@@ -101,7 +101,7 @@ var fakeBilder = map[string][2]string{
 	"mauer":   {"mauer/mauer-1.png", "mauer/mauer-1-stil.png"},
 }
 
-func (f fakeFrames) Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (review.FrameAntwort, error) {
+func (f fakeFrames) Frame(ctx context.Context, spec, stil, animation string, frame int, variante, out string) (review.FrameAntwort, error) {
 	// Die echte CLI (RD1) lehnt die Basis HEAD~1 ab (Reittier fehlt dort); die Attrappe rendert ohne CLI.
 	if bilder, ok := fakeBilder[strings.TrimSuffix(filepath.Base(spec), ".paper.json")]; ok {
 		i := 1
@@ -114,7 +114,7 @@ func (f fakeFrames) Frame(ctx context.Context, spec, animation string, frame int
 		}
 		return review.FrameAntwort{Datei: out, Teile: map[string][]int{}}, os.WriteFile(out, raw, 0o644)
 	}
-	return f.CLI.Frame(ctx, spec, animation, frame, variante, out)
+	return f.CLI.Frame(ctx, spec, stil, animation, frame, variante, out)
 }
 
 func dienst(repo string, fake bool) Dienst {

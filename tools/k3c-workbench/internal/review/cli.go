@@ -13,7 +13,8 @@ import (
 type Renderer interface {
 	Validate(ctx context.Context, spec string) ([]Fehler, error)
 	Diff(ctx context.Context, alt, neu, stilAlt, stilNeu string) (DiffAntwort, error)
-	Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (FrameAntwort, error)
+	// Frame rendert mit der Stil-Datei stil (leer: public/grafik/stil.paper.json des Checkouts; B-705).
+	Frame(ctx context.Context, spec, stil, animation string, frame int, variante, out string) (FrameAntwort, error)
 	PixelDiff(ctx context.Context, a, b, out string) (PixelAntwort, error)
 }
 
@@ -92,11 +93,14 @@ func (c CLI) Diff(ctx context.Context, alt, neu, stilAlt, stilNeu string) (DiffA
 	return d, err
 }
 
-// Frame rendert einen Frame nach out.
-func (c CLI) Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (FrameAntwort, error) {
+// Frame rendert einen Frame nach out; mit stil über `--stil` (Stil des Schnappschusses, B-705).
+func (c CLI) Frame(ctx context.Context, spec, stil, animation string, frame int, variante, out string) (FrameAntwort, error) {
 	args := []string{"frame", spec, "--animation", animation, "--frame", strconv.Itoa(frame), "--out", out}
 	if variante != "" {
 		args = append(args, "--variante", variante)
+	}
+	if stil != "" {
+		args = append(args, "--stil", stil)
 	}
 	var f FrameAntwort
 	err := c.run(ctx, &f, args...)

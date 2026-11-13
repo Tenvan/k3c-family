@@ -121,3 +121,20 @@ func TestAssetsPreviewBasis(t *testing.T) {
 		t.Errorf("Text:\n%s", text)
 	}
 }
+
+// B-709: assets_preview reicht die Boxen reittier:* der echten CLI durch (nach den Teilen der Spec, sortiert).
+func TestAssetsPreviewReittierBoxen(t *testing.T) {
+	root := paperRepo(t)
+	t.Setenv("K3C_PAPER_CLI", filepath.Join(repoWurzel(t), "tools", "paper", "bin", "paper.ts"))
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	res := callResult(t, cs, "assets_preview", map[string]any{"id": "monarch", "animation": "reiten"})
+	text := res.Content[len(res.Content)-1].(*mcp.TextContent).Text
+	if res.IsError || !regexp.MustCompile(`· reittier:[a-z-]+ \d+,\d+,\d+,\d+`).MatchString(text) {
+		t.Errorf("Reittier-Boxen fehlen:\n%s", text)
+	}
+	b := bildErgebnis{teile: map[string][]int{"kopf": {1, 2, 3, 4}, "reittier:rumpf": {5, 6, 7, 8}, "reittier:bein-v": {9, 9, 9, 9}, "rumpf": {0, 0, 1, 1}, "fremd": {1, 1, 1, 1}}}
+	got := boxReihenfolge([]byte(`{"teile":[{"id":"rumpf"},{"id":"kopf"}]}`), b.teile)
+	if strings.Join(got, ",") != "rumpf,kopf,reittier:bein-v,reittier:rumpf" {
+		t.Errorf("Reihenfolge: %v", got)
+	}
+}

@@ -1,15 +1,19 @@
 // @vitest-environment happy-dom
 import { act } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fillPrompt, reviewWerte } from './prompt';
+import { fillPrompt } from '../prompts/fill';
+import { reviewWerte } from './prompt';
 import { PromptButtons } from './PromptButtons';
 import { button, click, fakeApi, fixture, mount, unmount } from './testing';
-import type { Review, Vorlage } from './types';
+import type { Review, Vorlage } from '../api';
 
 // RV1.4 / AC-06: Prompt-Buttons am Review-Eintrag kopieren den gefüllten Prompt.
 
 const fake = vi.hoisted(() => ({ api: {} as ReturnType<typeof import('./testing').fakeApi> }));
-vi.mock('./api', () => ({ reviewApi: new Proxy({}, { get: (_t, k: string) => (fake.api as Record<string, unknown>)[k] }) }));
+vi.mock('../../api', async (echt) => {
+  const m = await echt<typeof import('../../api')>();
+  return { ...m, backend: new Proxy(m.backend, { get: (t, k: string) => (fake.api as Record<string, unknown>)[k] ?? Reflect.get(t, k) }) };
+});
 
 const monarch = fixture<Review>('AssetsReview').assets.find((a) => a.id === 'monarch')!;
 let writes: string[];

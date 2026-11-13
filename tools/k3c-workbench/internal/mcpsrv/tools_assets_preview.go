@@ -150,12 +150,31 @@ func previewText(a pa.Asset, in assetsPreviewIn, anim string, spec []byte, b bil
 		kopf += " · Variante " + in.Variante
 	}
 	var teile []string
-	for _, id := range teilIDs(spec) {
-		if box, ok := b.teile[id]; ok && len(box) == 4 {
+	for _, id := range boxReihenfolge(spec, b.teile) {
+		if box := b.teile[id]; len(box) == 4 {
 			teile = append(teile, fmt.Sprintf("%s %d,%d,%d,%d", id, box[0], box[1], box[2], box[3]))
 		}
 	}
 	return kopf + "\nTeile (x,y,b,h px): " + strings.Join(teile, " · ")
+}
+
+// boxReihenfolge: erst die Teile der Spec in Zeichenreihenfolge, dann die Boxen des Reittiers (`reittier:<teil>`,
+// sortiert; B-709). Andere Schlüssel der CLI bleiben weg.
+func boxReihenfolge(spec []byte, boxen map[string][]int) []string {
+	var out []string
+	for _, id := range teilIDs(spec) {
+		if _, ok := boxen[id]; ok {
+			out = append(out, id)
+		}
+	}
+	var reittier []string
+	for id := range boxen {
+		if strings.HasPrefix(id, "reittier:") {
+			reittier = append(reittier, id)
+		}
+	}
+	slices.Sort(reittier)
+	return append(out, reittier...)
 }
 
 // teilIDs sind die Teil-IDs der Spec in Zeichenreihenfolge.

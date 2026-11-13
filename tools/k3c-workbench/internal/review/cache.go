@@ -222,7 +222,7 @@ func Bild(ctx context.Context, r Renderer, root string, q Quelle, animation stri
 	if g, ok := ausCache(png, meta); ok {
 		return g, nil
 	}
-	spec, err := q.SpecDatei(root, r)
+	spec, stil, err := q.schnappschuss(root, r)
 	if err != nil {
 		return Gerendert{}, err
 	}
@@ -230,7 +230,7 @@ func Bild(ctx context.Context, r Renderer, root string, q Quelle, animation stri
 	if err != nil {
 		return Gerendert{}, err
 	}
-	a, err := r.Frame(ctx, spec, animation, frame, variante, tmp)
+	a, err := r.Frame(ctx, spec, stil, animation, frame, variante, tmp) // Stil des Stands, beim Vorher-Bild der Basis (B-705)
 	if err == nil {
 		err = uebernehme(tmp, png)
 	}

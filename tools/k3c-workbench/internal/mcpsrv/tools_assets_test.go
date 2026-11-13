@@ -41,7 +41,8 @@ func TestAssetsGuide(t *testing.T) {
 		"Einzeltöne (ohne Ton): huf, auge, weiss, linie, edelstein",
 		"Pflicht-Teile figur: rumpf, kopf, oberarm-v", "Pivots: Hüfte (0,-50)",
 		"Proportion: Kopfhöhe / Rahmenhöhe = 0.286 ± 0.15", "Lagen: flaeche {form, material, ton?, auflage?}",
-		"Ablauf: assets_get → assets_set (Merge-Patch) → assets_preview → assets_review"} {
+		"Ablauf: assets_get → assets_set (Merge-Patch) → assets_preview → assets_review",
+		"(0.5/0.9, Unschärfe 0.45, 55 %)", "0.3/0.5/0.3/35 %"} { // B-709/AC-02: Prozent gerundet
 		if isErr || !strings.Contains(text, want) {
 			t.Errorf("guide figur ohne %q:\n%s", want, text)
 		}

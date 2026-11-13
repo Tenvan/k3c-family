@@ -41,9 +41,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
 | [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | eingeplant | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
-| [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
-| [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | eingeplant | WZ43 | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
-| [B-709](B-709-assets-preview-reittier-boxen.md) | PAP | Idee | niedrig | eingeplant | WZ43 | assets_preview nennt bei Reit-Animationen keine Teil-Boxen des Reittiers |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | eingeplant | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |

@@ -1,9 +1,9 @@
 import { Button, Flex, Text, TextField } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
-import { reviewApi } from './api';
 import { text } from './fehlertext';
-import { fillPrompt, reviewWerte } from './prompt';
-import type { ReviewAsset, Vorlage } from './types';
+import { fillPrompt } from '../prompts/fill';
+import { reviewWerte } from './prompt';
+import { assetsPrompts, type ReviewAsset, type Vorlage } from '../api';
 
 /** Prompt-Buttons am Review-Eintrag (Vorlagen mit Ort `review`): füllen den Prompt und kopieren ihn in die Zwischenablage. */
 export function PromptButtons({ asset, basis }: { asset: ReviewAsset; basis: string }) {
@@ -12,7 +12,7 @@ export function PromptButtons({ asset, basis }: { asset: ReviewAsset; basis: str
   const [meldung, setMeldung] = useState<{ text: string; fehler: boolean }>();
   useEffect(() => {
     let aktiv = true;
-    reviewApi.prompts().then(
+    assetsPrompts().then(
       (v) => aktiv && setVorlagen(v.filter((x) => x.ort === 'review')),
       (e) => aktiv && setMeldung({ text: text(e), fehler: true }),
     );

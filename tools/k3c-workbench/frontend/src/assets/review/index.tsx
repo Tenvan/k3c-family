@@ -9,7 +9,7 @@ import { PromptButtons } from './PromptButtons';
 import { SizeCompare } from '../size/SizeCompare';
 import { ReviewList } from './ReviewList';
 import { cachedReview, clearReviewCache, loadReview } from './reviewStore';
-import type { Review, ReviewAsset } from './types';
+import type { Review, ReviewAsset } from '../api';
 
 /** Review-Seite im Bereich Assets (RV1, Vertrag docs/standards/paper-mcp.md › Oberfläche): jede Asset-Änderung gegen
  *  eine wählbare Git-Basis mit Vorher/Nachher, Pixel-Diff-Overlay und markierten Teilen. Ändert nichts. */

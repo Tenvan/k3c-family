@@ -119,6 +119,26 @@
       "licht": "#7d86e0",
       "basis": "#4a52b0",
       "schatten": "#2c3174"
+    },
+    "fell-grau": {
+      "basis": "#7a746f",
+      "licht": "#a29d97",
+      "schatten": "#544f4b"
+    },
+    "geisterweiss": {
+      "basis": "#d5e5ee",
+      "licht": "#f5fbff",
+      "schatten": "#a6bdcb"
+    },
+    "lava": {
+      "basis": "#ee6420",
+      "licht": "#ffb04a",
+      "schatten": "#a3301a"
+    },
+    "stroh": {
+      "basis": "#d8b45a",
+      "licht": "#f2da8c",
+      "schatten": "#a5813a"
     }
   },
   "einzeltoene": {

@@ -4,17 +4,20 @@ import { act } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Compare } from './Compare';
 import { button, click, fakeApi, fixture, flush, key, mount, unmount } from './testing';
-import type { Review } from './types';
+import type { Review } from '../api';
 
 // RV1.4 / AC-04: Vorher und Nachher laufen synchron mit einem Frame-Schieber.
 
 const fake = vi.hoisted(() => ({ api: {} as ReturnType<typeof import('./testing').fakeApi> }));
-vi.mock('./api', () => ({ reviewApi: new Proxy({}, { get: (_t, k: string) => (fake.api as Record<string, unknown>)[k] }) }));
+vi.mock('../../api', async (echt) => {
+  const m = await echt<typeof import('../../api')>();
+  return { ...m, backend: new Proxy(m.backend, { get: (t, k: string) => (fake.api as Record<string, unknown>)[k] ?? Reflect.get(t, k) }) };
+});
 
 const monarch = fixture<Review>('AssetsReview').assets.find((a) => a.id === 'monarch')!;
 /** Frames, die je Seite (Basis HEAD~1 bzw. Arbeitsstand '') zuletzt angefragt wurden. */
 const letzte = () => {
-  const calls = fake.api.frame.mock.calls;
+  const calls = fake.api.assetsFrame.mock.calls;
   const seite = (b: string) => calls.filter((c) => c[4] === b).at(-1);
   return { vorher: seite('HEAD~1'), nachher: seite('') };
 };
@@ -71,8 +74,8 @@ describe('AnimationSync', () => {
   });
 
   it('Frame fehlt in der Basis: Hinweis, Nachher läuft weiter', async () => {
-    const ok = fake.api.frame.getMockImplementation()!;
-    fake.api.frame.mockImplementation((id, a, f, v, b) => (b === 'HEAD~1' ? Promise.reject(new Error('Animation „idle“ fehlt')) : ok(id, a, f, v, b)));
+    const ok = fake.api.assetsFrame.getMockImplementation()!;
+    fake.api.assetsFrame.mockImplementation((id, a, f, v, b) => (b === 'HEAD~1' ? Promise.reject(new Error('Animation „idle“ fehlt')) : ok(id, a, f, v, b)));
     const host = await mount(<Compare asset={monarch} basis="HEAD~1" />);
     expect(host.textContent).toContain('Frame fehlt in der Basis');
     expect(host.querySelector('img[alt="Nachher"]')).not.toBeNull();
@@ -84,9 +87,9 @@ describe('AnimationSync', () => {
     await tick(10);
     await act(async () => button(host, 'Abspielen')!.click());
     await tick(125 * 8);
-    const nachEinemDurchlauf = fake.api.frame.mock.calls.length;
+    const nachEinemDurchlauf = fake.api.assetsFrame.mock.calls.length;
     await tick(125 * 8);
-    expect(fake.api.frame.mock.calls.length).toBe(nachEinemDurchlauf);
+    expect(fake.api.assetsFrame.mock.calls.length).toBe(nachEinemDurchlauf);
     expect(nachEinemDurchlauf).toBe(16);
   }, LANG);
 });
@@ -121,6 +124,6 @@ describe('Pixel-Diff beim Abspielen (Befund 4)', () => {
     await click(button(host, 'Unterschiede'));
     await act(async () => button(host, 'Abspielen')!.click());
     await tick(125 * 16);
-    expect(fake.api.pixelDiff.mock.calls.length).toBe(8);
+    expect(fake.api.assetsPixelDiff.mock.calls.length).toBe(8);
   }, LANG);
 });
