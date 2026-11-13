@@ -342,3 +342,8 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | `erledigt/RV1-asset-review/` |
 | WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | `erledigt/WZ44-planung-wellen-werkzeuge/` |
 | PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | `erledigt/PT2-paper-cli-und-stil/` |
+| NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | `erledigt/NG9-native-zusammenfuehrung-abnahme/` |
+| NG11 | Natives Spiel: Fluss mit Shader | `erledigt/NG11-native-fluss-shader/` |
+| NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | `erledigt/NG14-native-fehleranzeige-shader-umschalter/` |
+| NG15 | Natives Spiel: Ton-Gerät ohne Absturz | `erledigt/NG15-native-ton-geraet/` |
+| NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | `erledigt/NG19-native-menue-kacheln-batching-version/` |

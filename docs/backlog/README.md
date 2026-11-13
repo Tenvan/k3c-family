@@ -65,14 +65,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
-| [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
-| [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
-| [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
-| [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | eingeplant | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
-| [B-810](B-810-native-lade-und-fehleranzeige.md) | CLI | Problem | mittel | eingeplant | NG14 | Das native Spiel meldet Startfehler und fehlende Grafik im Fenster und zeigt beim Stufenwechsel eine Ladeanzeige |
-| [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | eingeplant | NG19 | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
-| [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
-| [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
 | [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | offen | – | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
@@ -91,6 +83,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
 | [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | offen | PT2 | Abnahme-Läufe PT2 |
 | [B-845](B-845-paper-frame-ohne-reittier-teile.md) | PAP | Problem | niedrig | offen | – | paper frame --ohne kennt die Teile des Reittiers nicht |
+| [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | offen | – | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 
 ## Archiv
 
@@ -796,8 +789,7 @@ Zeile in diesen Abschnitt.
 | [B-738](archiv/B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | erledigt | WZ42 | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
 | [B-747](archiv/B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | erledigt | WZ42 | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
 | [B-787](archiv/B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | erledigt | WZ42 | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
-| [B-826](archiv/B-826-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | verworfen | – | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
-| [B-827](archiv/B-827-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | verworfen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
+| [B-826](archiv/B-826-native-fenstermodus.md) | CLI | Idee | mittel | erledigt | NG19 | Die Optionen des nativen Spiels schalten zwischen Fenster, rahmenlos und Vollbild um |
 | [B-782](archiv/B-782-plan-next-branch-praefix.md) | DEV | Problem | hoch | erledigt | WZ44 | plan_next nennt den Sprint-Branch richtig, auch wenn das Feld Branch schon mit sprint/ beginnt |
 | [B-783](archiv/B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | erledigt | WZ44 | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
 | [B-784](archiv/B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | erledigt | WZ44 | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
@@ -806,3 +798,11 @@ Zeile in diesen Abschnitt.
 | [B-840](archiv/B-840-dev-test-im-worktree-ohne-frontend.md) | DEV | Problem | mittel | verworfen | – | check_run dev:test läuft im Worktree ohne gebautes frontend/dist |
 | [B-708](archiv/B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | erledigt | PT2 | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
 | [B-735](archiv/B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | erledigt | PT2 | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
+| [B-786](archiv/B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | verworfen | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
+| [B-790](archiv/B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | erledigt | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
+| [B-802](archiv/B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | erledigt | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
+| [B-805](archiv/B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | erledigt | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
+| [B-810](archiv/B-810-native-lade-und-fehleranzeige.md) | CLI | Problem | mittel | erledigt | NG14 | Das native Spiel meldet Startfehler und fehlende Grafik im Fenster und zeigt beim Stufenwechsel eine Ladeanzeige |
+| [B-818](archiv/B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | erledigt | NG19 | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
+| [B-820](archiv/B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | erledigt | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
+| [B-821](archiv/B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | erledigt | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
