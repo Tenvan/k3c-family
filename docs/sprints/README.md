@@ -38,6 +38,8 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 | WZ47 | DEV | WZG | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | – | bereit | `geplant/WZ47-ticket-relationen-index/` |
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
 | WZ46 | DEV | WZG | Workbench-Tests ohne Engine-Spielserver | – | Entwurf | `geplant/WZ46-workbench-tests-ohne-spielserver/` |
+| WZ49 | DEV | WZG | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | – | bereit | `geplant/WZ49-planung-checkrun-restbefunde/` |
+| WZ50 | DEV | WZG | Katalog-Vitests der Workbench bleiben unter Last grün | – | bereit | `geplant/WZ50-katalog-vitests-stabil/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | LG1 | SRV, DEV, CLI | LST | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | – | Entwurf | `geplant/LG1-remote-logs-webgl-budget/` |

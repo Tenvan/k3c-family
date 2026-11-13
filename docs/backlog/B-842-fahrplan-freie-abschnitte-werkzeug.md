@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ49
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
 - **Spec:** Entwurf

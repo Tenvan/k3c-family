@@ -65,7 +65,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
-| [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
 | [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | eingeplant | WZ48 | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
@@ -74,16 +73,21 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-828](B-828-ci-workbench-go-tests.md) | INF | Problem | mittel | eingeplant | WZ48 | Der CI-Job k3c-workbench fährt die Go-Tests der Workbench |
 | [B-829](B-829-filewatch-neustart-flake.md) | DEV | Problem | niedrig | eingeplant | WZ48 | TestDateiAenderungStartetNeu bleibt unter Last stabil |
 | [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | eingeplant | WZ48 | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
-| [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | offen | – | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
-| [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | offen | – | Katalog-Vitests der Workbench bleiben unter Last grün |
-| [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | offen | – | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
+| [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | eingeplant | WZ49 | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
+| [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | eingeplant | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün |
+| [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | eingeplant | WZ49 | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
 | [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | offen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
-| [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | offen | – | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
+| [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | eingeplant | WZ49 | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
 | [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
 | [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | offen | PT2 | Abnahme-Läufe PT2 |
 | [B-845](B-845-paper-frame-ohne-reittier-teile.md) | PAP | Problem | niedrig | eingeplant | PT3 | paper frame --ohne kennt die Teile des Reittiers nicht |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | offen | – | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
+| [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | offen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
+| [B-847](B-847-workbench-im-spiel-ansehen-nativ.md) | DEV | Schuld | niedrig | eingeplant | WZ49 | „Im Spiel ansehen“ der Workbench startet das native Spiel statt game.html |
+| [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | offen | – | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
+| [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | offen | – | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
+| [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | offen | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
 
 ## Archiv
 
@@ -806,3 +810,4 @@ Zeile in diesen Abschnitt.
 | [B-818](archiv/B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | erledigt | NG19 | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
 | [B-820](archiv/B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | erledigt | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
 | [B-821](archiv/B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | erledigt | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
+| [B-823](archiv/B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | erledigt | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |

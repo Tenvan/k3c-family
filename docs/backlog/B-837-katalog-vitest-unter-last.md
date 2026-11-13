@@ -4,8 +4,8 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ50
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
 - **Spec:** Entwurf

@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-12
@@ -85,3 +85,5 @@ Alle entschieden 🧑 2026-11-12 (Dialog, „nur noch nativ (PC)“; Vorschläge
 ## Notizen
 
 Beschluss 🧑 2026-11-12: als Entwurf einplanen, nicht freigeben. Projekt NAT nennt Browser-Client und Xbox/Edge bisher als Nicht-Ziel („bleiben bis zur Umstellung“).
+
+2026-11-13 (Claude): AC-01 erfüllt – Entscheidung `docs/decisions/009-nur-natives-spiel.md` liegt vor, NG9 ist erledigt (NG9.5 entfallen, Ralf). Zerlegt in B-846 (Server ohne Client-Auslieferung, SRV, Freigabe 🧑), B-847 (Workbench „Im Spiel ansehen“ nativ, DEV, Klasse A), B-848 (Browser-Client-Code, CI, Docker, Release, INF, nach B-846/B-847), B-849 (`site/` mit Papierschnitt-Bildern, PLAT, Freigabe 🧑), B-850 (Zukunft von Server, `engine/net`, `k3c-load`, `k3c-tui`, Entscheidung 🧑). Punkt 7 (Browser-Planung verwerfen) ist mit Entscheidung 009 erledigt.
