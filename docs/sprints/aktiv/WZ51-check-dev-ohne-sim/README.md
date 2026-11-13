@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ51.1 | `WZ51.1-check-dev-paketliste.md` | Umsetzung | autonom | offen |
+| WZ51.1 | `WZ51.1-check-dev-paketliste.md` | Umsetzung | autonom | fertig |
 | WZ51.2 | `WZ51.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
