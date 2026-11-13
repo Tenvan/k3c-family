@@ -37,6 +37,9 @@ func (g *Gueltigkeit) Pruefe(ctx context.Context, cli CLI, assets []Asset) map[s
 	nachID := map[string]Asset{}
 	if alle, err := Assets(cli.Root); err == nil {
 		for _, a := range alle {
+			if _, doppelt := nachID[a.ID]; doppelt {
+				a.Pfad = "" // mehrdeutige ID: reittierStand markiert sie, statt einen Treffer zu raten
+			}
 			nachID[a.ID] = a
 		}
 	}

@@ -38,8 +38,12 @@ func reittierStand(root, pfad string, nachID map[string]Asset) string {
 	stand := ""
 	for _, id := range review.Reittiere(b) {
 		r, ok := nachID[id]
-		if !ok {
+		switch {
+		case !ok:
 			stand += "|" + id + ":–"
+			continue
+		case r.Pfad == "":
+			stand += "|" + id + ":mehrdeutig"
 			continue
 		}
 		stand += "|" + id + ":" + dateiStand(r.Abs(root))

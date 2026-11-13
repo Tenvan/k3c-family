@@ -26,7 +26,7 @@ func TestSetAendertMaterial(t *testing.T) {
 	}
 	// B-706: Overlays von assets_set heißen anders als die von assets_review (<id>-<anim>-0-diff.png).
 	for _, p := range r.Pixel {
-		if p.Overlay != "" && p.Overlay != ".cache/paper/mcp/set-monarch-"+p.Animation+"-0-diff.png" {
+		if p.Overlay != "" && p.Overlay != ".cache/paper/mcp/set/monarch-"+p.Animation+"-0-diff.png" {
 			t.Errorf("Overlay %s: %s", p.Animation, p.Overlay)
 		}
 	}
@@ -168,6 +168,23 @@ func TestErsetzeOrdnerBeiseiteImCache(t *testing.T) {
 	}
 	if e, _ := os.ReadDir(filepath.Dir(ziel)); len(e) != 1 {
 		t.Errorf("neben der Ausgabe: %v", e)
+	}
+}
+
+// Review WZ43.5: lässt sich die alte Ausgabe nicht zurückbenennen, wird sie nach .cache/paper/gerettet/ gelegt.
+func TestZurueckLegenRettet(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	tmp := filepath.Join(root, ".cache", "paper", "tmp", "abc")
+	schreibe(t, tmp, ".beiseite/idle.png", "alt")
+	ziel := filepath.Join(root, "kein", "ordner", "monarch") // Elternordner fehlt: Umbenennen scheitert
+	err := zurueckLegen(filepath.Join(tmp, ".beiseite"), ziel, os.ErrPermission)
+	gerettet := filepath.Join(root, ".cache", "paper", "gerettet", "abc")
+	if err == nil || !strings.Contains(err.Error(), gerettet) {
+		t.Fatalf("Fehler: %v", err)
+	}
+	if b, _ := os.ReadFile(filepath.Join(gerettet, "idle.png")); string(b) != "alt" {
+		t.Errorf("gerettet: %q", b)
 	}
 }
 

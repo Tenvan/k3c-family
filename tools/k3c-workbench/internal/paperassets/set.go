@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"time"
 
 	"k3c/tools/k3c-workbench/internal/assetsui"
 )
@@ -224,7 +225,7 @@ func ersetzeOrdner(src, ziel string) error {
 	}
 	if err := ordnerUmbenennen(src, ziel); err != nil {
 		if beiseite != "" {
-			_ = os.Rename(beiseite, ziel)
+			return zurueckLegen(beiseite, ziel, err)
 		}
 		return err
 	}
@@ -232,6 +233,24 @@ func ersetzeOrdner(src, ziel string) error {
 		_ = os.RemoveAll(beiseite) // Aufräumen; der neue Stand liegt schon
 	}
 	return nil
+}
+
+// zurueckLegen bringt die beiseitegelegte Ausgabe zurück (drei Versuche, der Watcher kann kurz sperren). Gelingt
+// das nicht, rettet es sie nach .cache/paper/gerettet/, weil der Temp-Ordner danach gelöscht wird, und nennt den Pfad.
+func zurueckLegen(beiseite, ziel string, ursache error) error {
+	var err error
+	for i := range 3 {
+		if err = os.Rename(beiseite, ziel); err == nil {
+			return ursache
+		}
+		time.Sleep(time.Duration(i+1) * 50 * time.Millisecond)
+	}
+	tmp := filepath.Dir(beiseite) // .cache/paper/tmp/<x>
+	gerettet := filepath.Join(filepath.Dir(filepath.Dir(tmp)), "gerettet", filepath.Base(tmp))
+	if os.MkdirAll(filepath.Dir(gerettet), 0o755) == nil && os.Rename(beiseite, gerettet) == nil {
+		return fmt.Errorf("%w; alte Ausgabe liegt unter %s (zurückbenennen: %v)", ursache, gerettet, err)
+	}
+	return fmt.Errorf("%w; alte Ausgabe nicht wiederhergestellt: %v", ursache, err)
 }
 
 // animationen sind die Schlüssel von "animationen" in Reihenfolge der Spec.
@@ -249,19 +268,19 @@ func animationen(spec []byte) []string {
 	return out
 }
 
-// SetOverlay ist der Dateiname des Overlays von assets_set unter .cache/paper/mcp/: Präfix set-, damit er das
-// Overlay von assets_review (<id>-<animation>-0-diff.png) nicht überschreibt (B-706).
-func SetOverlay(id, anim string) string { return fmt.Sprintf("set-%s-%s-0-diff.png", id, anim) }
+// SetOverlay ist der Pfad des Overlays von assets_set unter .cache/paper/mcp/: eigener Unterordner set/, damit er
+// das Overlay von assets_review (<id>-<animation>-0-diff.png) auch bei IDs mit „-“ nie trifft (B-706).
+func SetOverlay(id, anim string) string { return fmt.Sprintf("set/%s-%s-0-diff.png", id, anim) }
 
 // pixelJeAnimation rendert Frame 0 jeder Animation alt und neu (parallel) und vergleicht die Pixel.
 func pixelJeAnimation(ctx context.Context, cli CLI, a Asset, altSpec, spec string, anims []string) []Pixel {
 	out := make([]Pixel, len(anims))
-	cache := filepath.Join(cli.Root, ".cache", "paper", "mcp")
+	cache := filepath.Join(cli.Root, ".cache", "paper", "mcp", "set")
 	_ = os.MkdirAll(cache, 0o755)
 	var wg sync.WaitGroup
 	for i, anim := range anims {
 		wg.Go(func() {
-			out[i] = pixel(ctx, cli, altSpec, spec, anim, filepath.Join(cache, SetOverlay(a.ID, anim)))
+			out[i] = pixel(ctx, cli, altSpec, spec, anim, filepath.Join(filepath.Dir(cache), filepath.FromSlash(SetOverlay(a.ID, anim))))
 		})
 	}
 	wg.Wait()

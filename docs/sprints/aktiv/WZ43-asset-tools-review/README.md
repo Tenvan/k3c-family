@@ -71,12 +71,13 @@ keine blockierenden. Defaults (Claude, 2026-11-12, Meldung im Nachgang): `assets
 | WZ43.2 | `WZ43.2-review-backend-stil.md` | Umsetzung | autonom | fertig |
 | WZ43.3 | `WZ43.3-katalog-belegen.md` | Umsetzung | autonom | fertig |
 | WZ43.4 | `WZ43.4-sichtpruefung-pc.md` | Workshop | Mensch | offen |
-| WZ43.5 | `WZ43.5-review.md` | Review | autonom | offen |
+| WZ43.5 | `WZ43.5-review.md` | Review | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Claude (WZ43.5): AC-01 bis AC-06 belegt (Ergebnisse WZ43.1–WZ43.3); `task check`, `go:test` grün, `dev:test` grün bis auf den flackernden `services/TestDateiAenderungStartetNeu` (einzeln grün, nicht WZ43). **AC-07 offen: Sichtprüfung WZ43.4 durch Ralf am PC**, daher bleibt der Sprint aktiv; B-732 und B-734 bleiben bis dahin `eingeplant`.
+Behoben aus `k3c-reviewer`: alte Ausgabe wird bei gescheitertem Zurückbenennen nach `.cache/paper/gerettet/` gerettet statt mit dem Temp-Ordner gelöscht; Overlays von `assets_set` im Unterordner `.cache/paper/mcp/set/`; mehrdeutige Reittier-ID im Gültigkeits-Cache markiert.
+Neue Tickets (anzulegen, kein `plan_create` im Worktree): Abnahme-Ticket WZ43 für Gen (`gen:paper` samt Grafik-Golden, `check:race`; Sim und Balance gesperrt); flackernder Watch-Test der Workbench; ggf. Größenvergleich für das Vorher-Bild (WZ43.3).
+PR und Push macht die Wellen-Leitung; Neubau der Workbench-EXE nach dem Merge (Sperre `exe`).
