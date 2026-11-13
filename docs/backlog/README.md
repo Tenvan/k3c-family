@@ -41,7 +41,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
 | [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | eingeplant | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
-| [B-704](B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | eingeplant | WZ42 | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
 | [B-703](B-703-review-auf-wb1-backend.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Die Review-Seite nutzt backend.assets* und fillPrompt aus WB1 statt eigener Kopien |
 | [B-705](B-705-paper-frame-stil-der-basis.md) | DEV | Problem | mittel | eingeplant | WZ43 | Das Vorher-Bild im Review rendert mit dem Stil der Basis |
 | [B-706](B-706-asset-tools-nachzug-review-mc1.md) | DEV | Schuld | mittel | eingeplant | WZ43 | Asset-MCP-Tools: Restbefunde aus dem Review MC1 nachziehen |
@@ -87,6 +86,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
 | [B-835](B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | offen | – | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
+| [B-828](B-828-ci-workbench-go-tests.md) | INF | Problem | mittel | offen | – | Der CI-Job k3c-workbench fährt die Go-Tests der Workbench |
+| [B-829](B-829-filewatch-neustart-flake.md) | DEV | Problem | niedrig | offen | – | TestDateiAenderungStartetNeu bleibt unter Last stabil |
+| [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | offen | – | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
+| [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | offen | – | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
+| [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | offen | – | Katalog-Vitests der Workbench bleiben unter Last grün |
 
 ## Archiv
 
@@ -785,3 +789,10 @@ Zeile in diesen Abschnitt.
 | [B-750](archiv/B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | erledigt | PT1 | gen:paper meldet die Ausgaben innerhalb großer Assets |
 | [B-751](archiv/B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | erledigt | PT1 | gen:paper schneller: Cache je Asset und parallel rastern |
 | [B-700](archiv/B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | erledigt | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
+| [B-621](archiv/B-621-workbench-console-tail-flake.md) | DEV | Problem | niedrig | erledigt | WZ42 | TestSourcesUndConsoleTail flackert, wenn die Ressourcen-Zeile früh kommt |
+| [B-695](archiv/B-695-flaky-simrun-tempdir-balancing-abbruch.md) | DEV | Problem | niedrig | erledigt | WZ42 | Zwei Tests flackern: simrun-TempDir-Cleanup und Abbruch eines wartenden Laufs |
+| [B-702](archiv/B-702-test-runprocess-wackelt.md) | DEV | Problem | mittel | erledigt | WZ42 | TestRunProcessExitUndAusgabe wackelt: fehlendes Programm ohne Fehler |
+| [B-704](archiv/B-704-go-tests-unter-last-flaky.md) | DEV | Problem | mittel | erledigt | WZ42 | Lastabhängige Go-Tests scheitern bei parallelen Agenten |
+| [B-738](archiv/B-738-workbench-go-tests-rot-style-vorlage-review.md) | DEV | Problem | mittel | erledigt | WZ42 | Workbench-Go-Tests rot: Style-Fixture, Rig-Vorlage vierbeiner ohne Gangarten, Review-Tests mit festen Commit-Hashes |
+| [B-747](archiv/B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | erledigt | WZ42 | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
+| [B-787](archiv/B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | erledigt | WZ42 | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |

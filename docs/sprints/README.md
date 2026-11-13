@@ -337,3 +337,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ41 | CI und Release grün, check:diff-Protokoll belegt | `erledigt/WZ41-ci-release-gruen/` |
 | PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | `erledigt/PT1-gen-paper-schneller/` |
 | CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | `erledigt/CU1-alte-grafik-aufraeumen/` |
+| WZ42 | Workbench-Tests schnell und stabil | `erledigt/WZ42-workbench-tests-schnell-stabil/` |
