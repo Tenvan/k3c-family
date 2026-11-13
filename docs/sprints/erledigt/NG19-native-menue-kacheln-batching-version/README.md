@@ -1,6 +1,6 @@
 # NG19 · CLI · Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -68,8 +68,8 @@ Vorgezogen am 2026-11-13 (Dialog Ralf „NG19 vorziehen“): Die Abhängigkeit v
 |---|---|---|---|---|
 | NG19.1 | `NG19.1-batching-version.md` | Umsetzung | autonom | fertig |
 | NG19.2 | `NG19.2-menue-kacheln.md` | Umsetzung | autonom | fertig |
-| NG19.3 | `NG19.3-review.md` | Review | autonom | offen |
-| NG19.4 | `NG19.4-sichtpruefung-pc.md` | Review | Mensch | offen |
+| NG19.3 | `NG19.3-review.md` | Review | autonom | fertig |
+| NG19.4 | `NG19.4-sichtpruefung-pc.md` | Review | Mensch | fertig |
 | NG19.5 | `NG19.5-fenstermodus.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -78,6 +78,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-13: AC-01 bis AC-04 laut Ergebnis von NG19.1, NG19.2, NG19.5; Sichtprüfung NG19.4 und Review-Freigabe durch 🧑 („NG19.3 +4 ok“). Review-Befunde (k3c-reviewer) behoben: Fenster-Lage nach Vollbild, Größe ≤ 90 % des Monitors. `task check` und `task check:go` grün. Neue Tickets: B-826. Kein Abnahme-Ticket für Gen (keine Grafik geändert).

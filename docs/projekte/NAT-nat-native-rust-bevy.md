@@ -31,12 +31,12 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | erledigt |
 | NG13 | Natives Spiel: Menüs und HUD nachziehen | erledigt |
 | NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | aktiv |
-| NG15 | Natives Spiel: Ton-Gerät ohne Absturz | aktiv |
+| NG15 | Natives Spiel: Ton-Gerät ohne Absturz | erledigt |
 | NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | erledigt |
 | NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | erledigt |
 | NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | erledigt |
 | CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | erledigt |
-| NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | aktiv |
+| NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | erledigt |
 
 ## Nicht-Ziele
 
