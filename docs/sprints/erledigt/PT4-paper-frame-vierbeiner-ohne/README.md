@@ -1,6 +1,6 @@
 # PT4 · PAP · Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PT4.1 | `PT4.1-frame-ohne-vierbeiner.md` | Umsetzung | autonom | fertig |
-| PT4.2 | `PT4.2-review.md` | Review | autonom | offen |
+| PT4.2 | `PT4.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -68,6 +68,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+- 2026-11-13: B-851/AC-01 geprüft (PT4.1-Ergebnis: Tests in `rig/vierbeiner.test.ts` und `bin/paper.test.ts` grün).
+- Review PT4.2: keine Befunde; `task:check` und `go:test` grün.
+- Neue Tickets: keine. Abnahme-Ticket für Sim, Balance und Gen: nicht angelegt (Auftrag ohne neue Tickets), Vorschlag im Bericht der Welle.

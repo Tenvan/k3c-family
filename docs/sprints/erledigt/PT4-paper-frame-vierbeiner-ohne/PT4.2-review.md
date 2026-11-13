@@ -1,6 +1,6 @@
 # PT4.2 · Review PT4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -52,5 +52,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review des Diffs PT4.1 (Domäne PAP, unter 150 Zeilen, kein Risiko-Bereich, daher kein Reviewer-Agent): `beinOhne` nur im Vierbeiner-Pfad wirksam, Reit-Pfad des Reiters unberührt, Render ohne `--ohne` unverändert; keine Befunde.
+- `task:check` grün (5 min 52 s), `go:test` grün (2 min 20 s). `bun test tools/paper`: 351 grün, 1 rot (`golden/public.test.ts`, fehlendes `galopp.png` im Worktree, B-737).
+- Abnahme-Ticket: nicht angelegt (Auftrag: keine neuen Tickets); Vorschlag unter „Neue Tickets (anzulegen)“ im Bericht.
+- Neue Tickets: keine.
