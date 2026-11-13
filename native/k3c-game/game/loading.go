@@ -21,6 +21,11 @@ func (g *Game) Loading() bool { return g.loading }
 // syncLevels bringt die geladene Grafik auf den Stand der Stufen im Frame. Im Fenster: erstes Update „lädt“ setzen,
 // weiter warten, bis Draw die Anzeige gezeichnet hat, dann laden.
 func (g *Game) syncLevels() {
+	if g.parts.Art != nil && len(g.frame.Stages) == 0 && !g.args.Stall {
+		g.loading = false
+		g.loadLevels() // nur die Menü-Illustrationen, klein und einmal (B-818): ohne Ladeanzeige
+		return
+	}
 	if g.parts.Art == nil || (SameLevels(g.levels, g.frame.Stages) && !g.args.Stall) {
 		g.loading = false
 		return

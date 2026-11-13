@@ -86,11 +86,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-783](B-783-plan-waves-ralf-queue.md) | DEV | Idee | hoch | eingeplant | WZ44 | plan_waves berechnet Wellen aus Abhängigkeit, Bereich und Sperre, plan_queue zeigt die Ralf-Queue |
 | [B-784](B-784-planungsangaben-pruefen.md) | DEV | Idee | mittel | eingeplant | WZ44 | Planungsangaben für Wellen werden geprüft: plan_check und Regel-Test für freigegebene Tickets |
 | [B-785](B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | eingeplant | WZ44 | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
-| [B-786](B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | eingeplant | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
 | [B-787](B-787-workbench-tests-short-zu-langsam.md) | DEV | Problem | hoch | eingeplant | WZ42 | Workbench-Tests bleiben mit -short unter 3 s je Test, der volle Lauf ist grün |
 | [B-788](B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | eingeplant | WZ44 | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-790](B-790-prototyp-shader-wasser.md) | CLI | Frage | mittel | eingeplant | NG11 | Ein vierter Prototyp zeigt, was Shader in Ebitengine für Wasser und Papier-Effekte bringen |
-| [B-802](B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | eingeplant | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |
 | [B-805](B-805-native-ton-geraetefehler-abfangen.md) | CLI | Problem | mittel | eingeplant | NG15 | Ein Fehler des Ton-Geräts beendet das native Spiel nicht mehr |
 | [B-810](B-810-native-lade-und-fehleranzeige.md) | CLI | Problem | mittel | eingeplant | NG14 | Das native Spiel meldet Startfehler und fehlende Grafik im Fenster und zeigt beim Stufenwechsel eine Ladeanzeige |
 | [B-818](B-818-native-menue-kachel-illustrationen.md) | CLI | Idee | niedrig | eingeplant | NG19 | Hauptmenü und Pause-Menü des nativen Spiels zeigen Kacheln mit Illustrationen |
@@ -98,6 +96,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
 | [B-825](B-825-ci-tests-wieder-einschalten.md) | INF | Schuld | hoch | eingeplant | WZ41 | Die CI führt die Tests wieder aus (seit #531 abgeschaltet) |
+| [B-826](B-826-native-fenstermodus.md) | CLI | Idee | mittel | offen | NG19 | Die Optionen des nativen Spiels schalten zwischen Fenster, rahmenlos und Vollbild um |
 
 ## Archiv
 
@@ -786,3 +785,5 @@ Zeile in diesen Abschnitt.
 | [B-676](archiv/B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | verworfen | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-739](archiv/B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | erledigt | WZ41 | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
 | [B-759](archiv/B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | erledigt | WZ41 | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
+| [B-786](archiv/B-786-rig-monarch-sichtpruefung-mini-pc.md) | CLI | Frage | niedrig | verworfen | NG9 | Rig-Monarch wird am Mini-PC geprüft und gemessen, sobald das Spiel am PC fertig ist |
+| [B-802](archiv/B-802-native-zusammenfuehrung-abnahme.md) | CLI | Idee | hoch | erledigt | NG9 | Das native Spiel läuft von Start bis Spielstand durch, ist gemessen und am PC abgenommen |

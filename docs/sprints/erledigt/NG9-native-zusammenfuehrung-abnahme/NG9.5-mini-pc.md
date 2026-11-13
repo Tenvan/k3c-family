@@ -1,6 +1,6 @@
 # NG9.5 · Sichtprüfung und Messung am Mini-PC
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Review
 - **Agent:** Mensch
 - **Domäne:** CLI

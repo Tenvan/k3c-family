@@ -14,7 +14,10 @@ vars:
   # Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game, bindet k3c und k3c-rig per replace ein
   GAME: '{{.ROOT_DIR}}/native/k3c-game'
   GAME_EXE: '{{.ROOT_DIR}}/native/k3c-game/bin/k3c-game.exe'
-  GAME_PAKET: '{{.ROOT_DIR}}/.work/native-game'
+  # Paket zum Weitergeben (Wunsch 🧑 2026-11-13): fertige EXE mit allen Dateien unter dist/k3c-game; die Probe-Aufnahme
+  # bleibt in .work. Achtung: der Web-Build (vite, dist/) leert dist/ bis zum Ende des Browser-Clients (B-823).
+  GAME_PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
+  GAME_PROBE: '{{.ROOT_DIR}}/.work/native-game-probe'
   # Version des nativen Spiels (B-808): git describe, ohne Git leer (das Spiel zeigt dann „unbekannt“)
   GAME_VERSION:
     sh: git describe --tags --always --dirty 2>/dev/null || true
@@ -86,11 +89,11 @@ tasks:
       - '{{.MEASURE}} -Engine game'
 
   game:paket:
-    desc: "Paket für den Mini-PC nach .work/native-game/ (EXE, Lizenzdatei LIZENZEN.txt, nur die geladenen Ordner aus public/grafik, public/audio, Schrift, Rig-Teile, Messskript) und Probe-Aufnahme aus dem Paket-Ordner nach .work/native-game-probe/; dort k3c-game.exe oder messen.cmd starten"
+    desc: "Fertiges Spiel nach dist/k3c-game/ (EXE, Lizenzdatei LIZENZEN.txt, nur die geladenen Ordner aus public/grafik, public/audio, Schrift, Rig-Teile, Messskript) und Probe-Aufnahme aus dem Paket-Ordner nach .work/native-game-probe/; Ordner kopieren, dort k3c-game.exe oder messen.cmd starten"
     dir: '{{.ROOT_DIR}}'
     deps: [game:build]
     cmds:
-      - rm -rf "{{.GAME_PAKET}}" "{{.GAME_PAKET}}-probe"
+      - rm -rf "{{.GAME_PAKET}}" "{{.GAME_PROBE}}"
       - mkdir -p "{{.GAME_PAKET}}/public/grafik" "{{.GAME_PAKET}}/native/k3c-rig"
       - cp "{{.GAME_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.GAME_PAKET}}/"
       # nur die Grafik, die das Spiel laden kann (k3c-game --assets: je Zeile gruppe/id aller Level)
@@ -102,7 +105,7 @@ tasks:
       # Lizenzdatei aus derselben Liste wie die Lizenz-Seite im Menü (menu.LicenseText, B-808)
       - 'cd "{{.GAME}}" && CGO_ENABLED=0 go run ./menu/licensefile -version "{{.GAME_VERSION}}" > "{{.GAME_PAKET}}/LIZENZEN.txt"'
       # Probe: die EXE startet aus dem Paket-Ordner (Tag und Nacht mit Gegnern, Aufnahme-Modus)
-      - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PAKET}}-probe/nacht" --seed k3c --tick 15600 --count 2 --input 0@0=-,1@0=-'
+      - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PROBE}}/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PROBE}}/nacht" --seed k3c --tick 15600 --count 2 --input 0@0=-,1@0=-'
 
   rig:export:
     desc: "Rig-Prototyp: Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach native/k3c-rig/assets/ schreiben (eingecheckt; liest Specs und Stil nur)"

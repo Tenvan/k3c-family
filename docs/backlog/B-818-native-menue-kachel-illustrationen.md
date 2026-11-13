@@ -8,9 +8,9 @@
 - **Sprint:** NG19
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-12
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** Ralf, 2026-11-13 (Dialog „weiter mit B-818“)
 
 ## Ausgangslage
 
@@ -56,14 +56,13 @@ Bild fehlt → Karte mit Text, kein Absturz, Log-Zeile mit Pfad.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test in `menu`: Jeder Eintrag von Haupt- und Pause-Menü hat eine zugeordnete Illustration; fehlendes Bild liefert die Text-Karte.
-- **AC-02** Illustrationen über `assets_*` angelegt und im Bereich Assets der Workbench geprüft.
+- **AC-01** Test in `menu`: Jeder Eintrag von Haupt- und Pause-Menü hat eine zugeordnete Illustration aus vorhandener Spielgrafik; fehlendes Bild liefert die Text-Karte.
+- **AC-02** Die Illustrationen stammen aus vorhandenen Assets (`public/grafik`, Entscheidung 005); neue Assets nur über `assets_*`.
 - **AC-03** Sichtprüfung am PC durch 🧑.
 
 ## Offene Fragen
 
-- Welche Illustrationen (aus `hubArt.ts` übernehmen oder neu als Papierschnitt)? Entscheidet Ralf bei der Freigabe.
-- Zerlegung in Hauptmenü und Pause getrennt? Entscheidet Ralf bei der Freigabe.
+keine (entschieden 2026-11-13, Dialog Ralf „weiter mit B-818“, Defaults durch Claude): Illustrationen aus der vorhandenen Spielgrafik wie `src/scenes/hubArtData.ts` (Monarch, Portal, Truppen, Truhe, Ausgang …), keine neuen Assets; Haupt- und Pause-Menü in einer Session.
 
 ## Notizen
 

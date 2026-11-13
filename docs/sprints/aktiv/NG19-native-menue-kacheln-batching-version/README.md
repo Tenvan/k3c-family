@@ -4,7 +4,7 @@
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
-- **Tickets:** B-818, B-820, B-821
+- **Tickets:** B-818, B-820, B-821, B-826
 - **Start-Commit:** 9b2ef1dcb
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -54,6 +54,7 @@ Illustration fehlt → Text-Karte (B-818/AC-01).
 - **AC-01** Menü-Kacheln mit Illustrationen (`B-818/AC-01` bis `B-818/AC-03`).
 - **AC-02** Hintergrund wechselt den Filter je Bild höchstens einmal, e2e grün (`B-820/AC-01`, `B-820/AC-02`).
 - **AC-03** Version in EXE und `LIZENZEN.txt` gleich, kein unnötiger Neubau (`B-821/AC-01`, `B-821/AC-02`).
+- **AC-04** Optionen schalten zwischen Fenster, rahmenlos und Vollbild (`B-826/AC-01` bis `B-826/AC-04`; Wunsch Ralf 2026-11-13).
 
 ## Offene Fragen
 
@@ -66,9 +67,10 @@ Vorgezogen am 2026-11-13 (Dialog Ralf „NG19 vorziehen“): Die Abhängigkeit v
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | NG19.1 | `NG19.1-batching-version.md` | Umsetzung | autonom | fertig |
-| NG19.2 | `NG19.2-menue-kacheln.md` | Umsetzung | autonom | offen |
+| NG19.2 | `NG19.2-menue-kacheln.md` | Umsetzung | autonom | fertig |
 | NG19.3 | `NG19.3-review.md` | Review | autonom | offen |
 | NG19.4 | `NG19.4-sichtpruefung-pc.md` | Review | Mensch | offen |
+| NG19.5 | `NG19.5-fenstermodus.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

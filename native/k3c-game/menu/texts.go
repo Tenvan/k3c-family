@@ -52,6 +52,9 @@ const (
 	txtMusic
 	txtEffects
 	txtFullscreen
+	txtDisplay
+	txtWindowed
+	txtBorderless
 	txtLanguage
 	txtBack
 	txtOn
@@ -154,7 +157,10 @@ var texts = [textCount][2]string{
 	txtMusic:           {"Musik", "Music"},
 	txtEffects:         {"Effekte", "Effects"},
 	txtFullscreen:      {"Vollbild", "Fullscreen"},
-	txtLanguage:        {"Sprache", "Language"},
+	txtDisplay:         {"Anzeige", "Display"},
+	txtWindowed:        {"Fenster", "Windowed"},
+	txtBorderless:      {"Rahmenlos", "Borderless"},
+	txtLanguage:       {"Sprache", "Language"},
 	txtBack:            {"Zurück", "Back"},
 	txtOn:              {"an", "on"},
 	txtOff:             {"aus", "off"},

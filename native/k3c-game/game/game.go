@@ -27,22 +27,23 @@ type Sim interface {
 // Game ist die Ebitengine-Schleife: Eingabe, Menü-Stapel, Takt der Simulation, Kameras, Grafik der Level und Zeichnen
 // der Zellen in Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (Frame.Clock), nie aus der Wanduhr.
 type Game struct {
-	parts  Parts
-	sim    Sim
-	args   Args
-	src    view.Source
-	stack  Stack
-	mode   Mode
-	frame  view.Frame
-	cues   []view.Cue
-	cells  []view.Cell
-	win    image.Rectangle // Zeichenfläche aus Layout
-	cams   Cameras
-	devs   devices
-	levels []string // Level, deren Grafik geladen ist (sortiert)
-	full   bool     // Vollbild ist angewendet
-	err    error    // beendet das Programm (nur im Messmodus; sonst fail)
-	fault  *Fault   // Fehler im Fenster (fehlende Grafik, B-810); gesetzt: die Schleife zeigt nur die Meldung
+	parts   Parts
+	sim     Sim
+	args    Args
+	src     view.Source
+	stack   Stack
+	mode    Mode
+	frame   view.Frame
+	cues    []view.Cue
+	cells   []view.Cell
+	win     image.Rectangle // Zeichenfläche aus Layout
+	cams    Cameras
+	devs    devices
+	levels  []string // Level, deren Grafik geladen ist (sortiert)
+	menuArt bool     // Grafik steht auf den Menü-Illustrationen (ohne Level, loadMenuArt)
+	window  string   // angewendeter Anzeige-Modus (view.Window*; Start: Fenster)
+	err     error    // beendet das Programm (nur im Messmodus; sonst fail)
+	fault   *Fault   // Fehler im Fenster (fehlende Grafik, B-810); gesetzt: die Schleife zeigt nur die Meldung
 	// Ladeanzeige (loading.go): loading = Stufenwechsel wartet auf das Laden, shown = Draw hat die Anzeige gezeichnet.
 	loading, shown bool
 	loadMsg        *notice
@@ -173,7 +174,7 @@ func (g *Game) advance() {
 	}
 	in := g.src.Poll()
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)
-	g.toggleFullscreen(in)
+	g.toggleWindow(in)
 	g.devKeys()
 	if top := g.stack.Top(); top != nil {
 		g.step(top.Update(in, g.sim))
@@ -190,37 +191,10 @@ func (g *Game) advance() {
 	g.cells = Cells(g.cells, g.win, &g.frame)
 	g.cams.Follow(g.cells, &g.frame)
 	g.frame.Cells, g.frame.Recording = g.cells, g.args.Shots != ""
-	g.applyFullscreen()
+	g.applyWindow()
 	for _, l := range g.parts.Listeners {
 		l.Listen(&g.frame)
 	}
-}
-
-// toggleFullscreen kehrt bei ActionFullscreen eines Geräts (Menü und Spiel) das Vollbild der Einstellungen um
-// (Session.SetSettings; applyFullscreen wendet es im nächsten Schritt an). Nicht im Aufnahme-Modus und nicht vor dem
-// ersten Frame (dessen Settings sind noch leer, sonst gingen Lautstärken und Sprache verloren).
-func (g *Game) toggleFullscreen(in view.Input) {
-	if g.args.Shots != "" || g.frame.Settings.Language == "" {
-		return
-	}
-	if _, ok := in.Has(view.ActionFullscreen); !ok {
-		return
-	}
-	s := g.frame.Settings
-	s.Fullscreen = !s.Fullscreen
-	if err := g.sim.SetSettings(s); err != nil {
-		slog.Warn("💥 Einstellungen nicht gespeichert", "err", err)
-	}
-}
-
-// applyFullscreen setzt Vollbild nach den Einstellungen, sobald sie sich ändern; nicht im Aufnahme-Modus.
-func (g *Game) applyFullscreen() {
-	if g.shots != nil || g.args.Shots != "" || g.frame.Settings.Fullscreen == g.full {
-		return
-	}
-	g.full = g.frame.Settings.Fullscreen
-	ebiten.SetFullscreen(g.full)
-	slog.Info("🚦 Vollbild", "an", g.full)
 }
 
 // step wendet das Ergebnis des obersten Screens an.
