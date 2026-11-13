@@ -77,15 +77,18 @@ func sectionLines(text, head string) []string {
 	return out
 }
 
-// allowedFiles ist die Dateimenge einer Session: je Stichpunkt unter „Erlaubte Dateien“ der erste Pfad in Backticks.
+// allowedFiles ist die Dateimenge einer Session: je Stichpunkt unter „Erlaubte Dateien“ alle Pfade in Backticks
+// (`a/**`, `b.go`); Backticks ohne `/` und `.` (z. B. „nur über `plan_*`“) sind kein Pfad.
 func allowedFiles(text string) []string {
 	var out []string
 	for _, l := range sectionLines(text, "## Erlaubte Dateien") {
 		if !strings.HasPrefix(strings.TrimSpace(l), "- ") {
 			continue
 		}
-		if m := reBacktick.FindStringSubmatch(l); m != nil {
-			out = append(out, parseGlobs(m[1])...)
+		for _, m := range reBacktick.FindAllStringSubmatch(l, -1) {
+			if strings.ContainsAny(m[1], "/.") && !strings.Contains(m[1], " ") {
+				out = append(out, parseGlobs(m[1])...)
+			}
 		}
 	}
 	return out

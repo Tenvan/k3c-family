@@ -1,6 +1,6 @@
 # WZ44 · DEV, INF · Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV, INF
 - **Reife:** bereit
@@ -69,12 +69,13 @@ keine blockierenden. Defaults (Claude, 2026-11-12, Meldung im Nachgang): Gerät 
 | WZ44.2 | `WZ44.2-plan-waves-queue.md` | Umsetzung | autonom | fertig |
 | WZ44.3 | `WZ44.3-plan-check.md` | Umsetzung | autonom | fertig |
 | WZ44.4 | `WZ44.4-fahrplan-aufraeumen.md` | Umsetzung | autonom | fertig |
-| WZ44.5 | `WZ44.5-review.md` | Review | autonom | offen |
+| WZ44.5 | `WZ44.5-review.md` | Review | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-13 (WZ44.5, Claude): AC-01–AC-04 erfüllt (Ergebnisse WZ44.1–WZ44.3), AC-05 teilweise (WZ44.4; „Offen am Gerät“, KB6-Thema und LG1-Zeile verschoben nach B-826). `task check`, `task check:go` grün; `dev:test` im Worktree ohne Frontend-Build nicht lauffähig (B-831), Planungs-Tests per `go test` grün.
+Behoben im Review: `allowedFiles` liest alle Pfade je Zeile (Kollisionen in `plan_waves`/`plan_next` wurden übersehen).
+Neue Tickets: B-826, B-827, B-838 (Regel Sessions eines Sprints, Entscheidung 🧑), B-839; Abnahme-Ticket B-841.
+Version: keine vorgeschlagen (nur Entwickler-Werkzeug). Nach Merge: Workbench-EXE neu bauen (Sperre `exe`).
