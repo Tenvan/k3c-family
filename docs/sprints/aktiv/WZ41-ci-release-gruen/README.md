@@ -69,7 +69,7 @@ keine blockierenden. Default (Claude, 2026-11-12): B-758/AC-03 prüft den aktuel
 | WZ41.1 | `WZ41.1-ci-belegen.md` | Umsetzung | autonom | fertig |
 | WZ41.2 | `WZ41.2-release-pruefungen.md` | Umsetzung | autonom | fertig |
 | WZ41.3 | `WZ41.3-review.md` | Review | autonom | offen |
-| WZ41.4 | `WZ41.4-ci-tests-einschalten.md` | Umsetzung | autonom | offen |
+| WZ41.4 | `WZ41.4-ci-tests-einschalten.md` | Umsetzung | autonom | fertig |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
 

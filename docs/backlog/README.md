@@ -97,7 +97,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-820](B-820-native-menue-backdrop-batching.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Menü-Hintergrund wechselt den Filter je Scheibe und bricht das Batching |
 | [B-821](B-821-native-lizenzen-version-worktree.md) | CLI | Schuld | niedrig | eingeplant | NG19 | Version in LIZENZEN.txt und EXE können im Worktree auseinanderlaufen |
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
-| [B-825](B-825-ci-tests-wieder-einschalten.md) | INF | Schuld | hoch | eingeplant | WZ41 | Die CI führt die Tests wieder aus (seit #531 abgeschaltet) |
 
 ## Archiv
 
@@ -786,3 +785,4 @@ Zeile in diesen Abschnitt.
 | [B-676](archiv/B-676-studio-skills-ziel-und-status.md) | DEV | Idee | mittel | verworfen | KB5 | Das Studio zeigt Skills am Wirkort und DoTs und Buffs an Gegnern und Monarchen |
 | [B-739](archiv/B-739-check-diff-grafik-golden-logging-sperre.md) | INF | Problem | hoch | erledigt | WZ41 | check:diff: Grafik-Golden je Gruppe, Schritt-Logging und Sperre gegen parallele Läufe |
 | [B-759](archiv/B-759-docker-build-ohne-work-ordner.md) | INF | Problem | hoch | erledigt | WZ41 | Docker-Build im Release scheitert an .work (EXDEV beim gen:paper) |
+| [B-825](archiv/B-825-ci-tests-wieder-einschalten.md) | INF | Schuld | hoch | erledigt | WZ41 | Die CI führt die Tests wieder aus (seit #531 abgeschaltet) |

@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ41
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-12
