@@ -335,3 +335,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | `erledigt/US3-spielbefunde-papierschnitt/` |
 | WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | `erledigt/WZ40-check-diff-schneller/` |
 | WZ41 | CI und Release grün, check:diff-Protokoll belegt | `erledigt/WZ41-ci-release-gruen/` |
+| PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | `erledigt/PT1-gen-paper-schneller/` |
+| CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | `erledigt/CU1-alte-grafik-aufraeumen/` |

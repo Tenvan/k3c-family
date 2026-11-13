@@ -68,11 +68,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | eingeplant | WZ46 | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 | [B-747](B-747-verweise-k3c-balance-nachziehen.md) | DEV | Schuld | niedrig | eingeplant | WZ42 | Verweise auf bin/k3c-balance und internal/enginetools außerhalb der Workbench nachziehen |
 ||||||| 8d74a196
-| [B-740](B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | eingeplant | PT1 | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
-| [B-748](B-748-gen-paper-fehlende-grafik-erkennen.md) | PAP | Problem | hoch | eingeplant | PT1 | gen:paper rendert, wenn Grafiken fehlen, obwohl Specs unverändert sind |
-| [B-749](B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | eingeplant | PT1 | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
-| [B-750](B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | eingeplant | PT1 | gen:paper meldet die Ausgaben innerhalb großer Assets |
-| [B-751](B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | eingeplant | PT1 | gen:paper schneller: Cache je Asset und parallel rastern |
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
@@ -95,6 +90,9 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-823](B-823-browser-client-abloesen.md) | INF | Schuld | niedrig | offen | – | Der Browser-Client ist durch das native Spiel abgelöst und aus dem Repo entfernt |
 | [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | offen | – | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
+| [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
+| [B-835](B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | offen | – | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |
+| [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
 
 ## Archiv
 
@@ -787,3 +785,9 @@ Zeile in diesen Abschnitt.
 | [B-756](archiv/B-756-ci-rendert-papier-grafik-vor-go-tests.md) | INF | Problem | hoch | erledigt | WZ41 | CI rendert die Papierschnitt-Grafik vor den Go-Tests, die sie lesen |
 | [B-757](archiv/B-757-ci-race-balance-timeout-datadoc-test.md) | INF | Problem | hoch | erledigt | WZ41 | CI: Race-Lauf ohne engine/balance, datadoc-Test kennt Balance-Berichtsdateien |
 | [B-758](archiv/B-758-release-workflow-tests-wieder-einschalten.md) | INF | Schuld | hoch | erledigt | WZ41 | Release-Workflow: Typecheck und Tests vor dem Bauen wieder einschalten |
+| [B-740](archiv/B-740-gen-paper-fortschritt.md) | PAP | Idee | mittel | erledigt | PT1 | gen:paper zeigt Fortschritt je Schritt in Konsole und Log |
+| [B-748](archiv/B-748-gen-paper-fehlende-grafik-erkennen.md) | PAP | Problem | hoch | erledigt | PT1 | gen:paper rendert, wenn Grafiken fehlen, obwohl Specs unverändert sind |
+| [B-749](archiv/B-749-gen-paper-startzeile-je-asset.md) | PAP | Problem | mittel | erledigt | PT1 | gen:paper meldet den Start jedes Assets, lange Assets wirken sonst wie ein Stillstand |
+| [B-750](archiv/B-750-gen-paper-schritte-im-asset.md) | PAP | Problem | mittel | erledigt | PT1 | gen:paper meldet die Ausgaben innerhalb großer Assets |
+| [B-751](archiv/B-751-gen-paper-schneller-rendern.md) | PAP | Idee | mittel | erledigt | PT1 | gen:paper schneller: Cache je Asset und parallel rastern |
+| [B-700](archiv/B-700-alte-pixel-grafik-aufraeumen.md) | CLI | Schuld | mittel | erledigt | CU1 | Alte Pixel-Grafiken, Register und Gebäude-Renderer werden nach der Papierschnitt-Umstellung entfernt |
