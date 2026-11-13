@@ -57,6 +57,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 - `task check` grün (4 min), danach `task check:go` grün (2 min), beide über `check_run` im Worktree.
 - Kriterien: AC-01 bis AC-03 mit Nachweis in PT2.1, AC-04 und AC-05 in PT2.2.
-- Review `k3c-reviewer` (Diff `c8ff7f341..HEAD`): kein schwerer, kein mittlerer Befund; Vertrag und Code stimmen, Golden-Änderung begründet (PNG-Hashes nur bei umgestellten Assets und `*-wolf*` des Monarchen, sonst nur `renderKey`), Stil bis auf die vier Materialien unverändert. Behoben: fehlender Nachweis für drei Assets in `ersatz.test.ts`, falsche Angabe zu `index.paper.json` im PT2.2-Ergebnis. Als Ticket: `--ohne` mit `reittier:`-Teilen und Wulst der Bein-Box (B-839).
-- Abnahme-Ticket: B-838 (Gen; Sim und Balance verschoben, Sperre 2026-11-11).
-- Abweichung: PR mit Auto-Merge nicht geöffnet (Auftrag ohne Push; Branch des Worktrees, Merge über die Welle).
+- Review `k3c-reviewer` (Diff `c8ff7f341..HEAD`): kein schwerer, kein mittlerer Befund; Vertrag und Code stimmen, Golden-Änderung begründet (PNG-Hashes nur bei umgestellten Assets und `*-wolf*` des Monarchen, sonst nur `renderKey`), Stil bis auf die vier Materialien unverändert. Behoben: fehlender Nachweis für drei Assets in `ersatz.test.ts`, falsche Angabe zu `index.paper.json` im PT2.2-Ergebnis. Als Ticket: `--ohne` mit `reittier:`-Teilen und Wulst der Bein-Box (B-845).
+- Abnahme-Ticket: B-844 (Gen; Sim und Balance verschoben, Sperre 2026-11-11).
+- Abweichung: PR mit Auto-Merge nicht geöffnet (Auftrag ohne Push; Branch des Worktrees, Merge über die Welle). B-844/B-845 umnummeriert von B-838/B-839 (Kollision mit WZ44).

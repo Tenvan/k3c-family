@@ -74,5 +74,5 @@ Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und 
 ## Abnahme
 
 2026-11-13, autonom (Claude, Klasse A). Kriterien: AC-01 bis AC-03 in PT2.1, AC-04 und AC-05 in PT2.2; `task check` und `task check:go` grün (PT2.3).
-Review-Befunde behoben: Nachweis für drei umgestellte Assets ergänzt, PT2.2-Ergebnis korrigiert. Neue Tickets: B-839 (`--ohne` mit Reittier-Teilen, Wulst der Bein-Box).
-Abnahme-Ticket für Sim, Balance und Gen: B-838. Sichtprüfung der 19 umgestellten Assets im Bereich Assets durch 🧑 (nicht blockierend).
+Review-Befunde behoben: Nachweis für drei umgestellte Assets ergänzt, PT2.2-Ergebnis korrigiert. Neue Tickets: B-845 (`--ohne` mit Reittier-Teilen, Wulst der Bein-Box).
+Abnahme-Ticket für Sim, Balance und Gen: B-844. Sichtprüfung der 19 umgestellten Assets im Bereich Assets durch 🧑 (nicht blockierend).

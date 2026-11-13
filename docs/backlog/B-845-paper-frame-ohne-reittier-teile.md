@@ -1,9 +1,9 @@
-# B-839 · paper frame --ohne kennt die Teile des Reittiers nicht
+# B-845 · paper frame --ohne kennt die Teile des Reittiers nicht
 
 - **Domäne:** PAP
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** –
 - **Projekt:** PAP
@@ -62,4 +62,4 @@ keine
 
 ## Notizen
 
-Quelle: Review PT2.3 (k3c-reviewer).
+Quelle: Review PT2.3 (k3c-reviewer). Umnummeriert 2026-11-13 von B-839 (Kollision mit WZ44 in Welle 5b).

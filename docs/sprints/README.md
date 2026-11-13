@@ -342,3 +342,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | `erledigt/MC1-asset-mcp-tools/` |
 | RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | `erledigt/RV1-asset-review/` |
 | WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | `erledigt/WZ44-planung-wellen-werkzeuge/` |
+| PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | `erledigt/PT2-paper-cli-und-stil/` |

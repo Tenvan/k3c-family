@@ -58,7 +58,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | eingeplant | WZ43 | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
 | [B-733](B-733-assets-groessenvergleich.md) | DEV | Idee | mittel | eingeplant | WZ43 | Katalog und Review zeigen ein Asset im Größenvergleich mit dem Monarch vor einem Biom |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | eingeplant | WZ43 | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
-| [B-735](B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | eingeplant | PT2 | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | eingeplant | WZ46 | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 ||||||| 8d74a196
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
@@ -90,6 +89,8 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
 | [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | offen | – | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
 | [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
+| [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | offen | PT2 | Abnahme-Läufe PT2 |
+| [B-845](B-845-paper-frame-ohne-reittier-teile.md) | PAP | Problem | niedrig | offen | – | paper frame --ohne kennt die Teile des Reittiers nicht |
 
 ## Archiv
 
@@ -803,3 +804,5 @@ Zeile in diesen Abschnitt.
 | [B-785](archiv/B-785-fahrplan-aufraeumen-geraetetermine.md) | INF | Schuld | mittel | erledigt | WZ44 | Fahrplan ist aufgeräumt: fertige Sprints erledigt, Abnahmen als Gerätetermine, alte bereite Sprints geprüft |
 | [B-788](archiv/B-788-check-run-teilaufgaben-sim-sperre.md) | DEV | Schuld | mittel | erledigt | WZ44 | check_run kennt die Teilaufgaben von check:diff, sim_test und sim_run lehnen während der Sperre ab |
 | [B-840](archiv/B-840-dev-test-im-worktree-ohne-frontend.md) | DEV | Problem | mittel | verworfen | – | check_run dev:test läuft im Worktree ohne gebautes frontend/dist |
+| [B-708](archiv/B-708-paper-fehlerfeld-reittier.md) | PAP | Problem | niedrig | erledigt | PT2 | Ablehnung reittier-unbekannt nennt das Feld ohne Animationsnamen |
+| [B-735](archiv/B-735-weitere-materialien-stroh-lava-geisterweiss.md) | PAP | Schuld | niedrig | erledigt | PT2 | Weitere Ersatz-Materialien (stroh, lava, geisterweiss, fell-grau) in der Stil-Datei |
