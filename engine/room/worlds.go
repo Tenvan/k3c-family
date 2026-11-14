@@ -76,7 +76,7 @@ func worldErrorf(code error, format string, args ...any) error {
 	return fmt.Errorf("%s (%w)", fmt.Sprintf(format, args...), code)
 }
 
-// WorldInfo ist ein Eintrag der Weltliste für die Lobby (GET /api/worlds).
+// WorldInfo ist ein Eintrag der Weltliste für die Lobby.
 type WorldInfo struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`

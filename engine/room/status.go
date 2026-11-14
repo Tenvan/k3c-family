@@ -5,7 +5,8 @@ import (
 	"strings"
 )
 
-// Status für /api/status (B-027, Token): je Raum Plätze, Takt und Tick-Dauer, dazu abgestürzte Räume.
+// Status: je Raum Plätze, Takt und Tick-Dauer, dazu abgestürzte Räume (früher /api/status, B-027; heute für das native
+// Spiel und Tests).
 
 // TickMs ist die Tick-Dauer in Millisekunden.
 type TickMs struct {
@@ -13,7 +14,7 @@ type TickMs struct {
 	P99  float64 `json:"p99"`
 }
 
-// Status ist ein Raum in /api/status.
+// Status ist ein Raum in Manager.Status.
 type Status struct {
 	Info
 	Devices  int           `json:"devices"`  // verbunden
@@ -58,7 +59,7 @@ func (m *Manager) Status() ([]Status, []Failure) {
 	return out, append([]Failure{}, m.failures...)
 }
 
-// Summary ist der verdichtete Zustand eines Raums (/api/status?room=CODE, Grundlage für room_snapshot in M6).
+// Summary ist der verdichtete Zustand eines Raums (Beobachtung in Tests).
 type Summary struct {
 	Code    string         `json:"code"`
 	Depth   int            `json:"depth"`

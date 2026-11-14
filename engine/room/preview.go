@@ -11,9 +11,10 @@ import (
 )
 
 // Vorschau-Welt für den Welt-Betrachter im Asset-Studio (WZ7.1, B-460): eine Welt in dem Format, das auch ein Raum
-// hat, aber ohne Raum, Spielstand und globalen Zustand. Die Serialisierung (level und snap) liegt in engine/net.
+// hat, aber ohne Raum, Spielstand und globalen Zustand. Der Aufrufer (engine/net) ist mit dem Spielserver entfallen
+// (B-897); die Vorschau bleibt, bis über einen Welt-Betrachter im nativen Spiel entschieden ist.
 
-// maxPreviewSeedRunes ist die Länge des Seeds wie bei GET /api/level.
+// maxPreviewSeedRunes ist die Länge des Seeds wie bei MaxSeedRunes.
 const maxPreviewSeedRunes = 64
 
 var previewBiome = regexp.MustCompile(`^[a-z0-9-]{1,32}$`)

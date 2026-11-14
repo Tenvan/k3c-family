@@ -140,7 +140,6 @@ func (r *Room) write(data []byte, tick int) bool {
 	start := time.Now() // Wanduhr nur fürs Log, nicht für den Spielverlauf
 	backup, err := r.m.Store.Store(r.Name, data)
 	took := time.Since(start)
-	r.m.Monitor.saved(took)
 	ms := took.Milliseconds()
 	if err != nil {
 		r.log().Error("💥 Spielstand nicht gespeichert", "err", err, "ms", ms)

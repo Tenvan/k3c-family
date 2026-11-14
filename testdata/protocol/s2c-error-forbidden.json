@@ -1,5 +1,0 @@
-{
-  "t": "error",
-  "code": "forbidden",
-  "message": "Nur im Dev-Mode erlaubt"
-}

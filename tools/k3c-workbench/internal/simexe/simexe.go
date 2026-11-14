@@ -1,6 +1,6 @@
 // Package simexe ruft das Engine-CLI bin/k3c-sim als Kindprozess auf (B-726, RS2.2): sim_run, level_generate,
-// replay_run und die Bot-Entscheider der Online-Testläufe. Die Workbench importiert die Engine nicht; ob k3c-sim in Go
-// oder Rust rechnet, sieht sie nicht. Schnittstelle: Kopfkommentar von cmd/k3c-sim/main.go.
+// replay_run und der Welten-Editor; die Bot-Entscheider der Online-Testläufe sind mit dem Spielserver entfallen (B-897).
+// Die Workbench importiert die Engine nicht. Schnittstelle: Kopfkommentar von cmd/k3c-sim/main.go.
 package simexe
 
 import (
@@ -28,14 +28,13 @@ const tailLines = 5
 
 // Event ist eine JSON-Zeile von k3c-sim auf stdout.
 type Event struct {
-	Event    string          `json:"event"`
-	Done     int             `json:"done,omitempty"`
-	Total    int             `json:"total,omitempty"`
-	Text     string          `json:"text,omitempty"`
-	Message  string          `json:"message,omitempty"`
-	Files    []string        `json:"files,omitempty"`
-	Report   json.RawMessage `json:"report,omitempty"`
-	Commands []Command       `json:"commands,omitempty"`
+	Event   string          `json:"event"`
+	Done    int             `json:"done,omitempty"`
+	Total   int             `json:"total,omitempty"`
+	Text    string          `json:"text,omitempty"`
+	Message string          `json:"message,omitempty"`
+	Files   []string        `json:"files,omitempty"`
+	Report  json.RawMessage `json:"report,omitempty"`
 }
 
 // ParseEvent liest eine stdout-Zeile; false, wenn sie keine JSON-Zeile mit "event" ist.

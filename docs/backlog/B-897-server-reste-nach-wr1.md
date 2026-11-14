@@ -3,14 +3,14 @@
 - **Domäne:** SRV
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
+- **Umgebung:** offline
+- **Status:** eingeplant
 - **Sprint:** WR2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle; Entscheidung B-850)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,46 +24,56 @@ Kein toter Server-Code mehr; was nur dem Online-Spiel diente, ist weg oder bewus
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+- Wer entwickelt: Claude (autonom) und Ralf; weniger toter Code in `engine/room`, `cmd/k3c-sim` und der Workbench.
+- Entscheidet: 🧑 Ralf (Entscheidung B-850, Rückbau des Spielservers).
 
 ## Anforderungen
 
-- Prüfen und entfernen: `k3c-sim bot`, `simexe.StartBot`, Server-Teile in `engine/room` (sofern das native Spiel sie nicht nutzt).
-- Entscheiden, ob Dienste-Infrastruktur und `svc_*` der Workbench bleiben (künftige Dienste) oder entfallen.
-- Mocks und Fixtures ohne Spielserver und Vite.
+- Entfernen: Unterbefehl `k3c-sim bot` (`cmd/k3c-sim/bot.go` samt Test), `simexe.StartBot`, `Bot`, `Pool` (`tools/k3c-workbench/internal/simexe/bot.go`, `pool.go`) und der Fake-Bot der MCP-Tests.
+- Entfernen in `engine/room`, was nur `engine/net` aufrief: Messreihen (`Monitor`, `Sample`), `Reopen`/`OpenRefs` und den Hook `Changed`.
+- Behalten, was das native Spiel (`native/k3c-game/local`) oder die Workbench (`studioview`) nutzt: `Manager`, `Room`, `Peer`, `Snapshot`, `Status` (Abstürze), `CloseRoom`, `DeleteSave`, Dev-Aktionen, Zeitraffer, Fehler-Werte. Bei Zweifel behalten und im Ergebnis nennen.
+- `testdata/protocol/` entfernen; `engine/room/autosave_test.go` hält das Beispiel selbst.
+- Dienste-Infrastruktur und `svc_*` der Workbench bleiben (generisch, künftige Dienste); Kommentare zum Port-Versatz und die Frontend-Mocks nennen weder Spielserver noch Vite.
+- Kommentare in Go-Code, die auf `engine/net` oder den Spielserver verweisen, nachziehen.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+- `native/k3c-game` (parallel EP1/ST2, BI2).
+- Beobachter-Logik und Vorschau (`preview*.go`) in `engine/room`: im Zweifel behalten, eigene Entscheidung später.
+- Spielmetrik-Report (`metrics.go`, B-150): Balancing-Thema, gesperrt.
+- Test-Fixtures, die „Spielserver“ nur als erfundenen Dienstnamen nutzen (Controller-Tests der Workbench).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+- Entscheidung B-850 (Spielserver, `engine/net`, Lasttest, TUI entfallen), Entscheidung 009 (nur natives Spiel).
+- Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen; Simulationen und Balancing gesperrt.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `engine/room/**`, `cmd/k3c-sim/**`, `tools/k3c-workbench/internal/simexe/**`, `tools/k3c-workbench/internal/mcpsrv/**`, `tools/k3c-workbench/internal/services/**`, `tools/k3c-workbench/frontend/src/api/**`, `tools/checkdiff/**`, `testdata/protocol/**`
+- **Abhängig von:** WR1
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** protokoll
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- `k3c-sim bot --bot saver` → unbekannter Unterbefehl (Exit Usage).
+- Das native Spiel startet einen Raum über `room.NewManager` → läuft unverändert, ohne Messreihen.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- Ein Teil von `engine/room` wird doch noch genutzt → der Compiler meldet es, der Teil bleibt und steht im Ergebnis.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `grep` nach `engine/net`, `Spielserver` und `k3c-server` in Go-Code findet nur noch Historie in Kommentaren mit Ticket-Verweis.
-- **AC-02** `task check:all` grün.
+- **AC-01** Go-Code ohne `_test.go` in `engine/room`, `cmd/` und `tools/k3c-workbench` nennt `engine/net`, Spielserver und `k3c-server` nur noch als Historie mit Ticket-Verweis.
+- **AC-02** `k3c-sim bot`, `simexe.StartBot`/`Pool` und die nur dem Server dienenden Teile von `engine/room` (Messreihen, Reopen, Changed) sind entfernt; Behaltenes ist im Session-Ergebnis begründet.
+- **AC-03** `testdata/protocol/` ist entfernt; `engine/room` testet das Ereignis `gesichert` ohne die Datei.
+- **AC-04** Dienste-Infrastruktur und `svc_*` bleiben; Port-Versatz-Texte und Frontend-Mocks der Workbench nennen weder Spielserver noch Vite.
+- **AC-05** `task check:diff` je Commit grün; `task check:all` läuft im Abnahme-Ticket B-907.
 
 ## Offene Fragen
 
-Bleiben Dienste-Infrastruktur und `svc_*` der Workbench? Default: bleiben (generisch), nur Port-Versatz-Texte anpassen.
+keine (Dienste-Infrastruktur bleibt, Default aus dem Entwurf; autonom entschieden).
 
 ## Notizen
 

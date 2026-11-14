@@ -32,8 +32,6 @@ func (m *Manager) Run(ctx context.Context) {
 	defer sweep.Stop()
 	stats := time.NewTicker(statsEvery)
 	defer stats.Stop()
-	sample := time.NewTicker(sampleEvery) // Messreihen (B-281), außerhalb der Raum-Ticks
-	defer sample.Stop()
 	for {
 		select {
 		case <-ctx.Done():
@@ -42,8 +40,6 @@ func (m *Manager) Run(ctx context.Context) {
 			m.safeSweep()
 		case <-stats.C:
 			m.logStats()
-		case <-sample.C:
-			m.Sample()
 		}
 	}
 }
@@ -110,7 +106,6 @@ func (r *Room) timedTick() bool {
 	took := time.Since(start)
 	r.noteTick(took)
 	r.durations = append(r.durations, took)
-	r.secTicks++
 	if len(r.durations) > durations {
 		r.durations = r.durations[1:]
 	}
@@ -120,8 +115,6 @@ func (r *Room) timedTick() bool {
 // crash schließt einen abgestürzten Raum, ohne ihn zu speichern (sein Zustand ist nicht mehr sicher).
 func (m *Manager) crash(r *Room, msg string) {
 	m.log().Error("💥 Raum abgestürzt", "ns", "room", "room", r.Code, "save", r.Name, "err", msg)
-	m.Monitor.Event(m.now(), r.Code, "crash", msg)
-	defer m.notify(true)
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	r.closeCrashed()

@@ -46,16 +46,11 @@ type Manager struct {
 	Dev bool
 	// Worlds ist der Ordner der Welt-Dateien (K3C_WORLDS_DIR); nur im Dev-Mode gelesen, nil = nur die Standard-Welt.
 	Worlds fs.FS
-	// Changed meldet, dass sich Raumliste oder Plätze geändert haben (für `rooms` an Geräte ohne Raum).
-	// Aufruf ohne gehaltene Sperre.
-	Changed func()
 	// Sessions nimmt den Spielmetrik-Report beim Raumende (B-150); nil = kein Report.
 	Sessions SessionStore
 	// Snapshot baut den Zustand einer Stufe für Peer.State, unter der Raum-Sperre einmal je Stufe und Tick (B-276);
-	// engine/net setzt ihn. timescale > 0 nur im Dev-Mode. nil = die Welt selbst (Tests in diesem Paket).
+	// native/k3c-game/local setzt ihn. timescale > 0 nur im Dev-Mode. nil = die Welt selbst (Tests in diesem Paket).
 	Snapshot func(w *sim.World, timescale int, paused bool) any
-	// Monitor hält die Messreihen (B-281); NewManager legt ihn an.
-	Monitor *Monitor
 
 	mu       sync.Mutex
 	rooms    map[string]*Room
@@ -66,7 +61,7 @@ type Manager struct {
 
 // NewManager legt einen Manager ohne Räume an.
 func NewManager(s Store) *Manager {
-	return &Manager{Store: s, rooms: map[string]*Room{}, Monitor: NewMonitor(time.Now())}
+	return &Manager{Store: s, rooms: map[string]*Room{}}
 }
 
 func (m *Manager) now() time.Time {
@@ -81,12 +76,6 @@ func (m *Manager) log() *slog.Logger {
 		return slog.New(slog.NewTextHandler(io.Discard, nil))
 	}
 	return m.Log
-}
-
-func (m *Manager) notify(changed bool) {
-	if changed && m.Changed != nil {
-		m.Changed()
-	}
 }
 
 func (m *Manager) code() string {
@@ -124,7 +113,6 @@ func (m *Manager) createWith(id, name string, fresh bool, depth int, opts Option
 	var r *Room
 	var err error
 	defer func() {
-		m.notify(err == nil)
 		m.logRejected("create", id, name, err)
 	}()
 	m.mu.Lock()
@@ -260,7 +248,6 @@ func (m *Manager) Join(id string, peer Peer, code string, slots []int) (*Room, e
 	}
 	err := ErrRoomNotFound
 	defer func() {
-		m.notify(err == nil)
 		m.logRejected("join", id, code, err)
 	}()
 	m.mu.Lock()
@@ -299,16 +286,13 @@ func (m *Manager) Rooms() []Info {
 // speichern und aufräumen (Code wird frei).
 func (m *Manager) Sweep() {
 	now := m.now()
-	changed := false
-	defer func() { m.notify(changed) }()
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	for code, r := range m.rooms {
-		c, remove := r.lockedSweep(now)
+		_, remove := r.lockedSweep(now)
 		if remove {
 			delete(m.rooms, code)
 		}
-		changed = changed || c || remove
 	}
 }
 
@@ -333,7 +317,6 @@ func (r *Room) lockedSweep(now time.Time) (changed, remove bool) {
 // Close speichert alle Räume, meldet ihren Geräten `room_closed` und räumt sie auf (Server fährt herunter).
 // Danach nimmt der Manager keine Räume mehr an (room_closed).
 func (m *Manager) Close() {
-	defer m.notify(true)
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	m.shut = true

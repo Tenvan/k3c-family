@@ -26,8 +26,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-885](B-885-native-rig-export-bosse.md) | PAP | Schuld | mittel | offen | MG10 | Nativer Rig-Export der Bosse ist nach MG10 veraltet |
 | [B-886](B-886-abnahme-mg10.md) | PAP | Schuld | mittel | offen | MG10 | Abnahme MG10: Sichtprüfung der Bosse und Gen-Läufe sind erledigt |
 | [B-888](B-888-nativ-cheat-dialog-und-tastenhilfe.md) | CLI | Idee | hoch | offen | CH1 | Das native Spiel hat wieder einen Cheat-Dialog (F9) und eine Tastenhilfe der UI-Tasten (F1) |
-| [B-897](B-897-server-reste-nach-wr1.md) | SRV | Schuld | niedrig | offen | WR2 | Nach dem Server-Rückbau sind Server-Reste in engine/room, k3c-sim bot, simexe.StartBot und der Dienste-Infrastruktur der Workbench entfernt |
-| [B-898](B-898-doku-nach-wr1.md) | INF | Schuld | niedrig | offen | WR2 | Prozess-Doku, Rechte und Mocks nennen keinen Spielserver, keinen Browser-Client und keine Xbox-Seiten mehr |
+| [B-897](B-897-server-reste-nach-wr1.md) | SRV | Schuld | niedrig | eingeplant | WR2 | Nach dem Server-Rückbau sind Server-Reste in engine/room, k3c-sim bot, simexe.StartBot und der Dienste-Infrastruktur der Workbench entfernt |
+| [B-898](B-898-doku-nach-wr1.md) | INF | Schuld | niedrig | eingeplant | WR2 | Prozess-Doku, Rechte und Mocks nennen keinen Spielserver, keinen Browser-Client und keine Xbox-Seiten mehr |
 | [B-907](B-907-abnahme-wr1-gen-race.md) | SRV | Schuld | niedrig | offen | WR2 | Abnahme WR1: gen:paper samt Grafik-Golden und check:race laufen nach dem Rückbau grün |
 | [B-889](B-889-nativ-debug-werte-und-logs.md) | CLI | Idee | hoch | offen | CH1 | Das native Spiel zeigt Debug-Werte der Sim (F10) und loggt Zustandswechsel und Zusammenfassungen |
 | [B-890](B-890-nativ-hud-icons-statt-namen.md) | CLI | Idee | hoch | offen | CH1 | Das HUD des nativen Spiels zeigt Ressourcen als Icon mit Zahl statt als Namen |

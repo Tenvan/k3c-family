@@ -3,14 +3,14 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
+- **Umgebung:** offline
+- **Status:** eingeplant
 - **Sprint:** WR2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle; Entscheidung B-850)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,47 +24,54 @@ Doku und Konfiguration beschreiben nur noch das native Spiel.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+- Wer entwickelt: Claude (autonom) und Ralf; Agenten lesen `docs/arbeitsweise.md` in jeder Session.
+- Entscheidet: 🧑 Ralf (Rechte-Datei `.claude/settings.json`).
 
 ## Anforderungen
 
-- `docs/arbeitsweise.md`, Glossar und Regeln auf Verweise prüfen und nachziehen.
-- 🧑: drei veraltete Rechte in `.claude/settings.json` entfernen.
-- `scripts/backup-saves.sh`/`ops:backup` auf Spielstände des nativen Spiels umstellen oder entfernen.
+- `docs/arbeitsweise.md` und `docs/glossar.md`: Verweise auf Spielserver, `task dev`/`task start`/`task serve`, Browser-Pane, Xbox-Edge, `engine/net`, `k3c-load`, `testdata/protocol` nachziehen oder als Historie kennzeichnen.
+- Weitere Doku (`docs/rules`, `docs/standards`) auf solche Verweise prüfen und nachziehen; Entscheidungen (`docs/decisions/`) bleiben als Historie unverändert.
+- `docs/protocol.md` als Historie kennzeichnen (Spielserver entfallen, B-850).
+- `.serena/memories/*` und `.codemap/state.json` nennen keine entfernten Ordner.
+- `scripts/backup-saves.sh`/`task ops:backup` sichern die Spielstände des nativen Spiels (`K3C_SAVES_DIR`, sonst `dist/k3c-game/saves`), ohne Docker.
+- 🧑: drei veraltete Rechte in `.claude/settings.json` entfernen (`server_status`, `rooms_list`, `room_snapshot`); nicht Teil der Sessions.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+- `.claude/settings.json` (ändert nur 🧑).
+- Archivierte Tickets, erledigte Sprints und Entscheidungen (Historie).
+- `CLAUDE.md`, README, requirements, Codemaps (WR1).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+- Entscheidung B-850 und 009; Glossar ist verbindlich, Begriffe dort zuerst.
+- Prozess steht nur in `docs/arbeitsweise.md`.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `docs/arbeitsweise.md`, `docs/glossar.md`, `docs/protocol.md`, `docs/rules/**`, `docs/standards/**`, `.serena/memories/**`, `.codemap/state.json`, `scripts/**`
+- **Abhängig von:** WR1
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** taskfile
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Agent liest `docs/arbeitsweise.md` › Domänen → SRV nennt `engine/room`, `engine/store`, keinen `engine/net` und kein Docker.
+- `task ops:backup -- E:/` → Kopie von `dist/k3c-game/saves` nach `E:/k3c-saves-<Datum>/`.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- Quelle fehlt → `backup-saves.sh` meldet Fehler mit Zeit auf stderr, Exit ≠ 0.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `grep -r "task start\|task serve\|k3c-server" docs/arbeitsweise.md docs/glossar.md` findet nichts mehr außer Historie.
-- **AC-02** `.claude/settings.json` nennt keine entfernten MCP-Tools.
+- **AC-01** `grep -n "task start\|task serve\|k3c-server" docs/arbeitsweise.md docs/glossar.md` findet nichts außer Historie mit Ticket-Verweis.
+- **AC-02** `scripts/backup-saves.sh` sichert die Spielstände des nativen Spiels ohne Docker; `task ops:backup` beschreibt das.
+- **AC-03** `.serena/memories/*` und `.codemap/state.json` nennen keine von WR1 entfernten Ordner.
 
 ## Offene Fragen
 
-Backup-Skript umstellen oder entfernen? Entscheidet 🧑.
+keine. Backup-Skript wird umgestellt statt entfernt (autonom entschieden: geringer Aufwand, Sicherung bleibt möglich). Die Rechte in `.claude/settings.json` entfernt 🧑 Ralf.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+- 🧑 Ralf: `mcp__k3c-workbench__server_status`, `rooms_list`, `room_snapshot` aus `.claude/settings.json` entfernen (Rechte-Datei, ändert nur Ralf).

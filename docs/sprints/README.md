@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WR2 | SRV, DEV, INF | NAT | Reste des Server- und Web-Rückbaus aufräumen | – | `aktiv/WR2-rueckbau-reste/` |
 | BI1 | SIM, DEV, CLI | NAT | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | – | `aktiv/BI1-biom-eigenschaften/` |
 | GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
@@ -26,7 +27,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WR2 | SRV | NAT | Reste des Server- und Web-Rückbaus aufräumen | – | Entwurf | `geplant/WR2-rueckbau-reste/` |
 | BI2 | CLI | NAT | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | – | Entwurf | `geplant/BI2-biom-darstellung/` |
 | EP1 | CLI | NAT | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | – | Entwurf | `geplant/EP1-eingabe-profile/` |
 | ST2 | CLI | NAT | Stresstests im Spielmenü (Testing) | – | Entwurf | `geplant/ST2-stresstests-im-menue/` |

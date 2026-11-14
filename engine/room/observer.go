@@ -11,7 +11,6 @@ import "slices"
 func (m *Manager) Observe(id string, peer Peer, code string) (*Room, error) {
 	err := ErrRoomNotFound
 	defer func() {
-		m.notify(err == nil)
 		m.logRejected("observe", id, code, err)
 	}()
 	m.mu.Lock()

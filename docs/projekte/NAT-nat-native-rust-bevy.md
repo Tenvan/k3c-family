@@ -39,7 +39,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | erledigt |
 | NG20 | Natives Spiel komplett nach dist (B-827) | erledigt |
 | WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | erledigt |
-| WR2 | Reste des Server- und Web-Rückbaus aufräumen | geplant |
+| WR2 | Reste des Server- und Web-Rückbaus aufräumen | aktiv |
 | CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | erledigt |
 | BI1 | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | aktiv |
 | BI2 | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | geplant |
