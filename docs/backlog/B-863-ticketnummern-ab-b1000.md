@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ54
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
