@@ -58,5 +58,101 @@
     "titel": "Nachbessern …",
     "ort": "review",
     "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Bessere die Änderung am Asset `{asset}` ({pfad}) gegenüber der Basis `{basis}` nach: {eingabe}. Zustand: {zustand}. Schreibe nur mit `assets_set`. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "stil-material-aendern",
+    "titel": "Material ändern",
+    "ort": "material",
+    "text": "Stil: Material `{material}` ändern (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-material-neu",
+    "titel": "Neues Material",
+    "ort": "material",
+    "text": "Stil: neues Material wie `{material}` anlegen (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-material-nutzer",
+    "titel": "Nutzer zeigen",
+    "ort": "material",
+    "text": "Stil: Assets mit Material `{material}` zeigen"
+  },
+  {
+    "id": "stil-ton-aendern",
+    "titel": "Ton ändern",
+    "ort": "ton",
+    "text": "Stil: Einzelton `{ton}` ändern (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-ton-neu",
+    "titel": "Neuer Ton",
+    "ort": "ton",
+    "text": "Stil: neuen Einzelton wie `{ton}` anlegen (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-ton-nutzer",
+    "titel": "Nutzer zeigen",
+    "ort": "ton",
+    "text": "Stil: Assets mit Einzelton `{ton}` zeigen"
+  },
+  {
+    "id": "stil-papier-aendern",
+    "titel": "Papier ändern",
+    "ort": "papier",
+    "text": "Stil: Papier ändern (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-papier-neu",
+    "titel": "Neue Papier-Einstellung",
+    "ort": "papier",
+    "text": "Stil: neue Papier-Einstellung anlegen (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-papier-nutzer",
+    "titel": "Wirkung zeigen",
+    "ort": "papier",
+    "text": "Stil: Papier-Wirkung an einem Asset zeigen"
+  },
+  {
+    "id": "sound-suchen",
+    "titel": "Anderen Sound suchen",
+    "ort": "sound",
+    "text": "Sound: anderen Sound für Slot `{slot}` suchen (aktuell {datei})"
+  },
+  {
+    "id": "sound-vergleichen",
+    "titel": "Kandidaten vergleichen",
+    "ort": "sound",
+    "text": "Sound: Kandidaten für Slot `{slot}` vergleichen (aktuell {datei})"
+  },
+  {
+    "id": "sound-lautstaerke",
+    "titel": "Lautstärke prüfen",
+    "ort": "sound",
+    "text": "Sound: Lautstärke von Slot `{slot}` prüfen ({datei})"
+  },
+  {
+    "id": "quelle-lizenz-pruefen",
+    "titel": "Lizenz prüfen",
+    "ort": "datei",
+    "text": "Quellen: Lizenz von `{datei}` prüfen (Pack {pack}, {lizenz})"
+  },
+  {
+    "id": "quelle-credit",
+    "titel": "Credit nachtragen",
+    "ort": "datei",
+    "text": "Quellen: Credit für `{datei}` nachtragen (Pack {pack}, {lizenz})"
+  },
+  {
+    "id": "treffer-lizenz-pruefen",
+    "titel": "Lizenz prüfen",
+    "ort": "treffer",
+    "text": "Quellen: Lizenz von Treffer `{treffer}` für Slot `{slot}` prüfen ({datei}, {pack}, {lizenz})"
+  },
+  {
+    "id": "treffer-uebernehmen",
+    "titel": "Treffer übernehmen",
+    "ort": "treffer",
+    "text": "Quellen: Treffer `{treffer}` für Slot `{slot}` übernehmen ({datei}, {pack}, {lizenz})"
   }
 ]

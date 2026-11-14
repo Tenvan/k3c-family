@@ -801,3 +801,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | erledigt | WZ57 | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | erledigt | PT5 | Abnahme-Läufe CU1 |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | erledigt | NG20 | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |

@@ -2,7 +2,7 @@
 // Review (RV1, Sprint-README WB1 › D-02). Reine Funktionen; nie ein halb gefüllter Prompt.
 import type { AssetEintrag, Spec, Vorlage } from '../api';
 
-export const PLATZHALTER = ['asset', 'rig', 'teil', 'pfad', 'zustand', 'basis', 'eingabe'] as const;
+export const PLATZHALTER = ['asset', 'rig', 'teil', 'pfad', 'zustand', 'basis', 'eingabe', 'material', 'ton', 'slot', 'datei', 'pack', 'lizenz', 'treffer'] as const;
 export type Platzhalter = (typeof PLATZHALTER)[number];
 export type Werte = Partial<Record<Platzhalter, string | undefined>>;
 

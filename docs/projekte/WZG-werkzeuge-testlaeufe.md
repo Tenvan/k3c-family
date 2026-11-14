@@ -65,7 +65,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | erledigt |
 | WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | erledigt |
 | WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | erledigt |
-| WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | geplant |
+| WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | erledigt |
 | WZ48 | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | erledigt |
 | WZ49 | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | erledigt |
 | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | erledigt |

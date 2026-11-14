@@ -9,13 +9,15 @@ interface Props {
   vorlagen: Vorlage[];
   werte: Werte;
   caption: string;
+  /** Hinweis statt leerer Fläche, wenn es für den Ort keine Vorlage gibt; ohne Hinweis zeichnet nichts. */
+  leer?: string;
 }
 
 /** Prompt-Buttons (Entscheidung 005 › 5): der Titel kopiert den gefüllten Prompt in die Zwischenablage, ✦ öffnet ihn als
  *  neue Code-Session in Claude Desktop (B-701 D-12). Kein schreibendes Control: geändert wird erst über MCP. */
-export function PromptButtons({ vorlagen, werte, caption }: Props) {
+export function PromptButtons({ vorlagen, werte, caption, leer }: Props) {
   const [note, setNote] = useState<{ ok: boolean; text: string } | null>(null);
-  if (!vorlagen.length) return null;
+  if (!vorlagen.length) return leer ? <Text size="1" color="gray">{leer}</Text> : null;
   const run = async (v: Vorlage, open: boolean) => {
     try {
       const prompt = fillPrompt(v, werte);
