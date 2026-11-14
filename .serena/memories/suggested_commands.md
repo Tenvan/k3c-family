@@ -9,6 +9,6 @@ Einziger Einstieg: `task` (Taskfile.yml, `task --list`). Neue Aufgaben ins Taskf
 - `task check` Lint + Typecheck + Tests · `check:go` · `check:dev` · `check:studio` · `check:all` (inkl. Build)
 - `task go:golden` Golden-Files neu schreiben, nur bei gewollter Regeländerung (Begründung im Commit)
 - `task k3c-workbench` / `task k3c-studio` Wails-Fenster im Watch-Modus; `:build` für EXE; Pattern `build|run|dev` je EXE-Projekt
-- `task gen:atlas|gen:gebaeude|gen:rules`, `task ops:aufraeumen|ops:backup`
+- `task gen:rules|gen:paper`, `task ops:aufraeumen|ops:backup`
 
 Windows: Shell ist PowerShell/Git Bash; blockiert die Execution Policy `npm.ps1`, `npm.cmd` nutzen. EXEs mit festem Pfad starten (Firewall-Abfrage vermeiden), kein `go run`.

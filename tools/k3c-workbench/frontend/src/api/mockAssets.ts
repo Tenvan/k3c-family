@@ -38,7 +38,7 @@ export function mockAssets(): AssetsBackend {
     assetsList: () => fixture<AssetEintrag[]>('AssetsList'),
     // Index ohne Prüfung: alle offen und gültig, die Prüfung liefert die Fixture (B-732)
     assetsIndex: async () => (await fixture<AssetEintrag[]>('AssetsList')).map((e) => ({ ...e, fehler: undefined, gueltig: true, offen: true })),
-    // Größenvergleich (B-733): Maßstab des Monarchen laut data/sprites.json, ein Biom mit 1×1-PNGs
+    // Größenvergleich (B-733): Maßstab des Monarchen laut data/paper.json, ein Biom mit 1×1-PNGs
     // Teil ausblenden (B-734): Fixture-Frame ohne die Boxen der ausgeblendeten Teile
     assetsFrameOhne: async (id, _animation, _frame, ohne) => {
       known(id);
@@ -47,7 +47,7 @@ export function mockAssets(): AssetsBackend {
     },
     assetsGroesse: async (id): Promise<Groesse> => {
       known(id);
-      return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/sprites.json)' };
+      return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/paper.json)' };
     },
     assetsHintergruende: async () => ['wald'],
     assetsHintergrund: async (teil): Promise<Hintergrund> => {
@@ -76,6 +76,6 @@ export function mockAssets(): AssetsBackend {
       return 'data:audio/ogg;base64,T2dnUw==';
     },
     studioSources: async () => QUELLEN,
-    studioGameOpen: async (seed) => `http://127.0.0.1:8099/index.html#${encodeURIComponent(`game.html?autostart=1&save=voll-${seed}`)}`,
+    studioGameOpen: async (seed) => `Natives Spiel gestartet mit Spielstand voll-${seed}`, // B-847
   };
 }

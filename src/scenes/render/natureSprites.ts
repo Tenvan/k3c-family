@@ -3,9 +3,9 @@ import { paperBuildingFile, paperObjectFile, paperObjectLook, paperObjectOf } fr
 import type { ObjectSprite, WorldFile } from './worldSprites';
 
 /**
- * Natur und Objekte aus `tools/buildings` (GEB6, GEB10): Bäume, Höhlen-Flora, Busch, Fels, Erzbrocken, Adern, Truhe,
- * Portal, Ausgang und Rekrutierungslager, alle 32 px je Kachel (Maßstab 1). Reine Auswahl ohne Phaser und ohne Zufall:
- * Form aus der Position, Look aus dem Biom (Regeldatei `docs/standards/gebaeude-grafik.md` § 5, § 6).
+ * Natur und Objekte als Papierschnitt (`objekte/`, `data/paper.json`; GEB6, GEB10): Bäume, Höhlen-Flora, Busch, Fels, Erzbrocken, Adern, Truhe,
+ * Portal, Ausgang und Rekrutierungslager, Maßstab 1. Reine Auswahl ohne Phaser und ohne Zufall:
+ * Form aus der Position, Look aus dem Biom.
  */
 
 const ARTEN = ['tanne', 'pappel', 'birke'] as const;
@@ -36,6 +36,8 @@ export const NATURE_TEXTURES: Record<string, string> = {
   'grafik:truhe': objekt('truhe-offen'),
   'grafik:portal': objekt('portal'),
   'grafik:ausgang': objekt('ausgang'),
+  'grafik:setzling': objekt('setzling'), // Plantage (GEB5, B-568): Setzling auf leerem Platz
+  'grafik:pappel-niedrig': objekt('pappel-niedrig'), // niedrige Pappel auf gewachsenem Platz, vor der Baumschule
   'grafik:hafen': papier('hafen'), // Hafen-Steg des Chunks `harbor` (BS10, B-641)
   ...Object.fromEntries([1, 2, 3].map((look) => [look === 1 ? 'grafik:lager' : `grafik:lager-${look}`, papier('rekrutierungslager', look)])),
   ...MINE_SYMBOL_TEXTURES, // Axt und Spitzhacke am Abbau-Schild (GEB16, B-588)
@@ -123,6 +125,9 @@ export function rockTexture(x: number, biomeId: string | undefined): string {
 }
 
 const still = (key: string): ObjectSprite => objectLook(key, NATURE_TEXTURES[key]);
+
+/** Bild der Plantage: `setzling` (leerer Platz) oder `pappel-niedrig` (gewachsener Baum) */
+export const plantationSprite = (id: 'setzling' | 'pappel-niedrig'): ObjectSprite => still(`grafik:${id}`);
 
 /** Bild eines Ressourcen-Knotens (Baum, Fels, Erzbrocken, Busch, Ader) an Position `x` im Biom; unbekannte Art `null` → Platzhalter */
 export function nodeSprite(kind: string, x: number, biomeId: string | undefined): ObjectSprite | null {

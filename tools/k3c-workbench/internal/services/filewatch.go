@@ -7,8 +7,13 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"sync"
 	"time"
 )
+
+// filesBatch hält snapshot an, solange jemand Lock hält: Tests schreiben mehrere Dateien als eine Sammeländerung, ohne dass
+// der Watcher einen Zwischenstand sieht (B-829). Im Betrieb nimmt nur snapshot die Lesesperre, sie kostet nichts.
+var filesBatch sync.RWMutex
 
 // Watch beschreibt, bei welchen Änderungen k3c-workbench einen Dienst neu startet (Eintrag `watch` in services.json).
 type Watch struct {
@@ -27,6 +32,8 @@ type fileSig struct {
 // snapshot liest Änderungszeit und Größe aller beobachteten Dateien. Versteckte Ordner (.git …), node_modules und
 // nicht lesbare Pfade werden übersprungen; ein fehlender Pfad ist nicht schlimm (er kann später entstehen).
 func snapshot(root string, w *Watch) map[string]fileSig {
+	filesBatch.RLock()
+	defer filesBatch.RUnlock()
 	out := map[string]fileSig{}
 	add := func(path string, d fs.DirEntry) {
 		if info, err := d.Info(); err == nil {
@@ -88,6 +95,10 @@ func (c *Controller) watchFiles(u *unit) {
 	if u.svc.Watch == nil {
 		return
 	}
+	// Der Ausgangsstand entsteht hier, nicht erst in der Goroutine: Startet sie unter Last spät, ginge eine Änderung direkt
+	// nach dem Start sonst verloren oder würde halb geschrieben zum Ausgangsstand (B-829). Außerhalb von u.mu, weil das
+	// Durchsuchen der Ordner dauern kann.
+	base := snapshot(c.opts.Root, u.svc.Watch)
 	u.mu.Lock()
 	defer u.mu.Unlock()
 	if u.unfiles != nil {
@@ -95,7 +106,7 @@ func (c *Controller) watchFiles(u *unit) {
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	u.unfiles = cancel
-	go c.filesLoop(ctx, u)
+	go c.filesLoop(ctx, u, base)
 }
 
 // unwatchFiles beendet die Beobachtung (der Dienst wurde ausdrücklich gestoppt).
@@ -111,8 +122,7 @@ func (c *Controller) unwatchFiles(u *unit) {
 // filesLoop prüft alle FilesEvery die Dateien. Eine Änderung wird erst nach FilesQuiet Ruhe wirksam (Speichern in
 // mehreren Schritten, Formatierer); dann startet der Dienst neu. Läuft er nicht (gestoppt, übernommen), gibt es nichts
 // zu tun; ist er fehlgeschlagen (z. B. Build-Fehler), versucht der nächste Neustart es erneut.
-func (c *Controller) filesLoop(ctx context.Context, u *unit) {
-	base := snapshot(c.opts.Root, u.svc.Watch)
+func (c *Controller) filesLoop(ctx context.Context, u *unit, base map[string]fileSig) {
 	tick := time.NewTicker(c.opts.FilesEvery)
 	defer tick.Stop()
 	for {

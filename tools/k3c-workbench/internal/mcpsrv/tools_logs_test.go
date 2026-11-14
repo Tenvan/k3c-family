@@ -30,10 +30,11 @@ func logServer(t *testing.T) *Server {
 }
 
 func TestLogsSourcesUndUnbekannteQuelle(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	ctx := context.Background()
 	s.console.Add("check:task:test", "stdout", "x")
-	text, _ := s.logsSources(ctx, struct{}{})
+	text, _ := s.logsSources(ctx, sourcesIn{})
 	if !strings.Contains(text, "Log k3c-workbench · ") || !strings.Contains(text, " zuletzt ") || !strings.Contains(text, "WARN") ||
 		!strings.Contains(text, "Konsole check:task:test · 1 Zeilen") {
 		t.Errorf("Quellen: %q", text)
@@ -46,6 +47,7 @@ func TestLogsSourcesUndUnbekannteQuelle(t *testing.T) {
 }
 
 func TestLogsQuery(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	ctx := context.Background()
 	text, err := s.logsQuery(ctx, queryIn{Source: "k3c-workbench", MinLevel: "WARN", Limit: 2})
@@ -67,6 +69,7 @@ func TestLogsQuery(t *testing.T) {
 }
 
 func TestLogsErrorsUndSince(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	ctx := context.Background()
 	text, _ := s.logsErrors(ctx, errorsIn{Source: "k3c-workbench", Since: "2026-09-30T00:00:00Z"})
@@ -93,6 +96,7 @@ func TestLogsErrorsUndSince(t *testing.T) {
 }
 
 func TestParseSinceUndFormatBytes(t *testing.T) {
+	t.Parallel()
 	now := time.Date(2026, 9, 30, 12, 0, 0, 0, time.UTC)
 	cases := map[string]time.Time{"30m": now.Add(-30 * time.Minute), "24h": now.Add(-24 * time.Hour),
 		"7d": now.Add(-7 * 24 * time.Hour), "2026-09-29T08:00:00Z": time.Date(2026, 9, 29, 8, 0, 0, 0, time.UTC), "": {}}
@@ -109,6 +113,7 @@ func TestParseSinceUndFormatBytes(t *testing.T) {
 }
 
 func TestEreignisseImEigenenLog(t *testing.T) {
+	t.Parallel()
 	var buf bytes.Buffer
 	s := New(Config{Version: "test", Root: t.TempDir(), Log: slog.New(slog.NewJSONHandler(&buf, nil))})
 	s.run = func(context.Context, runSpec) runResult { return runResult{exit: 1} }
@@ -129,6 +134,7 @@ func TestEreignisseImEigenenLog(t *testing.T) {
 
 // Jeder Tool-Aufruf steht im Log: Debug beim Start mit gekürzten Argumenten, Info/Warn am Ende mit Dauer.
 func TestToolAufrufeImLog(t *testing.T) {
+	t.Parallel()
 	var buf bytes.Buffer
 	s := New(Config{Version: "test", Log: slog.New(slog.NewJSONHandler(&buf, &slog.HandlerOptions{Level: slog.LevelDebug}))})
 	cs := connect(t, s)

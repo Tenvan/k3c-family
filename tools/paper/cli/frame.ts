@@ -9,6 +9,9 @@ import { animationVon } from '../render/pose';
 import { type FrameGroesse, rastere, streifenSvg } from '../render/raster';
 import type { Ausgabe } from '../render/stufen';
 import { defs } from '../render/svg';
+import { REITTIER_PRAEFIX } from '../rig/reitBoxen';
+import type { VierbeinerKontext } from '../rig/vierbeinerBild';
+import { ladeReittier, type ReitKontext, reitFeld } from '../rig/reiten';
 
 /** `ohne`: Teile, die ohne Lagen gerendert werden (B-734: Teil in der Vorschau ausblenden); Gelenke bleiben. */
 export type FrameWahl = { animation: string; frame: number; variante?: string; stufe: number; ohne?: string[] };
@@ -32,31 +35,44 @@ export function teilBoxen(geo: Geometrie, g: FrameGroesse): Record<string, numbe
   return out;
 }
 
-/** Auszublendende Teile (B-734) müssen in der Spec stehen. */
-function pruefeOhne(spec: Spec, ohne: string[]) {
-  const unbekannt = ohne.filter((id) => !spec.teile.some((t) => t.id === id));
-  if (unbekannt.length)
-    throw ablehnen('teile', 'teil-unbekannt', `Teil „${unbekannt.join('“, „')}“ fehlt (${spec.teile.map((t) => t.id).join(', ')})`);
+const teilFehlt = (unbekannt: string[], ids: string[]) =>
+  ablehnen('teile', 'teil-unbekannt', `Teil „${unbekannt.join('“, „')}“ fehlt (${ids.join(', ')})`);
+
+/** Teile des Reittiers in `ohne` (Präfix `reittier:`, B-845), ohne Präfix; die übrigen gelten dem Reiter. */
+const reittierTeile = (ohne: string[]) => ohne.filter((id) => id.startsWith(REITTIER_PRAEFIX)).map((id) => id.slice(REITTIER_PRAEFIX.length));
+
+/** Auszublendende Teile (B-734) müssen in der Spec stehen, `reittier:<teil>` bei Reit-Animationen im Reittier (B-845). */
+function pruefeOhne(spec: Spec, w: FrameWahl, stil: Stil, specPfad: string) {
+  const ohne = w.ohne ?? [], ids = spec.teile.map((t) => t.id), anim = animationVon(spec, w.animation);
+  const reitet = !!anim.reittier && !anim.ebene;
+  const unbekannt = ohne.filter((id) => !ids.includes(id) && !(reitet && id.startsWith(REITTIER_PRAEFIX)));
+  if (unbekannt.length) throw teilFehlt(unbekannt, ids);
+  const fremd = reittierTeile(ohne);
+  if (!reitet || !fremd.length) return;
+  const tier = ladeReittier(specPfad, anim.reittier!, stil, reitFeld(w.animation)).teile.map((t) => t.id);
+  const fehlt = fremd.filter((id) => !tier.includes(id));
+  if (fehlt.length) throw teilFehlt(fehlt.map((id) => REITTIER_PRAEFIX + id), tier.map((id) => REITTIER_PRAEFIX + id));
 }
 
-function pruefeWahl(spec: Spec, w: FrameWahl) {
+function pruefeWahl(spec: Spec, w: FrameWahl, stil: Stil, specPfad: string) {
   const anim = animationVon(spec, w.animation);
   if (w.variante !== undefined && !Object.hasOwn(spec.varianten ?? {}, w.variante))
     throw ablehnen('varianten', 'variante-unbekannt', `Variante „${w.variante}“ fehlt (${Object.keys(spec.varianten ?? {}).join(', ') || 'keine'})`);
   const stufen = (spec.stufen?.length ?? 0) + 1;
   if (!Number.isInteger(w.stufe) || w.stufe < 1 || w.stufe > stufen)
     throw ablehnen('stufen', 'stufe-unbekannt', `Stufe ${w.stufe} gibt es nicht (1–${stufen})`);
-  pruefeOhne(spec, w.ohne ?? []);
+  pruefeOhne(spec, w, stil, specPfad);
   if (!Number.isInteger(w.frame) || w.frame < 0 || w.frame >= anim.frames)
     throw ablehnen(`animationen.${w.animation}.frames`, 'frame-unbekannt', `Frame ${w.frame} gibt es nicht (0–${anim.frames - 1})`);
 }
 
 /** Rendert den Frame nach `out` und liefert die Teil-Boxen. */
 export function frameRendern(spec: Spec, w: FrameWahl, stil: Stil, specPfad: string, out: string): Record<string, number[]> {
-  pruefeWahl(spec, w);
+  pruefeWahl(spec, w, stil, specPfad);
   if (w.ohne?.length) spec = { ...spec, teile: spec.teile.map((t) => (w.ohne!.includes(t.id) ? { ...t, lagen: [] } : t)) };
   const a: Ausgabe = { schluessel: w.animation, animation: w.animation, stufe: w.stufe, ...(w.variante ? { variante: w.variante } : {}) };
-  const bild = bildVon(spec, a, { stil, specPfad }), f = bild.frames[w.frame];
+  const k: ReitKontext & VierbeinerKontext = { stil, specPfad, reittierOhne: reittierTeile(w.ohne ?? []), beinOhne: w.ohne ?? [] };
+  const bild = bildVon(spec, a, k), f = bild.frames[w.frame];
   writeFileSync(out, rastere(streifenSvg([f.svg], bild.groesse, defs(stil, spec.id, bild.groesse.frameH / bild.groesse.rahmen[3]))).png);
   return teilBoxen(f.geometrie, bild.groesse);
 }

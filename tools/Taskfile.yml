@@ -2,39 +2,6 @@
 version: '3'
 
 tasks:
-  atlas:
-    desc: Figuren-Atlas nach public/atlas/ packen (aus data/sprites.json, deterministisch; feste EXE bin/atlas, B-163)
-    deps: [':tmp']
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    sources:
-      - tools/atlas/*.go
-      - data/sprites.json
-      - public/sprites/**/*.png
-    generates:
-      - public/atlas/atlas.json
-    cmds:
-      - go build -o bin/atlas{{exeExt}} ./tools/atlas
-      - ./bin/atlas{{exeExt}}
-
-  gebaeude:
-    desc: Gebäude-PNGs aus public/grafik/gebaeude/*.json rendern (16/32/64/128 px je Kachel, deterministisch; feste EXE bin/gebaeude, GEB1)
-    deps: [':tmp']
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    sources:
-      - tools/buildings/*.go
-      - public/grafik/gebaeude/*.json
-      - exclude: public/grafik/gebaeude/index.json
-    generates:
-      - public/grafik/gebaeude/*.png
-      - public/grafik/gebaeude/index.json
-    cmds:
-      - go build -o bin/gebaeude{{exeExt}} ./tools/buildings
-      - ./bin/gebaeude{{exeExt}}
-
   paper:
     desc: 'Papierschnitt-Grafik bereitstellen: rendert nach .work/grafik (nur bei geänderten Quellen) und kopiert fehlende oder geänderte Dateien nach public/grafik (RD1, B-737, B-748)'
     cmds:
@@ -79,21 +46,6 @@ tasks:
     cmds:
       - bun tools/paper/bin/gen.ts
 
-  pipeline:
-    desc: Grafiken aus docs/assets/pipeline-liste.json auf DB32 und 16 px umrechnen (public/grafik → public/grafik-db32, deterministisch; feste EXE bin/pipeline, B-331)
-    deps: [':tmp']
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    sources:
-      - tools/pipeline/*.go
-      - docs/assets/pipeline-liste.json
-      - public/grafik/**/*.png
-    generates:
-      - public/grafik-db32/**/*.png
-    cmds:
-      - go build -o bin/pipeline{{exeExt}} ./tools/pipeline
-      - ./bin/pipeline{{exeExt}}
 
   rules:
     desc: "Regeltabelle Hub-Stufe → Gebäude (docs/rules/materialien-gebaeude.md § 3) aus data/hub.json erzeugen (deterministisch; feste EXE bin/regeltabelle, WZ15.2, B-462)"
@@ -105,7 +57,7 @@ tasks:
       - ./bin/regeltabelle{{exeExt}}
 
   soundatlas:
-    desc: Sound-Atlas public/audio/atlas.{ogg,mp3,json} aus den Effekt-Slots in data/assets.json packen (erste Präferenz je Slot, ffmpeg; feste EXE bin/soundatlas, SO6.2, B-494)
+    desc: Sound-Atlas public/audio/atlas.{ogg,mp3,json} aus den Effekt-Slots in data/sounds.json packen (erste Präferenz je Slot, ffmpeg; feste EXE bin/soundatlas, SO6.2, B-494)
     deps: [':tmp']
     preconditions:
       - sh: command -v go
@@ -114,7 +66,7 @@ tasks:
         msg: ffmpeg fehlt (requirements.md)
     sources:
       - tools/soundatlas/*.go
-      - data/assets.json
+      - data/sounds.json
     generates:
       - public/audio/atlas.json
     cmds:

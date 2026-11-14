@@ -1,0 +1,202 @@
+# Namespace `native`: natives Spiel in Go + Ebitengine (Projekt NAT, Entscheidung 008) und der Rig-Prototyp.
+# Der Ebitengine-Prototyp native/k3c-ebiten (NV1, NV3) ist entfernt; Fluss und Shader leben in native/k3c-game weiter.
+# Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig; seine Teil-Bilder und Rig-Dateien sind eingecheckt
+# (native/k3c-rig/assets, `rig:export` schreibt sie neu), Bauen und Starten braucht keinen Gen-Lauf.
+# Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game (`game:build`, `game`), ohne cgo.
+version: '3'
+
+vars:
+  MEASURE: 'powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/native/measure.ps1"'
+  # Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig, Teile und Rig-Dateien eingecheckt in assets/
+  RIG: '{{.ROOT_DIR}}/native/k3c-rig'
+  RIG_EXE: '{{.ROOT_DIR}}/native/k3c-rig/bin/k3c-rig.exe'
+  RIG_PAKET: '{{.ROOT_DIR}}/.work/native-rig'
+  # Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game, bindet k3c und k3c-rig per replace ein
+  GAME: '{{.ROOT_DIR}}/native/k3c-game'
+  GAME_EXE: '{{.ROOT_DIR}}/native/k3c-game/bin/k3c-game.exe'
+  # Paket zum Weitergeben (Wunsch 🧑 2026-11-13): fertige EXE mit allen Dateien unter dist/k3c-game; die Probe-Aufnahme
+  # bleibt in .work. Achtung: der Web-Build (vite, dist/) leert dist/ bis zum Ende des Browser-Clients (B-823).
+  GAME_PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
+  GAME_PROBE: '{{.ROOT_DIR}}/.work/native-game-probe'
+  # Version des nativen Spiels (B-808): git describe, ohne Git leer (das Spiel zeigt dann „unbekannt“)
+  GAME_VERSION:
+    sh: git describe --tags --always --dirty 2>/dev/null || true
+
+tasks:
+  # Version als Datei (B-821): schreibt bin/version.txt nur, wenn sich GAME_VERSION ändert; game:build beobachtet die
+  # Datei. So baut ein neuer Commit auch im Worktree neu (dort ist .git eine Datei), ohne Änderung bleibt es „up to date“.
+  game:version:
+    internal: true
+    dir: '{{.GAME}}'
+    status:
+      # Datei muss existieren: ohne Git ist die Version leer, bin/version.txt entsteht trotzdem (leer = „unbekannt“)
+      - test -f bin/version.txt && test "$(cat bin/version.txt)" = "{{.GAME_VERSION}}"
+    cmds:
+      - mkdir -p bin && printf '%s' "{{.GAME_VERSION}}" > bin/version.txt
+
+  game:build:
+    desc: "Natives Spiel bauen: EXE (Go, ohne cgo), Papierschnitt-Grafik (gen:paper) und das komplette Spiel nach dist/k3c-game/ (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
+    deps: [game:exe, ':gen:paper']
+    cmds:
+      - task: game:dist
+
+  # dist: bringt EXE, geladene Grafik, Ton, Schrift, Rig-Teile, Lizenzdatei und Messskript nach GAME_PAKET. Das Kopieren
+  # macht cmd/sync (nur Geändertes, Ordner zusammengeführt): Tasks eingebautes cp kann unter Windows weder -u noch das.
+  game:dist:
+    internal: true
+    dir: '{{.ROOT_DIR}}'
+    env:
+      CGO_ENABLED: '0'
+    cmds:
+      - mkdir -p "{{.GAME_PAKET}}"
+      # nur die Grafik, die das Spiel laden kann (k3c-game --assets: je Zeile gruppe/id aller Level und des Menüs)
+      - '"{{.GAME_EXE}}" --assets > "{{.GAME_PAKET}}/assets.txt"'
+      - |
+        set -e
+        p="{{.GAME_PAKET}}"
+        args="{{.GAME_EXE}}=$p/k3c-game.exe native/measure.ps1=$p/measure.ps1 native/messen.cmd=$p/messen.cmd public/audio=$p/public/audio {{.RIG}}/assets=$p/native/k3c-rig/assets"
+        if [ -d public/schrift ]; then args="$args public/schrift=$p/public/schrift"; fi
+        for a in $(tr -d '\r' < "$p/assets.txt"); do args="$args public/grafik/$a=$p/public/grafik/$a"; done
+        cd "{{.GAME}}" && go run ./cmd/sync $(for x in $args; do case "$x" in /*|?:*) echo "$x";; *) echo "{{.ROOT_DIR}}/$x";; esac; done)
+      # Lizenzdatei aus derselben Liste wie die Lizenz-Seite im Menü (menu.LicenseText, B-808)
+      - 'cd "{{.GAME}}" && CGO_ENABLED=0 go run ./menu/licensefile -version "{{.GAME_VERSION}}" > "{{.GAME_PAKET}}/LIZENZEN.txt"'
+      - 'echo "✅ Spiel in {{.GAME_PAKET}} ($(du -sh "{{.GAME_PAKET}}" | cut -f1))"'
+
+  game:exe:
+    desc: "Nur die EXE des nativen Spiels bauen (Go, ohne cgo) nach native/k3c-game/bin/"
+    dir: '{{.GAME}}'
+    deps: [':tmp', game:version]
+    env:
+      CGO_ENABLED: '0'
+    sources:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+      # Simulation und Balancing aus dem Wurzel-Modul (replace k3c => ../..), data per go:embed
+      - ../../go.mod
+      - ../../engine/**/*.go
+      - ../../data/**/*
+      # Version: neue Angabe von git describe baut neu (game:version), im Hauptcheckout wie im Worktree
+      - bin/version.txt
+    generates:
+      - bin/k3c-game.exe
+    cmds:
+      # Version ins Hauptmenü (menu.Version, B-808)
+      - go build -ldflags "-X k3c/native/k3c-game/menu.Version={{.GAME_VERSION}}" -o bin/k3c-game.exe .
+
+  game:
+    desc: "Natives Spiel starten (Platzhalter; Menü: Leertaste/Enter/A, Mitspieler: Bestätigen, Spiel: A/D bzw. Pfeile bzw. Stick, Esc/Menu Pause; direkt ins Spiel: task native:game -- --seed wald)"
+    dir: '{{.ROOT_DIR}}'
+    deps: [game:exe]
+    cmds:
+      - '"{{.GAME_EXE}}" {{.CLI_ARGS}}'
+
+  game:shots:
+    desc: "Natives Spiel, Aufnahme-Modus: Szene vorlaufen lassen, 8 Bilder alle 3 Takte und Streifen nach reports/native-game-shots/ (Schalter anhängen: task native:game:shots -- --seed x --tick 300)"
+    dir: '{{.ROOT_DIR}}'
+    deps: [game:exe]
+    cmds:
+      - '"{{.GAME_EXE}}" --shots "{{.ROOT_DIR}}/reports/native-game-shots" --tick 90 {{.CLI_ARGS}}'
+
+  game:e2e:
+    desc: "Natives Spiel Ende-zu-Ende (NG9.1, B-802): Hauptmenü → Lobby zu zweit → Spiel (laufen, zahlen, bauen, Skill, Nacht) → Pause → Verlassen → Weiter → Niederlage ohne Fenster prüfen, dann zweimal aufnehmen und bildgleich vergleichen; Bilder nach reports/native-game-e2e/"
+    dir: '{{.GAME}}'
+    deps: [game:exe]
+    env:
+      CGO_ENABLED: '0'
+      K3C_GAME_EXE: '{{.GAME_EXE}}'
+      K3C_ROOT: '{{.ROOT_DIR}}'
+      K3C_E2E_OUT: '{{.ROOT_DIR}}/reports/native-game-e2e'
+    cmds:
+      - go test -count=1 -run 'TestFlow' ./e2e/
+
+  game:measure:
+    desc: "Natives Spiel messen (NG9.2, B-802): Fenster 1920×1080, VSync aus, 2 Spieler, je einmal Tag und Nacht mit Gegnern (FPS, 1-%-Low, Rechenzeit je Bild und Takt, Texturbudget, GPU-Speicher, RAM), Bericht nach reports/native-game-*.json"
+    deps: [game:exe]
+    cmds:
+      - '{{.MEASURE}} -Engine game'
+
+  game:paket:
+    desc: "Sauberes Paket: dist/k3c-game/ leeren und neu füllen (wie game:build), dann Probe-Aufnahme aus dem Paket-Ordner nach .work/native-game-probe/; Ordner kopieren, dort k3c-game.exe oder messen.cmd starten"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - rm -rf "{{.GAME_PAKET}}" "{{.GAME_PROBE}}"
+      - task: game:build
+      # Probe: die EXE startet aus dem Paket-Ordner (Tag und Nacht mit Gegnern, Aufnahme-Modus)
+      - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PROBE}}/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PROBE}}/nacht" --seed k3c --tick 15600 --count 2 --input 0@0=-,1@0=-'
+
+  rig:export:
+    desc: "Rig-Prototyp: Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach native/k3c-rig/assets/ schreiben (eingecheckt; liest Specs und Stil nur)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bun native/k3c-rig/export/export.ts
+
+  rig:export:check:
+    desc: "Rig-Prototyp: Export wiederholen und byte-genau mit native/k3c-rig/assets/ vergleichen (schreibt nichts)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bun native/k3c-rig/export/export.ts --pruefen
+
+  rig:test:
+    desc: "Rig-Prototyp prüfen: gofmt, go vet, go test (Rig-Rechnung gegen die Sollwerte aus tools/paper)"
+    dir: '{{.RIG}}'
+    deps: [':tmp']
+    env:
+      CGO_ENABLED: '0'
+    cmds:
+      # gofmt ohne CR: Unter Windows (core.autocrlf=true) liegt der Arbeitsbaum mit CRLF vor, im Repo steht LF
+      - 'bad=""; for f in $(find . -name "*.go"); do test -z "$(tr -d "\r" < "$f" | gofmt -l)" || bad="$bad $f"; done; test -z "$bad" || { echo "❌ gofmt:$bad"; exit 1; }'
+      - go vet ./...
+      - go test ./...
+
+  rig:build:
+    desc: "Rig-Prototyp bauen (Go, ohne cgo) nach native/k3c-rig/bin/"
+    dir: '{{.RIG}}'
+    deps: [':tmp']
+    env:
+      CGO_ENABLED: '0'
+    sources:
+      - '*.go'
+      - rig/*.go
+      - paint/*.go
+      - go.mod
+      - go.sum
+    generates:
+      - bin/k3c-rig.exe
+    cmds:
+      - go build -o bin/k3c-rig.exe .
+
+  rig:
+    desc: "Rig-Prototyp starten: links Sheet, rechts Rig-Teile, zwei Monarchen (Tastatur oder je ein Gamepad; Tasten stehen im Fenster)"
+    deps: [rig:build]
+    cmds:
+      - '"{{.RIG_EXE}}" --root "{{.ROOT_DIR}}"'
+
+  rig:shots:
+    desc: "Rig-Prototyp: Screenshots aller Zustände nach reports/native-rig-shots/"
+    deps: [rig:build]
+    cmds:
+      - '"{{.RIG_EXE}}" --root "{{.ROOT_DIR}}" --shots "{{.ROOT_DIR}}/reports/native-rig-shots"'
+
+  rig:vergleich:
+    desc: "Rig-Prototyp: Bildvergleich Rig gegen Sheet (idle, lauf, trab) nach reports/native-rig-vergleich/ (Kennzahlen und Differenzbilder; braucht task gen:paper)"
+    deps: [rig:build]
+    cmds:
+      - mkdir -p "{{.ROOT_DIR}}/reports/native-rig-vergleich"
+      - '"{{.RIG_EXE}}" --root "{{.ROOT_DIR}}" --vergleich "{{.ROOT_DIR}}/reports/native-rig-vergleich"'
+
+  rig:measure:
+    desc: "Rig-Prototyp messen: 2, 50 und 200 Reiter als Rig und aus dem Sheet (FPS, GPU-Speicher, RAM), Bericht nach reports/native-rig-*.json"
+    deps: [rig:build]
+    cmds:
+      - '{{.MEASURE}} -Engine rig'
+
+  rig:paket:
+    desc: "Paket für den Mini-PC nach .work/native-rig/ (EXE, assets, Messskript, Sheets des Monarchen); dort k3c-rig.exe oder messen.cmd starten"
+    deps: [rig:build]
+    cmds:
+      - rm -rf "{{.RIG_PAKET}}"
+      - mkdir -p "{{.RIG_PAKET}}/public/grafik/figuren"
+      - cp "{{.RIG_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.RIG_PAKET}}/"
+      - cp -r "{{.RIG}}/assets" "{{.RIG_PAKET}}/assets"
+      - cp -r "{{.ROOT_DIR}}/public/grafik/figuren/monarch" "{{.RIG_PAKET}}/public/grafik/figuren/monarch"

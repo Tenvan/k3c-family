@@ -6,7 +6,6 @@ require (
 	charm.land/bubbletea/v2 v2.0.10
 	charm.land/lipgloss/v2 v2.0.6
 	github.com/coder/websocket v1.8.15
-	github.com/ebitengine/purego v0.10.2
 	github.com/fsnotify/fsnotify v1.10.1
 	golang.org/x/sys v0.47.0
 )

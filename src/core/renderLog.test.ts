@@ -119,3 +119,56 @@ describe('Ladevorgang (AC-04)', () => {
     expect(lines[0]!.ctx).toMatchObject({ group: 'gebaeude', files: 40, loadMs: 2400 });
   });
 });
+
+describe('Texturbudget im Log (B-772/AC-01)', () => {
+  const withBudget = (info: RenderInfo, budget: number | null) => {
+    const lines: Line[] = [];
+    let t = 1000;
+    const env: RenderLogEnv = { log: (level, msg, ctx) => lines.push({ level, msg, ctx }), now: () => t, info: () => info, heapMiB: () => 55.5, budgetMiB: () => budget };
+    return { log: new RenderLog(env), lines, advance: (ms: number) => (t += ms) };
+  };
+  const gl1: RenderInfo = { ...webgl, kind: 'WebGL', textureMiB: 96 };
+
+  it('die Startzeile nennt WebGL-Version, Budget und Verbrauch', () => {
+    const { msg, ctx } = startLine(gl1, { userAgent: 'Xbox', version: '1', budgetMiB: 130 });
+    expect(msg).toBe('🚀 Renderer: WebGL, GPU Mali-450, maxTex 4096, 212 Texturen, ~96 MiB, Texturen 96 von 130 MiB (74 %) [ok]');
+    expect(ctx).toMatchObject({ glVersion: 1, budgetMiB: 130, budgetState: 'ok', renderer: 'WebGL' });
+    expect(startLine({ ...gl1, kind: 'WebGL2' }, { userAgent: '', version: '' }).ctx).toMatchObject({ glVersion: 2, budgetMiB: null, budgetState: null });
+    expect(startLine(canvas, { userAgent: '', version: '' }).ctx).toMatchObject({ glVersion: 0 });
+  });
+
+  it('start() liest das Budget aus der Umgebung; ohne Budget bleibt die Zeile wie bisher', () => {
+    const a = withBudget(gl1, 130);
+    a.log.start({ userAgent: 'Xbox', version: '1' });
+    expect(a.lines[0]!.msg).toContain('von 130 MiB');
+    const b = withBudget(gl1, null);
+    b.log.start({ userAgent: 'Edge', version: '1' });
+    expect(b.lines[0]!.msg).toBe('🚀 Renderer: WebGL, GPU Mali-450, maxTex 4096, 212 Texturen, ~96 MiB');
+  });
+
+  it('über dem Budget warnt loaded() einmal je Minute, darunter oder ohne Budget nie', () => {
+    const over = withBudget({ ...gl1, textureMiB: 140 }, 130);
+    over.log.loaded('g1', 10, 20, 100);
+    over.log.loaded('g2', 10, 20, 100);
+    const warns = () => over.lines.filter((l) => l.level === 'warn');
+    expect(warns()).toHaveLength(1);
+    expect(warns()[0]!.msg).toContain('Texturen 140 von 130 MiB');
+    expect(warns()[0]!.ctx).toMatchObject({ budgetExceeded: true, budgetState: 'over' });
+    over.advance(WARN_EVERY_MS + 1);
+    over.log.loaded('g3', 10, 20, 100);
+    expect(warns()).toHaveLength(2);
+    const ok = withBudget(gl1, 130);
+    ok.log.loaded('g1', 10, 20, 100);
+    expect(ok.lines.filter((l) => l.level === 'warn')).toHaveLength(0);
+    const none = withBudget({ ...gl1, textureMiB: 999 }, null);
+    none.log.loaded('g1', 10, 20, 100);
+    expect(none.lines.filter((l) => l.level === 'warn')).toHaveLength(0);
+  });
+
+  it('die Verlaufszeile trägt Budget und Ampel im Kontext', () => {
+    const { log, lines, advance } = withBudget(gl1, 130);
+    advance(TREND_EVERY_MS + 1);
+    log.frame(16, 60);
+    expect(lines.find((l) => l.msg.startsWith('💓'))!.ctx).toMatchObject({ budgetMiB: 130, budgetState: 'ok' });
+  });
+});

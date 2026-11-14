@@ -62,6 +62,7 @@ func registerPlanning(s *Server) {
 			"Session: Status (auch verworfen), Domäne (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP; Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar), " +
 			"Lane (– oder Kurzname a-z, 0-9, -) und Modell (–, haiku, sonnet, opus, fable), beide auch in älteren Dateien ohne das Feld. " +
 			"Projekt: Status, Rang (die anderen rücken lückenlos), Sprints (neue Reihenfolge, kommagetrennt). " +
+			"Ticket-Relationen: Duplikat von (eine ID, setzt verworfen), Ersetzt (IDs, kommagetrennt); geprüft auf ID, Selbstverweis, Zyklus. " +
 			"Nutze es bei: Status, Prio oder andere Kopf-Felder ändern. Statt: Datei, Index und Fahrplan von Hand bearbeiten.",
 		Annotations: write,
 	}, func(ctx context.Context, in planSetIn) (string, error) {
@@ -92,6 +93,8 @@ func registerPlanning(s *Server) {
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Delete(s.ws(ctx).root, in.ID) })
 	registerGitHub(s)
+	registerPlanWaves(s)
+	registerPlanDigest(s)
 }
 
 // registerPlanRead sind die lesenden Planungs-Tools: Überblick, ein Dokument, nächste Session (B-518).
@@ -101,6 +104,8 @@ func registerPlanRead(s *Server) {
 		Description: "Sprints mit Sessions und Tickets als je eine Zeile, filterbar nach kind, status, domain, sprint, projekt; " +
 			"archive mit erledigten Tickets. Sprints mit Projekt nach Rang und Platz im Projekt, ohne Projekt dahinter. " +
 			"kind projekt: Projekte nach Rang mit Sprints und Fortschritt. " +
+			"Tickets beginnen mit der Zeile `Tickets: <gezeigt> von <alle nicht archivierten> · <n> offen · <n> eingeplant · <n> ungeplant` " +
+			"(offen/eingeplant = Status, ungeplant = ohne Sprint); sprint `ungeplant` (oder –) zeigt nur Tickets ohne Sprint. " +
 			"Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.Filter) (string, error) {
@@ -115,10 +120,11 @@ func registerPlanRead(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "plan_next",
 		Description: "Nächste Session nach docs/arbeitsweise.md › Autonomer Ablauf, Schritt 1, aus den lokalen Dateien: aktive Projekte " +
-			"nach Rang, ihre aktiven Sprints in Tabellen-Reihenfolge, erste Session offen und autonom mit erledigten Abhängigkeiten " +
-			"und freier Domäne bzw. Lane (ohne Lane sperrt eine Session in Arbeit die ganze Domäne); domain grenzt ein. Antwort: Kopf " +
-			"(ID, Pfad, Sprint, Domäne, Lane, Umgebung, Modell, Branch, Kriterien), Session-Datei, ihre Kriterien aus der Sprint-README " +
-			"und höchstens drei parallel mögliche Sessions (andere Domäne oder andere Lane, je mit Modell); sonst der Grund je " +
+			"nach Rang, ihre aktiven Sprints in Tabellen-Reihenfolge, erste Session offen und autonom mit erledigten Abhängigkeiten, " +
+			"die mit keiner Session in Arbeit kollidiert (wie plan_waves: gleiche Sperre der Sprint-README oder überlappende " +
+			"Erlaubte Dateien; ohne Dateimenge noch Domäne bzw. Lane); domain grenzt ein. Antwort: Kopf " +
+			"(ID, Pfad, Sprint, Domäne, Lane, Umgebung, Modell, Branch sprint/<präfix>, Kriterien), Session-Datei, ihre Kriterien aus der Sprint-README " +
+			"und höchstens drei parallel mögliche Sessions (ohne Kollision untereinander, je mit Modell); sonst der Grund je " +
 			"Projekt. Je aktivem Sprint gilt der Stand von refs/remotes/origin/sprint/<präfix> (README, Sessions; kein fetch), " +
 			"sonst der lokale Stand; die Antwort nennt das je Sprint. " +
 			"Nutze es bei: Start einer autonomen Session. Statt: Projekte, Sprint-READMEs und Session-Dateien einzeln lesen.",

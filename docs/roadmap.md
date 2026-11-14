@@ -5,7 +5,7 @@ Umsetzung in Sprints und Sessions: [`docs/sprints/`](sprints/README.md). Tickets
 
 ## Schritt 0 – Xbox-Machbarkeit (einschiebbar, Sprint X1) ✅
 
-- [x] **Gamepad-Testseite** `gamepad-test.html`: Live-Anzeige aller Controller, Falle für Zurück-Navigation (B),
+- [x] **Gamepad-Testseite** `gamepad-test.html` (entfernt, B-822): Live-Anzeige aller Controller, Falle für Zurück-Navigation (B),
   Vollbild, Vibration, FPS-Test (Phaser/WebGL, 100–4000 Sprites), Bericht per **Y** an den Server.
 - [x] **Heimnetz-Server** (früher ein Node-Server, seit SP03/SP09 der Go-Server `cmd/k3c-server`): liefert `dist/` aus, speichert Berichte
   in `reports/`, optional HTTPS mit `certs/`. Start: `task serve`.

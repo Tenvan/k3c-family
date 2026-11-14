@@ -31,6 +31,7 @@ type candidate struct {
 	project Project
 	sprint  Sprint
 	session Session
+	scope   scoped
 	why     string
 }
 
@@ -46,8 +47,9 @@ type nextState struct {
 	root    string
 	status  map[string]string // Session-ID → Status aus der Session-Tabelle, alle Sprints
 	tickets map[string]string // Ticket-Nr → Status (Backlog ohne Archiv)
-	locked  locks             // Sessions in Arbeit aktiver Sprints je Domäne und Lane (next_lanes.go)
-	readmes map[string]string // Sprint-ID → README von origin/sprint/<präfix> (B-519), sonst lokal
+	running []scoped            // Sessions in Arbeit aktiver Sprints mit Dateimenge und Sperren (next_lanes.go)
+	readmes map[string]string   // Sprint-ID → README von origin/sprint/<präfix> (B-519), sonst lokal
+	specs   map[string]PlanSpec // Sprint-ID → Planungsangaben der README (Sperre, Bereich)
 }
 
 // Next liefert die nächste Session als verdichteten Text: Kopf, Session-Datei, ihre Kriterien aus der Sprint-README
@@ -62,8 +64,7 @@ func Next(root string, f NextFilter) (string, error) {
 		return "", err
 	}
 	notes, readmes := originOverlay(root, &d)
-	st := newNextState(root, d)
-	st.readmes = readmes
+	st := newNextState(root, d, readmes)
 	plan := st.plan(d)
 	var cands []candidate
 	for _, pn := range plan {
@@ -71,11 +72,23 @@ func Next(root string, f NextFilter) (string, error) {
 	}
 	for _, c := range cands {
 		if c.why == "" && (want == "" || c.session.Domain == want) {
-			out, err := st.pickText(c, parallel(cands, c))
+			out, err := st.pickText(c, parallel(cands, c, st.agents()))
 			return withNotes(out, notes), err
 		}
 	}
 	return withNotes(noneText(plan, want), notes), nil
+}
+
+// agents zählt die Sessions in Arbeit, die einen Agenten belegen; eine Mensch-Session (Abnahme am Gerät) sperrt mit
+// Dateien und Sperren, belegt aber keinen der vier Plätze (B-839).
+func (st nextState) agents() int {
+	n := 0
+	for _, r := range st.running {
+		if r.session.Agent == "autonom" {
+			n++
+		}
+	}
+	return n
 }
 
 // withNotes hängt die Herkunft des Stands je aktivem Sprint (origin oder lokal) an die Antwort.
@@ -86,13 +99,17 @@ func withNotes(text string, notes []string) string {
 	return text + "\n\n── Stand der Sprints ──\n" + strings.Join(notes, "\n")
 }
 
-func newNextState(root string, d Data) nextState {
-	st := nextState{root: root, status: map[string]string{}, tickets: map[string]string{}, locked: newLocks()}
+func newNextState(root string, d Data, readmes map[string]string) nextState {
+	st := nextState{root: root, status: map[string]string{}, tickets: map[string]string{}, readmes: readmes,
+		specs: map[string]PlanSpec{}}
 	for _, s := range d.Sprints {
+		if s.Status == "aktiv" {
+			st.specs[s.ID] = parsePlanSpec(st.readme(s.ID))
+		}
 		for _, x := range s.Sessions {
 			st.status[x.Nr] = x.Status
-			if s.Status == "aktiv" && x.Status == "in Arbeit" && x.Domain != "" {
-				st.locked.add(x)
+			if s.Status == "aktiv" && x.Status == "in Arbeit" { // auch ohne Domäne: Dateien und Sperren zählen (B-839)
+				st.running = append(st.running, st.scope(s, x))
 			}
 		}
 	}
@@ -133,14 +150,40 @@ func (st nextState) open(p Project, sp Sprint) []candidate {
 	var out []candidate
 	for _, x := range sp.Sessions {
 		if x.Status == "offen" {
-			out = append(out, candidate{project: p, sprint: sp, session: x, why: st.blocked(x)})
+			c := candidate{project: p, sprint: sp, session: x, scope: st.scope(sp, x)}
+			c.why = st.blocked(c.scope)
+			out = append(out, c)
 		}
 	}
 	return out
 }
 
+// scope: Dateimenge aus „Erlaubte Dateien“ (sonst Bereich der Sprint-README) und Sperren des Sprints.
+func (st nextState) scope(sp Sprint, x Session) scoped {
+	spec := st.specs[sp.ID]
+	area := allowedFiles(x.Text)
+	if len(area) == 0 {
+		area = spec.Area
+	}
+	return scoped{session: x, area: area, locks: spec.Locks}
+}
+
+// readme ist die Sprint-README von origin (B-519), sonst die lokale; leer, wenn keine lesbar ist.
+func (st nextState) readme(id string) string {
+	if text, ok := st.readmes[id]; ok {
+		return text
+	}
+	if r, ok := findSprint(st.root, id); ok {
+		if text, _, err := readText(st.root, r.rel); err == nil {
+			return text
+		}
+	}
+	return ""
+}
+
 // blocked nennt, warum eine offene Session nicht dran ist; leer = frei.
-func (st nextState) blocked(x Session) string {
+func (st nextState) blocked(s scoped) string {
+	x := s.session
 	if x.Agent != "autonom" {
 		return "Agent " + firstOf(x.Agent, "?")
 	}
@@ -150,7 +193,7 @@ func (st nextState) blocked(x Session) string {
 	if open := st.openDeps(x); len(open) > 0 {
 		return "wartet auf " + strings.Join(open, ", ")
 	}
-	return st.locked.why(x)
+	return busy(st.running, s)
 }
 
 // openDeps sind die unerledigten Einträge aus „Abhängig von“: Sessions nicht fertig oder verworfen, Tickets weder
@@ -200,17 +243,13 @@ func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 		}
 	}
 	x, head := c.session, sessionHead(c.session)
-	prefix := strings.ToLower(c.sprint.ID)
-	if b, _, ok := strings.Cut(head["Branch"], "/"); ok && b != "" {
-		prefix = b
-	}
 	crit := firstOf(head["Kriterien"], "–")
 	out := []string{
 		"Nächste Session: " + x.Nr + " · " + x.Titel,
 		"Pfad: docs/" + r.dir + "/" + x.File,
 		fmt.Sprintf("Sprint: %s · %s (Projekt %s, Rang %s)", c.sprint.ID, c.sprint.Title, c.project.ID, c.project.Rang),
 		domainLine(x),
-		"Branch: sprint/" + prefix,
+		"Branch: sprint/" + sprintPrefix(c.sprint), // wie originOverlay (B-839)
 		"Kriterien: " + crit,
 		"Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der " +
 			"Agent mit git fetch --prune.",

@@ -32,5 +32,5 @@ Phaser-Szenen des Browser-Clients (Laden, Lobby, Spiel, HUD, Optionen) samt Spli
 
 ## Integration
 
-- Konsument: `src/main.ts` (Szenen-Registrierung, `VERSION_KEY` aus `debug/debugOverlay`); `src/tools/testScenarios.test.ts` (`lobbyLogic`).
+- Konsument: `src/main.ts` (Szenen-Registrierung, `VERSION_KEY` aus `debug/debugOverlay`).
 - Abhängigkeiten: `src/online/` (`RoomClient`, `clientWorld`, `clientTimeline`, `clientPredict`, `clientProtocol`), `src/model/` (`types`, `data`, `biome`), `src/input/` (`playerInput`, `touchInput`, `botInput`, `slotBindings`), `src/audio/` (`audioCore`, `events`, `music`), `src/core/` (`constants`, `texts`, `settings`, `saveStore`, `fullscreen`, `clientLog`, `guideSeen`), Phaser; Unterordner nur über die eigenen Codemaps.

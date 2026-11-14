@@ -21,13 +21,29 @@ function golden(gruppe: string): Record<string, { renderKey: string; dateien: Re
   return out;
 }
 
-/** Fortschritt (B-740): `[i/n] gruppe/id gerendert ✅ Dauer` je Asset, je Gruppe eine Zeile für golden/Index. */
+/** golden.json einer Gruppe atomar schreiben, als Schritt `💾` gemeldet. */
+export function schreibeGolden(dir: string, g: string, melde?: Melde): void {
+  schritt(melde, '💾', `${g}: golden.json`, () => {
+    const tmp = join(dir, `.golden.json.tmp-${process.pid}`);
+    writeFileSync(tmp, JSON.stringify(golden(dir), null, 2) + '\n');
+    renameSync(tmp, join(dir, 'golden.json'));
+  });
+}
+
+/** Stil der Wurzel (`<wurzel>/stil.paper.json`, sonst der Standard) und die Gruppen mit Specs, sortiert. */
+export function wurzelLesen(wurzel: string, stil?: Stil): { stil: Stil; gruppen: string[] } {
+  const stilPfad = join(wurzel, 'stil.paper.json');
+  return {
+    stil: stil ?? (existsSync(stilPfad) ? ladeStil(stilPfad) : ladeStil()),
+    gruppen: readdirSync(wurzel).sort().filter((g) => statSync(join(wurzel, g)).isDirectory() && specsIn(join(wurzel, g)).length > 0),
+  };
+}
+
+/** Nacheinander auf einem Kern (Referenz für den Golden-Test); gen:paper nutzt genParallel. Fortschritt (B-740):
+ * `[i/n] gruppe/id gerendert ✅ Dauer` je Asset, je Gruppe eine Zeile für golden/Index. */
 export function gen(wurzel: string, o: { stil?: Stil; melde?: Melde } = {}): { gruppen: string[] } {
   const { melde } = o;
-  const stilPfad = join(wurzel, 'stil.paper.json');
-  const stil = o.stil ?? (existsSync(stilPfad) ? ladeStil(stilPfad) : ladeStil());
-  const gruppen = readdirSync(wurzel).sort()
-    .filter((g) => statSync(join(wurzel, g)).isDirectory() && specsIn(join(wurzel, g)).length > 0);
+  const { stil, gruppen } = wurzelLesen(wurzel, o.stil);
   const gesamt = gruppen.reduce((n, g) => n + specsIn(join(wurzel, g)).length, 0);
   melde?.(`🚀 gen:paper: ${gruppen.length} Gruppen, ${gesamt} Assets`);
   let nr = 0;
@@ -40,11 +56,7 @@ export function gen(wurzel: string, o: { stil?: Stil; melde?: Melde } = {}): { g
       beiAusgabe: (id, nr, n, key, ms) => n > 4 && melde?.(`   ↳ ${nr}/${n} ${g}/${id}: ${key} ${dauer(ms)}`),
       beiAsset: (id, ms) => melde?.(`🔨 [${++nr}/${gesamt}] ${g}/${id} gerendert ✅ ${dauer(ms)}`),
     });
-    schritt(melde, '💾', `${g}: golden.json`, () => {
-      const tmp = join(dir, `.golden.json.tmp-${process.pid}`);
-      writeFileSync(tmp, JSON.stringify(golden(dir), null, 2) + '\n');
-      renameSync(tmp, join(dir, 'golden.json'));
-    });
+    schreibeGolden(dir, g, melde);
   }
   return { gruppen };
 }

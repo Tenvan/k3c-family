@@ -2,8 +2,8 @@ import { natureFiles, objectLook, worldFile } from './natureSprites';
 import { paperBackgroundFile } from './paperAssets';
 
 /**
- * Grafiken für Truhe, Portal, Ausgang, Lager, Stern, Münze und Hintergründe je Biom (GR3.2, Zuordnung
- * `docs/assets/zuordnung-welt.md`); Bäume, Fels, Erz, Busch und Adern wählt `natureSprites.ts` (GEB6). Reine Auswahl ohne
+ * Grafiken für Truhe, Portal, Ausgang, Lager, Stern, Münze und Hintergründe je Biom (GR3.2);
+ * Bäume, Fels, Erz, Busch und Adern wählt `natureSprites.ts` (GEB6). Reine Auswahl ohne
  * Phaser: `null` = keine Grafik, dann zeichnet der Platzhalter.
  */
 
@@ -99,7 +99,7 @@ export interface ObjectSprite {
 /** Bild eines Schlüssels aus `WORLD_TEXTURES` (Papier: Frames, Ursprung und Maßstab aus `data/paper.json`) */
 const sprite = (key: string): ObjectSprite => objectLook(key, WORLD_TEXTURES[key]?.file);
 
-/** Objekt-IDs wie in der Zuordnung (Knoten: `natureSprites.ts` › `nodeSprite`); Truhe, Portal, Ausgang, Lager aus `tools/buildings` im Maßstab 1 (GEB6) */
+/** Objekt-IDs wie in der Zuordnung (Knoten: `natureSprites.ts` › `nodeSprite`); Truhe, Portal, Ausgang, Lager als Papier-Objekte im Maßstab 1 (GEB6) */
 const OBJECTS: Record<string, ObjectSprite> = {
   portal: sprite('grafik:portal'),
   exit: sprite('grafik:ausgang'),

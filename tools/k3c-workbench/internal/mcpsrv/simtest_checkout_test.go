@@ -11,6 +11,7 @@ import (
 
 // sim_test mit checkout (B-423, WZ20.3): Build und Daten des Läufe liegen im Worktree, der Status nennt ihn.
 func TestSimTestMitCheckout(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	main, wts := gitRepo(t, ".claude/worktrees/wt-a")
 	s := New(Config{Root: main, Version: "test"})
 	var mu sync.Mutex
@@ -61,6 +62,7 @@ func TestSimTestMitCheckout(t *testing.T) {
 }
 
 func TestSimTestUnbekannterCheckout(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	main, _ := gitRepo(t, ".claude/worktrees/wt-a", ".claude/worktrees/wt-b")
 	s := New(Config{Root: main, Version: "test"})
 	started := 0

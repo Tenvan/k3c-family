@@ -10,7 +10,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 - `cmd/k3c-server/`: Go-Spielserver (liefert `dist/` aus, `/api`, `/ws`; Supervisor mit Selbst-Neustart bei geänderten Dateien: Kind mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten aus `K3C_DATA_DIR`)
 - `Taskfile.yml`: einziger Einstieg für Befehle (`task dev`, `task start`, `task check` …)
 - `package.json`, `tsconfig.json`, `vite.config.ts`: Client-Build (jede Root-`*.html` wird eine Seite; Dev-Proxy für `/api` und `/ws`; Watcher ignoriert Worktrees und Laufzeit-Ausgaben)
-- `go.mod`: Go-Modul für Engine, Server und `tools/atlas`; `tools/k3c-workbench/go.mod`, `tools/k3c-starter/go.mod` und `tools/assetkit/go.mod` sind eigene Module
+- `go.mod`: Go-Modul für Engine und Server; `tools/k3c-workbench/go.mod`, `tools/k3c-starter/go.mod` und `tools/assetkit/go.mod` sind eigene Module
 
 ## Directory Map
 | Directory | Responsibility Summary | Detailed Map |
@@ -43,12 +43,10 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `src/audio/` | Web-Audio: `AudioCore`, `Mixer`-Busse, Ton aus `GameEvent`s | [View Map](src/audio/codemap.md) |
 | `src/core/` | Infrastructure: Shell-Protokoll, Vollbild, Client-Log, Persistenz, i18n, Hinweis-Merker, Version | [View Map](src/core/codemap.md) |
 | `src/landing/` | Landingpage/Shell: Kacheln aus `pages.ts`, iframe-Host | [View Map](src/landing/codemap.md) |
-| `src/tools/` | Entry-Scripts der Test- und Info-Seiten (Entwicklerseite, Gamepad-Test, Szenarien, Grafiken, Monitor, Hörprobe, Dungeon Master, Lizenzen) | [View Map](src/tools/codemap.md) |
+| `src/tools/` | Entry-Scripts der Test- und Info-Seiten (Kacheln im Spielmenü, Monitor, Lizenzen) | [View Map](src/tools/codemap.md) |
 | `tools/` | Entwickler-Werkzeuge außerhalb des Spiels | [View Map](tools/codemap.md) |
-| `tools/atlas/` | Altlast bis CU1, vom Spiel nicht mehr geladen: Build-Time-CLI, packt Sprites zu Atlas-PNGs und Phaser-`atlas.json` | [View Map](tools/atlas/codemap.md) |
 | `tools/assetkit/` | Gemeinsame Asset-Logik der k3c-workbench (Bereich Assets): Slot-Register, Katalog, Recherche, Schreibregel | [View Map](tools/assetkit/codemap.md) |
 | `tools/paper/` | Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts` | – |
-| `tools/buildings/` | CLI: rendert Gebäude-JSON deterministisch zu PNGs (Dichten 16/32/64/128) | [View Map](tools/buildings/codemap.md) |
 | `tools/ruletable/` | CLI (`task gen:rules`): schreibt den Block Hub-Stufe → Gebäude in die Regeldoku | [View Map](tools/ruletable/codemap.md) |
 | `tools/ruletable/table/` | Paket: erzeugt, ersetzt und prüft den Regeltabellen-Block aus `hub.json` | [View Map](tools/ruletable/table/codemap.md) |
 | `tools/cleanup/` | CLI: löscht lokale Branches und Worktrees nur in sicheren Fällen | [View Map](tools/cleanup/codemap.md) |
@@ -70,9 +68,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `tools/k3c-workbench/internal/botdev/` | Bot-Gerät: belegt per WebSocket einen Slot und sendet Balancing-Bot-Eingaben | [View Map](tools/k3c-workbench/internal/botdev/codemap.md) |
 | `tools/k3c-workbench/internal/botfeed/` | Loopback-WebSocket-Feed je Testlauf-Client für Bot-Kommandos | [View Map](tools/k3c-workbench/internal/botfeed/codemap.md) |
 | `tools/k3c-workbench/internal/browser/` | Findet Edge/Chrome und startet ihn headless mit eigenem Profil | [View Map](tools/k3c-workbench/internal/browser/codemap.md) |
-| `tools/k3c-workbench/internal/enginetools/` | In-process-Facade auf `engine/level` und `engine/sim` (`level_generate`, `sim_run`) | [View Map](tools/k3c-workbench/internal/enginetools/codemap.md) |
 | `tools/k3c-workbench/internal/balance/` | Balancing-Tester: Bot-Szenario-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays | [View Map](tools/k3c-workbench/internal/balance/codemap.md) |
-| `tools/k3c-workbench/internal/balance/cmd/` | CLI `k3c-balance` für Matrix-Läufe und Replays | [View Map](tools/k3c-workbench/internal/balance/cmd/codemap.md) |
 | `tools/k3c-workbench/internal/gamedata/` | Read-only-Zusammenfassungen von `reports/` und `saves/` | [View Map](tools/k3c-workbench/internal/gamedata/codemap.md) |
 | `tools/k3c-workbench/internal/github/` | `gh`-CLI-Client mit TTL-Cache für PR- und CI-Stand | [View Map](tools/k3c-workbench/internal/github/codemap.md) |
 | `tools/k3c-workbench/internal/usage/` | Statistik der MCP-Aufrufe mit JSON-Persistenz | [View Map](tools/k3c-workbench/internal/usage/codemap.md) |

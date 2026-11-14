@@ -2,8 +2,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act } from 'react';
 import { backend } from '../../api';
-import { buttons, click, flush, mount, unmount } from '../testing';
-import { CatalogPage } from './CatalogPage';
+import { buttons, click, unmount } from '../testing';
+import { mountCatalog, select, until } from './catalogTesting';
 
 // WB1.3/AC-03: Prompt-Buttons am Asset und am angeklickten Teil kopieren den gefüllten Prompt aus AssetsPrompts.
 
@@ -23,16 +23,18 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** Katalog mit gewähltem monarch; wartet, bis Bild und Prompt-Vorlagen da sind (B-837). */
 async function monarch() {
-  const host = await mount(<CatalogPage />);
-  await click(host.querySelector('[data-asset="monarch"]')!);
+  const host = await mountCatalog();
+  await select(host, 'monarch');
+  const erste = (await backend.assetsPrompts()).find((p) => p.ort === 'asset')!;
+  await until('Prompt-Buttons', () => buttons(host, erste.titel).length > 0);
   return host;
 }
 
 async function pick(host: HTMLElement, x: number, y: number) {
   const layer = host.querySelector<HTMLElement>('[data-hit-layer]')!;
   await act(async () => layer.dispatchEvent(new MouseEvent('click', { bubbles: true, clientX: x, clientY: y })));
-  await flush();
 }
 
 describe('Prompt-Buttons im Katalog (WB1.3)', () => {
@@ -41,6 +43,7 @@ describe('Prompt-Buttons im Katalog (WB1.3)', () => {
     const host = await monarch();
     for (const p of prompts.filter((x) => x.ort === 'asset')) expect(buttons(host, p.titel), p.titel).toHaveLength(1);
     await click(buttons(host, 'Material ändern')[0] ?? buttons(host, prompts[0].titel)[0]);
+    await until('Prompt kopiert', () => writeText.mock.calls.length > 0);
     expect(writeText).toHaveBeenCalledTimes(1);
     const text = writeText.mock.calls[0][0];
     expect(text).toContain('monarch');
@@ -55,17 +58,19 @@ describe('Prompt-Buttons im Katalog (WB1.3)', () => {
     const host = await monarch();
     for (const p of teil) expect(buttons(host, p.titel), p.titel).toHaveLength(0);
     await pick(host, 80, 60);
-    expect(host.querySelector('[data-teil-mark="kopf"]')).toBeTruthy();
+    await until('Teil kopf gewählt', () => host.querySelector('[data-teil-mark="kopf"]'));
     expect(host.textContent).toContain('Teil: kopf');
     for (const p of teil) expect(buttons(host, p.titel), p.titel).toHaveLength(1);
     await click(buttons(host, teil[0].titel)[0]);
+    await until('Teil-Prompt kopiert', () => writeText.mock.calls.length > 0);
     expect(writeText.mock.calls.at(-1)![0]).toContain('kopf');
   });
 
   it('Klick daneben hebt die Auswahl auf', async () => {
     const host = await monarch();
     await pick(host, 80, 60);
+    await until('Teil gewählt', () => host.querySelector('[data-teil-mark]'));
     await pick(host, 1, 1);
-    expect(host.querySelector('[data-teil-mark]')).toBeNull();
+    await until('Auswahl aufgehoben', () => !host.querySelector('[data-teil-mark]'));
   });
 });

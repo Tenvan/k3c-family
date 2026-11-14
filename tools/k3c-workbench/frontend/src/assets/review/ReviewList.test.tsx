@@ -2,7 +2,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { mount, unmount } from '../testing';
 import { ReviewList } from './ReviewList';
-import type { ReviewAsset } from './types';
+import type { ReviewAsset } from '../api';
 
 // B-732: Feldliste gewählt bis zur Höhe der Ansicht rechts, sonst zwei Zeilen; der volle Text steht im Tooltip.
 

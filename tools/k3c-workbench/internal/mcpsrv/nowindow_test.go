@@ -9,6 +9,7 @@ import (
 
 // B-416: k3c-workbench läuft ohne Konsole; git und andere Kindprozesse nur über proc.Command (CREATE_NO_WINDOW).
 func TestKeinExecCommandAufGit(t *testing.T) {
+	t.Parallel()
 	err := filepath.WalkDir("..", func(p string, d os.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "_test.go") {
 			return err

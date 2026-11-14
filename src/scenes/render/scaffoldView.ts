@@ -4,7 +4,7 @@ import { showsBuildSign } from './buildSignView';
 
 /**
  * Gerüst im Bau (B-586, GEB16): Ein bezahlter, noch nicht fertiger Platz zeigt ein Gerüst in Gebäudeform statt des Bauschilds.
- * Größenklasse = Breite des Gebäude-Sprites in Kacheln (`geruest-<breite>.json`, `docs/standards/gebaeude-grafik.md` § 1);
+ * Größenklasse = Breite des Gebäude-Sprites in Kacheln (`geruest-<breite>.json`);
  * fehlt die Grafik, zeichnet `drawScaffoldShape` eine einfache Form. Zeichnung nur, keine Spiel-Logik.
  */
 
@@ -29,7 +29,7 @@ export const SCAFFOLD_CLASS: Record<SiteKind, ScaffoldClass> = {
 
 export const SCAFFOLD_CLASSES: readonly ScaffoldClass[] = [1, 2, 3, 4, 6];
 
-/** Textur-Schlüssel des Gerüsts einer Größenklasse (`BUILDING_TEXTURES` lädt `gebaeude/geruest-<klasse>-32.png`) */
+/** Textur-Schlüssel des Gerüsts einer Größenklasse (`BUILDING_TEXTURES` lädt `gebaeude-paper/geruest-<klasse>/stand.png`) */
 export const scaffoldKey = (c: ScaffoldClass): string => `grafik:geruest-${c}`;
 
 /** Textur des Gerüsts für eine Platzart */

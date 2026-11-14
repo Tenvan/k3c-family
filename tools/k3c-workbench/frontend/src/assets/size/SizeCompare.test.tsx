@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CatalogPage } from '../catalog/CatalogPage';
-import { buttons, click, mount, unmount } from '../testing';
+import { buttons, click, mount, unmount, until } from '../testing';
 import { clearSizeCache } from './sizeCache';
 
 // B-733: Größenvergleich im Katalog: Szene in Spielhöhe mit Maßstab, Monarch rechts zugewandt, Biom wählbar.
@@ -14,8 +14,11 @@ afterEach(() => {
 
 async function zeigeGroesse() {
   const host = await mount(<CatalogPage />);
+  await until('Kachel monarch', () => host.querySelector('[data-asset="monarch"]'));
   await click(host.querySelector('[data-asset="monarch"]')!);
+  await until('Knopf Größenvergleich', () => buttons(host, 'Größenvergleich')[0]);
   await click(buttons(host, 'Größenvergleich')[0]!);
+  await until('Szene', () => host.querySelector('[data-size-scene] [data-figur="asset"]') && host.querySelector('[data-hintergrund]'));
   return host;
 }
 
@@ -37,9 +40,9 @@ describe('Größenvergleich (B-733)', () => {
     const host = await zeigeGroesse();
     expect(host.querySelector('[data-hintergrund]')).not.toBeNull();
     await click(buttons(host, 'ohne')[0]!);
-    expect(host.querySelector('[data-hintergrund]')).toBeNull();
+    await until('ohne Hintergrund', () => !host.querySelector('[data-hintergrund]'));
     await click(buttons(host, 'wald')[0]!);
-    expect(host.querySelector('[data-hintergrund]')).not.toBeNull();
+    await until('Hintergrund wald', () => host.querySelector('[data-hintergrund]'));
   });
 });
 
@@ -50,14 +53,15 @@ describe('Zoom-Stufen (B-733)', () => {
     const breite = Number(scene().getAttribute('data-breite'));
     expect(Number(scene().getAttribute('width'))).toBe(breite * 0.5);
     await click(buttons(host, '4×')[0]!);
-    expect(Number(scene().getAttribute('width'))).toBe(breite * 4);
+    await until('Zoom 4×', () => Number(scene().getAttribute('width')) === breite * 4);
   });
 
   it('Vorschau im Katalog startet bei 2× und folgt der Stufe', async () => {
     const host = await mount(<CatalogPage />);
+    await until('Kachel monarch', () => host.querySelector('[data-asset="monarch"]'));
     await click(host.querySelector('[data-asset="monarch"]')!);
-    expect(host.querySelector('img.as-frame')?.getAttribute('data-zoom')).toBe('2');
+    await until('Vorschau bei 2×', () => host.querySelector('img.as-frame')?.getAttribute('data-zoom') === '2');
     await click(buttons(host, '0,5×')[0]!);
-    expect(host.querySelector('img.as-frame')?.getAttribute('data-zoom')).toBe('0.5');
+    await until('Vorschau bei 0,5×', () => host.querySelector('img.as-frame')?.getAttribute('data-zoom') === '0.5');
   });
 });

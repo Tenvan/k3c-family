@@ -19,7 +19,7 @@ tasks:
       - sh: command -v golangci-lint
         msg: golangci-lint fehlt (requirements.md)
     cmds:
-      - golangci-lint run {{.GO_LINT_PKGS}}
+      - golangci-lint run --allow-serial-runners {{.GO_LINT_PKGS}}
 
   race:
     desc: go test -race für engine/ ohne engine/balance (dessen Simulationsläufe dauern unter -race über 10 min; Balancing nur im Abnahme-Ticket, B-742, B-757); braucht cgo und einen C-Compiler, ohne Compiler nur ein Hinweis, B-077

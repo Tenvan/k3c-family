@@ -20,6 +20,16 @@ func blocking(g *Registry, release <-chan struct{}) Runner {
 	}
 }
 
+// releaseOnCleanup gibt den blockierenden Lauf am Testende frei und wartet, bis Finish seinen Bericht geschrieben hat.
+// t.Cleanup läuft vor dem Aufräumen eines früher angelegten t.TempDir; sonst schreibt Finish unter Windows noch in
+// reports/, während RemoveAll löscht („The directory is not empty“, B-695).
+func releaseOnCleanup(t *testing.T, g *Registry, run *Run, release chan struct{}) {
+	t.Cleanup(func() {
+		close(release)
+		waitFor(t, g, run.Root(), run.ID(), func(i Info) bool { return i.Report != "" })
+	})
+}
+
 func TestWarteschlange(t *testing.T) {
 	root := t.TempDir()
 	g := New(nil)
@@ -183,11 +193,12 @@ func TestLaufIDNachNeustartHinterHoechstemOrdner(t *testing.T) {
 	}
 	g := New(nil)
 	release := make(chan struct{})
-	defer close(release)
 	run, err := g.Start(root, "Repo-Wurzel", "x", nil, blocking(g, release), true)
 	if err != nil {
+		close(release)
 		t.Fatal(err)
 	}
+	releaseOnCleanup(t, g, run, release)
 	if run.ID() != "run-8" {
 		t.Fatalf("ID %q, erwartet run-8", run.ID())
 	}

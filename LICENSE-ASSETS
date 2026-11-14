@@ -1,7 +1,8 @@
 Geltungsbereich: Eigene Grafiken, Animationen, Sounds und Musik von Ralf Stich (Family Three Crowns, K3C),
 sobald sie im Projekt liegen. Namensnennung: "Ralf Stich, Family Three Crowns (K3C)".
-Nicht erfasst: Fremdmaterial, z. B. alle Figuren in public/sprites/. Es behält seine Originallizenz
-(CC0 bzw. CC-BY 3.0), siehe public/sprites/CREDITS.md. Der Code steht unter LICENSE (PolyForm Noncommercial 1.0.0).
+Nicht erfasst: Fremdmaterial, z. B. fremde Sounds in public/audio/. Es behält seine Originallizenz
+(CC0, CC-BY 3.0 bzw. CC-BY 4.0), siehe public/audio/README.md; die Schrift public/schrift/k3c.ttf
+(Go Regular, BSD-3) siehe public/schrift/LICENSE. Der Code steht unter LICENSE (PolyForm Noncommercial 1.0.0).
 
 Copyright (c) 2026 Ralf Stich
 

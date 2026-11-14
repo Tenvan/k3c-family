@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-import sprites from '../../../data/sprites.json';
 import { effectFor } from '../effects/effects';
 import { DEAD_ALPHA, type MonarchFrame, pickMonarchAnim } from './monarchAnim';
 import type { AnimName } from './sprites';
@@ -39,12 +38,5 @@ describe('pickMonarchAnim', () => {
     expect(pickMonarchAnim(alive, alive, 'give', all)).toEqual({ anim: 'give', restart: true, alpha: 1 });
     expect(pickMonarchAnim(alive, alive, 'give', legacy).anim).toBe('idle');
     expect(pickMonarchAnim(alive, dead, 'give', all).anim).toBe('death');
-  });
-
-  it('beide Spieler-Sheets haben give, hit, death und respawn', () => {
-    const sheets = sprites.sheets as Record<string, { anims: Record<string, unknown> }>;
-    for (const { sheet } of sprites.players) {
-      expect(Object.keys(sheets[sheet]!.anims), sheet).toEqual(expect.arrayContaining(['give', 'hit', 'death', 'respawn']));
-    }
   });
 });

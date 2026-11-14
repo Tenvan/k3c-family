@@ -57,7 +57,7 @@ const SITE_COLOR: Record<Site['kind'], number> = {
   ship: 0x4a6fa5,
 };
 
-/** Nur die zugeordneten Gebäude-Grafiken laden (LoadScene.preload): aktive Zuordnung aus `data/assets.json` (B-685) */
+/** Alle Gebäude-Grafiken laden (LoadScene.preload): `BUILDING_TEXTURES`, Papierschnitt */
 export function preloadBuildings(scene: Phaser.Scene): void {
   preloadBuildingLooks(scene);
 }

@@ -37,7 +37,7 @@ func TestVorratAdoptParallelEineKopie(t *testing.T) {
 	}
 	reg, _ := Load(root)
 	if c := reg.Find("sfx:coin").Choices; len(c) != 1 {
-		t.Errorf("zuordnungen: %v", c)
+		t.Errorf("Zuweisungen: %v", c)
 	}
 	credits, _ := os.ReadFile(filepath.Join(root, "public", "audio", "README.md"))
 	if strings.Count(string(credits), "kandidaten") != 1 {

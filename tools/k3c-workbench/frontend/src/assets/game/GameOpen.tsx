@@ -6,22 +6,22 @@ import { backend } from '../../api';
 /** Fester Seed des Testspielstands „voll ausgebaut“ (D-04): voll-ansicht. */
 export const GAME_SEED = 'ansicht';
 
-/** „Im Spiel ansehen“ (005 › 5, WB1.4): legt den Testspielstand in der eingebundenen Engine an und öffnet das Spiel im
- *  Browser; der Stand liegt außerhalb des Repos (gilt als Ansehen, nicht als schreibendes Control). */
+/** „Im Spiel ansehen“ (005 › 5, B-847): legt den Testspielstand an und startet das native Spiel mit ihm; der Stand
+ *  liegt außerhalb des Repos (gilt als Ansehen, nicht als schreibendes Control). */
 export function GameOpen() {
-  const [state, setState] = useState<{ busy: boolean; error: string }>({ busy: false, error: '' });
+  const [state, setState] = useState<{ busy: boolean; error: string; info: string }>({ busy: false, error: '', info: '' });
   const open = async () => {
-    setState({ busy: true, error: '' });
+    setState({ busy: true, error: '', info: '' });
     try {
-      backend.openUrl(await backend.studioGameOpen(GAME_SEED));
-      setState({ busy: false, error: '' });
+      setState({ busy: false, error: '', info: await backend.studioGameOpen(GAME_SEED) });
     } catch (e) {
-      setState({ busy: false, error: errorText(e) });
+      setState({ busy: false, error: errorText(e), info: '' });
     }
   };
   return (
     <Flex gap="2" align="center">
       <ActionButton size="1" variant="soft" disabled={state.busy} onClick={open}>Im Spiel ansehen</ActionButton>
+      {state.info && <Text size="1" color="gray">{state.info}</Text>}
       {state.error && <Text size="1" color="red">{state.error}</Text>}
     </Flex>
   );

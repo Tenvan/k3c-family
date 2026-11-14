@@ -42,6 +42,7 @@ func serviceServer(t *testing.T, healthy, busy *atomic.Bool) (*Server, *services
 }
 
 func TestSvcToolsStartStatusStop(t *testing.T) {
+	t.Parallel()
 	var healthy, busy atomic.Bool
 	healthy.Store(true)
 	s, _ := serviceServer(t, &healthy, &busy)
@@ -72,6 +73,7 @@ func TestSvcToolsStartStatusStop(t *testing.T) {
 }
 
 func TestSvcToolsFehlerMitKonsoleUndForce(t *testing.T) {
+	t.Parallel()
 	var healthy, busy atomic.Bool
 	s, ctl := serviceServer(t, &healthy, &busy)
 	cs := connect(t, s)
@@ -94,6 +96,7 @@ func TestSvcToolsFehlerMitKonsoleUndForce(t *testing.T) {
 }
 
 func TestSvcToolsOhneDienste(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test", ServicesErr: errors.New("services.json: unknown field \"x\"")})
 	if _, err := s.svcStatus(context.Background(), struct{}{}); err == nil || !strings.Contains(err.Error(), "services.json nicht geladen") {
 		t.Errorf("kaputte Konfiguration: %v", err)
@@ -105,6 +108,7 @@ func TestSvcToolsOhneDienste(t *testing.T) {
 }
 
 func TestSvcToolsHealthPortsUrlsAll(t *testing.T) {
+	t.Parallel()
 	var healthy, busy atomic.Bool
 	healthy.Store(true)
 	s, _ := serviceServer(t, &healthy, &busy)
@@ -129,6 +133,7 @@ func TestSvcToolsHealthPortsUrlsAll(t *testing.T) {
 }
 
 func TestSvcToolsConfirmWaitAll(t *testing.T) {
+	t.Parallel()
 	var healthy, busy atomic.Bool
 	s, _ := serviceServer(t, &healthy, &busy)
 	cs := connect(t, s)

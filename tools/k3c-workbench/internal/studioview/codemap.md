@@ -7,7 +7,7 @@ Assets und „Im Spiel ansehen“ mit der Engine als Bibliothek. Schreibt nichts
 
 ## Design
 
-- `studioview.go`: `Sounds(root)` (Sound-Slots aus `data/assets.json` mit `assets.Status`), `SoundData(root, pfad)`
+- `studioview.go`: `Sounds(root)` (Sound-Slots aus `data/sounds.json` mit `assets.Status`), `SoundData(root, pfad)`
   (Audiodatei unter `public/` als Data-URL, über `os.Root`, nur `.ogg/.mp3/.wav/.m4a`, ohne `..`/Backslash/absolute Pfade,
   höchstens 10 MB), `Sources(root)` (Katalog `assets.Catalog` und Recherche-Treffer `assets.LoadResearch`).
 - `game.go`: `Game` startet beim ersten `Open(seed)` die Engine (`room.Manager` im Dev-Mode, Welten aus `data/worlds`,

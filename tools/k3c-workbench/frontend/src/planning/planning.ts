@@ -43,6 +43,12 @@ export const QUICK: { id: string; label: string; sprint?: (s: PlanSprint) => boo
   { id: 'ungeplant', label: 'Ungeplant', ticket: (t) => !t.sprint || t.sprint === '–' },
 ];
 
+/** Kennzahlen der Ticket-Zeile (B-823-Wunsch): dieselben Prädikate wie QUICK, offen/eingeplant nach Status, ungeplant ohne Sprint. */
+export function ticketCounts(tickets: PlanTicket[]): { offen: number; eingeplant: number; ungeplant: number } {
+  const n = (id: string) => tickets.filter(QUICK.find((x) => x.id === id)!.ticket!).length;
+  return { offen: n('offen'), eingeplant: n('eingeplant'), ungeplant: n('ungeplant') };
+}
+
 /** Schnellfilter des Projekt-Filters (B-401): ein Projekt bleibt, wenn mindestens einer seiner Sprints passt. */
 export const PQUICK: { id: string; label: string; sprint: (s: PlanSprint) => boolean }[] = [
   { id: 'aktiv', label: 'Aktive Sprints', sprint: (s) => s.status === 'aktiv' },

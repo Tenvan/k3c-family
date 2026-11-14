@@ -12,21 +12,24 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **Projekte und Sprints:** Die nächste offene Session nach **Projekt-Rang** liefert `plan_next` (k3c-workbench); ohne k3c-workbench
   `docs/projekte/README.md` und `docs/sprints/aktiv/` lesen. `docs/sprints/geplant/` nur beim
   Planen lesen, `docs/sprints/erledigt/` nur auf Nachfrage. Übersicht: `docs/sprints/README.md`.
+  Parallel laufen Sessions, die sich weder über Abhängigkeit noch Bereich noch Sperre berühren (Arbeitswellen, `docs/arbeitsweise.md` › Parallelität und Wellen); der Rang ordnet nur bei Kollision.
 - **Tickets:** `docs/backlog/` (Index `README.md`, ein Ticket pro Datei). Neue Ideen/Probleme sofort als Ticket anlegen,
-  nicht nebenbei umsetzen. Erledigte/verworfene liegen in `docs/backlog/archiv/` (nur auf Nachfrage lesen).
+  nicht nebenbei umsetzen. Erledigte/verworfene liegen samt Index `archiv/README.md` in `docs/backlog/archiv/` (nur auf Nachfrage lesen); der Index `docs/backlog/README.md` führt nur offene und eingeplante. Duplikate und Ersatz über die Felder `Duplikat von:`/`Ersetzt:` (B-696).
 - **Vorlagen sind Pflicht:** Tickets, Sprints und Sessions nur als Kopie von `docs/vorlagen/*.md`; `tests/planning.test.ts` prüft das.
 - **Planung nur über MCP:** Tickets, Sprints und Sessions anlegen und ändern ausschließlich mit `plan_create`, `plan_set`,
   `plan_sections` (mehrere Abschnitte in einem Aufruf), `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`,
-  `plan_next`) von k3c-workbench; von Hand nur, wenn k3c-workbench nicht läuft.
+  `plan_next`) von k3c-workbench; von Hand nur, wenn k3c-workbench nicht läuft. Läuft sie, lehnt der Hook
+  `tools/hooks/planGuard.ts` Edit, Write und schreibende Shell-Befehle auf `docs/backlog`, `docs/sprints`, `docs/projekte` ab.
+  Überblick und Zählung über `plan_list` (offen = Status offen, eingeplant = Status eingeplant, ungeplant = ohne Sprint).
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
-  Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer; Ausnahme: Sagt der Nutzer ausdrücklich „autonom abarbeiten“, darf Claude Specs freigeben (Feld `Freigabe`: „autonom, Claude“), offene Fragen mit Default entscheiden und im Nachgang melden; manuelle Abnahmen bleiben beim Nutzer. Details: `docs/arbeitsweise.md` › SDD.
+  Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer; Ausnahme: Sagt der Nutzer ausdrücklich „autonom abarbeiten“, darf Claude Specs freigeben (Feld `Freigabe`: „autonom, Claude“), offene Fragen mit Default entscheiden und im Nachgang melden; manuelle Abnahmen bleiben beim Nutzer. **Klasse A** (Typ Problem oder Schuld, Domäne DEV, INF oder PAP, ohne Spielregeln, Protokoll, Spielstand-Format, neue Abhängigkeit) gibt Claude dauerhaft selbst frei („Klasse A, Claude“) und meldet gesammelt. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
   wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
   **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
   Asset-Studio ist entfallen (WB1).
-  **006: Simulationskern wird Rust** (Etappe 1, Server bleibt Go; Etappe 2 Rust-Server möglich), Projekt RST, B-725, B-726.
+  **008: Natives Spiel in Go + Ebitengine, Rust entfällt** (Projekt NAT, B-775; 006 und 007 sind überholt, Projekt RST ruht; Rust-Code, Rust-Prototyp und Rust-Brücke `engine/core` sind entfernt, B-779); der Monarch wird ein Rig aus Teilen, wenn der Prototyp B-778 das bestätigt.
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -38,7 +41,7 @@ task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Ein
 task install       # Abhängigkeiten holen
 task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
 task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
-task check:diff    # nur die Prüfungen, die der eigene Diff zum Integrations-Branch braucht (einmal vor jedem Commit, B-730; ohne Sim/Balance/Gen, B-742)
+task check:diff    # nur was die geänderten Dateien dieses Commits brauchen (einmal vor jedem Commit; Basis HEAD, Tests nur der geänderten Pakete; Teilaufgaben check:diff:plan, :js, :go)
 task check         # Lint + Typecheck + Tests des Clients, parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
@@ -57,8 +60,8 @@ task k3c-workbench:web  # Web-Client: nur der Server, Oberfläche im Browser htt
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
-`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren: `gen:atlas`,
-`gen:gebaeude`, `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
+`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren:
+`gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
@@ -80,17 +83,17 @@ Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/wa
 über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
 `K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen. Der Watch ignoriert `*.paper.json`; neu gestartet wird erst bei geänderten PNGs.
 
-Die Gamepad-Testseite (`gamepad-test.html`) schickt Berichte von der Xbox nach `reports/*.json`. Dort die Ergebnisse nachlesen.
+Berichte unter `reports/*.json` (`POST /api/report`) liest `reports_list`/`report_read`; die Gamepad-Testseite ist entfernt (B-822).
 
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
-`sim_run`/`level_generate`. **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
+`sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft.
+nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`, nie zusätzlich die Web-EXE: gleicher Port 5180), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
-Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; währenddessen nur gezielte Tests
+Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests
 (`docs/arbeitsweise.md` › Tempo im Lauf).
 Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
 prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
@@ -115,10 +118,10 @@ prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, 
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
-  CLIs: `tools/atlas` (Altlast bis CU1, vom Spiel nicht mehr geladen), `tools/buildings` (`task gen:gebaeude`), `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
+  CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
 - Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
-  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte und Gerüste bleiben bis MG8 Pixel-Grafik.
+  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte, Icons und Gerüste sind seit MG8/CU1 ebenfalls Papierschnitt.
 - `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
 - `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
 - `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
@@ -168,12 +171,13 @@ Für **jede** Werkzeug-Seite gilt:
   150 geänderten Code-Zeilen, im
   Hintergrund parallel zu `task check:diff`; schwere Befunde werden vor dem Commit behoben, ein Fix unter etwa 30 Zeilen
   ohne zweites Review. Die Sprint-Review-Session bleibt Pflicht (`docs/arbeitsweise.md` › Tempo im Lauf).
-- **Sim, Balance, Gen nur am Feature (B-742):** Sessions, Sprints und Projekte schließen ohne Sim-, Balance- und
-  Gen-Läufe ab (`sim_test`, Balancing, `gen:paper` samt Grafik-Golden, `check:race`); sie laufen nur bei der Entwicklung
-  des betroffenen Features. Zum Abschluss eines Sprints oder Projekts gibt es dafür **genau ein Abnahme-Ticket**, das
-  Claude autonom nachts abarbeitet (`docs/arbeitsweise.md` › Sim, Balance und Gen).
+- **Sim und Balancing gesperrt (Beschluss 🧑 2026-11-11, bis auf Widerruf):** keine Simulationen, kein Balancing, kein
+  Lasttest, auch nicht am Feature oder im Abnahme-Ticket. **Gen nur am Feature (B-742):** Sessions, Sprints und Projekte
+  schließen ohne Gen-Läufe ab (`gen:paper` samt Grafik-Golden, `check:race`); zum Abschluss eines Sprints oder Projekts gibt
+  es dafür **genau ein Abnahme-Ticket** (`docs/arbeitsweise.md` › Sim, Balance und Gen).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
-  Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑. Sonst im aktuellen Checkout bleiben;
+  Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
+  In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
 
 ## Im Browser-Pane testen

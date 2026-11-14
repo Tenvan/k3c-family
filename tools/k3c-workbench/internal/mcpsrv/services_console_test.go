@@ -17,6 +17,7 @@ func (p *stubProc) Wait() error { <-p.done; return nil }
 func (p *stubProc) Kill() error { close(p.done); return nil }
 
 func TestDienstAusgabeInLogsSources(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	store := console.New(0, nil)
 	s := New(Config{Version: "test", Root: t.TempDir(), Console: store})
 	ctl := services.New([]services.Service{{Name: "Vite", Command: []string{"x"}, Port: 1, Health: "tcp"}}, services.Options{
@@ -32,7 +33,7 @@ func TestDienstAusgabeInLogsSources(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer ctl.StopAll(context.Background())
-	text, _ := s.logsSources(context.Background(), struct{}{})
+	text, _ := s.logsSources(context.Background(), sourcesIn{})
 	if !strings.Contains(text, "Konsole Vite · 1 Zeilen") {
 		t.Errorf("Quellen: %q", text)
 	}

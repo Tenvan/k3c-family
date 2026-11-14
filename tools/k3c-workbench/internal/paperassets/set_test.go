@@ -24,6 +24,12 @@ func TestSetAendertMaterial(t *testing.T) {
 	if r.PNGs == 0 || strings.Join(r.Animationen, ",") != "idle,lauf,reiten" || len(r.Pixel) != 3 {
 		t.Errorf("Render: %+v", r)
 	}
+	// B-706: Overlays von assets_set heißen anders als die von assets_review (<id>-<anim>-0-diff.png).
+	for _, p := range r.Pixel {
+		if p.Overlay != "" && p.Overlay != ".cache/paper/mcp/set/monarch-"+p.Animation+"-0-diff.png" {
+			t.Errorf("Overlay %s: %s", p.Animation, p.Overlay)
+		}
+	}
 	b, _ := os.ReadFile(filepath.Join(root, monarchPfad))
 	if !strings.Contains(string(b), `"material": "purpur"`) || !strings.HasSuffix(string(b), "}\n") {
 		t.Errorf("Spec nicht geschrieben:\n%.300s", b)
@@ -57,16 +63,7 @@ func TestSetUngueltigAendertNichts(t *testing.T) {
 func TestSetRenderFehlerAendertNichts(t *testing.T) {
 	t.Parallel()
 	root, cli := testRepo(t)
-	stub := filepath.ToSlash(cli.Skript)
-	cli.Skript = filepath.Join(t.TempDir(), "kaputt.ts")
-	schreibe(t, filepath.Dir(cli.Skript), "kaputt.ts", `import { run } from '`+stub+`';
-const a = process.argv.slice(2);
-if (a[0] === 'render') { process.stderr.write('Renderer kaputt\n'); process.exit(2); }
-const r = run(a);
-if (r.stdout) process.stdout.write(r.stdout + '\n');
-if (r.stderr) process.stderr.write(r.stderr + '\n');
-process.exit(r.code);
-`)
+	cli, _ = stubMit(t, cli, `return { code: 2, stdout: '', stderr: 'Renderer kaputt' };`)
 	vorher := hashBaum(t, root, monarchPfad, "public/grafik/figuren/monarch")
 	_, err := Set(context.Background(), cli, "monarch", []byte(`{"umhang":{"material":"purpur"}}`))
 	if err == nil || !strings.Contains(err.Error(), "Renderer kaputt") {
@@ -82,23 +79,10 @@ process.exit(r.code);
 func TestSetUebernimmtAusgabe(t *testing.T) {
 	t.Parallel()
 	root, cli := testRepo(t)
-	stub := filepath.ToSlash(cli.Skript)
-	cli.Skript = filepath.Join(t.TempDir(), "schreibt.ts")
-	schreibe(t, filepath.Dir(cli.Skript), "schreibt.ts", `import { run } from '`+stub+`';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, basename } from 'node:path';
-const a = process.argv.slice(2);
-if (a[0] === 'render') {
-  const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
+	cli, _ = stubMit(t, cli, `const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
   mkdirSync(aus, { recursive: true });
   writeFileSync(join(aus, 'idle.png'), 'neu');
-  process.stdout.write(JSON.stringify({ ok: true, manifeste: [], dateien: [join(aus, 'idle.png')] }) + '\n');
-  process.exit(0);
-}
-const r = run(a);
-if (r.stdout) process.stdout.write(r.stdout + '\n');
-process.exit(r.code);
-`)
+  return { code: 0, stdout: JSON.stringify({ ok: true, manifeste: [], dateien: [join(aus, 'idle.png')] }), stderr: '' };`)
 	r, err := Set(context.Background(), cli, "monarch", []byte(`{"version":2}`))
 	if err != nil {
 		t.Fatal(err)
@@ -113,23 +97,10 @@ process.exit(r.code);
 // Review MC1.1: scheitert das Umbenennen der Ausgabe, kommt die alte Spec zurück.
 func TestSetRollbackBeiAusgabeFehler(t *testing.T) {
 	root, cli := testRepo(t)
-	stub := filepath.ToSlash(cli.Skript)
-	cli.Skript = filepath.Join(t.TempDir(), "schreibt.ts")
-	schreibe(t, filepath.Dir(cli.Skript), "schreibt.ts", `import { run } from '`+stub+`';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, basename } from 'node:path';
-const a = process.argv.slice(2);
-if (a[0] === 'render') {
-  const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
+	cli, _ = stubMit(t, cli, `const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
   mkdirSync(aus, { recursive: true });
   writeFileSync(join(aus, 'idle.png'), 'neu');
-  process.stdout.write(JSON.stringify({ ok: true, manifeste: [], dateien: [] }) + '\n');
-  process.exit(0);
-}
-const r = run(a);
-if (r.stdout) process.stdout.write(r.stdout + '\n');
-process.exit(r.code);
-`)
+  return { code: 0, stdout: JSON.stringify({ ok: true, manifeste: [], dateien: [] }), stderr: '' };`)
 	vorher := hashBaum(t, root, monarchPfad, "public/grafik/figuren/monarch")
 	ordnerUmbenennen = func(string, string) error { return os.ErrPermission }
 	t.Cleanup(func() { ordnerUmbenennen = os.Rename })
@@ -138,6 +109,47 @@ process.exit(r.code);
 	}
 	if hashBaum(t, root, monarchPfad, "public/grafik/figuren/monarch") != vorher {
 		t.Error("Spec oder Ausgabe geändert")
+	}
+}
+
+// B-706: die alte Ausgabe wird unter dem Temp-Ordner (.cache/) beiseitegelegt, nicht neben der Ausgabe.
+func TestErsetzeOrdnerBeiseiteImCache(t *testing.T) {
+	root := t.TempDir()
+	tmp := filepath.Join(root, ".cache", "paper", "tmp", "abc")
+	schreibe(t, tmp, "figuren/monarch/idle.png", "neu")
+	schreibe(t, root, "public/grafik/figuren/monarch/idle.png", "alt")
+	var ziele []string
+	ordnerUmbenennen = func(a, b string) error { ziele = append(ziele, b); return os.Rename(a, b) }
+	t.Cleanup(func() { ordnerUmbenennen = os.Rename })
+	ziel := filepath.Join(root, "public", "grafik", "figuren", "monarch")
+	if err := ersetzeOrdner(filepath.Join(tmp, "figuren", "monarch"), ziel); err != nil {
+		t.Fatal(err)
+	}
+	if len(ziele) != 2 || ziele[0] != filepath.Join(tmp, ".beiseite") {
+		t.Errorf("beiseite: %v", ziele)
+	}
+	if b, _ := os.ReadFile(filepath.Join(ziel, "idle.png")); string(b) != "neu" {
+		t.Errorf("Ausgabe: %q", b)
+	}
+	if e, _ := os.ReadDir(filepath.Dir(ziel)); len(e) != 1 {
+		t.Errorf("neben der Ausgabe: %v", e)
+	}
+}
+
+// Review WZ43.5: lässt sich die alte Ausgabe nicht zurückbenennen, wird sie nach .cache/paper/gerettet/ gelegt.
+func TestZurueckLegenRettet(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	tmp := filepath.Join(root, ".cache", "paper", "tmp", "abc")
+	schreibe(t, tmp, ".beiseite/idle.png", "alt")
+	ziel := filepath.Join(root, "kein", "ordner", "monarch") // Elternordner fehlt: Umbenennen scheitert
+	err := zurueckLegen(filepath.Join(tmp, ".beiseite"), ziel, os.ErrPermission)
+	gerettet := filepath.Join(root, ".cache", "paper", "gerettet", "abc")
+	if err == nil || !strings.Contains(err.Error(), gerettet) {
+		t.Fatalf("Fehler: %v", err)
+	}
+	if b, _ := os.ReadFile(filepath.Join(gerettet, "idle.png")); string(b) != "alt" {
+		t.Errorf("gerettet: %q", b)
 	}
 }
 

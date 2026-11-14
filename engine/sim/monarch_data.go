@@ -37,7 +37,7 @@ type presetData struct {
 }
 
 // MountData ist das Standard-Reittier aus monarch.json › mount (docs/rules/monarch.md § 7, B-152). Sprite ist ein
-// Schlüssel aus sprites.json › mounts; Tempo = base.speed × SpeedFactor, Sprint = sprintMultiplier × SprintFactor.
+// Schlüssel aus data/paper.json › reittiere; Tempo = base.speed × SpeedFactor, Sprint = sprintMultiplier × SprintFactor.
 type MountData struct {
 	ID, Sprite                string
 	SpeedFactor, SprintFactor float64

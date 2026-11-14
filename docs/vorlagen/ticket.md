@@ -11,6 +11,8 @@
 - **Spec:** Entwurf | freigegeben | rückwirkend
 - **Revision:** 1
 - **Freigabe:** – (bei `freigegeben`: Datum und Quelle, z. B. „2026-10-02 🧑 PR #20“)
+- **Duplikat von:** – (optional: genau eine ID B-000; `plan_set` setzt dann Status verworfen)
+- **Ersetzt:** – (optional: IDs B-000, B-001 der Tickets, die dieses ersetzt)
 
 ## Ausgangslage
 
@@ -35,6 +37,14 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 ## Regeln und Einschränkungen
 
 Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
+- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
+- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
+- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
+- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
 
 ## Beispiele
 

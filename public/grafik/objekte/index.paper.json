@@ -60,6 +60,11 @@
     "manifest": "hoehlenbusch/manifest.json"
   },
   {
+    "id": "pappel-niedrig",
+    "rig": "requisite",
+    "manifest": "pappel-niedrig/manifest.json"
+  },
+  {
     "id": "pappel",
     "rig": "requisite",
     "manifest": "pappel/manifest.json"

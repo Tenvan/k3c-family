@@ -54,6 +54,9 @@ type Ticket struct {
 	Sprint  string `json:"sprint"`
 	Project string `json:"project"` // Feld „Projekt“: Kürzel oder –
 	Spec    string `json:"spec"`
+	// Relationen (B-696), leer bei `–` oder fehlendem Feld.
+	Duplicate string   `json:"duplicate,omitempty"`
+	Replaces  []string `json:"replaces,omitempty"`
 }
 
 // Data ist der Stand für die Oberfläche; die Listen sind nie nil.
@@ -118,7 +121,7 @@ func Load(root string) (Data, error) {
 		}
 		d.Tickets = append(d.Tickets, ParseTicket(string(text)))
 	}
-	sort.Slice(d.Tickets, func(i, j int) bool { return d.Tickets[i].Nr < d.Tickets[j].Nr })
+	sort.Slice(d.Tickets, func(i, j int) bool { return ticketLess(d.Tickets[i].Nr, d.Tickets[j].Nr) })
 	rank(&d)
 	return d, nil
 }
@@ -250,5 +253,9 @@ func ParseTicket(text string) Ticket {
 	if h := header(lines); len(h) >= 2 {
 		t.Nr, t.Title = h[0], strings.Join(h[1:], " · ")
 	}
+	if d := relIDs(f[fieldDup]); len(d) > 0 {
+		t.Duplicate = d[0]
+	}
+	t.Replaces = relIDs(f[fieldReplace])
 	return t
 }

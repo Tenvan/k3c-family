@@ -2,22 +2,12 @@
 # Bauen:   docker buildx build --platform linux/amd64,linux/arm64 -t k3c-server .
 # Starten: docker compose up -d   (Port 8080, Spielstände und Berichte im Volume unter /data)
 
-# Figuren-Atlas packen (tools/atlas, nur Standardbibliothek; B-196): public/atlas/ ist nicht eingecheckt
-FROM --platform=$BUILDPLATFORM golang:1.27-alpine AS atlas
-WORKDIR /src
-COPY go.mod go.sum ./
-COPY tools/atlas ./tools/atlas
-COPY data/sprites.json ./data/sprites.json
-COPY public/sprites ./public/sprites
-RUN go run ./tools/atlas
-
 # Spiel-Build auf der Build-Plattform (ein Build für alle Zielplattformen)
 FROM --platform=$BUILDPLATFORM node:22-alpine AS web
 WORKDIR /src
 COPY package.json bun.lock ./
 RUN npm i -g bun@1.4.2 && bun install --frozen-lockfile
 COPY . .
-COPY --from=atlas /src/public/atlas ./public/atlas
 # Papierschnitt-Grafik rendern: PNG und Manifeste sind nicht eingecheckt (B-737)
 RUN bun tools/paper/bin/gen.ts
 # Version des Clients (Landingpage, Lobby, Debug-Overlay); .git fehlt im Image, deshalb als Build-Argument

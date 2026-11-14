@@ -11,6 +11,7 @@ import (
 )
 
 func TestWorkbenchResourcesZeigtPufferUndVorgaenge(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test", Root: t.TempDir(), Resources: resmon.New(resmon.Config{})})
 	s.console.Add("check:task:test", "stdout", "zeile")
 	defer s.cfg.Resources.Track("tool:x")()
@@ -26,6 +27,7 @@ func TestWorkbenchResourcesZeigtPufferUndVorgaenge(t *testing.T) {
 }
 
 func TestWorkbenchResourcesOhneMessgeraetMeldetEsKlar(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test", Root: t.TempDir()})
 	if _, err := s.workbenchResources(context.Background(), struct{}{}); err == nil {
 		t.Fatal("ohne Messgerät muss das Tool einen Fehler melden")
@@ -33,6 +35,7 @@ func TestWorkbenchResourcesOhneMessgeraetMeldetEsKlar(t *testing.T) {
 }
 
 func TestPprofNurFuerLoopbackHosts(t *testing.T) {
+	t.Parallel()
 	mux := http.NewServeMux()
 	mountPprof(mux)
 	for host, want := range map[string]int{"127.0.0.1:5180": http.StatusOK, "localhost:5180": http.StatusOK, "evil.example:5180": http.StatusForbidden} {

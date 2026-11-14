@@ -20,10 +20,9 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
 const sourceFiles = (dir: string) => filesIn(dir, (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'));
 
 // Das Spiel ist die einzige oberste Seite (`index.html`, BD11.6); `game.html` ist sein Alias für Werkzeuge und Lesezeichen.
-// dm.html läuft außerhalb des Spiels in einem eigenen Fenster (B-232).
 const allHtml = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
 const GAME_PAGES = ['index.html', 'game.html'];
-const htmlPages = allHtml.filter((f) => !GAME_PAGES.includes(f) && f !== 'dm.html');
+const htmlPages = allHtml.filter((f) => !GAME_PAGES.includes(f));
 // Jede Werkzeug-Seite hat eine Kachel im Spielmenü (Seiten › Kategorie, `src/scenes/menuPages.ts`, Daten in `src/tools/devTiles.ts`).
 const hrefs = menuCategories(true).flatMap((c) => c.entries.map((e) => e.id.split('?')[0]!));
 

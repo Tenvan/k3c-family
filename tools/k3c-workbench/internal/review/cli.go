@@ -1,26 +1,20 @@
 package review
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
-	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
-	"time"
-
-	"k3c/tools/k3c-workbench/internal/proc"
 )
 
 // Renderer ist die Render-CLI (paper-spec.md › CLI-Vertrag); Tests ersetzen einzelne Befehle.
 type Renderer interface {
 	Validate(ctx context.Context, spec string) ([]Fehler, error)
 	Diff(ctx context.Context, alt, neu, stilAlt, stilNeu string) (DiffAntwort, error)
-	Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (FrameAntwort, error)
+	// Frame rendert mit der Stil-Datei stil (leer: public/grafik/stil.paper.json des Checkouts; B-705).
+	Frame(ctx context.Context, spec, stil, animation string, frame int, variante, out string) (FrameAntwort, error)
 	PixelDiff(ctx context.Context, a, b, out string) (PixelAntwort, error)
 }
 
@@ -55,51 +49,26 @@ func (a *Abgelehnt) Error() string {
 	return strings.Join(texte, "; ")
 }
 
-const cliZeit = 2 * time.Minute
-
-// CLI ruft `bun tools/paper/bin/paper.ts` (RD1) im Ordner Root auf, solange die Datei fehlt die Attrappe
-// tools/paper/fixtures/cli-stub.ts.
+// CLI ruft die Render-CLI (Skript: K3C_PAPER_CLI, tools/paper/bin/paper.ts oder die Attrappe) im Ordner Root auf.
 type CLI struct{ Root string }
 
 // Kennung ist die Renderer-Version für den Cache-Schlüssel; die Attrappe bekommt einen Zusatz.
 func (c CLI) Kennung() string {
-	if strings.HasSuffix(c.skript(), "cli-stub.ts") {
+	if strings.HasSuffix(filepath.ToSlash(c.skript()), "cli-stub.ts") {
 		return RendererVersion + "+attrappe"
 	}
 	return RendererVersion
 }
 
-func (c CLI) skript() string {
-	echt := filepath.Join(c.Root, "tools", "paper", "bin", "paper.ts")
-	if _, err := os.Stat(echt); err == nil {
-		return echt
-	}
-	return filepath.Join(c.Root, "tools", "paper", "fixtures", "cli-stub.ts")
-}
+func (c CLI) skript() string { return Skript(c.Root) }
 
-// run führt einen Befehl aus und dekodiert die Antwort nach ziel; Exit 1 → *Abgelehnt, Exit 2 → Fehler mit stderr.
+// run führt einen Befehl über Aufruf aus und dekodiert die Antwort nach ziel.
 func (c CLI) run(ctx context.Context, ziel any, args ...string) error {
-	ctx, cancel := context.WithTimeout(ctx, cliZeit)
-	defer cancel()
-	cmd := proc.Command(ctx, append([]string{"bun", c.skript()}, args...))
-	cmd.Dir = c.Root
-	var out, errOut bytes.Buffer
-	cmd.Stdout, cmd.Stderr = &out, &errOut
-	err := cmd.Run()
-	var exit *exec.ExitError
-	switch {
-	case err == nil:
-		return json.Unmarshal(out.Bytes(), ziel)
-	case errors.As(err, &exit) && exit.ExitCode() == 1:
-		var a struct{ Fehler []Fehler }
-		if jerr := json.Unmarshal(out.Bytes(), &a); jerr != nil || len(a.Fehler) == 0 {
-			// Exit 1 ohne Antwort ist ein Absturz von bun (z. B. fehlende node_modules), keine Ablehnung.
-			return fmt.Errorf("paper %s: %w: %s", args[0], err, strings.TrimSpace(errOut.String()))
-		}
-		return &Abgelehnt{Fehler: a.Fehler}
-	default:
-		return fmt.Errorf("paper %s: %w: %s", args[0], err, strings.TrimSpace(errOut.String()))
+	out, err := Aufruf(ctx, c.Root, c.skript(), Zeitlimit, args...)
+	if err != nil {
+		return err
 	}
+	return json.Unmarshal(out, ziel)
 }
 
 // Validate liefert die Regelverstöße der Spec; leer = gültig.
@@ -124,11 +93,14 @@ func (c CLI) Diff(ctx context.Context, alt, neu, stilAlt, stilNeu string) (DiffA
 	return d, err
 }
 
-// Frame rendert einen Frame nach out.
-func (c CLI) Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (FrameAntwort, error) {
+// Frame rendert einen Frame nach out; mit stil über `--stil` (Stil des Schnappschusses, B-705).
+func (c CLI) Frame(ctx context.Context, spec, stil, animation string, frame int, variante, out string) (FrameAntwort, error) {
 	args := []string{"frame", spec, "--animation", animation, "--frame", strconv.Itoa(frame), "--out", out}
 	if variante != "" {
 		args = append(args, "--variante", variante)
+	}
+	if stil != "" {
+		args = append(args, "--stil", stil)
 	}
 	var f FrameAntwort
 	err := c.run(ctx, &f, args...)

@@ -9,43 +9,32 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
-| MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
-| RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
-| WZ40 | INF | WZG | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | – | `aktiv/WZ40-check-diff-schneller/` |
-| BD9 | SRV, CLI | BED | Welt-Anzeige größer und je Spielstand, offene Räume schließen | – | `aktiv/BD9-welt-anzeige-raum-schliessen/` |
-| BD10 | SRV | BED | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | – | `aktiv/BD10-schreibende-endpunkte-schutz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
-| PM1 | CLI | LST | Leistung messen: Diagnose-Zeile und Performance-Modus | – | `aktiv/PM1-leistung-messen/` |
-| KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
-| KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
-| RG1 | REG | BAL | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | Beschlüsse in `docs/rules/`, geänderte Werte in `data/`, `task balance` grün | `aktiv/RG1-werte-burg-hub-adern/` |
-| BR2 | REG | BAL | Balancing-Runde Kampf und Bosse und Spieleabend 3 | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | `aktiv/BR2-balancing-kampf/` |
-| RS1 | SRV, INF, SIM | RST | Messen, Go-Fixes, Rust-Spike für den Simulationskern | – | `aktiv/RS1-messen-go-fixes-rust-spike/` |
-| RS2 | SRV, DEV, INF | RST | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | – | `aktiv/RS2-vorarbeit-inventar/` |
-| HW1 | PLAT, SRV, INF, CLI | ABN | Zurückgestellte Controller-Prüfungen nachholen | – | `aktiv/HW1-controller-pruefungen/` |
-| PF1 | CLI | LST | Split-Screen flüssig auf der Xbox | Zwei Spieler im Split-Screen ohne sichtbares Ruckeln auf der Xbox | `aktiv/PF1-splitscreen-leistung/` |
 
 ## Offen am Gerät
 
-Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`../projekte/ABN-abnahmen-geraet.md`](../projekte/ABN-abnahmen-geraet.md). Bis zur Abnahme gelten die angenommenen Werte aus [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md) § 11.6 (`../arbeitsweise.md` › Hardware entkoppelt).
+Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext der Session). Die Workbench schreibt den Abschnitt bei jedem schreibenden `plan_*`-Aufruf neu; mit Freigaben und Entscheidungen: `plan_queue`.
+
+### PC
+
+- KB4.4 · Abnahme am PC: Boss und Event über das Debug-Panel (Sprint KB4, offen, Agent Mensch)
+- KB5.6 · Abnahme im Spiel mit zwei Spielern und im Studio (Sprint KB5, offen, Agent Mensch)
+- W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
+- WZ43.4 · Sichtprüfung Katalog im Web-Client (PC) (Sprint WZ43, offen, Agent Mensch)
+
+### Veröffentlichung
+
+- PB1.2 · Veröffentlichung auf itch.io durch Ralf, schließt ab (Sprint PB1, offen, Agent Mensch)
 
 ## Geplant (nach Projekt-Rang)
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| CU1 | PAP, CLI, DEV, INF | PAP | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | – | bereit | `geplant/CU1-alte-grafik-aufraeumen/` |
+| WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
-| US3 | CLI | PAP | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | – | Entwurf | `geplant/US3-spielbefunde-papierschnitt/` |
-| W6 | CLI | WRT | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | HUD und Bauplätze am TV, von 🧑 abgenommen | bereit | `geplant/W6-anzeige-wirtschaft/` |
-| RX1 | CLI, PAP, SRV | LST | Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px | – | Entwurf | `geplant/RX1-xbox-webgl-stabil/` |
-| LG1 | SRV, DEV, CLI | LST | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | – | Entwurf | `geplant/LG1-remote-logs-webgl-budget/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
-| P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | bereit | `geplant/P1-spieleabend-1/` |
-| BR1 | REG | BAL | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | Pass/Fail je Kennzahl, Begründungen in `docs/rules/`, Protokoll in `docs/playtests/` | bereit | `geplant/BR1-balancing-wirtschaft/` |
-| GRJ2 | DEV | GRJ | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | – | Entwurf | `geplant/GRJ2-zielmass-ausschnitt-abnehmen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -53,7 +42,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 
 | Sprint | Thema | Ordner |
 |---|---|---|
-| KB6 | SIM, REG | KMP | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | – | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
+| KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
 | ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
 | SP00 | Arbeitsweise einführen | `erledigt/SP00-arbeitsweise/` |
 | SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |
@@ -287,7 +276,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | `erledigt/BAL8-welt-werte-overrides/` |
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | `erledigt/WZ37-overrides-editor-chat/` |
 | BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | `erledigt/BAL9-meilenstein-1-nachtraege/` |
-| PV1 | INF, DEV, PAP | `erledigt/PV1-papierschnitt-vertraege/` |
+| PV1 | Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag | `erledigt/PV1-papierschnitt-vertraege/` |
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | `erledigt/WB1-workbench-development-assets/` |
 | MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | `erledigt/MG6-papier-gebaeude/` |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | `erledigt/US1-spiel-auf-papierschnitt/` |
@@ -304,3 +293,66 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | `erledigt/RD2-renderer-stil-nachschaerfen/` |
 | MG9 | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | `erledigt/MG9-papier-figuren-nachbessern/` |
 | BD11 | Eine Startseite, Navigation im Pausenmenü, Vollbild halten | `erledigt/BD11-startseite-pausenmenue/` |
+| NV1 | Bevy-Prototyp: Papier-Sheets, zwei Gamepads, Messung | `erledigt/NV1-bevy-prototyp/` |
+| NV2 | Rig-Prototyp: Monarch aus Teilen in Ebitengine | `erledigt/NV2-rig-prototyp-monarch/` |
+| NV3 | Prototyp-Ausbau: Fluss, fester Hintergrund, alle Figuren als Rig | `erledigt/NV3-prototyp-fluss-rigs/` |
+| NG1 | Natives Spiel: Fundament mit Modul, Vertrag, Simulation im Prozess und Spielschleife | `erledigt/NG1-native-fundament/` |
+| NG2 | Natives Spiel: Welt, Kamera, Schichten, Fluss und Licht | `erledigt/NG2-native-welt-kamera/` |
+| NG3 | Natives Spiel: Figuren als Rig, Bein-Bänder und Gegnerzahl | `erledigt/NG3-native-figuren/` |
+| NG4 | Natives Spiel: Gebäude, Baustellen, Natur und Objekte | `erledigt/NG4-native-bauten-natur/` |
+| NG5 | Natives Spiel: Eingabe mit Gamepads und Tastatur | `erledigt/NG5-native-eingabe/` |
+| NG6 | Natives Spiel: HUD, Hinweise und Effekte | `erledigt/NG6-native-hud-effekte/` |
+| NG7 | Natives Spiel: Menüs, Lobby, Spielstände, Optionen und Pause | `erledigt/NG7-native-menues-spielstaende/` |
+| NG8 | Natives Spiel: Klänge und Musik | `erledigt/NG8-native-ton/` |
+| NG10 | Rust und Bevy entfernen | `erledigt/NG10-rust-bevy-entfernen/` |
+| RS1 | Messen, Go-Fixes, Rust-Spike für den Simulationskern | `erledigt/RS1-messen-go-fixes-rust-spike/` |
+| RS2 | Etappe 2 vorbereiten: Workbench entkoppeln, Zustand ohne JSON-Roundtrip, Inventar | `erledigt/RS2-vorarbeit-inventar/` |
+| NG12 | Natives Spiel: Anzeigen an Figuren, Bäume und Geschosse | `erledigt/NG12-native-figuren-darstellung/` |
+| NG16 | Raum: Absturzbehandlung nach außen, Position nach dem Laden | `erledigt/NG16-raum-laden-absturz/` |
+| NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | `erledigt/NG18-native-schrift/` |
+| NG13 | Natives Spiel: Menüs und HUD nachziehen | `erledigt/NG13-native-menues-hud/` |
+| NG17 | Papier: Reittier Wolf und Pfoten der Gegner-Wölfe | `erledigt/NG17-papier-wolf/` |
+| CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | `erledigt/CU2-altlasten-testseiten-pixel/` |
+| RX1 | Xbox hält den WebGL-Kontext: Render-Log, Kontextverlust abfangen, Texturen auf 2048 px | `erledigt/RX1-xbox-webgl-stabil/` |
+| PF1 | Split-Screen flüssig auf der Xbox | `erledigt/PF1-splitscreen-leistung/` |
+| LG1 | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | `erledigt/LG1-remote-logs-webgl-budget/` |
+| PM1 | Leistung messen: Diagnose-Zeile und Performance-Modus | `erledigt/PM1-leistung-messen/` |
+| BD9 | Welt-Anzeige größer und je Spielstand, offene Räume schließen | `erledigt/BD9-welt-anzeige-raum-schliessen/` |
+| BD10 | Schreibende HTTP-Endpunkte lehnen fremde Webseiten ab | `erledigt/BD10-schreibende-endpunkte-schutz/` |
+| W6 | Anzeigen für Bau, Lager, Hub und Bürger (B-117, B-126) | `erledigt/W6-anzeige-wirtschaft/` |
+| HW1 | Zurückgestellte Controller-Prüfungen nachholen | `erledigt/HW1-controller-pruefungen/` |
+| RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | `erledigt/RG1-werte-burg-hub-adern/` |
+| BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 (BR1.1 erledigt; zurückgestellt am 2026-10-07, Vorrang Performance, Grafik und Sound) | `erledigt/BR1-balancing-wirtschaft/` |
+| BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | `erledigt/BR2-balancing-kampf/` |
+| GRJ2 | Grafik-Zielmaß und Ausschnitt-Rahmen abnehmen | `erledigt/GRJ2-zielmass-ausschnitt-abnehmen/` |
+| US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | `erledigt/US3-spielbefunde-papierschnitt/` |
+| WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | `erledigt/WZ40-check-diff-schneller/` |
+| WZ41 | CI und Release grün, check:diff-Protokoll belegt | `erledigt/WZ41-ci-release-gruen/` |
+| PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | `erledigt/PT1-gen-paper-schneller/` |
+| CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | `erledigt/CU1-alte-grafik-aufraeumen/` |
+| WZ42 | Workbench-Tests schnell und stabil | `erledigt/WZ42-workbench-tests-schnell-stabil/` |
+| RD1 | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | `erledigt/RD1-papierschnitt-renderer/` |
+| MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | `erledigt/MC1-asset-mcp-tools/` |
+| RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | `erledigt/RV1-asset-review/` |
+| WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | `erledigt/WZ44-planung-wellen-werkzeuge/` |
+| PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | `erledigt/PT2-paper-cli-und-stil/` |
+| NG9 | Natives Spiel: Zusammenführung, Messung und Abnahme | `erledigt/NG9-native-zusammenfuehrung-abnahme/` |
+| NG11 | Natives Spiel: Fluss mit Shader | `erledigt/NG11-native-fluss-shader/` |
+| NG14 | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | `erledigt/NG14-native-fehleranzeige-shader-umschalter/` |
+| NG15 | Natives Spiel: Ton-Gerät ohne Absturz | `erledigt/NG15-native-ton-geraet/` |
+| NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | `erledigt/NG19-native-menue-kacheln-batching-version/` |
+| PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | `erledigt/PT3-paper-frame-reittier-ohne/` |
+| PT4 | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | `erledigt/PT4-paper-frame-vierbeiner-ohne/` |
+| WZ48 | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | `erledigt/WZ48-tests-ci-stabil/` |
+| WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt | `erledigt/WZ51-check-dev-ohne-sim/` |
+| WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | `erledigt/WZ50-katalog-vitests-stabil/` |
+| WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | `erledigt/WZ52-readonly-vitest-stabil/` |
+| WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | `erledigt/WZ47-ticket-relationen-index/` |
+| WZ53 | Vitests unter src/assets bleiben unter Last grün | `erledigt/WZ53-assets-vitests-stabil/` |
+| WZ49 | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | `erledigt/WZ49-planung-checkrun-restbefunde/` |
+| WZ54 | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | `erledigt/WZ54-index-atomar-nummern-b1000/` |
+| WZ55 | assets_set ruft die Paper-CLI gesammelt auf | `erledigt/WZ55-paper-cli-sammelaufruf/` |
+| WZ56 | Sammelaufruf: Fehlerantwort mit Teilergebnis, Task-Version gemerkt | `erledigt/WZ56-sammelaufruf-fehlerpfad-taskversion/` |
+| KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | `erledigt/KB4-dev-aktionen-boss-event/` |
+| KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | `erledigt/KB5-skills-wirkort-status/` |
+| WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | `erledigt/WZ43-asset-tools-review/` |

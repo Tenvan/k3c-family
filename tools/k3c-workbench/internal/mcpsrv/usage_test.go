@@ -13,6 +13,7 @@ import (
 )
 
 func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
+	t.Parallel()
 	tr := usage.New(time.Now)
 	s := New(Config{Version: "test", Usage: tr, Root: t.TempDir()})
 	add(s, &mcp.Tool{Name: "echo", Description: "Test"}, func(_ context.Context, in echoIn) (string, error) {

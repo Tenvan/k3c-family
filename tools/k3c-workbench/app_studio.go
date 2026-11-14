@@ -11,7 +11,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/studioview"
 )
 
-// studioCloseWait ist die Frist, in der „Im Spiel ansehen“ beim Beenden seine Räume speichert.
+// studioCloseWait ist die Frist für das Beenden von „Im Spiel ansehen“.
 const studioCloseWait = 5 * time.Second
 
 // StudioSounds listet die Sound-Slots mit Status und Dateien (Binding).
@@ -32,7 +32,8 @@ func (a *App) StudioSources() (studioview.Quellen, error) {
 	return studioview.Sources(a.root)
 }
 
-// StudioGameOpen legt den Testspielstand voll-<seed> an und liefert die Adresse zum Ansehen im Spiel (Binding).
+// StudioGameOpen legt den Testspielstand voll-<seed> an und startet das native Spiel mit ihm; die Antwort sagt, was
+// gestartet ist (Binding, B-847).
 func (a *App) StudioGameOpen(seed string) (string, error) {
 	a.wait()
 	return a.studioGame().Open(seed)
@@ -56,7 +57,7 @@ func (a *App) studioGame() *studioview.Game {
 	return a.game
 }
 
-// closeStudio beendet den Listener von „Im Spiel ansehen“ und wartet auf das Speichern der Räume.
+// closeStudio beendet „Im Spiel ansehen“: danach startet es nichts mehr, ein laufendes Spiel bleibt offen.
 func (a *App) closeStudio() {
 	a.mu.Lock()
 	g := a.game

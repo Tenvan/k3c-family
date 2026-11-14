@@ -8,6 +8,7 @@ import { RENDERER_VERSION, renderKey, specHash, stilHash } from '../schema/hash'
 import type { Spec, Stil } from '../schema/types';
 import '../rig/register';
 import { reittierHash } from '../rig/reiten';
+import { ausgabeFps } from '../rig/takt';
 import { bildVon, type Kontext } from './bild';
 import { Abgelehnt, Aufruf } from './fehler';
 import { animationen, ausgaben } from './stufen';
@@ -39,7 +40,7 @@ export function rendereAsset(spec: Spec, k: Kontext, beiAusgabe?: (nr: number, n
     const datei = `${a.schluessel}.png`;
     pngs.push([datei, r.png]);
     const eigen = g.eigen || g.frameW !== basis.frameW || g.frameH !== basis.frameH ? { rahmen: g.rahmen, frameW: g.frameW, frameH: g.frameH } : {};
-    anim[a.schluessel] = { frames: bild.frames.length, fps: animationen(spec)[a.animation].fps ?? 8, datei,
+    anim[a.schluessel] = { frames: bild.frames.length, fps: ausgabeFps(spec, a.animation, animationen(spec)[a.animation], bild.frames.length), datei,
       hashes: frameHashes(r.rgba, r.breite, g.frameW, g.frameH, bild.frames.length), ...eigen };
     beiAusgabe?.(nr + 1, alle.length, a.schluessel, performance.now() - t0);
   }

@@ -1,10 +1,11 @@
 // Prüft die Planungs-Dateien gegen die Pflicht-Vorlagen in docs/vorlagen/ (siehe docs/arbeitsweise.md).
 // Projekte, Rang und Domänen-Sperre: planningProjects.test.ts; gemeinsame Hilfen: planningDocs.ts.
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  checkTemplate, DOCS, DOMAINS, ids, laneOk, meta, none, read, sessionRows, sprints, title,
+  checkTemplate, DIGEST, DOCS, DOMAINS, ids, indexRow, isTicketFile, laneOk, meta, none, PLAN_LINES_SINCE, planLineDefects, read,
+  relationOk, sessionRows, sprints, ticketIdOf, title,
 } from './planningDocs';
 
 /** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
@@ -23,29 +24,41 @@ function checkSpec(text: string, fields: Record<string, string>, where: string):
   return acs;
 }
 
-const isTicket = (f: string) => /^B-\d{3}-.+\.md$/.test(f);
 const ticketFiles = (folder: string) =>
-  readdirSync(join(DOCS, 'backlog', folder)).filter(isTicket).map((file) => ({ file, folder, rel: folder ? folder + '/' + file : file }));
+  readdirSync(join(DOCS, 'backlog', folder)).filter(isTicketFile).map((file) => ({ file, folder, rel: folder ? folder + '/' + file : file }));
 /** Offene und eingeplante Tickets liegen in backlog/, erledigte und verworfene in backlog/archiv/. */
 const tickets = [...ticketFiles(''), ...ticketFiles('archiv')].map((t) => ({ ...t, path: 'backlog/' + t.rel }));
-const ticketIds = new Set(tickets.map((t) => t.file.slice(0, 5)));
-const ticketCriteria = (id: string) => criteria(read(tickets.find((t) => t.file.startsWith(id))?.path ?? ''));
+const ticketIds = new Set(tickets.map((t) => ticketIdOf(t.file)));
+/** Kriterien aller Dateien mit der Nummer (doppelt vergebene wie B-199, B-696 liegen beide im Archiv). */
+const ticketCriteria = (id: string) => tickets.filter((t) => t.file.startsWith(id + '-')).flatMap((t) => criteria(read(t.path)));
 
 describe('Backlog', () => {
   it.each(tickets)('$path folgt der Vorlage', ({ file, folder, path }) => {
     const text = read(path);
-    expect(title(text), `${file}: Überschrift`).toBe(file.slice(0, 5));
+    expect(title(text), `${file}: Überschrift`).toBe(ticketIdOf(file));
     const fields = checkTemplate('ticket', text, file);
     const archived = ['erledigt', 'verworfen'].includes(fields.Status);
     expect(folder === 'archiv', `${path}: Ordner passt zum Status ${fields.Status}`).toBe(archived);
+    for (const id of ids(`${fields['Duplikat von'] ?? ''} ${fields.Ersetzt ?? ''}`)) expect(ticketIds, `${file}: Relation ${id}`).toContain(id);
+    if (!none(fields['Duplikat von'])) expect(fields.Status, `${file}: Duplikat ist verworfen`).toBe('verworfen');
     checkSpec(text, fields, file);
   });
 
+  // B-696 Teil B: offen und eingeplant in backlog/README.md, erledigt und verworfen in backlog/archiv/README.md (Links
+  // dort relativ zu archiv/); die Archiv-Datei darf vor der Umstellung fehlen.
   it('Index listet jedes Ticket genau einmal mit gleichem Status und Pfad', () => {
-    const rows = [...read('backlog/README.md').matchAll(/^\| \[(B-\d{3})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$/gm)];
-    expect(rows.map((r) => r[2]).sort()).toEqual(tickets.map((t) => t.rel).sort());
-    for (const [, id, file, status] of rows) {
+    const row = indexRow();
+    const split = existsSync(join(DOCS, 'backlog/archiv/README.md'));
+    const rows = [
+      ...[...read('backlog/README.md').matchAll(row)].map(([, id, file, status]) => ({ id, file, status, archive: false })),
+      ...(split
+        ? [...read('backlog/archiv/README.md').matchAll(row)].map(([, id, file, status]) => ({ id, file: 'archiv/' + file, status, archive: true }))
+        : []),
+    ];
+    expect(rows.map((r) => r.file).sort()).toEqual(tickets.map((t) => t.rel).sort());
+    for (const { id, file, status, archive } of rows) {
       expect(status, `${id}: Status im Index`).toBe(meta(read('backlog/' + file)).Status);
+      if (split) expect(archive ? ['erledigt', 'verworfen'] : ['offen', 'eingeplant'], `${id}: richtige Index-Datei`).toContain(status);
     }
   });
 });
@@ -53,7 +66,8 @@ describe('Backlog', () => {
 /** Jede Session verweist nur auf Kriterien des Sprints, und jedes Kriterium hat eine Session. */
 function checkSessions(path: string, sprintId: string, sprintCriteria: string[]) {
   const rows = sessionRows(read(`${path}/README.md`));
-  const files = readdirSync(join(DOCS, path)).filter((f) => f !== 'README.md');
+  // ZUSAMMENFASSUNG.md (plan_digest, B-696 Teil C) ist kein Dokument nach Vorlage.
+  const files = readdirSync(join(DOCS, path)).filter((f) => f !== 'README.md' && f !== DIGEST);
   expect(rows.map((r) => r.file).sort(), `${path}: Session-Tabelle ↔ Dateien`).toEqual(files.sort());
   expect(rows.length, `${path}: mindestens eine Session`).toBeGreaterThan(0);
   const covered = new Set<string>();
@@ -86,7 +100,7 @@ describe('Sprints', () => {
     expect(text, `${path}: Domäne in der Überschrift`).toMatch(new RegExp(`^# ${id} · ${fields.Domäne} · `));
     expect(fields.Status, `${path}: Status passt zum Ordner`).toBe(state);
     for (const ticket of ids(fields.Tickets)) expect(ticketIds, `${path}: ${ticket}`).toContain(ticket);
-    for (const [ref, ticket, ac] of text.matchAll(/(B-\d{3})\/(AC-\d{2})/g)) {
+    for (const [ref, ticket, ac] of text.matchAll(/(B-\d{3,})\/(AC-\d{2})/g)) {
       expect(ticketCriteria(ticket), `${path}: ${ref}`).toContain(ac);
     }
     if (fields.Reife === 'bereit') checkSessions(path, id, acs);
@@ -152,5 +166,41 @@ describe('Glossar', () => {
   it('ist in CLAUDE.md und arbeitsweise.md verpflichtend verlinkt', () => {
     expect(readFileSync(resolve(DOCS, '../CLAUDE.md'), 'utf8')).toContain('docs/glossar.md');
     expect(read('arbeitsweise.md')).toContain('glossar.md');
+  });
+});
+
+describe('Planungsangaben für Arbeitswellen (B-784)', () => {
+  it('jedes offene Ticket, das nach dem Stichtag freigegeben wurde, trägt sie', () => {
+    const open = tickets.filter((t) => !t.folder);
+    expect(open.flatMap((t) => planLineDefects(read(t.path)).map((d) => `${t.file}: ${d}`))).toEqual([]);
+  });
+
+  it('schlägt bei einem neu freigegebenen Ticket ohne Bereich an, der Bestand bleibt gültig', () => {
+    const rules = (area: string | null) =>
+      (area === null ? '' : `- **Bereich:** ${area}\n`) + '- **Abhängig von:** –\n- **Braucht 🧑:** –\n- **Größe:** S\n- **Sperre:** –\n';
+    const ticket = (freigabe: string, area: string | null) =>
+      `# B-999 · Neu\n\n- **Umgebung:** offline\n- **Spec:** freigegeben\n- **Freigabe:** Klasse A, Claude, ${freigabe}\n\n` +
+      `## Regeln und Einschränkungen\n\nDomäne DEV.\n\n${rules(area)}\n## Beispiele\n\n–\n`;
+    expect(planLineDefects(ticket('2099-01-01', ''))).toEqual(['Bereich leer']);
+    expect(planLineDefects(ticket('2099-01-01', null))).toEqual(['Bereich fehlt']);
+    expect(planLineDefects(ticket('2099-01-01', '`tools/x/**`'))).toEqual([]);
+    expect(planLineDefects(ticket(PLAN_LINES_SINCE, ''))).toEqual([]);
+    expect(planLineDefects(ticket('2026-01-01', null))).toEqual([]);
+    expect(planLineDefects(ticket('2099-01-01', '').replace('Spec:** freigegeben', 'Spec:** Entwurf'))).toEqual([]);
+  });
+});
+
+// B-863/AC-01: Nummern ab B-1000 gelten wie dreistellige (Dateiname, Nummer, Relationen, Index-Zeile, Kriterien-Verweis).
+describe('Ticket-Nummern ab B-1000', () => {
+  it('erkennt B-1000 in Datei, Relation, Index und Verweis', () => {
+    expect(isTicketFile('B-1000-titel.md')).toBe(true);
+    expect(ticketIdOf('B-1000-titel.md')).toBe('B-1000');
+    expect(ticketIdOf('B-999-titel.md')).toBe('B-999');
+    expect(ids('B-999, B-1000')).toEqual(['B-999', 'B-1000']);
+    expect(relationOk('Ersetzt', 'B-999, B-1000')).toBe(true);
+    expect(relationOk('Duplikat von', 'B-1000')).toBe(true);
+    const row = '| [B-1000](B-1000-titel.md) | DEV | Schuld | niedrig | offen | – | Titel |';
+    expect([...row.matchAll(indexRow())].map((m) => m.slice(1))).toEqual([['B-1000', 'B-1000-titel.md', 'offen']]);
+    expect([...'B-1000/AC-01'.matchAll(/(B-\d{3,})\/(AC-\d{2})/g)].map((m) => m[1])).toEqual(['B-1000']);
   });
 });

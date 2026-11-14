@@ -15,7 +15,7 @@ func assetRepo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	files := map[string]string{
-		"data/assets.json": `{"_comment": "Test", "slots": [
+		"data/sounds.json": `{"_comment": "Test", "slots": [
   {"id": "farm", "art": "grafik", "kategorie": "gebaeude", "beschreibung": "Farm", "wahl": []},
   {"id": "sfx:coin", "art": "sound", "kategorie": "sfx", "beschreibung": "Münze", "bus": "sfx", "wahl": []}]}`,
 		"public/grafik/CREDITS.md": "| Ordner | Pack | Urheber | Lizenz | Quelle |\n|---|---|---|---|---|\n| town | Town | Zuno | CC BY-NC 4.0 | https://example.org |\n",
@@ -46,6 +46,7 @@ func assetRepo(t *testing.T) string {
 
 // MC1/AC-06: Register-Varianten von assets_list/get/set und assets_catalog sind entfernt; die Recherche bleibt.
 func TestAlteRegisterToolsEntfernt(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test", Root: assetRepo(t)}))
 	res, err := cs.ListTools(context.Background(), nil)
 	if err != nil {
@@ -55,7 +56,7 @@ func TestAlteRegisterToolsEntfernt(t *testing.T) {
 	for _, tool := range res.Tools {
 		da[tool.Name] = true
 		if tool.Name == "assets_list" || tool.Name == "assets_get" || tool.Name == "assets_set" {
-			if strings.Contains(tool.Description, "data/assets.json") || strings.Contains(tool.Description, "Slot") {
+			if strings.Contains(tool.Description, "data/sounds.json") || strings.Contains(tool.Description, "Slot") {
 				t.Errorf("%s beschreibt noch das Register", tool.Name)
 			}
 			props, _ := tool.InputSchema.(map[string]any)["properties"].(map[string]any)

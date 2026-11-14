@@ -10,10 +10,8 @@ export interface DevTile {
   readonly title: string;
   readonly description: string;
   icon: string;
-  /** Ziel `name.html` dieses Ordners; geöffnet über `openPage()`, mit `external` in einem neuen Fenster */
+  /** Ziel `name.html` dieses Ordners; geöffnet über `openPage()` */
   href: string;
-  /** Seite läuft außerhalb der Shell (z. B. `dm.html`, B-232) und öffnet sich in einem neuen Fenster bzw. Tab */
-  external?: boolean;
 }
 
 export interface DevSection {
@@ -26,7 +24,7 @@ export interface DevSection {
 }
 
 /** Kachel mit Text aus `tile.<name>.title` und `tile.<name>.desc`; der Text wird erst beim Lesen aufgelöst. */
-export function tile(name: string, icon: string, href: string, external?: true): DevTile {
+export function tile(name: string, icon: string, href: string): DevTile {
   return {
     get title() {
       return textOf(`tile.${name}.title`, name);
@@ -36,7 +34,6 @@ export function tile(name: string, icon: string, href: string, external?: true):
     },
     icon,
     href,
-    ...(external && { external }),
   };
 }
 
@@ -53,15 +50,9 @@ const section = (id: DevSection['id'], tiles: readonly DevTile[]): DevSection =>
 
 export const DEV_SECTIONS: readonly DevSection[] = [
   section('dev', [
-    tile('testing', '🧪', 'testing.html'),
     tile('gamedev', '🐛', 'game.html?dev=1'),
-    tile('gamepad', '🎮', 'gamepad-test.html'),
-    tile('grafiken', '🏰', 'grafiken.html'),
-    tile('pipeline', '🎨', 'pipeline.html'),
-    tile('sound', '🔊', 'soundtest.html'),
-    tile('dm', '🎲', 'dm.html', true),
   ]),
-  section('perf', [tile('monitor', '📈', 'monitor.html'), tile('stress', '🔥', 'stress.html'), tile('textures', '🧱', 'texturetest.html'), tile('stressReal1', '🧪', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald&seed=stress&players=1&depth=0&stress=typisch'), tile('stressReal2', '🧪', 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald2&seed=stress&players=2&depth=0&stress=worstCase'), tile('stressReal3', '🧪', 'game.html?dev=1&autostart=1&fresh=1&save=stress-mine&seed=stress&players=2&depth=2&stress=worstCase')]),
+  section('perf', [tile('monitor', '📈', 'monitor.html')]),
   section('balance', []),
 ];
 

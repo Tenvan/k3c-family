@@ -411,25 +411,25 @@
         {
           "art": "flaeche",
           "form": "M-16 -116C-10 -120 12 -121 21 -116C14 -113 -9 -113 -16 -116Z",
-          "material": "leinen"
+          "material": "stroh"
         },
         {
           "art": "flaeche",
           "form": "M-8 -117C-8 -128 12 -130 13 -117Z",
-          "material": "leinen"
+          "material": "stroh"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8 -117C-8 -124 -2 -128 4 -129C-1 -125 -3 -121 -3 -117Z",
-          "material": "leinen",
+          "material": "stroh",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 0.8,
           "form": "M-7 -118C0 -119.5 7 -119.5 13 -118",
-          "material": "leinen",
+          "material": "stroh",
           "ton": "licht"
         }
       ],

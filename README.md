@@ -61,7 +61,7 @@ Einstellungen per Umgebung: `K3C_HTTP_PORT`,
   Eintrag im Log mit `ns` `diag`): `/api/status/disconnect?room=CODE&device=KENNUNG` trennt die Verbindung eines Geräts (es
   verhält sich wie nach einem Abbruch und darf sich bis zur Frist wieder verbinden), `/api/status/save?room=CODE` sichert den
   Spielstand des Raums sofort.
-- **Auslesen im Dev-Mode (RX1):** Ist `K3C_DEV` an (Standard), liest ein Entwickler den Server ohne Token und ohne SSH aus, nur `GET`: `/api/dev/status` (wie `/api/status`: Speicher, CPU, Räume, Abstürze), `/api/dev/log?pattern=<regex>&limit=<n>&mib=<n>` (die letzten passenden Zeilen des JSON-Logs als Text, z. B. `curl "http://pi-gaming:8080/api/dev/log?pattern=Context%20lost&limit=50"`) und `/api/dev/reports` (Liste der Berichte, mit `?name=<datei>.json` der Inhalt). Ohne Dev-Mode 403. Nur fürs Heimnetz.
+- **Auslesen im Dev-Mode (RX1):** Ist `K3C_DEV` an (Standard), liest ein Entwickler den Server ohne Token und ohne SSH aus, nur `GET`: `/api/dev/status` (wie `/api/status`: Speicher, CPU, Räume, Abstürze), `/api/dev/logs` (die vorhandenen Log-Dateien `server`, `client`, `client.1`), `/api/dev/log?file=<name>&pattern=<regex>&limit=<n>&mib=<n>&since=<Cursor>` (die letzten passenden Zeilen eines JSON-Logs als Text, Standard `server`, `client` = Browser-Meldungen, z. B. `curl "http://pi-gaming:8080/api/dev/log?file=client&pattern=Context%20lost&limit=50"`; `since` holt nur Neues, Cursor = `X-Log-Size`) und `/api/dev/reports` (Liste der Berichte, mit `?name=<datei>.json` der Inhalt). Ohne Dev-Mode 403, ohne Log-Ordner (`K3C_LOG_DIR` nicht gesetzt, z. B. am Pi) 404. Nur fürs Heimnetz.
 - **Diagnose-TUI:** `go run ./cmd/k3c-tui` (oder im Container `docker exec -it k3c k3c-tui`) zeigt Räume, Geräte, Tick-Dauer, Speicher
   und Abstürze live (jede Sekunde). Token `K3C_STATUS_TOKEN`, Adresse `K3C_SERVER_URL` oder `K3C_HTTP_PORT` (Standard 8080);
   im Container gelten die Variablen des Servers. `k3c-tui -once` druckt den Zustand einmal als Text und endet (Skripte, CI,
@@ -160,7 +160,7 @@ Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints
 ## CI/CD (GitHub Actions)
 
 - **CI** (jeder Push/PR): Lint, Typecheck, Tests, Build; Go-Job mit Tests (auch Heimnetz-Server per `httptest`), `golangci-lint` und Cross-Build für Windows und Raspberry Pi; Windows-Job für `tools/k3c-workbench`. Der Build liegt als Artefakt `k3c-dist` am Lauf.
-- **GitHub Pages** (Push auf `main`): nur was ohne Server geht. Die Testseiten laufen; die Spiel-Kacheln sind deaktiviert
+- **GitHub Pages** (Push auf `main`): nur was ohne Server geht. Die Spiel-Kacheln sind deaktiviert
   („Braucht den Heimnetz-Server“), `game.html` zeigt denselben Hinweis.
   Einmalig aktivieren: *Settings → Pages → Source: GitHub Actions*.
 - **Release** (Tag `v*`, z.B. `git tag v0.2.0 && git push --tags`): Zip mit `dist/` und `k3c-server` für Windows, Linux amd64 und arm64.
@@ -170,6 +170,6 @@ Prüfen: `task check:dev`. Plan für Statistik, Dienste und Oberfläche: Sprints
 
 Quelltext: [PolyForm Noncommercial 1.0.0](LICENSE). Eigene Grafiken und Sounds: [CC BY-NC 4.0](LICENSE-ASSETS).
 Das Projekt ist *source-available*, aber **nicht** für kommerzielle Nutzung frei (kein Open Source im Sinne der OSI).
-Fremdmaterial behält seine Lizenz: [Figuren-Credits](public/sprites/CREDITS.md), im Spiel die Seite „Lizenzen & Danksagung“ (`lizenzen.html`).
+Fremdmaterial behält seine Lizenz: [Sound-Credits](public/audio/README.md), im Spiel die Seite „Lizenzen & Danksagung“ (`lizenzen.html`).
 
 Mehr: [Game Design](docs/game-design.md) · [Roadmap](docs/roadmap.md) · [Arbeitsweise](docs/arbeitsweise.md) · [Sprints](docs/sprints/README.md) · [Backlog](docs/backlog/README.md)

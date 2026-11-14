@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { PlanSession, PlanningData } from '../api';
-import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, ghBadges, groupTickets, isNext, linkedTickets, parseFilter, sortSprints } from './planning';
+import { EMPTY_FILTER, domains, filterSprints, filterTickets, findSession, ghBadges, groupTickets, isNext, linkedTickets, parseFilter, sortSprints, ticketCounts } from './planning';
 
 const s = (nr: string, status: string, agent = 'autonom', titel = ''): PlanSession => ({ nr, typ: 'Umsetzung', agent, status, titel });
 const tk = (nr: string, domain: string, prio: string, status = 'offen', sprint = '–') =>
@@ -79,5 +79,13 @@ describe('GitHub-Stand', () => {
   });
   it('gemergter PR ohne Checks: nur der PR', () => {
     expect(ghBadges({ ...pr, state: 'gemergt', ci: '–', merge: '–' })).toEqual([{ label: '#110 gemergt', tone: 'ok' }]);
+  });
+});
+
+describe('Kennzahlen', () => {
+  it('zählt offen, eingeplant und ungeplant wie die Schnellfilter', () => {
+    const ts = [tk('B-1', 'SIM', 'hoch'), tk('B-2', 'SIM', 'hoch', 'eingeplant', 'M8'), tk('B-3', 'SIM', 'hoch', 'eingeplant', '–'), tk('B-4', 'SIM', 'hoch', 'offen', 'M8')];
+    expect(ticketCounts(ts)).toEqual({ offen: 2, eingeplant: 2, ungeplant: 2 });
+    expect(ticketCounts([])).toEqual({ offen: 0, eingeplant: 0, ungeplant: 0 });
   });
 });

@@ -13,7 +13,7 @@ import (
 	"k3c/engine/balance"
 )
 
-// targetOpts sind die Optionen des Ziel-Modus `--targets` (task balance, BAL2.2), wie in bin/k3c-balance.
+// targetOpts sind die Optionen des Ziel-Modus `--targets` (task balance, BAL2.2), wie bis RS2.2 in bin/k3c-balance.
 type targetOpts struct {
 	on       bool
 	seeds    int      // 0 = Seed-Modus der Datei (dev: nur der erste, sonst alle)

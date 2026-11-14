@@ -8,6 +8,7 @@ import (
 )
 
 func TestDiffData(t *testing.T) {
+	t.Parallel()
 	base := Data{
 		Projects: []Project{{ID: "TST", Status: "aktiv", Rang: "8"}},
 		Sprints:  []Sprint{{ID: "TR4", Status: "geplant", Sessions: []Session{{Nr: "TR4.1", Status: "offen"}}}},
@@ -46,6 +47,7 @@ func TestDiffData(t *testing.T) {
 }
 
 func TestParseWorktreePaths(t *testing.T) {
+	t.Parallel()
 	out := "worktree C:/k3c\nHEAD 1\nbranch refs/heads/develop\n\nworktree C:/k3c/wt\nbranch refs/heads/claude/x\n"
 	got := parseWorktreePaths(out, "C:/k3c")
 	if len(got) != 1 || got[0].branch != "claude/x" {
@@ -55,6 +57,7 @@ func TestParseWorktreePaths(t *testing.T) {
 
 // Gegen die Merge-Base: Der Vorsprung der Wurzel (B-006) erscheint nicht, nur was der Worktree selbst ändert (B-007).
 func TestCheckWorktreesMergeBase(t *testing.T) {
+	t.Parallel()
 	root := gitRepo(t)
 	wt := filepath.Join(t.TempDir(), "wt")
 	git(t, root, "worktree", "add", "-q", "-b", "claude/x", wt)
@@ -87,6 +90,7 @@ func TestCheckWorktreesMergeBase(t *testing.T) {
 
 // M1: Ein im Worktree archiviertes Ticket (erledigt) erscheint als Statuswechsel, nicht als Nichts.
 func TestCheckWorktreesArchiviertesTicket(t *testing.T) {
+	t.Parallel()
 	root := gitRepo(t)
 	wt := filepath.Join(t.TempDir(), "wt")
 	git(t, root, "worktree", "add", "-q", "-b", "claude/y", wt)
@@ -118,6 +122,7 @@ func TestCheckWorktreesArchiviertesTicket(t *testing.T) {
 
 // M1: Was im Worktree fehlt, wird als „entfernt“ gemeldet.
 func TestDiffDataEntfernt(t *testing.T) {
+	t.Parallel()
 	base := Data{
 		Projects: []Project{{ID: "TST"}},
 		Sprints:  []Sprint{{ID: "TR4", Sessions: []Session{{Nr: "TR4.1"}}}, {ID: "TR9"}},
@@ -137,6 +142,7 @@ func TestDiffDataEntfernt(t *testing.T) {
 
 // M3: Scheitert git, kommt ein Fehler zurück statt einer leeren Liste.
 func TestCheckWorktreesGitFehler(t *testing.T) {
+	t.Parallel()
 	if _, err := CheckWorktrees(filepath.Join(t.TempDir(), "gibt-es-nicht")); err == nil {
 		t.Fatal("Fehler erwartet")
 	}
@@ -145,6 +151,7 @@ func TestCheckWorktreesGitFehler(t *testing.T) {
 // Reihenfolge und alle verglichenen Felder: je Art erst der Worktree (neu oder Feldänderungen in fester Reihenfolge,
 // beim Sprint danach die Sessions), dann das Entfernte; Arten in der Folge Projekt, Sprint, Ticket (B-465).
 func TestDiffDataReihenfolge(t *testing.T) {
+	t.Parallel()
 	base := Data{
 		Projects: []Project{{ID: "WZG", Title: "Werkzeuge", Status: "ruht", Rang: "2"}, {ID: "ALT", Title: "Alt"}},
 		Sprints: []Sprint{{ID: "WZ6", Title: "Studio", Status: "geplant", Project: "–",
@@ -176,6 +183,7 @@ func TestDiffDataReihenfolge(t *testing.T) {
 }
 
 func TestDiffDataNeueEintraegeTragenProjektUndSprint(t *testing.T) {
+	t.Parallel()
 	wt := Data{
 		Sprints: []Sprint{{ID: "WZ20", Title: "Dummy", Project: "WZG"}},
 		Tickets: []Ticket{{Nr: "B-9", Title: "Neu", Project: "WZG", Sprint: "WZ20"}},
@@ -192,6 +200,7 @@ func TestDiffDataNeueEintraegeTragenProjektUndSprint(t *testing.T) {
 
 // B-484: Ein Sprint nur im Worktree bringt seine Sessions als neu mit, direkt hinter dem Sprint.
 func TestDiffDataNeuerSprintMitSessions(t *testing.T) {
+	t.Parallel()
 	wt := Data{Sprints: []Sprint{{ID: "X1", Title: "Neu", Project: "WZG", Sessions: []Session{{Nr: "X1.1", Titel: "Eins"}, {Nr: "X1.2", Titel: "Zwei"}}}}}
 	got := diffData(Data{}, wt)
 	want := []Change{

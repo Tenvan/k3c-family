@@ -4,7 +4,7 @@
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** Entwurf
-- **Tickets:** B-721, B-722, B-723
+- **Tickets:** B-721, B-722, B-723, B-699
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1

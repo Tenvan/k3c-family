@@ -42,6 +42,7 @@ func (f *fakeTasks) TaskState(name string) taskgate.State {
 }
 
 func TestTaskTools(t *testing.T) {
+	t.Parallel()
 	host := &fakeTasks{}
 	s := New(Config{Version: "test", Root: t.TempDir(), Tasks: host})
 	cs := connect(t, s)

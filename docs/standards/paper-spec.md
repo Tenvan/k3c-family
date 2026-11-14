@@ -180,8 +180,8 @@ JSON-Objekt auf stdout. Exit 0 = ok, 1 = fachlich abgelehnt (`{"ok": false, "feh
 | Befehl | Antwort bei Exit 0 |
 |---|---|
 | `validate <spec>` | `{"ok": true, "fehler": []}` |
-| `render <spec\|ordner>` | `{"ok": true, "manifeste": ["…/manifest.json"], "dateien": ["…/idle.png", …]}`; ein Ordner rendert alle Specs darin (ohne `index.paper.json`) und schreibt den Gruppen-Index |
-| `frame <spec> --animation a --frame n [--variante v] [--stufe s] [--ohne t1,t2] --out datei.png` | `{"ok": true, "datei": "…", "teile": {"<teilId>": [x, y, b, h]}}` – Teil-Boxen in Pixeln des Frames; `--ohne` rendert die genannten Teile ohne Lagen (Gelenke bleiben, B-734), ein unbekanntes Teil lehnt mit `teil-unbekannt` ab |
+| `render <spec\|ordner> [--stil datei]` | `{"ok": true, "manifeste": ["…/manifest.json"], "dateien": ["…/idle.png", …]}`; ein Ordner rendert alle Specs darin (ohne `index.paper.json`) und schreibt den Gruppen-Index |
+| `frame <spec> --animation a --frame n [--variante v] [--stufe s] [--ohne t1,t2] [--stil datei] --out datei.png` | `{"ok": true, "datei": "…", "teile": {"<teilId>": [x, y, b, h]}}` – Teil-Boxen in Pixeln des Frames; `--ohne` rendert die genannten Teile ohne Lagen (Gelenke bleiben, B-734), ein unbekanntes Teil lehnt mit `teil-unbekannt` ab |
 | `diff <alt.json> <neu.json> [--stil-alt s1 --stil-neu s2]` | `{"ok": true, "felder": [{"pfad", "alt", "neu"}], "teile": ["<teilId>"], "stil": false}` |
 | `pixeldiff <a.png> <b.png> --out overlay.png` | `{"ok": true, "anteil": 0.0123, "boxen": [[x, y, b, h]], "datei": "overlay.png"}` |
 
@@ -190,6 +190,20 @@ JSON-Objekt auf stdout. Exit 0 = ok, 1 = fachlich abgelehnt (`{"ok": false, "feh
 - `pixeldiff`: `anteil` = Anteil der Pixel mit Kanal-Differenz > 2 (0..1); `boxen` = Rahmen zusammenhängender
   Abweichungen (höchstens 32, größte zuerst); das Overlay zeigt `b` mit rot markierten Abweichungen.
 - `render` schreibt atomar: erst in einen Temp-Ordner, dann Umbenennen; bei Fehler bleibt der alte Stand.
+- `--stil <datei>` (`render`, `frame`; B-705): rendert mit dieser Stil-Datei statt `public/grafik/stil.paper.json`
+  (Standard ohne Option); Manifest-`stilHash` und `renderKey` folgen ihr. Fehlt die Datei → Exit 2 mit Pfad auf
+  stderr; kein JSON oder Verstoß gegen `stil.schema.json` → Exit 1, `feld` mit Dateinamen (`stil.json:materialien`).
+- `frame` bei Reit-Animationen (B-709): Teile des Reittiers stehen mit Präfix `reittier:` (`reittier:hals`), die des
+  Reiters ohne Präfix. Auch Ober- und Unterbeine (vom Beinpfad gezeichnet, Box aus seinen Stützpunkten samt Breite) und
+  Teile hinter dem Reiter haben eine Box; die verdeckte Bein-Kette des Reiters (`oberschenkel-h` …) wird nicht
+  gezeichnet und hat keine Box. Die Bein-Box der Vorderbeine umfasst den Wulst (B-845).
+- `frame --ohne` bei Reit-Animationen (B-845): `reittier:<teil>` blendet ein Teil des Reittiers aus, ids ohne Präfix
+  die des Reiters. Ober- oder Unterbein nimmt den ganzen Beinpfad des Beins (ein Papierstück), beide Bein-Boxen fehlen.
+  Ein unbekanntes `reittier:`-Teil lehnt mit `teil-unbekannt` und der Liste der Reittier-Teile ab, ebenso
+  `reittier:<teil>` bei einer Animation ohne Reittier.
+- `frame --ohne` bei Vierbeinern (B-851): `oberbein-<b>` oder `unterbein-<b>` nimmt auch hier den ganzen Beinpfad des Beins
+  (Animationen eines Vierbeiners und seine Reittier-Ebenen); die anderen Beine und Teile bleiben.
+- Fehler zu Reit-Angaben nennen den vollen Pfad: `animationen.<name>.reittier` bzw. `animationen.<name>.reiter` (B-708).
 
 ## 9. Fixtures (`tools/paper/fixtures/`)
 

@@ -118,6 +118,9 @@ func nextTicket(root string) (string, []string, error) {
 // isRepoRoot: git-Auskünfte gelten nur, wenn root selbst die Wurzel eines Worktrees ist; ein Ordner unterhalb eines
 // Repos (z. B. ein Test-Verzeichnis) würde sonst die Worktrees und Refs des umgebenden Repos liefern.
 func isRepoRoot(root string) bool {
+	if !hasGitEntry(root) { // eine Wurzel trägt immer .git; ohne spart das den git-Aufruf (B-830)
+		return false
+	}
 	top, err := gitOut(root, "rev-parse", "--show-toplevel")
 	return err == nil && samePath(strings.TrimSpace(top), root)
 }

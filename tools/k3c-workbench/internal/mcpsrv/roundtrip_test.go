@@ -37,6 +37,7 @@ func callText(t *testing.T, cs *mcp.ClientSession, name string, args any) (strin
 }
 
 func TestAlleToolsMitBeschreibungUndAnnotations(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test"})
 	res, err := connect(t, s).ListTools(context.Background(), nil)
 	if err != nil {
@@ -65,6 +66,7 @@ type echoIn struct {
 }
 
 func TestUnbekannterParameterNenntGueltige(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test"})
 	add(s, &mcp.Tool{Name: "echo", Description: "Test"}, func(_ context.Context, in echoIn) (string, error) {
 		return in.Text, nil
@@ -81,6 +83,7 @@ func TestUnbekannterParameterNenntGueltige(t *testing.T) {
 }
 
 func TestPanikWirdZumFehler(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test"})
 	add(s, &mcp.Tool{Name: "boom", Description: "Test"}, func(context.Context, struct{}) (string, error) {
 		panic("kaputt")
@@ -99,6 +102,7 @@ func TestPanikWirdZumFehler(t *testing.T) {
 }
 
 func TestHTTPNurAnLocalhost(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test"})
 	if err := s.Start(); err != nil {
 		t.Fatal(err)
@@ -128,6 +132,7 @@ func TestHTTPNurAnLocalhost(t *testing.T) {
 }
 
 func TestResolvePort(t *testing.T) {
+	t.Parallel()
 	for raw, want := range map[string]int{"": DefaultPort, " 6000 ": 6000} {
 		if got, err := ResolvePort(raw); err != nil || got != want {
 			t.Errorf("ResolvePort(%q) = %d, %v", raw, got, err)
@@ -177,6 +182,7 @@ func planRepo(t *testing.T) string {
 }
 
 func TestPlanungsToolsRoundtrip(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test", Root: planRepo(t)}))
 	steps := []struct {
 		tool string

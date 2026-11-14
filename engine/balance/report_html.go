@@ -30,16 +30,16 @@ type reportAsset struct {
 }
 
 var reportAssets = map[string]reportAsset{
-	"castle": {path: "grafik/gebaeude/burg-1-32.png"},
-	"wall":   {path: "grafik/gebaeude/mauer-1-32.png"},
-	"tower":  {path: "grafik/gebaeude/turm-1-32.png"},
-	"fire":   {path: "grafik/gebaeude/lagerfeuer-1-32.png"},
-	"axe":    {path: "grafik/gebaeude/symbol-axt-32.png"},
-	"pick":   {path: "grafik/gebaeude/symbol-spitzhacke-32.png"},
-	"ore":    {path: "grafik/gebaeude/erzbrocken-32.png"},
-	"coin":   {path: "grafik/16x16-small-and-medium-coin-animation/muenzen/sCoins_1.png", frameW: 16, frameH: 16},
-	"enemy":  {path: "sprites/skeleton/idle.png", frameW: 150, frameH: 150},
-	"enemy2": {path: "sprites/goblin/idle.png", frameW: 150, frameH: 150},
+	"castle": {path: "grafik/gebaeude-paper/burg/stand.png"},
+	"wall":   {path: "grafik/gebaeude-paper/mauer/stand.png"},
+	"tower":  {path: "grafik/gebaeude-paper/turm/stand.png"},
+	"fire":   {path: "grafik/gebaeude-paper/lagerfeuer/stand.png"},
+	"axe":    {path: "grafik/objekte/schild-axt/idle.png", frameW: 36, frameH: 51},
+	"pick":   {path: "grafik/objekte/schild-spitzhacke/idle.png", frameW: 36, frameH: 51},
+	"ore":    {path: "grafik/objekte/erzbrocken/idle.png", frameW: 43, frameH: 28},
+	"coin":   {path: "grafik/icons/muenze/idle.png", frameW: 26, frameH: 26},
+	"enemy":  {path: "grafik/gegner/skelett/idle.png", frameW: 159, frameH: 192},
+	"enemy2": {path: "grafik/gegner/goblin/idle.png", frameW: 143, frameH: 192},
 }
 
 // HTML schreibt den Bericht; root ist der Checkout (Grafiken aus root/public/, fehlende zeigt der Bericht als Platzhalter).

@@ -1,7 +1,7 @@
 # Sound-Atlas (SO6.2, B-494)
 
 `atlas.ogg`, `atlas.mp3` und `atlas.json` erzeugt `task gen:soundatlas` (`tools/soundatlas`): die erste Präferenz jedes
-Effekt-Slots in `data/assets.json` (Bus `sfx`, ohne die Schleife `sfx:ride`), mono 44,1 kHz, 0,15 s Stille dazwischen
+Effekt-Slots in `data/sounds.json` (Bus `sfx`, ohne die Schleife `sfx:ride`), mono 44,1 kHz, 0,15 s Stille dazwischen
 (fängt die MP3-Encoder-Verzögerung ab), Ogg Vorbis q3 und MP3 64 kbit/s. `atlas.json` nennt Start und Dauer je Slot. Der Atlas
 setzt nur fremde Dateien zusammen, die unten mit Credit stehen; er selbst braucht keinen eigenen Eintrag. **Nach jeder Änderung
 der Effekt-Slots `task gen:soundatlas` laufen lassen**; ein Slot ohne Atlas-Eintrag lädt als Einzeldatei (Rückfall).
@@ -10,8 +10,8 @@ Bis SO6.2 war der Atlas ein selbst erzeugter Platzhalter aus drei Sinustönen (S
 ## Probe-Stücke und Kandidaten (SO3.2)
 
 `probe-a` (C-Dur-Akkord, 2 Hz Tremolo) und `probe-b` (a-Moll-Akkord, 3 Hz Tremolo): je 8 s, mono, `.ogg` und `.mp3`, für die Crossfade-Probe
-der Hörprobenseite. **Selbst erzeugt, keine fremden Inhalte** (kein Credit nötig). Die Hörprobe zeigt die Sound-Slots des
-Slot-Registers `data/assets.json` (B-298, M10; früher `kandidaten.json`); Zuordnungen setzt k3c-workbench. Fremde Dateien nur mit Quelle und Lizenz (B-165).
+der früheren Hörprobenseite (entfernt, B-822; die Dateien sind ungenutzt). **Selbst erzeugt, keine fremden Inhalte** (kein Credit nötig). Die Hörprobe zeigt die Sound-Slots des
+Slot-Registers `data/sounds.json` (B-298, M10; früher `kandidaten.json`); Zuordnungen setzt k3c-workbench. Fremde Dateien nur mit Quelle und Lizenz (B-165).
 
 ```bash
 ffmpeg -f lavfi -i "aevalsrc='(sin(2*PI*262*t)+sin(2*PI*330*t)+sin(2*PI*392*t))/3*0.4*(0.7+0.3*sin(2*PI*2*t))':d=8:s=44100" -ac 1 -map_metadata -1 -c:a libvorbis -q:a 2 probe-a.ogg

@@ -19,6 +19,42 @@
     "fireSpirit": "gegner/feuergeist", "crystalSpider": "gegner/kristallspinne", "shardling": "gegner/splitterling",
     "crystalGuardian": "gegner/kristallwaechter"
   },
+  "figuren": {
+    "_hinweis": "Zielhöhe in Spiel-Pixeln (bisherige Figurhöhe der alten Sheets), Tönung (nur Spieler), Höhe über dem Boden y und Deckkraft je Rolle (CU1.2, vorher data/sprites.json)",
+    "spieler": [
+      { "hoehe": 121.5 },
+      { "hoehe": 121.5 },
+      { "hoehe": 121.5, "tint": "#9ecbff" },
+      { "hoehe": 121.5, "tint": "#ffb3c8" }
+    ],
+    "truppen": {
+      "vagrant": { "hoehe": 102.5 },
+      "peasant": { "hoehe": 102.5 },
+      "archer": { "hoehe": 99.0 },
+      "warrior": { "hoehe": 102.5 },
+      "eliteArcher": { "hoehe": 99.0 },
+      "eliteWarrior": { "hoehe": 101.25 }
+    },
+    "gegner": {
+      "greed": { "hoehe": 81.0 },
+      "wolf": { "hoehe": 72.0 },
+      "alphaWolf": { "hoehe": 72.0 },
+      "goblin": { "hoehe": 81.0 },
+      "goblinArcher": { "hoehe": 81.0 },
+      "skeleton": { "hoehe": 100.0 },
+      "bat": { "hoehe": 54.0, "y": 130 },
+      "caveTroll": { "hoehe": 147.88 },
+      "zombie": { "hoehe": 100.0 },
+      "ratSwarm": { "hoehe": 51.8 },
+      "mineGhost": { "hoehe": 105.0, "alpha": 0.85 },
+      "lavaSlime": { "hoehe": 56 },
+      "ironBeetle": { "hoehe": 60 },
+      "fireSpirit": { "hoehe": 92.0 },
+      "crystalSpider": { "hoehe": 60 },
+      "shardling": { "hoehe": 64 },
+      "crystalGuardian": { "hoehe": 110 }
+    }
+  },
   "gebaeude": "gebaeude-paper",
   "hintergruende": { "gruppe": "hintergruende", "varianten": 2 },
   "objekte": {
@@ -39,6 +75,7 @@
     "schild-axt": { "gruppe": "objekte", "frame": [36, 51], "frames": 4, "rahmen": [-17,  -46,  34,  48] },
     "schild-spitzhacke": { "gruppe": "objekte", "frame": [36, 51], "frames": 4, "rahmen": [-17,  -46,  34,  48] },
     "setzling": { "gruppe": "objekte", "frame": [42, 36], "frames": 8, "rahmen": [-20,  -32,  40,  34] },
+    "pappel-niedrig": { "gruppe": "objekte", "frame": [26, 80], "frames": 8, "rahmen": [-12,  -73,  24,  75] },
     "stern": { "gruppe": "objekte", "frame": [34, 34], "frames": 8, "rahmen": [-16,  -32,  32,  32] },
     "tanne": { "gruppe": "objekte", "frame": [93, 155], "frames": 8, "rahmen": [-44,  -142,  88,  146] },
     "truhe-offen": { "gruppe": "objekte", "frame": [47, 49], "frames": 1, "rahmen": [-22,  -44,  44,  46] },

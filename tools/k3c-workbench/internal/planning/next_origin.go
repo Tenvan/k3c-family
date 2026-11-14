@@ -59,12 +59,32 @@ func originReadmePath(root, ref, id string) string {
 	return ""
 }
 
-// sprintPrefix ist der Branch-Präfix: aus „Branch“ der ersten Session (`<präfix>/…`), sonst die Sprint-ID klein.
+// sprintPrefix ist der Branch-Präfix ohne „sprint/“: aus „Branch“ der ersten Session, die einen trägt, sonst die
+// Sprint-ID klein (B-782).
 func sprintPrefix(sp Sprint) string {
 	for _, x := range sp.Sessions {
-		if b, _, ok := strings.Cut(sessionHead(x)["Branch"], "/"); ok && b != "" {
-			return b
+		if p := branchPrefix(sessionHead(x)["Branch"]); p != "" {
+			return p
 		}
 	}
 	return strings.ToLower(sp.ID)
+}
+
+// branchPrefix leitet den Sprint-Präfix aus dem Session-Feld „Branch“ ab (B-782): `sprint/cu1` → `cu1`,
+// `w15/1-fackeln` → `w15`; leer oder ohne `/` → leer (dann gilt die Sprint-ID).
+func branchPrefix(field string) string {
+	v := strings.Trim(strings.TrimSpace(field), "`")
+	if rest, ok := strings.CutPrefix(v, "sprint/"); ok {
+		p, _, _ := strings.Cut(rest, "/")
+		return p
+	}
+	if p, _, ok := strings.Cut(v, "/"); ok && p != "" {
+		return p
+	}
+	return ""
+}
+
+// sprintBranch ist der Sprint-Branch einer Session: `sprint/` + Präfix aus „Branch“, sonst aus der Sprint-ID (B-782).
+func sprintBranch(sprintID, field string) string {
+	return "sprint/" + firstOf(branchPrefix(field), strings.ToLower(sprintID))
 }

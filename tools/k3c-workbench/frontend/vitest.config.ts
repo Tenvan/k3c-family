@@ -8,5 +8,7 @@ export default defineConfig({
   resolve: { alias: ALIAS, dedupe: DEDUPE },
   server: { fs: { allow: ['.', WEBKIT, ...MOCK_DATA] } },
   // Die Tests der gemeinsamen Bausteine (tools/webkit) laufen hier mit.
-  test: { include: ['src/**/*.test.{ts,tsx}', '../../webkit/**/*.test.{ts,tsx}'] },
+  // Zeitlimit über dem Standard (5 s): unter paralleler Last warten die Katalog-Tests auf Bedingungen (B-837), ein Test mit
+  // Abspielen braucht dann mehr als 5 s, ohne zu hängen.
+  test: { include: ['src/**/*.test.{ts,tsx}', '../../webkit/**/*.test.{ts,tsx}'], testTimeout: 20_000 },
 });

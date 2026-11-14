@@ -13,7 +13,7 @@ type Filter struct {
 	Kind    string `json:"kind,omitempty" jsonschema:"ticket, sprint, projekt oder leer für Sprints und Tickets"`
 	Status  string `json:"status,omitempty" jsonschema:"Status, z. B. aktiv, geplant, offen, eingeplant, erledigt"`
 	Domain  string `json:"domain,omitempty" jsonschema:"Domäne: REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP"`
-	Sprint  string `json:"sprint,omitempty" jsonschema:"Sprint-ID: nur dieser Sprint und seine Tickets"`
+	Sprint  string `json:"sprint,omitempty" jsonschema:"Sprint-ID: nur dieser Sprint und seine Tickets; – oder ungeplant: Tickets ohne Sprint (wie der Schnellfilter Ungeplant der Workbench)"`
 	Projekt string `json:"projekt,omitempty" jsonschema:"Projekt-Kürzel: nur dieses Projekt, seine Sprints und Tickets"`
 	Archive bool   `json:"archive,omitempty" jsonschema:"auch erledigte und verworfene Tickets aus backlog/archiv"`
 }
@@ -24,6 +24,7 @@ func List(root string, f Filter) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	all := d.Tickets // nicht archivierte Tickets: Bezug der Kennzahl-Zeile
 	if f.Archive {
 		d.Tickets = append(d.Tickets, archived(root)...)
 	}
@@ -34,9 +35,9 @@ func List(root string, f Filter) (string, error) {
 	case "sprint":
 		out = sprintList(d, f)
 	case "ticket":
-		out = ticketList(d, f)
+		out = ticketList(d, f, all, true)
 	default:
-		out = append(sprintList(d, f), ticketList(d, f)...)
+		out = append(sprintList(d, f), ticketList(d, f, all, false)...)
 	}
 	if len(out) == 0 {
 		return "keine Treffer", nil
@@ -46,25 +47,78 @@ func List(root string, f Filter) (string, error) {
 
 func match(want, have string) bool { return want == "" || strings.EqualFold(want, have) }
 
+// unplanned: „–“ oder „ungeplant“ als Sprint-Filter meint Tickets ohne Sprint (leer oder „–“), wie der Schnellfilter
+// Ungeplant der Planungsseite (frontend/src/planning/planning.ts › QUICK).
+func unplanned(want string) bool {
+	return want == "–" || want == "-" || strings.EqualFold(want, "ungeplant")
+}
+
+// matchSprint vergleicht den Sprint eines Tickets mit dem Filter.
+func matchSprint(want, have string) bool {
+	if unplanned(want) {
+		return have == "" || have == "–" || have == "-"
+	}
+	return match(want, have)
+}
+
 func sprintList(d Data, f Filter) []string {
 	var out []string
 	sortSprints(d.Sprints, d.Projects)
 	for _, s := range d.Sprints {
-		if match(f.Status, s.Status) && match(f.Domain, s.Domain) && match(f.Sprint, s.ID) && match(f.Projekt, s.Project) {
+		if match(f.Status, s.Status) && match(f.Domain, s.Domain) && !unplanned(f.Sprint) && match(f.Sprint, s.ID) && match(f.Projekt, s.Project) {
 			out = append(out, sprintLines(s)...)
 		}
 	}
 	return out
 }
 
-func ticketList(d Data, f Filter) []string {
-	var out []string
-	for _, t := range d.Tickets {
-		if match(f.Status, t.Status) && match(f.Domain, t.Domain) && match(f.Sprint, t.Sprint) && match(f.Projekt, t.Project) {
-			out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title))
+// ticketCounts zählt wie die Schnellfilter der Oberfläche (frontend/src/planning/planning.ts › ticketCounts):
+// offen = Status offen, eingeplant = Status eingeplant, ungeplant = ohne Sprint, unabhängig vom Status.
+func ticketCounts(ts []Ticket) (open, planned, unplanned int) {
+	for _, t := range ts {
+		if t.Status == "offen" {
+			open++
+		}
+		if t.Status == "eingeplant" {
+			planned++
+		}
+		if matchSprint("ungeplant", t.Sprint) {
+			unplanned++
 		}
 	}
+	return open, planned, unplanned
+}
+
+// countsLine ist die Kennzahl-Zeile vor den Tickets: gezeigt von allen nicht archivierten, dazu die drei Kennzahlen.
+func countsLine(shown int, all []Ticket) string {
+	o, e, u := ticketCounts(all)
+	return fmt.Sprintf("Tickets: %d von %d · %d offen · %d eingeplant · %d ungeplant", shown, len(all), o, e, u)
+}
+
+// ticketList: die Kennzahl-Zeile steht vorn, bei Kind leer nur, wenn Tickets passen (sonst „keine Treffer“).
+func ticketList(d Data, f Filter, all []Ticket, always bool) []string {
+	var out []string
+	for _, t := range d.Tickets {
+		if match(f.Status, t.Status) && match(f.Domain, t.Domain) && matchSprint(f.Sprint, t.Sprint) && match(f.Projekt, t.Project) {
+			out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s%s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title, relSuffix(t)))
+		}
+	}
+	if len(out) > 0 || always {
+		out = append([]string{countsLine(len(out), all)}, out...)
+	}
 	return out
+}
+
+// relSuffix nennt gesetzte Relationen hinter dem Titel: „→ B-1“ bei Duplikaten, „ersetzt B-2, B-3“.
+func relSuffix(t Ticket) string {
+	s := ""
+	if t.Duplicate != "" {
+		s += " → " + t.Duplicate
+	}
+	if len(t.Replaces) > 0 {
+		s += " · ersetzt " + strings.Join(t.Replaces, ", ")
+	}
+	return s
 }
 
 // projectLines: je Projekt `Rang Kürzel Status Sprints erledigt/gesamt · Titel` und die Sprints in Reihenfolge.
@@ -122,7 +176,7 @@ func archived(root string) []Ticket {
 			}
 		}
 	}
-	sort.Slice(out, func(i, j int) bool { return out[i].Nr < out[j].Nr })
+	sort.Slice(out, func(i, j int) bool { return ticketLess(out[i].Nr, out[j].Nr) })
 	return out
 }
 

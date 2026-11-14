@@ -36,15 +36,9 @@ describe('Ebenen Seiten (B-768/AC-02)', () => {
     expect(ids.sort()).toEqual([...DEV_TILES.map((tile) => tile.href), 'lizenzen.html'].sort());
   });
 
-  it('Gamepad-Test steht unter Info und Hilfe, nicht unter Entwicklung', () => {
-    const info = menuCategories(true).find((c) => c.id === 'info')!;
-    expect(info.entries.map((e) => e.id)).toEqual(['lizenzen.html', 'gamepad-test.html']);
-    expect(menuCategories(true).find((c) => c.id === 'dev')!.entries.some((e) => e.id === 'gamepad-test.html')).toBe(false);
-  });
-
-  it('Performance enthält Monitor, Stress Live-Grafik, Textur-Grenze und die drei Stress-echt-Szenarien', () => {
-    const perf = menuCategories(true).find((c) => c.id === 'perf')!;
-    expect(perf.entries.map((e) => e.target.kind)).toEqual(['page', 'page', 'page', 'run', 'run', 'run']);
+  it('Info und Hilfe enthält die Lizenzen, Performance den Monitor', () => {
+    expect(menuCategories(true).find((c) => c.id === 'info')!.entries.map((e) => e.id)).toEqual(['lizenzen.html']);
+    expect(menuCategories(true).find((c) => c.id === 'perf')!.entries.map((e) => e.target.kind)).toEqual(['page']);
   });
 
   it('jeder Eintrag hat Titel und Beschreibung, deutsch und englisch', () => {
@@ -68,22 +62,14 @@ describe('Ebenen Seiten (B-768/AC-02)', () => {
 
 describe('Ziele der Einträge (B-768/AC-06)', () => {
   it('Spiel-URL wird zur Konfiguration, ohne dass die Seite neu geladen wird', () => {
-    const run = targetOf({ href: 'game.html?dev=1&autostart=1&fresh=1&save=stress-wald&seed=stress&players=1&depth=0&stress=typisch' });
-    expect(run).toEqual({ kind: 'run', params: { dev: '1', autostart: '1', fresh: '1', save: 'stress-wald', seed: 'stress', players: '1', depth: '0', stress: 'typisch' } });
+    const run = targetOf({ href: 'game.html?dev=1&autostart=1&fresh=1&save=dev-wald&seed=dev&players=1&depth=0' });
+    expect(run).toEqual({ kind: 'run', params: { dev: '1', autostart: '1', fresh: '1', save: 'dev-wald', seed: 'dev', players: '1', depth: '0' } });
   });
 
-  it('andere Seiten bleiben Seiten, Dungeon Master bleibt extern, game.html ohne Abfrage ist keine Konfiguration', () => {
+  it('andere Seiten bleiben Seiten, game.html ohne Abfrage ist keine Konfiguration', () => {
     expect(targetOf({ href: 'monitor.html' })).toEqual({ kind: 'page', href: 'monitor.html' });
-    expect(targetOf({ href: 'dm.html', external: true })).toEqual({ kind: 'external', href: 'dm.html' });
     expect(runParamsOf('game.html')).toBeNull();
-    expect(runParamsOf('stress.html?x=1')).toBeNull();
-  });
-
-  it('die drei Stress-echt-Szenarien tragen Spieler, Welt-Stufe und Szenario in der Konfiguration', () => {
-    const runs = all.flatMap((e) => (e.target.kind === 'run' && e.target.params.stress ? [e.target.params] : []));
-    expect(runs.map((p) => p.stress)).toEqual(['typisch', 'worstCase', 'worstCase']);
-    expect(runs.map((p) => p.players)).toEqual(['1', '2', '2']);
-    for (const p of runs) expect([p.dev, p.autostart, p.fresh]).toEqual(['1', '1', '1']);
+    expect(runParamsOf('monitor.html?x=1')).toBeNull();
   });
 });
 

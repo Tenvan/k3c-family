@@ -8,6 +8,7 @@ import (
 // TestRankErbtPlatzUndFolgtAbhaengigkeiten: Sprints eines Projekts nach Rang und Tabellenplatz, die ohne Projekt
 // dahinter in Fahrplan-Reihenfolge; eine Voraussetzung erbt den Platz ihres Abnehmers.
 func TestRankErbtPlatzUndFolgtAbhaengigkeiten(t *testing.T) {
+	t.Parallel()
 	ses := func(nr, deps string) Session { return Session{Nr: nr, Text: "- **Abhängig von:** " + deps + "\n"} }
 	d := Data{
 		Projects: []Project{{ID: "GRA", Rang: "1", Sprints: []string{"C1", "B1"}}},
@@ -34,6 +35,7 @@ func TestRankErbtPlatzUndFolgtAbhaengigkeiten(t *testing.T) {
 }
 
 func TestOrderBrichtZyklus(t *testing.T) {
+	t.Parallel()
 	deps := map[string][]string{"a": {"b"}, "b": {"a"}, "c": nil}
 	got := Order([]string{"a", "b", "c"}, func(s string) string { return s }, func(s string) []string { return deps[s] },
 		func(x, y string) bool { return false })

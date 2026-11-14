@@ -31,13 +31,13 @@
         {
           "art": "flaeche",
           "form": "M-8 -86L-8 -95L1.6 -86Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8 -86L-8 -95L-3.2 -86Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         }
       ],
@@ -295,37 +295,37 @@
         {
           "art": "flaeche",
           "form": "M-21.7 -86L-21.7 -104L-9.3 -86Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-21.7 -86L-21.7 -104L-15.5 -86Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M-10.85 -90L-3.1 -114L1.55 -90Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-10.85 -90L-3.1 -114L-4.65 -90Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M-26.35 -70L-31 -82L-17.05 -70Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-26.35 -70L-31 -82L-21.7 -70Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -399,7 +399,7 @@
           "art": "flaeche",
           "auflage": true,
           "form": "M7.48 -111C9.68 -113.4 13.42 -113.6 15.18 -110.8C12.98 -109.2 9.68 -109 7.48 -111Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -410,7 +410,7 @@
         },
         {
           "art": "punkt",
-          "material": "koenigsblau",
+          "material": "kristall",
           "mitte": [12.54, -111.5],
           "radius": 0.5,
           "ton": "licht"
@@ -431,13 +431,13 @@
         {
           "art": "flaeche",
           "form": "M-7.7 -120L-6.6 -132L-1.1 -120Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-7.7 -120L-6.6 -132L-4.4 -120Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
@@ -475,13 +475,13 @@
         {
           "art": "flaeche",
           "form": "M-8 -86L-8 -95L1.6 -86Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-8 -86L-8 -95L-3.2 -86Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         }
       ],

@@ -34,6 +34,7 @@ func registerSimTest(s *Server) {
 			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
 			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
 			"Delta-Runde (B-640): action baseline {id, saveBaseline: M1} sichert einen durchgelaufenen Lauf als Baseline, start mit baseline: M1 vergleicht je Werte-Gruppe. " +
+			"start ist bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Workbench mit K3C_SIM_ENTSPERRT=1). " +
 			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task k3c-load oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)
@@ -61,6 +62,9 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 }
 
 func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (string, error) {
+	if err := simLockErr("sim_test start"); err != nil {
+		return "", err
+	}
 	root := ws.root
 	spec, err := in.spec()
 	if err != nil {

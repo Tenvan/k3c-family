@@ -1,4 +1,4 @@
-// Command soundatlas packt die erste Präferenz jedes Effekt-Slots aus data/assets.json (Bus sfx, ohne Schleifen) zu einem
+// Command soundatlas packt die erste Präferenz jedes Effekt-Slots aus data/sounds.json (Bus sfx, ohne Schleifen) zu einem
 // Sound-Atlas public/audio/atlas.ogg und atlas.mp3 mit atlas.json (Start und Dauer je Slot, SO6.2, B-494).
 // ffmpeg dekodiert und kodiert; die Reihenfolge folgt der Slot-ID, die Ausgabe hängt nur von den Eingaben ab.
 package main

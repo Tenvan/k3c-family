@@ -11,7 +11,7 @@ export type GuideId = 'coin' | 'pay' | 'dusk' | 'recruit';
 /** Reihenfolge, wenn mehrere passen (B-148 › Anforderungen) */
 export const GUIDE_ORDER: readonly GuideId[] = ['coin', 'pay', 'dusk', 'recruit'];
 
-/** Bild vor dem Hinweistext: Textur-Key und feste Pixel-Art-Skalierung (Zuordnung `docs/assets/zuordnung-welt.md` › `guide:coin`) */
+/** Bild vor dem Hinweistext: Textur-Key und feste Pixel-Art-Skalierung */
 export interface GuideImage {
   image: string;
   scale: number;

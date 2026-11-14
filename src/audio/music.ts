@@ -7,7 +7,7 @@ import type { Phase, World } from '../model/types';
 import { FORMAT_ORDER, pickFile } from './atlas';
 import { audioCore, type AudioCore } from './audioCore';
 import { CROSSFADE_SECONDS } from './crossfade';
-import assets from '../../data/assets.json';
+import assets from '../../data/sounds.json';
 
 export const MUSIC_STATES = ['day', 'dusk', 'night', 'battle', 'depth', 'boss', 'lobby', 'defeat', 'ending'] as const;
 export type MusicState = (typeof MUSIC_STATES)[number];
@@ -44,7 +44,7 @@ export function nextMusicState(prev: MusicState | undefined, view: MusicView, ev
 }
 
 /**
- * Zustand → Sound-Slot im Register `data/assets.json` (Auswahl SO4.1, Katalog `docs/assets/sounds.md` › Musik); `null` = Lücke.
+ * Zustand → Sound-Slot im Register `data/sounds.json` (Auswahl SO4.1, Katalog `docs/assets/sounds.md` › Musik); `null` = Lücke.
  * Die Niederlage (`castleFallen`) hat ein eigenes Stück, das Siegstück `music:ende` bleibt dem Sieg vorbehalten (B-573, B-555).
  */
 export const MUSIC_SLOTS: Readonly<Record<MusicState, string | null>> = {

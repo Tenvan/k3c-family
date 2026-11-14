@@ -36,22 +36,49 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 ## 1. Planung
 
-- Tickets, Sprints und Sessions (`docs/backlog/`, `docs/sprints/`) **nur** über diese Tools ändern, nicht von Hand: sie
-  halten Vorlage, Nummer, Index, Session-Tabelle, Fahrplan und Ablage (`archiv/`, `geplant/` → `aktiv/` → `erledigt/`) gleich.
+- Tickets, Sprints, Sessions und Projekte (`docs/backlog/`, `docs/sprints/`, `docs/projekte/`) **nur** über diese Tools
+  ändern, nie von Hand: sie halten Vorlage, Nummer, Index, Session-Tabelle, Fahrplan und Ablage (`archiv/`, `geplant/` →
+  `aktiv/` → `erledigt/`) gleich. **Läuft die Workbench, lehnt der Hook `tools/hooks/planGuard.ts` jede andere Änderung
+  ab** (Edit, Write, schreibende Shell-Befehle wie `sed -i`, `rm`, Umleitung, Skripte); Lesen per Shell bleibt erlaubt,
+  ist aber zweite Wahl: Überblick und Zählung immer über `plan_list` (wie die Planungsseite der Workbench).
+- Begriffe wie auf der Planungsseite: **offen** = Status offen, **eingeplant** = Status eingeplant, **ungeplant** = ohne
+  Sprint (`plan_list {kind: "ticket", sprint: "ungeplant"}`).
 - `plan_list {kind?, status?, domain?, sprint?, archive?}` für den Überblick, `plan_get {id}` für ein Dokument
   (`B-210`, `M8`, `M8.1`).
 - `plan_next {domain?}` zu Beginn einer autonomen Session: die nächste Session nach `docs/arbeitsweise.md` › Autonomer
-  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, Domäne frei), mit Pfad, Branch
-  `sprint/<präfix>`, Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions anderer
-  Domänen; sonst „Keine Session frei“ mit Grund je Projekt. Liest nur die lokalen Dateien: die Sperre über `origin`
-  (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
+  Ablauf, Schritt 1 (Rang, aktive Sprints, offen und autonom, Abhängigkeiten erledigt, keine Kollision mit einer Session
+  in Arbeit), mit Pfad, Branch `sprint/<präfix>` (ein Feld `Branch: sprint/cu1` bleibt, `w15/1-x` wird `sprint/w15`),
+  Session-Datei, ihren Kriterien aus der Sprint-README und den parallel möglichen Sessions; sonst „Keine Session frei“
+  mit Grund je Projekt. Kollision wie bei `plan_waves`: gleiche Sperre der Sprint-README oder überlappende Erlaubte
+  Dateien; fehlt einer Session die Dateimenge, gilt noch die Sperre nach Domäne und Lane. Liest nur die lokalen Dateien:
+  die Sperre über `origin` (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
+- `plan_waves {slots?, project?, domain?}` beim Planen oder Starten einer Welle (`docs/arbeitsweise.md` › Parallelität
+  und Wellen): Kandidaten sind offene autonome Sessions aktiver Sprints, freigegebene Tickets ohne Sprint und
+  freigegebene geplante Sprints mit `Braucht 🧑: –`. Ebene aus `Abhängig von`, Kollision bei überlappendem `Bereich`
+  (Präfix der Globs, Sammeldateien ausgenommen; Sessions: Erlaubte Dateien) oder gleicher `Sperre`; Rang, Prio, Nummer
+  entscheiden. Sessions in Arbeit stehen in Welle 1 und belegen Plätze (höchstens 4). Je zurückgestelltem Knoten steht
+  der Grund da; „In keiner Welle“ nennt `Bereich fehlt`, `wartet auf …` und als `Fehler:` unbekannte IDs.
+  `project`/`domain` grenzen nur die Anzeige ein.
+- `plan_check {id}` vor der Freigabe einer Spec und vor `plan_waves`: nennt je Ticket oder Sprint die Mängel der
+  Planungsangaben (Zeilen fehlen, `Bereich` leer, `Umgebung: ?`, `Größe: L`, unbekannte ID oder Freitext in
+  `Abhängig von`, `Bereich` überlappt mit einem anderen offenen Ticket); archivierte Tickets prüft es nicht.
+- `plan_queue {device?}` legt 🧑 gesammelt vor (Ralf-Queue): Freigaben (Specs im Entwurf mit `Braucht 🧑: Freigabe`),
+  Entscheidungen, Abnahmen je Gerät (PC, Xbox/TV, Pi, Mini-PC, Workshop, Veröffentlichung, `unbekannt`). Das Gerät einer
+  Mensch-Session steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt `unbekannt`.
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
   Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_sections {id, sections}` füllen
   (`sections`: Abschnitt → Text). Mehrere Abschnitte immer mit `plan_sections`; ein unbekannter Abschnitt bricht ab,
-  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`.
+  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`. Beim Ticket nennt
+  die Antwort bis zu fünf Tickets mit ähnlichem Titel (offen und Archiv, nur Hinweis, B-696).
 - `plan_set {id, fields}` setzt Kopf-Felder, z. B. `{"Status": "fertig"}`; Ticket `erledigt`/`verworfen` wandert ins
   Archiv, Sprint-`Status` verschiebt den Ordner. `Spec: freigegeben` nur mit `Freigabe` (Datum, Quelle) und nur nach
   Zustimmung von 🧑.
+- Relationen (B-696): `plan_set B-741 {"Duplikat von": "B-823"}` verwirft und archiviert B-741; `{"Ersetzt": "B-210, B-211"}`
+  im neueren Ticket. Unbekannte ID, Selbstverweis und Zyklus lehnt das Tool ab, ältere Tickets bekommen das Feld
+  eingefügt. `plan_get` zeigt die Gegenrichtung (`Ersetzt durch`, `Duplikate`) berechnet unter dem Kopf.
+- `plan_digest {älter_als?, dry?, neu?}` (B-696): je erledigtem Sprint eine `ZUSAMMENFASSUNG.md` (Ziel, Abnahme,
+  Kriterien mit Status, Tickets); `dry` ist Standard, vorhandene bleiben ohne `neu`. Statt eines erledigten Sprint-Ordners
+  zuerst die Zusammenfassung lesen.
 - `plan_delete {id}` nur für Sprint-Entwürfe in `geplant/` und ihre Sessions; Tickets werden `verworfen`.
 - Commits macht das Tool nicht. Danach `check_run task:test` mit `pattern: planning`.
 - `gh_status {force?}` statt `gh pr list`/`gh run list` in der Shell: je Sprint PR, CI und Merge-Konflikt, dazu der letzte
@@ -75,6 +102,12 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   zuerst (verdichtet, ohne `service` über alle), `logs_stats {service?, since?, groupBy?}` für Zahlen je Level oder
   Namensraum, `logs_query {service, level?, ns?, pattern?, since?, limit?}` für einzelne Zeilen,
   `logs_context {service, ts}` für die Zeilen um einen Zeitpunkt, `logs_since {service, cursor}` zum Mitlesen.
+  **Entfernte Server (B-771):** Alle `logs_*`-Tools, `server_status`, `reports_list` und `report_read` nehmen `server`
+  (`pi` = pi-gaming:8080, weitere Namen aus der Umgebungsvariable `K3C_REMOTE_SERVERS="name=host:port,…"`, oder `host:port`
+  im Heimnetz). Sie lesen dann die Dev-Endpunkte `/api/dev/*` dieses Servers (nur GET, Dev-Mode am Server nötig, Log-Ordner
+  `K3C_LOG_DIR` am Server gesetzt) statt der lokalen Dateien. Es gelten nur die Dienste `k3c-server` und `k3c-client`; je
+  Datei kommen die letzten 1000 Zeilen. `logs_since` nutzt dann die Byte-Position im Log des Servers als Cursor. Die Antwort
+  nennt oben die Quelle. Ohne `server` bleibt alles lokal.
 - `console_tail {service, limit?, since?}`: flüchtige Ausgabe eines Dienstes oder Laufs (`check:<ziel>`, `task:<name>`).
 
 ## 3. MCP
@@ -94,10 +127,19 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 - `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
   oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
-  `task:check:go`, `task:check:diff`, `task:check:race`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht
-  bei `task:test`, `go:test` und `dev:test`.
-- `task:check:diff` prüft nur, was der Diff zu `origin/develop` braucht (vor jedem Commit); `task:check:race` ist der
-  langsame Race-Detector für `engine/` (Review-Session, CI).
+  `task:check:go`, `task:check:diff`, `task:check:diff:plan`, `task:check:diff:js`, `task:check:diff:go`,
+  `task:check:race`, `go:test`, `go:lint`, `dev:test`, `task:check:dev`. Ein Testmuster (`pattern`) geht bei
+  `task:test`, `go:test` und `dev:test`.
+- Workbench (B-831): `dev:test` baut das Frontend bei Bedarf und fährt `go test` der Workbench ohne Sim-Pakete;
+  `task:check:dev` ist die volle Prüfung der Review (Frontend, Vitest, `go test`, Lint). Beide brauchen `task install`
+  im Checkout und brechen ohne Frontend-Abhängigkeiten mit diesem Hinweis ab. `console_tail check:<ziel>` liefert nur
+  Läufe des eigenen Checkouts (im Worktree `checkout` setzen, B-855).
+- `task:check:diff` prüft nur, was die geänderten Dateien gegenüber der Basis `HEAD` brauchen (vor jedem Commit), in zwei
+  Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, `go vet`; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete.
+  Nach einem roten Lauf wiederholt `task:check:diff:js` bzw. `task:check:diff:go` nur diese Bahn; `task:check:diff:plan`
+  zeigt nur Basis und Schritte. `task:check:race` ist der langsame Race-Detector für `engine/` (Review-Session, CI).
+- **Sim-Sperre (B-788):** `sim_test start` und `sim_run` lehnen ab, solange Simulationen und Balancing gesperrt sind
+  (Beschluss 🧑 2026-11-11). Nur 🧑 hebt die Sperre auf: Workbench mit `K3C_SIM_ENTSPERRT=1` starten.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
 - `check_run` wartet bis zum Ende des Laufs und sendet alle 20 s Fortschritt (B-520); ein Aufruf liefert das Ergebnis.
   Nie in Schleifen nachfragen. Nur ohne progressToken antwortet es nach 4 min mit „läuft noch“ und einer Lauf-ID;
@@ -127,7 +169,7 @@ Repo-Wurzel (B-701 D-10).
 
 ### Recherche für Grafik- und Sound-Slots
 
-Das Slot-Register `data/assets.json` ist seit MC1 eingefroren (Entfernung B-700); `id` ist hier weiter ein Slot daraus.
+Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist hier ein Slot daraus.
 
 - Recherche (Treffer in `data/assets-recherche.json`): `assets_research {id, query?}` fragt freesound (Token in
   `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons und OpenGameArt; `assets_hits {id}` liest,

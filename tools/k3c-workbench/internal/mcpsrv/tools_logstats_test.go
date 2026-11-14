@@ -7,6 +7,7 @@ import (
 )
 
 func TestLogsStats(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	ctx := context.Background()
 	text, err := s.logsStats(ctx, statsIn{Source: "k3c-workbench", Since: "2026-09-30T00:00:00Z"})
@@ -22,6 +23,7 @@ func TestLogsStats(t *testing.T) {
 }
 
 func TestLogsContext(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	text, err := s.logsContext(context.Background(), contextIn{Source: "k3c-workbench", TS: "2026-09-30T09:04:00Z", Before: 1, After: 1})
 	lines := strings.Split(text, "\n")
@@ -35,6 +37,7 @@ func TestLogsContext(t *testing.T) {
 }
 
 func TestConsoleTailSince(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	for _, l := range []string{"a", "b", "c"} {
 		s.console.Add("Vite", "stdout", l)

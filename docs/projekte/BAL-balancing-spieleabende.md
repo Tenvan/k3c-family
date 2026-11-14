@@ -1,7 +1,7 @@
 # BAL · Balancing & Spieleabende
 
 - **Status:** aktiv
-- **Rang:** 10
+- **Rang:** 9
 - **Ziel-Tickets:** B-099
 
 ## Ziel
@@ -14,13 +14,12 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | aktiv |
+| RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | erledigt |
 | BAL6 | Balancing-Tester misst die Wirtschaft | erledigt |
 | RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | geplant |
-| P1 | Spieleabend 1 | geplant |
 | BAL4 | Abgleich Spielmetrik und Simulator | erledigt |
-| BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | geplant |
-| BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | aktiv |
+| BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | erledigt |
+| BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | erledigt |
 | BAL7 | Holz-Balancing nach dem dichteren Wald | erledigt |
 | BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | erledigt |
 | BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | erledigt |

@@ -11,6 +11,7 @@ import (
 
 // B-628: Ein Kurzname (wie RUNNER~1 auf dem CI-Runner) gleicht dem Langnamen, auch wenn das Ende des Pfads noch fehlt.
 func TestSamePathKurznameOhneVorhandenesEnde(t *testing.T) {
+	t.Parallel()
 	long := filepath.Join(t.TempDir(), "ein langer Ordnername")
 	if err := os.Mkdir(long, 0o755); err != nil {
 		t.Fatal(err)

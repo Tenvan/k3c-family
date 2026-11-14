@@ -15,6 +15,31 @@
     "manifest": "farm/manifest.json"
   },
   {
+    "id": "geruest-1",
+    "rig": "gebaeude",
+    "manifest": "geruest-1/manifest.json"
+  },
+  {
+    "id": "geruest-2",
+    "rig": "gebaeude",
+    "manifest": "geruest-2/manifest.json"
+  },
+  {
+    "id": "geruest-3",
+    "rig": "gebaeude",
+    "manifest": "geruest-3/manifest.json"
+  },
+  {
+    "id": "geruest-4",
+    "rig": "gebaeude",
+    "manifest": "geruest-4/manifest.json"
+  },
+  {
+    "id": "geruest-6",
+    "rig": "gebaeude",
+    "manifest": "geruest-6/manifest.json"
+  },
+  {
     "id": "hafen",
     "rig": "gebaeude",
     "manifest": "hafen/manifest.json"
@@ -28,6 +53,11 @@
     "id": "hintergrundmauer",
     "rig": "gebaeude",
     "manifest": "hintergrundmauer/manifest.json"
+  },
+  {
+    "id": "hub-geruest",
+    "rig": "gebaeude",
+    "manifest": "hub-geruest/manifest.json"
   },
   {
     "id": "kaserne",

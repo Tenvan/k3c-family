@@ -139,11 +139,17 @@ tasks:
       - bunx vitest run --config vitest.config.ts {{.VITEST_ARGS}}
 
   gotest:
-    desc: go test für k3c-workbench und die Asset-Logik tools/assetkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
+    desc: go test für k3c-workbench (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit) und die Asset-Logik tools/assetkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
+    # Paketliste ohne Sim-Pakete (balance, simrun, simexe, botdev; Sperre, CHECK_SIM=1 nimmt sie mit, B-857) aus
+    # tools/checkdiff › simDirs wie bei check:go; WB_PKGS (CI) hat Vorrang. Scheitert die Liste, bricht der Lauf ab,
+    # statt auf ./... zurückzufallen.
+    vars:
+      WB_GO_PKGS:
+        sh: cd "{{.ROOT_DIR}}" && go run ./tools/checkdiff -wbpkgs
     cmds:
-      - go test {{.GO_TEST_FLAGS}} {{.WB_PKGS | default "./..."}}
+      - go test {{.GO_TEST_FLAGS}} {{.WB_PKGS | default .WB_GO_PKGS | default "./paketliste-fehlt"}}
       - cmd: cd ../assetkit && go test {{.GO_TEST_FLAGS}} ./...
         if: '[ "{{.ASSETKIT}}" != "0" ]'
 
@@ -152,8 +158,8 @@ tasks:
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
-      - golangci-lint run {{.WB_LINT_PKGS}}
-      - cmd: cd ../assetkit && golangci-lint run
+      - golangci-lint run --allow-serial-runners {{.WB_LINT_PKGS}}
+      - cmd: cd ../assetkit && golangci-lint run --allow-serial-runners
         if: '[ "{{.ASSETKIT}}" != "0" ]'
 
   build:

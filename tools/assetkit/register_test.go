@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// repo legt ein Mini-Repo an: data/assets.json mit einem Grafik- und einem Sound-Slot, zwei Bilder, ein Sound.
+// repo legt ein Mini-Repo an: data/sounds.json mit einem Grafik- und einem Sound-Slot, zwei Bilder, ein Sound.
 func repo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
@@ -93,7 +93,7 @@ func TestUngueltigeZuordnungen(t *testing.T) {
 	root := repo(t)
 	cases := map[string][]Choice{
 		"fehlt":         {{File: "grafik/town/gibts-nicht.png"}},
-		"unter public/": {{File: "../data/assets.json"}},
+		"unter public/": {{File: "../data/sounds.json"}},
 		"Art grafik":    {{File: "audio/coin.ogg"}},
 	}
 	for want, choices := range cases {

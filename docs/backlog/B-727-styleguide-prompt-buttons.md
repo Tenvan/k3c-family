@@ -4,9 +4,9 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
-- **Projekt:** PAP
+- **Status:** eingeplant
+- **Sprint:** WZ45
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-07
 - **Spec:** Entwurf
 - **Revision:** 1

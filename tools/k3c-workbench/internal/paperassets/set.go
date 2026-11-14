@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"time"
 
 	"k3c/tools/k3c-workbench/internal/assetsui"
 )
@@ -32,6 +33,8 @@ type SetErgebnis struct {
 	PNGs        int
 	Dateien     []string
 	Pixel       []Pixel
+	Reiter      []string // Assets, die dieses Asset als Reittier nutzen (Render veraltet, B-706)
+	Abbruch     string   // Grund, wenn Prüfen und Rendern abbrach (nicht abgelehnt); Felder und Pixel zeigen den bekannten Stand (B-870)
 }
 
 // Set wendet einen Merge-Patch atomar auf die Spec an: Patch → validate → render in einen Temp-Ordner → Spec per
@@ -46,6 +49,10 @@ func Set(ctx context.Context, cli CLI, id string, patch json.RawMessage) (SetErg
 	if err != nil {
 		return SetErgebnis{}, err
 	}
+	patch, err = teilePatch(alt, patch)
+	if err != nil {
+		return SetErgebnis{}, err
+	}
 	neu, err := MergePatch(alt, patch)
 	if err != nil {
 		return SetErgebnis{}, err
@@ -54,7 +61,11 @@ func Set(ctx context.Context, cli CLI, id string, patch json.RawMessage) (SetErg
 	if err != nil {
 		return SetErgebnis{}, err
 	}
-	return schreibeSpec(ctx, cli, a, alt, text)
+	r, err := schreibeSpec(ctx, cli, a, alt, text)
+	if err == nil {
+		r.Reiter = ReiterVon(cli.Root, a.ID)
+	}
+	return r, err
 }
 
 // name ist eine erlaubte Asset-ID oder Gruppe (Schema-Muster name).
@@ -90,29 +101,21 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 	}
 	defer func() { _ = os.RemoveAll(tmp) }()
 	spec := filepath.Join(tmp, a.Gruppe, a.ID+endung)
-	if err := spiegeleNachbarn(cli.Root, tmp, a.ID); err != nil {
+	if err := spiegeleNachbarn(cli.Root, tmp, a); err != nil {
 		return SetErgebnis{}, err
 	}
 	if err := schreibeDatei(spec, text); err != nil {
 		return SetErgebnis{}, err
 	}
-	if err := cli.Validate(ctx, spec); err != nil {
-		return SetErgebnis{}, err
-	}
 	r := SetErgebnis{Asset: a, Animationen: animationen(text)}
+	altSpec := ""
 	if len(alt) > 0 {
-		altSpec := filepath.Join(tmp, ".alt", a.ID+endung) // .alt ist kein gültiger Gruppenname
+		altSpec = filepath.Join(tmp, ".alt", a.ID+endung) // .alt ist kein gültiger Gruppenname
 		if err := schreibeDatei(altSpec, alt); err != nil {
-			return r, err
+			return SetErgebnis{}, err
 		}
-		d, err := cli.Diff(ctx, altSpec, spec)
-		if err != nil {
-			return r, err
-		}
-		r.Felder = d.Felder
-		r.Pixel = pixelJeAnimation(ctx, cli, a, altSpec, spec, r.Animationen)
 	}
-	render, err := cli.Render(ctx, spec)
+	render, err := pruefeUndRendere(ctx, cli, a, altSpec, spec, &r)
 	if err != nil {
 		return r, err
 	}
@@ -151,13 +154,13 @@ func zurueck(spec string, alt []byte) {
 
 // spiegeleNachbarn kopiert die übrigen Specs in den Temp-Ordner (<tmp>/<gruppe>/<id>.paper.json): Die Render-CLI
 // sucht z. B. das Reittier neben der Spec und in den Nachbar-Gruppen (RD1, tools/paper/rig/reiten.ts).
-func spiegeleNachbarn(root, tmp, ohne string) error {
+func spiegeleNachbarn(root, tmp string, ohne Asset) error {
 	alle, err := Assets(root)
 	if err != nil {
 		return err
 	}
 	for _, n := range alle {
-		if n.ID == ohne {
+		if n.ID == ohne.ID && n.Gruppe == ohne.Gruppe {
 			continue
 		}
 		b, err := os.ReadFile(n.Abs(root))
@@ -203,18 +206,19 @@ func ersetze(src, ziel string) error {
 	return nil
 }
 
-// ersetzeOrdner benennt src nach ziel um; ein vorhandenes ziel wird erst beiseitegelegt und danach gelöscht.
+// ersetzeOrdner benennt src (<tmp>/<gruppe>/<id>) nach ziel um; ein vorhandenes ziel wird erst nach <tmp>/.beiseite
+// gelegt (unter .cache/, nicht neben die Ausgabe, die der Server beobachtet; B-706) und danach gelöscht.
 func ersetzeOrdner(src, ziel string) error {
 	beiseite := ""
 	if _, err := os.Stat(ziel); err == nil {
-		beiseite = ziel + ".alt-" + filepath.Base(filepath.Dir(filepath.Dir(src)))
+		beiseite = filepath.Join(filepath.Dir(filepath.Dir(src)), ".beiseite")
 		if err := ordnerUmbenennen(ziel, beiseite); err != nil {
 			return err
 		}
 	}
 	if err := ordnerUmbenennen(src, ziel); err != nil {
 		if beiseite != "" {
-			_ = os.Rename(beiseite, ziel)
+			return zurueckLegen(beiseite, ziel, err)
 		}
 		return err
 	}
@@ -222,6 +226,24 @@ func ersetzeOrdner(src, ziel string) error {
 		_ = os.RemoveAll(beiseite) // Aufräumen; der neue Stand liegt schon
 	}
 	return nil
+}
+
+// zurueckLegen bringt die beiseitegelegte Ausgabe zurück (drei Versuche, der Watcher kann kurz sperren). Gelingt
+// das nicht, rettet es sie nach .cache/paper/gerettet/, weil der Temp-Ordner danach gelöscht wird, und nennt den Pfad.
+func zurueckLegen(beiseite, ziel string, ursache error) error {
+	var err error
+	for i := range 3 {
+		if err = os.Rename(beiseite, ziel); err == nil {
+			return ursache
+		}
+		time.Sleep(time.Duration(i+1) * 50 * time.Millisecond)
+	}
+	tmp := filepath.Dir(beiseite) // .cache/paper/tmp/<x>
+	gerettet := filepath.Join(filepath.Dir(filepath.Dir(tmp)), "gerettet", filepath.Base(tmp))
+	if os.MkdirAll(filepath.Dir(gerettet), 0o755) == nil && os.Rename(beiseite, gerettet) == nil {
+		return fmt.Errorf("%w; alte Ausgabe liegt unter %s (zurückbenennen: %v)", ursache, gerettet, err)
+	}
+	return fmt.Errorf("%w; alte Ausgabe nicht wiederhergestellt: %v", ursache, err)
 }
 
 // animationen sind die Schlüssel von "animationen" in Reihenfolge der Spec.
@@ -239,42 +261,6 @@ func animationen(spec []byte) []string {
 	return out
 }
 
-// pixelJeAnimation rendert Frame 0 jeder Animation alt und neu (parallel) und vergleicht die Pixel.
-func pixelJeAnimation(ctx context.Context, cli CLI, a Asset, altSpec, spec string, anims []string) []Pixel {
-	out := make([]Pixel, len(anims))
-	cache := filepath.Join(cli.Root, ".cache", "paper", "mcp")
-	_ = os.MkdirAll(cache, 0o755)
-	var wg sync.WaitGroup
-	for i, anim := range anims {
-		wg.Go(func() {
-			out[i] = pixel(ctx, cli, altSpec, spec, anim, filepath.Join(cache, fmt.Sprintf("%s-%s-0-diff.png", a.ID, anim)))
-		})
-	}
-	wg.Wait()
-	return out
-}
-
-func pixel(ctx context.Context, cli CLI, altSpec, spec, anim, overlay string) Pixel {
-	p := Pixel{Animation: anim}
-	dir := filepath.Dir(altSpec)
-	pa, pn := filepath.Join(dir, anim+"-alt.png"), filepath.Join(dir, anim+"-neu.png")
-	if _, err := cli.Frame(ctx, altSpec, FrameArgs{Animation: anim}, pa); err != nil {
-		if _, ok := AlsAbgelehnt(err); ok {
-			p.Anteil, p.Fehler = 1, "neu"
-		} else {
-			p.Fehler = err.Error()
-		}
-		return p
-	}
-	if _, err := cli.Frame(ctx, spec, FrameArgs{Animation: anim}, pn); err != nil {
-		p.Fehler = err.Error()
-		return p
-	}
-	d, err := cli.PixelDiff(ctx, pa, pn, overlay)
-	if err != nil {
-		p.Fehler = err.Error()
-		return p
-	}
-	p.Anteil, p.Boxen, p.Overlay = d.Anteil, d.Boxen, cli.rel(overlay)
-	return p
-}
+// SetOverlay ist der Pfad des Overlays von assets_set unter .cache/paper/mcp/: eigener Unterordner set/, damit er
+// das Overlay von assets_review (<id>-<animation>-0-diff.png) auch bei IDs mit „-“ nie trifft (B-706).
+func SetOverlay(id, anim string) string { return fmt.Sprintf("set/%s-%s-0-diff.png", id, anim) }

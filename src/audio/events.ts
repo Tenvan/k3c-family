@@ -3,7 +3,7 @@
  * es reagiert nur auf Ereignisse und Kamera-Ausschnitte. Welche Ereignisse klingen, klärt SO2 (Q15, B-167).
  */
 import type { GameEvent } from '../model/types';
-import assets from '../../data/assets.json';
+import assets from '../../data/sounds.json';
 
 /** Sichtbarer Ausschnitt eines lokalen Spielers in Units (Mitte und Breite der Kamera). */
 export interface Listener {
@@ -12,7 +12,7 @@ export interface Listener {
 }
 
 export interface SoundCue {
-  /** Sound-Slot im Register `data/assets.json` (`sfx:coin` …), Katalog `docs/assets/sounds.md` */
+  /** Sound-Slot im Register `data/sounds.json` (`sfx:coin` …), Katalog `docs/assets/sounds.md` */
   slot: string;
   /** Warnung: überall gleich laut, keine Dämpfung */
   global: boolean;

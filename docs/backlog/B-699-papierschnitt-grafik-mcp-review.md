@@ -5,7 +5,7 @@
 - **Prio:** hoch
 - **Umgebung:** ?
 - **Status:** eingeplant
-- **Sprint:** –
+- **Sprint:** MG11
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-06
 - **Spec:** freigegeben

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import assets from '../../data/assets.json';
+import assets from '../../data/sounds.json';
 import katalog from '../../docs/assets/sounds.md?raw';
 import credits from '../../public/audio/README.md?raw';
 

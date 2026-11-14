@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildingFit, buildingSlot, buildingSource, buildingTarget } from './buildingSize';
-import { BUILDING_TEXTURES, hubLookTexture } from './buildingSprites';
+import { buildingFit, buildingSource } from './buildingSize';
+import { BUILDING_TEXTURES } from './buildingSprites';
 import { crispScale, fitTarget, validTarget } from './targetFit';
 
 // B-685: Zielmaß je Gebäude und Stufe, die Grafik wird eingepasst.
@@ -38,32 +38,12 @@ describe('Zielmaß einpassen (B-685)', () => {
   });
 });
 
-describe('Gebäude-Slots im Register (B-685)', () => {
-  it('Schlüssel → Slot je Stufe: Mauer, Turm, Hub-Gebäude, Schiff, Treppen, Burg-Reihe', () => {
-    expect(buildingSlot('grafik:wall-3')).toBe('wall:3');
-    expect(buildingSlot('grafik:tower-5')).toBe('tower:5');
-    expect(buildingSlot('grafik:tavern-2')).toBe('tavern:2');
-    expect(buildingSlot('grafik:ship-1')).toBe('ship:1');
-    expect(buildingSlot('grafik:stairsUp')).toBe('stairsUp');
-    expect(buildingSlot('grafik:hub-4')).toBe('hub:4');
-    expect(buildingSlot(hubLookTexture({ id: 'lagerfeuer', stufe: 2 })!)).toBe('hub:camp:2');
-    expect(buildingSlot(hubLookTexture({ id: 'burg', stufe: 6 })!)).toBe('hub:2:2');
-    expect(buildingSlot(hubLookTexture({ id: 'burg', stufe: 13 })!)).toBe('hub:5:3');
-    expect(buildingSlot('grafik:geruest-3')).toBeNull(); // Gerüste und Hintergrundmauer: nicht im Umfang
-    expect(buildingSlot('grafik:hub-geruest')).toBeNull();
-  });
-
-  it('jeder Slot-Schlüssel hat ein Zielmaß und eine ladbare Datei', () => {
-    const keys = Object.keys(BUILDING_TEXTURES).filter((k) => buildingSlot(k));
-    expect(keys.length).toBeGreaterThanOrEqual(71);
-    for (const key of keys) {
-      expect(buildingTarget(key), key).not.toBeNull();
-      expect(buildingSource(key)?.file, key).toMatch(/^gebaeude(-paper)?\/.+\.png$/);
+describe('Gebäude-Darstellung (CU1.2)', () => {
+  it('jeder Schlüssel hat eine Datei; Papier: Maßstab 1, weich', () => {
+    for (const key of Object.keys(BUILDING_TEXTURES)) {
+      expect(buildingSource(key)?.file, key).toBe(BUILDING_TEXTURES[key]);
+      expect(buildingFit(key, { w: 96, h: 160 }), key).toMatchObject({ scale: 1, w: 96, h: 160, smooth: true });
     }
-  });
-
-  it('ohne Slot bleibt die Datei aus BUILDING_TEXTURES und der heutige Maßstab', () => {
-    expect(buildingSource('grafik:geruest-3')).toEqual({ file: 'gebaeude/geruest-3-32.png' });
-    expect(buildingFit('grafik:geruest-3', { w: 96, h: 160 })).toMatchObject({ scale: 1, w: 96, h: 160 });
+    expect(buildingSource('grafik:gibtsnicht')).toBeNull();
   });
 });

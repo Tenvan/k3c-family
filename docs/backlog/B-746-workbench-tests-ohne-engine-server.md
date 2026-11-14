@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** –
-- **Projekt:** RST
+- **Projekt:** WZG
 - **Erstellt:** 2026-11-08
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -35,7 +35,13 @@ Umbau von `internal/studioview` (Ausnahme laut B-726).
 
 ## Regeln und Einschränkungen
 
-Domäne DEV; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen.
+Domäne DEV; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Entscheidung 009: Online-Spiel entfällt; erst nach der Zerlegung von B-823 (Server-Werkzeuge) umsetzen oder verwerfen. Eingereiht in WZ46 (Entwurf) am 2026-11-12.
+
+- **Bereich:** `tools/k3c-workbench/internal/botdev/**`, `tools/k3c-workbench/internal/mcpsrv/simtest_online*.go`, `tools/k3c-workbench/.golangci.yml`
+- **Abhängig von:** B-823
+- **Braucht 🧑:** Entscheidung
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 

@@ -13,8 +13,7 @@ holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange d
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
 | Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`); auch der Starter | `tools/k3c-workbench/go.mod` | `wails version` |
 | WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` und Starter | – | `wails doctor` |
-| Go Task | 3.53 (so getestet; der Aufruf `task <projekt>` für den Task `default` eines Namensraums braucht eine neuere 3.x) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
-| Rust (Kern, RST) | 1.99 (stable, `rust/rust-toolchain.toml`) | Simulationskern `k3c-core` als Bibliothek (`task rust:build`, `rust:test`, `rust:lint`); Go lädt sie ohne cgo (`engine/core`). Windows: MSVC-Build-Tools; Ziel linux/arm64 baut die CI | `rust/rust-toolchain.toml` | `rustc --version` |
+| Go Task | ab 3.54.0 (geprüft von `check_run`: Testmuster an Task-Ziele brauchen das Quoten von `CLI_ARGS` und `GO_TEST_FLAGS`, B-868; Zahl in `tools/k3c-workbench/internal/mcpsrv/check_taskversion.go`) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
 | C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task go:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 | Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
 

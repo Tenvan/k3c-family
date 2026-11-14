@@ -1,10 +1,10 @@
 import { installPageChrome } from '../core/shell';
 import { CREDITS, renderCredits } from './credits';
-import { installPadScroll } from './spriteReference';
+import { installPadScroll } from './padScroll';
 import { applyTexts } from './texts';
 
 installPageChrome();
 applyTexts();
 installPadScroll();
-const target = document.getElementById('credits-grafik');
+const target = document.getElementById('credits-sound');
 if (target) target.innerHTML = renderCredits(CREDITS);

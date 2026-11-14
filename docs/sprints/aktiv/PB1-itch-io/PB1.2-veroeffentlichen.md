@@ -16,8 +16,9 @@ Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Gerät: Veröffentlichung
+
+🧑 lädt das Paket aus PB1.1 auf itch.io hoch und schließt den Sprint ab.
 
 ## Erlaubte Dateien
 

@@ -2,7 +2,7 @@
 import { Theme } from '@radix-ui/themes';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { backend } from '../api';
 import { BalancingPage } from './BalancingPage';
 
@@ -88,6 +88,13 @@ describe('Balancing-Seite', () => {
   }, 20000);
 
   it('bricht einen wartenden Lauf ab', async () => {
+    // B-695: Ohne Takt des Mocks bleiben beide Läufe sicher „wartet“; mit Takt war der erste unter Last schon fertig
+    // und der zweite lief bereits, bevor der Test ihn suchte.
+    const tick = vi.spyOn(globalThis, 'setInterval').mockImplementation((() => 0) as unknown as typeof setInterval);
+    onTestFinished(async () => {
+      tick.mockRestore();
+      for (const r of await backend.balanceRuns()) if (r.state === 'wartet') await backend.balanceStop(r.id);
+    });
     const host = await mount();
     await act(async () => button(host, 'Lauf starten').click());
     await flush();

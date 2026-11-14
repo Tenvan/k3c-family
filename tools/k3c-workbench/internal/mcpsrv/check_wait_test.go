@@ -19,6 +19,7 @@ func progressCtx(got chan<- string) context.Context {
 
 // B-520/AC-01: Mit progressToken wartet check_run bis zum Ende und meldet unterwegs Fortschritt, auch über checkWait hinaus.
 func TestCheckRunMitFortschrittWartetBisZumEnde(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	s, _ := fakeServer(t, func(spec runSpec) runResult {
 		<-release
@@ -43,6 +44,7 @@ func TestCheckRunMitFortschrittWartetBisZumEnde(t *testing.T) {
 
 // B-520/AC-02: check_run {run} wartet wie der Start auf das Ende, statt sofort „läuft noch“ zu melden.
 func TestCheckRunRunWartetAufDasEnde(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	s, _ := fakeServer(t, func(runSpec) runResult { <-release; return runResult{dur: 5 * time.Minute} })
 	s.checkWait = 5 * time.Millisecond
@@ -62,6 +64,7 @@ func TestCheckRunRunWartetAufDasEnde(t *testing.T) {
 
 // B-520: Ohne progressToken bricht das Warten nach checkWait ab; der Lauf bleibt über seine ID erreichbar.
 func TestCheckRunOhneFortschrittNachWartezeitLaufID(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	defer close(release)
 	s, _ := fakeServer(t, func(runSpec) runResult { <-release; return runResult{} })
@@ -73,6 +76,7 @@ func TestCheckRunOhneFortschrittNachWartezeitLaufID(t *testing.T) {
 }
 
 func TestWithProgressOhneTokenOhneMelder(t *testing.T) {
+	t.Parallel()
 	if progressOf(withProgress(context.Background(), nil)) != nil {
 		t.Fatal("ohne Aufruf kein Fortschritts-Melder")
 	}

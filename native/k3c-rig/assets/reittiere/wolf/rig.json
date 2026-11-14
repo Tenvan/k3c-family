@@ -1,0 +1,531 @@
+{
+  "id": "wolf",
+  "rig": "vierbeiner",
+  "version": 1,
+  "dichte": 3.3059602649006625,
+  "massstab": 1.3,
+  "rahmen": [
+    -123,
+    -199,
+    240,
+    205
+  ],
+  "teile": [
+    {
+      "id": "oberbein-hf",
+      "eltern": "rumpf-hinten",
+      "pivot": [
+        -26,
+        -56
+      ],
+      "ebene": 0
+    },
+    {
+      "id": "unterbein-hf",
+      "eltern": "oberbein-hf",
+      "pivot": [
+        -26,
+        -31
+      ],
+      "ebene": 10
+    },
+    {
+      "id": "huf-hf",
+      "eltern": "unterbein-hf",
+      "pivot": [
+        -26,
+        -9
+      ],
+      "ebene": 20,
+      "bild": "huf-hf.png",
+      "versatz": [
+        -34.8013,
+        -11.3293
+      ],
+      "groesse": [
+        74,
+        45
+      ]
+    },
+    {
+      "id": "oberbein-vf",
+      "eltern": "rumpf-vorn",
+      "pivot": [
+        30,
+        -56
+      ],
+      "ebene": 30
+    },
+    {
+      "id": "unterbein-vf",
+      "eltern": "oberbein-vf",
+      "pivot": [
+        30,
+        -31
+      ],
+      "ebene": 40
+    },
+    {
+      "id": "huf-vf",
+      "eltern": "unterbein-vf",
+      "pivot": [
+        30,
+        -9
+      ],
+      "ebene": 50,
+      "bild": "huf-vf.png",
+      "versatz": [
+        21.1583,
+        -11.3293
+      ],
+      "groesse": [
+        74,
+        45
+      ]
+    },
+    {
+      "id": "schweif",
+      "eltern": "rumpf-hinten",
+      "pivot": [
+        -38,
+        -68
+      ],
+      "ebene": 60,
+      "bild": "schweif.png",
+      "versatz": [
+        -76.5441,
+        -73.9435
+      ],
+      "groesse": [
+        142,
+        154
+      ]
+    },
+    {
+      "id": "rumpf-hinten",
+      "eltern": "rumpf-vorn",
+      "pivot": [
+        0,
+        -66
+      ],
+      "ebene": 70,
+      "bild": "rumpf-hinten.png",
+      "versatz": [
+        -48.1106,
+        -82.1106
+      ],
+      "groesse": [
+        193,
+        139
+      ]
+    },
+    {
+      "id": "rumpf-vorn",
+      "pivot": [
+        0,
+        -80
+      ],
+      "ebene": 80,
+      "bild": "rumpf-vorn.png",
+      "versatz": [
+        -8.7877,
+        -85.1354
+      ],
+      "groesse": [
+        192,
+        148
+      ]
+    },
+    {
+      "id": "oberbein-hn",
+      "eltern": "rumpf-hinten",
+      "pivot": [
+        -30,
+        -56
+      ],
+      "ebene": 90
+    },
+    {
+      "id": "unterbein-hn",
+      "eltern": "oberbein-hn",
+      "pivot": [
+        -30,
+        -31
+      ],
+      "ebene": 100
+    },
+    {
+      "id": "huf-hn",
+      "eltern": "unterbein-hn",
+      "pivot": [
+        -30,
+        -9
+      ],
+      "ebene": 110,
+      "bild": "huf-hn.png",
+      "versatz": [
+        -38.7336,
+        -11.3293
+      ],
+      "groesse": [
+        74,
+        45
+      ]
+    },
+    {
+      "id": "oberbein-vn",
+      "eltern": "rumpf-vorn",
+      "pivot": [
+        26,
+        -56
+      ],
+      "ebene": 120
+    },
+    {
+      "id": "unterbein-vn",
+      "eltern": "oberbein-vn",
+      "pivot": [
+        26,
+        -31
+      ],
+      "ebene": 130
+    },
+    {
+      "id": "huf-vn",
+      "eltern": "unterbein-vn",
+      "pivot": [
+        26,
+        -9
+      ],
+      "ebene": 140,
+      "bild": "huf-vn.png",
+      "versatz": [
+        17.226,
+        -11.3293
+      ],
+      "groesse": [
+        74,
+        45
+      ]
+    },
+    {
+      "id": "sattel",
+      "eltern": "rumpf-vorn",
+      "pivot": [
+        0,
+        -78
+      ],
+      "ebene": 150,
+      "bild": "sattel.png",
+      "versatz": [
+        -20.5845,
+        -86.0429
+      ],
+      "groesse": [
+        144,
+        126
+      ]
+    },
+    {
+      "id": "hals",
+      "eltern": "rumpf-vorn",
+      "pivot": [
+        30,
+        -70
+      ],
+      "ebene": 160,
+      "bild": "hals.png",
+      "versatz": [
+        7.5465,
+        -114.7788
+      ],
+      "groesse": [
+        274,
+        201
+      ]
+    }
+  ],
+  "plaetze": [
+    {
+      "name": "sattel",
+      "teil": "rumpf-vorn",
+      "punkt": [
+        -1.5384615384615383,
+        -80
+      ],
+      "drehung": 0,
+      "ebene": 155
+    },
+    {
+      "name": "maul",
+      "teil": "hals",
+      "punkt": [
+        60,
+        -91
+      ],
+      "drehung": 0,
+      "ebene": 165
+    }
+  ],
+  "baender": [
+    {
+      "id": "bein-hf",
+      "teil": "rumpf-hinten",
+      "ebene": 0,
+      "mitte": -26,
+      "ruhe": [
+        -72,
+        -56,
+        -44,
+        -31,
+        -20,
+        -9,
+        -6.8
+      ],
+      "breite": [
+        [
+          11.1,
+          13.1
+        ],
+        [
+          10.1,
+          12.1
+        ],
+        [
+          7.85,
+          9.85
+        ],
+        [
+          5.6,
+          7.6
+        ],
+        [
+          4.3,
+          6.3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          2.6,
+          4.6
+        ]
+      ],
+      "bild": "bein-hf.png",
+      "versatz": [
+        -37.7833,
+        -73.2957
+      ],
+      "groesse": [
+        84,
+        238
+      ]
+    },
+    {
+      "id": "bein-hn",
+      "teil": "rumpf-hinten",
+      "ebene": 90,
+      "mitte": -30,
+      "ruhe": [
+        -72,
+        -56,
+        -44,
+        -31,
+        -20,
+        -9,
+        -6.8
+      ],
+      "breite": [
+        [
+          11.1,
+          13.1
+        ],
+        [
+          10.1,
+          12.1
+        ],
+        [
+          7.85,
+          9.85
+        ],
+        [
+          5.6,
+          7.6
+        ],
+        [
+          4.3,
+          6.3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          2.6,
+          4.6
+        ]
+      ],
+      "bild": "bein-hn.png",
+      "versatz": [
+        -41.7833,
+        -73.2957
+      ],
+      "groesse": [
+        84,
+        238
+      ]
+    },
+    {
+      "id": "bein-vf",
+      "teil": "rumpf-vorn",
+      "ebene": 30,
+      "mitte": 30,
+      "ruhe": [
+        -72,
+        -56,
+        -44,
+        -31,
+        -20,
+        -9,
+        -6.8
+      ],
+      "breite": [
+        [
+          9.6,
+          11.6
+        ],
+        [
+          8.6,
+          10.6
+        ],
+        [
+          7.35,
+          10.95
+        ],
+        [
+          5.7,
+          7.7
+        ],
+        [
+          4.3,
+          6.3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          2.6,
+          4.6
+        ]
+      ],
+      "bild": "bein-vf.png",
+      "versatz": [
+        19.4267,
+        -73.2957
+      ],
+      "groesse": [
+        75,
+        238
+      ]
+    },
+    {
+      "id": "bein-vn",
+      "teil": "rumpf-vorn",
+      "ebene": 120,
+      "mitte": 26,
+      "ruhe": [
+        -72,
+        -56,
+        -44,
+        -31,
+        -20,
+        -9,
+        -6.8
+      ],
+      "breite": [
+        [
+          9.6,
+          11.6
+        ],
+        [
+          8.6,
+          10.6
+        ],
+        [
+          7.35,
+          10.95
+        ],
+        [
+          5.7,
+          7.7
+        ],
+        [
+          4.3,
+          6.3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          2.6,
+          4.6
+        ]
+      ],
+      "bild": "bein-vn.png",
+      "versatz": [
+        15.4267,
+        -73.2957
+      ],
+      "groesse": [
+        75,
+        238
+      ]
+    }
+  ],
+  "bein": {
+    "spitze": 2.2
+  },
+  "proportionen": {
+    "fuss": "pfote"
+  },
+  "animationen": {
+    "galopp": {
+      "frames": 8,
+      "gangart": "galopp"
+    },
+    "schritt": {
+      "frames": 8,
+      "gangart": "schritt"
+    },
+    "trab": {
+      "frames": 8,
+      "gangart": "trab"
+    },
+    "stand": {
+      "frames": 8,
+      "gangart": "stand"
+    }
+  },
+  "varianten": {
+    "spieler1": {},
+    "spieler2": {
+      "sattel": "sattel@spieler2.png"
+    },
+    "spieler3": {
+      "sattel": "sattel@spieler3.png"
+    },
+    "spieler4": {
+      "sattel": "sattel@spieler4.png"
+    }
+  },
+  "zuegel": {
+    "farbe": "#55301d",
+    "deckkraft": 0.25,
+    "breite": 1.3,
+    "durchhang": 8,
+    "ebene": 165
+  }
+}

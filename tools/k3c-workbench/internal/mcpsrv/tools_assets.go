@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -32,7 +33,7 @@ type assetsListIn struct {
 }
 
 type assetsGetIn struct {
-	ID     string   `json:"id" jsonschema:"Asset-ID (Dateiname ohne .paper.json), z. B. monarch"`
+	ID     string   `json:"id" jsonschema:"Asset-ID (Dateiname ohne .paper.json), z. B. monarch; bei gleicher ID in zwei Gruppen <gruppe>/<id>, z. B. gegner/wolf"`
 	Felder []string `json:"felder,omitempty" jsonschema:"nur diese obersten Schlüssel, z. B. [umhang, ausgabe]"`
 }
 
@@ -43,7 +44,7 @@ type assetsCreateIn struct {
 	Gruppe       string `json:"gruppe" jsonschema:"Ordner unter public/grafik, z. B. requisiten"`
 }
 
-// assetsIDIn ist die Eingabe der Recherche-Tools (Slot des eingefrorenen Registers data/assets.json).
+// assetsIDIn ist die Eingabe der Recherche-Tools (Slot des Sound-Registers data/sounds.json).
 type assetsIDIn struct {
 	ID string `json:"id" jsonschema:"Asset-Slot, z. B. farm, mount:horse, sfx:coin"`
 }
@@ -115,6 +116,9 @@ type stilKurz struct {
 
 func zahl(f float64) string { return strconv.FormatFloat(f, 'f', -1, 64) }
 
+// anteilProzent schreibt einen Anteil 0..1 als Prozent ohne Gleitkomma-Rest (0.55 → 55, nicht 55.00000000000001; B-709).
+func anteilProzent(f float64) string { return zahl(math.Round(f*1e6) / 1e4) }
+
 // leseStil liest die Stil-Datei roh und verdichtet.
 func leseStil(root string) ([]byte, stilKurz, error) {
 	var k stilKurz
@@ -148,7 +152,7 @@ func assetsGuide(root, rig string) (string, error) {
 	fmt.Fprintf(&b, "Stil: keine Konturen; jede Fläche ein Papierstück mit Schatten papier.lage (%s/%s, Unschärfe %s, %s %%); "+
 		"Schattierungen als aufgeklebte Lage (auflage: true, %s/%s/%s/%s %%); Innenlinien nur als Falz (Deckkraft %s); Licht von %s; "+
 		"keine Farben in der Spec, nur Papier-Materialien.\n", zahl(p.Lage.Dx), zahl(p.Lage.Dy), zahl(p.Lage.Unschaerfe),
-		zahl(p.Lage.Deckkraft*100), zahl(p.Auflage.Dx), zahl(p.Auflage.Dy), zahl(p.Auflage.Unschaerfe), zahl(p.Auflage.Deckkraft*100),
+		anteilProzent(p.Lage.Deckkraft), zahl(p.Auflage.Dx), zahl(p.Auflage.Dy), zahl(p.Auflage.Unschaerfe), anteilProzent(p.Auflage.Deckkraft),
 		zahl(p.Falz), strings.ReplaceAll(k.Licht, "-", " "))
 	fmt.Fprintf(&b, "Papier-Materialien (licht/basis/schatten): %s\n", strings.Join(pa.Schluessel(roh, "materialien"), ", "))
 	fmt.Fprintf(&b, "Einzeltöne (ohne Ton): %s\n", strings.Join(pa.Schluessel(roh, "einzeltoene"), ", "))

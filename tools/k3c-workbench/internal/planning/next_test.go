@@ -89,6 +89,7 @@ func checkText(t *testing.T, out string, want, not []string) {
 // TestNextNachRangUndAbhaengigkeit: BBB vor AAA; B1.1 Mensch, B1.2 und B1.3 warten, B1.4 ist frei (E1.1 fertig,
 // B-011 im Archiv). Parallel nur andere Domänen, je Domäne eine, ohne gesperrte SRV und ohne ruhendes Projekt.
 func TestNextNachRangUndAbhaengigkeit(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Next(nextRepo(t), NextFilter{}))
 	if !strings.HasPrefix(out, "Nächste Session: B1.4 · Titel B1.4\n") {
 		t.Fatalf("Auswahl:\n%s", out)
@@ -103,6 +104,7 @@ func TestNextNachRangUndAbhaengigkeit(t *testing.T) {
 
 // TestNextMitDomaene: Filter wählt A1.3 (Kriterien alle), parallel steht die freie CLI-Session aus BBB.
 func TestNextMitDomaene(t *testing.T) {
+	t.Parallel()
 	root := nextRepo(t)
 	out := must(t)(Next(root, NextFilter{Domain: "inf"}))
 	if !strings.HasPrefix(out, "Nächste Session: A1.3 ·") {
@@ -116,6 +118,7 @@ func TestNextMitDomaene(t *testing.T) {
 
 // TestNextKeineFrei: SRV ist durch A1.1 gesperrt; die Gründe stehen je Projekt in Rang-Reihenfolge, gekürzt.
 func TestNextKeineFrei(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Next(nextRepo(t), NextFilter{Domain: "SRV"}))
 	want := "Keine Session frei in Domäne SRV. Gründe je Projekt:\n" +
 		"- BBB: B1.1 Agent Mensch; B1.2 wartet auf B1.1 (offen); B1.3 wartet auf B-010 (offen); … 1 weitere\n" +
@@ -123,5 +126,24 @@ func TestNextKeineFrei(t *testing.T) {
 		"- CCC: kein aktiver Sprint\n"
 	if !strings.HasPrefix(out, want) || strings.Contains(out, "RUH") {
 		t.Fatalf("Antwort:\n%s", out)
+	}
+}
+
+// B-782/AC-01: Ein Branch mit führendem sprint/ bleibt, sonst gilt sprint/ + Teil vor dem ersten /.
+func TestSprintBranch(t *testing.T) {
+	t.Parallel()
+	cases := []struct{ id, field, want string }{
+		{"CU1", "sprint/cu1", "sprint/cu1"},
+		{"CU1", "`sprint/cu1`", "sprint/cu1"},
+		{"W15", "w15/1-x", "sprint/w15"},
+		{"W15", "w15/1-fackeln", "sprint/w15"},
+		{"W15", "", "sprint/w15"},
+		{"W15", "ohne-strich", "sprint/w15"},
+		{"W15", "sprint/", "sprint/w15"},
+	}
+	for _, c := range cases {
+		if got := sprintBranch(c.id, c.field); got != c.want {
+			t.Errorf("sprintBranch(%q, %q) = %q, will %q", c.id, c.field, got, c.want)
+		}
 	}
 }

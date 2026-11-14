@@ -24,7 +24,7 @@ var fakeBilder = map[string][2]string{
 	"mauer":   {"mauer/mauer-1.png", "mauer/mauer-1-stil.png"},
 }
 
-func (f *fakeFrames) Frame(ctx context.Context, spec, animation string, frame int, variante, out string) (FrameAntwort, error) {
+func (f *fakeFrames) Frame(ctx context.Context, spec, stil, animation string, frame int, variante, out string) (FrameAntwort, error) {
 	f.aufrufe.Add(1)
 	// Die echte CLI (RD1) lehnt die Basis HEAD~1 ab (Reittier fehlt dort); die Attrappe rendert ohne CLI.
 	if bilder, ok := fakeBilder[strings.TrimSuffix(filepath.Base(spec), ".paper.json")]; ok {
@@ -42,13 +42,14 @@ func (f *fakeFrames) Frame(ctx context.Context, spec, animation string, frame in
 		}
 		return FrameAntwort{Datei: out, Teile: fx.Teile}, os.WriteFile(out, raw, 0o644)
 	}
-	return f.CLI.Frame(ctx, spec, animation, frame, variante, out)
+	return f.CLI.Frame(ctx, spec, stil, animation, frame, variante, out)
 }
 
 func cli() CLI { return CLI{Root: repoRoot} }
 
 // TestCLIValidateUngueltig: banner mit fremdem Material wird abgelehnt.
 func TestCLIValidateUngueltig(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	fehler, err := cli().Validate(context.Background(), filepath.Join(repo, "public/grafik/requisiten/banner.paper.json"))
@@ -67,6 +68,7 @@ func TestCLIValidateUngueltig(t *testing.T) {
 
 // TestCLIDiffUmhang: Feld-Diff des Umhangs, kein Teil geändert.
 func TestCLIDiffUmhang(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	repo := testRepo(t)
 	alt := filepath.Join(t.TempDir(), "monarch.paper.json")
@@ -89,6 +91,7 @@ func TestCLIDiffUmhang(t *testing.T) {
 
 // TestCLISystemfehler: Exit 2 wird ein Go-Fehler mit stderr.
 func TestCLISystemfehler(t *testing.T) {
+	langsam(t)
 	t.Parallel()
 	_, err := cli().Validate(context.Background(), filepath.Join(t.TempDir(), "fehlt.paper.json"))
 	var abgelehnt *Abgelehnt

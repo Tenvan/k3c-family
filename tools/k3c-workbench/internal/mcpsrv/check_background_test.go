@@ -14,6 +14,7 @@ var reRunID = regexp.MustCompile(`Lauf-ID (L\d+)`)
 // B-372/AC-01: Ein Lauf, der länger als die Wartezeit dauert, liefert eine Lauf-ID; über sie kommen Exit-Code und
 // Fehlerzeilen, sobald er endet.
 func TestCheckRunLangerLaufLiefertLaufID(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	s, _ := fakeServer(t, func(spec runSpec) runResult {
 		<-release
@@ -43,6 +44,7 @@ func TestCheckRunLangerLaufLiefertLaufID(t *testing.T) {
 }
 
 func TestCheckRunUnbekannteLaufID(t *testing.T) {
+	t.Parallel()
 	s, _ := fakeServer(t, func(runSpec) runResult { return runResult{} })
 	if _, err := s.checkRun(context.Background(), checkIn{Run: "L99"}); err == nil || !strings.Contains(err.Error(), "L99") {
 		t.Fatalf("erwartet Fehler mit der ID, bekam %v", err)
@@ -51,6 +53,7 @@ func TestCheckRunUnbekannteLaufID(t *testing.T) {
 
 // Ein kurzer Lauf antwortet wie bisher direkt.
 func TestCheckRunKurzerLaufAntwortetDirekt(t *testing.T) {
+	t.Parallel()
 	s, _ := fakeServer(t, func(runSpec) runResult { return runResult{dur: 2 * time.Second} })
 	text, err := s.checkRun(context.Background(), checkIn{Target: "task:test"})
 	if err != nil || text != "task:test · exit 0 · 2,0 s" {
@@ -60,6 +63,7 @@ func TestCheckRunKurzerLaufAntwortetDirekt(t *testing.T) {
 
 // B-372/AC-02: Die Server-Anweisungen nennen alle Parameter von console_tail.
 func TestInstructionsNennenConsoleTailParameter(t *testing.T) {
+	t.Parallel()
 	ty := reflect.TypeOf(tailIn{})
 	for i := 0; i < ty.NumField(); i++ {
 		name := strings.Split(ty.Field(i).Tag.Get("json"), ",")[0]
@@ -82,6 +86,7 @@ func consoleTailLine(t *testing.T) string {
 
 // B-403/N5: Ein Job hält nur Fehlerzeilen und das Ende der Ausgabe; die Antwort bleibt dieselbe.
 func TestCheckJobHaeltNurFehlerzeilen(t *testing.T) {
+	t.Parallel()
 	j := &checkJob{t: checkTarget{kinds: []string{kindGoTest}}}
 	for i := 0; i < 1000; i++ {
 		j.add("ok zeile")
@@ -99,6 +104,7 @@ func TestCheckJobHaeltNurFehlerzeilen(t *testing.T) {
 
 // Review WZ2.8: „läuft bereits“ nennt die Lauf-ID des laufenden Laufs.
 func TestCheckRunLaeuftBereitNenntLaufID(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	s, started := fakeServer(t, func(runSpec) runResult { <-release; return runResult{} })
 	s.checkWait = 10 * time.Millisecond

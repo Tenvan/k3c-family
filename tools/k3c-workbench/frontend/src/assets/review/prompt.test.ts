@@ -1,7 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { fillPrompt, reviewWerte } from './prompt';
-import { fixture } from './testing';
-import type { Review, Vorlage } from './types';
+import type { Review, Vorlage } from '../api';
+import { fillPrompt } from '../prompts/fill';
+import { reviewWerte } from './prompt';
+
+// ohne ./testing: das lädt reviewStore und damit backend (braucht window); dieser Test läuft ohne DOM
+const fixture = <T,>(name: string) =>
+  JSON.parse(readFileSync(resolve(__dirname, '../../../../../paper/fixtures/ui', `${name}.json`), 'utf-8')) as T;
 
 // RV1.4 / AC-06: Prompt-Vorlagen am Review-Eintrag werden vollständig gefüllt.
 

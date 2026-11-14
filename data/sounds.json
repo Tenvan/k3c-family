@@ -1,0 +1,497 @@
+{
+  "_comment": "Sound-Slots (CU1.2, vorher in data/assets.json): id, art (sound), kategorie (sfx|musik|ambient), beschreibung, bus (sfx|music|ambient), wahl: Dateien unter public/ (erste = aktive Wahl). Katalog docs/assets/sounds.md; liest src/audio und tools/soundatlas.",
+  "slots": [
+    {
+      "id": "music:tag",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Tag",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/happy-adventure-loop.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:abend",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Abend",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:nacht",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Nacht",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/haunting-chiptune-loop-void-estate.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:kampf",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Kampf",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/pixel-sprinter.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:tiefe",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Tiefe/Höhle",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/8-bit-cave-loop.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:boss",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Boss",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/nes-shooter-music-boss.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:lobby",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Lobby",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/nes-shooter-music-map.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:ende",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Sieg",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/8-bit-victory-loop.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:niederlage",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Niederlage (Burg gefallen)",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/selbst-erzeugt-niederlage.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:hit",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Treffer",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactpunch-medium.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmetal-light-0.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:kill",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Kill",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-spacetrash2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetonedown.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:coin",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Münze",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-pepsound3.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:arrow",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Pfeil",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-laser5.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:strike",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Schlag",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-chop.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice2.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:build",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Bau",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:death",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Tod",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-lowdown.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-lowthreetone.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:revive",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Wiederbeleben",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup5.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup11.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup7.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-twotone1.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:tank",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Tank (dumpf, metallisch)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmetal-light-0.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-metallatch.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/block-rpg-1.mp3"
+        },
+        {
+          "datei": "audio/kandidaten/shieldhit1.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:mage",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Zauberer (hell, mystisch)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup5.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/fire-rpg.mp3"
+        },
+        {
+          "datei": "audio/kandidaten/fireball.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:healer",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Heiler (weich, aufsteigend)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-powerup3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserup2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/heal-rpg.mp3"
+        },
+        {
+          "datei": "audio/kandidaten/status-effect-healing.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:skill:thief",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Skill Dieb (kurz, leise)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-knifeslice2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-pepsound3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/whoosh-swipe-fight-sounds-sword-air.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:warn",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Nacht naht",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-interface-sounds-bong-001.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:portal",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Portal",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phasejump3.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-phaserdown2.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-zapthreetoneup.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:coinGive",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Münze geben",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-handlecoins2.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:buildProgress",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Bau-Fortschritt",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:revived",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Wiederbeleben durch Mitspieler",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-highup.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:boss",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Boss-Auftritt",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-lowthreetone.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:hub",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Hub-Ausbau",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-digital-audio-threetone2.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:ride",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Reiten (Hufschlag)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/horse-gallop-loop-01.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/horse-gallop-loop-02.ogg"
+        },
+        {
+          "datei": "audio/kandidaten/horse-gallop-on-different-surfaces.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:uiSelect",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "UI: Auswahl wechseln",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/selbst-erzeugt-ui-select.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:uiConfirm",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "UI: Bestätigen",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/selbst-erzeugt-ui-confirm.ogg"
+        }
+      ]
+    }
+  ]
+}

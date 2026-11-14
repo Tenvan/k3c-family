@@ -1,9 +1,10 @@
 // Attrappe der Render-CLI (Vertrag docs/standards/paper-spec.md › CLI-Vertrag, docs/standards/paper-mcp.md › Attrappen):
-// beantwortet validate, render, frame, diff, pixeldiff deterministisch, ohne Renderer. Bekannte Fixtures (monarch, pferd,
+// beantwortet validate, render, frame, diff, pixeldiff (und batch) deterministisch, ohne Renderer. Bekannte Fixtures (monarch, pferd,
 // mauer) bekommen die PNGs aus fixtures/render/, gültige unbekannte Specs ein Platzhalter-PNG, ungültige Exit 1.
 // In-Process: run(args) → {code, stdout, stderr}; Shell: bun tools/paper/fixtures/cli-stub.ts <befehl> …
 import { copyFileSync, existsSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { basename, join, relative, resolve } from 'node:path';
+import { batch, schritteAus } from '../cli/batch';
 import { checkSpecFile, readJson } from '../schema/check';
 import { box } from '../schema/form';
 import { stilHash } from '../schema/hash';
@@ -135,7 +136,10 @@ function pixel(pos: string[], opt: Record<string, string>): Ergebnis {
   return ok({ anteil: d.anteil, boxen: d.boxen, datei: rel(opt.out) });
 }
 
-const BEFEHLE: Record<string, (pos: string[], opt: Record<string, string>) => Ergebnis> = { validate, render, frame, diff, pixeldiff: pixel };
+/** Sammelaufruf wie paper.ts (B-856). */
+const sammel = (pos: string[]): Ergebnis => ok({ schritte: batch(schritteAus(datei(pos[0], 'Schritte')), run) });
+
+const BEFEHLE: Record<string, (pos: string[], opt: Record<string, string>) => Ergebnis> = { validate, render, frame, diff, pixeldiff: pixel, batch: sammel };
 
 /** Führt einen Befehl aus; Aufruffehler → Exit 2 mit Text auf stderr, nichts auf stdout. */
 export function run(args: string[]): Ergebnis {

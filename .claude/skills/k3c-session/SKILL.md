@@ -12,7 +12,9 @@ die ganze Datei nur bei Regelfragen lesen.
 
 1. `git fetch --prune`, dann `task ops:aufraeumen`.
 2. `plan_next` (k3c-workbench) liefert Session, Pfad, Branch-Präfix, Kriterien und „Parallel möglich“.
-   Ohne k3c-workbench: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
+   Fehlen die MCP-Tools: erst prüfen, ob die Workbench läuft (Prozess `k3c-workbench*`, Port 5180, `logs/k3c-workbench.jsonl`),
+   sonst `bin/k3c-workbench.exe` starten (veraltet: vorher `task k3c-workbench:build`; nie zusätzlich die Web-EXE, gleicher Port) und
+   den MCP neu verbinden. Erst wenn das scheitert, ohne k3c-workbench: `docs/arbeitsweise.md` › Autonomer Ablauf, Schritt 1.
    `plan_next` überlagert je aktivem Sprint automatisch den Stand von `origin/sprint/<präfix>` (lokaler Ref aus dem
    `git fetch` in Schritt 1, B-519); die Zeilen unter „Stand der Sprints“ nennen, ob origin oder der lokale Stand gilt.
 3. Sperre über `origin`: Sie ist in `plan_next` enthalten; nur für Sprint-Branches, die lokal unbekannt sind, hilft
@@ -35,7 +37,7 @@ Sprint-Branch auschecken (fehlt er: von `origin/develop`), `plan_set {Status: in
 
 ## 4. Prüfen und Review (einmal, parallel)
 
-1. `check_run task:check:diff` wartet bis zum Ende und liefert das Ergebnis (B-520); über 2 min macht Claude Code den
+1. `check_run task:check:diff` prüft nur die geänderten Dateien dieses Commits (Basis `HEAD`; vor dem Commit aufrufen), wartet bis zum Ende und liefert das Ergebnis (B-520); über 2 min macht Claude Code den
    Aufruf selbst zum Hintergrund-Task. Kommt doch „läuft noch“ mit Lauf-ID, `check_run {run}` einmal aufrufen (wartet
    weiter), keine Schleife. Ohne k3c-workbench: `task check:diff` per Bash mit `run_in_background`.
 2. **Gleichzeitig** im Hintergrund ein Reviewer, aber nur bei Domäne SIM oder SRV, Protokoll- oder Spielstand-Änderung,

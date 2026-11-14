@@ -5,7 +5,7 @@ import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statS
 import { join } from 'node:path';
 import { ROOT } from '../render/stil';
 import { dauer, schritt, type Melde } from './fortschritt';
-import { gen } from './gen';
+import { genParallel, type ParallelErgebnis } from './genParallel';
 
 export const WORK = join(ROOT, '.work/grafik');
 
@@ -55,14 +55,14 @@ export function uebertragen(work: string, wurzel: string): { geschrieben: number
   return { geschrieben, entfernt };
 }
 
-/** Spiegeln, rendern, übertragen. */
-export function genMitWork(wurzel: string, work = WORK, melde?: Melde): { gruppen: string[]; geschrieben: number; entfernt: number } {
+/** Spiegeln, rendern (parallel, unveränderte Assets aus dem Cache in `work`, B-751), übertragen. */
+export async function genMitWork(wurzel: string, work = WORK, melde?: Melde, o: { jobs?: number } = {}): Promise<ParallelErgebnis & { geschrieben: number; entfernt: number }> {
   const t0 = performance.now();
   schritt(melde, '📂', 'Specs spiegeln', () => spiegeln(wurzel, work));
-  const { gruppen } = gen(work, { melde });
+  const g = await genParallel(work, { melde, cache: true, jobs: o.jobs });
   const r = schritt(melde, '📦', 'nach public/grafik übertragen', () => uebertragen(work, wurzel));
-  melde?.(`✅ gen:paper fertig in ${dauer(performance.now() - t0)}: ${r.geschrieben} Dateien geschrieben, ${r.entfernt} entfernt`);
-  return { gruppen, ...r };
+  melde?.(`✅ gen:paper fertig in ${dauer(performance.now() - t0)}: ${g.gerendert} Assets gerendert, ${g.ausCache} aus dem Cache, ${r.geschrieben} Dateien geschrieben, ${r.entfernt} entfernt`);
+  return { ...g, ...r };
 }
 
 /** Nur kopieren (B-748): `.work` ist vollständig, `public/grafik` nicht (frischer Checkout, gelöschte Ordner); kein Rendern. */
