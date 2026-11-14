@@ -85,6 +85,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-866](B-866-check-run-muster-mit-oder.md) | DEV | Problem | niedrig | eingeplant | WZ54 | check_run nimmt Testmuster mit Oder-Strich, Dach und Dollar an |
 | [B-867](B-867-changeset-remove-rollback.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | Ein gescheitertes Entfernen in changeSet.apply wird zurückgenommen |
 | [B-868](B-868-task-mindestversion-pruefen.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | Die Mindestversion von Task wird geprüft, auf die check_run beim Quoten von CLI_ARGS baut |
+| [B-869](B-869-abnahme-laeufe-wz55.md) | DEV | Schuld | mittel | offen | WZ55 | Abnahme-Läufe WZ55 |
+| [B-870](B-870-assets-set-fehlerantwort-sammelaufruf.md) | DEV | Problem | niedrig | eingeplant | WZ56 | assets_set nennt auch beim Abbruch des Sammelaufrufs die schon bekannten Felder und Pixel |
+| [B-871](B-871-task-version-merken.md) | DEV | Schuld | niedrig | eingeplant | WZ56 | check_run fragt die Task-Version einmal ab und merkt sie sich |
 
 ## Archiv
 
