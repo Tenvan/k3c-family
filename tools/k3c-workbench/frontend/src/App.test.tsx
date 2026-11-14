@@ -36,13 +36,13 @@ describe('Bereiche Development und Assets (WB1/AC-01)', () => {
   /** Beschriftung des gewählten Reiters. */
   const active = (head: string) => /aria-selected="true".*?TabsTriggerInner">([^<]+)</.exec(head)?.[1];
 
-  it('Kopfleiste schaltet zwischen Development und Assets, kein Studio-Knopf', () => {
+  it('Kopfleiste schaltet zwischen Development und Studio, kein Asset-Studio-Knopf', () => {
     savePref('app.area', 'development');
     savePref('app.page', 'dienste');
     const head = header(renderToStaticMarkup(<App />));
     expect(head).toMatch(/role="group" aria-label="Bereich"/);
     expect(head).toMatch(/aria-pressed="true"[^>]*>Development</);
-    expect(head).toMatch(/aria-pressed="false"[^>]*>Assets</);
+    expect(head).toMatch(/aria-pressed="false"[^>]*>Studio</);
     expect(head).not.toContain('Asset-Studio');
   });
 
@@ -56,7 +56,7 @@ describe('Bereiche Development und Assets (WB1/AC-01)', () => {
     }
   });
 
-  it('Assets startet mit dem Review und zeigt Katalog, Styleguide, Sound, Quellen', () => {
+  it('Studio startet mit dem Review und zeigt Katalog, Styleguide, Sound, Quellen, Balancing, Welten-Editor', () => {
     savePref('app.area', 'assets');
     localStorage.removeItem('k3c-workbench.app.assetsPage');
     const html = renderToStaticMarkup(<App />);

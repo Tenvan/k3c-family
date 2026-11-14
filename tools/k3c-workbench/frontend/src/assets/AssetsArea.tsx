@@ -7,7 +7,7 @@ import { SoundPage } from './sound/SoundPage';
 import { SourcesPage } from './sources/SourcesPage';
 import { StylePage } from './style/StylePage';
 
-/** Bereich Assets (Entscheidung 005 › 5): Review (RV1), Katalog, Styleguide, Sound, Quellen – nur Ansehen; Änderungen
+/** Bereich Studio, Asset-Seiten (Entscheidung 005 › 5): Review (RV1), Katalog, Styleguide, Sound, Quellen – nur Ansehen; Änderungen
  *  laufen über die MCP-Tools assets_*. Die Seiten stehen als Tabs.Content im Tabs.Root von AppFrame (App.tsx). */
 export function AssetsArea() {
   // Review gegen HEAD schon im Hintergrund rechnen lassen (B-732): die Seite Review steht dann sofort
