@@ -7,8 +7,9 @@
 //	k3c-sim level   [--input DATEI|-]          JSON {"biome","seed"} wie level_generate
 //	k3c-sim balance [--input DATEI|-] [Flags]  Flags wie bis RS2.2 bin/k3c-balance (--targets, --report-dir, --seed-list …)
 //	k3c-sim bot     --bot NAME                  je Zeile auf stdin ein Zustand, je Zeile eine Antwort (bot.go, RS2.2)
+//	k3c-sim world   [--input DATEI|-]          JSON {"op":"level"|"values"|"check",…} für den Welten-Editor (world.go, B-879)
 //
-// Eingabe: JSON aus der Datei hinter --input, bei run und level ohne --input von stdin („-“ = stdin). Bei balance ist
+// Eingabe: JSON aus der Datei hinter --input, bei run, level und world ohne --input von stdin („-“ = stdin). Bei balance ist
 // das JSON ein Objekt mit Flag-Namen als Schlüssel ({"targets": true, "seed-list": "k3c-dev", "vary": ["a=1"]});
 // Flags in der Befehlszeile stehen danach: Einfache Werte gewinnen, wiederholbare (--vary, --param) kommen hinzu.
 //
@@ -16,7 +17,7 @@
 //
 //	{"event":"progress","done":3,"total":6}          nach jedem fertigen Lauf (balance --targets --progress, auch --tune)
 //	{"event":"result","text":"…"}                     Ergebnis von run und level (Text wie sim_run/level_generate)
-//	{"event":"result","report":{…}}                   balance ohne --targets und ohne --out (Matrix-Bericht, --play)
+//	{"event":"result","report":{…}}                   balance ohne --targets und ohne --out (Matrix-Bericht, --play); world
 //	{"event":"report","files":["…json","…md","…html"]} balance --targets: geschriebene Berichtsdateien
 //	{"event":"commands","commands":[{"player":0,…}]}  Antwort von bot je Anfrage (bot.go)
 //	{"event":"error","message":"…"}                   vor Exit 1 oder 2
@@ -134,7 +135,7 @@ func run(args []string, v env) int {
 
 func dispatch(args []string, v env) error {
 	if len(args) == 0 {
-		return usagef("Unterbefehl fehlt: run, balance, level oder bot")
+		return usagef("Unterbefehl fehlt: run, balance, level, bot oder world")
 	}
 	switch args[0] {
 	case "run":
@@ -145,6 +146,8 @@ func dispatch(args []string, v env) error {
 		return cmdBalance(args[1:], v)
 	case "bot":
 		return cmdBot(args[1:], v)
+	case "world":
+		return cmdWorld(args[1:], v)
 	}
-	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level, bot)", args[0])
+	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level, bot, world)", args[0])
 }

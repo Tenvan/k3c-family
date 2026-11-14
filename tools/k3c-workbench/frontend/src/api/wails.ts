@@ -3,6 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
+import type { WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { AssetEintrag, AssetsBackend, Frame, Groesse, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -91,6 +92,12 @@ interface GoApp {
   StudioSoundData(pfad: string): Promise<string>;
   StudioSources(): Promise<Quellen>;
   StudioGameOpen(seed: string): Promise<string>;
+  // Welten-Editor (B-879, app_world.go)
+  WorldList(): Promise<WorldInfo[]>;
+  WorldDetail(id: string): Promise<WorldDetail>;
+  WorldLevel(id: string, island: string, stage: number, seed: string): Promise<WorldLevel>;
+  WorldValues(id: string): Promise<WorldValuesView>;
+  WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
 }
 
 interface WailsRuntime {
@@ -154,6 +161,16 @@ function assetsWails(app: GoApp): AssetsBackend {
   };
 }
 
+function worldWails(app: GoApp): WorldBackend {
+  return {
+    worldList: () => app.WorldList(),
+    worldDetail: (id) => app.WorldDetail(id),
+    worldLevel: (id, island, stage, seed) => app.WorldLevel(id, island, stage, seed),
+    worldValues: (id) => app.WorldValues(id),
+    worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
+  };
+}
+
 export function wailsBackend(): Backend {
   const app = window.go!.main!.App!;
   const runtime = window.runtime!;
@@ -206,6 +223,7 @@ export function wailsBackend(): Backend {
     ticketRecent: (n) => app.TicketRecent(n),
     ...balanceWails(app),
     ...assetsWails(app),
+    ...worldWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

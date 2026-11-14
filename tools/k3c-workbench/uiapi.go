@@ -50,6 +50,7 @@ var uiMethods = map[string]bool{
 	"AssetsFrame": true, "AssetsPixelDiff": true,
 	// Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
 	"StudioSounds": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
+	"WorldList": true, "WorldDetail": true, "WorldLevel": true, "WorldValues": true, "WorldOverrideSet": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix, die Oberfläche liefert Vite.

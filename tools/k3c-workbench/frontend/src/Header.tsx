@@ -4,10 +4,10 @@ import { loadPref, savePref } from './lib/prefs';
 import { StatusBadge, Tip } from '@webkit/atoms';
 import { ChipSwitch, SwitchField } from '@webkit/molecules';
 
-export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring', 'balancing'] as const;
+export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring', 'balancing', 'welten'] as const;
 export type Page = (typeof PAGES)[number];
 
-export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring', balancing: 'Balancing' };
+export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring', balancing: 'Balancing', welten: 'Welten-Editor' };
 
 /** Bereiche der Kopfleiste (Entscheidung 005 › 5): Development = die Seiten oben, Assets = nur Ansehen (WB1). */
 export const AREAS = ['development', 'assets'] as const;

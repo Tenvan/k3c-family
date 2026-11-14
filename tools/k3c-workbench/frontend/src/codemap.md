@@ -8,13 +8,13 @@ React-Single-Page-App von k3c-workbench: Shell mit vier Reitern (Dienste & Logs,
 
 - `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css`, `@webkit/theme.css` und `styles/*.css` (`app`, `services`, `logs`, `mcp`, `tasks`, `planning`, `planning-reader`), rendert `App` in `StrictMode`.
 - `App.tsx`: Wurzel über `AppFrame` (`@webkit/templates`): Titel „K3C Workbench“, Reiter aus `PAGES`/`LABELS` als `Tabs.Content`, Farbmodus dark/light (gemerkt `app.mode`, Vorgabe aus `prefers-color-scheme`), Seite gemerkt (`app.page`) über `lib/prefs`; hält den MCP-Zustand (`mcp:state`, `backend.info()`); `ui/organisms/Notices` als `overlay`.
-- `Header.tsx`: Bereiche `AREAS = development|assets` (Entscheidung 005 › 5), `PAGES` (Development: dienste … balancing) mit `LABELS`, `ASSET_PAGES` (review, katalog, styleguide, sound, quellen) mit `ASSET_LABELS` und `HeaderRight` (rechte Leiste von AppFrame: Bereichsumschalter `ChipSwitch`, MCP-Badge, `Mock`-Badge, Dark-Schalter `SwitchField`). App merkt `app.area`, `app.page`, `app.assetsPage`.
+- `Header.tsx`: Bereiche `AREAS = development|assets` (Entscheidung 005 › 5), `PAGES` (Development: dienste … balancing, welten) mit `LABELS`, `ASSET_PAGES` (review, katalog, styleguide, sound, quellen) mit `ASSET_LABELS` und `HeaderRight` (rechte Leiste von AppFrame: Bereichsumschalter `ChipSwitch`, MCP-Badge, `Mock`-Badge, Dark-Schalter `SwitchField`). App merkt `app.area`, `app.page`, `app.assetsPage`.
 - `assets/`: Bereich Assets, nur Ansehen (`AssetsArea.tsx`, Zugriff `api.ts`; `review/` gehört RV1).
 - Unterordner (je mit eigener codemap):
   - `api/` – Backend-Vertrag (`types.ts`), Wails-, HTTP-Adapter und Mock.
   - `lib/` – Formatierung, Prefs (Präfix `k3c-workbench.`, `prefsStore` für `useSplit`), Markdown-Parser, `useNow`; Gemeinsames in `tools/webkit` (`@webkit/…`).
   - `ui/` – `molecules/MarkdownView`, `organisms/Notices`; Radix und die Atome (`StatusBadge`, `ActionButton`, `Splitter` …) nur über `@webkit/atoms|molecules|organisms|templates`.
-  - `services/`, `tasks/`, `planning/`, `mcp/` – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.
+  - `services/`, `tasks/`, `planning/`, `mcp/`, `world/` (Welten-Editor, B-879) – je eine Seite; `logs/` – Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` genutzt.
   - `styles/` – CSS je Seite (keine Logik).
 - Muster: Feature-Ordner mit pure Logik-Dateien (Vitest) getrennt von Komponenten und Data-Hooks.
 

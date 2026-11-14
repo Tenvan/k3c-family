@@ -3,6 +3,7 @@ import { mockBalance } from './mockBalance';
 import { mockBalanceData } from './mockBalanceData';
 import { mockGit } from './mockGit';
 import { mockTickets } from './mockTickets';
+import { mockWorld } from './mockWorld';
 import { mockLogFiles } from './mockLogFiles';
 import { mockLogs } from './mockLogs';
 import { mockMcp } from './mockMcp';
@@ -72,6 +73,7 @@ export function mockBackend(): Backend {
     ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
     ...mockAssets(),
+    ...mockWorld(),
     mcpInstructions: async () => INSTRUCTIONS,
     mcpRestart: async () => {
       mcp = { ...mcp, listening: false, error: '' };

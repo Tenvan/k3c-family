@@ -17,6 +17,7 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings und M
 | [`logs/`](logs/codemap.md) | Leser für `logs/*.jsonl` mit Cursor und Digest |
 | [`serverapi/`](serverapi/codemap.md) | Read-only-Client für `/api/status` des Spielservers |
 | `simexe/` | Kindprozess `bin/k3c-sim` (Engine-CLI): `sim_run`, `level_generate`, `replay_run`, Bot-Entscheider (B-726) |
+| `world/` | Welten-Editor (B-879): Welten unter `data/worlds/` lesen, Level und Werte über `bin/k3c-sim world`, Overrides format-stabil in die Welt-Datei |
 | [`balance/`](balance/codemap.md) (+ [`cmd/`](balance/cmd/codemap.md)) | Balancing-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays |
 | [`gamedata/`](gamedata/codemap.md) | Zusammenfassungen von `reports/` und `saves/` |
 | [`github/`](github/codemap.md) | `gh`-CLI-Client für PR- und CI-Stand |
