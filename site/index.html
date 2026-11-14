@@ -238,9 +238,20 @@ pre .k{color:#9ea39a}
 }
 @media (min-width:861px) and (max-width:1100px){.gruppen{grid-template-columns:1fr 1fr}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* Schwebende Sprung-Knöpfe Anfang/Ende: zwei ausgeschnittene Papierkreise, ohne Script. */
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.sprung{position:fixed;right:clamp(12px,2.5vw,28px);bottom:clamp(12px,2.5vw,28px);z-index:50;display:flex;flex-direction:column;gap:10px}
+.sprung-knopf{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:var(--gelb);color:var(--schwarz);border:2px solid var(--schwarz);box-shadow:3px 3px 0 var(--schwarz);transition:transform .15s ease,box-shadow .15s ease}
+.sprung-knopf svg{width:22px;height:22px}
+.sprung-knopf.hoch svg{rotate:180deg}
+.sprung-knopf:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--schwarz)}
+.sprung-knopf:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--schwarz)}
+.sprung-knopf:focus-visible{outline:3px solid var(--blau);outline-offset:3px}
+@media print{.sprung{display:none}}
 </style>
 </head>
-<body>
+<body id="anfang">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -523,12 +534,16 @@ task native:game -- --seed familie-2026</pre></li>
     <p class="lizenz-text">Code: <a href="https://github.com/Tenvan/k3c-family/blob/main/LICENSE">PolyForm Noncommercial 1.0.0</a> (<a href="https://polyformproject.org/licenses/noncommercial/1.0.0">Lizenztext bei PolyForm</a>). Eigene Grafik und Sounds: CC BY-NC 4.0. Fremdmaterial behält seine eigene Lizenz, siehe <a href="https://github.com/Tenvan/k3c-family/blob/main/LICENSE-ASSETS">LICENSE-ASSETS</a>.</p>
   </section>
 
-  <footer class="impressum">
+  <footer class="impressum" id="ende">
     <p>Family Three Crowns (K3C) · © 2026 Ralf Stich · <a href="https://github.com/Tenvan/k3c-family">Quellcode</a> · <a href="#lizenz">Lizenz</a></p>
     <p>Inspiriert von Kingdom Two Crowns. Kein offizielles Produkt und nicht mit dessen Herstellern verbunden. Claude Code ist ein Produkt von Anthropic; das Spiel ist davon unabhängig.</p>
   </footer>
 </article>
 </div>
 
+<nav class="sprung" aria-label="Seite">
+  <a class="sprung-knopf hoch" href="#anfang" aria-label="Zum Anfang"><svg aria-hidden="true"><use href="#i-pfeil"/></svg></a>
+  <a class="sprung-knopf runter" href="#ende" aria-label="Zum Ende"><svg aria-hidden="true"><use href="#i-pfeil"/></svg></a>
+</nav>
 </body>
 </html>
