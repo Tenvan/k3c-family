@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | BI1 | SIM, DEV, CLI | NAT | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | – | `aktiv/BI1-biom-eigenschaften/` |
+| GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 
 ## Offen am Gerät

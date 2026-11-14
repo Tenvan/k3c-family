@@ -45,6 +45,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BI2 | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | geplant |
 | EP1 | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | geplant |
 | ST2 | Stresstests im Spielmenü (Testing) | geplant |
+| GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | aktiv |
 
 ## Nicht-Ziele
 
