@@ -31,6 +31,7 @@ type overlay struct {
 	toggles toggles
 	cues    []view.Cue
 	acts    []view.Action // Puffer von actionsOf
+	shapes  []shape       // Puffer der Debug-Formen (drawdebug.go)
 }
 
 // New liefert die Drawer des Pakets; lib darf nil sein (Tests), dann ohne Text.
@@ -40,13 +41,16 @@ func New(lib *art.Library) []view.Drawer {
 
 func (*overlay) Layer() view.Layer { return view.LayerOverlay }
 
-// Draw zeichnet die Cheat-Menüs in ihren Zellen und darüber die Tastenübersicht, wenn F1 sie eingeschaltet hat.
+// Draw zeichnet je Zelle das Debug-Overlay (F10) und das Cheat-Menü, darüber die Tastenübersicht (F1).
 func (o *overlay) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 	if f.Recording {
 		return
 	}
 	font := fontOf(o.lib)
 	for _, cell := range f.Cells {
+		if f.Dev.Debug != view.DebugOff {
+			o.drawDebug(dst, font, f, cell)
+		}
 		if cell.Player >= 0 && cell.Player < view.MaxPlayers && o.menus[cell.Player].open {
 			o.drawCheats(dst, font, cell, &o.menus[cell.Player])
 		}

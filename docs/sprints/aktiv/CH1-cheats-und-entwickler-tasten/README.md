@@ -75,7 +75,7 @@ keine
 |---|---|---|---|---|
 | CH1.1 | `CH1.1-tastentabelle-und-f-tasten.md` | Umsetzung | autonom | fertig |
 | CH1.2 | `CH1.2-cheat-menue.md` | Umsetzung | autonom | fertig |
-| CH1.3 | `CH1.3-debug-overlay.md` | Umsetzung | autonom | offen |
+| CH1.3 | `CH1.3-debug-overlay.md` | Umsetzung | autonom | fertig |
 | CH1.4 | `CH1.4-debug-werte.md` | Umsetzung | autonom | offen |
 | CH1.5 | `CH1.5-logs-und-bericht.md` | Umsetzung | autonom | offen |
 | CH1.6 | `CH1.6-hud-icons.md` | Umsetzung | autonom | offen |

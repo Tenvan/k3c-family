@@ -1,6 +1,6 @@
 # CH1.3 · Debug-Overlay F10: Hitboxen, Chunk-Grenzen, Kamera
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft: `devtools/debuggeo.go` (Rahmen um Monarchen, Truppen, Gegner, Münzen; Bauplätze mit Zahl-Reichweite aus `data/economy.json`; Chunk-Grenzen aus `Level.Chunks`, Weltkanten, Kamera-Mitte), `devtools/drawdebug.go` (je Zelle beschnitten, Kamera-Zeile unten links). Tests `TestGeometry`, `TestDebugDraw` grün.
+- Die Sim ist eindimensional: die Höhen der Rahmen sind feste Anzeige-Werte, keine Kollisionsboxen.
+- `check_run task:check:diff:go` grün.
