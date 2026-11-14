@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| NG20 | CLI | NAT | Natives Spiel komplett nach dist (B-827) | – | `aktiv/NG20-native-build-dist/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 
@@ -356,3 +355,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | `erledigt/WZ43-asset-tools-review/` |
 | WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | `erledigt/WZ57-workbench-aufraeumen/` |
 | PT5 | Abnahme-Läufe CU1 (B-836) | `erledigt/PT5-abnahme-cu1/` |
+| NG20 | Natives Spiel komplett nach dist (B-827) | `erledigt/NG20-native-build-dist/` |

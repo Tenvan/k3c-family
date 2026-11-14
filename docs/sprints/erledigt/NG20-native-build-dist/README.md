@@ -1,6 +1,6 @@
 # NG20 · CLI · Natives Spiel komplett nach dist (B-827)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit

@@ -29,7 +29,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
-| [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | eingeplant | NG20 | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 | [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | offen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
 | [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | offen | – | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
 | [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | offen | – | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
