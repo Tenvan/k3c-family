@@ -26,7 +26,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| BI2 | CLI | NAT | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | – | Entwurf | `geplant/BI2-biom-darstellung/` |
 | EP1 | CLI | NAT | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | – | Entwurf | `geplant/EP1-eingabe-profile/` |
 | ST2 | CLI | NAT | Stresstests im Spielmenü (Testing) | – | Entwurf | `geplant/ST2-stresstests-im-menue/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
@@ -364,3 +363,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | `erledigt/CH1-cheats-und-entwickler-tasten/` |
 | WZ59 | Studio-Seiten neu ordnen, Sound und Quellen zusammenlegen | `erledigt/WZ59-studio-seiten/` |
 | WR2 | Reste des Server- und Web-Rückbaus aufräumen | `erledigt/WR2-rueckbau-reste/` |
+| BI2 | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | `erledigt/BI2-biom-darstellung/` |
