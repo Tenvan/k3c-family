@@ -73,7 +73,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt | erledigt |
 | WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | erledigt |
 | WZ53 | Vitests unter src/assets bleiben unter Last grün | erledigt |
-| WZ54 | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | aktiv |
+| WZ54 | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | erledigt |
 | WZ55 | assets_set ruft die Paper-CLI gesammelt auf | geplant |
 
 ## Nicht-Ziele

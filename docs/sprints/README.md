@@ -10,7 +10,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ43 | DEV | WZG | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | – | `aktiv/WZ43-asset-tools-review/` |
-| WZ54 | DEV | WZG | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | – | `aktiv/WZ54-index-atomar-nummern-b1000/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
@@ -357,3 +356,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | `erledigt/WZ47-ticket-relationen-index/` |
 | WZ53 | Vitests unter src/assets bleiben unter Last grün | `erledigt/WZ53-assets-vitests-stabil/` |
 | WZ49 | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | `erledigt/WZ49-planung-checkrun-restbefunde/` |
+| WZ54 | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | `erledigt/WZ54-index-atomar-nummern-b1000/` |
