@@ -1,17 +1,19 @@
 import { useState } from 'react';
-import type { ToolStats, UsageBucket } from '../api';
+import type { UsageBucket, UsageRules } from '../api';
 import { Flex, SegmentedControl } from '@webkit/atoms';
 import { loadPref, savePref } from '../lib/prefs';
 import { useNow } from '../lib/useNow';
 import { LineChart } from './LineChart';
-import { share, sortByCalls } from './overview';
+import { barLabel, barTip, barValue, toolTotals, type ToolTotal } from './liveStats';
+import { share } from './overview';
 import { header, METRICS, pointsOf, RANGES, RANGE_SPEC, windowOf, type Metric, type Range } from './series';
 
-/** Top-Tools als senkrechte Balken. */
-const TOP = 5;
+/** Tools in der Balkenliste. */
+const TOP = 6;
 
-/** Live-Monitore (Workbench-Spec § 3): Top-Tools als Balken, Aufrufe oder Laufzeit über ein mitlaufendes Zeitfenster. */
-export function LiveMonitors({ minutes, tools }: { minutes: UsageBucket[]; tools: ToolStats[] }) {
+/** Live-Monitore (Workbench-Spec § 3, B-874): Verlauf mit Achsen und Legende, darunter die Tools des Fensters als
+ *  waagerechte Balken; Aufrufe oder Laufzeit über ein mitlaufendes Zeitfenster. */
+export function LiveMonitors({ minutes, rules }: { minutes: UsageBucket[]; rules?: UsageRules }) {
   const [metric, setMetric] = useState<Metric>(() => loadPref('mcp.liveMetric', METRICS, 'calls'));
   const [range, setRange] = useState<Range>(() => loadPref('mcp.liveRange', RANGES, '1h'));
   const now = useNow(30_000); // das Fenster wandert mit der Uhr
@@ -35,25 +37,29 @@ export function LiveMonitors({ minutes, tools }: { minutes: UsageBucket[]; tools
         </Flex>
       </Flex>
       <div className="mcp-live-body">
-        <TopTools tools={tools} />
-        <LineChart pts={pts} metric={metric} range={range} w={w} />
+        <LineChart pts={pts} metric={metric} range={range} w={w} rules={rules} />
+        <ToolBars tools={toolTotals(minutes, w)} metric={metric} />
       </div>
     </section>
   );
 }
 
-function TopTools({ tools }: { tools: ToolStats[] }) {
-  const top = sortByCalls(tools).filter((t) => t.calls > 0).slice(0, TOP);
-  const max = top[0]?.calls ?? 0;
+/** Tools des Fensters als waagerechte Balken: Name links, Balken, Wert mit Einheit rechts. */
+function ToolBars({ tools, metric }: { tools: ToolTotal[]; metric: Metric }) {
+  const top = [...tools].sort((a, b) => barValue(b, metric) - barValue(a, metric)).slice(0, TOP);
+  const max = top.length > 0 ? barValue(top[0], metric) : 0;
   if (top.length === 0) return null;
   return (
-    <div className="mcp-top" aria-label="Top-Tools nach Aufrufen">
+    <div className="mcp-bars" aria-label={metric === 'calls' ? 'Tools nach Aufrufen im Zeitraum' : 'Tools nach Ø-Laufzeit im Zeitraum'}>
+      <span className="mcp-bars-head">{metric === 'calls' ? 'Aufrufe je Tool' : 'Ø-Laufzeit je Tool'}</span>
       {top.map((t) => (
-        <div key={t.name} className="mcp-top-col" title={`${t.name}: ${t.calls}× · ${t.errors} Fehler`}>
-          <div className="mcp-top-bar">
-            <span className={t.errors > 0 ? 'mcp-top-fill mcp-top-bad' : 'mcp-top-fill'} style={{ height: `${share(t.calls, max)}%` }} />
-          </div>
-          <span className="mcp-top-name">{t.name}</span>
+        <div key={t.name} className="mcp-bar-row" title={barTip(t)}>
+          <span className="mcp-bar-name">{t.name}</span>
+          <span className="mcp-bar-track">
+            <span className={t.outliers > 0 && metric === 'duration' ? 'mcp-bar-fill mcp-bar-hot' : 'mcp-bar-fill'}
+              style={{ width: `${share(barValue(t, metric), max)}%` }} />
+          </span>
+          <span className="mcp-bar-value">{barLabel(t, metric)}</span>
         </div>
       ))}
     </div>

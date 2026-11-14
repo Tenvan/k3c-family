@@ -2,9 +2,10 @@ import { useState, type CSSProperties } from 'react';
 import { useTicketPage } from '@webkit/lib/ticketContext';
 import { SegmentedControl, Splitter, Text } from '@webkit/atoms';
 import { useSplit } from '@webkit/lib/split';
-import { NoticeCard } from '@webkit/molecules';
+import { NoticeCard, SplitStack } from '@webkit/molecules';
 import { loadPref, prefsStore, savePref } from '../lib/prefs';
 import { CallLog } from './CallLog';
+import { CheckRunPanel } from './CheckRunPanel';
 import { LiveMonitors } from './LiveMonitors';
 import { ServerCards } from './ServerCards';
 import { StatsView } from './StatsView';
@@ -15,7 +16,8 @@ const VIEWS = ['uebersicht', 'statistik'] as const;
 type View = (typeof VIEWS)[number];
 
 /** Reiter `MCP` (B-065, Workbench-Spec § 3): Umschalter Widgets | Statistiken (gemerkt); Splitter zwischen Tool-Kacheln
- *  und Live-Monitoren (B-445). */
+ *  und Live-Monitoren (B-445), waagerechter Splitter zwischen Widgets samt check_run-Auswertung und Aufruf-Log (B-875,
+ *  B-876; Anteil des Logs gemerkt unter `mcp.split.log`). */
 export function McpPage() {
   const [view, setView] = useState<View>(() => loadPref('mcp.view', VIEWS, 'uebersicht'));
   useTicketPage('mcp', view);
@@ -38,12 +40,18 @@ export function McpPage() {
       {overview && view === 'uebersicht' && (
         <>
           <ServerCards overview={overview} error={data.error} reload={data.reload} />
-          <div className="mcp-band2" style={{ '--mcp-band': `${split}%` } as CSSProperties}>
-            <ToolTiles tools={overview.stats.tools} />
-            <Splitter className="mcp-split" value={split} onChange={setSplit} onReset={resetSplit} />
-            <LiveMonitors minutes={data.usage?.minutes ?? []} tools={overview.stats.tools} />
-          </div>
-          <CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />
+          <SplitStack store={prefsStore} prefKey="mcp.split.log" dflt={45} label="Höhe des Aufruf-Logs" className="mcp-stack"
+            top={(
+              <>
+                <div className="mcp-band2" style={{ '--mcp-band': `${split}%` } as CSSProperties}>
+                  <ToolTiles tools={overview.stats.tools} />
+                  <Splitter className="mcp-split" value={split} onChange={setSplit} onReset={resetSplit} />
+                  <LiveMonitors minutes={data.usage?.minutes ?? []} rules={data.usage?.rules} />
+                </div>
+                <CheckRunPanel calls={data.calls} />
+              </>
+            )}
+            bottom={<CallLog calls={data.calls} tools={overview.stats.tools.map((t) => t.name)} />} />
         </>
       )}
       {view === 'statistik' && data.usage && <StatsView usage={data.usage} />}
