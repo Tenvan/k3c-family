@@ -561,7 +561,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-657](B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-707](B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
 | [B-701](B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | erledigt | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
-| [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | verworfen | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
+| [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | erledigt | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | erledigt | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-712](B-712-stil-schatten-materialien.md) | PAP | Problem | hoch | erledigt | RD2 | Stil zeigt Papierschatten wie der Prototyp und kennt Metall-, Kristall- und Biom-Materialien |
 | [B-713](B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | erledigt | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
@@ -742,3 +742,17 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-677](B-677-studio-assets-seite.md) | DEV | Idee | mittel | erledigt | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
 | [B-157](B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
 | [B-159](B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
+| [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | erledigt | WZ49 | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
+| [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | erledigt | WZ49 | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
+| [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | erledigt | WZ49 | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
+| [B-847](B-847-workbench-im-spiel-ansehen-nativ.md) | DEV | Schuld | niedrig | erledigt | WZ49 | „Im Spiel ansehen“ der Workbench startet das native Spiel statt game.html |
+| [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | erledigt | WZ49 | console_tail und check_run trennen die Konsolenpuffer je Checkout |
+| [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | erledigt | WZ55 | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
+| [B-862](B-862-index-statuswechsel-atomar.md) | DEV | Schuld | niedrig | erledigt | WZ54 | Ein Statuswechsel schreibt Haupt- und Archiv-Index so, dass keine Zeile verloren geht |
+| [B-863](B-863-ticketnummern-ab-b1000.md) | DEV | Schuld | niedrig | erledigt | WZ54 | Die Planungs-Werkzeuge verarbeiten Ticket-Nummern ab B-1000 |
+| [B-865](B-865-fahrplan-heilung-nur-bei-sprint-aenderung.md) | DEV | Problem | mittel | erledigt | WZ54 | Die Fahrplan-Heilung schreibt nur bei Sprint- oder Session-Änderungen und erzeugt keine Konflikte zwischen parallelen Worktrees |
+| [B-866](B-866-check-run-muster-mit-oder.md) | DEV | Problem | niedrig | erledigt | WZ54 | check_run nimmt Testmuster mit Oder-Strich, Dach und Dollar an |
+| [B-867](B-867-changeset-remove-rollback.md) | DEV | Schuld | niedrig | erledigt | WZ55 | Ein gescheitertes Entfernen in changeSet.apply wird zurückgenommen |
+| [B-868](B-868-task-mindestversion-pruefen.md) | DEV | Schuld | niedrig | erledigt | WZ55 | Die Mindestversion von Task wird geprüft, auf die check_run beim Quoten von CLI_ARGS baut |
+| [B-870](B-870-assets-set-fehlerantwort-sammelaufruf.md) | DEV | Problem | niedrig | erledigt | WZ56 | assets_set nennt auch beim Abbruch des Sammelaufrufs die schon bekannten Felder und Pixel |
+| [B-871](B-871-task-version-merken.md) | DEV | Schuld | niedrig | erledigt | WZ56 | check_run fragt die Task-Version einmal ab und merkt sie sich |

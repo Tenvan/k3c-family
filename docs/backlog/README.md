@@ -58,36 +58,22 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
-| [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | eingeplant | WZ49 | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
-| [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | eingeplant | WZ49 | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
 | [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | offen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
-| [B-839](B-839-wellen-restbefunde-review-wz44.md) | DEV | Problem | mittel | eingeplant | WZ49 | plan_next und plan_waves zählen Plätze, Ordner-Pfade und laufende Sessions ohne Domäne richtig |
 | [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
 | [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | offen | PT2 | Abnahme-Läufe PT2 |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | offen | – | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 | [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | offen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
-| [B-847](B-847-workbench-im-spiel-ansehen-nativ.md) | DEV | Schuld | niedrig | eingeplant | WZ49 | „Im Spiel ansehen“ der Workbench startet das native Spiel statt game.html |
 | [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | offen | – | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
 | [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | offen | – | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
 | [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | offen | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
 | [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | offen | WZ43 | Abnahme-Läufe WZ43 |
 | [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | offen | – | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | offen | WZ48 | Abnahme-Läufe WZ48 |
-| [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | eingeplant | WZ49 | console_tail und check_run trennen die Konsolenpuffer je Checkout |
-| [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
 | [B-860](B-860-abnahme-laeufe-wz47.md) | INF | Schuld | mittel | offen | WZ47 | Abnahme-Läufe WZ47 |
 | [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | offen | – | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
-| [B-862](B-862-index-statuswechsel-atomar.md) | DEV | Schuld | niedrig | eingeplant | WZ54 | Ein Statuswechsel schreibt Haupt- und Archiv-Index so, dass keine Zeile verloren geht |
-| [B-863](B-863-ticketnummern-ab-b1000.md) | DEV | Schuld | niedrig | eingeplant | WZ54 | Die Planungs-Werkzeuge verarbeiten Ticket-Nummern ab B-1000 |
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | offen | – | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
-| [B-865](B-865-fahrplan-heilung-nur-bei-sprint-aenderung.md) | DEV | Problem | mittel | eingeplant | WZ54 | Die Fahrplan-Heilung schreibt nur bei Sprint- oder Session-Änderungen und erzeugt keine Konflikte zwischen parallelen Worktrees |
-| [B-866](B-866-check-run-muster-mit-oder.md) | DEV | Problem | niedrig | eingeplant | WZ54 | check_run nimmt Testmuster mit Oder-Strich, Dach und Dollar an |
-| [B-867](B-867-changeset-remove-rollback.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | Ein gescheitertes Entfernen in changeSet.apply wird zurückgenommen |
-| [B-868](B-868-task-mindestversion-pruefen.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | Die Mindestversion von Task wird geprüft, auf die check_run beim Quoten von CLI_ARGS baut |
 | [B-869](B-869-abnahme-laeufe-wz55.md) | DEV | Schuld | mittel | offen | WZ55 | Abnahme-Läufe WZ55 |
-| [B-870](B-870-assets-set-fehlerantwort-sammelaufruf.md) | DEV | Problem | niedrig | eingeplant | WZ56 | assets_set nennt auch beim Abbruch des Sammelaufrufs die schon bekannten Felder und Pixel |
-| [B-871](B-871-task-version-merken.md) | DEV | Schuld | niedrig | eingeplant | WZ56 | check_run fragt die Task-Version einmal ab und merkt sie sich |
 
 ## Archiv
 

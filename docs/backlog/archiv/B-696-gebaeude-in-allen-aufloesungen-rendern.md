@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** verworfen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** GEB
 - **Erstellt:** 2026-11-05
