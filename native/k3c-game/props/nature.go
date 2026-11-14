@@ -75,6 +75,20 @@ func treeLook(x float64, biome string) look {
 	return object(treeKinds[mix(x)%uint32(len(treeKinds)*3)%uint32(len(treeKinds))])
 }
 
+// variantLook: Bild der Variante aus dem Level (B-891): im Wald die Baumart (tanne, pappel, birke = Asset-ID); andere
+// Varianten (Kristallfarben) haben noch keine Grafik, ok = false heißt: Bild wie ohne Variante.
+func variantLook(kind, variant, biome string) (look, bool) {
+	if kind != "tree" || natureLook(biome) != 1 {
+		return look{}, false
+	}
+	for _, id := range treeKinds {
+		if id == variant {
+			return object(id), true
+		}
+	}
+	return look{}, false
+}
+
 // rockLook: Fels-Form aus der Position (GEB15.2).
 func rockLook(x float64) look { return object(rockKinds[mix(x)%uint32(len(rockKinds))]) }
 

@@ -66,7 +66,7 @@ Alle Varianten einer Gruppe fest auf 0 → Prüfung lehnt die Welt ab. Wert auß
 |---|---|---|---|---|
 | BI1.1 | `BI1.1-datenmodell-generator.md` | Umsetzung | autonom | fertig |
 | BI1.2 | `BI1.2-welten-editor-natur.md` | Umsetzung | autonom | fertig |
-| BI1.3 | `BI1.3-baumart-darstellung.md` | Umsetzung | autonom | offen |
+| BI1.3 | `BI1.3-baumart-darstellung.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

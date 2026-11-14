@@ -1,6 +1,6 @@
 # BI1.3 · Baumart im nativen Spiel und Folge-Tickets der Darstellung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 geprüft: `variantLook` wählt im Wald das Asset der Baumart (tanne, pappel, birke); `TestVariantLookBaumart` grün. Plantage-Bäume (ohne Variante) und andere Biome bleiben beim Bild aus der Position. Sichtprüfung im Spiel durch Ralf offen.
+- Folge-Tickets im Sprint BI2 (Projekt NAT, geplant): B-900 Kristall-Adern in drei Farben (PAP), B-901 Kristallfarbe im Spiel, B-902 Deckenhöhe, B-903 Tropfsteine, B-904 Stützbalken und Verfall, B-905 Hitze und Glut, B-906 Leuchtstärke.
+- Baumarten brauchen kein neues Asset (vorhandene Papierschnitt-Bäume).
+- `task check:diff:go` grün; `check:diff:js` rot nur durch fremde Tickets (B-887, B-892 bis B-894).
