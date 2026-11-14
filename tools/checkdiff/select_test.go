@@ -19,7 +19,7 @@ func testRepo() repo {
 	}
 }
 
-// want: erwartete Auswahl. flags = gesetzte Schalter (D Docs, R Rules, C Client, W WbVitest, S StarterVitest, A go.mod der
+// want: erwartete Auswahl. flags = gesetzte Schalter (D Docs, R Rules, C Client, W WbVitest, A go.mod der
 // Wurzel), pkgs = geänderte Paket-Ordner als "modul:ordner".
 type want struct {
 	flags string
@@ -31,7 +31,7 @@ func summary(p plan) want {
 	for _, f := range []struct {
 		on   bool
 		name string
-	}{{p.Docs, "D"}, {p.Rules, "R"}, {p.Client, "C"}, {p.WbVitest, "W"}, {p.StarterVitest, "S"}, {p.Mods["."] != nil && p.Mods["."].All, "A"}} {
+	}{{p.Docs, "D"}, {p.Rules, "R"}, {p.Client, "C"}, {p.WbVitest, "W"}, {p.Mods["."] != nil && p.Mods["."].All, "A"}} {
 		if f.on {
 			w.flags += f.name
 		}
@@ -60,13 +60,13 @@ func TestClassify(t *testing.T) {
 		{"Workbench: eigenes Modul, Frontend nur Vitest",
 			[]string{"tools/k3c-workbench/internal/planning/next.go", "tools/k3c-workbench/frontend/src/App.tsx"},
 			want{"RW", []string{"tools/k3c-workbench:internal/planning"}}},
-		{"webkit: Vitest beider Oberflächen", []string{"tools/webkit/atoms/Button.tsx"}, want{"RWS", nil}},
+		{"webkit: Vitest der Workbench", []string{"tools/webkit/atoms/Button.tsx"}, want{"RW", nil}},
 		{"natives Modul: Paket und Modul-Wurzel",
 			[]string{"native/k3c-rig/rig/matrix.go", "native/k3c-rig/main.go", "native/k3c-rig/export/export.ts"},
 			want{"R", []string{"native/k3c-rig:.", "native/k3c-rig:rig"}}},
 		{"eingebettete Datei im Unterordner: Paket darüber", []string{"data/biomes/wald.json", "engine/balance/report/chart.json"}, want{"RC", []string{".:data", ".:engine/balance"}}},
 		{"Lockfile zählt als Client", []string{"bun.lock"}, want{"RC", nil}},
-		{"Client: src und Seiten", []string{"src/scenes/GameScene.ts", "index.html"}, want{"RC", nil}},
+		{"Wurzel: Tests und Konfiguration", []string{"tests/planning.test.ts", "vitest.config.ts"}, want{"RC", nil}},
 		{"gelöschtes Paket: kein Ziel", []string{"engine/alt/weg.go"}, want{"R", nil}},
 	}
 	for _, c := range cases {

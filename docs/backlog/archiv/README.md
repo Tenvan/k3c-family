@@ -816,3 +816,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | verworfen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | verworfen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 | [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | erledigt | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
+| [B-887](B-887-server-net-load-tui-entfernen.md) | SRV | Schuld | mittel | erledigt | WR1 | k3c-server, engine/net, k3c-load und k3c-tui sind entfernt, Tasks, CI, Docker und Workbench kommen ohne sie aus |
+| [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | erledigt | WR1 | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
+| [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | erledigt | WR1 | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |

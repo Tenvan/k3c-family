@@ -16,22 +16,11 @@ func writeConfig(t *testing.T, content string) string {
 	return path
 }
 
+// B-887: Spielserver und Vite sind entfernt, services.json des Moduls ist eine gültige, leere Liste.
 func TestLoadServicesJSONImModul(t *testing.T) {
 	list, err := Load("../../services.json")
-	if err != nil || len(list) != 2 || list[0].Name != "Vite" || list[1].Name != "Spielserver" {
+	if err != nil || len(list) != 0 {
 		t.Fatalf("services.json: %+v, %v", list, err)
-	}
-	if !strings.Contains(strings.Join(list[0].Command, " "), "--strictPort") || !list[0].AutoRestart || list[1].PortEnv != "K3C_HTTP_PORT" {
-		t.Errorf("Einträge: %+v", list)
-	}
-	if w := list[1].Watch; w == nil || len(w.Paths) == 0 || list[0].Watch != nil { // B-097: nur der Go-Server startet bei Änderungen neu (Vite hat Hot-Reload)
-		t.Errorf("Spielserver-Watch = %+v, Vite-Watch = %+v", list[1].Watch, list[0].Watch)
-	}
-	if list[1].Log != "k3c-server" { // B-066: Quelle logs/k3c-server.jsonl, geschrieben vom Go-Server
-		t.Errorf("Spielserver-Log = %q", list[1].Log)
-	}
-	if list[0].HealthURL() != "http://127.0.0.1:5183/" {
-		t.Errorf("Adresse: %s", list[0].HealthURL())
 	}
 }
 

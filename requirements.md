@@ -1,24 +1,22 @@
 # Voraussetzungen
 
-Was auf einem Entwickler-Rechner installiert sein muss. Alles Weitere (TypeScript, Vite, Vitest, Oxlint, Phaser)
+Was auf einem Entwickler-Rechner installiert sein muss. Alles Weitere (TypeScript, Vitest, Oxlint)
 holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange diese Datei, `.nvmrc`, `go.mod` und
 `.github/workflows/ci.yml` übereinstimmen; wer eine davon ändert, passt die anderen mit an.
 
 | Werkzeug | Version | Wofür | Quelle der Version | Prüfen |
 |---|---|---|---|---|
 | Git | aktuell | Repo, Branches | – | `git --version` |
-| Node.js | 22 (neuere laufen lokal meist auch) | Laufzeit der Werkzeuge (`bunx` startet Vite, Vitest, tsc darüber) | `.nvmrc` | `node --version` |
+| Node.js | 22 (neuere laufen lokal meist auch) | Laufzeit der Werkzeuge (`bunx` startet Vitest, tsc darüber) | `.nvmrc` | `node --version` |
 | Bun | 1.4.2 | Pakete installieren (`bun install`), Werkzeuge starten (`bunx`) | `.github/workflows/ci.yml` | `bun --version` |
-| Go | 1.27 | Go-Server, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
+| Go | 1.27 | Engine, natives Spiel, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
-| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`); auch der Starter | `tools/k3c-workbench/go.mod` | `wails version` |
-| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` und Starter | – | `wails doctor` |
+| Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`) | `tools/k3c-workbench/go.mod` | `wails version` |
+| WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` | – | `wails doctor` |
 | Go Task | ab 3.54.0 (geprüft von `check_run`: Testmuster an Task-Ziele brauchen das Quoten von `CLI_ARGS` und `GO_TEST_FLAGS`, B-868; Zahl in `tools/k3c-workbench/internal/mcpsrv/check_taskversion.go`) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
 | C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task go:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
-| Docker (optional) | aktuell, mit `buildx` | Image des Heimnetz-Servers (`Dockerfile`, `compose.yaml`); sonst prüft es die CI | – | `docker buildx version` |
 
-Zum Testen am Gerät, keine Installation im Repo: ein aktueller Browser (Edge oder Chrome) für `task dev`,
-Edge auf der Xbox für den Gamepad-Test (Anleitung im README).
+Zum Testen am Gerät, keine Installation im Repo: ein Windows-PC mit Controllern für das native Spiel (`task native:game`).
 
 ## Installation unter Windows
 
@@ -47,7 +45,7 @@ Hinweise:
 - `winget` nimmt die jeweils neueste Version. Bei `Go` und `golangci-lint` muss sie ≥ der Tabelle sein
   (Go 1.27, golangci-lint 2.14); eine feste Version erzwingt `--version 2.14.0`.
 - Ohne `winget`: Installer von den Download-Links unten, Standardoptionen, „Add to PATH“ aktiv lassen.
-- Ohne Go läuft alles außer `task check:go`; Client und `task check` brauchen nur Node.
+- Ohne Go läuft nur `task check` (Regeln, Planung, Papierschnitt); das Spiel und `task check:go` brauchen Go.
 - Skripte blockiert von der Execution Policy? Git Bash oder `cmd` nutzen; das ändert keine Systemeinstellung.
   Nur wenn das nicht reicht: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (dauerhaft, gilt für alle Skripte des Benutzerkontos, ohne Adminrechte).
 
@@ -56,11 +54,9 @@ Hinweise:
 ```bash
 bun install --frozen-lockfile
 bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
-bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 ```
 
-Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`), die dritte für den Windows-Starter
-(`task check:starter`); `task install` macht alle drei.
+Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`); `task install` macht beide.
 
 Go-Temp (`go-build`, Test-EXEs, `t.TempDir`): Jeder `task`-Aufruf setzt `GOTMPDIR`, `TMP` und `TEMP` auf
 `%USERPROFILE%\.k3c\tmp` (ohne `USERPROFILE`, etwa in der CI: `.work/tmp`; nicht unter AppData, dorthin leitet die Claude-App als MSIX-Paket Schreibzugriffe um). Für diesen Ordner einmal eine Ausnahme im

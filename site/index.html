@@ -1,7 +1,8 @@
 <!doctype html>
 <!--
   Präsentationsseite für GitHub Pages (B-183). Rein statisch: kein Script, keine Anfrage an einen Server oder Fremddienst.
-  Bilder liegen als Kopien aus public/ unter site/img/ (B-507); Pages lädt nur site/ hoch, ohne Build.
+  Bilder liegen als Kopien unter site/img/ (B-507): Papierschnitt-Grafik aus public/grafik (task gen:paper) unter img/papier/,
+  Aufnahmen des nativen Spiels (task native:game:shots) unter img/spiel/ (B-849). Pages lädt nur site/ hoch, ohne Build.
   tests/pagesSite.test.ts prüft das.
 -->
 <html lang="de">
@@ -9,9 +10,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Family Three Crowns</title>
-    <meta name="description" content="Couch-Koop-Strategie im Stil von Kingdom Two Crowns: im Browser, auf der Xbox, mit der ganzen Familie." />
+    <meta name="description" content="Couch-Koop-Strategie im Stil von Kingdom Two Crowns: natives Spiel am PC, mit Controllern, für die ganze Familie." />
     <meta name="theme-color" content="#0d1020" />
-    <link rel="icon" href="img/grafik/gold-treasure-icons-16x16/icons/1.png" />
+    <link rel="icon" href="img/papier/krone.png" />
     <style>
       :root {
         --bg: #0d1020;
@@ -30,7 +31,6 @@
       * { box-sizing: border-box; }
       html { scroll-behavior: smooth; scroll-padding-top: 80px; }
       body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 var(--sans); }
-      img, .px { image-rendering: pixelated; }
       a { color: var(--gold); }
       h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 0.5em; }
       h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
@@ -46,25 +46,24 @@
       .wip b { letter-spacing: 0.18em; text-transform: uppercase; padding: 2px 10px; border-radius: 999px; background: #23180a; color: var(--gold); }
       .wip span { font-weight: 600; }
 
-      /* Hero: Wald-Parallax (hg-wald-*, 768×480 px, auf 680 px Höhe), Figuren laufen auf der Stelle, die Welt zieht vorbei. */
+      /* Hero: Wald-Parallax im Papierschnitt (hg-wald-*-v1, 768×480 px, auf 680 px Höhe), Figuren laufen auf der Stelle, die Welt zieht vorbei. */
       .hero { position: relative; height: min(92vh, 680px); min-height: 540px; overflow: hidden; padding: 0; background: #1e2a3a; }
       .layer { position: absolute; left: 0; right: 0; bottom: 0; height: 680px; background-repeat: repeat-x; background-size: 1088px 680px; animation: scroll linear infinite; }
-      .l-back { background-image: url(img/grafik/gebaeude/hg-wald-fern-32.png); animation-duration: 90s; }
-      .l-mid { background-image: url(img/grafik/gebaeude/hg-wald-mitte-32.png); animation-duration: 50s; }
-      .l-front { background-image: url(img/grafik/gebaeude/hg-wald-nah-32.png); animation-duration: 30s; }
+      .l-back { background-image: url(img/papier/hg-wald-fern.png); animation-duration: 90s; }
+      .l-mid { background-image: url(img/papier/hg-wald-mitte.png); animation-duration: 50s; }
+      .l-front { background-image: url(img/papier/hg-wald-nah.png); animation-duration: 30s; }
       @keyframes scroll { to { background-position-x: -1088px; } }
       .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; background: linear-gradient(#2b2f22, var(--bg)); }
       .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13, 16, 32, 0.35) 0%, rgba(13, 16, 32, 0.6) 50%, rgba(13, 16, 32, 0.15) 85%); }
 
-      /* --foot: Pixel vom Bildrand bis zu den Füßen (aus originY in data/sprites.json), damit alle auf dem Boden stehen. */
+      /* Papierschnitt-Sheets (8 Bilder nebeneinander, manifest.json in public/grafik); --foot: Pixel vom unteren Bildrand bis zu den Füßen. */
       .sprite { position: absolute; bottom: calc(9% - var(--foot, 0) * var(--s) * 1px); width: calc(var(--w) * 1px); height: calc(var(--h) * 1px); background: var(--img) 0 0 / auto 100% no-repeat;
         transform-origin: 50% 100%; transform: scale(var(--s)); animation: frames calc(var(--n) / var(--fps) * 1s) steps(var(--n)) infinite; }
       @keyframes frames { to { background-position-x: calc(var(--w) * var(--n) * -1px); } }
-      .king { --img: url(img/sprites/medieval-king/run.png); --w: 155; --h: 155; --n: 8; --fps: 12; --s: 2.4; --foot: 39; left: 20%; }
-      .huntress { --img: url(img/sprites/huntress/run.png); --w: 89; --h: 67; --n: 8; --fps: 12; --s: 3.2; --foot: 1; left: 7%; }
-      .goblin { --img: url(img/sprites/goblin/run.png); --w: 150; --h: 150; --n: 8; --fps: 12; --s: 2.4; --foot: 49; right: 10%; transform: scale(calc(var(--s) * -1), var(--s)); }
-      .coin { --img: url(img/grafik/16x16-small-and-medium-coin-animation/muenzen/sCoins_1.png); --w: 16; --h: 16; --n: 8; --fps: 10; --s: 3;
-        background-size: 128px 64px; position: absolute; }
+      .king { --img: url(img/papier/monarch-trab.png); --w: 258; --h: 261; --n: 8; --fps: 12; --s: 1.05; --foot: 5; left: 16%; }
+      .archer { --img: url(img/papier/bogenschuetze-lauf.png); --w: 170; --h: 192; --n: 8; --fps: 12.8; --s: 1.05; --foot: 0; left: 4%; }
+      .goblin { --img: url(img/papier/goblin-lauf.png); --w: 143; --h: 192; --n: 8; --fps: 12.8; --s: 1.05; --foot: 0; right: 10%; transform: scale(calc(var(--s) * -1), var(--s)); }
+      .coin { --img: url(img/papier/muenze.png); --w: 26; --h: 26; --n: 8; --fps: 10; --s: 1.6; position: absolute; }
 
       .hero-text { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 0 16px 12vh; }
       .crowns { font-size: 2.2rem; letter-spacing: 0.4em; color: var(--gold); text-shadow: 0 0 18px rgba(242, 193, 78, 0.6); }
@@ -106,11 +105,11 @@
       .depth p { margin: 0; color: #d4d6e4; max-width: 640px; }
       .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
       .tag { font-size: 0.8rem; padding: 2px 10px; border-radius: 999px; background: rgba(242, 193, 78, 0.14); color: var(--gold); border: 1px solid rgba(242, 193, 78, 0.35); }
-      .d0 { --pic: url(img/grafik/gebaeude/hg-wald-mitte-32.png); }
-      .d1 { --pic: url(img/grafik/gebaeude/hg-hoehle-mitte-32.png); }
-      .d2 { --pic: url(img/grafik/gebaeude/hg-mine-mitte-32.png); }
-      .d3 { --pic: url(img/grafik/gebaeude/hg-eisenstollen-mitte-32.png); }
-      .d4 { --pic: url(img/grafik/gebaeude/hg-kristall-mitte-32.png); }
+      .d0 { --pic: url(img/papier/hg-wald-mitte.png); }
+      .d1 { --pic: url(img/papier/hg-hoehle-mitte.png); }
+      .d2 { --pic: url(img/papier/hg-mine-mitte.png); }
+      .d3 { --pic: url(img/papier/hg-eisenstollen-mitte.png); }
+      .d4 { --pic: url(img/papier/hg-kristall-mitte.png); }
 
       /* Skills */
       .lines { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 36px; }
@@ -142,13 +141,16 @@
       .shots figure { margin: 0; }
       .shots img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid rgba(255,255,255,.12); }
       .shots figcaption { font-size: .92rem; opacity: .85; margin-top: 8px; }
+      .castle { display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; padding: 16px 12px 10px; border-radius: 6px;
+        border: 1px solid rgba(255,255,255,.12); background: linear-gradient(#8fc4e4, #cfe6c0 82%, #6d8f4a 82%); aspect-ratio: 16 / 9; }
+      .shots .castle img { width: 19%; height: auto; border: 0; border-radius: 0; }
 
       @media (max-width: 640px) {
         section { padding: 64px 16px; }
-        .king { --s: 1.5; left: 24%; }
-        .huntress { --s: 2; left: 2%; }
-        .goblin { --s: 1.5; right: -4%; }
-        .coin { --s: 2; }
+        .king { --s: 0.8; left: 22%; }
+        .archer { --s: 0.7; left: 0; }
+        .goblin { --s: 0.7; right: -4%; }
+        .coin { --s: 1.2; }
         .wip span { display: none; }
         .wip b span { display: inline; }
         .depth { grid-template-columns: 1fr; }
@@ -163,22 +165,22 @@
   <body>
     <div class="wip"><b><span aria-hidden="true">🚧</span> Work in Progress</b><span>Das Spiel ist noch mitten in der Entwicklung. Vieles fehlt noch, und Werte und Regeln ändern sich ständig.</span></div>
     <header class="hero">
-      <div class="layer l-back px"></div>
-      <div class="layer l-mid px"></div>
-      <div class="layer l-front px"></div>
+      <div class="layer l-back"></div>
+      <div class="layer l-mid"></div>
+      <div class="layer l-front"></div>
       <div class="shade"></div>
       <div class="ground"></div>
-      <div class="sprite huntress px" role="img" aria-label="Speerjägerin läuft"></div>
-      <div class="sprite king px" role="img" aria-label="König läuft"></div>
-      <div class="sprite goblin px" role="img" aria-label="Goblin läuft auf die Helden zu"></div>
-      <div class="sprite coin px" style="left: 42%; bottom: 13%" aria-hidden="true"></div>
-      <div class="sprite coin px" style="left: 49%; bottom: 13%" aria-hidden="true"></div>
-      <div class="sprite coin px" style="left: 56%; bottom: 13%" aria-hidden="true"></div>
+      <div class="sprite archer" role="img" aria-label="Bogenschütze läuft"></div>
+      <div class="sprite king" role="img" aria-label="Monarch reitet im Trab"></div>
+      <div class="sprite goblin" role="img" aria-label="Goblin läuft auf die Helden zu"></div>
+      <div class="sprite coin" style="left: 42%; bottom: 13%" aria-hidden="true"></div>
+      <div class="sprite coin" style="left: 49%; bottom: 13%" aria-hidden="true"></div>
+      <div class="sprite coin" style="left: 56%; bottom: 13%" aria-hidden="true"></div>
       <div class="hero-text">
         <div class="crowns" aria-hidden="true">♛ ♛ ♛</div>
         <h1>Family Three Crowns</h1>
         <p>Couch-Koop-Strategie im Stil von <em>Kingdom Two Crowns</em>. Ihr baut zusammen ein Reich auf, haltet es nachts gegen die Gegnerwellen
-          und geht Stufe für Stufe tiefer in die Erde. Läuft im Browser und auf der Xbox, für die ganze Familie.</p>
+          und geht Stufe für Stufe tiefer in die Erde. Ein natives Spiel für den PC, mit Controllern auf dem Sofa, für die ganze Familie.</p>
         <div class="btns">
           <a class="btn primary" href="#features">Features ansehen</a>
           <a class="btn ghost" href="https://github.com/tenvan/k3c-family">Quellcode auf GitHub</a>
@@ -212,14 +214,16 @@
       <section id="bilder">
         <div class="wrap">
           <h2><small>Aus dem Spiel</small>So sieht K3C wirklich aus</h2>
-          <p class="lead">Echte Bilder aus dem laufenden Spiel, ohne Nachbearbeitung (PG1, B-184).</p>
+          <p class="lead">Aufnahmen aus dem nativen Spiel am PC, ohne Nachbearbeitung, und die Grafik im Papierschnitt: Figuren, Gebäude und
+            Hintergründe entstehen als ausgeschnittene Papierteile aus Beschreibungen (B-849).</p>
           <div class="shots">
-            <figure><img class="px" src="img/spiel/splitscreen-nacht.jpg" alt="Zwei Spieler im Split-Screen bei Nacht im Wald, beide zu Pferd am Lagerfeuer" loading="lazy" width="1280" height="720" />
-              <figcaption>Split-Screen: zwei Monarchen, jeder mit eigener Kamera.</figcaption></figure>
-            <figure><img class="px" src="img/spiel/hub-tag.jpg" alt="Ausgebauter Hub bei Tag mit Burg, Händlerstand, Werkstatt und Treppe nach unten" loading="lazy" width="1280" height="720" />
-              <figcaption>Der Hub bei Tag: Burg, Händler, Werkstatt und die Treppe in die Tiefe.</figcaption></figure>
-            <figure><img class="px" src="img/spiel/nacht-mauer.jpg" alt="Nachtwelle: Gegner greifen den Turm und die Mauer an, der Monarch reitet zur Verteidigung" loading="lazy" width="1280" height="720" />
-              <figcaption>Die Nacht: Die Welle rennt gegen Turm und Mauer.</figcaption></figure>
+            <figure><img src="img/spiel/start-zu-zweit.jpg" alt="Zwei Monarchen zu Pferd beim Start im Wald, oben und unten je ein eigener Bildschirmteil" loading="lazy" width="1280" height="720" />
+              <figcaption>Der Start zu zweit: Split-Screen, jeder Monarch mit eigener Kamera.</figcaption></figure>
+            <figure><img src="img/spiel/splitscreen-tag.jpg" alt="Split-Screen bei Tag: Die Monarchen reiten getrennt durch den Wald am Fluss" loading="lazy" width="1280" height="720" />
+              <figcaption>Getrennte Wege: Jeder erkundet seinen Teil der Oberwelt.</figcaption></figure>
+            <figure><div class="castle" role="img" aria-label="Die Burg im Papierschnitt in fünf Ausbaustufen, von Holz bis Kristall">
+                <img src="img/papier/burg-1.png" alt="" width="264" height="296" /><img src="img/papier/burg-2.png" alt="" width="264" height="296" /><img src="img/papier/burg-3.png" alt="" width="264" height="296" /><img src="img/papier/burg-4.png" alt="" width="264" height="296" /><img src="img/papier/burg-5.png" alt="" width="264" height="296" /></div>
+              <figcaption>Die Burg wächst mit dem Hub: fünf Ausbaustufen im Papierschnitt.</figcaption></figure>
           </div>
         </div>
       </section>
@@ -228,8 +232,8 @@
         <div class="wrap">
           <h2><small>Features</small>Was K3C ausmacht</h2>
           <div class="grid">
-            <article class="feature"><div class="icon">🎮</div><h3>Couch und Online gemischt</h3>
-              <p>Zwei Controller an der Xbox im Split-Screen, dazu weitere Mitspieler per Handy oder PC. Mitspielen könnt ihr jederzeit: einmal A drücken, fertig.</p></article>
+            <article class="feature"><div class="icon">🎮</div><h3>Couch-Koop am PC</h3>
+              <p>Zwei Spieler im Split-Screen, mit Controllern oder geteilter Tastatur. Mitspielen könnt ihr jederzeit: einmal A drücken, fertig.</p></article>
             <article class="feature"><div class="icon">🗺️</div><h3>Zufallswelten</h3>
               <p>Jede Stufe wird aus festen Eckdaten und einem Seed erzeugt. Gleicher Seed, gleiche Welt. Im Spielstand steckt nur der Seed, nicht die ganze Karte.</p></article>
             <article class="feature"><div class="icon">⛏️</div><h3>Die Welt geht nach unten</h3>
@@ -242,12 +246,12 @@
               <p>Unter Tage gibt es keine Nacht. Dafür füllt sich ein Aggro-Balken: Jeder Kill und jede Ressource heizt ihn an, und bei 100 % greifen die Portale an. Das Tempo bestimmt ihr.</p></article>
             <article class="feature"><div class="icon">👑</div><h3>Bosse und Ereignisse</h3>
               <p>Pro Stufe wartet ein Miniboss, pro Insel ein Endboss. Jede 7. Nacht ist Vollmond und der Alpha-Wolf kommt, jede 13. Nacht ist Blutmond.</p></article>
-            <article class="feature"><div class="icon">🛠️</div><h3>Welten bauen im Studio</h3>
-              <p>Das Asset-Studio läuft als Seite auf dem Server. Dort ordnet ihr Grafik und Sound zu, plant Welten und Chunks, legt fest, welche Gebäude zu welcher Hub-Stufe gehören, und seht euch Figuren in Bewegung an.</p></article>
+            <article class="feature"><div class="icon">✂️</div><h3>Grafik im Papierschnitt</h3>
+              <p>Figuren, Reittiere, Gebäude und Hintergründe sind aus Papierteilen geschnitten. Jedes Teil entsteht aus einer Beschreibung, die Animationen rechnet ein eigener Renderer.</p></article>
             <article class="feature"><div class="icon">🔊</div><h3>Effekt-Sounds</h3>
               <p>Schläge, Treffer, Bauen und Münzen haben jeweils eigene Sounds. Sie stammen aus freien Quellen, und zu jedem lässt sich die Lizenz nachlesen.</p></article>
             <article class="feature"><div class="icon">📺</div><h3>Gemacht für den Fernseher</h3>
-              <p>Läuft in Edge auf der Xbox und lässt sich komplett mit dem Controller bedienen. Die Schrift ist groß genug für den Abstand vom Sofa.</p></article>
+              <p>Ein natives Spiel für den PC, gern am Fernseher angeschlossen. Es lässt sich komplett mit dem Controller bedienen, die Schrift ist groß genug für den Abstand vom Sofa.</p></article>
           </div>
         </div>
       </section>
@@ -257,19 +261,19 @@
           <h2><small>Die Welt</small>Fünf Stufen, ein Vorrat</h2>
           <p class="lead">Die erste Insel hat fünf Stufen, jede ein eigenes Level. Nach unten werden sie schmaler und dichter. Das Baumaterial teilt sich die ganze Insel in einem gemeinsamen Vorrat.</p>
           <div class="depths">
-            <div class="depth d0 px"><div class="no">0<span>Oberwelt</span></div><div><h3>Wald</h3>
+            <div class="depth d0"><div class="no">0<span>Oberwelt</span></div><div><h3>Wald</h3>
               <p>Der Tag dauert 10 Minuten, die Nacht 5. Ihr fällt Holz, baut euer Lager auf und wehrt die ersten Wellen ab.</p>
               <div class="tags"><span class="tag">Holz</span><span class="tag">Greed</span><span class="tag">Goblin</span><span class="tag">Wolf bei Nacht</span></div></div></div>
-            <div class="depth d1 px"><div class="no">1<span>Tiefe</span></div><div><h3>Höhle</h3>
+            <div class="depth d1"><div class="no">1<span>Tiefe</span></div><div><h3>Höhle</h3>
               <p>Hier zählt nicht die Uhr, sondern der Aggro-Balken. Baut Stein ab, bevor die Fledermäuse über eure Mauern fliegen.</p>
               <div class="tags"><span class="tag">Stein</span><span class="tag">Fledermaus</span><span class="tag">Höhlentroll</span><span class="tag">Skelett</span></div></div></div>
-            <div class="depth d2 px"><div class="no">2<span>Tiefe</span></div><div><h3>Mine</h3>
+            <div class="depth d2"><div class="no">2<span>Tiefe</span></div><div><h3>Mine</h3>
               <p>Kupferadern geben unbegrenzt her, aber nur langsam. Zombies, Rattenschwärme und Minengeister machen es euch eng.</p>
               <div class="tags"><span class="tag">Kupfer</span><span class="tag">Zombie</span><span class="tag">Rattenschwarm</span><span class="tag">Minengeist</span></div></div></div>
-            <div class="depth d3 px"><div class="no">3<span>Tiefe</span></div><div><h3>Eisenstollen</h3>
+            <div class="depth d3"><div class="no">3<span>Tiefe</span></div><div><h3>Eisenstollen</h3>
               <p>Eisen ist hier die Beute, aber Lava schadet euch: 5 Schaden pro Sekunde, sobald ihr darin steht. Drei Portale halten euch auf Trab.</p>
               <div class="tags"><span class="tag">Eisen</span><span class="tag">Lavaschleim</span><span class="tag">Eisenkäfer</span><span class="tag">Feuergeist</span></div></div></div>
-            <div class="depth d4 px"><div class="no">4<span>Tiefe</span></div><div><h3>Kristallhöhle</h3>
+            <div class="depth d4"><div class="no">4<span>Tiefe</span></div><div><h3>Kristallhöhle</h3>
               <p>Ganz unten liegt der Kristall, den ihr für den letzten Hub-Ausbau braucht. Dafür warten hier Kristallwächter mit Flächenschaden und Schwärme von Splitterwichten.</p>
               <div class="tags"><span class="tag">Kristall</span><span class="tag">Kristallspinne</span><span class="tag">Splitterwicht</span><span class="tag">Kristallwächter</span></div></div></div>
           </div>
@@ -295,7 +299,7 @@
           <p class="lead">Springen gibt es nicht, ihr lauft nur nach links und rechts. Was an einer Stelle gerade möglich ist, blendet das Spiel direkt dort ein.</p>
           <div class="pad">
             <table>
-              <thead><tr><th>Aktion</th><th>Xbox-Controller</th><th>Tastatur</th></tr></thead>
+              <thead><tr><th>Aktion</th><th>Controller (Xbox-Belegung)</th><th>Tastatur</th></tr></thead>
               <tbody>
                 <tr><td>Laufen</td><td>Linker Stick</td><td><kbd>A</kbd> <kbd>D</kbd></td></tr>
                 <tr><td>Sprinten</td><td><kbd>RT</kbd></td><td><kbd>Shift</kbd></td></tr>
@@ -313,15 +317,15 @@
 
       <section id="technik" class="alt">
         <div class="wrap">
-          <h2><small>Technik und Stand</small>Ein Server im Wohnzimmer</h2>
+          <h2><small>Technik und Stand</small>Ein Spiel, ein Rechner</h2>
           <div class="split">
             <div class="box">
               <h3>So läuft es</h3>
               <ul>
-                <li>Ein <b>Go-Server</b> in eurem Heimnetz rechnet die ganze Spielwelt. Das läuft immer gleich ab: gleicher Seed, gleiches Ergebnis.</li>
-                <li>Euer Gerät zeigt das Spiel nur an. Das übernehmen <b>TypeScript</b> und <b>Phaser 4</b> im Browser, eure Eingaben gehen per WebSocket an den Server.</li>
-                <li>Mehrere Räume laufen gleichzeitig, zum Beispiel eine Runde an der Xbox und eine auf den Handys.</li>
-                <li>Den Server startet ihr auf dem PC (mit Windows-Starter) oder als <b>Docker-Image</b> auf dem Raspberry Pi (amd64 und arm64).</li>
+                <li>Das Spiel ist in <b>Go</b> geschrieben und läuft nativ am PC, gezeichnet mit <b>Ebitengine</b>.</li>
+                <li>Die Spielwelt rechnet eine eigene Engine immer gleich: gleicher Seed, gleiches Ergebnis.</li>
+                <li>Alle Spieler sitzen am selben Rechner; ein Online-Spiel gibt es nicht.</li>
+                <li>Die Grafik ist Papierschnitt: Beschreibungen der Teile werden zu Bildfolgen gerendert.</li>
               </ul>
             </div>
             <div class="box">
@@ -329,15 +333,15 @@
               <ul>
                 <li class="done">✔ Ein Tag, eine Nacht: Gold, Bauern, Bauen, Bogenschützen, Wellen</li>
                 <li class="done">✔ Zufallswelten für alle fünf Stufen von Wald bis Kristallhöhle</li>
-                <li class="done">✔ Split-Screen-Koop, Spielstände liegen auf dem Server</li>
-                <li class="done">✔ Asset-Studio mit Welten-Editor, Gebäude-Planer sowie Vorschau für Monarch und Gegner</li>
-                <li class="done">✔ Effekt-Sounds im Spiel, Start mit Seed und Tiefe über die Adresse</li>
+                <li class="done">✔ Split-Screen-Koop, Spielstände auf dem eigenen Rechner</li>
+                <li class="done">✔ Figuren, Gebäude und Hintergründe im Papierschnitt</li>
+                <li class="done">✔ Effekt-Sounds im Spiel</li>
                 <li class="todo">… Skills, Bosse und Hub-Ausbau sind noch in Arbeit</li>
-                <li class="todo">… Musik, Gebäude-Grafiken und Welten für Spieler kommen später</li>
+                <li class="todo">… Musik und Welten für Spieler kommen später</li>
               </ul>
             </div>
           </div>
-          <p class="note">Spielen könnt ihr hier nicht. Dafür braucht ihr den eigenen Server im Heimnetz. Wie ihr ihn startet, steht im
+          <p class="note">Spielen könnt ihr hier nicht. K3C läuft als natives Spiel am PC. Wie ihr es baut und startet, steht im
             <a href="https://github.com/tenvan/k3c-family">Quellcode auf GitHub</a>.</p>
         </div>
       </section>
@@ -347,8 +351,8 @@
       <div class="wrap">
         <div><b>Family Three Crowns (K3C)</b> · © 2026 Ralf Stich · source-available, nur nicht-kommerziell
           (<a href="https://github.com/tenvan/k3c-family/blob/main/LICENSE">Lizenz</a>)</div>
-        <div>Die Figuren stammen von LuizMelo und ansimuz, die Umgebung von Künstlern auf OpenGameArt (meist CC0).
-          Alle Danksagungen: <a href="https://github.com/tenvan/k3c-family/blob/main/lizenzen.html">Lizenzen &amp; Danksagung</a>.</div>
+        <div>Die Grafik ist eigener Papierschnitt (CC BY-NC 4.0), Sounds stammen aus freien Quellen.
+          Alle Danksagungen: <a href="https://github.com/tenvan/k3c-family/blob/main/public/audio/README.md">Sound-Credits</a>.</div>
         <div>Inspiriert von <em>Kingdom Two Crowns</em>, kein offizielles Produkt und nicht verbunden mit dessen Herstellern.</div>
       </div>
     </footer>

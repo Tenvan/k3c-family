@@ -40,7 +40,7 @@ func TestLogsSourcesUndUnbekannteQuelle(t *testing.T) {
 		t.Errorf("Quellen: %q", text)
 	}
 	for _, bad := range []string{"../k3c-workbench", "gibtsnicht", ""} {
-		if _, err := s.logsQuery(ctx, queryIn{Source: bad}); err == nil || !strings.Contains(err.Error(), "gültig: k3c-client, k3c-workbench, vite") {
+		if _, err := s.logsQuery(ctx, queryIn{Source: bad}); err == nil || !strings.Contains(err.Error(), "gültig: k3c-workbench") {
 			t.Errorf("Quelle %q: %v", bad, err)
 		}
 	}

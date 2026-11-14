@@ -15,7 +15,7 @@ vars:
   GAME: '{{.ROOT_DIR}}/native/k3c-game'
   GAME_EXE: '{{.ROOT_DIR}}/native/k3c-game/bin/k3c-game.exe'
   # Paket zum Weitergeben (Wunsch 🧑 2026-11-13): fertige EXE mit allen Dateien unter dist/k3c-game; die Probe-Aufnahme
-  # bleibt in .work. Achtung: der Web-Build (vite, dist/) leert dist/ bis zum Ende des Browser-Clients (B-823).
+  # bleibt in .work. Der Web-Build, der dist/ leerte, ist mit dem Browser-Client entfernt (B-848).
   GAME_PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
   GAME_PROBE: '{{.ROOT_DIR}}/.work/native-game-probe'
   # Version des nativen Spiels (B-808): git describe, ohne Git leer (das Spiel zeigt dann „unbekannt“)

@@ -9,13 +9,11 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings und M
 | [`mcpsrv/`](mcpsrv/codemap.md) | MCP-Server (Streamable HTTP, 127.0.0.1): Tool-Katalog, Worktree-Scoping, Check-Pipeline |
 | [`planning/`](planning/codemap.md) | Tickets, Sprints, Sessions und Roadmap unter `docs/`, transaktional mit Vorlagenpflicht, Prio-Vererbung |
 | [`services/`](services/codemap.md) | Supervisor für Dev-Dienste aus `services.json` mit Reload im laufenden Betrieb |
-| [`botdev/`](botdev/codemap.md) / [`botfeed/`](botfeed/codemap.md) / [`browser/`](browser/codemap.md) | Testläufe `sim_test`: Bot-Gerät am Spielserver, Bot-Feed (WebSocket) zu Clients, Headless-Browser |
 | [`taskgate/`](taskgate/codemap.md) | Freigabe-Schloss für `task_start` (`task-freigaben.json`) |
 | [`proc/`](proc/codemap.md) | Kindprozesse mit Prozessbaum-Kill (Job Object) |
 | [`taskrun/`](taskrun/codemap.md) / [`taskcat/`](taskcat/codemap.md) | Go-Task-Läufe und Task-Katalog |
 | [`console/`](console/codemap.md) / [`applog/`](applog/codemap.md) | Konsolenpuffer je Quelle, eigenes Log `logs/k3c-workbench.jsonl` |
 | [`logs/`](logs/codemap.md) | Leser für `logs/*.jsonl` mit Cursor und Digest |
-| [`serverapi/`](serverapi/codemap.md) | Read-only-Client für `/api/status` des Spielservers |
 | `simexe/` | Kindprozess `bin/k3c-sim` (Engine-CLI): `sim_run`, `level_generate`, `replay_run`, Bot-Entscheider (B-726) |
 | `world/` | Welten-Editor (B-879): Welten unter `data/worlds/` lesen, Level und Werte über `bin/k3c-sim world`, Overrides format-stabil in die Welt-Datei |
 | [`balance/`](balance/codemap.md) (+ [`cmd/`](balance/cmd/codemap.md)) | Balancing-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays |

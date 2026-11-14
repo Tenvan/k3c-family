@@ -1,7 +1,7 @@
 # K3C – Family Three Crowns
 
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **TypeScript + Phaser 4 + Vite**, läuft im Browser.
-Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die Kommunikation mit dem Nutzer ist deutsch.
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **Natives Spiel in Go + Ebitengine** (`native/k3c-game`, Entscheidung 008)
+am PC, Simulation in `engine/` (Go). Browser-Client, Spielserver und Online-Spiel sind entfernt (B-850, WR1). Die Kommunikation mit dem Nutzer ist deutsch.
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
@@ -24,9 +24,9 @@ Zielplattform ist **Edge auf der Xbox** (Gamepad API), gehostet im Heimnetz. Die
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer; Ausnahme: Sagt der Nutzer ausdrücklich „autonom abarbeiten“, darf Claude Specs freigeben (Feld `Freigabe`: „autonom, Claude“), offene Fragen mit Default entscheiden und im Nachgang melden; manuelle Abnahmen bleiben beim Nutzer. **Klasse A** (Typ Problem oder Schuld, Domäne DEV, INF oder PAP, ohne Spielregeln, Protokoll, Spielstand-Format, neue Abhängigkeit) gibt Claude dauerhaft selbst frei („Klasse A, Claude“) und meldet gesammelt. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
-- Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine wandert auf einen Go-Server**, der Browser
-  wird reiner Client. Umgesetzt (SP09): Es gibt keine TS-Simulation mehr, neue Mechaniken entstehen in `engine/` (Go).
-  **004: Asset-Studio getrennt vom Spielserver**, Schnittstelle sind die Dateien, der Server beobachtet sie (TS1, B-507).
+- Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine ist Go** (`engine/`), neue Mechaniken entstehen
+  dort; Spielserver und Browser-Client von 001 sind seit WR1 entfernt (B-850).
+  **004: Asset-Studio getrennt vom Spiel**, Schnittstelle sind die Dateien (TS1, B-507).
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
   Asset-Studio ist entfallen (WB1).
   **008: Natives Spiel in Go + Ebitengine, Rust entfällt** (Projekt NAT, B-775; 006 und 007 sind überholt, Projekt RST ruht; Rust-Code, Rust-Prototyp und Rust-Brücke `engine/core` sind entfernt, B-779); der Monarch wird ein Rig aus Teilen, wenn der Prototyp B-778 das bestätigt.
@@ -39,121 +39,87 @@ Voraussetzungen (Node, Go, golangci-lint mit Versionen): `requirements.md`.
 ```bash
 task               # alle Aufgaben anzeigen (Go Task, Taskfile.yml; einziger Einstieg für Befehle)
 task install       # Abhängigkeiten holen
-task dev           # Dev-Server (auch im LAN erreichbar, Port 5183)
-task test          # Vitest (Level-Generator, reine Logik); Filter: task test -- planning
+task test          # Vitest (Regeln, Planung, Papierschnitt); Filter: task test -- planning
 task check:diff    # nur was die geänderten Dateien dieses Commits brauchen (einmal vor jedem Commit; Basis HEAD, Tests nur der geänderten Pakete; Teilaufgaben check:diff:plan, :js, :go)
-task check         # Lint + Typecheck + Tests des Clients, parallel
+task check         # Lint + Typecheck + Tests der Wurzel (tests/, tools/paper), parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
 task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
-task build         # Typecheck + Produktions-Build nach dist/
-task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Starter) bauen und nach bin/ legen; laufende EXE vorher schließen
-task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build/test/dev rufen es selbst auf)
+task build         # natives Spiel bauen (wie native:game:build, Paket nach dist/k3c-game/)
+task buildall      # alle EXE (Workbench, Engine-CLI k3c-sim) bauen und nach bin/ legen; laufende EXE vorher schließen
+task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
-task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
-task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
-Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
-`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren:
+Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-sim`
+(cmd/), `k3c-workbench` (tools/), `native` (native/), `balance`, `gen` (Generatoren:
 `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
 Der Projektname allein (`task k3c-workbench`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
 (`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
-die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-workbench` 5191,
-`k3c-starter` 5194) laufen dabei unter Vite mit Hot Reload im Browser und leiten `/api` an das Kind weiter. `<app>:window` startet
-das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `bin/k3c-server` (freigegebener Pfad), `data/` und
-`public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
-`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-starter:exe`) und die
-Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
+die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberfläche der Wails-App (`k3c-workbench` 5191)
+läuft dabei unter Vite mit Hot Reload im Browser und leitet `/api` an das Kind weiter. `<app>:window` startet
+das echte Fenster mit `wails dev`. Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
+`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`) und das
+Frontend laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
 
-Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
-Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
-über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
-`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen. Der Watch ignoriert `*.paper.json`; neu gestartet wird erst bei geänderten PNGs.
-
-Berichte unter `reports/*.json` (`POST /api/report`) liest `reports_list`/`report_read`; die Gamepad-Testseite ist entfernt (B-822).
+Spielserver, Lasttest, TUI und Windows-Starter sind entfernt (B-887, Entscheidung B-850): kein Online-Spiel, das Spiel ist nativ.
+Berichte unter `reports/` liest `reports_list`/`report_read`.
 
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
-`task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
+`task test`, `go test` …), Dienste über `svc_start`/`svc_stop`, Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
-`sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
-offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
+`sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Stabilität;
+offline) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
+nie über `task balance` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests
 (`docs/arbeitsweise.md` › Tempo im Lauf).
-Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
-prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
+Die CI (`.github/workflows/ci.yml`) baut und testet zusätzlich das native Spiel unter Windows. `tests/projectRules.test.ts`
+prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Client und kein Spielserver mehr).
 
 ## Struktur
 
-- `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
-  Go-Server (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
-- `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
-  Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`), `watch/` (Datei-Watch für
-  `data/` und `public/`, ignoriert `*.paper.json`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
-- `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus; Supervisor `supervise.go`, Neustart bei geänderten
-  Dateien `restart.go`), `k3c-load` (Lasttest), `k3c-tui`.
-  `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Bereichen **Development**
+- `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Engine und
+  natives Spiel (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
+- `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/` (Raum mit Stufen und Spielstand,
+  Zustand und Ereignisse wie in `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `engine/`
+  importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
+- `cmd/` – Go-Binary `k3c-sim` (Engine-CLI: Simulation, Balancing, Level). Spielserver, Lasttest und TUI sind entfernt (B-887).
+- `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Bereichen **Development**
   (Dienste, Tasks, Planung, Git, MCP, Monitoring, Balancing) und **Assets** (Review, Katalog, Styleguide, Sound, Quellen; nur
   Ansehen, Prompt-Buttons, „Im Spiel ansehen“ über die eingebundene Engine in `internal/studioview`). Assets ändern nur die
   MCP-Tools `assets_*`; das frühere Asset-Studio `tools/k3c-studio` ist entfallen (Entscheidung 005, WB1).
   `tools/paper/` – Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts`.
-  `tools/assetkit` – Asset-Logik der Workbench (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
-  startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
-  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Starter) als **Atomic Design** auf
+  `tools/assetkit` – Asset-Logik der Workbench (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`).
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als **Atomic Design** auf
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
   CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
-- Papierschnitt-Grafik (Entscheidung 005): Der Client lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
+- `native/` – natives Spiel `k3c-game` (Go + Ebitengine, eigenes Modul, `task native:game`, Paket `task native:game:build` nach
+  `dist/k3c-game/`) und Rig-Prototyp `k3c-rig`.
+- Papierschnitt-Grafik (Entscheidung 005): Das Spiel lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
-  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build`, `test` und `dev` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte, Icons und Gerüste sind seit MG8/CU1 ebenfalls Papierschnitt.
-- `src/model/` – Typen und Daten, die der Client vom Server kennt (`World`, `GameEvent`, `BIOMES`, `SaveGame` …), keine Logik.
-- `src/online/` – Client des Go-Servers (`clientConnection.ts`, Version in `clientProtocol.ts`): sendet nur Eingaben, zeichnet Snapshots. Ein Monarch pro Gerät.
-- `src/input/` – `PlayerInput`-Abstraktion (Tastatur, Gamepad, Touch-Overlay `touchInput.ts`, per `?touch=1` erzwingbar). Spiel-Code fragt Aktionen ab, nie konkrete Tasten.
-- `src/scenes/` – Phaser-Szenen (`GameScene` = Eingabe, `step()`, Kameras; `HudScene` = bildschirmfeste Anzeigen);
-  Unterordner `render/` (`worldRenderer.ts` zeichnet den Zustand), `hud/`, `hints/`, `effects/`, `debug/`.
-  Neue Mechanik: Logik + Test in `engine/sim/`, dann nur zeichnen.
+  `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build` und `test` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte, Icons und Gerüste sind seit MG8/CU1 ebenfalls Papierschnitt.
 - Namen und Ablage: Datei- und Ordnernamen im Code englisch, Gruppen-Präfixe in `engine/sim` (`docs/arbeitsweise.md` › Namen und Ablage).
-- Seiten: `index.html` = das Spiel (`ip:8080` öffnet direkt das Spielmenü, B-768), `game.html` = Alias derselben Seite (Werkzeuge und Lesezeichen), weitere `*.html` = Werkzeug-Seiten.
-  Jede `*.html` im Root wird automatisch gebaut. Es gibt keine Landingpage mehr.
 - `site/` – Präsentationsseite für GitHub Pages (B-183), rein statisch, ohne Server. Pages lädt nur `site/` hoch (kein Node, kein Build); Bilder liegen als Kopien in `site/img/` (B-507).
-- `src/core/shell.ts` – Seiten-Rahmen der Werkzeug-Seiten (Home-Button, Home-Kombi, Zurück-Falle), `src/core/panelHost.ts` – Panel im Spielmenü, `src/core/fullscreen.ts` und `fullscreenKeeper.ts` – Vollbild, `src/core/runConfig.ts` – Start-Parameter (Menü > URL > Standard).
-
-## Regel: Seiten & Navigation
-
-**Das Spiel ist die einzige oberste Seite** (`index.html`, B-768) und navigiert nie; so bleibt Vollbild auf der Xbox erhalten
-(`src/core/fullscreenKeeper.ts` fordert es bei der ersten Eingabe an). Alle Werkzeug- und Testseiten erreicht man über das Spielmenü
-(Seiten › Kategorie) und sie öffnen als **Panel** im selben Dokument (`src/core/panelHost.ts`, iframe unter einer Leiste mit Zurück).
-Für **jede** Werkzeug-Seite gilt:
-
-1. Im Script **`installPageChrome()`** aus `src/core/shell.ts` aufrufen (das Spiel selbst mit `{ home: false }`). Das liefert den sichtbaren
-   **Home-Button** (oben mittig; im Panel = zurück ins Menü), **View + Menu** gemeinsam halten bzw. **Pos1** = zurück, und die Zurück-Falle für B.
-   Oben ca. 70 px frei lassen, damit der Home-Button nichts verdeckt.
-2. Die Seite braucht eine Kachel im Spielmenü: Daten in `src/tools/devTiles.ts` (Kategorien Entwicklung, Performance, Balancing; Info und Hilfe in
-   `src/scenes/menuPages.ts`). Sonst ist sie vom Controller aus nicht erreichbar (`tests/projectRules.test.ts`).
-3. Vollbild nur über `src/core/fullscreen.ts` (`toggleFullscreen()`, `requestLocal()`). Nie `requestFullscreen()` direkt oder `this.scale.toggleFullscreen()`.
-4. Seiten wechseln nie per Link oder `location`; innerhalb des Spiels nur über `openPage()` (Panel) oder `startRun()` (Szenario im selben Dokument).
-5. **Start-Parameter** (`?dev`, `?autostart`, `?seed` …) liest nur `src/core/runConfig.ts` (`runSearch()`/`runParam()`); die URL gilt beim Laden als Deep-Link für
-   Tests, CI und Bots, das Menü setzt die Konfiguration mit `setRun()`/`startRun()` (`src/core/runConfigRule.test.ts`).
 
 ## Regeln
 
+- Neue Mechanik: Logik + Test in `engine/sim/`, das native Spiel zeichnet nur.
 - Keine Sprünge, nur horizontale Bewegung. Welt-Koordinaten in **Units** (1 Unit = `UNIT_PX` = 32 px).
-- Level-Generierung und Simulation sind deterministisch und laufen in Go: nur `engine/rng` (`rng.New(seed)`) verwenden, niemals `math/rand`; im Client gibt es keine Würfel (kein `Math.random()` für Spiel-Logik).
+- Level-Generierung und Simulation sind deterministisch und laufen in Go: nur `engine/rng` (`rng.New(seed)`) verwenden, niemals `math/rand`.
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
-- Controller-Taste **B** geht in jedem Menü und in jedem Werkzeug-Panel **zurück** (wie Menu kurz und Esc); im laufenden Spiel bleibt sie unbelegt. Der Edge-Zurück der Xbox wird von der Zurück-Falle geschluckt.
-  **View + Menu** gemeinsam = zurück ins Menü (in einem Werkzeug-Panel; reserviert, auf keiner Seite anders belegen).
-- **Logging mit Emojis:** Jede Log-Meldung (Go `slog`, Client `clientLog`) beginnt mit einem Emoji zur Aktion:
+- Controller-Taste **B** geht in jedem Menü **zurück** (wie Esc); im laufenden Spiel bleibt sie unbelegt.
+- **Logging mit Emojis:** Jede Log-Meldung (Go `slog`) beginnt mit einem Emoji zur Aktion:
   🚀 Start · 🛑 Stopp · 🔁 Neustart · ✅ geschafft · ❌ fehlgeschlagen · 💥 Fehler/Absturz · 🚫 abgelehnt · ⏳ Warten/Frist ·
   🐢 zu langsam · 🔌 verbunden · 👑 Spieler kommt · 👋 geht/getrennt · 💾 gespeichert · 📂 geladen · 🩹 wiederhergestellt ·
   🧹 aufgeräumt · 📨 Nachricht · 📄 Datei/Log · 🔒 Sicherheit · 🚦 Zustandswechsel · 🤒 ungesund · 💓 Takt · 🏰 Raum ·
@@ -174,16 +140,6 @@ Für **jede** Werkzeug-Seite gilt:
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
-
-## Im Browser-Pane testen
-
-- Der Dev-Build stellt `window.game` bereit. In der Shell liegt die Seite im iframe: `document.getElementById('frame').contentWindow`.
-- Ist das Pane im Hintergrund (`document.hidden`), läuft die Game-Loop nicht. Dann Frames manuell takten:
-  `let t = performance.now(); for (...) { t += 16.7; game.loop.step(t); }`
-- Tastatur: `KeyboardEvent`s auf `window` dispatchen (keydown/keyup mit `code` + `keyCode`).
-- Controller mocken: `navigator.getGamepads = () => [pad, null, null, null]` + `gamepadconnected`-Event.
-  Das Pad-Objekt braucht `mapping: 'standard'`, 17 `buttons`, 4 `axes`. **Wichtig:** Nach jeder Änderung
-  `pad.timestamp = performance.now() + 100000` setzen, sonst ignoriert Phaser das Update.
 
 ## Repository Map
 

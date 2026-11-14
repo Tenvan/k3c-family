@@ -1,5 +1,11 @@
 # Protokoll v11
 
+> **Stand nach B-887 (WR1, 2026-11-14):** Spielserver (`cmd/k3c-server`), WebSocket-Schicht (`engine/net`) und
+> Browser-Client sind entfernt (Entscheidung B-850, das Spiel ist nativ, Entscheidung 008). Es gibt keine Verbindung,
+> kein `hello` und keine Versionsprüfung mehr. Das Dokument bleibt als Referenz für Zustand, Ereignisse und
+> Spielstand-Felder, die `engine/room` und das native Spiel weiter verwenden (Beispiele in `testdata/protocol/`).
+> Neue Felder werden hier nicht mehr nachgetragen.
+
 **Änderungen gegenüber v10 (KB5.2, Version 11, B-675):** Status-Effekte im Zustand (siehe *Status-Effekte*): Spieler
 tragen `auras` (wirkende Passive mit Radius); die schon vorhandenen Felder `enemies[].stun`, `slow`, `slowFor`, `tauntId`,
 `tauntFor`, `players[].shield`, `shieldFor`, `lastStandFor` und die Liste `storms` sind jetzt Vertrag. Der Client zeichnet

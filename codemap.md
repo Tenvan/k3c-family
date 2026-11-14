@@ -1,49 +1,28 @@
 # Repository Atlas: K3C – Family Three Crowns
 
 ## Project Responsibility
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (Gamepad API), gehostet im Heimnetz. Ein Go-Server (`engine/`, `cmd/k3c-server`) rechnet die deterministische Simulation und verteilt Snapshots über WebSocket (Protokoll v7). Der Browser-Client (`src/`, TypeScript + Phaser 4 + Vite) sendet nur Eingaben und zeichnet. Balancing liegt als JSON in `data/` und ist die einzige Quelle für beide Seiten. `tools/k3c-workbench` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server) mit den Bereichen Development und Assets; Assets ändern nur die MCP-Tools `assets_*`. Das frühere Asset-Studio `tools/k3c-studio` ist entfallen (Entscheidung 005, WB1). Grafik ist Papierschnitt (Entscheidung 005): Das Spiel lädt sie über die Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json`, die Zuordnung steht in `data/paper.json`. Schnittstelle sind die Dateien: Werkzeuge schreiben `data/**` und `public/`, der Server beobachtet sie (`engine/watch`, ignoriert `*.paper.json`) und startet sich über seinen Supervisor neu. `site/` ist die statische GitHub-Pages-Seite (Pages lädt nur `site/`, ohne Build).
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns als natives Spiel für den PC: `native/k3c-game` (Go + Ebitengine, Entscheidung 008) zeichnet und nimmt Eingaben, `engine/` (Go) rechnet die deterministische Simulation im selben Prozess. Browser-Client, Spielserver und Online-Spiel sind entfernt (B-850, Sprint WR1). Balancing liegt als JSON in `data/` und ist die einzige Quelle. `tools/k3c-workbench` ist das Entwickler-Werkzeug (Wails-Desktop-App + MCP-Server) mit den Bereichen Development und Studio; Assets ändern nur die MCP-Tools `assets_*`. Grafik ist Papierschnitt (Entscheidung 005): Das Spiel lädt sie über die Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json`, die Zuordnung steht in `data/paper.json`. `site/` ist die statische GitHub-Pages-Seite (Pages lädt nur `site/`, ohne Build).
 
 ## System Entry Points
-- `game.html` → `src/main.ts`: Spiel-Client (Phaser-Szenen `load` → `lobby` → `game` + `hud`)
-- `index.html` → `src/landing/landing.ts`: Landingpage/Shell, hält alle anderen Seiten im Vollflächen-iframe
-- weitere `*.html` im Root: Test- und Info-Seiten (`src/tools/`)
-- `cmd/k3c-server/`: Go-Spielserver (liefert `dist/` aus, `/api`, `/ws`; Supervisor mit Selbst-Neustart bei geänderten Dateien: Kind mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten aus `K3C_DATA_DIR`)
-- `Taskfile.yml`: einziger Einstieg für Befehle (`task dev`, `task start`, `task check` …)
-- `package.json`, `tsconfig.json`, `vite.config.ts`: Client-Build (jede Root-`*.html` wird eine Seite; Dev-Proxy für `/api` und `/ws`; Watcher ignoriert Worktrees und Laufzeit-Ausgaben)
-- `go.mod`: Go-Modul für Engine und Server; `tools/k3c-workbench/go.mod`, `tools/k3c-starter/go.mod` und `tools/assetkit/go.mod` sind eigene Module
+- `native/k3c-game/`: natives Spiel (`task native:game`, Paket `task build` bzw. `task native:game:build` nach `dist/k3c-game/`)
+- `cmd/k3c-sim/`: Engine-CLI (Simulation, Balancing, Level) für die Workbench
+- `Taskfile.yml`: einziger Einstieg für Befehle (`task native:game`, `task check`, `task check:go` …)
+- `package.json`, `tsconfig.json`, `vitest.config.ts`: Werkzeuge und Tests der Wurzel (`tests/`, `tools/paper`)
+- `go.mod`: Go-Modul für Engine und Werkzeuge; `native/k3c-game/go.mod`, `tools/k3c-workbench/go.mod` und `tools/assetkit/go.mod` sind eigene Module
 
 ## Directory Map
 | Directory | Responsibility Summary | Detailed Map |
 |-----------|------------------------|--------------|
 | `cmd/` | Go-Binaries (CLI entry points) über `engine/` | [View Map](cmd/codemap.md) |
-| `cmd/k3c-server/` | Composition Root des Spielservers: Auslieferung, HTTP/WebSocket-API, Spielstände, Berichte, Räume, Logging, Supervisor und Neustart bei geänderten Dateien | [View Map](cmd/k3c-server/codemap.md) |
-| `cmd/k3c-load/` | Lasttest-Client: Bots in Testräumen, misst Tick-Dauer über `/api/status`, Bericht mit Verdict | [View Map](cmd/k3c-load/codemap.md) |
-| `cmd/k3c-tui/` | Bubble-Tea-Terminal-UI zur Server-Diagnose über `/api/status` | [View Map](cmd/k3c-tui/codemap.md) |
-| `data/` | Balancing-JSON, einzige Quelle für Client-Import und Server (von der Platte aus `K3C_DATA_DIR`, sonst `go:embed`) | [View Map](data/codemap.md) |
+| `data/` | Balancing-JSON, einzige Quelle für Engine und natives Spiel (von der Platte aus `K3C_DATA_DIR`, sonst `go:embed`) | [View Map](data/codemap.md) |
 | `data/biomes/` | Ein JSON je Biom/Stufe (forest bis crystal, ironhold mit Lava) für Level-Generator und Simulation | [View Map](data/biomes/codemap.md) |
-| `engine/` | Go-Spiel-Engine: Simulation, Level, Räume, Netzwerk, Persistenz | [View Map](engine/codemap.md) |
+| `engine/` | Go-Spiel-Engine: Simulation, Level, Räume, Persistenz | [View Map](engine/codemap.md) |
 | `engine/sim/` | Domain Model und deterministischer Tick-Core (Stufe, Insel, Campaign): Wirtschaft, Bürger/Berufe, Monarch-Skills, Gegner-Traits, Saves, ohne I/O | [View Map](engine/sim/codemap.md) |
 | `engine/level/` | Deterministischer Level-Generator mit Validator, Biome-Loader, Mauerlinien, Adern und Lava | [View Map](engine/level/codemap.md) |
 | `engine/room/` | Room/Manager: Geräte, Slots, Takt, Fristen, Speichern (`saver`), Skills, Monitor-Messreihen, Crash-Supervision | [View Map](engine/room/codemap.md) |
-| `engine/net/` | HTTP/WebSocket-Adapter (Protokoll v7): REST inkl. Saves/Metriken/Dev, Delta-Zustand, Aktionen, RTT-Ping | [View Map](engine/net/codemap.md) |
 | `engine/store/` | File-Repository für Spielstände, Berichte und Spielmetrik (atomar, rotierende Sicherungen, `Saves.List`) | [View Map](engine/store/codemap.md) |
 | `engine/rng/` | Deterministischer mulberry32-Generator, einzige Zufallsquelle | [View Map](engine/rng/codemap.md) |
 | `engine/conlog/` | Farbiger `slog.Handler` mit Emoji-Topics | [View Map](engine/conlog/codemap.md) |
-| `engine/watch/` | Datei-Watch durch Abfragen (Größe, Änderungszeit), entprellt; beobachtet `data/` und `public/` für den Neustart des Servers | – |
-| `src/` | Browser-Client (Thin Client): Composition Root `main.ts` | [View Map](src/codemap.md) |
-| `src/scenes/` | Presentation Layer: Phaser-Szenen mit ihrer Logik und Split-Screen; Unterordner für Rendering, HUD, Hinweise, Effekte, Debug | [View Map](src/scenes/codemap.md) |
-| `src/scenes/render/` | Zeichnen der Welt: `WorldRenderer`, `StageView`, Sprites und Grafik-Zuordnung, Plätze, Reittier, Bürger | [View Map](src/scenes/render/codemap.md) |
-| `src/scenes/hud/` | Bildschirmfeste Anzeigen: HUD-Layout, Meldungen, Wirtschafts- und Bürger-Texte, Radar, Skill-Menü | [View Map](src/scenes/hud/codemap.md) |
-| `src/scenes/hints/` | Hinweise mit Tasten-Glyphen: Aktions-Overlay, geführte erste Nacht | [View Map](src/scenes/hints/codemap.md) |
-| `src/scenes/effects/` | Feedback: Effekte je Ereignis, Blitz/Shake/Rumble-Regeln, Partikel | [View Map](src/scenes/effects/codemap.md) |
-| `src/scenes/debug/` | Debug-Overlay und Cheat-Dialog (`?dev`) | [View Map](src/scenes/debug/codemap.md) |
-| `src/online/` | WebSocket-Client `/ws` (Protokoll v7): `RoomClient`, Stufen-Streams, Delta, Timeline, Interpolation, Vorhersage, Latenz | [View Map](src/online/codemap.md) |
-| `src/model/` | Client-Typen (`World`, `GameEvent` …) und typisierter `data/*.json`-Zugriff | [View Map](src/model/codemap.md) |
-| `src/input/` | `PlayerInput`-Adapter für Tastatur, Gamepad und Touch; Tastenbelegung der Slots in `slotBindings.ts` | [View Map](src/input/codemap.md) |
-| `src/audio/` | Web-Audio: `AudioCore`, `Mixer`-Busse, Ton aus `GameEvent`s | [View Map](src/audio/codemap.md) |
-| `src/core/` | Infrastructure: Shell-Protokoll, Vollbild, Client-Log, Persistenz, i18n, Hinweis-Merker, Version | [View Map](src/core/codemap.md) |
-| `src/landing/` | Landingpage/Shell: Kacheln aus `pages.ts`, iframe-Host | [View Map](src/landing/codemap.md) |
-| `src/tools/` | Entry-Scripts der Test- und Info-Seiten (Kacheln im Spielmenü, Monitor, Lizenzen) | [View Map](src/tools/codemap.md) |
 | `tools/` | Entwickler-Werkzeuge außerhalb des Spiels | [View Map](tools/codemap.md) |
 | `tools/assetkit/` | Gemeinsame Asset-Logik der k3c-workbench (Bereich Assets): Slot-Register, Katalog, Recherche, Schreibregel | [View Map](tools/assetkit/codemap.md) |
 | `tools/paper/` | Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts` | – |
@@ -52,22 +31,17 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns für Edge auf der Xbox (
 | `tools/cleanup/` | CLI: löscht lokale Branches und Worktrees nur in sicheren Fällen | [View Map](tools/cleanup/codemap.md) |
 | `tools/k3c-workbench/` | Wails-Desktop-Host: Composition Root, App-Bindings, MCP-Server, Dienste | [View Map](tools/k3c-workbench/codemap.md) |
 | `tools/webkit/` | Gemeinsame Oberflächen-Bausteine der Wails-Frontends k3c-workbench und k3c-starter (`@webkit/…`) | [View Map](tools/webkit/codemap.md) |
-| `tools/k3c-starter/` | Windows-Starter (Wails-Fenster, eigenes Go-Modul): startet `bin/k3c-server`, zeigt Status und Adressen | [View Map](tools/k3c-starter/codemap.md) |
 | `tools/k3c-workbench/internal/` | Interne Packages von k3c-workbench | [View Map](tools/k3c-workbench/internal/codemap.md) |
 | `tools/k3c-workbench/internal/mcpsrv/` | MCP-Server (Streamable HTTP): Tool-Katalog, Worktree-Scoping, Check-Pipeline | [View Map](tools/k3c-workbench/internal/mcpsrv/codemap.md) |
 | `tools/k3c-workbench/internal/planning/` | Tickets, Sprints, Sessions, Roadmap unter `docs/`, transaktional mit Vorlagenpflicht, Prio-Vererbung | [View Map](tools/k3c-workbench/internal/planning/codemap.md) |
 | `tools/k3c-workbench/internal/services/` | Supervisor für Dev-Dienste aus `services.json` mit Health-Check, Crash-Restart und Reload | [View Map](tools/k3c-workbench/internal/services/codemap.md) |
 | `tools/k3c-workbench/internal/proc/` | Kindprozesse mit Prozessbaum-Kill (Job Object) | [View Map](tools/k3c-workbench/internal/proc/codemap.md) |
-| `tools/k3c-workbench/internal/serverapi/` | Read-only-Client für `/api/status` und Raum-Diagnose | [View Map](tools/k3c-workbench/internal/serverapi/codemap.md) |
 | `tools/k3c-workbench/internal/applog/` | Eigenes Log `logs/k3c-workbench.jsonl` per `slog`-Fanout | [View Map](tools/k3c-workbench/internal/applog/codemap.md) |
 | `tools/k3c-workbench/internal/console/` | In-Memory-Konsolenpuffer je Quelle mit Live-Callback | [View Map](tools/k3c-workbench/internal/console/codemap.md) |
 | `tools/k3c-workbench/internal/logs/` | Rückwärts-Reader für `logs/*.jsonl` mit Cursor, Filter, Digest | [View Map](tools/k3c-workbench/internal/logs/codemap.md) |
 | `tools/k3c-workbench/internal/taskcat/` | Task-Katalog aus `task --list-all --json` | [View Map](tools/k3c-workbench/internal/taskcat/codemap.md) |
 | `tools/k3c-workbench/internal/taskrun/` | Task-Runner (ein Lauf je Task) und Argument-Validierung | [View Map](tools/k3c-workbench/internal/taskrun/codemap.md) |
 | `tools/k3c-workbench/internal/taskgate/` | Freigabe-Schloss: darf ein Agent einen Task starten (`task-freigaben.json`) | [View Map](tools/k3c-workbench/internal/taskgate/codemap.md) |
-| `tools/k3c-workbench/internal/botdev/` | Bot-Gerät: belegt per WebSocket einen Slot und sendet Balancing-Bot-Eingaben | [View Map](tools/k3c-workbench/internal/botdev/codemap.md) |
-| `tools/k3c-workbench/internal/botfeed/` | Loopback-WebSocket-Feed je Testlauf-Client für Bot-Kommandos | [View Map](tools/k3c-workbench/internal/botfeed/codemap.md) |
-| `tools/k3c-workbench/internal/browser/` | Findet Edge/Chrome und startet ihn headless mit eigenem Profil | [View Map](tools/k3c-workbench/internal/browser/codemap.md) |
 | `tools/k3c-workbench/internal/balance/` | Balancing-Tester: Bot-Szenario-Matrix, Zielkorridor, Baseline, Sensitivität, Kurven, Replays | [View Map](tools/k3c-workbench/internal/balance/codemap.md) |
 | `tools/k3c-workbench/internal/gamedata/` | Read-only-Zusammenfassungen von `reports/` und `saves/` | [View Map](tools/k3c-workbench/internal/gamedata/codemap.md) |
 | `tools/k3c-workbench/internal/github/` | `gh`-CLI-Client mit TTL-Cache für PR- und CI-Stand | [View Map](tools/k3c-workbench/internal/github/codemap.md) |

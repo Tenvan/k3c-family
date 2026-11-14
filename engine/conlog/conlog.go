@@ -1,4 +1,4 @@
-// Package conlog ist der gemeinsame Konsolen-Handler für slog (k3c-server, k3c-workbench): eine Zeile je Eintrag,
+// Package conlog ist der gemeinsame Konsolen-Handler für slog (k3c-workbench): eine Zeile je Eintrag,
 //
 //	17:03:11.042 ERROR [svc] Dienst fehlgeschlagen port=8080 err="bereits belegt"
 //

@@ -39,7 +39,7 @@ var (
 	procTerminateJob = kernel32.NewProc("TerminateJobObject")
 )
 
-// Strukturen von JOBOBJECT_EXTENDED_LIMIT_INFORMATION (64-Bit-Layout, wie in winnt.h; wie tools/k3c-starter).
+// Strukturen von JOBOBJECT_EXTENDED_LIMIT_INFORMATION (64-Bit-Layout, wie in winnt.h).
 type jobBasicLimits struct {
 	PerProcessUserTimeLimit, PerJobUserTimeLimit int64
 	LimitFlags                                   uint32

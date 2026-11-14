@@ -6,8 +6,6 @@ import type { ServiceStatus, Source } from '../api';
 /** Bekannte Log-Dateien ohne eigenen Dienst: Zweck und Einordnung. */
 const LOG_INFO: Record<string, { text: string; tags: string[] }> = {
   'k3c-workbench': { text: 'Log von k3c-workbench selbst: Dienste, MCP-Aufrufe, Watch.', tags: ['Tool'] },
-  'k3c-client': { text: 'Browser-Client des Spiels, über /api/log vom Go-Server mitgeschrieben.', tags: ['Spiel', 'Client'] },
-  'k3c-server': { text: 'Strukturiertes Log des Go-Spielservers.', tags: ['Spiel', 'Backend'] },
 };
 
 const GROUPS = [

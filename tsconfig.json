@@ -1,4 +1,6 @@
 {
+  // Typecheck der Repo-Wurzel: tests/ (B-033) und tools/paper/ (Papierschnitt-Renderer unter bun, PV1.3). Der Browser-Client
+  // src/ ist entfernt (B-848).
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
@@ -11,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "types": ["vite/client"]
+    "types": ["node"]
   },
-  "include": ["src"]
+  "include": ["tests", "tools/paper", "vitest.config.ts"]
 }

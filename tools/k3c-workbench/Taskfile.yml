@@ -103,7 +103,7 @@ tasks:
     desc: go test für k3c-workbench (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit) und die Asset-Logik tools/assetkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
-    # Paketliste ohne Sim-Pakete (balance, simrun, simexe, botdev; Sperre, CHECK_SIM=1 nimmt sie mit, B-857) aus
+    # Paketliste ohne Sim-Pakete (balance, simrun, simexe; Sperre, CHECK_SIM=1 nimmt sie mit, B-857) aus
     # tools/checkdiff › simDirs wie bei check:go; WB_PKGS (CI) hat Vorrang. Scheitert die Liste, bricht der Lauf ab,
     # statt auf ./... zurückzufallen.
     vars:

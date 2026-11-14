@@ -139,7 +139,7 @@ func TestVerdichtungEchterLaeufe(t *testing.T) {
 		{"go:test", "gotest", []string{"--- FAIL: TestZZFalsch (0.00s)", "zz_tmp_test.go:7: 1+1 = 2, erwartet 3", "FAIL\tk3c/tools/k3c-workbench\t0.907s"}, "ok "},
 		{"go:lint", "golangci", []string{"zz_tmp_test.go:11:35: Error return value is not checked (errcheck)",
 			"zz_tmp_test.go:13:6: func tmpErr is unused (unused)", "2 issues:"}, "func zz"},
-		{"task:build", "vite", []string{"error during build:", "Build failed with 1 error:", "[plugin vite:build-html] C:/WORKSPACE/k3c/game.html",
+		{"dev:test", "vite", []string{"error during build:", "Build failed with 1 error:", "[plugin vite:build-html] C:/WORKSPACE/k3c/game.html",
 			"Error: Failed to resolve /src/gibtsnicht.ts from C:/WORKSPACE/k3c/game.html"}, "at async"},
 	}
 	for _, c := range cases {

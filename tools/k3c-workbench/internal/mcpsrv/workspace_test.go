@@ -131,7 +131,6 @@ func TestWorktreeDiensteMitEigenenPorts(t *testing.T) {
 	writeFile(t, filepath.Join(wt, "tools", "k3c-workbench", "services.json"), `[
 		{"name":"Vite","command":["x"],"port":5173,"health":"http","portEnv":"K3C_VITE_PORT"},
 		{"name":"Spielserver","command":["x"],"port":8080,"health":"http","portEnv":"K3C_HTTP_PORT"}]`)
-	t.Setenv("K3C_SERVER_URL", "http://anderswo:1") // gilt im Worktree nicht: dort zählt der eigene Spielserver
 	s := New(Config{Root: main, Version: "test"})
 	s.portBusy = func(port int) bool { return port == 8090 } // Versatz 10 ist belegt → 20
 	t.Cleanup(func() { s.StopWorktreeServices(context.Background()) })
@@ -139,9 +138,6 @@ func TestWorktreeDiensteMitEigenenPorts(t *testing.T) {
 	text, isErr := callText(t, cw, "svc_status", nil)
 	if isErr || !strings.Contains(text, "Vite · gestoppt · Port 5193") || !strings.Contains(text, "Spielserver · gestoppt · Port 8100") {
 		t.Errorf("svc_status im Worktree: %q", text)
-	}
-	if text, _ := callText(t, cw, "server_status", nil); !strings.Contains(text, "127.0.0.1:8100") {
-		t.Errorf("server_status fragt nicht den Spielserver des Worktrees: %q", text)
 	}
 	if text, _ := callText(t, connectWithHeader(t, s, main), "svc_status", nil); !strings.Contains(text, "keine Dienste") {
 		t.Errorf("Wurzel ohne Controller sieht Worktree-Dienste: %q", text)

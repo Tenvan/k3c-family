@@ -130,13 +130,11 @@ func TestSimTestHoechstensZweiLaeufe(t *testing.T) {
 }
 
 func TestSimTestLehntAb(t *testing.T) {
-	t.Setenv("K3C_SERVER_URL", "http://127.0.0.1:1") // kein Spielserver
 	s, started := fakeServer(t, func(runSpec) runResult { return runResult{} })
 	cases := []simTestIn{
 		{Action: "starten"},
 		{Action: "start", Mode: "mock"},
 		{Action: "start", Players: 9},
-		{Action: "start", Clients: 5},
 		{Action: "start", Seeds: 500},
 		{Action: "start", Bots: "zauberer"},
 		{Action: "start", Seeds: 3, SeedList: "k3c-dev"},
@@ -147,12 +145,10 @@ func TestSimTestLehntAb(t *testing.T) {
 		{Action: "start", Mode: "online", World: "standard"},
 		{Action: "start", Mode: "online", Days: 40},
 		{Action: "start", Focus: []string{"spass"}},
-		{Action: "start", Clients: 2},
 		{Action: "start", Focus: []string{"perf"}},
 		{Action: "start", Players: 5},
 		{Action: "start", Vary: "economy.json:purse.startGold"},
 		{Action: "start", Mode: "online", Vary: "economy.json:purse.startGold=5"},
-		{Action: "start", Mode: "online", Duration: "3h"},
 		{Action: "start", Mode: "online"},
 		{Action: "status", ID: "run-99"},
 		{Action: "stop", ID: "run-99"},

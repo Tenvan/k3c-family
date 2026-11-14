@@ -3,11 +3,8 @@
   "private": true,
   "license": "PolyForm-Noncommercial-1.0.0",
   "version": "0.2.0",
-  "description": "Family Three Crowns - Couch-Koop Side-Scroller (Browser / Xbox Edge)",
+  "description": "Family Three Crowns - Couch-Koop Side-Scroller (natives Spiel; Node nur für Werkzeuge und Tests)",
   "type": "module",
-  "dependencies": {
-    "phaser": "^4.2.1"
-  },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",
     "@types/node": "^26.6.3",

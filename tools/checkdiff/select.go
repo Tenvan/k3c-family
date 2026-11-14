@@ -23,7 +23,6 @@ type plan struct {
 	Rules         bool // Regel-Test des Repos (alles außer Doku)
 	Client        bool // Oxlint, tsc, Vitest --changed
 	WbVitest      bool
-	StarterVitest bool
 	Mods          map[string]*modPlan
 }
 
@@ -38,13 +37,13 @@ var goldenOwners = map[string][]string{
 	"golden":       {"engine/sim", "engine/level"},
 	"hub":          {"engine/sim", "engine/level"},
 	"planned":      {"engine/level"},
-	"protocol":     {"engine/net"},
+	"protocol":     {"engine/room"},
 	"saves":        {"engine/store", "engine/sim"},
 	"torches.json": {"engine/sim"},
 }
 
-// clientRoots: Ordner, deren Dateien Lint, Typecheck und Vitest des Clients brauchen.
-var clientRoots = []string{"src/", "tests/", "public/", "data/", "tools/paper/"}
+// clientRoots: Ordner, deren Dateien Lint, Typecheck und Vitest der Wurzel brauchen (der Browser-Client src/ ist entfernt, B-848).
+var clientRoots = []string{"tests/", "public/", "data/", "tools/paper/"}
 
 func hasPrefix(f string, prefixes ...string) bool {
 	for _, p := range prefixes {
@@ -85,11 +84,9 @@ func (p *plan) mod(m string) *modPlan {
 func (p *plan) frontend(f string) bool {
 	switch {
 	case hasPrefix(f, "tools/webkit/"):
-		p.WbVitest, p.StarterVitest = true, true
+		p.WbVitest = true
 	case hasPrefix(f, "tools/k3c-workbench/frontend/"):
 		p.WbVitest = true
-	case hasPrefix(f, "tools/k3c-starter/frontend/"):
-		p.StarterVitest = true
 	default:
 		return false
 	}

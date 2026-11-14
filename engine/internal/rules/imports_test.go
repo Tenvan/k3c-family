@@ -13,15 +13,16 @@ import (
 // repoRoot ist die Wurzel des Hauptmoduls k3c, relativ zu diesem Paket (engine/internal/rules).
 const repoRoot = "../../.."
 
-// serverDirs sind die Ordner, die nichts aus tools/ importieren dürfen (B-507/AC-01): die Engine und der Spielserver.
-var serverDirs = []string{"engine", "cmd/k3c-server"}
+// serverDirs sind die Ordner, die nichts aus tools/ importieren dürfen (B-507/AC-01): die Engine (der Spielserver ist
+// entfernt, B-887).
+var serverDirs = []string{"engine"}
 
-// TestServerImportsNothingFromTools prüft die Importe von engine/ und cmd/k3c-server samt aller Pakete des Hauptmoduls,
+// TestServerImportsNothingFromTools prüft die Importe von engine/ samt aller Pakete des Hauptmoduls,
 // die sie (auch über Umwege) einbinden: kein Import beginnt mit k3c/tools. Das Studio darf die Engine nutzen, nie umgekehrt.
 func TestServerImportsNothingFromTools(t *testing.T) {
 	for _, imp := range moduleImports(t, startDirs(t)) {
 		if imp.path == "k3c/tools" || strings.HasPrefix(imp.path, "k3c/tools/") {
-			t.Errorf("%s importiert %s (engine/ und cmd/k3c-server importieren nichts aus tools/, B-507)", imp.file, imp.path)
+			t.Errorf("%s importiert %s (engine/ importiert nichts aus tools/, B-507)", imp.file, imp.path)
 		}
 	}
 }

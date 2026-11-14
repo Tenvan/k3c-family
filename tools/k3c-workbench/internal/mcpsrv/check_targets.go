@@ -53,8 +53,8 @@ var checkTargets = []checkTarget{
 		kinds: []string{kindTsc}},
 	{name: "task:lint", command: []string{"task", "lint"}, timeout: defaultTimeout,
 		kinds: []string{kindOxlint}},
-	{name: "task:build", command: []string{"task", "build"}, timeout: defaultTimeout,
-		kinds: []string{kindTsc, kindVite}},
+	{name: "task:build", command: []string{"task", "build"}, timeout: defaultTimeout, // natives Spiel (B-848)
+		kinds: []string{kindGoTest}},
 	{name: "task:check:go", command: []string{"task", "check:go"}, timeout: defaultTimeout,
 		kinds: []string{kindGoTest, kindGolangci}},
 	{name: "task:check:diff", command: []string{"task", "check:diff"}, timeout: defaultTimeout,

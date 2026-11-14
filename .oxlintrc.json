@@ -3,7 +3,6 @@
   "ignorePatterns": [
     "dist", "_site", "node_modules", "public",
     "tools/k3c-workbench/frontend/dist", "tools/k3c-workbench/frontend/wailsjs",
-    "tools/k3c-starter/frontend/dist", "tools/k3c-starter/frontend/wailsjs",
     ".claude" // fremde Skill-Skripte, nicht Teil des Spiel-Codes
   ],
   // Harte Grenzen aus docs/arbeitsweise.md › Komplexitäts-Budget. Die Zielwerte prüft das Review.
@@ -17,20 +16,6 @@
     {
       "files": ["**/*.test.ts", "tests/**"],
       "rules": { "max-lines-per-function": "off", "complexity": "off" }
-    },
-    // Ratsche: Ausnahmen mit dem gemessenen Wert (SP01.1, 2026-09-30). Nur senken, nie heben;
-    // wird eine Datei besser, Wert senken oder Eintrag löschen.
-    {
-      "files": ["src/landing/landing.ts"],
-      "rules": { "complexity": ["error", { "max": 29 }] }
-    },
-    {
-      "files": ["src/scenes/render/worldRenderer.ts"],
-      "rules": { "complexity": ["error", { "max": 23 }] }
-    },
-    {
-      "files": ["src/scenes/HudScene.ts"],
-      "rules": { "complexity": ["error", { "max": 17 }] }
     }
   ]
 }

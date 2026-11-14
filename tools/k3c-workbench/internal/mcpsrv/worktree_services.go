@@ -3,12 +3,10 @@ package mcpsrv
 import (
 	"context"
 	"fmt"
-	"os"
 	"path/filepath"
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/serverapi"
 	"k3c/tools/k3c-workbench/internal/services"
 )
 
@@ -130,44 +128,5 @@ func (s *Server) StopWorktreeServices(ctx context.Context) {
 		w.ctl.StopAll(ctx)
 		w.stop()
 		delete(s.wt.all, root)
-	}
-}
-
-// serverClient liest Adresse und Token bei jedem Aufruf aus der Umgebung (wie der Server: K3C_STATUS_TOKEN,
-// K3C_SERVER_URL, K3C_HTTP_PORT). Aus einem Worktree gilt immer dessen eigener Spielserver. Fehlt das Token in der
-// Umgebung, gilt das aus der env des Dienstes Spielserver (B-362).
-func (s *Server) serverClient(ctx context.Context) (*serverapi.Client, error) {
-	ws := s.ws(ctx)
-	if ws.name == "" {
-		return serverapi.FromEnv(withServiceToken(s.cfg.Services, os.Getenv)), nil
-	}
-	w, err := s.worktreeServices(ws)
-	if err != nil {
-		return nil, err
-	}
-	return serverapi.FromEnv(withServiceToken(w.ctl, func(key string) string {
-		if key == serverapi.EnvURL {
-			return ""
-		}
-		if v, ok := w.ports[key]; ok {
-			return v
-		}
-		return os.Getenv(key)
-	})), nil
-}
-
-// withServiceToken ergänzt get um das Token aus der env des Dienstes Spielserver, wenn get keins liefert.
-func withServiceToken(ctl *services.Controller, get func(string) string) func(string) string {
-	return func(key string) string {
-		v := get(key)
-		if v != "" || key != serverapi.EnvToken || ctl == nil {
-			return v
-		}
-		for _, svc := range ctl.Configs() {
-			if svc.Name == "Spielserver" {
-				return svc.Env[key]
-			}
-		}
-		return ""
 	}
 }

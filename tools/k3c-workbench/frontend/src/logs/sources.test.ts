@@ -35,8 +35,7 @@ group('Quellen ordnen', () => {
     expect(describe(src('check:task:test', 'run'))).toContain('task:test');
   });
 
-  it('ordnet Quellen Spiel/Tool und Backend/Client zu', () => {
-    expect(tagsOf(src('k3c-client', 'log'))).toEqual(['Spiel', 'Client']);
+  it('ordnet Quellen Tool oder keiner Gruppe zu', () => {
     expect(tagsOf(src('k3c-workbench', 'log'))).toEqual(['Tool']);
     expect(tagsOf(src('check:task:test', 'run'))).toEqual(['Tool']);
     expect(tagsOf(src('neu', 'log'))).toEqual([]);
