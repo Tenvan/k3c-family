@@ -45,6 +45,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WZ60 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
 | [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | offen | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
 | [B-909](B-909-planungsdaten-schlank.md) | DEV | Schuld | mittel | offen | WZ60 | Die Planungsseite lädt bei einer Änderung nur das Geänderte statt 5,5 MiB PlanningData |
+| [B-908](B-908-pages-bausatz.md) | PLAT | Idee | mittel | offen | GP1 | Die Präsentationsseite zeigt das Spiel als Bausatz: Einzelspieler und Couch-Koop, nativ, frei für nicht-kommerzielle Nutzung, eigene Welten mit dem MCP-Server |
 
 ## Archiv
 
