@@ -19,9 +19,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG10 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
-| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | eingeplant | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
-| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
-| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | offen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
@@ -36,6 +33,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-881](B-881-burg-ausbau-variante-je-stufe.md) | CLI | Problem | niedrig | offen | – | Burg-Ausbau-Überlage zeigt die Türmchen im Material der Burg-Stufe |
 | [B-883](B-883-hintergruende-fuenf-varianten-im-client.md) | CLI | Problem | niedrig | offen | – | Der Client nutzt alle fünf Hintergrund-Varianten |
 | [B-884](B-884-abnahme-mg11.md) | PAP | Schuld | mittel | offen | – | Abnahme MG11: Sichtprüfung der Welt-Grafik und Gen-Läufe sind erledigt |
+| [B-882](B-882-abnahme-laeufe-wz45.md) | DEV | Schuld | mittel | offen | WZ45 | Abnahme-Läufe WZ45 |
 
 ## Archiv
 

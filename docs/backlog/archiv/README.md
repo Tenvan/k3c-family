@@ -7,6 +7,9 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-859](B-859-assets-vitests-warten-auf-bedingungen.md) | DEV | Problem | niedrig | erledigt | WZ53 | Alle Vitests unter src/assets der Workbench warten auf Bedingungen statt flush() und bleiben unter Last grün |
 | [B-384](B-384-inselwechsel-bestaetigung-sim.md) | SIM | Frage | mittel | erledigt | – | Inselwechsel: Wechsel-Bestätigung (confirmIsland) passt nicht zum Presence-Wechsel der Sim |
 | [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | erledigt | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
