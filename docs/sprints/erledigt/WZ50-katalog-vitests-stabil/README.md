@@ -1,6 +1,6 @@
 # WZ50 · DEV · Katalog-Vitests der Workbench bleiben unter Last grün
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ50.1 | `WZ50.1-katalog-vitests.md` | Umsetzung | autonom | fertig |
-| WZ50.2 | `WZ50.2-review.md` | Review | autonom | offen |
+| WZ50.2 | `WZ50.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -68,6 +68,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Claude. AC-01 geprüft (WZ50.1 › Ergebnis, WZ50.2 › Ergebnis): Katalog-Vitests 40 von 40 Mal grün unter Last, `task check:dev` zweimal hintereinander grün, `task check` und `go:test` grün.
+Behoben: Die Katalog-Tests warten jetzt auf Bedingungen statt auf `flush()` und feste Zeiten (`catalog/catalogTesting.tsx`).
+Neue Tickets (anzulegen, durch den Aufrufer): `readonly.test.tsx` unter Last, `TestDateiAenderungStartetNeu` unter Last.
+Abnahme-Ticket für Sim, Balance und Gen: keins nötig, der Sprint ändert nur Frontend-Tests ohne Sim-, Balance- oder Gen-Bezug.

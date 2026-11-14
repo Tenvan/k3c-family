@@ -18,7 +18,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ44 | DEV, INF | WZG | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | – | `aktiv/WZ44-planung-wellen-werkzeuge/` |
 | WZ47 | DEV | WZG | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | – | `aktiv/WZ47-ticket-relationen-index/` |
 | WZ48 | INF, DEV | WZG | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | – | `aktiv/WZ48-tests-ci-stabil/` |
-| WZ50 | DEV | WZG | Katalog-Vitests der Workbench bleiben unter Last grün | – | `aktiv/WZ50-katalog-vitests-stabil/` |
 | RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
 | MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
 | RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |

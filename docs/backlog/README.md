@@ -63,7 +63,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
 | [B-831](B-831-check-run-dev-test-frontend-limit.md) | DEV | Problem | mittel | eingeplant | WZ49 | check_run dev:test baut das Frontend vorher und reicht für die volle Workbench-Suite |
-| [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | eingeplant | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün |
 | [B-842](B-842-fahrplan-freie-abschnitte-werkzeug.md) | DEV | Problem | mittel | eingeplant | WZ49 | Fahrplan-Abschnitt „Offen am Gerät“ und verwaiste Zeilen pflegt das Werkzeug |
 | [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | offen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
