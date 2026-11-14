@@ -40,7 +40,7 @@ Entwürfe löschen laufen über die MCP-Tools `plan_list`, `plan_get`, `plan_cre
 der Rückfall, wenn k3c-workbench nicht läuft; dann gelten die Regeln dieses Abschnitts wörtlich.
 **Fehlen die MCP-Tools, erst die Workbench prüfen.** Sind `mcp__k3c-workbench__*` in einer Session nicht verbunden, wird nicht sofort von Hand gearbeitet:
 (1) Läuft sie? Prozess `k3c-workbench*`, Port 5180 hört, letzte Zeilen von `logs/k3c-workbench.jsonl` (`💥 start fehlgeschlagen` nennt den Grund, meist ein belegter Port).
-(2) Läuft sie nicht: `bin/k3c-workbench.exe` starten; ist die EXE älter als `develop`, vorher `task k3c-workbench:build`. Nie zusätzlich die Web-EXE (`k3c-workbench:web`) starten:
+(2) Läuft sie nicht: `bin/k3c-workbench.exe` starten; ist die EXE älter als `main`, vorher `task k3c-workbench:build`. Nie zusätzlich die Web-EXE (`k3c-workbench:web`) starten:
 beide teilen sich Port 5180, die zweite Instanz bleibt ohne MCP. (3) MCP der Session neu verbinden. Erst wenn das scheitert, gilt der Rückfall von Hand, und die Meldung an 🧑 nennt den Grund.
 **Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird beim Schreiben von Specs und Texten gelesen. Ein neuer
 Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
@@ -75,20 +75,20 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
 
 ## Branches
 
-- **`develop`** ist der Arbeitsstand. Jeder Sprint hat **einen** Branch `sprint/<präfix>` von `origin/develop`; `<präfix>` ist
+- **`main`** ist der Arbeitsstand (kein `main` mehr, seit 2026-11-14). Jeder Sprint hat **einen** Branch `sprint/<präfix>` von `origin/main`; `<präfix>` ist
   der Teil vor `/` im Feld `Branch` seiner Sessions (z. B. `f5/1-…` → `sprint/f5`). Alle Sessions committen dort,
-  am Ende steht **ein PR je Sprint** gegen `develop`. Abgleich mit `develop` per `git merge origin/develop`, nie Rebase
+  am Ende steht **ein PR je Sprint** gegen `main`. Abgleich mit `main` per `git merge origin/main`, nie Rebase
   oder Force-Push auf einem geteilten Sprint-Branch.
-- **Basis:** Nennt das Projekt einen Integrations-Branch (`feature/<projekt>`, Zeile `Basis:` in den Notizen des Projekts), basiert der Sprint-Branch darauf, sonst auf `origin/develop`.
+- **Basis:** Nennt das Projekt einen Integrations-Branch (`feature/<projekt>`, Zeile `Basis:` in den Notizen des Projekts), basiert der Sprint-Branch darauf, sonst auf `origin/main`.
 - **Parallele Sprints:** Sprint-PRs mergen in der Reihenfolge ihrer Fertigstellung. Wer später fertig wird, holt die Basis mit `git merge origin/<Basis>` und löst die Konflikte vor dem Push;
   für Index und Fahrplan gilt die Regel „Sammeldateien“ (Abschnitt „Parallelität und Wellen“). Eine Session, die von einem offenen Sprint abhängt, startet erst nach dessen Merge.
-- **Aufräumen (B-302):** Lokal und auf `origin` liegen nur `develop`, `main`, die Branches aktiver Sprints und ihre Worktrees. Vier Meilensteine:
+- **Aufräumen (B-302):** Lokal und auf `origin` liegen nur `main`, die Branches aktiver Sprints und ihre Worktrees. Vier Meilensteine:
   Session-Start (Autonomer Ablauf, Schritt 1: `task ops:aufraeumen`) · Sprint erledigt (Review, Schritt 5: `wip/<präfix>…`-Branches des Sprints prüfen; was im Sprint-Branch steckt, steht im PR-Text unter „Zum Löschen“) ·
   Sprint-PR gemergt (🧑 löscht die genannten `origin/wip/…`-Branches; auf `origin` löscht nur 🧑) · Release (Zeile „Aufgeräumt“ der Checkliste, nur Hinweis).
-  `task ops:aufraeumen` löscht lokal nur Branches, deren Commits per `git cherry` in `origin/develop` stecken oder deren Upstream weg ist und deren Pull Request laut `gh` gemergt ist, dazu saubere Worktrees dieser Branches.
-  Nie gelöscht werden `develop`, `main`, der ausgecheckte Branch und `sprint/*` mit Ordner in `docs/sprints/aktiv/`. Ohne `gh` oder Netz listet der Task nur.
+  `task ops:aufraeumen` löscht lokal nur Branches, deren Commits per `git cherry` in `origin/main` stecken oder deren Upstream weg ist und deren Pull Request laut `gh` gemergt ist, dazu saubere Worktrees dieser Branches.
+  Nie gelöscht werden `main`, der ausgecheckte Branch und `sprint/*` mit Ordner in `docs/sprints/aktiv/`. Ohne `gh` oder Netz listet der Task nur.
 - **`main`** ist geschützt und trägt nur Release-Stände. Nur 🧑 gleicht ihn bei einem neuen Major-Release ab,
-  per Fast-Forward: `git fetch && git push origin origin/develop:main`, danach Tag `v*` auf `main`
+  per Fast-Forward: `git fetch && git push origin origin/main:main`, danach Tag `v*` auf `main`
   (startet `release.yml`; GitHub Pages baut aus `main`). Nie direkt auf `main` committen oder einen PR gegen `main` öffnen.
 
 ## Autonomer Ablauf (Mensch oder Cloud-Agent)
@@ -98,7 +98,7 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
 1. **Aufräumen:** `git fetch --prune`, dann `task ops:aufraeumen` (löscht nur sichere lokale Branches und Worktrees, listet den Rest mit Grund; `task ops:aufraeumen -- --dry` zeigt nur an).
    `docs/sprints/aktiv/*/README.md` lesen. Liegt `sprint/<präfix>` schon auf `origin` (`git ls-remote --heads origin
    sprint/<präfix>`), gilt der Stand der Sprint-Dateien dort (`git show origin/sprint/<präfix>:<Pfad>`), sonst der von
-   `develop`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
+   `main`. Die nächste Session ergibt sich aus dem **Rang** (`projekte/README.md`): aktives Projekt mit dem kleinsten
    Rang → seine aktiven Sprints in der Reihenfolge der Projekt-Tabelle → erste Session mit `Status: offen`,
    `Agent: autonom` und erledigten Abhängigkeiten. Gibt es dort keine, kommt das Projekt mit dem nächsten Rang. Die **Domäne** (bei gesetzter `Lane`: Domäne und Lane) der Session darf nicht gesperrt sein:
    Steht auf einem anderen Sprint-Branch (`git ls-remote --heads origin 'sprint/*'`) eine Session derselben Domäne auf
@@ -108,7 +108,7 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
    „Parallel möglich“; je aktivem Sprint überlagert es den Stand von `origin/sprint/<präfix>` (lokaler Ref nach `git fetch`,
    Schritt 1 oben; fehlt der Ref, gilt der lokale Stand und die Antwort sagt das, B-519). Sprint-Branches, die lokal noch nicht
    bekannt sind, zeigt `git fetch --prune`.
-2. Sprint-Branch auschecken (fehlt er: von `origin/develop` anlegen, die erste Session setzt `Start-Commit`).
+2. Sprint-Branch auschecken (fehlt er: von `origin/main` anlegen, die erste Session setzt `Start-Commit`).
    Session-Datei vollständig lesen, `Status: in Arbeit` setzen, committen und sofort `git push -u origin sprint/<präfix>`
    (beansprucht die Session; scheitert der Push, hat ein anderer Lauf sie: neu holen und bei 1. beginnen).
 3. Nur die **Erlaubten Dateien** ändern. Die **Schritte** der Reihe nach ausführen, **Nicht-Ziele** einhalten.
@@ -117,7 +117,7 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
 5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
    Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
    (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Ein Commit mit Session im Titel
-   (`feat(srv): Restore absichern (F4.3)`), `git fetch`, `git merge origin/develop`, push auf den Sprint-Branch.
+   (`feat(srv): Restore absichern (F4.3)`), `git fetch`, `git merge origin/main`, push auf den Sprint-Branch.
    **Kein PR**: den öffnet erst die letzte Session des Sprints (Review, im Doku-Sprint die letzte); sie schaltet
    auch Auto-Merge ein (siehe Review-Session, Schritt 5). Alle anderen Sessions mergen nie.
 
@@ -139,7 +139,7 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 - **Prüfstufen:** Während der Arbeit nur gezielte Tests (`go test ./engine/sim/ -run TestX`, `check_run go:test` oder
   `task:test` mit `pattern`). Vor dem Commit **genau einmal** `task check:diff` (B-730, Werkzeug `tools/checkdiff`): Es prüft
   **nur, was die geänderten Dateien dieses Commits brauchen** (Beschluss 🧑 2026-11-11). Basis ist `HEAD` (geänderte und neue
-  Dateien; bei sauberem Checkout der letzte Commit), nicht mehr der ganze Sprint; `CHECK_BASE=origin/develop` nimmt bewusst mehr.
+  Dateien; bei sauberem Checkout der letzte Commit), nicht mehr der ganze Sprint; `CHECK_BASE=origin/main` nimmt bewusst mehr.
   **Stufe 1 (Sekunden):** Planungs-Tests nur bei Doku, Regel-Test, Oxlint, tsc, `go vet` der geänderten Pakete **und ihrer
   Abnehmer** (übersetzt sie samt Tests, führt nichts aus), golangci-lint der geänderten Pakete. **Stufe 2, nur nach grüner
   Stufe 1:** `go test -short` **nur der geänderten Pakete** und Vitest `--changed`. Tests der Abnehmer, volle Module, Sim,
@@ -362,7 +362,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
    Braucht er 🧑 (`Braucht 🧑` ≠ `–`), steht er bis dahin in der Ralf-Queue.
    Die Aktivierung ist der erste Commit auf `sprint/<präfix>`; ein Sprint mit Branch auf `origin`
    (`git ls-remote --heads origin 'sprint/*'`) gilt als aktiv, auch solange sein PR noch offen ist.
-   Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/develop` beim Anlegen des Sprint-Branchs.
+   Das Feld `Start-Commit` setzt die **erste Session** des Sprints: `git rev-parse --short origin/main` beim Anlegen des Sprint-Branchs.
 4. **Abschließen:** Erledigt ist ein Sprint erst, wenn **alle** Sessions `fertig` oder `verworfen` sind. Die letzte
    davon (meist das Review, sonst die letzte Hardware-Session) verschiebt den Ordner nach `sprints/erledigt/` und setzt `Status: erledigt`.
    Das Abnahme-Ticket für Sim, Balance und Gen (B-742) ist keine Session und hält den Abschluss nicht auf.
@@ -403,7 +403,7 @@ Modell (z. B. Sonnet) reicht.
 
 1. `task check` und `task check:go` → grün. Damit gelten die Grenzen aus dem Komplexitäts-Budget als geprüft.
    Sim, Balance, Gen und `check:race` laufen nicht hier, sondern im Abnahme-Ticket (Schritt 4, B-742).
-2. `git fetch && git diff origin/develop...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert, in **allen**
+2. `git fetch && git diff origin/main...origin/sprint/<präfix>` lesen (alles, was der Sprint ändert, in **allen**
    Domänen seiner Sessions), **nur den Diff**, nicht jede Datei vollständig.
 3. Nur diese Befunde zählen:
    - falsches Verhalten oder Datenverlust (Spielstände, Berichte, Dateien)
@@ -419,11 +419,11 @@ Modell (z. B. Sonnet) reicht.
    nach „Sim, Balance und Gen“; bei Projektabschluss das des Projekts).
 5. **Wip-Branches prüfen** (B-302): Was inhaltlich von `wip/<präfix>…` im Sprint-Branch steckt, kommt in den PR-Text unter „Zum Löschen“.
    Sind alle anderen Sessions fertig: Sprint-Ordner nach `sprints/erledigt/` verschieben, `Status: erledigt`; sonst bleibt
-   er in `aktiv/` (Hardware entkoppelt). Fahrplan anpassen, committen, `git merge origin/develop`,
+   er in `aktiv/` (Hardware entkoppelt). Fahrplan anpassen, committen, `git merge origin/main`,
    pushen und **den einen PR des Sprints** öffnen (Vorlage, eine Zeile je Session), danach **Auto-Merge einschalten**:
    `gh pr merge --auto --squash`. Ist der PR schon `CLEAN` (Konflikt-Check fertig), lehnt GitHub `--auto` ab: dann
    `gh pr merge --squash`. Im PR läuft nur der Konflikt-Check, die Tests laufen vorher lokal und nach dem Merge auf
-   `develop` (B-397). Ein Entwurfs-PR einer blockierten Session bekommt kein Auto-Merge.
+   `main` (B-397). Ein Entwurfs-PR einer blockierten Session bekommt kein Auto-Merge.
 6. **Version vorschlagen** (siehe „Entscheidungen und Versionen“): eine Zeile `Version: v… vorgeschlagen (Grund)` in der Abnahme; gesetzt wird sie erst nach Bestätigung durch 🧑.
 
 ## Komplexitäts-Budget

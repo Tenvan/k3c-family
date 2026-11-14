@@ -37,9 +37,9 @@ func has(t *testing.T, dir, name string) bool {
 
 // fixture baut ein Repo mit origin und je einem Branch pro Fall; der Checkout steht auf `aktuell`.
 //
-//	sicher        ohne Upstream, per cherry-pick in develop (Patch gleich)
-//	ungemergt     ohne Upstream, Commit fehlt in develop
-//	weg-gemergt   Upstream weg, PR gemergt laut Stub, Commit fehlt in develop
+//	sicher        ohne Upstream, per cherry-pick in main (Patch gleich)
+//	ungemergt     ohne Upstream, Commit fehlt in main
+//	weg-gemergt   Upstream weg, PR gemergt laut Stub, Commit fehlt in main
 //	weg-offen     Upstream weg, kein gemergter PR
 //	sprint/xx1    sicher, aber Ordner in docs/sprints/aktiv
 //	wt-sauber     sicher, eigener sauberer Worktree
@@ -52,23 +52,22 @@ func fixture(t *testing.T) fix {
 	root := t.TempDir()
 	origin := filepath.Join(root, "origin.git")
 	dir := filepath.Join(root, "work")
-	git(t, root, "init", "-q", "--bare", "-b", "develop", origin)
+	git(t, root, "init", "-q", "--bare", "-b", "main", origin)
 	git(t, root, "clone", "-q", origin, dir)
-	git(t, dir, "checkout", "-q", "-b", "develop")
+	git(t, dir, "checkout", "-q", "-b", "main")
 	commit(t, dir, "basis")
-	git(t, dir, "branch", "main")
 	for _, n := range []string{"sicher", "sprint/xx1", "wt-sauber", "wt-schmutzig", "aktuell"} {
-		git(t, dir, "checkout", "-q", "-b", n, "develop")
+		git(t, dir, "checkout", "-q", "-b", n, "main")
 		commit(t, dir, "f-"+strings.ReplaceAll(n, "/", "-"))
-		git(t, dir, "checkout", "-q", "develop")
+		git(t, dir, "checkout", "-q", "main")
 		git(t, dir, "cherry-pick", n)
 	}
-	git(t, dir, "push", "-q", "origin", "develop")
+	git(t, dir, "push", "-q", "origin", "main")
 	for _, n := range []string{"ungemergt", "weg-gemergt", "weg-offen"} {
-		git(t, dir, "checkout", "-q", "-b", n, "develop")
+		git(t, dir, "checkout", "-q", "-b", n, "main")
 		commit(t, dir, "f-"+n)
 	}
-	git(t, dir, "checkout", "-q", "develop")
+	git(t, dir, "checkout", "-q", "main")
 	for _, n := range []string{"weg-gemergt", "weg-offen"} {
 		git(t, dir, "push", "-q", "-u", "origin", n)
 		git(t, dir, "push", "-q", "origin", "--delete", n)
@@ -87,7 +86,7 @@ func fixture(t *testing.T) fix {
 	if err := os.WriteFile(filepath.Join(f.wtSchmutzig, "lose.txt"), []byte("x"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	git(t, dir, "worktree", "add", "-q", "--detach", f.wtDetached, "develop")
+	git(t, dir, "worktree", "add", "-q", "--detach", f.wtDetached, "main")
 	git(t, dir, "worktree", "add", "-q", "--detach", f.wtDetachedAlt, "ungemergt")
 	git(t, dir, "checkout", "-q", "aktuell")
 	return f
@@ -122,7 +121,7 @@ func TestLoeschtNurSichereFaelle(t *testing.T) {
 			t.Errorf("%s sollte gelöscht sein\n%s", n, out.String())
 		}
 	}
-	for _, n := range []string{"develop", "main", "aktuell", "sprint/xx1", "ungemergt", "weg-offen", "wt-schmutzig"} {
+	for _, n := range []string{"main", "aktuell", "sprint/xx1", "ungemergt", "weg-offen", "wt-schmutzig"} {
 		if !has(t, f.dir, n) {
 			t.Errorf("%s sollte bleiben\n%s", n, out.String())
 		}
@@ -134,7 +133,7 @@ func TestLoeschtNurSichereFaelle(t *testing.T) {
 		t.Error("schmutziger Worktree muss bleiben")
 	}
 	if _, err := os.Stat(f.wtDetached); err == nil {
-		t.Error("sauberer detached Worktree auf develop sollte entfernt sein")
+		t.Error("sauberer detached Worktree auf main sollte entfernt sein")
 	}
 	if _, err := os.Stat(f.wtDetachedAlt); err != nil {
 		t.Error("detached Worktree auf ungemergtem Stand muss bleiben")

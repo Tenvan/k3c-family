@@ -178,7 +178,7 @@ tasks:
   # check:diff ist das Werkzeug tools/checkdiff (Auswahl als getestete Go-Logik statt Shell). Teilaufgaben: `check:diff:plan` zeigt nur,
   # was laufen würde; `check:diff:js` und `check:diff:go` wiederholen nach einem roten Lauf nur die betroffene Bahn.
   check:diff:
-    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/develop` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1: Tests der geänderten Pakete (-short), Vitest --changed. Ohne Abnehmer-Tests, Sim, Balance, Gen, Race (B-518, B-730, B-742)"
+    desc: "Vor jedem Commit: nur was die geänderten Dateien dieses Commits brauchen (Basis HEAD; `CHECK_BASE=origin/main` für den ganzen Sprint). Stufe 1 Regel-Tests, Lint, Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1: Tests der geänderten Pakete (-short), Vitest --changed. Ohne Abnehmer-Tests, Sim, Balance, Gen, Race (B-518, B-730, B-742)"
     deps: [tmp]
     cmds:
       - go run ./tools/checkdiff {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}} {{.CLI_ARGS}}
