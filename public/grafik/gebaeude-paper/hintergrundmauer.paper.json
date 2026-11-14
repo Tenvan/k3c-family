@@ -100,8 +100,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 128,
-    "rahmen": [-16, -128, 32, 128]
+    "hoehe_px": 153,
+    "rahmen": [-22, -153, 44, 153]
   },
   "animationen": {
     "stand": {
@@ -211,12 +211,29 @@
             }
           ],
           "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "aufmauerung",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-16 -134L-9 -134L-9 -126L-16 -126Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "form": "M0 -134L7 -134L7 -126L0 -126Z",
+              "material": "stein"
+            }
+          ],
+          "pivot": [0, 0]
         }
       ]
     },
     {
       "tausch": {
-        "stein": "fell-fuchs"
+        "stein": "kupfer"
       },
       "zusaetze": [
         {
@@ -239,13 +256,46 @@
             }
           ],
           "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "hauben",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-16.5 -134L-12.5 -141L-8.5 -134Z",
+              "material": "kupfer",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-12.5 -141L-8.5 -134L-12.5 -134Z",
+              "material": "kupfer",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-0.5 -134L3.5 -141L7.5 -134Z",
+              "material": "kupfer",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M3.5 -141L7.5 -134L3.5 -134Z",
+              "material": "kupfer",
+              "ton": "licht"
+            }
+          ],
+          "pivot": [0, 0]
         }
       ]
     },
     {
       "tausch": {
-        "fell-fuchs": "stoff",
-        "smaragd": "stoff"
+        "kupfer": "eisen",
+        "smaragd": "eisen"
       },
       "zusaetze": [
         {
@@ -255,7 +305,8 @@
             {
               "art": "flaeche",
               "form": "M-16 -70L16 -70L16 -66L-16 -66Z",
-              "material": "maehne"
+              "material": "eisen",
+              "ton": "schatten"
             },
             {
               "art": "punkt",
@@ -273,12 +324,30 @@
             }
           ],
           "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "wimpel",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-5.4 -146L-3.6 -146L-3.6 -115L-5.4 -115Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-3.6 -146L8.5 -142.5L-3.6 -139Z",
+              "material": "koenigsrot"
+            }
+          ],
+          "pivot": [0, 0]
         }
       ]
     },
     {
       "tausch": {
-        "stoff": "koenigsblau"
+        "eisen": "kristall"
       },
       "zusaetze": [
         {
@@ -296,6 +365,85 @@
               "material": "weiss",
               "mitte": [9, -40],
               "radius": 0.8
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "krone",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-17.1 -140L-16 -145.6L-13.7 -140Z",
+              "material": "kristall",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-11.3 -140L-9 -145.6L-7.9 -140Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-14.9 -140L-13.8 -146.3L-12.5 -149L-11.2 -146.3L-10.1 -140Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-12.5 -149L-11.2 -146.3L-10.1 -140L-12.5 -140Z",
+              "material": "kristall",
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-11.9, -144.9],
+              "radius": 1
+            },
+            {
+              "art": "flaeche",
+              "form": "M-1.1 -140L0 -145.6L2.3 -140Z",
+              "material": "kristall",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M4.7 -140L7 -145.6L8.1 -140Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "form": "M1.1 -140L2.2 -146.3L3.5 -149L4.8 -146.3L5.9 -140Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M3.5 -149L4.8 -146.3L5.9 -140L3.5 -140Z",
+              "material": "kristall",
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [4.1, -144.9],
+              "radius": 1
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "fugen",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-0.5 -115.2L0.6 -115.2L0.6 -104.8L-0.5 -104.8ZM7.5 -103.2L8.6 -103.2L8.6 -92.8L7.5 -92.8ZM-8.5 -103.2L-7.4 -103.2L-7.4 -92.8L-8.5 -92.8ZM-0.5 -91.2L0.6 -91.2L0.6 -80.8L-0.5 -80.8ZM7.5 -79.2L8.6 -79.2L8.6 -68.8L7.5 -68.8ZM-8.5 -79.2L-7.4 -79.2L-7.4 -68.8L-8.5 -68.8ZM-0.5 -67.2L0.6 -67.2L0.6 -56.8L-0.5 -56.8ZM7.5 -55.2L8.6 -55.2L8.6 -44.8L7.5 -44.8ZM-8.5 -55.2L-7.4 -55.2L-7.4 -44.8L-8.5 -44.8ZM-0.5 -43.2L0.6 -43.2L0.6 -32.8L-0.5 -32.8ZM7.5 -31.2L8.6 -31.2L8.6 -20.8L7.5 -20.8ZM-8.5 -31.2L-7.4 -31.2L-7.4 -20.8L-8.5 -20.8ZM-0.5 -19.2L0.6 -19.2L0.6 -8.8L-0.5 -8.8Z",
+              "material": "kristall",
+              "ton": "licht"
             }
           ],
           "pivot": [0, 0]

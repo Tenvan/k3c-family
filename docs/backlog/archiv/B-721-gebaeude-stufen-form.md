@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG11
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
@@ -63,3 +63,5 @@ keine
 ## Notizen
 
 Quelle: PS1.3 Punkt 6, D-MG6-08. Nach B-712. Lane `gebaeude`.
+
+Umgesetzt in MG11.1 (2026-11-14): Rahmen mit Rand, Kette Holz → Stein → Kupfer → Eisen → Kristall, Formzuwachs je Stufe, leuchtende Fugen, D-MG6-08 erledigt (Burg-Ausbau-Variante im Client: B-881). **Sichtprüfung durch Ralf offen** (AC-02, Review der Workbench, Gruppe `gebaeude-paper`).

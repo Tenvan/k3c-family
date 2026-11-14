@@ -35,7 +35,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | erledigt |
 | MG9 | Papierschnitt nachbessern: Monarch, Reittiere, Truppen, Gegner | erledigt |
 | MG10 | Papierschnitt: Bosse neu mit eigener Silhouette | geplant |
-| MG11 | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | geplant |
+| MG11 | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | aktiv |
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | erledigt |
 | PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | erledigt |
 | PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | erledigt |
