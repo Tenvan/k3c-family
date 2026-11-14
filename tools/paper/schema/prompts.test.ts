@@ -11,13 +11,13 @@ const vorlagen = JSON.parse(readFileSync(join(ROOT, 'data/asset-prompts.json'), 
 const Ajv2020 = ((Ajv2020Import as unknown as { default?: typeof Ajv2020Import }).default ?? Ajv2020Import);
 
 /** Erlaubte Platzhalter (paper-mcp.md › Prompt-Vorlagen). */
-export const PLATZHALTER = ['asset', 'rig', 'teil', 'pfad', 'zustand', 'basis', 'eingabe', 'material', 'ton'];
+export const PLATZHALTER = ['asset', 'rig', 'teil', 'pfad', 'zustand', 'basis', 'eingabe', 'material', 'ton', 'slot', 'datei'];
 export const platzhalter = (text: string) => [...new Set([...text.matchAll(/\{([a-z_]+)\}/g)].map((m) => m[1]))];
 
 /** Orte der Asset-Arbeit mit festem Anfang und Ende; die übrigen (Styleguide, Sound, Quellen) sind kurze Prompts (B-639). */
 const ASSET_ORTE = ['asset', 'teil', 'review'];
 /** Pflicht-Platzhalter der kurzen Orte (B-727). */
-const PFLICHT: Record<string, string[]> = { material: ['material'], ton: ['ton'], papier: [] };
+const PFLICHT: Record<string, string[]> = { material: ['material'], ton: ['ton'], papier: [], sound: ['slot', 'datei'] };
 
 describe('Prompt-Vorlagen', () => {
   it('sind gültig gegen prompts.schema.json', () => {

@@ -1,4 +1,5 @@
 // @vitest-environment happy-dom
+import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
 import { buttons, click, mount, unmount, until } from '../testing';
@@ -10,6 +11,19 @@ afterEach(() => {
   unmount();
   vi.restoreAllMocks();
 });
+
+/** Tippt in die Suche des ListFilter (B-728). */
+async function tippe(host: HTMLElement, text: string) {
+  const input = host.querySelector<HTMLInputElement>('input[aria-label="Suchen"]')!;
+  await act(async () => {
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, text);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+}
+
+/** Chip `wert` in der Chip-Zeile `dimension`. */
+const chip = (host: HTMLElement, dimension: string, wert: string) =>
+  [...host.querySelectorAll(`[role="group"][aria-label="${dimension}"] button`)].find((b) => b.textContent?.startsWith(wert))!;
 
 describe('Sound (WB1.4)', () => {
   it('listet die Sound-Slots nach Kategorie mit Status', async () => {
@@ -30,6 +44,47 @@ describe('Sound (WB1.4)', () => {
     await until('Player mit Data-URL', () => host.querySelector('audio')?.getAttribute('src'));
     expect(data).toHaveBeenCalledWith('audio/tag.ogg');
     expect(host.querySelector('audio')?.getAttribute('src')).toMatch(/^data:audio\/ogg;base64,/);
+  });
+
+});
+
+describe('Sound-Filter und -Prompts (B-728)', () => {
+  it('B-728/AC-01: Filter nach Text, Kategorie und Status; kein Treffer lässt den Filter stehen', async () => {
+    const host = await mount(<SoundPage />);
+    await until('Sound-Slots', () => host.querySelectorAll('[data-sound]').length === 3);
+    const slots = () => [...host.querySelectorAll('[data-sound]')].map((e) => e.getAttribute('data-sound'));
+    await tippe(host, 'münze');
+    await until('Text-Filter', () => slots().join() === 'sfx:muenze');
+    await tippe(host, 'gibtsnicht');
+    await until('kein Treffer', () => host.textContent?.includes('Kein Treffer.'));
+    expect(host.querySelector('input[aria-label="Suchen"]')).not.toBeNull();
+    await tippe(host, '');
+    await click(chip(host, 'Kategorie', 'ambient'));
+    await until('Kategorie-Chip', () => slots().join() === 'ambient:wald');
+    await click(chip(host, 'Kategorie', 'ambient'));
+    await click(chip(host, 'Status', 'zugeordnet'));
+    await until('Status-Chip', () => slots().join() === 'music:tag');
+  });
+
+  it('B-728/AC-02: Klick auf den Slot zeigt Prompt-Buttons mit Slot-Id und Datei', async () => {
+    const writeText = vi.fn(async (text: string) => void text);
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
+    const titel = (await backend.assetsPrompts()).filter((v) => v.ort === 'sound').map((v) => v.titel);
+    expect(titel).toEqual(['Anderen Sound suchen', 'Kandidaten vergleichen', 'Lautstärke prüfen']);
+    const host = await mount(<SoundPage />);
+    const slot = await until('Slot music:tag', () => host.querySelector<HTMLElement>('[data-sound="music:tag"]'));
+    expect(buttons(host, titel[0])).toHaveLength(0);
+    await click(slot.querySelector('[data-wahl="sound"]')!);
+    await until('Prompt-Buttons', () => titel.every((t) => buttons(slot, t).length === 1));
+    await click(buttons(slot, 'Anderen Sound suchen')[0]);
+    await until('kopiert', () => writeText.mock.calls.length === 1);
+    expect(writeText.mock.calls[0][0]).toBe('Sound: anderen Sound für Slot `music:tag` suchen (aktuell audio/tag.ogg)');
+    const wald = host.querySelector<HTMLElement>('[data-sound="ambient:wald"]')!;
+    await click(wald.querySelector('[data-wahl="sound"]')!);
+    await until('nur der gewählte Slot', () => buttons(host, titel[0]).length === 1 && buttons(wald, titel[0]).length === 1);
+    await click(buttons(wald, 'Lautstärke prüfen')[0]);
+    await until('kopiert', () => writeText.mock.calls.length === 2);
+    expect(writeText.mock.calls[1][0]).toContain('`ambient:wald` prüfen (keine Datei)');
   });
 
   it('eine fehlende Datei zeigt den Fehler, kein Zuordnen-Knopf', async () => {

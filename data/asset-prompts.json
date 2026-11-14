@@ -112,5 +112,23 @@
     "titel": "Wirkung zeigen",
     "ort": "papier",
     "text": "Stil: Papier-Wirkung an einem Asset zeigen"
+  },
+  {
+    "id": "sound-suchen",
+    "titel": "Anderen Sound suchen",
+    "ort": "sound",
+    "text": "Sound: anderen Sound für Slot `{slot}` suchen (aktuell {datei})"
+  },
+  {
+    "id": "sound-vergleichen",
+    "titel": "Kandidaten vergleichen",
+    "ort": "sound",
+    "text": "Sound: Kandidaten für Slot `{slot}` vergleichen (aktuell {datei})"
+  },
+  {
+    "id": "sound-lautstaerke",
+    "titel": "Lautstärke prüfen",
+    "ort": "sound",
+    "text": "Sound: Lautstärke von Slot `{slot}` prüfen ({datei})"
   }
 ]

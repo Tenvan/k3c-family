@@ -70,7 +70,7 @@ eingesetzten Werten als eine User-Nachricht.
 |---|---|
 | `id` | `^[a-z][a-z0-9-]*$`, eindeutig |
 | `titel` | Text des Prompt-Buttons, höchstens 40 Zeichen |
-| `ort` | `asset` (am Asset im Katalog), `teil` (am angeklickten Teil der Vorschau), `review` (am Review-Eintrag); Styleguide (B-727): `material` (gewähltes Material), `ton` (gewählter Einzelton), `papier` |
+| `ort` | `asset` (am Asset im Katalog), `teil` (am angeklickten Teil der Vorschau), `review` (am Review-Eintrag); Styleguide (B-727): `material` (gewähltes Material), `ton` (gewählter Einzelton), `papier`; Sound (B-728): `sound` (gewählter Slot) |
 | `text` | Orte `asset`, `teil`, `review`: beginnt mit „Rufe zuerst `assets_guide {rig: {rig}}` auf“, endet mit „Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf.“ Alle anderen Orte: kurzer Prompt in einer Zeile ohne Arbeitsanweisungen (B-639), höchstens 120 Zeichen |
 
 Platzhalter (nur diese): `{asset}` ID, `{rig}` Rig-Typ, `{teil}` angeklicktes Teil (Pflicht bei `ort: teil`),
@@ -83,7 +83,12 @@ setzt die Werte ein und kopiert den fertigen Prompt in die Zwischenablage. Vorla
 Styleguide (B-727): `{material}` Material-Name (Pflicht bei `ort: material`), `{ton}` Name des Einzeltons (Pflicht bei
 `ort: ton`). Vorlagen je Ort „ändern“, „neu anlegen“, „Nutzer zeigen“: `stil-material-aendern`, `stil-material-neu`,
 `stil-material-nutzer`, `stil-ton-aendern`, `stil-ton-neu`, `stil-ton-nutzer`, `stil-papier-aendern`, `stil-papier-neu`,
-`stil-papier-nutzer`. Die MCP-Prompts `asset-<id>` kennen dieselben Platzhalter.
+`stil-papier-nutzer`.
+
+Sound (B-728): `{slot}` Slot-ID aus `data/sounds.json`, `{datei}` zugeordnete Dateien (kommagetrennt, sonst „keine
+Datei“), beide Pflicht bei `ort: sound`. Vorlagen: `sound-suchen`, `sound-vergleichen`, `sound-lautstaerke`.
+
+Die MCP-Prompts `asset-<id>` kennen dieselben Platzhalter.
 
 ## 4. Oberfläche (RPC)
 

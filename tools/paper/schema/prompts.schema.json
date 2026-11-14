@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://k3c.local/paper/prompts.schema.json",
   "title": "Prompt-Vorlagen der Asset-Arbeit (data/asset-prompts.json)",
-  "description": "Liste der Vorlagen; Platzhalter {asset} {rig} {teil} {pfad} {zustand} {basis} {eingabe} {material} {ton}. Vertrag: docs/standards/paper-mcp.md › Prompt-Vorlagen.",
+  "description": "Liste der Vorlagen; Platzhalter {asset} {rig} {teil} {pfad} {zustand} {basis} {eingabe} {material} {ton} {slot} {datei}. Vertrag: docs/standards/paper-mcp.md › Prompt-Vorlagen.",
   "type": "array",
   "minItems": 1,
   "items": {
@@ -12,7 +12,7 @@
     "properties": {
       "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
       "titel": { "type": "string", "minLength": 1, "maxLength": 40 },
-      "ort": { "description": "Wo der Prompt-Button steht", "enum": ["asset", "teil", "review", "material", "ton", "papier"] },
+      "ort": { "description": "Wo der Prompt-Button steht", "enum": ["asset", "teil", "review", "material", "ton", "papier", "sound"] },
       "text": { "type": "string", "minLength": 1 }
     }
   }
