@@ -70,11 +70,14 @@ export interface Stil {
   [feld: string]: unknown;
 }
 
+/** Wo ein Prompt-Button steht (paper-mcp.md › 3): Katalog, Teil, Review; Styleguide (B-727); Sound (B-728); Quellen (B-729). */
+export type VorlagenOrt = 'asset' | 'teil' | 'review' | 'material' | 'ton' | 'papier' | 'sound' | 'datei' | 'treffer';
+
 /** Prompt-Vorlage aus `data/asset-prompts.json`. */
 export interface Vorlage {
   id: string;
   titel: string;
-  ort: 'asset' | 'teil' | 'review';
+  ort: VorlagenOrt;
   text: string;
 }
 

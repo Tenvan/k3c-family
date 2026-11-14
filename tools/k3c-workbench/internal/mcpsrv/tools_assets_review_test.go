@@ -72,7 +72,7 @@ func vorlagenAusDatei(t *testing.T, root string) map[string][]string {
 	if err := json.Unmarshal(b, &vorlagen); err != nil {
 		t.Fatal(err)
 	}
-	re := regexp.MustCompile(`\{(asset|rig|teil|pfad|zustand|basis|eingabe)\}`)
+	re := regexp.MustCompile(`\{(asset|rig|teil|pfad|zustand|basis|eingabe|material|ton|slot|datei|pack|lizenz|treffer)\}`)
 	out := map[string][]string{}
 	for _, v := range vorlagen {
 		var namen []string
@@ -133,7 +133,7 @@ func TestAssetsPromptEinsetzen(t *testing.T) {
 	}
 	text := res.Messages[0].Content.(*mcp.TextContent).Text
 	if len(res.Messages) != 1 || res.Messages[0].Role != "user" || !strings.HasPrefix(text, "Rufe zuerst `assets_guide {rig: figur}` auf") ||
-		regexp.MustCompile(`\{(asset|rig|teil|pfad|zustand|basis|eingabe)\}`).MatchString(text) {
+		regexp.MustCompile(`\{(asset|rig|teil|pfad|zustand|basis|eingabe|material|ton|slot|datei|pack|lizenz|treffer)\}`).MatchString(text) {
 		t.Errorf("Prompt:\n%s", text)
 	}
 	if _, err := cs.GetPrompt(ctx, &mcp.GetPromptParams{Name: "asset-material-aendern", Arguments: map[string]string{
