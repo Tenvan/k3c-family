@@ -3,269 +3,116 @@
   "id": "hg-mine-nah-v1",
   "rig": "hintergrund",
   "version": 1,
-  "beschreibung": "Hintergrund Schachtwand mit Gerüst, nahe Ebene, Variante 1: periodisches Profil, kachelt waagrecht.",
+  "beschreibung": "Hintergrund Mine, nahe Ebene (Licht- und Schattenkanten), Variante 1: ohne Bäume, periodisches Profil, kachelt waagrecht (B-722).",
   "teile": [
     {
-      "id": "grund",
+      "id": "rand",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M0 0l0 -25 32 -3 32 -2 32 1 32 3 32 1 32 1 32 3 32 4 32 2 32 -2 32 -4 32 -3 32 1 32 2 32 1 32 0 32 2 32 2 32 0 32 -4 32 -4 32 -1 32 1 32 -1 0 25Z",
-          "material": "biom-mine"
+          "form": "M0 -480L0 -466.4L16 -465.6L32 -463.8L48 -461.5L64 -459.3L80 -458.1L96 -458.2L112 -459.6L128 -461.7L144 -463.6L160 -464.5L176 -463.9L192 -462L208 -459.6L224 -457.4L240 -456.5L256 -457L272 -458.8L288 -461.1L304 -463L320 -463.6L336 -462.5L352 -460.1L368 -457.1L384 -454.4L400 -452.9L416 -452.6L432 -453.5L448 -454.8L464 -455.9L480 -456.3L496 -456L512 -455.6L528 -455.9L544 -457.5L560 -460.7L576 -465.1L592 -470L608 -474.1L624 -476.5L640 -476.8L656 -475.2L672 -472.4L688 -469.4L704 -467.1L720 -466L736 -465.9L752 -466.3L768 -466.4L768 -480Z",
+          "material": "biom-mine",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 0L0 -22.5L16 -21L32 -19.1L48 -17.1L64 -15.5L80 -14.6L96 -14.4L112 -14.9L128 -15.7L144 -16.4L160 -16.6L176 -16.4L192 -15.8L208 -15.3L224 -15.2L240 -15.8L256 -17L272 -18.8L288 -20.6L304 -22.2L320 -23.2L336 -23.7L352 -23.7L368 -23.6L384 -23.5L400 -23.7L416 -24L432 -24.1L448 -23.8L464 -22.9L480 -21.3L496 -19.4L512 -17.6L528 -16.3L544 -16L560 -16.6L576 -18.1L592 -19.9L608 -21.7L624 -22.9L640 -23.6L656 -23.8L672 -23.6L688 -23.5L704 -23.5L720 -23.6L736 -23.7L752 -23.4L768 -22.5L768 0Z",
+          "material": "biom-mine",
+          "ton": "basis"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M0 0l0 -11 32 -1 32 0 32 1 32 1 32 1 32 1 32 2 32 0 32 -1 32 -1 32 1 32 1 32 0 32 -2 32 -2 32 -1 32 0 32 -1 32 0 32 2 32 2 32 1 32 -2 32 -2 0 11Z",
+          "form": "M0 -22.5L16 -21L32 -19.1L48 -17.1L64 -15.5L80 -14.6L96 -14.4L112 -14.9L128 -15.7L144 -16.4L160 -16.6L176 -16.4L192 -15.8L208 -15.3L224 -15.2L240 -15.8L256 -17L272 -18.8L288 -20.6L304 -22.2L320 -23.2L336 -23.7L352 -23.7L368 -23.6L384 -23.5L400 -23.7L416 -24L432 -24.1L448 -23.8L464 -22.9L480 -21.3L496 -19.4L512 -17.6L528 -16.3L544 -16L560 -16.6L576 -18.1L592 -19.9L608 -21.7L624 -22.9L640 -23.6L656 -23.8L672 -23.6L688 -23.5L704 -23.5L720 -23.6L736 -23.7L752 -23.4L768 -22.5L768 -19.5L752 -20.4L736 -20.7L720 -20.6L704 -20.5L688 -20.5L672 -20.6L656 -20.8L640 -20.6L624 -19.9L608 -18.7L592 -16.9L576 -15.1L560 -13.6L544 -13L528 -13.3L512 -14.6L496 -16.4L480 -18.3L464 -19.9L448 -20.8L432 -21.1L416 -21L400 -20.7L384 -20.5L368 -20.6L352 -20.7L336 -20.7L320 -20.2L304 -19.2L288 -17.6L272 -15.8L256 -14L240 -12.8L224 -12.2L208 -12.3L192 -12.8L176 -13.4L160 -13.6L144 -13.4L128 -12.7L112 -11.9L96 -11.4L80 -11.6L64 -12.5L48 -14.1L32 -16.1L16 -18L0 -19.5Z",
           "material": "biom-mine",
-          "ton": "schatten"
-        }
-      ],
-      "pivot": [384, -240]
-    },
-    {
-      "id": "balken",
-      "lagen": [
-        {
-          "art": "flaeche",
-          "form": "M272 0l0 -480 43 0 0 480ZM512 0l0 -480 47 0 0 480ZM253 -391l0 -22 323 0 0 22ZM263 -355l0 -18 303 0 0 18Z",
-          "material": "holz"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M272 0l0 -480 13 0 0 480ZM512 0l0 -480 14 0 0 480ZM253 -391l0 -6 323 0 0 6Z",
-          "material": "holz",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M307 0l0 -480 8 0 0 480ZM551 0l0 -480 8 0 0 480Z",
-          "material": "holz",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 1.4,
-          "form": "M289 -60L293 -100M289 -150L293 -190M289 -240L293 -280M289 -330L293 -370M289 -420L293 -460M531 -60L536 -100M531 -150L536 -190M531 -240L536 -280M531 -330L536 -370M531 -420L536 -460",
-          "material": "holz"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-mine",
-          "mitte": [293, -402],
-          "radius": 2.6,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-mine",
-          "mitte": [293, -364],
-          "radius": 2.6,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-mine",
-          "mitte": [536, -402],
-          "radius": 2.6,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-mine",
-          "mitte": [536, -364],
-          "radius": 2.6,
           "ton": "licht"
         }
       ],
       "pivot": [384, -240]
     },
     {
-      "id": "vorn",
+      "id": "pfosten",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M0 -30l0 -6 768 0 0 6Z",
-          "material": "biom-mine",
-          "ton": "licht"
+          "form": "M285 -17.6L285 -466.3L309 -466.3L309 -17.6Z",
+          "material": "holz",
+          "ton": "basis"
         },
         {
           "art": "flaeche",
-          "form": "M4 -22l0 -10 30 0 0 10ZM60 -22l0 -10 30 0 0 10ZM116 -22l0 -10 30 0 0 10ZM172 -22l0 -10 30 0 0 10ZM228 -22l0 -10 30 0 0 10ZM284 -22l0 -10 30 0 0 10ZM340 -22l0 -10 30 0 0 10ZM396 -22l0 -10 30 0 0 10ZM452 -22l0 -10 30 0 0 10ZM508 -22l0 -10 30 0 0 10ZM564 -22l0 -10 30 0 0 10ZM620 -22l0 -10 30 0 0 10ZM676 -22l0 -10 30 0 0 10ZM732 -22l0 -10 30 0 0 10Z",
+          "auflage": true,
+          "form": "M285 -17.6L285 -466.3L291 -466.3L291 -17.6Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M407 -40l-10 -70 140 0 -10 70Z",
-          "material": "biom-mine"
-        },
-        {
-          "art": "flaeche",
           "auflage": true,
-          "form": "M407 -40l-10 -70 26 0 6 70Z",
-          "material": "biom-mine",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M409 -108C409 -121 435 -132 467 -132C499 -132 525 -121 525 -108Z",
-          "material": "linie"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [423, -128],
-          "radius": 6.7,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [438, -120],
-          "radius": 5.1,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [453, -121],
-          "radius": 6.2,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [468, -122],
-          "radius": 4.1,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [483, -116],
-          "radius": 6.1,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [498, -126],
-          "radius": 5.8,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [513, -126],
-          "radius": 5.6,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "linie",
-          "mitte": [429, -38],
-          "radius": 11
-        },
-        {
-          "art": "punkt",
-          "material": "biom-mine",
-          "mitte": [429, -38],
-          "radius": 4,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "linie",
-          "mitte": [505, -38],
-          "radius": 11
-        },
-        {
-          "art": "punkt",
-          "material": "biom-mine",
-          "mitte": [505, -38],
-          "radius": 4,
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M289 -12l0 -54 53 0 0 54ZM137 -20l0 -60 60 0 0 60Z",
-          "material": "holz"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M289 -12l0 -54 11 0 0 54ZM137 -20l0 -60 13 0 0 60Z",
+          "form": "M303 -21.6L303 -462.3L309 -462.3L309 -21.6Z",
           "material": "holz",
-          "ton": "schatten"
+          "ton": "licht"
         },
         {
           "art": "falz",
-          "breite": 1.4,
-          "form": "M289 -12L342 -66M289 -66L342 -12M137 -20L197 -80M137 -80L197 -20",
-          "material": "holz"
+          "breite": 1.2,
+          "form": "M298 -452.3L298 -31.6",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "brocken",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M74.3 -10.4L77.5 -26.7L87.2 -37.9L100.3 -36.8L112.8 -27L116.3 -10.4ZM189.2 -11.3L191.1 -22.5L200.4 -35.7L212 -33.1L225.1 -26.6L227.8 -11.3ZM330.7 -19.6L335.2 -36.5L345.7 -48.3L366.3 -45.3L381.4 -36.1L388.9 -19.6ZM435.3 -19L436.9 -33.3L451.9 -46.5L468 -43.7L485.1 -34.5L488.4 -19ZM624.2 -19.7L626.1 -34.6L639.6 -47.5L658 -46.9L667.3 -38.6L672.5 -19.7Z",
+          "material": "biom-mine",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M77.5 -26.7L87.2 -37.9L100.3 -36.8L95.3 -29.7L80.6 -24.2ZM191.1 -22.5L200.4 -35.7L212 -33.1L208.5 -28.4L195 -23.5ZM335.2 -36.5L345.7 -48.3L366.3 -45.3L359.8 -39.7L339.4 -34ZM436.9 -33.3L451.9 -46.5L468 -43.7L461.9 -38.2L443.3 -32.7ZM626.1 -34.6L639.6 -47.5L658 -46.9L648.3 -39.1L631.4 -33.6Z",
+          "material": "biom-mine",
+          "ton": "basis"
         },
         {
           "art": "punkt",
-          "material": "gold",
-          "mitte": [56, -22],
-          "radius": 4
+          "material": "eisen",
+          "mitte": [204.1, -22.6],
+          "radius": 2.4,
+          "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "linie",
-          "mitte": [118, -21],
-          "radius": 4.7
+          "material": "kupfer",
+          "mitte": [320.8, -34.4],
+          "radius": 2.4,
+          "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "gold",
-          "mitte": [193, -19],
-          "radius": 4.7
+          "material": "eisen",
+          "mitte": [462.2, -34.8],
+          "radius": 2.4,
+          "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "linie",
-          "mitte": [294, -10],
-          "radius": 4.7
+          "material": "kupfer",
+          "mitte": [546.2, -27.3],
+          "radius": 2.4,
+          "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "linie",
-          "mitte": [326, -15],
-          "radius": 4.7
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [442, -16],
-          "radius": 4.7
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [485, -15],
-          "radius": 4.5
-        },
-        {
-          "art": "punkt",
-          "material": "linie",
-          "mitte": [552, -15],
-          "radius": 4.1
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [639, -15],
-          "radius": 4.2
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [700, -17],
-          "radius": 3.7
+          "material": "eisen",
+          "mitte": [646.2, -30.1],
+          "radius": 2.4,
+          "ton": "licht"
         }
       ],
       "pivot": [384, -240]
