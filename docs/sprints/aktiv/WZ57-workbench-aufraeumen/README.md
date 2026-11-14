@@ -1,9 +1,9 @@
 # WZ57 · DEV · Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
@@ -50,7 +50,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Der Web-Client der Workbench ist entfernt, die Workbench läuft nur als EXE (`B-872/AC-01`–`AC-03`).
+- **AC-02** Jede Ticket-Nummer kommt genau einmal vor (`B-861/AC-01`).
+- **AC-03** Die Abnahme-Läufe WZ43 sind gefahren (`B-852/AC-01`–`AC-03`).
+- **AC-04** Review des Sprints ohne offenen schweren Befund.
 
 ## Offene Fragen
 
@@ -60,9 +63,9 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ57.1 | `WZ57.1-web-client-entfernen.md` | Umsetzung | autonom | offen |
+| WZ57.1 | `WZ57.1-web-client-entfernen.md` | Umsetzung | autonom | fertig |
 | WZ57.2 | `WZ57.2-doppelte-nummern.md` | Umsetzung | autonom | offen |
-| WZ57.3 | `WZ57.3-abnahme-wz43.md` | Umsetzung | autonom | offen |
+| WZ57.3 | `WZ57.3-abnahme-wz43.md` | Umsetzung | autonom | fertig |
 | WZ57.4 | `WZ57.4-review.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

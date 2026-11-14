@@ -795,3 +795,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-874](B-874-mcp-live-statistik-schoener.md) | DEV | Idee | mittel | erledigt | – | Die Live-Statistik der MCP-Seite ist übersichtlich und lesbar |
 | [B-875](B-875-mcp-widgets-splitter.md) | DEV | Idee | mittel | erledigt | – | Unter den MCP-Widgets trennt ein Splitter Widgets und Aufruf-Log, seine Stellung wird gemerkt |
 | [B-876](B-876-check-run-auswertung.md) | DEV | Idee | mittel | erledigt | – | Die MCP-Seite zeigt zwischen Widgets und Aufruf-Log eine grafische Auswertung von check_run |
+| [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | erledigt | WZ57 | Abnahme-Läufe WZ43 |
+| [B-872](B-872-workbench-web-client-entfernen.md) | DEV | Schuld | niedrig | erledigt | WZ57 | Der Web-Client der Workbench ist entfernt, die Workbench läuft nur als EXE |

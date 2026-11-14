@@ -9,6 +9,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WZ57 | DEV | WZG | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | – | `aktiv/WZ57-workbench-aufraeumen/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 
@@ -30,7 +31,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 |---|---|---|---|---|---|---|
 | NG20 | CLI | NAT | Natives Spiel komplett nach dist (B-827) | – | Entwurf | `geplant/NG20-native-build-dist/` |
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
-| WZ57 | DEV | WZG | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | – | Entwurf | `geplant/WZ57-workbench-aufraeumen/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | PT5 | PAP | PAP | Abnahme-Läufe CU1 (B-836) | – | Entwurf | `geplant/PT5-abnahme-cu1/` |
