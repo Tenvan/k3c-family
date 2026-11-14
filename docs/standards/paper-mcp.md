@@ -70,8 +70,8 @@ eingesetzten Werten als eine User-Nachricht.
 |---|---|
 | `id` | `^[a-z][a-z0-9-]*$`, eindeutig |
 | `titel` | Text des Prompt-Buttons, höchstens 40 Zeichen |
-| `ort` | `asset` (am Asset im Katalog), `teil` (am angeklickten Teil der Vorschau), `review` (am Review-Eintrag) |
-| `text` | beginnt mit „Rufe zuerst `assets_guide {rig: {rig}}` auf“, endet mit „Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf.“ |
+| `ort` | `asset` (am Asset im Katalog), `teil` (am angeklickten Teil der Vorschau), `review` (am Review-Eintrag); Styleguide (B-727): `material` (gewähltes Material), `ton` (gewählter Einzelton), `papier` |
+| `text` | Orte `asset`, `teil`, `review`: beginnt mit „Rufe zuerst `assets_guide {rig: {rig}}` auf“, endet mit „Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf.“ Alle anderen Orte: kurzer Prompt in einer Zeile ohne Arbeitsanweisungen (B-639), höchstens 120 Zeichen |
 
 Platzhalter (nur diese): `{asset}` ID, `{rig}` Rig-Typ, `{teil}` angeklicktes Teil (Pflicht bei `ort: teil`),
 `{pfad}` Spec-Pfad, `{zustand}` kurzer Zustand (z. B. „gültig, Version 1“ oder die Feldänderungen des Reviews), `{basis}`
@@ -79,6 +79,11 @@ Review-Basis, `{eingabe}` Freitext aus einem Eingabefeld des Buttons (Pflicht be
 setzt die Werte ein und kopiert den fertigen Prompt in die Zwischenablage. Vorlagen v1: `material-aendern`,
 `proportion-anpassen`, `detail-ergaenzen`, `variante-anlegen`, `animation-aendern`, `neues-wie-dieses` (asset);
 `teil-material`, `teil-form` (teil); `aenderung-zuruecknehmen`, `nachbessern` (review).
+
+Styleguide (B-727): `{material}` Material-Name (Pflicht bei `ort: material`), `{ton}` Name des Einzeltons (Pflicht bei
+`ort: ton`). Vorlagen je Ort „ändern“, „neu anlegen“, „Nutzer zeigen“: `stil-material-aendern`, `stil-material-neu`,
+`stil-material-nutzer`, `stil-ton-aendern`, `stil-ton-neu`, `stil-ton-nutzer`, `stil-papier-aendern`, `stil-papier-neu`,
+`stil-papier-nutzer`. Die MCP-Prompts `asset-<id>` kennen dieselben Platzhalter.
 
 ## 4. Oberfläche (RPC)
 

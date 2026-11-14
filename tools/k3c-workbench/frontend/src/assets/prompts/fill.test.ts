@@ -25,8 +25,9 @@ describe('fillPrompt (WB1.3)', () => {
   });
 
   it('füllt jede Vorlage der Fixture vollständig', () => {
-    expect(VORLAGEN).toHaveLength(10);
-    for (const vorlage of VORLAGEN) {
+    const amAsset = VORLAGEN.filter((x) => ['asset', 'teil', 'review'].includes(x.ort));
+    expect(amAsset).toHaveLength(10);
+    for (const vorlage of amAsset) {
       const text = fillPrompt(vorlage, WERTE);
       expect(text, vorlage.id).not.toMatch(/\{[a-z]+\}/);
       expect(text, vorlage.id).toMatch(/^Rufe zuerst `assets_guide \{rig: figur\}` auf/);
@@ -39,6 +40,13 @@ describe('fillPrompt (WB1.3)', () => {
     expect(() => fillPrompt(v('x', 'teil'), { ...WERTE, teil: undefined })).toThrow('Teil wählen');
     expect(() => fillPrompt(v('{eingabe}', 'review'), { ...WERTE, eingabe: '  ' })).toThrow('Eingabe fehlt');
     expect(() => fillPrompt(v('{basis}'), { asset: 'monarch' })).toThrow('Wert für {basis} fehlt');
+  });
+
+  it('füllt die kurzen Styleguide-Vorlagen mit Material bzw. Ton (B-727/AC-02)', () => {
+    const material = VORLAGEN.find((x) => x.id === 'stil-material-aendern')!;
+    expect(fillPrompt(material, { material: 'koenigsrot' })).toBe('Stil: Material `koenigsrot` ändern (Stil-Datei public/grafik/stil.paper.json)');
+    expect(() => fillPrompt(material, {})).toThrow('Wert für {material} fehlt');
+    expect(fillPrompt(VORLAGEN.find((x) => x.id === 'stil-ton-nutzer')!, { ton: 'tinte' })).toContain('`tinte`');
   });
 
   it('meldet unbekannte Platzhalter als Vorlagen-Fehler', () => {

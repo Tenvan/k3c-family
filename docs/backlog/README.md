@@ -22,7 +22,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | eingeplant | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | eingeplant | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | eingeplant | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
-| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | eingeplant | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | offen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |

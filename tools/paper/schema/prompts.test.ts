@@ -11,8 +11,13 @@ const vorlagen = JSON.parse(readFileSync(join(ROOT, 'data/asset-prompts.json'), 
 const Ajv2020 = ((Ajv2020Import as unknown as { default?: typeof Ajv2020Import }).default ?? Ajv2020Import);
 
 /** Erlaubte Platzhalter (paper-mcp.md › Prompt-Vorlagen). */
-export const PLATZHALTER = ['asset', 'rig', 'teil', 'pfad', 'zustand', 'basis', 'eingabe'];
+export const PLATZHALTER = ['asset', 'rig', 'teil', 'pfad', 'zustand', 'basis', 'eingabe', 'material', 'ton'];
 export const platzhalter = (text: string) => [...new Set([...text.matchAll(/\{([a-z_]+)\}/g)].map((m) => m[1]))];
+
+/** Orte der Asset-Arbeit mit festem Anfang und Ende; die übrigen (Styleguide, Sound, Quellen) sind kurze Prompts (B-639). */
+const ASSET_ORTE = ['asset', 'teil', 'review'];
+/** Pflicht-Platzhalter der kurzen Orte (B-727). */
+const PFLICHT: Record<string, string[]> = { material: ['material'], ton: ['ton'], papier: [] };
 
 describe('Prompt-Vorlagen', () => {
   it('sind gültig gegen prompts.schema.json', () => {
@@ -27,7 +32,14 @@ describe('Prompt-Vorlagen', () => {
       'animation-aendern', 'neues-wie-dieses', 'teil-material', 'teil-form', 'aenderung-zuruecknehmen', 'nachbessern']));
   });
 
-  it.each(vorlagen)('$id: nur erlaubte Platzhalter, Anfang und Ende fest, Ort passt', (v) => {
+  it.each(vorlagen.filter((v) => !ASSET_ORTE.includes(v.ort)))('$id: kurzer Prompt, eine Zeile, Pflicht-Platzhalter des Orts', (v) => {
+    expect(platzhalter(v.text).filter((p) => !PLATZHALTER.includes(p))).toEqual([]);
+    expect(v.text).not.toContain('\n');
+    expect(v.text.length).toBeLessThanOrEqual(120);
+    expect(platzhalter(v.text)).toEqual(expect.arrayContaining(PFLICHT[v.ort]));
+  });
+
+  it.each(vorlagen.filter((v) => ASSET_ORTE.includes(v.ort)))('$id: nur erlaubte Platzhalter, Anfang und Ende fest, Ort passt', (v) => {
     expect(platzhalter(v.text).filter((p) => !PLATZHALTER.includes(p))).toEqual([]);
     expect(v.text.startsWith('Rufe zuerst `assets_guide {rig: {rig}}` auf')).toBe(true);
     expect(v.text.endsWith('Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf.')).toBe(true);

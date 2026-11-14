@@ -58,5 +58,59 @@
     "titel": "Nachbessern …",
     "ort": "review",
     "text": "Rufe zuerst `assets_guide {rig: {rig}}` auf. Bessere die Änderung am Asset `{asset}` ({pfad}) gegenüber der Basis `{basis}` nach: {eingabe}. Zustand: {zustand}. Schreibe nur mit `assets_set`. Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf."
+  },
+  {
+    "id": "stil-material-aendern",
+    "titel": "Material ändern",
+    "ort": "material",
+    "text": "Stil: Material `{material}` ändern (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-material-neu",
+    "titel": "Neues Material",
+    "ort": "material",
+    "text": "Stil: neues Material wie `{material}` anlegen (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-material-nutzer",
+    "titel": "Nutzer zeigen",
+    "ort": "material",
+    "text": "Stil: Assets mit Material `{material}` zeigen"
+  },
+  {
+    "id": "stil-ton-aendern",
+    "titel": "Ton ändern",
+    "ort": "ton",
+    "text": "Stil: Einzelton `{ton}` ändern (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-ton-neu",
+    "titel": "Neuer Ton",
+    "ort": "ton",
+    "text": "Stil: neuen Einzelton wie `{ton}` anlegen (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-ton-nutzer",
+    "titel": "Nutzer zeigen",
+    "ort": "ton",
+    "text": "Stil: Assets mit Einzelton `{ton}` zeigen"
+  },
+  {
+    "id": "stil-papier-aendern",
+    "titel": "Papier ändern",
+    "ort": "papier",
+    "text": "Stil: Papier ändern (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-papier-neu",
+    "titel": "Neue Papier-Einstellung",
+    "ort": "papier",
+    "text": "Stil: neue Papier-Einstellung anlegen (Stil-Datei public/grafik/stil.paper.json)"
+  },
+  {
+    "id": "stil-papier-nutzer",
+    "titel": "Wirkung zeigen",
+    "ort": "papier",
+    "text": "Stil: Papier-Wirkung an einem Asset zeigen"
   }
 ]

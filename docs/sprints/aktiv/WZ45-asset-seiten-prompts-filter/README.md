@@ -1,6 +1,6 @@
 # WZ45 · DEV · Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -64,7 +64,7 @@ keine. Entschieden (Default, autonom Claude, 2026-11-14): Aktionen wie in den Ti
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ45.1 | `WZ45.1-styleguide-prompts.md` | Umsetzung | autonom | offen |
+| WZ45.1 | `WZ45.1-styleguide-prompts.md` | Umsetzung | autonom | fertig |
 | WZ45.2 | `WZ45.2-sound-filter-prompts.md` | Umsetzung | autonom | offen |
 | WZ45.3 | `WZ45.3-quellen-filter-prompts.md` | Umsetzung | autonom | offen |
 | WZ45.4 | `WZ45.4-review.md` | Umsetzung | autonom | offen |
