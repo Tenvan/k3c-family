@@ -1,6 +1,6 @@
 # WZ55 · DEV · assets_set ruft die Paper-CLI gesammelt auf
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -62,7 +62,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ55.1 | `WZ55.1-paper-batch.md` | Umsetzung | autonom | fertig |
-| WZ55.2 | `WZ55.2-review.md` | Review | autonom | offen |
+| WZ55.2 | `WZ55.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -70,6 +70,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Claude (autonom). AC-01 bis AC-03 geprüft (WZ55.1, WZ55.2); `task check`, `task check:go`, `go:test`, `task check:dev` grün; `assets_set` startet bun einmal statt zwölfmal.
+Behoben im Review: Zeitlimit des Sammelaufrufs, Test ohne Skip, gocyclo in `apply`.
+Neue Tickets: keine angelegt (Vorschläge im Bericht).
+Abnahme-Ticket: vorgeschlagen, `gen:paper` samt Grafik-Golden (CLI geändert, Render-Logik nicht); vom Koordinator anzulegen.

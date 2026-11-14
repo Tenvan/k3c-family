@@ -74,7 +74,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | erledigt |
 | WZ53 | Vitests unter src/assets bleiben unter Last grün | erledigt |
 | WZ54 | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | erledigt |
-| WZ55 | assets_set ruft die Paper-CLI gesammelt auf | aktiv |
+| WZ55 | assets_set ruft die Paper-CLI gesammelt auf | erledigt |
 
 ## Nicht-Ziele
 
