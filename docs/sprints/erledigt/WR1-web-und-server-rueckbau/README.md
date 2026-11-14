@@ -1,6 +1,6 @@
 # WR1 · SRV, INF, PLAT · Rückbau von Browser-Client, Spielserver und Online-Werkzeugen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** SRV, INF, PLAT
 - **Reife:** bereit
@@ -68,7 +68,7 @@ keine
 |---|---|---|---|---|
 | WR1.1 | `WR1.1-server-entfernen.md` | Umsetzung | autonom | fertig |
 | WR1.2 | `WR1.2-browser-client-entfernen.md` | Umsetzung | autonom | fertig |
-| WR1.3 | `WR1.3-site-papier-bilder.md` | Umsetzung | autonom | offen |
+| WR1.3 | `WR1.3-site-papier-bilder.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -76,6 +76,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Claude (autonom). AC-01 bis AC-04 laut Ergebnis von WR1.1, WR1.2, WR1.3; Sichtprüfung `site/` (B-849/AC-01) durch Ralf offen. Review ohne schwere Befunde. Neue Tickets: B-897 (Server-Reste), B-898 (Doku, Rechte, Backup-Skript), Abnahme-Ticket B-907 (gen:paper, check:race) im Sprint WR2.

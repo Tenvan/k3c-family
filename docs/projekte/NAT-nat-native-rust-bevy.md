@@ -38,7 +38,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | erledigt |
 | NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | erledigt |
 | NG20 | Natives Spiel komplett nach dist (B-827) | erledigt |
-| WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | aktiv |
+| WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | erledigt |
+| WR2 | Reste des Server- und Web-Rückbaus aufräumen | geplant |
 
 ## Nicht-Ziele
 

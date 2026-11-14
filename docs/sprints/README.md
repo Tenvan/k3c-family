@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WR1 | SRV, INF, PLAT | NAT | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | – | `aktiv/WR1-web-und-server-rueckbau/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 
 ## Offen am Gerät
@@ -24,6 +23,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| WR2 | SRV | NAT | Reste des Server- und Web-Rückbaus aufräumen | – | Entwurf | `geplant/WR2-rueckbau-reste/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -355,3 +355,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | MG10 | Papierschnitt: Bosse neu mit eigener Silhouette | `erledigt/MG10-papier-bosse-neu/` |
 | WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | `erledigt/WZ58-welten-editor-planung-review/` |
 | PB1 | Veröffentlichung auf itch.io | `erledigt/PB1-itch-io/` |
+| WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | `erledigt/WR1-web-und-server-rueckbau/` |
