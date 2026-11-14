@@ -1,6 +1,6 @@
 # WZ45 · DEV · Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -67,7 +67,7 @@ keine. Entschieden (Default, autonom Claude, 2026-11-14): Aktionen wie in den Ti
 | WZ45.1 | `WZ45.1-styleguide-prompts.md` | Umsetzung | autonom | fertig |
 | WZ45.2 | `WZ45.2-sound-filter-prompts.md` | Umsetzung | autonom | fertig |
 | WZ45.3 | `WZ45.3-quellen-filter-prompts.md` | Umsetzung | autonom | fertig |
-| WZ45.4 | `WZ45.4-review.md` | Umsetzung | autonom | offen |
+| WZ45.4 | `WZ45.4-review.md` | Umsetzung | autonom | fertig |
 
 Entwurf (Stichpunkte, Session-Dateien vor dem Aktivieren):
 
@@ -77,6 +77,6 @@ Entwurf (Stichpunkte, Session-Dateien vor dem Aktivieren):
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Claude (autonom). AC-01 bis AC-03 geprüft laut Ergebnis WZ45.1 bis WZ45.3 (Tests je Seite), AC-04 laut WZ45.4 (`task check`, `check:dev`, `check:go` grün).
+Behobene Befunde: keine schweren; im Lauf `readonly.test.tsx` auf das Suchfeld des ListFilter erweitert.
+Neue Tickets: keine. Abnahme-Ticket: B-882 (Sim/Balance nicht relevant, Gen-Gegenprobe, Race).
