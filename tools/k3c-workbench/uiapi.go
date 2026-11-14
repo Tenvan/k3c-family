@@ -52,13 +52,12 @@ var uiMethods = map[string]bool{
 	"StudioSounds": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
 }
 
-// uiHandler beantwortet alle Adressen unter uiPrefix, alle anderen GET liefern die eingebettete Oberfläche (web.go).
+// uiHandler beantwortet alle Adressen unter uiPrefix, die Oberfläche liefert Vite.
 func (a *App) uiHandler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET "+uiPrefix+"events", a.uiEvents)
 	mux.HandleFunc("POST "+uiPrefix+"rpc/{method}", a.uiRPC)
 	mux.HandleFunc("GET "+uiPrefix, func(w http.ResponseWriter, _ *http.Request) { uiFail(w, http.StatusNotFound, "Unbekannte Adresse") })
-	mux.Handle("GET /", webPages())
 	return uiGuard(mux)
 }
 

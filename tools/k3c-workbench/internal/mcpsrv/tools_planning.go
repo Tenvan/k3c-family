@@ -95,6 +95,7 @@ func registerPlanning(s *Server) {
 	registerGitHub(s)
 	registerPlanWaves(s)
 	registerPlanDigest(s)
+	registerPlanIndex(s)
 }
 
 // registerPlanRead sind die lesenden Planungs-Tools: Überblick, ein Dokument, nächste Session (B-518).

@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ57
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
@@ -63,3 +63,8 @@ keine
 ## Notizen
 
 Vorschlag aus WZ43.5 (2026-11-14).
+
+Lauf WZ57.3 (2026-11-14, Claude):
+- AC-01 Sim und Balance verschoben (Sperre 2026-11-11).
+- AC-02 Gen: `check_run task:test` (4 min 14 s) samt `gen:paper` und Grafik-Golden grün: 175 Testdateien grün; einziger Fehler war ein Planungstest der neuen WZ57-README (Kriterien ohne Session), behoben, danach grün.
+- AC-03 Race: `check_run task:check:race` exit 0 in 0,4 s, lokal ohne gcc übersprungen.

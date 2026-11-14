@@ -49,13 +49,12 @@ task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Typecheck + Produktions-Build nach dist/
-task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Starter, dazu die Web-EXE `k3c-workbench-web`) bauen und nach bin/ legen; laufende EXE vorher schließen
+task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Starter) bauen und nach bin/ legen; laufende EXE vorher schließen
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build/test/dev rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
 task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
-task k3c-workbench:web  # Web-Client: nur der Server, Oberfläche im Browser http://127.0.0.1:8181/ (MCP 5180, nicht zugleich mit der EXE)
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
@@ -73,10 +72,6 @@ das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `
 `public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
 `wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-starter:exe`) und die
 Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
-**Web-Client first (B-614):** `k3c-workbench:web` baut die Oberfläche (nur bei Änderungen) und eine feste EXE
-(`bin/k3c-workbench-web`, `go build`), starten sie `-headless -open` und liefern die gebaute Oberfläche selbst
-aus, ohne Fenster, Vite und Neubau bei Go-Änderungen. Ports über die Umgebung: `K3C_WEB_UI_PORT` (8181), `K3C_WEB_MCP_PORT` (5180);
-`K3C_WEB_OPEN=0` öffnet keinen Browser. Die EXE-Builds bleiben, bis sich der Weg bewährt hat.
 
 Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
 Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
@@ -90,7 +85,7 @@ Berichte unter `reports/*.json` (`POST /api/report`) liest `reports_list`/`repor
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
 `sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`, nie zusätzlich die Web-EXE: gleicher Port 5180), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
+nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests

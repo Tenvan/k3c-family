@@ -30,7 +30,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 |---|---|---|---|---|---|---|
 | NG20 | CLI | NAT | Natives Spiel komplett nach dist (B-827) | – | Entwurf | `geplant/NG20-native-build-dist/` |
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
-| WZ57 | DEV | WZG | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | – | Entwurf | `geplant/WZ57-workbench-aufraeumen/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | PT5 | PAP | PAP | Abnahme-Läufe CU1 (B-836) | – | Entwurf | `geplant/PT5-abnahme-cu1/` |
@@ -356,3 +355,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | `erledigt/KB4-dev-aktionen-boss-event/` |
 | KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | `erledigt/KB5-skills-wirkort-status/` |
 | WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | `erledigt/WZ43-asset-tools-review/` |
+| WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | `erledigt/WZ57-workbench-aufraeumen/` |

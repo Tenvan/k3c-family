@@ -1,16 +1,18 @@
-# B-199 · Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise
+# B-877 · Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise
 
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Umgebung:** offline
+- **Umgebung:** ?
 - **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** –
-- **Erstellt:** 2026-10-04
+- **Erstellt:** 2026-11-14
 - **Spec:** rückwirkend
 - **Revision:** 1
 - **Freigabe:** –
+- **Duplikat von:** –
+- **Ersetzt:** –
 
 ## Ausgangslage
 
@@ -56,5 +58,7 @@ nicht relevant: reine Textanpassung.
 keine
 
 ## Notizen
+
+Umnummeriert von B-199 (B-861, WZ57.2, 2026-11-14): die Nummer war doppelt vergeben, B-199 bleibt „Raum fünf Stufen“. Ursprünglich erstellt 2026-10-04, Spec rückwirkend.
 
 `docs/vorlagen/` enthielt die alte Zeile nicht; die Vorlage `session.md` nennt keinen Diff-Befehl.
