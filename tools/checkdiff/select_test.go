@@ -66,7 +66,7 @@ func TestClassify(t *testing.T) {
 			want{"R", []string{"native/k3c-rig:.", "native/k3c-rig:rig"}}},
 		{"eingebettete Datei im Unterordner: Paket darüber", []string{"data/biomes/wald.json", "engine/balance/report/chart.json"}, want{"RC", []string{".:data", ".:engine/balance"}}},
 		{"Lockfile zählt als Client", []string{"bun.lock"}, want{"RC", nil}},
-		{"Client: src und Seiten", []string{"src/scenes/GameScene.ts", "index.html"}, want{"RC", nil}},
+		{"Wurzel: Tests und Konfiguration", []string{"tests/planning.test.ts", "vitest.config.ts"}, want{"RC", nil}},
 		{"gelöschtes Paket: kein Ziel", []string{"engine/alt/weg.go"}, want{"R", nil}},
 	}
 	for _, c := range cases {

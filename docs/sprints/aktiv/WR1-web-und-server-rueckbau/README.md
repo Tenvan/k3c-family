@@ -67,7 +67,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WR1.1 | `WR1.1-server-entfernen.md` | Umsetzung | autonom | fertig |
-| WR1.2 | `WR1.2-browser-client-entfernen.md` | Umsetzung | autonom | offen |
+| WR1.2 | `WR1.2-browser-client-entfernen.md` | Umsetzung | autonom | fertig |
 | WR1.3 | `WR1.3-site-papier-bilder.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

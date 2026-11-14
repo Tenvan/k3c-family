@@ -1,4 +1,5 @@
-# Release: Tag v* (z.B. v0.2.0) → Build als Zip am GitHub-Release. Spielserver und Docker-Image sind entfernt (B-887).
+# Release: Tag v* (z.B. v0.2.0) → natives Spiel für Windows (task native:game:build, Paket dist/k3c-game/) als Zip am
+# GitHub-Release. Browser-Client, Spielserver und Docker-Image sind entfernt (B-848, B-887).
 name: Release
 
 on:
@@ -10,29 +11,36 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    # Windows wie der CI-Job k3c-game: Ebitengine baut dort ohne cgo.
+    runs-on: windows-latest
     timeout-minutes: 30
+    env:
+      CGO_ENABLED: "0"
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
         with:
-          node-version-file: .nvmrc
+          fetch-depth: 0 # git describe für die Version im Spiel (B-808)
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
       - uses: actions/setup-go@v7
         with:
-          go-version-file: go.mod
+          go-version-file: native/k3c-game/go.mod
+          cache-dependency-path: native/k3c-game/go.sum
       - uses: go-task/setup-task@v2
-      - run: task install
-      # Vor Paket und Image: Typecheck und Tests (Client und Frontends, wie lokal task check); task test rendert vorher
-      # die Papierschnitt-Grafik (gen:paper). Nach dem Pi-Test v0.22.0 wieder eingeschaltet (B-758).
-      - run: task typecheck
-      - run: task test
-      - run: task build
-      - name: Paket schnüren (dist)
-        run: zip -r "k3c-${GITHUB_REF_NAME}.zip" dist README.md
+      # Papierschnitt-Renderer (gen:paper) braucht die Werkzeuge der Wurzel.
+      - run: bun install --frozen-lockfile
+      # Vor dem Paket: Tests ohne Fenster und GPU (wie CI-Job k3c-game).
+      - run: go test -short ./...
+        working-directory: native/k3c-game
+      - run: task native:game:build
+      - name: Paket schnüren (natives Spiel)
+        shell: pwsh
+        run: Compress-Archive -Path dist/k3c-game/* -DestinationPath "k3c-$env:GITHUB_REF_NAME-windows.zip"
       - name: GitHub-Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "k3c-${GITHUB_REF_NAME}.zip" --generate-notes --title "K3C $GITHUB_REF_NAME"
+        run: gh release create "$GITHUB_REF_NAME" "k3c-${GITHUB_REF_NAME}-windows.zip" --generate-notes --title "K3C $GITHUB_REF_NAME"

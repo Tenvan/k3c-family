@@ -13,7 +13,7 @@
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #   native       native/Taskfile.yml            Natives Spiel und Prototypen (Projekt NAT, Entscheidung 008): game, ebiten, rig, measure
 #
-# Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
+# Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Werkzeuge und Tests (lint, typecheck, test) · Bauen und Ausliefern
 # (build, buildall, pages) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:all).
 #
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
@@ -59,24 +59,13 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Client, Frontend von k3c-workbench)
+    desc: Abhängigkeiten holen (Werkzeuge und Tests der Wurzel, Frontend von k3c-workbench)
     cmds:
       - mkdir -p '{{.K3C_TMP}}'
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
 
-  # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
-
-  dev:
-    desc: Dev-Server (LAN, Port 5183); rendert vorher die Papierschnitt-Grafik (gen:paper, B-737)
-    deps: [gen:paper]
-    cmds:
-      - bunx vite --host {{.CLI_ARGS}}
-
-  preview:
-    desc: Produktions-Build lokal ansehen
-    cmds:
-      - bunx vite preview --host
+  # --- Werkzeuge und Tests der Wurzel (tests/, tools/paper; der Browser-Client ist entfernt, B-848) ------------------
 
   lint:
     desc: Oxlint
@@ -84,10 +73,9 @@ tasks:
       - bunx oxlint
 
   typecheck:
-    desc: tsc für Client und Tests
+    desc: tsc für tests/ und tools/paper
     cmds:
       - bunx tsc --noEmit
-      - bunx tsc --noEmit -p tests
 
   test:
     desc: Vitest (Filter optional, z. B. `task test -- planning`); rendert vorher die Papierschnitt-Grafik (gen:paper, B-737)
@@ -101,14 +89,12 @@ tasks:
       - bunx vitest
 
   # --- Bauen und Ausliefern -----------------------------------------------------------------------------------------
-  # `build` ist der Web-Build (dist/), `buildall` baut dazu alle EXE nach bin/, `pages` die statische Präsentationsseite.
+  # `build` baut das native Spiel (dist/k3c-game/), `buildall` die Werkzeug-EXE nach bin/, `pages` die statische Präsentationsseite.
 
   build:
-    desc: Typecheck und Produktions-Build nach dist/ (die Papierschnitt-PNGs in public/grafik/ rendert vorher gen:paper, sie sind nicht eingecheckt, US1, B-737)
-    deps: [gen:paper]
+    desc: Natives Spiel bauen (wie native:game:build; EXE, Papierschnitt-Grafik über gen:paper und Paket nach dist/k3c-game/, B-848)
     cmds:
-      - bunx tsc --noEmit
-      - bunx vite build
+      - task: native:game:build
 
   buildall:
     desc: Alle EXE bauen und nach bin/ legen (Workbench, Engine-CLI k3c-sim); laufende EXE vorher schließen, sonst scheitert die Kopie
@@ -117,16 +103,16 @@ tasks:
       - task: k3c-sim:build
 
   pages:
-    desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `bunx vite preview --outDir _site`)
+    desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507)
     cmds:
       - rm -rf _site
       - mkdir -p _site
       - cp -r site/. _site/
 
-  # --- Prüfen: ein Name je Projekt, `check` ist der Client -----------------------------------------------------------
+  # --- Prüfen: ein Name je Projekt, `check` ist die Wurzel (Regeln, Planung, Papierschnitt) -----------------------------------------------------------
 
   check:
-    desc: Lint, Typecheck, Tests des Clients parallel (vor jedem Abschluss)
+    desc: Lint, Typecheck, Tests der Wurzel (tests/, tools/paper) parallel (vor jedem Abschluss)
     deps: [lint, typecheck, test]
 
   check:go:
@@ -180,7 +166,7 @@ tasks:
       - task: k3c-workbench:lint
 
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-workbench, Build)
+    desc: Alles prüfen (Wurzel, Go, k3c-workbench, Build des nativen Spiels)
     cmds:
       - task: check
       - task: build

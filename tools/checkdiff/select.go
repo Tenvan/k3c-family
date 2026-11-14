@@ -42,8 +42,8 @@ var goldenOwners = map[string][]string{
 	"torches.json": {"engine/sim"},
 }
 
-// clientRoots: Ordner, deren Dateien Lint, Typecheck und Vitest des Clients brauchen.
-var clientRoots = []string{"src/", "tests/", "public/", "data/", "tools/paper/"}
+// clientRoots: Ordner, deren Dateien Lint, Typecheck und Vitest der Wurzel brauchen (der Browser-Client src/ ist entfernt, B-848).
+var clientRoots = []string{"tests/", "public/", "data/", "tools/paper/"}
 
 func hasPrefix(f string, prefixes ...string) bool {
 	for _, p := range prefixes {

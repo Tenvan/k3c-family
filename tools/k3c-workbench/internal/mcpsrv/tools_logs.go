@@ -48,9 +48,9 @@ type sinceIn struct {
 	Limit  int    `json:"limit,omitempty" jsonschema:"höchstens so viele Einträge, Standard 100, höchstens 500"`
 }
 
-// knownSources sind Quellen, die immer gelten, auch bevor ihre Datei existiert: k3c-workbench schreibt das eigene Log,
-// vite die Ausgabe des Dienstes Vite (k3c-workbench).
-var knownSources = []string{applog.Source, "vite"}
+// knownSources sind Quellen, die immer gelten, auch bevor ihre Datei existiert: k3c-workbench schreibt das eigene Log.
+// Der Dienst Vite des Browser-Clients ist entfernt (B-848).
+var knownSources = []string{applog.Source}
 
 // LogSources sind alle logs/*.jsonl der Repo-Wurzel und die bekannten Quellen, sortiert (Oberfläche).
 func (s *Server) LogSources() []string { return logSources(s.cfg.Root) }

@@ -1,8 +1,7 @@
 // Prüft die Projektregeln aus CLAUDE.md, damit die CI Verstöße früh meldet.
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, relative, resolve, sep } from 'node:path';
+import { join, resolve, sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { menuCategories } from '../src/scenes/menuPages';
 
 const ROOT = resolve(__dirname, '..');
 const read = (file: string) => readFileSync(join(ROOT, file), 'utf8');
@@ -17,55 +16,25 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
     return keep(name) ? [path] : [];
   });
 }
-const sourceFiles = (dir: string) => filesIn(dir, (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'));
 
-// Das Spiel ist die einzige oberste Seite (`index.html`, BD11.6); `game.html` ist sein Alias für Werkzeuge und Lesezeichen.
-const allHtml = readdirSync(ROOT).filter((f) => f.endsWith('.html'));
-const GAME_PAGES = ['index.html', 'game.html'];
-const htmlPages = allHtml.filter((f) => !GAME_PAGES.includes(f));
-// Jede Werkzeug-Seite hat eine Kachel im Spielmenü (Seiten › Kategorie, `src/scenes/menuPages.ts`, Daten in `src/tools/devTiles.ts`).
-const hrefs = menuCategories(true).flatMap((c) => c.entries.map((e) => e.id.split('?')[0]!));
-
-describe('Seiten & Navigation', () => {
-  it.each(htmlPages)('%s hat eine Kachel im Spielmenü (src/scenes/menuPages.ts, src/tools/devTiles.ts)', (page) => {
-    expect(hrefs).toContain(page);
+// Browser-Client und Spielserver sind entfernt (B-848, B-887, Entscheidung B-850): Das Spiel ist nativ (native/k3c-game).
+describe('Browser-Client und Spielserver entfernt (B-848, B-887)', () => {
+  it('keine Spielseiten, kein src/, keine Vite-Konfiguration des Spiels', () => {
+    expect(readdirSync(ROOT).filter((f) => f.endsWith('.html'))).toEqual([]);
+    for (const gone of ['src', 'vite.config.ts', 'Dockerfile', 'compose.yaml', 'cmd/k3c-server', 'cmd/k3c-load', 'cmd/k3c-tui',
+      'engine/net', 'engine/watch', 'tools/k3c-starter']) {
+      expect(existsSync(join(ROOT, gone)), gone).toBe(false);
+    }
   });
 
-  it('das Spiel ist die Startseite: index.html und game.html laden beide src/main.ts, keine Landingpage', () => {
-    for (const page of GAME_PAGES) expect(read(page)).toContain('src="/src/main.ts"');
-    expect(existsSync(join(ROOT, 'src/landing'))).toBe(false);
-    expect(existsSync(join(ROOT, 'dev.html'))).toBe(false);
-    expect(read('index.html')).not.toMatch(/<iframe|landing/i);
+  it('package.json hängt nicht mehr an Phaser', () => {
+    expect(read('package.json')).not.toContain('phaser');
   });
 
-  it('das Spiel ruft installPageChrome ohne Home auf (es ist die oberste Seite)', () => {
-    expect(read('src/main.ts')).toMatch(/^installPageChrome\(\{[^}]*home: false/m);
-  });
-
-  it('jede Kachel zeigt auf eine vorhandene Seite', () => {
-    for (const href of hrefs.filter((h) => !h.includes('/'))) expect(allHtml).toContain(href); // Ziele in Unterordnern liegen nicht im Projektordner
-  });
-
-  it.each(htmlPages)('%s ruft installPageChrome() auf', (page) => {
-    const script = /<script type="module" src="\/([^"]+)"/.exec(read(page))?.[1];
-    expect(script, `${page} braucht ein Modul-Script`).toBeDefined();
-    expect(read(script!)).toMatch(/^installPageChrome\(/m);
-  });
-});
-
-describe('Code-Regeln', () => {
-  const files = sourceFiles('src');
-
-  it('Vollbild nur über src/core/fullscreen.ts', () => {
-    const offenders = files.filter(
-      (f) => relative('src/core', f) !== 'fullscreen.ts' && /requestFullscreen\(|scale\.toggleFullscreen/.test(read(f)),
-    );
-    expect(offenders).toEqual([]);
-  });
-
-  it('kein Seitenwechsel per location (nur goHome() / Shell)', () => {
-    const offenders = files.filter((f) => !f.startsWith(join('src', 'core')) && /location\.(href\s*=|assign|replace)/.test(read(f)));
-    expect(offenders).toEqual([]);
+  it('Taskfile.yml kennt keine Web- und Server-Tasks mehr', () => {
+    const tasks = [...read('Taskfile.yml').matchAll(/^ {2}([\w:-]+):\s*$/gm)].map((m) => m[1]);
+    for (const gone of ['dev', 'preview', 'serve', 'start', 'check:starter']) expect(tasks, gone).not.toContain(gone);
+    expect(read('Taskfile.yml')).not.toMatch(/k3c-server|k3c-load|k3c-tui|k3c-starter|vite (build|preview)|bunx vite\b/);
   });
 });
 
@@ -73,7 +42,7 @@ describe('Komplexität & Schichten', () => {
   const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Go dieser Test
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
-  const goDirs = ['data', 'engine', 'cmd', 'tools'];
+  const goDirs = ['data', 'engine', 'cmd', 'tools', 'native'];
   const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
 
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
@@ -104,7 +73,7 @@ describe('Regeltabelle Hub-Stufe → Gebäude (WZ15.2, B-462)', () => {
 // geändert wird über die MCP-Tools assets_*. Keine Tasks, EXEs, Ports und Dienste des Studios mehr.
 describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
   const STUDIO = /k3c-studio|check:studio|\b(8091|8182|5192)\b/;
-  const FILES = ['Taskfile.yml', '.github/workflows/ci.yml', 'vite.config.ts', '.claude/launch.json', '.oxlintrc.json',
+  const FILES = ['Taskfile.yml', '.github/workflows/ci.yml', '.claude/launch.json', '.oxlintrc.json',
     'tools/k3c-workbench/services.json', 'tools/k3c-workbench/task-freigaben.json'];
 
   it.each(FILES)('%s nennt weder Studio-Tasks noch Studio-Ports', (file) => {
@@ -112,29 +81,8 @@ describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
     expect(hits).toEqual([]);
   });
 
-  it('keine studio.html und keine Kachel zum Studio', () => {
-    expect(allHtml).not.toContain('studio.html');
-    expect(hrefs.filter((h) => h.includes('studio'))).toEqual([]);
-  });
-
-  it('Vite reicht /api ohne Studio-Ausnahme weiter', () => {
-    expect(read('vite.config.ts')).not.toMatch(/api\/studio|isStudioPath/);
-  });
-
   it('K3C_STUDIO_LAN kommt im Code nicht mehr vor', () => {
-    const code = ['src', 'engine', 'cmd', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
+    const code = ['engine', 'cmd', 'tools', 'native'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
     expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
-  });
-});
-
-describe('Spiel lädt Papierschnitt (US1/AC-01)', () => {
-  const RENDER = ['src/scenes/LoadScene.ts', ...filesIn('src/scenes/render', (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'))];
-
-  it('kein Lade-Pfad zeigt auf atlas/ oder grafik-db32/', () => {
-    for (const file of RENDER) {
-      const text = readFileSync(join(ROOT, file), 'utf8');
-      expect(/['"`/]atlas\//.test(text), `${file}: atlas/`).toBe(false);
-      expect(text.includes('grafik-db32'), `${file}: grafik-db32`).toBe(false);
-    }
   });
 });

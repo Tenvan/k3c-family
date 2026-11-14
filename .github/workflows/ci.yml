@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests, Build (auch GitHub-Pages-Seite); Go: Tests, Lint, Cross-Build; natives Spiel: vet, Build, Tests unter Windows ohne cgo; k3c-workbench: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; natives Spiel: vet, Build, Tests unter Windows ohne cgo; k3c-workbench: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -41,7 +41,7 @@ jobs:
 
   check:
     if: github.event_name != 'pull_request'
-    name: Typecheck · Tests · Build
+    name: Lint · Typecheck · Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -56,20 +56,13 @@ jobs:
         with:
           go-version-file: go.mod
       - uses: go-task/setup-task@v2
-      # Wie lokal: Client und Frontend von k3c-workbench, deren Komponententests (React, Radix) laufen in task test mit.
+      # Wie lokal: Wurzel und Frontend von k3c-workbench, deren Komponententests (React, Radix) laufen in task test mit.
       - run: task install
       - run: task lint
       - run: task typecheck
-      # Vitest (Client, Regel-Tests; rendert vorher gen:paper). Seit #531 aus, wieder an mit B-825.
+      # Vitest (Regel-, Planungs- und Papierschnitt-Tests; rendert vorher gen:paper). Der Browser-Build entfällt (B-848),
+      # das native Spiel baut der Job k3c-game; die GitHub-Pages-Seite site/ baut nichts (B-507).
       - run: task test
-      # Produktions-Build (dist/); die GitHub-Pages-Seite site/ baut nichts (B-507).
-      - run: task build
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: k3c-dist
-          path: dist/
-          retention-days: 14
 
   go:
     if: github.event_name != 'pull_request'

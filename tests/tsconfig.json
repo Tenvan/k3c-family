@@ -1,8 +1,0 @@
-{
-  // Typecheck für tests/ (B-033) und tools/paper/ (Papierschnitt-Renderer unter bun, PV1.3). Eigene Datei, damit Node-Typen nicht in den Browser-Code (src/) gelangen.
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "types": ["vite/client", "node"]
-  },
-  "include": [".", "../tools/paper"]
-}

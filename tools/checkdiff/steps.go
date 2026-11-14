@@ -36,8 +36,7 @@ var prepTasks = map[string]string{"tools/k3c-workbench": "k3c-workbench:frontend
 
 // vitestExcludes: Tests, die gerenderte Papierschnitt-Grafik brauchen (gen:paper läuft hier nicht, B-742).
 var vitestExcludes = []string{
-	"tests/paperAssets.test.ts", "tests/buildingTargets.test.ts", "tools/paper/golden/**",
-	"src/scenes/render/*Sprites.test.ts", "src/scenes/render/hubGrowth.test.ts",
+	"tools/paper/golden/**",
 }
 
 func jsSteps(p plan, base string) []step {
