@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-13
@@ -66,4 +66,4 @@ Vorschlag Claude:
 
 ## Notizen
 
-Zerlegung B-823 am 2026-11-13 (Claude). 2026-11-14: k3c-starter in die Prüfung aufgenommen (Claude, Auftrag Ralf).
+Entscheidung 🧑 Ralf, 2026-11-14: **Alles entfällt** – k3c-server, engine/net, k3c-load und k3c-tui werden entfernt (ohne Online-Spiel kein Bedarf). Umsetzung: neues Ticket für den Rückbau; B-846 und B-746 sind damit überholt und verworfen.

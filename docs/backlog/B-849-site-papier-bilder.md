@@ -5,7 +5,7 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** WR1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-13
 - **Spec:** Entwurf

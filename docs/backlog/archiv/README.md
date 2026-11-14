@@ -810,3 +810,9 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | erledigt | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | erledigt | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | erledigt | MG10 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
+| [B-881](B-881-burg-ausbau-variante-je-stufe.md) | CLI | Problem | niedrig | verworfen | – | Burg-Ausbau-Überlage zeigt die Türmchen im Material der Burg-Stufe |
+| [B-883](B-883-hintergruende-fuenf-varianten-im-client.md) | CLI | Problem | niedrig | verworfen | – | Der Client nutzt alle fünf Hintergrund-Varianten |
+| [B-023](B-023-itch-io.md) | INF | Idee | niedrig | verworfen | PB1 | Spiel ist auf itch.io veröffentlicht |
+| [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | verworfen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
+| [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | verworfen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
+| [B-850](B-850-server-net-load-tui-zukunft.md) | SRV | Frage | niedrig | erledigt | – | Es ist entschieden, ob k3c-server, engine/net, k3c-load und k3c-tui ohne Online-Spiel bleiben oder entfallen |
