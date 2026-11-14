@@ -1,6 +1,6 @@
 # BI2 · PAP, CLI · Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** PAP, CLI
 - **Reife:** bereit
@@ -76,10 +76,8 @@ keine (Defaults autonom entschieden: blau = vorhandenes `ader-kristall`; violett
 | BI2.2 | `BI2.2-kristallfarbe-im-spiel.md` | Umsetzung | autonom | fertig |
 | BI2.3 | `BI2.3-hoehle-decke-tropfsteine.md` | Umsetzung | autonom | fertig |
 | BI2.4 | `BI2.4-verfall-glut-leuchten.md` | Umsetzung | autonom | fertig |
-| BI2.5 | `BI2.5-review.md` | Review | autonom | offen |
+| BI2.5 | `BI2.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, Claude (autonom). AC-01 bis AC-07 erfüllt laut Ergebnis von BI2.1–BI2.4 (Unit-Tests in `props/decor_test.go`, `props/nature_test.go`). Review (k3c-reviewer): keine schweren Befunde; leicht offen: `viewTop` dupliziert `game.ViewUnits` (props darf game nicht importieren). Abnahme-Ticket für Gen, Golden, `check:race` und Sichtprüfung: B-910.

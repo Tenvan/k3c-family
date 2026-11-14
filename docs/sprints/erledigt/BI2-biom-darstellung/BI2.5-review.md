@@ -1,6 +1,6 @@
 # BI2.5 · Sprint-Review BI2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,5 +45,4 @@ Keine schweren Befunde offen, Abnahme-Ticket angelegt, `check:diff` grün.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review über `6802a69d9..HEAD` (k3c-reviewer, Sonnet): keine schweren oder mittleren Befunde. Leicht: `viewTop` in `props/decor.go` dupliziert `game.ViewUnits` (bewusst, kein Import von game in props); Reihenfolge in `golden.json` vom Werkzeug. Abnahme-Ticket B-910 angelegt (Gen, Golden, `check:race`, Sichtprüfung durch Ralf).
