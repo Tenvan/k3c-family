@@ -56,11 +56,9 @@ Hinweise:
 ```bash
 bun install --frozen-lockfile
 bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
-bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 ```
 
-Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`), die dritte für den Windows-Starter
-(`task check:starter`); `task install` macht alle drei.
+Die zweite Zeile nur für `tools/k3c-workbench` (Frontend der Oberfläche, `task check:dev`); `task install` macht beide.
 
 Go-Temp (`go-build`, Test-EXEs, `t.TempDir`): Jeder `task`-Aufruf setzt `GOTMPDIR`, `TMP` und `TEMP` auf
 `%USERPROFILE%\.k3c\tmp` (ohne `USERPROFILE`, etwa in der CI: `.work/tmp`; nicht unter AppData, dorthin leitet die Claude-App als MSIX-Paket Schreibzugriffe um). Für diesen Ordner einmal eine Ausnahme im

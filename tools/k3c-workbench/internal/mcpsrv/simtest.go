@@ -20,22 +20,18 @@ import (
 // internal/simrun; sim_test reiht nicht ein, sondern lehnt bei belegten Plätzen ab (wie vor WZ28.4).
 const maxStatusLines = 10
 
-// simRun ist ein Lauf im gemeinsamen Register.
-type simRun = simrun.Run
-
 func registerSimTest(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "sim_test",
 		Description: "Jeder Testlauf (Balancing, Performance, Stabilität) über ein Tool: action start (sofort zurück mit ID), " +
-			"status (≤ 10 Zeilen), stop, list. mode offline (Mocks im Prozess) oder online (Spielserver des Checkouts), " +
-			"clients 0 = headless, 1–4 = laufende Clients mit Bot-Eingabe; focus balance, perf, stability. Bericht unter reports/simtest-<id>/. " +
-			"Offline ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList gehen auch offline. " +
-			"world (z. B. standard) und days (1–60) gelten nur offline: der Lauf spielt die ganze erste Insel. " +
+			"status (≤ 10 Zeilen), stop, list. Nur mode offline (Mocks im Prozess; der Spielserver ist entfernt, B-887), focus balance. " +
+			"Bericht unter reports/simtest-<id>/. Ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList. " +
+			"world (z. B. standard) und days (1–60): der Lauf spielt die ganze erste Insel. " +
 			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
 			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
 			"Delta-Runde (B-640): action baseline {id, saveBaseline: M1} sichert einen durchgelaufenen Lauf als Baseline, start mit baseline: M1 vergleicht je Werte-Gruppe. " +
 			"start ist bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Workbench mit K3C_SIM_ENTSPERRT=1). " +
-			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance, task k3c-load oder Binaries in der Shell.",
+			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)
 }

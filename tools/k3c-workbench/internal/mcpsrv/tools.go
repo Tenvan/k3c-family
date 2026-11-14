@@ -56,7 +56,6 @@ func register(s *Server) {
 			"Nutze es bei: welcher Spielstand existiert und wie weit er ist. Statt: saves/ durchsuchen.",
 		Annotations: readOnly(),
 	}, s.savesList)
-	registerServer(s)
 	registerEngine(s)
 	registerSimTest(s)
 	registerServices(s)
@@ -142,31 +141,6 @@ func registerEngine(s *Server) {
 // readOnlyEngine: rechnet nur (Kindprozess), ändert nichts.
 func readOnlyEngine() *mcp.ToolAnnotations { return readOnly() }
 
-// registerServer sind die Tools für den laufenden Go-Server (B-047): nur lesend über /api/status.
-func registerServer(s *Server) {
-	open := false
-	ro := &mcp.ToolAnnotations{ReadOnlyHint: true, IdempotentHint: true, OpenWorldHint: &open}
-	add(s, &mcp.Tool{
-		Name: "server_status",
-		Description: "Laufender Go-Server über /api/status: Version, Laufzeit, Räume, Spielstände, Berichte, letzte Abstürze. " +
-			"Token K3C_STATUS_TOKEN, Adresse K3C_SERVER_URL oder 127.0.0.1:K3C_HTTP_PORT. " +
-			"Nutze es bei: läuft der Spielserver, welche Version, letzte Abstürze. Statt: curl /api/status.",
-		Annotations: ro,
-	}, s.serverStatus)
-	add(s, &mcp.Tool{
-		Name: "rooms_list",
-		Description: "Laufende Räume des Go-Servers, eine Zeile je Raum: Geräte, Monarchen, Tick und Tick-Dauer (letzter, p99). " +
-			"Nutze es bei: welche Räume laufen und wie schnell sie ticken. Statt: Monitor-Seite oder curl.",
-		Annotations: ro,
-	}, s.roomsList)
-	add(s, &mcp.Tool{
-		Name: "room_snapshot",
-		Description: "Verdichteter Zustand eines Raums: Tiefe, Tag/Nacht, Welle, Gold je Monarch, Truppen, Gegner, Burg-HP. " +
-			"Nutze es bei: Zustand eines Raums während eines Tests. Statt: Dungeon-Master-Seite oder curl.",
-		Annotations: ro,
-	}, s.roomSnapshot)
-}
-
 // registerServices sind die Dienste-Tools (B-067, Workbench-Spec § 2); Start ist nicht zerstörerisch, Stopp und Neustart schon.
 func registerServices(s *Server) {
 	no, yes, closed := false, true, false
@@ -174,7 +148,7 @@ func registerServices(s *Server) {
 	stop := &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed}
 	add(s, &mcp.Tool{
 		Name: "svc_status",
-		Description: "Alle Dienste (Vite, Spielserver …) mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, " +
+		Description: "Alle Dienste aus services.json mit Zustand, Port, PID, CPU, Speicher, Laufzeit, Neustarts, " +
 			"Log-Level der letzten 60 min und letztem Fehler. Nutze es bei: jeder Arbeit an der laufenden Umgebung, als ersten Aufruf. " +
 			"Statt: tasklist, netstat oder Raten.",
 		Annotations: readOnly(),

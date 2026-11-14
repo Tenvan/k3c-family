@@ -6,20 +6,15 @@
 # (die Workbench gruppiert nach dem Namensraum vor dem Doppelpunkt):
 #
 #   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
-#   k3c-server   cmd/k3c-server/Taskfile.yml    Spielserver: build, run, dev (devrun, -dev)
-#   k3c-load     cmd/k3c-load/Taskfile.yml      Lasttest
 #   k3c-sim      cmd/k3c-sim/Taskfile.yml       Engine-CLI: Simulation, Balancing, Level (B-726)
-#   k3c-tui      cmd/k3c-tui/Taskfile.yml       Diagnose-Oberfläche
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
-#   k3c-starter  tools/k3c-starter/Taskfile.yml Windows-Starter: dev (Client/Server), window (wails dev), build, test, lint
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #   native       native/Taskfile.yml            Natives Spiel und Prototypen (Projekt NAT, Entscheidung 008): game, ebiten, rig, measure
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Client (dev, lint, typecheck, test) · Bauen und Ausliefern
-# (build, buildall, pages) · Spielserver (start, serve) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:starter,
-# check:all).
+# (build, buildall, pages) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:all).
 #
 # Jedes EXE-Projekt kennt dieselben Verben: `build` (EXE bauen), `run` (bauen und starten), `dev` (Backend mit `-dev` baut und startet sich
 # bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
@@ -39,12 +34,8 @@ env:
 
 includes:
   go: engine/Taskfile.yml
-  k3c-server: cmd/k3c-server/Taskfile.yml
-  k3c-load: cmd/k3c-load/Taskfile.yml
   k3c-sim: cmd/k3c-sim/Taskfile.yml
-  k3c-tui: cmd/k3c-tui/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
-  k3c-starter: tools/k3c-starter/Taskfile.yml
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
@@ -68,17 +59,16 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Client, Frontends von k3c-workbench und Starter)
+    desc: Abhängigkeiten holen (Client, Frontend von k3c-workbench)
     cmds:
       - mkdir -p '{{.K3C_TMP}}'
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
-      - bun install --frozen-lockfile --cwd tools/k3c-starter/frontend
 
   # --- Client (Phaser, Vite): entwickeln und prüfen -----------------------------------------------------------------
 
   dev:
-    desc: Dev-Server (LAN, Port 5183); /api und /ws gehen an den Go-Server (Port 8080, `task start`); rendert vorher die Papierschnitt-Grafik (gen:paper, B-737)
+    desc: Dev-Server (LAN, Port 5183); rendert vorher die Papierschnitt-Grafik (gen:paper, B-737)
     deps: [gen:paper]
     cmds:
       - bunx vite --host {{.CLI_ARGS}}
@@ -121,14 +111,10 @@ tasks:
       - bunx vite build
 
   buildall:
-    desc: Alle EXE bauen und nach bin/ legen (Spielserver, Lasttest, Engine-CLI k3c-sim, TUI, Workbench, Starter samt Web-Build dist/); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen und nach bin/ legen (Workbench, Engine-CLI k3c-sim); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
-      - task: k3c-server:build
-      - task: k3c-load:build
       - task: k3c-sim:build
-      - task: k3c-tui:build
-      - task: k3c-starter:build
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507; danach z. B. `bunx vite preview --outDir _site`)
@@ -136,19 +122,6 @@ tasks:
       - rm -rf _site
       - mkdir -p _site
       - cp -r site/. _site/
-
-  # --- Spielserver --------------------------------------------------------------------------------------------------
-
-  start:
-    desc: Go-Server ohne Web-Build (feste EXE bin/k3c-server, damit die Firewall-Freigabe bleibt, B-085); Kurzform von k3c-server:run
-    cmds:
-      - task: k3c-server:run
-
-  serve:
-    desc: Build und Go-Server (Port 8080)
-    deps: [build]
-    cmds:
-      - task: start
 
   # --- Prüfen: ein Name je Projekt, `check` ist der Client -----------------------------------------------------------
 
@@ -206,18 +179,11 @@ tasks:
       - task: k3c-workbench:test
       - task: k3c-workbench:lint
 
-  check:starter:
-    desc: Windows-Starter prüfen (Frontend-Vitest, go test, golangci-lint; B-041)
-    cmds:
-      - task: k3c-starter:test
-      - task: k3c-starter:lint
-
   check:all:
-    desc: Alles prüfen (Client, Go, k3c-workbench, Starter, Build)
+    desc: Alles prüfen (Client, Go, k3c-workbench, Build)
     cmds:
       - task: check
       - task: build
       - task: check:go
       - task: check:race
       - task: check:dev
-      - task: check:starter

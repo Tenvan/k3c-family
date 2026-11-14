@@ -3,7 +3,7 @@
 - **Domäne:** SRV
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** WR1
 - **Projekt:** NAT
@@ -39,15 +39,13 @@ Browser-Client `src/` und Phaser (B-848). Simulation `engine/sim` und Level-Gene
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne. `engine/room` und `engine/store` nutzt das native Spiel weiter.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `cmd/k3c-server/**`, `cmd/k3c-load/**`, `cmd/k3c-tui/**`, `engine/net/**`, `engine/watch/**`, `tools/k3c-starter/**`, `tools/k3c-workbench/**`, `tools/checkdiff/**`, `Taskfile.yml`, `.github/workflows/**`, `Dockerfile`, `compose.yaml`, `docs/protocol.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** deps, taskfile, exe
 
 ## Beispiele
 
@@ -59,13 +57,13 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: Die Ordner und Tasks oben existieren nicht mehr; `task --list` nennt sie nicht.
-- AC-02: `task check:all` und die CI sind grün.
-- AC-03: Die Workbench startet und zeigt keine Server-Dienste mehr.
+- **AC-01** Die Ordner und Tasks oben existieren nicht mehr; `task --list` nennt sie nicht.
+- **AC-02** `task check:all` und die CI sind grün.
+- **AC-03** Die Workbench startet und zeigt keine Server-Dienste mehr.
 
 ## Offene Fragen
 
-- Bleibt `tools/k3c-starter`? Default: entfällt mit dem Server.
+keine (`tools/k3c-starter` entfällt mit dem Server, Default übernommen).
 
 ## Notizen
 

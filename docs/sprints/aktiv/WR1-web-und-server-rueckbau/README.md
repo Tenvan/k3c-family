@@ -4,65 +4,69 @@
 - **Projekt:** NAT
 - **Domäne:** SRV, INF, PLAT
 - **Reife:** bereit
-- **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Tickets:** B-887, B-848, B-849
+- **Start-Commit:** 80af0d633
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Ralf, 2026-11-14
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+Entscheidung B-850 (Ralf, 2026-11-14): kein Online-Spiel mehr, das Spiel ist nativ (Go + Ebitengine, Entscheidung 008). Im Repo liegen noch Spielserver, WebSocket-Schicht, Lasttest, TUI, Windows-Starter, der Phaser-Browser-Client und eine Präsentationsseite mit Pixel-Grafik.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Das Repo enthält nur noch das native Spiel, Engine, Werkzeuge (Workbench, Papierschnitt) und die Präsentationsseite mit Papierschnitt-Bildern.
+
+Am Ende sichtbar: `task --list` ohne Server-, Web- und Starter-Tasks; CI ohne Docker- und Browser-Build; `site/` mit Papierschnitt-Bildern.
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Claude (Umsetzung, autonom); 🧑 Ralf liest das Ergebnis und prüft `site/` per Sichtprüfung.
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+- `B-887 › Anforderungen` (WR1.1)
+- `B-848 › Anforderungen` (WR1.2)
+- `B-849 › Anforderungen` (WR1.3)
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+`engine/sim`, `engine/level`, `engine/room`, `engine/store`, das native Spiel und `tools/paper` bleiben. Kein neues Seitenlayout für `site/`.
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Sim, Balancing, Lasttest gesperrt (Beschluss 🧑 2026-11-11). Entfernt Abhängigkeiten (Go: websocket, bubbletea, fsnotify; JS: phaser).
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
-
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `cmd/**`, `engine/net/**`, `engine/watch/**`, `tools/k3c-starter/**`, `tools/k3c-workbench/**`, `tools/checkdiff/**`, `src/**`, `tests/**`, `site/**`, `.github/workflows/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Sperre:** deps, taskfile, exe
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`task check:all` nach dem Sprint grün; `task native:game:build` unverändert.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Ein Werkzeug nutzt noch Code eines entfernten Teils → vorher dorthin verschieben, wo es gebraucht wird, oder Ticket anlegen.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Spielserver, `engine/net`, `engine/watch`, Lasttest, TUI und Starter sind entfernt; Tasks, CI, Docker und Workbench kommen ohne sie aus (`B-887/AC-01`, `B-887/AC-03`).
+- **AC-02** `src/`, Spielseiten und `phaser` sind entfernt; CI und Release bauen ohne `dist/` (`B-848/AC-01`, `B-848/AC-02`).
+- **AC-03** `site/` zeigt Papierschnitt-Bilder statt Pixel-Grafik (`B-849/AC-01`).
+- **AC-04** `task check:all` grün (`B-887/AC-02`).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WR1.1 | `WR1.1-server-entfernen.md` | Umsetzung | autonom | offen |
+| WR1.1 | `WR1.1-server-entfernen.md` | Umsetzung | autonom | fertig |
 | WR1.2 | `WR1.2-browser-client-entfernen.md` | Umsetzung | autonom | offen |
 | WR1.3 | `WR1.3-site-papier-bilder.md` | Umsetzung | autonom | offen |
 

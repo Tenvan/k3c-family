@@ -18,15 +18,13 @@ const (
 )
 
 type statsIn struct {
-	Server  string `json:"server,omitempty" jsonschema:"entfernter Server statt der lokalen Logs: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz"`
 	Source string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
 	Since   string `json:"since,omitempty" jsonschema:"Dauer wie 30m, 24h oder Zeitpunkt RFC 3339; Standard 1h"`
 	GroupBy string `json:"groupBy,omitempty" jsonschema:"level (Standard) oder ns"`
 }
 
 type contextIn struct {
-	Server string `json:"server,omitempty" jsonschema:"entfernter Server statt der lokalen Logs: pi (= pi-gaming:8080), ein Name aus K3C_REMOTE_SERVERS oder host:port im Heimnetz"`
-	Source string `json:"service" jsonschema:"Dienst mit Logdatei aus logs_services, z. B. k3c-server"`
+	Source string `json:"service" jsonschema:"Dienst mit Logdatei aus logs_services, z. B. k3c-workbench"`
 	TS     string `json:"ts" jsonschema:"Zeitpunkt RFC 3339, z. B. aus logs_errors oder logs_query"`
 	Before int    `json:"before,omitempty" jsonschema:"Zeilen davor, Standard 10"`
 	After  int    `json:"after,omitempty" jsonschema:"Zeilen danach, Standard 10"`
@@ -48,12 +46,8 @@ func (s *Server) logsStats(ctx context.Context, in statsIn) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	root, note, done, err := s.logRoot(ctx, in.Server, in.Source, s.ws(ctx).root)
-	defer done()
-	if err != nil {
-		return "", err
-	}
-	paths, err := s.logPaths(root, in.Source, in.Server != "")
+	root := s.ws(ctx).root
+	paths, err := s.logPaths(root, in.Source)
 	if err != nil {
 		return "", err
 	}
@@ -81,7 +75,7 @@ func (s *Server) logsStats(ctx context.Context, in statsIn) (string, error) {
 		parts[i] = fmt.Sprintf("%s %d", orDash(k), counts[k])
 	}
 	head := fmt.Sprintf("%d Einträge seit %s je %s", len(res.Entries), in.Since, in.GroupBy)
-	return withNote(note, scanFooter(head, res)+"\n"+orNone(parts)), nil
+	return scanFooter(head, res)+"\n"+orNone(parts), nil
 }
 
 // logsContext ist das Tool logs_context: Zeilen um einen Zeitpunkt, älteste zuerst; ">" markiert die erste Zeile ab ts.
@@ -90,11 +84,7 @@ func (s *Server) logsContext(ctx context.Context, in contextIn) (string, error) 
 	if err != nil {
 		return "", fmt.Errorf("ts %q ist kein Zeitpunkt nach RFC 3339", in.TS)
 	}
-	root, note, done, err := s.logRoot(ctx, in.Server, in.Source, s.ws(ctx).root)
-	defer done()
-	if err != nil {
-		return "", err
-	}
+	root := s.ws(ctx).root
 	path, err := s.logPath(root, in.Source)
 	if err != nil {
 		return "", err
@@ -119,7 +109,7 @@ func (s *Server) logsContext(ctx context.Context, in contextIn) (string, error) 
 		}
 		out = append(out, mark+entryLine(entries[i]))
 	}
-	return withNote(note, strings.Join(append(out, fmt.Sprintf("%d Zeilen um %s", to-from, in.TS)), "\n")), nil
+	return strings.Join(append(out, fmt.Sprintf("%d Zeilen um %s", to-from, in.TS)), "\n"), nil
 }
 
 func orDefault(v, def int) int {

@@ -21,18 +21,18 @@ type step struct {
 // Ralf 2026-11-11); go vet und Lint laufen weiter. CHECK_SIM=1 hebt die Sperre für einen Lauf auf.
 // task check:go liest sie über -gopkgs; ci.yml › GO_SIM_PKGS, WB_SIM_PKGS muss gleich sein (simlist_test.go, B-832).
 var simDirs = map[string]bool{
-	"engine/balance": true, "cmd/k3c-sim": true, "cmd/k3c-load": true,
+	"engine/balance": true, "cmd/k3c-sim": true,
 	"tools/k3c-workbench/internal/balance": true, "tools/k3c-workbench/internal/simrun": true,
-	"tools/k3c-workbench/internal/simexe": true, "tools/k3c-workbench/internal/botdev": true,
+	"tools/k3c-workbench/internal/simexe": true,
 }
 
-// lintMods: Module mit golangci-lint (wie task check:go, check:dev, check:starter; das Spiel-Modul seit NG1-Review).
+// lintMods: Module mit golangci-lint (wie task check:go und check:dev; das Spiel-Modul seit NG1-Review).
 var lintMods = map[string]bool{
-	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/k3c-starter": true, "native/k3c-game": true,
+	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "native/k3c-game": true,
 }
 
 // prepTasks: Module, deren Go-Code ein gebautes Frontend einbettet (go:embed frontend/dist).
-var prepTasks = map[string]string{"tools/k3c-workbench": "k3c-workbench:frontend", "tools/k3c-starter": "k3c-starter:frontend"}
+var prepTasks = map[string]string{"tools/k3c-workbench": "k3c-workbench:frontend"}
 
 // vitestExcludes: Tests, die gerenderte Papierschnitt-Grafik brauchen (gen:paper läuft hier nicht, B-742).
 var vitestExcludes = []string{
@@ -65,9 +65,6 @@ func jsSteps(p plan, base string) []step {
 	if p.WbVitest {
 		args := "VITEST_ARGS=--changed " + base + " --passWithNoTests"
 		out = append(out, step{"wb-vitest", "js", 2, ".", []string{"task", "k3c-workbench:vitest", args}})
-	}
-	if p.StarterVitest {
-		out = append(out, step{"starter-vitest", "js", 2, ".", []string{"task", "k3c-starter:vitest"}})
 	}
 	return out
 }

@@ -3,7 +3,6 @@ module k3c/tools/k3c-workbench
 go 1.27.0
 
 require (
-	github.com/coder/websocket v1.8.15
 	github.com/google/jsonschema-go v0.4.3
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/shirou/gopsutil/v4 v4.26.8

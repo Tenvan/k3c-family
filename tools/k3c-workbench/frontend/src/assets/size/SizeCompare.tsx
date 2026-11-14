@@ -72,18 +72,34 @@ export function SizeCompare({ id, basis = '', nachher = true }: Props) {
           {nachher && szene('Nachher', jetzt)}
         </Flex>
       ) : (
-        <>
-          {jetzt.fehler && <Text color="red" size="2">{jetzt.fehler}</Text>}
-          {jetzt.wert && monarch.wert ? (
-            <>
-              <SizeScene asset={jetzt.wert} monarch={monarch.wert} hintergrund={gueltig ? hg.wert : undefined} zoom={zoom.faktor} />
-              <Text size="1" color="gray">{id}: {jetzt.wert.quelle}, Animation {jetzt.wert.animation} · Monarch: {monarch.wert.quelle}</Text>
-            </>
-          ) : (
-            !jetzt.fehler && !fehler && <LoadingNote id="size" text={`Lädt Größenvergleich ${id} …`} />
-          )}
-        </>
+        <Einzeln id={id} asset={jetzt} monarch={monarch.wert} hg={gueltig ? hg.wert : undefined} zoom={zoom.faktor} fehler={fehler} />
       )}
     </Flex>
+  );
+}
+
+interface EinzelnProps {
+  id: string;
+  asset: { wert?: Figur; fehler?: string };
+  monarch?: Figur;
+  hg?: Hintergrund;
+  zoom: number;
+  fehler?: string;
+}
+
+/** Ohne Basis: nur der Arbeitsstand neben dem Monarchen. */
+function Einzeln({ id, asset, monarch, hg, zoom, fehler }: EinzelnProps) {
+  return (
+    <>
+      {asset.fehler && <Text color="red" size="2">{asset.fehler}</Text>}
+      {asset.wert && monarch ? (
+        <>
+          <SizeScene asset={asset.wert} monarch={monarch} hintergrund={hg} zoom={zoom} />
+          <Text size="1" color="gray">{id}: {asset.wert.quelle}, Animation {asset.wert.animation} · Monarch: {monarch.quelle}</Text>
+        </>
+      ) : (
+        !asset.fehler && !fehler && <LoadingNote id="size" text={`Lädt Größenvergleich ${id} …`} />
+      )}
+    </>
   );
 }

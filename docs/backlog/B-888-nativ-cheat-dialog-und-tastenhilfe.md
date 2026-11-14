@@ -58,9 +58,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: F1 zeigt die Tastenübersicht, erneut F1 blendet sie aus; jede ausgewertete F-Taste steht in der Übersicht (Test gegen die Tabelle).
-- AC-02: F9 öffnet und schließt das Cheat-Menü; Gold, Material, Zeitraffer, nächste Tageszeit und Nacht sofort wirken (Go-Test über die Sim-Befehle).
-- AC-03: Sichtprüfung durch 🧑.
+- **AC-01** F1 zeigt die Tastenübersicht, erneut F1 blendet sie aus; jede ausgewertete F-Taste steht in der Übersicht (Test gegen die Tabelle).
+- **AC-02** F9 öffnet und schließt das Cheat-Menü; Gold, Material, Zeitraffer, nächste Tageszeit und Nacht sofort wirken (Go-Test über die Sim-Befehle).
+- **AC-03** Sichtprüfung durch 🧑.
 
 ## Offene Fragen
 

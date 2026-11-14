@@ -49,67 +49,58 @@ task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Typecheck + Produktions-Build nach dist/
-task buildall      # alle EXE (Server, Lasttest, TUI, Workbench, Starter) bauen und nach bin/ legen; laufende EXE vorher schließen
+task buildall      # alle EXE (Workbench, Engine-CLI k3c-sim) bauen und nach bin/ legen; laufende EXE vorher schließen
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build/test/dev rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
-task serve         # Build + Go-Server (Port 8080, bin/k3c-server)
-task start         # Go-Server ohne Web-Build (task dev leitet /api und /ws an ihn weiter)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
-Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-server`,
-`k3c-load`, `k3c-tui` (cmd/), `k3c-workbench`, `k3c-starter` (tools/), `balance`, `gen` (Generatoren:
+Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-sim`
+(cmd/), `k3c-workbench` (tools/), `native` (native/), `balance`, `gen` (Generatoren:
 `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
 Der Projektname allein (`task k3c-workbench`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
 (`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
-die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberflächen der Wails-Apps (`k3c-workbench` 5191,
-`k3c-starter` 5194) laufen dabei unter Vite mit Hot Reload im Browser und leiten `/api` an das Kind weiter. `<app>:window` startet
-das echte Fenster mit `wails dev`. Der Server (`k3c-server:dev`) baut als Kind `bin/k3c-server` (freigegebener Pfad), `data/` und
-`public/` beobachtet er weiter selbst (Exit 75 = Neustart). Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
-`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`, `k3c-starter:exe`) und die
-Frontends laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
+die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberfläche der Wails-App (`k3c-workbench` 5191)
+läuft dabei unter Vite mit Hot Reload im Browser und leiten `/api` an das Kind weiter. `<app>:window` startet
+das echte Fenster mit `wails dev`. Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
+`wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`) und das
+Frontend laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` erzwingt.
 
-Der Go-Server beobachtet `data/` und `public/` immer (auch produktiv, `engine/watch`, Entscheidung 004): Nach einer
-Änderung prüft er den neuen Stand (`k3c-server -check-data`), zeigt allen Geräten „Server startet neu“ und startet sich
-über seinen Supervisor neu (Kindprozess mit `K3C_CHILD=1`, Exit-Code 75 = Neustart, Daten von der Platte aus
-`K3C_DATA_DIR`, Standard `data/`; ohne Ordner eingebettet). Ein ungültiger Stand lässt den alten Stand laufen. Der Watch ignoriert `*.paper.json`; neu gestartet wird erst bei geänderten PNGs.
-
-Berichte unter `reports/*.json` (`POST /api/report`) liest `reports_list`/`report_read`; die Gamepad-Testseite ist entfernt (B-822).
+Spielserver, Lasttest, TUI und Windows-Starter sind entfernt (B-887, Entscheidung B-850): kein Online-Spiel, das Spiel ist nativ.
+Berichte unter `reports/` liest `reports_list`/`report_read`.
 
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
-`task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev`/`task start` in der Shell), Logs über
+`task test`, `go test` …), Dienste über `svc_start`/`svc_stop` (nie `task dev` in der Shell), Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
 `sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Performance von Server und Client, Stabilität;
 offline, online, headless oder mit Clients) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
-nie über `task balance`, `task k3c-load` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
+nie über `task balance` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests
 (`docs/arbeitsweise.md` › Tempo im Lauf).
-Die CI (`.github/workflows/ci.yml`) prüft zusätzlich Build + Server-Smoke-Test. `tests/projectRules.test.ts`
+Die CI (`.github/workflows/ci.yml`) prüft zusätzlich den Build. `tests/projectRules.test.ts`
 prüft die Regeln unten automatisch (Seiten eingetragen, `installPageChrome()`, Vollbild, kein `Math.random()`).
 
 ## Struktur
 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Client (Import) und
   Go-Server (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
-- `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/`, `net/` (HTTP, WebSocket `/ws`,
-  Protokoll laut `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`), `watch/` (Datei-Watch für
-  `data/` und `public/`, ignoriert `*.paper.json`). `engine/` und `cmd/k3c-server` importieren nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
-- `cmd/` – Go-Binaries: `k3c-server` (liefert `dist/` und die API aus; Supervisor `supervise.go`, Neustart bei geänderten
-  Dateien `restart.go`), `k3c-load` (Lasttest), `k3c-tui`.
+- `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/` (Raum mit Stufen und Spielstand,
+  Zustand und Ereignisse wie in `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `engine/`
+  importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
+- `cmd/` – Go-Binary `k3c-sim` (Engine-CLI: Simulation, Balancing, Level). Spielserver, Lasttest und TUI sind entfernt (B-887).
   `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Bereichen **Development**
   (Dienste, Tasks, Planung, Git, MCP, Monitoring, Balancing) und **Assets** (Review, Katalog, Styleguide, Sound, Quellen; nur
   Ansehen, Prompt-Buttons, „Im Spiel ansehen“ über die eingebundene Engine in `internal/studioview`). Assets ändern nur die
   MCP-Tools `assets_*`; das frühere Asset-Studio `tools/k3c-studio` ist entfallen (Entscheidung 005, WB1).
   `tools/paper/` – Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts`.
-  `tools/assetkit` – Asset-Logik der Workbench (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`). `tools/k3c-starter` – Windows-Starter für den Server (Wails-Fenster
-  startet `bin/k3c-server`, zeigt Status und Adresse, EXE `bin/k3c-starter.exe`, `task k3c-starter:build`, B-041).
-  `tools/webkit` – gemeinsame Oberflächen-Bausteine aller Wails-Frontends (k3c-workbench, Starter) als **Atomic Design** auf
+  `tools/assetkit` – Asset-Logik der Workbench (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`).
+  `tools/webkit` – gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als **Atomic Design** auf
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).

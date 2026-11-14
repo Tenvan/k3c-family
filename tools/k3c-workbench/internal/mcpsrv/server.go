@@ -18,8 +18,6 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"k3c/tools/k3c-workbench/internal/applog"
-	"k3c/tools/k3c-workbench/internal/botfeed"
-	"k3c/tools/k3c-workbench/internal/browser"
 	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
@@ -77,10 +75,6 @@ type Server struct {
 	log     *slog.Logger
 	checks  *checkRuns
 	sims    *simrun.Registry // Testläufe von sim_test und der Balancing-Seite (internal/simrun)
-	feeds   *botfeed.Hub     // Bot-Feeds der Läufe mit Clients (simtest_clients.go), Route /bot/
-	// findBrowser und launch starten die Clients von sim_test; Test-Naht.
-	findBrowser     func() (string, error)
-	launch          func(ctx context.Context, exe, profile, url string) (stop func(), err error)
 	run             func(context.Context, runSpec) runResult // Test-Naht für check_run
 	taskVersion     func(context.Context) (string, error)    // Test-Naht: `task --version` (B-868, check_taskversion.go)
 	taskVersionMemo taskVersionMemo                          // gemerktes Ergebnis von taskVersion, einmal je Workbench-Lauf (B-871)
@@ -112,8 +106,7 @@ func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
 		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, taskVersion: readTaskVersion, checkWait: defaultCheckWait,
 		progressEvery: defaultProgressEvery,
-		wt:            worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy,
-		feeds: botfeed.NewHub(), findBrowser: browser.Find, launch: launchBrowser}
+		wt:            worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy}
 	if s.console == nil {
 		s.console = console.New(console.DefaultCapacity, nil)
 	}
@@ -150,7 +143,6 @@ func (s *Server) Start() error {
 	mux := http.NewServeMux()
 	mux.Handle("/mcp", forceChunked(mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
 		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout})))
-	mux.Handle(botfeed.Prefix, s.feeds)
 	if s.cfg.Resources != nil {
 		mountPprof(mux)
 	}

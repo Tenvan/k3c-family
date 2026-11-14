@@ -43,10 +43,16 @@ export function slotsOf(kinds: readonly string[]): number[] {
   return kinds.map((_, i) => (i < first ? i - first : i > last ? i - last : 0));
 }
 
+type CompleteLevel = Partial<WorldLevel> & Pick<WorldLevel, 'chunks' | 'entities' | 'widthUnits' | 'chunkWidthUnits'>;
+
+/** Hat die Antwort alle Felder, die das Zeichenmodell braucht? */
+const isComplete = (r: Partial<WorldLevel>): r is CompleteLevel =>
+  Array.isArray(r.chunks) && Array.isArray(r.entities) && typeof r.widthUnits === 'number' && typeof r.chunkWidthUnits === 'number';
+
 /** Zeichenmodell eines Levels; ein unvollständiges ergibt ein leeres Modell mit einer Warnung, nie einen Fehler. */
 export function levelModel(res: Partial<WorldLevel> | null | undefined): LevelModel {
   const r = res ?? {};
-  if (!Array.isArray(r.chunks) || !Array.isArray(r.entities) || typeof r.widthUnits !== 'number' || typeof r.chunkWidthUnits !== 'number') {
+  if (!isComplete(r)) {
     return { seed: r.seed ?? '', biomeId: r.biomeId ?? '', widthUnits: 0, hubCenterUnits: 0, chunks: [], objects: [], counts: [], planned: [], warnings: [...(r.warnings ?? []), INCOMPLETE] };
   }
   const width = r.chunkWidthUnits;

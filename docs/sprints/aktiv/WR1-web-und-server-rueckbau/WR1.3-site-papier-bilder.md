@@ -10,7 +10,7 @@
 - **Branch:** wr1/3-site-papier-bilder
 - **Abhängig von:** –
 - **Tickets:** B-849
-- **Kriterien:** AC-03
+- **Kriterien:** AC-03, AC-04
 
 ## Ziel
 

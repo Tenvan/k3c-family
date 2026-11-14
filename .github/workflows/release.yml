@@ -1,5 +1,4 @@
-# Release: Tag v* (z.B. v0.2.0) → Build als Zip und k3c-server für Windows, Linux amd64 und arm64 am GitHub-Release,
-# dazu das Docker-Image (amd64 + arm64) in ghcr.io für `docker compose pull` auf dem Raspberry Pi.
+# Release: Tag v* (z.B. v0.2.0) → Build als Zip am GitHub-Release. Spielserver und Docker-Image sind entfernt (B-887).
 name: Release
 
 on:
@@ -8,7 +7,6 @@ on:
 
 permissions:
   contents: write
-  packages: write
 
 jobs:
   release:
@@ -32,31 +30,9 @@ jobs:
       - run: task typecheck
       - run: task test
       - run: task build
-      - name: k3c-server bauen (Windows, Linux amd64, Linux arm64)
-        run: |
-          for target in windows/amd64 linux/amd64 linux/arm64; do
-            os=${target%/*}; arch=${target#*/}; ext=; [ "$os" = windows ] && ext=.exe
-            CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath -ldflags "-s -w -X main.version=${GITHUB_REF_NAME}"               -o "k3c-server-${os}-${arch}${ext}" ./cmd/k3c-server
-          done
-      - name: Paket schnüren (dist + Server)
+      - name: Paket schnüren (dist)
         run: zip -r "k3c-${GITHUB_REF_NAME}.zip" dist README.md
       - name: GitHub-Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" "k3c-${GITHUB_REF_NAME}.zip" k3c-server-* --generate-notes --title "K3C $GITHUB_REF_NAME"
-      - uses: docker/setup-buildx-action@v4
-      - uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Docker-Image bauen und veröffentlichen (amd64 + arm64)
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          build-args: VERSION=${{ github.ref_name }}
-          tags: |
-            ghcr.io/tenvan/k3c-family:${{ github.ref_name }}
-            ghcr.io/tenvan/k3c-family:latest
+        run: gh release create "$GITHUB_REF_NAME" "k3c-${GITHUB_REF_NAME}.zip" --generate-notes --title "K3C $GITHUB_REF_NAME"

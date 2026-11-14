@@ -46,8 +46,8 @@ export default defineConfig({
   },
   preview: { host: true, port: 4173 },
   // .claude/worktrees enthält komplette Checkouts anderer Branches; deren Tests gehören nicht zu diesem Lauf.
-  // Die Frontends unter tools/*/frontend (k3c-workbench, k3c-starter) prüfen ihr eigenes Vitest (Alias @webkit,
-  // task check:dev, check:starter); die Tests von tools/webkit laufen im Vitest von k3c-workbench.
+  // Die Frontends unter tools/*/frontend (k3c-workbench) prüfen ihr eigenes Vitest (Alias @webkit,
+  // task check:dev); die Tests von tools/webkit laufen im Vitest von k3c-workbench.
   test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/*/frontend/**', 'tools/webkit/**'] },
   build: {
     target: 'es2022',

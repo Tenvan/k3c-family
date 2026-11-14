@@ -23,7 +23,6 @@ type plan struct {
 	Rules         bool // Regel-Test des Repos (alles außer Doku)
 	Client        bool // Oxlint, tsc, Vitest --changed
 	WbVitest      bool
-	StarterVitest bool
 	Mods          map[string]*modPlan
 }
 
@@ -38,7 +37,7 @@ var goldenOwners = map[string][]string{
 	"golden":       {"engine/sim", "engine/level"},
 	"hub":          {"engine/sim", "engine/level"},
 	"planned":      {"engine/level"},
-	"protocol":     {"engine/net"},
+	"protocol":     {"engine/room"},
 	"saves":        {"engine/store", "engine/sim"},
 	"torches.json": {"engine/sim"},
 }
@@ -85,11 +84,9 @@ func (p *plan) mod(m string) *modPlan {
 func (p *plan) frontend(f string) bool {
 	switch {
 	case hasPrefix(f, "tools/webkit/"):
-		p.WbVitest, p.StarterVitest = true, true
+		p.WbVitest = true
 	case hasPrefix(f, "tools/k3c-workbench/frontend/"):
 		p.WbVitest = true
-	case hasPrefix(f, "tools/k3c-starter/frontend/"):
-		p.StarterVitest = true
 	default:
 		return false
 	}

@@ -22,7 +22,7 @@ var (
 	quiet        = 300 * time.Millisecond // Entprellfrist: so lange darf sich nichts mehr ändern (Speichern in Schritten, Formatierer)
 	swapWait     = 3 * time.Second        // Windows gibt die EXE eines beendeten Prozesses manchmal erst verzögert frei
 	restartPause = time.Second            // Mindestlaufzeit vor einem Neustart mit RestartCode (Bremse gegen eine Schleife)
-	loopWindow   = time.Minute            // Schleifenbremse wie cmd/k3c-server/supervise.go: mehr als loopMax Neustarts
+	loopWindow   = time.Minute            // Schleifenbremse: mehr als loopMax Neustarts
 	loopMax      = 3                      // mit RestartCode in diesem Fenster warten auf die nächste Änderung
 )
 
@@ -45,7 +45,7 @@ const EnvRebuild = "K3C_DEV_REBUILD"
 type Config struct {
 	Name    string   // für Logs, z. B. "studio"
 	Dir     string   // Arbeitsordner für go build (Modul-Wurzel der App); dessen go.mod und go.sum werden immer beobachtet
-	Package string   // Paket für go build, z. B. "." oder "./cmd/k3c-server"
+	Package string   // Paket für go build, z. B. "." oder "./cmd/k3c-sim"
 	Child   string   // fester Pfad der Kind-EXE, z. B. build/bin/k3c-studio-devchild-8192.exe (absolut oder relativ zu Dir)
 	Args    []string // Argumente des Kindes; das Kind läuft im Arbeitsverzeichnis des Aufrufers
 	Env     []string // zusätzliche Umgebung des Kindes (K3C_DEV_CHILD=1 setzt Run selbst)
@@ -54,7 +54,7 @@ type Config struct {
 	// genannte Datei zählt immer.
 	Watch       []string
 	Extra       []string      // zusätzliche Dateiendungen, z. B. ".html" (optional)
-	RestartCode int           // Exit-Code des Kindes, der einen Neustart ohne Neubau auslöst (k3c-server: 75); 0 = keiner
+	RestartCode int           // Exit-Code des Kindes, der einen Neustart ohne Neubau auslöst (z. B. 75); 0 = keiner
 	Grace       time.Duration // Zeit für sauberes Beenden, danach hart (Standard 5 s)
 	Log         *slog.Logger  // nil = slog.Default()
 }

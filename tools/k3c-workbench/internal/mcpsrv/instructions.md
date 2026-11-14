@@ -29,8 +29,8 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - Ohne `checkout` und ohne Header gilt die Repo-Wurzel. Schreibende Tools lehnen nicht ab, nennen aber immer den
   Checkout in der letzten Zeile `Checkout:`. Steht dort aus einem Worktree die Repo-Wurzel, die Änderung in der Wurzel
   zurücknehmen und mit `checkout` wiederholen.
-- Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …: Vite 5193, Spielserver 8090 …); `get_urls` nennt
-  sie, `server_status` fragt den Spielserver des eigenen Worktrees. Die Ports der Repo-Wurzel (5183, 8080) nie aus einem
+- Dienste eines Worktrees laufen auf eigenen Ports (Versatz 10, 20 …); `get_urls` nennt
+  sie. Die Ports der Repo-Wurzel nie aus einem
   Worktree ansprechen.
 - `task_*` bedient nur die Repo-Wurzel; im Worktree `check_run` nutzen.
 
@@ -90,26 +90,17 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 ## 2. Dienste & Logs
 
-- Dienste (Vite, Spielserver) nie per Shell starten: `svc_status` zuerst, dann `svc_start {service, waitSeconds?}`,
+- Dienste aus `services.json` (seit dem Rückbau des Spielservers, B-887, leer) nie per Shell starten: `svc_status` zuerst, dann `svc_start {service, waitSeconds?}`,
   `svc_stop {service, force?}`, `svc_restart {service, confirm: true}`; alle auf einmal mit `svc_start_all` und
   `svc_stop_all`.
 - Läuft ein Dienst, antwortet aber nicht: `svc_health {service}`. Scheitert ein Start am Port: `ports_status`.
 - Vor jedem HTTP-Aufruf und jeder Browserprüfung `get_urls {target?}`.
-- Der Spielserver startet von selbst neu, sobald sich Go-Code oder Daten ändern (`watch` in `services.json`). Die
-  Konsole (`console_tail {service: Spielserver}`) nennt die Datei; ein Build-Fehler steht dort, und der Dienst heißt
-  `fehlgeschlagen`, bis die nächste Änderung ihn wieder startet.
 - Ein übernommener Dienst lief schon vor k3c-workbench (z. B. im Terminal eines Menschen): nur mit `force` stoppen, und nur,
   wenn das gewollt ist.
 - Logs: `logs_services` zeigt die Dienste mit Logdatei (`logs/*.jsonl`, `k3c-workbench` ist das eigene Log). `logs_errors`
   zuerst (verdichtet, ohne `service` über alle), `logs_stats {service?, since?, groupBy?}` für Zahlen je Level oder
   Namensraum, `logs_query {service, level?, ns?, pattern?, since?, limit?}` für einzelne Zeilen,
   `logs_context {service, ts}` für die Zeilen um einen Zeitpunkt, `logs_since {service, cursor}` zum Mitlesen.
-  **Entfernte Server (B-771):** Alle `logs_*`-Tools, `server_status`, `reports_list` und `report_read` nehmen `server`
-  (`pi` = pi-gaming:8080, weitere Namen aus der Umgebungsvariable `K3C_REMOTE_SERVERS="name=host:port,…"`, oder `host:port`
-  im Heimnetz). Sie lesen dann die Dev-Endpunkte `/api/dev/*` dieses Servers (nur GET, Dev-Mode am Server nötig, Log-Ordner
-  `K3C_LOG_DIR` am Server gesetzt) statt der lokalen Dateien. Es gelten nur die Dienste `k3c-server` und `k3c-client`; je
-  Datei kommen die letzten 1000 Zeilen. `logs_since` nutzt dann die Byte-Position im Log des Servers als Cursor. Die Antwort
-  nennt oben die Quelle. Ohne `server` bleibt alles lokal.
 - `console_tail {service, limit?, since?}`: flüchtige Ausgabe eines Dienstes oder Laufs (`check:<ziel>`, `task:<name>`).
 
 ## 3. MCP
@@ -121,7 +112,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `task_list {namespace?, query?}`: Taskfile-Baum; `*` = Schloss offen, `task_start` erlaubt. Das Schloss setzt 🧑 auf
   der Tasks-Seite (Datei `tools/k3c-workbench/task-freigaben.json` plus Schalter bis zum Beenden).
 - `task_start {task, args?}` kehrt sofort zurück; `task_status`, `task_output {task, limit?, since?}`, `task_stop {task}`.
-- Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`/`task k3c-load`, sondern `sim_test`.
+- Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`, sondern `sim_test`.
 
 ## Projektspezifisch
 
@@ -150,7 +141,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 ### Spieldaten
 
-- `reports_list` und `report_read` statt `reports/*.json` zu öffnen: Xbox-Berichte der Gamepad-Testseite.
+- `reports_list` und `report_read` statt `reports/*.json` zu öffnen (Berichte und `sim_test`-Läufe).
 - `saves_list` statt `saves/` zu durchsuchen: Stufe, Tag, Spieler und Datum je Spielstand.
 
 ### Assets (Papierschnitt)
@@ -183,12 +174,6 @@ Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist 
   `public/audio/kandidaten/`, Credit-Zeile im Abschnitt „Importe (k3c-workbench)“, Zuordnung als letzte Präferenz. Die Lizenz
   bestätigt nur 🧑 in der Oberfläche; ein Agent nie.
 
-### Laufender Server
-
-- `server_status`, `rooms_list` und `room_snapshot <Raum>` lesen `/api/status` des Go-Servers (nur lesend). Sie brauchen
-  `K3C_STATUS_TOKEN`; Adresse `K3C_SERVER_URL`, sonst `127.0.0.1:K3C_HTTP_PORT` (8080). Ist der Server aus oder das
-  Token falsch, steht das in der Meldung; kein Grund, den Server selbst abzufragen.
-
 ### Rechnen ohne Server
 
 - `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen im Kindprozess `bin/k3c-sim`
@@ -197,15 +182,15 @@ Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist 
 - `replay_run {path}` spielt eine Replay-Datei (`task balance:run -- --replay-dir DIR`) ohne Bot ab: Endzustand-Hash,
   Burgfall-Tick, Vergleich mit der Aufnahme; `path` relativ zur Repo-Wurzel, Dateien außerhalb werden abgelehnt.
 - Diese drei rechnen mit `bin/k3c-sim` des Checkouts der Session (Daten aus dessen `data/`). Fehlt die EXE oder ist sie
-  älter als `engine/`, `cmd/k3c-sim`, `go.mod`: Meldung mit `task k3c-sim:build`. `sim_test` offline baut sich
-  `bin/k3c-sim-<platz>` selbst; online rechnen die Bots in `k3c-sim bot` (ebenfalls `bin/k3c-sim`).
+  älter als `engine/`, `cmd/k3c-sim`, `go.mod`: Meldung mit `task k3c-sim:build`. `sim_test` baut sich
+  `bin/k3c-sim-<platz>` selbst.
 
 ### Testläufe
 
-- **Jeder Testlauf** (Balancing, Performance, Stabilität) läuft über `sim_test`, nie über `task balance`/`task k3c-load` in
-  der Shell. `sim_test {action: start, mode, clients, focus, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
+- **Jeder Testlauf** (Balancing, Performance, Stabilität) läuft über `sim_test`, nie über `task balance` in
+  der Shell. `sim_test {action: start, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
   status, id}` zeigt den Lauf in höchstens 10 Zeilen, `stop` bricht ab, `list` zeigt die Läufe des Checkouts.
-- `mode: offline` (Standard, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
+- `mode: offline` (einziger Modus seit B-887, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
   `data/balance-targets.json`. Ohne `seeds` gilt dort `seedMode`: `dev` rechnet nur den ersten Seed `k3c-dev`, `all`
   alle (B-634). `seeds: N` nimmt die ersten N, `seedList: "k3c-dev,7"` genau diese; `bots` (z. B. `coop2`) ersetzt
   offline den Bot aller Ziele. Der Bericht nennt Seed-Anzahl und Seed-Modus.
@@ -226,12 +211,4 @@ Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist 
 - **Warten wie `check_run`** (B-644): `sim_test {action: start, …, wait: true}` bzw. `sim_test {action: wait, id}` wartet auf das Ende
   des Laufs und liefert den Endstatus. Mit `progressToken` meldet der Aufruf alle 20 s ein Lebenszeichen und wartet bis zum Ende;
   ohne antwortet er nach 4 min mit „läuft noch“ und der ID. Der Lauf überlebt den Aufruf; `stop` bricht ihn ab.
-- `mode: online, clients: 0` startet `rooms` × `players` Bot-Geräte
-  (`bots`, Standard 1 × 2 `saver`, `duration` 5m) gegen den Spielserver des Checkouts (vorher `svc_start`) und
-  misst Tick p99, CPU, Trennungen und Fehler.
-- `mode: online, clients: 1`–`4` öffnet je Client einen Raum mit einem Beobachter der Workbench (ohne Platz, B-352,
-  daher `players` 1–4) und startet Edge oder Chrome headless mit `game.html?room=…&players=…&botfeed=…` am Vite-Port
-  des Checkouts (vorher `svc_start` für Vite und Spielserver). Bots steuern die Monarchen über den Bot-Feed
-  (`/bot/<id>/<n>`, nur Loopback); FPS und Latenz kommen aus dem Log `k3c-client`. `attach: <Raumcode>` mit `clients: 1`
-  startet keinen Browser: den Client auf diesem Rechner mit der Feed-Adresse aus dem Status öffnen.
 - Der volle Bericht liegt unter `reports/simtest-<id>/` (`simtest.md` und der Bericht des Testers), lesbar mit `report_read`.

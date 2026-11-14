@@ -10,7 +10,7 @@
 - **Erstellt:** 2026-11-13
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** Ralf, 2026-11-14 („WR1 auch abarbeiten“)
+- **Freigabe:** Ralf, 2026-11-14 (Sprint WR1)
 
 ## Ausgangslage
 
