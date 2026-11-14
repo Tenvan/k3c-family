@@ -49,6 +49,10 @@ type Biome struct {
 		DamagePerSecond float64 `json:"damagePerSecond"`
 		WidthUnits      float64 `json:"widthUnits"`
 	} `json:"lava"`
+	// Traits sind die Natur-Eigenschaften (Walddichte, Steindichte …, nature.go, B-891); Weights die Gewichts-Gruppen
+	// (Baumarten, Kristallfarben) mit dem Bereich des Gewichts je Variante. Ohne Felder würfelt das Biom wie bisher.
+	Traits  Ordered[Trait]       `json:"traits"`
+	Weights Ordered[WeightGroup] `json:"weights"`
 	Enemies struct {
 		Portal []string `json:"portal"`
 		Night  []string `json:"night"`
@@ -79,6 +83,9 @@ func LoadBiome(id string) (Biome, error) {
 		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
 	}
 	if err := b.Cycle.Check(); err != nil {
+		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
+	}
+	if err := b.checkNature(); err != nil {
 		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
 	}
 	return b, nil

@@ -25,7 +25,7 @@ func TestGoldenGzAbweichung(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	w, err := CreateWorld(b, run.Seed, Options{CycleSpeed: run.CycleSpeed})
+	w, err := CreateWorld(b, run.Seed, Options{CycleSpeed: run.CycleSpeed, Nature: level.NeutralNature(b)}) // Mechanik-Golden: neutrale Natur (B-891)
 	if err != nil {
 		t.Fatal(err)
 	}

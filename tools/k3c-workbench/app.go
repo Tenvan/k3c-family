@@ -106,8 +106,9 @@ func (a *App) wait() {
 func (a *App) startup(ctx context.Context) {
 	defer a.markReady()
 	a.ctx = ctx
-	// console:line trägt eine Liste, damit Go später bündeln kann, ohne den Vertrag zu ändern.
-	a.store = console.New(console.DefaultCapacity, func(l console.Line) { a.emit(a.ctx, evConsoleLine, []console.Line{l}) })
+	// console:line trägt eine Liste; Zeilen gehen gebündelt raus (B-895, console_batch.go).
+	lines := newLineBatcher(func(ls []console.Line) { a.emit(a.ctx, evConsoleLine, ls) })
+	a.store = console.New(console.DefaultCapacity, lines.add)
 	store := a.store
 	var err error
 	a.log, err = applog.Open(filepath.Join(a.root, "logs"), store)

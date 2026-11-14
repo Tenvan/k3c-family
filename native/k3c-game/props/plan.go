@@ -297,6 +297,9 @@ func (p *planner) nodes(w *sim.World, k view.Camera, biome string) {
 			}
 		}
 		l := nodeLook(n.Kind, n.X, biome)
+		if v, ok := variantLook(n.Kind, n.Variant, biome); ok {
+			l = v
+		}
 		_, h, ok := p.size(l)
 		if ok {
 			p.body = append(p.body, item{shape: shapeSprite, look: l, x: n.X, phase: animPhase(n.X, 8), sy: fellShrink(n.Progress)})

@@ -15,19 +15,24 @@ export const AREAS = ['development', 'assets'] as const;
 export type Area = (typeof AREAS)[number];
 export const AREA_LABELS: Record<Area, string> = { development: 'Development', assets: 'Studio' };
 
-/** Seiten des Bereichs Studio; Review ist die Startseite (RV1 füllt sie). */
-export const ASSET_PAGES = ['review', 'katalog', 'styleguide', 'sound', 'quellen', 'balancing', 'welten'] as const;
+/** Seiten des Bereichs Studio in der Reihenfolge von B-892; Review bleibt die Startseite (RV1 füllt sie). */
+export const ASSET_PAGES = ['styleguide', 'katalog', 'review', 'sound', 'welten', 'balancing'] as const;
 export type AssetPage = (typeof ASSET_PAGES)[number];
-export const ASSET_LABELS: Record<AssetPage, string> = { review: 'Review', katalog: 'Katalog', styleguide: 'Styleguide', sound: 'Sound', quellen: 'Quellen', balancing: 'Balancing', welten: 'Welten-Editor' };
+export const ASSET_LABELS: Record<AssetPage, string> = { styleguide: 'Styleguide', katalog: 'Katalog', review: 'Review', sound: 'Sound & Quellen', welten: 'Welten-Editor', balancing: 'Balancing' };
 
 type AnyPage = Page | AssetPage;
+
+/** Startseite des Bereichs; eine gemerkte frühere Seite `quellen` führt auf „Sound & Quellen“ (B-892). */
+function legacyAssetPage(): AssetPage {
+  return loadPref('app.assetsPage', ['quellen'] as const, 'review' as never) === 'quellen' ? 'sound' : 'review';
+}
 
 /** Gewählter Bereich und Seite je Bereich, gemerkt unter `app.area`, `app.page`, `app.assetsPage` (WB1.1); `tabs` sind
  *  die Reiter des aktiven Bereichs für AppFrame. */
 export function useNavigation() {
   const [area, setArea] = useState<Area>(() => loadPref('app.area', AREAS, 'development'));
   const [page, setPage] = useState<Page>(() => loadPref('app.page', PAGES, 'dienste'));
-  const [assetPage, setAssetPage] = useState<AssetPage>(() => loadPref('app.assetsPage', ASSET_PAGES, 'review'));
+  const [assetPage, setAssetPage] = useState<AssetPage>(() => loadPref('app.assetsPage', ASSET_PAGES, legacyAssetPage()));
   const chooseArea = (next: Area) => {
     setArea(next);
     savePref('app.area', next);

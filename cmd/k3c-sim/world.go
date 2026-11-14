@@ -65,10 +65,49 @@ func cmdWorld(args []string, v env) error {
 }
 
 // worldLevelReport ist das Level wie im Spiel plus die geplanten Chunks der Stufe und die Warnungen der Prüfung.
+// Natur (B-891): `nature` (im Layout) sind die geltenden Werte, `natureFixed` die in der Welt fest gesetzten,
+// `natureTraits` und `natureWeights` die Eigenschaften und Gewichts-Gruppen des Bioms mit ihren Bereichen.
 type worldLevelReport struct {
 	level.Layout
-	Planned  []level.PlannedChunk `json:"planned"`
-	Warnings []string             `json:"warnings"`
+	Planned       []level.PlannedChunk `json:"planned"`
+	Warnings      []string             `json:"warnings"`
+	Nature        level.NatureValues   `json:"nature"`
+	NatureFixed   level.NatureValues   `json:"natureFixed"`
+	NatureTraits  []natureTrait        `json:"natureTraits"`
+	NatureWeights []natureWeights      `json:"natureWeights"`
+}
+
+type natureTrait struct {
+	Key string `json:"key"`
+	level.Trait
+}
+
+type natureWeights struct {
+	Key     string         `json:"key"`
+	Name    string         `json:"name"`
+	Kind    string         `json:"kind"`
+	Options []natureOption `json:"options"`
+}
+
+type natureOption struct {
+	Key string `json:"key"`
+	level.Range
+}
+
+// natureOf liefert Eigenschaften und Gewichts-Gruppen des Bioms in Datei-Reihenfolge (nie nil).
+func natureOf(b level.Biome) ([]natureTrait, []natureWeights) {
+	traits, groups := []natureTrait{}, []natureWeights{}
+	for _, e := range b.Traits {
+		traits = append(traits, natureTrait{e.Key, e.Value})
+	}
+	for _, g := range b.Weights {
+		w := natureWeights{Key: g.Key, Name: g.Value.Name, Kind: g.Value.Kind, Options: []natureOption{}}
+		for _, o := range g.Value.Options {
+			w.Options = append(w.Options, natureOption{o.Key, o.Value})
+		}
+		groups = append(groups, w)
+	}
+	return traits, groups
 }
 
 func worldLevel(worlds fs.FS, in worldInput) (worldLevelReport, error) {
@@ -93,12 +132,13 @@ func worldLevel(worlds fs.FS, in worldInput) (worldLevelReport, error) {
 		return worldLevelReport{}, err
 	}
 	key := strconv.Itoa(depth)
-	opts := level.Options{Planned: isl.PlannedChunks[key], ChunkCount: isl.ChunkCounts[key]}
+	opts := level.Options{Planned: isl.PlannedChunks[key], ChunkCount: isl.ChunkCounts[key], Nature: isl.NatureAt(depth)}
 	layout, err := level.GenerateWith(b, in.Seed, opts)
 	if err != nil {
 		return worldLevelReport{}, fmt.Errorf("das Level ist nicht erzeugbar: %w", err)
 	}
-	r := worldLevelReport{Layout: layout, Planned: opts.Planned, Warnings: level.ValidateWith(layout, b, opts)}
+	r := worldLevelReport{Layout: layout, Planned: opts.Planned, Warnings: level.ValidateWith(layout, b, opts), Nature: layout.Nature, NatureFixed: opts.Nature}
+	r.NatureTraits, r.NatureWeights = natureOf(b)
 	if r.Planned == nil {
 		r.Planned = []level.PlannedChunk{}
 	}

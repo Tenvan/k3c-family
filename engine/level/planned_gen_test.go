@@ -59,7 +59,7 @@ func TestGeplanteChunksSindDeterministischUndGueltig(t *testing.T) {
 		for seed := range 500 {
 			s := strconv.Itoa(seed)
 			l := gen2(t, b, s, plan)
-			if errs := Validate(l, b); len(errs) > 0 {
+			if errs := ValidateWith(l, b, Options{Planned: plan}); len(errs) > 0 { // feste Adern zählen mit (B-891)
 				t.Fatalf("Biom %s, Seed %s: %v", id, s, errs)
 			}
 			if again := gen2(t, b, s, plan); !slices.Equal(l.Entities, again.Entities) || !slices.Equal(l.Chunks, again.Chunks) {
@@ -97,7 +97,7 @@ func TestChunkSeedIstUeberLevelSeedsStabil(t *testing.T) {
 		var out []Entity
 		for _, e := range l.Entities {
 			if e.X >= start && e.X < start+b.ChunkWidthUnits {
-				out = append(out, Entity{Kind: e.Kind, X: e.X - l.HubCenterUnits})
+				out = append(out, Entity{Kind: e.Kind, X: e.X - l.HubCenterUnits}) // Variante folgt der Mischung der Welt (B-891)
 			}
 		}
 		return out

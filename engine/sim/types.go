@@ -113,6 +113,8 @@ type ResourceNode struct {
 	MarkedBy *int    `json:"markedBy,omitempty"` // Spieler-Index der letzten Markier-Münze, fehlt = unbekannt (B-532)
 	WorkerID *int    `json:"workerId"`
 	Progress float64 `json:"progress"`
+	// Variant ist die Variante aus dem Level (Baumart, Kristallfarbe; B-891); leer bei Plantage-Bäumen und ohne Gruppe.
+	Variant string `json:"-"` // nur im Prozess (natives Spiel), nicht im Zustand und nicht im Spielstand
 	gone     bool    // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
 }
 

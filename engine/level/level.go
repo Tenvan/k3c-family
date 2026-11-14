@@ -27,6 +27,9 @@ type Chunk struct {
 type Entity struct {
 	Kind string  `json:"kind"`
 	X    float64 `json:"x"`
+	// Variant ist die Variante aus einer Gewichts-Gruppe des Bioms (Baumart, Kristallfarbe; nature.go, B-891); leer
+	// ohne Gruppe für die Art.
+	Variant string `json:"-"`
 }
 
 // Layout ist ein fertiges Level, gleiche JSON-Form wie `LevelLayout` in TS.
@@ -49,6 +52,9 @@ type Layout struct {
 	// Backdrops ist die Hintergrund-Variante (1 …) je Kachel von BackdropTileUnits (backdrop.go, GEB18); Teil der
 	// level-Nachricht (additiv, docs/protocol.md), ohne Varianten im Biom fehlt das Feld.
 	Backdrops []int `json:"backdrops,omitempty"`
+	// Nature sind die geltenden Natur-Werte der Stufe (nature.go, B-891), fest gesetzt oder aus dem Seed; leer ohne
+	// Eigenschaften im Biom. Nicht Teil der level-Nachricht; der Welten-Editor bekommt sie über k3c-sim world.
+	Nature NatureValues `json:"-"`
 }
 
 // eventKinds in fester Reihenfolge wie `EVENT_KINDS` in TS.
@@ -75,6 +81,9 @@ type gen struct {
 	planned             map[int]PlannedChunk
 	fixed               map[string]int
 	sideFixed           [2]int
+	// plannedRes sind die Ressourcen je Chunk-Art ohne Natur-Faktoren: geplante Chunks würfeln ihren Inhalt daraus, damit
+	// ein Chunk-Seed in jedem Level dieselben Objekte ergibt (B-891).
+	plannedRes Ordered[Ordered[[2]int]]
 }
 
 func (g *gen) center(i int) float64 { return float64(float64(i)*g.cw) + g.cw/2 }
@@ -101,7 +110,12 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	if err := ValidatePlanFor(b, o.Planned, o.ChunkCount); err != nil {
 		return Layout{}, fmt.Errorf("geplante Chunks: %w", err)
 	}
-	g := &gen{b: b, r: rng.New(b.ID + ":" + seed), seed: seed, cw: b.ChunkWidthUnits, count: o.ChunkCount}
+	nature, err := ResolveNature(b, seed, o.Nature)
+	if err != nil {
+		return Layout{}, fmt.Errorf("natur: %w", err)
+	}
+	g := &gen{b: b.withNature(nature), r: rng.New(b.ID + ":" + seed), seed: seed, cw: b.ChunkWidthUnits, count: o.ChunkCount,
+		plannedRes: b.ResourcesPerChunk}
 	g.frame()
 	g.reserve(o.Planned)
 	if err := g.placePortals(); err != nil {
@@ -110,7 +124,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	if err := g.placeEvents(seed); err != nil {
 		return Layout{}, err
 	}
-	w := weights(b.ChunkWeights)
+	w := weights(g.b.ChunkWeights)
 	for _, i := range g.free() {
 		g.kinds[i] = g.r.Weighted(w)
 	}
@@ -123,12 +137,14 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 		entities = append(entities, Entity{Kind: "lair", X: g.lairX()})
 	}
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
+	assignVariants(b, seed, nature, entities)
 	sites := g.placeSites(entities, chunks)
 	width := float64(len(chunks)) * g.cw
 	return Layout{
 		Seed: seed, BiomeID: b.ID, WidthUnits: width, ChunkWidthUnits: g.cw,
 		HubCenterUnits: g.hub, Chunks: chunks, Entities: entities, Sites: sites, FreeGround: freeGround(sites),
 		Ruins: g.ruinsOf(chunks), Guards: g.guardsOf(chunks), Backdrops: backdrops(b.ID, seed, b.BackdropVariants, width),
+		Nature: nature,
 	}, nil
 }
 

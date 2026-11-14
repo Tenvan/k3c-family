@@ -1,6 +1,8 @@
 package mcpsrv
 
 import (
+	"fmt"
+	"strings"
 	"context"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
@@ -38,7 +40,7 @@ type planCreateIn struct {
 	ID     string            `json:"id,omitempty" jsonschema:"Sprint M9, Session M9.1 oder Projekt-Kürzel GRA; beim Ticket leer (nächste freie Nummer)"`
 	Slug   string            `json:"slug" jsonschema:"Kurzname für Datei oder Ordner: a-z, 0-9, -"`
 	Title  string            `json:"title" jsonschema:"Titel, beim Ticket als Aussage"`
-	Fields map[string]string `json:"fields,omitempty" jsonschema:"Kopf-Felder; Ticket braucht Domäne, Typ, Prio; Sprint und Session brauchen Domäne (die Sprint-Domäne folgt danach den Sessions)"`
+	Fields map[string]string `json:"fields,omitempty" jsonschema:"Kopf-Felder; Ticket braucht Domäne, Typ, Prio, Projekt und Sprint (keine ungeplanten Tickets); Sprint und Session brauchen Domäne (die Sprint-Domäne folgt danach den Sessions)"`
 }
 
 // registerPlanning sind die Planungs-Tools (B-210): lesen und schreiben docs/sprints und docs/backlog.
@@ -53,6 +55,9 @@ func registerPlanning(s *Server) {
 			"Nutze es bei: neues Ticket, neuer Sprint, neue Session, neues Projekt. Statt: Vorlage von Hand kopieren.",
 		Annotations: write,
 	}, func(ctx context.Context, in planCreateIn) (string, error) {
+		if err := ticketPlanned(in); err != nil {
+			return "", err
+		}
 		return planning.Create(s.ws(ctx).root, planning.NewDoc{Kind: in.Kind, ID: in.ID, Slug: in.Slug, Title: in.Title, Fields: in.Fields})
 	})
 	add(s, &mcp.Tool{
@@ -147,4 +152,23 @@ func registerGitHub(s *Server) {
 	}, func(ctx context.Context, in ghStatusIn) (string, error) {
 		return github.Text(gh.Status(ctx, in.Force)), nil
 	})
+}
+
+// ticketPlanned: Es gibt keine ungeplanten Tickets (Regel 🧑 2026-11-14). Ein neues Ticket nennt gleich Projekt und
+// Sprint; fehlt der passende Sprint, zuerst plan_create kind sprint.
+func ticketPlanned(in planCreateIn) error {
+	if in.Kind != "ticket" {
+		return nil
+	}
+	var missing []string
+	for _, k := range []string{"Projekt", "Sprint"} {
+		if v := strings.TrimSpace(in.Fields[k]); v == "" || v == "–" || v == "-" {
+			missing = append(missing, k)
+		}
+	}
+	if len(missing) > 0 {
+		return fmt.Errorf("neues Ticket ohne %s: es gibt keine ungeplanten Tickets, Projekt und Sprint gleich mitgeben "+
+			"(fehlt der Sprint, zuerst plan_create kind sprint)", strings.Join(missing, " und "))
+	}
+	return nil
 }

@@ -33,8 +33,14 @@ func biomeForDepth(depth int) level.Biome {
 
 // newWorld erzeugt eine Stufe.
 // ponytail: Generate scheitert nur an kaputten Biom-Daten; die sind eingebettet und von den Level-Tests abgedeckt.
+// Die Kampagne ist der Altpfad vor den Inseln (Golden-Kampagnen, Tests): Ohne feste Werte gilt die neutrale Natur
+// (level.NeutralNature), damit aufgezeichnete Eingaben dieselben Bäume und Felsen treffen (B-891).
 func newWorld(depth int, seed string, opts Options) *World {
-	w, err := CreateWorld(biomeForDepth(depth), seed, opts)
+	b := biomeForDepth(depth)
+	if opts.Nature.Empty() {
+		opts.Nature = level.NeutralNature(b)
+	}
+	w, err := CreateWorld(b, seed, opts)
 	if err != nil {
 		panic(err)
 	}

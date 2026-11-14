@@ -110,3 +110,19 @@ func abs(v float64) float64 {
 	}
 	return v
 }
+
+// B-891: Die Baumart aus dem Level wählt das Bild, im Wald; unbekannte Varianten und andere Biome bleiben beim alten Bild.
+func TestVariantLookBaumart(t *testing.T) {
+	for _, id := range treeKinds {
+		if l, ok := variantLook("tree", id, "forest"); !ok || l != object(id) {
+			t.Errorf("Baumart %s: %v %v", id, l, ok)
+		}
+	}
+	for _, c := range []struct{ kind, variant, biome string }{
+		{"tree", "eiche", "forest"}, {"tree", "tanne", "cave"}, {"crystalVein", "blau", "crystal"}, {"tree", "", "forest"},
+	} {
+		if _, ok := variantLook(c.kind, c.variant, c.biome); ok {
+			t.Errorf("%+v: Variante gewählt", c)
+		}
+	}
+}

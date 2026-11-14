@@ -4,6 +4,7 @@ import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
+import { NatureValues } from './NatureValues';
 import { WorldValues } from './WorldValues';
 import { useWorld, type StageChoice, type WorldState } from './useWorld';
 
@@ -76,6 +77,7 @@ export function WorldPage() {
         <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}
           selected={chunk} onChunk={setChunk} />
         <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
+        <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
         <WorldValues values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} />
       </Flex>
     </ListDetail>

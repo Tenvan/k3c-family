@@ -15,6 +15,8 @@ type Options struct {
 	// ChunkCount ist die eingestellte Chunk-Anzahl der Stufe (Inselgröße, geplante-chunks.md § 7); 0 = gewürfelte
 	// Länge aus lengthUnits wie bisher. Sie ersetzt den Wurf der Länge.
 	ChunkCount int
+	// Nature sind die fest gesetzten Natur-Werte der Stufe (nature.go, B-891); fehlende würfelt der Generator aus dem Seed.
+	Nature NatureValues
 }
 
 // slotIndex ist der Chunk-Index eines Platzes: +n liegt n Chunks rechts der Hub-Chunks, −n links davon.
@@ -82,7 +84,7 @@ func (g *gen) plannedEntities(c Chunk, pc PlannedChunk) []Entity {
 		return out
 	}
 	r := g.chunkStream(pc)
-	resources, _ := g.b.ResourcesPerChunk.Get(c.Kind)
+	resources, _ := g.plannedRes.Get(c.Kind)
 	for _, res := range resources {
 		for range r.Int(res.Value[0], res.Value[1]) {
 			out = append(out, Entity{Kind: res.Key, X: g.clearOfRuin(r, c, pc)})

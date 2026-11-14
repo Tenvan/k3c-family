@@ -99,6 +99,7 @@ interface GoApp {
   WorldLevel(id: string, island: string, stage: number, seed: string): Promise<WorldLevel>;
   WorldValues(id: string): Promise<WorldValuesView>;
   WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
+  WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
 }
 
 interface WailsRuntime {
@@ -170,6 +171,7 @@ function worldWails(app: GoApp): WorldBackend {
     worldLevel: (id, island, stage, seed) => app.WorldLevel(id, island, stage, seed),
     worldValues: (id) => app.WorldValues(id),
     worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
+    worldNatureSet: (id, island, stage, key, value, seed) => app.WorldNatureSet(id, island, stage, key, value, seed),
   };
 }
 

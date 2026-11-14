@@ -23,6 +23,9 @@ type IslandDef struct {
 	// ChunkCounts sind die Chunk-Anzahlen je Tiefe (Schlüssel = Tiefe, Wert = Inselgröße, geplante-chunks.md § 7);
 	// ohne Eintrag gilt die Länge des Bioms.
 	ChunkCounts map[string]int
+	// Nature ist die Vorgabe der Insel für die Natur-Werte, NatureByDepth setzt je Tiefe fest (island_nature.go, B-891).
+	Nature        level.NatureValues
+	NatureByDepth map[string]level.NatureValues
 }
 
 // checkIsland prüft eine Insel in der Reihenfolge aus docs/rules/welten.md § 3: Name, Tiefen (vorhanden, bekannt,
@@ -57,7 +60,10 @@ func checkIsland(d IslandDef) error {
 	if err := checkChunkCounts(d); err != nil {
 		return err
 	}
-	return checkPlannedChunks(d)
+	if err := checkPlannedChunks(d); err != nil {
+		return err
+	}
+	return checkNature(d)
 }
 
 // checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlanFor) gegen die

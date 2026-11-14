@@ -49,6 +49,13 @@ type LevelView struct {
 	Planned         []json.RawMessage `json:"planned"`
 	Warnings        []string          `json:"warnings"`
 	Error           string            `json:"error"`
+	// Natur (B-891): geltende Werte, fest gesetzte Werte, Eigenschaften und Gewichts-Gruppen des Bioms (von k3c-sim).
+	Nature        json.RawMessage `json:"nature"`
+	NatureFixed   json.RawMessage `json:"natureFixed"`
+	NatureTraits  json.RawMessage `json:"natureTraits"`
+	NatureWeights json.RawMessage `json:"natureWeights"`
+	// Rejected ist der Grund, warum ein Festsetzen abgelehnt wurde (SetNature); das Level ist dann das alte.
+	Rejected string `json:"rejected,omitempty"`
 }
 
 // Level holt das Level der Insel island in der Stufe stage (Index in ihren Tiefen) der Welt id zum Seed, mit der
@@ -69,6 +76,14 @@ func (e Editor) Level(ctx context.Context, id, island string, stage int, seed st
 	}
 	if v.Warnings == nil {
 		v.Warnings = []string{}
+	}
+	for _, f := range []struct {
+		p     *json.RawMessage
+		empty string
+	}{{&v.Nature, "{}"}, {&v.NatureFixed, "{}"}, {&v.NatureTraits, "[]"}, {&v.NatureWeights, "[]"}} {
+		if len(*f.p) == 0 || string(*f.p) == "null" {
+			*f.p = json.RawMessage(f.empty)
+		}
 	}
 	return v
 }

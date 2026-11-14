@@ -1,4 +1,4 @@
-import type { WorldBackend, WorldDetail, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
+import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
 
 // Mock des Welten-Editors (B-879, `?mock=1` und Vitest): zwei Welten, ein festes Level je Stufe und ein paar Werte.
 // Overrides leben nur im Speicher; ein Text in einem Zahlenfeld wird abgelehnt wie die Prüfung in Go.
@@ -34,7 +34,31 @@ function mockLevel(detail: WorldDetail, island: string, stage: number, seed: str
     { kind: 'rock', x: 8 * CHUNK + 4 }, { kind: 'exit', x: 11 * CHUNK + 10 },
   ];
   const planned = isl.plannedChunks[String(isl.depths[stage])] ?? [];
-  return { ...empty, biomeId: isl.biomes[stage] ?? '', widthUnits: KINDS.length * CHUNK, hubCenterUnits: 6 * CHUNK, chunks, entities, planned, error: '' };
+  const fixed = mockFixed.get(`${detail.id}:${island}:${stage}`) ?? {};
+  const nature = { traits: { forestDensity: 2, ...fixed.traits }, weights: { treeSpecies: { tanne: 3, birke: 1, ...fixed.weights?.treeSpecies } } };
+  return { ...empty, biomeId: isl.biomes[stage] ?? '', widthUnits: KINDS.length * CHUNK, hubCenterUnits: 6 * CHUNK, chunks, entities, planned, error: '',
+    nature, natureFixed: fixed, natureTraits: MOCK_TRAITS, natureWeights: MOCK_WEIGHTS };
+}
+
+// Natur im Mock (B-891): eine Eigenschaft und eine Gewichts-Gruppe, feste Werte je Welt, Insel und Stufe.
+const MOCK_TRAITS: NatureTrait[] = [{ key: 'forestDensity', name: 'Walddichte', min: 1, max: 5, default: 3, scales: ['tree'] }];
+const MOCK_WEIGHTS: NatureGroup[] = [{ key: 'treeSpecies', name: 'Baumarten', kind: 'tree', options: [{ key: 'tanne', min: 0, max: 5 }, { key: 'birke', min: 0, max: 5 }] }];
+const mockFixed = new Map<string, NatureValues>();
+
+/** Festsetzen im Mock: Bereich wie im Backend, null entfernt den Wert. */
+function mockNatureSet(id: string, island: string, stage: number, key: string, value: number | null): string {
+  const [group, option] = key.split('.');
+  const range = option ? MOCK_WEIGHTS.find((g) => g.key === group)?.options.find((o) => o.key === option) : MOCK_TRAITS.find((t) => t.key === key);
+  if (!range) return `unbekannter Natur-Schlüssel ${key}`;
+  if (value !== null && (value < range.min || value > range.max)) return `${key} = ${value} liegt außerhalb ${range.min}–${range.max}`;
+  const at = `${id}:${island}:${stage}`;
+  const cur = mockFixed.get(at) ?? {};
+  const next: NatureValues = { traits: { ...cur.traits }, weights: { treeSpecies: { ...cur.weights?.treeSpecies } } };
+  const bucket = option ? next.weights!.treeSpecies! : next.traits!;
+  if (value === null) delete bucket[option ?? key];
+  else bucket[option ?? key] = value;
+  mockFixed.set(at, next);
+  return '';
 }
 
 const BASE: WorldValueEntry[] = [
@@ -72,6 +96,11 @@ export function mockWorld(): WorldBackend {
       return detail ? mockLevel(detail, island, stage, seed) : { ...mockLevel(DETAILS.standard!, '', 0, seed), error: `die Welt "${id}" gibt es nicht` };
     },
     worldValues: async (id) => values(id),
+    worldNatureSet: async (id, island, stage, key, value, seed) => {
+      const detail = DETAILS[id] ?? DETAILS.standard!;
+      const rejected = mockNatureSet(id, island, stage, key, value);
+      return { ...mockLevel(detail, island, stage, seed), ...(rejected ? { rejected } : {}) };
+    },
     worldOverrideSet: async (id, file, path, value) => {
       const view = values(id);
       const entry = view.entries.find((e) => e.file === file && same(e.path, path));

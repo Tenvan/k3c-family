@@ -54,6 +54,39 @@ export interface WorldLevel {
   planned: PlannedChunk[];
   warnings: string[];
   error: string;
+  /** Natur (B-891): geltende Werte der Stufe, fest gesetzte Werte, Eigenschaften und Gewichts-Gruppen des Bioms */
+  nature?: NatureValues;
+  natureFixed?: NatureValues;
+  natureTraits?: NatureTrait[];
+  natureWeights?: NatureGroup[];
+  /** Grund, warum ein Festsetzen abgelehnt wurde (worldNatureSet); das Level ist dann das alte */
+  rejected?: string;
+}
+
+/** Natur-Werte: Eigenschaft → Wert, Gruppe → Variante → Gewicht. */
+export interface NatureValues {
+  traits?: Record<string, number>;
+  weights?: Record<string, Record<string, number>>;
+}
+
+/** Eigenschaft eines Bioms: Bereich, neutraler Wert, Wirkung (Objekte, Chunk-Arten oder nur Darstellung). */
+export interface NatureTrait {
+  key: string;
+  name: string;
+  min: number;
+  max: number;
+  default: number;
+  scales?: string[];
+  chunks?: string[];
+  display?: boolean;
+}
+
+/** Gewichts-Gruppe eines Bioms (Baumarten, Kristallfarben): je Variante der Bereich des Gewichts. */
+export interface NatureGroup {
+  key: string;
+  name: string;
+  kind: string;
+  options: { key: string; min: number; max: number }[];
 }
 
 /** Ein Feld einer Basis-Datei: base ist null, wenn die Basis das Feld nicht nennt; override fehlt, wenn die Welt erbt. */
@@ -83,4 +116,6 @@ export interface WorldBackend {
   worldValues(id: string): Promise<WorldValuesView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
+  /** Natur-Wert der Insel-Stufe festsetzen (key: Eigenschaft oder „gruppe.variante“); null setzt auf „aus Seed“ zurück. */
+  worldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
 }
