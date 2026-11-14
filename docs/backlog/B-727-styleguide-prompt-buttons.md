@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** WZ45
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Die Stil-Datei in der Workbench direkt bearbeiten (Änderungen nur über MCP, En
 
 ## Regeln und Einschränkungen
 
-Neue Orte der Vorlagen (z. B. `material`, `ton`, `papier`) im Vertrag `docs/standards/paper-mcp.md` und in den Fixtures `tools/paper/fixtures/ui/AssetsPrompts.json` nachziehen.
+Neue Orte der Vorlagen (`material`, `ton`, `papier`) im Vertrag `docs/standards/paper-mcp.md` und in den Fixtures `tools/paper/fixtures/ui/AssetsPrompts.json` nachziehen.
+
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/style/**`, `tools/k3c-workbench/frontend/src/assets/prompts/**`, `data/asset-prompts.json`, `docs/standards/paper-mcp.md`, `tools/paper/fixtures/ui/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -51,7 +57,7 @@ Ohne Vorlagen für einen Ort keine Buttons, ein Hinweis statt leerer Fläche.
 
 ## Offene Fragen
 
-Welche Aktionen je Material/Ton/Papier? Default: ändern, neu anlegen, Nutzer zeigen.
+keine. Entschieden (Default, autonom Claude, 2026-11-14): Aktionen je Material, Ton und Papier sind „ändern“, „neu anlegen“ und „Nutzer zeigen“.
 
 ## Notizen
 

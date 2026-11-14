@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** PAP
 - **Domäne:** PAP
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-721, B-722, B-723, B-699
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-14
 
 ## Ausgangslage
 
@@ -20,7 +20,7 @@ Welt-Grafik besteht die Sichtprüfung.
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Claude setzt um (Assets über MCP); 🧑 prüft die Grafik im Review der Workbench.
 
 ## Anforderungen
 
@@ -32,7 +32,14 @@ Spiel-Einbau der Größen (US3).
 
 ## Regeln und Einschränkungen
 
-Nach RD2. Lanes `gebaeude`, `hintergruende`, `natur` parallel.
+Nach RD2. B-699 ist das Dach-Ticket des Projekts PAP und schließt mit dem Projekt, nicht mit diesem Sprint.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `public/grafik/gebaeude/**`, `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `public/grafik/icons/**`, `tools/paper/golden/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Sperre:** golden
 
 ## Beispiele
 
@@ -47,12 +54,21 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 - **AC-01** B-721/AC-01 bis AC-03
 - **AC-02** B-722/AC-01 bis AC-03
 - **AC-03** B-723/AC-01 bis AC-03
+- **AC-04** Review ohne offenen schweren Befund; Sichtprüfung durch 🧑 im Review der Workbench.
 
 ## Offene Fragen
 
 keine
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| MG11.1 | `MG11.1-gebaeude.md` | Umsetzung | autonom | offen |
+| MG11.2 | `MG11.2-hintergruende-wald-hoehle-mine.md` | Umsetzung | autonom | offen |
+| MG11.3 | `MG11.3-hintergruende-stollen-kristall.md` | Umsetzung | autonom | offen |
+| MG11.4 | `MG11.4-natur-icons-muenze.md` | Umsetzung | autonom | offen |
+| MG11.5 | `MG11.5-review.md` | Umsetzung | autonom | offen |
 
 Reife Entwurf:
 

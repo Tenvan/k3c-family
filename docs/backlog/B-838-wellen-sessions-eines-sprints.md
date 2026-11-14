@@ -4,13 +4,13 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ58
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -37,7 +37,7 @@ Andere Wellen-Regeln.
 
 - **Bereich:** `tools/k3c-workbench/internal/planning/**`, `docs/arbeitsweise.md`
 - **Abhängig von:** –
-- **Braucht 🧑:** Entscheidung
+- **Braucht 🧑:** –
 - **Größe:** S
 - **Sperre:** exe
 
@@ -55,7 +55,7 @@ Sprint C1 mit C1.1 (`a/**`) und C1.2 (`b/**`), ohne Sperre: heute beide in Welle
 
 ## Offene Fragen
 
-Vorschlag Claude: (a), weil ein Sprint einen Branch hat und zwei Worktrees ihn nicht zugleich auschecken.
+keine. Entschieden (autonom Claude, 2026-11-14, Vorschlag a): Sessions desselben Sprints laufen nie parallel in einer Welle, weil ein Sprint einen Branch hat und zwei Worktrees ihn nicht zugleich auschecken.
 
 ## Notizen
 

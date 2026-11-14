@@ -42,6 +42,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | erledigt |
 | PT4 | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | erledigt |
 | PT5 | Abnahme-Läufe CU1 (B-836) | erledigt |
+| PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | geplant |
 
 ## Nicht-Ziele
 

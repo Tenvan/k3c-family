@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** –
+- **Status:** eingeplant
+- **Sprint:** WZ58
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -37,7 +37,7 @@ Katalog.
 
 - **Bereich:** `tools/k3c-workbench/internal/review/**`, `tools/k3c-workbench/frontend/src/assets/review/**`
 - **Abhängig von:** WZ43
-- **Braucht 🧑:** Entscheidung
+- **Braucht 🧑:** –
 - **Größe:** S
 - **Sperre:** exe
 
@@ -55,7 +55,7 @@ Basis ohne Asset → nur Nachher.
 
 ## Offene Fragen
 
-Reicht die umschaltbare Lösung? Entscheidet 🧑 bei WZ43.4.
+keine. Entschieden (autonom Claude, 2026-11-14): die umschaltbare Lösung reicht; WZ43.4 ist verworfen.
 
 ## Notizen
 

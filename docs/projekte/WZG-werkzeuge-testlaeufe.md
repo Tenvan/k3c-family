@@ -76,6 +76,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ55 | assets_set ruft die Paper-CLI gesammelt auf | erledigt |
 | WZ56 | Sammelaufruf: Fehlerantwort mit Teilergebnis, Task-Version gemerkt | erledigt |
 | WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | erledigt |
+| WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | geplant |
 
 ## Nicht-Ziele
 
