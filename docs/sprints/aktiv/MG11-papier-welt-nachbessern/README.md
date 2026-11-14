@@ -66,7 +66,7 @@ keine
 |---|---|---|---|---|
 | MG11.1 | `MG11.1-gebaeude.md` | Umsetzung | autonom | fertig |
 | MG11.2 | `MG11.2-hintergruende-wald-hoehle-mine.md` | Umsetzung | autonom | fertig |
-| MG11.3 | `MG11.3-hintergruende-stollen-kristall.md` | Umsetzung | autonom | offen |
+| MG11.3 | `MG11.3-hintergruende-stollen-kristall.md` | Umsetzung | autonom | fertig |
 | MG11.4 | `MG11.4-natur-icons-muenze.md` | Umsetzung | autonom | offen |
 | MG11.5 | `MG11.5-review.md` | Umsetzung | autonom | offen |
 

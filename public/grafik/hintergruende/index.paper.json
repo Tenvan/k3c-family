@@ -10,6 +10,21 @@
     "manifest": "hg-eisenstollen-fern-v2/manifest.json"
   },
   {
+    "id": "hg-eisenstollen-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v5/manifest.json"
+  },
+  {
     "id": "hg-eisenstollen-mitte-v1",
     "rig": "hintergrund",
     "manifest": "hg-eisenstollen-mitte-v1/manifest.json"
@@ -20,6 +35,21 @@
     "manifest": "hg-eisenstollen-mitte-v2/manifest.json"
   },
   {
+    "id": "hg-eisenstollen-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v5/manifest.json"
+  },
+  {
     "id": "hg-eisenstollen-nah-v1",
     "rig": "hintergrund",
     "manifest": "hg-eisenstollen-nah-v1/manifest.json"
@@ -28,6 +58,21 @@
     "id": "hg-eisenstollen-nah-v2",
     "rig": "hintergrund",
     "manifest": "hg-eisenstollen-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v5/manifest.json"
   },
   {
     "id": "hg-hoehle-fern-v1",
@@ -115,6 +160,21 @@
     "manifest": "hg-kristall-fern-v2/manifest.json"
   },
   {
+    "id": "hg-kristall-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-kristall-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-kristall-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v5/manifest.json"
+  },
+  {
     "id": "hg-kristall-mitte-v1",
     "rig": "hintergrund",
     "manifest": "hg-kristall-mitte-v1/manifest.json"
@@ -125,6 +185,21 @@
     "manifest": "hg-kristall-mitte-v2/manifest.json"
   },
   {
+    "id": "hg-kristall-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v5/manifest.json"
+  },
+  {
     "id": "hg-kristall-nah-v1",
     "rig": "hintergrund",
     "manifest": "hg-kristall-nah-v1/manifest.json"
@@ -133,6 +208,21 @@
     "id": "hg-kristall-nah-v2",
     "rig": "hintergrund",
     "manifest": "hg-kristall-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v5/manifest.json"
   },
   {
     "id": "hg-mine-fern-v1",

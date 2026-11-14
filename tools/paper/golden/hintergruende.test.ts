@@ -19,6 +19,11 @@ describe('Hintergründe (B-722)', () => {
     expect(treffer).toEqual([]);
   });
 
+  it('75 Assets: 5 Biome × 3 Ebenen × 5 Varianten (AC-03)', () => {
+    const soll = ['wald', 'hoehle', 'mine', 'eisenstollen', 'kristall'].flatMap((b) => ['fern', 'mitte', 'nah'].flatMap((e) => [1, 2, 3, 4, 5].map((v) => `hg-${b}-${e}-v${v}`)));
+    expect(specs.map((s) => s.id).sort()).toEqual(soll.sort());
+  });
+
   it('Specs heißen hg-<biom>-<ebene>-v<n>', () => {
     for (const p of specsIn(ordner)) expect(basename(p)).toMatch(/^hg-(wald|hoehle|mine|eisenstollen|kristall)-(fern|mitte|nah)-v[1-5]\.paper\.json$/);
   });

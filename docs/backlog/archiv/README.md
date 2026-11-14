@@ -802,3 +802,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | erledigt | PT5 | Abnahme-Läufe CU1 |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | erledigt | NG20 | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | erledigt | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
+| [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | erledigt | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |

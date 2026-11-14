@@ -1,0 +1,193 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "hg-eisenstollen-fern-v3",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Hintergrund Eisenstollen, ferne Ebene (nur Schattenton), Variante 3: ohne Bäume, periodisches Profil, kachelt waagrecht (B-722).",
+  "teile": [
+    {
+      "id": "rueckwand",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0L0 -480L768 -480L768 0Z",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -24L768 -24",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -50L768 -50",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -76L768 -76",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -102L768 -102",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -128L768 -128",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -154L768 -154",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -180L768 -180",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -206L768 -206",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -232L768 -232",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -258L768 -258",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -284L768 -284",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -310L768 -310",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -336L768 -336",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -362L768 -362",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -388L768 -388",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -414L768 -414",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -440L768 -440",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M0 -466L768 -466",
+          "material": "biom-eisenstollen",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "boegen",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M48 -88.9L48 -266.4L67.2 -292.3L96 -300L124.8 -292.3L144 -266.4L144 -88.9ZM240 -78.8L240 -266.4L259.2 -292.3L288 -300L316.8 -292.3L336 -266.4L336 -78.8ZM432 -99.3L432 -266.4L451.2 -292.3L480 -300L508.8 -292.3L528 -266.4L528 -99.3ZM624 -85.1L624 -266.4L643.2 -292.3L672 -300L700.8 -292.3L720 -266.4L720 -85.1Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M57.6 -88.9L69.1 -121.9L96 -124.9L122.9 -112.9L134.4 -88.9ZM249.6 -78.8L261.1 -111.8L288 -114.8L314.9 -102.8L326.4 -78.8ZM441.6 -99.3L453.1 -132.3L480 -135.3L506.9 -123.3L518.4 -99.3ZM633.6 -85.1L645.1 -118.1L672 -121.1L698.9 -109.1L710.4 -85.1Z",
+          "material": "lava",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M73 -88.9L79.9 -109.5L96 -111.3L112.1 -104.1L119 -88.9ZM265 -78.8L271.9 -99.4L288 -101.2L304.1 -94L311 -78.8ZM457 -99.3L463.9 -119.9L480 -121.7L496.1 -114.5L503 -99.3ZM649 -85.1L655.9 -105.7L672 -107.5L688.1 -100.3L695 -85.1Z",
+          "material": "lava",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "boden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0L0 -98.8L16 -98.5L32 -97.5L48 -96L64 -94.3L80 -92.5L96 -90.9L112 -89.6L128 -88.6L144 -87.9L160 -87.5L176 -87.2L192 -86.8L208 -86.2L224 -85.4L240 -84.3L256 -83.1L272 -81.8L288 -80.8L304 -80.1L320 -80L336 -80.7L352 -82.1L368 -84.4L384 -87.3L400 -90.5L416 -93.8L432 -96.9L448 -99.3L464 -100.8L480 -101.3L496 -100.6L512 -98.9L528 -96.4L544 -93.4L560 -90.2L576 -87.2L592 -84.8L608 -83.3L624 -82.8L640 -83.4L656 -84.9L672 -87.1L688 -89.7L704 -92.5L720 -95L736 -97L752 -98.3L768 -98.8L768 0Z",
+          "material": "biom-eisenstollen",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [384, -240]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

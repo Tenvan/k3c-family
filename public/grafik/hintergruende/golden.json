@@ -1,38 +1,92 @@
 {
   "hg-eisenstollen-fern-v1": {
-    "renderKey": "18b664e76bc60711dc22a5cd964d678efab17d0c763b89c4dcfe5cb4dbaf1183",
+    "renderKey": "f1c2b2dc8090605d64da02e2ae7eb7fa4f6aa5a7328a4d8100d7b72d664640ee",
     "dateien": {
-      "stand.png": "3670a6d4b3627821d376c14ae39b13c24977b23f419b3e3a1da17a80b16fe536"
+      "stand.png": "ebfdfa05220748b025456a443005d67e9c1d255e2ade4c19abe565d41c3e016c"
     }
   },
   "hg-eisenstollen-fern-v2": {
-    "renderKey": "47cd0a1b2713891c702d353bebecdf23450dfcbef89657278d458329cc5fdad7",
+    "renderKey": "0bc67e968380e6c838c04177ed385528b69f2dea0f918d71d441cc1356b2a538",
     "dateien": {
-      "stand.png": "0849333573a56180dc6f94ca9bc3d2c65577f38c543201a7ebf1afc9290bf23d"
+      "stand.png": "116e7fd05396b2d4bad2a20a6abf96f108c0370052726239d91a255f3bceed5e"
+    }
+  },
+  "hg-eisenstollen-fern-v3": {
+    "renderKey": "0fb516115365b915a8461e013bef432a9a795ffb2b34d35fe0d722d3e424d9ca",
+    "dateien": {
+      "stand.png": "ea81026a2a397258ea78f3463505bd4c3a25b6aa2571f2c98f76ebd19263dd0e"
+    }
+  },
+  "hg-eisenstollen-fern-v4": {
+    "renderKey": "33683326044e3a2d51454bead9e0c3f64d0288389dcd575bb8959ba66e6dad6f",
+    "dateien": {
+      "stand.png": "31c1f0fb1b6e11cb722dceb4b021d53bb364d01ef561350542c1617d09eb98a4"
+    }
+  },
+  "hg-eisenstollen-fern-v5": {
+    "renderKey": "d912b24ea6d2461cb6d37348c818a9baa36eed488af78596e17a3f7a297137a1",
+    "dateien": {
+      "stand.png": "665ff35480c020a981654c99ab03c73068c7b8e7758926bb7ea45f8d126e458c"
     }
   },
   "hg-eisenstollen-mitte-v1": {
-    "renderKey": "5bd0e9d532e71ed6693176fc095e0acb21a2d45e83883fe0c8bd2f6fe1c98582",
+    "renderKey": "d5e002188cccdf8a2b010f6d05f952e3c328dfe83c7d35521efc7cfebaffff28",
     "dateien": {
-      "stand.png": "815360dd1b322440e258a2645619a059f85b4bb9b9b22d367702c4b0b5b8abae"
+      "stand.png": "e11f0e0929f97a73ed7b0ebe13aba145f0a4e5d1b807361928bd6671e4070eab"
     }
   },
   "hg-eisenstollen-mitte-v2": {
-    "renderKey": "90cd605301e89e694ee612209b81ea37e1962d11f9feb66a028f35c1df0b95d7",
+    "renderKey": "391847acf971af0a4ba443148c3e5664e310b440d346d31667e7a6b59a403e66",
     "dateien": {
-      "stand.png": "7b90f83dcc55207c3d216562369c6dbd53e0b1a67c1ace6eea31a071a579dfd9"
+      "stand.png": "078db569cda948d67dab9c7b9e0826b0f1029d5501d633b084b88d2201c8bdd9"
+    }
+  },
+  "hg-eisenstollen-mitte-v3": {
+    "renderKey": "c2b2cd1985c79c8b0546085efb1359315c66a2a204e0342d5426deaa3806905a",
+    "dateien": {
+      "stand.png": "ffedaaf24c7f99aa6afc22b984b1fc0a458788d5f5132652b66fafcf9b99a337"
+    }
+  },
+  "hg-eisenstollen-mitte-v4": {
+    "renderKey": "09d137c2b2e549212af059ef774c152d7141d7c5f76530c86191e54403a1542a",
+    "dateien": {
+      "stand.png": "672d0038eede0af653886fa7c22db86a515b81a028d81cf19632fd77d3ab6ffa"
+    }
+  },
+  "hg-eisenstollen-mitte-v5": {
+    "renderKey": "abfe962ec678e44f30b20881331691c96153d61f33ac21e8bb86438263752bc9",
+    "dateien": {
+      "stand.png": "56fdfbb7412e713ac919797a51f7d5b314deb7455df7f71051abac719cc62bff"
     }
   },
   "hg-eisenstollen-nah-v1": {
-    "renderKey": "b0f5b71bfe3aa46f1c0dd08b0a9f77d003b9f29d2f4b59969b6840361c4d9012",
+    "renderKey": "fca1afcfbd0d837230bc4871d7d569f099bda3863d62409d7fc34b83cb25d0bc",
     "dateien": {
-      "stand.png": "e674f293ad2a4776fd3e5305acf29c6d5f2cc88213176d547a5660bfbfafa85e"
+      "stand.png": "30938a320ec52df6de7e0e5b3c8adc1bb82a13df5862ad0564bc5258339cef3e"
     }
   },
   "hg-eisenstollen-nah-v2": {
-    "renderKey": "734d9732b328c824d40e0d9f38b71e846224cebc5f7047a9599ba114ddd38122",
+    "renderKey": "65c52bc5a71fcd325e89816b3f9e0a91d8ff8d5ba0c56fc6747cbecc4d619d71",
     "dateien": {
-      "stand.png": "54aac6801e7fcf6bbaab91e0f5cf2f95b74152e74d401f7f160ef0d2cc812597"
+      "stand.png": "2cc2439c8e94521248645fac9e17c40fb642f3b06d3ee9d860219fa947e6d6f8"
+    }
+  },
+  "hg-eisenstollen-nah-v3": {
+    "renderKey": "d123628b506fee258713fb9c6fa8c7f5913a105ea67e830364342324cc12358c",
+    "dateien": {
+      "stand.png": "333aab42129e64b2b71cb8a545dfaf62878b2597dfa5cc1c8fae46c9d9efe250"
+    }
+  },
+  "hg-eisenstollen-nah-v4": {
+    "renderKey": "37d2bc7139f4bb403da7532e9c8239d7ad51a391cd0f0e2624d05313f1aef71b",
+    "dateien": {
+      "stand.png": "54e7990b65f7c969859891766a4f95442908f9169d3dfe614045f0167c0539ab"
+    }
+  },
+  "hg-eisenstollen-nah-v5": {
+    "renderKey": "db93d2c47169f4a3027ea1c00512ae4e5a7faa25f82f3af9fff827844ea0b7a4",
+    "dateien": {
+      "stand.png": "abc2a510be28652a3e9ba02d84ea115bf3039ee40c49565da2ac1a1096c2471b"
     }
   },
   "hg-hoehle-fern-v1": {
@@ -126,39 +180,93 @@
     }
   },
   "hg-kristall-fern-v1": {
-    "renderKey": "e0e6ea41150b3ead6334e2fe09ba365ecca9de579061e60099f41d604d48add6",
+    "renderKey": "3c88fd13e279a38369a9a24415293d6502afffc7d26dea98d8e6cc7c0c63f705",
     "dateien": {
-      "stand.png": "dea045d564876d75fbb0c4b4f44c4b66e88f38e70171cacded6c3c5d79f3e50f"
+      "stand.png": "89bc86a4cc2efb3d6d659d195bd8f09327d4b636b2240e8e79ad0286798f4dff"
     }
   },
   "hg-kristall-fern-v2": {
-    "renderKey": "25a882ecd8beb472881afd1048d0f46cb7651855780847728bb34080f816a00b",
+    "renderKey": "8aee177bfff015ee28a1b22410bad6b6d8b80b8078c54f76ae2440188bf1f474",
     "dateien": {
-      "stand.png": "194ab2e3a28612fc2ef03f8b9dd9b0919b73c80d8e4a195a865b892a52450522"
+      "stand.png": "ed5abf4569a3fa97a27c87276438cf04fb662ab31de0a9e0f6ca911fc60c7826"
+    }
+  },
+  "hg-kristall-fern-v3": {
+    "renderKey": "e403bb13100760cd39e6e5ce15a3c2dacef3b7856c51c94f1680892f3bf0b398",
+    "dateien": {
+      "stand.png": "c601d3521f0972833fc293e8d402c8e1aaa67627aff278b4d59b72bbe800cd85"
+    }
+  },
+  "hg-kristall-fern-v4": {
+    "renderKey": "f3dd6bef168b473da6ed2845dc4e053e38088c1fc9c48263dfdff3e90dda1893",
+    "dateien": {
+      "stand.png": "6b608746cec55046d81689de88e68e1b3bd98d3a6fc281c0c55e86b9ebe52f50"
+    }
+  },
+  "hg-kristall-fern-v5": {
+    "renderKey": "50a374ac3e90546fd602714b78b699285fa84426af987ae07c39840443727f38",
+    "dateien": {
+      "stand.png": "7b50bbe90506aa0c5a96c103e821612926afcf2abc2e08e9f74a1db31571eb4c"
     }
   },
   "hg-kristall-mitte-v1": {
-    "renderKey": "8807b863d88b53b6312413c9f7027928cfd46a777d520b1edd206babb42d9d51",
+    "renderKey": "524db2dbef89172c725eefa24380819b973118f88a6fb39f492bcc867395f52a",
     "dateien": {
-      "stand.png": "bc325cad53a7d18e589ee979fe875979ffaac950677329f2c7a62b89d7196253"
+      "stand.png": "8283892d34f1af55b84597264ada83c543cc5de911cd29ae27c45aa49174412c"
     }
   },
   "hg-kristall-mitte-v2": {
-    "renderKey": "75ca072e0bcdb9a9023f0865e42584c97f940615689a83ff26bf4c6ce6b4abed",
+    "renderKey": "9dd95a4b7f03ca72c58710b8caf626cbad400929acd1cfb8a1d32947978ba157",
     "dateien": {
-      "stand.png": "a460e778288cedaf23b8cb8827d25fa51561fa86b2c806ce863ac6a0272637e1"
+      "stand.png": "79f7f4acca8d4fe2167a74e119394c72e8a43c1e4813ba7dc5f4d45b1ab9376f"
+    }
+  },
+  "hg-kristall-mitte-v3": {
+    "renderKey": "b349d860d79617f21d7691eda3e8395453200fe9a8a3e1d626edbc51fe1327f0",
+    "dateien": {
+      "stand.png": "c284d11cdcfe7dc1a26a0984ad8a2e6e6c26bd2925a1e35e1dcec798a7b14bfb"
+    }
+  },
+  "hg-kristall-mitte-v4": {
+    "renderKey": "67775eba4eaf2b219eeaffb50191b9db716c9a8c9371583f7322e4e617c1678e",
+    "dateien": {
+      "stand.png": "0cc6f1c149cd64f967118371246ec4669315ff58a07590dd575b5f284dc27378"
+    }
+  },
+  "hg-kristall-mitte-v5": {
+    "renderKey": "499da1da9745fb7d029dc427695f1022f565a01b34219e7fd851381e8ea3f442",
+    "dateien": {
+      "stand.png": "a31141484ca9084bc4c17d99a215c1798be6ce1051f00eecb17360494b2a9253"
     }
   },
   "hg-kristall-nah-v1": {
-    "renderKey": "f5550c725f6ba29750ff0c0f84b951bd962abf8c210f00c78bfd13bbbd3beaeb",
+    "renderKey": "7ad2d67ec95490e7a928901e4a9417eebb05d8b6fe3eaaf43270a44804b4703d",
     "dateien": {
-      "stand.png": "4af167fd450d93c76b858737057494a6dde11f8bf75cc059876fd62cebb98d6b"
+      "stand.png": "a0380762869d0e3986e3f67ccb6e7b7999f6b37afb89e15c48172c785364e4d3"
     }
   },
   "hg-kristall-nah-v2": {
-    "renderKey": "158cd7b89c7ce58ac910122b1f200dc2ddcc1cb1ebb49c7274cc0fc4dada2c35",
+    "renderKey": "a0c16263b121a893b148ca3252500e3af2a00382fd03d94a11e20ae9506ea020",
     "dateien": {
-      "stand.png": "39ef2a06c60a6d6606cca986db94af4fb3c72a04e90014fddbc54a6991d4e3f0"
+      "stand.png": "1420e2270f82d278d222c5105b5a9a170a5e90d8209200ffd71bb1523098c931"
+    }
+  },
+  "hg-kristall-nah-v3": {
+    "renderKey": "c333732037bab88a7c3ced98cfb8c172aa081ec8c70dc8ca2453d408123e9437",
+    "dateien": {
+      "stand.png": "f0e376cf52969700270adb7b9b8b195d09fa882980ed4ed25df2c133e1a4ac5b"
+    }
+  },
+  "hg-kristall-nah-v4": {
+    "renderKey": "be838112fc7ed382ff1372ed047ac4ed4c7c3055d9bab2b211cabd5769b6e34e",
+    "dateien": {
+      "stand.png": "c23401e5c05d8b32dbb368c46cfc92cfa38b0e8d92da0038053a0672a2ba5521"
+    }
+  },
+  "hg-kristall-nah-v5": {
+    "renderKey": "e6308ea3f6786facbf690ddf9031af7db11ffe9904219a08519e68ac758de82b",
+    "dateien": {
+      "stand.png": "d2acc110b7757ff279ce51a76d6c8e478db9efd8318ae484ed94dcb0e7918247"
     }
   },
   "hg-mine-fern-v1": {
