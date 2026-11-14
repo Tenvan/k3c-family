@@ -46,12 +46,12 @@ func refreshRepo(t *testing.T) string {
 	return root
 }
 
-// TestRefreshRoadmap: Nach einem schreibenden Aufruf (changeSet.apply) steht jede offene Mensch-Session genau einmal
-// unter ihrem Gerät, veraltete Zeilen sind weg, KB6 trägt seinen Titel.
+// TestRefreshRoadmap: Nach der Heilung (changeSet.apply mit Sprint-Änderung, B-865) steht jede offene Mensch-Session
+// genau einmal unter ihrem Gerät, veraltete Zeilen sind weg, KB6 trägt seinen Titel.
 func TestRefreshRoadmap(t *testing.T) {
 	t.Parallel()
 	root := refreshRepo(t)
-	if err := newChangeSet(root).apply(); err != nil {
+	if err := refreshRoadmap(root); err != nil {
 		t.Fatal(err)
 	}
 	text, _, err := readText(root, roadmapRel)

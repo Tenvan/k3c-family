@@ -23,7 +23,7 @@ const (
 var indexFiles = []string{mainIndex, archiveIndex}
 
 var (
-	reIndexRow = regexp.MustCompile(`^\| \[(B-\d{3})\]\([^)]*\) \|[^|]*\|[^|]*\|[^|]*\| (\S+) \|[^|]*\| (.*) \|$`)
+	reIndexRow = regexp.MustCompile(`^\| \[(B-\d{3,})\]\([^)]*\) \|[^|]*\|[^|]*\|[^|]*\| (\S+) \|[^|]*\| (.*) \|$`)
 	stopWords  = map[string]bool{}
 )
 

@@ -34,7 +34,7 @@ func TestCheckRunLehntAbOhneProzessstart(t *testing.T) {
 		{Target: "task:test", Pattern: "--watch"},
 		{Target: "go:test", Pattern: "-v"},
 	}
-	for _, bad := range []string{";", "&", "|", "$", "`", `"`, "'", "<", ">", "%", "^", " ", "a b", strings.Repeat("a", 101)} {
+	for _, bad := range []string{";", "&", "`", `"`, "'", "<", ">", "%", `\`, " ", "a b", strings.Repeat("a", 101)} {
 		cases = append(cases, checkIn{Target: "task:test", Pattern: "x" + bad})
 	}
 	for _, in := range cases {

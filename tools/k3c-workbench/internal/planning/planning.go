@@ -121,7 +121,7 @@ func Load(root string) (Data, error) {
 		}
 		d.Tickets = append(d.Tickets, ParseTicket(string(text)))
 	}
-	sort.Slice(d.Tickets, func(i, j int) bool { return d.Tickets[i].Nr < d.Tickets[j].Nr })
+	sort.Slice(d.Tickets, func(i, j int) bool { return ticketLess(d.Tickets[i].Nr, d.Tickets[j].Nr) })
 	rank(&d)
 	return d, nil
 }

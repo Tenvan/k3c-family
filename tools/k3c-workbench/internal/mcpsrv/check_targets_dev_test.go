@@ -15,7 +15,7 @@ func TestCheckRunWorkbenchZiele(t *testing.T) {
 	t.Parallel()
 	cases := []struct{ target, pattern, cmd string }{
 		{"dev:test", "", "task k3c-workbench:gotest"},
-		{"dev:test", "TestX", "task k3c-workbench:gotest GO_TEST_FLAGS=-run=TestX"},
+		{"dev:test", "TestX", "task k3c-workbench:gotest GO_TEST_FLAGS=-run='TestX'"},
 		{"task:check:dev", "", "task check:dev"},
 	}
 	for _, c := range cases {

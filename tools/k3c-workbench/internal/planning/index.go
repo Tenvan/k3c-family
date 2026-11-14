@@ -3,7 +3,6 @@ package planning
 import (
 	"fmt"
 	"os"
-	"slices"
 	"sort"
 	"strings"
 
@@ -136,5 +135,5 @@ func less(order map[string]int, a, b string) bool {
 	case oka != okb:
 		return oka
 	}
-	return slices.Compare([]byte(a), []byte(b)) < 0
+	return ticketLess(a, b) // B-999 vor B-1000 (B-863)
 }

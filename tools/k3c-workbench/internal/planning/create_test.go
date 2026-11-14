@@ -65,7 +65,7 @@ func TestKernTicketBestehtPlanungsRegeln(t *testing.T) {
 		t.Errorf("Ticket %+v", tk)
 	}
 	index, _, _ := readText(root, "backlog/README.md")
-	row := regexp.MustCompile(`(?m)^\| \[(B-\d{3})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$`)
+	row := regexp.MustCompile(`(?m)^\| \[(B-\d{3,})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$`)
 	if !slices.ContainsFunc(row.FindAllStringSubmatch(index, -1), func(m []string) bool {
 		return m[1] == got.ID && m[2] == strings.TrimPrefix(rel, "backlog/") && m[3] == "offen"
 	}) {

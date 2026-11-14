@@ -129,6 +129,7 @@ func syncIndex(c *changeSet, t Ticket, rel string) error {
 		return fmt.Errorf("%s: %w", target, err)
 	}
 	c.write(target, joinLines(lines))
+	c.first = append(c.first, target) // erst eintragen, dann aus dem anderen Index entfernen (B-862)
 	return nil
 }
 

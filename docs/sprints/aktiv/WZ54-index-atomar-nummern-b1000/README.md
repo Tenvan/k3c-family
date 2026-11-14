@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ54.1 | `WZ54.1-index-atomar-b1000.md` | Umsetzung | autonom | offen |
+| WZ54.1 | `WZ54.1-index-atomar-b1000.md` | Umsetzung | autonom | fertig |
 | WZ54.2 | `WZ54.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

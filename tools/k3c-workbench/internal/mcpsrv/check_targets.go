@@ -26,6 +26,10 @@ type checkTarget struct {
 	dir     string   // relativ zur Repo-Wurzel
 	command []string // ohne Shell gestartet
 	pattern string   // Schalter vor dem Testmuster; leer = kein Muster erlaubt; endet er auf `=`, hängt das Muster direkt an
+	// quote setzt das Muster in einfache Anführungszeichen: Task setzt eine Variable (GO_TEST_FLAGS) als Text in den
+	// Befehl seiner Shell ein, `|` oder `$(…)` liefen dort sonst als Shell-Syntax (B-866). CLI_ARGS nach `--` quotet Task
+	// selbst, go test startet ohne Shell; dort bleibt das Muster roh.
+	quote   bool
 	timeout time.Duration
 	kinds   []string
 	needs   []string // Pfade relativ zur Wurzel, ohne die der Lauf nicht startet (Hinweis task install, B-831)
@@ -69,7 +73,7 @@ var checkTargets = []checkTarget{
 		kinds: []string{kindGolangci}},
 	// Workbench (B-831): gotest baut das Frontend vorher (go:embed braucht frontend/dist) und lässt die Sim-Pakete aus;
 	// check:dev ist die volle Prüfung der Review (Frontend mit Vitest, go test, golangci-lint).
-	{name: "dev:test", command: []string{"task", "k3c-workbench:gotest"}, pattern: "GO_TEST_FLAGS=-run=",
+	{name: "dev:test", command: []string{"task", "k3c-workbench:gotest"}, pattern: "GO_TEST_FLAGS=-run=", quote: true,
 		timeout: devTimeout, kinds: []string{kindTsc, kindVite, kindGoTest}, needs: []string{devFrontendDeps}},
 	{name: "task:check:dev", command: []string{"task", "check:dev"}, timeout: devTimeout,
 		kinds: []string{kindTsc, kindVite, kindVitest, kindGoTest, kindGolangci}, needs: []string{devFrontendDeps}},
@@ -92,9 +96,10 @@ const checkRunDescription = "Führt eine Prüfung aus einem festen Katalog aus (
 	"Nutze es bei: jeder Prüfung vor einem Abschluss. Statt: task check, task test, go test oder golangci-lint in der Shell; " +
 	"volle Ausgabe über console_tail check:<ziel>."
 
-// patternRule ist eine Positivliste: sie lehnt Shell-Zeichen (;&|$`"' < > % ^) und Leerzeichen ab, und ein
-// führendes "-", damit kein Muster zur Option wird (z. B. "--watch" hielte den Lauf bis zum Zeitlimit offen).
-var patternRule = regexp.MustCompile(`^[A-Za-z0-9_./:][A-Za-z0-9_./:-]{0,99}$`)
+// patternRule ist eine Positivliste: Regex-Zeichen für Alternativen und Anker (| ^ $ ( ), B-866) sind erlaubt, Shell-
+// Zeichen (; & ` " ' < > % \ und Leerzeichen) nicht, und kein führendes "-", damit kein Muster zur Option wird (z. B.
+// "--watch" hielte den Lauf bis zum Zeitlimit offen). Ohne `'` ist das Quoten in args immer geschlossen.
+var patternRule = regexp.MustCompile(`^[A-Za-z0-9_./:|^$()][A-Za-z0-9_./:|^$()-]{0,99}$`)
 
 func targetNames() string {
 	names := make([]string, len(checkTargets))
@@ -123,7 +128,10 @@ func (t checkTarget) args(pattern string) ([]string, error) {
 		return nil, fmt.Errorf("%s nimmt kein Testmuster; Muster gehen nur bei task:test, go:test, dev:test", t.name)
 	}
 	if !patternRule.MatchString(pattern) {
-		return nil, fmt.Errorf("testmuster %q abgelehnt: erlaubt sind nur A–Z, a–z, 0–9 und _ . / : - (kein - am Anfang, höchstens 100)", pattern)
+		return nil, fmt.Errorf("testmuster %q abgelehnt: erlaubt sind nur A–Z, a–z, 0–9 und _ . / : - | ^ $ ( ) (kein - am Anfang, höchstens 100)", pattern)
+	}
+	if t.quote {
+		pattern = "'" + pattern + "'"
 	}
 	if strings.HasSuffix(t.pattern, "=") {
 		return append(args, t.pattern+pattern), nil

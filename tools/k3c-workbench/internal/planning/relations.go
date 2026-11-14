@@ -92,8 +92,8 @@ func relations(root string) map[string]relInfo {
 				info.dup = d[0]
 			}
 			// Doppelt vergebene Nummer (B-199, B-696): das Ticket im Backlog gilt, es wird zuerst gelesen.
-			if _, dup := out[e.Name()[:5]]; !dup {
-				out[e.Name()[:5]] = info
+			if _, dup := out[ticketFileID(e.Name())]; !dup {
+				out[ticketFileID(e.Name())] = info
 			}
 		}
 	}
@@ -218,7 +218,7 @@ func replacedBy(all map[string]relInfo, id string) string {
 			hits = append(hits, k)
 		}
 	}
-	sort.Strings(hits)
+	sort.Slice(hits, func(i, j int) bool { return ticketLess(hits[i], hits[j]) })
 	if len(hits) == 0 {
 		return ""
 	}
@@ -257,7 +257,7 @@ func nearIDs(all map[string]relInfo, id string) string {
 	if len(hits) == 0 {
 		return ""
 	}
-	sort.Strings(hits)
+	sort.Slice(hits, func(i, j int) bool { return ticketLess(hits[i], hits[j]) })
 	return "; ähnlich: " + strings.Join(hits[:min(5, len(hits))], ", ")
 }
 
@@ -272,8 +272,8 @@ func reverseLines(root, id string) []string {
 			dups = append(dups, k)
 		}
 	}
-	sort.Strings(by)
-	sort.Strings(dups)
+	sort.Slice(by, func(i, j int) bool { return ticketLess(by[i], by[j]) })
+	sort.Slice(dups, func(i, j int) bool { return ticketLess(dups[i], dups[j]) })
 	var out []string
 	if len(by) > 0 {
 		out = append(out, "> **Ersetzt durch:** "+strings.Join(by, ", ")+" (berechnet)")

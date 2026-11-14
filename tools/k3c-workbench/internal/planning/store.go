@@ -1,12 +1,16 @@
 package planning
 
 import (
+	"errors"
 	"fmt"
+	"io/fs"
 	ticketkit "k3c/tools/assetkit/ticket"
+	"maps"
 	"os"
 	"path"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -16,8 +20,8 @@ import (
 // nur aus geprüften IDs und Kurznamen unter docs/sprints und docs/backlog.
 
 var (
-	writeMu    sync.Mutex // ein Schreibweg zur Zeit, auch bei parallelen MCP-Aufrufen
-	reTicketID = regexp.MustCompile(`^B-\d{3}$`)
+	writeMu    sync.Mutex                         // ein Schreibweg zur Zeit, auch bei parallelen MCP-Aufrufen
+	reTicketID = regexp.MustCompile(`^B-\d{3,}$`) // ab B-1000 vierstellig (B-863)
 	reSprintID = regexp.MustCompile(`^[A-Z]+\d+$`)
 	reSession  = regexp.MustCompile(`^([A-Z]+\d+)\.(\d+[a-z]?)$`)
 	reSlug     = regexp.MustCompile(`^[a-z0-9]+(-[a-z0-9]+)*$`)
@@ -104,7 +108,11 @@ type changeSet struct {
 	crlf   map[string]bool
 	remove []string
 	notes  []string
+	first  []string // Dateien, die vor allen anderen geschrieben werden (Index, der eine Zeile bekommt; B-862)
 }
+
+// writeFile schreibt eine Datei des changeSets; Tests ersetzen es, um einen Schreibfehler zu erzwingen (B-862).
+var writeFile = writeAtomic
 
 func newChangeSet(root string) *changeSet {
 	return &changeSet{root: root, writes: map[string]string{}, crlf: map[string]bool{}}
@@ -122,35 +130,88 @@ func (c *changeSet) read(rel string) (string, error) {
 
 func (c *changeSet) write(rel, text string) { c.writes[rel] = text }
 
+// apply führt Verschieben, Schreiben und Löschen aus. Scheitert ein Verschieben oder Schreiben, nimmt es die schon
+// ausgeführten Schritte zurück (B-862: ein Statuswechsel verliert so keine Index-Zeile); der Index, der eine Zeile
+// bekommt, wird zuerst geschrieben, damit auch ein gescheitertes Zurücknehmen keine Zeile verliert.
 func (c *changeSet) apply() error {
+	var undo []func() error
+	rollback := func(err error) error {
+		var failed []error
+		for i := len(undo) - 1; i >= 0; i-- {
+			if uerr := undo[i](); uerr != nil {
+				failed = append(failed, uerr)
+			}
+		}
+		if len(failed) > 0 {
+			return fmt.Errorf("%w (Zurücknehmen unvollständig: %w)", err, errors.Join(failed...))
+		}
+		return fmt.Errorf("%w (Änderung zurückgenommen)", err)
+	}
 	for _, m := range c.moves {
-		to := docsPath(c.root, m[1])
+		from, to := docsPath(c.root, m[0]), docsPath(c.root, m[1])
 		if err := os.MkdirAll(filepath.Dir(to), 0o755); err != nil {
-			return err
+			return rollback(err)
 		}
-		if err := os.Rename(docsPath(c.root, m[0]), to); err != nil {
-			return err
+		if err := os.Rename(from, to); err != nil {
+			return rollback(err)
 		}
+		undo = append(undo, func() error { return os.Rename(to, from) })
 	}
-	keys := make([]string, 0, len(c.writes))
-	for k := range c.writes {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, rel := range keys {
-		if err := writeAtomic(docsPath(c.root, rel), c.writes[rel], c.crlf[rel]); err != nil {
-			return err
+	for _, rel := range c.writeOrder() {
+		p := docsPath(c.root, rel)
+		old, rerr := os.ReadFile(p)
+		if rerr != nil && !errors.Is(rerr, fs.ErrNotExist) {
+			return rollback(rerr) // ohne alten Inhalt kein sicheres Zurücknehmen; eine vorhandene Datei nie löschen
 		}
+		if err := writeFile(p, c.writes[rel], c.crlf[rel]); err != nil {
+			return rollback(err)
+		}
+		undo = append(undo, func() error {
+			if rerr != nil {
+				return os.Remove(p) // die Datei war neu
+			}
+			return writeFile(p, string(old), false) // Bytes wie gelesen, Zeilenenden inklusive
+		})
 	}
 	for _, rel := range c.remove {
 		if err := os.RemoveAll(docsPath(c.root, rel)); err != nil {
 			return err
 		}
 	}
-	// Fahrplan-Teile aus den Dateien (B-842). Ein Fehler hier meldet die schon geschriebene Änderung nicht als
-	// gescheitert (sonst legte ein zweiter Versuch ein Duplikat an); der nächste Aufruf heilt den Fahrplan.
-	_ = refreshRoadmap(c.root)
+	// Fahrplan-Teile aus den Dateien (B-842), nur bei Sprint- oder Session-Änderungen (B-865: reine Ticket-Änderungen
+	// lassen den Fahrplan unberührt, keine Konflikte zwischen parallelen Worktrees). Ein Fehler hier meldet die schon
+	// geschriebene Änderung nicht als gescheitert (sonst legte ein zweiter Versuch ein Duplikat an); der nächste
+	// Sprint-Aufruf heilt den Fahrplan.
+	if c.touchesSprints() {
+		_ = refreshRoadmap(c.root)
+	}
 	return nil
+}
+
+// writeOrder: zuerst die Dateien aus first (in ihrer Reihenfolge), dann die übrigen sortiert.
+func (c *changeSet) writeOrder() []string {
+	var keys, rest []string
+	for _, k := range c.first {
+		if _, ok := c.writes[k]; ok && !slices.Contains(keys, k) {
+			keys = append(keys, k)
+		}
+	}
+	for k := range c.writes {
+		if !slices.Contains(keys, k) {
+			rest = append(rest, k)
+		}
+	}
+	sort.Strings(rest)
+	return append(keys, rest...)
+}
+
+// touchesSprints: Der changeSet verschiebt, schreibt oder löscht etwas unter docs/sprints (Sprint, Session, Fahrplan).
+func (c *changeSet) touchesSprints() bool {
+	paths := slices.Concat(slices.Collect(maps.Keys(c.writes)), c.remove)
+	for _, m := range c.moves {
+		paths = append(paths, m[0], m[1])
+	}
+	return slices.ContainsFunc(paths, func(p string) bool { return strings.HasPrefix(p, "sprints/") })
 }
 
 // writeAtomic schreibt über eine Temp-Datei im selben Ordner, damit nie eine halbe Datei liegt.

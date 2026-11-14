@@ -49,7 +49,9 @@ func match(want, have string) bool { return want == "" || strings.EqualFold(want
 
 // unplanned: „–“ oder „ungeplant“ als Sprint-Filter meint Tickets ohne Sprint (leer oder „–“), wie der Schnellfilter
 // Ungeplant der Planungsseite (frontend/src/planning/planning.ts › QUICK).
-func unplanned(want string) bool { return want == "–" || want == "-" || strings.EqualFold(want, "ungeplant") }
+func unplanned(want string) bool {
+	return want == "–" || want == "-" || strings.EqualFold(want, "ungeplant")
+}
 
 // matchSprint vergleicht den Sprint eines Tickets mit dem Filter.
 func matchSprint(want, have string) bool {
@@ -174,7 +176,7 @@ func archived(root string) []Ticket {
 			}
 		}
 	}
-	sort.Slice(out, func(i, j int) bool { return out[i].Nr < out[j].Nr })
+	sort.Slice(out, func(i, j int) bool { return ticketLess(out[i].Nr, out[j].Nr) })
 	return out
 }
 

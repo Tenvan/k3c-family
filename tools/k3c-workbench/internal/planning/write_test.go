@@ -224,7 +224,7 @@ func snapshot(t *testing.T, root string) string {
 	return fmt.Sprintf("%x", h.Sum(nil))
 }
 
-var indexRow = regexp.MustCompile(`(?m)^\| \[(B-\d{3})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$`)
+var indexRow = regexp.MustCompile(`(?m)^\| \[(B-\d{3,})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$`)
 
 // checkConsistent prüft die Regeln aus tests/planning.test.ts, die die Schreibwege berühren: Index ↔ Tickets mit
 // Status und Ordner, Sprint-Status ↔ Ordner, Fahrplan nennt jeden Ordner, Session-Tabelle ↔ Dateien.
