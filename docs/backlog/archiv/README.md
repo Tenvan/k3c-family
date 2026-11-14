@@ -805,3 +805,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | erledigt | WZ58 | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
+| [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | erledigt | WZ58 | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |

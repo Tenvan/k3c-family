@@ -105,7 +105,7 @@ function useReview(basis: string, stand: number) {
 }
 
 type Ansicht = 'vergleich' | 'groesse';
-/** Vorher/Nachher oder Größenvergleich des Arbeitsstands mit dem Monarchen (B-733); gilt für alle Einträge. */
+/** Vorher/Nachher oder Größenvergleich mit dem Monarchen (B-733), Vorher und Nachher nebeneinander (B-853); gilt für alle Einträge. */
 const ANSICHTEN = [{ value: 'vergleich', label: 'Vorher/Nachher' }, { value: 'groesse', label: 'Größenvergleich' }] as const;
 let letzteAnsicht: Ansicht = 'vergleich';
 
@@ -115,12 +115,14 @@ function Detail({ asset, review }: { asset: ReviewAsset; review: Review }) {
     letzteAnsicht = a;
     setAnsicht(a);
   };
-  const groesse = ansicht === 'groesse' && asset.status !== 'geloescht';
+  // neu: keine Basis, nur Nachher; gelöscht: kein Arbeitsstand, nur Vorher (B-853)
+  const geloescht = asset.status === 'geloescht';
+  const basis = asset.status === 'neu' ? '' : review.basisCommit;
   return (
     <>
       <ChipSwitch label="Ansicht" options={ANSICHTEN} value={ansicht} onChange={waehle} />
-      {ansicht === 'groesse' && asset.status === 'geloescht' && <Text size="2" color="gray">Gelöscht: kein Arbeitsstand für den Größenvergleich</Text>}
-      {groesse ? <SizeCompare id={asset.id} /> : ansicht === 'vergleich' && <Compare asset={asset} basis={review.basisCommit} />}
+      {ansicht === 'groesse' && geloescht && <Text size="2" color="gray">Gelöscht: kein Arbeitsstand, nur das Vorher-Bild</Text>}
+      {ansicht === 'groesse' ? <SizeCompare id={asset.id} basis={basis} nachher={!geloescht} /> : <Compare asset={asset} basis={review.basisCommit} />}
     </>
   );
 }

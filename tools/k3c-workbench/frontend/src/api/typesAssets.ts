@@ -27,6 +27,11 @@ export interface Groesse {
   quelle: string;
 }
 
+/** Asset im Stand der Basis für den Größenvergleich (B-853): Spec dieses Stands und sein Maßstab. */
+export interface GroesseBasis extends Groesse {
+  spec: Spec;
+}
+
 /** Hintergrund eines Bioms (Variante 1): Ebenen hinten → vorn als Data-URLs, je 768 × 480 Spiel-Pixel, Fuß unten. */
 export interface Hintergrund {
   fern: string;
@@ -175,6 +180,8 @@ export interface AssetsBackend {
   assetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
   /** Spiel-Maßstab eines Assets für den Größenvergleich (B-733). */
   assetsGroesse(id: string): Promise<Groesse>;
+  /** Spec und Maßstab im Stand der Basis (B-853); fehlt das Asset dort, ein Fehler */
+  assetsGroesseBasis(id: string, basis: string): Promise<GroesseBasis>;
   /** Frame des Arbeitsstands ohne die Teile in `ohne` (B-734: Teil ausblenden). */
   assetsFrameOhne(id: string, animation: string, frame: number, ohne: string[]): Promise<Frame>;
   /** Biome mit Hintergrund (Namensteil `hg-<teil>-…`, z. B. `wald`). */
