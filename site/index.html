@@ -155,6 +155,12 @@ pre .k{color:#9ea39a}
   linear-gradient(var(--schwarz),var(--schwarz)) 100% 100%/14px 1.5px no-repeat,linear-gradient(var(--schwarz),var(--schwarz)) 100% 100%/1.5px 14px no-repeat}
 .probe figcaption{font:500 .8rem/1.3 var(--mono);color:var(--grau);margin-top:8px}
 
+/* Werkbank: drei Bildschirmfotos der Workbench (Studio, Mock-Daten), untereinander in voller Breite */
+.werkbank-fotos{display:grid;gap:clamp(18px,3vw,32px);grid-column:1/-1;width:100%}
+.werkbank-fotos figure{margin:0;padding:clamp(10px,1.5vw,16px);background:var(--bogen);border:2px solid var(--schwarz);box-shadow:4px 4px 0 var(--schwarz)}
+.werkbank-fotos img{display:block;width:100%;height:auto;border:1px solid #0000001f}
+.werkbank-fotos figcaption{font:500 .92rem/1.45 var(--sans);color:var(--schwarz);margin-top:12px;max-width:72ch}
+
 .impressum{border-top:1px solid #0000001a;margin-top:clamp(24px,4vw,48px);padding-top:16px;font-size:.88rem;color:var(--grau)}
 .impressum p{margin:.2rem 0;max-width:90ch}
 
@@ -420,7 +426,7 @@ task native:game:build
 
 <span class="k"># 4 · spielen</span>
 task native:game</pre>
-        <div class="lizenz"><b>Mitbauen ausdrücklich erwünscht</b>Fehler melden, Ideen einreichen, Code schicken: alles über GitHub. Eigene Welten bauen zeigt <a href="#welten">Bogen 2</a>, die Lizenz steht in <a href="#lizenz">Abschnitt 11</a>.</div>
+        <div class="lizenz"><b>Mitbauen ausdrücklich erwünscht</b>Fehler melden, Ideen einreichen, Code schicken: alles über GitHub. Eigene Welten bauen zeigt <a href="#welten">Bogen 2</a>, die Lizenz steht in <a href="#lizenz">Abschnitt 12</a>.</div>
       </div>
     </div>
   </section>
@@ -484,8 +490,17 @@ task native:game</pre>
     </div>
   </section>
 
+  <section class="teil" id="werkbank">
+    <header><span class="nr">9</span><div><h2>Die Werkbank</h2><p>Die Werkbank läuft lokal unter Windows und ist zugleich der MCP-Server, über den ein KI-Assistent mitbaut. Drei ihrer Seiten im Studio, hier mit Beispieldaten:</p></div></header>
+    <div class="werkbank-fotos">
+      <figure><img src="img/werkbank-katalog.webp" alt="Werkbank, Seite Katalog: Liste der Papierschnitt-Baupläne, Vorschau des Monarchen zu Pferd mit Animationen" loading="lazy" width="1440" height="808"><figcaption><b>Katalog</b> · Jede Figur, jedes Gebäude, jeder Hintergrund als Papierschnitt-Bauplan, mit Vorschau und Größenvergleich zum Monarchen.</figcaption></figure>
+      <figure><img src="img/werkbank-review.webp" alt="Werkbank, Seite Review: geänderte Assets mit Vorher- und Nachher-Bild nebeneinander" loading="lazy" width="1440" height="808"><figcaption><b>Review</b> · Jede Änderung an einem Asset vorher und nachher nebeneinander, bevor sie ins Spiel kommt.</figcaption></figure>
+      <figure><img src="img/werkbank-welten.webp" alt="Werkbank, Seite Welten-Editor: Chunk-Vorschau einer Stufe mit Bäumen, Portalen und Burg" loading="lazy" width="1440" height="590"><figcaption><b>Welten-Editor</b> · Inseln, Stufen und Natur-Werte ansehen und festsetzen; die Chunk-Vorschau zeigt das Ergebnis sofort.</figcaption></figure>
+    </div>
+  </section>
+
   <section class="teil">
-    <header><span class="nr">9</span><div><h2>Teileliste: Werkzeuge des MCP-Servers</h2><p>Der Server <code>k3c-workbench</code> läuft lokal und verbindet sich über <code>.mcp.json</code> im Repository mit dem Assistenten. Eine Auswahl der Werkzeuge:</p></div></header>
+    <header><span class="nr">10</span><div><h2>Teileliste: Werkzeuge des MCP-Servers</h2><p>Der Server <code>k3c-workbench</code> läuft lokal und verbindet sich über <code>.mcp.json</code> im Repository mit dem Assistenten. Eine Auswahl der Werkzeuge:</p></div></header>
     <div class="werkzeuge">
       <div><h3>Papierschnitt-Assets</h3><ul>
         <li><code>assets_guide</code>Stil-Regeln, Materialien, Pflicht-Teile</li>
@@ -514,7 +529,7 @@ task native:game</pre>
   </section>
 
   <section class="teil">
-    <header><span class="nr">10</span><div><h2>Beispiel: ein dichterer Wald mit eigenem Gegner</h2><p>So kann eine Sitzung aussehen, gekürzt. Was der Assistent dabei aufruft, steht jeweils darunter.</p></div></header>
+    <header><span class="nr">11</span><div><h2>Beispiel: ein dichterer Wald mit eigenem Gegner</h2><p>So kann eine Sitzung aussehen, gekürzt. Was der Assistent dabei aufruft, steht jeweils darunter.</p></div></header>
     <ol class="gespraech">
       <li><div class="du">Werkbank starten, Claude Code im Repository öffnen.</div><pre>task k3c-workbench</pre></li>
       <li><div class="du">„Mach den Wald dichter: mehr Lichtungen mit Birken, weniger Felsen.“</div><div class="ki">Ändert die Gewichte und Bäume je Abschnitt in <code>data/biomes/forest.json</code>.</div></li>
@@ -527,7 +542,7 @@ task native:game -- --seed familie-2026</pre></li>
   </section>
 
   <section class="teil" id="lizenz">
-    <header><span class="nr">11</span><div><h2>Lizenz: was ihr damit machen dürft</h2><p>Quellcode offen · frei für nicht-kommerzielle Nutzung: spielen, ändern, weitergeben, eigene Welten bauen.</p></div></header>
+    <header><span class="nr">12</span><div><h2>Lizenz: was ihr damit machen dürft</h2><p>Quellcode offen · frei für nicht-kommerzielle Nutzung: spielen, ändern, weitergeben, eigene Welten bauen.</p></div></header>
     <div class="lizenz-gitter">
       <div class="darf"><h3>Erlaubt, solange niemand damit Geld verdient</h3><ul>
         <li>spielen, allein, mit der Familie, im Verein, in der Schule</li>
