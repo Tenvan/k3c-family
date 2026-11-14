@@ -147,7 +147,7 @@ func (c *changeSet) apply() error {
 			return err
 		}
 	}
-	return nil
+	return refreshRoadmap(c.root) // Fahrplan-Teile aus den Dateien (B-842)
 }
 
 // writeAtomic schreibt über eine Temp-Datei im selben Ordner, damit nie eine halbe Datei liegt.

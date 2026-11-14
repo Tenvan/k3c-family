@@ -9,9 +9,9 @@ import (
 // Kollision wie bei den Arbeitswellen (B-783, docs/arbeitsweise.md › Parallelität und Wellen): gleiche Sperre des
 // Sprints oder überlappende Erlaubte Dateien. Übergang für Sessions ohne Dateimenge: Sperre je Domäne und Lane
 // (PV1.1/PV1.2): ohne Lane sperrt eine Session in Arbeit ihre ganze Domäne, mit Lane nur Domäne und Lane. Neben der
-// Auswahl schlägt plan_next höchstens maxParallel weitere vor (vier Agenten).
+// Auswahl schlägt plan_next höchstens maxParallel weniger die Sessions in Arbeit vor (vier Agenten, B-839).
 
-// maxParallel begrenzt „Parallel möglich“: Auswahl plus drei = höchstens vier Agenten gleichzeitig.
+// maxParallel begrenzt „Parallel möglich“: Sessions in Arbeit, Auswahl und Vorschläge zusammen höchstens vier Agenten.
 const maxParallel = 3
 
 var (
@@ -88,12 +88,14 @@ func conflict(a, b Session) bool {
 	return a.Domain == b.Domain && (la == "" || lb == "" || la == lb)
 }
 
-// parallel sind weitere freie Sessions, die weder mit pick noch untereinander kollidieren, höchstens maxParallel.
-func parallel(cands []candidate, pick candidate) []candidate {
+// parallel sind weitere freie Sessions, die weder mit pick noch untereinander kollidieren: höchstens maxParallel
+// abzüglich der Sessions in Arbeit (B-839), damit Auswahl, Vorschläge und laufende zusammen vier Agenten nicht übersteigen.
+func parallel(cands []candidate, pick candidate, running int) []candidate {
+	limit := max(maxParallel-running, 0)
 	chosen := []scoped{pick.scope}
 	var out []candidate
 	for _, c := range cands {
-		if c.why != "" || len(out) == maxParallel {
+		if c.why != "" || len(out) >= limit {
 			continue
 		}
 		free := true

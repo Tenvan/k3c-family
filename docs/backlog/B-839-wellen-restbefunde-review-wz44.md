@@ -8,9 +8,9 @@
 - **Sprint:** WZ49
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-14
 
 ## Ausgangslage
 
@@ -54,11 +54,11 @@ Drei Sessions in Arbeit → `plan_next` nennt höchstens eine weitere parallel.
 
 ## Ausnahme- und Fehlerfälle
 
-–
+Vier oder mehr Sessions in Arbeit → `plan_next` nennt keine weitere parallel.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Je Befund ein Test in `tools/k3c-workbench/internal/planning`, grün.
+- **AC-01** Je Befund ein Test in `tools/k3c-workbench/internal/planning`, grün: (a) drei Sessions `in Arbeit` → `plan_next` nennt höchstens eine weitere parallel; (b) `tools/paper` überlappt mit `tools/paper/cli/**`; (c) Session `in Arbeit` ohne Domäne blockt mit Dateien und Sperre; (d) Branch-Zeile und origin-Overlay stammen aus derselben Session.
 
 ## Offene Fragen
 

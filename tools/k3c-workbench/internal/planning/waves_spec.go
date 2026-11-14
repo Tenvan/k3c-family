@@ -159,20 +159,22 @@ func globPrefix(g string) (prefix string, wild bool) {
 	return g, strings.HasSuffix(g, "/")
 }
 
-// globsOverlap: Zwei Globs überlappen, wenn ein fester Teil Präfix des anderen ist; zwei feste Pfade nur bei Gleichheit.
+// globsOverlap: Zwei Globs überlappen, wenn ein fester Teil Präfix des anderen ist. Ein fester Pfad gilt zugleich als
+// Ordner (B-839): `tools/paper` überlappt mit `tools/paper/cli/**`, aber nicht mit `tools/paper2/**`.
 func globsOverlap(a, b string) bool {
-	pa, wa := globPrefix(a)
-	pb, wb := globPrefix(b)
-	switch {
-	case !wa && !wb:
-		return pa == pb
-	case wa && wb:
-		return strings.HasPrefix(pa, pb) || strings.HasPrefix(pb, pa)
-	case wa:
-		return strings.HasPrefix(pb, pa)
-	default:
-		return strings.HasPrefix(pa, pb)
+	if a == b {
+		return true
 	}
+	pa, pb := asFolder(globPrefix(a)), asFolder(globPrefix(b))
+	return strings.HasPrefix(pa, pb) || strings.HasPrefix(pb, pa)
+}
+
+// asFolder macht aus einem festen Pfad ohne Platzhalter den Ordner-Präfix `pfad/`; bei Globs bleibt der feste Teil.
+func asFolder(prefix string, wild bool) string {
+	if wild {
+		return prefix
+	}
+	return prefix + "/"
 }
 
 // areaOverlap nennt das erste überlappende Paar zweier Bereiche; ok = false ohne Überlappung.

@@ -217,11 +217,10 @@ func takeRoadmapRow(lines []string, id, dir string) ([]string, map[string]string
 		if !strings.HasPrefix(l, "| "+id+" |") || !strings.Contains(l, key) {
 			continue
 		}
-		if header, ok := headerAt(lines, i); ok {
+		// Eine Zeile mit falscher Spaltenzahl (KB6, B-842) liefert keine Werte: die Zellen wären verschoben.
+		if header, ok := headerAt(lines, i); ok && len(cells(l)) == len(header) {
 			for k, v := range cells(l) {
-				if k < len(header) {
-					old[header[k]] = v
-				}
+				old[header[k]] = v
 			}
 		}
 		return append(lines[:i], lines[i+1:]...), old, i

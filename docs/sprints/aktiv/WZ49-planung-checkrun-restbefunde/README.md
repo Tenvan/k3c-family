@@ -63,7 +63,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ49.1 | `WZ49.1-plan-waves-restbefunde-fahrplan.md` | Umsetzung | autonom | offen |
+| WZ49.1 | `WZ49.1-plan-waves-restbefunde-fahrplan.md` | Umsetzung | autonom | fertig |
 | WZ49.2 | `WZ49.2-checkrun-devtest-im-spiel-nativ.md` | Umsetzung | autonom | offen |
 | WZ49.3 | `WZ49.3-review.md` | Review | autonom | offen |
 

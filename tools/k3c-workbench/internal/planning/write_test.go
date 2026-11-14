@@ -128,8 +128,9 @@ func TestSprintUndSessionLebenslauf(t *testing.T) {
 	if !strings.Contains(roadmap, "| X1 | Test-Sprint | `erledigt/X1-test/` |") || strings.Count(roadmap, "| X1 |") != 1 {
 		t.Fatalf("Fahrplan Erledigt:\n%s", roadmap)
 	}
-	if !strings.Contains(roadmap, "| X1.3 | Xbox |") {
-		t.Fatal("Zeile in „Offen am Gerät“ mit gleichem Ordner verschwunden")
+	// „Offen am Gerät“ entsteht aus den Session-Dateien (B-842): die Freitext-Zeile des erledigten X1 ist weg.
+	if strings.Contains(roadmap, "| X1.3 | Xbox |") || !strings.Contains(roadmap, "mit Freigaben und Entscheidungen: `plan_queue`") {
+		t.Fatalf("„Offen am Gerät“ nicht neu geschrieben:\n%s", roadmap)
 	}
 	checkConsistent(t, root)
 }
