@@ -8,6 +8,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // pixelSchritte sind die Indizes und Dateien der Schritte einer Animation im Sammelaufruf.
@@ -108,7 +109,8 @@ func abbruch(ctx context.Context, cli CLI, altSpec, spec string, r *SetErgebnis,
 		return err
 	}
 	r.Abbruch = err.Error()
-	if altSpec != "" && ctx.Err() == nil {
+	// Nach einem Zeitlimit hängt die CLI vermutlich noch: kein weiterer Aufruf, der die Asset-Sperre länger hält.
+	if altSpec != "" && ctx.Err() == nil && !strings.Contains(r.Abbruch, "Zeitlimit") {
 		if d, derr := cli.Diff(ctx, altSpec, spec); derr == nil {
 			r.Felder = d.Felder
 		}

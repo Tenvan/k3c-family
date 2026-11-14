@@ -92,7 +92,7 @@ func checkTaskVersion(ctx context.Context, t checkTarget, pattern string, read f
 	}
 	if versionLess(v, minTaskVersion) {
 		return "", fmt.Errorf("%s mit Testmuster braucht Go Task ab %s (gefunden %s), sonst quotet Task das Muster nicht; "+
-			"Task aktualisieren (requirements.md) oder ohne Muster laufen lassen", t.name, versionText(minTaskVersion), versionText(v))
+			"Task aktualisieren (requirements.md, danach die Workbench neu starten: die Version wird je Lauf gemerkt) oder ohne Muster laufen lassen", t.name, versionText(minTaskVersion), versionText(v))
 	}
 	return "", nil
 }

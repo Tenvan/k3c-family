@@ -107,6 +107,10 @@ func TestSetAbbruchText(t *testing.T) {
 		Felder: []assetsui.FeldAenderung{{Pfad: "umhang.material", Alt: "koenigsrot", Neu: "purpur"}}}
 	want := "monarch: Render abgebrochen, nichts geändert · Render-CLI batch: Zeitlimit 3m0s überschritten\n" +
 		"Bekannt vor dem Abbruch: 1 Feld · umhang.material koenigsrot → purpur"
+	if b, err := os.ReadFile("../../../paper/fixtures/mcp/assets_set-abbruch.txt"); err != nil ||
+		!strings.HasPrefix(strings.ReplaceAll(string(b), "\r\n", "\n"), want+"\nCheckout: ") {
+		t.Errorf("Fixture assets_set-abbruch.txt weicht ab: %v", err)
+	}
 	if err := setAbbruch(r, errors.New("x")); err.Error() != want {
 		t.Errorf("Text: %q, erwartet %q", err, want)
 	}
