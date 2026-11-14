@@ -1,6 +1,6 @@
 # CH1.6 · HUD-Icons statt Ressourcen-Namen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-07 geprüft: `hud/icons.go` (Zuordnung Rohstoff → Icon aus der Gruppe icons, HUD als Asset-Quelle, `stockParts`), `hud/drawstock.go` (Icon + Zahl, voll in Orange, ohne Grafik Name statt Icon); Spielerkarte zeigt das Münz-Icon statt des gezeichneten Goldtopfs. Tests `TestEveryResourceHasIcon` (jedes Feld von `sim.Stock` hat ein Icon, jedes Icon steht in `data/paper.json`), `TestStockParts` grün.
+- Nachweis: Aufnahme `task native:game:shots -- --seed wald --tick 300 --count 1` (2 Spieler, Split-Screen) zeigt Holz-Icon mit 100/1500 und Münz-Icon mit Gold. Für die Aufnahme lief `task gen:paper` (am Feature); die dabei geänderten `golden.json`/`index.paper.json` sind nicht eingecheckt (Abweichung vorbestehend, Abnahme-Ticket).
+- Kein Icon fehlte, kein neues Ticket.
+- `check_run task:check:diff:go` grün.

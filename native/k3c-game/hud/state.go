@@ -49,6 +49,9 @@ type seatState struct {
 	mClock    memo[clockKey]
 	mFight    memo[waveKey]
 	mShared   memo[stockKey]
+	parts     []stockPart // Vorrats-Anzeige mit Icons (icons.go), gebaut aus stockK
+	stockK    stockKey
+	partsSet  bool
 	mPlace    memo[placeKey]
 	mCit      memo[hubKey]
 	mTravel   memo[travelKey]
@@ -155,7 +158,11 @@ func (st *seatState) card(lang string, e sim.Economy, m *sim.Player, now float64
 func (st *seatState) world(lang string, w *sim.World, e sim.Economy, now float64) {
 	st.clockS = st.mClock.get(newClockKey(lang, w.Cycle, w.CycleSpeed, w.Aggression, now < st.savedUntil), clockText)
 	st.fightS = st.mFight.get(waveKey{lang, w.Wave, len(w.Enemies) + len(w.SpawnQueue)}, waveText)
-	st.sharedS = st.mShared.get(stockKey{lang, w.Biome.PrimaryResource, stockOf(w.Stock), e.StockMax, w.SkillPoints}, sharedText)
+	sk := stockKey{lang, w.Biome.PrimaryResource, stockOf(w.Stock), e.StockMax, w.SkillPoints}
+	st.sharedS = st.mShared.get(sk, sharedText)
+	if !st.partsSet || st.stockK != sk {
+		st.parts, st.stockK, st.partsSet = stockParts(st.parts, sk), sk, true
+	}
 	st.citS = st.mCit.get(newHubKey(lang, e, w.Merchant), citizensText)
 	st.placeS = st.mPlace.get(placeKey{lang, w.Biome.ID, w.Biome.Name, st.monarch}, placeText)
 	st.travelS = st.mTravel.get(newTravelKey(lang, w.Travel), travelText)

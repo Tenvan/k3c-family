@@ -47,7 +47,6 @@ var textItems = [...]textItem{
 	{itemSkills, slotSkillBar, rolePlayer, func(s *seatState) string { return s.barS }},
 	{itemClock, slotClock, roleShared, func(s *seatState) string { return s.clockS }},
 	{itemFight, slotFight, roleFight, func(s *seatState) string { return s.fightS }},
-	{itemShared, slotShared, roleShared, func(s *seatState) string { return s.sharedS }},
 	{itemPlace, slotPlace, roleRoomInfo, func(s *seatState) string { return s.placeS }},
 	{itemCitizens, slotCit, roleShared, func(s *seatState) string { return s.citS }},
 	{itemEvents, slotEvents, roleBanner, func(s *seatState) string { return s.evS }},
@@ -96,6 +95,8 @@ func (h *hud) drawItems(dst *ebiten.Image, st *seatState, c view.Cell, k float64
 		in[itemJoin].W, in[itemJoin].H = boxSize(w, ht, k)
 	}
 	in[itemPlayer].W, in[itemPlayer].H = h.cardSize(st, f, p, k)
+	sharedPx := fontPx(roleShared, h.cells) * k
+	in[itemShared].W, in[itemShared].H = h.stockSize(st, f, p, sharedPx, k)
 	in[itemBoss].W, in[itemBoss].H = h.bossSize(st, f, p, k, float64(c.Rect.Dx()))
 	if st.widthUnits > 0 {
 		in[itemRadar].W, in[itemRadar].H = radarSize(float64(c.Rect.Dx()), k)
@@ -111,6 +112,9 @@ func (h *hud) drawItems(dst *ebiten.Image, st *seatState, c view.Cell, k float64
 	}
 	if pl.ok[itemPlayer] {
 		h.drawCard(dst, st, f, p, pl.at[itemPlayer], k)
+	}
+	if pl.ok[itemShared] {
+		h.drawStock(dst, st, f, p, pl.at[itemShared], sharedPx, k)
 	}
 	if pl.ok[itemBoss] {
 		h.drawBoss(dst, st, f, p, pl.at[itemBoss], k)
@@ -184,8 +188,12 @@ func (h *hud) drawCard(dst *ebiten.Image, st *seatState, f *art.Font, player int
 	pt.frame(dst, bar, 2*k, rgb(st.color, 1))
 	x += bar.W + spaceW(size)
 	cx, cy := x+cardPot*k/2, by+cardBarH*k/2+2*k
-	pt.circle(dst, cx, cy, 11*k, rgb(0xffd166, 1))
-	pt.fill(dst, rect{cx - 10*k, cy - 13*k, 20 * k, 3 * k}, rgb(0x9c6644, 1))
+	if ic := h.icon(goldIcon); ic != nil { // Münz-Icon statt gezeichnetem Goldtopf (B-890)
+		drawIcon(dst, ic, cx-cardPot*k/2, cy-cardPot*k/2-2*k, cardPot*k)
+	} else {
+		pt.circle(dst, cx, cy, 11*k, rgb(0xffd166, 1))
+		pt.fill(dst, rect{cx - 10*k, cy - 13*k, 20 * k, 3 * k}, rgb(0x9c6644, 1))
+	}
 	if st.flash {
 		pt.ringAt(dst, cx, cy, 17*k, rgb(0xffffff, 1))
 	}
