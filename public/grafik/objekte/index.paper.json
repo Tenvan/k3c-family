@@ -25,6 +25,11 @@
     "manifest": "ausgang/manifest.json"
   },
   {
+    "id": "birke-2",
+    "rig": "requisite",
+    "manifest": "birke-2/manifest.json"
+  },
+  {
     "id": "birke",
     "rig": "requisite",
     "manifest": "birke/manifest.json"
@@ -60,6 +65,11 @@
     "manifest": "hoehlenbusch/manifest.json"
   },
   {
+    "id": "pappel-2",
+    "rig": "requisite",
+    "manifest": "pappel-2/manifest.json"
+  },
+  {
     "id": "pappel-niedrig",
     "rig": "requisite",
     "manifest": "pappel-niedrig/manifest.json"
@@ -93,6 +103,11 @@
     "id": "stern",
     "rig": "requisite",
     "manifest": "stern/manifest.json"
+  },
+  {
+    "id": "tanne-2",
+    "rig": "requisite",
+    "manifest": "tanne-2/manifest.json"
   },
   {
     "id": "tanne",

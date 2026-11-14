@@ -1,0 +1,148 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "birke-2",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Birke: weißer Stamm mit schwarzen Kerben und lockere hellgrüne Blattballen; Krone wiegt, zweite Form: breite, niedrige Krone (B-723).",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 0L-4 -5.4L-3 -72L3 -72L4 -5.4L6 0Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 0L-4 -5.4L-3 -72L-1 -72L-1 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.5 -10.8L0.5 -12.15L1 -9.72Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -23.4L-0.5 -24.75L-1 -22.32Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.5 -34.2L0.5 -35.55L1 -33.12Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -46.8L-0.5 -48.15L-1 -45.72Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.5 -59.4L0.5 -60.75L1 -58.32Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -76.12C0 -83.37 -9.31 -89.24 -20.8 -89.24C-32.29 -89.24 -41.6 -83.37 -41.6 -76.12C-41.6 -68.87 -32.29 -63 -20.8 -63C-9.31 -63 0 -68.87 0 -76.12Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20.8 -89.24C-32.24 -89.24 -41.6 -83.34 -41.6 -76.12C-41.6 -68.9 -32.24 -63 -20.8 -63C-27.04 -69.56 -27.04 -82.68 -20.8 -89.24Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M41.6 -79.4C41.6 -87.1 31.71 -93.34 19.5 -93.34C7.29 -93.34 -2.6 -87.1 -2.6 -79.4C-2.6 -71.7 7.29 -65.46 19.5 -65.46C31.71 -65.46 41.6 -71.7 41.6 -79.4Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M19.5 -93.34C7.35 -93.34 -2.6 -87.07 -2.6 -79.4C-2.6 -71.73 7.35 -65.46 19.5 -65.46C12.87 -72.43 12.87 -86.37 19.5 -93.34Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M26 -94.16C26 -103.22 14.37 -110.56 0 -110.56C-14.37 -110.56 -26 -103.22 -26 -94.16C-26 -85.1 -14.37 -77.76 0 -77.76C14.37 -77.76 26 -85.1 26 -94.16Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -110.56C-14.3 -110.56 -26 -103.18 -26 -94.16C-26 -85.14 -14.3 -77.76 0 -77.76C-7.8 -85.96 -7.8 -102.36 0 -110.56Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M9.1 -69.56C9.1 -75.45 1.53 -80.22 -7.8 -80.22C-17.13 -80.22 -24.7 -75.45 -24.7 -69.56C-24.7 -63.67 -17.13 -58.9 -7.8 -58.9C1.53 -58.9 9.1 -63.67 9.1 -69.56Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-7.8 -80.22C-17.1 -80.22 -24.7 -75.42 -24.7 -69.56C-24.7 -63.7 -17.1 -58.9 -7.8 -58.9C-12.87 -64.23 -12.87 -74.89 -7.8 -80.22Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M28.6 -66.28C28.6 -71.72 21.62 -76.12 13 -76.12C4.38 -76.12 -2.6 -71.72 -2.6 -66.28C-2.6 -60.84 4.38 -56.44 13 -56.44C21.62 -56.44 28.6 -60.84 28.6 -66.28Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M13 -76.12C4.42 -76.12 -2.6 -71.69 -2.6 -66.28C-2.6 -60.87 4.42 -56.44 13 -56.44C8.32 -61.36 8.32 -71.2 13 -76.12Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -63]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 360,
+    "rahmen": [-48, -117, 96, 121]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}

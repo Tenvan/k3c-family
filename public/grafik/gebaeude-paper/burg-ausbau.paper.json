@@ -12,8 +12,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 288,
-    "rahmen": [-128, -288, 256, 288]
+    "hoehe_px": 292,
+    "rahmen": [-132, -292, 264, 292]
   },
   "animationen": {
     "stand": {
@@ -211,5 +211,27 @@
         }
       ]
     }
-  ]
+  ],
+  "varianten": {
+    "eisen": {
+      "tausch": {
+        "holz": "eisen"
+      }
+    },
+    "kristall": {
+      "tausch": {
+        "holz": "kristall"
+      }
+    },
+    "kupfer": {
+      "tausch": {
+        "holz": "kupfer"
+      }
+    },
+    "stein": {
+      "tausch": {
+        "holz": "stein"
+      }
+    }
+  }
 }

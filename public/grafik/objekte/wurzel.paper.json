@@ -3,74 +3,64 @@
   "id": "wurzel",
   "rig": "requisite",
   "version": 1,
-  "beschreibung": "Höhlenwurzel: knorriger brauner Wurzelstrunk mit zwei Seitenarmen und dunklen Moosflecken, Höhlen-Flora statt Baum",
+  "beschreibung": "Wurzel: drei Wurzelbögen aus einem Erdhügel, kein Stamm (B-723).",
   "teile": [
     {
       "id": "strunk",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-12 0C-10 -10 -14 -24 -8 -40C-4 -52 -10 -64 -4 -78C0 -84 6 -82 6 -74C4 -60 10 -50 8 -38C6 -24 12 -10 14 0Z",
-          "material": "leder"
+          "form": "M-30 0C-26 -12 -12 -16 0 -16C12 -16 26 -12 30 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-27 0C-27 -34 -6 -44 1 -10L-5 -9C-9 -34 -20 -28 -20 0Z",
+          "material": "holz"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-12 0C-10 -10 -14 -24 -8 -40C-4 -52 -10 -64 -4 -78C-2 -80 0 -80 0 -78C-4 -64 0 -52 -2 -40C-6 -24 -4 -10 -4 0Z",
-          "material": "leder",
+          "form": "M-27 0C-27 -34 -6 -44 1 -10L-2 -10C-8 -38 -24 -32 -24 0Z",
+          "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-8 -40C-16 -44 -22 -52 -24 -62C-20 -60 -16 -54 -10 -50Z",
+          "form": "M3 -6C8 -48 27 -44 28 0L21 0C21 -32 12 -36 9 -6Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3 -6C8 -48 27 -44 28 0L25 0C24 -38 9 -42 6 -6Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-11 -2C-6 -26 9 -28 11 -2L6 -2C5 -18 -3 -18 -5 -2Z",
           "material": "leder"
-        },
-        {
-          "art": "flaeche",
-          "form": "M8 -36C16 -38 22 -44 26 -54C22 -54 16 -48 9 -46Z",
-          "material": "leder"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-12 0C-18 -2 -24 0 -28 2L-10 2Z",
-          "material": "leder",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M14 0C20 -2 26 -1 30 2L12 2Z",
-          "material": "leder",
-          "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1,
-          "form": "M2 -10C0 -30 4 -50 0 -70",
-          "material": "leder",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 0.7,
-          "form": "M-6 -20C-4 -26 -6 -32 -5 -38",
-          "material": "linie"
-        },
-        {
-          "art": "flaeche",
-          "form": "M5 -78C5 -80.21 1.87 -82 -2 -82C-5.87 -82 -9 -80.21 -9 -78C-9 -75.79 -5.87 -74 -2 -74C1.87 -74 5 -75.79 5 -78Z",
-          "material": "smaragd",
+          "form": "M-22 -20L-28 -26M24 -24L29 -30",
+          "material": "holz",
           "ton": "schatten"
         },
         {
-          "art": "flaeche",
-          "form": "M14 -44C14 -45.66 11.76 -47 9 -47C6.24 -47 4 -45.66 4 -44C4 -42.34 6.24 -41 9 -41C11.76 -41 14 -42.34 14 -44Z",
+          "art": "punkt",
           "material": "smaragd",
-          "ton": "schatten"
+          "mitte": [-12, -24],
+          "radius": 2
         },
         {
-          "art": "flaeche",
-          "form": "M-17 -60C-17 -61.38 -18.79 -62.5 -21 -62.5C-23.21 -62.5 -25 -61.38 -25 -60C-25 -58.62 -23.21 -57.5 -21 -57.5C-18.79 -57.5 -17 -58.62 -17 -60Z",
-          "material": "smaragd"
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [17, -30],
+          "radius": 1.6
         }
       ],
       "pivot": [0, 0]

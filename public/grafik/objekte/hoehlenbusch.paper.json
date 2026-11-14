@@ -3,111 +3,134 @@
   "id": "hoehlenbusch",
   "rig": "requisite",
   "version": 1,
-  "beschreibung": "Höhlenbusch: violetter Höhlenstrauch mit blau leuchtenden Knospen; wiegt leicht",
+  "beschreibung": "Höhlenpilze: fünf Leuchtpilze mit violetten Hüten auf hellen Stielen, andere Form als der Busch (B-723).",
   "teile": [
     {
       "id": "ballen",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-2 -12C-2 -18.63 -7.37 -24 -14 -24C-20.63 -24 -26 -18.63 -26 -12C-26 -5.37 -20.63 0 -14 0C-7.37 0 -2 -5.37 -2 -12Z",
+          "form": "M-17.6 0L-17.1 -14L-14.9 -14L-14.4 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-25 -13C-25 -22.1 -7 -22.1 -7 -13Z",
           "material": "purpur"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-14 -24C-20.6 -24 -26 -18.6 -26 -12C-26 -5.4 -20.6 0 -14 0C-18.2 -6 -18.2 -18 -14 -24Z",
-          "material": "purpur",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M25 -12C25 -18.63 19.63 -24 13 -24C6.37 -24 1 -18.63 1 -12C1 -5.37 6.37 0 13 0C19.63 0 25 -5.37 25 -12Z",
-          "material": "purpur"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M13 -24C6.4 -24 1 -18.6 1 -12C1 -5.4 6.4 0 13 0C8.8 -6 8.8 -18 13 -24Z",
-          "material": "purpur",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M15 -20C15 -28.28 8.28 -35 0 -35C-8.28 -35 -15 -28.28 -15 -20C-15 -11.72 -8.28 -5 0 -5C8.28 -5 15 -11.72 15 -20Z",
-          "material": "purpur"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M0 -35C-8.25 -35 -15 -28.25 -15 -20C-15 -11.75 -8.25 -5 0 -5C-5.25 -12.5 -5.25 -27.5 0 -35Z",
-          "material": "purpur",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M6 -8C6 -13.52 1.52 -18 -4 -18C-9.52 -18 -14 -13.52 -14 -8C-14 -2.48 -9.52 2 -4 2C1.52 2 6 -2.48 6 -8Z",
-          "material": "purpur"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-4 -18C-9.5 -18 -14 -13.5 -14 -8C-14 -2.5 -9.5 2 -4 2C-7.5 -3 -7.5 -13 -4 -18Z",
-          "material": "purpur",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M17 -7C17 -11.97 12.97 -16 8 -16C3.03 -16 -1 -11.97 -1 -7C-1 -2.03 3.03 2 8 2C12.97 2 17 -2.03 17 -7Z",
-          "material": "purpur"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M8 -16C3.05 -16 -1 -11.95 -1 -7C-1 -2.05 3.05 2 8 2C4.85 -2.5 4.85 -11.5 8 -16Z",
-          "material": "purpur",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M10 -26C10 -28.21 7.31 -30 4 -30C0.69 -30 -2 -28.21 -2 -26C-2 -23.79 0.69 -22 4 -22C7.31 -22 10 -23.79 10 -26Z",
-          "material": "purpur",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M21 -16C21 -17.66 19.21 -19 17 -19C14.79 -19 13 -17.66 13 -16C13 -14.34 14.79 -13 17 -13C19.21 -13 21 -14.34 21 -16Z",
+          "form": "M-16 -20.12C-10.600000000000001 -19.4 -7 -15.8 -7 -13L-16 -13Z",
           "material": "purpur",
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [-10, -16],
-          "radius": 1.8,
+          "mitte": [-19.6, -16.25],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M13.4 0L13.9 -12L16.1 -12L16.6 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M7 -11C7 -19.2 23 -19.2 23 -11Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M15 -17.44C19.8 -16.8 23 -13.6 23 -11L15 -11Z",
+          "material": "purpur",
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [6, -12],
-          "radius": 1.8,
+          "mitte": [11.8, -14],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.6 0L-3.1 -24L-0.9 -24L-0.4 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -23C-14 -34.8 10 -34.8 10 -23Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2 -32.16C5.199999999999999 -31.2 10 -26.4 10 -23L-2 -23Z",
+          "material": "purpur",
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [-2, -26],
-          "radius": 1.8,
+          "mitte": [-6.800000000000001, -27],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10.6 1L-10.1 -5L-7.9 -5L-7.4 1Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -4C-14 -9.5 -4 -9.5 -4 -4Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-9 -8.4C-6 -8 -4 -6 -4 -4L-9 -4Z",
+          "material": "purpur",
           "ton": "licht"
         },
         {
           "art": "punkt",
           "material": "koenigsblau",
-          "mitte": [16, -9],
-          "radius": 1.8,
+          "mitte": [-11, -6.25],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5.4 1L5.9 -6L8.1 -6L8.6 1Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1.5 -5C1.5 -10.95 12.5 -10.95 12.5 -5Z",
+          "material": "purpur"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M7 -9.74C10.3 -9.3 12.5 -7.1 12.5 -5L7 -5Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsblau",
+          "mitte": [4.8, -7.375],
+          "radius": 1.2,
           "ton": "licht"
         }
       ],

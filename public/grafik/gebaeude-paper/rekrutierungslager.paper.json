@@ -67,7 +67,7 @@
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [46, -3],
+          "mitte": [44.5, -3],
           "radius": 3.2
         },
         {
@@ -92,8 +92,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 64,
-    "rahmen": [-48, -64, 96, 64]
+    "hoehe_px": 68,
+    "rahmen": [-52, -68, 104, 68]
   },
   "animationen": {
     "stand": {
@@ -148,7 +148,7 @@
             {
               "art": "punkt",
               "material": "stein",
-              "mitte": [46, -3],
+              "mitte": [44.5, -3],
               "radius": 2.4,
               "ton": "schatten"
             }
@@ -168,7 +168,7 @@
           "lagen": [
             {
               "art": "flaeche",
-              "form": "M14 -7L50 -7L50 -5L14 -5Z",
+              "form": "M14 -7L47 -7L47 -5L14 -5Z",
               "material": "hermelin",
               "ton": "schatten"
             },

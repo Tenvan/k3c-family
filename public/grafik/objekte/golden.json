@@ -29,10 +29,16 @@
       "idle.png": "b96cdf6315419e931ad482a9b57a8e5da11c411ea9728c1e68a912cf46d7e32b"
     }
   },
-  "birke": {
-    "renderKey": "034e92ff5786a32d57a71f7a570b66d00b79ac8e8c20cb0417b02292fe10bcc4",
+  "birke-2": {
+    "renderKey": "1bbaed133e23c03e7f97f35678f37281057e360eb3ccc7dad0c0484877faea83",
     "dateien": {
-      "idle.png": "911796041485133e3e35bc536d787d470bcb5d3bf7c2aec2a0404322b568de26"
+      "idle.png": "f734e1742a8aad6d6f35d225a2379133f2f793af581cfbd2e00ad1316594bea2"
+    }
+  },
+  "birke": {
+    "renderKey": "172c623fd40e439cd9351fcf2f16dfa94f6587a26848ae948cfe8b9a8bec232e",
+    "dateien": {
+      "idle.png": "50d289d19331e4fa718ca667aae5d72c10f0df308fa8fda9ce8d0b73ea00858f"
     }
   },
   "busch": {
@@ -48,39 +54,60 @@
     }
   },
   "felsen-b": {
-    "renderKey": "dc285c16cc62a90016bbe3bd12a8e7a58ec4e6bfee7d2f138ab029580ec9738f",
+    "renderKey": "2ce25158498dbe37feda27492f9e6111b4a2c9a92aa54674f98ec08f5d0c59ad",
     "dateien": {
-      "idle.png": "f73faf4780541e9150b8fa62c3ae093266f87343a8578a0f21d38cf7ddfc646e"
+      "idle.png": "f73faf4780541e9150b8fa62c3ae093266f87343a8578a0f21d38cf7ddfc646e",
+      "idle@eisenstollen.png": "49b8214f388b3b581c363c1dc54cc4f2b9b532f82fe573ab1de99f54bc6e9dc1",
+      "idle@hoehle.png": "4c3e7522237c72711f95b336397f79492b3dec4de77b97222979d03b05697bac",
+      "idle@kristall.png": "49efe8e956132d05a7d38c414077bdc8307409de174e27a6307944087d59b838",
+      "idle@mine.png": "5894fb4a133049b950116c60b21bee85b94a46e1e28e585c1d296d49fe50ba7d",
+      "idle@wald.png": "bec0d2e524ae844eed73d16fe262f7c50698b31d7e820b1d591f39f0b2f3ec3f"
     }
   },
   "felsen-c": {
-    "renderKey": "90ae106cc426a66abd1a746e2fcb4ce3ff5b04942ade01278423b3bfda64cd75",
+    "renderKey": "e0b8025edc0472e050b26c14c13d13d6279baa7f332264bd45c4f0ad4673bf63",
     "dateien": {
-      "idle.png": "edf90e54d7db0ff67b113c4ab7d7daacc429782deb88a4de3ffd8d205735093a"
+      "idle.png": "edf90e54d7db0ff67b113c4ab7d7daacc429782deb88a4de3ffd8d205735093a",
+      "idle@eisenstollen.png": "0e51a3b16f1d2e81d15c622789edf58337633b4a2afc9211fe2d1c4f6722d175",
+      "idle@hoehle.png": "d598f13fe7d0db546b9eb86917ce33c461325052ab043047cef4ad559da2cafa",
+      "idle@kristall.png": "38f6358b97d9e8adc296d8b901e4ecd9e3bb79be2031cd6e09f2511ebc2cfd21",
+      "idle@mine.png": "ec5b6ff98bcadda89c35d58db8cb3a6e2d655def2638ad4d31dddc3c0c4a10e0",
+      "idle@wald.png": "6a54a9f9464dc0a63f21c9d38c5349880957088ed84b90cd5b9d0de487b3802f"
     }
   },
   "felsen": {
-    "renderKey": "679acf7b07b259294bc015fe7b7780c8dd2f989807e6f45b67331a06f356411a",
+    "renderKey": "cb8d81a8910b442120f7b25528ae4c55d0e05d0c4f6ea4d1f014739978250b03",
     "dateien": {
-      "idle.png": "5edc6e8e1cf9b3be6ba1991544c9b269c302c5b6aa1b516b673b6c9470c9175a"
+      "idle.png": "5edc6e8e1cf9b3be6ba1991544c9b269c302c5b6aa1b516b673b6c9470c9175a",
+      "idle@eisenstollen.png": "142d88c04efbb615b92d0651d45ae08d8876128f43df74e51ac2f7b3a7f4cce8",
+      "idle@hoehle.png": "f08939a5017e21d48a8bd8b47bc205e5d8feb38a5c7c82bd00fe50600fbeb859",
+      "idle@kristall.png": "4605a287c2950b890040c497212f0ff996692b90017c8ba97ce62ba94986800b",
+      "idle@mine.png": "7381b6e4dcb1e8056f2a17a023c361c07e095ea99745ca1a0e84c649e9f3a0c2",
+      "idle@wald.png": "5a08a86cf4880df9ada29d48780639d9d5a3d5c80fa2bc0c38bdb6f15746a9cb"
     }
   },
   "hoehlenbusch": {
-    "renderKey": "4ee98a26ef5ff45ddfc09cb3e6b4e0e5da7adee70b4deb6ca4060f685a60a6c1",
+    "renderKey": "fe11bcce8c58e168816560391db690698717adf9174b23b548aa76f138241174",
     "dateien": {
-      "idle.png": "2ef0db1871bad733d379094da65dbdaf42b9066cc98c572b7f0488c966ce0bc9"
+      "idle.png": "a85a81586cb236b8887e2a0d4897f4f057c6f1c81fd765bcb17ba35ef0e2d441"
+    }
+  },
+  "pappel-2": {
+    "renderKey": "7feb26c7241ce0304d75313a85ce7631f396c7bcecbfe1482c53446e07d6a8dc",
+    "dateien": {
+      "idle.png": "4f62d0c923eb2e801216f8a63cf2fab1e7e1aa77e6fa8cd7e4c8094eaa73336c"
     }
   },
   "pappel-niedrig": {
-    "renderKey": "48932908d8f4ec1ae03ae4e9984898ba47aa5836c3cc380babde5539967a6825",
+    "renderKey": "94acdc0bba7d9999e8f385250efe43d856cdb359f45c3b4a29eb1fc0bb309190",
     "dateien": {
-      "idle.png": "0cd136f4e862c98da927eed0700aa72b9445a22b01b957dbb3bf6cac489846ff"
+      "idle.png": "05fe1b35da9e5e4cd0b881598bfa1db23c613cf81d939865311f755967a37108"
     }
   },
   "pappel": {
-    "renderKey": "1ce3cd6f1d7b6ee41e180e64c1f36b320368215f6882bd96839219c63ee1df1c",
+    "renderKey": "be21e78032d7ee973c9bce1be1bac19af6f49a7bc618c99027b4d0c7bb9c4c10",
     "dateien": {
-      "idle.png": "675288f66a67c6eba27493414c4cec07975ee682f63ca60bfa2c38ef949f3d82"
+      "idle.png": "75813d3fe1657361db32cec862d98c18f8ced2b70a32aff30a61bfca527445a2"
     }
   },
   "portal": {
@@ -90,9 +117,9 @@
     }
   },
   "schild-axt": {
-    "renderKey": "aea3aebb154b4b7739ca6b793454e1ffeb2f2baff1fb86b838422db8f1fc30f8",
+    "renderKey": "b7a6352548a7b3c9c4ad372672ab575c3b15589700add19e5b1485f0d697c413",
     "dateien": {
-      "idle.png": "c00173fd332ec75f957fb825268bcee610d1994c282c098b9874eb395a531d54"
+      "idle.png": "295c83315f6acdc5a4f0fae97443d4c206d17e3c7332c4e337ddb6476e3ead07"
     }
   },
   "schild-spitzhacke": {
@@ -113,16 +140,22 @@
       "idle.png": "e62a1c81e8bd735f24d9ddf432d262ac9a5f7da7d5b9cf92be2bd617d3b13877"
     }
   },
-  "tanne": {
-    "renderKey": "9a0297f75f80404b635cf237f972b664062e35e06bf570481013e808a9ffe239",
+  "tanne-2": {
+    "renderKey": "994fbada34013dfb47bd4a8d0fe6028bb10882a83c325b1ca80907303177c0ab",
     "dateien": {
-      "idle.png": "b08491c69df312097b1b89d7f34ef29ec98ca7710ec1a78aa7b1cc5988b6c0a3"
+      "idle.png": "6831cbccfe06f49f729e130f579631212fcdf85d7cf15ad60567819041dc6378"
+    }
+  },
+  "tanne": {
+    "renderKey": "6d8cdeaddd0588f38a32e5df0c58076b57ed0dcbeeb0fcb24e55cf21b0f9e376",
+    "dateien": {
+      "idle.png": "5e9bfbe31ac24317ae4ddd1950571718f981ceb306a4e0dadf1846919e325a4e"
     }
   },
   "truhe-offen": {
-    "renderKey": "7c05eca4abfa0f53b7bdd71d8eee22c23f93c7888750759999d40753e426e0be",
+    "renderKey": "cff3720dc35831935cae3ff06e4ca0b11d32f7be28171c62148f6a89b8bee8e2",
     "dateien": {
-      "idle.png": "f668e5ac16d374659168235dc020fc663ccfbd62a1494ee9309d8eeac667328f"
+      "idle.png": "041dd1ba34b20d383ace190fa223df37cefe6c5ada40288e61c4b1408e0e958e"
     }
   },
   "truhe": {
@@ -132,9 +165,9 @@
     }
   },
   "wurzel": {
-    "renderKey": "bb8c0827d0dcf90ffbf858fa740c785557ce64b2daeb5c560420ae4f4aa41945",
+    "renderKey": "73dfb4159f7aee9c7dfd103e1f3df89f2b0b49a22d3151000c6628dfb690de19",
     "dateien": {
-      "idle.png": "0b09a43d17c46af33439702f65350e9de555a7d75096d561319ee6f761d9d915"
+      "idle.png": "d3a397dfeec740c5a77d6443baf4f0daac4b096f9c1536f66d986001874d3b53"
     }
   }
 }

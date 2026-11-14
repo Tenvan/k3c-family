@@ -10,6 +10,21 @@
     "manifest": "hg-eisenstollen-fern-v2/manifest.json"
   },
   {
+    "id": "hg-eisenstollen-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-fern-v5/manifest.json"
+  },
+  {
     "id": "hg-eisenstollen-mitte-v1",
     "rig": "hintergrund",
     "manifest": "hg-eisenstollen-mitte-v1/manifest.json"
@@ -18,6 +33,21 @@
     "id": "hg-eisenstollen-mitte-v2",
     "rig": "hintergrund",
     "manifest": "hg-eisenstollen-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-mitte-v5/manifest.json"
   },
   {
     "id": "hg-eisenstollen-nah-v1",
@@ -30,6 +60,21 @@
     "manifest": "hg-eisenstollen-nah-v2/manifest.json"
   },
   {
+    "id": "hg-eisenstollen-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-eisenstollen-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-eisenstollen-nah-v5/manifest.json"
+  },
+  {
     "id": "hg-hoehle-fern-v1",
     "rig": "hintergrund",
     "manifest": "hg-hoehle-fern-v1/manifest.json"
@@ -38,6 +83,21 @@
     "id": "hg-hoehle-fern-v2",
     "rig": "hintergrund",
     "manifest": "hg-hoehle-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-fern-v5/manifest.json"
   },
   {
     "id": "hg-hoehle-mitte-v1",
@@ -50,6 +110,21 @@
     "manifest": "hg-hoehle-mitte-v2/manifest.json"
   },
   {
+    "id": "hg-hoehle-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-mitte-v5/manifest.json"
+  },
+  {
     "id": "hg-hoehle-nah-v1",
     "rig": "hintergrund",
     "manifest": "hg-hoehle-nah-v1/manifest.json"
@@ -58,6 +133,21 @@
     "id": "hg-hoehle-nah-v2",
     "rig": "hintergrund",
     "manifest": "hg-hoehle-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-hoehle-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-hoehle-nah-v5/manifest.json"
   },
   {
     "id": "hg-kristall-fern-v1",
@@ -70,6 +160,21 @@
     "manifest": "hg-kristall-fern-v2/manifest.json"
   },
   {
+    "id": "hg-kristall-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-kristall-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-kristall-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-fern-v5/manifest.json"
+  },
+  {
     "id": "hg-kristall-mitte-v1",
     "rig": "hintergrund",
     "manifest": "hg-kristall-mitte-v1/manifest.json"
@@ -78,6 +183,21 @@
     "id": "hg-kristall-mitte-v2",
     "rig": "hintergrund",
     "manifest": "hg-kristall-mitte-v2/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-kristall-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-mitte-v5/manifest.json"
   },
   {
     "id": "hg-kristall-nah-v1",
@@ -90,6 +210,21 @@
     "manifest": "hg-kristall-nah-v2/manifest.json"
   },
   {
+    "id": "hg-kristall-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-kristall-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-kristall-nah-v5/manifest.json"
+  },
+  {
     "id": "hg-mine-fern-v1",
     "rig": "hintergrund",
     "manifest": "hg-mine-fern-v1/manifest.json"
@@ -98,6 +233,21 @@
     "id": "hg-mine-fern-v2",
     "rig": "hintergrund",
     "manifest": "hg-mine-fern-v2/manifest.json"
+  },
+  {
+    "id": "hg-mine-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-mine-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-mine-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-fern-v5/manifest.json"
   },
   {
     "id": "hg-mine-mitte-v1",
@@ -110,6 +260,21 @@
     "manifest": "hg-mine-mitte-v2/manifest.json"
   },
   {
+    "id": "hg-mine-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-mine-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-mine-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-mitte-v5/manifest.json"
+  },
+  {
     "id": "hg-mine-nah-v1",
     "rig": "hintergrund",
     "manifest": "hg-mine-nah-v1/manifest.json"
@@ -118,6 +283,21 @@
     "id": "hg-mine-nah-v2",
     "rig": "hintergrund",
     "manifest": "hg-mine-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-mine-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-mine-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-mine-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-mine-nah-v5/manifest.json"
   },
   {
     "id": "hg-wald-fern-v1",
@@ -130,6 +310,21 @@
     "manifest": "hg-wald-fern-v2/manifest.json"
   },
   {
+    "id": "hg-wald-fern-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-fern-v3/manifest.json"
+  },
+  {
+    "id": "hg-wald-fern-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-fern-v4/manifest.json"
+  },
+  {
+    "id": "hg-wald-fern-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-fern-v5/manifest.json"
+  },
+  {
     "id": "hg-wald-mitte-v1",
     "rig": "hintergrund",
     "manifest": "hg-wald-mitte-v1/manifest.json"
@@ -140,6 +335,21 @@
     "manifest": "hg-wald-mitte-v2/manifest.json"
   },
   {
+    "id": "hg-wald-mitte-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-mitte-v3/manifest.json"
+  },
+  {
+    "id": "hg-wald-mitte-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-mitte-v4/manifest.json"
+  },
+  {
+    "id": "hg-wald-mitte-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-mitte-v5/manifest.json"
+  },
+  {
     "id": "hg-wald-nah-v1",
     "rig": "hintergrund",
     "manifest": "hg-wald-nah-v1/manifest.json"
@@ -148,5 +358,20 @@
     "id": "hg-wald-nah-v2",
     "rig": "hintergrund",
     "manifest": "hg-wald-nah-v2/manifest.json"
+  },
+  {
+    "id": "hg-wald-nah-v3",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-nah-v3/manifest.json"
+  },
+  {
+    "id": "hg-wald-nah-v4",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-nah-v4/manifest.json"
+  },
+  {
+    "id": "hg-wald-nah-v5",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-nah-v5/manifest.json"
   }
 ]

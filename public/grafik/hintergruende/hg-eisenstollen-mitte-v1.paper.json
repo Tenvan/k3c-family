@@ -3,373 +3,91 @@
   "id": "hg-eisenstollen-mitte-v1",
   "rig": "hintergrund",
   "version": 1,
-  "beschreibung": "Hintergrund Schmiedehalle mit Glut, mittlere Ebene, Variante 1: periodisches Profil, kachelt waagrecht.",
+  "beschreibung": "Hintergrund Eisenstollen, mittlere Ebene (Grundton mit Schatten), Variante 1: ohne Bäume, periodisches Profil, kachelt waagrecht (B-722).",
   "teile": [
     {
-      "id": "grund",
+      "id": "decke",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M0 -480l0 36 32 4 32 1 32 -1 32 -1 32 3 32 6 32 1 32 -4 32 -7 32 -6 32 -2 32 -1 32 -1 32 3 32 6 32 4 32 -2 32 -7 32 -6 32 0 32 3 32 2 32 2 32 3 0 -36ZM0 0l0 -51 32 2 32 6 32 6 32 1 32 -3 32 -1 32 3 32 3 32 -1 32 -3 32 -3 32 -1 32 -1 32 -5 32 -3 32 1 32 5 32 1 32 -3 32 -5 32 -1 32 1 32 1 32 0 0 51Z",
-          "material": "biom-eisenstollen"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M0 0l0 -20 32 2 32 -1 32 -1 32 2 32 1 32 -1 32 -1 32 1 32 4 32 1 32 -2 32 -3 32 0 32 2 32 2 32 -1 32 -2 32 0 32 0 32 -3 32 -4 32 -2 32 2 32 4 0 20Z",
+          "form": "M0 -480L0 -461.8L16 -462.3L32 -462.2L48 -461.1L64 -458.8L80 -455.6L96 -452L112 -449L128 -447.2L144 -447.2L160 -448.9L176 -452.1L192 -455.9L208 -459.6L224 -462.7L240 -464.9L256 -466.4L272 -467.4L288 -468.2L304 -469.1L320 -469.9L336 -470.3L352 -470L368 -468.7L384 -466.6L400 -464L416 -461.6L432 -459.9L448 -459.4L464 -459.8L480 -461L496 -462.1L512 -462.5L528 -461.9L544 -460.3L560 -458L576 -455.7L592 -454L608 -453.5L624 -454L640 -455.4L656 -457.2L672 -458.7L688 -459.8L704 -460.3L720 -460.6L736 -460.8L752 -461.2L768 -461.8L768 -480Z",
           "material": "biom-eisenstollen",
-          "ton": "schatten"
+          "ton": "basis"
         }
       ],
       "pivot": [384, -240]
     },
     {
-      "id": "stahl",
+      "id": "oefen",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M233 -29l0 -409 18 0 0 409ZM224 -29l0 -8 36 0 0 8ZM224 -430l0 -8 36 0 0 8ZM342 -35l0 -421 18 0 0 421ZM333 -35l0 -8 36 0 0 8ZM333 -448l0 -8 36 0 0 8ZM549 -38l0 -412 18 0 0 412ZM540 -38l0 -8 36 0 0 8ZM540 -442l0 -8 36 0 0 8ZM202 -392l0 -16 396 0 0 16ZM255 -402l45 88 -7 3 -45 -88ZM345 -399l-45 88 -7 -3 45 -88ZM364 -403l93 88 -5 6 -94 -88ZM551 -397l-94 88 -5 -6 93 -88Z",
+          "form": "M86.2 -64.4L97.2 -259.8L117.9 -279.8L117.9 -447L145.9 -447L145.9 -279.8L166.7 -259.8L177.6 -64.4ZM560.9 -56.4L573.9 -284.6L601.3 -304.6L601.3 -453.6L629.3 -453.6L629.3 -304.6L656.7 -284.6L669.8 -56.4Z",
           "material": "biom-eisenstollen"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M233 -29l0 -409 6 0 0 409ZM342 -35l0 -421 6 0 0 421ZM549 -38l0 -412 6 0 0 412ZM202 -392l0 -5 396 0 0 5Z",
+          "form": "M86.2 -64.4L97.2 -259.8L113.6 -259.8L104.5 -64.4ZM560.9 -56.4L573.9 -284.6L593.5 -284.6L582.6 -56.4Z",
           "material": "biom-eisenstollen",
           "ton": "schatten"
         },
         {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -59],
-          "radius": 1.8,
-          "ton": "licht"
+          "art": "flaeche",
+          "form": "M109.9 -66.4L109.9 -104.4L119.9 -116.4L143.9 -116.4L153.9 -104.4L153.9 -66.4ZM593.3 -58.4L593.3 -96.4L603.3 -108.4L627.3 -108.4L637.3 -96.4L637.3 -58.4Z",
+          "material": "schwarz"
         },
         {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -99],
-          "radius": 1.8,
-          "ton": "licht"
+          "art": "flaeche",
+          "form": "M117.9 -66.4L119.9 -94.4L131.9 -104.4L143.9 -94.4L145.9 -66.4ZM601.3 -58.4L603.3 -86.4L615.3 -96.4L627.3 -86.4L629.3 -58.4Z",
+          "material": "lava"
         },
         {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -139],
-          "radius": 1.8,
+          "art": "flaeche",
+          "form": "M123.9 -66.4L131.9 -90.4L139.9 -66.4ZM607.3 -58.4L615.3 -82.4L623.3 -58.4Z",
+          "material": "gold",
           "ton": "licht"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "boden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0L0 -64.4L16 -64.9L32 -65.7L48 -66.7L64 -67.8L80 -68.8L96 -69.4L112 -69.4L128 -68.7L144 -67.3L160 -65L176 -62.1L192 -58.7L208 -55.1L224 -51.7L240 -48.8L256 -46.6L272 -45.4L288 -45.3L304 -46.2L320 -48L336 -50.5L352 -53.4L368 -56.4L384 -59.1L400 -61.2L416 -62.7L432 -63.3L448 -63.2L464 -62.5L480 -61.4L496 -60.1L512 -58.8L528 -57.9L544 -57.3L560 -57.3L576 -57.8L592 -58.7L608 -59.9L624 -61.1L640 -62.3L656 -63.3L672 -64L688 -64.3L704 -64.4L720 -64.3L736 -64.2L752 -64.2L768 -64.4L768 0Z",
+          "material": "biom-eisenstollen"
         },
         {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -179],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -219],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -259],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -299],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -339],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [245, -379],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -64],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -104],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -144],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -184],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -224],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -264],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -304],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -344],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -384],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [354, -424],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -68],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -108],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -148],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -188],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -228],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -268],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -308],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -348],
-          "radius": 1.8,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [561, -388],
-          "radius": 1.8,
+          "art": "flaeche",
+          "form": "M0 -66.4L16 -66.9L32 -67.7L48 -68.7L64 -69.8L80 -70.8L96 -71.4L112 -71.4L128 -70.7L144 -69.3L160 -67L176 -64.1L192 -60.7L208 -57.1L224 -53.7L240 -50.8L256 -48.6L272 -47.4L288 -47.3L304 -48.2L320 -50L336 -52.5L352 -55.4L368 -58.4L384 -61.1L400 -63.2L416 -64.7L432 -65.3L448 -65.2L464 -64.5L480 -63.4L496 -62.1L512 -60.8L528 -59.9L544 -59.3L560 -59.3L576 -59.8L592 -60.7L608 -61.9L624 -63.1L640 -64.3L656 -65.3L672 -66L688 -66.3L704 -66.4L720 -66.3L736 -66.2L752 -66.2L768 -66.4L768 -61.4L752 -61.2L736 -61.2L720 -61.3L704 -61.4L688 -61.3L672 -61L656 -60.3L640 -59.3L624 -58.1L608 -56.9L592 -55.7L576 -54.8L560 -54.3L544 -54.3L528 -54.9L512 -55.8L496 -57.1L480 -58.4L464 -59.5L448 -60.2L432 -60.3L416 -59.7L400 -58.2L384 -56.1L368 -53.4L352 -50.4L336 -47.5L320 -45L304 -43.2L288 -42.3L272 -42.4L256 -43.6L240 -45.8L224 -48.7L208 -52.1L192 -55.7L176 -59.1L160 -62L144 -64.3L128 -65.7L112 -66.4L96 -66.4L80 -65.8L64 -64.8L48 -63.7L32 -62.7L16 -61.9L0 -61.4Z",
+          "material": "lava",
           "ton": "licht"
         },
         {
           "art": "falz",
-          "breite": 1.6,
-          "form": "M296 -392L302 -272M444 -392L450 -272",
-          "material": "linie"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [296, -382],
-          "radius": 3.2,
+          "breite": 2,
+          "form": "M282.9 -468L282.9 -329",
+          "material": "eisen",
           "ton": "schatten"
         },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [297, -362],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [298, -342],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [299, -322],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [300, -302],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [301, -282],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [444, -382],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [445, -362],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [446, -342],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [447, -322],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [448, -302],
-          "radius": 3.2,
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "biom-eisenstollen",
-          "mitte": [449, -282],
-          "radius": 3.2,
-          "ton": "schatten"
-        }
-      ],
-      "pivot": [384, -240]
-    },
-    {
-      "id": "glut",
-      "lagen": [
         {
           "art": "flaeche",
-          "form": "M72 -41l17 -8 9 6 13 -8 13 10 -13 -4 -13 6 -9 -5ZM200 -40l23 -8 12 6 17 -8 17 10 -17 -4 -17 6 -12 -5ZM388 -47l15 -8 8 6 11 -8 11 10 -11 -4 -11 6 -8 -5ZM464 -55l22 -8 11 6 16 -8 16 10 -16 -4 -16 6 -11 -5ZM665 -57l18 -8 10 6 13 -8 14 10 -14 -4 -13 6 -10 -5Z",
-          "material": "koenigsrot",
-          "ton": "licht"
+          "form": "M277.9 -329L287.9 -329L284.9 -319L287.9 -313L279.9 -317Z",
+          "material": "eisen"
         },
         {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [98, -45],
-          "radius": 2.4,
-          "ton": "licht"
+          "art": "falz",
+          "breite": 2,
+          "form": "M500.9 -462.3L500.9 -308.4",
+          "material": "eisen",
+          "ton": "schatten"
         },
         {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [235, -44],
-          "radius": 2.4,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [411, -51],
-          "radius": 2.4,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [497, -59],
-          "radius": 2.4,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [693, -61],
-          "radius": 2.4,
-          "ton": "licht"
+          "art": "flaeche",
+          "form": "M495.9 -308.4L505.9 -308.4L502.9 -298.4L505.9 -292.4L497.9 -296.4Z",
+          "material": "eisen"
         }
       ],
       "pivot": [384, -240]

@@ -220,8 +220,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 288,
-    "rahmen": [-128, -288, 256, 288]
+    "hoehe_px": 296,
+    "rahmen": [-132, -296, 264, 296]
   },
   "animationen": {
     "stand": {
@@ -587,7 +587,7 @@
             },
             {
               "art": "flaeche",
-              "form": "M-130 -10L-86 -10L-86 0L-130 0Z",
+              "form": "M-128 -10L-86 -10L-86 0L-128 0Z",
               "material": "stein"
             },
             {
@@ -708,8 +708,526 @@
             },
             {
               "art": "flaeche",
-              "form": "M86 -10L130 -10L130 0L86 0Z",
+              "form": "M86 -10L128 -10L128 0L86 0Z",
               "material": "stein"
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "mittelbau-quader",
+          "lagen": [
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -14L-41 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -14L87 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-72 -14L-72 0",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-56 -14L-56 0",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M56 -14L56 0",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M72 -14L72 0",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -28L-41 -28",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -28L87 -28",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-80 -28L-80 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-64 -28L-64 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-48 -28L-48 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M48 -28L48 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M64 -28L64 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M80 -28L80 -14",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -42L-41 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -42L87 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-72 -42L-72 -28",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-56 -42L-56 -28",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M56 -42L56 -28",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M72 -42L72 -28",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -56L-41 -56",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -56L87 -56",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-80 -56L-80 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-64 -56L-64 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-48 -56L-48 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M48 -56L48 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M64 -56L64 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M80 -56L80 -42",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -70L-41 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -70L87 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-72 -70L-72 -56",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-56 -70L-56 -56",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M56 -70L56 -56",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M72 -70L72 -56",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -84L-41 -84",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -84L87 -84",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-80 -84L-80 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-64 -84L-64 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-48 -84L-48 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M48 -84L48 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M64 -84L64 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M80 -84L80 -70",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -98L-41 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -98L87 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-72 -98L-72 -84",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-56 -98L-56 -84",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M56 -98L56 -84",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M72 -98L72 -84",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -112L-41 -112",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M41 -112L87 -112",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-80 -112L-80 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-64 -112L-64 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-48 -112L-48 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M48 -112L48 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M64 -112L64 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M80 -112L80 -98",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -126L87 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-72 -126L-72 -112",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-56 -126L-56 -112",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M56 -126L56 -112",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M72 -126L72 -112",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-88 -140L87 -140",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-80 -140L-80 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-64 -140L-64 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-48 -140L-48 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-32 -140L-32 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M-16 -140L-16 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M0 -140L0 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M16 -140L16 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M32 -140L32 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M48 -140L48 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M64 -140L64 -126",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.9,
+              "form": "M80 -140L80 -126",
+              "material": "stein",
+              "ton": "schatten"
             }
           ],
           "pivot": [0, 0]
@@ -718,7 +1236,7 @@
     },
     {
       "tausch": {
-        "stein": "fell-fuchs"
+        "stein": "kupfer"
       },
       "zusaetze": [
         {
@@ -859,8 +1377,8 @@
     },
     {
       "tausch": {
-        "fell-fuchs": "stoff",
-        "smaragd": "stoff"
+        "kupfer": "eisen",
+        "smaragd": "eisen"
       },
       "zusaetze": [
         {
@@ -902,22 +1420,50 @@
             },
             {
               "art": "flaeche",
-              "form": "M-109 -270L-107 -270L-107 -246L-109 -246Z",
-              "material": "maehne"
+              "form": "M-127 -231L-108 -271L-89 -231Z",
+              "material": "eisen",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
-              "form": "M-107 -270L-90 -265L-107 -260Z",
+              "auflage": true,
+              "form": "M-108 -271L-89 -231L-108 -231Z",
+              "material": "eisen",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M89 -231L108 -271L127 -231Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M108 -271L127 -231L108 -231Z",
+              "material": "eisen",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-108.9 -287L-107.1 -287L-107.1 -268L-108.9 -268Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-107.1 -287L-95 -283.5L-107.1 -280Z",
               "material": "koenigsrot"
             },
             {
               "art": "flaeche",
-              "form": "M107 -270L109 -270L109 -246L107 -246Z",
-              "material": "maehne"
+              "form": "M107.1 -287L108.9 -287L108.9 -268L107.1 -268Z",
+              "material": "eisen",
+              "ton": "schatten"
             },
             {
               "art": "flaeche",
-              "form": "M109 -270L126 -265L109 -260Z",
+              "form": "M108.9 -287L121 -283.5L108.9 -280Z",
               "material": "koenigsrot"
             }
           ],
@@ -927,7 +1473,7 @@
     },
     {
       "tausch": {
-        "stoff": "koenigsblau"
+        "eisen": "kristall"
       },
       "zusaetze": [
         {
@@ -936,27 +1482,15 @@
           "lagen": [
             {
               "art": "flaeche",
-              "form": "M-118 -246L-108 -286L-98 -246Z",
-              "material": "koenigsblau",
+              "form": "M-30 -214L0 -292L30 -214Z",
+              "material": "kristall",
               "ton": "licht"
             },
             {
               "art": "flaeche",
-              "form": "M98 -246L108 -286L118 -246Z",
-              "material": "koenigsblau",
-              "ton": "licht"
-            },
-            {
-              "art": "flaeche",
-              "form": "M-26 -224L0 -288L26 -224Z",
-              "material": "koenigsblau",
-              "ton": "licht"
-            },
-            {
-              "art": "falz",
-              "breite": 1,
-              "form": "M1 -284L22 -227",
-              "material": "weiss",
+              "auflage": true,
+              "form": "M0 -292L30 -214L0 -214Z",
+              "material": "kristall",
               "ton": "basis"
             },
             {
@@ -998,6 +1532,20 @@
               "material": "weiss",
               "mitte": [-8, -250],
               "radius": 1.3
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "fugen",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-60.5 -149.2L-59.4 -149.2L-59.4 -136.8L-60.5 -136.8ZM-24.5 -149.2L-23.4 -149.2L-23.4 -136.8L-24.5 -136.8ZM11.5 -149.2L12.6 -149.2L12.6 -136.8L11.5 -136.8ZM47.5 -149.2L48.6 -149.2L48.6 -136.8L47.5 -136.8ZM83.5 -149.2L84.6 -149.2L84.6 -136.8L83.5 -136.8ZM-42.5 -135.2L-41.4 -135.2L-41.4 -122.8L-42.5 -122.8ZM-6.5 -135.2L-5.4 -135.2L-5.4 -122.8L-6.5 -122.8ZM29.5 -135.2L30.6 -135.2L30.6 -122.8L29.5 -122.8ZM65.5 -135.2L66.6 -135.2L66.6 -122.8L65.5 -122.8ZM-60.5 -121.2L-59.4 -121.2L-59.4 -108.8L-60.5 -108.8ZM-24.5 -121.2L-23.4 -121.2L-23.4 -108.8L-24.5 -108.8ZM11.5 -121.2L12.6 -121.2L12.6 -108.8L11.5 -108.8ZM47.5 -121.2L48.6 -121.2L48.6 -108.8L47.5 -108.8ZM83.5 -121.2L84.6 -121.2L84.6 -108.8L83.5 -108.8ZM-42.5 -107.2L-41.4 -107.2L-41.4 -94.8L-42.5 -94.8ZM-6.5 -107.2L-5.4 -107.2L-5.4 -94.8L-6.5 -94.8ZM29.5 -107.2L30.6 -107.2L30.6 -94.8L29.5 -94.8ZM65.5 -107.2L66.6 -107.2L66.6 -94.8L65.5 -94.8ZM-60.5 -93.2L-59.4 -93.2L-59.4 -80.8L-60.5 -80.8ZM47.5 -93.2L48.6 -93.2L48.6 -80.8L47.5 -80.8ZM83.5 -93.2L84.6 -93.2L84.6 -80.8L83.5 -80.8ZM-42.5 -79.2L-41.4 -79.2L-41.4 -66.8L-42.5 -66.8ZM65.5 -79.2L66.6 -79.2L66.6 -66.8L65.5 -66.8ZM-60.5 -65.2L-59.4 -65.2L-59.4 -52.8L-60.5 -52.8ZM47.5 -65.2L48.6 -65.2L48.6 -52.8L47.5 -52.8ZM83.5 -65.2L84.6 -65.2L84.6 -52.8L83.5 -52.8ZM-42.5 -51.2L-41.4 -51.2L-41.4 -38.8L-42.5 -38.8ZM65.5 -51.2L66.6 -51.2L66.6 -38.8L65.5 -38.8ZM-60.5 -37.2L-59.4 -37.2L-59.4 -24.8L-60.5 -24.8ZM47.5 -37.2L48.6 -37.2L48.6 -24.8L47.5 -24.8ZM83.5 -37.2L84.6 -37.2L84.6 -24.8L83.5 -24.8ZM-42.5 -23.2L-41.4 -23.2L-41.4 -10.8L-42.5 -10.8ZM65.5 -23.2L66.6 -23.2L66.6 -10.8L65.5 -10.8ZM-127.5 -212.5L-88.5 -212.5L-88.5 -211.4L-127.5 -211.4ZM-127.5 -192.5L-88.5 -192.5L-88.5 -191.4L-127.5 -191.4ZM-127.5 -172.5L-88.5 -172.5L-88.5 -171.4L-127.5 -171.4ZM-127.5 -152.5L-88.5 -152.5L-88.5 -151.4L-127.5 -151.4ZM-127.5 -132.5L-88.5 -132.5L-88.5 -131.4L-127.5 -131.4ZM-127.5 -112.5L-88.5 -112.5L-88.5 -111.4L-127.5 -111.4ZM-127.5 -92.5L-88.5 -92.5L-88.5 -91.4L-127.5 -91.4ZM-127.5 -72.5L-88.5 -72.5L-88.5 -71.4L-127.5 -71.4ZM-127.5 -52.5L-88.5 -52.5L-88.5 -51.4L-127.5 -51.4ZM-127.5 -32.5L-88.5 -32.5L-88.5 -31.4L-127.5 -31.4ZM-127.5 -12.5L-88.5 -12.5L-88.5 -11.4L-127.5 -11.4ZM88.5 -212.5L127.5 -212.5L127.5 -211.4L88.5 -211.4ZM88.5 -192.5L127.5 -192.5L127.5 -191.4L88.5 -191.4ZM88.5 -172.5L127.5 -172.5L127.5 -171.4L88.5 -171.4ZM88.5 -152.5L127.5 -152.5L127.5 -151.4L88.5 -151.4ZM88.5 -132.5L127.5 -132.5L127.5 -131.4L88.5 -131.4ZM88.5 -112.5L127.5 -112.5L127.5 -111.4L88.5 -111.4ZM88.5 -92.5L127.5 -92.5L127.5 -91.4L88.5 -91.4ZM88.5 -72.5L127.5 -72.5L127.5 -71.4L88.5 -71.4ZM88.5 -52.5L127.5 -52.5L127.5 -51.4L88.5 -51.4ZM88.5 -32.5L127.5 -32.5L127.5 -31.4L88.5 -31.4ZM88.5 -12.5L127.5 -12.5L127.5 -11.4L88.5 -11.4ZM-88 -14.5L-41 -14.5L-41 -13.4L-88 -13.4ZM41 -14.5L87 -14.5L87 -13.4L41 -13.4ZM-72.5 -14L-71.4 -14L-71.4 0L-72.5 0ZM-56.5 -14L-55.4 -14L-55.4 0L-56.5 0ZM55.5 -14L56.6 -14L56.6 0L55.5 0ZM71.5 -14L72.6 -14L72.6 0L71.5 0ZM-88 -28.5L-41 -28.5L-41 -27.4L-88 -27.4ZM41 -28.5L87 -28.5L87 -27.4L41 -27.4ZM-80.5 -28L-79.4 -28L-79.4 -14L-80.5 -14ZM-64.5 -28L-63.4 -28L-63.4 -14L-64.5 -14ZM-48.5 -28L-47.4 -28L-47.4 -14L-48.5 -14ZM47.5 -28L48.6 -28L48.6 -14L47.5 -14ZM63.5 -28L64.6 -28L64.6 -14L63.5 -14ZM79.5 -28L80.6 -28L80.6 -14L79.5 -14ZM-88 -42.5L-41 -42.5L-41 -41.4L-88 -41.4ZM41 -42.5L87 -42.5L87 -41.4L41 -41.4ZM-72.5 -42L-71.4 -42L-71.4 -28L-72.5 -28ZM-56.5 -42L-55.4 -42L-55.4 -28L-56.5 -28ZM55.5 -42L56.6 -42L56.6 -28L55.5 -28ZM71.5 -42L72.6 -42L72.6 -28L71.5 -28ZM-88 -56.5L-41 -56.5L-41 -55.4L-88 -55.4ZM41 -56.5L87 -56.5L87 -55.4L41 -55.4ZM-80.5 -56L-79.4 -56L-79.4 -42L-80.5 -42ZM-64.5 -56L-63.4 -56L-63.4 -42L-64.5 -42ZM-48.5 -56L-47.4 -56L-47.4 -42L-48.5 -42ZM47.5 -56L48.6 -56L48.6 -42L47.5 -42ZM63.5 -56L64.6 -56L64.6 -42L63.5 -42ZM79.5 -56L80.6 -56L80.6 -42L79.5 -42ZM-88 -70.5L-41 -70.5L-41 -69.4L-88 -69.4ZM41 -70.5L87 -70.5L87 -69.4L41 -69.4ZM-72.5 -70L-71.4 -70L-71.4 -56L-72.5 -56ZM-56.5 -70L-55.4 -70L-55.4 -56L-56.5 -56ZM55.5 -70L56.6 -70L56.6 -56L55.5 -56ZM71.5 -70L72.6 -70L72.6 -56L71.5 -56ZM-88 -84.5L-41 -84.5L-41 -83.4L-88 -83.4ZM41 -84.5L87 -84.5L87 -83.4L41 -83.4ZM-80.5 -84L-79.4 -84L-79.4 -70L-80.5 -70ZM-64.5 -84L-63.4 -84L-63.4 -70L-64.5 -70ZM-48.5 -84L-47.4 -84L-47.4 -70L-48.5 -70ZM47.5 -84L48.6 -84L48.6 -70L47.5 -70ZM63.5 -84L64.6 -84L64.6 -70L63.5 -70ZM79.5 -84L80.6 -84L80.6 -70L79.5 -70ZM-88 -98.5L-41 -98.5L-41 -97.4L-88 -97.4ZM41 -98.5L87 -98.5L87 -97.4L41 -97.4ZM-72.5 -98L-71.4 -98L-71.4 -84L-72.5 -84ZM-56.5 -98L-55.4 -98L-55.4 -84L-56.5 -84ZM55.5 -98L56.6 -98L56.6 -84L55.5 -84ZM71.5 -98L72.6 -98L72.6 -84L71.5 -84ZM-88 -112.5L-41 -112.5L-41 -111.4L-88 -111.4ZM41 -112.5L87 -112.5L87 -111.4L41 -111.4ZM-80.5 -112L-79.4 -112L-79.4 -98L-80.5 -98ZM-64.5 -112L-63.4 -112L-63.4 -98L-64.5 -98ZM-48.5 -112L-47.4 -112L-47.4 -98L-48.5 -98ZM47.5 -112L48.6 -112L48.6 -98L47.5 -98ZM63.5 -112L64.6 -112L64.6 -98L63.5 -98ZM79.5 -112L80.6 -112L80.6 -98L79.5 -98ZM-88 -126.5L87 -126.5L87 -125.4L-88 -125.4ZM-72.5 -126L-71.4 -126L-71.4 -112L-72.5 -112ZM-56.5 -126L-55.4 -126L-55.4 -112L-56.5 -112ZM55.5 -126L56.6 -126L56.6 -112L55.5 -112ZM71.5 -126L72.6 -126L72.6 -112L71.5 -112ZM-88 -140.5L87 -140.5L87 -139.4L-88 -139.4ZM-80.5 -140L-79.4 -140L-79.4 -126L-80.5 -126ZM-64.5 -140L-63.4 -140L-63.4 -126L-64.5 -126ZM-48.5 -140L-47.4 -140L-47.4 -126L-48.5 -126ZM-32.5 -140L-31.4 -140L-31.4 -126L-32.5 -126ZM-16.5 -140L-15.4 -140L-15.4 -126L-16.5 -126ZM-0.5 -140L0.6 -140L0.6 -126L-0.5 -126ZM15.5 -140L16.6 -140L16.6 -126L15.5 -126ZM31.5 -140L32.6 -140L32.6 -126L31.5 -126ZM47.5 -140L48.6 -140L48.6 -126L47.5 -126ZM63.5 -140L64.6 -140L64.6 -126L63.5 -126ZM79.5 -140L80.6 -140L80.6 -126L79.5 -126Z",
+              "material": "kristall",
+              "ton": "licht"
             }
           ],
           "pivot": [0, 0]

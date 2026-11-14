@@ -249,8 +249,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 128,
-    "rahmen": [-96, -128, 192, 128]
+    "hoehe_px": 132,
+    "rahmen": [-100, -132, 200, 132]
   },
   "animationen": {
     "stand": {
