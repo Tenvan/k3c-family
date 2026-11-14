@@ -35,6 +35,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-880](B-880-asset-pakete-je-welt.md) | PAP | Idee | mittel | eingeplant | PT6 | Assets lassen sich zusammen mit einer Welt zu Paketen bündeln |
 | [B-881](B-881-burg-ausbau-variante-je-stufe.md) | CLI | Problem | niedrig | offen | – | Burg-Ausbau-Überlage zeigt die Türmchen im Material der Burg-Stufe |
 | [B-883](B-883-hintergruende-fuenf-varianten-im-client.md) | CLI | Problem | niedrig | offen | – | Der Client nutzt alle fünf Hintergrund-Varianten |
+| [B-884](B-884-abnahme-mg11.md) | PAP | Schuld | mittel | offen | – | Abnahme MG11: Sichtprüfung der Welt-Grafik und Gen-Läufe sind erledigt |
 
 ## Archiv
 

@@ -8,7 +8,7 @@ import type { Spec } from '../schema/types';
 
 const ordner = join(ROOT, 'public/grafik/hintergruende');
 const specs = specsIn(ordner).map((p) => JSON.parse(readFileSync(p, 'utf8')) as Spec);
-const BAUM = /baum|baeume|tanne|birke|pappel|eiche|stamm|laub/i;
+const BAUM = /baum|bäum|baeume|tanne|birke|pappel|eiche|stamm|laub/i;
 
 describe('Hintergründe (B-722)', () => {
   it('kein Teil ist ein Baum, keine Beschreibung nennt Bäume als Motiv (AC-01)', () => {
@@ -22,6 +22,14 @@ describe('Hintergründe (B-722)', () => {
   it('75 Assets: 5 Biome × 3 Ebenen × 5 Varianten (AC-03)', () => {
     const soll = ['wald', 'hoehle', 'mine', 'eisenstollen', 'kristall'].flatMap((b) => ['fern', 'mitte', 'nah'].flatMap((e) => [1, 2, 3, 4, 5].map((v) => `hg-${b}-${e}-v${v}`)));
     expect(specs.map((s) => s.id).sort()).toEqual(soll.sort());
+  });
+
+  it('alle Formen liegen waagrecht in 0..768, damit die Kachelnaht nichts abschneidet (D-MG7-03)', () => {
+    const raus = specs.flatMap((s) => s.teile.flatMap((t) => t.lagen.flatMap((l) => {
+      const xs = l.art === 'punkt' ? [l.mitte[0] - l.radius, l.mitte[0] + l.radius] : (l.form.match(/-?\d*\.?\d+/g) ?? []).map(Number).filter((_, i) => i % 2 === 0);
+      return xs.some((x) => x < 0 || x > 768) ? [`${s.id}:${t.id}`] : [];
+    })));
+    expect([...new Set(raus)]).toEqual([]);
   });
 
   it('Specs heißen hg-<biom>-<ebene>-v<n>', () => {

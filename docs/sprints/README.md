@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | `aktiv/MG11-papier-welt-nachbessern/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 
@@ -358,3 +357,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | `erledigt/WZ57-workbench-aufraeumen/` |
 | PT5 | Abnahme-Läufe CU1 (B-836) | `erledigt/PT5-abnahme-cu1/` |
 | NG20 | Natives Spiel komplett nach dist (B-827) | `erledigt/NG20-native-build-dist/` |
+| MG11 | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | `erledigt/MG11-papier-welt-nachbessern/` |

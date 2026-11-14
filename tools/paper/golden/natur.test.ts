@@ -27,6 +27,12 @@ describe('Münze (B-723/AC-03)', () => {
     expect(idle.frames).toBeGreaterThanOrEqual(6);
     const kf = idle.keyframes!;
     expect(kf.length).toBe(idle.frames);
-    for (const k of kf) expect(Object.values(k.sichtbar ?? {}).filter(Boolean).length, `t ${k.t}`).toBe(1);
+    const phasen = m.teile.map((t) => t.id);
+    kf.forEach((k, i) => {
+      expect(k.t).toBeCloseTo(i / idle.frames);
+      // jeder Keyframe nennt alle Phasen, sonst erbt ein Teil den Zustand des Vorgängers (pose.ts)
+      expect(Object.keys(k.sichtbar ?? {}).sort(), `t ${k.t}`).toEqual([...phasen].sort());
+      expect(Object.values(k.sichtbar ?? {}).filter(Boolean).length, `t ${k.t}`).toBe(1);
+    });
   });
 });

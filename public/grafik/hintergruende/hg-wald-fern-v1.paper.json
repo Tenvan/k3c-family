@@ -36,7 +36,7 @@
         {
           "art": "flaeche",
           "form": "M173.8 -148.3L187.8 -187.3L203.8 -176.3L219.8 -148.3ZM386.9 -181.2L400.9 -220.2L416.9 -209.2L432.9 -181.2Z",
-          "material": "stein",
+          "material": "biom-hoehle",
           "ton": "schatten"
         },
         {

@@ -1,11 +1,11 @@
 # MG11 · PAP · Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
 - **Tickets:** B-721, B-722, B-723, B-699
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 9cbe9be79
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-14
@@ -36,10 +36,12 @@ Nach RD2. B-699 ist das Dach-Ticket des Projekts PAP und schließt mit dem Proje
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `public/grafik/gebaeude/**`, `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `public/grafik/icons/**`, `tools/paper/golden/**`
+- **Bereich:** `public/grafik/gebaeude-paper/**`, `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `public/grafik/icons/**`, `tools/paper/golden/**`, `data/paper.json`
 - **Abhängig von:** –
-- **Braucht 🧑:** –
+- **Braucht 🧑:** Sichtprüfung (AC-04)
 - **Sperre:** golden
+
+Korrektur im Review MG11.5: Bereich nannte `public/grafik/gebaeude/**`, geändert wurde `gebaeude-paper/`; `data/paper.json` (Frame-Maße der Bäume) kam in MG11.4 dazu.
 
 ## Beispiele
 
@@ -68,7 +70,7 @@ keine
 | MG11.2 | `MG11.2-hintergruende-wald-hoehle-mine.md` | Umsetzung | autonom | fertig |
 | MG11.3 | `MG11.3-hintergruende-stollen-kristall.md` | Umsetzung | autonom | fertig |
 | MG11.4 | `MG11.4-natur-icons-muenze.md` | Umsetzung | autonom | fertig |
-| MG11.5 | `MG11.5-review.md` | Umsetzung | autonom | offen |
+| MG11.5 | `MG11.5-review.md` | Umsetzung | autonom | fertig |
 
 Reife Entwurf:
 
@@ -80,5 +82,6 @@ Reife Entwurf:
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+2026-11-14, Claude autonom (Review MG11.5). AC-01–AC-03: Session-Ergebnisse MG11.1–MG11.4; Tests `tools/paper/golden/{gebaeude,hintergruende,natur}.test.ts`, `task check` und `task check:go` grün. AC-04: Review ohne schweren Befund; Sichtprüfung durch 🧑 offen (Gruppen `gebaeude-paper`, `hintergruende`, `objekte`, `icons`).
+Behoben im Review: `materialien.test.ts` auf 75 Hintergründe, Wald ohne `smaragd`/`stein`-Ersatz, Farne an der Kachelnaht (neuer Test: Formen in 0..768), Münz-Test prüft alle Phasen je Keyframe, Baum-Regex mit Umlaut, Bereich korrigiert.
+Neue Tickets: B-881 (Burg-Ausbau-Variante im Client), B-883 (fünf Hintergrund-Varianten im Client). Offen als Risiko (vermutet): 360-px-Bäume werden im Spiel auf ≈0,4 verkleinert, mehr Texturspeicher und mögliches Flimmern auf der Xbox; mit US3 klären.
