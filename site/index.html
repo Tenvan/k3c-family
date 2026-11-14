@@ -249,6 +249,15 @@ html{scroll-behavior:smooth}
 .sprung-knopf:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--schwarz)}
 .sprung-knopf:focus-visible{outline:3px solid var(--blau);outline-offset:3px}
 @media print{.sprung{display:none}}
+/* Nur passende Knöpfe zeigen, ohne Script: oben fehlt „Zum Anfang“, unten „Zum Ende“ (Scroll-Zeitleiste; Browser ohne
+   animation-timeline zeigen beide). */
+@supports (animation-timeline: scroll()){
+  .sprung-knopf{animation-timeline:scroll(root);animation-fill-mode:both;animation-timing-function:linear;animation-duration:1ms}
+  .sprung-knopf.hoch{animation-name:sprung-hoch}
+  .sprung-knopf.runter{animation-name:sprung-runter}
+  @keyframes sprung-hoch{0%{opacity:0;visibility:hidden;scale:.6}4%,100%{opacity:1;visibility:visible;scale:1}}
+  @keyframes sprung-runter{0%,96%{opacity:1;visibility:visible;scale:1}100%{opacity:0;visibility:hidden;scale:.6}}
+}
 </style>
 </head>
 <body id="anfang">
