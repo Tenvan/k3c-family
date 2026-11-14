@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { PLAN_RELOAD_MS, useLiveReload } from '../lib/useLiveReload';
 import { backend, type GitHubData } from '../api';
 import { ActionButton, LinkButton, Text } from '@webkit/atoms';
 import { Pill } from './Pill';
@@ -7,10 +8,7 @@ import { Pill } from './Pill';
 export function useGitHub(): [GitHubData | null, () => Promise<void>] {
   const [gh, setGh] = useState<GitHubData | null>(null);
   const load = (force: boolean) => backend.githubStatus(force).then(setGh, () => setGh(null));
-  useEffect(() => {
-    void load(false);
-    return backend.on('planning:changed', () => void load(false));
-  }, []);
+  useLiveReload(['planning:changed'], () => void load(false), PLAN_RELOAD_MS);
   return [gh, () => load(true)];
 }
 

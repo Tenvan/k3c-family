@@ -71,9 +71,13 @@ func signedBytes(v float64) string {
 }
 
 func summary(s Sample) string {
+	web := ""
+	if s.WebView > 0 {
+		web = " · Renderer " + formatBytes(s.WebView)
+	}
 	return fmt.Sprintf("heap live %s · go gesamt %s · RSS %s · privat %s · Kinder %d (%s) · Goroutinen %d · Handles %d",
 		formatBytes(s.HeapLive), formatBytes(s.Total), formatBytes(s.RSS), formatBytes(s.Private), s.Children,
-		formatBytes(s.ChildrenRSS), s.Goroutines, s.Handles)
+		formatBytes(s.ChildrenRSS), s.Goroutines, s.Handles) + web
 }
 
 // Report ist der Bericht für workbench_resources: aktuelle Werte, Trend, Messwerte der Puffer, die größten Vorgänge

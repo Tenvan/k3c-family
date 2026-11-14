@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTicketPage } from '@webkit/lib/ticketContext';
 import { backend, type PlanDoc } from '../api';
 import { Button, Flex, SegmentedControl, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
 import { NoticeCard } from '@webkit/molecules';
+import { PLAN_RELOAD_MS, useLiveReload } from '../lib/useLiveReload';
 import { loadText, savePref } from '../lib/prefs';
 import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { SprintsBacklog } from './SprintsBacklog';
@@ -15,11 +16,7 @@ const LABEL: Record<PlanDoc, string> = { plan: 'Plan', fragen: 'Fragenkatalog', 
 export function PlanningPage() {
   const [docs, setDocs] = useState<PlanDoc[]>([]);
   const [view, setView] = useState(() => loadText('planning.view', 'sprints'));
-  useEffect(() => {
-    const load = () => backend.planningDocs().then(setDocs, () => setDocs([]));
-    void load();
-    return backend.on('planning:changed', () => void load());
-  }, []);
+  useLiveReload(['planning:changed'], () => void backend.planningDocs().then(setDocs, () => setDocs([])), PLAN_RELOAD_MS);
   const choose = (v: string) => {
     setView(v);
     savePref('planning.view', v);
@@ -44,10 +41,7 @@ function DocView({ name }: { name: PlanDoc }) {
     setError('');
     backend.planningDoc(name).then(setText, (e) => setError(errorText(e)));
   };
-  useEffect(() => {
-    load();
-    return backend.on('planning:changed', load); // Dokument wurde gespeichert
-  }, [name]);
+  useLiveReload(['planning:changed'], load, PLAN_RELOAD_MS); // Dokument wurde gespeichert; DocView hat key={name}
   if (error) return <NoticeCard title="Dokument nicht geladen" tone="error">{error}</NoticeCard>;
   if (text === null) return <Text color="gray">Lade …</Text>;
   return (
