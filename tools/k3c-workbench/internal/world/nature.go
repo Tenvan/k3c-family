@@ -71,7 +71,10 @@ func islandSpan(raw []byte, id string) (span, islandHead, error) {
 			return span{}, islandHead{}, err
 		}
 		var head islandHead
-		if json.Unmarshal(v, &head) == nil && head.ID == id {
+		if err := json.Unmarshal(v, &head); err != nil {
+			return span{}, islandHead{}, fmt.Errorf("islands: %w", err)
+		}
+		if head.ID == id {
 			end := arr.from + int(dec.InputOffset())
 			return span{end - len(v), end}, head, nil
 		}

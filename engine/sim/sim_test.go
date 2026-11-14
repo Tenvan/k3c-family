@@ -84,7 +84,7 @@ func goldenWorld(t *testing.T, run goldenRun, h *HubData) *World {
 	if err != nil {
 		t.Fatal(err)
 	}
-	w, err := CreateWorld(b, run.Seed, Options{CycleSpeed: run.CycleSpeed, hub: h})
+	w, err := CreateWorld(b, run.Seed, Options{CycleSpeed: run.CycleSpeed, hub: h, Nature: level.NeutralNature(b)}) // Mechanik-Golden: neutrale Natur (B-891)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -173,7 +173,7 @@ func (b Biome) withNature(v NatureValues) Biome {
 	weights, sum := make(Ordered[float64], len(b.ChunkWeights)), 0.0
 	for i, c := range b.ChunkWeights {
 		weights[i] = c
-		if key, t, ok := b.traitOf(c.Key, func(t Trait) []string { return t.Chunks }); ok {
+		if key, t, ok := b.traitOf(c.Key, func(t Trait) []string { return t.Chunks }); ok && traitValue(v, key, t) != t.Default {
 			weights[i].Value = float64(c.Value*float64(traitValue(v, key, t))) / float64(t.Default)
 		}
 		sum += weights[i].Value
