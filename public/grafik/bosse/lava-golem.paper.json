@@ -2,7 +2,7 @@
   "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
   "id": "lava-golem",
   "rig": "figur",
-  "version": 2,
+  "version": 3,
   "beschreibung": "Lava-Golem: breiter, gedrungener Felsblock ohne Hals, kleiner Kopf zwischen Schulterbrocken, glühende Lavaspalten flächig in Brust und Fäusten, riesige Fäuste an abgespreizten Armen, kurze Stampfbeine (Miniboss Stufe 3).",
   "teile": [
     {
@@ -33,6 +33,12 @@
           "form": "M-38 -48C-42 -36 -36 -24 -25 -24C-14 -24 -10 -36 -12 -48Z",
           "material": "stein",
           "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 -44L-20 -42L-24 -36L-17 -32L-29 -31L-26 -38Z",
+          "material": "lava",
+          "ton": "schatten"
         }
       ],
       "pivot": [-25, -68]
@@ -59,6 +65,12 @@
           "form": "M-21 -20C-22 -12 -23 -4 -23 2L1 2C2 -4 0 -12 -2 -20Z",
           "material": "stein",
           "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -21L-2 -21L-3 -17L-19 -17Z",
+          "material": "lava",
+          "ton": "schatten"
         }
       ],
       "pivot": [-10, -18]
@@ -80,6 +92,33 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M18 -112L30 -104L33 -84L24 -88Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M20 -66L33 -60L31 -44L22 -48Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-18 -84L-10 -78L-14 -64M18 -86L24 -72L18 -58",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -106L10 -101L4 -86L16 -78L6 -60L13 -44L-4 -54L-13 -72L-3 -84L-15 -95Z",
+          "material": "lava",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M-4 -104L8 -100L3 -86L14 -78L5 -62L12 -46L-2 -56L-10 -72L-1 -84L-12 -94Z",
           "material": "lava"
         },
@@ -92,9 +131,20 @@
         },
         {
           "art": "flaeche",
+          "form": "M-24 -60L-16 -56L-20 -48L-12 -42L-22 -44L-26 -52Z",
+          "material": "lava"
+        },
+        {
+          "art": "flaeche",
           "form": "M-28 -112C-30 -124 -12 -128 -6 -116L-10 -104L-24 -102Z",
           "material": "stein",
           "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-24 -116L-16 -110",
+          "material": "stein"
         }
       ],
       "pivot": [0, -36]
@@ -119,6 +169,18 @@
           "art": "flaeche",
           "form": "M1 -20C0 -12 -1 -4 -1 2L23 2C24 -4 22 -12 20 -20Z",
           "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M1 -20C0 -12 -1 -4 -1 2L5 2C5 -6 6 -14 7 -20Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -21L20 -21L19 -17L3 -17Z",
+          "material": "lava"
         }
       ],
       "pivot": [10, -18]
@@ -134,6 +196,20 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -104L-11 -126L-2 -132L-4 -104Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M8 -129L12 -128L14 -110L10 -112Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
           "form": "M-13 -122L14 -125L16 -118L-12 -116Z",
           "material": "stein",
           "ton": "schatten"
@@ -143,6 +219,11 @@
           "form": "M2 -115L13 -116L12 -111L3 -111Z",
           "material": "lava",
           "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M4 -106L14 -107L13 -104L5 -104Z",
+          "material": "lava"
         }
       ],
       "pivot": [0, -106]
@@ -159,8 +240,28 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -108C12 -96 14 -80 16 -68L21 -68C19 -80 19 -96 20 -111C17 -111 15 -110 14 -108Z",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M24 -92L28 -84L25 -76",
+          "material": "lava",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
           "form": "M14 -104C13 -118 36 -122 41 -106C37 -100 18 -98 14 -104Z",
           "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -104C13 -112 20 -118 28 -118C22 -114 20 -108 22 -101C18 -101 15 -102 14 -104Z",
+          "material": "stein",
+          "ton": "schatten"
         }
       ],
       "pivot": [24, -96]
@@ -177,14 +278,33 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M16 -70C15 -60 16 -52 17 -46L21 -46C20 -54 20 -62 21 -70Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
           "form": "M12 -48C8 -36 14 -24 25 -24C36 -24 40 -36 38 -48Z",
           "material": "stein",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M16 -44L30 -42L26 -36L34 -32L20 -30L24 -38Z",
+          "auflage": true,
+          "form": "M12 -48C8 -36 14 -24 25 -24C20 -30 18 -40 19 -48Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M18 -45L32 -43L27 -37L35 -32L21 -30L25 -38Z",
           "material": "lava"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M22 -43L29 -42L25 -38L30 -34L24 -34Z",
+          "material": "lava",
+          "ton": "licht"
         }
       ],
       "pivot": [25, -68]

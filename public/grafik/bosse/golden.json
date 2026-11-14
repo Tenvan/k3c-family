@@ -15,11 +15,11 @@
     }
   },
   "lava-golem": {
-    "renderKey": "9c92f9f007833264a850805fe12db037612b0404ce4f3fc12567fc97623e79de",
+    "renderKey": "bd10dd0093df2406678d910e9687e45681b8df103149fe276c4e2ef5001d9cea",
     "dateien": {
-      "angriff.png": "8b564f49385550f80d7a1fbdef9a844a0ca5d517d6e71730cc7f643435d3658e",
-      "idle.png": "beb74934422c6898fcadbfa162e9c0868e8b32bdf4548734d2f7e0d763be7d3a",
-      "lauf.png": "a28b3b2cc5b09af8dd61afd08be1e639595beed5509e117911d76bd6e7c19d5c"
+      "angriff.png": "b574246bcdcc16eab8f02b9ee85fcc851ea44d1b1f6ef2420a115b7a418a1221",
+      "idle.png": "617fba4a1b7e18a8d45018718b7057aaa1236c74a69afe76ff6107a6e2a772d1",
+      "lauf.png": "69204c3920346d4f078eb5d9253c760323749ced54814da3830c4dfd398a64b8"
     }
   },
   "ratten-koenigin": {
@@ -31,11 +31,11 @@
     }
   },
   "splitter-titan": {
-    "renderKey": "8bcc4d0e5a54679e4ba0018949b6c046f9b5f74658c575b35601718cb33013b8",
+    "renderKey": "7cb6005f22e05b9b1e11362be4b3b2995f810c766ccf83834e4a9cd39ca650c2",
     "dateien": {
-      "angriff.png": "cc98b7590e1d6ae3f822f6ecb18c97dba1947ab4e82172c17ced5e03c5340996",
-      "idle.png": "3b3cf2348aa3d7675b8fa3311df0564e0985ddffa90e0c122625a37e5008532a",
-      "lauf.png": "8ab6be242f60baf0dab9366a63ee8259e6504d0604e4bfdfa86e0ee5753a851a"
+      "angriff.png": "9155c2675a8debb8b049757c450d2f868c191b681d42a4718023d8fedd808109",
+      "idle.png": "7ff9ee8010471a26218efa2064c053b6a62c7b8fa8cca19660e1e783c2b14911",
+      "lauf.png": "060f363a18a5aa29d6e16f8125fc44ed1629d919431cfa0129718d7ad5e9be8b"
     }
   },
   "troll-koenig": {

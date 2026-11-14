@@ -2,7 +2,7 @@
   "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
   "id": "splitter-titan",
   "rig": "figur",
-  "version": 2,
+  "version": 3,
   "beschreibung": "Splitter-Titan: hoher, kantiger Steinriese mit schmaler Hüfte und breiter Brust, große Kristallzacken wachsen aus Rücken und Schultern, Kristallspitze als Krone, Kristallklinge statt Unterarm-Hand, lange Beine (Miniboss Stufe 4, Fernkampf).",
   "teile": [
     {
@@ -22,15 +22,33 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M-18 -118L-34 -162L-14 -120Z",
+          "material": "kristall",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M-8 -124L-14 -170L4 -126Z",
           "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 -124L-14 -170L-4 -125Z",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
           "form": "M-22 -82L-40 -96L-20 -72Z",
-          "material": "kristall",
+          "material": "purpur",
           "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -110L-30 -128L-14 -114Z",
+          "material": "purpur"
         }
       ],
       "pivot": [-6, -110]
@@ -110,9 +128,35 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -124L18 -126L22 -98L16 -96Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-6 -100L8 -96M-4 -80L12 -78",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M4 -114L12 -106L6 -92L10 -78L2 -88L-2 -102Z",
           "material": "kristall",
           "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M6 -78L2 -66L6 -58",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -62L12 -62L11 -56L-9 -56Z",
+          "material": "stein",
+          "ton": "schatten"
         }
       ],
       "pivot": [0, -62]
@@ -125,6 +169,13 @@
           "art": "flaeche",
           "form": "M-4 -66L9 -66L7 -34L-2 -34Z",
           "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -66L1 -66L1 -34L-2 -34Z",
+          "material": "stein",
+          "ton": "schatten"
         }
       ],
       "pivot": [2, -62]
@@ -137,6 +188,19 @@
           "art": "flaeche",
           "form": "M-3 -36L8 -36L9 -6L17 -3L17 2L-4 2L-3 -6Z",
           "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-3 -36L1 -36L0 -6L-4 2L-3 -6Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M5 -32L3 -20L6 -10",
+          "material": "kristall"
         }
       ],
       "pivot": [2, -34]
@@ -152,13 +216,31 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M2 -124L0 -140L12 -147L8 -124Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M14 -130L23 -130L21 -124L14 -124Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M6 -143L9 -160L14 -144Z",
           "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M12 -136L21 -135L20 -132L12 -132Z",
+          "form": "M1 -140L-2 -152L5 -143Z",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -137L22 -136L21 -133L12 -133Z",
           "material": "kristall",
           "ton": "licht"
         }
@@ -177,8 +259,27 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M1 -122L6 -122L7 -90L4 -90Z",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M11 -112L9 -100L12 -94",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
           "form": "M-2 -118L4 -132L12 -122L18 -130L20 -116Z",
           "material": "kristall"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2 -118L4 -132L6 -118Z",
+          "material": "kristall",
+          "ton": "schatten"
         }
       ],
       "pivot": [8, -116]
@@ -192,6 +293,18 @@
           "form": "M4 -92L14 -92L13 -66L5 -66Z",
           "material": "stein",
           "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4 -92L7 -92L8 -66L5 -66Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -72L15 -72L15 -66L3 -66Z",
+          "material": "kristall",
+          "ton": "schatten"
         }
       ],
       "pivot": [9, -90]
@@ -211,6 +324,13 @@
           "form": "M9 -68L15 -68L19 -40L11 -22Z",
           "material": "kristall",
           "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M9 -66L10 -30",
+          "material": "kristall",
+          "ton": "schatten"
         }
       ],
       "pivot": [9, -66]
