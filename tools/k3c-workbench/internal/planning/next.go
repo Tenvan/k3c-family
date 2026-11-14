@@ -165,7 +165,7 @@ func (st nextState) scope(sp Sprint, x Session) scoped {
 	if len(area) == 0 {
 		area = spec.Area
 	}
-	return scoped{session: x, area: area, locks: spec.Locks}
+	return scoped{session: x, sprint: sp.ID, area: area, locks: spec.Locks}
 }
 
 // readme ist die Sprint-README von origin (B-519), sonst die lokale; leer, wenn keine lesbar ist.

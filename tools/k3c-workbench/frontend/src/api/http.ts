@@ -1,5 +1,6 @@
 import type { Backend, BalanceBackend, EventName, Events } from './types';
 import type { AssetsBackend } from './typesAssets';
+import type { WorldBackend } from './typesWorld';
 
 // Client-Server-Betrieb (k3c-workbench -headless/-dev, Go: uiapi.go): jede Methode von App ist ein POST auf
 // /api/dev/rpc/<Methode> mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Ereignisse kommen
@@ -91,6 +92,7 @@ function httpAssets(): AssetsBackend {
     assetsIndex: () => rpc('AssetsIndex'),
     assetsCheck: (pfade) => rpc('AssetsCheck', pfade),
     assetsGroesse: (id) => rpc('AssetsGroesse', id),
+    assetsGroesseBasis: (id, basis) => rpc('AssetsGroesseBasis', id, basis),
     assetsFrameOhne: (id, animation, frame, ohne) => rpc('AssetsFrameOhne', id, animation, frame, ohne),
     assetsHintergruende: () => rpc('AssetsHintergruende'),
     assetsHintergrund: (teil) => rpc('AssetsHintergrund', teil),
@@ -104,6 +106,16 @@ function httpAssets(): AssetsBackend {
     studioSoundData: (pfad) => rpc('StudioSoundData', pfad),
     studioSources: () => rpc('StudioSources'),
     studioGameOpen: (seed) => rpc('StudioGameOpen', seed),
+  };
+}
+
+function httpWorld(): WorldBackend {
+  return {
+    worldList: () => rpc('WorldList'),
+    worldDetail: (id) => rpc('WorldDetail', id),
+    worldLevel: (id, island, stage, seed) => rpc('WorldLevel', id, island, stage, seed),
+    worldValues: (id) => rpc('WorldValues', id),
+    worldOverrideSet: (id, file, path, value) => rpc('WorldOverrideSet', id, file, path, value),
   };
 }
 
@@ -157,6 +169,7 @@ export function httpBackend(): Backend {
     ticketRecent: (n) => rpc('TicketRecent', n),
     ...httpBalance(),
     ...httpAssets(),
+    ...httpWorld(),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },

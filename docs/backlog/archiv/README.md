@@ -804,6 +804,8 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | erledigt | WZ57 | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | erledigt | PT5 | Abnahme-Läufe CU1 |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | erledigt | NG20 | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
+| [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | erledigt | WZ58 | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
+| [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | erledigt | WZ58 | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | erledigt | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | erledigt | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | erledigt | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |

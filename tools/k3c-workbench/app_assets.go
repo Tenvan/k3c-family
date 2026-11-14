@@ -23,6 +23,11 @@ func (a *App) AssetsFrameOhne(id, animation string, frame int, ohne []string) (a
 // AssetsGroesse liefert den Spiel-Maßstab eines Assets für den Größenvergleich (Binding, B-733).
 func (a *App) AssetsGroesse(id string) (assetsui.Groesse, error) { return a.assets().AssetsGroesse(id) }
 
+// AssetsGroesseBasis liefert Spec und Spiel-Maßstab eines Assets im Stand der Basis (Binding, B-853).
+func (a *App) AssetsGroesseBasis(id, basis string) (assetsui.GroesseBasis, error) {
+	return a.assets().AssetsGroesseBasis(id, basis)
+}
+
 // AssetsHintergruende listet die Biome mit Hintergrund (Binding, B-733).
 func (a *App) AssetsHintergruende() ([]string, error) { return a.assets().AssetsHintergruende() }
 

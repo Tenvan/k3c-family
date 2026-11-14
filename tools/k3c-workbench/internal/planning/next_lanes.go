@@ -44,9 +44,10 @@ func lockKey(x Session) string {
 	return x.Domain
 }
 
-// scoped ist eine Session mit ihrer Dateimenge (Erlaubte Dateien) und den Sperren ihres Sprints (B-783).
+// scoped ist eine Session mit ihrem Sprint, ihrer Dateimenge (Erlaubte Dateien) und den Sperren ihres Sprints (B-783).
 type scoped struct {
 	session     Session
+	sprint      string
 	area, locks []string
 }
 
@@ -60,10 +61,14 @@ func busy(running []scoped, x scoped) string {
 	return ""
 }
 
-// clash ist die Kollisionsprüfung der Arbeitswellen (wie plan_waves): gleiche Sperre oder überlappende Dateimengen.
-// Übergang: Fehlt einer der beiden die Dateimenge, gilt die alte Regel nach Domäne und Lane. Sessions desselben
-// Sprints ordnet „Abhängig von“; ohne Abhängigkeit dürfen sie wie bisher über Lanes parallel laufen (PV1).
+// clash ist die Kollisionsprüfung der Arbeitswellen (wie plan_waves): derselbe Sprint, gleiche Sperre oder
+// überlappende Dateimengen. Sessions desselben Sprints laufen nie parallel (B-838: ein Sprint hat einen Branch, zwei
+// Worktrees checken ihn nicht zugleich aus). Übergang: Fehlt einer der beiden die Dateimenge, gilt die alte Regel nach
+// Domäne und Lane.
 func clash(a, b scoped) string {
+	if a.sprint != "" && a.sprint == b.sprint {
+		return "Sprint " + a.sprint
+	}
 	if l := sharedLock(a.locks, b.locks); l != "" {
 		return "Sperre " + l
 	}

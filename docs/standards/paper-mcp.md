@@ -115,6 +115,7 @@ Beispielantworten `tools/paper/fixtures/ui/<Methode>.json`: PV1.8.
 | `AssetsPixelDiff(id, animation string, frame int, basis string) PixelDiff` | `{anteil, boxen: [[x, y, b, h]], overlay}` – Arbeitsstand gegen `basis` |
 | `AssetsFrameOhne(id, animation string, frame int, ohne []string) Frame` | wie `AssetsFrame` (Arbeitsstand, ohne Variante), die Teile in `ohne` ausgeblendet (`paper frame --ohne`, B-734) |
 | `AssetsGroesse(id string) Groesse` | `{pxProEinheit, quelle}`: Spiel-Pixel je Einheit von `ausgabe.rahmen` – Figur mit Spielrolle aus `data/paper.json` + `data/sprites.json` (`height · scale`), Figur ohne Rolle mit dem Maßstab des Monarchen, sonst 1 (B-733) |
+| `AssetsGroesseBasis(id, basis string) GroesseBasis` | `{pxProEinheit, quelle, spec}`: wie `AssetsGroesse`, aber Spec und `ausgabe.rahmen` aus dem Stand der Basis (Pflicht); fehlt das Asset dort, Fehler (Vorher-Bild im Größenvergleich, B-853) |
 | `AssetsHintergruende() []string` | Biome mit Hintergrund, Namensteil `hg-<teil>-…` unter `public/grafik/hintergruende/` (B-733) |
 | `AssetsHintergrund(teil string) Hintergrund` | `{fern, mitte, nah}`: die Ebenen der Variante 1 als Data-URLs (je 768 × 480 Spiel-Pixel, Fuß unten) |
 

@@ -5,7 +5,7 @@ import { ReviewPage } from './index';
 import { button, click, fakeApi, mount, unmount, until } from './testing';
 
 // B-733/AC-03 (Darstellung wie mit #514 umgesetzt, Default B-733 › Offene Fragen): die Review-Seite schaltet zwischen
-// Vorher/Nachher und dem Größenvergleich des Arbeitsstands um; die Wahl gilt für alle Einträge.
+// Vorher/Nachher und dem Größenvergleich um (seit B-853 Vorher und Nachher nebeneinander); die Wahl gilt für alle Einträge.
 
 const fake = vi.hoisted(() => ({ api: {} as ReturnType<typeof import('./testing').fakeApi> }));
 vi.mock('../../api', async (echt) => {
@@ -40,14 +40,38 @@ describe('Größenvergleich im Review (B-733/AC-03)', () => {
     await until('Vorher/Nachher wieder', () => host.querySelector('img[alt="Nachher"]'));
   });
 
-  it('gelöschtes Asset: Hinweis statt Größenvergleich', async () => {
+  it('gelöschtes Asset: nur das Vorher-Bild, kein Nachher', async () => {
     const host = await mount(<ReviewPage />);
     await until('Eintrag fass', () => eintrag(host, 'fass'));
     await click(eintrag(host, 'fass'));
     await until('Knopf Größenvergleich', () => button(host, 'Größenvergleich'));
     await click(button(host, 'Größenvergleich'));
-    await until('Hinweis', () => host.textContent?.includes('Gelöscht: kein Arbeitsstand für den Größenvergleich'));
-    expect(host.querySelector('[data-size-scene]')).toBeNull();
-    expect(host.textContent).toContain('Gelöscht: kein Arbeitsstand für den Größenvergleich');
+    await until('Hinweis', () => host.textContent?.includes('Gelöscht: kein Arbeitsstand, nur das Vorher-Bild'));
+    await until('Vorher', () => host.querySelector('[data-size-stand="Vorher (32eb7a7)"]'));
+    expect(host.querySelector('[data-size-stand="Nachher"]')).toBeNull();
+  });
+});
+
+describe('Größenvergleich für das Vorher-Bild (B-853)', () => {
+  it('geändertes Asset: Vorher (Basis) und Nachher nebeneinander, das Vorher-Bild kommt aus der Basis', async () => {
+    const host = await mount(<ReviewPage />);
+    await until('Eintrag monarch', () => eintrag(host, 'monarch'));
+    await click(eintrag(host, 'monarch'));
+    await until('Knopf Größenvergleich', () => button(host, 'Größenvergleich'));
+    await click(button(host, 'Größenvergleich'));
+    await until('zwei Szenen', () => host.querySelectorAll('[data-size-scene]').length === 2);
+    const staende = [...host.querySelectorAll('[data-size-stand]')].map((e) => e.getAttribute('data-size-stand'));
+    expect(staende).toEqual(['Vorher (32eb7a7)', 'Nachher']);
+    expect(fake.api.assetsFrame.mock.calls.some((c) => c[0] === 'monarch' && c[4] === '32eb7a7')).toBe(true);
+  });
+
+  it('neues Asset: ohne Basis nur der Arbeitsstand', async () => {
+    const host = await mount(<ReviewPage />);
+    await until('Eintrag pferd', () => eintrag(host, 'pferd'));
+    await click(eintrag(host, 'pferd'));
+    await until('Knopf Größenvergleich', () => button(host, 'Größenvergleich'));
+    await click(button(host, 'Größenvergleich'));
+    await until('Fehler oder Szene', () => host.querySelector('[data-size-compare]'));
+    expect(host.querySelector('[data-size-stand]')).toBeNull();
   });
 });

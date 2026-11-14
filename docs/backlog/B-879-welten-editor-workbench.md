@@ -67,3 +67,5 @@ Sollen auch die Studio-Bereiche `enemies` (Gegner), `monarch`, `planner` und `pl
 ## Notizen
 
 Auftrag Ralf im Chat (2026-11-14): „Es fehlen auch noch die alten Seiten aus dem Studio in der Workbench: WeltenEditor“.
+
+WZ58.1 (2026-11-14): AC-01 und AC-02 umgesetzt und getestet (Session-Ergebnis WZ58.1). **AC-03 offen: Sichtprüfung durch Ralf im Fenster** (Workbench neu bauen, vorher `task k3c-sim:build`); das Ticket bleibt bis dahin eingeplant. Offene Frage zu enemies/monarch/planner/playback unverändert.

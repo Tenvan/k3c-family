@@ -10,6 +10,7 @@ import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
+import { WorldPage } from './world/WorldPage';
 import { Notices } from './ui/organisms/Notices';
 import { TicketProvider } from '@webkit/lib/ticketContext';
 import { Tabs } from '@webkit/organisms';
@@ -74,6 +75,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="balancing" {...keep('balancing')}>
         <BalancingPage active={shown('balancing')} />
+      </Tabs.Content>
+      <Tabs.Content value="welten">
+        <WorldPage />
       </Tabs.Content>
       <AssetsArea />
     </AppFrame>

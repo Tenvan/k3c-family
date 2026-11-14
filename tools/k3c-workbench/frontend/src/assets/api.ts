@@ -10,6 +10,7 @@ export const assetsCheck = (pfade: string[]) => backend.assetsCheck(pfade);
 export const assetsFrameOhne = (id: string, animation: string, frame: number, ohne: string[]) =>
   backend.assetsFrameOhne(id, animation, frame, ohne);
 export const assetsGroesse = (id: string) => backend.assetsGroesse(id);
+export const assetsGroesseBasis = (id: string, basis: string) => backend.assetsGroesseBasis(id, basis);
 export const assetsHintergruende = () => backend.assetsHintergruende();
 export const assetsHintergrund = (teil: string) => backend.assetsHintergrund(teil);
 export const assetsGet = (id: string) => backend.assetsGet(id);
