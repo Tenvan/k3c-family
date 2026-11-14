@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ57 | DEV | WZG | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | – | `aktiv/WZ57-workbench-aufraeumen/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 
@@ -356,3 +355,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | `erledigt/KB4-dev-aktionen-boss-event/` |
 | KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | `erledigt/KB5-skills-wirkort-status/` |
 | WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | `erledigt/WZ43-asset-tools-review/` |
+| WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | `erledigt/WZ57-workbench-aufraeumen/` |

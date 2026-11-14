@@ -1,6 +1,6 @@
 # WZ57 · DEV · Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -66,7 +66,7 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 | WZ57.1 | `WZ57.1-web-client-entfernen.md` | Umsetzung | autonom | fertig |
 | WZ57.2 | `WZ57.2-doppelte-nummern.md` | Umsetzung | autonom | fertig |
 | WZ57.3 | `WZ57.3-abnahme-wz43.md` | Umsetzung | autonom | fertig |
-| WZ57.4 | `WZ57.4-review.md` | Umsetzung | autonom | offen |
+| WZ57.4 | `WZ57.4-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
