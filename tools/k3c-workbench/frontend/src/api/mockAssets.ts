@@ -1,4 +1,4 @@
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Mock der Asset-Methoden (WB1.1): die Beispielantworten aus tools/paper/fixtures/ui (PV1.4), geladen beim ersten
 // Aufruf. Wie die Go-Stubs (internal/assetsui) kennt er nur das Asset monarch.
@@ -48,6 +48,12 @@ export function mockAssets(): AssetsBackend {
     assetsGroesse: async (id): Promise<Groesse> => {
       known(id);
       return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/paper.json)' };
+    },
+    // Basis (B-853): Spec der Fixture, Maßstab wie im Arbeitsstand
+    assetsGroesseBasis: async (id, basis): Promise<GroesseBasis> => {
+      known(id);
+      if (!basis) throw new Error('Basis „“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/main');
+      return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/paper.json)', spec: await fixture<Spec>('AssetsGet') };
     },
     assetsHintergruende: async () => ['wald'],
     assetsHintergrund: async (teil): Promise<Hintergrund> => {

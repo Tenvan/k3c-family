@@ -1,6 +1,6 @@
 # WZ58 · DEV · Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -62,10 +62,10 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ58.1 | `WZ58.1-welten-editor.md` | Umsetzung | autonom | offen |
-| WZ58.2 | `WZ58.2-wellen-regel.md` | Umsetzung | autonom | offen |
-| WZ58.3 | `WZ58.3-groessenvergleich-vorher.md` | Umsetzung | autonom | offen |
-| WZ58.4 | `WZ58.4-review.md` | Umsetzung | autonom | offen |
+| WZ58.1 | `WZ58.1-welten-editor.md` | Umsetzung | autonom | fertig |
+| WZ58.2 | `WZ58.2-wellen-regel.md` | Umsetzung | autonom | fertig |
+| WZ58.3 | `WZ58.3-groessenvergleich-vorher.md` | Umsetzung | autonom | fertig |
+| WZ58.4 | `WZ58.4-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -73,6 +73,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14 (WZ58.4, autonom Claude): AC-01 siehe WZ58.1 (B-879 AC-01/AC-02 getestet; **AC-03 Sichtprüfung durch Ralf offen**, B-879 bleibt bis dahin eingeplant), AC-02 siehe WZ58.2 (B-838 erledigt), AC-03 siehe WZ58.3 (B-853 erledigt), AC-04: Sprint-Review (k3c-reviewer) ohne schweren Befund, Akzent der geplanten Chunks dezenter (world.css); leichte Befunde bewusst gelassen (Log-Text bei unverändertem Override, Cache-Schlüssel nach Basis-Name, Wellen-Reihenfolge nur über „Abhängig von“).
+Prüfung: `task check:diff` je Session und `task check:dev` grün. Kein Abnahme-Ticket für Sim, Balance und Gen: der Sprint ändert nur Workbench, `k3c-sim world` (ohne Simulation) und Doku, keine Grafik.

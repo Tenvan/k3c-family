@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WZ58
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13

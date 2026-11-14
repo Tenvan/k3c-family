@@ -1,6 +1,7 @@
 package assetsui
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -11,6 +12,8 @@ import (
 	"regexp"
 	"slices"
 	"strings"
+
+	"k3c/tools/k3c-workbench/internal/review"
 )
 
 // Größenvergleich (B-733): Spiel-Pixel je Einheit eines Assets und die Hintergrund-Ebenen der Biome. Die Regeln folgen dem
@@ -39,13 +42,46 @@ func (d Dienst) AssetsGroesse(id string) (Groesse, error) {
 	if err != nil {
 		return Groesse{}, err
 	}
+	return d.groesseVon(ctx, p, nil)
+}
+
+// GroesseBasis ist ein Asset im Stand der Basis für den Größenvergleich (B-853): Spec dieses Stands (ohne `$schema`) und
+// sein Maßstab. Rollen und Monarch-Maßstab kommen aus dem Arbeitsstand, der Rahmen aus der Spec der Basis.
+type GroesseBasis struct {
+	Groesse
+	Spec map[string]any `json:"spec"`
+}
+
+// AssetsGroesseBasis liefert Spec und Spiel-Maßstab eines Assets im Stand der Basis (Pflicht: HEAD, HEAD~1, Commit-SHA
+// oder origin/main). Fehlt das Asset in der Basis, ist das ein Fehler (das Review zeigt dann nur den Arbeitsstand).
+func (d Dienst) AssetsGroesseBasis(id, basis string) (GroesseBasis, error) {
+	if basis == "" {
+		return GroesseBasis{}, review.FehlerBasis(basis)
+	}
+	ctx, cancel := kontext()
+	defer cancel()
+	q, err := d.quelle(ctx, id, basis)
+	if err != nil {
+		return GroesseBasis{}, err
+	}
+	var spec map[string]any
+	if err := json.Unmarshal(q.Spec, &spec); err != nil {
+		return GroesseBasis{}, err
+	}
+	delete(spec, "$schema")
+	g, err := d.groesseVon(ctx, q.Pfad, q.Spec)
+	return GroesseBasis{Groesse: g, Spec: spec}, err
+}
+
+// groesseVon ist der Maßstab des Assets am Pfad p; spec ist der Inhalt seiner Spec (nil = Datei des Arbeitsstands).
+func (d Dienst) groesseVon(ctx context.Context, p string, spec []byte) (Groesse, error) {
 	ref := strings.Split(p, "/")[2] + "/" + idVon(p)
 	rollen, err := d.rollenHoehen()
 	if err != nil {
 		return Groesse{}, err
 	}
 	if r, ok := rollen[ref]; ok {
-		return d.figurGroesse(p, r.hoehe, fmt.Sprintf("Spielrolle %s (data/paper.json)", r.rolle))
+		return d.figurGroesse(p, spec, r.hoehe, fmt.Sprintf("Spielrolle %s (data/paper.json)", r.rolle))
 	}
 	if !slices.Contains(figurGruppen, strings.Split(ref, "/")[0]) {
 		return Groesse{PxProEinheit: 1, Quelle: "1 px je Einheit wie im Spiel (Gebäude, Objekte, Hintergründe)"}, nil
@@ -58,15 +94,18 @@ func (d Dienst) AssetsGroesse(id string) (Groesse, error) {
 	if err != nil {
 		return Groesse{}, err
 	}
-	return d.figurGroesse(mp, m.hoehe, "Maßstab des Monarchen (keine Spielrolle)")
+	return d.figurGroesse(mp, nil, m.hoehe, "Maßstab des Monarchen (keine Spielrolle)")
 }
 
-// figurGroesse: Zielhöhe in Spiel-Pixeln geteilt durch die Höhe des Rahmens über dem Fuß.
-func (d Dienst) figurGroesse(pfad string, hoehe float64, quelle string) (Groesse, error) {
+// figurGroesse: Zielhöhe in Spiel-Pixeln geteilt durch die Höhe des Rahmens über dem Fuß; spec nil = Datei am Pfad.
+func (d Dienst) figurGroesse(pfad string, spec []byte, hoehe float64, quelle string) (Groesse, error) {
 	var s struct {
 		Ausgabe struct{ Rahmen []float64 } `json:"ausgabe"`
 	}
-	raw, err := os.ReadFile(filepath.Join(d.Root, filepath.FromSlash(pfad)))
+	raw, err := spec, error(nil)
+	if raw == nil {
+		raw, err = os.ReadFile(filepath.Join(d.Root, filepath.FromSlash(pfad)))
+	}
 	if err == nil {
 		err = json.Unmarshal(raw, &s)
 	}

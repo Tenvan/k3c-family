@@ -58,7 +58,7 @@ func TestNextOhneOriginBranch(t *testing.T) {
 	t.Parallel()
 	root := originNextRepo(t, false)
 	out := must(t)(Next(root, NextFilter{Domain: "SRV"}))
-	checkText(t, out, []string{"Keine Session frei in Domäne SRV", "A1.2 Domäne SRV gesperrt (A1.1 in Arbeit)",
+	checkText(t, out, []string{"Keine Session frei in Domäne SRV", "A1.2 Sprint A1 gesperrt (A1.1 in Arbeit)",
 		"A1: kein origin/sprint/a1, lokaler Stand"}, nil)
 }
 

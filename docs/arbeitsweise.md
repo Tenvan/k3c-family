@@ -217,11 +217,13 @@ Verbindlich ab PV1 für jeden Sprint (Vorgabe 🧑, 2026-11-06): Agenten arbeite
 Jede **Session** gehört zu **genau einer Domäne** (Feld `Domäne`) und ändert nur deren Dateien (plus Tests und Doku dazu).
 Ein Sprint darf Sessions mehrerer Domänen **nacheinander** enthalten (z. B. SIM → SRV → CLI); sein Feld `Domäne` nennt
 sie in der Reihenfolge der Sessions. Was eine Domäne außerhalb des Sprints braucht, wird ein Ticket.
-**Sperre:** Maßgeblich sind die Dateien: Zwei Sessions kollidieren, wenn ihre **Erlaubten Dateien** überlappen oder sie dieselbe **Sperre** tragen
-(Abschnitt „Parallelität und Wellen“). Die Domäne ordnet Zuständigkeit und Commit-Titel.
+**Sperre:** Maßgeblich sind die Dateien: Zwei Sessions kollidieren, wenn sie zum **selben Sprint** gehören, ihre **Erlaubten Dateien** überlappen oder sie
+dieselbe **Sperre** tragen (Abschnitt „Parallelität und Wellen“). Die Domäne ordnet Zuständigkeit und Commit-Titel.
 `plan_next` und `plan_waves` prüfen das aus den Erlaubten Dateien und der Sperre der Sprint-README (B-783). Nur wenn einer Session die Erlaubten Dateien
 fehlen, sperrt `plan_next` noch nach Domäne und `Lane` (PV1.1).
-Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch); Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Schritt 1.
+Sessions **eines** Sprints laufen immer nacheinander (ein Sprint-Branch, zwei Worktrees checken ihn nicht zugleich aus; entschieden 2026-11-14, B-838):
+`plan_waves` setzt sie in Folgewellen, `plan_next` schlägt sie nicht als „Parallel möglich“ vor und sperrt den Sprint, solange eine seiner Sessions in
+Arbeit ist. Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Schritt 1.
 
 | Kürzel | Domäne | Dateien |
 |---|---|---|
@@ -297,8 +299,8 @@ der Stand der Basis; die eigene Änderung wird mit `plan_*` oder dem kleinen Edi
 2. **Ralf-Queue zuerst:** Alles mit `Braucht 🧑` ≠ `–` wird 🧑 vorab und gesammelt vorgelegt. Es hält nur auf, was es in `Abhängig von` nennt.
 3. **Ebene:** ohne Abhängigkeit Ebene 1, sonst eins mehr als die höchste Ebene der Abhängigkeiten. Werkzeug-Änderungen sind erst nach Merge, Pull und
    Neubau nutzbar; wer sie braucht, nennt sie in `Abhängig von`.
-4. **Kollision:** Zwei Kandidaten einer Ebene kollidieren, wenn ihre Bereiche überlappen (ein Pfad ist Präfix des anderen) oder sie dieselbe Sperre
-   tragen. Der Kandidat aus dem Projekt mit dem kleineren Rang bleibt (danach Ticket-Prio, dann kleinere Nummer), der andere rückt in die nächste Welle.
+4. **Kollision:** Zwei Kandidaten einer Ebene kollidieren, wenn sie Sessions desselben Sprints sind (B-838), ihre Bereiche überlappen (ein Pfad ist
+   Präfix des anderen) oder sie dieselbe Sperre tragen. Der Kandidat aus dem Projekt mit dem kleineren Rang bleibt (danach Ticket-Prio, dann kleinere Nummer), der andere rückt in die nächste Welle.
 5. **Plätze:** höchstens vier Agenten gleichzeitig; Sessions `in Arbeit` zählen mit, gleich in welchem Checkout.
 6. **Folgewelle:** Sie startet, wenn die Sprint-PRs gemergt sind, von denen sie abhängt. Ihre Specs werden 🧑 schon während der laufenden Welle vorgelegt.
 

@@ -161,8 +161,12 @@ func fit(wave []*node, n *node, slots int) string {
 	return ""
 }
 
-// collision: gleiche Sperre oder überlappender Bereich (wie clash in plan_next); leer = keine.
+// collision: derselbe Sprint (B-838: Sessions eines Sprints laufen nacheinander, ein Sprint-Branch), gleiche Sperre
+// oder überlappender Bereich (wie clash in plan_next); leer = keine.
 func collision(a, b *node) string {
+	if a.sprint != "" && a.sprint == b.sprint {
+		return "Sprint " + a.sprint
+	}
 	if l := sharedLock(a.locks, b.locks); l != "" {
 		return "Sperre " + l
 	}

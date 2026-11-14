@@ -3,7 +3,8 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -77,6 +78,7 @@ interface GoApp {
   AssetsIndex(): Promise<AssetEintrag[]>;
   AssetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
   AssetsGroesse(id: string): Promise<Groesse>;
+  AssetsGroesseBasis(id: string, basis: string): Promise<GroesseBasis>;
   AssetsFrameOhne(id: string, animation: string, frame: number, ohne: string[]): Promise<Frame>;
   AssetsHintergruende(): Promise<string[]>;
   AssetsHintergrund(teil: string): Promise<Hintergrund>;
@@ -91,6 +93,12 @@ interface GoApp {
   StudioSoundData(pfad: string): Promise<string>;
   StudioSources(): Promise<Quellen>;
   StudioGameOpen(seed: string): Promise<string>;
+  // Welten-Editor (B-879, app_world.go)
+  WorldList(): Promise<WorldInfo[]>;
+  WorldDetail(id: string): Promise<WorldDetail>;
+  WorldLevel(id: string, island: string, stage: number, seed: string): Promise<WorldLevel>;
+  WorldValues(id: string): Promise<WorldValuesView>;
+  WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
 }
 
 interface WailsRuntime {
@@ -138,6 +146,7 @@ function assetsWails(app: GoApp): AssetsBackend {
     assetsIndex: () => app.AssetsIndex(),
     assetsCheck: (pfade) => app.AssetsCheck(pfade),
     assetsGroesse: (id) => app.AssetsGroesse(id),
+    assetsGroesseBasis: (id, basis) => app.AssetsGroesseBasis(id, basis),
     assetsFrameOhne: (id, animation, frame, ohne) => app.AssetsFrameOhne(id, animation, frame, ohne),
     assetsHintergruende: () => app.AssetsHintergruende(),
     assetsHintergrund: (teil) => app.AssetsHintergrund(teil),
@@ -151,6 +160,16 @@ function assetsWails(app: GoApp): AssetsBackend {
     studioSoundData: (pfad) => app.StudioSoundData(pfad),
     studioSources: () => app.StudioSources(),
     studioGameOpen: (seed) => app.StudioGameOpen(seed),
+  };
+}
+
+function worldWails(app: GoApp): WorldBackend {
+  return {
+    worldList: () => app.WorldList(),
+    worldDetail: (id) => app.WorldDetail(id),
+    worldLevel: (id, island, stage, seed) => app.WorldLevel(id, island, stage, seed),
+    worldValues: (id) => app.WorldValues(id),
+    worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
   };
 }
 
@@ -206,6 +225,7 @@ export function wailsBackend(): Backend {
     ticketRecent: (n) => app.TicketRecent(n),
     ...balanceWails(app),
     ...assetsWails(app),
+    ...worldWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),
