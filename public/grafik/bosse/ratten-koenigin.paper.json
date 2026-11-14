@@ -2,7 +2,7 @@
   "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
   "id": "ratten-koenigin",
   "rig": "figur",
-  "version": 2,
+  "version": 3,
   "beschreibung": "Ratten-Königin: gebeugte Rattenfrau in bodenlanger Purpurrobe mit Hermelinkragen, langer Schnauze, großen runden Ohren, hoher Goldkrone, dickem dunklem Schwanz im Bogen hinter sich und einem Zepter mit Edelstein, das sie über den Kopf ragen lässt (Miniboss Stufe 2).",
   "teile": [
     {
@@ -14,6 +14,12 @@
           "form": "M-12 -36C-30 -32 -44 -42 -48 -62C-51 -78 -45 -92 -36 -98C-37 -94 -39 -86 -40 -78C-41 -60 -32 -44 -10 -26Z",
           "material": "fell-grau",
           "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.1,
+          "form": "M-36 -38L-33 -33M-44 -52L-39 -50M-45 -68L-41 -68M-42 -84L-39 -85",
+          "material": "fell-grau"
         }
       ],
       "pivot": [-14, -30]
@@ -104,8 +110,52 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -92C18 -70 18 -40 22 -6L17 -6C14 -40 13 -70 11 -92Z",
+          "material": "purpur",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-6 -70L-12 -8M4 -72L2 -8",
+          "material": "purpur",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-28 -2L24 -2L23 -8L-27 -8Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-28 -2L24 -2L24 -4L-28 -4Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M-12 -96C-6 -104 14 -105 22 -96C14 -88 -4 -88 -12 -96Z",
           "material": "hermelin"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [-4, -95],
+          "radius": 1
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [6, -93],
+          "radius": 1
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [15, -96],
+          "radius": 1
         }
       ],
       "pivot": [0, -46]
@@ -118,6 +168,25 @@
           "art": "flaeche",
           "form": "M2 -100C0 -112 8 -120 18 -118L40 -104C42 -101 40 -98 36 -98L12 -94C6 -94 3 -96 2 -100Z",
           "material": "fell-grau"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M12 -94L36 -98C39 -98 41 -99 40 -101L14 -98C9 -97 5 -97 3 -98C5 -95 8 -94 12 -94Z",
+          "material": "fell-grau",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M18 -118L30 -111L22 -112C18 -113 14 -114 12 -116Z",
+          "material": "fell-grau",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M33 -98L35 -93L37 -98Z",
+          "material": "weiss"
         },
         {
           "art": "flaeche",
@@ -135,16 +204,41 @@
           "material": "gold"
         },
         {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M10 -118L9 -124L25 -121L24 -115Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "edelstein",
+          "mitte": [17, -133],
+          "radius": 1.5
+        },
+        {
           "art": "punkt",
           "material": "schwarz",
           "mitte": [40, -102],
           "radius": 2
         },
         {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M37 -103L47 -107M37 -101L47 -99",
+          "material": "linie"
+        },
+        {
           "art": "punkt",
           "material": "auge",
           "mitte": [22, -110],
-          "radius": 1.6
+          "radius": 2.2
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [23, -110],
+          "radius": 1.1
         }
       ],
       "pivot": [10, -98]
@@ -158,6 +252,12 @@
           "form": "M4 -94L16 -94L16 -70L6 -68Z",
           "material": "purpur",
           "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4 -94L8 -94L9 -69L6 -68Z",
+          "material": "purpur"
         }
       ],
       "pivot": [10, -90]
@@ -173,12 +273,31 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M10 -82L11.5 -82L11.5 -14L10 -14Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M6 -84C6 -94 18 -94 18 -84C18 -78 6 -78 6 -84Z",
           "material": "edelstein"
         },
         {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [14.5, -88],
+          "radius": 1.4
+        },
+        {
           "art": "flaeche",
           "form": "M5 -82L19 -82L17 -78L7 -78Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -18L16 -18L14 -12L10 -12Z",
           "material": "gold",
           "ton": "schatten"
         }
@@ -197,8 +316,19 @@
         },
         {
           "art": "flaeche",
+          "form": "M7 -58L18 -59L19 -53L8 -51Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
           "form": "M7 -55L18 -55L17 -46L8 -46Z",
           "material": "fell-grau"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M10 -49V-46M14 -49V-46",
+          "material": "linie"
         }
       ],
       "pivot": [11, -68]

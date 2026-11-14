@@ -1,10 +1,10 @@
 {
   "goblin-anfuehrer": {
-    "renderKey": "83d6c56a8f723b6684d9ace13ca06c23dc83ba349f7bd66a5f5a0e095d0f8e62",
+    "renderKey": "b5ab34b0898cc82e8a8c7a6da2460152128efd30f422813f1f58127b906a81ae",
     "dateien": {
-      "angriff.png": "9f85f9dd0950251f30aac50cb06dec2d2418eb1bb26237ff860ec489002087ff",
-      "idle.png": "e1c7b39b511f031741c6badca48214932a2d9470cbeb8c261b364af35e9a169b",
-      "lauf.png": "75c001a2881ed9144e331efb8f63388d182cff48ae1525faa5b0568215a11bc0"
+      "angriff.png": "f4449eb1c2bf5402f82fe58afc4a9afd46fa9eef88b281e0b884b0b2d168f1af",
+      "idle.png": "6a712553f7bca12bffb19a1db90895698ba5bcfccd07ef812f7cddffc3b5ad83",
+      "lauf.png": "ea4d25cbc75ad4e17fe4d344ad6416c80f131a0be6dfd969052476c1062e6245"
     }
   },
   "kristallherz-waechter": {
@@ -23,11 +23,11 @@
     }
   },
   "ratten-koenigin": {
-    "renderKey": "3513bd323a9a19e6e3f1c36385b5be7d3dabbb63cbb7d7159e12804b667d1326",
+    "renderKey": "be4cffb42d7f815b417fce3a94b63e4fcfad2a0ca0e67c5b9abee15350af6f4b",
     "dateien": {
-      "angriff.png": "73d244870d8bdc6e8e21776d38409dab213a62073f06abb02ba645bc5be51297",
-      "idle.png": "d209df8c9633eb25c3622c64d9550141ce3ac0f4430e5d50d3bf313fb93b1dad",
-      "lauf.png": "004b15962776fec34156ff9ea48518db3d0c13ef604b29ea73328296d6ceb85b"
+      "angriff.png": "b34c7d1e8dded22742e5b9c0f074989e522d2fcbbc01678e4e95f73180722427",
+      "idle.png": "25366aed61741d0c2bf0eebbd579be1f3077c2dcf682ed87e075a0b59dfc71ce",
+      "lauf.png": "e8c65477e9a51a4ef99440ae8e4dc27b2f12f4cdd311f09bf2d12b3214dd0207"
     }
   },
   "splitter-titan": {
@@ -39,11 +39,11 @@
     }
   },
   "troll-koenig": {
-    "renderKey": "89d2f8608c3d388fcdb9a6f99a5094fd45075ae0e97738b1f4b61afe75c0cbf8",
+    "renderKey": "5ced2c62c7037e16ea9951dc377ab10c15cdf07ea112c66b6ef3562297bd331c",
     "dateien": {
-      "angriff.png": "4709be5947e6d6d5dbe71c75b58aa44dd66df49cb4f2863d0be8caf2bee666ab",
-      "idle.png": "78f1c1bef75ba4298e35299149f8692c3d7b382a2af668ece8ec4892239f078a",
-      "lauf.png": "c546efff5c299f065fee294abc18b744f1cc43ecbe8594934af64d2ae85d6600"
+      "angriff.png": "3353778612d209f3524dd415d205e70eb7c2bed9ac7d358710b9265b2d439c2c",
+      "idle.png": "0d1369ebddddc9e007857d22b168b9c800ce9895da87b5b7da7d145cb397206a",
+      "lauf.png": "6f970210f5865127f037e6cb9910ee3ccd2cf8db7fc0ea9affba524c3fcacd47"
     }
   }
 }

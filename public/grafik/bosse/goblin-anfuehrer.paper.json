@@ -2,7 +2,7 @@
   "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
   "id": "goblin-anfuehrer",
   "rig": "figur",
-  "version": 2,
+  "version": 3,
   "beschreibung": "Goblin-Anführer: kleiner, gedrungener Goblin mit übergroßem Kopf, langer Nase, riesigem nach hinten abstehendem Ohr, Eisenhelm mit hohem Dorn, rotem Waffenrock mit Bauch, krummen Beinen, großem Hackmesser und rundem Holzschild auf dem Rücken-Arm (Miniboss Stufe 0).",
   "teile": [
     {
@@ -39,6 +39,20 @@
           "art": "flaeche",
           "form": "M-27.5 -47.5C-27.5 -62.5 -15 -70 -5 -70C7.5 -70 17.5 -60 17.5 -47.5C17.5 -32.5 7.5 -22.5 -5 -22.5C-17.5 -22.5 -27.5 -32.5 -27.5 -47.5Z",
           "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-17 -64V-30M-5 -69V-24M7 -66V-28",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 2.5,
+          "form": "M-26 -47.5C-26 -61 -15 -68.5 -5 -68.5C7 -68.5 16 -59 16 -47.5C16 -34 7 -24 -5 -24C-17 -24 -26 -34 -26 -47.5Z",
+          "material": "eisen",
+          "ton": "licht"
         },
         {
           "art": "flaeche",
@@ -92,8 +106,34 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -76C21 -68 25 -58 24 -46L20 -46C21 -58 18 -68 12 -74Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M6 -80L4 -54",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
           "form": "M-17.5 -50L25 -52.5L26.3 -45L-17.5 -42.5Z",
           "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -52L14 -52.5L14.5 -44.5L6.5 -44Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M8 -50.5L12.5 -50.8L12.8 -46.2L8.3 -46Z",
+          "material": "gold",
+          "ton": "schatten"
         }
       ],
       "pivot": [0, -37.5]
@@ -129,6 +169,12 @@
         {
           "art": "flaeche",
           "form": "M-2.5 -105L-45 -117.5L-35 -105L-5 -92.5Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-6 -102L-38 -113L-32 -106L-7 -96Z",
           "material": "smaragd",
           "ton": "schatten"
         },
@@ -139,8 +185,93 @@
         },
         {
           "art": "flaeche",
+          "auflage": true,
+          "form": "M-7.5 -82.5C-15 -95 -10 -117.5 10 -120C2 -112 0 -96 4 -80C-1 -80 -5 -81 -7.5 -82.5Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M38 -99L49 -95C48 -93 46 -92 43 -92Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M20 -86C26 -84 32 -85 36 -88",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 -86L26 -81L28 -86ZM31 -86L32.5 -82L34 -87Z",
+          "material": "weiss"
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [36, -97],
+          "radius": 1.3,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [25, -102.5],
+          "radius": 2.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [26, -102.5],
+          "radius": 1.3
+        },
+        {
+          "art": "falz",
+          "breite": 1.8,
+          "form": "M18 -108L31 -104",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
           "form": "M-12.5 -107.5C-10 -125 22.5 -130 35 -112.5C22.5 -110 0 -107.5 -12.5 -107.5Z",
           "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12.5 -107.5C-10 -125 4 -128 12 -127C2 -122 -2 -114 -1 -108Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 -110L35 -114L36 -110L-13 -106Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0, -109],
+          "radius": 1,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [12, -110],
+          "radius": 1,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [24, -112],
+          "radius": 1,
+          "ton": "licht"
         },
         {
           "art": "flaeche",
@@ -149,10 +280,10 @@
           "ton": "licht"
         },
         {
-          "art": "punkt",
-          "material": "auge",
-          "mitte": [25, -102.5],
-          "radius": 2.3
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M6.3 -122.5L11.3 -152.5L10 -122.5Z",
+          "material": "eisen"
         }
       ],
       "pivot": [5, -80]
@@ -165,6 +296,13 @@
           "art": "flaeche",
           "form": "M1.3 -80L13.8 -80L12.5 -55L2.5 -55Z",
           "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M1.3 -80L5 -80L5 -55L2.5 -55Z",
+          "material": "smaragd",
+          "ton": "schatten"
         }
       ],
       "pivot": [7.5, -75]
@@ -202,6 +340,11 @@
           "art": "flaeche",
           "form": "M2.5 -57.5L12.5 -57.5L11.3 -37.5L3.8 -37.5Z",
           "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2.3 -50L12.7 -50L12 -41L3 -41Z",
+          "material": "leder"
         },
         {
           "art": "flaeche",
