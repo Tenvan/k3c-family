@@ -56,7 +56,7 @@ func TestKeyRows(t *testing.T) {
 		view.KeyPay:        {Left: "Leertaste", Right: "Enter", Pad: "A"},
 		view.KeySkill4:     {Left: "Z", Right: "Num 4", Pad: "D-Pad ↑"},
 		view.KeyPause:      {Left: "Esc", Right: "Backspace", Pad: "Menu"},
-		view.KeyFullscreen: {Left: "F", Right: "", Pad: "RS"},
+		view.KeyFullscreen: {Left: "F11", Right: "", Pad: "RS"},
 	}
 	for i, r := range rows {
 		if r.Action != view.KeyActions[i] || r.Left == "" || r.Pad == "" {

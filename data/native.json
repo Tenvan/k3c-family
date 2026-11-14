@@ -1,0 +1,5 @@
+{
+  "_hinweis": "Werte des nativen Spiels (native/k3c-game, B-889). stepBudgetMs: Rechenzeit eines Simulationstakts in ms, ab der das Spiel 🐢 loggt (höchstens alle slowLogEverySeconds Sekunden, mit Objektanzahl).",
+  "stepBudgetMs": 4,
+  "slowLogEverySeconds": 5
+}

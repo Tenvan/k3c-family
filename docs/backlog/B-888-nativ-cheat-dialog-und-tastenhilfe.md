@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** hoch
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** CH1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-14 („Ja, alle so“)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,37 +24,39 @@ Im nativen Spiel öffnet F9 den Cheat-Dialog mit den Dev-Befehlen der Sim, F1 bl
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+- 🧑 Ralf: entwickelt und testet das native Spiel, entscheidet die Belegung.
+- Spielende: sehen die Tasten nicht, solange sie sie nicht drücken.
 
 ## Anforderungen
 
-- F1 schaltet eine Tastenübersicht aller UI-/Entwickler-Tasten (F-Tasten, keine Spieltasten) ein und aus; die Liste kommt aus einer zentralen Tabelle, aus der auch die Auswertung liest.
-- F9 schaltet ein Cheat-Menü, bedienbar mit Tastatur und Gamepad, Gruppen wie im alten Dialog (Vorrat, Ausbau, Zeit, Grad, Kampf), wirkt auf den Spieler, der es öffnet.
-- Nicht im Aufnahme-Modus (`--shots`).
+- Zentrale Tastentabelle (UI-/Entwickler-Tasten, keine Spieltasten); Auswertung und F1-Übersicht lesen daraus.
+- F1 Tastenübersicht ein/aus · F2 Leistungsanzeige (besteht) · F3 Fluss-Fassung (besteht) · F5 Schnellspeichern · F6 Spielstand laden · F7 Pause, in der Pause erneut F7 = ein Takt Einzelschritt · F8 Zeitraffer 1×→2×→4×→8×→1× (beendet auch die Pause) · F9 Cheat-Menü ein/aus (Tastatur und Gamepad, Gruppen wie im alten Dialog `src/scenes/debug/debugActions.ts`: Vorrat, Ausbau, Zeit, Grad, Kampf; wirkt auf den öffnenden Spieler) · F10 Debug-Overlay (Hitboxen, Chunk-Grenzen, Kamera) · F11 Vollbild (Taste F für Vollbild entfällt) · F12 Screenshot nach `reports/`.
+- Keine dieser Tasten im Aufnahme-Modus (`--shots`).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+- Debug-Werte und Logs der Sim (eigenes Ticket im Sprint CH1).
+- Icons im HUD (eigenes Ticket im Sprint CH1).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Dev-Befehle über `engine/room/dev.go` (`Room.Dev`) und `engine/sim/dev*.go`, nicht neu schreiben. Datei ≤ 400 Zeilen, Funktion ≤ 60. Jede Mechanik mit 2 Spielern.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/**`, `engine/room/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+- Spieler 2 drückt am Pad die Cheat-Kombination bzw. F9 auf seiner Tastatur-Hälfte → Cheat-Menü für Spieler 2, Gold fällt bei Monarch 2.
+- F8 dreimal → Zeitraffer 8×, die Anzeige oben nennt ihn.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+- Kein Spiel aktiv: F5–F9 tun nichts außer einer Log-Meldung.
+- F6 ohne Spielstand: Hinweis „kein Spielstand“, Spiel läuft weiter.
 
 ## Akzeptanzkriterien
 
@@ -64,7 +66,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-- Weitere Tasten (Vorschlag Claude, Default übernehmen nach Rückmeldung Ralf): F5 Schnellspeichern, F6 Spielstand laden, F7 Pause/Einzelschritt, F8 Zeitraffer durchschalten (1×/2×/4×/8×), F10 Debug-Overlay (Hitboxen, Chunk-Grenzen, Kamera), F11 Vollbild, F12 Screenshot nach reports/.
+Keine (Tastenbelegung von 🧑 am 2026-11-14 bestätigt: „Ja, alle so“).
 
 ## Notizen
 

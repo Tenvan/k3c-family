@@ -34,6 +34,21 @@ func cyclePhases(c level.Cycle) ([4]cyclePhase, float64) {
 	}, day + dusk + night + dawn
 }
 
+// SecondsToNight liefert die Spielsekunden bis zum nächsten Nachtbeginn der Welt w (0 in der Nacht; Anzeige des nativen
+// Debug-Overlays, B-889).
+func SecondsToNight(w *World) float64 {
+	if w.Cycle.Phase == "night" || w.CycleSpeed <= 0 {
+		return 0
+	}
+	phases, length := cyclePhases(globalDayNight)
+	t := math.Mod(w.Time*w.CycleSpeed, length)
+	start := phases[2].start
+	if t >= start {
+		start += length
+	}
+	return (start - t) / w.CycleSpeed
+}
+
 func cycleAt(c level.Cycle, seconds float64) CycleInfo {
 	phases, length := cyclePhases(c)
 	n := math.Floor(seconds / length)

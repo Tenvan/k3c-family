@@ -28,16 +28,20 @@ func (s *Session) Command(player int, c view.Command) error {
 	return s.r.Input(deviceID, s.p, s.cmd)
 }
 
-// Step rechnet einen Takt (1/30 s), außer ohne Spiel und in der Pause, und liefert den Frame. Die Schleife ruft Step
+// Step rechnet einen Takt (1/30 s), außer ohne Spiel, in der Pause und im Halt (außer Einzelschritt), und liefert den Frame. Die Schleife ruft Step
 // einmal je Update bei 30 Updates je Sekunde. Stages, Seats und Events des Frames liegen in Puffern, die der nächste
 // Step überschreibt.
 func (s *Session) Step() view.Frame {
 	s.steps++
-	if s.r != nil && !s.paused {
+	s.stepMs = 0
+	if s.running() {
+		t0 := time.Now()
 		s.tick()
+		s.stepMs = float64(time.Since(t0).Microseconds()) / 1000
 	}
 	s.collectSaves()
-	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused, Timescale: 1, Cues: s.cues, Settings: s.settings,
+	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused || s.halt, Timescale: s.timescale(), Cues: s.cues,
+		Settings: s.settings, StepMs: s.stepMs,
 		Outcome: s.ended}
 	s.cues = nil
 	if s.p != nil {

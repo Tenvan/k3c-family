@@ -356,3 +356,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | `erledigt/WZ58-welten-editor-planung-review/` |
 | PB1 | Veröffentlichung auf itch.io | `erledigt/PB1-itch-io/` |
 | WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | `erledigt/WR1-web-und-server-rueckbau/` |
+| CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | `erledigt/CH1-cheats-und-entwickler-tasten/` |

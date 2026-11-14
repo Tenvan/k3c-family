@@ -46,6 +46,7 @@ var (
 	down  = []view.Action{view.ActionDown}
 	downS = []view.Action{view.ActionDown, view.ActionSkillMenu} // Steuerkreuz ↓ gedrückt: auch das Skill-Menü
 	conf  = []view.Action{view.ActionConfirm}
+	cheat = []view.Action{view.ActionCheats}
 )
 
 // runPad spielt die Updates nach einem leeren ersten Update ab und prüft die Aktionen je Update.
@@ -82,6 +83,8 @@ func TestPadMenuViewHome(t *testing.T) {
 		{"Menu zu lang", seq(times(menuShort+1, at(none, padMenu)), one(at(none)))},
 		{"View allein", seq(times(30, at(none, padView)), one(at(viewA)))},
 		{"B zurück", seq(one(at(back, padB)), times(20, at(none, padB)), one(at(none)))},
+		{"View + Y Cheat-Menü", seq(one(at(none, padView)), one(at(cheat, padView, padY)), times(5, at(none, padView, padY)), one(at(none)))},
+		{"Y allein", seq(one(at(none, padY)), times(5, at(none, padY)), one(at(none)))},
 	}
 	for _, c := range cases {
 		runPad(t, c.name, c.steps)

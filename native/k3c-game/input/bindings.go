@@ -35,7 +35,7 @@ import (
 )
 
 // actionCount ist die Zahl der Menü-Aktionen in view (Index = view.Action).
-const actionCount = int(view.ActionFullscreen) + 1
+const actionCount = int(view.ActionCheats) + 1
 
 // keyLayout ist die Belegung einer Tastatur-Hälfte; je Eintrag gelten alle genannten Tasten.
 type keyLayout struct {
@@ -60,7 +60,8 @@ var halves = [2]keyLayout{
 			view.ActionMenu: keys(ebiten.KeyEscape), view.ActionView: keys(ebiten.KeyTab),
 			view.ActionPrevPage: keys(ebiten.KeyQ), view.ActionNextPage: keys(ebiten.KeyE),
 			view.ActionHome: keys(ebiten.KeyHome), view.ActionSkillMenu: keys(ebiten.KeyK),
-			view.ActionFullscreen: keys(ebiten.KeyF),
+			view.ActionFullscreen: keys(view.DevKeyOf(view.DevFullscreen)),
+			view.ActionCheats:     keys(view.DevKeyOf(view.DevCheats)),
 		},
 	},
 	{
@@ -94,17 +95,19 @@ const (
 	padLeft  = ebiten.StandardGamepadButtonLeftLeft
 	padRight = ebiten.StandardGamepadButtonLeftRight
 	padRS    = ebiten.StandardGamepadButtonRightStick
+	padY     = ebiten.StandardGamepadButtonRightTop
 )
 
 // padSkills sind die Skill-Slots 1 … 4 des Gamepads.
 var padSkills = [4]ebiten.StandardGamepadButton{padLB, padRB, padLT, padUp}
 
-// padActions ist die Menü-Belegung des Gamepads; -1 = keine Taste (Home ist die Kombi View + Menu).
+// padActions ist die Menü-Belegung des Gamepads; -1 = keine Taste (Home ist die Kombi View + Menu). Y zählt nur mit
+// gehaltenem View als ActionCheats (padChord).
 var padActions = [actionCount]ebiten.StandardGamepadButton{
 	view.ActionUp: padUp, view.ActionDown: padDown, view.ActionLeft: padLeft, view.ActionRight: padRight,
 	view.ActionConfirm: padA, view.ActionBack: padB, view.ActionMenu: padMenu, view.ActionView: padView,
 	view.ActionPrevPage: padLB, view.ActionNextPage: padRB, view.ActionHome: -1,
-	view.ActionSkillMenu: padDown, view.ActionFullscreen: padRS,
+	view.ActionSkillMenu: padDown, view.ActionFullscreen: padRS, view.ActionCheats: padY,
 }
 
 // usedKeys sind alle Tasten beider Hälften (Ebitengine wird nur nach ihnen gefragt).

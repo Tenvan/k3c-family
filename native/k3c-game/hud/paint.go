@@ -43,7 +43,6 @@ const (
 	slotP
 	slotClock
 	slotFight
-	slotShared
 	slotPlace
 	slotCit
 	slotBanner
@@ -59,7 +58,8 @@ const (
 	slotMenuRow                                // menuWindow Zeilen ab hier
 	slotMenuGlyph = slotMenuRow + menuWindow   // Glyph-Beschriftung je Zeile
 	slotLabel     = slotMenuGlyph + menuWindow // Welt-Labels ab hier (höchstens maxLabels)
-	slotCount     = slotLabel + maxLabels
+	slotStock     = slotLabel + maxLabels      // Teile der Vorrats-Anzeige ab hier (stockSlots, drawstock.go)
+	slotCount     = slotStock + stockSlots
 )
 
 // maxLabels: höchstens so viele Welt-Labels je Zelle werden gemessen und gezeichnet.

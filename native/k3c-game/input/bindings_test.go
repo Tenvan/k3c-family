@@ -129,7 +129,10 @@ func TestKeyActionTable(t *testing.T) {
 		{0, ebiten.KeyE, []view.Action{view.ActionNextPage}},
 		{0, ebiten.KeyHome, []view.Action{view.ActionHome}},
 		{0, ebiten.KeyK, []view.Action{view.ActionSkillMenu}},
-		{0, ebiten.KeyF, []view.Action{view.ActionFullscreen}},
+		{0, ebiten.KeyF11, []view.Action{view.ActionFullscreen}},
+		{0, ebiten.KeyF, nil},
+		{0, ebiten.KeyF9, []view.Action{view.ActionCheats}},
+		{1, ebiten.KeyF9, nil},
 		{0, ebiten.KeyNumpad5, nil},
 		{0, ebiten.KeyArrowUp, nil},
 		{1, ebiten.KeyArrowUp, []view.Action{view.ActionUp}},
@@ -171,6 +174,7 @@ func TestPadActionTable(t *testing.T) {
 		{padView, nil},
 		{padX, nil},
 		{padRT, nil},
+		{padY, nil},
 		{ebiten.StandardGamepadButtonRightStick, []view.Action{view.ActionFullscreen}},
 	}
 	for _, c := range cases {

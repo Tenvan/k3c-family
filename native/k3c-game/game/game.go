@@ -48,6 +48,10 @@ type Game struct {
 	loading, shown bool
 	loadMsg        *notice
 	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
+	dev            view.DevView          // Entwickler-Anzeigen (F1, F10), kommt in jeden Frame
+	shotNext       bool                  // F12: das nächste Bild nach reports/ schreiben (devshot.go)
+	inBuf          []view.DeviceInput    // Puffer der Eingabe späterer Overlays (play.go › hideConsumed)
+	tps            tpsMeter              // Takte je Sekunde der Seite Werte (devvalues.go)
 	subs           subImages
 	stats          *overlay
 	shots          *shooter
@@ -138,9 +142,19 @@ func (g *Game) Update() error {
 		return g.err
 	}
 	if g.mode == ModeQuit {
+		g.finish()
 		return g.sim.Close()
 	}
 	return nil
+}
+
+// finish meldet allen Listenern mit view.Finisher das Programmende (Sitzungsbericht).
+func (g *Game) finish() {
+	for _, l := range g.parts.Listeners {
+		if f, ok := l.(view.Finisher); ok {
+			f.Finish()
+		}
+	}
 }
 
 // advanceTimed rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige (clock() ist unter
@@ -182,6 +196,8 @@ func (g *Game) advance() {
 		g.play(in)
 	}
 	g.frame = g.sim.Step()
+	g.devValues()
+	g.frame.Dev = g.dev
 	g.devs.decorate(&g.frame, in)
 	if len(g.cues) > 0 {
 		g.frame.Cues = append(g.frame.Cues, g.cues...)
@@ -216,6 +232,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.drawLoading(screen)
 	default:
 		g.drawGame(screen)
+		g.devShot(screen)
 		return
 	}
 	if g.shots != nil {

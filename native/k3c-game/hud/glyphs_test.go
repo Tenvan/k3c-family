@@ -20,7 +20,7 @@ func TestGlyphSchluessel(t *testing.T) {
 		keys []string
 	}{
 		{pad, []string{"pad:A", "pad:MENU", "", "pad:X", "pad:LB", "pad:RB", "pad:LT", "pad:UP", "pad:DOWN"}},
-		{keys1, []string{"key:SPACE", "key:ESC", "key:F", "key:E", "key:Q", "key:R", "key:T", "key:Z", "key:K"}},
+		{keys1, []string{"key:SPACE", "key:ESC", "key:F11", "key:E", "key:Q", "key:R", "key:T", "key:Z", "key:K"}},
 		{keys2, []string{"key:ENTER", "key:BACKSPACE", "", "key:NUM0", "key:NUM1", "key:NUM2", "key:NUM3", "key:NUM4", "key:NUM5"}},
 	}
 	for _, c := range cases {

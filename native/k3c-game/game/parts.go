@@ -9,6 +9,7 @@ import (
 	"k3c/native/k3c-game/actors"
 	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/audio"
+	"k3c/native/k3c-game/devtools"
 	"k3c/native/k3c-game/fx"
 	"k3c/native/k3c-game/hud"
 	"k3c/native/k3c-game/input"
@@ -48,6 +49,7 @@ func Packages(lib *art.Library) []Part {
 		{Name: "props", Drawers: []view.Drawer{props.New(lib)}},
 		{Name: "actors", Drawers: []view.Drawer{actors.New(lib)}},
 		{Name: "fx", Drawers: []view.Drawer{fx.New(lib)}},
+		{Name: "devtools", Drawers: devtools.New(lib), Listener: devtools.NewChronicle(lib, view.ReportsDir)}, // vor hud: das Cheat-Menü nimmt die Eingabe vor dem Skill-Menü
 		{Name: "hud", Drawers: []view.Drawer{hud.New(lib)}},
 		{Name: "input", Source: input.New(lib)},
 		{Name: "menu", Menus: menu.New(lib, KeyRows)},

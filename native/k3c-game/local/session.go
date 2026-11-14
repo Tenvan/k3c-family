@@ -49,6 +49,9 @@ type Session struct {
 	devs   map[int]view.DeviceID // Slot (= lokaler Spieler) → Gerät
 	last   []view.DeviceID       // Geräte des letzten Spiels, für Load und Continue
 	paused bool
+	halt   bool // Halt der Entwickler-Taste F7 (dev.go)
+	single bool // im Halt: der nächste Step rechnet einen Takt
+	stepMs float64 // Rechenzeit des letzten Takts (Frame.StepMs)
 	steps  uint64 // Aufrufe von Step, Grundlage von Frame.Clock
 	cues   []view.Cue
 	ended  view.Outcome // Ausgang des laufenden bzw. zuletzt beendeten Spiels (Frame.Outcome)
@@ -197,7 +200,7 @@ func (s *Session) Close() error {
 
 // reset vergisst das laufende Spiel, ohne zu speichern.
 func (s *Session) reset() {
-	s.m, s.r, s.p, s.name, s.devs, s.paused = nil, nil, nil, "", nil, false
+	s.m, s.r, s.p, s.name, s.devs, s.paused, s.halt, s.single = nil, nil, nil, "", nil, false, false, false
 }
 
 // Active meldet, ob ein Spiel läuft (auch pausiert).
