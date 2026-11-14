@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-Teil von B-823 (Entscheidung 009, Punkt 2): Das Online-Spiel über `/ws` entfällt. Offen ist, ob `k3c-server` (Werkzeug-API, Berichte, Spielstände), `engine/net`, `k3c-load` und `k3c-tui` bleiben.
+Teil von B-823 (Entscheidung 009, Punkt 2): Das Online-Spiel über `/ws` entfällt. Offen ist, ob `k3c-server` (Werkzeug-API, Berichte, Spielstände), `engine/net`, `k3c-load`, `k3c-tui` und `k3c-starter` bleiben (Ralf 2026-11-14: „auch die anderen Apps prüfen, ob noch notwendig“). Der Web-Client der Workbench entfällt bereits (B-872).
 
 ## Ziel
 
@@ -57,8 +57,13 @@ nicht relevant: Entscheidung.
 
 ## Offene Fragen
 
-Vorschlag Claude: Server als Werkzeug-API behalten (Workbench, Berichte), `/ws`-Spielbetrieb, `k3c-load` und `k3c-tui` entfernen.
+Vorschlag Claude:
+- `k3c-server`: als Werkzeug-API behalten, solange Workbench, Berichte und Spielstände ihn brauchen; `/ws`-Spielbetrieb entfernen.
+- `k3c-load` (Lasttest): entfernen, ohne Online-Spiel gibt es keine Last.
+- `k3c-tui`: entfernen, ersetzt durch Workbench und natives Spiel.
+- `k3c-starter`: entfernen, er startet nur den Server für Browser-Geräte (B-041 dann verwerfen).
+- Workbench-EXE und natives Spiel bleiben.
 
 ## Notizen
 
-Zerlegung B-823 am 2026-11-13 (Claude).
+Zerlegung B-823 am 2026-11-13 (Claude). 2026-11-14: k3c-starter in die Prüfung aufgenommen (Claude, Auftrag Ralf).

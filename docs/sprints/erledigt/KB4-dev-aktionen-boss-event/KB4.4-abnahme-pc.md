@@ -1,6 +1,6 @@
 # KB4.4 · Abnahme am PC: Boss und Event über das Debug-Panel
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI

@@ -1,6 +1,6 @@
 # KB5.6 · Abnahme im Spiel mit zwei Spielern und im Studio
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI

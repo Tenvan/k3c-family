@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** eingeplant
-- **Sprint:** WZ46
+- **Status:** offen
+- **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-08
 - **Spec:** Entwurf
