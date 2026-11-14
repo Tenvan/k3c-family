@@ -1,6 +1,6 @@
 # KB5 · SRV, CLI, DEV · Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI, DEV
 - **Reife:** bereit
@@ -61,7 +61,7 @@ keine
 | KB5.3 | `KB5.3-status-darstellung.md` | Umsetzung | autonom | fertig |
 | KB5.4 | `KB5.4-studio-ziel-und-status.md` | Umsetzung | autonom | fertig |
 | KB5.5 | `KB5.5-review-kb5.md` | Review | autonom | fertig |
-| KB5.6 | `KB5.6-abnahme-kb5.md` | Workshop | Mensch | offen |
+| KB5.6 | `KB5.6-abnahme-kb5.md` | Workshop | Mensch | verworfen |
 
 ## Abnahme
 

@@ -1,6 +1,6 @@
 # KB4 · SRV, CLI · Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** SRV, CLI
 - **Reife:** bereit
@@ -60,7 +60,7 @@ keine
 | KB4.1 | `KB4.1-dev-aktionen-server.md` | Umsetzung | autonom | fertig |
 | KB4.2 | `KB4.2-debug-panel-kampf.md` | Umsetzung | autonom | fertig |
 | KB4.3 | `KB4.3-review.md` | Review | autonom | fertig |
-| KB4.4 | `KB4.4-abnahme-pc.md` | Workshop | Mensch | offen |
+| KB4.4 | `KB4.4-abnahme-pc.md` | Workshop | Mensch | verworfen |
 
 - KB4.1 (SRV) Aktionen `boss`, `bossPhase`, `event`, `night` in Sim und Server, Go-Tests, `docs/protocol.md`, Beispiel-Dateien (AC-01, AC-02).
 - KB4.2 (CLI) Debug-Panel Gruppe „Kampf“, Vitest (AC-03).

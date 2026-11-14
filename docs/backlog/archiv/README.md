@@ -761,3 +761,11 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | erledigt | PT2 | Abnahme-Läufe PT2 |
 | [B-860](B-860-abnahme-laeufe-wz47.md) | INF | Schuld | mittel | erledigt | WZ47 | Abnahme-Läufe WZ47 |
 | [B-869](B-869-abnahme-laeufe-wz55.md) | DEV | Schuld | mittel | erledigt | WZ55 | Abnahme-Läufe WZ55 |
+| [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | verworfen | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
+| [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | niedrig | verworfen | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
+| [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | verworfen | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
+| [B-603](B-603-dev-aktionen-boss-event.md) | SRV | Idee | hoch | erledigt | KB4 | Dev-Aktionen lösen Boss, Phasenwechsel und Events (Vollmond, Blutmond, Händler) sofort aus |
+| [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | erledigt | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
+| [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | erledigt | WZ43 | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
+| [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | erledigt | WZ43 | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
+| [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | erledigt | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
