@@ -7,6 +7,8 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | erledigt | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
+| [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | erledigt | EP1 | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
 | [B-892](B-892-studio-seiten-reihenfolge.md) | DEV | Idee | mittel | erledigt | WZ59 | Studio zeigt die Seiten in der Reihenfolge Styleguide, Katalog, Review, Sound &amp; Quellen (eine Seite), Welten-Editor, Balancing |
 | [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
@@ -829,3 +831,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-904](B-904-mine-stuetzbalken-verfall.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Mine zeigt Stützbalken und Verfall nach der Natur-Eigenschaft decay |
 | [B-905](B-905-eisenstollen-glut.md) | CLI | Idee | niedrig | erledigt | BI2 | Der Eisenstollen zeigt Hitze und Glut nach der Natur-Eigenschaft glow |
 | [B-906](B-906-kristallhoehle-leuchtstaerke.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Kristallhöhle leuchtet nach der Natur-Eigenschaft brightness |
+| [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | erledigt | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
