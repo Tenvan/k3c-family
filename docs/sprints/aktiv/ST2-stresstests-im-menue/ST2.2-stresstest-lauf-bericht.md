@@ -1,6 +1,6 @@
 # ST2.2 · Stresstest-Lauf mit Leistungsanzeige und Bericht in reports/
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,5 +59,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-02 geprüft:** `game/stress_test.go` › `TestStressStartsWithConfig`: `NewGame` mit Seed, Tiefe, Spielstand `stresstest` und Geräten, F2 und F10 an, im ersten Takt `buildAll`, `spawn troop`, `timescale`, zu jeder Welle `spawn enemy` nach der Kurve (10, dann 15); `TestStressEnemiesFor` (linear, exponentiell, Deckel 200).
+- **AC-03 geprüft:** `TestStressWritesReport`: nach der letzten geschlagenen Welle liegt `native-stress-*.json` im Berichtsordner (Takte, Takte/s, Taktdauer p50/p95/p99/max aus `Frame.StepMs`, FPS Mittel und Minimum, Höchst- und Endwerte der Objekte, Go-Speicher), die Simulation steht (F7 weiter). `TestStressEndsOnLeaveAndNeedsDev`: Verlassen schreibt den Bericht ohne Halt; ohne Entwickler-Rolle kein Start.
+- Umsetzung: `game/stress.go` (Rolle `view.StressStarter` über die Session-Hülle `menuSession` der Menüs, Vorspann, Wellen, Ende), `game/stressreport.go` (Messwerte, Bericht). Spieler ohne Gerät bekommen Platzhalter-Pads (Platz wartet auf ein Gerät). Ende-Meldung als Banner („Stresstest beendet: <Pfad>“).
+- `task check:diff` grün.

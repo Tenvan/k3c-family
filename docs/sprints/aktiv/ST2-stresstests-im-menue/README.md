@@ -75,7 +75,7 @@ keine. Entschieden mit Default (autonom, Claude, 2026-11-14): Sichtbarkeit per E
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | ST2.1 | `ST2.1-testing-menue.md` | Umsetzung | autonom | fertig |
-| ST2.2 | `ST2.2-stresstest-lauf-bericht.md` | Umsetzung | autonom | offen |
+| ST2.2 | `ST2.2-stresstest-lauf-bericht.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

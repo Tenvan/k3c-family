@@ -4,6 +4,7 @@ import (
 	"image"
 	"image/color"
 	"log/slog"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -57,6 +58,12 @@ type Game struct {
 	shots          *shooter
 	meter          *meter // Messmodus (--measure), sonst nil
 	endIn          int    // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
+	// Stresstest (Testing, B-896, stress.go): laufender Test, sonst nil; clock, fpsOf und reports ersetzen in Tests
+	// Wanduhr, Bildrate und Berichtsordner.
+	stress  *stressRun
+	clock   func() time.Time
+	fpsOf   func() float64
+	reports string
 }
 
 // New baut die Schleife. Mit Szene (Seed oder Spielstand) startet das Spiel sofort, sonst liegt das Hauptmenü oben.
@@ -194,11 +201,12 @@ func (g *Game) advance() {
 	g.toggleWindow(in)
 	g.devKeys()
 	if top := g.stack.Top(); top != nil {
-		g.step(top.Update(in, g.sim))
+		g.step(top.Update(in, menuSession{Sim: g.sim, g: g}))
 	} else {
 		g.play(in)
 	}
 	g.frame = g.sim.Step()
+	g.stressStep()
 	g.devValues()
 	g.frame.Dev = g.dev
 	g.devs.decorate(&g.frame, in)
