@@ -48,7 +48,7 @@ func TestParseStatusGoneUndDetached(t *testing.T) {
 }
 
 func TestParseWorktreesOhneWurzel(t *testing.T) {
-	out := "worktree C:/k3c\nHEAD 1111111111\nbranch refs/heads/develop\n\n" +
+	out := "worktree C:/k3c\nHEAD 1111111111\nbranch refs/heads/main\n\n" +
 		"worktree C:/k3c/.claude/worktrees/a\nHEAD 4348d4fc99\ndetached\n\n" +
 		"worktree C:/k3c/.claude/worktrees/b\nHEAD abcdef0123\nbranch refs/heads/sprint/k5\n"
 	got := parseWorktrees(out)
@@ -60,12 +60,12 @@ func TestParseWorktreesOhneWurzel(t *testing.T) {
 
 func TestParseRefsUndTrack(t *testing.T) {
 	out := strings.Join([]string{
-		"refs/heads/develop\torigin/develop\t[behind 1]\ts1\t100\tKRT",
+		"refs/heads/main\torigin/main\t[behind 1]\ts1\t100\tKRT",
 		"refs/heads/sprint/bd2\torigin/sprint/bd2\t[gone]\ts2\t90\tReview",
 		"refs/heads/lokal\t\t\ts3\t80\tnur hier",
 		"refs/heads/beides\torigin/beides\t[ahead 1, behind 2]\ts4\t70\tx",
 		"refs/remotes/origin/HEAD\t\t\ts0\t0\t",
-		"refs/remotes/origin/develop\t\t\ts1\t100\tKRT",
+		"refs/remotes/origin/main\t\t\ts1\t100\tKRT",
 		"refs/remotes/origin/sprint/k5\t\t\ts5\t60\tK5",
 	}, "\n")
 	refs := parseRefs(out)
@@ -76,7 +76,7 @@ func TestParseRefsUndTrack(t *testing.T) {
 		tr, _, _ := parseTrack(r)
 		tracks = append(tracks, tr)
 	}
-	if !reflect.DeepEqual(names, []string{"develop", "sprint/bd2", "lokal", "beides", "sprint/k5"}) {
+	if !reflect.DeepEqual(names, []string{"main", "sprint/bd2", "lokal", "beides", "sprint/k5"}) {
 		t.Fatalf("Namen = %v", names)
 	}
 	if !reflect.DeepEqual(tracks, []string{TrackBehind, TrackGone, TrackNone, TrackBoth, TrackRemote}) {
@@ -94,7 +94,7 @@ func TestParseDiff(t *testing.T) {
 }
 
 func TestValidBranch(t *testing.T) {
-	for _, ok := range []string{"develop", "sprint/bd2", "feat/git-seite", "claude/k4-abschluss-review-487fe9", "w11_lauf.3"} {
+	for _, ok := range []string{"main", "sprint/bd2", "feat/git-seite", "claude/k4-abschluss-review-487fe9", "w11_lauf.3"} {
 		if !ValidBranch(ok) {
 			t.Errorf("%q sollte gültig sein", ok)
 		}
@@ -114,7 +114,7 @@ func TestAdvise(t *testing.T) {
 		{Status{Branch: "f", Upstream: "origin/f", Ahead: 1}, "Push: 1 Commits nicht gepusht"},
 		{Status{Branch: "f", Upstream: "origin/f", UpstreamGone: true}, "Remote-Branch gelöscht"},
 		{Status{Branch: "f", BaseAhead: 3}, "Push mit Upstream"},
-		{Status{Branch: "develop", Upstream: "origin/develop", BaseBehind: 2}, "develop liegt 2 hinter"},
+		{Status{Branch: "main", Upstream: "origin/main", BaseBehind: 2}, "main liegt 2 hinter"},
 		{Status{Branch: "f", MainBehind: 275}, "main liegt 275 hinter"},
 		{Status{Changes: []Change{{Path: "a"}}, Branch: "f"}, "1 geänderte Dateien"},
 	}

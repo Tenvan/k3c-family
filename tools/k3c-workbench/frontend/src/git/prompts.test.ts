@@ -15,7 +15,7 @@ const br = (b: Partial<GitBranch> & Pick<GitBranch, 'name' | 'state'>): GitBranc
 });
 
 const branches = [
-  br({ name: 'develop', state: 'basis', date: 5 }),
+  br({ name: 'main', state: 'basis', date: 5 }),
   br({ name: 'sprint/bd2', state: 'squash', track: 'gone', date: 3 }),
   br({ name: 'alt/arbeit', state: 'ungemergt', track: 'gone', date: 2 }),
   br({ name: 'feat/x', state: 'aktuell', date: 9 }),
@@ -47,7 +47,7 @@ describe('Prompts in Kurzform (B-580/AC-03, B-639)', () => {
 
 describe('Branch-Liste', () => {
   it('sortiert lokal vor remote, dann nach Zustand und Alter', () => {
-    expect(sortBranches(branches).map((b) => b.name)).toEqual(['feat/x', 'develop', 'neu', 'alt/arbeit', 'sprint/bd2', 'sprint/k5']);
+    expect(sortBranches(branches).map((b) => b.name)).toEqual(['feat/x', 'main', 'neu', 'alt/arbeit', 'sprint/bd2', 'sprint/k5']);
   });
 
   it('filtert', () => {
@@ -60,7 +60,7 @@ describe('Statuskarte und Zeit', () => {
   it('Pillen sagen, was zu tun ist', () => {
     const s = { branch: 'f', upstream: 'origin/f', upstreamGone: false, ahead: 2, behind: 0, baseAhead: 2, baseBehind: 0, mainBehind: 3,
       changes: [], stashes: [], worktrees: [], fetchedAt: 0, advice: [] };
-    expect(badges(s).map((b) => b[1])).toEqual(['2 nicht gepusht', 'develop +2 / −0', 'main 3 hinter origin']);
+    expect(badges(s).map((b) => b[1])).toEqual(['2 nicht gepusht', 'main +2 / −0', 'main 3 hinter origin']);
     const changes = [{ path: 'a', code: 'M', staged: true }, { path: 'a', code: 'M', staged: false }, { path: 'b', code: '?', staged: false }];
     expect(badges({ ...s, changes }).map((b) => b[1])).toContain('2 Dateien nicht committet');
   });

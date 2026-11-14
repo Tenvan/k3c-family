@@ -11,10 +11,10 @@ import (
 	"unicode/utf8"
 )
 
-// Offene PRs und PR-Aktionen für die Seite Git (B-580). Ziel ist immer develop; Branches löscht die Seite selbst
+// Offene PRs und PR-Aktionen für die Seite Git (B-580). Ziel ist immer main; Branches löscht die Seite selbst
 // (gitops.Delete), deshalb nie --delete-branch: gh würde dabei auch den Checkout wechseln.
 
-// OpenPR ist ein offener PR gegen develop.
+// OpenPR ist ein offener PR gegen main.
 type OpenPR struct {
 	Number  int    `json:"number"`
 	Title   string `json:"title"`
@@ -34,7 +34,7 @@ type PRList struct {
 	Fetched string   `json:"fetched,omitempty"`
 }
 
-var openArgs = []string{"gh", "pr", "list", "--state", "open", "--base", "develop", "--limit", "50", "--json",
+var openArgs = []string{"gh", "pr", "list", "--state", "open", "--base", "main", "--limit", "50", "--json",
 	"number,title,state,isDraft,headRefName,mergeable,statusCheckRollup,url,author,updatedAt"}
 
 const (
@@ -84,11 +84,11 @@ type MergedHead struct {
 	SHA    string `json:"headRefOid"`
 }
 
-// Nur PRs nach develop: ein PR in einen Sprint- oder Feature-Branch bringt nichts nach develop.
-var mergedArgs = []string{"gh", "pr", "list", "--state", "merged", "--base", "develop", "--limit", "500", "--json",
+// Nur PRs nach main: ein PR in einen Sprint- oder Feature-Branch bringt nichts nach main.
+var mergedArgs = []string{"gh", "pr", "list", "--state", "merged", "--base", "main", "--limit", "500", "--json",
 	"number,headRefName,headRefOid"}
 
-// Merged liest die letzten 500 nach develop gemergten PRs (eine Abfrage für alle Branches).
+// Merged liest die letzten 500 nach main gemergten PRs (eine Abfrage für alle Branches).
 func (c *Client) Merged(ctx context.Context) ([]MergedHead, error) {
 	ctx, cancel := context.WithTimeout(ctx, 2*timeout)
 	defer cancel()
@@ -103,7 +103,7 @@ func (c *Client) Merged(ctx context.Context) ([]MergedHead, error) {
 	return list, nil
 }
 
-// Create legt einen PR von head nach develop an und liefert seine Adresse.
+// Create legt einen PR von head nach main an und liefert seine Adresse.
 func (c *Client) Create(ctx context.Context, head, title, body string) (string, error) {
 	title = strings.TrimSpace(title)
 	switch {
@@ -111,15 +111,15 @@ func (c *Client) Create(ctx context.Context, head, title, body string) (string, 
 		return "", errors.New("kein Titel angegeben")
 	case utf8.RuneCountInString(title) > maxTitle || len(body) > maxBody:
 		return "", errors.New("zu langer Titel oder zu lange Beschreibung")
-	case head == "develop" || head == "main":
+	case head == "main":
 		return "", fmt.Errorf("von %s gibt es keinen PR", head)
 	}
 	// Werte mit "=": ein Titel, der mit "-" beginnt, bleibt so ein Wert und wird keine Option.
-	out, err := c.do(ctx, "gh", "pr", "create", "--base=develop", "--head="+head, "--title="+title, "--body="+body)
+	out, err := c.do(ctx, "gh", "pr", "create", "--base=main", "--head="+head, "--title="+title, "--body="+body)
 	return strings.TrimSpace(lastOf(out)), err
 }
 
-// Merge mergt PR number, mit squash als Squash-Merge. Nur offene PRs gegen develop; --match-head-commit lässt GitHub
+// Merge mergt PR number, mit squash als Squash-Merge. Nur offene PRs gegen main; --match-head-commit lässt GitHub
 // ablehnen, wenn seit dem Lesen jemand nachgepusht hat.
 func (c *Client) Merge(ctx context.Context, number int, squash bool) error {
 	head, err := c.checkOpen(ctx, number)
@@ -134,7 +134,7 @@ func (c *Client) Merge(ctx context.Context, number int, squash bool) error {
 	return err
 }
 
-// Close schließt PR number (nur offen und gegen develop) ohne Merge.
+// Close schließt PR number (nur offen und gegen main) ohne Merge.
 func (c *Client) Close(ctx context.Context, number int) error {
 	if _, err := c.checkOpen(ctx, number); err != nil {
 		return err
@@ -164,8 +164,8 @@ func (c *Client) checkOpen(ctx context.Context, number int) (string, error) {
 		return "", fmt.Errorf("PR #%d: Antwort von gh unlesbar", number)
 	case p.State != "OPEN":
 		return "", fmt.Errorf("PR #%d ist nicht mehr offen", number)
-	case p.Base != "develop":
-		return "", fmt.Errorf("PR #%d zielt auf %s, die Seite bearbeitet nur PRs gegen develop", number, p.Base)
+	case p.Base != "main":
+		return "", fmt.Errorf("PR #%d zielt auf %s, die Seite bearbeitet nur PRs gegen main", number, p.Base)
 	}
 	return p.Head, nil
 }

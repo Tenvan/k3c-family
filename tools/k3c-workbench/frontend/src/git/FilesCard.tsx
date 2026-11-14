@@ -44,7 +44,7 @@ function ChangeList({ title, list }: { title: string; list: GitChange[] }) {
   );
 }
 
-/** Dateien der Commits seit develop (das, was ein PR zeigen würde); Teil des Commit-Status, aufgeklappt nur per Knopf. */
+/** Dateien der Commits seit main (das, was ein PR zeigen würde); Teil des Commit-Status, aufgeklappt nur per Knopf. */
 export function DiffList({ base, files }: { base: string; files: GitDiffFile[] }) {
   const [open, setOpen] = useState(false);
   const added = files.reduce((n, f) => n + f.added, 0);

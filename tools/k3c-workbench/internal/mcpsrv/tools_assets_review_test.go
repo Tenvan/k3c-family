@@ -54,8 +54,8 @@ func TestAssetsReview(t *testing.T) {
 // Kopfzeile bei Basis-Stand lokal wie fixtures/mcp/assets_review-lokal.txt.
 func TestAssetsReviewKopfLokal(t *testing.T) {
 	t.Parallel()
-	got := reviewKopf("origin/develop", "32eb7a7", "lokal", 5)
-	want := "Review gegen origin/develop (32eb7a7) · Basis-Stand: lokal (ohne vorheriges Fetch; origin/develop kann veraltet sein): 5 Assets"
+	got := reviewKopf("origin/main", "32eb7a7", "lokal", 5)
+	want := "Review gegen origin/main (32eb7a7) · Basis-Stand: lokal (ohne vorheriges Fetch; origin/main kann veraltet sein): 5 Assets"
 	if got != want {
 		t.Errorf("%q", got)
 	}

@@ -36,8 +36,8 @@ func TestMerged(t *testing.T) {
 	if err != nil || !reflect.DeepEqual(got, []MergedHead{{Number: 431, Head: "sprint/bd2", SHA: "abc"}}) {
 		t.Fatalf("Merged = %+v, %v", got, err)
 	}
-	if !reflect.DeepEqual((*calls)[0], mergedArgs) || !strings.Contains(strings.Join(mergedArgs, " "), "--base develop") {
-		t.Fatalf("Argumente = %q (nur PRs nach develop zählen)", (*calls)[0])
+	if !reflect.DeepEqual((*calls)[0], mergedArgs) || !strings.Contains(strings.Join(mergedArgs, " "), "--base main") {
+		t.Fatalf("Argumente = %q (nur PRs nach main zählen)", (*calls)[0])
 	}
 	bad, _ := fake("", errors.New("boom"))
 	if _, err := bad.Merged(context.Background()); err == nil {
@@ -47,7 +47,7 @@ func TestMerged(t *testing.T) {
 
 // fake merkt sich die Argumente und antwortet mit out bzw. err; `gh pr view` beantwortet view (Stand des PRs).
 func fake(out string, err error) (*Client, *[][]string) {
-	return fakeView(out, err, `{"state":"OPEN","baseRefName":"develop","headRefOid":"abc123"}`)
+	return fakeView(out, err, `{"state":"OPEN","baseRefName":"main","headRefOid":"abc123"}`)
 }
 
 func fakeView(out string, err error, view string) (*Client, *[][]string) {
@@ -68,11 +68,11 @@ func TestCreateArgumenteUndPruefung(t *testing.T) {
 	if err != nil || url != "https://github.com/tenvan/k3c-family/pull/460" {
 		t.Fatalf("Create = %q, %v", url, err)
 	}
-	want := []string{"gh", "pr", "create", "--base=develop", "--head=feat/git-seite", "--title=-rm -rf: Titel", "--body=Text"}
+	want := []string{"gh", "pr", "create", "--base=main", "--head=feat/git-seite", "--title=-rm -rf: Titel", "--body=Text"}
 	if !reflect.DeepEqual((*calls)[0], want) {
 		t.Fatalf("Argumente = %q", (*calls)[0])
 	}
-	for _, bad := range [][2]string{{"feat/x", " "}, {"develop", "T"}, {"main", "T"}, {"feat/x", strings.Repeat("x", 201)}} {
+	for _, bad := range [][2]string{{"feat/x", " "}, {"main", "T"}, {"feat/x", strings.Repeat("x", 201)}} {
 		if _, err := c.Create(context.Background(), bad[0], bad[1], ""); err == nil {
 			t.Errorf("Create(%q, %q) muss scheitern", bad[0], bad[1])
 		}
@@ -105,7 +105,7 @@ func TestMergeUndClose(t *testing.T) {
 	if !reflect.DeepEqual(*calls, want) {
 		t.Fatalf("Aufrufe = %q", *calls)
 	}
-	for _, v := range []string{`{"state":"OPEN","baseRefName":"main","headRefOid":"x"}`, `{"state":"MERGED","baseRefName":"develop","headRefOid":"x"}`, `kaputt`} {
+	for _, v := range []string{`{"state":"OPEN","baseRefName":"sprint/x","headRefOid":"x"}`, `{"state":"MERGED","baseRefName":"main","headRefOid":"x"}`, `kaputt`} {
 		c, calls := fakeView("", nil, v)
 		if err := c.Merge(ctx, 9, true); err == nil {
 			t.Errorf("Merge bei %s muss scheitern", v)

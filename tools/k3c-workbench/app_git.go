@@ -18,7 +18,7 @@ type GitView struct {
 	Files    gitops.Files    `json:"files"`
 }
 
-// GitOverview liest Status, Branches und den Diff zu origin/develop (Binding).
+// GitOverview liest Status, Branches und den Diff zu origin/main (Binding).
 func (a *App) GitOverview() (GitView, error) {
 	a.wait()
 	st, err := a.git.Status(a.ctx)
@@ -31,7 +31,7 @@ func (a *App) GitOverview() (GitView, error) {
 	}
 	files, err := a.git.BranchFiles(a.ctx)
 	if err != nil {
-		files = gitops.Files{Base: "origin/develop", Files: []gitops.DiffFile{}} // ohne origin/develop geht der Rest
+		files = gitops.Files{Base: "origin/main", Files: []gitops.DiffFile{}} // ohne origin/main geht der Rest
 	}
 	return GitView{Status: st, Branches: branches, Files: files}, nil
 }
@@ -81,13 +81,13 @@ func (a *App) GitStamp() (string, error) {
 	return a.git.Stamp(a.ctx)
 }
 
-// GitPRs liefert die offenen PRs gegen develop (Binding); ein Fehler von gh steht in Error.
+// GitPRs liefert die offenen PRs gegen main (Binding); ein Fehler von gh steht in Error.
 func (a *App) GitPRs() github.PRList {
 	a.wait()
 	return a.gh.Open(a.ctx)
 }
 
-// GitPRCreate legt für den aktuellen Branch einen PR gegen develop an und liefert die Adresse (Binding).
+// GitPRCreate legt für den aktuellen Branch einen PR gegen main an und liefert die Adresse (Binding).
 func (a *App) GitPRCreate(title, body string) (string, error) {
 	a.wait()
 	st, err := a.git.Status(a.ctx)

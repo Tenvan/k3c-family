@@ -18,9 +18,9 @@ const timeout = 15 * time.Second
 
 // Feste Argumente: nichts davon stammt aus Dateien oder Eingaben.
 var (
-	prArgs = []string{"gh", "pr", "list", "--state", "all", "--base", "develop", "--limit", "50", "--json",
+	prArgs = []string{"gh", "pr", "list", "--state", "all", "--base", "main", "--limit", "50", "--json",
 		"number,title,state,isDraft,headRefName,mergeable,mergeStateStatus,statusCheckRollup,url"}
-	runArgs = []string{"gh", "run", "list", "--branch", "develop", "--limit", "1", "--json",
+	runArgs = []string{"gh", "run", "list", "--branch", "main", "--limit", "1", "--json",
 		"status,conclusion,displayTitle,url,createdAt"}
 )
 
@@ -71,7 +71,7 @@ func (c *Client) fetch(ctx context.Context) (Data, error) {
 	}
 	runs, err := c.run(ctx, c.root, runArgs)
 	if err != nil {
-		runs = nil // ohne develop-Lauf geht es auch
+		runs = nil // ohne main-Lauf geht es auch
 	}
 	return Parse(prs, runs, time.Now())
 }

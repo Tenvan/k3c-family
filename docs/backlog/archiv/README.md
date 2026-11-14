@@ -771,3 +771,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | erledigt | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | erledigt | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | erledigt | WZ48 | Abnahme-Läufe WZ48 |
+| [B-873](B-873-workbench-git-ohne-develop.md) | DEV | Schuld | mittel | erledigt | – | Git-Seite und GitHub-Leiste der Workbench arbeiten gegen main statt develop |

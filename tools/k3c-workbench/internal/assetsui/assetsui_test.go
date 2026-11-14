@@ -126,7 +126,7 @@ func TestAssetsBasisUngueltig(t *testing.T) {
 	_, e3 := d.AssetsPixelDiff("monarch", "reiten", 0, "")
 	_, e4 := d.AssetsPixelDiff("monarch", "reiten", 0, "; rm -rf")
 	for i, err := range []error{e1, e2, e3, e4} {
-		if err == nil || !strings.HasSuffix(err.Error(), "ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop") {
+		if err == nil || !strings.HasSuffix(err.Error(), "ungültig: HEAD, HEAD~1, Commit-SHA oder origin/main") {
 			t.Errorf("Aufruf %d: %v", i, err)
 		}
 	}

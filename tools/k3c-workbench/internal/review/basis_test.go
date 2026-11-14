@@ -37,12 +37,12 @@ func TestBasisAufloesen(t *testing.T) {
 	}
 }
 
-// TestBasisOriginDevelopLokal: origin/develop ohne erreichbares Remote → lokaler Stand.
-func TestBasisOriginDevelopLokal(t *testing.T) {
+// TestBasisOriginMainLokal: origin/main ohne erreichbares Remote → lokaler Stand.
+func TestBasisOriginMainLokal(t *testing.T) {
 	t.Parallel()
 	repo := testRepo(t)
-	gitIn(t, repo, "update-ref", "refs/remotes/origin/develop", "HEAD~1")
-	s, err := Aufloesen(context.Background(), repo, "origin/develop")
+	gitIn(t, repo, "update-ref", "refs/remotes/origin/main", "HEAD~1")
+	s, err := Aufloesen(context.Background(), repo, "origin/main")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,22 +55,22 @@ func TestBasisOriginDevelopLokal(t *testing.T) {
 func TestBasisUngueltig(t *testing.T) {
 	t.Parallel()
 	repo := testRepo(t)
-	for _, b := range []string{"main", "HEAD~2", "xyz", "deadbeef", "origin/develop"} {
+	for _, b := range []string{"main", "HEAD~2", "xyz", "deadbeef", "origin/main"} {
 		_, err := Aufloesen(context.Background(), repo, b)
-		want := "Basis „" + b + "“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop"
+		want := "Basis „" + b + "“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/main"
 		if err == nil || err.Error() != want {
 			t.Errorf("%q: Fehler %v, will %s", b, err, want)
 		}
 	}
 }
 
-// TestBasisFetchNurEinmal: origin/develop holt höchstens einmal je Minute (Review-Befund RV1.2/5).
+// TestBasisFetchNurEinmal: origin/main holt höchstens einmal je Minute (Review-Befund RV1.2/5).
 func TestBasisFetchNurEinmal(t *testing.T) {
 	repo := testRepo(t)
-	gitIn(t, repo, "update-ref", "refs/remotes/origin/develop", "HEAD~1")
+	gitIn(t, repo, "update-ref", "refs/remotes/origin/main", "HEAD~1")
 	vorher := fetchAufrufe.Load()
 	for range 3 {
-		if _, err := Aufloesen(context.Background(), repo, "origin/develop"); err != nil {
+		if _, err := Aufloesen(context.Background(), repo, "origin/main"); err != nil {
 			t.Fatal(err)
 		}
 	}

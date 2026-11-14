@@ -25,7 +25,7 @@ type assetsPreviewIn struct {
 	Animation string `json:"animation,omitempty" jsonschema:"Animation; leer = erste der Spec"`
 	Frame     int    `json:"frame,omitempty" jsonschema:"Frame-Nummer, Standard 0"`
 	Variante  string `json:"variante,omitempty" jsonschema:"Variante (Material-Tausch); leer = keine"`
-	Basis     string `json:"basis,omitempty" jsonschema:"alter Stand: HEAD, HEAD~1, Commit-SHA oder origin/develop; leer = Arbeitsstand"`
+	Basis     string `json:"basis,omitempty" jsonschema:"alter Stand: HEAD, HEAD~1, Commit-SHA oder origin/main; leer = Arbeitsstand"`
 }
 
 // bildErgebnis ist ein Frame als PNG mit den Teil-Boxen.

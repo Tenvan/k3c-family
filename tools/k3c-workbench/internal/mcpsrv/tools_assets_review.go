@@ -26,7 +26,7 @@ type assetReview interface {
 var newAssetReview = func(root string) assetReview { return assetsui.Dienst{Root: root} }
 
 type assetsReviewIn struct {
-	Basis string `json:"basis,omitempty" jsonschema:"HEAD (Standard), HEAD~1, Commit-SHA oder origin/develop"`
+	Basis string `json:"basis,omitempty" jsonschema:"HEAD (Standard), HEAD~1, Commit-SHA oder origin/main"`
 }
 
 func registerAssetsReview(s *Server) {
@@ -43,7 +43,7 @@ func registerAssetsReview(s *Server) {
 // reviewKopf ist die Kopfzeile wie fixtures/mcp/assets_review[-lokal].txt.
 func reviewKopf(basis, commit, stand string, n int) string {
 	if stand == "lokal" {
-		return fmt.Sprintf("Review gegen %s (%s) · Basis-Stand: lokal (ohne vorheriges Fetch; origin/develop kann veraltet sein): %d %s",
+		return fmt.Sprintf("Review gegen %s (%s) · Basis-Stand: lokal (ohne vorheriges Fetch; origin/main kann veraltet sein): %d %s",
 			basis, commit, n, mehrzahl(n, "Asset", "Assets"))
 	}
 	return fmt.Sprintf("Review gegen %s (%s, Basis-Stand %s): %d %s", basis, commit, stand, n, mehrzahl(n, "Asset", "Assets"))

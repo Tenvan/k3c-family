@@ -140,7 +140,7 @@ func registerGitHub(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "gh_status",
 		Description: "GitHub-Stand je Sprint über die gh-CLI: PR (offen, Entwurf, gemergt), CI (grün, rot, läuft), " +
-			"Merge-Konflikt, dazu der letzte CI-Lauf auf develop. 60 s zwischengespeichert, force holt neu. " +
+			"Merge-Konflikt, dazu der letzte CI-Lauf auf main. 60 s zwischengespeichert, force holt neu. " +
 			"Nutze es bei: Stand von PR und CI eines Sprints. Statt: gh pr list und gh run list in der Shell.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in ghStatusIn) (string, error) {

@@ -60,9 +60,9 @@ describe('ReviewPage', () => {
     const anfragen = () => fake.api.assetsReview.mock.calls.length;
     await until('erste Anfrage', () => anfragen() === 1 && button(host, 'HEAD~1'));
     await click(button(host, 'HEAD~1'));
-    await until('Anfrage HEAD~1', () => anfragen() === 2 && button(host, 'origin/develop'));
-    await click(button(host, 'origin/develop'));
-    await until('Anfrage origin/develop', () => anfragen() === 3);
+    await until('Anfrage HEAD~1', () => anfragen() === 2 && button(host, 'origin/main'));
+    await click(button(host, 'origin/main'));
+    await until('Anfrage origin/main', () => anfragen() === 3);
     const feld = host.querySelector<HTMLInputElement>('input[aria-label="Commit-SHA"]')!;
     await act(async () => {
       const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
@@ -71,14 +71,14 @@ describe('ReviewPage', () => {
     });
     await click(button(host, 'Vergleichen'));
     await until('Anfrage Commit-SHA', () => anfragen() === 4);
-    expect(fake.api.assetsReview.mock.calls.map((c) => c[0])).toEqual(['HEAD', 'HEAD~1', 'origin/develop', '32eb7a7']);
+    expect(fake.api.assetsReview.mock.calls.map((c) => c[0])).toEqual(['HEAD', 'HEAD~1', 'origin/main', '32eb7a7']);
   });
 
 });
 
 describe('ReviewPage: Fehler und Basis-Stand', () => {
   it('Fehler der Basis sichtbar, Liste leer', async () => {
-    fake.api.assetsReview.mockImplementation(() => Promise.reject(new Error('Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop')));
+    fake.api.assetsReview.mockImplementation(() => Promise.reject(new Error('Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/main')));
     const host = await mount(<ReviewPage />);
     await until('Fehlermeldung', () => host.querySelector('[role="alert"]'));
     expect(host.querySelector('[role="alert"]')?.textContent).toContain('Basis „main“ ungültig');

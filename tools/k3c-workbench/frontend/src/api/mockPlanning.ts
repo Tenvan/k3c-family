@@ -154,7 +154,7 @@ const pr = (number: number, state: GitHubSprint['state'], ci: GitHubSprint['ci']
 const GITHUB: GitHubData = {
   sprints: { SP11: pr(110, 'offen', 'grün', 'konfliktfrei'), F1: pr(108, 'Entwurf', 'läuft', 'Konflikt'),
     F2: pr(107, 'offen', 'rot', 'unbekannt'), R1: pr(95, 'gemergt', '–', '–'), M5: pr(90, 'geschlossen', '–', '–') },
-  develop: { ci: 'grün', title: 'M8 · SRV · k3c-workbench VIII (#104)', url: 'https://github.com/Tenvan/k3c-family/actions/runs/1',
+  main: { ci: 'grün', title: 'M8 · SRV · k3c-workbench VIII (#104)', url: 'https://github.com/Tenvan/k3c-family/actions/runs/1',
     created: '2026-10-04T10:16:35Z' },
   fetched: '2026-10-04T12:00:00Z',
 };

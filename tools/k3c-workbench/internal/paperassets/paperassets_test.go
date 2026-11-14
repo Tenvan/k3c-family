@@ -88,7 +88,7 @@ func testRepo(t *testing.T) (string, CLI) {
 	kopiere(t, root, "tools/paper/fixtures/specs/mauer.paper.json", "public/grafik/gebaeude/mauer.paper.json")
 	schreibe(t, root, "public/grafik/figuren/monarch/idle.png", "alt")
 	schreibe(t, root, ".gitignore", ".cache/\n")
-	git(t, root, "init", "-q", "-b", "develop")
+	git(t, root, "init", "-q", "-b", "main")
 	git(t, root, "add", "-A")
 	git(t, root, "commit", "-q", "--no-gpg-sign", "-m", "Basis")
 	return root, CLI{Root: root, Skript: stubSkript(t)}

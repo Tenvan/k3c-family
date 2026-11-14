@@ -12,7 +12,7 @@ const CI_TONE: Record<string, Tone> = { grün: 'ok', rot: 'error', läuft: 'info
 const MERGE_TONE: Record<string, Tone> = { konfliktfrei: 'ok', Konflikt: 'error' };
 
 interface Props {
-  /** Aktueller Branch; von develop/main und ohne Branch gibt es kein „PR anlegen“. */
+  /** Aktueller Branch; von main und ohne Branch gibt es kein „PR anlegen“. */
   branch: string;
   /** null: noch nicht geladen. Die Seite lädt sie mit „Laden“ und nach jeder Aktion. */
   list: GitPRList | null;
@@ -20,11 +20,11 @@ interface Props {
   confirm: (r: ConfirmRequest) => void;
 }
 
-/** Dritter Schritt des Ablaufs: offene PRs gegen develop mit CI- und Merge-Stand; anlegen, mergen, schließen. */
+/** Dritter Schritt des Ablaufs: offene PRs gegen main mit CI- und Merge-Stand; anlegen, mergen, schließen. */
 export function PrsCard({ branch, list, act, confirm }: Props) {
   const ask = (pr: GitPR, action: GitPRAction) => confirm({
     title: action === 'close' ? `PR #${pr.number} schließen?` : `PR #${pr.number} ${action === 'squash' ? 'per Squash ' : ''}mergen?`,
-    text: `„${pr.title}“ (${pr.head} → develop). Den Branch räumt danach die Branch-Liste auf.`,
+    text: `„${pr.title}“ (${pr.head} → main). Den Branch räumt danach die Branch-Liste auf.`,
     action: action === 'close' ? 'Schließen' : action === 'squash' ? 'Squash-Merge' : 'Mergen',
     danger: action === 'close',
     run: () => void act(backend.gitPRAction(pr.number, action)),
@@ -33,7 +33,7 @@ export function PrsCard({ branch, list, act, confirm }: Props) {
   return (
     <section className="git-card" aria-label="Pull Requests">
       <header className="git-head">
-        <Text weight="bold">Pull Requests gegen develop <Text color="gray" size="1">({prs.length} offen
+        <Text weight="bold">Pull Requests gegen main <Text color="gray" size="1">({prs.length} offen
           {list?.fetched && ` · GitHub ${ago(Date.parse(list.fetched))}, aktualisiert sich selbst`})</Text></Text>
         <Flex gap="2" align="center">
           {prs.length > 0 && <><Text size="1" color="gray">Alle prüfen:</Text><CopyPrompt prompt={reviewAllPrsPrompt(prs)} what="Alle PRs prüfen und mergen" /></>}
@@ -80,7 +80,7 @@ function CreatePr({ branch, create }: { branch: string; create: (title: string, 
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  if (!branch || branch === 'develop' || branch === 'main') return null;
+  if (!branch || branch === 'main') return null;
   if (!open) return <Button size="1" variant="soft" mt="2" onClick={() => setOpen(true)}>PR anlegen für {branch}</Button>;
   const submit = () => create(title, body).then(() => {
     setOpen(false);
@@ -92,7 +92,7 @@ function CreatePr({ branch, create }: { branch: string; create: (title: string, 
       <TextField.Root size="1" placeholder="K5: Debug-Overlay nur mit ?dev=1" aria-label="Titel des PRs" value={title} onChange={(e) => setTitle(e.target.value)} />
       <TextArea size="1" rows={4} placeholder="Was der PR ändert, Tickets (B-…), Prüfungen" aria-label="Beschreibung des PRs" value={body} onChange={(e) => setBody(e.target.value)} />
       <Flex gap="2">
-        <ActionButton size="1" disabled={!title.trim()} onClick={submit}>PR {branch} → develop anlegen</ActionButton>
+        <ActionButton size="1" disabled={!title.trim()} onClick={submit}>PR {branch} → main anlegen</ActionButton>
         <Button size="1" variant="soft" color="gray" onClick={() => setOpen(false)}>Abbrechen</Button>
       </Flex>
     </Flex>

@@ -116,7 +116,7 @@ func fuellePaperVorlage(wurzel, root string) error {
 	if err := schreibe(root, ".gitignore", []byte(".cache/\n")); err != nil {
 		return err
 	}
-	for _, args := range [][]string{{"init", "-q", "-b", "develop"}, {"add", "-A"}, {"commit", "-q", "--no-gpg-sign", "-m", "Basis"}} {
+	for _, args := range [][]string{{"init", "-q", "-b", "main"}, {"add", "-A"}, {"commit", "-q", "--no-gpg-sign", "-m", "Basis"}} {
 		cmd := exec.Command("git", args...)
 		cmd.Dir = root
 		cmd.Env = append(os.Environ(), "GIT_AUTHOR_NAME=test", "GIT_AUTHOR_EMAIL=t@example.invalid",

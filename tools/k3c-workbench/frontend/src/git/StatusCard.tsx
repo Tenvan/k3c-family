@@ -11,7 +11,7 @@ interface Props {
   confirm: (r: ConfirmRequest) => void;
 }
 
-/** Zweiter Schritt des Ablaufs: Commits des Branches gegenüber Remote und develop, dazu Fetch, Pull, Push, Stash. */
+/** Zweiter Schritt des Ablaufs: Commits des Branches gegenüber Remote und main, dazu Fetch, Pull, Push, Stash. */
 export function StatusCard({ status: s, files, run, confirm }: Props) {
   const popStash = () => confirm({
     title: 'Letzten Stash zurückholen?', action: 'Zurückholen',
@@ -29,7 +29,7 @@ export function StatusCard({ status: s, files, run, confirm }: Props) {
         <Flex gap="2" wrap="wrap">
           <ActionButton size="1" variant="soft" onClick={() => run('fetch')}>Fetch</ActionButton>
           <ActionButton size="1" variant="soft" onClick={() => run('pull')} disabled={s.behind === 0 || s.upstreamGone}>Pull</ActionButton>
-          <ActionButton size="1" variant="soft" onClick={() => run('push')} disabled={!s.branch || s.branch === 'develop' || s.branch === 'main'}>Push</ActionButton>
+          <ActionButton size="1" variant="soft" onClick={() => run('push')} disabled={!s.branch || s.branch === 'main'}>Push</ActionButton>
           <ActionButton size="1" variant="soft" onClick={() => run('stash')} disabled={s.changes.length === 0}>Stash</ActionButton>
           <ActionButton size="1" variant="soft" onClick={popStash} disabled={s.stashes.length === 0}>Stash zurück</ActionButton>
         </Flex>
@@ -56,7 +56,7 @@ export function badges(s: GitStatus): Badge[] {
   if (s.ahead > 0) b.push(['warn', `${s.ahead} nicht gepusht`]);
   if (s.behind > 0) b.push(['warn', `${s.behind} auf dem Remote`]);
   if (s.upstream && !s.upstreamGone && s.ahead === 0 && s.behind === 0) b.push(['ok', 'synchron mit Remote']);
-  b.push(['neutral', `develop +${s.baseAhead} / −${s.baseBehind}`]);
+  b.push(['neutral', `main +${s.baseAhead} / −${s.baseBehind}`]);
   if (s.changes.length > 0) b.push(['warn', `${fileCount(s.changes)} Dateien nicht committet`]);
   if (s.stashes.length > 0) b.push(['info', `${s.stashes.length} Stashes`]);
   if (s.worktrees.length > 0) b.push(['info', `${s.worktrees.length} Worktrees`]);

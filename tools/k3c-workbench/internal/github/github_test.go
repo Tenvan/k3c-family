@@ -39,11 +39,11 @@ func TestParse(t *testing.T) {
 			t.Errorf("%s: %+v, erwartet %+v", id, g, w)
 		}
 	}
-	if d.Develop == nil || d.Develop.CI != "rot" || d.Develop.Title != "M7 · Seiten (#102)" {
-		t.Errorf("develop: %+v", d.Develop)
+	if d.Main == nil || d.Main.CI != "rot" || d.Main.Title != "M7 · Seiten (#102)" {
+		t.Errorf("main: %+v", d.Main)
 	}
 	text := Text(d)
-	for _, line := range []string{"M8 #110 offen · CI grün · konfliktfrei · https://", "S5 #95 gemergt · CI – · https://", "develop: CI rot"} {
+	for _, line := range []string{"M8 #110 offen · CI grün · konfliktfrei · https://", "S5 #95 gemergt · CI – · https://", "main: CI rot"} {
 		if !strings.Contains(text, line) {
 			t.Errorf("Text ohne %q:\n%s", line, text)
 		}
@@ -52,7 +52,7 @@ func TestParse(t *testing.T) {
 
 func TestParseLeerUndKaputt(t *testing.T) {
 	d, err := Parse([]byte("[]"), nil, time.Now())
-	if err != nil || len(d.Sprints) != 0 || d.Develop != nil || Text(d) != "keine Sprint-PRs" {
+	if err != nil || len(d.Sprints) != 0 || d.Main != nil || Text(d) != "keine Sprint-PRs" {
 		t.Fatalf("leer: %+v %v", d, err)
 	}
 	if _, err := Parse([]byte("kein json"), nil, time.Now()); err == nil {
@@ -75,11 +75,11 @@ func TestClientHinweisUndZwischenspeicher(t *testing.T) {
 	c.run = func(_ context.Context, _ string, args []string) ([]byte, error) {
 		calls++
 		if args[1] == "run" {
-			return nil, errors.New("kein Netz") // develop-Lauf fehlt, PRs reichen
+			return nil, errors.New("kein Netz") // main-Lauf fehlt, PRs reichen
 		}
 		return prs, nil
 	}
-	if d := c.Status(context.Background(), false); d.Error != "" || d.Sprints["M8"].Number != 110 || d.Develop != nil {
+	if d := c.Status(context.Background(), false); d.Error != "" || d.Sprints["M8"].Number != 110 || d.Main != nil {
 		t.Fatalf("Abruf: %+v", d)
 	}
 	n := calls

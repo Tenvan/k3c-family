@@ -67,7 +67,7 @@ export function BranchesCard({ branches, remove, check, confirm }: Props) {
     const stay = picked.filter((b) => !b.deletable).map((b) => b.name);
     confirm({
       title: `${go.length} Branches löschen?`, action: 'Löschen', danger: true,
-      text: `${go.join(', ')} ${remote ? 'lokal und auf origin' : 'lokal'}; develop enthält sie, die Workbench prüft das noch einmal.`
+      text: `${go.join(', ')} ${remote ? 'lokal und auf origin' : 'lokal'}; main enthält sie, die Workbench prüft das noch einmal.`
         + (stay.length > 0 ? ` Bleiben stehen (ungemergt oder ungeprüft): ${stay.join(', ')}.` : ''),
       run: () => void remove(go, remote).then(() => setMarked(new Set())),
     });
@@ -113,7 +113,7 @@ function BranchTable({ list, marked, toggle, check }: TableProps) {
           <Table.ColumnHeaderCell width="28px" />
           <Table.ColumnHeaderCell>Branch</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Remote</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>zu develop</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>zu main</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Zustand</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Commit</Table.ColumnHeaderCell>
         </Table.Row>

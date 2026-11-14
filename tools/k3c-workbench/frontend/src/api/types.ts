@@ -427,7 +427,7 @@ export interface GitHubSprint {
 export interface GitHubData {
   /** Schlüssel: Sprint-ID in Großbuchstaben, aus dem Branch `sprint/<präfix>`. */
   sprints: Record<string, GitHubSprint>;
-  develop?: { ci: GitHubSprint['ci']; title: string; url: string; created: string };
+  main?: { ci: GitHubSprint['ci']; title: string; url: string; created: string };
   error?: string;
   fetched?: string;
 }

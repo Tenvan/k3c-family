@@ -48,7 +48,7 @@ func TestDiffData(t *testing.T) {
 
 func TestParseWorktreePaths(t *testing.T) {
 	t.Parallel()
-	out := "worktree C:/k3c\nHEAD 1\nbranch refs/heads/develop\n\nworktree C:/k3c/wt\nbranch refs/heads/claude/x\n"
+	out := "worktree C:/k3c\nHEAD 1\nbranch refs/heads/main\n\nworktree C:/k3c/wt\nbranch refs/heads/claude/x\n"
 	got := parseWorktreePaths(out, "C:/k3c")
 	if len(got) != 1 || got[0].branch != "claude/x" {
 		t.Fatalf("got %v", got)

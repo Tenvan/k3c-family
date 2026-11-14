@@ -102,9 +102,9 @@ export type GitPRAction = 'merge' | 'squash' | 'close';
 
 /** Methoden der Seite Git am Backend. Fehler kommen als Ablehnung mit dem Text aus Go. */
 export interface GitBackend {
-  /** Status, Branches (mit Squash-Erkennung) und Diff des Branches zu origin/develop. */
+  /** Status, Branches (mit Squash-Erkennung) und Diff des Branches zu origin/main. */
   gitOverview(): Promise<GitView>;
-  /** Nie mit Force; Push lehnt develop und main ab, Pull nur Fast-Forward. Antwort ist ein Satz zum Ergebnis. */
+  /** Nie mit Force; Push lehnt main ab, Pull nur Fast-Forward. Antwort ist ein Satz zum Ergebnis. */
   gitAction(action: GitAction): Promise<string>;
   /** Prüft gründlich auf Squash-Merges (gemergter PR, merge-tree, Squash-Patch); leer = alle ungeprüften. Dauert
    *  je Branch einen Moment; Antwort ist die neue Branch-Liste. */
@@ -114,7 +114,7 @@ export interface GitBackend {
   gitPRs(): Promise<GitPRList>;
   /** Fingerabdruck des Repo-Zustands (HEAD, Index, Refs, FETCH_HEAD); billig, für den Takt der Seite. */
   gitStamp(): Promise<string>;
-  /** PR vom aktuellen Branch nach develop; Antwort ist die Adresse. */
+  /** PR vom aktuellen Branch nach main; Antwort ist die Adresse. */
   gitPRCreate(title: string, body: string): Promise<string>;
   gitPRAction(number: number, action: GitPRAction): Promise<string>;
 }

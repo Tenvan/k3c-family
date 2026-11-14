@@ -1,9 +1,9 @@
 import { Button, Flex, TextField } from '@webkit/atoms';
 import { useState } from 'react';
 
-const FEST = ['HEAD', 'HEAD~1', 'origin/develop'] as const;
+const FEST = ['HEAD', 'HEAD~1', 'origin/main'] as const;
 
-/** Basis des Reviews: HEAD (Standard), HEAD~1, origin/develop oder eine Commit-SHA; der Server prüft den Wert. */
+/** Basis des Reviews: HEAD (Standard), HEAD~1, origin/main oder eine Commit-SHA; der Server prüft den Wert. */
 export function BasisSelect({ basis, onChange }: { basis: string; onChange: (basis: string) => void }) {
   const [sha, setSha] = useState('');
   return (
