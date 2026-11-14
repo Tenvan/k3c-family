@@ -81,6 +81,11 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | eingeplant | WZ49 | console_tail und check_run trennen die Konsolenpuffer je Checkout |
 | [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | offen | – | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
 | [B-859](B-859-assets-vitests-warten-auf-bedingungen.md) | DEV | Problem | niedrig | eingeplant | WZ53 | Alle Vitests unter src/assets der Workbench warten auf Bedingungen statt flush() und bleiben unter Last grün |
+| [B-860](B-860-abnahme-laeufe-wz47.md) | INF | Schuld | mittel | offen | WZ47 | Abnahme-Läufe WZ47 |
+| [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | offen | – | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
+| [B-862](B-862-index-statuswechsel-atomar.md) | DEV | Schuld | niedrig | offen | – | Ein Statuswechsel schreibt Haupt- und Archiv-Index so, dass keine Zeile verloren geht |
+| [B-863](B-863-ticketnummern-ab-b1000.md) | DEV | Schuld | niedrig | offen | – | Die Planungs-Werkzeuge verarbeiten Ticket-Nummern ab B-1000 |
+| [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | offen | – | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 
 ## Archiv
 
