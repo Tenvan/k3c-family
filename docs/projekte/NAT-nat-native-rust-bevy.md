@@ -40,6 +40,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG20 | Natives Spiel komplett nach dist (B-827) | erledigt |
 | WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | erledigt |
 | WR2 | Reste des Server- und Web-Rückbaus aufräumen | geplant |
+| CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | erledigt |
 
 ## Nicht-Ziele
 
