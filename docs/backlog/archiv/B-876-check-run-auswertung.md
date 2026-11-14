@@ -1,10 +1,10 @@
-# B-875 · Unter den MCP-Widgets trennt ein Splitter Widgets und Aufruf-Log, seine Stellung wird gemerkt
+# B-876 · Die MCP-Seite zeigt zwischen Widgets und Aufruf-Log eine grafische Auswertung von check_run
 
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Ralf, 2026-11-14: Unter den MCP-Widgets (Tool-Kacheln und Live-Statistik) fehlt ein Splitter zum Aufruf-Log.
+Ralf, 2026-11-14: `check_run` verbraucht die meiste Zeit (Screenshot: 197 Aufrufe, Ø 1 min 49 s, 7 Fehler). Eine eigene Auswertung soll zeigen, wo die Zeit hingeht.
 
 ## Ziel
 
-Ein waagerechter Splitter trennt Widget-Bereich und Aufruf-Log; die Stellung wird gemerkt (wie der Splitter der Planungsseite, B-400).
+Zwischen den Widgets und dem Aufruf-Log steht eine grafische Auswertung von `check_run`: Laufzeit und Ergebnis je Ziel (z. B. `task:check:diff`, `task:test`) über die Zeit.
 
 ## Beteiligte und Zielgruppen
 
@@ -56,9 +56,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ziehen am Splitter ändert die Höhe von Widgets und Log.
-- **AC-02** Die Stellung bleibt nach Neuladen erhalten.
-- **AC-03** Baustein aus `@webkit` (Atomic Design), Test vorhanden.
+- **AC-01** Je Ziel: Anzahl, Ø und max. Laufzeit, Fehlerquote.
+- **AC-02** Verlauf der Laufzeit je Ziel über den gewählten Zeitraum (15 min bis 7 T), Fehlschläge markiert.
+- **AC-03** Klick auf einen Lauf zeigt dessen Konsole (`console_tail`).
+- **AC-04** Sichtprüfung durch Ralf.
 
 ## Offene Fragen
 

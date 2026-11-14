@@ -1,10 +1,10 @@
-# B-874 · Die Live-Statistik der MCP-Seite ist übersichtlich und lesbar
+# B-875 · Unter den MCP-Widgets trennt ein Splitter Widgets und Aufruf-Log, seine Stellung wird gemerkt
 
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Ralf, 2026-11-14 (Screenshot MCP-Seite): Die Live-Statistik rechts (Balken je Tool, Laufzeit-Kurve mit Ausreißern) ist unschön: senkrechte Tool-Namen, rote Balken ohne Skala, Kurve ohne Achsenwerte.
+Ralf, 2026-11-14: Unter den MCP-Widgets (Tool-Kacheln und Live-Statistik) fehlt ein Splitter zum Aufruf-Log.
 
 ## Ziel
 
-Die Live-Statistik zeigt Aufrufe und Laufzeit je Tool lesbar (waagerechte Beschriftung, Skala, Einheiten) und den Zeitverlauf mit Achsen.
+Ein waagerechter Splitter trennt Widget-Bereich und Aufruf-Log; die Stellung wird gemerkt (wie der Splitter der Planungsseite, B-400).
 
 ## Beteiligte und Zielgruppen
 
@@ -56,9 +56,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Tool-Namen sind waagerecht lesbar, Werte haben Einheit und Skala.
-- **AC-02** Der Zeitverlauf hat beschriftete Achsen; Ausreißer sind erklärt (Legende oder Tooltip).
-- **AC-03** Hell- und Dunkel-Modus lesbar; Sichtprüfung durch Ralf.
+- **AC-01** Ziehen am Splitter ändert die Höhe von Widgets und Log.
+- **AC-02** Die Stellung bleibt nach Neuladen erhalten.
+- **AC-03** Baustein aus `@webkit` (Atomic Design), Test vorhanden.
 
 ## Offene Fragen
 
