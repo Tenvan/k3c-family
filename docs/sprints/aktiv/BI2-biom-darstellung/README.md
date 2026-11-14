@@ -74,7 +74,7 @@ keine (Defaults autonom entschieden: blau = vorhandenes `ader-kristall`; violett
 |---|---|---|---|---|
 | BI2.1 | `BI2.1-kristall-assets.md` | Umsetzung | autonom | fertig |
 | BI2.2 | `BI2.2-kristallfarbe-im-spiel.md` | Umsetzung | autonom | fertig |
-| BI2.3 | `BI2.3-hoehle-decke-tropfsteine.md` | Umsetzung | autonom | offen |
+| BI2.3 | `BI2.3-hoehle-decke-tropfsteine.md` | Umsetzung | autonom | fertig |
 | BI2.4 | `BI2.4-verfall-glut-leuchten.md` | Umsetzung | autonom | offen |
 | BI2.5 | `BI2.5-review.md` | Review | autonom | offen |
 

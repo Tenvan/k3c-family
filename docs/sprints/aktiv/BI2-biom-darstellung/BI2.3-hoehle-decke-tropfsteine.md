@@ -1,6 +1,6 @@
 # BI2.3 · Höhle: Deckenhöhe und Tropfsteine
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,5 +45,4 @@ B-902/AC-01, AC-02 und B-903/AC-01, AC-02 per Unit-Test erfüllt, `check:diff` g
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03, AC-04 erfüllt (B-902, B-903 je AC-01, AC-02): neues `props/decor.go` liest Darstellungs-Werte (`trait`: Level-Wert, sonst Default, begrenzt), plant die Felsdecke mit Zacken (Unterkante 9,6/11,0/12,3 Units) und Tropfsteine (Raster 2 Units, `mix % 6 < Wert`), nur im sichtbaren Teil der Welt; Aufruf als erstes in `plan`. Tests in `props/decor_test.go`.
