@@ -9,18 +9,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| NG9 | CLI | NAT | Natives Spiel: Zusammenführung, Messung und Abnahme | – | `aktiv/NG9-native-zusammenfuehrung-abnahme/` |
-| NG11 | CLI | NAT | Natives Spiel: Fluss mit Shader | – | `aktiv/NG11-native-fluss-shader/` |
-| NG14 | CLI | NAT | Natives Spiel: Fehler- und Ladeanzeige, Shader-Umschalter | – | `aktiv/NG14-native-fehleranzeige-shader-umschalter/` |
-| NG15 | CLI | NAT | Natives Spiel: Ton-Gerät ohne Absturz | – | `aktiv/NG15-native-ton-geraet/` |
-| WZ42 | DEV | WZG | Workbench-Tests schnell und stabil | – | `aktiv/WZ42-workbench-tests-schnell-stabil/` |
 | WZ43 | DEV | WZG | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | – | `aktiv/WZ43-asset-tools-review/` |
-| WZ44 | DEV, INF | WZG | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | – | `aktiv/WZ44-planung-wellen-werkzeuge/` |
-| WZ48 | INF, DEV | WZG | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | – | `aktiv/WZ48-tests-ci-stabil/` |
-| RD1 | PAP | PAP | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | – | `aktiv/RD1-papierschnitt-renderer/` |
-| MC1 | DEV | PAP | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | – | `aktiv/MC1-asset-mcp-tools/` |
-| RV1 | DEV | PAP | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | – | `aktiv/RV1-asset-review/` |
-| PT2 | PAP | PAP | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | – | `aktiv/PT2-paper-cli-und-stil/` |
+| WZ54 | DEV | WZG | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | – | `aktiv/WZ54-index-atomar-nummern-b1000/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
@@ -28,7 +18,18 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 ## Offen am Gerät
 
-Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`../projekte/ABN-abnahmen-geraet.md`](../projekte/ABN-abnahmen-geraet.md). Bis zur Abnahme gelten die angenommenen Werte aus [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md) § 11.6 (`../arbeitsweise.md` › Hardware entkoppelt).
+Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext der Session). Die Workbench schreibt den Abschnitt bei jedem schreibenden `plan_*`-Aufruf neu; mit Freigaben und Entscheidungen: `plan_queue`.
+
+### PC
+
+- KB4.4 · Abnahme am PC: Boss und Event über das Debug-Panel (Sprint KB4, offen, Agent Mensch)
+- KB5.6 · Abnahme im Spiel mit zwei Spielern und im Studio (Sprint KB5, offen, Agent Mensch)
+- W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
+- WZ43.4 · Sichtprüfung Katalog im Web-Client (PC) (Sprint WZ43, offen, Agent Mensch)
+
+### Veröffentlichung
+
+- PB1.2 · Veröffentlichung auf itch.io durch Ralf, schließt ab (Sprint PB1, offen, Agent Mensch)
 
 ## Geplant (nach Projekt-Rang)
 
@@ -36,11 +37,9 @@ Abnahmen am Gerät (`Agent: Mensch`) sammelt das Projekt ABN im Sprint HW1: [`..
 |---|---|---|---|---|---|---|
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
 | WZ46 | DEV | WZG | Workbench-Tests ohne Engine-Spielserver | – | Entwurf | `geplant/WZ46-workbench-tests-ohne-spielserver/` |
-| WZ54 | DEV | WZG | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | – | bereit | `geplant/WZ54-index-atomar-nummern-b1000/` |
 | WZ55 | DEV | WZG | assets_set ruft die Paper-CLI gesammelt auf | – | bereit | `geplant/WZ55-paper-cli-sammelaufruf/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
-| LG1 | SRV, DEV, CLI | LST | Remote-Logs vom Pi und Xbox mit WebGL 1 und 130 MiB | – | Entwurf | `geplant/LG1-remote-logs-webgl-budget/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 | P1 | REG | BAL | Spieleabend 1 | Protokoll und Folge-Tickets | Entwurf | `geplant/P1-spieleabend-1/` |
 
@@ -50,7 +49,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 
 | Sprint | Thema | Ordner |
 |---|---|---|
-| KB6 | SIM, REG | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
+| KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | `erledigt/KB6-kampf-nachtraege-wellen-schutz/` |
 | ALT | Vorgeschichte vor der Sprint-Einteilung | `erledigt/ALT-vorgeschichte/` |
 | SP00 | Arbeitsweise einführen | `erledigt/SP00-arbeitsweise/` |
 | SP01 | Leitplanken + Go-Gerüst | `erledigt/SP01-leitplanken/` |
@@ -284,7 +283,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | `erledigt/BAL8-welt-werte-overrides/` |
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | `erledigt/WZ37-overrides-editor-chat/` |
 | BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | `erledigt/BAL9-meilenstein-1-nachtraege/` |
-| PV1 | INF, DEV, PAP | `erledigt/PV1-papierschnitt-vertraege/` |
+| PV1 | Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag | `erledigt/PV1-papierschnitt-vertraege/` |
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | `erledigt/WB1-workbench-development-assets/` |
 | MG6 | Papierschnitt-Migration: Gebäude mit Ausbaustufen | `erledigt/MG6-papier-gebaeude/` |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | `erledigt/US1-spiel-auf-papierschnitt/` |

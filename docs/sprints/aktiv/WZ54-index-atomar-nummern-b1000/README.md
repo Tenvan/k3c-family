@@ -1,11 +1,11 @@
 # WZ54 · DEV · Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
-- **Tickets:** B-862, B-863
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Tickets:** B-862, B-863, B-865, B-866
+- **Start-Commit:** 7ce5b2894
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-14
@@ -51,6 +51,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 - **AC-01** `B-862/AC-01` grün.
 - **AC-02** `B-863/AC-01` grün.
+- **AC-03** `B-865/AC-01` grün (Fahrplan-Heilung nur bei Sprint- oder Session-Änderungen).
+- **AC-04** `B-866/AC-01` grün (Testmuster mit Oder und Ankern).
 
 ## Offene Fragen
 
