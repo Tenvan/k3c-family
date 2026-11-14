@@ -77,16 +77,17 @@ type Server struct {
 	log     *slog.Logger
 	checks  *checkRuns
 	sims    *simrun.Registry // Testläufe von sim_test und der Balancing-Seite (internal/simrun)
-	feeds   *botfeed.Hub // Bot-Feeds der Läufe mit Clients (simtest_clients.go), Route /bot/
+	feeds   *botfeed.Hub     // Bot-Feeds der Läufe mit Clients (simtest_clients.go), Route /bot/
 	// findBrowser und launch starten die Clients von sim_test; Test-Naht.
-	findBrowser   func() (string, error)
-	launch        func(ctx context.Context, exe, profile, url string) (stop func(), err error)
-	run           func(context.Context, runSpec) runResult // Test-Naht für check_run
-	taskVersion   func(context.Context) (string, error)    // Test-Naht: `task --version` (B-868, check_taskversion.go)
-	checkWait     time.Duration                            // wie lange check_run ohne progressToken wartet (check_wait.go)
-	progressEvery time.Duration                            // Abstand der Fortschritts-Meldungen von check_run
-	wt            worktrees                                // Dienste der Worktrees (worktree_services.go)
-	portBusy      func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
+	findBrowser     func() (string, error)
+	launch          func(ctx context.Context, exe, profile, url string) (stop func(), err error)
+	run             func(context.Context, runSpec) runResult // Test-Naht für check_run
+	taskVersion     func(context.Context) (string, error)    // Test-Naht: `task --version` (B-868, check_taskversion.go)
+	taskVersionMemo taskVersionMemo                          // gemerktes Ergebnis von taskVersion, einmal je Workbench-Lauf (B-871)
+	checkWait       time.Duration                            // wie lange check_run ohne progressToken wartet (check_wait.go)
+	progressEvery   time.Duration                            // Abstand der Fortschritts-Meldungen von check_run
+	wt              worktrees                                // Dienste der Worktrees (worktree_services.go)
+	portBusy        func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
 
 	mu   sync.Mutex
 	http *http.Server

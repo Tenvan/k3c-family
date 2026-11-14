@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -21,6 +22,32 @@ func readTaskVersion(ctx context.Context) (string, error) {
 	defer cancel()
 	out, err := exec.CommandContext(ctx, "task", "--version").Output()
 	return string(out), err
+}
+
+// taskVersionMemo merkt das Ergebnis von `task --version` (auch den Fehlerfall) einmal je Workbench-Lauf (B-871):
+// check_run mit Testmuster startete den Prozess sonst bei jedem Lauf. Wurde der erste Aufruf abgebrochen (ctx), gilt
+// das Ergebnis nicht; der nächste Lauf fragt neu.
+type taskVersionMemo struct {
+	mu   sync.Mutex
+	done bool
+	out  string
+	err  error
+}
+
+// lesen liefert read als gemerkte Funktion mit demselben Aufrufmuster.
+func (m *taskVersionMemo) lesen(read func(context.Context) (string, error)) func(context.Context) (string, error) {
+	return func(ctx context.Context) (string, error) {
+		m.mu.Lock()
+		defer m.mu.Unlock()
+		if m.done {
+			return m.out, m.err
+		}
+		out, err := read(ctx)
+		if ctx.Err() == nil {
+			m.out, m.err, m.done = out, err, true
+		}
+		return out, err
+	}
 }
 
 var versionRule = regexp.MustCompile(`v?(\d+)\.(\d+)(?:\.(\d+))?`)

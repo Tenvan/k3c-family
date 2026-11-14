@@ -1,11 +1,15 @@
 package mcpsrv
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
+
+	"k3c/tools/k3c-workbench/internal/assetsui"
+	pa "k3c/tools/k3c-workbench/internal/paperassets"
 )
 
 func TestAssetsSetMaterial(t *testing.T) {
@@ -93,6 +97,21 @@ func TestAssetsSetTeilPatchUndReiter(t *testing.T) {
 	text, isErr = callText(t, cs, "assets_set", map[string]any{"id": "pferd", "patch": map[string]any{"version": 2}})
 	if isErr || !strings.Contains(text, "\nReiter veraltet: monarch · Weiter: assets_render {id} je Reiter") {
 		t.Errorf("Reiter:\n%s", text)
+	}
+}
+
+// B-870/AC-01: Fehlerantwort bei Abbruch nennt Grund und bekannte Felder; ohne Abbruch bleibt die Ablehnung.
+func TestSetAbbruchText(t *testing.T) {
+	t.Parallel()
+	r := pa.SetErgebnis{Asset: pa.Asset{ID: "monarch"}, Abbruch: "Render-CLI batch: Zeitlimit 3m0s überschritten",
+		Felder: []assetsui.FeldAenderung{{Pfad: "umhang.material", Alt: "koenigsrot", Neu: "purpur"}}}
+	want := "monarch: Render abgebrochen, nichts geändert · Render-CLI batch: Zeitlimit 3m0s überschritten\n" +
+		"Bekannt vor dem Abbruch: 1 Feld · umhang.material koenigsrot → purpur"
+	if err := setAbbruch(r, errors.New("x")); err.Error() != want {
+		t.Errorf("Text: %q, erwartet %q", err, want)
+	}
+	if err := setAbbruch(pa.SetErgebnis{}, errors.New("anderer")); err.Error() != "anderer" {
+		t.Errorf("ohne Abbruch: %v", err)
 	}
 }
 

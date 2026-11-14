@@ -111,7 +111,7 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	if err := t.preflight(ws.root); err != nil {
 		return "", err
 	}
-	warn, err := checkTaskVersion(ctx, t, in.Pattern, s.taskVersion)
+	warn, err := checkTaskVersion(ctx, t, in.Pattern, s.taskVersionMemo.lesen(s.taskVersion))
 	if err != nil {
 		return "", err
 	}

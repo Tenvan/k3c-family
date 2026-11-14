@@ -31,7 +31,7 @@ func pruefeUndRendere(ctx context.Context, cli CLI, a Asset, altSpec, spec strin
 	schritte = append(schritte, Schritt{Args: []string{"render", spec}, Stopp: true})
 	res, err := cli.Batch(ctx, schritte)
 	if err != nil {
-		return RenderErgebnis{}, err
+		return RenderErgebnis{}, abbruch(ctx, cli, altSpec, spec, r, err)
 	}
 	if res[0].Err != nil {
 		*r = SetErgebnis{}
@@ -40,7 +40,7 @@ func pruefeUndRendere(ctx context.Context, cli CLI, a Asset, altSpec, spec strin
 	if diff >= 0 {
 		var d DiffErgebnis
 		if err := res[diff].in("diff", &d); err != nil {
-			return RenderErgebnis{}, err
+			return RenderErgebnis{}, abbruch(ctx, cli, "", spec, r, err)
 		}
 		r.Felder = d.Felder
 		r.Pixel = make([]Pixel, len(pixel))
@@ -50,7 +50,7 @@ func pruefeUndRendere(ctx context.Context, cli CLI, a Asset, altSpec, spec strin
 	}
 	var out RenderErgebnis
 	if err := res[render].in("render", &out); err != nil {
-		return RenderErgebnis{}, err
+		return RenderErgebnis{}, abbruch(ctx, cli, "", spec, r, err)
 	}
 	return cli.renderRel(out), nil
 }
@@ -97,4 +97,21 @@ func pixelAus(cli CLI, p pixelSchritte, res []SchrittErgebnis) Pixel {
 	}
 	px.Anteil, px.Boxen, px.Overlay = d.Anteil, d.Boxen, cli.rel(p.overlay)
 	return px
+}
+
+// abbruch hält fest, was vor einem Abbruch bekannt war (B-870): Scheitert der Sammelaufruf als Ganzes (Zeitlimit, bun
+// fehlt, Exit 2), kennt Set weder Felder noch Pixel; dann liefert ein einzelner diff (nur mit altSpec, nicht nach
+// Abbruch des Aufrufers) wenigstens die Felder. Der Grund steht in r.Abbruch; Ablehnungen (*Abgelehnt) bleiben
+// fachliche Ablehnungen und setzen keinen Grund.
+func abbruch(ctx context.Context, cli CLI, altSpec, spec string, r *SetErgebnis, err error) error {
+	if _, ok := AlsAbgelehnt(err); ok {
+		return err
+	}
+	r.Abbruch = err.Error()
+	if altSpec != "" && ctx.Err() == nil {
+		if d, derr := cli.Diff(ctx, altSpec, spec); derr == nil {
+			r.Felder = d.Felder
+		}
+	}
+	return err
 }

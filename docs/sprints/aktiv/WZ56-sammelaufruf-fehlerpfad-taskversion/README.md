@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ56.1 | `WZ56.1-fehlerpfad-taskversion.md` | Umsetzung | autonom | offen |
+| WZ56.1 | `WZ56.1-fehlerpfad-taskversion.md` | Umsetzung | autonom | fertig |
 | WZ56.2 | `WZ56.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

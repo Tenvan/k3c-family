@@ -103,7 +103,7 @@ func assetsSetText(ctx context.Context, root string, in assetsSetIn) (string, er
 	}
 	r, err := pa.Set(ctx, pa.NewCLI(root), in.ID, patch)
 	if err != nil {
-		return "", ablehnung(err)
+		return "", setAbbruch(r, err)
 	}
 	var b strings.Builder
 	if len(r.Felder) == 0 {
@@ -130,6 +130,23 @@ func assetsSetText(ctx context.Context, root string, in assetsSetIn) (string, er
 		fmt.Fprintf(&b, "\nReiter veraltet: %s · Weiter: assets_render {id} je Reiter", strings.Join(r.Reiter, ", "))
 	}
 	return b.String(), nil
+}
+
+// setAbbruch ergänzt die Fehlerantwort, wenn Prüfen und Rendern abbrach (B-870): nichts geändert, Grund, die bis
+// dahin bekannten Felder und Pixel; sonst wie ablehnung.
+func setAbbruch(r pa.SetErgebnis, err error) error {
+	if r.Abbruch == "" {
+		return ablehnung(err)
+	}
+	var b strings.Builder
+	fmt.Fprintf(&b, "%s: Render abgebrochen, nichts geändert · %s", r.Asset.ID, r.Abbruch)
+	if len(r.Felder) > 0 {
+		fmt.Fprintf(&b, "\nBekannt vor dem Abbruch: %d %s · %s", len(r.Felder), mehrzahl(len(r.Felder), "Feld", "Felder"), felderText(r.Felder))
+	}
+	if t := pixelText(r.Pixel); t != "" {
+		b.WriteString("\nBekannt vor dem Abbruch:" + strings.TrimPrefix(t, " ·"))
+	}
+	return errors.New(b.String())
 }
 
 func pixelText(px []pa.Pixel) string {

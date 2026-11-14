@@ -90,3 +90,36 @@ func TestSetNeueAnimationImSammelaufruf(t *testing.T) {
 		t.Errorf("neue Animation: %+v", r.Pixel)
 	}
 }
+
+// B-870/AC-01: Bricht der Sammelaufruf als Ganzes ab (hier Exit 2), nennt Set den Grund und die Felder, die ein
+// einzelner diff noch liefert; die Spec bleibt unberührt.
+func TestSetAbbruchDesSammelaufrufsNenntFelderUndGrund(t *testing.T) {
+	t.Parallel()
+	root, cli := testRepo(t)
+	dir := t.TempDir()
+	q := func(p string) string { b, _ := json.Marshal(filepath.ToSlash(p)); return string(b) }
+	schreibe(t, dir, "stub.ts", `import { run } from `+q(cli.Skript)+`;
+const a = process.argv.slice(2);
+if (a[0] === 'batch') { process.stderr.write('bun abgestürzt\n'); process.exit(2); }
+const r = run(a);
+if (r.stdout) process.stdout.write(r.stdout + '\n');
+if (r.stderr) process.stderr.write(r.stderr + '\n');
+process.exit(r.code);
+`)
+	cli.Skript = filepath.Join(dir, "stub.ts")
+	spec := filepath.Join(root, "public", "grafik", "figuren", "monarch.paper.json")
+	vorher, err := os.ReadFile(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r, err := Set(context.Background(), cli, "monarch", []byte(`{"umhang":{"material":"purpur"}}`))
+	if err == nil || !strings.Contains(err.Error(), "bun abgestürzt") {
+		t.Fatalf("Fehler: %v", err)
+	}
+	if !strings.Contains(r.Abbruch, "bun abgestürzt") || len(r.Felder) != 1 || r.Felder[0].Pfad != "umhang.material" {
+		t.Errorf("Teilergebnis: Abbruch %q, Felder %+v", r.Abbruch, r.Felder)
+	}
+	if nachher, _ := os.ReadFile(spec); string(nachher) != string(vorher) {
+		t.Error("Spec geändert")
+	}
+}

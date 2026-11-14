@@ -34,6 +34,7 @@ type SetErgebnis struct {
 	Dateien     []string
 	Pixel       []Pixel
 	Reiter      []string // Assets, die dieses Asset als Reittier nutzen (Render veraltet, B-706)
+	Abbruch     string   // Grund, wenn Prüfen und Rendern abbrach (nicht abgelehnt); Felder und Pixel zeigen den bekannten Stand (B-870)
 }
 
 // Set wendet einen Merge-Patch atomar auf die Spec an: Patch → validate → render in einen Temp-Ordner → Spec per
@@ -263,4 +264,3 @@ func animationen(spec []byte) []string {
 // SetOverlay ist der Pfad des Overlays von assets_set unter .cache/paper/mcp/: eigener Unterordner set/, damit er
 // das Overlay von assets_review (<id>-<animation>-0-diff.png) auch bei IDs mit „-“ nie trifft (B-706).
 func SetOverlay(id, anim string) string { return fmt.Sprintf("set/%s-%s-0-diff.png", id, anim) }
-

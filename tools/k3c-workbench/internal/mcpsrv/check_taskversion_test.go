@@ -50,6 +50,40 @@ func TestCheckRunTaskMindestversion(t *testing.T) {
 	}
 }
 
+// B-871/AC-01: Zwei Läufe mit Testmuster fragen `task --version` einmal ab, auch wenn die Version nicht lesbar ist
+// (Warnung bei beiden Läufen); ein abgebrochener erster Aufruf wird nicht gemerkt.
+func TestCheckRunFragtTaskVersionEinmal(t *testing.T) {
+	t.Parallel()
+	for _, readErr := range []error{nil, errors.New("nicht gefunden")} {
+		s, _ := fakeServer(t, func(runSpec) runResult { return runResult{} })
+		if err := os.MkdirAll(s.cfg.Root+"/"+devFrontendDeps, 0o755); err != nil {
+			t.Fatal(err)
+		}
+		reads := 0
+		s.taskVersion = func(context.Context) (string, error) { reads++; return "3.54.0", readErr }
+		for range 2 {
+			text, err := s.checkRun(context.Background(), checkIn{Target: "task:test", Pattern: "planning"})
+			if err != nil || strings.Contains(text, "Task-Version nicht lesbar") != (readErr != nil) {
+				t.Fatalf("Lauf (Fehler %v): %v %q", readErr, err, text)
+			}
+		}
+		if reads != 1 {
+			t.Errorf("task --version %d-mal gelesen (Fehler %v), erwartet 1", reads, readErr)
+		}
+	}
+	var m taskVersionMemo
+	ctx, cancel := context.WithCancel(context.Background())
+	reads := 0
+	lesen := m.lesen(func(context.Context) (string, error) { reads++; return "3.54.0", nil })
+	cancel()
+	_, _ = lesen(ctx)
+	_, _ = lesen(context.Background())
+	_, _ = lesen(context.Background())
+	if reads != 2 {
+		t.Errorf("abgebrochener Aufruf gemerkt: %d Aufrufe, erwartet 2", reads)
+	}
+}
+
 // B-868/AC-01: requirements.md nennt die geprüfte Mindestversion.
 func TestRequirementsNenntTaskMindestversion(t *testing.T) {
 	t.Parallel()
