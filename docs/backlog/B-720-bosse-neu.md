@@ -63,3 +63,5 @@ keine
 ## Notizen
 
 Quelle: PS1.3 Punkt 5, D-MG5-04. Nach B-712, B-715. Lane `bosse`.
+
+Umgesetzt in MG10.1–MG10.3 (2026-11-14, Claude): fünf Figur-Bosse mit eigenem Rig und eigener Silhouette, D-MG5-04 erledigt, Golden `bosse` neu. kristallherz-waechter unverändert (Requisite, eigene Silhouette). **Offen: Sichtprüfung der Silhouetten durch 🧑 (AC-01)** in der Workbench (Assets › Review, Gruppe bosse); das Ticket bleibt bis dahin offen.

@@ -809,3 +809,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | erledigt | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
 | [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | erledigt | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
 | [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | erledigt | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
+| [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | erledigt | MG10 | Variante des Reiters tauscht die Materialien des Reittiers nicht |

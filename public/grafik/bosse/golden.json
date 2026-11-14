@@ -1,10 +1,10 @@
 {
   "goblin-anfuehrer": {
-    "renderKey": "42838997bcf440b2f725c1b7e622f8d6f5624f049c159489f8d719bbe91181e4",
+    "renderKey": "b5ab34b0898cc82e8a8c7a6da2460152128efd30f422813f1f58127b906a81ae",
     "dateien": {
-      "angriff.png": "38b1d2160006af3c4f0c7ac1734f5bb44237323d74a585744f4ea8feff7ff57f",
-      "idle.png": "ca30ae686382a8a1ff7396607743835b251d004bfa8788f0540521a31f6a40f3",
-      "lauf.png": "c8a8122fc31ec53f70f97629d08d954f7276b83bc7c472fc5ad72e301625a9e7"
+      "angriff.png": "f4449eb1c2bf5402f82fe58afc4a9afd46fa9eef88b281e0b884b0b2d168f1af",
+      "idle.png": "6a712553f7bca12bffb19a1db90895698ba5bcfccd07ef812f7cddffc3b5ad83",
+      "lauf.png": "ea4d25cbc75ad4e17fe4d344ad6416c80f131a0be6dfd969052476c1062e6245"
     }
   },
   "kristallherz-waechter": {
@@ -15,35 +15,35 @@
     }
   },
   "lava-golem": {
-    "renderKey": "c4fc652591255688e01b63fd147ef80c1a0a59e9bb7ed0191a8ff36aae203772",
+    "renderKey": "bd10dd0093df2406678d910e9687e45681b8df103149fe276c4e2ef5001d9cea",
     "dateien": {
-      "angriff.png": "4bb70b13ecfbe410635a4909a9282604fac43ce40ee82bb97cff223b5d959159",
-      "idle.png": "211e89241ae84dd939761b7da71a0412e14b418222f6a413706f9d2967748f31",
-      "lauf.png": "e0f46627b532c67d750bf9bcb566b262caaaff3430b7f75207a7db94d9905b95"
+      "angriff.png": "b574246bcdcc16eab8f02b9ee85fcc851ea44d1b1f6ef2420a115b7a418a1221",
+      "idle.png": "617fba4a1b7e18a8d45018718b7057aaa1236c74a69afe76ff6107a6e2a772d1",
+      "lauf.png": "69204c3920346d4f078eb5d9253c760323749ced54814da3830c4dfd398a64b8"
     }
   },
   "ratten-koenigin": {
-    "renderKey": "89f117aaec47f73e1b1f11abb8462e33549b31a927fc69388221a0b87472d50a",
+    "renderKey": "be4cffb42d7f815b417fce3a94b63e4fcfad2a0ca0e67c5b9abee15350af6f4b",
     "dateien": {
-      "angriff.png": "f95ff72b8881fb6f84768e5d6e675b58ed5e51beb75a496ed4fb974ec9f368f2",
-      "idle.png": "94af7dca1cb22d1e725a5e3784c713b935af98bc41b09f0201a3749854e6b34a",
-      "lauf.png": "4c345d12f9a433a1cc68e6886feba35908b2ee2f90d5432f4acab9d0853e1473"
+      "angriff.png": "b34c7d1e8dded22742e5b9c0f074989e522d2fcbbc01678e4e95f73180722427",
+      "idle.png": "25366aed61741d0c2bf0eebbd579be1f3077c2dcf682ed87e075a0b59dfc71ce",
+      "lauf.png": "e8c65477e9a51a4ef99440ae8e4dc27b2f12f4cdd311f09bf2d12b3214dd0207"
     }
   },
   "splitter-titan": {
-    "renderKey": "ce79a22b6ac8d6ba4d0039a6e70feb50c81c3e2297b929c368290768c2838674",
+    "renderKey": "7cb6005f22e05b9b1e11362be4b3b2995f810c766ccf83834e4a9cd39ca650c2",
     "dateien": {
-      "angriff.png": "14a45624b9b117c424ccff631c8b91e620398d9441d9b6ffda5c0e54e81a8d83",
-      "idle.png": "249f42c93e2edc5ab234d308f448e4e92d42b565ee04238e21c74b0044cdd797",
-      "lauf.png": "56aa169f221e87260b5b64ebdf7301d049022851f385050f028863b01d913d10"
+      "angriff.png": "9155c2675a8debb8b049757c450d2f868c191b681d42a4718023d8fedd808109",
+      "idle.png": "7ff9ee8010471a26218efa2064c053b6a62c7b8fa8cca19660e1e783c2b14911",
+      "lauf.png": "060f363a18a5aa29d6e16f8125fc44ed1629d919431cfa0129718d7ad5e9be8b"
     }
   },
   "troll-koenig": {
-    "renderKey": "a8c2f9db07d71fc044222f83affa1e2a7094a9992bd99ba074b4c96d21509347",
+    "renderKey": "5ced2c62c7037e16ea9951dc377ab10c15cdf07ea112c66b6ef3562297bd331c",
     "dateien": {
-      "angriff.png": "3ba396c328c4bd9405180cd521b48d907ba38b69ce0af6acec28e525c09e2741",
-      "idle.png": "4889bdd065410355027e9f1794ae88b80c30b12df6372d66fca0968cbea100c9",
-      "lauf.png": "79cd0763ec33e0034da796bd87496210fea40505e65a5c0aa613eb0a8b6e519f"
+      "angriff.png": "3353778612d209f3524dd415d205e70eb7c2bed9ac7d358710b9265b2d439c2c",
+      "idle.png": "0d1369ebddddc9e007857d22b168b9c800ce9895da87b5b7da7d145cb397206a",
+      "lauf.png": "6f970210f5865127f037e6cb9910ee3ccd2cf8db7fc0ea9affba524c3fcacd47"
     }
   }
 }
