@@ -820,3 +820,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-887](B-887-server-net-load-tui-entfernen.md) | SRV | Schuld | mittel | erledigt | WR1 | k3c-server, engine/net, k3c-load und k3c-tui sind entfernt, Tasks, CI, Docker und Workbench kommen ohne sie aus |
 | [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | erledigt | WR1 | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
 | [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | erledigt | WR1 | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
+| [B-897](B-897-server-reste-nach-wr1.md) | SRV | Schuld | niedrig | erledigt | WR2 | Nach dem Server-Rückbau sind Server-Reste in engine/room, k3c-sim bot, simexe.StartBot und der Dienste-Infrastruktur der Workbench entfernt |
+| [B-898](B-898-doku-nach-wr1.md) | INF | Schuld | niedrig | erledigt | WR2 | Prozess-Doku, Rechte und Mocks nennen keinen Spielserver, keinen Browser-Client und keine Xbox-Seiten mehr |

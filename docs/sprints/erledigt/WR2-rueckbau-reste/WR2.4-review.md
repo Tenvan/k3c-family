@@ -1,6 +1,6 @@
 # WR2.4 · Review und Abschluss WR2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SRV
@@ -44,5 +44,7 @@ Alle Kriterien der Sprint-README; Abnahme-Ticket B-907 für `check:all`, Gen und
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Review k3c-reviewer (Sonnet) über 6802a69d9..HEAD: keine schweren Befunde; `go build`/`go vet` in Wurzel, `native/k3c-game` und Workbench sauber, Sperr-Reihenfolge in `engine/room` unverändert (die entfernten `notify` liefen nach dem Entsperren).
+- Behoben: Release-Regel in `docs/arbeitsweise.md` nannte noch Server-Dateien und Docker-Image (mittel); Kommentar `K3C_WORLDS_DIR` in `engine/room/worlds.go`; `backup-saves.sh` stellt klar, dass `K3C_SAVES_DIR` nur das Skript betrifft, und bricht ab, wenn das Ziel schon existiert.
+- Offen gelassen (kosmetisch): Beispiel-Spalte der Zelle „Weitere Welten“ in `docs/rules/welten.md` nennt noch das Studio.
+- `task check:diff` grün.

@@ -1,6 +1,6 @@
 # WR2 · SRV, DEV, INF · Reste des Server- und Web-Rückbaus aufräumen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** SRV, DEV, INF
 - **Reife:** bereit
@@ -81,10 +81,11 @@ keine (Dienste bleiben, Backup wird umgestellt; autonom entschieden, gemeldet im
 | WR2.1 | `WR2.1-server-reste-code.md` | Umsetzung | autonom | fertig |
 | WR2.2 | `WR2.2-workbench-dienste-mocks.md` | Umsetzung | autonom | fertig |
 | WR2.3 | `WR2.3-doku-backup.md` | Umsetzung | autonom | fertig |
-| WR2.4 | `WR2.4-review.md` | Review | autonom | offen |
+| WR2.4 | `WR2.4-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14, autonom (Claude): AC-01 bis AC-04 und AC-08 in WR2.1/WR2.2, AC-05 bis AC-07 in WR2.3, Review WR2.4 ohne schwere Befunde (ein mittlerer Doku-Befund behoben).
+Behalten im Zweifel: `Summary`, Beobachter, Vorschau, Raumliste, Spielmetrik-Report in `engine/room` (WR2.1 › Ergebnis).
+🧑 offen: drei Rechte in `.claude/settings.json` entfernen (B-898 › Notizen). Keine neuen Tickets.
+Abnahme-Ticket für `check:all`, `check:race` und Gen: B-907. Version: v0.<n>.<m+1> vorgeschlagen (Aufräumen ohne neue Funktion).

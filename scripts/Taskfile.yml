@@ -13,6 +13,6 @@ tasks:
       - ./bin/aufraeumen{{exeExt}} {{.CLI_ARGS}}
 
   backup:
-    desc: "Spielstände des nativen Spiels sichern (B-142, B-898): task ops:backup -- <ziel>; Quelle K3C_SAVES_DIR, sonst dist/k3c-game/saves"
+    desc: "Spielstände des nativen Spiels sichern (B-142, B-898): task ops:backup -- <ziel>; Quelle K3C_SAVES_DIR (nur für das Skript), sonst dist/k3c-game/saves"
     cmds:
       - sh scripts/backup-saves.sh {{.CLI_ARGS}}

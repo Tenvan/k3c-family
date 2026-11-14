@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WR2 | SRV, DEV, INF | NAT | Reste des Server- und Web-Rückbaus aufräumen | – | `aktiv/WR2-rueckbau-reste/` |
 | BI1 | SIM, DEV, CLI | NAT | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | – | `aktiv/BI1-biom-eigenschaften/` |
 | GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
@@ -364,3 +363,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | `erledigt/WR1-web-und-server-rueckbau/` |
 | CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | `erledigt/CH1-cheats-und-entwickler-tasten/` |
 | WZ59 | Studio-Seiten neu ordnen, Sound und Quellen zusammenlegen | `erledigt/WZ59-studio-seiten/` |
+| WR2 | Reste des Server- und Web-Rückbaus aufräumen | `erledigt/WR2-rueckbau-reste/` |

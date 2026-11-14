@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** WR2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
