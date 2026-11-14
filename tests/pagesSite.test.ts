@@ -8,10 +8,10 @@ const ROOT = resolve(__dirname, '..');
 const SITE = join(ROOT, 'site');
 const html = readFileSync(join(SITE, 'index.html'), 'utf8');
 
-/** Lokale Referenzen aus src/href/url(), ohne Anker, Fremdadressen und mailto. */
+/** Lokale Referenzen aus src/href/url(), ohne Anker, Fremdadressen, mailto und eingebettete data:-Bilder. */
 function localRefs(): string[] {
   const refs = [...html.matchAll(/(?:src|href)="([^"]+)"|url\(([^)]+)\)/g)].map((m) => (m[1] ?? m[2]).replace(/["']/g, ''));
-  return refs.filter((ref) => !/^(?:#|https?:|mailto:|var\()/.test(ref));
+  return refs.filter((ref) => !/^(?:#|https?:|mailto:|data:|var\()/.test(ref));
 }
 
 describe('GitHub-Pages-Seite', () => {
