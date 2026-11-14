@@ -19,7 +19,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG10 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
-| [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | eingeplant | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
 | [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | eingeplant | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | eingeplant | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |

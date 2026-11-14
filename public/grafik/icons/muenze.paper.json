@@ -3,26 +3,27 @@
   "id": "muenze",
   "rig": "requisite",
   "version": 1,
-  "beschreibung": "Münze: goldene Münze mit Prägung und Glanzpunkt, liegt im Gras und kippelt",
+  "beschreibung": "Spiel-Münze, 24 px: dreht sich in 8 Phasen um die Hochachse (Seitenansicht als schmale Kante), B-723.",
   "teile": [
     {
-      "id": "icon",
+      "id": "phase-0",
       "lagen": [
         {
           "art": "flaeche",
           "form": "M8 -9C8 -13.42 4.42 -17 0 -17C-4.42 -17 -8 -13.42 -8 -9C-8 -4.58 -4.42 -1 0 -1C4.42 -1 8 -4.58 8 -9Z",
-          "material": "gold"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M0 -17C-4.4 -17 -8 -13.4 -8 -9C-8 -4.6 -4.4 -1 0 -1C-3.2 -5 -3.2 -13 0 -17Z",
           "material": "gold",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M4.96 -9C4.96 -11.74 2.74 -13.96 0 -13.96C-2.74 -13.96 -4.96 -11.74 -4.96 -9C-4.96 -6.26 -2.74 -4.04 0 -4.04C2.74 -4.04 4.96 -6.26 4.96 -9Z",
+          "form": "M8 -9C8 -13.42 4.42 -17 0 -17C-4.42 -17 -8 -13.42 -8 -9C-8 -4.58 -4.42 -1 0 -1C4.42 -1 8 -4.58 8 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M5.92 -9C5.92 -11.76 3.7 -14 0.96 -14C-1.78 -14 -4 -11.76 -4 -9C-4 -6.24 -1.78 -4 0.96 -4C3.7 -4 5.92 -6.24 5.92 -9Z",
           "material": "gold",
           "ton": "licht"
         },
@@ -36,7 +37,194 @@
         {
           "art": "punkt",
           "material": "weiss",
-          "mitte": [3.6, -13],
+          "mitte": [3, -13],
+          "radius": 0.8
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-1",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M6.93 -9C6.93 -13.42 4.39 -17 1.27 -17C-1.85 -17 -4.39 -13.42 -4.39 -9C-4.39 -4.58 -1.85 -1 1.27 -1C4.39 -1 6.93 -4.58 6.93 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5.66 -9C5.66 -13.42 3.12 -17 0 -17C-3.12 -17 -5.66 -13.42 -5.66 -9C-5.66 -4.58 -3.12 -1 0 -1C3.12 -1 5.66 -4.58 5.66 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4.19 -9C4.19 -11.76 2.62 -14 0.68 -14C-1.26 -14 -2.83 -11.76 -2.83 -9C-2.83 -6.24 -1.26 -4 0.68 -4C2.62 -4 4.19 -6.24 4.19 -9Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-1.13 -11.8L1.13 -11.8M0 -12.2L0 -5.8",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [2.12, -13],
+          "radius": 0.8
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-2",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M3.2 -9C3.2 -13.42 2.57 -17 1.8 -17C1.03 -17 0.4 -13.42 0.4 -9C0.4 -4.58 1.03 -1 1.8 -1C2.57 -1 3.2 -4.58 3.2 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1.4 -9C1.4 -13.42 0.77 -17 0 -17C-0.77 -17 -1.4 -13.42 -1.4 -9C-1.4 -4.58 -0.77 -1 0 -1C0.77 -1 1.4 -4.58 1.4 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-3",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M6.93 -9C6.93 -13.42 4.39 -17 1.27 -17C-1.85 -17 -4.39 -13.42 -4.39 -9C-4.39 -4.58 -1.85 -1 1.27 -1C4.39 -1 6.93 -4.58 6.93 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5.66 -9C5.66 -13.42 3.12 -17 0 -17C-3.12 -17 -5.66 -13.42 -5.66 -9C-5.66 -4.58 -3.12 -1 0 -1C3.12 -1 5.66 -4.58 5.66 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4.19 -9C4.19 -11.76 2.62 -14 0.68 -14C-1.26 -14 -2.83 -11.76 -2.83 -9C-2.83 -6.24 -1.26 -4 0.68 -4C2.62 -4 4.19 -6.24 4.19 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-4",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M8 -9C8 -13.42 4.42 -17 0 -17C-4.42 -17 -8 -13.42 -8 -9C-8 -4.58 -4.42 -1 0 -1C4.42 -1 8 -4.58 8 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8 -9C8 -13.42 4.42 -17 0 -17C-4.42 -17 -8 -13.42 -8 -9C-8 -4.58 -4.42 -1 0 -1C4.42 -1 8 -4.58 8 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M5.92 -9C5.92 -11.76 3.7 -14 0.96 -14C-1.78 -14 -4 -11.76 -4 -9C-4 -6.24 -1.78 -4 0.96 -4C3.7 -4 5.92 -6.24 5.92 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-5",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M4.39 -9C4.39 -13.42 1.85 -17 -1.27 -17C-4.39 -17 -6.93 -13.42 -6.93 -9C-6.93 -4.58 -4.39 -1 -1.27 -1C1.85 -1 4.39 -4.58 4.39 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5.66 -9C5.66 -13.42 3.12 -17 0 -17C-3.12 -17 -5.66 -13.42 -5.66 -9C-5.66 -4.58 -3.12 -1 0 -1C3.12 -1 5.66 -4.58 5.66 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4.19 -9C4.19 -11.76 2.62 -14 0.68 -14C-1.26 -14 -2.83 -11.76 -2.83 -9C-2.83 -6.24 -1.26 -4 0.68 -4C2.62 -4 4.19 -6.24 4.19 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-6",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-0.4 -9C-0.4 -13.42 -1.03 -17 -1.8 -17C-2.57 -17 -3.2 -13.42 -3.2 -9C-3.2 -4.58 -2.57 -1 -1.8 -1C-1.03 -1 -0.4 -4.58 -0.4 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M1.4 -9C1.4 -13.42 0.77 -17 0 -17C-0.77 -17 -1.4 -13.42 -1.4 -9C-1.4 -4.58 -0.77 -1 0 -1C0.77 -1 1.4 -4.58 1.4 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -9]
+    },
+    {
+      "id": "phase-7",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M4.39 -9C4.39 -13.42 1.85 -17 -1.27 -17C-4.39 -17 -6.93 -13.42 -6.93 -9C-6.93 -4.58 -4.39 -1 -1.27 -1C1.85 -1 4.39 -4.58 4.39 -9Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5.66 -9C5.66 -13.42 3.12 -17 0 -17C-3.12 -17 -5.66 -13.42 -5.66 -9C-5.66 -4.58 -3.12 -1 0 -1C3.12 -1 5.66 -4.58 5.66 -9Z",
+          "material": "gold",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4.19 -9C4.19 -11.76 2.62 -14 0.68 -14C-1.26 -14 -2.83 -11.76 -2.83 -9C-2.83 -6.24 -1.26 -4 0.68 -4C2.62 -4 4.19 -6.24 4.19 -9Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-1.13 -11.8L1.13 -11.8M0 -12.2L0 -5.8",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [2.12, -13],
           "radius": 0.8
         }
       ],
@@ -49,20 +237,120 @@
   },
   "animationen": {
     "idle": {
-      "fps": 8,
+      "fps": 10,
       "frames": 8,
       "keyframes": [
         {
+          "sichtbar": {
+            "phase-0": true,
+            "phase-1": false,
+            "phase-2": false,
+            "phase-3": false,
+            "phase-4": false,
+            "phase-5": false,
+            "phase-6": false,
+            "phase-7": false
+          },
           "t": 0,
-          "winkel": {
-            "icon": -10
-          }
+          "winkel": {}
         },
         {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": true,
+            "phase-2": false,
+            "phase-3": false,
+            "phase-4": false,
+            "phase-5": false,
+            "phase-6": false,
+            "phase-7": false
+          },
+          "t": 0.125,
+          "winkel": {}
+        },
+        {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": false,
+            "phase-2": true,
+            "phase-3": false,
+            "phase-4": false,
+            "phase-5": false,
+            "phase-6": false,
+            "phase-7": false
+          },
+          "t": 0.25,
+          "winkel": {}
+        },
+        {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": false,
+            "phase-2": false,
+            "phase-3": true,
+            "phase-4": false,
+            "phase-5": false,
+            "phase-6": false,
+            "phase-7": false
+          },
+          "t": 0.375,
+          "winkel": {}
+        },
+        {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": false,
+            "phase-2": false,
+            "phase-3": false,
+            "phase-4": true,
+            "phase-5": false,
+            "phase-6": false,
+            "phase-7": false
+          },
           "t": 0.5,
-          "winkel": {
-            "icon": 10
-          }
+          "winkel": {}
+        },
+        {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": false,
+            "phase-2": false,
+            "phase-3": false,
+            "phase-4": false,
+            "phase-5": true,
+            "phase-6": false,
+            "phase-7": false
+          },
+          "t": 0.625,
+          "winkel": {}
+        },
+        {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": false,
+            "phase-2": false,
+            "phase-3": false,
+            "phase-4": false,
+            "phase-5": false,
+            "phase-6": true,
+            "phase-7": false
+          },
+          "t": 0.75,
+          "winkel": {}
+        },
+        {
+          "sichtbar": {
+            "phase-0": false,
+            "phase-1": false,
+            "phase-2": false,
+            "phase-3": false,
+            "phase-4": false,
+            "phase-5": false,
+            "phase-6": false,
+            "phase-7": true
+          },
+          "t": 0.875,
+          "winkel": {}
         }
       ]
     }

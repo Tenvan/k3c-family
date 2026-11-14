@@ -9,60 +9,108 @@
       "id": "icon",
       "lagen": [
         {
-          "art": "flaeche",
-          "form": "M-12 -16L-3 -16L-3 -4L-12 -4Z",
-          "material": "holz",
+          "art": "punkt",
+          "material": "leder",
+          "mitte": [-6.6, -9],
+          "radius": 6.6,
           "ton": "schatten"
         },
         {
-          "art": "flaeche",
-          "form": "M1.2 -10C1.2 -13.31 -0.68 -16 -3 -16C-5.32 -16 -7.2 -13.31 -7.2 -10C-7.2 -6.69 -5.32 -4 -3 -4C-0.68 -4 1.2 -6.69 1.2 -10Z",
+          "art": "punkt",
           "material": "holz",
+          "mitte": [-6.6, -9],
+          "radius": 5.4,
           "ton": "licht"
         },
         {
-          "art": "falz",
-          "breite": 0.7,
-          "form": "M-4.5 -10C-4.5 -13 -1.5 -13 -1.5 -10",
+          "art": "punkt",
           "material": "holz",
-          "ton": "schatten"
+          "mitte": [-6.6, -9],
+          "radius": 3.6,
+          "ton": "basis"
         },
         {
-          "art": "flaeche",
-          "form": "M-1 -16L8 -16L8 -4L-1 -4Z",
+          "art": "punkt",
           "material": "holz",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M12.2 -10C12.2 -13.31 10.32 -16 8 -16C5.68 -16 3.8 -13.31 3.8 -10C3.8 -6.69 5.68 -4 8 -4C10.32 -4 12.2 -6.69 12.2 -10Z",
-          "material": "holz",
+          "mitte": [-6.6, -9],
+          "radius": 2.3,
           "ton": "licht"
         },
         {
-          "art": "falz",
-          "breite": 0.7,
-          "form": "M6.5 -10C6.5 -13 9.5 -13 9.5 -10",
+          "art": "punkt",
           "material": "holz",
+          "mitte": [-6.6, -9],
+          "radius": 0.9,
           "ton": "schatten"
         },
         {
-          "art": "flaeche",
-          "form": "M-6 -26L3 -26L3 -14L-6 -14Z",
-          "material": "holz",
+          "art": "punkt",
+          "material": "leder",
+          "mitte": [6.6, -9],
+          "radius": 6.6,
           "ton": "schatten"
         },
         {
-          "art": "flaeche",
-          "form": "M7.2 -20C7.2 -23.31 5.32 -26 3 -26C0.68 -26 -1.2 -23.31 -1.2 -20C-1.2 -16.69 0.68 -14 3 -14C5.32 -14 7.2 -16.69 7.2 -20Z",
+          "art": "punkt",
           "material": "holz",
+          "mitte": [6.6, -9],
+          "radius": 5.4,
           "ton": "licht"
         },
         {
-          "art": "falz",
-          "breite": 0.7,
-          "form": "M1.5 -20C1.5 -23 4.5 -23 4.5 -20",
+          "art": "punkt",
           "material": "holz",
+          "mitte": [6.6, -9],
+          "radius": 3.6,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [6.6, -9],
+          "radius": 2.3,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [6.6, -9],
+          "radius": 0.9,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "leder",
+          "mitte": [0, -20.2],
+          "radius": 6.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [0, -20.2],
+          "radius": 5.4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [0, -20.2],
+          "radius": 3.6,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [0, -20.2],
+          "radius": 2.3,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [0, -20.2],
+          "radius": 0.9,
           "ton": "schatten"
         }
       ],

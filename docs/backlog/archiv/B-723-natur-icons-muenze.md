@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG11
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
@@ -65,3 +65,5 @@ keine
 ## Notizen
 
 Quelle: PS1.1 ✏️ D-US2-01, PS1.3 Punkt 8, D-MG8-04. Tanne ✅. Lane `natur`.
+
+Umgesetzt in MG11.4 (2026-11-14): Bäume 360 px mit zweiter Form, Icons, drehende Münze, D-MG8-04. Größe im Spiel unverändert bis US3. **Sichtprüfung durch Ralf offen** (AC-02, Review der Workbench, Gruppen `objekte` und `icons`).
