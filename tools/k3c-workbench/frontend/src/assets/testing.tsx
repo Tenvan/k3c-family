@@ -10,6 +10,20 @@ let root: Root | null = null;
 
 export const wait = (ms: number) => act(async () => new Promise((r) => setTimeout(r, ms)));
 
+/** Höchste Wartezeit einer Bedingung; unter Last reichen Millisekunden, das Limit fängt nur echte Fehler. */
+const LIMIT_MS = 5000;
+
+/** Wartet, bis `cond` einen Wert liefert, und gibt ihn zurück; nach `ms` scheitert der Test mit `what` (B-837, B-858). */
+export async function until<T>(what: string, cond: () => T | null | undefined | false, ms = LIMIT_MS): Promise<T> {
+  const end = Date.now() + ms;
+  for (;;) {
+    const v = cond();
+    if (v) return v;
+    if (Date.now() > end) throw new Error(`nicht erreicht nach ${ms} ms: ${what}`);
+    await wait(5);
+  }
+}
+
 export async function flush() {
   for (let i = 0; i < 8; i++) await wait(0);
 }

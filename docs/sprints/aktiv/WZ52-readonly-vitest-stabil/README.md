@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ52.1 | `WZ52.1-readonly-vitest.md` | Umsetzung | autonom | offen |
+| WZ52.1 | `WZ52.1-readonly-vitest.md` | Umsetzung | autonom | fertig |
 | WZ52.2 | `WZ52.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
