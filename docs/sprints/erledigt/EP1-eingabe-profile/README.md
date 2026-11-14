@@ -1,6 +1,6 @@
 # EP1 · CLI · Eingabe-Profile je Spieler und Tasten-Icons je Gerät
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -87,6 +87,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14 (autonom, Claude): AC-01 bis AC-03 siehe EP1.1 › Ergebnis, AC-04 und AC-05 siehe EP1.2 › Ergebnis. Review (k3c-reviewer, Sonnet): keine schweren Befunde. Neue Tickets: B-911 (Papierschnitt-Tasten-Icons), B-912 (`TestFlow` schon auf `main` rot). Abnahme-Ticket für Sichtprüfung und Spieltest: B-913 (Sim, Balance gesperrt; Gen und Race nicht betroffen).
