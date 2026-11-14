@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { backend, type WorktreeChange, type WorktreeDiff } from '../api';
 import { errorText } from '@webkit/lib/errors';
+import { PLAN_RELOAD_MS, useLiveReload } from '../lib/useLiveReload';
 import { Pill } from './Pill';
 import { EMPTY_INDEX, marksFor, pillLabel, pillTitle, type WtIndex } from './wtPills';
 
@@ -30,11 +31,10 @@ export function useWorktreeDiffs(): { diffs: WorktreeDiff[]; error: string; load
       (e) => done(() => { setDiffs([]); setError(errorText(e)); }), // Wails reicht Go-Fehler als Text durch
     );
   };
+  const soon = useLiveReload(['planning:changed'], reload, PLAN_RELOAD_MS);
   useEffect(() => {
-    reload();
-    window.addEventListener('focus', reload);
-    const off = backend.on('planning:changed', reload);
-    return () => { window.removeEventListener('focus', reload); off(); };
+    window.addEventListener('focus', soon);
+    return () => window.removeEventListener('focus', soon);
   }, []);
   return { diffs, error, loaded, reload };
 }

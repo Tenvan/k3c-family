@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { PLAN_RELOAD_MS, useLiveReload } from '../lib/useLiveReload';
 import { backend, type PlanningData, type PlanSprint } from '../api';
 import { LinkButton, Splitter, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
@@ -41,10 +42,7 @@ export function SprintsBacklog() {
     savePref(PREF, JSON.stringify(f));
   };
   const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
-  useEffect(() => {
-    void load();
-    return backend.on('planning:changed', () => void load()); // Wächter in Go: Datei in docs/ geändert
-  }, []);
+  useLiveReload(['planning:changed'], () => void load(), PLAN_RELOAD_MS); // Wächter in Go: Datei in docs/ geändert (B-895: gedrosselt)
   // Verschwundene Auswahl (archiviert, gelöscht) schließt das Detail.
   useEffect(() => { if (data && wt.loaded && filter.sel && !exists(data, filter.sel)) setFilter({ ...filter, sel: '' }); }, [data, wt.loaded]);
   if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;

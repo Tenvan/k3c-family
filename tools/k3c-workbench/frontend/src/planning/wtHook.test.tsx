@@ -6,6 +6,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { WorktreeDiff } from '../api';
 import { mockPlanningData } from '../api/mockPlanning';
+import { PLAN_RELOAD_MS } from '../lib/useLiveReload';
 import { groupProjects, rankedCount } from './projects';
 import { ProjectSections } from './ProjectsView';
 import { indexChanges } from './wtPills';
@@ -33,23 +34,27 @@ async function mount(): Promise<{ get: () => State; done: () => void }> {
 const diff = (id: string): WorktreeDiff[] => [{ branch: 'b', path: 'p', changes: [{ kind: 'neu', item: 'Ticket', id, text: 't' }] }];
 
 describe('useWorktreeDiffs', () => {
-  it('lädt beim Öffnen, bei planning:changed und bei Fokus; ein Fehler liefert keine Pills, nur den Text', async () => {
+  it('lädt beim Öffnen, bei planning:changed und bei Fokus (gedrosselt, B-895); ein Fehler liefert keine Pills, nur den Text', async () => {
+    const tick = (fire: () => void) => act(async () => { fire(); await vi.advanceTimersByTimeAsync(PLAN_RELOAD_MS); });
     check.mockResolvedValueOnce(diff('B-1'));
     const m = await mount();
+    vi.useFakeTimers();
     expect(m.get().loaded).toBe(true);
     expect(m.get().diffs).toHaveLength(1);
     check.mockRejectedValueOnce(new Error('git: exit 128'));
-    await act(async () => { handlers['planning:changed']!(); });
+    await tick(() => { handlers['planning:changed']!(); handlers['planning:changed']!(); }); // zwei Ereignisse, ein Check
     expect(m.get().diffs).toEqual([]);
     expect(m.get().error).toContain('git: exit 128');
     check.mockResolvedValueOnce(diff('B-2'));
-    await act(async () => { window.dispatchEvent(new Event('focus')); });
+    await tick(() => window.dispatchEvent(new Event('focus')));
     expect(m.get().error).toBe('');
     expect(m.get().diffs[0]!.changes[0]!.id).toBe('B-2');
     expect(check).toHaveBeenCalledTimes(3);
     m.done();
     window.dispatchEvent(new Event('focus')); // nach dem Unmount kein weiterer Check
+    await vi.advanceTimersByTimeAsync(PLAN_RELOAD_MS);
     expect(check).toHaveBeenCalledTimes(3);
+    vi.useRealTimers();
   });
 });
 
@@ -77,13 +82,15 @@ describe('useWorktreeDiffs: Zustand und Reihenfolge', () => {
     check.mockReturnValueOnce(new Promise<WorktreeDiff[]>((r) => { first = r; }));
     const m = await mount();
     expect(m.get().loaded).toBe(false);
+    vi.useFakeTimers();
     check.mockReturnValueOnce(new Promise<WorktreeDiff[]>((r) => { second = r; }));
-    await act(async () => { handlers['planning:changed']!(); });
+    await act(async () => { handlers['planning:changed']!(); await vi.advanceTimersByTimeAsync(PLAN_RELOAD_MS); });
     await act(async () => { second(diff('NEU')); });
     await act(async () => { first(diff('ALT')); }); // überholte Antwort
     expect(m.get().loaded).toBe(true);
     expect(m.get().diffs[0]!.changes[0]!.id).toBe('NEU');
     m.done();
+    vi.useRealTimers();
   });
 });
 

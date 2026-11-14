@@ -40,7 +40,7 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 Oberflächen nach Atomic Design über `@webkit`.
 
-- **Bereich:** `tools/k3c-workbench/frontend/src/**`, `tools/k3c-workbench/internal/mcpsrv/resources.go`
+- **Bereich:** `tools/k3c-workbench/frontend/src/**`, `tools/k3c-workbench/internal/resmon/**`, `tools/k3c-workbench/internal/mcpsrv/resources.go`
 - **Abhängig von:** –
 - **Braucht 🧑:** –
 - **Größe:** M

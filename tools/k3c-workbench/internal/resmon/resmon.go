@@ -10,6 +10,7 @@ import (
 	"log/slog"
 	"runtime/metrics"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 )
@@ -21,8 +22,12 @@ const (
 	defaultKeepDumps = 5
 	// DefaultHeapDump ist der Live-Heap, ab dem das erste Profil entsteht; danach je 50 % mehr.
 	DefaultHeapDump = 1 << 30
-	maxOps          = 256 // verschiedene Vorgangsnamen, danach zählt overflowOp
-	overflowOp      = "(weitere)"
+	// DefaultWebViewWarn ist der Arbeitssatz des WebView2-Renderers, ab dem eine 🤒-Warnung erscheint (B-895); danach je
+	// 50 % mehr. Darüber wird die Oberfläche träge und bleibt nach einiger Zeit leer.
+	DefaultWebViewWarn = 500 << 20
+	webViewProc        = "msedgewebview2.exe"
+	maxOps             = 256 // verschiedene Vorgangsnamen, danach zählt overflowOp
+	overflowOp         = "(weitere)"
 )
 
 // Config beschreibt ein Messgerät; Nullwerte nehmen die Vorgaben.
@@ -33,8 +38,10 @@ type Config struct {
 	Dir       string // Ordner der Profile (heap-*.pprof, goroutines-*.txt); leer: keine Profile
 	HeapDump  uint64 // Live-Heap in Bytes für das erste Heap-Profil
 	KeepDumps int
-	Log       *slog.Logger
-	Now       func() time.Time
+	// WebViewWarn ist der Renderer-Arbeitssatz in Bytes für die erste 🤒-Warnung.
+	WebViewWarn uint64
+	Log         *slog.Logger
+	Now         func() time.Time
 }
 
 // Sample ist eine Probe.
@@ -46,6 +53,7 @@ type Sample struct {
 	RSS         uint64 // Arbeitssatz des Prozesses
 	Children    int
 	ChildrenRSS uint64
+	WebView     uint64 // größter WebView2-Prozess unter den Kindern: der Renderer der Oberfläche (0 ohne Fenster)
 	Goroutines  int
 	Handles     int
 	GCCycles    uint64
@@ -69,6 +77,7 @@ type Monitor struct {
 	started  time.Time
 	nextHeap uint64
 	nextGor  int
+	nextWeb  uint64
 	n        int
 	top      []ProcInfo
 }
@@ -87,6 +96,9 @@ func New(cfg Config) *Monitor {
 	if cfg.HeapDump == 0 {
 		cfg.HeapDump = DefaultHeapDump
 	}
+	if cfg.WebViewWarn == 0 {
+		cfg.WebViewWarn = DefaultWebViewWarn
+	}
 	if cfg.KeepDumps <= 0 {
 		cfg.KeepDumps = defaultKeepDumps
 	}
@@ -96,7 +108,8 @@ func New(cfg Config) *Monitor {
 	if cfg.Log == nil {
 		cfg.Log = slog.New(slog.DiscardHandler)
 	}
-	return &Monitor{cfg: cfg, ops: map[string]*opStat{}, started: cfg.Now(), nextHeap: cfg.HeapDump, nextGor: 2000}
+	return &Monitor{cfg: cfg, ops: map[string]*opStat{}, started: cfg.Now(), nextHeap: cfg.HeapDump, nextGor: 2000,
+		nextWeb: cfg.WebViewWarn}
 }
 
 // Gauge meldet einen Messwert an, der bei jeder Probe gelesen wird (Größe eines Puffers, Zahl der Läufe). unit "B"
@@ -153,6 +166,9 @@ func (m *Monitor) read() Sample {
 	s.Children, s.ChildrenRSS = len(p.children), 0
 	for _, c := range p.children {
 		s.ChildrenRSS += c.RSS
+		if strings.EqualFold(c.Name, webViewProc) && c.RSS > s.WebView {
+			s.WebView = c.RSS
+		}
 	}
 	m.mu.Lock()
 	gs := slicesClone(m.gauges)

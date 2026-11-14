@@ -28,7 +28,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BI2 | CLI | NAT | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | – | Entwurf | `geplant/BI2-biom-darstellung/` |
 | EP1 | CLI | NAT | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | – | Entwurf | `geplant/EP1-eingabe-profile/` |
 | ST2 | CLI | NAT | Stresstests im Spielmenü (Testing) | – | Entwurf | `geplant/ST2-stresstests-im-menue/` |
-| WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | Entwurf | `geplant/WZ60-workbench-oberflaeche-speicher/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

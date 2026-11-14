@@ -44,6 +44,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-906](B-906-kristallhoehle-leuchtstaerke.md) | CLI | Idee | niedrig | offen | BI2 | Die Kristallhöhle leuchtet nach der Natur-Eigenschaft brightness |
 | [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WZ60 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
 | [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | offen | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
+| [B-909](B-909-planungsdaten-schlank.md) | DEV | Schuld | mittel | offen | WZ60 | Die Planungsseite lädt bei einer Änderung nur das Geänderte statt 5,5 MiB PlanningData |
 
 ## Archiv
 
