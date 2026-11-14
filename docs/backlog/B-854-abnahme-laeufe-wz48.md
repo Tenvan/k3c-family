@@ -64,3 +64,5 @@ keine
 ## Notizen
 
 Vorschlag aus WZ48.4 (2026-11-14).
+
+2026-11-14 (Claude, auf `sprint/welle6`): AC-01 verschoben (Sperre). AC-02 `check_run task:test` grün (4 min 4 s). AC-03 `check_run task:check:race` lokal ohne gcc übersprungen. Offen: AC-04 (CI auf `develop`), erst nach dem Merge.
