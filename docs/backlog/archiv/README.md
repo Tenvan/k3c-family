@@ -792,3 +792,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-730](B-730-check-diff-schneller.md) | INF | Problem | hoch | erledigt | WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | erledigt | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | erledigt | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
+| [B-874](B-874-mcp-live-statistik-schoener.md) | DEV | Idee | mittel | erledigt | – | Die Live-Statistik der MCP-Seite ist übersichtlich und lesbar |
+| [B-875](B-875-mcp-widgets-splitter.md) | DEV | Idee | mittel | erledigt | – | Unter den MCP-Widgets trennt ein Splitter Widgets und Aufruf-Log, seine Stellung wird gemerkt |
+| [B-876](B-876-check-run-auswertung.md) | DEV | Idee | mittel | erledigt | – | Die MCP-Seite zeigt zwischen Widgets und Aufruf-Log eine grafische Auswertung von check_run |

@@ -1,10 +1,10 @@
-# B-876 · Die MCP-Seite zeigt zwischen Widgets und Aufruf-Log eine grafische Auswertung von check_run
+# B-874 · Die Live-Statistik der MCP-Seite ist übersichtlich und lesbar
 
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Ralf, 2026-11-14: `check_run` verbraucht die meiste Zeit (Screenshot: 197 Aufrufe, Ø 1 min 49 s, 7 Fehler). Eine eigene Auswertung soll zeigen, wo die Zeit hingeht.
+Ralf, 2026-11-14 (Screenshot MCP-Seite): Die Live-Statistik rechts (Balken je Tool, Laufzeit-Kurve mit Ausreißern) ist unschön: senkrechte Tool-Namen, rote Balken ohne Skala, Kurve ohne Achsenwerte.
 
 ## Ziel
 
-Zwischen den Widgets und dem Aufruf-Log steht eine grafische Auswertung von `check_run`: Laufzeit und Ergebnis je Ziel (z. B. `task:check:diff`, `task:test`) über die Zeit.
+Die Live-Statistik zeigt Aufrufe und Laufzeit je Tool lesbar (waagerechte Beschriftung, Skala, Einheiten) und den Zeitverlauf mit Achsen.
 
 ## Beteiligte und Zielgruppen
 
@@ -56,10 +56,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Je Ziel: Anzahl, Ø und max. Laufzeit, Fehlerquote.
-- **AC-02** Verlauf der Laufzeit je Ziel über den gewählten Zeitraum (15 min bis 7 T), Fehlschläge markiert.
-- **AC-03** Klick auf einen Lauf zeigt dessen Konsole (`console_tail`).
-- **AC-04** Sichtprüfung durch Ralf.
+- **AC-01** Tool-Namen sind waagerecht lesbar, Werte haben Einheit und Skala.
+- **AC-02** Der Zeitverlauf hat beschriftete Achsen; Ausreißer sind erklärt (Legende oder Tooltip).
+- **AC-03** Hell- und Dunkel-Modus lesbar; Sichtprüfung durch Ralf.
 
 ## Offene Fragen
 

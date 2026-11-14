@@ -40,9 +40,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | eingeplant | WZ57 | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | offen | – | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 | [B-872](B-872-workbench-web-client-entfernen.md) | DEV | Schuld | niedrig | eingeplant | WZ57 | Der Web-Client der Workbench ist entfernt, die Workbench läuft nur als EXE |
-| [B-874](B-874-mcp-live-statistik-schoener.md) | DEV | Idee | mittel | offen | – | Die Live-Statistik der MCP-Seite ist übersichtlich und lesbar |
-| [B-875](B-875-mcp-widgets-splitter.md) | DEV | Idee | mittel | offen | – | Unter den MCP-Widgets trennt ein Splitter Widgets und Aufruf-Log, seine Stellung wird gemerkt |
-| [B-876](B-876-check-run-auswertung.md) | DEV | Idee | mittel | offen | – | Die MCP-Seite zeigt zwischen Widgets und Aufruf-Log eine grafische Auswertung von check_run |
 
 ## Archiv
 
