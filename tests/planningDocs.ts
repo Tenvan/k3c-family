@@ -64,6 +64,9 @@ export function checkTemplate(kind: Kind, text: string, where: string): Record<s
   return fields;
 }
 
+/** Zusammenfassung eines erledigten Sprints (plan_digest, B-696 Teil C); kein Dokument nach Vorlage. */
+export const DIGEST = 'ZUSAMMENFASSUNG.md';
+
 const STATES = ['geplant', 'aktiv', 'erledigt'] as const;
 export const sprints = STATES.flatMap((state) => dirs(`sprints/${state}`).map((dir) => ({ state, dir, path: `sprints/${state}/${dir}` })));
 

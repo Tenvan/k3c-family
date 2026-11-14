@@ -65,7 +65,7 @@ keine blockierenden. Defaults (Claude, 2026-11-12, Meldung im Nachgang) zu `B-69
 |---|---|---|---|---|
 | WZ47.1 | `WZ47.1-relationen.md` | Umsetzung | autonom | fertig |
 | WZ47.2 | `WZ47.2-index-verdichtung.md` | Umsetzung | autonom | fertig |
-| WZ47.3 | `WZ47.3-sprint-zusammenfassungen.md` | Umsetzung | autonom | offen |
+| WZ47.3 | `WZ47.3-sprint-zusammenfassungen.md` | Umsetzung | autonom | fertig |
 | WZ47.4 | `WZ47.4-review.md` | Review | autonom | offen |
 
 Keine eigenen Sim- oder Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).

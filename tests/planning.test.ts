@@ -4,7 +4,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  checkTemplate, DOCS, DOMAINS, ids, laneOk, meta, none, PLAN_LINES_SINCE, planLineDefects, read, sessionRows, sprints, title,
+  checkTemplate, DIGEST, DOCS, DOMAINS, ids, laneOk, meta, none, PLAN_LINES_SINCE, planLineDefects, read, sessionRows, sprints, title,
 } from './planningDocs';
 
 /** Akzeptanzkriterien `- **AC-01** …` im gleichnamigen Abschnitt. */
@@ -65,7 +65,8 @@ describe('Backlog', () => {
 /** Jede Session verweist nur auf Kriterien des Sprints, und jedes Kriterium hat eine Session. */
 function checkSessions(path: string, sprintId: string, sprintCriteria: string[]) {
   const rows = sessionRows(read(`${path}/README.md`));
-  const files = readdirSync(join(DOCS, path)).filter((f) => f !== 'README.md');
+  // ZUSAMMENFASSUNG.md (plan_digest, B-696 Teil C) ist kein Dokument nach Vorlage.
+  const files = readdirSync(join(DOCS, path)).filter((f) => f !== 'README.md' && f !== DIGEST);
   expect(rows.map((r) => r.file).sort(), `${path}: Session-Tabelle ↔ Dateien`).toEqual(files.sort());
   expect(rows.length, `${path}: mindestens eine Session`).toBeGreaterThan(0);
   const covered = new Set<string>();

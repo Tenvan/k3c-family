@@ -94,6 +94,7 @@ func registerPlanning(s *Server) {
 	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Delete(s.ws(ctx).root, in.ID) })
 	registerGitHub(s)
 	registerPlanWaves(s)
+	registerPlanDigest(s)
 }
 
 // registerPlanRead sind die lesenden Planungs-Tools: Überblick, ein Dokument, nächste Session (B-518).
