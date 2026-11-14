@@ -47,11 +47,17 @@ type Settings struct {
 	// Controls ist das Eingabe-Profil je Spieler (ProfileWASD, ProfileArrows, ProfileGamepad; B-893, profile.go);
 	// höchstens einer hat ein Tastatur-Profil.
 	Controls [MaxPlayers]string
+	// DevMode zeigt im Hauptmenü die Karte Testing (Optionen › Entwicklermodus, B-896); im Entwickler-Build ist sie
+	// immer da (menu). Null-Wert = aus.
+	DevMode bool
+	// Stress sind die zuletzt eingestellten Werte der Seite Testing (B-896, „eigene Einstellungen merken“).
+	Stress StressTest
 }
 
 // DefaultSettings sind die Werte ohne gespeicherte Einstellungen (wie der Browser: volle Lautstärke, Deutsch, Fenster).
 func DefaultSettings() Settings {
-	return Settings{Music: 1, Effects: 1, Language: DefaultLanguage, Controls: defaultControls()}
+	return Settings{Music: 1, Effects: 1, Language: DefaultLanguage, Controls: defaultControls(),
+		Stress: DefaultStress()}
 }
 
 // Normalized begrenzt die Lautstärken auf 0 … 1 (NaN = Standard), setzt eine unbekannte Sprache auf
@@ -71,6 +77,10 @@ func (s Settings) Normalized() Settings {
 	}
 	s.GuideSeen = max(0, s.GuideSeen)
 	s.Controls = normalizeControls(s.Controls)
+	if s.Stress == (StressTest{}) {
+		s.Stress = DefaultStress()
+	}
+	s.Stress = s.Stress.Normalized()
 	return s
 }
 

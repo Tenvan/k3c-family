@@ -77,7 +77,7 @@ func TestLicensesPage(t *testing.T) {
 		}
 	}
 	st := stepThrough(newMenus().Main(), &fakeSession{}, press(pad1, view.ActionDown), press(pad1, view.ActionDown),
-		press(pad1, view.ActionDown), press(pad1, view.ActionConfirm))
+		press(pad1, view.ActionDown), press(pad1, view.ActionDown), press(pad1, view.ActionConfirm)) // über Testing (Entwickler-Build)
 	if l, ok := st.Next.(*tableScreen); st.Kind != view.StepPush || !ok || l.kind != tableLicenses {
 		t.Errorf("Hauptmenü › Lizenzen: %+v", st)
 	}

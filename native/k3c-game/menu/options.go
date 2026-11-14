@@ -12,7 +12,9 @@ import (
 
 // Optionen (Entscheidung 🧑 2026-11-11, B-800, dazu Blitze und Anleitung, B-809; Vorbild src/scenes/optionsLogic.ts):
 // Lautstärke Musik und Effekte in Schritten von 10 %, Anzeige (Fenster, rahmenlos, Vollbild, B-826), Sprache, Blitze,
-// Anleitung, dazu die Unterseite Steuerung (Eingabe-Profile je Spieler, B-893, controls.go). Links/Rechts ändert, A legt Schalter, Anzeige und Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
+// Anleitung, Entwicklermodus (Karte Testing, B-896), dazu die Unterseite Steuerung (Eingabe-Profile je Spieler, B-893,
+// controls.go). Mehr als maxRows Zeilen rollen mit der Auswahl. Links/Rechts ändert, A legt Schalter, Anzeige und
+// Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
 // (local speichert sie); ein Fehler betrifft nur das Speichern und erscheint als Meldung. Grundlage jeder Änderung
 // ist der aktuelle Stand der Session, nicht der beim Öffnen: F2/F3 (Settings.Stats, River) gehen nicht verloren.
 // Anleitung wieder an setzt „Anleitung gesehen“ zurück (alle Hinweise erneut, wie OptionsScene.ts).
@@ -24,6 +26,7 @@ const (
 	optLanguage
 	optFlashes
 	optGuide
+	optDevMode
 	optControls
 	optBack
 	optRows
@@ -32,7 +35,7 @@ const (
 // volumeStep ist der Schritt der Lautstärke-Regler (0 … 1).
 const volumeStep = 0.1
 
-var optLabels = [optRows]textKey{txtMusic, txtEffects, txtDisplay, txtLanguage, txtFlashes, txtGuide, txtControls, txtBack}
+var optLabels = [optRows]textKey{txtMusic, txtEffects, txtDisplay, txtLanguage, txtFlashes, txtGuide, txtDevMode, txtControls, txtBack}
 
 // optionsScreen bearbeitet die Einstellungen. cur ist der Stand, den das Menü kennt und schreibt.
 type optionsScreen struct {
@@ -116,6 +119,8 @@ func applyOption(s view.Settings, opt int, k key) view.Settings {
 		if !s.GuideOff {
 			s.GuideSeen = 0
 		}
+	case optDevMode:
+		s.DevMode = !s.DevMode
 	}
 	return s
 }
@@ -182,14 +187,15 @@ func (sc *optionsScreen) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 func (sc *optionsScreen) fill(lang string) {
 	p := &sc.pg
 	p.reset(tr(lang, txtOptions))
-	for i := range optRows {
+	from := window(sc.sel, optRows, maxRows)
+	for i := from; i < min(optRows, from+maxRows); i++ {
 		r := row{label: tr(lang, optLabels[i]), value: optionValue(lang, sc.cur, i), mat: matPurple}
 		if i == optBack {
 			r.mat = matCoral
 		}
 		p.add(r)
 	}
-	p.sel = sc.sel
+	p.sel = sc.sel - from
 	p.dim = sc.dim
 	p.note, p.bad = sc.note.text(lang), sc.note.bad
 	p.hint = byHint(lang, txtOptionsHint, &sc.base)
@@ -216,6 +222,8 @@ func optionValue(lang string, s view.Settings, opt int) string {
 		return onOff(!s.FlashesOff)
 	case optGuide:
 		return onOff(!s.GuideOff)
+	case optDevMode:
+		return onOff(s.DevMode)
 	}
 	return ""
 }

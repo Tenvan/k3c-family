@@ -16,7 +16,7 @@ func TestSettingsNormalized(t *testing.T) {
 		{Settings{GuideSeen: 5}, Settings{GuideSeen: 5, Language: "de"}},
 	}
 	for _, c := range cases {
-		c.want.Controls = defaultControls()
+		c.want.Controls, c.want.Stress = defaultControls(), DefaultStress()
 		if got := c.in.Normalized(); got != c.want {
 			t.Errorf("%+v.Normalized() = %+v, erwartet %+v", c.in, got, c.want)
 		}

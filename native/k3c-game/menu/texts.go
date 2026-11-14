@@ -116,6 +116,28 @@ const (
 	txtLicAudio
 	txtVersion
 	txtVersionUnknown
+	txtTesting
+	txtTestingSub
+	txtTestingHint
+	txtTstPreset
+	txtTstPlayers
+	txtTstDepth
+	txtTstEnemies
+	txtTstGrowth
+	txtTstFactor
+	txtTstBuild
+	txtTstTroops
+	txtTstTimescale
+	txtTstWaves
+	txtTstMinutes
+	txtTstOwn
+	txtTstLinear
+	txtTstExp
+	txtTstNone
+	txtTstNoPresets
+	txtTstNoRunner
+	txtDevMode
+	txtTstStart
 	textCount
 )
 
@@ -225,6 +247,28 @@ var texts = [textCount][2]string{
 	txtLicAudio:        {"Audio", "Audio"},
 	txtVersion:         {"Version {}", "Version {}"},
 	txtVersionUnknown:  {"unbekannt", "unknown"},
+	txtTesting:         {"Testing", "Testing"},
+	txtTestingSub:      {"Stresstest einstellen und starten", "Set up and start a stress test"},
+	txtTestingHint:     {"Hoch/Runter wählen · Links/Rechts ändern · A starten · B zurück", "Up/Down select · Left/Right change · A start · B back"},
+	txtTstPreset:       {"Vorgabe", "Preset"},
+	txtTstPlayers:      {"Spieler", "Players"},
+	txtTstDepth:        {"Stufe (Tiefe)", "Stage (depth)"},
+	txtTstEnemies:      {"Gegner je Welle", "Enemies per wave"},
+	txtTstGrowth:       {"Anstieg", "Growth"},
+	txtTstFactor:       {"Faktor je Welle", "Factor per wave"},
+	txtTstBuild:        {"Ausbau vorab", "Build up front"},
+	txtTstTroops:       {"Truppen vorab", "Troops up front"},
+	txtTstTimescale:    {"Zeitraffer", "Time lapse"},
+	txtTstWaves:        {"Ende nach Wellen", "Stop after waves"},
+	txtTstMinutes:      {"Ende nach Minuten", "Stop after minutes"},
+	txtTstOwn:          {"eigene Werte", "own values"},
+	txtTstLinear:       {"linear", "linear"},
+	txtTstExp:          {"exponentiell", "exponential"},
+	txtTstNone:         {"keine", "none"},
+	txtTstNoPresets:    {"Vorgaben nicht lesbar (data/stresstests.json)", "Presets not readable (data/stresstests.json)"},
+	txtTstNoRunner:     {"Stresstest hier nicht verfügbar", "Stress test not available here"},
+	txtDevMode:         {"Entwicklermodus", "Developer mode"},
+	txtTstStart:        {"Test starten", "Start test"},
 }
 
 // langIndex liefert den Index der Sprache in texts (unbekannt = Deutsch, wie view.Settings.Normalized).

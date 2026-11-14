@@ -25,7 +25,9 @@ type settingsJSON struct {
 	Flashes    *bool    `json:"flashes"`   // Blitze an (B-809); fehlt: an
 	Guide      *bool    `json:"guide"`     // Anleitung an (B-809); fehlt: an
 	GuideSeen  *int     `json:"guideSeen"` // erledigte Hinweise der ersten Nacht (Bitmaske, view.Settings.GuideSeen)
-	Controls   []string `json:"controls"`  // Eingabe-Profil je Spieler (B-893); fehlt: Standard
+	Controls   []string         `json:"controls"`         // Eingabe-Profil je Spieler (B-893); fehlt: Standard
+	DevMode    *bool            `json:"devMode,omitempty"` // Entwicklermodus (Karte Testing, B-896)
+	Stress     *view.StressTest `json:"stress,omitempty"`  // zuletzt eingestellter Stresstest (B-896)
 }
 
 // loadSettings liest die Einstellungen aus path. Fehlt die Datei oder ist sie kaputt, gelten die Standardwerte (eine
@@ -65,8 +67,8 @@ func loadSettings(path string) (view.Settings, error) {
 	return s.Normalized(), nil
 }
 
-// applyGuide übernimmt Blitze, Anleitung, „Anleitung gesehen“ (B-809) und die Eingabe-Profile (B-893) aus der Datei;
-// fehlende Felder bleiben Standard.
+// applyGuide übernimmt Blitze, Anleitung, „Anleitung gesehen“ (B-809), die Eingabe-Profile (B-893), Entwicklermodus
+// und Stresstest (B-896) aus der Datei; fehlende Felder bleiben Standard.
 func applyGuide(s *view.Settings, j settingsJSON) {
 	if j.Flashes != nil {
 		s.FlashesOff = !*j.Flashes
@@ -82,13 +84,22 @@ func applyGuide(s *view.Settings, j settingsJSON) {
 			s.Controls[i] = p
 		}
 	}
+	if j.DevMode != nil {
+		s.DevMode = *j.DevMode
+	}
+	if j.Stress != nil {
+		s.Stress = *j.Stress
+	}
 }
 
 // saveSettings schreibt die Einstellungen nach path (erst in eine Temp-Datei, dann umbenennen: nie halb geschrieben).
 func saveSettings(path string, s view.Settings) error {
 	flashes, guide := !s.FlashesOff, !s.GuideOff
 	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Window: &s.Window, Language: &s.Language, Stats: &s.Stats,
-		Flashes: &flashes, Guide: &guide, GuideSeen: &s.GuideSeen, Controls: s.Controls[:]}
+		Flashes: &flashes, Guide: &guide, GuideSeen: &s.GuideSeen, Controls: s.Controls[:], Stress: &s.Stress}
+	if s.DevMode {
+		j.DevMode = &s.DevMode
+	}
 	if s.River != "" {
 		j.River = &s.River
 	}
