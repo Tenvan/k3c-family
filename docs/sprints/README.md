@@ -28,7 +28,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WZ58 | DEV | WZG | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | – | bereit | `geplant/WZ58-welten-editor-planung-review/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -358,3 +357,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | `erledigt/WZ45-asset-seiten-prompts-filter/` |
 | PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | `erledigt/PT6-asset-pakete-vorlage/` |
 | MG10 | Papierschnitt: Bosse neu mit eigener Silhouette | `erledigt/MG10-papier-bosse-neu/` |
+| WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | `erledigt/WZ58-welten-editor-planung-review/` |
