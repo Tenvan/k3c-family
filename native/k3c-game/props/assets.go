@@ -14,10 +14,10 @@ var buildingAssets = []string{
 	"geruest-1", "geruest-3", "geruest-4", "geruest-6",
 }
 
-// objectAssets: Objekte in jedem Biom (Felsen, Erz, Adern, Abbau-Schilder, Plantage, Portal, Ausgang, Truhen, Stern).
+// objectAssets: Objekte in jedem Biom (Felsen, Erz, Adern mit den Kristallfarben, Abbau-Schilder, Plantage, Portal, Ausgang, Truhen, Stern).
 var objectAssets = []string{
 	"felsen", "felsen-b", "felsen-c", "erzbrocken", "ader-stein", "ader-kupfer", "ader-eisen", "ader-kristall",
-	"schild-axt", "schild-spitzhacke", "setzling", "pappel-niedrig", "portal", "ausgang", "truhe", "truhe-offen", "stern",
+	"ader-kristall-violett", "ader-kristall-gruen", "schild-axt", "schild-spitzhacke", "setzling", "pappel-niedrig", "portal", "ausgang", "truhe", "truhe-offen", "stern",
 }
 
 // natureAssets: Natur je Look (1 Wald, sonst Höhle und Mine).

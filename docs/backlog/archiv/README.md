@@ -822,3 +822,10 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-849](B-849-site-papier-bilder.md) | PLAT | Schuld | niedrig | erledigt | WR1 | Die Präsentationsseite site/ zeigt Papierschnitt-Bilder statt Pixel-Grafik |
 | [B-897](B-897-server-reste-nach-wr1.md) | SRV | Schuld | niedrig | erledigt | WR2 | Nach dem Server-Rückbau sind Server-Reste in engine/room, k3c-sim bot, simexe.StartBot und der Dienste-Infrastruktur der Workbench entfernt |
 | [B-898](B-898-doku-nach-wr1.md) | INF | Schuld | niedrig | erledigt | WR2 | Prozess-Doku, Rechte und Mocks nennen keinen Spielserver, keinen Browser-Client und keine Xbox-Seiten mehr |
+| [B-900](B-900-kristall-adern-farben-papier.md) | PAP | Idee | niedrig | erledigt | BI2 | Kristall-Adern gibt es als Papierschnitt in drei Farben (blau, violett, grün) |
+| [B-901](B-901-kristallfarbe-im-spiel.md) | CLI | Idee | niedrig | erledigt | BI2 | Das native Spiel zeigt die Kristallfarbe jeder Kristall-Ader |
+| [B-902](B-902-hoehle-deckenhoehe.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Höhle zeigt ihre Deckenhöhe (Natur-Eigenschaft ceilingHeight) |
+| [B-903](B-903-hoehle-tropfsteine.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Höhle zeigt Tropfsteine nach der Natur-Eigenschaft stalactites |
+| [B-904](B-904-mine-stuetzbalken-verfall.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Mine zeigt Stützbalken und Verfall nach der Natur-Eigenschaft decay |
+| [B-905](B-905-eisenstollen-glut.md) | CLI | Idee | niedrig | erledigt | BI2 | Der Eisenstollen zeigt Hitze und Glut nach der Natur-Eigenschaft glow |
+| [B-906](B-906-kristallhoehle-leuchtstaerke.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Kristallhöhle leuchtet nach der Natur-Eigenschaft brightness |

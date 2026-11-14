@@ -5,6 +5,18 @@
       "idle.png": "2bc610ad0c7934a197adf3a1be199c575268b864ffe87e6f1e17d4e28a8a58b9"
     }
   },
+  "ader-kristall-gruen": {
+    "renderKey": "bbef78b05849d693e397b7ab922d88f3a7efa3f9527a531c27075ec5281c21dc",
+    "dateien": {
+      "idle.png": "e05675f439cc4935a1ce5a6cdaa57674fae5eb0cfce418b9120a9ca19bace576"
+    }
+  },
+  "ader-kristall-violett": {
+    "renderKey": "925ab8b9128ff1f7c4335d4cde8c6ee8f1b079646ee4f398ddbee6a537a8ad4a",
+    "dateien": {
+      "idle.png": "8174e9975054d9ad8b9f9eedbde588102a53da3ad8d2dc2cbb885078c80c99d6"
+    }
+  },
   "ader-kristall": {
     "renderKey": "7497141a4859b8ef7e337c40771d4af28902049e81bd1b9fe8de00af8a1580a0",
     "dateien": {

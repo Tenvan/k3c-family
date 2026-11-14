@@ -75,15 +75,23 @@ func treeLook(x float64, biome string) look {
 	return object(treeKinds[mix(x)%uint32(len(treeKinds)*3)%uint32(len(treeKinds))])
 }
 
-// variantLook: Bild der Variante aus dem Level (B-891): im Wald die Baumart (tanne, pappel, birke = Asset-ID); andere
-// Varianten (Kristallfarben) haben noch keine Grafik, ok = false heißt: Bild wie ohne Variante.
+// crystalKinds: Bild der Kristall-Ader je Farbe der Gewichts-Gruppe crystalColors (B-900, B-901); blau ist das
+// ursprüngliche ader-kristall.
+var crystalKinds = map[string]string{"blau": "ader-kristall", "violett": "ader-kristall-violett", "gruen": "ader-kristall-gruen"}
+
+// variantLook: Bild der Variante aus dem Level (B-891): im Wald die Baumart (tanne, pappel, birke = Asset-ID), an der
+// Kristall-Ader die Farbe (crystalKinds). ok = false heißt: unbekannte Variante, Bild wie ohne Variante.
 func variantLook(kind, variant, biome string) (look, bool) {
-	if kind != "tree" || natureLook(biome) != 1 {
-		return look{}, false
-	}
-	for _, id := range treeKinds {
-		if id == variant {
+	switch {
+	case kind == "crystalVein":
+		if id, ok := crystalKinds[variant]; ok {
 			return object(id), true
+		}
+	case kind == "tree" && natureLook(biome) == 1:
+		for _, id := range treeKinds {
+			if id == variant {
+				return object(id), true
+			}
 		}
 	}
 	return look{}, false

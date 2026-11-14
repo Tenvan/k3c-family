@@ -112,6 +112,10 @@ func chosen(biome string) []look {
 			out = append(out, nodeLook(kind, float64(x), biome))
 		}
 	}
+	for variant := range crystalKinds {
+		l, _ := variantLook("crystalVein", variant, biome)
+		out = append(out, l)
+	}
 	for _, k := range []string{"portal", "exit", "harbor", "recruitCamp", "chest", "skillPoint"} {
 		l, _, _ := entityLook(k, biome)
 		p, _ := pickupLook(k)

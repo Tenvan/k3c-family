@@ -60,6 +60,8 @@
   "objekte": {
     "ader-eisen": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
     "ader-kristall": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
+    "ader-kristall-gruen": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
+    "ader-kristall-violett": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
     "ader-kupfer": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
     "ader-stein": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
     "ausgang": { "gruppe": "objekte", "frame": [80, 76], "frames": 1, "rahmen": [-38,  -70,  76,  72] },

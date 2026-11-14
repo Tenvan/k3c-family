@@ -119,10 +119,23 @@ func TestVariantLookBaumart(t *testing.T) {
 		}
 	}
 	for _, c := range []struct{ kind, variant, biome string }{
-		{"tree", "eiche", "forest"}, {"tree", "tanne", "cave"}, {"crystalVein", "blau", "crystal"}, {"tree", "", "forest"},
+		{"tree", "eiche", "forest"}, {"tree", "tanne", "cave"}, {"crystalVein", "rot", "crystal"}, {"crystalVein", "", "crystal"},
+		{"tree", "", "forest"}, {"rock", "blau", "crystal"},
 	} {
 		if _, ok := variantLook(c.kind, c.variant, c.biome); ok {
 			t.Errorf("%+v: Variante gewählt", c)
 		}
+	}
+}
+
+// B-901/AC-01, AC-02: Kristall-Adern zeigen das Bild ihrer Farbe, unbekannte Farben das Bild ohne Variante.
+func TestVariantLookKristallfarbe(t *testing.T) {
+	for variant, id := range map[string]string{"blau": "ader-kristall", "violett": "ader-kristall-violett", "gruen": "ader-kristall-gruen"} {
+		if l, ok := variantLook("crystalVein", variant, "crystal"); !ok || l != object(id) {
+			t.Errorf("Farbe %s: %v %v, will %s", variant, l, ok, id)
+		}
+	}
+	if l := nodeLook("crystalVein", 3, "crystal"); l != object("ader-kristall") {
+		t.Errorf("ohne Variante: %v", l)
 	}
 }
