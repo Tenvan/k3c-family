@@ -1,6 +1,6 @@
 # BI2.2 · Kristallfarbe im nativen Spiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -45,5 +45,4 @@ B-901/AC-01, AC-02 per Unit-Test erfüllt, `check:diff` grün.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 erfüllt (B-901/AC-01, AC-02): `variantLook` wählt für `crystalVein` je Farbe das Asset (`crystalKinds` in `props/nature.go`), unbekannte Farben fallen auf `ader-kristall` zurück; `objectAssets` nennt die neuen Assets. Tests `TestVariantLookKristallfarbe`, `TestJedeGewaehlteGrafikLiegtVorUndIstGemeldet` (mit Varianten).
