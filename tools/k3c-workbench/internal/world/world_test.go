@@ -68,6 +68,9 @@ func fakeEngine(root string) Engine {
 			if strings.Contains(string(in.Draft), `"startGold":"`) {
 				return nil, errors.New("economy.purse.startGold: Zahl erwartet")
 			}
+			if strings.Contains(string(in.Draft), `"forestDensity":9`) {
+				return nil, errors.New("Insel island1: natureByDepth Tiefe 0: forestDensity = 9 liegt außerhalb 1–5")
+			}
 			return json.RawMessage(`{"warnings":[]}`), nil
 		case "level":
 			return json.RawMessage(`{"seed":"k3c","biomeId":"forest","widthUnits":60,"chunkWidthUnits":20,"chunks":[{"index":0},{"index":1},{"index":2}],"entities":[],"planned":[{"slot":-7,"kind":"harbor"}],"warnings":null}`), nil

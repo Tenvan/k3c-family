@@ -116,6 +116,7 @@ function httpWorld(): WorldBackend {
     worldLevel: (id, island, stage, seed) => rpc('WorldLevel', id, island, stage, seed),
     worldValues: (id) => rpc('WorldValues', id),
     worldOverrideSet: (id, file, path, value) => rpc('WorldOverrideSet', id, file, path, value),
+    worldNatureSet: (id, island, stage, key, value, seed) => rpc('WorldNatureSet', id, island, stage, key, value, seed),
   };
 }
 

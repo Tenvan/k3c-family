@@ -64,3 +64,18 @@ func (a *App) WorldOverrideSet(id, file string, path []string, value json.RawMes
 	}
 	return view
 }
+
+// WorldNatureSet setzt einen Natur-Wert der Insel-Stufe fest; value null setzt ihn auf „aus Seed“ zurück (Binding,
+// B-891). Geschrieben wird nur eine gültige Welt; die Antwort ist das neue Level zum Seed.
+func (a *App) WorldNatureSet(id, island string, stage int, key string, value *int, seed string) world.LevelView {
+	a.wait()
+	view := a.worlds().SetNature(a.worldCtx(), id, island, stage, key, value, seed)
+	if a.log != nil {
+		if view.Rejected != "" {
+			a.log.Warn("🚫 Natur-Wert abgelehnt", "ns", "dev", "world", id, "island", island, "key", key, "error", view.Rejected)
+		} else {
+			a.log.Info("💾 Natur-Wert gespeichert", "ns", "dev", "world", id, "island", island, "key", key)
+		}
+	}
+	return view
+}

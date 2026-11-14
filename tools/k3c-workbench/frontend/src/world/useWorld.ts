@@ -28,6 +28,10 @@ export interface WorldState {
   /** Level zum Seed neu rechnen (ohne Seed: der aktuelle) */
   reload: (seed?: string) => void;
   model: LevelModel | null;
+  /** Level, wie das Backend es liefert (Natur-Werte, B-891) */
+  level: WorldLevel | null;
+  /** Natur-Wert der Stufe festsetzen; null setzt auf „aus Seed“ zurück (B-891) */
+  setNature: (key: string, value: number | null) => Promise<void>;
   /** Zeile unter der Vorschau: Seed, Biom, Größe oder der Fehler */
   note: string;
   values: WorldValuesView | null;
@@ -41,8 +45,22 @@ const firstStage = (d: WorldDetail | null): StageChoice | null => (d?.islands[0]
 
 function useLevel(stage: StageChoice | null, seed: string) {
   const [model, setModel] = useState<LevelModel | null>(null);
+  const [level, setLevel] = useState<WorldLevel | null>(null);
   const [note, setNote] = useState('Lade …');
   const request = useRef(0);
+  /** Antwort des Backends anzeigen (Laden und Festsetzen) */
+  const show = useCallback((view: Partial<WorldLevel> & { error?: string }) => {
+    if (view.error) {
+      setModel(null);
+      setLevel(null);
+      setNote(view.error);
+      return;
+    }
+    const next = levelModel(view as WorldLevel);
+    setModel(next);
+    setLevel(view as WorldLevel);
+    setNote(`Seed „${next.seed}“ · ${next.biomeId} · ${next.widthUnits} Units · ${next.chunks.length} Abschnitte · ${next.objects.length} Objekte`);
+  }, []);
   const load = useCallback(async (s: string) => {
     const mine = ++request.current;
     if (!stage) {
@@ -53,19 +71,12 @@ function useLevel(stage: StageChoice | null, seed: string) {
     setNote('Lade …');
     const view = await backend.worldLevel(stage.world, stage.island, stage.stage, s).catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }));
     if (mine !== request.current) return;
-    if (view.error) {
-      setModel(null);
-      setNote(view.error);
-      return;
-    }
-    const next = levelModel(view as WorldLevel);
-    setModel(next);
-    setNote(`Seed „${next.seed}“ · ${next.biomeId} · ${next.widthUnits} Units · ${next.chunks.length} Abschnitte · ${next.objects.length} Objekte`);
-  }, [stage]);
+    show(view);
+  }, [stage, show]);
   const latestSeed = useRef(seed);
   latestSeed.current = seed;
   useEffect(() => { void load(latestSeed.current); }, [load]);
-  return { model, note, load };
+  return { model, level, note, load, show, request };
 }
 
 export function useWorld(): WorldState {
@@ -76,7 +87,7 @@ export function useWorld(): WorldState {
   const [seed, setSeed] = useState(DEFAULT_SEED);
   const [values, setValues] = useState<WorldValuesView | null>(null);
   const [notice, setNotice] = useState<WorldState['notice']>(null);
-  const { model, note, load } = useLevel(stage, seed);
+  const { model, level, note, load, show, request } = useLevel(stage, seed);
   const current = useRef(id);
   current.current = id;
 
@@ -114,5 +125,19 @@ export function useWorld(): WorldState {
     setValues(v);
     setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${file}.${path.join('.')} gespeichert` });
   };
-  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, note, values, setValue, notice };
+  const setNature = async (key: string, value: number | null) => {
+    if (!stage) return;
+    const mine = ++request.current;
+    const v = await backend.worldNatureSet(stage.world, stage.island, stage.stage, key, value, level?.seed ?? seed)
+      .catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }) as Partial<WorldLevel>);
+    if (mine !== request.current) return; // inzwischen anderes Level geladen
+    if (v.rejected || v.error) {
+      setNotice({ tone: 'error', text: v.rejected || v.error || 'keine Antwort' });
+      if (v.rejected) show(v);
+      return;
+    }
+    show(v);
+    setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${key} ${value === null ? 'aus Seed' : `= ${value}`} gespeichert` });
+  };
+  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, notice };
 }

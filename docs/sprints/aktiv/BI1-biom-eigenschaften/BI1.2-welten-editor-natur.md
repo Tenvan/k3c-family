@@ -1,6 +1,6 @@
 # BI1.2 · Welten-Editor zeigt und setzt Natur-Werte
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -24,6 +24,9 @@ Der Welten-Editor der Workbench zeigt je Insel und Stufe die geltenden Natur-Wer
 
 - `tools/k3c-workbench/internal/world/**`
 - `tools/k3c-workbench/frontend/src/world/**`
+- `tools/k3c-workbench/frontend/src/api/**`
+- `tools/k3c-workbench/app_world.go`
+- `tools/k3c-workbench/uiapi.go`
 
 ## Nicht-Ziele
 
@@ -55,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 teilweise: Der Abschnitt „Natur der Stufe“ zeigt je Eigenschaft und Variante Wert, Bereich, Wirkung und Quelle (Seed/fest), die Auswahl setzt fest oder auf „aus Seed“ zurück (`WorldNatureSet`, schreibt nur `natureByDepth` der Insel byte-stabil, geprüft von `k3c-sim world check`); die Chunk-Vorschau zeigt das neue Level. Tests: `internal/world` (`TestSetNatureWritesAndResets`, `TestSetNatureRejectsInvalid`, `TestLevelNatureNeverNull`), Vitest `NatureValues.test.tsx`, `task k3c-workbench:vitest` 507 grün. **Sichtprüfung durch Ralf offen.**
+- `task check:diff:go` grün; `check:diff:js` rot nur durch fremde Tickets (B-887, B-892 bis B-894).
+
+Abweichung: Erlaubte Dateien um `frontend/src/api/**`, `app_world.go`, `uiapi.go` erweitert (Binding). Die Vorgabe der Insel (`nature`) setzt der Editor nicht, nur je Stufe.
