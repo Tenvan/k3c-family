@@ -769,3 +769,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | erledigt | WZ43 | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | erledigt | WZ43 | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | erledigt | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
+| [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | erledigt | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
+| [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | erledigt | WZ48 | Abnahme-Läufe WZ48 |
