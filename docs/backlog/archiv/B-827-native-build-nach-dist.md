@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** NG20
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-13
@@ -66,3 +66,8 @@ keine
 ## Notizen
 
 Vermutet: Der Web-Build (`task build`, Vite) leert `dist/` und löscht damit auch `dist/k3c-game`, bis B-823.
+
+NG20.1 (2026-11-14, Claude): Umsetzung lag bereits mit #575 in main (game:exe, game:build, game:dist mit cmd/sync, game:paket). Geprüft:
+- AC-01 `go test ./cmd/sync/` grün.
+- AC-02 `task native:game:build` zweiter Lauf: „0 Dateien aktualisiert“; nach `touch` einer Portal-Grafik: „1 Dateien aktualisiert“. Spiel in `dist/k3c-game` (50 MB).
+- AC-03 Sichtprüfung übernimmt 🧑.

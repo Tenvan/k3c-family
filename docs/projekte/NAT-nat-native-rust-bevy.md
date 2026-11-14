@@ -37,7 +37,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | NG18 | Natives Spiel: freie Schrift statt Debug-Schrift | erledigt |
 | CU2 | Altlasten: Testseiten des Browser-Clients und Pixel-Reste entfernen | erledigt |
 | NG19 | Natives Spiel: Menü-Kacheln mit Illustrationen, Hintergrund-Batching, Version im Paket | erledigt |
-| NG20 | Natives Spiel komplett nach dist (B-827) | geplant |
+| NG20 | Natives Spiel komplett nach dist (B-827) | erledigt |
 
 ## Nicht-Ziele
 
