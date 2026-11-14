@@ -61,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ55.1 | `WZ55.1-paper-batch.md` | Umsetzung | autonom | offen |
+| WZ55.1 | `WZ55.1-paper-batch.md` | Umsetzung | autonom | fertig |
 | WZ55.2 | `WZ55.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

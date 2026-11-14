@@ -50,11 +50,7 @@ var cliZeit = review.Zeitlimit
 // *Abgelehnt, sonst Fehler mit stderr.
 func (c CLI) run(ctx context.Context, args ...string) (json.RawMessage, error) {
 	out, err := review.Aufruf(ctx, c.Root, c.Skript, cliZeit, args...)
-	var ab *review.Abgelehnt
-	if errors.As(err, &ab) {
-		return nil, &Abgelehnt{Fehler: ab.Fehler}
-	}
-	return out, err
+	return out, c.alsAbgelehnt(err)
 }
 
 // rel macht einen Pfad im Checkout relativ mit /; außerhalb bleibt er (mit /) unverändert.
@@ -96,13 +92,18 @@ func (c CLI) Render(ctx context.Context, ziel string) (RenderErgebnis, error) {
 	if err := c.decode(ctx, &r, "render", ziel); err != nil {
 		return r, err
 	}
+	return c.renderRel(r), nil
+}
+
+// renderRel macht die Pfade eines Render-Ergebnisses relativ zum Checkout.
+func (c CLI) renderRel(r RenderErgebnis) RenderErgebnis {
 	for i := range r.Manifeste {
 		r.Manifeste[i] = c.rel(c.abs(r.Manifeste[i]))
 	}
 	for i := range r.Dateien {
 		r.Dateien[i] = c.rel(c.abs(r.Dateien[i]))
 	}
-	return r, nil
+	return r
 }
 
 // FrameArgs wählt einen Frame; Variante leer und Stufe 0 = keine Angabe.
@@ -121,6 +122,13 @@ type FrameErgebnis struct {
 
 // Frame schreibt einen Frame nach out.
 func (c CLI) Frame(ctx context.Context, spec string, f FrameArgs, out string) (FrameErgebnis, error) {
+	var r FrameErgebnis
+	err := c.decode(ctx, &r, frameArgs(spec, f, out)...)
+	return r, err
+}
+
+// frameArgs sind die Argumente von `frame` (auch als Schritt eines Sammelaufrufs).
+func frameArgs(spec string, f FrameArgs, out string) []string {
 	args := []string{"frame", spec, "--animation", f.Animation, "--frame", strconv.Itoa(f.Frame), "--out", out}
 	if f.Variante != "" {
 		args = append(args, "--variante", f.Variante)
@@ -128,9 +136,7 @@ func (c CLI) Frame(ctx context.Context, spec string, f FrameArgs, out string) (F
 	if f.Stufe > 0 {
 		args = append(args, "--stufe", strconv.Itoa(f.Stufe))
 	}
-	var r FrameErgebnis
-	err := c.decode(ctx, &r, args...)
-	return r, err
+	return args
 }
 
 // DiffErgebnis sind die geänderten Felder, Teile und ob sich der Stil geändert hat.

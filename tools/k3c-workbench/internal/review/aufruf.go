@@ -58,18 +58,27 @@ func Aufruf(eltern context.Context, root, skript string, zeit time.Duration, arg
 	if cmd.ProcessState != nil {
 		code = cmd.ProcessState.ExitCode()
 	}
+	return Auswerten(args[0], code, out.Bytes(), errOut.String(), err.Error())
+}
+
+// Auswerten deutet einen beendeten Befehl wie Aufruf (auch je Schritt eines Sammelaufrufs `batch`, B-856): Exit 0 →
+// stdout, Exit 1 mit {fehler} → *Abgelehnt, sonst ein Fehler mit stderr (leer: ersatz).
+func Auswerten(befehl string, code int, stdout []byte, stderr, ersatz string) ([]byte, error) {
+	if code == 0 {
+		return stdout, nil
+	}
 	if code == 1 {
 		var ab struct {
 			Fehler []Fehler `json:"fehler"`
 		}
 		// Exit 1 ohne Antwort ist ein Absturz von bun (z. B. fehlende node_modules), keine Ablehnung.
-		if json.Unmarshal(out.Bytes(), &ab) == nil && len(ab.Fehler) > 0 {
+		if json.Unmarshal(stdout, &ab) == nil && len(ab.Fehler) > 0 {
 			return nil, &Abgelehnt{Fehler: ab.Fehler}
 		}
 	}
-	text := strings.TrimSpace(errOut.String())
+	text := strings.TrimSpace(stderr)
 	if text == "" {
-		text = err.Error()
+		text = ersatz
 	}
-	return nil, fmt.Errorf("Render-CLI %s (Exit %d): %s", args[0], code, text) //nolint:staticcheck // Satz für die Antwort
+	return nil, fmt.Errorf("Render-CLI %s (Exit %d): %s", befehl, code, text) //nolint:staticcheck // Satz für die Antwort
 }

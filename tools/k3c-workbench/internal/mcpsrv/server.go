@@ -82,6 +82,7 @@ type Server struct {
 	findBrowser   func() (string, error)
 	launch        func(ctx context.Context, exe, profile, url string) (stop func(), err error)
 	run           func(context.Context, runSpec) runResult // Test-Naht für check_run
+	taskVersion   func(context.Context) (string, error)    // Test-Naht: `task --version` (B-868, check_taskversion.go)
 	checkWait     time.Duration                            // wie lange check_run ohne progressToken wartet (check_wait.go)
 	progressEvery time.Duration                            // Abstand der Fortschritts-Meldungen von check_run
 	wt            worktrees                                // Dienste der Worktrees (worktree_services.go)
@@ -108,7 +109,7 @@ func ResolvePort(raw string) (int, error) {
 // New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
 func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
-		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, checkWait: defaultCheckWait,
+		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, taskVersion: readTaskVersion, checkWait: defaultCheckWait,
 		progressEvery: defaultProgressEvery,
 		wt:            worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy,
 		feeds: botfeed.NewHub(), findBrowser: browser.Find, launch: launchBrowser}

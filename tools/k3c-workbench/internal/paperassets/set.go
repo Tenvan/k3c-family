@@ -106,23 +106,15 @@ func schreibeSpec(ctx context.Context, cli CLI, a Asset, alt, text []byte) (SetE
 	if err := schreibeDatei(spec, text); err != nil {
 		return SetErgebnis{}, err
 	}
-	if err := cli.Validate(ctx, spec); err != nil {
-		return SetErgebnis{}, err
-	}
 	r := SetErgebnis{Asset: a, Animationen: animationen(text)}
+	altSpec := ""
 	if len(alt) > 0 {
-		altSpec := filepath.Join(tmp, ".alt", a.ID+endung) // .alt ist kein gültiger Gruppenname
+		altSpec = filepath.Join(tmp, ".alt", a.ID+endung) // .alt ist kein gültiger Gruppenname
 		if err := schreibeDatei(altSpec, alt); err != nil {
-			return r, err
+			return SetErgebnis{}, err
 		}
-		d, err := cli.Diff(ctx, altSpec, spec)
-		if err != nil {
-			return r, err
-		}
-		r.Felder = d.Felder
-		r.Pixel = pixelJeAnimation(ctx, cli, a, altSpec, spec, r.Animationen)
 	}
-	render, err := cli.Render(ctx, spec)
+	render, err := pruefeUndRendere(ctx, cli, a, altSpec, spec, &r)
 	if err != nil {
 		return r, err
 	}
@@ -272,42 +264,3 @@ func animationen(spec []byte) []string {
 // das Overlay von assets_review (<id>-<animation>-0-diff.png) auch bei IDs mit „-“ nie trifft (B-706).
 func SetOverlay(id, anim string) string { return fmt.Sprintf("set/%s-%s-0-diff.png", id, anim) }
 
-// pixelJeAnimation rendert Frame 0 jeder Animation alt und neu (parallel) und vergleicht die Pixel.
-func pixelJeAnimation(ctx context.Context, cli CLI, a Asset, altSpec, spec string, anims []string) []Pixel {
-	out := make([]Pixel, len(anims))
-	cache := filepath.Join(cli.Root, ".cache", "paper", "mcp", "set")
-	_ = os.MkdirAll(cache, 0o755)
-	var wg sync.WaitGroup
-	for i, anim := range anims {
-		wg.Go(func() {
-			out[i] = pixel(ctx, cli, altSpec, spec, anim, filepath.Join(filepath.Dir(cache), filepath.FromSlash(SetOverlay(a.ID, anim))))
-		})
-	}
-	wg.Wait()
-	return out
-}
-
-func pixel(ctx context.Context, cli CLI, altSpec, spec, anim, overlay string) Pixel {
-	p := Pixel{Animation: anim}
-	dir := filepath.Dir(altSpec)
-	pa, pn := filepath.Join(dir, anim+"-alt.png"), filepath.Join(dir, anim+"-neu.png")
-	if _, err := cli.Frame(ctx, altSpec, FrameArgs{Animation: anim}, pa); err != nil {
-		if _, ok := AlsAbgelehnt(err); ok {
-			p.Anteil, p.Fehler = 1, "neu"
-		} else {
-			p.Fehler = err.Error()
-		}
-		return p
-	}
-	if _, err := cli.Frame(ctx, spec, FrameArgs{Animation: anim}, pn); err != nil {
-		p.Fehler = err.Error()
-		return p
-	}
-	d, err := cli.PixelDiff(ctx, pa, pn, overlay)
-	if err != nil {
-		p.Fehler = err.Error()
-		return p
-	}
-	p.Anteil, p.Boxen, p.Overlay = d.Anteil, d.Boxen, cli.rel(overlay)
-	return p
-}

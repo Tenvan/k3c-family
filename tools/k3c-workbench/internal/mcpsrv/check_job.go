@@ -111,6 +111,10 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	if err := t.preflight(ws.root); err != nil {
 		return "", err
 	}
+	warn, err := checkTaskVersion(ctx, t, in.Pattern, s.taskVersion)
+	if err != nil {
+		return "", err
+	}
 	key := ws.source(t.name)
 	if !s.checks.begin(key) {
 		return "", fmt.Errorf("%s läuft bereits (Lauf-ID %s); auf das Ende warten, Ergebnis mit check_run {run}, Ausgabe über console_tail check:%s",
@@ -119,7 +123,11 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	s.notifyCheck(CheckState{Name: key, Running: true, At: time.Now()})
 	job := s.checks.newJob(t, key)
 	go s.runCheck(context.WithoutCancel(ctx), job, filepath.Join(ws.root, t.dir), args)
-	return s.awaitJob(ctx, job)
+	out, err := s.awaitJob(ctx, job)
+	if warn != "" && err == nil {
+		out = warn + "\n" + out
+	}
+	return out, err
 }
 
 // runCheck führt den Lauf aus und meldet Ende, Ergebnis und Freigabe der Sperre, auch nach einer Panik.

@@ -46,6 +46,13 @@ Assets werden **nur** über diese Tools geändert; die Oberfläche editiert nich
   (`internal/review` › `Aufruf`): Skript aus `K3C_PAPER_CLI`, sonst `tools/paper/bin/paper.ts`, sonst die Attrappe
   `tools/paper/fixtures/cli-stub.ts`; Zeitlimit 2 min je Aufruf; fehlt `bun`, nennt der Fehler `requirements.md`.
   Tests in-process gegen die Attrappe (`run(args)`).
+- **Sammelaufruf (B-856):** `assets_set` (und `Schreibe`) startet bun **einmal**: `batch <schritte.json>` mit
+  `[{args, stopp?, braucht?}]` führt `validate`, `diff`, je Animation `frame` alt, `frame` neu und `pixeldiff`, zuletzt
+  `render` in einem Prozess aus (`tools/paper/cli/batch.ts`, auch in der Attrappe). Antwort
+  `{ok: true, schritte: [{code, antwort} | {code: 2, stderr} | {uebersprungen: true}]}`; jeder Schritt wird wie ein
+  Einzelaufruf gedeutet (`review.Auswerten`). `stopp` (bei `validate`, `diff`, `render`) überspringt nach einem Fehler
+  den Rest, `braucht` überspringt `frame` neu und `pixeldiff`, wenn ein früherer Schritt scheiterte. Das Zeitlimit gilt
+  für den ganzen Sammelaufruf. Die Antwort von `assets_set` bleibt unverändert.
 - `assets_list` cacht `validate` je Spec, solange Spec, Stil-Datei und die Specs ihrer Reittiere unverändert sind.
 - Temp-Ordner und beiseitegelegte Ausgaben liegen unter `.cache/paper/tmp/`, nie neben der Ausgabe.
 

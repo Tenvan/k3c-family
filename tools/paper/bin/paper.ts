@@ -6,6 +6,7 @@ import { basename } from 'node:path';
 import { checkSpecFile, checkStil, readJson } from '../schema/check';
 import { stilHash } from '../schema/hash';
 import type { Spec, Stil } from '../schema/types';
+import { batch, schritteAus } from '../cli/batch';
 import { diffSpecs } from '../cli/diff';
 import { frameRendern } from '../cli/frame';
 import { pixeldiff } from '../cli/pixeldiff';
@@ -93,7 +94,10 @@ const pixel: Befehl = (pos, opt) => {
   return { anteil: d.anteil, boxen: d.boxen, datei: rel(opt.out) };
 };
 
-export const BEFEHLE: Record<string, Befehl> = { validate, render, frame, diff, pixeldiff: pixel };
+/** Sammelaufruf (B-856): Schritte aus der Datei nacheinander in diesem Prozess, Antwort je Schritt. */
+const sammel: Befehl = (pos, _opt, o) => ({ schritte: batch(schritteAus(datei(pos[0], 'Schritte')), (a) => run(a, o)) });
+
+export const BEFEHLE: Record<string, Befehl> = { validate, render, frame, diff, pixeldiff: pixel, batch: sammel };
 
 /** Führt einen Befehl aus; Aufruffehler → Exit 2 mit Text auf stderr, nichts auf stdout. */
 export function run(args: string[], o: Optionen = {}): Ergebnis {

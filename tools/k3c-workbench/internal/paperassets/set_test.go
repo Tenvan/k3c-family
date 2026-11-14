@@ -63,16 +63,7 @@ func TestSetUngueltigAendertNichts(t *testing.T) {
 func TestSetRenderFehlerAendertNichts(t *testing.T) {
 	t.Parallel()
 	root, cli := testRepo(t)
-	stub := filepath.ToSlash(cli.Skript)
-	cli.Skript = filepath.Join(t.TempDir(), "kaputt.ts")
-	schreibe(t, filepath.Dir(cli.Skript), "kaputt.ts", `import { run } from '`+stub+`';
-const a = process.argv.slice(2);
-if (a[0] === 'render') { process.stderr.write('Renderer kaputt\n'); process.exit(2); }
-const r = run(a);
-if (r.stdout) process.stdout.write(r.stdout + '\n');
-if (r.stderr) process.stderr.write(r.stderr + '\n');
-process.exit(r.code);
-`)
+	cli, _ = stubMit(t, cli, `return { code: 2, stdout: '', stderr: 'Renderer kaputt' };`)
 	vorher := hashBaum(t, root, monarchPfad, "public/grafik/figuren/monarch")
 	_, err := Set(context.Background(), cli, "monarch", []byte(`{"umhang":{"material":"purpur"}}`))
 	if err == nil || !strings.Contains(err.Error(), "Renderer kaputt") {
@@ -88,23 +79,10 @@ process.exit(r.code);
 func TestSetUebernimmtAusgabe(t *testing.T) {
 	t.Parallel()
 	root, cli := testRepo(t)
-	stub := filepath.ToSlash(cli.Skript)
-	cli.Skript = filepath.Join(t.TempDir(), "schreibt.ts")
-	schreibe(t, filepath.Dir(cli.Skript), "schreibt.ts", `import { run } from '`+stub+`';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, basename } from 'node:path';
-const a = process.argv.slice(2);
-if (a[0] === 'render') {
-  const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
+	cli, _ = stubMit(t, cli, `const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
   mkdirSync(aus, { recursive: true });
   writeFileSync(join(aus, 'idle.png'), 'neu');
-  process.stdout.write(JSON.stringify({ ok: true, manifeste: [], dateien: [join(aus, 'idle.png')] }) + '\n');
-  process.exit(0);
-}
-const r = run(a);
-if (r.stdout) process.stdout.write(r.stdout + '\n');
-process.exit(r.code);
-`)
+  return { code: 0, stdout: JSON.stringify({ ok: true, manifeste: [], dateien: [join(aus, 'idle.png')] }), stderr: '' };`)
 	r, err := Set(context.Background(), cli, "monarch", []byte(`{"version":2}`))
 	if err != nil {
 		t.Fatal(err)
@@ -119,23 +97,10 @@ process.exit(r.code);
 // Review MC1.1: scheitert das Umbenennen der Ausgabe, kommt die alte Spec zurück.
 func TestSetRollbackBeiAusgabeFehler(t *testing.T) {
 	root, cli := testRepo(t)
-	stub := filepath.ToSlash(cli.Skript)
-	cli.Skript = filepath.Join(t.TempDir(), "schreibt.ts")
-	schreibe(t, filepath.Dir(cli.Skript), "schreibt.ts", `import { run } from '`+stub+`';
-import { mkdirSync, writeFileSync } from 'node:fs';
-import { dirname, join, basename } from 'node:path';
-const a = process.argv.slice(2);
-if (a[0] === 'render') {
-  const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
+	cli, _ = stubMit(t, cli, `const aus = join(dirname(a[1]), basename(a[1], '.paper.json'));
   mkdirSync(aus, { recursive: true });
   writeFileSync(join(aus, 'idle.png'), 'neu');
-  process.stdout.write(JSON.stringify({ ok: true, manifeste: [], dateien: [] }) + '\n');
-  process.exit(0);
-}
-const r = run(a);
-if (r.stdout) process.stdout.write(r.stdout + '\n');
-process.exit(r.code);
-`)
+  return { code: 0, stdout: JSON.stringify({ ok: true, manifeste: [], dateien: [] }), stderr: '' };`)
 	vorher := hashBaum(t, root, monarchPfad, "public/grafik/figuren/monarch")
 	ordnerUmbenennen = func(string, string) error { return os.ErrPermission }
 	t.Cleanup(func() { ordnerUmbenennen = os.Rename })

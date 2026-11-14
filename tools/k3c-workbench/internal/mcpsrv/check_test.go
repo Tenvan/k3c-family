@@ -17,6 +17,7 @@ func fakeServer(t *testing.T, run func(runSpec) runResult) (*Server, *atomic.Int
 	t.Helper()
 	s := New(Config{Version: "test", Root: t.TempDir()})
 	var started atomic.Int32
+	s.taskVersion = func(context.Context) (string, error) { return "3.54.0", nil } // unabhängig vom installierten Task
 	s.run = func(_ context.Context, spec runSpec) runResult {
 		started.Add(1)
 		return run(spec)

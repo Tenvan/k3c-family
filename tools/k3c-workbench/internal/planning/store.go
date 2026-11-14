@@ -130,7 +130,7 @@ func (c *changeSet) read(rel string) (string, error) {
 
 func (c *changeSet) write(rel, text string) { c.writes[rel] = text }
 
-// apply führt Verschieben, Schreiben und Löschen aus. Scheitert ein Verschieben oder Schreiben, nimmt es die schon
+// apply führt Verschieben, Schreiben und Löschen aus. Scheitert ein Verschieben, Schreiben oder Löschen, nimmt es die schon
 // ausgeführten Schritte zurück (B-862: ein Statuswechsel verliert so keine Index-Zeile); der Index, der eine Zeile
 // bekommt, wird zuerst geschrieben, damit auch ein gescheitertes Zurücknehmen keine Zeile verliert.
 func (c *changeSet) apply() error {
@@ -174,8 +174,10 @@ func (c *changeSet) apply() error {
 		})
 	}
 	for _, rel := range c.remove {
-		if err := os.RemoveAll(docsPath(c.root, rel)); err != nil {
-			return err
+		u, err := removeWithBackup(docsPath(c.root, rel)) // B-867: gesichert, auch ein gescheitertes Entfernen geht zurück
+		undo = append(undo, u)
+		if err != nil {
+			return rollback(err)
 		}
 	}
 	// Fahrplan-Teile aus den Dateien (B-842), nur bei Sprint- oder Session-Änderungen (B-865: reine Ticket-Änderungen
