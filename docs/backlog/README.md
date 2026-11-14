@@ -80,6 +80,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | offen | WZ48 | Abnahme-Läufe WZ48 |
 | [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | eingeplant | WZ49 | console_tail und check_run trennen die Konsolenpuffer je Checkout |
 | [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | offen | – | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
+| [B-859](B-859-assets-vitests-warten-auf-bedingungen.md) | DEV | Problem | niedrig | eingeplant | WZ53 | Alle Vitests unter src/assets der Workbench warten auf Bedingungen statt flush() und bleiben unter Last grün |
 
 ## Archiv
 
