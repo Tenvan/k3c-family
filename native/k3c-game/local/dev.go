@@ -52,6 +52,9 @@ func (s *Session) Reload() error {
 		return errNoGame
 	}
 	name, devs := s.name, s.devices()
+	if !s.loadable(name) {
+		return userErr("Noch kein ladbarer Spielstand dieses Spiels (F5 speichert)", nil)
+	}
 	s.reset()
 	if err := s.Load(name, devs); err != nil {
 		return err
@@ -60,9 +63,24 @@ func (s *Session) Reload() error {
 	return nil
 }
 
+// loadable meldet, ob der Spielstand name in der Liste steht und ladbar ist.
+func (s *Session) loadable(name string) bool {
+	list, err := s.List()
+	if err != nil {
+		return false
+	}
+	for _, e := range list {
+		if e.Name == name {
+			return e.Loadable
+		}
+	}
+	return false
+}
+
 // running meldet, ob Step in diesem Aufruf einen Takt rechnet (Spiel läuft, keine Pause, kein Halt außer Einzelschritt).
 func (s *Session) running() bool {
 	if s.r == nil || s.paused {
+		s.single = false // kein Einzelschritt auf Vorrat
 		return false
 	}
 	if !s.halt {

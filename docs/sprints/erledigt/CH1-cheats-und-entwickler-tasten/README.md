@@ -1,6 +1,6 @@
 # CH1 · CLI · Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -79,7 +79,7 @@ keine
 | CH1.4 | `CH1.4-debug-werte.md` | Umsetzung | autonom | fertig |
 | CH1.5 | `CH1.5-logs-und-bericht.md` | Umsetzung | autonom | fertig |
 | CH1.6 | `CH1.6-hud-icons.md` | Umsetzung | autonom | fertig |
-| CH1.7 | `CH1.7-review.md` | Review | autonom | offen |
+| CH1.7 | `CH1.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -87,6 +87,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14: AC-01 bis AC-07 laut Ergebnissen CH1.1–CH1.6, Review CH1.7 (Befunde behoben bzw. dort vermerkt). AC-08 (Sichtprüfung 🧑) offen im Abnahme-Ticket B-899, ebenso `gen:paper` mit Golden und `check:race`.

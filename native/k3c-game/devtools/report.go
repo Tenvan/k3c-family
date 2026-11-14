@@ -1,7 +1,7 @@
 package devtools
 
 // Sitzungszusammenfassung (B-889): am Ende eines Spiels (Spielende, Verlassen, Programmende) eine JSON-Datei
-// native-session-<Zeit>.json in reports/ (lesbar über report_read der Workbench). Ein Schreibfehler steht im Log.
+// native-session-<Zeit>-t<Takte>.json in reports/ (lesbar über report_read der Workbench). Ein Schreibfehler steht im Log.
 
 import (
 	"encoding/json"
@@ -63,7 +63,7 @@ func writeReport(dir string, r Report) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	name := fmt.Sprintf("native-session-%s.json", r.End[:len("2006-01-02T15:04:05")])
+	name := fmt.Sprintf("native-session-%s-t%d.json", r.End[:len("2006-01-02T15:04:05")], r.Ticks)
 	name = filepath.Join(dir, sanitize(name))
 	return name, os.WriteFile(name, raw, 0o644)
 }

@@ -64,11 +64,12 @@ func devSettings(c view.DevCmd, s *view.Settings) {
 	}
 }
 
-// devSession führt F5–F8 über die Session aus; ohne laufendes Spiel oder ohne Entwickler-Rolle geschieht nichts.
+// devSession führt F5–F8 über die Session aus; ohne laufendes Spiel, mit offenem Menü oder ohne Entwickler-Rolle
+// geschieht nichts.
 func (g *Game) devSession(c view.DevCmd) {
 	ds, ok := g.sim.(view.DevSession)
-	if !ok || !g.sim.Active() {
-		slog.Info("🚫 Entwickler-Taste ohne laufendes Spiel", "befehl", int(c))
+	if !ok || !g.sim.Active() || g.mode != ModePlay { // nicht unter einem Menü: F6 hebt sonst dessen Pause auf
+		slog.Info("🚫 Entwickler-Taste nur im laufenden Spiel", "befehl", int(c))
 		return
 	}
 	var err error

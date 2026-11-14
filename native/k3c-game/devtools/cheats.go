@@ -19,6 +19,9 @@ func (o *overlay) Update(in view.Input, f *view.Frame, s view.Session) view.Over
 	if f.Recording {
 		return out
 	}
+	if len(f.Seats) == 0 { // kein Spiel: die Schalter des Raums sind wieder aus
+		clear(o.toggles)
+	}
 	var seated [view.MaxPlayers]bool
 	for _, seat := range f.Seats {
 		p := seat.Player
