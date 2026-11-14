@@ -1,6 +1,7 @@
 package mcpsrv
 
 import (
+	"encoding/json"
 	"sort"
 	"sync"
 	"time"
@@ -44,6 +45,8 @@ type Call struct {
 	OK         bool    `json:"ok"`
 	Error      string  `json:"error,omitempty"`
 	Summary    string  `json:"summary"`
+	// Target ist das Ziel eines check_run-Aufrufs (B-876), aus den ungekürzten Argumenten; sonst leer.
+	Target string `json:"target,omitempty"`
 }
 
 // Snapshot sind alle Zähler für die Oberfläche; Tools in Katalog-Reihenfolge.
@@ -118,7 +121,7 @@ func (st *stats) begin(tool, args string) int64 {
 	st.nextID++
 	st.seq++
 	c := Call{ID: st.nextID, Ref: ref(st.nextID), StartedAt: now.Format(timeLayout), StartSeq: st.seq,
-		Running: true, Tool: tool, Args: clip(args)}
+		Running: true, Tool: tool, Args: clip(args), Target: targetOf(tool, args)}
 	st.running[c.ID] = runningCall{call: c, start: now}
 	st.inFlight++
 	st.peakInFlight = max(st.peakInFlight, st.inFlight)
@@ -128,6 +131,20 @@ func (st *stats) begin(tool, args string) int64 {
 		fn(c)
 	}
 	return c.ID
+}
+
+// targetOf liest das Ziel eines check_run-Aufrufs aus den rohen Argumenten (vor dem Kürzen); andere Tools: leer.
+func targetOf(tool, args string) string {
+	if tool != "check_run" {
+		return ""
+	}
+	var in struct {
+		Target string `json:"target"`
+	}
+	if json.Unmarshal([]byte(args), &in) != nil {
+		return ""
+	}
+	return clip(in.Target)
 }
 
 // end schließt einen Aufruf ab, zählt ihn, schiebt ihn ins Aufruf-Log und liefert ihn zurück.

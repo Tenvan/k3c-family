@@ -135,6 +135,18 @@ function minutesOf(events: Event[]): UsageBucket[] {
   return [...byMinute.values()].sort((a, b) => a.ts - b.ts);
 }
 
+/** Ziel eines check_run-Aufrufs wie in Go (Call.Target). */
+function targetOf(e: Event): string | undefined {
+  return e.tool === 'check_run' ? (JSON.parse(e.args) as { target?: string }).target : undefined;
+}
+
+/** Kopfzeile wie in Go: check_run „<ziel> · exit <n> · <dauer>“, sonst knapp. */
+function summaryOf(e: Event, ms: number): string {
+  if (e.tool !== 'check_run') return e.ok ? `${e.tool} · ok` : e.error;
+  const failed = e.error !== '' || ms > 6000;
+  return `${targetOf(e)} · exit ${failed ? 1 : 0} · ${(ms / 1000).toFixed(1).replace('.', ',')} s`;
+}
+
 type Emit = (event: 'mcp:start' | 'mcp:call', call: McpCall) => void;
 
 export function mockMcp(emit: Emit, mcpState: () => McpState) {
@@ -153,14 +165,14 @@ export function mockMcp(emit: Emit, mcpState: () => McpState) {
   const begin = () => {
     const e = sampleEvent(r, Date.now());
     const call: McpCall = { id: ++id, ref: `#${id}`, startedAt: iso(e.at), ts: '', startSeq: ++seq, endSeq: 0,
-      running: true, tool: e.tool, args: e.args, durationMs: 0, ok: false, summary: '' };
+      running: true, tool: e.tool, args: e.args, durationMs: 0, ok: false, summary: '', target: targetOf(e) };
     running.set(call.id, call);
     emit('mcp:start', call);
     setTimeout(() => {
       running.delete(call.id);
       const done: McpCall = { ...call, running: false, ts: iso(Date.now()), endSeq: ++seq,
         durationMs: Math.min(e.ms, 8000), ok: e.ok, error: e.error || undefined,
-        summary: e.ok ? `${e.tool} · ok` : e.error };
+        summary: summaryOf(e, Math.min(e.ms, 8000)) };
       session.push({ ...e, ms: done.durationMs, at: Date.now() });
       log.unshift(done);
       log.length = Math.min(log.length, 200);

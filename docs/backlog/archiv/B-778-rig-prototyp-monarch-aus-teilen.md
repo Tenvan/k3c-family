@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** NV2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11

@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** CU1
+- **Status:** eingeplant
+- **Sprint:** PT5
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
 - **Spec:** freigegeben

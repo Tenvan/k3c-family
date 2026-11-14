@@ -18,10 +18,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 ### PC
 
-- KB4.4 · Abnahme am PC: Boss und Event über das Debug-Panel (Sprint KB4, offen, Agent Mensch)
-- KB5.6 · Abnahme im Spiel mit zwei Spielern und im Studio (Sprint KB5, offen, Agent Mensch)
 - W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
-- WZ43.4 · Sichtprüfung Katalog im Web-Client (PC) (Sprint WZ43, offen, Agent Mensch)
 
 ### Veröffentlichung
 
@@ -31,9 +28,12 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| NG20 | CLI | NAT | Natives Spiel komplett nach dist (B-827) | – | Entwurf | `geplant/NG20-native-build-dist/` |
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
+| WZ57 | DEV | WZG | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | – | Entwurf | `geplant/WZ57-workbench-aufraeumen/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
+| PT5 | PAP | PAP | Abnahme-Läufe CU1 (B-836) | – | Entwurf | `geplant/PT5-abnahme-cu1/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

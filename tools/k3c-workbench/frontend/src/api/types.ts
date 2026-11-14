@@ -178,6 +178,8 @@ export interface McpCall {
   ok: boolean;
   error?: string;
   summary: string;
+  /** Ziel eines check_run-Aufrufs (B-876), aus den ungekürzten Argumenten; fehlt bei anderen Tools und älteren Servern. */
+  target?: string;
 }
 
 /** Eintrag einer Rangliste: Argument mit Laufzeiten oder Fehlermeldung mit Tool (Go: usage.Count). */

@@ -131,3 +131,20 @@ func TestFormatUptime(t *testing.T) {
 		}
 	}
 }
+
+// check_run trägt sein Ziel aus den ungekürzten Argumenten ins Aufruf-Log, auch wenn args gekürzt wird (B-876).
+func TestCheckRunZielImLog(t *testing.T) {
+	t.Parallel()
+	st := testStats()
+	long := `{"wait":true,"pattern":"` + strings.Repeat("x", 300) + `","target":"task:check:diff"}`
+	st.end(st.begin("check_run", long), outcome{ok: true})
+	st.end(st.begin("a", `{"target":"task:test"}`), outcome{ok: true})
+	st.end(st.begin("check_run", `kaputt`), outcome{err: "x"})
+	calls := st.calls()
+	if calls[2].Target != "task:check:diff" || strings.Contains(calls[2].Args, "task:check:diff") {
+		t.Errorf("Ziel: %q, Args: %q", calls[2].Target, calls[2].Args)
+	}
+	if calls[1].Target != "" || calls[0].Target != "" {
+		t.Errorf("Ziel nur bei gültigem check_run: %q, %q", calls[1].Target, calls[0].Target)
+	}
+}

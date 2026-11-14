@@ -97,13 +97,15 @@
 .chart-ticks {
   display: flex;
   justify-content: space-between;
+  margin-left: var(--chart-yaxis, 52px);
   color: var(--dim);
   font-size: 11px;
 }
 
+
 .chart-empty {
   position: absolute;
-  inset: 0 0 16px;
+  inset: 0;
   display: grid;
   place-items: center;
   color: var(--dim);
@@ -112,7 +114,7 @@
 
 .mcp-svg {
   width: 100%;
-  height: 70px;
+  height: 90px;
   display: block;
 }
 
@@ -127,6 +129,9 @@
 .chart-err { fill: none; stroke: var(--error); stroke-width: 1.4; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
 .chart-avg { fill: none; stroke: var(--info); stroke-width: 1.4; stroke-dasharray: 5 3; vector-effect: non-scaling-stroke; }
 .chart-dot { stroke: var(--error); stroke-width: 7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.chart-grid { stroke: var(--gray-a4); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.chart-hit { fill: transparent; }
+.chart-hit:hover { fill: var(--gray-a3); }
 
 .mcp-log-body {
   overflow: auto;
@@ -372,14 +377,16 @@
 .mcp-band2 { display: grid; grid-template-columns: minmax(0, var(--mcp-band, 60%)) 8px minmax(320px, 1fr); gap: 14px 4px; flex: none; align-items: start; }
 .mcp-band2 > .mcp-split { align-self: stretch; }
 .mcp-tools { max-height: 240px; overflow: auto; }
-.mcp-live-body { display: flex; gap: 12px; align-items: stretch; }
-.mcp-live-body > :last-child { flex: 1; min-width: 0; }
-.mcp-top { display: flex; gap: 6px; align-items: flex-end; flex: none; }
-.mcp-top-col { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 34px; }
-.mcp-top-bar { height: 80px; width: 14px; display: flex; align-items: flex-end; background: var(--card-line); border-radius: 3px; overflow: hidden; }
-.mcp-top-fill { display: block; width: 100%; background: var(--gold); }
-.mcp-top-bad { background: var(--error); }
-.mcp-top-name { font-size: 9px; color: var(--dim); writing-mode: vertical-rl; transform: rotate(180deg); max-height: 70px; overflow: hidden; }
+/* B-874: Verlauf oben, Tools als waagerechte Balken darunter (breit: daneben); Namen waagerecht, Werte mit Einheit. */
+.mcp-live-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px 16px; align-items: start; }
+.mcp-bars { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.mcp-bars-head { color: var(--dim); font-size: 11px; }
+.mcp-bar-row { display: grid; grid-template-columns: minmax(80px, 9rem) minmax(40px, 1fr) auto; gap: 8px; align-items: center; font-size: 12px; }
+.mcp-bar-name { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Cascadia Mono', Consolas, monospace; font-size: 11px; }
+.mcp-bar-track { height: 8px; border-radius: 4px; background: var(--gray-a4); overflow: hidden; }
+.mcp-bar-fill { display: block; height: 100%; border-radius: 4px; background: var(--gold); }
+.mcp-bar-hot { background: var(--warn); }
+.mcp-bar-value { color: var(--text); font-variant-numeric: tabular-nums; text-align: right; min-width: 5ch; }
 .mcp-tip { white-space: pre-line; }
 @media (max-width: 900px) {
   .mcp-band2, .mcp-kpi-groups { grid-template-columns: 1fr; }
