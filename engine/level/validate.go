@@ -12,7 +12,10 @@ func Validate(l Layout, b Biome) []string { return ValidateWith(l, b, Options{})
 // ValidateWith prüft wie Validate; mit eingestellter Chunk-Anzahl (o.ChunkCount) gilt die Länge gegen die Anzahl statt
 // gegen lengthUnits (geplante-chunks.md § 7).
 func ValidateWith(l Layout, b Biome, o Options) []string {
-	errs := validateLength(l, b, o.ChunkCount)
+	veinErrs := validateVeins(l, b, o)
+	b = b.withNature(l.Nature) // Ressourcen und Chunk-Gewichte nach den Natur-Werten der Stufe (B-891)
+	b.Veins.Count = 0           // Adern prüft validateVeins
+	errs := append(validateLength(l, b, o.ChunkCount), veinErrs...)
 	add := func(format string, args ...any) { errs = append(errs, fmt.Sprintf(format, args...)) }
 	// Portale, Truhen und Camps zählen als Objekte: feste Objekte geplanter Chunks stehen auch in anderen Chunk-Arten.
 	if countKind(l, "exit") != 1 {
@@ -155,4 +158,33 @@ func validateEntities(l Layout, b Biome) []string {
 		errs = append(errs, fmt.Sprintf("falsche Anzahl Adern: %d", countEntities(l, b.Veins.Kind)))
 	}
 	return errs
+}
+
+// fixedVeins zählt die festen Adern der geplanten Chunks.
+func fixedVeins(b Biome, plan []PlannedChunk, cw float64) int {
+	n := 0
+	for _, c := range plan {
+		for _, o := range fixedObjects(c, cw) {
+			if o.Kind == b.Veins.Kind {
+				n++
+			}
+		}
+	}
+	return n
+}
+
+// validateVeins prüft die Zahl der Adern (B-114, B-891): höchstens das Ziel (Natur-Wert, mindestens die festen Adern
+// geplanter Chunks) und mindestens das Ziel oder die Zahl des Bioms, je nachdem was kleiner ist. Mehr Adern als im
+// Biom kann der Generator nur setzen, solange freie Chunks bleiben; die Zahl des Bioms hat immer Platz (checkRoom).
+func validateVeins(l Layout, b Biome, o Options) []string {
+	if b.Veins.Count == 0 {
+		return nil
+	}
+	fixed := fixedVeins(b, o.Planned, l.ChunkWidthUnits)
+	target := max(b.withNature(l.Nature).Veins.Count, fixed)
+	floor := min(target, max(b.Veins.Count, fixed))
+	if n := countEntities(l, b.Veins.Kind); n > target || n < floor {
+		return []string{fmt.Sprintf("falsche Anzahl Adern: %d", n)}
+	}
+	return nil
 }

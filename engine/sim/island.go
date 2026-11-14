@@ -75,6 +75,9 @@ type CreateOptions struct {
 	// ChunkCounts sind die Chunk-Anzahlen je Tiefe (Inselgrößen, geplante-chunks.md § 7). nil = die der ersten Insel
 	// der Welt; ohne Eintrag gilt die Länge des Bioms. CreateIsland lehnt eine Anzahl ab, die keine Inselgröße ist.
 	ChunkCounts map[int]int
+	// Nature sind die fest gesetzten Natur-Werte je Tiefe (B-891). nil = die der ersten Insel der Welt; ohne Eintrag
+	// würfelt der Generator alle Werte aus dem Seed.
+	Nature map[int]level.NatureValues
 }
 
 // plannedFor liefert die geplanten Chunks der Tiefe; ohne Planned die der Insel def.
@@ -98,8 +101,11 @@ func (d IslandDef) plannedAt(depth int) []level.PlannedChunk { return d.PlannedC
 
 // CreateOptions liefert die Erzeugungs-Parameter dieser Insel aus den Daten (ihre eigene Planung und Chunk-Anzahl).
 func (d IslandDef) CreateOptions() CreateOptions {
-	planned, counts := map[int][]level.PlannedChunk{}, map[int]int{}
+	planned, counts, nature := map[int][]level.PlannedChunk{}, map[int]int{}, map[int]level.NatureValues{}
 	for _, depth := range d.Depths {
+		if v := d.NatureAt(depth); !v.Empty() {
+			nature[depth] = v
+		}
 		if plan := d.plannedAt(depth); len(plan) > 0 {
 			planned[depth] = plan
 		}
@@ -107,7 +113,7 @@ func (d IslandDef) CreateOptions() CreateOptions {
 			counts[depth] = n
 		}
 	}
-	return CreateOptions{Planned: planned, ChunkCounts: counts}
+	return CreateOptions{Planned: planned, ChunkCounts: counts, Nature: nature}
 }
 
 // CreateIsland baut die erste Insel der Standard-Welt (CreateIslandIn).
@@ -160,7 +166,7 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 				return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 			}
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, hub: opts.Candidate, vals: vals})
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, Nature: opts.natureFor(d, first), hub: opts.Candidate, vals: vals})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}

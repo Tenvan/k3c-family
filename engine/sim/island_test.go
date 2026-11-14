@@ -16,10 +16,11 @@ func mustIsland(t *testing.T, seed string, depths []int) *Island {
 	return isl
 }
 
-// newIsland ist CreateIsland mit Startvorrat, wie ein neues Spiel.
+// newIsland ist CreateIsland mit Startvorrat, wie ein neues Spiel, mit neutraler Natur (B-891): Die Tests prüfen
+// Mechanik, nicht die gewürfelte Dichte des Seeds.
 func newIsland(t *testing.T, seed string, depths []int) *Island {
 	t.Helper()
-	isl, err := CreateIsland(seed, depths, islandSpeed, CreateOptions{})
+	isl, err := CreateIsland(seed, depths, islandSpeed, CreateOptions{Nature: neutralNature(depths)})
 	if err != nil {
 		t.Fatal(err)
 	}

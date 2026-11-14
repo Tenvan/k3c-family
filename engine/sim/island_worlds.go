@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/fs"
 	"regexp"
+	"maps"
 	"slices"
 	"strconv"
 	"strings"
@@ -115,6 +116,8 @@ type rawIsland struct {
 	DepthScaling  json.RawMessage                 `json:"depthScaling"`
 	PlannedChunks map[string][]level.PlannedChunk `json:"plannedChunks"`
 	ChunkCounts   map[string]int                  `json:"chunkCounts"`
+	Nature        json.RawMessage                 `json:"nature"`
+	NatureByDepth map[string]json.RawMessage      `json:"natureByDepth"`
 }
 
 type rawScaling struct {
@@ -160,7 +163,7 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 	for i, raw := range islands {
 		var r rawIsland
 		var d IslandDef
-		err := strictDecode(raw, &r, "id", "name", "depths", "depthScaling", "plannedChunks", "chunkCounts")
+		err := strictDecode(raw, &r, "id", "name", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth")
 		if err == nil {
 			d, err = r.def()
 		}
@@ -244,7 +247,33 @@ func (r rawIsland) def() (IslandDef, error) {
 	}
 	d := IslandDef{ID: *r.ID, Name: *r.Name, Depths: *r.Depths, PlannedChunks: r.PlannedChunks, ChunkCounts: r.ChunkCounts}
 	d.DepthScaling.HP, d.DepthScaling.Damage, d.DepthScaling.Speed = *s.HP, *s.Damage, *s.Speed
+	var err error
+	if d.Nature, err = decodeNature(r.Nature, "nature"); err != nil {
+		return IslandDef{}, err
+	}
+	for _, key := range slices.Sorted(maps.Keys(r.NatureByDepth)) {
+		v, err := decodeNature(r.NatureByDepth[key], "natureByDepth."+key)
+		if err != nil {
+			return IslandDef{}, err
+		}
+		if d.NatureByDepth == nil {
+			d.NatureByDepth = map[string]level.NatureValues{}
+		}
+		d.NatureByDepth[key] = v
+	}
 	return d, nil
+}
+
+// decodeNature liest Natur-Werte streng (nur `traits` und `weights`); fehlt das Feld, sind sie leer.
+func decodeNature(raw json.RawMessage, name string) (level.NatureValues, error) {
+	var v level.NatureValues
+	if raw == nil {
+		return v, nil
+	}
+	if err := strictDecode(raw, &v, "traits", "weights"); err != nil {
+		return v, fmt.Errorf("%s: %w", name, err)
+	}
+	return v, nil
 }
 
 // strictDecode liest genau ein JSON-Objekt nach dst: Schlüssel exakt aus fields (Groß-/Kleinschreibung zählt, keiner

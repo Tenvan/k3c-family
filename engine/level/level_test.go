@@ -148,13 +148,14 @@ func TestAdernJeStufe(t *testing.T) {
 		withVeins++
 		bare := b
 		bare.Veins.Count = 0
+		neutral := Options{Nature: NeutralNature(b)} // Adern-Eigenschaft neutral (B-891): genau Veins.Count
 		for seed := range 500 {
-			l, _ := Generate(b, strconv.Itoa(seed))
+			l, _ := GenerateWith(b, strconv.Itoa(seed), neutral)
 			if n := countEntities(l, b.Veins.Kind); n != b.Veins.Count {
 				t.Fatalf("Biom %s, Seed %d: %d Adern, erwartet %d", id, seed, n, b.Veins.Count)
 			}
-			again, _ := Generate(b, strconv.Itoa(seed))
-			without, _ := Generate(bare, strconv.Itoa(seed))
+			again, _ := GenerateWith(b, strconv.Itoa(seed), neutral)
+			without, _ := GenerateWith(bare, strconv.Itoa(seed), neutral)
 			rest := slices.DeleteFunc(slices.Clone(l.Entities), func(e Entity) bool { return e.Kind == b.Veins.Kind })
 			if !slices.Equal(l.Entities, again.Entities) || !slices.Equal(rest, without.Entities) {
 				t.Fatalf("Biom %s, Seed %d: Adern nicht reproduzierbar oder verschieben andere Objekte", id, seed)
@@ -166,13 +167,15 @@ func TestAdernJeStufe(t *testing.T) {
 	}
 }
 
-// density sind die endlichen Objekte (Bäume, Felsen, Erz, Truhen, Camps) je 100 Units, gemittelt über 100 Seeds.
+// density sind die endlichen Objekte (Bäume, Felsen, Erz, Truhen, Camps) je 100 Units, gemittelt über 100 Seeds, mit
+// neutraler Natur (B-891): Die Regel gilt für das Biom; gewürfelte Natur-Werte verschieben die Dichte je Welt.
 func density(t *testing.T, id string) float64 {
 	t.Helper()
 	finite := map[string]bool{"tree": true, "rock": true, "copperOre": true, "chest": true, "recruitCamp": true}
 	objects, width := 0, 0.0
 	for seed := range 100 {
-		l, _ := Generate(biome(t, id), strconv.Itoa(seed))
+		b := biome(t, id)
+		l, _ := GenerateWith(b, strconv.Itoa(seed), Options{Nature: NeutralNature(b)})
 		for _, e := range l.Entities {
 			if finite[e.Kind] {
 				objects++

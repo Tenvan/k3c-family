@@ -20,6 +20,16 @@
     "rocks": { "tree": [1, 2], "rock": [2, 4] },
     "stream": { "tree": [5, 8] }
   },
+  "traits": {
+    "forestDensity": { "name": "Walddichte", "min": 1, "max": 5, "default": 3, "scales": ["tree"] },
+    "rockDensity": { "name": "Steindichte", "min": 0, "max": 3, "default": 1, "scales": ["rock"] },
+    "bushDensity": { "name": "Buschdichte", "min": 0, "max": 3, "default": 1, "scales": ["bush"] },
+    "clearings": { "name": "Lichtungen", "min": 0, "max": 3, "default": 1, "chunks": ["clearing"] },
+    "streams": { "name": "Bachläufe", "min": 0, "max": 2, "default": 1, "chunks": ["stream"] }
+  },
+  "weights": {
+    "treeSpecies": { "name": "Baumarten", "kind": "tree", "options": { "tanne": { "min": 0, "max": 5 }, "pappel": { "min": 0, "max": 5 }, "birke": { "min": 0, "max": 5 } } }
+  },
   "primaryResource": "wood",
   "enemies": { "portal": ["greed", "goblin", "goblinArcher"], "night": ["wolf"] },
   "cycle": { "type": "dayNight", "dayMinutes": 6, "twilightMinutes": 2, "nightMinutes": 4, "dawnMinutes": 2 },

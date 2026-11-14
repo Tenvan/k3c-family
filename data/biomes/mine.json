@@ -19,6 +19,13 @@
     "rails": { "rock": [2, 3], "copperOre": [1, 2] },
     "oreVein": { "copperOre": [4, 6] }
   },
+  "traits": {
+    "copperDensity": { "name": "Kupferader-Dichte", "min": 1, "max": 5, "default": 3, "scales": ["copperOre", "copperVein"] },
+    "railShare": { "name": "Schienen-Anteil", "min": 0, "max": 3, "default": 1, "chunks": ["rails"] },
+    "decay": { "name": "Stützbalken und Verfall", "min": 0, "max": 3, "default": 1, "display": true },
+    "rubble": { "name": "Geröll", "min": 0, "max": 3, "default": 1, "scales": ["rock"] },
+    "shafts": { "name": "Schächte", "min": 0, "max": 2, "default": 1, "chunks": ["shaft"] }
+  },
   "primaryResource": "copper",
   "veins": { "count": 2, "kind": "copperVein" },
   "enemies": { "portal": ["zombie", "ratSwarm", "mineGhost"], "night": [] },

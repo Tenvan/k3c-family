@@ -31,7 +31,7 @@ func firstNode(t *testing.T, w *World, kind string) *ResourceNode {
 
 func TestMineLevelHatKupfer(t *testing.T) {
 	b := biomeForDepth(2)
-	l, err := level.Generate(b, "mine")
+	l, err := level.GenerateWith(b, "mine", level.Options{Nature: level.NeutralNature(b)})
 	if err != nil {
 		t.Fatal(err)
 	}

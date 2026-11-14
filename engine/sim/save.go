@@ -58,6 +58,8 @@ type HubSave struct {
 	// nicht mit den aktuellen Daten; ohne Eintrag gilt reiner Zufall in der Länge des Bioms (kein Format-Sprung).
 	Planned    []level.PlannedChunk `json:"planned,omitempty"`
 	ChunkCount int                  `json:"chunkCount,omitempty"`
+	// Natur-Werte, mit denen die Stufe gebaut wurde (B-891): alle Werte fest, damit das Laden dieselbe Natur baut.
+	Nature level.NatureValues `json:"nature,omitzero"`
 	// Geräumte Gegnerlager (Version 9, enemies_guard.go): Schlüssel `kind@x` der besiegten Wachen, sortiert; sie kommen nie wieder.
 	GuardsCleared []string `json:"guardsCleared,omitempty"`
 }
@@ -133,7 +135,7 @@ func pickupKey(p *Pickup) (string, bool)     { return key(p.Kind, p.X), true }
 
 func hubSave(w, base *World) HubSave {
 	h := HubSave{Depth: w.Biome.Depth, CastleHP: w.Castle.HP, Stock: *w.Stock, Wave: w.Wave, Sites: []SiteSave{},
-		Planned: slices.Clone(w.planned), ChunkCount: w.chunkCount}
+		Planned: slices.Clone(w.planned), ChunkCount: w.chunkCount, Nature: w.Level.Nature}
 	if w.Aggression != nil {
 		a := *w.Aggression
 		h.Aggression = &a

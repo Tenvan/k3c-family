@@ -3,14 +3,14 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** BI1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
-- **Revision:** 1
-- **Freigabe:** Ralf, 2026-11-14 (Defaults der offenen Fragen)
+- **Revision:** 2
+- **Freigabe:** Ralf, 2026-11-14 (Defaults der offenen Fragen; Erweiterung auf alle Biome)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,22 +28,53 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-### Eigenschaften (Vorschlag)
-- **Walddichte** 1–5 (Biome mit Bäumen): Faktor auf die Baumanzahl je Chunk.
-- **Steindichte** 0–3 (Biome mit Steinen): Faktor auf Felsen und Adern.
-- **Baumarten-Mischung**: je Baumart ein Gewicht 0–5 (0 = kommt nicht vor, 5 = sehr häufig). Die Wahrscheinlichkeit einer Art ist Gewicht / Summe aller Gewichte. Monokultur = eine Art > 0, alle anderen 0; Mischwald = mehrere Arten mit ähnlichen Gewichten. Mindestens eine Art muss > 0 sein.
-- Weitere je Biom-Art, z. B. Buschdichte, Lichtungen (Anteil leerer Chunks), Kristalldichte (crystal), Pilze (cave). Die Liste steht je Biom in den Daten, nicht im Code.
+### Eigenschaften je Biom (Erweiterung freigegeben von Ralf, 2026-11-14: gilt für alle Biome)
+
+Neutraler Wert (`default`, Faktor 1): bei min 0 der Wert 1, bei min 1 die Mitte. Wirkung je Eigenschaft genau eine: Anzahl von Objekten (`scales`), Gewicht von Chunk-Arten (`chunks`) oder nur Darstellung (`display`).
+
+| Biom | Eigenschaft | Bereich | Wirkung |
+|---|---|---|---|
+| Wald (forest) | Walddichte `forestDensity` | 1–5 | Bäume |
+| | Steindichte `rockDensity` | 0–3 | Felsen |
+| | Buschdichte `bushDensity` | 0–3 | Büsche |
+| | Lichtungen `clearings` | 0–3 | Chunk-Gewicht clearing |
+| | Bachläufe `streams` | 0–2 | Chunk-Gewicht stream |
+| | Baumarten `treeSpecies` | Gewicht 0–5 je Art (tanne, pappel, birke) | Art je Baum |
+| Höhle (cave) | Felsdichte `rockDensity` | 1–5 | Felsen |
+| | Deckenhöhe `ceilingHeight` | 1–3 | Darstellung |
+| | Pilze und Höhlenbäume `mushrooms` | 0–3 | Höhlenbäume und Büsche |
+| | Tropfsteine `stalactites` | 0–3 | Darstellung |
+| | Abgründe `chasms` | 0–2 | Chunk-Gewicht chasm |
+| | Steinadern `stoneVeins` | 1–3 | Adern |
+| Mine (mine) | Kupferader-Dichte `copperDensity` | 1–5 | Kupfererz und Kupfer-Adern |
+| | Schienen-Anteil `railShare` | 0–3 | Chunk-Gewicht rails |
+| | Stützbalken und Verfall `decay` | 0–3 | Darstellung |
+| | Geröll `rubble` | 0–3 | Felsen |
+| | Schächte `shafts` | 0–2 | Chunk-Gewicht shaft |
+| Eisenstollen (ironhold) | Eisenader-Dichte `ironDensity` | 1–5 | Eisen-Adern |
+| | Lava-Anteil `lavaShare` | 0–3 | Chunk-Gewicht lava |
+| | Schmieden `forges` | 0–2 | Chunk-Gewicht forge |
+| | Hitze und Glut `glow` | 0–3 | Darstellung |
+| | Galerie-Breite `galleryWidth` | 1–3 | Chunk-Gewicht gallery |
+| Kristallhöhle (crystal) | Kristalldichte `crystalDensity` | 1–5 | Kristall-Adern |
+| | Kristallfarben `crystalColors` | Gewicht 0–5 je Farbe (blau, violett, gruen) | Farbe je Ader |
+| | Geoden `geodes` | 0–3 | Chunk-Gewicht geode |
+| | Leuchtstärke `brightness` | 1–3 | Darstellung |
+| | Grotten-Anteil `grottoShare` | 0–3 | Chunk-Gewicht grotto |
+
+Gewichts-Eigenschaften (Baumarten, Kristallfarben) funktionieren gleich: je Variante ein Gewicht 0–5, Wahrscheinlichkeit = Gewicht / Summe; Monokultur = eine Variante > 0.
 
 ### Datenmodell
-- `data/biomes/<biom>.json` bekommt `traits`: je Eigenschaft `{min, max, default}`, bei Baumarten je Art `{min, max}` als Gewicht.
-- Welt (`data/worlds/<welt>.json`) kann je Insel/Stufe einen Wert **fest setzen**; ohne Eintrag würfelt der Level-Generator den Wert aus dem Seed (`engine/rng`, deterministisch) innerhalb `min..max`.
-- Der Level-Generator (`engine/level`) rechnet `resourcesPerChunk` mit den Faktoren um und wählt die Baumart je Baum nach den Gewichten.
+- `data/biomes/<biom>.json`: `traits` je Eigenschaft `{name, min, max, default, scales | chunks | display}`, `weights` je Gruppe `{name, kind, options: {<variante>: {min, max}}}`. Die Liste steht in den Daten, nicht im Code.
+- Welt (`data/worlds/<welt>.json`) je Insel: `nature` (Vorgabe der Insel für alle Stufen, deren Biom die Eigenschaft hat) und `natureByDepth` (je Tiefe, gewinnt); Form je Eintrag `{traits: {…}, weights: {<gruppe>: {…}}}`. Ohne Eintrag würfelt der Level-Generator den Wert aus dem Seed (`engine/rng`, eigener Strom `<biom>:<seed>:nature`) in `min..max`.
+- Der Level-Generator (`engine/level`) skaliert Bereiche in `resourcesPerChunk`, die Zahl der Adern und die Chunk-Gewichte mit Wert/Default und wählt die Variante je Objekt nach den Gewichten (Strom je Ort, `<biom>:<seed>:variant:<gruppe>:<x>`). Geplante Chunks würfeln ohne Faktoren (Chunk-Seed bleibt gleich).
+- Der Spielstand speichert die geltenden Werte je Stufe (`nature`), das Laden baut damit dieselbe Natur.
 
 ### Welten-Editor
-- Zeigt je Insel/Stufe die gewürfelten Werte, erlaubt Festsetzen und Zurücksetzen auf „aus Seed“; die Chunk-Vorschau zeigt das Ergebnis.
+- Zeigt je Insel/Stufe die geltenden Werte, erlaubt Festsetzen und Zurücksetzen auf „aus Seed“; die Chunk-Vorschau zeigt das Ergebnis.
 
 ### Grafik
-- Jede Baumart braucht ein Papierschnitt-Asset; fehlende Arten als eigenes PAP-Ticket.
+- Baumarten nutzen die vorhandenen Papierschnitt-Bäume (tanne, pappel, birke). Kristallfarben brauchen Assets (PAP-Folge-Ticket). Reine Darstellungs-Eigenschaften (Deckenhöhe, Tropfsteine, Stützbalken und Verfall, Hitze und Glut, Leuchtstärke) bekommen je ein Folge-Ticket für die Darstellung.
 
 ## Nicht-Ziele
 
@@ -51,15 +82,13 @@ Balancing der Erträge (gesperrt bis auf Widerruf); neue Biome.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Determinismus nur über `engine/rng`; keine Map-Iteration ohne Sortierung. Balancing der Erträge bleibt gesperrt (Beschluss 2026-11-11): Die Dichte ändert nur die Anzahl der Objekte, nicht den Ertrag je Objekt. Golden-Änderungen über `task go:golden` mit Begründung im Commit.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `data/biomes/**`, `engine/level/**`, `engine/sim/island*.go`, `engine/sim/save.go`, `engine/sim/types.go`, `engine/sim/world.go`, `engine/sim/campaign.go`, `cmd/k3c-sim/world.go`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/frontend/src/world/**`, `native/k3c-game/props/nature.go`, `native/k3c-game/props/plan.go`, `testdata/golden/**`, `docs/rules/welten.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** golden
 
 ## Beispiele
 
@@ -71,17 +100,19 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: Gleicher Seed und gleiche Welt ergeben dieselben Werte und dieselbe Natur (Golden-Test).
-- AC-02: Zwei Seeds ergeben im selben Biom messbar verschiedene Walddichte oder Mischung (Test).
-- AC-03: Ein fest gesetzter Wert in der Welt gilt unabhängig vom Seed (Test).
-- AC-04: Monokultur (eine Art Gewicht > 0) erzeugt nur diese Art; Gewichte 0 überall lehnt die Datenprüfung ab.
-- AC-05: Der Welten-Editor zeigt und setzt die Werte; Sichtprüfung durch 🧑.
+- **AC-01** Gleicher Seed und gleiche Welt ergeben dieselben Werte und dieselbe Natur (Golden-Test).
+- **AC-02** Zwei Seeds ergeben im selben Biom messbar verschiedene Walddichte oder Mischung (Test).
+- **AC-03** Ein fest gesetzter Wert in der Welt gilt unabhängig vom Seed (Test).
+- **AC-04** Monokultur (eine Art Gewicht > 0) erzeugt nur diese Art; Gewichte 0 überall lehnt die Datenprüfung ab.
+- **AC-05** Der Welten-Editor zeigt und setzt die Werte; Sichtprüfung durch 🧑.
 
 ## Offene Fragen
 
-- Welche Baumarten soll es geben (Vorschlag: Eiche, Tanne, Birke, Buche, tote Bäume)? Default: die vorhandenen Papierschnitt-Bäume als Arten nehmen.
-- Gilt ein Wert je Insel oder je Stufe? Default: je Stufe, mit Vorgabe je Insel.
-- Ändert die Dichte auch Erträge (Holz, Stein)? Default: nur Anzahl der Objekte; Ertrag je Objekt bleibt. Golden-Werte ändern sich trotzdem (task go:golden mit Begründung).
+Entschieden mit den Defaults (Freigabe Ralf, 2026-11-14):
+
+- Baumarten: die vorhandenen Papierschnitt-Bäume tanne, pappel, birke.
+- Wert je Stufe, mit Vorgabe je Insel (`nature` und `natureByDepth`).
+- Die Dichte ändert nur die Anzahl der Objekte; Golden-Werte ändern sich (`task go:golden`).
 
 ## Notizen
 

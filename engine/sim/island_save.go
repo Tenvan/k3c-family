@@ -243,8 +243,11 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 // savedCreateOptions sind die Erzeugungs-Parameter aus dem Stand: je Stufe die Planung und Chunk-Anzahl, mit denen sie
 // gebaut wurde (B-489). Spätere Änderungen von data/worlds/*.json betreffen nur neu erzeugte Stufen.
 func savedCreateOptions(s IslandSave) CreateOptions {
-	planned, counts := map[int][]level.PlannedChunk{}, map[int]int{}
+	planned, counts, nature := map[int][]level.PlannedChunk{}, map[int]int{}, map[int]level.NatureValues{}
 	for _, h := range s.Stages {
+		if !h.Nature.Empty() {
+			nature[h.Depth] = h.Nature
+		}
 		if len(h.Planned) > 0 {
 			planned[h.Depth] = h.Planned
 		}
@@ -252,7 +255,7 @@ func savedCreateOptions(s IslandSave) CreateOptions {
 			counts[h.Depth] = h.ChunkCount
 		}
 	}
-	return CreateOptions{Planned: planned, ChunkCounts: counts}
+	return CreateOptions{Planned: planned, ChunkCounts: counts, Nature: nature}
 }
 
 func hasHub(hubs []HubSave, depth int) bool {

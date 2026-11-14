@@ -120,6 +120,8 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `depthScaling` | ja | Objekt | `hp`, `damage`, `speed`: Basen der Potenz je Tiefe (`stufen.md` § 1, Skalierung), alle > 0. |
 | `plannedChunks` | nein | Objekt | Geplante Chunks je Tiefe (`geplante-chunks.md` § 1–5); fehlt oder `{}` = reiner Zufall. |
 | `chunkCounts` | nein | Objekt | Chunk-Anzahl je Tiefe (`geplante-chunks.md` § 7); ohne Eintrag gilt die Länge des Bioms. |
+| `nature` | nein | Objekt | Natur-Werte als Vorgabe der Insel (§ 2.1): `{traits, weights}`; gilt in jeder Stufe, deren Biom die Eigenschaft hat. |
+| `natureByDepth` | nein | Objekt | Natur-Werte je Tiefe (§ 2.1), gewinnen über `nature`; nur Eigenschaften des Bioms der Tiefe. |
 
 **Unbekannte Felder** (auf jeder Ebene, auch in `plannedChunks`) werden **abgelehnt** und mit Namen genannt, nicht still
 verworfen (B-488 › Ausnahme- und Fehlerfälle). Fehlende Pflichtfelder ebenso, auch einzelne Faktoren in `depthScaling`
@@ -146,6 +148,32 @@ Beispiel `data/worlds/nordmeer.json` (Welt „Nordmeer“, Insel 1 als Kopie der
 Die Standard-Welt `data/worlds/standard.json` (WZ18.2) ist die bisherige `data/islands.json` mit `"id": "standard"` und
 `"name": "Standard"` davor; die Liste `islands` bleibt **byte-gleich** (B-488/AC-02, Golden unverändert), `notes` darf auf die
 neuen Pfade angepasst werden (das Spiel liest sie nicht). Entschieden von Claude (Delegation 🧑, 2026-10-19).
+
+### 2.1 Natur-Eigenschaften (B-891)
+
+Jedes Biom nennt in `data/biomes/<biom>.json` seine Eigenschaften und Gewichts-Gruppen; die Liste steht in den Daten:
+
+- `traits`: je Eigenschaft `{name, min, max, default}` und genau eine Wirkung: `scales` (Anzahl der Ressourcen-Arten aus
+  `resourcesPerChunk` oder der Adern-Art), `chunks` (Gewicht der Chunk-Arten in `chunkWeights`) oder `display: true` (nur
+  Darstellung). Der Faktor ist Wert / `default`; `default` ergibt das Level wie ohne Eigenschaft. Mengen werden
+  kaufmännisch auf ganze Zahlen gerundet; würden alle Chunk-Gewichte 0, bleiben die des Bioms.
+- `weights`: je Gruppe `{name, kind, options}`, je Variante `{min, max}` mit Gewicht 0–5. Jedes Objekt der Art `kind`
+  bekommt eine Variante mit der Wahrscheinlichkeit Gewicht / Summe; Monokultur = eine Variante > 0. Ergeben gewürfelte
+  Gewichte zusammen 0, bekommt die erste gewürfelte Variante mit `max` > 0 das Gewicht 1.
+
+Je Stufe gilt ein Wert: fest gesetzt in der Welt (`natureByDepth` vor `nature`) oder aus dem Seed gewürfelt
+(`engine/rng`, Strom `<biom>:<seed>:nature`, in Datei-Reihenfolge; ein fester Wert verschiebt die übrigen Würfe nicht).
+Varianten würfeln je Objekt aus dem Strom `<biom>:<seed>:variant:<gruppe>:<x>`. Geplante Chunks würfeln ihren Inhalt
+ohne Natur-Faktoren. Feste Werte prüft das Laden: Bereich, bekannte Eigenschaft und Gruppe (die Vorgabe der Insel muss
+in mindestens einem Biom der Insel gelten), nicht alle Varianten einer Gruppe fest auf 0. Der Spielstand speichert die
+geltenden Werte je Stufe (`nature`); das Laden baut damit dieselbe Natur.
+
+Beispiel (Insel 1, Wald als Pappel-Monokultur mit dichtem Wald, Felsen auf allen Stufen mit Felsdichte):
+
+```json
+"nature": { "traits": { "rockDensity": 3 } },
+"natureByDepth": { "0": { "traits": { "forestDensity": 5 }, "weights": { "treeSpecies": { "tanne": 0, "pappel": 3, "birke": 0 } } } }
+```
 
 ## 3. Prüfung beim Laden
 
