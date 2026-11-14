@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-892](B-892-studio-seiten-reihenfolge.md) | DEV | Idee | mittel | erledigt | WZ59 | Studio zeigt die Seiten in der Reihenfolge Styleguide, Katalog, Review, Sound &amp; Quellen (eine Seite), Welten-Editor, Balancing |
 | [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |

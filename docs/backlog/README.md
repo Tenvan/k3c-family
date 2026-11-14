@@ -33,9 +33,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-890](B-890-nativ-hud-icons-statt-namen.md) | CLI | Idee | hoch | offen | CH1 | Das HUD des nativen Spiels zeigt Ressourcen als Icon mit Zahl statt als Namen |
 | [B-899](B-899-abnahme-ch1.md) | CLI | Schuld | mittel | offen | CH1 | Abnahme CH1: Sichtprüfung der Entwickler-Tasten, Cheats, Debug-Werte und HUD-Icons und Gen-Läufe sind erledigt |
 | [B-891](B-891-biom-eigenschaften-je-welt.md) | SIM | Idee | mittel | offen | BI1 | Biome haben einstellbare Eigenschaften (Walddichte, Steindichte, Baumarten-Mischung), aus dem Seed gewürfelt oder im Welten-Editor fest gesetzt |
-| [B-892](B-892-studio-seiten-reihenfolge.md) | DEV | Idee | mittel | offen | – | Studio zeigt die Seiten in der Reihenfolge Styleguide, Katalog, Review, Sound &amp; Quellen (eine Seite), Welten-Editor, Balancing |
-| [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | offen | – | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
-| [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | offen | – | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
+| [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | offen | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
+| [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | offen | EP1 | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
 | [B-900](B-900-kristall-adern-farben-papier.md) | PAP | Idee | niedrig | offen | BI2 | Kristall-Adern gibt es als Papierschnitt in drei Farben (blau, violett, grün) |
 | [B-901](B-901-kristallfarbe-im-spiel.md) | CLI | Idee | niedrig | offen | BI2 | Das native Spiel zeigt die Kristallfarbe jeder Kristall-Ader |
 | [B-902](B-902-hoehle-deckenhoehe.md) | CLI | Idee | niedrig | offen | BI2 | Die Höhle zeigt ihre Deckenhöhe (Natur-Eigenschaft ceilingHeight) |
@@ -43,6 +42,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-904](B-904-mine-stuetzbalken-verfall.md) | CLI | Idee | niedrig | offen | BI2 | Die Mine zeigt Stützbalken und Verfall nach der Natur-Eigenschaft decay |
 | [B-905](B-905-eisenstollen-glut.md) | CLI | Idee | niedrig | offen | BI2 | Der Eisenstollen zeigt Hitze und Glut nach der Natur-Eigenschaft glow |
 | [B-906](B-906-kristallhoehle-leuchtstaerke.md) | CLI | Idee | niedrig | offen | BI2 | Die Kristallhöhle leuchtet nach der Natur-Eigenschaft brightness |
+| [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WZ60 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
+| [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | offen | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
 
 ## Archiv
 
