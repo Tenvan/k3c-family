@@ -8,9 +8,9 @@
 - **Sprint:** WR1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-14 („WR1 auch abarbeiten“)
 
 ## Ausgangslage
 

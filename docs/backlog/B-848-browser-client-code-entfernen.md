@@ -10,7 +10,7 @@
 - **Erstellt:** 2026-11-13
 - **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** Klasse A, Claude, 2026-11-13 (entfernt nur, keine neue Abhängigkeit; wartet auf B-846)
+- **Freigabe:** Ralf, 2026-11-14 („WR1 auch abarbeiten“)
 
 ## Ausgangslage
 

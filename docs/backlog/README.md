@@ -28,6 +28,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-885](B-885-native-rig-export-bosse.md) | PAP | Schuld | mittel | offen | MG10 | Nativer Rig-Export der Bosse ist nach MG10 veraltet |
 | [B-886](B-886-abnahme-mg10.md) | PAP | Schuld | mittel | offen | MG10 | Abnahme MG10: Sichtprüfung der Bosse und Gen-Läufe sind erledigt |
 | [B-887](B-887-server-net-load-tui-entfernen.md) | SRV | Schuld | mittel | offen | WR1 | k3c-server, engine/net, k3c-load und k3c-tui sind entfernt, Tasks, CI, Docker und Workbench kommen ohne sie aus |
+| [B-888](B-888-nativ-cheat-dialog-und-tastenhilfe.md) | CLI | Idee | hoch | offen | – | Das native Spiel hat wieder einen Cheat-Dialog (F9) und eine Tastenhilfe der UI-Tasten (F1) |
 
 ## Archiv
 

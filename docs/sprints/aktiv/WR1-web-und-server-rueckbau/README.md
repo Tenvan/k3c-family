@@ -1,14 +1,14 @@
 # WR1 · SRV, INF, PLAT · Rückbau von Browser-Client, Spielserver und Online-Werkzeugen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** SRV, INF, PLAT
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-14
 
 ## Ausgangslage
 
