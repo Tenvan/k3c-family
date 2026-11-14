@@ -69,8 +69,12 @@ const (
 	txtLost
 	txtWon
 	txtBy
-	txtKeysLeft
-	txtKeysRight
+	txtKeysWASD
+	txtKeysArrows
+	txtKeyboard
+	txtGamepad
+	txtControls
+	txtControlsHint
 	txtPad
 	txtGradeEasy
 	txtGradeNormal
@@ -127,7 +131,7 @@ var texts = [textCount][2]string{
 	txtLoad:            {"Laden", "Load"},
 	txtLoadSub:         {"Spielstände", "Saves"},
 	txtOptions:         {"Optionen", "Options"},
-	txtOptionsSub:      {"Ton, Anzeige, Sprache", "Sound, display, language"},
+	txtOptionsSub:      {"Ton, Anzeige, Sprache, Steuerung", "Sound, display, language, controls"},
 	txtQuit:            {"Beenden", "Quit"},
 	txtQuitSub:         {"Spiel schließen", "Close the game"},
 	txtMainHint:        {"Hoch/Runter wählen · A / Enter bestätigen", "Up/Down select · A / Enter confirm"},
@@ -174,8 +178,12 @@ var texts = [textCount][2]string{
 	txtLost:            {"Die Insel ist verloren. Weiter lädt den letzten Spielstand.", "The island is lost. Continue loads the last save."},
 	txtWon:             {"Ziel erreicht! Das Spiel ist gespeichert.", "Goal reached! The game is saved."},
 	txtBy:              {"bedient: {}", "operated by: {}"},
-	txtKeysLeft:        {"Tastatur links", "Keyboard left"},
-	txtKeysRight:       {"Tastatur rechts", "Keyboard right"},
+	txtKeysWASD:        {"Tastatur WASD", "Keyboard WASD"},
+	txtKeysArrows:      {"Tastatur Pfeile", "Keyboard arrows"},
+	txtKeyboard:        {"Tastatur", "Keyboard"},
+	txtGamepad:         {"Gamepad", "Gamepad"},
+	txtControls:        {"Steuerung", "Controls"},
+	txtControlsHint:    {"Hoch/Runter wählen · Links/Rechts Gerät · die Tastatur hat höchstens ein Spieler · B zurück", "Up/Down select · Left/Right device · only one player may use the keyboard · B back"},
 	txtPad:             {"Pad {}", "Pad {}"},
 	txtGradeEasy:       {"Leicht", "Easy"},
 	txtGradeNormal:     {"Normal", "Normal"},

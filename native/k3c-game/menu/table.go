@@ -77,7 +77,7 @@ func (sc *tableScreen) fill(lang string) {
 		return
 	}
 	t.title, t.hint = tr(lang, txtKeys), tr(lang, txtKeysHint)
-	t.head = [tableCols]string{tr(lang, txtKeyAction), tr(lang, txtKeysLeft), tr(lang, txtKeysRight), tr(lang, txtPadColumn)}
+	t.head = [tableCols]string{tr(lang, txtKeyAction), tr(lang, txtKeysWASD), tr(lang, txtKeysArrows), tr(lang, txtPadColumn)}
 	t.share = [tableCols]float64{0.31, 0.23, 0.25, 0.21}
 	if sc.m.keys == nil {
 		return

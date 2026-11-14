@@ -11,7 +11,7 @@ import (
 type DeviceKind int
 
 const (
-	DeviceKeyboard DeviceKind = iota // Tastatur; Index 0 = linke Hälfte (WASD), 1 = rechte Hälfte (Pfeile)
+	DeviceKeyboard DeviceKind = iota // Tastatur; ein Gerät (Index 0), Belegung nach Tastatur-Profil (B-893)
 	DeviceGamepad                    // Gamepad; Index = ebiten.GamepadID (stabil, solange verbunden; neu verbunden: neue ID)
 )
 
@@ -20,7 +20,7 @@ const (
 // Zuordnungs-Regel dem verwaisten Platz zu, nie über einen festen Index.
 type DeviceID struct {
 	Kind  DeviceKind
-	Index int // Tastatur: Hälfte 0 (links) oder 1 (rechts); Gamepad: ebiten.GamepadID
+	Index int // Tastatur: immer 0; Gamepad: ebiten.GamepadID
 }
 
 func (d DeviceID) String() string {
@@ -115,4 +115,10 @@ func (in Input) Has(a Action) (dev DeviceID, ok bool) {
 // Source liefert die Eingabe je Update (input: Tastatur und Gamepads; Aufnahme-Modus: feste Folge je Takt).
 type Source interface {
 	Poll() Input
+}
+
+// KeyboardSource ist eine Quelle mit Tastatur, deren Belegung dem Tastatur-Profil folgt (input, B-893); game stellt
+// sie vor jedem Poll auf Settings.KeyboardProfile.
+type KeyboardSource interface {
+	SetKeyboard(profile string)
 }

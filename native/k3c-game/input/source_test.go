@@ -9,10 +9,7 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-var (
-	keys1 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 0}
-	keys2 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}
-)
+var keys1 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 0}
 
 func padID(id int) view.DeviceID { return view.DeviceID{Kind: view.DeviceGamepad, Index: id} }
 
@@ -32,13 +29,13 @@ func TestDevicesHotPlug(t *testing.T) {
 		pads []PadState
 		want []view.DeviceID
 	}{
-		{"kein Pad", nil, []view.DeviceID{keys1, keys2}},
-		{"Pad kommt", []PadState{padState(5)}, []view.DeviceID{keys1, keys2, padID(5)}},
-		{"zweites Pad, unsortiert gemeldet", []PadState{padState(5), padState(2)}, []view.DeviceID{keys1, keys2, padID(2), padID(5)}},
-		{"Pad 2 geht", []PadState{padState(5)}, []view.DeviceID{keys1, keys2, padID(5)}},
-		{"Pad kommt mit neuer ID", []PadState{padState(7), padState(5)}, []view.DeviceID{keys1, keys2, padID(5), padID(7)}},
-		{"Pad ohne Standard-Belegung", []PadState{padState(5), {ID: 9, Name: "Lenkrad"}}, []view.DeviceID{keys1, keys2, padID(5)}},
-		{"alle Pads weg", nil, []view.DeviceID{keys1, keys2}},
+		{"kein Pad", nil, []view.DeviceID{keys1}},
+		{"Pad kommt", []PadState{padState(5)}, []view.DeviceID{keys1, padID(5)}},
+		{"zweites Pad, unsortiert gemeldet", []PadState{padState(5), padState(2)}, []view.DeviceID{keys1, padID(2), padID(5)}},
+		{"Pad 2 geht", []PadState{padState(5)}, []view.DeviceID{keys1, padID(5)}},
+		{"Pad kommt mit neuer ID", []PadState{padState(7), padState(5)}, []view.DeviceID{keys1, padID(5), padID(7)}},
+		{"Pad ohne Standard-Belegung", []PadState{padState(5), {ID: 9, Name: "Lenkrad"}}, []view.DeviceID{keys1, padID(5)}},
+		{"alle Pads weg", nil, []view.DeviceID{keys1}},
 	}
 	s := &source{}
 	for _, c := range cases {
@@ -89,11 +86,11 @@ func pollTwice(k *KeyState, pads []PadState) view.Input {
 	return s.poll(k, pads)
 }
 
-// Zwei Spieler gleichzeitig ohne Übersprechen: Jedes Gerät bekommt nur seine Tasten, auch wenn alle zugleich drücken.
+// Drei Spieler gleichzeitig ohne Übersprechen: Jedes Gerät bekommt nur seine Tasten, auch wenn alle zugleich drücken.
 func TestNoCrosstalk(t *testing.T) {
 	right := padState(3, padRT, padX)
 	right.X = 1
-	in := pollTwice(keyState(ebiten.KeyA, ebiten.KeySpace, ebiten.KeyArrowRight, ebiten.KeyNumpad1),
+	in := pollTwice(keyState(ebiten.KeyA, ebiten.KeySpace),
 		[]PadState{padState(1, padA, padLeft), right})
 	want := []struct {
 		dev     view.DeviceID
@@ -101,7 +98,6 @@ func TestNoCrosstalk(t *testing.T) {
 		actions []view.Action
 	}{
 		{keys1, view.Command{Move: -1, Pay: true}, []view.Action{view.ActionLeft, view.ActionConfirm}},
-		{keys2, view.Command{Move: 1, Skill: 1}, []view.Action{view.ActionRight}},
 		{padID(1), view.Command{Move: -1, Pay: true}, []view.Action{view.ActionLeft, view.ActionConfirm}},
 		{padID(3), view.Command{Move: 1, Sprint: true, Attack: true}, []view.Action{view.ActionRight}},
 	}

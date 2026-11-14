@@ -41,7 +41,7 @@ type Scene struct {
 	Seed    string    // neues Spiel mit diesem Seed (leer und ohne Load: Menü)
 	Depth   int       // Stufe (Tiefe), in der die Spieler beginnen
 	Load    string    // statt Seed: Spielstand aus dem Ordner --saves
-	Players int       // 1 oder 2 (Geräte keys1, keys2)
+	Players int       // 1 oder 2 (Geräte keys1, pad1)
 	Cams    []float64 // Kamera-x je Zelle in Units, NaN = folgt dem Monarchen
 	Tick    int       // Takte, die die Simulation vor dem ersten Bild vorläuft
 	Script  []Hold    // feste Eingabe-Folge; gesetzt: ersetzt Tastatur und Gamepads
@@ -83,11 +83,13 @@ func (s Scene) InGame() bool {
 // Direct meldet, ob das Spiel ohne Menü startet.
 func (s Scene) Direct() bool { return s.Seed != "" || s.Load != "" }
 
-// Devices sind die Geräte der Spieler der Szene: keys1, dann keys2.
+// Devices sind die Geräte der Spieler der Szene: keys1, dann Pads 1, 2 … (eine Tastatur hat nur ein Spieler, B-893).
 func (s Scene) Devices() []view.DeviceID {
 	out := make([]view.DeviceID, s.Players)
 	for i := range out {
-		out[i] = view.DeviceID{Kind: view.DeviceKeyboard, Index: i}
+		if i > 0 {
+			out[i] = view.DeviceID{Kind: view.DeviceGamepad, Index: i - 1}
+		}
 	}
 	return out
 }

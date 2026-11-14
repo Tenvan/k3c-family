@@ -25,15 +25,25 @@ type source struct {
 	keys   KeyState
 	ids    []ebiten.GamepadID
 	raw    []PadState
-	halves [2]tracker
+	kb     tracker // Tastatur (ein Gerät, Belegung layout)
+	layout int     // Index in layouts (SetKeyboard)
 	pads   []padSlot
 	warned []ebiten.GamepadID // Pads ohne Standard-Belegung, schon gemeldet
 	buf    []view.DeviceInput
 	n      int
 }
 
-// New liefert die Eingabe-Quelle; lib ist einheitlich dabei, Eingabe zeichnet nichts und braucht sie nicht.
+// New liefert die Eingabe-Quelle; lib ist einheitlich dabei, Eingabe zeichnet nichts und braucht sie nicht. Die
+// Quelle erfüllt view.KeyboardSource (Belegung der Tastatur).
 func New(_ *art.Library) view.Source { return &source{} }
+
+// SetKeyboard stellt die Belegung der Tastatur auf das Tastatur-Profil p (view.ProfileWASD oder ProfileArrows, B-893).
+// Ein Wechsel gilt ab dem nächsten Poll; schon gehaltene Tasten lösen erst nach dem Loslassen aus.
+func (s *source) SetKeyboard(p string) {
+	if l := Layout(p); l != s.layout {
+		s.layout, s.kb = l, tracker{}
+	}
+}
 
 // Poll liest Tastatur und Gamepads aus Ebitengine. Das Ergebnis gilt bis zum nächsten Poll.
 func (s *source) Poll() view.Input {
@@ -63,16 +73,15 @@ func readPad(id ebiten.GamepadID, p *PadState) {
 	p.Y = ebiten.StandardGamepadAxisValue(id, ebiten.StandardGamepadAxisLeftStickVertical)
 }
 
-// poll wertet den Rohzustand eines Updates aus: beide Tastatur-Hälften, dann die Gamepads mit Standard-Belegung nach
-// ID (pads wird dafür sortiert). Pads ohne Standard-Belegung meldet es einmal im Log und lässt sie weg.
+// poll wertet den Rohzustand eines Updates aus: die Tastatur mit der Belegung des Profils, dann die Gamepads mit
+// Standard-Belegung nach ID (pads wird dafür sortiert). Pads ohne Standard-Belegung meldet es einmal im Log und lässt
+// sie weg.
 func (s *source) poll(k *KeyState, pads []PadState) view.Input {
 	s.n = 0
-	for i := range halves {
-		di := s.slot(view.DeviceID{Kind: view.DeviceKeyboard, Index: i})
-		di.Command = keyCommand(i, k)
-		held := keyHeld(i, k)
-		di.Actions = s.halves[i].step(&held, false, di.Actions)
-	}
+	kb := s.slot(view.DeviceID{Kind: view.DeviceKeyboard})
+	kb.Command = keyCommand(s.layout, k)
+	held := keyHeld(s.layout, k)
+	kb.Actions = s.kb.step(&held, false, kb.Actions)
 	slices.SortFunc(pads, func(a, b PadState) int { return cmp.Compare(a.ID, b.ID) })
 	s.forget(pads)
 	for i := range pads {

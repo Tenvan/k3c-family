@@ -110,7 +110,7 @@ func TestScriptedSource(t *testing.T) {
 		if moving != (tick >= 2) {
 			t.Errorf("Takt %d: Spieler 2 läuft %v", tick, moving)
 		}
-		if ia.Devices[1].Device != (view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}) {
+		if ia.Devices[1].Device != (view.DeviceID{Kind: view.DeviceGamepad}) {
 			t.Errorf("Gerät %v", ia.Devices[1].Device)
 		}
 	}

@@ -70,9 +70,9 @@ func TestRunRemembersOperatingDevice(t *testing.T) {
 	if !strings.HasSuffix(sc.pg.hint, "bedient: Pad 2") {
 		t.Errorf("Hinweis %q", sc.pg.hint)
 	}
-	sc.Update(press(view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}, view.ActionUp), s)
+	sc.Update(press(view.DeviceID{Kind: view.DeviceKeyboard}, view.ActionUp), s)
 	sc.fill(view.LanguageEnglish)
-	if !strings.HasSuffix(sc.pg.hint, "operated by: Keyboard right") {
+	if !strings.HasSuffix(sc.pg.hint, "operated by: Keyboard") {
 		t.Errorf("hint %q", sc.pg.hint)
 	}
 }

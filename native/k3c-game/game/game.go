@@ -180,11 +180,14 @@ func (g *Game) Frame() *view.Frame { return &g.frame }
 // Screen liefert den obersten Screen des Menü-Stapels (nil im laufenden Spiel; Ende-zu-Ende-Test).
 func (g *Game) Screen() view.Screen { return g.stack.Top() }
 
-// advance liest die Eingabe, schaltet bei ActionFullscreen das Vollbild um, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
+// advance stellt die Tastatur auf das Eingabe-Profil, liest die Eingabe, schaltet bei ActionFullscreen das Vollbild um, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
 // Geräte, Grafik der Level, Kameras, Vollbild, dann die Listener.
 func (g *Game) advance() {
 	if g.fault != nil { // Fehler im Fenster: nichts mehr rechnen (der Aufnahme-Modus ruft advance weiter)
 		return
+	}
+	if k, ok := g.src.(view.KeyboardSource); ok { // Belegung der Tastatur nach Eingabe-Profil (B-893)
+		k.SetKeyboard(g.frame.Settings.KeyboardProfile())
 	}
 	in := g.src.Poll()
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)

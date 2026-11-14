@@ -10,8 +10,8 @@ import (
 
 var (
 	keys1 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 0}
-	keys2 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}
 	pad1  = view.DeviceID{Kind: view.DeviceGamepad, Index: 0}
+	pad2  = view.DeviceID{Kind: view.DeviceGamepad, Index: 1}
 )
 
 // fakeSession ist eine Session mit Entwickler-Rolle, die die Dev-Aktionen mitschreibt.
@@ -107,13 +107,13 @@ func TestCheatOverlayCloses(t *testing.T) {
 	}
 }
 
-// Spielt die linke Tastatur-Hälfte nicht, öffnet F9 das Menü des ersten Spielers an einer Tastatur, sonst des ersten.
+// Spielt die Tastatur nicht, öffnet F9 das Menü des ersten Spielers.
 func TestCheatKeyFallback(t *testing.T) {
 	o := New(nil)[0].(*overlay)
-	f := &view.Frame{Seats: []view.Seat{{Player: 0, Device: pad1}, {Player: 1, Device: keys2}}}
+	f := &view.Frame{Seats: []view.Seat{{Player: 0, Device: pad1}, {Player: 1, Device: pad2}}}
 	o.Update(input(press(keys1, view.ActionCheats)), f, &fakeSession{})
-	if !o.menus[1].open || o.menus[0].open {
-		t.Fatalf("Tastatur rechts: %v/%v", o.menus[0].open, o.menus[1].open)
+	if !o.menus[0].open || o.menus[1].open {
+		t.Fatalf("zwei Pads: %v/%v", o.menus[0].open, o.menus[1].open)
 	}
 	o = New(nil)[0].(*overlay)
 	f.Seats = f.Seats[:1]

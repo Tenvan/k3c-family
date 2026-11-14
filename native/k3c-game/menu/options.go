@@ -12,7 +12,7 @@ import (
 
 // Optionen (Entscheidung 🧑 2026-11-11, B-800, dazu Blitze und Anleitung, B-809; Vorbild src/scenes/optionsLogic.ts):
 // Lautstärke Musik und Effekte in Schritten von 10 %, Anzeige (Fenster, rahmenlos, Vollbild, B-826), Sprache, Blitze,
-// Anleitung. Links/Rechts ändert, A legt Schalter, Anzeige und Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
+// Anleitung, dazu die Unterseite Steuerung (Eingabe-Profile je Spieler, B-893, controls.go). Links/Rechts ändert, A legt Schalter, Anzeige und Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
 // (local speichert sie); ein Fehler betrifft nur das Speichern und erscheint als Meldung. Grundlage jeder Änderung
 // ist der aktuelle Stand der Session, nicht der beim Öffnen: F2/F3 (Settings.Stats, River) gehen nicht verloren.
 // Anleitung wieder an setzt „Anleitung gesehen“ zurück (alle Hinweise erneut, wie OptionsScene.ts).
@@ -24,6 +24,7 @@ const (
 	optLanguage
 	optFlashes
 	optGuide
+	optControls
 	optBack
 	optRows
 )
@@ -31,7 +32,7 @@ const (
 // volumeStep ist der Schritt der Lautstärke-Regler (0 … 1).
 const volumeStep = 0.1
 
-var optLabels = [optRows]textKey{txtMusic, txtEffects, txtDisplay, txtLanguage, txtFlashes, txtGuide, txtBack}
+var optLabels = [optRows]textKey{txtMusic, txtEffects, txtDisplay, txtLanguage, txtFlashes, txtGuide, txtControls, txtBack}
 
 // optionsScreen bearbeitet die Einstellungen. cur ist der Stand, den das Menü kennt und schreibt.
 type optionsScreen struct {
@@ -65,10 +66,13 @@ func (sc *optionsScreen) handle(_ view.DeviceID, k key, s view.Session) (view.St
 		sc.cue(view.CueMove, -1, "")
 		sc.ver++
 	case keyLeft, keyRight, keyOK:
-		if sc.sel == optBack {
-			if k != keyOK {
-				return view.StepStay, nil
-			}
+		switch {
+		case sc.sel == optControls && k == keyOK:
+			sc.cue(view.CueConfirm, -1, "")
+			return view.StepPush, newControls(sc.m, sc.dim)
+		case sc.sel == optControls || (sc.sel == optBack && k != keyOK):
+			return view.StepStay, nil
+		case sc.sel == optBack:
 			sc.cue(view.CueBack, -1, "")
 			return view.StepPop, nil
 		}

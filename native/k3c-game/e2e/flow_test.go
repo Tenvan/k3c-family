@@ -29,7 +29,7 @@ const (
 	saveName   = "spiel-1"
 )
 
-// flowScript ist die feste Eingabe-Folge (game.ParseScript). Spieler 1 = Tastatur links, Spieler 2 = Tastatur rechts.
+// flowScript ist die feste Eingabe-Folge (game.ParseScript). Spieler 1 = Tastatur, Spieler 2 = Pad 1 (B-893).
 const flowScript = "0@2=a:confirm,1@4=a:confirm," + // Neues Spiel, Spieler 2 tritt der Lobby bei
 	"0@6=a:right,0@8=a:right," + // Grad Normal → Schwer → Ultra (Niederlage: komplett verloren)
 	"0@10=a:down,0@12=a:down,0@14=a:down,0@16=a:down,0@18=a:down,0@20=a:confirm," + // Starten
@@ -74,7 +74,7 @@ func (r *run) menus() {
 	if len(f.Seats) != 2 || len(f.Stages) != 1 || f.Stages[0].Level != "forest" {
 		r.t.Fatalf("Spielstart: %d Plätze, Stufen %+v", len(f.Seats), f.Stages)
 	}
-	if f.Seats[0].Device != (view.DeviceID{Kind: view.DeviceKeyboard}) || f.Seats[1].Device != (view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}) {
+	if f.Seats[0].Device != (view.DeviceID{Kind: view.DeviceKeyboard}) || f.Seats[1].Device != (view.DeviceID{Kind: view.DeviceGamepad}) {
 		r.t.Fatalf("Geräte der Plätze: %+v", f.Seats)
 	}
 	r.mark("spielstart")

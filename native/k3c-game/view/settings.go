@@ -44,16 +44,19 @@ type Settings struct {
 	// GuideSeen sind die erledigten Hinweise der geführten ersten Nacht als Bitmaske (hud vergibt die Bits und meldet
 	// neue über Session.SetSettings); 0 = nichts gesehen. Das Optionen-Menü setzt sie beim Einschalten der Anleitung zurück.
 	GuideSeen int
+	// Controls ist das Eingabe-Profil je Spieler (ProfileWASD, ProfileArrows, ProfileGamepad; B-893, profile.go);
+	// höchstens einer hat ein Tastatur-Profil.
+	Controls [MaxPlayers]string
 }
 
 // DefaultSettings sind die Werte ohne gespeicherte Einstellungen (wie der Browser: volle Lautstärke, Deutsch, Fenster).
 func DefaultSettings() Settings {
-	return Settings{Music: 1, Effects: 1, Language: DefaultLanguage}
+	return Settings{Music: 1, Effects: 1, Language: DefaultLanguage, Controls: defaultControls()}
 }
 
 // Normalized begrenzt die Lautstärken auf 0 … 1 (NaN = Standard), setzt eine unbekannte Sprache auf
-// DefaultLanguage, eine unbekannte Fluss-Fassung auf "" und negative GuideSeen auf 0. SetSettings und das Laden wenden
-// es an.
+// DefaultLanguage, eine unbekannte Fluss-Fassung auf "", negative GuideSeen auf 0 und die Eingabe-Profile auf gültige
+// (profile.go). SetSettings und das Laden wenden es an.
 func (s Settings) Normalized() Settings {
 	d := DefaultSettings()
 	s.Music, s.Effects = volume(s.Music, d.Music), volume(s.Effects, d.Effects)
@@ -67,6 +70,7 @@ func (s Settings) Normalized() Settings {
 		s.Window = WindowFramed
 	}
 	s.GuideSeen = max(0, s.GuideSeen)
+	s.Controls = normalizeControls(s.Controls)
 	return s
 }
 

@@ -21,7 +21,7 @@ func TestGlyphSchluessel(t *testing.T) {
 	}{
 		{pad, []string{"pad:A", "pad:MENU", "", "pad:X", "pad:LB", "pad:RB", "pad:LT", "pad:UP", "pad:DOWN"}},
 		{keys1, []string{"key:SPACE", "key:ESC", "key:F11", "key:E", "key:Q", "key:R", "key:T", "key:Z", "key:K"}},
-		{keys2, []string{"key:ENTER", "key:BACKSPACE", "", "key:NUM0", "key:NUM1", "key:NUM2", "key:NUM3", "key:NUM4", "key:NUM5"}},
+		{keys2, []string{"key:ENTER", "key:ESC", "key:F11", "key:CONTROLRIGHT", "key:INSERT", "key:DELETE", "key:END", "key:PAGEDOWN", "key:DOWN"}},
 	}
 	for _, c := range cases {
 		var got []string
@@ -43,7 +43,8 @@ func TestGlyphBeschriftung(t *testing.T) {
 		{"Leertaste", glyphOf("de", "confirm", keys1).label, "Leertaste"},
 		{"Space", glyphOf("en", "confirm", keys1).label, "Space"},
 		{"Steuerkreuz", glyphOf("de", "skillMenu", pad).label, "D-Pad ↓"},
-		{"Ziffernblock", glyphOf("de", "skill2", keys2).label, "Num 2"},
+		{"Entf", glyphOf("de", "skill2", keys2).label, "Entf"},
+		{"Bild ab englisch", glyphOf("en", "skill4", keys2).label, "Page Down"},
 		{"rechter Stick", glyphOf("de", "fullscreen", pad).label, "RS"},
 		{"unbekannt", glyphOf("de", "dance", pad).label, "dance"},
 	})
@@ -113,7 +114,7 @@ func TestMenuFooterPerDevice(t *testing.T) {
 		want string
 	}{
 		{view.DeviceID{Kind: view.DeviceKeyboard}, "A / D wählen · Leertaste bestätigen · K schließen"},
-		{view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}, "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Num 5 schließen"},
+		{view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}, "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Pfeil unten schließen"},
 		{view.DeviceID{Kind: view.DeviceGamepad}, "◄ ► wählen · A bestätigen · B schließen"},
 	}
 	for _, c := range cases {

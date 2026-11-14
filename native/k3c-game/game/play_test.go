@@ -122,11 +122,11 @@ func TestPlayHomePauses(t *testing.T) {
 func TestPlayRebindsLostPad(t *testing.T) {
 	s := newFakeSim()
 	g := playGame(s)
-	g.devs.observe(devicesIn([]view.DeviceID{keys1, keys2, pad3}), g.frame.Seats, nil)
-	in := view.Input{Devices: []view.DeviceInput{press(keys1, view.Command{}), press(keys2, view.Command{}, view.ActionConfirm), press(pad5, view.Command{}, view.ActionConfirm)}}
+	g.devs.observe(devicesIn([]view.DeviceID{keys1, pad9, pad3}), g.frame.Seats, nil)
+	in := view.Input{Devices: []view.DeviceInput{press(keys1, view.Command{}), press(pad9, view.Command{}, view.ActionConfirm), press(pad5, view.Command{}, view.ActionConfirm)}}
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)
 	g.play(in)
-	if len(s.rebinds) != 1 || s.rebinds[0] != (Rebind{1, keys2}) {
+	if len(s.rebinds) != 1 || s.rebinds[0] != (Rebind{1, pad9}) {
 		t.Errorf("Neuzuordnung %+v", s.rebinds)
 	}
 	if len(s.joins) != 1 || s.joins[0] != pad5 {

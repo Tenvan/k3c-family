@@ -25,6 +25,7 @@ type settingsJSON struct {
 	Flashes    *bool    `json:"flashes"`   // Blitze an (B-809); fehlt: an
 	Guide      *bool    `json:"guide"`     // Anleitung an (B-809); fehlt: an
 	GuideSeen  *int     `json:"guideSeen"` // erledigte Hinweise der ersten Nacht (Bitmaske, view.Settings.GuideSeen)
+	Controls   []string `json:"controls"`  // Eingabe-Profil je Spieler (B-893); fehlt: Standard
 }
 
 // loadSettings liest die Einstellungen aus path. Fehlt die Datei oder ist sie kaputt, gelten die Standardwerte (eine
@@ -64,7 +65,8 @@ func loadSettings(path string) (view.Settings, error) {
 	return s.Normalized(), nil
 }
 
-// applyGuide übernimmt Blitze, Anleitung und „Anleitung gesehen“ aus der Datei (B-809); fehlende Felder bleiben Standard.
+// applyGuide übernimmt Blitze, Anleitung, „Anleitung gesehen“ (B-809) und die Eingabe-Profile (B-893) aus der Datei;
+// fehlende Felder bleiben Standard.
 func applyGuide(s *view.Settings, j settingsJSON) {
 	if j.Flashes != nil {
 		s.FlashesOff = !*j.Flashes
@@ -75,13 +77,18 @@ func applyGuide(s *view.Settings, j settingsJSON) {
 	if j.GuideSeen != nil {
 		s.GuideSeen = *j.GuideSeen
 	}
+	for i, p := range j.Controls {
+		if i < len(s.Controls) {
+			s.Controls[i] = p
+		}
+	}
 }
 
 // saveSettings schreibt die Einstellungen nach path (erst in eine Temp-Datei, dann umbenennen: nie halb geschrieben).
 func saveSettings(path string, s view.Settings) error {
 	flashes, guide := !s.FlashesOff, !s.GuideOff
 	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Window: &s.Window, Language: &s.Language, Stats: &s.Stats,
-		Flashes: &flashes, Guide: &guide, GuideSeen: &s.GuideSeen}
+		Flashes: &flashes, Guide: &guide, GuideSeen: &s.GuideSeen, Controls: s.Controls[:]}
 	if s.River != "" {
 		j.River = &s.River
 	}

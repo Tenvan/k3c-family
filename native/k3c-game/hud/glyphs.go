@@ -2,7 +2,7 @@ package hud
 
 // Glyphen und Beschriftungen der Tasten (Spiegel von src/scenes/hints/glyphs.ts und src/input/slotBindings.ts, S6.2,
 // B-149): Aktion und Gerät → Glyph-Schlüssel und Beschriftung. Nur Xbox-Glyphen für Pads; die Tastatur hat zwei
-// Hälften (native/k3c-game/input: links WASD, rechts Pfeile und Ziffernblock). B und View bekommen nie ein Bild.
+// Belegungen (Eingabe-Profile wasd und pfeile, native/k3c-game/input, B-893). B und View bekommen nie ein Bild.
 
 import (
 	"image/color"
@@ -19,21 +19,23 @@ type glyph struct {
 // Aktionen in der Reihenfolge der Belegung (slotBindings.ts › KEY_ACTIONS).
 var glyphActions = [...]string{"confirm", "pause", "fullscreen", "attack", "skill1", "skill2", "skill3", "skill4", "skillMenu"}
 
-// Tasten je Aktion: Pad (Name der Xbox-Taste), linke und rechte Tastatur-Hälfte. "" = nicht belegt. Die Tastatur
-// spiegelt input/bindings.go (game/keys_test.go prüft das über KeyName); left/right sind Laufen bzw. Wählen.
+// Tasten je Aktion: Pad (Name der Xbox-Taste), Tastatur-Profil wasd (leftKeys) und pfeile (rightKeys). "" = nicht
+// belegt. Die Tastatur spiegelt input/bindings.go (game/keys_test.go prüft das über KeyName); left/right sind Laufen
+// bzw. Wählen.
 var (
 	padKeys   = map[string]string{"confirm": "A", "pause": "MENU", "fullscreen": "RS", "attack": "X", "skill1": "LB", "skill2": "RB", "skill3": "LT", "skill4": "UP", "skillMenu": "DOWN"}
 	leftKeys  = map[string]string{"confirm": "SPACE", "pause": "ESC", "fullscreen": "F11", "attack": "E", "skill1": "Q", "skill2": "R", "skill3": "T", "skill4": "Z", "skillMenu": "K", "left": "A", "right": "D"}
-	rightKeys = map[string]string{"confirm": "ENTER", "pause": "BACKSPACE", "attack": "NUM0", "skill1": "NUM1", "skill2": "NUM2", "skill3": "NUM3", "skill4": "NUM4", "skillMenu": "NUM5", "left": "LEFT", "right": "RIGHT"}
+	rightKeys = map[string]string{"confirm": "ENTER", "pause": "ESC", "fullscreen": "F11", "attack": "CONTROLRIGHT", "skill1": "INSERT", "skill2": "DELETE", "skill3": "END", "skill4": "PAGEDOWN", "skillMenu": "DOWN", "left": "LEFT", "right": "RIGHT"}
 )
 
 // KeyActions sind die Aktionen mit Tastatur-Taste (KeyName).
 var KeyActions = [...]string{"confirm", "pause", "fullscreen", "attack", "skill1", "skill2", "skill3", "skill4", "skillMenu", "left", "right"}
 
-// KeyName liefert den Namen der Taste der Tastatur-Hälfte half (0 links, 1 rechts) für action ("" = nicht belegt), wie
-// ihn das HUD beschriftet: Buchstaben, SPACE, ESC, ENTER, BACKSPACE, LEFT, RIGHT, NUMn. Für den Abgleich mit input.
-func KeyName(half int, action string) string {
-	if half == 1 {
+// KeyName liefert den Namen der Taste der Tastatur-Belegung layout (0 wasd, 1 pfeile) für action ("" = nicht
+// belegt), wie ihn das HUD beschriftet: Buchstaben, SPACE, ESC, ENTER, LEFT, RIGHT, DOWN, INSERT … Für den Abgleich
+// mit input.
+func KeyName(layout int, action string) string {
+	if layout == 1 {
 		return rightKeys[action]
 	}
 	return leftKeys[action]
@@ -66,13 +68,15 @@ func keyLabel(lang, name string) string {
 		return tr(lang, "key.shiftRight")
 	case name == "CONTROLRIGHT":
 		return tr(lang, "key.ctrlRight")
+	case name == "INSERT", name == "DELETE", name == "END", name == "PAGEDOWN", name == "PAGEUP":
+		return tr(lang, "key."+strings.ToLower(name))
 	case name == "ESC":
 		return "Esc"
 	case name == "ENTER":
 		return "Enter"
 	case name == "BACKSPACE":
 		return "Backspace"
-	case name == "LEFT", name == "RIGHT": // Wörter statt Pfeilzeichen: die Debug-Schrift kennt nur ASCII
+	case name == "LEFT", name == "RIGHT", name == "UP", name == "DOWN": // Wörter statt Pfeilzeichen: die Debug-Schrift kennt nur ASCII
 		return tr(lang, "hint."+strings.ToLower(name))
 	case strings.HasPrefix(name, "NUM"):
 		return "Num " + name[3:]
