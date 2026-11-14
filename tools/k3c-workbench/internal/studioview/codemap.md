@@ -2,23 +2,22 @@
 
 ## Responsibility
 
-Was vom Asset-Studio lesend blieb (Entscheidung 005 › 5, Sprint WB1, D-03/D-04): Sound-Slots und Quellen für den Bereich
-Assets und „Im Spiel ansehen“ mit der Engine als Bibliothek. Schreibt nichts nach `data/` oder `public/`.
+Was vom Asset-Studio lesend blieb (Entscheidung 005 › 5, Sprint WB1): Sound-Slots und Quellen für den Bereich Assets und „Im Spiel ansehen“, das einen voll ausgebauten Testspielstand anlegt und das native Spiel damit startet (B-847). Schreibt nichts nach `data/` oder `public/`.
 
 ## Design
 
-- `studioview.go`: `Sounds(root)` (Sound-Slots aus `data/sounds.json` mit `assets.Status`), `SoundData(root, pfad)`
-  (Audiodatei unter `public/` als Data-URL, über `os.Root`, nur `.ogg/.mp3/.wav/.m4a`, ohne `..`/Backslash/absolute Pfade,
-  höchstens 10 MB), `Sources(root)` (Katalog `assets.Catalog` und Recherche-Treffer `assets.LoadResearch`).
-- `game.go`: `Game` startet beim ersten `Open(seed)` die Engine (`room.Manager` im Dev-Mode, Welten aus `data/worlds`,
-  `engine/net` als Spiel-API) auf `127.0.0.1:0`, legt `voll-<seed>` an und liefert `…/index.html#game.html?autostart=1&save=…`.
-  Spielstände unter `DefaultSavesDir` (`<UserCacheDir>/k3c/studioview/<Hash des Checkouts>/saves`), nie im Repo. Ohne
-  `dist/index.html` Hinweis `task build`. `Close` beendet Listener und wartet auf das Speichern der Räume.
-- `handler.go`: Listener-Handler aus dem früheren `tools/k3c-studio/server.go`: `hostGuard` (Loopback-Gegenstelle,
-  Host localhost oder Loopback-IP), `gameGuard` (schreibend nur gleiche Herkunft), Dateien erst aus `public/`, dann `dist/`.
+- `studioview.go`: `Sounds(root)` (Sound-Slots aus `data/sounds.json` mit `assets.Status`) → `[]SoundEintrag`; `SoundData(root, pfad)` (Audiodatei unter `public/` als Data-URL, über `os.Root`, nur `.ogg/.mp3/.wav/.m4a`, ohne `..`/Backslash/absolute Pfade, höchstens 10 MB); `Sources(root)` → `Quellen` (Katalog `assets.Catalog` und Recherche-Treffer `assets.LoadResearch`). Fehler für die Oberfläche als `hint` in ganzen Sätzen.
+- `game.go`: `Game` (`NewGame(ctx, root, savesDir, log)`); `Open(seed)` prüft `fullSeed`, legt über `fullSave` den Spielstand `voll-<seed>` an (`room.NewManager` im Dev-Modus mit `store.Saves`, Welten aus `data/worlds`, `FullSave`) und startet das native Spiel losgelöst (`startDetached`) mit `--saves`, `--load`, `--players 1`.
+- EXE-Suche `nativeExe`: zuerst `native/k3c-game/bin/k3c-game.exe` (Arbeitsordner Checkout), dann `dist/k3c-game/k3c-game.exe`; fehlt beides, Hinweis auf `task native:game:build`.
+- Spielstände unter `DefaultSavesDir` (`<UserCacheDir>/k3c/studioview/<Hash des Checkouts>/saves`), nie im Repo. `Close`: danach startet `Open` nichts mehr, ein laufendes Spiel bleibt offen.
+
+## Flow
+
+1. Oberfläche (Assets › Sound/Quellen) → `App.StudioSounds`/`StudioSoundData`/`StudioSources` → Funktionen in `studioview.go`.
+2. „Im Spiel ansehen“ → `App.StudioGameOpen(seed)` → `studioGame()` legt `Game` beim ersten Aufruf an → `Open` → `fullSave` → `exe` → `startDetached`.
+3. `App.shutdown` → `closeStudio` → `Game.Close`.
 
 ## Integration
 
-- Bindings in `app_studio.go` (`StudioSounds`, `StudioSoundData`, `StudioSources`, `StudioGameOpen`), `uiMethods` in `uiapi.go`;
-  Oberfläche `frontend/src/assets/sound/`, `sources/`, `game/`. `App.shutdown` ruft `closeStudio`.
-- Importiert `engine/net`, `engine/room`, `engine/store` und `tools/assetkit` (Richtung tools → engine, nie umgekehrt).
+- Konsumenten: `tools/k3c-workbench/app_studio.go` (Bindings), `app.go` (Feld `game`), `uiMethods` in `uiapi.go`; Oberfläche `frontend/src/assets/sound/`, `sources/`, `game/`.
+- Abhängigkeiten: `engine/room`, `engine/store`, `tools/assetkit` (Richtung tools → engine, nie umgekehrt); native EXE aus `native/k3c-game`.

@@ -56,11 +56,17 @@ tasks:
         p="{{.GAME_PAKET}}"
         args="{{.GAME_EXE}}=$p/k3c-game.exe native/measure.ps1=$p/measure.ps1 native/messen.cmd=$p/messen.cmd public/audio=$p/public/audio {{.RIG}}/assets=$p/native/k3c-rig/assets"
         if [ -d public/schrift ]; then args="$args public/schrift=$p/public/schrift"; fi
-        for a in $(tr -d '\r' < "$p/assets.txt"); do args="$args public/grafik/$a=$p/public/grafik/$a"; done
+        # ohne tr (fehlt dem Runner der Workbench, dann blieb die Liste still leer und die Grafik fehlte im Paket)
+        n=0
+        while IFS= read -r a || [ -n "$a" ]; do
+          a="${a%$'\r'}"
+          if [ -n "$a" ]; then args="$args public/grafik/$a=$p/public/grafik/$a"; n=$((n+1)); fi
+        done < "$p/assets.txt"
+        if [ "$n" -eq 0 ]; then echo "❌ $p/assets.txt ist leer: keine Grafik fürs Paket"; exit 1; fi
         cd "{{.GAME}}" && go run ./cmd/sync $(for x in $args; do case "$x" in /*|?:*) echo "$x";; *) echo "{{.ROOT_DIR}}/$x";; esac; done)
       # Lizenzdatei aus derselben Liste wie die Lizenz-Seite im Menü (menu.LicenseText, B-808)
       - 'cd "{{.GAME}}" && CGO_ENABLED=0 go run ./menu/licensefile -version "{{.GAME_VERSION}}" > "{{.GAME_PAKET}}/LIZENZEN.txt"'
-      - 'echo "✅ Spiel in {{.GAME_PAKET}} ($(du -sh "{{.GAME_PAKET}}" | cut -f1))"'
+      - 'echo "✅ Spiel in {{.GAME_PAKET}}"'
 
   game:exe:
     desc: "Nur die EXE des nativen Spiels bauen (Go, ohne cgo) nach native/k3c-game/bin/"

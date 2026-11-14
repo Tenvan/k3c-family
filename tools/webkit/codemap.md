@@ -2,21 +2,24 @@
 
 ## Responsibility
 
-Gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als Atomic Design auf Radix Themes (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Reiner Quellordner ohne eigenes Paket und ohne eigene Abhängigkeiten.
+Gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als Atomic Design auf Radix Themes (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme). Reiner Quellordner ohne eigenes Paket und ohne eigene Abhängigkeiten; direkt im Ordner liegt nur `theme.css`.
 
 ## Design
 
-- `lib/` (ohne Oberfläche): `errors.ts` (`errorText`), `prefs.ts` (`createPrefs(prefix)` mit `loadPref`, `loadText`, `savePref`, `loadJSON`, `saveJSON`, `isStringList`; jede App bindet ihr Präfix in `src/lib/prefs.ts`), `useDebounced.ts`, `split.ts` (`splitShare`, `clampSplit`, `parseSplit`, `useSplit(store, key, dflt)`), `devProxy.ts` (Vite-Plugin `waitForBackend`: hält `/api` im Dev-Server zurück, bis das Backend lauscht; nur für `vite.config.ts`, Node, mit Node-Typen per Referenz).
-- `atoms/` (`@webkit/atoms`): Re-Export der Radix-Grund-Atome (Layout, Text, Controls) und eigene Atome `ActionButton` (Ladezustand), `CardButton` (Karte als Knopf), `LinkButton` (Knopf als Link), `SelectField` (Radix Select aus Einträgen, leerer Wert erlaubt, Wert als `data-value` an Auslöser und Einträgen), `StatusBadge` (Badge mit Punkt), `Splitter`, `Tip`, `Tone`/`TONE_COLOR`. Nur hier stehen rohe HTML-Controls.
-- `molecules/` (`@webkit/molecules`): Radix Card, Callout, DataList, Gruppen, Popover; `NoticeCard` (Callout), `CheckField`, `SwitchField`, `FocusBar` (Fokus-Chips mit Zähler, eigene Chips mit ✕, „Ansicht merken“), `FramePlayer` (Abspielen, Frame-Schieber und Zähler mit festen Breiten, WB2), `LoadingNote` (Lade-Anzeige als Zeile oder Überlage über einer Grafik, WB2).
-- `organisms/` (`@webkit/organisms`): Radix Dialog, AlertDialog, DropdownMenu, ContextMenu, Tabs, TabNav, Table; `AppHeader` (Titel, Reiter, rechte Leiste); `FacetRail` (Facetten links mit Markierfeldern und Zähler), `TransportBar` (eine Abspielleiste: Stopp, Überblenden, Lautstärke).
-- `templates/` (`@webkit/templates`): Radix Theme, ThemePanel; `AppFrame` (Theme, Kopfzeile, optionale Reiter, Seite, `aside`, `overlay`, `fixed`); `ListDetail` (Kopf, Liste | Detail in voller Höhe, je eigener Scrollbereich, WB2).
-- `testing/select.ts`: Test-Helfer `pickOption`, `selectedText`, `selectTrigger` für Radix Select in happy-dom, dazu `selectedValue` und `pickValue` (nach `data-value`, nur `SelectField`); `testing/options.ts`: `shownOptions` (Text, Wert, gesperrt), `optionTexts`, `pickWhere` (offene Liste lesen, Eintrag nach Bedingung wählen).
-- `theme.css`: Farb-Namen auf Radix-Variablen (hell/dunkel), ANSI-Farben, Rahmen (`wk-shell`, `wk-header`, `wk-page`), Status-Punkt, Hinweis, Splitter.
+| Ordner | Rolle |
+|--------|-------|
+| [`lib/`](lib/codemap.md) | ohne Oberfläche: `errorText`, `createPrefs`, `useDebounced`, Splitter-Rechnung, Listen-Filter, Diagramm-Skalen, Ticket-Typen und `TicketProvider`, Vite-Plugin `waitForBackend` |
+| [`atoms/`](atoms/codemap.md) | `@webkit/atoms`: Radix-Grund-Atome und eigene Atome (`ActionButton`, `CardButton`, `LinkButton`, `SelectField`, `ValueSlider`, `Splitter`, `StatusBadge`, `Tip`, `Tone`); nur hier rohe HTML-Controls |
+| [`molecules/`](molecules/codemap.md) | `@webkit/molecules`: Radix Card, Callout, Popover …; `NoticeCard`, `CheckField`/`SwitchField`, `ChipSwitch`, `FocusBar`, `ActionMenu`, `ListFilter`, `SplitStack`, `FramePlayer`, `LoadingNote`, SVG-Diagramme `LineChart`, `BarChart`, `CorridorBar` |
+| [`organisms/`](organisms/codemap.md) | `@webkit/organisms`: Radix Dialog, Menüs, Tabs, Table; `AppHeader`, `FacetRail`, `TransportBar`, `TicketButton`, `TicketDialog` |
+| [`templates/`](templates/codemap.md) | `@webkit/templates`: Radix Theme, ThemePanel; `AppFrame`, `ListDetail` |
+| [`testing/`](testing/codemap.md) | Test-Helfer für Radix Select in happy-dom (`pickOption`, `pickValue`, `shownOptions` …) |
+
+- `theme.css`: Farb-Namen auf Radix-Variablen (hell/dunkel), ANSI-Farben, Rahmen (`wk-shell`, `wk-header`, `wk-page`, `wk-listdetail`), Status-Punkt, Hinweis, Splitter.
 
 ## Flow
 
-1. Ein Frontend importiert über den Alias `@webkit/<ebene>` bzw. `@webkit/lib/<datei>` (`paths.ts` → `vite.config.ts`, `vitest.config.ts`; `tsconfig.json` › `paths`).
+1. Ein Frontend importiert über den Alias `@webkit/<ebene>` bzw. `@webkit/lib/<datei>` (`tools/k3c-workbench/frontend/paths.ts` → `vite.config.ts`, `vitest.config.ts`; `tsconfig.json` › `paths`).
 2. `resolve.dedupe` (`react`, `react-dom`, `@radix-ui/themes`) bzw. die `paths`-Einträge im `tsconfig.json` lösen die Pakete dieser Dateien aus dem `node_modules` des jeweiligen Frontends auf.
 3. Importe nur nach unten: lib ← atoms ← molecules ← organisms ← templates ← Seiten der App.
 

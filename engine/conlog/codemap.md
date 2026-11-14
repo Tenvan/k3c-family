@@ -2,14 +2,14 @@
 
 ## Responsibility
 
-Infrastructure/Adapter: `slog.Handler` für lesbare, farbige Konsolenzeilen. Wird von Server und Entwickler-Werkzeug gemeinsam genutzt; JSON-Logdateien bleiben davon unberührt.
+Infrastructure/Adapter: `slog.Handler` für lesbare, farbige Konsolenzeilen. Genutzt von k3c-workbench (Konsole des Backends); JSON-Logdateien bleiben davon unberührt.
 
 ## Design
 
 - `Handler` (`conlog.go`) implementiert `slog.Handler` (`Enabled`, `Handle`, `WithAttrs`, `WithGroup`); Writer und Mutex werden zwischen abgeleiteten Handlern geteilt.
 - Zeilenformat: `HH:MM:SS.mmm LEVEL [ns] Text key=value …`, Level-Wörter bleiben im Text (auch ohne Farbe auffindbar).
 - `Topics` (`map[string]string`): Emoji je Namespace (`ns`), wird vor `[ns]` gesetzt; neuer `ns` wird dort eingetragen.
-- `Color()`: aus bei gesetztem `NO_COLOR`; `levelStyle` liefert ANSI-Farbe und 5-Zeichen-Name; `quote` quotet wie `slog.TextHandler`; `attr` löst Gruppen zu `key.sub=value` auf.
+- `Color()`: aus bei gesetztem `NO_COLOR`; `paint` setzt die Farbe nur bei `color`; `levelStyle` liefert ANSI-Farbe und 5-Zeichen-Name; `quote` quotet wie `slog.TextHandler`; `attr` löst Gruppen zu `key.sub=value` auf.
 
 ## Flow
 
@@ -20,5 +20,5 @@ Infrastructure/Adapter: `slog.Handler` für lesbare, farbige Konsolenzeilen. Wir
 ## Integration
 
 - Abhängigkeiten: nur Stdlib (`log/slog`).
-- Konsumenten: `cmd/k3c-server`, `tools/k3c-workbench/internal/applog`.
+- Konsumenten: `tools/k3c-workbench/headless.go` und `tools/k3c-workbench/internal/applog`.
 - k3c-workbench liest Level-Wörter (`markOf`, `outLevel`) aus den Zeilen.

@@ -4,7 +4,7 @@
 Task-Katalog der Taskfile-Hierarchie: lädt alle Tasks über `task --list-all --json` und gruppiert/filtert sie nach Namensräumen für die Oberfläche.
 
 ## Design
-- Kein eigener YAML-Parser: `go-task` löst Includes, Aliase und `internal: true` selbst auf; `Load` ruft `listCommand` (`task --list-all --json --no-status`) in `root` auf.
+- Kein eigener YAML-Parser: `go-task` löst Includes, Aliase und `internal: true` selbst auf; `Load` ruft `task --list-all --json --no-status` über `internal/proc` in `root` auf (`listCommand` nur für Fehlertexte).
 - Typen: `Task`, `Namespace`, `listOutput` (JSON-Schema der Ausgabe, unbekannte Felder ignoriert); Konstante `Workspace` für Tasks ohne Doppelpunkt (Root-Aggregate).
 - `Parse(data, root)` ist rein und testbar; `split` trennt Namensraum/Blatt, `relative` macht Taskfile-Pfade relativ zu `root`; `describe` übersetzt Exec-Fehler.
 - `group.go`: `Group(tasks)` (Workspace zuerst, Rest sortiert, nie nil) und `Filter(tasks, query)` (Name/Beschreibung, case-insensitive; Namensräume ohne Treffer entfallen). Die Logik liegt im Backend, damit auch ein MCP-Tool sie nutzen kann.
@@ -15,5 +15,5 @@ Task-Katalog der Taskfile-Hierarchie: lädt alle Tasks über `task --list-all --
 3. `Filter(tasks, query)` → `Group` → `[]Namespace` an die Oberfläche.
 
 ## Integration
-- Konsument: `tools/k3c-workbench/app_tasks.go` (Wails-Bindings Task-Ansicht).
-- Abhängigkeit: externes Programm `task` (go-task); sonst Standardbibliothek.
+- Konsumenten: `tools/k3c-workbench/app_tasks.go` (Bindings der Task-Ansicht), `internal/mcpsrv/tools_tasks.go` (`task_list` mit `Filter` und `Group`).
+- Abhängigkeiten: `internal/proc`; externes Programm `task` (go-task).

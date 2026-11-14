@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-Freigabe-Schloss der Tasks (Workbench-Spec § 4): entscheidet, ob ein Agent einen Task über `task_start` starten darf. Die Datei `task-freigaben.json` (neben `services.json`) hält den dauerhaften Stand, Laufzeit-Schalter gelten bis zum Beenden von k3c-workbench.
+Freigabe-Schloss der Tasks (Workbench-Spec § 4): entscheidet, ob ein Agent einen Task über `task_start` starten darf. Die Datei `task-freigaben.json` (`FileName`, neben `services.json`) hält den dauerhaften Stand, Laufzeit-Schalter gelten bis zum Beenden von k3c-workbench.
 
 ## Design
 

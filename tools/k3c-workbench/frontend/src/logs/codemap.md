@@ -6,9 +6,9 @@ Logs-Bereich der Dienste-Seite: Quellenleiste sowie je Quelle Konsole (Live-Puff
 
 ## Design
 
-- Pure Logik (testbar, ohne React): `lines.ts` (`mergeLines` mit Lücken-Erkennung über `seq`, `visibleLines`, `markOf`, `dotTone`, `upsertSource` für `source:state`, `MAX_LINES`), `sources.ts` (`Group`, `logFor`, `otherGroups`, `describe`, `tagsOf`), `logview.ts` (`TABS`, `LIMITS`, `LEVEL_FILTERS`, `tabEnabled`, `pickTab`), `ansi.ts` (`parseAnsi` SGR → `Span[]`, `stripAnsi`; Text bleibt Text, nie HTML).
+- Pure Logik (testbar, ohne React): `lines.ts` (`mergeLines` mit Lücken-Erkennung über `seq`, `visibleLines`, `markOf`, `dotTone` über `badgeFor` aus `services/tables.ts`, `upsertSource` für `source:state`, `MAX_LINES = 2000` wie der Go-Puffer), `sources.ts` (`Group`, `serviceLog`, `logFor`, `otherGroups`, `describe`, `tagsOf`), `logview.ts` (`TABS`, `LIMITS`, `LEVEL_FILTERS`, `tabEnabled`, `pickTab`, `levelTone`, `oldestFirst`, Fußzeilen und Budget-Hinweis), `ansi.ts` (`parseAnsi` SGR → `Span[]` mit 16, 256 und RGB-Farben, `stripAnsi`; Text bleibt Text, nie HTML).
 - Data-Hooks: `useSources.ts` (Quellenliste), `useConsole.ts` (Tail laden, `console:line` anhängen, bei Lücke oder Zustandswechsel gebündelt nachladen, 300 ms), `useLogQuery.ts` (`logsQuery`).
-- Präsentation: `SourceBar.tsx`, `SourcePanel.tsx` (Radix `Tabs` `konsole`/`log`/`fehler`, Reiter via `prefs`), `ConsoleView.tsx`, `LogTab.tsx` (Filter, debounced), `ErrorsTab.tsx` (`logsErrors`), `RoleTags.tsx` (Farbe je Einordnung).
+- Präsentation: `SourceBar.tsx`, `SourcePanel.tsx` (`Tabs` aus `@webkit/organisms`: `konsole`/`log`/`fehler`, Reiter via `prefs`), `ConsoleView.tsx`, `LogTab.tsx` (Filter, `useDebounced`, älteste oben, läuft mit), `ErrorsTab.tsx` (`logsErrors`), `RoleTags.tsx` (Farbe je Einordnung).
 
 ## Flow
 
@@ -20,6 +20,6 @@ Logs-Bereich der Dienste-Seite: Quellenleiste sowie je Quelle Konsole (Live-Puff
 
 ## Integration
 
-- Konsumenten: `services/ServicesPage.tsx` (Quellenleiste, Panel), `services/ServiceCard.tsx` (`RoleTags`), `tasks/TasksPage.tsx` (`ConsoleView name="task:<name>"`).
+- Konsumenten: `services/ServicesPage.tsx` (Quellenleiste, Panel), `services/ServiceCard.tsx` (`RoleTags`), `tasks/TaskDetail.tsx` und `mcp/CheckRunPanel.tsx` (`ConsoleView`).
 - Abhängigkeiten: `api` (`backend`, Typen), `lib/` (`format`, `prefs`), `@webkit/lib/errors`, `@webkit/lib/useDebounced`, `@webkit/atoms` (`StatusBadge`, `SelectField`, `CardButton` für die Quellen, `Tone`), `@webkit/molecules` (`NoticeCard`), `@webkit/organisms` (`Tabs`).
 - Go-Seite: Wails-Methoden `Sources`, `ConsoleTail`, `LogsQuery`, `LogsErrors`; Events `console:line`, `source:state`.

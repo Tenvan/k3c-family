@@ -7,15 +7,15 @@ CLI für das Aufräumen lokaler Branches und Worktrees (B-302, RP1.1): löscht n
 ## Design
 
 - `main.go`: Flags `-root`, `-dry`; `execGit` (git über `os/exec`), `ghMerged` (gemergter PR per `gh pr list`, Fehler bei fehlendem `gh` oder Netz).
-- `cleanup.go`: `options` (Git und PRMerged austauschbar), `judgeBranch` (Schutzliste: `develop`, `main`, ausgecheckter Branch, `sprint/*` mit Ordner in `docs/sprints/aktiv/`; Upstream vorhanden → bleibt; `git cherry` ohne `+` → löschen; Upstream weg + gemergter PR → löschen), `withWorktree` (nur Worktrees ohne Änderungen und ohne ignorierte Dateien, nie der Hauptcheckout), `judgeDetached` (sauber und Stand in `origin/develop`), `apply` (Ausgabe, `-dry` ändert nichts).
+- `cleanup.go`: `options` (Git und PRMerged austauschbar), `judgeBranch` (Schutzliste: `main`, ausgecheckter Branch, `sprint/*` mit Ordner in `docs/sprints/aktiv/`; Upstream vorhanden → bleibt; `git cherry` ohne `+` → löschen; Upstream weg + gemergter PR → löschen), `withWorktree` (nur Worktrees ohne Änderungen und ohne ignorierte Dateien, nie der Hauptcheckout), `judgeDetached` (sauber und Stand in der Basis), `apply` (Ausgabe, `-dry` ändert nichts).
 - Exit 0, auch ohne `gh`; Exit 1 nur, wenn Git selbst scheitert.
 
 ## Flow
 
-1. `baseRef` (`origin/develop`, sonst `develop`) → `listBranches`, `listWorktrees` → Entscheidungen → `apply` (`git worktree remove`, `git branch -D`).
+1. `baseRef` (`origin/main`, sonst `main`) → `listBranches`, `listWorktrees` → Entscheidungen → `apply` (`git worktree remove`, `git branch -D`).
 2. Ausgabe je Kandidat `löschen`/`würde löschen`/`bleibt` mit Grund, am Ende eine Summenzeile.
 
 ## Integration
 
-- Taskfile-Task `ops:aufraeumen` (baut `bin/aufraeumen`, `-- --dry` reicht Flags durch); Meilensteine stehen in `docs/arbeitsweise.md` › Branches.
+- Taskfile-Task `ops:aufraeumen` in `scripts/Taskfile.yml` (baut `bin/aufraeumen`, `-- --dry` reicht Flags durch); Regeln stehen in `docs/arbeitsweise.md` › Branches.
 - Test `cleanup_test.go` baut temporäre Repos mit `origin` und prüft jeden Fall.

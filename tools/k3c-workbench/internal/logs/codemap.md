@@ -15,5 +15,5 @@ Liest die JSON-Logs unter `logs/*.jsonl` (B-046, Format von `log/slog`) effizien
 3. `logs_since`: `ReadSince` ab Cursor der letzten Antwort → neuer Cursor.
 
 ## Integration
-- Konsumenten: `internal/mcpsrv/tools_logs.go` (MCP-Log-Tools), `tools/k3c-workbench/app_logview.go` (Log-Ansicht), `internal/services/adopt.go` (`logs.Scan` der letzten Stunde zur Dienst-Übernahme).
+- Konsumenten: `internal/mcpsrv/tools_logs.go` und `tools_logstats.go` (MCP-Log-Tools), `tools/k3c-workbench/app_logview.go` (Log-Ansicht), `internal/services/adopt.go` (`logs.Scan` der letzten Stunde zur Dienst-Übernahme).
 - Abhängigkeiten: nur Standardbibliothek.

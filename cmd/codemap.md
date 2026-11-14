@@ -9,8 +9,12 @@ Ein Unterordner je Binary, jeweils `package main` als d체nner Composition Root �
 
 | Ordner | Binary |
 |--------|--------|
-| `k3c-sim/` | Engine-CLI: Simulation, Balancing, Level (B-726), f체r die Workbench-Tools `level_generate`, `sim_run`, `sim_test` |
+| [`k3c-sim/`](k3c-sim/codemap.md) | Engine-CLI (B-726): Unterbefehle `run`, `level`, `balance`, `world`; JSON-Zeilen auf stdout, Kindprozess der Workbench |
+
+## Flow
+Die Workbench (`tools/k3c-workbench/internal/simexe`) startet `bin/k3c-sim` als Kindprozess und liest dessen
+JSON-Zeilen; `cmd/` selbst hat keinen Ablauf.
 
 ## Integration
-- Gebaut 체ber `Taskfile.yml` (`task k3c-sim:build`, `task buildall`) nach `bin/`.
+- Gebaut 체ber `cmd/k3c-sim/Taskfile.yml` (`task k3c-sim:build`) bzw. `task buildall` nach `bin/`.
 - Abh채ngigkeit: `engine/*`, `data/` (via `go:embed`).

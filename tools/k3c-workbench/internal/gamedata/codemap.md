@@ -6,7 +6,7 @@ Read-only-Zugriff auf Xbox-Berichte (`reports/*.json`) und Spielstände (`saves/
 ## Design
 - `reports.go`: `ReportsList` (neueste zuerst, eine Zeile je Bericht) und `ReportRead`; interne Typen `report`, `pad`, `perf`, `attempt`; Hilfsmethoden `when`, `device`, `biggestStage`, `fps`, `fullscreen`; `buttons` übersetzt Indizes über `buttonNames`.
 - Pfadschutz: `inside` + Regex `fileName` erlauben nur einfache `*.json`-Namen im Ordner (kein Traversal).
-- `saves.go`: `SavesList` (inkl. Sicherungen), `SavesDir(root, env)` mit Override `EnvSavesDir` (`K3C_SAVES_DIR`, relativ ab Repo-Wurzel), `cycleSeconds` liest den Tageszyklus aus den Daten für die Zeitangabe.
+- `saves.go`: `SavesList` (inkl. Sicherungen), `SavesDir(root, env)` mit Override `EnvSavesDir` (`K3C_SAVES_DIR`, relativ ab Repo-Wurzel), `cycleSeconds` liest Zyklus- und Morgengrauen-Länge aus `data/biomes/forest.json` für die Zeitangabe.
 - Funktionen sind zustandslos und nehmen `root` explizit (Worktree-fähig).
 
 ## Flow
@@ -16,4 +16,4 @@ Read-only-Zugriff auf Xbox-Berichte (`reports/*.json`) und Spielstände (`saves/
 
 ## Integration
 - Konsument: `internal/mcpsrv/tools_gamedata.go` (MCP `reports_list`, `report_read`, `saves_list`).
-- Abhängigkeiten: nur Standardbibliothek; Daten aus `reports/`, `saves/`, `data/`.
+- Abhängigkeiten: nur Standardbibliothek; Daten aus `reports/`, `saves/` und `data/biomes/forest.json` (Tageszyklus).
