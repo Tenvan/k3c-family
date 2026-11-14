@@ -51,6 +51,7 @@ type Game struct {
 	dev            view.DevView          // Entwickler-Anzeigen (F1, F10), kommt in jeden Frame
 	shotNext       bool                  // F12: das nächste Bild nach reports/ schreiben (devshot.go)
 	inBuf          []view.DeviceInput    // Puffer der Eingabe späterer Overlays (play.go › hideConsumed)
+	tps            tpsMeter              // Takte je Sekunde der Seite Werte (devvalues.go)
 	subs           subImages
 	stats          *overlay
 	shots          *shooter
@@ -185,6 +186,7 @@ func (g *Game) advance() {
 		g.play(in)
 	}
 	g.frame = g.sim.Step()
+	g.devValues()
 	g.frame.Dev = g.dev
 	g.devs.decorate(&g.frame, in)
 	if len(g.cues) > 0 {

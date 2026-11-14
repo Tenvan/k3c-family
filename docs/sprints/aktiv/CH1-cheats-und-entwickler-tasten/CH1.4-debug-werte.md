@@ -1,6 +1,6 @@
 # CH1.4 · Werte-Seite des Debug-Overlays
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 geprüft: F10 schaltet aus → Geometrie → Werte → aus; `devtools/values.go` stellt Tageszeit, Tag, Welle, Restzeit bis zur Nacht (`sim.SecondsToNight`, neu mit Test), je Spieler Gold, Vorrat der Stufe, x, Chunk, Stufe/Tiefe, Objektanzahl, Takt (TPS gemessen in `game/devvalues.go`, Rechenzeit `Frame.StepMs` aus local), Zeitraffer, Seed und das ausgewählte Objekt (Mausklick oder am Monarchen; Gegner/Truppe mit Zustand, Ziel, LP, KI) zusammen. Tests `TestValueLines`, `TestSelectAt`, `TestValuesDraw`, `TestTPSMeter`, `TestPickAt`, `TestSecondsToNight` grün.
+- Pad-Auswahl = Objekt am eigenen Monarchen (mitlaufen statt Cursor).
+- `check_run task:check:diff:go` grün.

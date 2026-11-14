@@ -33,12 +33,15 @@ func (s *Session) Command(player int, c view.Command) error {
 // Step überschreibt.
 func (s *Session) Step() view.Frame {
 	s.steps++
+	s.stepMs = 0
 	if s.running() {
+		t0 := time.Now()
 		s.tick()
+		s.stepMs = float64(time.Since(t0).Microseconds()) / 1000
 	}
 	s.collectSaves()
 	f := view.Frame{Clock: float64(s.steps) / stepHz, Paused: s.paused || s.halt, Timescale: s.timescale(), Cues: s.cues,
-		Settings: s.settings,
+		Settings: s.settings, StepMs: s.stepMs,
 		Outcome: s.ended}
 	s.cues = nil
 	if s.p != nil {

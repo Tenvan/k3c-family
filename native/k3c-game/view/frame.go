@@ -34,6 +34,8 @@ type Frame struct {
 	Recording bool
 	// Dev ist der Zustand der Entwickler-Anzeigen (F1, F10; game, B-888).
 	Dev DevView
+	// StepMs ist die Rechenzeit des letzten Simulationstakts in ms (local, Wanduhr; 0 ohne Takt; Debug-Werte, B-889).
+	StepMs float64
 }
 
 // Outcome ist der Ausgang eines Spiels.

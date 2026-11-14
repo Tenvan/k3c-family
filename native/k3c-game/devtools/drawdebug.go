@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
@@ -51,4 +52,18 @@ func (o *overlay) drawDebug(dst *ebiten.Image, font *art.Font, f *view.Frame, c 
 	at := image.Pt(c.Rect.Min.X+int(px), c.Rect.Max.Y-int(th+px))
 	box(sub, float64(at.X)-px/2, float64(at.Y)-px/4, tw+px, th+px/2)
 	font.Draw(sub, text, float64(at.X), float64(at.Y), px, textColor)
+	if f.Dev.Debug == view.DebugValues {
+		o.drawValues(sub, font, f, c, px)
+	}
+}
+
+// drawValues zeichnet die Werte-Tafel oben rechts in die Zelle c (unter der Anzeige oben rechts).
+func (o *overlay) drawValues(dst *ebiten.Image, font *art.Font, f *view.Frame, c view.Cell, px float64) {
+	o.lines = valueLines(o.lines[:0], f, c)
+	text := strings.Join(o.lines, "\n")
+	tw, th := font.Measure(text, px)
+	x := float64(c.Rect.Max.X) - tw - 2*px
+	y := float64(c.Rect.Min.Y) + float64(view.StatsRect(c.Rect).Dy()) + px
+	box(dst, x-px/2, y-px/2, tw+px, th+px)
+	font.Draw(dst, text, x, y, px, textColor)
 }

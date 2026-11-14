@@ -51,6 +51,7 @@ type Session struct {
 	paused bool
 	halt   bool // Halt der Entwickler-Taste F7 (dev.go)
 	single bool // im Halt: der nächste Step rechnet einen Takt
+	stepMs float64 // Rechenzeit des letzten Takts (Frame.StepMs)
 	steps  uint64 // Aufrufe von Step, Grundlage von Frame.Clock
 	cues   []view.Cue
 	ended  view.Outcome // Ausgang des laufenden bzw. zuletzt beendeten Spiels (Frame.Outcome)

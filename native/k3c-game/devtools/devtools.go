@@ -32,6 +32,7 @@ type overlay struct {
 	cues    []view.Cue
 	acts    []view.Action // Puffer von actionsOf
 	shapes  []shape       // Puffer der Debug-Formen (drawdebug.go)
+	lines   []string      // Puffer der Werte-Zeilen (values.go)
 }
 
 // New liefert die Drawer des Pakets; lib darf nil sein (Tests), dann ohne Text.

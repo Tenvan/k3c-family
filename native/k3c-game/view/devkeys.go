@@ -74,8 +74,19 @@ func NextTimescale(cur int) int {
 
 // DevView ist der Zustand der Entwickler-Anzeigen eines Frames (game setzt ihn nach Session.Step).
 type DevView struct {
-	Help  bool // Tastenübersicht (F1)
-	Debug int  // Debug-Overlay (F10): DebugOff, DebugGeometry, DebugValues
+	Help  bool    // Tastenübersicht (F1)
+	Debug int     // Debug-Overlay (F10): DebugOff, DebugGeometry, DebugValues
+	TPS   float64 // gemessene Takte je Sekunde (game, Wanduhr; Seite Werte)
+	// Pick ist die per Maus gewählte Stelle: Spieler der Zelle und Welt-x (Picked false: keine Wahl, dann gilt das
+	// Objekt am Monarchen der Zelle).
+	Pick   Pick
+}
+
+// Pick ist eine per Maus gewählte Stelle in der Welt eines Spielers.
+type Pick struct {
+	Picked bool
+	Player int
+	X      float64
 }
 
 // Seiten des Debug-Overlays.
