@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ58 | DEV | WZG | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | – | `aktiv/WZ58-welten-editor-planung-review/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | PB1 | INF | REL | Veröffentlichung auf itch.io | – | `aktiv/PB1-itch-io/` |
 
@@ -358,3 +357,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | NG20 | Natives Spiel komplett nach dist (B-827) | `erledigt/NG20-native-build-dist/` |
 | WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | `erledigt/WZ45-asset-seiten-prompts-filter/` |
 | PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | `erledigt/PT6-asset-pakete-vorlage/` |
+| WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | `erledigt/WZ58-welten-editor-planung-review/` |

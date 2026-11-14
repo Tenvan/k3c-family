@@ -21,7 +21,7 @@
 .wd-chunk:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }
 .wd-hub { background: var(--amber-a3); }
 .wd-special { background: var(--violet-a3); }
-.wd-planned { box-shadow: inset 0 -3px 0 var(--blue-9); }
+.wd-planned { outline: 1px dashed var(--blue-8); outline-offset: -3px; }
 .wd-selected { border: 2px solid var(--accent-9); background: var(--accent-a4); }
 .wd-marker { position: absolute; top: 3.6rem; border-radius: 50%; border: 1px solid var(--gray-a8); }
 .wd-marker-big { top: 3.35rem; border-radius: 3px; }
