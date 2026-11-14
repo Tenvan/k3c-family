@@ -41,7 +41,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | erledigt |
 | PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | erledigt |
 | PT4 | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | erledigt |
-| PT5 | Abnahme-Läufe CU1 (B-836) | geplant |
+| PT5 | Abnahme-Läufe CU1 (B-836) | erledigt |
 
 ## Nicht-Ziele
 

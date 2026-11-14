@@ -1,16 +1,16 @@
 # PT5.1 · Abnahme-Läufe CU1 (B-836)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
 - **Lane:** –
 - **Modell:** –
 - **Umgebung:** offline
-- **Branch:** pt5/1-abnahme-cu1
+- **Branch:** sprint/pt5
 - **Abhängig von:** –
-- **Tickets:** –
-- **Kriterien:** –
+- **Tickets:** B-836
+- **Kriterien:** AC-01
 
 ## Ziel
 
