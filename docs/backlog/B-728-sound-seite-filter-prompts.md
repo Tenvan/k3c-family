@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** WZ45
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Sounds in der Workbench zuordnen oder bearbeiten.
 
 ## Regeln und Einschränkungen
 
-Nach CU1.4 umsetzen oder mit ihr abstimmen (Datenquelle `data/sounds.json`). Neue Vorlagen-Orte im Vertrag `docs/standards/paper-mcp.md` und in den Fixtures nachziehen.
+Datenquelle `data/sounds.json`. Neue Vorlagen-Orte im Vertrag `docs/standards/paper-mcp.md` und in den Fixtures nachziehen.
+
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/sound/**`, `tools/k3c-workbench/frontend/src/assets/prompts/**`, `data/asset-prompts.json`, `docs/standards/paper-mcp.md`, `tools/paper/fixtures/ui/**`
+- **Abhängig von:** B-727
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -51,7 +57,7 @@ Kein Treffer: „Keine Sounds“, Filter bleibt sichtbar.
 
 ## Offene Fragen
 
-Welche Aktionen je Slot? Default: anderen Sound suchen, Kandidaten vergleichen, Lautstärke prüfen.
+keine. Entschieden (Default, autonom Claude, 2026-11-14): Aktionen je Slot sind „anderen Sound suchen“, „Kandidaten vergleichen“ und „Lautstärke prüfen“.
 
 ## Notizen
 

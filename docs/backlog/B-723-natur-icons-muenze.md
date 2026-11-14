@@ -8,9 +8,9 @@
 - **Sprint:** MG11
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-14
 
 ## Ausgangslage
 
@@ -36,7 +36,13 @@ Einbau der Größe ins Spiel (B-724).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Assets nur über MCP `assets_*` (Entscheidung 005); Golden nur bei gewollter Änderung neu.
+
+- **Bereich:** `public/grafik/objekte/**`, `public/grafik/icons/**`, `tools/paper/golden/**`
+- **Abhängig von:** B-722
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** golden
 
 ## Beispiele
 

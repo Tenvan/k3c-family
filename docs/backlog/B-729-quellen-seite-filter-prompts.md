@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** WZ45
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-07
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -36,6 +36,12 @@ Dateien in der Workbench importieren oder löschen.
 
 Neue Vorlagen-Orte im Vertrag `docs/standards/paper-mcp.md` und in den Fixtures nachziehen.
 
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/sources/**`, `tools/k3c-workbench/frontend/src/assets/prompts/**`, `data/asset-prompts.json`, `docs/standards/paper-mcp.md`, `tools/paper/fixtures/ui/**`
+- **Abhängig von:** B-728
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
+
 ## Beispiele
 
 Chip „CC-BY“ zeigt nur Dateien mit Namensnennung; Button „Credit nachtragen“ nennt Datei und Pack.
@@ -51,7 +57,7 @@ Unbekannte Lizenz bleibt als eigener Chip „unbekannt“ sichtbar.
 
 ## Offene Fragen
 
-Welche Aktionen? Default: Lizenz prüfen, Credit nachtragen, Treffer übernehmen.
+keine. Entschieden (Default, autonom Claude, 2026-11-14): Aktionen sind „Lizenz prüfen“, „Credit nachtragen“ und „Treffer übernehmen“.
 
 ## Notizen
 

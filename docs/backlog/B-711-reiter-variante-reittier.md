@@ -3,14 +3,14 @@
 - **Domäne:** PAP
 - **Typ:** Frage
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** MG9
+- **Sprint:** MG10
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-06
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -34,7 +34,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Assets nur über MCP `assets_*` (Entscheidung 005).
+
+- **Bereich:** `public/grafik/figuren/**`, `public/grafik/reittiere/**`, `tools/paper/**`, `docs/standards/paper-spec.md`
+- **Abhängig von:** B-720
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** golden
 
 ## Beispiele
 
@@ -50,7 +56,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Tausch mitwirken lassen (einfach) oder Reittier-Varianten (flexibler, MG2)?
+keine. Entschieden (Default, autonom Claude, 2026-11-14): Der Varianten-Tausch wirkt beim Reittier mit (einfach); Reittier-Varianten (MG2) bleiben ungenutzt.
 
 ## Notizen
 

@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-727, B-728, B-729
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: alle offenen angehen)
 
 ## Ausgangslage
 
@@ -34,11 +34,11 @@ Neue Asset-Arten, Änderungen an Assets ohne MCP (Entscheidung 005).
 
 ## Regeln und Einschränkungen
 
-Domäne DEV; Oberfläche nur über `@webkit`; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Typ Idee: Freigabe durch 🧑.
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `tools/k3c-workbench/frontend/src/assets/**`
-- **Abhängig von:** WZ43
-- **Braucht 🧑:** Freigabe
+- **Bereich:** `tools/k3c-workbench/frontend/src/assets/**`, `data/asset-prompts.json`, `docs/standards/paper-mcp.md`, `tools/paper/fixtures/ui/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
 - **Sperre:** –
 
 ## Beispiele
@@ -51,15 +51,23 @@ Leere Filtertreffer → Hinweis statt leerer Liste.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Styleguide mit Prompt-Buttons für Materialien, Töne und Papier (B-727).
-- **AC-02** Sound-Seite mit Filter (Text, Kategorie, Status) und Prompt-Buttons je Slot (B-728).
-- **AC-03** Quellen-Seite mit Filter (Lizenz, Pack, Art) und Prompt-Buttons (B-729).
+- **AC-01** Styleguide hat Prompt-Buttons für Material, Ton und Papier (`B-727/AC-01`, `AC-02`).
+- **AC-02** Sound-Seite hat Filter und Prompt-Buttons (`B-728`).
+- **AC-03** Quellen-Seite hat Filter und Prompt-Buttons (`B-729`).
+- **AC-04** Review ohne offenen schweren Befund.
 
 ## Offene Fragen
 
-Welche Prompts je Seite genau, und sollen die Kriterien der drei Tickets als `AC-01` … ausformuliert werden? Entscheidet 🧑 bei der Freigabe.
+keine. Entschieden (Default, autonom Claude, 2026-11-14): Aktionen wie in den Tickets B-727 bis B-729 notiert.
 
 ## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| WZ45.1 | `WZ45.1-styleguide-prompts.md` | Umsetzung | autonom | offen |
+| WZ45.2 | `WZ45.2-sound-filter-prompts.md` | Umsetzung | autonom | offen |
+| WZ45.3 | `WZ45.3-quellen-filter-prompts.md` | Umsetzung | autonom | offen |
+| WZ45.4 | `WZ45.4-review.md` | Umsetzung | autonom | offen |
 
 Entwurf (Stichpunkte, Session-Dateien vor dem Aktivieren):
 
