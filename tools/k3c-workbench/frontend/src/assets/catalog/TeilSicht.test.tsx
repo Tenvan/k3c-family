@@ -29,10 +29,11 @@ const ohne = (host: ParentNode) => host.querySelector('[data-ohne]')?.textConten
 describe('Teil ausblenden (B-734)', () => {
   it('blendet das gewählte Teil aus und wieder ein', async () => {
     const host = await mount(<Probe teil="krone" />);
+    await until('Knopf ausblenden', () => buttons(host, 'krone ausblenden')[0]);
     await click(buttons(host, 'krone ausblenden')[0]!);
-    expect(ohne(host)).toBe('krone');
+    await until('krone ausgeblendet', () => ohne(host) === 'krone');
     await click(buttons(host, 'krone einblenden')[0]!);
-    expect(ohne(host)).toBe('');
+    await until('krone eingeblendet', () => buttons(host, 'krone ausblenden')[0] && ohne(host) === '');
   });
 
   it('Vorschau holt den Frame ohne die ausgeblendeten Teile', async () => {

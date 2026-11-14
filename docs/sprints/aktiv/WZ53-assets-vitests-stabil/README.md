@@ -59,7 +59,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ53.1 | `WZ53.1-assets-vitests-until.md` | Umsetzung | autonom | offen |
+| WZ53.1 | `WZ53.1-assets-vitests-until.md` | Umsetzung | autonom | fertig |
 | WZ53.2 | `WZ53.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

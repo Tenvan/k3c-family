@@ -7,6 +7,7 @@ import { act, type ReactNode } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { vi } from 'vitest';
 import { clearReviewCache } from './reviewStore';
+import { until, wait } from '../testing';
 import type { Frame, PixelDiff, Review, Spec, Vorlage } from '../api';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -30,16 +31,16 @@ export function fakeApi() {
 
 let root: Root | null = null;
 
-export async function flush() {
-  for (let i = 0; i < 6; i++) await act(async () => new Promise((r) => setTimeout(r, 0)));
-}
+export { until, wait };
+
+/** Ein Takt (setTimeout 0) in act(): nur für Gegenproben und Zeitschritte, nie als Warten auf Inhalt (B-859). */
+export const settle = () => wait(0);
 
 export async function mount(node: ReactNode): Promise<HTMLElement> {
   const host = document.createElement('div');
   document.body.append(host);
   root = createRoot(host);
   await act(async () => root!.render(<Theme>{node}</Theme>));
-  await flush();
   return host;
 }
 
@@ -54,7 +55,6 @@ export function unmount() {
 export async function click(el: Element | null | undefined) {
   if (!el) throw new Error('Element fehlt');
   await act(async () => (el as HTMLElement).click());
-  await flush();
 }
 
 export const button = (host: ParentNode, text: string) =>

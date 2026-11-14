@@ -3,7 +3,7 @@ import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
 import type { AssetEintrag } from '../api';
-import { buttons, click, flush, mount, unmount } from '../testing';
+import { buttons, click, mount, unmount } from '../testing';
 import { mountCatalog, select, until } from './catalogTesting';
 import { CatalogPage } from './CatalogPage';
 
@@ -62,10 +62,9 @@ describe('Katalog: Cache (B-732/AC-03)', () => {
     document.body.appendChild(other);
     const root = createRoot(other);
     act(() => root.render(<CatalogPage />));
-    await flush();
-    expect(entry(other, 'monarch')).toBeTruthy();
+    await until('Liste aus dem Cache', () => entry(other, 'monarch'));
     await click(entry(other, 'monarch'));
-    expect(other.querySelector('img[alt="monarch idle Frame 1"]')).toBeTruthy();
+    await until('Vorschau aus dem Cache', () => other.querySelector('img[alt="monarch idle Frame 1"]'));
     expect(index).toHaveBeenCalledTimes(1);
     expect(spec).toHaveBeenCalledTimes(1);
     expect(frame).toHaveBeenCalledTimes(1);
@@ -96,9 +95,8 @@ describe('Katalog: Filter „nur geänderte“ (B-732)', () => {
     const box = host.querySelector<HTMLElement>('[role="checkbox"]')!;
     await until('Zähler im Filter', () => box.closest('label')?.textContent?.includes('nur geänderte (1)'));
     await click(box);
-    expect(entry(host, 'monarch')).toBeTruthy();
-    expect(entry(host, 'banner')).toBeNull();
+    await until('Filter an: banner weg', () => entry(host, 'monarch') && !entry(host, 'banner'));
     await click(box);
-    expect(entry(host, 'banner')).toBeTruthy();
+    await until('Filter aus: banner da', () => entry(host, 'banner'));
   });
 });

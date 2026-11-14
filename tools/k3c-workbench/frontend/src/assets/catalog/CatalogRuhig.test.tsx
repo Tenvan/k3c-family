@@ -5,7 +5,7 @@ import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
 import type { AssetEintrag, Frame, Spec } from '../api';
-import { buttons, click, flush, mount, unmount, wait } from '../testing';
+import { buttons, click, mount, unmount, wait } from '../testing';
 import { mountCatalog, playFrames, select, until } from './catalogTesting';
 import { CatalogPage } from './CatalogPage';
 
@@ -31,7 +31,6 @@ async function pressRight(host: ParentNode) {
   await act(async () => {
     thumb.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
   });
-  await flush();
 }
 
 describe('Katalog: Lade-Anzeige (WB2/AC-03)', () => {
@@ -66,7 +65,7 @@ describe('Katalog: Lade-Anzeige (WB2/AC-03)', () => {
     await pressRight(host);
     const stage = host.querySelector('.as-stage')!;
     expect(stage.querySelector('img[alt="monarch idle Frame 1"]')).toBeTruthy();
-    expect(stage.querySelector('[data-loading="frame"]')).toBeTruthy();
+    await until('Spinner am Frame', () => stage.querySelector('[data-loading="frame"]'));
     second.resolve(await real('monarch', 'idle', 1, '', ''));
     await until('Frame 2 gezeigt', () => stage.querySelector('img[alt="monarch idle Frame 2"]'));
     expect(stage.querySelector('[data-loading="frame"]')).toBeNull();
@@ -124,8 +123,7 @@ describe('Review-Befunde WB2.3', () => {
     await click(entry(host, 'mauer'));
     const vorher = frame.mock.calls.filter((c) => c[0] === 'monarch').length;
     for (const o of offen.splice(0)) o.resolve();
-    await flush();
-    await wait(200);
+    await wait(200); // Gegenprobe: nach dem Abbruch kommt nichts nach
     expect(frame.mock.calls.filter((c) => c[0] === 'monarch').length).toBe(vorher);
   });
 

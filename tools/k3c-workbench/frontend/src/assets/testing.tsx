@@ -24,16 +24,15 @@ export async function until<T>(what: string, cond: () => T | null | undefined | 
   }
 }
 
-export async function flush() {
-  for (let i = 0; i < 8; i++) await wait(0);
-}
+/** Ein Takt (setTimeout 0) in act(): nur für Gegenproben und Zeitschritte, nie als Warten auf Inhalt (B-859). */
+export const settle = () => wait(0);
 
 export async function mount(node: ReactNode): Promise<HTMLElement> {
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
   act(() => root!.render(<Theme>{node}</Theme>));
-  await flush();
+  await settle();
   return host;
 }
 
@@ -47,7 +46,7 @@ export function unmount() {
 
 export async function click(el: Element) {
   await act(async () => (el as HTMLElement).click());
-  await flush();
+  await settle();
 }
 
 export const buttons = (host: ParentNode, text: string) =>
