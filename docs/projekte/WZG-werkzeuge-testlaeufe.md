@@ -71,7 +71,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ49 | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | geplant |
 | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | erledigt |
 | WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt | erledigt |
-| WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | aktiv |
+| WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | erledigt |
 
 ## Nicht-Ziele
 

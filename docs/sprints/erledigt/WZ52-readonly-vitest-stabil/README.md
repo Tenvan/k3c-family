@@ -1,6 +1,6 @@
 # WZ52 · DEV · readonly-Vitest der Workbench bleibt unter Last grün
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ52.1 | `WZ52.1-readonly-vitest.md` | Umsetzung | autonom | fertig |
-| WZ52.2 | `WZ52.2-review.md` | Review | autonom | offen |
+| WZ52.2 | `WZ52.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -68,6 +68,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14: AC-01 (B-858) erfüllt, Nachweis WZ52.1 (20 readonly-Läufe unter paralleler Last grün), `task check` grün (WZ52.2). Behobene Befunde: readonly.test.tsx wartet per `until` (nach `src/assets/testing.tsx` gehoben). Neues Ticket anzulegen: SizeCompare.test.tsx unter Last wackelig. Kein Abnahme-Ticket für Sim/Balance/Gen nötig (nur Testcode).
