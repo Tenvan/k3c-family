@@ -1,5 +1,5 @@
 // Package github liest den GitHub-Stand der Sprints über die GitHub CLI `gh` (B-212): je Sprint-Branch
-// `sprint/<präfix>` den neuesten PR gegen develop mit CI- und Merge-Stand, dazu den letzten CI-Lauf auf develop.
+// `sprint/<präfix>` den neuesten PR gegen main mit CI- und Merge-Stand, dazu den letzten CI-Lauf auf main.
 // Die Anmeldung liegt bei `gh`; k3c-workbench speichert kein Token.
 package github
 
@@ -21,7 +21,7 @@ type SprintPR struct {
 	Merge  string `json:"merge"` // konfliktfrei | Konflikt | unbekannt | – (nicht offen)
 }
 
-// Run ist der letzte CI-Lauf auf develop.
+// Run ist der letzte CI-Lauf auf main.
 type Run struct {
 	CI      string `json:"ci"`
 	Title   string `json:"title"`
@@ -32,7 +32,7 @@ type Run struct {
 // Data ist der Stand für Oberfläche und Tool; Error ist ein Hinweis (gh fehlt, nicht angemeldet, veraltet).
 type Data struct {
 	Sprints map[string]SprintPR `json:"sprints"` // Schlüssel: Sprint-ID in Großbuchstaben (M8)
-	Develop *Run                `json:"develop,omitempty"`
+	Main *Run                `json:"main,omitempty"`
 	Error   string              `json:"error,omitempty"`
 	Fetched string              `json:"fetched,omitempty"` // RFC 3339, leer = nie geholt
 }
@@ -91,7 +91,7 @@ func Parse(prsJSON, runsJSON []byte, now time.Time) (Data, error) {
 		}
 		if len(runs) > 0 {
 			r := runs[0]
-			d.Develop = &Run{CI: runCI(r.Status, r.Conclusion), Title: r.Title, URL: r.URL, Created: r.CreatedAt}
+			d.Main = &Run{CI: runCI(r.Status, r.Conclusion), Title: r.Title, URL: r.URL, Created: r.CreatedAt}
 		}
 	}
 	return d, nil
@@ -169,7 +169,7 @@ func runCI(status, conclusion string) string {
 	return "rot"
 }
 
-// Text ist die knappe Fassung für das MCP-Tool gh_status: eine Zeile je Sprint, dann develop.
+// Text ist die knappe Fassung für das MCP-Tool gh_status: eine Zeile je Sprint, dann main.
 func Text(d Data) string {
 	var out []string
 	if d.Error != "" {
@@ -188,8 +188,8 @@ func Text(d Data) string {
 		}
 		out = append(out, line+" · "+p.URL)
 	}
-	if d.Develop != nil {
-		out = append(out, fmt.Sprintf("develop: CI %s · %s (%s)", d.Develop.CI, d.Develop.Title, d.Develop.Created))
+	if d.Main != nil {
+		out = append(out, fmt.Sprintf("main: CI %s · %s (%s)", d.Main.CI, d.Main.Title, d.Main.Created))
 	}
 	if len(out) == 0 {
 		return "keine Sprint-PRs"

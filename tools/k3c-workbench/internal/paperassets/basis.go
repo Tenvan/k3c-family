@@ -25,8 +25,8 @@ const (
 	StilPfad = Grafik + "/stil.paper.json"
 )
 
-// reBasis: HEAD, HEAD~1, origin/develop oder Commit-SHA mit 7–40 Hex-Zeichen (paper-mcp.md › 1).
-var reBasis = regexp.MustCompile(`^(HEAD|HEAD~1|origin/develop|[0-9a-fA-F]{7,40})$`)
+// reBasis: HEAD, HEAD~1, origin/main oder Commit-SHA mit 7–40 Hex-Zeichen (paper-mcp.md › 1).
+var reBasis = regexp.MustCompile(`^(HEAD|HEAD~1|origin/main|[0-9a-fA-F]{7,40})$`)
 
 // CheckBasis lehnt eine unbekannte Basis mit den erlaubten Werten ab (Vertragstext aus internal/review).
 func CheckBasis(basis string) error {

@@ -198,7 +198,7 @@ func shortHash(h string) string {
 	return h
 }
 
-// advise leitet die nächsten Handgriffe aus dem Stand ab, passend zu „ein PR je Sprint gegen develop“.
+// advise leitet die nächsten Handgriffe aus dem Stand ab, passend zu „ein PR je Sprint gegen main“.
 func advise(s Status) []string {
 	var a []string
 	if len(s.Changes) > 0 {
@@ -208,16 +208,16 @@ func advise(s Status) []string {
 	case s.Branch == "":
 		a = append(a, "Detached HEAD: auf einen Branch wechseln")
 	case s.UpstreamGone:
-		a = append(a, "Remote-Branch gelöscht (PR gemergt?): auf develop wechseln und den Branch aufräumen")
+		a = append(a, "Remote-Branch gelöscht (PR gemergt?): auf main wechseln und den Branch aufräumen")
 	case s.Behind > 0:
 		a = append(a, fmt.Sprintf("Pull: %d Commits auf dem Remote", s.Behind))
 	case s.Ahead > 0:
 		a = append(a, fmt.Sprintf("Push: %d Commits nicht gepusht", s.Ahead))
 	case s.Upstream == "" && !protected(s.Branch) && s.BaseAhead > 0:
-		a = append(a, "Push mit Upstream, dann PR gegen develop öffnen")
+		a = append(a, "Push mit Upstream, dann PR gegen main öffnen")
 	}
 	if s.Branch == Base && s.BaseBehind > 0 && s.Behind == 0 {
-		a = append(a, fmt.Sprintf("develop liegt %d hinter origin/develop: Fetch und Pull", s.BaseBehind))
+		a = append(a, fmt.Sprintf("main liegt %d hinter origin/main: Fetch und Pull", s.BaseBehind))
 	}
 	if s.MainBehind > 0 {
 		a = append(a, fmt.Sprintf("main liegt %d hinter origin/main (Fast-Forward macht Ralf)", s.MainBehind))

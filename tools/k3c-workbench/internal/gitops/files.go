@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// DiffFile ist eine Datei im Diff des Branches zu origin/develop.
+// DiffFile ist eine Datei im Diff des Branches zu origin/main.
 type DiffFile struct {
 	Path    string `json:"path"`
 	Code    string `json:"code"` // A, M, D, R …
@@ -15,13 +15,13 @@ type DiffFile struct {
 	Binary  bool   `json:"binary"`
 }
 
-// Files sind die Änderungen des Branches seit der Abzweigung von develop (Commits, ohne Working Tree).
+// Files sind die Änderungen des Branches seit der Abzweigung von main (Commits, ohne Working Tree).
 type Files struct {
-	Base  string     `json:"base"` // origin/develop
+	Base  string     `json:"base"` // origin/main
 	Files []DiffFile `json:"files"`
 }
 
-// BranchFiles liest den Diff von der Merge-Basis mit origin/develop bis HEAD.
+// BranchFiles liest den Diff von der Merge-Basis mit origin/main bis HEAD.
 func (r *Repo) BranchFiles(ctx context.Context) (Files, error) {
 	f := Files{Base: baseRemote, Files: []DiffFile{}}
 	names, err := r.git(ctx, "diff", "--name-status", "--no-renames", baseRemote+"...HEAD")

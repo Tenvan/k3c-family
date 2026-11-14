@@ -16,17 +16,17 @@ export function useGitHub(): [GitHubData | null, () => Promise<void>] {
 
 const TONE = { grün: 'ok', rot: 'error', läuft: 'warn', '–': 'neutral' } as const;
 
-/** Kopfzeile über der Filterleiste: letzter CI-Lauf auf develop, Hinweis von gh, Neu laden (B-212). */
+/** Kopfzeile über der Filterleiste: letzter CI-Lauf auf main, Hinweis von gh, Neu laden (B-212). */
 export function GitHubBar({ gh, reload }: { gh: GitHubData | null; reload: () => Promise<void> }) {
   return (
     <div className="pl-ghbar">
       <Text size="1" color="gray">GitHub</Text>
-      {gh?.develop && (
-        <LinkButton underline="none" onClick={() => backend.openUrl(gh.develop!.url)} title={gh.develop.created}>
-          <Pill tone={TONE[gh.develop.ci]}>develop · CI {gh.develop.ci}</Pill>
+      {gh?.main && (
+        <LinkButton underline="none" onClick={() => backend.openUrl(gh.main!.url)} title={gh.main.created}>
+          <Pill tone={TONE[gh.main.ci]}>main · CI {gh.main.ci}</Pill>
         </LinkButton>
       )}
-      {gh?.develop && <Text size="1" color="gray" className="pl-ellipsis">{gh.develop.title}</Text>}
+      {gh?.main && <Text size="1" color="gray" className="pl-ellipsis">{gh.main.title}</Text>}
       {gh?.error && <Pill tone="warn">{gh.error}</Pill>}
       {gh === null && <Text size="1" color="gray">lädt …</Text>}
       <ActionButton size="1" variant="ghost" color="gray" className="pl-push" onClick={reload}>Neu laden</ActionButton>

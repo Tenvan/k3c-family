@@ -122,7 +122,7 @@ describe('Seite Git mit Mock (B-580/AC-02)', () => {
 
   it('Dateien der Commits erst nach „Dateien zeigen“', async () => {
     const host = await mount();
-    expect(host.textContent).toContain('Commits seit origin/develop: 3 Dateien');
+    expect(host.textContent).toContain('Commits seit origin/main: 3 Dateien');
     expect(host.textContent).not.toContain('internal/gitops/status.go');
     act(() => button('Dateien zeigen').click());
     expect(host.textContent).toContain('internal/gitops/status.go');

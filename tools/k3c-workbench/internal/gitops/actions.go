@@ -40,7 +40,7 @@ func (r *Repo) Do(ctx context.Context, action string) (string, error) {
 	return "", fmt.Errorf("unbekannte Aktion %q", action)
 }
 
-// push schiebt den aktuellen Branch; ohne Upstream mit -u nach origin. develop und main nimmt die Seite nicht.
+// push schiebt den aktuellen Branch; ohne Upstream mit -u nach origin. main nimmt die Seite nicht.
 func (r *Repo) push(ctx context.Context) (string, error) {
 	branch, err := r.git(ctx, "branch", "--show-current")
 	if err != nil {
@@ -55,7 +55,7 @@ func (r *Repo) push(ctx context.Context) (string, error) {
 		return "", fmt.Errorf("ungewöhnlicher Branch-Name %q", branch)
 	}
 	// Immer mit ausdrücklichem Ziel gleichen Namens: ein bloßes `git push` ginge an den Upstream, und der könnte (mit
-	// push.default=upstream) origin/develop sein.
+	// push.default=upstream) origin/main sein.
 	refspec := "HEAD:refs/heads/" + branch
 	if _, err := r.git(ctx, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"); err == nil {
 		_, err := r.git(ctx, "push", "origin", refspec)
@@ -65,7 +65,7 @@ func (r *Repo) push(ctx context.Context) (string, error) {
 	return "Push fertig, Upstream origin/" + branch + " gesetzt", err
 }
 
-// Delete löscht lokale Branches, die develop schon enthält; remote löscht dazu den Branch auf origin, falls es ihn
+// Delete löscht lokale Branches, die main schon enthält; remote löscht dazu den Branch auf origin, falls es ihn
 // noch gibt. Die Prüfung läuft hier noch einmal, die Oberfläche könnte einen alten Stand zeigen.
 func (r *Repo) Delete(ctx context.Context, names []string, remote bool) (string, error) {
 	if len(names) == 0 {
@@ -104,7 +104,7 @@ func (r *Repo) Delete(ctx context.Context, names []string, remote bool) (string,
 	return r.deleteAll(ctx, names, byName, remote)
 }
 
-// deleteAll löscht erst die Remote-Branches (nur, wenn develop auch deren Stand enthält), dann lokal. Scheitert ein
+// deleteAll löscht erst die Remote-Branches (nur, wenn main auch deren Stand enthält), dann lokal. Scheitert ein
 // Remote-Schritt, bleibt der lokale Branch stehen; die übrigen laufen weiter.
 func (r *Repo) deleteAll(ctx context.Context, names []string, byName map[string]Branch, remote bool) (string, error) {
 	var res result
@@ -132,7 +132,7 @@ func (r *Repo) deleteAll(ctx context.Context, names []string, byName map[string]
 	return res.String(), nil
 }
 
-// deleteRemote löscht origin/<upstream>, wenn develop dessen Stand enthält (Vorfahre oder Squash); Commits, die nur auf
+// deleteRemote löscht origin/<upstream>, wenn main dessen Stand enthält (Vorfahre oder Squash); Commits, die nur auf
 // origin liegen (anderes Gerät, andere Session), bleiben so erhalten.
 func (r *Repo) deleteRemote(ctx context.Context, b Branch) error {
 	up, ok := strings.CutPrefix(b.Upstream, "origin/")
@@ -146,7 +146,7 @@ func (r *Repo) deleteRemote(ctx context.Context, b Branch) error {
 	if b.PR == 0 || seen != b.SHA { // über einen gemergten PR geprüft: origin darf nur genau diesen Stand haben
 		ahead, _, measured := r.aheadBehind(ctx, b.Upstream, baseRemote)
 		if in, _ := r.squashed(ctx, b.Upstream); !measured || (ahead > 0 && !in) {
-			return errors.New("origin hat Commits, die develop fehlen; nichts gelöscht")
+			return errors.New("origin hat Commits, die main fehlen; nichts gelöscht")
 		}
 	}
 	// Lease auf den zuletzt gesehenen Stand: hat seit dem letzten Fetch jemand nachgepusht, lehnt origin ab.

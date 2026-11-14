@@ -17,7 +17,7 @@ import (
 
 // Base ist der Ziel-Branch aller PRs, Main der Release-Branch; beide lassen sich nicht löschen und nicht pushen.
 const (
-	Base       = "develop"
+	Base       = "main"
 	Main       = "main"
 	baseRemote = "origin/" + Base
 	timeout    = 60 * time.Second
@@ -31,7 +31,7 @@ type Repo struct {
 	root string
 	run  Runner
 	mu   sync.Mutex // eine schreibende Aktion zur Zeit
-	memo sync.Map   // Merge-Zustand je "branch-sha develop-sha" (merged.go)
+	memo sync.Map   // Merge-Zustand je "branch-sha main-sha" (merged.go)
 
 	dirOnce sync.Once // gemeinsamer Git-Ordner für Stamp (stamp.go)
 	dir     string

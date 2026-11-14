@@ -11,8 +11,7 @@ function mockBranches(): GitBranch[] {
   });
   return [
     branch({ name: 'feat/git-seite', state: 'aktuell', track: 'voraus', ahead: 1, baseAhead: 1, subject: 'feat(dev): Git-Seite', date: now - 600, reason: 'ausgecheckt' }),
-    branch({ name: 'develop', state: 'basis', subject: 'Neun Sprints (#451)', reason: 'develop und main bleiben' }),
-    branch({ name: 'main', state: 'basis', track: 'zurück', behind: 275, baseBehind: 275, subject: 'M8 (#106)', date: now - 40 * DAY, reason: 'develop und main bleiben' }),
+    branch({ name: 'main', state: 'basis', track: 'zurück', behind: 275, baseBehind: 275, subject: 'M8 (#106)', date: now - 40 * DAY, reason: 'main bleibt' }),
     branch({ name: 'sprint/bd2', state: 'squash', pr: 431, track: 'gone', baseAhead: 4, baseBehind: 61, subject: 'docs(bd2): Review', date: now - 12 * DAY }),
     branch({ name: 'w11-lauf', state: 'ungemergt', checked: false, track: 'zurück', behind: 24, baseAhead: 1, baseBehind: 70, subject: 'feat(srv): Bauplätze (W11.2)', date: now - 18 * DAY, reason: 'ungeprüft: erst „Prüfen“' }),
     branch({ name: 'sprint/gr8', state: 'squash', track: 'gone', baseAhead: 3, baseBehind: 80, subject: 'docs(cli): Review GR8', date: now - 15 * DAY }),
@@ -28,7 +27,7 @@ function checkMock(branches: GitBranch[], names: string[]): GitBranch[] {
   return branches.map((b) => {
     if (b.remote || b.state !== 'ungemergt' || (names.length > 0 ? !names.includes(b.name) : b.checked)) return b;
     if (b.name === 'w11-lauf') return { ...b, state: 'squash', pr: 427, checked: true, deletable: true, reason: '' };
-    return { ...b, checked: true, reason: 'nicht in develop' };
+    return { ...b, checked: true, reason: 'nicht in main' };
   });
 }
 
@@ -59,7 +58,7 @@ export function mockGit(): GitBackend {
     },
     branches,
     files: {
-      base: 'origin/develop',
+      base: 'origin/main',
       files: [
         { path: 'tools/k3c-workbench/internal/gitops/status.go', code: 'A', added: 214, deleted: 0, binary: false },
         { path: 'tools/k3c-workbench/uiapi.go', code: 'M', added: 1, deleted: 0, binary: false },

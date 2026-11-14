@@ -35,8 +35,8 @@ func commit(t *testing.T, dir, file, text string) {
 	sh(t, dir, "commit", "-q", "-m", file+" "+text)
 }
 
-// setup baut origin mit develop und main, einen Klon und drei Branches: squash (per Squash in develop),
-// merged (Vorfahre von develop) und offen (eigene Arbeit).
+// setup baut origin mit main, einen Klon und drei Branches: squash (per Squash in main),
+// merged (Vorfahre von main) und offen (eigene Arbeit).
 func setup(t *testing.T) (*Repo, string) {
 	t.Helper()
 	if _, err := exec.LookPath("git"); err != nil {
@@ -49,25 +49,23 @@ func setup(t *testing.T) (*Repo, string) {
 	}
 	base := t.TempDir()
 	origin, work := filepath.Join(base, "origin.git"), filepath.Join(base, "work")
-	sh(t, base, "init", "-q", "--bare", "-b", "develop", origin)
+	sh(t, base, "init", "-q", "--bare", "-b", "main", origin)
 	sh(t, base, "clone", "-q", origin, work)
-	sh(t, work, "checkout", "-q", "-b", "develop")
+	sh(t, work, "checkout", "-q", "-b", "main")
 	commit(t, work, "a.txt", "1")
-	sh(t, work, "push", "-q", "-u", "origin", "develop")
-	sh(t, work, "push", "-q", "origin", "develop:main")
-	sh(t, work, "branch", "main", "origin/main")
+	sh(t, work, "push", "-q", "-u", "origin", "main")
 
 	sh(t, work, "checkout", "-q", "-b", "squash")
 	commit(t, work, "s1.txt", "x")
 	commit(t, work, "s2.txt", "y")
 	sh(t, work, "push", "-q", "-u", "origin", "squash")
-	sh(t, work, "checkout", "-q", "-b", "merged", "develop")
-	sh(t, work, "checkout", "-q", "-b", "offen", "develop")
+	sh(t, work, "checkout", "-q", "-b", "merged", "main")
+	sh(t, work, "checkout", "-q", "-b", "offen", "main")
 	commit(t, work, "o.txt", "z")
-	sh(t, work, "checkout", "-q", "develop")
+	sh(t, work, "checkout", "-q", "main")
 	sh(t, work, "merge", "-q", "--squash", "squash")
 	sh(t, work, "commit", "-q", "-m", "Squash von squash (#1)")
-	sh(t, work, "push", "-q", "origin", "develop")
+	sh(t, work, "push", "-q", "origin", "main")
 	sh(t, work, "push", "-q", "origin", "--delete", "squash") // GitHub löscht nach dem Merge
 	sh(t, work, "fetch", "-q", "--prune")
 	return New(work), work
@@ -107,8 +105,7 @@ func TestBranchesErkenntSquashUndGone(t *testing.T) {
 		name, state, track string
 		deletable          bool
 	}{
-		{"develop", StateBase, TrackSync, false}, // ausgecheckt, aber Basis geht vor
-		{"main", StateBase, TrackSync, false},
+		{"main", StateBase, TrackSync, false}, // ausgecheckt, aber Basis geht vor
 		{"squash", StateSquash, TrackGone, true},
 		{"merged", StateMerged, TrackNone, true},
 		{"offen", StateOpen, TrackNone, false},
@@ -125,7 +122,7 @@ func TestBranchesErkenntSquashUndGone(t *testing.T) {
 	}
 }
 
-// Sammel-PR: develop bekam den Branch zusammen mit anderem in einem Squash und änderte die Datei danach weiter.
+// Sammel-PR: main bekam den Branch zusammen mit anderem in einem Squash und änderte die Datei danach weiter.
 // git allein erkennt das nicht (merge-tree Konflikt, Squash-Patch anders), der gemergte PR mit gleichem Head schon.
 func TestCheckErkenntSammelPR(t *testing.T) {
 	if testing.Short() {
@@ -136,7 +133,7 @@ func TestCheckErkenntSammelPR(t *testing.T) {
 	sh(t, work, "checkout", "-q", "-b", "viapr")
 	commit(t, work, "a.txt", "2")
 	sha := sh(t, work, "rev-parse", "HEAD")
-	sh(t, work, "checkout", "-q", "develop")
+	sh(t, work, "checkout", "-q", "main")
 	sh(t, work, "merge", "-q", "--squash", "viapr")
 	if err := os.WriteFile(filepath.Join(work, "anderes.txt"), []byte("x"), 0o600); err != nil {
 		t.Fatal(err)
@@ -144,7 +141,7 @@ func TestCheckErkenntSammelPR(t *testing.T) {
 	sh(t, work, "add", "anderes.txt")
 	sh(t, work, "commit", "-q", "-m", "Sammel-PR (#9)")
 	commit(t, work, "a.txt", "3")
-	sh(t, work, "push", "-q", "origin", "develop")
+	sh(t, work, "push", "-q", "origin", "main")
 	sh(t, work, "fetch", "-q")
 
 	if err := r.Check(ctx, []string{"viapr"}, nil); err != nil {
@@ -176,7 +173,7 @@ func TestDeleteNurGemergte(t *testing.T) {
 	if err := r.Check(ctx, nil, nil); err != nil {
 		t.Fatal(err)
 	}
-	for _, names := range [][]string{{"offen"}, {"develop"}, {"main"}, {"gibtsnicht"}, {"-D"}, {"squash", "offen"}} {
+	for _, names := range [][]string{{"offen"}, {"main"}, {"gibtsnicht"}, {"-D"}, {"squash", "offen"}} {
 		if _, err := r.Delete(ctx, names, false); err == nil {
 			t.Errorf("Delete(%v) muss scheitern", names)
 		}
@@ -223,7 +220,7 @@ func TestStampFolgtDemRepo(t *testing.T) {
 			}
 			sh(t, work, "add", "x.txt")
 		}},
-		{"fetch", func() { sh(t, work, "fetch", "-q", "--force", "origin", "develop:refs/remotes/origin/probe") }},
+		{"fetch", func() { sh(t, work, "fetch", "-q", "--force", "origin", "main:refs/remotes/origin/probe") }},
 	}
 	for _, s := range steps {
 		before := stamp()
@@ -234,7 +231,7 @@ func TestStampFolgtDemRepo(t *testing.T) {
 	}
 }
 
-// Review B-580 (1): Scheitert die Messung zu develop, darf nichts als gemergt und löschbar gelten.
+// Review B-580 (1): Scheitert die Messung zu main, darf nichts als gemergt und löschbar gelten.
 func TestMessfehlerGiltNieAlsGemergt(t *testing.T) {
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
@@ -261,7 +258,7 @@ func TestMessfehlerGiltNieAlsGemergt(t *testing.T) {
 	}
 }
 
-// Review B-580 (2): Liegen auf origin Commits, die develop fehlen, bleibt der Remote-Branch und auch der lokale.
+// Review B-580 (2): Liegen auf origin Commits, die main fehlen, bleibt der Remote-Branch und auch der lokale.
 func TestRemoteMitFremdenCommitsBleibt(t *testing.T) {
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
@@ -288,8 +285,8 @@ func TestStatusUndAktionen(t *testing.T) {
 	}
 	r, work := setup(t)
 	ctx := context.Background()
-	if _, err := r.Do(ctx, ActPush); err == nil || !strings.Contains(err.Error(), "develop") {
-		t.Fatalf("Push auf develop muss scheitern: %v", err)
+	if _, err := r.Do(ctx, ActPush); err == nil || !strings.Contains(err.Error(), "main") {
+		t.Fatalf("Push auf main muss scheitern: %v", err)
 	}
 	sh(t, work, "checkout", "-q", "offen")
 	if err := os.WriteFile(filepath.Join(work, "neu.txt"), []byte("n"), 0o600); err != nil {

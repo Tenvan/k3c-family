@@ -9,13 +9,13 @@ import (
 
 func TestBasis(t *testing.T) {
 	t.Parallel()
-	for _, ok := range []string{"HEAD", "HEAD~1", "abc1234", "origin/develop"} {
+	for _, ok := range []string{"HEAD", "HEAD~1", "abc1234", "origin/main"} {
 		if err := CheckBasis(ok); err != nil {
 			t.Errorf("%s: %v", ok, err)
 		}
 	}
 	err := CheckBasis("main")
-	if err == nil || err.Error() != "Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop" {
+	if err == nil || err.Error() != "Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/main" {
 		t.Errorf("main: %v", err)
 	}
 }

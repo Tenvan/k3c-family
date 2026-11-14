@@ -7,14 +7,14 @@ import (
 	"sync"
 )
 
-// Zustände eines Branches gegenüber develop.
+// Zustände eines Branches gegenüber main.
 const (
 	StateCurrent  = "aktuell"   // ausgecheckt in der Wurzel
 	StateWorktree = "worktree"  // ausgecheckt in einem anderen Worktree
-	StateBase     = "basis"     // develop oder main
-	StateMerged   = "gemergt"   // Vorfahre von origin/develop
-	StateSquash   = "squash"    // Inhalt per Squash-Merge in origin/develop
-	StateOpen     = "ungemergt" // eigene Commits, die develop fehlen
+	StateBase     = "basis"     // main
+	StateMerged   = "gemergt"   // Vorfahre von origin/main
+	StateSquash   = "squash"    // Inhalt per Squash-Merge in origin/main
+	StateOpen     = "ungemergt" // eigene Commits, die main fehlen
 )
 
 // Remote-Zustände eines Branches.
@@ -76,7 +76,7 @@ func (r *Repo) Branches(ctx context.Context) ([]Branch, error) {
 	for _, w := range parseWorktrees(wtOut) {
 		wt[w.Branch] = w.Branch != ""
 	}
-	base, _ := r.git(ctx, "rev-parse", "--verify", "--quiet", baseRemote) // leer: kein origin/develop, alles bleibt ungemergt
+	base, _ := r.git(ctx, "rev-parse", "--verify", "--quiet", baseRemote) // leer: kein origin/main, alles bleibt ungemergt
 	list := make([]Branch, len(refs))
 	var wg sync.WaitGroup
 	sem := make(chan struct{}, 6)
@@ -114,7 +114,7 @@ func (r *Repo) branch(ctx context.Context, f ref, base, current string, wt map[s
 	case b.State != "":
 	case !ok || base == "":
 		b.State = StateOpen
-		b.Deletable, b.Reason = false, "Stand zu origin/develop unbekannt"
+		b.Deletable, b.Reason = false, "Stand zu origin/main unbekannt"
 		return b
 	default:
 		b.State, b.PR, b.Checked = r.mergedState(f.sha, base, ahead)
@@ -123,13 +123,13 @@ func (r *Repo) branch(ctx context.Context, f ref, base, current string, wt map[s
 	return b
 }
 
-// deletable: nur lokale Branches, die develop schon enthält und die nirgends ausgecheckt sind.
+// deletable: nur lokale Branches, die main schon enthält und die nirgends ausgecheckt sind.
 func deletable(b Branch) (bool, string) {
 	switch {
 	case b.Remote:
 		return false, "nur remote"
 	case b.State == StateBase:
-		return false, "develop und main bleiben"
+		return false, "main bleibt"
 	case b.State == StateCurrent:
 		return false, "ausgecheckt"
 	case b.State == StateWorktree:
@@ -137,7 +137,7 @@ func deletable(b Branch) (bool, string) {
 	case b.State == StateOpen && !b.Checked:
 		return false, "ungeprüft: erst „Prüfen“"
 	case b.State == StateOpen:
-		return false, "nicht in develop"
+		return false, "nicht in main"
 	}
 	return true, ""
 }

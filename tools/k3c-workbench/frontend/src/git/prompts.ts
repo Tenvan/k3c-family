@@ -1,12 +1,12 @@
 import type { GitBranch, GitPR } from '../api';
 
 // Aufträge an Claude von der Seite Git (B-580/AC-03): kopieren oder als neue Code-Session öffnen (CopyPrompt). Kurzform
-// ohne Anweisungen (B-639): Art und Namen; die Regeln des Repos setzt GitHub durch (develop und main geschützt).
+// ohne Anweisungen (B-639): Art und Namen; die Regeln des Repos setzt GitHub durch (main geschützt).
 
 /** Prompt für die markierten Branches. */
 export const cleanupMarkedPrompt = (names: string[]): string => `Branches aufräumen: ${names.join(', ')}`;
 
-/** Kandidaten für „Veraltete aufräumen“: gemergt oder Remote gone, nicht ausgecheckt, nicht develop/main. */
+/** Kandidaten für „Veraltete aufräumen“: gemergt oder Remote gone, nicht ausgecheckt, nicht main. */
 export function staleBranches(branches: GitBranch[]): GitBranch[] {
   return branches.filter((b) => !b.remote && (b.deletable || (b.track === 'gone' && b.state === 'ungemergt')));
 }

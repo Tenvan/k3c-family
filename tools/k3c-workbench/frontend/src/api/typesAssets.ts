@@ -181,7 +181,7 @@ export interface AssetsBackend {
   assetsGet(id: string): Promise<Spec>;
   assetsStyle(): Promise<Stil>;
   assetsPrompts(): Promise<Vorlage[]>;
-  /** Basis `HEAD`, `HEAD~1`, Commit-SHA oder `origin/develop`. */
+  /** Basis `HEAD`, `HEAD~1`, Commit-SHA oder `origin/main`. */
   assetsReview(basis: string): Promise<Review>;
   /** `variante` und `basis` dürfen leer sein (leere Basis = Arbeitsstand). */
   assetsFrame(id: string, animation: string, frame: number, variante: string, basis: string): Promise<Frame>;

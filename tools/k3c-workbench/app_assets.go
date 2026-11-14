@@ -45,7 +45,7 @@ func (a *App) AssetsStyle() (map[string]any, error) { return a.assets().AssetsSt
 // AssetsPrompts liefert die Prompt-Vorlagen aus data/asset-prompts.json (Binding).
 func (a *App) AssetsPrompts() ([]assetsui.Vorlage, error) { return a.assets().AssetsPrompts() }
 
-// AssetsReview vergleicht den Arbeitsstand mit der Basis HEAD, HEAD~1, Commit-SHA oder origin/develop (Binding).
+// AssetsReview vergleicht den Arbeitsstand mit der Basis HEAD, HEAD~1, Commit-SHA oder origin/main (Binding).
 func (a *App) AssetsReview(basis string) (assetsui.Review, error) {
 	return a.assets().AssetsReview(basis)
 }

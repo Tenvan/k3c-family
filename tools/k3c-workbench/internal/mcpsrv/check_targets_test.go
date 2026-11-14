@@ -42,8 +42,8 @@ func TestCheckRunTeilaufgabenCheckDiff(t *testing.T) {
 			t.Errorf("Beschreibung von check_run nennt %q nicht", s)
 		}
 	}
-	if strings.Contains(checkRunDescription, "origin/develop") {
-		t.Error("Beschreibung nennt noch origin/develop")
+	if strings.Contains(checkRunDescription, "origin/main") {
+		t.Error("Beschreibung nennt noch origin/main")
 	}
 	if _, err := findTarget("task:check:diff:rust"); err == nil || !strings.Contains(err.Error(), "task:check:diff:go") {
 		t.Errorf("Ablehnung nennt die Teilaufgaben nicht: %v", err)

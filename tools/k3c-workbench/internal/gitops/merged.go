@@ -13,7 +13,7 @@ type MergedPR struct {
 	SHA    string
 }
 
-// verdict ist das Ergebnis der Prüfung „steckt der Branch in develop?“, gemerkt je Commit-Paar (Branch, develop).
+// verdict ist das Ergebnis der Prüfung „steckt der Branch in main?“, gemerkt je Commit-Paar (Branch, main).
 type verdict struct {
 	state string // StateSquash oder StateOpen
 	pr    int    // Nummer des gemergten PRs, 0 = über git erkannt oder ungemergt
@@ -21,7 +21,7 @@ type verdict struct {
 
 func memoKey(sha, base string) string { return sha + " " + base }
 
-// mergedState: Vorfahre von develop heißt gemergt; sonst gilt das gemerkte Ergebnis von Check. Ohne Prüfung bleibt
+// mergedState: Vorfahre von main heißt gemergt; sonst gilt das gemerkte Ergebnis von Check. Ohne Prüfung bleibt
 // der Branch ungemergt und ungeprüft, die teure Prüfung läuft nur auf Knopfdruck. Der Aufrufer stellt sicher, dass
 // baseAhead gemessen ist (aheadBehind ok) und base existiert.
 func (r *Repo) mergedState(sha, base string, baseAhead int) (string, int, bool) {
@@ -40,8 +40,8 @@ func (r *Repo) mergedState(sha, base string, baseAhead int) (string, int, bool) 
 
 // Check prüft die genannten lokalen Branches (leer = alle ungeprüften) gründlich und merkt das Ergebnis:
 // 1. ein gemergter PR, dessen Head der Branch ist oder enthält (der übliche Squash-Merge, auch Sammel-PRs),
-// 2. ein Merge in develop ändert nichts mehr (merge-tree),
-// 3. der Netto-Diff des Branches ist als Commit in develop (Squash-Patch, git cherry).
+// 2. ein Merge in main ändert nichts mehr (merge-tree),
+// 3. der Netto-Diff des Branches ist als Commit in main (Squash-Patch, git cherry).
 func (r *Repo) Check(ctx context.Context, names []string, prs []MergedPR) error {
 	all, err := r.Branches(ctx)
 	if err != nil {
@@ -49,7 +49,7 @@ func (r *Repo) Check(ctx context.Context, names []string, prs []MergedPR) error 
 	}
 	base, _ := r.git(ctx, "rev-parse", "--verify", "--quiet", baseRemote)
 	if base == "" {
-		return nil // ohne origin/develop gibt es nichts zu prüfen
+		return nil // ohne origin/main gibt es nichts zu prüfen
 	}
 	want := map[string]bool{}
 	for _, n := range names {
@@ -92,7 +92,7 @@ func (r *Repo) verdict(ctx context.Context, b Branch, prs []MergedPR) (verdict, 
 // (kein Vorfahre, Konflikt) mit Exit 1 ohne Text auf stderr; gitError macht daraus „…: exit status 1“.
 func noAnswer(err error) bool { return err != nil && !strings.HasSuffix(err.Error(), "exit status 1") }
 
-// prFor sucht einen nach develop gemergten PR mit dem Branch als Head, über den Upstream-Namen oder den eigenen
+// prFor sucht einen nach main gemergten PR mit dem Branch als Head, über den Upstream-Namen oder den eigenen
 // Namen; der Branch muss der Head des PRs sein oder in ihm stecken. sure ist falsch, wenn git nicht antworten konnte.
 func (r *Repo) prFor(ctx context.Context, b Branch, prs []MergedPR) (pr int, sure bool) {
 	up := strings.TrimPrefix(b.Upstream, "origin/")
@@ -115,9 +115,9 @@ func (r *Repo) prFor(ctx context.Context, b Branch, prs []MergedPR) (pr int, sur
 	return 0, sure
 }
 
-// squashed: develop enthält den Stand von target, wenn ein Merge nichts mehr ändert (merge-tree) oder ein Commit
-// mit dem Netto-Diff des Branches für `git cherry` gleich einem Commit auf develop ist (Squash-Merge). Bekannte
-// Grenze: hat develop die Änderung später zurückgenommen, gilt der Branch über merge-tree ebenfalls als enthalten.
+// squashed: main enthält den Stand von target, wenn ein Merge nichts mehr ändert (merge-tree) oder ein Commit
+// mit dem Netto-Diff des Branches für `git cherry` gleich einem Commit auf main ist (Squash-Merge). Bekannte
+// Grenze: hat main die Änderung später zurückgenommen, gilt der Branch über merge-tree ebenfalls als enthalten.
 // sure ist falsch, wenn git nicht antworten konnte.
 func (r *Repo) squashed(ctx context.Context, target string) (in, sure bool) {
 	tree, err := r.git(ctx, "merge-tree", "--write-tree", baseRemote, target)
@@ -133,7 +133,7 @@ func (r *Repo) squashed(ctx context.Context, target string) (in, sure bool) {
 }
 
 // squashPatch: Ein Commit mit dem Baum des Branches auf der Merge-Basis ist für `git cherry` gleich einem Commit auf
-// develop, wenn ein Squash-Merge genau diese Änderung gebracht hat.
+// main, wenn ein Squash-Merge genau diese Änderung gebracht hat.
 func (r *Repo) squashPatch(ctx context.Context, target string) (in, sure bool) {
 	mb, err := r.git(ctx, "merge-base", baseRemote, target)
 	if err != nil {

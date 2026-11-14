@@ -97,7 +97,7 @@ func TestAssetsPreviewFehler(t *testing.T) {
 	for args, want := range map[string]string{
 		`{"id":"monarch","animation":"flug"}`: "idle, lauf, reiten",
 		`{"id":"x"}`:                          "Asset „x“ fehlt",
-		`{"id":"monarch","basis":"main"}`:     "Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop",
+		`{"id":"monarch","basis":"main"}`:     "Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/main",
 	} {
 		res, err := cs.CallTool(context.Background(), &mcp.CallToolParams{Name: "assets_preview", Arguments: jsonRoh(args)})
 		if err != nil {
