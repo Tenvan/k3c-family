@@ -4,8 +4,8 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** –
+- **Status:** erledigt
+- **Sprint:** WZ59
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
@@ -58,9 +58,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: Die Reiter stehen in der genannten Reihenfolge (App.test.tsx).
-- AC-02: Sound & Quellen zeigt beide Inhalte; Filter und Prompt-Buttons (WZ45) funktionieren weiter.
-- AC-03: `task k3c-workbench:test` grün.
+- **AC-01** Die Reiter stehen in der genannten Reihenfolge (App.test.tsx).
+- **AC-02** Sound & Quellen zeigt beide Inhalte; Filter und Prompt-Buttons (WZ45) funktionieren weiter.
+- **AC-03** `task k3c-workbench:test` grün.
 
 ## Offene Fragen
 

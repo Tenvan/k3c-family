@@ -77,6 +77,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ56 | Sammelaufruf: Fehlerantwort mit Teilergebnis, Task-Version gemerkt | erledigt |
 | WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | erledigt |
 | WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | erledigt |
+| WZ59 | Studio-Seiten neu ordnen, Sound und Quellen zusammenlegen | erledigt |
+| WZ60 | Workbench-Oberfläche bleibt bei langen Läufen stabil | geplant |
 
 ## Nicht-Ziele
 

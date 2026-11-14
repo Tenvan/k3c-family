@@ -114,7 +114,8 @@ Eine Session muss **ohne Rückfragen und ohne Planungs-Werkzeuge** abzuarbeiten 
 4. Alles unter **Fertig, wenn** abhaken, die Befehle unter **Prüfen** müssen grün sein (Prüfstufen: „Tempo im Lauf“).
    Maßstab sind die Kriterien der Session in der Sprint-README (SDD), nicht eine eigene Auslegung.
 5. **Ergebnis** mit Nachweis je Kriterium ausfüllen, `Status: fertig` setzen, auch in der Session-Tabelle der Sprint-README. Neue Ideen oder
-   Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen. Gemeinsame Planungsdateien
+   Probleme als Ticket anlegen (Vorlage!) und in `backlog/README.md` eintragen; jedes neue Ticket gleich mit Projekt und
+   Sprint (keine ungeplanten Tickets, Regel 🧑 2026-11-14, `plan_create` erzwingt es). Gemeinsame Planungsdateien
    (`backlog/README.md`, `sprints/README.md`) erst am Ende ändern. Ein Commit mit Session im Titel
    (`feat(srv): Restore absichern (F4.3)`), `git fetch`, `git merge origin/main`, push auf den Sprint-Branch.
    **Kein PR**: den öffnet erst die letzte Session des Sprints (Review, im Doku-Sprint die letzte); sie schaltet

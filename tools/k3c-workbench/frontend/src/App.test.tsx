@@ -56,12 +56,12 @@ describe('Bereiche Development und Assets (WB1/AC-01)', () => {
     }
   });
 
-  it('Studio startet mit dem Review und zeigt Katalog, Styleguide, Sound, Quellen, Balancing, Welten-Editor', () => {
+  it('Studio startet mit dem Review und zeigt Styleguide, Katalog, Sound & Quellen, Welten-Editor, Balancing', () => {
     savePref('app.area', 'assets');
     localStorage.removeItem('k3c-workbench.app.assetsPage');
     const html = renderToStaticMarkup(<App />);
     const head = header(html);
-    for (const p of ASSET_PAGES) expect(head, p).toContain(`>${ASSET_LABELS[p]}<`);
+    for (const p of ASSET_PAGES) expect(head, p).toContain(`>${ASSET_LABELS[p].replace("&", "&amp;")}<`);
     expect(active(head)).toBe('Review');
     expect(head).not.toContain(`>${LABELS.dienste}<`);
     expect(html).toContain('Asset-Review');

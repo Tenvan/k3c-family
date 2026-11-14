@@ -3,9 +3,9 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** EP1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
@@ -40,15 +40,13 @@ Frei belegbare Einzeltasten (Rebinding) – später eigenes Ticket.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Spiel-Code fragt Aktionen ab, nie konkrete Tasten. Nur Xbox-Symbole für jedes Pad.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/input/**`, `native/k3c-game/menu/**`, `native/k3c-game/view/**`
+- **Abhängig von:** B-888
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
@@ -60,10 +58,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: Jedes Profil liefert alle Spiel-Aktionen (Test gegen die Aktionsliste).
-- AC-02: Zwei Spieler können nicht beide ein Tastatur-Profil haben (Test).
-- AC-03: Umschalten im Menü wirkt sofort und bleibt nach Neustart erhalten.
-- AC-04: Sichtprüfung/Spieltest durch 🧑.
+- **AC-01** Jedes Profil liefert alle Spiel-Aktionen (Test gegen die Aktionsliste).
+- **AC-02** Zwei Spieler können nicht beide ein Tastatur-Profil haben (Test).
+- **AC-03** Umschalten im Menü wirkt sofort und bleibt nach Neustart erhalten.
+- **AC-04** Sichtprüfung und Spieltest durch 🧑.
 
 ## Offene Fragen
 

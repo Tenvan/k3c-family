@@ -3,9 +3,9 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** EP1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
@@ -39,15 +39,13 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Nur Xbox-Symbole für jedes Pad; Icons nur über die MCP-Tools `assets_*`.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/view/**`, `native/k3c-game/input/**`, `public/grafik/icons/**`
+- **Abhängig von:** B-893
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
@@ -59,9 +57,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- AC-01: Für jede Aktion und jedes Profil gibt es ein Icon (Test).
-- AC-02: Ein Wechsel des Profils ändert die Hinweise sofort.
-- AC-03: Sichtprüfung durch 🧑 (TV und PC).
+- **AC-01** Für jede Aktion und jedes Profil gibt es ein Icon (Test).
+- **AC-02** Ein Wechsel des Profils ändert die Hinweise sofort.
+- **AC-03** Sichtprüfung durch 🧑 (TV und PC).
 
 ## Offene Fragen
 

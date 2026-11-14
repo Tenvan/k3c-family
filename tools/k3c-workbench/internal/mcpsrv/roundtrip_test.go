@@ -156,8 +156,9 @@ const (
 func planRepo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
-	files := map[string]string{"backlog/README.md": planIndex, "sprints/README.md": planRoadmap, "sprints/aktiv/.keep": ""}
-	for _, k := range []string{"ticket", "sprint", "session"} {
+	files := map[string]string{"backlog/README.md": planIndex, "sprints/README.md": planRoadmap, "sprints/aktiv/.keep": "",
+		"projekte/README.md": "# Projekte\n\n## Aktiv\n\n| Rang | Projekt | Ziel | Datei |\n|---|---|---|---|\n\n## Ruht\n\n| Projekt | Grund | Datei |\n|---|---|---|\n\n## Erledigt\n\n| Projekt | Datei |\n|---|---|\n"}
+	for _, k := range []string{"ticket", "sprint", "session", "projekt"} {
 		b, err := os.ReadFile(filepath.Join("..", "..", "..", "..", "docs", "vorlagen", k+".md"))
 		if err != nil {
 			t.Fatal(err)
@@ -189,26 +190,31 @@ func TestPlanungsToolsRoundtrip(t *testing.T) {
 		args map[string]any
 		want string
 	}{
+		{"plan_create", map[string]any{"kind": "projekt", "id": "PXX", "slug": "px", "title": "Projekt X"}, "PXX angelegt"},
+		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X",
+			"fields": map[string]string{"Domäne": "SRV", "Projekt": "PXX"}}, "X1 angelegt"},
 		{"plan_create", map[string]any{"kind": "ticket", "slug": "neu", "title": "Neu",
-			"fields": map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch"}}, "B-001 angelegt"},
+			"fields": map[string]string{"Domäne": "SRV", "Typ": "Idee", "Prio": "hoch", "Projekt": "PXX", "Sprint": "X1"}}, "B-001 angelegt"},
 		{"plan_section", map[string]any{"id": "B-001", "section": "Ziel", "text": "Ein Ziel."}, "Ziel ersetzt"},
 		{"plan_sections", map[string]any{"id": "B-001", "sections": map[string]string{"Ziel": "Ein Ziel.", "Ausgangslage": "Heute."}},
 			"B-001 · Ausgangslage, Ziel ersetzt"},
-		{"plan_next", map[string]any{}, "Keine Session frei. Gründe je Projekt:\n- kein aktives Projekt"},
+		{"plan_next", map[string]any{}, "Keine Session frei. Gründe je Projekt:\n- PXX: kein aktiver Sprint"},
 		{"plan_set", map[string]any{"id": "B-001", "fields": map[string]string{"Prio": "niedrig"}}, "B-001 geändert"},
 		{"plan_get", map[string]any{"id": "B-001"}, "## Ziel\n\nEin Ziel."},
-		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X",
-			"fields": map[string]string{"Domäne": "SRV"}}, "X1 angelegt"},
 		{"plan_create", map[string]any{"kind": "ticket", "slug": "dev", "title": "Werkzeug",
-			"fields": map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "mittel"}}, "B-002 angelegt"},
+			"fields": map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "mittel", "Projekt": "PXX", "Sprint": "X1"}}, "B-002 angelegt"},
 		{"plan_list", map[string]any{"domain": "DEV"}, "B-002 DEV Idee mittel"},
-		{"plan_list", map[string]any{"domain": "SRV"}, "B-001 SRV Idee niedrig ? offen"},
+		{"plan_list", map[string]any{"domain": "SRV"}, "B-001 SRV Idee niedrig ?"},
 	}
 	for _, st := range steps {
 		text, isErr := callText(t, cs, st.tool, st.args)
 		if isErr || !strings.Contains(text, st.want) {
 			t.Errorf("%s: %q (Fehler %v), erwartet %q", st.tool, text, isErr, st.want)
 		}
+	}
+	if text, isErr := callText(t, cs, "plan_create", map[string]any{"kind": "ticket", "slug": "lose", "title": "Lose",
+		"fields": map[string]string{"Domäne": "DEV", "Typ": "Idee", "Prio": "mittel"}}); !isErr || !strings.Contains(text, "keine ungeplanten Tickets") {
+		t.Errorf("Ticket ohne Projekt und Sprint angelegt: %q", text)
 	}
 	if text, isErr := callText(t, cs, "plan_set", map[string]any{"id": "X1", "fields": map[string]string{"Prio": "hoch"}}); !isErr || !strings.Contains(text, "unbekanntes Feld") {
 		t.Errorf("Prio am Sprint gesetzt: %q", text)

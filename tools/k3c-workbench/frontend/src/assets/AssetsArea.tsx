@@ -3,11 +3,10 @@ import { Tabs } from '@webkit/organisms';
 import { CatalogPage } from './catalog/CatalogPage';
 import { ReviewPage } from './review';
 import { loadReview } from './review/reviewStore';
-import { SoundPage } from './sound/SoundPage';
-import { SourcesPage } from './sources/SourcesPage';
+import { SoundSourcesPage } from './SoundSourcesPage';
 import { StylePage } from './style/StylePage';
 
-/** Bereich Studio, Asset-Seiten (Entscheidung 005 › 5): Review (RV1), Katalog, Styleguide, Sound, Quellen – nur Ansehen; Änderungen
+/** Bereich Studio, Asset-Seiten (Entscheidung 005 › 5): Styleguide, Katalog, Review (RV1), Sound & Quellen – nur Ansehen; Änderungen
  *  laufen über die MCP-Tools assets_*. Die Seiten stehen als Tabs.Content im Tabs.Root von AppFrame (App.tsx). */
 export function AssetsArea() {
   // Review gegen HEAD schon im Hintergrund rechnen lassen (B-732): die Seite Review steht dann sofort
@@ -26,10 +25,7 @@ export function AssetsArea() {
         <StylePage />
       </Tabs.Content>
       <Tabs.Content value="sound">
-        <SoundPage />
-      </Tabs.Content>
-      <Tabs.Content value="quellen">
-        <SourcesPage />
+        <SoundSourcesPage />
       </Tabs.Content>
     </>
   );
