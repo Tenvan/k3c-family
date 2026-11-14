@@ -74,6 +74,9 @@ describe('ReviewPage', () => {
     expect(fake.api.assetsReview.mock.calls.map((c) => c[0])).toEqual(['HEAD', 'HEAD~1', 'origin/develop', '32eb7a7']);
   });
 
+});
+
+describe('ReviewPage: Fehler und Basis-Stand', () => {
   it('Fehler der Basis sichtbar, Liste leer', async () => {
     fake.api.assetsReview.mockImplementation(() => Promise.reject(new Error('Basis „main“ ungültig: HEAD, HEAD~1, Commit-SHA oder origin/develop')));
     const host = await mount(<ReviewPage />);

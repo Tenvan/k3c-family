@@ -1,6 +1,6 @@
 # WZ53 · DEV · Vitests unter src/assets bleiben unter Last grün
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -60,7 +60,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ53.1 | `WZ53.1-assets-vitests-until.md` | Umsetzung | autonom | fertig |
-| WZ53.2 | `WZ53.2-review.md` | Review | autonom | offen |
+| WZ53.2 | `WZ53.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -68,6 +68,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14: AC-01 geprüft (WZ53.1/WZ53.2: B-859/AC-01 und AC-02, `task check` grün, 10 Läufe unter Last grün). Behoben: lint max-lines-per-function in ReviewPage.test.tsx. Neue Tickets: keine. Abnahme-Ticket für Sim, Balance und Gen: entfällt (nur Testcode).

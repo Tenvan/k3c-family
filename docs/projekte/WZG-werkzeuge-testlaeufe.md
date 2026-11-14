@@ -72,7 +72,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | erledigt |
 | WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt | erledigt |
 | WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | erledigt |
-| WZ53 | Vitests unter src/assets bleiben unter Last grün | aktiv |
+| WZ53 | Vitests unter src/assets bleiben unter Last grün | erledigt |
 
 ## Nicht-Ziele
 
