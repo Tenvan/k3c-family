@@ -7,9 +7,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-677](B-677-studio-assets-seite.md) | DEV | Idee | mittel | erledigt | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
-| [B-157](B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
-| [B-159](B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-384](B-384-inselwechsel-bestaetigung-sim.md) | SIM | Frage | mittel | erledigt | – | Inselwechsel: Wechsel-Bestätigung (confirmIsland) passt nicht zum Presence-Wechsel der Sim |
 | [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | erledigt | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
 | [B-283](B-283-protokoll-berufe-tausch-grabstein.md) | SRV | Idee | mittel | erledigt | W5 | Das Protokoll kennt Beruf ausbilden, Tauschen, Berufe der Bürger und Grabstein/Wiederbeleben |
@@ -738,3 +735,9 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-830](B-830-mcpsrv-planning-short-langsam.md) | DEV | Problem | mittel | erledigt | WZ48 | mcpsrv und planning bleiben mit -short unter 3 s je Test und 10 s je Paket |
 | [B-832](B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | erledigt | WZ48 | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-835](B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | erledigt | WZ48 | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |
+| [B-857](B-857-check-dev-ohne-sim-pakete.md) | DEV | Problem | mittel | erledigt | WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt |
+| [B-837](B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | erledigt | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün |
+| [B-858](B-858-readonly-vitest-unter-last.md) | DEV | Problem | niedrig | erledigt | WZ52 | Der readonly-Vitest der Workbench bleibt unter Last grün |
+| [B-677](B-677-studio-assets-seite.md) | DEV | Idee | mittel | erledigt | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
+| [B-157](B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
+| [B-159](B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
