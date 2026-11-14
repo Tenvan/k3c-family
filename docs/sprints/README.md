@@ -10,6 +10,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | WZ43 | DEV | WZG | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | – | `aktiv/WZ43-asset-tools-review/` |
+| WZ55 | DEV | WZG | assets_set ruft die Paper-CLI gesammelt auf | – | `aktiv/WZ55-paper-cli-sammelaufruf/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | KB4 | SRV, CLI | KMP | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | – | `aktiv/KB4-dev-aktionen-boss-event/` |
 | KB5 | SRV, CLI, DEV | KMP | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | fireball am Gegner, Betäubung, Schild und Sturm als Zeichnung | `aktiv/KB5-skills-wirkort-status/` |
@@ -36,7 +37,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 |---|---|---|---|---|---|---|
 | WZ45 | DEV | WZG | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | – | Entwurf | `geplant/WZ45-asset-seiten-prompts-filter/` |
 | WZ46 | DEV | WZG | Workbench-Tests ohne Engine-Spielserver | – | Entwurf | `geplant/WZ46-workbench-tests-ohne-spielserver/` |
-| WZ55 | DEV | WZG | assets_set ruft die Paper-CLI gesammelt auf | – | bereit | `geplant/WZ55-paper-cli-sammelaufruf/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | Entwurf | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | Entwurf | `geplant/MG11-papier-welt-nachbessern/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |

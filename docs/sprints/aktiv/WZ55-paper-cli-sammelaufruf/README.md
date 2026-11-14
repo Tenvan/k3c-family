@@ -1,11 +1,11 @@
 # WZ55 · DEV · assets_set ruft die Paper-CLI gesammelt auf
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
-- **Tickets:** B-856
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Tickets:** B-856, B-867, B-868
+- **Start-Commit:** 21a4188c0
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-14
@@ -50,6 +50,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 ## Akzeptanzkriterien
 
 - **AC-01** `B-856/AC-01` und `B-856/AC-02` grün.
+- **AC-02** `B-867/AC-01` grün (gescheitertes Entfernen zurückgenommen).
+- **AC-03** `B-868/AC-01` grün (Mindestversion von Task geprüft).
 
 ## Offene Fragen
 

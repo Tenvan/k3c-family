@@ -83,6 +83,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | offen | – | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 | [B-865](B-865-fahrplan-heilung-nur-bei-sprint-aenderung.md) | DEV | Problem | mittel | eingeplant | WZ54 | Die Fahrplan-Heilung schreibt nur bei Sprint- oder Session-Änderungen und erzeugt keine Konflikte zwischen parallelen Worktrees |
 | [B-866](B-866-check-run-muster-mit-oder.md) | DEV | Problem | niedrig | eingeplant | WZ54 | check_run nimmt Testmuster mit Oder-Strich, Dach und Dollar an |
+| [B-867](B-867-changeset-remove-rollback.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | Ein gescheitertes Entfernen in changeSet.apply wird zurückgenommen |
+| [B-868](B-868-task-mindestversion-pruefen.md) | DEV | Schuld | niedrig | eingeplant | WZ55 | Die Mindestversion von Task wird geprüft, auf die check_run beim Quoten von CLI_ARGS baut |
 
 ## Archiv
 
