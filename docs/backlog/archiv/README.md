@@ -799,3 +799,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-878](B-878-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | erledigt | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | erledigt | WZ57 | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | erledigt | WZ57 | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
+| [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | erledigt | PT5 | Abnahme-Läufe CU1 |

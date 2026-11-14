@@ -28,7 +28,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | offen | – | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
-| [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | eingeplant | PT5 | Abnahme-Läufe CU1 |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | eingeplant | NG20 | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 | [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | offen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |

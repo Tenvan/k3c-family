@@ -1,9 +1,9 @@
 # PT5 · PAP · Abnahme-Läufe CU1 (B-836)
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
@@ -49,7 +49,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Die Abnahme-Läufe von CU1 sind gefahren und im Ticket notiert (`B-836/AC-01`–`AC-05`).
 
 ## Offene Fragen
 
@@ -59,7 +59,7 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PT5.1 | `PT5.1-abnahme-cu1.md` | Umsetzung | autonom | offen |
+| PT5.1 | `PT5.1-abnahme-cu1.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

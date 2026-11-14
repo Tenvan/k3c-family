@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** PT5
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
@@ -64,4 +64,8 @@ keine
 
 ## Notizen
 
-–
+Lauf PT5.1 (2026-11-14, Claude, Branch sprint/pt5):
+- AC-01 Sim und AC-02 Balance verschoben (Sperre 2026-11-11).
+- AC-03 Gen: `check_run task:check` (4 min 54 s, ruft `gen:paper` und die Grafik-Golden) grün: 175 Testdateien grün; einziger Fehler war die Vorlage der PT5-README (Kriterium ohne Session), behoben, Planungstest danach grün.
+- AC-04 Race: `check_run task:check:race` exit 0 in 0,4 s, lokal ohne gcc übersprungen.
+- AC-05 CU1/AC-02: `task:check:go` grün (1 min 36 s), `task:check:dev` grün (4 min 22 s), `task:build` grün, `task buildall` exit 0 (alle EXE in bin/ um 10:37–10:38 neu, Workbench dazu kurz gestoppt). `check:all` ist kein check_run-Ziel und wurde über diese Teilläufe abgedeckt.
