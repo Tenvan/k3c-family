@@ -1,6 +1,6 @@
 # WR2.3 · Doku, Serena, Codemap-Stand und Backup-Skript nachziehen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -47,5 +47,9 @@ B-898 › Anforderungen. `.claude/settings.json` ändert nur 🧑.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- `docs/arbeitsweise.md`: Domänen SRV, CLI, PLAT, INF, DEV auf natives Spiel und Engine-CLI umgestellt; Protokoll-Grenzfall und Sperre `protokoll` als Historie; Abschnitt „Alt-Engine löschen“ entfernt; Schichtgrenzen ohne `engine/net` und `src/`; `task dev` und `k3c-load` als entfallen; Release-Checkliste ohne Pi-Image, Version und Lizenzen im Menü des nativen Spiels.
+- `docs/glossar.md`: zehn Begriffe des Online-Spiels (Bot-Feed, Landingpage, Home-Kombi, Latenz, Orakel, Protokoll, RTT, Shell, Vorhersage, Zeitleiste) als Historie markiert; Lauf-Modus und Unit nachgezogen.
+- `docs/protocol.md`: Verweis auf die entfallenen Beispiele; `docs/rules/welten.md` › Weitere Welten beschreibt das Laden über `engine/room` (nur technischer Text, keine Regeländerung).
+- `.serena/memories` (core, conventions, suggested_commands, tech_stack) neu auf natives Spiel; `.codemap/state.json` ohne entfernte Pfade (485 Dateien, 69 Ordner) und mit aktuellen Mustern.
+- `scripts/backup-saves.sh` sichert `K3C_SAVES_DIR`, sonst `dist/k3c-game/saves`, ohne Docker; `task ops:backup` beschreibt das. Gegen einen Temp-Ordner getestet (Kopie, Fehler bei fehlender Quelle).
+- Nicht geändert: `.claude/settings.json` (🧑, B-898 › Notizen), Entscheidungen. `task check:diff` grün.

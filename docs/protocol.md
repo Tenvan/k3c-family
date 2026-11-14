@@ -3,7 +3,7 @@
 > **Stand nach B-887 (WR1, 2026-11-14):** Spielserver (`cmd/k3c-server`), WebSocket-Schicht (`engine/net`) und
 > Browser-Client sind entfernt (Entscheidung B-850, das Spiel ist nativ, Entscheidung 008). Es gibt keine Verbindung,
 > kein `hello` und keine Versionsprüfung mehr. Das Dokument bleibt als Referenz für Zustand, Ereignisse und
-> Spielstand-Felder, die `engine/room` und das native Spiel weiter verwenden (Beispiele in `testdata/protocol/`).
+> Spielstand-Felder, die `engine/room` und das native Spiel weiter verwenden (die Beispiele unter `testdata/protocol/` sind mit WR2 entfallen, B-897; sie stehen in der Git-Historie).
 > Neue Felder werden hier nicht mehr nachgetragen.
 
 **Änderungen gegenüber v10 (KB5.2, Version 11, B-675):** Status-Effekte im Zustand (siehe *Status-Effekte*): Spieler

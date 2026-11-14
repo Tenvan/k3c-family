@@ -80,7 +80,7 @@ keine (Dienste bleiben, Backup wird umgestellt; autonom entschieden, gemeldet im
 |---|---|---|---|---|
 | WR2.1 | `WR2.1-server-reste-code.md` | Umsetzung | autonom | fertig |
 | WR2.2 | `WR2.2-workbench-dienste-mocks.md` | Umsetzung | autonom | fertig |
-| WR2.3 | `WR2.3-doku-backup.md` | Umsetzung | autonom | offen |
+| WR2.3 | `WR2.3-doku-backup.md` | Umsetzung | autonom | fertig |
 | WR2.4 | `WR2.4-review.md` | Review | autonom | offen |
 
 ## Abnahme
