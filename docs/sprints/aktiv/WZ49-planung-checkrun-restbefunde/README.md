@@ -1,11 +1,11 @@
 # WZ49 · DEV · Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
 - **Tickets:** B-831, B-839, B-842, B-847, B-855
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 3ea017230
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-13 (Ralf: autonome Tickets abarbeiten)
