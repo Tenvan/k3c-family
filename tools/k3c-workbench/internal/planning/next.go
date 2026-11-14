@@ -72,11 +72,23 @@ func Next(root string, f NextFilter) (string, error) {
 	}
 	for _, c := range cands {
 		if c.why == "" && (want == "" || c.session.Domain == want) {
-			out, err := st.pickText(c, parallel(cands, c, len(st.running)))
+			out, err := st.pickText(c, parallel(cands, c, st.agents()))
 			return withNotes(out, notes), err
 		}
 	}
 	return withNotes(noneText(plan, want), notes), nil
+}
+
+// agents zählt die Sessions in Arbeit, die einen Agenten belegen; eine Mensch-Session (Abnahme am Gerät) sperrt mit
+// Dateien und Sperren, belegt aber keinen der vier Plätze (B-839).
+func (st nextState) agents() int {
+	n := 0
+	for _, r := range st.running {
+		if r.session.Agent == "autonom" {
+			n++
+		}
+	}
+	return n
 }
 
 // withNotes hängt die Herkunft des Stands je aktivem Sprint (origin oder lokal) an die Antwort.

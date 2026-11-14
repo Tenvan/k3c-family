@@ -147,7 +147,10 @@ func (c *changeSet) apply() error {
 			return err
 		}
 	}
-	return refreshRoadmap(c.root) // Fahrplan-Teile aus den Dateien (B-842)
+	// Fahrplan-Teile aus den Dateien (B-842). Ein Fehler hier meldet die schon geschriebene Änderung nicht als
+	// gescheitert (sonst legte ein zweiter Versuch ein Duplikat an); der nächste Aufruf heilt den Fahrplan.
+	_ = refreshRoadmap(c.root)
+	return nil
 }
 
 // writeAtomic schreibt über eine Temp-Datei im selben Ordner, damit nie eine halbe Datei liegt.

@@ -1,6 +1,6 @@
 # WZ49 · DEV · Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -65,7 +65,7 @@ keine
 |---|---|---|---|---|
 | WZ49.1 | `WZ49.1-plan-waves-restbefunde-fahrplan.md` | Umsetzung | autonom | fertig |
 | WZ49.2 | `WZ49.2-checkrun-devtest-im-spiel-nativ.md` | Umsetzung | autonom | fertig |
-| WZ49.3 | `WZ49.3-review.md` | Review | autonom | offen |
+| WZ49.3 | `WZ49.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -73,6 +73,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14 (Claude, autonom): AC-01 bis AC-05 geprüft (WZ49.1: AC-02, AC-03; WZ49.2: AC-01, AC-04, AC-05). Review WZ49.3: `task check`, `task check:go` (ohne Sim), `go:test`, `task check:dev` grün; zwei leichte Befunde des k3c-reviewers behoben (Fehler beim Fahrplan-Heilen, Mensch-Sessions belegen keinen Platz). Neue Wirkung erst nach Neubau der Workbench-EXE (Sperre exe); der erste schreibende `plan_*`-Aufruf danach heilt den Fahrplan. Kein Abnahme-Ticket (kein Sim-, Balance- oder Gen-Bezug).
