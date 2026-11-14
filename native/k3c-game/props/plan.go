@@ -120,7 +120,7 @@ func (p *planner) plan(w *sim.World, info *stageInfo, k view.Camera, clock float
 		return
 	}
 	biome := w.Biome.ID
-	p.decor(w, k)
+	p.decor(w, k, clock)
 	p.castle(w, info, k)
 	p.entities(w, k, biome)
 	p.nodes(w, k, biome)

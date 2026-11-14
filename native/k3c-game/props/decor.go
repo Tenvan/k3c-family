@@ -62,10 +62,11 @@ func cellHash(x, step, salt float64) uint32 { return mix(math.Round(x/step)*7 + 
 // Dicke 3,5 Units bei 1, 2,15 bei 2, 0,8 bei 3.
 func ceilingBottom(v int) float64 { return viewTop - (3.5 - float64(v-1)*1.35) }
 
-// decor plant die Darstellung der Natur-Eigenschaften der Welt w für Kamera k.
-func (p *planner) decor(w *sim.World, k view.Camera) {
+// decor plant die Darstellung der Natur-Eigenschaften der Welt w für Kamera k zur Uhr clock (Pulsieren).
+func (p *planner) decor(w *sim.World, k view.Camera, clock float64) {
 	p.ceiling(w, k)
 	p.stalactites(w, k)
+	p.decorGlow(w, k, clock)
 }
 
 // ceiling: Felsdecke über die sichtbare Breite bis zur Unterkante der Deckenhöhe, mit Zacken nach unten (B-902).

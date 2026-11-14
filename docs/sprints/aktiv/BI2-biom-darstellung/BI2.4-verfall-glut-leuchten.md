@@ -1,6 +1,6 @@
 # BI2.4 · Mine, Eisenstollen, Kristallhöhle: Verfall, Glut, Leuchten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -44,5 +44,4 @@ B-904, B-905, B-906 je AC-01, AC-02 per Unit-Test erfüllt, `check:diff` grün.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05, AC-06, AC-07 erfüllt (B-904, B-905, B-906 je AC-01, AC-02): neues `props/decor_glow.go` mit Stützbalken-Rahmen alle 8 Units (verfallen bei `mix % 4 < decay`: schiefer Pfosten, hängender Querbalken, Geröll; nicht ±10 Units um die Burg), Glutpunkten und Hitze-Schleier nach `glow` (pulsierend) und einem Schein je Kristall-Ader in ihrer Farbe nach `brightness` (hinter der Ader). `decor` bekommt die Uhr. Tests in `props/decor_test.go` (ohne Grafik lauffähig).
