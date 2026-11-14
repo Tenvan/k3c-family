@@ -1,6 +1,6 @@
 import type { ConsoleLine, Source } from './types';
 
-// Erfundene Quellen und Konsolen für den Mock (B-064): Vite schreibt laufend, das eigene Log spiegelt Einträge,
+// Erfundene Quellen und Konsolen für den Mock (B-064): Docs schreibt laufend, das eigene Log spiegelt Einträge,
 // ein Lauf check:task:test wechselt blau → grün/rot und schreibt dabei farbige Zeilen.
 
 const ESC = '\u001b[';
@@ -10,11 +10,11 @@ const RUN = 'check:task:test';
 type EmitLines = (lines: ConsoleLine[]) => void;
 type EmitSource = (src: Source) => void;
 
-const VITE_LINES = [
-  `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:5183/${ESC}0m`,
-  `${ESC}2m17:03:12${ESC}0m ${ESC}36m[vite]${ESC}0m hmr update ${ESC}2m/src/scenes/GameScene.ts${ESC}0m`,
-  `${ESC}2m17:03:15${ESC}0m ${ESC}33m[vite] WARN${ESC}0m Sourcemap für ${ESC}38;5;208mphaser.js${ESC}0m fehlt`,
-  `${ESC}2m17:03:20${ESC}0m ${ESC}36m[vite]${ESC}0m page reload ${ESC}2mgame.html${ESC}0m`,
+const DOCS_LINES = [
+  `${ESC}32m➜${ESC}0m  ${ESC}1mLocal${ESC}0m:   ${ESC}36mhttp://localhost:7000/${ESC}0m`,
+  `${ESC}2m17:03:12${ESC}0m ${ESC}36m[vite]${ESC}0m hmr update ${ESC}2m/src/pages/Start.tsx${ESC}0m`,
+  `${ESC}2m17:03:15${ESC}0m ${ESC}33m[vite] WARN${ESC}0m Sourcemap für ${ESC}38;5;208mreact-dom.js${ESC}0m fehlt`,
+  `${ESC}2m17:03:20${ESC}0m ${ESC}36m[vite]${ESC}0m page reload ${ESC}2mindex.html${ESC}0m`,
 ];
 
 // Format von engine/conlog: Zeit, Level, [ns], Meldung, key=value.
@@ -22,8 +22,8 @@ const k = (key: string) => `${ESC}90m${key}=${ESC}0m`;
 const LOG_LINES = [
   `${ESC}90m17:03:01.204${ESC}0m ${ESC}34mINFO ${ESC}0m ${ESC}36m[mcp]${ESC}0m ${ESC}1maufruf beendet${ESC}0m ${k('tool')}logs_query ${k('ms')}12`,
   `${ESC}90m17:03:04.517${ESC}0m ${ESC}1m${ESC}33mWARN ${ESC}0m ${ESC}36m[check]${ESC}0m ${ESC}1mlauf beendet${ESC}0m ${k('target')}task:test ${k('exit')}1`,
-  `${ESC}90m17:03:09.031${ESC}0m ${ESC}34mINFO ${ESC}0m ${ESC}36m[svc]${ESC}0m ${ESC}1mdienst Vite: läuft${ESC}0m ${k('pid')}41232`,
-  `${ESC}90m17:03:11.882${ESC}0m ${ESC}1m${ESC}31mERROR${ESC}0m ${ESC}36m[svc]${ESC}0m ${ESC}1m${ESC}31mdienst Spielserver fehlgeschlagen${ESC}0m ${k('err')}${ESC}31m"Port 8080 bereits belegt"${ESC}0m`,
+  `${ESC}90m17:03:09.031${ESC}0m ${ESC}34mINFO ${ESC}0m ${ESC}36m[svc]${ESC}0m ${ESC}1mdienst Docs: läuft${ESC}0m ${k('pid')}41232`,
+  `${ESC}90m17:03:11.882${ESC}0m ${ESC}1m${ESC}31mERROR${ESC}0m ${ESC}36m[svc]${ESC}0m ${ESC}1m${ESC}31mdienst Backend fehlgeschlagen${ESC}0m ${k('err')}${ESC}31m"Port 7010 bereits belegt"${ESC}0m`,
 ];
 
 const TEST_LINES = [
@@ -48,14 +48,14 @@ export function mockLogs(emitLines: EmitLines, emitSource: EmitSource) {
     emitLines([line]);
   };
   let run: Source = { name: RUN, kind: 'run', state: 'ok', detail: 'Exit 0 · 4,2 s · 17:02:40' };
-  VITE_LINES.forEach((l) => add('Vite', l));
+  DOCS_LINES.forEach((l) => add('Docs', l));
   LOG_LINES.forEach((l) => add('k3c-workbench', l, 'log'));
   TEST_LINES.forEach((l) => add(RUN, l));
 
   let tick = 0;
   setInterval(() => {
     tick++;
-    add('Vite', VITE_LINES[1 + (tick % 3)]);
+    add('Docs', DOCS_LINES[1 + (tick % 3)]);
     if (tick % 3 === 0) add('k3c-workbench', LOG_LINES[tick % LOG_LINES.length], 'log');
     if (tick % 16 === 0) {
       buffers.set(RUN, []); // wie Reset in Go: neuer Lauf, Seq läuft weiter

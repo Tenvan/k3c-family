@@ -41,7 +41,7 @@ func memory(h windows.Handle) (rss, private uint64) {
 	return uint64(c.workingSetSize), uint64(c.pagefileUsage)
 }
 
-// readProcess misst den eigenen Prozess, seine Handles und alle Nachkommen (go test, vitest, Vite, Spielserver).
+// readProcess misst den eigenen Prozess, seine Handles und alle Nachkommen (go test, vitest, Vite der Oberfläche, Dienste).
 func readProcess() procSnapshot {
 	var s procSnapshot
 	self := windows.CurrentProcess()

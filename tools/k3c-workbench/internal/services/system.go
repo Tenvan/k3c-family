@@ -108,8 +108,8 @@ func sample(ctx context.Context, p *process.Process) (Metrics, error) {
 	return m, nil
 }
 
-// SupervisorOf liefert die PID des Elternprozesses von pid, wenn er dieselbe Programmdatei ist (k3c-server startet sich als
-// Supervisor und Kind aus derselben EXE); sonst 0. Ein fremder Elternprozess (Shell, task) zählt nicht, ein Stopp träfe ihn nie.
+// SupervisorOf liefert die PID des Elternprozesses von pid, wenn er dieselbe Programmdatei ist (ein Dienst mit Supervisor startet
+// sich als Supervisor und Kind aus derselben EXE, wie früher k3c-server, B-887); sonst 0. Ein fremder Elternprozess (Shell, task) zählt nicht, ein Stopp träfe ihn nie.
 func SupervisorOf(ctx context.Context, pid int) int {
 	child, err := process.NewProcessWithContext(ctx, int32(pid))
 	if err != nil {

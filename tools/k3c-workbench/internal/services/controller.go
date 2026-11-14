@@ -76,8 +76,8 @@ type Options struct {
 	Listen        Listener
 	Sample        Sampler
 	KillPID       func(pid int) error // übernommene Prozesse (ohne Job)
-	// Supervisor liefert die PID des Supervisors, der den Prozess pid als Kind gestartet hat (k3c-server startet sich als
-	// Kind und nach einem Selbst-Neustart mit neuer PID neu), 0 = keiner. Test-Naht.
+	// Supervisor liefert die PID des Supervisors, der den Prozess pid als Kind gestartet hat (ein Dienst mit Supervisor startet
+	// sich als Kind und nach einem Selbst-Neustart mit neuer PID neu, wie früher k3c-server, B-887), 0 = keiner. Test-Naht.
 	Supervisor func(ctx context.Context, pid int) int
 	Now           func() time.Time
 	StartTimeout  time.Duration // 60 s bis gesund

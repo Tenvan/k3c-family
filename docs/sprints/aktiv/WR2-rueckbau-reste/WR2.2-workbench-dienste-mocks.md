@@ -1,6 +1,6 @@
 # WR2.2 · Workbench: Dienste-Texte, Mocks und Fixtures ohne Spielserver und Vite
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -46,5 +46,9 @@ B-897 › Anforderungen; Default der offenen Frage: Dienste und `svc_*` bleiben.
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Dienste-Infrastruktur und `svc_*` bleiben (Default der offenen Frage, generisch für künftige Dienste); `services.json` bleibt `[]`.
+- Kommentare zu Port-Versatz, Proxy-Ports und Supervisor in `mcpsrv/worktree_services.go`, `mcpsrv/tools_services.go`, `services/config.go`, `controller.go`, `system.go`, `resmon/proc_windows.go`, `studioview/game.go` ohne Spielserver und Vite bzw. als Historie mit Ticket-Verweis.
+- Frontend-Mocks (`mockServices`, `mockLogs`, `mockLogFiles`, `mockMcp`, `mockTasks`) mit erfundenen Diensten Docs, Backend, Indexer, Suche (Ports 7000 ff.) statt Vite und Spielserver.
+- Behalten: Unit-Test-Fixtures mit „Vite“/„Spielserver“ als erfundenen Dienstnamen (Go und Vitest, Nicht-Ziel) und `mockPlanning.ts` (erfundene Planungsdaten, von Planungs-Tests genutzt).
+- `tools/checkdiff/select_test.go` nutzt `engine/room` statt `engine/net`.
+- `task check:diff` grün; gezielt Vitest `src/api src/logs src/services src/mcp src/tasks` grün (96 Tests).

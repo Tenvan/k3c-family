@@ -115,7 +115,7 @@ func (g *Game) exe() (exe, dir string, err error) {
 	return "", "", hint("Natives Spiel fehlt (" + nativeExe[0].exe + ") – erst bauen: " + nativeBuildTask)
 }
 
-// fullSave legt voll-<seed> über die Engine an (wie der Spielserver im Dev-Modus) und liefert den Namen.
+// fullSave legt voll-<seed> über die Engine an (wie früher der Spielserver im Dev-Modus, B-887) und liefert den Namen.
 func (g *Game) fullSave(seed string) (string, error) {
 	if err := os.MkdirAll(g.saves, 0o750); err != nil {
 		return "", err
