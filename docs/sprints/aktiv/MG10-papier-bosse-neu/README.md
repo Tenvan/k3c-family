@@ -1,11 +1,11 @@
 # MG10 · PAP · Papierschnitt: Bosse neu mit eigener Silhouette
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
 - **Tickets:** B-720
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 879fac30d
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** Klasse A, Claude, 2026-11-14
@@ -64,7 +64,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | MG10.5 | `MG10.5-reiter-variante.md` | Umsetzung | autonom | offen |
-| MG10.1 | `MG10.1-silhouetten.md` | Umsetzung | autonom | offen |
+| MG10.1 | `MG10.1-silhouetten.md` | Umsetzung | autonom | fertig |
 | MG10.2 | `MG10.2-bosse-a.md` | Umsetzung | autonom | offen |
 | MG10.3 | `MG10.3-bosse-b.md` | Umsetzung | autonom | offen |
 | MG10.4 | `MG10.4-review.md` | Umsetzung | autonom | offen |

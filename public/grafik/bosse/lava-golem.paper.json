@@ -2,8 +2,8 @@
   "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
   "id": "lava-golem",
   "rig": "figur",
-  "version": 1,
-  "beschreibung": "Lava-Golem: Steingolem mit Schulterbrocken, glühenden Lavarissen in der Brust und goldenen Augen, schlägt mit der Faust (Miniboss Stufe 3).",
+  "version": 2,
+  "beschreibung": "Lava-Golem: breiter, gedrungener Felsblock ohne Hals, kleiner Kopf zwischen Schulterbrocken, glühende Lavaspalten flächig in Brust und Fäusten, riesige Fäuste an abgespreizten Armen, kurze Stampfbeine (Miniboss Stufe 3).",
   "teile": [
     {
       "eltern": "rumpf",
@@ -11,25 +11,12 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L4.6 -68C6.5 -74 8 -84 6.2 -90C2 -93.5 -2 -93.5 -6.2 -90Z",
+          "form": "M-36 -108C-38 -96 -36 -80 -34 -68L-16 -68C-14 -80 -14 -96 -16 -108C-22 -114 -30 -114 -36 -108Z",
           "material": "stein",
           "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L-1 -68C-2.5 -75 -3.5 -84 -2.5 -92Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 1.3,
-          "form": "M4 -87C5 -81 4.5 -75 3.2 -71",
-          "material": "stein"
         }
       ],
-      "pivot": [0, -84]
+      "pivot": [-26, -96]
     },
     {
       "eltern": "oberarm-h",
@@ -37,70 +24,18 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L3.9 -56C4.1 -60 4.7 -66 4.9 -72.5Z",
+          "form": "M-34 -70C-35 -60 -34 -52 -33 -46L-17 -46C-16 -52 -15 -60 -16 -70Z",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "auflage": true,
-          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L-1 -56L-1.3 -72.5Z",
+          "form": "M-38 -48C-42 -36 -36 -24 -25 -24C-14 -24 -10 -36 -12 -48Z",
           "material": "stein",
           "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-5.6 -58.5H5.6L5.2 -53.5H-5.2Z",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-5.6 -58.5H-2L-2.2 -53.5H-5.2Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "linie",
-          "mitte": [2, -55.5],
-          "radius": 1
-        },
-        {
-          "art": "flaeche",
-          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2C4.2 -45.6 5.4 -49 4.3 -53.8Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2L-1 -53.8Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M3.6 -52.2C6.6 -52.4 7 -49 4.4 -48",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-1.6 -49.5H2.2",
-          "material": "linie"
         }
       ],
-      "pivot": [0, -70]
-    },
-    {
-      "eltern": "unterarm-h",
-      "id": "schild",
-      "lagen": [],
-      "pivot": [0, -49]
+      "pivot": [-25, -68]
     },
     {
       "eltern": "rumpf",
@@ -108,25 +43,12 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L5 -27C7 -35 8 -45 7 -55Z",
+          "form": "M-22 -42C-24 -32 -22 -24 -21 -18L-3 -18C-1 -24 0 -32 -2 -42Z",
           "material": "stein",
           "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L-1.5 -27C-3 -36 -3.5 -46 -3 -55Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M4.5 -50C5.5 -42 5 -35 3.5 -29",
-          "material": "stein"
         }
       ],
-      "pivot": [0, -50]
+      "pivot": [-10, -36]
     },
     {
       "eltern": "oberschenkel-h",
@@ -134,48 +56,48 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-5.2 -31L5.2 -31L5.2 -24L-5.2 -24Z",
+          "form": "M-21 -20C-22 -12 -23 -4 -23 2L1 2C2 -4 0 -12 -2 -20Z",
           "material": "stein",
           "ton": "schatten"
-        },
+        }
+      ],
+      "pivot": [-10, -18]
+    },
+    {
+      "id": "rumpf",
+      "lagen": [
         {
           "art": "flaeche",
-          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L11 1.6C14 1.6 14.6 -1.6 12 -3.2L5.2 -6.2C5.2 -12 5.6 -18 5.6 -24Z",
-          "material": "stein",
-          "ton": "schatten"
+          "form": "M-30 -40C-37 -60 -37 -96 -26 -108C-14 -118 18 -118 28 -108C38 -96 38 -60 32 -40C20 -31 -18 -31 -30 -40Z",
+          "material": "stein"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L0 1.6L-1.5 -6C-1.8 -12 -2 -18 -2 -24Z",
+          "form": "M-30 -40C-37 -60 -37 -96 -26 -108C-20 -113 -14 -115 -8 -116C-18 -100 -20 -60 -14 -33C-22 -34 -27 -36 -30 -40Z",
           "material": "stein",
           "ton": "schatten"
         },
         {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M3.8 -21C4 -15 4 -10 3.6 -7",
-          "material": "stein"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M-6 -0.2H12.8",
-          "material": "linie"
+          "art": "flaeche",
+          "form": "M-4 -104L8 -100L3 -86L14 -78L5 -62L12 -46L-2 -56L-10 -72L-1 -84L-12 -94Z",
+          "material": "lava"
         },
         {
           "art": "flaeche",
-          "form": "M-6.6 -27L6.6 -27L6.1 -21.5L-6.1 -21.5Z",
-          "material": "stein"
+          "auflage": true,
+          "form": "M-1 -98L5 -96L1 -86L9 -78L3 -66L-4 -72L2 -84L-6 -92Z",
+          "material": "lava",
+          "ton": "licht"
         },
         {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-5 -23.5H5",
-          "material": "linie"
+          "art": "flaeche",
+          "form": "M-28 -112C-30 -124 -12 -128 -6 -116L-10 -104L-24 -102Z",
+          "material": "stein",
+          "ton": "schatten"
         }
       ],
-      "pivot": [0, -28]
+      "pivot": [0, -36]
     },
     {
       "eltern": "rumpf",
@@ -183,25 +105,11 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L5 -27C7 -35 8 -45 7 -55Z",
+          "form": "M0 -42C-2 -32 0 -24 1 -18L19 -18C21 -24 22 -32 20 -42Z",
           "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-7 -55C-8 -45 -7 -35 -5 -27L-1.5 -27C-3 -36 -3.5 -46 -3 -55Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M4.5 -50C5.5 -42 5 -35 3.5 -29",
-          "material": "stein",
-          "ton": "licht"
         }
       ],
-      "pivot": [0, -50]
+      "pivot": [10, -36]
     },
     {
       "eltern": "oberschenkel-v",
@@ -209,186 +117,11 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-5.2 -31L5.2 -31L5.2 -24L-5.2 -24Z",
+          "form": "M1 -20C0 -12 -1 -4 -1 2L23 2C24 -4 22 -12 20 -20Z",
           "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L11 1.6C14 1.6 14.6 -1.6 12 -3.2L5.2 -6.2C5.2 -12 5.6 -18 5.6 -24Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-5.6 -24C-5.6 -17 -5.2 -11 -5.2 -6L-6.2 -1C-6.4 1 -5.2 1.6 -3 1.6L0 1.6L-1.5 -6C-1.8 -12 -2 -18 -2 -24Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M3.8 -21C4 -15 4 -10 3.6 -7",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M-6 -0.2H12.8",
-          "material": "linie"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-6.6 -27L6.6 -27L6.1 -21.5L-6.1 -21.5Z",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-5 -23.5H5",
-          "material": "linie"
         }
       ],
-      "pivot": [0, -28]
-    },
-    {
-      "id": "rumpf",
-      "lagen": [
-        {
-          "art": "flaeche",
-          "form": "M-12 -91C-15 -80 -16 -60 -16 -43L16 -43C16 -59 15 -78 12 -91C4 -94.5 -4 -94.5 -12 -91Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-12 -91C-15 -80 -16 -60 -16 -43L-5 -43C-6 -60 -6 -78 -4 -93Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M8 -89C11 -78 12.5 -62 13 -46L14.6 -46C14.5 -62 13.6 -78 11 -90Z",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-15.5 -58.5H15.5V-53H-15.5Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-15.5 -55.2H15.5V-53H-15.5Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-15.5 -52H15.5L16.5 -40H-16.5Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-15.5 -52H-5L-5 -40H-16.5Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 0.8,
-          "form": "M-13 -47H14",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 0.8,
-          "form": "M-14 -43.5H15",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-8 -90H8L10 -42H-10Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-8 -90H-2L-3 -42H-10Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-10 -45H10L10.4 -42H-10.4Z",
-          "material": "stein"
-        },
-        {
-          "art": "falz",
-          "breite": 0.8,
-          "form": "M0 -86V-46",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-6 -82L0 -88L7 -80L3 -68L-4 -70Z",
-          "material": "lava",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-6 -82L0 -88L1 -76L-4 -70Z",
-          "material": "lava"
-        },
-        {
-          "art": "falz",
-          "breite": 2.2,
-          "form": "M-8 -86L-2 -74L-6 -62L0 -50",
-          "material": "lava",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 2,
-          "form": "M6 -84L10 -70L5 -58",
-          "material": "lava",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 1.6,
-          "form": "M-12 -70L-6 -66",
-          "material": "lava",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-20 -94L-24 -78L-10 -76L-6 -96Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-20 -94L-24 -78L-16 -77L-14 -95Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M8 -96L22 -94L24 -78L10 -78Z",
-          "material": "stein",
-          "ton": "licht"
-        }
-      ],
-      "pivot": [0, -50]
+      "pivot": [10, -18]
     },
     {
       "eltern": "rumpf",
@@ -396,127 +129,23 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-4.5 -98H5.5V-89H-4.5Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-12 -104C-13 -116 -6 -123 3 -122.5C12 -122 17 -115 17.2 -107.5C17.4 -100 13 -95 6 -94.2C-2 -93.5 -11 -97 -12 -104Z",
+          "form": "M-12 -104L-11 -126L-2 -132L12 -128L15 -104Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
-          "auflage": true,
-          "form": "M-12 -104C-13 -116 -6 -123 3 -122.5C-2 -118 -4 -110 -2 -95C-7 -96 -11 -99 -12 -104Z",
+          "form": "M-13 -122L14 -125L16 -118L-12 -116Z",
           "material": "stein",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "auflage": true,
-          "form": "M10 -119C14 -116 16 -112 16.4 -108C14.6 -110 12.8 -114 10 -119Z",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-12 -104.5C-15.5 -112 -12.5 -121 -3.5 -123.5C3.5 -125 10 -123 13.5 -119.5C6.5 -118.5 0.5 -116.5 -3.5 -112.5C-6 -108.5 -6 -103 -4 -99C-8 -99 -11 -101 -12 -104.5Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-12 -104.5C-15.5 -112 -12.5 -121 -3.5 -123.5C-7 -118 -8 -110 -6.5 -101C-9 -101 -11 -102 -12 -104.5Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-8 -118C-6 -114 -5 -110 -5 -106",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-2 -121C0 -119 2 -118.5 6 -118.5",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-6 -106.5C-9 -107.5 -9.5 -101.5 -6 -101.5Z",
-          "material": "stein"
-        },
-        {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-7.2 -105.2C-6.4 -104.4 -6.4 -103.4 -7.2 -102.6",
-          "material": "linie"
-        },
-        {
-          "art": "flaeche",
-          "form": "M14.6 -109.5C17.2 -106.4 19 -104.2 17.6 -102.4C16.6 -101.6 15.2 -102 14.4 -102.8Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M14.6 -103.4C15.4 -102.6 16.4 -102.2 17.4 -102.6L17 -103.6Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M6.8 -111C8.8 -113.4 12.2 -113.6 13.8 -110.8C11.8 -109.2 8.8 -109 6.8 -111Z",
-          "material": "stein",
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "stein",
-          "mitte": [11.4, -111.5],
-          "radius": 0.5,
-          "ton": "licht"
-        },
-        {
-          "art": "falz",
-          "breite": 1.5,
-          "form": "M6.6 -111.2C8.8 -113.8 12.4 -114 14 -111",
-          "material": "linie"
-        },
-        {
-          "art": "falz",
-          "breite": 2,
-          "form": "M5.8 -115.8C8.8 -117.4 12 -117 14.4 -115.2",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
+          "form": "M2 -115L13 -116L12 -111L3 -111Z",
           "material": "lava",
-          "mitte": [11.5, -105.5],
-          "radius": 2.6,
-          "ton": "licht"
-        },
-        {
-          "art": "punkt",
-          "material": "gold",
-          "mitte": [10.9, -111],
-          "radius": 2,
           "ton": "licht"
         }
       ],
-      "pivot": [0, -90]
-    },
-    {
-      "eltern": "kopf",
-      "id": "helm",
-      "lagen": [],
-      "pivot": [2, -120]
+      "pivot": [0, -106]
     },
     {
       "eltern": "rumpf",
@@ -524,25 +153,17 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L4.6 -68C6.5 -74 8 -84 6.2 -90C2 -93.5 -2 -93.5 -6.2 -90Z",
-          "material": "stein"
+          "form": "M14 -108C12 -96 14 -80 16 -68L34 -68C36 -80 36 -96 34 -108C28 -114 20 -114 14 -108Z",
+          "material": "stein",
+          "ton": "licht"
         },
         {
           "art": "flaeche",
-          "auflage": true,
-          "form": "M-6.2 -90C-8 -84 -6.5 -74 -4.6 -68L-1 -68C-2.5 -75 -3.5 -84 -2.5 -92Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 1.3,
-          "form": "M4 -87C5 -81 4.5 -75 3.2 -71",
-          "material": "stein",
-          "ton": "licht"
+          "form": "M14 -104C13 -118 36 -122 41 -106C37 -100 18 -98 14 -104Z",
+          "material": "stein"
         }
       ],
-      "pivot": [0, -84]
+      "pivot": [24, -96]
     },
     {
       "eltern": "oberarm-v",
@@ -550,126 +171,97 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L3.9 -56C4.1 -60 4.7 -66 4.9 -72.5Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-4.9 -72.5C-4.7 -66 -4.1 -60 -3.9 -56L-1 -56L-1.3 -72.5Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-5.6 -58.5H5.6L5.2 -53.5H-5.2Z",
+          "form": "M16 -70C15 -60 16 -52 17 -46L33 -46C34 -52 35 -60 34 -70Z",
           "material": "stein",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "auflage": true,
-          "form": "M-5.6 -58.5H-2L-2.2 -53.5H-5.2Z",
+          "form": "M12 -48C8 -36 14 -24 25 -24C36 -24 40 -36 38 -48Z",
           "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "punkt",
-          "material": "linie",
-          "mitte": [2, -55.5],
-          "radius": 1
+          "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2C4.2 -45.6 5.4 -49 4.3 -53.8Z",
-          "material": "stein"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-4.2 -53.8C-5.4 -50 -4.4 -45.8 0 -45.2L-1 -53.8Z",
-          "material": "stein",
-          "ton": "schatten"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M3.6 -52.2C6.6 -52.4 7 -49 4.4 -48",
-          "material": "stein"
-        },
-        {
-          "art": "falz",
-          "breite": 0.9,
-          "form": "M-1.6 -49.5H2.2",
-          "material": "linie"
+          "form": "M16 -44L30 -42L26 -36L34 -32L20 -30L24 -38Z",
+          "material": "lava"
         }
       ],
-      "pivot": [0, -70]
-    },
-    {
-      "eltern": "unterarm-v",
-      "id": "schwert",
-      "lagen": [],
-      "pivot": [0, -49]
+      "pivot": [25, -68]
     }
   ],
   "ausgabe": {
-    "hoehe_px": 288,
-    "rahmen": [-60, -175, 150, 181]
+    "hoehe_px": 294,
+    "rahmen": [-66, -175, 176, 185]
   },
   "animationen": {
     "angriff": {
-      "fps": 14,
+      "fps": 12,
       "frames": 8,
       "keyframes": [
         {
           "t": 0,
           "winkel": {
             "oberarm-h": 10,
-            "oberarm-v": -50,
-            "schwert": 75,
-            "unterarm-v": -40
+            "oberarm-v": -20
           }
         },
         {
           "t": 0.35,
           "winkel": {
-            "kopf": 4,
-            "oberarm-h": 25,
-            "oberarm-v": -165,
+            "kopf": -3,
+            "oberarm-h": 20,
+            "oberarm-v": -150,
             "rumpf": -6,
-            "schwert": 26,
-            "unterarm-v": -10
+            "unterarm-v": -40
           }
         },
         {
           "t": 0.55,
           "winkel": {
-            "kopf": -3,
+            "kopf": 3,
             "oberarm-h": -10,
-            "oberarm-v": -85,
+            "oberarm-v": -45,
             "rumpf": 8,
-            "schwert": 142,
             "unterarm-v": 0
           }
         },
         {
-          "t": 0.75,
+          "t": 0.8,
           "winkel": {
             "oberarm-h": 0,
-            "oberarm-v": -55,
-            "rumpf": 4,
-            "schwert": 146,
-            "unterarm-v": -10
+            "oberarm-v": -30,
+            "rumpf": 4
           }
         }
       ]
     },
     "idle": {
-      "frames": 8
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-h": 10,
+            "oberarm-v": -10
+          }
+        }
+      ]
     },
     "lauf": {
-      "frames": 8
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-h": 8,
+            "oberarm-v": -8
+          }
+        }
+      ]
     }
+  },
+  "proportionen": {
+    "beine": 0.6
   }
 }
