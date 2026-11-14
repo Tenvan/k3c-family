@@ -1,10 +1,10 @@
 # MG10 · PAP · Papierschnitt: Bosse neu mit eigener Silhouette
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
-- **Tickets:** B-720
+- **Tickets:** B-720, B-711
 - **Start-Commit:** 879fac30d
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -43,11 +43,11 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+Bosse nebeneinander als schwarze Flächen → jeder an seiner Silhouette erkennbar (Buckel, Felsblock, Kristallzacken, Robe mit Schwanz, Riesenkopf mit Ohr).
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Angriff ragt über den Rahmen → Rahmen breiter oder Keyframes enger, Oberkante −175 bleibt (Spielgröße).
 
 ## Akzeptanzkriterien
 
@@ -67,16 +67,11 @@ keine
 | MG10.1 | `MG10.1-silhouetten.md` | Umsetzung | autonom | fertig |
 | MG10.2 | `MG10.2-bosse-a.md` | Umsetzung | autonom | fertig |
 | MG10.3 | `MG10.3-bosse-b.md` | Umsetzung | autonom | fertig |
-| MG10.4 | `MG10.4-review.md` | Umsetzung | autonom | offen |
-
-Reife Entwurf:
-
-- MG10.1 Silhouetten-Entwürfe aller Bosse
-- MG10.2 Bosse A
-- MG10.3 Bosse B
-- MG10.4 Review
+| MG10.4 | `MG10.4-review.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets. Bis dahin `–`.
+- 2026-11-14, Review MG10.4 (k3c-reviewer, Claude): AC-01 umgesetzt, Sichtprüfung durch 🧑 offen (B-720 bleibt offen); AC-02 erfüllt (MG10.5, B-711 erledigt); AC-03 erfüllt.
+- Behoben: `ersatz.test.ts` auf die neuen Boss-Teile; Ergebnis MG10.5 korrigiert.
+- Neue Tickets: B-885 (nativer Rig-Export der Bosse), B-886 (Abnahme: Sichtprüfung, B-711 bestätigen, `gen:paper`, `check:race`).
+- `task check` und `task check:go` grün.

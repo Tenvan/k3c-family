@@ -38,9 +38,10 @@ describe('Keine Ersatz-Abbildung mehr (B-735/AC-02)', () => {
     ['gegner/eisenkaefer', undefined, ['stein'], 'eisen'],
     ['gegner/skelett', ['schwert', 'schild'], ['stein'], 'eisen'],
     ['gegner/goblin', ['dolch'], ['stein'], 'eisen'],
-    ['bosse/goblin-anfuehrer', ['schwert', 'schild'], ['stein'], 'eisen'],
-    ['bosse/troll-koenig', ['schild'], ['stein'], 'eisen'],
-    ['bosse/ratten-koenigin', ['unterarm-h', 'unterarm-v'], ['stein'], 'eisen'],
+    // Bosse seit MG10 (B-720) mit eigenen Waffen: Hackmesser, Keule, Zepter
+    ['bosse/goblin-anfuehrer', ['hackmesser', 'schild'], ['stein'], 'eisen'],
+    ['bosse/troll-koenig', ['keule'], ['stein'], 'eisen'],
+    ['bosse/ratten-koenigin', ['zepter'], ['stein'], 'gold'],
     ['gegner/goblin-bogenschuetze', ['pfeil'], ['stein'], 'eisen'],
     ['gegner/hoehlentroll', ['keule'], ['stein'], 'eisen'],
     ['gegner/kristallspinne', undefined, ['edelstein', 'koenigsblau'], 'kristall'],

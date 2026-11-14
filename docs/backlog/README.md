@@ -33,6 +33,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-883](B-883-hintergruende-fuenf-varianten-im-client.md) | CLI | Problem | niedrig | offen | – | Der Client nutzt alle fünf Hintergrund-Varianten |
 | [B-884](B-884-abnahme-mg11.md) | PAP | Schuld | mittel | offen | – | Abnahme MG11: Sichtprüfung der Welt-Grafik und Gen-Läufe sind erledigt |
 | [B-882](B-882-abnahme-laeufe-wz45.md) | DEV | Schuld | mittel | offen | WZ45 | Abnahme-Läufe WZ45 |
+| [B-885](B-885-native-rig-export-bosse.md) | PAP | Schuld | mittel | offen | – | Nativer Rig-Export der Bosse ist nach MG10 veraltet |
+| [B-886](B-886-abnahme-mg10.md) | PAP | Schuld | mittel | offen | – | Abnahme MG10: Sichtprüfung der Bosse und Gen-Läufe sind erledigt |
 
 ## Archiv
 
