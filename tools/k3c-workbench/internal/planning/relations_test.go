@@ -43,6 +43,7 @@ func TestRelationenUngueltigAendernNichts(t *testing.T) {
 		"Duplikat erledigt":     {"B-001", map[string]string{fieldDup: "B-002"}, "erledigt"},
 		"Format":                {"B-002", map[string]string{fieldReplace: "B-3"}, "keine Ticket-ID"},
 		"doppelt":               {"B-002", map[string]string{fieldReplace: "B-001, B-001"}, "doppelt"},
+		"Trennung":              {"B-002", map[string]string{fieldReplace: "B-001,B-003"}, "trennen"},
 		"Duplikat beim Anlegen": {"", map[string]string{fieldDup: "B-002"}, "kein Duplikat"},
 	}
 	for name, c := range bad {

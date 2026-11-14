@@ -9,7 +9,8 @@ import (
 func TestPlanDigestUeberMCP(t *testing.T) {
 	t.Parallel()
 	cs := connect(t, New(Config{Version: "test", Root: planRepo(t)}))
-	if text, isErr := callText(t, cs, "plan_digest", map[string]any{}); isErr || !strings.HasPrefix(text, "Zusammenfassungen:") {
+	if text, isErr := callText(t, cs, "plan_digest", map[string]any{}); isErr || !strings.HasPrefix(text, "Zusammenfassungen:") ||
+		!strings.Contains(text, "Checkout:") {
 		t.Errorf("plan_digest: %q (Fehler %v)", text, isErr)
 	}
 	if !strings.Contains(instructions, "`plan_digest") {

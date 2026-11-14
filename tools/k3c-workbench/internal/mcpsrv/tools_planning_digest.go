@@ -14,6 +14,9 @@ type planDigestIn struct {
 	Renew     bool   `json:"neu,omitempty" jsonschema:"vorhandene ZUSAMMENFASSUNG.md neu schreiben (Standard: unverändert lassen)"`
 }
 
+// plan_digest schreibt Dateien: Argument checkout und Zeile „Checkout:“ wie die anderen schreibenden Tools (B-388).
+func init() { writeTools["plan_digest"] = true }
+
 // registerPlanDigest ist plan_digest: Zusammenfassungen erledigter Sprints (B-696 Teil C).
 func registerPlanDigest(s *Server) {
 	closed, destructive := false, false

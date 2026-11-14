@@ -1,22 +1,20 @@
 # Backlog
 
-Alle Tickets, eine Zeile pro Ticket. Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ticket.md).
-Jedes Ticket ist eine Spec (SDD, siehe [`../arbeitsweise.md`](../arbeitsweise.md)). Neues Ticket: nächste freie Nummer,
-Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen. `task test` prüft beides.
+Offene und eingeplante Tickets, eine Zeile pro Ticket; erledigte und verworfene stehen in [`archiv/README.md`](archiv/README.md).
+Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ticket.md) und eine Spec (SDD, siehe
+[`../arbeitsweise.md`](../arbeitsweise.md)). Anlegen und ändern nur über k3c-workbench (`plan_create`, `plan_set`);
+`task test` prüft Dateien und beide Index-Dateien.
 
 ## Offen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-677](archiv/B-677-studio-assets-seite.md) | DEV | Idee | mittel | erledigt | WZ33 | Grafik, Sound und Quellen sind im Studio eine Seite Assets mit Fokus-Chips, Inspektor und einer Abspielleiste |
 | [B-008](B-008-spieleabend.md) | REG | Frage | niedrig | eingeplant | P1 | Familie hat einen Spieleabend gespielt und Feedback gegeben |
 | [B-023](B-023-itch-io.md) | INF | Idee | niedrig | eingeplant | PB1 | Spiel ist auf itch.io veröffentlicht |
 | [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
 | [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | eingeplant | BT1 | Wails-Starter für Windows existiert |
 | [B-151](B-151-spieleabend-fragebogen.md) | REG | Idee | niedrig | eingeplant | P1 | Der Spieleabend hat einen kindgerechten Fragebogen und eine Playtest-Vorlage |
 | [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
-| [B-157](archiv/B-157-zielkorridor-pruefung.md) | SIM | Idee | mittel | erledigt | BAL2 | Der Balancing-Tester prüft Zielkorridore und meldet Pass oder Fail je Kennzahl |
-| [B-159](archiv/B-159-replay-repro-format.md) | SIM | Idee | mittel | erledigt | BAL1 | Ein Lauf ist als Datei aus Seed und Eingaben wiederholbar |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
 | [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
@@ -39,7 +37,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-674](B-674-skill-effekt-am-wirkort.md) | SRV | Problem | mittel | eingeplant | KB5 | Flächenzauber erscheinen dort, wo die Simulation sie wirkt, nicht am Monarchen |
 | [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | eingeplant | BAL8 | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
 | [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | eingeplant | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
-| [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | eingeplant | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-711](B-711-reiter-variante-reittier.md) | PAP | Frage | mittel | eingeplant | MG9 | Variante des Reiters tauscht die Materialien des Reittiers nicht |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
@@ -53,7 +50,6 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-732](B-732-assets-katalog-schneller.md) | DEV | Idee | mittel | eingeplant | WZ43 | Der Assets-Katalog zeigt Einträge sofort, cacht sie und hat eine größere Vorschau |
 | [B-734](B-734-katalog-teil-ausblenden.md) | DEV | Idee | mittel | eingeplant | WZ43 | Im Katalog lässt sich das gewählte Teil in der Vorschau aus- und einblenden |
 | [B-746](B-746-workbench-tests-ohne-engine-server.md) | DEV | Schuld | niedrig | eingeplant | WZ46 | Workbench-Tests laufen gegen einen Fake-Spielserver statt engine/net und engine/room |
-||||||| 8d74a196
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-776](B-776-bevy-prototyp-papier-sheets-zwei-pads.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Bevy-Prototyp zeigt ein Level mit echten Papier-Sheets, zwei Gamepads steuern je einen Monarchen, FPS und Grafikspeicher sind gemessen |
 | [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | eingeplant | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |

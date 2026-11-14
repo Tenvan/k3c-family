@@ -38,7 +38,8 @@ func relIDs(v string) []string {
 	return out
 }
 
-// checkRelFormat: `–`, bei „Duplikat von“ genau eine ID, bei „Ersetzt“ eine Liste ohne Dopplung.
+// checkRelFormat: `–`, bei „Duplikat von“ genau eine ID, bei „Ersetzt“ eine Liste `B-001, B-002` ohne Dopplung (das
+// Format prüft auch tests/planningDocs.ts › relationOk).
 func checkRelFormat(name, value string) error {
 	ids := relIDs(value)
 	if value != "–" && len(ids) == 0 {
@@ -46,6 +47,9 @@ func checkRelFormat(name, value string) error {
 	}
 	if name == fieldDup && len(ids) > 1 {
 		return fmt.Errorf("%s: genau eine ID, nicht %d", name, len(ids))
+	}
+	if value != "–" && value != strings.Join(ids, ", ") {
+		return fmt.Errorf("%s: IDs mit „, “ trennen, z. B. B-001, B-002", name)
 	}
 	for i, id := range ids {
 		if !reTicketID.MatchString(id) {
@@ -87,7 +91,10 @@ func relations(root string) map[string]relInfo {
 			if d := relIDs(f[fieldDup]); len(d) > 0 {
 				info.dup = d[0]
 			}
-			out[e.Name()[:5]] = info
+			// Doppelt vergebene Nummer (B-199, B-696): das Ticket im Backlog gilt, es wird zuerst gelesen.
+			if _, dup := out[e.Name()[:5]]; !dup {
+				out[e.Name()[:5]] = info
+			}
 		}
 	}
 	return out

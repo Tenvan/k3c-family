@@ -39,20 +39,53 @@ func TestStatuswechselZwischenIndexDateien(t *testing.T) {
 	checkIndexes(t, root)
 }
 
-// TestArchivIndexEntstehtBeimErstenWechsel: ohne archiv/README.md legt der erste Wechsel ins Archiv sie an; die Zeile
-// verschwindet aus dem alten Abschnitt „Archiv“ des Haupt-Index.
-func TestArchivIndexEntstehtBeimErstenWechsel(t *testing.T) {
+// TestArchivIndexAltesFormatUndNeuAnlegen: mit Archiv-Tabelle im Haupt-Index (vor RebuildIndex) bleibt das alte Format;
+// ohne sie und ohne archiv/README.md legt der erste Wechsel ins Archiv die Datei an.
+func TestArchivIndexAltesFormatUndNeuAnlegen(t *testing.T) {
 	t.Parallel()
 	root := relRepo(t)
 	must(t)(Set(root, "B-003", map[string]string{"Status": "verworfen"}))
+	if exists(root, archiveIndex) || !strings.Contains(doc(t, root, mainIndex), "| [B-003](archiv/B-003-t.md) |") {
+		t.Fatalf("altes Format verlassen:\n%s", doc(t, root, mainIndex))
+	}
+	main := doc(t, root, mainIndex)
+	main = main[:strings.Index(main, "## Archiv")] + mainArchive
+	if err := os.WriteFile(docsPath(root, mainIndex), []byte(main), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	must(t)(Set(root, "B-004", map[string]string{"Status": "verworfen"}))
 	arch := doc(t, root, archiveIndex)
-	if !strings.HasPrefix(arch, "# Backlog · Archiv") || !strings.Contains(arch, "| [B-003](B-003-t.md) |") {
+	if !strings.HasPrefix(arch, "# Backlog · Archiv") || !strings.Contains(arch, "| [B-004](B-004-t.md) |") ||
+		strings.Contains(doc(t, root, mainIndex), "[B-004]") {
 		t.Fatalf("Archiv-Index:\n%s", arch)
 	}
-	if strings.Contains(doc(t, root, mainIndex), "[B-003]") {
-		t.Error("Zeile steht noch im Haupt-Index")
+}
+
+// TestDoppelteNummerBleibtGetrennt: zwei Tickets mit derselben Nummer (B-199, B-696 im echten Backlog) behalten beide
+// ihre Zeile; Relationen sehen das offene Ticket.
+func TestDoppelteNummerBleibtGetrennt(t *testing.T) {
+	t.Parallel()
+	root := relRepo(t)
+	twin := "# B-002 · Zwilling im Archiv\n\n- **Domäne:** DEV\n- **Typ:** Idee\n- **Prio:** mittel\n- **Status:** erledigt\n- **Sprint:** –\n"
+	if err := os.MkdirAll(docsPath(root, "backlog/archiv"), 0o755); err != nil {
+		t.Fatal(err)
 	}
-	checkIndexes(t, root)
+	if err := os.WriteFile(docsPath(root, "backlog/archiv/B-002-zwilling.md"), []byte(twin), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	must(t)(RebuildIndex(root, false))
+	if relations(root)["B-002"].status != "offen" {
+		t.Error("Relationen sehen den Zwilling im Archiv")
+	}
+	must(t)(Set(root, "B-002", map[string]string{"Status": "erledigt"}))
+	arch := doc(t, root, archiveIndex)
+	if !strings.Contains(arch, "| [B-002](B-002-zwilling.md) |") || !strings.Contains(arch, "| [B-002](B-002-t.md) |") {
+		t.Fatalf("Zeile überschrieben:\n%s", arch)
+	}
+	must(t)(Set(root, "B-002", map[string]string{"Status": "offen"}))
+	if arch = doc(t, root, archiveIndex); !strings.Contains(arch, "| [B-002](B-002-zwilling.md) |") || strings.Contains(arch, "B-002-t.md") {
+		t.Fatalf("falsche Zeile entfernt:\n%s", arch)
+	}
 }
 
 // TestRebuildIndex: B-696/AC-07 im Kleinen; dry schreibt nichts, ein Ticket im falschen Ordner bricht ab.
@@ -97,22 +130,27 @@ func checkIndexes(t *testing.T, root string) {
 			continue
 		}
 		for _, m := range indexRow.FindAllStringSubmatch(text, -1) {
-			if seen[m[1]] {
-				t.Errorf("%s doppelt", m[1])
-			}
-			seen[m[1]] = true
 			file := "backlog/" + m[2]
 			if rel == archiveIndex {
 				file = "backlog/archiv/" + m[2]
 			}
+			key := m[1] + " " + file
+			if seen[key] {
+				t.Errorf("%s doppelt", key)
+			}
+			seen[key] = true
 			if st := ParseTicket(doc(t, root, file)).Status; st != m[3] {
 				t.Errorf("%s: Index %s, Datei %s", m[1], m[3], st)
 			}
 		}
 	}
 	for _, x := range must2(t)(indexTickets(root)) {
-		if !seen[x.t.Nr] {
-			t.Errorf("%s fehlt im Index", x.t.Nr)
+		folder := "backlog/"
+		if x.archived {
+			folder = "backlog/archiv/"
+		}
+		if !seen[x.t.Nr+" "+folder+x.file] {
+			t.Errorf("%s (%s) fehlt im Index", x.t.Nr, x.file)
 		}
 	}
 }

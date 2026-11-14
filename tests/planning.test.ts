@@ -29,7 +29,8 @@ const ticketFiles = (folder: string) =>
 /** Offene und eingeplante Tickets liegen in backlog/, erledigte und verworfene in backlog/archiv/. */
 const tickets = [...ticketFiles(''), ...ticketFiles('archiv')].map((t) => ({ ...t, path: 'backlog/' + t.rel }));
 const ticketIds = new Set(tickets.map((t) => t.file.slice(0, 5)));
-const ticketCriteria = (id: string) => criteria(read(tickets.find((t) => t.file.startsWith(id))?.path ?? ''));
+/** Kriterien aller Dateien mit der Nummer (doppelt vergebene wie B-199, B-696 liegen beide im Archiv). */
+const ticketCriteria = (id: string) => tickets.filter((t) => t.file.startsWith(id + '-')).flatMap((t) => criteria(read(t.path)));
 
 describe('Backlog', () => {
   it.each(tickets)('$path folgt der Vorlage', ({ file, folder, path }) => {

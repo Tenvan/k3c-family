@@ -64,7 +64,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ42 | Workbench-Tests schnell und stabil | erledigt |
 | WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | aktiv |
 | WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | erledigt |
-| WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | aktiv |
+| WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | erledigt |
 | WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | geplant |
 | WZ46 | Workbench-Tests ohne Engine-Spielserver | geplant |
 | WZ48 | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | erledigt |

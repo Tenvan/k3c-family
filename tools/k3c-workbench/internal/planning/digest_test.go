@@ -66,6 +66,15 @@ func TestDigestDryUndZweiterLauf(t *testing.T) {
 	}
 }
 
+// TestDigestImCheckout schreibt die Zusammenfassungen eines echten Checkouts (WZ47.4); nur mit K3C_DIGEST=<Repo-Wurzel>.
+func TestDigestImCheckout(t *testing.T) {
+	root := os.Getenv("K3C_DIGEST")
+	if root == "" {
+		t.Skip("K3C_DIGEST nicht gesetzt")
+	}
+	t.Log(must(t)(Digest(root, DigestIn{})))
+}
+
 // TestDigestAuswahlUndLuecken: älter_als nach Sprint-ID und Datum, fehlendes Ziel als Hinweis.
 func TestDigestAuswahlUndLuecken(t *testing.T) {
 	t.Parallel()
