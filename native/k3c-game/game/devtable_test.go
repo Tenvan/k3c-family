@@ -104,3 +104,18 @@ func TestDevKeySession(t *testing.T) {
 		t.Errorf("F6: %d Ladevorgänge, Cues %+v", s.reloads, g.cues)
 	}
 }
+
+// Ein Spieler, den ein früheres Overlay verbraucht (Cheat-Menü), fehlt in der Eingabe der späteren (Skill-Menü); der
+// andere Spieler bleibt sichtbar.
+func TestOverlayHidesConsumedPlayer(t *testing.T) {
+	first, second := &skillMenu{}, &skillMenu{}
+	g := playGame(newFakeSim(), first, second)
+	g.play(view.Input{Devices: []view.DeviceInput{press(keys1, view.Command{}, view.ActionView)}})
+	if !first.open[0] || second.open[0] {
+		t.Fatalf("erstes %v, zweites %v", first.open, second.open)
+	}
+	g.play(view.Input{Devices: []view.DeviceInput{press(pad3, view.Command{}, view.ActionView)}})
+	if !first.open[1] || second.open[1] {
+		t.Errorf("Spieler 2: erstes %v, zweites %v", first.open, second.open)
+	}
+}

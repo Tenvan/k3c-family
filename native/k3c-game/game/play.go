@@ -56,17 +56,32 @@ func (g *Game) ending() bool {
 	return true
 }
 
-// overlays ruft alle Overlays und vereinigt die verbrauchten Spieler; ihre Cues kommen in den nächsten Frame.
+// overlays ruft alle Overlays in Anmelde-Reihenfolge und vereinigt die verbrauchten Spieler; ihre Cues kommen in den
+// nächsten Frame. Ein Spieler, den ein Overlay verbraucht, fehlt in der Eingabe der späteren (Cheat-Menü vor Skill-Menü).
 func (g *Game) overlays(in view.Input) [view.MaxPlayers]bool {
 	var consumed [view.MaxPlayers]bool
 	for _, o := range g.parts.Overlays {
-		st := o.Update(in, &g.frame, g.sim)
+		st := o.Update(g.hideConsumed(in, consumed), &g.frame, g.sim)
 		g.cues = append(g.cues, st.Cues...)
 		for p, c := range st.Consumed {
 			consumed[p] = consumed[p] || c
 		}
 	}
 	return consumed
+}
+
+// hideConsumed liefert in ohne die Geräte verbrauchter Spieler (Puffer inBuf, gilt bis zum nächsten Aufruf).
+func (g *Game) hideConsumed(in view.Input, consumed [view.MaxPlayers]bool) view.Input {
+	if !slices.Contains(consumed[:], true) {
+		return in
+	}
+	g.inBuf = g.inBuf[:0]
+	for _, di := range in.Devices {
+		if !isConsumed(consumed, seatOf(g.frame.Seats, di.Device)) {
+			g.inBuf = append(g.inBuf, di)
+		}
+	}
+	return view.Input{Devices: g.inBuf}
 }
 
 func isConsumed(consumed [view.MaxPlayers]bool, p int) bool {

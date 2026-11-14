@@ -1,6 +1,6 @@
 # CH1.2 · Cheat-Menü F9 je Spieler
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,5 +61,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `devtools/cheatlist.go` (Gruppen Vorrat, Ausbau, Zeit, Grad, Kampf; Bosse aus `data/bosses.json`), `devtools/cheatmenu.go` (Bedienung), `devtools/cheats.go` (Overlay je Spieler, F9 der linken Tastatur-Hälfte, sonst Ersatz-Spieler; Pad View + Y), `devtools/drawcheats.go`. Wirkung über `local.Dev` → `Room.DevLocal` (🐛-Log des Raums mit Slot und Wert); Tests `TestCheatOverlayPerPlayer`, `TestCheatOverlayCloses`, `TestCheatKeyFallback`, `TestCheatGroups`, `local/TestDevActions` grün.
+- game: Ein verbrauchter Spieler fehlt in der Eingabe späterer Overlays (`play.go` › `hideConsumed`), devtools steht vor hud (Cheat-Menü vor Skill-Menü); Test `TestOverlayHidesConsumedPlayer`.
+- Grad „dev“ fehlt im Menü (braucht Dev-Mode des Raums).
+- `check_run task:check:diff:go` grün.

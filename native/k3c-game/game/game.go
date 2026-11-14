@@ -50,6 +50,7 @@ type Game struct {
 	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
 	dev            view.DevView          // Entwickler-Anzeigen (F1, F10), kommt in jeden Frame
 	shotNext       bool                  // F12: das nächste Bild nach reports/ schreiben (devshot.go)
+	inBuf          []view.DeviceInput    // Puffer der Eingabe späterer Overlays (play.go › hideConsumed)
 	subs           subImages
 	stats          *overlay
 	shots          *shooter
