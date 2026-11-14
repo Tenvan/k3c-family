@@ -3,14 +3,14 @@
 - **Domäne:** DEV
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** WZ49
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-14
 
 ## Ausgangslage
 
@@ -26,8 +26,10 @@ Claude (Umsetzung); Review-Sessions der Workbench-Sprints.
 
 ## Anforderungen
 
-- `dev:test` (oder ein neues Ziel `task:check:dev`) baut das Frontend bei Bedarf vorher und hat ein Limit, das für den vollen Lauf reicht.
-- Fehlen `node_modules` des Frontends, nennt die Antwort `task install` statt hunderter TS-Fehler.
+- `dev:test` läuft über `task k3c-workbench:gotest` (baut das Frontend bei Bedarf, ohne Sim-Pakete), Testmuster als `GO_TEST_FLAGS=-run=<muster>`.
+- Neues Ziel `task:check:dev` (`task check:dev`: Frontend mit Vitest, go test, golangci-lint) für die Review.
+- Zeitlimit beider Ziele 20 min.
+- Fehlen `tools/k3c-workbench/frontend/node_modules`, bricht `check_run` vor dem Start mit dem Hinweis `task install` ab statt hunderter TS-Fehler.
 
 ## Nicht-Ziele
 
@@ -53,7 +55,7 @@ Frontend-Abhängigkeiten fehlen → Abbruch mit Hinweis `task install`, exit ≠
 
 ## Akzeptanzkriterien
 
-- **AC-01** Auf frischem Worktree (nach `task install`) läuft die volle Workbench-Prüfung über `check_run` ohne `setup failed` und ohne Zeitlimit-Abbruch.
+- **AC-01** Auf frischem Worktree (nach `task install`) läuft die volle Workbench-Prüfung über `check_run` ohne `setup failed` und ohne Zeitlimit-Abbruch. Nachweis: Go-Test in `internal/mcpsrv` (Befehl, Limit, Abbruch ohne `node_modules`) und ein voller Lauf von `task check:dev` im Worktree; über `check_run` erst nach Neubau der Workbench-EXE.
 
 ## Offene Fragen
 

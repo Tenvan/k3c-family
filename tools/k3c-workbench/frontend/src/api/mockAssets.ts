@@ -76,6 +76,6 @@ export function mockAssets(): AssetsBackend {
       return 'data:audio/ogg;base64,T2dnUw==';
     },
     studioSources: async () => QUELLEN,
-    studioGameOpen: async (seed) => `http://127.0.0.1:8099/index.html#${encodeURIComponent(`game.html?autostart=1&save=voll-${seed}`)}`,
+    studioGameOpen: async (seed) => `Natives Spiel gestartet mit Spielstand voll-${seed}`, // B-847
   };
 }

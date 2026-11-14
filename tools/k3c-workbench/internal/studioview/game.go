@@ -8,45 +8,51 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
-	"net"
-	"net/http"
-	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sync"
 	"time"
 
-	k3cnet "k3c/engine/net"
 	"k3c/engine/room"
 	"k3c/engine/store"
 )
 
-// „Im Spiel ansehen“ (Entscheidung 005 › 5, Sprint-README WB1 › D-04; übernommen aus tools/k3c-studio/backend, TS1.2):
-// die Engine läuft als Bibliothek in der Workbench, mit eigenem Loopback-Listener auf einem freien Port (kein fester
-// Port, keine Firewall-Abfrage) und Testspielständen außerhalb des Repos. Gestartet wird erst beim ersten Aufruf.
+// „Im Spiel ansehen“ (Entscheidung 005 › 5, B-847): legt den Testspielstand voll-<seed> (voll ausgebaut, Standard-Welt)
+// außerhalb des Repos an und startet das native Spiel mit festem Pfad (keine Firewall-Abfrage, kein go run), das ihn
+// lädt. Der Browser-Client (dist/index.html, game.html) wird nicht mehr gebraucht (Entscheidung 009).
 
 // fullSeed: `voll-<seed>` muss ins Namensformat eines Spielstands passen (wie fullSeed in engine/room).
 var fullSeed = regexp.MustCompile(`^[a-z0-9-]{1,27}$`)
 
+// nativeBuildTask baut die native EXE; die Meldung bei fehlender EXE nennt ihn (B-847/AC-02).
+const nativeBuildTask = "task native:game:build"
+
+// nativeExe sind die Orte der nativen EXE, zuerst der Build im Checkout, dann das Spiel-Paket; dir ist der
+// Arbeitsordner, unter dem das Spiel public/ findet. Pfade relativ zur Wurzel des Checkouts.
+var nativeExe = []struct{ exe, dir string }{
+	{"native/k3c-game/bin/k3c-game.exe", "."},
+	{"dist/k3c-game/k3c-game.exe", "dist/k3c-game"},
+}
+
 // Game ist „Im Spiel ansehen“ eines Checkouts.
 type Game struct {
-	ctx    context.Context
-	cancel context.CancelFunc // beendet den Raum-Takt (Close)
-	root   string
-	saves  string
-	log    *slog.Logger
+	ctx   context.Context
+	root  string
+	saves string
+	log   *slog.Logger
+	// launch startet das Spiel und kehrt sofort zurück (Tests ersetzen es); das Spiel überlebt die Workbench.
+	launch func(cmd *exec.Cmd) error
 
 	mu     sync.Mutex
-	rooms  *room.Manager
-	srv    *http.Server
-	base   string        // http://127.0.0.1:<port>
-	done   chan struct{} // schließt, wenn die Räume gespeichert und geschlossen sind
-	closed bool          // nach Close startet nichts mehr
+	closed bool // nach Close startet nichts mehr
+
+	open sync.Mutex // ein Open zugleich: zwei Aufrufe schrieben sonst denselben Spielstand gleichzeitig
 }
 
 // NewGame bereitet „Im Spiel ansehen“ für root vor; savesDir ist der Ordner der Testspielstände (leer = Cache des
-// Nutzers, DefaultSavesDir). Endet ctx, speichert die Engine ihre Räume. log darf nil sein.
+// Nutzers, DefaultSavesDir). Endet ctx, startet Open nichts mehr. log darf nil sein.
 func NewGame(ctx context.Context, root, savesDir string, log *slog.Logger) *Game {
 	if log == nil {
 		log = slog.New(slog.NewTextHandler(io.Discard, nil))
@@ -54,8 +60,7 @@ func NewGame(ctx context.Context, root, savesDir string, log *slog.Logger) *Game
 	if savesDir == "" {
 		savesDir = DefaultSavesDir(root)
 	}
-	ctx, cancel := context.WithCancel(ctx)
-	return &Game{ctx: ctx, cancel: cancel, root: root, saves: savesDir, log: log}
+	return &Game{ctx: ctx, root: root, saves: savesDir, log: log, launch: startDetached}
 }
 
 // DefaultSavesDir ist `<Cache des Nutzers>/k3c/studioview/<Hash des Checkouts>/saves`, nie im Repo.
@@ -68,87 +73,79 @@ func DefaultSavesDir(root string) string {
 	return filepath.Join(base, "k3c", "studioview", hex.EncodeToString(sum[:6]), "saves")
 }
 
-// Open legt den Testspielstand `voll-<seed>` an (voll ausgebaut, Standard-Welt) und liefert die Adresse, unter der die
-// Landingpage `game.html` mit ihm startet.
+// Open legt den Testspielstand `voll-<seed>` an und startet das native Spiel, das ihn lädt; die Antwort sagt, was
+// gestartet ist. Ein zweiter Aufruf startet ein weiteres Fenster.
 func (g *Game) Open(seed string) (string, error) {
 	if !fullSeed.MatchString(seed) {
 		return "", hint("Seed muss aus Kleinbuchstaben, Ziffern und - bestehen (höchstens 27 Zeichen)")
 	}
-	if _, err := os.Stat(filepath.Join(g.root, "dist", "index.html")); err != nil {
-		return "", hint("Spiel-Client fehlt (dist/index.html) – erst bauen: task build")
+	g.open.Lock()
+	defer g.open.Unlock()
+	g.mu.Lock()
+	closed := g.closed || g.ctx.Err() != nil
+	g.mu.Unlock()
+	if closed {
+		return "", hint("„Im Spiel ansehen“ ist beendet")
 	}
-	rooms, base, err := g.start()
+	exe, dir, err := g.exe()
 	if err != nil {
 		return "", err
 	}
+	save, err := g.fullSave(seed)
+	if err != nil {
+		return "", err
+	}
+	cmd := exec.Command(exe, "--saves", g.saves, "--load", save, "--players", "1")
+	cmd.Dir = dir
+	if err := g.launch(cmd); err != nil {
+		return "", hint(fmt.Sprintf("Natives Spiel nicht gestartet: %v", err))
+	}
+	g.log.Info("🚀 Im Spiel ansehen: natives Spiel gestartet", "ns", "room", "exe", cmd.Path, "save", save)
+	return "Natives Spiel gestartet mit Spielstand " + save, nil
+}
+
+// exe ist der feste Pfad der nativen EXE und ihr Arbeitsordner; ohne EXE ein Hinweis auf den Build-Task.
+func (g *Game) exe() (exe, dir string, err error) {
+	for _, n := range nativeExe {
+		exe = filepath.Join(g.root, filepath.FromSlash(n.exe))
+		if st, err := os.Stat(exe); err == nil && !st.IsDir() {
+			return exe, filepath.Join(g.root, filepath.FromSlash(n.dir)), nil
+		}
+	}
+	return "", "", hint("Natives Spiel fehlt (" + nativeExe[0].exe + ") – erst bauen: " + nativeBuildTask)
+}
+
+// fullSave legt voll-<seed> über die Engine an (wie der Spielserver im Dev-Modus) und liefert den Namen.
+func (g *Game) fullSave(seed string) (string, error) {
+	if err := os.MkdirAll(g.saves, 0o750); err != nil {
+		return "", err
+	}
+	rooms := room.NewManager(&store.Saves{Dir: g.saves})
+	rooms.Log = g.log
+	rooms.Dev = true
+	rooms.Worlds = os.DirFS(filepath.Join(g.root, "data", "worlds"))
+	defer rooms.Close()
 	save, err := rooms.FullSave(seed)
 	if err != nil {
 		return "", fullSaveHint(err)
 	}
-	q := url.Values{"autostart": {"1"}, "save": {save}}
-	return base + "/index.html#" + url.QueryEscape("game.html?"+q.Encode()), nil
+	return save, nil
 }
 
-// start startet Engine und Listener beim ersten Aufruf und liefert beide; nach Close lehnt es ab.
-func (g *Game) start() (*room.Manager, string, error) {
-	g.mu.Lock()
-	defer g.mu.Unlock()
-	switch {
-	case g.closed:
-		return nil, "", hint("„Im Spiel ansehen“ ist beendet")
-	case g.srv != nil:
-		return g.rooms, g.base, nil
+// startDetached startet das Spiel und holt den Prozess im Hintergrund ab, ohne auf ihn zu warten.
+func startDetached(cmd *exec.Cmd) error {
+	if err := cmd.Start(); err != nil {
+		return err
 	}
-	if err := os.MkdirAll(g.saves, 0o750); err != nil {
-		return nil, "", err
-	}
-	saves := &store.Saves{Dir: g.saves}
-	rooms := room.NewManager(saves)
-	rooms.Log = g.log
-	rooms.Dev = true
-	rooms.Worlds = os.DirFS(filepath.Join(g.root, "data", "worlds"))
-	api := k3cnet.NewHandler(k3cnet.Config{
-		Dist: filepath.Join(g.root, "dist"), Saves: saves, Reports: &store.Reports{Dir: filepath.Join(g.saves, "reports")},
-		Log: g.log, Version: "workbench", StartedAt: time.Now(), Rooms: rooms, Conns: &sync.WaitGroup{},
-	})
-	ln, err := net.Listen("tcp", "127.0.0.1:0")
-	if err != nil {
-		return nil, "", err
-	}
-	g.srv = &http.Server{Handler: handler(g.root, api), ReadHeaderTimeout: 10 * time.Second}
-	g.rooms, g.base, g.done = rooms, "http://"+ln.Addr().String(), make(chan struct{})
-	go func() { _ = g.srv.Serve(ln) }()
-	go func() {
-		rooms.Run(g.ctx)
-		rooms.Close()
-		close(g.done)
-	}()
-	g.log.Info("🚀 Im Spiel ansehen bereit", "ns", "room", "adresse", g.base, "spielstaende", g.saves)
-	return g.rooms, g.base, nil
+	go func() { _ = cmd.Wait() }()
+	return nil
 }
 
-// shutdownWait begrenzt das Abwarten offener Anfragen, damit die Frist von Close fürs Speichern der Räume bleibt.
-const shutdownWait = time.Second
-
-// Close beendet Raum-Takt und Listener und wartet höchstens d, bis die Engine ihre Räume gespeichert hat. Danach
-// startet Open nichts mehr; ein zweites Close tut nichts.
-func (g *Game) Close(d time.Duration) {
+// Close: Danach startet Open nichts mehr; ein laufendes Spiel bleibt offen. Ein zweites Close tut nichts.
+func (g *Game) Close(_ time.Duration) {
 	g.mu.Lock()
-	srv, done, closed := g.srv, g.done, g.closed
 	g.closed = true
 	g.mu.Unlock()
-	g.cancel()
-	if srv == nil || closed {
-		return
-	}
-	stop, cancel := context.WithTimeout(context.Background(), min(d, shutdownWait))
-	_ = srv.Shutdown(stop)
-	cancel()
-	select {
-	case <-done:
-	case <-time.After(d):
-		g.log.Warn("⏳ Räume von „Im Spiel ansehen“ nicht rechtzeitig gespeichert", "ns", "room")
-	}
 }
 
 // fullSaveHint macht aus einem Fehler der Engine beim Anlegen von „voll ausgebaut“ einen Hinweis.

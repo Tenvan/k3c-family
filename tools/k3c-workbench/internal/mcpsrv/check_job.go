@@ -108,6 +108,9 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	}
 	// Sperre, Ergebnis und Konsole je Checkout: Läufe verschiedener Worktrees stören sich nicht.
 	ws := s.ws(ctx)
+	if err := t.preflight(ws.root); err != nil {
+		return "", err
+	}
 	key := ws.source(t.name)
 	if !s.checks.begin(key) {
 		return "", fmt.Errorf("%s läuft bereits (Lauf-ID %s); auf das Ende warten, Ergebnis mit check_run {run}, Ausgabe über console_tail check:%s",
@@ -129,6 +132,9 @@ func (s *Server) runCheck(ctx context.Context, j *checkJob, dir string, args []s
 	defer func() {
 		if p := recover(); p != nil {
 			res = runResult{err: fmt.Errorf("abgestürzt: %v", p)}
+		}
+		if res.at.IsZero() {
+			res.at = j.start // Startzeit für die Kopfzeile von console_tail, auch nach einer Panik (B-855)
 		}
 		j.setResult(res)
 		s.logRun(j.key, res)

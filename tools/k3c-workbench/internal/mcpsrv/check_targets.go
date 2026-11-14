@@ -2,6 +2,8 @@ package mcpsrv
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
@@ -23,15 +25,20 @@ type checkTarget struct {
 	name    string
 	dir     string   // relativ zur Repo-Wurzel
 	command []string // ohne Shell gestartet
-	pattern string   // Schalter vor dem Testmuster; leer = kein Muster erlaubt
+	pattern string   // Schalter vor dem Testmuster; leer = kein Muster erlaubt; endet er auf `=`, hängt das Muster direkt an
 	timeout time.Duration
 	kinds   []string
+	needs   []string // Pfade relativ zur Wurzel, ohne die der Lauf nicht startet (Hinweis task install, B-831)
 }
 
 const (
 	defaultTimeout = 10 * time.Minute
 	testTimeout    = 5 * time.Minute
+	devTimeout     = 20 * time.Minute // Workbench: Frontend-Build, Vitest, go test samt Worktree-Tests, Lint (B-831)
 )
+
+// devFrontendDeps sind die Frontend-Abhängigkeiten der Workbench; ohne sie scheitert schon der Frontend-Build.
+const devFrontendDeps = "tools/k3c-workbench/frontend/node_modules"
 
 var checkTargets = []checkTarget{
 	{name: "task:check", command: []string{"task", "check"}, timeout: defaultTimeout,
@@ -60,15 +67,21 @@ var checkTargets = []checkTarget{
 		kinds: []string{kindGoTest}},
 	{name: "go:lint", command: []string{"task", "go:lint"}, timeout: defaultTimeout,
 		kinds: []string{kindGolangci}},
-	{name: "dev:test", dir: "tools/k3c-workbench", command: []string{"go", "test", "./..."}, pattern: "-run",
-		timeout: testTimeout, kinds: []string{kindGoTest}},
+	// Workbench (B-831): gotest baut das Frontend vorher (go:embed braucht frontend/dist) und lässt die Sim-Pakete aus;
+	// check:dev ist die volle Prüfung der Review (Frontend mit Vitest, go test, golangci-lint).
+	{name: "dev:test", command: []string{"task", "k3c-workbench:gotest"}, pattern: "GO_TEST_FLAGS=-run=",
+		timeout: devTimeout, kinds: []string{kindTsc, kindVite, kindGoTest}, needs: []string{devFrontendDeps}},
+	{name: "task:check:dev", command: []string{"task", "check:dev"}, timeout: devTimeout,
+		kinds: []string{kindTsc, kindVite, kindVitest, kindGoTest, kindGolangci}, needs: []string{devFrontendDeps}},
 }
 
 // checkRunDescription ist die Beschreibung von check_run; sie nennt den Katalog oben (B-788: Basis HEAD, zwei Stufen,
 // Teilaufgaben von check:diff).
 const checkRunDescription = "Führt eine Prüfung aus einem festen Katalog aus (task:check, task:test, task:typecheck, task:lint, " +
 	"task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, " +
-	"go:test, go:lint, dev:test) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. task:check:diff prüft nur, was " +
+	"go:test, go:lint, dev:test, task:check:dev) und antwortet mit Exit-Code, Dauer und nur den Fehlerzeilen. dev:test baut das " +
+	"Workbench-Frontend bei Bedarf und fährt go test der Workbench, task:check:dev ist die volle Workbench-Prüfung (Frontend, " +
+	"Vitest, go test, Lint); beide brauchen task install. task:check:diff prüft nur, was " +
 	"die geänderten Dateien gegenüber der Basis HEAD brauchen (vor jedem Commit), in zwei Stufen: Stufe 1 Regel-Tests, Lint, " +
 	"Typecheck, go vet; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete. task:check:diff:plan zeigt nur die " +
 	"Schritte, task:check:diff:js und task:check:diff:go wiederholen nach einem roten Lauf nur diese Bahn; " +
@@ -112,5 +125,18 @@ func (t checkTarget) args(pattern string) ([]string, error) {
 	if !patternRule.MatchString(pattern) {
 		return nil, fmt.Errorf("testmuster %q abgelehnt: erlaubt sind nur A–Z, a–z, 0–9 und _ . / : - (kein - am Anfang, höchstens 100)", pattern)
 	}
+	if strings.HasSuffix(t.pattern, "=") {
+		return append(args, t.pattern+pattern), nil
+	}
 	return append(args, t.pattern, pattern), nil
+}
+
+// preflight prüft vor dem Start, ob die nötigen Pfade da sind; sonst Abbruch mit Hinweis statt hunderter Folgefehler.
+func (t checkTarget) preflight(root string) error {
+	for _, p := range t.needs {
+		if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(p))); err != nil {
+			return fmt.Errorf("%s: %s fehlt; erst task install im Checkout (holt die Frontend-Abhängigkeiten)", t.name, p)
+		}
+	}
+	return nil
 }
