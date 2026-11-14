@@ -31,7 +31,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | WZ58 | DEV | WZG | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | – | bereit | `geplant/WZ58-welten-editor-planung-review/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | bereit | `geplant/MG10-papier-bosse-neu/` |
 | MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | bereit | `geplant/MG11-papier-welt-nachbessern/` |
-| PT6 | PAP | PAP | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | – | bereit | `geplant/PT6-asset-pakete-vorlage/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

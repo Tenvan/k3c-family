@@ -1,6 +1,6 @@
 # PT6 · PAP · Entscheidungsvorlage: Asset-Pakete je Welt (B-880)
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -61,7 +61,7 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| PT6.1 | `PT6.1-vorlage.md` | Umsetzung | autonom | offen |
+| PT6.1 | `PT6.1-vorlage.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
