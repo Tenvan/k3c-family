@@ -10,6 +10,7 @@ import (
 type nextSession struct{ nr, agent, status, domain, deps, crit string }
 
 // nextRepo: BBB (Rang 1) vor AAA (Rang 2), obwohl AAA im Ordner zuerst steht; RUH ruht, CCC hat keinen aktiven Sprint.
+// AAA hat zwei aktive Sprints: A1 (A1.1 in Arbeit sperrt den ganzen Sprint, B-838) und A2.
 func nextRepo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
@@ -26,7 +27,7 @@ func nextRepo(t *testing.T) string {
 	w("backlog/B-010-offen.md", "# B-010 · Offen\n\n- **Status:** offen\n")
 	w("backlog/archiv/B-011-fertig.md", "# B-011 · Fertig\n\n- **Status:** erledigt\n")
 	w("sprints/geplant/.keep", "")
-	w("projekte/AAA-a.md", nextProject("AAA", "aktiv", "2", "A1"))
+	w("projekte/AAA-a.md", nextProject("AAA", "aktiv", "2", "A1", "A2"))
 	w("projekte/BBB-b.md", nextProject("BBB", "aktiv", "1", "B1"))
 	w("projekte/CCC-c.md", nextProject("CCC", "aktiv", "3", "C9"))
 	w("projekte/RUH-r.md", nextProject("RUH", "ruht", "–", "R1"))
@@ -40,9 +41,11 @@ func nextRepo(t *testing.T) string {
 	nextSprint(w, "aktiv", "A1", "AAA", []nextSession{
 		{"A1.1", "autonom", "in Arbeit", "SRV", "–", "AC-01"},
 		{"A1.2", "autonom", "offen", "SRV", "–", "AC-01"},
-		{"A1.3", "autonom", "offen", "INF", "–", "alle"},
-		{"A1.4", "autonom", "offen", "CLI", "–", "AC-01"},
-		{"A1.5", "autonom", "offen", "INF", "–", "AC-01"},
+	})
+	nextSprint(w, "aktiv", "A2", "AAA", []nextSession{
+		{"A2.3", "autonom", "offen", "INF", "–", "alle"},
+		{"A2.4", "autonom", "offen", "CLI", "–", "AC-01"},
+		{"A2.5", "autonom", "offen", "INF", "–", "AC-01"},
 	})
 	nextSprint(w, "aktiv", "R1", "RUH", []nextSession{{"R1.1", "autonom", "offen", "PLAT", "–", "AC-01"}})
 	return root
@@ -87,7 +90,7 @@ func checkText(t *testing.T, out string, want, not []string) {
 }
 
 // TestNextNachRangUndAbhaengigkeit: BBB vor AAA; B1.1 Mensch, B1.2 und B1.3 warten, B1.4 ist frei (E1.1 fertig,
-// B-011 im Archiv). Parallel nur andere Domänen, je Domäne eine, ohne gesperrte SRV und ohne ruhendes Projekt.
+// B-011 im Archiv). Parallel nur andere Domänen, je Sprint eine (B-838), ohne gesperrten Sprint A1 und ohne ruhendes Projekt.
 func TestNextNachRangUndAbhaengigkeit(t *testing.T) {
 	t.Parallel()
 	out := must(t)(Next(nextRepo(t), NextFilter{}))
@@ -98,31 +101,31 @@ func TestNextNachRangUndAbhaengigkeit(t *testing.T) {
 		"Pfad: docs/sprints/aktiv/B1-s/B1.4-x.md", "Sprint: B1 · Sprint B1 (Projekt BBB, Rang 1)",
 		"Domäne: CLI · Umgebung: offline", "Branch: sprint/b1", "Kriterien: AC-02", "Ziel B1.4.",
 		"- **AC-02** Zweites\n  mit Folgezeile.", "Stand der Sprints",
-		"── Parallel möglich ──\n- INF · A1.3 · Titel A1.3 (Sprint A1, offline)",
-	}, []string{"- **AC-01**", "Nachsatz", "A1.4", "A1.5", "R1.1", "SRV ·"})
+		"── Parallel möglich ──\n- INF · A2.3 · Titel A2.3 (Sprint A2, offline)",
+	}, []string{"- **AC-01**", "Nachsatz", "A2.4", "A2.5", "R1.1", "SRV ·"})
 }
 
-// TestNextMitDomaene: Filter wählt A1.3 (Kriterien alle), parallel steht die freie CLI-Session aus BBB.
+// TestNextMitDomaene: Filter wählt A2.3 (Kriterien alle), parallel steht die freie CLI-Session aus BBB.
 func TestNextMitDomaene(t *testing.T) {
 	t.Parallel()
 	root := nextRepo(t)
 	out := must(t)(Next(root, NextFilter{Domain: "inf"}))
-	if !strings.HasPrefix(out, "Nächste Session: A1.3 ·") {
+	if !strings.HasPrefix(out, "Nächste Session: A2.3 ·") {
 		t.Fatalf("Auswahl:\n%s", out)
 	}
-	checkText(t, out, []string{"- **AC-01** Erstes.\n- **AC-02** Zweites", "- CLI · B1.4"}, []string{"A1.5", "- INF"})
+	checkText(t, out, []string{"- **AC-01** Erstes.\n- **AC-02** Zweites", "- CLI · B1.4"}, []string{"A2.5", "- INF"})
 	if _, err := Next(root, NextFilter{Domain: "XYZ"}); err == nil {
 		t.Error("unbekannte Domäne angenommen")
 	}
 }
 
-// TestNextKeineFrei: SRV ist durch A1.1 gesperrt; die Gründe stehen je Projekt in Rang-Reihenfolge, gekürzt.
+// TestNextKeineFrei: Sprint A1 ist durch A1.1 gesperrt (B-838); die Gründe stehen je Projekt in Rang-Reihenfolge, gekürzt.
 func TestNextKeineFrei(t *testing.T) {
 	t.Parallel()
 	out := must(t)(Next(nextRepo(t), NextFilter{Domain: "SRV"}))
 	want := "Keine Session frei in Domäne SRV. Gründe je Projekt:\n" +
 		"- BBB: B1.1 Agent Mensch; B1.2 wartet auf B1.1 (offen); B1.3 wartet auf B-010 (offen); … 1 weitere\n" +
-		"- AAA: A1.2 Domäne SRV gesperrt (A1.1 in Arbeit); A1.3 andere Domäne INF; A1.4 andere Domäne CLI; … 1 weitere\n" +
+		"- AAA: A1.2 Sprint A1 gesperrt (A1.1 in Arbeit); A2.3 andere Domäne INF; A2.4 andere Domäne CLI; … 1 weitere\n" +
 		"- CCC: kein aktiver Sprint\n"
 	if !strings.HasPrefix(out, want) || strings.Contains(out, "RUH") {
 		t.Fatalf("Antwort:\n%s", out)

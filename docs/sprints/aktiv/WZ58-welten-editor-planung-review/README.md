@@ -63,7 +63,7 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ58.1 | `WZ58.1-welten-editor.md` | Umsetzung | autonom | fertig |
-| WZ58.2 | `WZ58.2-wellen-regel.md` | Umsetzung | autonom | offen |
+| WZ58.2 | `WZ58.2-wellen-regel.md` | Umsetzung | autonom | fertig |
 | WZ58.3 | `WZ58.3-groessenvergleich-vorher.md` | Umsetzung | autonom | offen |
 | WZ58.4 | `WZ58.4-review.md` | Umsetzung | autonom | offen |
 

@@ -804,3 +804,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
 | [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
 | [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
+| [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | erledigt | WZ58 | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
