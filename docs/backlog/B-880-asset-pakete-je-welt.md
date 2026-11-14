@@ -65,3 +65,5 @@ Was gehört außer Grafik zum Paket (Ton, Werte, Level-Generator-Einstellungen)?
 ## Notizen
 
 Auftrag Ralf im Chat (2026-11-14): erst als Plan aufnehmen, dann autonom vorbereiten.
+
+2026-11-14 PT6.1: Entscheidungsvorlage `docs/decisions/010-asset-pakete-je-welt.md` (Entwurf) liegt vor, AC-01 erfüllt. Empfehlung Variante A (Welt-Manifest, gemeinsamer Pool), C als Ausbau. Ticket bleibt offen, wartet auf Entscheidung von Ralf (AC-02, Fragen in der Vorlage).
