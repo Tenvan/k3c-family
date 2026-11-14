@@ -22,7 +22,7 @@ export function indexChanges(diffs: readonly WorktreeDiff[]): WtIndex {
   const out = new Map<string, WtMark[]>();
   for (const d of diffs) {
     if (d.error) continue;
-    for (const c of d.changes) {
+    for (const c of d.changes ?? []) {
       const k = keyOf(c.item, c.id);
       out.set(k, [...(out.get(k) ?? []), { branch: d.branch || d.path, kind: c.kind, text: c.text }]);
     }
@@ -76,7 +76,7 @@ const ORDER: WorktreeChange['item'][] = ['Projekt', 'Sprint', 'Ticket', 'Session
  * unverändert.
  */
 export function withWorktreeEntries(data: PlanningData, diffs: readonly WorktreeDiff[]): PlanningData {
-  const news = diffs.filter((d) => !d.error).flatMap((d) => d.changes.filter((c) => c.kind === 'neu').map((c) => ({ c, wt: d.branch || d.path })));
+  const news = diffs.filter((d) => !d.error).flatMap((d) => (d.changes ?? []).filter((c) => c.kind === 'neu').map((c) => ({ c, wt: d.branch || d.path })));
   if (news.length === 0) return data;
   const draft: Draft = { sprints: data.sprints.map((s) => ({ ...s, sessions: [...s.sessions] })), tickets: [...data.tickets] };
   if (data.projects) draft.projects = [...data.projects];

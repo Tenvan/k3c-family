@@ -160,3 +160,13 @@ describe('neue Einträge unter ihrem Projekt', () => {
     expect(groupProjects(out).without.sprints.map((s) => s.id)).toEqual(['X1']);
   });
 });
+
+// Ein sauberer Worktree kam vom Backend mit `changes: null` (Go-nil-Slice) und warf die ganze Oberfläche weg (B-895).
+describe('Worktree ohne Änderungen', () => {
+  it('changes null bricht weder Zuordnung noch neue Einträge', () => {
+    const root = data();
+    const sauber = { branch: 'sprint/x', path: 'wt-x', changes: null } as unknown as WorktreeDiff;
+    expect(withWorktreeEntries(root, [sauber])).toBe(root);
+    expect(() => indexChanges([sauber])).not.toThrow();
+  });
+});

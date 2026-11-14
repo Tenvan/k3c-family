@@ -89,8 +89,8 @@ func checkWorktrees(root string, bases map[string]Data) ([]WorktreeDiff, error) 
 		changes, err := diffWorktree(root, w, bases)
 		if err != nil {
 			d.Error = err.Error()
-		} else {
-			d.Changes = changes
+		} else if changes != nil {
+			d.Changes = changes // nil bliebe als JSON null und brach die Planungsseite (B-895)
 		}
 		diffs = append(diffs, d)
 	}
