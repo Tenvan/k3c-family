@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** –
+- **Sprint:** MG10
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-14
 - **Spec:** Entwurf

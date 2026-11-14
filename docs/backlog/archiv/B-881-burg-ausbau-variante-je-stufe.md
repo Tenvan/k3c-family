@@ -1,10 +1,10 @@
-# B-883 · Der Client nutzt alle fünf Hintergrund-Varianten
+# B-881 · Burg-Ausbau-Überlage zeigt die Türmchen im Material der Burg-Stufe
 
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** –
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-14
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-MG11 (B-722) liefert je Biom und Ebene fünf Hintergrund-Varianten `hg-<biom>-<ebene>-v1` … `v5`. `data/paper.json` › `hintergruende.varianten` steht noch auf 2, der Client wiederholt also v1/v2; Tests (`tests/paperAssets.test.ts`, `src/scenes/render/worldSprites.test.ts`) erwarten v1/v2.
+D-MG6-08: Die Wehrtürmchen der Überlage `burg-ausbau` sind immer Holz, auch über einer Burg aus Stein, Kupfer, Eisen oder Kristall. MG11.1 hat dem Asset die Varianten `stein`, `kupfer`, `eisen`, `kristall` gegeben (`stand@<material>.s<n>.png`); der Client lädt bisher nur `stand.s<n>.png`.
 
 ## Ziel
 
-Das Spiel zeigt alle fünf Varianten.
+Die Überlage passt im Material zur Burg-Stufe darunter.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,11 +28,11 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-`hintergruende.varianten` auf 5, Tests anpassen; Ladeliste (LoadScene) lädt die neuen Dateien.
+`castleOverlay`/`BUILDING_TEXTURES` (`src/scenes/render/buildingSprites.ts`) wählen die Variante nach der Hub-Stufe (2 stein, 3 kupfer, 4 eisen, 5 kristall) und laden die Dateien.
 
 ## Nicht-Ziele
 
-Neue Grafik, Parallax-Code.
+Neue Grafik.
 
 ## Regeln und Einschränkungen
 
@@ -56,7 +56,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Test: `paperBackgroundFile('wald', 'fern', 5)` liefert `hintergruende/hg-wald-fern-v5/stand.png`, v6 wieder v1.
+- **AC-01** Test: Ausbauschritt über Hub-Stufe n lädt `burg-ausbau/stand@<material>.s<schritt>.png` mit dem Material der Stufe n.
 
 ## Offene Fragen
 
@@ -64,4 +64,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Quelle: MG11.2 (B-722).
+Quelle: MG11.1 (B-721), D-MG6-08.

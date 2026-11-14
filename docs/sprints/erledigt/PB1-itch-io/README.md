@@ -1,6 +1,6 @@
 # PB1 · INF · Veröffentlichung auf itch.io
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** REL
 - **Domäne:** INF
 - **Reife:** bereit
@@ -55,7 +55,7 @@ Build ohne Server → klare Meldung statt leerem Bildschirm.
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | PB1.1 | `PB1.1-paket-seite.md` | Umsetzung | autonom | fertig |
-| PB1.2 | `PB1.2-veroeffentlichen.md` | Workshop | Mensch | offen |
+| PB1.2 | `PB1.2-veroeffentlichen.md` | Workshop | Mensch | verworfen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
