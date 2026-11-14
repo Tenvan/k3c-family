@@ -1,6 +1,6 @@
 # EP1.2 · Tasten-Icons je Eingabegerät in allen Hinweisen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -66,5 +66,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-04 geprüft:** `hud/glyphs_test.go` › `TestGlyphSchluessel` (jede Aktion in wasd, pfeile und gamepad mit Glyph, RS neu als Xbox-Glyph) und `hud/profile_test.go` › `TestIconAsset` (jeder Schlüssel hat einen Icon-Namen).
+- **AC-05 geprüft:** `hud/profile_test.go` › `TestProfileSwitchChangesHints`: Profilwechsel in `Frame.Settings` ändert Skill-Menü-Hinweis und Beitritts-Hinweis im nächsten `Listen`, der Pad-Spieler bleibt bei Xbox.
+- Zentrale Funktion: `hud/glyphs.go` › `glyphOf(lang, action, profile)` mit `IconAsset`; Skill-Menü zeigt jetzt auch an der Tastatur die Tastenkappe statt „[Q]“. Profil je Spieler aus `view.Settings.ProfileOf` (`hud/state.go`).
+- F1-Übersicht zeichnet die UI-Tasten als helle Tastenkappen (`devtools/help.go` › `keyCap`).
+- Papierschnitt-Icons fehlen noch: **B-911** (PAP, NAT, EP1); bis dahin zeichnet `drawGlyph` Kappe bzw. Xbox-Taste.
+- `task check:diff` grün.

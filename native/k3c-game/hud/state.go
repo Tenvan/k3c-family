@@ -26,6 +26,7 @@ type seatState struct {
 	active          bool
 	monarch, stage  int
 	device          view.DeviceID
+	profile         string // Eingabe-Profil des Geräts (view.Settings.ProfileOf, B-894)
 	x, hp           float64
 	down, flash     bool
 	color           uint32
@@ -73,7 +74,7 @@ func (h *hud) Listen(f *view.Frame) {
 	h.paint.outline.Sweep()
 	h.lang = view.Settings{Language: f.Settings.Language}.Normalized().Language
 	h.cells = min(len(f.Seats), view.MaxPlayers) // Pause zeigt das Pause-Menü (menu), kein eigenes Band
-	h.joinS = h.mJoin.get(newJoinKey(h.lang, f.Unseated), joinFromKey)
+	h.joinS = h.mJoin.get(newJoinKey(h.lang, f.Settings.KeyboardProfile(), f.Unseated), joinFromKey)
 	h.guide, h.seen = !f.Settings.GuideOff, guideSeen(f.Settings.GuideSeen)|h.pending
 	h.cues(f)
 	var seen [view.MaxPlayers]bool
@@ -122,6 +123,7 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	}
 	w, lang := stage.World, h.lang
 	st.monarch, st.stage, st.device, st.x = m.Index, s.Stage, s.Device, m.X
+	st.profile = f.Settings.ProfileOf(s.Device)
 	st.color = playerColors[m.Index%len(playerColors)]
 	e := sim.EconomyOf(w)
 	st.card(lang, e, m, f.Clock)
@@ -241,7 +243,7 @@ func (st *seatState) skills(lang string, w *sim.World, m *sim.Player) {
 		return
 	}
 	points := st.refreshEntries(w, m)
-	k := newMenuKey(lang, st.device, st.menu.cursor, points, st.entries, st.slots)
+	k := newMenuKey(lang, st.profile, st.menu.cursor, points, st.entries, st.slots)
 	if !st.mMenu.set || st.mMenu.key != k {
 		st.mMenu.key, st.mMenu.set = k, true
 		st.menuV = buildMenu(k, st.entries)

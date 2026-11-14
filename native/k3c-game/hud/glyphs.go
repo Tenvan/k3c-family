@@ -6,6 +6,7 @@ package hud
 
 import (
 	"image/color"
+	"slices"
 	"strings"
 
 	"k3c/native/k3c-game/view"
@@ -42,7 +43,7 @@ func KeyName(layout int, action string) string {
 }
 
 // padGlyphs sind die Controller-Tasten mit Bild (B-149).
-var padGlyphs = [...]string{"A", "X", "Y", "LB", "RB", "LT", "RT", "UP", "DOWN", "MENU"}
+var padGlyphs = [...]string{"A", "X", "Y", "LB", "RB", "LT", "RT", "RS", "UP", "DOWN", "MENU"}
 
 // padLabels: Beschriftung der Steuerkreuz-Tasten (slotBindings.ts › PAD_LABELS).
 var padLabels = map[string]string{"UP": "D-Pad ↑", "DOWN": "D-Pad ↓"}
@@ -110,10 +111,12 @@ func PadLabel(lang, action string) string {
 	return name
 }
 
-// glyphOf liefert Glyph-Schlüssel und Beschriftung einer Aktion auf dem Gerät d; unbekannte oder nicht belegte Aktion:
-// Text-Rückfall mit dem Aktionsnamen (rechter Stick: „RS“).
-func glyphOf(lang, action string, d view.DeviceID) glyph {
-	if d.Kind == view.DeviceGamepad {
+// glyphOf ist die zentrale Zuordnung Aktion + Eingabe-Profil → Tasten-Icon (B-894): Glyph-Schlüssel ("pad:A",
+// "key:E") und Beschriftung; alle Tasten-Hinweise des HUD gehen darüber. profile ist view.ProfileWASD,
+// view.ProfileArrows oder view.ProfileGamepad (view.Settings.ProfileOf); unbekannte oder nicht belegte Aktion:
+// Text-Rückfall mit dem Aktionsnamen.
+func glyphOf(lang, action, profile string) glyph {
+	if profile == view.ProfileGamepad {
 		name, ok := padKeys[action]
 		if !ok {
 			return glyph{"", action}
@@ -122,15 +125,13 @@ func glyphOf(lang, action string, d view.DeviceID) glyph {
 		if l, ok := padLabels[name]; ok {
 			label = l
 		}
-		for _, g := range padGlyphs {
-			if g == name {
-				return glyph{"pad:" + name, label}
-			}
+		if slices.Contains(padGlyphs[:], name) {
+			return glyph{"pad:" + name, label}
 		}
 		return glyph{"", label}
 	}
 	keys := leftKeys
-	if d.Index == 1 {
+	if profile == view.ProfileArrows {
 		keys = rightKeys
 	}
 	name, ok := keys[action]
@@ -140,27 +141,42 @@ func glyphOf(lang, action string, d view.DeviceID) glyph {
 	return glyph{"key:" + name, keyLabel(lang, name)}
 }
 
-// slotLabels ist die Beschriftung von Schlag, Skill-Slot 1–4 und Skill-Menü auf dem Gerät d.
-func slotLabels(lang string, d view.DeviceID) [6]string {
+// IconAsset ist das Papierschnitt-Icon (Gruppe icons) zum Glyph-Schlüssel key: "key:PAGEDOWN" → icons/taste-pagedown,
+// "pad:A" → icons/xbox-a; "" ohne Bild. Die Icons fehlen noch (PAP-Ticket aus EP1.2); bis dahin zeichnet drawGlyph
+// Kappe bzw. Xbox-Taste selbst.
+func IconAsset(key string) string {
+	kind, name, ok := strings.Cut(key, ":")
+	switch {
+	case !ok || name == "":
+		return ""
+	case kind == "pad":
+		return "icons/xbox-" + strings.ToLower(name)
+	}
+	return "icons/taste-" + strings.ToLower(name)
+}
+
+// slotLabels ist die Beschriftung von Schlag, Skill-Slot 1–4 und Skill-Menü im Eingabe-Profil profile.
+func slotLabels(lang, profile string) [6]string {
 	var out [6]string
 	for i, a := range glyphActions[3:] {
-		out[i] = glyphOf(lang, a, d).label
+		out[i] = glyphOf(lang, a, profile).label
 	}
 	return out
 }
 
 // joinText ist der Beitritts-Hinweis für die freien Geräte (Frame.Unseated): je Art des Geräts ein Satz, in der
-// Reihenfolge der Eingabe, jede Art höchstens einmal (joinHint.ts, B-391); ohne freies Gerät "".
-func joinText(lang string, unseated []view.DeviceID) string {
-	var seen [3]bool
-	parts := make([]string, 0, 3)
+// Reihenfolge der Eingabe, jede Art höchstens einmal (joinHint.ts, B-391); die Tastatur nennt die Bestätigen-Taste
+// ihres Profils kb (Leertaste bzw. Enter, B-894). Ohne freies Gerät "".
+func joinText(lang, kb string, unseated []view.DeviceID) string {
+	var seen [2]bool
+	parts := make([]string, 0, 2)
 	for _, d := range unseated {
 		i, key := 0, "hud.join.pad"
-		switch {
-		case d.Kind == view.DeviceKeyboard && d.Index == 0:
+		if d.Kind == view.DeviceKeyboard {
 			i, key = 1, "hud.join.keyboard"
-		case d.Kind == view.DeviceKeyboard:
-			i, key = 2, "hud.join.keyboard2"
+			if kb == view.ProfileArrows {
+				key = "hud.join.keyboard2"
+			}
 		}
 		if !seen[i] {
 			seen[i] = true
@@ -170,26 +186,23 @@ func joinText(lang string, unseated []view.DeviceID) string {
 	return strings.Join(parts, sep)
 }
 
-// joinKey: welche Arten freier Geräte es gibt (Pad, linke, rechte Tastatur) in Reihenfolge des ersten Auftretens.
+// joinKey: welche Arten freier Geräte es gibt (0 Pad, 1 Tastatur) in Reihenfolge des ersten Auftretens, dazu das
+// Tastatur-Profil.
 type joinKey struct {
-	lang  string
-	order [3]int8
-	n     int
+	lang, kb string
+	order    [2]int8
+	n        int
 }
 
-// newJoinKey fasst die freien Geräte für memo zusammen, ohne anzulegen.
-func newJoinKey(lang string, unseated []view.DeviceID) joinKey {
-	k := joinKey{lang: lang}
+// newJoinKey fasst die freien Geräte für memo zusammen, ohne anzulegen; kb ist das Tastatur-Profil.
+func newJoinKey(lang, kb string, unseated []view.DeviceID) joinKey {
+	k := joinKey{lang: lang, kb: kb}
 	for _, d := range unseated {
 		var i int8
 		if d.Kind == view.DeviceKeyboard {
-			i = 1 + int8(min(d.Index, 1))
+			i = 1
 		}
-		known := false
-		for j := range k.n {
-			known = known || k.order[j] == i
-		}
-		if !known && k.n < len(k.order) {
+		if !slices.Contains(k.order[:k.n], i) && k.n < len(k.order) {
 			k.order[k.n] = i
 			k.n++
 		}
@@ -201,12 +214,11 @@ func newJoinKey(lang string, unseated []view.DeviceID) joinKey {
 func joinFromKey(k joinKey) string {
 	devs := make([]view.DeviceID, 0, k.n)
 	for _, i := range k.order[:k.n] {
-		switch i {
-		case 0:
+		if i == 1 {
+			devs = append(devs, view.DeviceID{Kind: view.DeviceKeyboard})
+		} else {
 			devs = append(devs, view.DeviceID{Kind: view.DeviceGamepad})
-		default:
-			devs = append(devs, view.DeviceID{Kind: view.DeviceKeyboard, Index: int(i - 1)})
 		}
 	}
-	return joinText(k.lang, devs)
+	return joinText(k.lang, k.kb, devs)
 }

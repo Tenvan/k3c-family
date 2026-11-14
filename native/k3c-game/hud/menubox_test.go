@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"k3c/native/k3c-game/art"
-	"k3c/native/k3c-game/view"
 )
 
 // measureMenu misst ein Skill-Menü mit der Schrift f wie drawMenu.
@@ -31,7 +30,7 @@ func TestSkillMenueOhneUeberlappung(t *testing.T) {
 	}
 	es := menuEntries(nil, []string{"taunt"}, 1, only("heal"), true)
 	slots := slotViews([]string{"fireball", "taunt", "", ""}, nil)
-	for _, dev := range []view.DeviceID{keys1, pad} {
+	for _, dev := range []string{wasd, arrows, gp} {
 		v := buildMenu(newMenuKey("de", dev, 0, 1, es, slots), es)
 		for _, win := range [][3]float64{{1280, 720, 2}, {1920, 1080, 1}, {1920, 1080, 2}} {
 			cell := rect{0, 0, win[0], win[1] / win[2]}

@@ -79,7 +79,7 @@ keine. Entschieden mit Default (autonom, Claude, 2026-11-14): Belegungstabelle s
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | EP1.1 | `EP1.1-eingabe-profile.md` | Umsetzung | autonom | fertig |
-| EP1.2 | `EP1.2-tasten-icons.md` | Umsetzung | autonom | offen |
+| EP1.2 | `EP1.2-tasten-icons.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
