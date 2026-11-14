@@ -72,7 +72,10 @@ const (
 	// input kennt Spiel und Menü nicht: Steuerkreuz ↓ liefert immer ActionDown und ActionSkillMenu. Nur das Overlay
 	// (hud) wertet ActionSkillMenu aus, also nur im Spiel; Menüs und Overlays mit offenem Menü nehmen ActionDown.
 	ActionSkillMenu
-	ActionFullscreen // F / rechter Stick gedrückt: Vollbild umschalten (game über Session.SetSettings, nicht im Aufnahme-Modus)
+	ActionFullscreen // F11 / rechter Stick gedrückt: Vollbild umschalten (game über Session.SetSettings, nicht im Aufnahme-Modus)
+	// ActionCheats öffnet bzw. schließt das Cheat-Menü des Spielers (F9 auf der linken Tastatur-Hälfte / View + Y,
+	// B-888); nur das Overlay devtools wertet sie aus.
+	ActionCheats
 )
 
 // DeviceInput ist die Eingabe eines verbundenen Geräts in einem Update.

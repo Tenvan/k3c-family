@@ -164,6 +164,7 @@ func (t *tracker) step(held *[actionCount]bool, pad bool, out []view.Action) []v
 		return out
 	}
 	if pad {
+		out = t.cheatChord(held, out)
 		out = t.padChord(held, out)
 	}
 	for a := range actionCount {
@@ -187,7 +188,7 @@ func (t *tracker) fires(a view.Action, held, pad bool) bool {
 	default:
 		t.hold[a]++
 	}
-	if t.ignore[a] || (pad && (a == view.ActionMenu || a == view.ActionView)) {
+	if t.ignore[a] || (pad && (a == view.ActionMenu || a == view.ActionView || a == view.ActionCheats)) {
 		return false
 	}
 	if pressed {
@@ -214,6 +215,15 @@ func (t *tracker) padChord(held *[actionCount]bool, out []view.Action) []view.Ac
 	}
 	if !v && !m {
 		t.chord = false
+	}
+	return out
+}
+
+// cheatChord meldet View + Y als ActionCheats (Cheat-Menü, B-888); View löst danach beim Loslassen nichts aus.
+func (t *tracker) cheatChord(held *[actionCount]bool, out []view.Action) []view.Action {
+	if held[view.ActionView] && held[view.ActionCheats] && !t.prev[view.ActionCheats] {
+		out = append(out, view.ActionCheats)
+		t.chord = true
 	}
 	return out
 }

@@ -59,6 +59,28 @@ func (r *Room) Dev(id string, peer Peer, a DevAction) error {
 	})
 }
 
+// DevLocal führt eine Dev-Aktion des eingebetteten nativen Spiels aus (B-888): wie Dev, aber ohne Dev-Mode, denn der
+// würde auch Grad und Welten neuer Spiele ändern (Manager.Dev); das native Spiel läuft nur lokal.
+func (r *Room) DevLocal(id string, peer Peer, a DevAction) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	d := r.own(id, peer)
+	if d == nil || d.observer {
+		return ErrBadRequest
+	}
+	return r.devApply(short(id), a, func(slot int) (int, bool) {
+		idx, ok := d.slots[slot]
+		return idx, ok
+	})
+}
+
+// Timescale liefert den Faktor des Zeitraffers (mindestens 1).
+func (r *Room) Timescale() int {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	return r.scale()
+}
+
 // DevPage führt eine Dev-Aktion der Seite /dm aus (B-232): ohne Gerät, slot ist der Index des Monarchen.
 func (r *Room) DevPage(a DevAction) error {
 	if !r.devAllowed("dm", a) {

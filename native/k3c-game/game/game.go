@@ -48,6 +48,8 @@ type Game struct {
 	loading, shown bool
 	loadMsg        *notice
 	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
+	dev            view.DevView          // Entwickler-Anzeigen (F1, F10), kommt in jeden Frame
+	shotNext       bool                  // F12: das nächste Bild nach reports/ schreiben (devshot.go)
 	subs           subImages
 	stats          *overlay
 	shots          *shooter
@@ -182,6 +184,7 @@ func (g *Game) advance() {
 		g.play(in)
 	}
 	g.frame = g.sim.Step()
+	g.frame.Dev = g.dev
 	g.devs.decorate(&g.frame, in)
 	if len(g.cues) > 0 {
 		g.frame.Cues = append(g.frame.Cues, g.cues...)
@@ -216,6 +219,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		g.drawLoading(screen)
 	default:
 		g.drawGame(screen)
+		g.devShot(screen)
 		return
 	}
 	if g.shots != nil {

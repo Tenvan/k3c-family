@@ -32,6 +32,8 @@ type Frame struct {
 	// Recording: Aufnahme-Modus (--shots). Kein Ton, kein Vollbild, das Bild hängt nur vom Takt ab; game zeichnet
 	// statt der FPS den Takt in StatsRect.
 	Recording bool
+	// Dev ist der Zustand der Entwickler-Anzeigen (F1, F10; game, B-888).
+	Dev DevView
 }
 
 // Outcome ist der Ausgang eines Spiels.

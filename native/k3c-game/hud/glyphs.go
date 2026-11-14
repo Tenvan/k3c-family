@@ -23,7 +23,7 @@ var glyphActions = [...]string{"confirm", "pause", "fullscreen", "attack", "skil
 // spiegelt input/bindings.go (game/keys_test.go prüft das über KeyName); left/right sind Laufen bzw. Wählen.
 var (
 	padKeys   = map[string]string{"confirm": "A", "pause": "MENU", "fullscreen": "RS", "attack": "X", "skill1": "LB", "skill2": "RB", "skill3": "LT", "skill4": "UP", "skillMenu": "DOWN"}
-	leftKeys  = map[string]string{"confirm": "SPACE", "pause": "ESC", "fullscreen": "F", "attack": "E", "skill1": "Q", "skill2": "R", "skill3": "T", "skill4": "Z", "skillMenu": "K", "left": "A", "right": "D"}
+	leftKeys  = map[string]string{"confirm": "SPACE", "pause": "ESC", "fullscreen": "F11", "attack": "E", "skill1": "Q", "skill2": "R", "skill3": "T", "skill4": "Z", "skillMenu": "K", "left": "A", "right": "D"}
 	rightKeys = map[string]string{"confirm": "ENTER", "pause": "BACKSPACE", "attack": "NUM0", "skill1": "NUM1", "skill2": "NUM2", "skill3": "NUM3", "skill4": "NUM4", "skillMenu": "NUM5", "left": "LEFT", "right": "RIGHT"}
 )
 
