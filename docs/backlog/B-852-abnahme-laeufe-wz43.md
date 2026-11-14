@@ -4,8 +4,8 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
-- **Sprint:** WZ43
+- **Status:** eingeplant
+- **Sprint:** WZ57
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben

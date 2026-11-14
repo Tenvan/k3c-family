@@ -772,3 +772,23 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | erledigt | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | erledigt | WZ48 | Abnahme-Läufe WZ48 |
 | [B-873](B-873-workbench-git-ohne-develop.md) | DEV | Schuld | mittel | erledigt | – | Git-Seite und GitHub-Leiste der Workbench arbeiten gegen main statt develop |
+| [B-041](B-041-wails-starter.md) | DEV | Idee | niedrig | erledigt | BT1 | Wails-Starter für Windows existiert |
+| [B-315](B-315-spielstand-voll-ausgebaut.md) | SRV | Idee | hoch | erledigt | SV1 | Der Level-Betrachter erzeugt einen Spielstand mit allen Gebäuden voll ausgebaut |
+| [B-363](B-363-planung-flags-bearbeiten.md) | DEV | Idee | mittel | erledigt | WZ2 | Die Planungsseite ändert Prio, Umgebung, Agent und Projekt direkt im Detail |
+| [B-400](B-400-planung-splitter-merken.md) | DEV | Idee | niedrig | erledigt | WZ2 | Die Planungsseite trennt Backlog und Details mit einem Splitter, dessen Stellung gemerkt wird |
+| [B-401](B-401-planung-filter-getrennt.md) | DEV | Idee | niedrig | erledigt | WZ2 | Der Backlog-Filter wirkt nur auf den Backlog, der Projekt-Filter nur auf die Projekte |
+| [B-402](B-402-planung-session-titel.md) | DEV | Idee | mittel | erledigt | WZ2 | Die Planungsseite zeigt in den Session-Zeilen den Titel der Session |
+| [B-409](B-409-bauplaetze-abstand-zu-eng.md) | REG | Problem | mittel | erledigt | W11 | Bauplätze im Hub stehen zu eng, besonders die Treppen |
+| [B-410](B-410-aktion-ausbilden-tauschen-protokoll.md) | SRV | Problem | mittel | erledigt | W11 | Aktionen-Overlay zeigt Ausbilden und Tauschen nicht, der Server liefert sie nicht in actions |
+| [B-454](B-454-baeume-hoeher-dichter-hoehle-wurzeln.md) | DEV | Problem | hoch | erledigt | GEB10 | Bäume höher und dichter, Höhle mit eigener Unterwelt-Flora (Wurzeln) |
+| [B-458](B-458-hub-ausbau-wachstum-feinstufen.md) | DEV | Idee | hoch | erledigt | GEB11 | Hub wächst in Ausbaustufen sichtbar und kleinteilig (Lagerfeuer bis Burg, K2C-Stil) |
+| [B-635](B-635-muenzskala-2-bis-30.md) | REG | Idee | hoch | erledigt | BS2 | Münzpreise liegen auf einer kleinen Skala von 2 bis 30 Gold |
+| [B-650](B-650-boss-hp-je-spieler-eigenes-feld.md) | SIM | Idee | hoch | erledigt | BS3 | Boss-HP je Zusatzspieler bekommt ein eigenes Feld, getrennt von der Wellengröße |
+| [B-636](B-636-farm-heisst-baumschule.md) | SIM | Idee | hoch | erledigt | BS4 | Die Farm heißt Baumschule und steht auf gerodeten Waldbauplätzen |
+| [B-637](B-637-hafen-chunk-boot.md) | SIM | Idee | hoch | erledigt | BS5 | Ein Hafen-Chunk auf Inselstufe 1 baut das Boot zum Verlassen der Insel |
+| [B-652](B-652-mauern-tuerme-verteilt-tor-ist-aeusserste-mauer.md) | SIM | Idee | hoch | erledigt | BS12 | Mauern und Türme stehen verteilt in jedem Chunk, das Tor ist die äußerste gebaute Mauer |
+| [B-680](B-680-welt-werte-ueberschreiben.md) | REG | Idee | hoch | erledigt | BAL8 | Eine Welt-Datei erbt die Basis-Werte und übersteuert nur, was sie ändern will |
+| [B-681](B-681-sim-werte-je-raum.md) | SIM | Idee | hoch | erledigt | BAL8 | Die Simulation rechnet mit den Werten ihrer Welt statt mit globalen Datei-Variablen |
+| [B-730](B-730-check-diff-schneller.md) | INF | Problem | hoch | erledigt | WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel |
+| [B-777](B-777-ebitengine-prototyp-vergleich.md) | CLI | Frage | hoch | erledigt | NV1 | Ein Ebitengine-Prototyp zeigt dasselbe Level wie der Bevy-Prototyp und liefert vergleichbare Messwerte |
+| [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | erledigt | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
