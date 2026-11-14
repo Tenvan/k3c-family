@@ -98,8 +98,9 @@ func (g *Game) stressStep() {
 		g.stressPrelude(ds, p)
 	}
 	for _, e := range g.frame.Events {
-		if e.Type() == "wave" {
+		if e.Type() == "wave" && e.Stage == g.frame.Seats[0].Stage { // nur die Stufe von Spieler 1 (dort der Spawn)
 			r.waves++
+			r.fought = false
 			g.stressDev(ds, p, view.DevAction{Action: "spawn", Kind: "enemy", Unit: r.cfg.Enemy, Amount: r.cfg.EnemiesFor(r.waves)})
 		}
 	}

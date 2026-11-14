@@ -25,7 +25,8 @@ type stressRun struct {
 	start     time.Time
 	prelude   bool   // Vorspann (Ausbau, Truppen, Zeitraffer) ausgeführt
 	startTick uint64 // Takt beim Vorspann
-	waves     int    // gezählte Wellen (Ereignis wave)
+	waves     int    // gezählte Wellen (Ereignis wave der Stufe von Spieler 1)
+	fought    bool   // seit der letzten Welle waren Gegner da (ihre Gegner liegen erst in der SpawnQueue)
 	steps     []float64
 	fpsSum    float64
 	fpsMin    float64
@@ -39,6 +40,7 @@ type stressObjects struct {
 	Troops      int `json:"truppen"`
 	Projectiles int `json:"geschosse"`
 	Coins       int `json:"muenzen"`
+	Queued      int `json:"wartend"` // Gegner in der SpawnQueue (noch nicht erschienen)
 }
 
 // StressReport ist der Bericht eines Stresstests.
@@ -74,6 +76,7 @@ func objectsOf(f *view.Frame) stressObjects {
 			o.Troops += len(w.Troops)
 			o.Projectiles += len(w.Projectiles)
 			o.Coins += len(w.Coins)
+			o.Queued += len(w.SpawnQueue)
 		}
 	}
 	return o
@@ -92,11 +95,13 @@ func (r *stressRun) sample(f *view.Frame, fps float64) {
 	}
 	o := objectsOf(f)
 	r.peak = stressObjects{max(r.peak.Enemies, o.Enemies), max(r.peak.Troops, o.Troops),
-		max(r.peak.Projectiles, o.Projectiles), max(r.peak.Coins, o.Coins)}
+		max(r.peak.Projectiles, o.Projectiles), max(r.peak.Coins, o.Coins), max(r.peak.Queued, o.Queued)}
+	r.fought = r.fought || o.Enemies > 0
 }
 
-// over liefert die Ursache, aus der der Test endet ("" = läuft weiter): Spielende, Minuten, oder die letzte
-// eingestellte Welle ist geschlagen (keine Gegner mehr).
+// over liefert die Ursache, aus der der Test endet ("" = läuft weiter): Spielende, Minuten (Wanduhr samt Pausen), oder
+// die letzte eingestellte Welle ist geschlagen: ihre Gegner waren da, und keiner lebt oder wartet noch.
+// sample läuft vorher (fought).
 func (r *stressRun) over(f *view.Frame, now time.Time) string {
 	switch {
 	case f.Outcome == view.OutcomeWon:
@@ -105,7 +110,7 @@ func (r *stressRun) over(f *view.Frame, now time.Time) string {
 		return "verloren"
 	case r.cfg.Minutes > 0 && now.Sub(r.start) >= time.Duration(r.cfg.Minutes)*time.Minute:
 		return "minuten"
-	case r.cfg.Waves > 0 && r.waves >= r.cfg.Waves && objectsOf(f).Enemies == 0:
+	case r.cfg.Waves > 0 && r.waves >= r.cfg.Waves && r.fought && objectsOf(f).Enemies+objectsOf(f).Queued == 0:
 		return "wellen"
 	}
 	return ""

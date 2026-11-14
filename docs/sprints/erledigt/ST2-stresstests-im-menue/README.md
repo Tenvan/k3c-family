@@ -1,6 +1,6 @@
 # ST2 · CLI · Stresstests im Spielmenü (Testing)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -83,6 +83,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-14 (autonom, Claude): AC-01 siehe ST2.1 › Ergebnis, AC-02 und AC-03 siehe ST2.2 › Ergebnis. Review (k3c-reviewer, Sonnet): behoben, dass der Test schon beim Start der letzten Welle endete (Gegner liegen erst in der SpawnQueue) und dass Wellen aller Stufen zählten; die Minutenfrist nach Wanduhr samt Pausen bleibt bewusst. Abnahme-Ticket für die Sichtprüfung: B-914 (Sim und Balance gesperrt, Gen und Race nicht betroffen).

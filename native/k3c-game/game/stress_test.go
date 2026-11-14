@@ -41,6 +41,7 @@ func stressFrame(tick uint64, enemies int, events ...string) view.Frame {
 	for _, e := range events {
 		f.Events = append(f.Events, view.Event{Data: sim.Event{"type": e}})
 	}
+	f.Events = append(f.Events, view.Event{Stage: 1, Data: sim.Event{"type": "wave"}}) // andere Stufe: zählt nicht
 	return f
 }
 
@@ -113,7 +114,7 @@ func runWaves(g *Game, now *time.Time) {
 		if tick == 110 || tick == 130 {
 			ev = append(ev, "wave")
 		}
-		if tick > 150 {
+		if tick > 150 || tick == 130 || tick == 131 { // Gegner der letzten Welle erscheinen erst nach dem Ereignis
 			enemies = 0
 		}
 		*now = now.Add(time.Second)

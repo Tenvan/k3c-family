@@ -34,7 +34,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | offen | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
 | [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | offen | EP1 | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
 | [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WZ60 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
-| [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | offen | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
 | [B-909](B-909-planungsdaten-schlank.md) | DEV | Schuld | mittel | offen | WZ60 | Die Planungsseite lädt bei einer Änderung nur das Geänderte statt 5,5 MiB PlanningData |
 | [B-908](B-908-pages-bausatz.md) | PLAT | Idee | mittel | offen | GP1 | Die Präsentationsseite zeigt das Spiel als Bausatz: Einzelspieler und Couch-Koop, nativ, frei für nicht-kommerzielle Nutzung, eigene Welten mit dem MCP-Server |
 | [B-910](B-910-abnahme-bi2.md) | CLI | Idee | mittel | eingeplant | BI2 | Abnahme BI2: Biom-Darstellung ist gesichtet, Grafik gerendert und Golden geprüft |
