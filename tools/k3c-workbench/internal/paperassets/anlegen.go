@@ -36,23 +36,12 @@ func Anlegen(ctx context.Context, cli CLI, id, rig, beschreibung, gruppe string)
 	if err != nil {
 		return AnlegenErgebnis{}, err
 	}
-	vorhanden, err := Finde(cli.Root, id)
-	var mehrdeutig *MehrdeutigFehler
-	if errors.As(err, &mehrdeutig) {
-		return AnlegenErgebnis{}, fmt.Errorf("%s gibt es schon (%s)", id, strings.Join(mehrdeutig.Treffer, ", "))
-	}
-	if err == nil {
-		return AnlegenErgebnis{}, fmt.Errorf("%s gibt es schon (%s)", id, vorhanden.Pfad)
-	}
 	text, err := Vorlage(rig, id, beschreibung)
 	if err != nil {
 		return AnlegenErgebnis{}, err
 	}
 	a := Asset{ID: id, Rig: rig, Gruppe: gruppe, Pfad: Grafik + "/" + gruppe + "/" + id + endung}
-	frei := sperre(cli.Root, id)
-	err = schreibeNeu(a.Abs(cli.Root), text)
-	frei()
-	if err != nil {
+	if err := legeAn(cli.Root, a, text); err != nil {
 		return AnlegenErgebnis{}, err
 	}
 	out := AnlegenErgebnis{Asset: a, Teile: r.VorlageTeile()}
@@ -66,6 +55,21 @@ func Anlegen(ctx context.Context, cli CLI, id, rig, beschreibung, gruppe string)
 	}
 	out.Render = RenderEins(ctx, cli, a)
 	return out, nil
+}
+
+// legeAn schreibt die neue Spec; Prüfung „gibt es schon“ und Schreiben laufen unter der Sperre der ID (nicht der
+// Gruppe), damit zwei parallele Anlagen derselben ID in verschiedenen Gruppen nicht beide gelingen (B-706).
+func legeAn(root string, a Asset, text []byte) error {
+	defer sperre(root, a.ID)()
+	vorhanden, err := Finde(root, a.ID)
+	var mehrdeutig *MehrdeutigFehler
+	if errors.As(err, &mehrdeutig) {
+		return fmt.Errorf("%s gibt es schon (%s)", a.ID, strings.Join(mehrdeutig.Treffer, ", "))
+	}
+	if err == nil {
+		return fmt.Errorf("%s gibt es schon (%s)", a.ID, vorhanden.Pfad)
+	}
+	return schreibeNeu(a.Abs(root), text)
 }
 
 // schreibeNeu legt eine Datei über Temp-Datei und Umbenennen an; eine vorhandene Datei bleibt (Fehler).

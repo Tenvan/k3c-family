@@ -27,18 +27,28 @@ function material(spec: Spec, vorn: boolean): string {
   return lage?.material ?? 'stoff';
 }
 
-export function beinpfad(spec: Spec, b: Bein, winkel: Record<string, number>, stil: Stil): string {
-  const P = beinPunkte(spec, b, winkel), vorn = BEINE[b].vorn, fern = b.endsWith('f');
+/** Wulst der Vorderbeine: die rechte Kante steht am Stützpunkt 2 um so viele Einheiten weiter hinaus (auch in der Box, B-845). */
+export const WULST = 1.6;
+
+/** Kanten des Beinpfads je Stützpunkt: links (−Normale · w), rechts (+Normale · (w + Wulst)), Schatten- und Lichtlinie. */
+export function beinKanten(spec: Spec, b: Bein, winkel: Record<string, number>) {
+  const P = beinPunkte(spec, b, winkel), vorn = BEINE[b].vorn;
   const W = vorn ? spec.bein!.breiten_vorn : spec.bein!.breiten_hinten;
-  const Lp: Punkt[] = [], Rp: Punkt[] = [], Sp: Punkt[] = [], Hp: Punkt[] = [];
+  const links: Punkt[] = [], rechts: Punkt[] = [], schatten: Punkt[] = [], licht: Punkt[] = [];
   P.forEach((p, i) => {
     const q0 = P[Math.max(i - 1, 0)], q1 = P[Math.min(i + 1, P.length - 1)], tx = q1[0] - q0[0], ty = q1[1] - q0[1];
-    const d = Math.hypot(tx, ty) || 1, nx = ty / d, ny = -tx / d, w = W[i] / 2, wulst = vorn && i === 2 ? 1.6 : 0;
-    Lp.push([p[0] - nx * w, p[1] - ny * w]);
-    Rp.push([p[0] + nx * (w + wulst), p[1] + ny * (w + wulst)]);
-    Sp.push([p[0] - nx * w * 0.15, p[1] - ny * w * 0.15]);
-    Hp.push([p[0] + nx * w * 0.55, p[1] + ny * w * 0.55]);
+    const d = Math.hypot(tx, ty) || 1, nx = ty / d, ny = -tx / d, w = W[i] / 2, wulst = vorn && i === 2 ? WULST : 0;
+    links.push([p[0] - nx * w, p[1] - ny * w]);
+    rechts.push([p[0] + nx * (w + wulst), p[1] + ny * (w + wulst)]);
+    schatten.push([p[0] - nx * w * 0.15, p[1] - ny * w * 0.15]);
+    licht.push([p[0] + nx * w * 0.55, p[1] + ny * w * 0.55]);
   });
+  return { P, links, rechts, schatten, licht };
+}
+
+export function beinpfad(spec: Spec, b: Bein, winkel: Record<string, number>, stil: Stil): string {
+  const { P, links: Lp, rechts: Rp, schatten: Sp, licht: Hp } = beinKanten(spec, b, winkel);
+  const vorn = BEINE[b].vorn, fern = b.endsWith('f');
   const F = P[5], unter = Math.hypot(F[0] - P[3][0], F[1] - P[3][1]) || 1;
   const spitze = plus(F, [(F[0] - P[3][0]) / unter, (F[1] - P[3][1]) / unter], FUESSE[fussVon(spec)].spitze);
   const m = material(spec, vorn), [koerper, licht]: Ton[] = fern ? ['schatten', 'basis'] : ['basis', 'licht'];

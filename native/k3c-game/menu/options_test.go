@@ -23,8 +23,10 @@ func TestApplyOption(t *testing.T) {
 		{"Musik A ändert nichts", d, optMusic, keyOK, d},
 		{"Effekte rundet auf 10 %", half, optEffects, keyRight, view.Settings{Music: 0.5, Effects: 0.2, Language: "en"}},
 		{"Effekte nicht unter 0", half, optEffects, keyLeft, view.Settings{Music: 0.5, Effects: 0, Language: "en"}},
-		{"Vollbild an", d, optFullscreen, keyOK, view.Settings{Music: 1, Effects: 1, Fullscreen: true, Language: "de"}},
-		{"Vollbild mit links", d, optFullscreen, keyLeft, view.Settings{Music: 1, Effects: 1, Fullscreen: true, Language: "de"}},
+		{"Anzeige A: rahmenlos", d, optWindow, keyOK, view.Settings{Music: 1, Effects: 1, Window: view.WindowBorderless, Language: "de"}},
+		{"Anzeige rechts: rahmenlos", d, optWindow, keyRight, view.Settings{Music: 1, Effects: 1, Window: view.WindowBorderless, Language: "de"}},
+		{"Anzeige links: Vollbild", d, optWindow, keyLeft, view.Settings{Music: 1, Effects: 1, Window: view.WindowFullscreen, Language: "de"}},
+		{"Anzeige nach Vollbild: Fenster", view.Settings{Music: 1, Effects: 1, Window: view.WindowFullscreen, Language: "de"}, optWindow, keyRight, d},
 		{"Sprache englisch", d, optLanguage, keyRight, view.Settings{Music: 1, Effects: 1, Language: "en"}},
 		{"Sprache zurück", half, optLanguage, keyOK, view.Settings{Music: 0.5, Effects: 0.05, Language: "de"}},
 		{"Zurück ändert nichts", d, optBack, keyRight, d},
@@ -60,10 +62,10 @@ func TestOptionsUnchangedValueIsNotWritten(t *testing.T) {
 }
 
 func TestOptionsStartFromKnownSettings(t *testing.T) {
-	s := &fakeSession{cur: view.Settings{Music: 0.3, Effects: 0.4, Fullscreen: true, Language: "en"}}
+	s := &fakeSession{cur: view.Settings{Music: 0.3, Effects: 0.4, Window: view.WindowFullscreen, Language: "en"}}
 	sc := newOptions(newMenus(), true)
 	sc.Update(press(pad1, view.ActionRight), s)
-	if got := s.settings[0]; got.Music != 0.4 || got.Effects != 0.4 || !got.Fullscreen || got.Language != "en" {
+	if got := s.settings[0]; got.Music != 0.4 || got.Effects != 0.4 || got.Window != view.WindowFullscreen || got.Language != "en" {
 		t.Errorf("Basis nicht von der Session: %+v", got)
 	}
 }
@@ -107,12 +109,32 @@ func TestOptionsNavigation(t *testing.T) {
 }
 
 func TestOptionValueTexts(t *testing.T) {
-	s := view.Settings{Music: 0.7, Effects: 0, Fullscreen: true, Language: "en"}
-	want := []string{"< 70 % >", "< 0 % >", "an", "< English >", "an", "an", ""}
+	s := view.Settings{Music: 0.7, Effects: 0, Window: view.WindowFullscreen, Language: "en"}
+	want := []string{"< 70 % >", "< 0 % >", "< Vollbild >", "< English >", "an", "an", ""}
 	for i, w := range want {
 		if got := optionValue(view.DefaultLanguage, s, i); got != w {
 			t.Errorf("Zeile %d: %q, erwartet %q", i, got, w)
 		}
+	}
+}
+
+// B-826 AC-01: Die Zeile Anzeige nennt jeden Modus in beiden Sprachen; Rechts läuft zyklisch durch alle drei.
+func TestOptionWindowModes(t *testing.T) {
+	want := map[string][2]string{
+		view.WindowFramed:     {"< Fenster >", "< Windowed >"},
+		view.WindowBorderless: {"< Rahmenlos >", "< Borderless >"},
+		view.WindowFullscreen: {"< Vollbild >", "< Fullscreen >"},
+	}
+	s := view.DefaultSettings()
+	for range view.WindowModes {
+		w := want[s.Window]
+		if de, en := optionValue("de", s, optWindow), optionValue("en", s, optWindow); de != w[0] || en != w[1] {
+			t.Errorf("Modus %q: %q/%q, erwartet %v", s.Window, de, en, w)
+		}
+		s = applyOption(s, optWindow, keyRight)
+	}
+	if s.Window != view.WindowFramed {
+		t.Errorf("nach drei Schritten %q, erwartet Fenster", s.Window)
 	}
 }
 

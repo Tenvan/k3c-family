@@ -29,7 +29,7 @@ const PAPER = join(ROOT, 'tools/paper');
 const QUELLEN = ['render', 'rig', 'schema', 'cli'];
 // Aus cli/ zählen nur die Dateien, die Pixel oder Manifest bestimmen (nicht Fortschritt, Kopieren, golden.json)
 const zaehlt = (ordner: string, f: string) =>
-  /\.(ts|json)$/.test(f) && !f.endsWith('.test.ts') && (ordner !== 'cli' || /^(genParallel|pool\.worker)\.ts$/.test(f));
+  /\.(ts|json)$/.test(f) && !f.endsWith('.test.ts') && (ordner !== 'cli' || /^(genParallel|pool|pool\.worker)\.ts$/.test(f));
 
 /** Hash über die Renderer-Quellen und die resvg-Version (Zeilenenden egal). */
 export function codeStand(paper = PAPER): string {

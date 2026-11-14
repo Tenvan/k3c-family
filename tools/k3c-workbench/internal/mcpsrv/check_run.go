@@ -12,7 +12,7 @@ import (
 )
 
 type checkIn struct {
-	Target  string `json:"target,omitempty" jsonschema:"Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, go:test, go:lint, dev:test"`
+	Target  string `json:"target,omitempty" jsonschema:"Ziel aus dem Katalog: task:check, task:test, task:typecheck, task:lint, task:build, task:check:go, task:check:diff, task:check:diff:plan, task:check:diff:js, task:check:diff:go, task:check:race, go:test, go:lint, dev:test, task:check:dev"`
 	Pattern string `json:"pattern,omitempty" jsonschema:"optionales Testmuster, nur bei task:test, go:test und dev:test"`
 	Run     string `json:"run,omitempty" jsonschema:"Lauf-ID aus einer Antwort „läuft noch“: wartet weiter auf diesen Lauf und liefert sein Ergebnis, statt einen neuen zu starten"`
 }
@@ -65,6 +65,17 @@ func (c *checkRuns) end(name string, res runResult) {
 	defer c.mu.Unlock()
 	delete(c.running, name)
 	c.last[name] = res
+}
+
+// startOf ist der Beginn des laufenden oder sonst des letzten Laufs mit diesem Schlüssel (B-855).
+func (c *checkRuns) startOf(key string) (time.Time, bool) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if at, ok := c.running[key]; ok {
+		return at, true
+	}
+	r, ok := c.last[key]
+	return r.at, ok && !r.at.IsZero()
 }
 
 func (c *checkRuns) lastRun(name string) (runResult, bool) {

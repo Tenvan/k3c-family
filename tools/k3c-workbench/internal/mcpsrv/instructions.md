@@ -68,10 +68,17 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `plan_create {kind, slug, title, id?, fields}`: Ticket (Felder `Domäne`, `Typ`, `Prio`), Sprint (`id`, `Domäne`) oder
   Session (`id` wie `M8.5`) als Kopie der Vorlage; danach die Abschnitte mit `plan_sections {id, sections}` füllen
   (`sections`: Abschnitt → Text). Mehrere Abschnitte immer mit `plan_sections`; ein unbekannter Abschnitt bricht ab,
-  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`.
+  ohne etwas zu schreiben. Einen einzelnen Abschnitt ersetzt auch `plan_section {id, section, text}`. Beim Ticket nennt
+  die Antwort bis zu fünf Tickets mit ähnlichem Titel (offen und Archiv, nur Hinweis, B-696).
 - `plan_set {id, fields}` setzt Kopf-Felder, z. B. `{"Status": "fertig"}`; Ticket `erledigt`/`verworfen` wandert ins
   Archiv, Sprint-`Status` verschiebt den Ordner. `Spec: freigegeben` nur mit `Freigabe` (Datum, Quelle) und nur nach
   Zustimmung von 🧑.
+- Relationen (B-696): `plan_set B-741 {"Duplikat von": "B-823"}` verwirft und archiviert B-741; `{"Ersetzt": "B-210, B-211"}`
+  im neueren Ticket. Unbekannte ID, Selbstverweis und Zyklus lehnt das Tool ab, ältere Tickets bekommen das Feld
+  eingefügt. `plan_get` zeigt die Gegenrichtung (`Ersetzt durch`, `Duplikate`) berechnet unter dem Kopf.
+- `plan_digest {älter_als?, dry?, neu?}` (B-696): je erledigtem Sprint eine `ZUSAMMENFASSUNG.md` (Ziel, Abnahme,
+  Kriterien mit Status, Tickets); `dry` ist Standard, vorhandene bleiben ohne `neu`. Statt eines erledigten Sprint-Ordners
+  zuerst die Zusammenfassung lesen.
 - `plan_delete {id}` nur für Sprint-Entwürfe in `geplant/` und ihre Sessions; Tickets werden `verworfen`.
 - Commits macht das Tool nicht. Danach `check_run task:test` mit `pattern: planning`.
 - `gh_status {force?}` statt `gh pr list`/`gh run list` in der Shell: je Sprint PR, CI und Merge-Konflikt, dazu der letzte
@@ -121,8 +128,12 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `check_run` statt `task check`, `task test`, `task typecheck`, `task lint`, `task build`, `task check:go`, `go test`
   oder `golangci-lint` in der Shell. Ziele: `task:check`, `task:test`, `task:typecheck`, `task:lint`, `task:build`,
   `task:check:go`, `task:check:diff`, `task:check:diff:plan`, `task:check:diff:js`, `task:check:diff:go`,
-  `task:check:race`, `go:test`, `go:lint`, `dev:test`. Ein Testmuster (`pattern`) geht bei `task:test`, `go:test` und
-  `dev:test`.
+  `task:check:race`, `go:test`, `go:lint`, `dev:test`, `task:check:dev`. Ein Testmuster (`pattern`) geht bei
+  `task:test`, `go:test` und `dev:test`.
+- Workbench (B-831): `dev:test` baut das Frontend bei Bedarf und fährt `go test` der Workbench ohne Sim-Pakete;
+  `task:check:dev` ist die volle Prüfung der Review (Frontend, Vitest, `go test`, Lint). Beide brauchen `task install`
+  im Checkout und brechen ohne Frontend-Abhängigkeiten mit diesem Hinweis ab. `console_tail check:<ziel>` liefert nur
+  Läufe des eigenen Checkouts (im Worktree `checkout` setzen, B-855).
 - `task:check:diff` prüft nur, was die geänderten Dateien gegenüber der Basis `HEAD` brauchen (vor jedem Commit), in zwei
   Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, `go vet`; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete.
   Nach einem roten Lauf wiederholt `task:check:diff:js` bzw. `task:check:diff:go` nur diese Bahn; `task:check:diff:plan`

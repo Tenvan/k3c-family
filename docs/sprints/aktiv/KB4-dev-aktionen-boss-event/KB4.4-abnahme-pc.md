@@ -16,8 +16,9 @@ Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Gerät: PC
+
+Abnahme im Browser-Client über das Debug-Panel. Nach Entscheidung 009 (nur natives Spiel) entscheidet 🧑, ob die Abnahme noch stattfindet oder verworfen wird (B-823).
 
 ## Erlaubte Dateien
 

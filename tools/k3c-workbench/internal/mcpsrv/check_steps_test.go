@@ -11,6 +11,7 @@ import (
 )
 
 func TestStepLogZeitUndExit(t *testing.T) {
+	t.Parallel()
 	var buf bytes.Buffer
 	log := slog.New(slog.NewTextHandler(&buf, nil))
 	l := newStepLog(log, "task:check:diff")
@@ -32,6 +33,7 @@ func TestStepLogZeitUndExit(t *testing.T) {
 }
 
 func TestStepLogEndeOhneStart(t *testing.T) {
+	t.Parallel()
 	var buf bytes.Buffer
 	l := newStepLog(slog.New(slog.NewTextHandler(&buf, nil)), "x")
 	l.line("⏱■ ohne-start exit=1")
@@ -41,6 +43,7 @@ func TestStepLogEndeOhneStart(t *testing.T) {
 }
 
 func TestParseStepEnd(t *testing.T) {
+	t.Parallel()
 	if n, e := parseStepEnd("grafik-golden exit=7"); n != "grafik-golden" || e != 7 {
 		t.Errorf("%q %d", n, e)
 	}
@@ -50,6 +53,7 @@ func TestParseStepEnd(t *testing.T) {
 }
 
 func TestIsHeavyTarget(t *testing.T) {
+	t.Parallel()
 	if !isHeavyTarget("task:check:diff") || isHeavyTarget("task:test") {
 		t.Error("schwere Ziele falsch erkannt")
 	}
@@ -66,6 +70,7 @@ func (b *lockedBuf) String() string               { b.mu.Lock(); defer b.mu.Unlo
 
 // B-739/AC-03: Zwei schwere Läufe aus verschiedenen Checkouts laufen nacheinander, der zweite loggt das Warten.
 func TestAcquireHeavyNacheinander(t *testing.T) {
+	t.Parallel()
 	var buf lockedBuf
 	s := &Server{log: slog.New(slog.NewTextHandler(&buf, nil))}
 	ctx := context.Background()
@@ -97,6 +102,7 @@ func TestAcquireHeavyNacheinander(t *testing.T) {
 }
 
 func TestAcquireHeavyAbbruch(t *testing.T) {
+	t.Parallel()
 	s := &Server{log: slog.New(slog.NewTextHandler(&bytes.Buffer{}, nil))}
 	release := s.acquireHeavy(context.Background(), "task:check", "erster")
 	defer release()

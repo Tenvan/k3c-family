@@ -10,16 +10,29 @@ let root: Root | null = null;
 
 export const wait = (ms: number) => act(async () => new Promise((r) => setTimeout(r, ms)));
 
-export async function flush() {
-  for (let i = 0; i < 8; i++) await wait(0);
+/** Höchste Wartezeit einer Bedingung; unter Last reichen Millisekunden, das Limit fängt nur echte Fehler. */
+const LIMIT_MS = 5000;
+
+/** Wartet, bis `cond` einen Wert liefert, und gibt ihn zurück; nach `ms` scheitert der Test mit `what` (B-837, B-858). */
+export async function until<T>(what: string, cond: () => T | null | undefined | false, ms = LIMIT_MS): Promise<T> {
+  const end = Date.now() + ms;
+  for (;;) {
+    const v = cond();
+    if (v) return v;
+    if (Date.now() > end) throw new Error(`nicht erreicht nach ${ms} ms: ${what}`);
+    await wait(5);
+  }
 }
+
+/** Ein Takt (setTimeout 0) in act(): nur für Gegenproben und Zeitschritte, nie als Warten auf Inhalt (B-859). */
+export const settle = () => wait(0);
 
 export async function mount(node: ReactNode): Promise<HTMLElement> {
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
   act(() => root!.render(<Theme>{node}</Theme>));
-  await flush();
+  await settle();
   return host;
 }
 
@@ -33,7 +46,7 @@ export function unmount() {
 
 export async function click(el: Element) {
   await act(async () => (el as HTMLElement).click());
-  await flush();
+  await settle();
 }
 
 export const buttons = (host: ParentNode, text: string) =>

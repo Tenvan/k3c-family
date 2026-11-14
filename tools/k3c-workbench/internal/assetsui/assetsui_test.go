@@ -156,7 +156,7 @@ func TestAssetsFrame(t *testing.T) {
 	if png := dekodiere(t, got.Bild); !slices.Equal(png[:8], []byte{0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a}) {
 		t.Error("Bild ist kein PNG")
 	}
-	for _, teil := range []string{"kopf", "krone", "rumpf-vorn", "sattel"} {
+	for _, teil := range []string{"kopf", "krone", "reittier:rumpf-vorn", "reittier:sattel"} { // Reittier-Teile mit Präfix (PT2, B-709)
 		if len(got.Teile[teil]) != 4 {
 			t.Errorf("Teil %s fehlt: %v", teil, got.Teile)
 		}
@@ -223,7 +223,7 @@ func TestAssetsPixelDiff(t *testing.T) {
 // keinFrame lässt jeden Render scheitern (gleiche Cache-Kennung wie die Attrappe).
 type keinFrame struct{ review.CLI }
 
-func (keinFrame) Frame(context.Context, string, string, int, string, string) (review.FrameAntwort, error) {
+func (keinFrame) Frame(context.Context, string, string, string, int, string, string) (review.FrameAntwort, error) {
 	return review.FrameAntwort{}, errors.New("Frame gerendert, obwohl er im Cache liegt")
 }
 

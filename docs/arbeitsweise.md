@@ -16,8 +16,9 @@ docs/
   vorlagen/                   Pflicht-Vorlagen: projekt.md, ticket.md, sprint.md, session.md
   projekte/README.md          Rangliste aller Projekte
   projekte/XXX-name.md        ein Projekt: Ziel, Status, Rang, Sprints in Reihenfolge
-  backlog/README.md           Index aller Tickets (eine Zeile pro Ticket)
+  backlog/README.md           Index der offenen und eingeplanten Tickets (eine Zeile pro Ticket)
   backlog/B-NNN-kurzname.md   ein offenes oder eingeplantes Ticket pro Datei
+  backlog/archiv/README.md    Index der erledigten und verworfenen Tickets (B-696)
   backlog/archiv/B-NNN-…      erledigte und verworfene Tickets (gleicher Dateiname, per `git mv`)
   sprints/README.md           Fahrplan: alle Sprints mit Ordner und Status
   sprints/aktiv/SPnn-name/    der laufende Sprint: README.md (Sprint) + SPnn.m-name.md (Sessions)
@@ -26,7 +27,8 @@ docs/
 ```
 
 **Lesen:** `projekte/README.md` und `sprints/aktiv/` immer, `sprints/geplant/` nur beim Planen, `sprints/erledigt/` und `backlog/archiv/` nur auf ausdrückliche Nachfrage.
-Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt sie es nach `backlog/archiv/` und die Index-Zeile in den Abschnitt „Archiv“.
+Setzt eine Session ein Ticket auf `erledigt` oder `verworfen`, verschiebt `plan_set` es nach `backlog/archiv/` und die Index-Zeile nach `backlog/archiv/README.md` (zurück beim Wiederöffnen); `backlog/README.md` führt nur offene und eingeplante Tickets.
+Duplikate und Ersatz stehen im neueren Ticket als `Duplikat von:` (setzt `verworfen`) und `Ersetzt:`; die Gegenrichtung zeigt `plan_get` berechnet.
 
 **Vorlagen sind Pflicht.** Jedes Ticket, jeder Sprint und jede Session entsteht als Kopie der Vorlage aus
 `docs/vorlagen/`. `tests/planning.test.ts` prüft Felder, Überschriften, Status passend zum Ordner, Index und Verweise.

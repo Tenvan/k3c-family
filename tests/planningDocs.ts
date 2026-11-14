@@ -16,7 +16,13 @@ export function meta(text: string): Record<string, string> {
 }
 export const headings = (text: string) => [...text.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
 export const title = (text: string) => /^# (\S+) · /.exec(text)?.[1];
-export const ids = (value: string) => value.match(/B-\d{3}/g) ?? [];
+export const ids = (value: string) => value.match(/B-\d{3,}/g) ?? [];
+/** Ticket-Datei `B-123-name.md`; Nummern ab B-1000 sind vierstellig (B-863). */
+export const isTicketFile = (f: string) => /^B-\d{3,}-.+\.md$/.test(f);
+/** Nummer aus dem Dateinamen: `B-1000-name.md` → `B-1000`. */
+export const ticketIdOf = (f: string) => /^(B-\d+)-/.exec(f)?.[1] ?? f;
+/** Zeile im Index: Nummer, Link und Status (Gruppen 1 bis 3). */
+export const indexRow = () => /^\| \[(B-\d{3,})\]\((.+?)\) \|.*\| (\S+) \| \S+ \| .* \|$/gm;
 /** `–` (auch mit Erläuterung dahinter) heißt: kein Wert. */
 export const none = (value: string | undefined) => !value || value.startsWith('–');
 /** Abschnitt `## Name` bis zur nächsten Unterüberschrift. */
@@ -36,8 +42,12 @@ const ALLOWED = {
 } as const;
 type Kind = keyof typeof ALLOWED;
 
-/** Felder, die in einer Datei fehlen dürfen (ältere Sessions ohne Lane und Modell, PV1.1); die Reihenfolge bleibt die der Vorlage. */
-const OPTIONAL: Partial<Record<Kind, readonly string[]>> = { session: ['Lane', 'Modell'] };
+/** Felder, die in einer Datei fehlen dürfen (ältere Sessions ohne Lane und Modell, PV1.1; Tickets ohne Relationen,
+ *  B-696); die Reihenfolge bleibt die der Vorlage. */
+const OPTIONAL: Partial<Record<Kind, readonly string[]>> = { session: ['Lane', 'Modell'], ticket: ['Duplikat von', 'Ersetzt'] };
+/** Relationsfeld eines Tickets: `–` oder IDs (bei „Duplikat von“ genau eine). */
+export const relationOk = (name: string, value: string) =>
+  value === '–' || (name === 'Duplikat von' ? /^B-\d{3,}$/ : /^B-\d{3,}(, B-\d{3,})*$/).test(value);
 /** Lane einer Session: `–` oder Kurzname aus a-z, 0-9 und `-`. */
 export const laneOk = (value: string) => value === '–' || /^[a-z0-9-]+$/.test(value);
 
@@ -54,8 +64,14 @@ export function checkTemplate(kind: Kind, text: string, where: string): Record<s
     expect(values as readonly string[], `${where}: ${field} = "${fields[field]}"`).toContain(fields[field]);
   }
   if ('Lane' in fields && optional.includes('Lane')) expect(laneOk(fields.Lane), `${where}: Lane = "${fields.Lane}"`).toBe(true);
+  for (const name of ['Duplikat von', 'Ersetzt']) {
+    if (kind === 'ticket' && name in fields) expect(relationOk(name, fields[name]), `${where}: ${name} = "${fields[name]}"`).toBe(true);
+  }
   return fields;
 }
+
+/** Zusammenfassung eines erledigten Sprints (plan_digest, B-696 Teil C); kein Dokument nach Vorlage. */
+export const DIGEST = 'ZUSAMMENFASSUNG.md';
 
 const STATES = ['geplant', 'aktiv', 'erledigt'] as const;
 export const sprints = STATES.flatMap((state) => dirs(`sprints/${state}`).map((dir) => ({ state, dir, path: `sprints/${state}/${dir}` })));

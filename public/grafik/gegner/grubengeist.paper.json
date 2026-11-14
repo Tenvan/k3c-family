@@ -12,14 +12,14 @@
         {
           "art": "flaeche",
           "form": "M-12 -44C-14 -30 -18 -18 -26 -10C-18 -12 -14 -16 -10 -22C-10 -14 -12 -8 -16 -2C-8 -6 -2 -14 0 -24C2 -16 6 -12 10 -10C6 -18 6 -30 10 -44Z",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1,
           "form": "M-6 -38C-8 -28 -12 -18 -18 -10",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "licht"
         }
       ],
@@ -32,7 +32,7 @@
         {
           "art": "flaeche",
           "form": "M-6 -68C-12 -62 -14 -54 -12 -46C-10 -50 -8 -52 -6 -52C-6 -56 -4 -60 -2 -64Z",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "schatten"
         }
       ],
@@ -44,20 +44,20 @@
         {
           "art": "flaeche",
           "form": "M-12 -68C-14 -80 -8 -90 0 -91C9 -91 14 -82 14 -70C14 -60 12 -50 10 -42L-12 -42C-13 -50 -12 -60 -12 -68Z",
-          "material": "hermelin"
+          "material": "geisterweiss"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-12 -68C-14 -80 -8 -90 0 -91C-5 -84 -7 -70 -5 -42L-12 -42C-13 -50 -12 -60 -12 -68Z",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M8 -86C12 -82 13 -74 13 -66C11 -72 10 -80 8 -86Z",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "licht"
         },
         {
@@ -127,27 +127,27 @@
         {
           "art": "flaeche",
           "form": "M0 -68C6 -64 8 -56 6 -48C4 -46 0 -46 -1 -48C1 -54 0 -60 -2 -64Z",
-          "material": "hermelin"
+          "material": "geisterweiss"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M0 -68C2 -62 2 -54 -1 -48C1 -54 0 -60 -2 -64Z",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1,
           "form": "M2 -48L1 -44",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1,
           "form": "M4.5 -48L4.5 -44.5",
-          "material": "hermelin",
+          "material": "geisterweiss",
           "ton": "schatten"
         }
       ],

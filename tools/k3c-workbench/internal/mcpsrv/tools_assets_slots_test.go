@@ -46,6 +46,7 @@ func assetRepo(t *testing.T) string {
 
 // MC1/AC-06: Register-Varianten von assets_list/get/set und assets_catalog sind entfernt; die Recherche bleibt.
 func TestAlteRegisterToolsEntfernt(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test", Root: assetRepo(t)}))
 	res, err := cs.ListTools(context.Background(), nil)
 	if err != nil {

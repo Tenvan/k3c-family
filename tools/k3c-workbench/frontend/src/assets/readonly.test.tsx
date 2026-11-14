@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } fr
 import { Tabs } from '@webkit/organisms';
 import { backend } from '../api';
 import { AssetsArea } from './AssetsArea';
-import { click, mount, unmount } from './testing';
+import { click, mount, unmount, until } from './testing';
 
 // WB1/AC-02 (005 › 5, 7): Der Bereich Assets hat kein schreibendes Control. Jede Seite (außer review/, RV1) wird mit
 // allen Buttons durchgeklickt; dabei darf nur die Lese-Allowlist aufgerufen werden. Neue Seiten in PAGES eintragen
@@ -37,6 +37,14 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** Hängt die Seite ein und wartet, bis ihr Inhalt steht (Mock-Fixtures laden lazy, unter Last länger als flush(), B-858). */
+async function mountPage(page: string, hasButtons: boolean): Promise<HTMLElement> {
+  const host = await mount(<Tabs.Root value={page}><AssetsArea /></Tabs.Root>);
+  await until(`${page}: Inhalt geladen`, () =>
+    (hasButtons ? host.querySelector('button, [role="button"], [data-asset]') : host.textContent?.trim()) && !host.querySelector('[data-checking]'));
+  return host;
+}
+
 /** Klickt jeden sichtbaren Button, auch die, die erst nach einem Klick erscheinen (höchstens drei Runden). */
 async function clickAll(host: HTMLElement) {
   const seen = new Set<Element>();
@@ -54,14 +62,14 @@ async function clickAll(host: HTMLElement) {
 describe('Bereich Assets ohne schreibende Controls (WB1/AC-02)', () => {
   for (const [page, hasButtons] of Object.entries(PAGES)) {
     it(`${page}: alle Buttons rufen nur Lesemethoden`, async () => {
-      const host = await mount(<Tabs.Root value={page}><AssetsArea /></Tabs.Root>);
+      const host = await mountPage(page, hasButtons);
       const clicked = await clickAll(host);
       if (hasButtons) expect(clicked, `${page}: Buttons gefunden`).toBeGreaterThan(0);
       for (const [name, spy] of spies) expect(spy, name).not.toHaveBeenCalled();
     });
 
     it(`${page}: Eingabefelder nur zum Filtern`, async () => {
-      const host = await mount(<Tabs.Root value={page}><AssetsArea /></Tabs.Root>);
+      const host = await mountPage(page, hasButtons);
       await clickAll(host);
       const fields = [...host.querySelectorAll('input, textarea, select')].filter(
         (f) => f.getAttribute('aria-hidden') !== 'true' && (f as HTMLInputElement).type !== 'hidden' && (f as HTMLElement).style.display !== 'none',

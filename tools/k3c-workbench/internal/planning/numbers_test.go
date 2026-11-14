@@ -48,6 +48,7 @@ func newTicket(t *testing.T, root string) string {
 
 // B-387/AC-01 und AC-03: höhere Nummer in einem anderen Worktree, Antwort nennt den Checkout.
 func TestTicketNummerAusAnderemWorktree(t *testing.T) {
+	t.Parallel()
 	root := gitRepo(t)
 	wt := filepath.Join(t.TempDir(), "wt-zwei")
 	git(t, root, "worktree", "add", "-q", wt, "-b", "zwei")
@@ -63,6 +64,7 @@ func TestTicketNummerAusAnderemWorktree(t *testing.T) {
 
 // B-387/AC-02: ein nicht lesbarer Worktree wird übersprungen und genannt, die Anlage gelingt.
 func TestTicketNummerWorktreeNichtLesbar(t *testing.T) {
+	t.Parallel()
 	root := gitRepo(t)
 	wt := filepath.Join(t.TempDir(), "wt-kaputt")
 	git(t, root, "worktree", "add", "-q", wt, "-b", "kaputt")
@@ -77,6 +79,7 @@ func TestTicketNummerWorktreeNichtLesbar(t *testing.T) {
 
 // B-387/AC-04: Ein Remote-Ref ohne Worktree zählt mit, ohne Fetch.
 func TestTicketNummerAusRemoteRef(t *testing.T) {
+	t.Parallel()
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
 	}
@@ -96,6 +99,7 @@ func TestTicketNummerAusRemoteRef(t *testing.T) {
 
 // B-403/N1: liegt der Ordner unterhalb eines Repos (keine Wurzel), nennt die Antwort, dass Worktrees und Refs fehlen.
 func TestTicketNummerKeineRepoWurzelNennt(t *testing.T) {
+	t.Parallel()
 	root := gitRepo(t)
 	sub := filepath.Join(root, "unterordner")
 	if err := os.MkdirAll(filepath.Join(sub, "docs", "backlog"), 0o755); err != nil {
@@ -112,6 +116,7 @@ func TestTicketNummerKeineRepoWurzelNennt(t *testing.T) {
 
 // B-360/AC-01: ein Feld, das in der Datei fehlt, wird abgelehnt, die Datei bleibt unverändert.
 func TestFehlendesFeldWirdAbgelehnt(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	before := doc(t, root, "backlog/B-001-alt.md")
 	_, err := Set(root, "B-001", map[string]string{"Prio": "hoch"})

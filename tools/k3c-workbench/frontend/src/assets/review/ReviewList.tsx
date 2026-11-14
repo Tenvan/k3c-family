@@ -1,6 +1,6 @@
 import { Badge, CardButton, Flex, Strong, Text } from '@webkit/atoms';
 import { felderText } from './prompt';
-import type { ReviewAsset, ReviewStatus } from './types';
+import type { ReviewAsset, ReviewStatus } from '../api';
 
 const STATUS: Record<ReviewStatus, { text: string; farbe: 'red' | 'amber' | 'green' | 'gray' }> = {
   ungueltig: { text: 'ungültig', farbe: 'red' },

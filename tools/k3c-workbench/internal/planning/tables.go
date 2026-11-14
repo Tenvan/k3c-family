@@ -2,6 +2,7 @@ package planning
 
 import (
 	"fmt"
+	"path"
 	"strings"
 
 	ticketkit "k3c/tools/assetkit/ticket"
@@ -86,23 +87,80 @@ func removeRow(lines []string, prefix string) []string {
 func splitLines(s string) []string { return strings.Split(s, "\n") }
 func joinLines(l []string) string  { return strings.Join(l, "\n") }
 
-// syncIndex trägt das Ticket in docs/backlog/README.md ein: Abschnitt „Offen“ oder „Archiv“ je nach Ordner.
+// archiveIndex ist der Index der erledigten und verworfenen Tickets (B-696 Teil B), Links relativ zu backlog/archiv/.
+const archiveIndex = "backlog/archiv/README.md"
+
+// syncIndex trägt das Ticket in seinen Index ein (B-696 Teil B): offen und eingeplant in docs/backlog/README.md
+// unter „Offen“, erledigt und verworfen in docs/backlog/archiv/README.md (Link ohne `archiv/`); aus dem anderen Index
+// verschwindet die Zeile. Zeilen gelten über Nummer und Dateiname (doppelt vergebene Nummern wie B-199, B-696 bleiben
+// getrennt). Altes Format (Archiv-Tabelle im Haupt-Index, kein Archiv-Index): bis RebuildIndex dorthin wie bisher;
+// fehlen beide, entsteht der Archiv-Index mit dem Kopf von RebuildIndex.
 func syncIndex(c *changeSet, t Ticket, rel string) error {
-	text, err := c.read("backlog/README.md")
+	main, err := c.read(mainIndex) // liest auch die Zeilenenden für einen neuen Archiv-Index
 	if err != nil {
 		return err
 	}
-	link := strings.TrimPrefix(rel, "backlog/")
-	section := "## Offen"
-	if strings.HasPrefix(link, "archiv/") {
-		section = "## Archiv"
+	file := path.Base(rel)
+	target, link, section := mainIndex, file, "## Offen"
+	if strings.HasPrefix(rel, "backlog/archiv/") {
+		target, section = archiveIndex, "## Archiv"
+		if _, legacy := findTable(splitLines(main), heading("## Archiv")); legacy && !exists(c.root, archiveIndex) {
+			target, link = mainIndex, "archiv/"+file
+		}
 	}
-	row := ticketkit.IndexRow(ticketkit.Row{Nr: t.Nr, Link: link, Domain: t.Domain, Typ: t.Typ, Prio: t.Prio, Status: t.Status, Sprint: t.Sprint, Title: t.Title})
-	lines, err := placeRow(splitLines(text), "| ["+t.Nr+"](", heading(section), row)
+	for _, f := range indexFiles {
+		if f != target {
+			if err := dropRows(c, f, t.Nr, file, ""); err != nil {
+				return err
+			}
+		}
+	}
+	text, err := c.read(target)
 	if err != nil {
-		return fmt.Errorf("backlog/README.md: %w", err)
+		if target != archiveIndex || exists(c.root, archiveIndex) {
+			return fmt.Errorf("%s: %w", target, err)
+		}
+		text, c.crlf[archiveIndex] = archiveHead+"\n## Archiv\n\n"+tableHead, c.crlf[mainIndex]
 	}
-	c.write("backlog/README.md", joinLines(lines))
+	prefix := "| [" + t.Nr + "](" + link + ")"
+	row := ticketkit.IndexRow(ticketkit.Row{Nr: t.Nr, Link: link, Domain: t.Domain, Typ: t.Typ, Prio: t.Prio, Status: t.Status, Sprint: t.Sprint, Title: t.Title})
+	lines, err := placeRow(rowsWithout(splitLines(text), t.Nr, file, link), prefix, heading(section), row)
+	if err != nil {
+		return fmt.Errorf("%s: %w", target, err)
+	}
+	c.write(target, joinLines(lines))
+	c.first = append(c.first, target) // erst eintragen, dann aus dem anderen Index entfernen (B-862)
+	return nil
+}
+
+// rowsWithout entfernt die Zeilen des Tickets (Link `file` oder `archiv/file`) außer der mit dem Link keep.
+func rowsWithout(lines []string, nr, file, keep string) []string {
+	out := lines[:0:0]
+	for _, l := range lines {
+		drop := false
+		for _, link := range []string{file, "archiv/" + file} {
+			drop = drop || (link != keep && strings.HasPrefix(l, "| ["+nr+"]("+link+")"))
+		}
+		if !drop {
+			out = append(out, l)
+		}
+	}
+	return out
+}
+
+// dropRows entfernt die Zeilen des Tickets aus einer Index-Datei; ein fehlender Archiv-Index ist kein Fehler.
+func dropRows(c *changeSet, rel, nr, file, keep string) error {
+	text, err := c.read(rel)
+	if err != nil {
+		if rel == archiveIndex && !exists(c.root, rel) {
+			return nil
+		}
+		return fmt.Errorf("%s: %w", rel, err)
+	}
+	lines := splitLines(text)
+	if kept := rowsWithout(lines, nr, file, keep); len(kept) != len(lines) {
+		c.write(rel, joinLines(kept))
+	}
 	return nil
 }
 
@@ -160,11 +218,10 @@ func takeRoadmapRow(lines []string, id, dir string) ([]string, map[string]string
 		if !strings.HasPrefix(l, "| "+id+" |") || !strings.Contains(l, key) {
 			continue
 		}
-		if header, ok := headerAt(lines, i); ok {
+		// Eine Zeile mit falscher Spaltenzahl (KB6, B-842) liefert keine Werte: die Zellen wären verschoben.
+		if header, ok := headerAt(lines, i); ok && len(cells(l)) == len(header) {
 			for k, v := range cells(l) {
-				if k < len(header) {
-					old[header[k]] = v
-				}
+				old[header[k]] = v
 			}
 		}
 		return append(lines[:i], lines[i+1:]...), old, i

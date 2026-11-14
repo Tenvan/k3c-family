@@ -20,6 +20,7 @@ func write(t *testing.T, root, rel, text string) {
 }
 
 func TestStamp(t *testing.T) {
+	t.Parallel()
 	root := t.TempDir()
 	write(t, root, "docs/sprints/aktiv/X1-a/README.md", "# X1")
 	write(t, root, "docs/backlog/B-001-a.md", "# B-001")
@@ -44,6 +45,7 @@ func TestStamp(t *testing.T) {
 }
 
 func TestWatch(t *testing.T) {
+	t.Parallel()
 	root := t.TempDir()
 	write(t, root, "docs/backlog/B-001-a.md", "# B-001")
 	ctx, cancel := context.WithCancel(context.Background())

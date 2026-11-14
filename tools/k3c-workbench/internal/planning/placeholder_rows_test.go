@@ -33,6 +33,7 @@ func withSessionRows(t *testing.T, root, dir string, rows ...string) {
 }
 
 func TestPlatzhalterZeileWirdErsetzt(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newSprint(t, root, "GEB1", nil)
 	withSessionRows(t, root, "GEB1-s",
@@ -54,6 +55,7 @@ func TestPlatzhalterZeileWirdErsetzt(t *testing.T) {
 }
 
 func TestPlatzhalterAndereNummerBleibtStehen(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newSprint(t, root, "GEB1", nil)
 	withSessionRows(t, root, "GEB1-s", "| GEB1.2 | – (Entwurf) | Umsetzung | autonom | offen |")
@@ -65,6 +67,7 @@ func TestPlatzhalterAndereNummerBleibtStehen(t *testing.T) {
 }
 
 func TestZeileMitFehlenderDateiBleibtFehler(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newSprint(t, root, "GEB1", nil)
 	withSessionRows(t, root, "GEB1-s", "| GEB1.2 | `GEB1.2-weg.md` | Umsetzung | autonom | offen |")

@@ -339,34 +339,34 @@
         {
           "art": "flaeche",
           "form": "M-6 -82L0 -88L7 -80L3 -68L-4 -70Z",
-          "material": "koenigsrot",
+          "material": "lava",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-6 -82L0 -88L1 -76L-4 -70Z",
-          "material": "koenigsrot"
+          "material": "lava"
         },
         {
           "art": "falz",
           "breite": 2.2,
           "form": "M-8 -86L-2 -74L-6 -62L0 -50",
-          "material": "koenigsrot",
+          "material": "lava",
           "ton": "licht"
         },
         {
           "art": "falz",
           "breite": 2,
           "form": "M6 -84L10 -70L5 -58",
-          "material": "koenigsrot",
+          "material": "lava",
           "ton": "licht"
         },
         {
           "art": "falz",
           "breite": 1.6,
           "form": "M-12 -70L-6 -66",
-          "material": "koenigsrot",
+          "material": "lava",
           "ton": "licht"
         },
         {
@@ -497,7 +497,7 @@
         },
         {
           "art": "punkt",
-          "material": "koenigsrot",
+          "material": "lava",
           "mitte": [11.5, -105.5],
           "radius": 2.6,
           "ton": "licht"

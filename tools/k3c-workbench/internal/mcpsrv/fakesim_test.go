@@ -3,12 +3,14 @@ package mcpsrv
 import (
 	"bufio"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 	"slices"
 	"strings"
+	"sync"
 	"testing"
 
 	"k3c/tools/k3c-workbench/internal/simexe"
@@ -24,24 +26,75 @@ func TestMain(m *testing.M) {
 	if os.Getenv(fakeSimEnv) == "1" && strings.HasPrefix(filepath.Base(os.Args[0]), "k3c-sim") {
 		os.Exit(fakeSim(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
 	}
-	os.Exit(m.Run())
+	// Die Asset-Tests rufen die CLI-Attrappe; einmal für den Lauf statt t.Setenv je Test, damit sie parallel laufen (B-830).
+	if os.Getenv("K3C_PAPER_CLI") == "" {
+		stub, _ := filepath.Abs(filepath.Join("..", "..", "..", "paper", "fixtures", "cli-stub.ts"))
+		_ = os.Setenv("K3C_PAPER_CLI", stub)
+	}
+	// Höchstens sechs parallele Tests, wenn -parallel nicht gesetzt ist: Mit GOMAXPROCS warten git-, bun- und
+	// Render-Prozesse aufeinander und ein einzelner Test zeigt über 3 s (B-830).
+	flag.Parse()
+	set := false
+	flag.Visit(func(f *flag.Flag) { set = set || f.Name == "test.parallel" })
+	if !set {
+		_ = flag.Set("test.parallel", "6")
+	}
+	code := m.Run()
+	for _, dir := range []string{paperDir, fakeSimDir} {
+		if dir != "" {
+			_ = os.RemoveAll(dir)
+		}
+	}
+	os.Exit(code)
 }
 
-// installFakeSim legt das falsche k3c-sim in root ab.
+// installFakeSim legt das falsche k3c-sim in root ab. Die Test-EXE (einige zehn MB) wird einmal je Lauf kopiert und je Test nur verlinkt (Hardlink): Eine neue Kopie je Test
+// prüft der Virenscanner beim ersten Start jedes Mal ganz (B-830). Ohne Hardlink (anderes Laufwerk) wird kopiert.
 func installFakeSim(t *testing.T, root string) {
 	t.Helper()
-	self, err := os.ReadFile(os.Args[0])
-	if err != nil {
-		t.Fatal(err)
-	}
 	exe := filepath.Join(root, simexe.Rel(0))
 	if err := os.MkdirAll(filepath.Dir(exe), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(exe, self, 0o755); err != nil {
-		t.Fatal(err)
+	src := fakeSimVorlage(t)
+	if err := os.Link(src, exe); err != nil {
+		self, err := os.ReadFile(src)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(exe, self, 0o755); err != nil {
+			t.Fatal(err)
+		}
 	}
 	t.Setenv(fakeSimEnv, "1")
+}
+
+var (
+	fakeSimOnce sync.Once
+	fakeSimDir  string // TestMain räumt auf
+	fakeSimExe  string
+	fakeSimErr  error
+)
+
+// fakeSimVorlage kopiert die Test-EXE einmal je Lauf (nicht die laufende EXE verlinken: die ließe sich nicht löschen).
+func fakeSimVorlage(t *testing.T) string {
+	t.Helper()
+	fakeSimOnce.Do(func() {
+		self, err := os.ReadFile(os.Args[0])
+		if err != nil {
+			fakeSimErr = err
+			return
+		}
+		if fakeSimDir, fakeSimErr = os.MkdirTemp("", "mcpsrv-fakesim-"); fakeSimErr != nil {
+			return
+		}
+		fakeSimExe = filepath.Join(fakeSimDir, filepath.Base(simexe.Rel(0)))
+		fakeSimErr = os.WriteFile(fakeSimExe, self, 0o755)
+	})
+	if fakeSimErr != nil {
+		t.Fatal(fakeSimErr)
+	}
+	return fakeSimExe
 }
 
 func fakeSim(args []string, stdin io.Reader, stdout, stderr io.Writer) int {

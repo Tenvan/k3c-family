@@ -59,6 +59,38 @@ func TestReviewHEAD1WieFixture(t *testing.T) {
 	}
 }
 
+// TestReviewStilwechselVorherBild (B-705/AC-02): nur die Stil-Datei geändert; das Vorher-Bild entsteht mit dem Stil
+// der Basis (--stil des Schnappschusses), daher zeigt die echte CLI einen Pixel-Unterschied.
+func TestReviewStilwechselVorherBild(t *testing.T) {
+	t.Parallel()
+	repo := testRepo(t)
+	gitIn(t, repo, "add", "-A")
+	gitIn(t, repo, "commit", "-q", "--no-gpg-sign", "-m", "Arbeitsstand")
+	pfad := filepath.Join(repo, filepath.FromSlash(stilPfad))
+	var stil map[string]any
+	if err := json.Unmarshal(lies(t, pfad), &stil); err != nil {
+		t.Fatal(err)
+	}
+	stil["materialien"].(map[string]any)["stein"].(map[string]any)["basis"] = "#2050d0"
+	raw, _ := json.MarshalIndent(stil, "", "  ")
+	if err := os.WriteFile(pfad, raw, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	got, err := Vergleich(context.Background(), repo, "HEAD", cli())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, a := range got.Assets {
+		if a.ID == "mauer" {
+			if a.Status != StatusGeaendert || !a.Stil || a.PixelAnteil <= 0 {
+				t.Errorf("mauer: %+v", a)
+			}
+			return
+		}
+	}
+	t.Fatalf("mauer fehlt: %+v", got.Assets)
+}
+
 // TestReviewHEAD: gegen HEAD nur monarch (geändert) und banner (ungültig).
 func TestReviewHEAD(t *testing.T) {
 	t.Parallel()

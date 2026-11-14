@@ -59,14 +59,23 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ37 | Welt-Overrides im Welten-Editor und im Studio-Chat | erledigt |
 | WZ38 | Umgesetzte Werkzeug-Tickets abnehmen: Welten-Editor, Studio-Seiten, Git-Seite, check:diff | erledigt |
 | WZ39 | Studio-Nachträge: Downloads, Overrides-Editor, Inspektor, Testlücken, Quellen | erledigt |
-| WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | aktiv |
-| WZ41 | CI und Release grün, check:diff-Protokoll belegt | aktiv |
-| WZ42 | Workbench-Tests schnell und stabil | aktiv |
-| WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | geplant |
-| WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | aktiv |
-| WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | geplant |
+| WZ40 | check:diff prüft nur den eigenen Diff, betroffene Pakete und parallel | erledigt |
+| WZ41 | CI und Release grün, check:diff-Protokoll belegt | erledigt |
+| WZ42 | Workbench-Tests schnell und stabil | erledigt |
+| WZ43 | Asset-MCP-Tools und Review: Restbefunde, Teil-Patch, Basis-Stil, Katalog belegt | aktiv |
+| WZ44 | Planungs-Werkzeuge für Wellen: plan_waves, plan_queue, plan_check, Sim-Sperre im Werkzeug | erledigt |
+| WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | erledigt |
 | WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | geplant |
 | WZ46 | Workbench-Tests ohne Engine-Spielserver | geplant |
+| WZ48 | Tests und CI: check:go ohne Sim, Workbench-Go-Tests in der CI, stabile und schnelle Tests | erledigt |
+| WZ49 | Planungs-Werkzeuge und check_run: Restbefunde, Fahrplan aus Dateien, Im Spiel ansehen nativ | erledigt |
+| WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | erledigt |
+| WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt | erledigt |
+| WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | erledigt |
+| WZ53 | Vitests unter src/assets bleiben unter Last grün | erledigt |
+| WZ54 | Planungs-Index: Statuswechsel ohne Zeilenverlust, Ticket-Nummern ab B-1000 | erledigt |
+| WZ55 | assets_set ruft die Paper-CLI gesammelt auf | erledigt |
+| WZ56 | Sammelaufruf: Fehlerantwort mit Teilergebnis, Task-Version gemerkt | erledigt |
 
 ## Nicht-Ziele
 

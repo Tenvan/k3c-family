@@ -15,10 +15,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | PV1 | Papierschnitt-Verträge: Domäne, Spec-Schema, Styleguide, Render-, MCP- und Review-Vertrag | erledigt |
-| RD1 | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | aktiv |
-| MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | aktiv |
+| RD1 | Papierschnitt-Renderer: Rig-Typen, IK, Physik, resvg-Export, Golden-Tests | erledigt |
+| MC1 | Asset-MCP-Tools auf Spec-Basis, MCP-Prompts, Chat entfernt | erledigt |
 | WB1 | Workbench mit Bereichen Development und Assets, Studio-Programm abgebaut | erledigt |
-| RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | aktiv |
+| RV1 | Asset-Review mit Git-Diff, Pixel-Overlay und Teil-Markierung | erledigt |
 | MG1 | Papierschnitt-Migration: Monarch und Spielerfarben | erledigt |
 | MG2 | Papierschnitt-Migration: Reittiere | erledigt |
 | MG3 | Papierschnitt-Migration: Truppen | erledigt |
@@ -29,7 +29,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MG8 | Papierschnitt-Migration: Natur, Objekte, Münzen, Icons | erledigt |
 | US1 | Spiel lädt Papierschnitt-Grafik, alte Pixel-Assets und Gebäude-Renderer entfernt | erledigt |
 | PS1 | Papierschnitt-Sichtprüfungen und Abnahmen gebündelt | erledigt |
-| CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | aktiv |
+| CU1 | Cleanup zum Schluss: alte Pixel-Grafik, Register und Gebäude-Renderer entfernen | erledigt |
 | US2 | Spiel lädt Natur, Objekte, Münzen, Icons und Reittiere als Papierschnitt | erledigt |
 | WB2 | Review und Katalog: feste Schieber, getrennte Scrollbereiche, Lade-Anzeige | erledigt |
 | RD2 | Renderer und Stil nach der Sichtprüfung: Schatten, Materialien, Sichtbarkeit, Rig-Proportionen | erledigt |
@@ -37,8 +37,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | MG10 | Papierschnitt: Bosse neu mit eigener Silhouette | geplant |
 | MG11 | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | geplant |
 | US3 | Spiel: Bogenschützen auf der Plattform, Reit-Tempo und -Idle, Größen von Bäumen und Tor | erledigt |
-| PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | aktiv |
-| PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | geplant |
+| PT1 | gen:paper schneller: Cache je Asset, paralleles Rastern, Fortschritt belegt | erledigt |
+| PT2 | Paper-CLI: Fehlerpfade, Reittier-Boxen, Stil-Option und Ersatz-Materialien | erledigt |
+| PT3 | Paper-CLI: --ohne mit Reittier-Teilen, Bein-Box mit Wulst | erledigt |
+| PT4 | Paper-CLI: --ohne blendet Beinpfade von Vierbeinern aus | erledigt |
 
 ## Nicht-Ziele
 

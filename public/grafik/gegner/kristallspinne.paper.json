@@ -33,7 +33,7 @@
         {
           "art": "flaeche",
           "form": "M-72 -7.2L-69.6 0L-67.2 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
       "pivot": [-7.2, -52.8]
@@ -66,10 +66,10 @@
         {
           "art": "flaeche",
           "form": "M-33.6 -7.2L-31.2 0L-28.8 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
-      "pivot": [2.4, -48.0]
+      "pivot": [2.4, -48]
     },
     {
       "eltern": "korpus",
@@ -99,10 +99,10 @@
         {
           "art": "flaeche",
           "form": "M28.8 -7.2L31.2 0L33.6 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
-      "pivot": [12.0, -48.0]
+      "pivot": [12, -48]
     },
     {
       "eltern": "korpus",
@@ -125,14 +125,14 @@
         {
           "art": "punkt",
           "material": "stein",
-          "mitte": [60.0, -43.2],
+          "mitte": [60, -43.2],
           "radius": 3.36,
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "form": "M72 -7.2L74.4 0L76.8 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
       "pivot": [21.6, -52.8]
@@ -156,34 +156,34 @@
         {
           "art": "flaeche",
           "form": "M-67.2 -81.6L-62.4 -110.4L-48 -84Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-67.2 -81.6L-62.4 -110.4L-57.6 -84Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M-48 -86.4L-36 -105.6L-31.2 -79.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M-48 -86.4L-36 -105.6L-38.4 -84Z",
-          "material": "koenigsblau",
+          "material": "kristall",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "form": "M-79.2 -62.4L-96 -76.8L-76.8 -50.4Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
-      "pivot": [-19.2, -48.0]
+      "pivot": [-19.2, -48]
     },
     {
       "id": "korpus",
@@ -209,21 +209,21 @@
         },
         {
           "art": "punkt",
-          "material": "koenigsblau",
-          "mitte": [24.0, -55.2],
+          "material": "kristall",
+          "mitte": [24, -55.2],
           "radius": 2.88,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "koenigsblau",
+          "material": "kristall",
           "mitte": [30.24, -51.84],
           "radius": 2.16,
           "ton": "licht"
         },
         {
           "art": "punkt",
-          "material": "koenigsblau",
+          "material": "kristall",
           "mitte": [19.2, -59.52],
           "radius": 1.92,
           "ton": "licht"
@@ -231,10 +231,10 @@
         {
           "art": "flaeche",
           "form": "M-4.8 -67.2L0 -81.6L7.2 -67.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
-      "pivot": [0.0, -48.0]
+      "pivot": [0, -48]
     },
     {
       "eltern": "korpus",
@@ -278,7 +278,7 @@
         {
           "art": "flaeche",
           "form": "M-79.2 -7.2L-76.8 0L-74.4 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
       "pivot": [-14.4, -52.8]
@@ -308,10 +308,10 @@
         {
           "art": "flaeche",
           "form": "M-40.8 -7.2L-38.4 0L-36 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
-      "pivot": [-4.8, -48.0]
+      "pivot": [-4.8, -48]
     },
     {
       "eltern": "korpus",
@@ -338,10 +338,10 @@
         {
           "art": "flaeche",
           "form": "M21.6 -7.2L24 0L26.4 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
-      "pivot": [4.8, -48.0]
+      "pivot": [4.8, -48]
     },
     {
       "eltern": "korpus",
@@ -368,7 +368,7 @@
         {
           "art": "flaeche",
           "form": "M64.8 -7.2L67.2 0L69.6 -7.2Z",
-          "material": "edelstein"
+          "material": "kristall"
         }
       ],
       "pivot": [14.4, -52.8]

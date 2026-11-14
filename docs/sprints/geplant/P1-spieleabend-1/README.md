@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Projekt:** BAL
 - **Domäne:** REG
-- **Reife:** bereit
+- **Reife:** Entwurf
 - **Tickets:** B-008, B-151
 - **Start-Commit:** –
 - **Spec:** freigegeben

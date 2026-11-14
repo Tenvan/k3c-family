@@ -11,6 +11,7 @@ import (
 
 // Workbench-Spec › MCP-Tools: Name <bereich>_<verb>, Beschreibung endet mit „Nutze es bei: … Statt: …“.
 func TestToolRegelnDerSpec(t *testing.T) {
+	t.Parallel()
 	cs := connect(t, New(Config{Version: "test"}))
 	res, err := cs.ListTools(context.Background(), &mcp.ListToolsParams{})
 	if err != nil {
@@ -29,6 +30,7 @@ func TestToolRegelnDerSpec(t *testing.T) {
 }
 
 func TestNotifyUI(t *testing.T) {
+	t.Parallel()
 	var got []Notice
 	s := New(Config{Version: "test", OnNotify: func(n Notice) { got = append(got, n) }})
 	cs := connect(t, s)

@@ -137,27 +137,51 @@ func TestPlayRebindsLostPad(t *testing.T) {
 	}
 }
 
-// ActionFullscreen kehrt das Vollbild der Einstellungen um und lässt den Rest stehen; nicht im Aufnahme-Modus und nicht
-// ohne Frame (leere Einstellungen).
+// ActionFullscreen schaltet zwischen Vollbild und Fenster (aus rahmenlos: Vollbild) und lässt den Rest stehen; nicht
+// im Aufnahme-Modus und nicht ohne Frame (leere Einstellungen). B-826 AC-03.
 func TestFullscreenToggles(t *testing.T) {
 	s := newFakeSim()
 	g := playGame(s)
 	in := view.Input{Devices: []view.DeviceInput{press(pad3, view.Command{}, view.ActionFullscreen)}}
-	g.toggleFullscreen(in)
+	g.toggleWindow(in)
 	if len(s.set) != 0 {
 		t.Fatalf("ohne Frame umgeschaltet: %+v", s.set)
 	}
 	g.frame.Settings = view.Settings{Music: 0.5, Effects: 1, Language: view.LanguageEnglish}
-	g.toggleFullscreen(view.Input{Devices: []view.DeviceInput{press(pad3, view.Command{}, view.ActionDown)}})
-	g.toggleFullscreen(in)
+	g.toggleWindow(view.Input{Devices: []view.DeviceInput{press(pad3, view.Command{}, view.ActionDown)}})
+	g.toggleWindow(in)
 	want := g.frame.Settings
-	want.Fullscreen = true
+	want.Window = view.WindowFullscreen
 	if len(s.set) != 1 || s.set[0] != want {
 		t.Errorf("Vollbild an: %+v, erwartet %+v", s.set, want)
 	}
+	for from, to := range map[string]string{view.WindowFullscreen: view.WindowFramed, view.WindowBorderless: view.WindowFullscreen} {
+		if got := toggledWindow(from); got != to {
+			t.Errorf("F aus %q: %q, erwartet %q", from, got, to)
+		}
+	}
 	g.args.Shots = "reports/x"
-	g.toggleFullscreen(in)
+	g.toggleWindow(in)
 	if len(s.set) != 1 {
 		t.Errorf("im Aufnahme-Modus umgeschaltet: %+v", s.set)
+	}
+}
+
+// Rahmenlos füllt den Monitor; das Fenster behält die Startgröße (höchstens Monitorgröße) und steht mittig.
+func TestWindowRect(t *testing.T) {
+	cases := []struct {
+		mode         string
+		w, h         int
+		x, y, ww, wh int
+	}{
+		{view.WindowBorderless, 1280, 720, 0, 0, 1920, 1080},
+		{view.WindowFramed, 1280, 720, 320, 180, 1280, 720},
+		{view.WindowFramed, 2560, 1440, 96, 54, 1728, 972},
+	}
+	for _, c := range cases {
+		x, y, ww, wh := windowRect(c.mode, 1920, 1080, c.w, c.h)
+		if x != c.x || y != c.y || ww != c.ww || wh != c.wh {
+			t.Errorf("%q %dx%d: %d/%d %dx%d", c.mode, c.w, c.h, x, y, ww, wh)
+		}
 	}
 }

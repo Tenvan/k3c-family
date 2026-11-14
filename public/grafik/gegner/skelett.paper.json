@@ -111,13 +111,13 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [0, -52],
           "radius": 3.2
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [0.7, -52.7],
           "radius": 1.3,
           "ton": "licht"
@@ -510,33 +510,33 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [-7.07, -41.93],
           "radius": 2.2
         },
         {
           "art": "flaeche",
           "form": "M0.35 -58.55L9.55 -49.35L7.42 -47.23L-1.77 -56.42Z",
-          "material": "stein"
+          "material": "eisen"
         },
         {
           "art": "flaeche",
           "form": "M3.25 -55.65L6.65 -52.25L33.09 -79.55L35.36 -84.36L30.55 -82.09Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "licht"
         },
         {
           "art": "flaeche",
           "auflage": true,
           "form": "M3.25 -55.65L4.95 -53.95L35.36 -84.36L30.55 -82.09Z",
-          "material": "stein",
+          "material": "eisen",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 0.8,
           "form": "M8.13 -56.42L30.76 -79.05",
-          "material": "stein"
+          "material": "eisen"
         }
       ],
       "pivot": [0, -49]

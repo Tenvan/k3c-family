@@ -14,14 +14,24 @@ const (
 	RiverTiles  = "tiles"  // Fluss aus Wellen-Kacheln
 )
 
+// Anzeige-Modi (Settings.Window, B-826): "" ist das Fenster mit Rahmen, der Null-Wert und Standard.
+const (
+	WindowFramed     = ""          // Fenster mit Rahmen
+	WindowBorderless = "rahmenlos" // Fenster ohne Rahmen in Größe des Monitors
+	WindowFullscreen = "vollbild"  // Vollbild
+)
+
+// WindowModes sind die Anzeige-Modi in der Reihenfolge der Optionen.
+var WindowModes = [...]string{WindowFramed, WindowBorderless, WindowFullscreen}
+
 // Settings sind die Einstellungen am Gerät (Optionen-Menü, B-800): Session.SetSettings ändert sie, local speichert
-// sie dauerhaft neben den Spielständen, Frame.Settings zeigt den aktuellen Stand. game wendet Vollbild an (nicht im
-// Aufnahme-Modus), audio die Lautstärken, hud und menu die Sprache.
+// sie dauerhaft neben den Spielständen, Frame.Settings zeigt den aktuellen Stand. game wendet den Anzeige-Modus an
+// (nicht im Aufnahme-Modus), audio die Lautstärken, hud und menu die Sprache.
 type Settings struct {
-	Music      float64 // Lautstärke der Musik 0 … 1
-	Effects    float64 // Lautstärke der Klang-Effekte 0 … 1
-	Fullscreen bool    // Vollbild statt Fenster
-	Language   string  // DefaultLanguage oder LanguageEnglish
+	Music    float64 // Lautstärke der Musik 0 … 1
+	Effects  float64 // Lautstärke der Klang-Effekte 0 … 1
+	Window   string  // Anzeige-Modus: WindowFramed, WindowBorderless oder WindowFullscreen
+	Language string  // DefaultLanguage oder LanguageEnglish
 	// River ist die Fassung des Flusses (F3, B-816): "" = Startwert (K3C_RIVER, sonst Shader), sonst RiverShader oder
 	// RiverTiles. Kein Eintrag im Optionen-Menü; local speichert nur einen gewählten Wert.
 	River string
@@ -52,6 +62,9 @@ func (s Settings) Normalized() Settings {
 	}
 	if s.River != RiverShader && s.River != RiverTiles {
 		s.River = ""
+	}
+	if s.Window != WindowBorderless && s.Window != WindowFullscreen {
+		s.Window = WindowFramed
 	}
 	s.GuideSeen = max(0, s.GuideSeen)
 	return s

@@ -1,8 +1,10 @@
 package game
 
 import (
+	"log/slog"
 	"slices"
 
+	"k3c/native/k3c-game/menu"
 	"k3c/native/k3c-game/view"
 )
 
@@ -43,10 +45,21 @@ func WantedAssets(stages []view.Stage, sources []view.AssetSource) map[string][]
 	return want
 }
 
+// menuLevel ist der Schlüssel der Menü-Illustrationen ohne Level (Hauptmenü, B-818); kein Biom heißt so.
+const menuLevel = "_menu"
+
 // loadLevels lädt die Grafik, sobald sich die Level in Frame.Stages ändern; ein Fehler (fehlende Grafik) zeigt die
-// Schleife im Fenster (fail, B-810) statt still zu beenden.
+// Schleife im Fenster (fail, B-810) statt still zu beenden. Ohne Stufen (Hauptmenü) lädt es nur die Illustrationen
+// des Menüs; fehlen sie, bleibt das Menü bei Text-Karten (Log-Zeile, kein Abbruch).
 func (g *Game) loadLevels() {
-	if g.parts.Art == nil || SameLevels(g.levels, g.frame.Stages) {
+	if g.parts.Art == nil {
+		return
+	}
+	if len(g.frame.Stages) == 0 {
+		g.loadMenuArt()
+		return
+	}
+	if SameLevels(g.levels, g.frame.Stages) {
 		return
 	}
 	want := WantedAssets(g.frame.Stages, g.parts.Assets)
@@ -54,9 +67,22 @@ func (g *Game) loadLevels() {
 		g.fail(err)
 		return
 	}
+	g.menuArt = false
 	g.levels = g.levels[:0]
 	for lv := range want {
 		g.levels = append(g.levels, lv)
 	}
 	slices.Sort(g.levels)
+}
+
+// loadMenuArt stellt die Grafik einmal auf die Menü-Illustrationen (gibt Level-Sheets frei); ein Fehler bleibt beim
+// Log und wird nicht wiederholt.
+func (g *Game) loadMenuArt() {
+	if g.menuArt {
+		return
+	}
+	g.menuArt, g.levels = true, g.levels[:0]
+	if err := g.parts.Art.SetLevels(map[string][]string{menuLevel: menu.Art()}); err != nil {
+		slog.Warn("🚫 Menü-Illustrationen fehlen, Karten nur mit Text", "err", err)
+	}
 }

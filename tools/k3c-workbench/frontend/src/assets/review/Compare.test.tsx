@@ -1,13 +1,16 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Compare } from './Compare';
-import { button, click, fakeApi, fixture, key, mount, unmount } from './testing';
-import type { Frame, PixelDiff, Review, ReviewAsset } from './types';
+import { button, click, fakeApi, fixture, key, mount, unmount, until } from './testing';
+import type { Frame, PixelDiff, Review, ReviewAsset } from '../api';
 
 // RV1.3 / AC-03: Vorher/Nachher, Überblendregler, Pixel-Diff-Overlay mit Boxen und Teil-Markierung.
 
 const fake = vi.hoisted(() => ({ api: {} as ReturnType<typeof import('./testing').fakeApi> }));
-vi.mock('./api', () => ({ reviewApi: new Proxy({}, { get: (_t, k: string) => (fake.api as Record<string, unknown>)[k] }) }));
+vi.mock('../../api', async (echt) => {
+  const m = await echt<typeof import('../../api')>();
+  return { ...m, backend: new Proxy(m.backend, { get: (t, k: string) => (fake.api as Record<string, unknown>)[k] ?? Reflect.get(t, k) }) };
+});
 
 beforeEach(() => {
   fake.api = fakeApi();
@@ -20,42 +23,45 @@ const bild = fixture<Frame>('AssetsFrame').bild;
 describe('Compare', () => {
   it('zeigt Vorher (Basis) und Nachher (Arbeitsstand)', async () => {
     const host = await mount(<Compare asset={asset('monarch')} basis="HEAD~1" />);
-    expect(fake.api.frame).toHaveBeenCalledWith('monarch', 'idle', 0, '', 'HEAD~1');
-    expect(fake.api.frame).toHaveBeenCalledWith('monarch', 'idle', 0, '', '');
+    await until('Vorher und Nachher', () => host.querySelector('img[alt="Vorher"]') && host.querySelector('img[alt="Nachher"]'));
+    expect(fake.api.assetsFrame).toHaveBeenCalledWith('monarch', 'idle', 0, '', 'HEAD~1');
+    expect(fake.api.assetsFrame).toHaveBeenCalledWith('monarch', 'idle', 0, '', '');
     expect(host.querySelector('img[alt="Vorher"]')?.getAttribute('src')).toBe(bild);
     expect(host.querySelector('img[alt="Nachher"]')?.getAttribute('src')).toBe(bild);
   });
 
   it('neu nur Nachher, gelöscht nur Vorher', async () => {
     let host = await mount(<Compare asset={asset('pferd')} basis="HEAD~1" />);
+    await until('Nachher', () => host.querySelector('img[alt="Nachher"]'));
     expect(host.querySelector('img[alt="Vorher"]')).toBeNull();
-    expect(host.querySelector('img[alt="Nachher"]')).not.toBeNull();
-    expect(fake.api.frame.mock.calls.every((c) => c[4] === '')).toBe(true);
+    expect(fake.api.assetsFrame.mock.calls.every((c) => c[4] === '')).toBe(true);
     unmount();
     fake.api = fakeApi();
     host = await mount(<Compare asset={asset('fass')} basis="HEAD~1" />);
+    await until('Vorher', () => host.querySelector('img[alt="Vorher"]'));
     expect(host.querySelector('img[alt="Nachher"]')).toBeNull();
-    expect(host.querySelector('img[alt="Vorher"]')).not.toBeNull();
-    expect(fake.api.get).not.toHaveBeenCalled();
-    expect(fake.api.frame).toHaveBeenCalledWith('fass', '', 0, '', 'HEAD~1');
+    expect(fake.api.assetsGet).not.toHaveBeenCalled();
+    expect(fake.api.assetsFrame).toHaveBeenCalledWith('fass', '', 0, '', 'HEAD~1');
   });
 
   it('Überblendregler setzt die Deckkraft des Nachher-Bilds', async () => {
     const host = await mount(<Compare asset={asset('monarch')} basis="HEAD~1" />);
     const nachher = () => host.querySelector<HTMLImageElement>('img[data-ebene="nachher"]')!;
-    expect(nachher().style.opacity).toBe('0.5');
+    await until('Überblendung 0,5', () => nachher()?.style.opacity === '0.5');
     const regler = host.querySelector('[aria-label="Überblendung"] [role="slider"]')!;
     await key(regler, 'Home');
-    expect(nachher().style.opacity).toBe('0');
+    await until('Deckkraft 0', () => nachher().style.opacity === '0');
     await key(regler, 'End');
-    expect(nachher().style.opacity).toBe('1');
+    await until('Deckkraft 1', () => nachher().style.opacity === '1');
   });
 
   it('Pixel-Diff-Overlay mit Boxen in Prozent des Frames', async () => {
     const host = await mount(<Compare asset={asset('monarch')} basis="HEAD~1" />);
+    await until('Unterschiede-Knopf', () => button(host, 'Unterschiede'));
     await click(button(host, 'Unterschiede'));
     const diff = fixture<PixelDiff>('AssetsPixelDiff');
-    expect(fake.api.pixelDiff).toHaveBeenCalledWith('monarch', 'idle', 0, 'HEAD~1');
+    await until('Overlay und Boxen', () => host.querySelector('img[data-ebene="overlay"]') && host.querySelectorAll('[data-box]').length === diff.boxen.length);
+    expect(fake.api.assetsPixelDiff).toHaveBeenCalledWith('monarch', 'idle', 0, 'HEAD~1');
     expect(host.querySelector('img[data-ebene="overlay"]')?.getAttribute('src')).toBe(diff.overlay);
     const boxen = host.querySelectorAll<HTMLElement>('[data-box]');
     expect(boxen.length).toBe(diff.boxen.length);
@@ -67,12 +73,13 @@ describe('Compare', () => {
   });
 
   it('markiert geänderte Teile, die im Frame eine Box haben', async () => {
-    fake.api.frame.mockImplementation(() => Promise.resolve({ ...fixture<Frame>('AssetsFrame'), teile: { tuch: [10, 20, 30, 40] } }));
+    fake.api.assetsFrame.mockImplementation(() => Promise.resolve({ ...fixture<Frame>('AssetsFrame'), teile: { tuch: [10, 20, 30, 40] } }));
     let host = await mount(<Compare asset={asset('banner')} basis="HEAD~1" />);
-    expect(host.querySelector('[data-teil="tuch"]')).not.toBeNull();
+    await until('Teil tuch markiert', () => host.querySelector('[data-teil="tuch"]'));
     unmount();
     fake.api = fakeApi();
     host = await mount(<Compare asset={asset('monarch')} basis="HEAD~1" />);
+    await until('Nachher geladen', () => host.querySelector('img[alt="Nachher"]'));
     expect(host.querySelector('[data-teil]')).toBeNull();
   });
 });

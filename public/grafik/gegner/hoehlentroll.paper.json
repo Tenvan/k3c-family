@@ -533,19 +533,19 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [23.04, -85.8],
           "radius": 1.6
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [38.14, -83.57],
           "radius": 1.6
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [25.04, -71.07],
           "radius": 1.4
         },

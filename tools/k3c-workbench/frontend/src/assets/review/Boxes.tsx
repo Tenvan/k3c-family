@@ -1,4 +1,4 @@
-import type { Box } from './types';
+import type { Box } from '../api';
 
 /** Breite und Höhe aus dem IHDR-Block einer PNG-Data-URL (Bytes 16–23). */
 export function pngGroesse(dataUrl: string): { b: number; h: number } {

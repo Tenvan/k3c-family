@@ -42,6 +42,7 @@ func TestReplayRunGleicherHashUndBurgfall(t *testing.T) {
 }
 
 func TestReplayRunNurImRepo(t *testing.T) {
+	t.Parallel()
 	base := t.TempDir()
 	root := filepath.Join(base, "repo")
 	if err := os.Mkdir(root, 0o755); err != nil {

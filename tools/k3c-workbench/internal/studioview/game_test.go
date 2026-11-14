@@ -2,18 +2,18 @@ package studioview
 
 import (
 	"context"
-	"io"
-	"net/http"
-	"net/url"
+	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
 )
 
-// WB1.4 (005 › 5, Sprint-README WB1 › D-04): „Im Spiel ansehen“ legt den Testspielstand voll-<seed> in der eingebundenen
-// Engine an und liefert die Adresse des eigenen Loopback-Listeners; Spielstände liegen außerhalb des Repos.
+// B-847: „Im Spiel ansehen“ legt den Testspielstand voll-<seed> außerhalb des Repos an und startet das native Spiel mit
+// festem Pfad, das ihn lädt; ohne EXE nennt die Meldung den Build-Task. Kein Bezug mehr auf dist/index.html oder game.html.
 
 // repoRoot ist die Wurzel des Checkouts (tools/k3c-workbench/internal/studioview → ../../../..).
 func repoRoot(t *testing.T) string {
@@ -25,8 +25,8 @@ func repoRoot(t *testing.T) string {
 	return root
 }
 
-// gameRoot ist ein Checkout mit der Standard-Welt und einem gebauten Client (dist/index.html).
-func gameRoot(t *testing.T, client bool) string {
+// gameRoot ist ein Checkout mit der Standard-Welt; exe legt eine native EXE (relativ zur Wurzel) an.
+func gameRoot(t *testing.T, exe string) string {
 	t.Helper()
 	root := t.TempDir()
 	raw, err := os.ReadFile(filepath.Join(repoRoot(t), "data", "worlds", "standard.json"))
@@ -34,38 +34,47 @@ func gameRoot(t *testing.T, client bool) string {
 		t.Fatal(err)
 	}
 	write(t, root, "data/worlds/standard.json", string(raw))
-	write(t, root, "public/audio/tag.ogg", "OggS")
-	if client {
-		write(t, root, "dist/index.html", "<!doctype html><title>K3C</title>")
+	if exe != "" {
+		write(t, root, exe, "MZ")
 	}
 	return root
 }
 
-func newGame(t *testing.T, root string) (*Game, string) {
+// newGame: Game mit Testspielständen in einem Temp-Ordner; gestartete Befehle landen in started statt im System.
+func newGame(t *testing.T, root string) (g *Game, saves string, started *[]*exec.Cmd) {
 	t.Helper()
-	saves := t.TempDir()
+	saves = t.TempDir()
 	ctx, cancel := context.WithCancel(context.Background())
-	g := NewGame(ctx, root, saves, nil)
-	t.Cleanup(func() {
-		cancel()
-		g.Close(time.Second)
-	})
-	return g, saves
+	t.Cleanup(cancel)
+	g = NewGame(ctx, root, saves, nil)
+	var cmds []*exec.Cmd
+	g.launch = func(cmd *exec.Cmd) error { cmds = append(cmds, cmd); return nil }
+	return g, saves, &cmds
 }
 
-func TestImSpielAnsehenLegtVollausbauAnUndLiefertLoopbackAdresse(t *testing.T) {
-	root := gameRoot(t, true)
-	g, saves := newGame(t, root)
-	link, err := g.Open("abc")
+// AC-01: Die Befehlszeile zeigt auf die native EXE mit festem Pfad und lädt voll-<seed>; kein game.html.
+func TestImSpielAnsehenStartetNativesSpiel(t *testing.T) {
+	root := gameRoot(t, "native/k3c-game/bin/k3c-game.exe")
+	g, saves, started := newGame(t, root)
+	msg, err := g.Open("abc")
 	if err != nil {
 		t.Fatal(err)
 	}
-	u, err := url.Parse(link)
-	if err != nil || u.Hostname() != "127.0.0.1" || u.Path != "/index.html" || u.Port() == "" {
-		t.Fatalf("Adresse %q: %v", link, err)
+	if !strings.Contains(msg, "voll-abc") {
+		t.Errorf("Antwort %q", msg)
 	}
-	if want := "game.html?autostart=1&save=voll-abc"; u.Fragment != want {
-		t.Errorf("Fragment %q, erwartet %q", u.Fragment, want)
+	if len(*started) != 1 {
+		t.Fatalf("%d Starts", len(*started))
+	}
+	cmd := (*started)[0]
+	if want := filepath.Join(root, "native", "k3c-game", "bin", "k3c-game.exe"); cmd.Path != want || cmd.Dir != filepath.Clean(root) {
+		t.Errorf("EXE %q in %q, erwartet %q in %q", cmd.Path, cmd.Dir, want, root)
+	}
+	if want := []string{"--saves", saves, "--load", "voll-abc", "--players", "1"}; !slices.Equal(cmd.Args[1:], want) {
+		t.Errorf("Schalter %v, erwartet %v", cmd.Args[1:], want)
+	}
+	if line := strings.Join(cmd.Args, " "); strings.Contains(line, "game.html") || strings.Contains(line, "index.html") {
+		t.Errorf("Befehlszeile mit Browser-Client: %s", line)
 	}
 	if _, err := os.Stat(filepath.Join(saves, "voll-abc.json")); err != nil {
 		t.Errorf("Testspielstand fehlt: %v", err)
@@ -73,117 +82,57 @@ func TestImSpielAnsehenLegtVollausbauAnUndLiefertLoopbackAdresse(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(root, "saves")); !os.IsNotExist(err) {
 		t.Errorf("saves/ im Checkout angelegt: %v", err)
 	}
-	// Derselbe Listener liefert Seite, Spiel-API und public/.
-	for path, want := range map[string]string{"/index.html": "K3C", "/audio/tag.ogg": "OggS", "/api/health": ""} {
-		body := get(t, "http://"+u.Host+path, "")
-		if !strings.Contains(body, want) {
-			t.Errorf("%s: %q ohne %q", path, body, want)
-		}
-	}
-	again, err := g.Open("abc")
-	if err != nil || !strings.HasPrefix(again, "http://"+u.Host+"/") {
-		t.Errorf("zweiter Aufruf %q, %v: neuer Listener statt desselben", again, err)
+	// EXE läuft schon: ein zweiter Start ist erlaubt.
+	if _, err := g.Open("abc"); err != nil || len(*started) != 2 {
+		t.Errorf("zweiter Start: %v (%d Starts)", err, len(*started))
 	}
 }
 
-func TestImSpielAnsehenAblehnungen(t *testing.T) {
-	g, _ := newGame(t, gameRoot(t, true))
-	for _, seed := range []string{"", "Abc", "a b", "../x", strings.Repeat("a", 28)} {
-		if _, err := g.Open(seed); err == nil {
-			t.Errorf("Seed %q angenommen", seed)
-		}
-	}
-	g2, _ := newGame(t, gameRoot(t, false))
-	if _, err := g2.Open("abc"); err == nil || !strings.Contains(err.Error(), "task build") {
-		t.Errorf("ohne Client: %v", err)
-	}
-}
-
-func TestListenerNurLoopbackUndEigenerHost(t *testing.T) {
-	g, _ := newGame(t, gameRoot(t, true))
-	link, err := g.Open("abc")
-	if err != nil {
-		t.Fatal(err)
-	}
-	u, _ := url.Parse(link)
-	if !strings.HasPrefix(u.Host, "127.0.0.1:") {
-		t.Fatalf("Host %q", u.Host)
-	}
-	if code := status(t, "http://"+u.Host+"/index.html", "boese.example"); code != http.StatusForbidden {
-		t.Errorf("fremder Host-Kopf: %d", code)
-	}
-	if code := status(t, "http://"+u.Host+"/", ""); code != http.StatusNotFound {
-		t.Errorf("Verzeichnisliste der Wurzel: %d", code)
-	}
-}
-
-func get(t *testing.T, link, host string) string {
-	t.Helper()
-	res := do(t, link, host)
-	defer func() { _ = res.Body.Close() }()
-	b, _ := io.ReadAll(res.Body)
-	return string(b)
-}
-
-func status(t *testing.T, link, host string) int {
-	t.Helper()
-	res := do(t, link, host)
-	_ = res.Body.Close()
-	return res.StatusCode
-}
-
-func do(t *testing.T, link, host string) *http.Response {
-	t.Helper()
-	req, err := http.NewRequest(http.MethodGet, link, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if host != "" {
-		req.Host = host
-	}
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return res
-}
-
-// Review WB1.4: Nach Close startet Open nichts mehr (kein geschlossener Server, kein beendeter Raum-Takt); doppeltes Close
-// ist harmlos, und Close beendet die Räume selbst, ohne auf das Ende des äußeren ctx zu warten.
-func TestOpenNachCloseAbgelehnt(t *testing.T) {
-	g, _ := newGame(t, gameRoot(t, true))
+// Ohne Build im Checkout gilt das Spiel-Paket dist/k3c-game mit seinem Ordner als Arbeitsordner.
+func TestImSpielAnsehenSpielPaket(t *testing.T) {
+	root := gameRoot(t, "dist/k3c-game/k3c-game.exe")
+	g, _, started := newGame(t, root)
 	if _, err := g.Open("abc"); err != nil {
 		t.Fatal(err)
 	}
-	start := time.Now()
-	g.Close(3 * time.Second)
-	if d := time.Since(start); d > 2*time.Second {
-		t.Errorf("Close wartete %v: Räume nicht selbst beendet", d)
-	}
-	g.Close(time.Second)
-	if _, err := g.Open("abc"); err == nil || !strings.Contains(err.Error(), "beendet") {
-		t.Errorf("Open nach Close: %v", err)
+	if cmd := (*started)[0]; cmd.Dir != filepath.Join(root, "dist", "k3c-game") || filepath.Base(cmd.Path) != "k3c-game.exe" {
+		t.Errorf("EXE %q in %q", cmd.Path, cmd.Dir)
 	}
 }
 
-// Review WB1.4: Schreibende Anfragen an die Spiel-API nur von derselben Seite (Origin, Sec-Fetch-Site).
-func TestSpielAPISchreibendNurGleicheHerkunft(t *testing.T) {
-	g, _ := newGame(t, gameRoot(t, true))
-	link, err := g.Open("abc")
-	if err != nil {
+// AC-02: Fehlt die EXE, nennt die Meldung task native:game:build und startet nichts; ungültige Seeds lehnt Open ab.
+func TestImSpielAnsehenAblehnungen(t *testing.T) {
+	g, saves, started := newGame(t, gameRoot(t, ""))
+	if _, err := g.Open("abc"); err == nil || !strings.Contains(err.Error(), "task native:game:build") {
+		t.Errorf("ohne EXE: %v", err)
+	}
+	if _, err := os.Stat(filepath.Join(saves, "voll-abc.json")); !os.IsNotExist(err) {
+		t.Errorf("Spielstand trotz fehlender EXE angelegt: %v", err)
+	}
+	g2, _, _ := newGame(t, gameRoot(t, "native/k3c-game/bin/k3c-game.exe"))
+	for _, seed := range []string{"", "Abc", "a b", "../x", strings.Repeat("a", 28)} {
+		if _, err := g2.Open(seed); err == nil {
+			t.Errorf("Seed %q angenommen", seed)
+		}
+	}
+	g2.launch = func(*exec.Cmd) error { return errors.New("kaputt") }
+	if _, err := g2.Open("abc"); err == nil || !strings.Contains(err.Error(), "kaputt") {
+		t.Errorf("Startfehler: %v", err)
+	}
+	if len(*started) != 0 {
+		t.Errorf("ohne EXE gestartet: %d", len(*started))
+	}
+}
+
+// Nach Close startet Open nichts mehr; doppeltes Close ist harmlos.
+func TestOpenNachCloseAbgelehnt(t *testing.T) {
+	g, _, _ := newGame(t, gameRoot(t, "native/k3c-game/bin/k3c-game.exe"))
+	if _, err := g.Open("abc"); err != nil {
 		t.Fatal(err)
 	}
-	u, _ := url.Parse(link)
-	for name, hdr := range map[string][2]string{"fremder Origin": {"Origin", "http://boese.example"}, "cross-site": {"Sec-Fetch-Site", "cross-site"}} {
-		req, _ := http.NewRequest(http.MethodPost, "http://"+u.Host+"/api/rooms", strings.NewReader("{}"))
-		req.Header.Set(hdr[0], hdr[1])
-		res, err := http.DefaultClient.Do(req)
-		if err != nil {
-			t.Fatal(err)
-		}
-		_ = res.Body.Close()
-		if res.StatusCode != http.StatusForbidden {
-			t.Errorf("%s: %d", name, res.StatusCode)
-		}
+	g.Close(time.Second)
+	g.Close(time.Second)
+	if _, err := g.Open("abc"); err == nil || !strings.Contains(err.Error(), "beendet") {
+		t.Errorf("Open nach Close: %v", err)
 	}
 }

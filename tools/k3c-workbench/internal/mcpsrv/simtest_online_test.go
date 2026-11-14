@@ -29,6 +29,9 @@ func gameServer(t *testing.T, token string) *httptest.Server {
 }
 
 func TestSimTestOnlineHeadless(t *testing.T) {
+	if testing.Short() {
+		t.Skip("langer Test (Lauf von 3 s gegen den Spielserver), läuft ohne -short (B-619, B-830)")
+	}
 	srv := gameServer(t, "geheim-1234")
 	t.Setenv("K3C_SERVER_URL", srv.URL)
 	t.Setenv("K3C_STATUS_TOKEN", "geheim-1234")

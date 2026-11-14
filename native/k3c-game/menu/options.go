@@ -11,8 +11,8 @@ import (
 )
 
 // Optionen (Entscheidung 🧑 2026-11-11, B-800, dazu Blitze und Anleitung, B-809; Vorbild src/scenes/optionsLogic.ts):
-// Lautstärke Musik und Effekte in Schritten von 10 %, Vollbild, Sprache, Blitze, Anleitung. Links/Rechts ändert, A legt
-// Schalter und Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
+// Lautstärke Musik und Effekte in Schritten von 10 %, Anzeige (Fenster, rahmenlos, Vollbild, B-826), Sprache, Blitze,
+// Anleitung. Links/Rechts ändert, A legt Schalter, Anzeige und Sprache um, Hoch/Runter springt am Ende zum Anfang. Jede Änderung geht sofort über Session.SetSettings
 // (local speichert sie); ein Fehler betrifft nur das Speichern und erscheint als Meldung. Grundlage jeder Änderung
 // ist der aktuelle Stand der Session, nicht der beim Öffnen: F2/F3 (Settings.Stats, River) gehen nicht verloren.
 // Anleitung wieder an setzt „Anleitung gesehen“ zurück (alle Hinweise erneut, wie OptionsScene.ts).
@@ -20,7 +20,7 @@ import (
 const (
 	optMusic = iota
 	optEffects
-	optFullscreen
+	optWindow
 	optLanguage
 	optFlashes
 	optGuide
@@ -31,7 +31,7 @@ const (
 // volumeStep ist der Schritt der Lautstärke-Regler (0 … 1).
 const volumeStep = 0.1
 
-var optLabels = [optRows]textKey{txtMusic, txtEffects, txtFullscreen, txtLanguage, txtFlashes, txtGuide, txtBack}
+var optLabels = [optRows]textKey{txtMusic, txtEffects, txtDisplay, txtLanguage, txtFlashes, txtGuide, txtBack}
 
 // optionsScreen bearbeitet die Einstellungen. cur ist der Stand, den das Menü kennt und schreibt.
 type optionsScreen struct {
@@ -97,8 +97,12 @@ func applyOption(s view.Settings, opt int, k key) view.Settings {
 		if k != keyOK {
 			s.Effects = stepVolume(s.Effects, dir)
 		}
-	case optFullscreen:
-		s.Fullscreen = !s.Fullscreen
+	case optWindow:
+		step := 1
+		if k == keyLeft {
+			step = -1
+		}
+		s.Window = nextWindow(s.Window, step)
 	case optLanguage:
 		s.Language = otherLanguage(s.Language)
 	case optFlashes:
@@ -115,6 +119,28 @@ func applyOption(s view.Settings, opt int, k key) view.Settings {
 // stepVolume verschiebt v um d und rundet auf ganze 10 % (0 … 1).
 func stepVolume(v, d float64) float64 {
 	return math.Max(0, math.Min(1, math.Round((v+d)*10)/10))
+}
+
+// nextWindow geht in view.WindowModes um step weiter (zyklisch: Fenster, rahmenlos, Vollbild, B-826).
+func nextWindow(cur string, step int) string {
+	n := len(view.WindowModes)
+	for i, m := range view.WindowModes {
+		if m == cur {
+			return view.WindowModes[(i+step+n)%n]
+		}
+	}
+	return view.WindowFramed
+}
+
+// windowText ist der Name des Anzeige-Modus w.
+func windowText(lang, w string) string {
+	switch w {
+	case view.WindowBorderless:
+		return tr(lang, txtBorderless)
+	case view.WindowFullscreen:
+		return tr(lang, txtFullscreen)
+	}
+	return tr(lang, txtWindowed)
 }
 
 // otherLanguage wechselt zwischen Deutsch und Englisch.
@@ -178,8 +204,8 @@ func optionValue(lang string, s view.Settings, opt int) string {
 		return "< " + strconv.Itoa(int(math.Round(s.Music*100))) + " % >"
 	case optEffects:
 		return "< " + strconv.Itoa(int(math.Round(s.Effects*100))) + " % >"
-	case optFullscreen:
-		return onOff(s.Fullscreen)
+	case optWindow:
+		return "< " + windowText(lang, s.Window) + " >"
 	case optLanguage:
 		return "< " + tr(s.Language, txtLangName) + " >"
 	case optFlashes:

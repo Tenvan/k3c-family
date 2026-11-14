@@ -19,6 +19,7 @@ type step struct {
 
 // simDirs: Pakete mit Simulations-, Balancing- und Lasttest-Läufen. Ihre Tests sind bis auf Weiteres gesperrt (Beschluss
 // Ralf 2026-11-11); go vet und Lint laufen weiter. CHECK_SIM=1 hebt die Sperre für einen Lauf auf.
+// task check:go liest sie über -gopkgs; ci.yml › GO_SIM_PKGS, WB_SIM_PKGS muss gleich sein (simlist_test.go, B-832).
 var simDirs = map[string]bool{
 	"engine/balance": true, "cmd/k3c-sim": true, "cmd/k3c-load": true,
 	"tools/k3c-workbench/internal/balance": true, "tools/k3c-workbench/internal/simrun": true,

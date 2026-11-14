@@ -18,7 +18,7 @@ const SettingsFile = "_settings.json"
 type settingsJSON struct {
 	Music      *float64 `json:"music"`
 	Effects    *float64 `json:"effects"`
-	Fullscreen *bool    `json:"fullscreen"`
+	Window     *string  `json:"window"` // Anzeige-Modus (B-826): "", "rahmenlos" oder "vollbild"
 	Language   *string  `json:"language"`
 	River      *string  `json:"river,omitempty"` // fehlt: Startwert (K3C_RIVER), B-816
 	Stats      *bool    `json:"stats"`
@@ -48,8 +48,8 @@ func loadSettings(path string) (view.Settings, error) {
 	if j.Effects != nil {
 		s.Effects = *j.Effects
 	}
-	if j.Fullscreen != nil {
-		s.Fullscreen = *j.Fullscreen
+	if j.Window != nil {
+		s.Window = *j.Window
 	}
 	if j.Language != nil {
 		s.Language = *j.Language
@@ -80,7 +80,7 @@ func applyGuide(s *view.Settings, j settingsJSON) {
 // saveSettings schreibt die Einstellungen nach path (erst in eine Temp-Datei, dann umbenennen: nie halb geschrieben).
 func saveSettings(path string, s view.Settings) error {
 	flashes, guide := !s.FlashesOff, !s.GuideOff
-	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Fullscreen: &s.Fullscreen, Language: &s.Language, Stats: &s.Stats,
+	j := settingsJSON{Music: &s.Music, Effects: &s.Effects, Window: &s.Window, Language: &s.Language, Stats: &s.Stats,
 		Flashes: &flashes, Guide: &guide, GuideSeen: &s.GuideSeen}
 	if s.River != "" {
 		j.River = &s.River

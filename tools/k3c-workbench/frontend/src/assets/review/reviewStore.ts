@@ -1,6 +1,5 @@
 import { clearSizeCache } from '../size/sizeCache';
-import { reviewApi } from './api';
-import type { Frame, PixelDiff, Review, Spec } from './types';
+import { assetsGet, assetsReview, type Frame, type PixelDiff, type Review, type Spec } from '../api';
 
 /** Review-Cache (B-732): Ergebnis je Basis, Specs, Frames und Pixel-Diffs leben auf Modul-Ebene und überleben den Abbau
  *  der Seite beim Tab-Wechsel. „Neu laden“ leert alles (`clearReviewCache`). Ein Fehler bleibt nicht im Cache des
@@ -20,7 +19,7 @@ export function cachedReview(basis: string) {
 export function loadReview(basis: string): Promise<Review> {
   let p = reviews.get(basis);
   if (!p) {
-    p = reviewApi.review(basis);
+    p = assetsReview(basis);
     reviews.set(basis, p);
     p.then(
       (r) => reviews.get(basis) === p && fertig.set(basis, r),
@@ -34,7 +33,7 @@ export function loadReview(basis: string): Promise<Review> {
 export function loadSpec(id: string): Promise<Spec> {
   let p = specCache.get(id);
   if (!p) {
-    p = reviewApi.get(id);
+    p = assetsGet(id);
     specCache.set(id, p);
     p.catch(() => specCache.get(id) === p && specCache.delete(id));
   }

@@ -136,7 +136,7 @@ func (sc *pauseScreen) fill(lang string) {
 	p := &sc.pg
 	p.reset(tr(lang, txtPauseTitle))
 	for i := range pauseRows {
-		p.add(row{label: tr(lang, pauseLabels[i]), mat: pauseMats[i], off: sc.off(i)})
+		p.add(row{label: tr(lang, pauseLabels[i]), mat: pauseMats[i], off: sc.off(i), art: pauseArt[i]})
 	}
 	if pl := sc.m.seatOf(sc.by); sc.byOK && pl >= 0 {
 		p.rows[pauseRemove].value = tr1(lang, txtPlayer, strconv.Itoa(pl+1)) + " · " + deviceName(lang, sc.by)

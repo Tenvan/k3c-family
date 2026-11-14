@@ -3,9 +3,11 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"k3c/tools/assetkit/ticket"
+	"k3c/tools/k3c-workbench/internal/planning"
 )
 
 func ticketRepo(t *testing.T) *App {
@@ -48,5 +50,37 @@ func TestTicketCreateUndRecent(t *testing.T) {
 	}
 	if _, err := a.TicketCreate(ticket.Input{}); err == nil {
 		t.Error("leere Eingabe angenommen")
+	}
+}
+
+// TestTicketButtonUndArchivIndex (B-696/AC-09): ein Ticket vom Ticket-Button steht im Haupt-Index; erledigt wandert
+// seine Zeile in docs/backlog/archiv/README.md und zurück.
+func TestTicketButtonUndArchivIndex(t *testing.T) {
+	a := ticketRepo(t)
+	got, err := a.TicketCreate(ticket.Input{Titel: "Knopf-Ticket", Typ: "Idee", Prio: "niedrig", Domaene: "DEV"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	read := func(rel string) string {
+		b, _ := os.ReadFile(filepath.Join(a.root, "docs", filepath.FromSlash(rel)))
+		return string(b)
+	}
+	if !strings.Contains(read("backlog/README.md"), "| ["+got.ID+"](") {
+		t.Fatal("nicht im Haupt-Index")
+	}
+	if _, err := planning.RebuildIndex(a.root, false); err != nil { // neues Format mit Archiv-Index
+		t.Fatal(err)
+	}
+	if _, err := planning.Set(a.root, got.ID, map[string]string{"Status": "erledigt"}); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(read("backlog/README.md"), "| ["+got.ID+"](") || !strings.Contains(read("backlog/archiv/README.md"), "| ["+got.ID+"](") {
+		t.Error("Zeile nicht im Archiv-Index")
+	}
+	if _, err := planning.Set(a.root, got.ID, map[string]string{"Status": "offen"}); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(read("backlog/README.md"), "| ["+got.ID+"](") || strings.Contains(read("backlog/archiv/README.md"), "| ["+got.ID+"](") {
+		t.Error("Zeile nicht zurück im Haupt-Index")
 	}
 }

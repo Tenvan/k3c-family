@@ -14,6 +14,13 @@ concurrency:
 permissions:
   contents: read
 
+# Go-Tests ohne Sim-, Balance- und Lasttest-Pakete: Ihre Tests sind gesperrt (Beschluss Ralf 2026-11-11) und laufen nur im
+# Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825), aus der auch
+# task check:go liest (checkdiff -gopkgs); tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
+env:
+  GO_SIM_PKGS: '/(engine/balance|cmd/k3c-sim|cmd/k3c-load)$'
+  WB_SIM_PKGS: '/internal/(balance|simrun|simexe|botdev)$'
+
 jobs:
   # Pull Request: nur prüfen, ob der Branch sauber in die Zielbranch passt. Die übrigen Jobs laufen nur bei Push/Dispatch.
   merge-konflikte:
@@ -53,6 +60,8 @@ jobs:
       - run: task install
       - run: task lint
       - run: task typecheck
+      # Vitest (Client, Regel-Tests; rendert vorher gen:paper). Seit #531 aus, wieder an mit B-825.
+      - run: task test
       # Produktions-Build (dist/); die GitHub-Pages-Seite site/ baut nichts (B-507).
       - run: task build
 
@@ -81,6 +90,8 @@ jobs:
       # Die Papierschnitt-Grafik ist nicht eingecheckt (B-737): Tests lesen sie aus public/grafik, hier rendern (B-756)
       - run: bun install --frozen-lockfile
       - run: task gen:paper
+      - name: Go-Tests (-short, ohne Sim/Balance/Last)
+        run: task go:test GO_TEST_FLAGS=-short GO_PKGS="$(go list ./... | grep -Ev "$GO_SIM_PKGS" | tr '\n' ' ')"
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
@@ -90,7 +101,7 @@ jobs:
   # Golden-Tests auf arm64 (Raspberry Pi, B-071): Go darf dort x*y + z zu FMA fusionieren, dann weichen Gleitkommawerte
   # ab. Nativer GitHub-Runner (Repo öffentlich), Rückfall wäre qemu-Emulation.
   go-arm64:
-    if: false # Tests vorläufig aus
+    if: github.event_name != 'pull_request'
     name: Go · Tests arm64
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 30
@@ -107,7 +118,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: task gen:paper
       - run: go env GOARCH
-      - run: task go:test
+      - run: task go:test GO_TEST_FLAGS=-short GO_PKGS="$(go list ./... | grep -Ev "$GO_SIM_PKGS" | tr '\n' ' ')"
 
   # Natives Spiel (Projekt NAT, B-794): Go + Ebitengine, eigenes Modul native/k3c-game. Nur Windows ohne cgo (unter Linux
   # bräuchte Ebitengine cgo und X11); es laufen nur Tests ohne Fenster und GPU (-short).
@@ -201,6 +212,14 @@ jobs:
         working-directory: tools/k3c-workbench/frontend
       - run: task k3c-workbench:frontend
         working-directory: .
+      # Vitest des Frontends und go test (-short) für k3c-workbench und tools/assetkit, ohne Sim/Balance-Pakete (B-825).
+      - run: task k3c-workbench:vitest
+        working-directory: .
+      # Task aus der Wurzel (Namensraum), die Paketliste aus dem Modul tools/k3c-workbench.
+      - name: Go-Tests (-short, ohne Sim/Balance)
+        shell: bash
+        working-directory: .
+        run: task k3c-workbench:gotest GO_TEST_FLAGS=-short WB_PKGS="$(cd tools/k3c-workbench && go list ./... | grep -Ev "$WB_SIM_PKGS" | tr '\n' ' ')"
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
@@ -244,6 +263,9 @@ jobs:
         working-directory: tools/k3c-starter/frontend
       # Task aus der Wurzel: im Ordner tools/k3c-starter gälte dessen Taskfile ohne Namensraum.
       - run: task k3c-starter:frontend
+        working-directory: .
+      # Vitest und go test (-short) des Starters, seit #531 aus (B-825).
+      - run: task k3c-starter:test GO_TEST_FLAGS=-short
         working-directory: .
       - uses: golangci/golangci-lint-action@v9
         with:

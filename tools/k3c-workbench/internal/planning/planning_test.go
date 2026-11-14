@@ -15,6 +15,7 @@ const sprint = "# SP11 · SRV · Raspberry Pi\n\n- **Status:** aktiv\n- **Domän
 const draft = "# F1 · REG · Zielkorridore\n\n- **Reife:** Entwurf\n\n## Sessions\n\n- F1.1 🧑 Workshop Zielkorridore (AC-01)\n"
 
 func TestParseSprint(t *testing.T) {
+	t.Parallel()
 	s := ParseSprint(sprint, "SP11-raspberry-pi", "aktiv")
 	if s.ID != "SP11" || s.Domain != "SRV" || s.Title != "Raspberry Pi" || len(s.Tickets) != 2 {
 		t.Fatalf("Kopf: %+v", s)
@@ -29,6 +30,7 @@ func TestParseSprint(t *testing.T) {
 }
 
 func TestParseSprintStichpunkteNebenTabelle(t *testing.T) {
+	t.Parallel()
 	text := strings.Replace(sprint, "\n\n## Abnahme", "\n\n- SP11.1 Stichpunkt zur Tabelle\n- SP11.2 noch einer\n- SP11.3 nur als Stichpunkt\n\n## Abnahme", 1)
 	s := ParseSprint(text, "SP11-raspberry-pi", "aktiv")
 	if len(s.Sessions) != 3 || s.Sessions[0].Status != "fertig" || s.Sessions[1].Status != "offen" || s.Sessions[2].Nr != "SP11.3" ||
@@ -38,6 +40,7 @@ func TestParseSprintStichpunkteNebenTabelle(t *testing.T) {
 }
 
 func TestLoad(t *testing.T) {
+	t.Parallel()
 	root := t.TempDir()
 	w := func(rel, text string) {
 		p := filepath.Join(root, filepath.FromSlash(rel))
@@ -74,6 +77,7 @@ func sessionsOptional(s Sprint) bool { return s.Status == "erledigt" || s.Reife 
 
 // TestRepo liest die echten Docs des Repos: das Format der Vorlagen darf nicht still aus dem Parser fallen.
 func TestRepo(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join("..", "..", "..", "..")
 	if _, err := os.Stat(filepath.Join(root, "docs", "sprints")); err != nil {
 		t.Skip("kein Repo über dem Modul")
@@ -98,6 +102,7 @@ func TestRepo(t *testing.T) {
 }
 
 func TestWorktrees(t *testing.T) {
+	t.Parallel()
 	b := parseWorktrees("worktree C:/k3c\nHEAD 1\nbranch refs/heads/develop\n\nworktree C:/w1\nbranch refs/heads/sprint/s4\n\n" +
 		"worktree C:/w2\nbranch refs/heads/gr4-4-work\n\nworktree C:/w3\ndetached\n\n" +
 		"worktree C:/w4\nbranch refs/heads/claude/s4-review-ab12\n\nworktree C:/w5\nbranch refs/heads/claude/sprint-s4-cd34\n")
@@ -113,6 +118,7 @@ func TestWorktrees(t *testing.T) {
 
 // TestDocs: Das Glossar erscheint nur mit Datei, die Reihenfolge folgt DocOrder (B-211/AC-04).
 func TestDocs(t *testing.T) {
+	t.Parallel()
 	root := t.TempDir()
 	if got := strings.Join(Available(root), ","); got != "" {
 		t.Fatalf("ohne Dateien keine Dokumente: %q", got)

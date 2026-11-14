@@ -8,6 +8,10 @@ import (
 
 // MC1/AC-05: {alle} antwortet sofort mit dem Job, {job, wait} liefert das Ergebnis.
 func TestAssetsRender(t *testing.T) {
+	if testing.Short() {
+		t.Skip("ruft die Render-CLI (bun) gut zehnmal auf, je 0,3 s; läuft ohne -short (B-619, B-830)")
+	}
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	root := paperRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	text, isErr := callText(t, cs, "assets_render", map[string]any{"id": "monarch"})
@@ -32,6 +36,7 @@ func TestAssetsRender(t *testing.T) {
 }
 
 func TestAssetsRenderFehler(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	for _, args := range []map[string]any{{}, {"id": "monarch", "alle": true}} {
 		if text, isErr := callText(t, cs, "assets_render", args); !isErr || !strings.Contains(text, "{id}, {alle: true} oder {job") {

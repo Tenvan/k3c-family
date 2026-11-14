@@ -9,6 +9,7 @@ import (
 
 // Viele gleichzeitige Aufrufe teilen sich wenige Läufe (hier: ein laufender plus höchstens ein Folgelauf).
 func TestFlightBuendeltGleichzeitigeAufrufe(t *testing.T) {
+	t.Parallel()
 	f := &flight{bases: map[string]Data{}}
 	var runs atomic.Int32
 	release := make(chan struct{})
@@ -38,6 +39,7 @@ func TestFlightBuendeltGleichzeitigeAufrufe(t *testing.T) {
 
 // Wer nach dem Ende eines Laufs ankommt, bekommt einen frischen Lauf (kein veraltetes Ergebnis).
 func TestFlightFrischerLaufNachAnkunft(t *testing.T) {
+	t.Parallel()
 	f := &flight{bases: map[string]Data{}}
 	var runs int
 	check := func(map[string]Data) ([]WorktreeDiff, error) { runs++; return nil, nil }
@@ -54,6 +56,7 @@ func TestFlightFrischerLaufNachAnkunft(t *testing.T) {
 
 // Der Cache der Merge-Bases bleibt zwischen den Läufen und ist begrenzt.
 func TestFlightBaseCache(t *testing.T) {
+	t.Parallel()
 	f := &flight{bases: map[string]Data{}}
 	check := func(b map[string]Data) ([]WorktreeDiff, error) { b["x"] = Data{}; return nil, nil }
 	time.Sleep(2 * time.Millisecond)

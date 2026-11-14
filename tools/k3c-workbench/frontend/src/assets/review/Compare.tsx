@@ -1,12 +1,11 @@
 import { Box, Button, Flex, Text, ValueSlider } from '@webkit/atoms';
 import { useEffect, useState } from 'react';
 import { type Animation, AnimationSync } from './AnimationSync';
-import { reviewApi } from './api';
 import { useZoom } from '../zoom';
 import { diffCache, frameCache, loadSpec } from './reviewStore';
 import { Boxes, pngGroesse } from './Boxes';
 import { text } from './fehlertext';
-import type { Box as Rahmen, Frame, PixelDiff, ReviewAsset } from './types';
+import { assetsFrame, assetsPixelDiff, type Box as Rahmen, type Frame, type PixelDiff, type ReviewAsset } from '../api';
 
 interface Stand {
   frame?: Frame;
@@ -40,7 +39,7 @@ function useFrame(cache: Map<string, Promise<Frame>>, id: string, anim: string |
     if (anim === undefined || basis === null) return setStand({});
     const key = `${id}|${anim}|${nr}|${basis}`;
     let p = cache.get(key);
-    if (!p) cache.set(key, (p = reviewApi.frame(id, anim, nr, '', basis)));
+    if (!p) cache.set(key, (p = assetsFrame(id, anim, nr, '', basis)));
     let aktiv = true;
     p.then((frame) => aktiv && setStand({ frame }), (e) => aktiv && setStand({ fehler: text(e) }));
     return () => {
@@ -93,7 +92,7 @@ function useDiff(cache: Map<string, Promise<PixelDiff>>, asset: ReviewAsset, ani
     if (!an || anim === undefined || asset.status !== 'geaendert') return setDiff({});
     const key = `${asset.id}|${anim}|${nr}|${basis}`;
     let p = cache.get(key);
-    if (!p) cache.set(key, (p = reviewApi.pixelDiff(asset.id, anim, nr, basis)));
+    if (!p) cache.set(key, (p = assetsPixelDiff(asset.id, anim, nr, basis)));
     let aktiv = true;
     // das alte Overlay bleibt stehen, bis das neue da ist
     p.then((wert) => aktiv && setDiff({ wert }), (e) => aktiv && setDiff({ fehler: text(e) }));

@@ -7,6 +7,7 @@ import (
 
 // B-372/AC-04: Session-IDs mit Buchstaben wie K3.2a lassen sich anlegen, lesen und ändern.
 func TestSessionIDMitBuchstabe(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newSprint(t, root, "K3", nil)
 	out := must(t)(Create(root, NewDoc{Kind: "session", ID: "K3.2a", Slug: "teil", Title: "Teil a", Fields: map[string]string{"Domäne": "SRV"}}))

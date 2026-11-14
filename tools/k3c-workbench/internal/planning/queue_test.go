@@ -8,6 +8,7 @@ import (
 // B-783/AC-02: Mensch-Sessions nach Gerät (Zeile „Gerät:“ im Kontext, sonst unbekannt), Specs im Entwurf mit
 // „Braucht 🧑: Freigabe“, Entscheidungen; ein freigegebenes Ticket steht nicht bei den Freigaben.
 func TestQueueNachGeraet(t *testing.T) {
+	t.Parallel()
 	root := wavesRepo(t)
 	out := must(t)(Queue(root, QueueFilter{}))
 	want := "Ralf-Queue: 1 Freigaben · 1 Entscheidungen · 2 Abnahmen an 2 Geräten\n" +
@@ -24,6 +25,7 @@ func TestQueueNachGeraet(t *testing.T) {
 }
 
 func TestNormDevice(t *testing.T) {
+	t.Parallel()
 	for in, want := range map[string]string{"Xbox": "Xbox/TV", "TV im Wohnzimmer": "Xbox/TV", "pi-gaming Pi": "Pi",
 		"PC": "PC", "Mini-PC": "Mini-PC", "Workshop mit Kindern": "Workshop", "Veröffentlichung": "Veröffentlichung",
 		"Tablet": "Tablet"} {

@@ -8,7 +8,8 @@ import (
 	"sync"
 )
 
-// Gueltigkeit merkt sich das Ergebnis von validate je Spec, solange Spec und Stil-Datei unverändert sind.
+// Gueltigkeit merkt sich das Ergebnis von validate je Spec, solange Spec, Stil-Datei und die Specs ihrer Reittiere
+// unverändert sind (B-706).
 type Gueltigkeit struct {
 	mu    sync.Mutex
 	cache map[string]gueltigEintrag
@@ -33,13 +34,22 @@ func dateiStand(p string) string {
 // Pruefe liefert je Asset die Fehler von validate (leer = gültig); höchstens 8 Prüfungen gleichzeitig.
 func (g *Gueltigkeit) Pruefe(ctx context.Context, cli CLI, assets []Asset) map[string][]Fehler {
 	stil := dateiStand(filepath.Join(cli.Root, filepath.FromSlash(StilPfad)))
+	nachID := map[string]Asset{}
+	if alle, err := Assets(cli.Root); err == nil {
+		for _, a := range alle {
+			if _, doppelt := nachID[a.ID]; doppelt {
+				a.Pfad = "" // mehrdeutige ID: reittierStand markiert sie, statt einen Treffer zu raten
+			}
+			nachID[a.ID] = a
+		}
+	}
 	out := make(map[string][]Fehler, len(assets))
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 	sem := make(chan struct{}, 8)
 	for _, a := range assets {
 		pfad := a.Abs(cli.Root)
-		stand := dateiStand(pfad) + "|" + stil
+		stand := dateiStand(pfad) + "|" + stil + reittierStand(cli.Root, pfad, nachID)
 		g.mu.Lock()
 		e, ok := g.cache[pfad]
 		g.mu.Unlock()

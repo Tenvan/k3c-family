@@ -72,11 +72,23 @@ func Next(root string, f NextFilter) (string, error) {
 	}
 	for _, c := range cands {
 		if c.why == "" && (want == "" || c.session.Domain == want) {
-			out, err := st.pickText(c, parallel(cands, c))
+			out, err := st.pickText(c, parallel(cands, c, st.agents()))
 			return withNotes(out, notes), err
 		}
 	}
 	return withNotes(noneText(plan, want), notes), nil
+}
+
+// agents zählt die Sessions in Arbeit, die einen Agenten belegen; eine Mensch-Session (Abnahme am Gerät) sperrt mit
+// Dateien und Sperren, belegt aber keinen der vier Plätze (B-839).
+func (st nextState) agents() int {
+	n := 0
+	for _, r := range st.running {
+		if r.session.Agent == "autonom" {
+			n++
+		}
+	}
+	return n
 }
 
 // withNotes hängt die Herkunft des Stands je aktivem Sprint (origin oder lokal) an die Antwort.
@@ -96,7 +108,7 @@ func newNextState(root string, d Data, readmes map[string]string) nextState {
 		}
 		for _, x := range s.Sessions {
 			st.status[x.Nr] = x.Status
-			if s.Status == "aktiv" && x.Status == "in Arbeit" && x.Domain != "" {
+			if s.Status == "aktiv" && x.Status == "in Arbeit" { // auch ohne Domäne: Dateien und Sperren zählen (B-839)
 				st.running = append(st.running, st.scope(s, x))
 			}
 		}
@@ -237,7 +249,7 @@ func (st nextState) pickText(c candidate, more []candidate) (string, error) {
 		"Pfad: docs/" + r.dir + "/" + x.File,
 		fmt.Sprintf("Sprint: %s · %s (Projekt %s, Rang %s)", c.sprint.ID, c.sprint.Title, c.project.ID, c.project.Rang),
 		domainLine(x),
-		"Branch: " + sprintBranch(c.sprint.ID, head["Branch"]),
+		"Branch: sprint/" + sprintPrefix(c.sprint), // wie originOverlay (B-839)
 		"Kriterien: " + crit,
 		"Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der " +
 			"Agent mit git fetch --prune.",

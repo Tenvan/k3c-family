@@ -42,6 +42,7 @@ func passingBalance(t *testing.T, seen *[][]string, mu *sync.Mutex) func(runSpec
 }
 
 func TestSimTestBaselineSichernUndVergleichen(t *testing.T) {
+	t.Parallel()
 	var seen [][]string
 	var mu sync.Mutex
 	s, _ := fakeServer(t, passingBalance(t, &seen, &mu))
@@ -80,6 +81,7 @@ func TestSimTestBaselineSichernUndVergleichen(t *testing.T) {
 }
 
 func TestSimTestBaselineLehntAb(t *testing.T) {
+	t.Parallel()
 	s, started := fakeServer(t, func(runSpec) runResult { return runResult{} })
 	cases := []simTestIn{
 		{Action: "start", Baseline: "M9"},                      // gibt es nicht
@@ -104,6 +106,7 @@ func TestSimTestBaselineLehntAb(t *testing.T) {
 // B-662/AC-03: „Als Baseline sichern“ der Balancing-Seite (App.BalanceSaveBaseline ruft Registry.SaveBaseline mit dem
 // Berichtspfad) und sim_test {action: baseline} gehen denselben Weg und schreiben dieselben Dateien.
 func TestBaselineSeiteWieSimTest(t *testing.T) {
+	t.Parallel()
 	var seen [][]string
 	var mu sync.Mutex
 	s, _ := fakeServer(t, passingBalance(t, &seen, &mu))

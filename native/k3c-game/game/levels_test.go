@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"k3c/engine/sim"
+	"k3c/native/k3c-game/menu"
 	"k3c/native/k3c-game/view"
 )
 
@@ -78,10 +79,16 @@ func TestLoadLevels(t *testing.T) {
 		t.Fatalf("Aufrufe %v, Level %v", ld.calls, g.levels)
 	}
 	g.frame.Stages = nil
-	if g.loadLevels(); len(ld.calls) != 2 || len(ld.calls[1]) != 0 || len(g.levels) != 0 {
-		t.Errorf("ins Menü: Aufrufe %v", ld.calls)
+	g.loadLevels()
+	g.loadLevels()
+	if len(ld.calls) != 2 || !slices.Equal(ld.calls[1][menuLevel], menu.Art()) || len(ld.calls[1]) != 1 || len(g.levels) != 0 {
+		t.Errorf("ins Menü (nur Illustrationen, einmal, B-818): Aufrufe %v", ld.calls)
 	}
 	ld.fail = errors.New("fehlende Grafik")
+	g.menuArt = false
+	if g.loadLevels(); g.Fault() != nil || len(ld.calls) != 3 {
+		t.Errorf("fehlende Menü-Illustration beendet das Menü: %v", g.Fault())
+	}
 	g.frame.Stages = stages("mine")
 	if g.loadLevels(); g.Fault() == nil || g.err != nil || len(g.levels) != 0 {
 		t.Errorf("Fehler nicht im Fenster gemeldet: %v %v %v", g.Fault(), g.err, g.levels)

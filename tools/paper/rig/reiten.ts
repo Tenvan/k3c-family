@@ -15,10 +15,11 @@ import type { FrameGroesse } from '../render/raster';
 import { type Ausgabe, ausgabeSpec } from '../render/stufen';
 import { lageSvg, mitNachkommen, teileSvg } from '../render/svg';
 import { frameSchritte, umhangLauf } from './animation';
-import { GANGARTEN, type GangPose, gangPose } from './gangarten';
+import { type Bein, GANGARTEN, type GangPose, gangPose } from './gangarten';
+import { beinAus, reittierGeometrie } from './reitBoxen';
 import { umhangSvg } from './umhang';
 import { rideMatrix, rideText, vierbeinerMatrizen } from './vierbeiner';
-import { gangartVon, pferdTeile, pruefeVierbeiner } from './vierbeinerBild';
+import { gangartVon, pferdTeile, pruefeVierbeiner, type VierbeinerKontext } from './vierbeinerBild';
 
 /** Ordner? Nicht lesbare Einträge (fremde Rechte) zählen nicht. */
 const istOrdner = (p: string) => {
@@ -28,33 +29,41 @@ const istOrdner = (p: string) => {
     return false;
   }
 };
-const abgelehnt = (text: string) => new Abgelehnt([{ feld: 'animationen.reittier', regel: 'reittier-unbekannt', text }]);
+/** `feld`: voller Pfad der Angabe, z. B. `animationen.schritt.reittier` (B-708). */
+const abgelehnt = (text: string, feld = 'animationen.reittier') => new Abgelehnt([{ feld, regel: 'reittier-unbekannt', text }]);
+/** Feld der Reittier- bzw. Reiter-Angabe einer Animation (B-708). */
+export const reitFeld = (animation: string, art: 'reittier' | 'reiter' = 'reittier') => `animationen.${animation}.${art}`;
 
 /** Spec des Reittiers: erst im Ordner der Spec, dann in Geschwister-Gruppen (../<gruppe>/<id>.paper.json). */
-export function findeReittier(specPfad: string, id: string): string {
-  if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) throw abgelehnt(`Reittier-id „${id}“ ist kein Asset-Name`);
+export function findeReittier(specPfad: string, id: string, feld?: string): string {
+  if (!/^[a-z0-9][a-z0-9-]*$/.test(id)) throw abgelehnt(`Reittier-id „${id}“ ist kein Asset-Name`, feld);
   const ordner = dirname(specPfad), eltern = dirname(ordner), name = `${id}.paper.json`;
   if (existsSync(join(ordner, name))) return join(ordner, name);
   // Gruppe `reittiere` zuerst (B-804): gleiche ids bei Gegnern (Wolf) dürfen das Reittier nicht verdecken.
   const gruppen = existsSync(eltern) ? readdirSync(eltern).sort((a, b) => Number(b === 'reittiere') - Number(a === 'reittiere') || (a < b ? -1 : 1)).map((g) => join(eltern, g)) : [];
   const treffer = gruppen.find((g) => g !== ordner && existsSync(join(g, name)) && istOrdner(g));
-  if (!treffer) throw abgelehnt(`Reittier „${id}“ fehlt neben ${basename(specPfad)} und in den Nachbar-Gruppen`);
+  if (!treffer) throw abgelehnt(`Reittier „${id}“ fehlt neben ${basename(specPfad)} und in den Nachbar-Gruppen`, feld);
   return join(treffer, name);
 }
 
 /** Hashes der Specs, auf die Reit-Animationen verweisen (`reittier`, bei Reittier-Ebenen `reiter`; sortiert nach id), damit der renderKey des Reiters sie enthält (B-713). */
 export function reittierHash(spec: Spec, specPfad: string | undefined): string | undefined {
-  const ids = [...new Set(Object.values(spec.animationen ?? {}).flatMap((a) => [...(a.reittier ? [a.reittier] : []), ...(a.reiter ? [a.reiter] : [])]))].sort();
-  if (!specPfad || !ids.length) return undefined;
-  return ids.map((id) => `${id}=${specHash(readFileSync(findeReittier(specPfad, id), 'utf8'))}`).join(',');
+  const verweise = new Map<string, string>();
+  for (const [name, a] of Object.entries(spec.animationen ?? {})) {
+    if (a.reittier && !verweise.has(a.reittier)) verweise.set(a.reittier, reitFeld(name));
+    if (a.reiter && !verweise.has(a.reiter)) verweise.set(a.reiter, reitFeld(name, 'reiter'));
+  }
+  if (!specPfad || !verweise.size) return undefined;
+  return [...verweise].sort(([a], [b]) => (a < b ? -1 : 1))
+    .map(([id, feld]) => `${id}=${specHash(readFileSync(findeReittier(specPfad, id, feld), 'utf8'))}`).join(',');
 }
 
-export function ladeReittier(specPfad: string | undefined, id: string, stil: Stil): Spec {
+export function ladeReittier(specPfad: string | undefined, id: string, stil: Stil, feld?: string): Spec {
   if (!specPfad) throw new Aufruf('Reiten braucht den Pfad der Spec');
-  const pfad = findeReittier(specPfad, id), fehler = checkSpecFile(pfad, stil);
+  const pfad = findeReittier(specPfad, id, feld), fehler = checkSpecFile(pfad, stil);
   if (fehler.length) throw new Abgelehnt(fehler.map((f) => ({ ...f, feld: `${basename(pfad)}:${f.feld}` })));
   const spec = JSON.parse(readFileSync(pfad, 'utf8')) as Spec;
-  if (spec.rig !== 'vierbeiner') throw abgelehnt(`„${id}“ ist kein vierbeiner (rig ${spec.rig})`);
+  if (spec.rig !== 'vierbeiner') throw abgelehnt(`„${id}“ ist kein vierbeiner (rig ${spec.rig})`, feld);
   pruefeVierbeiner(spec);
   return spec;
 }
@@ -106,34 +115,43 @@ const vornVon = (reittier: Spec): Set<string> => {
   return new Set(reittier.teile.slice(ab < 0 ? reittier.teile.length : ab).map((t) => t.id));
 };
 
-/** SVG der gewünschten Segmente (`nur`, sonst alle) in Zeichenreihenfolge; nicht gewünschte werden nicht gerechnet. */
-export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: Stil, nur?: ReadonlySet<Segment>): { name: Segment; svg: string }[] {
-  const p = f.pose, vorn = vornVon(reittier);
+/** Teil des Reittiers sichtbar? Nicht in `ohne`; ein Beinpfad entfällt mit Ober- oder Unterbein (B-845). */
+const sichtbar = (ohne?: ReadonlySet<string>) => (id: string) =>
+  !ohne?.has(id) && !(id.startsWith('oberbein-') && beinAus(id.slice(9) as Bein, ohne));
+
+/** SVG der gewünschten Segmente (`nur`, sonst alle) in Zeichenreihenfolge; nicht gewünschte werden nicht gerechnet.
+ *  `ohne`: Teile des Reittiers, die nicht gezeichnet werden (`frame --ohne reittier:<teil>`, B-845). */
+export function reitSegmente(reiter: Spec, reittier: Spec, f: ReitFrame, stil: Stil, nur?: ReadonlySet<Segment>, ohne?: ReadonlySet<string>): { name: Segment; svg: string }[] {
+  const p = f.pose, vorn = vornVon(reittier), zeigen = sichtbar(ohne);
   const [vx, vy] = p.reiter.versatz;
   const svg: Record<Segment, () => string> = {
-    'reittier-hinten': () => pferdTeile(reittier, p, stil, (id) => !vorn.has(id)),
+    'reittier-hinten': () => pferdTeile(reittier, p, stil, (id) => !vorn.has(id) && zeigen(id)),
     umhang: () => (f.umhang && reiter.umhang ? umhangSvg(f.umhang, reiter.umhang, stil) : ''),
     reiter: () => `<g transform="translate(${num(vx)} ${num(vy)}) rotate(${num(p.reiter.drehung)} 0 -50)">` +
       `${teileSvg(reiter, stil, p.reiter.winkel, { ausblenden: mitNachkommen(reiter.teile, 'oberschenkel-h') })}</g>`,
-    'reittier-vorn': () => pferdTeile(reittier, p, stil, (id) => vorn.has(id)),
+    'reittier-vorn': () => pferdTeile(reittier, p, stil, (id) => vorn.has(id) && zeigen(id)),
     zuegel: () => zuegel(reiter, reittier, p, stil),
   };
   return EBENEN.filter((n) => !nur || nur.has(n)).map((name) => ({ name, svg: svg[name]() }));
 }
 
-export function reitBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+/** Kontext des Reit-Bilds: `reittierOhne` = Teile des Reittiers (ohne Präfix), die `frame --ohne` ausblendet (B-845). */
+export type ReitKontext = Kontext & { reittierOhne?: readonly string[] };
+
+export function reitBild(spec: Spec, a: Ausgabe, k: ReitKontext): Bild {
   if (animationVon(spec, a.animation).ebene === 'reiter') return reiterEbeneBild(spec, a, k);
   const reiter = ausgabeSpec(spec, a), id = animationVon(spec, a.animation).reittier!;
   // Varianten färben auch die Satteldecke des Reittiers (B-717/AC-03, B-711): der Tausch der Variante gilt für beide.
-  const geladen = ladeReittier(k.specPfad, id, k.stil);
+  const geladen = ladeReittier(k.specPfad, id, k.stil, reitFeld(a.animation));
   const reittier = a.variante ? tausche(geladen, spec.varianten![a.variante].tausch) : geladen;
-  const ohne = mitNachkommen(reiter.teile, 'oberschenkel-h');
+  const ohne = mitNachkommen(reiter.teile, 'oberschenkel-h'), reittierOhne = new Set(k.reittierOhne ?? []);
   const frames = reitZustand(reiter, reittier, a, k).map((f) => {
     const p = f.pose, R0 = rideMatrix(p.ride.dy, p.ride.pitch, 1);
-    const inhalt = reitSegmente(reiter, reittier, f, k.stil).map((s) => s.svg).join('');
+    const inhalt = reitSegmente(reiter, reittier, f, k.stil, undefined, reittierOhne).map((s) => s.svg).join('');
     return {
       svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${inhalt}</g></g>`,
-      geometrie: [...geometrie(reittier.teile, vierbeinerMatrizen(reittier, p)),
+      // Reittier-Teile mit Präfix `reittier:` (B-709), sonst überschriebe der Reiter gleichnamige Boxen (rumpf, kopf)
+      geometrie: [...reittierGeometrie(reittier, p, reittierOhne),
         ...geometrie(reiter.teile, weltMatrizen(reiter, p.reiter.winkel, mul(R0, reiterBasis(p))), ohne)],
     };
   });
@@ -158,7 +176,7 @@ function ebenenGroesse(rahmen: [number, number, number, number], reiter: Spec, r
 /** Reiter-Ebene (Umhang + Reiter): hängt von Gangart und Phase ab, nicht vom Reittier (alle teilen den Maßstab) */
 function reiterEbeneBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
   const reiter = ausgabeSpec(spec, a), anim = animationVon(spec, a.animation);
-  const reittier = ladeReittier(k.specPfad, anim.reittier!, k.stil);
+  const reittier = ladeReittier(k.specPfad, anim.reittier!, k.stil, reitFeld(a.animation));
   const [rx, ry, rb, rh] = reiter.ausgabe.rahmen;
   const frames = reitZustand(reiter, reittier, a, k).map((f) => {
     const p = f.pose, R0 = rideMatrix(p.ride.dy, p.ride.pitch, 1);
@@ -174,24 +192,24 @@ function reiterEbeneBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
 }
 
 /** Reiter, dessen Hand die Zügel hält (Pflichtangabe `reiter` der Reittier-Ebenen); Figur im selben Ordner oder in Nachbar-Gruppen */
-export function ladeReiter(specPfad: string | undefined, id: string, stil: Stil): Spec {
+export function ladeReiter(specPfad: string | undefined, id: string, stil: Stil, feld?: string): Spec {
   if (!specPfad) throw new Aufruf('Reittier-Ebenen brauchen den Pfad der Spec');
-  const pfad = findeReittier(specPfad, id), fehler = checkSpecFile(pfad, stil);
+  const pfad = findeReittier(specPfad, id, feld), fehler = checkSpecFile(pfad, stil);
   if (fehler.length) throw new Abgelehnt(fehler.map((f) => ({ ...f, feld: `${basename(pfad)}:${f.feld}` })));
   const spec = JSON.parse(readFileSync(pfad, 'utf8')) as Spec;
-  if (spec.rig !== 'figur') throw abgelehnt(`„${id}“ ist keine figur (rig ${spec.rig})`);
+  if (spec.rig !== 'figur') throw abgelehnt(`„${id}“ ist keine figur (rig ${spec.rig})`, feld);
   return spec;
 }
 
 /** Reittier-Ebene `hinten` oder `vorn` (vorn samt Zügeln des Standard-Reiters); der Tausch der Spielerfarbe gilt hier nicht */
-export function reittierEbeneBild(spec: Spec, a: Ausgabe, k: Kontext): Bild {
+export function reittierEbeneBild(spec: Spec, a: Ausgabe, k: VierbeinerKontext): Bild {
   pruefeVierbeiner(spec);
   const s = ausgabeSpec(spec, a), anim = animationVon(s, a.animation), g = gangartVon(anim, a.animation);
-  const reiter = ladeReiter(k.specPfad, anim.reiter!, k.stil), vorn = anim.ebene === 'vorn';
+  const reiter = ladeReiter(k.specPfad, anim.reiter!, k.stil, reitFeld(a.animation, 'reiter')), vorn = anim.ebene === 'vorn';
   const nur = new Set<Segment>(vorn ? ['reittier-vorn', 'zuegel'] : ['reittier-hinten']);
   const frames = Array.from({ length: anim.frames }, (_, n) => {
     const p = gangPose(s, g, n / anim.frames);
-    const inhalt = reitSegmente(reiter, s, { pose: p }, k.stil, nur).map((x) => x.svg).join('');
+    const inhalt = reitSegmente(reiter, s, { pose: p }, k.stil, nur, new Set(k.beinOhne ?? [])).map((x) => x.svg).join('');
     return { svg: `<g filter="url(#paper)"><g transform="${rideText(p.ride.dy, p.ride.pitch)}">${inhalt}</g></g>`, geometrie: geometrie(s.teile, vierbeinerMatrizen(s, p)) };
   });
   const m = s.ausgabe.massstab ?? 1;

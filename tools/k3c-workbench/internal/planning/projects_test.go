@@ -37,6 +37,7 @@ func ranks(t *testing.T, root string) map[string]string {
 }
 
 func TestProjektAnlegenLesenListen(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newProject(t, root, "GRA", "grafik")
 	newProject(t, root, "SND", "sound")
@@ -71,6 +72,7 @@ func TestProjektAnlegenLesenListen(t *testing.T) {
 }
 
 func TestProjektRangLueckenlos(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	for _, id := range []string{"GRA", "SND", "BAL"} {
 		newProject(t, root, id, strings.ToLower(id))
@@ -102,6 +104,7 @@ func TestProjektRangLueckenlos(t *testing.T) {
 }
 
 func TestProjektOhneRangABN(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newProject(t, root, "GRA", "grafik")
 	newProject(t, root, "ABN", "abnahmen")
@@ -118,6 +121,7 @@ func TestProjektOhneRangABN(t *testing.T) {
 }
 
 func TestProjektZuordnung(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newProject(t, root, "GRA", "grafik")
 	newProject(t, root, "SND", "sound")
@@ -160,6 +164,7 @@ func TestProjektZuordnung(t *testing.T) {
 
 // TestProjektAblehnungAendertNichts: B-357 › Ausnahme- und Fehlerfälle.
 func TestProjektAblehnungAendertNichts(t *testing.T) {
+	t.Parallel()
 	root := tempRepo(t)
 	newProject(t, root, "GRA", "grafik")
 	newProject(t, root, "SND", "sound")

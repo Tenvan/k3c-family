@@ -2,7 +2,7 @@ package menu
 
 // Papier-Hintergrund der Menüs (B-812, Vorbild src/scenes/paperBackdrop.ts ohne Sterne und Wald, die sind Grafik):
 // Nachthimmel, zwei geschnittene Papierbahnen mit heller Kante und ein Papiermond mit Schlagschatten. Die Lage rechnet
-// backdropOf rein, painter zeichnet sie mit Rechtecken und einer Scheibe; je Bild entsteht nichts Neues.
+// backdropOf und shapes rein, painter zeichnet die Formen (erst Rechtecke, dann Scheiben); je Bild entsteht nichts Neues.
 
 import (
 	"image"
@@ -61,27 +61,63 @@ func (b backdrop) segment(bd band, j int) (x, w, y float64) {
 // discPx ist die Größe der Scheiben-Vorlage (Mond); gestreckt gezeichnet.
 const discPx = 64
 
-// backdrop zeichnet den Hintergrund ins Fenster g.
-func (p *painter) backdrop(dst *ebiten.Image, g geom) {
-	b := backdropOf(g)
-	r := g.win
-	p.rect(dst, float64(r.Min.X), float64(r.Min.Y), float64(r.Dx()), float64(r.Dy()), colNight)
+// shape ist eine Form des Hintergrunds: Rechteck (Ecke x, y, Größe w × h) oder Scheibe (Mittelpunkt x, y, Radius w).
+type shape struct {
+	disc       bool
+	x, y, w, h float64
+	clr        color.RGBA
+}
+
+// filter ist der Filter der Form: Scheiben glatt (Linear), Rechtecke scharf (Nearest).
+func (s shape) filter() ebiten.Filter {
+	if s.disc {
+		return ebiten.FilterLinear
+	}
+	return ebiten.FilterNearest
+}
+
+// backdropShapes ist die Zahl der Formen: Himmel, je Bahn-Abschnitt Fläche und Kante, Mondschatten, Mond, Ausschnitt.
+const backdropShapes = 1 + 2*2*len(bandSteps) + len(shadowLayers) + 2
+
+// shapes füllt out in Zeichenreihenfolge: erst alle Rechtecke, dann alle Scheiben. So wechselt der Filter je Bild nur
+// einmal und Ebitengine kann die Draw-Aufrufe bündeln (B-820); Mond und Bahnen überlappen nicht.
+func (b backdrop) shapes(out *[backdropShapes]shape) {
+	r := b.win
+	out[0] = shape{x: float64(r.Min.X), y: float64(r.Min.Y), w: float64(r.Dx()), h: float64(r.Dy()), clr: colNight}
+	n := 1
 	for _, bd := range b.bands {
 		for j := range bandSteps {
 			x, w, y := b.segment(bd, j)
-			p.rect(dst, x, y, w+1, float64(r.Max.Y)-y, bd.clr)
-			p.rect(dst, x, y, w+1, 3*b.k, colEdge)
+			out[n] = shape{x: x, y: y, w: w + 1, h: float64(r.Max.Y) - y, clr: bd.clr}
+			out[n+1] = shape{x: x, y: y, w: w + 1, h: 3 * b.k, clr: colEdge}
+			n += 2
 		}
 	}
 	for _, s := range shadowLayers {
 		d := s.d * b.k
-		p.disc(dst, b.moonX+d*0.6, b.moonY+d, b.moonR, fade(colShadow, s.alpha))
+		out[n] = shape{disc: true, x: b.moonX + d*0.6, y: b.moonY + d, w: b.moonR, clr: fade(colShadow, s.alpha)}
+		n++
 	}
-	p.disc(dst, b.moonX, b.moonY, b.moonR, matLinen.licht)
-	p.disc(dst, b.moonX-22*b.k, b.moonY-12*b.k, 50*b.k, colNight)
+	out[n] = shape{disc: true, x: b.moonX, y: b.moonY, w: b.moonR, clr: matLinen.licht}
+	out[n+1] = shape{disc: true, x: b.moonX - 22*b.k, y: b.moonY - 12*b.k, w: 50 * b.k, clr: colNight}
 }
 
-// disc zeichnet eine Scheibe mit Mittelpunkt (x, y) und Radius rad in clr (vormultipliziert).
+// backdrop zeichnet den Hintergrund ins Fenster g; danach gilt wieder FilterNearest für die übrigen Zeichnungen.
+func (p *painter) backdrop(dst *ebiten.Image, g geom) {
+	var s [backdropShapes]shape
+	backdropOf(g).shapes(&s)
+	for i := range s {
+		p.op.Filter = s[i].filter()
+		if s[i].disc {
+			p.disc(dst, s[i].x, s[i].y, s[i].w, s[i].clr)
+		} else {
+			p.rect(dst, s[i].x, s[i].y, s[i].w, s[i].h, s[i].clr)
+		}
+	}
+	p.op.Filter = ebiten.FilterNearest
+}
+
+// disc zeichnet eine Scheibe mit Mittelpunkt (x, y) und Radius rad in clr (vormultipliziert) mit dem gesetzten Filter.
 func (p *painter) disc(dst *ebiten.Image, x, y, rad float64, clr color.RGBA) {
 	if p.round == nil {
 		p.round = ebiten.NewImage(discPx, discPx)
@@ -92,7 +128,5 @@ func (p *painter) disc(dst *ebiten.Image, x, y, rad float64, clr color.RGBA) {
 	p.op.GeoM.Translate(x-rad, y-rad)
 	p.op.ColorScale.Reset()
 	p.op.ColorScale.ScaleWithColor(clr)
-	p.op.Filter = ebiten.FilterLinear
 	dst.DrawImage(p.round, &p.op)
-	p.op.Filter = ebiten.FilterNearest
 }

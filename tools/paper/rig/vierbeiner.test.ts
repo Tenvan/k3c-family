@@ -10,7 +10,10 @@ import { box } from '../schema/form';
 import { anwenden } from '../render/matrix';
 import { ladeStil } from '../render/stil';
 import { ausgaben } from '../render/stufen';
-import { vierbeinerBild } from './vierbeinerBild';
+import { beinpfad } from './beinpfad';
+import { gangPose } from './gangarten';
+import { gangartVon, vierbeinerBild } from './vierbeinerBild';
+import { animationVon } from '../render/pose';
 
 const SPECS = join(import.meta.dirname, '../fixtures/specs');
 const pferd = JSON.parse(readFileSync(join(SPECS, 'pferd.paper.json'), 'utf8')) as Spec;
@@ -46,6 +49,18 @@ describe('Vierbeiner', { timeout: 60_000 }, () => {
     const svg = vierbeinerBild(pferd, galopp, kontext).frames[0].svg;
     const fell = stil.materialien['fell-fuchs'].schatten;
     expect(svg.indexOf(`fill="${fell}" filter="url(#ds)"`)).toBeLessThan(svg.indexOf(stil.einzeltoene.huf));
+  });
+
+  it('frame --ohne oberbein-<b>/unterbein-<b> nimmt den Beinpfad dieses Beins, andere Beine bleiben (B-851/AC-01)', () => {
+    const anim = animationVon(pferd, 'galopp'), p = gangPose(pferd, gangartVon(anim, 'galopp'), 0);
+    const pfad = (b: 'vn' | 'hf') => beinpfad(pferd, b, p.winkel, stil);
+    const voll = vierbeinerBild(pferd, galopp, kontext).frames[0].svg;
+    expect(voll).toContain(pfad('vn'));
+    for (const ohne of ['oberbein-vn', 'unterbein-vn']) {
+      const svg = vierbeinerBild(pferd, galopp, { ...kontext, beinOhne: [ohne] }).frames[0].svg;
+      expect(svg, ohne).not.toContain(pfad('vn'));
+      expect(svg, ohne).toContain(pfad('hf'));
+    }
   });
 
   it('Rahmen in Welt-Einheiten: rahmen · massstab, Pixel wie der Spec-Rahmen', () => {

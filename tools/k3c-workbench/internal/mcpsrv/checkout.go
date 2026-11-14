@@ -20,9 +20,10 @@ import (
 const checkoutArg = "checkout"
 
 // takesCheckout: Tools mit dem Argument checkout im Schema.
-// Asset-Tools (paper-mcp.md › 1) nehmen checkout immer, auch die lesenden.
+// Asset-Tools (paper-mcp.md › 1) nehmen checkout immer, auch die lesenden; console_tail wie check_run (B-855).
 func takesCheckout(tool string) bool {
-	return writeTools[tool] || tool == "check_run" || tool == "sim_test" || strings.HasPrefix(tool, "assets_")
+	return writeTools[tool] || tool == "check_run" || tool == "console_tail" || tool == "sim_test" ||
+		strings.HasPrefix(tool, "assets_")
 }
 
 // withCheckout ergänzt das aus In abgeleitete Schema um checkout. Der Handler sieht das Feld nie (splitCheckout).

@@ -10,8 +10,13 @@ import (
 )
 
 // gitRepo legt mit git ein Repo des Spiels an und hängt die Worktrees unter den relativen Pfaden wts an (B-388).
+// Mit -short übersprungen: Repo, Worktrees und je Tool-Aufruf ein git worktree list kosten unter Windows 2 s und mehr
+// je Test; voller Lauf in check:dev (B-619, B-830).
 func gitRepo(t *testing.T, wts ...string) (main string, paths []string) {
 	t.Helper()
+	if testing.Short() {
+		t.Skip("Test mit echtem Git-Repo und Worktrees, läuft ohne -short (B-619, B-830)")
+	}
 	if _, err := exec.LookPath("git"); err != nil {
 		t.Skip("git fehlt")
 	}
@@ -68,6 +73,7 @@ func section(text, checkout string) map[string]any {
 
 // AC-01: checkout (Name oder Pfad) gilt vor dem Header; geschrieben wird nur im genannten Worktree.
 func TestCheckoutVorHeader(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	main, wts := gitRepo(t, ".claude/worktrees/wt-a")
 	logs := &lockedLog{}
 	s := New(Config{Root: main, Version: "test", Log: slog.New(slog.NewJSONHandler(logs, nil))})
@@ -104,6 +110,7 @@ func TestCheckoutVorHeader(t *testing.T) {
 
 // AC-02: Unbekannter Name, Pfad außerhalb und mehrdeutiger Name werden abgelehnt, ohne zu schreiben; die Meldung nennt die Worktrees.
 func TestCheckoutUngueltig(t *testing.T) {
+	t.Parallel()
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
 	}
@@ -131,6 +138,7 @@ func TestCheckoutUngueltig(t *testing.T) {
 
 // check_run nimmt checkout; Lese-Tools kennen es nicht (Schema lehnt ab, Hinweis nennt die Parameter).
 func TestCheckoutNurBeiSchreibendenTools(t *testing.T) {
+	t.Parallel()
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
 	}

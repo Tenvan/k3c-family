@@ -49,8 +49,8 @@ func TestStudioLeseBindings(t *testing.T) {
 func TestStudioGameOpenOhneClientNenntBuild(t *testing.T) {
 	app := &App{root: studioRoot(t)}
 	t.Cleanup(app.closeStudio)
-	if _, err := app.StudioGameOpen("abc"); err == nil || !strings.Contains(err.Error(), "task build") {
-		t.Fatalf("ohne dist/: %v", err)
+	if _, err := app.StudioGameOpen("abc"); err == nil || !strings.Contains(err.Error(), "task native:game:build") {
+		t.Fatalf("ohne native EXE: %v", err) // B-847
 	}
 }
 

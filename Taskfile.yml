@@ -158,9 +158,16 @@ tasks:
     deps: [lint, typecheck, test]
 
   check:go:
-    desc: Go-Tests und golangci-lint (nacheinander wegen Wanduhr-Tests, B-284; Race-Detector getrennt in check:race, B-518)
+    desc: Go-Tests ohne Sim-, Balance- und Lasttest-Pakete (Sperre, CHECK_SIM=1 nimmt sie mit, B-832) und golangci-lint (nacheinander wegen Wanduhr-Tests, B-284; Race-Detector getrennt in check:race, B-518)
+    # Die Paketliste kommt aus tools/checkdiff › simDirs (eine Quelle, ohne grep und tr, die dem Runner der Workbench fehlen);
+    # scheitert sie, bricht check:go ab, statt auf ./... zurückzufallen.
+    vars:
+      CHECK_GO_PKGS:
+        sh: go run ./tools/checkdiff -gopkgs
     cmds:
       - task: go:test
+        vars:
+          GO_PKGS: '{{.CHECK_GO_PKGS | default "./paketliste-fehlt"}}'
       - task: go:lint
 
   check:race:

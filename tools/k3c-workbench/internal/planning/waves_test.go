@@ -92,6 +92,7 @@ func wavesRepo(t *testing.T) string {
 // B-783/AC-01: Abhängigkeit (A1.2 nach A1.1), gleiche Sperre (B1.1 neben A1.1), überlappender Bereich (C1.1 unter
 // tools/a/**), volle Plätze (B-002) und Knoten ohne Welle mit Grund.
 func TestWavesAbhaengigkeitBereichSperre(t *testing.T) {
+	t.Parallel()
 	out := must(t)(Waves(wavesRepo(t), WavesFilter{}))
 	want := []string{
 		"Arbeitswellen: 1 in Arbeit, 7 eingeplant in 3 Wellen, 3 in keiner Welle · 4 Plätze",
@@ -111,6 +112,7 @@ func TestWavesAbhaengigkeitBereichSperre(t *testing.T) {
 
 // Filter grenzen nur die Anzeige ein; slots außerhalb 1–4 lehnt das Tool ab.
 func TestWavesFilterUndPlaetze(t *testing.T) {
+	t.Parallel()
 	root := wavesRepo(t)
 	out := must(t)(Waves(root, WavesFilter{Project: "aaa"}))
 	checkText(t, out, []string{"A1.1", "Anzeige gefiltert"}, []string{"C1.2", "- B1.1"})
@@ -122,6 +124,7 @@ func TestWavesFilterUndPlaetze(t *testing.T) {
 }
 
 func TestPlanSpecUndGlobs(t *testing.T) {
+	t.Parallel()
 	p := parsePlanSpec(rules("`a/**`, `docs/glossar.md`, `b.go`", "B-1, SP12.3, irgendwas", "–", "M", "`exe`, golden"))
 	if strings.Join(p.Area, " ") != "a/** b.go" || strings.Join(p.Deps, " ") != "B-1 SP12.3" ||
 		strings.Join(p.BadDeps, " ") != "irgendwas" || p.Needs != "–" || p.Size != "M" || strings.Join(p.Locks, " ") != "exe golden" {

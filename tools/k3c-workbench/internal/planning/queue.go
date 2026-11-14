@@ -41,14 +41,8 @@ func Queue(root string, f QueueFilter) (string, error) {
 	var accept []queueItem
 	w.queueDocs(&release, &decide, &accept)
 	for _, sp := range w.d.Sprints {
-		if sp.Status != "aktiv" {
-			continue
-		}
-		for _, x := range sp.Sessions {
-			if (x.Status == "offen" || x.Status == "in Arbeit") && x.Agent != "autonom" {
-				accept = append(accept, queueItem{deviceOf(x.Text), fmt.Sprintf("- %s · %s (Sprint %s, %s, Agent %s)",
-					x.Nr, x.Titel, sp.ID, x.Status, firstOf(x.Agent, "?"))})
-			}
+		if sp.Status == "aktiv" {
+			accept = append(accept, humanItems(sp)...)
 		}
 	}
 	want := normDevice(f.Device)
@@ -57,6 +51,19 @@ func Queue(root string, f QueueFilter) (string, error) {
 		release, decide = nil, nil
 	}
 	return queueText(release, decide, accept, f.Device != ""), nil
+}
+
+// humanItems sind die offenen oder laufenden Sessions eines Sprints, die nicht autonom sind, mit ihrem Gerät
+// (plan_queue und Fahrplan „Offen am Gerät“, B-842).
+func humanItems(sp Sprint) []queueItem {
+	var out []queueItem
+	for _, x := range sp.Sessions {
+		if (x.Status == "offen" || x.Status == "in Arbeit") && x.Agent != "autonom" {
+			out = append(out, queueItem{deviceOf(x.Text), fmt.Sprintf("- %s · %s (Sprint %s, %s, Agent %s)",
+				x.Nr, x.Titel, sp.ID, x.Status, firstOf(x.Agent, "?"))})
+		}
+	}
+	return out
 }
 
 // queueDocs sammelt Tickets und Sprints mit `Braucht 🧑` ≠ `–`.

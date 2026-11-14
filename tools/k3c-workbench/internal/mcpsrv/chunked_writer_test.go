@@ -14,6 +14,7 @@ import (
 // Regression: Das 202 auf notifications/initialized muss von Anfang an chunked und abgeschlossen sein, sonst hängt
 // Claude Code (siehe forceChunked).
 func TestBenachrichtigungAntwortIstChunkedAbgeschlossen(t *testing.T) {
+	t.Parallel()
 	s := New(Config{Version: "test"})
 	if err := s.Start(); err != nil {
 		t.Fatal(err)

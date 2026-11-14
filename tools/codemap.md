@@ -6,7 +6,6 @@ Entwickler-Werkzeuge außerhalb des Spiels (Build-Time-CLIs, Desktop-Tools, Clau
 ## Design
 | Ordner | Rolle |
 |--------|-------|
-| [`atlas/`](atlas/codemap.md) | Build-Time-CLI: packt Sprite-Frames aus `data/sprites.json` zu Atlas-PNGs und Phaser-`atlas.json` |
 | [`k3c-workbench/`](k3c-workbench/codemap.md) | Wails-Desktop-Tool mit MCP-Server: Prüfläufe, Dienste, Logs, Planung, Balancing |
 | [`k3c-studio/`](k3c-studio/codemap.md) | Asset-Studio als eigenes Wails-Fenster (Backend `k3c-studio/backend`, Frontend, eingebundene Engine; keine Seite des Spielservers, Entscheidung 004): Grafik, Sound, Monarch, Gegner, Gebäude-Planer, Welten Editor (B-459, B-507) |
 | [`k3c-starter/`](k3c-starter/codemap.md) | Windows-Starter (Wails-Fenster): startet `bin/k3c-server`, zeigt Status und Adressen im Heimnetz (B-041) |

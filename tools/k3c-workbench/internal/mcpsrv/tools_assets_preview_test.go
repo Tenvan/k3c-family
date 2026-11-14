@@ -66,6 +66,7 @@ func callResult(t *testing.T, cs *mcp.ClientSession, name string, args any) *mcp
 
 // MC1/AC-03: assets_preview liefert ein Bild image/png plus Text mit Teil-Boxen.
 func TestAssetsPreviewBild(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	for anim, fixture := range map[string]string{"": "monarch-idle-0.png", "reiten": "monarch-galopp-0.png"} {
 		args := map[string]any{"id": "monarch"}
@@ -91,6 +92,7 @@ func TestAssetsPreviewBild(t *testing.T) {
 }
 
 func TestAssetsPreviewFehler(t *testing.T) {
+	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	cs := connect(t, New(Config{Version: "test", Root: paperRepo(t)}))
 	for args, want := range map[string]string{
 		`{"id":"monarch","animation":"flug"}`: "idle, lauf, reiten",
@@ -119,5 +121,22 @@ func TestAssetsPreviewBasis(t *testing.T) {
 	}
 	if text := res.Content[1].(*mcp.TextContent).Text; !strings.Contains(text, "monarch · idle · Frame 0 · Basis HEAD~1 · ") {
 		t.Errorf("Text:\n%s", text)
+	}
+}
+
+// B-709: assets_preview reicht die Boxen reittier:* der echten CLI durch (nach den Teilen der Spec, sortiert).
+func TestAssetsPreviewReittierBoxen(t *testing.T) {
+	root := paperRepo(t)
+	t.Setenv("K3C_PAPER_CLI", filepath.Join(repoWurzel(t), "tools", "paper", "bin", "paper.ts"))
+	cs := connect(t, New(Config{Version: "test", Root: root}))
+	res := callResult(t, cs, "assets_preview", map[string]any{"id": "monarch", "animation": "reiten"})
+	text := res.Content[len(res.Content)-1].(*mcp.TextContent).Text
+	if res.IsError || !regexp.MustCompile(`· reittier:[a-z-]+ \d+,\d+,\d+,\d+`).MatchString(text) {
+		t.Errorf("Reittier-Boxen fehlen:\n%s", text)
+	}
+	b := bildErgebnis{teile: map[string][]int{"kopf": {1, 2, 3, 4}, "reittier:rumpf": {5, 6, 7, 8}, "reittier:bein-v": {9, 9, 9, 9}, "rumpf": {0, 0, 1, 1}, "fremd": {1, 1, 1, 1}}}
+	got := boxReihenfolge([]byte(`{"teile":[{"id":"rumpf"},{"id":"kopf"}]}`), b.teile)
+	if strings.Join(got, ",") != "rumpf,kopf,reittier:bein-v,reittier:rumpf" {
+		t.Errorf("Reihenfolge: %v", got)
 	}
 }

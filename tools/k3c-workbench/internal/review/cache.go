@@ -63,7 +63,9 @@ func neueQuelle(pfad string, spec, stil []byte, basis bool, specs []string, lies
 	return q, err
 }
 
-// reittiere liefert die Reittier-IDs aus animationen[*].reittier.
+// Reittiere liefert die Reittier-IDs aus animationen[*].reittier (sortiert, ohne Doppelte).
+func Reittiere(spec []byte) []string { return reittiere(spec) }
+
 func reittiere(spec []byte) []string {
 	var s struct {
 		Animationen map[string]struct{ Reittier string } `json:"animationen"`
@@ -220,7 +222,7 @@ func Bild(ctx context.Context, r Renderer, root string, q Quelle, animation stri
 	if g, ok := ausCache(png, meta); ok {
 		return g, nil
 	}
-	spec, err := q.SpecDatei(root, r)
+	spec, stil, err := q.schnappschuss(root, r)
 	if err != nil {
 		return Gerendert{}, err
 	}
@@ -228,7 +230,7 @@ func Bild(ctx context.Context, r Renderer, root string, q Quelle, animation stri
 	if err != nil {
 		return Gerendert{}, err
 	}
-	a, err := r.Frame(ctx, spec, animation, frame, variante, tmp)
+	a, err := r.Frame(ctx, spec, stil, animation, frame, variante, tmp) // Stil des Stands, beim Vorher-Bild der Basis (B-705)
 	if err == nil {
 		err = uebernehme(tmp, png)
 	}

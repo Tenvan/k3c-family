@@ -166,8 +166,23 @@ func TestCLIPfadAusUmgebung(t *testing.T) {
 		t.Errorf("Umgebung: %+v", c)
 	}
 	t.Setenv("K3C_PAPER_CLI", "")
-	if c := NewCLI("R"); c.Skript != filepath.Join("R", "tools", "paper", "bin", "paper.ts") {
+	// B-706: gemeinsame Anbindung mit internal/review, ohne paper.ts die Attrappe.
+	root := t.TempDir()
+	if c := NewCLI(root); c.Skript != filepath.Join(root, "tools", "paper", "fixtures", "cli-stub.ts") {
+		t.Errorf("Rückfall Attrappe: %+v", c)
+	}
+	schreibe(t, root, "tools/paper/bin/paper.ts", "")
+	if c := NewCLI(root); c.Skript != filepath.Join(root, "tools", "paper", "bin", "paper.ts") {
 		t.Errorf("Standard: %+v", c)
+	}
+}
+
+// B-706: fehlt bun im PATH, nennt der Fehler requirements.md.
+func TestCLIOhneBun(t *testing.T) {
+	t.Setenv("PATH", t.TempDir())
+	err := CLI{Root: t.TempDir(), Skript: "x.ts"}.Validate(context.Background(), "x.paper.json")
+	if err == nil || !strings.Contains(err.Error(), "requirements.md") {
+		t.Errorf("ohne bun: %v", err)
 	}
 }
 

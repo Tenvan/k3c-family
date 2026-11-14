@@ -26,6 +26,7 @@ func testStats() *stats {
 }
 
 func TestZaehlerJeTool(t *testing.T) {
+	t.Parallel()
 	st := testStats()
 	st.end(st.begin("a", `{}`), outcome{ok: true})
 	st.end(st.begin("a", `{}`), outcome{err: "kaputt"})
@@ -42,6 +43,7 @@ func TestZaehlerJeTool(t *testing.T) {
 
 // Der Zeitpunkt des letzten Fehlers je Tool: leer ohne Fehler, sonst der des jüngsten fehlgeschlagenen Aufrufs.
 func TestLetzterFehlerJeTool(t *testing.T) {
+	t.Parallel()
 	st := testStats()
 	st.end(st.begin("a", `{}`), outcome{err: "erster"})
 	st.end(st.begin("a", `{}`), outcome{ok: true})
@@ -58,6 +60,7 @@ func TestLetzterFehlerJeTool(t *testing.T) {
 }
 
 func TestParallelUndFolge(t *testing.T) {
+	t.Parallel()
 	st := testStats()
 	first := st.begin("a", "")
 	second := st.begin("b", "")
@@ -79,6 +82,7 @@ func TestParallelUndFolge(t *testing.T) {
 }
 
 func TestRingHaelt200NeuesteZuerst(t *testing.T) {
+	t.Parallel()
 	st := testStats()
 	for range callRingSize + 5 {
 		st.end(st.begin("a", ""), outcome{ok: true})
@@ -97,6 +101,7 @@ func TestRingHaelt200NeuesteZuerst(t *testing.T) {
 }
 
 func TestRueckrufeUndKuerzen(t *testing.T) {
+	t.Parallel()
 	st := testStats()
 	var started, ended []Call
 	st.onStart = func(c Call) { started = append(started, c) }
@@ -115,6 +120,7 @@ func TestRueckrufeUndKuerzen(t *testing.T) {
 }
 
 func TestFormatUptime(t *testing.T) {
+	t.Parallel()
 	cases := map[time.Duration]string{
 		30 * time.Second: "< 1 min", 13 * time.Minute: "13 min",
 		133 * time.Minute: "2 h 13 min", 76 * time.Hour: "3 T 4 h",

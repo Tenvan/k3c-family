@@ -137,7 +137,7 @@ func (sc *mainScreen) fill(lang string) {
 	p.reset(tr(lang, txtTitle))
 	p.sub = versionText(lang)
 	for i := range mainCount {
-		r := row{label: tr(lang, mainLabels[i]), value: tr(lang, mainSubs[i]), mat: mainMats[i], off: sc.off(i)}
+		r := row{label: tr(lang, mainLabels[i]), value: tr(lang, mainSubs[i]), mat: mainMats[i], off: sc.off(i), art: mainArt[i]}
 		if i == mainContinue {
 			r.value = tr(lang, txtContinueNone)
 			if !sc.listed {

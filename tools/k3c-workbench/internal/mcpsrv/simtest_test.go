@@ -65,6 +65,7 @@ func waitDone(t *testing.T, s *Server, id string) string {
 }
 
 func TestSimTestOfflineBewertetZiele(t *testing.T) {
+	t.Parallel()
 	s, _ := fakeServer(t, fakeBalance(t, 2))
 	id := start(t, s, simTestIn{Seeds: 3})
 	out := waitDone(t, s, id)
@@ -83,6 +84,7 @@ func TestSimTestOfflineBewertetZiele(t *testing.T) {
 }
 
 func TestSimTestStartSofortUndStop(t *testing.T) {
+	t.Parallel()
 	blocked := make(chan struct{})
 	s, _ := fakeServer(t, func(runSpec) runResult { <-blocked; return runResult{} })
 	s.run = func(ctx context.Context, _ runSpec) runResult { <-ctx.Done(); return runResult{exit: -1} }
@@ -103,6 +105,7 @@ func TestSimTestStartSofortUndStop(t *testing.T) {
 }
 
 func TestSimTestStatusHoechstensZehnZeilen(t *testing.T) {
+	t.Parallel()
 	s, _ := fakeServer(t, fakeBalance(t, 20))
 	out := waitDone(t, s, start(t, s, simTestIn{}))
 	if n := len(strings.Split(out, "\n")); n > maxStatusLines {
@@ -114,6 +117,7 @@ func TestSimTestStatusHoechstensZehnZeilen(t *testing.T) {
 }
 
 func TestSimTestHoechstensZweiLaeufe(t *testing.T) {
+	t.Parallel()
 	s, _ := fakeServer(t, nil)
 	s.run = func(ctx context.Context, _ runSpec) runResult { <-ctx.Done(); return runResult{} }
 	a, b := start(t, s, simTestIn{}), start(t, s, simTestIn{})

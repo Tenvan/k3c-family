@@ -17,6 +17,7 @@ func fakeServer(t *testing.T, run func(runSpec) runResult) (*Server, *atomic.Int
 	t.Helper()
 	s := New(Config{Version: "test", Root: t.TempDir()})
 	var started atomic.Int32
+	s.taskVersion = func(context.Context) (string, error) { return "3.54.0", nil } // unabhängig vom installierten Task
 	s.run = func(_ context.Context, spec runSpec) runResult {
 		started.Add(1)
 		return run(spec)
@@ -25,6 +26,7 @@ func fakeServer(t *testing.T, run func(runSpec) runResult) (*Server, *atomic.Int
 }
 
 func TestCheckRunLehntAbOhneProzessstart(t *testing.T) {
+	t.Parallel()
 	s, started := fakeServer(t, func(runSpec) runResult { return runResult{} })
 	ctx := context.Background()
 	cases := []checkIn{
@@ -33,7 +35,7 @@ func TestCheckRunLehntAbOhneProzessstart(t *testing.T) {
 		{Target: "task:test", Pattern: "--watch"},
 		{Target: "go:test", Pattern: "-v"},
 	}
-	for _, bad := range []string{";", "&", "|", "$", "`", `"`, "'", "<", ">", "%", "^", " ", "a b", strings.Repeat("a", 101)} {
+	for _, bad := range []string{";", "&", "`", `"`, "'", "<", ">", "%", `\`, " ", "a b", strings.Repeat("a", 101)} {
 		cases = append(cases, checkIn{Target: "task:test", Pattern: "x" + bad})
 	}
 	for _, in := range cases {
@@ -50,6 +52,7 @@ func TestCheckRunLehntAbOhneProzessstart(t *testing.T) {
 }
 
 func TestCheckRunEinLaufJeZiel(t *testing.T) {
+	t.Parallel()
 	release := make(chan struct{})
 	s, started := fakeServer(t, func(runSpec) runResult { <-release; return runResult{} })
 	ctx := context.Background()
@@ -68,6 +71,7 @@ func TestCheckRunEinLaufJeZiel(t *testing.T) {
 }
 
 func TestCheckRunGibtSperreNachPanikFrei(t *testing.T) {
+	t.Parallel()
 	var calls atomic.Int32
 	s, _ := fakeServer(t, func(runSpec) runResult {
 		if calls.Add(1) == 1 {
@@ -85,6 +89,7 @@ func TestCheckRunGibtSperreNachPanikFrei(t *testing.T) {
 }
 
 func TestCheckRunMusterUndKonsole(t *testing.T) {
+	t.Parallel()
 	var got runSpec
 	s, _ := fakeServer(t, func(spec runSpec) runResult {
 		got = spec
@@ -119,6 +124,7 @@ func sample(t *testing.T, name string) []string {
 }
 
 func TestVerdichtungEchterLaeufe(t *testing.T) {
+	t.Parallel()
 	cases := []struct {
 		target string
 		sample string
@@ -150,6 +156,7 @@ func TestVerdichtungEchterLaeufe(t *testing.T) {
 }
 
 func TestVerdichtungOhneMusterUndDeckel(t *testing.T) {
+	t.Parallel()
 	target, _ := findTarget("task:test")
 	var lines []string
 	for i := range 30 {

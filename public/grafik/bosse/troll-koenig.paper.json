@@ -119,13 +119,13 @@
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [0, -52],
           "radius": 3.2
         },
         {
           "art": "punkt",
-          "material": "stein",
+          "material": "eisen",
           "mitte": [0.7, -52.7],
           "radius": 1.3,
           "ton": "licht"

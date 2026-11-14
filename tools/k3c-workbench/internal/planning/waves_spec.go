@@ -31,7 +31,7 @@ var (
 	rePlanID   = regexp.MustCompile(`^(B-\d+|[A-Z]+\d+(?:\.\d+[a-z]?)?)$`)
 	reBacktick = regexp.MustCompile("`([^`]+)`")
 	// collectFiles berührt fast jede Session; sie zählen nicht zum Bereich (arbeitsweise.md › Sammeldateien).
-	collectFiles = []string{"docs/backlog/README.md", "docs/sprints/README.md", "docs/projekte/README.md", "docs/glossar.md"}
+	collectFiles = []string{"docs/backlog/README.md", "docs/backlog/archiv/README.md", "docs/sprints/README.md", "docs/projekte/README.md", "docs/glossar.md"}
 )
 
 // parsePlanSpec liest die Planungsangaben aus dem Abschnitt „Regeln und Einschränkungen“.
@@ -77,15 +77,18 @@ func sectionLines(text, head string) []string {
 	return out
 }
 
-// allowedFiles ist die Dateimenge einer Session: je Stichpunkt unter „Erlaubte Dateien“ der erste Pfad in Backticks.
+// allowedFiles ist die Dateimenge einer Session: je Stichpunkt unter „Erlaubte Dateien“ alle Pfade in Backticks
+// (`a/**`, `b.go`); Backticks ohne `/` und `.` (z. B. „nur über `plan_*`“) sind kein Pfad.
 func allowedFiles(text string) []string {
 	var out []string
 	for _, l := range sectionLines(text, "## Erlaubte Dateien") {
 		if !strings.HasPrefix(strings.TrimSpace(l), "- ") {
 			continue
 		}
-		if m := reBacktick.FindStringSubmatch(l); m != nil {
-			out = append(out, parseGlobs(m[1])...)
+		for _, m := range reBacktick.FindAllStringSubmatch(l, -1) {
+			if strings.ContainsAny(m[1], "/.") && !strings.Contains(m[1], " ") {
+				out = append(out, parseGlobs(m[1])...)
+			}
 		}
 	}
 	return out
@@ -156,20 +159,22 @@ func globPrefix(g string) (prefix string, wild bool) {
 	return g, strings.HasSuffix(g, "/")
 }
 
-// globsOverlap: Zwei Globs überlappen, wenn ein fester Teil Präfix des anderen ist; zwei feste Pfade nur bei Gleichheit.
+// globsOverlap: Zwei Globs überlappen, wenn ein fester Teil Präfix des anderen ist. Ein fester Pfad gilt zugleich als
+// Ordner (B-839): `tools/paper` überlappt mit `tools/paper/cli/**`, aber nicht mit `tools/paper2/**`.
 func globsOverlap(a, b string) bool {
-	pa, wa := globPrefix(a)
-	pb, wb := globPrefix(b)
-	switch {
-	case !wa && !wb:
-		return pa == pb
-	case wa && wb:
-		return strings.HasPrefix(pa, pb) || strings.HasPrefix(pb, pa)
-	case wa:
-		return strings.HasPrefix(pb, pa)
-	default:
-		return strings.HasPrefix(pa, pb)
+	if a == b {
+		return true
 	}
+	pa, pb := asFolder(globPrefix(a)), asFolder(globPrefix(b))
+	return strings.HasPrefix(pa, pb) || strings.HasPrefix(pb, pa)
+}
+
+// asFolder macht aus einem festen Pfad ohne Platzhalter den Ordner-Präfix `pfad/`; bei Globs bleibt der feste Teil.
+func asFolder(prefix string, wild bool) string {
+	if wild {
+		return prefix
+	}
+	return prefix + "/"
 }
 
 // areaOverlap nennt das erste überlappende Paar zweier Bereiche; ok = false ohne Überlappung.

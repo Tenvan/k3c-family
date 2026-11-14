@@ -2,7 +2,7 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { checkTemplate, DOCS, meta, none, read, section, sessionRows, sprints, title, waitsForDevice } from './planningDocs';
+import { checkTemplate, DOCS, isTicketFile, meta, none, read, section, sessionRows, sprints, title, waitsForDevice } from './planningDocs';
 
 type Project = { id: string; status: string; rang: string; sprints: string[] };
 type SprintInfo = { id: string; projekt: string; domains: string[]; sessionDomains: string[] };
@@ -116,7 +116,7 @@ const sessions: SessionInfo[] = sprints.flatMap(({ path }) =>
     const f = meta(read(`${path}/${r.file}`));
     return { id: r.id, domain: f.Domäne, status: r.status, lane: f.Lane };
   }));
-const ticketDir = (folder: string) => readdirSync(join(DOCS, 'backlog', folder)).filter((f) => /^B-\d{3}-.+\.md$/.test(f))
+const ticketDir = (folder: string) => readdirSync(join(DOCS, 'backlog', folder)).filter(isTicketFile)
   .map((f) => `backlog/${folder ? folder + '/' : ''}${f}`);
 
 describe('Projekte', () => {

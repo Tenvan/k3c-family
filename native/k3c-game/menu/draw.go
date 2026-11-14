@@ -35,6 +35,7 @@ type row struct {
 	label, value string
 	mat          material
 	off          bool
+	art          string // Illustration `gruppe/id` (B-818), leer = nur Text
 }
 
 // stale meldet, ob die Texte für Version ver und Sprache lang neu gebaut werden müssen, und merkt sich beides.
@@ -63,6 +64,7 @@ func (p *page) add(r row) {
 // Schriftdatei) wird über ein Zwischenbild vergrößert und eingefärbt. Bilder und Optionen werden wiederverwendet.
 type painter struct {
 	font    *art.Font
+	lib     *art.Library // Illustrationen der Karten (B-818); nil = nur Text
 	pixel   *ebiten.Image
 	round   *ebiten.Image // Scheibe (Mond des Hintergrunds)
 	scratch *ebiten.Image
@@ -168,9 +170,13 @@ func (p *painter) card(dst *ebiten.Image, g geom, i int, rw *row, selected bool)
 	if rw.off {
 		clr = colLineOff
 	}
+	lx := x + 3*in
+	if ah := h - 2*in; p.artBox(dst, rw.art, x+2*in, y+in, 1.4*ah, ah) {
+		lx += 1.4*ah + in // Text rechts neben der Illustration
+	}
 	_, th := p.measure(rw.label, g.rowPx)
 	ty := y + (h-th)/2
-	p.text(dst, rw.label, x+3*in, ty, g.rowPx, clr)
+	p.text(dst, rw.label, lx, ty, g.rowPx, clr)
 	vw, _ := p.measure(rw.value, g.rowPx)
 	p.text(dst, rw.value, x+w-3*in-vw, ty, g.rowPx, clr)
 }

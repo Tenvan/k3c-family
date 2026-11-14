@@ -77,6 +77,7 @@ func (p *fakePi) addr() string { return strings.TrimPrefix(p.URL, "http://") }
 
 // B-771/AC-01: logs_errors, logs_query und logs_stats lesen mit server den Dev-Endpunkt; die Antwort nennt die Quelle.
 func TestRemote_errorsQueryStats(t *testing.T) {
+	t.Parallel()
 	pi := newFakePi(t, 0, "")
 	s := logServer(t)
 	ctx := context.Background()
@@ -100,6 +101,7 @@ func TestRemote_errorsQueryStats(t *testing.T) {
 
 // B-771/AC-01: logs_services mit server listet die Dateien des Servers unter den Namen, die service erwartet.
 func TestRemote_services(t *testing.T) {
+	t.Parallel()
 	pi := newFakePi(t, 0, "")
 	text, err := logServer(t).logsSources(context.Background(), sourcesIn{Server: pi.addr()})
 	if err != nil || !strings.Contains(text, "Log k3c-server · 2,0 KB") || !strings.Contains(text, "Log k3c-client · 512 B") {
@@ -109,6 +111,7 @@ func TestRemote_services(t *testing.T) {
 
 // B-771/AC-03: server_status mit server zeigt Version, Laufzeit und Log-Status des entfernten Servers; Berichte lassen sich listen und lesen.
 func TestRemote_statusUndBerichte(t *testing.T) {
+	t.Parallel()
 	pi := newFakePi(t, 0, "")
 	s := logServer(t)
 	ctx := context.Background()
@@ -132,6 +135,7 @@ func TestRemote_statusUndBerichte(t *testing.T) {
 
 // B-771/AC-01: logs_since mit server reicht den Cursor an den Server, der nächste Cursor ist dessen X-Log-Size.
 func TestRemote_since(t *testing.T) {
+	t.Parallel()
 	pi := newFakePi(t, 0, "")
 	text, err := logServer(t).logsSince(context.Background(), sinceIn{Server: pi.addr(), Source: "k3c-server", Cursor: 500})
 	if err != nil || !strings.Contains(text, "Absturz im Raum") || !strings.Contains(text, "cursor=777") {
@@ -144,6 +148,7 @@ func TestRemote_since(t *testing.T) {
 
 // B-771/AC-02: Fehler nennen Adresse und Grund: 403 (Dev-Mode), 404 „Log aus“ (K3C_LOG_DIR), Weiterleitung, nicht erreichbar.
 func TestRemote_fehler(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	s := logServer(t)
 	for _, c := range []struct {
@@ -170,6 +175,7 @@ func TestRemote_fehler(t *testing.T) {
 
 // B-771/AC-02: Unbekannte Namen, fremde Adressen und lokale Dienste mit server werden abgelehnt, mit den gültigen Werten.
 func TestRemote_abgelehnt(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	s := logServer(t)
 	for _, bad := range []string{"evil.example.com:80", "8.8.8.8:80", "http://pi-gaming:8080", "unbekannt", "pi-gaming:0", "pi-gaming:99999"} {
@@ -206,6 +212,7 @@ func TestResolveRemote(t *testing.T) {
 
 // B-771 Review: Dateinamen vom Server werden nur aus der festen Liste übernommen; ein Name mit Pfad landet nie im Dateisystem.
 func TestRemote_boeserDateiname(t *testing.T) {
+	t.Parallel()
 	pi := newFakePi(t, 0, "")
 	pi.evilList = true
 	s := logServer(t)
@@ -223,6 +230,7 @@ func TestRemote_boeserDateiname(t *testing.T) {
 
 // B-771 Review: Ziffern-Hosts (Dezimal, Hex) sind keine Namen; der Dialer prüft die verbundene Adresse.
 func TestRemote_ziffernHostUndDialer(t *testing.T) {
+	t.Parallel()
 	for _, bad := range []string{"2130706433:8080", "134744072:80", "0x7f000001:80", "[::ffff:8.8.8.8]:80", "[2001:4860:4860::8888]:80"} {
 		if got, err := resolveRemote(bad); err == nil {
 			t.Errorf("%q ist erlaubt: %+v", bad, got)
@@ -252,6 +260,7 @@ func TestRemote_ungueltigerKurzname(t *testing.T) {
 
 // B-771 Review: logs_since ohne X-Log-Size ist ein Fehler (sonst fängt der Aufrufer bei 0 neu an), eine zu große Antwort auch.
 func TestRemote_cursorPflichtUndGroesse(t *testing.T) {
+	t.Parallel()
 	s := logServer(t)
 	ctx := context.Background()
 	pi := newFakePi(t, 0, "")
@@ -268,6 +277,7 @@ func TestRemote_cursorPflichtUndGroesse(t *testing.T) {
 
 // B-771 Review: Parallele Aufrufe auf denselben Server stören sich nicht (jeder Aufruf hat seinen eigenen Ordner) und räumen auf.
 func TestRemote_parallel(t *testing.T) {
+	t.Parallel()
 	pi := newFakePi(t, 0, "")
 	s := logServer(t)
 	var wg sync.WaitGroup

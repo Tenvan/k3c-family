@@ -49,7 +49,9 @@ func match(want, have string) bool { return want == "" || strings.EqualFold(want
 
 // unplanned: „–“ oder „ungeplant“ als Sprint-Filter meint Tickets ohne Sprint (leer oder „–“), wie der Schnellfilter
 // Ungeplant der Planungsseite (frontend/src/planning/planning.ts › QUICK).
-func unplanned(want string) bool { return want == "–" || want == "-" || strings.EqualFold(want, "ungeplant") }
+func unplanned(want string) bool {
+	return want == "–" || want == "-" || strings.EqualFold(want, "ungeplant")
+}
 
 // matchSprint vergleicht den Sprint eines Tickets mit dem Filter.
 func matchSprint(want, have string) bool {
@@ -98,13 +100,25 @@ func ticketList(d Data, f Filter, all []Ticket, always bool) []string {
 	var out []string
 	for _, t := range d.Tickets {
 		if match(f.Status, t.Status) && match(f.Domain, t.Domain) && matchSprint(f.Sprint, t.Sprint) && match(f.Projekt, t.Project) {
-			out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title))
+			out = append(out, fmt.Sprintf("%s %s %s %s %s %s %s · %s%s", t.Nr, t.Domain, t.Typ, t.Prio, t.Env, t.Status, t.Sprint, t.Title, relSuffix(t)))
 		}
 	}
 	if len(out) > 0 || always {
 		out = append([]string{countsLine(len(out), all)}, out...)
 	}
 	return out
+}
+
+// relSuffix nennt gesetzte Relationen hinter dem Titel: „→ B-1“ bei Duplikaten, „ersetzt B-2, B-3“.
+func relSuffix(t Ticket) string {
+	s := ""
+	if t.Duplicate != "" {
+		s += " → " + t.Duplicate
+	}
+	if len(t.Replaces) > 0 {
+		s += " · ersetzt " + strings.Join(t.Replaces, ", ")
+	}
+	return s
 }
 
 // projectLines: je Projekt `Rang Kürzel Status Sprints erledigt/gesamt · Titel` und die Sprints in Reihenfolge.
@@ -162,7 +176,7 @@ func archived(root string) []Ticket {
 			}
 		}
 	}
-	sort.Slice(out, func(i, j int) bool { return out[i].Nr < out[j].Nr })
+	sort.Slice(out, func(i, j int) bool { return ticketLess(out[i].Nr, out[j].Nr) })
 	return out
 }
 

@@ -62,6 +62,7 @@ func registerPlanning(s *Server) {
 			"Session: Status (auch verworfen), Domäne (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP; Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar), " +
 			"Lane (– oder Kurzname a-z, 0-9, -) und Modell (–, haiku, sonnet, opus, fable), beide auch in älteren Dateien ohne das Feld. " +
 			"Projekt: Status, Rang (die anderen rücken lückenlos), Sprints (neue Reihenfolge, kommagetrennt). " +
+			"Ticket-Relationen: Duplikat von (eine ID, setzt verworfen), Ersetzt (IDs, kommagetrennt); geprüft auf ID, Selbstverweis, Zyklus. " +
 			"Nutze es bei: Status, Prio oder andere Kopf-Felder ändern. Statt: Datei, Index und Fahrplan von Hand bearbeiten.",
 		Annotations: write,
 	}, func(ctx context.Context, in planSetIn) (string, error) {
@@ -93,6 +94,7 @@ func registerPlanning(s *Server) {
 	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Delete(s.ws(ctx).root, in.ID) })
 	registerGitHub(s)
 	registerPlanWaves(s)
+	registerPlanDigest(s)
 }
 
 // registerPlanRead sind die lesenden Planungs-Tools: Überblick, ein Dokument, nächste Session (B-518).
