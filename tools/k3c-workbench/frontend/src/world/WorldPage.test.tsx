@@ -4,7 +4,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
-import { LABELS, PAGES } from '../Header';
+import { ASSET_LABELS, ASSET_PAGES } from '../Header';
 import { WorldPage } from './WorldPage';
 
 // B-879/AC-01: Die Seite Welten-Editor zeigt mit dem Mock-Backend (Testlauf = Mock) die Welten, die Chunk-Vorschau und
@@ -42,9 +42,9 @@ const click = async (el: Element | null | undefined) => {
 };
 
 describe('Welten-Editor (B-879/AC-01)', () => {
-  it('ist eine Seite im Bereich Development', () => {
-    expect(PAGES).toContain('welten');
-    expect(LABELS.welten).toBe('Welten-Editor');
+  it('ist eine Seite im Bereich Studio', () => {
+    expect(ASSET_PAGES).toContain('welten');
+    expect(ASSET_LABELS.welten).toBe('Welten-Editor');
   });
 
   it('zeigt Welten-Liste, Chunk-Vorschau und Inspektor des gewählten Abschnitts', async () => {

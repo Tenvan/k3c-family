@@ -4,20 +4,21 @@ import { loadPref, savePref } from './lib/prefs';
 import { StatusBadge, Tip } from '@webkit/atoms';
 import { ChipSwitch, SwitchField } from '@webkit/molecules';
 
-export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring', 'balancing', 'welten'] as const;
+export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring'] as const;
 export type Page = (typeof PAGES)[number];
 
-export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring', balancing: 'Balancing', welten: 'Welten-Editor' };
+export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring' };
 
-/** Bereiche der Kopfleiste (Entscheidung 005 › 5): Development = die Seiten oben, Assets = nur Ansehen (WB1). */
+/** Bereiche der Kopfleiste (Entscheidung 005 › 5): Development = Werkzeuge der Entwicklung; Studio (Schlüssel `assets`) = alles,
+ *  was das fertige Spiel bearbeitet oder ansieht: Assets, Balancing, Welten-Editor (früher im Studio). */
 export const AREAS = ['development', 'assets'] as const;
 export type Area = (typeof AREAS)[number];
-export const AREA_LABELS: Record<Area, string> = { development: 'Development', assets: 'Assets' };
+export const AREA_LABELS: Record<Area, string> = { development: 'Development', assets: 'Studio' };
 
-/** Seiten des Bereichs Assets; Review ist die Startseite (RV1 füllt sie). */
-export const ASSET_PAGES = ['review', 'katalog', 'styleguide', 'sound', 'quellen'] as const;
+/** Seiten des Bereichs Studio; Review ist die Startseite (RV1 füllt sie). */
+export const ASSET_PAGES = ['review', 'katalog', 'styleguide', 'sound', 'quellen', 'balancing', 'welten'] as const;
 export type AssetPage = (typeof ASSET_PAGES)[number];
-export const ASSET_LABELS: Record<AssetPage, string> = { review: 'Review', katalog: 'Katalog', styleguide: 'Styleguide', sound: 'Sound', quellen: 'Quellen' };
+export const ASSET_LABELS: Record<AssetPage, string> = { review: 'Review', katalog: 'Katalog', styleguide: 'Styleguide', sound: 'Sound', quellen: 'Quellen', balancing: 'Balancing', welten: 'Welten-Editor' };
 
 type AnyPage = Page | AssetPage;
 
@@ -43,7 +44,7 @@ export function useNavigation() {
   const tabs = area === 'assets'
     ? { pages: ASSET_PAGES as readonly AnyPage[], labels: ASSET_LABELS as Record<AnyPage, string>, value: assetPage as AnyPage, onChange }
     : { pages: PAGES as readonly AnyPage[], labels: LABELS as Record<AnyPage, string>, value: page as AnyPage, onChange };
-  return { area, page, chooseArea, tabs };
+  return { area, page, assetPage, chooseArea, tabs };
 }
 
 interface Props {

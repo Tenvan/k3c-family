@@ -44,10 +44,11 @@ export function App() {
     savePref('app.mode', mode);
   }, [mode]);
 
-  // Dienste, Tasks, Git und Monitoring bleiben eingehängt (Zustand, laufende Ansichten), auch im Bereich Assets; Planung
+  // Dienste, Tasks, Git und Monitoring bleiben eingehängt (Zustand, laufende Ansichten), auch im Bereich Studio; Balancing ebenso (Bereich Studio); Planung
   // und MCP bauen sich bei jedem Wechsel neu auf und laden dabei frisch. forceMount hält den Inhalt, hidden und display
   // verbergen ihn.
   const shown = (v: Page) => nav.area === 'development' && nav.page === v;
+  const balancing = nav.area === 'assets' && nav.assetPage === 'balancing';
   const keep = (v: Page) => ({ forceMount: true as const, hidden: !shown(v), style: shown(v) ? undefined : { display: 'none' } });
 
   return (
@@ -73,8 +74,8 @@ export function App() {
       <Tabs.Content value="monitoring" {...keep('monitoring')}>
         <MonitoringPage active={shown('monitoring')} />
       </Tabs.Content>
-      <Tabs.Content value="balancing" {...keep('balancing')}>
-        <BalancingPage active={shown('balancing')} />
+      <Tabs.Content value="balancing" forceMount hidden={!balancing} style={balancing ? undefined : { display: 'none' }}>
+        <BalancingPage active={balancing} />
       </Tabs.Content>
       <Tabs.Content value="welten">
         <WorldPage />
