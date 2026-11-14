@@ -8,9 +8,9 @@
 - **Sprint:** WZ60
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-14 („sollte zuerst gefixt werden“)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
