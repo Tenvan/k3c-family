@@ -357,3 +357,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | PT5 | Abnahme-Läufe CU1 (B-836) | `erledigt/PT5-abnahme-cu1/` |
 | NG20 | Natives Spiel komplett nach dist (B-827) | `erledigt/NG20-native-build-dist/` |
 | WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | `erledigt/WZ45-asset-seiten-prompts-filter/` |
+| PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | `erledigt/PT6-asset-pakete-vorlage/` |
