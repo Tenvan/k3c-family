@@ -75,6 +75,10 @@ Koordinaten in **Spec-Einheiten**, Boden `y = 0`, Blick nach rechts, `y` wächst
   Gliedern (gleicher Ausschlag in Einheiten). Keyframe-Winkel der Spec bleiben unverändert.
 - **`reittier`:** `id` eines `vierbeiner`-Assets; beim Reiten gilt der Rahmen des Reittiers.
 - **`ebene`** (B-752): Reiter und Reittier getrennt rendern, der Client setzt sie nach `rahmen` zusammen (Reihenfolge hinten, Umhang + Reiter, vorn mit Zügeln). `reiter` am `figur` (braucht `reittier` und `gangart`): Umhang und Reiter; `hinten` und `vorn` am `vierbeiner` (brauchen `reiter` = id der Figur, deren Hand die Zügel hält, und `gangart`). Alle Ebenen teilen Koordinaten (Fußpunkt des Reittiers) und Pixel je Einheit, jede hat einen eigenen engen Rahmen mit Rand. Der Tausch der Spielerfarbe gilt nur für die Reiter-Ebene (Satteldecke ohne Spielerfarbe, 🧑 2026-11-08). Fehler: `ebene-angabe`.
+- **Varianten** (B-711, entschieden 2026-11-14): Der `tausch` einer Variante gilt für alle Lagen der Spec, beim Reiten
+  ohne `ebene` auch für das Reittier. `galopp@spieler2.png` des Monarchen zeigt die Satteldecke des Pferds also in der
+  Farbe von `spieler2` (`tools/paper/rig/reiten.ts` › `reitBild`). Reittiere brauchen dafür keine eigenen Varianten. Die
+  getrennten Ebenen (`ebene`, B-752) bleiben davon unberührt: Dort gilt der Tausch nur für die Reiter-Ebene.
 - **`massstab`:** Faktor Spec-Einheiten → Welt-Einheiten (Standard 1). Das Pferd steht in eigenen Einheiten mit `1.3`
   (wie `scale(1.3)` im Prototyp); Pivots und Beinbreiten gelten in Spec-Einheiten.
 - **`rahmen`:** Ausschnitt eines Frames in Spec-Einheiten; Frame-Breite = `round(hoehe_px · b / h)`.

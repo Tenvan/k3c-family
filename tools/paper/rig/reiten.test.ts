@@ -10,7 +10,7 @@ import { Abgelehnt } from '../render/fehler';
 import { ladeStil } from '../render/stil';
 import { lageSvg } from '../render/svg';
 import { ausgaben } from '../render/stufen';
-import { findeReittier, reitRahmen, reitSegmente, reitZustand, reittierHash } from './reiten';
+import { findeReittier, reitBild, reitRahmen, reitSegmente, reitZustand, reittierHash } from './reiten';
 
 const SPECS = join(import.meta.dirname, '../fixtures/specs');
 const lies = (id: string) => JSON.parse(readFileSync(join(SPECS, `${id}.paper.json`), 'utf8')) as Spec;
@@ -58,6 +58,17 @@ describe('Reiten', { timeout: 60_000 }, () => {
     expect(seg[3].svg).toContain('cx="57.6" cy="-96.2"');
     expect(seg[0].svg).not.toContain('cx="57.6" cy="-96.2"');
     expect(seg[4].svg).toContain(`stroke="${stil.materialien.leder.schatten}" stroke-width="1.3"`);
+  });
+
+  it('Variante tauscht auch die Satteldecke des Reittiers (B-711)', () => {
+    const blau = `fill="${stil.materialien.koenigsblau.basis}"`, gruen = `fill="${stil.materialien.smaragd.basis}"`;
+    const reitFrame = (variante?: string) => {
+      const a = variante ? { ...reiten, schluessel: `${reiten.animation}@${variante}`, variante } : reiten;
+      return reitBild(monarch, a, kontext).frames[0].svg;
+    };
+    expect(reitFrame()).toContain(blau);
+    expect(reitFrame('spieler2')).toContain(gruen);
+    expect(reitFrame('spieler2')).not.toContain(blau);
   });
 
   it('oberschenkel-h samt Kindern ist beim Reiten ausgeblendet', () => {
