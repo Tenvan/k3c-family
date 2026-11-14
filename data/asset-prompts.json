@@ -130,5 +130,29 @@
     "titel": "Lautstärke prüfen",
     "ort": "sound",
     "text": "Sound: Lautstärke von Slot `{slot}` prüfen ({datei})"
+  },
+  {
+    "id": "quelle-lizenz-pruefen",
+    "titel": "Lizenz prüfen",
+    "ort": "datei",
+    "text": "Quellen: Lizenz von `{datei}` prüfen (Pack {pack}, {lizenz})"
+  },
+  {
+    "id": "quelle-credit",
+    "titel": "Credit nachtragen",
+    "ort": "datei",
+    "text": "Quellen: Credit für `{datei}` nachtragen (Pack {pack}, {lizenz})"
+  },
+  {
+    "id": "treffer-lizenz-pruefen",
+    "titel": "Lizenz prüfen",
+    "ort": "treffer",
+    "text": "Quellen: Lizenz von Treffer `{treffer}` für Slot `{slot}` prüfen ({datei}, {pack}, {lizenz})"
+  },
+  {
+    "id": "treffer-uebernehmen",
+    "titel": "Treffer übernehmen",
+    "ort": "treffer",
+    "text": "Quellen: Treffer `{treffer}` für Slot `{slot}` übernehmen ({datei}, {pack}, {lizenz})"
   }
 ]

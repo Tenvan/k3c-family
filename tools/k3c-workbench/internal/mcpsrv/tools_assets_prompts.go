@@ -19,7 +19,7 @@ import (
 // vorlagenPfad ist die Datei der Prompt-Vorlagen relativ zum Checkout.
 const vorlagenPfad = "data/asset-prompts.json"
 
-var platzhalter = regexp.MustCompile(`\{(asset|rig|teil|pfad|zustand|basis|eingabe|material|ton|slot|datei)\}`)
+var platzhalter = regexp.MustCompile(`\{(asset|rig|teil|pfad|zustand|basis|eingabe|material|ton|slot|datei|pack|lizenz|treffer)\}`)
 
 // optional dürfen leer bleiben; alle anderen Platzhalter sind Pflicht.
 var optional = map[string]bool{"zustand": true, "basis": true}

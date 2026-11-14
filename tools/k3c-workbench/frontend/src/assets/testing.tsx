@@ -51,3 +51,16 @@ export async function click(el: Element) {
 
 export const buttons = (host: ParentNode, text: string) =>
   [...host.querySelectorAll('button')].filter((b) => b.textContent?.trim() === text);
+
+/** Tippt in die Suche eines ListFilter (B-728, B-729). */
+export async function tippe(host: HTMLElement, text: string) {
+  const input = host.querySelector<HTMLInputElement>('input[aria-label="Suchen"]')!;
+  await act(async () => {
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, text);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+}
+
+/** Chip `wert` in der Chip-Zeile `dimension` eines ListFilter. */
+export const chip = (host: HTMLElement, dimension: string, wert: string) =>
+  [...host.querySelectorAll(`[role="group"][aria-label="${dimension}"] button`)].find((b) => b.textContent?.startsWith(wert))!;

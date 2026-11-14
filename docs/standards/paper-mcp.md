@@ -70,7 +70,7 @@ eingesetzten Werten als eine User-Nachricht.
 |---|---|
 | `id` | `^[a-z][a-z0-9-]*$`, eindeutig |
 | `titel` | Text des Prompt-Buttons, höchstens 40 Zeichen |
-| `ort` | `asset` (am Asset im Katalog), `teil` (am angeklickten Teil der Vorschau), `review` (am Review-Eintrag); Styleguide (B-727): `material` (gewähltes Material), `ton` (gewählter Einzelton), `papier`; Sound (B-728): `sound` (gewählter Slot) |
+| `ort` | `asset` (am Asset im Katalog), `teil` (am angeklickten Teil der Vorschau), `review` (am Review-Eintrag); Styleguide (B-727): `material` (gewähltes Material), `ton` (gewählter Einzelton), `papier`; Sound (B-728): `sound` (gewählter Slot); Quellen (B-729): `datei` (gewählte Katalog-Datei), `treffer` (gewählter Recherche-Treffer) |
 | `text` | Orte `asset`, `teil`, `review`: beginnt mit „Rufe zuerst `assets_guide {rig: {rig}}` auf“, endet mit „Prüfe das Ergebnis mit `assets_preview` und rufe zum Schluss `assets_review` auf.“ Alle anderen Orte: kurzer Prompt in einer Zeile ohne Arbeitsanweisungen (B-639), höchstens 120 Zeichen |
 
 Platzhalter (nur diese): `{asset}` ID, `{rig}` Rig-Typ, `{teil}` angeklicktes Teil (Pflicht bei `ort: teil`),
@@ -87,6 +87,11 @@ Styleguide (B-727): `{material}` Material-Name (Pflicht bei `ort: material`), `{
 
 Sound (B-728): `{slot}` Slot-ID aus `data/sounds.json`, `{datei}` zugeordnete Dateien (kommagetrennt, sonst „keine
 Datei“), beide Pflicht bei `ort: sound`. Vorlagen: `sound-suchen`, `sound-vergleichen`, `sound-lautstaerke`.
+
+Quellen (B-729): `{datei}` Datei unter `public/` bzw. Datei oder Link des Treffers, `{pack}` Pack bzw. Quelle des
+Treffers, `{lizenz}` Lizenz wie angegeben („unbekannt“ ohne Angabe), Pflicht bei `ort: datei` und `ort: treffer`;
+dazu bei `ort: treffer` `{treffer}` Treffer-ID und `{slot}`. Vorlagen: `quelle-lizenz-pruefen`, `quelle-credit` (datei);
+`treffer-lizenz-pruefen`, `treffer-uebernehmen` (treffer).
 
 Die MCP-Prompts `asset-<id>` kennen dieselben Platzhalter.
 

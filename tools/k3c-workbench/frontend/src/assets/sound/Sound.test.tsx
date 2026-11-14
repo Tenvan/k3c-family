@@ -1,8 +1,7 @@
 // @vitest-environment happy-dom
-import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
-import { buttons, click, mount, unmount, until } from '../testing';
+import { buttons, chip, click, mount, tippe, unmount, until } from '../testing';
 import { SoundPage } from './SoundPage';
 
 // WB1.4/AC-02 (D-03): Sound-Slots nur ansehen und anhören, kein Zuordnen.
@@ -11,19 +10,6 @@ afterEach(() => {
   unmount();
   vi.restoreAllMocks();
 });
-
-/** Tippt in die Suche des ListFilter (B-728). */
-async function tippe(host: HTMLElement, text: string) {
-  const input = host.querySelector<HTMLInputElement>('input[aria-label="Suchen"]')!;
-  await act(async () => {
-    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, text);
-    input.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-}
-
-/** Chip `wert` in der Chip-Zeile `dimension`. */
-const chip = (host: HTMLElement, dimension: string, wert: string) =>
-  [...host.querySelectorAll(`[role="group"][aria-label="${dimension}"] button`)].find((b) => b.textContent?.startsWith(wert))!;
 
 describe('Sound (WB1.4)', () => {
   it('listet die Sound-Slots nach Kategorie mit Status', async () => {
