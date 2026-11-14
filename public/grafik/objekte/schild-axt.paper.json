@@ -53,14 +53,15 @@
         },
         {
           "art": "flaeche",
-          "form": "M2 -40C6 -42 10 -38 10 -34L6 -33L2 -37Z",
+          "form": "M3 -39L7 -35L12 -40L14 -30L8 -29Z",
           "material": "stein",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M2 -37L6 -33L4 -31C1 -32 0 -35 2 -37Z",
-          "material": "stein"
+          "form": "M3 -39L8 -29L6 -31L2 -36Z",
+          "material": "stein",
+          "ton": "schatten"
         }
       ],
       "pivot": [0, 0]

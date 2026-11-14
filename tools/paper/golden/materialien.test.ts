@@ -37,7 +37,7 @@ describe('Ersatz-Materialien sind ersetzt (AC-03)', () => {
 
   it('Hintergründe nutzen das Material ihres Bioms und nicht mehr stein/smaragd/koenigsblau als Biom-Ersatz', () => {
     const dateien = readdirSync(join(GRAFIK, 'hintergruende')).filter((f) => /^hg-.*\.paper\.json$/.test(f) && f !== 'index.paper.json');
-    expect(dateien.length).toBe(30);
+    expect(dateien.length).toBe(75); // MG11 (B-722): fünf Varianten je Biom und Ebene
     for (const f of dateien) {
       const [, biom] = f.split('-'), ms = materialien('hintergruende', f.replace('.paper.json', ''));
       expect(ms.has(`biom-${biom}`), f).toBe(true);

@@ -502,8 +502,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 128,
-    "rahmen": [-96, -128, 192, 128]
+    "hoehe_px": 161,
+    "rahmen": [-100, -161, 200, 161]
   },
   "animationen": {
     "stand": {
@@ -557,12 +557,44 @@
             }
           ],
           "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "torhaus",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-50 -112L2 -112L2 -95L-50 -95Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-50 -120L-42 -120L-42 -111L-50 -111Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-34 -120L-26 -120L-26 -111L-34 -111Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-18 -120L-10 -120L-10 -111L-18 -111Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-6 -120L2 -120L2 -111L-6 -111Z",
+              "material": "stein"
+            }
+          ],
+          "pivot": [0, 0]
         }
       ]
     },
     {
       "tausch": {
-        "stein": "fell-fuchs"
+        "stein": "kupfer"
       },
       "zusaetze": [
         {
@@ -604,13 +636,45 @@
     },
     {
       "tausch": {
-        "fell-fuchs": "stoff",
-        "smaragd": "stoff"
-      }
+        "kupfer": "eisen",
+        "smaragd": "eisen"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "dachreiter",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-30 -130L-18 -130L-18 -118L-30 -118Z",
+              "material": "eisen"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-25 -127L-23 -127L-23 -121L-25 -121Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-32.5 -129.5L-24 -144L-15.5 -129.5Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-24 -144L-15.5 -129.5L-24 -129.5Z",
+              "material": "eisen",
+              "ton": "licht"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
     },
     {
       "tausch": {
-        "stoff": "koenigsblau"
+        "eisen": "kristall"
       },
       "zusaetze": [
         {
@@ -641,6 +705,42 @@
               "material": "weiss",
               "mitte": [-10, -90],
               "radius": 1.1
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "krone",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-31.6 -143L-29.8 -151.7L-26 -143Z",
+              "material": "kristall",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-22 -143L-18.2 -151.7L-16.4 -143Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-28 -143L-26.2 -152.8L-24 -157L-21.8 -152.8L-20 -143Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-24 -157L-21.8 -152.8L-20 -143L-24 -143Z",
+              "material": "kristall",
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-23, -150.7],
+              "radius": 1
             }
           ],
           "pivot": [0, 0]

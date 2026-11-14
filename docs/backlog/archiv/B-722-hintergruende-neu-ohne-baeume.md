@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** MG11
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-07
@@ -65,3 +65,5 @@ keine
 ## Notizen
 
 Quelle: PS1.3 Punkt 7, PS1.4 Bäume, D-MG7-01, D-MG7-06. Nach B-712. Lane `hintergruende`.
+
+Umgesetzt in MG11.2 und MG11.3 (2026-11-14): 75 Assets ohne Bäume, Test `tools/paper/golden/hintergruende.test.ts`. Client nutzt bis B-883 nur v1/v2. **Sichtprüfung durch Ralf offen** (AC-02, Review der Workbench, Gruppe `hintergruende`).

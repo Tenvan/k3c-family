@@ -30,7 +30,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 |---|---|---|---|---|---|---|
 | WZ58 | DEV | WZG | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | – | bereit | `geplant/WZ58-welten-editor-planung-review/` |
 | MG10 | PAP | PAP | Papierschnitt: Bosse neu mit eigener Silhouette | – | bereit | `geplant/MG10-papier-bosse-neu/` |
-| MG11 | PAP | PAP | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | – | bereit | `geplant/MG11-papier-welt-nachbessern/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -356,5 +355,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | `erledigt/WZ57-workbench-aufraeumen/` |
 | PT5 | Abnahme-Läufe CU1 (B-836) | `erledigt/PT5-abnahme-cu1/` |
 | NG20 | Natives Spiel komplett nach dist (B-827) | `erledigt/NG20-native-build-dist/` |
+| MG11 | Papierschnitt nachbessern: Gebäude, Hintergründe ohne Bäume, Natur und Icons | `erledigt/MG11-papier-welt-nachbessern/` |
 | WZ45 | Asset-Seiten: Filter und Prompt-Buttons für Styleguide, Sound und Quellen | `erledigt/WZ45-asset-seiten-prompts-filter/` |
 | PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | `erledigt/PT6-asset-pakete-vorlage/` |

@@ -1,1 +1,174 @@
-{"$schema": "../../../tools/paper/schema/paper-spec.schema.json", "id": "geruest-2", "rig": "gebaeude", "version": 1, "beschreibung": "Baugerüst der Größenklasse 2 (2 × 4 Kacheln): unfertige Steinwand hinter Holzstangen, Laufbretter, Riegel und Streben.", "teile": [{"id": "korpus", "lagen": [{"art": "flaeche", "form": "M-26 -38L0 -38L0 0L-26 0Z", "material": "stein"}, {"art": "flaeche", "form": "M0 -26L26 -26L26 0L0 0Z", "material": "stein"}, {"art": "falz", "breite": 1.6, "form": "M-25.5 -37L-0.5 -37", "material": "stein", "ton": "licht"}, {"art": "falz", "breite": 1.6, "form": "M0.5 -25L25.5 -25", "material": "stein", "ton": "licht"}, {"art": "falz", "breite": 0.9, "form": "M-25.5 -25.5L-0.5 -25.5", "material": "stein", "ton": "schatten"}, {"art": "falz", "breite": 0.9, "form": "M-9.5 -24.5L-9.5 -14.5", "material": "stein", "ton": "schatten"}, {"art": "falz", "breite": 0.9, "form": "M-25.5 -13.5L25.5 -13.5", "material": "stein", "ton": "schatten"}, {"art": "falz", "breite": 0.9, "form": "M-17.5 -12.5L-17.5 -2.5", "material": "stein", "ton": "schatten"}, {"art": "falz", "breite": 0.9, "form": "M-1.5 -12.5L-1.5 -2.5", "material": "stein", "ton": "schatten"}, {"art": "falz", "breite": 0.9, "form": "M14.5 -12.5L14.5 -2.5", "material": "stein", "ton": "schatten"}, {"art": "flaeche", "form": "M-30 -120L-26 -120L-26 0L-30 0Z", "material": "holz"}, {"art": "falz", "breite": 1.0, "form": "M-29.5 -119.5L-29.5 -0.5", "material": "holz", "ton": "licht"}, {"art": "flaeche", "form": "M26 -120L30 -120L30 0L26 0Z", "material": "holz"}, {"art": "falz", "breite": 1.0, "form": "M26.5 -119.5L26.5 -0.5", "material": "holz", "ton": "licht"}, {"art": "flaeche", "form": "M-30 -80L30 -80L30 -78L-30 -78Z", "material": "holz"}, {"art": "flaeche", "form": "M-30 -28L30 -28L30 -26L-30 -26Z", "material": "holz"}, {"art": "flaeche", "form": "M-22.72 -56.46L25.28 -96.46L22.72 -99.54L-25.28 -59.54Z", "material": "holz"}, {"art": "flaeche", "form": "M-25.41 -48.59L22.59 -0.59L25.41 -3.41L-22.59 -51.41Z", "material": "holz"}, {"art": "flaeche", "form": "M-32 -104L32 -104L32 -100L-32 -100Z", "material": "holz", "ton": "licht"}, {"art": "falz", "breite": 1.0, "form": "M-31.5 -103.5L31.5 -103.5", "material": "holz", "ton": "licht"}, {"art": "falz", "breite": 1.0, "form": "M-31.5 -99.5L31.5 -99.5", "material": "holz", "ton": "schatten"}, {"art": "flaeche", "form": "M-32 -56L32 -56L32 -52L-32 -52Z", "material": "holz", "ton": "licht"}, {"art": "falz", "breite": 1.0, "form": "M-31.5 -55.5L31.5 -55.5", "material": "holz", "ton": "licht"}, {"art": "falz", "breite": 1.0, "form": "M-31.5 -51.5L31.5 -51.5", "material": "holz", "ton": "schatten"}], "pivot": [0, 0]}], "ausgabe": {"hoehe_px": 128, "rahmen": [-32.0, -128.0, 64.0, 128.0]}, "animationen": {"stand": {"frames": 1}}}
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "geruest-2",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Baugerüst der Größenklasse 2 (2 × 4 Kacheln): unfertige Steinwand hinter Holzstangen, Laufbretter, Riegel und Streben.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-26 -38L0 -38L0 0L-26 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -26L26 -26L26 0L0 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M-25.5 -37L-0.5 -37",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M0.5 -25L25.5 -25",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-25.5 -25.5L-0.5 -25.5",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-9.5 -24.5L-9.5 -14.5",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-25.5 -13.5L25.5 -13.5",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-17.5 -12.5L-17.5 -2.5",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-1.5 -12.5L-1.5 -2.5",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M14.5 -12.5L14.5 -2.5",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -120L-26 -120L-26 0L-30 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.0,
+          "form": "M-29.5 -119.5L-29.5 -0.5",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M26 -120L30 -120L30 0L26 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1.0,
+          "form": "M26.5 -119.5L26.5 -0.5",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -80L30 -80L30 -78L-30 -78Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -28L30 -28L30 -26L-30 -26Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-22.72 -56.46L25.28 -96.46L22.72 -99.54L-25.28 -59.54Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-25.41 -48.59L22.59 -0.59L25.41 -3.41L-22.59 -51.41Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 -104L32 -104L32 -100L-32 -100Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.0,
+          "form": "M-31.5 -103.5L31.5 -103.5",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.0,
+          "form": "M-31.5 -99.5L31.5 -99.5",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 -56L32 -56L32 -52L-32 -52Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.0,
+          "form": "M-31.5 -55.5L31.5 -55.5",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.0,
+          "form": "M-31.5 -51.5L31.5 -51.5",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 132,
+    "rahmen": [-36, -132, 72, 132]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

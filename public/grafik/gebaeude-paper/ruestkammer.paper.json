@@ -357,8 +357,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 128,
-    "rahmen": [-96, -128, 192, 128]
+    "hoehe_px": 151,
+    "rahmen": [-102, -151, 204, 151]
   },
   "animationen": {
     "stand": {
@@ -370,11 +370,38 @@
       "tausch": {
         "holz": "stein",
         "stoff": "stein"
-      }
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "schornstein",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-54 -132L-44 -132L-44 -113L-54 -113Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-54 -132L-52 -132L-52 -113L-54 -113Z",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-55.5 -135L-42.5 -135L-42.5 -132L-55.5 -132Z",
+              "material": "stein",
+              "ton": "licht"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
     },
     {
       "tausch": {
-        "stein": "fell-fuchs"
+        "stein": "kupfer"
       },
       "zusaetze": [
         {
@@ -416,8 +443,8 @@
     },
     {
       "tausch": {
-        "fell-fuchs": "stoff",
-        "smaragd": "stoff"
+        "kupfer": "eisen",
+        "smaragd": "eisen"
       },
       "zusaetze": [
         {
@@ -427,13 +454,13 @@
             {
               "art": "flaeche",
               "form": "M-90 -60L-82 -60L-82 -56L-90 -56Z",
-              "material": "stoff",
+              "material": "eisen",
               "ton": "schatten"
             },
             {
               "art": "flaeche",
               "form": "M82 -60L90 -60L90 -56L82 -56Z",
-              "material": "stoff",
+              "material": "eisen",
               "ton": "schatten"
             },
             {
@@ -452,12 +479,41 @@
             }
           ],
           "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "wimpel",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-87.9 -108L-86.1 -108L-86.1 -89L-87.9 -89Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-86.1 -108L-74 -104.5L-86.1 -101Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M84.1 -108L85.9 -108L85.9 -89L84.1 -89Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M85.9 -108L98 -104.5L85.9 -101Z",
+              "material": "koenigsrot"
+            }
+          ],
+          "pivot": [0, 0]
         }
       ]
     },
     {
       "tausch": {
-        "stoff": "koenigsblau"
+        "eisen": "kristall"
       },
       "zusaetze": [
         {
@@ -488,6 +544,42 @@
               "material": "weiss",
               "mitte": [-30, -30],
               "radius": 1.1
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "krone",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-55.6 -134L-54.1 -142.1L-50.7 -134Z",
+              "material": "kristall",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-47.2 -134L-43.9 -142.1L-42.3 -134Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-52.5 -134L-50.9 -143.1L-49 -147L-47.1 -143.1L-45.5 -134Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-49 -147L-47.1 -143.1L-45.5 -134L-49 -134Z",
+              "material": "kristall",
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-48.1, -141.1],
+              "radius": 1
             }
           ],
           "pivot": [0, 0]

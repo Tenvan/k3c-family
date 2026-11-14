@@ -74,5 +74,32 @@
         }
       ]
     }
+  },
+  "varianten": {
+    "eisenstollen": {
+      "tausch": {
+        "stein": "biom-eisenstollen"
+      }
+    },
+    "hoehle": {
+      "tausch": {
+        "stein": "biom-hoehle"
+      }
+    },
+    "kristall": {
+      "tausch": {
+        "stein": "biom-kristall"
+      }
+    },
+    "mine": {
+      "tausch": {
+        "stein": "biom-mine"
+      }
+    },
+    "wald": {
+      "tausch": {
+        "stein": "biom-wald"
+      }
+    }
   }
 }

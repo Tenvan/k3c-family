@@ -236,18 +236,18 @@
         },
         {
           "art": "flaeche",
-          "form": "M54 -120L66 -120L66 -118L54 -118Z",
+          "form": "M52 -120L64 -120L64 -118L52 -118Z",
           "material": "maehne"
         },
         {
           "art": "flaeche",
-          "form": "M55 -118L65 -118L65 -108L55 -108Z",
+          "form": "M53 -118L63 -118L63 -108L53 -108Z",
           "material": "gold",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M54 -108L66 -108L66 -106L54 -106Z",
+          "form": "M52 -108L64 -108L64 -106L52 -106Z",
           "material": "maehne"
         }
       ],
@@ -255,8 +255,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 128,
-    "rahmen": [-64, -128, 128, 128]
+    "hoehe_px": 132,
+    "rahmen": [-68, -132, 136, 132]
   },
   "animationen": {
     "stand": {

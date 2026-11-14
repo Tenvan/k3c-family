@@ -3,34 +3,34 @@
   "id": "truhe-offen",
   "rig": "requisite",
   "version": 1,
-  "beschreibung": "Truhe offen: aufgeklappte Holztruhe, randvoll mit Goldmünzen und einem Edelstein",
+  "beschreibung": "Offene Truhe: Deckel nach hinten aufgeklappt (Innenseite dunkel, runder Rand oben), Gold und Edelstein im Kasten (B-723).",
   "teile": [
     {
       "id": "korpus",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-16 -16L-18 -34C-16 -38 -10 -38 -8 -36L-8 -16Z",
-          "material": "holz"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-16 -16L-18 -34C-17 -36 -15 -37 -14 -37L-13 -16Z",
-          "material": "holz",
+          "form": "M-16 -16L16 -16L14 -34L-14 -34Z",
+          "material": "leder",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-8 -16L-8 -36L16 -40L16 -16Z",
+          "form": "M-14 -34C-10 -40 10 -40 14 -34L14 -31C10 -36 -10 -36 -14 -31Z",
           "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -16L-8 -16L-7 -35L-9 -35Z",
+          "material": "gold",
           "ton": "schatten"
         },
         {
-          "art": "falz",
-          "breite": 0.6,
-          "form": "M-8 -26L16 -28",
-          "material": "linie"
+          "art": "flaeche",
+          "form": "M8 -16L10 -16L9 -35L7 -35Z",
+          "material": "gold",
+          "ton": "schatten"
         },
         {
           "art": "flaeche",

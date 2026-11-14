@@ -7,6 +7,9 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
+| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
+| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
 | [B-859](B-859-assets-vitests-warten-auf-bedingungen.md) | DEV | Problem | niedrig | erledigt | WZ53 | Alle Vitests unter src/assets der Workbench warten auf Bedingungen statt flush() und bleiben unter Last grün |
 | [B-384](B-384-inselwechsel-bestaetigung-sim.md) | SIM | Frage | mittel | erledigt | – | Inselwechsel: Wechsel-Bestätigung (confirmIsland) passt nicht zum Presence-Wechsel der Sim |
 | [B-153](B-153-protokoll-berufe-haendler-lager-hub.md) | SRV | Idee | hoch | erledigt | W5 | Das Protokoll kennt Berufe, Händler, Lagerstand, Hub-Stufe und Wartegrund |
@@ -801,6 +804,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | erledigt | WZ57 | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | erledigt | PT5 | Abnahme-Läufe CU1 |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | erledigt | NG20 | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
-| [B-727](B-727-styleguide-prompt-buttons.md) | DEV | Idee | mittel | erledigt | WZ45 | Der Styleguide hat Prompt-Buttons für Materialien und Töne |
-| [B-728](B-728-sound-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Sound-Seite hat Filter und Prompt-Buttons |
-| [B-729](B-729-quellen-seite-filter-prompts.md) | DEV | Idee | mittel | erledigt | WZ45 | Die Quellen-Seite hat Filter und Prompt-Buttons |
+| [B-721](B-721-gebaeude-stufen-form.md) | PAP | Problem | mittel | erledigt | MG11 | Gebäude steigern sich in Form und Material, Kristall leuchtet, nichts wird abgeschnitten |
+| [B-722](B-722-hintergruende-neu-ohne-baeume.md) | PAP | Problem | hoch | erledigt | MG11 | Hintergründe sind neu gestaltet, mit Tiefe und ohne Bäume |
+| [B-723](B-723-natur-icons-muenze.md) | PAP | Problem | mittel | erledigt | MG11 | Natur hat Spielhöhe und mehrere Formen, Icons sind bei 32 px lesbar, die Münze dreht sich |
