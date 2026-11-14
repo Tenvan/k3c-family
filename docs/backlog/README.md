@@ -56,12 +56,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-778](B-778-rig-prototyp-monarch-aus-teilen.md) | CLI | Frage | hoch | eingeplant | NV2 | Ein dritter Prototyp setzt den Monarchen in Ebitengine zur Laufzeit aus Rig-Teilen zusammen |
 | [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | eingeplant | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
 | [B-833](B-833-wz41-abnahme-ci-develop-check-all.md) | INF | Schuld | hoch | offen | – | Abnahme WZ41: CI auf develop mit Tests grün, check:all nachgeholt |
-| [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | offen | PT1 | Abnahme-Läufe PT1 |
 | [B-836](B-836-abnahme-laeufe-cu1.md) | INF | Schuld | mittel | offen | CU1 | Abnahme-Läufe CU1 |
 | [B-843](B-843-browser-abnahmen-nach-009-entscheiden.md) | INF | Frage | mittel | offen | – | Offene Browser-Abnahmen KB4.4, KB5.6, W15.3 und PB1.2 sind nach Entscheidung 009 entschieden |
 | [B-838](B-838-wellen-sessions-eines-sprints.md) | DEV | Frage | mittel | offen | – | Regel für Sessions desselben Sprints in einer Welle ist entschieden und in Code und Doku gleich |
-| [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | offen | WZ44 | Abnahme-Läufe WZ44 |
-| [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | offen | PT2 | Abnahme-Läufe PT2 |
 | [B-827](B-827-native-build-nach-dist.md) | CLI | Problem | mittel | offen | – | task native:game:build legt das komplette Spiel nach dist/k3c-game und kopiert geänderte Grafik neu |
 | [B-846](B-846-server-ohne-client-auslieferung.md) | SRV | Schuld | niedrig | offen | – | Der Spielserver startet und läuft ohne dist/ und liefert keinen Browser-Client mehr aus |
 | [B-848](B-848-browser-client-code-entfernen.md) | INF | Schuld | niedrig | offen | – | src/, Phaser, die Spielseiten und die Web-Tasks des Browser-Clients sind entfernt, CI, Docker und Release bauen ohne dist |
@@ -70,10 +67,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | offen | WZ43 | Abnahme-Läufe WZ43 |
 | [B-853](B-853-review-groessenvergleich-vorher-bild.md) | DEV | Idee | niedrig | offen | – | Das Review zeigt den Größenvergleich auch für das Vorher-Bild |
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | offen | WZ48 | Abnahme-Läufe WZ48 |
-| [B-860](B-860-abnahme-laeufe-wz47.md) | INF | Schuld | mittel | offen | WZ47 | Abnahme-Läufe WZ47 |
 | [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | offen | – | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | offen | – | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
-| [B-869](B-869-abnahme-laeufe-wz55.md) | DEV | Schuld | mittel | offen | WZ55 | Abnahme-Läufe WZ55 |
 
 ## Archiv
 

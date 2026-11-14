@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** PT2
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
@@ -64,3 +64,5 @@ keine
 ## Notizen
 
 Umnummeriert 2026-11-13 von B-838 (Kollision mit WZ44 in Welle 5b).
+
+2026-11-14 (Claude, auf `sprint/welle6`): AC-01/AC-02 verschoben (Sperre). AC-03 `check_run task:test` grün (4 min 4 s, samt `gen:paper`, `tools/paper/golden`, `tests/paperAssets.test.ts`), Golden ohne Inhaltsänderung. AC-04 nicht relevant.

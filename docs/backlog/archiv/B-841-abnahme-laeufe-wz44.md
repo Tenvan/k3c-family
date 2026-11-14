@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** WZ44
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-13
@@ -63,4 +63,4 @@ keine
 
 ## Notizen
 
-–
+2026-11-14 (Claude, auf `sprint/welle6`): AC-01/AC-02 verschoben (Sperre). AC-03 nicht relevant. AC-04 `check_run task:check:race` exit 0 in 345 ms: lokal ohne gcc übersprungen (kein C-Compiler); der echte Race-Lauf bleibt der CI überlassen.

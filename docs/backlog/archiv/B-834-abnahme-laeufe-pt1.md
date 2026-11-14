@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** PT1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-13
@@ -63,4 +63,4 @@ keine
 
 ## Notizen
 
-–
+2026-11-14 (Claude, auf `sprint/welle6` mit PT1 bis PT4, WZ43 bis WZ56): AC-01/AC-02 verschoben (Sperre). AC-03 `check_run task:test` grün (4 min 4 s, ruft `gen:paper`), Grafik-Golden ohne Inhaltsänderung; zweiter `task gen:paper` direkt danach: `gen:paper-render` und `gen:paper-sync` „up to date“ (0 Assets). AC-04 nicht relevant.

@@ -756,3 +756,8 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-868](B-868-task-mindestversion-pruefen.md) | DEV | Schuld | niedrig | erledigt | WZ55 | Die Mindestversion von Task wird geprüft, auf die check_run beim Quoten von CLI_ARGS baut |
 | [B-870](B-870-assets-set-fehlerantwort-sammelaufruf.md) | DEV | Problem | niedrig | erledigt | WZ56 | assets_set nennt auch beim Abbruch des Sammelaufrufs die schon bekannten Felder und Pixel |
 | [B-871](B-871-task-version-merken.md) | DEV | Schuld | niedrig | erledigt | WZ56 | check_run fragt die Task-Version einmal ab und merkt sie sich |
+| [B-834](B-834-abnahme-laeufe-pt1.md) | PAP | Schuld | mittel | erledigt | PT1 | Abnahme-Läufe PT1 |
+| [B-841](B-841-abnahme-laeufe-wz44.md) | INF | Schuld | mittel | erledigt | WZ44 | Abnahme-Läufe WZ44 |
+| [B-844](B-844-abnahme-laeufe-pt2.md) | PAP | Schuld | mittel | erledigt | PT2 | Abnahme-Läufe PT2 |
+| [B-860](B-860-abnahme-laeufe-wz47.md) | INF | Schuld | mittel | erledigt | WZ47 | Abnahme-Läufe WZ47 |
+| [B-869](B-869-abnahme-laeufe-wz55.md) | DEV | Schuld | mittel | erledigt | WZ55 | Abnahme-Läufe WZ55 |

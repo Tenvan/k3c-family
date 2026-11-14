@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** WZ55
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
@@ -65,3 +65,5 @@ keine
 ## Notizen
 
 Vorschlag WZ55.2 (2026-11-14).
+
+2026-11-14 (Claude, auf `sprint/welle6`): AC-01 verschoben (Sperre). AC-02 `check_run task:test` samt `gen:paper` und Grafik-Golden grün (4 min 4 s), Golden ohne Inhaltsänderung. AC-03 `check_run task:check:race` lokal ohne gcc übersprungen.
