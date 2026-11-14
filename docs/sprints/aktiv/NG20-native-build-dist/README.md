@@ -1,14 +1,14 @@
 # NG20 · CLI · Natives Spiel komplett nach dist (B-827)
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 2026-11-14, Chat, durch 🧑
 
 ## Ausgangslage
 
@@ -36,7 +36,7 @@ Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität
 
 - **Bereich:** `native/Taskfile.yml`, `native/k3c-game/cmd/sync/**`
 - **Abhängig von:** –
-- **Braucht 🧑:** Freigabe
+- **Braucht 🧑:** –
 - **Sperre:** taskfile
 
 ## Beispiele
@@ -49,7 +49,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** `task native:game:build` legt das komplette Spiel nach `dist/k3c-game` und kopiert geänderte Grafik neu (`B-827`).
+- **AC-02** Review ohne offenen schweren Befund.
 
 ## Offene Fragen
 
@@ -59,8 +60,8 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| NG20.1 | `NG20.1-build-nach-dist.md` | Umsetzung | autonom | offen |
-| NG20.2 | `NG20.2-review.md` | Umsetzung | autonom | offen |
+| NG20.1 | `NG20.1-build-nach-dist.md` | Umsetzung | autonom | fertig |
+| NG20.2 | `NG20.2-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
