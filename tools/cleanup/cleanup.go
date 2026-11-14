@@ -63,14 +63,14 @@ func run(o options) error {
 	return apply(o, acts)
 }
 
-// baseRef ist origin/develop, sonst develop: der Stand, in dem gemergte Arbeit stecken muss.
+// baseRef ist origin/main, sonst main: der Stand, in dem gemergte Arbeit stecken muss.
 func baseRef(o options) (string, error) {
-	for _, ref := range []string{"origin/develop", "develop"} {
+	for _, ref := range []string{"origin/main", "main"} {
 		if _, err := o.Git(o.Root, "rev-parse", "--verify", "--quiet", ref); err == nil {
 			return ref, nil
 		}
 	}
-	return "", fmt.Errorf("weder origin/develop noch develop gefunden")
+	return "", fmt.Errorf("weder origin/main noch main gefunden")
 }
 
 func listBranches(o options) ([]branch, error) {
@@ -146,7 +146,7 @@ func cherry(o options, base, name string) (int, error) {
 // judgeBranch entscheidet allein über den Branch; Worktrees prüft judgeBranches danach.
 func judgeBranch(o options, base string, b branch, active map[string]bool) (bool, string) {
 	switch {
-	case b.name == "develop" || b.name == "main":
+	case b.name == "main":
 		return false, "geschützt"
 	case b.current:
 		return false, "im aktuellen Checkout ausgecheckt"

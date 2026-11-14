@@ -16,7 +16,7 @@ import (
 )
 
 // B-387: Die nächste Ticket-Nummer berücksichtigt alle Checkouts des Repos (Wurzel, Git-Worktrees samt Archiv) und die
-// lokalen Remote-Refs origin/develop und origin/sprint/* (aus dem lokalen Stand, ohne Fetch). Die Nummer eines
+// lokalen Remote-Refs origin/main und origin/sprint/* (aus dem lokalen Stand, ohne Fetch). Die Nummer eines
 // Checkouts und der Dateinamen rechnet der Ticket-Kern (assetkit/ticket als ticketkit, B-595).
 
 func gitOut(root string, args ...string) (string, error) {
@@ -52,9 +52,9 @@ func samePath(a, b string) bool {
 	return errA == nil && errB == nil && os.SameFile(ia, ib)
 }
 
-// remoteHighest liefert je lokalem Remote-Ref (origin/develop, origin/sprint/*) die größte Ticket-Nummer.
+// remoteHighest liefert je lokalem Remote-Ref (origin/main, origin/sprint/*) die größte Ticket-Nummer.
 func remoteHighest(root string) map[string]int {
-	out, err := gitOut(root, "for-each-ref", "--format=%(refname)", "refs/remotes/origin/develop", "refs/remotes/origin/sprint")
+	out, err := gitOut(root, "for-each-ref", "--format=%(refname)", "refs/remotes/origin/main", "refs/remotes/origin/sprint")
 	if err != nil {
 		return nil
 	}

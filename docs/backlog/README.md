@@ -62,6 +62,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | offen | – | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
 | [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | offen | – | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |
 | [B-872](B-872-workbench-web-client-entfernen.md) | DEV | Schuld | niedrig | offen | – | Der Web-Client der Workbench ist entfernt, die Workbench läuft nur als EXE |
+| [B-873](B-873-workbench-git-ohne-develop.md) | DEV | Schuld | mittel | offen | – | Git-Seite und GitHub-Leiste der Workbench arbeiten gegen main statt develop |
 
 ## Archiv
 
