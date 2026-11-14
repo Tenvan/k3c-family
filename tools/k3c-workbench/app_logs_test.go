@@ -29,7 +29,7 @@ func startedApp(t *testing.T) (*App, *atomic.Int32) {
 	app.usage = filepath.Join(root, "usage.json")
 	var lines atomic.Int32
 	app.emit = func(_ context.Context, name string, data ...any) {
-		if l, ok := data[0].([]console.Line); ok && name == evConsoleLine && len(l) == 1 {
+		if l, ok := data[0].([]console.Line); ok && name == evConsoleLine && len(l) > 0 { // gebündelt (B-895)
 			lines.Add(1)
 		}
 	}
