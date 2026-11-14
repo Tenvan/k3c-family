@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BI2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,44 +24,44 @@ Das native Spiel lässt Kristalle und Umgebungslicht nach dem Wert der Stufe sch
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler der Kristallhöhle; Claude setzt um; Ralf 🧑 prüft im Abnahme-Ticket.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Biome mit `brightness` zeichnen hinter jeder sichtbaren Kristall-Ader einen Schein (Kreis) in der Farbe der Ader (blau, violett, grün wie die Materialien `kristall`, `purpur`, `smaragd`).
+- Radius 0,8 + 0,6 · Wert Units, Deckkraft 0,12 · Wert, leicht pulsierend mit der Uhr (±10 %).
+- Der Schein liegt hinter der Ader (früher in der Zeichenliste).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Änderung der Nacht-Helligkeit oder Lichtquellen in `world/light.go`.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Wie B-902.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/props/decor_glow.go`, `native/k3c-game/props/decor_test.go`
+- **Abhängig von:** B-901
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Kristallhöhle mit Wert 1 → kleiner schwacher Schein; mit 3 → großer heller Schein.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Biom ohne `brightness` → kein Schein. Unbekannte Farbe → blau.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Leuchtstärke 1, 2 und 3 ergeben verschiedene Lichtstärken (Test der Lichtwerte).
-- **AC-02** Ohne Wert gilt der neutrale Wert 2; Sichtprüfung durch 🧑.
+- **AC-01** In der Kristallhöhle plant props je sichtbarer Kristall-Ader einen Schein in ihrer Farbe vor der Ader; Biome ohne `brightness` keinen (Unit-Test).
+- **AC-02** Radius und Deckkraft des Scheins steigen mit dem Wert (1 < 2 < 3) (Unit-Test).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine (Leuchten als Schein in props statt über die Nacht-Helligkeit in `world/light.go`).
 
 ## Notizen
 

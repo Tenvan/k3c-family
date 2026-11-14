@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BI2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,44 +24,44 @@ Das native Spiel zeigt Tropfsteine als Deko, ihre Menge folgt dem Wert der Stufe
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler der Höhle; Claude setzt um; Ralf 🧑 prüft im Abnahme-Ticket.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Biome mit `stalactites` zeichnen Tropfsteine, die von der Decke (B-902) hängen: Dreiecke mit der Spitze nach unten.
+- Raster alle 2 Units; an einem Rasterplatz hängt ein Tropfstein, wenn `mix(x) % 6 < Wert` (Wert 0 = keiner, 3 = etwa jeder zweite Platz). Länge 0,6–1,8 Units, Breite 0,4–0,8 Units aus der Position.
+- Die Menge bei kleinerem Wert ist eine Teilmenge der Menge bei größerem Wert (gleiche Plätze bleiben).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Stalagmiten am Boden; Herabfallen oder Schaden.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Wie B-902.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/props/decor.go`, `native/k3c-game/props/decor_test.go`
+- **Abhängig von:** B-902
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Gleicher Ausschnitt, Wert 0 / 1 / 3 → 0 / etwa n / etwa 3n Tropfsteine.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Biom ohne `stalactites` → keine. Ohne `ceilingHeight` hängen sie an der Decke mit Wert 2.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Tropfsteine 0 zeigt keine, 3 die meisten; die Lage folgt deterministisch der Position (Test).
-- **AC-02** Sichtprüfung durch 🧑.
+- **AC-01** Wert 0 plant keine Tropfsteine, Biome ohne die Eigenschaft ebenfalls (Unit-Test).
+- **AC-02** Die Anzahl im selben Ausschnitt steigt streng mit dem Wert (1 < 2 < 3), die Orte sind bei gleichem Wert gleich (Unit-Test).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

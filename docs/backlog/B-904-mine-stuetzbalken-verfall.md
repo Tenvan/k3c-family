@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BI2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,44 +24,44 @@ Das native Spiel zeigt Stützbalken intakt bis verfallen nach dem Wert der Stufe
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler der Mine; Claude setzt um; Ralf 🧑 prüft im Abnahme-Ticket.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Biome mit `decay` zeichnen alle 8 Units einen Stützbalken-Rahmen (zwei Pfosten, Querbalken, 4 Units hoch) in Holzfarbe, nicht im Bereich ±10 Units um die Burg.
+- Ein Rahmen ist verfallen, wenn `mix(x) % 4 < Wert`: ein Pfosten steht schief, der Querbalken hängt schräg herab, darunter liegt Geröll (kleine Rechtecke).
+- Wert 0 = alle heil, Wert 3 = etwa drei Viertel verfallen; die verfallenen bei kleinerem Wert bleiben bei größerem verfallen.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Einsturz als Spielregel; Papierschnitt-Asset der Balken.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Wie B-902.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/props/decor_glow.go`, `native/k3c-game/props/decor.go`, `native/k3c-game/props/decor_test.go`
+- **Abhängig von:** B-891
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Mine mit Wert 0 → nur gerade Rahmen; mit 3 → die meisten schief mit Geröll.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Biom ohne `decay` → keine Balken.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Verfall 0 zeigt intakte Balken, 3 stark verfallene (Test der Auswahl).
-- **AC-02** Sichtprüfung durch 🧑.
+- **AC-01** In der Mine plant props Stützbalken; Wert 0 plant keinen verfallenen Rahmen, Biome ohne `decay` keine Balken (Unit-Test).
+- **AC-02** Die Zahl verfallener Rahmen im selben Ausschnitt steigt streng mit dem Wert (1 < 2 < 3) (Unit-Test).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

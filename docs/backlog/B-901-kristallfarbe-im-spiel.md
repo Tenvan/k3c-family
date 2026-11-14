@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BI2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,44 +24,43 @@ Kristall-Adern zeigen im nativen Spiel das Asset ihrer Farbe.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler der Kristallhöhle; Claude setzt um; Ralf 🧑 prüft im Abnahme-Ticket.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- `variantLook` wählt für `crystalVein` je Variante das Bild: blau → `ader-kristall`, violett → `ader-kristall-violett`, gruen → `ader-kristall-gruen`.
+- `levelAssets` nennt die beiden neuen Assets (fehlende Datei = Spielende mit Pfad, art.ErrMissing).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Leuchten (B-906); Browser-Client.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Reine Auswahl in `props/nature.go`, getestet.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/props/nature.go`, `native/k3c-game/props/assets.go`, `native/k3c-game/props/*_test.go`
+- **Abhängig von:** B-900
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Ader `crystalVein` mit Variante `violett` → Bild `objekte/ader-kristall-violett`.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Unbekannte oder leere Variante → Bild wie ohne Variante (`ader-kristall`).
 
 ## Akzeptanzkriterien
 
-- **AC-01** Eine Kristall-Ader mit Variante blau, violett oder gruen zeigt das passende Asset aus B-900 (Test).
-- **AC-02** Ohne Variante oder ohne Asset bleibt das bisherige Bild `ader-kristall`.
+- **AC-01** Eine Kristall-Ader mit Variante blau, violett oder gruen zeigt `ader-kristall`, `ader-kristall-violett` bzw. `ader-kristall-gruen` (Unit-Test).
+- **AC-02** Die Asset-Liste jedes Levels enthält die beiden neuen Assets; eine unbekannte Variante fällt auf `ader-kristall` zurück (Unit-Test).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

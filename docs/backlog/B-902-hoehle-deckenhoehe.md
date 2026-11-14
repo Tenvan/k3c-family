@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BI2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,44 +24,45 @@ Das native Spiel zeichnet die Höhlendecke niedrig, mittel oder hoch nach dem We
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler der Höhle; Claude setzt um; Ralf 🧑 prüft im Abnahme-Ticket.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Biome mit der Eigenschaft `ceilingHeight` zeichnen oben im Welt-Teil eine Felsdecke (Band über die sichtbare Breite) mit gezackter Unterkante.
+- Unterkante der Decke in Units über dem Boden: sichtbare Höhe (420/32 Units) minus Dicke; Dicke 3,5 Units bei Wert 1, 2,15 bei 2, 0,8 bei 3 (linear).
+- Zacken an der Unterkante alle 1,5 Units, Tiefe 0,3–0,8 Units aus der Position (`mix`).
+- Gezeichnet hinter allen anderen props (zuerst in der Zeichenliste).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Kollision oder Spielregeln der Decke; Papierschnitt-Asset der Decke.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Wert aus `World.Level.Nature`, fehlt er: `default` des Bioms. Formen der Zeichenliste (`shapeRect`, `shapeTri`), keine neue Abhängigkeit.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/props/decor.go`, `native/k3c-game/props/decor_test.go`, `native/k3c-game/props/plan.go`
+- **Abhängig von:** B-891
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Höhle mit Wert 1 → Decke reicht bis 9,6 Units über dem Boden; mit 3 → bis 12,3 Units.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Biom ohne `ceilingHeight` (Wald, Mine …) → keine Decke. Wert außerhalb 1–3 → auf den Bereich begrenzt.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Deckenhöhe 1, 2 und 3 ergeben sichtbar verschiedene Decken (Test der Auswahl, Sichtprüfung 🧑).
-- **AC-02** Ohne Wert gilt der neutrale Wert 2.
+- **AC-01** In der Höhle plant props eine Decke; in Biomen ohne `ceilingHeight` nicht (Unit-Test).
+- **AC-02** Die Unterkante der Decke steigt mit dem Wert: Wert 1 < Wert 2 < Wert 3; ohne Wert im Level gilt der Default (Unit-Test).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

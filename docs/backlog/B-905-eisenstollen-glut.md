@@ -4,13 +4,13 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** eingeplant
 - **Sprint:** BI2
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-14 (Auftrag Ralf: nächste autonome Welle)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,44 +24,43 @@ Das native Spiel zeigt Glut-Deko und Hitzeflimmern nach dem Wert der Stufe.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler des Eisenstollens; Claude setzt um; Ralf 🧑 prüft im Abnahme-Ticket.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Biome mit `glow` zeichnen Glutpunkte am Boden: Raster 1,5 Units, Glut wenn `mix(x) % 8 < 2 · Wert`; Kreise 0,08–0,18 Units, 0,05–0,4 Units über dem Boden, orange-rot, Deckkraft pulsiert mit der Uhr (Phase aus der Position).
+- Dazu ein Hitze-Schleier am Boden (Rechteck 1,2 Units hoch, rot, Deckkraft 0,06 · Wert).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Schaden durch Hitze; Lichtquellen in `world/light.go`.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Wie B-902.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `native/k3c-game/props/decor_glow.go`, `native/k3c-game/props/decor_test.go`
+- **Abhängig von:** B-891
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Eisenstollen mit Wert 0 → keine Glut, kein Schleier; mit 3 → dichte Glut und deutlicher Schleier.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Biom ohne `glow` → nichts.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Glut 0 zeigt keine Glut-Deko, 3 die stärkste (Test der Auswahl).
-- **AC-02** Sichtprüfung durch 🧑.
+- **AC-01** Wert 0 und Biome ohne `glow` planen weder Glut noch Schleier (Unit-Test).
+- **AC-02** Die Zahl der Glutpunkte im selben Ausschnitt steigt streng mit dem Wert (1 < 2 < 3), der Schleier wird mit dem Wert deckender (Unit-Test).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 
