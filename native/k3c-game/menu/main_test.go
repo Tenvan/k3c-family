@@ -38,7 +38,7 @@ func TestMainMovesAndSkipsDisabledContinue(t *testing.T) {
 	}{
 		{"runter", nil, []view.Action{view.ActionDown}, mainLoad},
 		{"hoch über ausgegrautes Weiter bleibt", nil, []view.Action{view.ActionUp}, mainNew},
-		{"unten bleibt am Rand", nil, []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown}, mainQuit},
+		{"unten bleibt am Rand", nil, []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown}, mainQuit},
 		{"hoch zu Weiter mit Stand", []view.SaveInfo{save("a", 1, true)}, []view.Action{view.ActionDown, view.ActionUp}, mainContinue},
 		{"Home springt zum Anfang", nil, []view.Action{view.ActionDown, view.ActionDown, view.ActionHome}, mainNew},
 		{"B im Hauptmenü bleibt", nil, []view.Action{view.ActionDown, view.ActionBack}, mainLoad},

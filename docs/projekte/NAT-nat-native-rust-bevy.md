@@ -43,8 +43,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | erledigt |
 | BI1 | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | aktiv |
 | BI2 | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | erledigt |
-| EP1 | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | geplant |
-| ST2 | Stresstests im Spielmenü (Testing) | geplant |
+| EP1 | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | erledigt |
+| ST2 | Stresstests im Spielmenü (Testing) | erledigt |
 | GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | aktiv |
 
 ## Nicht-Ziele

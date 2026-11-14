@@ -11,7 +11,7 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-// keysOf liefert die Tasten der Hälfte half für eine Aktion des HUD (Menü-Aktion oder gehaltener Befehl).
+// keysOf liefert die Tasten der Belegung half (0 wasd, 1 pfeile) für eine Aktion des HUD (Menü-Aktion oder gehaltener Befehl).
 func keysOf(half int, action string) []ebiten.Key {
 	switch action {
 	case "confirm":
@@ -26,7 +26,7 @@ func keysOf(half int, action string) []ebiten.Key {
 	return input.CommandKeys(half, action)
 }
 
-// Die Tasten-Texte des HUD je Tastatur-Hälfte stimmen mit der Belegung in input überein (hud darf input nicht
+// Die Tasten-Texte des HUD je Tastatur-Belegung stimmen mit der Belegung in input überein (hud darf input nicht
 // importieren, game kennt beide); nicht belegte Aktionen haben auf beiden Seiten keine Taste.
 func TestHudKeyNamesMatchInput(t *testing.T) {
 	for half := range 2 {
@@ -44,7 +44,7 @@ func TestHudKeyNamesMatchInput(t *testing.T) {
 }
 
 // Tastenbelegung für das Pause-Menü (B-807): eine Zeile je view.KeyActions, Tastatur aus input mit den Beschriftungen
-// des HUD, Gamepad mit der Standardbelegung; nicht belegt (Vollbild rechts) bleibt leer.
+// des HUD, Gamepad mit der Standardbelegung; Spalten WASD und Pfeile (B-893).
 func TestKeyRows(t *testing.T) {
 	rows := KeyRows("de")
 	if len(rows) != len(view.KeyActions) {
@@ -52,11 +52,12 @@ func TestKeyRows(t *testing.T) {
 	}
 	want := map[string]view.KeyRow{
 		view.KeyMove:       {Left: "A / D", Right: "Pfeil links / Pfeil rechts", Pad: "Stick / Steuerkreuz"},
-		view.KeySprint:     {Left: "Shift links", Right: "Strg rechts", Pad: "RT"},
+		view.KeySprint:     {Left: "Shift links", Right: "Shift rechts", Pad: "RT"},
+		view.KeyAttack:     {Left: "E", Right: "Strg rechts", Pad: "X"},
 		view.KeyPay:        {Left: "Leertaste", Right: "Enter", Pad: "A"},
-		view.KeySkill4:     {Left: "Z", Right: "Num 4", Pad: "D-Pad ↑"},
-		view.KeyPause:      {Left: "Esc", Right: "Backspace", Pad: "Menu"},
-		view.KeyFullscreen: {Left: "F11", Right: "", Pad: "RS"},
+		view.KeySkill4:     {Left: "Z", Right: "Bild ab", Pad: "D-Pad ↑"},
+		view.KeyPause:      {Left: "Esc", Right: "Esc", Pad: "Menu"},
+		view.KeyFullscreen: {Left: "F11", Right: "F11", Pad: "RS"},
 	}
 	for i, r := range rows {
 		if r.Action != view.KeyActions[i] || r.Left == "" || r.Pad == "" {

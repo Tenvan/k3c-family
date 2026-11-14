@@ -149,7 +149,7 @@ func TestLobbyTextsShowPlayers(t *testing.T) {
 	sc := newLobby(newMenus(), pad1)
 	sc.Update(press(keys1, view.ActionConfirm), &fakeSession{})
 	sc.fill(view.DefaultLanguage)
-	if want := "Spieler 1: Pad 1   ·   Spieler 2: Tastatur links"; sc.pg.sub != want {
+	if want := "Spieler 1: Pad 1   ·   Spieler 2: Tastatur"; sc.pg.sub != want {
 		t.Errorf("Spieler-Zeile %q, erwartet %q", sc.pg.sub, want)
 	}
 	if got := sc.pg.rows[lobbyGrade].value; got != "< Normal >" {

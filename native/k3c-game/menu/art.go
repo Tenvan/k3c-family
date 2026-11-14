@@ -19,7 +19,7 @@ const artAnim = "idle"
 // Bilder der Einträge (`gruppe/id`): Weiter und Fortsetzen der Krieger, Neues Spiel das Portal, Laden die offene Truhe,
 // Optionen die Truhe, Lizenzen und Tasten der Stern, Spieler abmelden der Bauer, Beenden und Verlassen der Ausgang.
 var (
-	mainArt  = [mainCount]string{"truppen/krieger", "objekte/portal", "objekte/truhe-offen", "objekte/truhe", "objekte/stern", "objekte/ausgang"}
+	mainArt  = [mainCount]string{"truppen/krieger", "objekte/portal", "objekte/truhe-offen", "objekte/truhe", "truppen/bauer", "objekte/stern", "objekte/ausgang"}
 	pauseArt = [pauseRows]string{"truppen/krieger", "objekte/truhe", "objekte/stern", "truppen/bauer", "objekte/ausgang"}
 )
 

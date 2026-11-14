@@ -33,6 +33,7 @@ func TestApplyOption(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
+			c.want.Controls, c.want.Stress = c.from.Controls, c.from.Stress // nicht in den Optionen (controls.go, testing.go)
 			if got := applyOption(c.from, c.opt, c.k); got != c.want {
 				t.Errorf("%+v, erwartet %+v", got, c.want)
 			}
@@ -110,7 +111,7 @@ func TestOptionsNavigation(t *testing.T) {
 
 func TestOptionValueTexts(t *testing.T) {
 	s := view.Settings{Music: 0.7, Effects: 0, Window: view.WindowFullscreen, Language: "en"}
-	want := []string{"< 70 % >", "< 0 % >", "< Vollbild >", "< English >", "an", "an", ""}
+	want := []string{"< 70 % >", "< 0 % >", "< Vollbild >", "< English >", "an", "an", "aus", "", ""}
 	for i, w := range want {
 		if got := optionValue(view.DefaultLanguage, s, i); got != w {
 			t.Errorf("Zeile %d: %q, erwartet %q", i, got, w)

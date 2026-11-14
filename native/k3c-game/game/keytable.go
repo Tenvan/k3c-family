@@ -43,7 +43,7 @@ func hudKeyName(k ebiten.Key) string {
 	return n
 }
 
-// keysFor liefert die Tasten der Tastatur-Hälfte half für eine Aktion der Tastenbelegung (move: links, dann rechts).
+// keysFor liefert die Tasten der Tastatur-Belegung half (0 wasd, 1 pfeile) für eine Aktion der Tastenbelegung (move: links, dann rechts).
 func keysFor(half int, action string) []ebiten.Key {
 	if action == view.KeyMove {
 		l, r := input.CommandKeys(half, "left"), input.CommandKeys(half, "right")

@@ -92,7 +92,7 @@ func TestSettingsPersist(t *testing.T) {
 	if got := s.Step().Settings; got != view.DefaultSettings() {
 		t.Fatalf("ohne Datei %+v", got)
 	}
-	want := view.Settings{Music: 0.3, Effects: 0.6, Window: view.WindowBorderless, Language: "en"}
+	want := view.Settings{Music: 0.3, Effects: 0.6, Window: view.WindowBorderless, Language: "en"}.Normalized()
 	if err := s.SetSettings(view.Settings{Music: 0.3, Effects: 0.6, Window: view.WindowBorderless, Language: "en"}); err != nil {
 		t.Fatal(err)
 	}

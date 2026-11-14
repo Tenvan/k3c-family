@@ -134,25 +134,25 @@ func TestMenuText(t *testing.T) {
 	es := menuEntries(nil, []string{"taunt", "fireball"}, 1, only("heal"), false)
 	slots := slotViews([]string{"fireball", "taunt", "", ""}, nil)
 	cursor := slices.IndexFunc(es, func(e menuEntry) bool { return e.id == "fireball" })
-	kb := buildMenu(newMenuKey("de", keys1, cursor, 1, es, slots), es)
+	kb := buildMenu(newMenuKey("de", wasd, cursor, 1, es, slots), es)
 	if kb.title != "Skills  ·  1 Punkte frei" || kb.n != menuWindow {
 		t.Errorf("Titel und Fenster: %q %d", kb.title, kb.n)
 	}
 	sel := slices.IndexFunc(kb.rows[:], func(r menuRow) bool { return r.selected })
-	if sel < 0 || !strings.HasPrefix(kb.rows[sel].text, "► [Q] ") || kb.rows[sel].glyph.key != "" {
-		t.Errorf("Tastatur: Taste als Text vor dem Skill: %+v", kb.rows[sel])
+	if sel < 0 || kb.rows[sel].glyph.key != "key:Q" || strings.Contains(kb.rows[sel].text, "[") {
+		t.Errorf("Tastatur: Tastenkappe statt Text: %+v", kb.rows[sel])
 	}
 	if kb.footer != "A / D wählen · Leertaste bestätigen · K schließen" {
 		t.Errorf("Hinweis Tastatur: %q", kb.footer)
 	}
-	gp := buildMenu(newMenuKey("de", pad, cursor, 1, es, slots), es)
-	if r := gp.rows[sel]; r.glyph.key != "pad:LB" || strings.Contains(r.text, "[") {
+	pv := buildMenu(newMenuKey("de", gp, cursor, 1, es, slots), es)
+	if r := pv.rows[sel]; r.glyph.key != "pad:LB" || strings.Contains(r.text, "[") {
 		t.Errorf("Pad: Xbox-Glyph statt Text: %+v", r)
 	}
-	if gp.footer != "◄ ► wählen · A bestätigen · B schließen" {
-		t.Errorf("Hinweis Pad: %q", gp.footer)
+	if pv.footer != "◄ ► wählen · A bestätigen · B schließen" {
+		t.Errorf("Hinweis Pad: %q", pv.footer)
 	}
-	last := buildMenu(newMenuKey("de", pad, len(es)-1, 1, es, slots), es)
+	last := buildMenu(newMenuKey("de", gp, len(es)-1, 1, es, slots), es)
 	if !last.rows[menuWindow-1].selected {
 		t.Error("am Ende steht der Cursor in der letzten Zeile")
 	}

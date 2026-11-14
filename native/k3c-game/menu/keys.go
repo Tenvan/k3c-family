@@ -128,15 +128,12 @@ func (n note) text(lang string) string {
 	return tr1(lang, n.key, n.arg)
 }
 
-// deviceName nennt das Gerät für die Anzeige (Tastatur links/rechts, Pad n).
+// deviceName nennt das Gerät für die Anzeige (Tastatur, Pad n).
 func deviceName(lang string, d view.DeviceID) string {
 	if d.Kind == view.DeviceGamepad {
 		return tr1(lang, txtPad, strconv.Itoa(d.Index+1))
 	}
-	if d.Index == 1 {
-		return tr(lang, txtKeysRight)
-	}
-	return tr(lang, txtKeysLeft)
+	return tr(lang, txtKeyboard)
 }
 
 // move liefert die nächste wählbare Zeile ab sel in Richtung dir (-1 hoch, 1 runter) unter n Zeilen. Am Rand bleibt

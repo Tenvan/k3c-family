@@ -44,16 +44,25 @@ type Settings struct {
 	// GuideSeen sind die erledigten Hinweise der geführten ersten Nacht als Bitmaske (hud vergibt die Bits und meldet
 	// neue über Session.SetSettings); 0 = nichts gesehen. Das Optionen-Menü setzt sie beim Einschalten der Anleitung zurück.
 	GuideSeen int
+	// Controls ist das Eingabe-Profil je Spieler (ProfileWASD, ProfileArrows, ProfileGamepad; B-893, profile.go);
+	// höchstens einer hat ein Tastatur-Profil.
+	Controls [MaxPlayers]string
+	// DevMode zeigt im Hauptmenü die Karte Testing (Optionen › Entwicklermodus, B-896); im Entwickler-Build ist sie
+	// immer da (menu). Null-Wert = aus.
+	DevMode bool
+	// Stress sind die zuletzt eingestellten Werte der Seite Testing (B-896, „eigene Einstellungen merken“).
+	Stress StressTest
 }
 
 // DefaultSettings sind die Werte ohne gespeicherte Einstellungen (wie der Browser: volle Lautstärke, Deutsch, Fenster).
 func DefaultSettings() Settings {
-	return Settings{Music: 1, Effects: 1, Language: DefaultLanguage}
+	return Settings{Music: 1, Effects: 1, Language: DefaultLanguage, Controls: defaultControls(),
+		Stress: DefaultStress()}
 }
 
 // Normalized begrenzt die Lautstärken auf 0 … 1 (NaN = Standard), setzt eine unbekannte Sprache auf
-// DefaultLanguage, eine unbekannte Fluss-Fassung auf "" und negative GuideSeen auf 0. SetSettings und das Laden wenden
-// es an.
+// DefaultLanguage, eine unbekannte Fluss-Fassung auf "", negative GuideSeen auf 0 und die Eingabe-Profile auf gültige
+// (profile.go). SetSettings und das Laden wenden es an.
 func (s Settings) Normalized() Settings {
 	d := DefaultSettings()
 	s.Music, s.Effects = volume(s.Music, d.Music), volume(s.Effects, d.Effects)
@@ -67,6 +76,11 @@ func (s Settings) Normalized() Settings {
 		s.Window = WindowFramed
 	}
 	s.GuideSeen = max(0, s.GuideSeen)
+	s.Controls = normalizeControls(s.Controls)
+	if s.Stress == (StressTest{}) {
+		s.Stress = DefaultStress()
+	}
+	s.Stress = s.Stress.Normalized()
 	return s
 }
 

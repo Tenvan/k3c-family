@@ -27,11 +27,11 @@ func padState(id ebiten.GamepadID, bs ...ebiten.StandardGamepadButton) PadState 
 	return p
 }
 
-// AC-01: Jede Zeile der Belegung (Befehl, gehalten) ergibt den erwarteten Befehl, je Tastatur-Hälfte.
+// AC-01: Jede Zeile der Belegung (Befehl, gehalten) ergibt den erwarteten Befehl, je Tastatur-Profil (B-893).
 func TestKeyCommandTable(t *testing.T) {
 	cases := []struct {
 		name string
-		half int
+		lay  int
 		keys []ebiten.Key
 		want view.Command
 	}{
@@ -48,20 +48,24 @@ func TestKeyCommandTable(t *testing.T) {
 		{"keys1 Skill 4 (Z)", 0, keys(ebiten.KeyZ), view.Command{Skill: 4}},
 		{"keys1 Skill 4 (Z auf QWERTZ)", 0, keys(ebiten.KeyY), view.Command{Skill: 4}},
 		{"keys1 niedrigster Skill gewinnt", 0, keys(ebiten.KeyT, ebiten.KeyR), view.Command{Skill: 2}},
-		{"keys1 ignoriert rechte Hälfte", 0, keys(ebiten.KeyArrowLeft, ebiten.KeyEnter, ebiten.KeyNumpad0), view.Command{}},
-		{"keys2 links", 1, keys(ebiten.KeyArrowLeft), view.Command{Move: -1}},
-		{"keys2 rechts", 1, keys(ebiten.KeyArrowRight), view.Command{Move: 1}},
-		{"keys2 Galopp Strg", 1, keys(ebiten.KeyControlRight), view.Command{Sprint: true}},
-		{"keys2 Galopp Shift", 1, keys(ebiten.KeyShiftRight), view.Command{Sprint: true}},
-		{"keys2 zahlen Enter", 1, keys(ebiten.KeyEnter), view.Command{Pay: true}},
-		{"keys2 zahlen Num-Enter", 1, keys(ebiten.KeyNumpadEnter), view.Command{Pay: true}},
-		{"keys2 Schlag", 1, keys(ebiten.KeyNumpad0), view.Command{Attack: true}},
-		{"keys2 Skill 1", 1, keys(ebiten.KeyNumpad1), view.Command{Skill: 1}},
-		{"keys2 Skill 4", 1, keys(ebiten.KeyNumpad4), view.Command{Skill: 4}},
-		{"keys2 ignoriert linke Hälfte", 1, keys(ebiten.KeyD, ebiten.KeySpace, ebiten.KeyE, ebiten.KeyShiftLeft), view.Command{}},
+		{"wasd ignoriert die Pfeile", 0, keys(ebiten.KeyArrowLeft, ebiten.KeyEnter, ebiten.KeyNumpad0), view.Command{}},
+		{"pfeile links", 1, keys(ebiten.KeyArrowLeft), view.Command{Move: -1}},
+		{"pfeile rechts", 1, keys(ebiten.KeyArrowRight), view.Command{Move: 1}},
+		{"pfeile Galopp Shift", 1, keys(ebiten.KeyShiftRight), view.Command{Sprint: true}},
+		{"pfeile zahlen Enter", 1, keys(ebiten.KeyEnter), view.Command{Pay: true}},
+		{"pfeile zahlen Num-Enter", 1, keys(ebiten.KeyNumpadEnter), view.Command{Pay: true}},
+		{"pfeile Schlag Strg", 1, keys(ebiten.KeyControlRight), view.Command{Attack: true}},
+		{"pfeile Schlag Num 0", 1, keys(ebiten.KeyNumpad0), view.Command{Attack: true}},
+		{"pfeile Skill 1 Einfg", 1, keys(ebiten.KeyInsert), view.Command{Skill: 1}},
+		{"pfeile Skill 2 Entf", 1, keys(ebiten.KeyDelete), view.Command{Skill: 2}},
+		{"pfeile Skill 3 Ende", 1, keys(ebiten.KeyEnd), view.Command{Skill: 3}},
+		{"pfeile Skill 4 Bild ab", 1, keys(ebiten.KeyPageDown), view.Command{Skill: 4}},
+		{"pfeile Skill 1 Num 1", 1, keys(ebiten.KeyNumpad1), view.Command{Skill: 1}},
+		{"pfeile Skill 4 Num 4", 1, keys(ebiten.KeyNumpad4), view.Command{Skill: 4}},
+		{"pfeile ignoriert WASD", 1, keys(ebiten.KeyD, ebiten.KeySpace, ebiten.KeyE, ebiten.KeyShiftLeft), view.Command{}},
 	}
 	for _, c := range cases {
-		if got := keyCommand(c.half, keyState(c.keys...)); got != c.want {
+		if got := keyCommand(c.lay, keyState(c.keys...)); got != c.want {
 			t.Errorf("%s: %+v, erwartet %+v", c.name, got, c.want)
 		}
 	}
@@ -111,10 +115,10 @@ func pressOnce(held [actionCount]bool, pad bool) []view.Action {
 	return tr.step(&held, pad, nil)
 }
 
-// AC-01: Jede Menü-Taste beider Tastatur-Hälften löst beim Drücken genau ihre Aktion(en) aus.
+// AC-01: Jede Menü-Taste beider Tastatur-Profile löst beim Drücken genau ihre Aktion(en) aus.
 func TestKeyActionTable(t *testing.T) {
 	cases := []struct {
-		half int
+		lay  int
 		key  ebiten.Key
 		want []view.Action
 	}{
@@ -132,16 +136,20 @@ func TestKeyActionTable(t *testing.T) {
 		{0, ebiten.KeyF11, []view.Action{view.ActionFullscreen}},
 		{0, ebiten.KeyF, nil},
 		{0, ebiten.KeyF9, []view.Action{view.ActionCheats}},
-		{1, ebiten.KeyF9, nil},
+		{1, ebiten.KeyF9, []view.Action{view.ActionCheats}},
+		{1, ebiten.KeyF11, []view.Action{view.ActionFullscreen}},
 		{0, ebiten.KeyNumpad5, nil},
 		{0, ebiten.KeyArrowUp, nil},
 		{1, ebiten.KeyArrowUp, []view.Action{view.ActionUp}},
-		{1, ebiten.KeyArrowDown, []view.Action{view.ActionDown}},
+		{1, ebiten.KeyArrowDown, []view.Action{view.ActionDown, view.ActionSkillMenu}},
 		{1, ebiten.KeyArrowLeft, []view.Action{view.ActionLeft}},
 		{1, ebiten.KeyArrowRight, []view.Action{view.ActionRight}},
 		{1, ebiten.KeyEnter, []view.Action{view.ActionConfirm}},
 		{1, ebiten.KeyNumpadEnter, []view.Action{view.ActionConfirm}},
 		{1, ebiten.KeyBackspace, []view.Action{view.ActionBack, view.ActionMenu}},
+		{1, ebiten.KeyEscape, []view.Action{view.ActionBack, view.ActionMenu}},
+		{1, ebiten.KeyTab, []view.Action{view.ActionView}},
+		{1, ebiten.KeyHome, []view.Action{view.ActionHome}},
 		{1, ebiten.KeyPageUp, []view.Action{view.ActionPrevPage}},
 		{1, ebiten.KeyPageDown, []view.Action{view.ActionNextPage}},
 		{1, ebiten.KeyNumpad5, []view.Action{view.ActionSkillMenu}},
@@ -150,8 +158,8 @@ func TestKeyActionTable(t *testing.T) {
 		{1, ebiten.KeyW, nil},
 	}
 	for _, c := range cases {
-		if got := pressOnce(keyHeld(c.half, keyState(c.key)), false); !slices.Equal(got, c.want) {
-			t.Errorf("keys%d %v: %v, erwartet %v", c.half+1, c.key, got, c.want)
+		if got := pressOnce(keyHeld(c.lay, keyState(c.key)), false); !slices.Equal(got, c.want) {
+			t.Errorf("Profil %d %v: %v, erwartet %v", c.lay, c.key, got, c.want)
 		}
 	}
 }
@@ -202,10 +210,10 @@ func TestStickDownIsNoSkillMenu(t *testing.T) {
 	}
 }
 
-// Jede Taste der Belegung wird bei Ebitengine abgefragt; keine Taste liegt doppelt in den Befehlen einer Hälfte.
-func TestUsedKeysAndHalves(t *testing.T) {
-	for i := range halves {
-		l := &halves[i]
+// Jede Taste der Belegung wird bei Ebitengine abgefragt; keine Taste liegt doppelt in den Befehlen eines Profils.
+func TestUsedKeysAndLayouts(t *testing.T) {
+	for i := range layouts {
+		l := &layouts[i]
 		var seen []ebiten.Key
 		groups := append([][]ebiten.Key{l.left, l.right, l.sprint, l.pay, l.attack}, l.skills[:]...)
 		for _, g := range groups {

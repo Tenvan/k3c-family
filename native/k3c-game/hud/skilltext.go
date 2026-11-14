@@ -64,7 +64,7 @@ func entryText(lang string, e menuEntry, selected bool, key string) string {
 	return mark + key + lineName(e.line) + " " + tier + " · " + skillName(e.id) + passive + sep + state
 }
 
-// menuRow ist eine sichtbare Zeile des Menüs: Glyph der Slot-Taste (Pad) und Text.
+// menuRow ist eine sichtbare Zeile des Menüs: Glyph der Slot-Taste (Xbox-Taste bzw. Tastenkappe, B-894) und Text.
 type menuRow struct {
 	glyph    glyph
 	text     string
@@ -81,8 +81,7 @@ type menuView struct {
 
 // menuKey ist alles, wovon der Text des Menüs abhängt.
 type menuKey struct {
-	lang               string
-	dev                view.DeviceID
+	lang, profile      string // Sprache, Eingabe-Profil des Spielers (B-894)
 	cursor, points, n  int
 	learned, learnable uint64
 	respec             bool
@@ -90,8 +89,8 @@ type menuKey struct {
 }
 
 // newMenuKey fasst Einträge, Punkte und Slots zusammen.
-func newMenuKey(lang string, dev view.DeviceID, cursor, points int, entries []menuEntry, slots [4]slotView) menuKey {
-	k := menuKey{lang: lang, dev: dev, cursor: cursor, points: points, n: len(entries)}
+func newMenuKey(lang, profile string, cursor, points int, entries []menuEntry, slots [4]slotView) menuKey {
+	k := menuKey{lang: lang, profile: profile, cursor: cursor, points: points, n: len(entries)}
 	for i, e := range entries {
 		switch {
 		case e.id == respecID:
@@ -112,38 +111,35 @@ func newMenuKey(lang string, dev view.DeviceID, cursor, points int, entries []me
 // buildMenu baut die Zeilen aus den Einträgen (Fenster von menuWindow Zeilen um den Cursor).
 func buildMenu(k menuKey, entries []menuEntry) menuView {
 	v := menuView{title: tf(k.lang, "skill.title", "n", k.points)}
-	labels := slotLabels(k.lang, k.dev)
+	labels := slotLabels(k.lang, k.profile)
 	from := max(0, min(k.cursor-menuWindow/2, len(entries)-menuWindow))
 	for i := from; i < min(len(entries), from+menuWindow); i++ {
 		e, row := entries[i], menuRow{selected: i == k.cursor}
 		key := ""
 		for s, id := range k.slots {
 			if id != "" && id == e.id {
-				key = labels[s+1]
-				row.glyph = glyphOf(k.lang, glyphActions[4+s], k.dev)
+				row.glyph = glyphOf(k.lang, glyphActions[4+s], k.profile)
+				if row.glyph.key == "" {
+					key = labels[s+1] // ohne Icon: Taste als Text
+				}
 			}
-		}
-		if row.glyph.key != "" && k.dev.Kind == view.DeviceGamepad {
-			key = "" // Pad: Glyph statt Text
-		} else {
-			row.glyph = glyph{}
 		}
 		row.text = entryText(k.lang, e, row.selected, key)
 		v.rows[v.n] = row
 		v.n++
 	}
-	v.footer = menuFooter(k.lang, k.dev, labels[5])
+	v.footer = menuFooter(k.lang, k.profile, labels[5])
 	return v
 }
 
-// menuFooter ist der Bedienhinweis mit den Tasten des Geräts; am Pad schließt B (Steuerkreuz ↓ wählt im offenen Menü
-// weiter).
-func menuFooter(lang string, dev view.DeviceID, menuKeyLabel string) string {
-	if dev.Kind == view.DeviceGamepad {
+// menuFooter ist der Bedienhinweis mit den Tasten des Eingabe-Profils; am Pad schließt B (Steuerkreuz ↓ wählt im
+// offenen Menü weiter).
+func menuFooter(lang, profile, menuKeyLabel string) string {
+	if profile == view.ProfileGamepad {
 		return tf(lang, "skill.hint.pad", "menu", "B")
 	}
-	move := glyphOf(lang, "left", dev).label + " / " + glyphOf(lang, "right", dev).label
-	return tf(lang, "skill.hint.keyboard", "move", move, "ok", glyphOf(lang, "confirm", dev).label, "menu", menuKeyLabel)
+	move := glyphOf(lang, "left", profile).label + " / " + glyphOf(lang, "right", profile).label
+	return tf(lang, "skill.hint.keyboard", "move", move, "ok", glyphOf(lang, "confirm", profile).label, "menu", menuKeyLabel)
 }
 
 // barKey: Skill und Abklingzeit (ganze Sekunden, aufgerundet) je Slot.

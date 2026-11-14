@@ -1,26 +1,29 @@
-// Package input liest Tastatur und Gamepads und liefert view.Input (Sprint NG5, B-798). Die Belegung folgt dem
-// Browser-Client (src/input/slotBindings.ts, keyboardLayouts.ts; Tastatur 2 wie das frühere KEYBOARD_2):
+// Package input liest Tastatur und Gamepads und liefert view.Input (Sprint NG5, B-798). Die Tastatur ist ein Gerät
+// (keys1) für einen Spieler; ihre Belegung folgt dem Tastatur-Profil der Einstellungen (B-893, view/profile.go,
+// SetKeyboard). Belegung je Profil:
 //
-//	Befehl (gehalten)  keys1 (links)      keys2 (rechts)         Gamepad (Xbox)
-//	laufen             A / D              ← / →                  linker Stick oder Steuerkreuz ←/→
-//	Galopp (Sprint)    Shift links        Strg rechts, Shift re. RT
-//	zahlen             Leertaste          Enter, Num-Enter       A
-//	Schlag             E                  Num 0                  X
-//	Skill 1 … 4        Q, R, T, Z         Num 1 … Num 4          LB, RB, LT, Steuerkreuz ↑ (der niedrigste gewinnt)
+//	Befehl (gehalten)  wasd          pfeile                     Gamepad (Xbox)
+//	laufen             A / D         ← / →                      linker Stick oder Steuerkreuz ←/→
+//	Galopp (Sprint)    Shift links   Shift rechts               RT
+//	zahlen             Leertaste     Enter, Num-Enter           A
+//	Schlag             E             Strg rechts, Num 0         X
+//	Skill 1 … 4        Q, R, T, Z    Einfg, Entf, Ende, Bild ↓  LB, RB, LT, Steuerkreuz ↑ (der niedrigste gewinnt)
+//	                                 oder Num 1 … Num 4
 //
-//	Aktion (Flanke)    keys1              keys2                  Gamepad
-//	↑ ↓ ← →            W S A D            Pfeile                 Steuerkreuz oder Stick (Wiederholung beim Halten)
-//	Bestätigen         Leertaste          Enter, Num-Enter       A
-//	Zurück             Esc                Rücktaste              B (im Spiel unbelegt, game wertet sie dort nicht aus)
-//	Menü               Esc                Rücktaste              Menu kurz (beim Loslassen, < 600 ms, ohne View)
-//	View               Tab                –                      View (beim Loslassen, ohne Menu)
-//	Seite zurück/vor   Q / E              Bild ↑ / Bild ↓        LB / RB
-//	Home               Pos1               –                      View + Menu gemeinsam (statt Menu und View)
-//	Skill-Menü         K                  Num 5                  Steuerkreuz ↓ (zusätzlich zu ↓, nicht der Stick)
-//	Vollbild           F                  –                      rechter Stick gedrückt
+//	Aktion (Flanke)    wasd          pfeile                     Gamepad
+//	↑ ↓ ← →            W S A D       Pfeile                     Steuerkreuz oder Stick (Wiederholung beim Halten)
+//	Bestätigen         Leertaste     Enter, Num-Enter           A
+//	Zurück             Esc           Esc, Rücktaste             B (im Spiel unbelegt, game wertet sie dort nicht aus)
+//	Menü               Esc           Esc, Rücktaste             Menu kurz (beim Loslassen, < 600 ms, ohne View)
+//	View               Tab           Tab                        View (beim Loslassen, ohne Menu)
+//	Seite zurück/vor   Q / E         Bild ↑ / Bild ↓            LB / RB
+//	Home               Pos1          Pos1                       View + Menu gemeinsam (statt Menu und View)
+//	Skill-Menü         K             ↓, Num 5                   Steuerkreuz ↓ (zusätzlich zu ↓, nicht der Stick)
+//	Vollbild, Cheats   F11, F9       F11, F9                    rechter Stick gedrückt, View + Y
 //
-// input unterscheidet Spiel und Menü nicht: Steuerkreuz ↓ liefert ActionDown und ActionSkillMenu zugleich; das
-// Skill-Menü (Overlay) wertet ActionSkillMenu nur im Spiel aus, Menüs nehmen ActionDown.
+// input unterscheidet Spiel und Menü nicht: Steuerkreuz ↓ (und ↓ im Profil pfeile) liefert ActionDown und
+// ActionSkillMenu zugleich; das Skill-Menü (Overlay) wertet ActionSkillMenu nur im Spiel aus, Menüs nehmen ActionDown.
+// Die übrigen Entwickler-Tasten F1 … F12 (view/devkeys.go) gelten unabhängig vom Profil.
 //
 // Pads ohne Standard-Belegung werden mit einer Meldung im Log ignoriert. Die Auswertung ist rein (Rohzustand →
 // view.DeviceInput, tracker.go), nur source.go fragt Ebitengine.
@@ -37,7 +40,7 @@ import (
 // actionCount ist die Zahl der Menü-Aktionen in view (Index = view.Action).
 const actionCount = int(view.ActionCheats) + 1
 
-// keyLayout ist die Belegung einer Tastatur-Hälfte; je Eintrag gelten alle genannten Tasten.
+// keyLayout ist die Belegung eines Tastatur-Profils; je Eintrag gelten alle genannten Tasten.
 type keyLayout struct {
 	left, right, sprint, pay, attack []ebiten.Key
 	skills                           [4][]ebiten.Key
@@ -46,10 +49,27 @@ type keyLayout struct {
 
 func keys(k ...ebiten.Key) []ebiten.Key { return k }
 
-// halves sind die beiden Tastatur-Hälften (DeviceID.Index 0 und 1). Z liegt auf QWERTZ auf der Taste KeyY, darum
-// gelten für Skill 4 beide.
-var halves = [2]keyLayout{
-	{
+// Indizes der Tastatur-Profile in layouts (Layout).
+const (
+	layoutWASD   = 0
+	layoutArrows = 1
+)
+
+// Layouts ist die Zahl der Tastatur-Belegungen (Index für ActionKeys und CommandKeys).
+const Layouts = 2
+
+// Layout liefert den Index der Belegung zum Tastatur-Profil p (view.ProfileArrows: 1, sonst 0 = WASD).
+func Layout(p string) int {
+	if p == view.ProfileArrows {
+		return layoutArrows
+	}
+	return layoutWASD
+}
+
+// layouts sind die Belegungen der Tastatur-Profile wasd und pfeile (Index Layout). Z liegt auf QWERTZ auf der Taste
+// KeyY, darum gelten für Skill 4 beide.
+var layouts = [Layouts]keyLayout{
+	layoutWASD: {
 		left: keys(ebiten.KeyA), right: keys(ebiten.KeyD), sprint: keys(ebiten.KeyShiftLeft),
 		pay: keys(ebiten.KeySpace), attack: keys(ebiten.KeyE),
 		skills: [4][]ebiten.Key{keys(ebiten.KeyQ), keys(ebiten.KeyR), keys(ebiten.KeyT), keys(ebiten.KeyZ, ebiten.KeyY)},
@@ -64,17 +84,22 @@ var halves = [2]keyLayout{
 			view.ActionCheats:     keys(view.DevKeyOf(view.DevCheats)),
 		},
 	},
-	{
-		left: keys(ebiten.KeyArrowLeft), right: keys(ebiten.KeyArrowRight),
-		sprint: keys(ebiten.KeyControlRight, ebiten.KeyShiftRight),
-		pay:    keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter), attack: keys(ebiten.KeyNumpad0),
-		skills: [4][]ebiten.Key{keys(ebiten.KeyNumpad1), keys(ebiten.KeyNumpad2), keys(ebiten.KeyNumpad3), keys(ebiten.KeyNumpad4)},
+	layoutArrows: {
+		left: keys(ebiten.KeyArrowLeft), right: keys(ebiten.KeyArrowRight), sprint: keys(ebiten.KeyShiftRight),
+		pay:    keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter),
+		attack: keys(ebiten.KeyControlRight, ebiten.KeyNumpad0),
+		skills: [4][]ebiten.Key{keys(ebiten.KeyInsert, ebiten.KeyNumpad1), keys(ebiten.KeyDelete, ebiten.KeyNumpad2),
+			keys(ebiten.KeyEnd, ebiten.KeyNumpad3), keys(ebiten.KeyPageDown, ebiten.KeyNumpad4)},
 		actions: [actionCount][]ebiten.Key{
 			view.ActionUp: keys(ebiten.KeyArrowUp), view.ActionDown: keys(ebiten.KeyArrowDown),
 			view.ActionLeft: keys(ebiten.KeyArrowLeft), view.ActionRight: keys(ebiten.KeyArrowRight),
-			view.ActionConfirm: keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter), view.ActionBack: keys(ebiten.KeyBackspace),
-			view.ActionMenu: keys(ebiten.KeyBackspace), view.ActionPrevPage: keys(ebiten.KeyPageUp),
-			view.ActionNextPage: keys(ebiten.KeyPageDown), view.ActionSkillMenu: keys(ebiten.KeyNumpad5),
+			view.ActionConfirm: keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter),
+			view.ActionBack:    keys(ebiten.KeyEscape, ebiten.KeyBackspace),
+			view.ActionMenu:    keys(ebiten.KeyEscape, ebiten.KeyBackspace), view.ActionView: keys(ebiten.KeyTab),
+			view.ActionPrevPage: keys(ebiten.KeyPageUp), view.ActionNextPage: keys(ebiten.KeyPageDown),
+			view.ActionHome: keys(ebiten.KeyHome), view.ActionSkillMenu: keys(ebiten.KeyArrowDown, ebiten.KeyNumpad5),
+			view.ActionFullscreen: keys(view.DevKeyOf(view.DevFullscreen)),
+			view.ActionCheats:     keys(view.DevKeyOf(view.DevCheats)),
 		},
 	},
 }
@@ -110,7 +135,7 @@ var padActions = [actionCount]ebiten.StandardGamepadButton{
 	view.ActionSkillMenu: padDown, view.ActionFullscreen: padRS, view.ActionCheats: padY,
 }
 
-// usedKeys sind alle Tasten beider Hälften (Ebitengine wird nur nach ihnen gefragt).
+// usedKeys sind alle Tasten beider Profile (Ebitengine wird nur nach ihnen gefragt).
 var usedKeys = collectKeys()
 
 func collectKeys() []ebiten.Key {
@@ -122,8 +147,8 @@ func collectKeys() []ebiten.Key {
 			}
 		}
 	}
-	for i := range halves {
-		l := &halves[i]
+	for i := range layouts {
+		l := &layouts[i]
 		for _, ks := range [][]ebiten.Key{l.left, l.right, l.sprint, l.pay, l.attack} {
 			add(ks)
 		}
@@ -137,22 +162,22 @@ func collectKeys() []ebiten.Key {
 	return out
 }
 
-// ActionKeys liefert die Tasten der Tastatur-Hälfte half (0 links, 1 rechts) für die Menü-Aktion a (nil = keine).
-// Für Abgleich-Tests anderer Pakete (Tasten-Texte im HUD, game/keys_test.go).
-func ActionKeys(half int, a view.Action) []ebiten.Key {
-	if half < 0 || half >= len(halves) || a < 0 || int(a) >= actionCount {
+// ActionKeys liefert die Tasten der Belegung layout (Layout: 0 wasd, 1 pfeile) für die Menü-Aktion a (nil = keine).
+// Für die Tastenbelegung und Abgleich-Tests anderer Pakete (Tasten-Texte im HUD, game/keys_test.go).
+func ActionKeys(layout int, a view.Action) []ebiten.Key {
+	if layout < 0 || layout >= len(layouts) || a < 0 || int(a) >= actionCount {
 		return nil
 	}
-	return halves[half].actions[a]
+	return layouts[layout].actions[a]
 }
 
-// CommandKeys liefert die Tasten der Tastatur-Hälfte half für einen gehaltenen Befehl: left, right, sprint, pay,
-// attack, skill1 … skill4 (nil = unbekannt).
-func CommandKeys(half int, name string) []ebiten.Key {
-	if half < 0 || half >= len(halves) {
+// CommandKeys liefert die Tasten der Belegung layout für einen gehaltenen Befehl: left, right, sprint, pay, attack,
+// skill1 … skill4 (nil = unbekannt).
+func CommandKeys(layout int, name string) []ebiten.Key {
+	if layout < 0 || layout >= len(layouts) {
 		return nil
 	}
-	l := &halves[half]
+	l := &layouts[layout]
 	switch name {
 	case "left":
 		return l.left

@@ -1,8 +1,8 @@
 package devtools
 
 // Cheat-Menü als view.Overlay (F9 bzw. View + Y, B-888): je Spieler ein eigenes Menü in seiner Zelle; ein offenes Menü
-// verbraucht die Eingabe seines Spielers (Monarch steht), die anderen spielen weiter. F9 kommt von der linken
-// Tastatur-Hälfte; spielt sie nicht, gilt der erste Spieler an einer Tastatur, sonst der erste Spieler. Die Aktion geht
+// verbraucht die Eingabe seines Spielers (Monarch steht), die anderen spielen weiter. F9 kommt von der Tastatur;
+// spielt sie nicht, gilt der erste Spieler. Die Aktion geht
 // über view.DevSession an den Raum (dort 🐛-Log mit Spieler und Wert); nicht im Aufnahme-Modus.
 
 import (
@@ -61,14 +61,9 @@ func (o *overlay) actionsOf(in view.Input, seats []view.Seat, seat view.Seat) []
 	return acts
 }
 
-// keyboardSeat ist der Spieler, für den F9 gilt, wenn die linke Tastatur-Hälfte nicht spielt: der erste an einer
-// Tastatur, sonst der erste; -1 ohne Spieler.
+// keyboardSeat ist der Spieler, für den F9 gilt, wenn die Tastatur keinen Platz hat: der erste; -1 ohne Spieler. Hat
+// die Tastatur einen Platz, öffnet F9 das Menü dieses Spielers über sein eigenes Gerät (eine Tastatur, B-893).
 func keyboardSeat(seats []view.Seat) int {
-	for _, s := range seats {
-		if s.Device.Kind == view.DeviceKeyboard {
-			return s.Player
-		}
-	}
 	if len(seats) > 0 {
 		return seats[0].Player
 	}

@@ -126,9 +126,9 @@ func anyKey(k *KeyState, ks []ebiten.Key) bool {
 	return false
 }
 
-// keyCommand liefert den Befehl der Tastatur-Hälfte half; beide Richtungen zugleich heben sich auf.
-func keyCommand(half int, k *KeyState) view.Command {
-	l := &halves[half]
+// keyCommand liefert den Befehl der Belegung layout; beide Richtungen zugleich heben sich auf.
+func keyCommand(layout int, k *KeyState) view.Command {
+	l := &layouts[layout]
 	var c view.Command
 	if anyKey(k, l.left) {
 		c.Move--
@@ -146,10 +146,10 @@ func keyCommand(half int, k *KeyState) view.Command {
 	return c
 }
 
-// keyHeld liefert die gehaltenen Menü-Tasten der Tastatur-Hälfte half.
-func keyHeld(half int, k *KeyState) [actionCount]bool {
+// keyHeld liefert die gehaltenen Menü-Tasten der Belegung layout.
+func keyHeld(layout int, k *KeyState) [actionCount]bool {
 	var held [actionCount]bool
-	for a, ks := range halves[half].actions {
+	for a, ks := range layouts[layout].actions {
 		held[a] = anyKey(k, ks)
 	}
 	return held

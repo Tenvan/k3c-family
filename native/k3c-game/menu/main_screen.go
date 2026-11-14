@@ -15,14 +15,15 @@ const (
 	mainNew
 	mainLoad
 	mainOptions
+	mainTesting
 	mainLicenses
 	mainQuit
 	mainCount
 )
 
-var mainLabels = [mainCount]textKey{txtContinue, txtNew, txtLoad, txtOptions, txtLicenses, txtQuit}
-var mainSubs = [mainCount]textKey{txtContinueSub, txtNewSub, txtLoadSub, txtOptionsSub, txtLicensesSub, txtQuitSub}
-var mainMats = [mainCount]material{matGold, matGreen, matBlue, matPurple, matRed, matCoral}
+var mainLabels = [mainCount]textKey{txtContinue, txtNew, txtLoad, txtOptions, txtTesting, txtLicenses, txtQuit}
+var mainSubs = [mainCount]textKey{txtContinueSub, txtNewSub, txtLoadSub, txtOptionsSub, txtTestingSub, txtLicensesSub, txtQuitSub}
+var mainMats = [mainCount]material{matGold, matGreen, matBlue, matPurple, matBlue, matRed, matCoral}
 
 // mainScreen ist das Hauptmenü. „Weiter“ ist ausgegraut, solange es keinen ladbaren Spielstand gibt; die Liste liest
 // es beim ersten Update und nach jeder Rückkehr aus einem Untermenü (Laden kann löschen). Bis dahin zeigt „Weiter“
@@ -34,15 +35,20 @@ type mainScreen struct {
 	listed bool
 	latest view.SaveInfo // neuester ladbarer Spielstand (Name leer: keiner)
 	ended  view.Outcome  // Ausgang des letzten Spiels, für den die Texte gelten (Frame.Outcome)
+	dev    bool          // Karte Testing sichtbar (Entwickler-Build oder Settings.DevMode, B-896)
 	pg     page
 }
 
-func newMain(m *menus) *mainScreen { return &mainScreen{m: m} }
+func newMain(m *menus) *mainScreen { return &mainScreen{m: m, dev: devBuild()} }
 
 // Update liest bei Bedarf die Spielstände und bedient die Tasten.
 func (sc *mainScreen) Update(in view.Input, s view.Session) view.Step {
 	if !sc.listed {
 		sc.refresh(s)
+	}
+	if dev := devBuild() || s.Settings().DevMode; dev != sc.dev {
+		sc.dev = dev
+		sc.ver++
 	}
 	return sc.run(in, s, sc)
 }
@@ -66,8 +72,14 @@ func (sc *mainScreen) refresh(s view.Session) {
 	sc.ver++
 }
 
-// off meldet ausgegraute Einträge (Weiter ohne Spielstand; vor dem Lesen der Liste noch nicht).
-func (sc *mainScreen) off(i int) bool { return i == mainContinue && sc.listed && sc.latest.Name == "" }
+// off meldet ausgegraute bzw. verborgene Einträge (Weiter ohne Spielstand, vor dem Lesen der Liste noch nicht;
+// Testing ohne Entwickler-Modus). Die Navigation überspringt sie.
+func (sc *mainScreen) off(i int) bool {
+	return (i == mainContinue && sc.listed && sc.latest.Name == "") || (i == mainTesting && !sc.dev)
+}
+
+// devBuild meldet den Entwickler-Build: ohne Versionsangabe (go run, Tests, task dev).
+func devBuild() bool { return Version == "" }
 
 func (sc *mainScreen) handle(d view.DeviceID, k key, s view.Session) (view.StepKind, view.Screen) {
 	switch k {
@@ -113,6 +125,9 @@ func (sc *mainScreen) confirm(d view.DeviceID, s view.Session) (view.StepKind, v
 	case mainOptions:
 		sc.cue(view.CueConfirm, -1, "")
 		return view.StepPush, newOptions(sc.m, false)
+	case mainTesting:
+		sc.cue(view.CueConfirm, -1, "")
+		return view.StepPush, newTesting(sc.m)
 	case mainLicenses:
 		sc.cue(view.CueConfirm, -1, "")
 		return view.StepPush, newLicenses(sc.m)
@@ -137,6 +152,9 @@ func (sc *mainScreen) fill(lang string) {
 	p.reset(tr(lang, txtTitle))
 	p.sub = versionText(lang)
 	for i := range mainCount {
+		if i == mainTesting && !sc.dev {
+			continue // nur für Entwickler sichtbar
+		}
 		r := row{label: tr(lang, mainLabels[i]), value: tr(lang, mainSubs[i]), mat: mainMats[i], off: sc.off(i), art: mainArt[i]}
 		if i == mainContinue {
 			r.value = tr(lang, txtContinueNone)
@@ -150,6 +168,9 @@ func (sc *mainScreen) fill(lang string) {
 		p.add(r)
 	}
 	p.sel = sc.sel
+	if !sc.dev && sc.sel > mainTesting {
+		p.sel-- // verborgene Karte Testing
+	}
 	n := sc.note
 	if !n.set {
 		n = outcomeNote(sc.ended)

@@ -69,8 +69,12 @@ const (
 	txtLost
 	txtWon
 	txtBy
-	txtKeysLeft
-	txtKeysRight
+	txtKeysWASD
+	txtKeysArrows
+	txtKeyboard
+	txtGamepad
+	txtControls
+	txtControlsHint
 	txtPad
 	txtGradeEasy
 	txtGradeNormal
@@ -112,6 +116,28 @@ const (
 	txtLicAudio
 	txtVersion
 	txtVersionUnknown
+	txtTesting
+	txtTestingSub
+	txtTestingHint
+	txtTstPreset
+	txtTstPlayers
+	txtTstDepth
+	txtTstEnemies
+	txtTstGrowth
+	txtTstFactor
+	txtTstBuild
+	txtTstTroops
+	txtTstTimescale
+	txtTstWaves
+	txtTstMinutes
+	txtTstOwn
+	txtTstLinear
+	txtTstExp
+	txtTstNone
+	txtTstNoPresets
+	txtTstNoRunner
+	txtDevMode
+	txtTstStart
 	textCount
 )
 
@@ -127,7 +153,7 @@ var texts = [textCount][2]string{
 	txtLoad:            {"Laden", "Load"},
 	txtLoadSub:         {"Spielstände", "Saves"},
 	txtOptions:         {"Optionen", "Options"},
-	txtOptionsSub:      {"Ton, Anzeige, Sprache", "Sound, display, language"},
+	txtOptionsSub:      {"Ton, Anzeige, Sprache, Steuerung", "Sound, display, language, controls"},
 	txtQuit:            {"Beenden", "Quit"},
 	txtQuitSub:         {"Spiel schließen", "Close the game"},
 	txtMainHint:        {"Hoch/Runter wählen · A / Enter bestätigen", "Up/Down select · A / Enter confirm"},
@@ -174,8 +200,12 @@ var texts = [textCount][2]string{
 	txtLost:            {"Die Insel ist verloren. Weiter lädt den letzten Spielstand.", "The island is lost. Continue loads the last save."},
 	txtWon:             {"Ziel erreicht! Das Spiel ist gespeichert.", "Goal reached! The game is saved."},
 	txtBy:              {"bedient: {}", "operated by: {}"},
-	txtKeysLeft:        {"Tastatur links", "Keyboard left"},
-	txtKeysRight:       {"Tastatur rechts", "Keyboard right"},
+	txtKeysWASD:        {"Tastatur WASD", "Keyboard WASD"},
+	txtKeysArrows:      {"Tastatur Pfeile", "Keyboard arrows"},
+	txtKeyboard:        {"Tastatur", "Keyboard"},
+	txtGamepad:         {"Gamepad", "Gamepad"},
+	txtControls:        {"Steuerung", "Controls"},
+	txtControlsHint:    {"Hoch/Runter wählen · Links/Rechts Gerät · die Tastatur hat höchstens ein Spieler · B zurück", "Up/Down select · Left/Right device · only one player may use the keyboard · B back"},
 	txtPad:             {"Pad {}", "Pad {}"},
 	txtGradeEasy:       {"Leicht", "Easy"},
 	txtGradeNormal:     {"Normal", "Normal"},
@@ -217,6 +247,28 @@ var texts = [textCount][2]string{
 	txtLicAudio:        {"Audio", "Audio"},
 	txtVersion:         {"Version {}", "Version {}"},
 	txtVersionUnknown:  {"unbekannt", "unknown"},
+	txtTesting:         {"Testing", "Testing"},
+	txtTestingSub:      {"Stresstest einstellen und starten", "Set up and start a stress test"},
+	txtTestingHint:     {"Hoch/Runter wählen · Links/Rechts ändern · A starten · B zurück", "Up/Down select · Left/Right change · A start · B back"},
+	txtTstPreset:       {"Vorgabe", "Preset"},
+	txtTstPlayers:      {"Spieler", "Players"},
+	txtTstDepth:        {"Stufe (Tiefe)", "Stage (depth)"},
+	txtTstEnemies:      {"Gegner je Welle", "Enemies per wave"},
+	txtTstGrowth:       {"Anstieg", "Growth"},
+	txtTstFactor:       {"Faktor je Welle", "Factor per wave"},
+	txtTstBuild:        {"Ausbau vorab", "Build up front"},
+	txtTstTroops:       {"Truppen vorab", "Troops up front"},
+	txtTstTimescale:    {"Zeitraffer", "Time lapse"},
+	txtTstWaves:        {"Ende nach Wellen", "Stop after waves"},
+	txtTstMinutes:      {"Ende nach Minuten", "Stop after minutes"},
+	txtTstOwn:          {"eigene Werte", "own values"},
+	txtTstLinear:       {"linear", "linear"},
+	txtTstExp:          {"exponentiell", "exponential"},
+	txtTstNone:         {"keine", "none"},
+	txtTstNoPresets:    {"Vorgaben nicht lesbar (data/stresstests.json)", "Presets not readable (data/stresstests.json)"},
+	txtTstNoRunner:     {"Stresstest hier nicht verfügbar", "Stress test not available here"},
+	txtDevMode:         {"Entwicklermodus", "Developer mode"},
+	txtTstStart:        {"Test starten", "Start test"},
 }
 
 // langIndex liefert den Index der Sprache in texts (unbekannt = Deutsch, wie view.Settings.Normalized).

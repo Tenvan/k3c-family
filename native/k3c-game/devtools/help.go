@@ -1,8 +1,11 @@
 package devtools
 
-// Tastenübersicht (F1): eine Zeile je Eintrag von view.DevKeys, Taste, Wirkung und Gamepad-Kombi, mittig im Fenster.
+// Tastenübersicht (F1): eine Zeile je Eintrag von view.DevKeys, Taste als Tastenkappe (UI-Tasten, unabhängig vom
+// Eingabe-Profil, B-894), Wirkung und Gamepad-Kombi, mittig im Fenster.
 
 import (
+	"image/color"
+
 	"github.com/hajimehoshi/ebiten/v2"
 
 	"k3c/native/k3c-game/art"
@@ -50,12 +53,28 @@ func drawHelp(dst *ebiten.Image, font *art.Font, c view.Cell) {
 	font.Draw(dst, helpTitle, x+gap, y+gap, px, textColor)
 	for i, row := range helpRows {
 		ry := y + gap + lineH*float64(i+2)
-		font.Draw(dst, row.Key, x+gap, ry, px, keyColor)
+		keyCap(dst, font, row.Key, x+gap, ry, px)
 		font.Draw(dst, row.Text, x+2*gap+keyW, ry, px, textColor)
 		if row.Pad != "" {
 			font.Draw(dst, row.Pad, x+3*gap+keyW+textW, ry, px, dimColor)
 		}
 	}
+}
+
+// Farben der Tastenkappe (wie die Kappen im HUD, hud/glyphs.go › glyphColors["key"]).
+var (
+	capFill = color.RGBA{242, 242, 242, 255}
+	capText = color.RGBA{17, 17, 17, 255}
+	capEdge = color.RGBA{0, 0, 0, 255}
+)
+
+// keyCap zeichnet die Taste label als helle Kappe mit dunkler Schrift, oben links an x, y (Zeilenhöhe px).
+func keyCap(dst *ebiten.Image, font *art.Font, label string, x, y, px float64) {
+	w, _ := font.Measure(label, px)
+	pad := px * 0.3
+	fill(dst, x-pad-1, y-1, w+2*pad+2, px*1.2+2, capEdge)
+	fill(dst, x-pad, y, w+2*pad, px*1.2, capFill)
+	font.Draw(dst, label, x, y, px, capText)
 }
 
 // columns misst die Breiten der drei Spalten.

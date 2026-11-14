@@ -1,0 +1,17 @@
+{
+  "_doc": "Vorgaben der Seite Testing im nativen Spiel (B-896). Felder wie view.StressTest: players 1 bis view.MaxPlayers, depth Stufe, seed 0 bis 999 (0 = Name des Spielstands), enemies zusätzliche Gegner der ersten Welle, growth linear oder exponentiell, factor (+ bzw. × je Welle), build Ausbaustufe vorab, troops Truppen vorab, timescale 1/2/4/8, waves und minutes Abbruch (0 = nie), enemy und troop Sorten aus enemies.json und troops.json.",
+  "presets": [
+    { "id": "vieleGegner", "name": "Viele Gegner", "nameEn": "Many enemies",
+      "players": 1, "depth": 0, "seed": 101, "enemies": 40, "growth": "linear", "factor": 20,
+      "build": 3, "troops": 20, "timescale": 4, "waves": 6, "minutes": 10, "enemy": "goblin", "troop": "archer" },
+    { "id": "volleBurg", "name": "Volle Burg", "nameEn": "Full castle",
+      "players": 1, "depth": 0, "seed": 102, "enemies": 20, "growth": "exponentiell", "factor": 1.5,
+      "build": 5, "troops": 120, "timescale": 2, "waves": 5, "minutes": 10, "enemy": "skeleton", "troop": "warrior" },
+    { "id": "splitScreen", "name": "Zwei Spieler Split-Screen", "nameEn": "Two players split screen",
+      "players": 2, "depth": 0, "seed": 103, "enemies": 30, "growth": "linear", "factor": 10,
+      "build": 3, "troops": 40, "timescale": 2, "waves": 5, "minutes": 10, "enemy": "goblin", "troop": "archer" },
+    { "id": "tiefe", "name": "Tiefe Stufe", "nameEn": "Deep stage",
+      "players": 1, "depth": 2, "seed": 104, "enemies": 30, "growth": "linear", "factor": 10,
+      "build": 2, "troops": 20, "timescale": 2, "waves": 4, "minutes": 10, "enemy": "caveTroll", "troop": "archer" }
+  ]
+}

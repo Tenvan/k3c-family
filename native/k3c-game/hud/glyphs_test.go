@@ -10,18 +10,25 @@ import (
 var (
 	pad   = view.DeviceID{Kind: view.DeviceGamepad, Index: 3}
 	keys1 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 0}
-	keys2 = view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}
 )
 
-// glyphOf: Aktion + Gerät → Glyph-Schlüssel (glyphs.test.ts, S6.2 AC-04, B-149 AC-01); nur Xbox-Glyphen am Pad.
+// Eingabe-Profile als Kurznamen der Tests.
+const (
+	wasd   = view.ProfileWASD
+	arrows = view.ProfileArrows
+	gp     = view.ProfileGamepad
+)
+
+// B-894/AC-04: glyphOf: Aktion + Profil → Glyph-Schlüssel (glyphs.test.ts, S6.2 AC-04, B-149 AC-01); jede Aktion hat in
+// jedem Profil ein Icon, nur Xbox-Glyphen am Pad.
 func TestGlyphSchluessel(t *testing.T) {
 	cases := []struct {
-		dev  view.DeviceID
+		dev  string
 		keys []string
 	}{
-		{pad, []string{"pad:A", "pad:MENU", "", "pad:X", "pad:LB", "pad:RB", "pad:LT", "pad:UP", "pad:DOWN"}},
-		{keys1, []string{"key:SPACE", "key:ESC", "key:F11", "key:E", "key:Q", "key:R", "key:T", "key:Z", "key:K"}},
-		{keys2, []string{"key:ENTER", "key:BACKSPACE", "", "key:NUM0", "key:NUM1", "key:NUM2", "key:NUM3", "key:NUM4", "key:NUM5"}},
+		{gp, []string{"pad:A", "pad:MENU", "pad:RS", "pad:X", "pad:LB", "pad:RB", "pad:LT", "pad:UP", "pad:DOWN"}},
+		{wasd, []string{"key:SPACE", "key:ESC", "key:F11", "key:E", "key:Q", "key:R", "key:T", "key:Z", "key:K"}},
+		{arrows, []string{"key:ENTER", "key:ESC", "key:F11", "key:CONTROLRIGHT", "key:INSERT", "key:DELETE", "key:END", "key:PAGEDOWN", "key:DOWN"}},
 	}
 	for _, c := range cases {
 		var got []string
@@ -40,23 +47,24 @@ func TestGlyphSchluessel(t *testing.T) {
 
 func TestGlyphBeschriftung(t *testing.T) {
 	checkTexts(t, []textCase{
-		{"Leertaste", glyphOf("de", "confirm", keys1).label, "Leertaste"},
-		{"Space", glyphOf("en", "confirm", keys1).label, "Space"},
-		{"Steuerkreuz", glyphOf("de", "skillMenu", pad).label, "D-Pad ↓"},
-		{"Ziffernblock", glyphOf("de", "skill2", keys2).label, "Num 2"},
-		{"rechter Stick", glyphOf("de", "fullscreen", pad).label, "RS"},
-		{"unbekannt", glyphOf("de", "dance", pad).label, "dance"},
+		{"Leertaste", glyphOf("de", "confirm", wasd).label, "Leertaste"},
+		{"Space", glyphOf("en", "confirm", wasd).label, "Space"},
+		{"Steuerkreuz", glyphOf("de", "skillMenu", gp).label, "D-Pad ↓"},
+		{"Entf", glyphOf("de", "skill2", arrows).label, "Entf"},
+		{"Bild ab englisch", glyphOf("en", "skill4", arrows).label, "Page Down"},
+		{"rechter Stick", glyphOf("de", "fullscreen", gp).label, "RS"},
+		{"unbekannt", glyphOf("de", "dance", gp).label, "dance"},
 	})
-	if got := slotLabels("de", keys1); got != [6]string{"E", "Q", "R", "T", "Z", "K"} {
+	if got := slotLabels("de", wasd); got != [6]string{"E", "Q", "R", "T", "Z", "K"} {
 		t.Errorf("Slots Tastatur: %v", got)
 	}
-	if got := slotLabels("de", pad); got != [6]string{"X", "LB", "RB", "LT", "D-Pad ↑", "D-Pad ↓"} {
+	if got := slotLabels("de", gp); got != [6]string{"X", "LB", "RB", "LT", "D-Pad ↑", "D-Pad ↓"} {
 		t.Errorf("Slots Pad: %v", got)
 	}
 }
 
 func TestBUndViewNieAlsGlyph(t *testing.T) {
-	for _, d := range []view.DeviceID{pad, keys1, keys2} {
+	for _, d := range []string{gp, wasd, arrows} {
 		for _, a := range glyphActions {
 			if k := glyphOf("de", a, d).key; k == "pad:B" || k == "pad:VIEW" {
 				t.Errorf("%s auf %v: %s", a, d, k)
@@ -75,13 +83,13 @@ func TestGlyphFarbenKontrast(t *testing.T) {
 
 func TestBeitrittsHinweis(t *testing.T) {
 	checkTexts(t, []textCase{
-		{"freies Pad", joinFromKey(newJoinKey("de", []view.DeviceID{pad})), "A drücken zum Beitreten"},
-		{"zwei Pads einmal", joinFromKey(newJoinKey("de", []view.DeviceID{pad, {Kind: view.DeviceGamepad, Index: 7}})),
+		{"freies Pad", joinFromKey(newJoinKey("de", wasd, []view.DeviceID{pad})), "A drücken zum Beitreten"},
+		{"zwei Pads einmal", joinFromKey(newJoinKey("de", wasd, []view.DeviceID{pad, {Kind: view.DeviceGamepad, Index: 7}})),
 			"A drücken zum Beitreten"},
-		{"Tastatur und Pad", joinFromKey(newJoinKey("de", []view.DeviceID{keys2, pad})),
+		{"Tastatur (Pfeile) und Pad", joinFromKey(newJoinKey("de", arrows, []view.DeviceID{keys1, pad})),
 			"Enter drücken zum Beitreten  ·  A drücken zum Beitreten"},
-		{"englisch", joinFromKey(newJoinKey("en", []view.DeviceID{keys1})), "Press Space to join"},
-		{"alle beigetreten", joinFromKey(newJoinKey("de", nil)), ""},
+		{"englisch", joinFromKey(newJoinKey("en", wasd, []view.DeviceID{keys1})), "Press Space to join"},
+		{"alle beigetreten", joinFromKey(newJoinKey("de", wasd, nil)), ""},
 	})
 }
 
@@ -106,15 +114,15 @@ func TestSchriftrollen(t *testing.T) {
 	}
 }
 
-// Bedienhinweis des Skill-Menüs mit den Tasten des Geräts: rechte Tastatur-Hälfte nennt Pfeile und Enter.
+// Bedienhinweis des Skill-Menüs mit den Tasten des Profils: Profil pfeile nennt Pfeile und Enter.
 func TestMenuFooterPerDevice(t *testing.T) {
 	cases := []struct {
-		dev  view.DeviceID
+		dev  string
 		want string
 	}{
-		{view.DeviceID{Kind: view.DeviceKeyboard}, "A / D wählen · Leertaste bestätigen · K schließen"},
-		{view.DeviceID{Kind: view.DeviceKeyboard, Index: 1}, "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Num 5 schließen"},
-		{view.DeviceID{Kind: view.DeviceGamepad}, "◄ ► wählen · A bestätigen · B schließen"},
+		{wasd, "A / D wählen · Leertaste bestätigen · K schließen"},
+		{arrows, "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Pfeil unten schließen"},
+		{gp, "◄ ► wählen · A bestätigen · B schließen"},
 	}
 	for _, c := range cases {
 		label := slotLabels("de", c.dev)[5]
