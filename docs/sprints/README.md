@@ -355,3 +355,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün | `erledigt/WZ50-katalog-vitests-stabil/` |
 | WZ52 | readonly-Vitest der Workbench bleibt unter Last grün | `erledigt/WZ52-readonly-vitest-stabil/` |
 | WZ47 | Ticket-Relationen, schlanker Index und Sprint-Zusammenfassungen | `erledigt/WZ47-ticket-relationen-index/` |
+| WZ53 | Vitests unter src/assets bleiben unter Last grün | `erledigt/WZ53-assets-vitests-stabil/` |
