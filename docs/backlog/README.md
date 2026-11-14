@@ -80,6 +80,7 @@ Datei `B-NNN-kurzname.md` aus der Vorlage, `Spec: Entwurf`, Zeile hier ergänzen
 | [B-854](B-854-abnahme-laeufe-wz48.md) | INF | Schuld | mittel | offen | WZ48 | Abnahme-Läufe WZ48 |
 | [B-855](B-855-check-run-konsole-je-checkout.md) | DEV | Problem | mittel | eingeplant | WZ49 | console_tail und check_run trennen die Konsolenpuffer je Checkout |
 | [B-856](B-856-paper-cli-sammelaufruf.md) | DEV | Schuld | niedrig | offen | – | assets_set ruft die Paper-CLI gesammelt auf statt zwölfmal je Änderung |
+| [B-858](B-858-readonly-vitest-unter-last.md) | DEV | Problem | niedrig | eingeplant | WZ52 | Der readonly-Vitest der Workbench bleibt unter Last grün |
 
 ## Archiv
 
@@ -817,3 +818,4 @@ Zeile in diesen Abschnitt.
 | [B-832](archiv/B-832-check-go-ohne-sim-pakete.md) | INF | Problem | mittel | erledigt | WZ48 | task check:go führt trotz Sperre die Balance- und Lasttests aus |
 | [B-835](archiv/B-835-k3c-server-exe-eingecheckt.md) | INF | Schuld | niedrig | erledigt | WZ48 | cmd/k3c-server/k3c-server.exe liegt als 14-MB-Binary im Repo |
 | [B-857](archiv/B-857-check-dev-ohne-sim-pakete.md) | DEV | Problem | mittel | erledigt | WZ51 | check:dev testet die Sim-Pakete der Workbench nicht, solange die Sim-Sperre gilt |
+| [B-837](archiv/B-837-katalog-vitest-unter-last.md) | DEV | Problem | niedrig | erledigt | WZ50 | Katalog-Vitests der Workbench bleiben unter Last grün |
