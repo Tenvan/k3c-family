@@ -1,6 +1,6 @@
 # CH1.5 · Zusammenfassungs-Logs und Sitzungsbericht
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-06 geprüft: `devtools/chronicle.go`, `chronicle_stage.go` (Listener): 🚦 Tageszeit, Welle, Bau fertig, Burgfall, Stufenwechsel je Spieler; 🏹 Kampf je Nacht und Stufe (gespawnt, getötet, Verluste, Schaden je Seite aus den Ereignissen); 🪙 Einnahmen/Ausgaben je Spieler und Tag (Gold-Änderungen); 🐢 Takt über Budget aus `data/native.json` (4 ms, höchstens alle 5 s, mit Objektanzahl). 🐛 je Cheat loggt der Raum (`Room.DevLocal`). `devtools/report.go` schreibt `reports/native-session-<Zeit>.json` (Seed, Dauer, Takte, Tage, Ende-Ursache) bei Spielende, Verlassen und Programmende (`view.Finisher`). Tests `TestChronicleQuietWithoutChange`, `TestChronicleNightAndEconomy`, `TestChronicleSlowTicks`, `TestChronicleReport` grün.
+- Ohne Grafik-Bibliothek (Tests, `--assets`) kein Bericht, im Aufnahme-Modus keine Chronik.
+- Schaden je Seite ist eine Untergrenze: die Sim begrenzt Ereignisse je Takt (`maxEventsPerTick`).
+- `check_run task:check:diff:go` grün.

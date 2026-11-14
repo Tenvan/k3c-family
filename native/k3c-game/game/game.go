@@ -142,9 +142,19 @@ func (g *Game) Update() error {
 		return g.err
 	}
 	if g.mode == ModeQuit {
+		g.finish()
 		return g.sim.Close()
 	}
 	return nil
+}
+
+// finish meldet allen Listenern mit view.Finisher das Programmende (Sitzungsbericht).
+func (g *Game) finish() {
+	for _, l := range g.parts.Listeners {
+		if f, ok := l.(view.Finisher); ok {
+			f.Finish()
+		}
+	}
 }
 
 // advanceTimed rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige (clock() ist unter

@@ -38,3 +38,13 @@ type OverlayStep struct {
 	Consumed [MaxPlayers]bool // Index = Seat.Player
 	Cues     []Cue            // z. B. CueMove, CueConfirm, CueDenied; game legt sie in den nächsten Frame
 }
+
+// Finisher ist eine optionale Rolle eines Listeners: game ruft Finish einmal beim Programmende, bevor das Spiel
+// geschlossen wird (Sitzungsbericht der Chronik, devtools).
+type Finisher interface {
+	Finish()
+}
+
+// ReportsDir ist der Ordner der Berichte und Screenshots des nativen Spiels (relativ zum Arbeitsordner, wie
+// task native:game; Workbench: report_read).
+const ReportsDir = "reports"

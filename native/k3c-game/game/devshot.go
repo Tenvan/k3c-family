@@ -12,10 +12,9 @@ import (
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
-)
 
-// ReportsDir ist der Ordner der Berichte und Screenshots (relativ zum Arbeitsordner).
-const ReportsDir = "reports"
+	"k3c/native/k3c-game/view"
+)
 
 // devShot schreibt das Bild screen, wenn F12 es verlangt hat.
 func (g *Game) devShot(screen *ebiten.Image) {
@@ -25,7 +24,7 @@ func (g *Game) devShot(screen *ebiten.Image) {
 	g.shotNext = false
 	img := image.NewRGBA(screen.Bounds())
 	screen.ReadPixels(img.Pix)
-	path, err := saveShot(ReportsDir, time.Now(), img)
+	path, err := saveShot(view.ReportsDir, time.Now(), img)
 	if err != nil {
 		slog.Warn("💥 Screenshot nicht geschrieben", "err", err)
 		return
