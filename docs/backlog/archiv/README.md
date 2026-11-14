@@ -129,7 +129,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-196](B-196-pages-workflows-go-fuer-atlas.md) | INF | Problem | hoch | erledigt | GR4 | Die Pages-Workflows bauen mit Go, weil `task build` den Atlas packt |
 | [B-106](B-106-kamera-je-stufe.md) | CLI | Idee | hoch | erledigt | S4 | Jeder Spieler sieht seine Stufe, auch wenn die Spieler in verschiedenen Stufen sind |
 | [B-199](B-199-raum-fuenf-stufen.md) | SRV | Problem | mittel | erledigt | SV1 | Ein neuer Raum legt die Insel mit allen Stufen an, für die es ein Biom gibt |
-| [B-199](B-199-review-diff-befehl.md) | INF | Schuld | mittel | erledigt | – | Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise |
 | [B-210](B-210-planung-ueber-mcp.md) | SRV | Idee | hoch | erledigt | M8 | Agenten pflegen Tickets, Sprints und Sessions über MCP-Tools von k3c-dev |
 | [B-211](B-211-planungsseite-react.md) | SRV | Schuld | mittel | erledigt | M8 | Die Planungsseite von k3c-dev ist eine React-Ansicht aus denselben Daten wie die MCP-Tools |
 | [B-212](B-212-github-status-planung.md) | SRV | Idee | mittel | erledigt | M8 | k3c-dev zeigt PR, CI und Merge-Konflikte je Sprint aus GitHub |
@@ -561,7 +560,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-657](B-657-castlehold-messfenster.md) | DEV | Problem | mittel | erledigt | BAL9 | Die Kennzahl castleHeld misst Nacht 1 bis 5 über den ganzen Lauf, nicht nur über das Fenster des Ziels |
 | [B-707](B-707-assets-set-golden-veraltet.md) | DEV | Problem | mittel | erledigt | – | assets_set und assets_render lassen golden.json der Gruppe veraltet |
 | [B-701](B-701-pap-gesammelte-fragen.md) | DEV | Frage | hoch | erledigt | PS1 | PAP: kritische Fragen und vorab getroffene Entscheidungen werden gesammelt von Ralf bestätigt |
-| [B-696](B-696-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | erledigt | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
 | [B-696](B-696-ticket-relationen-und-index-verdichtung.md) | DEV | Idee | mittel | erledigt | WZ47 | Tickets verweisen auf Duplikate und Ersatz, der Index und die Archive bleiben klein |
 | [B-712](B-712-stil-schatten-materialien.md) | PAP | Problem | hoch | erledigt | RD2 | Stil zeigt Papierschatten wie der Prototyp und kennt Metall-, Kristall- und Biom-Materialien |
 | [B-713](B-713-renderkey-reiter-reittier.md) | PAP | Schuld | mittel | erledigt | RD2 | renderKey des Reiters enthält den Hash der Reittier-Spec |
@@ -797,3 +795,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-876](B-876-check-run-auswertung.md) | DEV | Idee | mittel | erledigt | – | Die MCP-Seite zeigt zwischen Widgets und Aufruf-Log eine grafische Auswertung von check_run |
 | [B-852](B-852-abnahme-laeufe-wz43.md) | DEV | Schuld | mittel | erledigt | WZ57 | Abnahme-Läufe WZ43 |
 | [B-872](B-872-workbench-web-client-entfernen.md) | DEV | Schuld | niedrig | erledigt | WZ57 | Der Web-Client der Workbench ist entfernt, die Workbench läuft nur als EXE |
+| [B-877](B-877-review-diff-befehl.md) | INF | Schuld | mittel | erledigt | – | Review-Sessions lesen den Sprint-Diff mit dem Befehl aus der Arbeitsweise |
+| [B-878](B-878-gebaeude-in-allen-aufloesungen-rendern.md) | DEV | Idee | mittel | erledigt | – | Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor |
+| [B-861](B-861-doppelte-nummern-b199-b696.md) | DEV | Schuld | niedrig | erledigt | WZ57 | Die doppelt vergebenen Ticket-Nummern B-199 und B-696 sind aufgelöst |
+| [B-864](B-864-mcp-plan-index.md) | DEV | Idee | niedrig | erledigt | WZ57 | Ein MCP-Tool plan_index baut Haupt- und Archiv-Index neu auf |

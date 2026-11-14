@@ -1,16 +1,18 @@
-# B-696 · Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor
+# B-878 · Gebäude liegen in allen vorgesehenen Auflösungen als Grafik vor
 
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** offline
+- **Umgebung:** ?
 - **Status:** erledigt
 - **Sprint:** –
 - **Projekt:** GEB
-- **Erstellt:** 2026-11-05
+- **Erstellt:** 2026-11-14
 - **Spec:** Entwurf
 - **Revision:** 1
 - **Freigabe:** –
+- **Duplikat von:** –
+- **Ersetzt:** –
 
 ## Ausgangslage
 
@@ -56,5 +58,7 @@ Variante fehlt → Spiel nimmt die vorhandene und skaliert (B-685), das Studio m
 Welche Auflösungen? Reihenfolge zu GEB9 und B-685? Entscheidet 🧑.
 
 ## Notizen
+
+Umnummeriert von B-696 (B-861, WZ57.2, 2026-11-14): die Nummer war doppelt vergeben, B-696 bleibt „Ticket-Relationen und Index-Verdichtung“ (WZ47). Ursprünglich erstellt 2026-11-05.
 
 Angelegt aus einer Frage von Ralf im Chat (2026-11-05).

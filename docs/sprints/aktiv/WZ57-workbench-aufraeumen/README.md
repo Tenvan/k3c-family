@@ -64,7 +64,7 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockie
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ57.1 | `WZ57.1-web-client-entfernen.md` | Umsetzung | autonom | fertig |
-| WZ57.2 | `WZ57.2-doppelte-nummern.md` | Umsetzung | autonom | offen |
+| WZ57.2 | `WZ57.2-doppelte-nummern.md` | Umsetzung | autonom | fertig |
 | WZ57.3 | `WZ57.3-abnahme-wz43.md` | Umsetzung | autonom | fertig |
 | WZ57.4 | `WZ57.4-review.md` | Umsetzung | autonom | offen |
 
