@@ -1,7 +1,6 @@
 package room
 
 import (
-	"fmt"
 	"log/slog"
 	"time"
 )
@@ -40,7 +39,6 @@ func (r *Room) noteTick(d time.Duration) {
 	}
 	r.log().Warn("🐢 Tick zu langsam", "ms", float64(d)/float64(time.Millisecond), "budgetMs", float64(slowTick)/float64(time.Millisecond),
 		"seitLetzterMeldung", r.slowCount, "tick", r.tick, "geraete", r.connected(), "faktor", r.scale())
-	r.m.Monitor.Event(r.m.now(), r.Code, "slow", fmt.Sprintf("%.1f ms, %d seit letzter Meldung", float64(d)/float64(time.Millisecond), r.slowCount))
 	r.slowLogged, r.slowCount = now, 0
 }
 

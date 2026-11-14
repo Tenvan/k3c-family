@@ -9,7 +9,7 @@ import (
 // testRepo: Module und Paket-Ordner wie im echten Checkout, ohne Dateisystem.
 func testRepo() repo {
 	goDirs := map[string]bool{
-		"data": true, "engine/sim": true, "engine/balance": true, "engine/net": true, "tools/checkdiff": true,
+		"data": true, "engine/sim": true, "engine/balance": true, "engine/room": true, "tools/checkdiff": true,
 		"tools/k3c-workbench": true, "tools/k3c-workbench/internal/planning": true, "tools/k3c-workbench/internal/simrun": true,
 		"tools/assetkit": true, "native/k3c-rig": true, "native/k3c-rig/rig": true, "native/k3c-game/view": true, "engine/balance/report": false,
 	}
@@ -52,7 +52,7 @@ func TestClassify(t *testing.T) {
 	}{
 		{"nur Doku: nur Planungs-Tests", []string{"docs/backlog/B-001-x.md", "CLAUDE.md"}, want{"D", nil}},
 		{"Go-Datei: nur ihr Paket", []string{"engine/sim/world.go"}, want{"R", []string{".:engine/sim"}}},
-		{"testdata im Paket zählt zum Paket", []string{"engine/net/testdata/x.json"}, want{"R", []string{".:engine/net"}}},
+		{"testdata im Paket zählt zum Paket", []string{"engine/room/testdata/x.json"}, want{"R", []string{".:engine/room"}}},
 		{"Golden an der Wurzel: Besitzer-Pakete", []string{"testdata/golden/sim-1.json.gz"}, want{"R", []string{".:engine/level", ".:engine/sim"}}},
 		{"data: Paket k3c/data und Client", []string{"data/enemies.json"}, want{"RC", []string{".:data"}}},
 		{"Taskfile und CI lösen keine Tests aus", []string{"Taskfile.yml", "engine/Taskfile.yml", ".github/workflows/ci.yml"}, want{"R", nil}},

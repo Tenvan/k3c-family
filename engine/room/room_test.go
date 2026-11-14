@@ -363,16 +363,14 @@ func TestEingabeNurEigeneSlots(t *testing.T) {
 	}
 }
 
-func TestRaumlisteUndChanged(t *testing.T) {
+func TestRaumliste(t *testing.T) {
 	f := newFixture()
-	calls := 0
-	f.m.Changed = func() { calls++; f.m.Rooms() } // ohne Sperre aufgerufen: Rooms() darf nicht hängen
 	x := &peer{}
 	r := need(f.m.Create("xbox", x, "liste", true, 0, []int{0, 1}, Options{}))(t)
 	r.Drop("xbox", x)
 	got := f.m.Rooms()
-	if len(got) != 1 || got[0] != (Info{"KRNZ", "liste", 0, "normal", 2, 2, false, "standard"}) || calls != 2 {
-		t.Fatalf("Raumliste %+v, Changed %d", got, calls)
+	if len(got) != 1 || got[0] != (Info{"KRNZ", "liste", 0, "normal", 2, 2, false, "standard"}) {
+		t.Fatalf("Raumliste %+v", got)
 	}
 	if !strings.HasPrefix(x.log[0], "joined") {
 		t.Fatal("joined kommt nicht zuerst")

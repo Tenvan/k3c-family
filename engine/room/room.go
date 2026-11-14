@@ -1,6 +1,7 @@
 // Package room ist das Raummodell aus docs/protocol.md (Protokoll v2): Räume, Geräte mit lokalen Spielern (Slots),
-// Monarchen (taken, waiting, free), Fristen nach Wanduhr und Speichern. Es kennt kein Netz; engine/net setzt Peer
-// je Verbindung um und übersetzt die Fehler in die Codes des Protokolls.
+// Monarchen (taken, waiting, free), Fristen nach Wanduhr und Speichern. Es kennt kein Netz; das native Spiel setzt Peer
+// für das lokale Gerät um (native/k3c-game/local) und übersetzt die Fehler in Meldungen. Server-Teile (Messreihen,
+// Wiederöffnen, Raumliste-Hook) sind mit dem Spielserver entfallen (B-850, B-897).
 package room
 
 import (
@@ -64,7 +65,7 @@ type Seat struct {
 // World ist die Welt-ID eines neuen Stands (leer = standard, eine andere nur im Dev-Mode, docs/rules/welten.md § 6).
 type Options struct{ Grade, Goal, Defeat, Seed, World string }
 
-// MaxSeedRunes ist die Höchstlänge von `create.seed` (wie bei GET /api/level).
+// MaxSeedRunes ist die Höchstlänge von `create.seed` (wie beim Level-Generator, cmd/k3c-sim world).
 const MaxSeedRunes = 64
 
 // Peer ist die Verbindung eines Geräts. Der Raum ruft die Methoden unter seiner Sperre auf: Sie dürfen nicht blockieren
@@ -105,7 +106,7 @@ type Room struct {
 	mu         sync.Mutex
 	m          *Manager
 	isl        *sim.Island
-	wonNow     bool // im letzten Tick gewonnen (Island.Won wurde wahr, Victory)
+	wonNow     bool    // im letzten Tick gewonnen (Island.Won wurde wahr, Victory)
 	Opts       Options // angeforderte Raum-Optionen (gelten nur für neue Stände)
 	start      int     // Startstufe: dort treten neue Geräte ohne Spieler ein
 	monarchs   []*monarch
@@ -116,7 +117,6 @@ type Room struct {
 	durations  []time.Duration // letzte Tick-Dauern (run.go)
 	slowLogged time.Time       // letzte Meldung eines langsamen Ticks (logging.go)
 	slowCount  int             // langsame Ticks seit dieser Meldung
-	secTicks   int             // Ticks seit dem letzten Punkt der Messreihe (monitor.go)
 	beforeStep func()          // Test-Naht: läuft im Tick vor StepIsland
 	timescale  int             // Zeitraffer (dev timescale): Schritte je Tick, 0 = 1
 	autoReset  bool            // Dev: Zeitraffer endet beim nächsten Tageszeitwechsel (timescaleAuto)

@@ -1,7 +1,6 @@
 package mcpsrv
 
 import (
-	"bufio"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -18,7 +17,7 @@ import (
 
 // Falsches bin/k3c-sim (RS2.2): Die Test-EXE wird nach <root>/bin/k3c-sim kopiert und spielt dort das Engine-CLI
 // (Schnittstelle cmd/k3c-sim/main.go). So prüfen die Tests den Weg Workbench → Kindprozess ohne Engine; die Rechnung
-// selbst prüft cmd/k3c-sim (main_test.go, bot_test.go).
+// selbst prüft cmd/k3c-sim (main_test.go).
 
 const fakeSimEnv = "K3C_FAKE_SIM"
 
@@ -117,8 +116,6 @@ func fakeSim(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 		emit(map[string]string{"event": "result", "text": fmt.Sprintf("%s · Seed %q · %d Ticks", args[0], in.Seed, in.Ticks)})
 	case "balance":
 		return fakePlay(args, emit, fail)
-	case "bot":
-		return fakeBot(stdin, emit)
 	default:
 		return fail(2, "unbekannter Unterbefehl")
 	}
@@ -146,21 +143,5 @@ func fakePlay(args []string, emit func(any), fail func(int, string) int) int {
 	}
 	emit(map[string]any{"event": "result", "report": map[string]any{"ticks": 30, "endHash": r.EndHash,
 		"castleFallTick": r.CastleFallTick, "warnings": []string{}}})
-	return 0
-}
-
-// fakeBot antwortet je Anfrage: alle genannten Monarchen nach rechts, zahlen.
-func fakeBot(stdin io.Reader, emit func(any)) int {
-	sc := bufio.NewScanner(stdin)
-	sc.Buffer(make([]byte, 0, 1<<20), 64<<20)
-	for sc.Scan() {
-		var req struct{ Players []int }
-		_ = json.Unmarshal(sc.Bytes(), &req)
-		cmds := []simexe.Command{}
-		for _, p := range req.Players {
-			cmds = append(cmds, simexe.Command{Player: p, MoveX: 1, Pay: true})
-		}
-		emit(map[string]any{"event": "commands", "commands": cmds})
-	}
 	return 0
 }

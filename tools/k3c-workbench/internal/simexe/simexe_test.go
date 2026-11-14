@@ -2,7 +2,6 @@ package simexe
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -31,9 +30,6 @@ func fake(mode string) int {
 		fmt.Fprintln(os.Stderr, "panic: boom")
 		return 2
 	case "slow":
-		time.Sleep(time.Minute)
-	case "bot":
-		fmt.Println(`{"event":"commands","commands":[{"player":1,"moveX":-1,"sprint":false,"pay":true,"attack":false,"skill":0}]}`)
 		time.Sleep(time.Minute)
 	}
 	return 0
@@ -98,46 +94,5 @@ func TestCallErgebnisAbsturzZeitlimit(t *testing.T) {
 	_, err = Call(context.Background(), install(t, "slow"), []string{"level"}, nil, 300*time.Millisecond)
 	if err == nil || !strings.Contains(err.Error(), "Zeitlimit") {
 		t.Errorf("zeitlimit: %v", err)
-	}
-}
-
-func TestBotAntwortUndEnde(t *testing.T) {
-	b, err := StartBot(context.Background(), install(t, "bot"), "saver")
-	if err != nil {
-		t.Fatal(err)
-	}
-	cmds, err := b.Decide(json.RawMessage(`{"players":[]}`), []int{1})
-	if err != nil || len(cmds) != 1 || cmds[0].Player != 1 || cmds[0].MoveX != -1 || !cmds[0].Pay {
-		t.Errorf("antwort: %+v %v", cmds, err)
-	}
-	// die falsche EXE antwortet nur einmal: die zweite Anfrage scheitert erst beim Ende (Close beendet den Prozess)
-	done := make(chan error, 1)
-	go func() { _, err := b.Decide(json.RawMessage(`{}`), []int{0}); done <- err }()
-	time.Sleep(100 * time.Millisecond)
-	b.Close()
-	if err := <-done; err == nil || !strings.Contains(err.Error(), "keine Antwort") {
-		t.Errorf("nach Close: %v", err)
-	}
-}
-
-// Hängt k3c-sim bot, endet Decide nach decideTimeout mit Fehler; danach antwortet der Bot nur noch mit diesem Fehler.
-func TestBotZeitlimit(t *testing.T) {
-	old := decideTimeout
-	t.Cleanup(func() { decideTimeout = old })
-	b, err := StartBot(context.Background(), install(t, "bot"), "saver")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer b.Close()
-	// Die erste Antwort mit dem normalen Limit: unter Last startet der Bot-Prozess langsamer als 300 ms (B-704).
-	if _, err := b.Decide(json.RawMessage(`{}`), []int{1}); err != nil {
-		t.Fatal(err)
-	}
-	decideTimeout = 300 * time.Millisecond // erst ab hier soll der hängende Bot das Limit reißen
-	if _, err := b.Decide(json.RawMessage(`{}`), []int{1}); err == nil || !strings.Contains(err.Error(), "binnen") {
-		t.Errorf("zeitlimit: %v", err)
-	}
-	if _, err := b.Decide(json.RawMessage(`{}`), []int{1}); err == nil || !strings.Contains(err.Error(), "binnen") {
-		t.Errorf("danach: %v", err)
 	}
 }

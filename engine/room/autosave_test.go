@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"maps"
-	"os"
 	"slices"
 	"testing"
 )
@@ -56,19 +55,15 @@ func TestSpeichertImTakt(t *testing.T) {
 	}
 }
 
-// savedExample ist das Ereignis aus testdata/protocol/s2c-snapshot-gesichert.json (docs/protocol.md › Ereignisse).
+// savedExample ist das Ereignis `saved` aus dem früheren Protokoll-Beispiel s2c-snapshot-gesichert.json
+// (testdata/protocol, mit dem Spielserver entfallen, B-897).
 func savedExample(t *testing.T) map[string]any {
 	t.Helper()
-	var msg struct {
-		S struct {
-			Events []map[string]any `json:"events"`
-		} `json:"s"`
+	var ev map[string]any
+	if err := json.Unmarshal([]byte(`{ "type": "saved", "stage": 0 }`), &ev); err != nil {
+		t.Fatal(err)
 	}
-	raw := need(os.ReadFile("../../testdata/protocol/s2c-snapshot-gesichert.json"))(t)
-	if err := json.Unmarshal(raw, &msg); err != nil || len(msg.S.Events) != 1 || msg.S.Events[0]["type"] != "saved" {
-		t.Fatalf("Beispiel: %v, %v", err, msg.S.Events)
-	}
-	return msg.S.Events[0]
+	return ev
 }
 
 // B-186/AC-01: Beim Tagesanbruch speichert der Raum im selben Tick.

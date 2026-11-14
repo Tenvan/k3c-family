@@ -89,7 +89,7 @@ func check(s Service, names map[string]bool, ports map[int]bool) error {
 }
 
 // Shift verschiebt alle Ports um off (Dienste eines Worktrees neben denen der Repo-Wurzel) und gibt jedem Dienst
-// die Ports aller Dienste mit PortEnv mit, z. B. Vite den Port des Spielservers für seinen Proxy. off 0 ändert
+// die Ports aller Dienste mit PortEnv mit, z. B. einem Frontend den Port seines Backends für den Proxy. off 0 ändert
 // nur die Umgebung.
 func Shift(list []Service, off int) []Service {
 	ports := map[string]string{}

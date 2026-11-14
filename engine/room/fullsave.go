@@ -63,11 +63,9 @@ func (m *Manager) FullSave(seed string) (string, error) {
 		return "", err
 	}
 	name := FullSavePrefix + seed
-	closed := false
-	defer func() { m.notify(closed) }()
 	m.mu.Lock() // bis nach dem Schreiben: kein Gerät tritt dem alten Raum dazwischen bei
 	defer m.mu.Unlock()
-	if closed, err = m.closeEmpty(name); err != nil {
+	if _, err = m.closeEmpty(name); err != nil {
 		return "", err
 	}
 	if _, err := m.Store.Store(name, raw); err != nil {

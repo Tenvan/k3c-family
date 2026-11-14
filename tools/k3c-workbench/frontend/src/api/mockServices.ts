@@ -14,12 +14,12 @@ function initial(now: number): ServiceStatus[] {
     ...base, name, port, health: `http://127.0.0.1:${port}/`, state: 'gestoppt', ...rest,
   });
   return [
-    svc('Vite', 5183, { tags: ['Spiel', 'Client'], description: 'Vite-Dev-Server: liefert den Browser-Client mit Hot Reload aus.', state: 'läuft', pid: 41232, cpu: 3.1, memory: 480 * MB,
+    svc('Docs', 7000, { tags: ['Doku', 'Frontend'], description: 'Erfundener Dev-Server: liefert eine Doku-Seite mit Hot Reload aus.', state: 'läuft', pid: 41232, cpu: 3.1, memory: 480 * MB,
       startedAt: new Date(now - (2 * 60 + 13) * 60_000).toISOString() }),
-    svc('Spielserver', 8080, { tags: ['Spiel', 'Backend'], log: 'server', description: 'Go-Spielserver (Engine, API, WebSocket).' }),
-    svc('Go-Server', 8090, { tags: ['Spiel', 'Backend'], state: 'fehlgeschlagen', restarts: 2, log: 'k3c-workbench',
-      lastError: 'Port 8090 bereits belegt (PID 8812)' }),
-    svc('Spielraum', 8091, { tags: ['Spiel', 'Backend'], state: 'übernommen', pid: 8812, cpu: 0.4, memory: 96 * MB,
+    svc('Backend', 7010, { tags: ['Doku', 'Backend'], log: 'server', description: 'Erfundenes Backend (API) der Doku-Seite.' }),
+    svc('Indexer', 7020, { tags: ['Doku', 'Backend'], state: 'fehlgeschlagen', restarts: 2, log: 'k3c-workbench',
+      lastError: 'Port 7020 bereits belegt (PID 8812)' }),
+    svc('Suche', 7021, { tags: ['Doku', 'Backend'], state: 'übernommen', pid: 8812, cpu: 0.4, memory: 96 * MB,
       startedAt: new Date(now - 42 * 60_000).toISOString() }),
   ];
 }

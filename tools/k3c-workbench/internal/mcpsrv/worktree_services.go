@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	// slotStep ist der Port-Versatz je Worktree: Vite 5183 → 5193, 5203 …; Spielserver 8080 → 8090, 8100 …
+	// slotStep ist der Port-Versatz je Worktree: ein Dienst auf Port 7000 läuft im ersten Worktree auf 7010, im zweiten
+	// auf 7020 … (die Dienste aus services.json; seit B-887 ist die Liste leer).
 	slotStep = 10
 	maxSlots = 50
 )
@@ -21,7 +22,7 @@ const (
 type worktreeServices struct {
 	ctl   *services.Controller
 	off   int
-	ports map[string]string // PortEnv → Port, z. B. K3C_HTTP_PORT → 8090
+	ports map[string]string // PortEnv → Port, z. B. K3C_X_PORT → 7010
 	stop  context.CancelFunc
 }
 
@@ -83,7 +84,7 @@ func (s *Server) worktreeServices(ws workspace) (*worktreeServices, error) {
 
 // freeOffset ist der kleinste Versatz, dessen Ports weder die Repo-Wurzel noch ein anderer Worktree hat und an denen
 // niemand lauscht. Gesperrt sind Ports, nicht Versätze: Worktrees auf älteren Branches haben eine andere Basis in ihrer
-// services.json (Vite 5173 statt 5183, B-444) und dürfen den Port der Wurzel nicht bekommen, auch wenn sie gerade ruht.
+// services.json (früher Vite 5173 statt 5183, B-444) und dürfen den Port der Wurzel nicht bekommen, auch wenn sie gerade ruht.
 // ponytail: Vergabe nur im Speicher; nach einem Neustart von k3c-workbench kann ein Worktree einen anderen Versatz bekommen.
 func (s *Server) freeOffset(list []services.Service) (int, error) {
 	taken := map[int]bool{}

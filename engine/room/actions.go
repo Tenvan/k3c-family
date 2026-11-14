@@ -23,7 +23,6 @@ func (r *Room) own(id string, peer Peer) *device {
 
 // AddSlot nimmt einen lokalen Spieler dazu (docs/protocol.md › Lokale Spieler hinzufügen/entfernen).
 func (r *Room) AddSlot(id string, peer Peer, slot int) (err error) {
-	defer func() { r.m.notify(err == nil) }() // läuft nach dem Entsperren
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
@@ -48,7 +47,6 @@ func (r *Room) AddSlot(id string, peer Peer, slot int) (err error) {
 // RemoveSlot lässt einen lokalen Spieler gehen; sein Monarch ist sofort frei. left: Das war der letzte Slot, das
 // Gerät hat den Raum verlassen.
 func (r *Room) RemoveSlot(id string, peer Peer, slot int) (left bool, err error) {
-	defer func() { r.m.notify(err == nil) }()
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
@@ -93,7 +91,6 @@ func (r *Room) Input(id string, peer Peer, in map[int]sim.PlayerCommand) error {
 
 // Leave: Das Gerät verlässt den Raum bewusst, alle seine Monarchen sind sofort frei.
 func (r *Room) Leave(id string, peer Peer) {
-	defer r.m.notify(true)
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.own(id, peer) != nil {
@@ -121,12 +118,10 @@ func (r *Room) leave(id string) {
 // Drop: Die Verbindung peer ist abgebrochen. Seine Monarchen warten (stehen still), nach WaitFor sind sie frei.
 // Eine schon ersetzte Verbindung oder ein geschlossener Raum wird ignoriert.
 func (r *Room) Drop(id string, peer Peer) {
-	ok := false
-	defer func() { r.m.notify(ok) }()
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	d := r.own(id, peer)
-	if ok = d != nil; !ok {
+	if d == nil {
 		return
 	}
 	if d.observer { // ein Beobachter hat keine wartenden Monarchen
@@ -140,7 +135,6 @@ func (r *Room) Drop(id string, peer Peer) {
 	}
 	d.connected, d.paused, d.protect = false, false, 0 // die Pause endet mit der Verbindung (B-214)
 	r.met.drop(id)
-	r.m.Monitor.Event(now, r.Code, "drop", short(id))
 	r.log().Info("⏳ Gerät getrennt, Monarchen warten", "device", short(id), "frist", WaitFor.String(), "geraete", r.connected())
 	r.afterDisconnect()
 }

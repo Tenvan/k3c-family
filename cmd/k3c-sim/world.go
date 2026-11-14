@@ -34,7 +34,7 @@ type worldInput struct {
 	Draft  json.RawMessage `json:"draft"`
 }
 
-// maxWorldSeedRunes ist die Länge des Seeds wie bei GET /api/level.
+// maxWorldSeedRunes ist die Länge des Seeds wie room.MaxSeedRunes.
 const maxWorldSeedRunes = 64
 
 func cmdWorld(args []string, v env) error {

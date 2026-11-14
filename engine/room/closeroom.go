@@ -3,13 +3,11 @@ package room
 // CloseRoom schließt den offenen Raum mit dem Spielstand name auf Wunsch eines Geräts (B-581, BD9.1). Ablauf wie das
 // Aufräumen eines leeren Raums (lockedSweep): speichern, Report schreiben, schließen, Test-Stand löschen; verbundene
 // Geräte bekommen `room_closed` und gehen zurück zur Raumliste, die Verbindung bleibt. Danach ist der Code frei und
-// DeleteSave möglich. Ungültiger Name → ErrBadRequest, kein Raum mit diesem Stand → ErrRoomNotFound.
+// DeleteSave möglich (native/k3c-game/local). Ungültiger Name → ErrBadRequest, kein Raum mit diesem Stand → ErrRoomNotFound.
 func (m *Manager) CloseRoom(name string) error {
 	if !saveName.MatchString(name) {
 		return ErrBadRequest
 	}
-	err := ErrRoomNotFound
-	defer func() { m.notify(err == nil) }()
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	for code, r := range m.rooms {
@@ -18,11 +16,10 @@ func (m *Manager) CloseRoom(name string) error {
 		}
 		r.closeByDevice()
 		delete(m.rooms, code)
-		err = nil
-		return err
+		return nil
 	}
 	m.log().Info("🚫 Raum schließen abgelehnt, kein Raum offen", "ns", "room", "save", name)
-	return err
+	return ErrRoomNotFound
 }
 
 func (r *Room) closeByDevice() {

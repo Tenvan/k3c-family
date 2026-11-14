@@ -174,7 +174,7 @@ Wartezeit ist der größte Kostenblock eines Laufs: auf Prüfläufe, Reviews und
 ### Sim, Balance und Gen (B-742)
 
 **Sperre (Beschluss 🧑 2026-11-11, bis auf Widerruf):** Simulationen und Balancing laufen **gar nicht**: kein `sim_test`,
-kein `sim_run`, kein `task balance`, kein Lasttest (`k3c-load`), weder bei der Feature-Arbeit noch im Abnahme-Ticket. Die
+kein `sim_run`, kein `task balance`, kein Lasttest (`k3c-load` ist entfallen, B-850), weder bei der Feature-Arbeit noch im Abnahme-Ticket. Die
 Kriterien AC-01 Sim und AC-02 Balance eines Abnahme-Tickets heißen so lange `verschoben (Sperre 2026-11-11)`. `check:diff`
 lässt die Tests der Sim-, Balance- und Lasttest-Pakete aus (`tools/checkdiff/steps.go` › `simDirs`; `go vet` und Lint bleiben).
 Gen und Race bleiben wie unten beschrieben.
@@ -185,7 +185,7 @@ Balancing, kein `check:race`; Vitest lässt dort die Tests aus, die gerenderte P
 
 - **Bei der Feature-Arbeit:** Nur die Session, die ein betroffenes Feature entwickelt, fährt die passenden Läufe gezielt
   (z. B. `sim_test` nach einer Balancing-Änderung, `task gen:paper` und Golden nach einer Spec- oder Renderer-Änderung).
-  `task test`, `task build` und `task dev` rufen `gen:paper` weiter selbst auf.
+  `task test` und `task build` rufen `gen:paper` weiter selbst auf.
 - **Abnahme-Ticket:** Zum Abschluss eines Sprints legt die Review-Session (Doku-Sprint: letzte Session) **genau ein**
   Ticket für diese Läufe an; zum Abschluss eines Projekts ebenso genau eins, das noch offene Abnahme-Tickets seiner
   Sprints aufnimmt (diese `verworfen` mit Verweis). Claude arbeitet es autonom ab, gedacht für nachts; der Sprint wartet
@@ -230,12 +230,12 @@ Arbeit ist. Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Sch
 |---|---|---|
 | **REG** | Regelwerk & Balancing | `docs/game-design.md`, `docs/rules/`, `docs/playtests/`, **Werte** in `data/*.json` |
 | **SIM** | Spiel-Logik (Go) | `engine/sim/`, `engine/level/`, **neue Felder** in `data/*.json` |
-| **SRV** | Server & Betrieb (Go) | `engine/room/`, `engine/net/`, `engine/store/`, `cmd/k3c-server/`, Docker |
-| **CLI** | Client: Darstellung, HUD, Grafik, Audio, Verbindung | `src/scenes/`, `public/`, `src/online/client.ts`, `src/core/saveStore.ts` |
-| **PLAT** | Plattform: Eingabe, Shell, Seiten | `src/input/`, `src/core/shell.ts`, `src/core/fullscreen.ts`, `src/core/panelHost.ts`, `src/core/runConfig.ts`, `*.html`, Pages-Präsentation `site/` |
-| **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vite*.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
+| **SRV** | Räume und Spielstände (Go) | `engine/room/`, `engine/store/` (Spielserver, `engine/net/`, `cmd/k3c-server/` und Docker sind entfallen, B-850) |
+| **CLI** | Natives Spiel: Darstellung, HUD, Menü, Grafik, Audio | `native/k3c-game/`, `native/k3c-rig/` (Browser-Client entfallen, B-848) |
+| **PLAT** | Plattform: Eingabe, Fenster, Pages-Präsentation | `native/k3c-game/input/`, Pages-Präsentation `site/` |
+| **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vitest.config.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
 | **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche – Bereiche Development und Assets, Entscheidung 005 › 5 – und MCP-Server), `tools/assetkit/` (Asset-Logik der Workbench, eigenes Modul), `cmd/k3c-load/`, `cmd/k3c-tui/`, Werkzeug-Seiten `src/tools/` |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche – Bereiche Development und Assets, Entscheidung 005 › 5 – und MCP-Server), `tools/assetkit/` (Asset-Logik der Workbench, eigenes Modul), `cmd/k3c-sim/` (Engine-CLI der Workbench) |
 
 **Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
 und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
@@ -246,11 +246,8 @@ Grenzfälle:
 
 - **Planungs-Dateien** (`docs/sprints/`, `docs/backlog/`, `docs/roadmap.md`) darf jede Session für Status und Tickets ändern.
 - **Daten:** SIM legt neue Felder mit vorläufigen Werten an (aus dem REG-Beschluss). REG ändert danach nur Werte.
-- **Protokoll** (`docs/protocol.md`, `engine/net/protocol*.go`, `src/online/protocol.ts`, `testdata/protocol/`) betrifft
-  Client und Server. Eine Änderung daran bekommt eine eigene Session, die nur das Protokoll und beide Enden anpasst.
-- **Alt-Engine löschen (SP09, B-049):** INF löscht `src/world/`, `src/online/room.ts`, `src/online/wsServer.ts`, `server/*.mjs`,
-  `vite.server.config.ts` und zieht dafür Importe in `src/scenes/`, `src/online/`, `src/core/`, Dev-Server, `Taskfile.yml`, CI,
-  `tools/k3c-workbench/services.json` und die Landingpage-Hinweise für GitHub Pages (B-032) nach. Neue Funktionen gehören nicht dazu.
+- **Protokoll** (`docs/protocol.md`) ist seit dem Rückbau des Spielservers Historie (B-850, B-897); Verträge sind das
+  Spielstand-Format und die Schnittstelle von `cmd/k3c-sim` (Kopfkommentar `main.go`).
 - **Feature-Kette:** Ein neues Spielelement läuft als REG → SIM → CLI, als Sessions eines Sprints oder als
   aufeinanderfolgende Sprints desselben Projekts.
 
@@ -278,7 +275,7 @@ Jedes Ticket und jede Sprint-README trägt im Abschnitt „Regeln und Einschrän
 | Name | Gilt für |
 |---|---|
 | `golden` | `testdata/golden/`, Grafik-Golden unter `tools/paper/golden/` (Abschnitt „Golden aktualisieren“) |
-| `protokoll` | `docs/protocol.md`, `engine/net/protocol*.go`, `src/online/protocol.ts`, `testdata/protocol/` |
+| `protokoll` | `docs/protocol.md` (Historie seit B-850) |
 | `spielstand` | Spielstand-Format, `IslandSaveVersion`, Fixtures |
 | `deps` | `go.mod`, `package.json`, Lockfiles, jede neue Abhängigkeit |
 | `taskfile` | dieselbe Taskfile- oder Workflow-Datei (`Taskfile.yml`, `.github/workflows/*.yml`) |
@@ -442,22 +439,20 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 - Nur diese Grenzen gelten, geprüft von der Automatik. Kürzer ist besser, aber kein Befund.
 - **Ausnahmen für Bestandscode** stehen mit ihrem Wert in `.oxlintrc.json`; der Wert darf nicht steigen.
 - Keine neue Abhängigkeit ohne Ticket und Zustimmung von 🧑 (mit der Spec-Freigabe). Keine Abstraktion für nur einen Fall.
-- Schichtgrenzen: `engine/sim` und `engine/level` importieren nichts aus `engine/room`, `engine/net`, `cmd/`;
-  `engine/` nichts aus `cmd/`. Im Client rechnet `src/scenes` nichts, es zeichnet Snapshots.
-  `src/model` enthält keine Logik; der Client importiert Typen und Daten nur von dort.
+- Schichtgrenzen: `engine/sim` und `engine/level` importieren nichts aus `engine/room` und `cmd/`; `engine/` nichts aus
+  `cmd/` und `tools/`. Das native Spiel rechnet nicht selbst, es ruft `engine/room` und zeichnet den Zustand.
 - Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `depguard` (Go);
   Go-Verschachtelung: `engine/internal/rules/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
 
 ### Namen und Ablage im Code
 
-- **Datei- und Ordnernamen im Code sind englisch** (`engine/`, `cmd/`, `src/`, `tools/`), camelCase in TypeScript,
+- **Datei- und Ordnernamen im Code sind englisch** (`engine/`, `cmd/`, `native/`, `tools/`), camelCase in TypeScript,
   snake_case in Go, React-Komponenten wie ihre Komponente. Deutsch bleiben Doku, Spieltexte, Task-Namen, Seiten
   (`*.html`) und Begriffe aus dem Glossar in Kommentaren und Texten. Bestand wird angepasst, wenn eine Session die Datei
   ohnehin ändert.
 - **Gruppen statt flacher Ordner:** In `engine/sim` beginnt jede Datei mit ihrer Gruppe (`building_`, `unit_`,
   `monarch_`, `enemies_`, `boss_`, `skills_`, `events_`, `island_`, `hub_`, `world_`, `save_`); Kern-Dateien
-  (`world.go`, `types.go`, `data.go`, `common.go` …) haben keine. `src/scenes` hält nur Szenen und ihre Logik, der Rest
-  liegt in `render/`, `hud/`, `hints/`, `effects/`, `debug/`. Ab etwa 30 Dateien bekommt ein Ordner Gruppen.
+  (`world.go`, `types.go`, `data.go`, `common.go` …) haben keine. Ab etwa 30 Dateien bekommt ein Ordner Gruppen.
 - Tests liegen neben dem Code; `tests/` nur für Regeln über das ganze Repo (TypeScript), Go-Regeln in
   `engine/internal/rules`. Gemeinsame Oberflächen-Bausteine der Wails-Programme liegen in `tools/webkit` (nächster Abschnitt).
 
@@ -508,7 +503,7 @@ Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur f�
 ## Entscheidungen und Versionen
 
 - Größere Entscheidungen als `docs/decisions/NNN-titel.md`: **Kontext · Optionen · Entscheidung · Folgen**, höchstens eine Seite.
-- **Version nach jedem Sprint:** Jeder abgeschlossene Sprint endet mit einem **Versionsvorschlag**. Die Review-Session (im Doku-Sprint die letzte Session) trägt in der Abnahme `Version: vX.Y.Z vorgeschlagen (Grund)` ein: **Minor** (`v0.<n+1>.0`) bei Sprints mit Wirkung im Spiel, im Server oder im Werkzeug, **Patch** (`v0.<n>.<m+1>`) bei reiner Doku, Planung oder Korrektur ohne neue Funktion. Der Agent legt den Vorschlag 🧑 vor und setzt den Tag **nur bei ausdrücklicher Bestätigung**: `task check:all` grün, `git tag <Version>`, `git push origin <Version>`; der Release-Workflow (`.github/workflows/release.yml`) baut Zip, Server-Dateien und das Docker-Image für den Pi (`docker compose pull && docker compose up -d`). Ohne Bestätigung entsteht kein Tag. Die Abnahme vermerkt danach `Version: vX.Y.Z gesetzt` oder `nicht gesetzt (Grund)`.
+- **Version nach jedem Sprint:** Jeder abgeschlossene Sprint endet mit einem **Versionsvorschlag**. Die Review-Session (im Doku-Sprint die letzte Session) trägt in der Abnahme `Version: vX.Y.Z vorgeschlagen (Grund)` ein: **Minor** (`v0.<n+1>.0`) bei Sprints mit Wirkung im Spiel oder im Werkzeug, **Patch** (`v0.<n>.<m+1>`) bei reiner Doku, Planung oder Korrektur ohne neue Funktion. Der Agent legt den Vorschlag 🧑 vor und setzt den Tag **nur bei ausdrücklicher Bestätigung**: `task check:all` grün, `git tag <Version>`, `git push origin <Version>`; der Release-Workflow (`.github/workflows/release.yml`) baut das native Spiel für Windows als Zip am GitHub-Release (Server-Dateien und Docker-Image sind entfallen, B-850). Ohne Bestätigung entsteht kein Tag. Die Abnahme vermerkt danach `Version: vX.Y.Z gesetzt` oder `nicht gesetzt (Grund)`.
 - Zusätzlich ein Release-Tag nach jedem Spieleabend, auch wenn kein Sprint abschließt; vor jedem Tag gilt die Checkliste im Abschnitt „Release“.
 
 ## Release
@@ -521,9 +516,8 @@ Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur f�
 | Golden arm64 | CI-Job `go-arm64` (nativer arm64-Runner, B-071) | grün |
 | Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-workbench) |
 | Spielstand-Migration (Beschluss 2026-10-05, B-288: bis auf Widerruf keine Rücksicht auf alte Stände) | `engine/sim/save_migration_test.go` | vorhandene Tests grün; neue Version ohne Migration zulässig (Abschnitt „Spielstand-Format ändern“) |
-| Dev-Reste aus (B-098, B-107, B-080) | Release-Server ohne `K3C_DEV` (`engine/room/dev.go` lehnt Dev-Aktionen ab); Client: Debug-Overlay und `window.game` nur mit `?dev=1` (`src/main.ts`) | Dev-Aktion wird mit „🚫 Dev-Aktion abgelehnt“ geloggt, ohne `?dev=1` kein Overlay |
-| Pi-Image | CI-Job `docker` (amd64 und arm64); beim Tag schiebt `release.yml` das Image nach `ghcr.io/tenvan/k3c-family` | beide Plattformen gebaut, Image mit Tag und `latest` vorhanden |
-| Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`), `/api/health` (Feld `version`), Versionszeile der Lobby | alle drei nennen den Tag, kein Versionsunterschied zwischen Client und Server |
-| Credits vollständig (B-165) | `src/tools/credits.ts` und `credits.test.ts` über `task test` | Test grün, jedes Verzeichnis unter `public/grafik/` hat einen Credits-Eintrag |
+| Dev-Reste aus (B-098, B-107, B-080) | Release-Build des nativen Spiels ohne Dev-Modus (`engine/room/dev.go` lehnt Dev-Aktionen ab); Prüfweg im nativen Spiel noch offen (Spielserver und Browser-Client entfallen, B-850) | Dev-Aktion wird abgelehnt |
+| Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`) und die Version im Menü › Lizenzen des nativen Spiels (B-808) | beide nennen den Tag |
+| Credits vollständig (B-165) | Menü › Lizenzen des nativen Spiels (`native/k3c-game/menu/licenses.go`; der Browser-Test `src/tools/credits.test.ts` ist entfallen, B-850) | jede Grafik- und Audio-Quelle hat einen Eintrag |
 | Aufgeräumt (B-302) | `task ops:aufraeumen -- --dry` | keine Reste, sonst Hinweis (blockiert den Tag nicht) |
 | Tag-Schema | „Entscheidungen und Versionen“ | Minor bei Wirkung, Patch bei Doku oder Korrektur |

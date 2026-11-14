@@ -11,7 +11,7 @@ import (
 )
 
 // Welten im Raum (WZ18.4, docs/rules/welten.md § 5/6): Die Standard-Welt kommt immer aus der Einbettung, weitere Welten
-// nur im Dev-Mode frisch aus Manager.Worlds (<K3C_WORLDS_DIR>/<id>.json), bei jedem Anlegen und Laden eines Raums. Der
+// nur im Dev-Mode frisch aus Manager.Worlds (<id>.json), bei jedem Anlegen und Laden eines Raums. Der
 // Raum behält die geladene Welt, solange er läuft (sie steckt in seiner Insel).
 
 // world liefert die Welt id (leer = standard) mit ihrem aufgelösten Wertesatz (sim.ResolveWorld, welten.md § 1, B-681),
@@ -76,7 +76,7 @@ func worldErrorf(code error, format string, args ...any) error {
 	return fmt.Errorf("%s (%w)", fmt.Sprintf(format, args...), code)
 }
 
-// WorldInfo ist ein Eintrag der Weltliste für die Lobby (GET /api/worlds).
+// WorldInfo ist ein Eintrag der Weltliste für die Lobby.
 type WorldInfo struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
