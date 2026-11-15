@@ -36,6 +36,8 @@ type WorldDef struct {
 	Overrides map[string]json.RawMessage
 	// Story ist die Geschichte der Welt (story.go, B-965); leer = keine Zeilen. `extends` vererbt sie nicht.
 	Story WorldStory
+	// Skins: Basis-Asset → Ersatz-Asset (world_skins.go, B-984); nach ResolveWorld mit denen der Eltern gemischt.
+	Skins map[string]string
 	// values: der aufgelöste Wertesatz aus ResolveWorld (world_values_room.go); nil = beim Anlegen auflösen (valuesOf).
 	values *WorldValues
 }
@@ -116,6 +118,7 @@ type rawWorld struct {
 	Combat    *rawCombat                 `json:"combat"`
 	Islands   *[]json.RawMessage         `json:"islands"`
 	Story     json.RawMessage            `json:"story"`
+	Skins     json.RawMessage            `json:"skins"`
 }
 
 type rawIsland struct {
@@ -141,7 +144,7 @@ type rawScaling struct {
 // decodeWorld liest den Kopf der Welt streng und prüft Pflichtfelder und die ID; die Inseln bleiben roh.
 func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	var v rawWorld
-	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands", "story"); err != nil {
+	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands", "story", "skins"); err != nil {
 		return WorldDef{}, nil, err
 	}
 	switch {
@@ -170,6 +173,9 @@ func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 		w.Extends = *v.Extends
 	}
 	if w.Story, err = decodeWorldStory(v.Story); err != nil {
+		return WorldDef{}, nil, err
+	}
+	if w.Skins, err = decodeWorldSkins(v.Skins); err != nil {
 		return WorldDef{}, nil, err
 	}
 	return w, *v.Islands, nil

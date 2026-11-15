@@ -38,6 +38,7 @@ func ResolveWorld(world WorldDef, lookup func(id string) (WorldDef, error)) (Wor
 	if err != nil {
 		return WorldDef{}, err
 	}
+	world.Skins = chainSkins(chain) // Kind überschreibt Eltern je Schlüssel (B-984)
 	world.values = defaultValues()
 	for _, w := range chain {
 		if len(w.Overrides) > 0 {

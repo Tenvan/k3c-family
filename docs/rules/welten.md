@@ -122,6 +122,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `overrides` | nein | Objekt | Übersteuerte Basis-Werte je Basis-Datei (§ 1.1); fehlt es oder `{}`, gilt die Basis (bzw. die Eltern-Welt). |
 | `combat` | nein | Objekt | Kampfvariante der Welt (`kampf.md` § 3): `mode` (`groups` Standard oder `general`) und `groupSize` (ganze Zahl ≥ 1, Standard 5, nur bei `groups`); fehlt es, gilt `groups`/5. |
 | `story` | nein | Objekt | Geschichte der Welt (§ 2.2): `lexicon`, `start`, `etappen`, `end`, `bottles`; fehlt es, gibt es keine Zeilen der Welt. `extends` vererbt es nicht. |
+| `skins` | nein | Objekt | Aussehen (§ 2.3): Basis-Asset → Ersatz-Asset, je `<gruppe>/<asset>`; fehlt es, gilt überall das Basis-Asset. `extends` mischt je Schlüssel (Kind gewinnt). |
 | `islands` | ja | Liste | Inseln in Spielreihenfolge (Insel 1 zuerst), mindestens eine. |
 
 **Insel** (Eintrag in `islands`, Felder wie heute in `data/islands.json`, Reihenfolge beim Schreiben wie in der Tabelle):
@@ -237,6 +238,18 @@ Beispiel (Ausschnitt `data/worlds/sengoku.json`; Texte nur als Muster, die echte
   "done": ["MASKE nu, KRONE oru sen."] } } ]
 ```
 
+### 2.3 Skins und Gegner-Varianten (B-984)
+
+`skins` ordnet einem Basis-Asset ein Ersatz-Asset zu, beide in der Form von `data/paper.json` (`gegner/wolf`, `objekte/tanne`):
+`"skins": { "gegner/wolf": "gegner/ninja" }`. Die Engine prüft nur die Form (§ 3) und reicht die Zuordnung in `WorldDef.Skins`
+weiter; sie liest keine Grafik, prüft nicht, ob das Asset existiert, und rechnet nicht damit. Das Spiel zeichnet das Ersatz-Asset
+und fällt bei fehlender Datei auf das Basis-Asset zurück (WE6.2). Nach `ResolveWorld` trägt `Skins` die Zuordnung der ganzen Kette
+(Eltern zuerst, das Kind überschreibt je Schlüssel).
+
+Eine **Gegner-Variante** hat keine eigene ID: Basisart (alle Werte), optional Werte und `name` über `overrides › enemies › <art>`
+(`name` ist übersteuerbar), Aussehen über `skins`. Beispiel Sengoku: `"skins": {"gegner/wolf": "gegner/ninja"}` und
+`"overrides": {"enemies": {"wolf": {"name": "Ninja"}}}` – der Wolf heißt Ninja, hat Wolf-Werte und das Ninja-Asset.
+
 ## 3. Prüfung beim Laden
 
 Die Prüfung gilt für **jede** Welt-Datei, gleich ob eingebettet, im Dev-Mode von der Platte gelesen oder im Welten Editor als
@@ -255,6 +268,7 @@ geladen, nichts wird repariert.
 | Je Insel: `depthScaling` mit `hp`, `damage`, `speed` jeweils > 0. | Keine Gegner mit 0 HP oder Stillstand. | – |
 | `chunkCounts`: Schlüssel ist eine Tiefe der Insel (Dezimalzahl ohne führende Null), Wert eine Inselgröße aus der Tabelle. | `geplante-chunks.md` § 7. | `data/island-sizes.json` |
 | `plannedChunks`: Schlüssel ist eine Tiefe der Insel; die Planung besteht die Prüfung gegen die Mauerlinien und die Chunk-Anzahl der Tiefe, unabhängig vom Seed (`level.ValidatePlanFor`). | `geplante-chunks.md` § 5. | `data/biomes/*.json` |
+| `skins` (§ 2.3, B-984): ein Objekt aus Text-Paaren; Schlüssel und Wert je `<gruppe>/<asset>` (a-z, 0-9, -, _); Gruppe links und rechts gleich; kein Verweis auf sich selbst. Geprüft in Schlüssel-Reihenfolge, die erste Verletzung wird gemeldet; ob das Asset existiert, prüft die Engine nicht. | Ein Tippfehler fällt beim Laden auf; die Engine bleibt frei von Grafik. | – |
 | `story` der Welt und jeder Insel (§ 2.2, B-965/R4): keine unbekannten Felder; `lexicon` höchstens so groß wie die Obergrenze; je Eintrag 1 bis 2 Zeilen, keine leer, keine länger als die Obergrenze (in Zeichen, nicht Bytes); jedes Kunstwort steht im `lexicon`; je Zeile 2 bis 3 echte Wörter; jede Etappen-Nummer in `etappen` hat mindestens eine Insel. Geprüft wird nach den Inseln, in der Reihenfolge `lexicon`, `start`, `etappen` (aufsteigend), `end`, `bottles`, dann je Insel `arrival`, `boss`, `done`; je Zeile: leer, Länge, Kunstwörter, Anzahl echter Wörter. | Die Zeilen bleiben kurz und am TV lesbar; ein Tippfehler im Kunstwort fällt beim Laden auf, nicht erst im Spiel. | `data/story.json` (Obergrenzen, vorläufig: Zeile 64 Zeichen, Wortschatz 24 Wörter; angelegt in GS1.2) |
 
 **Fehlermeldungen** nennen Datei (und damit Welt), Insel, Tiefe und Platz, soweit vorhanden, im Muster
@@ -278,6 +292,7 @@ geladen, nichts wird repariert.
 | Faktor ≤ 0 | `data/worlds/nordmeer.json: Insel eisinsel: depthScaling braucht Faktoren > 0` |
 | Größe falsch | `data/worlds/nordmeer.json: Insel eisinsel: chunkCounts Tiefe 0: die Chunk-Anzahl 12 ist keine Inselgröße (gültig: 16, 24, …)` |
 | Planung falsch | `data/worlds/nordmeer.json: Insel eisinsel: plannedChunks Tiefe 0: auf Platz -9: …` |
+| Skins: Form, Gruppe, Selbstverweis | `data/worlds/sengoku.json: skins › gegner/wolf: Ersatz-Asset "ninja" ist kein <gruppe>/<asset>`, `… wechselt die Gruppe (gegner → objekte)`, `… verweist auf sich selbst` |
 | Geschichte: unbekanntes Feld | `data/worlds/sengoku.json: story: unbekanntes Feld "intro"`, `… Insel island1: story: unbekanntes Feld "ende"` |
 | Geschichte: Wortschatz zu groß | `data/worlds/sengoku.json: story.lexicon: 30 Wörter (höchstens 24)` |
 | Geschichte: Anzahl Zeilen | `data/worlds/sengoku.json: story.start: 3 Zeilen (1 bis 2)` |
