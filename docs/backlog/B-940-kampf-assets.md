@@ -62,4 +62,4 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Sichtprüfung 🧑 2026-11-15: Auslöser als Horn auf Pfahl vor dem Tor → B-941; Schild-Gestell an der Burg ab höherer Burgstufe → B-942 (beide KS7).
