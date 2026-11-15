@@ -16,6 +16,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
 | KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | `aktiv/KS2-portale-ausruestung/` |
 | KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
+| KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | `aktiv/KS4-angriff-gruppen-general/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
 | FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
@@ -34,7 +35,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WG2 | CLI | NAT | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | – | Entwurf | `geplant/WG2-weltbilder-anzeige/` |
-| KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | Entwurf | `geplant/KS4-angriff-gruppen-general/` |
 | KS5 | CLI | KSY | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | – | Entwurf | `geplant/KS5-kampf-anzeige/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | Entwurf | `geplant/WG1-weltbilder/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | Entwurf | `geplant/SR1-sound-ruhig/` |

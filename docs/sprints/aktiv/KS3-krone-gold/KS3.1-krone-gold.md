@@ -1,6 +1,6 @@
 # KS3.1 · Monarch zahlt Treffer mit Gold, Krone fällt und wird geraubt (B-930, B-931)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
