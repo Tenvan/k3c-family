@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"bytes"
@@ -37,7 +37,7 @@ func cmdRun(args []string, v env) error {
 	if err != nil {
 		return err
 	}
-	v.out.emit(map[string]string{"event": "result", "text": text})
+	v.out.Emit(map[string]string{"event": "result", "text": text})
 	return nil
 }
 
@@ -50,7 +50,7 @@ func cmdLevel(args []string, v env) error {
 	if err != nil {
 		return err
 	}
-	v.out.emit(map[string]string{"event": "result", "text": text})
+	v.out.Emit(map[string]string{"event": "result", "text": text})
 	return nil
 }
 

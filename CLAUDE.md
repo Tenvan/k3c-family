@@ -141,6 +141,7 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
+  **Sim-Code (B-925):** Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und Daten in `data/` mit Wirkung auf Sim, Level oder Balancing laufen in einem eigenen Worktree mit eigener Dev-Instanz der Workbench auf eigenen Ports (`task k3c-workbench:dev:worktree`, Agent `k3c-sim-dev`), weil die Workbench die Engine im Prozess rechnet (B-924); das gilt als ausdrückliche Anweisung für diesen Worktree. Die Wurzel-Workbench bleibt unberührt.
 
 ## Repository Map
 

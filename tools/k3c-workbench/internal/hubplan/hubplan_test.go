@@ -57,8 +57,8 @@ func TestHubPlanBefundeUndFehler(t *testing.T) {
 	if v.Error != "" || len(v.Findings) == 0 || len(v.Matrix.Rows) == 0 {
 		t.Fatalf("Kandidat ohne Werkstatt: Error %q, Befunde %v", v.Error, v.Findings)
 	}
-	if !slices.ContainsFunc(v.Findings, func(f HubFindingView) bool { return f.Rule == "pflicht" }) {
-		t.Errorf("Befund pflicht fehlt: %v", v.Findings)
+	if !slices.ContainsFunc(v.Findings, func(f HubFindingView) bool { return f.Rule == "pflichtplatz" }) {
+		t.Errorf("Befund pflichtplatz fehlt: %v", v.Findings)
 	}
 	if len(v.Notes) != 0 {
 		t.Errorf("Hinweise %v, erwartet keine (geplante Chunks werden mitgeprüft, B-479)", v.Notes)

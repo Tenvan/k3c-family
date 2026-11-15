@@ -13,7 +13,7 @@ export default defineConfig({
   plugins: [react(), waitForBackend(API)], // /api wartet, bis das Backend bereit ist (auch beim Neustart)
   resolve: { alias: ALIAS, dedupe: DEDUPE },
   server: {
-    port: 5191,
+    port: Number(process.env.K3C_DEV_UI_PORT ?? 5191), // dev:worktree setzt einen eigenen Port (B-925)
     strictPort: true,
     cors: false,
     fs: { allow: ['.', WEBKIT, ...MOCK_DATA] },

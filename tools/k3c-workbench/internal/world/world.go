@@ -1,7 +1,7 @@
 // Package world ist das Backend des Welten-Editors der Workbench (B-879, Port aus dem früheren Asset-Studio, Commit
 // 616b5afcb): Welten unter data/worlds/ auflisten und lesen, das Level einer Insel-Stufe für die Chunk-Vorschau holen
 // und Werte einer Welt übersteuern (`overrides`, B-680, docs/rules/welten.md § 1). Die Workbench importiert den
-// Engine-Kern nicht (B-726): Level, Basis-Werte und die Prüfung rechnet `bin/k3c-sim world` (Engine, engine.go).
+// Engine-Kern nicht selbst (B-924: über engine/simcli): Level, Basis-Werte und die Prüfung rechnet `simcli world` im Prozess (Engine, level.go).
 // Geschrieben wird nur die Welt-Datei, format-stabil und atomar; es läuft keine Simulation.
 package world
 
@@ -52,7 +52,7 @@ type Detail struct {
 	Error   string   `json:"error"`
 }
 
-// Editor ist der Welten-Editor eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (bin/k3c-sim world).
+// Editor ist der Welten-Editor eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (simcli world).
 type Editor struct {
 	Root   string
 	Engine Engine

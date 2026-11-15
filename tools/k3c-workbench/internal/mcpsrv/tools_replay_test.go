@@ -1,27 +1,42 @@
 package mcpsrv
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"k3c/engine/simcli"
 )
 
-// writeReplay schreibt eine Aufnahme nach dir/name (Felder wie engine/balance › Replay, ohne Eingaben); das falsche
-// k3c-sim spielt sie mit gleichem Endzustand ab (fakesim_test.go).
-func writeReplay(t *testing.T, dir, name string) replayHead {
+// writeReplay lässt die echte Engine einen kurzen Lauf (1 Spieler, 1 Tag, Bot passive) aufnehmen und liefert die
+// Aufnahme nach dir/<Name>; das Tool spielt sie wieder ab (B-924: keine Attrappe, kein Kindprozess).
+func writeReplay(t *testing.T, dir string) (name string, r replayHead) {
 	t.Helper()
-	r := replayHead{Seed: "2", Players: 1, Bot: "passive", Days: 1, EndHash: "a1b2c3"}
-	b, err := json.Marshal(map[string]any{"version": 1, "seed": r.Seed, "players": r.Players, "bot": r.Bot, "depth": 0,
-		"days": r.Days, "endHash": r.EndHash, "castleFallTick": nil})
+	in := `{"seed-list":"2","bots":"passive","players":"1","depths":"0","days":1,"replay-dir":` + jsonText(dir) +
+		`,"out":` + jsonText(filepath.Join(t.TempDir(), "matrix.json")) + `}`
+	if err := simcli.Stream(context.Background(), []string{"balance", "--input", "-"}, []byte(in), nil, func(simcli.Event) {}); err != nil {
+		t.Fatal(err)
+	}
+	files, _ := filepath.Glob(filepath.Join(dir, "*.json"))
+	if len(files) != 1 {
+		t.Fatalf("erwartet eine Aufnahme in %s: %v", dir, files)
+	}
+	b, err := os.ReadFile(files[0])
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(dir, name), b, 0o644); err != nil {
+	if err := json.Unmarshal(b, &r); err != nil {
 		t.Fatal(err)
 	}
-	return r
+	return filepath.Base(files[0]), r
+}
+
+func jsonText(s string) string {
+	b, _ := json.Marshal(s)
+	return string(b)
 }
 
 func TestReplayRunGleicherHashUndBurgfall(t *testing.T) {
@@ -29,13 +44,13 @@ func TestReplayRunGleicherHashUndBurgfall(t *testing.T) {
 	if err := os.Mkdir(filepath.Join(root, "replays"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	r := writeReplay(t, filepath.Join(root, "replays"), "2.replay.json")
-	installFakeSim(t, root)
+	name, r := writeReplay(t, filepath.Join(root, "replays"))
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 
-	text, isErr := callText(t, cs, "replay_run", map[string]any{"path": "replays/2.replay.json"})
+	rel := "replays/" + name
+	text, isErr := callText(t, cs, "replay_run", map[string]any{"path": rel})
 	want := "Endzustand-Hash " + r.EndHash + " · Burgfall-Tick " + tickText(r.CastleFallTick)
-	if isErr || !strings.HasPrefix(text, "replay_run replays/2.replay.json") || !strings.Contains(text, want) ||
+	if isErr || !strings.HasPrefix(text, "replay_run "+rel) || !strings.Contains(text, want) ||
 		!strings.Contains(text, "Aufnahme: gleicher Endzustand") || strings.Contains(text, "Warnung") {
 		t.Errorf("replay_run: %q, erwartet %q", text, want)
 	}
@@ -67,7 +82,6 @@ func TestReplayRunKaputteDatei(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(root, "alt.json"), []byte(`{"version":99}`), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	installFakeSim(t, root)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
 	if text, isErr := callText(t, cs, "replay_run", map[string]any{"path": "alt.json"}); !isErr || !strings.Contains(text, "unbekannte Version 99") {
 		t.Errorf("Version: %q", text)

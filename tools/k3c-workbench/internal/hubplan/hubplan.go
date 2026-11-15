@@ -8,29 +8,32 @@ import (
 	"path/filepath"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/simexe"
+	"k3c/engine/simcli"
 )
 
 // Gebäude-Planer (B-923, Port aus dem früheren Asset-Studio, B-462, WZ9.2): liest data/hub.json und zeigt die Freischaltung als Matrix Hub-Stufe × Bauplatz. Nur
-// lesen; Matrix und Prüfung rechnet `bin/k3c-sim hub` (engine/sim, B-726: die Workbench importiert den Engine-Kern nicht). Bearbeiten und Schreiben:
+// lesen; Matrix und Prüfung rechnet `simcli hub` (engine/sim, B-924: im Prozess). Bearbeiten und Schreiben:
 // app_planer_edit.go, app_planer_save.go (WZ9.3).
 
-// engineTimeout begrenzt einen Aufruf von bin/k3c-sim hub (Prüfung braucht Millisekunden).
+// engineTimeout begrenzt einen Aufruf von simcli hub (Prüfung braucht Millisekunden).
 const engineTimeout = 30 * time.Second
 
 // Engine ist die Engine-Seite des Planers: input ist das JSON von `k3c-sim hub` ({"op":"plan","raw":…}), die Antwort
 // sein report. Ein Fehler ist die Meldung von k3c-sim oder ein Startfehler.
 type Engine func(ctx context.Context, input []byte) (json.RawMessage, error)
 
-// SimExe ist die Engine über bin/k3c-sim des Checkouts root.
-func SimExe(root string) Engine {
+// Direct ist die Engine im Prozess (engine/simcli, B-924) mit den Daten des Checkouts root; eine Panik der Engine
+// wird zum Fehler (recover in simcli.Exec).
+func Direct(root string) Engine {
 	return func(ctx context.Context, input []byte) (json.RawMessage, error) {
-		ev, err := simexe.Call(ctx, root, []string{"hub"}, input, engineTimeout)
+		ctx, cancel := context.WithTimeout(ctx, engineTimeout)
+		defer cancel()
+		ev, err := simcli.Call(ctx, []string{"hub"}, input, simcli.DirFiles(filepath.Join(root, "data")))
 		return ev.Report, err
 	}
 }
 
-// Editor ist der Gebäude-Planer eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (bin/k3c-sim hub).
+// Editor ist der Gebäude-Planer eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (simcli hub).
 // Methoden: Plan, Check, Rules, Save.
 type Editor struct {
 	Root   string
@@ -142,7 +145,7 @@ func (e Editor) planOf(ctx context.Context, rel string, raw []byte) HubPlanView 
 func (e Editor) ask(ctx context.Context, raw []byte) (engineReport, error) {
 	var rep engineReport
 	if e.Engine == nil {
-		return rep, fmt.Errorf("keine Engine (bin/k3c-sim fehlt)")
+		return rep, fmt.Errorf("keine Engine")
 	}
 	input, err := json.Marshal(map[string]string{"op": "plan", "raw": string(raw)})
 	if err != nil {

@@ -327,6 +327,12 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
   alle Sessions dieser Welle. Ohne Auftrag bleibt ein Agent im aktuellen Checkout.
 - Jede Session einer Welle arbeitet im eigenen Worktree auf ihrem Sprint-Branch; schreibende MCP-Aufrufe nennen `checkout`.
 - In einem Checkout, in dem eine andere Session arbeitet, wechselt niemand den Branch, stasht oder setzt zurück.
+- **Sim-Code (B-925):** Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und Daten in `data/`, die Sim, Level oder Balancing betreffen, laufen in einem eigenen Worktree mit eigener
+  Dev-Instanz der Workbench, denn die Workbench rechnet die Engine im eigenen Prozess (B-924); eine Änderung in der Wurzel träfe die laufende Instanz.
+  Im Worktree startet `task k3c-workbench:dev:worktree` Backend und Vite auf eigenen Ports (Versatz aus dem Worktree-Pfad, MCP 6001–6399, API 8601–8999,
+  Vite 7001–7399, nie 5180, 5190, 5191; der Task nennt `K3C_DEV_PORT`). Geprüft wird gegen diese Instanz (`checkout`-Argument der MCP-Tools), am Ende
+  wird sie gestoppt. Das gilt als ausdrückliche Anweisung für den Worktree (`CLAUDE.md`); die Wurzel-Workbench bleibt unberührt. Den Ablauf führt der
+  Agent `k3c-sim-dev`. `sim_test start`, `sim_run`, `replay_run` und `level_generate` lehnen einen fremden `checkout` ab (Hinweis auf den Task); der Task setzt `K3C_DATA_DIR=<Worktree>/data`. Sim und Balancing bleiben gesperrt.
 - Ticketnummern: `plan_create` kennt nur den eigenen Checkout. Vor dem Anlegen `git fetch` und die höchste Nummer aller offenen Branches prüfen
   (`git ls-tree -r --name-only <branch> docs/backlog`), sonst vergeben zwei Branches dieselbe Nummer.
 

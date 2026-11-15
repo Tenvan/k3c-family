@@ -1,5 +1,6 @@
-// Command k3c-sim ist das Engine-CLI der Workbench (B-726, RS2.1): Simulation, Balancing und Level-Erzeugung als
-// Kindprozess statt als Import von engine/sim. Feste EXE bin/k3c-sim (`task k3c-sim:build`), kein go run.
+// Command k3c-sim ist das Engine-CLI (B-726, B-924): Simulation, Balancing, Level- und Welten-Rechnung. Die Logik steht
+// in engine/simcli, das auch die Workbench im Prozess aufruft; diese Hülle ist die EXE für Taskfile und CI (bin/k3c-sim,
+// `task k3c-sim:build`, kein go run).
 //
 // Schnittstelle (RS2.2 baut die Workbench darauf um):
 //
@@ -30,123 +31,37 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
+	"context"
 	"fmt"
 	"io"
 	"os"
 	"os/signal"
-	"sync"
 	"sync/atomic"
 	"syscall"
+
+	"k3c/engine/simcli"
 )
-
-// Exit-Codes der Schnittstelle.
-const (
-	exitOK      = 0
-	exitFailed  = 1
-	exitUsage   = 2
-	exitAborted = 130
-)
-
-// usageError ist ein Aufruffehler (Exit 2) statt eines gescheiterten Laufs (Exit 1).
-type usageError struct{ err error }
-
-func (e usageError) Error() string { return e.err.Error() }
-func (e usageError) Unwrap() error { return e.err }
-
-func usagef(format string, a ...any) error { return usageError{fmt.Errorf(format, a...)} }
-
-// emitter schreibt JSON-Zeilen nach stdout; Fortschritt kann aus mehreren Goroutinen kommen.
-type emitter struct {
-	mu  sync.Mutex
-	out io.Writer
-}
-
-func (e *emitter) emit(v any) {
-	b, err := json.Marshal(v)
-	if err != nil {
-		b, _ = json.Marshal(map[string]string{"event": "error", "message": err.Error()})
-	}
-	e.mu.Lock()
-	defer e.mu.Unlock()
-	_, _ = e.out.Write(append(b, '\n'))
-}
-
-// progressEvent ist die Fortschrittszeile; Feldfolge fest, "event" zuerst.
-type progressEvent struct {
-	Event string `json:"event"`
-	Done  int    `json:"done"`
-	Total int    `json:"total"`
-}
-
-func (e *emitter) progress(done, total int) {
-	e.emit(progressEvent{Event: "progress", Done: done, Total: total})
-}
-
-// env ist die Umgebung eines Aufrufs (in Tests ohne echten Prozess).
-type env struct {
-	stdin  io.Reader
-	stderr io.Writer
-	out    *emitter
-}
-
-func (v env) logf(format string, a ...any) { _, _ = fmt.Fprintf(v.stderr, format+"\n", a...) }
 
 func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
-	out := &emitter{out: os.Stdout}
+	out := simcli.NewEmitter(os.Stdout)
 	var finished atomic.Bool
 	go func() {
 		<-stop
 		onAbort(out, os.Stderr, &finished, os.Exit)
 	}()
-	code := run(os.Args[1:], env{stdin: os.Stdin, stderr: os.Stderr, out: out})
+	code := simcli.Exec(context.Background(), os.Args[1:], os.Stdin, os.Stderr, out, nil)
 	finished.Store(true)
 	os.Exit(code)
 }
 
 // onAbort meldet den Abbruch (Zeile aborted, Exit 130), außer der Lauf ist schon fertig: Dann gilt dessen Exit-Code.
-func onAbort(out *emitter, stderr io.Writer, finished *atomic.Bool, exit func(int)) {
+func onAbort(out *simcli.Emitter, stderr io.Writer, finished *atomic.Bool, exit func(int)) {
 	if finished.Load() {
 		return
 	}
-	out.emit(map[string]string{"event": "aborted"})
+	out.Emit(map[string]string{"event": "aborted"})
 	_, _ = fmt.Fprintln(stderr, "🛑 k3c-sim: abgebrochen")
-	exit(exitAborted)
-}
-
-// run führt einen Unterbefehl aus und liefert den Exit-Code.
-func run(args []string, v env) int {
-	err := dispatch(args, v)
-	if err == nil {
-		return exitOK
-	}
-	v.out.emit(map[string]string{"event": "error", "message": err.Error()})
-	v.logf("❌ k3c-sim: %v", err)
-	var ue usageError
-	if errors.As(err, &ue) {
-		return exitUsage
-	}
-	return exitFailed
-}
-
-func dispatch(args []string, v env) error {
-	if len(args) == 0 {
-		return usagef("Unterbefehl fehlt: run, balance, level, world oder hub")
-	}
-	switch args[0] {
-	case "run":
-		return cmdRun(args[1:], v)
-	case "level":
-		return cmdLevel(args[1:], v)
-	case "balance":
-		return cmdBalance(args[1:], v)
-	case "world":
-		return cmdWorld(args[1:], v)
-	case "hub":
-		return cmdHub(args[1:], v)
-	}
-	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level, world, hub)", args[0])
+	exit(simcli.ExitAborted)
 }

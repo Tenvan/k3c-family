@@ -73,7 +73,7 @@ func (r *Run) Started() time.Time { return r.started }
 
 // Registry hält alle Läufe der Workbench.
 type Registry struct {
-	// Exec startet einen Prozess (Test-Naht); vor dem ersten Start setzen.
+	// Exec rechnet einen Lauf der Engine (Test-Naht); vor dem ersten Start setzen.
 	Exec func(context.Context, Proc) Result
 
 	log    *slog.Logger
@@ -83,12 +83,12 @@ type Registry struct {
 	notify Notify // Rückrufe für die Ereignisse der Seite (notify.go)
 }
 
-// New baut ein leeres Register; Prozesse startet runProcess.
+// New baut ein leeres Register; Läufe rechnet runEngine (im Prozess).
 func New(log *slog.Logger) *Registry {
 	if log == nil {
 		log = slog.New(slog.DiscardHandler)
 	}
-	return &Registry{Exec: runProcess, log: log}
+	return &Registry{Exec: runEngine, log: log}
 }
 
 // Start legt einen Lauf an. Ist ein Platz frei, rechnet er sofort; sonst wartet er (queue) oder Start liefert ErrFull.

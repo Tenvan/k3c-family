@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/simexe"
+	"k3c/engine/simcli"
 )
 
 type replayIn struct {
@@ -41,9 +41,12 @@ const replayTimeout = 10 * time.Minute
 // maxReplayBytes begrenzt die gelesene Datei (eine Aufnahme über 60 Tage hat wenige MB).
 const maxReplayBytes = 64 << 20
 
-// replayRun ist das Tool replay_run (B-159, BAL1.3): spielt eine Replay-Datei ohne Bot ab, als Kindprozess
-// `k3c-sim balance --play` (RS2.2).
+// replayRun ist das Tool replay_run (B-159, BAL1.3): spielt eine Replay-Datei ohne Bot ab, im Prozess
+// (engine/simcli, B-924: wie `k3c-sim balance --play`).
 func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
+	if err := s.ownCheckoutErr(ctx, "replay_run"); err != nil {
+		return "", err
+	}
 	root := s.ws(ctx).root
 	path, err := insideRoot(root, in.Path)
 	if err != nil {
@@ -60,7 +63,9 @@ func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
 	if err := json.Unmarshal(b, &r); err != nil {
 		return "", fmt.Errorf("%s: kein Replay: %w", in.Path, err)
 	}
-	ev, err := simexe.Call(ctx, root, []string{"balance", "--play", path}, nil, replayTimeout)
+	ctx, cancel := context.WithTimeout(ctx, replayTimeout)
+	defer cancel()
+	ev, err := simcli.Call(ctx, []string{"balance", "--play", path}, nil, nil)
 	if err != nil {
 		return "", err
 	}

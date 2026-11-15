@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"flag"
@@ -56,7 +56,7 @@ func runTune(o targetOpts, tu tuneOpts) error {
 	if err := os.WriteFile(path, b, 0o644); err != nil {
 		return err
 	}
-	o.v.out.emit(map[string]any{"event": "report", "files": []string{path}})
+	o.v.out.Emit(map[string]any{"event": "report", "files": []string{path}})
 	o.v.logf("💾 k3c-sim: %d Punkte in %s, Ergebnis %s\n%s", len(res.Points),
 		time.Since(start).Round(time.Second), path, res.Reason)
 	return nil

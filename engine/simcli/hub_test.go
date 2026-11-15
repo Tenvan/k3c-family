@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"encoding/json"
@@ -21,7 +21,7 @@ func hubPlanOf(t *testing.T, raw string) hubReport {
 		t.Fatal(err)
 	}
 	code, out, errOut := call(t, string(in), "hub")
-	if code != exitOK {
+	if code != ExitOK {
 		t.Fatalf("Exit %d: %s", code, errOut)
 	}
 	var rep hubReport
@@ -182,7 +182,7 @@ func TestHubFixtureDesMocksIstDieAntwortDerEngine(t *testing.T) {
 }
 
 func TestHubUnbekannteOp(t *testing.T) {
-	if code, _, _ := call(t, `{"op":"fly"}`, "hub"); code != exitUsage {
+	if code, _, _ := call(t, `{"op":"fly"}`, "hub"); code != ExitUsage {
 		t.Errorf("unbekannte op: Exit %d", code)
 	}
 }

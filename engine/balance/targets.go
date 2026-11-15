@@ -103,6 +103,8 @@ type Targets struct {
 	// SeedMode (B-634): dev = ohne Seed-Angabe nur der erste Seed, all bzw. leer = alle (seedmode.go).
 	SeedMode string   `json:"seedMode,omitempty"`
 	Targets  []Target `json:"targets"`
+	// Tick (darf nil sein) wird nach jedem fertigen Lauf aufgerufen; eine Panik darin beendet den Lauf (parallel.go, B-924).
+	Tick func() `json:"-"`
 }
 
 // Target ist ein Ziel: Kennzahl, Szenario (ohne Seed) und Korridor. Eine fehlende Grenze (null) heißt: keine in diese Richtung.

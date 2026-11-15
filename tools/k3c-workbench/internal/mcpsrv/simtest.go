@@ -61,6 +61,9 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 	if err := simLockErr("sim_test start"); err != nil {
 		return "", err
 	}
+	if err := s.ownCheckoutErr(ctx, "sim_test start"); err != nil {
+		return "", err
+	}
 	root := ws.root
 	spec, err := in.spec()
 	if err != nil {

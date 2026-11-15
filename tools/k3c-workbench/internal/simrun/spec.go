@@ -216,12 +216,12 @@ func (s Spec) Title() string {
 
 // args baut die Argumente der Balance-CLI; dir ist der Berichtsordner relativ zum Checkout. Die Baseline des Repos
 // liefert den Trend der Auswertung (B-632); fehlt sie, rechnet die CLI ohne.
-func (s Spec) args(exe, dir string) []string {
+func (s Spec) args(dir string) []string {
 	baseline := balance.BaselinePath
 	if s.Baseline != "" {
 		baseline = balance.BaselineFile(s.Baseline)
 	}
-	args := []string{exe, "balance", "--targets", "--report-dir", dir, "--progress", "--baseline", baseline}
+	args := []string{"balance", "--targets", "--report-dir", dir, "--progress", "--baseline", baseline}
 	for _, f := range []struct {
 		flag string
 		n    int

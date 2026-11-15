@@ -16,7 +16,6 @@ func TestSimSperreLehntAb(t *testing.T) {
 	t.Setenv(simUnlockEnv, "")
 	s, started := fakeServer(t, fakeBalance(t, 1))
 	root := s.ws(context.Background()).root
-	installFakeSim(t, root)
 	_, err := s.simTest(context.Background(), simTestIn{Action: "start", Seeds: 3})
 	if err == nil || !strings.Contains(err.Error(), "Beschluss 🧑 2026-11-11") || !strings.Contains(err.Error(), simUnlockEnv+"=1") {
 		t.Errorf("sim_test start: %v", err)
@@ -37,8 +36,6 @@ func TestSimSperreLehntAb(t *testing.T) {
 func TestSimSperreMitSchalter(t *testing.T) {
 	t.Setenv(simUnlockEnv, "1")
 	s, _ := fakeServer(t, fakeBalance(t, 1))
-	root := s.ws(context.Background()).root
-	installFakeSim(t, root)
 	out, err := s.simTest(context.Background(), simTestIn{Action: "start", Seeds: 3, Wait: true})
 	if err != nil || !strings.Contains(out, "fertig") {
 		t.Errorf("sim_test start: %v\n%s", err, out)

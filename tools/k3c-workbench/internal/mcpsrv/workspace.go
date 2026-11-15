@@ -194,3 +194,24 @@ func isGameModule(path string) bool {
 	}
 	return false
 }
+
+// ownCheckoutErr lehnt einen Aufruf ab, dessen Checkout nicht der der laufenden Workbench ist (B-924, B-925): sim_run,
+// sim_test, replay_run und level_generate rechnen Code und Daten dieses Prozesses, nicht die eines Worktrees.
+func (s *Server) ownCheckoutErr(ctx context.Context, tool string) error {
+	root := s.ws(ctx).root
+	if root == "" || s.cfg.Root == "" || sameDir(root, s.cfg.Root) {
+		return nil
+	}
+	return fmt.Errorf("%s abgelehnt: Checkout %s ist nicht der Checkout dieser Workbench (%s); die Engine rechnet im Prozess der Workbench. "+
+		"Eigene Dev-Workbench im Worktree starten: task k3c-workbench:dev:worktree", tool, root, s.cfg.Root)
+}
+
+// sameDir sagt, ob a und b derselbe Ordner sind (Schreibweise, Links).
+func sameDir(a, b string) bool {
+	ia, errA := os.Stat(a)
+	ib, errB := os.Stat(b)
+	if errA != nil || errB != nil {
+		return filepath.Clean(a) == filepath.Clean(b)
+	}
+	return os.SameFile(ia, ib)
+}

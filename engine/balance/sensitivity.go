@@ -76,6 +76,9 @@ func (t *Targets) Sensitivity(o SensitivityOptions) (SensitivityReport, error) {
 			return rep, err
 		}
 		for _, j := range jobs {
+			if t.Tick != nil {
+				t.Tick()
+			}
 			err := withData(j.fsy, func() error {
 				cur, err := t.summary(o.Seeds)
 				j.v.Flips = append(j.v.Flips, flips(base, cur)...)
@@ -88,6 +91,9 @@ func (t *Targets) Sensitivity(o SensitivityOptions) (SensitivityReport, error) {
 		}
 	}
 	if o.Nights > 0 {
+		if t.Tick != nil {
+			t.Tick()
+		}
 		var err error
 		if rep.Curves, err = Curves(t.seedList(o.Seeds), o.Nights); err != nil {
 			return rep, err

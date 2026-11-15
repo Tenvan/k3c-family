@@ -87,6 +87,7 @@ func TestSimTestStartSofortUndStop(t *testing.T) {
 	t.Parallel()
 	blocked := make(chan struct{})
 	s, _ := fakeServer(t, func(runSpec) runResult { <-blocked; return runResult{} })
+	s.simsViaRun()
 	s.run = func(ctx context.Context, _ runSpec) runResult { <-ctx.Done(); return runResult{exit: -1} }
 	begin := time.Now()
 	id := start(t, s, simTestIn{})
@@ -119,6 +120,7 @@ func TestSimTestStatusHoechstensZehnZeilen(t *testing.T) {
 func TestSimTestHoechstensZweiLaeufe(t *testing.T) {
 	t.Parallel()
 	s, _ := fakeServer(t, nil)
+	s.simsViaRun()
 	s.run = func(ctx context.Context, _ runSpec) runResult { <-ctx.Done(); return runResult{} }
 	a, b := start(t, s, simTestIn{}), start(t, s, simTestIn{})
 	if _, err := s.simTest(context.Background(), simTestIn{Action: "start"}); err == nil {

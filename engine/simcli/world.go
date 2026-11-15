@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"encoding/json"
@@ -42,25 +42,26 @@ func cmdWorld(args []string, v env) error {
 	if err := readInput("world", args, v.stdin, &in); err != nil {
 		return err
 	}
-	worlds, err := fs.Sub(data.Files, "worlds")
+	base := v.dataFiles()
+	worlds, err := fs.Sub(base, "worlds")
 	if err != nil {
 		return err
 	}
 	var report any
 	switch in.Op {
 	case "level":
-		report, err = worldLevel(worlds, in)
+		report, err = worldLevel(base, worlds, in)
 	case "values":
-		report, err = worldValues(worlds, in.World)
+		report, err = worldValues(base, worlds, in.World)
 	case "check":
-		report, err = worldCheck(worlds, in.World, in.Draft)
+		report, err = worldCheck(base, worlds, in.World, in.Draft)
 	default:
 		return usagef("unbekannte op %q (bekannt: level, values, check)", in.Op)
 	}
 	if err != nil {
 		return err
 	}
-	v.out.emit(map[string]any{"event": "result", "report": report})
+	v.out.Emit(map[string]any{"event": "result", "report": report})
 	return nil
 }
 
@@ -110,7 +111,7 @@ func natureOf(b level.Biome) ([]natureTrait, []natureWeights) {
 	return traits, groups
 }
 
-func worldLevel(worlds fs.FS, in worldInput) (worldLevelReport, error) {
+func worldLevel(base data.FS, worlds fs.FS, in worldInput) (worldLevelReport, error) {
 	if n := utf8.RuneCountInString(in.Seed); n == 0 || n > maxWorldSeedRunes {
 		return worldLevelReport{}, fmt.Errorf("der Seed braucht 1 bis %d Zeichen", maxWorldSeedRunes)
 	}
@@ -127,7 +128,7 @@ func worldLevel(worlds fs.FS, in worldInput) (worldLevelReport, error) {
 		return worldLevelReport{}, fmt.Errorf("die Stufe %d gibt es auf der Insel %q nicht", in.Stage, in.Island)
 	}
 	depth := isl.Depths[in.Stage]
-	b, err := biomeForDepth(depth)
+	b, err := biomeForDepth(base, depth)
 	if err != nil {
 		return worldLevelReport{}, err
 	}
@@ -149,13 +150,13 @@ func worldLevel(worlds fs.FS, in worldInput) (worldLevelReport, error) {
 }
 
 // biomeForDepth ist das Biom der Tiefe depth (Feld depth der Biom-Dateien).
-func biomeForDepth(depth int) (level.Biome, error) {
-	entries, err := data.Files.ReadDir("biomes")
+func biomeForDepth(files data.FS, depth int) (level.Biome, error) {
+	entries, err := files.ReadDir("biomes")
 	if err != nil {
 		return level.Biome{}, err
 	}
 	for _, e := range entries {
-		b, err := level.LoadBiome(strings.TrimSuffix(e.Name(), ".json"))
+		b, err := loadBiomeFrom(files, e.Name())
 		if err == nil && b.Depth == depth {
 			return b, nil
 		}
@@ -172,12 +173,12 @@ type worldValuesReport struct {
 	Overrides map[string]json.RawMessage `json:"overrides"`
 }
 
-func worldValues(worlds fs.FS, id string) (worldValuesReport, error) {
+func worldValues(base data.FS, worlds fs.FS, id string) (worldValuesReport, error) {
 	def, err := sim.LoadWorld(worlds, id)
 	if err != nil {
 		return worldValuesReport{}, err
 	}
-	files, err := sim.ResolveWorldFiles(data.Files, func(w string) (sim.WorldDef, error) { return sim.LoadWorld(worlds, w) }, def.Extends)
+	files, err := sim.ResolveWorldFiles(base, func(w string) (sim.WorldDef, error) { return sim.LoadWorld(worlds, w) }, def.Extends)
 	if err != nil {
 		return worldValuesReport{}, err
 	}
@@ -194,7 +195,7 @@ func worldValues(worlds fs.FS, id string) (worldValuesReport, error) {
 // worldCheck prüft den Entwurf der Welt-Datei wie der Server (sim.ResolveWorldValues): die Welt und jeden Nachfolger.
 // Ein Nachfolger blockiert nur, wenn der Entwurf ihn neu oder anders ungültig macht; war er schon gleich ungültig oder
 // lädt er nicht, kommt eine Warnung zurück.
-func worldCheck(worlds fs.FS, id string, draft json.RawMessage) (map[string][]string, error) {
+func worldCheck(base data.FS, worlds fs.FS, id string, draft json.RawMessage) (map[string][]string, error) {
 	def, err := sim.ParseWorld(draft, id)
 	if err != nil {
 		return nil, err
@@ -206,7 +207,7 @@ func worldCheck(worlds fs.FS, id string, draft json.RawMessage) (map[string][]st
 		}
 		return disk(w)
 	}
-	if _, err := sim.ResolveWorldValues(data.Files, withDraft, id); err != nil {
+	if _, err := sim.ResolveWorldValues(base, withDraft, id); err != nil {
 		return nil, err
 	}
 	warnings := []string{}
@@ -215,11 +216,11 @@ func worldCheck(worlds fs.FS, id string, draft json.RawMessage) (map[string][]st
 			warnings = append(warnings, fmt.Sprintf("Welt %s erbt von %s, ist aber ungültig und nicht geprüft: %v", kid, id, bad))
 			continue
 		}
-		_, err := sim.ResolveWorldValues(data.Files, withDraft, kid)
+		_, err := sim.ResolveWorldValues(base, withDraft, kid)
 		if err == nil {
 			continue
 		}
-		if _, was := sim.ResolveWorldValues(data.Files, disk, kid); was != nil && was.Error() == err.Error() {
+		if _, was := sim.ResolveWorldValues(base, disk, kid); was != nil && was.Error() == err.Error() {
 			warnings = append(warnings, fmt.Sprintf("Welt %s war schon vorher ungültig: %v", kid, err))
 			continue
 		}
@@ -256,4 +257,15 @@ func descendants(worlds fs.FS, id string) []string {
 	}
 	delete(seen, id)
 	return slices.Sorted(maps.Keys(seen))
+}
+
+// loadBiomeFrom liest eine Biom-Datei (Name mit .json) aus files.
+func loadBiomeFrom(files data.FS, name string) (level.Biome, error) {
+	raw, err := files.ReadFile("biomes/" + name)
+	if err != nil {
+		return level.Biome{}, err
+	}
+	var b level.Biome
+	err = json.Unmarshal(raw, &b)
+	return b, err
 }

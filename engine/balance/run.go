@@ -28,6 +28,8 @@ type Matrix struct {
 	World string `json:"world,omitempty"`
 	// Helps: Dev-Hilfen wie im Stufen-Test (hilfen, voll, boss; helps.go), nur mit World; leer = keine.
 	Helps string `json:"helps,omitempty"`
+	// Tick (darf nil sein) wird nach jedem fertigen Lauf aufgerufen; eine Panik darin beendet den Lauf (parallel.go, B-924).
+	Tick func() `json:"-"`
 }
 
 // Scenario ist ein einzelner Lauf.
@@ -113,7 +115,7 @@ func Run(m Matrix) (Report, error) {
 	if err != nil {
 		return Report{}, err
 	}
-	return Report{Matrix: m, Results: runAll(scenarios, m.GoldThreshold, nil)}, nil
+	return Report{Matrix: m, Results: runAll(scenarios, m.GoldThreshold, tickProgress(m.Tick, nil))}, nil
 }
 
 // JSON schreibt den Bericht eingerückt mit Zeilenende; Feldreihenfolge aus den Structs.

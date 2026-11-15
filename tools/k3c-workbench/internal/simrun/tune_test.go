@@ -16,7 +16,7 @@ func TestSpecTune(t *testing.T) {
 	if err := ok.Check(); err != nil {
 		t.Fatal(err)
 	}
-	args := strings.Join(ok.args("exe", "dir"), " ")
+	args := strings.Join(ok.args("dir"), " ")
 	want := "--tune search --param economy.json:purse.startGold=50..250 --param buildings.json:wall.levels.0.cost.gold=-1.5..2 --steps 3 --budget 4"
 	if !strings.HasSuffix(args, want) || !strings.Contains(ok.Title(), "tune search 2 Parameter") {
 		t.Errorf("args %q, titel %q", args, ok.Title())

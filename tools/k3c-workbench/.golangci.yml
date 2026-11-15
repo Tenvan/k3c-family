@@ -8,42 +8,32 @@ linters:
     - gocyclo
     - depguard
   settings:
+    depguard:
+      # B-924: Die Workbench ruft die Engine im Prozess auf, aber nur über engine/simcli (Unterbefehle) und engine/store;
+      # engine/sim und engine/level nur für Typen. Spielstand-Raum und Netz gehören nicht in die Workbench, engine/devrun
+      # nur in den Supervisor in der Wurzel des Pakets. Ausnahme internal/studioview („Im Spiel ansehen“ mit eingebundener Engine).
+      rules:
+        workbench-ohne-raum:
+          files: ["$all", "!**/internal/studioview/**"]
+          deny:
+            - pkg: k3c/engine/room
+              desc: "Räume nur über den Spielserver oder studioview (B-726, B-924)"
+            - pkg: k3c/engine/net
+              desc: "Protokoll nur über den laufenden Spielserver (B-726)"
+            - pkg: k3c/engine/enginetools
+              desc: "Engine-Aufrufe über engine/simcli (B-924)"
+            - pkg: k3c/engine/balance
+              desc: "Balancing über engine/simcli balance (B-924)"
+        workbench-devrun-nur-wurzel:
+          files: ["$all", "!**/tools/k3c-workbench/*.go"]
+          deny:
+            - pkg: k3c/engine/devrun
+              desc: "engine/devrun nur im Supervisor in der Wurzel des Pakets (headless.go)"
     funlen:
       lines: 60
       statements: -1
     gocyclo:
       min-complexity: 15
-    depguard:
-      # B-726 (RS2.2): Sim, Balancing und Level rechnet der Kindprozess bin/k3c-sim (internal/simexe); die Workbench
-      # importiert den Engine-Kern nicht. Ausnahme internal/studioview („Im Spiel ansehen“ mit eingebundener Engine).
-      # Tests dürfen engine/net und engine/room für den echten Spielserver im Testprozess nutzen.
-      rules:
-        workbench-ohne-engine:
-          files: ["$all", "!$test", "!**/internal/studioview/**"]
-          deny:
-            - pkg: k3c/engine/sim
-              desc: "Simulation nur über bin/k3c-sim (internal/simexe, B-726)"
-            - pkg: k3c/engine/level
-              desc: "Level-Erzeugung nur über bin/k3c-sim level (internal/simexe, B-726)"
-            - pkg: k3c/engine/room
-              desc: "Räume nur über den laufenden Spielserver (B-726)"
-            - pkg: k3c/engine/net
-              desc: "Protokoll nur über den laufenden Spielserver (B-726)"
-            - pkg: k3c/engine/balance
-              desc: "Balancing nur über bin/k3c-sim balance (internal/simrun, B-726)"
-            - pkg: k3c/engine/enginetools
-              desc: "sim_run und level_generate nur über bin/k3c-sim (internal/simexe, B-726)"
-        workbench-tests-ohne-sim:
-          files: ["$test", "!**/internal/studioview/**"]
-          deny:
-            - pkg: k3c/engine/sim
-              desc: "Simulation nur über bin/k3c-sim (B-726)"
-            - pkg: k3c/engine/level
-              desc: "Level-Erzeugung nur über bin/k3c-sim (B-726)"
-            - pkg: k3c/engine/balance
-              desc: "Balancing nur über bin/k3c-sim (B-726)"
-            - pkg: k3c/engine/enginetools
-              desc: "sim_run und level_generate nur über bin/k3c-sim (B-726)"
   exclusions:
     rules:
       - path: _test\.go

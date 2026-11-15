@@ -15,7 +15,7 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings, Ober
 | [`console/`](console/codemap.md) / [`applog/`](applog/codemap.md) | Konsolenpuffer je Quelle, eigenes Log `logs/k3c-workbench.jsonl` |
 | [`logs/`](logs/codemap.md) | Leser für `logs/*.jsonl` mit Cursor und Digest |
 | [`resmon/`](resmon/codemap.md) | Ressourcen-Monitoring: Proben, Verlauf, Trends, Profile, Messung je Vorgang |
-| [`simexe/`](simexe/codemap.md) | Kindprozess `bin/k3c-sim` (Engine-CLI): `sim_run`, `level_generate`, `replay_run`, Welten-Editor |
+| (entfernt, B-924) | Die Workbench ruft die Engine über `engine/simcli` im Prozess auf |
 | [`simrun/`](simrun/codemap.md) | Register der Testläufe (`sim_test`, Balancing-Seite), Offline-Runner, Berichte und Baselines |
 | [`balance/`](balance/codemap.md) | Leseteil des Balancing-Testers: Berichte, Zielkorridore, Insights, HTML, Baselines |
 | [`datadoc/`](datadoc/codemap.md) | Balancing-relevante Dateien in `data/` mit Beschreibungen aus `docs/data/` und Zahlenwerten |
@@ -34,7 +34,7 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings, Ober
 ## Flow
 1. `tools/k3c-workbench/main.go` baut die Packages zusammen (`newApp`, `openServices`).
 2. Die Wails-App (`app*.go`) und `mcpsrv` rufen dieselben Packages auf; Frontend (Wails-Binding oder `/api/dev/rpc`) und MCP-Clients bekommen dieselben Daten.
-3. Engine-Arbeit läuft als Kindprozess `bin/k3c-sim` (`simexe`, `simrun`, `world`); Render-Arbeit als `bun`-Prozess (`review`, `paperassets`).
+3. Engine-Arbeit läuft im Prozess über `engine/simcli` (`mcpsrv`, `simrun`, `world`, `hubplan`; recover und Abbruch über Context); Render-Arbeit als `bun`-Prozess (`review`, `paperassets`).
 
 ## Integration
 - Konsument: `tools/k3c-workbench` (Wails-Host, Headless-Betrieb).

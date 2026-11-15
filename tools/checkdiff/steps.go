@@ -21,9 +21,8 @@ type step struct {
 // Ralf 2026-11-11); go vet und Lint laufen weiter. CHECK_SIM=1 hebt die Sperre für einen Lauf auf.
 // task check:go liest sie über -gopkgs; ci.yml › GO_SIM_PKGS, WB_SIM_PKGS muss gleich sein (simlist_test.go, B-832).
 var simDirs = map[string]bool{
-	"engine/balance": true, "cmd/k3c-sim": true,
+	"engine/balance": true, "engine/simcli": true, "cmd/k3c-sim": true,
 	"tools/k3c-workbench/internal/balance": true, "tools/k3c-workbench/internal/simrun": true,
-	"tools/k3c-workbench/internal/simexe": true,
 }
 
 // lintMods: Module mit golangci-lint (wie task check:go und check:dev; das Spiel-Modul seit NG1-Review).

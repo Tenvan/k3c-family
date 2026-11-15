@@ -167,10 +167,7 @@ func TestBerichteListe(t *testing.T) {
 	}
 }
 
-func TestPlaetzeBekommenEigeneEXE(t *testing.T) {
-	if balanceExe(0) == balanceExe(1) {
-		t.Fatalf("Platz 0 und 1 teilen sich %s", balanceExe(0))
-	}
+func TestPlaetzeWerdenBelegt(t *testing.T) {
 	g := New(nil)
 	g.mu.Lock()
 	defer g.mu.Unlock()

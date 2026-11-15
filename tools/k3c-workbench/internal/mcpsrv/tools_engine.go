@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/simexe"
+	"k3c/engine/simcli"
 )
 
-// level_generate und sim_run rechnen im Kindprozess bin/k3c-sim (RS2.2, B-726); der Text ist byte-gleich zum
-// früheren Aufruf im Prozess (cmd/k3c-sim/main_test.go).
+// level_generate und sim_run rechnen im Prozess über engine/simcli (B-924, wie `k3c-sim level` und `k3c-sim run`); eine
+// Panik der Engine wird zum Fehler des Tools (simcli.Exec).
 
 // engineTimeout begrenzt einen Aufruf (sim_run mit 100000 Ticks dauert Sekunden).
 const engineTimeout = 2 * time.Minute
@@ -38,12 +38,18 @@ type simIn struct {
 
 // levelGenerate ist das Tool level_generate (`k3c-sim level`, kein Server nötig).
 func (s *Server) levelGenerate(ctx context.Context, in levelIn) (string, error) {
+	if err := s.ownCheckoutErr(ctx, "level_generate"); err != nil {
+		return "", err
+	}
 	return s.engineCall(ctx, "level", in)
 }
 
 // simRun ist das Tool sim_run (`k3c-sim run`, kein Server nötig); während der Sim-Sperre lehnt es ab (B-788).
 func (s *Server) simRun(ctx context.Context, in simIn) (string, error) {
 	if err := simLockErr("sim_run"); err != nil {
+		return "", err
+	}
+	if err := s.ownCheckoutErr(ctx, "sim_run"); err != nil {
 		return "", err
 	}
 	return s.engineCall(ctx, "run", in)
@@ -54,7 +60,9 @@ func (s *Server) engineCall(ctx context.Context, sub string, in any) (string, er
 	if err != nil {
 		return "", err
 	}
-	ev, err := simexe.Call(ctx, s.ws(ctx).root, []string{sub}, raw, engineTimeout)
+	ctx, cancel := context.WithTimeout(ctx, engineTimeout)
+	defer cancel()
+	ev, err := simcli.Call(ctx, []string{sub}, raw, nil)
 	if err != nil {
 		return "", err
 	}

@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"encoding/json"
@@ -89,7 +89,7 @@ func (o *matrixOpts) register(fs *flag.FlagSet) {
 
 // runMatrix spielt die Szenario-Matrix (ohne --targets) und schreibt den Bericht nach --out oder als JSON-Zeile.
 func runMatrix(o matrixOpts, v env) error {
-	m := balance.Matrix{Seeds: seedNames(o.seeds, o.seedList), Bots: split(o.bots), Days: o.days, GoldThreshold: o.threshold}
+	m := balance.Matrix{Seeds: seedNames(o.seeds, o.seedList), Bots: split(o.bots), Days: o.days, GoldThreshold: o.threshold, Tick: v.tick()}
 	var err error
 	if m.Players, err = ints(o.players); err != nil {
 		return usageError{err}
@@ -166,7 +166,7 @@ func write(out string, b []byte, v env) error {
 	if !json.Valid(b) {
 		return fmt.Errorf("bericht ist kein JSON")
 	}
-	v.out.emit(map[string]any{"event": "result", "report": json.RawMessage(b)})
+	v.out.Emit(map[string]any{"event": "result", "report": json.RawMessage(b)})
 	return nil
 }
 
@@ -250,4 +250,3 @@ func ints(s string) ([]int, error) {
 	}
 	return out, nil
 }
-
