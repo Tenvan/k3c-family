@@ -34,6 +34,12 @@ export interface WorldIsland {
   etappe?: number;
 }
 
+/** Anzeige-Werte eines Bioms aus data/biomes/<id>.json (Go: world.BiomeInfo): Palette (sky, far, near, ground) und Portal-HP */
+export interface BiomeInfo {
+  palette: Record<string, string>;
+  portalHp: number;
+}
+
 /** Welt mit Kopf und Inseln; error nennt, warum sie nicht lesbar ist (Go: world.Detail) */
 export interface WorldDetail {
   id: string;
@@ -41,6 +47,8 @@ export interface WorldDetail {
   notes: string;
   extends: string;
   islands: WorldIsland[];
+  /** Palette und Portal-HP je Biom-ID der Inseln (aus data/biomes) */
+  biomeInfo?: Record<string, BiomeInfo>;
   error: string;
 }
 
@@ -125,6 +133,8 @@ export interface WorldBackend {
   worldValues(id: string): Promise<WorldValuesView>;
   /** Neue Welt anlegen (data/worlds/<id>.json, eine Insel, Tiefen 0–4); extends leer = Basis. Eine vorhandene Welt wird nie überschrieben. */
   worldCreate(id: string, name: string, extendsId: string): Promise<WorldCreateView>;
+  /** Etappe der Insel setzen (B-963); null entfernt sie. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
+  worldIslandEtappe(id: string, island: string, etappe: number | null): Promise<WorldCreateView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   /** Natur-Wert der Insel-Stufe festsetzen (key: Eigenschaft oder „gruppe.variante“); null setzt auf „aus Seed“ zurück. */

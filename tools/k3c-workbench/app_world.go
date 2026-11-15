@@ -93,3 +93,17 @@ func (a *App) WorldNatureSet(id, island string, stage int, key string, value *in
 	}
 	return view
 }
+
+// WorldIslandEtappe setzt die Etappe einer Insel; null entfernt sie (Binding, B-963). Geschrieben wird nur eine gültige Welt.
+func (a *App) WorldIslandEtappe(id, island string, etappe *int) world.CreateView {
+	a.wait()
+	view := a.worlds().SetEtappeView(a.worldCtx(), id, island, etappe)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Etappe abgelehnt", "ns", "dev", "world", id, "island", island, "error", view.Error)
+		} else {
+			a.log.Info("💾 Etappe gespeichert", "ns", "dev", "world", id, "island", island)
+		}
+	}
+	return view
+}

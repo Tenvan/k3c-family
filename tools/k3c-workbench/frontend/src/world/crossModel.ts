@@ -4,7 +4,7 @@ import type { LevelModel } from './levelView';
 // Querschnitt des Welten-Editors (B-963): reine Funktionen für Etappen-Gruppen, Biom-Farben, Streifen-Breite und Marker.
 // Kein DOM, kein Netz. Die Etappe einer Insel steht optional in der Welt-Datei; fehlt sie, gilt Listenplatz + 1.
 
-/** Biom-Palette (data/biomes/<id>.json › palette) */
+/** Biom-Palette (data/biomes/<id>.json › palette, geliefert vom Backend als WorldDetail.biomeInfo) */
 export interface Palette {
   sky: string;
   far: string;
@@ -12,17 +12,14 @@ export interface Palette {
   ground: string;
 }
 
-/** Paletten der Biome; unbekannte Biome bekommen die neutrale Palette. */
-const PALETTES: Record<string, Palette> = {
-  forest: { sky: '#8ecae6', far: '#6a8caf', near: '#3a5a40', ground: '#588157' },
-  cave: { sky: '#35354d', far: '#2e2e3a', near: '#44444f', ground: '#5c5c66' },
-  mine: { sky: '#2b1a12', far: '#4a2f1d', near: '#7a4a2a', ground: '#8c5a3c' },
-  ironhold: { sky: '#1f0f0a', far: '#3a1a10', near: '#5a2a18', ground: '#6b3a26' },
-  crystal: { sky: '#0d1626', far: '#1a2a44', near: '#2a4466', ground: '#3a5a80' },
-};
+/** Neutrale Palette für ein Biom ohne Daten (reine Anzeige-Rückfalllösung, kein Spielwert). */
 const NEUTRAL: Palette = { sky: '#9aa3ad', far: '#848d97', near: '#6f7882', ground: '#5a636d' };
 
-export const paletteOf = (biomeId: string): Palette => PALETTES[biomeId] ?? NEUTRAL;
+/** Palette des Bioms aus den Backend-Daten; fehlt sie oder ein Feld, gilt die neutrale. */
+export function paletteOf(info: WorldDetail['biomeInfo'], biomeId: string): Palette {
+  const p = info?.[biomeId]?.palette;
+  return { sky: p?.sky ?? NEUTRAL.sky, far: p?.far ?? NEUTRAL.far, near: p?.near ?? NEUTRAL.near, ground: p?.ground ?? NEUTRAL.ground };
+}
 
 /** Himmel, zwei Hintergrundbänder und Boden als Verlauf von oben nach unten. */
 export const gradientOf = (p: Palette): string =>
@@ -84,8 +81,8 @@ export interface Mark {
   title: string;
 }
 
-/** Marker eines Streifens: Burg (Hub-Chunks), Portale, Hafen-Chunks und Ausgang (Treppe, in der tiefsten Stufe Endboss). */
-export function marksOf(model: LevelModel, deepest: boolean): Mark[] {
+/** Marker eines Streifens (portalHp: Portal-HP der Stufe, 0 = unbekannt): Burg (Hub-Chunks), Portale, Hafen-Chunks und Ausgang (Treppe, in der tiefsten Stufe Endboss). */
+export function marksOf(model: LevelModel, deepest: boolean, portalHp = 0): Mark[] {
   const w = model.widthUnits || 1;
   const pct = (x: number) => (x / w) * 100;
   const marks: Mark[] = [];
@@ -99,7 +96,7 @@ export function marksOf(model: LevelModel, deepest: boolean): Mark[] {
     marks.push({ kind: 'harbor', left: pct((c.from + c.to) / 2), title: `Hafen-Chunk ${c.index}` });
   }
   for (const o of model.objects) {
-    if (o.kind === 'portal') marks.push({ kind: 'portal', left: pct(o.x), title: 'Portal' });
+    if (o.kind === 'portal') marks.push({ kind: 'portal', left: pct(o.x), title: portalHp > 0 ? `Portal · ${portalHp} HP` : 'Portal' });
     if (o.kind === 'exit') marks.push({ kind: deepest ? 'boss' : 'stairs', left: pct(o.x), title: deepest ? 'Endboss-Bau' : 'Treppe nach unten' });
   }
   return marks;

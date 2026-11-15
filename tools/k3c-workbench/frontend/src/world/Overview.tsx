@@ -16,9 +16,10 @@ interface Props {
   seed: string;
   choice: StageChoice | null;
   onPick: (island: string, stage: number) => void;
+  onEtappe?: (island: string, etappe: number | null) => void;
 }
 
-export function Overview({ detail, seed, choice, onPick }: Props) {
+export function Overview({ detail, seed, choice, onPick, onEtappe }: Props) {
   const models = useCross(detail, seed);
   const root = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -33,7 +34,7 @@ export function Overview({ detail, seed, choice, onPick }: Props) {
   return (
     <div className="wd-overview" ref={root}>
       <SeaMap detail={detail} models={models} onJump={jump} />
-      <CrossSection detail={detail} models={models} choice={choice} hit={hit} onPick={onPick} />
+      <CrossSection detail={detail} models={models} choice={choice} hit={hit} onPick={onPick} onEtappe={onEtappe} />
     </div>
   );
 }
