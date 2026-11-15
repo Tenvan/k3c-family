@@ -1,6 +1,6 @@
 # NA1.2 · Ende-zu-Ende-Lauf TestFlow wieder grün
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 geprüft: `go test ./e2e/ -run TestFlow -count=2` grün, `go test ./...` und Lint grün, `task check:diff` grün. Commit 9202ff4d5. Ursache 1: Skill-Punkt liegt bei x 707, fester Halt bei x 661 (`engine/level/level.go:317`); der Test liest die Lage jetzt aus dem Frame. Ursache 2: Burgfall beendet das Spiel seit KS3 nicht mehr, Station Niederlage läuft über Kronenraub. `TestFlowImages` nicht gelaufen (keine EXE gesetzt). Folgeticket: Kronenraub lässt sich per Verlassen und Weiter abbrechen.

@@ -1,6 +1,6 @@
 # GS1.2 · Engine: Feld story, Prüfung und Wendepunkt-Funktionen (B-965)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -61,5 +61,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: `TestStoryLaedtMitUndOhne`, `TestStoryLimitsAusDaten`, `TestStoryPruefungen`, `TestStoryNichtVererbt`. AC-03 geprüft: `TestStoryWendepunkteBeispiel`, `TestStoryDeterministischUndOhneZustand`, `TestStorySpielstandByteGleich`; Golden unverändert. Lint 0, `task check:diff` grün. Commit 9217d90bd auf `sprint/gs1`. API: `WorldDef.StoryStart/StoryArrival/StoryBoss/StoryDefeated/StoryVictory`, `(*Island).Story*`, `StoryLimitsOf`. Offen: Doku-Blatt `docs/data/story.md` (GS1.6).

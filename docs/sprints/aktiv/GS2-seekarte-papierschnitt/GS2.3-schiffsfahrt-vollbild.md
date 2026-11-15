@@ -1,6 +1,6 @@
 # GS2.3 · Spiel: Schiffsfahrt im Vollbild beim Inselwechsel (B-977)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-04 geprüft: `game/voyage_test.go` (Start, Dauer 90 Takte, wartet aufs Laden, ignoriert Eingabe, Rückfall auf Ladebildschirm), `hud/voyage_test.go` (Position reine Funktion der Zeit, ohne Allokationen). `go test ./...`, Lint 0, `task check:diff` grün; k3c-hud: drei mittlere Befunde behoben. Commit c81cacec1. AC-05 (TV, 🧑) offen. Abweichungen: Simulation steht während der Fahrt; Fahrzeit 3,0 s als Konstante in `game/voyage.go` statt in `data/` (Folgepunkt für GS2.4).

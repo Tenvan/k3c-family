@@ -1,6 +1,6 @@
 # WE7.4 · Review WE7 und Abnahme-Ticket (Gen, Grafik-Golden)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-03 geprüft (Ergebnisse WE7.1 bis WE7.3, 14 Assets deckungsgleich mit der Basis); k3c-grafik über alle 14 ohne schwere Befunde, keine Korrektur, kein Commit. `gen:paper`, `vitest tools/paper` (411), `task check` (1805 Tests), `task check:diff` grün; Golden danach unverändert. AC-04: Abnahme-Ticket angelegt, Sichtprüfung 🧑 offen. Hinweise für WE8: Rig-Typ von Ninja und Skorpion weicht von der Basis Wolf ab; die 14 IDs haben bis B-996 keine Rolle in `data/paper.json`; Texturbudget 880 MiB gegen 580 MiB aus Entscheidung 008 ungeklärt.

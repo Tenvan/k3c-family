@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** RG2
 - **Projekt:** BAL
 - **Erstellt:** 2026-09-29

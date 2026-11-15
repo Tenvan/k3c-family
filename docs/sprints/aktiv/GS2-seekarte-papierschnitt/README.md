@@ -73,10 +73,10 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GS2.1 | `GS2.1-assets-seekarte.md` | Umsetzung | autonom | offen |
-| GS2.2 | `GS2.2-diorama-overlay.md` | Umsetzung | autonom | offen |
-| GS2.3 | `GS2.3-schiffsfahrt-vollbild.md` | Umsetzung | autonom | offen |
-| GS2.4 | `GS2.4-review.md` | Review | autonom | offen |
+| GS2.1 | `GS2.1-assets-seekarte.md` | Umsetzung | autonom | fertig |
+| GS2.2 | `GS2.2-diorama-overlay.md` | Umsetzung | autonom | fertig |
+| GS2.3 | `GS2.3-schiffsfahrt-vollbild.md` | Umsetzung | autonom | fertig |
+| GS2.4 | `GS2.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -84,6 +84,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-15, GS2.4 (Claude): AC-01 bis AC-04 belegt (Ergebnisse GS2.1 bis GS2.3, Fachprüfung k3c-grafik und k3c-hud), AC-05 offen bei 🧑 (TV).
+Behoben: Fahrt blieb aus, wenn der Hafen nicht in Stufe 0 lag; Schiff wechselte in der Streckenmitte die Zeichen-Reihe.
+Werte der Fahrt stehen in `data/native.json` › `voyage`; Tests für Ladefehler und Geräteverlust während der Fahrt ergänzt.
+Neue Tickets: B-1012 (Nachträge: Reihenfolge von completed, gehaltenes A nach der Fahrt, Stufen der alten Insel, Chunk-Grenzen).
+Abnahme-Ticket: B-1011 (Gen samt Grafik-Golden, check:race, Shot-Messung, TV-Abnahme 🧑).

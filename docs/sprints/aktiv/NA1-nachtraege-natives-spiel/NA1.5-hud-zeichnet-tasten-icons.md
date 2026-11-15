@@ -1,6 +1,6 @@
 # NA1.5 · HUD zeichnet die Tasten-Icons, gemalte Glyphe als Rückfall
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

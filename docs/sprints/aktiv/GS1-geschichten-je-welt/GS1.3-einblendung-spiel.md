@@ -1,6 +1,6 @@
 # GS1.3 · Spiel: Geschichtszeile je Spielerhälfte an den Wendepunkten (B-974)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -60,5 +60,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-04 geprüft: `hud/story_test.go` (`TestGeschichteWendepunkte` mit 2 Spielern, `TestGeschichteAblauf`, `TestGeschichteOhneEingabeUndAllokation`), `hud/story_fit_test.go`, `local/campaign_test.go`. `go test ./...`, Lint 0, `task check:diff` grün; k3c-hud: drei mittlere Befunde behoben. Commit bde38898f. AC-05 (TV, 🧑) offen. Abweichungen: Zeiten als Konstanten in `hud/story.go` statt `data/`; Hauptmenü wartet nach einem Sieg auf die Zeilen (höchstens 12 s, berührt SI6); `local` liest Insel und Abgeschlossene aus dem Spielstand; Ereignisse aus Stufen ohne Spieler fehlen.

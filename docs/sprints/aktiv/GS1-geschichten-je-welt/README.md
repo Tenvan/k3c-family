@@ -80,10 +80,10 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe (Einzelheiten in 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| GS1.1 | `GS1.1-regeltext-geschichte.md` | Umsetzung | autonom | offen |
-| GS1.2 | `GS1.2-story-format-engine.md` | Umsetzung | autonom | offen |
-| GS1.3 | `GS1.3-einblendung-spiel.md` | Umsetzung | autonom | offen |
-| GS1.4 | `GS1.4-welten-werkzeuge-story.md` | Umsetzung | autonom | offen |
+| GS1.1 | `GS1.1-regeltext-geschichte.md` | Umsetzung | autonom | fertig |
+| GS1.2 | `GS1.2-story-format-engine.md` | Umsetzung | autonom | fertig |
+| GS1.3 | `GS1.3-einblendung-spiel.md` | Umsetzung | autonom | fertig |
+| GS1.4 | `GS1.4-welten-werkzeuge-story.md` | Umsetzung | autonom | fertig |
 | GS1.5 | `GS1.5-geschichten-schreiben.md` | Umsetzung | autonom | offen |
 | GS1.6 | `GS1.6-review.md` | Review | autonom | offen |
 

@@ -65,11 +65,13 @@ Ein Leser von `wirtschaft.md` § 3 sieht 25 % der Kämpfer wie in `buerger.md` �
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RG2.1 | `RG2.1-regeltexte-angleichen.md` | Umsetzung | autonom | offen |
-| RG2.2 | `RG2.2-review.md` | Review | autonom | offen |
+| RG2.1 | `RG2.1-regeltexte-angleichen.md` | Umsetzung | autonom | fertig |
+| RG2.2 | `RG2.2-review.md` | Review | autonom | fertig |
 
 RG2.1 (REG, haiku) erfüllt AC-01 bis AC-04; RG2.2 (REG, sonnet) prüft alle, auch AC-05, gleicht das Glossar an und schließt ab. Kein Abnahme-Ticket: keine Sim, keine Grafik, keine Werte.
 
 ## Abnahme
 
-–
+2026-11-15 RG2.2 (Claude): AC-01 bis AC-05 mit grep und Datei:Zeile geprüft, alle erfüllt; Glossar angeglichen.
+`task check` grün (1802 Tests), `task check:diff` grün; kein Sim, Balance, Gen (Doku-Sprint), daher kein Abnahme-Ticket.
+B-185, B-219, B-295, B-024 erledigt. Offen bei 🧑: B-203 verwerfen (Kennzahl entfällt). Folgeticket: Anzeigename `craftsman` in `data/troops.json`.

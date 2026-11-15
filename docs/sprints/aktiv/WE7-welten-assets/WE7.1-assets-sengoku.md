@@ -1,6 +1,6 @@
 # WE7.1 · Assets Sengoku: Torii, Pagode, Ninja, Samurai, Samurai-Lager (B-988)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-03 geprüft: `objekte/torii`, `objekte/samurai-lager`, `gebaeude-paper/pagode`, `gegner/ninja`, `gegner/samurai` über `assets_*`, deckungsgleich mit den Basis-Assets; `gen:paper`, `vitest tools/paper` (409 Tests), `task check:diff` grün; Fachprüfung k3c-grafik, Befunde behoben. Commit 7858193b6. AC-04 (Sichtprüfung 🧑) offen. Abweichungen: Ninja ist Rig `figur` (Wolf: `vierbeiner`), schmaler als die Basis; Texturbudget +11 MiB.

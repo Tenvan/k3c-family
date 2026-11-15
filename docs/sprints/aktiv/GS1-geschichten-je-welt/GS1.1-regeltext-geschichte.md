@@ -1,6 +1,6 @@
 # GS1.1 · Regeltext: Geschichte in der Welt-Datei und Wendepunkte (B-965)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -55,5 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `docs/rules/welten.md` § 2, § 2.2, § 3, § 6.2, § 9 (Feld `story`, Prüfungen mit Meldungen, Wendepunkte). `task check:diff` grün. Commit f99dc3a00 auf `sprint/gs1`. Glossar (Abschlusszeile, Geschichte, Kunstsprache, Wendepunkt, Wortschatz) folgt im letzten Commit des Sprints. Festlegungen (vorläufig): Meldung mit Datei-Präfix, Länge in Zeichen, leere Liste abgelehnt, Etappen-Abschluss zählt ab Endboss-Sieg.

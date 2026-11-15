@@ -1,6 +1,6 @@
 # GS2.1 · Assets: Meer, Insel-Miniaturen, Schiff, Aufsätze, Zeichen (B-964)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: 13 Assets in Gruppe `objekte` (`seekarte-meer-*`, `seekarte-insel-<welt>`, `seekarte-schiff`, `seekarte-aufsatz-*`, `seekarte-zeichen-*`) über `assets_*`, Zuordnung `data/paper.json` › `seekarte`; `gen:paper` grün, Golden der Gruppe objekte grün, `task check:diff` grün, Fachprüfung k3c-grafik ohne schwere Befunde. Commit ceefe59e6 auf `sprint/gs2`. Abweichung: alles in `objekte` statt `hintergruende` (Tests lassen dort nur hg-*/weltbild-* zu). Sichtprüfung im Review der Workbench offen (🧑).

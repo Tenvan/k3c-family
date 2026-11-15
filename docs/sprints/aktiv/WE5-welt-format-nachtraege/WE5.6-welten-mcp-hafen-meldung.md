@@ -1,6 +1,6 @@
 # WE5.6 · Welten-MCP: Hafen im selben world_set, Ablehnung nennt erlaubte Dateien (B-985, B-986)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 geprüft: `TestSetAppendIslandWithHarborInOneCall`, `TestSetAppendWithoutHarborNamesIslandAndField`. AC-07 geprüft: `TestSetOverrideUnknownFileListsAllowedFiles`, `TestSetOverrideLockedAndUnknownFieldMessages`, `TestSetOverrideDeepPathUnderLockedField`, `TestOverrideFilesTextMatchesEngine`. Go-Tests, Lint 0, `task check:diff` grün; Review k3c-workbench, Befunde behoben. Commit 7c497ee35. Der Hafen im selben Aufruf ging schon, es fehlten Hinweis und Tests.

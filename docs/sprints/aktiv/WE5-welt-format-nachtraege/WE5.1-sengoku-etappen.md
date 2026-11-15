@@ -1,6 +1,6 @@
 # WE5.1 · Sengoku: Hafen auf Insel 3 und Etappen 1, 2, 2 (B-979)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -55,5 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft (2026-11-15): `world_chunks_set` Hafen (slot -7) auf island3 Tiefe 0, `world_set` Etappen 1, 2, 2; `world_check sengoku`: „Welt sengoku ist gültig“. Datei ist gitignored, kein Commit; Kopie ins Spielpaket beim nächsten `task build`. Sichtprüfung 🧑 über B-996.

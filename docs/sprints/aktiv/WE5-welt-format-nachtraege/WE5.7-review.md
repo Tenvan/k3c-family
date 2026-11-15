@@ -1,6 +1,6 @@
 # WE5.7 · Review WE5 und Abnahme-Ticket
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM

@@ -1,6 +1,6 @@
 # SI1.1 · Regeltext Laderaum und Fracht (B-967)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+AC-01 geprüft: `docs/rules/stufen.md` § 1 (Laderaum und Plätze, drei Ladeplätze, Ankunft, Ausnahmen) und `docs/rules/wirtschaft.md` § 8 (Abschnitt `hold`, Beutel, Kiste, Koop). `task check:diff` und `vitest tests/` grün. Commit fafd5cf06 auf `sprint/si1`. Festlegungen für SI1.2 (vorläufig): `data/ship.json` › `cargo` mit `slots` 6, `holdSlots` 4, `purseCoins` 10, `crateUnits` 20, `callCoins` 1 (neu, nicht im Ticket); Abschnitt `hold` optional (15 Münzen + 60 Holz + 20 Stein); Ereignis `cargoFull`; `IslandSaveVersion` hochzählen. Glossar (Laderaum, Ladeplatz, Fracht, Beutel, Kiste) im letzten Commit des Sprints.

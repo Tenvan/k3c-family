@@ -9,11 +9,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | eingeplant | RG2 | Tiefe 3 und 4 sind beschrieben |
-| [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | eingeplant | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
-| [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | eingeplant | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
-| [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | eingeplant | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
@@ -32,7 +28,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-899](B-899-abnahme-ch1.md) | CLI | Schuld | mittel | offen | CH1 | Abnahme CH1: Sichtprüfung der Entwickler-Tasten, Cheats, Debug-Werte und HUD-Icons und Gen-Läufe sind erledigt |
 | [B-891](B-891-biom-eigenschaften-je-welt.md) | SIM | Idee | mittel | offen | BI1 | Biome haben einstellbare Eigenschaften (Walddichte, Steindichte, Baumarten-Mischung), aus dem Seed gewürfelt oder im Welten-Editor fest gesetzt |
 | [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WZ60 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
-| [B-909](B-909-planungsdaten-schlank.md) | DEV | Schuld | mittel | eingeplant | WZ61 | Die Planungsseite lädt bei einer Änderung nur das Geänderte statt 5,5 MiB PlanningData |
 | [B-908](B-908-pages-bausatz.md) | PLAT | Idee | mittel | offen | GP1 | Die Präsentationsseite zeigt das Spiel als Bausatz: Einzelspieler und Couch-Koop, nativ, frei für nicht-kommerzielle Nutzung, eigene Welten mit dem MCP-Server |
 | [B-910](B-910-abnahme-bi2.md) | CLI | Idee | mittel | eingeplant | BI2 | Abnahme BI2: Biom-Darstellung ist gesichtet, Grafik gerendert und Golden geprüft |
 | [B-911](B-911-papierschnitt-tasten-icons.md) | PAP | Idee | mittel | eingeplant | NA1 | Tastenkappen und Xbox-Tasten gibt es als Papierschnitt-Icons der Gruppe icons |
@@ -76,8 +71,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-982](B-982-overrides-events.md) | SIM | Idee | mittel | eingeplant | WE5 | Eine Welt übersteuert die Events der Nacht über overrides › events |
 | [B-983](B-983-overrides-hub-sites.md) | SIM | Idee | mittel | eingeplant | WE5 | Eine Welt übersteuert die Plätze hub › sites und islandSites, der Level-Generator liest den Wertesatz der Welt |
 | [B-984](B-984-welt-skins-feld.md) | SIM | Idee | mittel | eingeplant | WE5 | Die Welt-Datei ordnet mit skins Gegnern und Objekten eigene Assets zu (Gegner-Varianten je Welt) |
-| [B-985](B-985-world-set-hafen-im-selben-aufruf.md) | DEV | Problem | mittel | eingeplant | WE5 | world_set hängt eine Insel an und setzt den Hafen der Insel davor im selben Aufruf |
-| [B-986](B-986-override-fehlermeldung-erlaubte-dateien.md) | DEV | Problem | mittel | eingeplant | WE5 | world_override_set nennt bei einer Ablehnung die erlaubten Dateien und gesperrten Felder |
 | [B-987](B-987-welten-editor-neue-felder.md) | DEV | Idee | mittel | eingeplant | WE6 | Welten-Editor und Welten-MCP bearbeiten Endboss, Skins, Events und Plätze einer Welt |
 | [B-988](B-988-assets-sengoku.md) | PAP | Idee | niedrig | eingeplant | WE7 | Sengoku bekommt die Assets Torii, Pagode, Ninja, Samurai und Samurai-Lager |
 | [B-989](B-989-assets-nil.md) | PAP | Idee | niedrig | eingeplant | WE7 | Nil bekommt die Assets Palme, Barke, Obelisk, Skorpion und Mumie |
@@ -99,6 +92,11 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1005](B-1005-lint-qf1001-licensefile.md) | CLI | Schuld | niedrig | eingeplant | NA1 | golangci-lint meldet in native/k3c-game/menu/licensefile kein QF1001 mehr |
 | [B-1006](B-1006-steg-gehaltenes-a-zahlt-nicht.md) | CLI | Problem | mittel | eingeplant | NA1 | Gehaltenes A am Steg zahlt nach der Zielwahl erst wieder nach dem Loslassen |
 | [B-1007](B-1007-bin-alte-exe-aufraeumen.md) | INF | Schuld | niedrig | eingeplant | WZ61 | task ops:aufraeumen räumt die EXE entfernter Programme aus bin/ ab |
+| [B-1008](B-1008-kronenraub-ueberlebt-laden-nicht.md) | SIM | Problem | hoch | offen | NA1 | Ein laufender Kronenraub bleibt nach Verlassen und Weiter bestehen |
+| [B-1009](B-1009-anzeigename-geselle-troops.md) | SIM | Schuld | niedrig | offen | RG2 | Der Beruf craftsman heißt in data/troops.json Geselle statt Handwerker |
+| [B-1010](B-1010-abnahme-we7-welten-assets.md) | PAP | Frage | mittel | offen | WE7 | Abnahme WE7: Welten-Assets sind gesichtet, Gen-Läufe und Texturbudget geprüft |
+| [B-1011](B-1011-abnahme-gs2-seekarte.md) | CLI | Frage | mittel | offen | GS2 | Abnahme GS2: Seekarte als Papierschnitt und Schiffsfahrt sind am TV gesichtet, Gen-Läufe geprüft |
+| [B-1012](B-1012-seekarte-nachtraege-review.md) | CLI | Schuld | mittel | offen | GS2 | Seekarten-Nachträge aus dem Review: Reihenfolge von completed abgesichert, gehaltenes A nach der Fahrt, Stufen der alten Insel im Wechsel-Frame |
 
 ## Archiv
 

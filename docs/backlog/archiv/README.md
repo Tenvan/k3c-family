@@ -865,3 +865,10 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-963](B-963-welten-editor-querschnitt-seekarte.md) | DEV | Idee | hoch | erledigt | WE4 | Welten-Editor zeigt alle Inseln als Querschnitt nach Etappen mit Seekarte zum Springen |
 | [B-924](B-924-k3c-sim-in-workbench.md) | DEV | Schuld | mittel | erledigt | WE1 | Die Workbench nutzt den k3c-sim-Code direkt statt über den Kindprozess |
 | [B-925](B-925-sim-aenderung-eigene-workbench.md) | DEV | Schuld | mittel | erledigt | WE1 | Änderungen am Sim-Code laufen im eigenen Worktree mit eigener Dev-Workbench auf eigenen Ports |
+| [B-185](B-185-verluste-je-welle-angleichen.md) | REG | Schuld | niedrig | erledigt | RG2 | Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger |
+| [B-219](B-219-doku-gating-und-schlag.md) | REG | Schuld | niedrig | erledigt | RG2 | Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen |
+| [B-295](B-295-handwerker-schmiede-ruestkammer.md) | REG | Frage | mittel | erledigt | RG2 | Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden |
+| [B-024](B-024-tiefe-3-4.md) | REG | Idee | niedrig | erledigt | RG2 | Tiefe 3 und 4 sind beschrieben |
+| [B-985](B-985-world-set-hafen-im-selben-aufruf.md) | DEV | Problem | mittel | erledigt | WE5 | world_set hängt eine Insel an und setzt den Hafen der Insel davor im selben Aufruf |
+| [B-986](B-986-override-fehlermeldung-erlaubte-dateien.md) | DEV | Problem | mittel | erledigt | WE5 | world_override_set nennt bei einer Ablehnung die erlaubten Dateien und gesperrten Felder |
+| [B-909](B-909-planungsdaten-schlank.md) | DEV | Schuld | mittel | erledigt | WZ61 | Die Planungsseite lädt bei einer Änderung nur das Geänderte statt 5,5 MiB PlanningData |

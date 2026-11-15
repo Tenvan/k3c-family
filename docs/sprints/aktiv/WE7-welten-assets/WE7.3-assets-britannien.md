@@ -1,6 +1,6 @@
 # WE7.3 · Assets Britannien: Steinkreis, Rundhaus, römischer Späher, Moorgeist (B-990)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-03 geprüft: `objekte/steinkreis` (Basis portal), `gebaeude-paper/rundhaus` (farm, 4 Stufen), `gegner/roemischer-spaeher` (goblin-bogenschuetze), `gegner/moorgeist` (grubengeist), deckungsgleich mit den Basis-Assets; `gen:paper`, `vitest tools/paper` (411 Tests), `task check:diff` grün; k3c-grafik ohne schwere oder mittlere Befunde. Commit 0cb0827f5. AC-04 (Sichtprüfung 🧑) offen. Annahme: Bauernhaus = `farm`; Portal hat nur `idle`, kein Zustand „zerstört“.
