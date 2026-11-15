@@ -12,7 +12,7 @@
 //
 //	Aktion (Flanke)    wasd          pfeile                     Gamepad
 //	↑ ↓ ← →            W S A D       Pfeile                     Steuerkreuz oder Stick (Wiederholung beim Halten)
-//	Bestätigen         Leertaste     Enter, Num-Enter           A
+//	Bestätigen         Leertaste, Enter, Num-Enter  Enter, Num-Enter           A
 //	Zurück             Esc           Esc, Rücktaste             B (im Spiel unbelegt, game wertet sie dort nicht aus)
 //	Menü               Esc           Esc, Rücktaste             Menu kurz (beim Loslassen, < 600 ms, ohne View)
 //	View               Tab           Tab                        View (beim Loslassen, ohne Menu)
@@ -23,6 +23,7 @@
 //
 // input unterscheidet Spiel und Menü nicht: Steuerkreuz ↓ (und ↓ im Profil pfeile) liefert ActionDown und
 // ActionSkillMenu zugleich; das Skill-Menü (Overlay) wertet ActionSkillMenu nur im Spiel aus, Menüs nehmen ActionDown.
+// In jedem Menü gelten zusätzlich menuKeys (Pfeile, Enter, Leertaste, Esc) unabhängig vom Profil (SetMenu, B-945).
 // Die übrigen Entwickler-Tasten F1 … F12 (view/devkeys.go) gelten unabhängig vom Profil.
 //
 // Pads ohne Standard-Belegung werden mit einer Meldung im Log ignoriert. Die Auswertung ist rein (Rohzustand →
@@ -76,7 +77,7 @@ var layouts = [Layouts]keyLayout{
 		actions: [actionCount][]ebiten.Key{
 			view.ActionUp: keys(ebiten.KeyW), view.ActionDown: keys(ebiten.KeyS),
 			view.ActionLeft: keys(ebiten.KeyA), view.ActionRight: keys(ebiten.KeyD),
-			view.ActionConfirm: keys(ebiten.KeySpace), view.ActionBack: keys(ebiten.KeyEscape),
+			view.ActionConfirm: keys(ebiten.KeySpace, ebiten.KeyEnter, ebiten.KeyNumpadEnter), view.ActionBack: keys(ebiten.KeyEscape),
 			view.ActionMenu: keys(ebiten.KeyEscape), view.ActionView: keys(ebiten.KeyTab),
 			view.ActionPrevPage: keys(ebiten.KeyQ), view.ActionNextPage: keys(ebiten.KeyE),
 			view.ActionHome: keys(ebiten.KeyHome), view.ActionSkillMenu: keys(ebiten.KeyK),
@@ -133,6 +134,14 @@ var padActions = [actionCount]ebiten.StandardGamepadButton{
 	view.ActionConfirm: padA, view.ActionBack: padB, view.ActionMenu: padMenu, view.ActionView: padView,
 	view.ActionPrevPage: padLB, view.ActionNextPage: padRB, view.ActionHome: -1,
 	view.ActionSkillMenu: padDown, view.ActionFullscreen: padRS, view.ActionCheats: padY,
+}
+
+// menuKeys sind die Tasten, die in jedem Menü zusätzlich zum Profil gelten (B-945): Pfeile, Enter, Leertaste, Esc.
+var menuKeys = [actionCount][]ebiten.Key{
+	view.ActionUp: keys(ebiten.KeyArrowUp), view.ActionDown: keys(ebiten.KeyArrowDown),
+	view.ActionLeft: keys(ebiten.KeyArrowLeft), view.ActionRight: keys(ebiten.KeyArrowRight),
+	view.ActionConfirm: keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter, ebiten.KeySpace),
+	view.ActionBack:    keys(ebiten.KeyEscape),
 }
 
 // usedKeys sind alle Tasten beider Profile (Ebitengine wird nur nach ihnen gefragt).

@@ -107,6 +107,13 @@ export interface WorldValuesView {
   error: string;
 }
 
+/** Antwort von „Welt anlegen“ (Go: world.CreateView): error nennt den Grund, warum nichts angelegt wurde. */
+export interface WorldCreateView {
+  id: string;
+  warnings: string[];
+  error: string;
+}
+
 /** Aufrufe des Welten-Editors (Go: app_world.go) */
 export interface WorldBackend {
   worldList(): Promise<WorldInfo[]>;
@@ -114,6 +121,8 @@ export interface WorldBackend {
   /** Level der Insel island in der Stufe stage (Index in ihren Tiefen) zum Seed; rechnet ohne Spielserver und ohne Simulation */
   worldLevel(id: string, island: string, stage: number, seed: string): Promise<WorldLevel>;
   worldValues(id: string): Promise<WorldValuesView>;
+  /** Neue Welt anlegen (data/worlds/<id>.json, eine Insel, Tiefen 0–4); extends leer = Basis. Eine vorhandene Welt wird nie überschrieben. */
+  worldCreate(id: string, name: string, extendsId: string): Promise<WorldCreateView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   /** Natur-Wert der Insel-Stufe festsetzen (key: Eigenschaft oder „gruppe.variante“); null setzt auf „aus Seed“ zurück. */

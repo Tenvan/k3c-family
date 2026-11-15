@@ -67,6 +67,11 @@ func (g *Game) loadLevels() {
 		g.fail(err)
 		return
 	}
+	g.setLevels(want)
+}
+
+// setLevels merkt die geladenen Level (sortiert).
+func (g *Game) setLevels(want map[string][]string) {
 	g.menuArt = false
 	g.levels = g.levels[:0]
 	for lv := range want {

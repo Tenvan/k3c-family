@@ -1,22 +1,23 @@
-# WI1 · SIM · Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne
+# WE3 · DEV · Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954)
 
 - **Status:** geplant
-- **Projekt:** WIR
-- **Domäne:** SIM
-- **Reife:** bereit
+- **Projekt:** WZG
+- **Domäne:** DEV
+- **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** freigegeben
+- **Spec:** Entwurf
 - **Revision:** 1
-- **Freigabe:** autonom, Claude
+- **Freigabe:** –
 
 ## Ausgangslage
 
-Hinweis 🧑 2026-11-15: Wirtschaft weicht vom Vorbild ab (Handwerker, Gold aus Holz, Truhen). Prio nach KS7 und FB4, für einen autonomen Lauf.
+Stand vor dem Sprint, kurz. Details stehen in den Tickets.
 
 ## Ziel
 
-Handwerker mit Hammer, Bogner-Shop, Gold beim Holzfällen, ergiebige Truhen mit Fontaine.
+Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
+in der CI oder im Terminal sieht.
 
 ## Beteiligte und Zielgruppen
 
@@ -51,20 +52,16 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Handwerker und Start-Handwerker (`B-950`).
-- **AC-02** Hämmer und Bogner (`B-951`).
-- **AC-03** Gold aus Holz, Gegner-Drop gesenkt (`B-952`).
-- **AC-04** Truhen ×10 mit Fontaine (`B-953`).
+- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
 
 ## Offene Fragen
 
-keine
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WI1.1 | `WI1.1-handwerker-gold.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

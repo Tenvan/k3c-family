@@ -47,10 +47,10 @@ func TestTileRect(t *testing.T) {
 	if r0.y+r0.h != float64(c.GroundY()) {
 		t.Errorf("Fuß bei %v, Boden-Linie %d", r0.y+r0.h, c.GroundY())
 	}
-	if r0.x+r0.w != r1.x || r0.x != math.Round(r0.x) {
+	if r0.x+r0.w != r1.x+tileOverlap || r0.x != math.Round(r0.x) {
 		t.Errorf("Naht: %v + %v ≠ %v", r0.x, r0.w, r1.x)
 	}
-	if math.Abs(r0.w-tileUnits*32) > 1 {
+	if math.Abs(r0.w-tileUnits*32) > 1+tileOverlap {
 		t.Errorf("Breite %v", r0.w)
 	}
 }
@@ -94,6 +94,25 @@ func TestLoadLooks(t *testing.T) {
 	for id := range biomeLayers {
 		if _, ok := pal[id]; !ok {
 			t.Errorf("Biom %s ohne Palette", id)
+		}
+	}
+}
+
+// B-947/AC-01: Bei jedem Maßstab und jeder Kameralage deckt die Kachel k bis mindestens zur linken Kante der Kachel k+1;
+// keine Lücke, auch mit Schicht-Faktoren und gebrochenen Maßstäben.
+func TestTilesHaveNoGap(t *testing.T) {
+	for _, scale := range []float64{17.3, 24, 28.8, 32, 37.5, 41.1, 64.7} {
+		for _, x := range []float64{0, 13.3, 77.77, -5.5, 1234.567} {
+			for _, factor := range []float64{0, 0.2, 0.35, 0.5, 1} {
+				c := layerCell(x)
+				c.Camera = view.NewCamera(c.Rect, x, scale)
+				for k := -3; k < 6; k++ {
+					a, b := tileX(c, factor, k), tileX(c, factor, k+1)
+					if a.x+a.w < b.x {
+						t.Fatalf("Lücke %v px: Maßstab %v, x %v, Faktor %v, Kachel %d", b.x-a.x-a.w, scale, x, factor, k)
+					}
+				}
+			}
 		}
 	}
 }

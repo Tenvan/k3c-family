@@ -65,9 +65,13 @@ func (w *World) drawLayer(dst *ebiten.Image, c view.Cell, wd *sim.World, lk *loo
 // rectF ist ein Rechteck in Fenster-px.
 type rectF struct{ x, y, w, h float64 }
 
+// tileOverlap ist die Überlappung einer Kachel mit ihrem rechten Nachbarn in Bildpunkten (B-947): Rundung und
+// Filterung des Rands lassen so nie eine Lücke zwischen zwei Kacheln.
+const tileOverlap = 1.0
+
 // tileRect liefert die Lage der Kachel k einer Schicht mit Scroll-Faktor factor: links bei Welt-x k·tileUnits auf der
 // Ebene, Fußpunkt (Anteil originX, originY des Frames) auf der Boden-Linie. Die Kanten liegen auf ganzen Bildpunkten,
-// so stoßen Nachbarn ohne Naht aneinander.
+// die rechte reicht tileOverlap Bildpunkte unter den Nachbarn: keine Lücke bei jedem Maßstab.
 func tileRect(c view.Cell, factor float64, k, fw, fh int, originX, originY, unitsPerPx float64) rectF {
 	s := c.Camera.Scale * unitsPerPx / framePerUnit
 	w, h := float64(fw)*s, float64(fh)*s
@@ -77,7 +81,7 @@ func tileRect(c view.Cell, factor float64, k, fw, fh int, originX, originY, unit
 	if math.Abs(x1-(x0+w)) < 1 { // Kachel so breit wie der Abstand: an die gerundete Nachbarkante legen
 		right = math.Round(x1)
 	}
-	return rectF{x: left, y: float64(c.GroundY()) - originY*h, w: right - left, h: h}
+	return rectF{x: left, y: float64(c.GroundY()) - originY*h, w: right - left + tileOverlap, h: h}
 }
 
 // stageOf liefert die Stufe der Zelle mit Welt, sonst nil.

@@ -2,23 +2,18 @@
 
 - **Zweck:** Monarch: Basiswerte, Angriff, Wiederbelebung, Skill-Punkte, Skills mit Wirkung und Linien-Presets.
 - **Gelesen von:** Simulation (`engine/sim/monarch_data.go`, `engine/sim/monarch_passives.go`), Raum (`engine/room/skills.go`)
-- **Wichtigste Werte:** `base.hp`, `base.speed`, `attack.damage`, `respawnSeconds`, `tierPoints`, `skills.fireball.cooldown`
+- **Wichtigste Werte:** `hitCoins`, `base.speed`, `attack.damage`, `tierPoints`, `skills.fireball.cooldown`
 - **Regeln:** `docs/rules/monarch.md`
 
 ## Aufbau
 
 | Pfad | Typ | Einheit | Bedeutung | Typische Werte |
 |---|---|---|---|---|
-| `base.hp` | Zahl | HP | Basis-HP des Monarchen | 100 |
+| `hitCoins` | Zahl | Münzen | Gold, das jeder Treffer kostet (kein HP mehr, KS3) | 1 |
 | `base.damage` | Zahl | Schaden | Basis-Schaden | 10 |
 | `base.speed` | Zahl | Units/s | Basis-Tempo | 5 |
-| `base.defense` | Zahl | Punkte | Basis-Rüstung | 5 |
 | `sprintMultiplier` | Zahl | Faktor | Tempo-Faktor beim Sprinten | 1,8 |
 | `acceleration` | Zahl | Units/s² | Beschleunigung | 8 |
-| `respawnSeconds` | Zahl | s | Wartezeit bis zur Wiederkehr nach dem Tod | 15 |
-| `revive.seconds` | Zahl | s | Dauer der Wiederbelebung durch einen Mitspieler | 3 |
-| `revive.hpFraction` | Zahl | Anteil | HP nach der Wiederbelebung | 0,5 |
-| `revive.rangeUnits` | Zahl | Units | Reichweite der Wiederbelebung | 2 |
 | `mount.speedFactor` | Zahl | Faktor | Tempo-Faktor des Reittiers | 1,0 |
 | `attack.damage` | Zahl | Schaden | Nahkampf-Schaden | 10 |
 | `attack.range` | Zahl | Units | Nahkampf-Reichweite | 1,5 |
@@ -38,11 +33,11 @@
 
 ## Wirkung auf das Balancing
 
-Monarch-HP, Schaden und Skill-Abklingzeiten stärken oder schwächen die Verteidigung, besonders in den ersten Nächten (Korridor `castleHeld`). Passive sind laut Datei vorläufig (`provisional: true`). Mehr Skill-Punkte beschleunigen Freischaltungen. Siehe `docs/rules/zielkorridore.md` § 1.
+Gold je Treffer, Schaden und Skill-Abklingzeiten stärken oder schwächen die Verteidigung, besonders in den ersten Nächten (Korridor `castleHeld`). Passive sind laut Datei vorläufig (`provisional: true`). Mehr Skill-Punkte beschleunigen Freischaltungen. Siehe `docs/rules/zielkorridore.md` § 1.
 
 ## Beispiele für Varianten
 
-- `monarch.json:base.hp=120` – robusterer Monarch.
-- `monarch.json:respawnSeconds=10` – schnellere Wiederkehr.
+- `monarch.json:hitCoins=2` – Treffer kosten doppelt so viel Gold.
+- `monarch.json:base.speed=6` – schnellerer Monarch.
 - `monarch.json:skills.fireball.cooldown=6` – Fireball häufiger.
 - `monarch.json:attack.damage=12` – stärkerer Nahkampf.

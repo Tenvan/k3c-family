@@ -72,7 +72,7 @@ func (e Editor) writeOverride(ctx context.Context, id, base string, path []strin
 	if err := e.call(ctx, map[string]any{"op": "check", "world": id, "draft": json.RawMessage(out)}, &check); err != nil {
 		return nil, err
 	}
-	return check.Warnings, writeAtomic(e.file(id), out)
+	return check.Warnings, writeChecked(e.file(id), raw, out)
 }
 
 // given: der Wert ist gesetzt (nicht leer, nicht null).

@@ -56,6 +56,7 @@
     }
   },
   "gebaeude": "gebaeude-paper",
+  "skalierung": { "objekte/tanne": 1.5, "objekte/pappel": 1.5, "objekte/birke": 1.5 },
   "hintergruende": { "gruppe": "hintergruende", "varianten": 2 },
   "objekte": {
     "ader-eisen": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },

@@ -121,4 +121,6 @@ type Source interface {
 // sie vor jedem Poll auf Settings.KeyboardProfile.
 type KeyboardSource interface {
 	SetKeyboard(profile string)
+	// SetMenu meldet, ob ein Menü offen ist: dann gelten Pfeile, Enter, Leertaste, Esc zusätzlich (B-945).
+	SetMenu(open bool)
 }

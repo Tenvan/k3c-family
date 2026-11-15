@@ -27,6 +27,7 @@ type source struct {
 	raw    []PadState
 	kb     tracker // Tastatur (ein Gerät, Belegung layout)
 	layout int     // Index in layouts (SetKeyboard)
+	menu   bool    // ein Menü ist offen: menuKeys gelten zusätzlich (SetMenu)
 	pads   []padSlot
 	warned []ebiten.GamepadID // Pads ohne Standard-Belegung, schon gemeldet
 	buf    []view.DeviceInput
@@ -42,6 +43,20 @@ func New(_ *art.Library) view.Source { return &source{} }
 func (s *source) SetKeyboard(p string) {
 	if l := Layout(p); l != s.layout {
 		s.layout, s.kb = l, tracker{}
+	}
+}
+
+// SetMenu meldet, ob ein Menü offen ist: dann gelten Pfeile, Enter, Leertaste und Esc unabhängig vom Profil (B-945).
+// Beim Wechsel Menü ↔ Spiel beginnen alle Geräte neu: gehaltene Menü-Tasten lösen nichts aus und gehaltenes Zahlen oder
+// Schlagen zählt erst nach dem Loslassen (sonst bestätigt Enter im Menü und zahlt danach im Spiel).
+func (s *source) SetMenu(open bool) {
+	if open == s.menu {
+		return
+	}
+	s.menu = open
+	s.kb = tracker{quiet: true}
+	for i := range s.pads {
+		s.pads[i].t = tracker{quiet: true}
 	}
 }
 
@@ -80,7 +95,13 @@ func (s *source) poll(k *KeyState, pads []PadState) view.Input {
 	s.n = 0
 	kb := s.slot(view.DeviceID{Kind: view.DeviceKeyboard})
 	kb.Command = keyCommand(s.layout, k)
+	s.kb.mute(&kb.Command)
 	held := keyHeld(s.layout, k)
+	if s.menu {
+		for a, ks := range menuKeys {
+			held[a] = held[a] || anyKey(k, ks)
+		}
+	}
 	kb.Actions = s.kb.step(&held, false, kb.Actions)
 	slices.SortFunc(pads, func(a, b PadState) int { return cmp.Compare(a.ID, b.ID) })
 	s.forget(pads)
@@ -93,6 +114,7 @@ func (s *source) poll(k *KeyState, pads []PadState) view.Input {
 		t := s.tracker(p.ID)
 		di := s.slot(view.DeviceID{Kind: view.DeviceGamepad, Index: int(p.ID)})
 		di.Command = t.padCommand(p)
+		t.mute(&di.Command)
 		held := t.padHeld(p)
 		di.Actions = t.step(&held, true, di.Actions)
 	}

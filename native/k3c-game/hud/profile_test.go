@@ -29,7 +29,7 @@ func TestProfileSwitchChangesHints(t *testing.T) {
 	if got := h.seats[1].menuV.footer; got != "◄ ► wählen · A bestätigen · B schließen" {
 		t.Errorf("Pad bleibt: %q", got)
 	}
-	if !strings.Contains(h.joinS, "Enter drücken") {
+	if strings.Contains(h.joinS, "Leertaste") || !strings.Contains(h.joinS, "Enter") {
 		t.Errorf("Beitritt im Profil pfeile: %q", h.joinS)
 	}
 }

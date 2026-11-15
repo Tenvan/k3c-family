@@ -48,6 +48,9 @@ type Game struct {
 	// Ladeanzeige (loading.go): loading = Stufenwechsel wartet auf das Laden, shown = Draw hat die Anzeige gezeichnet.
 	loading, shown bool
 	loadMsg        *notice
+	loadScr        loadScreen          // Ladebild im Papierschnitt-Stil (loadscreen.go)
+	lload          *art.LevelLoad      // laufendes schrittweises Laden (loading.go), sonst nil
+	stepWant       map[string][]string // die Level dieses Ladens
 	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
 	dev            view.DevView          // Entwickler-Anzeigen (F1, F10), kommt in jeden Frame
 	shotNext       bool                  // F12: das nächste Bild nach reports/ schreiben (devshot.go)
@@ -197,6 +200,7 @@ func (g *Game) advance() {
 	}
 	if k, ok := g.src.(view.KeyboardSource); ok { // Belegung der Tastatur nach Eingabe-Profil (B-893)
 		k.SetKeyboard(g.frame.Settings.KeyboardProfile())
+		k.SetMenu(g.stack.Top() != nil)
 	}
 	in := g.src.Poll()
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)

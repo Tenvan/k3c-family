@@ -88,3 +88,34 @@ func TestLoadingWithoutArt(t *testing.T) {
 		t.Error("lädt ohne Bibliothek")
 	}
 }
+
+// B-949: Das Ladebild zeigt ganze Prozent, begrenzt auf 0 … 100.
+func TestLoadPercent(t *testing.T) {
+	for p, want := range map[float64]int{-1: 0, 0: 0, 0.334: 33, 0.5: 50, 1: 100, 3: 100} {
+		if got := percent(p); got != want {
+			t.Errorf("percent(%v) = %d, erwartet %d", p, got, want)
+		}
+	}
+	var s loadScreen
+	if s.draw(nil, nil, 0.5) {
+		t.Error("ohne Bibliothek gezeichnet: die Meldung muss einspringen")
+	}
+}
+
+// Review FB4: Wechseln die Stufen während des schrittweisen Ladens (drittes Level), gilt das laufende Laden als veraltet.
+func TestStaleLoad(t *testing.T) {
+	want := map[string][]string{"wald": nil}
+	cases := []struct {
+		name string
+		st   []view.Stage
+		want bool
+	}{
+		{"gleich", stages("wald"), false}, {"drittes Level", stages("mine"), true},
+		{"zusätzliches Level", stages("wald", "mine"), true}, {"keine Stufen", nil, true},
+	}
+	for _, c := range cases {
+		if got := staleLoad(want, c.st); got != c.want {
+			t.Errorf("%s: %v", c.name, got)
+		}
+	}
+}

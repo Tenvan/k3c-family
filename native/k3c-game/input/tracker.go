@@ -41,6 +41,7 @@ const (
 // tracker ist der Zustand eines Geräts über die Updates.
 type tracker struct {
 	started bool
+	quiet   bool // Zahlen und Schlagen ohne Wirkung, bis beide losgelassen sind (nach einem Wechsel Menü ↔ Spiel)
 	prev    [actionCount]bool
 	hold    [actionCount]int  // Updates in Folge gehalten, einschließlich des aktuellen
 	ignore  [actionCount]bool // beim ersten Update schon gehalten: ohne Wirkung bis zum Loslassen
@@ -80,6 +81,18 @@ func (t *tracker) stickNav(x, y float64) {
 		}
 		t.nav[i] = hysteresis(t.nav[i], v, navOn, navOff)
 	}
+}
+
+// mute nimmt Zahlen und Schlagen aus c, solange sie seit dem Wechsel Menü ↔ Spiel gehalten sind.
+func (t *tracker) mute(c *view.Command) {
+	if !t.quiet {
+		return
+	}
+	if !c.Pay && !c.Attack {
+		t.quiet = false
+		return
+	}
+	c.Pay, c.Attack = false, false
 }
 
 // padCommand liefert den Befehl eines Gamepads; das Steuerkreuz geht vor dem Stick, beide zugleich heben sich auf.

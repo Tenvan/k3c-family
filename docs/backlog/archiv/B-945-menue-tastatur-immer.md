@@ -1,10 +1,10 @@
-# B-946 · Der Hinweis „Leertaste zum Betreten“ wird nicht mehr angezeigt
+# B-945 · In Menüs funktioniert immer auch die normale Tastatursteuerung
 
 - **Domäne:** CLI
 - **Typ:** Problem
-- **Prio:** niedrig
+- **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** FB4
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-15
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Live-Test 🧑 2026-11-15: Der Hinweistext „Leertaste zum Betreten“ stört.
+Live-Test 🧑 2026-11-15: In Menüs gilt die Spiel-Steuerung des Profils statt der gewohnten Tastatur.
 
 ## Ziel
 
-Der Hinweis wird nicht mehr angezeigt.
+In jedem Menü funktionieren zusätzlich immer Pfeiltasten, Enter, Leertaste und Esc (zurück), unabhängig vom Eingabe-Profil.
 
 ## Beteiligte und Zielgruppen
 
@@ -36,7 +36,7 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/hud/**`
+- **Bereich:** `native/k3c-game/input/**`, `native/k3c-game/menu/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** –
 - **Größe:** S
@@ -52,7 +52,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Hinweis entfernt bzw. abgeschaltet (Test).
+- **AC-01** Test: in jedem Profil navigieren Pfeile, bestätigen Enter/Leertaste, Esc geht zurück.
 
 ## Offene Fragen
 
