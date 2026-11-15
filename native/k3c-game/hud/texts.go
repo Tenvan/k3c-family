@@ -11,8 +11,7 @@ import (
 )
 
 var textsDE = map[string]string{
-	"hud.join.pad": "A drücken zum Beitreten", "hud.join.keyboard": "Leertaste drücken zum Beitreten",
-	"hud.join.keyboard2": "Enter drücken zum Beitreten",
+	"hud.join.pad": "A drücken zum Beitreten", "hud.join.keyboard": "Enter drücken zum Beitreten",
 	"hud.travelUp":       "Aufstieg in Tiefe {depth}", "hud.travelDown": "Abstieg in Tiefe {depth}",
 	"hud.skillPoints": "Skill-Punkte {n}", "hud.wave": "Welle {wave}: {n} Gegner",
 	"hud.downShort": "{s} s", "hud.place": "P{p} · {stage}",
@@ -64,7 +63,7 @@ var textsDE = map[string]string{
 }
 
 var textsEN = map[string]string{
-	"hud.join.pad": "Press A to join", "hud.join.keyboard": "Press Space to join", "hud.join.keyboard2": "Press Enter to join",
+	"hud.join.pad": "Press A to join", "hud.join.keyboard": "Press Enter to join",
 	"hud.travelUp": "Going up to depth {depth}", "hud.travelDown": "Going down to depth {depth}",
 	"hud.skillPoints": "Skill points {n}", "hud.wave": "Wave {wave}: {n} enemies",
 	"hud.downShort": "{s} s", "hud.place": "P{p} · {stage}",

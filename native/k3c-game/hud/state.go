@@ -75,7 +75,7 @@ func (h *hud) Listen(f *view.Frame) {
 	h.paint.outline.Sweep()
 	h.lang = view.Settings{Language: f.Settings.Language}.Normalized().Language
 	h.cells = min(len(f.Seats), view.MaxPlayers) // Pause zeigt das Pause-Menü (menu), kein eigenes Band
-	h.joinS = h.mJoin.get(newJoinKey(h.lang, f.Settings.KeyboardProfile(), f.Unseated), joinFromKey)
+	h.joinS = h.mJoin.get(newJoinKey(h.lang, f.Unseated), joinFromKey)
 	h.guide, h.seen = !f.Settings.GuideOff, guideSeen(f.Settings.GuideSeen)|h.pending
 	h.cues(f)
 	var seen [view.MaxPlayers]bool

@@ -78,3 +78,59 @@ func TestSpaceTriggersInEveryProfile(t *testing.T) {
 		}
 	}
 }
+
+// B-945/AC-01: Im Menü gelten in jedem Profil Pfeile, Enter, Leertaste und Esc; außerhalb eines Menüs gilt nur das Profil.
+func TestMenuKeysInEveryProfile(t *testing.T) {
+	cases := []struct {
+		key ebiten.Key
+		act view.Action
+	}{
+		{ebiten.KeyArrowUp, view.ActionUp}, {ebiten.KeyArrowDown, view.ActionDown},
+		{ebiten.KeyArrowLeft, view.ActionLeft}, {ebiten.KeyArrowRight, view.ActionRight},
+		{ebiten.KeyEnter, view.ActionConfirm}, {ebiten.KeySpace, view.ActionConfirm}, {ebiten.KeyEscape, view.ActionBack},
+	}
+	for _, p := range []string{view.ProfileWASD, view.ProfileArrows} {
+		for _, c := range cases {
+			s := &source{}
+			s.SetKeyboard(p)
+			s.SetMenu(true)
+			s.poll(keyState(), nil)
+			in := s.poll(keyState(c.key), nil)
+			if di, _ := in.Of(keys1); !slices.Contains(di.Actions, c.act) {
+				t.Errorf("%s: Taste %v löst %d im Menü nicht aus: %v", p, c.key, c.act, di.Actions)
+			}
+		}
+	}
+	s := &source{}
+	s.poll(keyState(), nil)
+	if in := s.poll(keyState(ebiten.KeyArrowUp), nil); len(in.Devices[0].Actions) != 0 {
+		t.Error("Pfeil hoch wirkt im Profil wasd außerhalb eines Menüs")
+	}
+}
+
+// Review FB4: Beim Wechsel Menü ↔ Spiel mit gehaltener Taste (Profil pfeile) löst weder das Menü aus noch zahlt das Spiel,
+// bis die Taste losgelassen ist.
+func TestMenuSwitchIgnoresHeldKey(t *testing.T) {
+	s := &source{}
+	s.SetKeyboard(view.ProfileArrows)
+	s.poll(keyState(), nil)
+	s.SetMenu(true) // Menü öffnet, Enter noch gehalten
+	in := s.poll(keyState(ebiten.KeyEnter), nil)
+	if di, _ := in.Of(keys1); len(di.Actions) != 0 {
+		t.Errorf("gehaltenes Enter bestätigt im ersten Menü-Frame: %v", di.Actions)
+	}
+	s.poll(keyState(), nil)
+	if in = s.poll(keyState(ebiten.KeyEnter), nil); !slices.Contains(in.Devices[0].Actions, view.ActionConfirm) {
+		t.Error("frisches Enter bestätigt im Menü nicht")
+	}
+	s.SetMenu(false) // Menü schließt, Enter noch gehalten
+	for range 2 {
+		if in = s.poll(keyState(ebiten.KeyEnter), nil); in.Devices[0].Command.Pay {
+			t.Fatal("gehaltenes Enter zahlt nach dem Schließen")
+		}
+	}
+	s.poll(keyState(), nil)
+	if in = s.poll(keyState(ebiten.KeyEnter), nil); !in.Devices[0].Command.Pay {
+		t.Error("frisches Enter zahlt nicht")
+	}
+}
