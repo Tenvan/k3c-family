@@ -30,6 +30,8 @@ export interface WorldIsland {
   biomes: string[];
   plannedChunks: Record<string, PlannedChunk[]>;
   chunkCounts: Record<string, number>;
+  /** Etappe der Insel (B-963); fehlt sie, gilt Listenplatz + 1 */
+  etappe?: number;
 }
 
 /** Welt mit Kopf und Inseln; error nennt, warum sie nicht lesbar ist (Go: world.Detail) */

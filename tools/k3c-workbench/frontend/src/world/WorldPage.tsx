@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Badge, Box, Flex, Heading, SelectField, Text } from '@webkit/atoms';
 import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
@@ -6,6 +6,7 @@ import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
 import { NatureValues } from './NatureValues';
 import { NewWorld } from './NewWorld';
+import { Overview } from './Overview';
 import { WorldValues } from './WorldValues';
 import { useWorld, type StageChoice, type WorldState } from './useWorld';
 
@@ -71,11 +72,17 @@ export function WorldPage() {
   const w = useWorld();
   const [chunk, setChunk] = useState<number | null>(null);
   const [scale, setScale] = useState<Scale>('2');
+  const editor = useRef<HTMLDivElement>(null);
   useEffect(() => setChunk(null), [w.id, w.stage]);
   return (
     <ListDetail listWidth={240} className="wd-page" list={<WorldList worlds={w.worlds} id={w.id} onChoose={w.choose} onCreate={w.create} />}>
       <Flex direction="column" gap="3">
         <WorldHead w={w} />
+        {w.detail && w.detail.islands.length > 0 && (
+          <Overview detail={w.detail} seed={w.model?.seed ?? w.seed} choice={w.stage}
+            onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }} />
+        )}
+        <div ref={editor} className="wd-editor" />
         <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}
           selected={chunk} onChunk={setChunk} />
         <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
