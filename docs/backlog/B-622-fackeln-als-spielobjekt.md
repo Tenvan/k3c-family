@@ -8,9 +8,9 @@
 - **Sprint:** W15
 - **Projekt:** WRT
 - **Erstellt:** 2026-10-25
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

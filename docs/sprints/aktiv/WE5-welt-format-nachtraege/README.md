@@ -1,14 +1,14 @@
 # WE5 · SIM, DEV · Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** SIM, DEV
 - **Reife:** bereit
 - **Tickets:** B-979, B-981, B-982, B-983, B-984, B-985, B-986
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

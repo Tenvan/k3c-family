@@ -1,14 +1,14 @@
 # SI3 · REG, SIM, PAP, CLI · Wetter je Welt: Regel, Engine, Assets, Anzeige
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** REG, SIM, PAP, CLI
 - **Reife:** bereit
 - **Tickets:** B-969, B-999
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

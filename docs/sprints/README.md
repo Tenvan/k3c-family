@@ -15,6 +15,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | FB2 | SIM | NAT | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | – | `aktiv/FB2-feedback-sim/` |
 | WG2 | CLI | NAT | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | – | `aktiv/WG2-weltbilder-anzeige/` |
 | FB4 | CLI | NAT | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | – | `aktiv/FB4-live-test-2/` |
+| NA1 | CLI, PAP | NAT | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | – | `aktiv/NA1-nachtraege-natives-spiel/` |
 | KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
 | KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | `aktiv/KS2-portale-ausruestung/` |
 | KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
@@ -28,9 +29,21 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
 | WE4 | SIM, CLI, DEV | WZG | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | – | `aktiv/WE4-etappen-seekarte/` |
+| GS1 | REG, SIM, CLI, DEV | WZG | Geschichten je Welt und Insel in Kunstsprache | – | `aktiv/GS1-geschichten-je-welt/` |
+| GS2 | PAP, CLI | WZG | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | – | `aktiv/GS2-seekarte-papierschnitt/` |
+| WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
+| WE5 | SIM, DEV | WZG | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | – | `aktiv/WE5-welt-format-nachtraege/` |
+| WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
+| SI2 | REG, PAP, SIM, CLI | KMP | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | – | `aktiv/SI2-doppel-truhe-koop/` |
+| SI3 | REG, SIM, PAP, CLI | KMP | Wetter je Welt: Regel, Engine, Assets, Anzeige | – | `aktiv/SI3-wetter-je-welt/` |
+| SI4 | REG, PAP, SIM, CLI | KMP | Reittiere je Welt: Regel, Assets, Engine, Anzeige | – | `aktiv/SI4-reittiere-je-welt/` |
+| SI5 | REG, SIM, PAP, CLI | KMP | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | – | `aktiv/SI5-einsiedler-bauwerk/` |
+| SI6 | REG, PAP, SIM, CLI | KMP | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | – | `aktiv/SI6-fest-nach-dem-sieg/` |
+| SI1 | REG, SIM, PAP, CLI | KMP | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | – | `aktiv/SI1-fracht-auf-dem-schiff/` |
+| RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 
 ## Offen am Gerät
@@ -39,30 +52,19 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 ### PC
 
+- NA1.8 · Abnahme am PC: Tasten-Icons im HUD (Sprint NA1, offen, Agent Mensch)
 - W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
+- WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
 
 ## Geplant (nach Projekt-Rang)
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| NA1 | CLI, PAP | NAT | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | – | bereit | `geplant/NA1-nachtraege-natives-spiel/` |
-| GS1 | REG, SIM, CLI, DEV | WZG | Geschichten je Welt und Insel in Kunstsprache | – | bereit | `geplant/GS1-geschichten-je-welt/` |
-| GS2 | PAP, CLI | WZG | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | – | bereit | `geplant/GS2-seekarte-papierschnitt/` |
-| WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | bereit | `geplant/WE7-welten-assets/` |
 | GS3 | SIM, PAP, CLI, SRV | WZG | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | – | bereit | `geplant/GS3-andenken-chronik/` |
 | GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | bereit | `geplant/GS4-flaschenpost/` |
-| WE5 | SIM, DEV | WZG | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | – | bereit | `geplant/WE5-welt-format-nachtraege/` |
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
-| WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | bereit | `geplant/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
-| SI2 | REG, PAP, SIM, CLI | KMP | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | – | bereit | `geplant/SI2-doppel-truhe-koop/` |
-| SI3 | REG, SIM, PAP, CLI | KMP | Wetter je Welt: Regel, Engine, Assets, Anzeige | – | bereit | `geplant/SI3-wetter-je-welt/` |
-| SI4 | REG, PAP, SIM, CLI | KMP | Reittiere je Welt: Regel, Assets, Engine, Anzeige | – | bereit | `geplant/SI4-reittiere-je-welt/` |
-| SI5 | REG, SIM, PAP, CLI | KMP | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | – | bereit | `geplant/SI5-einsiedler-bauwerk/` |
-| SI6 | REG, PAP, SIM, CLI | KMP | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | – | bereit | `geplant/SI6-fest-nach-dem-sieg/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| SI1 | REG, SIM, PAP, CLI | KMP | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | – | bereit | `geplant/SI1-fracht-auf-dem-schiff/` |
-| RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | bereit | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

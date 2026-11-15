@@ -1,14 +1,14 @@
 # RG2 · REG · Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** BAL
 - **Domäne:** REG
 - **Reife:** bereit
 - **Tickets:** B-295, B-185, B-203, B-219, B-024
 - **Start-Commit:** –
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 2
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

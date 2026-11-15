@@ -1,14 +1,14 @@
 # WZ61 · DEV, INF · Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV, INF
 - **Reife:** bereit
 - **Tickets:** B-909, B-1007
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

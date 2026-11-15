@@ -8,9 +8,9 @@
 - **Sprint:** RG2
 - **Projekt:** BAL
 - **Erstellt:** 2026-10-03
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 
