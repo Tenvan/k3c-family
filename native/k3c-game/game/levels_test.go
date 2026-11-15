@@ -81,7 +81,7 @@ func TestLoadLevels(t *testing.T) {
 	g.frame.Stages = nil
 	g.loadLevels()
 	g.loadLevels()
-	if len(ld.calls) != 2 || !slices.Equal(ld.calls[1][menuLevel], menu.Art()) || len(ld.calls[1]) != 1 || len(g.levels) != 0 {
+	if len(ld.calls) != 2 || !slices.Equal(ld.calls[1][menuLevel], menu.Art(nil)) || len(ld.calls[1]) != 1 || len(g.levels) != 0 {
 		t.Errorf("ins Menü (nur Illustrationen, einmal, B-818): Aufrufe %v", ld.calls)
 	}
 	ld.fail = errors.New("fehlende Grafik")

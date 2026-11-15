@@ -854,3 +854,10 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-958](B-958-welt-polar.md) | DEV | Idee | niedrig | verworfen | WE3 | Welt Polar 1900: Expedition auf Eisschollen mit knappem Holz |
 | [B-945](B-945-menue-tastatur-immer.md) | CLI | Problem | mittel | erledigt | FB4 | In Menüs funktioniert immer auch die normale Tastatursteuerung |
 | [B-946](B-946-hinweis-leertaste-betreten-weg.md) | CLI | Problem | niedrig | erledigt | FB4 | Der Hinweis „Leertaste zum Betreten“ wird nicht mehr angezeigt |
+| [B-955](B-955-welt-sengoku.md) | DEV | Idee | niedrig | erledigt | WE3 | Welt Sengoku: Japan der Kriegerzeit mit Burgen, Reisfeldern und Ninja-Überfällen |
+| [B-956](B-956-welt-nil.md) | DEV | Idee | niedrig | erledigt | WE3 | Welt Nil: Ägypten mit Oasen-Inseln, Nilbarke und Sandstürmen |
+| [B-957](B-957-welt-britannien.md) | DEV | Idee | niedrig | erledigt | WE3 | Welt Britannien: Kelten mit Steinkreisen, Mooren und Druiden |
+| [B-954](B-954-welten-mcp-tools.md) | DEV | Problem | mittel | erledigt | WE2 | Der Welten-Editor hat MCP-Tools und kann neue Welten anlegen |
+| [B-950](B-950-handwerker-hammer.md) | SIM | Problem | mittel | erledigt | WI1 | Nur Handwerker mit Hammer bauen; jedes Spiel startet mit mindestens einem Handwerker |
+| [B-951](B-951-bogner-shop.md) | SIM | Problem | mittel | erledigt | WI1 | Der Handwerkerbedarf stellt Hämmer her, ein neuer Bogner stellt Bögen her |
+| [B-952](B-952-gold-holzfaellen.md) | SIM | Problem | mittel | erledigt | WI1 | Holzfällen bringt 1 bis 3 Gold und ist am Anfang die Haupteinnahme |

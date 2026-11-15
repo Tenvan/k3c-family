@@ -448,5 +448,53 @@
     "dateien": {
       "stand.png": "fe0944c1f27b6f8ecb7958d0bca70cd903acf564e4434b81e93bec8077dc002d"
     }
+  },
+  "weltbild-britannien-klein": {
+    "renderKey": "dbc5995d1e08a8f7d7242c5edf7b019f9ba70d837669ed8110cb921feff520bb",
+    "dateien": {
+      "stand.png": "7b0f60a06badf4ed836bf146b96ce923ea6c2daa2e07a469b210a9a115accf4f"
+    }
+  },
+  "weltbild-britannien": {
+    "renderKey": "64a9e1071b4c38232cc2220b7c16aa6d7b50ba1884a49fe7930b4d46ad447f6a",
+    "dateien": {
+      "stand.png": "604b39229d2d0d50a167ecdc3b0ae05c79178844ce0ef0da05f96580e9f6f3a0"
+    }
+  },
+  "weltbild-nil-klein": {
+    "renderKey": "48bf9f5dca42062b6e9fb7d97ee41c3bb2c0428ade308ec048838bb4d4ed4a7c",
+    "dateien": {
+      "stand.png": "2d8831507711bdc3c574ccc4b63b1c2d6988ae8eb7fc697ea48f8f9b3bdf051c"
+    }
+  },
+  "weltbild-nil": {
+    "renderKey": "d6bc6e0db0161be10302e03e2b4ee6304bec4c4f9c10ecf1940be0e2023af944",
+    "dateien": {
+      "stand.png": "fcb39b6311d4f96fa47a0189a18aa28311a042aa2302a39b56dd8daae49be074"
+    }
+  },
+  "weltbild-sengoku-klein": {
+    "renderKey": "d74a866c09d0751053404d22877195c16b30ee299e46a2ec4011c9cccc54b616",
+    "dateien": {
+      "stand.png": "ac5a6812a1a535fc4d9c7366932ed88855c2934ee3570a0395f78390bc11d5b0"
+    }
+  },
+  "weltbild-sengoku": {
+    "renderKey": "ba0a7a08250c987e2089c1daae1aaf58950b68c8722c79a7e3c5d1e36aafe418",
+    "dateien": {
+      "stand.png": "f492b5fe70ca6eaafb1f0689238145ef11aee7855862833347586cada89d991f"
+    }
+  },
+  "weltbild-standard-klein": {
+    "renderKey": "a16ec86cbdd34e369f5df5cd1889905766ebc8b3419da85df23b3dbeda17a844",
+    "dateien": {
+      "stand.png": "6bcf3f989b9e42ef3ea017a80d2c6d8d8d211173e3e20cbd0cf29905360f33a0"
+    }
+  },
+  "weltbild-standard": {
+    "renderKey": "d388be46a823bf78ef45a9346008c2b4bdad79e521f6fa16e6628c9933a5f689",
+    "dateien": {
+      "stand.png": "a9d05859f088399eb65eb19dd4c8cdec43e354681003afddd6059134c2eca168"
+    }
   }
 }

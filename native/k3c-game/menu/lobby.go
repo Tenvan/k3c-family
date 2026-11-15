@@ -38,9 +38,8 @@ var (
 	goalTexts    = []textKey{txtGoalEndboss, txtGoalGold, txtGoalDays, txtGoalMineAll, txtGoalBuildAll}
 	defeats      = []string{"resources", "stage"}
 	defeatTexts  = []textKey{txtDefeatResources, txtDefeatStage}
-	worlds       = []string{sim.StandardWorldID} // weitere Welten nur im Dev-Mode (docs/rules/welten.md § 6)
 	lobbyLabels  = [lobbyRows]textKey{txtGrade, txtGoal, txtDefeat, txtWorld, txtSeed, txtStart, txtCancel}
-	lobbyChoices = [lobbySeed]int{len(grades), len(goals), len(defeats), len(worlds)}
+	lobbyChoices = [lobbySeed]int{len(grades), len(goals), len(defeats), 1} // die Welt wählt vorher worldPickScreen (B-938)
 )
 
 // lobbyScreen ist die Lobby eines neuen Spiels.
@@ -50,7 +49,8 @@ type lobbyScreen struct {
 	devs      [view.MaxPlayers]view.DeviceID
 	n         int
 	row       int
-	pick      [lobbySeed]int // gewählter Index je Wahl-Zeile (Grad, Ziel, Niederlage, Welt)
+	pick      [lobbySeed]int // gewählter Index je Wahl-Zeile (Grad, Ziel, Niederlage; Welt immer 0)
+	world     string         // Welt-ID aus der Weltauswahl
 	seed      int
 	defeatSet bool
 	pg        page
@@ -58,7 +58,7 @@ type lobbyScreen struct {
 
 // newLobby öffnet die Lobby mit dem Gerät d als Spieler 1 und den Standards (Normal, Endboss, Standard-Welt).
 func newLobby(m *menus, d view.DeviceID) *lobbyScreen {
-	sc := &lobbyScreen{m: m, n: 1}
+	sc := &lobbyScreen{m: m, n: 1, world: sim.StandardWorldID}
 	sc.devs[0] = d
 	sc.pick[lobbyGrade] = slices.Index(grades, "normal")
 	sc.pick[lobbyDefeat] = defaultDefeat(grades[sc.pick[lobbyGrade]])
@@ -185,7 +185,7 @@ func (sc *lobbyScreen) newGame() view.NewGame {
 		Grade:   grades[sc.pick[lobbyGrade]],
 		Goal:    goals[sc.pick[lobbyGoal]],
 		Defeat:  defeats[sc.pick[lobbyDefeat]],
-		World:   worlds[sc.pick[lobbyWorld]],
+		World:   sc.world,
 		Devices: slices.Clone(sc.devs[:sc.n]),
 	}
 	if sc.seed > 0 {
@@ -261,7 +261,7 @@ func (sc *lobbyScreen) valueText(lang string, r int) string {
 	case lobbyDefeat:
 		return tr(lang, defeatTexts[sc.pick[r]])
 	case lobbyWorld:
-		return worlds[sc.pick[r]]
+		return sc.world
 	}
 	if sc.seed == 0 {
 		return tr(lang, txtSeedAuto)

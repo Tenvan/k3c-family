@@ -1,0 +1,155 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-sengoku-klein",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Vorschau des Weltbilds Sengoku (B-937): Berg, Bergfestung, Reisterrassen, Kirschblüte, rote Sonne, vereinfacht",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [410, -210],
+          "radius": 34,
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "berg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -118Q60 -138 110 -126L250 -236L410 -132Q450 -142 480 -134V0H0Z",
+          "material": "biom-hoehle",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M218 -210L250 -236L290 -206L270 -212L250 -198L232 -212Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "festung",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M330 -110L342 -160H398L410 -110Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M346 -158V-184H394V-158Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M330 -180Q348 -184 352 -196H388Q392 -184 410 -180Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M356 -194V-212H384V-194Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M342 -208Q358 -214 364 -232H376Q382 -214 398 -208Z",
+          "material": "schwarz",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "reisfelder",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -96Q240 -114 480 -94V0H0Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M160 -92Q300 -104 470 -88L468 -76Q300 -90 164 -80Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -62Q240 -80 480 -60V0H0Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M200 -60Q330 -72 474 -56L472 -44Q330 -60 204 -48Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -28Q240 -46 480 -26V0H0Z",
+          "material": "smaragd",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "kirschbaum",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M34 0Q50 -60 30 -116L50 -118Q66 -60 64 0Z",
+          "material": "leder",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -110Q4 -170 50 -168Q80 -204 130 -176Q180 -176 180 -130Q200 -96 150 -90Q100 -76 60 -94Q10 -84 0 -100Z",
+          "material": "haut",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [120, -150],
+          "radius": 12,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 54,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

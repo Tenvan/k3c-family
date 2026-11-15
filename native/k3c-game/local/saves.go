@@ -62,7 +62,7 @@ func (s *Session) List() ([]view.SaveInfo, error) {
 
 // info prüft einen Eintrag wie beim Laden (sim.ParseIslandSave), ohne die Insel aufzubauen.
 func (s *Session) info(e store.SaveInfo) view.SaveInfo {
-	v := view.SaveInfo{Name: e.Name, Day: e.Day, Depths: e.Depths}
+	v := view.SaveInfo{Name: e.Name, Day: e.Day, Depths: e.Depths, World: e.World}
 	v.SavedAt, _ = time.Parse(time.RFC3339, e.SavedAt)
 	if e.Error != "" {
 		v.Problem = "Spielstand unlesbar"
@@ -111,4 +111,26 @@ func (s *Session) freeName() string {
 			return n
 		}
 	}
+}
+
+// WorldList nennt die wählbaren Welten (room.Manager.WorldList: Standard-Welt, weitere nur im Dev-Mode des Managers).
+func (s *Session) WorldList() []view.WorldInfo {
+	m := s.m
+	if m == nil {
+		m = s.manager()
+	}
+	list := m.WorldList()
+	out := make([]view.WorldInfo, len(list))
+	for i, w := range list {
+		out[i] = view.WorldInfo{ID: w.ID, Name: w.Name}
+	}
+	return out
+}
+
+// World liefert die Welt-ID des laufenden Spiels (leer ohne Spiel).
+func (s *Session) World() string {
+	if s.r == nil {
+		return ""
+	}
+	return s.world
 }

@@ -1,0 +1,122 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-nil-klein",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Vorschau des Weltbilds Nil (B-937): Dünen, Pyramide, Fluss, Palme, Sonne, vereinfacht",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [392, -210],
+          "radius": 38,
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "duenen-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -136Q90 -166 180 -136Q260 -114 340 -142Q420 -166 480 -136V0H0Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "pyramide",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M80 -130L170 -224L260 -130Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M80 -130L170 -224L154 -130Z",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "duenen-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -100Q100 -132 200 -104Q300 -80 380 -112Q440 -132 480 -114V0H0Z",
+          "material": "stroh",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "fluss",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -84Q120 -104 240 -78Q360 -56 480 -80V-48Q360 -24 240 -46Q120 -70 0 -52Z",
+          "material": "kristall",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "sand",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -36Q100 -50 200 -36Q300 -22 480 -30V0H0Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "palme",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M350 -20Q344 -90 372 -156L388 -152Q362 -90 370 -20Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M380 -156Q336 -172 300 -130Q340 -146 380 -144ZM380 -156Q420 -184 460 -140Q420 -156 384 -144ZM380 -156Q362 -200 324 -196Q360 -186 376 -148ZM380 -156Q404 -204 440 -196Q404 -184 384 -148Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 54,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

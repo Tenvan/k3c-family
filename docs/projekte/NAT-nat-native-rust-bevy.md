@@ -48,7 +48,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | aktiv |
 | FB1 | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | aktiv |
 | FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | aktiv |
-| WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | geplant |
+| WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | aktiv |
 | FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | aktiv |
 
 ## Nicht-Ziele

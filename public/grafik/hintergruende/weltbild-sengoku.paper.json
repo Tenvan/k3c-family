@@ -1,0 +1,337 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-sengoku",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Weltbild Sengoku für die Weltauswahl (B-937): Reisterrassen, Bergfestung vor schneebedecktem Berg, Kirschblüte, rote Sonne, Querformat 16:9 ohne Text",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [404, -212],
+          "radius": 28,
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M330 -186Q380 -194 440 -188Q470 -186 480 -182V-176Q420 -182 340 -180Z",
+          "material": "leinen",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "berg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -118Q60 -138 120 -126L250 -230Q262 -238 274 -230L410 -132Q450 -142 480 -134V0H0Z",
+          "material": "biom-hoehle",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M256 -234L120 -126L196 -126L246 -190Z",
+          "material": "biom-hoehle",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M224 -208L250 -230Q262 -238 274 -230L300 -210L286 -214L274 -202L262 -212L250 -200L238 -212Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -100Q80 -120 160 -106Q250 -92 310 -126Q366 -158 420 -130Q450 -116 480 -112V0H0Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M366 -150Q400 -150 420 -130Q450 -116 480 -112V-100Q440 -112 400 -128Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "festung",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M300 -114V-126H342V-114Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M296 -125H346L342 -131H300Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M338 -138L347 -166H393L402 -138Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M338 -138L347 -166H352L346 -138Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M350 -165V-181H390V-165Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M338 -179Q352 -182 356 -191H384Q388 -182 402 -179Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M356 -190V-202H384V-190Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M346 -200Q358 -203 362 -212H378Q382 -203 394 -200Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M362 -211V-221H378V-211Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M354 -219Q364 -222 366 -231L370 -235L374 -231Q376 -222 386 -219Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [370, -236],
+          "radius": 2,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [362, -173],
+          "radius": 2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [378, -173],
+          "radius": 2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [370, -196],
+          "radius": 2,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "reisfelder",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -94Q240 -112 480 -92V0H0Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M150 -94Q300 -104 470 -90L468 -82Q300 -94 154 -86Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -70Q240 -88 480 -68V0H0Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M190 -72Q330 -82 474 -66L472 -58Q330 -72 194 -64Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -46Q240 -64 480 -44V0H0Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M210 -48Q340 -58 476 -42L474 -34Q340 -48 214 -40Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -22Q240 -40 480 -20V0H0Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M250 -16V-26M270 -17V-27M290 -18V-28M310 -18V-28M330 -18V-28M350 -18V-28M370 -18V-28M390 -17V-27M410 -16V-26M430 -15V-25M450 -14V-24",
+          "material": "smaragd",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "kirschbaum",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M38 0Q50 -60 32 -112L44 -114Q62 -72 58 -44Q80 -84 112 -104L118 -96Q82 -70 68 0Z",
+          "material": "leder",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M38 0Q50 -60 32 -112L38 -113Q54 -60 46 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -118Q8 -160 48 -160Q70 -192 112 -172Q152 -184 164 -144Q196 -124 164 -100Q142 -82 112 -96Q80 -78 50 -100Q10 -88 0 -108Z",
+          "material": "haut",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -108Q10 -88 50 -100Q80 -78 112 -96Q142 -82 164 -100Q150 -110 120 -108Q90 -100 60 -114Q30 -104 0 -122Z",
+          "material": "haut",
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [130, -160],
+          "radius": 7,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [84, -170],
+          "radius": 6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [150, -132],
+          "radius": 5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [30, -140],
+          "radius": 5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [100, -126],
+          "radius": 4,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "haut",
+          "mitte": [190, -84],
+          "radius": 3,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "haut",
+          "mitte": [214, -132],
+          "radius": 2.5,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "haut",
+          "mitte": [236, -66],
+          "radius": 3,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "haut",
+          "mitte": [176, -50],
+          "radius": 2.5,
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 270,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

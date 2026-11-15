@@ -1,0 +1,227 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-nil",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Weltbild Nil für die Weltauswahl (B-937): Wüstendünen mit Pyramiden, Fluss, Oase mit Palmen, große Sonne, Querformat 16:9 ohne Text",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -170Q240 -186 480 -170V0H0Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [392, -214],
+          "radius": 36,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [392, -214],
+          "radius": 26,
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "duenen-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -140Q90 -170 180 -140Q260 -118 340 -146Q420 -170 480 -140V0H0Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "pyramiden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M104 -136L168 -204L232 -136Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M104 -136L168 -204L156 -136Z",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M214 -134L246 -170L278 -134Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M214 -134L246 -170L240 -134Z",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "duenen-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -100Q100 -132 200 -104Q300 -80 380 -112Q440 -132 480 -114V0H0Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M380 -112Q440 -132 480 -114V-104Q440 -118 400 -104Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "fluss",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -82Q120 -100 240 -76Q360 -54 480 -78V-70Q360 -46 240 -68Q120 -92 0 -74Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -74Q120 -92 240 -68Q360 -46 480 -70V-52Q360 -28 240 -50Q120 -72 0 -56Z",
+          "material": "kristall",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M40 -76Q120 -88 220 -66Q300 -52 360 -50Q300 -46 220 -60Q130 -80 40 -72Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M30 -84V-96M38 -84V-100M46 -85V-95M150 -86V-98M158 -85V-101M300 -64V-76M308 -63V-79",
+          "material": "smaragd",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "sand",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -40Q100 -54 200 -40Q300 -26 480 -34V0H0Z",
+          "material": "stroh",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -16Q120 -28 240 -18Q360 -8 480 -16V0H0Z",
+          "material": "stroh",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "oase",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M284 -24Q300 -44 360 -46Q440 -48 460 -30Q450 -12 380 -10Q300 -10 284 -24Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M304 -26Q330 -38 380 -38Q430 -36 436 -26Q420 -18 370 -18Q320 -18 304 -26Z",
+          "material": "kristall",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M380 -36Q420 -34 430 -28Q410 -30 386 -32Z",
+          "material": "kristall",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "palmen",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M352 -34Q348 -90 372 -140L380 -138Q362 -90 362 -34Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M422 -32Q422 -70 438 -106L444 -104Q432 -70 430 -32Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M376 -140Q346 -152 324 -126Q350 -138 376 -134ZM376 -140Q404 -160 432 -134Q404 -144 378 -134ZM376 -140Q362 -170 338 -168Q362 -160 374 -136ZM376 -140Q396 -174 418 -170Q394 -162 378 -136ZM376 -140Q392 -130 404 -108Q384 -124 374 -134Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M441 -106Q420 -114 404 -96Q424 -104 441 -102ZM441 -106Q460 -120 480 -102Q460 -108 443 -102ZM441 -106Q432 -128 414 -126Q432 -120 440 -103ZM441 -106Q454 -130 470 -128Q454 -122 442 -103Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [376, -136],
+          "radius": 3,
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 270,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

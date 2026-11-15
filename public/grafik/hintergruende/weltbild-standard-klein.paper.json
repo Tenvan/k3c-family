@@ -1,0 +1,121 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-standard-klein",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Vorschau des Weltbilds Standard (B-937): Burg auf grünem Hügel mit Wald, vereinfacht für die Weltauswahl",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [420, -220],
+          "radius": 26,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -110Q100 -170 200 -120Q280 -90 340 -140Q410 -190 480 -140V0H0Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "burg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M296 -130V-200H384V-130Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M318 -130V-236H362V-130Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M286 -196L310 -244L334 -196Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M346 -196L370 -244L394 -196Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M330 -130V-158Q340 -172 350 -158V-130Z",
+          "material": "schwarz",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -80Q120 -126 240 -84Q360 -50 480 -96V0H0Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "wald",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -30L30 -170L60 -30ZM50 -30L90 -200L130 -30ZM120 -30L150 -150L180 -30ZM400 -30L430 -160L460 -30ZM440 -30L470 -190L500 -30Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "boden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -30Q120 -50 240 -34Q360 -20 480 -40V0H0Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 54,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

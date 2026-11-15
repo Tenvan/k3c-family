@@ -38,6 +38,7 @@ const (
 	txtPlayer
 	txtPlayerFree
 	txtLobbyHint
+	txtWorldHint
 	txtTooMany
 	txtSavesTitle
 	txtSavesEmpty
@@ -173,6 +174,7 @@ var texts = [textCount][2]string{
 	txtPlayer:          {"Spieler {}", "Player {}"},
 	txtPlayerFree:      {"frei: A drücken", "free: press A"},
 	txtLobbyHint:       {"A auf einem zweiten Gerät: mitspielen · Links/Rechts ändern · B zurück bzw. Spieler 2 geht", "A on a second device: join · Left/Right change · B back or player 2 leaves"},
+	txtWorldHint:      {"Links/Rechts blättern · A wählen · B zurück", "Left/Right browse · A choose · B back"},
 	txtTooMany:         {"Höchstens 2 Spieler", "At most 2 players"},
 	txtSavesTitle:      {"Spielstände", "Saves"},
 	txtSavesEmpty:      {"Keine Spielstände", "No saves"},

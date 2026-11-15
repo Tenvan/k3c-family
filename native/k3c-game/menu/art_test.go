@@ -30,12 +30,21 @@ func TestMenuArtForEveryEntry(t *testing.T) {
 			t.Errorf("%s ohne Animation %q: %v", a, artAnim, m.AnimNames())
 		}
 	}
-	got := Art()
+	got := artList(defaultWorlds, true, func(string) bool { return true })
 	if !slices.IsSorted(got) || len(slices.Compact(slices.Clone(got))) != len(got) {
 		t.Errorf("Art nicht sortiert oder doppelt: %v", got)
 	}
-	if a := (&menus{}).Assets("wald", nil); !slices.Equal(a, got) {
-		t.Errorf("Assets je Level %v, erwartet %v", a, got)
+	// Im Level nur die kleinen Weltbilder, die großen nur im Hauptmenü (B-937).
+	m := newMenus()
+	m.usable = func(string) bool { return true }
+	lvl := m.Assets("wald", nil)
+	for w, img := range m.worlds {
+		if !slices.Contains(got, img.Big) || !slices.Contains(got, img.Small) {
+			t.Errorf("Art ohne Weltbilder von %s: %v", w, got)
+		}
+		if slices.Contains(lvl, img.Big) || !slices.Contains(lvl, img.Small) {
+			t.Errorf("Assets je Level für %s: %v", w, lvl)
+		}
 	}
 }
 

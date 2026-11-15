@@ -67,7 +67,7 @@ func TestMainConfirmTransitions(t *testing.T) {
 		next string
 	}{
 		{"Weiter spielt", mainContinue, view.StepPlay, ""},
-		{"Neues Spiel öffnet die Lobby", mainNew, view.StepPush, "lobby"},
+		{"Neues Spiel öffnet die Weltauswahl", mainNew, view.StepPush, "worldpick"},
 		{"Laden öffnet die Liste", mainLoad, view.StepPush, "saves"},
 		{"Optionen", mainOptions, view.StepPush, "options"},
 		{"Beenden", mainQuit, view.StepQuit, ""},
@@ -151,6 +151,8 @@ func screenName(sc view.Screen) string {
 	switch sc.(type) {
 	case *mainScreen:
 		return "main"
+	case *worldPickScreen:
+		return "worldpick"
 	case *lobbyScreen:
 		return "lobby"
 	case *savesScreen:

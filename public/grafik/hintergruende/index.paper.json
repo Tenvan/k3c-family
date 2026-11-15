@@ -373,5 +373,45 @@
     "id": "hg-wald-nah-v5",
     "rig": "hintergrund",
     "manifest": "hg-wald-nah-v5/manifest.json"
+  },
+  {
+    "id": "weltbild-britannien-klein",
+    "rig": "hintergrund",
+    "manifest": "weltbild-britannien-klein/manifest.json"
+  },
+  {
+    "id": "weltbild-britannien",
+    "rig": "hintergrund",
+    "manifest": "weltbild-britannien/manifest.json"
+  },
+  {
+    "id": "weltbild-nil-klein",
+    "rig": "hintergrund",
+    "manifest": "weltbild-nil-klein/manifest.json"
+  },
+  {
+    "id": "weltbild-nil",
+    "rig": "hintergrund",
+    "manifest": "weltbild-nil/manifest.json"
+  },
+  {
+    "id": "weltbild-sengoku-klein",
+    "rig": "hintergrund",
+    "manifest": "weltbild-sengoku-klein/manifest.json"
+  },
+  {
+    "id": "weltbild-sengoku",
+    "rig": "hintergrund",
+    "manifest": "weltbild-sengoku/manifest.json"
+  },
+  {
+    "id": "weltbild-standard-klein",
+    "rig": "hintergrund",
+    "manifest": "weltbild-standard-klein/manifest.json"
+  },
+  {
+    "id": "weltbild-standard",
+    "rig": "hintergrund",
+    "manifest": "weltbild-standard/manifest.json"
   }
 ]

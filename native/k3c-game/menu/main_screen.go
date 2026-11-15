@@ -117,7 +117,7 @@ func (sc *mainScreen) confirm(d view.DeviceID, s view.Session) (view.StepKind, v
 		return view.StepPlay, nil
 	case mainNew:
 		sc.cue(view.CueConfirm, -1, "")
-		return view.StepPush, newLobby(sc.m, d)
+		return view.StepPush, newWorldPick(sc.m, d)
 	case mainLoad:
 		sc.listed = false
 		sc.cue(view.CueConfirm, -1, "")

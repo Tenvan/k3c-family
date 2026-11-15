@@ -148,7 +148,11 @@ func (sc *savesScreen) fill(lang string) {
 	p.reset(tr(lang, txtSavesTitle))
 	from := window(sc.sel, len(sc.list), maxRows)
 	for i := from; i < min(len(sc.list), from+maxRows); i++ {
-		p.add(saveRow(lang, sc.list[i]))
+		r := saveRow(lang, sc.list[i])
+		if sc.list[i].Loadable {
+			r.art = sc.m.worldAsset(sc.list[i].World, false) // kleines Bild der Welt (B-938)
+		}
+		p.add(r)
 	}
 	p.sel = sc.sel - from
 	if len(sc.list) == 0 {

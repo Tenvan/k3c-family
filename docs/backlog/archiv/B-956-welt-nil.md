@@ -1,16 +1,16 @@
-# B-955 · Welt Sengoku: Japan der Kriegerzeit mit Burgen, Reisfeldern und Ninja-Überfällen
+# B-956 · Welt Nil: Ägypten mit Oasen-Inseln, Nilbarke und Sandstürmen
 
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
+- **Umgebung:** offline
+- **Status:** erledigt
 - **Sprint:** WE3
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-15
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -20,12 +20,12 @@ Weltvorschlag 🧑 2026-11-15 aus dem Test des Welten-Editors.
 
 ## Ziel
 
-Welt `sengoku`: Japan der Kriegerzeit.
-- **Inseln/Biome:** Reisfeld-Ebene (forest), Bambuswälder (forest, dichte Natur), Bergfestung (ironhold) als letzte Insel; 3 Inseln, Tiefen 0–2.
-- **Gegner/Portale:** Portale als Torii-Schreine; Ninja-Überfälle als Nacht-Event (schnelle Diebe), Samurai-Wachen als Lager.
-- **Angriffsmodus:** `general` (Daimyo mit Banner).
-- **Besonderheiten:** Burgausbau stark (Hub-Stufen früher), Reis als Holz-Ersatz kosmetisch.
-- **Editor-Voraussetzungen (B-954):** `world_create`, Inseln/Tiefen/Biome setzen, `combat.mode`, Overrides (Natur-Dichte, Event-Gewichte); neue Assets (Torii, Pagode) über `assets_*`.
+Welt `nil`: Ägypten am Nil.
+- **Inseln/Biome:** Oasen am Fluss (forest mit Palmen), Wüstenrand (mine als Sandstein), Grabkammern (cave) als Tiefe; 3 Inseln, Wechsel per Nilbarke (Schiff).
+- **Gegner/Portale:** Portale als Grabeingänge; Sandsturm als Event (Sicht und Tempo sinken), Skorpione/Mumien als Gegner-Varianten.
+- **Angriffsmodus:** `groups`.
+- **Besonderheiten:** Gold eher aus Handel/Händler, weniger Holz (Overrides auf Holz-Gold aus B-952), Bauten aus Stein.
+- **Editor-Voraussetzungen (B-954):** `world_create`, Biome/Tiefen, Overrides (Natur, Wirtschaft, Events); Assets Palme, Barke, Obelisk über `assets_*`; ggf. neues Event „Sandsturm“ (SIM-Ticket).
 
 ## Beteiligte und Zielgruppen
 
@@ -62,7 +62,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-keine
+Sandsturm als neues Event: eigenes SIM-Ticket oder mit vorhandenen Events (Nebel/Nacht) nähern? Default: zuerst nähern. (🧑)
 
 ## Notizen
 
