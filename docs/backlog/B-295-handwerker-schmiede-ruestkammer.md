@@ -9,59 +9,59 @@
 - **Projekt:** BAL
 - **Erstellt:** 2026-10-05
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
 
-`docs/rules/buerger.md` § 1 nennt Handwerker „in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude)“. In
-`data/buildings.json` gibt es das Angebot `craftsman` aber nur an der Werkstatt (`dx −4`, W0.1); Schmiede (nur
-`eliteWarrior`) und Rüstkammer (keine `offers`) haben keins. Seit W4.2 bindet die Ausbildung einen Handwerker an das
-Gebäude, an dessen Angebot er bezahlt wurde (`engine/sim/unit_professions.go`), deshalb beschleunigt heute kein Handwerker
-Elite-Upgrade und Rüstung (W4.3b).
+Seit WI1 (B-950) heißt der Bauer mit Hammer **Handwerker** (baut und repariert); der frühere Beruf `craftsman` heißt **Geselle** (`docs/glossar.md` Zeile 105 und 115). Dieses Ticket meint den Gesellen. `docs/rules/buerger.md` § 1 (Zeile 21), § 2 (Zeile 38) und das Glossar (Zeile 105) nennen ihn „in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude)“. In `data/buildings.json` gibt es das Angebot `craftsman` nur an der Werkstatt (`dx −4`); Schmiede (nur `eliteWarrior`), Rüstkammer und Bogner haben keins. Die Ausbildung bindet den Gesellen an das Gebäude seines Angebots (`engine/sim/unit_professions.go`), deshalb beschleunigt kein Geselle Elite-Upgrade und Rüstung. Entschieden am 2026-10-31 (Claude im Auftrag von Ralf, B-627 › Notizen): **nur in der Werkstatt**.
 
 ## Ziel
 
-Schmiede und Rüstkammer bekommen einen Weg, Handwerker auszubilden, oder die Regel sagt ausdrücklich, dass Handwerker
-nur in der Werkstatt arbeiten.
+Regeltext, Glossar und Daten sagen dasselbe: Gesellen gibt es nur an der Werkstatt.
 
 ## Beteiligte und Zielgruppen
 
-Spieler (Koop); 🧑 entscheidet über Plätze und `dx`, REG pflegt die Werte.
+Spieler (Koop); 🧑 bestätigt die Entscheidung; ein Agent gleicht den Text an.
 
 ## Anforderungen
 
-- Entscheidung: je ein Angebot `craftsman` mit festem `dx` an Schmiede und Rüstkammer (Abstand ≥ 4 Units zu anderen
-  Anhängen, Datentest aus W0.1) oder Regel ändern.
-- Kein neuer Code nötig, wenn nur `offers` in `data/buildings.json` ergänzt werden (die Mechanik liest sie schon).
+- `docs/rules/buerger.md` § 1 und § 2 nennen den Gesellen nur an der Werkstatt (höchstens 2); er beschleunigt nur, was die Werkstatt herstellt.
+- Die Herstellungszeiten in § 2 sagen, dass Elite-Upgrade (Schmiede), Rüstungsstufe (Rüstkammer) und Bogen (Bogner) ohne Gesellen-Bonus laufen.
+- `docs/glossar.md` › Geselle passt dazu (Sammeldatei, letzter Commit des Sprints).
+- `data/buildings.json` bleibt unverändert; gilt für jeden Spieler gleich, keine Wirkung auf die Simulation.
 
 ## Nicht-Ziele
 
-Neue Tasten oder Bau-Menü (Q34), Balancing der Kosten (B-099).
+Neue Angebote oder `dx`-Werte an Schmiede, Rüstkammer oder Bogner; Balancing der Kosten und Zeiten (gesperrt); Code.
 
 ## Regeln und Einschränkungen
 
-Angebote als Anhänge mit festem `dx` (Q52); Plätze und `dx` ändert nur W0 bzw. REG nach Beschluss.
+Domäne REG, nur Text. Begriffe nach `docs/glossar.md` (Geselle, nicht Handwerker).
+
+- **Bereich:** `docs/rules/buerger.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Entscheidung
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Schmiede gebaut, Spieler hält A am Handwerker-Angebot der Schmiede → nächster freier Bauer wird Handwerker der
-Schmiede, das Elite-Upgrade dauert 20 s ÷ 1,5.
+Schmiede gebaut, Geselle an der Werkstatt ausgebildet → Schwert und Hammer entstehen schneller, das Elite-Upgrade dauert weiter 20 s.
 
 ## Ausnahme- und Fehlerfälle
 
-nicht relevant: offene Entscheidung, kein Verhalten festgelegt.
+🧑 will doch Gesellen an Schmiede und Rüstkammer → dieses Ticket endet ohne Textänderung, ein neues Ticket (REG Werte `dx`, dann SIM-Prüfung) übernimmt.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `docs/rules/buerger.md` § 1 und `data/buildings.json` stimmen überein (Angebot an Schmiede und Rüstkammer
-  oder Regel nur Werkstatt); `task check:go` grün.
+- **AC-01** `grep -n "Geselle" docs/rules/buerger.md docs/glossar.md` nennt als Ort nur die Werkstatt; `data/buildings.json` hat `craftsman` weiter nur unter `workshop.offers` (unverändert, `git diff --stat data/` leer).
 
 ## Offene Fragen
 
-Welche `dx` für das Handwerker-Angebot an Schmiede (+28, Anhang Elite-Krieger schon bei `dx +4`) und Rüstkammer (+40),
-oder Handwerker nur in der Werkstatt? Entscheidet 🧑.
+- Gesellen auch an Schmiede und Rüstkammer? → Default: nein, nur Werkstatt (vorläufig, 🧑 bestätigt; Entscheidung B-627 vom 2026-10-31, keine neuen `dx`-Werte, keine Balancing-Last).
+- Gilt das auch für den Bogner (neu seit B-951)? → Default: ja, Bogner ohne Geselle, wie `data/buildings.json` heute (vorläufig, 🧑 bestätigt).
 
 ## Notizen
 
-Gefunden in W4.2 (Sprint W4).
+Gefunden in W4.2 (Sprint W4). Titel stammt aus der Zeit vor B-950 („Handwerker“ = heute Geselle). Stand geprüft 2026-11-15: Text weiter widersprüchlich (`buerger.md`:21, :38, `glossar.md`:105).

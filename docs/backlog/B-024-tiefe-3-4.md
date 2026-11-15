@@ -56,4 +56,7 @@ keine
 
 ## Notizen
 
-–
+Stand geprüft 2026-11-15: **beide Kriterien sind erfüllt, Vorschlag Status erledigt** (setzt 🧑 bzw. der Sprint-Abschluss).
+
+- AC-01: `docs/rules/stufen.md`:22 (Eisenstollen und Kristallhöhle: Ausgang, 3 Portale, Lava), `docs/rules/materialien-gebaeude.md`:17, :21, :29 (Kristall, fünf Stufen der Insel 1, Breiten), `docs/rules/gegner.md`:17–18 (Gegner beider Stufen), `docs/rules/bosse.md`:29–30 (Lava-Golem, Splitter-Titan, Kristallherz-Wächter), `docs/rules/kampf.md`:64 (Lava und Monarch).
+- AC-02: `data/biomes/ironhold.json` („Tiefe 3 (Eisenstollen)“, `depth` 3) und `data/biomes/crystal.json` („Tiefe 4 (Kristallhöhle)“, `depth` 4).

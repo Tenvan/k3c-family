@@ -1,6 +1,6 @@
 # WE1.1 · Workbench ruft die Engine direkt, Regel und Agent k3c-sim-dev (B-924, B-925)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

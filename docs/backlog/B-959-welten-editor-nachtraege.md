@@ -58,7 +58,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Größe L: vor der Umsetzung in Tickets je Punkt zerlegen (🧑 oder Planungs-Session).
+Zerlegt am 2026-11-15 (Planungs-Session): Dieses Ticket bleibt Sammelticket. Endboss je Insel-Thema → B-981 (Engine), B-993 (Spiel); Hafen im selben `world_set` → B-985; Overrides `events` → B-982; Overrides `hub › sites` → B-983; Fehlermeldung mit erlaubten Dateien → B-986; Gegner-Varianten je Welt → B-984 (Format), B-994 (Spiel); Editor und MCP für alle neuen Felder → B-987. Sprints WE5 und WE6.
 
 ## Notizen
 

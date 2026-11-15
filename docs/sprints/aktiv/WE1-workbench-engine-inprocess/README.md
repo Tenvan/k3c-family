@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE1.1 | `WE1.1-engine-im-prozess.md` | Umsetzung | autonom | in Arbeit |
+| WE1.1 | `WE1.1-engine-im-prozess.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

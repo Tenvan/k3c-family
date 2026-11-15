@@ -1,6 +1,6 @@
 # KS7.1 · Auslöser am Pfahl vor dem Tor, Schild-Gestell ab Burgstufe (B-941, B-942)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

@@ -25,7 +25,13 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | erledigt |
 | KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | erledigt |
 | KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | erledigt |
-| SI1 | Spielideen: Fracht auf dem Schiff, Koop-Aktionen, Wetter je Welt | geplant |
+| SI2 | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | geplant |
+| SI3 | Wetter je Welt: Regel, Engine, Assets, Anzeige | geplant |
+| SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | geplant |
+| SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | geplant |
+| SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | geplant |
+| SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | geplant |
+| SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | geplant |
 
 ## Nicht-Ziele
 

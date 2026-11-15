@@ -4,19 +4,19 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** EP1
+- **Status:** eingeplant
+- **Sprint:** NA1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 - **Duplikat von:** –
 - **Ersetzt:** –
 
 ## Ausgangslage
 
-EP1.2 (B-894) führt alle Tasten-Hinweise über eine zentrale Funktion Aktion + Eingabe-Profil → Glyph (`native/k3c-game/hud/glyphs.go` › `glyphOf`, `IconAsset`). Gezeichnet werden die Glyphen noch selbst (`hud/drawmenu.go` › `drawGlyph`: Kreis für A/X/Y, Kappe für Tasten und Schultertasten); Papierschnitt-Icons dazu fehlen.
+EP1.2 (B-894) führt alle Tasten-Hinweise über eine zentrale Funktion Aktion + Eingabe-Profil → Glyph (`native/k3c-game/hud/glyphs.go` › `glyphOf`, `IconAsset`). Gezeichnet werden die Glyphen noch selbst (`native/k3c-game/hud/drawmenu.go` › `drawGlyph`: Kreis für A/X/Y, Kappe für Tasten und Schultertasten); Papierschnitt-Icons dazu fehlen. Die Beschriftung der Tastenkappen hängt an der Sprache (`keyLabel(lang, name)`, z. B. „Entf“). Andere HUD-Icons kommen schon aus der Gruppe `icons` (`native/k3c-game/hud/icons.go` › `hudAssets`, `Assets`; `data/paper.json`).
 
 ## Ziel
 
@@ -24,24 +24,25 @@ Jeder Glyph-Schlüssel hat ein Papierschnitt-Icon im gleichen Stil wie die übri
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spielende (Tastatur und Xbox-Pad, je Spieler eigenes Profil); Agent PAP (Icons über `assets_*`, Agent `k3c-grafik` prüft), Agent CLI (HUD, Agent `k3c-hud` prüft); 🧑 nimmt am PC ab.
 
 ## Anforderungen
 
-- Icons über `assets_*` in der Gruppe `icons`, Namen nach `IconAsset`: `icons/taste-<name>` und `icons/xbox-<name>`.
-- Tastenkappen (Beschriftung generiert): SPACE, ESC, F11, E, Q, R, T, Z, K, A, D, ENTER, CONTROLRIGHT, INSERT, DELETE, END, PAGEDOWN, DOWN, LEFT, RIGHT, dazu F1 … F12 für die F1-Übersicht.
-- Xbox-Tasten in Xbox-Farben: A, X, Y, LB, RB, LT, RT, RS, UP, DOWN, MENU (nur Xbox-Symbole, Plattform-Regel).
-- `hud` meldet die Icons als Asset-Quelle und zeichnet sie; ohne Grafik bleibt `drawGlyph` der Rückfall.
+- Icons über `assets_*` in der Gruppe `icons`, eingetragen in `data/paper.json`.
+- Xbox-Tasten in Xbox-Farben, je ein Icon `icons/xbox-<name>`: A, X, Y, LB, RB, LT, RT, RS, UP, DOWN, MENU (nur Xbox-Symbole, Plattform-Regel).
+- Tastenkappen: zwei leere Kappen `icons/taste-kappe` (ein Zeichen) und `icons/taste-kappe-breit` (längere Beschriftung); die Beschriftung setzt das HUD mit der Spielschrift in der Sprache des Spiels darauf (SPACE, ESC, F1 … F12, E, Q, R, T, Z, K, A, D, ENTER, CONTROLRIGHT, INSERT, DELETE, END, PAGEDOWN, DOWN, LEFT, RIGHT).
+- `IconAsset` liefert für jeden Glyph-Schlüssel ein vorhandenes Icon; `hud` meldet die Icons als Asset-Quelle (`Assets`) und zeichnet sie; ohne Grafik bleibt `drawGlyph` der Rückfall.
+- Zwei Spieler mit verschiedenen Profilen sehen je ihre Glyphen; keine Allokation je Frame durch die Icons.
 
 ## Nicht-Ziele
 
-Neue Belegungen oder weitere Geräte-Familien.
+Neue Belegungen oder weitere Geräte-Familien (B-339 verworfen); je Taste und Sprache ein eigenes Icon.
 
 ## Regeln und Einschränkungen
 
-Icons nur über `assets_*`; `gen:paper` nur am Feature (B-742).
+Icons nur über `assets_*` (Entscheidung 005); `gen:paper` und Grafik-Golden nur in der Icon-Session (am Feature, B-742). Das Spiel zeichnet nur.
 
-- **Bereich:** `public/grafik/icons/**`, `data/paper.json`, `native/k3c-game/hud/**`
+- **Bereich:** `public/grafik/icons/**`, `data/paper.json`, `native/k3c-game/hud/**`, `native/k3c-game/e2e/glyphs_test.go`
 - **Abhängig von:** B-894
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
@@ -49,22 +50,23 @@ Icons nur über `assets_*`; `gen:paper` nur am Feature (B-742).
 
 ## Beispiele
 
-Skill-Menü am Pad → Zeile mit Papierschnitt-LB statt gemaltem Kasten; Profil pfeile → Kappe „Entf“.
+Skill-Menü am Pad → Zeile mit Papierschnitt-LB statt gemaltem Kasten; Profil pfeile, Sprache Deutsch → breite Papier-Kappe mit „Entf“.
 
 ## Ausnahme- und Fehlerfälle
 
-Icon fehlt oder Grafik nicht geladen → gemalte Glyphe (`drawGlyph`) wie bisher.
+Icon fehlt oder Grafik nicht geladen → gemalte Glyphe (`drawGlyph`) wie bisher. Beschriftung länger als die breite Kappe → Schrift wird verkleinert, nie abgeschnitten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Für jeden Schlüssel aus `IconAsset` über alle Aktionen und Profile gibt es ein Icon (Test).
+- **AC-01** Für jeden Schlüssel aus `IconAsset` über alle Aktionen und Profile gibt es ein Icon in `data/paper.json` und `public/grafik/icons/` (Test).
 - **AC-02** Ohne Icon zeichnet das HUD die gemalte Glyphe (Test).
-- **AC-03** Sichtprüfung durch 🧑 (TV und PC).
+- **AC-03** Sichtprüfung durch 🧑 am PC: Skill-Menü und F1-Übersicht mit Tastatur- und Pad-Profil, 2 Spieler.
 
 ## Offene Fragen
 
-keine
+- Je Taste ein Icon mit eingebrannter Beschriftung oder leere Kappe plus Schrift des Spiels? → Default: zwei leere Kappen plus Schrift, weil die Beschriftung je Sprache wechselt und so 13 statt rund 43 Icons genügen (vorläufig, 🧑 bestätigt; ändert die Namensregel `icons/taste-<name>` aus Revision 1).
+- Farben der Xbox-Tasten? → Default: A grün, X blau, Y gelb, Schultertasten und MENU hell, in den Papiertönen des Stils (vorläufig, 🧑 bestätigt bei der Abnahme).
 
 ## Notizen
 
-Angelegt in EP1.2 (B-894: „Fehlende Icons als PAP-Ticket“).
+Angelegt in EP1.2 (B-894: „Fehlende Icons als PAP-Ticket“). Revision 2 (2026-11-15): Tastenkappen als leere Kappe plus Schrift statt je Taste ein Icon; Abnahme nur am PC (Entscheidung 009).
