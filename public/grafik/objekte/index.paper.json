@@ -85,6 +85,16 @@
     "manifest": "horn-pfahl/manifest.json"
   },
   {
+    "id": "obelisk",
+    "rig": "requisite",
+    "manifest": "obelisk/manifest.json"
+  },
+  {
+    "id": "palme",
+    "rig": "requisite",
+    "manifest": "palme/manifest.json"
+  },
+  {
     "id": "pappel-2",
     "rig": "requisite",
     "manifest": "pappel-2/manifest.json"
@@ -198,6 +208,11 @@
     "id": "setzling",
     "rig": "requisite",
     "manifest": "setzling/manifest.json"
+  },
+  {
+    "id": "steinkreis",
+    "rig": "requisite",
+    "manifest": "steinkreis/manifest.json"
   },
   {
     "id": "stern",

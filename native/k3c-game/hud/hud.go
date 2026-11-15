@@ -32,6 +32,7 @@ type hud struct {
 	spots   []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
 	seaMap  *art.SeaMap // Assets der Seekarte (nil: Karte aus Formen, drawsea.go)
 	assets  []string    // gemeldete Assets (nil: nur die Icons)
+	voy     voyageView  // Schiffsfahrt im Vollbild (voyage.go, B-977)
 }
 
 // New liefert den Drawer des HUD; lib (Grafik) darf nil sein, dann zeichnet es nur Flächen ohne Text.

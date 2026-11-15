@@ -55,6 +55,7 @@ var files = []entry{
 	{"balance-targets.json", "balance-targets", []string{ByTester}, false},
 	{"balance-hints.json", "balance-hints", []string{ByTester}, false},
 	{"ship.json", "ship", []string{BySim, ByTester}, true},
+	{"story.json", "story", []string{BySim}, false},
 }
 
 // File ist eine Zeile der Liste auf der Balancing-Seite.

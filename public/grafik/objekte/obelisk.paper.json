@@ -1,0 +1,146 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "obelisk",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Obelisk (Nil, Skin für den Felsen): gedrungener Steinobelisk mit goldener Spitze und Hieroglyphen-Kerben auf einem Sockel, daneben ein abgebrochenes Stück und Geröll, Licht oben rechts",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-26 0L-24 -5L-17 -7L-13 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 0L11 -8L22 -10L26 -4L25 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M9 0L11 -8L14.5 -8.6L13.5 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M11.5 -8L22 -9.6L25.6 -4",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M17 -8.6L16.4 -2M21 -8L21.4 -3",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 0L-13 -4L11 -4L11 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10.5 -4L-10.5 -7L8.5 -7L8.5 -4Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-10.5 -4L-10.5 -7L-4 -7L-4 -4Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 -7L-5.5 -23L3.5 -23L6 -7Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 -7L-5.5 -23L-2.4 -23L-3.4 -7Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M3.2 -22.4L5.4 -7.6",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-1.4 -20H2M-1.6 -17.6L1.8 -16.4M-1.8 -14H2.6M0.4 -14V-11.4M-2 -9.4H3",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.5 -23L-1 -29L3.5 -23Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5.5 -23L-1 -29L-2.4 -23Z",
+          "material": "gold",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 36,
+    "rahmen": [-30, -32, 60, 34]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  },
+  "varianten": {
+    "eisenstollen": {
+      "tausch": {
+        "stein": "biom-eisenstollen"
+      }
+    },
+    "hoehle": {
+      "tausch": {
+        "stein": "biom-hoehle"
+      }
+    },
+    "kristall": {
+      "tausch": {
+        "stein": "biom-kristall"
+      }
+    },
+    "mine": {
+      "tausch": {
+        "stein": "biom-mine"
+      }
+    },
+    "wald": {
+      "tausch": {
+        "stein": "biom-wald"
+      }
+    }
+  }
+}

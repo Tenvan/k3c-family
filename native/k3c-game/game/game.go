@@ -48,9 +48,10 @@ type Game struct {
 	// Ladeanzeige (loading.go): loading = Stufenwechsel wartet auf das Laden, shown = Draw hat die Anzeige gezeichnet.
 	loading, shown bool
 	loadMsg        *notice
-	loadScr        loadScreen          // Ladebild im Papierschnitt-Stil (loadscreen.go)
-	lload          *art.LevelLoad      // laufendes schrittweises Laden (loading.go), sonst nil
-	stepWant       map[string][]string // die Level dieses Ladens
+	loadScr        loadScreen            // Ladebild im Papierschnitt-Stil (loadscreen.go)
+	lload          *art.LevelLoad        // laufendes schrittweises Laden (loading.go), sonst nil
+	stepWant       map[string][]string   // die Level dieses Ladens
+	voy            voyage                // Schiffsfahrt beim Inselwechsel (voyage.go, B-977)
 	pressed        func(ebiten.Key) bool // Taste frisch gedrückt (devkeys.go); nil: keine Entwickler-Tasten
 	dev            view.DevView          // Entwickler-Anzeigen (F1, F10), kommt in jeden Frame
 	shotNext       bool                  // F12: das nächste Bild nach reports/ schreiben (devshot.go)
@@ -192,8 +193,9 @@ func (g *Game) Frame() *view.Frame { return &g.frame }
 // Screen liefert den obersten Screen des Menü-Stapels (nil im laufenden Spiel; Ende-zu-Ende-Test).
 func (g *Game) Screen() view.Screen { return g.stack.Top() }
 
-// advance stellt die Tastatur auf das Eingabe-Profil, liest die Eingabe, schaltet bei ActionFullscreen das Vollbild um, bedient Menü bzw. Spiel, taktet die Simulation einmal und bereitet den Frame vor:
-// Geräte, Grafik der Level, Kameras, Vollbild, dann die Listener.
+// advance stellt die Tastatur auf das Eingabe-Profil, liest die Eingabe, rechnet den Takt (tick: Vollbild, Menü bzw.
+// Spiel, Simulation; während der Schiffsfahrt sail) und bereitet den Frame vor: Geräte, Grafik der Level, Kameras,
+// Vollbild, dann die Listener.
 func (g *Game) advance() {
 	if g.fault != nil { // Fehler im Fenster: nichts mehr rechnen (der Aufnahme-Modus ruft advance weiter)
 		return
@@ -204,17 +206,11 @@ func (g *Game) advance() {
 	}
 	in := g.src.Poll()
 	g.cues = g.devs.observe(in, g.frame.Seats, g.cues)
-	g.toggleWindow(in)
-	g.devKeys()
-	if top := g.stack.Top(); top != nil {
-		g.step(top.Update(in, menuSession{Sim: g.sim, g: g}))
+	if g.voy.on {
+		g.sail(in) // Schiffsfahrt (voyage.go): keine Spiel-Eingabe, kein Takt der Simulation
 	} else {
-		g.play(in)
+		g.tick(in)
 	}
-	g.blend.capture(&g.frame, g.cells)
-	g.frame = g.sim.Step()
-	g.stressStep()
-	g.devValues()
 	g.frame.Dev = g.dev
 	g.devs.decorate(&g.frame, in)
 	if len(g.cues) > 0 {
@@ -230,6 +226,25 @@ func (g *Game) advance() {
 		l.Listen(&g.frame)
 	}
 	g.blend.stamp()
+	g.arrive()
+}
+
+// tick bedient Vollbild, Entwickler-Tasten und Menü bzw. Spiel, taktet die Simulation einmal und beginnt die
+// Schiffsfahrt, wenn der Takt den Inselwechsel meldet (voyage.go).
+func (g *Game) tick(in view.Input) {
+	g.toggleWindow(in)
+	g.devKeys()
+	if top := g.stack.Top(); top != nil {
+		g.step(top.Update(in, menuSession{Sim: g.sim, g: g}))
+	} else {
+		g.play(in)
+	}
+	g.blend.capture(&g.frame, g.cells)
+	g.voy.note(&g.frame)
+	g.frame = g.sim.Step()
+	g.stressStep()
+	g.devValues()
+	g.embark()
 }
 
 // step wendet das Ergebnis des obersten Screens an.
@@ -245,11 +260,13 @@ func (g *Game) step(st view.Step) {
 	}
 }
 
-// Draw zeichnet den Fehler bzw. die Ladeanzeige, sonst das Spiel (drawGame).
+// Draw zeichnet den Fehler, die Schiffsfahrt bzw. die Ladeanzeige, sonst das Spiel (drawGame).
 func (g *Game) Draw(screen *ebiten.Image) {
 	switch {
 	case g.fault != nil:
 		g.fault.Draw(screen)
+	case g.voy.on:
+		g.drawVoyage(screen)
 	case g.loading:
 		g.drawLoading(screen)
 	default:

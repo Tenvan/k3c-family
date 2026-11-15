@@ -60,6 +60,16 @@
     "manifest": "lavaschleim/manifest.json"
   },
   {
+    "id": "moorgeist",
+    "rig": "requisite",
+    "manifest": "moorgeist/manifest.json"
+  },
+  {
+    "id": "mumie",
+    "rig": "figur",
+    "manifest": "mumie/manifest.json"
+  },
+  {
     "id": "ninja",
     "rig": "figur",
     "manifest": "ninja/manifest.json"
@@ -70,6 +80,11 @@
     "manifest": "rattenschwarm/manifest.json"
   },
   {
+    "id": "roemischer-spaeher",
+    "rig": "figur",
+    "manifest": "roemischer-spaeher/manifest.json"
+  },
+  {
     "id": "samurai",
     "rig": "figur",
     "manifest": "samurai/manifest.json"
@@ -78,6 +93,11 @@
     "id": "skelett",
     "rig": "figur",
     "manifest": "skelett/manifest.json"
+  },
+  {
+    "id": "skorpion",
+    "rig": "requisite",
+    "manifest": "skorpion/manifest.json"
   },
   {
     "id": "splitterling",

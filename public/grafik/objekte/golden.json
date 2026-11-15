@@ -120,6 +120,23 @@
       "idle.png": "eb3205a3b01bc9aa05e5d4609d3abd45eb874df3ed67fafb8dcebfccea52955c"
     }
   },
+  "obelisk": {
+    "renderKey": "c1d134d3cbb52dcaea8c086766a447fd8ff26b45053fd82fce7775bbf5fb92e9",
+    "dateien": {
+      "idle.png": "5a5670287581ee6d9da4e60aed61d8c9623a199bbb11712ee31d281ffd316750",
+      "idle@eisenstollen.png": "926d0d1d170d087ed8af9d3018ce3f9c8bb51616c687df97d6b2ea2adbec78a9",
+      "idle@hoehle.png": "8e20d05391d383a3b0c9cb536921554aa02ed5ea9af249d71581f4eb8e647b0a",
+      "idle@kristall.png": "d510a45c8637d5ef10e76cce55ffead5bbf597aacfc4c480b85e7772f1b8fe84",
+      "idle@mine.png": "7f85fc46c25c263e820db74e11791c55b8cbd62b4409cef45e0360bc76545d5e",
+      "idle@wald.png": "1746f98b16cc81af73e7f29f29bb3b94c11d3f10766574e288a132dcac9b2eb3"
+    }
+  },
+  "palme": {
+    "renderKey": "0db9717c6cd2953d03c480e5ceb245a50d4d76f1102ffee693fc47b9d5a0c127",
+    "dateien": {
+      "idle.png": "72d815640a62388477bdaebea9e89dea590da719678cbb03b952180058f58795"
+    }
+  },
   "pappel-2": {
     "renderKey": "7feb26c7241ce0304d75313a85ce7631f396c7bcecbfe1482c53446e07d6a8dc",
     "dateien": {
@@ -260,6 +277,12 @@
     "renderKey": "ca061b05924de991b5b31d9a5a274508d7a84f005e6e03fd2553fe010b7d3f42",
     "dateien": {
       "idle.png": "0d5caa0ecf25986938944c3dfd540ead7a931bd340bdaea0135609c09fcba75b"
+    }
+  },
+  "steinkreis": {
+    "renderKey": "54965b86bf7c67d5e3fe746a2e6a3fc6078f54e64886c507550926c31aff22e6",
+    "dateien": {
+      "idle.png": "316fb67508b7f1b007f0a61d4267af0ecd65c6ad257e5ea34c11e9a408a2079d"
     }
   },
   "stern": {
