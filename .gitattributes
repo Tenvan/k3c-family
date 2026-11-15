@@ -26,3 +26,7 @@ go.sum text eol=lf
 
 # Rig-Export (task native:rig:export) schreibt LF; im Arbeitsbaum auch LF, sonst erscheint jeder Export als Scheinänderung.
 native/k3c-rig/assets/**/*.json text eol=lf
+
+# Papierschnitt-Generator (task gen:paper) schreibt Golden und Gruppen-Index mit LF; im Arbeitsbaum auch LF, sonst erscheint jeder Build als Scheinänderung.
+public/grafik/**/golden.json text eol=lf
+public/grafik/**/index.paper.json text eol=lf
