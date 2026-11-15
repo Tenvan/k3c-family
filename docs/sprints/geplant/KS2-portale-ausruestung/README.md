@@ -1,8 +1,8 @@
-# WE1 · DEV · Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn
+# KS2 · SIM · Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger
 
 - **Status:** geplant
-- **Projekt:** WZG
-- **Domäne:** DEV
+- **Projekt:** KSY
+- **Domäne:** SIM
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)

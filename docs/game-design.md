@@ -7,7 +7,7 @@ Zahlenwerte stehen als Daten in `data/*.json`. Dieses Dokument erklärt das *War
 
 2D-Side-Scroller-Strategiespiel im Stil von **Kingdom Two Crowns (K2C)** für **gemischten Koop** (Couch und Online) auf der
 Xbox (Browser/Edge) und weiteren Geräten. Die Monarchen bauen einen Hub aus, rekrutieren Bürger und verteidigen ihn gegen
-Portal-Angriffe. Unterschied zu K2C: Die Welt geht **nach unten** (Oberwelt → Höhle → Mine), der Monarch
+Portal-Angriffe und zerstören die Portale selbst (`rules/kampf.md`). Unterschied zu K2C: Die Welt geht **nach unten** (Oberwelt → Höhle → Mine), der Monarch
 kämpft **aktiv** mit Skills mit, und die Level werden **prozedural aus festen Eckdaten** erzeugt.
 
 Zielgruppe: die eigene Familie (ab 12), später evtl. itch.io.
@@ -46,8 +46,8 @@ Typische Session: 30–60 Minuten.
 - Bewegung nur **horizontal** (links/rechts), Sprint, **kein Springen**.
 - Interagieren (Münze geben, Truhe öffnen, Eingang nutzen; A halten), Skill-Menü, **Schlag** (X) und vier Skill-Slots. Es gibt **kein Bau-Menü**: Gebäude haben feste Plätze, Angebote je eigenes Zahlziel (Fragenkatalog Q34, 2026-10-04).
 - Hauptrolle ist das Management der Bürger. Im Kampf unterstützt er per Skill und mit einem einfachen Schlag, trägt aber nicht den Hauptschaden.
-- Werte: HP 100, Speed 5 Units/s, Verteidigung 5, Schlag 10 Schaden. **Kein Level**, der Monarch wächst nur über Skills.
-- Tod: Der gefallene Monarch bleibt liegen; ein Mitspieler belebt ihn durch A halten (3 s, 50 % HP), sonst Respawn an der Burg nach 15 s (heute noch 5 s, Umstellung mit B-120/W4.1), ohne Strafe, Bürger bleiben. Details: `rules/monarch.md`.
+- Werte: Speed 5 Units/s, Schlag 10 Schaden; **keine HP** (B-926, 🧑 2026-11-15; im Code heute noch HP 100, Verteidigung 5). **Kein Level**, der Monarch wächst nur über Skills.
+- **Kein Tod, Gold statt HP:** Jeder Treffer kostet 1 Münze (fällt aufsammelbar zu Boden, Gegner können sie rauben); ohne Gold fällt die **Krone** nach hinten. Ohne Krone kann der Monarch nur laufen und eine Krone aufheben; ein Mitspieler darf sie zurücktragen. Trägt ein Gegner eine Krone ins Portal, ist das Spiel verloren (**Kronenraub**). Grabstein, Wiederbeleben und Respawn entfallen. Details: `rules/kampf.md`, `rules/monarch.md`.
 
 ### Skill-System (offene Archetypen-Linien)
 
@@ -59,12 +59,12 @@ Jeder Spieler hat einen **eigenen Skill-Baum** mit 4 Linien: **Tank, Zauberer, H
 
 | Linie | Tier 1 (aktiv) | Tier 3 | Tier 4 (Ultimate) | Passive (Auswahl) |
 |---|---|---|---|---|
-| Tank | Taunt (10u, CD 15s), Shield Bash (Stun 2s, CD 10s) | Iron Wall (Barriere 500 HP, CD 30s) | Last Stand (überlebt mit 1 HP, CD 120s) | Armor Aura, Thick Skin, Regeneration, Guardian, Fortified |
+| Tank | Taunt (10u, CD 15s), Shield Bash (Stun 2s, CD 10s) | Iron Wall (Barriere 500 HP, CD 30s) | Last Stand (letzte Münze hält einen Treffer länger, CD 120s; `rules/kampf.md` § 5) | Armor Aura, Thick Skin, Regeneration, Guardian, Fortified |
 | Zauberer | Fireball (30 AoE 3u, CD 8s), Ice Wall (Slow 50%, CD 20s) | Lightning Storm (10/s, 5s, CD 40s) | Meteor (200 AoE 15u, CD 120s) | Arcane Power, Spell Echo, Frost Armor, Elemental Mastery |
-| Heiler | Heal (50 HP, CD 10s), Group Heal (30 HP 10u, CD 30s) | Divine Shield (100 HP Schild, CD 20s) | Resurrection (Monarchen 50% HP, CD 180s; Q66) | Healing Aura, Speed-/Damage-Blessing, Holy Ground |
+| Heiler | Heal (50 HP, CD 10s), Group Heal (30 HP 10u, CD 30s) | Divine Shield (Schild fängt Treffer ohne Goldverlust ab, CD 20s) | Resurrection (bringt eine gefallene Krone zurück, umgedeutet; `rules/kampf.md` § 5) | Healing Aura, Speed-/Damage-Blessing, Holy Ground |
 | Dieb | Backstab (40 / 80 von hinten, CD 12s), Smoke Bomb (unsichtbar 5s, CD 25s) | Poison Blade (10/s, 5s, CD 15s) | Shadow Strike (Teleport + 150, CD 90s) | Treasure Hunter, Swift, Critical Strike, Evasion, Resource Master, Shadow Step |
 
-Die Skills kommen **erst nach dem Vertical Slice**.
+HP-Skills auf Gold umgedeutet: Schild fängt Treffer ohne Goldverlust ab, Thick Skin = jeder n-te Treffer kostet nichts, Regeneration = Gold-Rinnsal tagsüber, Heiler heilen Truppen statt Monarch, Last Stand = die letzte Münze hält einen Treffer länger; Lava kostet 1 Münze je Sekunde (`rules/kampf.md` § 5). Die Skills kommen **erst nach dem Vertical Slice**.
 
 ## Bürger und Truppen (`data/troops.json`)
 
@@ -73,7 +73,7 @@ Bürger sind alle Figuren des Hubs, **Truppen** nur die Kämpfer (Bogenschützen
 - **Landstreicher** im Rekrutierungs-Camp → Münze geben → **Bauer** (folgt, sammelt, baut).
 - Werkstatt: Bauer + Bogen → **Bogenschütze** (Fernkampf, besetzt Türme). Bauer + Schwert → **Krieger** (Nahkampf, Frontlinie).
 - Elite-Upgrades in der Schmiede (Stein/Kupfer), Rüstung in der Rüstkammer (Eisen): +50% HP und Schaden, +20% Angriffstempo bzw. +20 % HP je Stufe. Bürger haben **kein Level und keine Skills**, nur Upgrades und **Berufe** (Bergmann, Baumeister, Handwerker; Händler kommt zu Besuch).
-- Truppen kämpfen automatisch (KI), Bauern fliehen bei Gefahr. **Truppen-Limit je Hub:** Basis 10, Kaserne +10, es zählen nur Kämpfer. Heilung nur am Heilplatz. **Bürger sterben nicht** (Q67–Q69, 2026-10-04, wie im Vorbild): Bei HP 0 lässt ein Bürger mit Ausrüstung sie fallen und wird Bauer, ein Bauer lässt seine Münze fallen und wird Landstreicher; Landstreicher werden nicht angegriffen. Gegner tragen Ausrüstung vom Boden zum Portal. Details: `rules/buerger.md`. *Krieger, Elite-Upgrades, Kaserne, Limit und Berufe sind beschlossen, aber noch nicht im Code.*
+- Truppen kämpfen automatisch (KI), Bauern fliehen bei Gefahr. **Angriff:** Je nach Kampfvariante der Welt (`combat.mode`) rücken Soldaten in Gruppen mit Gruppenführer (Schild 10 Gold, Auslöser am Tor 2 Gold; Standard `groups`) oder ein Trupp hinter dem Banner des Monarchen aus (`general`), um Portale zu zerstören (`rules/kampf.md` §§ 2, 3). **Truppen-Limit je Hub:** Basis 10, Kaserne +10, es zählen nur Kämpfer. Heilung nur am Heilplatz. **Bürger sterben nicht** (Q67–Q69, 2026-10-04, wie im Vorbild): Ein getroffener Kämpfer verliert die Waffe und wird Bürger (Bauer); die Kaskade bis zum Landstreicher entfällt, getroffene Bauern fliehen zur Burg und holen sich später (ohne Gegner in 8 Units) neue Ausrüstung; Landstreicher werden nicht angegriffen (B-928, B-929, `rules/kampf.md` § 4). Gegner tragen Ausrüstung vom Boden zum Portal. Details: `rules/buerger.md`. *Krieger, Elite-Upgrades, Kaserne, Limit und Berufe sind beschlossen, aber noch nicht im Code.*
 
 ## Gebäude (`data/buildings.json`)
 
@@ -121,7 +121,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 - Eigenschaften: `stealsGold` (Greed klaut Gold bei Kontakt mit dem Monarch), `ignoresWalls` (Fledermaus, Geist),
   `prefersBuildings`/`prefersTowers`/`prefersTroops`/`prefersMonarch`, `swarm`, `aoe`, `phases`, `fleesAtHalfHp`. Wolf-Rudel und Holzdiebstahl entfallen.
 - Pools je Stufe (2 Standard + 1 Elite): Wald, Höhle, Mine wie bisher; **Eisenstollen:** Lavaschleim, Eisenkäfer, Feuergeist; **Kristallhöhle:** Kristallspinne, Splitterwicht, Kristallwächter (`rules/gegner.md`).
-- Wellen: 1–5 → 5–10 Standard. 6–10 → 10–15 Standard + 1–2 Elite. Ab 11 → 15–20 Standard + 3–5 Elite; dazu Wellenfaktor je Spieleranzahl und Schwierigkeitsgrad. Eine Welle je Nacht (Oberwelt) bzw. je 100 % Aggressionspool, 2 Portale je Stufe (ab Tiefe 3 drei), Wellenzähler je Stufe. Das Tor blockiert Gegner wie die Mauer.
+- Wellen: 1–5 → 5–10 Standard. 6–10 → 10–15 Standard + 1–2 Elite. Ab 11 → 15–20 Standard + 3–5 Elite; dazu Wellenfaktor je Spieleranzahl und Schwierigkeitsgrad. Eine Welle je Nacht (Oberwelt) bzw. je 100 % Aggressionspool, 2 Portale je Stufe (ab Tiefe 3 drei) mit HP, Wellenzähler je Stufe. Sind alle Portale einer Stufe zerstört, ist sie dauerhaft sicher (keine Wellen, kein Miniboss, Endboss bleibt; das letzte Portal gibt den Skill-Punkt des Minibosses; `rules/kampf.md` § 2). Das Tor blockiert Gegner wie die Mauer.
 - Skalierung je Tiefe und je Insel (eigene Tabelle je Insel, Startwerte HP +50 %, Schaden +30 %, Tempo +10 % je Tiefe).
 - **Bosse:** je Stufe ein Miniboss (kommt mit Welle 5 im Wald, Welle 3 unten), je Insel ein Endboss in seinem Bau in der tiefsten Stufe (wartet, wird bei Ankunft ausgelöst); Gold, Material und Skill-Punkte als Belohnung, sie kehren nie zurück. Der Sieg über den Endboss öffnet die nächste Insel. Details: `rules/bosse.md`.
 - **Events:** Vollmond (jede 7. Nacht), Blutmond (jede 13.), Händler-Überfall (jeder 4. Besuch), siehe `rules/bosse.md`.
@@ -129,8 +129,9 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 
 ## Niederlage und Ziel
 
-- **Burg einer Stufe zerstört:** Der **Niederlage-Modus** des Raums entscheidet: *Gold/Material-Verlust* (je −50 %), *Stufenverlust* (Hub der Stufe zurückgesetzt) oder *Komplett verloren* (Game Over). Standard je Schwierigkeitsgrad: Dev/Leicht Gold/Material, Normal/Hart Stufenverlust, Ultra komplett verloren.
-- **Monarch tot:** Respawn an der Burg, keine Strafe (`rules/monarch.md` § 5).
+- **Niederlage = Kronenraub** (B-926, 🧑 2026-11-15): Trägt ein Gegner eine Krone ins Portal, ist das Spiel in jedem Grad verloren (`rules/kampf.md` § 6).
+- **Burg einer Stufe zerstört:** Schaden ohne Spielende. Der **Niederlage-Modus** des Raums entscheidet: *Gold/Material-Verlust* (je −50 %) oder *Stufenverlust* (Hub der Stufe zurückgesetzt); *Komplett verloren* gilt für den Burgfall nicht mehr; Ultra: Stufenverlust, Leicht/Normal nur Schaden (🧑 2026-11-15; Ist-Stand im Code noch: Ultra komplett verloren).
+- **Monarch:** stirbt nicht, kein Respawn (`rules/kampf.md` § 5).
 - **Ziel:** Standard ist der Endboss der letzten Insel; Varianten als Raum-Option: Gold sammeln, N Tage überleben, alles abbauen, alles ausbauen. Details: `rules/stufen.md`.
 - **Raum-Optionen:** Schwierigkeitsgrad, Ziel und Niederlage-Modus werden beim Anlegen des Raums gewählt.
 
@@ -144,7 +145,7 @@ Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engin
 | Interagieren | A (halten) | Leertaste (halten) |
 | Schlag | X | E |
 | Skills 1–4 | LB, RB, LT, D-Pad hoch | Q, R, T, Z |
-| Wiederbeleben (neben einem gefallenen Mitspieler) | A halten (3 s) | Leertaste halten |
+| Wiederbeleben (entfällt, B-926; Krone aufheben: Hinlaufen, Taste offen) | – | – |
 | Skill-Menü | D-Pad runter (nicht View, da View + Menu reserviert ist) | K |
 | Pause (Regel: [`rules/bedienung.md`](rules/bedienung.md) § 1) | Menu (kurz, < 600 ms) | Esc |
 | Vollbild | RS (Stick drücken) | F |

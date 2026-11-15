@@ -19,7 +19,7 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 | Die Stufen einer Insel sind je **ein Level** (der Generator erzeugt je Stufe ein Level aus Biom und Seed; Q61, 2026-10-04) und **pro Spieler frei begehbar**: Jeder Spieler wechselt allein über den Tiefen-Eingang (2 s stehen) oder eine gebaute Treppe; es gibt keine gemeinsame Reise. | Spieler sollen verschiedene Aufgaben an verschiedenen Orten übernehmen können. | `data/hub.json` › `travel` | – |
 | Jede Stufe hat **einen eigenen Hub**, der von Grund auf gebaut wird; alle Hubs bleiben bestehen. | Wie bisher. | `data/hub.json` | – |
 | **Breite der Stufen:** nach unten schmaler, dafür dichter (Startwerte in `materialien-gebaeude.md` § 1). **Dichte unter Tage nicht abnehmend** (Höhle ≤ Mine ≤ Eisenstollen ≤ Kristallhöhle), Untergrenze 2,8 endliche Objekte je 100 Units (Startwert; Q28, 2026-10-04). | Wege, Druck, Rechenzeit. | `data/biomes/*.json` | Dichte je Biom ≥ 2,8 je 100 Units (Messung mit 100 Seeds, B-115) |
-| **Eisenstollen und Kristallhöhle:** Ausgang (`exitSide`) Eisenstollen `left`, Kristallhöhle `right`; je 3 Portale. **Lava schadet:** Figuren auf Lava (Spieler und Bürger) erleiden 5 Schaden/s (Startwert); ob Gegner betroffen sind, bestätigt der Balancing-Workshop (Q28, 2026-10-04). | Lava ist eine echte Gefahr der tiefen Stufen. | `data/biomes/ironhold.json`, `crystal.json` (Lava-Schaden als Wert in `data/`, SIM legt an) | – |
+| **Eisenstollen und Kristallhöhle:** Ausgang (`exitSide`) Eisenstollen `left`, Kristallhöhle `right`; je 3 Portale (mit HP, `kampf.md` § 2). **Lava schadet:** Bürger auf Lava erleiden 5 Schaden/s (Startwert), der **Monarch verliert 1 Münze je Sekunde wie bei einem Treffer, ohne Gold fällt die Krone** (🧑 2026-11-15, `kampf.md` § 5); ob Gegner betroffen sind, bestätigt der Balancing-Workshop (Q28, 2026-10-04). | Lava ist eine echte Gefahr der tiefen Stufen. | `data/biomes/ironhold.json`, `crystal.json` (Lava-Schaden als Wert in `data/`, SIM legt an) | – |
 | **Das Baumaterial (Holz, Stein, Kupfer, Eisen, Kristall) gehört der Insel:** alle Stufen und Hubs einer Insel teilen einen Vorrat. Eine neue Insel beginnt mit dem **Startvorrat von 100 Holz** (Startwert, B-177, `materialien-gebaeude.md` § 1). Gold bleibt je Spieler. | Wald liefert Holz, Höhle Stein, Mine Kupfer, Eisenstollen Eisen, Kristallhöhle Kristall, gebaut wird überall; so trägt niemand Material von Hub zu Hub. | `World.stock` wird ein Vorrat je Insel (SIM) | Material am Morgen je Rohstoff im Korridor aus B-099 (Messgröße noch offen) |
 | **Alle Stufen einer Insel laufen weiter**, auch wenn kein Spieler dort ist (eine gemeinsame Zeit, eigene Wellen je Stufe). Ein Hub ohne Verteidiger kann fallen. | Die Entscheidung „wo bin ich?“ ist Spielinhalt. Rechenlast wird mit B-099 und SP11 (Pi 3) gemessen. | – | Rechenzeit je Tick mit 3 Stufen aktiv im Ziel aus B-042 (p99 < 10 ms bei 2 Räumen × 3 Spielern) |
 | **Inselwechsel (BAS, B-637):** Auf Stufe 1 (Tiefe 0) jeder Insel liegt ein **Hafen-Chunk** (`geplante-chunks.md` § 10). Dort bauen die Spieler das **Schiff** in **3 Abschnitten** (Kiel, Rumpf, Segel), jeder mit Münzen und Material (`wirtschaft.md` § 8); Gegner beschädigen das Schiff nicht. Ist das Schiff fertig **und** der Endboss der tiefsten Stufe besiegt, erfolgt der Wechsel **gemeinsam**: alle lebenden Spieler stehen am Steg. Fehlt eine Bedingung, nennt der Hinweis am Steg sie („Endboss besiegen“, „Schiff fertig bauen“). Ein Portal zur nächsten Insel gibt es nicht. Die neue Insel hat eigene Stufen und Hubs und beginnt mit dem Startvorrat (100 Holz, B-177); die nächste Insel ist die folgende der Welt-Datei des Raums ([`welten.md`](welten.md)). | Der Fortschritt bleibt ein gemeinsamer Meilenstein, Inseln folgen einander. | `data/worlds/<id>.json` › `islands`, `plannedChunks`; Schiffskosten (BS3) | Schiff fertig: `zielkorridore.md` § 6 |
@@ -29,11 +29,11 @@ Standardszenario **Wald, 2 Spieler, Bot „sparsam“, Normal, je 100 Seeds**.
 
 ## 2. Aggressionspool (unter Tage)
 
-Unverändert (🧑 hat nicht gesondert bestätigt): Unter Tage statt Tag/Nacht: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle und der Pool geht auf 0. **Der Pool friert ein** (B-646, 🧑 2026-10-26), solange Gegner einer Welle leben oder noch kommen (Wachen zählen nicht) und in den ersten **4 min Spielzeit** nach einer Welle; sonst löste jede getötete Welle über die +5 % je Kill sofort die nächste aus (Wellen-Lawine). Der globale Tag/Nacht-Zyklus läuft weiter (Nacht-Gegner wie Skelette). Daten: `data/biomes/cave.json`, `mine.json`. Zielkorridor: Wellen unter Tage im Abstand von 4–12 Minuten Spielzeit (Normal, Mine, Ressourcen gesammelt) – Startziel, Messgröße mit B-099.
+In einer **sicheren Stufe** (alle Portale zerstört, `kampf.md` § 2) gibt es keinen Pool und keine Wellen mehr. Unverändert (🧑 hat nicht gesondert bestätigt): Unter Tage statt Tag/Nacht: +1 %/min, +5 % je Kill, +1 % je gesammelter Ressource; bei 100 % kommt eine Welle und der Pool geht auf 0. **Der Pool friert ein** (B-646, 🧑 2026-10-26), solange Gegner einer Welle leben oder noch kommen (Wachen zählen nicht) und in den ersten **4 min Spielzeit** nach einer Welle; sonst löste jede getötete Welle über die +5 % je Kill sofort die nächste aus (Wellen-Lawine). Der globale Tag/Nacht-Zyklus läuft weiter (Nacht-Gegner wie Skelette). Daten: `data/biomes/cave.json`, `mine.json`. Zielkorridor: Wellen unter Tage im Abstand von 4–12 Minuten Spielzeit (Normal, Mine, Ressourcen gesammelt) – Startziel, Messgröße mit B-099.
 
 ## 3. Bosse und Ziel der Kampagne
 
-- **Minibosse:** je Stufe ein Miniboss. **Endboss:** sitzt immer in der **tiefsten Stufe** jeder Insel (Q60, 2026-10-04); sein Sieg macht den Weg zur nächsten Insel frei. Boss-Werte und Verhalten legt Regelwerk III fest (`bosse.md`).
+- **Minibosse:** je Stufe ein Miniboss (entfällt in einer sicheren Stufe; wer das letzte Portal zerstört, erhält seinen Skill-Punkt, `kampf.md` § 2). **Endboss:** sitzt immer in der **tiefsten Stufe** jeder Insel (Q60, 2026-10-04); sein Sieg macht den Weg zur nächsten Insel frei. Boss-Werte und Verhalten legt Regelwerk III fest (`bosse.md`).
 - **Ziel der Kampagne (Standard):** Der **Endboss der letzten Insel** wird besiegt. In der ersten Ausbaustufe (1 Insel) ist das bis W2 der Endboss der Mine, danach der Kristallhöhle (Q60, 2026-10-04).
 - **Siegvarianten:** Das Ziel ist eine **Raum-Option** (siehe 5), **eine Variante je Raum**; Minibosse gibt es immer. Varianten:
 
@@ -51,16 +51,18 @@ Annahme (🧑 hat nicht gesondert bestätigt): Eine Variante gilt je Insel; das 
 
 ## 4. Niederlage
 
+**Geändert 🧑 2026-11-15 (B-926, `kampf.md` § 6):** Die Niederlage ist der **Kronenraub** (ein Gegner trägt die Krone eines Monarchen ins Portal, Game Over in jedem Grad). Der **Burgfall** bleibt als **Schaden ohne Spielende**; der Modus „Komplett verloren“ gilt für ihn nicht mehr (Ist-Stand im Code: `engine/sim/island_defeat.go`, Umbau B-931).
+
 Fällt die **Burg einer Stufe**, wirkt der **Niederlage-Modus** des Raums (Raum-Option, Standard nach Schwierigkeitsgrad, einzeln änderbar):
 
 | Modus | Wirkung |
 |---|---|
 | **Gold/Material-Verlust** | Gold je Spieler und Material der Insel je −50 %; Bauten und Bürger bleiben. Die Burg steht sofort wieder. |
 | **Stufenverlust** | Hub der gefallenen Stufe wird zurückgesetzt (alle Bauplätze unbezahlt, alle Bürger weg außer Landstreichern, Material der Insel −50 %); Spieler dieser Stufe verlieren 50 % ihres Golds. Die Burg steht sofort wieder. |
-| **Komplett verloren** | Game Over: der Raum endet, der Spielstand bleibt wie zuletzt gespeichert. |
+| **Komplett verloren** | Game Over: der Raum endet, der Spielstand bleibt wie zuletzt gespeichert. **Nur noch Ist-Stand; entfällt für den Burgfall mit B-931, Game Over gibt es nur durch Kronenraub.** |
 
-Standard je Grad: **Dev und Leicht: Gold/Material-Verlust · Normal und Hart: Stufenverlust · Ultra: Komplett verloren.**
-**Monarch tot:** Respawn an der Burg ohne Strafe; heute nach 5 s, Ziel 15 s mit dem Wiederbeleben (B-120, W4.1; `monarch.md` § 5). Daten: neu `data/difficulty.json` (SIM legt Feld an); `engine/sim/world.go` › `castleFallen` ist der Ist-Stand von „Stufenverlust“. Zielkorridore: siehe `wirtschaft.md` § 4 (Burg hält Nacht 1–5).
+Standard je Grad: **Dev und Leicht: Gold/Material-Verlust · Normal und Hart: Stufenverlust · Ultra: Komplett verloren** (**entschieden 🧑 2026-11-15:** Ultra = Stufenverlust beim Burgfall; Kronenraub ist in jedem Grad Game Over, `kampf.md` § 6).
+**Monarch:** Er stirbt nicht (kein Tod, kein Respawn); Treffer kosten Gold, ohne Gold fällt die Krone (`kampf.md` § 5). Daten: neu `data/difficulty.json` (SIM legt Feld an); `engine/sim/world.go` › `castleFallen` ist der Ist-Stand von „Stufenverlust“. Zielkorridore: siehe `wirtschaft.md` § 4 (Burg hält Nacht 1–5).
 
 ## 5. Raum-Optionen
 
@@ -68,7 +70,9 @@ Beim Anlegen eines Raums (und im Dev-Mode im Debug-Panel) lassen sich einstellen
 
 1. **Schwierigkeitsgrad** (Dev, Leicht, Normal, Hart, Ultra; `wirtschaft.md` § 4),
 2. **Ziel** (Siegvariante, § 3),
-3. **Niederlage-Modus** (§ 4).
+3. **Niederlage-Modus** (§ 4, gilt für den Burgfall).
+
+Die **Kampfvariante** (`groups` Standard oder `general`) ist keine Raum-Option, sondern ein Feld der Welt (`welten.md` § 2, `kampf.md` § 3).
 
 Die Optionen stehen im Spielstand. **Dev** ist nur im Dev-Mode wählbar.
 

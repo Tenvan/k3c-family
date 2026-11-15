@@ -3,6 +3,7 @@
 Beschlossen von 🧑 im Workshop R4.2 am 2026-10-02 (Grundlage: [`archiv/ist-gegner-bosse.md`](archiv/ist-gegner-bosse.md); Rahmen: [`wirtschaft.md`](wirtschaft.md), [`stufen.md`](stufen.md), [`monarch.md`](monarch.md), [`buerger.md`](buerger.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Jede Regel gilt für 2+ Spieler. Bosse und Events: R4.3 (`bosse.md`).
+**Kampf (B-926, 🧑 2026-11-15):** Portale haben HP und werden von ausrückenden Truppen zerstört, laufender Spawn während eines Angriffs, zerstörte Portale machen die Stufe dauerhaft sicher; Gegner können Monarch-Gold und Krone ins Portal tragen. Verbindlich: [`kampf.md`](kampf.md) §§ 2, 5.
 
 ## 1. Gegner je Stufe (Insel 1)
 
@@ -48,7 +49,7 @@ Gold-Drops je Gegnerart wie in `wirtschaft.md` § 1 (Werte in `data/enemies.json
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
-| **Wellenform unverändert:** Oberwelt eine Welle je Nacht; unten eine Welle je 100 % Aggressionspool; **2 Portale je Stufe, ab Tiefe 3 drei**. | Bewährter Rhythmus, Tempo unten bestimmt der Spieler. | `waves.json`, `biomes/*.json` › `portals.count` | – |
+| **Wellenform unverändert:** Oberwelt eine Welle je Nacht; unten eine Welle je 100 % Aggressionspool; **2 Portale je Stufe, ab Tiefe 3 drei**; Portale haben HP und können zerstört werden, in einer **sicheren Stufe** (alle Portale zerstört) kommen keine Wellen mehr (`kampf.md` § 2). | Bewährter Rhythmus, Tempo unten bestimmt der Spieler. | `waves.json`, `biomes/*.json` › `portals.count` | – |
 | **Wellenzähler je Stufe**; Tag und Nacht bleiben global. | Jede Stufe hat ihre eigene Steigerung. | `World.Wave` je Stufe | – |
 | Größen laut Tabelle (Welle 1–5: 5–10 Standard; 6–10: 10–15 + 1–2 Elite; ab 11: 15–20 + 3–5 Elite), dazu Wellenfaktor je Spieleranzahl der Insel (Standard- und Elite-Zahl gleich, gerundet), Faktoren des Schwierigkeitsgrads und die Insel-Tabelle. | Bestehende Tabelle als Basis. | `waves.json` › `table` | Gegner einer Welle besiegt bis Tagesanbruch (Oberwelt) in ≥ 90 % |
 | **Tagesanbruch:** Gegner fliehen nur in der Oberwelt; unten bleiben sie bis zum Tod. | Unten bestimmen Spieler das Tempo. | `world_cycle.go` | – |
@@ -59,8 +60,8 @@ Gold-Drops je Gegnerart wie in `wirtschaft.md` § 1 (Werte in `data/enemies.json
 
 - Das **Tor blockiert wie die Mauer** (eigene Bürger und Spieler passieren).
 - Alle übrigen Gebäude (Heilplatz, Taverne, Lager, Schmiede, Rüstkammer, Werkstatt, Baumschule) sind **Ziele** für Gegner mit `prefersBuildings`; andere Gegner greifen sie nur an, wenn nichts anderes in Reichweite ist.
-- **Landstreicher sind kein Ziel** (Q67, 2026-10-04): Bürger sterben nicht, ein Treffer auf 0 HP stuft sie zurück (`buerger.md` § 3).
-- **Aufheben** (Q67, Q68, 2026-10-04): Gegner heben am Boden liegende **Münzen** und **Ausrüstung** auf. Ausrüstung **tragen sie zum Portal**, dort ist sie verloren (Ereignis `equipmentTaken`, Q69); wird der Träger vorher getötet, fällt sie wieder zu Boden.
+- **Landstreicher sind kein Ziel** (Q67, 2026-10-04): Bürger sterben nicht, ein Treffer entwaffnet Kämpfer, getroffene Bauern fliehen zur Burg (`buerger.md` § 3, `kampf.md` § 4).
+- **Aufheben** (Q67, Q68, 2026-10-04; erweitert B-926): Gegner heben am Boden liegende **Münzen**, **Ausrüstung** und die **Krone** eines Monarchen auf. Krone und Monarch-Gold tragen sie ebenfalls zum Portal: Die geraubte Krone ist der **Kronenraub** (Niederlage, `kampf.md` § 6). Ohne Portale in der Stufe lassen sie alles fallen. Ausrüstung **tragen sie zum Portal**, dort ist sie verloren (Ereignis `equipmentTaken`, Q69); wird der Träger vorher getötet, fällt sie wieder zu Boden.
 - Begründung: Wirtschaft muss geschützt werden, ohne dass jeder Gegner sie sucht. Zielkorridor: zerstörte Gebäude je Welle (1–5): Median höchstens 1 (`materialien-gebaeude.md` § 4).
 
 ## 5. Offen und Annahmen
