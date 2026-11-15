@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { PlanningData, PlanProject, PlanSprint, PlanTicket } from '../api';
+import type { PlanningData, PlanProject, PlanSession, PlanSprint, PlanTicket } from '../api';
 import { IconButton, LinkButton, Text } from '@webkit/atoms';
 import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { ENVS, envTone, setField } from './Backlog';
@@ -21,11 +21,13 @@ interface Props {
   onClose: () => void;
   /** Ziel der Backlog-Prompts (Ziel-Auswahl im Backlog). */
   target: SprintTarget;
+  /** Fließtexte der Sessions, beim Öffnen nachgeladen (B-909); fehlt die ID, lädt der Text noch. */
+  texts: Record<string, string>;
 }
 
 /** Detail der Auswahl unter dem Backlog (erp-qs-Look): Session, Sprint, Projekt oder Ticket mit Fakten, Prompt und
  *  Lesemodus (Doppelklick auf den Titel); verschwundene Auswahl als Hinweis. */
-export function PlanDetail({ data, sel, onSelect, onClose, target }: Props) {
+export function PlanDetail({ data, sel, onSelect, onClose, target, texts }: Props) {
   const head = (id: string, pill: ReactNode, title: string, prompt: string, wt?: string) => (
     <header className="pl-detail-head">
       {pill}
@@ -35,7 +37,7 @@ export function PlanDetail({ data, sel, onSelect, onClose, target }: Props) {
     </header>
   );
   const ctx = { data, onSelect, head };
-  if (findSession(data, sel)) return <SessionDetail sel={sel} {...ctx} />;
+  if (findSession(data, sel)) return <SessionDetail sel={sel} texts={texts} {...ctx} />;
   const sprint = data.sprints.find((s) => s.id === sel);
   if (sprint) return <SprintDetail s={sprint} {...ctx} />;
   const project = data.projects?.find((p) => p.id === sel);
@@ -63,7 +65,7 @@ const field = (id: string, label: string, value: string, options: string[], tone
   ? <Pill tone={tone}>{value || '?'}</Pill>
   : <FieldMenu label={label} value={value} options={options} onPick={(v) => void setField(id, label, v)}><Pill tone={tone}>{value || '?'}</Pill></FieldMenu>;
 
-function SessionDetail({ data, sel, onSelect, head }: Ctx & { sel: string }) {
+function SessionDetail({ data, sel, onSelect, head, texts }: Ctx & { sel: string; texts: Record<string, string> }) {
   const { sprint: s, session: x } = findSession(data, sel)!;
   const open = pickable(x);
   return (
@@ -77,10 +79,18 @@ function SessionDetail({ data, sel, onSelect, head }: Ctx & { sel: string }) {
         ['Sprint', <>{link(s.id, onSelect)} {s.title}</>], ['Projekt', s.project && s.project !== '–' ? link(s.project, onSelect) : ''],
       ]} />
       <div className="pl-md">
-        {x.text ? <MarkdownView source={x.text.replace(/^#\s[^\n]*\n/, '')} headingOffset={1} /> : <Text color="gray" size="2">Noch keine Session-Datei – Entwurf im Sprint {s.id}.</Text>}
+        <SessionText x={x} texts={texts} sprint={s.id} />
       </div>
     </div>
   );
+}
+
+/** Fließtext der Session: lädt noch, fehlt (Entwurf ohne Datei) oder Markdown ohne die H1 des Kopfes. */
+function SessionText({ x, texts, sprint }: { x: PlanSession; texts: Record<string, string>; sprint: string }) {
+  const text = x.wt ? x.text : texts[x.nr]; // Einträge nur im Worktree tragen ihren Text selbst
+  if (text === undefined && !x.wt) return <Text color="gray" size="2">Lade Session …</Text>;
+  if (!text) return <Text color="gray" size="2">Noch keine Session-Datei – Entwurf im Sprint {sprint}.</Text>;
+  return <MarkdownView source={text.replace(/^#\s[^\n]*\n/, '')} headingOffset={1} />;
 }
 
 function SprintDetail({ s, onSelect, head }: Ctx & { s: PlanSprint }) {

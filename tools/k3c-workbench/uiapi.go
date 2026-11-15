@@ -35,7 +35,7 @@ var uiMethods = map[string]bool{
 	"McpOverview": true, "McpRestart": true, "McpInstructions": true, "McpCalls": true, "McpUsage": true,
 	"Tasks": true, "TasksReload": true, "TaskStart": true, "TaskStop": true, "TaskRuns": true,
 	"TaskGatesView": true, "TaskGateToggle": true, "TaskGateSave": true,
-	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true,
+	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true, "PlanningList": true, "PlanningItems": true,
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,

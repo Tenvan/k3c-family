@@ -1,4 +1,5 @@
 // Command aufraeumen löscht sichere lokale Branches und Worktrees und listet den Rest mit Grund (B-302).
+// Zusätzlich löscht es in bin/ der Repo-Wurzel die EXE entfernter Programme (feste Liste, B-1007).
 // Aufruf über `task ops:aufraeumen` (`-- --dry` zeigt nur an). Auf origin löscht das Werkzeug nie etwas.
 package main
 

@@ -1,6 +1,6 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
-  McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
+  McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanItem, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
 import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
@@ -38,6 +38,8 @@ interface GoApp {
   TaskGateToggle(name: string): Promise<TaskGates>;
   TaskGateSave(): Promise<TaskGates>;
   PlanningData(): Promise<PlanningData>;
+  PlanningList(): Promise<PlanningData>;
+  PlanningItems(ids: string[]): Promise<PlanItem[]>;
   PlanningDocs(): Promise<PlanDoc[]>;
   PlanningSet(id: string, field: string, value: string): Promise<string>;
   PlanningDoc(name: PlanDoc): Promise<string>;
@@ -227,6 +229,7 @@ export function wailsBackend(): Backend {
     taskGateToggle: (name) => app.TaskGateToggle(name),
     taskGateSave: () => app.TaskGateSave(),
     planningData: () => app.PlanningData(),
+    planningList: () => app.PlanningList(), planningItems: (ids) => app.PlanningItems(ids),
     planningDocs: () => app.PlanningDocs(),
     planningSet: (id, field, value) => app.PlanningSet(id, field, value),
     planningDoc: (name) => app.PlanningDoc(name),

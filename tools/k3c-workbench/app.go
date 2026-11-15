@@ -120,7 +120,9 @@ func (a *App) startup(ctx context.Context) {
 	a.initTasks()
 	a.svcCtx, a.cancel = context.WithCancel(ctx)
 	a.startResources()
-	planning.Watch(a.svcCtx, a.root, planningPoll, func() { a.emit(a.ctx, evPlanning, nil) })
+	planning.WatchIDs(a.svcCtx, a.root, planningPoll, func(ids []string) {
+		a.emit(a.ctx, evPlanning, planning.Changed{IDs: ids})
+	})
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {
 			a.emit(a.ctx, evServiceState, st)
