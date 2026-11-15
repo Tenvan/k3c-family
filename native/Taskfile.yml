@@ -84,11 +84,15 @@ tasks:
       - ../../data/**/*
       # Version: neue Angabe von git describe baut neu (game:version), im Hauptcheckout wie im Worktree
       - bin/version.txt
+      - winres/winres.json
     generates:
       - bin/k3c-game.exe
     cmds:
+      # Windows-Versionsinfo und Manifest einbetten (winres/winres.json, go-winres): eine EXE mit Firma, Produktname und
+      # Version wird von Virenscannern (Defender-ML „Bearfoos") seltener als anonyme Datei eingestuft; die .syso ist generiert
+      - go run github.com/tc-hib/go-winres@v0.3.3 make --in winres/winres.json --out rsrc --arch amd64 --file-version git-tag --product-version git-tag
       # Version ins Hauptmenü (menu.Version, B-808)
-      - go build -ldflags "-X k3c/native/k3c-game/menu.Version={{.GAME_VERSION}}" -o bin/k3c-game.exe .
+      - go build -trimpath -ldflags "-X k3c/native/k3c-game/menu.Version={{.GAME_VERSION}}" -o bin/k3c-game.exe .
 
   game:
     desc: "Natives Spiel starten (Platzhalter; Menü: Leertaste/Enter/A, Mitspieler: Bestätigen, Spiel: A/D bzw. Pfeile bzw. Stick, Esc/Menu Pause; direkt ins Spiel: task native:game -- --seed wald)"

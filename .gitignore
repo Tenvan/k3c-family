@@ -57,3 +57,6 @@ docs/backlog/.ticket.lock
 /public/grafik/truppen/*/
 graphify-out/
 /native/k3c-game/bin/
+
+# generierte Windows-Ressourcen (go-winres, native:game:exe)
+*.syso
