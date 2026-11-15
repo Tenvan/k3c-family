@@ -151,7 +151,12 @@ func (e Editor) Set(ctx context.Context, id string, patch json.RawMessage) ([]st
 			return nil, err
 		}
 	}
-	return e.commitChange(ctx, id, raw, out)
+	warnings, err := e.commitChange(ctx, id, raw, out)
+	if err != nil && strings.Contains(err.Error(), "kein Hafen") {
+		err = fmt.Errorf("%w; Hinweis: den Hafen im selben world_set setzen, z. B. islands: [{id: <Insel davor>, plannedChunks: "+
+			`{"0": [{"slot": -7, "kind": "harbor"}]}}, {id: <neue Insel>}] (Feld plannedChunks, Tiefe 0)`, err)
+	}
+	return warnings, err
 }
 
 // commitChange schreibt nur eine inhaltliche Änderung (sonst bleibt die Datei, wie sie ist).
