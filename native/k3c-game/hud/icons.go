@@ -29,12 +29,38 @@ var resourceIcons = map[string]string{
 var hudAssets = []string{purseAsset, "icons/icon-eisen", "icons/icon-holz", "icons/icon-kristall", "icons/icon-kupfer", goldIcon,
 	"icons/icon-stein"}
 
-// Assets meldet die Icons des HUD für jedes Level (view.AssetSource), mit ladbarer Seekarte auch deren Assets.
+// keyAssets sind die Tasten-Icons (B-911), sortiert: die zwei Kappen und je Xbox-Taste mit Bild (padGlyphs) eins.
+var keyAssets = []string{capNarrow, capWide, "icons/xbox-a", "icons/xbox-down", "icons/xbox-lb", "icons/xbox-lt", "icons/xbox-menu",
+	"icons/xbox-rb", "icons/xbox-rs", "icons/xbox-rt", "icons/xbox-up", "icons/xbox-x", "icons/xbox-y"}
+
+// Assets meldet die Icons des HUD für jedes Level (view.AssetSource), mit ladbaren Tasten-Icons und ladbarer Seekarte
+// auch deren Assets.
 func (h *hud) Assets(string, *sim.World) []string {
 	if h.assets != nil {
 		return h.assets
 	}
 	return hudAssets
+}
+
+// firstUnusable ist das erste Asset, das usable nicht laden kann ("" = alle ladbar).
+func firstUnusable(assets []string, usable func(string) bool) string {
+	for _, a := range assets {
+		if !usable(a) {
+			return a
+		}
+	}
+	return ""
+}
+
+// useKeyIcons nimmt die Tasten-Icons, wenn usable alle laden kann (weiche Assets wie die Seekarte); sonst malt das HUD
+// die Glyphen selbst (drawGlyph).
+func (h *hud) useKeyIcons(usable func(string) bool) {
+	if a := firstUnusable(keyAssets, usable); a != "" {
+		slog.Info("🚫 Tasten ohne Papierschnitt-Icons, Asset nicht ladbar", "asset", a)
+		return
+	}
+	h.keyIcons = true
+	h.listAssets()
 }
 
 // useSeaMap nimmt die Assets der Seekarte m, wenn usable alle laden kann (Library.Usable: ein fehlendes Bild darf nie ein
@@ -43,15 +69,23 @@ func (h *hud) useSeaMap(m *art.SeaMap, usable func(string) bool) {
 	if m == nil {
 		return
 	}
-	sea := m.Assets()
-	for _, a := range sea {
-		if !usable(a) {
-			slog.Info("🚫 Seekarte ohne Diorama, Asset nicht ladbar", "asset", a)
-			return
-		}
+	if a := firstUnusable(m.Assets(), usable); a != "" {
+		slog.Info("🚫 Seekarte ohne Diorama, Asset nicht ladbar", "asset", a)
+		return
 	}
 	h.seaMap = m
-	h.assets = slices.Concat(hudAssets, sea)
+	h.listAssets()
+}
+
+// listAssets stellt die gemeldeten Assets zusammen: Icons, Tasten-Icons und Seekarte, sortiert.
+func (h *hud) listAssets() {
+	h.assets = slices.Clone(hudAssets)
+	if h.keyIcons {
+		h.assets = append(h.assets, keyAssets...)
+	}
+	if h.seaMap != nil {
+		h.assets = append(h.assets, h.seaMap.Assets()...)
+	}
 	slices.Sort(h.assets)
 }
 

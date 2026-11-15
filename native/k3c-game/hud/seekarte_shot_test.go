@@ -43,6 +43,9 @@ func TestMain(m *testing.M) {
 	if out := os.Getenv(storyShotEnv); out != "" {
 		os.Exit(runStoryShot(out))
 	}
+	if out := os.Getenv(glyphShotEnv); out != "" {
+		os.Exit(runGlyphShot(out))
+	}
 	os.Exit(m.Run())
 }
 

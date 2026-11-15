@@ -78,7 +78,7 @@ func TestVoyageViewBuildsMap(t *testing.T) {
 		t.Errorf("Plätze: Start %+v, Ziel %+v", y.from, y.to)
 	}
 	checkVoyageNodes(t, &y)
-	if y.sea.hint != tr("de", "sea.voyage") || y.sea.title == "" {
+	if y.sea.hint != tr("de", "sea.voyage") || y.sea.title == "" || y.sea.line.n != 0 || y.sea.line.plain != "" {
 		t.Errorf("Texte: %q, %q", y.sea.title, y.sea.hint)
 	}
 	if n := testing.AllocsPerRun(50, func() { y.use("de", shotRoute, v) }); n != 0 {

@@ -94,7 +94,7 @@ func TestSeekarteAbgeschlosseneUndEinZiel(t *testing.T) {
 			}
 		}
 	}
-	if v.hint != seaHint(view.DefaultLanguage, h.seats[0].profile, false) || strings.Contains(v.hint, "◄") {
+	if v.hint != seaLine(view.DefaultLanguage, h.seats[0].profile, false).plain || strings.Contains(v.hint, "◄") {
 		t.Errorf("ein Ziel: Hinweis ohne Pfeile, war %q", v.hint)
 	}
 	if r := v.step(acts(view.ActionRight, view.ActionLeft)); r.moved || r.pick != "" {

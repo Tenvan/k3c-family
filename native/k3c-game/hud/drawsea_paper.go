@@ -173,7 +173,7 @@ func (h *hud) drawSeaScene(dst *ebiten.Image, v *seaView, a seaArt, p seaPlan, x
 	if focus != nil {
 		pt.text(dst, f, focus.name, p.box.X+p.pad, y, p.b, yellow)
 	}
-	pt.text(dst, f, v.hint, p.box.X+p.pad, y+1.2*p.b, 0.8*p.b, white)
+	h.drawHint(dst, f, &v.line, v.hint, p.box.X+p.pad, y+1.2*p.b, 0.8*p.b)
 }
 
 // drawSeaStrip kachelt die Papierschicht s ab (x, y) über die Breite w: so viele ganze Kacheln, wie am besten passen,

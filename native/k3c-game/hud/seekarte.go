@@ -61,6 +61,7 @@ type seaView struct {
 	choice      string
 	rows        []seaRow
 	title, hint string
+	line        keyLine // Bedienhinweis mit Tasten-Icons (keyline.go); hint ist derselbe als Text
 	shown       seaShown
 	sizes       seaSizes
 	sizesK      float64
@@ -94,7 +95,8 @@ func (v *seaView) refresh(lang, profile string, sw *sim.SwitchState, route []vie
 		if v.choice != sw.Choice || v.cursor >= len(v.ids) {
 			v.choice, v.cursor = sw.Choice, max(0, slices.Index(v.ids, sw.Choice))
 		}
-		v.title, v.hint = tr(lang, "sea.title"), seaHint(lang, profile, len(v.ids) > 1)
+		v.title, v.line = tr(lang, "sea.title"), seaLine(lang, profile, len(v.ids) > 1)
+		v.hint = v.line.plain
 		v.build(lang, sw, route)
 		v.sizesK = 0
 	} else if v.choice != sw.Choice {
@@ -129,20 +131,13 @@ func (v *seaView) remember(lang, profile string, sw *sim.SwitchState, route []vi
 	sh.doneID = append(sh.doneID[:0], sw.Completed...)
 }
 
-// seaHint ist der Bedienhinweis mit den Tasten des Eingabe-Profils; bei einem Ziel ohne Pfeile (nichts zu blättern).
-func seaHint(lang, profile string, several bool) string {
-	ok := glyphOf(lang, "confirm", profile).label
-	if profile == view.ProfileGamepad {
-		if several {
-			return tr(lang, "sea.hint.pad")
-		}
-		return tr(lang, "sea.hintOne.pad")
-	}
+// seaLine ist der Bedienhinweis mit den Tasten des Eingabe-Profils; bei einem Ziel ohne Pfeile (nichts zu blättern).
+func seaLine(lang, profile string, several bool) keyLine {
+	ok := arg("ok", glyphOf(lang, "confirm", profile))
 	if several {
-		move := glyphOf(lang, "left", profile).label + " / " + glyphOf(lang, "right", profile).label
-		return tf(lang, "sea.hint.keyboard", "move", move, "ok", ok)
+		return newKeyLine(tr(lang, "sea.hint"), moveArg(lang, profile), ok)
 	}
-	return tf(lang, "sea.hintOne.keyboard", "ok", ok)
+	return newKeyLine(tr(lang, "sea.hintOne"), ok)
 }
 
 // build legt die Zeilen nach Etappe (aufsteigend) und die Knoten nach Listenreihenfolge an. Abgeschlossen ist, was

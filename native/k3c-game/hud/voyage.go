@@ -72,7 +72,7 @@ func (y *voyageView) use(lang string, route []view.RouteIsland, v *view.Voyage) 
 	}
 	y.sea.shown.set = false
 	y.sea.refresh(lang, "", &y.sw, route)
-	y.sea.hint = tr(lang, "sea.voyage")
+	y.sea.hint, y.sea.line = tr(lang, "sea.voyage"), keyLine{} // auf der Fahrt wählt niemand: kein Bedienhinweis mit Tasten
 	var okFrom, okTo bool
 	for i := range y.sea.rows {
 		nodes := y.sea.rows[i].nodes

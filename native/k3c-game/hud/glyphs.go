@@ -8,14 +8,19 @@ import (
 	"image/color"
 	"slices"
 	"strings"
+	"unicode/utf8"
 
 	"k3c/native/k3c-game/view"
 )
 
-// glyph ist das Bild einer Taste: key "" = nur Text (Rückfall), label = Beschriftung im Bild bzw. Text.
+// glyph ist das Bild einer Taste: key "" = nur Text (Rückfall), label = Beschriftung im Bild bzw. Text, icon = das
+// Papierschnitt-Icon dazu (IconAsset; "" ohne Bild).
 type glyph struct {
-	key, label string
+	key, label, icon string
 }
+
+// newGlyph ist die Glyph zum Schlüssel key mit Beschriftung label und ihrem Icon.
+func newGlyph(key, label string) glyph { return glyph{key, label, IconAsset(key, label)} }
 
 // Aktionen in der Reihenfolge der Belegung (slotBindings.ts › KEY_ACTIONS).
 var glyphActions = [...]string{"confirm", "pause", "fullscreen", "attack", "skill1", "skill2", "skill3", "skill4", "skillMenu"}
@@ -119,16 +124,16 @@ func glyphOf(lang, action, profile string) glyph {
 	if profile == view.ProfileGamepad {
 		name, ok := padKeys[action]
 		if !ok {
-			return glyph{"", action}
+			return glyph{label: action}
 		}
 		label := name
 		if l, ok := padLabels[name]; ok {
 			label = l
 		}
 		if slices.Contains(padGlyphs[:], name) {
-			return glyph{"pad:" + name, label}
+			return newGlyph("pad:"+name, label)
 		}
-		return glyph{"", label}
+		return glyph{label: label}
 	}
 	keys := leftKeys
 	if profile == view.ProfileArrows {
@@ -136,23 +141,31 @@ func glyphOf(lang, action, profile string) glyph {
 	}
 	name, ok := keys[action]
 	if !ok {
-		return glyph{"", action}
+		return glyph{label: action}
 	}
-	return glyph{"key:" + name, keyLabel(lang, name)}
+	return newGlyph("key:"+name, keyLabel(lang, name))
 }
 
-// IconAsset ist das Papierschnitt-Icon (Gruppe icons) zum Glyph-Schlüssel key: "key:PAGEDOWN" → icons/taste-pagedown,
-// "pad:A" → icons/xbox-a; "" ohne Bild. Die Icons fehlen noch (PAP-Ticket aus EP1.2); bis dahin zeichnet drawGlyph
-// Kappe bzw. Xbox-Taste selbst.
-func IconAsset(key string) string {
+// Tastenkappen (B-911): leer, die Beschriftung setzt das HUD in der Sprache des Spiels darauf (drawglyph.go).
+const (
+	capNarrow = "icons/taste-kappe"       // ein Zeichen
+	capWide   = "icons/taste-kappe-breit" // längere Beschriftung
+)
+
+// IconAsset ist das Papierschnitt-Icon (Gruppe icons) zum Glyph-Schlüssel key mit Beschriftung label: "pad:A" →
+// icons/xbox-a; eine Tastatur-Taste bekommt nach der Länge ihrer Beschriftung die schmale (ein Zeichen) oder die
+// breite Kappe; "" ohne Bild. Ist das Icon nicht geladen, zeichnet drawGlyph Kappe bzw. Xbox-Taste selbst.
+func IconAsset(key, label string) string {
 	kind, name, ok := strings.Cut(key, ":")
 	switch {
 	case !ok || name == "":
 		return ""
 	case kind == "pad":
 		return "icons/xbox-" + strings.ToLower(name)
+	case utf8.RuneCountInString(label) <= 1:
+		return capNarrow
 	}
-	return "icons/taste-" + strings.ToLower(name)
+	return capWide
 }
 
 // slotLabels ist die Beschriftung von Schlag, Skill-Slot 1–4 und Skill-Menü im Eingabe-Profil profile.
@@ -186,8 +199,8 @@ func joinText(lang string, unseated []view.DeviceID) string {
 // joinKey: welche Arten freier Geräte es gibt (0 Pad, 1 Tastatur) in Reihenfolge des ersten Auftretens.
 type joinKey struct {
 	lang  string
-	order    [2]int8
-	n        int
+	order [2]int8
+	n     int
 }
 
 // newJoinKey fasst die freien Geräte für memo zusammen, ohne anzulegen.
