@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -68,7 +69,7 @@ func TestStressStartsWithConfig(t *testing.T) {
 	}
 	g.frame = stressFrame(10, 0)
 	g.stressStep()
-	g.frame = stressFrame(11, 0, "wave")
+	g.frame = stressFrame(11, 10)
 	g.stressStep()
 	g.frame = stressFrame(12, 10, "wave")
 	g.stressStep()
@@ -76,6 +77,7 @@ func TestStressStartsWithConfig(t *testing.T) {
 		{Action: "buildAll", Level: 3},
 		{Action: "spawn", Kind: "troop", Unit: "archer", Amount: 20},
 		{Action: "timescale", Factor: 4},
+		{Action: "wave"},
 		{Action: "spawn", Kind: "enemy", Unit: "goblin", Amount: 10},
 		{Action: "spawn", Kind: "enemy", Unit: "goblin", Amount: 15},
 	}
@@ -184,5 +186,57 @@ func TestStressEnemiesFor(t *testing.T) {
 		if c.got != c.want {
 			t.Errorf("Fall %d: %d, erwartet %d", i, c.got, c.want)
 		}
+	}
+}
+
+// devNames sind die Namen der Dev-Aktionen, die ein Test bisher ausgelöst hat.
+func devNames(s *stressSim) []string {
+	var out []string
+	for _, a := range s.actions {
+		out = append(out, a.Action+":"+a.Kind)
+	}
+	return out
+}
+
+// B-920/AC-01: Der Test löst die Wellen selbst aus (Dev-Aktion wave plus zusätzliche Gegner), ohne auf die erste Nacht zu
+// warten: die erste gleich nach dem Vorspann, die nächste erst nach der geschlagenen, nicht über cfg.Waves hinaus.
+func TestStressTriggersWavesItself(t *testing.T) {
+	g, s, _ := stressGameOf(t, t.TempDir())
+	cfg := view.StressTest{Players: 1, Enemies: 10, Growth: view.GrowthLinear, Factor: 5, Waves: 2, Enemy: "goblin"}
+	if err := g.startStress(cfg, view.DeviceID{Kind: view.DeviceKeyboard}); err != nil {
+		t.Fatal(err)
+	}
+	for i, enemies := range []int{0, 3, 3, 0, 4, 0, 0} { // leer, Welle 1 kämpft, geschlagen, Welle 2 kämpft, geschlagen
+		g.frame = stressFrame(uint64(10+i), enemies)
+		g.stressStep()
+	}
+	want := "wave: spawn:enemy wave: spawn:enemy"
+	if got := strings.Join(devNames(s), " "); got != want {
+		t.Errorf("Aktionen %q, erwartet %q", got, want)
+	}
+	if s.actions[1].Amount != 10 || s.actions[3].Amount != 15 {
+		t.Errorf("Gegner je Welle %d und %d", s.actions[1].Amount, s.actions[3].Amount)
+	}
+}
+
+// B-921/AC-01 bis AC-03: Im reinen Modus schaltet der Test zuerst pure ein, löst keine natürliche Welle aus und setzt
+// die Gegner an die Burg (spawnCastle); Truppen kommen wie eingestellt.
+func TestStressPureMode(t *testing.T) {
+	g, s, _ := stressGameOf(t, t.TempDir())
+	cfg := view.StressTest{Players: 1, Enemies: 10, Growth: view.GrowthLinear, Factor: 5, Troops: 20, Waves: 2,
+		Enemy: "goblin", Troop: "archer", Pure: true}
+	if err := g.startStress(cfg, view.DeviceID{Kind: view.DeviceKeyboard}); err != nil {
+		t.Fatal(err)
+	}
+	for i, enemies := range []int{0, 3, 0, 4, 0} {
+		g.frame = stressFrame(uint64(10+i), enemies)
+		g.stressStep()
+	}
+	want := "pure: spawn:troop spawnCastle:enemy spawnCastle:enemy"
+	if got := strings.Join(devNames(s), " "); got != want {
+		t.Errorf("Aktionen %q, erwartet %q", got, want)
+	}
+	if on := s.actions[0].On; on == nil || !*on || s.actions[1].Amount != 20 || s.actions[2].Amount != 10 || s.actions[3].Amount != 15 {
+		t.Errorf("Aktionen %+v", s.actions)
 	}
 }

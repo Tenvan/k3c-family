@@ -19,6 +19,16 @@ const devSpawnSpan = 40.0
 // bzw. data/troops.json) in die Stufe des Spielers index. Liefert die Zahl der Figuren; Fehler: unbekannter Spieler, Art oder
 // Sorte oder count außerhalb von 1…DevMaxSpawn.
 func DevSpawnUnits(isl *Island, index int, kind, unit string, count int) (int, error) {
+	return devSpawn(isl, index, kind, unit, count, false)
+}
+
+// DevSpawnAtCastle wie DevSpawnUnits, aber um die Burg der Stufe statt um den Spieler, auf die Breite des Burgradius
+// (Stressmodus, B-921).
+func DevSpawnAtCastle(isl *Island, index int, kind, unit string, count int) (int, error) {
+	return devSpawn(isl, index, kind, unit, count, true)
+}
+
+func devSpawn(isl *Island, index int, kind, unit string, count int, atCastle bool) (int, error) {
 	stage := isl.StageOf(index)
 	if stage < 0 || count < 1 || count > DevMaxSpawn {
 		return 0, errDevInvalid
@@ -40,8 +50,12 @@ func DevSpawnUnits(isl *Island, index int, kind, unit string, count int) (int, e
 	default:
 		return 0, errDevInvalid
 	}
+	center, span := w.Players[i].X, devSpawnSpan
+	if atCastle {
+		center, span = w.HubX, 2*w.values().Hub.CastleRadiusUnits
+	}
 	for n := 0; n < count; n++ {
-		x := math.Min(math.Max(devSpawnX(w.Players[i].X, n, count), 0), w.WidthUnits)
+		x := math.Min(math.Max(devSpawnX(center, span, n, count), 0), w.WidthUnits)
 		if kind == "enemy" {
 			spawnEnemy(w, unit, x)
 			continue
@@ -52,10 +66,10 @@ func DevSpawnUnits(isl *Island, index int, kind, unit string, count int) (int, e
 	return count, nil
 }
 
-// devSpawnX verteilt Figur n von count gleichmäßig auf devSpawnSpan Units um center.
-func devSpawnX(center float64, n, count int) float64 {
+// devSpawnX verteilt Figur n von count gleichmäßig auf span Units um center.
+func devSpawnX(center, span float64, n, count int) float64 {
 	if count == 1 {
 		return center
 	}
-	return center + (float64(n)/float64(count-1)-0.5)*devSpawnSpan
+	return center + (float64(n)/float64(count-1)-0.5)*span
 }

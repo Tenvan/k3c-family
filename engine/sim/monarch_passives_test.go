@@ -207,7 +207,7 @@ func TestPassivesOhneBasiswerte(t *testing.T) {
 func TestPassivesDaten(t *testing.T) {
 	n := 0
 	for _, s := range defaultValues().skills.list {
-		if s.Kind != "passive" || s.Line == "thief" {
+		if s.Kind != "passive" || s.Line == "thief" || s.Line == "purse" { // Geldsack: purse_test.go
 			continue
 		}
 		n++

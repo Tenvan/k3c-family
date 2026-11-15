@@ -83,6 +83,7 @@ func DevSetPhase(isl *Island, phase string) bool {
 // DevFlags sind die Dev-Schalter einer Insel (nur im Speicher, nie im Spielstand).
 type DevFlags struct {
 	CheapBuild bool // alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten
+	Pure       bool // reiner Stressmodus (DevSetPure): keine Wellen, Lager, Wachen, Händler, Schänke
 	StockBonus int  // zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (devMaxStock)
 	// Nights: Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (DevStartEvent, dev_combat.go).
 	Nights map[string]int
@@ -117,7 +118,7 @@ func DevFillStock(isl *Island) {
 	w := isl.Stages[0]
 	for _, st := range isl.Stages {
 		for _, p := range st.Players {
-			p.Gold = max(p.Gold, purseMax(st))
+			p.Gold = max(p.Gold, PurseMaxOf(st, p))
 		}
 	}
 	limit, ok := capacity(w)
@@ -130,6 +131,24 @@ func DevFillStock(isl *Island) {
 		}
 	}
 }
+
+// DevSetPure schaltet den reinen Stressmodus (B-921) ein oder aus. Ein: natürliche Wellen (startWave), Rekrutenlager, Händler
+// und Schänke ruhen, vorhandene Landstreicher, Wachen und wartende Gegner verschwinden; Gegner und Truppen kommen nur
+// noch über die Dev-Aktion spawn bzw. spawnCastle.
+func DevSetPure(isl *Island, on bool) {
+	isl.Dev.Pure = on
+	if !on {
+		return
+	}
+	for _, w := range isl.Stages {
+		w.Troops = slices.DeleteFunc(w.Troops, func(t *Troop) bool { return t.Kind == "vagrant" })
+		w.Enemies = slices.DeleteFunc(w.Enemies, func(e *Enemy) bool { return e.Guard })
+		w.SpawnQueue = []QueuedSpawn{}
+	}
+}
+
+// pure: Die Insel der Stufe läuft im reinen Stressmodus (DevSetPure).
+func (w *World) pure() bool { return w.island != nil && w.island.Dev.Pure }
 
 // DevSetCheapBuild schaltet die Baukosten 1 ein oder aus (Preise stehen nicht im Zustand; Bezahltes bleibt bezahlt).
 func DevSetCheapBuild(isl *Island, on bool) {

@@ -286,7 +286,7 @@ func payVagrant(w *World, p *Player, t *Troop) {
 
 func collectCoins(w *World) {
 	kept := w.Coins[:0]
-	reach, purse := w.values().Economy.PickupRangeUnits, purseMax(w) // je Aufruf einmal: Profil RS1.1, Münzen × Spieler
+	reach := w.values().Economy.PickupRangeUnits // je Aufruf einmal: Profil RS1.1, Münzen × Spieler
 	for _, c := range w.Coins {
 		var taker *Player
 		for _, p := range w.Players {
@@ -294,7 +294,7 @@ func collectCoins(w *World) {
 				continue
 			}
 			blocked := c.BlockedPlayerID != nil && *c.BlockedPlayerID == p.ID && w.Time < c.BlockedUntil
-			if isAlive(p) && p.Gold < purse && !blocked {
+			if isAlive(p) && p.Gold < PurseMaxOf(w, p) && !blocked {
 				taker = p
 				break
 			}
@@ -341,7 +341,7 @@ func collectPickups(w *World) {
 
 // giveGold füllt den Beutel, was nicht mehr passt, fällt bei x als Münzen auf den Boden.
 func giveGold(w *World, p *Player, amount int, x float64) {
-	fits := min(amount, purseMax(w)-p.Gold)
+	fits := max(0, min(amount, PurseMaxOf(w, p)-p.Gold)) // nach Respec kann der Beutel über der Grenze liegen: nichts abziehen
 	p.Gold += fits
 	scatterCoins(w, x, amount-fits)
 }

@@ -30,6 +30,11 @@ func (sc *testingScreen) valueText(lang string, r int) string {
 			return "× " + f
 		}
 		return "+ " + f
+	case tstMode:
+		if t.Pure {
+			return tr(lang, txtTstModePure)
+		}
+		return tr(lang, txtTstModeNormal)
 	case tstTimescale:
 		return strconv.Itoa(t.Timescale) + "×"
 	case tstWaves, tstMinutes, tstBuild, tstTroops:

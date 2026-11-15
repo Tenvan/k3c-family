@@ -130,6 +130,9 @@ const (
 	txtTstTimescale
 	txtTstWaves
 	txtTstMinutes
+	txtTstMode
+	txtTstModeNormal
+	txtTstModePure
 	txtTstOwn
 	txtTstLinear
 	txtTstExp
@@ -261,6 +264,9 @@ var texts = [textCount][2]string{
 	txtTstTimescale:    {"Zeitraffer", "Time lapse"},
 	txtTstWaves:        {"Ende nach Wellen", "Stop after waves"},
 	txtTstMinutes:      {"Ende nach Minuten", "Stop after minutes"},
+	txtTstMode:         {"Modus", "Mode"},
+	txtTstModeNormal:   {"normal", "normal"},
+	txtTstModePure:     {"rein (Gegner an der Burg)", "pure (enemies at the castle)"},
 	txtTstOwn:          {"eigene Werte", "own values"},
 	txtTstLinear:       {"linear", "linear"},
 	txtTstExp:          {"exponentiell", "exponential"},

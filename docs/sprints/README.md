@@ -11,7 +11,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 |---|---|---|---|---|---|
 | BI1 | SIM, DEV, CLI | NAT | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | – | `aktiv/BI1-biom-eigenschaften/` |
 | GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
+| FB1 | CLI | NAT | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | – | `aktiv/FB1-feedback-client/` |
+| FB2 | SIM | NAT | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | – | `aktiv/FB2-feedback-sim/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
+| FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 
 ## Offen am Gerät

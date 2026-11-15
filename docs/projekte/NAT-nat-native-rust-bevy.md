@@ -46,6 +46,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | EP1 | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | erledigt |
 | ST2 | Stresstests im Spielmenü (Testing) | erledigt |
 | GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | aktiv |
+| FB1 | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | aktiv |
+| FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | aktiv |
 
 ## Nicht-Ziele
 

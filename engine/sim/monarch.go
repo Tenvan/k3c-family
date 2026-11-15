@@ -97,6 +97,8 @@ func CanLearn(w *World, p *Player, id string) error {
 		return fmt.Errorf("skill %q schon gelernt", id)
 	case AvailablePoints(w, p) <= 0:
 		return fmt.Errorf("skill %q: keine Punkte frei", id)
+	case s.Requires != "" && !slices.Contains(p.Skills, s.Requires):
+		return fmt.Errorf("skill %q verlangt zuerst %q", id, s.Requires)
 	case lineCount(v, p, s.Line) < tierNeed(v.Monarch.TierPoints, s.Tier):
 		return fmt.Errorf("skill %q: Tier %d verlangt %d gelernte Skills der Linie %s", id, s.Tier, tierNeed(v.Monarch.TierPoints, s.Tier), s.Line)
 	}

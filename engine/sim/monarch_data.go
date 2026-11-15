@@ -11,6 +11,7 @@ import (
 // SkillData ist ein Eintrag aus monarch.json › skills; ID ist der Schlüssel. Kind: active oder passive.
 type SkillData struct {
 	ID, Line, Kind string
+	Requires       string // Skill, den der Spieler zuerst gelernt haben muss (Geldsack-Stufen, B-922); leer = keiner
 	Tier           int
 	Cooldown       float64 // Sekunden, nur aktive Skills
 	Effect         skillEffect
@@ -28,6 +29,8 @@ type skillEffect struct {
 	Defense, Aura, Reduction, Chance                               float64
 	MaxHPBonus, SpeedBonus, DamageBonus, SpellBonus, CooldownBonus float64
 	Castle                                                         bool
+	// Size und MaxGold (Geldsack, purse.go): Größe 2 oder 3 und ihre Münz-Obergrenze je Spieler.
+	Size, MaxGold int
 }
 
 // presetData ist eine Startverteilung aus monarch.json › presets (Basiswerte liest der Code nicht, S1.1).
