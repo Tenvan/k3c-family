@@ -48,9 +48,11 @@ type seaShown struct {
 
 // seaView ist die Seekarte eines Spielers. open: der Wechselpunkt ist offen und es gibt Ziele. ids sind die Ziele in
 // Reihenfolge der Simulation, cursor ihr Index; choice ist die zuletzt gelesene Wahl (ändert sie sich, springt der
-// Cursor darauf). Texte, Zeilen und Messungen (sizes bei Skalierung sizesK) gelten, bis sich shown ändert.
+// Cursor darauf). Texte, Zeilen und Messungen (sizes bei Skalierung sizesK) gelten, bis sich shown ändert. hold: der
+// Spieler hat am Steg bestätigt und hält A noch; bis zum Loslassen bleibt seine Eingabe verbraucht (seekarte_input.go).
 type seaView struct {
 	open        bool
+	hold        bool
 	ids         []string
 	cursor      int
 	choice      string

@@ -1,67 +1,82 @@
 package audio
 
 import (
-	"os"
-	"path/filepath"
-	"regexp"
+	"sort"
 	"testing"
 
 	"k3c/engine/sim"
 	"k3c/native/k3c-game/view"
 )
 
-// browserSource liest eine Datei des Browser-Tons (src/audio/), Vorbild der Zuordnungen.
-func browserSource(t *testing.T, name string) string {
-	t.Helper()
-	b, err := os.ReadFile(filepath.Join("..", "..", "..", "src", "audio", name))
-	if err != nil {
-		t.Fatal(err)
+// effectSlots sind die Effekt-Slots, die das Spiel aus den nativen Tabellen abspielt: Ereignisse und Menü-Klänge.
+func effectSlots() map[string]string {
+	slots := map[string]string{"cue:move": cueSlot(view.CueMove), "cue:confirm": cueSlot(view.CueConfirm)}
+	for name, c := range eventCues {
+		slots[name] = c.slot
 	}
-	return string(b)
+	return slots
 }
 
-// AC-02: Jeder Eintrag aus events.ts › CUES hat nativ denselben Slot und dieselbe Warnung, und nativ gibt es keinen
-// zusätzlichen; jeder Slot hat eine Datei im Register.
-func TestEventCuesMatchBrowser(t *testing.T) {
-	re := regexp.MustCompile(`(\w+): \{ slot: '([^']+)', global: (true|false) \}`)
-	found := re.FindAllStringSubmatch(browserSource(t, "events.ts"), -1)
-	if len(found) == 0 {
-		t.Fatal("keine Einträge in events.ts gefunden")
-	}
-	reg := realRegister(t)
-	for _, m := range found {
-		got, ok := eventCues[m[1]]
-		if !ok || got.slot != m[2] || got.global != (m[3] == "true") {
-			t.Errorf("%s: nativ %+v, Browser %s global %s", m[1], got, m[2], m[3])
-		}
-		if _, ok := reg.Effects[m[2]]; !ok {
-			t.Errorf("%s: Slot %s ohne Datei im Register", m[1], m[2])
+// missingFiles nennt sortiert jeden Eintrag aus slots (Name → Slot), dessen Slot leer ist oder in files keine Datei hat.
+func missingFiles(slots, files map[string]string) []string {
+	var res []string
+	for name, slot := range slots {
+		if slot == "" || files[slot] == "" {
+			res = append(res, name+" → "+slot)
 		}
 	}
-	if len(eventCues) != len(found) {
-		t.Errorf("nativ %d Einträge, Browser %d", len(eventCues), len(found))
+	sort.Strings(res)
+	return res
+}
+
+// AC-01: Jeder Slot aus eventCues hat eine Datei im Register; global (Warnung) sind genau die vier Warn-Ereignisse.
+func TestEventCuesHaveFiles(t *testing.T) {
+	if len(eventCues) == 0 {
+		t.Fatal("eventCues ist leer")
+	}
+	for _, m := range missingFiles(effectSlots(), realRegister(t).Effects) {
+		t.Errorf("Slot ohne Datei im Register: %s", m)
+	}
+	warn := map[string]bool{"bossSpawned": true, "dusk": true, "wave": true, "castleFallen": true}
+	for name, c := range eventCues {
+		if c.global != warn[name] {
+			t.Errorf("%s: global %v, erwartet %v", name, c.global, warn[name])
+		}
 	}
 }
 
-// AC-02: Menü-Klänge wie ui.ts › UI_SLOTS (Auswahl bewegt, Bestätigen); alle anderen Cues bleiben still.
-func TestCueSlotsMatchBrowser(t *testing.T) {
-	src := browserSource(t, "ui.ts")
-	re := regexp.MustCompile(`select: '([^']+)', confirm: '([^']+)'`)
-	m := re.FindStringSubmatch(src)
-	if m == nil {
-		t.Fatal("UI_SLOTS in ui.ts nicht gefunden")
+// AC-02: Fehlt einem Slot die Datei im Register, nennt die Prüfung genau diesen Eintrag (Schutz gegen stumme Slots).
+func TestMissingFilesNamesSlot(t *testing.T) {
+	files := map[string]string{}
+	for k, v := range realRegister(t).Effects {
+		files[k] = v
 	}
-	if cueSlot(view.CueMove) != m[1] || cueSlot(view.CueConfirm) != m[2] {
-		t.Errorf("Move %q Confirm %q, Browser %q %q", cueSlot(view.CueMove), cueSlot(view.CueConfirm), m[1], m[2])
+	delete(files, eventCues["hit"].slot)
+	got := missingFiles(effectSlots(), files)
+	if len(got) != 1 || got[0] != "hit → sfx:hit" {
+		t.Errorf("fehlende Slots %v, erwartet [hit → sfx:hit]", got)
+	}
+	if got := missingFiles(map[string]string{"leer": ""}, files); len(got) != 1 {
+		t.Errorf("leerer Slot nicht gemeldet: %v", got)
+	}
+}
+
+// Menü-Klänge: nur Auswahl bewegt und Bestätigen klingen, je mit eigenem Slot; alle anderen Cues bleiben still.
+func TestCueSlots(t *testing.T) {
+	if cueSlot(view.CueMove) != slotUISelect || cueSlot(view.CueConfirm) != slotUIConfirm {
+		t.Errorf("Move %q Confirm %q", cueSlot(view.CueMove), cueSlot(view.CueConfirm))
+	}
+	if slotUISelect == slotUIConfirm {
+		t.Error("Bewegen und Bestätigen teilen einen Slot")
 	}
 	for k := view.CueBack; k <= view.CueRebound; k++ {
 		if s := cueSlot(k); s != "" {
-			t.Errorf("Cue %d klingt %q, im Browser still", k, s)
+			t.Errorf("Cue %d klingt %q, erwartet still", k, s)
 		}
 	}
 }
 
-// Skill-Klang wie skills.ts › skillSlot: aktive Skills über die Linie, passive still, unbekannte Linie → gemeinsamer Slot.
+// Skill-Klang: aktive Skills über die Linie, passive still, unbekannte Linie → gemeinsamer Slot.
 func TestSkillSlot(t *testing.T) {
 	reg := realRegister(t)
 	cases := map[string]string{
@@ -81,7 +96,7 @@ func TestSkillSlot(t *testing.T) {
 	}
 }
 
-// Dämpfung wie events.ts › attenuation: im Bild 1, am Rand 0,5, nach einer Breite 0; Warnung und ohne Ort 1.
+// Dämpfung: im Bild 1, am Rand 0,5, nach einer Breite 0; Warnung und ohne Ort 1.
 func TestAttenuation(t *testing.T) {
 	ears := []ear{{center: 0, span: 40}}
 	cases := []struct {
