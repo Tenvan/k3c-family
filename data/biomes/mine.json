@@ -7,7 +7,7 @@
   "chunkWidthUnits": 50,
   "hubWidthUnits": 100,
   "exitSide": "right",
-  "portals": { "count": 2, "minDistanceFromHubUnits": 150 },
+  "portals": { "count": 2, "minDistanceFromHubUnits": 150, "hp": 1200, "defense": { "intervalSeconds": 20, "size": 6 }, "provisional": true },
   "chunkWeights": { "shaft": 4, "rails": 3, "oreVein": 2 },
   "eventChunks": {
     "chest": { "min": 1, "max": 2 },

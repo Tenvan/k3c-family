@@ -9,10 +9,11 @@ import (
 // Monarch in der Nähe bleiben sie auf ihrem Posten.
 func TestTruppenBegleitenDenMonarchenZumEndboss(t *testing.T) {
 	_, w, lair := endIsland(t, 1)
+	// Die Truppen sind unverwundbar: Der Test prüft den Marsch; ein gefallener Kämpfer rüstet sich in Bossnähe nicht neu (kampf.md § 4).
 	troopsAt := func() (archers, warriors []*Troop) {
 		for i := range 3 {
-			a := &Troop{ID: w.newID(), Kind: "archer", X: w.HubX + 5, AnchorX: w.HubX + 5, HP: troops["archer"].HP, MaxHP: troops["archer"].HP}
-			k := &Troop{ID: w.newID(), Kind: "warrior", X: w.HubX - 5, AnchorX: w.HubX - 5, HP: troops["warrior"].HP, MaxHP: troops["warrior"].HP}
+			a := &Troop{ID: w.newID(), Kind: "archer", X: w.HubX + 5, AnchorX: w.HubX + 5, HP: 1e9, MaxHP: 1e9}
+			k := &Troop{ID: w.newID(), Kind: "warrior", X: w.HubX - 5, AnchorX: w.HubX - 5, HP: 1e9, MaxHP: 1e9}
 			w.Troops = append(w.Troops, a, k)
 			archers, warriors = append(archers, a), append(warriors, k)
 			_ = i

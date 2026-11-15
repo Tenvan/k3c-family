@@ -650,6 +650,9 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `revived` | `player`, `x` | Monarch von einem Mitspieler wiederbelebt (Q62) |
 | `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `playerDown`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
 | `equipmentTaken` | `kind` (wie `drops[].kind`), `x` | Gegner trägt Ausrüstung weg (Q69); Felder bestätigt 🧑 2026-10-06, Sim sendet ab B-312 |
+| `portalDefense` | `x`, `count` | Ein angegriffenes Portal stellt eine Verteidiger-Welle in die Warteschlange (KS2, B-927, `kampf.md` § 2) |
+| `portalDestroyed` | `x`, `left` | Truppen haben das Portal bei `x` zerstört, `left` Portale stehen noch (KS2, B-927) |
+| `stageSafe` | `depth` | Das letzte Portal der Stufe ist gefallen: keine Wellen mehr, Skill-Punkt des Miniboss im Pool (KS2, B-927) |
 | `playerDown` | `player`, `x`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` und `x` (B-217) sind Zusatzfelder, die Protokollversion ändert sich dadurch nicht |
 | `bossSpawned` | `boss`, `x` | Boss erscheint |
 | `bossPhase` | `boss`, `phase` (ab 2) | Endboss wechselt die Phase |

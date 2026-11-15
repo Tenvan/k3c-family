@@ -27,6 +27,14 @@ type Biome struct {
 	Portals         struct {
 		Count                   int     `json:"count"`
 		MinDistanceFromHubUnits float64 `json:"minDistanceFromHubUnits"`
+		// HP: Lebenspunkte jedes Portals der Stufe (kampf.md § 2, vorläufig); Defense: Verteidiger-Welle, solange Truppen
+		// es angreifen (alle IntervalSeconds Sekunden Size Gegner).
+		HP      float64 `json:"hp"`
+		Defense struct {
+			IntervalSeconds float64 `json:"intervalSeconds"`
+			Size            int     `json:"size"`
+		} `json:"defense"`
+		Provisional bool `json:"provisional"`
 	} `json:"portals"`
 	ChunkWeights      Ordered[float64]         `json:"chunkWeights"`
 	EventChunks       map[string]Range         `json:"eventChunks"`

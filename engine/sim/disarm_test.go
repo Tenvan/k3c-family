@@ -1,6 +1,7 @@
 package sim
 
 import (
+	"math"
 	"slices"
 	"testing"
 )
@@ -63,19 +64,24 @@ func TestDisarmBerufFaelltZuBoden(t *testing.T) {
 	}
 }
 
-func TestDisarmBauerWirdLandstreicherUndWirdNichtAngegriffen(t *testing.T) {
+// B-928: Ein Treffer macht nie einen Landstreicher; ein getroffener Bauer behält Status und Münze und flieht zur Burg.
+func TestTrefferMachtKeinenLandstreicher(t *testing.T) {
 	w := quietWorld(t)
 	tr := addPeasant(w, w.HubX-5, "")
 	coins := len(w.Coins)
-	events := hitUntil(t, w, tr, func() bool { return tr.Kind == "vagrant" })
-	if len(events) != 0 || len(w.Coins) != coins+1 || tr.HP != troops["vagrant"].HP {
-		t.Fatalf("Bauer → Landstreicher: Ereignisse %v, Münzen %d → %d, HP %v", events, coins, len(w.Coins), tr.HP)
+	events := hitUntil(t, w, tr, func() bool { return tr.fleeing })
+	if len(events) != 0 || tr.Kind != "peasant" {
+		t.Fatalf("Treffer: Ereignisse %v, %s", events, tr.Kind)
 	}
-	tr.X, tr.AnchorX, tr.TargetX = w.HubX-5, w.HubX-5, w.HubX-5
-	spawnEnemy(w, "skeleton", tr.X-1)
-	run(w, 3)
-	if tr.HP != troops["vagrant"].HP || tr.Kind != "vagrant" {
-		t.Errorf("Landstreicher angegriffen: %s mit %v HP", tr.Kind, tr.HP)
+	tr.HP = 0
+	loseLayer(w, tr) // Kampf-HP aufgebraucht: keine Kaskade
+	if tr.Kind != "peasant" || len(w.Coins) != coins || tr.HP != troops["peasant"].HP || !tr.fleeing || len(w.Drops) != 0 {
+		t.Fatalf("Bauer bei HP 0: %s, Münzen %d → %d, HP %v, flieht %v", tr.Kind, coins, len(w.Coins), tr.HP, tr.fleeing)
+	}
+	tr.X = w.HubX - 40
+	run(w, 30)
+	if tr.fleeing || math.Abs(tr.X-w.HubX) > w.values().Hub.HomeRadiusUnits+1 {
+		t.Errorf("Bauer nicht an der Burg angekommen: x %.1f, flieht %v", tr.X, tr.fleeing)
 	}
 }
 

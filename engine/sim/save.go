@@ -62,6 +62,8 @@ type HubSave struct {
 	Nature level.NatureValues `json:"nature,omitzero"`
 	// Geräumte Gegnerlager (Version 9, enemies_guard.go): Schlüssel `kind@x` der besiegten Wachen, sortiert; sie kommen nie wieder.
 	GuardsCleared []string `json:"guardsCleared,omitempty"`
+	// Zerstörte Portale (kampf.md § 2, portal.go): X der Portale; sind alle weg, ist die Stufe dauerhaft sicher.
+	PortalsDown []float64 `json:"portalsDown,omitempty"`
 }
 
 // PlayerSave ist das Gold eines Spielerplatzes.
@@ -160,6 +162,7 @@ func hubSave(w, base *World) HubSave {
 	h.NodesMarkedBy = markedByOf(w)
 	h.PickupsTaken = without(keys(base.Pickups, pickupKey), keys(w.Pickups, pickupKey))
 	h.GuardsCleared = guardsClearedKeys(w)
+	h.PortalsDown = slices.Clone(w.PortalsDown)
 	return h
 }
 
@@ -289,6 +292,7 @@ func applyHub(w *World, h HubSave) {
 	}
 	w.Pickups = pickups
 	applyGuards(w, h)
+	applyPortals(w, h)
 	applyPlots(w, h) // nach den Knoten: die Bäume der Plantage kommen dazu
 }
 

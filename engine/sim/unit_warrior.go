@@ -100,41 +100,49 @@ func stepSwordCraft(w *World, s *Site) {
 	}
 }
 
-// weaponToFetch: Ausrüstung am Boden, sonst Bogen oder Schwert im Regal, die noch kein anderer Bauer holt; nil, wenn
-// es nichts gibt. Kämpfer-Waffen nur unter dem Limit (Q29, einzige Prüfstelle): sonst bleiben sie liegen.
+// weaponToFetch: die nächste Ausrüstung am Boden oder Bogen bzw. Schwert im Regal, die noch kein anderer Bauer holt; nil, wenn
+// es nichts gibt oder ein Gegner näher als `fetchEnemyDistance` ist (am Bauern oder am Ziel, kampf.md § 4; ersetzt hier die
+// globale Gefahr, nur Vorposten bleiben bei Gefahr tabu). Bei gleicher Distanz zählt der Boden vor dem Regal. Kämpfer-Waffen
+// nur unter dem Limit (Q29, einzige Prüfstelle): sonst bleiben sie liegen.
 func weaponToFetch(w *World, t *Troop) *Job {
-	full := func() bool { return fighters(w)+weaponsInFlight(w, t) >= troopLimit(w) }
-	if len(w.Drops) > 0 {
-		if j := pickupJob(w, t, full()); j != nil {
-			return j
-		}
-	}
-	if !shelfStocked(w) || full() {
+	near := w.values().Troops["peasant"].FetchEnemyDistance
+	if enemyWithin(w, t.X, near) {
 		return nil
 	}
+	full := fighters(w)+weaponsInFlight(w, t) >= troopLimit(w)
+	var best *Job
+	bestDist := math.Inf(1)
+	consider := func(j *Job, x float64) { // strikt kleiner: bei Gleichstand bleibt der frühere (Boden) Kandidat
+		if d := math.Abs(x - t.X); d < bestDist && !enemyWithin(w, x, near) {
+			best, bestDist = j, d
+		}
+	}
+	for _, d := range w.Drops {
+		if (!full || !isFighter(w.values().Troops, d.Kind)) && fetching(w, t, "pickup", d.ID) == 0 {
+			consider(&Job{Type: "pickup", DropID: d.ID}, d.X)
+		}
+	}
+	if full || !shelfStocked(w) {
+		return best
+	}
+	shelfJobs(w, t, consider)
+	return best
+}
+
+// shelfJobs meldet die Regal-Aufträge (Bogen, Schwert) gebauter Werkstätten an consider; Vorposten nur ohne Gefahr.
+func shelfJobs(w *World, t *Troop, consider func(*Job, float64)) {
 	danger := isDangerous(w)
 	for _, s := range w.Sites {
-		if s.Kind != "workshop" || s.State != "built" || (danger && outpost(w, s.X)) { // Vorposten nur ohne Gefahr
+		if s.Kind != "workshop" || s.State != "built" || (danger && outpost(w, s.X)) {
 			continue
 		}
 		if fetching(w, t, "fetchBow", s.ID) < s.Bows {
-			return &Job{Type: "fetchBow", SiteID: s.ID}
+			consider(&Job{Type: "fetchBow", SiteID: s.ID}, s.X)
 		}
 		if fetching(w, t, "fetchSword", s.ID) < s.Swords {
-			return &Job{Type: "fetchSword", SiteID: s.ID}
+			consider(&Job{Type: "fetchSword", SiteID: s.ID}, s.X)
 		}
 	}
-	return nil
-}
-
-// pickupJob: erste Ausrüstung am Boden, die noch kein anderer Bauer holt (bei vollem Limit keine Kämpfer-Waffe).
-func pickupJob(w *World, t *Troop, full bool) *Job {
-	for _, d := range w.Drops {
-		if (!full || !isFighter(w.values().Troops, d.Kind)) && fetching(w, t, "pickup", d.ID) == 0 {
-			return &Job{Type: "pickup", DropID: d.ID}
-		}
-	}
-	return nil
 }
 
 // shelfStocked: Liegt in irgendeiner gebauten Werkstatt ein Bogen oder Schwert im Regal? Sonst holt niemand etwas.
@@ -177,6 +185,10 @@ func dropByID(w *World, id int) *Drop {
 
 // fetchWeapon: zum Regal bzw. zur Ausrüstung laufen, nehmen und damit Kämpfer werden (oder den Beruf zurückbekommen).
 func fetchWeapon(w *World, t *Troop, dt float64) {
+	if enemyWithin(w, t.X, w.values().Troops["peasant"].FetchEnemyDistance) {
+		t.Job = nil // ein Gegner kommt näher: nicht mitten im Kampf holen (kampf.md § 4)
+		return
+	}
 	j := t.Job
 	site, drop := siteByID(w, j.SiteID), dropByID(w, j.DropID)
 	x := 0.0
@@ -257,8 +269,9 @@ func stepWarrior(w *World, t *Troop, dt float64) {
 	t.Cooldown = 1 / d.AttacksPerSecond
 }
 
-// loseLayer: Verlust-Kaskade für eine Truppe mit HP ≤ 0 (Q67): Mit Ausrüstung (Kämpfer, Beruf) fällt sie zu Boden und
-// der Bürger wird Bauer, ein Bauer lässt eine Münze fallen und wird Landstreicher am nächsten Camp. Volle HP danach.
+// loseLayer: Verlust für eine Truppe mit HP ≤ 0 (Q67, kampf.md § 4): Mit Ausrüstung (Kämpfer, Beruf) fällt sie zu Boden und
+// der Bürger wird Bauer. Eine Kaskade bis zum Landstreicher gibt es nicht mehr: ein Bauer ohne Ausrüstung behält Status und
+// Münze und flieht zur Burg (unit_flee.go). Volle HP danach.
 func loseLayer(w *World, t *Troop) {
 	releaseJob(w, t)
 	t.TowerID, t.Cooldown = nil, 0
@@ -266,23 +279,12 @@ func loseLayer(w *World, t *Troop) {
 	if isFighter(w.values().Troops, t.Kind) {
 		kind = t.Kind
 	}
-	switch {
-	case kind != "":
+	if kind != "" {
 		w.Drops = append(w.Drops, &Drop{ID: w.newID(), Kind: kind, X: t.X, WorkSite: t.WorkSite})
 		emit(w, "disarmed", Event{"kind": kind, "x": unitX(t.X), "cause": cmp.Or(t.hitBy, causeOther)})
 		t.Kind, t.Profession, t.WorkSite, t.AnchorX = "peasant", "", 0, w.HubX
-	case t.Kind == "peasant":
-		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: t.X})
-		t.Kind, t.AnchorX, t.TargetX, t.PaidGold = "vagrant", campNear(w, t.X), t.X, 0
 	}
+	t.fleeing, t.attacking = t.Kind == "peasant", false
 	t.HP = w.values().Troops[t.Kind].HP
 	t.MaxHP = t.HP
-}
-
-// campNear ist das Camp nächst an x; ohne Camp x selbst.
-func campNear(w *World, x float64) float64 {
-	if c := nearest(w.Camps, func(c *Camp) float64 { return c.X }, x, math.Inf(1), func(*Camp) bool { return true }); c != nil {
-		return c.X
-	}
-	return x
 }

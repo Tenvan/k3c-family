@@ -12,7 +12,7 @@ import (
 // takeEquipment lässt e einen Drop in Reichweite aufheben; nicht fliehende Gegner ohne Last, keine Bosse.
 func takeEquipment(w *World, e *Enemy) {
 	grab := w.values().Enemies[e.Kind].GrabRange
-	if grab <= 0 || e.Boss || e.Fleeing || e.Carried != nil {
+	if grab <= 0 || e.Boss || e.Fleeing || e.Carried != nil || len(w.Portals) == 0 {
 		return
 	}
 	i := slices.IndexFunc(w.Drops, func(d *Drop) bool { return math.Abs(d.X-e.X) <= grab })

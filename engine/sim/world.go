@@ -61,7 +61,7 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		Castle:  Castle{X: hubX, HP: castleHP, MaxHP: castleHP},
 		Stock:   &Stock{},
 		Enemies: []*Enemy{}, Projectiles: []*Projectile{}, Pickups: []*Pickup{}, Camps: []*Camp{},
-		Portals: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{}, hubData: opts.hub,
+		Portals: []float64{}, PortalHP: []float64{}, PortalsDown: []float64{}, SpawnQueue: []QueuedSpawn{}, Events: []Event{}, hubData: opts.hub,
 		planned: slices.Clone(opts.Planned), chunkCount: opts.ChunkCount, vals: vals,
 	}
 	if b.Cycle.Type == "aggressionPool" {
@@ -123,6 +123,7 @@ func placeEntities(w *World) {
 			w.Portals = append(w.Portals, e.X)
 		}
 	}
+	syncPortals(w)
 }
 
 func emptySite(w *World, kind string, x float64) *Site {
@@ -161,6 +162,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepSites(w)
 	stepPlantations(w, dt)
 	stepTroops(w, dt)
+	stepPortals(w, dt)
 	stepHealing(w, dt)
 	stepSpellTowers(w, dt)
 	stepEndboss(w, dt)
