@@ -1,5 +1,10 @@
 [
   {
+    "id": "barke",
+    "rig": "gebaeude",
+    "manifest": "barke/manifest.json"
+  },
+  {
     "id": "bogner",
     "rig": "gebaeude",
     "manifest": "bogner/manifest.json"

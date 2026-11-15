@@ -1,0 +1,157 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "palme",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Palme (Nil, Skin für Tanne, Birke und Pappel): schlanker, leicht geschwungener Stamm mit Ringen, Krone aus sieben gefiederten Wedeln mit Kokosnüssen; Krone wiegt leicht im Wind",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-8 0C-5 -8 -5 -20 -4 -40C-3 -62 -1 -82 0 -100L7 -100C7 -82 6 -62 5 -40C5 -20 6 -8 9 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 0C-5 -8 -5 -20 -4 -40C-3 -62 -1 -82 0 -100L2.5 -100C1.5 -82 0 -62 -1 -40C-1.5 -20 -1.5 -8 -2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-4.6 -14L6 -15M-4.2 -28L5.4 -29M-3.6 -42L5 -43M-2.8 -56L5.6 -57M-1.8 -70L6.2 -71M-0.8 -84L6.8 -85",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M4.6 -10C4 -30 4.4 -60 5.6 -94",
+          "material": "holz",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M3 -100C-8 -116 -27 -114 -39 -78C-28 -97 -14 -103 3 -95Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -100C-2 -116 -10 -130 -22 -136C-12 -124 -4 -112 5 -99Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -100C14 -116 32 -114 40 -78C31 -97 18 -103 3 -95Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M5 -99C16 -110 30 -106 38 -84",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -100C-8 -122 -26 -126 -39 -110C-28 -116 -12 -112 3 -97Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M1 -101C-10 -118 -26 -120 -36 -111",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -100C8 -116 16 -130 27 -136C19 -124 10 -112 1 -99Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3 -100C14 -122 30 -126 40 -110C30 -116 16 -112 3 -97Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M5 -101C15 -118 28 -120 37 -111",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -100C-1 -114 0 -128 3 -138C6 -128 7 -114 6 -100Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -100C-1 -114 0 -128 3 -138C2.4 -126 2.4 -112 3 -100Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "leder",
+          "mitte": [-0.5, -97.5],
+          "radius": 3.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "leder",
+          "mitte": [6.5, -97],
+          "radius": 3.2
+        },
+        {
+          "art": "punkt",
+          "material": "leder",
+          "mitte": [3, -94],
+          "radius": 3,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [3, -100]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 360,
+    "rahmen": [-44, -142, 88, 146]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}
