@@ -74,8 +74,9 @@ type Slot struct {
 
 // Register ist der Inhalt von data/sounds.json.
 type Register struct {
-	Comment string `json:"_comment"`
-	Slots   []Slot `json:"slots"`
+	Comment string          `json:"_comment"`
+	Mix     json.RawMessage `json:"mischung,omitempty"` // Mischpegel des Spiels (B-935), beim Speichern unverändert
+	Slots   []Slot          `json:"slots"`
 }
 
 // mu reiht Schreibzugriffe von Oberfläche und MCP-Tools hintereinander (ein Prozess).

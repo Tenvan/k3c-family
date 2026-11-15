@@ -34,8 +34,8 @@ type Mix struct {
 	Effects   []Request     // je Slot höchstens einmal je Takt (Drosselung), der lauteste Auftrag gilt
 	Loops     []Loop        // gewünschte Hufschlag-Schleifen; fehlende enden
 	Music     [2]MusicVoice // [0] laufendes bzw. einblendendes Stück, [1] ausblendendes (mit Ducking)
-	EffectBus float64       // Lautstärke der Effekte aus den Einstellungen 0 … 1
-	MusicBus  float64       // Lautstärke der Musik aus den Einstellungen 0 … 1
+	EffectBus float64       // Lautstärke der Effekte: Einstellung 0 … 1 mal Mischpegel (Register.Mix)
+	MusicBus  float64       // Lautstärke der Musik: Einstellung 0 … 1 mal Mischpegel (Register.Mix)
 }
 
 // EffectVolume ist die Lautstärke eines Effekts oder einer Schleife mit Pegel gain am Bus.
@@ -67,7 +67,8 @@ func (p *planner) plan(f *view.Frame) *Mix {
 	t := float64(p.tick) / tps
 	s := f.Settings.Normalized()
 	p.mix.Effects, p.mix.Loops = p.mix.Effects[:0], p.mix.Loops[:0]
-	p.mix.EffectBus, p.mix.MusicBus = s.Effects, s.Music
+	mx := p.reg.mixing()
+	p.mix.EffectBus, p.mix.MusicBus = s.Effects*mx.Effects, s.Music*mx.Music
 	for _, c := range f.Cues {
 		if slot := cueSlot(c.Kind); slot != "" {
 			p.add(slot, 1)
@@ -112,7 +113,7 @@ func (p *planner) event(f *view.Frame, e view.Event, t float64) {
 		return
 	}
 	if c.global {
-		p.duck = extendDuck(p.duck, t) // Warnung senkt die Musik, auch wenn der Klang fehlt
+		p.duck = extendDuck(p.duck, t, p.reg.mixing().Duck) // Warnung senkt die Musik, auch wenn der Klang fehlt
 	}
 	var w *sim.World
 	if st, found := f.Stage(e.Stage); found {

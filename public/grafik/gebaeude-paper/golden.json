@@ -1,4 +1,14 @@
 {
+  "bogner": {
+    "renderKey": "6062b28b6a07e2f0b7e6a1ab26add738aa29d7dc746bc0d575ffa692c495ebbc",
+    "dateien": {
+      "stand.png": "63f20570220666c854bfb02127aed1d6a133fe1841718a7a4185a3d5412b1895",
+      "stand.s2.png": "17d9692ed22e5f97ea544e6c3917538030e5e5ae7dcebceac04c3cc8cdac324a",
+      "stand.s3.png": "973d2a0b374b6455b4c4c8c6d9eb4cc8e46d116bc82385135d8e6af7fc985e3a",
+      "stand.s4.png": "49ce27b34d868f793b0842e926972d8f9773fad6b87c4d31e7785c2be70bd7c1",
+      "stand.s5.png": "50f124e3ab50c00eca62901513170d12fbf832c00579876ea6c3e4ebeba4db04"
+    }
+  },
   "burg-ausbau": {
     "renderKey": "9266f2fe099ebc3e21bbd9b5e49be278a32545163e11452f1aebc121aed001cd",
     "dateien": {

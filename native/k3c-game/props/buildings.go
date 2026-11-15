@@ -29,7 +29,7 @@ func stageAnim(n int) string { return stageAnims[min(max(n, 1), len(stageAnims)-
 
 // hubBuildings: Hub-Gebäude → Papier-Asset; ohne eigene `levels` in den Daten folgen sie der Hub-Stufe (GEB9).
 var hubBuildings = map[string]string{
-	"workshop": bg + "werkstatt", "bowyer": bg + "werkstatt", /* Platzhalter bis zum Asset bogner (B-951) */ "tavern": bg + "taverne", "healer": bg + "heilplatz", "smithy": bg + "schmiede",
+	"workshop": bg + "werkstatt", "bowyer": bg + "bogner",
 	"armory": bg + "ruestkammer", "storage": bg + "lager", "nursery": bg + "farm", "barracks": bg + "kaserne",
 }
 

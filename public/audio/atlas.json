@@ -7,90 +7,90 @@
   "sprites": {
     "sfx:arrow": {
       "start": 0,
-      "duration": 0.415
+      "duration": 0.4
     },
     "sfx:boss": {
-      "start": 0.565,
-      "duration": 1.041
+      "start": 0.55,
+      "duration": 1.48
     },
     "sfx:build": {
-      "start": 1.756,
+      "start": 2.18,
       "duration": 0.261
     },
     "sfx:buildProgress": {
-      "start": 2.167,
+      "start": 2.591,
       "duration": 0.937
     },
     "sfx:coin": {
-      "start": 3.254,
+      "start": 3.679,
       "duration": 0.846
     },
     "sfx:coinGive": {
-      "start": 4.25,
+      "start": 4.674,
       "duration": 0.338
     },
     "sfx:death": {
-      "start": 4.738,
-      "duration": 0.781
+      "start": 5.162,
+      "duration": 1.001
     },
     "sfx:hit": {
-      "start": 5.669,
+      "start": 6.314,
       "duration": 0.431
     },
     "sfx:hub": {
-      "start": 6.249,
-      "duration": 0.866
+      "start": 6.894,
+      "duration": 0.937
     },
     "sfx:kill": {
-      "start": 7.265,
-      "duration": 1.475
+      "start": 7.982,
+      "duration": 0.115
     },
     "sfx:portal": {
-      "start": 8.89,
-      "duration": 0.441
+      "start": 8.247,
+      "duration": 0.981
     },
     "sfx:revive": {
-      "start": 9.481,
-      "duration": 1.149
+      "start": 9.378,
+      "duration": 1.233
     },
     "sfx:revived": {
-      "start": 10.781,
-      "duration": 0.546
+      "start": 10.761,
+      "duration": 1.233
     },
     "sfx:skill": {
-      "start": 11.476,
-      "duration": 0.676
+      "start": 12.144,
+      "duration": 0.981
     },
     "sfx:skill:healer": {
-      "start": 12.302,
-      "duration": 1.149
+      "start": 13.275,
+      "duration": 1.233
     },
     "sfx:skill:mage": {
-      "start": 13.602,
-      "duration": 0.311
+      "start": 14.658,
+      "duration": 0.981
     },
     "sfx:skill:tank": {
-      "start": 14.062,
+      "start": 15.79,
       "duration": 0.373
     },
     "sfx:skill:thief": {
-      "start": 14.585,
+      "start": 16.313,
       "duration": 0.4
     },
     "sfx:strike": {
-      "start": 15.135,
+      "start": 16.863,
       "duration": 0.24
     },
     "sfx:uiConfirm": {
-      "start": 15.525,
+      "start": 17.253,
       "duration": 0.238
     },
     "sfx:uiSelect": {
-      "start": 15.913,
+      "start": 17.641,
       "duration": 0.078
     },
     "sfx:warn": {
-      "start": 16.142,
+      "start": 17.869,
       "duration": 1.48
     }
   }

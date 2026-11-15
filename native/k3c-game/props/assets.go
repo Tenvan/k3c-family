@@ -9,7 +9,7 @@ import "slices"
 // buildingAssets: alle Gebäude-Assets, die siteLook, hubLookOf, scaffoldLook, backWallLook und entityLook wählen.
 var buildingAssets = []string{
 	"burg", "burg-ausbau", "lagerfeuer", "hub-geruest", "hintergrundmauer", "mauer", "turm", "schiff",
-	"werkstatt", "taverne", "heilplatz", "schmiede", "ruestkammer", "lager", "farm", "kaserne",
+	"werkstatt", "bogner", "taverne", "heilplatz", "schmiede", "ruestkammer", "lager", "farm", "kaserne",
 	"treppe-hoch", "treppe-runter", "hafen", "rekrutierungslager",
 	"geruest-1", "geruest-3", "geruest-4", "geruest-6",
 }

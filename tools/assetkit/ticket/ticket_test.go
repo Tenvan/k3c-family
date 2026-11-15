@@ -17,7 +17,7 @@ func tempRepo(t *testing.T) string {
 	copyDoc(t, root, "backlog/README.md")
 	write(t, root, "backlog/B-910-alt.md", "# B-910 · Altes Ticket\n")
 	write(t, root, "backlog/B-912-neuer.md", "# B-912 · Neueres Ticket\n")
-	write(t, root, "backlog/archiv/B-931-erledigt.md", "# B-931 · Erledigt\n")
+	write(t, root, "backlog/archiv/B-9931-erledigt.md", "# B-9931 · Erledigt\n")
 	write(t, root, "projekte/WZG-werkzeuge.md", "# WZG · Werkzeuge\n")
 	return root
 }
@@ -63,7 +63,7 @@ func TestCreateLegtTicketMitKontextAn(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := Created{ID: "B-932", Pfad: "docs/backlog/B-932-slot-shardling-sieht-aus-wie-ein-pilz.md", Titel: input().Titel}
+	want := Created{ID: "B-9932", Pfad: "docs/backlog/B-9932-slot-shardling-sieht-aus-wie-ein-pilz.md", Titel: input().Titel}
 	if got != want {
 		t.Fatalf("Ergebnis %+v, erwartet %+v", got, want)
 	}
@@ -72,7 +72,7 @@ func TestCreateLegtTicketMitKontextAn(t *testing.T) {
 		t.Error("Zeilenenden weichen von der Vorlage ab")
 	}
 	text := strings.ReplaceAll(raw, "\r\n", "\n")
-	for _, s := range []string{"# B-932 · Slot shardling sieht aus wie ein Pilz\n", "- **Domäne:** DEV\n", "- **Typ:** Problem\n",
+	for _, s := range []string{"# B-9932 · Slot shardling sieht aus wie ein Pilz\n", "- **Domäne:** DEV\n", "- **Typ:** Problem\n",
 		"- **Prio:** mittel\n", "- **Status:** offen\n", "- **Projekt:** –\n", "- **Spec:** Entwurf\n",
 		"## Ausgangslage\n\nErste Zeile\n\\## keine Überschrift\n\n- **App:** k3c-studio\n- **Seite:** grafik\n" +
 			"- **Auswahl:** Slot shardling\n- **Zeit:** 2026-10-24T14:30:00+02:00\n\n## Ziel\n"} {
@@ -96,7 +96,7 @@ func TestCreateSortiertIndexZeileEin(t *testing.T) {
 	if strings.Contains(before, "\r\n") {
 		nl = "\r\n"
 	}
-	row := "| [B-932](B-932-slot-shardling-sieht-aus-wie-ein-pilz.md) | DEV | Problem | mittel | offen | – | Slot shardling sieht aus wie ein Pilz |"
+	row := "| [B-9932](B-9932-slot-shardling-sieht-aus-wie-ein-pilz.md) | DEV | Problem | mittel | offen | – | Slot shardling sieht aus wie ein Pilz |"
 	lines := strings.Split(after, nl)
 	at := -1
 	for i, l := range lines {
@@ -133,7 +133,7 @@ func TestCreateLehntUngueltigeEingabeAb(t *testing.T) {
 			t.Errorf("%s: kein Fehler", name)
 		}
 	}
-	if top, _ := LocalHighest(root); top != 931 {
+	if top, _ := LocalHighest(root); top != 9931 {
 		t.Errorf("abgelehnte Eingabe hat geschrieben, höchste Nummer %d", top)
 	}
 	in := input()
