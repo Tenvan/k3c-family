@@ -112,7 +112,7 @@ type CombatSpotState struct {
 // StateFor liest den Zahlstand des Ziels für p; lesend, ändert die Welt nicht.
 func (s CombatSpot) StateFor(w *World, p *Player) CombatSpotState {
 	return CombatSpotState{Price: combatCost(w, s.Kind), Paid: w.combat.paid[s.key(p)], Payable: combatPayable(w, p, s),
-		Near: math.Abs(s.X-p.X) <= w.values().Economy.PayRangeUnits+1}
+		Near: s.NearOf(w, p)}
 }
 
 func combatCost(w *World, kind string) int {
@@ -259,4 +259,9 @@ func squadPost(w *World, t *Troop) (float64, bool) {
 		return anchor - dir*w.values().Economy.Combat.FollowUnits, true
 	}
 	return 0, false
+}
+
+// NearOf meldet ohne Allokation, ob p in Zahl-Reichweite (+1 Unit) des Ziels steht; das Spiel prüft es vor StateFor.
+func (s CombatSpot) NearOf(w *World, p *Player) bool {
+	return math.Abs(s.X-p.X) <= w.values().Economy.PayRangeUnits+1
 }

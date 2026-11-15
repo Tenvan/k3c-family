@@ -99,11 +99,10 @@ func (p *planner) spot(w *sim.World, s sim.CombatSpot) {
 		p.rect(&p.body, s.X+px(9), px(47), px(16), px(12), crownGold)
 	}
 	v := p.viewer // Preis und Zahlstand nur für den Monarchen dieser Split-Hälfte
-	if v == nil || v.Crown != nil {
+	if v == nil || v.Crown != nil || !s.NearOf(w, v) { // erst die billige Entfernung, StateFor alloziert
 		return
 	}
-	st := s.StateFor(w, v)
-	if st.Near && st.Payable {
+	if st := s.StateFor(w, v); st.Payable {
 		p.price(s.X, px(86), st.Price, st.Paid, "", true)
 	}
 }
