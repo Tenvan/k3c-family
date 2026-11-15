@@ -26,7 +26,7 @@ func TestKroneKeinRaubInGeschuetzterNacht(t *testing.T) {
 	p.Crown.X, p.X = w.HubX+30, w.HubX
 	e := spawnEnemy(w, "goblin", p.Crown.X)
 	takeCrownOrLoot(w, e)
-	if e.Crown != nil || p.Crown.State != crownGround {
+	if e.Crown != nil || p.Crown.State != CrownGround {
 		t.Fatal("Raub in geschützter Nacht")
 	}
 }

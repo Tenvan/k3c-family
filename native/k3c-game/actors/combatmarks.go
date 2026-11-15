@@ -58,7 +58,7 @@ func (k *ink) crown(dst *ebiten.Image, a anchor, cx, cy, alpha float64) {
 // crownCarrier: Der Monarch p trägt die Krone eines Mitspielers (CrownPlayer, Träger ist er).
 func crownCarrier(w *sim.World, p *sim.Player) bool {
 	for _, o := range w.Players {
-		if o != nil && o.Crown != nil && o.Crown.State == view.CrownPlayer && o.Crown.Carrier == p.ID {
+		if o != nil && o.Crown != nil && o.Crown.State == sim.CrownPlayer && o.Crown.Carrier == p.ID {
 			return true
 		}
 	}

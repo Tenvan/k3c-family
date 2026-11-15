@@ -12,10 +12,10 @@ import (
 
 // Zustände einer gefallenen Krone.
 const (
-	crownFlying = "flying" // fliegt im Bogen von FromX nach ToX, nicht aufhebbar
-	crownGround = "ground" // liegt am Boden und ist aufhebbar
-	crownEnemy  = "enemy"  // ein Gegner trägt sie zum Portal (Carrier = Gegner-ID)
-	crownPlayer = "player" // ein Mitspieler trägt sie zum Besitzer (Carrier = Spieler-ID)
+	CrownFlying = "flying" // fliegt im Bogen von FromX nach ToX, nicht aufhebbar
+	CrownGround = "ground" // liegt am Boden und ist aufhebbar
+	CrownEnemy  = "enemy"  // ein Gegner trägt sie zum Portal (Carrier = Gegner-ID)
+	CrownPlayer = "player" // ein Mitspieler trägt sie zum Besitzer (Carrier = Spieler-ID)
 )
 
 // Crown ist die gefallene Krone eines Monarchen (Player.Crown). X ist die Position, Z die Höhe über dem Boden in Units.
@@ -54,7 +54,7 @@ func crownDirection(w *World, p *Player) float64 {
 func dropCrown(w *World, p *Player, cause string) {
 	c := w.values().Monarch.Crown
 	to := math.Min(w.WidthUnits, math.Max(0, p.X+crownDirection(w, p)*c.DistanceUnits))
-	p.Crown = &Crown{Owner: p.Index, State: crownFlying, X: p.X, FromX: p.X, ToX: to}
+	p.Crown = &Crown{Owner: p.Index, State: CrownFlying, X: p.X, FromX: p.X, ToX: to}
 	p.VX = 0
 	emit(w, "crownFallen", Event{"player": p.Index, "cause": cause, "x": unitX(p.X), "toX": unitX(to)})
 }
@@ -66,18 +66,18 @@ func stepCrowns(w *World, dt float64) {
 		if c == nil {
 			continue
 		}
-		if owner.Free && c.State != crownEnemy { // abwesender Spieler: die Krone sitzt wieder auf, kein Raub (B-931)
+		if owner.Free && c.State != CrownEnemy { // abwesender Spieler: die Krone sitzt wieder auf, kein Raub (B-931)
 			restoreCrown(w, owner, owner)
 			continue
 		}
 		switch c.State {
-		case crownFlying:
+		case CrownFlying:
 			flyCrown(w, c, dt)
-		case crownGround:
+		case CrownGround:
 			pickUpCrown(w, owner, c)
-		case crownEnemy:
+		case CrownEnemy:
 			followEnemy(w, c)
-		case crownPlayer:
+		case CrownPlayer:
 			followBearer(w, owner, c)
 		}
 	}
@@ -94,7 +94,7 @@ func flyCrown(w *World, c *Crown, dt float64) {
 	c.X = c.FromX + (c.ToX-c.FromX)*f
 	c.Z = 4 * d.HeightUnits * f * (1 - f)
 	if f >= 1 {
-		c.State, c.Z, c.T = crownGround, 0, 0
+		c.State, c.Z, c.T = CrownGround, 0, 0
 		emit(w, "crownLanded", Event{"player": c.Owner, "x": unitX(c.X)})
 	}
 }
@@ -102,7 +102,7 @@ func flyCrown(w *World, c *Crown, dt float64) {
 // bearing: Trägt der Monarch p bereits eine fremde Krone?
 func bearing(w *World, p *Player) bool {
 	return slices.ContainsFunc(w.Players, func(o *Player) bool {
-		return o.Crown != nil && o.Crown.State == crownPlayer && o.Crown.Carrier == p.ID
+		return o.Crown != nil && o.Crown.State == CrownPlayer && o.Crown.Carrier == p.ID
 	})
 }
 
@@ -117,7 +117,7 @@ func pickUpCrown(w *World, owner *Player, c *Crown) {
 		if q == owner {
 			restoreCrown(w, owner, q)
 		} else {
-			c.State, c.Carrier = crownPlayer, q.ID
+			c.State, c.Carrier = CrownPlayer, q.ID
 			emit(w, "crownPickedUp", Event{"player": owner.Index, "by": q.Index, "x": unitX(c.X)})
 		}
 		return
@@ -134,7 +134,7 @@ func restoreCrown(w *World, owner, by *Player) {
 func followBearer(w *World, owner *Player, c *Crown) {
 	idx := slices.IndexFunc(w.Players, func(q *Player) bool { return q.ID == c.Carrier })
 	if idx < 0 {
-		c.State, c.Carrier = crownGround, 0
+		c.State, c.Carrier = CrownGround, 0
 		return
 	}
 	q := w.Players[idx]
@@ -150,7 +150,7 @@ func followEnemy(w *World, c *Crown) {
 		c.X = w.Enemies[i].X
 		return
 	}
-	c.State, c.Carrier = crownGround, 0
+	c.State, c.Carrier = CrownGround, 0
 }
 
 // takeCrownOrLoot lässt einen Gegner eine Krone am Boden aufheben (Kronenraub) oder, mit `stealsGold`, eine Münze aus einem
@@ -162,8 +162,8 @@ func takeCrownOrLoot(w *World, e *Enemy) {
 	}
 	grab := w.values().Monarch.Crown.GrabUnits
 	for _, p := range w.Players {
-		if c := p.Crown; c != nil && !p.Free && c.State == crownGround && math.Abs(c.X-e.X) <= grab {
-			c.State, c.Carrier, e.Crown, e.Fleeing = crownEnemy, e.ID, c, true
+		if c := p.Crown; c != nil && !p.Free && c.State == CrownGround && math.Abs(c.X-e.X) <= grab {
+			c.State, c.Carrier, e.Crown, e.Fleeing = CrownEnemy, e.ID, c, true
 			emit(w, "crownTaken", Event{"player": p.Index, "x": unitX(e.X)})
 			return
 		}
@@ -183,7 +183,7 @@ func takeCrownOrLoot(w *World, e *Enemy) {
 // dropCrownOf lässt einen Gegner die getragene Krone an seiner Stelle fallen (gefallen, kein Portal mehr).
 func dropCrownOf(e *Enemy) {
 	if c := e.Crown; c != nil {
-		c.State, c.Carrier, c.X, c.Z = crownGround, 0, e.X, 0
+		c.State, c.Carrier, c.X, c.Z = CrownGround, 0, e.X, 0
 		e.Crown = nil
 	}
 }

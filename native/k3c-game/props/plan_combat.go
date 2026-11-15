@@ -8,17 +8,10 @@ package props
 import (
 	"image/color"
 	"math"
-	"strings"
 
 	"k3c/engine/sim"
 	"k3c/native/k3c-game/view"
 )
-
-// combatPrices sind die Preise der Zahlstellen und die Zahl-Reichweite aus data/economy.json (Spiegel von sim.CombatSpot-Preisen).
-var combatPrices = readJSON[struct {
-	PayRangeUnits float64
-	Combat        struct{ ShieldCost, TriggerCost, BannerCost int }
-}]("economy.json")
 
 // spotsEvery: so selten (Sekunden Spielzeit) liest die Anzeige die Zahlstellen neu (sim.CombatSpots legt eine Liste an).
 const spotsEvery = 0.5
@@ -39,7 +32,7 @@ var (
 func (p *planner) combat(w *sim.World, info *stageInfo, k view.Camera) {
 	p.portalBars(w, k)
 	for _, o := range w.Players {
-		if o != nil && o.Crown != nil && (o.Crown.State == view.CrownFlying || o.Crown.State == view.CrownGround) &&
+		if o != nil && o.Crown != nil && (o.Crown.State == sim.CrownFlying || o.Crown.State == sim.CrownGround) &&
 			visible(k, o.Crown.X, 2) {
 			p.fallenCrown(o.Crown.X, o.Crown.Z)
 		}
@@ -49,7 +42,7 @@ func (p *planner) combat(w *sim.World, info *stageInfo, k view.Camera) {
 	}
 	for _, s := range info.spots {
 		if visible(k, s.X, 3) {
-			p.spot(s)
+			p.spot(w, s)
 		}
 	}
 }
@@ -93,7 +86,7 @@ func (p *planner) fallenCrown(x, z float64) {
 
 // spot: Zeichen der Zahlstelle (Schild an der Burg, Auslöser und Banner am Tor) und, steht ein Monarch mit Krone in Reichweite,
 // der Preis als Münz-Plätze (gefüllt = bezahlt).
-func (p *planner) spot(s sim.CombatSpot) {
+func (p *planner) spot(w *sim.World, s sim.CombatSpot) {
 	p.rect(&p.body, s.X, 0, px(4), px(64), poleBrown)
 	switch s.Kind {
 	case "shield":
@@ -106,49 +99,11 @@ func (p *planner) spot(s sim.CombatSpot) {
 		p.rect(&p.body, s.X+px(9), px(47), px(16), px(12), crownGold)
 	}
 	v := p.viewer // Preis und Zahlstand nur für den Monarchen dieser Split-Hälfte
-	if v == nil || v.Crown != nil || math.Abs(v.X-s.X) > combatPrices.PayRangeUnits+1 {
+	if v == nil || v.Crown != nil {
 		return
 	}
-	paid := 0
-	if v.PayKey != nil && payKeyIs(*v.PayKey, s, v.Index) {
-		paid = v.PayAmount
+	st := s.StateFor(w, v)
+	if st.Near && st.Payable {
+		p.price(s.X, px(86), st.Price, st.Paid, "", true)
 	}
-	p.price(s.X, px(86), spotCost(s.Kind), paid, "", true)
-}
-
-// spotCost ist der Preis einer Zahlstelle in Münzen.
-func spotCost(kind string) int {
-	switch kind {
-	case "shield":
-		return combatPrices.Combat.ShieldCost
-	case "trigger":
-		return combatPrices.Combat.TriggerCost
-	}
-	return combatPrices.Combat.BannerCost
-}
-
-// payKeyIs: Der Zahl-Schlüssel eines Monarchen ("combat:<art>:<seite>", Banner "combat:banner:<monarch>:<seite>", Spiegel von
-// sim.CombatSpot.key) gehört zur Zahlstelle s; ohne Allokation.
-func payKeyIs(key string, s sim.CombatSpot, player int) bool {
-	rest, ok := strings.CutPrefix(key, "combat:")
-	if !ok {
-		return false
-	}
-	rest, ok = strings.CutPrefix(rest, s.Kind+":")
-	if !ok {
-		return false
-	}
-	if s.Kind == "banner" {
-		if len(rest) < 2 || rest[0] != byte('0'+player) || rest[1] != ':' {
-			return false
-		}
-		rest = rest[2:]
-	}
-	switch s.Side {
-	case -1:
-		return rest == "-1"
-	case 1:
-		return rest == "1"
-	}
-	return rest == "0"
 }

@@ -24,7 +24,7 @@ func steps(w *World, cmds []PlayerCommand, seconds float64) {
 
 // fell lässt die Krone von p am Boden liegen (der Monarch ist „gefallen“), ohne Flug.
 func fell(p *Player) {
-	p.Crown = &Crown{Owner: p.Index, State: crownGround, X: p.X}
+	p.Crown = &Crown{Owner: p.Index, State: CrownGround, X: p.X}
 }
 
 // kill: ohne Gold, Schild und Last Stand trifft ein Treffer den Monarchen so, dass seine Krone fällt.

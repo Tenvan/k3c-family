@@ -87,7 +87,7 @@ func TestNiederlageKronenraub(t *testing.T) {
 	fell(p)
 	e := spawnEnemy(w, "goblin", p.X)
 	e.Crown, e.Fleeing, e.HomeX = p.Crown, true, e.X
-	p.Crown.State, p.Crown.Carrier = crownEnemy, e.ID
+	p.Crown.State, p.Crown.Carrier = CrownEnemy, e.ID
 	leaveThroughPortal(w)
 	if !isl.Over || count(w.Events, "gameOver") != 1 {
 		t.Fatalf("Over %v, %d× gameOver", isl.Over, count(w.Events, "gameOver"))
