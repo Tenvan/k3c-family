@@ -54,7 +54,7 @@ tasks:
       - |
         set -e
         p="{{.GAME_PAKET}}"
-        args="{{.GAME_EXE}}=$p/k3c-game.exe native/measure.ps1=$p/measure.ps1 native/messen.cmd=$p/messen.cmd public/audio=$p/public/audio {{.RIG}}/assets=$p/native/k3c-rig/assets"
+        args="{{.GAME_EXE}}=$p/k3c-game.exe native/measure.ps1=$p/measure.ps1 native/messen.cmd=$p/messen.cmd public/audio=$p/public/audio data=$p/data {{.RIG}}/assets=$p/native/k3c-rig/assets"
         if [ -d public/schrift ]; then args="$args public/schrift=$p/public/schrift"; fi
         # ohne tr (fehlt dem Runner der Workbench, dann blieb die Liste still leer und die Grafik fehlte im Paket)
         n=0
@@ -64,6 +64,8 @@ tasks:
         done < "$p/assets.txt"
         if [ "$n" -eq 0 ]; then echo "❌ $p/assets.txt ist leer: keine Grafik fürs Paket"; exit 1; fi
         cd "{{.GAME}}" && go run ./cmd/sync $(for x in $args; do case "$x" in /*|?:*) echo "$x";; *) echo "{{.ROOT_DIR}}/$x";; esac; done)
+        # Spieldaten samt lokaler Welten liegen als data/ neben der EXE (data.Files liest sie), ohne Go-Quellen und Doku
+        rm -f "$p"/data/*.go "$p"/data/*.md
       # Lizenzdatei aus derselben Liste wie die Lizenz-Seite im Menü (menu.LicenseText, B-808)
       - 'cd "{{.GAME}}" && CGO_ENABLED=0 go run ./menu/licensefile -version "{{.GAME_VERSION}}" > "{{.GAME_PAKET}}/LIZENZEN.txt"'
       - 'echo "✅ Spiel in {{.GAME_PAKET}}"'
@@ -85,6 +87,7 @@ tasks:
       # Version: neue Angabe von git describe baut neu (game:version), im Hauptcheckout wie im Worktree
       - bin/version.txt
       - winres/winres.json
+      - winres/icon.png
     generates:
       - bin/k3c-game.exe
     cmds:

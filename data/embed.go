@@ -3,9 +3,11 @@
 package data
 
 import (
+	"cmp"
 	"embed"
 	"io/fs"
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -29,9 +31,23 @@ const DirEnv = "K3C_DATA_DIR"
 // Eine Datei, die danach geändert wurde, hat der Prozess vielleicht schon im alten Stand gelesen (Datei-Watch, B-507).
 var LoadedAt = time.Now()
 
-// Files sind die Daten: aus DirEnv, sonst eingebettet. Gewählt wird einmal beim Laden des Pakets, vor allen Paketen,
-// die beim Start Werte daraus lesen.
-var Files = choose(os.Getenv(DirEnv))
+// Files sind die Daten: aus DirEnv, sonst aus dem Ordner data neben der EXE (Spielpaket dist/k3c-game, mit den lokalen
+// Welten), sonst eingebettet. Gewählt wird einmal beim Laden des Pakets, vor allen Paketen, die beim Start Werte daraus
+// lesen.
+var Files = choose(cmp.Or(os.Getenv(DirEnv), besideExe()))
+
+// besideExe ist der Ordner data neben der laufenden EXE, leer, wenn es ihn nicht gibt.
+func besideExe() string {
+	exe, err := os.Executable()
+	if err != nil {
+		return ""
+	}
+	dir := filepath.Join(filepath.Dir(exe), "data")
+	if info, err := os.Stat(filepath.Join(dir, "worlds")); err != nil || !info.IsDir() {
+		return ""
+	}
+	return dir
+}
 
 // choose liefert den Ordner dir als FS, wenn es ihn gibt, sonst die eingebetteten Dateien.
 func choose(dir string) FS {

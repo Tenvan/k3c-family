@@ -49,7 +49,7 @@ task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # natives Spiel bauen (wie native:game:build, Paket nach dist/k3c-game/)
-task buildall      # alle EXE (Workbench, Engine-CLI k3c-sim) bauen und nach bin/ legen; laufende EXE vorher schließen
+task buildall      # alle EXE bauen: Workbench, Engine-CLI k3c-sim nach bin/, Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/, weitergebbar; laufende EXE vorher schließen
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
