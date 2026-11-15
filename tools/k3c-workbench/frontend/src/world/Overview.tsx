@@ -16,11 +16,13 @@ interface Props {
   seed: string;
   choice: StageChoice | null;
   onPick: (island: string, stage: number) => void;
-  onEtappe?: (island: string, etappe: number | null) => void;
+  onEtappe?: (island: string, etappe: number | null) => Promise<boolean> | void;
+  /** Token `<insel>:<stufe>#<n>`: diese Stufe neu laden */
+  refresh?: string;
 }
 
-export function Overview({ detail, seed, choice, onPick, onEtappe }: Props) {
-  const models = useCross(detail, seed);
+export function Overview({ detail, seed, choice, onPick, onEtappe, refresh }: Props) {
+  const models = useCross(detail, seed, refresh);
   const root = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const [hit, setHit] = useState<string | null>(null);

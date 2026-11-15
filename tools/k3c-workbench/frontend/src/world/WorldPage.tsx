@@ -79,7 +79,7 @@ export function WorldPage() {
       <Flex direction="column" gap="3">
         <WorldHead w={w} />
         {w.detail && w.detail.islands.length > 0 && (
-          <Overview detail={w.detail} seed={w.model?.seed ?? w.seed} choice={w.stage} onEtappe={w.setEtappe}
+          <Overview detail={w.detail} seed={w.seed} choice={w.stage} onEtappe={w.setEtappe} refresh={w.crossRefresh}
             onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }} />
         )}
         <div ref={editor} className="wd-editor" />

@@ -43,23 +43,28 @@ function StageStrip({ island, stage, model, models, biomeInfo, selected, onPick 
 interface EtappeFieldProps {
   island: WorldIsland;
   index: number;
-  onEtappe: (island: string, etappe: number | null) => void;
+  onEtappe: (island: string, etappe: number | null) => Promise<boolean> | void;
 }
 
 /** Eingabe der Etappe einer Insel (leer = Listenplatz + 1); gespeichert wird beim Verlassen des Feldes. */
 function EtappeField({ island, index, onEtappe }: EtappeFieldProps) {
-  const commit = (text: string) => {
-    const t = text.trim();
+  const saved = island.etappe ?? '';
+  const commit = async (input: HTMLInputElement) => {
+    const t = input.value.trim();
     const n = t === '' ? null : Number(t);
-    if (n !== null && (!Number.isInteger(n) || n < 1)) return;
-    if (n !== (island.etappe ?? null)) onEtappe(island.id, n);
+    if (n !== null && (!Number.isInteger(n) || n < 1)) {
+      input.value = String(saved); // ungültig: gespeicherten Wert zurück
+      return;
+    }
+    if (n === (island.etappe ?? null)) return;
+    if ((await onEtappe(island.id, n)) === false) input.value = String(saved); // abgelehnt: gespeicherten Wert zurück
   };
   return (
     <label className="wd-x-etappe">
       <Text size="1" color="gray">Etappe</Text>
       <TextField.Root key={island.etappe ?? 'auto'} size="1" type="number" min={1} aria-label={`Etappe von ${island.name}`}
-        placeholder={String(index + 1)} defaultValue={island.etappe ?? ''}
-        onBlur={(e) => commit(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()} />
+        placeholder={String(index + 1)} defaultValue={saved}
+        onBlur={(e) => void commit(e.target)} onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()} />
     </label>
   );
 }
@@ -69,7 +74,7 @@ interface IslandProps {
   index: number;
   models: ReadonlyMap<string, LevelModel>;
   biomeInfo: WorldDetail['biomeInfo'];
-  onEtappe?: (island: string, etappe: number | null) => void;
+  onEtappe?: (island: string, etappe: number | null) => Promise<boolean> | void;
   choice: StageChoice | null;
   hit: boolean;
   onPick: (island: string, stage: number) => void;
