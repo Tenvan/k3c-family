@@ -22,10 +22,9 @@ func (h *hud) Update(in view.Input, f *view.Frame, s view.Session) view.OverlayS
 			continue
 		}
 		seated[p] = true
-		out.Consumed[p] = h.updateSeat(in, f, s, seat)
-		if !out.Consumed[p] {
-			out.Consumed[p] = h.updateSea(in, f, s, seat) // Seekarte am Hafen: nur Bestätigen wird verbraucht
-		}
+		menu := h.updateSeat(in, f, s, seat)
+		// Seekarte am Hafen: Bestätigen wird verbraucht, danach bis zum Loslassen von A (B-1006)
+		out.Consumed[p] = h.updateSea(in, f, s, seat, menu) || menu
 	}
 	for p := range h.seats {
 		if !seated[p] {
