@@ -5,11 +5,6 @@
     "manifest": "ader-eisen/manifest.json"
   },
   {
-    "id": "ader-kristall",
-    "rig": "requisite",
-    "manifest": "ader-kristall/manifest.json"
-  },
-  {
     "id": "ader-kristall-gruen",
     "rig": "requisite",
     "manifest": "ader-kristall-gruen/manifest.json"
@@ -18,6 +13,11 @@
     "id": "ader-kristall-violett",
     "rig": "requisite",
     "manifest": "ader-kristall-violett/manifest.json"
+  },
+  {
+    "id": "ader-kristall",
+    "rig": "requisite",
+    "manifest": "ader-kristall/manifest.json"
   },
   {
     "id": "ader-kupfer",

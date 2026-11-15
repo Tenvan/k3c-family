@@ -2,14 +2,14 @@
 
 ## Responsibility
 
-Supervisor für Entwicklungs-Dienste (Vite-Dev-Server, Go-Spielserver) aus `services.json`: Start/Stop/Restart, Health-Check, Crash-Restart, Neustart bei Dateiänderung, Übernahme bereits laufender Prozesse und Ressourcen-Sampling.
+Supervisor für Entwicklungs-Dienste aus `services.json` (derzeit eine leere Liste; Spielserver und Browser-Client sind entfernt): Start/Stop/Restart, Health-Check, Crash-Restart, Neustart bei Dateiänderung, Übernahme bereits laufender Prozesse und Ressourcen-Sampling.
 
 ## Design
 
-- Konfiguration `config.go`: `Service` (command, cwd, port, health, portEnv, autoRestart, `Watch`), `Load`, `validate`, `Shift` (Port-Versatz je Worktree), `HealthURL`.
+- Konfiguration `config.go`: `Service` (command, cwd, port, health, portEnv, autoRestart, `Watch`), `Load`, `validate`, `Shift` (Port-Versatz je Worktree), Methode `Service.HealthURL`.
 - Zustandsautomat `controller.go`: `State`, `Status`, `Controller` mit `unit`/`run`; Seams per Dependency Injection: `Process`, `Starter`, `Checker`, `Options` (testbar ohne echte Prozesse).
 - `lifecycle.go`: `start`, `awaitHealthy`, `stop`, `killRun`, `watch`, `crashed`, `allowRestart` (Restart-Limit).
-- `runtime.go`: Produktiv-Implementierung `ProcStarter` (über `proc`), `HealthCheck` (HTTP). `system.go`: `PortListener`, `NewSampler` (gopsutil; `Metrics`).
+- `runtime.go`: Produktiv-Implementierung `ProcStarter` (über `proc`), `HealthCheck` (HTTP). `system.go`: `PortListener`, `NewSampler` (gopsutil; `Metrics`), `SupervisorOf` (Elternprozess aus derselben EXE als Supervisor, Stopp trifft ihn mit).
 - `adopt.go`: `Adopt` übernimmt Prozesse auf belegten Ports, `Monitor`/`sampleAll`, `LogLevels` (`LevelCounts`). `filewatch.go`: Polling-Snapshot (`fileSig`) und `restartForChange`.
 - `reload.go`: `Controller.Reload` gleicht die Units mit einer neu gelesenen `services.json` ab (neue kommen dazu, entfernte eigene werden gestoppt, übernommene laufen weiter, Reihenfolge folgt der Liste); ein laufender Dienst mit geänderter Konfiguration behält die alte bis zum nächsten Start und wird als `pending` gemeldet (`sameConfig`, `newUnit`).
 - `query.go`: Lese-Sicht für MCP: `Configs` (Dienste in Startreihenfolge), `Health` (sofortige Prüfung ohne Zustandsänderung), `PortOwner` (frei, PID oder belegt).
@@ -17,7 +17,7 @@ Supervisor für Entwicklungs-Dienste (Vite-Dev-Server, Go-Spielserver) aus `serv
 
 ## Flow
 
-1. `Load` + `New(list, opts)`; `StartAll` startet alle Units.
+1. `Load` + `New(list, opts)`; `StartAll` startet alle Units (`ServicesStartAll`, `svc_start_all`).
 2. `Start`: `start` -> `Starter` (`proc`) -> `outSink` verdrahtet stdout/stderr -> `awaitHealthy` (`Checker`) -> State running.
 3. `watch` wartet auf Exit -> `crashed` -> `allowRestart` -> erneuter `start`.
 4. `filesLoop`: Snapshot-Diff -> `settle` -> `restartForChange`.
@@ -25,5 +25,5 @@ Supervisor für Entwicklungs-Dienste (Vite-Dev-Server, Go-Spielserver) aus `serv
 
 ## Integration
 
-- Konsumenten: MCP-Tools `svc_status`, `svc_start`, `svc_stop`, `svc_restart`, `svc_health`, `ports_status`, `get_urls` (`internal/mcpsrv/tools_services.go`, `tools_ports.go`, `worktree_services.go`); Wails-Bindings `Services`, `ServiceStart`, `ServiceStop`, `ServiceRestart`, `ServicesStartAll`, `ServicesStopAll`, `ServicesReload`, `ServiceLogLevels` (`app_services.go`); `main.go` (`openServices`).
+- Konsumenten: MCP-Tools `svc_status`, `svc_start`, `svc_stop`, `svc_restart`, `svc_health`, `svc_start_all`, `svc_stop_all`, `ports_status`, `get_urls` (`internal/mcpsrv/tools_services.go`, `tools_ports.go`, `worktree_services.go`); Wails-Bindings `Services`, `ServiceStart`, `ServiceStop`, `ServiceRestart`, `ServicesStartAll`, `ServicesStopAll`, `ServicesReload`, `ServiceLogLevels` (`app_services.go`); `main.go` (`openServices`, aufgerufen aus `app.go`).
 - Abhängigkeiten: `internal/proc`, `internal/console`, `internal/applog`, gopsutil (process/net); Konfig `tools/k3c-workbench/services.json`.

@@ -2,27 +2,49 @@
 
 ## Responsibility
 
-Domain Service: prozeduraler Level-Generator samt Validator, Go-Port des früheren TS-Generators (`src/world/levelGenerator.ts`, entfernt mit SP09). Erzeugt aus Biom und Seed ein deterministisches `Layout` (Chunks und Entities).
+Domain Service: prozeduraler Level-Generator samt Validator. Erzeugt aus Biom, Seed und optionaler Planung ein
+deterministisches `Layout` (Chunks, Entities, Bauplätze, Ruinen, Wachen, Hintergrund-Varianten, Natur-Werte).
 
 ## Design
 
-- `Generate(b Biome, seed string)` ruft `GenerateWith(b, seed, Options{})` (`level.go`); `Options` (`planned_gen.go`) trägt optional `Lines` (Mauerlinien, nil = eingebettet), `Planned` (geplante Chunks) und `ChunkCount` (Inselgröße, 0 = gewürfelte Länge aus `lengthUnits`; `checkCount`, `ValidatePlanFor`), ohne globalen Zustand; `GenerateWith` prüft die Planung mit `ValidatePlan` und ruft `reserve`, bevor der Builder läuft. Builder: interner Builder `gen` mit Schritten `frame` → `placePortals` → `placeEvents` (Camps auf Abstand zu den Linien, sonst `swapCampsWithChests`) → `entities` → `veins` (Adern zuletzt, damit bestehende Seeds gleich bleiben).
-- Layout: `[Rand/Ausgang] … [Portal] … [Chunks] [HUB] [Chunks] … [Portal] … [Ausgang/Rand]`; Typen `Chunk`, `Entity`, `Layout` (mit `Lines`; JSON-Form wie `LevelLayout` in TS).
-- `biome.go`: `Biome`, `Cycle` (dayNight / aggressionPool, nur für `engine/sim`), `Veins` (Anzahl und Art der Adern), `Lava` (Schaden je Sekunde und Breite; Wirkung in `engine/sim/world_lava.go`), `Range`, `LoadBiome(id)` liest `data/biomes/<id>.json`; `Ordered[V]` bewahrt die JSON-Schlüsselreihenfolge (TS `Object.entries`).
-- `lines.go`: `WallLine` (Seite, Index, Mauer-, Turm- und Tor-Position in Units) und `WallLines` (Parameter `Options.Lines` von `GenerateWith`, Standard eingebettet: `DefaultWallLines()` aus `data/hub.json › wallLines`) mit `generate(biomeID, seed, hub)` (feste Linien plus Versatz nach außen aus eigenem `rng`-Strom `<biom>:<seed>:sites`); `WallLines.ClearOf` hält Platzierungen frei von den Linien.
-- Geplante Chunks (`docs/rules/geplante-chunks.md`, B-461): `planned.go` (`PlannedChunk`, `PlannedObject`, `ValidatePlan`: Slots, feste Objekte, Abstand von Adern zu Bauplätzen und Chunk-Grenze, geprüft gegen die kürzeste mögliche Länge `shortest`/`geometry` und jede Streuung der Linien), `planned_totals.go` (`checkTotals`/`checkRoom`: Biom-Summen inklusive Planung und genug freie Plätze für den Rest), `planned_gen.go` (`slotIndex`, `reserve`, `plannedEntities`, `chunkStream`: fester Teil je Chunk plus eigener `rng`-Strom).
-- `validate.go`: `Validate(l, b) []string` (leere Liste = gültig) mit `validateChunks`, `validatePortalsOutsideLines`, `validateEntities`.
-- Determinismus: Reihenfolge der `rng`-Aufrufe ist Vertrag (Golden-Files `testdata/golden/level-*.json`); `float64(…)`-Rundung gegen FMA.
+- `level.go`: `Generate(b, seed)` = `GenerateWith(b, seed, Options{})`. Interner Builder `gen` mit Schritten `frame`
+  (Chunk-Zahl, Hub, Ausgang) → `reserve` (geplante Chunks) → `placePortals` → `placeEvents` (Camps sicher vor Bau und
+  Portal-Gegnern, `safeCampSlots`) → `entities` (Burg, Portale, Ressourcen, Skill-Punkte, Bau `lair` über `lairX`) →
+  `veins`. Typen `Chunk`, `Entity`, `Layout` (JSON wie früher `LevelLayout`; Laufzeitfelder `Sites`, `FreeGround`,
+  `Ruins`, `Guards`, `Nature` ohne JSON, `Backdrops` mit). `HarborKind` ist die Chunk-Art des Hafens.
+- `planned_gen.go`: `Options` (`Planned`, `ChunkCount` = Inselgröße, `Nature` = fest gesetzte Natur-Werte; Nullwert
+  wie `Generate`); `slotIndex`, `reserve`, `plannedEntities`, `chunkStream` (Chunk-Seed `<biom>:chunk:<chunk-seed>`),
+  `clearOfRuin`.
+- `biome.go`: `Biome` (Felder aus `data/biomes/*.json`), `Cycle` (`dayNight` / `aggressionPool`, `Check` ohne stillen
+  Standardwert), `Range`, `LoadBiome(id)`; `Ordered[V]`/`Entry[V]` bewahren die JSON-Schlüsselreihenfolge.
+- Geplante Chunks (`docs/rules/geplante-chunks.md`): `planned.go` (`PlannedChunk` streng gelesen, `PlannedObject`,
+  `ValidatePlan`/`ValidatePlanFor` gegen kürzeste Länge bzw. `ChunkCount`), `planned_totals.go` (Biom-Summen und freie
+  Plätze), `ruins.go` (`PlannedBuilding`, `Ruin`, `RuinRules` aus `data/ruins.json`, `RuinHP`, `ruinsOf`),
+  `guards.go` (Gegnerlager: `PlannedEnemy`, `Guard`, `GuardRules` aus `data/guards.json`, `guardsOf`).
+- `sites.go` (B-652): `WallSite`, `SitePlacement` (`data/hub.json › sitePlacement`), `placeSites` verteilt Mauer- und
+  Turm-Plätze je Zone aus eigenem Strom, `placeNurseries` (Strom `<biom>:<seed>:nursery`), `FreeGround` und
+  `Layout.OnFreeGround`. `lines.go` liest Hub-/Insel-Plätze (`hubSite`) und den Zahlziel-Abstand aus `hub.json` und
+  `economy.json`.
+- `nature.go`/`nature_check.go` (B-891): `Trait`, `WeightGroup`, `NatureValues` (`SetTrait`, `SetWeight`, `Empty`),
+  `MergeNature`, `NeutralNature`, `ResolveNature` (Würfe aus `<biom>:<seed>:nature`), `assignVariants`,
+  `Biome.CheckNatureValues`.
+- `backdrop.go`: `BackdropTileUnits`, `backdrops` wählt je Hintergrund-Kachel eine Variante aus Strom
+  `<biom>:<seed>:backdrop`.
+- `validate.go`: `Validate`/`ValidateWith` (leere Liste = gültig): Länge, Chunks, Portale außerhalb der Linien, Bau,
+  Entities, Adern.
+- Determinismus: Reihenfolge der `rng`-Aufrufe ist Vertrag (Golden `testdata/golden/level-*.json`); Neues würfelt aus
+  eigenen Strömen; `float64(…)`-Rundung gegen FMA.
 
 ## Flow
 
 1. `LoadBiome(id)` → `Biome`.
-2. `GenerateWith`: `ValidatePlan`, `rng.New(seed)`, `reserve`, `frame` legt Chunk-Zahl, Hub, Ausgang fest.
-3. `placePortals` (links/rechts mit Mindestabstand), `placeEvents` (Truhen, Camps nahe Hub), `entities` (Burg, Portale, Ressourcen, Skill-Punkte, Positionen via `inside`).
-4. `WallLines.generate` setzt die Mauerlinien beider Seiten in `Layout.Lines`.
-5. Optional `Validate(layout, biome)` prüft Spielbarkeit.
+2. `GenerateWith`: `ValidatePlanFor` → `ResolveNature` → `rng.New(seed)` → `frame` → `reserve` → Portale, Ereignisse,
+   Entities, Adern → `placeSites` → `Layout` mit `ruinsOf`, `guardsOf`, `backdrops`.
+3. Optional `ValidateWith(layout, biome, opts)` prüft Spielbarkeit.
 
 ## Integration
 
-- Abhängigkeiten: `k3c/engine/rng`, `k3c/data` (embed der Biome, `hub.json`).
-- Konsumenten: `engine/sim` (`CreateWorld`, Biome/Cycle), `engine/room`, `engine/net` (Level-Endpoint), `cmd/k3c-sim` (`k3c-sim level`, MCP `level_generate`).
+- Abhängigkeiten: `k3c/engine/rng`, `k3c/data` (`biomes/*.json`, `hub.json`, `economy.json`, `buildings.json`,
+  `ruins.json`, `guards.json`, `island-sizes.json`).
+- Konsumenten: `engine/sim` (`CreateWorld`, Biome, Cycle, Ruinen, Wachen, Bauplätze), `engine/room` (Vorschau),
+  `engine/enginetools`, `cmd/k3c-sim` (`level`, `world`), `native/k3c-game/local` (`level.Layout`).

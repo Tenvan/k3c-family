@@ -2,29 +2,48 @@
 
 ## Responsibility
 
-Configuration Data: einzige Quelle für Balancing-Werte (JSON) für den TS-Client (Import) und den Go-Server (`go:embed`); Werte gehören hierher, nicht in den Code.
+Configuration Data: einzige Quelle der Spielwerte (Balancing, Welten, Grafik-/Sound-Zuordnung, Werkzeug-Daten) als
+JSON für Engine, natives Spiel und Workbench. Werte gehören hierher, nicht in den Code.
 
 ## Design
 
-- `embed.go`: Package `data` mit `Files embed.FS` über `*.json` und `biomes/*.json`.
-- `buildings.json`: Schlüssel je Gebäude (`castle`, `wall`, `tower`, `gate`, `workshop`, `storage`, `farm`, `barracks`, `stairsUp`, `stairsDown`, `tavern`, `healer`, `smithy`, `armory`) mit `hp`, `buildSeconds`, `cost`, `unlockDepth`; je nach Gebäude `levels` (Ausbaustufen), `spell` (Turm), `offers`/`craftSeconds` (Werkstatt), `plantation` (Farm), `troopLimit` (Kaserne), `vagrants` (Taverne).
-- `troops.json`: `vagrant`, `peasant` (mit `professions`: `miner`, `builder`, `craftsman`), `archer`, `warrior`, `eliteArcher`, `eliteWarrior`; Kampfwerte, `upgradeFrom`, `cost`.
-- `enemies.json`: je Gegner `depth`, `tier` (`standard|elite`), Kampfwerte, `attacksPerSecond`, `gold`, `traits`; Trait-Parameter `kiteDistance`, `aoe`, `swarmSize`, `phases`. `waves.json`: Tabelle ab `fromWave` (`standard`, `elite`), `spawnSpreadSeconds`, `perExtraPlayer`, `depthScaling` (nur Welten ohne Insel, Inseln nutzen ihre Welt-Datei), `stealGold` (Angriffsrate steht je Gegner).
-- `economy.json`: `purse`, Reichweiten und Intervalle, `chestGold`, `enemyResourceDrop`, `gatherables` (Baum, Fels, Kupfererz), `veins` (`stoneVein`, `copperVein`, `ironVein`, `crystalVein` mit `maxWorkers`), `storage`, `recruitCamp`, `merchant`.
-- `monarch.json`: `base`, `sprintMultiplier`, `revive`, `mount`, `attack`, `tierPoints`, `skillPointSources`, `lines` (`tank`, `mage`, `healer`, `thief`) und `skills` je Skill.
-- `hub.json`: `levels` (Burgausbau), `sites` und `islandSites` (Bauplätze), `wallLines`, `merchant`, `islandStartStock`, Radien, `startTroops`, `travel`. `difficulty.json`: `grades` (`dev`, `easy`, `normal`, `hard`, `ultra`) mit `waveSize`, `enemyHp`, `enemyDamage`, `defaultDefeat`, bei `easy` zusätzlich `protectedNights`.
-- `bosses.json`: `bosses` (Minibosse je Stufe: `kind`, `depth`, `wave`, `base`, `hpFactor`, `damageFactor`, `ability` `summon|aoe|flameTrail|shardThrow`, `reward`) und `endBosses` (`lair`, `phases`). `events.json`: Nacht-Events `fullMoon`, `bloodMoon`, `merchantRaid` (nur Inseln). `worlds/standard.json`: Standard-Welt (Welt-Datei nach `docs/rules/welten.md`: `id`, `name`, `notes`, `islands` mit `depths`, `depthScaling`, `plannedChunks`, `chunkCounts`); als einzige Welt eingebettet, eigene Welten unter `worlds/` bleiben lokal (`.gitignore`). `goals.json`: Startwerte der Siegvarianten (`gold`, `days`).
-- `assets.json`: Slot-Register (`slots` mit `art` grafik|sound, `kategorie`, `wahl`), geschrieben von k3c-workbench und vom Asset-Studio. `assets-recherche.json`: Recherche-Treffer je Slot (`treffer`: Link, Quelle, Urheber, Lizenz, `lizenzStatus`), geschrieben von k3c-workbench (`assets_hit_add`, `assets_research`).
-- `island-sizes.json`: erlaubte Chunk-Anzahlen einer Stufe (`sizes`: Name, `chunkCount`, alle Biome), gesetzt je Insel und Tiefe in der Welt-Datei › `chunkCounts`; gelesen von `engine/sim/island_sizes.go`.
-- `sprites.json` (alte Pixel-Sheets, nur noch für Werkzeuge und Atlas, fällt mit CU1.5), `sounds.json` (die 32 Sound-Slots, CU1.2) und `balance-targets.json` (`margin`, `seeds`, `targets` für Balancing-Läufe). `biomes/`: siehe eigene codemap.
+- `embed.go` (Package `data`): `//go:embed *.json biomes/*.json worlds/standard.json`; `Files` (Interface `FS` =
+  `fs.ReadFileFS` + `fs.ReadDirFS`) liest aus dem Ordner in `DirEnv` (`K3C_DATA_DIR`), sonst eingebettet (`choose`);
+  `LoadedAt` ist der Ladezeitpunkt. Eigene Welten unter `worlds/` bleiben lokal, eingebettet wird nur `standard.json`.
+- Spielregeln und Balancing:
+  - `buildings.json` (Gebäude mit `hp`, `buildSeconds`, `cost`, Stufen, Spezialfelder je Art), `troops.json`,
+    `enemies.json` (Gegner mit Tiefe, Stufe, Kampfwerten, Traits), `waves.json` (Wellentabelle, Mehrspieler-Zuschläge,
+    `depthScaling`, `stealGold`), `bosses.json` (`bosses`, `endBosses`), `events.json` (Nacht-Events).
+  - `economy.json` (Börse, Zahlziele `payRangeUnits`, Morgengold je Spieler und Tiefe, Sammelbares, Adern, Lager,
+    Händler), `monarch.json` (Basiswerte, Reittier, Skill-Linien, `skills`, `presets`), `hub.json` (Hub-Stufen, `sites`,
+    `islandSites`, `sitePlacement`, Händler, Startvorrat, Reisen), `difficulty.json` (`grades`), `goals.json`
+    (Siegvarianten), `island-sizes.json` (erlaubte Chunk-Anzahlen), `guards.json` (Gegnerlager), `ruins.json`
+    (`hpShare`, `kinds`), `ship.json` (Ausbau-Abschnitte des Schiffs), `light.json` (Nachtlicht, Fackeln).
+  - `biomes/` (eigene codemap) und `worlds/standard.json` (Standard-Welt mit Inseln, Tiefen, Planung).
+- Balancing-Tester: `balance-targets.json` (`margin`, `frozen`, `seedMode`, `seeds`, `targets`), `balance-hints.json`
+  (Richtwerte von Kennzahlen und Hebeln).
+- Natives Spiel und Darstellung: `paper.json` (Zuordnung Spielobjekt → Papierschnitt-Asset je Gruppe), `sounds.json`
+  (Sound-Slots), `native.json` (`stepBudgetMs`, `slowLogEverySeconds`), `stresstests.json` (`presets` des
+  Testing-Menüs), `render.json` (Speicherbudget je Plattform, `xbox`).
+- Asset-Werkzeuge: `asset-prompts.json` (Prompt-Vorlagen), `assets-recherche.json` (Recherche-Treffer je Slot),
+  `assets-vorschlaege.json` (Asset-Vorschläge).
 
 ## Flow
 
-1. Go: `engine/sim/data.go` (`load[...]`, u. a. `goals.json`), `boss_data.go`, `island_worlds.go`, `events.go`, `engine/level/biome.go`, `engine/net/level.go` lesen per `data.Files`.
-2. TS: `src/model/data.ts` importiert die JSON-Dateien direkt (Vite), `src/scenes/render/sprites.ts` importiert `sprites.json`.
-3. `tools/assetkit/register.go` liest `sounds.json`; `tools/k3c-workbench/internal/balance` liest `balance-targets.json` und die Spielwerte.
+1. Prozess-Start: `data.Files` wird einmal gewählt (Platte über `K3C_DATA_DIR` oder Einbettung).
+2. `engine/sim/data.go` lädt per `load[T]` in Paket-Variablen; `engine/sim/world_values.go` legt Overrides einer Welt
+   darüber; `engine/level` liest Biome, `hub.json`, `economy.json`, `buildings.json`, `ruins.json`, `guards.json`.
+3. Das native Spiel liest Darstellungswerte (`paper.json`, `sounds.json`, `light.json`, `native.json`,
+   `stresstests.json`) über `data.Files`.
+4. Die Workbench schreibt Asset-Daten (`assets-recherche.json`, `asset-prompts.json`) und liest Werte für Doku und
+   Welten-Editor.
 
 ## Integration
 
-- Konsumenten: `engine/sim`, `engine/level`, `engine/net`, `tools/k3c-workbench/internal/balance` (`bots.go`, `replay.go`, `targets.go`), `tools/assetkit`, `src/model/data.ts`, `src/model/biome.ts`, `src/scenes/render/sprites.ts`.
-- Tests: `data/embed_test.go`, Vitest-Tests wie `tests/sprites.test.ts`.
+- Go-Konsumenten: `engine/sim`, `engine/level`, `engine/balance`, `engine/enginetools`, `cmd/k3c-sim`;
+  `native/k3c-game` (`actors/catalog.go`, `art/manifest.go`, `audio/register.go`, `world/light.go`,
+  `devtools/chronicle.go`, `menu/stress_presets.go`, `props/data.go`).
+- Workbench: `tools/k3c-workbench/internal/datadoc`, `internal/gamedata`, `internal/world`, `internal/assetsui`,
+  `internal/mcpsrv` (`assets_*`), `tools/assetkit` (`research.go`, `suggestions.go`), Frontend
+  (`frontend/src/api/typesAssets.ts`).
+- Tests: `data/embed_test.go`.

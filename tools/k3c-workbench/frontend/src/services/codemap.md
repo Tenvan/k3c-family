@@ -2,12 +2,12 @@
 
 ## Responsibility
 
-Reiter Dienste: Übersicht und Steuerung der vom Werkzeug verwalteten Dienste (Vite-Dev-Server, Spielserver …) mit Status, Metriken, Start/Stop/Neustart und eingebettetem Logs-Bereich.
+Reiter „Dienste & Logs“: Übersicht und Steuerung der in `tools/k3c-workbench/services.json` eingetragenen Dienste mit Status, Metriken, Start/Stop/Neustart und eingebettetem Logs-Bereich (links Karten und übrige Quellen, rechts Konsole und Log der gewählten Quelle).
 
 ## Design
 
 - Pure Logik: `tables.ts` (`badgeFor`, `buttonsFor`, `Command`, `preferredSource` (gemerkte Quelle, sonst ein laufender Dienst), `applyStatus` verwirft Updates mit kleinerer `seq`, `orderLine`, `levelShares` über `LEVELS`, `metricsOf` für CPU/Speicher/Uptime).
-- Container: `ServicesPage.tsx` – Kartenliste, `BulkBar` mit „Neu laden“ (`servicesReload`), „Alle starten/stoppen“ und `orderLine`, gemerkte Quellenwahl mit `logs/SourceBar` und `logs/SourcePanel`.
+- Container: `ServicesPage.tsx` (`active`, meldet Seite und gewählte Quelle per `useTicketPage` aus `@webkit/lib/ticketContext`) – Kartenliste, `BulkBar` mit „Neu laden“ (`servicesReload`), „Alle starten/stoppen“ und `orderLine`, gemerkte Quellenwahl mit `logs/SourceBar` und `logs/SourcePanel`.
 - Präsentation: `ServiceCard.tsx` (Aktionen, `AlertDialog` für erzwungenes Stoppen, `RoleTags`, `HealthUrl` mit klickbarer http-Adresse über `backend.openUrl`, `Notes` mit Neustart-Zähler, Änderungsdatei und Fehlern, `Metrics`), `LogBox.tsx` (Level-Verteilung der letzten 60 min).
 - Event-getriebener Zustand: `service:state` aktualisiert einzelne Karten, ältere `seq` werden ignoriert.
 
@@ -22,5 +22,5 @@ Reiter Dienste: Übersicht und Steuerung der vom Werkzeug verwalteten Dienste (V
 ## Integration
 
 - Konsument: `App.tsx` (Tab `dienste`).
-- Abhängigkeiten: `api` (`ServiceStatus`, `ServicesView`, `LevelCounts`), `logs/` (Quellenleiste, Panel, `RoleTags`), `lib/`, `@webkit/atoms` (`Button`, `LinkButton`, `Link`, `StatusBadge` …), `@webkit/organisms` (`AlertDialog`), `@webkit/lib/errors`.
+- Abhängigkeiten: `api` (`ServiceStatus`, `ServicesView`, `LevelCounts`), `logs/` (Quellenleiste, Panel, `RoleTags`), `lib/`, `@webkit/atoms` (`Button`, `LinkButton`, `Link`, `StatusBadge` …), `@webkit/organisms` (`AlertDialog`), `@webkit/lib/errors`, `@webkit/lib/ticketContext`.
 - Go-Seite: `Services`, `ServiceStart`, `ServiceStop`, `ServiceRestart`, `ServicesStartAll`, `ServicesStopAll`, `ServiceLogLevels`, `ServicesReload`; Event `service:state`.

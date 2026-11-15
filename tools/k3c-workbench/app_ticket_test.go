@@ -26,8 +26,9 @@ func ticketRepo(t *testing.T) *App {
 			t.Fatal(err)
 		}
 	}
-	seed := filepath.Join(root, "docs", "backlog", "B-912-neuer.md")
-	if err := os.WriteFile(seed, []byte("# B-912 · Neueres Ticket\n"), 0o644); err != nil {
+	// Seed weit über dem echten Backlog: die nächste Nummer kollidiert nie mit dem kopierten Index.
+	seed := filepath.Join(root, "docs", "backlog", "B-9998-neuer.md")
+	if err := os.WriteFile(seed, []byte("# B-9998 · Neueres Ticket\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	return &App{root: root}

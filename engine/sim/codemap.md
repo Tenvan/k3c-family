@@ -2,41 +2,72 @@
 
 ## Responsibility
 
-Domain Model und Simulation-Core des Spiels: deterministischer Tick-Step für eine Stufe (`World`), eine Insel mit mehreren Stufen (`Island`) und die Legacy-`Campaign`; dazu Wirtschaft (Bürger, Berufe, Händler, Ausbau), Monarch (Skills, Passive, Fund-Pool), Gegner-Traits und Spielstand-(De)Serialisierung. Reine Logik ohne I/O; Balancing kommt aus `data/` (`go:embed`).
+Domain Model und Simulation-Core: deterministischer Tick-Step für eine Stufe (`World`), eine Insel mit mehreren
+Stufen (`Island`) und die Legacy-`Campaign`; dazu Wirtschaft, Monarch, Gegner, Bosse, Welten mit Wertesatz und
+Spielstand-(De)Serialisierung. Reine Logik ohne I/O; Werte kommen aus `data/` (`go:embed`) bzw. dem Wertesatz der Welt.
 
 ## Design
 
-- **Dateigruppen** (ein Paket, Präfix = Gruppe, `docs/arbeitsweise.md` › Namen und Ablage): `building_*` (Gebäude-Wirkungen), `unit_*` (Bürger und Truppen), `monarch_*`, `skills_*`, `enemies_*` (Gegner, Wellen, Wegtragen), `boss_*`, `events_*`, `island_*` (Insel, Wechsel, Sieg/Niederlage, Spielstand), `hub_*`, `world_*` (Tageszyklus, Linien, Adern, Lava, Reisen, Zustandsspiegel), `save_*`; ohne Präfix der Kern (`world.go`, `types.go`, `data.go`, `common.go`, `economy*.go`, `campaign.go`, `merchant.go`, `preview.go`, `dev.go`).
-- **Domain Model** in `types.go`: `World`, `Player`, `Troop`, `Site`, `Enemy`, `Storm`, `Job`, `Stock`, `Event` (`map[string]any`), `PlayerCommand` als Eingabe. Gemeinsame Helfer in `common.go` (`applyDamage`/`applyDamageBy`, `damagePlayer`, `destroySite`, `siteByID`, `isDangerous`).
-- **System-Pipeline** pro Tick: `Step` in `world.go` ruft feste Reihenfolge `stepCycle`, `stepSpawns`, `stepPlayers`, `stepPassives`, `stepCamps`, `stepSites`, `stepPlantations`, `stepTroops`, `stepHealing`, `stepSpellTowers`, `stepEnemies`, `stepLava`, `stepStorms`, `stepProjectiles`, danach `removeDeadEnemies`, Verlust-Kaskade (`loseLayer`), `castleFallen`, `stepTravel`, `capEvents`. Die Reihenfolge ist Teil des Determinismus-Vertrags (Golden-Files `testdata/golden/sim-*.json`).
-- **Aggregate**: `Island` (`island.go`) hält `Stages []*World` mit gemeinsamem `Stock` (`island_storage.go`: Kapazität, `addStockCapped`) und Fund-Pool der Insel; `Campaign` (`campaign.go`) ist der v1-Vorgänger mit einer aktiven Stufe.
-- **Einzelwechsel** je Spieler: `island_travel.go` (`islandTravel`, `stepIslandTravel`, `moveToStage`); `world_travel.go` liefert `travelPoints` pro Welt.
-- **Monarch**: `monarch.go` (`stepAttack`, `LearnSkill`, `Respec`, `ApplyPreset`, `AvailablePoints` = Pool minus gelernte Skills), `monarch_data.go` (Lese-Typen für `monarch.json`: `SkillData`, `skillEffect`, `MountData`), `monarch_mount.go` (`MountOf`). Aktive Skills: `skills.go` (`stepSkills`, `castSkill`, Slots 1 bis 4, Abklingzeit je Slot) mit Linien `skills_caster.go`, `skills_healer.go`, `skills_tank.go`; `effect.type` wählt die Funktion. Passive: `monarch_passives.go` (`eachPassive`, `defenseOf`, `maxHPOf`, `speedOf`, `damageMultOf`, `cooldownMultOf`; berechnet, nicht im Zustand). Wiederbeleben: `monarch_revive.go`.
-- **Bürger und Wirtschaft**: `unit_professions.go` (Berufe über Angebots-Zahlziele `offerTarget`), `unit_warrior.go` (Schwert, Krieger, Verlust-Kaskade, `weaponToFetch`), `building_upgrades.go` (Schmiede: Elite, Rüstung, `stepCrafts`), `building_barracks.go` (Kämpfer-Limit `troopLimit`), `merchant.go` (Händler je Insel), `building_tavern.go` (Landstreicher bei dawn), `building_plantation.go` (Baumschule-Bäume), `world_vein.go` (Adern, `gatherVein`), `building_repair.go` (Reparatur zwischen den Wellen), `building_healer.go` (Heilplatz), `building_spell_tower.go` (selbstschießender Turm), `world_lava.go` (Schaden im Streifen). `economy.go` hält Spieler-Schritt und Zahlung (`stepPlayers`, `findPayTarget`, `payOneCoin`, `giveGold`, `stepSites`, `payDawnIncome`, `canAfford`/`spend`).
-- **Ausbau und Linien**: `hub_level.go` (Hub-Stufe 1 bis 5, Mauer/Turm-Stufen: `levelOf`, `stepUpgrade`, `finishUpgrade`); `world_lines.go` (Mauerlinien aus dem Layout: `siteLine`, `wallBuilt`, `lineOpen`; Linie wird nicht am `Site` gespeichert).
-- **Gegner**: `enemies.go` (KI, Zielwahl `chooseTarget`, `spawnScaled`, Betäubung `stunned`, Trait-Prüfung `Enemy.has`), `enemies_traits.go` (Traits `aoe`, `phases`, `kiting`, `swarm`, Angriffsrate; `knownTraits`, unbekanntes Trait scheitert beim Laden), `enemies_waves.go` (Wellenplanung `planWave`, `startWave`, `stepProjectiles`, `removeDeadEnemies`). Einheiten-KI in `unit_common.go` (Landstreicher, Bauern: `findJob`, `makeFighter`) und `unit_archer.go` (`stepArcher`, `freeTower`).
-- **Spielstand**: `IslandSave` Version 8 (`island_save.go`, `IslandSaveVersion`, mit Tag und Phase nur zur Anzeige; `FromIslandSave`/`FromIslandSaveIn` laden in der Standard- bzw. einer übergebenen Welt); `island_save_v8.go` (v8: `world` und `islandId` statt Index, `migrateWorld` setzt Stände bis v7 auf `standard`, `islandIn` prüft Welt und Insel, WZ18.3); `island_save_v3.go` überführt v3 und v2 (`parseIslandV2`, `parseIslandV3`, `validateSkills`, `restorePool`), `ParseIslandSave` migriert zusätzlich v1 über `islandFromV1`; `island_save_v5.go` (v5: besiegte Bosse, aktuelle Insel, Münzzähler, Sieg gemeldet, Skill-Basis; `validateProgress`, `restoreProgress`, `savedMerchant`); `save_economy.go` (v7: je Hub `armorLevel`, je Truppe Kämpfer-Art und Beruf, je Platz `CraftSave`/`PlotSave`; Aufträge, Drops und getragene Ausrüstung sind flüchtig); `SaveGame` v1 in `save.go` (`HubSave`, `SiteSave`, `applyHubLevel`, `applyUpgrade`). Gespeichert wird nur, was nicht aus dem Seed folgt.
-- **Daten**: `data.go` lädt JSON per `data.Files` (`load[T]`, panic bei Fehler) in Paket-Variablen (`buildings`, `troops`, `economy`, `hub`, `monarch`, `waves`, `biomes`); `checkPool` prüft beim Laden die Gegner-Pools je Biom (Einträge bekannt, Portal-Pool mit Standard und Elite); `island_options.go` hat `IslandOptions`/`Grade` (Schwierigkeit, `SetOptions`, `SetGrade`, `waveFactors`, `protectedNight`).
-- **Feedback-Events**: `events.go` (`emit`, `hitEvent`, `arrowEvent`, `coinGiveEvent`, `buildProgressEvent`, `capEvents` mit `priorityEvent`); lesen nur, verbrauchen kein rng. Dev-Eingriffe in `dev.go` (`DevDropGold`, `DevAddStock`, `DevStartWave`, `DevSetPhase`).
-- **Bosse und Nacht-Events** (`docs/rules/bosse.md`): `boss_data.go` (`BossData`, `BossPhase`, `BossAbility` aus `data/bosses.json`, als Listen), `boss.go` (`triggerBoss` am Wellenstart, `spawnBoss`; besiegte Bosse in `Island.DefeatedBosses`), `boss_abilities.go` (Flammenspur `flameTrail`, Splitter-Wurf `shardThrow`), `boss_endboss.go` (Endboss im Bau `lair`: Erscheinen nahe Spieler, Phasen nach HP, `endbossFight`, Sieg setzt `Island.EndbossDefeated`); `events_moon.go` (`NightEvent` aus `data/events.json`: Vollmond jede 7., Blutmond jede 13. Nacht), `events_merchant.go` (Händler-Überfall: `merchantRaidStart`/`merchantRaidEnd`), `enemies_equipment_taken.go` (Gegner mit `grabRange` tragen Drops zum Portal: `takeEquipment`, `dropCarried`). Bosse und Events verbrauchen kein rng außer Münz-Drops.
-- **Inselfolge und Ausgang**: `island_worlds.go` (`WorldDef`, `ParseWorld`/`LoadWorld`: Welt-Datei streng lesen und prüfen, `StandardWorld()` aus `data/worlds/standard.json`, WZ18.2; eine Insel kennt ihre Welt, `CreateIsland`/`CreateIslandIn`, `WorldID`, `IslandID`, WZ18.3), `island_data.go` (`IslandDef`, `checkIsland`, `ChunkCounts` je Tiefe), `island_sizes.go` (`IslandSize`, `IslandSizes()` aus `data/island-sizes.json`: erlaubte Chunk-Anzahlen, B-485), `island_switch.go` (`stepIslandSwitch`: Wechselpunkt neben der Burg der tiefsten Stufe nach dem Endboss, `SwitchReady`, `NextDef`/`NextIsland` und `isLast` je Welt der Insel), `island_victory.go` (`checkVictory`, `goalReached`: Siegvarianten `Options.Goal`, genau einmal, nur auf der letzten Insel), `island_defeat.go` (`defeatLosses`, `resourceLosses`, `gameOver`: Niederlage-Modi `Options.Defeat`, `Island.Over`).
-- **Anzeige-Ableitungen**: `economy_view.go` (`EconomyOf`: Lager-Maximum, Hub-Ausbau, Wartegrund Gefahr, nichts gespeichert), `world_state_mirror.go` (`mirrorState` am Ende von `StepIsland`: `WarnZone`, `ActiveEvent`, `SwitchState`; kein rng, nicht im Spielstand).
-- **Hub-Prüfung**: `hub_validate.go` (`ValidateHub(raw)`/`ValidateHubData` → `HubReport` mit `HubFinding`: Stufen, Platzarten, Mauerlinien) und `hub_validate_layout.go` (Abstandsregeln aus Kandidaten-`hub.json` und `data/buildings.json`, in jeder Tiefe und Streuung); ändert keinen globalen Zustand, Nutzer: Gebäude-Planer und `engine/room` (`preview_candidate.go`).
-- **Vorschau (WZ7.8)**: `preview.go` – `PreviewCycle` (Tageszeit direkt setzen: Sim-Phase `day`/`dusk`/`night` + Fortschritt in [0, 1), `dawn` und 1 werden abgelehnt) und `PreviewHubLevel` (Welt auf Hub-Stufe n ausbauen nach `devBuildSite`, Material-Stufen von Mauer und Turm reihum bis `min(n, Stufenzahl)`) und `PreviewSetSite` (`SiteLook`: Baustufe, Trefferpunkte in Prozent oder nicht gebaut je Platz); für den Welt-Betrachter im Asset-Studio (`engine/room`, WZ7.1), ohne globalen Zustand.
-- Float-Regel: Produkte vor Addition mit `float64(…)` runden (FMA-Abweichung zu JS).
+- **Dateigruppen** (ein Paket, Präfix = Gruppe): `building_*`, `unit_*`, `monarch_*`, `skills_*`, `enemies_*`, `boss_*`,
+  `events_*`, `island_*`, `hub_*`, `world_*`, `save_*`, `dev_*`; ohne Präfix der Kern (`world.go`, `types.go`, `data.go`,
+  `common.go`, `economy*.go`, `campaign.go`, `merchant.go`, `preview.go`, `ship.go`, `torches.go`, `node_mark.go`).
+- **Domain Model** (`types.go`): `World`, `Player`, `Troop`, `Site`, `Enemy`, `Storm`, `Job`, `Stock`, `Event`,
+  Eingabe `PlayerCommand`. Helfer in `common.go` (`applyDamage`, `damagePlayer`, `destroySite`, `siteByID`, `isDangerous`).
+- **System-Pipeline** (`Step` in `world.go`, feste Reihenfolge = Determinismus-Vertrag, Golden
+  `testdata/golden/sim-*.json`): `stepCycle`, `stepSpawns`, `stepPlayers`, `stepPassives`, `stepCamps`, `stepSites`,
+  `stepPlantations`, `stepTroops`, `stepHealing`, `stepSpellTowers`, `stepEndboss`, `stepEnemies`, `stepLava`,
+  `stepHazards`, `stepStorms`, `stepProjectiles`, `removeDeadEnemies`, `loseLayer`, `castleFallen`, `stepTravel`,
+  `capEvents`. Zyklus in `world_cycle.go` (`cycleAt`, `SecondsToNight`, Aggressionspool `addPool`).
+- **Aggregate**: `Island` (`island.go`) hält `Stages []*World`, gemeinsamen `Stock` (`island_storage.go`) und Fund-Pool;
+  Einzelwechsel je Spieler in `island_travel.go`, `world_travel.go`.
+- **Welten und Wertesatz** (`docs/rules/welten.md`): `island_worlds.go` (`WorldDef`, `ParseWorld`/`LoadWorld`,
+  `StandardWorld()` aus `data/worlds/standard.json`, `CreateIsland`/`CreateIslandIn`), `world_values.go`
+  (`ResolveWorldValues`, `ResolveWorldFiles`: Basis → `extends`-Kette → `overrides`, `WorldChildren`,
+  `CheckWorldRemovable`), `world_values_merge.go` (Merge je Feld, Map-Schlüssel, Listen-ID), `world_values_locked.go`
+  (vom Level-Generator gelesene Felder sind nicht übersteuerbar), `world_values_room.go` (`ResolveWorld`, Wertesatz
+  einmal je Insel, `defaultValues` ohne Overrides); `data.go` (`load[T]`, `UseData(fsys)` für Sensitivitätsläufe,
+  `checkPool`).
+- **Insel-Definition**: `island_data.go` (`IslandDef`, `ChunkCounts`), `island_sizes.go`, `island_nature.go`
+  (`NatureAt`: Natur-Vorgabe je Tiefe, B-891), `island_options.go` (`IslandOptions`, `Grade`, Schwierigkeit),
+  `island_switch.go` (Wechselpunkt nach dem Endboss, Feld `Island.SwitchReady`, `NextDef`/`NextIsland`), `island_victory.go`,
+  `island_defeat.go`.
+- **Monarch**: `monarch.go` (`LearnSkill`, `Respec`, `ApplyPreset`, `AvailablePoints`), `monarch_data.go`,
+  `monarch_mount.go`, `monarch_passives.go`, `monarch_revive.go`; Skills `skills.go` (Slots 1–4) mit Linien
+  `skills_caster.go`, `skills_healer.go`, `skills_tank.go`, `skills_thief.go` (Backstab, Smoke Bomb); `skills_status.go`
+  (`AurasOf` für die Anzeige).
+- **Bürger und Wirtschaft**: `unit_common.go`, `unit_professions.go`, `unit_warrior.go`, `unit_archer.go`,
+  `unit_escort.go` (Kämpfer begleiten den Monarchen zum Endboss); `economy.go` (Zahlung, `findPayTarget`, `stepSites`),
+  `economy_dawn.go` (`payDawnIncome`, Zuschlag je Tiefe), `merchant.go`, `node_mark.go` (Markier-Münzen auf Knoten).
+- **Gebäude**: `building_upgrades.go`, `building_barracks.go`, `building_tavern.go`, `building_plantation.go`,
+  `building_repair.go`, `building_healer.go`, `building_spell_tower.go`, `building_outpost.go` (Plätze jenseits der
+  äußersten Mauer-Lage), `building_ruin.go` (Ruinen aus `Layout.Ruins` als Plätze), `ship.go` (Hafen-Platz `ship` mit
+  Ausbau aus `data/ship.json`, `ShipNextCost`), `torches.go` (`TorchXs`); `hub_level.go` (Hub-Stufen),
+  `world_lines.go` (`lineOpen`, `SiteBlockers`, `SiteNeedsClearing`), `world_vein.go`, `world_lava.go`.
+- **Gegner und Bosse**: `enemies.go`, `enemies_traits.go`, `enemies_waves.go`, `enemies_equipment_taken.go`,
+  `enemies_guard.go` (Wachen der Gegnerlager aus `Layout.Guards`, bleiben nach dem Tod weg); `boss.go`, `boss_data.go`,
+  `boss_abilities.go` (inkl. `stepHazards`), `boss_endboss.go`; Nacht-Events `events_moon.go`, `events_merchant.go`.
+- **Spielstand**: `IslandSave` Version 9 (`island_save.go`; v9 = geräumte Gegnerlager), Migration in
+  `island_save_v8.go`, `island_save_v5.go`, `island_save_v3.go`, `save_economy.go`; `SaveGame` v1 in `save.go`.
+  Gespeichert wird nur, was nicht aus dem Seed folgt.
+- **Anzeige-Ableitungen** (nur lesend, kein rng): `economy_view.go` (`EconomyOf`), `action_view.go` (`TrainAt`,
+  `TradeAt`), `site_view.go` (`SiteHubLevel`, `SiteZone`, `SiteVisible`), `world_state_mirror.go` (`mirrorState`).
+- **Prüfung und Vorschau**: `hub_validate.go`, `hub_validate_layout.go` (`ValidateHub`), `preview.go`
+  (`PreviewCycle`, `PreviewHubLevel`, `PreviewSetSite`).
+- **Dev** (nur Dev-Mode des Raums): `dev.go` (`DevDropGold`, `DevAddStock`, `DevStartWave`, `DevSetPhase`),
+  `dev_combat.go` (`DevSpawnBoss`, `DevBossPhase`, `DevStartEvent`), `dev_spawn.go` (`DevSpawnUnits`, ohne rng).
+- Feedback-Events in `events.go` (`emit`, `capEvents`); Float-Regel: Produkte vor Addition mit `float64(…)` runden.
 
 ## Flow
 
-1. Raum erzeugt `CreateIsland(seed, depths, cycleSpeed)` → je Tiefe `CreateWorld(biome, seed, opts)` (`level.Generate` + `placeEntities`).
-2. `AddIslandPlayer(isl, stage)` vergibt inselweiten Spielerindex.
-3. Pro Tick: `StepIsland(isl, commands, dt)` → `Step` je Stufe (`commands[p.Index]`) → `stepIslandTravel` → jedes Event erhält `stage`.
-4. In `Step`: Events leeren, Zeit/Zyklus (`cycleAt`), dawn-Hooks (Händler, Taverne), Wellen via `planWave` (nutzt `rng.Rng`), Spieler (Zahlung, Bewegung, Schlag, Skills, Wiederbeleben), Passive, Bau/Ausbau/Reparatur, Bürger-KI, Heilung, Zaubertürme, Gegner-KI (Traits), Lava, Stürme, Kampf (`applyDamage`), Aufräumen, `castleFallen` bei Burg-HP ≤ 0.
-5. Danach (außer bei `Island.Over`): `stepIslandSwitch`, `mirrorSwitch`, `checkVictory`, je Stufe `mirrorState`; ein Burgfall wirkt im `Step` über `defeatLosses`.
-6. Fund-Pool: Truhe oder Ereignis → `addPoolPoints`/`chestSkillPoint`; Spieler verteilt per `LearnSkill`, `Respec`, `ApplyPreset`.
-7. Speichern: `isl.ToSave(savedAt)` → JSON; Laden: `ParseIslandSave` → `FromIslandSave(s, cycleSpeed)` (stellt Pool via `restorePool` wieder her).
+1. Raum erzeugt `CreateIslandIn(world, …)` → Wertesatz der Welt → je Tiefe `CreateWorld` (`level.GenerateWith` +
+   Entities, Ruinen, Wachen, Schiff).
+2. Pro Tick: `StepIsland(isl, commands, dt)` → `Step` je Stufe → `stepIslandTravel`; danach `stepIslandSwitch`,
+   `checkVictory`, je Stufe `mirrorState`.
+3. Speichern: `isl.ToSave(savedAt)` → JSON; Laden: `ParseIslandSave` (migriert ältere Versionen) → `FromIslandSave`.
 
 ## Integration
 
-- Importiert `k3c/engine/level` (Layout, Biome, Cycle, `WallLine`), `k3c/engine/rng`, `k3c/data` (embed; `buildings.json`, `troops.json`, `economy.json`, `enemies.json`, `monarch.json`, `bosses.json`, `events.json`, `worlds/standard.json`, `hub.json`, Biome).
-- Konsumenten: `engine/room` (Spielschleife), `engine/net` (Protokoll v4, Snapshots, Aktionen wie Skill lernen), `tools/k3c-workbench/internal/balance` und `cmd/k3c-sim` (`sim_run`, Balancing).
-- Client spiegelt Typen in `src/model/` (`World`, `GameEvent`).
+- Importiert `k3c/engine/level`, `k3c/engine/rng`, `k3c/data`.
+- Konsumenten: `engine/room`, `engine/balance`, `engine/enginetools`, `cmd/k3c-sim` (`ParseWorld`, `LoadWorld`,
+  `ResolveWorldValues`), `native/k3c-game/*` (`local`, `world`, `actors`, `hud`, `view`, `menu`, `fx`, `audio`,
+  `props`, `devtools`: lesen Zustand und Anzeige-Ableitungen).

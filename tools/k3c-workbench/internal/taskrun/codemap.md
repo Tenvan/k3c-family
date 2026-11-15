@@ -17,5 +17,5 @@ Führt Taskfile-Tasks aus k3c-workbench aus: Start, Stopp, Zustand und Exit-Code
 4. `StopAll` beim Beenden der App.
 
 ## Integration
-- Konsumenten: `tools/k3c-workbench/app.go` (Lebenszyklus, `StopAll`), `app_tasks.go` (Start/Stopp aus der Task-Ansicht).
+- Konsumenten: `tools/k3c-workbench/app.go` (Lebenszyklus, `StopAll`), `app_tasks.go` (`New`, Bindings `TaskStart`/`TaskStop`/`TaskRuns`), `internal/mcpsrv/tools_tasks.go` (`task_start`, `task_stop`, `task_status` über `TaskHost`, `ValidateArgs`).
 - Abhängigkeiten: `internal/proc`, `internal/console`.

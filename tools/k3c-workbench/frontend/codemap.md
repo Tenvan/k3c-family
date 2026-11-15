@@ -7,8 +7,9 @@ Build- und Toolchain-Konfiguration der k3c-workbench-Oberfläche (React + TypeSc
 ## Design
 
 - `package.json`: private ESM-Anwendung `k3c-workbench-frontend`; Abhängigkeiten `react`/`react-dom` und `@radix-ui/themes` (feste Versionen), Dev: `vite`, `@vitejs/plugin-react`, `typescript`. Skripte `dev` (`vite`) und `build` (`tsc --noEmit && vite build`); `package.json.md5` ist ein Install-Stempel.
-- `vite.config.ts`: Plugin `react()`, Dev-Server Port 5191 (`strictPort`), Proxy `/api` auf `K3C_DEV_API` (Vorgabe `http://127.0.0.1:8191`, `changeOrigin: false` für Host- und Origin-Prüfung), `cors: false`.
-- `tsconfig.json`: `strict`, `jsx: react-jsx`, `noUnusedLocals/Parameters`, Bundler-Resolution, `include: src, ../../webkit`, `paths` für `@webkit/*` und für `react`/`@radix-ui/themes` aus dem eigenen `node_modules`. `paths.ts` (`ALIAS` mit `@webkit`, `DEDUPE`, `WEBKIT`) teilen `vite.config.ts` (Alias, Dedupe, `server.fs.allow`) und `vitest.config.ts` (eigenes Vitest, `task check:dev`; das Vitest der Wurzel nimmt das Frontend aus).
+- `vite.config.ts`: Plugins `react()` und `waitForBackend(API)` (`tools/webkit/lib/devProxy.ts`: `/api` wartet, bis das Backend bereit ist, auch beim Neustart), Dev-Server Port 5191 (`strictPort`), Proxy `/api` auf `K3C_DEV_API` (Vorgabe `http://127.0.0.1:8191`, `changeOrigin: false` für Host- und Origin-Prüfung), `cors: false`.
+- `tsconfig.json`: `strict`, `jsx: react-jsx`, `noUnusedLocals/Parameters`, Bundler-Resolution, `include: src, ../../webkit`, `paths` für `@webkit/*` und für `react`/`@radix-ui/themes` aus dem eigenen `node_modules`. `paths.ts` (`ALIAS` mit `@webkit`, `DEDUPE`, `WEBKIT`, `MOCK_DATA`) teilen `vite.config.ts` (Alias, Dedupe, `server.fs.allow`) und `vitest.config.ts` (eigenes Vitest für `src/**` und `../../webkit/**`, `task check:dev`; das Vitest der Wurzel nimmt das Frontend aus).
+- `MOCK_DATA`: Die Mocks lesen echte Dateien (`docs/data`, `data`, `tools/paper/fixtures/ui`), deshalb erlaubt `server.fs.allow` diese Ordner.
 - `index.html`: Einstieg mit `#root` und `src/main.tsx`.
 - Generiert, nicht von Hand: `wailsjs/` (Wails-Bindings), `dist/`; Quellcode in `src/`.
 

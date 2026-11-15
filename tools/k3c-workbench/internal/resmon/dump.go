@@ -22,14 +22,15 @@ func (m *Monitor) checkThresholds(s Sample) {
 	if gorHit {
 		m.nextGor = s.Goroutines * 2
 	}
-	webHit := s.WebView >= m.nextWeb
+	webLimit := m.nextWeb // die Grenze, die gerade gerissen wurde (nach dem ersten Mal angehoben)
+	webHit := s.WebView >= webLimit
 	if webHit {
 		m.nextWeb = s.WebView + s.WebView/2
 	}
 	m.mu.Unlock()
 	if webHit {
-		m.cfg.Log.Warn("🤒 webview-renderer über der grenze: "+formatBytes(s.WebView)+" (grenze "+formatBytes(m.cfg.WebViewWarn)+")",
-			"ns", "res", "webview_rss", s.WebView, "limit", m.cfg.WebViewWarn)
+		m.cfg.Log.Warn("🤒 webview-renderer über der grenze: "+formatBytes(s.WebView)+" (grenze "+formatBytes(webLimit)+")",
+			"ns", "res", "webview_rss", s.WebView, "limit", webLimit)
 	}
 	if heapHit {
 		m.cfg.Log.Warn("🤒 live-heap über der Schwelle: "+formatBytes(s.HeapLive), "ns", "res", "heap_live", s.HeapLive,
