@@ -1,4 +1,4 @@
-import type { WorktreeDiff, GitHubData, GitHubSprint, PlanDoc, PlanningData, PlanSession, PlanTicket } from './types';
+import type { WorktreeDiff, GitHubData, GitHubSprint, PlanDoc, PlanItem, PlanningData, PlanSession, PlanTicket } from './types';
 import { setRank, withProjects } from './mockProjects';
 
 // Erfundene Planung für den Mock: ein aktiver Sprint mit Session-Tabelle, geplante Entwürfe, Tickets und drei kurze
@@ -210,6 +210,21 @@ export function mockPlanning(changed: () => void) {
   }, 15000);
   return {
     planningData: async (): Promise<PlanningData> => structuredClone(DATA), // wie planning.Load in Go: jedes Mal frisch
+    planningList: async (): Promise<PlanningData> => {
+      const d = structuredClone(DATA);
+      for (const s of d.sprints) for (const x of s.sessions) delete x.text; // wie planning.LoadList
+      return d;
+    },
+    planningItems: async (ids: string[]): Promise<PlanItem[]> => ids.map((id): PlanItem => {
+      const body = () => mockDoc(DATA, id).split('\n').slice(1).join('\n').trim(); // ohne die Pfadzeile
+      const x = DATA.sprints.flatMap((s) => s.sessions).find((y) => y.nr === id);
+      if (x) return { id, kind: 'session', path: `docs/sprints/aktiv/${id}.md`, text: x.text ?? '' };
+      if (DATA.tickets.some((y) => y.nr === id)) return { id, kind: 'ticket', path: `docs/backlog/${id}.md`, text: body() };
+      if (DATA.sprints.some((y) => y.id === id)) return { id, kind: 'sprint', path: `docs/sprints/aktiv/${id}/README.md`, text: body() };
+      const pj = DATA.projects?.find((y) => y.id === id);
+      if (pj) return { id, kind: 'projekt', path: `docs/projekte/${id}.md`, text: `# ${id} · ${pj.title}\n` };
+      return { id, kind: 'ticket', path: '', text: '', error: `${id} nicht gefunden` };
+    }),
     planningDocs: async (): Promise<PlanDoc[]> => ['plan', 'fragen', 'glossar'],
     planningSet: async (id: string, field: string, value: string): Promise<string> => {
       setField(id, field, value);
