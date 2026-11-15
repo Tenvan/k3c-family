@@ -1,4 +1,12 @@
 {
+  "barke": {
+    "renderKey": "006d542cffc348252f58f624c1ffad72a5d22043266227ff9136e939fe0d8414",
+    "dateien": {
+      "stand.png": "09890ec6e66d9ca3443e3c3a510b945f57f0a118b5ee7164568ca576b0d5fb0f",
+      "stand.s2.png": "16b2a6885b1ff4ab37f29c7ccf663073e2927d4e29d65341d8b9a3dd4eee299d",
+      "stand.s3.png": "851f2084eeded92be92bcce379cc44fe89612b8cf718a79f905e66a7ebae3b89"
+    }
+  },
   "bogner": {
     "renderKey": "6062b28b6a07e2f0b7e6a1ab26add738aa29d7dc746bc0d575ffa692c495ebbc",
     "dateien": {
