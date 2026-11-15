@@ -218,6 +218,7 @@ func (g *Game) advance() {
 		g.cues = g.cues[:0]
 	}
 	g.syncLevels()
+	g.frame.Loading = g.loading // Ladeanzeige statt Spiel: Einblendungen der Geschichte warten (B-974)
 	g.cells = Cells(g.cells, g.win, &g.frame)
 	g.cams.Follow(g.cells, &g.frame)
 	g.frame.Cells, g.frame.Recording = g.cells, g.args.Shots != ""

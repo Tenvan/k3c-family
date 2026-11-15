@@ -52,6 +52,8 @@ const (
 	slotSkillBar
 	slotHint
 	slotGuide
+	slotStoryA // Geschichtszeile, erste und zweite Zeile (story.go)
+	slotStoryB
 	slotMenuTitle
 	slotMenuFooter
 	slotMenuRow                                // menuWindow Zeilen ab hier

@@ -39,6 +39,10 @@ type Frame struct {
 	// Route sind alle Inseln der Welt des laufenden Spiels in Listenreihenfolge (local, nur lesen; leer ohne Spiel):
 	// Grundlage der Seekarte am Hafen (B-962).
 	Route []RouteIsland
+	// Campaign ist der Stand der Kampagne für die Geschichte (local, story.go; leer ohne Spiel, B-974).
+	Campaign Campaign
+	// Loading: game zeigt in diesem Update die Ladeanzeige statt des Spiels (Einblendungen warten so lange, B-974).
+	Loading bool
 }
 
 // RouteIsland ist eine Insel der Welt mit ihrer Etappe (>= 1; local setzt für 0 den Listenplatz + 1 wie die Simulation).

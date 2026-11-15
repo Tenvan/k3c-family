@@ -40,6 +40,9 @@ func TestMain(m *testing.M) {
 	if out := os.Getenv(voyageShotEnv); out != "" {
 		os.Exit(runVoyageShot(out))
 	}
+	if out := os.Getenv(storyShotEnv); out != "" {
+		os.Exit(runStoryShot(out))
+	}
 	os.Exit(m.Run())
 }
 

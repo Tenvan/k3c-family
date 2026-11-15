@@ -41,6 +41,7 @@ const (
 	itemShared
 	itemPlace
 	itemCitizens
+	itemStory
 	itemBoss
 	itemEvents
 	itemTravel
@@ -74,7 +75,7 @@ type anchor struct {
 const rowH = 42.0
 
 // anchors der Elemente: drei Zeilen oben wie die Leiste des Browsers (Zeile 0 Spielerkarte, Uhr, Kampf; Zeile 1
-// Vorrat, Meldung, Ort; Zeile 2 Hub und Bürger), darunter Boss und Events, unten Skill-Leiste, Reise, Beitritt und Radar (B-915: Unterkante im Fluss).
+// Vorrat, Meldung, Ort; Zeile 2 Hub und Bürger, mittig die Geschichtszeile), darunter Boss und Events, unten Skill-Leiste, Reise, Beitritt und Radar (B-915: Unterkante im Fluss).
 var anchors = [itemCount]anchor{
 	itemPlayer:   {alignStart, alignStart, 24, 4, rankMust},
 	itemBanner:   {alignCenter, alignStart, 0, 4 + rowH, rankMust},
@@ -84,6 +85,7 @@ var anchors = [itemCount]anchor{
 	itemShared:   {alignStart, alignStart, 24, 4 + rowH, rankShared},
 	itemPlace:    {alignEnd, alignStart, 24, 4 + rowH, rankShared},
 	itemCitizens: {alignEnd, alignStart, 24, 4 + 2*rowH, rankShared},
+	itemStory:    {alignCenter, alignStart, 0, 4 + 2*rowH, rankShared}, // Geschichtszeile (B-974): vor Boss und Events
 	itemBoss:     {alignCenter, alignStart, 0, 4 + 3*rowH, rankShared},
 	itemEvents:   {alignCenter, alignStart, 0, 4 + 4*rowH, rankShared},
 	itemTravel:   {alignCenter, alignEnd, 0, 150, rankTravel},
