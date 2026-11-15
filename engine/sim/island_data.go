@@ -28,6 +28,8 @@ type IslandDef struct {
 	// Nature ist die Vorgabe der Insel für die Natur-Werte, NatureByDepth setzt je Tiefe fest (island_nature.go, B-891).
 	Nature        level.NatureValues
 	NatureByDepth map[string]level.NatureValues
+	// Story ist die Geschichte der Insel (story.go, B-965); leer = keine Zeilen.
+	Story IslandStory
 }
 
 // checkIsland prüft eine Insel in der Reihenfolge aus docs/rules/welten.md § 3: Name, Tiefen (vorhanden, bekannt,
