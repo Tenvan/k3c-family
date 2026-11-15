@@ -167,7 +167,7 @@ func damagePlayer(w *World, p *Player, damage float64, cause string) {
 	lost := 0
 	switch {
 	case absorbByShield(p, damage), freeHit(w, p):
-	case p.LastStandFor > 0 && p.Gold <= w.values().Monarch.HitCoins:
+	case p.LastStandFor > 0 && p.Gold > 0 && p.Gold <= w.values().Monarch.HitCoins:
 		p.LastStandFor = 0
 	case p.Gold > 0:
 		lost = min(p.Gold, w.values().Monarch.HitCoins)

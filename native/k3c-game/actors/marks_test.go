@@ -9,7 +9,7 @@ import (
 )
 
 // Fälle aus src/scenes/render/worldRenderer.ts: setBar(hp / maxHp, sichtbar bei hp < maxHp), Monarchen zusätzlich
-// nur bei respawnIn ≤ 0; Breiten 36 (Truppe), 44 (Gegner), 50 (Monarch), Höhe 8.
+// nur für Truppen (36) und Gegner (44), Höhe 8; Monarchen haben keine HP und keinen Balken mehr (B-930).
 func TestBarRulesLikeBrowser(t *testing.T) {
 	cases := []struct {
 		name         string

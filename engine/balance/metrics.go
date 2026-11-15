@@ -17,6 +17,7 @@ type Metrics struct {
 	// FirstBowTick: erstes Ereignis armed (ein Bauer holt einen Bogen aus der Werkstatt); Start-Bogenschützen zählen nicht.
 	FirstBowTick   *int `json:"firstBowTick"`
 	CastleFallTick *int `json:"castleFallTick"` // erstes castleFallen
+	Lost           string `json:"lost,omitempty"`  // Ursache des verlorenen Laufs: "crown" (Kronenraub, kampf.md § 6)
 	// FirstWorkshopTick: erstes Ereignis built mit kind workshop (WZ28.4).
 	FirstWorkshopTick *int `json:"firstWorkshopTick"`
 	// FirstTowerTick: erstes Ereignis built mit kind tower; HubLevel2Tick/HubLevel3Tick: erstes Ereignis upgraded mit

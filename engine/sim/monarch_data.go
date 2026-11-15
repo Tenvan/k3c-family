@@ -51,6 +51,8 @@ type MountData struct {
 // CrownData: Flug der gefallenen Krone nach hinten (Units, Sekunden), Aufheben durch Monarchen, Raub durch Gegner (Units).
 type CrownData struct {
 	DistanceUnits, HeightUnits, FlightSeconds, PickupUnits, GrabUnits float64
+	// BlockSeconds: so lange sammelt der Getroffene seine Treffer-Münze nicht ein; CoinOffsetUnits, CoinStepUnits: Abstand der Münzen.
+	BlockSeconds, CoinOffsetUnits, CoinStepUnits float64
 }
 
 type monarchData struct {

@@ -66,6 +66,10 @@ func stepCrowns(w *World, dt float64) {
 		if c == nil {
 			continue
 		}
+		if owner.Free && c.State != crownEnemy { // abwesender Spieler: die Krone sitzt wieder auf, kein Raub (B-931)
+			restoreCrown(w, owner, owner)
+			continue
+		}
 		switch c.State {
 		case crownFlying:
 			flyCrown(w, c, dt)
@@ -150,14 +154,15 @@ func followEnemy(w *World, c *Crown) {
 }
 
 // takeCrownOrLoot lässt einen Gegner eine Krone am Boden aufheben (Kronenraub) oder, mit `stealsGold`, eine Münze aus einem
-// Treffer auf den Monarchen. Nicht fliehende Gegner ohne Last, keine Bosse und Wachen, nur solange die Stufe Portale hat.
+// Treffer auf den Monarchen. Nicht fliehende Gegner ohne Last, keine Bosse und Wachen, nur solange die Stufe Portale hat und nicht in
+// einer geschützten Nacht; Kronen abwesender (Free) Monarchen sind nicht raubbar.
 func takeCrownOrLoot(w *World, e *Enemy) {
-	if e.Boss || e.Guard || e.Fleeing || e.Crown != nil || len(w.Portals) == 0 {
+	if e.Boss || e.Guard || e.Fleeing || e.Crown != nil || len(w.Portals) == 0 || w.protectedNight() {
 		return
 	}
 	grab := w.values().Monarch.Crown.GrabUnits
 	for _, p := range w.Players {
-		if c := p.Crown; c != nil && c.State == crownGround && math.Abs(c.X-e.X) <= grab {
+		if c := p.Crown; c != nil && !p.Free && c.State == crownGround && math.Abs(c.X-e.X) <= grab {
 			c.State, c.Carrier, e.Crown, e.Fleeing = crownEnemy, e.ID, c, true
 			emit(w, "crownTaken", Event{"player": p.Index, "x": unitX(e.X)})
 			return
@@ -193,9 +198,9 @@ func crownStolen(w *World, e *Enemy) {
 // hitCoins: Münzen eines Treffers fallen neben dem Monarchen auf den Boden, aufsammelbar für alle; der Getroffene selbst
 // sammelt sie erst nach einer Sperrzeit wieder ein. Deterministisch gestaffelt, ohne Würfel.
 func hitCoins(w *World, p *Player, n int) {
-	back := crownDirection(w, p)
+	back, d := crownDirection(w, p), w.values().Monarch.Crown
 	for i := range n {
-		x := math.Min(w.WidthUnits, math.Max(0, p.X+back*(0.6+0.3*float64(i))))
-		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: x, BlockedPlayerID: &p.ID, BlockedUntil: w.Time + 1.5, Loot: true})
+		x := math.Min(w.WidthUnits, math.Max(0, p.X+back*(d.CoinOffsetUnits+d.CoinStepUnits*float64(i))))
+		w.Coins = append(w.Coins, &Coin{ID: w.newID(), X: x, BlockedPlayerID: &p.ID, BlockedUntil: w.Time + d.BlockSeconds, Loot: true})
 	}
 }

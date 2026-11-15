@@ -86,7 +86,9 @@ var miniBossKind = map[string]bool{"goblinLeader": true, "trollKing": true, "rat
 func healMonarchs(isl *sim.Island) {
 	for _, w := range isl.Stages {
 		for _, p := range w.Players {
-			p.Crown = nil
+			if p.Crown != nil && p.Crown.State != "enemy" { // trägt ein Gegner die Krone, bleibt sie dort
+				p.Crown = nil
+			}
 		}
 	}
 }
