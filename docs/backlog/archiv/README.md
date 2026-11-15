@@ -851,3 +851,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-933](B-933-angriff-general.md) | SIM | Idee | hoch | erledigt | KS4 | General-Angriff: Der Monarch nimmt das Banner am Tor, ein Trupp folgt ihm, Ausfälle werden nachbesetzt |
 | [B-934](B-934-kampf-anzeige.md) | CLI | Idee | mittel | erledigt | KS5 | Das Spiel zeigt Portal-HP, Krone, Münzverlust, Schild, Banner und Auslöser |
 | [B-939](B-939-kampf-engine-export.md) | SIM | Schuld | mittel | erledigt | KS6 | Die Engine exportiert Preis, Zahlstand und Zahlbarkeit je Kampf-Zahlstelle und Spieler sowie die Kronen-Zustände |
+| [B-958](B-958-welt-polar.md) | DEV | Idee | niedrig | verworfen | WE3 | Welt Polar 1900: Expedition auf Eisschollen mit knappem Holz |
+| [B-945](B-945-menue-tastatur-immer.md) | CLI | Problem | mittel | erledigt | FB4 | In Menüs funktioniert immer auch die normale Tastatursteuerung |
+| [B-946](B-946-hinweis-leertaste-betreten-weg.md) | CLI | Problem | niedrig | erledigt | FB4 | Der Hinweis „Leertaste zum Betreten“ wird nicht mehr angezeigt |
