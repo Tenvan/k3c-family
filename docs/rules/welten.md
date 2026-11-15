@@ -109,6 +109,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `extends` | nein | Text | Eltern-Welt (Welt-ID nach § 4, nicht die eigene); fehlt es, erbt die Welt von der Basis `data/` (§ 1). |
 | `overrides` | nein | Objekt | Übersteuerte Basis-Werte je Basis-Datei (§ 1.1); fehlt es oder `{}`, gilt die Basis (bzw. die Eltern-Welt). |
 | `combat` | nein | Objekt | Kampfvariante der Welt (`kampf.md` § 3): `mode` (`groups` Standard oder `general`) und `groupSize` (ganze Zahl ≥ 1, Standard 5, nur bei `groups`); fehlt es, gilt `groups`/5. |
+| `story` | nein | Objekt | Geschichte der Welt (§ 2.2): `lexicon`, `start`, `etappen`, `end`, `bottles`; fehlt es, gibt es keine Zeilen der Welt. `extends` vererbt es nicht. |
 | `islands` | ja | Liste | Inseln in Spielreihenfolge (Insel 1 zuerst), mindestens eine. |
 
 **Insel** (Eintrag in `islands`, Felder wie heute in `data/islands.json`, Reihenfolge beim Schreiben wie in der Tabelle):
@@ -118,6 +119,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `id` | ja | Text | Insel-ID (§ 4), eindeutig in der Welt. |
 | `name` | ja | Text | Anzeigename, nicht leer (z. B. „Insel 1“). |
 | `etappe` | nein | Ganzzahl ≥ 1 | Etappe der Insel (§ 6.1); fehlt sie, gilt Listenplatz + 1 (heute: jede Insel eine eigene Etappe, linear). |
+| `story` | nein | Objekt | Geschichte der Insel (§ 2.2): `arrival`, `boss`, `done`; fehlt es, gibt es keine Zeilen der Insel. |
 | `depths` | ja | Liste Zahlen | Tiefen der Stufen, jede ein bekanntes Biom (`data/biomes/*.json`), jede höchstens einmal; Lücken erlaubt (z. B. `[0, 4]`). |
 | `depthScaling` | ja | Objekt | `hp`, `damage`, `speed`: Basen der Potenz je Tiefe (`stufen.md` § 1, Skalierung), alle > 0. |
 | `plannedChunks` | nein | Objekt | Geplante Chunks je Tiefe (`geplante-chunks.md` § 1–5); fehlt oder `{}` = reiner Zufall. |
@@ -177,6 +179,51 @@ Beispiel (Insel 1, Wald als Pappel-Monokultur mit dichtem Wald, Felsen auf allen
 "natureByDepth": { "0": { "traits": { "forestDensity": 5 }, "weights": { "treeSpecies": { "tanne": 0, "pappel": 3, "birke": 0 } } } }
 ```
 
+### 2.2 Geschichte (B-965)
+
+Quelle: B-965 (🧑 2026-11-15, Ideenrunde). Jede Welt und jede Insel erzählt eine kurze **Geschichte** in einer
+**Kunstsprache** mit eigenem Klang je Welt; kurze echte Wörter deuten die Handlung an. Die Zeilen stehen fest in der
+Welt-Datei; wann sie gelten, regelt § 6.2. Alles ist optional (B-965/R5): Fehlt `story` oder ein Eintrag, gibt es dort
+keine Zeilen, sonst ändert sich nichts.
+
+**`story` der Welt:**
+
+| Feld | Typ | Regel |
+|---|---|---|
+| `lexicon` | Liste Text | **Wortschatz** der Kunstsprache: Kunstwörter in Kleinbuchstaben, Apostroph und Bindestrich im Wort erlaubt (`akh'et`, `sen-hotep`). Größe höchstens die Obergrenze (§ 3). |
+| `start` | Eintrag | Zeilen beim Start einer neuen Kampagne. |
+| `etappen` | Objekt | Etappen-Nummer (Dezimalzahl ohne führende Null, § 6.1) → Eintrag: Zeilen beim Abschluss dieser Etappe. |
+| `end` | Eintrag | Zeilen beim Kampagnensieg. |
+| `bottles` | Liste Einträge | Zeilen für die Flaschenpost; hier nur Format und Prüfung, genutzt erst von B-971. |
+
+**`story` der Insel:**
+
+| Feld | Typ | Regel |
+|---|---|---|
+| `arrival` | Eintrag | Zeilen bei der Ankunft auf der Insel. |
+| `boss` | Eintrag | Zeilen, wenn der Endboss der Insel ausgelöst wird. |
+| `done` | Eintrag | **Abschlusszeile** nach dem Sieg über den Endboss (B-966 zeigt sie als Andenken). |
+
+**Zeilenregel** (B-965/R3): Ein **Eintrag** ist eine Liste aus 1 bis 2 Zeilen (Text, nicht leer, höchstens so lang wie
+die Obergrenze). Wörter trennt der Leerraum; Satzzeichen am Rand eines Worts zählen nicht mit, ein Stück ohne Buchstaben
+(etwa ein Gedankenstrich) ist kein Wort. Ein **echtes Wort** hat mindestens zwei Buchstaben und nur Großbuchstaben
+(`KRONE`); es ist deutsch und wird nicht übersetzt. Jedes andere Wort ist ein **Kunstwort**, steht klein (am Satzanfang
+groß begonnen) und muss im `lexicon` stehen, Groß- und Kleinschreibung egal. Je Zeile stehen 2 bis 3 echte Wörter; eine
+Zeile darf zwei kurze Sätze haben.
+
+Beispiel (Ausschnitt `data/worlds/sengoku.json`; Texte nur als Muster, die echten schreibt B-976):
+
+```json
+"story": { "lexicon": ["oru", "kamae", "no", "sen", "shiro", "nu"],
+  "start": ["Oru kamae KRONE no sen. Shiro nu BRENNT."],
+  "etappen": { "1": ["Sen no MEER, oru KRONE kamae."] },
+  "end": ["Shiro no FRIEDE, kamae KRONE sen."] },
+"islands": [ { "id": "island1", "name": "Reisfeld-Ebene", "story": {
+  "arrival": ["Oru no REIS, sen SCHIFF nu."],
+  "boss": ["Nu kamae MASKE, shiro TIEF."],
+  "done": ["MASKE nu, KRONE oru sen."] } } ]
+```
+
 ## 3. Prüfung beim Laden
 
 Die Prüfung gilt für **jede** Welt-Datei, gleich ob eingebettet, im Dev-Mode von der Platte gelesen oder im Welten Editor als
@@ -195,6 +242,7 @@ geladen, nichts wird repariert.
 | Je Insel: `depthScaling` mit `hp`, `damage`, `speed` jeweils > 0. | Keine Gegner mit 0 HP oder Stillstand. | – |
 | `chunkCounts`: Schlüssel ist eine Tiefe der Insel (Dezimalzahl ohne führende Null), Wert eine Inselgröße aus der Tabelle. | `geplante-chunks.md` § 7. | `data/island-sizes.json` |
 | `plannedChunks`: Schlüssel ist eine Tiefe der Insel; die Planung besteht die Prüfung gegen die Mauerlinien und die Chunk-Anzahl der Tiefe, unabhängig vom Seed (`level.ValidatePlanFor`). | `geplante-chunks.md` § 5. | `data/biomes/*.json` |
+| `story` der Welt und jeder Insel (§ 2.2, B-965/R4): keine unbekannten Felder; `lexicon` höchstens so groß wie die Obergrenze; je Eintrag 1 bis 2 Zeilen, keine leer, keine länger als die Obergrenze (in Zeichen, nicht Bytes); jedes Kunstwort steht im `lexicon`; je Zeile 2 bis 3 echte Wörter; jede Etappen-Nummer in `etappen` hat mindestens eine Insel. Geprüft wird nach den Inseln, in der Reihenfolge `lexicon`, `start`, `etappen` (aufsteigend), `end`, `bottles`, dann je Insel `arrival`, `boss`, `done`; je Zeile: leer, Länge, Kunstwörter, Anzahl echter Wörter. | Die Zeilen bleiben kurz und am TV lesbar; ein Tippfehler im Kunstwort fällt beim Laden auf, nicht erst im Spiel. | `data/story.json` (Obergrenzen, vorläufig: Zeile 64 Zeichen, Wortschatz 24 Wörter; angelegt in GS1.2) |
 
 **Fehlermeldungen** nennen Datei (und damit Welt), Insel, Tiefe und Platz, soweit vorhanden, im Muster
 `<Datei>: Insel <insel-id>: <Grund>` (Grund wie heute aus `checkIsland`). Verbindlich sind die Teile, nicht jedes Wort:
@@ -214,8 +262,18 @@ geladen, nichts wird repariert.
 | Faktor ≤ 0 | `data/worlds/nordmeer.json: Insel eisinsel: depthScaling braucht Faktoren > 0` |
 | Größe falsch | `data/worlds/nordmeer.json: Insel eisinsel: chunkCounts Tiefe 0: die Chunk-Anzahl 12 ist keine Inselgröße (gültig: 16, 24, …)` |
 | Planung falsch | `data/worlds/nordmeer.json: Insel eisinsel: plannedChunks Tiefe 0: auf Platz -9: …` |
+| Geschichte: unbekanntes Feld | `data/worlds/sengoku.json: story: unbekanntes Feld "intro"`, `… Insel island1: story: unbekanntes Feld "ende"` |
+| Geschichte: Wortschatz zu groß | `data/worlds/sengoku.json: story.lexicon: 30 Wörter (höchstens 24)` |
+| Geschichte: Anzahl Zeilen | `data/worlds/sengoku.json: story.start: 3 Zeilen (1 bis 2)` |
+| Geschichte: leere Zeile | `data/worlds/sengoku.json: story.end Zeile 2: leer` |
+| Geschichte: Zeile zu lang | `data/worlds/sengoku.json: Insel island1: story.arrival Zeile 1: 71 Zeichen (höchstens 64)` |
+| Geschichte: Kunstwort unbekannt | `data/worlds/sengoku.json: story.start Zeile 1: Wort "kame" fehlt im lexicon` |
+| Geschichte: echte Wörter | `data/worlds/sengoku.json: Insel island1: story.boss Zeile 1: 1 echtes Wort (2 bis 3)`, `… story.etappen.1 Zeile 1: 4 echte Wörter (2 bis 3)`, `… story.bottles Eintrag 2 Zeile 1: …` |
+| Geschichte: Etappe ohne Insel | `data/worlds/sengoku.json: story.etappen: Etappe 3 hat keine Insel` |
 
 Entschieden von Claude (Delegation 🧑, 2026-10-19): Muster und neue Fälle; die Gründe aus `checkIsland` bleiben wörtlich.
+Meldungen der Geschichte: B-965/R4; sie nennen Welt (über die Datei), Insel, Feld und Zeile im selben Muster. Entschieden
+von Claude (GS1.1, 2026-11-15, vorläufig): Wortlaut, Prüfreihenfolge und Zählung in Zeichen.
 
 ## 4. IDs
 
@@ -267,6 +325,34 @@ Inseln einer **Etappe** sind in beliebiger Reihenfolge anfahrbar; die nächste E
 - **Bau der Zielinsel:** `NextIsland` baut das Ziel; der Seed ergibt sich aus Spiel-ID und **Listenplatz** des Ziels (`<id>:<Listenplatz>`), `Number` ist der Listenplatz. Die abgeschlossenen Inseln ziehen mit.
 - **Beispiel:** Etappen 1, 2, 2 (Inseln a, b, c): Nach a bietet der Hafen b und c; Wahl c, danach bietet er nur b; nach b gibt es keine Ziele, b ist die letzte (Sieg möglich).
 
+### 6.2 Geschichte an Wendepunkten (B-965)
+
+Quelle: B-965/R6 und R7 (🧑 2026-11-15); die Auslöser sind Defaults und **vorläufig** (§ 9). Ein **Wendepunkt** ist ein
+Moment der Kampagne, an dem Zeilen der Geschichte (§ 2.2) gelten. Die Engine nennt sie über reine Funktionen in
+`engine/sim`: ohne Zustand, ohne Zufall, ohne neue Ereignisse; das Spiel blendet sie nur ein (B-974).
+
+| Wendepunkt | Auslöser | Zeilen, in dieser Reihenfolge |
+|---|---|---|
+| Neue Kampagne | Start einer neuen Kampagne | `start` der Welt, danach `arrival` der Startinsel |
+| Ankunft | Inselwechsel (`islandSwitch`) | `arrival` der Zielinsel |
+| Endboss ausgelöst | `bossSpawned` des Endbosses | `boss` der Insel |
+| Endboss besiegt | `bossDefeated` des Endbosses | `done` der Insel; schließt der Sieg die Etappe ab, danach `etappen[<Nr>]`; ist es die letzte Insel der Welt, statt dessen `end` |
+
+- **Etappe abgeschlossen** heißt: Alle übrigen Inseln der Etappe sind abgeschlossen (§ 6.1); die Insel mit dem eben
+  besiegten Endboss zählt dabei schon mit, nicht erst beim Ablegen. Ohne `etappe` ist jede Insel eine eigene Etappe, die
+  Etappenzeile folgt dann auf jede Abschlusszeile.
+- **Letzte Insel der Welt** ist die Insel, nach der es keine Ziele mehr gibt (§ 6.1), nicht der letzte Listenplatz. Die
+  Zeile ihrer Etappe in `etappen` gilt nie, an ihre Stelle tritt `end`.
+- **Kein Auslösen beim Laden:** Das Laden eines Spielstands nennt keine Zeilen. Miniboss ausgelöst oder besiegt: keine Zeile.
+- **Siegvariante ohne Endboss** (z. B. Tage überleben): `done` und `end` gelten beim Sieg der Variante auf der letzten
+  Insel; auf früheren Inseln bleibt es beim Endboss (Bedingung des Inselwechsels, § 6).
+- **Fehlender Eintrag:** Der Wendepunkt nennt dafür nichts, die übrigen Zeilen bleiben (Insel ohne `boss`: am Endboss
+  keine Zeile, `done` gilt weiter).
+- **Determinismus und 2 Spieler:** Dieselbe Welt und derselbe Wendepunkt ergeben immer dieselben Zeilen; sie gelten für
+  alle Spieler der Insel gleich, in welcher Stufe sie auch stehen. Simulation, Golden und Spielstand ändern sich nicht.
+- **Beispiel:** Etappen 1, 2, 2 (Inseln a, b, c): Sieg über den Endboss von a → `done` von a, danach `etappen["1"]`.
+  Sieg auf c (b noch offen) → nur `done` von c. Sieg auf b danach, b ist die letzte Insel → `done` von b, danach `end`.
+
 ## 7. Git
 
 Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 5 der Session WZ18.1.
@@ -292,3 +378,10 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 6 der Session W
 
 - Obergrenze n der Inseln je Welt und Inhalt weiterer Inseln (`stufen.md` § 7), Variante „Ebenen“.
 - Endbosse in anderen Tiefen als 4 (heute muss jede Insel Tiefe 4 haben, § 3); neue Bosse sind Nicht-Ziel von B-488.
+- Geschichte (B-965), Defaults **vorläufig**, von 🧑 bei der Freigabe bestätigt: „Abschluss einer Etappe“ ist die Etappe
+  der Welt (§ 6.1); „vor dem Endboss“ ist der Moment, in dem er ausgelöst wird (`bossSpawned`); echte Wörter deutsch und
+  unübersetzt; Zeilen über Funktionen statt neuer Ereignisse; Einblendung je Spielerhälfte (B-974).
+- Geschichte, Obergrenzen **vorläufig**: Zeile höchstens 64 Zeichen, Wortschatz höchstens 24 Wörter je Welt
+  (`data/story.json`).
+- Welt „Polar“ gibt es nicht; ihr nordischer Klang gilt, sobald sie entsteht. Eine Geschichte bekommen heute `standard`,
+  `sengoku`, `nil`, `britannien` (B-976). Mechanik der Flaschenpost zu `story.bottles`: B-971.

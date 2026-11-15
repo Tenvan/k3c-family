@@ -35,18 +35,22 @@ func (isl *Island) done(i int) bool {
 
 // targetIndexes sind die Listenplätze der Ziele: offene Inseln der Etappe der aktuellen Insel, sonst die Inseln der
 // nächsten Etappe; leer = letzte Insel der Welt.
-func (isl *Island) targetIndexes() []int {
-	n := len(isl.world.Islands)
-	if isl.Number < 0 || isl.Number >= n {
+func (isl *Island) targetIndexes() []int { return isl.world.targetsFrom(isl.Number, isl.done) }
+
+// targetsFrom wie targetIndexes für die Insel am Listenplatz cur; done sagt je Listenplatz, ob die Insel abgeschlossen
+// gilt (reine Funktion, auch für die Wendepunkte der Geschichte, story_points.go).
+func (w WorldDef) targetsFrom(cur int, done func(int) bool) []int {
+	n := len(w.Islands)
+	if cur < 0 || cur >= n {
 		return nil
 	}
-	etappe := isl.world.etappeOf(isl.Number)
+	etappe := w.etappeOf(cur)
 	var same, next []int
 	for i := 0; i < n; i++ {
-		if i == isl.Number || isl.done(i) {
+		if i == cur || done(i) {
 			continue
 		}
-		switch isl.world.etappeOf(i) {
+		switch w.etappeOf(i) {
 		case etappe:
 			same = append(same, i)
 		case etappe + 1:

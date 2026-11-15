@@ -60,9 +60,19 @@
     "manifest": "lavaschleim/manifest.json"
   },
   {
+    "id": "ninja",
+    "rig": "figur",
+    "manifest": "ninja/manifest.json"
+  },
+  {
     "id": "rattenschwarm",
     "rig": "requisite",
     "manifest": "rattenschwarm/manifest.json"
+  },
+  {
+    "id": "samurai",
+    "rig": "figur",
+    "manifest": "samurai/manifest.json"
   },
   {
     "id": "skelett",

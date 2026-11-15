@@ -105,6 +105,11 @@
     "manifest": "portal/manifest.json"
   },
   {
+    "id": "samurai-lager",
+    "rig": "requisite",
+    "manifest": "samurai-lager/manifest.json"
+  },
+  {
     "id": "schild-axt",
     "rig": "requisite",
     "manifest": "schild-axt/manifest.json"
@@ -208,6 +213,11 @@
     "id": "tanne",
     "rig": "requisite",
     "manifest": "tanne/manifest.json"
+  },
+  {
+    "id": "torii",
+    "rig": "requisite",
+    "manifest": "torii/manifest.json"
   },
   {
     "id": "truhe-offen",

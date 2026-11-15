@@ -44,7 +44,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Bereich | Planungsangabe an Ticket und Sprint: Pfad-Globs aller Dateien, die die Arbeit anfasst; bei Sessions die Erlaubten Dateien. Überlappende Bereiche laufen nicht in derselben Arbeitswelle. | `arbeitsweise.md` › Parallelität und Wellen |
 | Bereich Assets | Bereich der Workbench neben **Development** (Kopfleiste): Review (Startseite), Katalog, Styleguide, Sound, Quellen; nur Ansehen, ohne schreibende Controls, mit Prompt-Buttons und „Im Spiel ansehen“. Assets ändern nur die MCP-Tools `assets_*` (Entscheidung 005 › 4–5). | B-699 |
 | Bergmann | Beruf (20 Gold): +50 % Abbaurate an Adern, Fels und Kupfererz; zählt als einer der höchstens 2 Bauern an einer Ader. | `rules/buerger.md` § 1, Q35 |
-| Beruf | Spezialisierung eines Bauern gegen Gold: Bergmann, Baumeister, Handwerker. Umschulung kostet erneut. | `rules/buerger.md` § 1 |
+| Beruf | Spezialisierung eines Bauern gegen Gold: Bergmann, Baumeister, Geselle. Umschulung kostet erneut. | `rules/buerger.md` § 1 |
 | Biom | Thema und Eckdaten einer Stufe (Länge, Chunks, Ressourcen, Gegner, Zyklus) in `data/biomes/<biom>.json`: heute `forest`, `cave`, `mine`; geplant `ironhold`, `crystal`. | `game-design.md` › Welt & Stufen, `rules/stufen.md` § 1 |
 | Bogenschütze | Kämpfer: Bauer plus Bogen aus der Werkstatt. Posten auf einem Turm oder hinter der äußersten Mauer (`outerWall`), Fernkampf. | `rules/buerger.md` § 1 |
 | Bogner | Gebäude (Code `bowyer`, Hub-Stufe 1): stellt Bögen her (bis 3 im Waffenregal). | `rules/materialien-gebaeude.md` § 3.2, B-951 |
@@ -102,7 +102,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Gegner-Seite | Seite im Asset-Studio neben Grafik, Sound und Monarch: alle Gegnertypen nach Biom und die Bosse je Tiefe mit den Animationen des Spiels; Lücken sind markiert. | B-464 |
 | Gegnerlager | Fest platziertes Lager in einem geplanten Chunk: Gegner aus dem Biom stehen als Wache, greifen in Reichweite an, kehren zurück; besiegbar, ohne Respawn, ohne Wirkung auf Wellen. Beschluss WZ14.1, umgesetzt in WZ27 (`docs/rules/geplante-chunks.md` § 9). | B-517 |
 | geplanter Chunk | Chunk, dessen Art und Inhalt je Insel und Tiefe in der Welt-Datei (`data/worlds/<id>.json`, `plannedChunks`) festgelegt sind: Chunk-Art fest, Inhalt aus Chunk-Seed oder festen Objekten. Alle anderen Chunks bleiben zufällig. | `rules/geplante-chunks.md`, B-461 |
-| Geselle | Beruf (30 Gold, `craftsman`) in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude): +50 % Herstellungstempo je Geselle. | `rules/buerger.md` § 1, Q35 |
+| Geselle | Beruf (30 Gold, `craftsman`) nur in der Werkstatt (1–2): +50 % Herstellungstempo je Geselle bei Schwert und Hammer. | `rules/buerger.md` § 1, Q35 |
 | Getrennter Monarch (`Player.Free`) | Monarch, dessen Gerät die Verbindung verloren hat: 60 s reserviert (`waiting`), danach frei (`free`); unverwundbar, ausgeblendet, nicht wiederbelebbar. | `rules/bedienung.md` § 3, Q04, Q33 |
 | Gold | Währung je Spieler (Start 100, höchstens 100, morgens +5); bezahlt Bauten, Rekrutierung, Markierung. Gehört dem Spieler, ist kein Material. | `rules/wirtschaft.md` § 1 |
 | Golden (Golden-Daten) | Referenzergebnisse von Simulation und Level-Generator in `testdata/golden/`; Update nur bei gewollter Regeländerung per `task go:golden` mit Begründung. | `arbeitsweise.md` › Golden aktualisieren |
