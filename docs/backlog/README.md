@@ -39,8 +39,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-912](B-912-e2e-flow-skillpunkt-rot.md) | CLI | Problem | hoch | eingeplant | NA1 | Der Ende-zu-Ende-Lauf TestFlow scheitert, weil Spieler 2 bis Takt 600 keinen Skill-Punkt findet |
 | [B-913](B-913-abnahme-ep1.md) | CLI | Idee | mittel | offen | EP1 | Ralf nimmt EP1 ab: Eingabe-Profile und Tasten-Icons an TV und PC geprüft |
 | [B-914](B-914-abnahme-st2.md) | CLI | Idee | mittel | offen | ST2 | Ralf nimmt ST2 ab: Testing-Menü und Stresstest-Bericht am PC geprüft |
-| [B-924](B-924-k3c-sim-in-workbench.md) | DEV | Schuld | mittel | offen | WE1 | Die Workbench nutzt den k3c-sim-Code direkt statt über den Kindprozess |
-| [B-925](B-925-sim-aenderung-eigene-workbench.md) | DEV | Schuld | mittel | offen | WE1 | Änderungen am Sim-Code laufen im eigenen Worktree mit eigener Dev-Workbench auf eigenen Ports |
 | [B-935](B-935-klangbild-couch.md) | CLI | Problem | hoch | offen | SR1 | Klangbild für Couch-Abende festlegen und konsolige Piep-Sounds ersetzen |
 | [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SR1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
 | [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | offen | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |

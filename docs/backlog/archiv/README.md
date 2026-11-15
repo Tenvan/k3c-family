@@ -863,3 +863,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-952](B-952-gold-holzfaellen.md) | SIM | Problem | mittel | erledigt | WI1 | Holzfällen bringt 1 bis 3 Gold und ist am Anfang die Haupteinnahme |
 | [B-961](B-961-etappen-inselwechsel.md) | SIM | Idee | hoch | erledigt | WE4 | Inseln einer Etappe sind frei wählbar, die nächste Etappe öffnet nach allen Inseln der vorigen |
 | [B-963](B-963-welten-editor-querschnitt-seekarte.md) | DEV | Idee | hoch | erledigt | WE4 | Welten-Editor zeigt alle Inseln als Querschnitt nach Etappen mit Seekarte zum Springen |
+| [B-924](B-924-k3c-sim-in-workbench.md) | DEV | Schuld | mittel | erledigt | WE1 | Die Workbench nutzt den k3c-sim-Code direkt statt über den Kindprozess |
+| [B-925](B-925-sim-aenderung-eigene-workbench.md) | DEV | Schuld | mittel | erledigt | WE1 | Änderungen am Sim-Code laufen im eigenen Worktree mit eigener Dev-Workbench auf eigenen Ports |
