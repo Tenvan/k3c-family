@@ -23,7 +23,7 @@ var resourceIcons = map[string]string{
 }
 
 // hudAssets sind alle Icons des HUD, sortiert.
-var hudAssets = []string{"icons/icon-eisen", "icons/icon-holz", "icons/icon-kristall", "icons/icon-kupfer", goldIcon,
+var hudAssets = []string{purseAsset, "icons/icon-eisen", "icons/icon-holz", "icons/icon-kristall", "icons/icon-kupfer", goldIcon,
 	"icons/icon-stein"}
 
 // Assets meldet die Icons des HUD für jedes Level (view.AssetSource).

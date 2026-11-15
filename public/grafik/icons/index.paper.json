@@ -1,5 +1,10 @@
 [
   {
+    "id": "geldsack",
+    "rig": "requisite",
+    "manifest": "geldsack/manifest.json"
+  },
+  {
     "id": "icon-eisen",
     "rig": "requisite",
     "manifest": "icon-eisen/manifest.json"
@@ -68,5 +73,20 @@
     "id": "muenze",
     "rig": "requisite",
     "manifest": "muenze/manifest.json"
+  },
+  {
+    "id": "zahlstelle-ausloeser",
+    "rig": "requisite",
+    "manifest": "zahlstelle-ausloeser/manifest.json"
+  },
+  {
+    "id": "zahlstelle-banner",
+    "rig": "requisite",
+    "manifest": "zahlstelle-banner/manifest.json"
+  },
+  {
+    "id": "zahlstelle-schild",
+    "rig": "requisite",
+    "manifest": "zahlstelle-schild/manifest.json"
   }
 ]

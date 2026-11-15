@@ -1,0 +1,134 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "banner-angriff",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Angriffs-Banner: Holzstab mit Goldspitze und Wimpel in Spielerfarbe (koenigsblau, Varianten spieler1-4), darauf ein goldenes Schwert-Zeichen; der Wimpel weht",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.5 0L-1.5 -54L1.5 -54L1.5 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-1.5 0L-1.5 -54L0 -54L0 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2.5 -54L0 -61L2.5 -54Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2.5 -54L0 -61L0 -54Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -53L3 -53L3 -51L-3 -51Z",
+          "material": "gold",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "korpus",
+      "id": "wimpel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M1.5 -51C9 -53 17 -49 26 -51L20 -42L26 -33C17 -31 9 -35 1.5 -33Z",
+          "material": "koenigsblau"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M1.5 -38C9 -40 17 -36 23 -37.5L26 -33C17 -31 9 -35 1.5 -33Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M1.5 -49C9 -51 17 -47 24 -49",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -37L14 -46L15.5 -44.5L7.5 -35.5Z",
+          "material": "eisen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M7 -42L11 -38L10 -37L6 -41Z",
+          "material": "gold"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [6.2, -36.2],
+          "radius": 1.2
+        }
+      ],
+      "pivot": [1.5, -50]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-8, -62, 36, 64]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "wimpel": -3
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "wimpel": 3
+          }
+        }
+      ]
+    }
+  },
+  "varianten": {
+    "spieler1": {
+      "tausch": {
+        "koenigsblau": "koenigsblau"
+      }
+    },
+    "spieler2": {
+      "tausch": {
+        "koenigsblau": "koenigsrot"
+      }
+    },
+    "spieler3": {
+      "tausch": {
+        "koenigsblau": "purpur"
+      }
+    },
+    "spieler4": {
+      "tausch": {
+        "koenigsblau": "kristall"
+      }
+    }
+  }
+}

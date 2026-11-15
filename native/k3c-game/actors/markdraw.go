@@ -134,7 +134,7 @@ func (d *drawer) enemyMarks(dst *ebiten.Image, c view.Cell, fg *figure, e *sim.E
 		d.ink.oval(dst, a, box{cx, cy, 2*lootRadius - edgeWidth, 2*lootRadius - edgeWidth}, tint(lootFill, fg.ui))
 	}
 	if e.Crown != nil { // Kronenraub: der Gegner trägt die Krone über dem Goldkreis
-		d.ink.crown(dst, a, 0, top+lootAbove+2*lootRadius+crownAbove, fg.ui)
+		d.crown(dst, a, 0, top+lootAbove+2*lootRadius+crownAbove, fg.ui)
 	}
 	if BarVisible(e.HP, e.MaxHP) {
 		d.ink.bar(dst, a, enemyBar, top, BarFraction(e.HP, e.MaxHP), fg.ui)

@@ -8,14 +8,16 @@ import (
 
 func TestBannerFlagPointsAwayFromBack(t *testing.T) {
 	for _, left := range []bool{false, true} {
-		pole, flag := bannerBoxes(60, left)
-		away := pole.cx > 0 // hinter dem Rücken: bei Blick nach links rechts davon
-		if (flag.cx > pole.cx) != away {
-			t.Errorf("left=%v: Flagge zeigt zum Monarchen hin", left)
+		// Der Wimpel zeigt im Bild nach rechts; gespiegelt, wenn der Stock links der Mitte steht.
+		if flip := bannerFlip(left); flip != (LoadOffset(left)*bannerOffset < 0) {
+			t.Errorf("left=%v: Wimpel zeigt zum Monarchen hin (flip=%v)", left, flip)
 		}
-		if flag.cy+flag.h/2 > pole.cy+pole.h/2 {
-			t.Errorf("left=%v: Flagge ragt über den Stock", left)
-		}
+	}
+}
+
+func TestVariantAnim(t *testing.T) {
+	if variantAnim(0) != "idle" || variantAnim(1) != "idle@spieler1" || variantAnim(4) != "idle@spieler4" || variantAnim(5) != "idle" {
+		t.Error("Variante je Spieler 1 bis 4, sonst Grundvariante")
 	}
 }
 
@@ -26,12 +28,5 @@ func TestCrownCarrier(t *testing.T) {
 	}}
 	if crownCarrier(w, w.Players[0]) || !crownCarrier(w, w.Players[1]) {
 		t.Error("Träger der fremden Krone falsch erkannt")
-	}
-}
-
-func TestCrownBoxesSymmetric(t *testing.T) {
-	b := crownBoxes(0, 10)
-	if b[1].cx != -b[3].cx || b[1].cy != b[3].cy {
-		t.Errorf("Zacken nicht symmetrisch: %+v", b)
 	}
 }

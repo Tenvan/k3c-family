@@ -1,0 +1,127 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "schild-gruppenfuehrer",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Rundschild des Gruppenführers: Holzbretter mit Eisenrand und Eisenbuckel, quer ein Band in Spielerfarbe (koenigsblau, Varianten spieler1-4); am Soldaten tragbar, Pivot in der Mitte",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0, -12],
+          "radius": 11
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [0, -12],
+          "radius": 9.3
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -21.3C-5.1 -21.3 -9.3 -17.1 -9.3 -12C-9.3 -6.9 -5.1 -2.7 0 -2.7C-4 -6 -4.5 -10 -3 -14C-2.4 -16 -1.4 -19 0 -21.3Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-6 -19.2L-6 -4.8M6 -19.2L6 -4.8",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3 -21L3 -21L3 -3L-3 -3Z",
+          "material": "koenigsblau"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-3 -21L-1 -21L-1 -3L-3 -3Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0, -12],
+          "radius": 3.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0.4, -12.4],
+          "radius": 2.8
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [1.2, -13.2],
+          "radius": 1,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [6.8, -19.2],
+          "radius": 0.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [-6.8, -4.8],
+          "radius": 0.8,
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -12]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 28,
+    "rahmen": [-14, -26, 28, 28]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  },
+  "varianten": {
+    "spieler1": {
+      "tausch": {
+        "koenigsblau": "koenigsblau"
+      }
+    },
+    "spieler2": {
+      "tausch": {
+        "koenigsblau": "koenigsrot"
+      }
+    },
+    "spieler3": {
+      "tausch": {
+        "koenigsblau": "purpur"
+      }
+    },
+    "spieler4": {
+      "tausch": {
+        "koenigsblau": "kristall"
+      }
+    }
+  }
+}

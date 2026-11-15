@@ -1,0 +1,105 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "zahlstelle-schild",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Zahlstelle Schild: Rundschild mit Eisenrand, Buckel und blauem Band, Symbol über der Zahlstelle am Tor, an der man der Gruppe einen Schild kauft",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0, -16],
+          "radius": 13
+        },
+        {
+          "art": "punkt",
+          "material": "holz",
+          "mitte": [0, -16],
+          "radius": 11
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -27C-6.1 -27 -11 -22.1 -11 -16C-11 -9.9 -6.1 -5 0 -5C-4.6 -9 -5.2 -13.5 -3.5 -18C-2.7 -20.5 -1.5 -24 0 -27Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-7.2 -24.3L-7.2 -7.7M7.2 -24.3L7.2 -7.7",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -26.4L3.5 -26.4L3.5 -5.6L-3.5 -5.6Z",
+          "material": "koenigsblau"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-3.5 -26.4L-1.2 -26.4L-1.2 -5.6L-3.5 -5.6Z",
+          "material": "koenigsblau",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0, -16],
+          "radius": 4.2,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [0.4, -16.4],
+          "radius": 3.3
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [1.3, -17.3],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [8, -24],
+          "radius": 0.9,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "eisen",
+          "mitte": [-8, -8],
+          "radius": 0.9,
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

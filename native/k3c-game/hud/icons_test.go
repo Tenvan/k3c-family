@@ -56,7 +56,7 @@ func TestEveryResourceHasIcon(t *testing.T) {
 		}
 	}
 	groups := paperGroups(t)
-	icons := append([]string{goldIcon}, slices.Collect(func(yield func(string) bool) {
+	icons := append([]string{goldIcon, purseAsset}, slices.Collect(func(yield func(string) bool) {
 		for _, a := range resourceIcons {
 			if !yield(a) {
 				return

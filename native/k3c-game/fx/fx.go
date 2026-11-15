@@ -50,6 +50,17 @@ func New(lib *art.Library) view.Drawer { return &drawer{lib: lib} }
 
 func (*drawer) Layer() view.Layer { return view.LayerEffects }
 
+// Das Münz-Sheet des Münzschauers (data/paper.json › muenze); props meldet es ebenfalls an, die Library lädt es einmal.
+const (
+	coinAsset = "icons/muenze"
+	coinAnim  = "idle"
+)
+
+// Assets meldet die Münze für jedes Level (view.AssetSource).
+func (*drawer) Assets(string, *sim.World) []string { return coinAssets }
+
+var coinAssets = []string{coinAsset}
+
 // Listen legt die Effekte der Ereignisse des Frames an (view.Listener).
 func (d *drawer) Listen(f *view.Frame) {
 	d.paint.outline.Sweep()
@@ -234,7 +245,7 @@ func (d *drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 	d.paint.warn(dst, w, c)
 	d.paint.projectiles(dst, w, c)
 	if s != nil {
-		d.paint.effects(dst, s.effects, d.font(), c, f.Clock, k)
+		d.paint.effects(dst, s.effects, d.font(), d.lib.Sheet(coinAsset, coinAnim), c, f.Clock, k)
 		d.paint.marks(dst, s.marks, c, f.Clock, false)
 	}
 }

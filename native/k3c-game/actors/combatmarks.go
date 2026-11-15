@@ -2,56 +2,80 @@ package actors
 
 // Anzeigen der Kampfregeln an den Figuren (KS5, B-934, docs/rules/kampf.md): Krone am Kopf des Monarchen und auf dem Kopf
 // ihres Trägers (Gegner oder Mitspieler), Monarch ohne Krone, Banner am Monarchen, Schild des Gruppenführers und die
-// dezente Gruppenmarke der Truppe. Fliegende und liegende Kronen, Portal-HP und Zahlstellen zeichnet props. Bis es
-// Papierschnitt-Assets gibt (assets_*, 005), entstehen alle Formen aus Rechtecken und Scheiben wie die Balken (vorläufig).
+// dezente Gruppenmarke der Truppe. Krone, Banner und Schild sind Papierschnitt-Bilder (B-940: icons/icon-krone,
+// objekte/banner-angriff und objekte/schild-gruppenfuehrer, Varianten je Spieler); die Gruppenmarke bleibt eine Scheibe.
+// Fliegende und liegende Kronen, Portal-HP und Zahlstellen zeichnet props.
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
 
 	"k3c/engine/sim"
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
-// Maße in Spiel-Pixeln (wie marks.go), Farben als 0xRRGGBB.
+// Assets der Anzeigen (data/paper.json › objekte) und die Animationen ihrer Varianten (Spieler 1 bis 4, 0 = ohne).
 const (
-	crownFill  = 0xffd166
-	crownEdge  = 0x9c6644
-	crownAbove = 10.0 // Mitte der Krone über der Oberkante der Figur
+	crownAsset  = "icons/icon-krone"
+	bannerAsset = "objekte/banner-angriff"
+	shieldAsset = "objekte/schild-gruppenfuehrer"
+)
+
+var variantAnims = [5]string{"idle", "idle@spieler1", "idle@spieler2", "idle@spieler3", "idle@spieler4"}
+
+// variantAnim ist die Animation der Variante für Spieler n (1 bis 4); sonst die Grundvariante.
+func variantAnim(n int) string {
+	if n < 1 || n >= len(variantAnims) {
+		return variantAnims[0]
+	}
+	return variantAnims[n]
+}
+
+// Maße in Spiel-Pixeln (wie marks.go).
+const (
+	crownScale = 0.75 // das 32-px-Icon ist größer als die alte Form; am Kopf auf 24 px verkleinert
+	crownAbove = 10.0 // Fuß der Krone über der Oberkante der Figur
 
 	bareAlpha = 0.3 // Deckkraft des Spieler-Punkts ohne Krone, relativ zu markerAlpha
 
-	bannerPoleW  = 3.0
-	bannerFlagW  = 16.0
-	bannerFlagH  = 12.0
-	bannerPole   = 0x6b4226
 	bannerOffset = 1.6 // Abstand des Stocks in Vielfachen des Last-Versatzes (hinter dem Rücken)
 
-	shieldW, shieldH = 14.0, 18.0
-	shieldFill       = 0x8d99ae
-	shieldEdge       = 0x343a40
-	shieldSide       = 16.0 // seitlicher Versatz des Schilds
+	shieldSide   = 16.0 // seitlicher Versatz des Schilds
+	shieldCenter = 12.0 // Mitte des 28-px-Bilds über seinem Fuß
 
 	groupDot      = 6.0
 	groupDotAlpha = 0.7
 )
 
-// crownBoxes ist eine Krone mit Mitte der Basis (cx, cy): Band und drei Zacken.
-func crownBoxes(cx, cy float64) [4]box {
-	var out [4]box
-	for i, q := range view.CrownParts {
-		out[i] = box{cx + q[0], cy + q[1], q[2], q[3]}
+// markAssets nennt die Papier-Bilder der Anzeigen, die actors für jedes Level anmeldet (sortiert).
+var markAssets = []string{bannerAsset, crownAsset, shieldAsset}
+
+// sprite zeichnet Bild i des Sheets mit dem Fuß bei (ox, oy) px vom Bezugspunkt (oy nach oben), um scale vergrößert,
+// bei flip gespiegelt, mit Deckkraft alpha. Ohne Allokation (Optionen und Matrix liegen im ink).
+func (k *ink) sprite(dst *ebiten.Image, a anchor, s *art.Sheet, i int, ox, oy, scale float64, flip bool, alpha float64) {
+	img := s.Frame(i)
+	if img == nil || s.FW <= 0 || s.FH <= 0 {
+		return
 	}
-	return out
+	fw, fh, px := float64(s.FW), float64(s.FH), s.UnitsPerPx*a.s*scale
+	g := &k.op.GeoM
+	g.Reset()
+	if flip {
+		g.Scale(-1, 1)
+		g.Translate(fw, 0)
+	}
+	g.Translate(-s.OriginX*fw, -s.OriginY*fh)
+	g.Scale(px, px)
+	g.Translate(a.sx+ox*a.s, a.sy-oy*a.s)
+	k.op.ColorScale.Reset()
+	k.op.ColorScale.ScaleAlpha(float32(alpha))
+	dst.DrawImage(img, &k.op)
 }
 
-// crown zeichnet eine Krone mit dunklem Rand; alpha ist die Deckkraft der Figur.
-func (k *ink) crown(dst *ebiten.Image, a anchor, cx, cy, alpha float64) {
-	bs := crownBoxes(cx, cy)
-	for _, b := range bs {
-		k.rect(dst, a, b, edgeWidth/2, tint(crownEdge, alpha))
-	}
-	for _, b := range bs {
-		k.rect(dst, a, b, 0, tint(crownFill, alpha))
+// crown zeichnet das Kronen-Icon mit dem Fuß bei (cx, cy); alpha ist die Deckkraft der Figur.
+func (d *drawer) crown(dst *ebiten.Image, a anchor, cx, cy, alpha float64) {
+	if s := d.lib.Sheet(crownAsset, variantAnims[0]); s != nil {
+		d.ink.sprite(dst, a, s, 0, cx, cy, crownScale, false, alpha)
 	}
 }
 
@@ -65,15 +89,8 @@ func crownCarrier(w *sim.World, p *sim.Player) bool {
 	return false
 }
 
-// bannerBoxes sind Stock und Flagge des Banners eines Monarchen mit Oberkante topPx; die Flagge zeigt weg vom Rücken.
-func bannerBoxes(topPx float64, left bool) (pole, flag box) {
-	ox := LoadOffset(left) * bannerOffset
-	dir := 1.0
-	if ox < 0 {
-		dir = -1
-	}
-	return box{ox, topPx / 2, bannerPoleW, topPx}, box{ox + dir*(bannerPoleW+bannerFlagW)/2, topPx - bannerFlagH/2, bannerFlagW, bannerFlagH}
-}
+// bannerFlip: Der Wimpel (im Bild nach rechts) zeigt vom Stock weg, den der Monarch hinter dem Rücken trägt.
+func bannerFlip(left bool) bool { return LoadOffset(left) < 0 }
 
 // playerMarks zeichnet Krone (am Kopf bzw. getragen) und Banner des Monarchen.
 func (d *drawer) playerMarks(dst *ebiten.Image, c view.Cell, fg *figure, p *sim.Player, w *sim.World) {
@@ -83,31 +100,23 @@ func (d *drawer) playerMarks(dst *ebiten.Image, c view.Cell, fg *figure, p *sim.
 	}
 	top := d.topPx(fg)
 	if p.Crown == nil || crownCarrier(w, p) {
-		d.ink.crown(dst, a, 0, top+crownAbove, fg.ui)
+		d.crown(dst, a, 0, top+crownAbove, fg.ui)
 	}
 	if p.Banner != 0 {
-		pole, flag := bannerBoxes(top, fg.left)
-		d.ink.rect(dst, a, pole, 0, tint(bannerPole, fg.ui))
-		d.ink.rect(dst, a, flag, edgeWidth/2, tint(crownEdge, fg.ui))
-		d.ink.rect(dst, a, flag, 0, tint(PlayerColor(p.Index), fg.ui))
+		if s := d.lib.Sheet(bannerAsset, variantAnim(p.Index+1)); s != nil {
+			d.ink.sprite(dst, a, s, SheetFrame(d.now, s.FPS, len(s.Frames), false), LoadOffset(fg.left)*bannerOffset, 0, 1, bannerFlip(fg.left), fg.ui)
+		}
 	}
-}
-
-// shieldBoxes ist das Schild des Gruppenführers neben einer Truppe mit Oberkante topPx: Fläche und runde Spitze.
-func shieldBoxes(topPx float64, left bool) (body, tip box) {
-	cx, cy := -LoadOffset(left)*shieldSide/loadSide, topPx*loadHeight
-	return box{cx, cy + 3, shieldW, shieldH - 6}, box{cx, cy - shieldH/2 + 5, shieldW, 12}
 }
 
 // leaderMarks zeichnet das Schild des Gruppenführers, sonst bei zugeordneter Truppe die dezente Gruppenmarke über dem Kopf.
+// Gruppen gehören keinem Spieler (t.Group ist eine Truppen-ID): das Schild nutzt die Grundvariante.
 func (d *drawer) leaderMarks(dst *ebiten.Image, a anchor, fg *figure, t *sim.Troop, top float64) {
 	switch {
 	case t.Leader:
-		body, tip := shieldBoxes(top, fg.left)
-		d.ink.rect(dst, a, body, edgeWidth/2, tint(shieldEdge, fg.ui))
-		d.ink.oval(dst, a, box{tip.cx, tip.cy, tip.w + edgeWidth, tip.h + edgeWidth}, tint(shieldEdge, fg.ui))
-		d.ink.rect(dst, a, body, -edgeWidth/2, tint(shieldFill, fg.ui))
-		d.ink.oval(dst, a, box{tip.cx, tip.cy, tip.w - edgeWidth, tip.h - edgeWidth}, tint(shieldFill, fg.ui))
+		if s := d.lib.Sheet(shieldAsset, variantAnims[0]); s != nil {
+			d.ink.sprite(dst, a, s, 0, -LoadOffset(fg.left)*shieldSide/loadSide, top*loadHeight-shieldCenter, 1, false, fg.ui)
+		}
 	case t.Group != 0:
 		d.ink.oval(dst, a, box{0, top + groupDot, groupDot, groupDot}, tint(PlayerColor(t.Group), groupDotAlpha*fg.ui))
 	}

@@ -28,7 +28,7 @@ var natureAssets = map[bool][]string{
 
 // levelAssets nennt die Assets `gruppe/id` des Levels (Biom-ID), sortiert und jedes einmal.
 func levelAssets(level string) []string {
-	out := make([]string, 0, len(buildingAssets)+len(objectAssets)+5)
+	out := make([]string, 0, len(buildingAssets)+len(objectAssets)+len(combatAssets)+5)
 	for _, id := range buildingAssets {
 		out = append(out, buildingGroup+id)
 	}
@@ -39,6 +39,7 @@ func levelAssets(level string) []string {
 		out = append(out, objectGroup+id)
 	}
 	out = append(out, coinLook.asset)
+	out = append(out, combatAssets...)
 	slices.Sort(out)
 	return slices.Compact(out)
 }

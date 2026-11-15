@@ -18,6 +18,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
 | KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | `aktiv/KS4-angriff-gruppen-general/` |
 | KS5 | CLI | KSY | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | – | `aktiv/KS5-kampf-anzeige/` |
+| KS6 | SIM, PAP | KSY | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | – | `aktiv/KS6-kampf-nachtraege/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
 | FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
@@ -36,7 +37,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WG2 | CLI | NAT | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | – | Entwurf | `geplant/WG2-weltbilder-anzeige/` |
-| KS6 | SIM | KSY | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | – | Entwurf | `geplant/KS6-kampf-nachtraege/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | Entwurf | `geplant/WG1-weltbilder/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | Entwurf | `geplant/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
