@@ -46,6 +46,15 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | offen | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |
 | [B-938](B-938-weltauswahl-menue.md) | CLI | Idee | mittel | offen | WG2 | Neues Spiel beginnt mit der Weltauswahl im großen Bild, Spielstände und Pausenmenü zeigen das kleine |
 | [B-940](B-940-kampf-assets.md) | PAP | Idee | mittel | offen | KS6 | Papierschnitt-Assets für Krone, Banner, Schild, Zahlstellen, Portal-HP und Münzschauer ersetzen die gezeichneten Formen |
+| [B-941](B-941-ausloeser-pfahl-vor-tor.md) | SIM | Problem | mittel | offen | KS7 | Der Angriffs-Auslöser steht als Horn auf einem Pfahl vor dem Tor statt schwebend dahinter |
+| [B-942](B-942-schild-gestell-burgstufe.md) | SIM | Idee | mittel | offen | KS7 | Schilde gibt es erst ab höherer Burgstufe, gestapelt auf einem Gestell neben der Burg |
+| [B-943](B-943-ruckeln-trotz-60fps.md) | CLI | Problem | hoch | offen | FB4 | Die Grafik ruckelt trotz stabiler 60 FPS, auch auf schnellen Rechnern |
+| [B-944](B-944-xbox-tasten-testseite.md) | CLI | Problem | hoch | offen | FB4 | Xbox-Controller-Tasten stimmen wieder, mit Testseite in den Entwickleroptionen |
+| [B-945](B-945-menue-tastatur-immer.md) | CLI | Problem | mittel | offen | FB4 | In Menüs funktioniert immer auch die normale Tastatursteuerung |
+| [B-946](B-946-hinweis-leertaste-betreten-weg.md) | CLI | Problem | niedrig | offen | FB4 | Der Hinweis „Leertaste zum Betreten“ wird nicht mehr angezeigt |
+| [B-947](B-947-hintergrundmauern-luecken.md) | CLI | Problem | mittel | offen | FB4 | Die durchgezogenen Hintergrundmauern haben keine Lücken mehr |
+| [B-948](B-948-baeume-groesser.md) | CLI | Problem | mittel | offen | FB4 | Bäume erscheinen in passender Größe statt zu klein |
+| [B-949](B-949-ladescreen-huebsch.md) | CLI | Idee | niedrig | offen | FB4 | Der Ladescreen ist im Stil des Spiels gestaltet |
 
 ## Archiv
 
