@@ -46,7 +46,7 @@ func allAtGate(isl *Island, w *World, x float64) bool {
 	n := 0
 	for _, s := range isl.Stages {
 		for _, p := range s.Players {
-			if !isAlive(p) || p.Free {
+			if !crowned(p) || p.Free {
 				continue
 			}
 			if s != w || math.Abs(p.X-x) > w.values().Hub.Travel.RangeUnits {
@@ -67,7 +67,7 @@ func (isl *Island) NextDef() (def IslandDef, ok bool) {
 }
 
 // NextIsland baut die nächste Insel nach def in der Welt der alten Insel: Seed aus der Spiel-ID und dem Inselindex,
-// Startvorrat, eigene Hubs, Optionen der alten Insel, Insel-ID aus def. Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit voller HP an
+// Startvorrat, eigene Hubs, Optionen der alten Insel, Insel-ID aus def. Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit Krone an
 // der Burg der ersten Stufe; ihre Skill-Basis ist die Zahl der mitgebrachten Skills.
 func NextIsland(cur *Island, def IslandDef) (*Island, error) {
 	if want, ok := cur.NextDef(); !ok || want.ID != def.ID {
@@ -88,7 +88,8 @@ func NextIsland(cur *Island, def IslandDef) (*Island, error) {
 		q.PayCooldown, q.Paying, q.PayKey, q.PayAmount = 0.5, false, nil, 0
 		q.Skills, q.Slots, q.Cooldowns = slices.Clone(p.Skills), slices.Clone(p.Slots), nil
 		q.SkillBase = len(q.Skills)
-		respawn(first, &q)
+		q.Crown = nil
+		toHub(first, &q)
 		first.Players = insertPlayer(first.Players, &q)
 	}
 	return next, nil

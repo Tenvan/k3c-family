@@ -41,11 +41,10 @@ func TestFallbackGait(t *testing.T) {
 }
 
 // Fälle aus src/scenes/render/monarchAnim.test.ts, beritten wie mountView.ts: Tod und Respawn zu Fuß (das Rig hat
-// death und respawn), Treffer und Münze-Geben zeigt der Reiter nicht.
+// ohne death und respawn, B-930), Treffer und Münze-Geben zeigt der Reiter nicht.
 func TestMonarchWant(t *testing.T) {
 	all := func(string) bool { return true }
 	alive := MonarchFrame{Known: true}
-	dead := MonarchFrame{Known: true, RespawnIn: 3}
 	cases := []struct {
 		name      string
 		prev, cur MonarchFrame
@@ -55,9 +54,6 @@ func TestMonarchWant(t *testing.T) {
 		{"erstes Bild", MonarchFrame{}, alive, Want{Anim: gaitStand, Gait: gaitStand}},
 		{"läuft", alive, MonarchFrame{Known: true, VX: 3}, Want{Anim: gaitTrot, Gait: gaitTrot}},
 		{"rennt nach links", alive, MonarchFrame{Known: true, VX: -5}, Want{Anim: gaitGallop, Gait: gaitGallop}},
-		{"stirbt", alive, dead, Want{Anim: animDeath, Once: true, Hold: true}},
-		{"bleibt tot", dead, dead, Want{Anim: animDeath, Once: true, Hold: true}},
-		{"Respawn", dead, alive, Want{Anim: animRespawn, Once: true, Restart: true}},
 	}
 	for _, c := range cases {
 		if got := MonarchWant(c.prev, c.cur, 5, all); got != c.want {

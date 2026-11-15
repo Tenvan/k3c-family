@@ -169,7 +169,7 @@ func (c *collector) event(w *sim.World, ev sim.Event, tick int) {
 		}
 	case "destroyed":
 		c.countInWave(func(wm *WaveMetrics) { wm.BuildingsDestroyed++ })
-	case "playerDown":
+	case "crownFallen":
 		c.countInWave(func(wm *WaveMetrics) { wm.PlayersDown++ })
 	}
 }

@@ -15,7 +15,7 @@ func TestStatusMarken(t *testing.T) {
 		Castle: sim.Castle{X: 50},
 		Players: []*sim.Player{
 			{Index: 0, X: 10, Shield: shieldMax / 2, ShieldFor: 3, LastStandFor: 1},
-			{Index: 1, X: 20, RespawnIn: 4, ShieldFor: 3, Shield: 5},
+			{Index: 1, X: 20, Crown: &sim.Crown{}, ShieldFor: 3, Shield: 5},
 		},
 		Enemies: []*sim.Enemy{
 			{X: 30, HP: 5, Stun: 1, SlowFor: 2, TauntFor: 1},
@@ -106,7 +106,8 @@ func TestAuraCache(t *testing.T) {
 	if len(c.entries) != 1 || len(c.entries[0].skills) != 2 {
 		t.Errorf("Skills nicht übernommen: %+v", c.entries)
 	}
-	if p.RespawnIn = 3; c.of(p) != nil {
+	p.Crown = &sim.Crown{}
+	if c.of(p) != nil {
 		t.Error("gefallen mit Auren")
 	}
 }

@@ -2,19 +2,19 @@ package sim
 
 import "math"
 
-// Heiler-Linie (docs/rules/monarch.md § 3): Heal, Group Heal, Divine Shield, Resurrection. Werte aus monarch.json ›
-// skills. Divine Shield ist der Schild aus skills_tank.go (castShield). Heilung geht nie über MaxHP.
+// Heiler-Linie (docs/rules/monarch.md § 3, kampf.md § 5): Heal und Group Heal heilen Truppen (Monarchen haben keine HP),
+// Divine Shield ist der Schild aus skills_tank.go (castShield), Resurrection bringt gefallene Kronen zurück. Werte aus
+// monarch.json › skills. Heilung geht nie über MaxHP.
 
-// castHeal: Der lebende Monarch mit den wenigsten HP in Range (auch der Wirkende; Gleichstand: kleinerer Index)
-// bekommt Amount HP.
+// castHeal: Die Truppe mit dem kleinsten HP-Anteil in Range (Gleichstand: kleinere ID) bekommt Amount HP.
 func castHeal(w *World, p *Player, e skillEffect) bool {
-	var best *Player
-	for _, q := range w.Players {
-		if !isAlive(q) || math.Abs(q.X-p.X) > e.Range {
+	var best *Troop
+	for _, t := range w.Troops {
+		if t.HP <= 0 || t.HP >= t.MaxHP || math.Abs(t.X-p.X) > e.Range {
 			continue
 		}
-		if best == nil || q.HP < best.HP || (q.HP == best.HP && q.Index < best.Index) {
-			best = q
+		if best == nil || t.HP/t.MaxHP < best.HP/best.MaxHP || (t.HP/t.MaxHP == best.HP/best.MaxHP && t.ID < best.ID) {
+			best = t
 		}
 	}
 	if best == nil {
@@ -24,13 +24,8 @@ func castHeal(w *World, p *Player, e skillEffect) bool {
 	return true
 }
 
-// castGroupHeal: Alle lebenden Monarchen und Truppen im Radius um den Wirkenden bekommen Amount HP.
+// castGroupHeal: Alle Truppen im Radius um den Wirkenden bekommen Amount HP.
 func castGroupHeal(w *World, p *Player, e skillEffect) bool {
-	for _, q := range w.Players {
-		if isAlive(q) && math.Abs(q.X-p.X) <= e.Radius {
-			q.HP = math.Min(q.MaxHP, q.HP+e.Amount)
-		}
-	}
 	for _, t := range w.Troops {
 		if t.HP > 0 && math.Abs(t.X-p.X) <= e.Radius {
 			t.HP = math.Min(t.MaxHP, t.HP+e.Amount)
@@ -39,13 +34,13 @@ func castGroupHeal(w *World, p *Player, e skillEffect) bool {
 	return true
 }
 
-// castReviveTroops (Resurrection, Auslegung S1.2b): Truppen im Radius haben danach mindestens HPFraction ihrer MaxHP.
-// Gefallene Truppen gibt es nicht mehr als Objekt (Step entfernt sie). Ohne Truppe im Radius keine Wirkung.
-func castReviveTroops(w *World, p *Player, e skillEffect) bool {
+// castReviveCrown (Resurrection, Annahme aus kampf.md § 9): Jede gefallene Krone im Radius, die nicht ein Gegner trägt,
+// sitzt sofort wieder auf ihrem Monarchen. Ohne Krone im Radius keine Wirkung.
+func castReviveCrown(w *World, p *Player, e skillEffect) bool {
 	hit := false
-	for _, t := range w.Troops {
-		if t.HP > 0 && math.Abs(t.X-p.X) <= e.Radius {
-			t.HP = math.Max(t.HP, t.MaxHP*e.HPFraction)
+	for _, q := range w.Players {
+		if c := q.Crown; c != nil && c.State != crownEnemy && math.Abs(c.X-p.X) <= e.Radius {
+			restoreCrown(w, q, p)
 			hit = true
 		}
 	}

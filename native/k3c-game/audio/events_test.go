@@ -119,8 +119,8 @@ func TestEventXAndNightGain(t *testing.T) {
 		ok   bool
 	}{
 		{sim.Event{"type": "hit", "x": 3.5}, 3.5, true},
-		{sim.Event{"type": "playerDown", "player": 1}, 42, true},
-		{sim.Event{"type": "playerDown", "player": 7}, 0, false},
+		{sim.Event{"type": "crownFallen", "player": 1}, 42, true},
+		{sim.Event{"type": "crownFallen", "player": 7}, 0, false},
 		{sim.Event{"type": "dusk"}, 0, false},
 	}
 	for _, c := range cases {

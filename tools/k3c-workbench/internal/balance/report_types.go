@@ -109,7 +109,7 @@ type StageMetrics struct {
 	ArrivalDay     *int `json:"arrivalDay"`
 	ArrivalTick    *int `json:"arrivalTick"`
 	CastleFallTick *int `json:"castleFallTick"`
-	Downs          int  `json:"downs,omitempty"`    // Ereignisse playerDown auf dieser Stufe (ein Monarch fiel)
+	Downs          int  `json:"downs,omitempty"`    // Ereignisse crownFallen auf dieser Stufe (ein Monarch fiel)
 	HubLevel       int  `json:"hubLevel,omitempty"` // Hub-Stufe am Ende des Laufs
 	Fighters       int  `json:"fighters,omitempty"` // Kämpfer (Truppen außer Landstreichern und Bauern) am Ende
 }

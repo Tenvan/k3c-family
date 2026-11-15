@@ -50,33 +50,6 @@ func TestTwoMonarchsOwnGaitAndFacing(t *testing.T) {
 	}
 }
 
-// Tod und Respawn: death hält zu Fuß, nach dem Tod respawn, danach wieder beritten.
-func TestMonarchDeathAndRespawn(t *testing.T) {
-	d := newTestDrawer(t)
-	p := &sim.Player{ID: 1, X: 10}
-	w := &sim.World{Players: []*sim.Player{p}}
-	d.Listen(frameOf(1, w))
-	p.RespawnIn = 5
-	d.Listen(frameOf(2, w))
-	fg := d.figs[key{0, classPlayer, 1}]
-	if fg.pose.Anim != animDeath || !fg.pose.Hold || fg.pose.Gait != "" {
-		t.Fatalf("Tod: %+v", fg.pose)
-	}
-	p.RespawnIn = 0
-	d.Listen(frameOf(3, w))
-	if fg.pose.Anim != animRespawn || fg.pose.Dur != defaultOnce {
-		t.Fatalf("Respawn: %+v", fg.pose)
-	}
-	d.Listen(frameOf(3+defaultOnce/2, w))
-	if fg.pose.Anim != animRespawn {
-		t.Errorf("Respawn bricht ab: %+v", fg.pose)
-	}
-	d.Listen(frameOf(4, w))
-	if fg.pose.Gait != gaitStand {
-		t.Errorf("nach dem Respawn nicht beritten: %+v", fg.pose)
-	}
-}
-
 // Smoke Bomb: Der unsichtbare Monarch wird fast durchsichtig, danach wieder deckend.
 func TestMonarchStealthAlpha(t *testing.T) {
 	d := newTestDrawer(t)

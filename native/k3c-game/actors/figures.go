@@ -56,8 +56,8 @@ type figure struct {
 	ui     float64 // Deckkraft der Anzeigen (Balken, Punkt, Gold): Container-Alpha des Browsers, ohne Sprite-Alpha
 	gen    uint64
 
-	known       bool // Vor-Zustand gesetzt
-	x, cd, dead float64
+	known bool // Vor-Zustand gesetzt
+	x, cd float64
 
 	posed   bool    // der Actor hat eine Pose (Umhang hängt)
 	dirty   bool    // Pose seit der letzten Rechnung gewechselt
@@ -104,13 +104,13 @@ func (d *drawer) listenPlayers(st *view.Stage) {
 			continue
 		}
 		fg := d.figure(key{st.Index, classPlayer, p.ID}, d.cat.Player(p.Index), true)
-		prev := MonarchFrame{Known: fg.known, RespawnIn: fg.dead}
-		cur := MonarchFrame{Known: true, RespawnIn: p.RespawnIn, VX: p.VX}
+		prev := MonarchFrame{Known: fg.known}
+		cur := MonarchFrame{Known: true, VX: p.VX}
 		d.apply(fg, MonarchWant(prev, cur, d.cat.MountRef, fg.hasGait))
 		if p.Facing != 0 {
 			fg.left = p.Facing < 0
 		}
-		fg.known, fg.x, fg.dead, fg.lift, fg.alpha = true, p.X, p.RespawnIn, 0, MonarchAlpha(p.StealthFor)
+		fg.known, fg.x, fg.lift, fg.alpha = true, p.X, 0, MonarchAlpha(p.StealthFor)
 		fg.ui = fg.alpha
 	}
 }

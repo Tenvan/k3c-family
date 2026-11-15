@@ -24,8 +24,9 @@ func takeEquipment(w *World, e *Enemy) {
 	emit(w, "equipmentTaken", Event{"kind": e.Carried.Kind, "x": unitX(e.X)})
 }
 
-// dropCarried legt die getragene Ausrüstung eines gefallenen Gegners wieder ab.
+// dropCarried legt die getragene Ausrüstung und Krone eines gefallenen Gegners wieder ab.
 func dropCarried(w *World, e *Enemy) {
+	dropCrownOf(e)
 	if e.Carried != nil {
 		e.Carried.X = e.X
 		w.Drops = append(w.Drops, e.Carried)

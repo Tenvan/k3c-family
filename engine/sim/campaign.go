@@ -104,10 +104,7 @@ func (c *Campaign) Travel(toDepth int) *World {
 		if p.Index%2 == 0 {
 			q.X = target.HubX - 3
 		}
-		if p.RespawnIn > 0 {
-			q.HP = p.MaxHP
-		}
-		q.VX, q.RespawnIn, q.PayCooldown, q.Paying = 0, 0, 0.5, false
+		q.VX, q.Crown, q.PayCooldown, q.Paying = 0, nil, 0.5, false
 		players = append(players, &q)
 	}
 	target.Players = players

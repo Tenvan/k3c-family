@@ -80,10 +80,15 @@ func islandState(t *testing.T, isl *Island) string {
 	return strings.Join(islandJSON(t, isl), "\n")
 }
 
-func TestNiederlageKomplettVerloren(t *testing.T) {
-	isl, w := defeatIsland(t, "lost")
-	w.Castle.HP = 0
-	StepIsland(isl, nil, dt)
+// Kronenraub ist die Niederlage (kampf.md § 6): Game Over, die Insel steht danach.
+func TestNiederlageKronenraub(t *testing.T) {
+	isl, w := defeatIsland(t, "stage")
+	p := w.Players[0]
+	fell(p)
+	e := spawnEnemy(w, "goblin", p.X)
+	e.Crown, e.Fleeing, e.HomeX = p.Crown, true, e.X
+	p.Crown.State, p.Crown.Carrier = crownEnemy, e.ID
+	leaveThroughPortal(w)
 	if !isl.Over || count(w.Events, "gameOver") != 1 {
 		t.Fatalf("Over %v, %d× gameOver", isl.Over, count(w.Events, "gameOver"))
 	}
@@ -104,7 +109,7 @@ func TestNiederlageKomplettVerloren(t *testing.T) {
 }
 
 func TestNiederlageStandardJeGrad(t *testing.T) {
-	want := map[string]string{"dev": "resources", "easy": "resources", "normal": "stage", "hard": "stage", "ultra": "lost"}
+	want := map[string]string{"dev": "resources", "easy": "resources", "normal": "resources", "hard": "stage", "ultra": "stage"}
 	for _, g := range gradeNames {
 		if got := DefaultOptionsFor(g).Defeat; got != want[g] {
 			t.Errorf("Grad %s: Standard %q, erwartet %q", g, got, want[g])
@@ -138,7 +143,7 @@ func TestNiederlageOhneInselStufenverlust(t *testing.T) {
 func TestNiederlageDeterministisch(t *testing.T) {
 	var runs [2]string
 	for i := range runs {
-		isl, w := defeatIsland(t, "lost")
+		isl, w := defeatIsland(t, "stage")
 		for range 30 {
 			StepIsland(isl, nil, dt)
 		}

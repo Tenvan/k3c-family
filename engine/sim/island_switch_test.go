@@ -86,7 +86,7 @@ func TestInselwechselAlleLebendenAmPunkt(t *testing.T) {
 		{"2 Spieler", 2, func(*Island, []*Player) {}, true},
 		{"4 Spieler", 4, func(*Island, []*Player) {}, true},
 		{"einer fehlt", 4, func(_ *Island, ps []*Player) { ps[3].X += 20 }, false},
-		{"einer tot", 2, func(_ *Island, ps []*Player) { ps[1].X += 20; ps[1].RespawnIn = 100 }, true},
+		{"einer tot", 2, func(_ *Island, ps []*Player) { ps[1].X += 20; fell(ps[1]); ps[1].Crown.X += 40 }, true},
 		{"einer frei", 2, func(_ *Island, ps []*Player) { ps[1].X += 20; ps[1].Free = true }, true},
 		{"einer in anderer Stufe", 2, func(isl *Island, _ []*Player) { AddIslandPlayer(isl, 1) }, false},
 	}
@@ -131,7 +131,7 @@ func switchedIsland(t *testing.T) (cur, next *Island) {
 	}
 	ps[0].Gold, ps[1].Gold = 33, 44
 	ps[0].Skills, ps[0].Slots = []string{"a", "b"}, []string{"a"}
-	ps[1].HP, ps[1].RespawnIn = 0, 3
+	fell(ps[1])
 	next, err := NextIsland(cur, def)
 	if err != nil {
 		t.Fatal(err)
@@ -161,8 +161,8 @@ func TestInselwechselSpielerZiehenMit(t *testing.T) {
 		t.Fatalf("Spieler in Stufe 0: %d, in Stufe 1: %d", len(first.Players), len(next.Stages[1].Players))
 	}
 	for i, p := range first.Players {
-		if p.Index != i || p.HP != p.MaxHP || !isAlive(p) || math.Abs(p.X-first.HubX) > 3 {
-			t.Errorf("Spieler %d: Index %d, HP %v/%v, x %v (Burg %v)", i, p.Index, p.HP, p.MaxHP, p.X, first.HubX)
+		if p.Index != i || p.Crown != nil || math.Abs(p.X-first.HubX) > 3 {
+			t.Errorf("Spieler %d: Index %d, Krone %v, x %v (Burg %v)", i, p.Index, p.Crown, p.X, first.HubX)
 		}
 	}
 	p0 := first.Players[0]

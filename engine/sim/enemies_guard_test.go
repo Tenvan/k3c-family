@@ -77,21 +77,21 @@ func TestWachenStehenUndZaehlenNichtAlsWelle(t *testing.T) {
 	}
 }
 
-// Ziel im Radius: die Wache greift an (Spieler verliert HP), das Ziel außerhalb des Radius bleibt unbehelligt.
+// Ziel im Radius: die Wache greift an (Spieler verliert Gold), das Ziel außerhalb des Radius bleibt unbehelligt.
 func TestWacheGreiftImRadiusAnUndKehrtZurueck(t *testing.T) {
 	_, w := guardIsland(t)
 	g := guardsOf(w)[0]
 	home := g.HomeX
 	far, near := w.Players[0], w.Players[1]
 	far.X, near.X = home-30, home-6 // 30 Units: außerhalb des Radius (10), 6: darin
+	probe(far, near)
 	gold := near.Gold
-	maxHP := near.HP
 	guardSteps(w, 6)
-	if far.HP != maxHP && far.HP != far.MaxHP {
-		t.Errorf("Spieler außerhalb des Radius getroffen: HP %v", far.HP)
+	if wasHit(far) {
+		t.Errorf("Spieler außerhalb des Radius getroffen: Gold %v", far.Gold)
 	}
-	if near.HP >= maxHP && near.Gold == gold {
-		t.Errorf("Spieler im Radius nicht angegriffen: HP %v", near.HP)
+	if !wasHit(near) && near.Gold == gold {
+		t.Errorf("Spieler im Radius nicht angegriffen: Gold %v", near.Gold)
 	}
 	if g.X == home {
 		t.Error("die Wache hat sich nicht auf das Ziel zubewegt")
@@ -111,8 +111,8 @@ func TestWacheKlautKeinGold(t *testing.T) {
 	p := w.Players[0]
 	p.X, p.Gold = thief.HomeX-2, 50
 	guardSteps(w, 5)
-	if p.Gold != 50 || thief.Fleeing || thief.CarriedGold != 0 {
-		t.Errorf("Gold %d, flieht %v, trägt %d", p.Gold, thief.Fleeing, thief.CarriedGold)
+	if thief.Fleeing || thief.CarriedGold != 0 {
+		t.Errorf("flieht %v, trägt %d", thief.Fleeing, thief.CarriedGold)
 	}
 }
 

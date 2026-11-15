@@ -132,7 +132,7 @@ func (s *stageInfo) priceTags(w *sim.World) {
 		s.cands = append(s.cands, candidate{w.Castle.ID, w.Castle.X})
 	}
 	for _, p := range w.Players {
-		if p != nil && p.RespawnIn <= 0 {
+		if p != nil && p.Crown == nil {
 			s.players = append(s.players, p.X)
 		}
 	}

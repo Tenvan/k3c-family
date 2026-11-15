@@ -24,8 +24,8 @@ func TestEffektJeEreignis(t *testing.T) {
 		{sim.Event{"type": "coinPickup", "player": 0, "x": 2.0}, kindCoin, 2},
 		{sim.Event{"type": "coinGive", "player": 0, "x": 2.0, "to": "site"}, kindCoinGive, 2},
 		{sim.Event{"type": "buildProgress", "site": 1, "kind": "wall", "x": 7.0, "percent": 25}, kindBuild, 7},
-		{sim.Event{"type": "playerDown", "player": 0}, kindDown, 5},
-		{sim.Event{"type": "playerDown", "player": 3, "x": 4.0}, kindDown, 4},
+		{sim.Event{"type": "crownFallen", "player": 0}, kindDown, 5},
+		{sim.Event{"type": "crownFallen", "player": 3, "x": 4.0}, kindDown, 4},
 		{sim.Event{"type": "built", "kind": "tower", "x": 9.0}, kindBuilt, 9},
 		{sim.Event{"type": "strike", "from": 4, "x": 10.0, "hit": false}, kindSwing, 10},
 	}
@@ -35,7 +35,7 @@ func TestEffektJeEreignis(t *testing.T) {
 			t.Errorf("%v: %+v %v", c.d, e, ok)
 		}
 	}
-	for _, d := range []sim.Event{{"type": "dusk"}, {"type": "zukunft", "x": 1.0}, {"type": "playerDown", "player": 3},
+	for _, d := range []sim.Event{{"type": "dusk"}, {"type": "zukunft", "x": 1.0}, {"type": "crownFallen", "player": 3},
 		{"type": "strike", "from": 7, "x": 3.0}} {
 		if _, ok := fxOf(d, map[string]float64{}); ok {
 			t.Errorf("%v: kein Effekt", d)

@@ -87,7 +87,7 @@ func TestGegnerStealsGold(t *testing.T) {
 			t.Fatalf("%s: Gold %d → %d, trägt %d, flieht %v", kind, g1, p1.Gold, e.CarriedGold, e.Fleeing)
 		}
 		stepFor(w, 5)
-		if len(w.Enemies) != 0 || p2.Gold != g2 || p1.HP != p1.MaxHP {
+		if len(w.Enemies) != 0 || p2.Gold != g2 || p1.Crown != nil {
 			t.Fatalf("%s: %d Gegner übrig, Spieler 2 Gold %d (%d)", kind, len(w.Enemies), p2.Gold, g2)
 		}
 	}
@@ -143,9 +143,10 @@ func TestGegnerPrefersTroops(t *testing.T) {
 		e := spawnEnemy(w, kind, w.HubX-30)
 		p1.X, p2.X = e.X+0.3, e.X+0.5
 		tr := warriorAt(w, e.X+1.2)
+		probe(p1, p2)
 		stepEnemies(w, dt)
-		if tr.HP == tr.MaxHP || p1.HP != p1.MaxHP || p2.HP != p2.MaxHP {
-			t.Fatalf("%s: Krieger %v, Spieler %v/%v", kind, tr.HP, p1.HP, p2.HP)
+		if tr.HP == tr.MaxHP || wasHit(p1) || wasHit(p2) {
+			t.Fatalf("%s: Krieger %v, Spieler Gold %v/%v", kind, tr.HP, p1.Gold, p2.Gold)
 		}
 	}
 }
@@ -158,9 +159,10 @@ func TestGegnerPrefersMonarch(t *testing.T) {
 		e := spawnEnemy(w, kind, w.HubX-30)
 		tr := warriorAt(w, e.X+0.3)
 		p1.X, p2.X = e.X+1, e.X+1.3
+		probe(p1, p2)
 		stepEnemies(w, dt)
-		if p1.HP == p1.MaxHP || p2.HP != p2.MaxHP || tr.HP != tr.MaxHP {
-			t.Fatalf("%s: Spieler %v/%v, Krieger %v", kind, p1.HP, p2.HP, tr.HP)
+		if !wasHit(p1) || wasHit(p2) || tr.HP != tr.MaxHP {
+			t.Fatalf("%s: Spieler Gold %v/%v, Krieger %v", kind, p1.Gold, p2.Gold, tr.HP)
 		}
 	}
 }

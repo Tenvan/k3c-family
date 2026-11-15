@@ -26,7 +26,7 @@ func TestEventsTrefferAufSpielerMitIndex1(t *testing.T) {
 	w := quietWorld(t)
 	p0, p1 := AddPlayer(w), AddPlayer(w)
 	p0.X, p1.X = w.HubX+40, w.HubX-40
-	p1.Gold = 0 // sonst stiehlt der Goblin nur Gold
+	p1.Gold = 0 // sonst stiehlt der Goblin nur Gold; ohne Gold fällt die Krone (hit mit damage 0)
 	spawnEnemy(w, "goblin", p1.X-0.5)
 	var onP1 Event
 	for _, h := range eventsOf(w, "hit", 60, []PlayerCommand{{}, {}}) {
@@ -37,7 +37,7 @@ func TestEventsTrefferAufSpielerMitIndex1(t *testing.T) {
 			onP1 = h
 		}
 	}
-	if onP1 == nil || onP1["damage"].(float64) <= 0 || onP1["x"] != unitX(p1.X) {
+	if onP1 == nil || onP1["x"] != unitX(p1.X) {
 		t.Fatalf("hit auf Spieler 1: %v (Spieler bei %v)", onP1, p1.X)
 	}
 }
@@ -219,19 +219,19 @@ func TestEventsBaufortschrittInViertelnUndFertig(t *testing.T) {
 	}
 }
 
-func TestEventsTodUndWiederbelebenSpieler1(t *testing.T) {
+func TestEventsKroneFaelltUndLandetSpieler1(t *testing.T) {
 	w := quietWorld(t)
 	AddPlayer(w)
 	p1 := AddPlayer(w)
-	applyDamage(w, p1.ID, 1e6)
-	down := firstEvent(t, w.Events[len(w.Events)-1:])
-	if down["type"] != "playerDown" || down["player"] != 1 {
-		t.Fatalf("Tod: %v", down)
+	kill(w, p1)
+	down := firstEvent(t, eventsOfType(w, "crownFallen"))
+	if down["player"] != 1 || down["x"] != unitX(p1.X) {
+		t.Fatalf("Krone fällt: %v", down)
 	}
-	steps := int(math.Ceil(monarch.RespawnSeconds/dt)) + 1 // Wartezeit aus den Daten (B-120: 15 s)
-	ev := firstEvent(t, eventsOf(w, "revive", steps, []PlayerCommand{{}, {}}))
-	if ev["player"] != 1 || ev["x"] != unitX(p1.X) {
-		t.Fatalf("revive: %v (Spieler bei %v)", ev, p1.X)
+	flight := int(math.Ceil(monarch.Crown.FlightSeconds/dt)) + 1
+	ev := firstEvent(t, eventsOf(w, "crownLanded", flight, []PlayerCommand{{}, {}}))
+	if ev["player"] != 1 {
+		t.Fatalf("crownLanded: %v", ev)
 	}
 }
 
@@ -257,7 +257,7 @@ func TestEventsNachtNaht(t *testing.T) {
 func TestEventsObergrenzeImTick(t *testing.T) {
 	w := quietWorld(t)
 	p := AddPlayer(w)
-	p.Gold, p.HP = 0, 1
+	p.Gold = 0
 	wall := leftWall(t, w)
 	wall.State, wall.HP, wall.BuildProgress = "waitingWorker", 0, 0.9999
 	w.Troops = []*Troop{{ID: 960, Kind: "peasant", X: wall.X, AnchorX: wall.X, HP: 1, MaxHP: 1, Job: &Job{Type: "build", SiteID: wall.ID}}}
@@ -273,7 +273,7 @@ func TestEventsObergrenzeImTick(t *testing.T) {
 	for _, ev := range w.Events {
 		types[ev["type"]] = true
 	}
-	if len(w.Events) != maxEventsPerTick || w.EventsDropped == 0 || !types["playerDown"] || !types["built"] {
+	if len(w.Events) != maxEventsPerTick || w.EventsDropped == 0 || !types["crownFallen"] || !types["built"] {
 		t.Fatalf("%d Ereignisse, verworfen %d, Typen %v", len(w.Events), w.EventsDropped, types)
 	}
 }
@@ -284,7 +284,7 @@ func TestEventsObergrenzePrioritaet(t *testing.T) {
 	for i := range maxEventsPerTick + 5 {
 		w.Events = append(w.Events, Event{"type": "hit", "id": i})
 	}
-	w.Events = append(w.Events, Event{"type": "built"}, Event{"type": "playerDown"}, Event{"type": "buildProgress"})
+	w.Events = append(w.Events, Event{"type": "built"}, Event{"type": "crownFallen"}, Event{"type": "buildProgress"})
 	total := len(w.Events)
 	capEvents(w)
 	n := len(w.Events)
@@ -292,7 +292,7 @@ func TestEventsObergrenzePrioritaet(t *testing.T) {
 		t.Fatalf("%d behalten, %d verworfen von %d", n, w.EventsDropped, total)
 	}
 	tail := []any{w.Events[n-3]["type"], w.Events[n-2]["type"], w.Events[n-1]["type"]}
-	if !reflect.DeepEqual(tail, []any{"built", "playerDown", "buildProgress"}) || w.Events[0]["id"] != 0 {
+	if !reflect.DeepEqual(tail, []any{"built", "crownFallen", "buildProgress"}) || w.Events[0]["id"] != 0 {
 		t.Fatalf("Reihenfolge: %v, erstes %v", tail, w.Events[0])
 	}
 	w.Events = []Event{{"type": "hit"}}

@@ -87,7 +87,6 @@ const (
 	txtGoalBuildAll
 	txtDefeatResources
 	txtDefeatStage
-	txtDefeatLost
 	txtLangName
 	txtFlashes
 	txtGuide
@@ -221,7 +220,6 @@ var texts = [textCount][2]string{
 	txtGoalBuildAll:    {"Alles ausbauen", "Build everything"},
 	txtDefeatResources: {"Gold/Material-Verlust", "Lose gold/material"},
 	txtDefeatStage:     {"Stufenverlust", "Lose level"},
-	txtDefeatLost:      {"Komplett verloren", "Game over"},
 	txtLangName:        {"Deutsch", "English"},
 	txtFlashes:         {"Blitze", "Flashes"},
 	txtGuide:           {"Anleitung", "Guide"},

@@ -15,10 +15,10 @@ func TestAnlegenPrueftOptionen(t *testing.T) {
 		opts               Options
 		want, goal, defeat string // want leer = bad_request
 	}{
-		{"live-standard", false, Options{}, "normal", "endboss", "stage"},
+		{"live-standard", false, Options{}, "normal", "endboss", "resources"},
 		{"dev-standard", true, Options{}, "dev", "endboss", "resources"},
-		{"gueltig", false, Options{Grade: "hard", Goal: "gold", Defeat: "lost"}, "hard", "gold", "lost"},
-		{"grad-bestimmt-niederlage", false, Options{Grade: "ultra"}, "ultra", "endboss", "lost"},
+		{"gueltig", false, Options{Grade: "hard", Goal: "gold", Defeat: "stage"}, "hard", "gold", "stage"},
+		{"grad-bestimmt-niederlage", false, Options{Grade: "ultra"}, "ultra", "endboss", "stage"},
 		{"dev-im-devmode", true, Options{Grade: "dev"}, "dev", "endboss", "resources"},
 		{"dev-ohne-devmode", false, Options{Grade: "dev"}, "", "", ""},
 		{"unbekannter-grad", true, Options{Grade: "mittel"}, "", "", ""},
@@ -55,12 +55,12 @@ func TestAnlegenPrueftOptionen(t *testing.T) {
 // Die Optionen stehen im Spielstand; beim Laden gelten die gespeicherten, die aus `create` werden ignoriert.
 func TestOptionenUeberlebenSpeichernUndLaden(t *testing.T) {
 	f := newFixture()
-	need(f.m.Create("x", &peer{}, "stand", true, 0, []int{0}, Options{Grade: "hard", Goal: "days", Defeat: "lost"}))(t)
+	need(f.m.Create("x", &peer{}, "stand", true, 0, []int{0}, Options{Grade: "hard", Goal: "days", Defeat: "stage"}))(t)
 	f.m.Close()
 	g := newFixture()
 	g.m.Store = f.store
 	r := need(g.m.Create("x", &peer{}, "stand", false, 0, []int{0}, Options{Grade: "easy", Goal: "gold"}))(t)
-	if o := r.isl.Options; o.Grade != "hard" || o.Goal != "days" || o.Defeat != "lost" {
+	if o := r.isl.Options; o.Grade != "hard" || o.Goal != "days" || o.Defeat != "stage" {
 		t.Fatalf("Optionen nach dem Laden: %+v", o)
 	}
 }

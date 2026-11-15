@@ -134,7 +134,7 @@ func effectFor(lang string, d sim.Event, typ string, px playerX, spots map[strin
 			x, hasX = spots[strOf(d, "kind")]
 		}
 		return at(kindBuilt, x, hasX, buildPx)
-	case "playerDown":
+	case "crownFallen":
 		if !hasX {
 			p, _ := numOf(d, "player")
 			x, hasX = px(int(p))

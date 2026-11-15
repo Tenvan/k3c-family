@@ -69,9 +69,10 @@ func TestGegnerFlaechenschlagZweiSpieler(t *testing.T) {
 	x := w.HubX - 30
 	spawnEnemy(w, "caveTroll", x)
 	p1.X, p2.X = x+1.5, x+3.5
+	probe(p1, p2)
 	stepEnemies(w, dt)
-	if p1.HP >= p1.MaxHP || p2.HP >= p2.MaxHP {
-		t.Fatalf("Spieler 1 %v/%v, Spieler 2 %v/%v", p1.HP, p1.MaxHP, p2.HP, p2.MaxHP)
+	if !wasHit(p1) || !wasHit(p2) {
+		t.Fatalf("Spieler 1 Gold %v, Spieler 2 Gold %v", p1.Gold, p2.Gold)
 	}
 }
 

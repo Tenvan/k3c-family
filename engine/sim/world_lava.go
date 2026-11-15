@@ -18,7 +18,7 @@ func onLava(w *World, x float64) bool {
 }
 
 // stepLava zieht allen Figuren auf Lava einmal je Sekunde den Schaden einer Sekunde ab (über applyDamage: Tod,
-// playerDown, Treffer). Je Sekunde statt je Tick, weil ein Treffer am Spieler mindestens 1 Schaden macht.
+// crownFallen, Treffer). Je Sekunde statt je Tick, weil ein Treffer am Spieler mindestens 1 Schaden macht.
 func stepLava(w *World, dt float64) {
 	dps := w.Biome.Lava.DamagePerSecond
 	if dps <= 0 {
@@ -31,7 +31,7 @@ func stepLava(w *World, dt float64) {
 	w.lavaIn++
 	var ids []int
 	for _, p := range w.Players {
-		if isAlive(p) && !p.Free && onLava(w, p.X) {
+		if crowned(p) && !p.Free && onLava(w, p.X) {
 			ids = append(ids, p.ID)
 		}
 	}

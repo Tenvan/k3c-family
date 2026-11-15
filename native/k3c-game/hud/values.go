@@ -81,18 +81,14 @@ func clockText(k clockKey) string {
 	return s
 }
 
-// goldKey: Gold, Maximum und Sekunden bis zum Respawn (aufgerundet, 0 = lebt).
+// goldKey: Gold und Maximum (das Gold ist die Lebensanzeige, kampf.md § 5).
 type goldKey struct {
-	lang           string
-	gold, max, out int
+	lang      string
+	gold, max int
 }
 
-// goldText ist der Wert der Spielerkarte: „Gold/Maximum“, gefallen die Sekunden bis zur Rückkehr. Gold steht nur
-// hier (Regel „Gold nur im HUD“, B-398).
+// goldText ist der Wert der Spielerkarte: „Gold/Maximum“. Gold steht nur hier (Regel „Gold nur im HUD“, B-398).
 func goldText(k goldKey) string {
-	if k.out > 0 {
-		return tf(k.lang, "hud.downShort", "s", k.out)
-	}
 	return strconv.Itoa(k.gold) + "/" + strconv.Itoa(k.max)
 }
 

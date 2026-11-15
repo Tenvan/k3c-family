@@ -5,6 +5,7 @@ package e2e
 
 import (
 	"fmt"
+	"math"
 	"testing"
 
 	"k3c/native/k3c-game/game"
@@ -74,16 +75,22 @@ func (r *run) startKeyboardGame(src *padSource) {
 	}
 }
 
-// reacts meldet, ob das Spiel auf Laufen reagiert: Der Monarch bewegt sich in 30 Updates nach rechts.
+// reacts meldet, ob das Spiel auf Laufen reagiert: Der Monarch bewegt sich in 30 Updates nach rechts, am rechten Rand der
+// Stufe nach links (ein Monarch ohne Krone stirbt nicht mehr und kann dort stehen bleiben, B-930).
 func (r *run) reacts(src *padSource) bool {
 	r.t.Helper()
 	x := r.frame().Monarch(0).X
-	src.cmd = view.Command{Move: 1}
-	for range 30 {
-		r.step()
+	for _, dir := range []float64{1, -1} {
+		src.cmd = view.Command{Move: dir}
+		for range 30 {
+			r.step()
+		}
+		src.cmd = view.Command{}
+		if math.Abs(r.frame().Monarch(0).X-x) > 0.1 {
+			return true
+		}
 	}
-	src.cmd = view.Command{}
-	return r.frame().Monarch(0).X > x+0.1
+	return false
 }
 
 // closeAll schließt alles, was offen sein kann: Zurück (im Spiel ohne Wirkung; Menü würde die Pause öffnen).
@@ -127,8 +134,12 @@ func inputRecovers(t *testing.T, seed uint32) {
 			r.closeAll(src)
 			r.startKeyboardGame(src)
 		}
+		if r.frame().Outcome != view.OutcomeNone { // Kronenraub beendet das Spiel (B-931): die Insel ruht, nichts reagiert mehr
+			t.Logf("Runde %d: Spiel verloren (Ausgang %v), Ende des Laufs", round, r.frame().Outcome)
+			return
+		}
 		if !r.reacts(src) {
-			t.Logf("gesehen: %v", seen)
+			t.Logf("gesehen: %v, Ausgang %v, aktiv %v", seen, r.frame().Outcome, r.sim.Active())
 			t.Fatalf("Runde %d: Spiel reagiert nicht mehr (Screen %T, Pause %v)", round, r.g.Screen(), r.frame().Paused)
 		}
 	}

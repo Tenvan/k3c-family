@@ -107,11 +107,12 @@ func TestGegnerKristallwaechterFlaechenschlag(t *testing.T) {
 	x := w.HubX - 30
 	spawnEnemy(w, "crystalGuardian", x)
 	p1.X, p2.X = x+2, x+4.5
+	probe(p1, p2)
 	out := warriorAt(w, x+6)
 	stepEnemies(w, dt)
 	if a := enemyData["crystalGuardian"].Aoe; a.Radius != 3 || a.IntervalSeconds != 4 ||
-		p1.HP >= p1.MaxHP || p2.HP >= p2.MaxHP || out.HP != out.MaxHP {
-		t.Fatalf("Spieler %v/%v, %v/%v, Krieger %v", p1.HP, p1.MaxHP, p2.HP, p2.MaxHP, out.HP)
+		!wasHit(p1) || !wasHit(p2) || out.HP != out.MaxHP {
+		t.Fatalf("Spieler Gold %v/%v, Krieger %v", p1.Gold, p2.Gold, out.HP)
 	}
 }
 

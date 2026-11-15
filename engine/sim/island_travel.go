@@ -35,7 +35,7 @@ func stepIslandTravel(isl *Island, dt float64) {
 		points := travelPoints(w)
 		for _, p := range w.Players {
 			var pt *travelPoint
-			if isAlive(p) && !p.Free {
+			if crowned(p) && !p.Free {
 				pt = pointNear(points, p.X, isl.values().Hub.Travel.RangeUnits)
 			}
 			if pt == nil {
@@ -86,7 +86,7 @@ func moveToStage(isl *Island, m islandMove) {
 	if q.Index%2 == 0 {
 		q.X = target.HubX - 3
 	}
-	q.VX, q.RespawnIn, q.PayCooldown, q.Paying = 0, 0, 0.5, false
+	q.VX, q.PayCooldown, q.Paying = 0, 0.5, false
 	q.PayKey, q.PayAmount = nil, 0
 	target.Players = insertPlayer(target.Players, &q)
 	target.Events = append(target.Events, Event{"type": "arrived", "depth": m.toDepth, "name": target.Biome.Name, "player": q.Index})

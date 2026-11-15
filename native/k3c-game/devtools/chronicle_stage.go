@@ -49,7 +49,7 @@ func (n *nightStats) add(typ string, e sim.Event) {
 		n.spawned += int(num(e["count"]))
 	case "kill":
 		n.killed++
-	case "playerDown", "destroyed":
+	case "crownFallen", "destroyed":
 		n.losses++
 	case "hit":
 		if e["target"] == "enemy" {

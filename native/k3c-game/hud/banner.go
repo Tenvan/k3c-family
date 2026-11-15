@@ -88,8 +88,8 @@ func eventText(lang string, e view.Event, biomeID string) string {
 		return tf(lang, "ev."+e.Type(), "name", siteName(lang, strOf(d, "kind")))
 	case "goldStolen":
 		return tf(lang, "ev.goldStolen", "p", intOf(d, "player")+1, "amount", intOf(d, "amount"))
-	case "playerDown":
-		return tf(lang, "ev.playerDown", "p", intOf(d, "player")+1)
+	case "crownFallen":
+		return tf(lang, "ev.crownFallen", "p", intOf(d, "player")+1)
 	case "arrived":
 		return nameOf(lang, "biome", biomeID, strOf(d, "name"))
 	}

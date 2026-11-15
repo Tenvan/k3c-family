@@ -35,9 +35,6 @@ func TestBarRulesLikeBrowser(t *testing.T) {
 		if got := BarFraction(c.hp, c.max); math.Abs(got-c.frac) > 1e-9 {
 			t.Errorf("%s: Anteil %v, erwartet %v", c.name, got, c.frac)
 		}
-		if got := PlayerBarVisible(c.hp, c.max, c.respawn); got != c.playerShows {
-			t.Errorf("%s: Monarch sichtbar %v, erwartet %v (%s)", c.name, got, c.playerShows, c.playerReason)
-		}
 	}
 }
 
@@ -46,7 +43,7 @@ func TestBarBoxesWidthAndPlacement(t *testing.T) {
 		look  barLook
 		width float64
 		above float64
-	}{{troopBar, 36, 16}, {enemyBar, 44, 32}, {playerBar, 50, 50}} {
+	}{{troopBar, 36, 16}, {enemyBar, 44, 32}} {
 		back, fill := barBoxes(l.look, 100, 0.5)
 		if back.w != l.width || back.h != barHeightPx || back.cx != 0 || back.cy != 100+l.above {
 			t.Errorf("Hintergrund %+v: Breite %v, Mitte %v über der Oberkante erwartet", back, l.width, l.above)
@@ -62,8 +59,8 @@ func TestBarBoxesWidthAndPlacement(t *testing.T) {
 	if full.cx != 0 || full.w != 36 {
 		t.Errorf("voller Balken deckt den Hintergrund: %+v", full)
 	}
-	if troopBar.color != 0x52b788 || enemyBar.color != 0xe63946 || playerBar.color != 0x52b788 {
-		t.Error("Balkenfarben wie im Browser: Truppe und Monarch grün, Gegner rot")
+	if troopBar.color != 0x52b788 || enemyBar.color != 0xe63946 {
+		t.Error("Balkenfarben wie im Browser: Truppe grün, Gegner rot")
 	}
 }
 

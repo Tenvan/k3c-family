@@ -34,15 +34,21 @@ func TestLavaSchadetFiguren(t *testing.T) {
 	archer := spawnVagrant(w, x, x)
 	makeArcher(w, archer)
 	archer.HP, archer.AnchorX = 1000, x
-	hp0, hp1 := p0.HP, p1.HP
+	probe(p0, p1)
+	hits0, hits1 := 0, 0
 	for range 60 { // 2 s: zwei Lava-Treffer
 		p0.X, p1.X, peasant.X, archer.X = x, x+w.Biome.Lava.WidthUnits, x, x
 		Step(w, []PlayerCommand{{}, {}}, dt)
+		for _, ev := range w.Events {
+			if ev["type"] == "hit" && ev["target"] == "player" && ev["damage"].(float64) > 0 {
+				hits0, hits1 = hits0+b2i(ev["id"] == p0.Index), hits1+b2i(ev["id"] == p1.Index)
+			}
+		}
 	}
 	want := 2 * dps
-	// Am Spieler wirkt die Verteidigung wie bei jedem Treffer (damagePlayer), mindestens 1 je Treffer.
-	if mine := 2 * math.Max(1, dps-defenseOf(w, p0)); math.Abs((hp0-p0.HP)-mine) > 0.01 || p1.HP != hp1 {
-		t.Errorf("Spieler auf Lava -%v (erwartet %v), daneben -%v", hp0-p0.HP, mine, hp1-p1.HP)
+	// Am Spieler wirkt Lava wie ein Treffer: eine Münze je Sekunde (kampf.md § 5), daneben nichts.
+	if hits0 != 2 || hits1 != 0 || wasHit(p1) {
+		t.Errorf("Spieler auf Lava %d Münz-Treffer (erwartet 2), daneben %d", hits0, hits1)
 	}
 	if math.Abs((1000-peasant.HP)-want) > 0.01 || math.Abs((1000-archer.HP)-want) > 0.01 {
 		t.Errorf("Bauer -%v, Schütze -%v, erwartet je %v", 1000-peasant.HP, 1000-archer.HP, want)

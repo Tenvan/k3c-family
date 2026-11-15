@@ -11,7 +11,7 @@ import "math"
 func eachPassive(w *World, f func(owner *Player, e skillEffect)) {
 	v := w.values()
 	for _, o := range w.Players {
-		if !isAlive(o) {
+		if !crowned(o) {
 			continue
 		}
 		for _, id := range o.Skills {
@@ -32,16 +32,6 @@ func statSum(w *World, p *Player, field func(skillEffect) float64) float64 {
 		}
 	})
 	return sum
-}
-
-// defenseOf: Verteidigung des Monarchen (Basis + Armor Aura, Fortified).
-func defenseOf(w *World, p *Player) float64 {
-	return w.values().Monarch.Base.Defense + statSum(w, p, func(e skillEffect) float64 { return e.Defense })
-}
-
-// maxHPOf: maximale HP des Monarchen (Basis × (1 + Thick Skin)).
-func maxHPOf(w *World, p *Player) float64 {
-	return float64(w.values().Monarch.Base.HP * (1 + statSum(w, p, func(e skillEffect) float64 { return e.MaxHPBonus })))
 }
 
 // speedOf: Grundtempo des Monarchen (Basis × Reittier-Faktor × (1 + Blessings)).
@@ -84,29 +74,37 @@ func troopDamage(w *World, t *Troop, damage float64) float64 {
 	return float64(damage * math.Max(0, 1-cut))
 }
 
-// stepPassives (je Tick nach stepPlayers): MaxHP folgt maxHPOf (Heilung deckelt daran), dann Regeneration, Healing
-// Aura und Holy Ground. Reihenfolge: Besitzer nach Index, je Besitzer Spieler nach Index, dann Truppen.
+// stepPassives (je Tick nach stepPlayers): Regeneration und Healing Aura. Ohne aura und castle ist `regen` ein Gold-Rinnsal
+// tagsüber für den Besitzer (kampf.md § 5, B-930: perSecond Münzen je Sekunde, bis der Geldsack voll ist); mit aura oder castle
+// heilt es Truppen (Monarchen haben keine HP mehr). Reihenfolge: Besitzer nach Index, dann Truppen.
 func stepPassives(w *World, dt float64) {
-	for _, p := range w.Players {
-		p.MaxHP = maxHPOf(w, p)
-		p.HP = math.Min(p.HP, p.MaxHP)
-	}
 	eachPassive(w, func(o *Player, e skillEffect) {
 		if e.Type != "regen" {
 			return
 		}
-		heal := float64(e.PerSecond * dt)
-		for _, q := range w.Players {
-			if isAlive(q) && regenReaches(w, o, e, q.X, q == o) {
-				q.HP = math.Min(q.MaxHP, q.HP+heal)
-			}
+		if e.Aura == 0 && !e.Castle {
+			regenGold(w, o, float64(e.PerSecond*dt))
+			return
 		}
+		heal := float64(e.PerSecond * dt)
 		for _, t := range w.Troops {
 			if t.HP > 0 && regenReaches(w, o, e, t.X, false) {
 				t.HP = math.Min(t.MaxHP, t.HP+heal)
 			}
 		}
 	})
+}
+
+// regenGold sammelt Bruchteile und legt volle Münzen in den Geldsack des Besitzers; nur tagsüber, nie über das Maximum.
+func regenGold(w *World, o *Player, amount float64) {
+	if w.Cycle.Phase != "day" || o.Gold >= PurseMaxOf(w, o) {
+		return
+	}
+	if o.regenGold += amount; o.regenGold >= 1 {
+		n := int(o.regenGold)
+		o.regenGold -= float64(n)
+		o.Gold = min(PurseMaxOf(w, o), o.Gold+n)
+	}
 }
 
 // regenReaches: Castle = alle im Burgradius (Holy Ground, Auslegung), Aura = im Radius um den Besitzer, sonst nur

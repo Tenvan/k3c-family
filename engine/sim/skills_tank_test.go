@@ -64,9 +64,15 @@ func TestTankIronWall(t *testing.T) {
 	if p.Shield != 500 || p.ShieldFor != 10 || p.Cooldowns[2] != 30 {
 		t.Fatalf("Iron Wall: Schild %v für %v s, CD %v", p.Shield, p.ShieldFor, p.Cooldowns)
 	}
-	applyDamage(w, p.ID, 555) // 550 nach Verteidigung: 500 absorbiert, 50 gehen durch
-	if p.Shield != 0 || p.HP != 50 {
-		t.Fatalf("Schild %v, HP %v", p.Shield, p.HP)
+	probe(p)
+	applyDamage(w, p.ID, 300) // der Schild fängt den Treffer ohne Goldverlust ab
+	if p.Shield != 200 || p.Gold != probeGold || p.Crown != nil {
+		t.Fatalf("Schild %v, Gold %v", p.Shield, p.Gold)
+	}
+	applyDamage(w, p.ID, 300) // der Rest-Schild nimmt auch den Überschuss
+	applyDamage(w, p.ID, 300) // Schild leer: der Treffer kostet eine Münze
+	if p.Shield != 0 || p.Gold != probeGold-monarch.HitCoins {
+		t.Fatalf("Schild %v, Gold %v", p.Shield, p.Gold)
 	}
 	w2 := quietWorld(t)
 	q := tankPlayer(t, w2)
@@ -84,15 +90,15 @@ func TestTankLastStand(t *testing.T) {
 	if p.LastStandFor != 10 || p.Cooldowns[3] != 120 {
 		t.Fatalf("Last Stand: %v s, CD %v", p.LastStandFor, p.Cooldowns)
 	}
+	p.Gold = monarch.HitCoins // die letzte Münze
 	applyDamage(w, p.ID, 1000)
-	applyDamage(w, p.ID, 1000)
-	if p.HP != 1 || !isAlive(p) {
-		t.Fatalf("tödliche Treffer während Last Stand: HP %v, Respawn %v", p.HP, p.RespawnIn)
+	if p.Crown != nil || p.Gold != monarch.HitCoins || p.LastStandFor != 0 {
+		t.Fatalf("Last Stand: Krone %v, Gold %d, Last Stand %v", p.Crown, p.Gold, p.LastStandFor)
 	}
-	stepIdle(w, p, 301) // 10 s
-	applyDamage(w, p.ID, 1000)
-	if isAlive(p) || p.LastStandFor != 0 {
-		t.Fatalf("nach Ablauf überlebt: HP %v, Last Stand %v", p.HP, p.LastStandFor)
+	applyDamage(w, p.ID, 1000) // ohne Last Stand kostet der Treffer die letzte Münze
+	applyDamage(w, p.ID, 1000) // ohne Gold fällt die Krone
+	if p.Crown == nil {
+		t.Fatalf("nach Ablauf bleibt die Krone: Gold %d", p.Gold)
 	}
 }
 

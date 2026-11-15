@@ -105,7 +105,7 @@ Strom des Geräts neu mit `level` und `snap` (kein `delta` über den Wechsel). K
 Wechsel-Bestätigung: Der Wechsel entsteht durch Anwesenheit am Wechselpunkt. `hello.v` muss 6 sein; ein v5-Client
 erhält `version`. Dev-Seite: Aktion `grade` (siehe *HTTP: Dungeon-Master-Seite*).
 
-**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`. Nachgetragen ohne neue Version (W10.2, B-332): `fighters` und `troopLimit` im Zustand, Zusatzfelder wie `playerDown.cause`. Ebenso additiv (GEB17.4, B-592): `hubStep`, `hubUpgrade.steps` und der Wartegrund `hubUpgrade.state` = `waitingNextIsland` (Beispiel `testdata/protocol/s2c-snapshot-wirtschaft.json`).
+**Änderungen gegenüber v4 (W5, Version 5, B-153, B-283):** `snap`/`delta` nennen den Wirtschaftsstand (`stockMax`, `hubLevel`, `hubUpgrade`, `danger`, `merchant`, `drops`, Berufe der Bürger; siehe *Wirtschaft: Hub, Lager, Wartegrund, Händler*) und die Ereignisse `revived`, `disarmed`, `equipmentTaken`. Keine neuen Nachrichten: Hub-Ausbau, Tausch beim Händler und Berufswahl bleiben Bezahlen am Ort über `input.pay` (B-330). `hello.v` muss 5 sein; ein v4-Client erhält `version`. Nachgetragen ohne neue Version (W10.2, B-332): `fighters` und `troopLimit` im Zustand, Zusatzfelder wie `crownFallen.cause`. Ebenso additiv (GEB17.4, B-592): `hubStep`, `hubUpgrade.steps` und der Wartegrund `hubUpgrade.state` = `waitingNextIsland` (Beispiel `testdata/protocol/s2c-snapshot-wirtschaft.json`).
 
 **Änderungen in v4 (S2.4, B-176):** Ein Gerät bekommt Level und Zustand **jeder** Stufe, in der einer seiner Slots
 steht, je Stufe ein eigener Strom. `level`, `snap` und `delta` tragen auf oberster Ebene `stage` (Index der Stufe auf
@@ -623,8 +623,11 @@ nichts**; im Delta fehlt ein abgelaufenes Feld eines Gegners oder Spielers im ge
 | `enemies[].slow`, `slowFor` | Faktor der Geschwindigkeit und Restdauer (Ice Wall, Frost Armor) | nicht verlangsamt |
 | `enemies[].tauntId`, `tauntFor` | Spieler-ID, auf die der Gegner zielt, und Restdauer (Taunt) | kein Spott |
 | `players[].shield`, `shieldFor` | Schild-HP und Restdauer (Iron Wall, Divine Shield) | kein Schild |
-| `players[].lastStandFor` | Restdauer von Last Stand | kein Last Stand |
-| `players[].auras` | wirkende Passive in Lernreihenfolge: `skill`, `radius` (0 = nur der Monarch), `castle: true` = wirkt im Burgradius statt um den Monarchen (Holy Ground). Auren (armorAura, healingAura, blessings), guardian, regeneration, holyGround, frostArmor; Passive ohne Wirkort fehlen | Monarch tot oder kein solches Passiv |
+| `players[].lastStandFor` | Restdauer von Last Stand (die letzte Münze hält einen Treffer länger) | kein Last Stand |
+| `players[].crown` | gefallene Krone des Monarchen (B-931): `owner` (Spieler-Index), `state` (`flying`, `ground`, `enemy`, `player`), `x`, `z` (Höhe in Units im Flug), `fromX`/`toX`/`t` (Flug), `carrier` (ID des Gegners bzw. Mitspielers). Hat ein Monarch keine HP mehr, fehlen `players[].hp`, `maxHp`, `respawnIn`, `reviveProgress` | Monarch trägt seine Krone |
+| `enemies[].crown` | dieselbe Krone, wenn der Gegner sie zum Portal trägt | trägt keine Krone |
+| `coins[].loot` | `true`: Münze aus einem Treffer auf einen Monarchen, Gegner mit `stealsGold` rauben sie vom Boden | gewöhnliche Münze |
+| `players[].auras` | wirkende Passive in Lernreihenfolge: `skill`, `radius` (0 = nur der Monarch), `castle: true` = wirkt im Burgradius statt um den Monarchen (Holy Ground). Auren (armorAura, healingAura, blessings), guardian, regeneration, holyGround, frostArmor; Passive ohne Wirkort fehlen | Monarch ohne Krone oder kein solches Passiv |
 | `storms` | laufende Lightning Storms: `x`, `radius`, `perSecond`, `left` (Restdauer), `owner` (Spieler-ID) | kein Sturm |
 
 Beispiel: `s2c-snapshot-status.json`, geprüft von `TestStatusEffekteImZustand` (`engine/net/status_snapshot_test.go`).
@@ -646,14 +649,17 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `coinPickup` | `player`, `x` | Münze aufgehoben |
 | `coinGive` | `player`, `x`, `to` (`site`, `recruit`, `mark`) | Münze bezahlt ein Ziel (nur zu Boden: kein Ereignis) |
 | `buildProgress` | `site`, `kind`, `x`, `percent` (25, 50, 75) | Bau fortgeschritten, fertig = `built` |
-| `revive` | `player`, `x` | Monarch steht nach der Wartezeit wieder |
-| `revived` | `player`, `x` | Monarch von einem Mitspieler wiederbelebt (Q62) |
-| `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `playerDown`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
+| `disarmed` | `kind` (Figur oder Beruf), `x`, `cause` (Gegnerart wie bei `crownFallen`, sonst `other`) | Bürger verliert seine Ausrüstung, sie fällt als `drops`-Eintrag zu Boden (Q69); nicht beim Burgfall |
 | `equipmentTaken` | `kind` (wie `drops[].kind`), `x` | Gegner trägt Ausrüstung weg (Q69); Felder bestätigt 🧑 2026-10-06, Sim sendet ab B-312 |
 | `portalDefense` | `x`, `count` | Ein angegriffenes Portal stellt eine Verteidiger-Welle in die Warteschlange (KS2, B-927, `kampf.md` § 2) |
 | `portalDestroyed` | `x`, `left` | Truppen haben das Portal bei `x` zerstört, `left` Portale stehen noch (KS2, B-927) |
 | `stageSafe` | `depth` | Das letzte Portal der Stufe ist gefallen: keine Wellen mehr, Skill-Punkt des Miniboss im Pool (KS2, B-927) |
-| `playerDown` | `player`, `x`, `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Monarch fällt; `cause` und `x` (B-217) sind Zusatzfelder, die Protokollversion ändert sich dadurch nicht |
+| `crownFallen` | `player`, `x`, `toX` (Landeort), `cause` (Gegnerart aus `data/enemies.json` bei Nahkampf und Geschoss, sonst `other`; B-182) | Der Monarch hatte kein Gold mehr: seine Krone springt im Bogen nach hinten (B-930, B-931, `kampf.md` § 5); ersetzt `playerDown` (Monarchen haben keine HP, kein Respawn, kein Wiederbeleben: `revive` und `revived` entfallen) |
+| `crownLanded` | `player`, `x` | Die gefallene Krone liegt am Boden und ist aufhebbar |
+| `crownPickedUp` | `player` (Besitzer), `by` (Mitspieler), `x` | Ein Mitspieler trägt die fremde Krone zu ihrem Besitzer |
+| `crownRestored` | `player` (Besitzer), `by`, `x` | Die Krone sitzt wieder auf dem Monarchen (selbst aufgehoben, vom Mitspieler gebracht oder durch Resurrection) |
+| `crownTaken` | `player` (Besitzer), `x` | Ein Gegner trägt die Krone zum Portal (Kronenraub läuft); stirbt er vorher, fällt sie wieder |
+| `crownStolen` | `player`, `x` | Der Gegner hat die Krone ins Portal getragen: Kronenraub, danach `gameOver` |
 | `bossSpawned` | `boss`, `x` | Boss erscheint |
 | `bossPhase` | `boss`, `phase` (ab 2) | Endboss wechselt die Phase |
 | `bossDefeated` | `boss`, `x` | Boss besiegt |
@@ -662,10 +668,10 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `islandGateOpen` | `island`, `x` | Wechselpunkt der Insel offen |
 | `islandSwitch` | `island` | Alle stehen am Wechselpunkt, die Insel wechselt |
 | `victory` | `goal`, `day` | Siegbedingung erreicht |
-| `gameOver` | – | Niederlage |
+| `gameOver` | `cause` (`crown`) | Niederlage durch Kronenraub (`kampf.md` § 6), in jedem Grad; der Burgfall beendet das Spiel nicht mehr |
 | `saved` | – | Der Server hat den Spielstand des Raums geschrieben (B-186: alle 60 s, bei Tagesanbruch, Stufen- und Inselwechsel, Verlassen); kommt mit dem nächsten Zustand **jeder** Stufe, nur nach gelungenem Schreiben. Der Client zeigt kurz „gesichert“. Kein Ereignis der Simulation: kein Einfluss auf Spielverlauf und Golden-Hash. Beispiel `s2c-snapshot-gesichert.json`, geprüft von `TestSpeichertImTakt` (`engine/room/autosave_test.go`) und `src/scenes/hud/savedHint.test.ts` |
 
-Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `playerDown`, `built`, `skillPoint`,
+Tod, Bau fertig, Skill, Nacht naht und Portal laufen über die älteren Typen `crownFallen`, `built`, `skillPoint`,
 `dusk`, `arrived` (`arrived` mit `player` beim Einzelwechsel; `built` mit `kind` und `x` des Bauplatzes, `x` als Zusatzfeld ohne neue Version, B-217). Die Simulation begrenzt die Ereignisse je Tick und
 Stufe auf **K = 32** (`maxEventsPerTick`); bei Überlauf gehen Tod und Bau vor, `eventsDropped` in `s` zählt die
 Verworfenen und fehlt bei 0.
@@ -917,7 +923,7 @@ Schema 1 (`engine/room/metrics.go`):
 | `devices[]` | Kürzel der Geräte, die beigetreten sind, sortiert |
 | `reached` | `day` (höchster Tag), `maxDepth` (tiefste Stufe mit einem Monarchen) |
 | `nights[]` | je beendete Nacht `day` und `survived` (false, wenn in einer Stufe `castleFallen` kam); eine bei Raumende laufende Nacht fehlt |
-| `deaths[]` | je `playerDown`: `monarch` (Index), `day`, `phase`, `depth`, `cause` (Gegnerart oder `other`, B-182) |
+| `deaths[]` | je `crownFallen`: `monarch` (Index), `day`, `phase`, `depth`, `cause` (Gegnerart oder `other`, B-182) |
 | `firstBuildSeconds` | simulierte Sekunden bis zum ersten `built`, sonst `null` |
 | `goldPerDay[]` | bei jedem `dawn` (Beginn des Morgengrauens): `day` (der neue Tag) und `gold[]` je Monarch-Index |
 | `goldEnd[]` | Gold je Monarch-Index bei Raumende |

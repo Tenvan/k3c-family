@@ -30,11 +30,12 @@ func protectSnapshot(w *World) protectState {
 func forcedAttack(t *testing.T, grade string, day int) (before, after protectState) {
 	t.Helper()
 	isl := islandWith(t, "protect", grade, 2)
+	isl.Options.Defeat = "stage" // der Test prüft den Stufenverlust, unabhängig vom Standard des Grads
 	w := isl.Stages[0]
 	w.Cycle = CycleInfo{Phase: "night", Day: day}
 	*w.Stock = Stock{Wood: 10, Stone: 8, Copper: 6}
 	for _, p := range w.Players {
-		p.Gold = 20
+		p.Gold, p.Shield, p.ShieldFor = 20, 1e9, 1e9 // Treffer-Münzen zählen nicht als Raub: der Schild fängt Treffer ab
 	}
 	site := buildSite(t, w, "tower")
 	w.Troops = append(w.Troops, &Troop{ID: w.newID(), Kind: "archer", X: w.HubX, HP: 10, MaxHP: 10})

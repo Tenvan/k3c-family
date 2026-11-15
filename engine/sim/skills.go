@@ -21,7 +21,7 @@ var skillEffects = map[string]func(w *World, p *Player, e skillEffect) bool{
 	"damageOverTime": castDamageOverTime,
 	"heal":           castHeal,
 	"groupHeal":      castGroupHeal,
-	"reviveTroops":   castReviveTroops,
+	"reviveCrown":    castReviveCrown,
 	// Dieb (skills_thief.go, B-577)
 	"backstab": castBackstab,
 	"stealth":  castStealth,

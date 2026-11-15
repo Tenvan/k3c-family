@@ -23,12 +23,14 @@ type SkillData struct {
 type skillEffect struct {
 	Type                                          string
 	Radius, Range, Duration, HP                   float64
-	Damage, Factor, PerSecond, Amount, HPFraction float64
+	Damage, Factor, PerSecond, Amount float64
 	BackDamage                                    float64 // Backstab: Schaden im Rücken des Gegners (skills_thief.go)
 	// Passive (S1.2c): Aura = Radius in Units (0 = nur der Besitzer), Castle = Burgradius statt Aura.
-	Defense, Aura, Reduction, Chance                               float64
-	MaxHPBonus, SpeedBonus, DamageBonus, SpellBonus, CooldownBonus float64
-	Castle                                                         bool
+	Defense, Aura, Reduction, Chance                   float64
+	SpeedBonus, DamageBonus, SpellBonus, CooldownBonus float64
+	Castle                                             bool
+	// FreeHitEvery: jeder n-te Treffer auf den Besitzer kostet kein Gold (Thick Skin, B-930).
+	FreeHitEvery int
 	// Size und MaxGold (Geldsack, purse.go): Größe 2 oder 3 und ihre Münz-Obergrenze je Spieler.
 	Size, MaxGold int
 }
@@ -46,12 +48,18 @@ type MountData struct {
 	SpeedFactor, SprintFactor float64
 }
 
+// CrownData: Flug der gefallenen Krone nach hinten (Units, Sekunden), Aufheben durch Monarchen, Raub durch Gegner (Units).
+type CrownData struct {
+	DistanceUnits, HeightUnits, FlightSeconds, PickupUnits, GrabUnits float64
+}
+
 type monarchData struct {
-	Base                                           struct{ HP, Damage, Speed, Defense float64 }
-	SprintMultiplier, Acceleration, RespawnSeconds float64
-	// Revive: Wiederbeleben durch einen Mitspieler (monarch.md § 5, B-120): Dauer, HP-Anteil, Reichweite in Units.
-	Revive struct{ Seconds, HPFraction, RangeUnits float64 }
-	Mount                                          MountData
+	Base                           struct{ Damage, Speed float64 }
+	SprintMultiplier, Acceleration float64
+	// HitCoins: Münzen, die ein Treffer den Monarchen kostet (kampf.md § 5, B-930); Crown: Flugbahn und Reichweiten der Krone (B-931).
+	HitCoins int
+	Crown    CrownData
+	Mount    MountData
 	Attack                                         struct{ Damage, Range, Cooldown float64 }
 	// TierPoints: Tier n verlangt TierPoints[n-1] gelernte Skills der Linie (Beschluss 🧑 2026-10-04, B-216).
 	TierPoints []int

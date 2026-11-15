@@ -16,7 +16,7 @@ type Aura struct {
 // Regeneration, Holy Ground, Frost Armor); reine Werte-Passive ohne Wirkort (Thick Skin, Arcane Power …) fehlen. nil,
 // wenn keins wirkt oder p tot ist.
 func AurasOf(w *World, p *Player) []Aura {
-	if !isAlive(p) {
+	if !crowned(p) {
 		return nil
 	}
 	var out []Aura

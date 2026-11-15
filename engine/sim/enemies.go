@@ -94,6 +94,7 @@ func stepEnemies(w *World, dt float64) {
 		}
 		bossAbility(w, e)
 		takeEquipment(w, e)
+		takeCrownOrLoot(w, e)
 		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 && len(w.Portals) > 0 {
 			e.Fleeing = true
 		}
@@ -122,14 +123,21 @@ func stepEnemies(w *World, dt float64) {
 }
 
 // leaveThroughPortal: Geflohene lebende Gegner verschwinden im Portal (mitsamt geklautem Gold); besiegte nie (B-189).
+// Trägt einer eine Krone, ist das Kronenraub und das Spiel verloren (crown.go).
 func leaveThroughPortal(w *World) {
 	kept := w.Enemies[:0]
+	var thief *Enemy
 	for _, e := range w.Enemies {
 		if e.HP <= 0 || e.Guard || !(e.Fleeing && math.Abs(e.X-e.HomeX) < 0.3) {
 			kept = append(kept, e)
+		} else if e.Crown != nil && thief == nil {
+			thief = e
 		}
 	}
 	w.Enemies = kept
+	if thief != nil {
+		crownStolen(w, thief)
+	}
 }
 
 // advance: geradeaus Richtung Burg, höchstens bis zur Mauer oder zum Burgrand.
@@ -212,7 +220,7 @@ func candidates(w *World, e *Enemy, dir float64, wall *Site) []target {
 	r := reach{e, e.has("ranged"), dir, wall}
 	out := []target{}
 	for _, p := range w.Players {
-		if isAlive(p) && !shielded(p) && r.inRange(p.X) {
+		if crowned(p) && !shielded(p) && r.inRange(p.X) {
 			out = append(out, target{p.ID, p.X, "player", p})
 		}
 	}

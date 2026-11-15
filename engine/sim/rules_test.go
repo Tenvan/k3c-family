@@ -192,7 +192,7 @@ func TestGegnerGeschossTrifft(t *testing.T) {
 			shot = shot || pr.Team == "enemy"
 		}
 	}
-	if !shot || p.HP >= p.MaxHP {
-		t.Fatalf("Geschoss %v, Monarch %v/%v", shot, p.HP, p.MaxHP)
+	if !shot || p.Crown == nil {
+		t.Fatalf("Geschoss %v, Krone %v (Monarch ohne Gold)", shot, p.Crown)
 	}
 }

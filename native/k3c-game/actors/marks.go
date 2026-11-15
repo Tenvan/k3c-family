@@ -21,9 +21,8 @@ type barLook struct {
 
 // Balken je Figurenart (createTroop, createEnemy, createPlayer).
 var (
-	troopBar  = barLook{36, 16, 0x52b788}
-	enemyBar  = barLook{44, 32, 0xe63946}
-	playerBar = barLook{50, 50, 0x52b788}
+	troopBar = barLook{36, 16, 0x52b788}
+	enemyBar = barLook{44, 32, 0xe63946}
 )
 
 // Farben und Maße der übrigen Anzeigen.
@@ -59,11 +58,6 @@ func PlayerColor(i int) uint32 {
 
 // BarVisible: Der Balken erscheint nur bei verletzter Figur (hp < maxHp); ohne Lebenswert (maxHp ≤ 0) nie.
 func BarVisible(hp, maxHP float64) bool { return maxHP > 0 && hp < maxHP }
-
-// PlayerBarVisible: Monarchen zeigen den Balken nur lebendig (respawnIn ≤ 0).
-func PlayerBarVisible(hp, maxHP, respawnIn float64) bool {
-	return BarVisible(hp, maxHP) && respawnIn <= 0
-}
 
 // BarFraction ist der gefüllte Anteil 0 … 1 (Phaser.Math.Clamp(hp / maxHp)).
 func BarFraction(hp, maxHP float64) float64 {

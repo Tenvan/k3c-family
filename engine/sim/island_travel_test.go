@@ -115,7 +115,7 @@ func TestIslandTravelAbortsWhenLeavingPoint(t *testing.T) {
 func TestIslandDeadAndFreePlayersDoNotTravel(t *testing.T) {
 	isl := mustIsland(t, "reise-e", []int{0, 1})
 	dead, free := AddIslandPlayer(isl, 0), AddIslandPlayer(isl, 0)
-	dead.HP, dead.RespawnIn = 0, 999
+	fell(dead)
 	free.Free = true
 	x := exitX(t, isl.Stages[0])
 	standFor(isl, 3, map[*Player]float64{dead: x, free: x})

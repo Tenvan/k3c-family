@@ -65,10 +65,10 @@ func TestThiefSmokeBombUnsichtbar(t *testing.T) {
 	if c := chooseTarget(w, en, dir, nil); c == nil || c.id != other.ID {
 		t.Fatalf("Gegner zielt auf %+v, erwartet den sichtbaren Spieler %d", c, other.ID)
 	}
-	hp := p.HP
+	probe(p)
 	applyDamageBy(w, p.ID, 50, "skeleton")
-	if p.HP != hp {
-		t.Fatalf("Unsichtbarer nimmt Schaden: %v → %v", hp, p.HP)
+	if p.Gold != probeGold {
+		t.Fatalf("Unsichtbarer verliert Gold: %v → %v", probeGold, p.Gold)
 	}
 	stepIdle(w, p, 151) // 151 Ticks > 5 s
 	if p.StealthFor != 0 {
