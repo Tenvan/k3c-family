@@ -60,7 +60,19 @@ func run(o options) error {
 	}
 	acts := judgeBranches(o, base, branches, trees, top)
 	acts = append(acts, judgeDetached(o, base, trees, top)...)
-	return apply(o, acts)
+	if err := apply(o, acts); err != nil {
+		return err
+	}
+	cleanBin(o, filepath.Join(mainCheckout(trees, top), "bin"))
+	return nil
+}
+
+// mainCheckout ist die Repo-Wurzel (git nennt sie zuerst), sonst der aktuelle Checkout.
+func mainCheckout(trees []worktree, top string) string {
+	if len(trees) > 0 && trees[0].path != "" {
+		return trees[0].path
+	}
+	return top
 }
 
 // baseRef ist origin/main, sonst main: der Stand, in dem gemergte Arbeit stecken muss.
