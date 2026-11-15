@@ -36,7 +36,7 @@ func stepIslandSwitch(isl *Island, dt float64) {
 	isl.switchProgress += dt / isl.values().Hub.Travel.Seconds
 	if isl.switchProgress >= 1 {
 		isl.SwitchReady = true
-		emit(w, "islandSwitch", Event{"island": isl.Number + 1})
+		emit(w, "islandSwitch", Event{"island": isl.Number + 1, "target": isl.ChosenTarget()})
 	}
 }
 

@@ -98,7 +98,7 @@ func ChooseIsland(w *World, p *Player, islandID string) error {
 	switch {
 	case isl == nil || !isl.GateOpen || isl.SwitchReady:
 		return errors.New("insel: Wechselpunkt nicht offen")
-	case !crowned(p):
+	case !crowned(p) || p.Free:
 		return errors.New("insel: ohne Krone keine Wahl")
 	case !slices.ContainsFunc(isl.Targets(), func(t SwitchTarget) bool { return t.ID == islandID }):
 		return fmt.Errorf("insel: %q ist kein Ziel", islandID)

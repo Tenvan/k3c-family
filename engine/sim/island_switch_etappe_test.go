@@ -64,6 +64,11 @@ func TestEtappenWahlRestUndSieg(t *testing.T) {
 	if err := choose(isl, ps[0], "gibtsnicht"); err == nil {
 		t.Error("Wahl außerhalb der Ziele angenommen")
 	}
+	ps[0].Free = true
+	if err := choose(isl, ps[0], three.ID); err == nil {
+		t.Error("Wahl eines freien Spielers angenommen")
+	}
+	ps[0].Free = false
 	if isl.ChosenTarget() != two.ID {
 		t.Errorf("Ziel nach Ablehnung %q", isl.ChosenTarget())
 	}

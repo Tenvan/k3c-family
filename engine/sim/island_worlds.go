@@ -189,7 +189,7 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 	}
 	for i, d := range out {
 		if !hasHarbor(d) && !soleOfLastEtappe(out, d) {
-			return nil, islandError{islandLabel(islands[i], i), errors.New("kein Hafen in den geplanten Chunks der Tiefe 0, die Insel ist nicht die letzte der Welt (geplante-chunks.md § 10)")}
+			return nil, islandError{islandLabel(islands[i], i), errors.New("kein Hafen in den geplanten Chunks der Tiefe 0, die Insel ist nicht die einzige der letzten Etappe (jede Insel einer Etappe mit mehreren Inseln braucht einen Hafen, geplante-chunks.md § 10)")}
 		}
 	}
 	return out, nil
