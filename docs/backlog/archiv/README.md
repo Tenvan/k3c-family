@@ -834,3 +834,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | erledigt | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
 | [B-920](B-920-stresstest-ohne-wellen.md) | SIM | Problem | hoch | erledigt | FB2 | Der Stresstest startet keine Gegnerwellen |
 | [B-921](B-921-stressmodus-burg.md) | SIM | Idee | mittel | erledigt | FB2 | Reiner Stressmodus: Gegner spawnen bei der Burg, nur eigene Bevölkerung nach Einstellung |
+| [B-923](B-923-gebaeudeplaner-workbench.md) | DEV | Problem | hoch | erledigt | FB3 | Gebäudeplaner samt MCP-Tools aus dem alten Studio fehlt in der Workbench |

@@ -99,7 +99,7 @@ func headerRoot(req *mcp.CallToolRequest) string {
 var writeTools = map[string]bool{"plan_create": true, "plan_set": true, "plan_section": true, "plan_sections": true, "plan_delete": true,
 	"svc_start": true, "svc_stop": true, "svc_restart": true, "svc_start_all": true, "svc_stop_all": true, "task_start": true, "task_stop": true,
 	"assets_set": true, "assets_create": true, "assets_style_set": true, "assets_render": true, "assets_delete": true,
-	"assets_research": true, "assets_hit_add": true, "assets_hit_drop": true, "assets_import": true}
+	"assets_research": true, "assets_hit_add": true, "assets_hit_drop": true, "assets_import": true, "hub_save": true}
 
 // addCheckout hängt an die Antwort eines schreibenden Tools die Zeile "Checkout: …".
 func addCheckout(tool string, res mcp.Result, ws workspace) {

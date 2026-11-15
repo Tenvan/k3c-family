@@ -4,6 +4,7 @@ import type {
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
 import type { WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
+import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
 import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -100,6 +101,11 @@ interface GoApp {
   WorldValues(id: string): Promise<WorldValuesView>;
   WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
+  // Gebäude-Planer (B-923, app_hub.go)
+  HubPlan(): Promise<HubPlanView>;
+  HubCheck(candidate: string): Promise<HubPlanView>;
+  HubRules(hubJSON: string): Promise<HubRulesView>;
+  HubSave(candidate: string, stand: HubStand): Promise<HubSaveResult>;
 }
 
 interface WailsRuntime {
@@ -175,6 +181,15 @@ function worldWails(app: GoApp): WorldBackend {
   };
 }
 
+function hubWails(app: GoApp): HubBackend {
+  return {
+    hubPlan: () => app.HubPlan(),
+    hubCheck: (candidate) => app.HubCheck(candidate),
+    hubRules: (hubJSON) => app.HubRules(hubJSON),
+    hubSave: (candidate, stand) => app.HubSave(candidate, stand),
+  };
+}
+
 export function wailsBackend(): Backend {
   const app = window.go!.main!.App!;
   const runtime = window.runtime!;
@@ -228,6 +243,7 @@ export function wailsBackend(): Backend {
     ...balanceWails(app),
     ...assetsWails(app),
     ...worldWails(app),
+    ...hubWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

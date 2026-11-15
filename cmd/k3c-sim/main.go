@@ -7,8 +7,9 @@
 //	k3c-sim level   [--input DATEI|-]          JSON {"biome","seed"} wie level_generate
 //	k3c-sim balance [--input DATEI|-] [Flags]  Flags wie bis RS2.2 bin/k3c-balance (--targets, --report-dir, --seed-list …)
 //	k3c-sim world   [--input DATEI|-]          JSON {"op":"level"|"values"|"check",…} für den Welten-Editor (world.go, B-879)
+//	k3c-sim hub     [--input DATEI|-]          JSON {"op":"plan","raw":…} für den Gebäude-Planer (hub.go, B-923)
 //
-// Eingabe: JSON aus der Datei hinter --input, bei run, level und world ohne --input von stdin („-“ = stdin). Bei balance ist
+// Eingabe: JSON aus der Datei hinter --input, bei run, level, world und hub ohne --input von stdin („-“ = stdin). Bei balance ist
 // das JSON ein Objekt mit Flag-Namen als Schlüssel ({"targets": true, "seed-list": "k3c-dev", "vary": ["a=1"]});
 // Flags in der Befehlszeile stehen danach: Einfache Werte gewinnen, wiederholbare (--vary, --param) kommen hinzu.
 //
@@ -133,7 +134,7 @@ func run(args []string, v env) int {
 
 func dispatch(args []string, v env) error {
 	if len(args) == 0 {
-		return usagef("Unterbefehl fehlt: run, balance, level oder world")
+		return usagef("Unterbefehl fehlt: run, balance, level, world oder hub")
 	}
 	switch args[0] {
 	case "run":
@@ -144,6 +145,8 @@ func dispatch(args []string, v env) error {
 		return cmdBalance(args[1:], v)
 	case "world":
 		return cmdWorld(args[1:], v)
+	case "hub":
+		return cmdHub(args[1:], v)
 	}
-	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level, world)", args[0])
+	return usagef("unbekannter Unterbefehl %q (bekannt: run, balance, level, world, hub)", args[0])
 }

@@ -1,6 +1,7 @@
 import type { Backend, BalanceBackend, EventName, Events } from './types';
 import type { AssetsBackend } from './typesAssets';
 import type { WorldBackend } from './typesWorld';
+import type { HubBackend } from './typesHub';
 
 // Client-Server-Betrieb (k3c-workbench -headless/-dev, Go: uiapi.go): jede Methode von App ist ein POST auf
 // /api/dev/rpc/<Methode> mit den Argumenten als JSON-Array, die Antwort ist {result} oder {error}. Ereignisse kommen
@@ -120,6 +121,15 @@ function httpWorld(): WorldBackend {
   };
 }
 
+function httpHub(): HubBackend {
+  return {
+    hubPlan: () => rpc('HubPlan'),
+    hubCheck: (candidate) => rpc('HubCheck', candidate),
+    hubRules: (hubJSON) => rpc('HubRules', hubJSON),
+    hubSave: (candidate, stand) => rpc('HubSave', candidate, stand),
+  };
+}
+
 export function httpBackend(): Backend {
   return {
     mock: false,
@@ -171,6 +181,7 @@ export function httpBackend(): Backend {
     ...httpBalance(),
     ...httpAssets(),
     ...httpWorld(),
+    ...httpHub(),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },
