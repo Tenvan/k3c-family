@@ -1,0 +1,104 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-britannien-klein",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Vorschau des Weltbilds Britannien (B-937): Steinkreis im Moor, Heide, Nebel, fahle Sonne, vereinfacht",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "geisterweiss",
+          "mitte": [390, -214],
+          "radius": 28,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -132Q120 -172 240 -142Q360 -112 480 -152V0H0Z",
+          "material": "biom-hoehle",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "moor",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -96Q120 -116 240 -100Q360 -84 480 -104V0H0Z",
+          "material": "biom-mine",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "steinkreis",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M120 -98V-170H146V-98ZM172 -98V-170H198V-98ZM114 -166V-188H204V-166ZM230 -100V-196H258V-100ZM284 -100V-196H312V-100ZM224 -192V-214H318V-192ZM340 -98V-160H364V-98Z",
+          "material": "stein",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "nebel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M60 -100Q200 -120 400 -100Q240 -86 70 -90Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "moor-vorn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -44Q120 -62 240 -48Q360 -34 480 -52V0H0Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -44Q20 -70 60 -62Q90 -66 110 -46Q60 -38 0 -40ZM360 -42Q390 -66 430 -60Q460 -70 480 -56V-38Q420 -34 360 -38Z",
+          "material": "purpur",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 54,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

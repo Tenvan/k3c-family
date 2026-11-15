@@ -46,6 +46,7 @@ type Session struct {
 	r      *room.Room
 	p      *peer
 	name   string                // Spielstand des laufenden Spiels
+	world  string                // Welt-ID des laufenden Spiels (leer = Standard-Welt)
 	devs   map[int]view.DeviceID // Slot (= lokaler Spieler) → Gerät
 	last   []view.DeviceID       // Geräte des letzten Spiels, für Load und Continue
 	paused bool
@@ -113,6 +114,7 @@ func (s *Session) manager() *room.Manager {
 		return s.now()
 	}
 	m.NewCode = func() string { return roomCode }
+	m.Dev, m.Worlds = s.settings.DevMode, worldsFS() // weitere Welten nur im Dev-Mode (engine/room, welten.md § 6)
 	m.Snapshot = func(w *sim.World, _ int, _ bool) any { return w }
 	return m
 }
@@ -179,6 +181,16 @@ func (s *Session) start(name string, fresh bool, depth int, opts room.Options, d
 	}
 	s.m, s.r, s.p, s.name, s.devs, s.paused, s.ended = m, r, p, name, devs, false, view.OutcomeNone
 	s.last = slices.Clone(devices)
+	s.world = opts.World
+	if !fresh {
+		s.world = ""
+		for _, e := range s.saves.List() {
+			if e.Name == name {
+				s.world = e.World
+				break
+			}
+		}
+	}
 	s.log.Info("🚀 Spiel gestartet", "save", name, "neu", fresh, "spieler", len(devices))
 	return nil
 }

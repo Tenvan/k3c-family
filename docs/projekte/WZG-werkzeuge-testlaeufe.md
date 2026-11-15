@@ -81,8 +81,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ60 | Workbench-Oberfläche bleibt bei langen Läufen stabil | aktiv |
 | FB3 | Live-Test-Feedback: Gebäudeplaner in der Workbench | aktiv |
 | WE1 | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | aktiv |
-| WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | geplant |
-| WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | geplant |
+| WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | aktiv |
+| WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | aktiv |
 
 ## Nicht-Ziele
 

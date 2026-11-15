@@ -1,0 +1,235 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-britannien",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Weltbild Britannien für die Weltauswahl (B-937): Steinkreis im Moor mit Heide, Nebelbänder, fahle Sonne, Querformat 16:9 ohne Text",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "geisterweiss",
+          "mitte": [372, -212],
+          "radius": 22,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M20 -236Q90 -246 170 -238Q120 -232 30 -232ZM250 -228Q330 -238 430 -226Q350 -222 260 -224Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M120 -194Q200 -202 300 -194Q220 -188 130 -190ZM330 -182Q400 -190 476 -182Q400 -176 340 -178Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -132Q120 -172 240 -142Q360 -112 480 -152V0H0Z",
+          "material": "biom-hoehle",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -124Q60 -132 130 -126Q70 -118 0 -118ZM300 -124Q380 -134 470 -130Q390 -120 310 -120Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "moor-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -96Q120 -116 240 -100Q360 -84 480 -104V0H0Z",
+          "material": "biom-mine",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -70Q120 -86 240 -72Q360 -58 480 -78V0H0Z",
+          "material": "biom-mine",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M20 -100Q30 -108 40 -102Q50 -110 62 -102Q72 -108 82 -100Q50 -96 20 -98ZM370 -92Q380 -100 392 -94Q404 -102 416 -94Q426 -100 436 -94Q400 -88 370 -90Z",
+          "material": "purpur",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "steinkreis",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M138 -96V-126L145 -132H153L154 -96ZM160 -98V-148H172V-98ZM188 -99V-148H200V-99ZM157 -147L158 -158H203L202 -147ZM213 -100V-169H230V-100ZM250 -100V-169H267V-100ZM209 -167L211 -181H270L271 -167ZM282 -100V-150H294V-100ZM308 -98V-150H320V-98ZM279 -149L280 -160H322L323 -149ZM336 -96L338 -122L345 -128H352L350 -96ZM238 -94L246 -104H282L278 -94Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M138 -96V-126L142 -129V-96ZM160 -98V-148H164V-98ZM188 -99V-148H192V-99ZM213 -100V-167H218V-100ZM250 -100V-167H255V-100ZM282 -100V-149H286V-100ZM308 -98V-149H312V-98ZM336 -96L338 -122L341 -125L340 -96Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M209 -181H270L271 -177H210ZM157 -158H203V-155H157ZM280 -160H322V-157H280Z",
+          "material": "stein",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "nebel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M90 -104Q170 -114 250 -102Q330 -94 380 -98Q330 -90 250 -94Q170 -102 100 -98Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -84Q60 -92 140 -86Q80 -80 0 -80ZM300 -78Q380 -90 470 -84Q390 -76 310 -74Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "moor-vorn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -46Q120 -62 240 -48Q360 -34 480 -52V0H0Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -46Q6 -56 16 -52Q22 -62 34 -56Q42 -64 54 -56Q64 -62 74 -54Q82 -56 86 -48Q40 -42 0 -42ZM150 -50Q156 -60 166 -56Q174 -64 186 -58Q196 -62 206 -56Q216 -58 222 -50Q186 -46 150 -46ZM394 -44Q400 -54 410 -50Q418 -60 430 -54Q440 -62 452 -54Q464 -60 480 -54V-40Q440 -38 394 -40Z",
+          "material": "purpur",
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "purpur",
+          "mitte": [26, -54],
+          "radius": 2.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "purpur",
+          "mitte": [48, -58],
+          "radius": 2.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "purpur",
+          "mitte": [180, -58],
+          "radius": 2.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "purpur",
+          "mitte": [200, -56],
+          "radius": 2.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "purpur",
+          "mitte": [424, -54],
+          "radius": 2.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "purpur",
+          "mitte": [446, -56],
+          "radius": 2.5,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M290 -24Q330 -36 390 -32Q420 -26 396 -18Q330 -12 290 -24Z",
+          "material": "biom-hoehle",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M340 -30Q380 -32 398 -26Q378 -28 350 -27Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M100 -40L96 -56M106 -40L108 -58M112 -40L118 -54M250 -38L246 -52M256 -38L258 -54M440 -30L436 -46M446 -30L448 -48",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "nebel-boden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M60 -12Q140 -22 230 -14Q150 -8 70 -8ZM300 -8Q380 -16 470 -12Q390 -4 310 -4Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 270,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

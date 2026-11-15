@@ -58,6 +58,12 @@
   "gebaeude": "gebaeude-paper",
   "skalierung": { "objekte/tanne": 1.5, "objekte/pappel": 1.5, "objekte/birke": 1.5 },
   "hintergruende": { "gruppe": "hintergruende", "varianten": 2 },
+  "weltbilder": {
+    "standard": { "gross": "hintergruende/weltbild-standard", "klein": "hintergruende/weltbild-standard-klein" },
+    "sengoku": { "gross": "hintergruende/weltbild-sengoku", "klein": "hintergruende/weltbild-sengoku-klein" },
+    "nil": { "gross": "hintergruende/weltbild-nil", "klein": "hintergruende/weltbild-nil-klein" },
+    "britannien": { "gross": "hintergruende/weltbild-britannien", "klein": "hintergruende/weltbild-britannien-klein" }
+  },
   "objekte": {
     "ader-eisen": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
     "ader-kristall": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },

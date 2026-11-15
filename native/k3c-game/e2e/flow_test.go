@@ -30,7 +30,7 @@ const (
 )
 
 // flowScript ist die feste Eingabe-Folge (game.ParseScript). Spieler 1 = Tastatur, Spieler 2 = Pad 1 (B-893).
-const flowScript = "0@2=a:confirm,1@4=a:confirm," + // Neues Spiel, Spieler 2 tritt der Lobby bei
+const flowScript = "0@2=a:confirm,0@3=a:confirm,1@4=a:confirm," + // Neues Spiel, Welt Standard, Spieler 2 tritt der Lobby bei
 	"0@6=a:right,0@8=a:right," + // Grad Normal → Schwer → Ultra (Niederlage: komplett verloren)
 	"0@10=a:down,0@12=a:down,0@14=a:down,0@16=a:down,0@18=a:down,0@20=a:confirm," + // Starten
 	"0@21=R,1@21=RS,0@298=P,1@380=-,0@700=-," + // laufen; Spieler 1 zahlt an der Mauer, Spieler 2 holt den Skill-Punkt

@@ -8,9 +8,9 @@
 - **Sprint:** WG1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-15
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 - **Duplikat von:** –
 - **Ersetzt:** –
 

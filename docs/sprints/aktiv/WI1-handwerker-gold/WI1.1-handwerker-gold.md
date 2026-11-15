@@ -1,6 +1,6 @@
 # WI1.1 · Handwerker mit Hammer, Bogner, Gold aus Holz, Truhen-Fontäne (B-950–B-953)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

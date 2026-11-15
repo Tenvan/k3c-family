@@ -64,7 +64,8 @@ func (r *run) press(src *padSource, acts ...view.Action) {
 func (r *run) startKeyboardGame(src *padSource) {
 	r.t.Helper()
 	r.step()
-	r.press(src, view.ActionConfirm)
+	r.press(src, view.ActionConfirm) // Neues Spiel
+	r.press(src, view.ActionConfirm) // Weltauswahl: Standard
 	for range 5 {
 		r.press(src, view.ActionDown)
 	}

@@ -24,10 +24,19 @@ type page struct {
 	ask        string
 	askRows    [2]string
 	askSel     int
+	hero       hero // großes Weltbild mit Name (Weltauswahl); leer = keins
 
 	ver  int    // Version des Screens, für die die Texte gelten
 	lang string // Sprache der Texte
 	ok   bool
+}
+
+// hero ist das große Bild der Weltauswahl: Illustration (leer = nur Name) mit dem Namen darüber und Blätter-Pfeilen.
+type hero struct {
+	art, name string
+	on        bool
+	left      bool // links gibt es weitere Welten
+	right     bool
 }
 
 // row ist eine Karte: Beschriftung links, Wert rechts, Papier-Farbe; off = ausgegraut bzw. als Problem markiert.
@@ -145,6 +154,9 @@ func (p *painter) page(dst *ebiten.Image, c view.Cell, pg *page) {
 	p.centered(dst, pg.sub, cx, g.subY, g.smallPx, colText)
 	for i := range pg.n {
 		p.card(dst, g, i, &pg.rows[i], i == pg.sel)
+	}
+	if pg.hero.on {
+		p.hero(dst, g, &pg.hero)
 	}
 	noteClr := colText
 	if pg.bad {

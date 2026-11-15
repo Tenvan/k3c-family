@@ -1,0 +1,256 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "weltbild-standard",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Weltbild Standard für die Weltauswahl (B-937): Wald, Burg auf dem Hügel, sanfte Hügel, Querformat 16:9 ohne Text",
+  "teile": [
+    {
+      "id": "himmel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -270H480V0H0Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [408, -222],
+          "radius": 20,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M60 -228Q66 -244 82 -240Q92 -256 110 -246Q126 -252 132 -236Q146 -234 144 -224H60Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M196 -244Q204 -258 218 -252Q228 -264 244 -254Q258 -256 260 -244Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -120Q80 -170 160 -130Q250 -88 330 -150Q410 -196 480 -142V0H0Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -120Q80 -170 160 -130Q110 -142 70 -134Q36 -126 0 -106Z",
+          "material": "smaragd",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "burg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M314 -146V-182H319V-188H325V-182H331V-188H337V-182H343V-188H349V-182H356V-146Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M298 -146V-202H316V-146Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M298 -146V-202H303V-146Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M294 -200L307 -228L320 -200Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M354 -146V-196H372V-146Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M354 -146V-196H359V-146Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M350 -194L363 -222L376 -194Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M323 -148V-218H328V-224H333V-218H339V-224H344V-218H349V-224V-148Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M323 -148V-218H328V-148Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M336 -224V-244",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M336 -244L350 -239L336 -234Z",
+          "material": "koenigsblau",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M330 -148V-164Q336 -172 342 -164V-148Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [307, -186],
+          "radius": 2,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [363, -182],
+          "radius": 2,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [336, -200],
+          "radius": 2.5,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -82Q100 -122 200 -86Q300 -52 380 -92Q440 -118 480 -98V0H0Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M380 -92Q440 -118 480 -98V-80Q440 -100 400 -84Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "wald",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -40L14 -132L28 -40ZM22 -40L40 -150L58 -40ZM50 -40L66 -124L82 -40ZM74 -40L94 -160L114 -40ZM104 -40L120 -128L136 -40ZM128 -40L146 -146L164 -40ZM158 -40L172 -112L186 -40ZM394 -40L410 -124L426 -40ZM420 -40L440 -150L460 -40ZM450 -40L468 -128L486 -40Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M14 -132L28 -40H18ZM40 -150L58 -40H46ZM66 -124L82 -40H72ZM94 -160L114 -40H100ZM120 -128L136 -40H126ZM146 -146L164 -40H152ZM172 -112L186 -40H177ZM410 -124L426 -40H416ZM440 -150L460 -40H446ZM468 -128L486 -40H474Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M206 -40Q190 -70 214 -84Q226 -104 246 -88Q268 -86 262 -62Q270 -46 256 -40Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M240 -92Q260 -88 262 -64Q256 -74 242 -76Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M228 -40V-56H236V-40Z",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "boden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -30Q120 -48 240 -34Q360 -20 480 -40V0H0Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -14Q140 -26 260 -16Q380 -8 480 -20V0H0Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M262 -32Q300 -30 336 -26Q380 -22 420 -30Q370 -14 330 -14Q290 -16 262 -32Z",
+          "material": "leinen",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 270,
+    "rahmen": [0, -270, 480, 270]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

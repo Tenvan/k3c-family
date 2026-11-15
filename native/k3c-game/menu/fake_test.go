@@ -29,6 +29,8 @@ type fakeSession struct {
 	settings []view.Settings
 	cur      view.Settings // aktuelle Einstellungen; Null-Wert = Standard
 	seats    []view.Seat
+	worlds   []view.WorldInfo // nil = nur Standard
+	world    string          // Welt des laufenden Spiels
 }
 
 var errFake = errors.New("Schein-Fehler")
@@ -100,6 +102,15 @@ func (s *fakeSession) Settings() view.Settings {
 }
 
 func (s *fakeSession) Seats() []view.Seat { return s.seats }
+
+func (s *fakeSession) WorldList() []view.WorldInfo {
+	if s.worlds == nil {
+		return []view.WorldInfo{{ID: "standard", Name: "Standard"}}
+	}
+	return s.worlds
+}
+
+func (s *fakeSession) World() string { return s.world }
 
 var (
 	keys1 = view.DeviceID{Kind: view.DeviceKeyboard}

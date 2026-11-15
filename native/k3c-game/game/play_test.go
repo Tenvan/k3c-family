@@ -32,6 +32,8 @@ func (s *fakeSim) Close() error                        { s.closed++; s.ended = t
 func (s *fakeSim) Active() bool                        { return !s.ended }
 func (s *fakeSim) Settings() view.Settings             { return view.DefaultSettings() }
 func (s *fakeSim) Seats() []view.Seat                  { return nil }
+func (s *fakeSim) WorldList() []view.WorldInfo { return nil }
+func (s *fakeSim) World() string { return "" }
 func (s *fakeSim) Pause(on bool)                       { s.paused = on }
 func (s *fakeSim) Join(d view.DeviceID) (int, error)   { s.joins = append(s.joins, d); return 1, nil }
 func (s *fakeSim) Leave(int) error                     { return nil }

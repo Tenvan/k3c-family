@@ -7,7 +7,9 @@ import { ROOT } from '../render/stil';
 import type { Spec } from '../schema/types';
 
 const ordner = join(ROOT, 'public/grafik/hintergruende');
-const specs = specsIn(ordner).map((p) => JSON.parse(readFileSync(p, 'utf8')) as Spec);
+// Weltbilder (weltbild-*, B-937) liegen in derselben Gruppe, sind aber keine Level-Kulissen.
+const kulissen = specsIn(ordner).filter((p) => !basename(p).startsWith('weltbild-'));
+const specs = kulissen.map((p) => JSON.parse(readFileSync(p, 'utf8')) as Spec);
 const BAUM = /baum|bäum|baeume|tanne|birke|pappel|eiche|stamm|laub/i;
 
 describe('Hintergründe (B-722)', () => {
@@ -33,6 +35,6 @@ describe('Hintergründe (B-722)', () => {
   });
 
   it('Specs heißen hg-<biom>-<ebene>-v<n>', () => {
-    for (const p of specsIn(ordner)) expect(basename(p)).toMatch(/^hg-(wald|hoehle|mine|eisenstollen|kristall)-(fern|mitte|nah)-v[1-5]\.paper\.json$/);
+    for (const p of kulissen) expect(basename(p)).toMatch(/^hg-(wald|hoehle|mine|eisenstollen|kristall)-(fern|mitte|nah)-v[1-5]\.paper\.json$/);
   });
 });

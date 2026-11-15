@@ -87,7 +87,8 @@ func (g *Game) loadMenuArt() {
 		return
 	}
 	g.menuArt, g.levels = true, g.levels[:0]
-	if err := g.parts.Art.SetLevels(map[string][]string{menuLevel: menu.Art()}); err != nil {
+	u, _ := g.parts.Art.(interface{ Usable(string) bool }) // Weltbilder weich laden (B-937)
+	if err := g.parts.Art.SetLevels(map[string][]string{menuLevel: menu.Art(u)}); err != nil {
 		slog.Warn("🚫 Menü-Illustrationen fehlen, Karten nur mit Text", "err", err)
 	}
 }

@@ -1,6 +1,6 @@
-# B-957 · Welt Britannien: Kelten mit Steinkreisen, Mooren und Druiden
+# B-960 · Inhalte für die neuen Welten: Assets, Events und Gegnerarten für Sengoku, Nil und Britannien
 
-- **Domäne:** DEV
+- **Domäne:** PAP
 - **Typ:** Idee
 - **Prio:** niedrig
 - **Umgebung:** ?
@@ -16,16 +16,11 @@
 
 ## Ausgangslage
 
-Weltvorschlag 🧑 2026-11-15 aus dem Test des Welten-Editors.
+Die Welten sengoku, nil, britannien (WE3) nutzen nur vorhandene Biome, Assets und Events.
 
 ## Ziel
 
-Welt `britannien`: Kelten in Britannien.
-- **Inseln/Biome:** Hochmoor (forest, feucht), Steinkreis-Hügel (forest/mine), Hügelgräber (cave); 3 Inseln.
-- **Gegner/Portale:** Portale als Nebel-Steinkreise; römische Späher und Moorgeister als Gegner-Varianten.
-- **Angriffsmodus:** `groups`.
-- **Besonderheiten:** Heiler-Linie (Druiden) stärker gewichtet, Monolithen als Bauplatz-Dekor.
-- **Editor-Voraussetzungen (B-954):** `world_create`, Biome/Tiefen, Overrides (Natur, Skill-Gewichte); Assets Steinkreis, Rundhaus über `assets_*`.
+Thematische Inhalte: Assets (Torii, Pagode, Palme, Barke, Obelisk, Steinkreis, Rundhaus) über `assets_*`; Events Sandsturm, Ninja-Überfall, Nebel; Gegner-Varianten Ninja, Samurai-Lager, Skorpion, Mumie, römischer Späher, Moorgeist.
 
 ## Beteiligte und Zielgruppen
 
@@ -41,11 +36,11 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `data/worlds/**`, `public/grafik/**`, `data/paper.json`
-- **Abhängig von:** B-954
+- **Bereich:** `public/grafik/**`, `data/**`
+- **Abhängig von:** B-959
 - **Braucht 🧑:** Abnahme
-- **Größe:** M
-- **Sperre:** –
+- **Größe:** L
+- **Sperre:** golden
 
 ## Beispiele
 
@@ -57,12 +52,13 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Welt per MCP angelegt und `world_check` grün.
-- **AC-02** Spielbar bis Inselwechsel (Sichtprüfung 🧑).
+- **AC-01** Assets angelegt und in den Welten zugeordnet.
+- **AC-02** Events und Gegner-Varianten (setzt B-959 voraus).
+- **AC-03** Sichtprüfung 🧑.
 
 ## Offene Fragen
 
-keine
+Zerlegen vor Umsetzung (Größe L).
 
 ## Notizen
 

@@ -53,14 +53,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-947](B-947-hintergrundmauern-luecken.md) | CLI | Problem | mittel | offen | FB4 | Die durchgezogenen Hintergrundmauern haben keine Lücken mehr |
 | [B-948](B-948-baeume-groesser.md) | CLI | Problem | mittel | offen | FB4 | Bäume erscheinen in passender Größe statt zu klein |
 | [B-949](B-949-ladescreen-huebsch.md) | CLI | Idee | niedrig | offen | FB4 | Der Ladescreen ist im Stil des Spiels gestaltet |
-| [B-950](B-950-handwerker-hammer.md) | SIM | Problem | mittel | offen | WI1 | Nur Handwerker mit Hammer bauen; jedes Spiel startet mit mindestens einem Handwerker |
-| [B-951](B-951-bogner-shop.md) | SIM | Problem | mittel | offen | WI1 | Der Handwerkerbedarf stellt Hämmer her, ein neuer Bogner stellt Bögen her |
-| [B-952](B-952-gold-holzfaellen.md) | SIM | Problem | mittel | offen | WI1 | Holzfällen bringt 1 bis 3 Gold und ist am Anfang die Haupteinnahme |
 | [B-953](B-953-truhen-fontaene.md) | SIM | Problem | mittel | offen | WI1 | Truhen geben zehnmal mehr Gold und werfen es als Fontäne auf den Boden |
-| [B-954](B-954-welten-mcp-tools.md) | DEV | Problem | mittel | offen | WE2 | Der Welten-Editor hat MCP-Tools und kann neue Welten anlegen |
-| [B-955](B-955-welt-sengoku.md) | DEV | Idee | niedrig | offen | WE3 | Welt Sengoku: Japan der Kriegerzeit mit Burgen, Reisfeldern und Ninja-Überfällen |
-| [B-956](B-956-welt-nil.md) | DEV | Idee | niedrig | offen | WE3 | Welt Nil: Ägypten mit Oasen-Inseln, Nilbarke und Sandstürmen |
-| [B-957](B-957-welt-britannien.md) | DEV | Idee | niedrig | offen | WE3 | Welt Britannien: Kelten mit Steinkreisen, Mooren und Druiden |
+| [B-959](B-959-welten-editor-nachtraege.md) | DEV | Problem | mittel | offen | WE3 | Welten-Editor-Nachträge: Endboss je Insel-Thema, Hafen-Ablauf, Event- und Sites-Overrides, Gegnerarten je Welt |
+| [B-960](B-960-welten-inhalte.md) | PAP | Idee | niedrig | offen | WE3 | Inhalte für die neuen Welten: Assets, Events und Gegnerarten für Sengoku, Nil und Britannien |
 
 ## Archiv
 

@@ -1,16 +1,16 @@
-# B-956 · Welt Nil: Ägypten mit Oasen-Inseln, Nilbarke und Sandstürmen
+# B-957 · Welt Britannien: Kelten mit Steinkreisen, Mooren und Druiden
 
 - **Domäne:** DEV
 - **Typ:** Idee
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
+- **Umgebung:** offline
+- **Status:** erledigt
 - **Sprint:** WE3
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-15
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -20,12 +20,12 @@ Weltvorschlag 🧑 2026-11-15 aus dem Test des Welten-Editors.
 
 ## Ziel
 
-Welt `nil`: Ägypten am Nil.
-- **Inseln/Biome:** Oasen am Fluss (forest mit Palmen), Wüstenrand (mine als Sandstein), Grabkammern (cave) als Tiefe; 3 Inseln, Wechsel per Nilbarke (Schiff).
-- **Gegner/Portale:** Portale als Grabeingänge; Sandsturm als Event (Sicht und Tempo sinken), Skorpione/Mumien als Gegner-Varianten.
+Welt `britannien`: Kelten in Britannien.
+- **Inseln/Biome:** Hochmoor (forest, feucht), Steinkreis-Hügel (forest/mine), Hügelgräber (cave); 3 Inseln.
+- **Gegner/Portale:** Portale als Nebel-Steinkreise; römische Späher und Moorgeister als Gegner-Varianten.
 - **Angriffsmodus:** `groups`.
-- **Besonderheiten:** Gold eher aus Handel/Händler, weniger Holz (Overrides auf Holz-Gold aus B-952), Bauten aus Stein.
-- **Editor-Voraussetzungen (B-954):** `world_create`, Biome/Tiefen, Overrides (Natur, Wirtschaft, Events); Assets Palme, Barke, Obelisk über `assets_*`; ggf. neues Event „Sandsturm“ (SIM-Ticket).
+- **Besonderheiten:** Heiler-Linie (Druiden) stärker gewichtet, Monolithen als Bauplatz-Dekor.
+- **Editor-Voraussetzungen (B-954):** `world_create`, Biome/Tiefen, Overrides (Natur, Skill-Gewichte); Assets Steinkreis, Rundhaus über `assets_*`.
 
 ## Beteiligte und Zielgruppen
 
@@ -62,7 +62,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Sandsturm als neues Event: eigenes SIM-Ticket oder mit vorhandenen Events (Nebel/Nacht) nähern? Default: zuerst nähern. (🧑)
+keine
 
 ## Notizen
 

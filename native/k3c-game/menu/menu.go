@@ -27,6 +27,10 @@ type menus struct {
 	seats  [view.MaxPlayers]view.Seat // Plätze aus Session.Seats beim letzten Update des Pause-Menüs
 	nSeats int
 	notice note // zeigt das nächste Hauptmenü (Fehler beim Verlassen)
+
+	worlds art.WorldImages     // Bilder je Welt (data/paper.json › weltbilder)
+	usable func(string) bool   // meldet, ob ein Weltbild ladbar ist (Library.Usable; nil: keins)
+	has    func(string) bool   // meldet, ob das Sheet eines Assets geladen ist (nil: unbekannt, Bild gilt als da)
 }
 
 var (
@@ -41,7 +45,11 @@ func New(lib *art.Library, keys view.KeyTable) view.Menus {
 	if lib != nil && lib.Font != nil {
 		font = lib.Font
 	}
-	return &menus{paint: painter{font: font, lib: lib}, keys: keys}
+	m := &menus{paint: painter{font: font, lib: lib}, keys: keys, worlds: defaultWorlds}
+	if lib != nil {
+		m.has, m.usable = m.paint.hasSheet, lib.Usable
+	}
+	return m
 }
 
 // Main liefert das Hauptmenü; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin.

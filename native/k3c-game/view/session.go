@@ -20,8 +20,15 @@ type SaveInfo struct {
 	SavedAt  time.Time // Zeitpunkt des letzten Speicherns (Null-Wert, wenn unbekannt)
 	Day      int       // Spieltag
 	Depths   []int     // Tiefen der Spieler, sortiert, jede einmal
+	World    string    // Welt-ID des Spielstands; leer = Standard-Welt (B-938)
 	Loadable bool      // false: kaputt oder alte Version; dann steht der Grund in Problem
 	Problem  string    // deutsch, für die Anzeige
+}
+
+// WorldInfo ist ein Eintrag der Weltauswahl (wie room.WorldInfo).
+type WorldInfo struct {
+	ID   string
+	Name string
 }
 
 // Session ist das Spiel aus Sicht der Menüs; local erfüllt sie. Alle Methoden laufen in der Goroutine der Schleife
@@ -56,4 +63,8 @@ type Session interface {
 	// Seats liefert die Plätze des laufenden Spiels nach Player (Device, Monarch, Stage; Seat.Lost setzt nur game im
 	// Frame); leer ohne Spiel. Der Slice gilt bis zum nächsten Aufruf einer Session-Methode.
 	Seats() []Seat
+	// WorldList nennt die Welten, die ein neues Spiel wählen darf (Standard-Welt zuerst; weitere nur, wenn engine/room
+	// sie zulässt, B-938). World ist die Welt-ID des laufenden Spiels (leer ohne Spiel).
+	WorldList() []WorldInfo
+	World() string
 }

@@ -31,9 +31,10 @@ var (
 // pauseScreen ist das Pause-Menü über dem stehenden Spiel.
 type pauseScreen struct {
 	base
-	m   *menus
-	sel int
-	pg  page
+	m     *menus
+	sel   int
+	world string // Welt des laufenden Spiels (kleines Bild auf „Fortsetzen“, B-938)
+	pg    page
 }
 
 func newPause(m *menus) *pauseScreen { return &pauseScreen{m: m} }
@@ -42,6 +43,10 @@ func newPause(m *menus) *pauseScreen { return &pauseScreen{m: m} }
 func (sc *pauseScreen) Update(in view.Input, s view.Session) view.Step {
 	n := sc.m.nSeats
 	if sc.m.sync(s); n != sc.m.nSeats {
+		sc.ver++
+	}
+	if w := s.World(); w != sc.world {
+		sc.world = w
 		sc.ver++
 	}
 	return sc.run(in, s, sc)
@@ -137,6 +142,11 @@ func (sc *pauseScreen) fill(lang string) {
 	p.reset(tr(lang, txtPauseTitle))
 	for i := range pauseRows {
 		p.add(row{label: tr(lang, pauseLabels[i]), mat: pauseMats[i], off: sc.off(i), art: pauseArt[i]})
+	}
+	if sc.world != "" {
+		if a := sc.m.worldAsset(sc.world, false); a != "" {
+			p.rows[pauseResume].art = a // kleines Bild der Welt statt des Kriegers
+		}
 	}
 	if pl := sc.m.seatOf(sc.by); sc.byOK && pl >= 0 {
 		p.rows[pauseRemove].value = tr1(lang, txtPlayer, strconv.Itoa(pl+1)) + " · " + deviceName(lang, sc.by)
