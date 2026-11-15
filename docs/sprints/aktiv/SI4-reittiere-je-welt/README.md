@@ -1,14 +1,14 @@
 # SI4 · REG, PAP, SIM, CLI · Reittiere je Welt: Regel, Assets, Engine, Anzeige
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** REG, PAP, SIM, CLI
 - **Reife:** bereit
 - **Tickets:** B-970, B-1000
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

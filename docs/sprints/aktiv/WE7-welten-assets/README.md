@@ -1,14 +1,14 @@
 # WE7 · PAP · Papierschnitt-Assets für Sengoku, Nil und Britannien
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** PAP
 - **Reife:** bereit
 - **Tickets:** B-988, B-989, B-990
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

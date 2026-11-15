@@ -8,9 +8,9 @@
 - **Sprint:** WE5
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-15
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 - **Duplikat von:** –
 - **Ersetzt:** –
 

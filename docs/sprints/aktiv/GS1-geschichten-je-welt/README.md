@@ -1,14 +1,14 @@
 # GS1 · REG, SIM, CLI, DEV · Geschichten je Welt und Insel in Kunstsprache
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, CLI, DEV
 - **Reife:** bereit
 - **Tickets:** B-965, B-974, B-975, B-976
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

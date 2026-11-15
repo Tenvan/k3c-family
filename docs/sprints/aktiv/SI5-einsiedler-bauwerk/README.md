@@ -1,14 +1,14 @@
 # SI5 · REG, SIM, PAP, CLI · Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** REG, SIM, PAP, CLI
 - **Reife:** bereit
 - **Tickets:** B-972, B-1001
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

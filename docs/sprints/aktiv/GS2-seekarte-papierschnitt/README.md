@@ -1,14 +1,14 @@
 # GS2 · PAP, CLI · Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** PAP, CLI
 - **Reife:** bereit
 - **Tickets:** B-964, B-977
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 

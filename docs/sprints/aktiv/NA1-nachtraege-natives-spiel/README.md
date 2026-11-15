@@ -1,14 +1,14 @@
 # NA1 · CLI, PAP · Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** NAT
 - **Domäne:** CLI, PAP
 - **Reife:** bereit
 - **Tickets:** B-1004, B-1005, B-912, B-1006, B-911, B-885
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 
