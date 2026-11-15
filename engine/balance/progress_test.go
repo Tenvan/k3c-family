@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"k3c/data"
+	"k3c/engine/sim"
 )
 
 // B-648/AC-01: Das Urteil hängt nur an den Zielen mit Rolle goal; verfehlte guard-Korridore ändern es nie.
@@ -113,10 +114,24 @@ func TestLeiterDecktAlleBosseAb(t *testing.T) {
 			t.Errorf("Miniboss %s fehlt in der Leiter", b.ID)
 		}
 	}
-	for _, b := range bf.EndBosses {
-		if slices.Contains(depths, b.Depth) && !have["endboss:"+b.ID] {
-			t.Errorf("Endboss %s fehlt in der Leiter", b.ID)
+	checkEndbossRung(t, world.Islands[0], bf.EndBosses, have)
+}
+
+// checkEndbossRung: Nur der Endboss der Insel steht in der Leiter (B-981): das Feld `endBoss`, sonst der der tiefsten Stufe.
+func checkEndbossRung(t *testing.T, isl sim.IslandDef, endBosses []bossEntry, have map[string]bool) {
+	t.Helper()
+	ends := 0
+	for _, b := range endBosses {
+		want := b.ID == isl.EndBoss || isl.EndBoss == "" && b.Depth == slices.Max(isl.Depths)
+		if want != have["endboss:"+b.ID] {
+			t.Errorf("Endboss %s: in der Leiter %v, erwartet %v", b.ID, have["endboss:"+b.ID], want)
 		}
+		if want {
+			ends++
+		}
+	}
+	if ends != 1 {
+		t.Errorf("%d Endbosse der Insel in der Leiter, erwartet 1", ends)
 	}
 }
 
