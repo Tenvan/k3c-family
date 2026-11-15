@@ -1,6 +1,6 @@
 # WE4.2 · Seekarte am Hafen im Spiel (B-962)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01/AC-02 (B-962) geprüft: `hud/seekarte_test.go` (2 Spieler, A verbraucht am Steg, keine Allokationen). Review k3c-hud: Befunde behoben. AC-03 TV-Abnahme offen bei 🧑. Offen: gehaltenes A zahlt ab dem Folgetakt wieder.

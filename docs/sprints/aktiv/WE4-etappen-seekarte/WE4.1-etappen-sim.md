@@ -1,6 +1,6 @@
 # WE4.1 · Etappen und Zielwahl am Hafen in der Engine (B-961)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 (B-961 AC-01–AC-04) geprüft: Tests `island_worlds_etappe_test.go`, `island_switch_etappe_test.go`, `engine/room/island_etappe_test.go`; Golden unverändert. Review k3c-welten: Befunde behoben (Spielstand-Prüfung, freie Spieler, Hafen-Meldung, Ziel im Ereignis, `completed` mit aktueller Insel).

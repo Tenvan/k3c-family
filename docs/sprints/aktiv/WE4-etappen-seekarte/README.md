@@ -58,9 +58,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE4.1 | `WE4.1-etappen-sim.md` | Umsetzung | autonom | offen |
-| WE4.2 | `WE4.2-seekarte-spiel.md` | Umsetzung | autonom | offen |
-| WE4.3 | `WE4.3-editor-querschnitt.md` | Umsetzung | autonom | offen |
+| WE4.1 | `WE4.1-etappen-sim.md` | Umsetzung | autonom | fertig |
+| WE4.2 | `WE4.2-seekarte-spiel.md` | Umsetzung | autonom | fertig |
+| WE4.3 | `WE4.3-editor-querschnitt.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

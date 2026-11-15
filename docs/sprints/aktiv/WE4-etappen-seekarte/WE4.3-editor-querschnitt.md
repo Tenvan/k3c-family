@@ -1,6 +1,6 @@
 # WE4.3 · Welten-Editor: Querschnitt und Seekarte (B-963)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01–AC-03 (B-963) geprüft: Vitest `Overview.test.tsx`, `CrossLoad.test.tsx`, Go `internal/world/etappe_test.go`; Browser-Pane mit Sengoku (Dev-Instanz im Worktree): Seekarte springt, Etappe-Änderung mit Hafen-Fehler abgelehnt und zurückgesetzt. Review k3c-workbench: Befunde behoben.
