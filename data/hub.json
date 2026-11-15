@@ -69,5 +69,6 @@
     "craftsman": 1,
     "archer": 2
   },
+  "castleSpareHammer": true,
   "travel": { "rangeUnits": 3, "seconds": 2 }
 }

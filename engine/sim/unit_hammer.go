@@ -44,9 +44,34 @@ func dropHammer(w *World, t *Troop) {
 func spawnStartPeasants(w *World, hubX float64) {
 	st := w.values().Hub.StartTroops
 	hp := w.values().Troops["peasant"].HP
-	for i := range st.Craftsman + st.Peasant {
+	craftsmen := max(1, st.Craftsman) // jedes Spiel startet mit mindestens einem Handwerker
+	for i := range craftsmen + st.Peasant {
 		t := spawnVagrant(w, hubX, hubX+2+float64(i))
 		t.Kind, t.HP, t.MaxHP = "peasant", hp, hp
-		t.Hammer = i < st.Craftsman
+		t.Hammer = i < craftsmen
 	}
+}
+
+// spareHammer: Gibt es keinen Handwerker und keinen Hammer (Boden, Regal), legt die Burg zum Tagesbeginn einen Hammer
+// ab (hub.json › castleSpareHammer), damit der letzte Hammer nie endgültig verloren ist.
+func spareHammer(w *World) {
+	if !w.values().Hub.CastleSpareHammer {
+		return
+	}
+	for _, t := range w.Troops {
+		if t.Hammer {
+			return
+		}
+	}
+	for _, d := range w.Drops {
+		if d.Kind == hammerKind {
+			return
+		}
+	}
+	for _, s := range w.Sites {
+		if s.Hammers > 0 {
+			return
+		}
+	}
+	w.Drops = append(w.Drops, &Drop{ID: w.newID(), Kind: hammerKind, X: w.Castle.X})
 }

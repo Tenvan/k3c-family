@@ -134,7 +134,7 @@ func stepOffers(w *World) {
 // freePeasant ist der Bauer ohne Auftrag nächst an x, der den Beruf kind noch nicht hat; nil, wenn keiner frei ist.
 func freePeasant(w *World, x float64, kind string) *Troop {
 	return nearest(w.Troops, func(t *Troop) float64 { return t.X }, x, math.Inf(1), func(t *Troop) bool {
-		return t.Kind == "peasant" && t.Job == nil && t.Profession != kind
+		return t.Kind == "peasant" && !t.Hammer && t.Job == nil && t.Profession != kind
 	})
 }
 

@@ -15,7 +15,7 @@ func takeEquipment(w *World, e *Enemy) {
 	if grab <= 0 || e.Boss || e.Fleeing || e.Carried != nil || len(w.Portals) == 0 {
 		return
 	}
-	i := slices.IndexFunc(w.Drops, func(d *Drop) bool { return math.Abs(d.X-e.X) <= grab })
+	i := slices.IndexFunc(w.Drops, func(d *Drop) bool { return d.Kind != hammerKind && math.Abs(d.X-e.X) <= grab }) // Hämmer bleiben liegen (B-950)
 	if i < 0 {
 		return
 	}

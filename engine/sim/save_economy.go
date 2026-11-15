@@ -81,7 +81,7 @@ func applyPlots(w *World, h HubSave) {
 		for i, ps := range saved.Craft.Plots {
 			s.plots[i].growIn = ps.GrowIn
 			if ps.Tree {
-				s.plots[i].tree = &ResourceNode{ID: w.newID(), Kind: "tree", X: plotX(s, p, i), Marked: true}
+				s.plots[i].tree = &ResourceNode{ID: w.newID(), Kind: "tree", X: plotX(s, p, i), Marked: true, plant: true}
 				w.Nodes = append(w.Nodes, s.plots[i].tree)
 			}
 		}

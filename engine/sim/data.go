@@ -135,6 +135,7 @@ type HubData struct {
 	}
 	CastleRadiusUnits, HomeRadiusUnits float64
 	StartTroops                        struct{ Peasant, Craftsman, Archer int } // Craftsman: Start-Bauern mit Hammer (B-950)
+	CastleSpareHammer                  bool                                     // Burg legt zum Tagesbeginn einen Hammer ab, wenn keiner mehr da ist
 	Travel                             struct{ RangeUnits, Seconds float64 }
 }
 

@@ -122,24 +122,24 @@ func weaponToFetch(w *World, t *Troop) *Job {
 			consider(&Job{Type: "pickup", DropID: d.ID}, d.X)
 		}
 	}
-	if full || !shelfStocked(w) {
+	if !shelfStocked(w) {
 		return best
 	}
-	shelfJobs(w, t, consider)
+	shelfJobs(w, t, consider, full)
 	return best
 }
 
 // shelfJobs meldet die Regal-Aufträge (Bogen, Schwert) gebauter Werkstätten an consider; Vorposten nur ohne Gefahr.
-func shelfJobs(w *World, t *Troop, consider func(*Job, float64)) {
+func shelfJobs(w *World, t *Troop, consider func(*Job, float64), full bool) {
 	danger := isDangerous(w)
 	for _, s := range w.Sites {
 		if (s.Kind != "workshop" && s.Kind != "bowyer") || s.State != "built" || (danger && outpost(w, s.X)) {
 			continue
 		}
-		if fetching(w, t, "fetchBow", s.ID) < s.Bows {
+		if !full && fetching(w, t, "fetchBow", s.ID) < s.Bows { // Waffen nur unter dem Limit, Hämmer immer
 			consider(&Job{Type: "fetchBow", SiteID: s.ID}, s.X)
 		}
-		if fetching(w, t, "fetchSword", s.ID) < s.Swords {
+		if !full && fetching(w, t, "fetchSword", s.ID) < s.Swords {
 			consider(&Job{Type: "fetchSword", SiteID: s.ID}, s.X)
 		}
 		if fetching(w, t, "fetchHammer", s.ID) < s.Hammers {

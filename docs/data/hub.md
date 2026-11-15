@@ -39,6 +39,7 @@
 | `homeRadiusUnits` | Zahl | Units | Heimat-Radius um den Hub | 12 |
 | `startTroops.peasant` | Ganzzahl | Bauern | Bauern ohne Hammer zu Spielbeginn | 1 |
 | `startTroops.craftsman` | Ganzzahl | Handwerker | Handwerker (Bauern mit Hammer) zu Spielbeginn zusätzlich, je Welt übersteuerbar (B-950) | 1 |
+| `castleSpareHammer` | Wahrheitswert | – | Die Burg legt zum Tagesbeginn einen Hammer ab, wenn es keinen Handwerker und keinen Hammer mehr gibt (B-950) | true |
 | `startTroops.archer` | Ganzzahl | Bogenschützen | Bogenschützen zu Spielbeginn | 2 |
 | `travel.rangeUnits` | Zahl | Units | Reichweite am Eingang bzw. an der Treppe | 3 |
 | `travel.seconds` | Zahl | s | Wartezeit für den Stufenwechsel | 2 |

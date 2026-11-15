@@ -202,3 +202,75 @@ func TestTruheWirftFontaene(t *testing.T) {
 		t.Errorf("gelandete Münze nicht aufgesammelt: Beutel %d → %d", gold, players[1].Gold)
 	}
 }
+
+// Review WI1: Hämmer gelten nicht als Kämpfer-Waffe und werden auch bei voller Truppe geholt.
+func TestHammerBeiVollerTruppeGeholt(t *testing.T) {
+	w := quietWorld(t)
+	w.CycleSpeed = 1e-6
+	AddPlayer(w)
+	AddPlayer(w)
+	for range troopLimit(w) {
+		makeArcher(w, spawnVagrant(w, w.HubX, w.HubX))
+	}
+	shop := buildSite(t, w, "workshop")
+	shop.Hammers = 1
+	peasant := hammerlessPeasant(w, shop.X+4)
+	if runUntil(w, 20, func() bool { return peasant.Hammer }) < 0 {
+		t.Fatalf("Hammer bei voller Truppe nicht geholt: %+v", peasant.Job)
+	}
+}
+
+// Review WI1: Ohne Handwerker und Hammer legt die Burg zum Tagesbeginn einen ab; Gegner nehmen keinen mit.
+func TestBurgLegtErsatzhammerAb(t *testing.T) {
+	w := quietWorld(t)
+	AddPlayer(w)
+	AddPlayer(w)
+	spareHammer(w)
+	if len(w.Drops) != 1 || w.Drops[0].Kind != hammerKind || w.Drops[0].X != w.Castle.X {
+		t.Fatalf("Ersatzhammer fehlt: %v", w.Drops)
+	}
+	spareHammer(w)
+	if len(w.Drops) != 1 {
+		t.Errorf("zweiter Hammer trotz Hammer am Boden: %d", len(w.Drops))
+	}
+	w.Portals = []float64{w.WidthUnits}
+	e := spawnEnemy(w, "goblin", w.Castle.X)
+	takeEquipment(w, e)
+	if len(w.Drops) != 1 || e.Carried != nil {
+		t.Errorf("Gegner trägt den Hammer weg: %v", e.Carried)
+	}
+	h := hammerlessPeasant(w, w.Castle.X)
+	h.Hammer = true
+	w.Drops = nil
+	spareHammer(w)
+	if len(w.Drops) != 0 {
+		t.Error("Ersatzhammer trotz Handwerker")
+	}
+}
+
+// Review WI1: Start-Handwerker mindestens 1; Plantagen-Bäume geben kein Gold; ein Handwerker wird nicht ausgebildet.
+func TestHandwerkerMindestensEinerKeinPlantagenGold(t *testing.T) {
+	w := newWorld(0, "test", Options{})
+	v := *w.values()
+	v.Hub.StartTroops.Craftsman = 0
+	w.vals, w.Troops = &v, nil
+	spawnStartPeasants(w, w.HubX)
+	if n := len(w.Troops); n < 1 || !w.Troops[0].Hammer {
+		t.Errorf("ohne Start-Handwerker: %d Bauern, Hammer %v", n, n > 0 && w.Troops[0].Hammer)
+	}
+	smith := w.Troops[0]
+	if freePeasant(w, smith.X, "miner") == smith {
+		t.Error("freePeasant wählt einen Handwerker")
+	}
+	w2 := dayWorld(t)
+	tree := &ResourceNode{ID: w2.newID(), Kind: "tree", X: w2.HubX + 3, Marked: true, plant: true}
+	w2.Nodes = append(w2.Nodes, tree)
+	w2.Troops[0].X = tree.X
+	before := len(w2.Coins)
+	if runUntil(w2, 60, func() bool { return tree.gone }) < 0 {
+		t.Fatal("Plantagen-Baum nicht gefällt")
+	}
+	if len(w2.Coins) != before {
+		t.Errorf("Plantagen-Baum warf %d Münzen", len(w2.Coins)-before)
+	}
+}

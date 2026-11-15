@@ -83,6 +83,7 @@ func stepCycle(w *World, dt float64) {
 			sendEnemiesHome(w)
 		}
 		payDawnIncome(w)
+		spareHammer(w)
 		tavernDawn(w)
 		merchantDawn(w)
 		nightEventsEnd(w)

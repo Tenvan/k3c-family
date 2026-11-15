@@ -97,7 +97,7 @@ func offersPrice(w *sim.World, s *sim.Site) bool {
 	if s.State == "unpaid" {
 		return sim.SitePayable(w, s)
 	}
-	return s.State == "built" && s.Kind == "workshop" && s.Bows < buildingInfo["workshop"].BowRack
+	return s.State == "built" && (s.Kind == "bowyer" && s.Bows < buildingInfo["bowyer"].BowRack || s.Kind == "workshop" && s.Hammers < buildingInfo["workshop"].HammerRack)
 }
 
 // guideID ist ein Hinweis der geführten ersten Nacht; am Bauplatz steht keiner mehr (🧑, 2026-11-05).

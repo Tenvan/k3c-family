@@ -136,6 +136,7 @@ type ResourceNode struct {
 	Progress float64 `json:"progress"`
 	// Variant ist die Variante aus dem Level (Baumart, Kristallfarbe; B-891); leer bei Plantage-Bäumen und ohne Gruppe.
 	Variant string `json:"-"` // nur im Prozess (natives Spiel), nicht im Zustand und nicht im Spielstand
+	plant   bool   // Baum einer Baumschule: kein Baum-Gold (B-952)
 	gone    bool   // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
 }
 

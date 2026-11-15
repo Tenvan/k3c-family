@@ -187,7 +187,7 @@ func gather(w *World, t *Troop, dt float64) {
 		}
 		w.Nodes = nodes
 		node.gone = true
-		if node.Kind == "tree" { // Holzfällen bringt Gold (B-952)
+		if node.Kind == "tree" && !node.plant { // Holzfällen bringt Gold (B-952)
 			tg := w.values().Economy.TreeGold
 			scatterCoins(w, node.X, w.rng.Int(tg[0], tg[1]))
 		}
