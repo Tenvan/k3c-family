@@ -1,10 +1,11 @@
 package e2e
 
-// Der Ablauf (NG9.1): Hauptmenü → Lobby mit zwei Geräten (Ultra: Niederlage „komplett verloren“) → Spiel (laufen,
-// Münzen geben, bauen, Skill lernen, Tag → Nacht mit Gegnern) → Pause → Spiel verlassen (speichert) → Weiter (lädt
-// denselben Stand, Spieler 2 tritt wieder bei) → Niederlage → Hauptmenü. Takte zählen die Updates seit dem Start.
+// Der Ablauf (NG9.1): Hauptmenü → Lobby mit zwei Geräten (Grad Ultra) → Spiel (laufen, Münzen geben, bauen, Skill
+// lernen, Tag → Nacht mit Gegnern) → Pause → Spiel verlassen (speichert) → Weiter (lädt denselben Stand, Spieler 2
+// tritt wieder bei) → Niederlage durch Kronenraub → Hauptmenü. Takte zählen die Updates seit dem Start.
 
 import (
+	"fmt"
 	"math"
 	"os"
 	"path/filepath"
@@ -29,14 +30,55 @@ const (
 	saveName   = "spiel-1"
 )
 
-// flowScript ist die feste Eingabe-Folge (game.ParseScript). Spieler 1 = Tastatur, Spieler 2 = Pad 1 (B-893).
-const flowScript = "0@2=a:confirm,0@3=a:confirm,1@4=a:confirm," + // Neues Spiel, Welt Standard, Spieler 2 tritt der Lobby bei
-	"0@6=a:right,0@8=a:right," + // Grad Normal → Schwer → Ultra (Niederlage: komplett verloren)
-	"0@10=a:down,0@12=a:down,0@14=a:down,0@16=a:down,0@18=a:down,0@20=a:confirm," + // Starten
-	"0@21=R,1@21=RS,0@298=P,1@380=-,0@700=-," + // laufen; Spieler 1 zahlt an der Mauer, Spieler 2 holt den Skill-Punkt
-	"1@400=a:skillmenu,1@405=a:confirm,1@410=a:skillmenu," + // Skill-Menü auf, ersten Skill lernen, zu
-	"0@15900=a:menu,0@15902=a:down,0@15904=a:down,0@15906=a:down,0@15908=a:down,0@15912=a:confirm," + // Pause › Spiel verlassen
-	"0@15916=a:confirm,1@15920=a:confirm" // Weiter, Spieler 2 tritt wieder bei
+// Eingabe-Folge (game.ParseScript) in vier Teilen. Spieler 1 = Tastatur, Spieler 2 = Pad 1 (B-893). Die Takte von
+// Spieler 2 hängen an der Lage des nächsten Skill-Punkts (flowScript, B-912).
+const (
+	flowWalk = "0@2=a:confirm,0@3=a:confirm,1@4=a:confirm," + // Neues Spiel, Welt Standard, Spieler 2 tritt der Lobby bei
+		"0@6=a:right,0@8=a:right," + // Grad Normal → Schwer → Ultra
+		"0@10=a:down,0@12=a:down,0@14=a:down,0@16=a:down,0@18=a:down,0@20=a:confirm," + // Starten
+		"0@21=R,1@21=RS,0@298=P,0@700=-" // laufen; Spieler 1 zahlt an der Mauer, Spieler 2 sprintet zum Skill-Punkt
+	// Spieler 2: halten, Skill-Menü auf, ersten Skill lernen, zu, vor der Nacht zurück zur Burg, halten.
+	flowSkill = ",1@%d=-,1@%d=a:skillmenu,1@%d=a:confirm,1@%d=a:skillmenu,1@%d=LS,1@%d=-"
+	flowLeave = ",0@15900=a:menu,0@15902=a:down,0@15904=a:down,0@15906=a:down,0@15908=a:down,0@15912=a:confirm," + // Pause › Spiel verlassen
+		"0@15916=a:confirm,1@15920=a:confirm" // Weiter, Spieler 2 tritt wieder bei
+	// Spieler 2 sprintet nach dem Wiedereintritt wieder hinaus und wartet ohne Gold vor dem Portal: In der zweiten
+	// Nacht fällt seine Krone, ein Gegner trägt sie ins Portal (Kronenraub = Niederlage, docs/rules/kampf.md § 6).
+	flowRaid = ",1@%d=RS,1@%d=-"
+
+	menuAfter   = 20  // Takte vom Fund des Skill-Punkts bis zum Skill-Menü
+	minRunSpeed = 0.1 // Units je Takt, die Spieler 2 im Sprint mindestens schafft (Grenze des Probelaufs)
+)
+
+// flowScript ist die feste Eingabe-Folge des Ablaufs und der Takt, in dem Spieler 2 den Skill-Punkt findet. Ein
+// Probelauf liest die Lage des nächsten Skill-Punkts rechts von Spieler 2 aus dem Frame und misst den Takt des
+// Ereignisses skillPoint, statt eine Strecke zu raten: Der Punkt liegt je Welt- und Biom-Daten anders (B-912).
+func flowScript(t *testing.T) (string, int) {
+	t.Helper()
+	p := newRun(t, "--flow", "--input", flowWalk)
+	p.to(startAt + 1)
+	f := p.frame()
+	x, goal := f.Monarch(1).X, math.Inf(1)
+	for _, pk := range f.Stages[0].World.Pickups {
+		if pk.Kind == "skillPoint" && pk.X > x {
+			goal = min(goal, pk.X)
+		}
+	}
+	if math.IsInf(goal, 1) {
+		t.Fatalf("❌ kein Skill-Punkt rechts von Spieler 2 (x %.1f): %+v", x, f.Stages[0].World.Pickups)
+	}
+	limit := p.tick + int((goal-x)/minRunSpeed)
+	p.until("Probelauf: Spieler 2 findet einen Skill-Punkt", limit, func(f *view.Frame) bool { return hasEvent(f, "skillPoint", 1) })
+	found := p.tick
+	menu, sprint := found+menuAfter, found-startAt-1 // sprint: Takte, die Spieler 2 bis zum Skill-Punkt sprintet
+	back := menu + 15
+	if back+sprint >= pauseAt/2 {
+		t.Fatalf("❌ Skill-Punkt bei x %.1f erst im Takt %d: Spieler 2 ist nicht vor der Nacht zurück", goal, found)
+	}
+	t.Logf("Skill-Punkt bei x %.1f, Spieler 2 startet bei x %.1f und findet ihn im Takt %d", goal, x, found)
+	out := rejoinAt + 5
+	return flowWalk + fmt.Sprintf(flowSkill, found, menu, menu+5, menu+10, back, back+sprint) + flowLeave +
+		fmt.Sprintf(flowRaid, out, out+sprint), found
+}
 
 const (
 	mainScreen  = "*menu.mainScreen"
@@ -46,7 +88,9 @@ const (
 
 // flow fährt den ganzen Ablauf und prüft jede Station.
 func flow(t *testing.T) *run {
-	r := newRun(t, "--flow", "--input", flowScript)
+	script, found := flowScript(t)
+	r := newRun(t, "--flow", "--input", script)
+	r.script, r.found = script, found
 	r.menus()
 	r.day()
 	r.night()
@@ -86,16 +130,21 @@ func (r *run) day() {
 	gold := r.frame().Monarch(0).Gold
 	r.until("Spieler 1 gibt Münzen", 700, func(f *view.Frame) bool { return hasEvent(f, "coinGive", 0) })
 	r.mark("muenzen")
-	r.until("Spieler 2 findet einen Skill-Punkt", 600, func(f *view.Frame) bool { return hasEvent(f, "skillPoint", 1) })
-	r.to(404)
+	r.until("Spieler 2 findet einen Skill-Punkt", r.found, func(f *view.Frame) bool { return hasEvent(f, "skillPoint", 1) })
+	if x := r.frame().Monarch(1).X; x <= x1 {
+		r.t.Fatalf("laufen: Spieler 2 %.1f → %.1f", x1, x)
+	}
+	r.mark("skillpunkt")
+	menu := r.found + menuAfter
+	r.to(menu + 4)
 	r.mark("skillmenue")
-	r.until("Spieler 2 lernt einen Skill", 420, func(f *view.Frame) bool { return len(f.Monarch(1).Skills) == 1 })
+	r.until("Spieler 2 lernt einen Skill", menu+20, func(f *view.Frame) bool { return len(f.Monarch(1).Skills) == 1 })
 	r.until("Mauer gebaut", 3000, func(f *view.Frame) bool { return hasEvent(f, "built", -1) })
 	r.mark("gebaut")
 	f := r.frame()
 	m0, m1 := f.Monarch(0), f.Monarch(1)
-	if m0.X < x0+40 || m1.X < x1+100 || m0.Gold >= gold {
-		r.t.Fatalf("laufen/zahlen: Spieler 1 %.1f → %.1f (Gold %d → %d), Spieler 2 %.1f → %.1f", x0, m0.X, gold, m0.Gold, x1, m1.X)
+	if m0.X < x0+40 || m0.Gold >= gold {
+		r.t.Fatalf("laufen/zahlen: Spieler 1 %.1f → %.1f (Gold %d → %d)", x0, m0.X, gold, m0.Gold)
 	}
 	r.t.Logf("Skill von Spieler 2: %v, Plätze %v", m1.Skills, m1.Slots)
 }
@@ -156,10 +205,11 @@ func (r *run) continueGame(saved []byte, at float64) {
 	r.mark("zu-zweit")
 }
 
-// defeat: Die Burg fällt (Ultra: komplett verloren), nach view.EndDelay Takten liegt das Hauptmenü oben.
+// defeat: Ein Gegner trägt die Krone von Spieler 2 ins Portal (Kronenraub, in jedem Grad Game Over; der Burgfall
+// beendet das Spiel seit B-930/B-931 nicht mehr), nach view.EndDelay Takten liegt das Hauptmenü oben.
 func (r *run) defeat() {
 	r.until("Niederlage", maxTicks, func(f *view.Frame) bool { return f.Outcome == view.OutcomeLost })
-	if !hasEvent(r.frame(), "gameOver", -1) && !hasEvent(r.frame(), "castleFallen", -1) {
+	if !hasEvent(r.frame(), "gameOver", -1) && !hasEvent(r.frame(), "crownStolen", -1) {
 		r.t.Logf("Niederlage ohne gameOver im Frame (Insel ruht)")
 	}
 	r.mark("niederlage")

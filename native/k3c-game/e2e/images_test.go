@@ -50,7 +50,7 @@ func TestFlowImages(t *testing.T) {
 		out = t.TempDir()
 	}
 	for _, run := range []string{"a", "b"} {
-		shoot(t, exe, filepath.Join(out, run), strings.Join(at, ","))
+		shoot(t, exe, filepath.Join(out, run), r.script, strings.Join(at, ","))
 	}
 	if err := os.WriteFile(filepath.Join(out, "stationen.txt"), []byte(index.String()), 0o644); err != nil {
 		t.Fatal(err)
@@ -65,11 +65,11 @@ func TestFlowImages(t *testing.T) {
 }
 
 // shoot startet die EXE im Aufnahme-Modus des Ablaufs und schreibt die Bilder nach dir.
-func shoot(t *testing.T, exe, dir, at string) {
+func shoot(t *testing.T, exe, dir, script, at string) {
 	t.Helper()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 	defer cancel()
-	cmd := exec.CommandContext(ctx, exe, "--flow", "--input", flowScript, "--shots", dir, "--at", at, "--size", shotSize)
+	cmd := exec.CommandContext(ctx, exe, "--flow", "--input", script, "--shots", dir, "--at", at, "--size", shotSize)
 	cmd.Dir = exeRoot()
 	var log bytes.Buffer
 	cmd.Stdout, cmd.Stderr = &log, &log
