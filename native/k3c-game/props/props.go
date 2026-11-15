@@ -42,6 +42,7 @@ func (d *drawer) Draw(dst *ebiten.Image, f *view.Frame, c view.Cell) {
 	if !ok || st.World == nil {
 		return
 	}
+	d.plan.viewer = f.Monarch(c.Player)
 	d.plan.plan(st.World, d.info(st.Index), c.Camera, f.Clock)
 	d.paint.paint(dst, d.plan.body, d.lib, c, f.Clock)
 	d.paint.paint(dst, d.plan.top, d.lib, c, f.Clock)

@@ -36,6 +36,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WG2 | CLI | NAT | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | – | Entwurf | `geplant/WG2-weltbilder-anzeige/` |
+| KS6 | SIM | KSY | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | – | Entwurf | `geplant/KS6-kampf-nachtraege/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | Entwurf | `geplant/WG1-weltbilder/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | Entwurf | `geplant/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |

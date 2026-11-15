@@ -1,26 +1,26 @@
-# B-934 · Das Spiel zeigt Portal-HP, Krone, Münzverlust, Schild, Banner und Auslöser
+# B-940 · Papierschnitt-Assets für Krone, Banner, Schild, Zahlstellen, Portal-HP und Münzschauer ersetzen die gezeichneten Formen
 
-- **Domäne:** CLI
+- **Domäne:** PAP
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** KS5
+- **Sprint:** KS6
 - **Projekt:** KSY
 - **Erstellt:** 2026-11-15
-- **Spec:** freigegeben
+- **Spec:** Entwurf
 - **Revision:** 1
-- **Freigabe:** 🧑 2026-11-15
+- **Freigabe:** –
 - **Duplikat von:** –
 - **Ersetzt:** –
 
 ## Ausgangslage
 
-Die neuen Kampfregeln (B-927 bis B-933) brauchen Anzeige im nativen Spiel.
+KS5 zeichnet Krone, Monarch ohne Krone, Banner, Schild, Gruppenmarke, Portal-HP-Balken, Zahlstellen-Symbole und Münzschauer vorläufig aus Grundformen; es gibt keine Papierschnitt-Assets dafür.
 
 ## Ziel
 
-Portal-HP, Krone (am Kopf, fallend, getragen), Münzverlust bei Treffer, Schild des Gruppenführers, Banner und Auslöser sind sichtbar; Assets über `assets_*` (005).
+Papierschnitt-Assets über `assets_*` (Entscheidung 005) ersetzen die gezeichneten Formen.
 
 ## Beteiligte und Zielgruppen
 
@@ -36,11 +36,11 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/**`, `data/paper.json`
-- **Abhängig von:** B-931, B-932, B-933
+- **Bereich:** `public/grafik/**`, `data/paper.json`, `native/k3c-game/**`
+- **Abhängig von:** B-934
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
-- **Sperre:** –
+- **Sperre:** golden
 
 ## Beispiele
 
@@ -52,8 +52,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Jedes neue Element hat eine Darstellung und, wo nötig, ein Papierschnitt-Asset.
-- **AC-02** HUD: Gold ist die Lebensanzeige (Geldsack), Healthbar bleibt weg.
+- **AC-01** Assets angelegt und im Bereich Assets der Workbench geprüft.
+- **AC-02** Das Spiel nutzt sie über `data/paper.json`.
+- **AC-03** Sichtprüfung am TV durch 🧑.
 
 ## Offene Fragen
 

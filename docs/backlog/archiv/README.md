@@ -849,3 +849,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-931](B-931-krone-raub.md) | SIM | Idee | hoch | erledigt | KS3 | Die gefallene Krone fliegt im Bogen nach hinten; Gegner rauben sie ins Portal (Niederlage), Monarchen sammeln sie auf |
 | [B-932](B-932-angriff-gruppen.md) | SIM | Idee | hoch | erledigt | KS4 | Gruppen-Angriff: Schild macht zum Gruppenführer, Auslöser am Tor schickt alle Gruppen los |
 | [B-933](B-933-angriff-general.md) | SIM | Idee | hoch | erledigt | KS4 | General-Angriff: Der Monarch nimmt das Banner am Tor, ein Trupp folgt ihm, Ausfälle werden nachbesetzt |
+| [B-934](B-934-kampf-anzeige.md) | CLI | Idee | mittel | erledigt | KS5 | Das Spiel zeigt Portal-HP, Krone, Münzverlust, Schild, Banner und Auslöser |

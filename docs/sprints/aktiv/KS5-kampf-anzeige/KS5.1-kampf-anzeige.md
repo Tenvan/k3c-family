@@ -1,6 +1,6 @@
 # KS5.1 · Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser (B-934)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
