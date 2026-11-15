@@ -60,7 +60,7 @@ function marked(): { data: PlanningData; ticket: string; session: string } {
 
 describe('Menüs nur für Wurzel-Einträge (AC-02)', () => {
   const { data, ticket, session } = marked();
-  const detail = (sel: string, d = data) => render(<PlanDetail data={d} sel={sel} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} />);
+  const detail = (sel: string, d = data) => render(<PlanDetail data={d} sel={sel} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} texts={{}} />);
 
   it('Backlog: markiertes Ticket ohne Prio-, Projekt- und Umgebungs-Menü, die anderen mit', () => {
     const html = render(<BacklogView data={data} tickets={data.tickets} sel="" onPick={() => {}} target={{ kind: 'new' }} goal="__new__" choose={() => {}} />);

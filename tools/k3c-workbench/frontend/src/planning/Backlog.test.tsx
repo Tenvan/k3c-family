@@ -31,8 +31,8 @@ describe('Planungsseite: Flags bearbeiten (B-363)', () => {
     const open = sessions.find((x) => x.status === 'offen');
     const done = sessions.find((x) => x.status === 'fertig');
     expect(open && done).toBeTruthy();
-    const openHtml = render(<PlanDetail data={d} sel={open!.nr} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} />);
-    const doneHtml = render(<PlanDetail data={d} sel={done!.nr} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} />);
+    const openHtml = render(<PlanDetail data={d} sel={open!.nr} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} texts={{}} />);
+    const doneHtml = render(<PlanDetail data={d} sel={done!.nr} onSelect={() => {}} onClose={() => {}} target={{ kind: 'new' }} texts={{}} />);
     expect(count(openHtml, 'Agent: ')).toBe(1);
     expect(count(openHtml, 'Umgebung: ')).toBe(1);
     expect(count(doneHtml, 'Agent: ')).toBe(0);

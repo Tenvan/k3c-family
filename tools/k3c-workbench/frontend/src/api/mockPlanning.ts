@@ -216,8 +216,13 @@ export function mockPlanning(changed: () => void) {
       return d;
     },
     planningItems: async (ids: string[]): Promise<PlanItem[]> => ids.map((id): PlanItem => {
+      const body = () => mockDoc(DATA, id).split('\n').slice(1).join('\n').trim(); // ohne die Pfadzeile
       const x = DATA.sprints.flatMap((s) => s.sessions).find((y) => y.nr === id);
       if (x) return { id, kind: 'session', path: `docs/sprints/aktiv/${id}.md`, text: x.text ?? '' };
+      if (DATA.tickets.some((y) => y.nr === id)) return { id, kind: 'ticket', path: `docs/backlog/${id}.md`, text: body() };
+      if (DATA.sprints.some((y) => y.id === id)) return { id, kind: 'sprint', path: `docs/sprints/aktiv/${id}/README.md`, text: body() };
+      const pj = DATA.projects?.find((y) => y.id === id);
+      if (pj) return { id, kind: 'projekt', path: `docs/projekte/${id}.md`, text: `# ${id} · ${pj.title}\n` };
       return { id, kind: 'ticket', path: '', text: '', error: `${id} nicht gefunden` };
     }),
     planningDocs: async (): Promise<PlanDoc[]> => ['plan', 'fragen', 'glossar'],

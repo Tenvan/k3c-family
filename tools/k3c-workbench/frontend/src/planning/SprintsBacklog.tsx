@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
-import { PLAN_RELOAD_MS, useLiveReload } from '../lib/useLiveReload';
-import { backend, type PlanningData, type PlanSprint } from '../api';
+import type { PlanningData, PlanSprint } from '../api';
 import { LinkButton, Splitter, Text } from '@webkit/atoms';
-import { errorText } from '@webkit/lib/errors';
 import { useSplit } from '@webkit/lib/split';
 import { NoticeCard } from '@webkit/molecules';
 import { loadText, prefsStore, savePref } from '../lib/prefs';
@@ -19,19 +17,19 @@ import { rankedCount, visibleSprints } from './projects';
 import { CopyPrompt } from './PromptParts';
 import { NEW_SPRINT, openSessions, promptSessions, type SprintTarget } from './prompts';
 import { SprintCard } from './SprintCard';
+import { usePlanningData } from './usePlanningData';
 
 const PREF = 'planning.filter';
 
 /** Planung aus planning.Data (dieselben Daten wie plan_list) im erp-qs-Look (B-439): GitHub-Leiste, Filterleiste,
  *  links die Projekte, rechts der Backlog und darunter das Detail der Auswahl, beide Grenzen mit Splitter. Lädt bei
- *  `planning:changed` neu; Filter (ohne Freitext), Auswahl und Splitter bleiben gemerkt. */
+ *  `planning:changed` nur die genannten IDs nach (usePlanningData, B-909); Filter (ohne Freitext), Auswahl und Splitter bleiben gemerkt. */
 export function SprintsBacklog() {
-  const [root, setData] = useState<PlanningData | null>(null);
+  const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
+  const { data: root, error, texts, load } = usePlanningData(filter.sel);
   const wt = useWorktreeDiffs();
   const data = useMemo(() => (root ? withWorktreeEntries(root, wt.diffs) : null), [root, wt.diffs]); // + Einträge nur im Worktree (B-467)
   const wtIndex = useMemo(() => indexChanges(wt.diffs), [wt.diffs]);
-  const [error, setError] = useState('');
-  const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
   const [gh, reloadGh] = useGitHub();
   const [checked, setChecked] = useState<ReadonlySet<string>>(new Set()); // markierte Sessions (Nr.)
   const [cols, setCols, resetCols] = useSplit(prefsStore, 'planning.split.cols', 50);
@@ -41,8 +39,6 @@ export function SprintsBacklog() {
     setFilterState(f);
     savePref(PREF, JSON.stringify(f));
   };
-  const load = () => backend.planningData().then((d) => { setData(d); setError(''); }, (e) => setError(errorText(e)));
-  useLiveReload(['planning:changed'], () => void load(), PLAN_RELOAD_MS); // Wächter in Go: Datei in docs/ geändert (B-895: gedrosselt)
   // Verschwundene Auswahl (archiviert, gelöscht) schließt das Detail.
   useEffect(() => { if (data && wt.loaded && filter.sel && !exists(data, filter.sel)) setFilter({ ...filter, sel: '' }); }, [data, wt.loaded]);
   if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;
@@ -78,7 +74,7 @@ export function SprintsBacklog() {
         </section>
         <Splitter className="pl-split-v" value={cols} onChange={setCols} onReset={resetCols} />
         <SidePane data={data} tickets={tickets} sel={filter.sel} onPick={select} onReveal={reveal} onClose={() => setFilter({ ...filter, sel: '' })}
-          rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} />
+          rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} texts={texts} />
       </div>
     </div>
     </WtContext.Provider>
@@ -118,10 +114,12 @@ interface SideProps {
   resetRows: () => void;
   goal: string;
   choose: (v: string) => void;
+  /** Fließtexte der Sessions (nachgeladen, B-909). */
+  texts: Record<string, string>;
 }
 
 /** Rechte Spalte: Backlog, bei einer Auswahl darunter Splitter und Detail. */
-function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows, resetRows, goal, choose }: SideProps) {
+function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows, resetRows, goal, choose, texts }: SideProps) {
   const target: SprintTarget = goal === NEW_SPRINT ? { kind: 'new' } : { kind: 'sprint', id: goal };
   return (
     <section className={`pl-pane pl-side${sel ? ' has-detail' : ''}`} aria-label="Backlog und Detail">
@@ -132,7 +130,7 @@ function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows
         <>
           <Splitter horizontal className="pl-split-h" value={rows} onChange={setRows} onReset={resetRows} />
           <div className="pl-side-detail">
-            <PlanDetail data={data} sel={sel} onSelect={onReveal} onClose={onClose} target={target} />
+            <PlanDetail data={data} sel={sel} onSelect={onReveal} onClose={onClose} target={target} texts={texts} />
           </div>
         </>
       )}
