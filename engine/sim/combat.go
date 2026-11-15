@@ -82,7 +82,7 @@ func gateSpotX(w *World, wall *Site, side float64) float64 {
 			break
 		}
 	}
-	return x
+	return max(0, min(w.WidthUnits, x)) // am Levelrand bleibt das Ziel erreichbar (Review KS7)
 }
 
 // combatSpotNear: Das Zahlziel in Zahl-Reichweite von x, auch wenn es gerade nichts nimmt.

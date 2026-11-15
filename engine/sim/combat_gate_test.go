@@ -88,3 +88,12 @@ func TestGestellStapelBegrenztUndZahltNichtUeberMax(t *testing.T) {
 		t.Error("Spieler 2 kann bei freiem Platz zahlen")
 	}
 }
+
+// Review KS7: Ein Tor nahe dem Levelrand legt das Zahlziel nicht hinter den Rand.
+func TestZahlstelleBleibtImLevel(t *testing.T) {
+	w, _, right := combatIsland(t, CombatGroups)
+	w.WidthUnits = right + 1
+	if x := spotFor(w, "trigger", 1).X; x > w.WidthUnits || x < 0 {
+		t.Fatalf("Auslöser bei %v hinter dem Rand %v", x, w.WidthUnits)
+	}
+}
