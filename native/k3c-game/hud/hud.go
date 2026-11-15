@@ -65,6 +65,9 @@ func (h *hud) Draw(dst *ebiten.Image, _ *view.Frame, c view.Cell) {
 	k := scaleOf(c, h.cells)
 	h.drawWorldTexts(dst, st, c, k)
 	h.drawItems(dst, st, c, k)
+	if st.sea.open {
+		h.drawSea(dst, st, c, k)
+	}
 	if st.menu.open {
 		h.drawMenu(dst, st, c, k)
 	}

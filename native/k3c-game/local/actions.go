@@ -54,6 +54,18 @@ func (s *Session) Respec(player int) error {
 	return nil
 }
 
+// ChooseIsland wählt für den Spieler die Zielinsel am offenen Wechselpunkt; die Simulation prüft Wechselpunkt, Krone und Ziel.
+func (s *Session) ChooseIsland(player int, island string) error {
+	if err := s.seated(player); err != nil {
+		return err
+	}
+	if err := s.r.ChooseIsland(deviceID, s.p, player, island); err != nil {
+		return userErr(fmt.Sprintf("Ziel „%s“ lässt sich jetzt nicht wählen", island), err)
+	}
+	s.log.Info("🪜 Zielinsel gewählt", "player", player, "island", island)
+	return nil
+}
+
 // reason ist der Grund einer Ablehnung durch die Simulation als Anhang „: …“, sonst leer.
 func reason(err error) string {
 	var se *room.SkillError

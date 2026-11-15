@@ -23,6 +23,9 @@ func (h *hud) Update(in view.Input, f *view.Frame, s view.Session) view.OverlayS
 		}
 		seated[p] = true
 		out.Consumed[p] = h.updateSeat(in, f, s, seat)
+		if !out.Consumed[p] {
+			h.updateSea(in, f, s, seat) // Seekarte am Hafen: verbraucht nichts
+		}
 	}
 	for p := range h.seats {
 		if !seated[p] {

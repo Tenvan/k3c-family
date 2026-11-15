@@ -47,6 +47,7 @@ type Session struct {
 	p      *peer
 	name   string                // Spielstand des laufenden Spiels
 	world  string                // Welt-ID des laufenden Spiels (leer = Standard-Welt)
+	route  routeCache            // Inseln der Welt (Frame.Route, route.go)
 	devs   map[int]view.DeviceID // Slot (= lokaler Spieler) → Gerät
 	last   []view.DeviceID       // Geräte des letzten Spiels, für Load und Continue
 	paused bool

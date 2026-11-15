@@ -55,6 +55,9 @@ type Session interface {
 	// des HUD). Die Wirkung zeigt der nächste Frame.
 	Learn(player int, skill string) error
 	Respec(player int) error
+	// ChooseIsland wählt für den Spieler das Ziel des Inselwechsels am Hafen (Insel-ID aus islandSwitch.targets, B-962);
+	// die Simulation prüft Wechselpunkt, Krone und Ziel, abgelehnt kommt ein anzeigbarer Fehler.
+	ChooseIsland(player int, island string) error
 	// SetSettings übernimmt die Einstellungen (Normalized) sofort und speichert sie; ein Fehler betrifft nur das
 	// Speichern, die Werte gelten trotzdem.
 	SetSettings(s Settings) error
