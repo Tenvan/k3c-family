@@ -104,3 +104,67 @@ func TestPatchOverridesKeepsCRLF(t *testing.T) {
 		t.Fatalf("Entfernen = %q (%v)", back, err)
 	}
 }
+
+// B-986/AC-01: Unbekannte Datei → die Meldung nennt alle erlaubten Dateien, gelesen aus der Engine.
+func TestSetOverrideUnknownFileListsAllowedFiles(t *testing.T) {
+	e := fixture(t)
+	v := e.SetOverride(ctx, "standard", "events", []string{"x"}, json.RawMessage("1"))
+	if !strings.Contains(v.Error, `unbekannte Datei "events"`) {
+		t.Fatalf("Error = %q", v.Error)
+	}
+	// Die Engine nennt dieselbe Liste: Wächst sie dort, folgt die Meldung ohne Änderung der Workbench.
+	var raw struct {
+		Warnings []string `json:"warnings"`
+	}
+	draft := strings.Replace(standardFixture, "\n}\n", ",\n  \"overrides\": {\"events\": {}}\n}\n", 1)
+	err := e.call(ctx, map[string]any{"op": "check", "world": "standard", "draft": json.RawMessage(draft)}, &raw)
+	if err == nil {
+		t.Fatal("Engine nahm events an")
+	}
+	list := err.Error()[strings.Index(err.Error(), "(erlaubt: ")+len("(erlaubt: "):]
+	list = strings.TrimSuffix(strings.TrimSpace(list), ")")
+	if !strings.Contains(v.Error, "(erlaubt: "+list+")") {
+		t.Fatalf("Liste der Engine %q fehlt in %q", list, v.Error)
+	}
+	if got := readWorld(t, e, "standard"); got != standardFixture {
+		t.Fatal("Datei geändert")
+	}
+}
+
+// B-986/AC-02: Gesperrtes Feld → Grund und Verweis; unbekanntes Feld → Felder der Ebene (höchstens 12, danach …).
+func TestSetOverrideLockedAndUnknownFieldMessages(t *testing.T) {
+	e := fixture(t)
+	for _, c := range []struct {
+		file string
+		path []string
+	}{{"hub", []string{"sites"}}, {"economy", []string{"payRangeUnits"}}} {
+		v := e.SetOverride(ctx, "standard", c.file, c.path, json.RawMessage("1"))
+		if !strings.Contains(v.Error, "nicht übersteuerbar") || !strings.Contains(v.Error, "welten.md § 1.3") {
+			t.Errorf("%s: Error = %q", c.file, v.Error)
+		}
+	}
+	v := e.SetOverride(ctx, "standard", "economy", []string{"purse", "gibtesnicht"}, json.RawMessage("1"))
+	if !strings.Contains(v.Error, `unbekanntes Feld "gibtesnicht" in economy › purse (Felder: startGold`) {
+		t.Errorf("Error = %q", v.Error)
+	}
+	v = e.SetOverride(ctx, "standard", "buildings", []string{"gibtesnicht"}, json.RawMessage("1"))
+	if !strings.Contains(v.Error, "unbekanntes Feld") || !strings.Contains(v.Error, ", …)") {
+		t.Errorf("mehr als 12 Felder ohne …: %q", v.Error)
+	}
+	v = e.SetOverride(ctx, "standard", "economy", []string{"purse"}, json.RawMessage("1"))
+	if !strings.Contains(v.Error, "Objekt oder eine Liste") || !strings.Contains(v.Error, "startGold") {
+		t.Errorf("Objekt: Error = %q", v.Error)
+	}
+	if got := readWorld(t, e, "standard"); got != standardFixture {
+		t.Fatal("Datei geändert")
+	}
+}
+
+// Review: Auch ein tieferer Pfad unter einem gesperrten Feld nennt den Grund.
+func TestSetOverrideDeepPathUnderLockedField(t *testing.T) {
+	e := fixture(t)
+	v := e.SetOverride(ctx, "standard", "hub", []string{"sites", "x", "y"}, json.RawMessage("1"))
+	if !strings.Contains(v.Error, "welten.md § 1.3") {
+		t.Fatalf("Error = %q", v.Error)
+	}
+}

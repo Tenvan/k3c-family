@@ -1,8 +1,10 @@
 package mcpsrv
 
 import (
+	"context"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -70,5 +72,21 @@ func checkWorldGet(t *testing.T, call func(string, map[string]any) (string, bool
 		if isErr || !strings.Contains(text, want) {
 			t.Fatalf("world_get ohne %q:\n%s", want, text)
 		}
+	}
+}
+
+// B-986: Die Liste der erlaubten Dateien in der Beschreibung von world_override_set gleicht der Basis der Engine.
+func TestOverrideFilesTextMatchesEngine(t *testing.T) {
+	t.Parallel()
+	view := worldEditor(worldRepo(t)).Values(context.Background(), "standard")
+	var files []string
+	for _, v := range view.Entries {
+		if !slices.Contains(files, v.File) {
+			files = append(files, v.File)
+		}
+	}
+	slices.Sort(files)
+	if got := strings.Join(files, ", "); got != overrideFilesText {
+		t.Fatalf("overrideFilesText = %q, Engine = %q", overrideFilesText, got)
 	}
 }

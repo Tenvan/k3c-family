@@ -22,6 +22,10 @@ var worldEngine = world.Direct
 
 func worldEditor(root string) world.Editor { return world.Editor{Root: root, Engine: worldEngine(root)} }
 
+// overrideFilesText sind die Basis-Dateien, die eine Welt übersteuern darf (Engine: overrideFiles in engine/sim/world_values.go);
+// TestOverrideFilesTextMatchesEngine hält die Liste gleich.
+const overrideFilesText = "buildings, economy, enemies, goals, hub, monarch, ship, troops, waves"
+
 type worldListIn struct{}
 
 type worldGetIn struct {
@@ -126,8 +130,9 @@ func registerWorldWrite(s *Server) {
 	})
 	add(s, &mcp.Tool{
 		Name: "world_set",
-		Description: "Ändert Kopf (name, notes, extends, combat) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung) einer Welt; " +
-			"geprüft wie beim Laden im Spiel, bei Fehler bleibt die Datei. Nutze es bei: Inseln, Tiefen, Biome, Kampfvariante einer Welt festlegen. " +
+		Description: "Ändert Kopf (name, notes, extends, combat) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung, plannedChunks, chunkCounts) einer Welt; " +
+			"der ganze Patch wird angewendet und dann einmal geprüft wie beim Laden im Spiel, bei Fehler bleibt die Datei. " +
+			"Insel anhängen in einem Aufruf: den Hafen der Insel davor mitgeben, z. B. islands: [{id: island1, plannedChunks: {\"0\": [{slot: -7, kind: harbor}]}}, {id: island2}]. Nutze es bei: Inseln, Tiefen, Biome, Kampfvariante einer Welt festlegen. " +
 			"Statt: Welt-Datei von Hand ändern.",
 		Annotations: write,
 	}, func(ctx context.Context, in worldSetIn) (string, error) {
@@ -141,7 +146,7 @@ func registerWorldWrite(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "world_override_set",
 		Description: "Übersteuert ein Basis-Feld (data/<file>.json › path, z. B. economy › purse › startGold) in den `overrides` der Welt; " +
-			"null oder der Basiswert setzt es zurück; geprüft mit allen Nachfolger-Welten. " +
+			"null oder der Basiswert setzt es zurück; geprüft mit allen Nachfolger-Welten. Erlaubte Dateien: " + overrideFilesText + "; gesperrt sind u. a. hub › sites und economy › payRangeUnits (docs/rules/welten.md § 1.3). " +
 			"Nutze es bei: Werte einer Welt anders als die Basis (Gold, Preise, Händler, Handwerker). Statt: data/*.json ändern (gilt für alle Welten).",
 		Annotations: write,
 	}, func(ctx context.Context, in worldOverrideIn) (string, error) {

@@ -10,7 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
-	"strings"
 	"sync"
 
 	"k3c/engine/store"
@@ -32,7 +31,7 @@ func (e Editor) SetOverride(ctx context.Context, id, base string, path []string,
 	}
 	at := slices.IndexFunc(view.Entries, func(v ValueEntry) bool { return v.File == base && slices.Equal(v.Path, path) })
 	if at < 0 {
-		view.Error = fmt.Sprintf("das Feld %s › %s gibt es nicht", base, strings.Join(path, "."))
+		view.Error = e.rejectOverride(ctx, id, view.Entries, base, path).Error()
 		return view
 	}
 	warnings, err := e.writeOverride(ctx, id, base, path, value, view.Entries[at].Base)
@@ -47,32 +46,44 @@ func (e Editor) SetOverride(ctx context.Context, id, base string, path []string,
 
 // writeOverride setzt das Blatt, lässt den Entwurf prüfen und schreibt die Datei nur bei einer inhaltlichen Änderung.
 func (e Editor) writeOverride(ctx context.Context, id, base string, path []string, value, baseValue json.RawMessage) ([]string, error) {
-	raw, err := e.read(id)
+	raw, out, err := e.draftOverride(id, base, path, value, baseValue)
+	if err != nil || bytes.Equal(out, raw) {
+		return nil, err
+	}
+	warnings, err := e.checkDraft(ctx, id, out)
 	if err != nil {
 		return nil, err
+	}
+	return warnings, writeChecked(e.file(id), raw, out)
+}
+
+// draftOverride liefert die Datei der Welt id (raw) und den Entwurf mit dem Blatt base/path = value (out).
+func (e Editor) draftOverride(id, base string, path []string, value, baseValue json.RawMessage) (raw, out []byte, err error) {
+	if raw, err = e.read(id); err != nil {
+		return nil, nil, err
 	}
 	var head struct {
 		Overrides map[string]json.RawMessage `json:"overrides"`
 	}
 	if err := json.Unmarshal(raw, &head); err != nil {
-		return nil, fmt.Errorf("Welt-Datei: %w", err)
+		return nil, nil, fmt.Errorf("Welt-Datei: %w", err)
 	}
 	reset := !given(value) || sameJSON(value, baseValue)
 	ov, err := withLeaf(head.Overrides, base, path, value, reset)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	out, err := patchOverrides(raw, ov)
-	if err != nil || bytes.Equal(out, raw) {
-		return nil, err
-	}
+	out, err = patchOverrides(raw, ov)
+	return raw, out, err
+}
+
+// checkDraft lässt k3c-sim den Entwurf out der Welt id prüfen; die Antwort sind die Warnungen.
+func (e Editor) checkDraft(ctx context.Context, id string, out []byte) ([]string, error) {
 	var check struct {
 		Warnings []string `json:"warnings"`
 	}
-	if err := e.call(ctx, map[string]any{"op": "check", "world": id, "draft": json.RawMessage(out)}, &check); err != nil {
-		return nil, err
-	}
-	return check.Warnings, writeChecked(e.file(id), raw, out)
+	err := e.call(ctx, map[string]any{"op": "check", "world": id, "draft": json.RawMessage(out)}, &check)
+	return check.Warnings, err
 }
 
 // given: der Wert ist gesetzt (nicht leer, nicht null).
