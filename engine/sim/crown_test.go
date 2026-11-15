@@ -52,7 +52,7 @@ func TestKroneFaelltOhneGoldNachHinten(t *testing.T) {
 	for _, c := range []struct{ dx, dir float64 }{{1, -1}, {-1, 1}} {
 		w, p0 := land(c.dx)
 		c0 := p0.Crown
-		if c0 == nil || c0.State != crownFlying || c0.ToX != p0.X+c.dir*monarch.Crown.DistanceUnits {
+		if c0 == nil || c0.State != CrownFlying || c0.ToX != p0.X+c.dir*monarch.Crown.DistanceUnits {
 			t.Fatalf("Gegner bei %+v: Krone %+v", c, c0)
 		}
 		w.Enemies = nil
@@ -61,7 +61,7 @@ func TestKroneFaelltOhneGoldNachHinten(t *testing.T) {
 			Step(w, nil, dt)
 			peak = math.Max(peak, p0.Crown.Z)
 		}
-		if p0.Crown.State != crownGround || p0.Crown.Z != 0 || math.Abs(p0.Crown.X-c0.ToX) > 1e-9 || peak < monarch.Crown.HeightUnits*0.9 {
+		if p0.Crown.State != CrownGround || p0.Crown.Z != 0 || math.Abs(p0.Crown.X-c0.ToX) > 1e-9 || peak < monarch.Crown.HeightUnits*0.9 {
 			t.Fatalf("Landung: %+v, Scheitel %v", p0.Crown, peak)
 		}
 	}
@@ -117,7 +117,7 @@ func TestKroneRaubIstGameOver(t *testing.T) {
 	var over bool
 	for range 30 * 60 {
 		Step(w, nil, dt)
-		if p0.Crown != nil && p0.Crown.State == crownEnemy && !e.Fleeing {
+		if p0.Crown != nil && p0.Crown.State == CrownEnemy && !e.Fleeing {
 			t.Fatal("Träger flieht nicht")
 		}
 		for _, ev := range w.Events {
@@ -140,7 +140,7 @@ func TestKroneRaubStuftMitInselOver(t *testing.T) {
 	fell(p)
 	e := spawnEnemy(w, "goblin", p.X)
 	e.Crown, e.Fleeing, e.HomeX = p.Crown, true, e.X
-	p.Crown.State, p.Crown.Carrier = crownEnemy, e.ID
+	p.Crown.State, p.Crown.Carrier = CrownEnemy, e.ID
 	leaveThroughPortal(w)
 	if !isl.Over {
 		t.Fatal("Island.Over nach Kronenraub nicht gesetzt")
@@ -154,7 +154,7 @@ func TestKroneKeinRaubOhnePortale(t *testing.T) {
 	fell(p0)
 	e := spawnEnemy(w, "goblin", p0.X)
 	takeCrownOrLoot(w, e)
-	if p0.Crown.State != crownGround || e.Crown != nil || e.Fleeing {
+	if p0.Crown.State != CrownGround || e.Crown != nil || e.Fleeing {
 		t.Fatalf("Raub ohne Portal: %+v", p0.Crown)
 	}
 }
@@ -166,12 +166,12 @@ func TestKroneTraegerStirbt(t *testing.T) {
 	e := spawnEnemy(w, "goblin", p0.X)
 	e.HomeX = w.Portals[0]
 	takeCrownOrLoot(w, e)
-	if p0.Crown.State != crownEnemy || !e.Fleeing {
+	if p0.Crown.State != CrownEnemy || !e.Fleeing {
 		t.Fatalf("Gegner hebt nicht auf: %+v", p0.Crown)
 	}
 	e.X, e.HP = p0.X+7, 0
 	Step(w, nil, dt)
-	if p0.Crown.State != crownGround || p0.Crown.X != p0.X+7 {
+	if p0.Crown.State != CrownGround || p0.Crown.X != p0.X+7 {
 		t.Fatalf("Krone nach dem Tod des Trägers: %+v", p0.Crown)
 	}
 }
@@ -205,7 +205,7 @@ func TestKroneEineJeMonarch(t *testing.T) {
 	fell(p1)
 	p0.Crown.X, p1.Crown.X = x, x
 	stepCrowns(w, dt)
-	if p0.Crown.State != crownPlayer || p0.Crown.Carrier != p2.ID || p1.Crown.State != crownGround {
+	if p0.Crown.State != CrownPlayer || p0.Crown.Carrier != p2.ID || p1.Crown.State != CrownGround {
 		t.Fatalf("P2 trägt eine Krone, die zweite bleibt liegen: P0 %+v, P1 %+v", p0.Crown, p1.Crown)
 	}
 }

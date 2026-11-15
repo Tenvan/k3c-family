@@ -39,7 +39,7 @@ func castGroupHeal(w *World, p *Player, e skillEffect) bool {
 func castReviveCrown(w *World, p *Player, e skillEffect) bool {
 	hit := false
 	for _, q := range w.Players {
-		if c := q.Crown; c != nil && c.State != crownEnemy && math.Abs(c.X-p.X) <= e.Radius {
+		if c := q.Crown; c != nil && c.State != CrownEnemy && math.Abs(c.X-p.X) <= e.Radius {
 			restoreCrown(w, q, p)
 			hit = true
 		}

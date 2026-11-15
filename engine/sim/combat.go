@@ -100,6 +100,21 @@ func triggerUseful(w *World, s CombatSpot) bool {
 	return false
 }
 
+// CombatSpotState ist der Zahlstand eines Zahlziels für den Monarchen p (Anzeige im Spiel, B-939): Preis in Münzen, bereits
+// gezahlter Betrag, ob p hier gerade zahlen kann (combatPayable) und ob p in Zahl-Reichweite plus einer Unit Anzeige-Spielraum steht.
+type CombatSpotState struct {
+	Price   int
+	Paid    int
+	Payable bool
+	Near    bool
+}
+
+// StateFor liest den Zahlstand des Ziels für p; lesend, ändert die Welt nicht.
+func (s CombatSpot) StateFor(w *World, p *Player) CombatSpotState {
+	return CombatSpotState{Price: combatCost(w, s.Kind), Paid: w.combat.paid[s.key(p)], Payable: combatPayable(w, p, s),
+		Near: s.NearOf(w, p)}
+}
+
 func combatCost(w *World, kind string) int {
 	c := w.values().Economy.Combat
 	switch kind {
@@ -244,4 +259,9 @@ func squadPost(w *World, t *Troop) (float64, bool) {
 		return anchor - dir*w.values().Economy.Combat.FollowUnits, true
 	}
 	return 0, false
+}
+
+// NearOf meldet ohne Allokation, ob p in Zahl-Reichweite (+1 Unit) des Ziels steht; das Spiel prüft es vor StateFor.
+func (s CombatSpot) NearOf(w *World, p *Player) bool {
+	return math.Abs(s.X-p.X) <= w.values().Economy.PayRangeUnits+1
 }

@@ -4,6 +4,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"k3c/engine/sim"
 )
 
 // Die Kronen-Zustände stehen in docs/protocol.md (Zeile players[].crown); weicht die Engine ab, ändert sich die Doku mit.
@@ -21,7 +23,7 @@ func TestCrownStatesMatchProtocol(t *testing.T) {
 	if row == "" {
 		t.Fatal("Zeile players[].crown fehlt im Protokoll")
 	}
-	for _, s := range []string{CrownFlying, CrownGround, CrownEnemy, CrownPlayer} {
+	for _, s := range []string{sim.CrownFlying, sim.CrownGround, sim.CrownEnemy, sim.CrownPlayer} {
 		if !strings.Contains(row, "`"+s+"`") {
 			t.Errorf("Zustand %q steht nicht im Protokoll", s)
 		}

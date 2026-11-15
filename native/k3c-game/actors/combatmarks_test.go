@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"k3c/engine/sim"
-	"k3c/native/k3c-game/view"
 )
 
 func TestBannerFlagPointsAwayFromBack(t *testing.T) {
@@ -22,7 +21,7 @@ func TestBannerFlagPointsAwayFromBack(t *testing.T) {
 
 func TestCrownCarrier(t *testing.T) {
 	w := &sim.World{Players: []*sim.Player{
-		{ID: 1, Index: 0, Crown: &sim.Crown{State: view.CrownPlayer, Carrier: 2}},
+		{ID: 1, Index: 0, Crown: &sim.Crown{State: sim.CrownPlayer, Carrier: 2}},
 		{ID: 2, Index: 1},
 	}}
 	if crownCarrier(w, w.Players[0]) || !crownCarrier(w, w.Players[1]) {
