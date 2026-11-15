@@ -1,0 +1,128 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-insel-nil",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Insel-Miniatur der Welt Nil nach dem Weltbild: Sandinsel mit zwei Pyramiden, Flusslauf und Palme",
+  "teile": [
+    {
+      "id": "sockel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 10L-114 -6Q-100 -24 -60 -26H60Q100 -24 114 -6L110 10Z",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "duenen-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-106 -18Q-70 -60 -20 -50Q30 -40 60 -58Q96 -60 106 -18Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "pyramiden",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M20 -40L52 -92L84 -40Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M20 -40L52 -92L46 -40Z",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-74 -38L-14 -128L46 -38Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-74 -38L-14 -128L-24 -38Z",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "duenen-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 -12Q-60 -50 0 -40Q60 -30 110 -44V-10Z",
+          "material": "stroh",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "fluss",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 -22Q-50 -38 0 -26Q50 -14 110 -28V-16Q50 -4 0 -14Q-50 -24 -110 -10Z",
+          "material": "kristall",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "sand",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-112 -6Q-50 -18 0 -10Q60 -2 112 -12V-2H-112Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "palme",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M78 -10Q74 -46 88 -78L96 -76Q84 -46 88 -10Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M92 -78Q70 -86 52 -64Q72 -74 92 -72ZM92 -78Q112 -92 118 -66Q108 -78 94 -72ZM92 -78Q84 -102 62 -98Q80 -94 90 -74ZM92 -78Q104 -104 118 -96Q102 -92 96 -74Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 168,
+    "rahmen": [-120, -150, 240, 168]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

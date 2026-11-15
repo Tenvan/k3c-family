@@ -1,0 +1,37 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-meer-hinten",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): hintere Papierschicht des Meeres, ferne flache Wellen, waagrecht kachelbar über 768",
+  "teile": [
+    {
+      "id": "flaeche",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0V-88Q48 -76 96 -88Q144 -76 192 -88Q240 -76 288 -88Q336 -76 384 -88Q432 -76 480 -88Q528 -76 576 -88Q624 -76 672 -88Q720 -76 768 -88V0Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -40Q48 -30 96 -40Q144 -30 192 -40Q240 -30 288 -40Q336 -30 384 -40Q432 -30 480 -40Q528 -30 576 -40Q624 -30 672 -40Q720 -30 768 -40V0H0Z",
+          "material": "kristall",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 96,
+    "rahmen": [0, -96, 768, 96]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

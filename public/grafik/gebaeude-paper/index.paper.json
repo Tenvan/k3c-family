@@ -85,6 +85,11 @@
     "manifest": "mauer/manifest.json"
   },
   {
+    "id": "pagode",
+    "rig": "gebaeude",
+    "manifest": "pagode/manifest.json"
+  },
+  {
     "id": "rekrutierungslager",
     "rig": "gebaeude",
     "manifest": "rekrutierungslager/manifest.json"

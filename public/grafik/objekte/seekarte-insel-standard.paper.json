@@ -1,0 +1,108 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-insel-standard",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Insel-Miniatur der Welt Standard nach dem Weltbild: grüne Hügelinsel mit Burg und Tannen auf Sandsockel",
+  "teile": [
+    {
+      "id": "sockel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 10L-114 -6Q-100 -24 -60 -26H60Q100 -24 114 -6L110 10Z",
+          "material": "stroh",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-100 -18Q-80 -70 -30 -72Q10 -100 56 -84Q96 -64 102 -18Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "burg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M30 -70V-108H46V-70ZM74 -70V-108H90V-70Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M44 -70V-98H76V-70Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M26 -106L38 -134L50 -106ZM70 -106L82 -134L94 -106Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M54 -70V-86Q60 -94 66 -86V-70Z",
+          "material": "schwarz",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-mitte",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-106 -14Q-70 -56 -10 -50Q40 -78 100 -70Q112 -40 108 -14Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "wald",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-100 -20L-84 -84L-68 -20ZM-76 -20L-56 -100L-36 -20ZM-44 -20L-28 -76L-12 -20Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "wiese",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-112 -6Q-60 -36 0 -28Q60 -22 112 -34V-6Q0 -16 -112 -6Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 168,
+    "rahmen": [-120, -150, 240, 168]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

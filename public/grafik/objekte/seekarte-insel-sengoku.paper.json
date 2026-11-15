@@ -1,0 +1,135 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-insel-sengoku",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Insel-Miniatur der Welt Sengoku nach dem Weltbild: Schneeberg, Festung mit Stufendach, Reisfelder und Kirschbaum auf Felssockel",
+  "teile": [
+    {
+      "id": "sockel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 10L-114 -6Q-100 -24 -60 -26H60Q100 -24 114 -6L110 10Z",
+          "material": "stein",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "berg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-104 -18Q-60 -50 -34 -128H-6Q24 -50 80 -18Z",
+          "material": "biom-hoehle",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-34 -128H-6L4 -100L-8 -108L-20 -98L-32 -108L-44 -100Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "festung",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M40 -36L46 -62H90L96 -36Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M50 -62V-78H86V-62Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M40 -76Q52 -80 56 -90H80Q84 -80 96 -76Z",
+          "material": "schwarz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M58 -90V-102H78V-90Z",
+          "material": "hermelin",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M48 -100Q60 -106 64 -120H72Q76 -106 88 -100Z",
+          "material": "schwarz",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "reisfelder",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 -14Q-40 -44 30 -40Q80 -44 110 -30V-8H-110Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20 -34Q40 -42 100 -30L98 -24Q40 -34 -18 -28Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-112 -6Q-40 -28 40 -22Q80 -20 112 -16V-4H-112Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "kirschbaum",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-84 -8Q-78 -36 -88 -60L-80 -62Q-70 -36 -72 -8Z",
+          "material": "leder",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-110 -58Q-108 -88 -84 -88Q-68 -106 -44 -92Q-22 -90 -22 -68Q-14 -52 -36 -48Q-60 -40 -80 -50Q-104 -46 -110 -54Z",
+          "material": "haut",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [-52, -76],
+          "radius": 6,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 168,
+    "rahmen": [-120, -150, 240, 168]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

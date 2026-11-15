@@ -1,0 +1,104 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-insel-britannien",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Insel-Miniatur der Welt Britannien nach dem Weltbild: Moorinsel mit Steinkreis, Nebelband und Heide auf Felssockel",
+  "teile": [
+    {
+      "id": "sockel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 10L-114 -6Q-100 -24 -60 -26H60Q100 -24 114 -6L110 10Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "huegel-fern",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-106 -18Q-66 -78 -10 -64Q40 -52 80 -74Q104 -70 106 -18Z",
+          "material": "biom-hoehle",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "moor",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-110 -14Q-50 -52 10 -44Q70 -36 110 -48V-10Z",
+          "material": "biom-mine",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "steinkreis",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-64 -42V-84H-52V-42ZM-36 -42V-84H-24V-42ZM-68 -82V-94H-20V-82ZM-6 -40V-96H8V-40ZM24 -40V-96H38V-40ZM-10 -94V-108H42V-94ZM52 -40V-78H64V-40Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-64 -42V-82H-59V-42ZM-36 -42V-82H-31V-42ZM-6 -40V-94H0V-40ZM24 -40V-94H30V-40ZM52 -40V-78H57V-40Z",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "nebel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-88 -40Q-96 -50 -80 -54Q-72 -64 -56 -58Q-40 -68 -22 -58Q-4 -66 12 -56Q32 -64 46 -54Q66 -58 72 -48Q84 -44 74 -38H-80Q-86 -37 -88 -40Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "moor-vorn",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-112 -6Q-50 -30 10 -22Q60 -16 112 -26V-4H-112Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-108 -8Q-98 -30 -78 -26Q-62 -30 -52 -14Q-80 -8 -108 -8ZM60 -18Q76 -36 94 -30Q106 -34 112 -24V-10Q86 -8 60 -14Z",
+          "material": "purpur",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 168,
+    "rahmen": [-120, -150, 240, 168]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}
