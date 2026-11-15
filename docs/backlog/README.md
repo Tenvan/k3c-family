@@ -41,6 +41,14 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-914](B-914-abnahme-st2.md) | CLI | Idee | mittel | offen | ST2 | Ralf nimmt ST2 ab: Testing-Menü und Stresstest-Bericht am PC geprüft |
 | [B-924](B-924-k3c-sim-in-workbench.md) | DEV | Schuld | mittel | offen | WE1 | Die Workbench nutzt den k3c-sim-Code direkt statt über den Kindprozess |
 | [B-925](B-925-sim-aenderung-eigene-workbench.md) | DEV | Schuld | mittel | offen | WE1 | Änderungen am Sim-Code laufen im eigenen Worktree mit eigener Dev-Workbench auf eigenen Ports |
+| [B-927](B-927-portale-zerstoerbar.md) | SIM | Idee | hoch | offen | KS2 | Portale haben HP, nur ausrückende Truppen zerstören sie; ohne Portale ist die Stufe dauerhaft sicher |
+| [B-928](B-928-kaempfer-werden-buerger.md) | SIM | Idee | hoch | offen | KS2 | Getroffene Kämpfer verlieren die Waffe und werden Bürger, keine Kaskade bis zum Landstreicher |
+| [B-929](B-929-buerger-holen-werkzeug.md) | SIM | Idee | mittel | offen | KS2 | Bürger ohne Waffe oder Werkzeug holen das nächste verfügbare, nur ohne Gegner in der Nähe |
+| [B-930](B-930-monarch-gold-statt-hp.md) | SIM | Idee | hoch | offen | KS3 | Der Monarch hat keine HP: jeder Treffer kostet einen festen Goldbetrag, ohne Gold fällt die Krone |
+| [B-931](B-931-krone-raub.md) | SIM | Idee | hoch | offen | KS3 | Die gefallene Krone fliegt im Bogen nach hinten; Gegner rauben sie ins Portal (Niederlage), Monarchen sammeln sie auf |
+| [B-932](B-932-angriff-gruppen.md) | SIM | Idee | hoch | offen | KS4 | Gruppen-Angriff: Schild macht zum Gruppenführer, Auslöser am Tor schickt alle Gruppen los |
+| [B-933](B-933-angriff-general.md) | SIM | Idee | hoch | offen | KS4 | General-Angriff: Der Monarch nimmt das Banner am Tor, ein Trupp folgt ihm, Ausfälle werden nachbesetzt |
+| [B-934](B-934-kampf-anzeige.md) | CLI | Idee | mittel | offen | KS5 | Das Spiel zeigt Portal-HP, Krone, Münzverlust, Schild, Banner und Auslöser |
 
 ## Archiv
 

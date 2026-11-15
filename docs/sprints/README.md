@@ -13,8 +13,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
 | FB1 | CLI | NAT | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | – | `aktiv/FB1-feedback-client/` |
 | FB2 | SIM | NAT | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | – | `aktiv/FB2-feedback-sim/` |
+| KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
 | FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
+| WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 
 ## Offen am Gerät
@@ -29,7 +31,10 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | Entwurf | `geplant/WE1-workbench-engine-inprocess/` |
+| KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | Entwurf | `geplant/KS2-portale-ausruestung/` |
+| KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | Entwurf | `geplant/KS3-krone-gold/` |
+| KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | Entwurf | `geplant/KS4-angriff-gruppen-general/` |
+| KS5 | CLI | KSY | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | – | Entwurf | `geplant/KS5-kampf-anzeige/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

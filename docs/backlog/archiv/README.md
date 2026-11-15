@@ -841,3 +841,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-918](B-918-tasten-nach-menues-tot.md) | CLI | Problem | hoch | erledigt | FB1 | Tastensteuerung fällt nach Debug-, Cheat- und Menü-Nutzung aus |
 | [B-919](B-919-hud-geldsack.md) | CLI | Idee | mittel | erledigt | FB1 | HUD zeigt einen Geldsack statt Healthbar und P1/P2 |
 | [B-922](B-922-geldsack-skill.md) | SIM | Idee | mittel | erledigt | FB2 | Geldsack in drei Größen, per Skillpunkte setzbar |
+| [B-926](B-926-kampfregeln-doku.md) | REG | Idee | hoch | erledigt | KS1 | Kampfregeln stehen in docs/rules/kampf.md und ersetzen den Burgfall als Niederlage |

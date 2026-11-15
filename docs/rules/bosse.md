@@ -3,20 +3,21 @@
 Beschlossen von 🧑 im Workshop R4.3 am 2026-10-02 (Grundlage: [`archiv/ist-gegner-bosse.md`](archiv/ist-gegner-bosse.md); Rahmen: [`gegner.md`](gegner.md), [`stufen.md`](stufen.md), [`monarch.md`](monarch.md), [`wirtschaft.md`](wirtschaft.md)).
 Je Regel: **Regel · Begründung · Verweis auf `data/` · Zielkorridor**. Werte sind **Startwerte**, Feintuning mit dem Balancing-Tester (B-099).
 Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot „sparsam“, je 100 Seeds**. Jede Regel gilt für 2+ Spieler.
+**Kampf (B-926, 🧑 2026-11-15):** In einer **sicheren Stufe** (alle Portale zerstört) entfällt der Miniboss mit den Wellen; der Endboss im Bau bleibt angreifbar; das letzte Portal gibt den Skill-Punkt des Minibosses, die Vollmond-Belohnung gibt es nur in Stufen mit Portalen (`kampf.md` § 2).
 
 ## 1. Bosse
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
 | **Je Stufe ein Miniboss, je Insel ein Endboss** in der tiefsten Stufe (Kristallhöhle in Insel 1). Jeder Boss ist eine **eigene Figur** im Thema der Stufe. | Klare Meilensteine; Bosse sind Höhepunkte, keine stärkeren Standardgegner. | `data/bosses.json` (SIM legt an) | – |
-| **Auslöser Miniboss:** Er kommt mit einer bestimmten Welle über ein Portal: **Welle 5** der Stufe im Wald (Oberwelt), **Welle 3** in Höhle, Mine, Eisenstollen und Kristallhöhle (unten kommen Wellen seltener). | Der Boss ist Teil des Wellenrhythmus und kommt zum Hub. | `data/bosses.json` › `wave` | Miniboss besiegt: Wald bis Tag 8 in 60–85 %; Höhle bis Tag 14, Mine bis Tag 20 in 50–80 % (Startziele) |
+| **Auslöser Miniboss:** Er kommt mit einer bestimmten Welle über ein Portal (entfällt, wenn alle Portale der Stufe zerstört sind, `kampf.md` § 2): **Welle 5** der Stufe im Wald (Oberwelt), **Welle 3** in Höhle, Mine, Eisenstollen und Kristallhöhle (unten kommen Wellen seltener). | Der Boss ist Teil des Wellenrhythmus und kommt zum Hub. | `data/bosses.json` › `wave` | Miniboss besiegt: Wald bis Tag 8 in 60–85 %; Höhle bis Tag 14, Mine bis Tag 20 in 50–80 % (Startziele) |
 | **Auslöser Endboss:** Er liegt in seinem **Bau** im Level (am Ende vor dem Eingang) und wird **ausgelöst, wenn ein Spieler dort ankommt**. Er **wartet ohne Zeitdruck**. | Spieler bestimmen den Zeitpunkt und können sich vorbereiten. | `data/bosses.json` › `lair` | Endboss besiegt bis Tag 25 in 30–55 % |
 | **Werte:** Miniboss etwa **8× HP und 2× Schaden** eines Standardgegners der Stufe, **1 Fähigkeit**; Endboss etwa **30× HP**, **3 Phasen** mit je einer neuen Fähigkeit. Zusätzlich skaliert nach der Insel-Tabelle (`stufen.md`) und mit der **Spieleranzahl der Insel** (HP × (1 + `bossHpPerExtraPlayer` je Zusatzspieler, eigenes Feld in `data/waves.json`, getrennt von `perExtraPlayer` der Wellen). | Bosse bleiben ein Gruppenkampf, auch bei 4 Spielern. | `data/bosses.json` | Boss-Kampfdauer Median 60–180 s (Kennzahl fehlt, B-099) |
 | **Gold und Material:** Miniboss **100 Gold + 50 Material** der Stufe, Endboss **500 Gold + 250 Material** der Stufe, als Haufen am Ort für alle; dazu die **Skill-Punkte** (Miniboss 1, Endboss 3, `monarch.md` § 3). | Bosse sind lohnend. | `data/bosses.json` › `reward` | – |
 | **Camp und Bau:** In einem Biom mit Bau liegt das Landstreicher-Camp (Anwerben) **nie näher als 80 Units** (`lair.noticeUnits` 40 plus 40 Rand) am Bau und, wo es der Abstand zu den Mauerlinien erlaubt, **nie hinter einem Portal** (vom Hub aus gesehen). Der Abstand zu den Linien (`geplante-chunks.md`, B-261) hat Vorrang. | Hinter dem Portal und vor dem Bau laufen Portal-Gegner und die Beschwörung des Endbosses; der Weg zum Camp wäre tödlich, und ohne Bauern gibt es kein Heer (BS3.4, B-645). | `engine/level/level.go` › `safeCampSlots`; `data/biomes/crystal.json` › `lengthUnits` (600–700, damit außerhalb der Linien Platz bleibt) | Test `camps_test.go`: 500 Seeds, Abstand zum Bau immer, hinter einem Portal höchstens 5 % |
 | Ein besiegter Boss **kehrt nie zurück**; der Sieg steht im Spielstand, auch bei Stufenverlust. | Bosse sind Meilensteine, keine Wiederholung. | Spielstand | – |
 | Der **Sieg über den Endboss** erfüllt die Endboss-Bedingung des Inselwechsels am Hafen (dazu fertiges Schiff, `stufen.md` § 1) und löst bei Ziel „Endboss“ den Kampagnensieg aus (`stufen.md`). | Beschlossene Rahmenregeln. | – | – |
-| Fällt ein Spieler im Bosskampf, wird er wie üblich wiederbelebt (A halten, 3 s) oder respawnt nach 15 s (`monarch.md` § 5). | Keine Sonderregel. | – | – |
+| Im Bosskampf gilt der Monarch-Treffer wie sonst: 1 Münze, ohne Gold fällt die Krone (`kampf.md` § 5); Wiederbeleben und Respawn entfallen. | Keine Sonderregel. | – | – |
 
 ### 1.1 Bosse der Insel 1 (Startwerte, Namen vorläufig)
 
