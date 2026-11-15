@@ -191,3 +191,33 @@ func TestPortalSimulationIstDeterministisch(t *testing.T) {
 		t.Error("zwei Läufe weichen ab")
 	}
 }
+
+func TestLetztesPortalOhneDoppelPunktBeiMiniboss(t *testing.T) {
+	isl, w := portalIsland(t)
+	b := miniBoss(w.Biome.Depth)
+	if b == nil {
+		t.Skip("kein Miniboss in dieser Stufe")
+	}
+	mini := w.values().Monarch.SkillPointSources.Miniboss
+	pool := isl.SkillPool
+	secureStage(w) // Miniboss lebt noch oder ist nie erschienen: der Punkt kommt einmal
+	if isl.SkillPool != pool+mini || !slicesContains(isl.DefeatedBosses, b.ID) {
+		t.Fatalf("Pool %d → %d, besiegt %v", pool, isl.SkillPool, isl.DefeatedBosses)
+	}
+	secureStage(w)
+	e := spawnBoss(w, b, w.HubX+100)
+	e.HP = 0
+	removeDeadEnemies(w)
+	if isl.SkillPool != pool+mini {
+		t.Errorf("Doppelter Punkt: Pool %d → %d", pool, isl.SkillPool)
+	}
+}
+
+func slicesContains(s []string, v string) bool {
+	for _, x := range s {
+		if x == v {
+			return true
+		}
+	}
+	return false
+}

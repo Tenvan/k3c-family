@@ -3,6 +3,7 @@ package level
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"k3c/data"
@@ -96,7 +97,18 @@ func LoadBiome(id string) (Biome, error) {
 	if err := b.checkNature(); err != nil {
 		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
 	}
+	if err := b.checkPortals(); err != nil {
+		return Biome{}, fmt.Errorf("biomes/%s.json: %w", id, err)
+	}
 	return b, nil
+}
+
+// checkPortals verlangt Portal-HP und Verteidiger-Takt größer 0 (kein stiller Standardwert, kampf.md § 2).
+func (b Biome) checkPortals() error {
+	if b.Portals.HP <= 0 || b.Portals.Defense.IntervalSeconds <= 0 {
+		return errors.New("portals.hp und portals.defense.intervalSeconds müssen größer 0 sein")
+	}
+	return nil
 }
 
 // Check lehnt einen Tag/Nacht-Zyklus ab, dem eine Dauer fehlt oder dessen Dauer nicht positiv ist (kein stiller

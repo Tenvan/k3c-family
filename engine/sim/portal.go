@@ -138,7 +138,13 @@ func standingPortalNear(w *World, x float64) float64 {
 // Beute fällt zu Boden (ohne Portal gibt es keinen Raub).
 func secureStage(w *World) {
 	w.SpawnQueue = []QueuedSpawn{}
-	addPoolPoints(w, w.values().Monarch.SkillPointSources.Miniboss)
+	if b := miniBoss(w.Biome.Depth); b == nil || w.island == nil {
+		addPoolPoints(w, w.values().Monarch.SkillPointSources.Miniboss)
+	} else if !slices.Contains(w.island.DefeatedBosses, b.ID) {
+		// Der Miniboss entfällt: sein Punkt gilt als vergeben, ein späterer Tod gibt ihn nicht noch einmal (bossDefeated).
+		addPoolPoints(w, w.values().Monarch.SkillPointSources.Miniboss)
+		w.island.DefeatedBosses = append(w.island.DefeatedBosses, b.ID)
+	}
 	for _, e := range w.Enemies {
 		dropLoot(w, e)
 	}
@@ -157,10 +163,10 @@ func dropLoot(w *World, e *Enemy) {
 
 // applyPortals übernimmt die zerstörten Portale aus dem Spielstand (nach dem Anlegen aus dem Level).
 func applyPortals(w *World, h HubSave) {
-	w.PortalsDown = slices.Clone(h.PortalsDown)
+	w.PortalsDown = append([]float64{}, h.PortalsDown...)
 	w.Portals = slices.DeleteFunc(w.Portals, func(p float64) bool {
 		return slices.ContainsFunc(h.PortalsDown, func(d float64) bool { return math.Abs(d-p) < 0.01 })
 	})
-	w.PortalHP, w.portalDefense = nil, nil
+	w.PortalHP, w.portalDefense = []float64{}, nil
 	syncPortals(w)
 }

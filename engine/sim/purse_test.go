@@ -34,7 +34,20 @@ func TestPurseSizes(t *testing.T) {
 	if p.Gold != PurseMaxOf(w, p) || q.Gold != base {
 		t.Fatalf("Gold p %d, q %d", p.Gold, q.Gold)
 	}
-	// Review FB2: nach Respec liegt der Beutel über der Grenze; neues Gold fällt zu Boden, der Beutel bleibt.
+}
+
+// Review FB2: nach Respec liegt der Beutel über der Grenze; neues Gold fällt zu Boden, der Beutel bleibt.
+func TestPurseRespecDropsNewGold(t *testing.T) {
+	isl := mustIsland(t, "geldsack", []int{0})
+	w := isl.Stages[0]
+	p := AddIslandPlayer(isl, 0)
+	addPoolPoints(w, 5)
+	for _, id := range []string{"purseMedium", "purseLarge"} {
+		if err := LearnSkill(w, p, id); err != nil {
+			t.Fatal(err)
+		}
+	}
+	p.Gold = PurseMaxOf(w, p)
 	full, coins := p.Gold, len(w.Coins)
 	if err := Respec(w, p); err != nil {
 		t.Fatal(err)

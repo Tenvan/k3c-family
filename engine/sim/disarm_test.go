@@ -98,3 +98,15 @@ func TestDisarmNichtBeimBurgfall(t *testing.T) {
 		t.Errorf("disarmed beim Burgfall: %v, am Boden %d", w.Events, len(w.Drops))
 	}
 }
+
+// B-928: Die Flucht verwirft ein getragenes Material nicht.
+func TestFluchtBehaeltDenTrageAuftrag(t *testing.T) {
+	w := quietWorld(t)
+	tr := addPeasant(w, w.HubX-30, "")
+	tr.Job = &Job{Type: "carry", Resource: "wood", Amount: 3}
+	tr.fleeing = true
+	run(w, 2)
+	if tr.Job == nil || tr.Job.Type != "carry" || tr.Job.Amount != 3 {
+		t.Fatalf("Trage-Auftrag verloren: %+v", tr.Job)
+	}
+}

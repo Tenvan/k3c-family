@@ -17,7 +17,9 @@ func enemyWithin(w *World, x, dist float64) bool {
 
 // flee läuft zum Schutzplatz; true, solange der Bürger noch flieht (der Aufrufer macht dann nichts weiter).
 func flee(w *World, t *Troop, dt float64) bool {
-	releaseJob(w, t)
+	if t.Job == nil || t.Job.Type != "carry" { // getragenes Material bleibt beim Bauern, er trägt es nach der Flucht weiter
+		releaseJob(w, t)
+	}
 	if walkTo(w, t, shelterX(w, t), dt) && !enemyWithin(w, t.X, w.values().Troops["peasant"].FetchEnemyDistance) {
 		t.fleeing, t.shelter = false, 0
 		return false
