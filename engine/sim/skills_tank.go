@@ -25,7 +25,7 @@ func castStun(w *World, p *Player, e skillEffect) bool {
 	return true
 }
 
-// castShield (Iron Wall, Divine Shield): Barriere aus HP Schild-Punkten auf dem Wirkenden für Duration Sekunden. Ein
+// castShield (Iron Wall, Divine Shield): Barriere aus HP Schild-Punkten (fängt Treffer ohne Goldverlust ab) auf dem Wirkenden für Duration Sekunden. Ein
 // laufender Schild wird nur durch einen größeren ersetzt (B-220); die Abklingzeit startet in jedem Fall.
 func castShield(_ *World, p *Player, e skillEffect) bool {
 	if e.HP > p.Shield {
@@ -34,7 +34,7 @@ func castShield(_ *World, p *Player, e skillEffect) bool {
 	return true
 }
 
-// castLastStand: Duration Sekunden lang lässt ein tödlicher Treffer den Wirkenden mit 1 HP stehen (applyDamage).
+// castLastStand: Duration Sekunden lang hält die letzte Münze einen Treffer länger (damagePlayer).
 func castLastStand(_ *World, p *Player, e skillEffect) bool {
 	p.LastStandFor = e.Duration
 	return true

@@ -71,7 +71,7 @@ func radarMarkers(out []radarMarker, w *sim.World, self int) []radarMarker {
 	}
 	for _, p := range w.Players {
 		if p != nil {
-			out = append(out, radarMarker{kind: radarPlayer, pos: at(p.X), index: p.Index, own: p.Index == self, down: p.RespawnIn > 0})
+			out = append(out, radarMarker{kind: radarPlayer, pos: at(p.X), index: p.Index, own: p.Index == self, down: p.Crown != nil})
 		}
 	}
 	return out

@@ -29,8 +29,6 @@ func sign(v float64) float64 {
 
 func intPtr(v int) *int { return &v }
 
-func isAlive(p *Player) bool { return p.RespawnIn <= 0 }
-
 // shielded: Der Monarch ist kein Ziel und nimmt keinen Schaden, wenn ein pausiertes Gerät ihn schützt (Protected, B-214) oder
 // niemand ihn steuert (Free: wartend nach Verbindungsverlust oder frei, docs/rules/bedienung.md § 3, B-530) oder er
 // unsichtbar ist (StealthFor, Smoke Bomb, B-577): Gegner wählen ihn nicht und verlieren ihn als Ziel.
@@ -98,7 +96,7 @@ func isWorker(w *World, id *int) bool {
 	return false
 }
 
-// causeOther ist die Todesursache in playerDown, wenn kein Gegner den Schaden verursacht hat (B-182).
+// causeOther ist die Todesursache in crownFallen, wenn kein Gegner den Schaden verursacht hat (B-182).
 const causeOther = "other"
 
 // applyDamage verteilt Schaden ohne Gegner als Quelle (Schlag, Skill, Schütze) auf ein Ziel per ID.
@@ -116,7 +114,7 @@ func hitTroop(w *World, t *Troop, damage float64, cause string) {
 	hitEvent(w, "troop", t.ID, t.X, damage)
 }
 
-// applyDamageBy verteilt Schaden auf ein Ziel per ID; cause ist die Gegnerart für playerDown (B-182), "" = causeOther.
+// applyDamageBy verteilt Schaden auf ein Ziel per ID; cause ist die Gegnerart für crownFallen (B-182), "" = causeOther.
 // Tod und Zerstörung behandelt der Tick.
 func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 	for _, p := range w.Players {
@@ -158,35 +156,60 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 	}
 }
 
-// damagePlayer: Verteidigung (defenseOf, Passive), dann zieht der Schild (Iron Wall) zuerst ab, der Rest geht auf die HP. Solange Last
-// Stand läuft, lässt ein tödlicher Treffer 1 HP stehen. Der tödliche Treffer setzt `cause` in playerDown.
-// Ein geschützter Monarch (shielded: Protected oder Free) nimmt keinen Schaden.
+// damagePlayer (kampf.md § 5, B-930): Der Monarch hat keine HP. Der Schild fängt den Treffer ab (kein Goldverlust, solange
+// Schild-Punkte da sind), jeder freeHitEvery-te Treffer (Thick Skin) kostet nichts, Last Stand lässt die letzte Münze einen
+// Treffer länger halten. Sonst kostet der Treffer hitCoins Münzen, die zu Boden fallen; ohne Gold fällt die Krone
+// (crown.go). Ein geschützter Monarch (shielded: Protected, Free, unsichtbar) und einer ohne Krone nimmt keinen Schaden.
 func damagePlayer(w *World, p *Player, damage float64, cause string) {
-	if !isAlive(p) || shielded(p) {
+	if !crowned(p) || shielded(p) {
 		return
 	}
-	dealt := math.Max(1, damage-defenseOf(w, p))
-	if p.Shield > 0 {
-		absorbed := math.Min(p.Shield, dealt)
-		p.Shield -= absorbed
-		dealt -= absorbed
-		if p.Shield == 0 {
-			p.ShieldFor = 0
+	lost := 0
+	switch {
+	case absorbByShield(p, damage), freeHit(w, p):
+	case p.LastStandFor > 0 && p.Gold > 0 && p.Gold <= w.values().Monarch.HitCoins:
+		p.LastStandFor = 0
+	case p.Gold > 0:
+		lost = min(p.Gold, w.values().Monarch.HitCoins)
+		p.Gold -= lost
+		hitCoins(w, p, lost)
+	default:
+		dropCrown(w, p, causeOrOther(cause))
+		hitEvent(w, "player", p.Index, p.X, 0)
+		return
+	}
+	hitEvent(w, "player", p.Index, p.X, float64(lost))
+}
+
+func causeOrOther(cause string) string {
+	if cause == "" {
+		return causeOther
+	}
+	return cause
+}
+
+// absorbByShield: Der Schild nimmt den Treffer ganz (auch den Überschuss) und zieht den Schaden von seinen Punkten ab.
+func absorbByShield(p *Player, damage float64) bool {
+	if p.Shield <= 0 {
+		return false
+	}
+	p.Shield = math.Max(0, p.Shield-math.Max(1, damage))
+	if p.Shield == 0 {
+		p.ShieldFor = 0
+	}
+	return true
+}
+
+// freeHit: Thick Skin (freeHitEvery n): jeder n-te Treffer kostet nichts; mehrere Passive: der kleinste Wert gilt.
+func freeHit(w *World, p *Player) bool {
+	p.hits++
+	every := 0
+	eachPassive(w, func(o *Player, e skillEffect) {
+		if o == p && e.FreeHitEvery > 0 && (every == 0 || e.FreeHitEvery < every) {
+			every = e.FreeHitEvery
 		}
-	}
-	p.HP -= dealt
-	p.hit = p.hit || dealt > 0 // bricht ein Wiederbeleben ab, bei dem p hilft (monarch_revive.go)
-	hitEvent(w, "player", p.Index, p.X, dealt)
-	if p.HP <= 0 && p.LastStandFor > 0 {
-		p.HP = 1
-	}
-	if p.HP <= 0 {
-		p.HP, p.RespawnIn, p.VX = 0, w.values().Monarch.RespawnSeconds, 0
-		if cause == "" {
-			cause = causeOther
-		}
-		w.Events = append(w.Events, Event{"type": "playerDown", "player": p.Index, "cause": cause, "x": unitX(p.X)})
-	}
+	})
+	return every > 0 && p.hits%every == 0
 }
 
 // destroySite: Der Bauplatz ist wieder leer und muss neu bezahlt werden; eine Ruine bleibt Ruine (building_ruin.go).

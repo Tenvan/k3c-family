@@ -52,7 +52,7 @@ func stepTravel(w *World, dt float64) {
 	}
 	var deciders []*Player
 	for _, p := range w.Players {
-		if isAlive(p) && !p.Free {
+		if crowned(p) && !p.Free {
 			deciders = append(deciders, p)
 		}
 	}

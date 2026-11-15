@@ -59,7 +59,7 @@ func chooseHint(down bool, train, side, resource string, atTag, atLair bool) (hi
 // actionHint liest die Aktionen des Monarchen p an seinem Ort (sim.TrainAt, sim.TradeAt, sim.AtLair wie die
 // Aktionsliste des Servers, engine/net/actions.go).
 func actionHint(lang string, w *sim.World, p *sim.Player) hintKey {
-	if p.RespawnIn > 0 {
+	if p.Crown != nil {
 		return hintKey{lang: lang}
 	}
 	side, res := sim.TradeAt(w, p)

@@ -16,21 +16,19 @@ import "math"
 //	coinPickup    – Münze aufgehoben: player (Index), x
 //	coinGive      – Münze gegeben: player, x, to (site, recruit, mark, offer, merchant); fällt sie nur zu Boden, kein Ereignis
 //	buildProgress – Bau fortgeschritten: site (ID), kind, x, percent (25, 50, 75; fertig = built)
-//	revive        – Monarch steht nach der Wartezeit wieder: player, x
-//	revived       – Monarch von einem Mitspieler wiederbelebt (A halten, monarch_revive.go; Q62): player, x
 //	trained       – Bauer ausgebildet (unit_professions.go): kind (miner, builder, craftsman), x
 //	merchantArrived – Händler kommt (merchant.go): resource, x (Zahlziel Kaufen); merchantLeft – Händler reist ab
 //	merchantFled  – Händler bei 0 HP geflohen, ein halber Kauf fällt als Münzen (merchant.go, B-373); hit mit target merchant
 //	disarmed      – Bürger verliert seine Ausrüstung (Verlust-Kaskade, unit_warrior.go; Q67, Q69): kind (Figur oder
-//	                Beruf), x, cause (Gegnerart wie playerDown); ohne Priorität, nicht beim Burgfall
+//	                Beruf), x, cause (Gegnerart wie crownFallen); ohne Priorität, nicht beim Burgfall
 //	equipmentTaken – Gegner trägt Ausrüstung weg (Q68, Q69); kind (Figur oder Beruf), x (enemies_equipment_taken.go)
 //	traded        – Tausch am Händler: player, resource, amount (+ gekauft, − verkauft), gold (− bezahlt, + erhalten)
 //	bossSpawned   – Boss erscheint (boss.go): boss (ID aus data/bosses.json), x
 //	bossDefeated  – Boss besiegt, Belohnung gegeben (boss.go): boss, x; statt `kill`
 //	bossPhase     – Endboss wechselt in die nächste Phase, je Wechsel einmal (boss_endboss.go): boss, phase (ab 2)
 //	victory       – Ziel der Insel erreicht, genau einmal je Insel, in Stufe 0 (island_victory.go): goal (Variante), day
-//	gameOver      – Burg gefallen im Niederlage-Modus „Komplett verloren“ (island_defeat.go): ohne Felder außer stage; danach
-//	                ruht die Insel (Island.Over), nach `castleFallen` im selben Tick
+//	gameOver      – Kronenraub, in jedem Grad (island_defeat.go, crown.go): cause "crown", stage; danach ruht die Insel
+//	                (Island.Over); der Burgfall beendet das Spiel nicht mehr
 //	islandGateOpen – Endboss besiegt, Wechselpunkt zur nächsten Insel offen, in der tiefsten Stufe (island_switch.go):
 //	                island (Index der nächsten Insel), x (Burg)
 //	islandSwitch  – alle lebenden Spieler stehen am Wechselpunkt, der Raum tauscht die Insel: island
@@ -40,11 +38,17 @@ import "math"
 //	eventEnded    – Event endet: Nacht-Events bei Tagesanbruch (event, day = die Nacht); merchantRaid bei Abreise oder
 //	                Flucht: event, day, protected, resource, amount (Belohnung im Vorrat)
 //
-//	playerDown    – Monarch fällt: player, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss,
-//	                sonst "other"; B-182)
+//	crownFallen   – Monarch ohne Gold getroffen, seine Krone springt im Bogen nach hinten (crown.go, B-930/B-931): player,
+//	                x, toX, cause (Gegnerart aus data/enemies.json bei Nahkampf und Geschoss, sonst "other"; B-182)
+//	crownLanded   – die Krone liegt am Boden: player, x
+//	crownPickedUp – ein Mitspieler trägt die fremde Krone zum Besitzer: player (Besitzer), by, x
+//	crownRestored – die Krone sitzt wieder auf dem Monarchen: player, by, x
+//	crownTaken    – ein Gegner trägt die Krone zum Portal: player (Besitzer), x
+//	crownStolen   – Kronenraub, die Krone ist im Portal; danach gameOver: player, x
 //
-// Auf bestehende Ereignisse abgebildet (Auslegung von Q08, bestätigt mit der Freigabe von F3): Tod = playerDown,
-// Bau fertig = built, Skill = skillPoint, Nacht naht = dusk, Portal = arrived.
+// Auf bestehende Ereignisse abgebildet (Auslegung von Q08, bestätigt mit der Freigabe von F3): Krone fällt = crownFallen,
+// Bau fertig = built, Skill = skillPoint, Nacht naht = dusk, Portal = arrived. Respawn, Wiederbeleben (revive, revived)
+// und playerDown entfallen (B-930).
 
 // emit hängt ein Ereignis an. Es liest nur und verbraucht kein rng, damit sich der Spielverlauf nicht ändert.
 func emit(w *World, typ string, fields Event) {
@@ -96,7 +100,7 @@ const maxEventsPerTick = 32
 // priorityEvent: Tod und Bau gehen bei Überlauf vor (B-139/AC-03).
 func priorityEvent(ev Event) bool {
 	switch ev["type"] {
-	case "playerDown", "castleFallen", "built", "buildProgress", "destroyed", "kill":
+	case "crownFallen", "castleFallen", "built", "buildProgress", "destroyed", "kill":
 		return true
 	}
 	return false

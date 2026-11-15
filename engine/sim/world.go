@@ -141,7 +141,6 @@ func addPlayerAt(w *World, index int) *Player {
 	}
 	p := &Player{
 		ID: w.newID(), Index: index, X: w.HubX + offset, Facing: facing, Gold: w.values().Economy.Purse.StartGold,
-		HP: w.values().Monarch.Base.HP, MaxHP: w.values().Monarch.Base.HP,
 		PayCooldown: 0.5, // der Beitritts-Tastendruck soll nicht gleich eine Münze ausgeben
 	}
 	w.Players = append(w.Players, p)
@@ -157,6 +156,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	spawnGuards(w)
 	stepSpawns(w)
 	stepPlayers(w, commands, dt)
+	stepCrowns(w, dt)
 	stepPassives(w, dt)
 	stepCamps(w, dt)
 	stepSites(w)
@@ -196,7 +196,7 @@ func castleFallen(w *World) {
 		defeatLosses(w)
 	}
 	for _, p := range w.Players {
-		respawn(w, p)
+		toHub(w, p)
 	}
 	w.Enemies, w.SpawnQueue, w.Projectiles = keepGuards(w.Enemies), []QueuedSpawn{}, []*Projectile{}
 }

@@ -108,7 +108,7 @@ func TestIslandOptionsGradeChangeAppliesNextWave(t *testing.T) {
 
 func TestIslandOptionsSetOptions(t *testing.T) {
 	isl := mustIsland(t, "opt-d", []int{0})
-	if isl.Options != DefaultOptions() || isl.Options.Defeat != "stage" {
+	if isl.Options != DefaultOptions() || isl.Options.Defeat != "resources" {
 		t.Fatalf("Standard falsch: %+v", isl.Options)
 	}
 	for _, bad := range []IslandOptions{{"x", "endboss", "stage"}, {"normal", "x", "stage"}, {"normal", "endboss", "x"}} {
@@ -119,17 +119,17 @@ func TestIslandOptionsSetOptions(t *testing.T) {
 	if SetGrade(isl, "dev", false) == nil {
 		t.Error("dev ohne Dev-Mode muss abgelehnt werden")
 	}
-	if err := SetGrade(isl, "ultra", false); err != nil || isl.Options.Defeat != "stage" {
+	if err := SetGrade(isl, "ultra", false); err != nil || isl.Options.Defeat != "resources" {
 		t.Errorf("Gradwechsel ändert den Niederlage-Modus nicht: %v %+v", err, isl.Options)
 	}
-	if o := DefaultOptionsFor("ultra"); o.Defeat != "lost" || DefaultOptionsFor("easy").Defeat != "resources" {
+	if o := DefaultOptionsFor("ultra"); o.Defeat != "stage" || DefaultOptionsFor("easy").Defeat != "resources" {
 		t.Errorf("Standards je Grad falsch: %+v", o)
 	}
 }
 
 func TestIslandOptionsSaveRoundTrip(t *testing.T) {
 	isl := mustIsland(t, "opt-e", []int{0, 1})
-	if err := SetOptions(isl, IslandOptions{"hard", "gold", "lost"}, false); err != nil {
+	if err := SetOptions(isl, IslandOptions{"hard", "gold", "stage"}, false); err != nil {
 		t.Fatal(err)
 	}
 	got := loadIsland(t, saveJSON(t, isl.ToSave("t")))

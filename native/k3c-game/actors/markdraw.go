@@ -143,13 +143,3 @@ func (d *drawer) playerMarker(dst *ebiten.Image, c view.Cell, fg *figure, p *sim
 		d.ink.oval(dst, a, markerBox(), tint(PlayerColor(p.Index), markerAlpha*fg.ui))
 	}
 }
-
-// playerBarMark zeichnet den Lebensbalken des lebenden, verletzten Monarchen (nach der Figur).
-func (d *drawer) playerBarMark(dst *ebiten.Image, c view.Cell, fg *figure, p *sim.Player) {
-	if !PlayerBarVisible(p.HP, p.MaxHP, p.RespawnIn) {
-		return
-	}
-	if a, ok := marksAnchor(c, fg, p.X); ok {
-		d.ink.bar(dst, a, playerBar, d.topPx(fg), BarFraction(p.HP, p.MaxHP), fg.ui)
-	}
-}

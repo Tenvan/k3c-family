@@ -125,20 +125,12 @@ func FallbackGait(g string, has func(string) bool) string {
 
 // MonarchFrame ist der Teil des Monarchen-Zustands, den die Animation braucht (wie monarchAnim.ts).
 type MonarchFrame struct {
-	Known     bool // es gibt einen Vor-Zustand
-	RespawnIn float64
-	VX        float64
+	Known bool // es gibt einen Vor-Zustand
+	VX    float64
 }
 
-// MonarchWant wählt die Animation des Monarchen: tot zu Fuß mit death (hält), nach dem Tod respawn zu Fuß, sonst
-// beritten in der Gangart nach Tempo. Treffer und Münze-Geben zeigt er beritten nicht (wie mountView.ts).
+// MonarchWant wählt die Animation des Monarchen: beritten in der Gangart nach Tempo (ohne Tod und Respawn, B-930). Treffer und Münze-Geben zeigt er beritten nicht (wie mountView.ts).
 func MonarchWant(prev, cur MonarchFrame, ref float64, has func(gait string) bool) Want {
-	if cur.RespawnIn > 0 {
-		return Want{Anim: animDeath, Once: true, Hold: true}
-	}
-	if prev.Known && prev.RespawnIn > 0 {
-		return Want{Anim: animRespawn, Once: true, Restart: true}
-	}
 	g, _ := MountGait(cur.VX, ref)
 	g = FallbackGait(g, has)
 	return Want{Anim: g, Gait: g}

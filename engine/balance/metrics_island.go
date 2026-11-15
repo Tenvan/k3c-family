@@ -16,7 +16,7 @@ type StageMetrics struct {
 	ArrivalDay     *int `json:"arrivalDay"`
 	ArrivalTick    *int `json:"arrivalTick"`
 	CastleFallTick *int `json:"castleFallTick"`
-	Downs          int  `json:"downs,omitempty"` // Ereignisse playerDown auf dieser Stufe (ein Monarch fiel)
+	Downs          int  `json:"downs,omitempty"` // Ereignisse crownFallen auf dieser Stufe (ein Monarch fiel)
 	HubLevel       int  `json:"hubLevel,omitempty"` // Hub-Stufe am Ende des Laufs
 	Fighters       int  `json:"fighters,omitempty"` // Kämpfer (Truppen außer Landstreichern und Bauern) am Ende
 }
@@ -81,7 +81,7 @@ func (c *collector) islandEvent(w *sim.World, ev sim.Event, tick int) {
 	case "bossSpawned":
 		id, _ := ev["boss"].(string)
 		c.m.BossSpawns = append(c.m.BossSpawns, BossMetrics{Boss: id, Day: w.Cycle.Day, Tick: tick})
-	case "playerDown":
+	case "crownFallen":
 		if i := slices.Index(c.isl.Stages, w); i >= 0 {
 			c.m.Stages[i].Downs++
 		}

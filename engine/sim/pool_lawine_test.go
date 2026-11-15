@@ -55,7 +55,7 @@ func TestKeineWellenLawine(t *testing.T) {
 		for _, e := range w.Enemies { // jeder Gegner stirbt sofort: je Kill +5 % ohne Einfrieren
 			e.HP = 0
 		}
-		p.HP = p.MaxHP
+		p.Crown, p.Gold = nil, 1000
 	}
 	if w.Wave > 3 {
 		t.Errorf("%d Wellen in 10 Spielminuten (Lawine)", w.Wave)

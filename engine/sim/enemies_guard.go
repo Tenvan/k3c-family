@@ -61,7 +61,7 @@ func guardFoe(w *World, e *Enemy) *target {
 		}
 	}
 	for _, p := range w.Players {
-		if isAlive(p) && !shielded(p) {
+		if crowned(p) && !shielded(p) {
 			consider(target{p.ID, p.X, "player", p})
 		}
 	}

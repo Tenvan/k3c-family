@@ -132,20 +132,20 @@ func TestResolveWorldUngueltigerOverride(t *testing.T) {
 	}
 }
 
-// Eine Zahl kommt nie aus zwei Quellen: HP und MaxHP, Truhen- und Morgengold folgen demselben Wertesatz (Review BAL8.2).
+// Eine Zahl kommt nie aus zwei Quellen: Münzen je Treffer, Truhen- und Morgengold folgen demselben Wertesatz (Review BAL8.2).
 func TestWertesatzEineQuelleJeWert(t *testing.T) {
 	w := StandardWorld()
 	w.ID, w.Name, w.Extends = "stark", "Stark", StandardWorldID
 	w.Overrides = map[string]json.RawMessage{
 		"troops":  json.RawMessage(`{"peasant": {"hp": 77}, "vagrant": {"hp": 66}}`),
-		"monarch": json.RawMessage(`{"base": {"hp": 55}}`),
+		"monarch": json.RawMessage(`{"hitCoins": 3}`),
 		"economy": json.RawMessage(`{"chestGold": [50, 60], "dawnGoldPerDepth": 7}`),
 	}
 	world := need(ResolveWorld(w, standardLookup))(t)
 	isl := need(CreateIslandIn(world, "eine-quelle", world.Islands[0].Depths, 1, CreateOptions{}))(t)
 	p := AddIslandPlayer(isl, 0)
-	if p.HP != 55 || p.MaxHP != 55 {
-		t.Fatalf("Monarch HP=%v MaxHP=%v, erwartet 55/55", p.HP, p.MaxHP)
+	if got := isl.Stages[0].values().Monarch.HitCoins; got != 3 || p.Crown != nil {
+		t.Fatalf("Monarch hitCoins=%v, erwartet 3", got)
 	}
 	st := isl.Stages[0]
 	if got := st.values().Economy.ChestGold; got != [2]int{50, 60} {

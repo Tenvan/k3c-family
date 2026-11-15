@@ -169,7 +169,7 @@ func TestPlanRideLoopsAndPause(t *testing.T) {
 	w := stageWorld("night", 0, 3, 5)
 	w.Players[0].VX = 2
 	w.Players[1].VX = 0.1
-	w.Players[2].VX, w.Players[2].RespawnIn = 2, 3
+	w.Players[2].VX, w.Players[2].Crown = 2, &sim.Crown{}
 	m := p.plan(gameFrame(w, 1))
 	if len(m.Loops) != 1 || m.Loops[0].Key != 0 || m.Loops[0].Gain != nightGainVal*rideGain {
 		t.Errorf("Schleifen %+v", m.Loops)

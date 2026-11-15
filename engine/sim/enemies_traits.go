@@ -73,7 +73,7 @@ func aoeTargets(w *World, x, radius float64) []target {
 	in := func(at, extra float64) bool { return math.Abs(at-x) <= radius+extra }
 	var out []target
 	for _, p := range w.Players {
-		if isAlive(p) && !shielded(p) && in(p.X, 0) {
+		if crowned(p) && !shielded(p) && in(p.X, 0) {
 			out = append(out, target{p.ID, p.X, "player", p})
 		}
 	}
@@ -139,7 +139,7 @@ func nearestThreat(w *World, e *Enemy) (float64, bool) {
 		}
 	}
 	for _, p := range w.Players {
-		if isAlive(p) {
+		if crowned(p) {
 			closer(p.X)
 		}
 	}

@@ -14,7 +14,7 @@ import (
 func TestGameOverLaesstSpielstandUnveraendert(t *testing.T) {
 	f, s, buf := logged(t)
 	x := &peer{}
-	r := need(f.m.Create("xbox", x, "verloren", true, 0, []int{0}, Options{Defeat: "lost"}))(t)
+	r := need(f.m.Create("xbox", x, "verloren", true, 0, []int{0}, Options{Defeat: "stage"}))(t)
 	ticks(r, 30)
 	r.Leave("xbox", x)
 	waitSaved(r)
@@ -54,7 +54,7 @@ func TestGameOverLaesstSpielstandUnveraendert(t *testing.T) {
 // Herunterfahren nach Game Over schreibt nicht; ohne vorherigen Stand entsteht keine Datei.
 func TestGameOverOhneStandBeimHerunterfahren(t *testing.T) {
 	f, s, _ := logged(t)
-	r := need(f.m.Create("xbox", &peer{}, "neu", true, 0, []int{0}, Options{Defeat: "lost"}))(t)
+	r := need(f.m.Create("xbox", &peer{}, "neu", true, 0, []int{0}, Options{Defeat: "stage"}))(t)
 	ticks(r, 10)
 	r.mu.Lock()
 	r.isl.Over = true

@@ -65,7 +65,7 @@ type auraEntry struct {
 
 // of liefert die Auren des Monarchen p in c.w (auras).
 func (c *auraCache) of(p *sim.Player) []sim.Aura {
-	if p.RespawnIn > 0 { // gefallen: keine Auren (wie sim.AurasOf), nichts merken
+	if p.Crown != nil { // gefallen: keine Auren (wie sim.AurasOf), nichts merken
 		return nil
 	}
 	for i := range c.entries {
@@ -107,7 +107,7 @@ func statusMarks(out []mark, w *sim.World, aurasOf auras) []mark {
 // auraMarks: Aura-Ringe der lebenden Monarchen am Boden (Holy Ground an der Burg), mindestens eine Unit groß.
 func auraMarks(out []mark, w *sim.World, aurasOf auras) []mark {
 	for _, p := range w.Players {
-		if p == nil || p.RespawnIn > 0 {
+		if p == nil || p.Crown != nil {
 			continue
 		}
 		for _, a := range aurasOf(p) {
@@ -128,7 +128,7 @@ func auraMarks(out []mark, w *sim.World, aurasOf auras) []mark {
 // playerMarks: Schild-Blase mit Balken bzw. Last Stand der lebenden Monarchen.
 func playerMarks(out []mark, w *sim.World, kind statusKind) []mark {
 	for _, p := range w.Players {
-		if p == nil || p.RespawnIn > 0 {
+		if p == nil || p.Crown != nil {
 			continue
 		}
 		switch {

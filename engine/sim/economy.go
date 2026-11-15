@@ -20,29 +20,24 @@ type payTarget struct {
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
-	stepRevive(w, commands, dt)
 	for _, p := range w.Players {
 		var cmd PlayerCommand
 		if p.Index < len(commands) {
 			cmd = commands[p.Index]
 		}
 		p.PayCooldown = math.Max(0, p.PayCooldown-dt)
-		if !isAlive(p) {
+		if !crowned(p) { // ohne Krone nur laufen (Aufheben: stepCrowns), kein Schlag, kein Skill, kein Zahlen (kampf.md § 5)
 			p.Paying = false
-			p.skillHeld = 0 // nach dem Respawn zählt der erste Druck wieder als neu (B-524)
+			p.skillHeld = 0 // mit der Krone zählt der erste Druck wieder als neu (B-524)
 			refundPending(w, p)
-			p.RespawnIn -= dt
-			if p.RespawnIn <= 0 {
-				respawn(w, p)
-				emit(w, "revive", Event{"player": p.Index, "x": unitX(p.X)})
-			}
+			movePlayer(w, p, cmd, dt)
 			continue
 		}
 		movePlayer(w, p, cmd, dt)
 		stepAttack(w, p, cmd, dt)
 		stepSkills(w, p, cmd, dt)
 		p.Paying = cmd.Pay
-		if cmd.Pay && !p.reviving && p.PayCooldown <= 0 && (p.Gold > 0 || merchantAt(w, p.X) == "sell") {
+		if cmd.Pay && p.PayCooldown <= 0 && (p.Gold > 0 || merchantAt(w, p.X) == "sell") {
 			payOneCoin(w, p)
 			p.PayCooldown = w.values().Economy.PayIntervalSeconds
 		}
@@ -68,8 +63,9 @@ func movePlayer(w *World, p *Player, cmd PlayerCommand, dt float64) {
 	}
 }
 
-func respawn(w *World, p *Player) {
-	p.RespawnIn, p.HP, p.VX, p.ReviveProgress = 0, p.MaxHP, 0, 0
+// toHub stellt den Monarchen nach einem Burgfall oder Stufenwechsel neben die Burg (er behält seine Krone oder deren Verlust).
+func toHub(w *World, p *Player) {
+	p.VX = 0
 	p.X = w.HubX + 3
 	if p.Index%2 == 0 {
 		p.X = w.HubX - 3
@@ -294,7 +290,7 @@ func collectCoins(w *World) {
 				continue
 			}
 			blocked := c.BlockedPlayerID != nil && *c.BlockedPlayerID == p.ID && w.Time < c.BlockedUntil
-			if isAlive(p) && p.Gold < PurseMaxOf(w, p) && !blocked {
+			if crowned(p) && p.Gold < PurseMaxOf(w, p) && !blocked {
 				taker = p
 				break
 			}
@@ -318,7 +314,7 @@ func collectPickups(w *World) {
 	for _, pk := range w.Pickups {
 		var p *Player
 		for _, pl := range w.Players {
-			if isAlive(pl) && math.Abs(pl.X-pk.X) <= r {
+			if crowned(pl) && math.Abs(pl.X-pk.X) <= r {
 				p = pl
 				break
 			}

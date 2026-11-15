@@ -36,6 +36,7 @@ type Metrics struct {
 	// FirstBowTick: erstes Ereignis armed (ein Bauer holt einen Bogen aus der Werkstatt); Start-Bogenschützen zählen nicht.
 	FirstBowTick   *int `json:"firstBowTick"`
 	CastleFallTick *int `json:"castleFallTick"` // erstes castleFallen
+	Lost           string `json:"lost,omitempty"` // "crown": Lauf durch Kronenraub verloren
 	// FirstWorkshopTick: erstes Ereignis built mit kind workshop (WZ28.4).
 	FirstWorkshopTick *int `json:"firstWorkshopTick"`
 	// FirstTowerTick: erstes Ereignis built mit kind tower; HubLevel2Tick/HubLevel3Tick: erstes Ereignis upgraded mit
@@ -109,7 +110,7 @@ type StageMetrics struct {
 	ArrivalDay     *int `json:"arrivalDay"`
 	ArrivalTick    *int `json:"arrivalTick"`
 	CastleFallTick *int `json:"castleFallTick"`
-	Downs          int  `json:"downs,omitempty"`    // Ereignisse playerDown auf dieser Stufe (ein Monarch fiel)
+	Downs          int  `json:"downs,omitempty"`    // Ereignisse crownFallen auf dieser Stufe (ein Monarch fiel)
 	HubLevel       int  `json:"hubLevel,omitempty"` // Hub-Stufe am Ende des Laufs
 	Fighters       int  `json:"fighters,omitempty"` // Kämpfer (Truppen außer Landstreichern und Bauern) am Ende
 }

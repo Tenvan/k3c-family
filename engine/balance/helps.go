@@ -82,12 +82,12 @@ func weakenEndboss(isl *sim.Island) {
 // miniBossKind: Miniboss-IDs bleiben unberührt (nur der Endboss wird abgeschwächt).
 var miniBossKind = map[string]bool{"goblinLeader": true, "trollKing": true, "ratQueen": true, "shardTitan": true, "lavaGolem": true}
 
-// healMonarchs stellt die HP lebender Monarchen voll her (Dev-Hilfe ohne Skills, B-647 Weg D).
+// healMonarchs setzt gefallene Kronen wieder auf (Dev-Hilfe ohne Skills, B-647 Weg D; Monarchen haben keine HP, B-930).
 func healMonarchs(isl *sim.Island) {
 	for _, w := range isl.Stages {
 		for _, p := range w.Players {
-			if p.HP > 0 {
-				p.HP = p.MaxHP
+			if p.Crown != nil && p.Crown.State != "enemy" { // trägt ein Gegner die Krone, bleibt sie dort
+				p.Crown = nil
 			}
 		}
 	}

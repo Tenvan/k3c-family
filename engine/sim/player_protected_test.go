@@ -15,14 +15,18 @@ func protectedRun(t *testing.T, kind string, dx float64, shield func(*Player)) (
 	if shield != nil {
 		shield(p1)
 	}
-	hp := p1.HP
+	probe(p1)
+	hp := p1.Gold
 	spawnEnemy(w, kind, p1.X+dx)
 	for _, ev := range eventsOf(w, "hit", 30*10, []PlayerCommand{{}, {}}) {
 		if ev["target"] == "player" && ev["id"] == p1.Index {
 			hits++
 		}
 	}
-	return hp - p1.HP, hits
+	if p1.Crown != nil {
+		lost = 1e6
+	}
+	return float64(hp-p1.Gold) + lost, hits
 }
 
 func TestProtectedOhneTreffer(t *testing.T) {

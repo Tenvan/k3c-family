@@ -60,28 +60,25 @@ func TestBossFlammenspur(t *testing.T) {
 	w.Enemies = []*Enemy{} // nur die Fläche wirkt
 	ps := isl.Players()
 	ps[0].X, ps[1].X = x-1, x+1
+	probe(ps[0], ps[1])
 	far := warriorAt(w, x+a.Radius+0.5)
 	run(w, 0.5)
 	for _, p := range ps {
-		if p.HP >= p.MaxHP {
+		if !wasHit(p) {
 			t.Fatalf("Spieler %d in der Fläche ohne Schaden", p.Index)
 		}
 	}
 	if far.HP != 1000 {
 		t.Fatal("Truppe außerhalb der Fläche getroffen")
 	}
-	hp := ps[0].HP
-	run(w, 1)
-	if ps[0].HP >= hp {
+	if playerHits(w, 1)[0] == 0 {
 		t.Fatal("kein Schaden in der nächsten Sekunde")
 	}
 	run(w, a.DurationSeconds)
 	if len(w.Hazards) != 0 {
 		t.Fatalf("Fläche nach %.0f s nicht ausgelaufen", a.DurationSeconds)
 	}
-	hp0, hp1 := ps[0].HP, ps[1].HP
-	run(w, 2)
-	if ps[0].HP != hp0 || ps[1].HP != hp1 {
+	if h := playerHits(w, 2); h[0] != 0 || h[1] != 0 {
 		t.Fatal("Schaden nach Ablauf der Fläche")
 	}
 }
@@ -193,7 +190,7 @@ func TestBossFlaechenDeterministisch(t *testing.T) {
 				out += fmt.Sprintf(" h%.3f:%.3f", h.X, h.SecondsLeft)
 			}
 			for _, p := range w.Players {
-				out += fmt.Sprintf(" p%d:%.3f:%.0f", p.Index, p.X, p.HP)
+				out += fmt.Sprintf(" p%d:%.3f:%.0f", p.Index, p.X, float64(p.Gold))
 			}
 		}
 		return out

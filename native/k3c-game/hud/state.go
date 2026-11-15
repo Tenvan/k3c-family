@@ -140,17 +140,13 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 // card: Werte der Spielerkarte (Geldsack-Größe, Gold) und der Skill-Leiste. Die Münz-Obergrenze kommt vom Spieler
 // (sim.PurseMaxOf, B-922), nicht aus der Insel-Wirtschaft.
 func (st *seatState) card(lang string, w *sim.World, m *sim.Player, now float64) {
-	st.down = m.RespawnIn > 0
+	st.down = m.Crown != nil
 	st.purse = sim.PurseSize(w, m)
 	purse := sim.PurseMaxOf(w, m)
 	if purse <= 0 {
 		purse = purseMaxGold
 	}
-	out := 0
-	if st.down {
-		out = int(ceilPos(m.RespawnIn))
-	}
-	st.goldS = st.mGold.get(goldKey{lang, m.Gold, purse, out}, goldText)
+	st.goldS = st.mGold.get(goldKey{lang, m.Gold, purse}, goldText)
 	st.flash = st.gold.step(m.Gold, now)
 	st.slots = slotViews(m.Slots, m.Cooldowns)
 	st.barS = st.mBar.get(newBarKey(lang, st.slots), slotBar)
@@ -195,7 +191,7 @@ func (st *seatState) events(lang string, f *view.Frame, stage *view.Stage) {
 func (st *seatState) hints(lang string, w *sim.World, m *sim.Player, guide bool, seen *guideSeen) {
 	st.hintS = st.mHint.get(actionHint(lang, w, m), hintText)
 	if guide {
-		st.guide = stepGuide(st.guide, w, m.X, m.RespawnIn > 0, seen)
+		st.guide = stepGuide(st.guide, w, m.X, m.Crown != nil, seen)
 	} else {
 		st.guide = guideHint{}
 	}
@@ -254,19 +250,7 @@ func (st *seatState) skills(lang string, w *sim.World, m *sim.Player) {
 func (st *seatState) refreshEntries(w *sim.World, m *sim.Player) int {
 	points := sim.AvailablePoints(w, m)
 	can := func(id string) bool { return sim.CanLearn(w, m, id) == nil }
-	respec := m.RespawnIn <= 0 && sim.CanRespec(w, m) == nil
+	respec := m.Crown == nil && sim.CanRespec(w, m) == nil
 	st.entries = menuEntries(st.entries, m.Skills, points, can, respec)
 	return points
-}
-
-// ceilPos rundet auf und begrenzt nach unten auf 0.
-func ceilPos(x float64) float64 {
-	if x <= 0 {
-		return 0
-	}
-	n := float64(int(x))
-	if n < x {
-		n++
-	}
-	return n
 }

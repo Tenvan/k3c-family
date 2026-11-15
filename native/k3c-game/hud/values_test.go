@@ -39,8 +39,7 @@ func TestUhrUndZeit(t *testing.T) {
 // Gold nur im HUD (goldOnlyInHud.test.ts): die Spielerkarte nennt Gold und Maximum, gefallen die Sekunden.
 func TestGoldNurAufDerKarte(t *testing.T) {
 	checkTexts(t, []textCase{
-		{"Gold/Maximum", goldText(goldKey{"de", 12, 30, 0}), "12/30"},
-		{"gefallen", goldText(goldKey{"de", 12, 30, 4}), "4 s"},
+		{"Gold/Maximum", goldText(goldKey{"de", 12, 30}), "12/30"},
 	})
 }
 

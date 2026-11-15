@@ -76,7 +76,7 @@ func TestEreignisTexte(t *testing.T) {
 		{"gebaut", eventText("de", ev(sim.Event{"type": "built", "kind": "wall", "x": 3.5}), ""), "Mauer fertig"},
 		{"zerstört englisch", eventText("en", ev(sim.Event{"type": "destroyed", "kind": "tower"}), ""), "Tower destroyed!"},
 		{"geklaut", eventText("de", ev(sim.Event{"type": "goldStolen", "player": 0, "amount": 2}), ""), "P1: 2 Gold geklaut!"},
-		{"gefallen", eventText("de", ev(sim.Event{"type": "playerDown", "player": 0}), ""), "P1 ist gefallen"},
+		{"gefallen", eventText("de", ev(sim.Event{"type": "crownFallen", "player": 0}), ""), "P1 hat die Krone verloren"},
 		{"angekommen", eventText("de", ev(sim.Event{"type": "arrived", "name": "Höhle"}), "cave"), "Tiefe 1 (Höhle)"},
 		{"geworben", eventText("de", ev(sim.Event{"type": "recruited"}), ""), ""},
 		{"unbekannt", eventText("de", ev(sim.Event{"type": "zukunft"}), ""), ""},

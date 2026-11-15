@@ -13,7 +13,7 @@ import (
 type IslandOptions struct {
 	Grade  string `json:"grade"`
 	Goal   string `json:"goal"`   // endboss, gold, days, mineAll, buildAll
-	Defeat string `json:"defeat"` // resources, stage, lost
+	Defeat string `json:"defeat"` // resources, stage (Kronenraub ist in jedem Grad Game Over, kein Modus)
 }
 
 // Grade sind die Faktoren eines Schwierigkeitsgrads aus data/difficulty.json.
@@ -26,7 +26,7 @@ type Grade struct {
 var (
 	gradeNames  = []string{"dev", "easy", "normal", "hard", "ultra"}
 	goalNames   = []string{"endboss", "gold", "days", "mineAll", "buildAll"}
-	defeatNames = []string{"resources", "stage", "lost"}
+	defeatNames = []string{"resources", "stage"}
 	difficulty  = loadDifficulty()
 )
 
@@ -49,7 +49,7 @@ func DefaultOptionsFor(grade string) IslandOptions {
 	return IslandOptions{Grade: grade, Goal: "endboss", Defeat: g.DefaultDefeat}
 }
 
-// DefaultOptions: Normal, Endboss, Stufenverlust.
+// DefaultOptions: Normal, Endboss, Gold/Material-Verlust.
 func DefaultOptions() IslandOptions { return DefaultOptionsFor("normal") }
 
 func validateOptions(o IslandOptions) error {

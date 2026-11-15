@@ -36,8 +36,8 @@ var (
 	gradeTexts   = []textKey{txtGradeEasy, txtGradeNormal, txtGradeHard, txtGradeUltra}
 	goals        = []string{"endboss", "gold", "days", "mineAll", "buildAll"}
 	goalTexts    = []textKey{txtGoalEndboss, txtGoalGold, txtGoalDays, txtGoalMineAll, txtGoalBuildAll}
-	defeats      = []string{"resources", "stage", "lost"}
-	defeatTexts  = []textKey{txtDefeatResources, txtDefeatStage, txtDefeatLost}
+	defeats      = []string{"resources", "stage"}
+	defeatTexts  = []textKey{txtDefeatResources, txtDefeatStage}
 	worlds       = []string{sim.StandardWorldID} // weitere Welten nur im Dev-Mode (docs/rules/welten.md § 6)
 	lobbyLabels  = [lobbyRows]textKey{txtGrade, txtGoal, txtDefeat, txtWorld, txtSeed, txtStart, txtCancel}
 	lobbyChoices = [lobbySeed]int{len(grades), len(goals), len(defeats), len(worlds)}

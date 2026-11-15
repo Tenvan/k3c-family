@@ -26,7 +26,7 @@ type DepthFigures struct {
 	Arrived          float64  `json:"arrived"`
 	ArrivalDayMedian *float64 `json:"arrivalDayMedian"`
 	CastleFell       float64  `json:"castleFell"`
-	Downs            float64  `json:"downs"`    // gefallene Monarchen je Lauf (Mittel), Ereignis playerDown
+	Downs            float64  `json:"downs"`    // gefallene Monarchen je Lauf (Mittel), Ereignis crownFallen
 	HubLevel         float64  `json:"hubLevel"` // Hub-Stufe am Ende (Mittel)
 	Fighters         float64  `json:"fighters"` // Kämpfer am Ende (Mittel)
 }

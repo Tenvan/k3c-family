@@ -18,16 +18,16 @@ func TestEventBuiltMitOrt(t *testing.T) {
 	}
 }
 
-// B-217/AC-01: `playerDown` trägt das x des Spielers.
+// B-217/AC-01: `crownFallen` trägt das x des Spielers.
 func TestEventPlayerDownMitOrt(t *testing.T) {
 	w := quietWorld(t)
 	AddPlayer(w)
 	p1 := AddPlayer(w)
 	p1.X = w.HubX + 7.25
-	applyDamage(w, p1.ID, 1e6)
-	down := w.Events[len(w.Events)-1]
-	if down["type"] != "playerDown" || down["player"] != 1 || down["x"] != unitX(p1.X) {
-		t.Fatalf("playerDown: %v", down)
+	kill(w, p1)
+	down := firstEvent(t, eventsOfType(w, "crownFallen"))
+	if down["player"] != 1 || down["x"] != unitX(p1.X) {
+		t.Fatalf("crownFallen: %v", down)
 	}
 }
 

@@ -64,7 +64,7 @@ func radarWorld() *sim.World {
 		Level:   level.Layout{Entities: []level.Entity{{Kind: "tree", X: 40}, {Kind: "exit", X: 1000}}},
 		Sites:   []*sim.Site{{Kind: "stairsUp", X: 250}, {Kind: "stairsDown", X: 750}, {Kind: "wall", X: 300}},
 		Enemies: []*sim.Enemy{{X: 0}, {X: 1000}, {X: -20}, {X: 1300}, {X: 500}},
-		Players: []*sim.Player{{Index: 0, X: 500}, {Index: 1, X: 250, RespawnIn: 3}},
+		Players: []*sim.Player{{Index: 0, X: 500}, {Index: 1, X: 250, Crown: &sim.Crown{}}},
 	}
 }
 

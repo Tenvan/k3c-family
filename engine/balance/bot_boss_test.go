@@ -64,11 +64,11 @@ func TestBosskampfRueckzugUndSchlag(t *testing.T) {
 	w, p := isl.Stages[0], isl.Stages[0].Players[0]
 	bot := withBossFight(passive, isl, 4)
 	p.X = w.HubX + 20
-	p.HP = 0.2 * p.MaxHP
+	p.Gold = 0
 	if cmd := bot(w, p); cmd.MoveX >= 0 {
 		t.Errorf("Rückzug zur Burg erwartet: %+v", cmd)
 	}
-	p.HP = p.MaxHP
+	p.Gold = 100
 	w.Enemies = append(w.Enemies, &sim.Enemy{ID: 99, X: p.X + 1, HP: 5, MaxHP: 5})
 	defer func() { w.Enemies = slices.DeleteFunc(w.Enemies, func(e *sim.Enemy) bool { return e.ID == 99 }) }()
 	if cmd := bot(w, p); !cmd.Attack {

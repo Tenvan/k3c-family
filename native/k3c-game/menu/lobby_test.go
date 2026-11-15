@@ -18,7 +18,7 @@ func TestLobbyStartsWithOnePlayer(t *testing.T) {
 		t.Fatalf("Start: %+v", st)
 	}
 	g := s.news[0]
-	want := view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "stage", World: "standard", Devices: []view.DeviceID{pad1}}
+	want := view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "resources", World: "standard", Devices: []view.DeviceID{pad1}}
 	if g.Grade != want.Grade || g.Goal != want.Goal || g.Defeat != want.Defeat || g.World != want.World || g.Seed != "" ||
 		!slices.Equal(g.Devices, want.Devices) || g.Name != "" {
 		t.Errorf("NewGame %+v, erwartet %+v", g, want)
@@ -82,14 +82,14 @@ func TestLobbyOptions(t *testing.T) {
 		want view.NewGame
 	}{
 		{"Grad rechts bringt Standard-Niederlage", []view.Action{view.ActionRight}, view.NewGame{Grade: "hard", Goal: "endboss", Defeat: "stage"}},
-		{"Grad Ultra: komplett verloren", []view.Action{view.ActionRight, view.ActionRight}, view.NewGame{Grade: "ultra", Goal: "endboss", Defeat: "lost"}},
+		{"Grad Ultra: Stufenverlust", []view.Action{view.ActionRight, view.ActionRight}, view.NewGame{Grade: "ultra", Goal: "endboss", Defeat: "stage"}},
 		{"Grad links: Leicht", []view.Action{view.ActionLeft, view.ActionLeft}, view.NewGame{Grade: "easy", Goal: "endboss", Defeat: "resources"}},
 		{"A im Kreis", []view.Action{view.ActionConfirm, view.ActionConfirm, view.ActionConfirm}, view.NewGame{Grade: "easy", Goal: "endboss", Defeat: "resources"}},
 		{"gewählte Niederlage bleibt beim Grad", []view.Action{view.ActionDown, view.ActionDown, view.ActionLeft, view.ActionUp, view.ActionUp, view.ActionRight}, view.NewGame{Grade: "hard", Goal: "endboss", Defeat: "resources"}},
-		{"Ziel", []view.Action{view.ActionDown, view.ActionRight, view.ActionRight}, view.NewGame{Grade: "normal", Goal: "days", Defeat: "stage"}},
-		{"Welt bleibt Standard", []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionRight}, view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "stage"}},
-		{"Seed 2", []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown, view.ActionRight, view.ActionRight}, view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "stage", Seed: "2"}},
-		{"Seed links bleibt Name", []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown, view.ActionLeft}, view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "stage"}},
+		{"Ziel", []view.Action{view.ActionDown, view.ActionRight, view.ActionRight}, view.NewGame{Grade: "normal", Goal: "days", Defeat: "resources"}},
+		{"Welt bleibt Standard", []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionRight}, view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "resources"}},
+		{"Seed 2", []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown, view.ActionRight, view.ActionRight}, view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "resources", Seed: "2"}},
+		{"Seed links bleibt Name", []view.Action{view.ActionDown, view.ActionDown, view.ActionDown, view.ActionDown, view.ActionLeft}, view.NewGame{Grade: "normal", Goal: "endboss", Defeat: "resources"}},
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {

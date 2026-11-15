@@ -26,9 +26,6 @@ type Player struct {
 	VX          float64 `json:"vx"`
 	Facing      int     `json:"facing"`
 	Gold        int     `json:"gold"`
-	HP          float64 `json:"hp"`
-	MaxHP       float64 `json:"maxHp"`
-	RespawnIn   float64 `json:"respawnIn"` // > 0: tot, Sekunden bis zum Respawn an der Burg
 	PayCooldown float64 `json:"payCooldown"`
 	Paying      bool    `json:"paying"`
 	PayKey      *string `json:"payKey"` // Ziel, an dem gerade gezahlt wird ("site:3")
@@ -47,18 +44,18 @@ type Player struct {
 	AttackCooldown float64 `json:"attackCooldown,omitempty"` // Sekunden bis zum nächsten Schlag
 	// Cooldowns: Abklingzeit je Slot (Index 0 bis 3, Sekunden), nil bis zum ersten Skill-Einsatz.
 	Cooldowns []float64 `json:"cooldowns,omitempty"`
-	// Shield: Schild-HP, die applyDamage zuerst abzieht, für ShieldFor Sekunden. LastStandFor: so lange lässt ein
-	// tödlicher Treffer 1 HP stehen.
+	// Shield: Schild-Punkte, die ein Treffer zuerst abzieht (kein Goldverlust, solange sie reichen), für ShieldFor Sekunden.
+	// LastStandFor: so lange hält die letzte Münze einen Treffer länger (damagePlayer, kampf.md § 5).
 	Shield       float64 `json:"shield,omitempty"`
 	ShieldFor    float64 `json:"shieldFor,omitempty"`
 	LastStandFor float64 `json:"lastStandFor,omitempty"`
 	// StealthFor: so lange ist der Monarch unsichtbar (Smoke Bomb, skills_thief.go): kein Ziel, kein Schaden.
 	StealthFor float64 `json:"stealthFor,omitempty"`
-	// ReviveProgress: Sekunden, die ein Mitspieler diesen Gefallenen schon wiederbelebt (monarch_revive.go, B-120).
-	ReviveProgress float64 `json:"reviveProgress,omitempty"`
-	skillHeld      int     // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
-	reviving       bool    // belebt in diesem Tick jemanden wieder (lässt keine Münze fallen), ohne JSON
-	hit            bool    // seit dem letzten stepRevive wirksam getroffen, ohne JSON
+	// Crown: die gefallene Krone dieses Monarchen (crown.go, B-931); nil = er trägt sie. Eine Krone je Monarch.
+	Crown     *Crown `json:"crown,omitempty"`
+	skillHeld int    // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
+	hits      int    // Treffer seit dem Start, für freeHitEvery (Thick Skin), ohne JSON
+	regenGold float64 // Gold-Rinnsal der Regeneration: angesammelte Bruchteile einer Münze, ohne JSON
 }
 
 // Coin ist eine Münze am Boden.
@@ -67,6 +64,8 @@ type Coin struct {
 	X               float64 `json:"x"`
 	BlockedPlayerID *int    `json:"blockedPlayerId"`
 	BlockedUntil    float64 `json:"blockedUntil"`
+	// Loot: Münze aus einem Treffer auf den Monarchen (kampf.md § 5); Gegner mit `stealsGold` rauben sie vom Boden (crown.go).
+	Loot bool `json:"loot,omitempty"`
 }
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
@@ -183,6 +182,7 @@ type Enemy struct {
 	Fleeing     bool     `json:"fleeing"`
 	CarriedGold int      `json:"carriedGold"`
 	Carried     *Drop    `json:"carried,omitempty"` // weggetragene Ausrüstung (enemies_equipment_taken.go)
+	Crown       *Crown   `json:"crown,omitempty"`   // getragene Krone eines Monarchen: im Portal ist sie geraubt (crown.go, B-931)
 	HomeX       float64  `json:"homeX"`             // Portal, aus dem der Gegner kam
 	// Stun: Sekunden betäubt (kein Schritt, kein Angriff). TauntFor: so lange zielt der Gegner auf den Spieler TauntID.
 	Stun     float64 `json:"stun,omitempty"`
@@ -222,7 +222,7 @@ type Projectile struct {
 	Team     string  `json:"team"` // player, enemy
 	Damage   float64 `json:"damage"`
 	Speed    float64 `json:"speed"`
-	Cause    string  `json:"-"` // Gegnerart des Schützen für playerDown (B-182), ohne Ausgabe
+	Cause    string  `json:"-"` // Gegnerart des Schützen für crownFallen (B-182), ohne Ausgabe
 	// Splash: Radius in Units, in dem der Einschlag alle Ziele trifft (Splitter-Wurf, boss_abilities.go); 0 = nur das Ziel.
 	Splash float64 `json:"splash,omitempty"`
 }
@@ -234,7 +234,7 @@ type Hazard struct {
 	Radius          float64 `json:"radius"`
 	DamagePerSecond float64 `json:"damagePerSecond"`
 	SecondsLeft     float64 `json:"secondsLeft"`
-	Cause           string  `json:"-"` // Boss-ID für playerDown
+	Cause           string  `json:"-"` // Boss-ID für crownFallen
 	tickIn          float64 // Sekunden bis zum nächsten Schaden
 }
 

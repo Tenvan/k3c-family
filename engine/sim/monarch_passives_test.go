@@ -24,62 +24,52 @@ func stepTicks(w *World, ticks int) {
 
 func effectOf(id string) skillEffect { return monarch.Skills[id].Effect }
 
-// (a) Armor Aura von Spieler 0 erhöht die Verteidigung von Spieler 1 im Radius 8, nicht außerhalb.
+// (a) Armor Aura von Spieler 0 senkt den Schaden an Truppen im Radius 8, nicht außerhalb (Monarchen haben keine Verteidigung mehr).
 func TestPassivesArmorAura(t *testing.T) {
-	w, p0, p1 := passiveWorld(t)
+	w, p0, _ := passiveWorld(t)
 	mustLearn(t, w, p0, "taunt", "shieldBash", "armorAura")
 	bonus, aura := effectOf("armorAura").Defense, effectOf("armorAura").Aura
-	p1.X = p0.X + aura
-	if defenseOf(w, p1) != monarch.Base.Defense+bonus || defenseOf(w, p0) != monarch.Base.Defense+bonus {
-		t.Fatalf("in der Aura: P1 %v, P0 %v", defenseOf(w, p1), defenseOf(w, p0))
-	}
-	applyDamage(w, p1.ID, 17)
-	if p1.HP != 100-(17-monarch.Base.Defense-bonus) {
-		t.Fatalf("Schaden in der Aura: HP %v", p1.HP)
-	}
-	p1.X = p0.X - aura - 0.5
-	if defenseOf(w, p1) != monarch.Base.Defense {
-		t.Fatalf("außerhalb der Aura: %v", defenseOf(w, p1))
+	in, out := troopAt(w, p0.X+aura, 100), troopAt(w, p0.X-aura-0.5, 100)
+	applyDamage(w, in.ID, 17)
+	applyDamage(w, out.ID, 17)
+	if in.HP != 100-(17-bonus) || out.HP != 100-17 {
+		t.Fatalf("Schaden in der Aura: HP %v, außerhalb %v", in.HP, out.HP)
 	}
 }
 
-// (b) Healing Aura: Spieler 1 (Heiler) heilt Spieler 0 und Truppen im Radius 8 mit 2 HP/s.
+// (b) Healing Aura: Spieler 1 (Heiler) heilt Truppen im Radius 8 mit 2 HP/s, Monarchen nicht (kampf.md § 5).
 func TestPassivesHealingAura(t *testing.T) {
 	w, p0, p1 := passiveWorld(t)
 	mustLearn(t, w, p1, "heal", "groupHeal", "healingAura")
 	p0.X = p1.X + 8
 	in, out := troopAt(w, p1.X-8, 2), troopAt(w, p1.X+9, 2)
-	p0.HP = 50
 	stepTicks(w, 1) // Truppen laufen danach los: nur der erste Tick zählt für sie
 	if in.HP != 2+float64(2*dt) || out.HP != 2 {
 		t.Fatalf("Healing Aura: Truppe 8u %v, 9u %v", in.HP, out.HP)
 	}
-	stepTicks(w, 29) // zusammen 1 s
-	if !near(p0.HP, 52) || p1.HP != 100 {
-		t.Fatalf("Healing Aura: P0 %v, Heiler %v", p0.HP, p1.HP)
-	}
-	p0.X = p1.X + 8.5
-	stepTicks(w, 30)
-	if !near(p0.HP, 52) {
-		t.Fatalf("außerhalb geheilt: %v", p0.HP)
-	}
 }
 
-// (c) Thick Skin, Regeneration, Fortified: Werte des Besitzers, Spieler 1 bleibt unverändert.
+// (c) Thick Skin und Regeneration: Werte des Besitzers, Spieler 1 bleibt unverändert.
 func TestPassivesTankBesitzer(t *testing.T) {
 	w, p0, p1 := passiveWorld(t)
 	addPoolPoints(w, 2)
-	mustLearn(t, w, p0, "taunt", "shieldBash", "thickSkin", "regeneration", "fortified")
-	p0.HP, p1.HP = 50, 50
-	stepTicks(w, 30)
-	if p0.MaxHP != 120 || maxHPOf(w, p0) != 120 || p1.MaxHP != 100 {
-		t.Fatalf("Thick Skin: P0 %v/%v, P1 %v", p0.MaxHP, maxHPOf(w, p0), p1.MaxHP)
+	mustLearn(t, w, p0, "taunt", "shieldBash", "thickSkin", "regeneration")
+	probe(p0, p1)
+	every := effectOf("thickSkin").FreeHitEvery
+	for range every {
+		applyDamage(w, p0.ID, 5)
+		applyDamage(w, p1.ID, 5)
 	}
-	if !near(p0.HP, 51) || p1.HP != 50 {
-		t.Fatalf("Regeneration: P0 %v, P1 %v", p0.HP, p1.HP)
+	if p0.Gold != probeGold-(every-1)*monarch.HitCoins || p1.Gold != probeGold-every*monarch.HitCoins {
+		t.Fatalf("Thick Skin: P0 Gold %v (jeder %d. Treffer gratis), P1 %v", p0.Gold, every, p1.Gold)
 	}
-	if defenseOf(w, p0) != monarch.Base.Defense+3 || defenseOf(w, p1) != monarch.Base.Defense {
-		t.Fatalf("Fortified: P0 %v, P1 %v (gleicher Ort)", defenseOf(w, p0), defenseOf(w, p1))
+	if w.Cycle.Phase != "day" {
+		t.Fatalf("Phase %q, erwartet Tag", w.Cycle.Phase)
+	}
+	p0.Gold, p1.Gold, w.Coins = 10, 10, nil
+	stepTicks(w, int(5/dt)+2) // 5 s × 0,2 Münzen/s
+	if p0.Gold != 11 || p1.Gold != 10 {
+		t.Fatalf("Regeneration (Gold-Rinnsal): P0 %v, P1 %v", p0.Gold, p1.Gold)
 	}
 }
 
@@ -144,20 +134,14 @@ func TestPassivesFrostArmor(t *testing.T) {
 	}
 }
 
-// (d) Holy Ground: 1 HP/s für alle Verbündeten im Burgradius, egal wo der Heiler steht.
+// (d) Holy Ground: Truppen im Burgradius werden geheilt, egal wo der Heiler steht; Monarchen haben keine HP.
 func TestPassivesHolyGround(t *testing.T) {
-	w, p0, p1 := passiveWorld(t)
+	w, _, p1 := passiveWorld(t)
 	mustLearn(t, w, p1, "heal", "groupHeal", "holyGround")
-	p0.X = w.Castle.X + hub.CastleRadiusUnits
 	tr := troopAt(w, w.Castle.X, 2)
-	p0.HP, p1.HP = 50, 50
 	stepTicks(w, 1)
 	if tr.HP != 2+float64(1*dt) {
 		t.Fatalf("Holy Ground: Truppe %v", tr.HP)
-	}
-	stepTicks(w, 29)
-	if !near(p0.HP, 51) || p1.HP != 50 {
-		t.Fatalf("Holy Ground: P0 %v, Truppe %v, Heiler fern %v", p0.HP, tr.HP, p1.HP)
 	}
 }
 
@@ -196,8 +180,7 @@ func TestPassivesOhneBasiswerte(t *testing.T) {
 	w, p0, p1 := passiveWorld(t)
 	mustLearn(t, w, p0, "taunt", "shieldBash")
 	for _, p := range []*Player{p0, p1} {
-		if defenseOf(w, p) != monarch.Base.Defense || maxHPOf(w, p) != monarch.Base.HP || speedOf(w, p) != monarch.Base.Speed ||
-			damageMultOf(w, p, true) != 1 || cooldownMultOf(w, p) != 1 {
+		if speedOf(w, p) != monarch.Base.Speed || damageMultOf(w, p, true) != 1 || cooldownMultOf(w, p) != 1 {
 			t.Fatalf("Spieler %d weicht von der Basis ab", p.Index)
 		}
 	}

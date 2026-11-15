@@ -67,9 +67,10 @@ func TestMonarchSchlagEreignisse(t *testing.T) {
 	if strike == nil || hit == nil || strike["x"] != unitX(p.X) {
 		t.Fatalf("strike %v, hit %v, Ereignisse %v", strike, hit, w.Events)
 	}
-	p.RespawnIn, p.AttackCooldown = 5, 0
+	fell(p)
+	p.AttackCooldown = 0
 	if ev := eventsOf(w, "strike", 1, []PlayerCommand{strikeCmd}); slices.ContainsFunc(ev, func(e Event) bool { return e["from"] == p.ID }) {
-		t.Fatal("ein toter Monarch schlägt zu")
+		t.Fatal("ein Monarch ohne Krone schlägt zu")
 	}
 }
 

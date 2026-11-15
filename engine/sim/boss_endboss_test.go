@@ -45,10 +45,10 @@ func warden(w *World) *Enemy {
 	return nil
 }
 
-// protect hält die Spieler am Leben: volle HP, und ein tödlicher Treffer lässt 1 HP stehen (Last Stand).
+// protect hält die Spieler handlungsfähig: Krone auf, viel Gold und Last Stand gegen den letzten Treffer.
 func protect(w *World) {
 	for _, p := range w.Players {
-		p.HP, p.LastStandFor = p.MaxHP, 1
+		p.Crown, p.Gold, p.LastStandFor = nil, 1000, 1
 	}
 }
 
@@ -71,10 +71,11 @@ func TestEndbossWartetOhneZeitdruck(t *testing.T) {
 	_, w, x := endIsland(t, 3)
 	trigger := endBoss(4).Lair.TriggerUnits
 	w.Players[0].X = x - trigger
-	w.Players[1].X, w.Players[1].RespawnIn = x, 10
+	w.Players[1].X = x
+	fell(w.Players[1])
+	w.Players[1].Crown.X = x + 200 // die Krone liegt fern: der Besitzer hebt sie nicht auf
 	w.Players[2].X, w.Players[2].Free = x, true
 	for tm := 0.0; tm < 20*60; tm++ {
-		w.Players[1].RespawnIn = 10
 		Step(w, nil, 1)
 		if warden(w) != nil || countEvents(w, "bossSpawned") > 0 {
 			t.Fatalf("Endboss nach %.0f s ohne Ankunft aktiv", tm)

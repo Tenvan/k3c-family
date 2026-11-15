@@ -117,7 +117,7 @@ func summary(w *sim.World, biome, seed string, ticks, firstFall int, events tall
 		fmt.Sprintf("Tag %d (%s) · Welle %d · Gegner %d · Burg %.0f HP", w.Cycle.Day, w.Cycle.Phase, w.Wave, len(w.Enemies), w.Castle.HP),
 		"Gold je Monarch: " + strings.Join(gold, ", "),
 		"Truppen: " + counts(troops),
-		fmt.Sprintf("Verluste: %d Gebäude zerstört, %d Monarchen am Boden · Gold gestohlen %d×", events["destroyed"], events["playerDown"], events["goldStolen"]),
+		fmt.Sprintf("Verluste: %d Gebäude zerstört, %d Monarchen am Boden · Gold gestohlen %d×", events["destroyed"], events["crownFallen"], events["goldStolen"]),
 		"Ende: " + end,
 	}, "\n")
 }

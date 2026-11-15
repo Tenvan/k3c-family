@@ -9,12 +9,12 @@ import (
 // Bosskampf (BS11.3, B-642): Im Insel-Lauf schlagen die Bots jeden Gegner in Reichweite und gehen auf den Boss los. Der
 // Miniboss kommt mit seiner Welle zum Hub (die Truppen und Monarchen dort kämpfen); den Endboss weckt nur, wer sich dem Bau
 // der tiefsten Stufe nähert (boss_endboss.go): Am hellen Tag geht ein gesunder Monarch zum Bau und schlägt auf den Boss ein.
-// Fällt die Gesundheit unter retreatHP (Anteil), zieht er sich zur Burg zurück. Ist der Endboss besiegt
+// Fällt sein Gold unter retreatGold (der Geldsack ist die Lebensanzeige, B-930), zieht er sich zur Burg zurück. Ist der Endboss besiegt
 // (Island.EndbossDefeated), bleibt er bei seinem Profil.
 
 const (
-	retreatHP   = 0.35 // darunter zieht sich der Bot zur Burg zurück
-	fightHP     = 0.7  // ab diesem Anteil geht er zum Bau des Endbosses
+	retreatGold = 3  // darunter zieht sich der Bot zur Burg zurück
+	fightGold   = 10 // ab so viel Gold geht er zum Bau des Endbosses
 	bossHubRange = 40.0 // so nah am Hub gilt ein Boss als Verteidigungsfall, weiter weg geht der Bot nur mit Heer hin
 	endbossWant = 16 // so viele Kämpfer braucht er, bevor er den Endboss am Bau weckt (B-651: 8 Bögen starben in Minuten an dessen Beschwörung)
 	strikeRange = 1.4  // etwas unter monarch.json › attack.range (1,5): der Schlag trifft sicher
@@ -24,7 +24,7 @@ const (
 func withBossFight(inner Bot, isl *sim.Island, deepest int) Bot {
 	return func(w *sim.World, p *sim.Player) sim.PlayerCommand {
 		cmd := inner(w, p)
-		if p.HP < retreatHP*p.MaxHP {
+		if p.Gold < retreatGold {
 			cmd = goTo(p, w.HubX, false)
 		} else if x, ok := fightX(w, p, deepest, isl.EndbossDefeated); ok {
 			cmd = goTo(p, x, false)
@@ -44,7 +44,7 @@ func fightX(w *sim.World, p *sim.Player, deepest int, won bool) (float64, bool) 
 		return boss.X - math.Copysign(0.3, boss.X-p.X), true
 	}
 	// Erst die Armee: Seit dem Begleitschutz (unit_escort.go) kämpfen die Truppen am Boss mit, also baut der Bot sie vorher auf.
-	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.HP < fightHP*p.MaxHP || sim.EconomyOf(w).Fighters < endbossWant {
+	if w.Biome.Depth != deepest || won || w.Cycle.Phase != "day" || p.Gold < fightGold || sim.EconomyOf(w).Fighters < endbossWant {
 		return 0, false
 	}
 	for _, e := range w.Level.Entities {

@@ -147,7 +147,7 @@ func runOne(sc Scenario, threshold int) (res Result) {
 	for tick := 1; tick <= sc.Days*maxTicksPerDay; tick++ {
 		for _, w := range isl.Stages {
 			for _, p := range w.Players {
-				cmds[p.Index] = bot(w, p)
+				cmds[p.Index] = retrieveCrown(w, p, bot(w, p))
 			}
 		}
 		rp.record(cmds)
@@ -155,6 +155,12 @@ func runOne(sc Scenario, threshold int) (res Result) {
 		afterStep(isl, sc, tick, enginetools.TickHz)
 		c.observe(tick)
 		res.Ticks = tick
+		if isl.Over { // Kronenraub: der Lauf ist ein gültiges Ergebnis „verloren“
+			res.Valid, res.Metrics, res.Replay = true, c.result(), rp
+			res.Metrics.Lost = "crown"
+			rp.EndHash, rp.CastleFallTick = endHash(isl), res.Metrics.CastleFallTick
+			return res
+		}
 		if isl.Stages[0].Cycle.Day > sc.Days {
 			res.Valid, res.Metrics, res.Replay = true, c.result(), rp
 			rp.EndHash, rp.CastleFallTick = endHash(isl), res.Metrics.CastleFallTick

@@ -10,7 +10,7 @@ func dawnGold(w *World) int {
 // payDawnIncome: morgens Steuern für jeden lebenden Monarchen.
 func payDawnIncome(w *World) {
 	for _, p := range w.Players {
-		if isAlive(p) {
+		if crowned(p) {
 			giveGold(w, p, dawnGold(w), p.X)
 		}
 	}

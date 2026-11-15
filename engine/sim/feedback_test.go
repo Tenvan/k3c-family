@@ -125,12 +125,13 @@ func TestSkillTasteNachTodMeldetCastFailedNeu(t *testing.T) {
 	if np, nq := step(1); np != 1 || nq != 1 {
 		t.Fatalf("erster Druck: %d/%d castFailed, erwartet je 1", np, nq)
 	}
-	p.HP, p.RespawnIn = 0, 3*dt // stirbt mit gehaltener Taste
-	for !isAlive(p) {
+	fell(p) // verliert die Krone mit gehaltener Taste
+	for range 3 {
 		if np, nq := step(0); np != 0 || nq != 0 {
-			t.Fatalf("während des Todes: %d/%d castFailed", np, nq)
+			t.Fatalf("ohne Krone: %d/%d castFailed", np, nq)
 		}
 	}
+	p.Crown = nil
 	if np, nq := step(1); np != 1 || nq != 0 {
 		t.Fatalf("neuer Druck nach dem Respawn: %d/%d castFailed, erwartet 1/0", np, nq)
 	}

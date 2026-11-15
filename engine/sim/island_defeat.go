@@ -1,7 +1,8 @@
 package sim
 
-// Niederlage-Modi der Raum-Optionen (B-102, docs/rules/stufen.md § 4): Fällt die Burg einer Stufe, wirkt der Modus der
-// Insel (Options.Defeat). Welten ohne Insel (Campaign, Golden-Läufe) behalten den Stufenverlust.
+// Niederlage-Modi der Raum-Optionen (B-102, docs/rules/stufen.md § 4, kampf.md § 6): Fällt die Burg einer Stufe, wirkt der Modus
+// der Insel (Options.Defeat), das Spiel endet dadurch nie. Welten ohne Insel (Campaign, Golden-Läufe) behalten den Stufenverlust.
+// Das Spielende kommt nur durch Kronenraub (crown.go).
 
 // defeatLosses wählt die Verluste eines Burgfalls nach dem Niederlage-Modus.
 func defeatLosses(w *World) {
@@ -12,8 +13,6 @@ func defeatLosses(w *World) {
 	switch w.island.Options.Defeat {
 	case "resources":
 		resourceLosses(w.island)
-	case "lost":
-		gameOver(w)
 	default: // stage
 		castleLosses(w)
 	}
@@ -27,11 +26,13 @@ func resourceLosses(isl *Island) {
 	}
 }
 
-// gameOver: Komplett verloren. Die Insel endet (Island.Over), StepIsland rechnet danach nichts mehr, damit Spieler in
+// gameOver: Kronenraub, komplett verloren. Die Insel endet (Island.Over), StepIsland rechnet danach nichts mehr, damit Spieler in
 // allen Stufen dasselbe Ende sehen. Dass der letzte Spielstand unverändert bleibt, sichert der Raum (B-344).
 func gameOver(w *World) {
-	w.island.Over = true
-	emit(w, "gameOver", Event{})
+	if w.island != nil {
+		w.island.Over = true
+	}
+	emit(w, "gameOver", Event{"cause": "crown"})
 }
 
 func halveStock(s *Stock) {

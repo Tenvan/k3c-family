@@ -111,7 +111,7 @@ func selectAt(w *sim.World, x float64, how string) []string {
 	}
 	for _, p := range w.Players {
 		consider(p.X, func() []string {
-			return []string{fmt.Sprintf("Monarch %d (#%d) · LP %.0f/%.0f · Gold %d", p.Index+1, p.ID, p.HP, p.MaxHP, p.Gold)}
+			return []string{fmt.Sprintf("Monarch %d (#%d) · Gold %d · Krone %t", p.Index+1, p.ID, p.Gold, p.Crown == nil)}
 		})
 	}
 	for _, t := range w.Troops {

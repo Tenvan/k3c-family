@@ -141,7 +141,7 @@ func (m *metrics) event(w *sim.World, ev sim.Event, players []*sim.Player) {
 			t := w.Time
 			m.firstBuild = &t
 		}
-	case "playerDown":
+	case "crownFallen":
 		idx, _ := ev["player"].(int)
 		cause, _ := ev["cause"].(string)
 		m.deaths = append(m.deaths, deathEntry{idx, w.Cycle.Day, w.Cycle.Phase, w.Biome.Depth, cause})

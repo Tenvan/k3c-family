@@ -48,10 +48,10 @@ func finishBuild(t *testing.T, r *Room) {
 	w.Troops = append(w.Troops, &sim.Troop{ID: id, Kind: "peasant", X: s.X, AnchorX: s.X, HP: 1, MaxHP: 1, Job: &sim.Job{Type: "build", SiteID: s.ID}})
 }
 
-// downByGoblin setzt neben Monarch idx (1 HP, ohne Gold) einen Goblin.
+// downByGoblin setzt neben Monarch idx (ohne Gold) einen Goblin: sein Treffer lässt die Krone fallen.
 func downByGoblin(r *Room, idx int) {
 	p := r.isl.Players()[idx]
-	p.HP, p.Gold = 1, 0
+	p.Gold = 0
 	w := r.isl.Stages[r.isl.StageOf(idx)]
 	w.Enemies = append(w.Enemies, &sim.Enemy{ID: 90001, Kind: "goblin", X: p.X - 0.5, HP: 50, MaxHP: 50, Damage: 5, Speed: 1, Range: 1, HomeX: p.X - 60})
 }

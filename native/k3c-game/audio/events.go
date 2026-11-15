@@ -21,13 +21,11 @@ var eventCues = map[string]soundCue{
 	"arrow":         {"sfx:arrow", false},
 	"strike":        {"sfx:strike", false},
 	"built":         {"sfx:build", false},
-	"playerDown":    {"sfx:death", false},
-	"revive":        {"sfx:revive", false},
+	"crownFallen":   {"sfx:death", false},
 	"skillPoint":    {"sfx:skill", false},
 	"arrived":       {"sfx:portal", false},
 	"coinGive":      {"sfx:coinGive", false},
 	"buildProgress": {"sfx:buildProgress", false},
-	"revived":       {"sfx:revived", false},
 	"bossSpawned":   {"sfx:boss", true},
 	"dusk":          {"sfx:warn", true},
 	"wave":          {"sfx:warn", true},
@@ -125,5 +123,5 @@ func number(v any) (float64, bool) {
 
 // riding meldet, ob man den Hufschlag eines Monarchen hört (events.ts › rideLoops): lebt und bewegt sich.
 func riding(p *sim.Player) bool {
-	return p != nil && p.RespawnIn <= 0 && math.Abs(p.VX) >= rideMinSpeed
+	return p != nil && p.Crown == nil && math.Abs(p.VX) >= rideMinSpeed
 }
