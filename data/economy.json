@@ -22,5 +22,6 @@
   },
   "storage": { "basePerHub": 300, "perStorage": 300 },
   "recruitCamp": { "maxVagrants": 2, "respawnSeconds": 25, "wanderUnits": 6 },
-  "merchant": { "hp": 100, "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 2, "materials": ["wood", "stone", "copper", "iron", "crystal"] }
+  "merchant": { "hp": 100, "everyDays": 3, "everyDaysWithTavern": 2, "stayDays": 1, "material": 10, "gold": 2, "materials": ["wood", "stone", "copper", "iron", "crystal"] },
+  "combat": { "shieldCost": 10, "triggerCost": 2, "bannerCost": 1, "troopSoldiers": 5, "troopArchers": 5, "engageUnits": 8, "shieldOffsetUnits": 4, "gateInsetUnits": 3.5, "notes": "Kampfvariante (kampf.md § 3, KS4): Schild, Auslöser, Banner; Startwerte vorläufig, bannerCost 1 ist eine Annahme" }
 }

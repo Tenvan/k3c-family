@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"regexp"
 	"maps"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -28,6 +28,8 @@ const StandardWorldID = "standard"
 type WorldDef struct {
 	ID, Name, Notes string
 	Islands         []IslandDef
+	// Combat ist die Kampfvariante der Welt (combat.mode, combat.groupSize; kampf.md § 3); leer = groups, 5.
+	Combat CombatSettings
 	// Extends ist die Eltern-Welt (leer = Basis data/), Overrides die übersteuerten Basis-Werte je Datei (Schlüssel =
 	// Dateiname ohne .json, welten.md § 1); aufgelöst von ResolveWorldValues (world_values.go).
 	Extends   string
@@ -106,6 +108,7 @@ type rawWorld struct {
 	Notes     string                     `json:"notes"`
 	Extends   *string                    `json:"extends"`
 	Overrides map[string]json.RawMessage `json:"overrides"`
+	Combat    *rawCombat                 `json:"combat"`
 	Islands   *[]json.RawMessage         `json:"islands"`
 }
 
@@ -129,7 +132,7 @@ type rawScaling struct {
 // decodeWorld liest den Kopf der Welt streng und prüft Pflichtfelder und die ID; die Inseln bleiben roh.
 func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	var v rawWorld
-	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "islands"); err != nil {
+	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands"); err != nil {
 		return WorldDef{}, nil, err
 	}
 	switch {
@@ -149,7 +152,11 @@ func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	if err := checkWorldLinks(id, v.Extends, v.Overrides); err != nil {
 		return WorldDef{}, nil, err
 	}
-	w := WorldDef{ID: *v.ID, Name: *v.Name, Notes: v.Notes, Overrides: v.Overrides}
+	combat, err := v.Combat.settings()
+	if err != nil {
+		return WorldDef{}, nil, err
+	}
+	w := WorldDef{ID: *v.ID, Name: *v.Name, Notes: v.Notes, Overrides: v.Overrides, Combat: combat}
 	if v.Extends != nil {
 		w.Extends = *v.Extends
 	}

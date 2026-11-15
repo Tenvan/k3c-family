@@ -161,6 +161,7 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepCamps(w, dt)
 	stepSites(w)
 	stepPlantations(w, dt)
+	stepCombat(w)
 	stepTroops(w, dt)
 	stepPortals(w, dt)
 	stepHealing(w, dt)
@@ -173,7 +174,9 @@ func Step(w *World, commands []PlayerCommand, dt float64) {
 	stepProjectiles(w, dt)
 	removeDeadEnemies(w)
 	for _, t := range w.Troops { // Bürger sterben nicht: Verlust-Kaskade (Q67, unit_warrior.go)
-		if t.HP <= 0 {
+		if t.HP <= 0 && guardedLeader(w, t) {
+			t.HP = t.MaxHP // der Führer fällt nicht, solange Soldaten seiner Gruppe stehen (combat_squad.go)
+		} else if t.HP <= 0 {
 			loseLayer(w, t)
 		}
 	}

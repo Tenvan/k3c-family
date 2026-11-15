@@ -101,7 +101,9 @@ func TestWertesatzOhneOverridesByteGleich(t *testing.T) {
 	kind := StandardWorld()
 	kind.ID, kind.Extends = "kind", StandardWorldID
 	kind = need(ResolveWorld(kind, standardLookup))(t)
-	if !reflect.DeepEqual(*kind.values, *defaultValues()) {
+	got := *kind.values
+	got.Combat = CombatSettings{} // die Kampfvariante steht in der Welt-Datei, nicht in data/ (combat_data.go)
+	if !reflect.DeepEqual(got, *defaultValues()) {
 		t.Fatal("Welt ohne Overrides: Wertesatz weicht von der Basis ab")
 	}
 	isl := need(CreateIsland("werte-je-raum", StandardWorld().Islands[0].Depths, islandSpeed, CreateOptions{}))(t)

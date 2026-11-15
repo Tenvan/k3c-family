@@ -52,10 +52,14 @@ type Player struct {
 	// StealthFor: so lange ist der Monarch unsichtbar (Smoke Bomb, skills_thief.go): kein Ziel, kein Schaden.
 	StealthFor float64 `json:"stealthFor,omitempty"`
 	// Crown: die gefallene Krone dieses Monarchen (crown.go, B-931); nil = er trägt sie. Eine Krone je Monarch.
-	Crown     *Crown `json:"crown,omitempty"`
-	skillHeld int    // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
-	hits      int    // Treffer seit dem Start, für freeHitEvery (Thick Skin), ohne JSON
+	Crown     *Crown  `json:"crown,omitempty"`
+	skillHeld int     // Skill-Slot (1 bis 4) des Vor-Ticks, 0 = keiner: castFailed nur bei neuem Druck (B-378), ohne JSON
+	hits      int     // Treffer seit dem Start, für freeHitEvery (Thick Skin), ohne JSON
 	regenGold float64 // Gold-Rinnsal der Regeneration: angesammelte Bruchteile einer Münze, ohne JSON
+	// Banner: Seite (-1 links, 1 rechts) des Tors, an dem der Monarch sein Banner aufgenommen hat, 0 = keins (Variante
+	// general, combat_banner.go); bannerOut: er war seither hinter dem Tor.
+	Banner    int  `json:"banner,omitempty"`
+	bannerOut bool // ohne JSON
 }
 
 // Coin ist eine Münze am Boden.
@@ -104,6 +108,13 @@ type Troop struct {
 	// gesetzt vom Angriff, KS4); siegeCD: Abklingzeit des Schlags gegen ein Portal. Alle ohne JSON.
 	fleeing, attacking bool
 	siegeCD            float64
+	// Leader: Gruppenführer mit Schild (Variante groups, combat.go); Group: ID des Führers (groups) bzw. des Monarchen mit
+	// Banner (general), dem die Truppe folgt, 0 = keine. sortie: Angriffsrichtung des Führers (±1), 0 = am Tor.
+	// shieldFetch: holt gerade sein Schild an der Burg.
+	Leader      bool `json:"leader,omitempty"`
+	Group       int  `json:"group,omitempty"`
+	sortie      float64
+	shieldFetch bool
 }
 
 // ResourceNode ist ein Baum, Fels oder Kupfererz.
@@ -118,7 +129,7 @@ type ResourceNode struct {
 	Progress float64 `json:"progress"`
 	// Variant ist die Variante aus dem Level (Baumart, Kristallfarbe; B-891); leer bei Plantage-Bäumen und ohne Gruppe.
 	Variant string `json:"-"` // nur im Prozess (natives Spiel), nicht im Zustand und nicht im Spielstand
-	gone     bool    // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
+	gone    bool   // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
 }
 
 // Site ist ein Bauplatz im Hub. State: unpaid, waitingMaterial, waitingWorker, built.
@@ -327,14 +338,15 @@ type World struct {
 	Camps       []*Camp         `json:"camps"`
 	Portals     []float64       `json:"portals"`
 	// PortalHP: Lebenspunkte je stehendem Portal (gleicher Index wie Portals), PortalMaxHP der Startwert (portal.go).
-	PortalHP    []float64       `json:"portalHp"`
-	PortalMaxHP float64         `json:"portalMaxHp"`
+	PortalHP    []float64 `json:"portalHp"`
+	PortalMaxHP float64   `json:"portalMaxHp"`
 	// PortalsDown: X der zerstörten Portale (im Spielstand, portal.go); sind alle weg, ist die Stufe sicher.
-	PortalsDown []float64       `json:"portalsDown"`
-	portalDefense []float64 // Sekunden bis zur nächsten Verteidiger-Welle je Portal, ohne JSON
-	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
-	Storms      []*Storm        `json:"storms,omitempty"`  // laufende Lightning Storms in Wirk-Reihenfolge
-	Hazards     []*Hazard       `json:"hazards,omitempty"` // Bodenflächen in Entstehungs-Reihenfolge (boss_abilities.go)
+	PortalsDown   []float64     `json:"portalsDown"`
+	portalDefense []float64     // Sekunden bis zur nächsten Verteidiger-Welle je Portal, ohne JSON
+	combat        combatRuntime // bezahlte Schilde, Auslöser, Banner (combat.go), ohne JSON
+	SpawnQueue    []QueuedSpawn `json:"spawnQueue"`
+	Storms        []*Storm      `json:"storms,omitempty"`  // laufende Lightning Storms in Wirk-Reihenfolge
+	Hazards       []*Hazard     `json:"hazards,omitempty"` // Bodenflächen in Entstehungs-Reihenfolge (boss_abilities.go)
 
 	Stock       *Stock    `json:"stock"` // Baumaterial gehört allen (in einer Insel: allen Stufen), Gold hat jeder Spieler selbst
 	SkillPoints int       `json:"skillPoints"`

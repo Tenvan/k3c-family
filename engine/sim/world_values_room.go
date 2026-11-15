@@ -49,6 +49,7 @@ func ResolveWorld(world WorldDef, lookup func(id string) (WorldDef, error)) (Wor
 			break
 		}
 	}
+	world.values.Combat = chainCombat(chain) // Kind überschreibt Eltern
 	return world, nil
 }
 

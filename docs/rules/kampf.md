@@ -31,9 +31,9 @@ Wo diese Datei einer älteren Regel widerspricht, gilt diese Datei; die anderen 
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
-| **Schild an der Burg:** Ein Zahlziel an der Burg verkauft ein Schild für **10 Gold** (Startwert). Ein **Soldat** (Krieger, auch Elite), der sich das Schild holt, wird **Gruppenführer**. Bogenschützen und Bürger werden nie Führer. | Der Spieler baut Gruppen gezielt auf, mit Gold als Preis. | `data/troops.json` › `combat.shieldCost` | – |
+| **Schild an der Burg:** Ein Zahlziel an der Burg verkauft ein Schild für **10 Gold** (Startwert). Ein **Soldat** (Krieger, auch Elite), der sich das Schild holt, wird **Gruppenführer**. Bogenschützen und Bürger werden nie Führer. | Der Spieler baut Gruppen gezielt auf, mit Gold als Preis. | `data/economy.json` › `combat.shieldCost` | – |
 | **Gruppe** = Gruppenführer + **5 Soldaten** (`combat.groupSize` je Welt). Die Soldaten stammen aus den Kriegern des Hubs und zählen weiter zum Truppen-Limit (`buerger.md` § 3). | Kleine, überschaubare Trupps. | `data/worlds/<id>.json` › `combat.groupSize` | – |
-| **Angriffs-Auslöser:** Links und rechts am **äußersten Tor** (`outerWall`) steht je ein Auslöser; ihn zu bezahlen kostet **2 Gold** (Startwert) und schickt **alle Gruppen** zum Angriff, zum nächsten Portal oder zu Gegnern auf dem Weg (Richtung = Seite des Auslösers, Annahme, ungeprüft). | Ein Knopf für den Angriff, wie im Vorbild. | `data/troops.json` › `combat.triggerCost` | – |
+| **Angriffs-Auslöser:** Links und rechts am **äußersten Tor** (`outerWall`) steht je ein Auslöser; ihn zu bezahlen kostet **2 Gold** (Startwert) und schickt **alle Gruppen** zum Angriff, zum nächsten Portal oder zu Gegnern auf dem Weg (Richtung = Seite des Auslösers, Annahme, ungeprüft). | Ein Knopf für den Angriff, wie im Vorbild. | `data/economy.json` › `combat.triggerCost` | – |
 | **Kampf:** Die Gruppe kämpft, bis das Portal zerstört oder die Gruppe aufgerieben ist. Danach oder ohne Ziel **kehrt sie ans Tor zurück**. **Nur Soldaten** rücken aus; Bogenschützen bleiben an Mauer und Turm. | Die Verteidigung bleibt stehen, während die Soldaten angreifen. | – | – |
 | **Schilde lassen sich nicht aufsammeln.** Der Führer verliert sein Schild **erst als Letzter seiner Gruppe**; dann ist er Bürger wie jeder getroffene Kämpfer (§ 4). | Der Verlust des Führers beendet die Gruppe. | – | – |
 
@@ -41,7 +41,7 @@ Wo diese Datei einer älteren Regel widerspricht, gilt diese Datei; die anderen 
 
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
-| **Banner:** Jeder Monarch hat **ein Banner**, das an **jedem Tor** zur Verfügung steht (am äußersten Tor je Seite, wenn es zurückgestellt ist). Der Monarch nimmt es auf; ihm folgt **genau ein Trupp** aus **bis zu 5 Soldaten und 5 Bogenschützen** (Startwerte), der Rest bleibt auf Posten. Je Monarch ein Banner, also ein Trupp je Monarch. | Der Monarch führt selbst, wie ein General. | `data/troops.json` › `combat.troopSoldiers`, `combat.troopArchers` | – |
+| **Banner:** Jeder Monarch hat **ein Banner**, das an **jedem Tor** zur Verfügung steht (am äußersten Tor je Seite, wenn es zurückgestellt ist). Der Monarch nimmt es auf; ihm folgt **genau ein Trupp** aus **bis zu 5 Soldaten und 5 Bogenschützen** (Startwerte), der Rest bleibt auf Posten. Je Monarch ein Banner, also ein Trupp je Monarch. | Der Monarch führt selbst, wie ein General. | `data/economy.json` › `combat.troopSoldiers`, `combat.troopArchers` | – |
 | **Zurückstellen:** Geht der Monarch **hinter das äußerste Tor** zurück, wird das Banner dort wieder aufgestellt, der Trupp kehrt zurück. | Der Angriff endet, wo der General ihn beendet. | – | – |
 | **Nachbesetzung:** Fällt ein Kämpfer des Trupps, ersetzt ihn ein neuer, der **vom letzten Tor** losgeht (vermutet: äußerstes Tor der Seite), solange Truppen da sind. | Der Trupp hält seine Stärke ohne Zutun. | – | – |
 | **Mit Banner darf der Monarch bauen und zahlen** (Default, nicht gesondert bestätigt). | Kein Sperrzustand. | – | – |
@@ -85,9 +85,9 @@ Folgende Regeln aus früheren Dateien **entfallen** (je mit Verweis in der jewei
 | Portal-HP je Tiefe 0 bis 4 | 500 / 800 / 1200 / 1800 / 2500 | `data/biomes/*.json` › `portals.hp` |
 | Verteidiger-Welle je Portal (Takt, Menge) | 20 s, 4 Gegner (Tiefe 0) | `data/biomes/*.json` › `portals.defense` |
 | Kampfvariante, Gruppengröße | `groups`, 5 | `data/worlds/*.json` › `combat` |
-| Schild (Gruppenführer) | 10 Gold | `data/troops.json` › `combat.shieldCost` |
-| Angriffs-Auslöser | 2 Gold | `data/troops.json` › `combat.triggerCost` |
-| Trupp hinter dem Banner | 5 Soldaten, 5 Bogenschützen | `data/troops.json` › `combat.troopSoldiers`, `combat.troopArchers` |
+| Schild (Gruppenführer) | 10 Gold | `data/economy.json` › `combat.shieldCost` |
+| Angriffs-Auslöser | 2 Gold | `data/economy.json` › `combat.triggerCost` |
+| Trupp hinter dem Banner | 5 Soldaten, 5 Bogenschützen | `data/economy.json` › `combat.troopSoldiers`, `combat.troopArchers` |
 | Gegner-Abstand zum Werkzeug-Holen | 8 Units | `data/troops.json` › `peasant.fetchEnemyDistance` |
 | Münzen je Treffer auf den Monarchen | 1 | `data/monarch.json` › `hitCoins` |
 | Kronen-Flugbahn | offen (Bogen nach hinten) | `data/monarch.json` › `crown` |
@@ -103,3 +103,4 @@ Folgende Regeln aus früheren Dateien **entfallen** (je mit Verweis in der jewei
 - Offen: Boss-Belohnung (Gold, Material) des entfallenden Minibosses und Händler-Überfall in einer sicheren Stufe.
 - **Umgesetzt KS3 (B-930, B-931), Auslegungen (ungeprüft, Feintuning B-099):** Ein Schild fängt den Treffer ganz ab (auch den Überschuss). Thick Skin: jeder 4. Treffer gratis. Last Stand: einmalig, nur bei der letzten Münze. Regeneration = Gold-Rinnsal tagsüber (0,2 Münzen/s); Heal, Group Heal, Healing Aura, Holy Ground heilen Truppen. Resurrection setzt nur Kronen zurück, die kein Gegner trägt. Fortified ist eine Truppen-Aura (+3 Verteidigung, Umkreis 4). Ein Mitspieler trägt eine fremde Krone zum Besitzer und setzt sie ihm bei Ankunft auf. In geschützten Nächten gibt es keinen Raub; die Krone eines abwesenden (Free) Monarchen sitzt wieder auf.
 - Ereignisse für Portal, Krone und sichere Stufe legen KS2 bis KS4 mit dem Protokoll an (`protocol.md`); Anzeige: B-934.
+- **Umgesetzt KS4 (B-932, B-933), Auslegungen (ungeprüft):** Werte stehen in `data/economy.json` › `combat` (nicht `troops.json`: dort ist jeder Schlüssel eine Truppenart). Banner nehmen kostet 1 Gold (`bannerCost`, Annahme; ohne Gold kein Banner). Schild-Zahlziel 4 Units rechts der Burg, Auslöser und Banner 3,5 Units innen vor dem äußersten Tor (`shieldOffsetUnits`, `gateInsetUnits`). Der Auslöser nimmt nur Gold, solange eine Gruppe der Seite am Tor steht; das Schild nur, solange ein freier Soldat da ist. Eine Gruppe greift Gegner bis 8 Units voraus (`engageUnits`), sonst das nächste Portal in ihrer Richtung; ohne Ziel kehrt sie ans Tor zurück. Der Führer fällt nicht, solange Soldaten seiner Gruppe stehen. Der Trupp des Banners greift Gegner und Portale bis 8 Units vor dem Monarchen an, sonst folgt er ihm (Soldaten voraus, Schützen dahinter); fällt die Krone, wird das Banner am Tor zurückgestellt. Gruppen und Banner stehen nicht im Spielstand (nach dem Laden stehen alle am Posten). Anzeige: KS5.
