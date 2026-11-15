@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | KS2 | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | aktiv |
 | KS3 | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | aktiv |
 | KS4 | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | aktiv |
-| KS5 | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | geplant |
+| KS5 | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | aktiv |
 
 ## Nicht-Ziele
 

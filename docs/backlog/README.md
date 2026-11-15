@@ -41,8 +41,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-914](B-914-abnahme-st2.md) | CLI | Idee | mittel | offen | ST2 | Ralf nimmt ST2 ab: Testing-Menü und Stresstest-Bericht am PC geprüft |
 | [B-924](B-924-k3c-sim-in-workbench.md) | DEV | Schuld | mittel | offen | WE1 | Die Workbench nutzt den k3c-sim-Code direkt statt über den Kindprozess |
 | [B-925](B-925-sim-aenderung-eigene-workbench.md) | DEV | Schuld | mittel | offen | WE1 | Änderungen am Sim-Code laufen im eigenen Worktree mit eigener Dev-Workbench auf eigenen Ports |
-| [B-932](B-932-angriff-gruppen.md) | SIM | Idee | hoch | offen | KS4 | Gruppen-Angriff: Schild macht zum Gruppenführer, Auslöser am Tor schickt alle Gruppen los |
-| [B-933](B-933-angriff-general.md) | SIM | Idee | hoch | offen | KS4 | General-Angriff: Der Monarch nimmt das Banner am Tor, ein Trupp folgt ihm, Ausfälle werden nachbesetzt |
 | [B-934](B-934-kampf-anzeige.md) | CLI | Idee | mittel | offen | KS5 | Das Spiel zeigt Portal-HP, Krone, Münzverlust, Schild, Banner und Auslöser |
 | [B-935](B-935-klangbild-couch.md) | CLI | Problem | hoch | offen | SR1 | Klangbild für Couch-Abende festlegen und konsolige Piep-Sounds ersetzen |
 | [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SR1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
