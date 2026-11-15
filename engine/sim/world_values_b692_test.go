@@ -104,7 +104,6 @@ func TestB692GesperrteFelder(t *testing.T) {
 	cases := map[string][2]string{
 		"economy.payRangeUnits":   {"economy", `{"payRangeUnits": 3}`},
 		"hub.sitePlacement":       {"hub", `{"sitePlacement": {"zone1WallUnits": 5}}`},
-		"hub.sites":               {"hub", `{"sites": {"0": {"offsetUnits": 4}}}`},
 		"nursery.plantation":      {"buildings", `{"nursery": {"plantation": {"stripUnits": 5}}}`},
 		"buildings.nursery.hp ok": {"buildings", `{"nursery": {"hp": 120, "plantation": {"slots": 4}}}`},
 	}

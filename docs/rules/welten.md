@@ -84,17 +84,28 @@ Der Level-Generator (`engine/level`) liest einige Werte aus den eingebetteten Ba
 Ein Override darauf ließe Level (Lage der Plätze, Zahlziele, Ruinen-Planung) und Simulation auseinanderlaufen; deshalb lehnt
 die Prüfung (§ 1.2) es beim Laden mit Pfad ab, Meldung `… › data/economy.json › payRangeUnits: nicht übersteuerbar (der
 Level-Generator liest die Basis, welten.md § 1.3)`. Entschieden von Claude (B-692): sperren statt durchreichen, weil das
-Durchreichen den Level-Generator und seine Planungsprüfung je Welt umbauen würde.
+Durchreichen den Level-Generator und seine Planungsprüfung je Welt umbauen würde (für `hub.sites` und `hub.islandSites`
+seit B-983 aufgehoben, s. u.).
 
 | Feld | Leser in der Basis |
 |---|---|
 | `economy.payRangeUnits` | Abstand der Zahlziele (`level/lines.go`) |
-| `hub.sites`, `hub.islandSites` | Hub- und Insel-Plätze (`level/lines.go`, Ruinen-Lage `level/ruins.go`) |
 | `hub.sitePlacement` | Mauer- und Turmplätze, Freiraum (`level/sites.go`, `sim/world_lines.go`, `level/guards.go`, `level/planned.go`) |
 | `buildings.<id>.plantation.stripUnits` | Randabstand einer Ruine (`level/ruins.go`) |
 
 Die **HP einer Ruine** folgen dagegen dem Wertesatz: Start-HP = `hpShare` (`data/ruins.json`) × HP der Art in der Welt.
 Umsetzung: `engine/sim/world_values_locked.go`.
+
+**Hub- und Insel-Plätze sind übersteuerbar** (B-983, hebt B-692 für diese zwei Felder auf): `hub.sites` und `hub.islandSites`
+gelten im Wertesatz der Welt. Der Generator bekommt sie als Wert (`level.Options.HubSites`, nil = Basis; `engine/level`
+importiert nichts aus `engine/sim`), die Stufe liest sie aus demselben Wertesatz (`hubOf`); Zahlziele, Mauer- und Turm-Plätze
+und die Ruinen-Lage (`level/ruins.go`) halten Abstand zu den Plätzen der Welt, die Planungsprüfung der Inseln
+(`level.ValidatePlanWith`) rechnet mit ihnen. Geprüft beim Laden (fail closed, `engine/sim/world_hub_sites.go`): bekannte Art,
+Pflichtplätze `workshop`, `stairsDown`, `stairsUp` je genau einmal, ein Platz je Bau, Hub-Stufe in 1 … Anzahl `levels`,
+Lage innerhalb der halben Hub-Breite, Abstand zweier Zahlziele ≥ 2 × `payRangeUnits` (Treppen ≥ 8 Units zu jedem Zahlziel).
+Meldung z. B. `data/worlds/nordmeer.json: overrides: data/hub.json: hub-breite: smithy@+55: offsetUnits 55 liegt nicht innerhalb
+der Hub-Breite (±50)`. Passt eine geplante Chunk-Planung einer Insel nach der Änderung nicht mehr, meldet die Auflösung der Welt
+Insel, Tiefe und Platz. `hub.sitePlacement` bleibt gesperrt.
 
 ## 2. Format
 

@@ -234,6 +234,9 @@ func valuesFrom(fsys fs.FS) (WorldValues, error) {
 		return WorldValues{}, err
 	}
 	v.Buildings, v.skills = withShip(v.Buildings, ship), newSkillTable(v.Monarch.Skills)
+	if err := checkWorldHubSites(&v.Hub, v.Economy, v.Buildings); err != nil {
+		return WorldValues{}, err
+	}
 	return v, nil
 }
 

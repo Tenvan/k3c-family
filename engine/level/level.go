@@ -74,7 +74,8 @@ type gen struct {
 	kinds []string
 	cw    float64
 	hub   float64
-	count int // eingestellte Chunk-Anzahl (Options.ChunkCount); 0 = gewürfelte Länge aus lengthUnits
+	count int       // eingestellte Chunk-Anzahl (Options.ChunkCount); 0 = gewürfelte Länge aus lengthUnits
+	sites []hubSite // Hub- und Insel-Plätze der Welt (Options.HubSites)
 	// Geplante Chunks (planned_gen.go): hubStart und hubChunks legen die Plätze fest, planned ordnet Chunk-Index
 	// und Plan zu, fixed zählt feste Portale, Truhen, Camps und Adern, sideFixed feste Portale je Seite.
 	hubStart, hubChunks int
@@ -107,14 +108,14 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	if err := checkCount(b, o.ChunkCount); err != nil {
 		return Layout{}, err
 	}
-	if err := ValidatePlanFor(b, o.Planned, o.ChunkCount); err != nil {
+	if err := ValidatePlanWith(b, o.Planned, o.ChunkCount, o.HubSites); err != nil {
 		return Layout{}, fmt.Errorf("geplante Chunks: %w", err)
 	}
 	nature, err := ResolveNature(b, seed, o.Nature)
 	if err != nil {
 		return Layout{}, fmt.Errorf("natur: %w", err)
 	}
-	g := &gen{b: b.withNature(nature), r: rng.New(b.ID + ":" + seed), seed: seed, cw: b.ChunkWidthUnits, count: o.ChunkCount,
+	g := &gen{b: b.withNature(nature), r: rng.New(b.ID + ":" + seed), seed: seed, cw: b.ChunkWidthUnits, count: o.ChunkCount, sites: sitesOf(o.HubSites),
 		plannedRes: b.ResourcesPerChunk}
 	g.b.Lair = o.hasLair(b)
 	g.frame()
@@ -361,4 +362,3 @@ func weights(o Ordered[float64]) []rng.Weight {
 	}
 	return out
 }
-

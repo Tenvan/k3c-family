@@ -46,6 +46,9 @@ func ResolveWorld(world WorldDef, lookup func(id string) (WorldDef, error)) (Wor
 				return WorldDef{}, err
 			}
 			world.values = &v
+			if err := checkWorldPlans(world); err != nil {
+				return WorldDef{}, err
+			}
 			break
 		}
 	}

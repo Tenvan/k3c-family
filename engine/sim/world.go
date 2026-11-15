@@ -39,7 +39,15 @@ func hubOf(w *World) *HubData {
 
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
-	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount, Nature: opts.Nature, Lair: opts.lair}
+	vals := opts.vals
+	if vals == nil {
+		vals = defaultValues()
+	}
+	hubData := opts.hub // Kandidat oder hub.json der Welt: Level und Stufe rechnen mit denselben Plätzen (B-983)
+	if hubData == nil {
+		hubData = &vals.Hub
+	}
+	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount, Nature: opts.Nature, Lair: opts.lair, HubSites: hubData.LevelSites()}
 	lv, err := level.GenerateWith(b, seed, lo)
 	if err != nil {
 		return nil, err
@@ -49,10 +57,6 @@ func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
 		speed = 1
 	}
 	hubX := lv.HubCenterUnits
-	vals := opts.vals
-	if vals == nil {
-		vals = defaultValues()
-	}
 	castleHP := vals.Buildings["castle"].HP
 	w := &World{
 		Seed: seed, Biome: b, Level: lv, rng: rng.New(b.ID + ":" + seed + ":sim"),

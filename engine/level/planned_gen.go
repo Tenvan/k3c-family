@@ -20,6 +20,9 @@ type Options struct {
 	// Lair sagt, ob die Stufe den Bau des Endbosses trägt (docs/rules/bosse.md § 1, B-981): nil = das Feld `lair` des
 	// Bioms (Level ohne Insel, Golden), sonst gilt der Wert in jedem Biom; die Insel setzt ihn nur für die tiefste Stufe.
 	Lair *bool
+	// HubSites sind die Hub- und Insel-Plätze der Welt (hub.sites und hub.islandSites, B-983); nil = die der Basis. Sie
+	// halten Zahlziele und Ruinen auf Abstand.
+	HubSites []HubSite
 }
 
 // hasLair: Die Stufe trägt den Bau des Endbosses (Options.Lair, sonst Biom.Lair).
