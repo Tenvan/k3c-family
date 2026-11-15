@@ -45,9 +45,24 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| GS1 | REG | WZG | Geschichten je Welt und Insel in Kunstsprache | – | Entwurf | `geplant/GS1-geschichten-je-welt/` |
-| SI1 | REG | KMP | Spielideen: Fracht auf dem Schiff, Koop-Aktionen, Wetter je Welt | – | Entwurf | `geplant/SI1-spielideen-fracht-koop-wetter/` |
-| RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
+| NA1 | CLI, PAP | NAT | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | – | bereit | `geplant/NA1-nachtraege-natives-spiel/` |
+| GS1 | REG, SIM, CLI, DEV | WZG | Geschichten je Welt und Insel in Kunstsprache | – | bereit | `geplant/GS1-geschichten-je-welt/` |
+| GS2 | PAP, CLI | WZG | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | – | bereit | `geplant/GS2-seekarte-papierschnitt/` |
+| WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | bereit | `geplant/WE7-welten-assets/` |
+| GS3 | SIM, PAP, CLI, SRV | WZG | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | – | bereit | `geplant/GS3-andenken-chronik/` |
+| GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | bereit | `geplant/GS4-flaschenpost/` |
+| WE5 | SIM, DEV | WZG | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | – | bereit | `geplant/WE5-welt-format-nachtraege/` |
+| WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
+| WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
+| WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | bereit | `geplant/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
+| SI2 | REG, PAP, SIM, CLI | KMP | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | – | bereit | `geplant/SI2-doppel-truhe-koop/` |
+| SI3 | REG, SIM, PAP, CLI | KMP | Wetter je Welt: Regel, Engine, Assets, Anzeige | – | bereit | `geplant/SI3-wetter-je-welt/` |
+| SI4 | REG, PAP, SIM, CLI | KMP | Reittiere je Welt: Regel, Assets, Engine, Anzeige | – | bereit | `geplant/SI4-reittiere-je-welt/` |
+| SI5 | REG, SIM, PAP, CLI | KMP | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | – | bereit | `geplant/SI5-einsiedler-bauwerk/` |
+| SI6 | REG, PAP, SIM, CLI | KMP | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | – | bereit | `geplant/SI6-fest-nach-dem-sieg/` |
+| SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
+| SI1 | REG, SIM, PAP, CLI | KMP | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | – | bereit | `geplant/SI1-fracht-auf-dem-schiff/` |
+| RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | bereit | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

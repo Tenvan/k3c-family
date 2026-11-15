@@ -32,7 +32,14 @@ Neue Beleuchtungs-Engine; Balancing.
 
 ## Regeln und Einschränkungen
 
-Client zeichnet nur, was der Server meldet; deterministisch; Protokoll nur additiv nach Entscheidung von 🧑.
+Das Spiel zeichnet nur, was die Simulation meldet; deterministisch; Protokoll nur additiv nach Entscheidung von 🧑.
+
+Planungsangaben (nachgetragen 2026-11-15, offen ist nur noch W15.3):
+
+- **Bereich:** `data/light.json`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Sperre:** –
 
 ## Beispiele
 

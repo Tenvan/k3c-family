@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** WZ60
+- **Status:** eingeplant
+- **Sprint:** WZ61
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-14
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Klasse A, Claude, 2026-11-15
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,45 +24,49 @@ Die Planungsseite bleibt bei laufenden Agenten aktuell, ohne je Änderung mehrer
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+🧑 und Agenten an der Planungsseite der Workbench; Agent DEV (Agent `k3c-workbench` prüft).
 
 ## Anforderungen
 
-- Größe von `PlanningData` aufschlüsseln (was macht die 5,5 MiB aus).
-- Nur Geändertes nachladen (Stempel je Datei oder Teil-Daten) oder die Nutzlast deutlich verkleinern.
+- Größe von `PlanningData` aufschlüsseln (Anteil je Teil: Sprints, Sessions, Tickets, Archiv, Fließtexte) und im Ergebnis nennen.
+- Die Listen-Daten tragen nur, was Listen und Karten zeigen (Kopf-Felder, Titel, Zähler); Fließtexte lädt die Seite erst beim Öffnen eines Dokuments (`PlanningGet`).
+- `planning:changed` nennt die geänderten IDs; die Seite lädt nur diese nach und ersetzt sie in ihrem Zustand. Ohne IDs (erster Aufruf, unklare Änderung) lädt sie einmal alles.
+- Die Drossel aus B-895 bleibt; Fenster (Wails) und Browser-Dev (Vite, `/api`) verhalten sich gleich.
+- Anzeige, Filter und Zähler der Planungsseite bleiben gleich (bestehende Tests grün).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Neue Funktionen der Planungsseite; Änderungen an den MCP-Tools `plan_*`; Cache auf der Platte.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Oberfläche nach Atomic Design über `@webkit` (`tests/atomicDesign.test.ts`); keine neue Abhängigkeit. Die Dateien unter `docs/` bleiben die Quelle.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `tools/k3c-workbench/app_planning.go`, `tools/k3c-workbench/app.go`, `tools/k3c-workbench/uiapi.go`, `tools/k3c-workbench/frontend/src/planning/**`, `tools/k3c-workbench/frontend/src/api/**`, `tools/k3c-workbench/frontend/src/lib/useLiveReload.ts`, `tools/k3c-workbench/frontend/wailsjs/**`
+- **Abhängig von:** WZ60.1
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** exe
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Ein Agent setzt per `plan_set` den Status eines Tickets → die Seite lädt nur dieses Ticket nach (wenige KiB) und zeigt den neuen Status.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Datei gelöscht oder ins Archiv verschoben → der Eintrag verschwindet bzw. wechselt die Liste. Viele Änderungen auf einmal (Merge, Branchwechsel) → einmal alles laden. Nachladen scheitert → alter Stand bleibt sichtbar, nächster Versuch mit dem nächsten Ereignis.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `PlanningData` bzw. ein Nachladen nach einer einzelnen Ticket-Änderung ist kleiner als 500 KiB (Messung im Ergebnis).
+- **AC-01** Ein Nachladen nach einer einzelnen Ticket-Änderung ist kleiner als 500 KiB und die Listen-Daten ohne Fließtexte sind kleiner als 1,5 MiB (Go-Test gegen das echte `docs/`, Messung im Ergebnis).
+- **AC-02** Vitest: Nach `planning:changed` mit einer ID ruft die Seite nur das Nachladen dieser ID auf, nicht `PlanningData`.
+- **AC-03** Die Aufschlüsselung der 5,5 MiB steht im Ergebnis der Session (Tabelle Teil → Größe).
 
 ## Offene Fragen
 
-keine
+- Stempel je Datei, Teil-Daten oder kleinere Nutzlast? → Default: beides in dieser Reihenfolge: Fließtexte aus den Listen-Daten nehmen, dann nur geänderte IDs nachladen (vorläufig, 🧑 bestätigt).
+- Grenze für die Listen-Daten? → Default: 1,5 MiB (vorläufig, nach der Aufschlüsselung anpassbar).
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Messwerte aus WZ60.1 (B-895). 2026-11-15 von WZ60 (alle Sessions fertig) nach WZ61 verschoben.

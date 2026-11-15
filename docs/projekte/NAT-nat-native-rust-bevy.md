@@ -50,6 +50,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | aktiv |
 | WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | aktiv |
 | FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | aktiv |
+| NA1 | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | geplant |
 
 ## Nicht-Ziele
 

@@ -58,7 +58,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Zerlegen vor Umsetzung (Größe L).
+Zerlegt am 2026-11-15 (Planungs-Session): Dieses Ticket bleibt Sammelticket. Assets je Welt → B-988 (Sengoku), B-989 (Nil), B-990 (Britannien), Sprint WE7; Events → B-991 (Ninja-Überfall), B-992 (Sandsturm, Nebel), B-995 (Anzeige im Spiel); Zuordnung in den Welten und Sichtprüfung → B-996; Sprint WE8. Gegner-Varianten sind Skins einer Basisart (B-984).
 
 ## Notizen
 

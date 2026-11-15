@@ -3,63 +3,72 @@
 - **Status:** geplant
 - **Projekt:** BAL
 - **Domäne:** REG
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-295, B-185, B-203, B-219, B-024
 - **Start-Commit:** –
 - **Spec:** Entwurf
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** –
 
 ## Ausgangslage
 
-Offene Regel-Fragen: Handwerker für Schmiede und Rüstkammer (B-295), Verlust-Korridor doppelt (B-185), Kennzahl „erste Gold-Schwelle“ (B-203), Tier-Gating in der Doku (B-219), Tiefe 3 und 4 fehlen (B-024).
+Stand 2026-11-15, je Ticket gegen Regelwerk und Daten geprüft: Der Verlust-Korridor steht in `docs/rules/wirtschaft.md` § 3 noch anders als in `buerger.md`, `kampf.md` und `zielkorridore.md` (B-185). `docs/game-design.md` nennt Tier-Gating 5/10/15 statt 2/4/6 (B-219; der Teil `events.go` ist erledigt). Der Geselle (Beruf `craftsman`, vor B-950 „Handwerker“) steht im Text an Werkstatt, Schmiede und Rüstkammer, in den Daten nur an der Werkstatt (B-295). Die Kennzahl „erste Gold-Schwelle“ entfällt (B-203). Tiefe 3 und 4 sind inzwischen beschrieben und haben Biom-Daten (B-024, Belege im Ticket).
 
 ## Ziel
 
-Regelwerk und Doku sind widerspruchsfrei, offene Fragen sind entschieden. Am Ende sichtbar: Regelwerk ohne Widersprüche, Tiefe 3 und 4 beschrieben.
+Regelwerk und Übersicht widersprechen sich in diesen Punkten nicht mehr. Am Ende sichtbar: die `grep`-Prüfungen der Kriterien ohne Treffer, `task check` grün.
 
 ## Beteiligte und Zielgruppen
 
-🧑 entscheidet; Agent schreibt `docs/rules/` und `docs/game-design.md`.
+🧑 bestätigt die Defaults (Geselle nur Werkstatt, Kennzahl entfällt) und gibt frei; ein Agent schreibt `docs/rules/` und `docs/game-design.md`.
 
 ## Anforderungen
 
-B-295 › Anforderungen; B-185 › Anforderungen; B-203 › Anforderungen; B-219 › Anforderungen; B-024 › Anforderungen.
+`B-185 › Anforderungen`; `B-219 › Anforderungen`; `B-295 › Anforderungen`; `B-203 › Anforderungen`; `B-024 › Anforderungen` (schon erfüllt, nur Gegenprüfung).
 
 ## Nicht-Ziele
 
-Code-Änderungen; Werte-Messung (RG1).
+Code; Werte in `data/`; Simulation und Balancing (gesperrt); Schalter `--gold-threshold` aus dem Tester entfernen.
 
 ## Regeln und Einschränkungen
 
-REG, nur Doku; keine Review-Session, die letzte Session schließt ab.
+REG, nur Doku. `docs/glossar.md` als Sammeldatei im letzten Commit.
+
+- **Bereich:** `docs/rules/wirtschaft.md`, `docs/rules/zielkorridore.md`, `docs/rules/buerger.md`, `docs/rules/monarch.md`, `docs/game-design.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Entscheidung
+- **Sperre:** –
 
 ## Beispiele
 
-Verlust-Korridor in Wirtschaft und Bürger → eine Zahl, von 🧑 entschieden.
+Ein Leser von `wirtschaft.md` § 3 sieht 25 % der Kämpfer wie in `buerger.md` § 3; `game-design.md` nennt Tier 2 ab 2 gelernten Skills.
 
 ## Ausnahme- und Fehlerfälle
 
-Frage bleibt offen → Ticket bleibt offen, Sprint nimmt es heraus.
+🧑 bestätigt einen Default nicht → das Ticket verlässt den Sprint, die übrigen laufen weiter.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Handwerker lassen sich auch für Schmiede und Rüstkammer ausbilden (B-295/AC-01).
-- **AC-02** Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger (B-185/AC-01).
-- **AC-03** Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung (B-203/AC-01).
-- **AC-04** Game-Design und Ereignis-Doku nennen Tier-Gating 2/4/6 und den Schlag des Monarchen (B-219/AC-01).
-- **AC-05** Tiefe 3 und 4 sind beschrieben (B-024/AC-01, B-024/AC-02).
+- **AC-01** Regeltext und Daten nennen den Gesellen nur an der Werkstatt (`B-295/AC-01`).
+- **AC-02** Wirtschaft nennt denselben Verlust-Korridor je Welle wie die Bürger (`B-185/AC-01`).
+- **AC-03** Die Kennzahl „erste Gold-Schwelle“ entfällt und steht in keinem Regeltext (`B-203/AC-01`).
+- **AC-04** Game-Design nennt Tier-Gating 2/4/6; die Ereignisliste nennt den Schlag des Monarchen (`B-219/AC-01`).
+- **AC-05** Tiefe 3 und 4 sind beschrieben und haben Biom-Daten (`B-024/AC-01`, `B-024/AC-02`; schon erfüllt, Gegenprüfung in RG2.2).
 
 ## Offene Fragen
 
-B-295, B-185, B-203 sind in B-627 › Notizen entschieden (2026-10-31, Claude im Auftrag von Ralf): Handwerker nur in der Werkstatt, Verlust-Korridor höchstens 25 % der Kämpfer, Kennzahl „erste Gold-Schwelle“ entfällt. RG2.1 (Workshop) entfällt damit, RG2.2 setzt die Doku um.
+- Geselle nur an der Werkstatt, auch nicht am Bogner? → Default: ja (vorläufig, 🧑 bestätigt; B-627, 2026-10-31).
+- Kennzahl „erste Gold-Schwelle“ entfällt, B-203 verworfen? → Default: ja (vorläufig, 🧑 bestätigt).
+- B-024 ohne weitere Arbeit erledigt? → Default: ja, Belege in B-024 › Notizen (vorläufig, 🧑 bestätigt).
 
 ## Sessions
 
-Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| RG2.1 | `RG2.1-regeltexte-angleichen.md` | Umsetzung | autonom | offen |
+| RG2.2 | `RG2.2-review.md` | Review | autonom | offen |
 
-- RG2.1 Workshop (🧑): Handwerker, Verlust-Korridor, Gold-Schwelle (AC-01, AC-02, AC-03).
-- RG2.2 Doku angleichen und Tiefe 3–4 beschreiben, schließt ab (AC-04, AC-05).
+RG2.1 (REG, haiku) erfüllt AC-01 bis AC-04; RG2.2 (REG, sonnet) prüft alle, auch AC-05, gleicht das Glossar an und schließt ab. Kein Abnahme-Ticket: keine Sim, keine Grafik, keine Werte.
 
 ## Abnahme
 

@@ -14,7 +14,7 @@
 
 ## Ausgangslage
 
-`docs/rules/wirtschaft.md` § 3 nennt als Zielkorridor „Verluste je Welle: Median höchstens die Hälfte der Truppen“, `docs/rules/buerger.md` § 3 „höchstens 25 % der Kämpfer“. Im Workshop F1.4 (2026-10-03) hat 🧑 entschieden: Es gilt **höchstens 25 % der Kämpfer** (`docs/rules/zielkorridore.md` § 4). Die Session F1.4 durfte `wirtschaft.md` nicht ändern.
+`docs/rules/wirtschaft.md` § 3 (Zeile 37, Stand 2026-11-15) nennt als Zielkorridor weiter „Verluste je Welle: Median höchstens die Hälfte der Truppen (Normal)“. `docs/rules/buerger.md` § 3 (Zeile 52), `docs/rules/kampf.md` § 4 (Zeile 53) und `docs/rules/zielkorridore.md` § 4 (Zeile 53) nennen „höchstens 25 % der Kämpfer“. Im Workshop F1.4 (2026-10-03) hat 🧑 entschieden: Es gilt **höchstens 25 % der Kämpfer**. `zielkorridore.md` Zeile 53 verweist noch auf den abweichenden Wert und auf dieses Ticket.
 
 ## Ziel
 
@@ -26,7 +26,9 @@ Beide Regelwerke nennen denselben, von 🧑 entschiedenen Korridor; der Balancin
 
 ## Anforderungen
 
-- Die Zeile in `wirtschaft.md` § 3 nennt „höchstens 25 % der Kämpfer“ und verweist auf `zielkorridore.md` § 4.
+- Die Zeile in `wirtschaft.md` § 3 nennt „Median höchstens 25 % der Kämpfer“ und verweist auf `zielkorridore.md` § 4.
+- Der Nebensatz in `zielkorridore.md` § 4 über den abweichenden Wert in `wirtschaft.md` und B-185 entfällt.
+- Gilt für 1 bis 4 Spieler gleich (Kennzahl je Welle, nicht je Spieler); keine Wirkung auf Simulation oder Determinismus.
 
 ## Nicht-Ziele
 
@@ -34,7 +36,13 @@ Messgröße und Prüfung (B-099, B-157); keine Änderung an `data/*.json`.
 
 ## Regeln und Einschränkungen
 
-Domäne REG. Keine neue Zahl; nur die Entscheidung aus F1.4 übernehmen.
+Domäne REG. Keine neue Zahl; nur die Entscheidung aus F1.4 übernehmen. Nur Text, kein Sim- oder Balancing-Lauf.
+
+- **Bereich:** `docs/rules/wirtschaft.md`, `docs/rules/zielkorridore.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Freigabe
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -46,7 +54,7 @@ nicht relevant: reine Textangleichung.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `docs/rules/wirtschaft.md` § 3 nennt „Median höchstens 25 % der Kämpfer“ mit Verweis auf `zielkorridore.md`; `grep -n "Hälfte der Truppen" docs/rules/wirtschaft.md` findet nichts.
+- **AC-01** `docs/rules/wirtschaft.md` § 3 nennt „Median höchstens 25 % der Kämpfer“ mit Verweis auf `zielkorridore.md`; `grep -n "Hälfte der Truppen" docs/rules/wirtschaft.md docs/rules/zielkorridore.md` findet nichts.
 
 ## Offene Fragen
 
@@ -54,4 +62,4 @@ keine
 
 ## Notizen
 
-Entscheidung: Workshop F1.4, 2026-10-03.
+Entscheidung: Workshop F1.4, 2026-10-03; bestätigt in B-627 › Notizen (2026-10-31). Stand geprüft 2026-11-15: weiter offen (`wirtschaft.md`:37).
