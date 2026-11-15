@@ -16,7 +16,9 @@ type payTarget struct {
 	node     *ResourceNode
 	offer    *offerTarget
 	merchant string
-	sword    *Site // Schwert-Zahlziel der Werkstatt (unit_warrior.go)
+	sword    *Site       // Schwert-Zahlziel der Werkstatt (unit_warrior.go)
+	combat    *CombatSpot // Schild, Auslöser oder Banner der Kampfvariante (combat.go)
+	combatKey string // Zahl-Schlüssel des Kampf-Zahlziels (CombatSpot.key)
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
@@ -89,6 +91,9 @@ func nearest[T any](items []*T, pos func(*T) float64, x, r float64, ok func(*T) 
 // findPayTarget: Was würde eine Münze gerade bezahlen? Bauplatz vor Landstreicher vor Ressource.
 func findPayTarget(w *World, p *Player) *payTarget {
 	r := w.values().Economy.PayRangeUnits
+	if c := combatTarget(w, p); c != nil && c.Kind != "shield" { // Auslöser und Banner gehen Bauplätzen in Reichweite vor
+		return &payTarget{combat: c, combatKey: c.key(p)}
+	}
 	s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) })
 	s = lineBeforeRuin(w, s, p.X) // Linien-Platz vor Ruine (building_ruin.go)
 	if h := w.hubSite; h != nil && math.Abs(h.X-p.X) <= r && sitePayable(w, h) && (s == nil || math.Abs(h.X-p.X) < math.Abs(s.X-p.X)) {
@@ -102,6 +107,9 @@ func findPayTarget(w *World, p *Player) *payTarget {
 	}
 	if s := swordAt(w, p.X, true); s != nil {
 		return &payTarget{sword: s}
+	}
+	if c := combatTarget(w, p); c != nil {
+		return &payTarget{combat: c, combatKey: c.key(p)}
 	}
 	if side := merchantAt(w, p.X); side != "" {
 		return &payTarget{merchant: side}
@@ -138,6 +146,8 @@ func keyOf(t *payTarget) string {
 		return "merchant:" + t.merchant
 	case t.sword != nil:
 		return "sword:" + strconv.Itoa(t.sword.ID)
+	case t.combat != nil:
+		return "combat:" + t.combatKey
 	case t.site != nil:
 		return "site:" + strconv.Itoa(t.site.ID)
 	case t.troop != nil:
@@ -165,6 +175,8 @@ func refundPending(w *World, p *Player) {
 		back = refundMerchant(w, amount)
 	case "sword":
 		back = refundSword(w, id, amount)
+	case "combat":
+		back = refundCombat(w, idText, amount)
 	case "vagrant":
 		if t := troopByID(w, id); t != nil && t.Kind == "vagrant" {
 			back = min(amount, t.PaidGold)
@@ -227,23 +239,7 @@ func payOneCoin(w *World, p *Player) {
 	}
 	p.PayKey = &key
 	p.PayAmount++
-	switch {
-	case target.offer != nil:
-		payAnyOffer(w, p, target.offer)
-	case target.sword != nil:
-		paySword(w, p, target.sword)
-	case target.site != nil:
-		paySite(w, p, target.site)
-	case target.troop != nil:
-		payVagrant(w, p, target.troop)
-	default:
-		n := target.node
-		n.PaidGold++
-		if g, _ := gatherOf(w.values(), n.Kind); n.PaidGold >= g.MarkCost {
-			markNode(n, p)
-			clearPending(p)
-		}
-	}
+	payToTarget(w, p, target)
 }
 
 func paySite(w *World, p *Player, s *Site) {
@@ -261,23 +257,6 @@ func paySite(w *World, p *Player, s *Site) {
 	if !sitePayable(w, s) {
 		clearPending(p)
 	}
-}
-
-func payVagrant(w *World, p *Player, t *Troop) {
-	t.PaidGold++
-	// ponytail: `recruitCost?.gold ?? 1` in TS; ein ausdrückliches gold: 0 in data/troops.json würde hier 1 kosten.
-	cost := w.values().Troops["vagrant"].RecruitCost.Gold
-	if cost == 0 {
-		cost = 1
-	}
-	if t.PaidGold < cost {
-		return
-	}
-	hp := w.values().Troops["peasant"].HP
-	t.Kind, t.HP, t.MaxHP = "peasant", hp, hp
-	t.AnchorX, t.TargetX, t.Job, t.PaidGold = w.HubX, t.X, nil, 0
-	w.Events = append(w.Events, Event{"type": "recruited", "player": p.Index})
-	clearPending(p)
 }
 
 func collectCoins(w *World) {

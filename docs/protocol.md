@@ -626,6 +626,9 @@ nichts**; im Delta fehlt ein abgelaufenes Feld eines Gegners oder Spielers im ge
 | `players[].lastStandFor` | Restdauer von Last Stand (die letzte Münze hält einen Treffer länger) | kein Last Stand |
 | `players[].crown` | gefallene Krone des Monarchen (B-931): `owner` (Spieler-Index), `state` (`flying`, `ground`, `enemy`, `player`), `x`, `z` (Höhe in Units im Flug), `fromX`/`toX`/`t` (Flug), `carrier` (ID des Gegners bzw. Mitspielers). Hat ein Monarch keine HP mehr, fehlen `players[].hp`, `maxHp`, `respawnIn`, `reviveProgress` | Monarch trägt seine Krone |
 | `enemies[].crown` | dieselbe Krone, wenn der Gegner sie zum Portal trägt | trägt keine Krone |
+| `troops[].leader` | `true` beim Gruppenführer mit Schild (Variante `groups`, B-932) | fehlt = kein Führer |
+| `troops[].group` | ID des Gruppenführers (`groups`) bzw. des Monarchen mit Banner (`general`, B-933), dem die Truppe folgt; der Führer trägt seine eigene ID | fehlt = in keiner Gruppe, am normalen Posten |
+| `players[].banner` | Seite des Tors (-1 links, 1 rechts), an dem der Monarch sein Banner aufgenommen hat (`general`) | fehlt = kein Banner |
 | `coins[].loot` | `true`: Münze aus einem Treffer auf einen Monarchen, Gegner mit `stealsGold` rauben sie vom Boden | gewöhnliche Münze |
 | `players[].auras` | wirkende Passive in Lernreihenfolge: `skill`, `radius` (0 = nur der Monarch), `castle: true` = wirkt im Burgradius statt um den Monarchen (Holy Ground). Auren (armorAura, healingAura, blessings), guardian, regeneration, holyGround, frostArmor; Passive ohne Wirkort fehlen | Monarch ohne Krone oder kein solches Passiv |
 | `storms` | laufende Lightning Storms: `x`, `radius`, `perSecond`, `left` (Restdauer), `owner` (Spieler-ID) | kein Sturm |
@@ -660,6 +663,11 @@ anderer Stufen kommen nie an. Auf einer Insel trägt jedes Ereignis `stage` (Ind
 | `crownRestored` | `player` (Besitzer), `by`, `x` | Die Krone sitzt wieder auf dem Monarchen (selbst aufgehoben, vom Mitspieler gebracht oder durch Resurrection) |
 | `crownTaken` | `player` (Besitzer), `x` | Ein Gegner trägt die Krone zum Portal (Kronenraub läuft); stirbt er vorher, fällt sie wieder |
 | `crownStolen` | `player`, `x` | Der Gegner hat die Krone ins Portal getragen: Kronenraub, danach `gameOver` |
+| `shield` | `troop`, `x` | Ein Soldat hat sein Schild an der Burg geholt und führt nun eine Gruppe (Variante `groups`, `kampf.md` § 3.1, B-932) |
+| `attackOrdered` | `side` (-1, 1), `groups` | Der Auslöser am Tor schickt alle Gruppen der Seite zum Angriff |
+| `groupReturned` | `troop` (Führer), `x` | Die Gruppe hat kein Ziel mehr und kehrt ans Tor zurück |
+| `bannerTaken` | `player`, `side` | Der Monarch hat das Banner am Tor der Seite aufgenommen, ihm folgt ein Trupp (Variante `general`, B-933) |
+| `bannerReturned` | `player` | Das Banner steht wieder am Tor (Monarch hinter dem äußersten Tor, ohne Krone oder Tor weg); der Trupp kehrt zurück |
 | `bossSpawned` | `boss`, `x` | Boss erscheint |
 | `bossPhase` | `boss`, `phase` (ab 2) | Endboss wechselt die Phase |
 | `bossDefeated` | `boss`, `x` | Boss besiegt |

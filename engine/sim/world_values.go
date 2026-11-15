@@ -40,6 +40,7 @@ type WorldValues struct {
 	Buildings map[string]BuildingData // mit dem Platz `ship` aus ship.json (withShip)
 	Troops    map[string]TroopData
 	Economy   economyData
+	Combat    CombatSettings // Kampfvariante der Welt (WorldDef.Combat, aus ResolveWorld)
 	Hub       HubData
 	Monarch   monarchData
 	Enemies   map[string]EnemyData
@@ -68,6 +69,7 @@ type economyData struct {
 		RespawnSeconds, WanderUnits float64
 	}
 	Merchant MerchantData // Händler (merchant.go)
+	Combat   combatData   // Schild, Auslöser, Banner (combat.go, kampf.md § 3)
 }
 
 // ResolveWorldValues löst die Welt id zu ihrem Wertesatz auf: Basis-Dateien aus base (Aufbau wie data/), darüber die

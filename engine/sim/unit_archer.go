@@ -35,6 +35,10 @@ func freeTower(w *World, t *Troop) *Site {
 // archerTower ist der Turm des Schützen (einen freien nimmt er sich); nil ohne Turm. Auf einem fertigen Zaubertum
 // steigt er ab und nimmt einen freien Posten (Q31).
 func archerTower(w *World, t *Troop) *Site {
+	if t.Group != 0 { // im Trupp hinter dem Banner: kein Turm (combat.go)
+		t.TowerID = nil
+		return nil
+	}
 	if t.TowerID == nil {
 		if tower := freeTower(w, t); tower != nil {
 			t.TowerID = intPtr(tower.ID)
@@ -66,6 +70,8 @@ func stepArcher(w *World, t *Troop, dt float64) {
 	}
 	if ex, ok := escortPost(w, t); ok {
 		post, tower = ex, nil // Begleitschutz: der Schütze verlässt Turm und Mauer (unit_escort.go)
+	} else if sx, ok := squadPost(w, t); ok {
+		post, tower = sx, nil // Trupp hinter dem Banner (combat.go)
 	}
 	walkTo(w, t, post, dt)
 

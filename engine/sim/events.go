@@ -45,6 +45,11 @@ import "math"
 //	crownRestored – die Krone sitzt wieder auf dem Monarchen: player, by, x
 //	crownTaken    – ein Gegner trägt die Krone zum Portal: player (Besitzer), x
 //	crownStolen   – Kronenraub, die Krone ist im Portal; danach gameOver: player, x
+//	shield        – ein Soldat hat sein Schild an der Burg geholt und führt eine Gruppe (combat_squad.go, B-932): troop, x
+//	attackOrdered – der Auslöser am Tor schickt alle Gruppen der Seite los: side (-1, 1), groups
+//	groupReturned – eine Gruppe hat kein Ziel mehr und kehrt ans Tor zurück: troop (Führer), x
+//	bannerTaken   – ein Monarch hat das Banner am Tor aufgenommen (Variante general, B-933): player, side
+//	bannerReturned – sein Banner steht wieder am Tor, der Trupp kehrt zurück: player
 //
 // Auf bestehende Ereignisse abgebildet (Auslegung von Q08, bestätigt mit der Freigabe von F3): Krone fällt = crownFallen,
 // Bau fertig = built, Skill = skillPoint, Nacht naht = dusk, Portal = arrived. Respawn, Wiederbeleben (revive, revived)
@@ -77,7 +82,7 @@ func coinGiveEvent(w *World, p *Player, t *payTarget) {
 		to = "site"
 	case t.troop != nil:
 		to = "recruit"
-	case t.sword != nil:
+	case t.sword != nil || t.combat != nil:
 		to = "offer"
 	}
 	emit(w, "coinGive", Event{"player": p.Index, "x": unitX(p.X), "to": to})

@@ -64,7 +64,7 @@ func swordPayable(w *World, s *Site) bool {
 
 // nearFullTarget: Liegt x an einem Bauplatz, Angebot oder Schwert-Zahlziel, das gerade nichts nimmt (payOneCoin)?
 func nearFullTarget(w *World, x float64) bool {
-	return nearOffer(w, x) || swordAt(w, x, false) != nil ||
+	return nearOffer(w, x) || swordAt(w, x, false) != nil || combatSpotNear(w, x) != nil ||
 		nearest(w.Sites, func(s *Site) float64 { return s.X }, x, w.values().Economy.PayRangeUnits, func(*Site) bool { return true }) != nil
 }
 
@@ -251,6 +251,8 @@ func stepWarrior(w *World, t *Troop, dt float64) {
 	post, front := warriorPost(w, side)
 	if ex, ok := escortPost(w, t); ok {
 		post, front = ex, ex // Begleitschutz: der Krieger geht zum Endboss (unit_escort.go)
+	} else if sx, ok := squadPost(w, t); ok {
+		post, front = sx, sx // Angriff der Kampfvariante (combat.go)
 	}
 	from := t.X
 	if walkTo(w, t, post, dt) {
@@ -284,7 +286,8 @@ func loseLayer(w *World, t *Troop) {
 		emit(w, "disarmed", Event{"kind": kind, "x": unitX(t.X), "cause": cmp.Or(t.hitBy, causeOther)})
 		t.Kind, t.Profession, t.WorkSite, t.AnchorX = "peasant", "", 0, w.HubX
 	}
-	t.fleeing, t.attacking = t.Kind == "peasant", false
+	leaveSquad(w, t)
+	t.fleeing = t.Kind == "peasant"
 	t.HP = w.values().Troops[t.Kind].HP
 	t.MaxHP = t.HP
 }
