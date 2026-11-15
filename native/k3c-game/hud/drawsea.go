@@ -59,7 +59,8 @@ func (h *hud) measureSea(v *seaView, b float64) seaSizes {
 }
 
 // drawSea zeichnet die Tafel mittig und etwas hoch in die Zelle c; passt sie nicht, schrumpft sie samt Schrift (nie
-// über die Zelle hinaus).
+// über die Zelle hinaus). Sind alle Assets der Seekarte geladen, zeichnet es das Diorama (drawsea_paper.go), sonst die
+// Formen (B-964/R5).
 func (h *hud) drawSea(dst *ebiten.Image, st *seatState, c view.Cell, k float64) {
 	f, v := h.font(), &st.sea
 	if f == nil || len(v.rows) == 0 {
@@ -68,6 +69,10 @@ func (h *hud) drawSea(dst *ebiten.Image, st *seatState, c view.Cell, k float64) 
 	b := 28 * k
 	if v.sizesK != k {
 		v.sizes, v.sizesK = h.measureSea(v, b), k // nur bei neuer Karte oder Skalierung messen
+	}
+	if a, ok := h.seaArtOf(v); ok {
+		h.drawSeaPaper(dst, v, a, rectOf(c.Rect), k)
+		return
 	}
 	m := v.sizes
 	pad, gap, nodeH := 0.6*b, 0.4*b, 1.6*b
