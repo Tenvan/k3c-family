@@ -16,8 +16,8 @@ func TestPadTestShowsButtonsAxesAction(t *testing.T) {
 	}
 	sc := newPadTest(newMenus())
 	s := &fakeSession{}
-	if st := sc.Update(press(pad1, view.ActionConfirm), s); st.Kind != view.StepStay {
-		t.Fatalf("A verlässt die Seite: %v", st.Kind)
+	if st := sc.Update(press(pad1, view.ActionLeft), s); st.Kind != view.StepStay {
+		t.Fatalf("Links verlässt die Seite: %v", st.Kind)
 	}
 	sc.fill(view.DefaultLanguage)
 	var all []string
@@ -25,7 +25,7 @@ func TestPadTestShowsButtonsAxesAction(t *testing.T) {
 		all = append(all, r.label+"|"+r.value)
 	}
 	text := strings.Join(all, "\n")
-	for _, want := range []string{"A LB → Bestätigen", "LS 0.50 0", "Xbox Controller", "roh 0 4"} {
+	for _, want := range []string{"A LB → Links", "LS 0.50 0", "Xbox Controller", "roh 0 4"} {
 		if !strings.Contains(text, want) {
 			t.Errorf("%q fehlt in\n%s", want, text)
 		}
@@ -33,8 +33,21 @@ func TestPadTestShowsButtonsAxesAction(t *testing.T) {
 	if sc.pg.n > maxRows {
 		t.Errorf("%d Zeilen", sc.pg.n)
 	}
-	if st := sc.Update(press(pad1, view.ActionBack), s); st.Kind != view.StepPop {
-		t.Errorf("B: %v, soll zurück", st.Kind)
+}
+
+// B-944: B, Esc (Back und Menu zugleich) und A auf Zurück gehen zurück.
+func TestPadTestBackKeys(t *testing.T) {
+	old := readPads
+	defer func() { readPads = old }()
+	readPads = func() []padRaw { return nil }
+	for name, in := range map[string]view.Input{
+		"B":   press(pad1, view.ActionBack),
+		"Esc": press(keysKeyboard, view.ActionBack, view.ActionMenu),
+		"A":   press(pad1, view.ActionConfirm),
+	} {
+		if st := newPadTest(newMenus()).Update(in, &fakeSession{}); st.Kind != view.StepPop {
+			t.Errorf("%s: %v, soll zurück", name, st.Kind)
+		}
 	}
 }
 

@@ -273,6 +273,7 @@ func (g *Game) drawGame(screen *ebiten.Image) {
 	Place(g.cells, win)
 	alpha := g.blend.alpha()
 	g.blend.apply(&g.frame, g.cells, alpha)
+	defer g.blend.restore(&g.frame, g.cells) // auch bei Panic: die Simulation bleibt unverschoben
 	for i, c := range g.cells {
 		dst := g.subs.of(screen, i, c.Rect)
 		for _, d := range g.parts.Drawers {
@@ -290,7 +291,6 @@ func (g *Game) drawGame(screen *ebiten.Image) {
 	if top := g.stack.Top(); top != nil {
 		top.Draw(screen, &g.frame, wc)
 	}
-	g.blend.restore(&g.frame, g.cells)
 	if timed {
 		g.stats.drw.add(g.stats.now() - s0)
 	}

@@ -143,9 +143,9 @@ func (sc *padTestScreen) Update(in view.Input, s view.Session) view.Step {
 	return sc.run(in, s, sc)
 }
 
-// handle: B und A auf Zurück gehen zurück; alle anderen Tasten zeigt die Seite nur an.
+// handle: B, Esc und A (auf Zurück, der einzigen Zeile) gehen zurück; alle anderen Tasten zeigt die Seite nur an.
 func (sc *padTestScreen) handle(_ view.DeviceID, k key, _ view.Session) (view.StepKind, view.Screen) {
-	if k == keyBack || k == keyHome {
+	if k == keyBack || k == keyHome || k == keyOK { // A gilt auf der einzigen Zeile Zurück
 		sc.cue(view.CueBack, -1, "")
 		return view.StepPop, nil
 	}

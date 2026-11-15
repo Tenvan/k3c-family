@@ -112,6 +112,7 @@ func (m *meter) frame(now, work float64, g *Game) {
 	case 0:
 		if m.t += dt; m.t >= m.cfg.Warmup {
 			m.phase, m.t = 1, 0
+			runtime.ReadMemStats(&m.gc0)
 			slog.Info("⏳ Messung beginnt", "takt", g.frame.Tick, "sekunden", m.cfg.Seconds)
 		}
 	case 1:
