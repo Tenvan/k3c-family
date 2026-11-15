@@ -861,3 +861,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-950](B-950-handwerker-hammer.md) | SIM | Problem | mittel | erledigt | WI1 | Nur Handwerker mit Hammer bauen; jedes Spiel startet mit mindestens einem Handwerker |
 | [B-951](B-951-bogner-shop.md) | SIM | Problem | mittel | erledigt | WI1 | Der Handwerkerbedarf stellt Hämmer her, ein neuer Bogner stellt Bögen her |
 | [B-952](B-952-gold-holzfaellen.md) | SIM | Problem | mittel | erledigt | WI1 | Holzfällen bringt 1 bis 3 Gold und ist am Anfang die Haupteinnahme |
+| [B-961](B-961-etappen-inselwechsel.md) | SIM | Idee | hoch | erledigt | WE4 | Inseln einer Etappe sind frei wählbar, die nächste Etappe öffnet nach allen Inseln der vorigen |
+| [B-963](B-963-welten-editor-querschnitt-seekarte.md) | DEV | Idee | hoch | erledigt | WE4 | Welten-Editor zeigt alle Inseln als Querschnitt nach Etappen mit Seekarte zum Springen |

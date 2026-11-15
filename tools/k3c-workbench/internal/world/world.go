@@ -36,6 +36,7 @@ type Info struct {
 type Island struct {
 	ID          string                     `json:"id"`
 	Name        string                     `json:"name"`
+	Etappe      *int                       `json:"etappe,omitempty"`
 	Depths      []int                      `json:"depths"`
 	Biomes      []string                   `json:"biomes"`
 	Planned     map[string]json.RawMessage `json:"plannedChunks"`
@@ -49,7 +50,9 @@ type Detail struct {
 	Notes   string   `json:"notes"`
 	Extends string   `json:"extends"`
 	Islands []Island `json:"islands"`
-	Error   string   `json:"error"`
+	// BiomeInfo: Palette und Portal-HP je Biom-ID aus data/biomes/*.json (nur die Biome der Inseln).
+	BiomeInfo map[string]BiomeInfo `json:"biomeInfo"`
+	Error     string               `json:"error"`
 }
 
 // Editor ist der Welten-Editor eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (simcli world).
@@ -114,7 +117,7 @@ func nameOf(raw []byte, id string) string {
 
 // Load liest die Welt id mit ihren Inseln; das Biom je Tiefe kommt aus data/biomes/*.json (Feld depth).
 func (e Editor) Load(id string) Detail {
-	view := Detail{ID: id, Islands: []Island{}}
+	view := Detail{ID: id, Islands: []Island{}, BiomeInfo: map[string]BiomeInfo{}}
 	raw, err := e.read(id)
 	if err != nil {
 		view.Error = err.Error()
@@ -134,6 +137,9 @@ func (e Editor) Load(id string) Detail {
 		isl.Biomes = []string{}
 		for _, d := range isl.Depths {
 			isl.Biomes = append(isl.Biomes, biomes[d])
+			if _, ok := view.BiomeInfo[biomes[d]]; !ok && biomes[d] != "" {
+				view.BiomeInfo[biomes[d]] = e.biomeInfo(biomes[d])
+			}
 		}
 		if isl.Planned == nil {
 			isl.Planned = map[string]json.RawMessage{}
@@ -160,4 +166,32 @@ func (e Editor) biomesByDepth() map[int]string {
 		}
 	}
 	return out
+}
+
+// BiomeInfo sind die Anzeige-Werte eines Bioms aus data/biomes/<id>.json: Palette des Querschnitts und Portal-HP.
+type BiomeInfo struct {
+	Palette  map[string]string `json:"palette"`
+	PortalHP int               `json:"portalHp"`
+}
+
+// biomeInfo liest Palette (palette) und Portal-HP (portals.hp) des Bioms id; fehlt etwas, bleibt es leer bzw. 0.
+func (e Editor) biomeInfo(id string) BiomeInfo {
+	info := BiomeInfo{Palette: map[string]string{}}
+	raw, err := os.ReadFile(filepath.Join(e.Root, "data", "biomes", id+".json"))
+	if err != nil {
+		return info
+	}
+	var b struct {
+		Palette map[string]string `json:"palette"`
+		Portals struct {
+			HP int `json:"hp"`
+		} `json:"portals"`
+	}
+	if json.Unmarshal(raw, &b) == nil {
+		if b.Palette != nil {
+			info.Palette = b.Palette
+		}
+		info.PortalHP = b.Portals.HP
+	}
+	return info
 }

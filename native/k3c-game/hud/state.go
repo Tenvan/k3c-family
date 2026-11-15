@@ -68,6 +68,7 @@ type seatState struct {
 	mMenu   memo[menuKey]
 	menuV   menuView
 	slots   [4]slotView
+	sea     seaView // Seekarte am Hafen (seekarte.go)
 }
 
 // listen schreibt den Zustand aller Spieler des Frames fort (view.Listener).
@@ -88,7 +89,7 @@ func (h *hud) Listen(f *view.Frame) {
 	}
 	for p := range h.seats {
 		if !seen[p] {
-			h.seats[p].active, h.seats[p].menu = false, menuState{}
+			h.seats[p].active, h.seats[p].menu, h.seats[p].sea = false, menuState{}, seaView{}
 		}
 	}
 	for p := range h.seats {
@@ -119,7 +120,7 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	m := f.Monarch(s.Player)
 	st.active = ok && stage.World != nil && m != nil
 	if !st.active {
-		st.menu = menuState{}
+		st.menu, st.sea = menuState{}, seaView{}
 		return
 	}
 	w, lang := stage.World, h.lang
@@ -135,6 +136,7 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	st.widthUnits = w.WidthUnits
 	st.citizenLabels(lang, w)
 	st.skills(lang, w, m)
+	st.sea.refresh(lang, st.profile, w.IslandSwitch, f.Route)
 }
 
 // card: Werte der Spielerkarte (Geldsack-Größe, Gold) und der Skill-Leiste. Die Münz-Obergrenze kommt vom Spieler

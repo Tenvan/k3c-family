@@ -38,3 +38,28 @@
 .wv-row:hover { background: var(--gray-a2); }
 .wv-row[data-status='überschrieben'] { background: var(--orange-a2); }
 .wv-path { overflow-wrap: anywhere; }
+
+/* Querschnitt und Seekarte (B-963, world/Overview): Streifen mittig auf einer Achse, Seekarte bleibt beim Scrollen stehen */
+.wd-overview { display: flex; gap: 16px; align-items: flex-start; }
+.wd-x { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.wd-x-band { background: var(--amber-a4); border-radius: 8px; padding: 6px 12px; text-align: center; font-weight: 600; font-size: 13px; }
+.wd-x-island { scroll-margin-top: 16px; outline: 3px solid transparent; transition: outline-color .2s; }
+.wd-x-hit { outline-color: var(--accent-9); }
+.wd-x-head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.wd-x-etappe { display: inline-flex; gap: 4px; align-items: center; margin-left: auto; }
+.wd-x-etappe input { width: 56px; }
+.wd-x-stage { text-align: center; margin: 4px 0; }
+.wd-x-bar { position: relative; margin: 3px auto 0; height: 46px; border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .25); cursor: pointer; overflow: hidden; }
+.wd-x-bar:focus-visible { outline: 2px solid var(--accent-8); outline-offset: 1px; }
+.wd-x-bar-selected { box-shadow: inset 0 0 0 2px var(--accent-9); }
+.wd-x-grid { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255, 255, 255, .15); }
+.wd-x-mark { position: absolute; bottom: 4px; font-size: 16px; line-height: 1; transform: translateX(-50%); filter: drop-shadow(0 1px 1px #000); }
+.wd-x-castle { transform: none; bottom: 2px; height: 26px; text-align: center; background: rgba(255, 230, 160, .35); border: 1px dashed #f1d48a; }
+.wd-map { position: sticky; top: 0; width: 260px; flex: none; display: flex; flex-direction: column; gap: 6px; text-align: center; padding: 10px; border: 1px solid var(--gray-a5); border-radius: 10px; background: var(--amber-a2); }
+.wd-map-etappe { border: 1px dashed var(--gray-a8); border-radius: 8px; padding: 6px; background: var(--color-panel-solid); }
+.wd-map-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 4px; }
+.wd-map-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px; border-radius: 6px; min-width: 110px; border: 1px solid var(--gray-a5); color: inherit; text-decoration: none; }
+.wd-map-node:hover, .wd-map-node:focus-visible { outline: 2px solid var(--accent-8); }
+.wd-map-sil { display: flex; flex-direction: column; align-items: center; gap: 1px; width: 96px; }
+.wd-map-sil i { display: block; height: 7px; border-radius: 2px; }
+.wd-map-sea { margin: 2px 0; }

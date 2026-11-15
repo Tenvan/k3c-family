@@ -49,6 +49,11 @@ type Island struct {
 	GateOpen       bool
 	SwitchReady    bool
 	switchProgress float64
+	// Completed: IDs der abgeschlossenen Inseln der Welt (Endboss beim Ablegen besiegt, B-961); Chosen: gewähltes Ziel am
+	// Hafen (leer = erstes Ziel); pendingChoice: Wahlen des Takts je Spielerindex (island_targets.go).
+	Completed     []string
+	Chosen        string
+	pendingChoice map[int]string
 	// Over: Niederlage-Modus „Komplett verloren“ (island_defeat.go); die Insel ist zu Ende, StepIsland ändert nichts mehr.
 	Over bool
 	// Dev: Schalter der Dev-Aktionen (dev.go), nur im Speicher; der Raum trägt sie über den Inselwechsel.
@@ -97,7 +102,9 @@ func (o CreateOptions) countFor(depth int, def IslandDef) int {
 }
 
 // plannedAt liefert die geplanten Chunks der Insel für eine Tiefe (leer = reiner Zufall).
-func (d IslandDef) plannedAt(depth int) []level.PlannedChunk { return d.PlannedChunks[strconv.Itoa(depth)] }
+func (d IslandDef) plannedAt(depth int) []level.PlannedChunk {
+	return d.PlannedChunks[strconv.Itoa(depth)]
+}
 
 // CreateOptions liefert die Erzeugungs-Parameter dieser Insel aus den Daten (ihre eigene Planung und Chunk-Anzahl).
 func (d IslandDef) CreateOptions() CreateOptions {

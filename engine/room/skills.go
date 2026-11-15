@@ -56,3 +56,9 @@ func (r *Room) withPlayer(id string, peer Peer, slot int, f func(*sim.World, *si
 	}
 	return ErrBadRequest
 }
+
+// ChooseIsland wählt für den Monarchen im Slot `slot` des Geräts das Ziel des Inselwechsels (Insel-ID, B-961): nur aus den
+// Zielen am offenen Wechselpunkt, sonst bad_request mit dem Grund der Sim. Mehrere Wahlen im selben Takt: höchster Spieler-Index.
+func (r *Room) ChooseIsland(id string, peer Peer, slot int, islandID string) error {
+	return r.withPlayer(id, peer, slot, func(w *sim.World, p *sim.Player) error { return sim.ChooseIsland(w, p, islandID) })
+}

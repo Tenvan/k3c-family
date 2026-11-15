@@ -214,3 +214,27 @@ func (e Editor) CreateView(ctx context.Context, id, name, extends string) Create
 	}
 	return v
 }
+
+// SetEtappeView setzt die Etappe der Insel island der Welt id (nil entfernt sie, dann gilt Listenplatz + 1) wie world_set
+// und liefert die Antwort für die Seite (nie ein Go-Fehler).
+func (e Editor) SetEtappeView(ctx context.Context, id, island string, etappe *int) CreateView {
+	if raw, err := e.read(id); err != nil {
+		return CreateView{ID: id, Warnings: []string{}, Error: err.Error()}
+	} else if _, _, err := islandSpan(raw, island); err != nil {
+		return CreateView{ID: id, Warnings: []string{}, Error: err.Error()}
+	}
+	var v any
+	if etappe != nil {
+		v = *etappe
+	}
+	patch, _ := json.Marshal(map[string]any{"islands": []map[string]any{{"id": island, "etappe": v}}})
+	warnings, err := e.Set(ctx, id, patch)
+	view := CreateView{ID: id, Warnings: warnings}
+	if view.Warnings == nil {
+		view.Warnings = []string{}
+	}
+	if err != nil {
+		view.Error = err.Error()
+	}
+	return view
+}

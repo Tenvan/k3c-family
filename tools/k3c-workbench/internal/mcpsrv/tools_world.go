@@ -36,7 +36,7 @@ type worldCreateIn struct {
 
 type worldSetIn struct {
 	ID    string         `json:"id" jsonschema:"Welt-ID"`
-	Patch map[string]any `json:"patch" jsonschema:"Felder: name, notes, extends, combat {mode, groupSize} (null entfernt); islands: Liste von Inseln {id, name?, depths? | biomes?, depthScaling? {hp, damage, speed}, plannedChunks?, chunkCounts?, nature?, natureByDepth?}. Bekannte Insel-id: nur genannte Felder ändern; neue id: anhängen (Standard: Tiefen 0-4, Skalierung der Standard-Welt). biomes = Biom-IDs statt Tiefen (forest, cave, mine, ironhold, crystal)."`
+	Patch map[string]any `json:"patch" jsonschema:"Felder: name, notes, extends, combat {mode, groupSize} (null entfernt); islands: Liste von Inseln {id, name?, etappe? (Ganzzahl ≥ 1, lückenlos ab 1, nicht fallend; null entfernt), depths? | biomes?, depthScaling? {hp, damage, speed}, plannedChunks?, chunkCounts?, nature?, natureByDepth?}. Bekannte Insel-id: nur genannte Felder ändern; neue id: anhängen (Standard: Tiefen 0-4, Skalierung der Standard-Welt). biomes = Biom-IDs statt Tiefen (forest, cave, mine, ironhold, crystal)."`
 }
 
 type worldOverrideIn struct {
@@ -196,7 +196,11 @@ func worldText(e world.Editor, id string) (string, error) {
 	var b strings.Builder
 	fmt.Fprintf(&b, "%s · %s · extends %s · %d Inseln\n", d.ID, d.Name, orDash(d.Extends), len(d.Islands))
 	for _, isl := range d.Islands {
-		fmt.Fprintf(&b, "- %s · %s · Tiefen %v → %s\n", isl.ID, isl.Name, isl.Depths, strings.Join(isl.Biomes, ", "))
+		et := ""
+		if isl.Etappe != nil {
+			et = " · Etappe " + strconv.Itoa(*isl.Etappe)
+		}
+		fmt.Fprintf(&b, "- %s · %s · Tiefen %v → %s%s\n", isl.ID, isl.Name, isl.Depths, strings.Join(isl.Biomes, ", "), et)
 		for _, depth := range slices.Sorted(mapKeys(isl.Planned)) {
 			fmt.Fprintf(&b, "    plannedChunks[%d]: %s\n", depth, strings.TrimSpace(string(isl.Planned[strconv.Itoa(depth)])))
 		}

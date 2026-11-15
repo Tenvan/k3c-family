@@ -41,6 +41,9 @@ type IslandSave struct {
 	// Version 6 (B-373): Besuche des Händlers und der anwesende Händler (Material, Abreisetag, HP).
 	MerchantVisits int           `json:"merchantVisits,omitempty"`
 	Merchant       *MerchantSave `json:"merchant,omitempty"`
+	// B-961 (island_targets.go, ohne neue Version, ältere Stände: leer): abgeschlossene Inseln (IDs) und das gewählte Ziel am Hafen.
+	Completed []string `json:"completed,omitempty"`
+	Chosen    string   `json:"chosen,omitempty"`
 	// Version 7 (save_economy.go): Rüstung, Berufe, Krieger, Elite, Schwerter und Plantage stehen in den Stufen (HubSave).
 	// Version 9 (enemies_guard.go): geräumte Gegnerlager stehen in den Stufen (HubSave.GuardsCleared).
 }
@@ -65,6 +68,7 @@ func (isl *Island) ToSave(savedAt string) IslandSave {
 		Stock: *isl.Stock, Options: isl.Options, Stages: []HubSave{}, SkillPool: isl.SkillPool, Players: []IslandPlayerSave{},
 		DefeatedBosses: slices.Clone(isl.DefeatedBosses), GoldCollected: isl.GoldCollected, Won: isl.Won,
 		MerchantVisits: isl.MerchantVisits, Merchant: savedMerchant(isl),
+		Completed: slices.Clone(isl.Completed), Chosen: isl.Chosen,
 	}
 	for _, w := range isl.Stages {
 		s.Stages = append(s.Stages, hubSave(w, newWorld(w.Biome.Depth, isl.Seed, Options{})))
@@ -205,6 +209,14 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 	if err != nil {
 		return nil, err
 	}
+	for _, id := range s.Completed {
+		if !slices.ContainsFunc(world.Islands, func(d IslandDef) bool { return d.ID == id }) {
+			return nil, fmt.Errorf("spielstand: abgeschlossene Insel %q gibt es in Welt %q nicht", id, s.World)
+		}
+		if id == world.Islands[number].ID {
+			return nil, fmt.Errorf("spielstand: aktuelle Insel %q steht unter den abgeschlossenen", id)
+		}
+	}
 	if cycleSpeed == 0 {
 		cycleSpeed = 1
 	}
@@ -225,6 +237,10 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 	*isl.Stock = s.Stock // applyHub setzt den Vorrat je Hub; maßgeblich ist der der Insel
 	restorePool(isl, s)
 	restoreProgress(isl, s)
+	isl.Completed, isl.Chosen = slices.Clone(s.Completed), s.Chosen
+	if s.Chosen != "" && !slices.ContainsFunc(isl.Targets(), func(t SwitchTarget) bool { return t.ID == s.Chosen }) {
+		return nil, fmt.Errorf("spielstand: gewähltes Ziel %q ist kein Ziel der Insel %q", s.Chosen, def.ID)
+	}
 	// Die Stelle des Monarchen ist flüchtig wie Gegner und Münzen am Boden (B-814, gewollt): IslandPlayerSave trägt keine
 	// Position, addPlayerAt stellt den Monarchen wie beim Beitritt an die Burg seiner Stufe (HubX ± 3).
 	for _, p := range s.Players {

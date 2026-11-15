@@ -88,9 +88,14 @@ export function mockWorld(): WorldBackend {
     });
     return { world: id, extends: detail.extends, children, entries, error: '' };
   };
+  /** Anzeige-Werte der Biome (Mock; echte Werte liefert das Backend aus data/biomes). */
+  const withInfo = (d: WorldDetail | undefined): WorldDetail | undefined => d && {
+    ...d,
+    biomeInfo: Object.fromEntries(d.islands.flatMap((i) => i.biomes).map((b, n) => [b, { portalHp: 500 + 300 * (n % 5), palette: { sky: '#8ecae6', far: '#6a8caf', near: '#3a5a40', ground: '#588157' } }])),
+  };
   return {
     worldList: async () => Object.values(DETAILS).map((d) => ({ id: d.id, name: d.name })),
-    worldDetail: async (id) => DETAILS[id] ?? { id, name: id, notes: '', extends: '', islands: [], error: `data/worlds/${id}.json: Datei fehlt` },
+    worldDetail: async (id) => withInfo(DETAILS[id]) ?? { id, name: id, notes: '', extends: '', islands: [], error: `data/worlds/${id}.json: Datei fehlt` },
     worldLevel: async (id, island, stage, seed) => {
       const detail = DETAILS[id];
       return detail ? mockLevel(detail, island, stage, seed) : { ...mockLevel(DETAILS.standard!, '', 0, seed), error: `die Welt "${id}" gibt es nicht` };
@@ -104,6 +109,13 @@ export function mockWorld(): WorldBackend {
       if (extendsId !== '' && !DETAILS[extendsId]) return fail(`extends: die Welt "${extendsId}" gibt es nicht`);
       DETAILS[id] = { id, name: name.trim(), notes: '', extends: extendsId, error: '',
         islands: [{ id: 'island1', name: 'Insel 1', depths: [0, 1, 2, 3, 4], biomes: ['forest', 'cave', 'mine', 'ironhold', 'crystal'], plannedChunks: {}, chunkCounts: {} }] };
+      return { id, warnings: [], error: '' };
+    },
+    worldIslandEtappe: async (id, island, etappe) => {
+      const isl = DETAILS[id]?.islands.find((i) => i.id === island);
+      if (!isl) return { id, warnings: [], error: `die Insel "${island}" gibt es nicht` };
+      if (etappe === null) delete isl.etappe;
+      else isl.etappe = etappe;
       return { id, warnings: [], error: '' };
     },
     worldNatureSet: async (id, island, stage, key, value, seed) => {

@@ -25,6 +25,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | KB4 | Dev-Aktionen für Boss, Phasenwechsel, Events und Nacht | erledigt |
 | KB5 | Skills am Wirkort, DoTs und Buffs sichtbar, im Spiel und im Studio | erledigt |
 | KB6 | Kampf-Nachträge: Wellenabstand unter Tage, stabiler Schutzplatz | erledigt |
+| SI1 | Spielideen: Fracht auf dem Schiff, Koop-Aktionen, Wetter je Welt | geplant |
 
 ## Nicht-Ziele
 

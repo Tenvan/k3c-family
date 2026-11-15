@@ -27,6 +27,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
 | WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
+| WE4 | SIM, CLI, DEV | WZG | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | – | `aktiv/WE4-etappen-seekarte/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
@@ -44,6 +45,8 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| GS1 | REG | WZG | Geschichten je Welt und Insel in Kunstsprache | – | Entwurf | `geplant/GS1-geschichten-je-welt/` |
+| SI1 | REG | KMP | Spielideen: Fracht auf dem Schiff, Koop-Aktionen, Wetter je Welt | – | Entwurf | `geplant/SI1-spielideen-fracht-koop-wetter/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

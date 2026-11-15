@@ -414,7 +414,9 @@ Gerät ohne Slots bekommt keinen. Stufen ohne eigenen Slot kommen nie an.
   und Slots bleiben, alle Spieler stehen in Stufe 0 der neuen Insel. Das Gerät bekommt zuerst ein letztes `delta` je
   Stufe der alten Insel mit den Ereignissen ihres letzten Ticks (darunter `islandSwitch` in der Stufe des Wechselpunkts,
   B-385), danach `seats`, `level` und `snap` der neuen Insel (kein `delta` über den Wechsel). Auf der letzten Insel gibt
-  es keinen Wechsel.
+  es keinen Wechsel. Das Ziel (Etappen, B-961) steht in `islandSwitch.targets`/`choice`; die Wahl ist die Aktion
+  `Room.ChooseIsland(device, peer, slot, islandId)` (nur gekrönt, nur am offenen Wechselpunkt, nur aus `targets`; Ablehnung
+  `SkillError`/`bad_request`); mehrere Wahlen im selben Takt: höchster Spieler-Index.
 - **Neue Slots** (`addSlot`, Beitreten) kommen in die Stufe des kleinsten Slots des Geräts.
 - **Client heute:** `RoomClient.level` und `takeFrames()` liefern die Stufe des kleinsten eigenen Slots,
   `stages()`, `levelOf(stage)` und `takeFramesOf(stage)` die übrigen (Kamera je Stufe: B-106).
@@ -509,7 +511,7 @@ danach und rechnet nichts nach; ein älterer Server ohne Felder zeigt kein Schil
 
 **Erst roden (B-636, B-652):** `sites[].clearing` ist `true`, wenn der Platz seine Hub-Stufe erreicht hat, aber im Freiraum noch Bäume oder Felsen stehen (Baumschule, Mauer, Turm: `sim.SiteNeedsClearing`); der Platz ist dann nicht `payable`. Fehlt bei `false` (additiv, Protokoll-Version unverändert); der Client zeigt „erst roden“ statt des Bau-Schilds (Darstellung kommt mit BS6, bis dahin zeigt er kein Schild). Geprüft von `TestBaumschuleErstNachDemRoden` (`engine/sim/building_plantation_test.go`) und `TestClearingImSnapshot` (`engine/net/payable_test.go`).
 
-**Schiff (B-637, BS5):** Der Hafen-Chunk der Stufe 0 (`harbor`) trägt einen Bauplatz `sites[].kind = "ship"` (letzter Eintrag der Liste, ohne Hub-Stufe und Linie bezahlbar). Seine Abschnitte (Kiel, Rumpf, Segel aus `data/ship.json`) sind die Stufen des Platzes: `level` 1 bis 3, `upgrade` und `upgradePaid` zeigen den laufenden Abschnitt wie bei Mauer und Turm. Fertig ist das Schiff mit `level` 3 (gebaut, kein `upgrade`). Mit besiegtem Endboss und fertigem Schiff öffnet `islandSwitch.open` (Ereignis `islandGateOpen` mit dem `x` des Stegs); der Wechsel läuft, wenn alle lebenden Spieler am Steg stehen. Keine neuen Felder, Protokoll-Version unverändert. Geprüft von `TestSchiffInAbschnittenBauen`, `TestInselwechselBrauchtFertigesSchiff` und `TestSchiffSpielstandRundlauf` (`engine/sim/ship_test.go`).
+**Schiff (B-637, BS5):** Der Hafen-Chunk der Stufe 0 (`harbor`) trägt einen Bauplatz `sites[].kind = "ship"` (letzter Eintrag der Liste, ohne Hub-Stufe und Linie bezahlbar). Seine Abschnitte (Kiel, Rumpf, Segel aus `data/ship.json`) sind die Stufen des Platzes: `level` 1 bis 3, `upgrade` und `upgradePaid` zeigen den laufenden Abschnitt wie bei Mauer und Turm. Fertig ist das Schiff mit `level` 3 (gebaut, kein `upgrade`). Mit besiegtem Endboss und fertigem Schiff öffnet `islandSwitch.open` (Ereignis `islandGateOpen` mit dem `x` des Stegs; `islandSwitch` trägt `target`, die ID der Zielinsel, B-961); der Wechsel läuft, wenn alle lebenden Spieler am Steg stehen. Keine neuen Felder, Protokoll-Version unverändert. Geprüft von `TestSchiffInAbschnittenBauen`, `TestInselwechselBrauchtFertigesSchiff` und `TestSchiffSpielstandRundlauf` (`engine/sim/ship_test.go`).
 
 **Berufe:** `troops[].profession` (`miner`, `builder`, `craftsman`; fehlt = keiner) und `troops[].workSite` (Site-ID
 des Arbeitsplatzes, fehlt = keiner). Berufswahl, Tausch und Hub-Ausbau als Eingabe stehen in W5.2.
@@ -605,7 +607,7 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 | `enemies[].phase` | Phase des Endbosses, ab 1 | kein Endboss |
 | `enemies[].warn` | nächster Flächenschlag: `x` Mitte, `r` Radius (Units), `in` Sekunden bis zum Schlag (= `aoeIn`) | Boss ohne Flächenschlag in dieser Phase |
 | `nightEvents` | Liste der laufenden Nacht-Events `[{id, secondsLeft}]` (`id` aus `data/events.json`: `fullMoon`, `bloodMoon`; Nacht 91 hat beide), `secondsLeft` = Restzeit der Nacht; heißt nicht `events`, das sind die Ereignisse des Ticks | kein Event |
-| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; in allen Stufen der Insel gleich | Endboss nicht besiegt |
+| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; ab B-961 `targets` (Ziele am Hafen in Listenreihenfolge: `id`, `name`, `etappe`), `choice` (Insel-ID des Ziels: Wahl, sonst erstes Ziel) und `completed` (IDs der abgeschlossenen Inseln samt der aktuellen); in allen Stufen der Insel gleich | Endboss nicht besiegt |
 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
