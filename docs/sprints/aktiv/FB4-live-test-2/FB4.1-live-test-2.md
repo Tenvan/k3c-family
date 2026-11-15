@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilstand 2026-11-15 (Abschluss auf Wunsch 🧑):
+- B-943: Ursache belegt – Sim 30 Hz, Bild 60 Hz ohne Zwischenbilder (47 % der Bilder ohne neuen Takt). Fix `game/blend.go` (Interpolation, allokationsfrei). Offen: Hänger 70–200 ms (p99 68–106 ms), vermutet Last durch parallele Agenten oder Allokation je Frame (Heap 78–132 MiB, 1,6 GC/s); Sichtprüfung am TV.
+- B-944: Testseite „Tasten-Test“ in Testing (`menu/padtest.go`). Zuordnung im Code korrekt (Ebiten-Standard), Fehler nur am Gerät prüfbar – 🧑 mit Xbox-Controller.
+- B-945 bis B-949: nicht begonnen.

@@ -55,6 +55,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-947](B-947-hintergrundmauern-luecken.md) | CLI | Problem | mittel | offen | FB4 | Die durchgezogenen Hintergrundmauern haben keine Lücken mehr |
 | [B-948](B-948-baeume-groesser.md) | CLI | Problem | mittel | offen | FB4 | Bäume erscheinen in passender Größe statt zu klein |
 | [B-949](B-949-ladescreen-huebsch.md) | CLI | Idee | niedrig | offen | FB4 | Der Ladescreen ist im Stil des Spiels gestaltet |
+| [B-950](B-950-handwerker-hammer.md) | SIM | Problem | mittel | offen | WI1 | Nur Handwerker mit Hammer bauen; jedes Spiel startet mit mindestens einem Handwerker |
+| [B-951](B-951-bogner-shop.md) | SIM | Problem | mittel | offen | WI1 | Der Handwerkerbedarf stellt Hämmer her, ein neuer Bogner stellt Bögen her |
+| [B-952](B-952-gold-holzfaellen.md) | SIM | Problem | mittel | offen | WI1 | Holzfällen bringt 1 bis 3 Gold und ist am Anfang die Haupteinnahme |
+| [B-953](B-953-truhen-fontaene.md) | SIM | Problem | mittel | offen | WI1 | Truhen geben zehnmal mehr Gold und werfen es als Fontäne auf den Boden |
 
 ## Archiv
 

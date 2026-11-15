@@ -37,7 +37,7 @@ func TestTestingShowsAllRows(t *testing.T) {
 		sc.Update(press(pad1, view.ActionDown), s)
 	}
 	want := []string{"Vorgabe", "Spieler", "Stufe (Tiefe)", "Seed", "Gegner je Welle", "Anstieg", "Faktor je Welle",
-		"Ausbau vorab", "Truppen vorab", "Zeitraffer", "Ende nach Wellen", "Ende nach Minuten", "Modus", "Test starten", "Zurück"}
+		"Ausbau vorab", "Truppen vorab", "Zeitraffer", "Ende nach Wellen", "Ende nach Minuten", "Modus", "Test starten", "Tasten-Test", "Zurück"}
 	if !slices.Equal(labels, want) {
 		t.Errorf("Zeilen %v", labels)
 	}
