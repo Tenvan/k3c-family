@@ -35,7 +35,11 @@ func (s *Session) routeList() []view.RouteIsland {
 		if e <= 0 {
 			e = i + 1 // wie sim.WorldDef.etappeOf: ohne Angabe gilt der Listenplatz + 1
 		}
-		s.route.list = append(s.route.list, view.RouteIsland{ID: d.ID, Name: d.Name, Etappe: e})
+		isl := view.RouteIsland{ID: d.ID, Name: d.Name, Etappe: e, World: s.world, Stages: len(d.Depths)}
+		for _, n := range d.ChunkCounts { // Aussehen auf der Seekarte (B-964): größte Stufe der Insel
+			isl.Chunks = max(isl.Chunks, n)
+		}
+		s.route.list = append(s.route.list, isl)
 	}
 	return s.route.list
 }

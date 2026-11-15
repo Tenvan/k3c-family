@@ -1,0 +1,135 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "torii",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Torii (Sengoku, Skin für den Ausgang): rotes Tor mit zwei Pfosten auf Steinsockeln, geschwungenem schwarzem Dachbalken, Querbalken mit goldener Tafel und goldenem Pfeil nach oben",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-28 0L-28 -5L-16 -5L-16 0Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M16 0L16 -5L28 -5L28 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-25 -5L-23 -53L-18.5 -53L-19.5 -5Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M19.5 -5L18.5 -53L23 -53L25 -5Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M22.4 -49L23.8 -8",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-25.5 -5L-25.2 -10L-19.2 -10L-19 -5Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M19 -5L19.2 -10L25.2 -10L25.5 -5Z",
+          "material": "schwarz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-31 -39L-31 -44L31 -44L31 -39Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-31 -39L-31 -44L-18 -44L-19 -39Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-31 -40.2L31 -40.2",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -44L-4 -54L4 -54L4 -44Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -44L-4 -54L-1.5 -54L-1.5 -44Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 -52L-32 -57L32 -57L32 -52Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-32 -52L-32 -57L-18 -57L-19 -52Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34.2 -64.5C-28 -61 -14 -60.5 0 -60.5C14 -60.5 28 -61 34.2 -64.5L33.2 -57.5C27 -56 14 -56 0 -56C-14 -56 -27 -56 -33.2 -57.5Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -60.5C14 -60.5 28 -61 34.2 -64.5L33.8 -62.2C28 -59 14 -58.6 0 -58.6Z",
+          "material": "schwarz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -16L0 -26L6 -16L2 -16L2 -6L-2 -6L-2 -16Z",
+          "material": "gold",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 76,
+    "rahmen": [-38, -70, 76, 72]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

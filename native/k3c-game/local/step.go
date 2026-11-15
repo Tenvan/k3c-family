@@ -45,9 +45,11 @@ func (s *Session) Step() view.Frame {
 		Outcome: s.ended}
 	s.cues = nil
 	if s.p != nil {
+		s.camp.follow(s.p)
 		f.Tick, f.Stages, f.Events, f.Seats = s.p.tick, s.p.stages(), s.p.events, s.seats()
 		s.p.events = s.p.events[:0]
 		f.Route = s.routeList()
+		f.Campaign = s.camp.frame(len(f.Stages) > 0 && len(f.Seats) > 0)
 	}
 	return f
 }

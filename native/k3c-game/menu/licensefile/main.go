@@ -78,9 +78,7 @@ func licenseFiles(dir string) []text {
 	entries, _ := os.ReadDir(dir)
 	var res []text
 	for _, e := range entries {
-		up := strings.ToUpper(e.Name())
-		if e.IsDir() || !(strings.HasPrefix(up, "LICENSE") || strings.HasPrefix(up, "LICENCE") ||
-			strings.HasPrefix(up, "COPYING") || strings.HasPrefix(up, "NOTICE")) {
+		if e.IsDir() || !isLicenseName(e.Name()) {
 			continue
 		}
 		if b, err := os.ReadFile(filepath.Join(dir, e.Name())); err == nil {
@@ -88,4 +86,15 @@ func licenseFiles(dir string) []text {
 		}
 	}
 	return res
+}
+
+// isLicenseName meldet, ob ein Dateiname eine Lizenz- oder Hinweisdatei benennt (Groß- und Kleinschreibung egal).
+func isLicenseName(name string) bool {
+	up := strings.ToUpper(name)
+	for _, prefix := range []string{"LICENSE", "LICENCE", "COPYING", "NOTICE"} {
+		if strings.HasPrefix(up, prefix) {
+			return true
+		}
+	}
+	return false
 }

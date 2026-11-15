@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"maps"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -130,6 +129,8 @@ func islandFields(entry map[string]json.RawMessage, biomes map[int]string) (map[
 			fields["depths"] = depths
 		case slices.Contains(islandKeys, k):
 			fields[k] = v
+		case k == "story":
+			return nil, errStoryTool
 		default:
 			return nil, fmt.Errorf("unbekanntes Feld %q (erlaubt: id, biomes, %s)", k, strings.Join(islandKeys, ", "))
 		}
@@ -320,15 +321,7 @@ func setDepthEntry(raw []byte, island, field, key string, v json.RawMessage) ([]
 	}
 	text := json.RawMessage("null")
 	if len(m) > 0 {
-		keys := slices.Collect(maps.Keys(m))
-		sort.Slice(keys, func(i, j int) bool {
-			a, ea := strconv.Atoi(keys[i])
-			b, eb := strconv.Atoi(keys[j])
-			if ea != nil || eb != nil {
-				return keys[i] < keys[j]
-			}
-			return a < b
-		})
+		keys := numericKeys(m)
 		var parts []string
 		for _, k := range keys {
 			parts = append(parts, quote(k)+": "+string(m[k]))

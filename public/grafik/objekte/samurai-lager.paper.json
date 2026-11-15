@@ -1,0 +1,252 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "samurai-lager",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Samurai-Lager (Sengoku, Skin für das Portal): Feldlager mit weißem Lagervorhang samt Wappen, dunklem Durchgang in der Mitte und zwei Bannern an Stangen, die im Wind schwingen",
+  "teile": [
+    {
+      "id": "lager",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M19 0L19 -94L21.5 -94L21.5 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5 -90L5 -92.2L23.5 -92.2L23.5 -90Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-23.5 0L-23.5 -80L-21 -80L-21 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-25.5 -76L-25.5 -78.2L-8 -78.2L-8 -76Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 0L-14 -34L14 -34L14 0Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34 0L-34 -38L-7 -38C-8 -24 -10 -12 -14 0Z",
+          "material": "leinen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M34 0L34 -38L7 -38C8 -24 10 -12 14 0Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-34 0L-34 -38L-27 -38L-28 0Z",
+          "material": "leinen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-12 -32C-13 -22 -15 -10 -17 -2M12 -32C13 -22 15 -10 17 -2M29 -32L29.5 -2",
+          "material": "leinen",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [-22, -18],
+          "radius": 4.6
+        },
+        {
+          "art": "punkt",
+          "material": "leinen",
+          "mitte": [-22, -18],
+          "radius": 2.2
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [23, -18],
+          "radius": 4.6
+        },
+        {
+          "art": "punkt",
+          "material": "leinen",
+          "mitte": [23, -18],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-34 -33L-34 -38L34 -38L34 -33Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-34 -33L-34 -38L-27 -38L-28 -33Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-36 0L-36 -45L-33.5 -45L-33.5 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M33.5 0L33.5 -45L36 -45L36 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-34.75, -46],
+          "radius": 1.7
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [34.75, -46],
+          "radius": 1.7,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "lager",
+      "id": "banner",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M6 -90L19 -90L19 -50L12.5 -45.5L6 -50Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M6 -90L9.5 -90L9.5 -47.6L6 -50Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "leinen",
+          "mitte": [12.5, -77],
+          "radius": 4
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [12.5, -77],
+          "radius": 1.8
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M7.5 -64H17.5M7.5 -59.5H17.5",
+          "material": "leinen"
+        }
+      ],
+      "pivot": [19, -90]
+    },
+    {
+      "eltern": "lager",
+      "id": "banner-2",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-21 -76L-9 -76L-9 -49L-15 -45L-21 -49Z",
+          "material": "schwarz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-21 -76L-18 -76L-18 -47L-21 -49Z",
+          "material": "schwarz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-15, -65],
+          "radius": 3.4
+        },
+        {
+          "art": "punkt",
+          "material": "schwarz",
+          "mitte": [-15, -65],
+          "radius": 1.5,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M-19.5 -55H-10.5",
+          "material": "gold"
+        }
+      ],
+      "pivot": [-21, -76]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 104,
+    "rahmen": [-38, -96, 76, 98]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 8,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "banner": 0,
+            "banner-2": 0
+          }
+        },
+        {
+          "t": 0.25,
+          "winkel": {
+            "banner": 3,
+            "banner-2": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "banner": 5,
+            "banner-2": -4
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "banner": 2.5,
+            "banner-2": -2
+          }
+        },
+        {
+          "t": 0.875,
+          "winkel": {
+            "banner": 1.2,
+            "banner-2": -1
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,394 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "rundhaus",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Rundhaus (Britannien, Skin für die Farm, 4 × 3 Kacheln): niedrige runde Flechtwand mit Pfosten und Schwelle, hohes kegelförmiges Strohdach mit Firstknoten, Tür mit hellem Rahmen, rechts Flechtzaun und Heuhaufen; Wand, Pfosten und Schwelle folgen der Materialkette, Rauchabzug ab Stufe 2, Windfahne ab Stufe 3.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-56 0L-56 -32L24 -32L24 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-56 0L-56 -32L-40 -32L-40 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M17 0L17 -32L24 -32L24 0Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-48 -30L-48 -6M-38 -30L-38 -6M2 -30L2 -6M12 -30L12 -6",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-55 -22C-50 -24 -44 -20 -38 -22M-38 -13C-34 -15 -31 -11 -28 -13M-4 -22C0 -24 6 -20 12 -22C16 -24 20 -20 23 -22M-4 -13C0 -15 6 -11 12 -13C16 -15 20 -11 23 -13M-55 -13C-50 -15 -44 -11 -38 -13",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-58 -6L26 -6L26 0L-58 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-29 -29L-3 -29L-3 0L-29 0Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-26 -26L-6 -26L-6 0L-26 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-19.5 -25L-19.5 -1M-12.5 -25L-12.5 -1",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-26 -19L-6 -19L-6 -16.5L-26 -16.5Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-8.5, -12],
+          "radius": 1.1
+        },
+        {
+          "art": "flaeche",
+          "form": "M-66 -29L-16 -90L34 -29C10 -24.5 -42 -24.5 -66 -29Z",
+          "material": "stroh"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-66 -29L-16 -90L-30 -26C-44 -26.3 -57 -27.3 -66 -29Z",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-16 -90L34 -29C30 -28.2 26 -27.6 21 -27Z",
+          "material": "stroh",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-50 -47C-30 -42.5 -2 -42.5 18 -47M-38 -62C-24 -58.5 -8 -58.5 6 -62M-27.5 -75C-20 -73 -12 -73 -4.5 -75",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-66 -29C-42 -24.5 10 -24.5 34 -29L34 -26C10 -21.5 -42 -21.5 -66 -26Z",
+          "material": "maehne"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -86L-18 -94L-16 -90L-14 -95L-12 -86Z",
+          "material": "maehne",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M34 -28L38 -28L38 0L34 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M48 -28L52 -28L52 0L48 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M60 -28L64 -28L64 0L60 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M35 -23C40 -26 46 -20 50 -23C54 -26 58 -20 63 -23M35 -15C40 -18 46 -12 50 -15C54 -18 58 -12 63 -15M35 -7C40 -10 46 -4 50 -7C54 -10 58 -4 63 -7",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M38 0C37 -10 41 -19 46.5 -19C52 -19 56 -10 55 0Z",
+          "material": "stroh",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M38 0C37 -10 41 -19 46.5 -19C43.5 -14 43 -6 43.5 0Z",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M47 -14L48 -3M51 -11L51.5 -2",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 112,
+    "rahmen": [-68, -112, 136, 112]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  },
+  "stufen": [
+    {
+      "tausch": {
+        "holz": "stein"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "schornstein",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-22 -82L-21 -93L-11 -93L-10 -82Z",
+              "material": "stein"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-22 -82L-21 -93L-18.5 -93L-19 -82Z",
+              "material": "stein",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-22.5 -96L-9.5 -96L-9.5 -93L-22.5 -93Z",
+              "material": "stein",
+              "ton": "licht"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "stein": "kupfer"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "windfahne",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-17 -108L-15 -108L-15 -96L-17 -96Z",
+              "material": "maehne"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-15 -107.5L-5 -104.5L-15 -101.5Z",
+              "material": "stein"
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [-46, -18],
+              "radius": 1.6
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [7, -18],
+              "radius": 1.6
+            },
+            {
+              "art": "punkt",
+              "material": "smaragd",
+              "mitte": [-16, -34],
+              "radius": 1.6
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "kupfer": "eisen",
+        "smaragd": "eisen"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "baender",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-56 -17L-49 -17L-49 -14L-56 -14Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M17 -17L24 -17L24 -14L17 -14Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "hermelin",
+              "mitte": [-52.5, -15.5],
+              "radius": 1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "hermelin",
+              "mitte": [20.5, -15.5],
+              "radius": 1,
+              "ton": "schatten"
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "wimpel",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-58.9 -54L-57.1 -54L-57.1 -27L-58.9 -27Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-57.1 -54L-45 -50.5L-57.1 -47Z",
+              "material": "koenigsrot"
+            },
+            {
+              "art": "flaeche",
+              "form": "M26.1 -54L27.9 -54L27.9 -27L26.1 -27Z",
+              "material": "eisen",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M27.9 -54L40 -50.5L27.9 -47Z",
+              "material": "koenigsrot"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "tausch": {
+        "eisen": "kristall"
+      },
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "kristall",
+          "lagen": [
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [-16, -109],
+              "radius": 1.6,
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-46, -24],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [14, -10],
+              "radius": 1.1
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-33, -12],
+              "radius": 1.1
+            }
+          ],
+          "pivot": [0, 0]
+        },
+        {
+          "eltern": "korpus",
+          "id": "krone",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-27 -93L-25.2 -101.5L-22 -93Z",
+              "material": "kristall",
+              "ton": "schatten"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-10 -93L-6.8 -101.5L-5 -93Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-24 -96L-22.6 -102L-21 -105L-19.4 -102L-18 -96Z",
+              "material": "kristall"
+            },
+            {
+              "art": "flaeche",
+              "auflage": true,
+              "form": "M-21 -105L-19.4 -102L-18 -96L-21 -96Z",
+              "material": "kristall",
+              "ton": "licht"
+            },
+            {
+              "art": "punkt",
+              "material": "weiss",
+              "mitte": [-20.2, -100],
+              "radius": 1
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    }
+  ]
+}

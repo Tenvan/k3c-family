@@ -95,6 +95,30 @@
       "lauf.png": "36fcaf88afc6c034e0ef60c5abe7f7a9859c293061d0b72a12996317713e4b8a"
     }
   },
+  "moorgeist": {
+    "renderKey": "9da7f8b969aa74f07961e89140dc6ff5605c10de5f5485bab10e0f5fea10630a",
+    "dateien": {
+      "angriff.png": "f79b479f17cd90d1573ee835f45e8e4b3562e0d78e9f74f55b0df3b0181f54ad",
+      "idle.png": "811b6a326260e93ad679ce421053b29312c1ebb9c411ec043f4f88cb99ac8b0f",
+      "lauf.png": "98de59cb79d190dfaa28f20892cdf202e477985698ab5cf94feb5403bf66902d"
+    }
+  },
+  "mumie": {
+    "renderKey": "7ebc57e85e4136aec0296b04c15de6320af1a9999b46030d59fe25a13ad3df3c",
+    "dateien": {
+      "angriff.png": "1b40933e7ccaa0e40784b6f2d5cca4141819abf402ddb8cb445f83029a9fd241",
+      "idle.png": "9523a356545da781b05f6b459bd0e3c38b2143baac1c2f0251a7ebef125c91be",
+      "lauf.png": "6f225c42c0f2a9162d40c1e50addd1ec683a15035e328411f864d5b5a58e0a24"
+    }
+  },
+  "ninja": {
+    "renderKey": "133998403d5cf7504187d796cb9e3d830dd0916c2975a678e26552b8dda59082",
+    "dateien": {
+      "angriff.png": "48301b0639c39cfe9cc41df27d752955e6397e4e95085eda760cc90c29cdc865",
+      "idle.png": "5ee9315c897640d969f509430bc7e332ba66f35da24aacf106cfa9d8c7587d24",
+      "lauf.png": "8414b7558ab7cb3387602a196138846f976bd6d761df1a39a22e5ed86d0d945c"
+    }
+  },
   "rattenschwarm": {
     "renderKey": "35c665c14598a67ab462b31d9acd5003cb3c95c208c6b6fb47475e23aa1e2027",
     "dateien": {
@@ -103,12 +127,36 @@
       "lauf.png": "48386487fc2cfdc70d38fdd2b3208dc329edce295ab5e027ece66a16e083279b"
     }
   },
+  "roemischer-spaeher": {
+    "renderKey": "b6e067f57efbabadb048334f27e3378fb956c3e5170ce6b2caa50322ced7a356",
+    "dateien": {
+      "angriff.png": "e09d972f9c54b6eecb76844aa87543b81f86dcf72165dc4f70bd74317f126e3f",
+      "idle.png": "dc7973209a54bb19b2e7a693d2332679d812262ad91ca1ee02d9777630182d94",
+      "lauf.png": "dbbd71b2eb2a90c4345a42a7c134a073cff6eb46f8b1a1c7fcec5fccf7597619"
+    }
+  },
+  "samurai": {
+    "renderKey": "d1a8040fd2fef9f160cd6b28802b78410618e889f5932ce09197aab69f807b57",
+    "dateien": {
+      "angriff.png": "a53ad5c627b7ead412db9ecb2e1e15b78bf6b604029412919d9ac191a832c607",
+      "idle.png": "919968ed548c97d8b3c8bb34d9fb52bc146427450ec91ea9c019243d803cef1b",
+      "lauf.png": "8354bfe18bb68da481470f4ee510f3fd279036109f8ea0e478dbefe297f281f5"
+    }
+  },
   "skelett": {
     "renderKey": "580bf0bea926232c00ae7ccd081479336e54baaf7a6c6c8dfa031aff959c0e1b",
     "dateien": {
       "angriff.png": "876fb0262e66087fb1da40b884d91cda7f10765b71e852e29159ed65316d3368",
       "idle.png": "5ffd3ce2f0591ca5f0ff82664723d2b6c42a56bf57aa2954293190771a9b781b",
       "lauf.png": "111cd99c7ed201e1953a2720de1eee0bbb34152d096b2e8e201aba2e2b451056"
+    }
+  },
+  "skorpion": {
+    "renderKey": "4cb080487f9183ea9c599bcc1648259d44d5727dc13791beb69d11e27cf17fba",
+    "dateien": {
+      "angriff.png": "86cfdb41126f119140f373db4804e1df0b2a5021ef2eb14fa89641da5be0b5a0",
+      "idle.png": "8294ca7bb57297db3a1919bc362559877eb1612df6342ddb1c6f35a9ed138cd4",
+      "lauf.png": "1d23017344084fbe7098cc9d0f390e893112b991b309668bed56921e1ac4cbc5"
     }
   },
   "splitterling": {

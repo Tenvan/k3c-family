@@ -1,0 +1,426 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "skorpion",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Skorpion (Nil, Skin für den Wolf): kupferbrauner Riesenskorpion mit gegliedertem Panzer, zwei Scheren, acht Beinen und hoch gebogenem Schwanz mit schwarzem Stachel; krabbelt, sticht mit dem Schwanz nach vorn",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "bein-1h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -15L-21 -29L-29 0L-26.5 0L-19 -23.5L-7 -11Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [-8, -14]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-2h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M5 -15L-5 -30L-9 0L-6.5 0L-3.5 -24L3 -11Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [3, -13]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-3h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M13 -15L22 -30L27 0L24.5 0L20.5 -24L15 -11Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [15, -13]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-4h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M24 -15L38 -29L47 0L44.5 0L36.5 -23.5L25 -11Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [26, -14]
+    },
+    {
+      "eltern": "korpus",
+      "id": "schere-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M32 -32L48 -42L54 -36L38 -24Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M48 -44C56 -52 70 -50 78 -40C72 -42 66 -41 62 -38C68 -37 74 -34 77 -29C68 -26 54 -28 48 -34Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [34, -28]
+    },
+    {
+      "eltern": "korpus",
+      "id": "schwanz",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-28 -33C-50 -35 -64 -55 -59 -82L-46 -80C-50 -61 -42 -47 -26 -21Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-28 -33C-50 -35 -64 -55 -59 -82L-54.6 -81.4C-59 -57 -47 -39 -28 -29.6Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-41 -38.6L-35 -29.4M-53 -50L-44 -45M-59 -65L-49 -62.6",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-44 -46C-49 -56 -50 -68 -48 -78",
+          "material": "kupfer",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-30, -26]
+    },
+    {
+      "eltern": "schwanz",
+      "id": "schwanz-spitze",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-11 -103C-4 -100 -2 -93 -5 -85C-7 -91 -10 -95 -15 -96Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-59.4 -79C-59 -100 -42 -112 -22 -106L-24 -96C-38 -100 -46.6 -93 -46 -78.6Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-59.4 -79C-59 -100 -42 -112 -22 -106L-22.8 -102.4C-41 -107.4 -55 -97 -55 -79Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-57.6 -90L-46.4 -86.6M-48 -103.4L-41.6 -95.4M-34 -108L-32.6 -98.4",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-27 -108C-19 -112.4 -9 -108.4 -9 -100.4C-9 -94.4 -18 -92.4 -26 -95.4Z",
+          "material": "kupfer",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-27 -108C-22 -110.6 -17 -110.4 -13.4 -108C-19 -107.6 -23 -105 -26.2 -100Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [-52, -81]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-34 -24C-34 -32 -24 -37 -8 -37C10 -38 30 -36 40 -30C46 -26 46 -18 40 -14C28 -10 6 -9 -12 -10C-26 -11 -34 -16 -34 -24Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-34 -24C-34 -16 -26 -11 -12 -10C6 -9 28 -10 40 -14C43 -15.6 44.6 -18 45 -20.4C30 -15 0 -13.6 -34 -24Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20 -35.2C-6 -37 14 -37 30 -34C16 -34.6 -4 -34.6 -20 -33Z",
+          "material": "kupfer",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-22 -35C-24.6 -28 -24.6 -20 -22 -12M-12 -36.8C-14.6 -28 -14.6 -20 -12 -10.4M-2 -37.4C-4.6 -28 -4.6 -20 -2 -9.8M8 -37.4C5.4 -29 5.4 -20 8 -9.6",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [35, -29],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "auge",
+          "mitte": [35.6, -29],
+          "radius": 1
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [28.6, -31.4],
+          "radius": 1.4,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -22]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-1",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -15L-27 -29L-35 0L-32.5 0L-25 -23.5L-13 -11Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-25.6 -26L-32.6 -2",
+          "material": "kupfer",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-14, -14]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-2",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1 -15L-11 -30L-15 0L-12.5 0L-9.5 -24L-3 -11Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-9.8 -27L-13 -2",
+          "material": "kupfer",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [-3, -13]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-3",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M7 -15L16 -30L21 0L18.5 0L14.5 -24L9 -11Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M16.4 -27L20 -2",
+          "material": "kupfer",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [9, -13]
+    },
+    {
+      "eltern": "korpus",
+      "id": "bein-4",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M18 -15L32 -29L41 0L38.5 0L30.5 -23.5L19 -11Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M32.4 -26L39.6 -2",
+          "material": "kupfer",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [20, -14]
+    },
+    {
+      "eltern": "korpus",
+      "id": "schere-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M36 -24L52 -33L58 -27L42 -16Z",
+          "material": "kupfer"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M36 -24L42 -16L58 -27L56 -29L42 -19.6Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M52 -34C60 -42 74 -40 82 -30C76 -32 70 -31 66 -28C72 -27 78 -24 81 -19C72 -16 58 -18 52 -24Z",
+          "material": "kupfer",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M52 -24C58 -18 72 -16 81 -19C79.6 -21 78 -22.6 76 -24C68 -21.6 58 -22.4 52 -27Z",
+          "material": "kupfer",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M56 -35.4C62 -39 70 -37.6 76 -33",
+          "material": "linie"
+        }
+      ],
+      "pivot": [38, -20]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 128,
+    "rahmen": [-80, -118, 168, 126]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        },
+        {
+          "t": 0.25,
+          "winkel": {
+            "korpus": -2,
+            "schere-h": -12,
+            "schere-v": -15,
+            "schwanz": -3,
+            "schwanz-spitze": -5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "korpus": 4,
+            "schere-h": 6,
+            "schere-v": 8,
+            "schwanz": 24,
+            "schwanz-spitze": 38
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "korpus": 1,
+            "schwanz": 8,
+            "schwanz-spitze": 10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "schere-h": 0,
+            "schere-v": 0,
+            "schwanz": 0,
+            "schwanz-spitze": 0
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "schere-h": 3,
+            "schere-v": -4,
+            "schwanz": -3,
+            "schwanz-spitze": 4
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "bein-1": 10,
+            "bein-1h": -10,
+            "bein-2": -10,
+            "bein-2h": 10,
+            "bein-3": 10,
+            "bein-3h": -10,
+            "bein-4": -10,
+            "bein-4h": 10,
+            "korpus": -1,
+            "schwanz-spitze": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "bein-1": -10,
+            "bein-1h": 10,
+            "bein-2": 10,
+            "bein-2h": -10,
+            "bein-3": -10,
+            "bein-3h": 10,
+            "bein-4": 10,
+            "bein-4h": -10,
+            "korpus": 1,
+            "schwanz-spitze": 2
+          }
+        }
+      ]
+    }
+  }
+}

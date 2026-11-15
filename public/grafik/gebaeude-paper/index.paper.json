@@ -1,5 +1,10 @@
 [
   {
+    "id": "barke",
+    "rig": "gebaeude",
+    "manifest": "barke/manifest.json"
+  },
+  {
     "id": "bogner",
     "rig": "gebaeude",
     "manifest": "bogner/manifest.json"
@@ -85,6 +90,11 @@
     "manifest": "mauer/manifest.json"
   },
   {
+    "id": "pagode",
+    "rig": "gebaeude",
+    "manifest": "pagode/manifest.json"
+  },
+  {
     "id": "rekrutierungslager",
     "rig": "gebaeude",
     "manifest": "rekrutierungslager/manifest.json"
@@ -93,6 +103,11 @@
     "id": "ruestkammer",
     "rig": "gebaeude",
     "manifest": "ruestkammer/manifest.json"
+  },
+  {
+    "id": "rundhaus",
+    "rig": "gebaeude",
+    "manifest": "rundhaus/manifest.json"
   },
   {
     "id": "schiff",

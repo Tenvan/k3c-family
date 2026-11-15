@@ -39,14 +39,14 @@ func (g *Game) play(in view.Input) {
 }
 
 // ending zählt die Takte im Spiel, seit der Frame einen Ausgang trägt (Frame.Outcome), und schließt das Spiel nach
-// view.EndDelay (Session.Close speichert; nach einer Niederlage speichert der Raum nicht mehr). Ein Frame ohne Stufe
+// view.EndDelay, frühestens wenn kein view.EndHolder mehr etwas zeigt (höchstens view.EndHoldMax länger; Session.Close speichert; nach einer Niederlage speichert der Raum nicht mehr). Ein Frame ohne Stufe
 // (Menü, beendetes Spiel) setzt den Zähler zurück, damit ein späteres Spiel neu zählt. true: Spiel geschlossen.
 func (g *Game) ending() bool {
 	if g.frame.Outcome == view.OutcomeNone || len(g.frame.Stages) == 0 {
 		g.endIn = 0
 		return false
 	}
-	if g.endIn++; g.endIn < view.EndDelay {
+	if g.endIn++; g.endIn < view.EndDelay || (g.endIn < view.EndDelay+view.EndHoldMax && g.endHeld()) {
 		return false
 	}
 	if err := g.sim.Close(); err != nil {
@@ -54,6 +54,16 @@ func (g *Game) ending() bool {
 	}
 	slog.Info("🛑 Spielende, zurück ins Hauptmenü", "ausgang", g.frame.Outcome)
 	return true
+}
+
+// endHeld meldet, ob ein Listener am Spielende noch etwas zeigt (view.EndHolder: Geschichte zum Sieg, B-974).
+func (g *Game) endHeld() bool {
+	for _, l := range g.parts.Listeners {
+		if h, ok := l.(view.EndHolder); ok && h.EndHolding() {
+			return true
+		}
+	}
+	return false
 }
 
 // overlays ruft alle Overlays in Anmelde-Reihenfolge und vereinigt die verbrauchten Spieler; ihre Cues kommen in den

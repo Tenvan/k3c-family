@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-meer-mitte",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): mittlere Papierschicht des Meeres, mittlere Wellen, waagrecht kachelbar über 768",
+  "teile": [
+    {
+      "id": "flaeche",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0V-90Q64 -72 128 -90Q192 -72 256 -90Q320 -72 384 -90Q448 -72 512 -90Q576 -72 640 -90Q704 -72 768 -90V0Z",
+          "material": "kristall",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -90Q64 -72 128 -90Q192 -72 256 -90Q320 -72 384 -90Q448 -72 512 -90Q576 -72 640 -90Q704 -72 768 -90V-86Q704 -64 640 -86Q576 -64 512 -86Q448 -64 384 -86Q320 -64 256 -86Q192 -64 128 -86Q64 -64 0 -86Z",
+          "material": "kristall",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -40Q64 -26 128 -40Q192 -26 256 -40Q320 -26 384 -40Q448 -26 512 -40Q576 -26 640 -40Q704 -26 768 -40V0H0Z",
+          "material": "kristall",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 96,
+    "rahmen": [0, -96, 768, 96]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

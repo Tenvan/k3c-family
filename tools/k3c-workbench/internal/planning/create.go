@@ -230,6 +230,11 @@ func Get(root, id string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	return getRef(root, r)
+}
+
+// getRef liest das aufgelöste Dokument wie Get.
+func getRef(root string, r ref) (string, error) {
 	text, _, err := readText(root, r.rel)
 	if err == nil && r.kind == "ticket" {
 		text = withReverse(text, reverseLines(root, r.id))

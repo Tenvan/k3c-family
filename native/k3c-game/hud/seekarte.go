@@ -22,11 +22,14 @@ const (
 	seaTarget                // wählbares Ziel
 )
 
-// seaNode ist eine Insel der Karte: chosen = gewähltes Ziel (für alle), cursor = Cursor dieses Spielers.
+// seaNode ist eine Insel der Karte: chosen = gewähltes Ziel (für alle), cursor = Cursor dieses Spielers, current = die
+// Insel, an der das Schiff liegt. look ist ihr Aussehen im Diorama (seekarte_look.go).
 type seaNode struct {
 	id, name       string
 	kind           seaKind
 	chosen, cursor bool
+	current        bool
+	look           seaLook
 }
 
 // seaRow ist eine Etappe mit ihren Inseln in Listenreihenfolge.
@@ -48,9 +51,11 @@ type seaShown struct {
 
 // seaView ist die Seekarte eines Spielers. open: der Wechselpunkt ist offen und es gibt Ziele. ids sind die Ziele in
 // Reihenfolge der Simulation, cursor ihr Index; choice ist die zuletzt gelesene Wahl (ändert sie sich, springt der
-// Cursor darauf). Texte, Zeilen und Messungen (sizes bei Skalierung sizesK) gelten, bis sich shown ändert.
+// Cursor darauf). Texte, Zeilen und Messungen (sizes bei Skalierung sizesK) gelten, bis sich shown ändert. hold: der
+// Spieler hat am Steg bestätigt und hält A noch; bis zum Loslassen bleibt seine Eingabe verbraucht (seekarte_input.go).
 type seaView struct {
 	open        bool
+	hold        bool
 	ids         []string
 	cursor      int
 	choice      string
@@ -142,7 +147,7 @@ func seaHint(lang, profile string, several bool) string {
 
 // build legt die Zeilen nach Etappe (aufsteigend) und die Knoten nach Listenreihenfolge an. Abgeschlossen ist, was
 // IslandSwitch.Completed nennt (die Simulation zählt die aktuelle Insel dazu), Ziel, was in Targets steht, alles
-// andere ist gesperrt.
+// andere ist gesperrt. Die aktuelle Insel nennt die Simulation als letzte der Abgeschlossenen (world_state_mirror.go).
 func (v *seaView) build(lang string, sw *sim.SwitchState, route []view.RouteIsland) {
 	v.rows = v.rows[:0]
 	for _, isl := range route {
@@ -151,7 +156,8 @@ func (v *seaView) build(lang string, sw *sim.SwitchState, route []view.RouteIsla
 			v.rows = append(v.rows, seaRow{etappe: isl.Etappe, title: tf(lang, "sea.etappe", "n", isl.Etappe)})
 			i = len(v.rows) - 1
 		}
-		n := seaNode{id: isl.ID, name: isl.Name, kind: seaLocked, chosen: isl.ID == sw.Choice}
+		n := seaNode{id: isl.ID, name: isl.Name, kind: seaLocked, chosen: isl.ID == sw.Choice, look: lookOf(isl)}
+		n.current = len(sw.Completed) > 0 && sw.Completed[len(sw.Completed)-1] == isl.ID
 		switch {
 		case slices.Contains(v.ids, isl.ID):
 			n.kind = seaTarget

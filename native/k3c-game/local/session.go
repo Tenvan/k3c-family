@@ -48,6 +48,7 @@ type Session struct {
 	name   string                // Spielstand des laufenden Spiels
 	world  string                // Welt-ID des laufenden Spiels (leer = Standard-Welt)
 	route  routeCache            // Inseln der Welt (Frame.Route, route.go)
+	camp   campaign              // Stand der Kampagne für die Geschichte (Frame.Campaign, campaign.go)
 	devs   map[int]view.DeviceID // Slot (= lokaler Spieler) → Gerät
 	last   []view.DeviceID       // Geräte des letzten Spiels, für Load und Continue
 	paused bool
@@ -192,6 +193,7 @@ func (s *Session) start(name string, fresh bool, depth int, opts room.Options, d
 			}
 		}
 	}
+	s.beginCampaign(name, fresh)
 	s.log.Info("🚀 Spiel gestartet", "save", name, "neu", fresh, "spieler", len(devices))
 	return nil
 }

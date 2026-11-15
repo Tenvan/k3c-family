@@ -4,7 +4,7 @@
 // geführte erste Nacht über der Welt, Berufe und Händler als Labels, dazu das Skill-Menü je Spieler.
 //
 // Aufbau: state.go schreibt je Frame den Zustand fort (Listener), overlay.go bedient das Skill-Menü (view.Overlay),
-// layout.go, values.go, banner.go, radar.go, kampf.go, hints.go, glyphs.go, skillmenu.go und skilltext.go rechnen rein
+// layout.go, values.go, banner.go, story.go, radar.go, kampf.go, hints.go, glyphs.go, skillmenu.go und skilltext.go rechnen rein
 // und getestet, draw*.go und paint.go zeichnen. Draw ändert keinen Zustand außer gemessenen Texten und dem Layout-Cache.
 package hud
 
@@ -30,11 +30,19 @@ type hud struct {
 	paint   painter
 	lay     [view.MaxPlayers]layoutCache
 	spots   []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
+	seaMap  *art.SeaMap // Assets der Seekarte (nil: Karte aus Formen, drawsea.go)
+	assets  []string    // gemeldete Assets (nil: nur die Icons)
+	voy     voyageView  // Schiffsfahrt im Vollbild (voyage.go, B-977)
+	tale    taleState   // Geschichtszeilen an den Wendepunkten (story.go, B-974)
 }
 
 // New liefert den Drawer des HUD; lib (Grafik) darf nil sein, dann zeichnet es nur Flächen ohne Text.
 func New(lib *art.Library) view.Drawer {
-	return &hud{lib: lib, lang: view.DefaultLanguage}
+	h := &hud{lib: lib, lang: view.DefaultLanguage}
+	if lib != nil { // ohne Grafik bleibt die Seekarte aus Formen
+		h.useSeaMap(art.DataSeaMap(), lib.Usable)
+	}
+	return h
 }
 
 func (*hud) Layer() view.Layer { return view.LayerHUD }

@@ -163,6 +163,8 @@ export function httpBackend(): Backend {
     taskGateToggle: (name) => rpc('TaskGateToggle', name),
     taskGateSave: () => rpc('TaskGateSave'),
     planningData: () => rpc('PlanningData'),
+    planningList: () => rpc('PlanningList'),
+    planningItems: (ids) => rpc('PlanningItems', ids),
     planningDocs: () => rpc('PlanningDocs'),
     planningSet: (id, field, value) => rpc('PlanningSet', id, field, value),
     planningDoc: (name) => rpc('PlanningDoc', name),

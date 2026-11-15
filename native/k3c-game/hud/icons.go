@@ -5,9 +5,12 @@ package hud
 // zeichnet das HUD statt des Icons den Namen.
 
 import (
+	"log/slog"
+	"slices"
 	"strconv"
 
 	"k3c/engine/sim"
+	"k3c/native/k3c-game/art"
 )
 
 // iconAnim ist die Animation der Icons.
@@ -26,8 +29,31 @@ var resourceIcons = map[string]string{
 var hudAssets = []string{purseAsset, "icons/icon-eisen", "icons/icon-holz", "icons/icon-kristall", "icons/icon-kupfer", goldIcon,
 	"icons/icon-stein"}
 
-// Assets meldet die Icons des HUD für jedes Level (view.AssetSource).
-func (*hud) Assets(string, *sim.World) []string { return hudAssets }
+// Assets meldet die Icons des HUD für jedes Level (view.AssetSource), mit ladbarer Seekarte auch deren Assets.
+func (h *hud) Assets(string, *sim.World) []string {
+	if h.assets != nil {
+		return h.assets
+	}
+	return hudAssets
+}
+
+// useSeaMap nimmt die Assets der Seekarte m, wenn usable alle laden kann (Library.Usable: ein fehlendes Bild darf nie ein
+// Level verhindern); sonst bleibt die Karte aus Formen (B-964/R5).
+func (h *hud) useSeaMap(m *art.SeaMap, usable func(string) bool) {
+	if m == nil {
+		return
+	}
+	sea := m.Assets()
+	for _, a := range sea {
+		if !usable(a) {
+			slog.Info("🚫 Seekarte ohne Diorama, Asset nicht ladbar", "asset", a)
+			return
+		}
+	}
+	h.seaMap = m
+	h.assets = slices.Concat(hudAssets, sea)
+	slices.Sort(h.assets)
+}
 
 // stockPart ist ein Teil der Vorrats-Anzeige: Rohstoff (Icon; "" = nur Text) und Zahl bzw. Text.
 type stockPart struct {

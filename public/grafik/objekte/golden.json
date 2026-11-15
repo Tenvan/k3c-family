@@ -120,6 +120,23 @@
       "idle.png": "eb3205a3b01bc9aa05e5d4609d3abd45eb874df3ed67fafb8dcebfccea52955c"
     }
   },
+  "obelisk": {
+    "renderKey": "c1d134d3cbb52dcaea8c086766a447fd8ff26b45053fd82fce7775bbf5fb92e9",
+    "dateien": {
+      "idle.png": "5a5670287581ee6d9da4e60aed61d8c9623a199bbb11712ee31d281ffd316750",
+      "idle@eisenstollen.png": "926d0d1d170d087ed8af9d3018ce3f9c8bb51616c687df97d6b2ea2adbec78a9",
+      "idle@hoehle.png": "8e20d05391d383a3b0c9cb536921554aa02ed5ea9af249d71581f4eb8e647b0a",
+      "idle@kristall.png": "d510a45c8637d5ef10e76cce55ffead5bbf597aacfc4c480b85e7772f1b8fe84",
+      "idle@mine.png": "7f85fc46c25c263e820db74e11791c55b8cbd62b4409cef45e0360bc76545d5e",
+      "idle@wald.png": "1746f98b16cc81af73e7f29f29bb3b94c11d3f10766574e288a132dcac9b2eb3"
+    }
+  },
+  "palme": {
+    "renderKey": "0db9717c6cd2953d03c480e5ceb245a50d4d76f1102ffee693fc47b9d5a0c127",
+    "dateien": {
+      "idle.png": "72d815640a62388477bdaebea9e89dea590da719678cbb03b952180058f58795"
+    }
+  },
   "pappel-2": {
     "renderKey": "7feb26c7241ce0304d75313a85ce7631f396c7bcecbfe1482c53446e07d6a8dc",
     "dateien": {
@@ -142,6 +159,12 @@
     "renderKey": "33cfba4d30837543cf144bc720fcebfcdfcfecee941766647f15ee55f3cd2e2c",
     "dateien": {
       "idle.png": "fe5a53a618021df9aeea23cfc66531c11fa4a435fb0e94ec5eb296d7d5bb1f49"
+    }
+  },
+  "samurai-lager": {
+    "renderKey": "7e8cc711982d96f29f0a9aebf2ec021b53e1963e234b58cca19c4f816c8d66e4",
+    "dateien": {
+      "idle.png": "c80426f488a971de8d226cd18191e46fc5a7f90bb4f437eab35418178fd3df2d"
     }
   },
   "schild-axt": {
@@ -172,10 +195,94 @@
       "idle.png": "4843bce44dda41bf021cae16b6b05ab89c1d3032d1b9d83261bd5d00e4341c3d"
     }
   },
+  "seekarte-aufsatz-baum": {
+    "renderKey": "b0e0f192be177fd5169b888a4c0ed67ea8c154618874505c84e0a92ccc6d37e9",
+    "dateien": {
+      "idle.png": "7919335a4f19f27368eb3afe5dd854fddc989696d2251ee0186c1a434d106fa9"
+    }
+  },
+  "seekarte-aufsatz-fels": {
+    "renderKey": "06edaeae82ca74321a28619a6336a77198ccfb9598ea39c4c37a5cf10f408d4d",
+    "dateien": {
+      "idle.png": "6ff3440ca11dcac2071d2ba53161201554a5da8043085973e805b36dfdbd2822"
+    }
+  },
+  "seekarte-aufsatz-turm": {
+    "renderKey": "b72853dc4cbd33b36a0c547560b5a643d65069512dab55985da59b9ca80f191c",
+    "dateien": {
+      "idle.png": "f24ddf034f6f826a4203f6cd60dfeea7abe8607c3ee942d9e13fe6943f97d4e1"
+    }
+  },
+  "seekarte-insel-britannien": {
+    "renderKey": "52036febd936b140510bad77c1091176db2137527adaea8b96171a4fa2e6be80",
+    "dateien": {
+      "stand.png": "de4f52aa05e0fff708d1d3cbc9f15da96f780bbaa7dde9d9dbc10f32a6bc8f1c"
+    }
+  },
+  "seekarte-insel-nil": {
+    "renderKey": "901b162926ac41f1646da7b575e3ca21e423dd3b30bff2c582d6685fa4d0f45e",
+    "dateien": {
+      "stand.png": "e9629e31f4bf6d07016eaeb877ea8781f7153de9b539a1e400db82cb1d9fde3a"
+    }
+  },
+  "seekarte-insel-sengoku": {
+    "renderKey": "67bc6100b0edc1e0bbf4c1c7bc69e74a47011f8832a719ec2ffbbe2dc565e4cf",
+    "dateien": {
+      "stand.png": "040e07989618df310ecab168794e00c5dc8a1df0041e7bd8f75631869f6e2cb5"
+    }
+  },
+  "seekarte-insel-standard": {
+    "renderKey": "0a9d290777b6caf018bb54130d044b46090b83e653b4f2bc23fa7b55899e20d4",
+    "dateien": {
+      "stand.png": "23857c1a2419011414b8d5a741ea281ced8ec4f78ab9da908b7d5e5785fd357e"
+    }
+  },
+  "seekarte-meer-hinten": {
+    "renderKey": "91c8d38a9981cbe8cea17e626ed3256532608d9efbb828bdc5615df6e8223c08",
+    "dateien": {
+      "stand.png": "70aa62e550eacab999da53c35459e6b9ac1c95ef4e509c7a7d445ebf2dc78392"
+    }
+  },
+  "seekarte-meer-mitte": {
+    "renderKey": "3e78698be4f24ea13208a59a1cfa07f508f86fc9214583886ac701b5ee140e22",
+    "dateien": {
+      "stand.png": "8d033f1082039f1a7fcc0afea649178ebe85326c0a73971851a038291a16135a"
+    }
+  },
+  "seekarte-meer-vorn": {
+    "renderKey": "58b22cf4c8deac7a69b87546758815fdc2fb802164f3ccaf0497e77175403ae2",
+    "dateien": {
+      "stand.png": "badbc159729c51d68df34d61daa8ea1ea4b376db34bb0b8a8f2a30964a1754bb"
+    }
+  },
+  "seekarte-schiff": {
+    "renderKey": "9324cf0e5bb2139b8999e7a0da6bbcc301dd5ccbf448459ff67582977fe665a9",
+    "dateien": {
+      "idle.png": "7953275dc4ff509fbf66e60830b649a1e62a039ad5d48da0ab2ca02911d14847"
+    }
+  },
+  "seekarte-zeichen-fahne": {
+    "renderKey": "c0acc9879ac6d1668bd8325bf71a2ea01b37b62e22173bb912044676f076bf0f",
+    "dateien": {
+      "idle.png": "f8a8fee519acd46fd745991ba1be8eb017799b4603f0818cd374ae558a784e59"
+    }
+  },
+  "seekarte-zeichen-nebel": {
+    "renderKey": "8f0d1b5505748d62f14165d5ee21021708ccb4e860612f69ca0cb28ba33e63be",
+    "dateien": {
+      "idle.png": "4c8bed3b55e2e7d1ec817df54694fbba0bb6d5595c85fea438bc3a7ce72bc9fe"
+    }
+  },
   "setzling": {
     "renderKey": "ca061b05924de991b5b31d9a5a274508d7a84f005e6e03fd2553fe010b7d3f42",
     "dateien": {
       "idle.png": "0d5caa0ecf25986938944c3dfd540ead7a931bd340bdaea0135609c09fcba75b"
+    }
+  },
+  "steinkreis": {
+    "renderKey": "54965b86bf7c67d5e3fe746a2e6a3fc6078f54e64886c507550926c31aff22e6",
+    "dateien": {
+      "idle.png": "316fb67508b7f1b007f0a61d4267af0ecd65c6ad257e5ea34c11e9a408a2079d"
     }
   },
   "stern": {
@@ -194,6 +301,12 @@
     "renderKey": "6d8cdeaddd0588f38a32e5df0c58076b57ed0dcbeeb0fcb24e55cf21b0f9e376",
     "dateien": {
       "idle.png": "5e9bfbe31ac24317ae4ddd1950571718f981ceb306a4e0dadf1846919e325a4e"
+    }
+  },
+  "torii": {
+    "renderKey": "8c0445c7313a11fde8a47e755899dc384bd325d1316a01133f6913210b8df546",
+    "dateien": {
+      "idle.png": "5537985bd7bb0191dbcc22d2435128bb5170a5d10cb18af8d89ab23aa4266142"
     }
   },
   "truhe-offen": {

@@ -1,4 +1,12 @@
 {
+  "barke": {
+    "renderKey": "006d542cffc348252f58f624c1ffad72a5d22043266227ff9136e939fe0d8414",
+    "dateien": {
+      "stand.png": "09890ec6e66d9ca3443e3c3a510b945f57f0a118b5ee7164568ca576b0d5fb0f",
+      "stand.s2.png": "16b2a6885b1ff4ab37f29c7ccf663073e2927d4e29d65341d8b9a3dd4eee299d",
+      "stand.s3.png": "851f2084eeded92be92bcce379cc44fe89612b8cf718a79f905e66a7ebae3b89"
+    }
+  },
   "bogner": {
     "renderKey": "6062b28b6a07e2f0b7e6a1ab26add738aa29d7dc746bc0d575ffa692c495ebbc",
     "dateien": {
@@ -149,6 +157,16 @@
       "stand.s5.png": "527929908d67ab7c58e3609e6123a77ad23041f5ff0d893b6b684fc39b180cac"
     }
   },
+  "pagode": {
+    "renderKey": "33443cc3e58cf2df79783993e25fefcc5bafaaf836dbc24f868226bbbfb36c8f",
+    "dateien": {
+      "stand.png": "69a13a334d2a05497b90b63954755afe21233fdc9eec22f749a0b92f539bb219",
+      "stand.s2.png": "ccc3cde6384047905c7c838a835b689bc1933cafa6836a4e4100b7816d1233ef",
+      "stand.s3.png": "646bb12298cf06adc90da102a7a9e47b9e25761d634551821e14d5f98da1a3ce",
+      "stand.s4.png": "8fadcdf198e0b6bd537ee3fa47e0c3d04054164ed98a1716676c11bc74ee5758",
+      "stand.s5.png": "2d58abd8f6b87276a593c0a8daf25dc3815e962dd68ed5f69ee587a0df62bc0d"
+    }
+  },
   "rekrutierungslager": {
     "renderKey": "d2ee8661ed1f87cd742ad074acdc45c5ea1a374465901362f23dae271f3a3f60",
     "dateien": {
@@ -165,6 +183,16 @@
       "stand.s3.png": "06c991046b9bbee6869ee5be8f887133f9fc74504a58eb1fcecd2e729b9fbfda",
       "stand.s4.png": "afec45ad2f79d32729c103cc02ba78514ba4c598d72f13b04b3b0500682b5787",
       "stand.s5.png": "d6970117f27055619fc4786e5edbbbad1491640fa20661da43159b6a81d181ed"
+    }
+  },
+  "rundhaus": {
+    "renderKey": "494bc7d6b66f1c334dd95ea3eb42a0d1f8eda27424029b054af490b1d130388a",
+    "dateien": {
+      "stand.png": "9b8a92e713f75f14f8b622c96f2ed68e8bb0a827488f1d0604b0705caa2bf657",
+      "stand.s2.png": "efaafaf61ba81e7d2329be017fc71cbe51f01499025fda627a121c1b5800289c",
+      "stand.s3.png": "7ae9d9178ae7dbfcadd6973e43e6a443474b4cb065e05b58279b3e8756861bc7",
+      "stand.s4.png": "c409c65540bec63d5014ae48ea57d2be6eeef69220363729c2b16dbfda14875e",
+      "stand.s5.png": "1c69e55eecb1fd53179747e0061e9154a10c7b330919579839b1ed8b9437e390"
     }
   },
   "schiff": {

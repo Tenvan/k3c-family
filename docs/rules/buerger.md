@@ -18,7 +18,7 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 | **Bergmann** | Bauer, Ausbildung 20 Gold | an Adern, Fels und Kupfererz, +50 % Abbaurate; zählt als einer der höchstens 2 Bauern an einer Ader (Q35, 2026-10-04) | wie Bauer |
 | **Baumeister** | Bauer, Ausbildung 20 Gold | baut und repariert +50 % schneller | wie Bauer |
 | **Handwerker** (B-950) | Bauer + Hammer: Start (`data/hub.json` › `startTroops.craftsman`, Standard 1, je Welt übersteuerbar), Hammer aus der Werkstatt (Handwerkerbedarf) oder vom Boden | **baut, baut aus und repariert**; ein Bauer ohne Hammer baut nie; holt weder Waffe noch zweiten Hammer; fällt er, bleibt der Hammer liegen, ein Bauer ohne Werkzeug holt ihn (nur ohne Gegner in 8 Units, B-929) | wie Bauer |
-| **Geselle** | Bauer, Ausbildung 30 Gold, in Werkstatt, Schmiede oder Rüstkammer (1–2 je Gebäude; Beruf `craftsman`, vor B-950 „Handwerker“ genannt) | stellt Waffen, Upgrades und Rüstung her, je Geselle +50 % Tempo | wie Bauer |
+| **Geselle** | Bauer, Ausbildung 30 Gold, in der Werkstatt (1–2; Beruf `craftsman`, vor B-950 „Handwerker“ genannt) | stellt in der Werkstatt Schwerter und Hämmer her, je Geselle +50 % Tempo | wie Bauer |
 | **Händler** | einer je Insel, im Hub der Tiefe 0 bei Hub-Mitte +8; kommt bei `dawn` alle 3 Tage, mit Taverne auf der Insel alle 2 Tage, bleibt einen Tag (Q36, 2026-10-04) | tauscht Material gegen Gold und umgekehrt (10 Material = 5 Gold) an den Zahlzielen „Kaufen“ und „Verkaufen“; ein Material je Besuch, per `w.rng` aus den freigeschalteten (Q36, 2026-10-04) | – (Daten bei SIM) |
 
 Begründung: Bürger sind Arbeiter und Verteidiger; Spezialisierungen der Bauern statt vieler neuer Figuren. Handwerker und Händler erweitern Wirtschaft und Truppenaufbau. Berufe sind auf die Arbeit festgelegt, **Umschulung kostet erneut**. Daten: `data/troops.json` › neue Figuren und Berufe (SIM legt an).
@@ -35,10 +35,10 @@ Begründung: Bürger sind Arbeiter und Verteidiger; Spezialisierungen der Bauern
 | Elite-Krieger | 100 Kupfer + 50 Gold | Schmiede |
 | Rüstungs-Upgrade | 100 Eisen + 100 Gold je Stufe; **2 Stufen** (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP; wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen gleich, keine Vollheilung); Bauern und Landstreicher ohne Rüstung (Q37, 2026-10-04) | Rüstkammer (Hub-Stufe 4) |
 | Bergmann, Baumeister | je 20 Gold | Werkstatt |
-| Geselle (Beruf `craftsman`) | 30 Gold | Werkstatt, Schmiede, Rüstkammer |
+| Geselle (Beruf `craftsman`) | 30 Gold | Werkstatt |
 | Händler-Tausch | 10 Material = 5 Gold | beim Händler |
 
-**Herstellungszeiten** (Startwerte; Q35, 2026-10-04): Bogen und Schwert 10 s, Hammer 8 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s; je Geselle +50 % Tempo (höchstens 2). Jedes Angebot hat ein eigenes Zahlziel als Anhang mit festem `dx` am Gebäude, das mit dem Bau entsteht; das Schwert-Zahlziel liegt an der Werkstatt bei `dx +4` (Q34, Q52, Q53, 2026-10-04; `materialien-gebaeude.md` § 3).
+**Herstellungszeiten** (Startwerte; Q35, 2026-10-04): Bogen und Schwert 10 s, Hammer 8 s, Elite-Upgrade 20 s, Rüstungsstufe 30 s; je Geselle +50 % Tempo (höchstens 2), nur bei den Angeboten der Werkstatt; Elite-Upgrade, Rüstungsstufe und Bogen ohne Gesellen-Bonus. Jedes Angebot hat ein eigenes Zahlziel als Anhang mit festem `dx` am Gebäude, das mit dem Bau entsteht; das Schwert-Zahlziel liegt an der Werkstatt bei `dx +4` (Q34, Q52, Q53, 2026-10-04; `materialien-gebaeude.md` § 3).
 
 Daten: `data/troops.json` (Kosten), `data/buildings.json`. Die Kosten der Gebäude selbst: `materialien-gebaeude.md`.
 
@@ -58,5 +58,5 @@ Daten: `data/troops.json` (Kosten), `data/buildings.json`. Die Kosten der Gebäu
 
 - **Alle Startwerte** (Ausbildungskosten, +50 %-Boni, Händler-Rate und Rhythmus, Rüstungs-Upgrade, Korridore) sind Vorschläge des Agenten; 🧑 hat die Kosten mit „Vorschlag“ bestätigt, Händler-Rhythmus und Boni nicht gesondert.
 - Händler: Ort, Ablauf, Kurs und Rhythmus sind beschlossen (Q36, 2026-10-04); die Figur zeigt B-126.
-- Offen: Handwerker-Anzahl je Gebäude bei Gebäuden mit mehreren Plätzen; Bürger der Bosse-Stufen (Regelwerk III). Geklärt: Der Bergmann zählt als einer der 2 Bauern an einer Ader (Q35, 2026-10-04).
+- Offen: Bürger der Bosse-Stufen (Regelwerk III). Geklärt: Der Bergmann zählt als einer der 2 Bauern an einer Ader (Q35, 2026-10-04).
 - Das Aktionen-Overlay (`monarch.md` § 4) zeigt auch die Bürger-Aktionen (Ausbilden, Tauschen, Upgrade).
