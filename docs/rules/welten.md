@@ -274,6 +274,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 5 der Session W
 | Regel | Begründung | Daten |
 |---|---|---|
 | Eingecheckt ist nur `data/worlds/standard.json`. Eigene Welten bleiben lokal: `.gitignore` bekommt `data/worlds/*` und `!data/worlds/standard.json` (umgesetzt in WZ18.2). | Entwürfe gelangen nicht versehentlich in Commits, Builds oder die CI (B-488/AC-10: keine eingecheckte Welt). | `.gitignore` |
+| Das Spielpaket (`task build`/`buildall` → `dist/k3c-game/`) enthält alle Spieldaten samt der lokalen Welten als `data/` neben der EXE; das Spiel liest diesen Ordner ohne `K3C_DATA_DIR` (`data/embed.go`). Quelle: 🧑 2026-11-15. | Das Paket ist vollständig lauffähig und lässt sich weitergeben. | `native/Taskfile.yml` › `game:dist` |
 | Eine weitere Welt einchecken entscheidet 🧑; dann bekommt `.gitignore` eine eigene Ausnahme `!data/worlds/<id>.json`, und die Welt ist eine REG-Änderung mit Begründung im Commit. | Bewusste Entscheidung statt Nebeneffekt. | `.gitignore` |
 | Eine geänderte Standard-Welt ist eine REG-Änderung durch 🧑 (`task go:golden` nur bei gewollter Änderung), wie die Planung (`geplante-chunks.md` § 6). Quelle: B-488 › Regeln. | Golden ändert sich nur gewollt. | `data/worlds/standard.json` |
 

@@ -73,26 +73,50 @@ const BASE: WorldValueEntry[] = [
 const key = (file: string, path: readonly string[]) => `${file}:${path.join('.')}`;
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
+type Overrides = Map<string, Map<string, unknown>>;
+
+function mockValues(overrides: Overrides, id: string): WorldValuesView {
+  const own = (w: string) => overrides.get(w) ?? new Map<string, unknown>();
+  const detail = DETAILS[id];
+  if (!detail) return { world: id, extends: '', children: [], entries: [], error: `data/worlds/${id}.json: Datei fehlt` };
+  const children = Object.values(DETAILS).filter((d) => d.extends === id).map((d) => d.id);
+  const parent = own(detail.extends);
+  const entries = BASE.map((e) => {
+    const base = parent.get(key(e.file, e.path)) ?? e.base;
+    const ov = own(id).get(key(e.file, e.path));
+    return ov === undefined ? { ...e, base } : { ...e, base, override: ov };
+  });
+  return { world: id, extends: detail.extends, children, entries, error: '' };
+}
+
+/** Anzeige-Werte der Biome (Mock; echte Werte liefert das Backend aus data/biomes). */
+const withInfo = (d: WorldDetail | undefined): WorldDetail | undefined => d && {
+  ...d,
+  biomeInfo: Object.fromEntries(d.islands.flatMap((i) => i.biomes).map((b, n) => [b, { portalHp: 500 + 300 * (n % 5), palette: { sky: '#8ecae6', far: '#6a8caf', near: '#3a5a40', ground: '#588157' } }])),
+};
+
+const mockCreate: WorldBackend['worldCreate'] = async (id, name, extendsId) => {
+  const fail = (error: string) => ({ id, warnings: [], error });
+  if (!/^[a-z0-9][a-z0-9-]{0,31}$/.test(id)) return fail(`ungültige Welt-ID "${id}"`);
+  if (name.trim() === '') return fail('der Name fehlt');
+  if (DETAILS[id]) return fail(`data/worlds/${id}.json gibt es schon (ändern mit world_set)`);
+  if (extendsId !== '' && !DETAILS[extendsId]) return fail(`extends: die Welt "${extendsId}" gibt es nicht`);
+  DETAILS[id] = { id, name: name.trim(), notes: '', extends: extendsId, error: '',
+    islands: [{ id: 'island1', name: 'Insel 1', depths: [0, 1, 2, 3, 4], biomes: ['forest', 'cave', 'mine', 'ironhold', 'crystal'], plannedChunks: {}, chunkCounts: {} }] };
+  return { id, warnings: [], error: '' };
+};
+
+const mockEtappe: WorldBackend['worldIslandEtappe'] = async (id, island, etappe) => {
+  const isl = DETAILS[id]?.islands.find((i) => i.id === island);
+  if (!isl) return { id, warnings: [], error: `die Insel "${island}" gibt es nicht` };
+  if (etappe === null) delete isl.etappe;
+  else isl.etappe = etappe;
+  return { id, warnings: [], error: '' };
+};
+
 export function mockWorld(): WorldBackend {
-  const overrides = new Map<string, Map<string, unknown>>([['wueste', new Map([[key('economy', ['purse', 'startGold']), 20]])]]);
-  const own = (id: string) => overrides.get(id) ?? new Map<string, unknown>();
-  const values = (id: string): WorldValuesView => {
-    const detail = DETAILS[id];
-    if (!detail) return { world: id, extends: '', children: [], entries: [], error: `data/worlds/${id}.json: Datei fehlt` };
-    const children = Object.values(DETAILS).filter((d) => d.extends === id).map((d) => d.id);
-    const parent = own(detail.extends);
-    const entries = BASE.map((e) => {
-      const base = parent.get(key(e.file, e.path)) ?? e.base;
-      const ov = own(id).get(key(e.file, e.path));
-      return ov === undefined ? { ...e, base } : { ...e, base, override: ov };
-    });
-    return { world: id, extends: detail.extends, children, entries, error: '' };
-  };
-  /** Anzeige-Werte der Biome (Mock; echte Werte liefert das Backend aus data/biomes). */
-  const withInfo = (d: WorldDetail | undefined): WorldDetail | undefined => d && {
-    ...d,
-    biomeInfo: Object.fromEntries(d.islands.flatMap((i) => i.biomes).map((b, n) => [b, { portalHp: 500 + 300 * (n % 5), palette: { sky: '#8ecae6', far: '#6a8caf', near: '#3a5a40', ground: '#588157' } }])),
-  };
+  const overrides: Overrides = new Map([['wueste', new Map([[key('economy', ['purse', 'startGold']), 20]])]]);
+  const values = (id: string) => mockValues(overrides, id);
   return {
     worldList: async () => Object.values(DETAILS).map((d) => ({ id: d.id, name: d.name })),
     worldDetail: async (id) => withInfo(DETAILS[id]) ?? { id, name: id, notes: '', extends: '', islands: [], error: `data/worlds/${id}.json: Datei fehlt` },
@@ -101,23 +125,8 @@ export function mockWorld(): WorldBackend {
       return detail ? mockLevel(detail, island, stage, seed) : { ...mockLevel(DETAILS.standard!, '', 0, seed), error: `die Welt "${id}" gibt es nicht` };
     },
     worldValues: async (id) => values(id),
-    worldCreate: async (id, name, extendsId) => {
-      const fail = (error: string) => ({ id, warnings: [], error });
-      if (!/^[a-z0-9][a-z0-9-]{0,31}$/.test(id)) return fail(`ungültige Welt-ID "${id}"`);
-      if (name.trim() === '') return fail('der Name fehlt');
-      if (DETAILS[id]) return fail(`data/worlds/${id}.json gibt es schon (ändern mit world_set)`);
-      if (extendsId !== '' && !DETAILS[extendsId]) return fail(`extends: die Welt "${extendsId}" gibt es nicht`);
-      DETAILS[id] = { id, name: name.trim(), notes: '', extends: extendsId, error: '',
-        islands: [{ id: 'island1', name: 'Insel 1', depths: [0, 1, 2, 3, 4], biomes: ['forest', 'cave', 'mine', 'ironhold', 'crystal'], plannedChunks: {}, chunkCounts: {} }] };
-      return { id, warnings: [], error: '' };
-    },
-    worldIslandEtappe: async (id, island, etappe) => {
-      const isl = DETAILS[id]?.islands.find((i) => i.id === island);
-      if (!isl) return { id, warnings: [], error: `die Insel "${island}" gibt es nicht` };
-      if (etappe === null) delete isl.etappe;
-      else isl.etappe = etappe;
-      return { id, warnings: [], error: '' };
-    },
+    worldCreate: mockCreate,
+    worldIslandEtappe: mockEtappe,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;
       const rejected = mockNatureSet(id, island, stage, key, value);
@@ -130,7 +139,7 @@ export function mockWorld(): WorldBackend {
       if (typeof entry.base === 'number' && value !== null && typeof value !== 'number') {
         return { ...view, error: `${file}.${path.join('.')}: Zahl erwartet` };
       }
-      const map = own(id);
+      const map = overrides.get(id) ?? new Map<string, unknown>();
       if (value === null || same(value, entry.base)) map.delete(key(file, path));
       else map.set(key(file, path), value);
       overrides.set(id, map);

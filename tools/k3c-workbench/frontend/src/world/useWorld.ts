@@ -86,6 +86,47 @@ function useLevel(stage: StageChoice | null, seed: string) {
   return { model, level, note, load, show, request };
 }
 
+type SetNotice = (n: WorldState['notice']) => void;
+
+const warnOr = (warnings: string[] | undefined, ok: string): WorldState['notice'] => (warnings?.length ? { tone: 'warn', text: warnings.join(' · ') } : { tone: 'ok', text: ok });
+
+function useEtappe(id: string, current: { current: string }, setDetail: (d: WorldDetail) => void, setNotice: SetNotice) {
+  const setEtappe = async (island: string, etappe: number | null): Promise<boolean> => {
+    const world = id;
+    const v = await backend.worldIslandEtappe(world, island, etappe).catch((e: unknown) => ({ id: world, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    if (current.current !== world) return false; // inzwischen eine andere Welt gewählt
+    if (v.error) {
+      setNotice({ tone: 'error', text: v.error });
+      return false;
+    }
+    const d = await backend.worldDetail(world).catch(() => null);
+    if (d && current.current === world) setDetail(d);
+    setNotice(warnOr(v.warnings, `Etappe von ${island} gespeichert`));
+    return true;
+  };
+  return { setEtappe };
+}
+
+function useNature(stage: StageChoice | null, level: WorldLevel | null, seed: string, request: { current: number }, show: (v: Partial<WorldLevel> & { error?: string }) => void, setNotice: SetNotice) {
+  const [crossRefresh, setCrossRefresh] = useState('');
+  const setNature = async (key: string, value: number | null) => {
+    if (!stage) return;
+    const mine = ++request.current;
+    const v = await backend.worldNatureSet(stage.world, stage.island, stage.stage, key, value, level?.seed ?? seed)
+      .catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }) as Partial<WorldLevel>);
+    if (mine !== request.current) return; // inzwischen anderes Level geladen
+    if (v.rejected || v.error) {
+      setNotice({ tone: 'error', text: v.rejected || v.error || 'keine Antwort' });
+      if (v.rejected) show(v);
+      return;
+    }
+    show(v);
+    setCrossRefresh(`${stageId(stage.island, stage.stage)}#${mine}`);
+    setNotice(warnOr(v.warnings, `${key} ${value === null ? 'aus Seed' : `= ${value}`} gespeichert`));
+  };
+  return { setNature, crossRefresh };
+}
+
 export function useWorld(): WorldState {
   const [worlds, setWorlds] = useState<WorldInfo[]>([]);
   const [id, setId] = useState(() => loadText('world.id', 'standard'));
@@ -140,34 +181,7 @@ export function useWorld(): WorldState {
     setNotice(v.warnings.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `Welt ${newId} angelegt` });
     return '';
   };
-  const setEtappe = async (island: string, etappe: number | null): Promise<boolean> => {
-    const world = id;
-    const v = await backend.worldIslandEtappe(world, island, etappe).catch((e: unknown) => ({ id: world, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
-    if (current.current !== world) return false; // inzwischen eine andere Welt gewählt
-    if (v.error) {
-      setNotice({ tone: 'error', text: v.error });
-      return false;
-    }
-    const d = await backend.worldDetail(world).catch(() => null);
-    if (d && current.current === world) setDetail(d);
-    setNotice(v.warnings.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `Etappe von ${island} gespeichert` });
-    return true;
-  };
-  const [crossRefresh, setCrossRefresh] = useState('');
-  const setNature = async (key: string, value: number | null) => {
-    if (!stage) return;
-    const mine = ++request.current;
-    const v = await backend.worldNatureSet(stage.world, stage.island, stage.stage, key, value, level?.seed ?? seed)
-      .catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }) as Partial<WorldLevel>);
-    if (mine !== request.current) return; // inzwischen anderes Level geladen
-    if (v.rejected || v.error) {
-      setNotice({ tone: 'error', text: v.rejected || v.error || 'keine Antwort' });
-      if (v.rejected) show(v);
-      return;
-    }
-    show(v);
-    setCrossRefresh(`${stageId(stage.island, stage.stage)}#${mine}`);
-    setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${key} ${value === null ? 'aus Seed' : `= ${value}`} gespeichert` });
-  };
+  const { setEtappe } = useEtappe(id, current, setDetail, setNotice);
+  const { setNature, crossRefresh } = useNature(stage, level, seed, request, show, setNotice);
   return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, setEtappe, crossRefresh, notice };
 }

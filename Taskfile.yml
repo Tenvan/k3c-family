@@ -97,10 +97,11 @@ tasks:
       - task: native:game:build
 
   buildall:
-    desc: Alle EXE bauen und nach bin/ legen (Workbench, Engine-CLI k3c-sim); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen (Workbench und Engine-CLI k3c-sim nach bin/, Spiel nach dist/k3c-game/); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
       - task: k3c-sim:build
+      - task: native:game:build
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507)
