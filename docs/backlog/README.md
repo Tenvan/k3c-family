@@ -56,6 +56,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-953](B-953-truhen-fontaene.md) | SIM | Problem | mittel | offen | WI1 | Truhen geben zehnmal mehr Gold und werfen es als Fontäne auf den Boden |
 | [B-959](B-959-welten-editor-nachtraege.md) | DEV | Problem | mittel | offen | WE3 | Welten-Editor-Nachträge: Endboss je Insel-Thema, Hafen-Ablauf, Event- und Sites-Overrides, Gegnerarten je Welt |
 | [B-960](B-960-welten-inhalte.md) | PAP | Idee | niedrig | offen | WE3 | Inhalte für die neuen Welten: Assets, Events und Gegnerarten für Sengoku, Nil und Britannien |
+| [B-961](B-961-etappen-inselwechsel.md) | SIM | Idee | hoch | eingeplant | WE4 | Inseln einer Etappe sind frei wählbar, die nächste Etappe öffnet nach allen Inseln der vorigen |
+| [B-962](B-962-seekarte-im-spiel.md) | CLI | Idee | hoch | eingeplant | WE4 | Am Hafen wählen die Spieler die Zielinsel auf einer Seekarte |
+| [B-963](B-963-welten-editor-querschnitt-seekarte.md) | DEV | Idee | hoch | eingeplant | WE4 | Welten-Editor zeigt alle Inseln als Querschnitt nach Etappen mit Seekarte zum Springen |
+| [B-964](B-964-seekarte-spiel-grafik.md) | PAP | Idee | mittel | offen | WE4 | Die Seekarte im Spiel ist eine gestaltete Papierschnitt-Karte statt gezeichneter Formen |
 
 ## Archiv
 
