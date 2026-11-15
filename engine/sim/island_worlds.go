@@ -34,6 +34,8 @@ type WorldDef struct {
 	// Dateiname ohne .json, welten.md § 1); aufgelöst von ResolveWorldValues (world_values.go).
 	Extends   string
 	Overrides map[string]json.RawMessage
+	// Story ist die Geschichte der Welt (story.go, B-965); leer = keine Zeilen. `extends` vererbt sie nicht.
+	Story WorldStory
 	// values: der aufgelöste Wertesatz aus ResolveWorld (world_values_room.go); nil = beim Anlegen auflösen (valuesOf).
 	values *WorldValues
 }
@@ -86,6 +88,9 @@ func ParseWorld(raw []byte, id string) (WorldDef, error) {
 	if err == nil {
 		w.Islands, err = decodeIslands(islands)
 	}
+	if err == nil {
+		err = checkStory(w)
+	}
 	if err != nil {
 		return WorldDef{}, fmt.Errorf("%s: %w", worldPath(id), err)
 	}
@@ -110,6 +115,7 @@ type rawWorld struct {
 	Overrides map[string]json.RawMessage `json:"overrides"`
 	Combat    *rawCombat                 `json:"combat"`
 	Islands   *[]json.RawMessage         `json:"islands"`
+	Story     json.RawMessage            `json:"story"`
 }
 
 type rawIsland struct {
@@ -122,6 +128,7 @@ type rawIsland struct {
 	ChunkCounts   map[string]int                  `json:"chunkCounts"`
 	Nature        json.RawMessage                 `json:"nature"`
 	NatureByDepth map[string]json.RawMessage      `json:"natureByDepth"`
+	Story         json.RawMessage                 `json:"story"`
 }
 
 type rawScaling struct {
@@ -133,7 +140,7 @@ type rawScaling struct {
 // decodeWorld liest den Kopf der Welt streng und prüft Pflichtfelder und die ID; die Inseln bleiben roh.
 func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	var v rawWorld
-	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands"); err != nil {
+	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands", "story"); err != nil {
 		return WorldDef{}, nil, err
 	}
 	switch {
@@ -161,6 +168,9 @@ func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	if v.Extends != nil {
 		w.Extends = *v.Extends
 	}
+	if w.Story, err = decodeWorldStory(v.Story); err != nil {
+		return WorldDef{}, nil, err
+	}
 	return w, *v.Islands, nil
 }
 
@@ -171,10 +181,13 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 	for i, raw := range islands {
 		var r rawIsland
 		var d IslandDef
-		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth")
+		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth", "story")
 		if err == nil {
 			d, err = r.def()
 			d.Etappe = r.etappe(i + 1)
+		}
+		if err == nil {
+			d.Story, err = decodeIslandStory(r.Story)
 		}
 		if err == nil {
 			err = checkIslandIn(d, out)

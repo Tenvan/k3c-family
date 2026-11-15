@@ -1,0 +1,5 @@
+{
+  "notes": "Obergrenzen der Geschichte in den Welt-Dateien (docs/rules/welten.md § 2.2 und § 3, B-965/R4), vorläufig: Zeile höchstens maxLineChars Zeichen (Runen, nicht Bytes), Wortschatz (story.lexicon) höchstens maxLexicon Wörter je Welt.",
+  "maxLineChars": 64,
+  "maxLexicon": 24
+}
