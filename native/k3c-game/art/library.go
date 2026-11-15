@@ -22,11 +22,13 @@ const (
 type Config struct {
 	GrafikDir, RigDir, FontPath string
 	StrictFont                  bool
+	Scales                      map[string]float64 // Anzeige-Maßstab je Asset `gruppe/id` (DataScales); nil = überall 1
 }
 
 // DefaultConfig liefert die Pfade im Repo.
 func DefaultConfig() Config {
-	return Config{GrafikDir: DefaultGrafikDir, RigDir: DefaultRigDir, FontPath: DefaultFontPath, StrictFont: true}
+	return Config{GrafikDir: DefaultGrafikDir, RigDir: DefaultRigDir, FontPath: DefaultFontPath, StrictFont: true,
+		Scales: DataScales()}
 }
 
 type sheetKey struct{ asset, anim string }
@@ -76,24 +78,95 @@ func (l *Library) SetLevels(want map[string][]string) error {
 		}
 		return nil
 	}
+	ld, err := l.BeginLevels(want)
+	if err != nil {
+		return err
+	}
+	_, err = ld.Step(len(ld.todo))
+	return err
+}
+
+// LevelLoad ist ein SetLevels in Schritten (B-949): Step lädt einige Sheets, zwischen den Schritten kann die Schleife
+// einen Fortschritt zeichnen. Erst der letzte Schritt gibt frei und stellt den neuen Stand ein; bis dahin bleibt der
+// alte unverändert.
+type LevelLoad struct {
+	l     *Library
+	want  map[string][]string
+	plans []*Plan
+	todo  []SheetSpec
+	free  []sheetKey
+	got   map[sheetKey]*Sheet
+	done  bool
+}
+
+// BeginLevels plant das Laden der Level in want wie SetLevels, lädt aber noch nichts. Fehlt Grafik, kommt der Fehler
+// (ErrMissing) schon hier; ein nil-Library nimmt nur Level ohne Assets an.
+func (l *Library) BeginLevels(want map[string][]string) (*LevelLoad, error) {
+	if l == nil {
+		for lv, assets := range want {
+			if len(assets) > 0 {
+				return nil, fmt.Errorf("%w: Level %s braucht %d Assets, aber es gibt keine Grafik-Bibliothek", ErrMissing, lv, len(assets))
+			}
+		}
+		return &LevelLoad{done: true}, nil
+	}
 	plans, err := planLevels(l.cfg.GrafikDir, want)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	load, free := diffSheets(l.sheets, plans)
-	loaded, err := uploadAll(load)
-	if err != nil {
-		return err
+	return &LevelLoad{l: l, want: want, plans: plans, todo: load, free: free, got: make(map[sheetKey]*Sheet, len(load))}, nil
+}
+
+// Step lädt bis zu n weitere Sheets und meldet, ob alles geladen und eingestellt ist. Bei einem Fehler sind die schon
+// geladenen Sheets wieder frei und der alte Stand bleibt.
+func (ld *LevelLoad) Step(n int) (bool, error) {
+	if ld.done {
+		return true, nil
 	}
-	for _, k := range free {
+	for ; n > 0 && len(ld.got) < len(ld.todo); n-- {
+		spec := ld.todo[len(ld.got)]
+		sh, err := uploadOne(spec)
+		if err != nil {
+			freeSheets(ld.got)
+			return false, err
+		}
+		ld.got[sheetKey{spec.Asset, spec.Anim}] = sh
+	}
+	if len(ld.got) < len(ld.todo) {
+		return false, nil
+	}
+	l := ld.l
+	for _, k := range ld.free {
 		l.sheets[k].img.Deallocate()
 		delete(l.sheets, k)
 	}
-	maps.Copy(l.sheets, loaded)
-	l.levels, l.budget = maps.Clone(want), budgetOf(plans)
-	slog.Info("📂 Grafik geladen", "level", l.Levels(), "neu", len(load), "frei", len(free),
+	applyScales(ld.got, l.cfg.Scales)
+	maps.Copy(l.sheets, ld.got)
+	l.levels, l.budget = maps.Clone(ld.want), budgetOf(ld.plans)
+	slog.Info("📂 Grafik geladen", "level", l.Levels(), "neu", len(ld.todo), "frei", len(ld.free),
 		"sheets", l.budget.String(), "rigs", fmt.Sprintf("%.1f MiB", l.RigMiB()))
-	return nil
+	ld.done = true
+	return true, nil
+}
+
+// Abort bricht ein laufendes Laden ab und gibt die schon geladenen Sheets frei; der alte Stand bleibt. Nach Ende oder
+// Abbruch ohne Wirkung.
+func (ld *LevelLoad) Abort() {
+	if ld == nil || ld.done {
+		return
+	}
+	freeSheets(ld.got)
+	clear(ld.got)
+	ld.done = true
+}
+
+// Progress ist der Anteil der geladenen Sheets, 0 … 1 (ohne Sheets: 1).
+func (ld *LevelLoad) Progress() float64 {
+	if ld.done || len(ld.todo) == 0 {
+		return 1
+	}
+	return float64(len(ld.got)) / float64(len(ld.todo))
 }
 
 // planLevels plant alle Level in fester Reihenfolge (nach Namen); alle Fehler gesammelt.
@@ -148,18 +221,13 @@ func budgetOf(plans []*Plan) Budget {
 	return b
 }
 
-// uploadAll liest und lädt die Sheets hoch; bei einem Fehler gibt es die schon geladenen wieder frei.
-func uploadAll(specs []SheetSpec) (map[sheetKey]*Sheet, error) {
-	loaded := make(map[sheetKey]*Sheet, len(specs))
-	for _, spec := range specs {
-		rgba, err := paint.ReadPNG(spec.Path)
-		if err != nil {
-			freeSheets(loaded)
-			return nil, fmt.Errorf("%w: Sheet %s nicht lesbar (%v)", ErrMissing, spec.Path, err)
-		}
-		loaded[sheetKey{spec.Asset, spec.Anim}] = upload(spec, rgba.Pix)
+// uploadOne liest das PNG des Sheets und lädt es hoch.
+func uploadOne(spec SheetSpec) (*Sheet, error) {
+	rgba, err := paint.ReadPNG(spec.Path)
+	if err != nil {
+		return nil, fmt.Errorf("%w: Sheet %s nicht lesbar (%v)", ErrMissing, spec.Path, err)
 	}
-	return loaded, nil
+	return upload(spec, rgba.Pix), nil
 }
 
 // Sheet liefert die Animation `anim` des Assets `gruppe/id` aus den geladenen Leveln, sonst nil. Ohne Allokation.

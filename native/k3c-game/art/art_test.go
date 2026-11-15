@@ -208,3 +208,55 @@ func TestDiffSheetsSeveralLevels(t *testing.T) {
 		t.Errorf("kein Level: frei %+v", free)
 	}
 }
+
+// B-948: Der Faktor aus data/paper.json › skalierung vergrößert Bäume; ohne Eintrag bleibt der Maßstab.
+func TestApplyScales(t *testing.T) {
+	sc := DataScales()
+	for _, id := range []string{"objekte/tanne", "objekte/pappel", "objekte/birke"} {
+		if sc[id] != 1.5 {
+			t.Errorf("%s: Faktor %v, erwartet 1,5", id, sc[id])
+		}
+	}
+	sheets := map[sheetKey]*Sheet{{"objekte/tanne", "idle"}: {UnitsPerPx: 2}, {"objekte/stein", "idle"}: {UnitsPerPx: 2}}
+	applyScales(sheets, sc)
+	if got := sheets[sheetKey{"objekte/tanne", "idle"}].UnitsPerPx; got != 3 {
+		t.Errorf("Tanne: %v", got)
+	}
+	if got := sheets[sheetKey{"objekte/stein", "idle"}].UnitsPerPx; got != 2 {
+		t.Errorf("Stein: %v", got)
+	}
+}
+
+// B-949: BeginLevels meldet fehlende Grafik sofort, ein Level ohne Assets ist mit dem ersten Schritt fertig (Fortschritt 1).
+func TestBeginLevelsSteps(t *testing.T) {
+	l := &Library{cfg: Config{GrafikDir: testGrafik}, sheets: map[sheetKey]*Sheet{}, levels: map[string][]string{}}
+	if _, err := l.BeginLevels(map[string][]string{"kaputt": {"figuren/gibtsnicht"}}); !errors.Is(err, ErrMissing) {
+		t.Fatalf("fehlende Grafik: %v", err)
+	}
+	ld, err := l.BeginLevels(map[string][]string{"leer": nil})
+	if err != nil || ld.Progress() != 1 {
+		t.Fatalf("Level ohne Assets: %v, Fortschritt %v", err, ld.Progress())
+	}
+	if done, err := ld.Step(4); !done || err != nil || !slices.Equal(l.Levels(), []string{"leer"}) {
+		t.Errorf("Schritt: %v %v %v", done, err, l.Levels())
+	}
+	var nilLib *Library
+	if ld, err := nilLib.BeginLevels(map[string][]string{"x": nil}); err != nil || ld.Progress() != 1 {
+		t.Errorf("nil-Library: %v", err)
+	}
+}
+
+// Abort beendet ein Laden ohne Wirkung auf den alten Stand; ein zweiter Abort und Step danach sind harmlos.
+func TestAbortLevelLoad(t *testing.T) {
+	l := &Library{cfg: Config{GrafikDir: testGrafik}, sheets: map[sheetKey]*Sheet{}, levels: map[string][]string{"alt": nil}}
+	ld, err := l.BeginLevels(map[string][]string{"neu": nil})
+	if err != nil {
+		t.Fatal(err)
+	}
+	ld.Abort()
+	ld.Abort()
+	if done, _ := ld.Step(1); !done || !slices.Equal(l.Levels(), []string{"alt"}) {
+		t.Errorf("nach Abort: Level %v", l.Levels())
+	}
+	(*LevelLoad)(nil).Abort()
+}

@@ -83,13 +83,14 @@ func TestGlyphFarbenKontrast(t *testing.T) {
 
 func TestBeitrittsHinweis(t *testing.T) {
 	checkTexts(t, []textCase{
-		{"freies Pad", joinFromKey(newJoinKey("de", wasd, []view.DeviceID{pad})), "A drücken zum Beitreten"},
-		{"zwei Pads einmal", joinFromKey(newJoinKey("de", wasd, []view.DeviceID{pad, {Kind: view.DeviceGamepad, Index: 7}})),
+		{"freies Pad", joinFromKey(newJoinKey("de", []view.DeviceID{pad})), "A drücken zum Beitreten"},
+		{"zwei Pads einmal", joinFromKey(newJoinKey("de", []view.DeviceID{pad, {Kind: view.DeviceGamepad, Index: 7}})),
 			"A drücken zum Beitreten"},
-		{"Tastatur (Pfeile) und Pad", joinFromKey(newJoinKey("de", arrows, []view.DeviceID{keys1, pad})),
+		{"Tastatur (Pfeile) und Pad", joinFromKey(newJoinKey("de", []view.DeviceID{keys1, pad})),
 			"Enter drücken zum Beitreten  ·  A drücken zum Beitreten"},
-		{"englisch", joinFromKey(newJoinKey("en", wasd, []view.DeviceID{keys1})), "Press Space to join"},
-		{"alle beigetreten", joinFromKey(newJoinKey("de", wasd, nil)), ""},
+		{"Tastatur (B-946: Enter statt Leertaste)", joinFromKey(newJoinKey("de", []view.DeviceID{keys1})), "Enter drücken zum Beitreten"},
+		{"englisch", joinFromKey(newJoinKey("en", []view.DeviceID{keys1})), "Press Enter to join"},
+		{"alle beigetreten", joinFromKey(newJoinKey("de", nil)), ""},
 	})
 }
 

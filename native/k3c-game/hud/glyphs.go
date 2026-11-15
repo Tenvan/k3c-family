@@ -165,18 +165,15 @@ func slotLabels(lang, profile string) [6]string {
 }
 
 // joinText ist der Beitritts-Hinweis für die freien Geräte (Frame.Unseated): je Art des Geräts ein Satz, in der
-// Reihenfolge der Eingabe, jede Art höchstens einmal (joinHint.ts, B-391); die Tastatur nennt die Bestätigen-Taste
-// ihres Profils kb (Leertaste bzw. Enter, B-894). Ohne freies Gerät "".
-func joinText(lang, kb string, unseated []view.DeviceID) string {
+// Reihenfolge der Eingabe, jede Art höchstens einmal (joinHint.ts, B-391). Die Tastatur nennt nur Enter (B-946: „Leertaste“
+// stört; Enter bestätigt in jedem Profil). Ohne freies Gerät "".
+func joinText(lang string, unseated []view.DeviceID) string {
 	var seen [2]bool
 	parts := make([]string, 0, 2)
 	for _, d := range unseated {
 		i, key := 0, "hud.join.pad"
 		if d.Kind == view.DeviceKeyboard {
 			i, key = 1, "hud.join.keyboard"
-			if kb == view.ProfileArrows {
-				key = "hud.join.keyboard2"
-			}
 		}
 		if !seen[i] {
 			seen[i] = true
@@ -186,17 +183,16 @@ func joinText(lang, kb string, unseated []view.DeviceID) string {
 	return strings.Join(parts, sep)
 }
 
-// joinKey: welche Arten freier Geräte es gibt (0 Pad, 1 Tastatur) in Reihenfolge des ersten Auftretens, dazu das
-// Tastatur-Profil.
+// joinKey: welche Arten freier Geräte es gibt (0 Pad, 1 Tastatur) in Reihenfolge des ersten Auftretens.
 type joinKey struct {
-	lang, kb string
+	lang  string
 	order    [2]int8
 	n        int
 }
 
-// newJoinKey fasst die freien Geräte für memo zusammen, ohne anzulegen; kb ist das Tastatur-Profil.
-func newJoinKey(lang, kb string, unseated []view.DeviceID) joinKey {
-	k := joinKey{lang: lang, kb: kb}
+// newJoinKey fasst die freien Geräte für memo zusammen, ohne anzulegen.
+func newJoinKey(lang string, unseated []view.DeviceID) joinKey {
+	k := joinKey{lang: lang}
 	for _, d := range unseated {
 		var i int8
 		if d.Kind == view.DeviceKeyboard {
@@ -220,5 +216,5 @@ func joinFromKey(k joinKey) string {
 			devs = append(devs, view.DeviceID{Kind: view.DeviceGamepad})
 		}
 	}
-	return joinText(k.lang, k.kb, devs)
+	return joinText(k.lang, devs)
 }
