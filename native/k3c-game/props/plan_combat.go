@@ -27,12 +27,19 @@ var (
 var (
 	crownLook   = look{"icons/icon-krone", idle}
 	shieldLook  = look{"icons/zahlstelle-schild", idle}
-	triggerLook = look{"icons/zahlstelle-ausloeser", idle}
+	triggerLook = look{"objekte/horn-pfahl", idle} // Horn auf einem Pfahl vor dem Tor (KS7, B-941)
 	bannerLook  = look{"icons/zahlstelle-banner", idle}
+	rackLook    = look{"objekte/schild-gestell", idle} // Gestell neben der Burg, ab Hub-Stufe 2 (KS7, B-942)
+)
+
+// Schildstapel auf dem Gestell: Höhe des Ablagebretts und Abstand je Schild (Units).
+var (
+	rackTop   = px(21)
+	rackLayer = px(5)
 )
 
 // combatAssets sind die Icons der Kampfregeln, die props in jedem Level anmeldet (levelAssets).
-var combatAssets = []string{crownLook.asset, shieldLook.asset, triggerLook.asset, bannerLook.asset}
+var combatAssets = []string{crownLook.asset, shieldLook.asset, triggerLook.asset, bannerLook.asset, rackLook.asset}
 
 // combat legt Portal-Balken, Kronen am Boden bzw. in der Luft und Zahlstellen an.
 func (p *planner) combat(w *sim.World, info *stageInfo, k view.Camera) {
@@ -89,19 +96,35 @@ func (p *planner) fallenCrown(x, z float64) {
 // spot: Icon der Zahlstelle (Schild an der Burg, Auslöser und Banner am Tor) und, steht ein Monarch mit Krone in Reichweite,
 // der Preis als Münz-Plätze (gefüllt = bezahlt).
 func (p *planner) spot(w *sim.World, s sim.CombatSpot) {
-	l := bannerLook
 	switch s.Kind {
 	case "shield":
-		l = shieldLook
+		p.shieldRack(w)
 	case "trigger":
-		l = triggerLook
+		p.sprite(triggerLook, s.X, 0, 0)
+	default:
+		p.sprite(bannerLook, s.X, 0, 0)
 	}
-	p.sprite(l, s.X, 0, 0)
-	v := p.viewer // Preis und Zahlstand nur für den Monarchen dieser Split-Hälfte
+	v := p.viewer                                      // Preis und Zahlstand nur für den Monarchen dieser Split-Hälfte
 	if v == nil || v.Crown != nil || !s.NearOf(w, v) { // erst die billige Entfernung, StateFor alloziert
 		return
 	}
 	if st := s.StateFor(w, v); st.Payable {
 		p.price(s.X, px(86), st.Price, st.Paid, "", true)
+	}
+}
+
+// shieldRack: Gestell neben der Burg mit den gebauten, noch nicht abgeholten Schilden als Stapel (sim.ShieldRack, B-942);
+// ohne Gestell-Bild bleibt das Schild-Icon als Ersatz.
+func (p *planner) shieldRack(w *sim.World) {
+	x, stack, ok := sim.ShieldRack(w)
+	if !ok {
+		return
+	}
+	if !p.sprite(rackLook, x, 0, 0) {
+		p.sprite(shieldLook, x, 0, 0)
+		return
+	}
+	for i := range stack {
+		p.sprite(shieldLook, x, rackTop+float64(i)*rackLayer, 0)
 	}
 }

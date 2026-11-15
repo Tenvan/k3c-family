@@ -80,6 +80,11 @@
     "manifest": "hoehlenbusch/manifest.json"
   },
   {
+    "id": "horn-pfahl",
+    "rig": "requisite",
+    "manifest": "horn-pfahl/manifest.json"
+  },
+  {
     "id": "pappel-2",
     "rig": "requisite",
     "manifest": "pappel-2/manifest.json"
@@ -103,6 +108,11 @@
     "id": "schild-axt",
     "rig": "requisite",
     "manifest": "schild-axt/manifest.json"
+  },
+  {
+    "id": "schild-gestell",
+    "rig": "requisite",
+    "manifest": "schild-gestell/manifest.json"
   },
   {
     "id": "schild-gruppenfuehrer",

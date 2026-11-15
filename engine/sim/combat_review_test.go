@@ -17,7 +17,7 @@ func TestAusloeserBanerNichtVonBauplatzUeberdeckt(t *testing.T) {
 			run(w, 10)
 		}
 		spot := spotFor(w, kind, side)
-		s := emptySite(w, "tower", spot.X+1) // Turm-Bauplatz in Zahl-Reichweite
+		s := emptySite(w, "tower", spot.X-1.6) // Turm-Bauplatz in Zahl-Reichweite, außerhalb von spotClearUnits (sonst wiche das Ziel aus, B-941)
 		w.Sites = append(w.Sites, s)
 		p := w.Players[1]
 		p.X = spot.X

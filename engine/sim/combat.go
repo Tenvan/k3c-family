@@ -40,15 +40,49 @@ func CombatSpots(w *World) []CombatSpot {
 	kind := "trigger"
 	if combatMode(w) == CombatGeneral {
 		kind = "banner"
-	} else {
+	} else if shieldsUnlocked(w) {
 		out = append(out, CombatSpot{Kind: "shield", X: w.HubX + c.ShieldOffsetUnits})
 	}
 	for _, side := range []float64{-1, 1} {
 		if wall := outerWall(w, side); wall != nil {
-			out = append(out, CombatSpot{Kind: kind, Side: int(side), X: wall.X - side*c.GateInsetUnits})
+			out = append(out, CombatSpot{Kind: kind, Side: int(side), X: gateSpotX(w, wall, side)})
 		}
 	}
 	return out
+}
+
+// shieldsUnlocked: Schilde (Zahlstelle und Gestell) gibt es erst ab Hub-Stufe `shieldMinHubLevel` (B-942); nur in groups.
+func shieldsUnlocked(w *World) bool {
+	return combatMode(w) == CombatGroups && w.HubLevel >= w.values().Economy.Combat.ShieldMinHubLevel
+}
+
+// ShieldRack: Das Gestell neben der Burg ist sichtbar (Schilde sind baubar) und trägt `stack` gebaute, noch nicht abgeholte
+// Schilde (höchstens shieldStackMax); X ist die Zahlstelle des Schilds (B-942, Anzeige).
+func ShieldRack(w *World) (x float64, stack int, visible bool) {
+	if !shieldsUnlocked(w) {
+		return 0, 0, false
+	}
+	c := w.values().Economy.Combat
+	return w.HubX + c.ShieldOffsetUnits, min(w.combat.shields, c.ShieldStackMax), true
+}
+
+// gateSpotX: Ort von Auslöser und Banner, gateOutUnits außerhalb (vor) dem äußersten Tor der Seite; liegt dort ein Bauplatz
+// näher als spotClearUnits, rückt das Ziel hinter ihn nach außen (B-941).
+func gateSpotX(w *World, wall *Site, side float64) float64 {
+	c := w.values().Economy.Combat
+	x := wall.X + side*c.GateOutUnits
+	for range w.Sites {
+		moved := false
+		for _, s := range w.Sites {
+			if s != wall && !s.Ruin && math.Abs(s.X-x) < c.SpotClearUnits && (s.X-wall.X)*side >= 0 {
+				x, moved = s.X+side*c.SpotClearUnits, true
+			}
+		}
+		if !moved {
+			break
+		}
+	}
+	return max(0, min(w.WidthUnits, x)) // am Levelrand bleibt das Ziel erreichbar (Review KS7)
 }
 
 // combatSpotNear: Das Zahlziel in Zahl-Reichweite von x, auch wenn es gerade nichts nimmt.
@@ -81,7 +115,8 @@ func combatTarget(w *World, p *Player) *CombatSpot {
 func combatPayable(w *World, p *Player, s CombatSpot) bool {
 	switch s.Kind {
 	case "shield":
-		return w.combat.shields+countFetching(w) < len(freeWarriors(w))
+		return w.combat.shields < w.values().Economy.Combat.ShieldStackMax &&
+			w.combat.shields+countFetching(w) < len(freeWarriors(w))
 	case "trigger":
 		return triggerUseful(w, s)
 	}

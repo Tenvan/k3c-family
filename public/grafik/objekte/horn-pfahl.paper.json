@@ -1,0 +1,86 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "horn-pfahl",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Zahlstelle Ausl�ser: Kriegshorn an einem Holzpfahl, Fu�punkt am Boden",
+  "teile": [
+    {
+      "id": "korpus",
+      "pivot": [0, 0],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-8 0C-6 -3.5 6 -3.5 8 0Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2.5 0L-2 -40L-1 -45L1 -45L2 -40L2.5 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M0.6 -2L0.8 -40",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M-9 -34Q0 -15 11 -30",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14.5 -40.5L-12.5 -42C-8 -33 0 -31 5.5 -42.5L15 -42.5C11 -21 -9 -19 -14.5 -40.5Z",
+          "material": "leinen"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-14.5 -40.5C-9 -19 11 -21 15 -42.5L13 -42.5C9.5 -27 -5.5 -25 -12.8 -38.4Z",
+          "material": "leinen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M15 -42.5C15 -43.6 12.9 -44.3 10.25 -44.3C7.6 -44.3 5.5 -43.6 5.5 -42.5C5.5 -41.4 7.6 -40.7 10.25 -40.7C12.9 -40.7 15 -41.4 15 -42.5Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M4.8 -38.8L13.9 -35.6",
+          "material": "gold"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M-5.2 -33.6L-3.4 -26.4",
+          "material": "gold"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 48,
+    "rahmen": [-16, -48, 32, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}
