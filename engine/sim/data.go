@@ -78,6 +78,7 @@ type TroopData struct {
 	Professions                                map[string]ProfessionData // nur peasant: Berufe (unit_professions.go)
 	PostUnits                                  float64                   // Krieger: Posten innen vor der Sperre (unit_warrior.go)
 	UpgradeFrom                                string                    // Elite: aus dieser Figur aufgewertet (building_upgrades.go)
+	FetchEnemyDistance                         float64                   // nur peasant: Werkzeug/Waffe holen nur ohne Gegner näher als so viele Units (kampf.md § 4)
 }
 
 // Gatherable ist eine Ressource, die Bauern holen (Baum, Fels, Kupfererz).

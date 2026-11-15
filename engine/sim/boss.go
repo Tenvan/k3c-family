@@ -109,7 +109,9 @@ func bossDefeated(w *World, e *Enemy) {
 	if b.Kind == "end" {
 		points = w.values().Monarch.SkillPointSources.Endboss
 	}
-	addPoolPoints(w, points)
+	if isl := w.island; isl == nil || !slices.Contains(isl.DefeatedBosses, b.ID) { // schon vergeben (secureStage): kein Doppel
+		addPoolPoints(w, points)
+	}
 	if isl := w.island; isl != nil && !slices.Contains(isl.DefeatedBosses, b.ID) {
 		isl.DefeatedBosses = append(isl.DefeatedBosses, b.ID)
 	}

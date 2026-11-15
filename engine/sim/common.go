@@ -106,6 +106,16 @@ func applyDamage(w *World, targetID int, damage float64) {
 	applyDamageBy(w, targetID, damage, causeOther)
 }
 
+// hitTroop trifft eine Truppe; ein getroffener Bürger flieht zur Burg (unit_flee.go).
+func hitTroop(w *World, t *Troop, damage float64, cause string) {
+	damage = troopDamage(w, t, damage)
+	t.HP, t.hitBy = t.HP-damage, cause
+	if t.Kind == "peasant" {
+		t.fleeing = true
+	}
+	hitEvent(w, "troop", t.ID, t.X, damage)
+}
+
 // applyDamageBy verteilt Schaden auf ein Ziel per ID; cause ist die Gegnerart für playerDown (B-182), "" = causeOther.
 // Tod und Zerstörung behandelt der Tick.
 func applyDamageBy(w *World, targetID int, damage float64, cause string) {
@@ -116,9 +126,7 @@ func applyDamageBy(w *World, targetID int, damage float64, cause string) {
 		}
 	}
 	if t := troopByID(w, targetID); t != nil {
-		damage = troopDamage(w, t, damage)
-		t.HP, t.hitBy = t.HP-damage, cause
-		hitEvent(w, "troop", t.ID, t.X, damage)
+		hitTroop(w, t, damage, cause)
 		return
 	}
 	for _, e := range w.Enemies {

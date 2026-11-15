@@ -7,7 +7,7 @@
   "chunkWidthUnits": 25,
   "hubWidthUnits": 100,
   "exitSide": "left",
-  "portals": { "count": 3, "minDistanceFromHubUnits": 135 },
+  "portals": { "count": 3, "minDistanceFromHubUnits": 135, "hp": 1800, "defense": { "intervalSeconds": 20, "size": 8 }, "provisional": true },
   "chunkWeights": { "gallery": 4, "forge": 2, "lava": 1 },
   "eventChunks": {
     "chest": { "min": 1, "max": 2 },

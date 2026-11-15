@@ -52,7 +52,7 @@ Wo diese Datei einer älteren Regel widerspricht, gilt diese Datei; die anderen 
 |---|---|---|---|
 | **Getroffene Kämpfer verlieren die Waffe und werden Bürger (Bauer)**; die Waffe fällt als Drop (Elite-Waffen mit ihrer Stufe, `buerger.md` § 3). Das gilt auch für den Gruppenführer (Schild fällt weg, nicht als Drop) und für Berufe mit Werkzeug. | Wie bisher die erste Stufe der Verlust-Kaskade, nun die einzige. | `engine/sim/unit_warrior.go` (SIM) | Verluste je Welle: Median höchstens 25 % der Kämpfer (`buerger.md` § 3, B-099) |
 | **Keine Kaskade bis zum Landstreicher:** Ein Treffer macht nie einen Landstreicher. Ein **getroffener Bürger** (ohne Waffe) **flieht zur Burg**, ohne Statusverlust; seine Münze bleibt bei ihm. **Landstreicher werden weiter nicht angegriffen.** | Der Bürger bleibt rekrutiert; nichts geht dauerhaft verloren. | – | – |
-| **Bürger holen das nächste Werkzeug oder die nächste Waffe** (Händler bzw. Werkstatt, oder fallen gelassen am Boden), **nur wenn kein Gegner innerhalb von 8 Units** ist; sonst wartet er. Das ersetzt für diesen Fall die globale Nacht-Gefahr (`isDangerous`). Bei gleicher Distanz zählt der Boden vor dem Händler. Das Truppen-Limit prüft weiter beim Waffe-Holen (`buerger.md` § 3). | Wer entwaffnet ist, rüstet sich neu, aber nicht mitten im Kampf. | `data/troops.json` › `combat.fetchEnemyDistance` (8 Units) | – |
+| **Bürger holen das nächste Werkzeug oder die nächste Waffe** (Händler bzw. Werkstatt, oder fallen gelassen am Boden), **nur wenn kein Gegner innerhalb von 8 Units** ist; sonst wartet er. Das ersetzt für diesen Fall die globale Nacht-Gefahr (`isDangerous`). Bei gleicher Distanz zählt der Boden vor dem Händler. Das Truppen-Limit prüft weiter beim Waffe-Holen (`buerger.md` § 3). | Wer entwaffnet ist, rüstet sich neu, aber nicht mitten im Kampf. | `data/troops.json` › `peasant.fetchEnemyDistance` (8 Units) | – |
 
 ## 5. Monarch: Gold statt HP, Krone
 
@@ -88,7 +88,7 @@ Folgende Regeln aus früheren Dateien **entfallen** (je mit Verweis in der jewei
 | Schild (Gruppenführer) | 10 Gold | `data/troops.json` › `combat.shieldCost` |
 | Angriffs-Auslöser | 2 Gold | `data/troops.json` › `combat.triggerCost` |
 | Trupp hinter dem Banner | 5 Soldaten, 5 Bogenschützen | `data/troops.json` › `combat.troopSoldiers`, `combat.troopArchers` |
-| Gegner-Abstand zum Werkzeug-Holen | 8 Units | `data/troops.json` › `combat.fetchEnemyDistance` |
+| Gegner-Abstand zum Werkzeug-Holen | 8 Units | `data/troops.json` › `peasant.fetchEnemyDistance` |
 | Münzen je Treffer auf den Monarchen | 1 | `data/monarch.json` › `hitCoins` |
 | Kronen-Flugbahn | offen (Bogen nach hinten) | `data/monarch.json` › `crown` |
 

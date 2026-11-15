@@ -48,7 +48,9 @@ func stepTroops(w *World, dt float64) {
 		case "vagrant":
 			wander(w, t, t.AnchorX, wanderRadius(w, t), dt)
 		case "peasant":
-			stepPeasant(w, t, dt)
+			if !t.fleeing || !flee(w, t, dt) {
+				stepPeasant(w, t, dt)
+			}
 		case "warrior", "eliteWarrior":
 			stepWarrior(w, t, dt)
 		default:

@@ -101,6 +101,10 @@ type Troop struct {
 	carried *Job
 	// shelter: Schutzplatz der laufenden Gefahr, 1 bis 5 (0 = keiner gemerkt; unit_common.go › shelterX, B-605).
 	shelter int
+	// fleeing: getroffener Bürger auf der Flucht zur Burg (unit_flee.go); attacking: Truppe im Angriff auf ein Portal (portal.go,
+	// gesetzt vom Angriff, KS4); siegeCD: Abklingzeit des Schlags gegen ein Portal. Alle ohne JSON.
+	fleeing, attacking bool
+	siegeCD            float64
 }
 
 // ResourceNode ist ein Baum, Fels oder Kupfererz.
@@ -322,6 +326,12 @@ type World struct {
 	Pickups     []*Pickup       `json:"pickups"`
 	Camps       []*Camp         `json:"camps"`
 	Portals     []float64       `json:"portals"`
+	// PortalHP: Lebenspunkte je stehendem Portal (gleicher Index wie Portals), PortalMaxHP der Startwert (portal.go).
+	PortalHP    []float64       `json:"portalHp"`
+	PortalMaxHP float64         `json:"portalMaxHp"`
+	// PortalsDown: X der zerstörten Portale (im Spielstand, portal.go); sind alle weg, ist die Stufe sicher.
+	PortalsDown []float64       `json:"portalsDown"`
+	portalDefense []float64 // Sekunden bis zur nächsten Verteidiger-Welle je Portal, ohne JSON
 	SpawnQueue  []QueuedSpawn   `json:"spawnQueue"`
 	Storms      []*Storm        `json:"storms,omitempty"`  // laufende Lightning Storms in Wirk-Reihenfolge
 	Hazards     []*Hazard       `json:"hazards,omitempty"` // Bodenflächen in Entstehungs-Reihenfolge (boss_abilities.go)

@@ -67,7 +67,7 @@ func stepSpawns(w *World) {
 // sendEnemiesHome: Bei Tagesanbruch fliehen alle Gegner zurück zu ihren Portalen (K2C), Bosse bleiben.
 func sendEnemiesHome(w *World) {
 	for _, e := range w.Enemies {
-		e.Fleeing = !e.Boss && isWaveEnemy(e)
+		e.Fleeing = !e.Boss && isWaveEnemy(e) && len(w.Portals) > 0 // ohne Portal gibt es kein Ziel der Flucht
 	}
 	w.SpawnQueue = []QueuedSpawn{}
 }
@@ -94,7 +94,7 @@ func stepEnemies(w *World, dt float64) {
 		}
 		bossAbility(w, e)
 		takeEquipment(w, e)
-		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 {
+		if e.has("fleesAtHalfHp") && e.HP < e.MaxHP/2 && len(w.Portals) > 0 {
 			e.Fleeing = true
 		}
 		speed := e.speed()
@@ -299,6 +299,9 @@ func attack(w *World, e *Enemy, t *target) {
 		p.Gold -= amount
 		e.CarriedGold += amount
 		e.Fleeing = true
+		if len(w.Portals) == 0 {
+			dropLoot(w, e) // ohne Portal gibt es keinen Raub: die Beute fällt als Münzen zu Boden
+		}
 		w.Events = append(w.Events, Event{"type": "goldStolen", "player": p.Index, "amount": amount})
 		return
 	}

@@ -114,7 +114,7 @@ func nightEventsEnd(w *World) {
 			}
 		}
 	}
-	if full := fullMoon(); eventInNight(w, full, night) && w.castleFellNight != night && stagePlayed(w) {
+	if full := fullMoon(); eventInNight(w, full, night) && w.castleFellNight != night && stagePlayed(w) && len(w.Portals) > 0 { // nur in Stufen mit Portalen (kampf.md § 2)
 		scatterCoins(w, w.HubX, full.RewardGold)
 	}
 }
@@ -133,7 +133,7 @@ func stagePlayed(w *World) bool {
 // (Anteil der gezogenen, aufgerundet) und genau ein Elite-Gegner (startWave).
 func fullMoonExtra(w *World, plan []spawnOrder) []spawnOrder {
 	full := fullMoon()
-	if w.Biome.Cycle.Type != "dayNight" || !eventActive(w, full) {
+	if w.Biome.Cycle.Type != "dayNight" || !eventActive(w, full) || len(w.Portals) == 0 {
 		return nil
 	}
 	n := 0
