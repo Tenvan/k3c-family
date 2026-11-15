@@ -16,7 +16,7 @@ import (
 // Inseln einer Welt bearbeiten (B-954): world_set › islands und world_chunks_set.
 
 // islandKeys sind die Felder einer Insel im patch (id wählt die Insel, biomes ist die Kurzform von depths).
-var islandKeys = []string{"name", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth"}
+var islandKeys = []string{"name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth"}
 
 // newIsland ist die Zeile einer neuen Insel; extra sind fertige `"schlüssel": wert`-Paare.
 func newIsland(id, name, depths string, extra []string) string {
@@ -63,18 +63,7 @@ func patchIsland(raw []byte, entry map[string]json.RawMessage, biomes map[int]st
 		return nil, err
 	}
 	for _, k := range slices.Sorted(maps.Keys(fields)) {
-		v := fields[k]
-		if k == "depthScaling" && given(v) {
-			at, found, _ := valueSpan(raw, obj, k)
-			cur := json.RawMessage("{}")
-			if found {
-				cur = raw[at.from:at.to]
-			}
-			if v, err = mergeScaling(cur, v); err != nil {
-				return nil, err
-			}
-		}
-		if raw, err = setField(raw, obj, k, v, false); err != nil {
+		if raw, err = setIslandField(raw, obj, k, fields[k]); err != nil {
 			return nil, err
 		}
 		if obj, _, err = islandSpan(raw, id); err != nil {
@@ -82,6 +71,46 @@ func patchIsland(raw []byte, entry map[string]json.RawMessage, biomes map[int]st
 		}
 	}
 	return raw, nil
+}
+
+// setIslandField setzt das Feld k der Insel (obj); depthScaling wird gemischt, etappe steht hinter name.
+func setIslandField(raw []byte, obj span, k string, v json.RawMessage) ([]byte, error) {
+	switch {
+	case k == "etappe":
+		return setEtappe(raw, obj, v)
+	case k == "depthScaling" && given(v):
+		at, found, _ := valueSpan(raw, obj, k)
+		cur := json.RawMessage("{}")
+		if found {
+			cur = raw[at.from:at.to]
+		}
+		merged, err := mergeScaling(cur, v)
+		if err != nil {
+			return nil, err
+		}
+		v = merged
+	}
+	return setField(raw, obj, k, v, false)
+}
+
+// setEtappe setzt `etappe` der Insel obj (null entfernt es); ein neues Feld steht hinter `name` (Reihenfolge nach
+// docs/rules/welten.md § 2). Die Zahl prüft die Engine vor dem Schreiben (≥ 1, lückenlos, nicht fallend).
+func setEtappe(raw []byte, obj span, v json.RawMessage) ([]byte, error) {
+	if _, found, err := valueSpan(raw, obj, "etappe"); err != nil || found || !given(v) {
+		if err != nil {
+			return nil, err
+		}
+		return setField(raw, obj, "etappe", v, false)
+	}
+	var n int
+	if json.Unmarshal(v, &n) != nil {
+		return nil, errors.New("etappe muss eine ganze Zahl sein")
+	}
+	name, ok, err := valueSpan(raw, obj, "name")
+	if err != nil || !ok {
+		return setField(raw, obj, "etappe", v, false)
+	}
+	return slices.Concat(raw[:name.to], []byte(", \"etappe\": "+strconv.Itoa(n)), raw[name.to:]), nil
 }
 
 // islandFields prüft die Felder des Eintrags und macht aus `biomes` die `depths`.
@@ -203,7 +232,15 @@ func islandLine(id string, fields map[string]json.RawMessage) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	parts := append([]string{`"id": ` + quote(id), `"name": ` + name, `"depths": ` + depths, `"depthScaling": ` + sc}, extra...)
+	parts := []string{`"id": ` + quote(id), `"name": ` + name}
+	if v, ok := fields["etappe"]; ok && given(v) {
+		var n int
+		if json.Unmarshal(v, &n) != nil {
+			return "", errors.New("etappe muss eine ganze Zahl sein")
+		}
+		parts = append(parts, `"etappe": `+strconv.Itoa(n))
+	}
+	parts = append(append(parts, `"depths": `+depths, `"depthScaling": `+sc), extra...)
 	return "{ " + strings.Join(parts, ", ") + " }", nil
 }
 
@@ -211,7 +248,7 @@ func islandLine(id string, fields map[string]json.RawMessage) (string, error) {
 func islandExtras(fields map[string]json.RawMessage) ([]string, error) {
 	extra := []string{}
 	for _, k := range slices.Sorted(maps.Keys(fields)) {
-		if k == "name" || k == "depths" || k == "depthScaling" || !given(fields[k]) {
+		if k == "name" || k == "etappe" || k == "depths" || k == "depthScaling" || !given(fields[k]) {
 			continue
 		}
 		text, err := inline(fields[k])

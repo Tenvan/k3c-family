@@ -101,6 +101,7 @@ interface GoApp {
   WorldValues(id: string): Promise<WorldValuesView>;
   WorldCreate(id: string, name: string, extendsId: string): Promise<WorldCreateView>;
   WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
+  WorldIslandEtappe(id: string, island: string, etappe: number | null): Promise<WorldCreateView>;
   WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
   // Gebäude-Planer (B-923, app_hub.go)
   HubPlan(): Promise<HubPlanView>;
@@ -179,6 +180,7 @@ function worldWails(app: GoApp): WorldBackend {
     worldValues: (id) => app.WorldValues(id),
     worldCreate: (id, name, extendsId) => app.WorldCreate(id, name, extendsId),
     worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
+    worldIslandEtappe: (id, island, etappe) => app.WorldIslandEtappe(id, island, etappe),
     worldNatureSet: (id, island, stage, key, value, seed) => app.WorldNatureSet(id, island, stage, key, value, seed),
   };
 }

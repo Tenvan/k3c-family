@@ -29,7 +29,7 @@ export function SeaMap({ detail, models, onJump }: Props) {
                   <span className="wd-map-sil">
                     {island.depths.map((_, s) => {
                       const m = models.get(stageId(island.id, s));
-                      return <i key={s} style={{ width: `${m ? widthPct(m, models) : 50}%`, background: gradientOf(paletteOf(m?.biomeId ?? '')) }} />;
+                      return <i key={s} style={{ width: `${m ? widthPct(m, models) : 50}%`, background: gradientOf(paletteOf(detail.biomeInfo, m?.biomeId ?? '')) }} />;
                     })}
                   </span>
                   <Text size="1" weight="bold">{index + 1} · {island.name}</Text>

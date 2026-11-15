@@ -4,7 +4,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend, type WorldDetail, type WorldIsland, type WorldLevel } from '../api';
-import { bandText, etappeOf, groupEtappen, marksOf } from './crossModel';
+import { bandText, etappeOf, groupEtappen, marksOf, paletteOf } from './crossModel';
 import { levelModel } from './levelView';
 import { Overview } from './Overview';
 
@@ -53,6 +53,14 @@ describe('Querschnitt (B-963/AC-01)', () => {
     const m = levelModel(level(1000));
     expect(marksOf(m, false).map((k) => k.kind).sort()).toEqual(['castle', 'harbor', 'portal', 'stairs']);
     expect(marksOf(m, true).map((k) => k.kind)).toContain('boss');
+  });
+
+  it('Portal-HP im Marker und Palette aus den Backend-Daten', () => {
+    const m = levelModel(level(1000));
+    expect(marksOf(m, false, 500).find((k) => k.kind === 'portal')?.title).toBe('Portal · 500 HP');
+    const info = { forest: { portalHp: 500, palette: { sky: '#111111', far: '#222222', near: '#333333', ground: '#444444' } } };
+    expect(paletteOf(info, 'forest').sky).toBe('#111111');
+    expect(paletteOf(info, 'unbekannt').sky).toBe(paletteOf(undefined, 'x').sky);
   });
 
   it('rendert alle Inseln und Stufen nach Etappen gruppiert', async () => {
