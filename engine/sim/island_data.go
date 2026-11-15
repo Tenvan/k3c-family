@@ -66,7 +66,9 @@ func checkIsland(d IslandDef) error {
 	if err := checkEndBoss(d); err != nil {
 		return err
 	}
-	if err := checkPlannedChunks(d); err != nil {
+	// Platz-unabhängig (leere Plätze): Die Plätze kennt erst der Wertesatz der Welt, ResolveWorld prüft die Planung danach
+	// gegen sie (checkWorldPlans, B-983).
+	if err := checkPlannedChunksWith(d, []level.HubSite{}); err != nil {
 		return err
 	}
 	return checkNature(d)
@@ -74,8 +76,6 @@ func checkIsland(d IslandDef) error {
 
 // checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlanFor) gegen die
 // Mauerlinien lines und die Chunk-Anzahl der Tiefe; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
-func checkPlannedChunks(d IslandDef) error { return checkPlannedChunksWith(d, nil) }
-
 // checkPlannedChunksWith prüft wie checkPlannedChunks gegen die Hub- und Insel-Plätze sites einer Welt (nil = Basis, B-983).
 func checkPlannedChunksWith(d IslandDef, sites []level.HubSite) error {
 	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {

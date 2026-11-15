@@ -47,11 +47,11 @@ func ResolveWorld(world WorldDef, lookup func(id string) (WorldDef, error)) (Wor
 				return WorldDef{}, err
 			}
 			world.values = &v
-			if err := checkWorldPlans(world); err != nil {
-				return WorldDef{}, err
-			}
 			break
 		}
+	}
+	if err := checkWorldPlans(world); err != nil { // Planung gegen die Plätze der Welt (Basis oder Override)
+		return WorldDef{}, err
 	}
 	world.values.Combat = chainCombat(chain) // Kind überschreibt Eltern
 	return world, nil

@@ -3,6 +3,7 @@ package sim
 import (
 	"encoding/json"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -86,5 +87,33 @@ func TestLevelSitesMitInselPlaetzen(t *testing.T) {
 	want := []level.HubSite{{Kind: "workshop", OffsetUnits: -16}, {Kind: "storage", OffsetUnits: -24}}
 	if got := h.LevelSites(); !reflect.DeepEqual(got, want) {
 		t.Errorf("LevelSites %v, erwartet %v", got, want)
+	}
+}
+
+// Review B-983: Der Gebäude-Planer prüft Kandidaten wie die Welt: Hub-Breite als Befund, Planung gegen die Kandidaten-Plätze.
+func TestKandidatPlaetzeHubBreiteUndPlanung(t *testing.T) {
+	cand := cloneHub(&hub)
+	cand.Sites[7].OffsetUnits = 60 // smithy außerhalb der Hub-Breite
+	found := func(r HubReport, rule string) bool {
+		for _, f := range r.Findings {
+			if f.Rule == rule {
+				return true
+			}
+		}
+		return false
+	}
+	if r := ValidateHubData(cand); !found(r, RuleBounds) {
+		t.Errorf("Kandidat mit Platz bei 60: Befund %q erwartet, war %v", RuleBounds, r.Findings)
+	}
+	world := StandardWorld()
+	d := world.Islands[0]
+	depth := d.Depths[0]
+	d.PlannedChunks = map[string][]level.PlannedChunk{strconv.Itoa(depth): {{Slot: 1, Kind: "forest", Buildings: []level.PlannedBuilding{{Kind: "smithy", At: 10}}}}}
+	world.Islands = []IslandDef{d}
+	if r := ValidateHubDataIn(&hub, world); found(r, RulePlanned) {
+		t.Errorf("Basis: Ruine bei 60 ist gültig, war %v", r.Findings)
+	}
+	if r := ValidateHubDataIn(cand, world); !found(r, RulePlanned) {
+		t.Errorf("Kandidat mit Platz auf der Ruinen-Lage: Befund %q erwartet, war %v", RulePlanned, r.Findings)
 	}
 }
