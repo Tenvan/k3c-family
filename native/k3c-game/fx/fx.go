@@ -134,6 +134,9 @@ func (s *stageFx) event(lang string, e view.Event, w *sim.World, now float64) {
 		if fx, ok := damageFor(e.Data); ok {
 			s.spawn(fx, now)
 		}
+		if fx, ok := coinLossFor(e.Data); ok && s.pieces+fx.pieces() < maxLivePieces { // Schadenszahl hat Vorrang
+			s.spawn(fx, now)
+		}
 	}
 	if typ == "skillCast" {
 		if fx, ok := castFor(e.Data); ok {

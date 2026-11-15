@@ -50,7 +50,9 @@ func (d *drawer) drawPlayers(dst *ebiten.Image, f *view.Frame, c view.Cell, stag
 		if fg := d.figs[k]; fg != nil && !fg.broken {
 			d.playerMarker(dst, c, fg, p)
 		}
-		d.drawFigure(dst, c, k, p.X)
+		if fg := d.drawFigure(dst, c, k, p.X); fg != nil {
+			d.playerMarks(dst, c, fg, p, w)
+		}
 	}
 }
 

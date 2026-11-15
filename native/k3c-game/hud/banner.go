@@ -73,8 +73,12 @@ func (b *bannerQueue) step(now float64) {
 func eventText(lang string, e view.Event, biomeID string) string {
 	d := e.Data
 	switch e.Type() {
-	case "dusk", "skillPoint", "armed", "castleFallen":
+	case "dusk", "skillPoint", "armed", "castleFallen", "stageSafe", "shield", "attackOrdered":
 		return tr(lang, "ev."+e.Type())
+	case "crownStolen", "crownTaken", "crownRestored", "crownPickedUp":
+		return tf(lang, "ev."+e.Type(), "p", intOf(d, "player")+1)
+	case "bannerTaken":
+		return tf(lang, "ev.bannerTaken", "p", intOf(d, "player")+1)
 	case "night", "dawn":
 		return tf(lang, "ev."+e.Type(), "day", intOf(d, "day"))
 	case "wave":

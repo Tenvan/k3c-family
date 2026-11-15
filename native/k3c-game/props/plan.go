@@ -65,6 +65,7 @@ type planner struct {
 	backs     []backWall
 	roots     []float64
 	texts     texts
+	viewer    *sim.Player // Monarch der gezeichneten Zelle (Preis der Zahlstellen), nil = keiner
 }
 
 func newPlanner(lib sheets) *planner { return &planner{lib: lib, texts: texts{}} }
@@ -129,6 +130,7 @@ func (p *planner) plan(w *sim.World, info *stageInfo, k view.Camera, clock float
 	p.plantation(w, k)
 	p.pickups(w, info, k, clock)
 	p.coins(w, k)
+	p.combat(w, info, k)
 }
 
 var (
@@ -234,7 +236,7 @@ func (p *planner) entities(w *sim.World, k view.Camera, biome string) {
 	for _, e := range w.Level.Entities {
 		l, dx, ok := entityLook(e.Kind, biome)
 		x := e.X + dx
-		if !ok || !visible(k, x, 4) {
+		if !ok || !visible(k, x, 4) || (e.Kind == "portal" && portalDown(w, e.X)) {
 			continue
 		}
 		if !p.sprite(l, x, 0, animPhase(x, 8)) {

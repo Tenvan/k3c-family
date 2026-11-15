@@ -38,6 +38,9 @@ type stageInfo struct {
 	chests   []candidate // Truhen des Frames (Nummer, Ort), für das Öffnen
 	prev     []candidate // Truhen des vorigen Frames
 	openings []opening
+	spots    []sim.CombatSpot // Zahlstellen der Kampfvariante, alle spotsEvery Sekunden neu gelesen
+	spotsAt  float64          // Frame.Clock der letzten Lesung
+	spotsSet bool
 }
 
 // opening ist eine aufgehobene Truhe: kurz offen, dann ausgeblendet (worldRenderer.ts › openChest).
@@ -117,6 +120,10 @@ func (s *stageInfo) update(w *sim.World, clock float64) {
 			clearing: !payable && sim.SiteNeedsClearing(w, site), goldLeft: left})
 	}
 	s.priceTags(w)
+	if clock < s.spotsAt || clock-s.spotsAt >= spotsEvery || !s.spotsSet {
+		s.spotsSet = true
+		s.spots, s.spotsAt = append(s.spots[:0], sim.CombatSpots(w)...), clock
+	}
 	s.chestsOf(w, clock)
 }
 

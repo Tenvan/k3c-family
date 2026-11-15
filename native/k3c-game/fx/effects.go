@@ -26,6 +26,7 @@ const (
 	kindNoTarget
 	kindSkill
 	kindDamage
+	kindCoinLoss
 )
 
 // look ist das Aussehen eines Effekts: Ring plus Partikel in Farbe, Größe (Welt-px), Dauer (s), Zahl und Bewegung.
@@ -63,6 +64,8 @@ var config = [...]struct {
 	kindNoTarget: {look{0xffffff, 0, 0.7, 0, motionBurst}, false},
 	kindSkill:    {look{0xffffff, 30, 0.45, 4, motionBurst}, false},
 	kindDamage:   {look{0xffffff, 0, 0.8, 0, motionBurst}, false},
+	// Münzen springen aus dem Geldsack, wenn ein Treffer den Monarchen Gold kostet (kampf.md § 5); vorläufig Partikel, ohne Asset.
+	kindCoinLoss: {look{0xffd23c, 14, 0.7, 4, motionRise}, false},
 }
 
 // Grenzen (effects.ts): höchstens 3 Blitze je Sekunde, höchstens 48 lebende Teile je Stufe.
@@ -169,6 +172,16 @@ func damageFor(d sim.Event) (effect, bool) {
 	n := int(math.Ceil(dmg - 1e-9))
 	return effect{kind: kindDamage, x: x, y: bodyPx + 40, look: config[kindDamage].look, text: strconv.Itoa(n),
 		target: strOf(d, "target") == "player", by: -1}, true
+}
+
+// coinLossFor ist der Münzschauer eines Treffers an einem Monarchen (Schaden > 0); andere Ziele: ok false.
+func coinLossFor(d sim.Event) (effect, bool) {
+	x, hasX := numOf(d, "x")
+	dmg, _ := numOf(d, "damage")
+	if !hasX || dmg <= 0 || strOf(d, "target") != "player" {
+		return effect{}, false
+	}
+	return effect{kind: kindCoinLoss, x: x, y: bodyPx, look: config[kindCoinLoss].look, by: -1}, true
 }
 
 // numOf liest eine Zahl aus einem Ereignis (int oder float64); ok false, wenn sie fehlt.

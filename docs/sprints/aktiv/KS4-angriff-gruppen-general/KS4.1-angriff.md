@@ -1,6 +1,6 @@
 # KS4.1 · Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner (B-932, B-933)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

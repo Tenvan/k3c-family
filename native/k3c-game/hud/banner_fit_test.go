@@ -60,3 +60,33 @@ func TestBurgfallBannerImBild(t *testing.T) {
 		t.Error("fitPx: passt bleibt, zu breit im Verhältnis kleiner")
 	}
 }
+
+// Die Kampf-Meldungen (KS5, B-934) liegen mit der echten Schrift ganz in der Zelle, auch Kronenraub (längste) mit P4.
+func TestKampfBannerImBild(t *testing.T) {
+	font, err := art.LoadFont("../../../public/schrift/k3c.ttf", true)
+	if err != nil {
+		t.Skipf("Schrift fehlt: %v", err)
+	}
+	for _, lang := range []string{"de", "en"} {
+		for _, key := range []string{"ev.crownStolen", "ev.stageSafe", "ev.crownTaken", "ev.crownPickedUp"} {
+			text := fitBanner(tf(lang, key, "p", 4), bannerMaxChars)
+			if strings.Contains(text, "…") {
+				t.Errorf("%s %s gekürzt: %q", lang, key, text)
+			}
+			for _, win := range [][2]int{{1280, 720}, {1920, 1080}, {640, 720}} {
+				area := rect{0, 0, float64(win[0]), float64(win[1]) / 2}
+				k := area.H * 2 / refHeight
+				px := fontPx(roleBanner, 2) * k
+				w, _ := font.Measure(text, px)
+				px = fitPx(px, w+2*boxPadX*k, area.W-2*gap*k)
+				w, h := font.Measure(text, px)
+				var in items
+				in[itemBanner].W, in[itemBanner].H = boxSize(w, h, k)
+				pl := layout(&in, area, nil, k)
+				if !pl.ok[itemBanner] || !pl.at[itemBanner].inside(area) {
+					t.Errorf("%s %s %v: Banner %+v nicht in der Zelle", lang, key, win, pl.at[itemBanner])
+				}
+			}
+		}
+	}
+}

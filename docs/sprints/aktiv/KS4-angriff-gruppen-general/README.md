@@ -33,7 +33,7 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 ## Regeln und Einschränkungen
 
 - **Bereich:** `engine/sim/**`, `engine/room/**`, `engine/level/**`, `engine/balance/**`, `data/**`, `testdata/golden/**`, `docs/protocol.md`, `docs/rules/kampf.md`, `native/k3c-game/**` (nur Eingabe für Banner/Auslöser)
-- **Sperre:** golden, protokoll
+- **Sperre:** golden, protokoll, spielstand
 - Sim-Code im eigenen Worktree (B-925).
 
 ## Beispiele
@@ -57,7 +57,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| KS4.1 | `KS4.1-angriff.md` | Umsetzung | autonom | in Arbeit |
+| KS4.1 | `KS4.1-angriff.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

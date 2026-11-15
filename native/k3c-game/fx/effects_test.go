@@ -62,6 +62,17 @@ func TestEffektBauOrtUndRueckmeldung(t *testing.T) {
 	}
 }
 
+func TestCoinLossFor(t *testing.T) {
+	if e, ok := coinLossFor(sim.Event{"x": 3.0, "target": "player", "damage": 1.0}); !ok || e.kind != kindCoinLoss {
+		t.Errorf("Treffer am Monarchen: %+v, %v", e, ok)
+	}
+	for _, d := range []sim.Event{{"x": 3.0, "target": "enemy", "damage": 1.0}, {"x": 3.0, "target": "player", "damage": 0.0}, {"target": "player", "damage": 1.0}} {
+		if _, ok := coinLossFor(d); ok {
+			t.Errorf("kein Münzschauer erwartet: %v", d)
+		}
+	}
+}
+
 func TestSchadenszahl(t *testing.T) {
 	e, ok := damageFor(sim.Event{"type": "hit", "x": 3.0, "target": "enemy", "damage": 2.4})
 	if !ok || e.text != "3" || e.target || e.kind != kindDamage {

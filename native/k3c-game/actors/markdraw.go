@@ -115,6 +115,7 @@ func (d *drawer) troopMarks(dst *ebiten.Image, c view.Cell, fg *figure, t *sim.T
 		d.ink.rect(dst, a, b, edgeWidth/2, tint(loadEdge, fg.ui))
 		d.ink.rect(dst, a, b, -edgeWidth/2, tint(loadFill, fg.ui))
 	}
+	d.leaderMarks(dst, a, fg, t, top)
 	if BarVisible(t.HP, t.MaxHP) {
 		d.ink.bar(dst, a, troopBar, top, BarFraction(t.HP, t.MaxHP), fg.ui)
 	}
@@ -132,6 +133,9 @@ func (d *drawer) enemyMarks(dst *ebiten.Image, c view.Cell, fg *figure, e *sim.E
 		d.ink.oval(dst, a, box{cx, cy, 2*lootRadius + edgeWidth, 2*lootRadius + edgeWidth}, tint(lootEdge, fg.ui))
 		d.ink.oval(dst, a, box{cx, cy, 2*lootRadius - edgeWidth, 2*lootRadius - edgeWidth}, tint(lootFill, fg.ui))
 	}
+	if e.Crown != nil { // Kronenraub: der Gegner trägt die Krone über dem Goldkreis
+		d.ink.crown(dst, a, 0, top+lootAbove+2*lootRadius+crownAbove, fg.ui)
+	}
 	if BarVisible(e.HP, e.MaxHP) {
 		d.ink.bar(dst, a, enemyBar, top, BarFraction(e.HP, e.MaxHP), fg.ui)
 	}
@@ -140,6 +144,10 @@ func (d *drawer) enemyMarks(dst *ebiten.Image, c view.Cell, fg *figure, e *sim.E
 // playerMarker zeichnet den Punkt in der Spielerfarbe unter den Füßen (vor der Figur).
 func (d *drawer) playerMarker(dst *ebiten.Image, c view.Cell, fg *figure, p *sim.Player) {
 	if a, ok := marksAnchor(c, fg, p.X); ok {
-		d.ink.oval(dst, a, markerBox(), tint(PlayerColor(p.Index), markerAlpha*fg.ui))
+		alpha := markerAlpha
+		if p.Crown != nil { // ohne Krone: Spielerfarbe bleibt, der Punkt ist gedämpft
+			alpha *= bareAlpha
+		}
+		d.ink.oval(dst, a, markerBox(), tint(PlayerColor(p.Index), alpha*fg.ui))
 	}
 }
