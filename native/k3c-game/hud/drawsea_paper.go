@@ -119,10 +119,26 @@ func (p seaPlan) nodeX(col, lane, n int) float64 {
 	return x
 }
 
+// seaExtra sind die Zusätze der Schiffsfahrt im Diorama (drawvoyage.go): das fahrende Schiff mit Fußpunkt (x, y),
+// gezeichnet nach den Inseln der Reihe lane (es liegt vor ihnen), und die bewegte vordere Welle (um shift Bildpunkte versetzt, beschnitten auf
+// den Ausschnitt front). Der Nullwert zeichnet die Karte am Hafen.
+type seaExtra struct {
+	ship  bool
+	lane  int
+	x, y  float64
+	front *ebiten.Image
+	shift float64
+}
+
 // drawSeaPaper zeichnet das Diorama der Karte v mit den Sheets a in die Zelle cell.
 func (h *hud) drawSeaPaper(dst *ebiten.Image, v *seaView, a seaArt, cell rect, k float64) {
+	h.drawSeaScene(dst, v, a, seaPaperPlan(v.sizes, len(v.rows), cell, k), seaExtra{})
+}
+
+// drawSeaScene zeichnet das Diorama der Karte v in der Lage p, von hinten nach vorn: je Reihe Welle, Inseln und das
+// fahrende Schiff, dann die vordere Welle, Rahmen und Texte.
+func (h *hud) drawSeaScene(dst *ebiten.Image, v *seaView, a seaArt, p seaPlan, x seaExtra) {
 	f, pt := h.font(), &h.paint
-	p := seaPaperPlan(v.sizes, len(v.rows), cell, k)
 	pt.fill(dst, p.box, rgb(clrSeaBack, 0.85))
 	top := p.water - seaTopH*p.u
 	pt.fill(dst, rect{p.box.X, top, p.box.W, p.front - top + p.u}, rgb(clrSeaSky, 1))
@@ -142,8 +158,16 @@ func (h *hud) drawSeaPaper(dst *ebiten.Image, v *seaView, a seaArt, cell rect, k
 				h.drawSeaIsland(dst, a, &nodes[lane], p.nodeX(i, lane, len(nodes)), wy, p.u)
 			}
 		}
+		if x.ship && x.lane == lane {
+			h.drawSeaSprite(dst, a.ship, x.x, x.y, p.u, white)
+		}
 	}
-	h.drawSeaStrip(dst, a.front, p.box.X, p.front, p.box.W, p.u)
+	if x.front != nil { // breiter als die Tafel, damit der Versatz keine Lücke am Rand lässt
+		over := math.Abs(x.shift) + p.u
+		h.drawSeaStrip(x.front, a.front, p.box.X-over+x.shift, p.front, p.box.W+2*over, p.u)
+	} else {
+		h.drawSeaStrip(dst, a.front, p.box.X, p.front, p.box.W, p.u)
+	}
 	focus := h.drawSeaFrames(dst, v, p)
 	y := p.front + seaWaveUp*p.u
 	if focus != nil {
@@ -178,6 +202,10 @@ func seaIslandRect(s *art.Sheet, nd *seaNode, cx, wy, u float64) rect {
 	return rect{cx - s.OriginX*w, wy - s.OriginY*ht, w, ht}
 }
 
+// seaBerth ist der Fußpunkt des Schiffs am Liegeplatz der Insel mit Fläche r, Mitte cx und Wasserlinie wy: links vor
+// der Miniatur.
+func seaBerth(r rect, cx, wy, u float64) (x, y float64) { return cx - 0.46*r.W, wy + 10*u }
+
 // drawSeaIsland zeichnet die Insel nd mit der Mitte cx auf die Wasserlinie wy: Schichten, Miniatur, Aufsatz, Zeichen
 // und, liegt das Schiff an, das Schiff. Gesperrte Inseln sind blass.
 func (h *hud) drawSeaIsland(dst *ebiten.Image, a seaArt, nd *seaNode, cx, wy, u float64) {
@@ -207,7 +235,8 @@ func (h *hud) drawSeaIsland(dst *ebiten.Image, a seaArt, nd *seaNode, cx, wy, u 
 		h.drawSeaSprite(dst, a.fog, cx, wy-0.2*r.H, sc, rgb(0xffffff, 0.92))
 	}
 	if nd.current {
-		h.drawSeaSprite(dst, a.ship, cx-0.46*r.W, wy+10*u, u, white)
+		x, y := seaBerth(r, cx, wy, u)
+		h.drawSeaSprite(dst, a.ship, x, y, u, white)
 	}
 }
 
