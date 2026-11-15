@@ -31,6 +31,9 @@ func eol(raw []byte, s string) []byte {
 	return []byte(s)
 }
 
+// errStoryTool: `story` ändert nur world_story_set (eigene Prüfung und Antwort, B-975).
+var errStoryTool = errors.New("story ändert world_story_set, nicht world_set")
+
 // errChanged: die Datei hat sich zwischen Lesen und Schreiben geändert (Lost Update vermieden).
 var errChanged = errors.New("die Welt wurde inzwischen geändert, neu lesen")
 
@@ -79,6 +82,12 @@ func (e Editor) commit(ctx context.Context, id string, expect, out []byte) ([]st
 // Create legt die Welt id an: eine Insel „island1“ (Tiefen 0-4, bis zum Endboss), Kampf groups/5, optional von extends erbend. Eine
 // vorhandene Welt wird nie überschrieben.
 func (e Editor) Create(ctx context.Context, id, name, extends string) ([]string, error) {
+	return e.CreateWithStory(ctx, id, name, extends, nil)
+}
+
+// CreateWithStory legt die Welt wie Create an und schreibt die Geschichte story gleich mit (nil = ohne `story`); besteht
+// sie die Prüfung nicht, entsteht keine Datei.
+func (e Editor) CreateWithStory(ctx context.Context, id, name, extends string, story *StoryPatch) ([]string, error) {
 	if err := checkID(id); err != nil {
 		return nil, err
 	}
@@ -98,7 +107,14 @@ func (e Editor) Create(ctx context.Context, id, name, extends string) ([]string,
 		head += fmt.Sprintf("  \"extends\": %s,\n", quote(extends))
 	}
 	head += "  \"combat\": { \"mode\": \"groups\", \"groupSize\": 5 },\n  \"islands\": [\n    " + newIsland("island1", "Insel 1", "[0, 1, 2, 3, 4]", nil) + "\n  ]\n}\n"
-	return e.commit(ctx, id, nil, []byte(head))
+	out := []byte(head)
+	if story != nil && !story.empty() {
+		var err error
+		if out, _, err = applyStory(out, *story); err != nil {
+			return nil, err
+		}
+	}
+	return e.commit(ctx, id, nil, out)
 }
 
 // Set ändert Kopf und Inseln der Welt id nach patch (JSON-Objekt): name, notes, extends, combat (null entfernt das Feld)
@@ -109,6 +125,9 @@ func (e Editor) Set(ctx context.Context, id string, patch json.RawMessage) ([]st
 		return nil, errors.New("patch muss ein JSON-Objekt sein")
 	}
 	for k := range p {
+		if k == "story" {
+			return nil, errStoryTool
+		}
 		if !slices.Contains(headerKeys, k) && k != "islands" {
 			return nil, fmt.Errorf("unbekanntes Feld %q im patch (erlaubt: %s, islands)", k, strings.Join(headerKeys, ", "))
 		}

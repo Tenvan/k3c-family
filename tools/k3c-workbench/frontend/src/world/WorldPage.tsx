@@ -7,6 +7,7 @@ import { ChunkPreview, type Scale } from './ChunkPreview';
 import { NatureValues } from './NatureValues';
 import { NewWorld } from './NewWorld';
 import { Overview } from './Overview';
+import { StoryState } from './StoryState';
 import { WorldValues } from './WorldValues';
 import { useWorld, type StageChoice, type WorldState } from './useWorld';
 
@@ -56,6 +57,7 @@ function WorldHead({ w }: { w: WorldState }) {
       </Flex>
       {detail.error && <Text size="1" color="red" role="alert">{detail.error}</Text>}
       {detail.notes && <Text size="1" color="gray" className="wd-notes">{detail.notes}</Text>}
+      {!detail.error && <StoryState detail={detail} />}
       {w.notice && <Text size="1" role="status" color={w.notice.tone === 'error' ? 'red' : w.notice.tone === 'warn' ? 'orange' : 'green'}>{w.notice.text}</Text>}
     </Flex>
   );

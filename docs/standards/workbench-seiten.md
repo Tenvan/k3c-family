@@ -46,6 +46,10 @@ Workbenches gleich, damit Skills und Policies projektübergreifend funktionieren
 Projektspezifisch und nicht Teil dieser Spec: `check_run` (Build-/Test-Ziele), `git_commit`
 (Seite Commit), `ui_snapshot` (Oberfläche der Anwendung, nicht der Workbench) und
 `open_in_ui` (Seitenwechsel durch den Agenten; nicht gefordert, wird kaum gebraucht).
+Ebenso die Welten-Tools von K3C (`world_list`, `world_get`, `world_create`, `world_set`,
+`world_override_set`, `world_chunks_set`, `world_story_set`, `world_check`): `world_story_set`
+schreibt die Geschichte einer Welt und ihrer Inseln (B-975), `world_get` zeigt sie, `world_check`
+nennt fehlende Einträge als Hinweis; Parameter stehen in den MCP-`instructions` der Workbench.
 
 ## Begriffe (verbindlich in allen Projekten)
 
@@ -293,3 +297,4 @@ Wer auf das Ende warten will, nimmt das projektspezifische `check_run`.
 | 1.0 | 2026-10-08 | Erstfassung aus ErpApi; Planung mit Baumstruktur nach k3c B-364 (Sprint-Karte mit Akzentkante, Phasen-Panels, Phasen-Chips, gemerktes Einklappen). |
 | 1.1 | 2026-10-08 | Begriffe in allen Projekten Projekt → Sprint → Session + Ticket (Tabelle je Projekt entfällt); Planung im k3c-Look: Rang-Kachel, Titel in Akzentfarbe, `Sprints x/y`, Sprint-Chips `S<nr>`, Sprint-Panels mit eigenem Balken. |
 | 1.2 | 2026-10-08 | MCP-Tools je Seite als fester Teil der Spec (Namen, Parameter, Regeln); Planung: Rang (`hoch/runter`, `plan_project update rank`) und Spalte `Tickets` je Session. |
+| 1.3 | 2026-11-15 | Projektspezifische Welten-Tools von K3C genannt, neu `world_story_set` (Geschichte einer Welt, B-975). |

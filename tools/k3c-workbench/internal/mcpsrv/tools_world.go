@@ -29,9 +29,10 @@ type worldGetIn struct {
 }
 
 type worldCreateIn struct {
-	ID      string `json:"id" jsonschema:"neue Welt-ID (a-z, 0-9, -, höchstens 32 Zeichen); die Datei darf noch nicht existieren"`
-	Name    string `json:"name" jsonschema:"Anzeigename der Welt"`
-	Extends string `json:"extends,omitempty" jsonschema:"Eltern-Welt, deren Werte geerbt werden (leer = Basis data/)"`
+	ID      string          `json:"id" jsonschema:"neue Welt-ID (a-z, 0-9, -, höchstens 32 Zeichen); die Datei darf noch nicht existieren"`
+	Name    string          `json:"name" jsonschema:"Anzeigename der Welt"`
+	Extends string          `json:"extends,omitempty" jsonschema:"Eltern-Welt, deren Werte geerbt werden (leer = Basis data/)"`
+	Story   *worldStoryArgs `json:"story,omitempty" jsonschema:"Geschichte der neuen Welt wie bei world_story_set (lexicon, start, etappen, end, bottles, islands: {island1: {arrival, boss, done}}); fehlt sie, entsteht die Welt ohne story"`
 }
 
 type worldSetIn struct {
@@ -58,14 +59,21 @@ func registerWorld(s *Server) {
 	registerWorldRead(s)
 	registerWorldWrite(s)
 	registerWorldChunks(s)
+	registerWorldStory(s)
 	add(s, &mcp.Tool{
 		Name: "world_check",
-		Description: "Prüft die Datei einer Welt wie das Laden im Spiel (strenge Felder, Inseln, Tiefen, Bosse, Häfen, Chunks) und mit allen Nachfolger-Welten; ändert nichts. " +
+		Description: "Prüft die Datei einer Welt wie das Laden im Spiel (strenge Felder, Inseln, Tiefen, Bosse, Häfen, Chunks, Geschichte) und mit allen Nachfolger-Welten; " +
+			"fehlende Einträge der Geschichte kommen als Hinweis, nicht als Fehler; ändert nichts. " +
 			"Nutze es bei: nach Änderungen, bevor die Welt gespielt wird. Statt: Spiel starten und auf den Ladefehler warten.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in worldGetIn) (string, error) {
-		warnings, err := worldEditor(s.ws(ctx).root).Check(ctx, in.ID)
-		return worldDone(fmt.Sprintf("Welt %s ist gültig", in.ID), warnings, err)
+		e := worldEditor(s.ws(ctx).root)
+		warnings, err := e.Check(ctx, in.ID)
+		if err != nil {
+			return "", err
+		}
+		text, _ := worldDone(fmt.Sprintf("Welt %s ist gültig", in.ID), warnings, nil)
+		return text + storyHints(e.Load(in.ID)), nil
 	})
 }
 
@@ -86,7 +94,7 @@ func registerWorldRead(s *Server) {
 	})
 	add(s, &mcp.Tool{
 		Name: "world_get",
-		Description: "Eine Welt: Kopf, Inseln mit Tiefen und Biomen, geplante Chunks, dazu der Text der Datei. " +
+		Description: "Eine Welt: Kopf, Inseln mit Tiefen und Biomen, geplante Chunks, die Geschichte (Wortschatz und Zeilen je Wendepunkt, fehlende als „fehlt“), dazu der Text der Datei. " +
 			"Nutze es bei: vor jeder Änderung an einer Welt. Statt: data/worlds/<id>.json lesen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in worldGetIn) (string, error) { return worldText(worldEditor(s.ws(ctx).root), in.ID) })
@@ -109,14 +117,12 @@ func registerWorldWrite(s *Server) {
 	write := worldWrite()
 	add(s, &mcp.Tool{
 		Name: "world_create",
-		Description: "Legt eine neue Welt an (data/worlds/<id>.json): eine Insel island1 mit Tiefen 0-4, Kampf groups/5, optional von einer Eltern-Welt erbend; " +
-			"eine vorhandene Welt wird nie überschrieben. Danach mit world_set, world_override_set und world_chunks_set ausbauen. " +
+		Description: "Legt eine neue Welt an (data/worlds/<id>.json): eine Insel island1 mit Tiefen 0-4, Kampf groups/5, optional von einer Eltern-Welt erbend und mit Geschichte (story); " +
+			"eine vorhandene Welt wird nie überschrieben. Danach mit world_set, world_override_set, world_chunks_set und world_story_set ausbauen. " +
 			"Nutze es bei: neue Welt entwerfen. Statt: Welt-Datei von Hand schreiben.",
 		Annotations: worldCreateHints(),
 	}, func(ctx context.Context, in worldCreateIn) (string, error) {
-		e := worldEditor(s.ws(ctx).root)
-		warnings, err := e.Create(ctx, in.ID, in.Name, in.Extends)
-		return worldDone(fmt.Sprintf("Welt %s angelegt (data/worlds/%s.json)", in.ID, in.ID), warnings, err)
+		return worldCreate(ctx, worldEditor(s.ws(ctx).root), in)
 	})
 	add(s, &mcp.Tool{
 		Name: "world_set",
@@ -205,12 +211,13 @@ func worldText(e world.Editor, id string) (string, error) {
 			fmt.Fprintf(&b, "    plannedChunks[%d]: %s\n", depth, strings.TrimSpace(string(isl.Planned[strconv.Itoa(depth)])))
 		}
 	}
+	b.WriteString(storyText(d))
 	b.WriteString("Datei:\n" + strings.TrimRight(raw, "\n"))
 	return b.String(), nil
 }
 
-// mapKeys sind die Tiefen (Schlüssel als Zahl) einer Planung; Nicht-Zahlen entfallen.
-func mapKeys(m map[string]json.RawMessage) func(yield func(int) bool) {
+// mapKeys sind die Schlüssel von m als Zahl (Tiefen einer Planung, Etappen der Geschichte); Nicht-Zahlen entfallen.
+func mapKeys[V any](m map[string]V) func(yield func(int) bool) {
 	return func(yield func(int) bool) {
 		for k := range m {
 			if n, err := strconv.Atoi(k); err == nil && !yield(n) {

@@ -176,14 +176,23 @@ jedes Tool nimmt `checkout`. Keine Grafik: Assets ändern nur die `assets_*`-Too
 format-stabil (nur geänderte Werte, ein Wert eine Zeile), vorher prüft die Engine wie das Laden im Spiel (`sim.ParseWorld`,
 Werte aller Nachfolger); bei Fehler bleibt die Datei. Keine Simulation. Das Biom folgt der Tiefe (`biomes` im Patch = Kurzform von `depths`).
 
-- `world_list`, `world_get {id}`: Welten mit Inseln, Tiefen → Biome, geplante Chunks und Text der Datei.
-- `world_create {id, name, extends?}`: neue Welt mit einer Insel `island1` (Tiefen 0-4); überschreibt nie.
+- `world_list`, `world_get {id}`: Welten mit Inseln, Tiefen → Biome, geplante Chunks, Geschichte (fehlende Einträge als
+  „fehlt“) und Text der Datei.
+- `world_create {id, name, extends?, story?}`: neue Welt mit einer Insel `island1` (Tiefen 0-4); überschreibt nie. `story`
+  wie die Felder von `world_story_set`; ohne sie endet die Antwort mit „Geschichte fehlt: world_story_set“.
 - `world_set {id, patch}`: `name`, `notes`, `extends`, `combat {mode, groupSize}` (null entfernt) und `islands` (Liste; bekannte `id` ändert
   nur genannte Felder, neue `id` wird angehängt; `depths` oder `biomes`, `depthScaling` wird gemischt). Jede Insel außer der letzten braucht
   in Tiefe 0 einen Hafen-Chunk (im selben Aufruf als `plannedChunks` mitgeben oder vorher `world_chunks_set`).
 - `world_override_set {id, file, path, value}`: Override eines Basis-Felds (z. B. `economy` › `purse.startGold`); null setzt zurück.
 - `world_chunks_set {id, island, depth, chunks?, count?}`: `plannedChunks` und `chunkCounts` einer Tiefe; `[]` bzw. 0 entfernt.
-- `world_check {id}`: prüft die Datei wie das Laden im Spiel, ändert nichts.
+- `world_story_set {id, lexicon?, start?, etappen?, end?, bottles?, islands?}`: Geschichte der Welt (docs/rules/welten.md
+  § 2.2) in einem Aufruf oder je Teil: `lexicon` Liste Kunstwörter, `start`/`end` je 1 bis 2 Zeilen, `etappen {"1": [Zeilen]}`,
+  `bottles` Liste von Einträgen, `islands {<insel-id>: {arrival?, boss?, done?}}`. Fehlt ein Feld, bleibt es; `[]` entfernt
+  den Eintrag; `lexicon` und `bottles` ersetzen die ganze Liste. Geschrieben wird nur, wenn die Prüfung der Engine besteht
+  (sonst nennt der Fehler Feld und Zeile); die Antwort nennt gesetzte, entfernte und noch fehlende Einträge. `world_set`
+  nimmt `story` nicht an.
+- `world_check {id}`: prüft die Datei wie das Laden im Spiel, ändert nichts; fehlende Einträge der Geschichte kommen als
+  `Hinweis: Geschichte fehlt (…)`, Verstöße als Fehler.
 
 ### Recherche für Grafik- und Sound-Slots
 
