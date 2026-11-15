@@ -65,6 +65,20 @@ func (a *App) WorldOverrideSet(id, file string, path []string, value json.RawMes
 	return view
 }
 
+// WorldCreate legt eine neue Welt an (Binding, B-954): eine Insel, Tiefen 0-4, optional von extends erbend.
+func (a *App) WorldCreate(id, name, extends string) world.CreateView {
+	a.wait()
+	view := a.worlds().CreateView(a.worldCtx(), id, name, extends)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Welt nicht angelegt", "ns", "dev", "world", id, "error", view.Error)
+		} else {
+			a.log.Info("💾 Welt angelegt", "ns", "dev", "world", id)
+		}
+	}
+	return view
+}
+
 // WorldNatureSet setzt einen Natur-Wert der Insel-Stufe fest; value null setzt ihn auf „aus Seed“ zurück (Binding,
 // B-891). Geschrieben wird nur eine gültige Welt; die Antwort ist das neue Level zum Seed.
 func (a *App) WorldNatureSet(id, island string, stage int, key string, value *int, seed string) world.LevelView {

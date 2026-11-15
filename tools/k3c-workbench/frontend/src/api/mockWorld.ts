@@ -96,6 +96,16 @@ export function mockWorld(): WorldBackend {
       return detail ? mockLevel(detail, island, stage, seed) : { ...mockLevel(DETAILS.standard!, '', 0, seed), error: `die Welt "${id}" gibt es nicht` };
     },
     worldValues: async (id) => values(id),
+    worldCreate: async (id, name, extendsId) => {
+      const fail = (error: string) => ({ id, warnings: [], error });
+      if (!/^[a-z0-9][a-z0-9-]{0,31}$/.test(id)) return fail(`ungültige Welt-ID "${id}"`);
+      if (name.trim() === '') return fail('der Name fehlt');
+      if (DETAILS[id]) return fail(`data/worlds/${id}.json gibt es schon (ändern mit world_set)`);
+      if (extendsId !== '' && !DETAILS[extendsId]) return fail(`extends: die Welt "${extendsId}" gibt es nicht`);
+      DETAILS[id] = { id, name: name.trim(), notes: '', extends: extendsId, error: '',
+        islands: [{ id: 'island1', name: 'Insel 1', depths: [0, 1, 2, 3, 4], biomes: ['forest', 'cave', 'mine', 'ironhold', 'crystal'], plannedChunks: {}, chunkCounts: {} }] };
+      return { id, warnings: [], error: '' };
+    },
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;
       const rejected = mockNatureSet(id, island, stage, key, value);

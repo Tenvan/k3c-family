@@ -36,6 +36,8 @@ export interface WorldState {
   note: string;
   values: WorldValuesView | null;
   setValue: (file: string, path: string[], value: unknown) => Promise<void>;
+  /** Neue Welt anlegen und wählen (B-954); die Antwort ist der Grund der Ablehnung, leer bei Erfolg */
+  create: (id: string, name: string, extendsId: string) => Promise<string>;
   /** Grund der letzten Ablehnung oder Warnungen nach dem Speichern */
   notice: { tone: 'error' | 'warn' | 'ok'; text: string } | null;
 }
@@ -125,6 +127,14 @@ export function useWorld(): WorldState {
     setValues(v);
     setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${file}.${path.join('.')} gespeichert` });
   };
+  const create = async (newId: string, name: string, extendsId: string) => {
+    const v = await backend.worldCreate(newId, name, extendsId).catch((e: unknown) => ({ id: newId, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    if (v.error) return v.error;
+    setWorlds(await backend.worldList().catch(() => worlds));
+    choose(newId);
+    setNotice(v.warnings.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `Welt ${newId} angelegt` });
+    return '';
+  };
   const setNature = async (key: string, value: number | null) => {
     if (!stage) return;
     const mine = ++request.current;
@@ -139,5 +149,5 @@ export function useWorld(): WorldState {
     show(v);
     setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${key} ${value === null ? 'aus Seed' : `= ${value}`} gespeichert` });
   };
-  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, notice };
+  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, notice };
 }

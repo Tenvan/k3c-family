@@ -5,13 +5,14 @@ import type { WorldDetail, WorldInfo } from '../api';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
 import { NatureValues } from './NatureValues';
+import { NewWorld } from './NewWorld';
 import { WorldValues } from './WorldValues';
 import { useWorld, type StageChoice, type WorldState } from './useWorld';
 
 // Seite Welten-Editor (B-879, Bereich Development): links die Welten unter data/worlds/, rechts Kopf mit Insel und
 // Stufe, Chunk-Vorschau, Inspektor und Werte. Port des Welten-Editors aus dem früheren Asset-Studio (Commit 616b5afcb).
 
-function WorldList({ worlds, id, onChoose }: { worlds: WorldInfo[]; id: string; onChoose: (id: string) => void }) {
+function WorldList({ worlds, id, onChoose, onCreate }: { worlds: WorldInfo[]; id: string; onChoose: (id: string) => void; onCreate: WorldState['create'] }) {
   return (
     <Flex direction="column" gap="1" role="list" aria-label="Welten">
       <Heading size="2" color="gray">Welten</Heading>
@@ -23,6 +24,7 @@ function WorldList({ worlds, id, onChoose }: { worlds: WorldInfo[]; id: string; 
         </Box>
       ))}
       {worlds.length === 0 && <Text size="1" color="gray">Keine Welten unter data/worlds/.</Text>}
+      <NewWorld worlds={worlds} onCreate={onCreate} />
     </Flex>
   );
 }
@@ -71,7 +73,7 @@ export function WorldPage() {
   const [scale, setScale] = useState<Scale>('2');
   useEffect(() => setChunk(null), [w.id, w.stage]);
   return (
-    <ListDetail listWidth={240} className="wd-page" list={<WorldList worlds={w.worlds} id={w.id} onChoose={w.choose} />}>
+    <ListDetail listWidth={240} className="wd-page" list={<WorldList worlds={w.worlds} id={w.id} onChoose={w.choose} onCreate={w.create} />}>
       <Flex direction="column" gap="3">
         <WorldHead w={w} />
         <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}

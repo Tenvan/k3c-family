@@ -65,6 +65,7 @@ func register(s *Server) {
 	registerAssetsResearch(s)
 	registerAssetsImport(s)
 	registerHub(s)
+	registerWorld(s)
 }
 
 // registerLogs sind die Tools der Seite Dienste & Logs (Workbench-Spec § 2): Konsole, Logdateien, Fehler.

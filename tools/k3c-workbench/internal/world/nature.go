@@ -79,8 +79,13 @@ func islandSpan(raw []byte, id string) (span, islandHead, error) {
 			return span{end - len(v), end}, head, nil
 		}
 	}
-	return span{}, islandHead{}, fmt.Errorf("die Insel %q gibt es nicht", id)
+	return span{}, islandHead{}, noIslandError(id)
 }
+
+// noIslandError: die Insel steht nicht in der Welt-Datei (errors.As erkennt es, z. B. beim Anlegen).
+type noIslandError string
+
+func (e noIslandError) Error() string { return fmt.Sprintf("die Insel %q gibt es nicht", string(e)) }
 
 // patchNature setzt in der Insel island den Natur-Wert key der Stufe stage (value nil = zurück auf „aus Seed“).
 func patchNature(raw []byte, island string, stage int, key string, value *int) ([]byte, error) {

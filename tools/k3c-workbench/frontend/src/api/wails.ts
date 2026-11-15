@@ -3,7 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskGates, TaskRun, PlanDoc, PlanningData, GitHubData, WorktreeDiff,
   BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
-import type { WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
+import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
 import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
 
@@ -99,6 +99,7 @@ interface GoApp {
   WorldDetail(id: string): Promise<WorldDetail>;
   WorldLevel(id: string, island: string, stage: number, seed: string): Promise<WorldLevel>;
   WorldValues(id: string): Promise<WorldValuesView>;
+  WorldCreate(id: string, name: string, extendsId: string): Promise<WorldCreateView>;
   WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
   // Gebäude-Planer (B-923, app_hub.go)
@@ -176,6 +177,7 @@ function worldWails(app: GoApp): WorldBackend {
     worldDetail: (id) => app.WorldDetail(id),
     worldLevel: (id, island, stage, seed) => app.WorldLevel(id, island, stage, seed),
     worldValues: (id) => app.WorldValues(id),
+    worldCreate: (id, name, extendsId) => app.WorldCreate(id, name, extendsId),
     worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
     worldNatureSet: (id, island, stage, key, value, seed) => app.WorldNatureSet(id, island, stage, key, value, seed),
   };
