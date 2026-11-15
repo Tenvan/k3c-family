@@ -22,7 +22,7 @@ WZ18.6 (Welten Editor). Bis WZ18.2 liegt die Standard-Welt noch als `data/island
 ### 1.1 Overrides: Format und Merge
 
 `overrides` ist ein Objekt **je Basis-Datei** (Schlüssel = Dateiname ohne `.json`), erlaubt sind `buildings`, `ship`, `troops`,
-`economy`, `hub`, `monarch`, `enemies`, `waves`, `goals`. Jeder Eintrag hat **dieselbe Struktur wie die Basis-Datei** und nennt nur
+`economy`, `hub`, `monarch`, `enemies`, `waves`, `goals`, `events` (Abstand, Stärke und Lohn je Event, Abstand 0 = aus, B-982; `bosse.md` § 2). Jeder Eintrag hat **dieselbe Struktur wie die Basis-Datei** und nennt nur
 die geänderten Felder. Entschieden von Claude (autonom, B-680):
 
 | Wert in der Basis | Override | Ergebnis |
@@ -67,6 +67,7 @@ wird geprüft; die Meldung nennt die Welt, deren Override den Fehler auslöst. M
 | Liste als Ganzes | `… › data/buildings.json › wall.levels: Liste von Objekten je Eintrag übersteuern ({"<id oder Index>": {…}}), ist Liste` |
 | feste Liste falsch lang | `… › data/enemies.json › wolf.gold: genau 2 Werte erwartet, sind 1` |
 | Schreibweise | `… › data/buildings.json › wall.HP: Schreibweise wie in der Basis: "hp"` |
+| Event-Regel verletzt | `data/worlds/nordmeer.json: overrides: data/events.json: bloodMoon braucht Faktoren > 0` (ebenso: Abstand < 0, unbekannte Gegnerart) |
 | Basis-Regel verletzt | `data/worlds/nordmeer.json: overrides: data/waves.json: perExtraPlayer und bossHpPerExtraPlayer dürfen nicht negativ sein` |
 | Eltern-Welt unbekannt | `data/worlds/nordmeer.json: extends: Eltern-Welt "eis" unbekannt: …` |
 | Zyklus | `data/worlds/b.json: extends: Zyklus b → a → b` |

@@ -21,7 +21,7 @@ var dataFS fs.FS = data.Files
 // Skill-Katalog baseSkills werden geteilt), damit Tests, die eine Paket-Variable kurz ändern, den Stand sehen.
 func defaultValues() *WorldValues {
 	return &WorldValues{Buildings: buildings, Troops: troops, Economy: economy, Hub: hub, Monarch: monarch,
-		Enemies: enemyData, Waves: waves, Goals: goals, skills: baseSkills}
+		Enemies: enemyData, Waves: waves, Goals: goals, Events: nightEvents, skills: baseSkills}
 }
 
 // ResolveWorld liefert world mit ihrem aufgelösten Wertesatz, den CreateIslandIn, FromIslandSaveIn und NextIsland

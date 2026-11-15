@@ -38,8 +38,8 @@ func mirrorState(w *World) {
 		}
 	}
 	w.NightEvents = nil
-	for i := range nightEvents {
-		if ev := &nightEvents[i]; eventActive(w, ev) {
+	for i, evs := 0, w.values().Events; i < len(evs); i++ {
+		if ev := &evs[i]; eventActive(w, ev) {
 			w.NightEvents = append(w.NightEvents, ActiveEvent{ev.ID, w.Cycle.SecondsLeft})
 		}
 	}

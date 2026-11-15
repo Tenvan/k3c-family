@@ -1,7 +1,6 @@
 package sim
 
 import (
-	"fmt"
 	"math"
 
 	"k3c/data"
@@ -32,33 +31,10 @@ func loadNightEvents() []NightEvent {
 	if err := loadFrom(data.Files, "events.json", &v); err != nil {
 		panic(err)
 	}
-	if err := checkNightEvents(v.Events); err != nil {
+	if err := checkNightEvents(v.Events, enemyData); err != nil {
 		panic(err)
 	}
 	return v.Events
-}
-
-// checkNightEvents: Vollmond und Blutmond vorhanden, Rhythmen > 0, Gegnerarten bekannt, Faktoren > 0.
-func checkNightEvents(events []NightEvent) error {
-	full, blood, raid := findEvent(events, "fullMoon"), findEvent(events, "bloodMoon"), findEvent(events, "merchantRaid")
-	switch {
-	case full == nil || blood == nil || raid == nil:
-		return fmt.Errorf("data/events.json: fullMoon, bloodMoon und merchantRaid fehlen")
-	case raid.EveryVisits <= 0 || raid.RewardMaterial < 0:
-		return fmt.Errorf("data/events.json: merchantRaid braucht everyVisits > 0")
-	case full.EveryNights <= 0 || blood.EveryNights <= 0:
-		return fmt.Errorf("data/events.json: everyNights muss > 0 sein")
-	case !knownEnemy(full.Kind) || !knownEnemy(full.Elite):
-		return fmt.Errorf("data/events.json: fullMoon nennt unbekannte Gegner %q, %q", full.Kind, full.Elite)
-	case blood.DamageFactor <= 0 || blood.DropFactor <= 0:
-		return fmt.Errorf("data/events.json: bloodMoon braucht Faktoren > 0")
-	}
-	return nil
-}
-
-func knownEnemy(kind string) bool {
-	_, ok := enemyData[kind] // events.json wird einmal gegen die Basis geprüft
-	return ok
 }
 
 func findEvent(events []NightEvent, id string) *NightEvent {
@@ -95,8 +71,8 @@ func nightEventsStart(w *World) {
 	if !eventStage(w) {
 		return
 	}
-	for i := range nightEvents {
-		if ev := &nightEvents[i]; eventActive(w, ev) {
+	for i, evs := 0, w.values().Events; i < len(evs); i++ {
+		if ev := &evs[i]; eventActive(w, ev) {
 			emit(w, "eventStarted", Event{"event": ev.ID, "day": w.Cycle.Day})
 		}
 	}
@@ -108,13 +84,13 @@ func nightEventsStart(w *World) {
 func nightEventsEnd(w *World) {
 	night := w.Cycle.Day - 1
 	if eventStage(w) {
-		for i := range nightEvents {
-			if ev := &nightEvents[i]; eventInNight(w, ev, night) {
+		for i, evs := 0, w.values().Events; i < len(evs); i++ {
+			if ev := &evs[i]; eventInNight(w, ev, night) {
 				emit(w, "eventEnded", Event{"event": ev.ID, "day": night})
 			}
 		}
 	}
-	if full := fullMoon(); eventInNight(w, full, night) && w.castleFellNight != night && stagePlayed(w) && len(w.Portals) > 0 { // nur in Stufen mit Portalen (kampf.md § 2)
+	if full := w.night("fullMoon"); eventInNight(w, full, night) && w.castleFellNight != night && stagePlayed(w) && len(w.Portals) > 0 { // nur in Stufen mit Portalen (kampf.md § 2)
 		scatterCoins(w, w.HubX, full.RewardGold)
 	}
 }
@@ -132,7 +108,7 @@ func stagePlayed(w *World) bool {
 // fullMoonExtra: In einer Vollmondnacht kommen zur Welle einer Tag/Nacht-Stufe zusätzliche Gegner der Art Kind
 // (Anteil der gezogenen, aufgerundet) und genau ein Elite-Gegner (startWave).
 func fullMoonExtra(w *World, plan []spawnOrder) []spawnOrder {
-	full := fullMoon()
+	full := w.night("fullMoon")
 	if w.Biome.Cycle.Type != "dayNight" || !eventActive(w, full) || len(w.Portals) == 0 {
 		return nil
 	}
@@ -152,7 +128,7 @@ func fullMoonExtra(w *World, plan []spawnOrder) []spawnOrder {
 // moonDamage ist der Schaden eines Gegnerangriffs, im Blutmond mit dem Faktor der Daten (attack, Flächenangriff und
 // Splitter der Bosse, B-380); die Bodenfläche (Hazard) bleibt ohne Faktor.
 func moonDamage(w *World, damage float64) float64 {
-	if blood := bloodMoon(); eventActive(w, blood) {
+	if blood := w.night("bloodMoon"); eventActive(w, blood) {
 		return damage * blood.DamageFactor
 	}
 	return damage
@@ -160,7 +136,7 @@ func moonDamage(w *World, damage float64) float64 {
 
 // moonDrop ist der Gold-Drop eines besiegten Gegners, im Blutmond mit dem Faktor der Daten (enemyDrop).
 func moonDrop(w *World, gold int) int {
-	if blood := bloodMoon(); eventActive(w, blood) {
+	if blood := w.night("bloodMoon"); eventActive(w, blood) {
 		return int(math.Round(float64(gold) * blood.DropFactor))
 	}
 	return gold

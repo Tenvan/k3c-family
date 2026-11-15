@@ -32,6 +32,7 @@ var overrideFiles = map[string]reflect.Type{
 	"enemies":   reflect.TypeFor[map[string]EnemyData](),
 	"waves":     reflect.TypeFor[wavesData](),
 	"goals":     reflect.TypeFor[Goals](),
+	"events":    reflect.TypeFor[eventsFile](),
 }
 
 // WorldValues ist der aufgelöste Wertesatz einer Welt, gleich gebaut wie die Paket-Variablen buildings, troops, economy,
@@ -46,6 +47,7 @@ type WorldValues struct {
 	Enemies   map[string]EnemyData
 	Waves     wavesData
 	Goals     Goals
+	Events    []NightEvent // Events der Nacht (events_values.go)
 	skills    skillTable // Monarch.Skills als sortierte Liste mit Index (monarch_data.go)
 }
 
@@ -221,9 +223,9 @@ func valuesFrom(fsys fs.FS) (WorldValues, error) {
 	err := errors.Join(loadFrom(fsys, "buildings.json", &v.Buildings), loadFrom(fsys, "ship.json", &ship),
 		loadFrom(fsys, "troops.json", &v.Troops), loadFrom(fsys, "economy.json", &v.Economy), loadFrom(fsys, "hub.json", &v.Hub),
 		loadFrom(fsys, "monarch.json", &v.Monarch), loadEnemies(fsys, &v.Enemies), loadFrom(fsys, "waves.json", &v.Waves),
-		loadFrom(fsys, "goals.json", &v.Goals))
+		loadFrom(fsys, "goals.json", &v.Goals), loadEvents(fsys, &v.Events))
 	if err == nil {
-		err = errors.Join(checkPresets(v.Monarch), checkWaves(v.Waves), checkPools(v.Enemies))
+		err = errors.Join(checkPresets(v.Monarch), checkWaves(v.Waves), checkPools(v.Enemies), checkNightEvents(v.Events, v.Enemies))
 	}
 	if err == nil && len(ship.Stages) == 0 {
 		err = errors.New("data/ship.json: keine Abschnitte")

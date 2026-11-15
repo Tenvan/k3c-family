@@ -39,7 +39,7 @@ Zielkorridore gelten im Standardszenario **Normal, Wald-Start, 2 Spieler, Bot �
 | **Blutmond** | jede **13. Nacht** | alle Gegner +30 % Schaden in dieser Nacht, auch Flächenangriff und Splitter der Bosse; die Bodenfläche (Hazard) bleibt ohne Faktor (B-380) | doppelter Drop der Gegner dieser Nacht |
 | **Händler-Überfall** | jeder **4. Händler-Besuch** (`buerger.md`) | Gegner greifen den Händler an; er flieht, wenn er stirbt | Wird er geschützt, schenkt er Material oder einen Rabatt beim Tausch (Startwert: 100 Material der Insel) |
 
-Begründung: Abwechslung im Wellenrhythmus und Gewicht für den Händler. Daten: `data/events.json` (SIM legt an). Zielkorridor: Burg hält Vollmond und Blutmond in ≥ 70 % der Seeds (Startziel).
+Begründung: Abwechslung im Wellenrhythmus und Gewicht für den Händler. Daten: `data/events.json` (SIM legt an). **Je Welt übersteuerbar** (`overrides › events`, `welten.md` § 1.1, B-982): Abstand (`everyNights`, `everyVisits`), Stärke (`wolfShare`, `damageFactor`, `dropFactor`) und Lohn (`rewardGold`, `rewardMaterial`) je Event; Abstand **0 schaltet das Event aus**, Abstände und Mengen ≥ 0, Faktoren > 0, Gegnerarten bekannt; neue Events stehen künftig in der Basis mit Abstand 0 und werden je Welt eingeschaltet. Der Raum rechnet mit dem Wertesatz der Welt, alle Stufen einer Insel mit demselben. Zielkorridor: Burg hält Vollmond und Blutmond in ≥ 70 % der Seeds (Startziel).
 
 ## 3. Offen und Annahmen
 
