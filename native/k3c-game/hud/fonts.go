@@ -35,6 +35,7 @@ var (
 	yellow   = color.RGBA{0xff, 0xd1, 0x66, 255}
 	pinkish  = color.RGBA{0xff, 0x8f, 0xa3, 255}
 	citizenC = color.RGBA{0xe9, 0xc4, 0x6a, 255}
+	paperC   = color.RGBA{0xff, 0xf1, 0xd0, 255}
 )
 
 // Rollen wie FONTS im Browser (nur die, die das HUD zeichnet).
@@ -49,6 +50,7 @@ var (
 	roleHint     = fontRole{24, artSide, white}
 	roleRoomInfo = fontRole{24, artSide, white}
 	roleCitizen  = fontRole{32, artInfo, citizenC}
+	roleStory    = fontRole{32, artInfo, paperC} // Geschichtszeile (B-974)
 )
 
 // minFontPx ist die Mindestgröße bei 1080 px Höhe: Pflicht-Info 28 px in Zellen über die ganze Breite (beide nativen

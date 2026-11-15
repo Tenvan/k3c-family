@@ -42,6 +42,7 @@ type seatState struct {
 	bossS           string
 	guide           guideHint
 	banner          bannerQueue
+	story           storyQueue // Geschichtszeile (story.go, B-974)
 	savedUntil      float64
 	gold            goldFlash
 	radar           []radarMarker
@@ -92,6 +93,7 @@ func (h *hud) Listen(f *view.Frame) {
 			h.seats[p].active, h.seats[p].menu, h.seats[p].sea = false, menuState{}, seaView{}
 		}
 	}
+	h.story(f)
 	for p := range h.seats {
 		h.seats[p].banner.step(f.Clock)
 	}

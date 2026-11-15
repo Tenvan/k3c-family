@@ -93,6 +93,7 @@ func (h *hud) drawItems(dst *ebiten.Image, st *seatState, c view.Cell, k float64
 	sharedPx := fontPx(roleShared, h.cells) * k
 	in[itemShared].W, in[itemShared].H = h.stockSize(st, f, p, sharedPx, k)
 	in[itemBoss].W, in[itemBoss].H = h.bossSize(st, f, p, k, float64(c.Rect.Dx()))
+	h.storySize(st, f, p, k, float64(c.Rect.Dx()), &in)
 	if st.widthUnits > 0 {
 		in[itemRadar].W, in[itemRadar].H = radarSize(float64(c.Rect.Dx()), k)
 	}
@@ -113,6 +114,9 @@ func (h *hud) drawItems(dst *ebiten.Image, st *seatState, c view.Cell, k float64
 	}
 	if pl.ok[itemBoss] {
 		h.drawBoss(dst, st, f, p, pl.at[itemBoss], k)
+	}
+	if pl.ok[itemStory] {
+		h.drawStory(dst, st, f, p, pl.at[itemStory], k, float64(c.Rect.Dx()))
 	}
 	if pl.ok[itemRadar] {
 		h.drawRadar(dst, st, c, pl.at[itemRadar], k)
