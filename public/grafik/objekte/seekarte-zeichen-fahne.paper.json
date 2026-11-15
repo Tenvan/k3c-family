@@ -1,0 +1,66 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-zeichen-fahne",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Zustandszeichen abgeschlossen, rote Fahne mit Goldpunkt an Holzmast",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 2V-48H2V2Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0, -49],
+          "radius": 3,
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -46Q12 -50 26 -44L19 -36L26 -28Q12 -32 2 -28Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M2 -34Q12 -37 21 -33L26 -28Q12 -32 2 -28Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [10, -39],
+          "radius": 3,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 58,
+    "rahmen": [-8, -54, 40, 58]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

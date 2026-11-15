@@ -1,0 +1,84 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-schiff",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): kleines Segelschiff, Bug nach rechts, Holzrumpf, zwei Leinensegel und roter Wimpel; liegt an der aktuellen Insel",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 -12V-66H2V-12Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -58Q-26 -42 -26 -22H-4Z",
+          "material": "leinen",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M4 -62Q32 -44 30 -22H4Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M4 -44Q20 -42 29 -36L30 -29Q20 -35 4 -37Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -68L16 -64L2 -60Z",
+          "material": "koenigsrot",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-38 -18Q-36 2 -20 4H20Q36 2 42 -20Q10 -10 -38 -18Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-36 -8Q-32 3 -20 4H20Q31 3 37 -8Q0 2 -36 -8Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-36 -15Q10 -7 40 -17",
+          "material": "holz",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 78,
+    "rahmen": [-44, -72, 92, 78]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

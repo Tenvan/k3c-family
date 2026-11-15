@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-zeichen-nebel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Zustandszeichen gesperrt, Nebelbank aus zwei hellen Wolkenlagen, liegt über der Insel-Miniatur",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-90 -8Q-98 -26 -78 -30Q-74 -50 -50 -46Q-36 -64 -10 -52Q10 -66 34 -50Q58 -58 66 -38Q90 -40 90 -20Q98 -6 80 -4H-80Q-90 -2 -90 -8Z",
+          "material": "geisterweiss",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-70 0Q-84 -14 -62 -20Q-56 -36 -34 -30Q-16 -44 6 -30Q30 -40 44 -24Q66 -26 68 -10Q76 0 60 2H-60Q-68 4 -70 0Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 76,
+    "rahmen": [-104, -70, 208, 76]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

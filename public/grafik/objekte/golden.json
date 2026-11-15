@@ -172,6 +172,84 @@
       "idle.png": "4843bce44dda41bf021cae16b6b05ab89c1d3032d1b9d83261bd5d00e4341c3d"
     }
   },
+  "seekarte-aufsatz-baum": {
+    "renderKey": "b0e0f192be177fd5169b888a4c0ed67ea8c154618874505c84e0a92ccc6d37e9",
+    "dateien": {
+      "idle.png": "7919335a4f19f27368eb3afe5dd854fddc989696d2251ee0186c1a434d106fa9"
+    }
+  },
+  "seekarte-aufsatz-fels": {
+    "renderKey": "06edaeae82ca74321a28619a6336a77198ccfb9598ea39c4c37a5cf10f408d4d",
+    "dateien": {
+      "idle.png": "6ff3440ca11dcac2071d2ba53161201554a5da8043085973e805b36dfdbd2822"
+    }
+  },
+  "seekarte-aufsatz-turm": {
+    "renderKey": "b72853dc4cbd33b36a0c547560b5a643d65069512dab55985da59b9ca80f191c",
+    "dateien": {
+      "idle.png": "f24ddf034f6f826a4203f6cd60dfeea7abe8607c3ee942d9e13fe6943f97d4e1"
+    }
+  },
+  "seekarte-insel-britannien": {
+    "renderKey": "52036febd936b140510bad77c1091176db2137527adaea8b96171a4fa2e6be80",
+    "dateien": {
+      "stand.png": "de4f52aa05e0fff708d1d3cbc9f15da96f780bbaa7dde9d9dbc10f32a6bc8f1c"
+    }
+  },
+  "seekarte-insel-nil": {
+    "renderKey": "901b162926ac41f1646da7b575e3ca21e423dd3b30bff2c582d6685fa4d0f45e",
+    "dateien": {
+      "stand.png": "e9629e31f4bf6d07016eaeb877ea8781f7153de9b539a1e400db82cb1d9fde3a"
+    }
+  },
+  "seekarte-insel-sengoku": {
+    "renderKey": "67bc6100b0edc1e0bbf4c1c7bc69e74a47011f8832a719ec2ffbbe2dc565e4cf",
+    "dateien": {
+      "stand.png": "040e07989618df310ecab168794e00c5dc8a1df0041e7bd8f75631869f6e2cb5"
+    }
+  },
+  "seekarte-insel-standard": {
+    "renderKey": "0a9d290777b6caf018bb54130d044b46090b83e653b4f2bc23fa7b55899e20d4",
+    "dateien": {
+      "stand.png": "23857c1a2419011414b8d5a741ea281ced8ec4f78ab9da908b7d5e5785fd357e"
+    }
+  },
+  "seekarte-meer-hinten": {
+    "renderKey": "91c8d38a9981cbe8cea17e626ed3256532608d9efbb828bdc5615df6e8223c08",
+    "dateien": {
+      "stand.png": "70aa62e550eacab999da53c35459e6b9ac1c95ef4e509c7a7d445ebf2dc78392"
+    }
+  },
+  "seekarte-meer-mitte": {
+    "renderKey": "3e78698be4f24ea13208a59a1cfa07f508f86fc9214583886ac701b5ee140e22",
+    "dateien": {
+      "stand.png": "8d033f1082039f1a7fcc0afea649178ebe85326c0a73971851a038291a16135a"
+    }
+  },
+  "seekarte-meer-vorn": {
+    "renderKey": "58b22cf4c8deac7a69b87546758815fdc2fb802164f3ccaf0497e77175403ae2",
+    "dateien": {
+      "stand.png": "badbc159729c51d68df34d61daa8ea1ea4b376db34bb0b8a8f2a30964a1754bb"
+    }
+  },
+  "seekarte-schiff": {
+    "renderKey": "9324cf0e5bb2139b8999e7a0da6bbcc301dd5ccbf448459ff67582977fe665a9",
+    "dateien": {
+      "idle.png": "7953275dc4ff509fbf66e60830b649a1e62a039ad5d48da0ab2ca02911d14847"
+    }
+  },
+  "seekarte-zeichen-fahne": {
+    "renderKey": "c0acc9879ac6d1668bd8325bf71a2ea01b37b62e22173bb912044676f076bf0f",
+    "dateien": {
+      "idle.png": "f8a8fee519acd46fd745991ba1be8eb017799b4603f0818cd374ae558a784e59"
+    }
+  },
+  "seekarte-zeichen-nebel": {
+    "renderKey": "8f0d1b5505748d62f14165d5ee21021708ccb4e860612f69ca0cb28ba33e63be",
+    "dateien": {
+      "idle.png": "4c8bed3b55e2e7d1ec817df54694fbba0bb6d5595c85fea438bc3a7ce72bc9fe"
+    }
+  },
   "setzling": {
     "renderKey": "ca061b05924de991b5b31d9a5a274508d7a84f005e6e03fd2553fe010b7d3f42",
     "dateien": {
