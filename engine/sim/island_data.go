@@ -15,7 +15,9 @@ import (
 
 // IslandDef ist eine Insel aus den Daten.
 type IslandDef struct {
-	ID, Name     string
+	ID, Name string
+	// Etappe (>= 1): Inseln einer Etappe sind frei anfahrbar, die nächste öffnet nach allen (B-961); 0 = Listenplatz + 1.
+	Etappe       int
 	Depths       []int
 	DepthScaling struct{ HP, Damage, Speed float64 }
 	// PlannedChunks sind die geplanten Chunks je Tiefe (Schlüssel = Tiefe, docs/rules/geplante-chunks.md); leer = reiner Zufall.

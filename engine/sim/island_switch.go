@@ -11,15 +11,15 @@ import (
 // hub.Travel.Seconds lang, ist der Wechsel bereit (SwitchReady); den Austausch der Insel macht der Raum (B-345) mit
 // NextIsland.
 
-// isLast: Die Insel ist die letzte ihrer Welt (kein Wechselpunkt, Kampagnensieg möglich).
-func (isl *Island) isLast() bool { return isl.Number+1 >= len(isl.world.Islands) }
-
+// isLast: Die Insel ist die letzte ihrer Welt: keine Ziele mehr (kein Wechselpunkt, Kampagnensieg möglich, B-961).
+func (isl *Island) isLast() bool { return len(isl.targetIndexes()) == 0 }
 
 // stepIslandSwitch: Wechselpunkt öffnen und den gemeinsamen Fortschritt rechnen (nach dem Tick aller Stufen).
 func stepIslandSwitch(isl *Island, dt float64) {
 	if !isl.EndbossDefeated || isl.isLast() || isl.SwitchReady {
 		return
 	}
+	isl.applyChoices()
 	w, ship := isl.harbor()
 	if ship == nil || !shipComplete(w, ship) {
 		isl.GateOpen, isl.switchProgress = false, 0 // Schiff verloren (Stufenverlust): der Wechselpunkt schließt
@@ -58,25 +58,31 @@ func allAtGate(isl *Island, w *World, x float64) bool {
 	return n > 0
 }
 
-// NextDef liefert die Daten der nächsten Insel der Welt; ok ist false auf der letzten.
+// NextDef liefert die Daten des gewählten Ziels (Wahl, sonst erstes Ziel); ok ist false auf der letzten Insel.
 func (isl *Island) NextDef() (def IslandDef, ok bool) {
-	if isl.isLast() {
+	i, ok := isl.chosenIndex()
+	if !ok {
 		return IslandDef{}, false
 	}
-	return isl.world.Islands[isl.Number+1], true
+	return isl.world.Islands[i], true
 }
 
-// NextIsland baut die nächste Insel nach def in der Welt der alten Insel: Seed aus der Spiel-ID und dem Inselindex,
-// Startvorrat, eigene Hubs, Optionen der alten Insel, Insel-ID aus def. Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit Krone an
-// der Burg der ersten Stufe; ihre Skill-Basis ist die Zahl der mitgebrachten Skills.
+// NextIsland baut die Insel def (das gewählte Ziel, NextDef) in der Welt der alten Insel: Seed aus der Spiel-ID und dem
+// Listenplatz des Ziels, Startvorrat, eigene Hubs, Optionen der alten Insel, Insel-ID aus def. Die abgeschlossenen
+// Inseln ziehen mit (die alte kommt dazu). Die Spieler ziehen mit (Index, Gold, Skills und Slots bleiben) und stehen mit
+// Krone an der Burg der ersten Stufe; ihre Skill-Basis ist die Zahl der mitgebrachten Skills.
 func NextIsland(cur *Island, def IslandDef) (*Island, error) {
-	if want, ok := cur.NextDef(); !ok || want.ID != def.ID {
-		return nil, fmt.Errorf("insel: %q ist nicht die nächste Insel der Welt %q", def.ID, cur.world.ID)
+	number, ok := cur.chosenIndex()
+	if !ok || cur.world.Islands[number].ID != def.ID {
+		return nil, fmt.Errorf("insel: %q ist nicht das Ziel des Wechsels in Welt %q", def.ID, cur.world.ID)
 	}
-	number := cur.Number + 1
 	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions(), cur.world)
 	if err != nil {
 		return nil, err
+	}
+	next.Completed = slices.Clone(cur.Completed)
+	if id := cur.world.Islands[cur.Number].ID; cur.EndbossDefeated && !slices.Contains(next.Completed, id) {
+		next.Completed = append(next.Completed, id)
 	}
 	*next.Stock = next.values().Hub.IslandStartStock
 	next.ID, next.Number, next.islandID, next.Scaling = cur.ID, number, def.ID, def.DepthScaling

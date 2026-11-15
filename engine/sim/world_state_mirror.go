@@ -1,5 +1,7 @@
 package sim
 
+import "slices"
+
 // Zustands-Spiegel (K4.1a, B-383): reine Anzeige-Felder für das Protokoll, ohne rng und nicht im Spielstand.
 // Sie werden nach jedem Tick neu gesetzt; fehlt der Zustand, fehlt das Feld im JSON.
 
@@ -21,6 +23,10 @@ type SwitchState struct {
 	Open     bool    `json:"open"`
 	Progress float64 `json:"progress"`
 	Ready    bool    `json:"ready"`
+	// Etappen (B-961): Ziele am Hafen, das Ziel des Wechsels (Wahl oder erstes Ziel) und die abgeschlossenen Inseln.
+	Targets   []SwitchTarget `json:"targets,omitempty"`
+	Choice    string         `json:"choice,omitempty"`
+	Completed []string       `json:"completed,omitempty"`
 }
 
 // mirrorState setzt Boss-Phase, Warnkreis und Nacht-Events der Stufe (Ende von StepIsland, island.go).
@@ -55,7 +61,8 @@ func mirrorBoss(w *World, e *Enemy) {
 func mirrorSwitch(isl *Island) {
 	var s *SwitchState
 	if isl.GateOpen {
-		s = &SwitchState{Open: true, Progress: min(isl.switchProgress, 1), Ready: isl.SwitchReady}
+		s = &SwitchState{Open: true, Progress: min(isl.switchProgress, 1), Ready: isl.SwitchReady,
+			Targets: isl.Targets(), Choice: isl.ChosenTarget(), Completed: slices.Clone(isl.Completed)}
 	}
 	for _, w := range isl.Stages {
 		w.IslandSwitch = s

@@ -117,6 +117,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 |---|---|---|---|
 | `id` | ja | Text | Insel-ID (§ 4), eindeutig in der Welt. |
 | `name` | ja | Text | Anzeigename, nicht leer (z. B. „Insel 1“). |
+| `etappe` | nein | Ganzzahl ≥ 1 | Etappe der Insel (§ 6.1); fehlt sie, gilt Listenplatz + 1 (heute: jede Insel eine eigene Etappe, linear). |
 | `depths` | ja | Liste Zahlen | Tiefen der Stufen, jede ein bekanntes Biom (`data/biomes/*.json`), jede höchstens einmal; Lücken erlaubt (z. B. `[0, 4]`). |
 | `depthScaling` | ja | Objekt | `hp`, `damage`, `speed`: Basen der Potenz je Tiefe (`stufen.md` § 1, Skalierung), alle > 0. |
 | `plannedChunks` | nein | Objekt | Geplante Chunks je Tiefe (`geplante-chunks.md` § 1–5); fehlt oder `{}` = reiner Zufall. |
@@ -190,6 +191,7 @@ geladen, nichts wird repariert.
 | Datei ist JSON nach § 2: keine unbekannten Felder, alle Pflichtfelder da; `id` passt zum Dateinamen; `name` nicht leer; mindestens eine Insel. | Fehler in Hand- oder Prompt-Entwürfen fallen sofort auf. | `data/worlds/<id>.json` |
 | Je Insel: `id` nach § 4 und eindeutig in der Welt; `name` nicht leer; `depths` nicht leer, jede Tiefe bekannt und höchstens einmal. | Die Insel-ID ist der Verweis im Spielstand (§ 5). | `data/biomes/*.json` |
 | Je Insel: jede Tiefe hat einen **Miniboss**, die **tiefste** Tiefe hat einen **Endboss**. Heute gibt es den Endboss nur in Tiefe 4: jede Insel braucht Tiefe 4. | Jede Stufe hat ihr Ziel, jede Insel ihr Ende (`stufen.md` § 3). | `data/bosses.json` |
+| Je Insel: `etappe` ab 1, über die Liste lückenlos (die erste Insel hat Etappe 1, jede weitere dieselbe oder um 1 höher) und nicht fallend. Jede Insel braucht einen Hafen, außer der einzigen Insel der letzten Etappe (B-961). | Jede Etappe öffnet erst nach der vorigen; ein Ziel ohne Hafen ließe das Schiff stranden. | – |
 | Je Insel: `depthScaling` mit `hp`, `damage`, `speed` jeweils > 0. | Keine Gegner mit 0 HP oder Stillstand. | – |
 | `chunkCounts`: Schlüssel ist eine Tiefe der Insel (Dezimalzahl ohne führende Null), Wert eine Inselgröße aus der Tabelle. | `geplante-chunks.md` § 7. | `data/island-sizes.json` |
 | `plannedChunks`: Schlüssel ist eine Tiefe der Insel; die Planung besteht die Prüfung gegen die Mauerlinien und die Chunk-Anzahl der Tiefe, unabhängig vom Seed (`level.ValidatePlanFor`). | `geplante-chunks.md` § 5. | `data/biomes/*.json` |
@@ -208,6 +210,7 @@ geladen, nichts wird repariert.
 | kein Endboss | `data/worlds/nordmeer.json: Insel insel3: kein Endboss in der tiefsten Stufe 2` |
 | Tiefe unbekannt | `data/worlds/nordmeer.json: Insel eisinsel: unbekannte Tiefe 5` (vor dem Endboss geprüft, siehe oben) |
 | kein Miniboss | `data/worlds/nordmeer.json: Insel eisinsel: kein Miniboss in Tiefe 3` (heute hat jede Tiefe 0–4 einen) |
+| Etappe falsch | `data/worlds/nordmeer.json: Insel eisinsel: etappe 3 lässt Etappe 2 aus (lückenlos ab 1)`, `… etappe 1 fällt unter die Etappe 2 der Insel davor (nicht fallend)`, `… etappe 0 ungültig (mindestens 1)` |
 | Faktor ≤ 0 | `data/worlds/nordmeer.json: Insel eisinsel: depthScaling braucht Faktoren > 0` |
 | Größe falsch | `data/worlds/nordmeer.json: Insel eisinsel: chunkCounts Tiefe 0: die Chunk-Anzahl 12 ist keine Inselgröße (gültig: 16, 24, …)` |
 | Planung falsch | `data/worlds/nordmeer.json: Insel eisinsel: plannedChunks Tiefe 0: auf Platz -9: …` |
@@ -253,6 +256,16 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 4 der Session W
 | **Wertesatz je Raum:** Beim Anlegen und Laden löst der Raum die Welt einmal zu ihrem Wertesatz auf (`sim.ResolveWorld`, Kette über `extends` aus demselben Welten-Ordner); Insel und alle Stufen rechnen danach nur mit ihm, nie mit globalen Werten, auch nach dem Inselwechsel. Ohne Overrides in der Kette gilt der Basis-Wertesatz (byte-gleich, folgt dem Balancing-Tester `UseData`). Ungültige Overrides → Raum wird nicht angelegt bzw. Stand nicht geladen, Meldung aus § 1.2. Zwei Räume mit verschiedenen Welten beeinflussen sich nicht. Gegen die Basis geprüft bleiben: Spielstand-Format (Truppenarten, Berufe, Rüstungsstufen, Tier-Gating), Kandidaten-hub.json, `events.json`, Skill-Katalog. Quelle: B-681, entschieden von Claude (autonom, BAL8.2). | Mehrere Räume spielen gleichzeitig verschiedene Welten; Auflösung einmal je Raum kostet je Tick nichts. | `engine/sim/world_values_room.go`, `engine/room/worlds.go` |
 | **Inselwechsel:** Nach dem Endboss der Insel geht es zur **nächsten Insel der Welt-Datei** (`stufen.md` § 1); das Ziel des Raums (Siegvariante) gilt wie heute nur auf der letzten Insel der Welt (`engine/sim/island_victory.go`). Der Seed der nächsten Insel bleibt aus Spiel-ID und Listenplatz gebildet (Golden unverändert). Abfahrt ist am Hafen der Insel mit fertigem Schiff (`stufen.md` § 1, B-637). Gilt mit 2 Spielern gleichzeitig wie mit einem. | Reihenfolge der Inseln = Reihenfolge der Liste. | `islands` |
 | Das Protokoll trägt die Welt-ID dort, wo der Client die Insel kennt (Werte wie im Spielstand: `world`, `islandId`); Felder und Version legt WZ18.5 in `docs/protocol.md` fest. | Client und Server benennen Welt und Insel gleich. | `docs/protocol.md` |
+
+### 6.1 Etappen und Zielwahl am Hafen (B-961)
+
+Inseln einer **Etappe** sind in beliebiger Reihenfolge anfahrbar; die nächste Etappe öffnet erst, wenn alle Inseln der laufenden abgeschlossen sind. Start bleibt die erste Insel der Liste, eine Rückkehr auf abgeschlossene Inseln gibt es nicht.
+
+- **Abgeschlossen** ist eine Insel mit besiegtem Endboss beim Ablegen. Der Spielstand trägt die abgeschlossenen Insel-IDs (`completed`) und das gewählte Ziel (`chosen`) mit (Version 9, beide optional; ältere Stände: leer).
+- **Ziele** (`Island.Targets`): die nicht abgeschlossenen Inseln der Etappe der aktuellen Insel in Listenreihenfolge; sind alle abgeschlossen, die Inseln der nächsten Etappe. Keine Ziele = letzte Insel der Welt (Kampagnensieg wie bisher). Der Wechselpunkt öffnet nur, wenn es Ziele gibt.
+- **Wahl:** Ein gekrönter Spieler wählt am **offenen** Wechselpunkt (vor dem Ablegen) ein Ziel (`Room.ChooseIsland`, `sim.ChooseIsland`); eine Insel außerhalb der Ziele oder ein geschlossener Wechselpunkt wird abgelehnt, das Ziel bleibt. Wählen mehrere Spieler im selben Takt, gewinnt der **höchste Spieler-Index** (unabhängig von der Aufrufreihenfolge); in späteren Takten gilt die letzte Wahl. Ohne Wahl gilt das erste Ziel in Listenreihenfolge.
+- **Bau der Zielinsel:** `NextIsland` baut das Ziel; der Seed ergibt sich aus Spiel-ID und **Listenplatz** des Ziels (`<id>:<Listenplatz>`), `Number` ist der Listenplatz. Die abgeschlossenen Inseln ziehen mit.
+- **Beispiel:** Etappen 1, 2, 2 (Inseln a, b, c): Nach a bietet der Hafen b und c; Wahl c, danach bietet er nur b; nach b gibt es keine Ziele, b ist die letzte (Sieg möglich).
 
 ## 7. Git
 

@@ -414,7 +414,9 @@ Gerät ohne Slots bekommt keinen. Stufen ohne eigenen Slot kommen nie an.
   und Slots bleiben, alle Spieler stehen in Stufe 0 der neuen Insel. Das Gerät bekommt zuerst ein letztes `delta` je
   Stufe der alten Insel mit den Ereignissen ihres letzten Ticks (darunter `islandSwitch` in der Stufe des Wechselpunkts,
   B-385), danach `seats`, `level` und `snap` der neuen Insel (kein `delta` über den Wechsel). Auf der letzten Insel gibt
-  es keinen Wechsel.
+  es keinen Wechsel. Das Ziel (Etappen, B-961) steht in `islandSwitch.targets`/`choice`; die Wahl ist die Aktion
+  `Room.ChooseIsland(device, peer, slot, islandId)` (nur gekrönt, nur am offenen Wechselpunkt, nur aus `targets`; Ablehnung
+  `SkillError`/`bad_request`); mehrere Wahlen im selben Takt: höchster Spieler-Index.
 - **Neue Slots** (`addSlot`, Beitreten) kommen in die Stufe des kleinsten Slots des Geräts.
 - **Client heute:** `RoomClient.level` und `takeFrames()` liefern die Stufe des kleinsten eigenen Slots,
   `stages()`, `levelOf(stage)` und `takeFramesOf(stage)` die übrigen (Kamera je Stufe: B-106).
@@ -605,7 +607,7 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 | `enemies[].phase` | Phase des Endbosses, ab 1 | kein Endboss |
 | `enemies[].warn` | nächster Flächenschlag: `x` Mitte, `r` Radius (Units), `in` Sekunden bis zum Schlag (= `aoeIn`) | Boss ohne Flächenschlag in dieser Phase |
 | `nightEvents` | Liste der laufenden Nacht-Events `[{id, secondsLeft}]` (`id` aus `data/events.json`: `fullMoon`, `bloodMoon`; Nacht 91 hat beide), `secondsLeft` = Restzeit der Nacht; heißt nicht `events`, das sind die Ereignisse des Ticks | kein Event |
-| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; in allen Stufen der Insel gleich | Endboss nicht besiegt |
+| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; ab B-961 `targets` (Ziele am Hafen in Listenreihenfolge: `id`, `name`, `etappe`), `choice` (Insel-ID des Ziels: Wahl, sonst erstes Ziel) und `completed` (IDs der abgeschlossenen Inseln); in allen Stufen der Insel gleich | Endboss nicht besiegt |
 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,

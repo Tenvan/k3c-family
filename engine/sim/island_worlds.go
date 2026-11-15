@@ -115,6 +115,7 @@ type rawWorld struct {
 type rawIsland struct {
 	ID            *string                         `json:"id"`
 	Name          *string                         `json:"name"`
+	Etappe        *int                            `json:"etappe"`
 	Depths        *[]int                          `json:"depths"`
 	DepthScaling  json.RawMessage                 `json:"depthScaling"`
 	PlannedChunks map[string][]level.PlannedChunk `json:"plannedChunks"`
@@ -170,24 +171,51 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 	for i, raw := range islands {
 		var r rawIsland
 		var d IslandDef
-		err := strictDecode(raw, &r, "id", "name", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth")
+		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth")
 		if err == nil {
 			d, err = r.def()
+			d.Etappe = r.etappe(i + 1)
 		}
 		if err == nil {
 			err = checkIslandIn(d, out)
+		}
+		if err == nil {
+			err = checkEtappe(d, out)
 		}
 		if err != nil {
 			return nil, islandError{islandLabel(raw, i), err}
 		}
 		out = append(out, d)
 	}
-	for i, d := range out[:len(out)-1] {
-		if !hasHarbor(d) {
+	for i, d := range out {
+		if !hasHarbor(d) && !soleOfLastEtappe(out, d) {
 			return nil, islandError{islandLabel(islands[i], i), errors.New("kein Hafen in den geplanten Chunks der Tiefe 0, die Insel ist nicht die letzte der Welt (geplante-chunks.md § 10)")}
 		}
 	}
 	return out, nil
+}
+
+// soleOfLastEtappe: d ist die einzige Insel der letzten Etappe, also die letzte der Welt (nur sie braucht keinen Hafen).
+func soleOfLastEtappe(islands []IslandDef, d IslandDef) bool {
+	last := islands[len(islands)-1].Etappe
+	return d.Etappe == last && !slices.ContainsFunc(islands, func(o IslandDef) bool { return o.ID != d.ID && o.Etappe == last })
+}
+
+// checkEtappe prüft die Etappe von d gegen die Inseln davor (B-961): ab 1, lückenlos, in der Liste nicht fallend.
+func checkEtappe(d IslandDef, before []IslandDef) error {
+	prev := 0
+	if len(before) > 0 {
+		prev = before[len(before)-1].Etappe
+	}
+	switch {
+	case d.Etappe < 1:
+		return fmt.Errorf("etappe %d ungültig (mindestens 1)", d.Etappe)
+	case d.Etappe < prev:
+		return fmt.Errorf("etappe %d fällt unter die Etappe %d der Insel davor (nicht fallend)", d.Etappe, prev)
+	case d.Etappe > prev+1:
+		return fmt.Errorf("etappe %d lässt Etappe %d aus (lückenlos ab 1)", d.Etappe, prev+1)
+	}
+	return nil
 }
 
 // hasHarbor: Die Insel plant in Tiefe 0 einen Hafen-Chunk (BAS, B-637).
@@ -219,6 +247,14 @@ func checkIslandIn(d IslandDef, before []IslandDef) error {
 		return errors.New("doppelt")
 	}
 	return checkIsland(d)
+}
+
+// etappe: das Feld `etappe`; fehlt es, gilt der Listenplatz place (1-basiert, B-961).
+func (r rawIsland) etappe(place int) int {
+	if r.Etappe != nil {
+		return *r.Etappe
+	}
+	return place
 }
 
 // def prüft die Pflichtfelder der Insel und liefert sie als IslandDef.
