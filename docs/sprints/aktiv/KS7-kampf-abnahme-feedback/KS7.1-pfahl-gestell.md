@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Stand 2026-11-15, Commit f619e1c9f auf sprint/ks7:
+- B-941: Auslöser und Banner 2,5 Units vor dem äußersten Tor, weichen Bauplätzen aus; Asset `horn-pfahl`. Banner bleibt Icon (kein `banner-gestell`).
+- B-942: Schilde ab Hub-Stufe 2, Gestell `schild-gestell` mit Stapel bis 5, nur sichtbar wenn baubar (`sim.ShieldRack`).
+- Tests grün (engine/sim, props, actors, paper 407/407), Lint 0. Offen: Sichtprüfung am TV (AC-03) durch 🧑.
