@@ -1,0 +1,87 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "schild-gestell",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Gestell f�r Schilde neben der Burg: zwei Holzbeine mit Ablagebrett, Fu�punkt am Boden; der Schildstapel wird im Spiel darauf gelegt",
+  "teile": [
+    {
+      "id": "korpus",
+      "pivot": [0, 0],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-17 0L-17 -17L-13 -17L-13 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M13 0L13 -17L17 -17L17 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-15 -2L-15 -16",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M15 -2L15 -16",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-20 -17L-18 -21L18 -21L20 -17Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-20 -17L20 -17L18 -19L-18 -19Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M-13 -9L13 -9",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M-17 -14L-13 -14",
+          "material": "eisen"
+        },
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M13 -14L17 -14",
+          "material": "eisen"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 24,
+    "rahmen": [-20, -24, 40, 24]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

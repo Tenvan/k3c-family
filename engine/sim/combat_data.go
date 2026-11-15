@@ -29,7 +29,10 @@ type combatData struct {
 	TroopSoldiers, TroopArchers         int
 	EngageUnits                         float64 // Gegner und Portale in diesem Abstand voraus greift eine Gruppe oder ein Trupp an
 	ShieldOffsetUnits                   float64 // Schild-Zahlziel: so weit rechts der Burg
-	GateInsetUnits                      float64 // Auslöser und Banner: so weit innen vor dem äußersten Tor
+	GateOutUnits                        float64 // Auslöser und Banner: so weit außerhalb (vor) dem äußersten Tor (B-941)
+	SpotClearUnits                      float64 // Mindestabstand eines Auslösers oder Banners zu Bauplätzen; sonst rückt er nach außen
+	ShieldMinHubLevel                   int     // Schilde (Zahlstelle, Gestell) erst ab dieser Hub-Stufe (B-942)
+	ShieldStackMax                      int     // so viele gebaute, nicht abgeholte Schilde liegen höchstens auf dem Gestell
 	BehindUnits                         float64 // Ziele bis so weit hinter dem Anker zählen noch als voraus
 	StandRangeFactor                    float64 // Angreifer stehen so viele Reichweiten (Anteil) vor dem Ziel
 	FollowUnits                         float64 // Trupp ohne Ziel: Abstand zum Monarchen (Soldaten voraus, Schützen dahinter)

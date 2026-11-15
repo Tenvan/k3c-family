@@ -17,6 +17,7 @@ func combatIsland(t *testing.T, mode string) (*World, float64, float64) {
 	_, w := portalIsland(t)
 	w.vals = defaultValues()
 	w.vals.Combat = CombatSettings{Mode: mode, GroupSize: 3}
+	w.HubLevel = w.values().Economy.Combat.ShieldMinHubLevel
 	for _, side := range []float64{-1, 1} {
 		s := emptySite(w, "wall", w.HubX+side*10)
 		s.State = "built"
@@ -121,8 +122,8 @@ func TestSchildMachtZumGruppenfuehrerUndGruppeFuellt(t *testing.T) {
 	if n := groupCount(w, l); n != 3 {
 		t.Errorf("Gruppe hat %d Soldaten, erwartet groupSize 3", n)
 	}
-	if trigger := spotFor(w, "trigger", 1); trigger.X >= right {
-		t.Errorf("Auslöser liegt nicht innen vor dem Tor: %v", trigger)
+	if trigger := spotFor(w, "trigger", 1); trigger.X <= right {
+		t.Errorf("Auslöser liegt nicht außerhalb vor dem Tor: %v", trigger)
 	}
 }
 

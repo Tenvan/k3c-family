@@ -114,6 +114,12 @@
       "idle.png": "a85a81586cb236b8887e2a0d4897f4f057c6f1c81fd765bcb17ba35ef0e2d441"
     }
   },
+  "horn-pfahl": {
+    "renderKey": "15e4c6944661f2c2d4bf45ff0188c0a61d89879f9870dabc3b7bf191a4b2412d",
+    "dateien": {
+      "idle.png": "eb3205a3b01bc9aa05e5d4609d3abd45eb874df3ed67fafb8dcebfccea52955c"
+    }
+  },
   "pappel-2": {
     "renderKey": "7feb26c7241ce0304d75313a85ce7631f396c7bcecbfe1482c53446e07d6a8dc",
     "dateien": {
@@ -142,6 +148,12 @@
     "renderKey": "b7a6352548a7b3c9c4ad372672ab575c3b15589700add19e5b1485f0d697c413",
     "dateien": {
       "idle.png": "295c83315f6acdc5a4f0fae97443d4c206d17e3c7332c4e337ddb6476e3ead07"
+    }
+  },
+  "schild-gestell": {
+    "renderKey": "239dcfd69d6dd1bbd52dcf4b962b9d6ff084373fed0945d47ccb7cbd0931b7b7",
+    "dateien": {
+      "idle.png": "5bc1efa35074b550d9821f34dce74c0e0aa51ac51fad1c1137bbadf76ab7d78a"
     }
   },
   "schild-gruppenfuehrer": {
