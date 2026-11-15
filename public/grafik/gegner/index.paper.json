@@ -60,6 +60,11 @@
     "manifest": "lavaschleim/manifest.json"
   },
   {
+    "id": "moorgeist",
+    "rig": "requisite",
+    "manifest": "moorgeist/manifest.json"
+  },
+  {
     "id": "mumie",
     "rig": "figur",
     "manifest": "mumie/manifest.json"
@@ -73,6 +78,11 @@
     "id": "rattenschwarm",
     "rig": "requisite",
     "manifest": "rattenschwarm/manifest.json"
+  },
+  {
+    "id": "roemischer-spaeher",
+    "rig": "figur",
+    "manifest": "roemischer-spaeher/manifest.json"
   },
   {
     "id": "samurai",

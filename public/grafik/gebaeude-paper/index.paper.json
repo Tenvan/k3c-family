@@ -105,6 +105,11 @@
     "manifest": "ruestkammer/manifest.json"
   },
   {
+    "id": "rundhaus",
+    "rig": "gebaeude",
+    "manifest": "rundhaus/manifest.json"
+  },
+  {
     "id": "schiff",
     "rig": "gebaeude",
     "manifest": "schiff/manifest.json"

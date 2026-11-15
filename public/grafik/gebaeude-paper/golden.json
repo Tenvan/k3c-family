@@ -185,6 +185,16 @@
       "stand.s5.png": "d6970117f27055619fc4786e5edbbbad1491640fa20661da43159b6a81d181ed"
     }
   },
+  "rundhaus": {
+    "renderKey": "494bc7d6b66f1c334dd95ea3eb42a0d1f8eda27424029b054af490b1d130388a",
+    "dateien": {
+      "stand.png": "9b8a92e713f75f14f8b622c96f2ed68e8bb0a827488f1d0604b0705caa2bf657",
+      "stand.s2.png": "efaafaf61ba81e7d2329be017fc71cbe51f01499025fda627a121c1b5800289c",
+      "stand.s3.png": "7ae9d9178ae7dbfcadd6973e43e6a443474b4cb065e05b58279b3e8756861bc7",
+      "stand.s4.png": "c409c65540bec63d5014ae48ea57d2be6eeef69220363729c2b16dbfda14875e",
+      "stand.s5.png": "1c69e55eecb1fd53179747e0061e9154a10c7b330919579839b1ed8b9437e390"
+    }
+  },
   "schiff": {
     "renderKey": "c837945bf6c4b19cfcb3208d2f068e45525843e6973d9b475bff7446ce75e6ce",
     "dateien": {
