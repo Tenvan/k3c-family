@@ -835,3 +835,9 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-920](B-920-stresstest-ohne-wellen.md) | SIM | Problem | hoch | erledigt | FB2 | Der Stresstest startet keine Gegnerwellen |
 | [B-921](B-921-stressmodus-burg.md) | SIM | Idee | mittel | erledigt | FB2 | Reiner Stressmodus: Gegner spawnen bei der Burg, nur eigene Bevölkerung nach Einstellung |
 | [B-923](B-923-gebaeudeplaner-workbench.md) | DEV | Problem | hoch | erledigt | FB3 | Gebäudeplaner samt MCP-Tools aus dem alten Studio fehlt in der Workbench |
+| [B-915](B-915-stresstest-overlay-radar.md) | CLI | Problem | mittel | erledigt | FB1 | Stresstest-Overlay überdeckt das Radar; Radar wandert an die Unterkante im Fluss |
+| [B-916](B-916-stresstest-ueberschreiben.md) | CLI | Problem | hoch | erledigt | FB1 | Ein bestehendes Stresstest-Spiel lässt sich beim Start eines neuen einfach überschreiben |
+| [B-917](B-917-ausloeser-leertaste.md) | CLI | Problem | mittel | erledigt | FB1 | Auslösetaste ist immer die Leertaste, unabhängig von den Richtungstasten |
+| [B-918](B-918-tasten-nach-menues-tot.md) | CLI | Problem | hoch | erledigt | FB1 | Tastensteuerung fällt nach Debug-, Cheat- und Menü-Nutzung aus |
+| [B-919](B-919-hud-geldsack.md) | CLI | Idee | mittel | erledigt | FB1 | HUD zeigt einen Geldsack statt Healthbar und P1/P2 |
+| [B-922](B-922-geldsack-skill.md) | SIM | Idee | mittel | erledigt | FB2 | Geldsack in drei Größen, per Skillpunkte setzbar |

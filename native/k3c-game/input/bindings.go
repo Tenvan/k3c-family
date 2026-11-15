@@ -5,7 +5,7 @@
 //	Befehl (gehalten)  wasd          pfeile                     Gamepad (Xbox)
 //	laufen             A / D         ← / →                      linker Stick oder Steuerkreuz ←/→
 //	Galopp (Sprint)    Shift links   Shift rechts               RT
-//	zahlen             Leertaste     Enter, Num-Enter           A
+//	zahlen             Leertaste     Enter, Num-Enter, Leertaste  A   (B-917: die Leertaste löst in jedem Profil aus)
 //	Schlag             E             Strg rechts, Num 0         X
 //	Skill 1 … 4        Q, R, T, Z    Einfg, Entf, Ende, Bild ↓  LB, RB, LT, Steuerkreuz ↑ (der niedrigste gewinnt)
 //	                                 oder Num 1 … Num 4
@@ -86,7 +86,7 @@ var layouts = [Layouts]keyLayout{
 	},
 	layoutArrows: {
 		left: keys(ebiten.KeyArrowLeft), right: keys(ebiten.KeyArrowRight), sprint: keys(ebiten.KeyShiftRight),
-		pay:    keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter),
+		pay:    keys(ebiten.KeyEnter, ebiten.KeyNumpadEnter, ebiten.KeySpace),
 		attack: keys(ebiten.KeyControlRight, ebiten.KeyNumpad0),
 		skills: [4][]ebiten.Key{keys(ebiten.KeyInsert, ebiten.KeyNumpad1), keys(ebiten.KeyDelete, ebiten.KeyNumpad2),
 			keys(ebiten.KeyEnd, ebiten.KeyNumpad3), keys(ebiten.KeyPageDown, ebiten.KeyNumpad4)},

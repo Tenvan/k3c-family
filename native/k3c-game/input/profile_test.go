@@ -62,3 +62,19 @@ func TestSetKeyboardSwitchesLayout(t *testing.T) {
 		t.Error("A wirkt im Profil pfeile")
 	}
 }
+
+// B-917/AC-01: In jedem Tastatur-Profil löst die Leertaste aus (zahlen), unabhängig von den Richtungstasten.
+func TestSpaceTriggersInEveryProfile(t *testing.T) {
+	for _, p := range []string{view.ProfileWASD, view.ProfileArrows} {
+		if !slices.Contains(CommandKeys(Layout(p), "pay"), ebiten.KeySpace) {
+			t.Errorf("%s: Leertaste löst nicht aus", p)
+		}
+		s := &source{}
+		s.SetKeyboard(p)
+		s.poll(keyState(), nil)
+		in := s.poll(keyState(ebiten.KeySpace), nil)
+		if di, _ := in.Of(keys1); !di.Command.Pay {
+			t.Errorf("%s: Leertaste setzt Pay nicht", p)
+		}
+	}
+}

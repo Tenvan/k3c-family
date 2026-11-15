@@ -1,8 +1,8 @@
 package hud
 
-// Radar (Spiegel von src/scenes/hud/radar.ts, B-090): eine schmale Leiste über das ganze Level mit Burg, Portalen,
-// Ausgang, Treppen, Gegnern und Monarchen sowie dem Kamera-Ausschnitt der Zelle. Reine Rechnung in einen
-// wiederverwendeten Puffer; gezeichnet wird in paint.go.
+// Radar (B-090): eine schmale Leiste über das ganze Level mit Burg, Portalen, Ausgang, Treppen, Gegnern und Monarchen
+// sowie dem Kamera-Ausschnitt der Zelle. Sie sitzt an der Unterkante der Zelle im Fluss (layout.go, B-915). Reine
+// Rechnung in einen wiederverwendeten Puffer; gezeichnet wird in drawworld.go (drawRadar).
 
 import (
 	"math"

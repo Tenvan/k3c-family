@@ -231,6 +231,9 @@ func (g *Game) step(st view.Step) {
 	g.mode = g.stack.Apply(st, g.sim.Active(), g.parts.Menus.Main)
 	if was == ModeMenu && g.mode == ModePlay {
 		g.sim.Pause(false)
+		if ds, ok := g.sim.(view.DevSession); ok {
+			ds.Halt(false) // ein vergessener Halt (F7) ließ das Spiel nach dem Fortsetzen unsichtbar stehen (B-918)
+		}
 	}
 }
 

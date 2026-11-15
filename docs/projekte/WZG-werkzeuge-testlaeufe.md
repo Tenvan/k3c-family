@@ -80,6 +80,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ59 | Studio-Seiten neu ordnen, Sound und Quellen zusammenlegen | erledigt |
 | WZ60 | Workbench-Oberfläche bleibt bei langen Läufen stabil | aktiv |
 | FB3 | Live-Test-Feedback: Gebäudeplaner in der Workbench | aktiv |
+| WE1 | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | geplant |
 
 ## Nicht-Ziele
 

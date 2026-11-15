@@ -1,6 +1,7 @@
 package local
 
 import (
+	"slices"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
@@ -230,5 +231,28 @@ func TestSaveDirNotWritable(t *testing.T) {
 	}
 	if f2 := stepN(t, s, 1); f2.Tick != f.Tick+1 {
 		t.Errorf("Spiel steht: Takt %d nach %d", f2.Tick, f.Tick)
+	}
+}
+
+// B-916: Der Stresstest-Ablauf (laufendes Spiel schließen, Stand löschen, mit demselben Namen neu anlegen) geht, der
+// andere Spielstand bleibt in der Liste.
+func TestNewAfterCloseAndDiscardSameName(t *testing.T) {
+	s := testSession(t, t.TempDir())
+	oldGame(t, s)
+	if err := s.New(view.NewGame{Name: "stresstest", Devices: twoDevices[:1]}); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.Delete("stresstest"); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.New(view.NewGame{Name: "stresstest", Devices: twoDevices[:1]}); err != nil {
+		t.Fatalf("neu mit demselben Namen: %v", err)
+	}
+	list, err := s.List()
+	if err != nil || !slices.ContainsFunc(list, func(e view.SaveInfo) bool { return e.Name == "alt" }) {
+		t.Fatalf("Spielstand alt fehlt: %v, %v", list, err)
 	}
 }

@@ -1,6 +1,6 @@
 # FB1.1 · Radar, Überschreiben, Leertaste, Tastenfokus, HUD-Geldsack (B-915–B-919, B-922 AC-02)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

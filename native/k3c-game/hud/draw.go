@@ -23,16 +23,11 @@ const (
 	widthStep = 32.0
 )
 
-// Maße der Spielerkarte in px bei 1080 (HudScene.ts › CARD).
+// Maße des Boss-Balkens in px bei 1080 (HudScene.ts).
 const (
-	cardBar  = 150.0
-	cardBarH = 20.0
-	cardPot  = 30.0
 	bossBarW = 640.0
 	bossBarH = 22.0
 )
-
-var playerTags = [...]string{"P1", "P2", "P3", "P4"}
 
 // textItem ist ein Element aus einem Text des Spielers.
 type textItem struct {
@@ -163,53 +158,28 @@ func fitPx(px, w, maxW float64) float64 {
 // spaceW ist die Breite eines Leerzeichens in der Größe size (Abstand der Teile der Spielerkarte).
 func spaceW(size float64) float64 { return size * 0.3 }
 
-// cardSize: „P1“, Lebensbalken, Goldtopf und Gold nebeneinander.
+// cardSize: Geldsack (Kante doppelt so groß wie ein Ressourcen-Icon) und Gold nebeneinander, ohne Lebensbalken und
+// Spielermarke (B-919).
 func (h *hud) cardSize(st *seatState, f *art.Font, p int, k float64) (float64, float64) {
 	size := rolePlayer.px * k
-	tw, th := h.paint.measureText(f, p, slotP, playerTags[st.monarch%len(playerTags)], size)
-	gw, _ := h.paint.measureText(f, p, slotGold, st.goldS, size)
-	w := tw + gw + (cardBar+cardPot)*k + 3*spaceW(size) + 2*boxPadX*k
-	return math.Ceil(w/(widthStep*k)) * (widthStep * k), max(th, cardBarH*k) + 2*boxPadY*k
+	side := purseSide(fontPx(roleShared, h.cells) * k)
+	gw, th := h.paint.measureText(f, p, slotGold, st.goldS, size)
+	w := side + gw + 2*spaceW(size) + 2*boxPadX*k
+	return math.Ceil(w/(widthStep*k)) * (widthStep * k), max(th, side) + 2*boxPadY*k
 }
 
-// drawCard zeichnet die Spielerkarte: Name, Lebensbalken (Farbe nach Anteil, Rahmen in Spielerfarbe), Goldtopf
-// (hervorgehoben nach einer Änderung, B-398) und „Gold/Maximum“.
+// drawCard zeichnet die Spielerkarte: Geldsack in der Größe des Spielers (hervorgehoben nach einer Änderung des
+// Goldes, B-398) und „Gold/Maximum“.
 func (h *hud) drawCard(dst *ebiten.Image, st *seatState, f *art.Font, player int, r rect, k float64) {
-	pt, size, p := &h.paint, rolePlayer.px*k, playerTags[st.monarch%len(playerTags)]
+	pt, size := &h.paint, rolePlayer.px*k
 	pt.fill(dst, r, rgb(0, boxAlpha))
+	side := purseSide(fontPx(roleShared, h.cells) * k)
 	x, y := r.X+boxPadX*k, r.Y+boxPadY*k
-	tw, th := pt.measureText(f, player, slotP, p, size)
-	pt.text(dst, f, p, x, y, size, rgb(st.color, 1))
-	x += tw + spaceW(size)
-	by := y + (max(th, cardBarH*k)-cardBarH*k)/2
-	bar := rect{x, by, cardBar * k, cardBarH * k}
-	pt.fill(dst, bar, rgb(0, 0.7))
-	pt.fill(dst, rect{x + 2*k, by + 2*k, (cardBar - 4) * k * st.hp, (cardBarH - 4) * k}, rgb(hpColor(st.hp), 1))
-	pt.frame(dst, bar, 2*k, rgb(st.color, 1))
-	x += bar.W + spaceW(size)
-	cx, cy := x+cardPot*k/2, by+cardBarH*k/2+2*k
-	if ic := h.icon(goldIcon); ic != nil { // Münz-Icon statt gezeichnetem Goldtopf (B-890)
-		drawIcon(dst, ic, cx-cardPot*k/2, cy-cardPot*k/2-2*k, cardPot*k)
-	} else {
-		pt.circle(dst, cx, cy, 11*k, rgb(0xffd166, 1))
-		pt.fill(dst, rect{cx - 10*k, cy - 13*k, 20 * k, 3 * k}, rgb(0x9c6644, 1))
-	}
-	if st.flash {
-		pt.ringAt(dst, cx, cy, 17*k, rgb(0xffffff, 1))
-	}
-	x += cardPot*k + spaceW(size)
-	pt.text(dst, f, st.goldS, x, y, size, white)
-}
-
-// hpColor: grün über der Hälfte, orange über einem Viertel, sonst rot (HudScene.ts › drawCards).
-func hpColor(hp float64) uint32 {
-	switch {
-	case hp > 0.5:
-		return 0x52b788
-	case hp > 0.25:
-		return 0xf4a261
-	}
-	return 0xe63946
+	inner := r.H - 2*boxPadY*k
+	h.drawPurse(dst, rect{x, y + (inner-side)/2, side, side}, st.purse, st.flash, k)
+	x += side + spaceW(size)
+	_, th := pt.measureText(f, player, slotGold, st.goldS, size)
+	pt.text(dst, f, st.goldS, x, y+(inner-th)/2, size, white)
 }
 
 // bossSize: Titel und Leiste untereinander; ohne Boss 0.

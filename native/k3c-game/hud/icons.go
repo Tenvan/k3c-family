@@ -13,7 +13,7 @@ import (
 // iconAnim ist die Animation der Icons.
 const iconAnim = "idle"
 
-// goldIcon ist das Icon des Goldes auf der Spielerkarte.
+// goldIcon ist das Münz-Icon (die Spielerkarte zeigt seit B-919 den Geldsack, purse.go).
 const goldIcon = "icons/icon-muenze"
 
 // resourceIcons ordnet jedem Rohstoff (resourceOrder) sein Icon zu.

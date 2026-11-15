@@ -1,10 +1,10 @@
-# B-915 · Stresstest-Overlay überdeckt das Radar; Radar wandert an die Unterkante im Fluss
+# B-917 · Auslösetaste ist immer die Leertaste, unabhängig von den Richtungstasten
 
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** FB1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-15
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Live-Test 🧑 2026-11-15: Das Overlay des Stresstests liegt über dem Radar.
+Live-Test 🧑 2026-11-15: Die Auslösetaste hängt vom gewählten Eingabe-Profil (EP1) ab.
 
 ## Ziel
 
-Radar und Stresstest-Overlay sind gleichzeitig lesbar; das Radar sitzt an der Unterkante im Fluss des HUD.
+Auf der Tastatur löst immer die Leertaste aus, egal welche Richtungstasten ein Profil setzt.
 
 ## Beteiligte und Zielgruppen
 
@@ -56,12 +56,11 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Im laufenden Stresstest überlappt das Overlay das Radar nicht (Test am Layout oder Screenshot).
-- **AC-02** Das Radar sitzt an der Unterkante des HUD im Fluss, auch im Split-Screen mit 2 Spielern.
+- **AC-01** In jedem Tastatur-Profil löst die Leertaste aus (Test über alle Profile).
 
 ## Offene Fragen
 
-keine
+Zwei Spieler an einer Tastatur: bekommt Spieler 2 eine eigene Auslösetaste? Default: Leertaste für Spieler 1, Spieler 2 behält seine Profiltaste (🧑).
 
 ## Notizen
 

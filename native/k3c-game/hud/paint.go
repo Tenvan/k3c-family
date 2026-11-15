@@ -40,7 +40,6 @@ type textSlot int
 
 const (
 	slotGold textSlot = iota
-	slotP
 	slotClock
 	slotFight
 	slotPlace

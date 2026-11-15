@@ -21,7 +21,7 @@ import (
 	"k3c/native/k3c-game/view"
 )
 
-// stressSave ist der Spielstand eines Stresstests (wird bei jedem Test überschrieben).
+// stressSave ist der Spielstand eines Stresstests (jeder neue Test ersetzt ihn ohne Rückfrage, B-916).
 const stressSave = "stresstest"
 
 // stressPadBase ist der Index der Platzhalter-Pads für Spieler ohne Gerät (der Platz wartet auf ein Gerät).
@@ -63,6 +63,9 @@ func (g *Game) startStress(t view.StressTest, by view.DeviceID) error {
 		return errNoDev
 	}
 	t = t.Normalized()
+	if err := g.dropStressSave(); err != nil {
+		return err
+	}
 	if err := g.sim.New(stressGame(t, by)); err != nil {
 		return err
 	}
@@ -76,6 +79,26 @@ func (g *Game) startStress(t view.StressTest, by view.DeviceID) error {
 	slog.Info("🚀 Stresstest gestartet", "vorgabe", t.Preset, "spieler", t.Players, "tiefe", t.Depth, "seed", t.Seed,
 		"gegner", t.Enemies, "anstieg", t.Growth, "faktor", t.Factor, "wellen", t.Waves, "minuten", t.Minutes, "rein", t.Pure)
 	return nil
+}
+
+// dropStressSave nimmt den vorhandenen Stresstest-Spielstand aus der Liste (Sicherung wie beim Löschen im Menü);
+// andere Spielstände bleiben unberührt. Lehnt Delete ab, weil er der des laufenden Spiels ist, wird dieses (der alte
+// Stresstest) beendet und erneut gelöscht; ein laufendes normales Spiel beendet erst New.
+func (g *Game) dropStressSave() error {
+	list, err := g.sim.List()
+	if err != nil {
+		return err
+	}
+	if !slices.ContainsFunc(list, func(e view.SaveInfo) bool { return e.Name == stressSave }) {
+		return nil
+	}
+	if err := g.sim.Delete(stressSave); err == nil || !g.sim.Active() {
+		return err
+	}
+	if err := g.sim.Close(); err != nil {
+		slog.Warn("💥 Laufender Stresstest nicht sauber beendet", "err", err)
+	}
+	return g.sim.Delete(stressSave)
 }
 
 // now ist die Wanduhr des Stresstests (Tests setzen clock).

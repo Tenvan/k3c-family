@@ -1,6 +1,7 @@
 package game
 
 import (
+	"errors"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -15,7 +16,19 @@ import (
 // stressSim ist devSim, der neue Spiele mitschreibt.
 type stressSim struct {
 	*devSim
-	games []view.NewGame
+	games   []view.NewGame
+	saves   []view.SaveInfo
+	deleted []string
+	running string // Name des laufenden Spiels: Delete lehnt ihn ab, bis Close lief
+}
+
+func (s *stressSim) List() ([]view.SaveInfo, error) { return s.saves, nil }
+func (s *stressSim) Delete(name string) error {
+	if name == s.running && !s.ended {
+		return errors.New("läuft")
+	}
+	s.deleted = append(s.deleted, name)
+	return nil
 }
 
 func (s *stressSim) New(g view.NewGame) error { s.games = append(s.games, g); return nil }
@@ -238,5 +251,48 @@ func TestStressPureMode(t *testing.T) {
 	}
 	if on := s.actions[0].On; on == nil || !*on || s.actions[1].Amount != 20 || s.actions[2].Amount != 10 || s.actions[3].Amount != 15 {
 		t.Errorf("Aktionen %+v", s.actions)
+	}
+}
+
+// B-916: Ein vorhandener Stresstest-Spielstand wird ohne Rückfrage ersetzt; ist er der des laufenden Spiels, wird dieses
+// vorher beendet. Ein laufendes normales Spiel und andere Spielstände bleiben unberührt (New beendet es selbst).
+func TestStressReplacesOldSave(t *testing.T) {
+	by := view.DeviceID{Kind: view.DeviceKeyboard}
+	for _, c := range []struct {
+		running string
+		closed  int
+	}{{stressSave, 1}, {"spiel-1", 0}, {"", 0}} {
+		g, s, _ := stressGameOf(t, t.TempDir())
+		s.saves, s.running = []view.SaveInfo{{Name: "spiel-1"}, {Name: stressSave}}, c.running
+		if err := (menuSession{Sim: g.sim, g: g}).StartStress(stressCfg, by); err != nil {
+			t.Fatal(err)
+		}
+		if len(s.deleted) != 1 || s.deleted[0] != stressSave || s.closed != c.closed || len(s.games) != 1 {
+			t.Errorf("läuft %q: gelöscht %v, geschlossen %d, Spiele %d", c.running, s.deleted, s.closed, len(s.games))
+		}
+	}
+	g, s, _ := stressGameOf(t, t.TempDir())
+	s.saves = []view.SaveInfo{{Name: "spiel-1"}}
+	if err := (menuSession{Sim: g.sim, g: g}).StartStress(stressCfg, by); err != nil || len(s.deleted) != 0 || len(s.games) != 1 {
+		t.Errorf("ohne alten Test: Fehler %v, gelöscht %v", err, s.deleted)
+	}
+}
+
+// B-918: Jeder Übergang Menü → Spiel (step) hebt einen hängenden Halt auf; ModePlay entsteht nur dort und beim Szenen-Start
+// (frische Session ohne Halt). Das Lade-Bild (Game.loading) ändert den Modus nicht.
+func TestStepFromMenuToPlayClearsHalt(t *testing.T) {
+	d := &devSim{fakeSim: newFakeSim(), halt: true}
+	g := playGame(d.fakeSim)
+	g.sim = d
+	g.mode = ModeMenu
+	g.stack.Push(g.parts.Menus.Pause())
+	g.step(view.Step{Kind: view.StepPlay})
+	if g.mode != ModePlay || d.halt {
+		t.Errorf("Modus %v, Halt %v", g.mode, d.halt)
+	}
+	d.halt, g.mode = true, ModePlay
+	g.step(view.Step{Kind: view.StepStay}) // kein Übergang aus dem Menü: Halt bleibt Sache der Entwickler-Taste
+	if !d.halt {
+		t.Error("Halt ohne Menü-Übergang aufgehoben")
 	}
 }

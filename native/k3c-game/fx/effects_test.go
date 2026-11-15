@@ -221,3 +221,12 @@ func TestBlitzeAus(t *testing.T) {
 		t.Errorf("Blitze aus: %d Blitze, %d andere Effekte", off, rest)
 	}
 }
+
+// Jede Skill-Linie aus monarch.json hat eine Ring-Farbe (auch die Linie purse, B-922).
+func TestLineColorsCoverEverySkillLine(t *testing.T) {
+	for id, s := range skills {
+		if _, ok := lineColors[s.Line]; !ok {
+			t.Errorf("Skill %s: Linie %q ohne Farbe", id, s.Line)
+		}
+	}
+}
