@@ -1,23 +1,22 @@
-# KS6 · SIM · Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf
+# KS6 · SIM, PAP · Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KSY
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** SIM, PAP
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+KS5 (#616) zeichnet Kampf-Elemente vorläufig und rechnet Zahl-Schlüssel und Preise der Engine nach.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Engine-API für Zahlstellen und Kronen, Papierschnitt-Assets für alle Kampf-Elemente.
 
 ## Beteiligte und Zielgruppen
 
@@ -33,14 +32,9 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
-
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
-
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `engine/sim/**`, `native/k3c-game/**`, `public/grafik/**`, `data/paper.json`
+- **Sperre:** golden
+- Sim-Code im eigenen Worktree (B-925); Assets nur über `assets_*`.
 
 ## Beispiele
 
@@ -52,16 +46,19 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Engine-Export für Zahlstellen und Kronen, Spiel nutzt ihn (`B-939`).
+- **AC-02** Papierschnitt-Assets ersetzen die gezeichneten Formen (`B-940`).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| KS6.1 | `KS6.1-engine-export.md` | Umsetzung | autonom | fertig |
+| KS6.2 | `KS6.2-kampf-assets.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

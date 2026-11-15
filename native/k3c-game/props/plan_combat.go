@@ -2,8 +2,8 @@ package props
 
 // Zeichenliste der Kampfregeln (KS5, B-934, docs/rules/kampf.md): HP-Balken über jedem stehenden Portal, gefallene Kronen
 // (fliegend im Bogen, liegend am Boden) und die Zahlstellen der Kampfvariante (Schild, Auslöser, Banner) mit Preis. Kronen auf
-// Köpfen (Monarch, Gegner, Mitspieler) zeichnet actors. Bis es Papierschnitt-Assets gibt (assets_*, 005), entstehen alle
-// Formen aus Rechtecken und Dreiecken (vorläufig); die Zahlstellen tragen keinen Text, nur Preis-Münzen.
+// Köpfen (Monarch, Gegner, Mitspieler) zeichnet actors. Krone und Zahlstellen sind Papierschnitt-Icons (B-940, Gruppe
+// icons); nur der Portal-Balken bleibt gezeichnet. Die Zahlstellen tragen keinen Text, nur Preis-Münzen.
 
 import (
 	"image/color"
@@ -19,14 +19,20 @@ const spotsEvery = 0.5
 // Farben der Zahlstellen und Kronen.
 var (
 	portalRed   = color.RGBA{230, 57, 70, 255}
-	crownGold   = color.RGBA{255, 209, 102, 255}
-	crownRim    = color.RGBA{156, 102, 68, 255}
-	poleBrown   = color.RGBA{111, 69, 24, 255}
-	shieldGrey  = color.RGBA{141, 153, 174, 255}
-	triggerRed  = color.RGBA{193, 18, 31, 255}
 	portalBarW  = px(80)
 	portalAbove = px(14) // Abstand des Balkens über dem Portal-Bild
 )
+
+// Bilder der Krone und der Zahlstellen (data/paper.json › objekte), einmal angelegt.
+var (
+	crownLook   = look{"icons/icon-krone", idle}
+	shieldLook  = look{"icons/zahlstelle-schild", idle}
+	triggerLook = look{"icons/zahlstelle-ausloeser", idle}
+	bannerLook  = look{"icons/zahlstelle-banner", idle}
+)
+
+// combatAssets sind die Icons der Kampfregeln, die props in jedem Level anmeldet (levelAssets).
+var combatAssets = []string{crownLook.asset, shieldLook.asset, triggerLook.asset, bannerLook.asset}
 
 // combat legt Portal-Balken, Kronen am Boden bzw. in der Luft und Zahlstellen an.
 func (p *planner) combat(w *sim.World, info *stageInfo, k view.Camera) {
@@ -73,31 +79,24 @@ func portalDown(w *sim.World, x float64) bool {
 	return false
 }
 
-// fallenCrown: Krone mit Fuß bei (x, z), z = Höhe in Units; Form view.CrownParts mit Rand.
+// fallenCrown: Krone-Icon mit Fuß bei (x, z), z = Höhe in Units; liegt über den Figuren (top).
 func (p *planner) fallenCrown(x, z float64) {
-	lift := view.CrownParts[0][3] / 2
-	for _, q := range view.CrownParts {
-		p.rect(&p.top, x+px(q[0]), z+px(lift+q[1]-q[3]/2-1), px(q[2]+2), px(q[3]+2), crownRim)
-	}
-	for _, q := range view.CrownParts {
-		p.rect(&p.top, x+px(q[0]), z+px(lift+q[1]-q[3]/2), px(q[2]), px(q[3]), crownGold)
+	if _, _, ok := p.size(crownLook); ok {
+		p.top = append(p.top, item{shape: shapeSprite, look: crownLook, x: x, y: z})
 	}
 }
 
-// spot: Zeichen der Zahlstelle (Schild an der Burg, Auslöser und Banner am Tor) und, steht ein Monarch mit Krone in Reichweite,
+// spot: Icon der Zahlstelle (Schild an der Burg, Auslöser und Banner am Tor) und, steht ein Monarch mit Krone in Reichweite,
 // der Preis als Münz-Plätze (gefüllt = bezahlt).
 func (p *planner) spot(w *sim.World, s sim.CombatSpot) {
-	p.rect(&p.body, s.X, 0, px(4), px(64), poleBrown)
+	l := bannerLook
 	switch s.Kind {
 	case "shield":
-		p.rect(&p.body, s.X, px(30), px(24), px(30), dark)
-		p.rect(&p.body, s.X, px(32), px(20), px(26), shieldGrey)
+		l = shieldLook
 	case "trigger":
-		p.body = append(p.body, item{shape: shapeTri, x: s.X + px(10), y: px(40), w: px(20), h: px(22), clr: triggerRed})
-	default:
-		p.rect(&p.body, s.X+px(9), px(46), px(18), px(14), crownRim)
-		p.rect(&p.body, s.X+px(9), px(47), px(16), px(12), crownGold)
+		l = triggerLook
 	}
+	p.sprite(l, s.X, 0, 0)
 	v := p.viewer // Preis und Zahlstand nur für den Monarchen dieser Split-Hälfte
 	if v == nil || v.Crown != nil || !s.NearOf(w, v) { // erst die billige Entfernung, StateFor alloziert
 		return

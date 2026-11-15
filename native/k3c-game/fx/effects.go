@@ -64,7 +64,7 @@ var config = [...]struct {
 	kindNoTarget: {look{0xffffff, 0, 0.7, 0, motionBurst}, false},
 	kindSkill:    {look{0xffffff, 30, 0.45, 4, motionBurst}, false},
 	kindDamage:   {look{0xffffff, 0, 0.8, 0, motionBurst}, false},
-	// Münzen springen aus dem Geldsack, wenn ein Treffer den Monarchen Gold kostet (kampf.md § 5); vorläufig Partikel, ohne Asset.
+	// Münzen springen aus dem Geldsack, wenn ein Treffer den Monarchen Gold kostet (kampf.md § 5); gezeichnet als Münz-Sprite (paint.go), die Farbe gilt ohne Grafik.
 	kindCoinLoss: {look{0xffd23c, 14, 0.7, 4, motionRise}, false},
 }
 

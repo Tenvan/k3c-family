@@ -41,6 +41,16 @@
       "idle.png": "b96cdf6315419e931ad482a9b57a8e5da11c411ea9728c1e68a912cf46d7e32b"
     }
   },
+  "banner-angriff": {
+    "renderKey": "c914d46b1de18a9a60237a167fe3e94928918a2928b1ec321920def40ea46933",
+    "dateien": {
+      "idle.png": "30aa2e063b6af140deddc7050f893144bfb4d2bba3775ce64f171cc152bfbd49",
+      "idle@spieler1.png": "30aa2e063b6af140deddc7050f893144bfb4d2bba3775ce64f171cc152bfbd49",
+      "idle@spieler2.png": "2afdf51190b2c224dba41eda29855915b7b54f8c3d5ba7e7d935470d80aef97d",
+      "idle@spieler3.png": "418c19f8c3f17cb7302588d51fe0b66c24ea1fe3e67a86c768c000064691571e",
+      "idle@spieler4.png": "829c30e28151fc408375df4dbbdf02108b10ed67ba667f72d6c4b0f8877f6942"
+    }
+  },
   "birke-2": {
     "renderKey": "1bbaed133e23c03e7f97f35678f37281057e360eb3ccc7dad0c0484877faea83",
     "dateien": {
@@ -132,6 +142,16 @@
     "renderKey": "b7a6352548a7b3c9c4ad372672ab575c3b15589700add19e5b1485f0d697c413",
     "dateien": {
       "idle.png": "295c83315f6acdc5a4f0fae97443d4c206d17e3c7332c4e337ddb6476e3ead07"
+    }
+  },
+  "schild-gruppenfuehrer": {
+    "renderKey": "943dab6f351b338e908b999c16fa481fe511a8264039206d890b288f221dd8ba",
+    "dateien": {
+      "idle.png": "8809411a04ff32ecd07451e3c291e053de9e6cd7805c8f4580b1cc81e892d479",
+      "idle@spieler1.png": "8809411a04ff32ecd07451e3c291e053de9e6cd7805c8f4580b1cc81e892d479",
+      "idle@spieler2.png": "71aa3ba60e8b3263ded018bc7aa2f7c0616318850214c9247e96d2900262b70a",
+      "idle@spieler3.png": "f0a735c21ca23f979272982ec3ce9888f1ddbbbf41d82574d63ff973775ee9ff",
+      "idle@spieler4.png": "391578a6beada1ecd871ca6874be4eab09c8db5982d0998728cd72638c268b41"
     }
   },
   "schild-spitzhacke": {

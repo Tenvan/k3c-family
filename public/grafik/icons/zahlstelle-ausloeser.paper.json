@@ -1,0 +1,83 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "zahlstelle-ausloeser",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Zahlstelle Auslöser: gebogenes Kriegshorn mit Goldbeschlägen und Lederriemen, Symbol über der Zahlstelle an der Burg, die den Angriff auslöst",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "falz",
+          "breite": 1.5,
+          "form": "M-9 -22Q0 -1 11 -16",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14.5 -26.5L-12.5 -28C-8 -19 0 -17 5.5 -28.5L15 -28.5C11 -7 -9 -5 -14.5 -26.5Z",
+          "material": "leinen"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-14.5 -26.5C-9 -5 11 -7 15 -28.5L13 -28.5C9.5 -13 -5.5 -11 -12.8 -24.4Z",
+          "material": "leinen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M15 -28.5C15 -29.6 12.9 -30.3 10.25 -30.3C7.6 -30.3 5.5 -29.6 5.5 -28.5C5.5 -27.4 7.6 -26.7 10.25 -26.7C12.9 -26.7 15 -27.4 15 -28.5Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M4.8 -24.8L13.9 -21.6",
+          "material": "gold"
+        },
+        {
+          "art": "falz",
+          "breite": 2,
+          "form": "M-5.2 -19.6L-3.4 -12.4",
+          "material": "gold"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M-14.2 -26.2L-12.4 -27.6",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "leinen",
+          "mitte": [13.2, -25.6],
+          "radius": 0.9,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

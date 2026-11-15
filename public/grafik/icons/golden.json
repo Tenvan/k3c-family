@@ -1,4 +1,10 @@
 {
+  "geldsack": {
+    "renderKey": "5f4ddf2f0743ab5f6cf2a89500c3d590a9d1ba1a7011266ace22d85f416f350b",
+    "dateien": {
+      "idle.png": "bc547661b0c9fc7892c7087f9cbf9b508d38d7404ee6beb706faee4478f71f5a"
+    }
+  },
   "icon-eisen": {
     "renderKey": "aceb907309da4b155932eb9518a745e5a9af9ecaaf346b8900f07bdc459361fe",
     "dateien": {
@@ -81,6 +87,24 @@
     "renderKey": "487c3965094e72ca2bfeb8423278f4bf67e5de0a7fd7af83f462c614eff047b9",
     "dateien": {
       "idle.png": "398c1bc0a0a35583872239c387c9dd4abfe17b6a742a01506496cd48af11bbf0"
+    }
+  },
+  "zahlstelle-ausloeser": {
+    "renderKey": "d855add2553cac00464046942537ac217ea0a89b38c2c75cd5df37f1202d2cb0",
+    "dateien": {
+      "idle.png": "8f6a5b8be90d8056b9d5781aa03be39bbf5951590e5e92a6a115401833b6f85b"
+    }
+  },
+  "zahlstelle-banner": {
+    "renderKey": "39228d3866425d914d757158313a11967766d70219363c0960780c922ac90454",
+    "dateien": {
+      "idle.png": "cc597d84b5a9ca3e2c7fe7cabd3882a41484c12597b9ecd1621422ae9aeb648c"
+    }
+  },
+  "zahlstelle-schild": {
+    "renderKey": "61c9db9fa2a12641cb6829eb0f2343bd816d558a358da5a482755a924a94c172",
+    "dateien": {
+      "idle.png": "6298c369163ede067bc4f08fd477831905f66d862ac406ebbb44ff1bfb54e6b4"
     }
   }
 }

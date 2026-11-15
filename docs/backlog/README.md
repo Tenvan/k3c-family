@@ -45,7 +45,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SR1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
 | [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | offen | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |
 | [B-938](B-938-weltauswahl-menue.md) | CLI | Idee | mittel | offen | WG2 | Neues Spiel beginnt mit der Weltauswahl im großen Bild, Spielstände und Pausenmenü zeigen das kleine |
-| [B-939](B-939-kampf-engine-export.md) | SIM | Schuld | mittel | offen | KS6 | Die Engine exportiert Preis, Zahlstand und Zahlbarkeit je Kampf-Zahlstelle und Spieler sowie die Kronen-Zustände |
 | [B-940](B-940-kampf-assets.md) | PAP | Idee | mittel | offen | KS6 | Papierschnitt-Assets für Krone, Banner, Schild, Zahlstellen, Portal-HP und Münzschauer ersetzen die gezeichneten Formen |
 
 ## Archiv

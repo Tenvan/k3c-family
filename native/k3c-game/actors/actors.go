@@ -86,5 +86,7 @@ func (d *drawer) Assets(_ string, w *sim.World) []string {
 	if d.cat == nil {
 		return nil
 	}
-	return d.cat.LevelSheets(w)
+	out := slices.Concat(d.cat.LevelSheets(w), markAssets) // Banner, Krone und Schild: Papier-Bilder der Anzeigen (B-940)
+	slices.Sort(out)
+	return slices.Compact(out)
 }

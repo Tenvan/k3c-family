@@ -35,6 +35,11 @@
     "manifest": "ausgang/manifest.json"
   },
   {
+    "id": "banner-angriff",
+    "rig": "requisite",
+    "manifest": "banner-angriff/manifest.json"
+  },
+  {
     "id": "birke-2",
     "rig": "requisite",
     "manifest": "birke-2/manifest.json"
@@ -98,6 +103,11 @@
     "id": "schild-axt",
     "rig": "requisite",
     "manifest": "schild-axt/manifest.json"
+  },
+  {
+    "id": "schild-gruppenfuehrer",
+    "rig": "requisite",
+    "manifest": "schild-gruppenfuehrer/manifest.json"
   },
   {
     "id": "schild-spitzhacke",

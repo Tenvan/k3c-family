@@ -105,7 +105,7 @@ func at(c view.Cell, x, y float64) (sx, sy, s float64) {
 }
 
 // effects zeichnet Ring und Partikel bzw. aufsteigenden Text jedes Effekts zur Zeit now.
-func (pt *painter) effects(dst *ebiten.Image, list []effect, f *art.Font, c view.Cell, now, k float64) {
+func (pt *painter) effects(dst *ebiten.Image, list []effect, f *art.Font, coin *art.Sheet, c view.Cell, now, k float64) {
 	for i := range list {
 		e := &list[i]
 		if !c.Camera.Visible(e.x, 4) {
@@ -119,9 +119,29 @@ func (pt *painter) effects(dst *ebiten.Image, list []effect, f *art.Font, c view
 		x, y, s := at(c, e.x, e.y)
 		for j := range 1 + e.look.particles {
 			q := pieceAt(e.look, j, p)
+			if e.kind == kindCoinLoss && coin != nil && j > 0 { // Münzschauer: Münz-Sprite statt Scheibe (B-940)
+				pt.coin(dst, coin, j, x+q.dx*s, y+q.dy*s, q.radius*s, q.alpha)
+				continue
+			}
 			pt.circle(dst, x+q.dx*s, y+q.dy*s, q.radius*s, rgba(e.look.color, q.alpha))
 		}
 	}
+}
+
+// coin zeichnet Bild i des Münz-Sheets als Kreis um (x, y) mit Radius r (Fenster-px) und Deckkraft alpha.
+func (pt *painter) coin(dst *ebiten.Image, sh *art.Sheet, i int, x, y, r, alpha float64) {
+	img := sh.Frame(i)
+	if img == nil || sh.FW <= 0 || r <= 0 {
+		return
+	}
+	k := 2 * r / float64(sh.FW)
+	pt.op.GeoM.Reset()
+	pt.op.GeoM.Scale(k, k)
+	pt.op.GeoM.Translate(x-r, y-float64(sh.FH)*k/2)
+	pt.op.ColorScale.Reset()
+	pt.op.ColorScale.ScaleAlpha(float32(alpha))
+	pt.op.Filter, pt.op.DisableMipmaps = ebiten.FilterLinear, true
+	dst.DrawImage(img, &pt.op)
 }
 
 // rising zeichnet den Text eines Effekts mittig, steigt auf und blendet aus (noTarget 24 px, Schadenszahl 28 px).

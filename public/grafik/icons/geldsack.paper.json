@@ -1,0 +1,89 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "geldsack",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Geldsack: prall gefüllter Leinensack mit Lederschnur und goldenem Münzzeichen, für die Münzanzeige im HUD; ein Asset, das HUD skaliert es",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-5 -20C-14 -17 -15 -3 -6 -3L6 -3C15 -3 14 -17 5 -20Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-5 -20C-14 -17 -15 -3 -6 -3L-1 -3C-9 -5 -10 -15 -3 -20Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -21.5L-8.5 -28L-3.5 -25L0 -29.5L3.5 -25L8.5 -28L6 -21.5Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -22.5L6 -22.5L5.5 -19.5L-5.5 -19.5Z",
+          "material": "leinen"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M3 -21Q7 -19 6 -15",
+          "material": "leinen"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0.5, -10.5],
+          "radius": 4.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0.8, -10.8],
+          "radius": 3.8
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [2, -12],
+          "radius": 1.2,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M8 -15Q10 -11 8.5 -6.5",
+          "material": "leder",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}
