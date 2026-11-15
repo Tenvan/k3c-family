@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-meer-vorn",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): vordere Papierschicht des Meeres mit heller Wellenkante (Gischt), große Wellen, waagrecht kachelbar über 768",
+  "teile": [
+    {
+      "id": "flaeche",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0V-92Q96 -64 192 -92Q288 -64 384 -92Q480 -64 576 -92Q672 -64 768 -92V0Z",
+          "material": "kristall",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -92Q96 -64 192 -92Q288 -64 384 -92Q480 -64 576 -92Q672 -64 768 -92V-85Q672 -53 576 -85Q480 -53 384 -85Q288 -53 192 -85Q96 -53 0 -85Z",
+          "material": "hermelin",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -36Q96 -14 192 -36Q288 -14 384 -36Q480 -14 576 -36Q672 -14 768 -36V0H0Z",
+          "material": "biom-kristall",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 96,
+    "rahmen": [0, -96, 768, 96]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

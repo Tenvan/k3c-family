@@ -1,0 +1,59 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-aufsatz-baum",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Aufsatz Baum für Insel-Miniaturen, kleiner Laubbaum mit runder Krone",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-3 2V-18H3V2Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -18Q-18 -32 -8 -36Q-4 -46 6 -42Q16 -40 14 -28Q18 -18 6 -14Q-6 -10 -14 -18Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-14 -18Q-18 -32 -8 -36Q-10 -26 -2 -18Q-8 -13 -14 -18Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [6, -32],
+          "radius": 4,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 52,
+    "rahmen": [-20, -48, 40, 52]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "seekarte-aufsatz-turm",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Seekarte (B-964): Aufsatz Turm für Insel-Miniaturen, kleiner Steinturm mit Zinnen und Fenster",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-9 2V-30H9V2Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-9 2V-30H-3V2Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -28V-40H-7V-35H-2.5V-40H2.5V-35H7V-40H12V-28Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2 -12V-20Q0 -24 2 -20V-12Z",
+          "material": "schwarz",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 48,
+    "rahmen": [-16, -44, 32, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

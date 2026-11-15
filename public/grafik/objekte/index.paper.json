@@ -130,6 +130,71 @@
     "manifest": "schild-spitzhacke/manifest.json"
   },
   {
+    "id": "seekarte-aufsatz-baum",
+    "rig": "requisite",
+    "manifest": "seekarte-aufsatz-baum/manifest.json"
+  },
+  {
+    "id": "seekarte-aufsatz-fels",
+    "rig": "requisite",
+    "manifest": "seekarte-aufsatz-fels/manifest.json"
+  },
+  {
+    "id": "seekarte-aufsatz-turm",
+    "rig": "requisite",
+    "manifest": "seekarte-aufsatz-turm/manifest.json"
+  },
+  {
+    "id": "seekarte-insel-britannien",
+    "rig": "hintergrund",
+    "manifest": "seekarte-insel-britannien/manifest.json"
+  },
+  {
+    "id": "seekarte-insel-nil",
+    "rig": "hintergrund",
+    "manifest": "seekarte-insel-nil/manifest.json"
+  },
+  {
+    "id": "seekarte-insel-sengoku",
+    "rig": "hintergrund",
+    "manifest": "seekarte-insel-sengoku/manifest.json"
+  },
+  {
+    "id": "seekarte-insel-standard",
+    "rig": "hintergrund",
+    "manifest": "seekarte-insel-standard/manifest.json"
+  },
+  {
+    "id": "seekarte-meer-hinten",
+    "rig": "hintergrund",
+    "manifest": "seekarte-meer-hinten/manifest.json"
+  },
+  {
+    "id": "seekarte-meer-mitte",
+    "rig": "hintergrund",
+    "manifest": "seekarte-meer-mitte/manifest.json"
+  },
+  {
+    "id": "seekarte-meer-vorn",
+    "rig": "hintergrund",
+    "manifest": "seekarte-meer-vorn/manifest.json"
+  },
+  {
+    "id": "seekarte-schiff",
+    "rig": "requisite",
+    "manifest": "seekarte-schiff/manifest.json"
+  },
+  {
+    "id": "seekarte-zeichen-fahne",
+    "rig": "requisite",
+    "manifest": "seekarte-zeichen-fahne/manifest.json"
+  },
+  {
+    "id": "seekarte-zeichen-nebel",
+    "rig": "requisite",
+    "manifest": "seekarte-zeichen-nebel/manifest.json"
+  },
+  {
     "id": "setzling",
     "rig": "requisite",
     "manifest": "setzling/manifest.json"
