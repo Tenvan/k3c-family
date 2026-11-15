@@ -17,7 +17,8 @@ type payTarget struct {
 	offer    *offerTarget
 	merchant string
 	sword    *Site       // Schwert-Zahlziel der Werkstatt (unit_warrior.go)
-	combat   *CombatSpot // Schild, Auslöser oder Banner der Kampfvariante (combat.go)
+	combat    *CombatSpot // Schild, Auslöser oder Banner der Kampfvariante (combat.go)
+	combatKey string // Zahl-Schlüssel des Kampf-Zahlziels (CombatSpot.key)
 }
 
 func stepPlayers(w *World, commands []PlayerCommand, dt float64) {
@@ -90,6 +91,9 @@ func nearest[T any](items []*T, pos func(*T) float64, x, r float64, ok func(*T) 
 // findPayTarget: Was würde eine Münze gerade bezahlen? Bauplatz vor Landstreicher vor Ressource.
 func findPayTarget(w *World, p *Player) *payTarget {
 	r := w.values().Economy.PayRangeUnits
+	if c := combatTarget(w, p); c != nil && c.Kind != "shield" { // Auslöser und Banner gehen Bauplätzen in Reichweite vor
+		return &payTarget{combat: c, combatKey: c.key(p)}
+	}
 	s := nearest(w.Sites, func(s *Site) float64 { return s.X }, p.X, r, func(s *Site) bool { return sitePayable(w, s) })
 	s = lineBeforeRuin(w, s, p.X) // Linien-Platz vor Ruine (building_ruin.go)
 	if h := w.hubSite; h != nil && math.Abs(h.X-p.X) <= r && sitePayable(w, h) && (s == nil || math.Abs(h.X-p.X) < math.Abs(s.X-p.X)) {
@@ -105,7 +109,7 @@ func findPayTarget(w *World, p *Player) *payTarget {
 		return &payTarget{sword: s}
 	}
 	if c := combatTarget(w, p); c != nil {
-		return &payTarget{combat: c}
+		return &payTarget{combat: c, combatKey: c.key(p)}
 	}
 	if side := merchantAt(w, p.X); side != "" {
 		return &payTarget{merchant: side}
@@ -143,7 +147,7 @@ func keyOf(t *payTarget) string {
 	case t.sword != nil:
 		return "sword:" + strconv.Itoa(t.sword.ID)
 	case t.combat != nil:
-		return "combat:" + t.combat.key()
+		return "combat:" + t.combatKey
 	case t.site != nil:
 		return "site:" + strconv.Itoa(t.site.ID)
 	case t.troop != nil:

@@ -64,6 +64,8 @@ type HubSave struct {
 	GuardsCleared []string `json:"guardsCleared,omitempty"`
 	// Zerstörte Portale (kampf.md § 2, portal.go): X der Portale; sind alle weg, ist die Stufe dauerhaft sicher.
 	PortalsDown []float64 `json:"portalsDown,omitempty"`
+	// Shields: bezahlte, noch nicht abgeholte Schilde der Stufe (Variante groups, combat.go).
+	Shields int `json:"shields,omitempty"`
 }
 
 // PlayerSave ist das Gold eines Spielerplatzes.
@@ -79,6 +81,8 @@ type TroopSave struct {
 	AnchorX    float64 `json:"anchorX"`
 	Profession string  `json:"profession,omitempty"`
 	WorkSite   string  `json:"workSite,omitempty"`
+	// Leader: Gruppenführer mit Schild (combat.go, B-932); die Gruppe füllt sich nach dem Laden neu.
+	Leader bool `json:"leader,omitempty"`
 }
 
 // SiteSave ist ein gespeicherter Bauplatz.
@@ -163,6 +167,7 @@ func hubSave(w, base *World) HubSave {
 	h.PickupsTaken = without(keys(base.Pickups, pickupKey), keys(w.Pickups, pickupKey))
 	h.GuardsCleared = guardsClearedKeys(w)
 	h.PortalsDown = slices.Clone(w.PortalsDown)
+	h.Shields = w.combat.shields + countFetching(w)
 	return h
 }
 

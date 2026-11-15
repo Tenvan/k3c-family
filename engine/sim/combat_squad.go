@@ -82,7 +82,7 @@ func stepGroups(w *World) {
 	}
 	for _, t := range w.Troops {
 		switch {
-		case t.shieldFetch && math.Abs(t.X-w.HubX) < arrive+0.2:
+		case t.shieldFetch && math.Abs(t.X-w.HubX) < w.values().Economy.Combat.ShieldArriveUnits:
 			t.shieldFetch, t.Leader, t.Group = false, true, t.ID
 			emit(w, "shield", Event{"troop": t.ID, "x": unitX(t.X)})
 		case t.Leader:

@@ -25,7 +25,13 @@ type combatRuntime struct {
 	shields int
 }
 
-func (s CombatSpot) key() string { return s.Kind + ":" + strconv.Itoa(s.Side) }
+// key ist der Zahl-Schlüssel des Ziels; das Banner gehört je Monarch (Anzahlungen vermischen sich nicht).
+func (s CombatSpot) key(p *Player) string {
+	if s.Kind == "banner" {
+		return "banner:" + strconv.Itoa(p.Index) + ":" + strconv.Itoa(s.Side)
+	}
+	return s.Kind + ":" + strconv.Itoa(s.Side)
+}
 
 // CombatSpots sind die Zahlziele der Kampfvariante der Stufe (Auslöser und Banner nur an einem gebauten Tor).
 func CombatSpots(w *World) []CombatSpot {
@@ -77,14 +83,21 @@ func combatPayable(w *World, p *Player, s CombatSpot) bool {
 	case "shield":
 		return w.combat.shields+countFetching(w) < len(freeWarriors(w))
 	case "trigger":
-		for _, l := range leadersOf(w, float64(s.Side)) {
-			if l.sortie == 0 { // nur Gruppen am Tor lassen sich losschicken
+		return triggerUseful(w, s)
+	}
+	return p.Banner == 0 && crowned(p)
+}
+
+// triggerUseful: Eine Gruppe der Seite steht am Tor und hat ein Ziel (gegen Gegner oder Portal voraus).
+func triggerUseful(w *World, s CombatSpot) bool {
+	for _, l := range leadersOf(w, float64(s.Side)) {
+		if l.sortie == 0 {
+			if _, ok := squadTarget(w, s.X, float64(s.Side), true); ok {
 				return true
 			}
 		}
-		return false
 	}
-	return p.Banner == 0
+	return false
 }
 
 func combatCost(w *World, kind string) int {
@@ -103,7 +116,7 @@ func payCombat(w *World, p *Player, s *CombatSpot) {
 	if w.combat.paid == nil {
 		w.combat.paid = map[string]int{}
 	}
-	key := s.key()
+	key := s.key(p)
 	w.combat.paid[key]++
 	if w.combat.paid[key] < combatCost(w, s.Kind) {
 		return
@@ -185,10 +198,11 @@ func squadActive(w *World, t *Troop) bool {
 // squadTarget: Ort des nächsten Ziels vor `anchor` in Richtung dir: der nächste Gegner innerhalb der Anspähweite, sonst das
 // nächste Portal (mit allPortals unbegrenzt, sonst ebenfalls innerhalb der Anspähweite).
 func squadTarget(w *World, anchor, dir float64, allPortals bool) (float64, bool) {
-	reach := w.values().Economy.Combat.EngageUnits
+	c := w.values().Economy.Combat
+	reach := c.EngageUnits
 	best, found := 0.0, false
 	for _, e := range w.Enemies {
-		if d := (e.X - anchor) * dir; d >= -1 && d <= reach && (!found || d < (best-anchor)*dir) {
+		if d := (e.X - anchor) * dir; d >= -c.BehindUnits && d <= reach && (!found || d < (best-anchor)*dir) {
 			best, found = e.X, true
 		}
 	}
@@ -196,7 +210,7 @@ func squadTarget(w *World, anchor, dir float64, allPortals bool) (float64, bool)
 		return best, true
 	}
 	for _, x := range w.Portals {
-		if d := (x - anchor) * dir; d >= -1 && (allPortals || d <= reach) && (!found || d < (best-anchor)*dir) {
+		if d := (x - anchor) * dir; d >= -c.BehindUnits && (allPortals || d <= reach) && (!found || d < (best-anchor)*dir) {
 			best, found = x, true
 		}
 	}
@@ -219,15 +233,15 @@ func squadPost(w *World, t *Troop) (float64, bool) {
 		l := troopByID(w, t.Group)
 		anchor, dir = l.X, l.sortie
 	}
-	reach := math.Max(w.values().Troops[t.Kind].Range*0.8, 1)
+	reach := math.Max(w.values().Troops[t.Kind].Range*w.values().Economy.Combat.StandRangeFactor, 1)
 	if x, ok := squadTarget(w, anchor, dir, all); ok {
 		return x - dir*reach, true
 	}
 	if combatMode(w) == CombatGeneral { // ohne Ziel folgt der Trupp dem Monarchen: Soldaten voraus, Schützen dahinter
 		if isSoldier(t) {
-			return anchor + dir*1.5, true
+			return anchor + dir*w.values().Economy.Combat.FollowUnits, true
 		}
-		return anchor - dir*1.5, true
+		return anchor - dir*w.values().Economy.Combat.FollowUnits, true
 	}
 	return 0, false
 }

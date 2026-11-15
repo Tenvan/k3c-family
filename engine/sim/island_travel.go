@@ -79,6 +79,9 @@ func moveToStage(isl *Island, m islandMove) {
 	from, target := isl.Stages[m.from], isl.Stages[to]
 	p := m.player
 	refundPending(from, p) // bezahlte, nicht fertige Münzen bleiben in der alten Stufe liegen
+	if p.Banner != 0 {
+		returnBanner(from, p) // das Banner bleibt am Tor der alten Stufe
+	}
 	from.Players = removePlayer(from.Players, p)
 	q := *p
 	q.ID = target.newID() // IDs sind nur innerhalb einer Welt eindeutig

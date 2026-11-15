@@ -94,7 +94,7 @@ func troopsSave(w *World) []TroopSave {
 		if t.Kind == "vagrant" {
 			continue
 		}
-		ts := TroopSave{Kind: t.Kind, X: t.X, AnchorX: t.AnchorX, Profession: t.Profession}
+		ts := TroopSave{Kind: t.Kind, X: t.X, AnchorX: t.AnchorX, Profession: t.Profession, Leader: t.Leader}
 		if s := siteByID(w, t.WorkSite); s != nil && t.WorkSite != 0 {
 			ts.WorkSite = key(s.Kind, s.X)
 		}
@@ -119,7 +119,11 @@ func applyTroops(w *World, h HubSave) {
 		}
 		makeFighter(w, troop, t.Kind)
 		troop.AnchorX = t.AnchorX
+		if t.Leader && isSoldier(troop) {
+			troop.Leader, troop.Group = true, troop.ID
+		}
 	}
+	w.combat.shields = h.Shields
 }
 
 // validateEconomy prüft einen Hub: bekannte Truppenart (nie stillschweigend Landstreicher), bekannter Beruf, Rüstungsstufe

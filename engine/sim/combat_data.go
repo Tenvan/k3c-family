@@ -30,6 +30,10 @@ type combatData struct {
 	EngageUnits                         float64 // Gegner und Portale in diesem Abstand voraus greift eine Gruppe oder ein Trupp an
 	ShieldOffsetUnits                   float64 // Schild-Zahlziel: so weit rechts der Burg
 	GateInsetUnits                      float64 // Auslöser und Banner: so weit innen vor dem äußersten Tor
+	BehindUnits                         float64 // Ziele bis so weit hinter dem Anker zählen noch als voraus
+	StandRangeFactor                    float64 // Angreifer stehen so viele Reichweiten (Anteil) vor dem Ziel
+	FollowUnits                         float64 // Trupp ohne Ziel: Abstand zum Monarchen (Soldaten voraus, Schützen dahinter)
+	ShieldArriveUnits                   float64 // so nah an der Burg gilt das Schild als geholt
 }
 
 // rawCombat ist die Rohform von `combat` (Zeiger erkennen fehlende Felder).
