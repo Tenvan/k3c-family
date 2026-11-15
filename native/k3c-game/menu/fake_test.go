@@ -88,6 +88,7 @@ func (s *fakeSession) Leave(p int) error               { s.left = append(s.left,
 func (s *fakeSession) Rebind(int, view.DeviceID) error { return nil }
 func (s *fakeSession) Learn(int, string) error         { return nil }
 func (s *fakeSession) Respec(int) error                { return nil }
+func (s *fakeSession) ChooseIsland(int, string) error  { return nil }
 func (s *fakeSession) SetSettings(v view.Settings) error {
 	s.settings = append(s.settings, v)
 	s.cur = v

@@ -47,6 +47,7 @@ func (s *Session) Step() view.Frame {
 	if s.p != nil {
 		f.Tick, f.Stages, f.Events, f.Seats = s.p.tick, s.p.stages(), s.p.events, s.seats()
 		s.p.events = s.p.events[:0]
+		f.Route = s.routeList()
 	}
 	return f
 }

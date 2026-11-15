@@ -36,6 +36,15 @@ type Frame struct {
 	Dev DevView
 	// StepMs ist die Rechenzeit des letzten Simulationstakts in ms (local, Wanduhr; 0 ohne Takt; Debug-Werte, B-889).
 	StepMs float64
+	// Route sind alle Inseln der Welt des laufenden Spiels in Listenreihenfolge (local, nur lesen; leer ohne Spiel):
+	// Grundlage der Seekarte am Hafen (B-962).
+	Route []RouteIsland
+}
+
+// RouteIsland ist eine Insel der Welt mit ihrer Etappe (>= 1; local setzt für 0 den Listenplatz + 1 wie die Simulation).
+type RouteIsland struct {
+	ID, Name string
+	Etappe   int
 }
 
 // Outcome ist der Ausgang eines Spiels.

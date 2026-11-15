@@ -38,6 +38,7 @@ func (s *fakeSim) Pause(on bool)                       { s.paused = on }
 func (s *fakeSim) Join(d view.DeviceID) (int, error)   { s.joins = append(s.joins, d); return 1, nil }
 func (s *fakeSim) Leave(int) error                     { return nil }
 func (s *fakeSim) Respec(int) error                    { return nil }
+func (s *fakeSim) ChooseIsland(int, string) error      { return nil }
 func (s *fakeSim) SetSettings(v view.Settings) error   { s.set = append(s.set, v); return nil }
 func (s *fakeSim) Step() view.Frame                    { return view.Frame{} }
 func (s *fakeSim) Command(p int, c view.Command) error { s.cmds[p] = c; return nil }
