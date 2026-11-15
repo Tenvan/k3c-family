@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** KS2
 - **Projekt:** KSY
 - **Erstellt:** 2026-11-15
