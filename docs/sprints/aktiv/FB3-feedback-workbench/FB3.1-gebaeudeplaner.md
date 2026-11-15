@@ -1,6 +1,6 @@
 # FB3.1 · Gebäudeplaner und hub_*-Tools in der Workbench (B-923)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

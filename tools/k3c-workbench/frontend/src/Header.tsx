@@ -10,15 +10,15 @@ export type Page = (typeof PAGES)[number];
 export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring' };
 
 /** Bereiche der Kopfleiste (Entscheidung 005 › 5): Development = Werkzeuge der Entwicklung; Studio (Schlüssel `assets`) = alles,
- *  was das fertige Spiel bearbeitet oder ansieht: Assets, Balancing, Welten-Editor (früher im Studio). */
+ *  was das fertige Spiel bearbeitet oder ansieht: Assets, Balancing, Welten-Editor und Gebäude-Planer (früher im Studio). */
 export const AREAS = ['development', 'assets'] as const;
 export type Area = (typeof AREAS)[number];
 export const AREA_LABELS: Record<Area, string> = { development: 'Development', assets: 'Studio' };
 
 /** Seiten des Bereichs Studio in der Reihenfolge von B-892; Review bleibt die Startseite (RV1 füllt sie). */
-export const ASSET_PAGES = ['styleguide', 'katalog', 'review', 'sound', 'welten', 'balancing'] as const;
+export const ASSET_PAGES = ['styleguide', 'katalog', 'review', 'sound', 'welten', 'planer', 'balancing'] as const;
 export type AssetPage = (typeof ASSET_PAGES)[number];
-export const ASSET_LABELS: Record<AssetPage, string> = { styleguide: 'Styleguide', katalog: 'Katalog', review: 'Review', sound: 'Sound & Quellen', welten: 'Welten-Editor', balancing: 'Balancing' };
+export const ASSET_LABELS: Record<AssetPage, string> = { styleguide: 'Styleguide', katalog: 'Katalog', review: 'Review', sound: 'Sound & Quellen', welten: 'Welten-Editor', planer: 'Gebäude-Planer', balancing: 'Balancing' };
 
 type AnyPage = Page | AssetPage;
 

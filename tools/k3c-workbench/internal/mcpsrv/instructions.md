@@ -160,6 +160,16 @@ Repo-Wurzel (B-701 D-10).
   wartet bis zum Ende (eigener Mechanismus, nicht `task_*`).
 - Prompts: jede Vorlage aus `data/asset-prompts.json` ist der MCP-Prompt `asset-<id>`, Argumente = Platzhalter.
 
+### Gebäude-Planer (B-923)
+
+`data/hub.json` (Hub-Stufen, Bauplätze, Händler, Baugrund) samt Block der Regeltabelle `docs/rules/materialien-gebaeude.md` § 3;
+jedes Tool nimmt `checkout`. Keine Grafik: Assets ändern nur die `assets_*`-Tools.
+
+- `hub_get`: Matrix Hub-Stufe × Bauplatz, Befunde der Prüfung (`sim.ValidateHubData`), Abweichung der Regeltabelle, Zeile `Stand`.
+- `hub_check {patch | candidate}`: prüft eine Änderung ohne zu schreiben; `patch` ist ein JSON-Merge-Patch, Listen ganz angeben.
+- `hub_save {patch | candidate, stand}`: schreibt `data/hub.json` format-stabil (ein Wert, eine Zeile) und die Regeltabelle,
+  nur ohne Befund und solange die Datei dem `stand` aus `hub_get` entspricht. REG-Änderung: Commit mit Begründung.
+
 ### Recherche für Grafik- und Sound-Slots
 
 Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist hier ein Slot daraus.

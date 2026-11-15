@@ -51,6 +51,8 @@ var uiMethods = map[string]bool{
 	// Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
 	"StudioSounds": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
 	"WorldList": true, "WorldDetail": true, "WorldLevel": true, "WorldValues": true, "WorldOverrideSet": true, "WorldNatureSet": true,
+	// Gebäude-Planer (B-923, internal/hubplan)
+	"HubPlan": true, "HubCheck": true, "HubRules": true, "HubSave": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uiPrefix, die Oberfläche liefert Vite.

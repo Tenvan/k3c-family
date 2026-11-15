@@ -10,6 +10,7 @@ import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
+import { PlannerPage } from './planner/PlannerPage';
 import { WorldPage } from './world/WorldPage';
 import { Notices } from './ui/organisms/Notices';
 import { TicketProvider } from '@webkit/lib/ticketContext';
@@ -79,6 +80,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="welten">
         <WorldPage />
+      </Tabs.Content>
+      <Tabs.Content value="planer">
+        <PlannerPage />
       </Tabs.Content>
       <AssetsArea />
     </AppFrame>
