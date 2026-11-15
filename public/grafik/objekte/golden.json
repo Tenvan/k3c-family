@@ -144,6 +144,12 @@
       "idle.png": "fe5a53a618021df9aeea23cfc66531c11fa4a435fb0e94ec5eb296d7d5bb1f49"
     }
   },
+  "samurai-lager": {
+    "renderKey": "7e8cc711982d96f29f0a9aebf2ec021b53e1963e234b58cca19c4f816c8d66e4",
+    "dateien": {
+      "idle.png": "c80426f488a971de8d226cd18191e46fc5a7f90bb4f437eab35418178fd3df2d"
+    }
+  },
   "schild-axt": {
     "renderKey": "b7a6352548a7b3c9c4ad372672ab575c3b15589700add19e5b1485f0d697c413",
     "dateien": {
@@ -194,6 +200,12 @@
     "renderKey": "6d8cdeaddd0588f38a32e5df0c58076b57ed0dcbeeb0fcb24e55cf21b0f9e376",
     "dateien": {
       "idle.png": "5e9bfbe31ac24317ae4ddd1950571718f981ceb306a4e0dadf1846919e325a4e"
+    }
+  },
+  "torii": {
+    "renderKey": "8c0445c7313a11fde8a47e755899dc384bd325d1316a01133f6913210b8df546",
+    "dateien": {
+      "idle.png": "5537985bd7bb0191dbcc22d2435128bb5170a5d10cb18af8d89ab23aa4266142"
     }
   },
   "truhe-offen": {

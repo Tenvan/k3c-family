@@ -149,6 +149,16 @@
       "stand.s5.png": "527929908d67ab7c58e3609e6123a77ad23041f5ff0d893b6b684fc39b180cac"
     }
   },
+  "pagode": {
+    "renderKey": "33443cc3e58cf2df79783993e25fefcc5bafaaf836dbc24f868226bbbfb36c8f",
+    "dateien": {
+      "stand.png": "69a13a334d2a05497b90b63954755afe21233fdc9eec22f749a0b92f539bb219",
+      "stand.s2.png": "ccc3cde6384047905c7c838a835b689bc1933cafa6836a4e4100b7816d1233ef",
+      "stand.s3.png": "646bb12298cf06adc90da102a7a9e47b9e25761d634551821e14d5f98da1a3ce",
+      "stand.s4.png": "8fadcdf198e0b6bd537ee3fa47e0c3d04054164ed98a1716676c11bc74ee5758",
+      "stand.s5.png": "2d58abd8f6b87276a593c0a8daf25dc3815e962dd68ed5f69ee587a0df62bc0d"
+    }
+  },
   "rekrutierungslager": {
     "renderKey": "d2ee8661ed1f87cd742ad074acdc45c5ea1a374465901362f23dae271f3a3f60",
     "dateien": {

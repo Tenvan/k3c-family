@@ -95,12 +95,28 @@
       "lauf.png": "36fcaf88afc6c034e0ef60c5abe7f7a9859c293061d0b72a12996317713e4b8a"
     }
   },
+  "ninja": {
+    "renderKey": "133998403d5cf7504187d796cb9e3d830dd0916c2975a678e26552b8dda59082",
+    "dateien": {
+      "angriff.png": "48301b0639c39cfe9cc41df27d752955e6397e4e95085eda760cc90c29cdc865",
+      "idle.png": "5ee9315c897640d969f509430bc7e332ba66f35da24aacf106cfa9d8c7587d24",
+      "lauf.png": "8414b7558ab7cb3387602a196138846f976bd6d761df1a39a22e5ed86d0d945c"
+    }
+  },
   "rattenschwarm": {
     "renderKey": "35c665c14598a67ab462b31d9acd5003cb3c95c208c6b6fb47475e23aa1e2027",
     "dateien": {
       "angriff.png": "8e2c54a0fff45eb0324f9d9ef69ff66bb56aa054ac99e8f8be11db2f14e5e48c",
       "idle.png": "9abf8a8789cc5dce9e0c898f3a3ba23e8ce442e3fe3c48fa053bc1603092a482",
       "lauf.png": "48386487fc2cfdc70d38fdd2b3208dc329edce295ab5e027ece66a16e083279b"
+    }
+  },
+  "samurai": {
+    "renderKey": "d1a8040fd2fef9f160cd6b28802b78410618e889f5932ce09197aab69f807b57",
+    "dateien": {
+      "angriff.png": "a53ad5c627b7ead412db9ecb2e1e15b78bf6b604029412919d9ac191a832c607",
+      "idle.png": "919968ed548c97d8b3c8bb34d9fb52bc146427450ec91ea9c019243d803cef1b",
+      "lauf.png": "8354bfe18bb68da481470f4ee510f3fd279036109f8ea0e478dbefe297f281f5"
     }
   },
   "skelett": {
