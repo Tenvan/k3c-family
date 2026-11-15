@@ -61,4 +61,4 @@ Text im Bild gerendert oder vom Spiel in Schrift darübergelegt? Default: vom Sp
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+VectorCraft (ArtCraft, https://craft.wiki/apps/vectorcraft/overview/, gelesen 2026-11-15): freier Vektor-Editor (MIT/Apache-2.0) im Illustrator-Stil (Pen, Pathfinder, Typ auf Pfaden, OpenType), Export für Bildschirme/PDF; `vectorcraft-cli` konvertiert Formate, führt Befehle ohne Fenster aus und startet einen MCP-Server für KI-Agenten. Einschätzung: ersetzt den Papierschnitt-Weg (005: Specs, `tools/paper`, Golden, Rigs) nicht; kann aber als Quelle für einmalige Illustrationen mit viel Typografie dienen (Weltbild mit Titel), Ergebnis über `assets_import` in den Papierschnitt-Bestand. Optionaler Spike in diesem Ticket. Ungeprüft: Exportformate im Detail, Stabilität.
