@@ -61,3 +61,25 @@ func TestSetEtappeView(t *testing.T) {
 		t.Fatalf("Fehler: %+v", v)
 	}
 }
+
+// Review B-963: unbekannte Insel legt keine Insel an; die Etappe ist eine ganze Zahl.
+func TestSetEtappeViewOnlyExistingIslandAndInteger(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "etappen", "Etappen", ""); err != nil {
+		t.Fatal(err)
+	}
+	before := readWorld(t, e, "etappen")
+	one := 1
+	if v := e.SetEtappeView(ctx, "etappen", "gibtsnicht", &one); v.Error == "" {
+		t.Fatalf("unbekannte Insel angenommen: %+v", v)
+	}
+	if readWorld(t, e, "etappen") != before {
+		t.Fatal("Datei trotz Fehler geändert")
+	}
+	if _, err := e.Set(ctx, "etappen", json.RawMessage(`{"islands":[{"id":"island1","etappe":1.5}]}`)); err == nil {
+		t.Fatal("nicht ganze Zahl angenommen")
+	}
+	if readWorld(t, e, "etappen") != before {
+		t.Fatal("Datei trotz Fehler geändert")
+	}
+}
