@@ -29,9 +29,12 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 ## Anforderungen
 
 - Gestaltete Karte statt gezeichneter Formen; Inhalte und Bedienung bleiben wie in B-962.
+- **Stil (🧑 2026-11-15): Diorama mit Weltbildern.** Das Meer besteht aus Papierschichten, jede Insel erscheint als Miniatur aus den Weltbildern ihrer Welt (Sengoku, Nil, Polar).
+- **Schiff (🧑 2026-11-15): fährt die Route.** Das Schiff liegt an der aktuellen Insel; nach der Wahl mit A fährt es als kurze Animation über die Papierwellen zur Zielinsel, danach lädt die Insel (dient als Übergang).
+- **Miniaturen (🧑 2026-11-15): ein Bild je Welt mit Varianten.** Je Welt ein Miniatur-Satz aus dem Weltbild; Inseln unterscheiden sich über Größe, Tiefe (Stufenzahl) und kleine Aufsätze. Neue Inseln im Editor brauchen kein neues Asset.
+- **Anzeige (🧑 2026-11-15): Overlay, Fahrt im Vollbild.** Die Wahl läuft als Overlay in der Hälfte des Spielers am Steg (wie B-962), der andere spielt weiter; erst die Schiffsfahrt nach A übernimmt den ganzen Bildschirm.
 - Assets nur über MCP `assets_*` (Entscheidung 005).
 - Funktioniert mit 2 Spielern im Split-Screen.
-- Details offen, siehe Offene Fragen (Ideenrunde k3c-07).
 
 ## Nicht-Ziele
 
@@ -63,10 +66,8 @@ Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_te
 
 ## Offene Fragen
 
-- Darstellung der Karte (Stil, Vollbild oder Overlay)?
-- Inseln als eigene Bilder je Welt oder generisch?
-- Bewegt sich das Schiff auf der Karte?
+keine
 
 ## Notizen
 
-Idee aus der Ideenrunde k3c-07, noch nicht ausgearbeitet.
+Idee aus der Ideenrunde k3c-07 (2026-11-15), Grundzüge mit 🧑 geklärt; Akzeptanzkriterien und Größe fehlen noch, Spec bleibt Entwurf.

@@ -84,6 +84,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | aktiv |
 | WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | aktiv |
 | WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | aktiv |
+| GS1 | Geschichten je Welt und Insel in Kunstsprache | geplant |
 
 ## Nicht-Ziele
 

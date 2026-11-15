@@ -45,6 +45,8 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
+| GS1 | REG | WZG | Geschichten je Welt und Insel in Kunstsprache | – | Entwurf | `geplant/GS1-geschichten-je-welt/` |
+| SI1 | REG | KMP | Spielideen: Fracht auf dem Schiff, Koop-Aktionen, Wetter je Welt | – | Entwurf | `geplant/SI1-spielideen-fracht-koop-wetter/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

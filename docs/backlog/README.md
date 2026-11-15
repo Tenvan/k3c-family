@@ -60,6 +60,15 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-962](B-962-seekarte-im-spiel.md) | CLI | Idee | hoch | eingeplant | WE4 | Am Hafen wählen die Spieler die Zielinsel auf einer Seekarte |
 | [B-963](B-963-welten-editor-querschnitt-seekarte.md) | DEV | Idee | hoch | eingeplant | WE4 | Welten-Editor zeigt alle Inseln als Querschnitt nach Etappen mit Seekarte zum Springen |
 | [B-964](B-964-seekarte-spiel-grafik.md) | PAP | Idee | mittel | offen | WE4 | Die Seekarte im Spiel ist eine gestaltete Papierschnitt-Karte statt gezeichneter Formen |
+| [B-965](B-965-geschichte-kunstsprache.md) | REG | Idee | mittel | offen | GS1 | Jede Welt und Insel erzählt eine kurze Geschichte in Kunstsprache mit eingestreuten echten Wörtern |
+| [B-966](B-966-chronik-der-reise.md) | REG | Idee | niedrig | offen | GS1 | Abgeschlossene Inseln hinterlassen auf der Seekarte ein Andenken und eine Zeile der Geschichte |
+| [B-967](B-967-fracht-auf-dem-schiff.md) | REG | Idee | mittel | offen | SI1 | Vor der Abfahrt wählen die Spieler die Fracht des Schiffs |
+| [B-968](B-968-koop-aktionen-zu-zweit.md) | REG | Idee | mittel | offen | SI1 | Zwei Monarchen am selben Ort lösen gemeinsame Koop-Aktionen aus |
+| [B-969](B-969-wetter-je-welt.md) | REG | Idee | mittel | offen | SI1 | Jede Welt hat ein eigenes Wetter-Ereignis mit Spielwirkung |
+| [B-970](B-970-reittiere-je-welt.md) | REG | Idee | mittel | offen | SI1 | Jede Welt hat ein eigenes Reittier mit kleiner Eigenheit |
+| [B-971](B-971-flaschenpost.md) | REG | Idee | niedrig | offen | GS1 | Am Strand treibt eine Flaschenpost mit Geschichtszeile und Hinweis an |
+| [B-972](B-972-einsiedler-mit-angebot.md) | REG | Idee | mittel | offen | SI1 | Auf jeder Insel wohnt eine besondere Figur der Welt mit einem einmaligen Angebot |
+| [B-973](B-973-fest-nach-dem-sieg.md) | REG | Idee | niedrig | offen | SI1 | Nach dem Sieg über den Endgegner feiert das Volk ein Fest |
 
 ## Archiv
 
