@@ -1,6 +1,6 @@
 # GS2.2 · Spiel: Seekarten-Overlay als Diorama (B-964)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: `hud/seekarte_paper_test.go` (Aussehen je Insel, Zustände, Lage, mit Assets). AC-03 geprüft: Rückfall ohne Assets, Logik ohne Allokationen (`TestSeekarteDioramaOhneAllokationen`); Ebitengine selbst allokiert 1 je DrawImage. `go test ./...`, Lint, `task check:diff` grün; k3c-hud ohne schweren Befund. Commit c14240e31. Abweichungen: `local/route.go` geändert (RouteIsland trägt Welt, Stufen, Chunks); aktuelle Insel = letzter Eintrag von `completed`; Name nur für die Insel unter dem Cursor. TV-Abnahme 🧑 offen.

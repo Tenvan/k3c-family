@@ -62,10 +62,10 @@ Keine blockierende. Default Basis je Asset steht in B-988, B-989, B-990 (vorläu
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE7.1 | `WE7.1-assets-sengoku.md` | Umsetzung | autonom | offen |
-| WE7.2 | `WE7.2-assets-nil.md` | Umsetzung | autonom | offen |
-| WE7.3 | `WE7.3-assets-britannien.md` | Umsetzung | autonom | offen |
-| WE7.4 | `WE7.4-review.md` | Review | autonom | offen |
+| WE7.1 | `WE7.1-assets-sengoku.md` | Umsetzung | autonom | fertig |
+| WE7.2 | `WE7.2-assets-nil.md` | Umsetzung | autonom | fertig |
+| WE7.3 | `WE7.3-assets-britannien.md` | Umsetzung | autonom | fertig |
+| WE7.4 | `WE7.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -73,6 +73,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-15, WE7.4 (Claude): AC-01 bis AC-03 geprüft (14 Assets deckungsgleich mit der Basis, PRs #637, #641, #643); k3c-grafik ohne schwere Befunde.
+`gen:paper`, `vitest tools/paper` (411), `task check` (1805 Tests) und `check:diff` grün; Golden danach unverändert.
+Offen: Sichtprüfung 🧑 (B-988/B-989/B-990 AC-04), besonders das Ohr-Teil des römischen Spähers.
+Abnahme-Ticket: siehe Tickets des Sprints (Sichtprüfung, Gen, Texturbudget).

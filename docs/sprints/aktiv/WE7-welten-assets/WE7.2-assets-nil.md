@@ -1,6 +1,6 @@
 # WE7.2 · Assets Nil: Palme, Barke, Obelisk, Skorpion, Mumie (B-989)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-03 geprüft: `objekte/palme` (Basis tanne), `objekte/obelisk` (felsen), `gegner/skorpion` (wolf), `gegner/mumie` (zombie), `gebaeude-paper/barke` (schiff, 3 Baustufen), deckungsgleich mit den Basis-Assets; `gen:paper`, `vitest tools/paper` (410 Tests), `task check:diff` grün; k3c-grafik ohne schwere oder mittlere Befunde. Commit 3b8c98759. AC-04 (Sichtprüfung 🧑) offen. Abweichungen: Palme nutzt den Rahmen der Tanne; Skorpion ist Rig `requisite` mit Keyframes.

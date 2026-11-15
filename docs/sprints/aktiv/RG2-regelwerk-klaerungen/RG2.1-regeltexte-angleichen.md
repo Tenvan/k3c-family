@@ -1,6 +1,6 @@
 # RG2.1 · Regeltexte angleichen: Verlust-Korridor, Tier-Gating, Geselle nur Werkstatt
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -70,5 +70,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-04 geprüft: `buerger.md` (Geselle nur Werkstatt), `wirtschaft.md:37` und `zielkorridore.md:53` (Verlust-Korridor 25 %), keine Fundstelle „Gold-Schwelle“, `game-design.md:57` und `monarch.md` (Tier-Gating 2/4/6). `task check:diff` und `vitest tests/` grün. Commit 4f45ffaa6 auf `sprint/rg2`.

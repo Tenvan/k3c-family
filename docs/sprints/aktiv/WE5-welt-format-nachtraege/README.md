@@ -66,13 +66,13 @@ Keine blockierende. Vorläufige Defaults stehen in den Tickets (Endboss-Feld und
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE5.1 | `WE5.1-sengoku-etappen.md` | Umsetzung | autonom | offen |
-| WE5.2 | `WE5.2-endboss-je-insel.md` | Umsetzung | autonom | offen |
-| WE5.3 | `WE5.3-overrides-events.md` | Umsetzung | autonom | offen |
-| WE5.4 | `WE5.4-overrides-hub-sites.md` | Umsetzung | autonom | offen |
-| WE5.5 | `WE5.5-welt-skins.md` | Umsetzung | autonom | offen |
-| WE5.6 | `WE5.6-welten-mcp-hafen-meldung.md` | Umsetzung | autonom | offen |
-| WE5.7 | `WE5.7-review.md` | Review | autonom | offen |
+| WE5.1 | `WE5.1-sengoku-etappen.md` | Umsetzung | autonom | fertig |
+| WE5.2 | `WE5.2-endboss-je-insel.md` | Umsetzung | autonom | fertig |
+| WE5.3 | `WE5.3-overrides-events.md` | Umsetzung | autonom | fertig |
+| WE5.4 | `WE5.4-overrides-hub-sites.md` | Umsetzung | autonom | fertig |
+| WE5.5 | `WE5.5-welt-skins.md` | Umsetzung | autonom | fertig |
+| WE5.6 | `WE5.6-welten-mcp-hafen-meldung.md` | Umsetzung | autonom | fertig |
+| WE5.7 | `WE5.7-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

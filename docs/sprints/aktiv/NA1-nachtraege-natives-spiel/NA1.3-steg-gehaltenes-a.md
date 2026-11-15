@@ -1,6 +1,6 @@
 # NA1.3 · Gehaltenes A am Steg zahlt erst nach dem Loslassen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: `TestSeekarteGehaltenesAZahltNicht`, `TestSeekarteSperreJeSpieler`, `TestSeekarteSperreOhneAllokationen`, `TestSeekarteSperreEndet`, `TestSeekarteSperreImSkillMenue` (`hud/seekarte_hold_test.go`). `go test ./...`, Lint, `task check:diff` grün; Review k3c-hud ohne schweren Befund. Commit 6b560daf4. Hinweis: Während A gehalten wird, ist die ganze Eingabe des Spielers verbraucht (kein Laufen, keine Pause).

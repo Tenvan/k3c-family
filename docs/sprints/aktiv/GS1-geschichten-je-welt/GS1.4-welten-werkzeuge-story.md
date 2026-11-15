@@ -1,6 +1,6 @@
 # GS1.4 · Workbench: world_story_set, Prüfung und Editor-Hinweis (B-975)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -60,5 +60,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-04 geprüft: `TestWorldStoryTools`, `TestSetStoryWritesOnlyStory`, `TestSetStoryRejects`, `TestOtherEditsKeepStory`, `TestCreateWithStoryAndCRLF`, `WorldPage.test.tsx`. Go-Tests, Lint 0, vitest world, tsc, oxlint, `task check:diff` grün; Review k3c-workbench, zwei leichte Befunde behoben. Commit 5ba59da8d. AC-05 (`task:check:dev`) nicht gelaufen, Einzelprüfungen als Ersatz. Tool: `world_story_set {id, lexicon?, start?, etappen?, end?, bottles?, islands?}`. GS1.5 braucht die neu gebaute Workbench (Sperre exe, 🧑).

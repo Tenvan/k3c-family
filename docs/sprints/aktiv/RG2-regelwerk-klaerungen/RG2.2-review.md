@@ -1,6 +1,6 @@
 # RG2.2 · Review und Abschluss RG2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** REG
@@ -59,5 +59,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-05 geprüft (grep, Datei:Zeile), alle erfüllt; Glossar angeglichen (Geselle nur Werkstatt, Beruf-Liste), Commit 95043f986. `task check` (1802 Tests) und `task check:diff` grün; kein Sim, Balance, Gen (Doku-Sprint). Folgeticket: Anzeigename `craftsman` = „Handwerker“ in `data/troops.json`.

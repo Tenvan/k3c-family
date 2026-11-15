@@ -1,6 +1,6 @@
 # WE5.4 · Overrides für hub › sites: Level-Generator liest den Wertesatz der Welt (B-983)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: `TestWeltPlaetzeWirkenInLevelUndSim`, `TestLevelSitesMitInselPlaetzen`, `TestWeltPlaetzeFehlerfaelle`, `TestWeltSitePlacementBleibtGesperrt`, `engine/level/hub_sites_test.go`; `welten.md` § 1.3 nachgezogen. AC-08 geprüft: Golden unverändert. `go vet`, Lint 0, `go test ./engine/...` (bis auf bekanntes `TestHTMLEigenstaendig`), `task check:diff` grün. Commit e1f54a64e auf `sprint/we5`. Auffällig: Hub-Plätze liegen so dicht, dass fast jede Verschiebung die Abstandsprüfung auslöst; Generator nutzt jetzt die Plätze einer Kandidaten-`hub.json`.

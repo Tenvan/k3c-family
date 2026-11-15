@@ -1,6 +1,6 @@
 # NA1.4 · Xbox-Tasten und Tastenkappen als Papierschnitt-Icons
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05 (Teil Grafik) geprüft: 13 Icons der Gruppe `icons` über `assets_*` (`xbox-a`, `-x`, `-y`, `-lb`, `-rb`, `-lt`, `-rt`, `-rs`, `-up`, `-down`, `-menu`, `taste-kappe`, `taste-kappe-breit` 48×32), Einträge in `data/paper.json`; `gen:paper` grün, `task check:diff` grün, k3c-grafik ohne schwere oder mittlere Befunde. Commit 12119e0fd auf `sprint/na1`. `vitest tools/paper`: 47 von 48 Dateien grün, in `rig/reiten.test.ts` stürzte der Worker ab (einzeln 14/14 grün, Ursache ungeklärt). Abweichungen: kein `xbox-b` (in `padGlyphs` nicht vorhanden); Tasten bekommen eine von zwei Kappen plus Schrift statt je Taste ein Icon. HUD-Teil folgt in NA1.5.

@@ -1,6 +1,6 @@
 # GS2.4 · Review: Sprint-Abnahme GS2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-04 belegt (Ergebnisse GS2.1 bis GS2.3; k3c-grafik ohne schwere oder mittlere Befunde, k3c-hud). Behoben: Fahrt blieb aus, wenn der Hafen nicht in Stufe 0 lag (`stillAt`, Test `TestVoyageStartsFromDeeperStage`); Schiff wechselte in der Streckenmitte die Zeichen-Reihe. Werte der Fahrt in `data/native.json` › `voyage`; Tests `TestVoyageLoadFailureIsFault`, `TestVoyageDeviceLost`. Commit 87fb7f6b1, PR #648. `go test`, Lint 0, `vitest tools/paper` (411), `check:go`, `check:diff` grün; `task check` einmal rot durch Timeout von `projectRules` › K3C_STUDIO_LAN unter Last, Einzellauf grün. AC-05 (TV) offen. Abnahme-Ticket B-1011, Nachträge B-1012.
