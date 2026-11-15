@@ -104,7 +104,7 @@ func TestMirrorInselwechsel(t *testing.T) {
 	if sw := isl.Stages[1].IslandSwitch; !sw.Ready || sw.Progress != 1 {
 		t.Errorf("bereit: %+v", sw)
 	}
-	if s := mirrorJSON(t, isl.Stages[0]); !strings.Contains(s, `"islandSwitch":{"open":true,"progress":1,"ready":true,"targets":[{"id":"test-island2","name":"Test-Insel","etappe":2}],"choice":"test-island2"}`) {
+	if s := mirrorJSON(t, isl.Stages[0]); !strings.Contains(s, `"islandSwitch":{"open":true,"progress":1,"ready":true,"targets":[{"id":"test-island2","name":"Test-Insel","etappe":2}],"choice":"test-island2","completed":["island1"]}`) {
 		t.Errorf("JSON: %s", s)
 	}
 }

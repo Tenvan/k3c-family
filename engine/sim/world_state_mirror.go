@@ -23,7 +23,8 @@ type SwitchState struct {
 	Open     bool    `json:"open"`
 	Progress float64 `json:"progress"`
 	Ready    bool    `json:"ready"`
-	// Etappen (B-961): Ziele am Hafen, das Ziel des Wechsels (Wahl oder erstes Ziel) und die abgeschlossenen Inseln.
+	// Etappen (B-961): Ziele am Hafen, das Ziel des Wechsels (Wahl oder erstes Ziel) und die abgeschlossenen Inseln samt
+	// der aktuellen (offener Wechselpunkt heißt Endboss besiegt), damit die Anzeige keine Regel ableitet.
 	Targets   []SwitchTarget `json:"targets,omitempty"`
 	Choice    string         `json:"choice,omitempty"`
 	Completed []string       `json:"completed,omitempty"`
@@ -62,7 +63,7 @@ func mirrorSwitch(isl *Island) {
 	var s *SwitchState
 	if isl.GateOpen {
 		s = &SwitchState{Open: true, Progress: min(isl.switchProgress, 1), Ready: isl.SwitchReady,
-			Targets: isl.Targets(), Choice: isl.ChosenTarget(), Completed: slices.Clone(isl.Completed)}
+			Targets: isl.Targets(), Choice: isl.ChosenTarget(), Completed: append(slices.Clone(isl.Completed), isl.islandID)}
 	}
 	for _, w := range isl.Stages {
 		w.IslandSwitch = s

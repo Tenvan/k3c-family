@@ -607,7 +607,7 @@ Phasen-Text und Zeitanzeige entstehen aus den Feldern. Zeiten in Sekunden, Orte 
 | `enemies[].phase` | Phase des Endbosses, ab 1 | kein Endboss |
 | `enemies[].warn` | nächster Flächenschlag: `x` Mitte, `r` Radius (Units), `in` Sekunden bis zum Schlag (= `aoeIn`) | Boss ohne Flächenschlag in dieser Phase |
 | `nightEvents` | Liste der laufenden Nacht-Events `[{id, secondsLeft}]` (`id` aus `data/events.json`: `fullMoon`, `bloodMoon`; Nacht 91 hat beide), `secondsLeft` = Restzeit der Nacht; heißt nicht `events`, das sind die Ereignisse des Ticks | kein Event |
-| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; ab B-961 `targets` (Ziele am Hafen in Listenreihenfolge: `id`, `name`, `etappe`), `choice` (Insel-ID des Ziels: Wahl, sonst erstes Ziel) und `completed` (IDs der abgeschlossenen Inseln); in allen Stufen der Insel gleich | Endboss nicht besiegt |
+| `islandSwitch` | Wechselpunkt zur nächsten Insel: `open`, `progress` (0..1), `ready`; ab B-961 `targets` (Ziele am Hafen in Listenreihenfolge: `id`, `name`, `etappe`), `choice` (Insel-ID des Ziels: Wahl, sonst erstes Ziel) und `completed` (IDs der abgeschlossenen Inseln samt der aktuellen); in allen Stufen der Insel gleich | Endboss nicht besiegt |
 
 Beispiele: `s2c-snapshot-boss.json` (Endboss in Phase 2 mit Warnkreis) und `s2c-snapshot-event.json` (Vollmond-Nacht,
 Wechselpunkt halb gefüllt), auf dem Zustand von `s2c-snapshot-full.json` aufgebaut. Geprüft von `TestKampfZustand`,
