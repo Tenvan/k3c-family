@@ -170,6 +170,21 @@ jedes Tool nimmt `checkout`. Keine Grafik: Assets ändern nur die `assets_*`-Too
 - `hub_save {patch | candidate, stand}`: schreibt `data/hub.json` format-stabil (ein Wert, eine Zeile) und die Regeltabelle,
   nur ohne Befund und solange die Datei dem `stand` aus `hub_get` entspricht. REG-Änderung: Commit mit Begründung.
 
+### Welten (B-954)
+
+`data/worlds/<id>.json` des Checkouts (docs/rules/welten.md); jedes Tool nimmt `checkout`. Geschrieben wird atomar und
+format-stabil (nur geänderte Werte, ein Wert eine Zeile), vorher prüft die Engine wie das Laden im Spiel (`sim.ParseWorld`,
+Werte aller Nachfolger); bei Fehler bleibt die Datei. Keine Simulation. Das Biom folgt der Tiefe (`biomes` im Patch = Kurzform von `depths`).
+
+- `world_list`, `world_get {id}`: Welten mit Inseln, Tiefen → Biome, geplante Chunks und Text der Datei.
+- `world_create {id, name, extends?}`: neue Welt mit einer Insel `island1` (Tiefen 0-4); überschreibt nie.
+- `world_set {id, patch}`: `name`, `notes`, `extends`, `combat {mode, groupSize}` (null entfernt) und `islands` (Liste; bekannte `id` ändert
+  nur genannte Felder, neue `id` wird angehängt; `depths` oder `biomes`, `depthScaling` wird gemischt). Jede Insel außer der letzten braucht
+  in Tiefe 0 einen Hafen-Chunk (im selben Aufruf als `plannedChunks` mitgeben oder vorher `world_chunks_set`).
+- `world_override_set {id, file, path, value}`: Override eines Basis-Felds (z. B. `economy` › `purse.startGold`); null setzt zurück.
+- `world_chunks_set {id, island, depth, chunks?, count?}`: `plannedChunks` und `chunkCounts` einer Tiefe; `[]` bzw. 0 entfernt.
+- `world_check {id}`: prüft die Datei wie das Laden im Spiel, ändert nichts.
+
 ### Recherche für Grafik- und Sound-Slots
 
 Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist hier ein Slot daraus.

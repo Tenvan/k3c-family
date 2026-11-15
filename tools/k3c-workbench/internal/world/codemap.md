@@ -10,6 +10,7 @@ Backend des Welten-Editors der Workbench (B-879): Welten unter `data/worlds/` au
 - Engine-Seite (`level.go`): `Engine func(ctx, input) (json.RawMessage, error)` mit JSON-Anfragen `{"op": "level" | "values" | "check", …}`; `Direct(root)` ruft `world` über `engine/simcli` im Prozess (B-924, Daten des Checkouts).
 - `Level(id, island, stage, seed)` → `LevelView` (Layout wie im Spiel, geplante Chunks der Stufe, Warnungen).
 - Werte (`values.go`, B-680/B-682): `Values(id)` → `ValuesView` mit `ValueEntry` je Feld (Basiswert aus `data/` plus Eltern-Overrides, Override der Welt).
+- Welt anlegen und bearbeiten (B-954): `Create`, `Set` (Kopf, Inseln, Tiefen/Biome), `SetChunks`, `Check`, `Raw` (`edit.go`, `edit_island.go`; `inline.go` schreibt Werte im Zeilenstil der Dateien); gleiches Muster: Prüfung `op: check`, dann atomar schreiben. MCP: `world_*` in `mcpsrv/tools_world.go`.
 - Schreiben: `SetOverride(id, base, path, value)` (`override.go`; `null` oder Basiswert entfernt den Override) und `SetNature(id, island, stage, key, value, seed)` (`nature.go`, B-891; nur `natureByDepth` der Insel). Vor dem Schreiben prüft k3c-sim den Entwurf (`op: check`); bei Fehler bleibt die Datei unverändert und `Error` nennt den Grund.
 - `patch.go`: format-stabiles Schreiben, nur der geänderte Wert bekommt neue Bytes, Zeilenenden bleiben; atomar über `.tmp-`-Datei und `store.Rename`.
 

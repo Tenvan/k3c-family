@@ -115,3 +115,36 @@ describe('Werte übersteuern (B-879/AC-02)', () => {
     expect(host.querySelector('[aria-label="Status wall.hp"]')?.textContent).toBe('geerbt');
   });
 });
+
+describe('Welt anlegen (B-954/AC-02)', () => {
+  const type = async (el: HTMLInputElement, text: string) => {
+    await act(async () => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(el, text);
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  };
+
+  it('legt die Welt an, wählt sie und lehnt eine vorhandene mit Grund ab', async () => {
+    const host = await mount();
+    const create = vi.spyOn(backend, 'worldCreate');
+    await click(host.querySelector('[aria-label="Welt anlegen"]'));
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-ID"]')!, 'standard');
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-Name"]')!, 'Doppelt');
+    await click(host.querySelector('[aria-label="Anlegen"]'));
+    expect(host.querySelector('[role="alert"]')?.textContent).toContain('gibt es schon');
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-ID"]')!, 'hanse');
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-Name"]')!, 'Hanse');
+    await click(host.querySelector('[aria-label="Anlegen"]'));
+    expect(create).toHaveBeenLastCalledWith('hanse', 'Hanse', '');
+    expect(host.querySelector('[data-world="hanse"]')).toBeTruthy();
+    expect(host.querySelector('[data-scroll="detail"] h1')?.textContent).toContain('Hanse');
+  });
+
+  it('Anlegen bleibt gesperrt, solange die ID ungültig ist', async () => {
+    const host = await mount();
+    await click(host.querySelector('[aria-label="Welt anlegen"]'));
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-ID"]')!, 'Ungültig');
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-Name"]')!, 'X');
+    expect(host.querySelector<HTMLButtonElement>('[aria-label="Anlegen"]')!.disabled).toBe(true);
+  });
+});
