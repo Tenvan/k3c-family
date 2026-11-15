@@ -13,12 +13,14 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
 | FB1 | CLI | NAT | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | – | `aktiv/FB1-feedback-client/` |
 | FB2 | SIM | NAT | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | – | `aktiv/FB2-feedback-sim/` |
+| FB4 | CLI | NAT | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | – | `aktiv/FB4-live-test-2/` |
 | KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
 | KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | `aktiv/KS2-portale-ausruestung/` |
 | KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
 | KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | `aktiv/KS4-angriff-gruppen-general/` |
 | KS5 | CLI | KSY | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | – | `aktiv/KS5-kampf-anzeige/` |
 | KS6 | SIM, PAP | KSY | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | – | `aktiv/KS6-kampf-nachtraege/` |
+| KS7 | SIM | KSY | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | – | `aktiv/KS7-kampf-abnahme-feedback/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
 | FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
@@ -37,8 +39,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
 | WG2 | CLI | NAT | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | – | Entwurf | `geplant/WG2-weltbilder-anzeige/` |
-| FB4 | CLI | NAT | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | – | Entwurf | `geplant/FB4-live-test-2/` |
-| KS7 | SIM | KSY | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | – | Entwurf | `geplant/KS7-kampf-abnahme-feedback/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | Entwurf | `geplant/WG1-weltbilder/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | Entwurf | `geplant/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | Entwurf | `geplant/RG2-regelwerk-klaerungen/` |
