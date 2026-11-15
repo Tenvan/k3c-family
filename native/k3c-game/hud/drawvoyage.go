@@ -11,6 +11,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
@@ -54,7 +55,8 @@ func (h *hud) DrawVoyage(dst *ebiten.Image, f *view.Frame, v *view.Voyage) bool 
 	}
 	h.paint.stencils()
 	cell := rectOf(dst.Bounds())
-	k := voyageScale * cell.H / refHeight
+	look := art.Voyage()
+	k := look.Scale * cell.H / refHeight
 	if y.sea.sizesK != k {
 		y.sea.sizes, y.sea.sizesK = h.measureSea(&y.sea, 28*k), k
 	}
@@ -62,13 +64,13 @@ func (h *hud) DrawVoyage(dst *ebiten.Image, f *view.Frame, v *view.Voyage) bool 
 	s := voyageEase(v.Elapsed, v.Duration)
 	from := y.node(y.from)
 	from.kind = seaTarget // am Liegeplatz noch ohne Fahne
-	if s >= voyageFlagAt {
+	if s >= look.FlagAt {
 		from.kind = seaDone
 	}
 	ax, ay := h.berthOf(y.from, from, p)
 	bx, by := h.berthOf(y.to, y.node(y.to), p)
-	x := seaExtra{ship: true, lane: voyageLane(y.from.lane, y.to.lane, s), shift: voyageShift(voyageWave*p.u, v.Elapsed)}
-	x.x, x.y = voyagePos(ax, ay, bx, by, voyageArc*p.u, voyageBob*p.u, v.Elapsed, v.Duration)
+	x := seaExtra{ship: true, lane: voyageLane(y.from.lane, y.to.lane), shift: voyageShift(look.Wave*p.u, look.WaveHz, v.Elapsed)}
+	x.x, x.y = voyagePos(ax, ay, bx, by, look.Arc*p.u, look.Bob*p.u, look.BobHz, v.Elapsed, v.Duration)
 	x.front = y.clip.of(dst, image.Rect(int(p.box.X), int(p.front), int(math.Ceil(p.box.X+p.box.W)), int(math.Ceil(p.box.Y+p.box.H))))
 	h.paint.fill(dst, cell, rgb(clrVoyagePaper, 1))
 	h.drawSeaScene(dst, &y.sea, a, p, x)

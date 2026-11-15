@@ -5,7 +5,8 @@ package game
 // im Frame davor als aktuelle nannte (letzte der Abgeschlossenen), Ziel das Ziel des Ereignisses. Während der Fahrt
 // taktet die Simulation nicht und keine Spiel-Eingabe wirkt (kein Befehl, kein Overlay, keine Pause, kein Beitritt; nur
 // der Vollbild-Wechsel bleibt). Die Zeit zählt in Takten der Schleife; der letzte Frame samt seiner Uhr steht, damit
-// Hinweise und Banner nicht hinter der Karte ablaufen (die Ankunft blendet erst nach der Fahrt ein, R6). Die Fahrt endet frühestens nach voyageSeconds und erst, wenn die Grafik der
+// Hinweise und Banner nicht hinter der Karte ablaufen (die Ankunft blendet erst nach der Fahrt ein, R6). Die Fahrt endet frühestens nach der Fahrzeit
+// (data/native.json › voyage.seconds) und erst, wenn die Grafik der
 // Zielinsel geladen ist. Ohne Zeichner, ohne Assets, im Aufnahme- und im Messmodus bleibt der Ladebildschirm. Laden
 // eines Spielstands und neues Spiel melden kein islandSwitch und zeigen ihn wie bisher. Die Schleife rechnet dabei
 // keine Regel: Wann gewechselt wird und wohin, entscheidet die Simulation.
@@ -15,11 +16,13 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 
+	"k3c/native/k3c-game/art"
 	"k3c/native/k3c-game/view"
 )
 
-// voyageSeconds ist die Fahrzeit (B-977/R3: Startwert, vorläufig bis zur Abstimmung am TV).
-const voyageSeconds = 3.0
+// voyageSeconds ist die Fahrzeit aus data/native.json › voyage.seconds (B-977/R3: Startwert 3 s, vorläufig bis zur
+// Abstimmung am TV).
+func voyageSeconds() float64 { return art.Voyage().Seconds }
 
 // voyage ist der Zustand der Fahrt. done, open und choice merkt note vor jedem Takt aus dem Wechselpunkt (Puffer, keine
 // Allokation je Takt); v.Done und v.Open teilen die Puffer, solange die Fahrt läuft (note ruht dann).
@@ -65,12 +68,26 @@ func switchTarget(f *view.Frame) (string, bool) {
 }
 
 // stillAt meldet, ob der Frame f weiter den Wechselpunkt der Insel from zeigt: Der Raum hat die Insel nicht getauscht
-// (Fehler beim Bau der Zielinsel), es gibt keine Fahrt.
+// (Fehler beim Bau der Zielinsel), es gibt keine Fahrt. Es zählen nur Stufen, in denen ein Spieler steht: Der Frame des
+// Wechsels trägt noch den letzten Zustand der verlassenen Stufen der alten Insel (der Raum schickt erst ihn, dann die
+// neue Insel; die Spieler landen in Stufe 0), ein Hafen in einer tieferen Stufe gälte sonst als nicht gewechselt.
 func stillAt(f *view.Frame, from string) bool {
 	for i := range f.Stages {
-		if w := f.Stages[i].World; w != nil && w.IslandSwitch != nil {
-			c := w.IslandSwitch.Completed
-			return len(c) > 0 && c[len(c)-1] == from
+		w := f.Stages[i].World
+		if w == nil || w.IslandSwitch == nil || !seated(f.Seats, f.Stages[i].Index) {
+			continue
+		}
+		c := w.IslandSwitch.Completed
+		return len(c) > 0 && c[len(c)-1] == from
+	}
+	return false
+}
+
+// seated meldet, ob ein Spieler in der Stufe stage steht.
+func seated(seats []view.Seat, stage int) bool {
+	for i := range seats {
+		if seats[i].Stage == stage {
+			return true
 		}
 	}
 	return false
@@ -90,7 +107,7 @@ func (g *Game) embark() {
 	if vd == nil || !g.deferLoad() || len(y.done) == 0 || to == "" || stillAt(&g.frame, y.done[len(y.done)-1]) {
 		return
 	}
-	y.v = view.Voyage{From: y.done[len(y.done)-1], To: to, Done: y.done, Open: y.open, Duration: voyageSeconds}
+	y.v = view.Voyage{From: y.done[len(y.done)-1], To: to, Done: y.done, Open: y.open, Duration: voyageSeconds()}
 	if !vd.VoyageReady(&g.frame, &y.v) {
 		return // Assets fehlen (R5): Ladebildschirm wie bisher
 	}

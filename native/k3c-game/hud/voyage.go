@@ -3,7 +3,8 @@ package hud
 // Schiffsfahrt beim Inselwechsel (B-977): Die Karte der Fahrt ist dieselbe wie am Hafen (seekarte.go), gebaut aus der
 // Route und der Fahrt (view.Voyage): abgeschlossen und Ziel ist, was die Fahrt nennt, gewählt die Zielinsel, kein Cursor, das
 // Schiff liegt an keiner Insel (es fährt). Die Lage des Schiffs ist eine reine Funktion der Zeit: gleiche Zeit, gleiche
-// Lage, ohne Zustand und ohne Zufall. Reine Logik ohne Ebitengine; das HUD rechnet damit keine Regel.
+// Lage, ohne Zustand und ohne Zufall. Bogen, Schaukeln, Welle, Fahnen-Schwelle und Maßstab stehen in data/native.json ›
+// voyage (art.VoyageLook). Reine Logik ohne Ebitengine; das HUD rechnet damit keine Regel.
 
 import (
 	"math"
@@ -11,16 +12,6 @@ import (
 
 	"k3c/engine/sim"
 	"k3c/native/k3c-game/view"
-)
-
-const (
-	voyageArc    = 28.0 // Höhe des Bogens über der geraden Strecke, in Asset-Pixeln
-	voyageBob    = 2.5  // Hub des Schiffs auf den Wellen
-	voyageBobHz  = 0.7  // Schaukeln je Sekunde
-	voyageWave   = 14.0 // Ausschlag der vorderen Welle
-	voyageWaveHz = 0.22 // Schwingungen der vorderen Welle je Sekunde
-	voyageFlagAt = 0.05 // Anteil der Strecke, ab dem die verlassene Insel ihre Fahne trägt (das Schiff hat abgelegt)
-	voyageScale  = 1.5  // Maßstab des Dioramas im Vollbild gegenüber dem HUD (passt es nicht, schrumpft es)
 )
 
 // seaSpot ist der Platz einer Insel auf der Karte: Etappen-Spalte col, Reihe lane, n Inseln in der Etappe.
@@ -104,22 +95,18 @@ func voyageEase(t, dur float64) float64 {
 }
 
 // voyagePos ist der Fußpunkt des Schiffs zur Zeit t: auf einem leichten Bogen der Höhe arc von (ax, ay) nach (bx, by),
-// dazu das Schaukeln mit Hub bob. Reine Funktion der Zeit.
-func voyagePos(ax, ay, bx, by, arc, bob, t, dur float64) (x, y float64) {
+// dazu das Schaukeln mit Hub bob und bobHz Schwingungen je Sekunde. Reine Funktion der Zeit.
+func voyagePos(ax, ay, bx, by, arc, bob, bobHz, t, dur float64) (x, y float64) {
 	s := voyageEase(t, dur)
 	x = ax + (bx-ax)*s
-	y = ay + (by-ay)*s - arc*math.Sin(math.Pi*s) + bob*math.Sin(2*math.Pi*voyageBobHz*t)
+	y = ay + (by-ay)*s - arc*math.Sin(math.Pi*s) + bob*math.Sin(2*math.Pi*bobHz*t)
 	return x, y
 }
 
-// voyageLane ist die Reihe, in der das Schiff beim Streckenanteil s gezeichnet wird: bis zur Mitte die des Starts,
-// danach die des Ziels.
-func voyageLane(from, to int, s float64) int {
-	if s < 0.5 {
-		return from
-	}
-	return to
-}
+// voyageLane ist die Reihe, in der das Schiff gezeichnet wird: die vordere von Start und Ziel, über die ganze Fahrt
+// dieselbe. Das Schiff liegt damit vor den Inseln beider Reihen und springt unterwegs nie vor oder hinter eine Insel
+// (GS2.4; vorher wechselte die Reihe in der Streckenmitte).
+func voyageLane(from, to int) int { return max(from, to) }
 
-// voyageShift ist der Versatz der vorderen Welle zur Zeit t beim Ausschlag amp.
-func voyageShift(amp, t float64) float64 { return amp * math.Sin(2*math.Pi*voyageWaveHz*t) }
+// voyageShift ist der Versatz der vorderen Welle zur Zeit t beim Ausschlag amp und hz Schwingungen je Sekunde.
+func voyageShift(amp, hz, t float64) float64 { return amp * math.Sin(2*math.Pi*hz*t) }
