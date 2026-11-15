@@ -8,7 +8,8 @@ import (
 )
 
 // planningPoll ist der Takt des Planungs-Wächters: Änderungen an docs/ erreichen die Oberfläche als Ereignis
-// `planning:changed`, auch wenn die Seite nicht offen ist (sie lädt dann beim Öffnen ohnehin frisch).
+// `planning:changed` mit den IDs der geänderten Dokumente (planning.Changed), auch wenn die Seite nicht offen ist (sie
+// lädt dann beim Öffnen ohnehin frisch).
 const planningPoll = 2 * time.Second
 
 // PlanningData liest Sprints und Tickets frisch aus docs/ (Binding), dieselben Daten wie plan_list: die Dateien sind
@@ -16,6 +17,20 @@ const planningPoll = 2 * time.Second
 func (a *App) PlanningData() (planning.Data, error) {
 	a.wait()
 	return planning.Load(a.root)
+}
+
+// PlanningList liefert die Planungsdaten wie PlanningData, aber ohne Fließtexte der Session-Dateien (Binding, B-909):
+// weniger als ein Drittel der Größe; den Text einzelner Dokumente holt PlanningItems.
+func (a *App) PlanningList() (planning.Data, error) {
+	a.wait()
+	return planning.LoadList(a.root)
+}
+
+// PlanningItems liefert Pfad und Fließtext zu den IDs (B-123, WZ61, WZ61.1, GRA; höchstens 100) in der Reihenfolge der
+// Anfrage (Binding, B-909); eine unbekannte ID bekommt einen Eintrag mit Error.
+func (a *App) PlanningItems(ids []string) ([]planning.Item, error) {
+	a.wait()
+	return planning.Items(a.root, ids)
 }
 
 // PlanningDocs nennt die vorhandenen Dokumente in Umschalter-Reihenfolge (Binding); das Glossar nur mit Datei.

@@ -400,6 +400,21 @@ export interface PlanningData {
   done: number;
 }
 
+/** Dokument mit Fließtext (Go: planning.Item); Error bei unbekannter ID, dann sind Path und Text leer. */
+export interface PlanItem {
+  id: string;
+  kind: 'ticket' | 'sprint' | 'session' | 'projekt';
+  path: string;
+  text: string;
+  error?: string;
+}
+
+/** Nutzlast von `planning:changed` (Go: planning.Changed): IDs der geänderten Dokumente (B-123, WZ61, WZ61.1, plan,
+ *  fragen, glossar); fehlt ids, ist die Lage unklar oder die Änderung groß, dann die ganze Liste neu laden. */
+export interface PlanningChanged {
+  ids?: string[];
+}
+
 /** Unterschied eines Worktrees zur Wurzel (Go: planning.Change); nur zur Anzeige. */
 export interface WorktreeChange {
   kind: 'neu' | 'geändert' | 'entfernt';
@@ -455,7 +470,7 @@ export interface Events {
   /** Hinweis eines Agenten (notify_ui). */
   'ui:notify': Notice;
   /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; ohne Nutzlast. */
-  'planning:changed': null;
+  'planning:changed': PlanningChanged | null;
   /** Ein Lauf der Balancing-Seite hat Zustand, Phase oder Fortschritt geändert (höchstens etwa 2 je Sekunde je Lauf, B-662). */
   'balance:runs': BalanceRun;
   /** Berichte oder Baselines haben sich geändert (neu, gelöscht, bewertet, Baseline gesichert); ohne Nutzlast. */
@@ -518,6 +533,10 @@ export interface Backend extends GitBackend, TicketBackend, BalanceBackend, Asse
   taskGateSave(): Promise<TaskGates>;
   /** Sprints und Tickets frisch aus docs/ (Go: planning.Load). */
   planningData(): Promise<PlanningData>;
+  /** Wie planningData, aber ohne Fließtexte der Sessions (`text` fehlt; Go: planning.LoadList, B-909). */
+  planningList(): Promise<PlanningData>;
+  /** Pfad und Fließtext einzelner Dokumente (höchstens 100 IDs; Go: planning.Items, B-909). */
+  planningItems(ids: string[]): Promise<PlanItem[]>;
   /** Vorhandene Planungs-Dokumente in Umschalter-Reihenfolge; das Glossar nur mit Datei. */
   planningDocs(): Promise<PlanDoc[]>;
   /** Setzt ein Kopf-Feld wie plan_set (Prio, Agent …); Antwort sind die Hinweise der Nacharbeit. */
