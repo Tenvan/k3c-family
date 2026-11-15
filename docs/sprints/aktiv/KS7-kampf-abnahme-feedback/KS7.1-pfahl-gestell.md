@@ -1,0 +1,62 @@
+# KS7.1 · Auslöser am Pfahl vor dem Tor, Schild-Gestell ab Burgstufe (B-941, B-942)
+
+- **Status:** in Arbeit
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** SIM
+- **Lane:** –
+- **Modell:** –
+- **Umgebung:** ?
+- **Branch:** sprint/ks7
+- **Abhängig von:** –
+- **Tickets:** B-941, B-942
+- **Kriterien:** AC-01, AC-02
+
+## Ziel
+
+Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+
+## Kontext
+
+Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
+(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+
+## Erlaubte Dateien
+
+Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
+Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
+`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
+
+- `pfad/…`
+
+## Nicht-Ziele
+
+Was in dieser Session ausdrücklich **nicht** passiert.
+
+## Schritte
+
+1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+
+## Fertig, wenn
+
+- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
+- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+
+## Prüfen
+
+```bash
+task check:diff
+```
+
+Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweise.md` › Tempo im Lauf).
+Review-Session statt dessen: `task check`, `task check:go` (nacheinander) und das Abnahme-Ticket des Sprints anlegen.
+Sim-, Balance- und Gen-Läufe (`sim_test`, Balancing, `gen:paper` samt Golden, `check:race`) nur, wenn diese Session das
+betroffene Feature entwickelt; sonst laufen sie im Abnahme-Ticket (`docs/arbeitsweise.md` › Sim, Balance und Gen).
+Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
+
+## Ergebnis
+
+Stand 2026-11-15, Commit f619e1c9f auf sprint/ks7:
+- B-941: Auslöser und Banner 2,5 Units vor dem äußersten Tor, weichen Bauplätzen aus; Asset `horn-pfahl`. Banner bleibt Icon (kein `banner-gestell`).
+- B-942: Schilde ab Hub-Stufe 2, Gestell `schild-gestell` mit Stapel bis 5, nur sichtbar wenn baubar (`sim.ShieldRack`).
+- Tests grün (engine/sim, props, actors, paper 407/407), Lint 0. Offen: Sichtprüfung am TV (AC-03) durch 🧑.

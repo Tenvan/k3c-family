@@ -54,6 +54,7 @@ type Game struct {
 	inBuf          []view.DeviceInput    // Puffer der Eingabe späterer Overlays (play.go › hideConsumed)
 	tps            tpsMeter              // Takte je Sekunde der Seite Werte (devvalues.go)
 	subs           subImages
+	blend          *blend // Zwischenbilder zwischen den 30-Hz-Takten (blend.go, B-943)
 	stats          *overlay
 	shots          *shooter
 	meter          *meter // Messmodus (--measure), sonst nil
@@ -71,7 +72,7 @@ type Game struct {
 // danach das Menü der Szene auf (Scene.Menu, menu.go).
 func New(p Parts, s Sim, a Args) (*Game, error) {
 	g := &Game{parts: p, sim: s, args: a, src: p.Input, mode: ModeMenu, cells: make([]view.Cell, 0, view.MaxPlayers),
-		win: image.Rect(0, 0, a.W, a.H), cams: Cameras{Rule: p.Camera, Fixed: a.Scene.Cams}}
+		win: image.Rect(0, 0, a.W, a.H), blend: newBlend(a.Shots == "" && !a.Script), cams: Cameras{Rule: p.Camera, Fixed: a.Scene.Cams}}
 	if a.Script {
 		g.src = newScripted(a.Scene)
 	}
@@ -170,6 +171,7 @@ func (g *Game) advanceTimed() {
 	switch {
 	case g.meter != nil:
 		t0 := clock()
+		g.meter.started(t0)
 		g.advance()
 		g.meter.tick(clock() - t0)
 	case g.stats.timing(&g.frame):
@@ -205,6 +207,7 @@ func (g *Game) advance() {
 	} else {
 		g.play(in)
 	}
+	g.blend.capture(&g.frame, g.cells)
 	g.frame = g.sim.Step()
 	g.stressStep()
 	g.devValues()
@@ -222,6 +225,7 @@ func (g *Game) advance() {
 	for _, l := range g.parts.Listeners {
 		l.Listen(&g.frame)
 	}
+	g.blend.stamp()
 }
 
 // step wendet das Ergebnis des obersten Screens an.
@@ -267,6 +271,9 @@ func (g *Game) drawGame(screen *ebiten.Image) {
 	screen.Fill(clearColor)
 	win := screen.Bounds()
 	Place(g.cells, win)
+	alpha := g.blend.alpha()
+	g.blend.apply(&g.frame, g.cells, alpha)
+	defer g.blend.restore(&g.frame, g.cells) // auch bei Panic: die Simulation bleibt unverschoben
 	for i, c := range g.cells {
 		dst := g.subs.of(screen, i, c.Rect)
 		for _, d := range g.parts.Drawers {

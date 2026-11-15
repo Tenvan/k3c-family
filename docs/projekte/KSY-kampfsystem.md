@@ -20,7 +20,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | KS4 | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | aktiv |
 | KS5 | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | aktiv |
 | KS6 | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | aktiv |
-| KS7 | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | geplant |
+| KS7 | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | aktiv |
 
 ## Nicht-Ziele
 

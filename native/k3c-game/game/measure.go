@@ -56,6 +56,11 @@ type Report struct {
 	Gegner        int        `json:"gegner"`    // lebende Gegner aller Stufen am Ende
 	GoHeapMib     float64    `json:"go_heap_mib"`
 	GoSysMib      float64    `json:"go_sys_mib"`
+	// Gleichmäßigkeit (B-943): Bilder ohne neuen Takt, Abstand der Updates, GC in der Messung.
+	BilderOhneTakt int        `json:"bilder_ohne_takt"` // Bilder, in denen sich der Takt seit dem Bild davor nicht änderte
+	TaktAbstandMs  FrameStats `json:"takt_abstand_ms"`  // Zeit zwischen zwei Updates (Soll 33,3 ms)
+	GcLaeufe       uint32     `json:"gc_laeufe"`
+	GcPauseMs      float64    `json:"gc_pause_ms"` // Summe der Stop-the-world-Pausen
 }
 
 // meter sammelt die Zeiten; phase 0 = Aufwärmen, 1 = Messen, 2 = fertig.
@@ -67,6 +72,12 @@ type meter struct {
 	frames []float64
 	drawMs float64
 	ticks  []float64
+	// Gleichmäßigkeit: Takt des letzten Bilds, Bilder ohne neuen Takt, Zeitpunkt des letzten Updates, Abstände, GC-Stand.
+	lastTick  uint64
+	repeated  int
+	lastStart float64
+	gaps      []float64
+	gc0       runtime.MemStats
 }
 
 func newMeter(cfg Measure) *meter { return &meter{cfg: cfg} }
@@ -81,6 +92,14 @@ func (m *meter) tick(sec float64) {
 	}
 }
 
+// started merkt den Beginn eines Updates (Uhrzeit in Sekunden) und sammelt den Abstand zum Update davor.
+func (m *meter) started(now float64) {
+	if m.phase == 1 && m.lastStart > 0 {
+		m.gaps = append(m.gaps, (now-m.lastStart)*1000)
+	}
+	m.lastStart = now
+}
+
 // frame läuft am Ende jedes Draw mit der Uhrzeit now und der Rechenzeit work dieses Draw in Sekunden.
 func (m *meter) frame(now, work float64, g *Game) {
 	dt := 0.0
@@ -88,14 +107,19 @@ func (m *meter) frame(now, work float64, g *Game) {
 		dt = now - m.last
 	}
 	m.last = now
+	defer func() { m.lastTick = g.frame.Tick }()
 	switch m.phase {
 	case 0:
 		if m.t += dt; m.t >= m.cfg.Warmup {
 			m.phase, m.t = 1, 0
+			runtime.ReadMemStats(&m.gc0)
 			slog.Info("⏳ Messung beginnt", "takt", g.frame.Tick, "sekunden", m.cfg.Seconds)
 		}
 	case 1:
 		m.frames = append(m.frames, dt*1000)
+		if g.frame.Tick == m.lastTick {
+			m.repeated++
+		}
 		m.drawMs += work * 1000
 		if m.t += dt; m.t >= m.cfg.Seconds {
 			m.phase = 2
@@ -131,6 +155,11 @@ func (g *Game) report(m *meter) Report {
 	var ms runtime.MemStats
 	runtime.ReadMemStats(&ms)
 	r.GoHeapMib, r.GoSysMib = round1(float64(ms.HeapAlloc)/(1<<20)), round1(float64(ms.Sys)/(1<<20))
+	r.BilderOhneTakt = m.repeated
+	r.GcLaeufe, r.GcPauseMs = ms.NumGC-m.gc0.NumGC, round1(float64(ms.PauseTotalNs-m.gc0.PauseTotalNs)/1e6)
+	if gaps := slices.Sorted(slices.Values(m.gaps)); len(gaps) > 0 {
+		r.TaktAbstandMs = FrameStats{P50: percentile(gaps, 0.5), P95: percentile(gaps, 0.95), P99: percentile(gaps, 0.99), Max: gaps[len(gaps)-1]}
+	}
 	return r
 }
 

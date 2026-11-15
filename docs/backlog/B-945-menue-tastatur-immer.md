@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** FB4
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-15
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude
 - **Duplikat von:** –
 - **Ersetzt:** –
 

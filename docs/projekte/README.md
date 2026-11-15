@@ -18,6 +18,7 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | 8 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
 | 9 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
 | 10 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
+| 11 | WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen | – | [WIR-wirtschaft-k2c.md](WIR-wirtschaft-k2c.md) |
 
 ## Ruht
 

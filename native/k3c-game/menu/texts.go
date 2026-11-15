@@ -140,6 +140,8 @@ const (
 	txtTstNoRunner
 	txtDevMode
 	txtTstStart
+	txtTstPads
+	txtPadTestHint
 	textCount
 )
 
@@ -273,6 +275,8 @@ var texts = [textCount][2]string{
 	txtTstNoRunner:     {"Stresstest hier nicht verfügbar", "Stress test not available here"},
 	txtDevMode:         {"Entwicklermodus", "Developer mode"},
 	txtTstStart:        {"Test starten", "Start test"},
+	txtTstPads:         {"Tasten-Test", "Button test"},
+	txtPadTestHint:     {"Tasten drücken · B zurück", "Press buttons · B back"},
 }
 
 // langIndex liefert den Index der Sprache in texts (unbekannt = Deutsch, wie view.Settings.Normalized).

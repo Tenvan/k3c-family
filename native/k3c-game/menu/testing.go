@@ -30,12 +30,13 @@ const (
 	tstMinutes
 	tstMode
 	tstStart
+	tstPads
 	tstBack
 	tstRows
 )
 
 var tstLabels = [tstRows]textKey{txtTstPreset, txtTstPlayers, txtTstDepth, txtSeed, txtTstEnemies, txtTstGrowth,
-	txtTstFactor, txtTstBuild, txtTstTroops, txtTstTimescale, txtTstWaves, txtTstMinutes, txtTstMode, txtTstStart, txtBack}
+	txtTstFactor, txtTstBuild, txtTstTroops, txtTstTimescale, txtTstWaves, txtTstMinutes, txtTstMode, txtTstStart, txtTstPads, txtBack}
 
 // tstSteps: Schritt und Höchstwert der Zahl-Zeilen (Minimum 0, Spieler 1).
 var tstSteps = map[int][2]int{
@@ -94,6 +95,9 @@ func (sc *testingScreen) handle(d view.DeviceID, k key, s view.Session) (view.St
 		switch {
 		case sc.sel == tstStart && k == keyOK:
 			return sc.start(d, s)
+		case sc.sel == tstPads && k == keyOK:
+			sc.cue(view.CueConfirm, -1, "")
+			return view.StepPush, newPadTest(sc.m)
 		case sc.sel == tstBack && k == keyOK:
 			sc.cue(view.CueBack, -1, "")
 			return view.StepPop, nil
@@ -250,6 +254,8 @@ func (sc *testingScreen) fill(lang string) {
 		switch r {
 		case tstStart:
 			rw.mat = matGreen
+		case tstPads:
+			rw.mat = matPurple
 		case tstBack:
 			rw.mat = matCoral
 		default:
