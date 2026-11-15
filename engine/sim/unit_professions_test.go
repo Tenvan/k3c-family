@@ -156,7 +156,7 @@ func TestProfessionAusbildungUndUmschulung(t *testing.T) {
 	}
 }
 
-// bowSeconds: so lange dauert ein bezahlter Bogen mit n Handwerkern an der Werkstatt (nur stepSites, ohne Abholer).
+// bowSeconds: so lange dauert ein bezahlter Hammer mit n Handwerkern (Beruf craftsman) an der Werkstatt (nur stepSites, ohne Abholer).
 func bowSeconds(t *testing.T, n int) float64 {
 	t.Helper()
 	w := quietWorld(t)
@@ -165,25 +165,25 @@ func bowSeconds(t *testing.T, n int) float64 {
 		addPeasant(w, s.X, "craftsman").WorkSite = s.ID
 	}
 	*w.Stock = Stock{Wood: 1000}
-	s.BowPaidGold = troops["archer"].Cost.Gold
+	s.BowPaidGold = buildings["workshop"].HammerCost.Gold
 	secs := 0.0
-	for ; s.Bows == 0 && secs < 60; secs += dt {
+	for ; s.Hammers == 0 && secs < 60; secs += dt {
 		w.Time += dt
 		stepSites(w)
 	}
 	return secs - dt // der erste Takt beginnt die Arbeit erst
 }
 
-// (c) Der Bogen liegt nach craftSeconds.bow im Regal, mit einem Handwerker nach 1/workFactor davon; ein dritter
+// (c) Der Hammer liegt nach craftSeconds.hammer im Regal, mit einem Handwerker nach 1/workFactor davon; ein dritter
 // Handwerker je Gebäude wird nicht ausgebildet.
 func TestProfessionHandwerkerUndHerstellungszeit(t *testing.T) {
 	craft := profession(t, "craftsman")
-	base := buildings["workshop"].CraftSeconds["bow"]
+	base := buildings["workshop"].CraftSeconds["hammer"]
 	if got := bowSeconds(t, 0); !aboutDt(got, base) {
-		t.Errorf("Bogen ohne Handwerker: %.2f s, erwartet %.2f s", got, base)
+		t.Errorf("Hammer ohne Handwerker: %.2f s, erwartet %.2f s", got, base)
 	}
 	if got, want := bowSeconds(t, 1), base/craft.WorkFactor; !aboutDt(got, want) {
-		t.Errorf("Bogen mit Handwerker: %.2f s, erwartet %.2f s", got, want)
+		t.Errorf("Hammer mit Handwerker: %.2f s, erwartet %.2f s", got, want)
 	}
 
 	w := quietWorld(t)

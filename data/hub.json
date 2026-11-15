@@ -33,6 +33,7 @@
   ],
   "sites": [
     { "kind": "workshop", "offsetUnits": -16, "hubLevel": 1 },
+    { "kind": "bowyer", "offsetUnits": -28, "hubLevel": 1 },
     { "kind": "stairsUp", "offsetUnits": 16, "fromDepth": 1, "hubLevel": 2 },
     { "kind": "stairsDown", "offsetUnits": 8, "needsDeeper": true, "hubLevel": 2 },
     { "kind": "healer", "offsetUnits": -40, "hubLevel": 3 },
@@ -42,7 +43,7 @@
     { "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }
   ],
   "islandSites": [
-    { "kind": "storage", "offsetUnits": -26, "hubLevel": 2 }
+    { "kind": "storage", "offsetUnits": -24, "hubLevel": 2 }
   ],
   "sitePlacement": {
     "zoneStartUnits": 40,
@@ -65,7 +66,9 @@
   "homeRadiusUnits": 12,
   "startTroops": {
     "peasant": 1,
+    "craftsman": 1,
     "archer": 2
   },
+  "castleSpareHammer": true,
   "travel": { "rangeUnits": 3, "seconds": 2 }
 }

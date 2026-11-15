@@ -59,7 +59,7 @@ func growPlot(w *World, s *Site, p Plantation, i int, dt float64) {
 	}
 	pl.growIn -= dt
 	if pl.growIn <= 0 {
-		pl.tree = &ResourceNode{ID: w.newID(), Kind: "tree", X: plotX(s, p, i), Marked: true}
+		pl.tree = &ResourceNode{ID: w.newID(), Kind: "tree", X: plotX(s, p, i), Marked: true, plant: true}
 		w.Nodes = append(w.Nodes, pl.tree)
 	}
 }

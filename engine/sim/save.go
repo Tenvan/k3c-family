@@ -81,6 +81,7 @@ type TroopSave struct {
 	AnchorX    float64 `json:"anchorX"`
 	Profession string  `json:"profession,omitempty"`
 	WorkSite   string  `json:"workSite,omitempty"`
+	Hammer     bool    `json:"hammer,omitempty"` // Handwerker (B-950)
 	// Leader: Gruppenführer mit Schild (combat.go, B-932); die Gruppe füllt sich nach dem Laden neu.
 	Leader bool `json:"leader,omitempty"`
 }

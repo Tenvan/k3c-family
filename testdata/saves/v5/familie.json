@@ -420,7 +420,7 @@
         },
         {
           "kind": "storage",
-          "x": 474,
+          "x": 476,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,
@@ -863,7 +863,7 @@
         },
         {
           "kind": "storage",
-          "x": 374,
+          "x": 376,
           "state": "unpaid",
           "paidGold": 0,
           "buildProgress": 0,

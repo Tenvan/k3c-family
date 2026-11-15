@@ -134,7 +134,7 @@ func stepOffers(w *World) {
 // freePeasant ist der Bauer ohne Auftrag nächst an x, der den Beruf kind noch nicht hat; nil, wenn keiner frei ist.
 func freePeasant(w *World, x float64, kind string) *Troop {
 	return nearest(w.Troops, func(t *Troop) float64 { return t.X }, x, math.Inf(1), func(t *Troop) bool {
-		return t.Kind == "peasant" && t.Job == nil && t.Profession != kind
+		return t.Kind == "peasant" && !t.Hammer && t.Job == nil && t.Profession != kind
 	})
 }
 
@@ -184,14 +184,15 @@ func bowsCrafting(s *Site) int {
 // CraftDone ist die Spielzeit, zu der er im Regal liegt (Q35).
 // ponytail: das Tempo gilt ab Beginn, ein später ausgebildeter Handwerker beschleunigt erst den nächsten Bogen.
 func stepBowCraft(w *World, s *Site) {
+	p := placeProduct(w, s)
 	if s.CraftDone > 0 && w.Time >= s.CraftDone {
-		s.Bows++
+		*p.have++
 		s.CraftDone = 0
 	}
-	bow := cheap(w, w.values().Troops["archer"].Cost)
-	if s.CraftDone == 0 && s.BowPaidGold >= bow.Gold && canAfford(*w.Stock, bow) {
-		spend(w.Stock, bow)
+	cost := cheap(w, p.cost)
+	if s.CraftDone == 0 && s.BowPaidGold >= cost.Gold && canAfford(*w.Stock, cost) {
+		spend(w.Stock, cost)
 		s.BowPaidGold = 0
-		s.CraftDone = w.Time + craftSeconds(w, s, "bow")
+		s.CraftDone = w.Time + craftSeconds(w, s, p.name)
 	}
 }

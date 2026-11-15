@@ -31,7 +31,7 @@ var (
 	purseMaxGold             = readJSON[struct{ Purse struct{ MaxGold int } }]("economy.json").Purse.MaxGold
 	buildingInfo             = readJSON[map[string]struct {
 		Name    string
-		BowRack int
+		BowRack, HammerRack int
 	}]("buildings.json")
 	endBossPhases = readBossPhases()
 )

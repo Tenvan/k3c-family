@@ -8,7 +8,7 @@ func fetchFixture(t *testing.T) (*World, *Troop, *Site) {
 	t.Helper()
 	_, w := portalIsland(t) // Insel mit 2 Spielern, ohne Gegner
 	w.Portals, w.PortalHP = nil, nil
-	shop := buildSite(t, w, "workshop")
+	shop := buildSite(t, w, "bowyer")
 	shop.Bows, shop.Swords = 1, 0
 	p := addPeasant(w, shop.X, "")
 	return w, p, shop

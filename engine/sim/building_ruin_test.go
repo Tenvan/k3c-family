@@ -173,7 +173,7 @@ func TestRuineWirdRepariert(t *testing.T) {
 	s := ruinOf(t, w, "smithy")
 	var peasant *Troop
 	for _, tr := range w.Troops {
-		if tr.Kind == "peasant" {
+		if tr.Kind == "peasant" && tr.Hammer { // repariert nur ein Handwerker (B-950)
 			peasant = tr
 		}
 	}

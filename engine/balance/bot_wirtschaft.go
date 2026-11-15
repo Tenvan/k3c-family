@@ -13,10 +13,10 @@ import (
 // das eigene Gold den Rest deckt, sonst kämen die Münzen beim Loslassen zurück.
 
 // buildOrder: unbezahlte Plätze in dieser Reihenfolge, je Art der nächste bezahlbare.
-var buildOrder = []string{"wall", "tower", "nursery", "workshop"}
+var buildOrder = []string{"wall", "tower", "nursery", "bowyer"}
 
 // deepBuildOrder gilt unter Tage: die Werkstatt zuerst, ohne sie entstehen keine Bögen, und jede Welle räumt sie ab (B-652).
-var deepBuildOrder = []string{"workshop", "wall", "tower", "nursery"}
+var deepBuildOrder = []string{"bowyer", "wall", "tower", "nursery"}
 
 func buildOrderOf(w *sim.World) []string {
 	if w.Biome.Depth >= 1 {
@@ -124,13 +124,13 @@ func hubStep(w *sim.World, p *sim.Player) (*float64, int) {
 	return nil, 0
 }
 
-// fighterStep: die nächste Werkstatt, die einen Bogen nimmt (Gold für den Rest plus Rücklage), solange ein Bauer ihn
+// fighterStep: der nächste Bogner, der einen Bogen nimmt (Gold für den Rest plus Rücklage), solange ein Bauer ihn
 // holen kann und weniger als fighterWant Kämpfer da sind; nil sonst.
 func fighterStep(w *sim.World, p *sim.Player, reserve int) *float64 {
 	if peasants(w) == 0 || sim.EconomyOf(w).Fighters >= fighterTarget(w) {
 		return nil
 	}
-	if s := nearestPayable(w, p, "workshop", "built", reserve); s != nil {
+	if s := nearestPayable(w, p, "bowyer", "built", reserve); s != nil {
 		return &s.X
 	}
 	return nil

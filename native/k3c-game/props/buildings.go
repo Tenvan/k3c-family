@@ -29,7 +29,7 @@ func stageAnim(n int) string { return stageAnims[min(max(n, 1), len(stageAnims)-
 
 // hubBuildings: Hub-Gebäude → Papier-Asset; ohne eigene `levels` in den Daten folgen sie der Hub-Stufe (GEB9).
 var hubBuildings = map[string]string{
-	"workshop": bg + "werkstatt", "tavern": bg + "taverne", "healer": bg + "heilplatz", "smithy": bg + "schmiede",
+	"workshop": bg + "werkstatt", "bowyer": bg + "werkstatt", /* Platzhalter bis zum Asset bogner (B-951) */ "tavern": bg + "taverne", "healer": bg + "heilplatz", "smithy": bg + "schmiede",
 	"armory": bg + "ruestkammer", "storage": bg + "lager", "nursery": bg + "farm", "barracks": bg + "kaserne",
 }
 
@@ -91,7 +91,7 @@ func siteLook(kind, state string, stage int) look {
 // scaffoldClass: Größenklasse des Gerüsts je Platzart = Breite des Gebäudes in Kacheln (B-586).
 var scaffoldClass = map[string]string{
 	"wall": bg + "geruest-1", "tower": bg + "geruest-3", "nursery": bg + "geruest-4", "stairsUp": bg + "geruest-4",
-	"stairsDown": bg + "geruest-4", "workshop": bg + "geruest-6", "storage": bg + "geruest-6", "barracks": bg + "geruest-6",
+	"stairsDown": bg + "geruest-4", "workshop": bg + "geruest-6", "bowyer": bg + "geruest-6", "storage": bg + "geruest-6", "barracks": bg + "geruest-6",
 	"tavern": bg + "geruest-6", "healer": bg + "geruest-6", "smithy": bg + "geruest-6", "armory": bg + "geruest-6",
 	"ship": bg + "geruest-6",
 }

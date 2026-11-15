@@ -14,6 +14,7 @@ func dayWorld(t *testing.T) *World {
 	w.CycleSpeed = 1e-6
 	peasant := spawnVagrant(w, w.HubX, w.HubX)
 	peasant.Kind, peasant.HP, peasant.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
+	peasant.Hammer = true
 	return w
 }
 
@@ -160,7 +161,7 @@ func TestHubPlatzErstAbHubStufe(t *testing.T) {
 		}
 	}
 	w := isl.Stages[0]
-	want := map[string]int{"stairsDown": 2, "storage": 2, "barracks": 2, "tavern": 2, "smithy": 3, "armory": 4, "workshop": 1}
+	want := map[string]int{"stairsDown": 2, "storage": 2, "barracks": 2, "tavern": 2, "smithy": 3, "armory": 4, "workshop": 1, "bowyer": 1}
 	for kind, level := range want {
 		for _, s := range w.Sites {
 			if s.Kind == kind && siteHubLevel(w, s) != level {

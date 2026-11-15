@@ -29,9 +29,9 @@ func TestNearestTags(t *testing.T) {
 }
 
 func TestOffersPrice(t *testing.T) {
-	rack := buildings["workshop"].BowRack
-	if rack == 0 {
-		t.Fatal("Bogen-Regal fehlt in data/buildings.json")
+	rack := buildings["bowyer"].BowRack
+	if rack == 0 || buildings["workshop"].HammerRack == 0 {
+		t.Fatal("Bogen-Regal des Bogners oder Hammer-Regal der Werkstatt fehlt in data/buildings.json")
 	}
 	cases := []struct {
 		kind, state string
@@ -42,8 +42,11 @@ func TestOffersPrice(t *testing.T) {
 		{"wall", "unpaid", false, 0, false},
 		{"wall", "unpaid", true, 0, true},
 		{"wall", "built", true, 0, false},
+		{"bowyer", "built", false, 0, true},
+		{"bowyer", "built", false, rack, false},
 		{"workshop", "built", false, 0, true},
-		{"workshop", "built", false, rack, false},
+		{"workshop", "built", false, buildings["workshop"].HammerRack, false},
+		{"smithy", "built", false, 0, false},
 		{"wall", "waitingWorker", true, 0, false},
 	}
 	for _, c := range cases {

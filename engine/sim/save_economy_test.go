@@ -49,7 +49,7 @@ func economyIsland(t *testing.T) *Island {
 	return isl
 }
 
-// added sind die Truppen, die setEconomy zur Startbesetzung (Bauer, zwei Bogenschützen) dazugibt.
+// added sind die Truppen, die setEconomy zur Startbesetzung (Handwerker, Bauer, zwei Bogenschützen) dazugibt.
 func added(w *World) []*Troop {
 	out := []*Troop{}
 	for _, tr := range w.Troops {
@@ -57,7 +57,9 @@ func added(w *World) []*Troop {
 			out = append(out, tr)
 		}
 	}
-	return out[3:]
+	// Die Startbesetzung (Handwerker, Bauern ohne Beruf, Bogenschützen) steht vor dem ersten Bauern mit Beruf; Spielstände
+	// älterer Versionen haben noch keinen Handwerker.
+	return out[slices.IndexFunc(out, func(tr *Troop) bool { return tr.Profession != "" }):]
 }
 
 func troopKinds(w *World) []string {

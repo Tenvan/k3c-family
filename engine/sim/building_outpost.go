@@ -32,7 +32,7 @@ func outpost(w *World, x float64) bool {
 // outpostJob: Bau, Reparatur oder Waffen holen an einem Vorposten.
 func outpostJob(w *World, j *Job) bool {
 	switch j.Type {
-	case "build", "repair", "fetchBow", "fetchSword":
+	case "build", "repair", "fetchBow", "fetchSword", "fetchHammer":
 		s := siteByID(w, j.SiteID)
 		return s != nil && outpost(w, s.X)
 	}

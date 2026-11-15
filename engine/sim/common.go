@@ -220,7 +220,7 @@ func destroySite(w *World, s *Site) {
 		if t.TowerID != nil && *t.TowerID == s.ID {
 			t.TowerID = nil
 		}
-		if t.Job != nil && (t.Job.Type == "build" || t.Job.Type == "fetchBow") && t.Job.SiteID == s.ID {
+		if t.Job != nil && (t.Job.Type == "build" || t.Job.Type == "fetchBow" || t.Job.Type == "fetchHammer") && t.Job.SiteID == s.ID {
 			t.Job = nil
 		}
 	}

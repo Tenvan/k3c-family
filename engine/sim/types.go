@@ -70,11 +70,16 @@ type Coin struct {
 	BlockedUntil    float64 `json:"blockedUntil"`
 	// Loot: Münze aus einem Treffer auf den Monarchen (kampf.md § 5); Gegner mit `stealsGold` rauben sie vom Boden (crown.go).
 	Loot bool `json:"loot,omitempty"`
+	// Fontäne (economy_fountain.go, B-953): Die Münze startet bei LaunchAt an FromX, fliegt im Bogen nach X und ist erst
+	// ab LandsAt aufsammelbar.
+	FromX    float64 `json:"fromX,omitempty"`
+	LaunchAt float64 `json:"launchAt,omitempty"`
+	LandsAt  float64 `json:"landsAt,omitempty"`
 }
 
 // Job ist der Auftrag eines Bauern; es sind nur die Felder seines Typs gesetzt (IDs sind nie 0).
 type Job struct {
-	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow, fetchSword, pickup (Ausrüstung, unit_warrior.go)
+	Type     string  `json:"type"` // build, repair, gather, carry, fetchBow, fetchSword, fetchHammer, pickup (Ausrüstung, unit_warrior.go)
 	SiteID   int     `json:"siteId,omitempty"`
 	DropID   int     `json:"dropId,omitempty"`
 	NodeID   int     `json:"nodeId,omitempty"`
@@ -99,6 +104,8 @@ type Troop struct {
 	// Profession: Beruf eines Bauern (miner, builder, craftsman; unit_professions.go), WorkSite: Gebäude eines Handwerkers.
 	Profession string `json:"profession,omitempty"`
 	WorkSite   int    `json:"workSite,omitempty"`
+	// Hammer: Handwerker, ein Bauer mit Hammer; nur er baut und repariert (unit_hammer.go, B-950).
+	Hammer bool `json:"hammer,omitempty"`
 	hitBy      string // Gegnerart des letzten Treffers für disarmed (unit_warrior.go), ohne JSON
 	// carried: Material, das ein Träger in einer Insel bei vollem Maximum behält, während er einen Bauauftrag übernimmt.
 	carried *Job
@@ -129,6 +136,7 @@ type ResourceNode struct {
 	Progress float64 `json:"progress"`
 	// Variant ist die Variante aus dem Level (Baumart, Kristallfarbe; B-891); leer bei Plantage-Bäumen und ohne Gruppe.
 	Variant string `json:"-"` // nur im Prozess (natives Spiel), nicht im Zustand und nicht im Spielstand
+	plant   bool   // Baum einer Baumschule: kein Baum-Gold (B-952)
 	gone    bool   // abgebaut und aus Nodes entfernt (Plantage, building_plantation.go)
 }
 
@@ -143,7 +151,8 @@ type Site struct {
 	HP            float64 `json:"hp"`
 	MaxHP         float64 `json:"maxHp"`
 	WorkerID      *int    `json:"workerId"`
-	Bows          int     `json:"bows"`        // Werkstatt: fertige Bögen im Regal
+	Bows          int     `json:"bows"`        // Bogner: fertige Bögen im Regal
+	Hammers       int     `json:"hammers,omitempty"` // Werkstatt: fertige Hämmer im Regal (unit_hammer.go)
 	BowPaidGold   int     `json:"bowPaidGold"` // bezahltes Gold für das Produkt am Platz (Werkstatt: Bogen; building_upgrades.go)
 	// CraftDone: Spielzeit, zu der das Produkt am Platz fertig ist (Werkstatt: Bogen im Regal, Schmiede:
 	// Elite-Bogenschütze, Rüstkammer: Rüstungsstufe; 0 = keins in Arbeit); OfferPaid: bezahltes Gold je Angebot (Index

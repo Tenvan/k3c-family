@@ -21,7 +21,7 @@ func damaged(w *World, s *Site) bool {
 
 // repairJob: nächstes beschädigtes Gebäude, nur ohne Gefahr; nil, wenn es keins gibt.
 func repairJob(w *World, t *Troop) *Job {
-	if isDangerous(w) {
+	if isDangerous(w) || !t.Hammer {
 		return nil
 	}
 	var site *Site

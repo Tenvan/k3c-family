@@ -64,14 +64,17 @@ func TestSparsamZweiSpielerZahlenBeide(t *testing.T) {
 		t.Fatal(err)
 	}
 	p0, p1 := sim.AddIslandPlayer(isl, 0), sim.AddIslandPlayer(isl, 0)
-	start0, start1 := p0.Gold, p1.Gold
 	w, cmds := isl.Stages[0], make([]sim.PlayerCommand, 2)
+	prev0, prev1, spent0, spent1 := p0.Gold, p1.Gold, 0, 0
 	for range 10 * 60 * 30 { // zehn Minuten: der helle Teil von Tag 1
 		cmds[0], cmds[1] = saver(w, p0), saver(w, p1)
 		sim.StepIsland(isl, cmds, 1.0/30)
+		// Gold aus Bäumen und Truhen (B-952, B-953) kann den Beutel füllen: gezahlt ist, was in einem Takt abgeht.
+		spent0, spent1 = spent0+max(0, prev0-p0.Gold), spent1+max(0, prev1-p1.Gold)
+		prev0, prev1 = p0.Gold, p1.Gold
 	}
-	if p0.Gold >= start0 || p1.Gold >= start1 {
-		t.Fatalf("Gold vorher %d/%d, nachher %d/%d: nicht beide haben gezahlt", start0, start1, p0.Gold, p1.Gold)
+	if spent0 == 0 || spent1 == 0 {
+		t.Fatalf("Ausgaben %d/%d: nicht beide haben gezahlt", spent0, spent1)
 	}
 }
 

@@ -80,8 +80,9 @@ func (p *planner) pickups(w *sim.World, info *stageInfo, k view.Camera, clock fl
 // coins: Münzen am Boden (Papier-Münze, ohne Grafik ein goldener Kreis).
 func (p *planner) coins(w *sim.World, k view.Camera) {
 	for _, c := range w.Coins {
-		if visible(k, c.X, 0.5) && !p.sprite(coinLook, c.X, 0, animPhase(c.X, 8)) {
-			p.body = append(p.body, item{shape: shapeCircle, x: c.X, y: px(8), w: px(8), clr: gold})
+		x, lift, shown := coinPose(c, w.Time) // Truhen-Fontäne im Bogen (B-953)
+		if shown && visible(k, x, 0.5) && !p.sprite(coinLook, x, px(lift), animPhase(c.X, 8)) {
+			p.body = append(p.body, item{shape: shapeCircle, x: x, y: px(8) + px(lift), w: px(8), clr: gold})
 		}
 	}
 }

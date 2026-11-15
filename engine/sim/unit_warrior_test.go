@@ -34,6 +34,7 @@ func TestWarriorNimmtSchwertUndKaempftHinterDerMauer(t *testing.T) {
 	workshop.Swords = 1
 	wall := sturdy(lineSite(t, w, "wall", -1, 1))
 	peasant := w.Troops[0]
+	peasant.Hammer = false
 	if runUntil(w, 30, func() bool { return peasant.Kind == "warrior" }) < 0 || workshop.Swords != 0 {
 		t.Fatalf("Bauer ist %s, Schwerter im Regal %d", peasant.Kind, workshop.Swords)
 	}
@@ -91,12 +92,12 @@ func TestWarriorSchwertNachHerstellungszeit(t *testing.T) {
 	}
 }
 
-// (e) Zwei Spieler zahlen gleichzeitig: einer am Bogen (Werkstatt), einer am Schwert-Zahlziel.
+// (e) Zwei Spieler zahlen gleichzeitig: einer am Bogen (Bogner), einer am Schwert-Zahlziel der Werkstatt.
 func TestWarriorZweiSpielerZahlenBogenUndSchwert(t *testing.T) {
 	w := quietWorld(t)
 	p1, p2 := AddPlayer(w), AddPlayer(w)
-	s := buildSite(t, w, "workshop")
-	spot, ok := swordSpot(w, s)
+	s, shop := buildSite(t, w, "bowyer"), buildSite(t, w, "workshop")
+	spot, ok := swordSpot(w, shop)
 	if !ok {
 		t.Fatal("Werkstatt ohne Schwert-Zahlziel")
 	}
@@ -106,8 +107,8 @@ func TestWarriorZweiSpielerZahlenBogenUndSchwert(t *testing.T) {
 		Step(w, []PlayerCommand{{Pay: true}, {Pay: true}}, dt)
 	}
 	bow, sword := troops["archer"].Cost.Gold, troops["warrior"].Cost.Gold
-	if s.BowPaidGold != bow || s.SwordPaidGold != sword || g1-p1.Gold != bow || g2-p2.Gold != sword {
+	if s.BowPaidGold != bow || shop.SwordPaidGold != sword || g1-p1.Gold != bow || g2-p2.Gold != sword {
 		t.Errorf("Bogen %d/%d (Spieler 1 zahlte %d), Schwert %d/%d (Spieler 2 zahlte %d)",
-			s.BowPaidGold, bow, g1-p1.Gold, s.SwordPaidGold, sword, g2-p2.Gold)
+			s.BowPaidGold, bow, g1-p1.Gold, shop.SwordPaidGold, sword, g2-p2.Gold)
 	}
 }

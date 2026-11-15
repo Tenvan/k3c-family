@@ -35,6 +35,7 @@ func TestDisarmKriegerWirdBauerUndHebtSchwertAuf(t *testing.T) {
 	AddPlayer(w)
 	AddPlayer(w)
 	tr := w.Troops[0]
+	tr.Hammer = false
 	makeFighter(w, tr, "warrior")
 	tr.X = w.HubX - 5
 	events := hitUntil(t, w, tr, func() bool { return tr.Kind != "warrior" })
