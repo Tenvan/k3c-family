@@ -2,36 +2,46 @@ package audio
 
 import (
 	"math"
-	"regexp"
 	"testing"
 )
 
-// AC-02: Zustand → Slot wie music.ts › MUSIC_SLOTS, jeder Slot mit Datei im Register, kein Stück doppelt.
-func TestMusicSlotsMatchBrowser(t *testing.T) {
-	src := browserSource(t, "music.ts")
-	re := regexp.MustCompile(`(?m)^\s+(day|dusk|night|battle|depth|boss|lobby|defeat|ending): '([^']+)',`)
-	found := re.FindAllStringSubmatch(src, -1)
-	byName := map[string]musicState{"day": stateDay, "dusk": stateDusk, "night": stateNight, "battle": stateBattle,
-		"depth": stateDepth, "boss": stateBoss, "lobby": stateLobby, "defeat": stateDefeat, "ending": stateEnding}
-	if len(found) != len(byName) {
-		t.Fatalf("%d Einträge in music.ts, erwartet %d", len(found), len(byName))
+// AC-01: Jeder Zustand außer stateNone hat einen Musik-Slot mit Datei im Register, kein Stück doppelt.
+func TestMusicSlotsHaveFiles(t *testing.T) {
+	if len(musicSlots) != int(stateEnding)+1 || musicSlots[stateNone] != "" {
+		t.Fatalf("musicSlots: %d Einträge, stateNone %q", len(musicSlots), musicSlots[stateNone])
 	}
 	reg := realRegister(t)
 	files := map[string]bool{}
-	for _, m := range found {
-		slot := musicSlots[byName[m[1]]]
-		if slot != m[2] {
-			t.Errorf("%s: nativ %q, Browser %q", m[1], slot, m[2])
-		}
+	for st := stateDay; st <= stateEnding; st++ {
+		slot := musicSlots[st]
 		f := reg.Music[slot]
-		if f == "" || files[f] {
-			t.Errorf("%s: Datei %q fehlt oder doppelt", slot, f)
+		if slot == "" || f == "" || files[f] {
+			t.Errorf("Zustand %d: Slot %q, Datei %q fehlt oder doppelt", st, slot, f)
 		}
 		files[f] = true
 	}
 }
 
-// AC-02: Musikwechsel nach music.ts › nextMusicState (Fälle aus music.test.ts).
+// AC-02: Fehlt einem Musik-Slot die Datei im Register, nennt die Prüfung genau diesen Slot.
+func TestMissingFilesNamesMusicSlot(t *testing.T) {
+	files := map[string]string{}
+	for k, v := range realRegister(t).Music {
+		files[k] = v
+	}
+	slots := map[string]string{}
+	for _, slot := range musicSlots[stateDay:] {
+		slots[slot] = slot
+	}
+	if got := missingFiles(slots, files); len(got) != 0 {
+		t.Fatalf("Musik-Slots ohne Datei: %v", got)
+	}
+	delete(files, musicSlots[stateBoss])
+	if got := missingFiles(slots, files); len(got) != 1 || got[0] != "music:boss → music:boss" {
+		t.Errorf("fehlende Slots %v, erwartet nur music:boss", got)
+	}
+}
+
+// AC-02: Musikwechsel des Zustands-Automaten nextMusicState.
 func TestNextMusicState(t *testing.T) {
 	all := musicView{phase: "night", enemies: 3, depth: 2, boss: true, victory: true}
 	cases := []struct {
@@ -119,7 +129,7 @@ func TestFaderRetargetWithoutJump(t *testing.T) {
 	}
 }
 
-// Ducking wie ducking.test.ts: sinkt, hält, steigt; überlappend verlängert; in der Rampe hinauf ohne Sprung.
+// Ducking: sinkt, hält, steigt; überlappend verlängert; in der Rampe hinauf ohne Sprung.
 func TestDuck(t *testing.T) {
 	near := func(a, b float64) bool { return math.Abs(a-b) < 1e-9 }
 	if duckGain(3, duckWindow{}) != 1 {
