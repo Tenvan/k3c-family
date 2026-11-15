@@ -37,6 +37,9 @@ func TestMain(m *testing.M) {
 	if out := os.Getenv(shotEnv); out != "" {
 		os.Exit(runSeaShot(out))
 	}
+	if out := os.Getenv(voyageShotEnv); out != "" {
+		os.Exit(runVoyageShot(out))
+	}
 	os.Exit(m.Run())
 }
 
