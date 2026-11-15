@@ -62,7 +62,7 @@ func TestKeyCommandTable(t *testing.T) {
 		{"pfeile Skill 4 Bild ab", 1, keys(ebiten.KeyPageDown), view.Command{Skill: 4}},
 		{"pfeile Skill 1 Num 1", 1, keys(ebiten.KeyNumpad1), view.Command{Skill: 1}},
 		{"pfeile Skill 4 Num 4", 1, keys(ebiten.KeyNumpad4), view.Command{Skill: 4}},
-		{"pfeile ignoriert WASD", 1, keys(ebiten.KeyD, ebiten.KeySpace, ebiten.KeyE, ebiten.KeyShiftLeft), view.Command{}},
+		{"pfeile ignoriert WASD, Leertaste zahlt (B-917)", 1, keys(ebiten.KeyD, ebiten.KeySpace, ebiten.KeyE, ebiten.KeyShiftLeft), view.Command{Pay: true}},
 	}
 	for _, c := range cases {
 		if got := keyCommand(c.lay, keyState(c.keys...)); got != c.want {

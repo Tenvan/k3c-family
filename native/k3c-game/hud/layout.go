@@ -74,7 +74,7 @@ type anchor struct {
 const rowH = 42.0
 
 // anchors der Elemente: drei Zeilen oben wie die Leiste des Browsers (Zeile 0 Spielerkarte, Uhr, Kampf; Zeile 1
-// Vorrat, Meldung, Ort; Zeile 2 Hub und Bürger), darunter Boss, Events und Radar, unten Skill-Leiste, Reise, Beitritt.
+// Vorrat, Meldung, Ort; Zeile 2 Hub und Bürger), darunter Boss und Events, unten Skill-Leiste, Reise, Beitritt und Radar (B-915: Unterkante im Fluss).
 var anchors = [itemCount]anchor{
 	itemPlayer:   {alignStart, alignStart, 24, 4, rankMust},
 	itemBanner:   {alignCenter, alignStart, 0, 4 + rowH, rankMust},
@@ -88,7 +88,7 @@ var anchors = [itemCount]anchor{
 	itemEvents:   {alignCenter, alignStart, 0, 4 + 4*rowH, rankShared},
 	itemTravel:   {alignCenter, alignEnd, 0, 150, rankTravel},
 	itemJoin:     {alignCenter, alignEnd, 0, 85, rankJoin},
-	itemRadar:    {alignCenter, alignStart, 0, 4 + 3*rowH, rankRadar},
+	itemRadar:    {alignEnd, alignEnd, 24, 24, rankRadar},
 }
 
 // items sind die Größen der Elemente einer Zelle in px; W == 0 heißt: nicht gezeigt.

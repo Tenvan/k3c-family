@@ -12,7 +12,7 @@ import (
 )
 
 // lineColors: Farbe des Skill-Rings je Linie (effects.ts › LINE_COLORS).
-var lineColors = map[string]uint32{"tank": 0x6fa8ff, "mage": 0xc070ff, "healer": 0x70f0a0, "thief": 0x9a9a9a}
+var lineColors = map[string]uint32{"tank": 0x6fa8ff, "mage": 0xc070ff, "healer": 0x70f0a0, "thief": 0x9a9a9a, "purse": 0xf2c94c}
 
 var skillLooks = map[string]look{
 	"taunt": {0xdf7126, 40, 0.7, 6, motionWave}, "shieldBash": {0xfbf236, 24, 0.4, 5, motionBurst},

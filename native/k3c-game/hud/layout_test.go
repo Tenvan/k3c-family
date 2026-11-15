@@ -12,7 +12,7 @@ import (
 func sizesAt(k, cellW float64) items {
 	var in items
 	set := func(id itemID, w, h float64) { in[id].W, in[id].H = w*k, h*k }
-	set(itemPlayer, 704, 42)
+	set(itemPlayer, 224, 92) // Geldsack-Karte (cardSize): Sack 84 px + Gold, B-919
 	set(itemSkills, 832, 42)
 	set(itemBanner, 640, 42)
 	set(itemShared, 416, 42)
@@ -148,5 +148,49 @@ func TestScaleOf(t *testing.T) {
 	}
 	if k := scaleOf(view.Cell{Rect: image.Rect(0, 0, 1920, 1080)}, 1); k != 1 {
 		t.Errorf("1080 px: Maßstab %v", k)
+	}
+}
+
+// B-915: Das Radar sitzt an der Unterkante der Zelle (im Fluss) und überlappt weder die Takt-/Stresstest-Anzeige
+// (auch mit zwei Zeilen) noch ein anderes Element, mit einem und mit zwei Spielern.
+func TestLayoutRadarUnterkanteOhneAnzeige(t *testing.T) {
+	for _, win := range []image.Rectangle{image.Rect(0, 0, 1280, 720), image.Rect(0, 0, 1920, 1080)} {
+		for _, n := range []int{1, 2} {
+			for i := range n {
+				checkRadarCell(t, win, n, i)
+			}
+		}
+	}
+}
+
+// checkRadarCell prüft eine Zelle mit den echten Größen (Geldsack-Karte, Boss, Events): Radar und Vorrats-Zeile bleiben
+// in der Zelle, das Radar im Fluss.
+func checkRadarCell(t *testing.T, win image.Rectangle, n, i int) {
+	t.Helper()
+	area := rectOf(cellRect(win, n, i))
+	k := float64(win.Dy()) / refHeight
+	var free []rect
+	var stats rect
+	if i == 0 {
+		free = []rect{tickFree(area)}
+		stats = rectOf(view.StatsRectLines(image.Rect(int(area.X), int(area.Y), int(area.X+area.W), int(area.Y+area.H)), 2))
+	}
+	in := sizesAt(k, area.W)
+	out := layout(&in, area, free, k)
+	name := fmt.Sprintf("%v, %d Spieler, Zelle %d", win, n, i)
+	if !out.ok[itemRadar] || !out.ok[itemShared] {
+		t.Fatalf("%s: Radar %v oder Vorrat %v fehlt", name, out.ok[itemRadar], out.ok[itemShared])
+	}
+	r := out.at[itemRadar]
+	if r.Y < area.Y+area.H*view.WorldShare || !r.inside(area) || !out.at[itemShared].inside(area) {
+		t.Errorf("%s: Radar %v nicht im Fluss der Zelle %v bzw. Vorrat %v draußen", name, r, area, out.at[itemShared])
+	}
+	if stats.W > 0 && r.overlaps(stats) {
+		t.Errorf("%s: Radar %v überlappt die Anzeige %v", name, r, stats)
+	}
+	for o := range itemCount {
+		if o != itemRadar && out.ok[o] && r.overlaps(out.at[o]) {
+			t.Errorf("%s: Radar schneidet Element %d", name, o)
+		}
 	}
 }

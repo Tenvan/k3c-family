@@ -27,8 +27,9 @@ type seatState struct {
 	monarch, stage  int
 	device          view.DeviceID
 	profile         string // Eingabe-Profil des Geräts (view.Settings.ProfileOf, B-894)
-	x, hp           float64
+	x               float64
 	down, flash     bool
+	purse           int // Größe des Geldsacks 1 bis 3 (sim.PurseSize, B-922)
 	color           uint32
 	widthUnits      float64
 	goldS, clockS   string
@@ -126,7 +127,7 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	st.profile = f.Settings.ProfileOf(s.Device)
 	st.color = playerColors[m.Index%len(playerColors)]
 	e := sim.EconomyOf(w)
-	st.card(lang, e, m, f.Clock)
+	st.card(lang, w, m, f.Clock)
 	st.world(lang, w, e, f.Clock)
 	st.events(lang, f, stage)
 	st.hints(lang, w, m, h.guide, &h.seen)
@@ -136,13 +137,12 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	st.skills(lang, w, m)
 }
 
-// card: Werte der Spielerkarte (Leben, Gold, Topf) und der Skill-Leiste.
-func (st *seatState) card(lang string, e sim.Economy, m *sim.Player, now float64) {
-	st.hp, st.down = 0, m.RespawnIn > 0
-	if m.MaxHP > 0 {
-		st.hp = max(0, min(1, m.HP/m.MaxHP))
-	}
-	purse := e.PurseMax
+// card: Werte der Spielerkarte (Geldsack-Größe, Gold) und der Skill-Leiste. Die Münz-Obergrenze kommt vom Spieler
+// (sim.PurseMaxOf, B-922), nicht aus der Insel-Wirtschaft.
+func (st *seatState) card(lang string, w *sim.World, m *sim.Player, now float64) {
+	st.down = m.RespawnIn > 0
+	st.purse = sim.PurseSize(w, m)
+	purse := sim.PurseMaxOf(w, m)
 	if purse <= 0 {
 		purse = purseMaxGold
 	}

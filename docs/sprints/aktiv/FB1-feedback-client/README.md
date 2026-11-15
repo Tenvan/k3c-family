@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| FB1.1 | `FB1.1-overlay-tasten-hud.md` | Umsetzung | autonom | offen |
+| FB1.1 | `FB1.1-overlay-tasten-hud.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
