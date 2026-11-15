@@ -845,3 +845,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-927](B-927-portale-zerstoerbar.md) | SIM | Idee | hoch | erledigt | KS2 | Portale haben HP, nur ausrückende Truppen zerstören sie; ohne Portale ist die Stufe dauerhaft sicher |
 | [B-928](B-928-kaempfer-werden-buerger.md) | SIM | Idee | hoch | erledigt | KS2 | Getroffene Kämpfer verlieren die Waffe und werden Bürger, keine Kaskade bis zum Landstreicher |
 | [B-929](B-929-buerger-holen-werkzeug.md) | SIM | Idee | mittel | erledigt | KS2 | Bürger ohne Waffe oder Werkzeug holen das nächste verfügbare, nur ohne Gegner in der Nähe |
+| [B-930](B-930-monarch-gold-statt-hp.md) | SIM | Idee | hoch | erledigt | KS3 | Der Monarch hat keine HP: jeder Treffer kostet einen festen Goldbetrag, ohne Gold fällt die Krone |
+| [B-931](B-931-krone-raub.md) | SIM | Idee | hoch | erledigt | KS3 | Die gefallene Krone fliegt im Bogen nach hinten; Gegner rauben sie ins Portal (Niederlage), Monarchen sammeln sie auf |

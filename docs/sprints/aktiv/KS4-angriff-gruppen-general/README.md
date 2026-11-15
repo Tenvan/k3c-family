@@ -1,23 +1,22 @@
 # KS4 · SIM · Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KSY
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-15
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+KS2 (#611) und KS3 (#613) gemergt: Portale mit HP und Schadens-Schnittstelle `Troop.attacking`, Krone statt HP.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Aktiver Angriff je Welt: Gruppen (Schild, Auslöser) oder General (Banner).
 
 ## Beteiligte und Zielgruppen
 
@@ -33,14 +32,9 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
-
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
-
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `engine/sim/**`, `engine/room/**`, `engine/level/**`, `engine/balance/**`, `data/**`, `testdata/golden/**`, `docs/protocol.md`, `docs/rules/kampf.md`, `native/k3c-game/**` (nur Eingabe für Banner/Auslöser)
+- **Sperre:** golden, protokoll
+- Sim-Code im eigenen Worktree (B-925).
 
 ## Beispiele
 
@@ -52,16 +46,18 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Gruppen-Angriff mit Schild (10 Gold), Gruppenführer, Auslöser (2 Gold) am Tor, Rückkehr, Variante je Welt (`B-932`).
+- **AC-02** General-Angriff mit Banner je Monarch, Trupp 5+5, Nachbesetzen (`B-933`).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| KS4.1 | `KS4.1-angriff.md` | Umsetzung | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
