@@ -66,7 +66,10 @@ func (h *hud) drawSea(dst *ebiten.Image, st *seatState, c view.Cell, k float64) 
 		return
 	}
 	b := 28 * k
-	m := h.measureSea(v, b)
+	if v.sizesK != k {
+		v.sizes, v.sizesK = h.measureSea(v, b), k // nur bei neuer Karte oder Skalierung messen
+	}
+	m := v.sizes
 	pad, gap, nodeH := 0.6*b, 0.4*b, 1.6*b
 	nodeW := m.nameW + nodeH + pad
 	n := float64(len(v.rows))

@@ -136,7 +136,7 @@ func (st *seatState) update(h *hud, f *view.Frame, s view.Seat) {
 	st.widthUnits = w.WidthUnits
 	st.citizenLabels(lang, w)
 	st.skills(lang, w, m)
-	st.sea.refresh(lang, w.IslandSwitch, f.Route)
+	st.sea.refresh(lang, st.profile, w.IslandSwitch, f.Route)
 }
 
 // card: Werte der Spielerkarte (Geldsack-Größe, Gold) und der Skill-Leiste. Die Münz-Obergrenze kommt vom Spieler

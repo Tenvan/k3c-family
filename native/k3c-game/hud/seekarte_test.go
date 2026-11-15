@@ -3,6 +3,7 @@ package hud
 import (
 	"errors"
 	"slices"
+	"strings"
 	"testing"
 
 	"k3c/engine/sim"
@@ -25,8 +26,8 @@ func (s *seaSession) ChooseIsland(p int, id string) error {
 var seaRoute = []view.RouteIsland{{ID: "a", Name: "A", Etappe: 1}, {ID: "b", Name: "B", Etappe: 2},
 	{ID: "c", Name: "C", Etappe: 2}, {ID: "d", Name: "D", Etappe: 3}}
 
-func openSwitch(choice string, completed ...string) *sim.SwitchState {
-	return &sim.SwitchState{Open: true, Choice: choice, Completed: completed,
+func openSwitch(choice string) *sim.SwitchState {
+	return &sim.SwitchState{Open: true, Choice: choice, Completed: []string{"a"}, // die Simulation nennt die aktuelle Insel a
 		Targets: []sim.SwitchTarget{{ID: "b", Name: "B", Etappe: 2}, {ID: "c", Name: "C", Etappe: 2}}}
 }
 
@@ -35,7 +36,7 @@ func seaWorld(t *testing.T) (*sim.World, *view.Frame) {
 	t.Helper()
 	w, f := twoPlayers(t, 0)
 	w.Sites = append(w.Sites, &sim.Site{Kind: shipKind, X: 50})
-	w.Players[0].X, w.Players[1].X = 50, 51
+	w.Players[0].X, w.Players[1].X = 50, 51 // Steg-Radius 3 (data/hub.json)
 	f.Route = seaRoute
 	return w, f
 }
@@ -93,7 +94,7 @@ func TestSeekarteAbgeschlosseneUndEinZiel(t *testing.T) {
 			}
 		}
 	}
-	if v.hint != tr(view.DefaultLanguage, "sea.hintOne") {
+	if v.hint != seaHint(view.DefaultLanguage, h.seats[0].profile, false) || strings.Contains(v.hint, "◄") {
 		t.Errorf("ein Ziel: Hinweis ohne Pfeile, war %q", v.hint)
 	}
 	if r := v.step(acts(view.ActionRight, view.ActionLeft)); r.moved || r.pick != "" {
@@ -112,8 +113,8 @@ func TestSeekarteEingabeZweiSpieler(t *testing.T) {
 	if !slices.Equal(s.picks, []string{"0:c", "1:b"}) {
 		t.Errorf("Spieler 1 wählt c, Spieler 2 (eigener Cursor) b: %v", s.picks)
 	}
-	if st.Consumed[0] || st.Consumed[1] || !hasCue(st.Cues, view.CueMove, 0) || !hasCue(st.Cues, view.CueConfirm, 1) {
-		t.Errorf("die Karte verbraucht nichts, meldet Cues: %v %v", st.Consumed, st.Cues)
+	if !st.Consumed[0] || !st.Consumed[1] || !hasCue(st.Cues, view.CueMove, 0) || !hasCue(st.Cues, view.CueConfirm, 1) {
+		t.Errorf("A wird verbraucht (kein Bezahlen), Cues: %v %v", st.Consumed, st.Cues)
 	}
 	w.IslandSwitch = openSwitch("c") // die Simulation hat die Wahl übernommen: beide sehen c
 	h.Listen(f)
@@ -147,4 +148,41 @@ func TestSeekarteKeineEingabeOhneKroneOderAmSteg(t *testing.T) {
 	if !hasCue(st.Cues, view.CueDenied, 1) {
 		t.Error("abgelehnte Wahl: Cue")
 	}
+}
+
+// Nur das Bestätigen wird verbraucht; Blättern und B lassen den Monarchen laufen.
+func TestSeekarteVerbrauchtNurBestaetigen(t *testing.T) {
+	w, f := seaWorld(t)
+	w.IslandSwitch = openSwitch("b")
+	h := New(nil).(*hud)
+	h.Listen(f)
+	s := &seaSession{}
+	if st := h.Update(input(acts(view.ActionRight), acts(view.ActionBack)), f, s); st.Consumed[0] || st.Consumed[1] {
+		t.Error("Blättern und B verbrauchen nichts")
+	}
+	s.err = errors.New("abgelehnt")
+	if st := h.Update(input(acts(view.ActionConfirm), nil), f, s); !st.Consumed[0] {
+		t.Error("auch abgelehntes Bestätigen verbraucht (kein Bezahlen)")
+	}
+	w.Players[0].X = 80
+	if st := h.Update(input(acts(view.ActionConfirm), nil), f, s); st.Consumed[0] {
+		t.Error("fern vom Steg bleibt A Bezahlen")
+	}
+}
+
+// Bei offener Karte keine Allokation je Frame (Listen und Update), solange sich nichts ändert.
+func TestSeekarteOhneAllokationen(t *testing.T) {
+	w, f := seaWorld(t)
+	w.IslandSwitch = openSwitch("b")
+	h := New(nil).(*hud)
+	s := &seaSession{}
+	h.Listen(f)
+	in := input(acts(view.ActionRight), nil)
+	if n := testing.AllocsPerRun(50, func() { h.seats[0].sea.refresh("de", view.ProfileWASD, w.IslandSwitch, f.Route) }); n != 0 {
+		t.Errorf("refresh: %v Allokationen", n)
+	}
+	if n := testing.AllocsPerRun(50, func() { h.seats[1].sea.step(in.Devices[0].Actions) }); n != 0 {
+		t.Errorf("step: %v Allokationen", n)
+	}
+	_ = s
 }
