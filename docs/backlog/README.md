@@ -50,8 +50,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-942](B-942-schild-gestell-burgstufe.md) | SIM | Idee | mittel | offen | KS7 | Schilde gibt es erst ab höherer Burgstufe, gestapelt auf einem Gestell neben der Burg |
 | [B-943](B-943-ruckeln-trotz-60fps.md) | CLI | Problem | hoch | offen | FB4 | Die Grafik ruckelt trotz stabiler 60 FPS, auch auf schnellen Rechnern |
 | [B-944](B-944-xbox-tasten-testseite.md) | CLI | Problem | hoch | offen | FB4 | Xbox-Controller-Tasten stimmen wieder, mit Testseite in den Entwickleroptionen |
-| [B-945](B-945-menue-tastatur-immer.md) | CLI | Problem | mittel | offen | FB4 | In Menüs funktioniert immer auch die normale Tastatursteuerung |
-| [B-946](B-946-hinweis-leertaste-betreten-weg.md) | CLI | Problem | niedrig | offen | FB4 | Der Hinweis „Leertaste zum Betreten“ wird nicht mehr angezeigt |
 | [B-947](B-947-hintergrundmauern-luecken.md) | CLI | Problem | mittel | offen | FB4 | Die durchgezogenen Hintergrundmauern haben keine Lücken mehr |
 | [B-948](B-948-baeume-groesser.md) | CLI | Problem | mittel | offen | FB4 | Bäume erscheinen in passender Größe statt zu klein |
 | [B-949](B-949-ladescreen-huebsch.md) | CLI | Idee | niedrig | offen | FB4 | Der Ladescreen ist im Stil des Spiels gestaltet |
@@ -59,6 +57,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-951](B-951-bogner-shop.md) | SIM | Problem | mittel | offen | WI1 | Der Handwerkerbedarf stellt Hämmer her, ein neuer Bogner stellt Bögen her |
 | [B-952](B-952-gold-holzfaellen.md) | SIM | Problem | mittel | offen | WI1 | Holzfällen bringt 1 bis 3 Gold und ist am Anfang die Haupteinnahme |
 | [B-953](B-953-truhen-fontaene.md) | SIM | Problem | mittel | offen | WI1 | Truhen geben zehnmal mehr Gold und werfen es als Fontäne auf den Boden |
+| [B-954](B-954-welten-mcp-tools.md) | DEV | Problem | mittel | offen | WE2 | Der Welten-Editor hat MCP-Tools und kann neue Welten anlegen |
+| [B-955](B-955-welt-sengoku.md) | DEV | Idee | niedrig | offen | WE3 | Welt Sengoku: Japan der Kriegerzeit mit Burgen, Reisfeldern und Ninja-Überfällen |
+| [B-956](B-956-welt-nil.md) | DEV | Idee | niedrig | offen | WE3 | Welt Nil: Ägypten mit Oasen-Inseln, Nilbarke und Sandstürmen |
+| [B-957](B-957-welt-britannien.md) | DEV | Idee | niedrig | offen | WE3 | Welt Britannien: Kelten mit Steinkreisen, Mooren und Druiden |
 
 ## Archiv
 

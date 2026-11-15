@@ -1,6 +1,6 @@
 # FB4.1 · Ruckeln, Xbox-Tasten, Menü-Tastatur, Hinweis, Mauern, Bäume, Ladescreen (B-943–B-949)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
