@@ -1,0 +1,56 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "xbox-y",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Xbox-Taste Y: gelbe runde Taste mit dunklem Y (Tasten-Hinweis im HUD, Pad)",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M12.5 -16C12.5 -22.9 6.9 -28.5 0 -28.5C-6.9 -28.5 -12.5 -22.9 -12.5 -16C-12.5 -9.1 -6.9 -3.5 0 -3.5C6.9 -3.5 12.5 -9.1 12.5 -16Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -28.5C-6.88 -28.5 -12.5 -22.87 -12.5 -16C-12.5 -9.12 -6.88 -3.5 0 -3.5C-5 -9.75 -5 -22.25 0 -28.5Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5.95 -21.73L-0.23 -14.25L1.75 -15.77L-3.97 -23.25ZM3.97 -23.25L-1.75 -15.77L0.23 -14.25L5.95 -21.73ZM-1.25 -17.25L-1.25 -9.25L1.25 -9.25L1.25 -17.25Z",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [7.2, -23.6],
+          "radius": 1.1
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

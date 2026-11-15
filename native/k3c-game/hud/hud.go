@@ -17,29 +17,33 @@ import (
 
 // hud ist der Beitrag des Pakets: Drawer (LayerHUD), Listener und Overlay (Skill-Menü).
 type hud struct {
-	lib     *art.Library
-	seats   [view.MaxPlayers]seatState
-	seen    guideSeen // gesehene Hinweise der ersten Nacht: Settings.GuideSeen und pending
-	guide   bool      // Anleitung an (nicht Settings.GuideOff)
-	pending guideSeen // neu gesehen, noch nicht in Settings.GuideSeen (Overlay.Update speichert sie)
-	lang    string
-	cells   int
-	joinS   string
-	mJoin   memo[joinKey]
-	cueBuf  []view.Cue
-	paint   painter
-	lay     [view.MaxPlayers]layoutCache
-	spots   []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
-	seaMap  *art.SeaMap // Assets der Seekarte (nil: Karte aus Formen, drawsea.go)
-	assets  []string    // gemeldete Assets (nil: nur die Icons)
-	voy     voyageView  // Schiffsfahrt im Vollbild (voyage.go, B-977)
-	tale    taleState   // Geschichtszeilen an den Wendepunkten (story.go, B-974)
+	lib      *art.Library
+	seats    [view.MaxPlayers]seatState
+	seen     guideSeen // gesehene Hinweise der ersten Nacht: Settings.GuideSeen und pending
+	guide    bool      // Anleitung an (nicht Settings.GuideOff)
+	pending  guideSeen // neu gesehen, noch nicht in Settings.GuideSeen (Overlay.Update speichert sie)
+	lang     string
+	cells    int
+	joinS    string
+	mJoin    memo[joinKey]
+	cueBuf   []view.Cue
+	paint    painter
+	lay      [view.MaxPlayers]layoutCache
+	spots    []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
+	seaMap   *art.SeaMap // Assets der Seekarte (nil: Karte aus Formen, drawsea.go)
+	assets   []string    // gemeldete Assets (nil: nur die Icons)
+	keyIcons bool        // Tasten-Icons gemeldet (icons.go › useKeyIcons, B-911)
+	capOf    *art.Sheet  // breite Tastenkappe, aus der capCut geschnitten ist (drawglyph.go)
+	capCut   [3]*ebiten.Image
+	voy      voyageView // Schiffsfahrt im Vollbild (voyage.go, B-977)
+	tale     taleState  // Geschichtszeilen an den Wendepunkten (story.go, B-974)
 }
 
 // New liefert den Drawer des HUD; lib (Grafik) darf nil sein, dann zeichnet es nur Flächen ohne Text.
 func New(lib *art.Library) view.Drawer {
 	h := &hud{lib: lib, lang: view.DefaultLanguage}
-	if lib != nil { // ohne Grafik bleibt die Seekarte aus Formen
+	if lib != nil { // ohne Grafik bleiben die Tasten gemalt und die Seekarte aus Formen
+		h.useKeyIcons(lib.Usable)
 		h.useSeaMap(art.DataSeaMap(), lib.Usable)
 	}
 	return h

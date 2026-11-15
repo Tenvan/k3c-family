@@ -57,8 +57,9 @@ const (
 	slotMenuTitle
 	slotMenuFooter
 	slotMenuRow                                // menuWindow Zeilen ab hier
-	slotMenuGlyph = slotMenuRow + menuWindow   // Glyph-Beschriftung je Zeile
-	slotLabel     = slotMenuGlyph + menuWindow // Welt-Labels ab hier (höchstens maxLabels)
+	slotMenuGlyph = slotMenuRow + menuWindow   // Glyph-Beschriftung je Zeile beim Zeichnen
+	slotMenuCap   = slotMenuGlyph + menuWindow // Glyph-Beschriftung je Zeile beim Messen (Grundgröße)
+	slotLabel     = slotMenuCap + menuWindow   // Welt-Labels ab hier (höchstens maxLabels)
 	slotStock     = slotLabel + maxLabels      // Teile der Vorrats-Anzeige ab hier (stockSlots, drawstock.go)
 	slotCount     = slotStock + stockSlots
 )
@@ -140,4 +141,9 @@ func (pt *painter) ringAt(dst *ebiten.Image, x, y, r float64, clr color.RGBA) {
 // ein Zwischenbild je Text), Debug-Schrift ohne.
 func (pt *painter) text(dst *ebiten.Image, f *art.Font, s string, x, y, size float64, clr color.RGBA) {
 	pt.outline.Draw(dst, f, s, x, y, size, clr, art.Outline8, 1)
+}
+
+// label zeichnet s ohne Kontur mit der linken oberen Ecke bei (x, y): Beschriftung auf heller Fläche (Tastenkappe).
+func (pt *painter) label(dst *ebiten.Image, f *art.Font, s string, x, y, size float64, clr color.RGBA) {
+	pt.outline.Draw(dst, f, s, x, y, size, clr, nil, 1)
 }

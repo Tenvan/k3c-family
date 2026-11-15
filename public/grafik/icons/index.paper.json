@@ -75,6 +75,71 @@
     "manifest": "muenze/manifest.json"
   },
   {
+    "id": "taste-kappe-breit",
+    "rig": "requisite",
+    "manifest": "taste-kappe-breit/manifest.json"
+  },
+  {
+    "id": "taste-kappe",
+    "rig": "requisite",
+    "manifest": "taste-kappe/manifest.json"
+  },
+  {
+    "id": "xbox-a",
+    "rig": "requisite",
+    "manifest": "xbox-a/manifest.json"
+  },
+  {
+    "id": "xbox-down",
+    "rig": "requisite",
+    "manifest": "xbox-down/manifest.json"
+  },
+  {
+    "id": "xbox-lb",
+    "rig": "requisite",
+    "manifest": "xbox-lb/manifest.json"
+  },
+  {
+    "id": "xbox-lt",
+    "rig": "requisite",
+    "manifest": "xbox-lt/manifest.json"
+  },
+  {
+    "id": "xbox-menu",
+    "rig": "requisite",
+    "manifest": "xbox-menu/manifest.json"
+  },
+  {
+    "id": "xbox-rb",
+    "rig": "requisite",
+    "manifest": "xbox-rb/manifest.json"
+  },
+  {
+    "id": "xbox-rs",
+    "rig": "requisite",
+    "manifest": "xbox-rs/manifest.json"
+  },
+  {
+    "id": "xbox-rt",
+    "rig": "requisite",
+    "manifest": "xbox-rt/manifest.json"
+  },
+  {
+    "id": "xbox-up",
+    "rig": "requisite",
+    "manifest": "xbox-up/manifest.json"
+  },
+  {
+    "id": "xbox-x",
+    "rig": "requisite",
+    "manifest": "xbox-x/manifest.json"
+  },
+  {
+    "id": "xbox-y",
+    "rig": "requisite",
+    "manifest": "xbox-y/manifest.json"
+  },
+  {
     "id": "zahlstelle-ausloeser",
     "rig": "requisite",
     "manifest": "zahlstelle-ausloeser/manifest.json"

@@ -1,0 +1,50 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "xbox-lb",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Xbox-Schultertaste LB: helle flache Taste, links oben gerundet, Aufschrift LB (Tasten-Hinweis im HUD, Pad)",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-7.5 -23.5L11.5 -23.5Q14.5 -23.5 14.5 -20.5L14.5 -11.5Q14.5 -8.5 11.5 -8.5L-11.5 -8.5Q-14.5 -8.5 -14.5 -11.5L-14.5 -16.5Q-14.5 -23.5 -7.5 -23.5Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-14.5 -12L14.5 -12L14.5 -11.5Q14.5 -8.5 11.5 -8.5L-11.5 -8.5Q-14.5 -8.5 -14.5 -11.5Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8.15 -21.55L-8.15 -11.65L-6.25 -11.65L-6.25 -21.55ZM-8.15 -11.65L-1.57 -11.65L-1.57 -13.55L-8.15 -13.55ZM1.05 -21.55L1.05 -11.65L2.95 -11.65L2.95 -21.55ZM1.05 -19.65L6.85 -19.65L6.85 -21.55L1.05 -21.55ZM4.56 -20.62L7.18 -17.92L8.54 -19.25L5.92 -21.94ZM6.25 -20.22L6.25 -16.98L8.15 -16.98L8.15 -20.22ZM7.18 -19.28L4.56 -16.58L5.92 -15.26L8.54 -17.95ZM1.05 -15.65L6.85 -15.65L6.85 -17.55L1.05 -17.55ZM4.56 -16.62L7.18 -13.92L8.54 -15.25L5.92 -17.94ZM6.25 -16.22L6.25 -12.98L8.15 -12.98L8.15 -16.22ZM7.18 -15.28L4.56 -12.58L5.92 -11.26L8.54 -13.95ZM6.85 -13.55L1.05 -13.55L1.05 -11.65L6.85 -11.65Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

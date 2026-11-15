@@ -71,12 +71,14 @@ type menuRow struct {
 	selected bool
 }
 
-// menuView ist das gezeichnete Menü: Titel, Zeilen um den Cursor, Bedienhinweis.
+// menuView ist das gezeichnete Menü: Titel, Zeilen um den Cursor, Bedienhinweis als Text (footer) und als Zeile mit
+// Tasten-Icons (line, B-911).
 type menuView struct {
 	title  string
 	rows   [menuWindow]menuRow
 	n      int
 	footer string
+	line   keyLine
 }
 
 // menuKey ist alles, wovon der Text des Menüs abhängt.
@@ -128,18 +130,28 @@ func buildMenu(k menuKey, entries []menuEntry) menuView {
 		v.rows[v.n] = row
 		v.n++
 	}
-	v.footer = menuFooter(k.lang, k.profile, labels[5])
+	v.line = menuLine(k.lang, k.profile)
+	v.footer = v.line.plain
 	return v
 }
 
-// menuFooter ist der Bedienhinweis mit den Tasten des Eingabe-Profils; am Pad schließt B (Steuerkreuz ↓ wählt im
-// offenen Menü weiter).
-func menuFooter(lang, profile, menuKeyLabel string) string {
+// menuLine ist der Bedienhinweis mit den Tasten des Eingabe-Profils; am Pad schließt B (ohne Bild; Steuerkreuz ↓ wählt
+// im offenen Menü weiter).
+func menuLine(lang, profile string) keyLine {
+	menu := glyphOf(lang, "skillMenu", profile)
 	if profile == view.ProfileGamepad {
-		return tf(lang, "skill.hint.pad", "menu", "B")
+		menu = textPart("B")
 	}
-	move := glyphOf(lang, "left", profile).label + " / " + glyphOf(lang, "right", profile).label
-	return tf(lang, "skill.hint.keyboard", "move", move, "ok", glyphOf(lang, "confirm", profile).label, "menu", menuKeyLabel)
+	return newKeyLine(tr(lang, "skill.hint"), moveArg(lang, profile), arg("ok", glyphOf(lang, "confirm", profile)), arg("menu", menu))
+}
+
+// moveArg sind die Tasten zum Wählen (Platzhalter move): am Pad die Pfeile als Text, an der Tastatur Links und Rechts
+// des Eingabe-Profils.
+func moveArg(lang, profile string) lineArg {
+	if profile == view.ProfileGamepad {
+		return arg("move", textPart("◄ ►"))
+	}
+	return arg("move", glyphOf(lang, "left", profile), textPart(" / "), glyphOf(lang, "right", profile))
 }
 
 // barKey: Skill und Abklingzeit (ganze Sekunden, aufgerundet) je Slot.

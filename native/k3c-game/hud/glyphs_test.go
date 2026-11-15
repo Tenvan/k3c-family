@@ -126,8 +126,7 @@ func TestMenuFooterPerDevice(t *testing.T) {
 		{gp, "◄ ► wählen · A bestätigen · B schließen"},
 	}
 	for _, c := range cases {
-		label := slotLabels("de", c.dev)[5]
-		if got := menuFooter("de", c.dev, label); got != c.want {
+		if got := menuLine("de", c.dev).plain; got != c.want {
 			t.Errorf("%v: %q, erwartet %q", c.dev, got, c.want)
 		}
 	}

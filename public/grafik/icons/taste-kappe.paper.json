@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "taste-kappe",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon leere Tastenkappe (ein Zeichen): helle Tastatur-Taste von vorn; die Beschriftung setzt das HUD mit der Spielschrift",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-9.5 -29.5L9.5 -29.5Q13.5 -29.5 13.5 -25.5L13.5 -6.5Q13.5 -2.5 9.5 -2.5L-9.5 -2.5Q-13.5 -2.5 -13.5 -6.5L-13.5 -25.5Q-13.5 -29.5 -9.5 -29.5Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8.5 -28.5L8.5 -28.5Q11.5 -28.5 11.5 -25.5L11.5 -10Q11.5 -7 8.5 -7L-8.5 -7Q-11.5 -7 -11.5 -10L-11.5 -25.5Q-11.5 -28.5 -8.5 -28.5Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8.5 -28.5L8.5 -28.5Q11.5 -28.5 11.5 -25.5L-11.5 -25.5Q-11.5 -28.5 -8.5 -28.5Z",
+          "material": "hermelin",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

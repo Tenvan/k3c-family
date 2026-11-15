@@ -39,6 +39,7 @@ func seaFill(n seaNode) uint32 {
 type seaSizes struct {
 	labW, nameW, titleW, hintW float64
 	maxNodes                   int
+	hintIcons                  bool // hintW gilt für den Hinweis mit Tasten-Icons
 }
 
 // measureSea misst Beschriftungen, Namen, Titel und Hinweis bei Schriftgröße b.
@@ -46,7 +47,9 @@ func (h *hud) measureSea(v *seaView, b float64) seaSizes {
 	f := h.font()
 	var m seaSizes
 	m.titleW, _ = f.Measure(v.title, b)
-	m.hintW, _ = f.Measure(v.hint, b*0.8)
+	if m.hintW, m.hintIcons = h.lineWidth(f, &v.line, b*0.8); !m.hintIcons {
+		m.hintW, _ = f.Measure(v.hint, b*0.8)
+	}
 	for _, r := range v.rows {
 		w, _ := f.Measure(r.title, b)
 		m.labW, m.maxNodes = max(m.labW, w), max(m.maxNodes, len(r.nodes))
@@ -67,8 +70,8 @@ func (h *hud) drawSea(dst *ebiten.Image, st *seatState, c view.Cell, k float64) 
 		return
 	}
 	b := 28 * k
-	if v.sizesK != k {
-		v.sizes, v.sizesK = h.measureSea(v, b), k // nur bei neuer Karte oder Skalierung messen
+	if v.sizesK != k || v.sizes.hintIcons != h.lineIcons(&v.line) {
+		v.sizes, v.sizesK = h.measureSea(v, b), k // nur bei neuer Karte, Skalierung oder anderen Tasten-Icons messen
 	}
 	if a, ok := h.seaArtOf(v); ok {
 		h.drawSeaPaper(dst, v, a, rectOf(c.Rect), k)
@@ -99,7 +102,7 @@ func (h *hud) drawSea(dst *ebiten.Image, st *seatState, c view.Cell, k float64) 
 		}
 		y += nodeH + gap
 	}
-	pt.text(dst, f, v.hint, x, y, b*0.8, white)
+	h.drawHint(dst, f, &v.line, v.hint, x, y, b*0.8)
 }
 
 // drawSeaNode zeichnet den Knoten nd in r: Fläche, Rahmen, Marke und Name.
