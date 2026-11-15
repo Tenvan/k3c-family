@@ -3,16 +3,21 @@ package game
 // Stresstest (Testing, B-896): menu startet über die Rolle view.StressStarter, die die Schleife den Menüs reicht
 // (menuSession). game legt das Spiel an, schaltet Leistungsanzeige (F2) und Debug-Werte (F10) an und führt die Werte
 // über Dev-Aktionen des Raums aus: im ersten Takt Ausbau, Truppen und Zeitraffer, zu jeder neuen Welle (Ereignis wave)
-// zusätzliche Gegner nach der Kurve (view.StressTest.EnemiesFor). Nach den eingestellten Wellen (sobald die letzte
+// zusätzliche Gegner nach der Kurve (view.StressTest.EnemiesFor). Der Test löst die Wellen selbst aus (stressWave), sobald
+// keine Gegner mehr leben oder warten, statt den Tag-Nacht-Zyklus abzuwarten (der Wald braucht 8 Minuten bis zur ersten Nacht,
+// unter Tage füllt sich der Pool in Stunden, B-920). Im reinen Modus (StressTest.Pure, B-921) ruht jede natürliche Welle;
+// die Gegner entstehen an der Burg (Dev-Aktion spawnCastle), nur die eingestellten Truppen leben. Nach den eingestellten Wellen (sobald die letzte
 // geschlagen ist) oder Minuten, bei Spielende oder Verlassen schreibt es den Bericht (stressreport.go) und hält die
 // Simulation an (F7 lässt sie weiterlaufen).
 
 import (
 	"errors"
 	"log/slog"
+	"slices"
 	"strconv"
 	"time"
 
+	"k3c/engine/sim"
 	"k3c/native/k3c-game/view"
 )
 
@@ -69,7 +74,7 @@ func (g *Game) startStress(t view.StressTest, by view.DeviceID) error {
 	g.dev.Debug = view.DebugValues
 	g.stress = newStressRun(t, g.now())
 	slog.Info("🚀 Stresstest gestartet", "vorgabe", t.Preset, "spieler", t.Players, "tiefe", t.Depth, "seed", t.Seed,
-		"gegner", t.Enemies, "anstieg", t.Growth, "faktor", t.Factor, "wellen", t.Waves, "minuten", t.Minutes)
+		"gegner", t.Enemies, "anstieg", t.Growth, "faktor", t.Factor, "wellen", t.Waves, "minuten", t.Minutes, "rein", t.Pure)
 	return nil
 }
 
@@ -104,15 +109,51 @@ func (g *Game) stressStep() {
 			g.stressDev(ds, p, view.DevAction{Action: "spawn", Kind: "enemy", Unit: r.cfg.Enemy, Amount: r.cfg.EnemiesFor(r.waves)})
 		}
 	}
+	g.stressWave(ds, p, r)
 	r.sample(&g.frame, g.fps())
 	if cause := r.over(&g.frame, g.now()); cause != "" {
 		g.finishStress(ds, cause)
 	}
 }
 
+// stressWave löst die nächste Welle aus, wenn die Stufe leer ist: die erste gleich nach dem Vorspann, jede weitere, sobald
+// die vorige geschlagen ist (fought), bis cfg.Waves. Das Ereignis wave der Dev-Aktion geht im Takt verloren (die Simulation
+// leert die Ereignisse zu Beginn jedes Takts), darum zählt der Test die Welle selbst.
+func (g *Game) stressWave(ds view.DevSession, p int, r *stressRun) {
+	c := r.cfg
+	if (c.Waves > 0 && r.waves >= c.Waves) || (r.waves > 0 && !r.fought) || !waveIdle(&g.frame) {
+		return
+	}
+	r.waves++
+	r.fought = false
+	a := view.DevAction{Action: "spawn", Kind: "enemy", Unit: c.Enemy, Amount: c.EnemiesFor(r.waves)}
+	if c.Pure {
+		a.Action = "spawnCastle"
+	} else {
+		g.stressDev(ds, p, view.DevAction{Action: "wave"})
+	}
+	g.stressDev(ds, p, a)
+}
+
+// waveIdle: Keine Gegner einer Welle leben oder warten (Wachen zählen nicht, sie bleiben stehen).
+func waveIdle(f *view.Frame) bool {
+	for _, st := range f.Stages {
+		if w := st.World; w != nil {
+			if len(w.SpawnQueue) > 0 || slices.ContainsFunc(w.Enemies, func(e *sim.Enemy) bool { return !e.Guard }) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 // stressPrelude: Ausbau, Truppen und Zeitraffer im ersten Takt des Tests.
 func (g *Game) stressPrelude(ds view.DevSession, p int) {
 	c := g.stress.cfg
+	if c.Pure { // vor allem anderen: keine natürlichen Wellen, Lager und Händler
+		on := true
+		g.stressDev(ds, p, view.DevAction{Action: "pure", On: &on})
+	}
 	if c.Build > 0 {
 		g.stressDev(ds, p, view.DevAction{Action: "buildAll", Level: c.Build})
 	}

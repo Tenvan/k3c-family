@@ -11,7 +11,7 @@ import (
 )
 
 // Testing (B-896): Stresstest einstellen und starten. Zeilen: Vorgabe, Spieler, Stufe, Seed, Gegner je Welle, Anstieg,
-// Faktor, Ausbau, Truppen, Zeitraffer, Wellen, Dauer, Starten, Zurück (rollt wie die Spielstände, maxRows sichtbar).
+// Faktor, Ausbau, Truppen, Zeitraffer, Wellen, Dauer, Modus (normal oder rein, B-921), Starten, Zurück (rollt wie die Spielstände, maxRows sichtbar).
 // Links/Rechts ändert am Rand begrenzt, A im Kreis; eine geänderte Zeile macht aus der Vorgabe „eigene Werte“.
 // Starten merkt die Werte in den Einstellungen (Settings.Stress) und startet über view.StressStarter (game).
 
@@ -28,13 +28,14 @@ const (
 	tstTimescale
 	tstWaves
 	tstMinutes
+	tstMode
 	tstStart
 	tstBack
 	tstRows
 )
 
 var tstLabels = [tstRows]textKey{txtTstPreset, txtTstPlayers, txtTstDepth, txtSeed, txtTstEnemies, txtTstGrowth,
-	txtTstFactor, txtTstBuild, txtTstTroops, txtTstTimescale, txtTstWaves, txtTstMinutes, txtTstStart, txtBack}
+	txtTstFactor, txtTstBuild, txtTstTroops, txtTstTimescale, txtTstWaves, txtTstMinutes, txtTstMode, txtTstStart, txtBack}
 
 // tstSteps: Schritt und Höchstwert der Zahl-Zeilen (Minimum 0, Spieler 1).
 var tstSteps = map[int][2]int{
@@ -157,6 +158,8 @@ func changeStress(t view.StressTest, r, dir int, round bool) view.StressTest {
 		if round && t.Factor > view.StressMaxFactor {
 			t.Factor = 0
 		}
+	case tstMode:
+		t.Pure = !t.Pure
 	case tstTimescale:
 		i := max(0, slices.Index(view.Timescales[:], t.Timescale))
 		t.Timescale = view.Timescales[cycleOrClamp(i, dir, len(view.Timescales), round)]
@@ -224,7 +227,7 @@ func (sc *testingScreen) start(d view.DeviceID, s view.Session) (view.StepKind, 
 		return view.StepStay, nil
 	}
 	slog.Info("🚀 Stresstest aus dem Menü", "vorgabe", sc.cur.Preset, "spieler", sc.cur.Players, "gegner", sc.cur.Enemies,
-		"anstieg", sc.cur.Growth, "faktor", sc.cur.Factor, "wellen", sc.cur.Waves)
+		"anstieg", sc.cur.Growth, "faktor", sc.cur.Factor, "wellen", sc.cur.Waves, "rein", sc.cur.Pure)
 	sc.cue(view.CueConfirm, -1, "")
 	return view.StepPlay, nil
 }

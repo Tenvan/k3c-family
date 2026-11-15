@@ -11,7 +11,7 @@ import (
 // in der Stufe des Monarchen, WZ14.5) brauchen slot, phase braucht
 // phase (day, dusk, night, dawn) (B-232); grade braucht grade (Name aus data/difficulty.json, gilt ab der nächsten Welle, B-080).
 // maxStock (+100 je Aufruf), fillStock und nextPhase brauchen nichts; cheapBuild und timescaleAuto brauchen on, buildAll
-// braucht level (1 bis 5). Kampf (B-603, dev_combat.go): boss braucht slot und boss (Id aus data/bosses.json), event
+// braucht level (1 bis 5), pure braucht on (reiner Stressmodus, B-921: keine natürlichen Wellen; spawnCastle wie spawn, aber an der Burg). Kampf (B-603, dev_combat.go): boss braucht slot und boss (Id aus data/bosses.json), event
 // braucht event (fullMoon, bloodMoon, merchantRaid), bossPhase und night brauchen nichts; spawn (B-766, Stresstest) braucht slot, kind, unit, amount.
 type DevAction struct {
 	Action   string
@@ -167,6 +167,11 @@ func (r *Room) devExtra(who string, a DevAction, player func(int) (int, bool)) (
 		attrs = []any{"stufe", a.Level}
 	case "nextPhase":
 		attrs, ok = []any{"phase", sim.DevNextPhase(r.isl)}, true
+	case "pure": // reiner Stressmodus (B-921)
+		if ok = a.On != nil; ok {
+			sim.DevSetPure(r.isl, *a.On)
+			attrs = []any{"an", *a.On}
+		}
 	case "timescaleAuto":
 		if ok = a.On != nil; ok {
 			r.autoReset, r.resetPhase = *a.On, r.isl.Stages[r.start].Cycle.Phase

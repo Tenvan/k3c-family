@@ -70,6 +70,9 @@ func spawnOrders(v *WorldValues, picks []string, portals []float64, r *rng.Rng) 
 }
 
 func startWave(w *World) {
+	if w.pure() {
+		return // reiner Stressmodus (B-921): keine Welle außer den gesetzten Gegnern
+	}
 	w.Wave++
 	w.lastWaveAt = w.Time
 	size, hp, damage := 1.0, 1.0, 1.0 // nur Inseln skalieren nach Spieleranzahl und Grad

@@ -832,3 +832,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-905](B-905-eisenstollen-glut.md) | CLI | Idee | niedrig | erledigt | BI2 | Der Eisenstollen zeigt Hitze und Glut nach der Natur-Eigenschaft glow |
 | [B-906](B-906-kristallhoehle-leuchtstaerke.md) | CLI | Idee | niedrig | erledigt | BI2 | Die Kristallhöhle leuchtet nach der Natur-Eigenschaft brightness |
 | [B-896](B-896-stresstests-im-menue.md) | CLI | Idee | hoch | erledigt | ST2 | Das native Spiel hat im Menü einen Bereich Testing, in dem einstellbare Stresstests starten |
+| [B-920](B-920-stresstest-ohne-wellen.md) | SIM | Problem | hoch | erledigt | FB2 | Der Stresstest startet keine Gegnerwellen |
+| [B-921](B-921-stressmodus-burg.md) | SIM | Idee | mittel | erledigt | FB2 | Reiner Stressmodus: Gegner spawnen bei der Burg, nur eigene Bevölkerung nach Einstellung |

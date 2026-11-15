@@ -26,6 +26,9 @@ func spawnVagrant(w *World, campX, x float64) *Troop {
 
 func stepCamps(w *World, dt float64) {
 	c := w.values().Economy.RecruitCamp
+	if w.pure() {
+		return
+	}
 	for _, camp := range w.Camps {
 		if vagrantsAt(w, camp.X) >= c.MaxVagrants {
 			camp.RespawnIn = c.RespawnSeconds

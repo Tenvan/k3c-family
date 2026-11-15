@@ -5,6 +5,9 @@ package sim
 // (data/buildings.json › tavern.vagrants).
 
 func tavernDawn(w *World) {
+	if w.pure() {
+		return
+	}
 	v := w.values().Buildings["tavern"].Vagrants
 	for _, s := range w.Sites {
 		if s.Kind != "tavern" || s.State != "built" {

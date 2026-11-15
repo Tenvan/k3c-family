@@ -33,6 +33,7 @@ type StressTest struct {
 	Minutes   int     `json:"minutes"`   // Abbruch nach so vielen Minuten Wanduhr, 0 = nie
 	Enemy     string  `json:"enemy"`     // Gegner-Sorte der zusätzlichen Gegner (data/enemies.json)
 	Troop     string  `json:"troop"`     // Truppen-Sorte vorab (data/troops.json)
+	Pure      bool    `json:"pure"`      // reiner Stressmodus (B-921): Gegner entstehen an der Burg, sonst nichts von selbst
 }
 
 // EnemiesFor liefert die zusätzlichen Gegner der Welle wave (1 = erste) nach Anstieg und Faktor, 0 … StressMaxEnemies.

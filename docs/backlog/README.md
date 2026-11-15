@@ -39,6 +39,13 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-912](B-912-e2e-flow-skillpunkt-rot.md) | CLI | Problem | hoch | offen | EP1 | Der Ende-zu-Ende-Lauf TestFlow scheitert, weil Spieler 2 bis Takt 600 keinen Skill-Punkt findet |
 | [B-913](B-913-abnahme-ep1.md) | CLI | Idee | mittel | offen | EP1 | Ralf nimmt EP1 ab: Eingabe-Profile und Tasten-Icons an TV und PC geprüft |
 | [B-914](B-914-abnahme-st2.md) | CLI | Idee | mittel | offen | ST2 | Ralf nimmt ST2 ab: Testing-Menü und Stresstest-Bericht am PC geprüft |
+| [B-915](B-915-stresstest-overlay-radar.md) | CLI | Problem | mittel | offen | FB1 | Stresstest-Overlay überdeckt das Radar; Radar wandert an die Unterkante im Fluss |
+| [B-916](B-916-stresstest-ueberschreiben.md) | CLI | Problem | hoch | offen | FB1 | Ein bestehendes Stresstest-Spiel lässt sich beim Start eines neuen einfach überschreiben |
+| [B-917](B-917-ausloeser-leertaste.md) | CLI | Problem | mittel | offen | FB1 | Auslösetaste ist immer die Leertaste, unabhängig von den Richtungstasten |
+| [B-918](B-918-tasten-nach-menues-tot.md) | CLI | Problem | hoch | offen | FB1 | Tastensteuerung fällt nach Debug-, Cheat- und Menü-Nutzung aus |
+| [B-919](B-919-hud-geldsack.md) | CLI | Idee | mittel | offen | FB1 | HUD zeigt einen Geldsack statt Healthbar und P1/P2 |
+| [B-922](B-922-geldsack-skill.md) | SIM | Idee | mittel | offen | FB2 | Geldsack in drei Größen, per Skillpunkte setzbar |
+| [B-923](B-923-gebaeudeplaner-workbench.md) | DEV | Problem | hoch | offen | FB3 | Gebäudeplaner samt MCP-Tools aus dem alten Studio fehlt in der Workbench |
 
 ## Archiv
 

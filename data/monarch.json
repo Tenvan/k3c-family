@@ -1,5 +1,5 @@
 {
-  "_comment": "Skill-Wirkungen: Schaden, Heilung, Schild-HP, Fläche (radius von Fireball und Meteor) und Abklingzeiten aus docs/game-design.md › Skill-Tabelle. Vorschläge der Planung (S1.2a/S1.2b, Feintuning B-099): Dauern, range (Abstand zum Ziel-Gegner bzw. Heil-Ziel), die übrigen Radien, factor von Ice Wall und hpFraction von Resurrection. Passive (S1.2c, B-119): alle Werte vorläufig (provisional: true), Vorschläge der Planung, nicht beschlossen; Abstimmung REG (B-099, B-155). Wirkungstypen: stat (defense absolut; maxHpBonus, speedBonus, damageBonus = Schlag und Zauber, spellBonus, cooldownBonus = Zauberer-Skills als Anteil; aura = Radius in Units, ohne aura nur der Besitzer; Truppen in der Aura bekommen nur defense), regen (perSecond HP/s; aura = Monarchen und Truppen im Radius, castle = alle im Burgradius, sonst nur der Besitzer), guardian (Truppen im radius nehmen reduction weniger Schaden), frostArmor (Nahkampf-Angreifer factor für duration s), spellEcho (chance je Zauber, zweite Wirkung). Dieb (B-577): backstab (damage, backDamage im Rücken des Gegners; range ist ein Vorschlag der Planung), stealth (Smoke Bomb: duration s unsichtbar).",
+  "_comment": "Skill-Wirkungen: Schaden, Heilung, Schild-HP, Fläche (radius von Fireball und Meteor) und Abklingzeiten aus docs/game-design.md › Skill-Tabelle. Vorschläge der Planung (S1.2a/S1.2b, Feintuning B-099): Dauern, range (Abstand zum Ziel-Gegner bzw. Heil-Ziel), die übrigen Radien, factor von Ice Wall und hpFraction von Resurrection. Passive (S1.2c, B-119): alle Werte vorläufig (provisional: true), Vorschläge der Planung, nicht beschlossen; Abstimmung REG (B-099, B-155). Wirkungstypen: stat (defense absolut; maxHpBonus, speedBonus, damageBonus = Schlag und Zauber, spellBonus, cooldownBonus = Zauberer-Skills als Anteil; aura = Radius in Units, ohne aura nur der Besitzer; Truppen in der Aura bekommen nur defense), regen (perSecond HP/s; aura = Monarchen und Truppen im Radius, castle = alle im Burgradius, sonst nur der Besitzer), guardian (Truppen im radius nehmen reduction weniger Schaden), frostArmor (Nahkampf-Angreifer factor für duration s), spellEcho (chance je Zauber, zweite Wirkung). Geldsack (B-922): purse (size = Größe 2 oder 3, maxGold = Münz-Obergrenze des Spielers statt economy.purse.maxGold = Größe 1; purseLarge verlangt purseMedium; Werte vorläufig). Dieb (B-577): backstab (damage, backDamage im Rücken des Gegners; range ist ein Vorschlag der Planung), stealth (Smoke Bomb: duration s unsichtbar).",
   "base":{ "hp": 100, "damage": 10, "speed": 5, "defense": 5 },
   "sprintMultiplier": 1.8,
   "acceleration": 8,
@@ -13,7 +13,8 @@
     "tank":   { "name": "Tank" },
     "mage":   { "name": "Zauberer" },
     "healer": { "name": "Heiler" },
-    "thief":  { "name": "Dieb" }
+    "thief":  { "name": "Dieb" },
+    "purse":  { "name": "Geldsack" }
   },
   "skills": {
     "taunt":            { "line": "tank",   "tier": 1, "kind": "active", "cooldown": 15,  "effect": { "type": "taunt", "radius": 10, "duration": 4 } },
@@ -41,7 +42,9 @@
     "blessings":        { "line": "healer", "tier": 2, "kind": "passive", "provisional": true, "effect": { "type": "stat", "speedBonus": 0.1, "damageBonus": 0.1, "aura": 8 } },
     "holyGround":       { "line": "healer", "tier": 2, "kind": "passive", "provisional": true, "effect": { "type": "regen", "perSecond": 1, "castle": true } },
     "backstab":         { "line": "thief",  "tier": 1, "kind": "active", "cooldown": 12,  "effect": { "type": "backstab", "damage": 40, "backDamage": 80, "range": 2 } },
-    "smokeBomb":        { "line": "thief",  "tier": 1, "kind": "active", "cooldown": 25,  "effect": { "type": "stealth", "duration": 5 } }
+    "smokeBomb":        { "line": "thief",  "tier": 1, "kind": "active", "cooldown": 25,  "effect": { "type": "stealth", "duration": 5 } },
+    "purseMedium":      { "line": "purse",  "tier": 1, "kind": "passive", "provisional": true, "effect": { "type": "purse", "size": 2, "maxGold": 60 } },
+    "purseLarge":       { "line": "purse",  "tier": 1, "kind": "passive", "provisional": true, "requires": "purseMedium", "effect": { "type": "purse", "size": 3, "maxGold": 120 } }
   },
   "presets": {
     "tank":   { "name": "Tank",     "hp": 200, "damage": 8,  "speed": 5.0, "defense": 10,  "activeSkills": ["taunt", "shieldBash"] },

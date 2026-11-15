@@ -37,7 +37,7 @@ func TestTestingShowsAllRows(t *testing.T) {
 		sc.Update(press(pad1, view.ActionDown), s)
 	}
 	want := []string{"Vorgabe", "Spieler", "Stufe (Tiefe)", "Seed", "Gegner je Welle", "Anstieg", "Faktor je Welle",
-		"Ausbau vorab", "Truppen vorab", "Zeitraffer", "Ende nach Wellen", "Ende nach Minuten", "Test starten", "Zurück"}
+		"Ausbau vorab", "Truppen vorab", "Zeitraffer", "Ende nach Wellen", "Ende nach Minuten", "Modus", "Test starten", "Zurück"}
 	if !slices.Equal(labels, want) {
 		t.Errorf("Zeilen %v", labels)
 	}
@@ -76,6 +76,15 @@ func TestTestingChangesValues(t *testing.T) {
 	sc.Update(press(pad1, view.ActionConfirm), s)
 	if sc.cur.Timescale == 4 {
 		t.Errorf("Zeitraffer unverändert")
+	}
+	sc.sel = tstMode // B-921: Modus kippt zwischen normal und rein
+	sc.Update(press(pad1, view.ActionConfirm), s)
+	if !sc.cur.Pure || sc.valueText("de", tstMode) != "rein (Gegner an der Burg)" {
+		t.Errorf("Modus nicht rein: %+v", sc.cur)
+	}
+	sc.Update(press(pad1, view.ActionConfirm), s)
+	if sc.cur.Pure {
+		t.Errorf("Modus nicht zurück auf normal")
 	}
 }
 

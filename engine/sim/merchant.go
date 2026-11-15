@@ -44,7 +44,7 @@ const merchantID = -1
 
 // merchantDawn: Abreise, dann Ankunft nach Rhythmus (aus stepCycle beim dawn).
 func merchantDawn(w *World) {
-	if w.Biome.Depth != hubOf(w).Merchant.OnlyDepth {
+	if w.pure() || w.Biome.Depth != hubOf(w).Merchant.OnlyDepth {
 		return
 	}
 	m, day := w.values().Economy.Merchant, w.Cycle.Day
