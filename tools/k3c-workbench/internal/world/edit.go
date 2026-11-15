@@ -31,8 +31,39 @@ func eol(raw []byte, s string) []byte {
 	return []byte(s)
 }
 
-// commit lässt den Entwurf out der Welt id prüfen und schreibt ihn atomar; die Antwort sind die Warnungen der Prüfung.
-func (e Editor) commit(ctx context.Context, id string, out []byte) ([]string, error) {
+// errChanged: die Datei hat sich zwischen Lesen und Schreiben geändert (Lost Update vermieden).
+var errChanged = errors.New("die Welt wurde inzwischen geändert, neu lesen")
+
+// writeChecked schreibt out atomar, aber nur, wenn die Datei noch expect enthält; expect nil legt die Datei exklusiv an
+// (eine zwischenzeitlich entstandene Datei bleibt, Link statt Rename).
+func writeChecked(path string, expect, out []byte) error {
+	if expect != nil {
+		if now, err := os.ReadFile(path); err != nil || !bytes.Equal(now, expect) {
+			return errChanged
+		}
+		return writeAtomic(path, out)
+	}
+	tmp, err := os.CreateTemp(filepath.Dir(path), ".tmp-world-*")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = os.Remove(tmp.Name()) }()
+	_, werr := tmp.Write(out)
+	if cerr := tmp.Close(); werr != nil || cerr != nil {
+		return fmt.Errorf("schreiben: %v %v", werr, cerr)
+	}
+	if err := os.Link(tmp.Name(), path); err != nil {
+		if _, st := os.Stat(path); st == nil {
+			return fmt.Errorf("%s gibt es schon (ändern mit world_set)", filepath.Base(path))
+		}
+		return err
+	}
+	return nil
+}
+
+// commit lässt den Entwurf out der Welt id prüfen und schreibt ihn atomar (nur wenn die Datei noch expect enthält, sonst
+// exklusiv neu, siehe writeChecked); die Antwort sind die Warnungen der Prüfung.
+func (e Editor) commit(ctx context.Context, id string, expect, out []byte) ([]string, error) {
 	var check struct {
 		Warnings []string `json:"warnings"`
 	}
@@ -42,7 +73,7 @@ func (e Editor) commit(ctx context.Context, id string, out []byte) ([]string, er
 	if err := os.MkdirAll(filepath.Dir(e.file(id)), 0o755); err != nil {
 		return nil, err
 	}
-	return check.Warnings, writeAtomic(e.file(id), out)
+	return check.Warnings, writeChecked(e.file(id), expect, out)
 }
 
 // Create legt die Welt id an: eine Insel „island1“ (Tiefen 0-4, bis zum Endboss), Kampf groups/5, optional von extends erbend. Eine
@@ -67,7 +98,7 @@ func (e Editor) Create(ctx context.Context, id, name, extends string) ([]string,
 		head += fmt.Sprintf("  \"extends\": %s,\n", quote(extends))
 	}
 	head += "  \"combat\": { \"mode\": \"groups\", \"groupSize\": 5 },\n  \"islands\": [\n    " + newIsland("island1", "Insel 1", "[0, 1, 2, 3, 4]", nil) + "\n  ]\n}\n"
-	return e.commit(ctx, id, []byte(head))
+	return e.commit(ctx, id, nil, []byte(head))
 }
 
 // Set ändert Kopf und Inseln der Welt id nach patch (JSON-Objekt): name, notes, extends, combat (null entfernt das Feld)
@@ -109,7 +140,7 @@ func (e Editor) commitChange(ctx context.Context, id string, raw, out []byte) ([
 	if bytes.Equal(raw, out) {
 		return nil, nil
 	}
-	return e.commit(ctx, id, out)
+	return e.commit(ctx, id, raw, out)
 }
 
 // Check prüft die Datei der Welt id wie das Laden im Spiel und mit allen Nachfolgern; die Antwort sind die Warnungen.

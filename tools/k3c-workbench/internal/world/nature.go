@@ -162,5 +162,5 @@ func (e Editor) writeNature(ctx context.Context, id, island string, stage int, k
 	if err := e.call(ctx, map[string]any{"op": "check", "world": id, "draft": json.RawMessage(out)}, &check); err != nil {
 		return nil, err
 	}
-	return check.Warnings, writeAtomic(e.file(id), out)
+	return check.Warnings, writeChecked(e.file(id), raw, out)
 }

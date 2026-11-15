@@ -2,6 +2,8 @@ package world
 
 import (
 	"encoding/json"
+	"os"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -107,5 +109,23 @@ func TestInlineStyle(t *testing.T) {
 		if again, _ := inline([]byte(got)); again != got {
 			t.Errorf("nicht stabil: %q", again)
 		}
+	}
+}
+
+// Review: Eine zwischen Lesen und Schreiben geänderte Datei wird nicht überschrieben; Anlegen ist exklusiv.
+func TestWriteCheckedRefusesLostUpdate(t *testing.T) {
+	e := fixture(t)
+	raw := []byte(readWorld(t, e, "standard"))
+	if err := os.WriteFile(e.file("standard"), append(slices.Clone(raw), ' '), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := writeChecked(e.file("standard"), raw, []byte("{}")); err == nil || !strings.Contains(err.Error(), "inzwischen geändert") {
+		t.Fatalf("Lost Update nicht erkannt: %v", err)
+	}
+	if err := writeChecked(e.file("standard"), nil, []byte("{}")); err == nil || !strings.Contains(err.Error(), "gibt es schon") {
+		t.Fatalf("exklusives Anlegen überschrieb: %v", err)
+	}
+	if got := readWorld(t, e, "standard"); got != string(raw)+" " {
+		t.Fatalf("Datei geändert: %q", got)
 	}
 }

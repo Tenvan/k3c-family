@@ -98,6 +98,13 @@ func worldWrite() *mcp.ToolAnnotations {
 	return &mcp.ToolAnnotations{DestructiveHint: &notDestructive, IdempotentHint: true, OpenWorldHint: &closed}
 }
 
+// worldCreateHints: Anlegen ist nicht idempotent (ein zweiter Aufruf lehnt ab).
+func worldCreateHints() *mcp.ToolAnnotations {
+	a := worldWrite()
+	a.IdempotentHint = false
+	return a
+}
+
 func registerWorldWrite(s *Server) {
 	write := worldWrite()
 	add(s, &mcp.Tool{
@@ -105,7 +112,7 @@ func registerWorldWrite(s *Server) {
 		Description: "Legt eine neue Welt an (data/worlds/<id>.json): eine Insel island1 mit Tiefen 0-4, Kampf groups/5, optional von einer Eltern-Welt erbend; " +
 			"eine vorhandene Welt wird nie überschrieben. Danach mit world_set, world_override_set und world_chunks_set ausbauen. " +
 			"Nutze es bei: neue Welt entwerfen. Statt: Welt-Datei von Hand schreiben.",
-		Annotations: write,
+		Annotations: worldCreateHints(),
 	}, func(ctx context.Context, in worldCreateIn) (string, error) {
 		e := worldEditor(s.ws(ctx).root)
 		warnings, err := e.Create(ctx, in.ID, in.Name, in.Extends)
