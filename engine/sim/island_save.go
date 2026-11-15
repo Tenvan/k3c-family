@@ -225,7 +225,7 @@ func FromIslandSaveIn(s IslandSave, cycleSpeed float64, world WorldDef) (*Island
 		depths[i] = h.Depth
 	}
 	def := world.Islands[number]
-	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, savedCreateOptions(s), world)
+	isl, err := createIsland(s.Seed, depths, cycleSpeed, s.Time, savedCreateOptions(s), world, def)
 	if err != nil {
 		return nil, err
 	}

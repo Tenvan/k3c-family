@@ -28,12 +28,14 @@ type IslandDef struct {
 	// Nature ist die Vorgabe der Insel für die Natur-Werte, NatureByDepth setzt je Tiefe fest (island_nature.go, B-891).
 	Nature        level.NatureValues
 	NatureByDepth map[string]level.NatureValues
+	// EndBoss ist die ID des Endbosses der Insel (data/bosses.json › endBosses, B-981); leer = der Endboss der tiefsten Stufe.
+	EndBoss string
 	// Story ist die Geschichte der Insel (story.go, B-965); leer = keine Zeilen.
 	Story IslandStory
 }
 
 // checkIsland prüft eine Insel in der Reihenfolge aus docs/rules/welten.md § 3: Name, Tiefen (vorhanden, bekannt,
-// einmalig), je Tiefe ein Miniboss, in der tiefsten der Endboss, Faktoren > 0, chunkCounts, plannedChunks. ID und
+// einmalig), je Tiefe ein Miniboss, Faktoren > 0, chunkCounts, Endboss und Bau der tiefsten Stufe (island_endboss.go), plannedChunks. ID und
 // Eindeutigkeit prüft checkWorld.
 func checkIsland(d IslandDef) error {
 	if d.Name == "" {
@@ -55,13 +57,13 @@ func checkIsland(d IslandDef) error {
 			return fmt.Errorf("kein Miniboss in Tiefe %d", depth)
 		}
 	}
-	if deepest := slices.Max(d.Depths); endBoss(deepest) == nil {
-		return fmt.Errorf("kein Endboss in der tiefsten Stufe %d", deepest)
-	}
 	if s := d.DepthScaling; s.HP <= 0 || s.Damage <= 0 || s.Speed <= 0 {
 		return fmt.Errorf("depthScaling braucht Faktoren > 0")
 	}
 	if err := checkChunkCounts(d); err != nil {
+		return err
+	}
+	if err := checkEndBoss(d); err != nil {
 		return err
 	}
 	if err := checkPlannedChunks(d); err != nil {

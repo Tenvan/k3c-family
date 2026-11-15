@@ -24,6 +24,7 @@ type Options struct {
 	ChunkCount int
 	// Nature sind die fest gesetzten Natur-Werte dieser Stufe (B-891); fehlende würfelt der Generator aus dem Seed.
 	Nature     level.NatureValues
+	lair       *bool        // trägt die Stufe den Bau (level.Options.Lair); nil = Feld `lair` des Bioms
 	hub        *HubData     // Kandidaten-hub.json (CreateOptions.Candidate); nil = eingebettete data/hub.json
 	vals       *WorldValues // Wertesatz der Welt (world_values_room.go); nil = Basis-Wertesatz (defaultValues)
 }
@@ -38,7 +39,7 @@ func hubOf(w *World) *HubData {
 
 // CreateWorld baut den Startzustand einer Stufe.
 func CreateWorld(b level.Biome, seed string, opts Options) (*World, error) {
-	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount, Nature: opts.Nature}
+	lo := level.Options{Planned: opts.Planned, ChunkCount: opts.ChunkCount, Nature: opts.Nature, Lair: opts.lair}
 	lv, err := level.GenerateWith(b, seed, lo)
 	if err != nil {
 		return nil, err

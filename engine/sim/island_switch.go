@@ -76,7 +76,7 @@ func NextIsland(cur *Island, def IslandDef) (*Island, error) {
 	if !ok || cur.world.Islands[number].ID != def.ID {
 		return nil, fmt.Errorf("insel: %q ist nicht das Ziel des Wechsels in Welt %q", def.ID, cur.world.ID)
 	}
-	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions(), cur.world)
+	next, err := createIsland(fmt.Sprintf("%s:%d", cur.ID, number), def.Depths, cur.CycleSpeed, 0, def.CreateOptions(), cur.world, def)
 	if err != nil {
 		return nil, err
 	}

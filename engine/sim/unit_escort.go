@@ -11,7 +11,7 @@ import "math"
 
 // escortCheck rastet den Begleitschutz ein, sobald ein lebender Monarch näher als `lair.escortUnits` am Boss ist.
 func escortCheck(w *World, f *endbossFight) {
-	if b := endBoss(w.Biome.Depth); !f.escort && b != nil && b.Lair.EscortUnits > 0 && playerNear(w, f.boss.X, b.Lair.EscortUnits) {
+	if b := w.lairBoss; !f.escort && b != nil && b.Lair.EscortUnits > 0 && playerNear(w, f.boss.X, b.Lair.EscortUnits) {
 		f.escort = true
 	}
 }
@@ -23,7 +23,7 @@ func escortPost(w *World, t *Troop) (float64, bool) {
 		return 0, false
 	}
 	boss := isl.endboss.boss
-	b := endBoss(w.Biome.Depth)
+	b := w.lairBoss
 	if boss == nil || boss.HP <= 0 || b == nil || b.Lair.EscortUnits <= 0 || !isl.endboss.escort {
 		return 0, false
 	}

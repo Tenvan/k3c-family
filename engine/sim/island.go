@@ -138,7 +138,7 @@ func CreateIslandIn(world WorldDef, seed string, depths []int, cycleSpeed float6
 		}
 		opts.Candidate = cloneHub(opts.Candidate) // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
 	}
-	isl, err := createIsland(seed, depths, cycleSpeed, 0, opts, world)
+	isl, err := createIsland(seed, depths, cycleSpeed, 0, opts, world, world.Islands[0])
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func CreateIslandIn(world WorldDef, seed string, depths []int, cycleSpeed float6
 
 // createIsland wie CreateIslandIn, mit Startzeit (Laden eines Spielstands). Die Insel ist zunächst die erste der Welt;
 // Laden und Inselwechsel setzen danach Number, islandID und Scaling.
-func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts CreateOptions, world WorldDef) (*Island, error) {
+func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts CreateOptions, world WorldDef, first IslandDef) (*Island, error) {
 	switch {
 	case len(depths) == 0:
 		return nil, fmt.Errorf("insel: keine Stufen")
@@ -159,7 +159,6 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 	if err != nil {
 		return nil, fmt.Errorf("insel: %w", err)
 	}
-	first := world.Islands[0]
 	isl := &Island{ID: seed, Seed: seed, CycleSpeed: cycleSpeed, Stock: &Stock{}, Options: DefaultOptions(), travel: map[int]*islandTravel{}}
 	world.values = vals // Inselwechsel (NextIsland) übernimmt den Wertesatz
 	isl.world, isl.islandID, isl.Scaling = world, first.ID, first.DepthScaling
@@ -173,12 +172,13 @@ func createIsland(seed string, depths []int, cycleSpeed, startTime float64, opts
 				return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 			}
 		}
-		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, Nature: opts.natureFor(d, first), hub: opts.Candidate, vals: vals})
+		lair, boss := lairOptions(first, d)
+		w, err := CreateWorld(biomeForDepth(d), seed, Options{CycleSpeed: cycleSpeed, Time: startTime, Planned: opts.plannedFor(d, first), ChunkCount: count, Nature: opts.natureFor(d, first), hub: opts.Candidate, vals: vals, lair: lair})
 		if err != nil {
 			return nil, fmt.Errorf("insel: Stufe mit Tiefe %d: %w", d, err)
 		}
 		w.Stock = isl.Stock
-		w.island = isl
+		w.island, w.lairBoss = isl, boss
 		for _, s := range hubOf(w).IslandSites {
 			w.Sites = append(w.Sites, emptySite(w, s.Kind, w.HubX+s.OffsetUnits))
 		}

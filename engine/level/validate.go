@@ -13,6 +13,7 @@ func Validate(l Layout, b Biome) []string { return ValidateWith(l, b, Options{})
 // gegen lengthUnits (geplante-chunks.md § 7).
 func ValidateWith(l Layout, b Biome, o Options) []string {
 	veinErrs := validateVeins(l, b, o)
+	b.Lair = o.hasLair(b)
 	b = b.withNature(l.Nature) // Ressourcen und Chunk-Gewichte nach den Natur-Werten der Stufe (B-891)
 	b.Veins.Count = 0           // Adern prüft validateVeins
 	errs := append(validateLength(l, b, o.ChunkCount), veinErrs...)

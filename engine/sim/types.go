@@ -377,6 +377,8 @@ type World struct {
 	// island: die Insel, zu der die Stufe gehört (nil bei Campaign und einzelnen Welten: keine Optionen, Faktor 1,
 	// kein Lager-Maximum).
 	island *Island
+	// lairBoss: der Endboss im Bau dieser Stufe (island_endboss.go, B-981); nil = die Stufe trägt keinen Bau.
+	lairBoss *BossData
 	// lastWaveAt: Spielzeit (Time) der letzten Welle; der Aggressionspool wächst erst nach minWaveGapSeconds wieder (B-646).
 	lastWaveAt float64
 	// castleFellNight: letzte Nacht, in der die Burg fiel (Vollmond-Belohnung, events_moon.go); nicht im Spielstand.

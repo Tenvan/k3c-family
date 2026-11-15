@@ -116,6 +116,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 	}
 	g := &gen{b: b.withNature(nature), r: rng.New(b.ID + ":" + seed), seed: seed, cw: b.ChunkWidthUnits, count: o.ChunkCount,
 		plannedRes: b.ResourcesPerChunk}
+	g.b.Lair = o.hasLair(b)
 	g.frame()
 	g.reserve(o.Planned)
 	if err := g.placePortals(); err != nil {
@@ -133,7 +134,7 @@ func GenerateWith(b Biome, seed string, o Options) (Layout, error) {
 		chunks[i] = Chunk{Index: i, Kind: k, StartUnits: float64(i) * g.cw}
 	}
 	entities := g.entities(chunks)
-	if b.Lair {
+	if g.b.Lair {
 		entities = append(entities, Entity{Kind: "lair", X: g.lairX()})
 	}
 	sort.SliceStable(entities, func(i, j int) bool { return entities[i].X < entities[j].X })
@@ -245,6 +246,9 @@ func (g *gen) placeEvents(seed string) error {
 			safe := g.safeCampSlots()
 			// Stabil: gleich gute Slots behalten ihre Reihenfolge aus dem Mischen.
 			sort.SliceStable(slots, func(i, j int) bool {
+				if fi, fj := g.farFromLair(slots[i]), g.farFromLair(slots[j]); fi != fj {
+					return fi // mit Bau zuerst Chunks weit genug vom Bau (B-981: in jedem Biom, auch wo wenig Platz bleibt)
+				}
 				di, dj := g.center(slots[i])-g.hub, g.center(slots[j])-g.hub
 				if oi, oj := math.Abs(di) > sitePlacement.OutsideUnits, math.Abs(dj) > sitePlacement.OutsideUnits; oi != oj {
 					return oi // Camps zuerst außerhalb der Verteidigungszone (früher: Abstand zu den Linien, B-261)
@@ -264,6 +268,11 @@ func (g *gen) placeEvents(seed string) error {
 
 // lairCampGapUnits: So nah am Bau des Endbosses liegt kein Camp: lair.noticeUnits (40) plus 40 Units Rand (docs/rules/bosse.md § 1, B-645).
 const lairCampGapUnits = 80
+
+// farFromLair: Der Chunk liegt mindestens lairCampGapUnits vom Bau entfernt (ohne Bau immer).
+func (g *gen) farFromLair(chunk int) bool {
+	return !g.b.Lair || math.Abs(g.center(chunk)-g.lairX()) >= lairCampGapUnits
+}
 
 // safeCampSlots: die Chunks, in denen ein Camp sicher steht (Ordnung nach dem Abstand zu den Linien, B-261, bleibt davor): Bei Biomen
 // mit Bau nicht näher als lairCampGapUnits am Bau und nie hinter einem Portal (vom Hub aus gesehen); dort laufen die Beschwörung des

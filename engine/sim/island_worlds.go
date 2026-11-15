@@ -126,6 +126,7 @@ type rawIsland struct {
 	DepthScaling  json.RawMessage                 `json:"depthScaling"`
 	PlannedChunks map[string][]level.PlannedChunk `json:"plannedChunks"`
 	ChunkCounts   map[string]int                  `json:"chunkCounts"`
+	EndBoss       string                          `json:"endBoss"`
 	Nature        json.RawMessage                 `json:"nature"`
 	NatureByDepth map[string]json.RawMessage      `json:"natureByDepth"`
 	Story         json.RawMessage                 `json:"story"`
@@ -181,7 +182,7 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 	for i, raw := range islands {
 		var r rawIsland
 		var d IslandDef
-		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth", "story")
+		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "endBoss", "nature", "natureByDepth", "story")
 		if err == nil {
 			d, err = r.def()
 			d.Etappe = r.etappe(i + 1)
@@ -301,7 +302,7 @@ func (r rawIsland) def() (IslandDef, error) {
 	if missing != "" {
 		return IslandDef{}, missingField(missing)
 	}
-	d := IslandDef{ID: *r.ID, Name: *r.Name, Depths: *r.Depths, PlannedChunks: r.PlannedChunks, ChunkCounts: r.ChunkCounts}
+	d := IslandDef{ID: *r.ID, Name: *r.Name, Depths: *r.Depths, PlannedChunks: r.PlannedChunks, ChunkCounts: r.ChunkCounts, EndBoss: r.EndBoss}
 	d.DepthScaling.HP, d.DepthScaling.Damage, d.DepthScaling.Speed = *s.HP, *s.Damage, *s.Speed
 	var err error
 	if d.Nature, err = decodeNature(r.Nature, "nature"); err != nil {

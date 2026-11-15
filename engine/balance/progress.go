@@ -96,8 +96,10 @@ func milestoneDefs(worldID string) ([]milestoneDef, error) {
 				defs = append(defs, bossDef(b.ID, b.Name+" besiegt"))
 			}
 		}
+		isl := world.Islands[0]
 		for _, b := range bf.EndBosses {
-			if b.Depth == depth {
+			// Nur der Endboss der Insel: das Feld `endBoss`, sonst der der tiefsten Stufe (B-981).
+			if depth == slices.Max(isl.Depths) && (b.ID == isl.EndBoss || isl.EndBoss == "" && b.Depth == depth) {
 				defs = append(defs, milestoneDef{"endboss:" + b.ID, b.Name + " (Endboss) besiegt", func(m *Metrics) *int { return m.EndbossDay }})
 			}
 		}

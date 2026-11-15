@@ -33,7 +33,7 @@ In einer **sicheren Stufe** (alle Portale zerstört, `kampf.md` § 2) gibt es ke
 
 ## 3. Bosse und Ziel der Kampagne
 
-- **Minibosse:** je Stufe ein Miniboss (entfällt in einer sicheren Stufe; wer das letzte Portal zerstört, erhält seinen Skill-Punkt, `kampf.md` § 2). **Endboss:** sitzt immer in der **tiefsten Stufe** jeder Insel (Q60, 2026-10-04); sein Sieg macht den Weg zur nächsten Insel frei. Boss-Werte und Verhalten legt Regelwerk III fest (`bosse.md`).
+- **Minibosse:** je Stufe ein Miniboss (entfällt in einer sicheren Stufe; wer das letzte Portal zerstört, erhält seinen Skill-Punkt, `kampf.md` § 2). **Endboss:** sitzt immer in der **tiefsten Stufe** jeder Insel (Q60, 2026-10-04); sein Sieg macht den Weg zur nächsten Insel frei. Welcher Endboss, wählt die Insel (`endBoss`, `welten.md` § 2); sein Bau liegt in der tiefsten Stufe in jedem Biom (`bosse.md` § 1, B-981). Boss-Werte und Verhalten legt Regelwerk III fest (`bosse.md`).
 - **Ziel der Kampagne (Standard):** Der **Endboss der letzten Insel** wird besiegt. In der ersten Ausbaustufe (1 Insel) ist das bis W2 der Endboss der Mine, danach der Kristallhöhle (Q60, 2026-10-04).
 - **Siegvarianten:** Das Ziel ist eine **Raum-Option** (siehe 5), **eine Variante je Raum**; Minibosse gibt es immer. Varianten:
 

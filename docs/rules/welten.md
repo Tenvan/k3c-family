@@ -124,6 +124,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `depthScaling` | ja | Objekt | `hp`, `damage`, `speed`: Basen der Potenz je Tiefe (`stufen.md` § 1, Skalierung), alle > 0. |
 | `plannedChunks` | nein | Objekt | Geplante Chunks je Tiefe (`geplante-chunks.md` § 1–5); fehlt oder `{}` = reiner Zufall. |
 | `chunkCounts` | nein | Objekt | Chunk-Anzahl je Tiefe (`geplante-chunks.md` § 7); ohne Eintrag gilt die Länge des Bioms. |
+| `endBoss` | nein | Text | ID eines Endbosses aus `data/bosses.json › endBosses` (B-981); fehlt das Feld, gilt der Endboss der **tiefsten** Tiefe der Insel. Der **Bau** des Endbosses liegt immer in der tiefsten Stufe, in jedem Biom (`bosse.md` § 1). |
 | `nature` | nein | Objekt | Natur-Werte als Vorgabe der Insel (§ 2.1): `{traits, weights}`; gilt in jeder Stufe, deren Biom die Eigenschaft hat. |
 | `natureByDepth` | nein | Objekt | Natur-Werte je Tiefe (§ 2.1), gewinnen über `nature`; nur Eigenschaften des Bioms der Tiefe. |
 
@@ -237,7 +238,7 @@ geladen, nichts wird repariert.
 |---|---|---|
 | Datei ist JSON nach § 2: keine unbekannten Felder, alle Pflichtfelder da; `id` passt zum Dateinamen; `name` nicht leer; mindestens eine Insel. | Fehler in Hand- oder Prompt-Entwürfen fallen sofort auf. | `data/worlds/<id>.json` |
 | Je Insel: `id` nach § 4 und eindeutig in der Welt; `name` nicht leer; `depths` nicht leer, jede Tiefe bekannt und höchstens einmal. | Die Insel-ID ist der Verweis im Spielstand (§ 5). | `data/biomes/*.json` |
-| Je Insel: jede Tiefe hat einen **Miniboss**, die **tiefste** Tiefe hat einen **Endboss**. Heute gibt es den Endboss nur in Tiefe 4: jede Insel braucht Tiefe 4. | Jede Stufe hat ihr Ziel, jede Insel ihr Ende (`stufen.md` § 3). | `data/bosses.json` |
+| Je Insel: jede Tiefe hat einen **Miniboss**. Der **Endboss** ist `endBoss` (eine ID aus `endBosses`, kein Miniboss), ohne Feld der Endboss der **tiefsten** Tiefe (`endBosses` kennt die Tiefen 0 bis 4, B-981). Die tiefste Stufe trägt den **Bau**: Ihr Biom muss ihn samt Camp-Abstand tragen (`level.CheckLairFit`, mit der Inselgröße aus `chunkCounts`, sonst der kürzesten Länge). | Jede Stufe hat ihr Ziel, jede Insel ihr Ende (`stufen.md` § 3), in dem Biom, das zu ihrem Thema passt. | `data/bosses.json`, `data/biomes/*.json` |
 | Je Insel: `etappe` ab 1, über die Liste lückenlos (die erste Insel hat Etappe 1, jede weitere dieselbe oder um 1 höher) und nicht fallend. Jede Insel braucht einen Hafen, außer der einzigen Insel der letzten Etappe (B-961). | Jede Etappe öffnet erst nach der vorigen; ein Ziel ohne Hafen ließe das Schiff stranden. | – |
 | Je Insel: `depthScaling` mit `hp`, `damage`, `speed` jeweils > 0. | Keine Gegner mit 0 HP oder Stillstand. | – |
 | `chunkCounts`: Schlüssel ist eine Tiefe der Insel (Dezimalzahl ohne führende Null), Wert eine Inselgröße aus der Tabelle. | `geplante-chunks.md` § 7. | `data/island-sizes.json` |
@@ -255,7 +256,10 @@ geladen, nichts wird repariert.
 | Welt ohne Insel | `data/worlds/nordmeer.json: keine Insel` |
 | ID ungültig | `data/worlds/nordmeer.json: Insel "Insel 2": id ungültig (a-z, 0-9, -, höchstens 32 Zeichen)` |
 | Insel doppelt | `data/worlds/nordmeer.json: Insel island1 doppelt` |
-| kein Endboss | `data/worlds/nordmeer.json: Insel insel3: kein Endboss in der tiefsten Stufe 2` |
+| kein Endboss in der tiefsten Stufe | `data/worlds/nordmeer.json: Insel insel3: kein Endboss in der tiefsten Stufe 2` |
+| `endBoss` unbekannt | `data/worlds/nordmeer.json: Insel insel3: endBoss "x" unbekannt (erlaubt: forestChieftain, caveColossus, …)` |
+| `endBoss` ist ein Miniboss | `data/worlds/nordmeer.json: Insel insel3: endBoss "trollKing" ist ein Miniboss (erlaubt: …)` |
+| Biom trägt den Bau nicht | `data/worlds/nordmeer.json: Insel insel3: bau in der tiefsten Stufe 2: biom mine: nur 0 Chunks mit 80 Units Abstand zum Bau, 1 Camp(s) brauchen Platz (Inselgröße 4 Chunks)` |
 | Tiefe unbekannt | `data/worlds/nordmeer.json: Insel eisinsel: unbekannte Tiefe 5` (vor dem Endboss geprüft, siehe oben) |
 | kein Miniboss | `data/worlds/nordmeer.json: Insel eisinsel: kein Miniboss in Tiefe 3` (heute hat jede Tiefe 0–4 einen) |
 | Etappe falsch | `data/worlds/nordmeer.json: Insel eisinsel: etappe 3 lässt Etappe 2 aus (lückenlos ab 1)`, `… etappe 1 fällt unter die Etappe 2 der Insel davor (nicht fallend)`, `… etappe 0 ungültig (mindestens 1)` |
@@ -377,7 +381,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 6 der Session W
 ## 9. Offen
 
 - Obergrenze n der Inseln je Welt und Inhalt weiterer Inseln (`stufen.md` § 7), Variante „Ebenen“.
-- Endbosse in anderen Tiefen als 4 (heute muss jede Insel Tiefe 4 haben, § 3); neue Bosse sind Nicht-Ziel von B-488.
+- Eigene Grafik der Endbosse der Tiefen 0–3 (bis dahin das Asset der Basisart, B-993), mehrere Endbosse je Insel.
 - Geschichte (B-965), Defaults **vorläufig**, von 🧑 bei der Freigabe bestätigt: „Abschluss einer Etappe“ ist die Etappe
   der Welt (§ 6.1); „vor dem Endboss“ ist der Moment, in dem er ausgelöst wird (`bossSpawned`); echte Wörter deutsch und
   unübersetzt; Zeilen über Funktionen statt neuer Ereignisse; Einblendung je Spielerhälfte (B-974).

@@ -43,7 +43,7 @@ func stepEndboss(w *World, dt float64) {
 	if !ok {
 		return
 	}
-	b := endBoss(w.Biome.Depth)
+	b := w.lairBoss
 	if b == nil || isl.EndbossDefeated || slices.Contains(isl.DefeatedBosses, b.ID) || !playerNear(w, x, b.Lair.TriggerUnits) {
 		return
 	}
@@ -66,7 +66,7 @@ func lairX(w *World) (float64, bool) {
 // näher als `lair.noticeUnits` daran; die Aktionsliste nennt dann den Bau als Auslöser (B-563, `lair`).
 func AtLair(w *World, p *Player) bool {
 	isl := w.island
-	b := endBoss(w.Biome.Depth)
+	b := w.lairBoss
 	x, ok := lairX(w)
 	if isl == nil || b == nil || !ok || isl.endboss != nil || isl.EndbossDefeated || slices.Contains(isl.DefeatedBosses, b.ID) {
 		return false
