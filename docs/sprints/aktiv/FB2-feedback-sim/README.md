@@ -12,12 +12,11 @@
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+Live-Test 🧑 2026-11-15: Der Stresstest bringt keine Gegnerwellen, ein reiner Stressmodus fehlt, der Geldsack soll per Skill wachsen.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Stresstest mit Wellen, Stressmodus an der Burg und Geldsack-Größen in der Engine.
 
 ## Beteiligte und Zielgruppen
 
@@ -52,16 +51,19 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Der Stresstest erzeugt Gegnerwellen (`B-920/AC-01`).
+- **AC-02** Reiner Stressmodus: Gegner an der Burg, nur eigene Bevölkerung, deterministisch (`B-921/AC-01` bis `AC-03`).
+- **AC-03** Geldsack in drei Größen als Skill-Stufen mit Münz-Obergrenze je Spieler (`B-922/AC-01`).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| FB2.1 | `FB2.1-wellen-stressmodus-geldsack.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

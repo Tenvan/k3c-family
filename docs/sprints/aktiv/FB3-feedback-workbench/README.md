@@ -12,12 +12,11 @@
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+Hinweis 🧑 2026-11-15: Der Gebäudeplaner des alten Studios fehlt in der Workbench.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Gebäudeplaner samt MCP-Tools in der Workbench.
 
 ## Beteiligte und Zielgruppen
 
@@ -52,16 +51,17 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Seite Gebäudeplaner, MCP-Tools `hub_*` mit Roundtrip-Test, `check:dev` grün (`B-923/AC-01` bis `AC-03`).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| FB3.1 | `FB3.1-gebaeudeplaner.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

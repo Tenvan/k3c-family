@@ -12,12 +12,11 @@
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+Live-Test 🧑 2026-11-15: Overlay überdeckt Radar, Stresstest-Spiel nicht überschreibbar, Auslöser nicht immer Leertaste, Tasten fallen nach Menüs aus, HUD zeigt Healthbar und P1/P2.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Diese fünf Punkte im nativen Spiel behoben und der Geldsack im HUD.
 
 ## Beteiligte und Zielgruppen
 
@@ -52,16 +51,21 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Radar an der Unterkante, kein Überlappen mit dem Overlay (`B-915`).
+- **AC-02** Neuer Stresstest überschreibt den alten (`B-916`).
+- **AC-03** Leertaste löst immer aus (`B-917`).
+- **AC-04** Tasten bleiben nach Menü-Folgen erhalten (`B-918`).
+- **AC-05** HUD mit Geldsack statt Healthbar und P1/P2, zeigt die Größe (`B-919`, `B-922/AC-02`).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| FB1.1 | `FB1.1-overlay-tasten-hud.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
