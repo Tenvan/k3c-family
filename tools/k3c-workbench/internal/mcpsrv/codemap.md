@@ -27,5 +27,5 @@ MCP-Server von k3c-workbench (Streamable HTTP, nur 127.0.0.1): registriert den T
 ## Integration
 
 - Konsumenten: Wails-`App` (`app.go`, `app_logs.go`, `app_mcp.go`: `McpOverview`, `McpRestart`, `McpCalls`, `McpUsage`) und `main.go`; `TaskHost` wird von `app_tasks.go` erfüllt.
-- Abhängigkeiten (intern): `console`, `applog`, `proc`, `services`, `planning`, `logs`, `taskcat`/`taskrun`, `taskgate`, `simexe` (bin/k3c-sim: `sim_run`, `level_generate`, `replay_run`), `simrun` (`sim_test`), `balance` (Leseteil), `paperassets`/`assetsui` (`assets_*`), `resmon`, `gamedata`, `github`, `usage`; kein Engine-Kern (depguard, B-726).
+- Abhängigkeiten (intern): `console`, `applog`, `proc`, `services`, `planning`, `logs`, `taskcat`/`taskrun`, `taskgate`, `engine/simcli` (im Prozess: `sim_run`, `level_generate`, `replay_run`), `simrun` (`sim_test`), `balance` (Leseteil), `paperassets`/`assetsui` (`assets_*`), `resmon`, `gamedata`, `github`, `usage`; kein Engine-Kern (depguard, B-726).
 - Extern: `k3c/tools/assetkit` (Katalog, Recherche, Import), `github.com/modelcontextprotocol/go-sdk/mcp`, `github.com/google/jsonschema-go`; Client: Claude Code über `.mcp.json`.

@@ -69,7 +69,7 @@ func (t *Targets) RunTargetsProgress(n int, progress func(done, total int)) (Rep
 		}
 		all = append(all, sc...)
 	}
-	rep.Results = runAll(all, 0, progress)
+	rep.Results = runAll(all, 0, tickProgress(t.Tick, progress))
 	return rep, nil
 }
 

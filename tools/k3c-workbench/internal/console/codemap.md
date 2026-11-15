@@ -18,5 +18,5 @@ In-Memory-Konsolenpuffer je Quelle (Prüfläufe `check:<ziel>`, eigenes Log, Die
 
 ## Integration
 
-- Konsumenten: `internal/applog`, `internal/services` (`controller.go`, `runtime.go`), `internal/taskrun`, `internal/simexe`, `internal/simrun` (`offline.go`), `internal/mcpsrv` (`check_run.go`, `server.go`, `tools_console.go`), `main.go`, `app.go`, `app_logs.go`, `console_batch.go`.
+- Konsumenten: `internal/applog`, `internal/services` (`controller.go`, `runtime.go`), `internal/taskrun`, `internal/simrun` (`offline.go`), `internal/mcpsrv` (`check_run.go`, `server.go`, `tools_console.go`), `main.go`, `app.go`, `app_logs.go`, `console_batch.go`.
 - Keine internen Abhängigkeiten.

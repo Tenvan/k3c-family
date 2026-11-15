@@ -2,39 +2,35 @@ package simrun
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
-	"k3c/tools/k3c-workbench/internal/proc"
-	"k3c/tools/k3c-workbench/internal/simexe"
+	"k3c/engine/simcli"
 )
 
-// Modus offline (B-348/AC-02, RS2.2): das Engine-CLI im Checkout bauen (bin/k3c-sim-<platz>, fester Pfad, kein go run)
-// und `k3c-sim balance --targets` ausführen. So rechnet die Engine des Checkouts, nicht die der Workbench; die
-// Workbench liest nur die JSON-Zeilen (Fortschritt, Fehler) und den Bericht. Bericht des Testers und eigener Bericht
-// liegen in reports/simtest-<id>/.
+// Modus offline (B-348/AC-02, B-924): `balance --targets` rechnet im Prozess der Workbench (engine/simcli, in einer
+// Goroutine, abbrechbar über den Context; eine Panik der Engine wird zum Fehler des Laufs). Die Workbench liest die
+// Events (Fortschritt, Fehler) und den Bericht. Bericht des Testers und eigener Bericht liegen in reports/simtest-<id>/.
+// Die Engine ist die der laufenden Workbench: Sim-Änderungen prüft eine eigene Instanz im Worktree (B-925).
 
-const (
-	buildTimeout   = 5 * time.Minute
-	offlineTimeout = 60 * time.Minute
-)
+const offlineTimeout = 60 * time.Minute
 
-// Proc ist ein Prozesslauf; Out bekommt jede Zeile mit ihrem Strom („stdout“, „stderr“).
+// Proc ist ein Lauf der Engine (Args wie bei `k3c-sim`: Unterbefehl zuerst); Out bekommt jede Zeile mit ihrem Strom
+// („stdout“: JSON-Zeilen der Events, „stderr“: Meldungen für Menschen).
 type Proc struct {
-	Dir     string
+	Dir     string // Checkout; data/ darunter liest world/hub
 	Args    []string
 	Timeout time.Duration
-	Env     []string // zusätzlich zur Umgebung der Workbench, NAME=Wert
 	Out     func(stream, text string)
 }
 
-// Result ist das Ende eines Prozesses.
+// Result ist das Ende eines Laufs.
 type Result struct {
 	Exit     int
 	TimedOut bool
@@ -69,29 +65,16 @@ func (g *Registry) StartOffline(root, where string, spec Spec) (Info, error) {
 	return g.Get(root, first.id)
 }
 
-// Offline ist der Runner des Modus offline: bauen, rechnen, Bericht lesen.
+// Offline ist der Runner des Modus offline: rechnen, Bericht lesen.
 func (g *Registry) Offline(spec Spec) Runner {
 	return func(ctx context.Context, run *Run) {
 		dir := ReportDir(run)
-		// Ein fester EXE-Pfad je Platz: läuft der erste Lauf noch, sperrt Windows seine EXE, und der zweite Bau
-		// schlüge fehl (kein go run, B-348/AC-02). bin/k3c-sim selbst baut `task k3c-sim:build` (sim_run, Bots).
-		exe := balanceExe(run.Slot())
-		steps := []struct {
-			phase string
-			proc  Proc
-		}{
-			{"bauen", Proc{Dir: run.root, Timeout: buildTimeout,
-				Args: []string{"go", "build", "-o", exe, "./cmd/k3c-sim"}}},
-			{"rechnen", Proc{Dir: run.root, Timeout: offlineTimeout, Args: spec.args(exe, dir), Env: simexe.Env(run.root)}},
-		}
+		g.SetPhase(run, "rechnen")
 		out := &procOutput{progress: func(done, total int) { g.SetProgress(run, done, total) }}
-		for _, st := range steps {
-			g.SetPhase(run, st.phase)
-			st.proc.Out = out.line
-			if failed := stepFailed(ctx, g.Exec(ctx, st.proc)); failed != "" {
-				g.finishFailed(run, append([]string{st.phase + ": " + failed}, out.lines()...), dir, spec)
-				return
-			}
+		p := Proc{Dir: run.root, Timeout: offlineTimeout, Args: spec.args(dir), Out: out.line}
+		if failed := stepFailed(ctx, g.Exec(ctx, p)); failed != "" {
+			g.finishFailed(run, append([]string{"rechnen: " + failed}, out.lines()...), dir, spec)
+			return
 		}
 		verdict, lines, err := g.readStamped(run, dir, spec)
 		if err != nil {
@@ -112,7 +95,7 @@ type procOutput struct {
 }
 
 func (o *procOutput) line(stream, text string) {
-	if ev, ok := simexe.ParseEvent(text); ok && stream == "stdout" {
+	if ev, ok := simcli.ParseEvent(text); ok && stream == "stdout" {
 		if ev.Event == "progress" {
 			o.progress(ev.Done, ev.Total)
 		}
@@ -162,35 +145,30 @@ func stepFailed(ctx context.Context, res Result) string {
 	return ""
 }
 
-// runProcess startet einen Prozess mit Zeitlimit; Zeitlimit und Abbruch beenden den ganzen Prozessbaum (Job-Objekt).
-func runProcess(ctx context.Context, p Proc) Result {
+// runEngine rechnet im Prozess (engine/simcli) mit den Daten von p.Dir/data; Zeitlimit und Abbruch beenden den Lauf
+// beim nächsten fertigen Lauf der Engine. Jedes Event geht als JSON-Zeile nach p.Out, ein Fehler als „❌ k3c-sim: …“.
+func runEngine(ctx context.Context, p Proc) Result {
 	ctx, cancel := context.WithTimeout(ctx, p.Timeout)
 	defer cancel()
-	cmd := proc.Command(ctx, p.Args)
-	cmd.Dir = p.Dir
-	if len(p.Env) > 0 {
-		cmd.Env = append(os.Environ(), p.Env...)
-	}
 	out := p.Out
 	if out == nil {
 		out = func(string, string) {}
 	}
-	stdout := console.NewLineWriter(func(text string) { out("stdout", text) })
-	stderr := console.NewLineWriter(func(text string) { out("stderr", text) })
-	cmd.Stdout, cmd.Stderr = stdout, stderr
-	err := cmd.Run()
-	stdout.Flush()
-	stderr.Flush()
-	var res Result
+	err := simcli.Stream(ctx, p.Args, nil, simcli.DirFiles(filepath.Join(p.Dir, "data")), func(ev simcli.Event) {
+		if b, err := json.Marshal(ev); err == nil {
+			out("stdout", string(b))
+		}
+	})
 	switch {
+	case err == nil:
+		return Result{}
 	case errors.Is(ctx.Err(), context.DeadlineExceeded):
-		res.TimedOut, res.Exit = true, -1
-	case cmd.ProcessState != nil:
-		res.Exit = cmd.ProcessState.ExitCode()
-	case err != nil:
-		res.Err = err
+		return Result{TimedOut: true, Exit: -1}
+	case ctx.Err() != nil:
+		return Result{Exit: simcli.ExitAborted}
 	}
-	return res
+	out("stderr", "❌ k3c-sim: "+err.Error())
+	return Result{Exit: simcli.ExitFailed}
 }
 
 func lastLines(lines []string, n int) []string {
@@ -199,7 +177,3 @@ func lastLines(lines []string, n int) []string {
 	}
 	return lines
 }
-
-// balanceExe ist der feste Pfad des Engine-CLI für einen Platz (relativ zum Checkout): Platz n baut
-// bin/k3c-sim-<n+1>, getrennt von bin/k3c-sim, das sim_run und die Bots der Online-Läufe nutzen.
-func balanceExe(slot int) string { return simexe.Rel(slot + 1) }

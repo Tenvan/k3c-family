@@ -36,7 +36,7 @@ func TestWorldBindingsOverRPC(t *testing.T) {
 			return json.RawMessage(`{"warnings":[]}`), nil
 		}
 	}
-	t.Cleanup(func() { worldEngine = world.SimExe })
+	t.Cleanup(func() { worldEngine = world.Direct })
 
 	if code, out := uiCall(t, a, http.MethodPost, uiPrefix+"rpc/WorldList", "[]", nil); code != http.StatusOK || len(out["result"].([]any)) != 1 {
 		t.Fatalf("WorldList: %d %v", code, out)

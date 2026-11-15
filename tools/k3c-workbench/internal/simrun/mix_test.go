@@ -23,7 +23,7 @@ func TestSpecWeltUndTage(t *testing.T) {
 	if err := ok.Check(); err != nil {
 		t.Fatal(err)
 	}
-	args := strings.Join(ok.args("exe", "dir"), " ")
+	args := strings.Join(ok.args("dir"), " ")
 	for _, want := range []string{"--bot coop2", "--days 40", "--world standard"} {
 		if !strings.Contains(args, want) {
 			t.Errorf("%q fehlt in %s", want, args)

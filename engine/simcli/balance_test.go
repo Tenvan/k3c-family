@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"encoding/json"
@@ -18,7 +18,7 @@ func TestVerletztesZielIstKeinFehler(t *testing.T) {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
 	}
 	dir := t.TempDir()
-	if code, _, errOut := call(t, "", "balance", "--targets", "--seeds", "3", "--report-dir", dir); code != exitOK {
+	if code, _, errOut := call(t, "", "balance", "--targets", "--seeds", "3", "--report-dir", dir); code != ExitOK {
 		t.Fatalf("Bericht ohne Baseline: Exit %d %s", code, errOut)
 	}
 	md, _ := filepath.Glob(filepath.Join(dir, "balance-*.md"))
@@ -32,15 +32,15 @@ func TestWerkzeugFehlerIstFehler(t *testing.T) {
 	if testing.Short() {
 		t.Skip("langer Test, läuft ohne -short (B-619)")
 	}
-	if code, _, _ := call(t, "", "balance", "--targets", "--seeds", "1", "--write-baseline"); code != exitUsage {
-		t.Fatalf("--write-baseline ohne --baseline: Exit %d, erwartet %d", code, exitUsage)
+	if code, _, _ := call(t, "", "balance", "--targets", "--seeds", "1", "--write-baseline"); code != ExitUsage {
+		t.Fatalf("--write-baseline ohne --baseline: Exit %d, erwartet %d", code, ExitUsage)
 	}
 	datei := filepath.Join(t.TempDir(), "datei")
 	if err := os.WriteFile(datei, nil, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if code, _, _ := call(t, "", "balance", "--targets", "--seeds", "1", "--report-dir", datei); code != exitFailed {
-		t.Fatalf("Berichtsordner, der eine Datei ist: Exit %d, erwartet %d", code, exitFailed)
+	if code, _, _ := call(t, "", "balance", "--targets", "--seeds", "1", "--report-dir", datei); code != ExitFailed {
+		t.Fatalf("Berichtsordner, der eine Datei ist: Exit %d, erwartet %d", code, ExitFailed)
 	}
 }
 
@@ -50,7 +50,7 @@ func TestFortschrittVarianteImBericht(t *testing.T) {
 	dir := t.TempDir()
 	code, out, errOut := call(t, "", "balance", "--targets", "--seeds", "1", "--days", "1", "--grade", "normal", "--progress",
 		"--vary", "economy.json:purse.startGold=120", "--report-dir", dir)
-	if code != exitOK {
+	if code != ExitOK {
 		t.Fatalf("Exit %d: %s", code, errOut)
 	}
 	if !strings.Contains(out, `{"event":"progress","done":1,"total":1}`+"\n") {
@@ -71,7 +71,7 @@ func TestFortschrittVarianteImBericht(t *testing.T) {
 		{"balance", "--vary", "economy.json:purse.startGold=1"},
 		{"balance", "--targets", "--players", "1,2", "--report-dir", dir},
 	} {
-		if code, _, _ := call(t, "", args...); code == exitOK {
+		if code, _, _ := call(t, "", args...); code == ExitOK {
 			t.Errorf("%v: Fehler erwartet", args)
 		}
 	}
@@ -82,7 +82,7 @@ func TestTuneSchreibtErgebnis(t *testing.T) {
 	dir := t.TempDir()
 	code, out, errOut := call(t, "", "balance", "--targets", "--seeds", "1", "--days", "1", "--grade", "normal", "--progress",
 		"--tune", "sweep", "--steps", "2", "--param", "economy.json:purse.startGold=8..20", "--report-dir", dir)
-	if code != exitOK {
+	if code != ExitOK {
 		t.Fatalf("Exit %d: %s", code, errOut)
 	}
 	if !strings.Contains(out, `{"event":"progress","done":2,"total":2}`+"\n") {
@@ -104,7 +104,7 @@ func TestTuneSchreibtErgebnis(t *testing.T) {
 		{"balance", "--targets", "--tune", "raten", "--param", "economy.json:purse.startGold=1..2", "--report-dir", dir},
 		{"balance", "--targets", "--tune", "sweep", "--report-dir", dir},
 	} {
-		if code, _, _ := call(t, "", args...); code == exitOK {
+		if code, _, _ := call(t, "", args...); code == ExitOK {
 			t.Errorf("%v: Fehler erwartet", args)
 		}
 	}

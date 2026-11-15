@@ -66,7 +66,7 @@ func TestSimListeGleich(t *testing.T) {
 
 // TestFilterPkgs: check:go lässt die Sim-Pakete weg, CHECK_SIM=1 nimmt sie mit (B-832/AC-01).
 func TestFilterPkgs(t *testing.T) {
-	all := []string{"k3c/cmd/k3c-sim", "k3c/engine/level", "k3c/engine/balance", "k3c/engine/balance/x", "k3c/engine/sim"}
+	all := []string{"k3c/cmd/k3c-sim", "k3c/engine/simcli", "k3c/engine/level", "k3c/engine/balance", "k3c/engine/balance/x", "k3c/engine/sim"}
 	if got := filterPkgs(all, false); !slices.Equal(got, []string{"k3c/engine/level", "k3c/engine/balance/x", "k3c/engine/sim"}) {
 		t.Errorf("ohne Sim: %v", got)
 	}
@@ -75,11 +75,11 @@ func TestFilterPkgs(t *testing.T) {
 	}
 }
 
-// TestFilterPkgsWorkbench: k3c-workbench:test lässt balance, simrun und simexe weg, CHECK_SIM=1 nimmt sie mit
+// TestFilterPkgsWorkbench: k3c-workbench:test lässt balance und simrun weg, CHECK_SIM=1 nimmt sie mit
 // (B-857/AC-01).
 func TestFilterPkgsWorkbench(t *testing.T) {
 	const m = wbModule + "/"
-	all := []string{m + "internal/balance", m + "internal/mcp", m + "internal/simexe", m + "internal/simrun", m + "internal/studioview"}
+	all := []string{m + "internal/balance", m + "internal/mcp", m + "internal/simrun", m + "internal/studioview"}
 	if got := filterPkgs(all, false); !slices.Equal(got, []string{m + "internal/mcp", m + "internal/studioview"}) {
 		t.Errorf("ohne Sim: %v", got)
 	}

@@ -114,10 +114,6 @@ func New(cfg Config) *Server {
 		s.log = applog.Discard()
 	}
 	s.sims = simrun.New(s.log)
-	s.sims.Exec = func(ctx context.Context, p simrun.Proc) simrun.Result { // über die Test-Naht s.run
-		res := s.run(ctx, runSpec{dir: p.Dir, args: p.Args, timeout: p.Timeout, env: p.Env, out: p.Out})
-		return simrun.Result{Exit: res.exit, TimedOut: res.timedOut, Err: res.err}
-	}
 	s.stats.onStart, s.stats.onCall = cfg.OnStart, cfg.OnCall
 	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "k3c-workbench", Version: cfg.Version}, &mcp.ServerOptions{
 		Instructions:       instructions,

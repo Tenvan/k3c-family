@@ -2,12 +2,12 @@ package main
 
 // Gebäude-Planer (B-923, Port aus dem früheren Asset-Studio, B-462): data/hub.json als Matrix Hub-Stufe × Bauplatz
 // ansehen, einen Kandidaten prüfen, mit der Regeltabelle vergleichen und geprüft speichern. Die Logik liegt in
-// internal/hubplan, Matrix und Prüfung rechnet bin/k3c-sim hub; dieselben Aufrufe machen die MCP-Tools hub_*.
+// internal/hubplan, Matrix und Prüfung rechnet simcli hub; dieselben Aufrufe machen die MCP-Tools hub_*.
 
 import "k3c/tools/k3c-workbench/internal/hubplan"
 
-// hubEngine ist die Engine-Seite des Planers (bin/k3c-sim hub); Tests setzen einen Ersatz.
-var hubEngine = hubplan.SimExe
+// hubEngine ist die Engine-Seite des Planers (simcli hub); Tests setzen einen Ersatz.
+var hubEngine = hubplan.Direct
 
 // hubs ist der Gebäude-Planer des Checkouts.
 func (a *App) hubs() hubplan.Editor { return hubplan.Editor{Root: a.root, Engine: hubEngine(a.root)} }

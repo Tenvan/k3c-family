@@ -49,6 +49,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-932](B-932-angriff-gruppen.md) | SIM | Idee | hoch | offen | KS4 | Gruppen-Angriff: Schild macht zum Gruppenführer, Auslöser am Tor schickt alle Gruppen los |
 | [B-933](B-933-angriff-general.md) | SIM | Idee | hoch | offen | KS4 | General-Angriff: Der Monarch nimmt das Banner am Tor, ein Trupp folgt ihm, Ausfälle werden nachbesetzt |
 | [B-934](B-934-kampf-anzeige.md) | CLI | Idee | mittel | offen | KS5 | Das Spiel zeigt Portal-HP, Krone, Münzverlust, Schild, Banner und Auslöser |
+| [B-935](B-935-klangbild-couch.md) | CLI | Problem | hoch | offen | SR1 | Klangbild für Couch-Abende festlegen und konsolige Piep-Sounds ersetzen |
+| [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SR1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
+| [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | offen | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |
+| [B-938](B-938-weltauswahl-menue.md) | CLI | Idee | mittel | offen | WG2 | Neues Spiel beginnt mit der Weltauswahl im großen Bild, Spielstände und Pausenmenü zeigen das kleine |
 
 ## Archiv
 

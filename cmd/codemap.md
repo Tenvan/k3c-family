@@ -12,7 +12,7 @@ Ein Unterordner je Binary, jeweils `package main` als dünner Composition Root �
 | [`k3c-sim/`](k3c-sim/codemap.md) | Engine-CLI (B-726): Unterbefehle `run`, `level`, `balance`, `world`; JSON-Zeilen auf stdout, Kindprozess der Workbench |
 
 ## Flow
-Die Workbench (`tools/k3c-workbench/internal/simexe`) startet `bin/k3c-sim` als Kindprozess und liest dessen
+Die Workbench ruft dieselbe Logik über `engine/simcli` im Prozess auf (B-924) und liest dessen
 JSON-Zeilen; `cmd/` selbst hat keinen Ablauf.
 
 ## Integration

@@ -113,18 +113,18 @@ func registerLogs(s *Server) {
 	}, s.logsSince)
 }
 
-// registerEngine sind die Engine-Tools (B-047): rechnen im Kindprozess bin/k3c-sim des Checkouts (RS2.2), ohne laufenden Server.
+// registerEngine sind die Engine-Tools (B-047): rechnen im Prozess der Workbench über engine/simcli (B-924), ohne laufenden Server.
 func registerEngine(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "level_generate",
-		Description: "Erzeugt ein Level mit bin/k3c-sim des Checkouts (kein Server nötig; fehlt die EXE: task k3c-sim:build): Kopfzeile, eine Zeile je Abschnitt, " +
+		Description: "Erzeugt ein Level mit der Engine der Workbench (kein Server nötig): Kopfzeile, eine Zeile je Abschnitt, " +
 			"Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. " +
 			"Nutze es bei: Level eines Seeds prüfen. Statt: Server starten und Level-Betrachter öffnen.",
 		Annotations: readOnlyEngine(),
 	}, s.levelGenerate)
 	add(s, &mcp.Tool{
 		Name: "sim_run",
-		Description: "Deterministischer Simulationslauf mit bin/k3c-sim des Checkouts (kein Server nötig), höchstens 100000 Ticks (30/s): " +
+		Description: "Deterministischer Simulationslauf mit der Engine der Workbench (kein Server nötig), höchstens 100000 Ticks (30/s): " +
 			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
 			"Bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Workbench mit K3C_SIM_ENTSPERRT=1). " +
 			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
@@ -132,7 +132,7 @@ func registerEngine(s *Server) {
 	}, s.simRun)
 	add(s, &mcp.Tool{
 		Name: "replay_run",
-		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit bin/k3c-sim ohne Bot ab: " +
+		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit der Engine der Workbench ohne Bot ab: " +
 			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. " +
 			"Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
 		Annotations: readOnlyEngine(),

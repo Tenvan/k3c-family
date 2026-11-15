@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"errors"
@@ -125,12 +125,18 @@ func runTargets(o targetOpts) error {
 	return nil
 }
 
-// onProgress meldet mit --progress nach jedem Lauf eine JSON-Zeile für die Laufsteuerung (simrun).
+// onProgress meldet mit --progress nach jedem Lauf eine JSON-Zeile für die Laufsteuerung (simrun) und beendet den Lauf,
+// wenn der Context fertig ist (checkAbort).
 func (o *targetOpts) onProgress() func(done, total int) {
-	if !o.progress {
+	if !o.progress && o.v.ctx == nil {
 		return nil
 	}
-	return o.v.out.progress
+	return func(done, total int) {
+		if o.progress {
+			o.v.out.progress(done, total)
+		}
+		o.v.checkAbort()
+	}
 }
 
 func writeBaseline(path string, sum balance.Summary) error {
@@ -179,7 +185,7 @@ func writeSummary(dir string, sum balance.Summary, base *balance.Summary, baseNa
 	if err := balance.WriteReports(stem, sum, base, baseName, "."); err != nil {
 		return err
 	}
-	v.out.emit(map[string]any{"event": "report", "files": []string{stem + ".json", stem + ".md", stem + ".html"}})
+	v.out.Emit(map[string]any{"event": "report", "files": []string{stem + ".json", stem + ".md", stem + ".html"}})
 	v.logf("💾 k3c-sim: Bericht %s.json, %s.md und %s.html", stem, stem, stem)
 	return nil
 }
@@ -190,7 +196,7 @@ func runInsights(path string, v env) error {
 	if err != nil {
 		return err
 	}
-	v.out.emit(map[string]any{"event": "report", "files": []string{page}})
+	v.out.Emit(map[string]any{"event": "report", "files": []string{page}})
 	v.logf("📄 k3c-sim: Auswertung %s", page)
 	return nil
 }
@@ -215,6 +221,7 @@ func (o targetOpts) targets() (*balance.Targets, error) {
 	if err != nil {
 		return nil, err
 	}
+	ts.Tick = o.v.tick()
 	if ts, err = ts.Restrict(o.scope); err != nil {
 		return nil, err
 	}

@@ -3,22 +3,26 @@ package world
 import (
 	"context"
 	"encoding/json"
+	"path/filepath"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/simexe"
+	"k3c/engine/simcli"
 )
 
-// engineTimeout begrenzt einen Aufruf von bin/k3c-sim world (Level und Prüfung brauchen Millisekunden).
+// engineTimeout begrenzt einen Aufruf von simcli world (Level und Prüfung brauchen Millisekunden).
 const engineTimeout = 30 * time.Second
 
 // Engine ist die Engine-Seite des Editors: input ist das JSON von `k3c-sim world` ({"op": …}), die Antwort sein
 // report. Ein Fehler ist die Meldung von k3c-sim (ungültiger Entwurf, unbekannte Insel) oder ein Startfehler.
 type Engine func(ctx context.Context, input []byte) (json.RawMessage, error)
 
-// SimExe ist die Engine über bin/k3c-sim des Checkouts root (B-726: die Workbench importiert den Engine-Kern nicht).
-func SimExe(root string) Engine {
+// Direct ist die Engine im Prozess (engine/simcli, B-924) mit den Daten des Checkouts root; eine Panik der Engine
+// wird zum Fehler (recover in simcli.Exec).
+func Direct(root string) Engine {
 	return func(ctx context.Context, input []byte) (json.RawMessage, error) {
-		ev, err := simexe.Call(ctx, root, []string{"world"}, input, engineTimeout)
+		ctx, cancel := context.WithTimeout(ctx, engineTimeout)
+		defer cancel()
+		ev, err := simcli.Call(ctx, []string{"world"}, input, simcli.DirFiles(filepath.Join(root, "data")))
 		return ev.Report, err
 	}
 }

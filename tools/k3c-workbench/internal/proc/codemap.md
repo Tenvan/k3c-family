@@ -18,5 +18,5 @@ Startet Kindprozesse so, dass sie samt gesamtem Prozessbaum beendet werden könn
 
 ## Integration
 
-- Konsumenten: `app_claude.go`, `internal/mcpsrv` (`check_run.go`, `checkout.go`), `internal/services` (`controller.go`, `runtime.go`), `internal/taskrun`, `internal/taskcat`, `internal/github/client.go`, `internal/gitops/repo.go`, `internal/planning` (`worktree.go`, `wtdiff.go`, `mergebase.go`, `ticketnr.go`), `internal/review` (`aufruf.go`, `git.go`), `internal/paperassets/basis.go`, `internal/simexe`, `internal/simrun/offline.go`.
+- Konsumenten: `app_claude.go`, `internal/mcpsrv` (`check_run.go`, `checkout.go`), `internal/services` (`controller.go`, `runtime.go`), `internal/taskrun`, `internal/taskcat`, `internal/github/client.go`, `internal/gitops/repo.go`, `internal/planning` (`worktree.go`, `wtdiff.go`, `mergebase.go`, `ticketnr.go`), `internal/review` (`aufruf.go`, `git.go`), `internal/paperassets/basis.go`, `internal/simrun/offline.go`.
 - Abhängigkeiten: Standardbibliothek `os/exec`, `golang.org/x/sys/windows`.

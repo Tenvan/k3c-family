@@ -2,7 +2,7 @@ package main
 
 // Welten-Editor (B-879, Port aus dem früheren Asset-Studio): Welten unter data/worlds/ ansehen, das Level einer
 // Insel-Stufe als Chunk-Vorschau holen und Werte einer Welt übersteuern (overrides, B-680) über internal/world. Level,
-// Basis-Werte und Prüfung rechnet bin/k3c-sim world (B-726); es laufen keine Simulationen (Sperre 2026-11-11).
+// Basis-Werte und Prüfung rechnet simcli world (B-726); es laufen keine Simulationen (Sperre 2026-11-11).
 
 import (
 	"context"
@@ -12,8 +12,8 @@ import (
 	"k3c/tools/k3c-workbench/internal/world"
 )
 
-// worldEngine ist die Engine-Seite des Editors (bin/k3c-sim world); Tests setzen einen Ersatz.
-var worldEngine = world.SimExe
+// worldEngine ist die Engine-Seite des Editors (simcli world); Tests setzen einen Ersatz.
+var worldEngine = world.Direct
 
 // worlds ist der Welten-Editor des Checkouts.
 func (a *App) worlds() world.Editor { return world.Editor{Root: a.root, Engine: worldEngine(a.root)} }
@@ -38,7 +38,7 @@ func (a *App) WorldDetail(id string) world.Detail {
 	return a.worlds().Load(id)
 }
 
-// WorldLevel holt das Level der Insel island in der Stufe stage zum Seed von bin/k3c-sim (Binding).
+// WorldLevel holt das Level der Insel island in der Stufe stage zum Seed der Engine (Binding).
 func (a *App) WorldLevel(id, island string, stage int, seed string) world.LevelView {
 	a.wait()
 	return a.worlds().Level(a.worldCtx(), id, island, stage, seed)

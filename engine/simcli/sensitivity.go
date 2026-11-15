@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"flag"
@@ -43,6 +43,7 @@ func runSensitivity(o sensOpts, v env) error {
 	if err != nil {
 		return err
 	}
+	ts.Tick = v.tick()
 	opt := balance.SensitivityOptions{Seeds: o.seeds}
 	if o.vary {
 		opt.Paths = o.paths
@@ -72,7 +73,7 @@ func runSensitivity(o sensOpts, v env) error {
 	if err := os.WriteFile(stem+".md", []byte(rep.Markdown()), 0o644); err != nil {
 		return err
 	}
-	v.out.emit(map[string]any{"event": "report", "files": []string{stem + ".json", stem + ".md"}})
+	v.out.Emit(map[string]any{"event": "report", "files": []string{stem + ".json", stem + ".md"}})
 	v.logf("💾 k3c-sim: Sensitivität mit %d Seeds in %s, Bericht %s.json und %s.md",
 		rep.Seeds, time.Since(start).Round(time.Second), stem, stem)
 	return nil

@@ -18,8 +18,8 @@ permissions:
 # Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825), aus der auch
 # task check:go liest (checkdiff -gopkgs); tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
 env:
-  GO_SIM_PKGS: '/(engine/balance|cmd/k3c-sim)$'
-  WB_SIM_PKGS: '/internal/(balance|simrun|simexe)$'
+  GO_SIM_PKGS: '/(engine/balance|engine/simcli|cmd/k3c-sim)$'
+  WB_SIM_PKGS: '/internal/(balance|simrun)$'
 
 jobs:
   # Pull Request: nur prüfen, ob der Branch sauber in die Zielbranch passt. Die übrigen Jobs laufen nur bei Push/Dispatch.

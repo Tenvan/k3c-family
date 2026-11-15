@@ -185,15 +185,17 @@ Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist 
   bestätigt nur 🧑 in der Oberfläche; ein Agent nie.
 
 ### Rechnen ohne Server
-
-- `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen im Kindprozess `bin/k3c-sim`
-  (Engine-CLI, B-726), ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
+- `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen im Prozess der Workbench
+  (`engine/simcli`, B-924), ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
   (30 pro Sekunde). Für Balancing-Vergleiche statt eigener Skripte.
 - `replay_run {path}` spielt eine Replay-Datei (`task balance:run -- --replay-dir DIR`) ohne Bot ab: Endzustand-Hash,
   Burgfall-Tick, Vergleich mit der Aufnahme; `path` relativ zur Repo-Wurzel, Dateien außerhalb werden abgelehnt.
-- Diese drei rechnen mit `bin/k3c-sim` des Checkouts der Session (Daten aus dessen `data/`). Fehlt die EXE oder ist sie
-  älter als `engine/`, `cmd/k3c-sim`, `go.mod`: Meldung mit `task k3c-sim:build`. `sim_test` baut sich
-  `bin/k3c-sim-<platz>` selbst.
+- Diese drei und `sim_test start` rechnen **Code und Daten dieses Prozesses** (Stand beim Start der Workbench), nicht die
+  eines Worktrees. Aus einem anderen Checkout lehnen sie ab; der Hinweis nennt `task k3c-workbench:dev:worktree`: eigene
+  Dev-Workbench im Worktree (eigene Ports, `K3C_DATA_DIR=<Worktree>/data`), dort mit deren `K3C_DEV_PORT` verbinden. Das gilt
+  für Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und für Daten in `data/`. Nur die Welten- und
+  Planer-Seiten (`world`, `hub`) lesen `data/` des Checkouts frisch von der Platte. Ein Absturz der Engine ist ein Tool-Fehler
+  (`💥 Absturz in der Engine`, Stack im Log), nie ein Absturz der Workbench.
 
 ### Testläufe
 

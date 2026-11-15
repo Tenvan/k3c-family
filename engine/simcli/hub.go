@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"encoding/json"
@@ -88,13 +88,13 @@ func cmdHub(args []string, v env) error {
 	if in.Op != "plan" {
 		return usagef("unbekannte op %q (bekannt: plan)", in.Op)
 	}
-	v.out.emit(map[string]any{"event": "result", "report": hubPlan([]byte(in.Raw))})
+	v.out.Emit(map[string]any{"event": "result", "report": hubPlan(v.dataFiles(), []byte(in.Raw))})
 	return nil
 }
 
 // hubPlan prüft den Text einer hub.json und baut die Matrix; h bleibt unverändert.
-func hubPlan(raw []byte) hubReport {
-	rep := hubReport{Matrix: hubMatrix{Rows: []hubRow{}}, Findings: []hubFinding{}, Notes: []string{}, Kinds: placeableKinds()}
+func hubPlan(files data.FS, raw []byte) hubReport {
+	rep := hubReport{Matrix: hubMatrix{Rows: []hubRow{}}, Findings: []hubFinding{}, Notes: []string{}, Kinds: placeableKinds(files)}
 	h, err := sim.ParseHub(raw)
 	if err != nil {
 		rep.ParseError = err.Error()
@@ -111,8 +111,8 @@ func hubPlan(raw []byte) hubReport {
 
 // placeableKinds sind die Arten aus data/buildings.json, die als Hub- oder Insel-Platz stehen dürfen. Die Prüfung
 // entscheidet (Probe mit einem Platz je Art), damit die Workbench die Regel nicht nachbaut.
-func placeableKinds() []string {
-	raw, err := data.Files.ReadFile("buildings.json")
+func placeableKinds(files data.FS) []string {
+	raw, err := files.ReadFile("buildings.json")
 	if err != nil {
 		return []string{}
 	}

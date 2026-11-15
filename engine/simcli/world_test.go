@@ -1,4 +1,4 @@
-package main
+package simcli
 
 import (
 	"encoding/json"
@@ -26,7 +26,7 @@ func worldReport(t *testing.T, out string, dst any) {
 // B-879: level rechnet die Insel-Stufe der Standard-Welt mit ihrer Planung (Hafen in Tiefe 0).
 func TestWorldLevel(t *testing.T) {
 	code, out, errOut := call(t, `{"op":"level","world":"standard","island":"island1","stage":0,"seed":"k3c"}`, "world")
-	if code != exitOK {
+	if code != ExitOK {
 		t.Fatalf("Exit %d: %s", code, errOut)
 	}
 	var r struct {
@@ -44,11 +44,11 @@ func TestWorldLevel(t *testing.T) {
 		`{"op":"level","world":"standard","island":"island1","stage":99,"seed":"k3c"}`,
 		`{"op":"level","world":"../x","island":"island1","stage":0,"seed":"k3c"}`,
 	} {
-		if code, _, _ := call(t, bad, "world"); code != exitFailed {
-			t.Errorf("%s: Exit %d, erwartet %d", bad, code, exitFailed)
+		if code, _, _ := call(t, bad, "world"); code != ExitFailed {
+			t.Errorf("%s: Exit %d, erwartet %d", bad, code, ExitFailed)
 		}
 	}
-	if code, _, _ := call(t, `{"op":"fly"}`, "world"); code != exitUsage {
+	if code, _, _ := call(t, `{"op":"fly"}`, "world"); code != ExitUsage {
 		t.Errorf("unbekannte op: Exit %d", code)
 	}
 }
@@ -56,7 +56,7 @@ func TestWorldLevel(t *testing.T) {
 // values liefert die Basis je Datei (buildings, economy …) und die Overrides der Welt.
 func TestWorldValues(t *testing.T) {
 	code, out, errOut := call(t, `{"op":"values","world":"standard"}`, "world")
-	if code != exitOK {
+	if code != ExitOK {
 		t.Fatalf("Exit %d: %s", code, errOut)
 	}
 	var r worldValuesReport
@@ -77,10 +77,10 @@ func TestWorldCheck(t *testing.T) {
 		in, _ := json.Marshal(map[string]any{"op": "check", "world": "standard", "draft": json.RawMessage(text)})
 		return string(in)
 	}
-	if code, out, errOut := call(t, draft(`{"economy":{"purse":{"startGold":20}}}`), "world"); code != exitOK || !strings.Contains(out, `"warnings":[]`) {
+	if code, out, errOut := call(t, draft(`{"economy":{"purse":{"startGold":20}}}`), "world"); code != ExitOK || !strings.Contains(out, `"warnings":[]`) {
 		t.Fatalf("gültiger Entwurf: Exit %d %s %s", code, out, errOut)
 	}
-	if code, out, _ := call(t, draft(`{"economy":{"purse":{"startGold":"viel"}}}`), "world"); code != exitFailed || !strings.Contains(out, "startGold") {
+	if code, out, _ := call(t, draft(`{"economy":{"purse":{"startGold":"viel"}}}`), "world"); code != ExitFailed || !strings.Contains(out, "startGold") {
 		t.Fatalf("falscher Typ: Exit %d %s", code, out)
 	}
 }

@@ -41,8 +41,8 @@ func TestSetOverrideWritesWorldFile(t *testing.T) {
 		t.Fatalf("overrides = %+v (%v)", f.Overrides, err)
 	}
 	// Ein zweites Feld kommt dazu, das erste bleibt; Kommazahlen bleiben, wie sie eingegeben wurden.
-	e.SetOverride(ctx, "standard", "economy", []string{"purse", "maxGold"}, json.RawMessage("40.50"))
-	if text := readWorld(t, e, "standard"); !strings.Contains(text, `"startGold": 99`) || !strings.Contains(text, `"maxGold": 40.50`) {
+	e.SetOverride(ctx, "standard", "economy", []string{"payIntervalSeconds"}, json.RawMessage("0.50"))
+	if text := readWorld(t, e, "standard"); !strings.Contains(text, `"startGold": 99`) || !strings.Contains(text, `"payIntervalSeconds": 0.50`) {
 		t.Fatalf("zwei Felder erwartet:\n%s", text)
 	}
 }

@@ -2,7 +2,6 @@ package simrun
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path/filepath"
 	"slices"
@@ -11,58 +10,63 @@ import (
 	"time"
 )
 
-// Fake-Binary (WZ28.4/AC-04, RS2.2): Der Testprozess selbst spielt `k3c-sim balance` (Hilfsprozess-Muster). „Bauen“ entfällt,
-// „rechnen“ startet ihn als echten Kindprozess über runProcess (Job-Objekt, Abbruch, Ausgabe).
+// Falsche Engine (WZ28.4/AC-04, B-924): g.Exec rechnet `balance --targets` nicht, sondern schreibt einen festen
+// Bericht und meldet Events wie runEngine; die Rechnung selbst prüft engine/simcli. runEngine prüft der Test unten.
 
-// TestHelperProcess ist die falsche Balance-CLI; ohne SIMRUN_HELPER tut er nichts.
-func TestHelperProcess(t *testing.T) {
-	if os.Getenv("SIMRUN_HELPER") != "1" {
-		return
-	}
-	args := os.Args[slices.Index(os.Args, "--")+1:]
-	dir := args[slices.Index(args, "--report-dir")+1]
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		os.Exit(3)
-	}
-	_ = os.WriteFile(filepath.Join(dir, "args.txt"), []byte(strings.Join(args, "\n")), 0o644)
-	write := func() {
-		raw := `{"version":1,"seeds":2,"pass":true,"varianten":["gegner.json:a.b=2"],"targets":[` +
-			`{"name":"Ziel","kind":"share","value":80,"lower":75,"upper":90,"pass":true}]}`
-		_ = os.WriteFile(filepath.Join(dir, "balance-1.json"), []byte(raw), 0o644)
-	}
-	switch os.Getenv("SIMRUN_FAKE") {
-	case "slow":
-		fmt.Println(`{"event":"progress","done":1,"total":3}`)
-		write()
-		time.Sleep(time.Minute)
-	case "crash":
-		fmt.Println(`{"event":"progress","done":1,"total":2}`)
-		fmt.Fprintln(os.Stderr, "panic: boom\n\ngoroutine 1 [running]:\nmain.main()\n\tmain.go:1 +0x1")
-		os.Exit(2)
-	case "error":
-		fmt.Println(`{"event":"error","message":"welt \"x\" fehlt"}`)
-		fmt.Fprintln(os.Stderr, `❌ k3c-sim: welt "x" fehlt`)
-		os.Exit(1)
-	default:
-		fmt.Println(`{"event":"progress","done":1,"total":2}`)
-		fmt.Println(`{"event":"progress","done":2,"total":2}`)
-		write()
-	}
-	os.Exit(0)
-}
-
-// fakeRegistry: Bauen ist sofort fertig, Rechnen startet TestHelperProcess.
+// fakeRegistry: g.Exec spielt je nach mode einen Lauf (ok, slow, crash, error).
 func fakeRegistry(mode string) *Registry {
 	g := New(nil)
 	g.Exec = func(ctx context.Context, p Proc) Result {
-		if p.Args[0] == "go" {
-			return Result{}
+		dir := filepath.Join(p.Dir, p.Args[slices.Index(p.Args, "--report-dir")+1])
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			return Result{Err: err}
 		}
-		p.Args = append([]string{os.Args[0], "-test.run=^TestHelperProcess$", "--"}, p.Args...)
-		p.Env = append(p.Env, "SIMRUN_HELPER=1", "SIMRUN_FAKE="+mode)
-		return runProcess(ctx, p)
+		_ = os.WriteFile(filepath.Join(dir, "args.txt"), []byte(strings.Join(p.Args, "\n")), 0o644)
+		write := func() {
+			raw := `{"version":1,"seeds":2,"pass":true,"varianten":["gegner.json:a.b=2"],"targets":[` +
+				`{"name":"Ziel","kind":"share","value":80,"lower":75,"upper":90,"pass":true}]}`
+			_ = os.WriteFile(filepath.Join(dir, "balance-1.json"), []byte(raw), 0o644)
+		}
+		switch mode {
+		case "slow":
+			p.Out("stdout", `{"event":"progress","done":1,"total":3}`)
+			write()
+			<-ctx.Done()
+			return Result{Exit: 130}
+		case "crash":
+			p.Out("stdout", `{"event":"progress","done":1,"total":2}`)
+			p.Out("stderr", "❌ k3c-sim: 💥 Absturz in der Engine: boom")
+			return Result{Exit: 1}
+		case "error":
+			p.Out("stdout", `{"event":"error","message":"welt \"x\" fehlt"}`)
+			p.Out("stderr", `❌ k3c-sim: welt "x" fehlt`)
+			return Result{Exit: 1}
+		}
+		p.Out("stdout", `{"event":"progress","done":1,"total":2}`)
+		p.Out("stdout", `{"event":"progress","done":2,"total":2}`)
+		write()
+		return Result{}
 	}
 	return g
+}
+
+// B-924: runEngine rechnet im Prozess; ein Fehler der Engine wird Exit 1 mit der Meldung auf stderr, ein beendeter
+// Context ein Abbruch, das Zeitlimit ein TimedOut. Kein Lauf wird gerechnet (unbekannter Unterbefehl).
+func TestRunEngineFehlerAbbruchUndZeitlimit(t *testing.T) {
+	var lines []string
+	out := func(stream, text string) { lines = append(lines, stream+": "+text) }
+	res := runEngine(context.Background(), Proc{Dir: t.TempDir(), Args: []string{"fliegen"}, Timeout: time.Minute, Out: out})
+	if res.Exit != 1 || len(lines) < 2 || !strings.Contains(strings.Join(lines, "\n"), "stderr: ❌ k3c-sim: unbekannter Unterbefehl") {
+		t.Errorf("Fehler: %+v %v", res, lines)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	if res := runEngine(ctx, Proc{Dir: t.TempDir(), Args: []string{"level"}, Timeout: time.Minute}); res.Exit != 130 {
+		t.Errorf("Abbruch: %+v", res)
+	}
+	if res := runEngine(context.Background(), Proc{Dir: t.TempDir(), Args: []string{"level"}, Timeout: -time.Second}); !res.TimedOut {
+		t.Errorf("Zeitlimit: %+v", res)
+	}
 }
 
 // waitFor fragt den Lauf ab, bis ok gilt.
@@ -153,7 +157,7 @@ func TestOfflineAlterBerichtZaehltNicht(t *testing.T) {
 
 // RS2.2: Ein Absturz oder Fehler von k3c-sim beendet den Lauf als fehlgeschlagen; der Status nennt Exit und Grund.
 func TestOfflineAbsturzNenntStderr(t *testing.T) {
-	for mode, want := range map[string][]string{"crash": {"rechnen: Exit 2", "panic: boom"},
+	for mode, want := range map[string][]string{"crash": {"rechnen: Exit 1", "💥 Absturz in der Engine: boom"},
 		"error": {"rechnen: Exit 1", `❌ k3c-sim: welt "x" fehlt`}} {
 		root := t.TempDir()
 		g := fakeRegistry(mode)

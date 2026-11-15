@@ -29,3 +29,30 @@ func TestParallelWieNacheinander(t *testing.T) {
 		}
 	}
 }
+
+// B-924: Eine Panik in progress (so beendet die Workbench einen abgebrochenen Lauf) kommt in der aufrufenden Goroutine
+// an, lässt die übrigen Läufe aus und reißt den Prozess nicht mit.
+func TestParallelPanikKommtBeimAufruferAn(t *testing.T) {
+	m := Matrix{Seeds: []string{DevSeed, "1", "2", "3"}, Players: []int{1}, Bots: []string{"saver"}, Depths: []int{0}, Days: 1}
+	sc, err := m.Scenarios()
+	if err != nil {
+		t.Fatal(err)
+	}
+	old := workers
+	t.Cleanup(func() { workers = old })
+	workers = 2
+	calls := 0
+	defer func() {
+		if c, _ := recover().(*Crash); c == nil || c.Value != "abbruch" || len(c.Stack) == 0 {
+			t.Errorf("recover = %v, erwartet Crash abbruch mit Stack", c)
+		}
+		if calls >= len(sc) {
+			t.Errorf("%d Meldungen: die Läufe nach der Panik liefen weiter", calls)
+		}
+	}()
+	runAll(sc, 0, func(done, total int) {
+		calls++
+		panic("abbruch")
+	})
+	t.Fatal("keine Panik")
+}

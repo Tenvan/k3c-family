@@ -51,9 +51,9 @@ func TestSetNatureRejectsInvalid(t *testing.T) {
 	}
 }
 
-// Das Level hat immer Natur-Felder (leere Objekte und Listen, nie null).
+// Auch ein Fehlerfall (unbekannte Insel) hat Natur-Felder (leere Objekte und Listen, nie null).
 func TestLevelNatureNeverNull(t *testing.T) {
-	v := fixture(t).Level(ctx, "standard", "island1", 0, "k3c")
+	v := fixture(t).Level(ctx, "standard", "gibts-nicht", 0, "k3c")
 	if string(v.Nature) != "{}" || string(v.NatureTraits) != "[]" || string(v.NatureWeights) != "[]" || string(v.NatureFixed) != "{}" {
 		t.Fatalf("%s %s %s %s", v.Nature, v.NatureFixed, v.NatureTraits, v.NatureWeights)
 	}
