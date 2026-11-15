@@ -13,8 +13,8 @@ var _ view.VoyageDrawer = (*hud)(nil)
 // der verlassenen Insel, nach der Fahrzeit am Ziel (dort schaukelt es weiter), dazwischen über der geraden Strecke und
 // nie rückwärts.
 func TestVoyagePosIsPureFunctionOfTime(t *testing.T) {
-	const ax, ay, bx, by, arc, bob, dur = 100.0, 400.0, 900.0, 490.0, 28.0, 2.5, 3.0
-	pos := func(t float64) (float64, float64) { return voyagePos(ax, ay, bx, by, arc, bob, t, dur) }
+	const ax, ay, bx, by, arc, bob, bobHz, dur = 100.0, 400.0, 900.0, 490.0, 28.0, 2.5, 0.7, 3.0
+	pos := func(t float64) (float64, float64) { return voyagePos(ax, ay, bx, by, arc, bob, bobHz, t, dur) }
 	for _, at := range []float64{0, 0.4, 1.5, 2.9, 3, 7.25} {
 		x1, y1 := pos(at)
 		x2, y2 := pos(at)
@@ -50,13 +50,23 @@ func TestVoyagePosIsPureFunctionOfTime(t *testing.T) {
 func TestVoyagePosAllocatesNothing(t *testing.T) {
 	var sink float64
 	if n := testing.AllocsPerRun(100, func() {
-		x, y := voyagePos(100, 400, 900, 490, 28, 2.5, 1.25, 3)
-		sink = x + y + voyageShift(14, 1.25) + float64(voyageLane(0, 1, voyageEase(1.25, 3)))
+		x, y := voyagePos(100, 400, 900, 490, 28, 2.5, 0.7, 1.25, 3)
+		sink = x + y + voyageShift(14, 0.22, 1.25) + float64(voyageLane(0, 1)) + voyageEase(1.25, 3)
 	}); n != 0 || sink == 0 {
 		t.Errorf("Lage des Schiffs: %v Allokationen", n)
 	}
-	if voyageShift(14, 0.5) == voyageShift(14, 1.5) {
+	if voyageShift(14, 0.22, 0.5) == voyageShift(14, 0.22, 1.5) {
 		t.Error("vordere Welle bewegt sich nicht")
+	}
+}
+
+// GS2.4: Das Schiff bleibt die ganze Fahrt in einer Zeichen-Reihe, der vorderen von Start und Ziel: Es springt
+// unterwegs nicht vor oder hinter eine Insel, gleich in welche Richtung die Fahrt geht.
+func TestVoyageLaneStaysInFront(t *testing.T) {
+	for _, c := range [][3]int{{0, 0, 0}, {0, 1, 1}, {1, 0, 1}, {2, 0, 2}, {1, 2, 2}} {
+		if got := voyageLane(c[0], c[1]); got != c[2] {
+			t.Errorf("Reihe von %d nach %d: %d, will %d", c[0], c[1], got, c[2])
+		}
 	}
 }
 

@@ -97,7 +97,7 @@ func TestVoyageStartsOnIslandSwitch(t *testing.T) {
 		g.advance()
 		v := d.last
 		if !g.voy.on || v.From != "a" || v.To != c.want || !slices.Equal(v.Done, []string{"z", "a"}) ||
-			!slices.Equal(v.Open, []string{"b", "c"}) || v.Duration != voyageSeconds {
+			!slices.Equal(v.Open, []string{"b", "c"}) || v.Duration != voyageSeconds() {
 			t.Errorf("%s: Fahrt an %v, %+v", c.name, g.voy.on, v)
 		}
 	}
@@ -110,7 +110,7 @@ func TestVoyageEndsAfterTravelTime(t *testing.T) {
 	g.advance()
 	g.advance()
 	steps, clock := s.steps, g.frame.Clock
-	n := int(voyageSeconds * TPS)
+	n := int(voyageSeconds() * TPS)
 	for i := 1; i < n; i++ {
 		g.advance()
 		if !g.voy.on || s.steps != steps || g.frame.Clock != clock || len(g.frame.Events) != 0 {
@@ -137,7 +137,7 @@ func TestVoyageWaitsForLoading(t *testing.T) {
 		t.Fatalf("Wechsel: Fahrt %v, lädt %v", g.voy.on, g.Loading())
 	}
 	steps := s.steps
-	for range int(voyageSeconds*TPS) + 30 { // kein Bild gezeichnet: es lädt noch
+	for range int(voyageSeconds()*TPS) + 30 { // kein Bild gezeichnet: es lädt noch
 		g.advance()
 	}
 	if !g.voy.on || !g.Loading() || s.steps != steps {

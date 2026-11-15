@@ -1,5 +1,15 @@
 {
-  "_hinweis": "Werte des nativen Spiels (native/k3c-game, B-889). stepBudgetMs: Rechenzeit eines Simulationstakts in ms, ab der das Spiel 🐢 loggt (höchstens alle slowLogEverySeconds Sekunden, mit Objektanzahl).",
+  "_hinweis": "Werte des nativen Spiels (native/k3c-game, B-889). stepBudgetMs: Rechenzeit eines Simulationstakts in ms, ab der das Spiel 🐢 loggt (höchstens alle slowLogEverySeconds Sekunden, mit Objektanzahl). voyage: Schiffsfahrt beim Inselwechsel (B-977, reine Darstellung, native/k3c-game/art/voyage.go): seconds Fahrzeit; arcPx Höhe des Bogens, bobPx Hub und bobHz Takt des Schaukelns, wavePx Ausschlag und waveHz Takt der vorderen Welle (Längen in Asset-Pixeln des Dioramas); flagAt Anteil der Strecke (0 bis 1), ab dem die verlassene Insel ihre Fahne trägt; scale Maßstab des Dioramas im Vollbild gegenüber dem HUD.",
   "stepBudgetMs": 4,
-  "slowLogEverySeconds": 5
+  "slowLogEverySeconds": 5,
+  "voyage": {
+    "seconds": 3,
+    "arcPx": 28,
+    "bobPx": 2.5,
+    "bobHz": 0.7,
+    "wavePx": 14,
+    "waveHz": 0.22,
+    "flagAt": 0.05,
+    "scale": 1.5
+  }
 }
