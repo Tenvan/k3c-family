@@ -111,7 +111,8 @@ func TestEventsKillMitGold(t *testing.T) {
 	}
 	k := kills[0]
 	gold := enemyData["goblin"].Gold
-	if k["kind"] != "goblin" || k["x"] != unitX(e.X) || k["gold"].(int) < gold[0]+3 || k["gold"].(int) > gold[1]+3 {
+	lo, hi := int(math.Round(float64(gold[0])*economy.EnemyGoldFactor)), int(math.Round(float64(gold[1])*economy.EnemyGoldFactor)) // B-952
+	if k["kind"] != "goblin" || k["x"] != unitX(e.X) || k["gold"].(int) < lo+3 || k["gold"].(int) > hi+3 {
 		t.Fatalf("kill: %v", k)
 	}
 	if len(w.Coins)-coins != k["gold"].(int) {

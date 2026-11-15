@@ -104,7 +104,7 @@ func stepPeasant(w *World, t *Troop, dt float64) {
 		return
 	}
 	switch t.Job.Type {
-	case "fetchBow", "fetchSword", "pickup":
+	case "fetchBow", "fetchSword", "fetchHammer", "pickup":
 		fetchWeapon(w, t, dt)
 	case "build":
 		build(w, t, dt)
@@ -187,6 +187,10 @@ func gather(w *World, t *Troop, dt float64) {
 		}
 		w.Nodes = nodes
 		node.gone = true
+		if node.Kind == "tree" { // Holzfällen bringt Gold (B-952)
+			tg := w.values().Economy.TreeGold
+			scatterCoins(w, node.X, w.rng.Int(tg[0], tg[1]))
+		}
 		t.Job = &Job{Type: "carry", Resource: g.Resource, Amount: g.Amount}
 	}
 }
@@ -252,6 +256,9 @@ func siteJob(w *World, t *Troop) *Job {
 
 // buildJob: nächster wartender Bauplatz ohne Bauer, Ausbauten und Vorposten nur ohne Gefahr; nil, wenn es keinen gibt.
 func buildJob(w *World, t *Troop) *Job {
+	if !t.Hammer { // nur Handwerker bauen (B-950)
+		return nil
+	}
 	var site *Site
 	danger := isDangerous(w)
 	eachSite(w, func(s *Site) {

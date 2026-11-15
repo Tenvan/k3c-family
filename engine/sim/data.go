@@ -29,6 +29,8 @@ type BuildingData struct {
 	CostByDepth                      []Cost // Treppen: Kosten je Biom-Tiefe (B-631, siteCost), leer = Cost
 	ArcherSlots, RangeBonus, BowRack int
 	SwordRack                        int                // Werkstatt: Schwerter im Regal (unit_warrior.go)
+	HammerRack                       int                // Werkstatt: Hämmer im Regal (unit_hammer.go, B-951)
+	HammerCost                       Cost               // Werkstatt: Preis eines Hammers
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: unit_professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, unit_professions.go)
 	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm, Tor; hub_level.go)
@@ -132,7 +134,7 @@ type HubData struct {
 		OnlyDepth                       int
 	}
 	CastleRadiusUnits, HomeRadiusUnits float64
-	StartTroops                        struct{ Peasant, Archer int }
+	StartTroops                        struct{ Peasant, Craftsman, Archer int } // Craftsman: Start-Bauern mit Hammer (B-950)
 	Travel                             struct{ RangeUnits, Seconds float64 }
 }
 

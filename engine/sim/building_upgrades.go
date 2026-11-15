@@ -14,8 +14,9 @@ import "math"
 // placePayable: Nimmt der gebaute Platz s Münzen für sein Produkt am Platz (Bogen, Elite-Bogenschütze, Rüstung)?
 func placePayable(w *World, s *Site) bool {
 	switch s.Kind {
-	case "workshop":
-		return s.Bows+bowsCrafting(s) < w.values().Buildings["workshop"].BowRack && s.BowPaidGold < cheap(w, w.values().Troops["archer"].Cost).Gold
+	case "workshop", "bowyer":
+		p := placeProduct(w, s)
+		return *p.have+bowsCrafting(s) < p.rack && s.BowPaidGold < cheap(w, p.cost).Gold
 	case "smithy":
 		return s.BowPaidGold < cheap(w, w.values().Troops["eliteArcher"].Cost).Gold
 	case "armory":

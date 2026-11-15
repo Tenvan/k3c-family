@@ -11,7 +11,7 @@ import (
 // carrier stellt einen tagsüber wartenden Träger mit Holz bei x in die Welt.
 func carrier(w *World, x float64, amount int) *Troop {
 	w.Cycle.Phase, w.Enemies = "day", nil
-	t := &Troop{ID: 900, Kind: "peasant", X: x, HP: 1, MaxHP: 1, Job: &Job{Type: "carry", Resource: "wood", Amount: amount}}
+	t := &Troop{ID: 900, Kind: "peasant", X: x, HP: 1, MaxHP: 1, Hammer: true, Job: &Job{Type: "carry", Resource: "wood", Amount: amount}}
 	w.Troops = append(w.Troops, t)
 	return t
 }
@@ -180,7 +180,7 @@ func TestIslandFullCarrierDoesNotFetchBow(t *testing.T) {
 	p := carrier(w, w.HubX, 10)
 	w.Troops = []*Troop{p}
 	for _, s := range w.Sites {
-		if s.Kind == "workshop" {
+		if s.Kind == "bowyer" {
 			s.State, s.Bows = "built", 1
 		}
 	}

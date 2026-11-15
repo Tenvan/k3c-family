@@ -106,7 +106,7 @@ func stepSwordCraft(w *World, s *Site) {
 // nur unter dem Limit (Q29, einzige Prüfstelle): sonst bleiben sie liegen.
 func weaponToFetch(w *World, t *Troop) *Job {
 	near := w.values().Troops["peasant"].FetchEnemyDistance
-	if enemyWithin(w, t.X, near) {
+	if t.Hammer || enemyWithin(w, t.X, near) { // ein Handwerker bleibt Handwerker: Werkzeug und Waffe schließen sich aus (B-950)
 		return nil
 	}
 	full := fighters(w)+weaponsInFlight(w, t) >= troopLimit(w)
@@ -133,7 +133,7 @@ func weaponToFetch(w *World, t *Troop) *Job {
 func shelfJobs(w *World, t *Troop, consider func(*Job, float64)) {
 	danger := isDangerous(w)
 	for _, s := range w.Sites {
-		if s.Kind != "workshop" || s.State != "built" || (danger && outpost(w, s.X)) {
+		if (s.Kind != "workshop" && s.Kind != "bowyer") || s.State != "built" || (danger && outpost(w, s.X)) {
 			continue
 		}
 		if fetching(w, t, "fetchBow", s.ID) < s.Bows {
@@ -142,13 +142,16 @@ func shelfJobs(w *World, t *Troop, consider func(*Job, float64)) {
 		if fetching(w, t, "fetchSword", s.ID) < s.Swords {
 			consider(&Job{Type: "fetchSword", SiteID: s.ID}, s.X)
 		}
+		if fetching(w, t, "fetchHammer", s.ID) < s.Hammers {
+			consider(&Job{Type: "fetchHammer", SiteID: s.ID}, s.X)
+		}
 	}
 }
 
 // shelfStocked: Liegt in irgendeiner gebauten Werkstatt ein Bogen oder Schwert im Regal? Sonst holt niemand etwas.
 func shelfStocked(w *World) bool {
 	for _, s := range w.Sites {
-		if s.Kind == "workshop" && s.State == "built" && (s.Bows > 0 || s.Swords > 0) {
+		if (s.Kind == "workshop" || s.Kind == "bowyer") && s.State == "built" && (s.Bows > 0 || s.Swords > 0 || s.Hammers > 0) {
 			return true
 		}
 	}
@@ -212,6 +215,9 @@ func fetchWeapon(w *World, t *Troop, dt float64) {
 	case j.Type == "fetchBow" && site.Bows > 0:
 		site.Bows--
 		equip(w, t, "archer", 0)
+	case j.Type == "fetchHammer" && site.Hammers > 0:
+		site.Hammers--
+		equip(w, t, hammerKind, 0)
 	case j.Type == "fetchSword" && site.Swords > 0:
 		site.Swords--
 		equip(w, t, "warrior", 0)
@@ -219,6 +225,10 @@ func fetchWeapon(w *World, t *Troop, dt float64) {
 }
 
 func equip(w *World, t *Troop, kind string, workSite int) {
+	if kind == hammerKind {
+		t.Hammer = true
+		return
+	}
 	if !isFighter(w.values().Troops, kind) {
 		t.Profession, t.WorkSite = kind, workSite
 		return
@@ -277,6 +287,7 @@ func stepWarrior(w *World, t *Troop, dt float64) {
 func loseLayer(w *World, t *Troop) {
 	releaseJob(w, t)
 	t.TowerID, t.Cooldown = nil, 0
+	dropHammer(w, t)
 	kind := t.Profession // Ausrüstung: Figur eines Kämpfers, sonst Beruf ("" = keine)
 	if isFighter(w.values().Troops, t.Kind) {
 		kind = t.Kind

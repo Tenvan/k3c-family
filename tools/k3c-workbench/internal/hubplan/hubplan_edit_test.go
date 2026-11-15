@@ -14,7 +14,7 @@ func TestHubCheckPrueftDenKandidaten(t *testing.T) {
 	if v.Error != "" || len(v.Findings) != 0 || v.Stand != (HubStand{}) {
 		t.Fatalf("Kandidat: %+v", v)
 	}
-	if r := rowOf(t, v.Matrix, "armory@40"); r.HubLevel != 3 || r.Source != "sites" || r.Index != 7 {
+	if r := rowOf(t, v.Matrix, "armory@40"); r.HubLevel != 3 || r.Source != "sites" || r.Index != 8 {
 		t.Errorf("Rüstkammer: %+v", r)
 	}
 	bad := a.Check(context.Background(), strings.Replace(planerArmoryFrom3(t), armory3, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 9 }`, 1))
@@ -32,7 +32,7 @@ func TestHubPlanIndexArtenUndStand(t *testing.T) {
 	if v.Stand.Hub != stamp([]byte(readIn(t, root, hubFile))) || v.Stand.Rules != stamp([]byte(readIn(t, root, rulesFile))) {
 		t.Errorf("Stand %+v", v.Stand)
 	}
-	if r := rowOf(t, v.Matrix, "storage@-26"); r.Source != "islandSites" || r.Index != 0 {
+	if r := rowOf(t, v.Matrix, "storage@-24"); r.Source != "islandSites" || r.Index != 0 {
 		t.Errorf("Lager: %+v", r)
 	}
 	if r := rowOf(t, v.Matrix, "zone1"); r.Index != 0 || r.Line != 1 || r.Source != "sitePlacement" {

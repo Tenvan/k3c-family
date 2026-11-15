@@ -18,7 +18,7 @@ type Metrics struct {
 	FirstBowTick   *int `json:"firstBowTick"`
 	CastleFallTick *int `json:"castleFallTick"` // erstes castleFallen
 	Lost           string `json:"lost,omitempty"`  // Ursache des verlorenen Laufs: "crown" (Kronenraub, kampf.md § 6)
-	// FirstWorkshopTick: erstes Ereignis built mit kind workshop (WZ28.4).
+	// FirstWorkshopTick: erstes Ereignis built mit kind bowyer, dem Bogner (WZ28.4, B-951).
 	FirstWorkshopTick *int `json:"firstWorkshopTick"`
 	// FirstTowerTick: erstes Ereignis built mit kind tower; HubLevel2Tick/HubLevel3Tick: erstes Ereignis upgraded mit
 	// kind castle auf Stufe 2 bzw. 3 (BAL6, B-347).
@@ -141,7 +141,7 @@ func (c *collector) event(w *sim.World, ev sim.Event, tick int) {
 		switch ev["kind"] {
 		case "wall":
 			first(&c.m.FirstWallTick, tick)
-		case "workshop":
+		case "bowyer":
 			first(&c.m.FirstWorkshopTick, tick)
 		case "tower":
 			first(&c.m.FirstTowerTick, tick)

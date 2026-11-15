@@ -55,7 +55,7 @@ func TestHubPlanMatrixDerHeutigenDatei(t *testing.T) {
 	}
 	m := rep.Matrix
 	want := map[string]int{
-		"workshop@-16": 1, "barracks@24": 2, "tavern@-32": 2, "storage@-26": 2,
+		"workshop@-16": 1, "barracks@24": 2, "tavern@-32": 2, "storage@-24": 2, "bowyer@-28": 1,
 		"stairsDown@8": 2, "stairsUp@16": 2, "smithy@28": 3, "healer@-40": 3, "armory@40": 4,
 		"zone1": 1, "merchantBuy@16": 1, "merchantSell@20": 1,
 	}
@@ -86,7 +86,7 @@ func TestHubPlanPlatzTiefeBaugrundUndHaendler(t *testing.T) {
 	if c := hubRowOf(t, m, "stairsDown@8").Cells[4]; !c.NeedsDeeper || c.OffsetUnits != 8 {
 		t.Errorf("Treppe runter: %+v", c)
 	}
-	if r := hubRowOf(t, m, "storage@-26"); r.Source != hubSrcIslandSites || r.Index != 0 {
+	if r := hubRowOf(t, m, "storage@-24"); r.Source != hubSrcIslandSites || r.Index != 0 {
 		t.Errorf("Lager: %+v", r)
 	}
 }

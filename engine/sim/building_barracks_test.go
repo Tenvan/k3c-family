@@ -26,13 +26,14 @@ func TestKaserneHebtLimitUmDatenwert(t *testing.T) {
 func limitWorld(t *testing.T) (*World, *Site) {
 	t.Helper()
 	w := dayWorld(t)
+	w.Troops[0].Hammer = false // Waffen holt nur ein Bauer ohne Hammer (B-950)
 	AddPlayer(w)
 	AddPlayer(w)
 	for range buildings["barracks"].TroopLimit.Base {
 		makeArcher(w, spawnVagrant(w, w.HubX, w.HubX))
 	}
 	spawnVagrant(w, w.HubX+30, w.HubX+30)
-	workshop := buildSite(t, w, "workshop")
+	workshop := buildSite(t, w, "bowyer")
 	workshop.Bows = 1
 	return w, workshop
 }
@@ -65,7 +66,7 @@ func TestKaserneZerstoertKaempferBleiben(t *testing.T) {
 	}
 	other := spawnVagrant(w, w.HubX, w.HubX)
 	other.Kind = "peasant"
-	if weaponToFetch(w, other) != nil {
+	if j := weaponToFetch(w, other); j != nil && fetchesFighterWeapon(w, j) {
 		t.Error("über dem Limit gibt es trotzdem einen Abhol-Auftrag")
 	}
 }
@@ -85,6 +86,7 @@ func TestLimitZaehltBogenschuetzenUndKrieger(t *testing.T) {
 	workshop := buildSite(t, w, "workshop")
 	workshop.Swords = 1
 	peasant := w.Troops[0]
+	peasant.Hammer = false
 	run(w, 20)
 	if peasant.Kind != "peasant" || workshop.Swords != 1 || fighters(w) != l.Base {
 		t.Fatalf("Limit voll: Bauer ist %s, Schwerter im Regal %d, Kämpfer %d/%d", peasant.Kind, workshop.Swords,

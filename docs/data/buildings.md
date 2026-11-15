@@ -29,9 +29,12 @@
 | `tower.spell.radiusUnits` | Zahl | Units | Radius um das Ziel | 3 |
 | `tower.spell.rangeUnits` | Zahl | Units | Reichweite | 13 |
 | `tower.spell.intervalSeconds` | Zahl | s | Abstand der Schüsse | 1,5 |
-| `workshop.bowRack` | Ganzzahl | Bögen | Bogen-Vorrat am Platz | 3 |
+| `bowyer.bowRack` | Ganzzahl | Bögen | Bogen-Vorrat am Platz des Bogners (B-951) | 3 |
+| `bowyer.craftSeconds.bow` | Zahl | s | Herstellungszeit eines Bogens | 10 |
+| `workshop.hammerRack` | Ganzzahl | Hämmer | Hammer-Vorrat am Platz der Werkstatt (B-951) | 3 |
+| `workshop.hammerCost.gold` | Ganzzahl | Gold | Gold-Preis eines Hammers (vorläufig) | 3 |
 | `workshop.swordRack` | Ganzzahl | Schwerter | Schwert-Vorrat | 3 |
-| `workshop.craftSeconds.*` | Zahl | s | Herstellungszeit je Stück (Bogen, Schwert) | 10 |
+| `workshop.craftSeconds.*` | Zahl | s | Herstellungszeit je Stück (Hammer, Schwert) | 8 bis 10 |
 | `workshop.offers.*.kind` | Text | – | Angebot am Zahlziel (Handwerker, Schwert, Bergmann, Baumeister) | craftsman, sword, miner, builder |
 | `workshop.offers.*.dx` | Zahl | Units | Versatz des Angebots zum Gebäude | -4 bis 12 |
 | `nursery.plantation.slots` | Ganzzahl | Plätze | Baum-Plätze der Plantage | 6 |

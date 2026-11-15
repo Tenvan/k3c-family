@@ -57,6 +57,9 @@ type economyData struct {
 	DawnGoldPerPlayer                                   int
 	DawnGoldPerDepth                                    int // Zuschlag je Tiefe der Stufe auf das Morgengold (wirtschaft.md § 8, B-645)
 	ChestGold                                           [2]int
+	ChestFountain                                       struct{ FlightSeconds, SpreadUnits, StaggerSeconds float64 } // Münz-Fontäne einer Truhe (B-953)
+	TreeGold                                            [2]int // Gold je gefälltem Baum (B-952)
+	EnemyGoldFactor                                     float64 // Faktor auf das Gold der Gegner (B-952)
 	EnemyResourceDrop                                   struct {
 		Chance float64
 		Amount int

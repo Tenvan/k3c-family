@@ -264,6 +264,10 @@ func collectCoins(w *World) {
 	reach := w.values().Economy.PickupRangeUnits // je Aufruf einmal: Profil RS1.1, Münzen × Spieler
 	for _, c := range w.Coins {
 		var taker *Player
+		if w.Time < c.LandsAt { // noch in der Luft (Fontäne)
+			kept = append(kept, c)
+			continue
+		}
 		for _, p := range w.Players {
 			if math.Abs(p.X-c.X) > reach {
 				continue
@@ -303,7 +307,7 @@ func collectPickups(w *World) {
 			kept = append(kept, pk)
 		case pk.Kind == "chest":
 			gold := w.rng.Int(w.values().Economy.ChestGold[0], w.values().Economy.ChestGold[1])
-			giveGold(w, p, gold, pk.X)
+			fountainCoins(w, pk.X, gold)
 			w.Events = append(w.Events, Event{"type": "chest", "player": p.Index, "gold": gold})
 			chestSkillPoint(w, p)
 		default:
@@ -358,7 +362,7 @@ func stepSites(w *World) {
 				s.State = "waitingWorker"
 			}
 		}
-		if s.Kind == "workshop" && s.State == "built" {
+		if (s.Kind == "workshop" || s.Kind == "bowyer") && s.State == "built" {
 			stepBowCraft(w, s)
 			stepSwordCraft(w, s)
 		}

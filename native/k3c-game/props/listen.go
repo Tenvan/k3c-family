@@ -131,7 +131,7 @@ func (s *stageInfo) update(w *sim.World, clock float64) {
 func (s *stageInfo) priceTags(w *sim.World) {
 	s.cands, s.players, s.tags = s.cands[:0], s.players[:0], s.tags[:0]
 	for i, site := range w.Sites {
-		if s.flags[i].visible && offersPrice(site.Kind, site.State, s.flags[i].payable, site.Bows) {
+		if s.flags[i].visible && offersPrice(site.Kind, site.State, s.flags[i].payable, shelfOf(site)) {
 			s.cands = append(s.cands, candidate{site.ID, site.X})
 		}
 	}

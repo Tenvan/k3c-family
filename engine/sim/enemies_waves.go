@@ -164,7 +164,7 @@ func removeDeadEnemies(w *World) {
 // enemyDrop: Gold laut Daten plus geklautes Gold als Münzen, mit Chance die Stufen-Ressource in den Vorrat.
 func enemyDrop(w *World, e *Enemy) {
 	gold := w.values().Enemies[e.Kind].Gold
-	dropped := moonDrop(w, w.rng.Int(gold[0], gold[1])) + e.CarriedGold // Blutmond: Drop × Faktor, geklautes Gold nicht
+	dropped := moonDrop(w, scaledGold(w, w.rng.Int(gold[0], gold[1]))) + e.CarriedGold // Blutmond: Drop × Faktor, geklautes Gold nicht
 	scatterCoins(w, e.X, dropped)
 	dropCarried(w, e)
 	emit(w, "kill", Event{"kind": e.Kind, "x": unitX(e.X), "gold": dropped})

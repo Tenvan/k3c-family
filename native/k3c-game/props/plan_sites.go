@@ -13,14 +13,14 @@ import (
 
 // siteSize: Platzhalter-Größe je Platzart in Spiel-Pixeln (siteView.ts › SITE_SIZE).
 var siteSize = map[string][2]float64{
-	"wall": {36, 150}, "tower": {70, 260}, "workshop": {150, 120}, "storage": {130, 100}, "stairsUp": {110, 110},
+	"wall": {36, 150}, "tower": {70, 260}, "workshop": {150, 120}, "bowyer": {130, 110}, "storage": {130, 100}, "stairsUp": {110, 110},
 	"stairsDown": {110, 110}, "nursery": {140, 90}, "barracks": {150, 130}, "tavern": {130, 120}, "healer": {100, 100},
 	"smithy": {120, 110}, "armory": {130, 120}, "ship": {190, 160},
 }
 
 // siteColor: Farbe der Platzhalter-Form (siteView.ts › SITE_COLOR).
 var siteColor = map[string]color.RGBA{
-	"wall": {141, 153, 174, 255}, "tower": {156, 102, 68, 255}, "workshop": {188, 108, 37, 255},
+	"wall": {141, 153, 174, 255}, "tower": {156, 102, 68, 255}, "workshop": {188, 108, 37, 255}, "bowyer": {214, 150, 70, 255},
 	"storage": {127, 85, 57, 255}, "stairsUp": {108, 117, 125, 255}, "stairsDown": {52, 58, 64, 255},
 	"nursery": {167, 201, 87, 255}, "barracks": {108, 88, 76, 255}, "tavern": {176, 137, 104, 255},
 	"healer": {229, 229, 229, 255}, "smithy": {73, 80, 87, 255}, "armory": {92, 103, 125, 255}, "ship": {74, 111, 165, 255},
@@ -115,19 +115,23 @@ func (p *planner) builtSigns(s *sim.Site, info *stageInfo, fl siteFlags, h float
 	if s.MaxHP > 0 && s.HP < s.MaxHP {
 		p.bar(s.X, h+px(22), px(80), s.HP/s.MaxHP, hpGreen)
 	}
-	if s.Kind != "workshop" {
+	if shelfRack(s.Kind) == 0 {
 		return labeled
 	}
-	for i := range s.Bows {
+	price := archerCost // Bogner: Bogen, Werkstatt: Hammer (B-951)
+	if s.Kind == "workshop" {
+		price = buildings["workshop"].HammerCost
+	}
+	for i := range s.Bows { // Bögen liegen sichtbar im Regal des Bogners
 		p.bow(s.X - px(40) + float64(i)*px(30))
 	}
-	if info.tagged(s.ID) && s.Bows < buildings["workshop"].BowRack {
-		total := archerCost["gold"]
+	if info.tagged(s.ID) && shelfOf(s) < shelfRack(s.Kind) {
+		total := price["gold"]
 		if fl.payable {
 			total = fl.goldLeft + s.BowPaidGold
 		}
-		text := p.texts.get(textKey{what: textBow}, siteText)
-		p.price(s.X, h+px(20), total, s.BowPaidGold, text, canAfford(info.stock, archerCost))
+		text := p.texts.get(textKey{what: textBow, kind: s.Kind}, siteText)
+		p.price(s.X, h+px(20), total, s.BowPaidGold, text, canAfford(info.stock, price))
 		labeled = true
 	}
 	return labeled

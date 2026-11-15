@@ -35,8 +35,8 @@ func TestBlockInhaltFuerDieHeutigenFuenfStufen(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, want := range []string{
-		"| 1 | Holz | Werkstatt −16 | Zone 1: Baugrund Mauer ±44, Turm ±36, dazu 0…2 Plätze je Seed | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |",
-		"| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Zone 2: 1…3 Mauern, 1…3 Türme je Seed | – |",
+		"| 1 | Holz | Werkstatt −16; Bogner −28 | Zone 1: Baugrund Mauer ±44, Turm ±36, dazu 0…2 Plätze je Seed | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |",
+		"| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −24 (je Insel) | Zone 2: 1…3 Mauern, 1…3 Türme je Seed | – |",
 		"| 5 | Kristall | – | Zone 5: 1…3 Mauern, 1…3 Türme je Seed | – |",
 	} {
 		if !strings.Contains(block, want) {

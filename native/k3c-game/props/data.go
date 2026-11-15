@@ -22,6 +22,8 @@ type buildingData struct {
 	CostByDepth []cost
 	Levels      []struct{ Cost cost }
 	BowRack     int
+	HammerRack  int  // Werkstatt: Hämmer im Regal (B-951)
+	HammerCost  cost // Werkstatt: Preis eines Hammers
 	Plantation  struct {
 		Slots      int
 		StripUnits float64

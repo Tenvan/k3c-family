@@ -8,6 +8,8 @@ import (
 	"math"
 	"strconv"
 	"strings"
+
+	"k3c/engine/sim"
 )
 
 // priceTagRange: Preisschild und Zahlen erscheinen, wenn ein Monarch so viele Units nah am Ziel steht (viewRules.ts).
@@ -55,12 +57,32 @@ func hasID(ids []int, id int) bool {
 	return false
 }
 
-// offersPrice: unbezahlt und bezahlbar (payable, B-653) oder gebaute Werkstatt mit freiem Bogen-Regal.
-func offersPrice(kind, state string, payable bool, bows int) bool {
+// offersPrice: unbezahlt und bezahlbar (payable, B-653) oder gebauter Hersteller mit freiem Regal (shelf = Stückzahl im
+// Regal, shelfOf).
+func offersPrice(kind, state string, payable bool, shelf int) bool {
 	if state == "unpaid" {
 		return payable
 	}
-	return state == "built" && kind == "workshop" && bows < buildings["workshop"].BowRack
+	return state == "built" && shelf < shelfRack(kind)
+}
+
+// shelfRack ist die Regalgröße des Herstellers: Bogner Bögen, Werkstatt Hämmer (B-951); 0 für jeden anderen Platz.
+func shelfRack(kind string) int {
+	switch kind {
+	case "bowyer":
+		return buildings[kind].BowRack
+	case "workshop":
+		return buildings[kind].HammerRack
+	}
+	return 0
+}
+
+// shelfOf ist die Stückzahl im Regal des Platzes (Bogner Bögen, Werkstatt Hämmer).
+func shelfOf(s *sim.Site) int {
+	if s.Kind == "workshop" {
+		return s.Hammers
+	}
+	return s.Bows
 }
 
 // offersHubUpgrade: Die Burg nimmt Münzen für den Ausbau, solange Gold offen ist und noch kein Ausbau läuft (B-591).
@@ -178,6 +200,9 @@ func siteText(k textKey) string {
 	case textPrice:
 		return priceLabel(name, buildCost(k.kind, k.n))
 	case textBow:
+		if k.kind == "workshop" {
+			return priceLabel("Hammer", buildings["workshop"].HammerCost)
+		}
 		return priceLabel("Bogen", archerCost)
 	case textClearing:
 		return name + ": erst roden"

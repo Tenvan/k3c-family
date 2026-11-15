@@ -56,7 +56,7 @@ func TestMineKupferBisInDenVorrat(t *testing.T) {
 	w.Troops, w.CycleSpeed = []*Troop{}, 1e-6
 	p0, p1 := AddIslandPlayer(isl, 2), AddIslandPlayer(isl, 2)
 	ore, vein := firstNode(t, w, "copperOre"), firstNode(t, w, "copperVein")
-	ore.X, vein.X = w.HubX-30, w.HubX+30 // nah an der Burg, außer Reichweite anderer Zahlziele
+	ore.X, vein.X = w.HubX-30.5, w.HubX+31 // nah an der Burg, außer Reichweite anderer Zahlziele
 	for _, n := range []*ResourceNode{ore, vein} {
 		gold := p0.Gold + p1.Gold
 		g, _ := gatherOf(defaultValues(), n.Kind)

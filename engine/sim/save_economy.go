@@ -16,6 +16,7 @@ type CraftSave struct {
 	Done          float64    `json:"done,omitempty"`          // Site.CraftDone: Elite-Bogenschütze bzw. Rüstungsstufe fertig um
 	OfferPaid     []int      `json:"offerPaid,omitempty"`     // Site.OfferPaid
 	OfferDone     float64    `json:"offerDone,omitempty"`     // Site.OfferDone: Elite-Krieger
+	Hammers       int        `json:"hammers,omitempty"`       // Hämmer im Regal der Werkstatt (B-951)
 	Swords        int        `json:"swords,omitempty"`        // Schwerter im Regal
 	SwordPaidGold int        `json:"swordPaidGold,omitempty"` // bezahltes Gold für das nächste Schwert
 	SwordDone     float64    `json:"swordDone,omitempty"`
@@ -32,7 +33,7 @@ type PlotSave struct {
 func craftSave(s *Site) *CraftSave {
 	c := &CraftSave{
 		Done: s.CraftDone, OfferPaid: slices.Clone(s.OfferPaid), OfferDone: s.OfferDone,
-		Swords: s.Swords, SwordPaidGold: s.SwordPaidGold, SwordDone: s.SwordDone,
+		Swords: s.Swords, SwordPaidGold: s.SwordPaidGold, SwordDone: s.SwordDone, Hammers: s.Hammers,
 	}
 	if s.State == "built" {
 		for _, p := range s.plots {
@@ -40,7 +41,7 @@ func craftSave(s *Site) *CraftSave {
 		}
 	}
 	if c.Done == 0 && !slices.ContainsFunc(c.OfferPaid, func(n int) bool { return n != 0 }) && c.OfferDone == 0 &&
-		c.Swords == 0 && c.SwordPaidGold == 0 && c.SwordDone == 0 && len(c.Plots) == 0 {
+		c.Swords == 0 && c.SwordPaidGold == 0 && c.SwordDone == 0 && c.Hammers == 0 && len(c.Plots) == 0 {
 		return nil
 	}
 	return c
@@ -52,7 +53,7 @@ func applyCraft(w *World, s *Site, c *CraftSave) {
 		return
 	}
 	s.CraftDone, s.OfferDone = c.Done, c.OfferDone
-	s.Swords, s.SwordPaidGold, s.SwordDone = c.Swords, c.SwordPaidGold, c.SwordDone
+	s.Swords, s.SwordPaidGold, s.SwordDone, s.Hammers = c.Swords, c.SwordPaidGold, c.SwordDone, c.Hammers
 	if len(c.OfferPaid) <= len(w.values().Buildings[s.Kind].Offers) {
 		s.OfferPaid = slices.Clone(c.OfferPaid)
 	}
@@ -94,7 +95,7 @@ func troopsSave(w *World) []TroopSave {
 		if t.Kind == "vagrant" {
 			continue
 		}
-		ts := TroopSave{Kind: t.Kind, X: t.X, AnchorX: t.AnchorX, Profession: t.Profession, Leader: t.Leader}
+		ts := TroopSave{Kind: t.Kind, X: t.X, AnchorX: t.AnchorX, Profession: t.Profession, Leader: t.Leader, Hammer: t.Hammer}
 		if s := siteByID(w, t.WorkSite); s != nil && t.WorkSite != 0 {
 			ts.WorkSite = key(s.Kind, s.X)
 		}
@@ -111,7 +112,7 @@ func applyTroops(w *World, h HubSave) {
 		if t.Kind == "peasant" {
 			hp := w.values().Troops["peasant"].HP
 			troop.Kind, troop.HP, troop.MaxHP, troop.AnchorX = "peasant", hp, hp, w.HubX
-			troop.Profession = t.Profession
+			troop.Profession, troop.Hammer = t.Profession, t.Hammer
 			if s := siteByKey(w, t.WorkSite); s != nil {
 				troop.WorkSite = s.ID
 			}

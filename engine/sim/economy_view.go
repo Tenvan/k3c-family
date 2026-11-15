@@ -103,8 +103,8 @@ func SiteGoldLeft(w *World, s *Site) (int, bool) {
 	}
 	price := 0
 	switch s.Kind {
-	case "workshop":
-		price = cheap(w, w.values().Troops["archer"].Cost).Gold
+	case "workshop", "bowyer":
+		price = cheap(w, placeProduct(w, s).cost).Gold
 	case "smithy":
 		price = cheap(w, w.values().Troops["eliteArcher"].Cost).Gold
 	case "armory":

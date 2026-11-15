@@ -71,7 +71,7 @@ Werte je Nacht sind Mittelwerte über die gültigen Läufe, getrennt nach Schwie
 | Kennzahl | Feld | Messung |
 |---|---|---|
 | Zeit bis zur ersten Mauer | `firstWallTickMedian` | Median der Ticks bis zum ersten `built` mit `kind` wall (30 Ticks = 1 s), nur Läufe mit Mauer |
-| Zeit bis zur ersten Werkstatt | `firstWorkshopTickMedian` | wie oben mit `kind` workshop; `null`, wenn in keinem Lauf eine gebaut wurde |
+| Zeit bis zur ersten Werkstatt | `firstWorkshopTickMedian` | wie oben mit `kind` bowyer (Bogner, B-951); `null`, wenn in keinem Lauf eine gebaut wurde |
 | Überlebensquote je Nacht und Grad | `nights[].survival` | Anteil der Läufe in %, in denen die Burg im Tag samt Nacht n nicht fiel (`castleFallen`) |
 | Gold-Bilanz je Phase | `nights[].dayIncome`, `dayExpense`, `nightIncome`, `nightExpense` | Änderung des Golds aller Monarchen je Tick, getrennt nach Phase Nacht und Rest des Tags (Tag und Dämmerung); die Morgen-Steuer zählt zum neuen Tag |
 | Rohstoff-Fluss je Rohstoff und Nacht | `nights[].resourceIn`, `resourceOut` | Zu- und Abgang des Insel-Vorrats je Rohstoff (Holz, Stein, Kupfer, Eisen, Kristall) |

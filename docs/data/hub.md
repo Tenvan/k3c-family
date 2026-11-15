@@ -37,7 +37,8 @@
 | `islandStartStock.wood` | Ganzzahl | Holz | Startvorrat einer neuen Insel | 100 |
 | `castleRadiusUnits` | Zahl | Units | Radius der Burg | 5 |
 | `homeRadiusUnits` | Zahl | Units | Heimat-Radius um den Hub | 12 |
-| `startTroops.peasant` | Ganzzahl | Bauern | Bauern zu Spielbeginn | 1 |
+| `startTroops.peasant` | Ganzzahl | Bauern | Bauern ohne Hammer zu Spielbeginn | 1 |
+| `startTroops.craftsman` | Ganzzahl | Handwerker | Handwerker (Bauern mit Hammer) zu Spielbeginn zusätzlich, je Welt übersteuerbar (B-950) | 1 |
 | `startTroops.archer` | Ganzzahl | Bogenschützen | Bogenschützen zu Spielbeginn | 2 |
 | `travel.rangeUnits` | Zahl | Units | Reichweite am Eingang bzw. an der Treppe | 3 |
 | `travel.seconds` | Zahl | s | Wartezeit für den Stufenwechsel | 2 |

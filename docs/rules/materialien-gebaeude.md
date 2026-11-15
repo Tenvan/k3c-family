@@ -81,8 +81,8 @@ des Snapshots (`docs/protocol.md` › Wirtschaft). Wie in Kingdom Two Crowns beg
 <!-- rules:hub-levels:start -->
 | Hub-Stufe | Material | Hub-Plätze | Mauer- und Turm-Zone | Händler |
 |---|---|---|---|---|
-| 1 | Holz | Werkstatt −16 | Zone 1: Baugrund Mauer ±44, Turm ±36, dazu 0…2 Plätze je Seed | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |
-| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −26 (je Insel) | Zone 2: 1…3 Mauern, 1…3 Türme je Seed | – |
+| 1 | Holz | Werkstatt −16; Bogner −28 | Zone 1: Baugrund Mauer ±44, Turm ±36, dazu 0…2 Plätze je Seed | Kaufen +16, Verkaufen +20 (nur Tiefe 0) |
+| 2 | Stein | Treppe hoch +16 (ab Tiefe 1); Treppe runter +8 (nur mit tieferer Stufe); Taverne −32; Kaserne +24; Lager −24 (je Insel) | Zone 2: 1…3 Mauern, 1…3 Türme je Seed | – |
 | 3 | Kupfer | Heilplatz −40; Schmiede +28 | Zone 3: 1…3 Mauern, 1…3 Türme je Seed | – |
 | 4 | Eisen | Rüstkammer +40 | Zone 4: 1…3 Mauern, 1…3 Türme je Seed | – |
 | 5 | Kristall | – | Zone 5: 1…3 Mauern, 1…3 Türme je Seed | – |
@@ -114,7 +114,8 @@ Zielkorridor: Erste Mauer vor Ende Tag 1 in ≥ 90 %; erster Turm vor Ende Tag 2
 | **Burg** | Hub-Kern; fällt sie, wirkt der Niederlage-Modus (`stufen.md` § 4) | HP 1000 |
 | **Mauer** | blockiert Gegner (außer `ignoresWalls`) | siehe 3.1 |
 | **Tor** | Kein eigenes Gebäude (B-652, BS12): Die äußerste gebaute Mauer einer Seite ist das Tor; eigene Bürger und Spieler passieren, Gegner nicht (für Gegner wie jede Mauer: Hindernis und Angriffsziel); wandert nach innen, wenn die äußerste Mauer zerstört wird, und nach außen, wenn weiter außen gebaut wird | Ausbau wie die Mauer (Stufen 1–5, Stufe n ab Hub-Stufe n) |
-| **Werkstatt** | Bogen und Schwert, je bis 3 im Waffenregal; Schwert-Zahlziel als Anhang `dx +4` (Q53, 2026-10-04) | wie heute (40 Holz + 15 Gold, 150 HP) |
+| **Werkstatt** (Handwerkerbedarf) | stellt **Hämmer** her (bis 3 im Regal, Preis `hammerCost`, B-951) und Schwerter (bis 3 im Regal; Schwert-Zahlziel als Anhang `dx +4`, Q53, 2026-10-04); bildet Bergmann und Baumeister aus | wie heute (40 Holz + 15 Gold, 150 HP) |
+| **Bogner** (Code `bowyer`, B-951) | stellt **Bögen** her (bis 3 im Waffenregal, Herstellungszeit 10 s, Preis des Bogens aus `troops.json`); Hub-Platz −28, ab Hub-Stufe 1; Grafik: Platzhalter Werkstatt, Asset `bogner` offen | Kosten, HP und Bauzeit wie die frühere Bogen-Werkstatt (40 Holz + Gold, 150 HP, 8 s) |
 | **Baumschule** (Code `nursery`) | Baumplantage: 6 Plätze, je Platz alle 30 s ein Baum (10 Holz), siehe § 1; steht auf einem Baumschul-Platz im Wald, kaufbar erst nach dem Roden (§ 3.3, B-636) | 30 Holz + Gold nach Münzskala (`wirtschaft.md` § 8), 100 HP |
 | **Kaserne** | Truppen-Limit +10 (Basis 10, einfach gebaut); Regel und Prüfung beim Waffe-Holen: `buerger.md` § 3 | wie heute (60 Stein + 30 Gold, 200 HP) |
 | **Lager** | +300 Kapazität je Rohstoff für die Insel; Arbeiter bringen Material hierher oder zur Burg | Startwert: 50 Stein + 20 Gold, HP 200, Bauzeit 8 s |

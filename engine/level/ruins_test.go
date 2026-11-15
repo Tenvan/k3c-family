@@ -191,7 +191,8 @@ func TestRuineAufHubPlatzGleicherArtWirdAbgelehnt(t *testing.T) {
 	}{
 		"Rüstkammer rechts":   {placed{kind: "armory", slot: 1, at: 25, dist: 40}, true},
 		"Werkstatt links":     {placed{kind: "workshop", slot: -1, at: 25, dist: 16}, true},
-		"Lager (Insel-Platz)": {placed{kind: "storage", slot: -1, at: 25, dist: 26}, true},
+		"Lager (Insel-Platz)": {placed{kind: "storage", slot: -1, at: 25, dist: 24}, true},
+			"Bogner links":        {placed{kind: "bowyer", slot: -1, at: 25, dist: 28}, true},
 		"andere Art":          {placed{kind: "tavern", slot: 1, at: 25, dist: 40}, false},
 		"andere Seite":        {placed{kind: "workshop", slot: 1, at: 25, dist: 16}, false},
 	}

@@ -48,7 +48,7 @@ func TestSchutzplatzStabilBeiTruppenwechsel(t *testing.T) {
 	}
 }
 
-// extraSite ist der zusätzliche unbezahlte Hub-Platz für B-605/AC-02: frei zwischen Werkstatt (-16) und Lager (-26),
+// extraSite ist der zusätzliche unbezahlte Hub-Platz für B-605/AC-02: frei zwischen Werkstatt (-16) und Lager (-24),
 // erst ab Hub-Stufe 5 bezahlbar; die Waffenkammer bleibt so ab Stufe 4 baubar.
 var extraSite = HubSite{Kind: "armory", OffsetUnits: -20, HubLevel: 5}
 

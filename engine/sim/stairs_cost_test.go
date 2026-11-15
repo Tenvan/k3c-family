@@ -30,7 +30,7 @@ func TestTreppeHochInDerHoehleKostetHolz(t *testing.T) {
 	w.Troops, w.Camps, w.Pickups = []*Troop{}, []*Camp{}, []*Pickup{}
 	w.CycleSpeed = 1e-6
 	peasant := spawnVagrant(w, w.HubX, w.HubX)
-	peasant.Kind, peasant.HP, peasant.MaxHP = "peasant", troops["peasant"].HP, troops["peasant"].HP
+	peasant.Kind, peasant.HP, peasant.MaxHP, peasant.Hammer = "peasant", troops["peasant"].HP, troops["peasant"].HP, true
 	players := []*Player{AddPlayer(w), AddPlayer(w)}
 	w.HubLevel = 2
 	stairs := siteOfKind(w, "stairsUp")

@@ -101,7 +101,7 @@ func TestVorpostenBauNurOhneGefahr(t *testing.T) {
 	if j := buildJob(w, p); j != nil {
 		t.Fatalf("bei Gefahr Bau am Vorposten angenommen: %+v", j)
 	}
-	inner := siteAt(w, "storage", 524)
+	inner := siteAt(w, "storage", 526)
 	inner.State = "waitingWorker"
 	if j := buildJob(w, p); j == nil || j.SiteID != inner.ID {
 		t.Fatalf("bei Gefahr Bau innerhalb der Mauern: %+v, erwartet %d", j, inner.ID)
@@ -121,8 +121,9 @@ func TestVorpostenWaffenNurOhneGefahr(t *testing.T) {
 	_, w := fixtureIsland(t)
 	edgeWalls(w)
 	p := outpostPeasant(t, w)
+	p.Hammer = false // Waffen holt nur ein Bauer ohne Hammer (B-950)
 	right, _ := outermostGate(w, 1)
-	far := emptySite(w, "workshop", right+20)
+	far := emptySite(w, "bowyer", right+20)
 	far.State, far.Bows = "built", 1
 	w.Sites = append(w.Sites, far)
 	if j := weaponToFetch(w, p); j == nil || j.Type != "fetchBow" || j.SiteID != far.ID {
