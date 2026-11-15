@@ -92,4 +92,10 @@ func TestWorldValuesGegnerNameUebersteuerbar(t *testing.T) {
 	if mustMarshal(t, got) != mustMarshal(t, base) {
 		t.Error("außer dem Namen darf sich nichts ändern")
 	}
+	for _, empty := range []string{`""`, `"  "`} {
+		w.Overrides = ov(map[string]string{"enemies": `{"wolf": {"name": ` + empty + `}}`})
+		if _, err := ResolveWorldValues(data.Files, testWorlds(w), "sengoku"); err == nil || !strings.Contains(err.Error(), "wolf: name") {
+			t.Errorf("leerer Name %s: Fehler = %v", empty, err)
+		}
+	}
 }

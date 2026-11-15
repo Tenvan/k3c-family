@@ -74,8 +74,6 @@ func checkIsland(d IslandDef) error {
 	return checkNature(d)
 }
 
-// checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlanFor) gegen die
-// Mauerlinien lines und die Chunk-Anzahl der Tiefe; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
 // checkPlannedChunksWith prüft wie checkPlannedChunks gegen die Hub- und Insel-Plätze sites einer Welt (nil = Basis, B-983).
 func checkPlannedChunksWith(d IslandDef, sites []level.HubSite) error {
 	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {

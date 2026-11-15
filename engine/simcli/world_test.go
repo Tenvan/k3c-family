@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
+	"testing/fstest"
 
 	"k3c/data"
 )
@@ -82,5 +83,32 @@ func TestWorldCheck(t *testing.T) {
 	}
 	if code, out, _ := call(t, draft(`{"economy":{"purse":{"startGold":"viel"}}}`), "world"); code != ExitFailed || !strings.Contains(out, "startGold") {
 		t.Fatalf("falscher Typ: Exit %d %s", code, out)
+	}
+}
+
+// B-981 (Review WE5.7): level setzt den Bau wie das Spiel in die tiefste Stufe der Insel, auch in Biomen ohne Feld `lair`.
+func TestWorldLevelBauInTiefsterStufe(t *testing.T) {
+	worlds := fstest.MapFS{"kurz.json": {Data: []byte(`{"id":"kurz","name":"Kurz","extends":"standard",
+		"combat":{"mode":"groups","groupSize":5},
+		"islands":[{"id":"island1","name":"Insel 1","depths":[0,1],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}}]}`)}}
+	std, err := data.Files.ReadFile("worlds/standard.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	worlds["standard.json"] = &fstest.MapFile{Data: std}
+	for stage, want := range []int{0, 1} {
+		r, err := worldLevel(data.Files, worlds, worldInput{World: "kurz", Island: "island1", Stage: stage, Seed: "k3c"})
+		if err != nil {
+			t.Fatal(err)
+		}
+		got := 0
+		for _, e := range r.Entities {
+			if e.Kind == "lair" {
+				got++
+			}
+		}
+		if got != want {
+			t.Errorf("Stufe %d: %d Baue, erwartet %d", stage, got, want)
+		}
 	}
 }

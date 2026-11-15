@@ -137,7 +137,8 @@ func worldLevel(base data.FS, worlds fs.FS, in worldInput) (worldLevelReport, er
 	if err != nil {
 		return worldLevelReport{}, err
 	}
-	opts := level.Options{Planned: isl.PlannedChunks[key], ChunkCount: isl.ChunkCounts[key], Nature: isl.NatureAt(depth), HubSites: vals.Hub.LevelSites()}
+	lair := depth == isl.LairDepth() // der Bau liegt wie im Spiel in der tiefsten Stufe der Insel (B-981)
+	opts := level.Options{Planned: isl.PlannedChunks[key], ChunkCount: isl.ChunkCounts[key], Nature: isl.NatureAt(depth), HubSites: vals.Hub.LevelSites(), Lair: &lair}
 	layout, err := level.GenerateWith(b, in.Seed, opts)
 	if err != nil {
 		return worldLevelReport{}, fmt.Errorf("das Level ist nicht erzeugbar: %w", err)

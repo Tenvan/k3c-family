@@ -24,7 +24,7 @@ func worldEditor(root string) world.Editor { return world.Editor{Root: root, Eng
 
 // overrideFilesText sind die Basis-Dateien, die eine Welt übersteuern darf (Engine: overrideFiles in engine/sim/world_values.go);
 // TestOverrideFilesTextMatchesEngine hält die Liste gleich.
-const overrideFilesText = "buildings, economy, enemies, goals, hub, monarch, ship, troops, waves"
+const overrideFilesText = "buildings, economy, enemies, events, goals, hub, monarch, ship, troops, waves"
 
 type worldListIn struct{}
 
@@ -146,7 +146,7 @@ func registerWorldWrite(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "world_override_set",
 		Description: "Übersteuert ein Basis-Feld (data/<file>.json › path, z. B. economy › purse › startGold) in den `overrides` der Welt; " +
-			"null oder der Basiswert setzt es zurück; geprüft mit allen Nachfolger-Welten. Erlaubte Dateien: " + overrideFilesText + "; gesperrt sind u. a. hub › sites und economy › payRangeUnits (docs/rules/welten.md § 1.3). " +
+			"null oder der Basiswert setzt es zurück; geprüft mit allen Nachfolger-Welten. Erlaubte Dateien: " + overrideFilesText + "; gesperrt sind u. a. hub › sitePlacement und economy › payRangeUnits (docs/rules/welten.md § 1.3). " +
 			"Nutze es bei: Werte einer Welt anders als die Basis (Gold, Preise, Händler, Handwerker). Statt: data/*.json ändern (gilt für alle Welten).",
 		Annotations: write,
 	}, func(ctx context.Context, in worldOverrideIn) (string, error) {

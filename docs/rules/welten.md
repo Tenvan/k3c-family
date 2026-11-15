@@ -247,7 +247,7 @@ und fällt bei fehlender Datei auf das Basis-Asset zurück (WE6.2). Nach `Resolv
 (Eltern zuerst, das Kind überschreibt je Schlüssel).
 
 Eine **Gegner-Variante** hat keine eigene ID: Basisart (alle Werte), optional Werte und `name` über `overrides › enemies › <art>`
-(`name` ist übersteuerbar), Aussehen über `skins`. Beispiel Sengoku: `"skins": {"gegner/wolf": "gegner/ninja"}` und
+(`name` ist übersteuerbar, aber nie leer), Aussehen über `skins`. Beispiel Sengoku: `"skins": {"gegner/wolf": "gegner/ninja"}` und
 `"overrides": {"enemies": {"wolf": {"name": "Ninja"}}}` – der Wolf heißt Ninja, hat Wolf-Werte und das Ninja-Asset.
 
 ## 3. Prüfung beim Laden
