@@ -1,6 +1,7 @@
 package sim
 
 import (
+	"errors"
 	"fmt"
 	"maps"
 	"slices"
@@ -22,6 +23,9 @@ const (
 
 // checkStory prüft die Geschichte der Welt und ihrer Inseln; Inselfehler tragen die Insel-ID.
 func checkStory(w WorldDef) error {
+	if !storyLimits.usable() && hasStory(w) {
+		return errors.New("story: data/story.json fehlt oder nennt keine Obergrenzen (maxLineChars, maxLexicon)")
+	}
 	lex, err := checkLexicon(w.Story.Lexicon)
 	if err != nil {
 		return err
@@ -104,6 +108,8 @@ func checkLexicon(words []string) (map[string]bool, error) {
 		switch {
 		case word == "" || strings.ContainsFunc(word, unicode.IsSpace):
 			return nil, fmt.Errorf("story.lexicon Wort %d: %q ist leer oder enthält Leerraum", i+1, word)
+		case strings.TrimFunc(word, func(r rune) bool { return !unicode.IsLetter(r) }) != word:
+			return nil, fmt.Errorf("story.lexicon Wort %d: %q beginnt oder endet nicht mit einem Buchstaben", i+1, word)
 		case word != strings.ToLower(word):
 			return nil, fmt.Errorf("story.lexicon Wort %d: %q ist nicht klein geschrieben", i+1, word)
 		case set[word]:
@@ -178,4 +184,15 @@ func isRealWord(word string) bool {
 		letters++
 	}
 	return letters >= storyMinRealWords
+}
+
+// hasStory: Die Welt oder eine ihrer Inseln trägt eine Geschichte.
+func hasStory(w WorldDef) bool {
+	ws := w.Story
+	if len(ws.Lexicon)+len(ws.Start)+len(ws.Etappen)+len(ws.End)+len(ws.Bottles) > 0 {
+		return true
+	}
+	return slices.ContainsFunc(w.Islands, func(d IslandDef) bool {
+		return len(d.Story.Arrival)+len(d.Story.Boss)+len(d.Story.Done) > 0
+	})
 }

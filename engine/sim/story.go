@@ -3,6 +3,8 @@ package sim
 import (
 	"encoding/json"
 	"fmt"
+
+	"k3c/data"
 )
 
 // Geschichte je Welt und Insel (B-965, docs/rules/welten.md § 2.2): Kunstsprache mit eingestreuten echten Wörtern, feste
@@ -31,8 +33,18 @@ type StoryLimits struct {
 	MaxLexicon   int `json:"maxLexicon"`
 }
 
-// storyLimits sind die eingebetteten Obergrenzen.
-var storyLimits = load[StoryLimits]("story.json")
+// storyLimits sind die Obergrenzen aus data/story.json. Fehlt die Datei (älterer data-Ordner neben der EXE) oder sind die
+// Werte nicht positiv, startet das Spiel trotzdem; erst eine Welt mit Geschichte wird dann abgelehnt (checkStory).
+var storyLimits = loadStoryLimits()
+
+func loadStoryLimits() StoryLimits {
+	var v StoryLimits
+	_ = loadFrom(data.Files, "story.json", &v)
+	return v
+}
+
+// usable: beide Obergrenzen sind gesetzt.
+func (l StoryLimits) usable() bool { return l.MaxLineChars > 0 && l.MaxLexicon > 0 }
 
 // StoryLimitsOf liefert die Obergrenzen der Geschichte (Zeilenlänge, Wortschatz) für Werkzeuge und Anzeige.
 func StoryLimitsOf() StoryLimits { return storyLimits }
