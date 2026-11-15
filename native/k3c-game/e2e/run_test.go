@@ -35,7 +35,9 @@ type run struct {
 	g        *game.Game
 	sim      *local.Session
 	dir      string
-	tick     int // Zahl der Updates seit dem Start
+	tick     int    // Zahl der Updates seit dem Start
+	script   string // Eingabe-Folge des Laufs (flowScript)
+	found    int    // Takt, in dem Spieler 2 den Skill-Punkt findet (flowScript)
 	stations []station
 }
 
