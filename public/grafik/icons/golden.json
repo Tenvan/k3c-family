@@ -89,6 +89,84 @@
       "idle.png": "398c1bc0a0a35583872239c387c9dd4abfe17b6a742a01506496cd48af11bbf0"
     }
   },
+  "taste-kappe-breit": {
+    "renderKey": "49777f72b64a59c459df45501ac204094e471890263d160cdfaf1c04ed8fabbd",
+    "dateien": {
+      "idle.png": "00efe12114a3d8c77d0f2b7753f266251569bb6b488a61b156bc20ec82c28bef"
+    }
+  },
+  "taste-kappe": {
+    "renderKey": "4dfbc56dae29731755239713bb5da6c1049004e5680bdf13f5d785ffd9316d5e",
+    "dateien": {
+      "idle.png": "89652760c3b3af1ac837b40857e7f5433132313b988348cd23524e6d9d4c7d83"
+    }
+  },
+  "xbox-a": {
+    "renderKey": "55a878459b1a57d6c11f785a8161aeb42b65f748b257a500cde789b93c9e1b3b",
+    "dateien": {
+      "idle.png": "939cf75ab5f4b93b88faa4ada4d3f90ceaad7bd1b58e0f0113d775a7d945d7f5"
+    }
+  },
+  "xbox-down": {
+    "renderKey": "70aa1382b5261fb4f2540532b12b09f076172ace089e32a917da56140ecc4a5a",
+    "dateien": {
+      "idle.png": "f3e1f0b8c96d056834f88bc6977109c2b1a26178109a07b0eb631a445d0dd61e"
+    }
+  },
+  "xbox-lb": {
+    "renderKey": "0a798dd12cd76456e5d97854094c23ea943314bdafcd789fa19f3d0d02f0e133",
+    "dateien": {
+      "idle.png": "49858de5adaebc67e9046b788d0e074b3815ede90188a5de525a194d258d0305"
+    }
+  },
+  "xbox-lt": {
+    "renderKey": "05a978b8412716737aa4652d9078f9a9c90c7c7b4892e63871a1d4fcbc1dcb5c",
+    "dateien": {
+      "idle.png": "9277c3a71b907bf776c1fcbb2f77122cacbb8f4e474d195aa1f0f84411c75a0d"
+    }
+  },
+  "xbox-menu": {
+    "renderKey": "de6094b4a03b071ed1c4b36684aea02d0b998a706bc7b8c17c1c902f21d2ff1c",
+    "dateien": {
+      "idle.png": "a62a419f27999284d1fbf0254c24d2f72a335d61c5bbf8a610a3d235ce8dc71e"
+    }
+  },
+  "xbox-rb": {
+    "renderKey": "7edc60574eff5d013245cc60f209277e31a2434f81256828859cd20138f642d4",
+    "dateien": {
+      "idle.png": "cc46b7dcbbf0ff51a3cd5f58bcad3f5a8eb8dbfd44337cdde69001fb4f2ea69a"
+    }
+  },
+  "xbox-rs": {
+    "renderKey": "8f3afddc5f2b85b6ca7eef2c38b0f0180865aad31f96d4b0e70b778a96120961",
+    "dateien": {
+      "idle.png": "16983c84c4d0fb7f65af67403b856bfa9ebf82df0478cfc4d0b7ec34abbdf658"
+    }
+  },
+  "xbox-rt": {
+    "renderKey": "e1e8683fe9daa6b1907b9a2e905810dae18ea9cd28aa9af558d72af52e9358e7",
+    "dateien": {
+      "idle.png": "ced1fbc35242b81e34a7f7ca47d55842e96bc1b0ad160b358eabbc5239048831"
+    }
+  },
+  "xbox-up": {
+    "renderKey": "2b4bead38605d03a330ca71c681bcf6dda6f20bebc03c201166508931f05c39d",
+    "dateien": {
+      "idle.png": "3b6347939b9d32400bfbfac88283d17b3b886a506a277450748ad6f43d1fa30c"
+    }
+  },
+  "xbox-x": {
+    "renderKey": "55558dd963d5426d56c49c1dcc42169fe5a11e270bb0f3caf7afd10e06d2444e",
+    "dateien": {
+      "idle.png": "c9717ca18ed6b1d89bd52b6f4993790c45b43a1f7d65aaf53e9cd3ecc34c74f3"
+    }
+  },
+  "xbox-y": {
+    "renderKey": "c6b2607946204b07f4e8e8bedd45266d943a46682ac663d2ae0caa64047cb4a3",
+    "dateien": {
+      "idle.png": "0c89bd5d300e8a69a1be53ebdf0325789a7628cfd733ee62b95ddb71f0bdb047"
+    }
+  },
   "zahlstelle-ausloeser": {
     "renderKey": "d855add2553cac00464046942537ac217ea0a89b38c2c75cd5df37f1202d2cb0",
     "dateien": {

@@ -1,0 +1,62 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "xbox-up",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Xbox-Steuerkreuz oben: helles Kreuz, oberer Arm dunkel mit Pfeil (Tasten-Hinweis im HUD, Pad)",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4.6 -28.5L4.6 -28.5L4.6 -20.6L12.5 -20.6L12.5 -11.4L4.6 -11.4L4.6 -3.5L-4.6 -3.5L-4.6 -11.4L-12.5 -11.4L-12.5 -20.6L-4.6 -20.6Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4.6 -28.5L-2.8 -28.5L-2.8 -20.6L-4.6 -20.6ZM-12.5 -20.6L-10.7 -20.6L-10.7 -11.4L-12.5 -11.4ZM-4.6 -11.4L-2.8 -11.4L-2.8 -3.5L-4.6 -3.5Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4.6 -28.5L4.6 -28.5L4.6 -20L-4.6 -20Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2.9 -22.9L2.9 -22.9L0 -27.1Z",
+          "material": "weiss"
+        },
+        {
+          "art": "punkt",
+          "material": "hermelin",
+          "mitte": [0, -16],
+          "radius": 2,
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

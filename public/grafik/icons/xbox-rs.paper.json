@@ -1,0 +1,62 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "xbox-rs",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Icon Xbox rechter Stick RS: dunkler Stick-Ring mit heller Kappe und R (Tasten-Hinweis im HUD, Pad)",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M12.5 -16C12.5 -22.9 6.9 -28.5 0 -28.5C-6.9 -28.5 -12.5 -22.9 -12.5 -16C-12.5 -9.1 -6.9 -3.5 0 -3.5C6.9 -3.5 12.5 -9.1 12.5 -16Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -28.5C-6.88 -28.5 -12.5 -22.87 -12.5 -16C-12.5 -9.12 -6.88 -3.5 0 -3.5C-5 -9.75 -5 -22.25 0 -28.5Z",
+          "material": "schwarz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 -16C9 -20.97 4.97 -25 0 -25C-4.97 -25 -9 -20.97 -9 -16C-9 -11.03 -4.97 -7 0 -7C4.97 -7 9 -11.03 9 -16Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -25C-4.95 -25 -9 -20.95 -9 -16C-9 -11.05 -4.95 -7 0 -7C-3.6 -11.5 -3.6 -20.5 0 -25Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -21.8L-4 -10.2L-1.8 -10.2L-1.8 -21.8ZM-4 -19.6L3 -19.6L3 -21.8L-4 -21.8ZM0.34 -20.68L3.52 -17.58L5.06 -19.15L1.88 -22.26ZM2.4 -20.23L2.4 -16.47L4.6 -16.47L4.6 -20.23ZM3.52 -19.12L0.34 -16.02L1.88 -14.44L5.06 -17.55ZM3 -17.1L-4 -17.1L-4 -14.9L3 -14.9ZM-1.23 -16.29L3.21 -9.77L5.03 -11.01L0.59 -17.53Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}
