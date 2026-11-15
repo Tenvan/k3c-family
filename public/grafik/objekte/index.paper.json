@@ -210,6 +210,11 @@
     "manifest": "setzling/manifest.json"
   },
   {
+    "id": "steinkreis",
+    "rig": "requisite",
+    "manifest": "steinkreis/manifest.json"
+  },
+  {
     "id": "stern",
     "rig": "requisite",
     "manifest": "stern/manifest.json"

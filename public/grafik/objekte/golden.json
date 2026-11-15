@@ -279,6 +279,12 @@
       "idle.png": "0d5caa0ecf25986938944c3dfd540ead7a931bd340bdaea0135609c09fcba75b"
     }
   },
+  "steinkreis": {
+    "renderKey": "54965b86bf7c67d5e3fe746a2e6a3fc6078f54e64886c507550926c31aff22e6",
+    "dateien": {
+      "idle.png": "316fb67508b7f1b007f0a61d4267af0ecd65c6ad257e5ea34c11e9a408a2079d"
+    }
+  },
   "stern": {
     "renderKey": "fb6659ca8a5d0ef9d6e0886b8f315f275500e7416195a2109bad3d89fe91d9bc",
     "dateien": {
