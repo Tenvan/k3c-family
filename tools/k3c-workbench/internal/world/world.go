@@ -41,6 +41,8 @@ type Island struct {
 	Biomes      []string                   `json:"biomes"`
 	Planned     map[string]json.RawMessage `json:"plannedChunks"`
 	ChunkCounts map[string]int             `json:"chunkCounts"`
+	// Story ist die Geschichte der Insel (story.go, B-975); nil = fehlt.
+	Story *IslandStory `json:"story,omitempty"`
 }
 
 // Detail ist eine Welt mit Kopf und Inseln; Error nennt, warum sie nicht lesbar ist (dann ohne Inseln).
@@ -50,6 +52,8 @@ type Detail struct {
 	Notes   string   `json:"notes"`
 	Extends string   `json:"extends"`
 	Islands []Island `json:"islands"`
+	// Story ist die Geschichte der Welt (story.go, B-975); nil = fehlt.
+	Story *Story `json:"story,omitempty"`
 	// BiomeInfo: Palette und Portal-HP je Biom-ID aus data/biomes/*.json (nur die Biome der Inseln).
 	BiomeInfo map[string]BiomeInfo `json:"biomeInfo"`
 	Error     string               `json:"error"`
@@ -126,12 +130,13 @@ func (e Editor) Load(id string) Detail {
 	var f struct {
 		Name, Notes, Extends string
 		Islands              []Island `json:"islands"`
+		Story                *Story   `json:"story"`
 	}
 	if err := json.Unmarshal(raw, &f); err != nil {
 		view.Error = fmt.Sprintf("Welt-Datei: %v", err)
 		return view
 	}
-	view.Name, view.Notes, view.Extends = nameOf(raw, id), f.Notes, f.Extends
+	view.Name, view.Notes, view.Extends, view.Story = nameOf(raw, id), f.Notes, f.Extends, f.Story
 	biomes := e.biomesByDepth()
 	for _, isl := range f.Islands {
 		isl.Biomes = []string{}

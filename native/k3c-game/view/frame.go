@@ -42,9 +42,14 @@ type Frame struct {
 }
 
 // RouteIsland ist eine Insel der Welt mit ihrer Etappe (>= 1; local setzt für 0 den Listenplatz + 1 wie die Simulation).
+// World, Stages und Chunks tragen das Aussehen der Insel auf der Seekarte (B-964): Welt-ID (leer = Standard-Welt), Zahl
+// der Stufen (`depths`) und größte Chunk-Anzahl einer Stufe (`chunkCounts`; 0 = ohne Angabe, Länge des Bioms).
 type RouteIsland struct {
 	ID, Name string
 	Etappe   int
+	World    string
+	Stages   int
+	Chunks   int
 }
 
 // Outcome ist der Ausgang eines Spiels.

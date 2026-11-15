@@ -39,6 +39,7 @@ type Parts struct {
 	Camera    view.CameraRule
 	Assets    []view.AssetSource
 	Overlays  []view.Overlay
+	Voyage    view.VoyageDrawer // Schiffsfahrt im Vollbild (hud, B-977); nil: Ladebildschirm
 	Art       Loader
 }
 
@@ -94,7 +95,7 @@ func Assemble(ps []Part) (Parts, error) {
 	return out, nil
 }
 
-// addRoles meldet die Beiträge des Pakets p für Kamera-Regel, Asset-Quelle und Overlay an.
+// addRoles meldet die Beiträge des Pakets p für Kamera-Regel, Asset-Quelle, Overlay und Schiffsfahrt an.
 func (out *Parts) addRoles(p Part) error {
 	items := make([]any, 0, len(p.Drawers)+3)
 	for _, d := range p.Drawers {
@@ -116,6 +117,11 @@ func (out *Parts) addRoles(p Part) error {
 		}
 		if o, ok := x.(view.Overlay); ok {
 			out.Overlays = append(out.Overlays, o)
+		}
+		if v, ok := x.(view.VoyageDrawer); ok {
+			if err := setOnce(&out.Voyage, v, p.Name, "Schiffsfahrt"); err != nil {
+				return err
+			}
 		}
 	}
 	return nil

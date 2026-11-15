@@ -129,3 +129,53 @@ func TestWriteCheckedRefusesLostUpdate(t *testing.T) {
 		t.Fatalf("Datei geändert: %q", got)
 	}
 }
+
+// B-985/AC-01: Ein Patch setzt den Hafen der bisher letzten Insel und hängt die nächste an; die Welt ist gültig, nie nur halb.
+func TestSetAppendIslandWithHarborInOneCall(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "hanse", "Hanse", "standard"); err != nil {
+		t.Fatal(err)
+	}
+	patch := `{"islands":[
+		{"id":"island1","plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},
+		{"id":"island2","name":"Visby","depths":[0,4],"plannedChunks":{"0":[{"slot":-5,"kind":"harbor"}]},"chunkCounts":{"0":16}},
+		{"id":"island3","name":"Reval"}]}`
+	if _, err := e.Set(ctx, "hanse", json.RawMessage(patch)); err != nil {
+		t.Fatal(err)
+	}
+	text := readWorld(t, e, "hanse")
+	for _, want := range []string{`"id": "island3"`, `"id": "island2", "name": "Visby"`, `"chunkCounts": { "0": 16 }`, `"kind": "harbor"`} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("fehlt %q:\n%s", want, text)
+		}
+	}
+	if _, err := e.Check(ctx, "hanse"); err != nil {
+		t.Fatalf("Welt ungültig: %v", err)
+	}
+}
+
+// B-985/AC-02: Ohne Hafen lehnt die Prüfung ab; die Meldung nennt die Insel und das Feld plannedChunks, die Datei bleibt.
+func TestSetAppendWithoutHarborNamesIslandAndField(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "hanse", "Hanse", "standard"); err != nil {
+		t.Fatal(err)
+	}
+	before := readWorld(t, e, "hanse")
+	_, err := e.Set(ctx, "hanse", json.RawMessage(`{"islands":[{"id":"island2","name":"Visby"}]}`))
+	if err == nil {
+		t.Fatal("Insel ohne Hafen der Vorgängerin angenommen")
+	}
+	for _, want := range []string{"island1", "kein Hafen", "plannedChunks", "world_set"} {
+		if !strings.Contains(err.Error(), want) {
+			t.Fatalf("Meldung ohne %q: %v", want, err)
+		}
+	}
+	if readWorld(t, e, "hanse") != before {
+		t.Fatal("Datei trotz Fehler geändert")
+	}
+	// Ungültiger Chunk-Plan: die Engine nennt den Grund, die Datei bleibt.
+	_, err = e.Set(ctx, "hanse", json.RawMessage(`{"islands":[{"id":"island1","plannedChunks":{"0":[{"slot":-7,"kind":"gibtesnicht"}]}},{"id":"island2"}]}`))
+	if err == nil || readWorld(t, e, "hanse") != before {
+		t.Fatalf("ungültiger Chunk-Plan angenommen (%v)", err)
+	}
+}

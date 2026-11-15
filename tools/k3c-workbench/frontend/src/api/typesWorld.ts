@@ -32,6 +32,24 @@ export interface WorldIsland {
   chunkCounts: Record<string, number>;
   /** Etappe der Insel (B-963); fehlt sie, gilt Listenplatz + 1 */
   etappe?: number;
+  /** Geschichte der Insel (B-975); fehlt sie, gibt es keine Zeilen */
+  story?: IslandStory;
+}
+
+/** Geschichte einer Insel: je Eintrag 1 bis 2 Zeilen (Go: world.IslandStory, docs/rules/welten.md § 2.2) */
+export interface IslandStory {
+  arrival?: string[];
+  boss?: string[];
+  done?: string[];
+}
+
+/** Geschichte einer Welt: Wortschatz der Kunstsprache und Zeilen je Wendepunkt (Go: world.Story) */
+export interface WorldStory {
+  lexicon?: string[];
+  start?: string[];
+  etappen?: Record<string, string[]>;
+  end?: string[];
+  bottles?: string[][];
 }
 
 /** Anzeige-Werte eines Bioms aus data/biomes/<id>.json (Go: world.BiomeInfo): Palette (sky, far, near, ground) und Portal-HP */
@@ -47,6 +65,8 @@ export interface WorldDetail {
   notes: string;
   extends: string;
   islands: WorldIsland[];
+  /** Geschichte der Welt (B-975); fehlt sie, zeigt die Seite „Geschichte fehlt“ */
+  story?: WorldStory;
   /** Palette und Portal-HP je Biom-ID der Inseln (aus data/biomes) */
   biomeInfo?: Record<string, BiomeInfo>;
   error: string;

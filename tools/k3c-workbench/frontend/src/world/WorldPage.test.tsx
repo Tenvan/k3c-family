@@ -5,6 +5,7 @@ import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
 import { ASSET_LABELS, ASSET_PAGES } from '../Header';
+import { storyGaps, storyPrompt } from './StoryState';
 import { WorldPage } from './WorldPage';
 
 // B-879/AC-01: Die Seite Welten-Editor zeigt mit dem Mock-Backend (Testlauf = Mock) die Welten, die Chunk-Vorschau und
@@ -138,6 +139,37 @@ describe('Welt anlegen (B-954/AC-02)', () => {
     expect(create).toHaveBeenLastCalledWith('hanse', 'Hanse', '');
     expect(host.querySelector('[data-world="hanse"]')).toBeTruthy();
     expect(host.querySelector('[data-scroll="detail"] h1')?.textContent).toContain('Hanse');
+  });
+
+  it('zeigt nach dem Anlegen „Geschichte fehlt“ und kopiert den Auftrag mit Welt-ID und world_story_set (B-975/AC-04)', async () => {
+    const host = await mount();
+    const writes: string[] = [];
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (t: string) => void writes.push(t) } });
+    await click(host.querySelector('[aria-label="Welt anlegen"]'));
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-ID"]')!, 'saga');
+    await type(host.querySelector<HTMLInputElement>('[aria-label="Welt-Name"]')!, 'Saga');
+    await click(host.querySelector('[aria-label="Anlegen"]'));
+    const story = host.querySelector('[aria-label="Geschichte"]')!;
+    expect(story.textContent).toContain('Geschichte fehlt');
+    await click(story.querySelector('[aria-label="Geschichte schreiben"]'));
+    expect(writes).toHaveLength(1);
+    expect(writes[0]).toContain('Welt-ID saga');
+    expect(writes[0]).toContain('world_story_set {id: "saga"');
+    expect(writes[0]).toContain('Klang:');
+    expect(writes[0]).toContain('Insel island1: story');
+    expect(story.querySelector('[role="status"]')?.textContent).toBe('Auftrag kopiert');
+  });
+
+  it('nennt den Stand einer vorhandenen und einer unvollständigen Geschichte', () => {
+    const entry = ['Oru KRONE no MEER.'];
+    const base = { id: 'saga', name: 'Saga', notes: '', extends: '', error: '' };
+    const island = { id: 'island1', name: 'Insel 1', depths: [0], biomes: ['forest'], plannedChunks: {}, chunkCounts: {} };
+    const full = { ...base, story: { lexicon: ['oru', 'no'], start: entry, end: entry, bottles: [entry] },
+      islands: [{ ...island, story: { arrival: entry, boss: entry, done: entry } }] };
+    expect(storyGaps(full)).toEqual([]);
+    expect(storyGaps({ ...full, story: { lexicon: ['oru'], start: entry }, islands: [{ ...island, story: { done: entry } }, { ...island, id: 'island2' }] }))
+      .toEqual(['story.end', 'story.bottles', 'Insel island1: story.arrival', 'Insel island1: story.boss', 'Insel island2: story']);
+    expect(storyPrompt(full)).toContain('Alle Einträge sind vorhanden');
   });
 
   it('Anlegen bleibt gesperrt, solange die ID ungültig ist', async () => {

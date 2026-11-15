@@ -1,0 +1,278 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "moorgeist",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Moorgeist (Britannien, Skin für den Grubengeist): bleicher schwebender Geist unter einer zerfransten Mooskapuze mit Mooskragen, grünes Irrlicht an der Stirn, hohle Augen mit grünem Glimmen und wehender Schweif mit Moosfäden; greift nach vorn",
+  "teile": [
+    {
+      "eltern": "korpus",
+      "id": "schweif",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -44C-14 -30 -18 -18 -26 -10C-18 -12 -14 -16 -10 -22C-10 -14 -12 -8 -16 -2C-8 -6 -2 -14 0 -24C2 -16 6 -12 10 -10C6 -18 6 -30 10 -44Z",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-6 -38C-8 -28 -12 -18 -18 -10",
+          "material": "geisterweiss",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.3,
+          "form": "M3 -40C2 -32 4 -24 7 -15",
+          "material": "biom-wald"
+        },
+        {
+          "art": "falz",
+          "breite": 1.1,
+          "form": "M-3 -40C-5 -30 -6 -20 -11 -9",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -40]
+    },
+    {
+      "eltern": "korpus",
+      "id": "arm-h",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -68C-12 -62 -14 -54 -12 -46C-10 -50 -8 -52 -6 -52C-6 -56 -4 -60 -2 -64Z",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [-4, -66]
+    },
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -68C-14 -80 -8 -90 0 -91C9 -91 14 -82 14 -70C14 -60 12 -50 10 -42L-12 -42C-13 -50 -12 -60 -12 -68Z",
+          "material": "geisterweiss"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 -68C-14 -80 -8 -90 0 -91C-5 -84 -7 -70 -5 -42L-12 -42C-13 -50 -12 -60 -12 -68Z",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M8 -86C12 -82 13 -74 13 -66C11 -72 10 -80 8 -86Z",
+          "material": "geisterweiss",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13.5 -66C-6 -62.5 5 -62.5 14.5 -66L13.5 -57C10 -60 7 -54.5 4 -58C1 -60.5 -2 -54 -5 -58C-8 -60.5 -11 -55.5 -13 -57.5Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-15 -75C-16 -89 -7 -98 4 -98C12 -98 18 -91 18 -81L15.5 -78L13 -81.5L9.5 -78L6 -81.5L2 -78.5L-2 -81L-6.5 -72L-10.5 -76L-13.5 -69Z",
+          "material": "biom-wald"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-15 -75C-16 -89 -7 -98 4 -98C-3 -93 -7 -86 -6.5 -72L-10.5 -76L-13.5 -69Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M8 -96.5C13 -95 16.5 -90 17 -84C14.5 -89 12 -93 8 -96.5Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M8.4 -86.4C7 -90 10 -92 11.2 -96C14.4 -92.4 15.4 -89 14 -86.4C12.6 -84.6 9.8 -84.6 8.4 -86.4Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [11.3, -88],
+          "radius": 1.5
+        },
+        {
+          "art": "flaeche",
+          "form": "M2 -75C3 -78 7 -78 8 -75C7 -72 3 -72 2 -75Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10 -75C11 -77.5 13.5 -77.5 14 -75C13.5 -72.5 11 -72.5 10 -75Z",
+          "material": "linie"
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [5, -75],
+          "radius": 0.9,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [12, -75],
+          "radius": 0.8,
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -66.5C7 -69.5 11 -69.5 12 -66.5C11 -63.5 7 -63.5 6 -66.5Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, -90]
+    },
+    {
+      "eltern": "korpus",
+      "id": "arm-v",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -68C6 -64 8 -56 6 -48C4 -46 0 -46 -1 -48C1 -54 0 -60 -2 -64Z",
+          "material": "geisterweiss"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -68C2 -62 2 -54 -1 -48C1 -54 0 -60 -2 -64Z",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M2 -48L1 -44",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M4.5 -48L4.5 -44.5",
+          "material": "geisterweiss",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M5.5 -57C6.5 -53 5 -50 6 -46",
+          "material": "biom-wald"
+        }
+      ],
+      "pivot": [2, -66]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 150,
+    "rahmen": [-40, -102, 76, 106]
+  },
+  "animationen": {
+    "angriff": {
+      "fps": 12,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-h": 0,
+            "arm-v": 0,
+            "korpus": -4
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "arm-h": 30,
+            "arm-v": 40,
+            "korpus": 6,
+            "schweif": -10
+          }
+        },
+        {
+          "t": 0.6,
+          "winkel": {
+            "arm-h": -95,
+            "arm-v": -110,
+            "korpus": -20,
+            "schweif": 30
+          }
+        },
+        {
+          "t": 0.8,
+          "winkel": {
+            "arm-h": -60,
+            "arm-v": -70,
+            "korpus": -12,
+            "schweif": 15
+          }
+        }
+      ]
+    },
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-v": 5,
+            "korpus": -4,
+            "schweif": 8
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "arm-v": -5,
+            "korpus": 4,
+            "schweif": -8
+          }
+        }
+      ]
+    },
+    "lauf": {
+      "fps": 10,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "arm-h": 15,
+            "arm-v": 20,
+            "korpus": -10,
+            "schweif": 20
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "arm-h": 25,
+            "arm-v": 10,
+            "korpus": -6,
+            "schweif": 8
+          }
+        }
+      ]
+    }
+  }
+}

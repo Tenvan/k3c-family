@@ -54,7 +54,7 @@ Typische Session: 30–60 Minuten.
 Jeder Spieler hat einen **eigenen Skill-Baum** mit 4 Linien: **Tank, Zauberer, Heiler, Dieb** (zuerst Tank, Zauberer, Heiler). Punkte werden frei verteilt, hybride Builds sind erlaubt. Die Presets aus `monarch.json` sind nur Startverteilungen. Respec kostenlos an der Burg jedes Hubs, nur am Tag.
 
 - Skill-Punkte kommen aus einem **gemeinsamen Fund-Pool** je Insel (versteckt in der Welt 3–5 je Stufe, Minibosse, Endboss, Meilensteine des Hub-Ausbaus, jede 3. Truhe); jeder Spieler verteilt die gefundenen Punkte für sich.
-- Tier-Gating: Tier 2 ab 5, Tier 3 ab 10, Tier 4 (Ultimate) ab 15 Punkten in der Linie.
+- Tier-Gating: Tier 2 ab 2, Tier 3 ab 4, Tier 4 (Ultimate) ab 6 gelernten Skills der Linie (`rules/monarch.md` § 3).
 - 4 Skill-Slots: LB, RB, LT, D-Pad hoch (Tastatur Q, R, T, Z), Skill-Menü D-Pad runter (K).
 
 | Linie | Tier 1 (aktiv) | Tier 3 | Tier 4 (Ultimate) | Passive (Auswahl) |

@@ -30,11 +30,18 @@ type hud struct {
 	paint   painter
 	lay     [view.MaxPlayers]layoutCache
 	spots   []labelSpot // Puffer der sichtbaren Welt-Labels in Draw
+	seaMap  *art.SeaMap // Assets der Seekarte (nil: Karte aus Formen, drawsea.go)
+	assets  []string    // gemeldete Assets (nil: nur die Icons)
+	voy     voyageView  // Schiffsfahrt im Vollbild (voyage.go, B-977)
 }
 
 // New liefert den Drawer des HUD; lib (Grafik) darf nil sein, dann zeichnet es nur Flächen ohne Text.
 func New(lib *art.Library) view.Drawer {
-	return &hud{lib: lib, lang: view.DefaultLanguage}
+	h := &hud{lib: lib, lang: view.DefaultLanguage}
+	if lib != nil { // ohne Grafik bleibt die Seekarte aus Formen
+		h.useSeaMap(art.DataSeaMap(), lib.Usable)
+	}
+	return h
 }
 
 func (*hud) Layer() view.Layer { return view.LayerHUD }
