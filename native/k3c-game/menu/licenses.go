@@ -28,7 +28,7 @@ var licenses = []license{
 	{txtLicGraphics, "x/image, rasterx", "The Go Authors, Steven R. Wiley", "BSD-3-Clause", "golang.org/x/image"},
 	{txtLicAudio, "go-mp3", "Hajime Hoshi", "Apache-2.0", "github.com/hajimehoshi/go-mp3"},
 	{txtLicAudio, "oggvorbis, vorbis", "Johann Freymuth", "MIT", "github.com/jfreymuth/oggvorbis"},
-	{txtLicAudio, "Klänge und Musik", "Kenney, OpenGameArt", "CC0", "public/audio/README.md"},
+	{txtLicAudio, "Klänge und Musik", "Kenney, OpenGameArt, Freesound (colorsCrimsonTears)", "CC0", "public/audio/README.md"},
 }
 
 // versionText ist die Versionszeile des Hauptmenüs („Version …“, ohne Angabe „unbekannt“).

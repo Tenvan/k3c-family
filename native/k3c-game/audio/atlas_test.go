@@ -139,19 +139,20 @@ func TestLoadBankMissingFilesIsSilent(t *testing.T) {
 // AC-01: Lautstärke je Bus wirkt (ohne Gerät): Effekte und Musik folgen getrennt den Einstellungen.
 func TestBusVolumesFromSettings(t *testing.T) {
 	p := newPlanner(realRegister(t))
+	mx := p.reg.Mix
 	f := &view.Frame{Settings: view.Settings{Music: 0.25, Effects: 0.5}, Cues: []view.Cue{{Kind: view.CueConfirm}}}
 	m := p.plan(f)
-	if m.EffectBus != 0.5 || m.MusicBus != 0.25 {
+	if m.EffectBus != 0.5*mx.Effects || m.MusicBus != 0.25*mx.Music {
 		t.Fatalf("Busse %v / %v", m.EffectBus, m.MusicBus)
 	}
-	if v := m.EffectVolume(m.Effects[0].Gain); v != 0.5 {
-		t.Errorf("Effekt %v, erwartet 0.5", v)
+	if v := m.EffectVolume(m.Effects[0].Gain); v != 0.5*mx.Effects {
+		t.Errorf("Effekt %v, erwartet %v", v, 0.5*mx.Effects)
 	}
-	if v := m.MusicVolume(0.8); v != 0.2 {
-		t.Errorf("Musik %v, erwartet 0.2", v)
+	if v := m.MusicVolume(0.8); v != 0.8*(0.25*mx.Music) {
+		t.Errorf("Musik %v, erwartet %v", v, 0.8*(0.25*mx.Music))
 	}
 	f.Settings = view.Settings{Music: 7, Effects: math.NaN()}
-	if m = p.plan(f); m.MusicBus != 1 || m.EffectBus != 1 {
+	if m = p.plan(f); m.MusicBus != mx.Music || m.EffectBus != mx.Effects {
 		t.Errorf("begrenzt: %v / %v", m.MusicBus, m.EffectBus)
 	}
 }

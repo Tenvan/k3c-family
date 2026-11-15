@@ -125,28 +125,29 @@ func TestDuck(t *testing.T) {
 	if duckGain(3, duckWindow{}) != 1 {
 		t.Error("ohne Warnung voll")
 	}
-	w := extendDuck(duckWindow{}, 10)
+	d := duckShape{level: 0.4, attack: 0.3, hold: 1, release: 1.5}
+	w := extendDuck(duckWindow{}, 10, d)
 	checks := [][2]float64{
-		{10, 1}, {10 + duckAttack/2, (1 + duckLevel) / 2}, {10 + duckAttack, duckLevel}, {w.end, duckLevel},
-		{w.end + duckRelease/2, (1 + duckLevel) / 2}, {w.end + duckRelease, 1},
+		{10, 1}, {10 + d.attack/2, (1 + d.level) / 2}, {10 + d.attack, d.level}, {w.end, d.level},
+		{w.end + d.release/2, (1 + d.level) / 2}, {w.end + d.release, 1},
 	}
 	for _, c := range checks {
 		if g := duckGain(c[0], w); !near(g, c[1]) {
 			t.Errorf("t=%v: %v, erwartet %v", c[0], g, c[1])
 		}
 	}
-	o := extendDuck(extendDuck(extendDuck(duckWindow{}, 0), 0.5), 1)
-	if o.start != 0 || !near(o.end, 1+duckHold) {
+	o := extendDuck(extendDuck(extendDuck(duckWindow{}, 0, d), 0.5, d), 1, d)
+	if o.start != 0 || !near(o.end, 1+d.hold) {
 		t.Errorf("verlängert: %+v", o)
 	}
 	for x := 0.0; x < 4; x += 0.05 {
-		if duckGain(x, o) < duckLevel-1e-9 {
+		if duckGain(x, o) < d.level-1e-9 {
 			t.Fatalf("t=%v unter level", x)
 		}
 	}
-	at := w.end + duckRelease/2
-	w2 := extendDuck(w, at)
-	if !near(duckGain(at, w2), duckGain(at, w)) || !near(duckGain(at+duckAttack, w2), duckLevel) {
+	at := w.end + d.release/2
+	w2 := extendDuck(w, at, d)
+	if !near(duckGain(at, w2), duckGain(at, w)) || !near(duckGain(at+d.attack, w2), d.level) {
 		t.Errorf("Sprung in der Rampe hinauf: %+v", w2)
 	}
 }

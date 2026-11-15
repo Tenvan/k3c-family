@@ -7,22 +7,22 @@ Katalog Ereignis → Sound → Quelle → Lizenz (B-167, SO2). Die Zuordnung ste
 | Ereignis | Slot | Sound (aktiv) | Quelle | Urheber | Lizenz | Status |
 |---|---|---|---|---|---|---|
 | Treffer | `sfx:hit` | `audio/kandidaten/kenney-impact-sounds-impactpunch-medium.ogg` (+2) | https://kenney.nl/assets/impact-sounds | Kenney | CC0 | zugeordnet |
-| Gegner-Tod | `sfx:kill` | `audio/kandidaten/kenney-digital-audio-spacetrash2.ogg` (+1) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
+| Gegner-Tod | `sfx:kill` | `audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg` (+2) | https://kenney.nl/assets/impact-sounds | Kenney | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
 | Münze aufheben | `sfx:coin` | `audio/kandidaten/kenney-rpg-audio-handlecoins.ogg` (+2) | https://kenney.nl/assets/rpg-audio | Kenney | CC0 | zugeordnet |
 | Münze geben | `sfx:coinGive` | `audio/kandidaten/kenney-rpg-audio-handlecoins2.ogg` | https://kenney.nl/assets/rpg-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (`coinGive`) |
-| Pfeil | `sfx:arrow` | `audio/kandidaten/kenney-digital-audio-phaserup2.ogg` (+2) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
+| Pfeil | `sfx:arrow` | `audio/kandidaten/kenney-rpg-audio-drawknife1.ogg` (+2) | https://kenney.nl/assets/rpg-audio | Kenney | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
 | Schlag | `sfx:strike` | `audio/kandidaten/kenney-rpg-audio-chop.ogg` (+2) | https://kenney.nl/assets/rpg-audio | Kenney | CC0 | zugeordnet |
 | Bau-Fortschritt | `sfx:buildProgress` | `audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg` | https://kenney.nl/assets/impact-sounds | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (`buildProgress`) |
 | Bau fertig | `sfx:build` | `audio/kandidaten/kenney-rpg-audio-metallatch.ogg` (+1) | https://kenney.nl/assets/rpg-audio | Kenney | CC0 | zugeordnet |
-| Tod | `sfx:death` | `audio/kandidaten/kenney-digital-audio-lowdown.ogg` (+1) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
-| Skill | `sfx:skill` | `audio/kandidaten/kenney-digital-audio-powerup11.ogg` (+2) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
+| Tod | `sfx:death` | `audio/kandidaten/block-rpg-1.mp3` (+2) | https://freesound.org/people/colorsCrimsonTears/sounds/641896/ | colorsCrimsonTears | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
+| Skill | `sfx:skill` | `audio/kandidaten/fire-rpg.mp3` (+3) | https://freesound.org/people/colorsCrimsonTears/sounds/563541/ | colorsCrimsonTears | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
 | Nacht naht | `sfx:warn` | `audio/kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg` (+2) | https://kenney.nl/assets/impact-sounds | Kenney | CC0 | zugeordnet |
-| Portal öffnet | `sfx:portal` | `audio/kandidaten/kenney-digital-audio-phasejump3.ogg` (+2) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
-| Respawn (`revive`) | `sfx:revive` | `audio/kandidaten/kenney-digital-audio-powerup3.ogg` (+2) | https://kenney.nl/assets/digital-audio | Kenney | CC0 | zugeordnet |
-| Wiederbeleben durch Mitspieler (`revived`) | `sfx:revived` | `audio/kandidaten/kenney-digital-audio-highup.ogg` | https://kenney.nl/assets/digital-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (`revived`) |
-| Hub-Ausbau | `sfx:hub` | `audio/kandidaten/kenney-digital-audio-threetone2.ogg` | https://kenney.nl/assets/digital-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (Anstieg `hubLevel`, global) |
+| Portal öffnet | `sfx:portal` | `audio/kandidaten/fire-rpg.mp3` (+3) | https://freesound.org/people/colorsCrimsonTears/sounds/563541/ | colorsCrimsonTears | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
+| Respawn (`revive`) | `sfx:revive` | `audio/kandidaten/heal-rpg.mp3` (+3) | https://freesound.org/people/colorsCrimsonTears/sounds/562292/ | colorsCrimsonTears | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
+| Wiederbeleben durch Mitspieler (`revived`) | `sfx:revived` | `audio/kandidaten/heal-rpg.mp3` (+1) | https://freesound.org/people/colorsCrimsonTears/sounds/562292/ | colorsCrimsonTears | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
+| Hub-Ausbau | `sfx:hub` | `audio/kandidaten/kenney-impact-sounds-impactmining-000.ogg` (+1) | https://kenney.nl/assets/impact-sounds | Kenney | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
 | Skill je Klasse | – | – | – | – | – | **Lücke** (B-576): gemeinsamer Ton `sfx:skill` (Rückfall); der Snapshot nennt weder Klasse noch Skill-Auslösung eines Spielers (nur Preset-Punkte, `types.ts`), ein Ereignis je gewirktem Skill fehlt |
-| Boss-Auftritt | `sfx:boss` | `audio/kandidaten/kenney-digital-audio-lowthreetone.ogg` | https://kenney.nl/assets/digital-audio | Kenney | CC0 | gewählt (Default Claude 2026-10-22, B-558), eingebaut SO6.4 (`bossSpawned`, global) |
+| Boss-Auftritt | `sfx:boss` | `audio/kandidaten/kenney-impact-sounds-impactbell-heavy-00.ogg` (+1) | https://kenney.nl/assets/impact-sounds | Kenney | CC0 | Klangbild B-935: ersetzt digital-audio, Default Claude 2026-11-15 |
 | UI-Klicks | `sfx:uiSelect` | `audio/kandidaten/selbst-erzeugt-ui-select.ogg` | selbst erzeugt (Rezept `public/audio/README.md`) | Claude (selbst erzeugt) | CC0 | eingebaut (B-575): Auswahl wechseln in Lobby und Optionen, kein Server-Ereignis (Q08) |
 | UI-Klick Bestätigen | `sfx:uiConfirm` | `audio/kandidaten/selbst-erzeugt-ui-confirm.ogg` | selbst erzeugt (Rezept `public/audio/README.md`) | Claude (selbst erzeugt) | CC0 | eingebaut (B-575): Bestätigen (Enter, A, Tippen) |
 | Reiten (Hufschlag, Schleife) | `sfx:ride` | `audio/kandidaten/horse-gallop-loop-01.ogg` (+2) | https://opengameart.org/content/horse-gallop-loop | AntumDeluge | CC-BY 3.0 | eingebaut (B-574): Schleife je Spieler, solange er lebt und sich bewegt (`vx`); Absteigen gibt es im Snapshot nicht (Monarch ist immer beritten) |

@@ -101,10 +101,11 @@ func TestPlanWarnAndSkill(t *testing.T) {
 		t.Fatalf("Tagesmusik %v", g)
 	}
 	p.plan(gameFrame(w, 1, sim.Event{"type": "dusk"}, sim.Event{"type": "skillCast", "skill": "fireball", "x": 0.0}))
-	for range int(math.Ceil(duckAttack * tps)) {
+	duck := p.reg.Mix.Duck
+	for range int(math.Ceil(duck.attack * tps)) {
 		p.plan(gameFrame(w, 1))
 	}
-	if g := p.mix.Music[0].Gain; math.Abs(g-duckLevel) > 1e-9 {
+	if g := p.mix.Music[0].Gain; math.Abs(g-duck.level) > 1e-9 {
 		t.Errorf("Ducking: %v", g)
 	}
 	m := p.plan(gameFrame(w, 1, sim.Event{"type": "wave", "x": 900.0}, sim.Event{"type": "skillCast", "skill": "heal", "x": 0.0}))
