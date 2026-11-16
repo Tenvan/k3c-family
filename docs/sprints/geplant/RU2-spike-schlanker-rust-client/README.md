@@ -67,10 +67,10 @@ Keine; Stack, Reihenfolge und Abnahme hat 🧑 am 2026-11-16 entschieden.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU2.1 | `RU2.1-plattform-kern.md` | Umsetzung | autonom | offen |
+| RU2.1 | `RU2.1-plattform-kern.md` | Umsetzung | autonom | fertig |
 | RU2.2 | `RU2.2-grafik-laden.md` | Umsetzung | autonom | fertig |
 | RU2.3 | `RU2.3-demo-szene-und-driver.md` | Umsetzung | autonom | fertig |
-| RU2.4 | `RU2.4-messung-und-review.md` | Review | autonom | offen |
+| RU2.4 | `RU2.4-messung-und-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -78,6 +78,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-16, Review RU2.4: AC-01 bis AC-04 erfüllt (Plattform-Kern, Grafik laden, Demo, Messbericht `docs/messung/rust-client-1.md`). Messung auf belastetem Rechner: Median 60 Bilder/s stabil, späte Bilder nicht lastabhängig (vermutet: Störung durch parallele Sessions).
+**AC-05 offen:** Ralf prüft `dist/k3c-rust-demo/start.cmd` auf PC und Notebook (ruckelfrei ja/nein), Eintrag in RU2.4 › Ergebnis; Messung auf ruhigem Rechner wiederholen.
+Befunde: keine offenen; Abweichungen (Canvas::layer, Esc/F, Bodenfarbe) stehen in RU2.1 und RU2.3. Neue Tickets: keine. Sim/Balance/Gen: nicht berührt.
