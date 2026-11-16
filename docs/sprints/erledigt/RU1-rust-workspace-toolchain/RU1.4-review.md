@@ -1,6 +1,6 @@
 # RU1.4 · Review Rust-Workspace
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** INF
@@ -59,5 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-06 nachgeprüft: zehn Crates in `rust/crates`, `cargo build/test/clippy -D warnings/fmt --check` grün, `Cargo.lock` eingecheckt, alle Crates mit `version.workspace`, `task rust:*` und `check:diff` mit Rust-Bahn (`TestRustSteps`), Job `rust` in `ci.yml`, 400-Zeilen-Test mit 401-Zeilen-Probe rot, Leitfaden § 1 bis § 10.
+- `task check` grün (5 min 42 s), `task check:go` grün (2 min 34 s), `task check:diff` grün.
+- Diff gegen den Stand vor RU1: außerhalb des erlaubten Bereichs nur Planungsdateien (Sessions, Sprint, Backlog-Index); kein Go-Test geändert, außer dem neuen Fall in `tools/checkdiff/select_test.go`.
+- Befunde: keine. Abweichung: Kein PR (Auftrag der Orchestrierung: der Sprint-PR folgt später). Abnahme-Ticket: B-1021.
+- Manuell geprüft: nichts.

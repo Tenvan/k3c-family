@@ -1,6 +1,6 @@
 # RU1 · INF · Rust-Workspace, Toolchain, Taskfile und CI
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF
 - **Reife:** bereit
@@ -71,7 +71,7 @@ Entscheidung 🧑 am Gate bzw. vor dem Start (B-1014 › Offene Fragen).
 | RU1.1 | `RU1.1-workspace-und-leitfaden.md` | Umsetzung | autonom | fertig |
 | RU1.2 | `RU1.2-tasks-und-check-diff.md` | Umsetzung | autonom | fertig |
 | RU1.3 | `RU1.3-ci-und-repo-regeln.md` | Umsetzung | autonom | fertig |
-| RU1.4 | `RU1.4-review.md` | Review | autonom | offen |
+| RU1.4 | `RU1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -79,6 +79,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-16, Review RU1.4 (Claude): AC-01, AC-02, AC-06 (RU1.1), AC-03 (RU1.2), AC-05 (RU1.3) geprüft, `task check` und `task check:go` grün; keine Befunde, Diff nur im erlaubten Bereich, kein Go-Test geändert.
+AC-04: Job `rust` steht in `ci.yml`, die cargo-Befehle laufen lokal grün; der echte CI-Lauf folgt nach dem Merge (B-1021 AC-05).
+Offen für 🧑: Abschnitt „Freigegebene Crates“ in B-1014 nachtragen (Freigabe lief über RU2 › Anforderungen).
+Abnahme-Ticket für Sim, Balance, Gen und `check:race`: B-1021.
+B-1015/AC-02 Ist-Werte: Dauer und Token je Session wurden in dieser Welle nicht erfasst; RU1.1 bis RU1.3 liefen nacheinander in einem Worktree, je rund 10 bis 25 Minuten (geschätzt, ungeprüft).
