@@ -17,6 +17,20 @@ type Options struct {
 	ChunkCount int
 	// Nature sind die fest gesetzten Natur-Werte der Stufe (nature.go, B-891); fehlende würfelt der Generator aus dem Seed.
 	Nature NatureValues
+	// Lair sagt, ob die Stufe den Bau des Endbosses trägt (docs/rules/bosse.md § 1, B-981): nil = das Feld `lair` des
+	// Bioms (Level ohne Insel, Golden), sonst gilt der Wert in jedem Biom; die Insel setzt ihn nur für die tiefste Stufe.
+	Lair *bool
+	// HubSites sind die Hub- und Insel-Plätze der Welt (hub.sites und hub.islandSites, B-983); nil = die der Basis. Sie
+	// halten Zahlziele und Ruinen auf Abstand.
+	HubSites []HubSite
+}
+
+// hasLair: Die Stufe trägt den Bau des Endbosses (Options.Lair, sonst Biom.Lair).
+func (o Options) hasLair(b Biome) bool {
+	if o.Lair != nil {
+		return *o.Lair
+	}
+	return b.Lair
 }
 
 // slotIndex ist der Chunk-Index eines Platzes: +n liegt n Chunks rechts der Hub-Chunks, −n links davon.

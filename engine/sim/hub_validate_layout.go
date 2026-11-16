@@ -30,7 +30,7 @@ func zoneTargets(p SitePlacementData) []hubTarget {
 
 // fixedTargets: Burg, Hub- und Insel-Plätze (ohne Linien), Händler und Angebote, die es in Tiefe depth gibt
 // (deeper: es gibt eine tiefere Stufe), wie world_lines.go, island.go und merchant.go sie anlegen.
-func fixedTargets(h *HubData, depth int, deeper bool) []hubTarget {
+func fixedTargets(h *HubData, bs map[string]BuildingData, depth int, deeper bool) []hubTarget {
 	out := []hubTarget{{"castle", 0}}
 	if depth == h.Merchant.OnlyDepth {
 		out = append(out, hubTarget{"merchant buy", h.Merchant.BuyOffsetUnits},
@@ -41,7 +41,7 @@ func fixedTargets(h *HubData, depth int, deeper bool) []hubTarget {
 			continue
 		}
 		out = append(out, hubTarget{siteName(s), s.OffsetUnits})
-		for _, o := range buildings[s.Kind].Offers {
+		for _, o := range bs[s.Kind].Offers {
 			out = append(out, hubTarget{fmt.Sprintf("%s:%s", s.Kind, o.Kind), s.OffsetUnits + o.DX})
 		}
 	}
@@ -49,7 +49,7 @@ func fixedTargets(h *HubData, depth int, deeper bool) []hubTarget {
 }
 
 // eachLayout ruft fn für jede Tiefe der Biome (mit und ohne tiefere Stufe) auf.
-func eachLayout(h *HubData, fn func(desc string, all []hubTarget)) {
+func eachLayout(h *HubData, bs map[string]BuildingData, fn func(desc string, all []hubTarget)) {
 	var depths []int
 	for _, b := range biomes {
 		if !slices.Contains(depths, b.Depth) {
@@ -59,15 +59,15 @@ func eachLayout(h *HubData, fn func(desc string, all []hubTarget)) {
 	for _, depth := range depths {
 		for _, deeper := range []bool{true, false} {
 			desc := fmt.Sprintf("Tiefe %d (tiefer %v)", depth, deeper)
-			fn(desc, slices.Concat(fixedTargets(h, depth, deeper), zoneTargets(h.SitePlacement)))
+			fn(desc, slices.Concat(fixedTargets(h, bs, depth, deeper), zoneTargets(h.SitePlacement)))
 		}
 	}
 }
 
 // checkGaps: Zwei Zahlziele liegen ≥ 2 × payRangeUnits auseinander (kein Zahlziel überdeckt ein anderes), Treppen
 // ≥ stairsGapUnits zu jedem Zahlziel derselben Tiefe. Jedes Paar wird nur einmal gemeldet (erste Lage).
-func checkGaps(h *HubData) []HubFinding {
-	minGap := 2 * economy.PayRangeUnits
+func checkGaps(h *HubData, bs map[string]BuildingData, payRange float64) []HubFinding {
+	minGap := 2 * payRange
 	var out []HubFinding
 	seen := map[string]bool{}
 	report := func(rule, desc string, a, b hubTarget, limit float64) {
@@ -79,7 +79,7 @@ func checkGaps(h *HubData) []HubFinding {
 		out = append(out, HubFinding{rule, a.name + " / " + b.name, fmt.Sprintf("%v und %v nur %v Units auseinander, mindestens %v (%s)",
 			a.x, b.x, math.Abs(b.x-a.x), limit, desc)})
 	}
-	eachLayout(h, func(desc string, all []hubTarget) {
+	eachLayout(h, bs, func(desc string, all []hubTarget) {
 		sort.SliceStable(all, func(i, j int) bool { return all[i].x < all[j].x })
 		for i := 1; i < len(all); i++ {
 			if all[i].x-all[i-1].x < minGap {

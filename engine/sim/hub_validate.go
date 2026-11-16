@@ -82,11 +82,16 @@ func ValidateHubDataIn(h *HubData, world WorldDef) HubReport {
 	var out []HubFinding
 	out = append(out, checkHubLevels(h)...)
 	out = append(out, checkGates(h)...)
-	out = append(out, checkSiteKinds(h)...)
+	bs, payRange := buildings, economy.PayRangeUnits
+	if v := world.values; v != nil { // aufgelöste Welt: Offers und payRangeUnits aus ihrem Wertesatz (wie checkWorldHubSites)
+		bs, payRange = v.Buildings, v.Economy.PayRangeUnits
+	}
+	out = append(out, checkSiteKinds(h, bs)...)
+	out = append(out, checkSiteBounds(h)...)
 	placement := checkSitePlacement(h.SitePlacement)
 	out = append(out, placement...)
 	if len(placement) == 0 {
-		out = append(out, checkGaps(h)...)
+		out = append(out, checkGaps(h, bs, payRange)...)
 		out = append(out, validatePlanned(world, h)...)
 	}
 	return HubReport{Findings: out}
@@ -94,10 +99,11 @@ func ValidateHubDataIn(h *HubData, world WorldDef) HubReport {
 
 // validatePlanned prüft die geplanten Chunks aller Inseln der Welt (B-479): Eine Änderung, die eine Planung ungültig macht,
 // würde das Laden der Welt scheitern lassen und wird abgelehnt.
-func validatePlanned(world WorldDef, _ *HubData) []HubFinding {
+func validatePlanned(world WorldDef, h *HubData) []HubFinding {
 	var out []HubFinding
+	sites := h.LevelSites() // die Plätze des Kandidaten, wie CreateWorld sie dem Generator gibt (B-983)
 	for _, d := range world.Islands {
-		if err := checkPlannedChunks(d); err != nil {
+		if err := checkPlannedChunksWith(d, sites); err != nil {
 			out = append(out, HubFinding{RulePlanned, "Insel " + d.ID, err.Error()})
 		}
 	}
@@ -148,8 +154,8 @@ func checkGates(h *HubData) []HubFinding {
 
 // placeableKind: Arten aus data/buildings.json, die auf einem Hub- oder Insel-Platz stehen dürfen (Burg und
 // Mauer und Turm kommen aus Hub-Mitte und sitePlacement).
-func placeableKind(kind string) bool {
-	_, ok := buildings[kind]
+func placeableKind(bs map[string]BuildingData, kind string) bool {
+	_, ok := bs[kind]
 	return ok && kind != "castle" && !isLineKind(kind)
 }
 
@@ -157,14 +163,14 @@ func placeableKind(kind string) bool {
 func isLineKind(kind string) bool { return kind == "wall" || kind == "tower" }
 
 // checkSiteKinds: nur bekannte Arten; Pflichtplätze genau einmal, optionale höchstens einmal.
-func checkSiteKinds(h *HubData) []HubFinding {
+func checkSiteKinds(h *HubData, bs map[string]BuildingData) []HubFinding {
 	var out []HubFinding
 	count := map[string]map[int]int{}
 	for _, s := range allSites(h) {
 		switch {
 		case s.Kind == "castle" || isLineKind(s.Kind):
 			out = append(out, HubFinding{RuleKind, siteName(s), "gehört nicht in sites (Hub-Mitte bzw. sitePlacement)"})
-		case !placeableKind(s.Kind):
+		case !placeableKind(bs, s.Kind):
 			out = append(out, HubFinding{RuleKind, siteName(s), fmt.Sprintf("unbekannte Art %q", s.Kind)})
 		}
 		if count[s.Kind] == nil {
@@ -179,7 +185,7 @@ func checkSiteKinds(h *HubData) []HubFinding {
 		}
 	}
 	for _, kind := range slices.Sorted(maps.Keys(count)) {
-		if n := count[kind][-1] + count[kind][1]; placeableKind(kind) && !slices.Contains(requiredSiteKinds[:], kind) && n > 1 {
+		if n := count[kind][-1] + count[kind][1]; placeableKind(bs, kind) && !slices.Contains(requiredSiteKinds[:], kind) && n > 1 {
 			out = append(out, HubFinding{RuleOnePerBau, kind, fmt.Sprintf("höchstens ein Platz erwartet, gefunden %d", n)})
 		}
 	}

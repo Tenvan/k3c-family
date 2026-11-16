@@ -207,7 +207,6 @@ func TestInselwechselDaten(t *testing.T) {
 		}
 	}
 	bad := map[string][]byte{
-		"ohne Endboss": testWorld(testIsland("a", `,"depths":[0,1]`)),
 		"doppelt":      testWorld(testIsland("a", "") + "," + testIsland("a", "")),
 		"Faktor 0":     testWorld(testIsland("a", `,"depthScaling":{"hp":0,"damage":1,"speed":1}`)),
 		"Tiefe fehlt":  testWorld(testIsland("a", `,"depths":[4,9]`)),

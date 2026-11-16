@@ -133,7 +133,12 @@ func worldLevel(base data.FS, worlds fs.FS, in worldInput) (worldLevelReport, er
 		return worldLevelReport{}, err
 	}
 	key := strconv.Itoa(depth)
-	opts := level.Options{Planned: isl.PlannedChunks[key], ChunkCount: isl.ChunkCounts[key], Nature: isl.NatureAt(depth)}
+	vals, err := sim.ResolveWorldValues(base, func(w string) (sim.WorldDef, error) { return sim.LoadWorld(worlds, w) }, in.World)
+	if err != nil {
+		return worldLevelReport{}, err
+	}
+	lair := depth == isl.LairDepth() // der Bau liegt wie im Spiel in der tiefsten Stufe der Insel (B-981)
+	opts := level.Options{Planned: isl.PlannedChunks[key], ChunkCount: isl.ChunkCounts[key], Nature: isl.NatureAt(depth), HubSites: vals.Hub.LevelSites(), Lair: &lair}
 	layout, err := level.GenerateWith(b, in.Seed, opts)
 	if err != nil {
 		return worldLevelReport{}, fmt.Errorf("das Level ist nicht erzeugbar: %w", err)

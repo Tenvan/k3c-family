@@ -275,11 +275,11 @@ func TestEndbossDeterministisch(t *testing.T) {
 	}
 }
 
-// Daten: ein Endboss je Insel 1 in der Kristallhöhle mit Werten laut bosse.md § 1; kaputte Phasen oder Baue werden
+// Daten: der Endboss der Kristallhöhle (Tiefe 4, dazu je einer für Tiefe 0–3, B-981) mit Werten laut bosse.md § 1; kaputte Phasen oder Baue werden
 // beim Laden abgelehnt.
 func TestEndbossDaten(t *testing.T) {
 	b := endBoss(4)
-	if len(endBosses) != 1 || b == nil || b.ID != wardenID || b.HPFactor != 30 || len(b.Phases) != 3 ||
+	if len(endBosses) != 5 || b == nil || b.ID != wardenID || b.HPFactor != 30 || len(b.Phases) != 3 ||
 		b.Phases[2].BelowHPPercent != 25 || b.Phases[2].Tempo != 1.5 || b.Reward.Gold != 42 || b.Reward.Material != 250 {
 		t.Fatalf("Endbosse %+v", endBosses)
 	}

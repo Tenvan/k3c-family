@@ -93,6 +93,7 @@ type Gatherable struct {
 
 // EnemyData ist ein Eintrag aus data/enemies.json; Trait-Parameter in enemies_traits.go (gegner.md § 2).
 type EnemyData struct {
+	Name                     string // Anzeigename; übersteuerbar je Welt (overrides › enemies › <art> › name, B-984)
 	Tier                     string // standard, elite
 	HP, Damage, Speed, Range float64
 	Gold                     [2]int

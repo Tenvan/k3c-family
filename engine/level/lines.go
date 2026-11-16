@@ -36,8 +36,28 @@ type hubSite struct {
 	offset float64
 }
 
-// hubSites sind alle Hub- und Insel-Plätze aus data/hub.json.
+// HubSite ist ein Hub- oder Insel-Platz einer Welt (hub.sites, hub.islandSites, B-983): Art und Lage als Abstand zur
+// Hub-Mitte, links negativ. Der Generator bekommt die Plätze als Wert (Options.HubSites); engine/level importiert nichts
+// aus engine/sim.
+type HubSite struct {
+	Kind        string
+	OffsetUnits float64
+}
+
+// hubSites sind alle Hub- und Insel-Plätze aus data/hub.json: die Plätze der Basis, wenn eine Welt keine eigenen setzt.
 var hubSites = loadHubSites()
+
+// sitesOf wählt die Plätze einer Erzeugung oder Prüfung: die der Welt (own), ohne sie die der Basis.
+func sitesOf(own []HubSite) []hubSite {
+	if own == nil {
+		return hubSites
+	}
+	out := make([]hubSite, len(own))
+	for i, s := range own {
+		out[i] = hubSite{s.Kind, s.OffsetUnits}
+	}
+	return out
+}
 
 func loadHubSites() []hubSite {
 	type entry struct {

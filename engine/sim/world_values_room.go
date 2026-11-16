@@ -21,7 +21,7 @@ var dataFS fs.FS = data.Files
 // Skill-Katalog baseSkills werden geteilt), damit Tests, die eine Paket-Variable kurz ändern, den Stand sehen.
 func defaultValues() *WorldValues {
 	return &WorldValues{Buildings: buildings, Troops: troops, Economy: economy, Hub: hub, Monarch: monarch,
-		Enemies: enemyData, Waves: waves, Goals: goals, skills: baseSkills}
+		Enemies: enemyData, Waves: waves, Goals: goals, Events: nightEvents, skills: baseSkills}
 }
 
 // ResolveWorld liefert world mit ihrem aufgelösten Wertesatz, den CreateIslandIn, FromIslandSaveIn und NextIsland
@@ -38,6 +38,7 @@ func ResolveWorld(world WorldDef, lookup func(id string) (WorldDef, error)) (Wor
 	if err != nil {
 		return WorldDef{}, err
 	}
+	world.Skins = chainSkins(chain) // Kind überschreibt Eltern je Schlüssel (B-984)
 	world.values = defaultValues()
 	for _, w := range chain {
 		if len(w.Overrides) > 0 {
@@ -48,6 +49,9 @@ func ResolveWorld(world WorldDef, lookup func(id string) (WorldDef, error)) (Wor
 			world.values = &v
 			break
 		}
+	}
+	if err := checkWorldPlans(world); err != nil { // Planung gegen die Plätze der Welt (Basis oder Override)
+		return WorldDef{}, err
 	}
 	world.values.Combat = chainCombat(chain) // Kind überschreibt Eltern
 	return world, nil

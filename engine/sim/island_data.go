@@ -28,12 +28,14 @@ type IslandDef struct {
 	// Nature ist die Vorgabe der Insel für die Natur-Werte, NatureByDepth setzt je Tiefe fest (island_nature.go, B-891).
 	Nature        level.NatureValues
 	NatureByDepth map[string]level.NatureValues
+	// EndBoss ist die ID des Endbosses der Insel (data/bosses.json › endBosses, B-981); leer = der Endboss der tiefsten Stufe.
+	EndBoss string
 	// Story ist die Geschichte der Insel (story.go, B-965); leer = keine Zeilen.
 	Story IslandStory
 }
 
 // checkIsland prüft eine Insel in der Reihenfolge aus docs/rules/welten.md § 3: Name, Tiefen (vorhanden, bekannt,
-// einmalig), je Tiefe ein Miniboss, in der tiefsten der Endboss, Faktoren > 0, chunkCounts, plannedChunks. ID und
+// einmalig), je Tiefe ein Miniboss, Faktoren > 0, chunkCounts, Endboss und Bau der tiefsten Stufe (island_endboss.go), plannedChunks. ID und
 // Eindeutigkeit prüft checkWorld.
 func checkIsland(d IslandDef) error {
 	if d.Name == "" {
@@ -55,31 +57,32 @@ func checkIsland(d IslandDef) error {
 			return fmt.Errorf("kein Miniboss in Tiefe %d", depth)
 		}
 	}
-	if deepest := slices.Max(d.Depths); endBoss(deepest) == nil {
-		return fmt.Errorf("kein Endboss in der tiefsten Stufe %d", deepest)
-	}
 	if s := d.DepthScaling; s.HP <= 0 || s.Damage <= 0 || s.Speed <= 0 {
 		return fmt.Errorf("depthScaling braucht Faktoren > 0")
 	}
 	if err := checkChunkCounts(d); err != nil {
 		return err
 	}
-	if err := checkPlannedChunks(d); err != nil {
+	if err := checkEndBoss(d); err != nil {
+		return err
+	}
+	// Platz-unabhängig (leere Plätze): Die Plätze kennt erst der Wertesatz der Welt, ResolveWorld prüft die Planung danach
+	// gegen sie (checkWorldPlans, B-983).
+	if err := checkPlannedChunksWith(d, []level.HubSite{}); err != nil {
 		return err
 	}
 	return checkNature(d)
 }
 
-// checkPlannedChunks prüft die geplanten Chunks jeder Tiefe unabhängig vom Seed (level.ValidatePlanFor) gegen die
-// Mauerlinien lines und die Chunk-Anzahl der Tiefe; Fehler nennen Tiefe und Platz (der Aufrufer ergänzt die Insel).
-func checkPlannedChunks(d IslandDef) error {
+// checkPlannedChunksWith prüft wie checkPlannedChunks gegen die Hub- und Insel-Plätze sites einer Welt (nil = Basis, B-983).
+func checkPlannedChunksWith(d IslandDef, sites []level.HubSite) error {
 	for _, key := range slices.Sorted(maps.Keys(d.PlannedChunks)) {
 		plan := d.PlannedChunks[key]
 		depth, err := strconv.Atoi(key)
 		if err != nil || strconv.Itoa(depth) != key || !slices.Contains(d.Depths, depth) {
 			return fmt.Errorf("plannedChunks: Tiefe %q ist keine Tiefe der Insel", key)
 		}
-		if err := level.ValidatePlanFor(biomeForDepth(depth), plan, d.countAt(depth)); err != nil {
+		if err := level.ValidatePlanWith(biomeForDepth(depth), plan, d.countAt(depth), sites); err != nil {
 			return fmt.Errorf("plannedChunks Tiefe %d: %w", depth, err)
 		}
 	}

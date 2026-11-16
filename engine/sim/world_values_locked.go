@@ -8,13 +8,14 @@ import (
 )
 
 // Nicht übersteuerbare Felder (docs/rules/welten.md § 1.3, B-692): Der Level-Generator (engine/level) liest diese Werte
-// aus den eingebetteten Dateien, nicht aus dem Wertesatz der Welt. Ein Override darauf ließe Level (Lage der Plätze,
+// aus den eingebetteten Dateien, nicht aus dem Wertesatz der Welt (hub.sites und hub.islandSites bekommt er seit B-983
+// als Wert, Options.HubSites). Ein Override darauf ließe Level (Lage der Plätze,
 // Zahlziele, Ruinen-Planung) und Simulation auseinanderlaufen; es wird beim Laden mit Pfad abgelehnt (fail closed).
 
 // lockedFields sind je Basis-Datei die Felder der obersten Ebene, die keine Welt übersteuert.
 var lockedFields = map[string][]string{
 	"economy": {"payRangeUnits"},
-	"hub":     {"sites", "islandSites", "sitePlacement"},
+	"hub":     {"sitePlacement"},
 }
 
 // lockedPlantation: `buildings.<id>.plantation.stripUnits` prüft die Ruinen-Planung gegen die Basis (level/ruins.go).

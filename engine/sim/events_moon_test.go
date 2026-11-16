@@ -203,19 +203,23 @@ func TestMondEventsAusDenDaten(t *testing.T) {
 		t.Error("Werte stammen aus data/events.json")
 	}
 	bad := []NightEvent{{ID: "fullMoon", EveryNights: 7, Kind: "wolf", Elite: "unbekannt"}, {ID: "bloodMoon", EveryNights: 13, DamageFactor: 1, DropFactor: 1}, {ID: "merchantRaid", EveryVisits: 4}}
-	if checkNightEvents(bad) == nil {
+	if checkNightEvents(bad, enemyData) == nil {
 		t.Error("unbekannter Elite-Gegner wird abgelehnt")
 	}
 	bad[0].Elite = "alphaWolf"
-	if err := checkNightEvents(bad); err != nil {
+	if err := checkNightEvents(bad, enemyData); err != nil {
 		t.Fatalf("gültige Events abgelehnt: %v", err)
 	}
-	bad[1].EveryNights = 0
-	if checkNightEvents(bad) == nil {
-		t.Error("Rhythmus 0 wird abgelehnt")
+	bad[1].EveryNights, bad[2].EveryVisits = 0, 0
+	if err := checkNightEvents(bad, enemyData); err != nil {
+		t.Errorf("Abstand 0 heißt aus (B-982): %v", err)
 	}
-	bad[1].EveryNights, bad[2].EveryVisits = 13, 0
-	if checkNightEvents(bad) == nil {
-		t.Error("merchantRaid ohne everyVisits wird abgelehnt")
+	bad[1].EveryNights = -1
+	if checkNightEvents(bad, enemyData) == nil {
+		t.Error("negativer Rhythmus wird abgelehnt")
+	}
+	bad[1].EveryNights, bad[2].EveryVisits = 13, -1
+	if checkNightEvents(bad, enemyData) == nil {
+		t.Error("negatives everyVisits wird abgelehnt")
 	}
 }

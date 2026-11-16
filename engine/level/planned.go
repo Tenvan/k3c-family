@@ -41,10 +41,11 @@ func (c *PlannedChunk) UnmarshalJSON(raw []byte) error {
 
 // geometry beschreibt die Länge eines Bioms in Chunks, gegen die eine Planung geprüft wird.
 type geometry struct {
-	cw      float64 // Chunk-Breite
-	hubHalf float64 // halbe Breite der Hub-Chunks
-	usable  int     // planbare Plätze je Seite (ohne Ausgang und Rand)
-	count   int     // eingestellte Chunk-Anzahl; 0 = kürzeste Länge des Bioms
+	cw      float64   // Chunk-Breite
+	hubHalf float64   // halbe Breite der Hub-Chunks
+	usable  int       // planbare Plätze je Seite (ohne Ausgang und Rand)
+	count   int       // eingestellte Chunk-Anzahl; 0 = kürzeste Länge des Bioms
+	sites   []hubSite // Hub- und Insel-Plätze, gegen die Ruinen geprüft werden
 }
 
 // geometryOf rechnet wie `frame` im Generator: mit der eingestellten Anzahl count, ohne sie (0) mit der kleinsten Länge.
@@ -58,7 +59,7 @@ func geometryOf(b Biome, count int) geometry {
 			n++
 		}
 	}
-	return geometry{cw: cw, hubHalf: float64(hubChunks) * cw / 2, usable: (n-hubChunks)/2 - 1, count: count}
+	return geometry{cw: cw, hubHalf: float64(hubChunks) * cw / 2, usable: (n-hubChunks)/2 - 1, count: count, sites: hubSites}
 }
 
 // beyond ist der Grund für einen Platz jenseits der geprüften Länge.
@@ -132,6 +133,11 @@ func ValidatePlan(b Biome, plan []PlannedChunk) error {
 // ValidatePlanFor prüft wie ValidatePlan, aber gegen die Chunk-Anzahl count (Options.ChunkCount, geplante-chunks.md
 // § 7) statt gegen die kürzeste Länge; count 0 ist ValidatePlan.
 func ValidatePlanFor(b Biome, plan []PlannedChunk, count int) error {
+	return ValidatePlanWith(b, plan, count, nil)
+}
+
+// ValidatePlanWith prüft wie ValidatePlanFor gegen die Hub- und Insel-Plätze sites einer Welt (nil = Basis, B-983).
+func ValidatePlanWith(b Biome, plan []PlannedChunk, count int, sites []HubSite) error {
 	if err := checkCount(b, count); err != nil {
 		return err
 	}
@@ -139,6 +145,7 @@ func ValidatePlanFor(b Biome, plan []PlannedChunk, count int) error {
 		return nil
 	}
 	g := geometryOf(b, count)
+	g.sites = sitesOf(sites)
 	seen, spots := make(map[int]bool, len(plan)), make(map[spotKey]bool, len(plan))
 	var all, allRuins []placed
 	for _, c := range plan {

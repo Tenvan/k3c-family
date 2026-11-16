@@ -22,7 +22,7 @@ WZ18.6 (Welten Editor). Bis WZ18.2 liegt die Standard-Welt noch als `data/island
 ### 1.1 Overrides: Format und Merge
 
 `overrides` ist ein Objekt **je Basis-Datei** (Schlüssel = Dateiname ohne `.json`), erlaubt sind `buildings`, `ship`, `troops`,
-`economy`, `hub`, `monarch`, `enemies`, `waves`, `goals`. Jeder Eintrag hat **dieselbe Struktur wie die Basis-Datei** und nennt nur
+`economy`, `hub`, `monarch`, `enemies`, `waves`, `goals`, `events` (Abstand, Stärke und Lohn je Event, Abstand 0 = aus, B-982; `bosse.md` § 2). Jeder Eintrag hat **dieselbe Struktur wie die Basis-Datei** und nennt nur
 die geänderten Felder. Entschieden von Claude (autonom, B-680):
 
 | Wert in der Basis | Override | Ergebnis |
@@ -67,6 +67,7 @@ wird geprüft; die Meldung nennt die Welt, deren Override den Fehler auslöst. M
 | Liste als Ganzes | `… › data/buildings.json › wall.levels: Liste von Objekten je Eintrag übersteuern ({"<id oder Index>": {…}}), ist Liste` |
 | feste Liste falsch lang | `… › data/enemies.json › wolf.gold: genau 2 Werte erwartet, sind 1` |
 | Schreibweise | `… › data/buildings.json › wall.HP: Schreibweise wie in der Basis: "hp"` |
+| Event-Regel verletzt | `data/worlds/nordmeer.json: overrides: data/events.json: bloodMoon braucht Faktoren > 0` (ebenso: Abstand < 0, unbekannte Gegnerart) |
 | Basis-Regel verletzt | `data/worlds/nordmeer.json: overrides: data/waves.json: perExtraPlayer und bossHpPerExtraPlayer dürfen nicht negativ sein` |
 | Eltern-Welt unbekannt | `data/worlds/nordmeer.json: extends: Eltern-Welt "eis" unbekannt: …` |
 | Zyklus | `data/worlds/b.json: extends: Zyklus b → a → b` |
@@ -83,17 +84,28 @@ Der Level-Generator (`engine/level`) liest einige Werte aus den eingebetteten Ba
 Ein Override darauf ließe Level (Lage der Plätze, Zahlziele, Ruinen-Planung) und Simulation auseinanderlaufen; deshalb lehnt
 die Prüfung (§ 1.2) es beim Laden mit Pfad ab, Meldung `… › data/economy.json › payRangeUnits: nicht übersteuerbar (der
 Level-Generator liest die Basis, welten.md § 1.3)`. Entschieden von Claude (B-692): sperren statt durchreichen, weil das
-Durchreichen den Level-Generator und seine Planungsprüfung je Welt umbauen würde.
+Durchreichen den Level-Generator und seine Planungsprüfung je Welt umbauen würde (für `hub.sites` und `hub.islandSites`
+seit B-983 aufgehoben, s. u.).
 
 | Feld | Leser in der Basis |
 |---|---|
 | `economy.payRangeUnits` | Abstand der Zahlziele (`level/lines.go`) |
-| `hub.sites`, `hub.islandSites` | Hub- und Insel-Plätze (`level/lines.go`, Ruinen-Lage `level/ruins.go`) |
 | `hub.sitePlacement` | Mauer- und Turmplätze, Freiraum (`level/sites.go`, `sim/world_lines.go`, `level/guards.go`, `level/planned.go`) |
 | `buildings.<id>.plantation.stripUnits` | Randabstand einer Ruine (`level/ruins.go`) |
 
 Die **HP einer Ruine** folgen dagegen dem Wertesatz: Start-HP = `hpShare` (`data/ruins.json`) × HP der Art in der Welt.
 Umsetzung: `engine/sim/world_values_locked.go`.
+
+**Hub- und Insel-Plätze sind übersteuerbar** (B-983, hebt B-692 für diese zwei Felder auf): `hub.sites` und `hub.islandSites`
+gelten im Wertesatz der Welt. Der Generator bekommt sie als Wert (`level.Options.HubSites`, nil = Basis; `engine/level`
+importiert nichts aus `engine/sim`), die Stufe liest sie aus demselben Wertesatz (`hubOf`); Zahlziele, Mauer- und Turm-Plätze
+und die Ruinen-Lage (`level/ruins.go`) halten Abstand zu den Plätzen der Welt, die Planungsprüfung der Inseln
+(`level.ValidatePlanWith`) rechnet mit ihnen. Geprüft beim Laden (fail closed, `engine/sim/world_hub_sites.go`): bekannte Art,
+Pflichtplätze `workshop`, `stairsDown`, `stairsUp` je genau einmal, ein Platz je Bau, Hub-Stufe in 1 … Anzahl `levels`,
+Lage innerhalb der halben Hub-Breite, Abstand zweier Zahlziele ≥ 2 × `payRangeUnits` (Treppen ≥ 8 Units zu jedem Zahlziel).
+Meldung z. B. `data/worlds/nordmeer.json: overrides: data/hub.json: hub-breite: smithy@+55: offsetUnits 55 liegt nicht innerhalb
+der Hub-Breite (±50)`. Passt eine geplante Chunk-Planung einer Insel nach der Änderung nicht mehr, meldet die Auflösung der Welt
+Insel, Tiefe und Platz. `hub.sitePlacement` bleibt gesperrt.
 
 ## 2. Format
 
@@ -110,6 +122,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `overrides` | nein | Objekt | Übersteuerte Basis-Werte je Basis-Datei (§ 1.1); fehlt es oder `{}`, gilt die Basis (bzw. die Eltern-Welt). |
 | `combat` | nein | Objekt | Kampfvariante der Welt (`kampf.md` § 3): `mode` (`groups` Standard oder `general`) und `groupSize` (ganze Zahl ≥ 1, Standard 5, nur bei `groups`); fehlt es, gilt `groups`/5. |
 | `story` | nein | Objekt | Geschichte der Welt (§ 2.2): `lexicon`, `start`, `etappen`, `end`, `bottles`; fehlt es, gibt es keine Zeilen der Welt. `extends` vererbt es nicht. |
+| `skins` | nein | Objekt | Aussehen (§ 2.3): Basis-Asset → Ersatz-Asset, je `<gruppe>/<asset>`; fehlt es, gilt überall das Basis-Asset. `extends` mischt je Schlüssel (Kind gewinnt). |
 | `islands` | ja | Liste | Inseln in Spielreihenfolge (Insel 1 zuerst), mindestens eine. |
 
 **Insel** (Eintrag in `islands`, Felder wie heute in `data/islands.json`, Reihenfolge beim Schreiben wie in der Tabelle):
@@ -124,6 +137,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `depthScaling` | ja | Objekt | `hp`, `damage`, `speed`: Basen der Potenz je Tiefe (`stufen.md` § 1, Skalierung), alle > 0. |
 | `plannedChunks` | nein | Objekt | Geplante Chunks je Tiefe (`geplante-chunks.md` § 1–5); fehlt oder `{}` = reiner Zufall. |
 | `chunkCounts` | nein | Objekt | Chunk-Anzahl je Tiefe (`geplante-chunks.md` § 7); ohne Eintrag gilt die Länge des Bioms. |
+| `endBoss` | nein | Text | ID eines Endbosses aus `data/bosses.json › endBosses` (B-981); fehlt das Feld, gilt der Endboss der **tiefsten** Tiefe der Insel. Der **Bau** des Endbosses liegt immer in der tiefsten Stufe, in jedem Biom (`bosse.md` § 1). |
 | `nature` | nein | Objekt | Natur-Werte als Vorgabe der Insel (§ 2.1): `{traits, weights}`; gilt in jeder Stufe, deren Biom die Eigenschaft hat. |
 | `natureByDepth` | nein | Objekt | Natur-Werte je Tiefe (§ 2.1), gewinnen über `nature`; nur Eigenschaften des Bioms der Tiefe. |
 
@@ -224,6 +238,18 @@ Beispiel (Ausschnitt `data/worlds/sengoku.json`; Texte nur als Muster, die echte
   "done": ["MASKE nu, KRONE oru sen."] } } ]
 ```
 
+### 2.3 Skins und Gegner-Varianten (B-984)
+
+`skins` ordnet einem Basis-Asset ein Ersatz-Asset zu, beide in der Form von `data/paper.json` (`gegner/wolf`, `objekte/tanne`):
+`"skins": { "gegner/wolf": "gegner/ninja" }`. Die Engine prüft nur die Form (§ 3) und reicht die Zuordnung in `WorldDef.Skins`
+weiter; sie liest keine Grafik, prüft nicht, ob das Asset existiert, und rechnet nicht damit. Das Spiel zeichnet das Ersatz-Asset
+und fällt bei fehlender Datei auf das Basis-Asset zurück (WE6.2). Nach `ResolveWorld` trägt `Skins` die Zuordnung der ganzen Kette
+(Eltern zuerst, das Kind überschreibt je Schlüssel).
+
+Eine **Gegner-Variante** hat keine eigene ID: Basisart (alle Werte), optional Werte und `name` über `overrides › enemies › <art>`
+(`name` ist übersteuerbar, aber nie leer), Aussehen über `skins`. Beispiel Sengoku: `"skins": {"gegner/wolf": "gegner/ninja"}` und
+`"overrides": {"enemies": {"wolf": {"name": "Ninja"}}}` – der Wolf heißt Ninja, hat Wolf-Werte und das Ninja-Asset.
+
 ## 3. Prüfung beim Laden
 
 Die Prüfung gilt für **jede** Welt-Datei, gleich ob eingebettet, im Dev-Mode von der Platte gelesen oder im Welten Editor als
@@ -237,11 +263,12 @@ geladen, nichts wird repariert.
 |---|---|---|
 | Datei ist JSON nach § 2: keine unbekannten Felder, alle Pflichtfelder da; `id` passt zum Dateinamen; `name` nicht leer; mindestens eine Insel. | Fehler in Hand- oder Prompt-Entwürfen fallen sofort auf. | `data/worlds/<id>.json` |
 | Je Insel: `id` nach § 4 und eindeutig in der Welt; `name` nicht leer; `depths` nicht leer, jede Tiefe bekannt und höchstens einmal. | Die Insel-ID ist der Verweis im Spielstand (§ 5). | `data/biomes/*.json` |
-| Je Insel: jede Tiefe hat einen **Miniboss**, die **tiefste** Tiefe hat einen **Endboss**. Heute gibt es den Endboss nur in Tiefe 4: jede Insel braucht Tiefe 4. | Jede Stufe hat ihr Ziel, jede Insel ihr Ende (`stufen.md` § 3). | `data/bosses.json` |
+| Je Insel: jede Tiefe hat einen **Miniboss**. Der **Endboss** ist `endBoss` (eine ID aus `endBosses`, kein Miniboss), ohne Feld der Endboss der **tiefsten** Tiefe (`endBosses` kennt die Tiefen 0 bis 4, B-981). Die tiefste Stufe trägt den **Bau**: Ihr Biom muss ihn samt Camp-Abstand tragen (`level.CheckLairFit`, mit der Inselgröße aus `chunkCounts`, sonst der kürzesten Länge). | Jede Stufe hat ihr Ziel, jede Insel ihr Ende (`stufen.md` § 3), in dem Biom, das zu ihrem Thema passt. | `data/bosses.json`, `data/biomes/*.json` |
 | Je Insel: `etappe` ab 1, über die Liste lückenlos (die erste Insel hat Etappe 1, jede weitere dieselbe oder um 1 höher) und nicht fallend. Jede Insel braucht einen Hafen, außer der einzigen Insel der letzten Etappe (B-961). | Jede Etappe öffnet erst nach der vorigen; ein Ziel ohne Hafen ließe das Schiff stranden. | – |
 | Je Insel: `depthScaling` mit `hp`, `damage`, `speed` jeweils > 0. | Keine Gegner mit 0 HP oder Stillstand. | – |
 | `chunkCounts`: Schlüssel ist eine Tiefe der Insel (Dezimalzahl ohne führende Null), Wert eine Inselgröße aus der Tabelle. | `geplante-chunks.md` § 7. | `data/island-sizes.json` |
 | `plannedChunks`: Schlüssel ist eine Tiefe der Insel; die Planung besteht die Prüfung gegen die Mauerlinien und die Chunk-Anzahl der Tiefe, unabhängig vom Seed (`level.ValidatePlanFor`). | `geplante-chunks.md` § 5. | `data/biomes/*.json` |
+| `skins` (§ 2.3, B-984): ein Objekt aus Text-Paaren; Schlüssel und Wert je `<gruppe>/<asset>` (a-z, 0-9, -, _); Gruppe links und rechts gleich; kein Verweis auf sich selbst. Geprüft in Schlüssel-Reihenfolge, die erste Verletzung wird gemeldet; ob das Asset existiert, prüft die Engine nicht. | Ein Tippfehler fällt beim Laden auf; die Engine bleibt frei von Grafik. | – |
 | `story` der Welt und jeder Insel (§ 2.2, B-965/R4): keine unbekannten Felder; `lexicon` höchstens so groß wie die Obergrenze; je Eintrag 1 bis 2 Zeilen, keine leer, keine länger als die Obergrenze (in Zeichen, nicht Bytes); jedes Kunstwort steht im `lexicon`; je Zeile 2 bis 3 echte Wörter; jede Etappen-Nummer in `etappen` hat mindestens eine Insel. Geprüft wird nach den Inseln, in der Reihenfolge `lexicon`, `start`, `etappen` (aufsteigend), `end`, `bottles`, dann je Insel `arrival`, `boss`, `done`; je Zeile: leer, Länge, Kunstwörter, Anzahl echter Wörter. | Die Zeilen bleiben kurz und am TV lesbar; ein Tippfehler im Kunstwort fällt beim Laden auf, nicht erst im Spiel. | `data/story.json` (Obergrenzen, vorläufig: Zeile 64 Zeichen, Wortschatz 24 Wörter; angelegt in GS1.2) |
 
 **Fehlermeldungen** nennen Datei (und damit Welt), Insel, Tiefe und Platz, soweit vorhanden, im Muster
@@ -255,13 +282,17 @@ geladen, nichts wird repariert.
 | Welt ohne Insel | `data/worlds/nordmeer.json: keine Insel` |
 | ID ungültig | `data/worlds/nordmeer.json: Insel "Insel 2": id ungültig (a-z, 0-9, -, höchstens 32 Zeichen)` |
 | Insel doppelt | `data/worlds/nordmeer.json: Insel island1 doppelt` |
-| kein Endboss | `data/worlds/nordmeer.json: Insel insel3: kein Endboss in der tiefsten Stufe 2` |
+| kein Endboss in der tiefsten Stufe | `data/worlds/nordmeer.json: Insel insel3: kein Endboss in der tiefsten Stufe 2` |
+| `endBoss` unbekannt | `data/worlds/nordmeer.json: Insel insel3: endBoss "x" unbekannt (erlaubt: forestChieftain, caveColossus, …)` |
+| `endBoss` ist ein Miniboss | `data/worlds/nordmeer.json: Insel insel3: endBoss "trollKing" ist ein Miniboss (erlaubt: …)` |
+| Biom trägt den Bau nicht | `data/worlds/nordmeer.json: Insel insel3: bau in der tiefsten Stufe 2: biom mine: nur 0 Chunks mit 80 Units Abstand zum Bau, 1 Camp(s) brauchen Platz (Inselgröße 4 Chunks)` |
 | Tiefe unbekannt | `data/worlds/nordmeer.json: Insel eisinsel: unbekannte Tiefe 5` (vor dem Endboss geprüft, siehe oben) |
 | kein Miniboss | `data/worlds/nordmeer.json: Insel eisinsel: kein Miniboss in Tiefe 3` (heute hat jede Tiefe 0–4 einen) |
 | Etappe falsch | `data/worlds/nordmeer.json: Insel eisinsel: etappe 3 lässt Etappe 2 aus (lückenlos ab 1)`, `… etappe 1 fällt unter die Etappe 2 der Insel davor (nicht fallend)`, `… etappe 0 ungültig (mindestens 1)` |
 | Faktor ≤ 0 | `data/worlds/nordmeer.json: Insel eisinsel: depthScaling braucht Faktoren > 0` |
 | Größe falsch | `data/worlds/nordmeer.json: Insel eisinsel: chunkCounts Tiefe 0: die Chunk-Anzahl 12 ist keine Inselgröße (gültig: 16, 24, …)` |
 | Planung falsch | `data/worlds/nordmeer.json: Insel eisinsel: plannedChunks Tiefe 0: auf Platz -9: …` |
+| Skins: Form, Gruppe, Selbstverweis | `data/worlds/sengoku.json: skins › gegner/wolf: Ersatz-Asset "ninja" ist kein <gruppe>/<asset>`, `… wechselt die Gruppe (gegner → objekte)`, `… verweist auf sich selbst` |
 | Geschichte: unbekanntes Feld | `data/worlds/sengoku.json: story: unbekanntes Feld "intro"`, `… Insel island1: story: unbekanntes Feld "ende"` |
 | Geschichte: Wortschatz zu groß | `data/worlds/sengoku.json: story.lexicon: 30 Wörter (höchstens 24)` |
 | Geschichte: Anzahl Zeilen | `data/worlds/sengoku.json: story.start: 3 Zeilen (1 bis 2)` |
@@ -377,7 +408,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 6 der Session W
 ## 9. Offen
 
 - Obergrenze n der Inseln je Welt und Inhalt weiterer Inseln (`stufen.md` § 7), Variante „Ebenen“.
-- Endbosse in anderen Tiefen als 4 (heute muss jede Insel Tiefe 4 haben, § 3); neue Bosse sind Nicht-Ziel von B-488.
+- Eigene Grafik der Endbosse der Tiefen 0–3 (bis dahin das Asset der Basisart, B-993), mehrere Endbosse je Insel.
 - Geschichte (B-965), Defaults **vorläufig**, von 🧑 bei der Freigabe bestätigt: „Abschluss einer Etappe“ ist die Etappe
   der Welt (§ 6.1); „vor dem Endboss“ ist der Moment, in dem er ausgelöst wird (`bossSpawned`); echte Wörter deutsch und
   unübersetzt; Zeilen über Funktionen statt neuer Ereignisse; Einblendung je Spielerhälfte (B-974).

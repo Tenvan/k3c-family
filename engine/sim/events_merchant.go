@@ -9,8 +9,8 @@ func merchantRaid() *NightEvent { return findEvent(nightEvents, "merchantRaid") 
 
 // merchantRaidStart: nach der Ankunft (merchantDawn); ohne Insel oder außerhalb des Rhythmus kein Überfall.
 func merchantRaidStart(w *World) {
-	raid := merchantRaid()
-	if w.island == nil || w.Merchant == nil || w.island.MerchantVisits%raid.EveryVisits != 0 {
+	raid := w.night("merchantRaid")
+	if w.island == nil || w.Merchant == nil || raid.EveryVisits <= 0 || w.island.MerchantVisits%raid.EveryVisits != 0 { // 0 = aus
 		return
 	}
 	raidMerchant(w)
@@ -18,7 +18,7 @@ func merchantRaidStart(w *World) {
 
 // raidMerchant: Der Besuch wird überfallen, eine Welle der Stufe kommt dazu (auch Dev-Aktion event, dev_combat.go).
 func raidMerchant(w *World) {
-	raid := merchantRaid()
+	raid := w.night("merchantRaid")
 	w.Merchant.Raid = true
 	size, hp, damage := w.island.waveFactors()
 	queueWave(w, planWave(w.values(), w.Biome, max(w.Wave, 1), w.rng, w.Portals, w.Cycle.Phase == "night", size), hp, damage)
@@ -30,7 +30,7 @@ func merchantRaidEnd(w *World, protected bool) {
 	if !w.Merchant.Raid {
 		return
 	}
-	raid := merchantRaid()
+	raid := w.night("merchantRaid")
 	reward := 0
 	if protected {
 		reward, _ = addStockCapped(w, w.Merchant.Resource, raid.RewardMaterial)

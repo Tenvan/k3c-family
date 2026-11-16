@@ -6,6 +6,7 @@ import (
 	"maps"
 	"math"
 	"slices"
+	"strings"
 
 	"k3c/data"
 )
@@ -32,6 +33,9 @@ func loadEnemies(fsys fs.FS, dst *map[string]EnemyData) error {
 		return err
 	}
 	for _, kind := range slices.Sorted(maps.Keys(v)) {
+		if strings.TrimSpace(v[kind].Name) == "" {
+			return fmt.Errorf("data/enemies.json: %s: name fehlt oder ist leer", kind)
+		}
 		for _, t := range v[kind].Traits {
 			if !slices.Contains(knownTraits, t) {
 				return fmt.Errorf("data/enemies.json: %s: unbekanntes Trait %q", kind, t)

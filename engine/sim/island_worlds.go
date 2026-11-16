@@ -36,6 +36,8 @@ type WorldDef struct {
 	Overrides map[string]json.RawMessage
 	// Story ist die Geschichte der Welt (story.go, B-965); leer = keine Zeilen. `extends` vererbt sie nicht.
 	Story WorldStory
+	// Skins: Basis-Asset → Ersatz-Asset (world_skins.go, B-984); nach ResolveWorld mit denen der Eltern gemischt.
+	Skins map[string]string
 	// values: der aufgelöste Wertesatz aus ResolveWorld (world_values_room.go); nil = beim Anlegen auflösen (valuesOf).
 	values *WorldValues
 }
@@ -116,6 +118,7 @@ type rawWorld struct {
 	Combat    *rawCombat                 `json:"combat"`
 	Islands   *[]json.RawMessage         `json:"islands"`
 	Story     json.RawMessage            `json:"story"`
+	Skins     json.RawMessage            `json:"skins"`
 }
 
 type rawIsland struct {
@@ -126,6 +129,7 @@ type rawIsland struct {
 	DepthScaling  json.RawMessage                 `json:"depthScaling"`
 	PlannedChunks map[string][]level.PlannedChunk `json:"plannedChunks"`
 	ChunkCounts   map[string]int                  `json:"chunkCounts"`
+	EndBoss       string                          `json:"endBoss"`
 	Nature        json.RawMessage                 `json:"nature"`
 	NatureByDepth map[string]json.RawMessage      `json:"natureByDepth"`
 	Story         json.RawMessage                 `json:"story"`
@@ -140,7 +144,7 @@ type rawScaling struct {
 // decodeWorld liest den Kopf der Welt streng und prüft Pflichtfelder und die ID; die Inseln bleiben roh.
 func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	var v rawWorld
-	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands", "story"); err != nil {
+	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "overrides", "combat", "islands", "story", "skins"); err != nil {
 		return WorldDef{}, nil, err
 	}
 	switch {
@@ -171,6 +175,9 @@ func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	if w.Story, err = decodeWorldStory(v.Story); err != nil {
 		return WorldDef{}, nil, err
 	}
+	if w.Skins, err = decodeWorldSkins(v.Skins); err != nil {
+		return WorldDef{}, nil, err
+	}
 	return w, *v.Islands, nil
 }
 
@@ -181,7 +188,7 @@ func decodeIslands(islands []json.RawMessage) ([]IslandDef, error) {
 	for i, raw := range islands {
 		var r rawIsland
 		var d IslandDef
-		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth", "story")
+		err := strictDecode(raw, &r, "id", "name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "endBoss", "nature", "natureByDepth", "story")
 		if err == nil {
 			d, err = r.def()
 			d.Etappe = r.etappe(i + 1)
@@ -301,7 +308,7 @@ func (r rawIsland) def() (IslandDef, error) {
 	if missing != "" {
 		return IslandDef{}, missingField(missing)
 	}
-	d := IslandDef{ID: *r.ID, Name: *r.Name, Depths: *r.Depths, PlannedChunks: r.PlannedChunks, ChunkCounts: r.ChunkCounts}
+	d := IslandDef{ID: *r.ID, Name: *r.Name, Depths: *r.Depths, PlannedChunks: r.PlannedChunks, ChunkCounts: r.ChunkCounts, EndBoss: r.EndBoss}
 	d.DepthScaling.HP, d.DepthScaling.Damage, d.DepthScaling.Speed = *s.HP, *s.Damage, *s.Speed
 	var err error
 	if d.Nature, err = decodeNature(r.Nature, "nature"); err != nil {

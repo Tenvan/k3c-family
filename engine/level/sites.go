@@ -218,7 +218,7 @@ func (z *zonePlacer) add(kind string, d float64) {
 // Ereignisse, Portale, Ausgang und Bau.
 func (g *gen) blockedXs(entities []Entity) []float64 {
 	var out []float64
-	for _, h := range hubSites {
+	for _, h := range g.sites {
 		out = append(out, g.hub+h.offset)
 	}
 	for _, e := range entities {
