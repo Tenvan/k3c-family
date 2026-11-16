@@ -65,7 +65,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU2 | CLI | RSU | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | – | bereit | `geplant/RU2-spike-schlanker-rust-client/` |
 | RU3 | SIM | RSU | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | – | Entwurf | `geplant/RU3-rng-zahlen-daten/` |
 | RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | Entwurf | `geplant/RU4-plattform-fenster-eingabe-ton/` |
 | RU5 | CLI | RSU | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | – | Entwurf | `geplant/RU5-rig-in-rust/` |
@@ -444,3 +443,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | ST2 | Stresstests im Spielmenü (Testing) | `erledigt/ST2-stresstests-im-menue/` |
 | RU0 | Ruckler im Go-Spiel messen: GC, Bildtakt, Laden (Gate G0) | `erledigt/RU0-ruckler-im-go-spiel-messen/` |
 | RU1 | Rust-Workspace, Toolchain, Taskfile und CI | `erledigt/RU1-rust-workspace-toolchain/` |
+| RU2 | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | `erledigt/RU2-spike-schlanker-rust-client/` |

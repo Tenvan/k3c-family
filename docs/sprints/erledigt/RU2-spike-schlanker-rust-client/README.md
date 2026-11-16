@@ -1,6 +1,6 @@
 # RU2 · CLI · Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1)
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -78,6 +78,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-16, Review RU2.4: AC-01 bis AC-04 erfüllt (Plattform-Kern, Grafik laden, Demo, Messbericht `docs/messung/rust-client-1.md`). Messung auf belastetem Rechner: Median 60 Bilder/s stabil, späte Bilder nicht lastabhängig (vermutet: Störung durch parallele Sessions).
-**AC-05 offen:** Ralf prüft `dist/k3c-rust-demo/start.cmd` auf PC und Notebook (ruckelfrei ja/nein), Eintrag in RU2.4 › Ergebnis; Messung auf ruhigem Rechner wiederholen.
+2026-11-16, Review RU2.4: AC-01 bis AC-04 erfüllt (Plattform-Kern, Grafik laden, Demo, Messbericht `docs/messung/rust-client-1.md`). **AC-05 abgenommen (🧑 Ralf, 2026-11-16): „Ruckelfrei“** (`dist/k3c-rust-demo/start.cmd`).
 Befunde: keine offenen; Abweichungen (Canvas::layer, Esc/F, Bodenfarbe) stehen in RU2.1 und RU2.3. Neue Tickets: keine. Sim/Balance/Gen: nicht berührt.
