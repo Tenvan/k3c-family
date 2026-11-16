@@ -72,7 +72,7 @@ Keine blockierende. Vorläufige Defaults stehen in den Tickets (Endboss-Feld und
 | WE5.4 | `WE5.4-overrides-hub-sites.md` | Umsetzung | autonom | fertig |
 | WE5.5 | `WE5.5-welt-skins.md` | Umsetzung | autonom | fertig |
 | WE5.6 | `WE5.6-welten-mcp-hafen-meldung.md` | Umsetzung | autonom | fertig |
-| WE5.7 | `WE5.7-review.md` | Review | autonom | in Arbeit |
+| WE5.7 | `WE5.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -80,6 +80,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-15, Review WE5.7 (acf3fce12, Merge origin/main ddd5d85fb). AC-01 bis AC-08 erfüllt, Nachweise in den Ergebnissen WE5.1 bis WE5.6.
+Behoben: Workbench-Tests und Tool-Text nach dem Merge mit WE5.6; `simcli level` setzt den Bau in die tiefste Stufe; leerer Gegner-Name abgelehnt.
+Offen, Entscheidung 🧑: Camp hinter einem Portal außerhalb der Kristallhöhle (Mine 147/500), `bosse.md` § 1 als vorläufig markiert.
+Neue Tickets: skins für Asset-Varianten mit @; Abnahme-Läufe WE5.
+`task check`, `check:go`, `check:diff` grün; Sim und Balance verschoben (Sperre 2026-11-11).

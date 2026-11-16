@@ -73,7 +73,7 @@ Das Spiel zeichnet nur, Regeln bleiben in `engine/sim`. Grafik nur über `assets
 | NA1.2 | `NA1.2-testflow-skillpunkt.md` | Umsetzung | autonom | fertig |
 | NA1.3 | `NA1.3-steg-gehaltenes-a.md` | Umsetzung | autonom | fertig |
 | NA1.4 | `NA1.4-tasten-icons-papierschnitt.md` | Umsetzung | autonom | fertig |
-| NA1.5 | `NA1.5-hud-zeichnet-tasten-icons.md` | Umsetzung | autonom | in Arbeit |
+| NA1.5 | `NA1.5-hud-zeichnet-tasten-icons.md` | Umsetzung | autonom | fertig |
 | NA1.6 | `NA1.6-rig-export-bosse.md` | Umsetzung | autonom | offen |
 | NA1.7 | `NA1.7-review.md` | Review | autonom | offen |
 | NA1.8 | `NA1.8-abnahme-tasten-icons-pc.md` | Workshop | Mensch | offen |

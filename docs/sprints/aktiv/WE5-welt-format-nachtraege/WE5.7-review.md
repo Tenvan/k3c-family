@@ -1,6 +1,6 @@
 # WE5.7 · Review WE5 und Abnahme-Ticket
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -66,5 +66,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-08 erfüllt, Nachweise in den Ergebnissen WE5.1 bis WE5.6. Merge von origin/main konfliktfrei (ddd5d85fb), Review-Commit acf3fce12 auf `sprint/we5`. Behoben: Workbench-Tests und Tool-Text nach dem Merge mit WE5.6 (`events` übersteuerbar, gesperrt `hub › sitePlacement`); `simcli level` setzt den Bau in die tiefste Stufe (`TestWorldLevelBauInTiefsterStufe`); leerer Gegner-Name abgelehnt. `go vet`, Lint 0, `go test ./engine/...` nach `gen:paper` vollständig grün, `task check`, `check:go`, `check:diff` grün. Offen, Entscheidung 🧑: Camp hinter einem Portal außerhalb der Kristallhöhle (Mine 147/500); `bosse.md` § 1 als vorläufig markiert. Folgetickets: skins für Asset-Varianten mit @; Glossar Skin und Bau.
