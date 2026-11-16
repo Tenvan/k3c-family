@@ -4,8 +4,13 @@ edition.workspace = true
 version.workspace = true
 publish.workspace = true
 
-[lints]
-workspace = true
+# Eigene Lints statt `workspace = true`: der Allokations-Test (tests/alloc.rs) braucht
+# einen zählenden Allocator und damit `unsafe`; die Bibliothek selbst bleibt `forbid(unsafe_code)`.
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+too_many_lines = "deny"
 
 [dependencies]
 winit.workspace = true

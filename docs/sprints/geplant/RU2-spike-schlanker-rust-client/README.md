@@ -67,7 +67,7 @@ Keine; Stack, Reihenfolge und Abnahme hat 🧑 am 2026-11-16 entschieden.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU2.1 | `RU2.1-plattform-kern.md` | Umsetzung | autonom | offen |
+| RU2.1 | `RU2.1-plattform-kern.md` | Umsetzung | autonom | fertig |
 | RU2.2 | `RU2.2-grafik-laden.md` | Umsetzung | autonom | offen |
 | RU2.3 | `RU2.3-demo-szene-und-driver.md` | Umsetzung | autonom | offen |
 | RU2.4 | `RU2.4-messung-und-review.md` | Review | autonom | offen |

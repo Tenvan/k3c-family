@@ -1,6 +1,6 @@
 # RU2.1 · Plattform-Kern: Fenster, Schleife, Sprite-Bündelung, headless
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -65,5 +65,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `cargo run --release -p k3c-platform --example probe -- n=20000 secs=15` (Vulkan und DX12, Windows): Median Bildabstand 16,68 ms (60 Bilder/s), p99 17,5–17,7 ms, längstes Bild 33–35 ms; 1–3 späte Bilder (> 25 ms) je Lauf, alle in den ersten Sekunden (Fensterstart, parallel liefen andere Builds), danach 0 je Sekunde. Titel zeigt Backend, Bilder/s und späte Bilder. CPU-Zeit bis present: Vulkan Median 1,6 ms, DX12 16,3 ms (DX12 blockiert in submit/present, vermutet wegen Fifo-Kopplung; für RU2.4 beobachten).
+- **AC-01 geprüft:** `cargo test -p k3c-platform` grün (16 Unit-Tests, `tests/alloc.rs` zählender Allocator: 0 Allokationen in 120 Leerlauf-Bildern mit 2000 Sprites, Rechteck und Text; `tests/layering.rs`: kein `winit::`/`wgpu::` außerhalb `src/backend/`). `cargo clippy --all-targets -D warnings` und `cargo fmt --check` grün; `task check:diff` grün.
+- **Abweichungen:** (1) Crate-`Cargo.toml` führt eigene Lints (`unsafe_code = "deny"`, `too_many_lines = "deny"`) statt `workspace = true`, weil der Allokations-Test `unsafe` braucht; `lib.rs` hat `#![forbid(unsafe_code)]`. (2) wgpu 30 statt 23 der Vorlage: `request_device` ohne Trace, `Queue::present`, `Option`-Bind-Group-Layouts, `immediate_size`, `CurrentSurfaceTexture`. (3) Vollfarbflächen und Schrift tragen den Sortierschlüssel `SOLID` und werden nach allen Sprites gezeichnet (also obenauf); Zeichenreihenfolge zwischen Sprites und Rechtecken ist damit nicht frei. (4) Schrift: Großbuchstaben, Ziffern, Satzzeichen; Klein und Umlaute werden Groß, Unbekanntes ein Kästchen. (5) Instanzen laufen über einen wiederverwendeten Byte-Puffer und `write_buffer` (`write_buffer_with` liefert in wgpu 30 keinen Slice).
+- **API:** `App`, `Canvas`, `Rect`, `TexId`, `Frame` (Sammler, implementiert `Canvas`), `Clock` (30 Hz, höchstens 4 Schritte), `run_window(app, Config)`, `run_headless(app, steps) -> NullCanvas`, `Measure`/`Summary::to_json`, `Config { title, measure, max_seconds }`.
+- **Manuell:** nicht verlangt, nicht geprüft (kein Blick auf das Fenster durch Ralf).
