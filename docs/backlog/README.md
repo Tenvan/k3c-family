@@ -102,6 +102,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1016](B-1016-rust-client-spike-g1.md) | CLI | Frage | mittel | eingeplant | RU2 | Ein schlanker Rust-Client hält die Messwerte der Ebitengine (Spike, Gate G1) |
 | [B-1017](B-1017-laeufe-im-game-client.md) | CLI | Idee | mittel | eingeplant | RU33 | Sim und Balancing laufen im Game-Client, headless oder mit Fenster per Parameter |
 | [B-1018](B-1018-rust-port-leitfaden.md) | INF | Idee | mittel | eingeplant | RU1 | Port-Leitfaden: Regeln, nach denen jede Port-Session von Go nach Rust arbeitet |
+| [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | RU1 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
 
 ## Archiv
 
