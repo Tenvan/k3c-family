@@ -1,6 +1,6 @@
 # RU1.2 · Tasks im Namensraum rust und check:diff für Rust
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -59,5 +59,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `task rust:build`, `rust:test`, `rust:lint`, `rust:fmt` enden mit Code 0; `task --list` zeigt sie unter `rust:` (dazu `rust:fmt:check` und `check:diff:rust`).
+- AC-03 geprüft: `tools/checkdiff/rust.go` (neu) wählt für `rust/crates/<name>/…` fmt, `clippy -p <name>` und `test -p <name>` (Bahn `rust`, fmt/clippy Stufe 1, Test Stufe 2); `Cargo.toml`, `Cargo.lock`, `rust-toolchain.toml`, `clippy.toml`, `rustfmt.toml` wählen `--workspace`; ohne Rust-Datei, bei `rust/spike/` und `rust/Taskfile.yml` läuft kein `cargo`. `TestRustSteps` in `select_test.go` deckt die drei Fälle ab und ist grün (`go test ./tools/checkdiff/...`).
+- `check:diff` kennt `-only rust`; `Taskfile.yml` hat `includes: rust` und `check:diff:rust`.
+- Abweichung: Die Regel steht in der neuen Datei `rust.go` statt in `select.go`/`steps.go` (Dateigröße, Übersicht); `select.go` ruft sie mit einer Zeile auf. Mehrere geänderte Crates laufen in einem cargo-Aufruf (`-p a -p b`).
+- Auffällig, nicht geändert: `gofmt -l` meldet alle Dateien von `tools/checkdiff` (vermutlich Zeilenenden), schon vor dieser Session.
+- Manuell geprüft: nichts. Neue Tickets: keine.

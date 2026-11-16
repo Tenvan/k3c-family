@@ -40,6 +40,7 @@ includes:
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
   native: native/Taskfile.yml
+  rust: rust/Taskfile.yml
 
 tasks:
   # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).
@@ -158,6 +159,11 @@ tasks:
     deps: [tmp]
     cmds:
       - go run ./tools/checkdiff -only go {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
+
+  check:diff:rust:
+    desc: "check:diff, nur die Bahn Rust (cargo fmt, clippy und Tests der geänderten Crates in rust/)"
+    cmds:
+      - go run ./tools/checkdiff -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:dev:
     desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
