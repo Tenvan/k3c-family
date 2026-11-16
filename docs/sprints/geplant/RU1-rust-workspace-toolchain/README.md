@@ -69,8 +69,8 @@ Entscheidung 🧑 am Gate bzw. vor dem Start (B-1014 › Offene Fragen).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU1.1 | `RU1.1-workspace-und-leitfaden.md` | Umsetzung | autonom | fertig |
-| RU1.2 | `RU1.2-tasks-und-check-diff.md` | Umsetzung | autonom | offen |
-| RU1.3 | `RU1.3-ci-und-repo-regeln.md` | Umsetzung | autonom | offen |
+| RU1.2 | `RU1.2-tasks-und-check-diff.md` | Umsetzung | autonom | fertig |
+| RU1.3 | `RU1.3-ci-und-repo-regeln.md` | Umsetzung | autonom | fertig |
 | RU1.4 | `RU1.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

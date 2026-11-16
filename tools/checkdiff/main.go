@@ -3,7 +3,7 @@
 // Stufe 1: Tests der geänderten Pakete (-short) und Vitest --changed. Keine Tests der Abnehmer, keine Sim-, Balance-,
 // Gen- und Race-Läufe. Regeln: docs/arbeitsweise.md › Tempo im Lauf.
 //
-//	checkdiff [-base <ref>] [-plan] [-only js|go]
+//	checkdiff [-base <ref>] [-plan] [-only js|go|rust]
 //	checkdiff -gopkgs   (Paketliste für task check:go ohne Sim-Pakete, B-832)
 //	checkdiff -wbpkgs   (dasselbe für task k3c-workbench:test, Modul tools/k3c-workbench, B-857)
 //
@@ -27,7 +27,7 @@ type options struct {
 func parse() options {
 	o := options{base: os.Getenv("CHECK_BASE"), sim: os.Getenv("CHECK_SIM") == "1"}
 	flag.StringVar(&o.base, "base", o.base, "Vergleichsbasis statt HEAD")
-	flag.StringVar(&o.only, "only", "", "nur eine Bahn: js oder go")
+	flag.StringVar(&o.only, "only", "", "nur eine Bahn: js, go oder rust")
 	flag.BoolVar(&o.plan, "plan", false, "nur zeigen, was laufen würde")
 	flag.BoolVar(&o.gopkgs, "gopkgs", false, "nur die Pakete für task check:go ausgeben (ohne Sim-Pakete, außer CHECK_SIM=1)")
 	flag.BoolVar(&o.wbpkgs, "wbpkgs", false, "nur die Pakete für task k3c-workbench:test ausgeben (ohne Sim-Pakete, außer CHECK_SIM=1)")
@@ -54,6 +54,7 @@ func build(o options) (string, []step, []string) {
 	steps := jsSteps(p, base)
 	targets := allTargets(r, p, o.sim)
 	steps = append(steps, goSteps(targets)...)
+	steps = append(steps, rustSteps(p)...)
 	var kept []step
 	for _, s := range steps {
 		if o.only == "" || s.Lane == o.only {

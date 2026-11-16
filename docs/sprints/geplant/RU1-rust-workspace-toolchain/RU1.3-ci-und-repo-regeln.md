@@ -1,6 +1,6 @@
 # RU1.3 · CI-Job für Rust und Repo-Regeln
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft: `.github/workflows/ci.yml` enthält den Job `rust` („Rust · fmt · clippy · Tests (Windows)“, `windows-latest`, `working-directory: rust`, Schritte `rustup show`, `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace`; nur außerhalb von Pull Requests wie die anderen Jobs). Die drei cargo-Befehle liefen lokal in `rust/` mit Code 0 (RU1.2, `task rust:*`). Go-Jobs im Diff unverändert; nur die Kopfzeile (Kommentar) nennt den neuen Job. Nur geprüft, nicht auf GitHub gelaufen: der grüne CI-Lauf entsteht erst nach dem Sprint-PR.
+- AC-05 geprüft: `task test -- projectRules` grün (14 Tests); mit einer probeweise angelegten Datei `rust/crates/k3c-rng/src/probe.rs` (401 Zeilen) scheiterte der neue Test „keine Rust-Datei unter rust/crates über der harten Grenze“ (`expected ['rust/crates/k3c-rng/src/probe.rs'] to deeply equal []`); die Datei ist wieder gelöscht. clippy `too_many_lines` steht auf 60 (RU1.1).
+- Abweichung: Der Job nutzt kein `actions/cache` (keine neue Action, Nicht-Ziel); die erste CI-Laufzeit ist daher länger, `timeout-minutes: 30`. Vermutet, ungeprüft: Windows-Runner hat `rustup` vorinstalliert, sodass `rustup show` die Toolchain aus `rust-toolchain.toml` holt.
+- Manuell geprüft: nichts. Neue Tickets: keine.
