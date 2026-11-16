@@ -1,0 +1,13 @@
+[package]
+name = "k3c-level"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+k3c-rng = { path = "../k3c-rng" }
+k3c-data = { path = "../k3c-data" }
+k3c-det = { path = "../k3c-det" }

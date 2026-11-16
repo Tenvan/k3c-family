@@ -1,6 +1,6 @@
 # RU1.1 · Workspace-Gerüst mit allen Crates und Port-Leitfaden
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** INF
@@ -73,5 +73,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `cargo build --workspace` in `rust/` Code 0; `rust/crates` hat zehn Crates (die neun der Spec plus `k3c-platform` laut Auftrag, RU2.1 füllt sie).
+- AC-02 geprüft: fremde Crates nur unter `[workspace.dependencies]` (feste Versionen `=`: winit 0.30.12, wgpu 30.0.2, pollster 1.0.1, png 0.18.1, serde 1.0.229, serde_json 1.0.154); Crates erben `version.workspace`; `rust/Cargo.lock` liegt im Commit.
+- AC-06 geprüft: `docs/standards/rust-port.md` enthält § 1 bis § 10 aus `B-1018 › Anforderungen`, maschinell kopiert.
+- `cargo test --workspace` (je Crate `crate_baut`), `cargo clippy --workspace --all-targets -- -D warnings` und `cargo fmt --all --check` grün.
+- Abweichung: In `B-1014 › Notizen` fehlt der Abschnitt „Freigegebene Crates“. Als Freigabe gilt die Liste in `RU2 › Anforderungen` (Spec 🧑 2026-11-16, „Stack fest“) und der Wellen-Auftrag. `flate2` (Golden als `.json.gz`) und `kira`/`gilrs` sind nicht eingetragen und fehlen; die Freigabe kommt bei Bedarf. 🧑 sollte den Abschnitt in B-1014 nachtragen.
+- Abweichung: `docs/backlog/README.md` (Index) neu aufgebaut (`plan_index`), weil B-1014 bis B-1018 im Index fehlten und `tests/planning.test.ts` sonst rot war.
+- Manuell geprüft: nichts. Neue Tickets: keine.
