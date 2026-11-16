@@ -1,0 +1,10 @@
+{
+  "id": "test",
+  "version": 1,
+  "rahmen": [-2, -4, 4, 4],
+  "frameW": 4,
+  "frameH": 4,
+  "animationen": {
+    "idle": { "frames": 2, "fps": 6, "datei": "idle.png" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "_hinweis": "Fixture",
+  "beritten": "figuren/test",
+  "spieler": ["figuren/test", "figuren/test@spieler2"],
+  "truppen": { "a": "figuren/test" }
+}
