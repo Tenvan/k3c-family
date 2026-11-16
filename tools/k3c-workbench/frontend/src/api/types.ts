@@ -469,7 +469,7 @@ export interface Events {
   'task:state': TaskRun;
   /** Hinweis eines Agenten (notify_ui). */
   'ui:notify': Notice;
-  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; ohne Nutzlast. */
+  /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; Nutzlast sind die geänderten IDs, null heißt alles neu laden (B-909). */
   'planning:changed': PlanningChanged | null;
   /** Ein Lauf der Balancing-Seite hat Zustand, Phase oder Fortschritt geändert (höchstens etwa 2 je Sekunde je Lauf, B-662). */
   'balance:runs': BalanceRun;

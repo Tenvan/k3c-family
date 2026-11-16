@@ -71,23 +71,30 @@ export function applyItems(data: PlanningData, items: PlanItem[]): Applied {
   let tickets = data.tickets;
   let reload = false;
   for (const it of items) {
-    const known = tickets.some((t) => t.nr === it.id);
-    const session = data.sprints.some((s) => s.sessions.some((x) => x.nr === it.id));
     if (it.kind === 'session' && !it.error) texts[it.id] = it.text;
-    if (it.error || (it.kind === 'ticket' && it.path.includes('/archiv/'))) { // archiviert zählt wie entfernt
-      if (known) tickets = tickets.filter((t) => t.nr !== it.id);
-      else if (session) reload = true;
-      continue;
-    }
-    if (it.kind === 'ticket' && known) {
-      const old = tickets.find((t) => t.nr === it.id)!;
-      const next = patchTicket(old, it.text);
-      if (next.sprint !== first(old.sprint)) reload = true; // Sprintwechsel: PlanSprint.tickets zieht nach
-      tickets = tickets.map((t) => (t.nr === it.id ? next : t));
-    } else if (it.kind === 'session' && session) {
-      const x = data.sprints.flatMap((sp) => sp.sessions).find((y) => y.nr === it.id)!;
-      if (!x.wt && sessionHeadChanged(x, it.text)) reload = true;
-    } else reload = true; // Sprint, Projekt, neues Ticket oder neue Session
+    const step = applyItem(data, tickets, it);
+    tickets = step.tickets;
+    reload ||= step.reload;
   }
   return { data: tickets === data.tickets ? data : { ...data, tickets }, texts, reload };
+}
+
+/** Ein nachgeladenes Dokument: neue Ticket-Liste und ob die Liste neu zu laden ist. */
+function applyItem(data: PlanningData, tickets: PlanTicket[], it: PlanItem): { tickets: PlanTicket[]; reload: boolean } {
+  const known = tickets.some((t) => t.nr === it.id);
+  const session = data.sprints.some((s) => s.sessions.some((x) => x.nr === it.id));
+  if (it.error || (it.kind === 'ticket' && it.path.includes('/archiv/'))) { // archiviert zählt wie entfernt
+    return known ? { tickets: tickets.filter((t) => t.nr !== it.id), reload: false } : { tickets, reload: session };
+  }
+  if (it.kind === 'ticket' && known) {
+    const old = tickets.find((t) => t.nr === it.id)!;
+    const next = patchTicket(old, it.text);
+    // Sprintwechsel: PlanSprint.tickets zieht nach
+    return { tickets: tickets.map((t) => (t.nr === it.id ? next : t)), reload: next.sprint !== first(old.sprint) };
+  }
+  if (it.kind === 'session' && session) {
+    const x = data.sprints.flatMap((sp) => sp.sessions).find((y) => y.nr === it.id)!;
+    return { tickets, reload: !x.wt && sessionHeadChanged(x, it.text) };
+  }
+  return { tickets, reload: true }; // Sprint, Projekt, neues Ticket oder neue Session
 }

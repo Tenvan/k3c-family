@@ -41,8 +41,8 @@ export function SprintsBacklog() {
   };
   // Verschwundene Auswahl (archiviert, gelöscht) schließt das Detail.
   useEffect(() => { if (data && wt.loaded && filter.sel && !exists(data, filter.sel)) setFilter({ ...filter, sel: '' }); }, [data, wt.loaded]);
-  if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;
-  if (data === null) return <Text color="gray">Lade Planung …</Text>;
+  // Ohne Daten ersetzt der Fehler die Seite; scheitert nur ein Nachladen, bleibt der alte Stand mit Hinweis (B-909).
+  if (data === null) return error ? <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard> : <Text color="gray">Lade Planung …</Text>;
   const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
   const tickets = filterTickets(data, filter);
   // Der Projekt-Filter wählt die Projekte, der Backlog-Filter die Sprints darin und den Backlog (B-401).
@@ -59,6 +59,7 @@ export function SprintsBacklog() {
     <WtContext.Provider value={wtIndex}>
     <div className="pl-board">
       <GitHubBar gh={gh} reload={reloadGh} />
+      {error && <ReloadNotice error={error} reload={() => void load()} />}
       {wt.error && <WorktreeNotice error={wt.error} reload={wt.reload} />}
       <PlanToolbar data={data} filter={filter} setFilter={setFilter} hits={(shown.projects?.length ?? 0) + tickets.length} />
       <div className="pl-grid" style={{ '--pl-split': `${cols}%`, '--pl-detail': rows } as CSSProperties}>
@@ -82,6 +83,15 @@ export function SprintsBacklog() {
 }
 
 /** Hinweis, wenn der Workflow-Check der Worktrees scheitert: keine Pills, dafür der Grund und ein neuer Versuch. */
+/** Hinweis, wenn ein Nachladen scheiterte: Die Seite zeigt weiter den alten Stand. */
+function ReloadNotice({ error, reload }: { error: string; reload: () => void }) {
+  return (
+    <Text size="1" color="red" role="alert">
+      Planung nicht aktualisiert, alter Stand: {error} <LinkButton size="1" onClick={reload}>neu laden</LinkButton>
+    </Text>
+  );
+}
+
 function WorktreeNotice({ error, reload }: { error: string; reload: () => void }) {
   return (
     <Text size="1" color="gray" role="status">
