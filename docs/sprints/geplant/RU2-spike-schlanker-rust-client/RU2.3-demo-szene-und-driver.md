@@ -1,6 +1,6 @@
 # RU2.3 · Demo-Szene mit einfachem Driver
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,5 +61,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03 geprüft:** `cargo run --release -p k3c-game -- demo --driver rust/demo/reiten.json` (Windows, Vulkan): Fenster zeigt Wald-Welt mit drei Parallaxe-Ebenen, Boden, Burg/Taverne/Schmiede/Turm/Rundhaus, 80 laufende Figuren (Bauer, Krieger, Bogenschütze, gespiegelt beim Wenden) und den Monarchen zu Pferd, dem die Kamera folgt (Tempo aus `data/monarch.json`: 5 Units/s). Titel: „60 Bilder/s | spät 0“. Claude sah den Screenshot selbst; die optische Abnahme durch Ralf bleibt AC-05 in RU2.4.
+- **AC-03 geprüft:** `--headless --steps 600` endet mit Code 0 (600 Schritte, 15 171 Sprites, 259 Texturen).
+- **AC-03 geprüft:** `cargo test -p k3c-game` grün (23 Tests: Driver lesen, Wende an den Enden, Reiter hin und her, alpha-Mischung, Zusatzlast, Culling, Malreihenfolge, Spiegelung, Vormultiplikation, Argumente, headless 600 Schritte mit Fixture-Grafik). `cargo clippy --workspace --all-targets -D warnings`, `cargo fmt --check`, `task check:diff` grün.
+- **Abweichungen:** (1) `k3c-platform` erweitert (nicht in den erlaubten Dateien, gleicher Worktree): `Canvas::layer(z)` mit Standard-Methode, Sortierschlüssel `(Ebene, Textur, Reihenfolge)`; reine Textur-Sortierung zerstörte die Malreihenfolge (Himmel, Ebenen, Boden, Figuren, Schrift). Esc beendet, F schaltet Vollbild um, `Config.fullscreen`. (2) `boden` im Driver ist eine Farbe `#rrggbb` (es gibt kein Boden-Asset, der Boden ist im Go-Spiel prozedural). (3) Driver-Feld `skala` (Standard 0,6) verkleinert Figuren und Gebäude, `ebenen[].skala` (Standard 1,5) die Hintergründe; `kamera.tempo` ist optional (fehlt es, gilt `base.speed × mount.speedFactor`). (4) PNG-Sheets werden beim Hochladen vormultipliziert (Pipeline erwartet premultiplied Alpha). (5) Grafik: `public/grafik` ist nicht eingecheckt; `task gen:paper` oder Kopie aus dem Hauptcheckout nötig, Pfad per `--grafik`/`--data` änderbar.
+- **Beobachtet:** Erstes Bild dauert ~580 ms (Hochladen von 259 Texturen), danach Median 16,68 ms, p99 17,5 ms, 0 späte Bilder je Sekunde.
+- **Aufruf:** `cargo run --release -p k3c-game -- demo --driver rust/demo/reiten.json [--sprites N] [--measure S --out datei.json] [--fullscreen]`

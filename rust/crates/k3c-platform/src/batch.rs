@@ -22,6 +22,7 @@ pub struct Inst {
 
 #[derive(Clone, Copy)]
 struct Item {
+    layer: u32,
     tex: u32,
     seq: u32,
     inst: Inst,
@@ -30,6 +31,7 @@ struct Item {
 /// Ein Draw-Call: Textur (`None` = Vollfarbe) und Bereich in der sortierten Instanz-Liste.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Run {
+    pub layer: u32,
     pub tex: Option<TexId>,
     pub first: u32,
     pub count: u32,
@@ -50,6 +52,7 @@ pub struct Frame {
     runs: Vec<Run>,
     sizes: Vec<(u32, u32)>,
     pending: Vec<Pending>,
+    layer: u32,
 }
 
 impl Frame {
@@ -61,22 +64,20 @@ impl Frame {
     pub fn begin(&mut self) {
         self.items.clear();
         self.runs.clear();
+        self.layer = 0;
     }
 
-    /// Sortiert nach Textur (Reihenfolge innerhalb einer Textur bleibt) und bildet die Draw-Calls.
+    /// Sortiert nach Ebene, dann Textur (Reihenfolge innerhalb gleicher Ebene und Textur bleibt)
+    /// und bildet die Draw-Calls.
     pub fn finish(&mut self) {
-        self.items.sort_unstable_by_key(|i| (i.tex, i.seq));
+        self.items.sort_unstable_by_key(|i| (i.layer, i.tex, i.seq));
         let mut first = 0;
-        for (i, it) in self.items.iter().enumerate() {
-            let prev = if i == 0 { it.tex } else { self.items[i - 1].tex };
-            if it.tex != prev {
-                self.runs.push(run(prev, first, i as u32));
+        for i in 1..=self.items.len() {
+            let a = self.items[i - 1];
+            if i == self.items.len() || (self.items[i].layer, self.items[i].tex) != (a.layer, a.tex) {
+                self.runs.push(run(a.layer, a.tex, first, i as u32));
                 first = i as u32;
             }
-        }
-        if !self.items.is_empty() {
-            let last = self.items[self.items.len() - 1].tex;
-            self.runs.push(run(last, first, self.items.len() as u32));
         }
     }
 
@@ -112,13 +113,19 @@ impl Frame {
 
     fn push(&mut self, tex: u32, inst: Inst) {
         let seq = self.items.len() as u32;
-        self.items.push(Item { tex, seq, inst });
+        self.items.push(Item {
+            layer: self.layer,
+            tex,
+            seq,
+            inst,
+        });
     }
 }
 
-fn run(tex: u32, first: u32, end: u32) -> Run {
+fn run(layer: u32, tex: u32, first: u32, end: u32) -> Run {
     let tex = (tex != SOLID).then_some(TexId(tex));
     Run {
+        layer,
         tex,
         first,
         count: end - first,
@@ -128,6 +135,10 @@ fn run(tex: u32, first: u32, end: u32) -> Run {
 impl Canvas for Frame {
     fn size(&self) -> (f32, f32) {
         LOGICAL
+    }
+
+    fn layer(&mut self, z: u32) {
+        self.layer = z;
     }
 
     fn texture(&mut self, rgba: &[u8], w: u32, h: u32) -> TexId {
@@ -208,6 +219,25 @@ mod tests {
         assert_eq!(xs, [1.0, 3.0, 0.0, 2.0, 4.0, 9.0]);
         let runs: Vec<_> = f.runs().iter().map(|r| (r.tex, r.first, r.count)).collect();
         assert_eq!(runs, [(Some(a), 0, 2), (Some(b), 2, 3), (None, 5, 1)]);
+    }
+
+    #[test]
+    fn ebene_geht_vor_textur() {
+        let mut f = Frame::new();
+        let (a, b) = (tex(&mut f), tex(&mut f));
+        f.begin();
+        let (src, r) = (Rect::new(0.0, 0.0, 2.0, 2.0), Rect::new(0.0, 0.0, 1.0, 1.0));
+        f.layer(2);
+        f.sprite(a, src, r, WHITE);
+        f.layer(1);
+        f.sprite(b, src, r, WHITE);
+        f.rect(r, WHITE);
+        f.finish();
+        let runs: Vec<_> = f.runs().iter().map(|r| (r.layer, r.tex)).collect();
+        assert_eq!(runs, [(1, Some(b)), (1, None), (2, Some(a))]);
+        f.begin();
+        f.finish();
+        assert!(f.runs().is_empty());
     }
 
     #[test]

@@ -72,6 +72,7 @@ fn main() {
         title: format!("k3c probe n={n} ({:.0} Hz)", 1.0 / STEP),
         measure: args.get("measure").map(PathBuf::from),
         max_seconds: args.get("secs").and_then(|v| v.parse().ok()),
+        fullscreen: false,
     };
     let mut app = Probe { n, tick: 0, tex: None };
     if let Err(e) = run_window(&mut app, cfg) {

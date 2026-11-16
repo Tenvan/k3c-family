@@ -8,9 +8,10 @@ use std::time::Instant;
 
 use winit::application::ApplicationHandler;
 use winit::dpi::LogicalSize;
-use winit::event::WindowEvent;
+use winit::event::{ElementState, KeyEvent, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
-use winit::window::{Window, WindowId};
+use winit::keyboard::{KeyCode, PhysicalKey};
+use winit::window::{Fullscreen, Window, WindowId};
 
 use crate::measure::SecondStat;
 use crate::{App, Clock, Frame, Measure, STEP};
@@ -31,6 +32,8 @@ pub struct Config {
     pub measure: Option<PathBuf>,
     /// Beendet die Schleife nach so vielen Sekunden (für Messläufe).
     pub max_seconds: Option<f64>,
+    /// Startet im Vollbild (randlos); Taste F schaltet um, Esc beendet.
+    pub fullscreen: bool,
 }
 
 /// Öffnet ein Fenster und treibt `app` im Takt [`STEP`], bis `done()`, Schließen oder `max_seconds`.
@@ -91,7 +94,8 @@ impl<'a> Runner<'a> {
     fn create(&mut self, el: &ActiveEventLoop) -> Result<(), String> {
         let attrs = Window::default_attributes()
             .with_title(self.cfg.title.clone())
-            .with_inner_size(LogicalSize::new(1280, 720));
+            .with_inner_size(LogicalSize::new(1280, 720))
+            .with_fullscreen(self.cfg.fullscreen.then_some(Fullscreen::Borderless(None)));
         let win = Arc::new(el.create_window(attrs).map_err(|e| e.to_string())?);
         let (gfx, backend) = Gfx::new(win.clone())?;
         println!("backend: {backend}");
@@ -132,6 +136,23 @@ impl<'a> Runner<'a> {
         }
     }
 
+    /// Nur Esc (Ende) und F (Vollbild); alles andere gehört der Eingabe von RU4.
+    fn key(&mut self, el: &ActiveEventLoop, ev: &KeyEvent) {
+        if ev.state != ElementState::Pressed || ev.repeat {
+            return;
+        }
+        match ev.physical_key {
+            PhysicalKey::Code(KeyCode::Escape) => el.exit(),
+            PhysicalKey::Code(KeyCode::KeyF) => {
+                if let Some(w) = &self.win {
+                    let on = w.fullscreen().is_none();
+                    w.set_fullscreen(on.then_some(Fullscreen::Borderless(None)));
+                }
+            }
+            _ => {}
+        }
+    }
+
     /// Titel je Sekunde: Backend, Bilder/s, späte Bilder der letzten vollen Sekunde.
     fn update_title(&mut self) {
         let (Some(st), Some(w)) = (self.second.take(), &self.win) else {
@@ -162,6 +183,7 @@ impl ApplicationHandler for Runner<'_> {
                     g.resize(s.width, s.height);
                 }
             }
+            WindowEvent::KeyboardInput { event, .. } => self.key(el, &event),
             WindowEvent::RedrawRequested => self.redraw(el),
             _ => {}
         }

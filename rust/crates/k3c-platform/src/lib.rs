@@ -52,6 +52,9 @@ pub trait App {
 /// Zeichenfläche in logischen 1920×1080.
 pub trait Canvas {
     fn size(&self) -> (f32, f32);
+    /// Setzt die Ebene der folgenden Aufrufe (Standard 0 je Bild): niedrige Ebenen werden zuerst gezeichnet;
+    /// innerhalb einer Ebene wird nach Textur gebündelt, Vollfarbe und Schrift zuletzt.
+    fn layer(&mut self, _z: u32) {}
     /// Lädt RGBA8 mit vormultipliziertem Alpha hoch.
     fn texture(&mut self, rgba: &[u8], w: u32, h: u32) -> TexId;
     /// `src` in Textur-Pixeln, `dst` in logischen Einheiten.
