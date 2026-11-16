@@ -1,6 +1,6 @@
 # NA1.5 · HUD zeichnet die Tasten-Icons, gemalte Glyphe als Rückfall
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05 geprüft: `TestJederGlyphSchluesselHatEinIcon` (alle Aktionen × 3 Profile × de/en, 11 Pad-Tasten). AC-06 geprüft: `TestOhneIconGemalteGlyphe` (drei Rückfall-Fälle). `go test ./...`, Lint 0, `task check:diff` grün; k3c-hud: ein mittlerer Befund behoben (Hinweis während der Schiffsfahrt). Commit 72cfe44ef. Abweichungen: Tastentabelle im Pause-Menü (`game/keytable.go`) und `menu/` zeigen Tasten weiter als Text (außerhalb der erlaubten Dateien); Icons in Hinweiszeilen 1,5 × Schriftgröße; Text-Schlüssel zusammengelegt.
