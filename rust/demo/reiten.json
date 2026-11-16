@@ -1,0 +1,24 @@
+{
+  "laenge": 400,
+  "biom": "wald",
+  "ebenen": [
+    { "asset": "hintergruende/hg-wald-fern-v1", "parallaxe": 0.2 },
+    { "asset": "hintergruende/hg-wald-mitte-v1", "parallaxe": 0.5 },
+    { "asset": "hintergruende/hg-wald-nah-v1", "parallaxe": 0.8 }
+  ],
+  "boden": "#4f6b34",
+  "gebaeude": [
+    { "x": 20, "asset": "gebaeude-paper/burg" },
+    { "x": 75, "asset": "gebaeude-paper/taverne" },
+    { "x": 140, "asset": "gebaeude-paper/schmiede" },
+    { "x": 210, "asset": "gebaeude-paper/turm" },
+    { "x": 280, "asset": "gebaeude-paper/rundhaus" },
+    { "x": 350, "asset": "gebaeude-paper/burg" }
+  ],
+  "figuren": [
+    { "asset": "truppen/bauer", "anzahl": 40, "tempo": 2.5, "von": 0, "bis": 400 },
+    { "asset": "truppen/krieger", "anzahl": 20, "tempo": 3.0, "von": 0, "bis": 400 },
+    { "asset": "truppen/bogenschuetze", "anzahl": 20, "tempo": 2.8, "von": 0, "bis": 400 }
+  ],
+  "kamera": { "figur": "figuren/monarch", "anim": "galopp" }
+}

@@ -20,6 +20,9 @@ type Measure struct {
 	Warmup  float64 // Sekunden Aufwärmen vor der Messung
 	Report  string  // Pfad des Berichts; leer = Standardausgabe
 	NoVsync bool    // VSync aus (Bildrate unbegrenzt)
+	Frames  string  // Datei für die Messung je Bild (--measure-frames, measure_frames.go); leer = keine
+	Load    string  // Last-Szene „ausbau,truppen,gegner“ (--measure-load, measure_load.go); leer = keine
+	Pacing  string  // Versuch „frame“: ein Update je Bild, Takte aus eigener Zeitsammlung (--pacing, pacing.go)
 }
 
 // Prüf-Schalter für Fehler-, Lade- und Leistungsanzeige (NG14): --grafik (anderer Grafik-Ordner, z. B. ein leerer, um
@@ -34,6 +37,9 @@ func addModeFlags(fs *flag.FlagSet, a *Args, r *rawArgs) {
 	fs.Float64Var(&a.Measure.Warmup, "warmup", 5, "")
 	fs.StringVar(&a.Measure.Report, "report", "", "")
 	fs.BoolVar(&a.Measure.NoVsync, "novsync", false, "")
+	fs.StringVar(&a.Measure.Frames, "measure-frames", "", "")
+	fs.StringVar(&a.Measure.Load, "measure-load", "", "")
+	fs.StringVar(&a.Measure.Pacing, "pacing", "", "")
 	fs.BoolVar(&a.Assets, "assets", false, "")
 	fs.StringVar(&a.Grafik, "grafik", "", "")
 	fs.StringVar(&a.River, "river", "", "")

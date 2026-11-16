@@ -61,6 +61,8 @@ type Report struct {
 	TaktAbstandMs  FrameStats `json:"takt_abstand_ms"`  // Zeit zwischen zwei Updates (Soll 33,3 ms)
 	GcLaeufe       uint32     `json:"gc_laeufe"`
 	GcPauseMs      float64    `json:"gc_pause_ms"` // Summe der Stop-the-world-Pausen
+	// Bilder: Kennwerte der Messung je Bild (--measure-frames, measure_frames.go), sonst nicht im Bericht.
+	Bilder *FrameReport `json:"bilder,omitempty"`
 }
 
 // meter sammelt die Zeiten; phase 0 = Aufwärmen, 1 = Messen, 2 = fertig.
@@ -78,9 +80,12 @@ type meter struct {
 	lastStart float64
 	gaps      []float64
 	gc0       runtime.MemStats
+	log       *frameLog // Messung je Bild (--measure-frames), sonst nil
 }
 
-func newMeter(cfg Measure) *meter { return &meter{cfg: cfg} }
+func newMeter(cfg Measure) *meter {
+	return &meter{cfg: cfg, log: newFrameLog(cfg.Frames, cfg.Seconds)}
+}
 
 // done meldet, dass der Bericht geschrieben ist (Update beendet das Programm).
 func (m *meter) done() bool { return m != nil && m.phase == 2 }
@@ -113,6 +118,7 @@ func (m *meter) frame(now, work float64, g *Game) {
 		if m.t += dt; m.t >= m.cfg.Warmup {
 			m.phase, m.t = 1, 0
 			runtime.ReadMemStats(&m.gc0)
+			m.log.start()
 			slog.Info("⏳ Messung beginnt", "takt", g.frame.Tick, "sekunden", m.cfg.Seconds)
 		}
 	case 1:
@@ -121,9 +127,15 @@ func (m *meter) frame(now, work float64, g *Game) {
 			m.repeated++
 		}
 		m.drawMs += work * 1000
+		m.log.add(m.t, dt*1000, work*1000, g.frame.Tick-m.lastTick)
 		if m.t += dt; m.t >= m.cfg.Seconds {
 			m.phase = 2
-			m.finish(g.report(m))
+			r := g.report(m)
+			var err error
+			if r.Bilder, err = m.log.report(); err != nil {
+				slog.Error("❌ Bilder der Messung nicht geschrieben", "datei", m.cfg.Frames, "err", err)
+			}
+			m.finish(r)
 		}
 	}
 }

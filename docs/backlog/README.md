@@ -97,6 +97,12 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1010](B-1010-abnahme-we7-welten-assets.md) | PAP | Frage | mittel | offen | WE7 | Abnahme WE7: Welten-Assets sind gesichtet, Gen-Läufe und Texturbudget geprüft |
 | [B-1011](B-1011-abnahme-gs2-seekarte.md) | CLI | Frage | mittel | offen | GS2 | Abnahme GS2: Seekarte als Papierschnitt und Schiffsfahrt sind am TV gesichtet, Gen-Läufe geprüft |
 | [B-1012](B-1012-seekarte-nachtraege-review.md) | CLI | Schuld | mittel | offen | GS2 | Seekarten-Nachträge aus dem Review: Reihenfolge von completed abgesichert, gehaltenes A nach der Fahrt, Stufen der alten Insel im Wechsel-Frame |
+| [B-1014](B-1014-rust-umstellung-analyse.md) | INF | Idee | mittel | eingeplant | RU1 | Spiel und Simulation laufen komplett in Rust (Analyse, Empfehlung, Gates) |
+| [B-1015](B-1015-rust-umstellung-wellen-kosten.md) | INF | Idee | mittel | eingeplant | RU1 | Wellen- und Kostenplan der Rust-Umstellung |
+| [B-1016](B-1016-rust-client-spike-g1.md) | CLI | Frage | mittel | eingeplant | RU2 | Ein schlanker Rust-Client hält die Messwerte der Ebitengine (Spike, Gate G1) |
+| [B-1017](B-1017-laeufe-im-game-client.md) | CLI | Idee | mittel | eingeplant | RU33 | Sim und Balancing laufen im Game-Client, headless oder mit Fenster per Parameter |
+| [B-1018](B-1018-rust-port-leitfaden.md) | INF | Idee | mittel | eingeplant | RU1 | Port-Leitfaden: Regeln, nach denen jede Port-Session von Go nach Rust arbeitet |
+| [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | RU1 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
 
 ## Archiv
 

@@ -24,6 +24,7 @@ type plan struct {
 	Client        bool // Oxlint, tsc, Vitest --changed
 	WbVitest      bool
 	Mods          map[string]*modPlan
+	Rust          *rustPlan // Workspace rust/ (rust.go); nil ohne Rust-Dateien
 }
 
 // repo beantwortet, was die Auswahl über den Checkout wissen muss.
@@ -152,7 +153,7 @@ func classify(r repo, files []string) plan {
 			continue
 		}
 		p.Rules = true
-		if path.Base(f) == "Taskfile.yml" || hasPrefix(f, ".github/") || p.frontend(f) {
+		if path.Base(f) == "Taskfile.yml" || hasPrefix(f, ".github/") || p.frontend(f) || p.rustFile(f) {
 			continue
 		}
 		if name, ok := strings.CutPrefix(f, "testdata/"); ok {

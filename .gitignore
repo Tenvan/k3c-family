@@ -60,3 +60,5 @@ graphify-out/
 
 # generierte Windows-Ressourcen (go-winres, native:game:exe)
 *.syso
+
+rust/target/

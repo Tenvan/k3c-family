@@ -1,0 +1,22 @@
+[package]
+name = "k3c-game"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+k3c-rng = { path = "../k3c-rng" }
+k3c-det = { path = "../k3c-det" }
+k3c-data = { path = "../k3c-data" }
+k3c-level = { path = "../k3c-level" }
+k3c-sim = { path = "../k3c-sim" }
+k3c-room = { path = "../k3c-room" }
+k3c-balance = { path = "../k3c-balance" }
+k3c-rig = { path = "../k3c-rig" }
+k3c-platform = { path = "../k3c-platform" }
+png.workspace = true
+serde.workspace = true
+serde_json.workspace = true

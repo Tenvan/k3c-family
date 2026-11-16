@@ -49,6 +49,12 @@ describe('Komplexität & Schichten', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
   });
 
+  // Rust-Workspace (RSU, RU1.3): nur rust/crates; rust/target (Build) und rust/spike (Prototyp) zählen nicht. Die Funktionslänge prüft clippy.
+  it('keine Rust-Datei unter rust/crates über der harten Grenze, auch keine Test-Datei', () => {
+    const rustFiles = filesIn('rust/crates', (n) => n.endsWith('.rs')).map(posix);
+    expect(rustFiles.filter((f) => lines(f) > HARD)).toEqual([]);
+  });
+
   // 16 MB (B-417, Ralf 2026-10-13); die großen Läufe liegen seit GD1 gepackt (B-624, B-620).
   it('Golden-Daten gesamt höchstens 16 MB (B-417, GD1)', () => {
     const bytes = filesIn('testdata/golden', () => true).reduce((sum, f) => sum + statSync(join(ROOT, f)).size, 0);

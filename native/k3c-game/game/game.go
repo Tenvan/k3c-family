@@ -62,6 +62,8 @@ type Game struct {
 	stats          *overlay
 	shots          *shooter
 	meter          *meter // Messmodus (--measure), sonst nil
+	load           MeasureLoad // Last-Szene des Messmodus (--measure-load, measure_load.go)
+	pace           *pacer      // Versuch --pacing frame (pacing.go), sonst nil
 	endIn          int    // Takte im Spiel seit Frame.Outcome (Spielende nach view.EndDelay)
 	// Stresstest (Testing, B-896, stress.go): laufender Test, sonst nil; clock, fpsOf und reports ersetzen in Tests
 	// Wanduhr, Bildrate und Berichtsordner.
@@ -76,7 +78,7 @@ type Game struct {
 // danach das Menü der Szene auf (Scene.Menu, menu.go).
 func New(p Parts, s Sim, a Args) (*Game, error) {
 	g := &Game{parts: p, sim: s, args: a, src: p.Input, mode: ModeMenu, cells: make([]view.Cell, 0, view.MaxPlayers),
-		win: image.Rect(0, 0, a.W, a.H), blend: newBlend(a.Shots == "" && !a.Script), cams: Cameras{Rule: p.Camera, Fixed: a.Scene.Cams}}
+		win: image.Rect(0, 0, a.W, a.H), blend: newBlend(a.Shots == "" && (!a.Script || a.Measure.Seconds > 0)), cams: Cameras{Rule: p.Camera, Fixed: a.Scene.Cams}}
 	if a.Script {
 		g.src = newScripted(a.Scene)
 	}
@@ -98,6 +100,7 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 	if a.Measure.Seconds > 0 {
 		g.meter = newMeter(a.Measure)
 	}
+	g.pace = newPacer(a.Measure.Pacing)
 	if a.Scene.Direct() {
 		if err := g.startScene(); err != nil {
 			return nil, err
@@ -105,15 +108,29 @@ func New(p Parts, s Sim, a Args) (*Game, error) {
 	} else {
 		g.stack.Push(p.Menus.Main())
 	}
-	for range a.Scene.Tick {
-		if g.advance(); g.err != nil {
-			return nil, g.err
-		}
+	if err := g.prerun(); err != nil {
+		return nil, err
 	}
 	if err := g.openMenu(); err != nil {
 		return nil, err
 	}
 	return g, nil
+}
+
+// prerun lässt Scene.Tick Takte vorlaufen; im Messmodus baut es nach dem ersten Takt die Last-Szene auf (die Plätze
+// der Spieler stehen dann).
+func (g *Game) prerun() error {
+	for i := range g.args.Scene.Tick {
+		if g.advance(); g.err != nil {
+			return g.err
+		}
+		if i == 0 && g.meter != nil {
+			if err := g.measureLoad(g.args.Measure.Load); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 // startScene startet das Spiel der Szene ohne Menü.
@@ -149,7 +166,13 @@ func (g *Game) Update() error {
 		g.mode = ModeQuit
 		return g.sim.Close()
 	}
-	g.advanceTimed()
+	n := 1
+	if g.pace != nil { // Versuch --pacing frame: Takte aus der eigenen Zeitsammlung (pacing.go)
+		n = g.pace.step(clock())
+	}
+	for i := 0; i < n && g.err == nil && g.mode != ModeQuit; i++ {
+		g.advanceTimed()
+	}
 	if g.err != nil {
 		return g.err
 	}
@@ -177,6 +200,7 @@ func (g *Game) advanceTimed() {
 		t0 := clock()
 		g.meter.started(t0)
 		g.advance()
+		g.refillMeasureLoad()
 		g.meter.tick(clock() - t0)
 	case g.stats.timing(&g.frame):
 		t0 := g.stats.now()
@@ -294,6 +318,12 @@ func (g *Game) drawGame(screen *ebiten.Image) {
 	win := screen.Bounds()
 	Place(g.cells, win)
 	alpha := g.blend.alpha()
+	if g.pace != nil {
+		alpha = g.pace.alpha()
+	}
+	if g.meter != nil && g.meter.log != nil {
+		g.meter.log.alpha = alpha
+	}
 	g.blend.apply(&g.frame, g.cells, alpha)
 	defer g.blend.restore(&g.frame, g.cells) // auch bei Panic: die Simulation bleibt unverschoben
 	for i, c := range g.cells {

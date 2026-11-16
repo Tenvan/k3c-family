@@ -158,3 +158,27 @@ func TestSpielModul(t *testing.T) {
 		t.Errorf("Abnehmer aus engine/: %q", names(got))
 	}
 }
+
+// Rust (RU1.2, AC-03): eine Crate, Manifest/Lockfile, keine Rust-Datei.
+func TestRustSteps(t *testing.T) {
+	cmd := func(s step) string { return strings.Join(s.Cmd, " ") }
+	p := classify(testRepo(), []string{"rust/crates/k3c-sim/src/lib.rs", "rust/crates/k3c-rng/Cargo.toml"})
+	got := rustSteps(p)
+	if names(got) != "rust-fmt rust-lint rust-test" || got[0].Dir != "rust" || got[0].Stage != 1 || got[2].Stage != 2 {
+		t.Fatalf("eine Crate: %+v", got)
+	}
+	if cmd(got[1]) != "cargo clippy -p k3c-rng -p k3c-sim --all-targets -- -D warnings" || cmd(got[2]) != "cargo test -p k3c-rng -p k3c-sim" {
+		t.Errorf("nur geänderte Crates: %q, %q", cmd(got[1]), cmd(got[2]))
+	}
+	for _, f := range []string{"rust/Cargo.toml", "rust/Cargo.lock", "rust/rust-toolchain.toml"} {
+		got = rustSteps(classify(testRepo(), []string{f}))
+		if len(got) != 3 || cmd(got[1]) != "cargo clippy --workspace --all-targets -- -D warnings" || cmd(got[2]) != "cargo test --workspace" {
+			t.Errorf("%s wählt den ganzen Workspace: %+v", f, got)
+		}
+	}
+	for _, files := range [][]string{{"engine/sim/world.go"}, {"rust/spike/src/main.rs", "rust/Taskfile.yml"}, {"docs/standards/rust-port.md"}} {
+		if got := rustSteps(classify(testRepo(), files)); got != nil {
+			t.Errorf("%v: kein cargo erwartet, Schritte %v", files, got)
+		}
+	}
+}
