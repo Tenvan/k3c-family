@@ -1,6 +1,6 @@
 # RU2.2 · Papierschnitt-Grafik laden: Index, Manifest, Sheets
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: `cargo test -p k3c-game art` grün (4 Fixture-Tests + Test mit echter Grafik). Mit gerenderter Grafik (K3C_GRAFIK_DIR auf `public/grafik` des Hauptcheckouts) lädt der Test alle 133 Assets aus `data/paper.json` ohne Fehler; ohne gerenderte Grafik wird er mit Meldung übersprungen. clippy -D warnings und fmt grün.
+
+Umsetzung: `art/{mod,manifest,paper,tests}.rs`; `Library::open/assets/load`, `Asset { sheets, frames, animationen }`, Fehler nennen `task gen:paper`. Abweichung: `src/lib.rs` bekommt `pub mod art;` (nicht in der Dateiliste, nötig). Assets aus `paper.json` werden generisch eingesammelt (Strings `gruppe/id[@variante]`, Reittiere, Objekte, Gebäude-Gruppe). Rig-Figuren/Rig-Teile werden nicht geladen. Keine neuen Tickets.
