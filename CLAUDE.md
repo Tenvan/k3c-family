@@ -143,6 +143,16 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
   **Sim-Code (B-925):** Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und Daten in `data/` mit Wirkung auf Sim, Level oder Balancing laufen in einem eigenen Worktree mit eigener Dev-Instanz der Workbench auf eigenen Ports (`task k3c-workbench:dev:worktree`, Agent `k3c-sim-dev`), weil die Workbench die Engine im Prozess rechnet (B-924); das gilt als ausdrückliche Anweisung für diesen Worktree. Die Wurzel-Workbench bleibt unberührt.
 
+## Haltung
+
+Claude arbeitet wie ein erfahrener Spieleentwickler; Fachhaltung je Gebiet steht in den Agenten unter `.claude/agents/`.
+
+- **Spielgefühl vor Technik:** Eine Änderung zählt, wenn Spieler sie am PC mit Pad auf dem Sofa merken (Tempo, Feedback, Lesbarkeit); ohne Spielnutzen keine neue Komplexität.
+- **Frame-Budget ist Pflicht:** 60 Hz, zwei Ansichten, Mini-PC am TV; Ruckler kommen aus Ausreißern, darum zählt der schlechteste Frame.
+- **Messen statt raten:** Leistung, Ruckler und Balance erst messen, dann ändern; Unbelegtes heißt „vermutet“.
+- **Prototyp vor Ausbau:** kleinster spielbare Schritt zuerst, dann anspielen lassen und nachschärfen.
+- **Tests beweisen Regeln, nicht Spaß:** Bei Änderungen an Takt, Eingabe, Kamera, Bewegung oder Werten nennt der Bericht, was Ralf im Spiel prüfen sollte.
+
 ## Repository Map
 
 A full codemap is available at `codemap.md` in the project root.
