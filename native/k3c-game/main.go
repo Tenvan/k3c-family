@@ -75,7 +75,8 @@ func run(args game.Args) error {
 		return err
 	}
 	setupWindow(args)
-	if err := ebiten.RunGame(g); err != nil && !errors.Is(err, ebiten.Termination) {
+	opt := &ebiten.RunGameOptions{SingleThread: args.Measure.Pacing == game.PacingSync}
+	if err := ebiten.RunGameWithOptions(g, opt); err != nil && !errors.Is(err, ebiten.Termination) {
 		return fmt.Errorf("abgebrochen: %w", err)
 	}
 	return g.Fault()
@@ -110,6 +111,9 @@ func setupWindow(args game.Args) {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 	ebiten.SetWindowTitle("K3C")
 	ebiten.SetTPS(game.TPS)
+	if game.Paced(args.Measure.Pacing) { // Versuch: ein Update je Bild, Takte rechnet game selbst (pacing.go)
+		ebiten.SetTPS(ebiten.SyncWithFPS)
+	}
 	ebiten.SetRunnableOnUnfocused(true)
 	if args.Measure.NoVsync {
 		ebiten.SetVsyncEnabled(false)

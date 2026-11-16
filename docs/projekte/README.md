@@ -19,6 +19,7 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | 9 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
 | 10 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
 | 11 | WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen | – | [WIR-wirtschaft-k2c.md](WIR-wirtschaft-k2c.md) |
+| 12 | RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust | – | [RSU-rust-umstellung.md](RSU-rust-umstellung.md) |
 
 ## Ruht
 
