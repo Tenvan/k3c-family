@@ -132,3 +132,34 @@ func TestWatchIDs(t *testing.T) {
 		t.Fatal("Änderung nicht erkannt")
 	}
 }
+
+// Projekte (docs/projekte) werden beobachtet: die Projekt-ID kommt, die Übersicht gilt als Index (B-909).
+func TestChangedIDsProjekte(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	write(t, root, "docs/projekte/WZG-werkzeuge.md", "# WZG")
+	write(t, root, "docs/projekte/README.md", "# Projekte")
+	before := Snapshot(root)
+	write(t, root, "docs/projekte/WZG-werkzeuge.md", "# WZG neu")
+	write(t, root, "docs/projekte/README.md", "# Projekte neu")
+	if got := ChangedIDs(before, Snapshot(root)); !slices.Equal(got, []string{"WZG"}) {
+		t.Errorf("IDs %v, erwartet [WZG]", got)
+	}
+}
+
+// Ein Sprintwechsel per plan_set ändert Ticket und Sprint-README: beide IDs kommen im selben Ereignis (die Oberfläche
+// lädt dann die Liste neu, PlanSprint.tickets bleibt nicht veraltet).
+func TestChangedIDsSprintwechselTicket(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	write(t, root, "docs/backlog/B-001-a.md", "- **Sprint:** X1")
+	write(t, root, "docs/sprints/aktiv/X1-a/README.md", "Tickets: B-001")
+	write(t, root, "docs/sprints/aktiv/Y1-b/README.md", "Tickets: –")
+	before := Snapshot(root)
+	write(t, root, "docs/backlog/B-001-a.md", "- **Sprint:** Y1 xx")
+	write(t, root, "docs/sprints/aktiv/X1-a/README.md", "Tickets: –")
+	write(t, root, "docs/sprints/aktiv/Y1-b/README.md", "Tickets: B-001")
+	if got := ChangedIDs(before, Snapshot(root)); !slices.Equal(got, []string{"B-001", "X1", "Y1"}) {
+		t.Errorf("IDs %v", got)
+	}
+}

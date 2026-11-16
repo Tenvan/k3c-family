@@ -17,7 +17,7 @@ import { rankedCount, visibleSprints } from './projects';
 import { CopyPrompt } from './PromptParts';
 import { NEW_SPRINT, openSessions, promptSessions, type SprintTarget } from './prompts';
 import { SprintCard } from './SprintCard';
-import { usePlanningData } from './usePlanningData';
+import { usePlanningData, type TextLoad } from './usePlanningData';
 
 const PREF = 'planning.filter';
 
@@ -26,7 +26,7 @@ const PREF = 'planning.filter';
  *  `planning:changed` nur die genannten IDs nach (usePlanningData, B-909); Filter (ohne Freitext), Auswahl und Splitter bleiben gemerkt. */
 export function SprintsBacklog() {
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
-  const { data: root, error, texts, load } = usePlanningData(filter.sel);
+  const { data: root, error, texts, textLoad, load } = usePlanningData(filter.sel);
   const wt = useWorktreeDiffs();
   const data = useMemo(() => (root ? withWorktreeEntries(root, wt.diffs) : null), [root, wt.diffs]); // + Einträge nur im Worktree (B-467)
   const wtIndex = useMemo(() => indexChanges(wt.diffs), [wt.diffs]);
@@ -74,7 +74,7 @@ export function SprintsBacklog() {
         </section>
         <Splitter className="pl-split-v" value={cols} onChange={setCols} onReset={resetCols} />
         <SidePane data={data} tickets={tickets} sel={filter.sel} onPick={select} onReveal={reveal} onClose={() => setFilter({ ...filter, sel: '' })}
-          rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} texts={texts} />
+          rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} texts={texts} textLoad={textLoad} />
       </div>
     </div>
     </WtContext.Provider>
@@ -116,10 +116,11 @@ interface SideProps {
   choose: (v: string) => void;
   /** Fließtexte der Sessions (nachgeladen, B-909). */
   texts: Record<string, string>;
+  textLoad?: TextLoad;
 }
 
 /** Rechte Spalte: Backlog, bei einer Auswahl darunter Splitter und Detail. */
-function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows, resetRows, goal, choose, texts }: SideProps) {
+function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows, resetRows, goal, choose, texts, textLoad }: SideProps) {
   const target: SprintTarget = goal === NEW_SPRINT ? { kind: 'new' } : { kind: 'sprint', id: goal };
   return (
     <section className={`pl-pane pl-side${sel ? ' has-detail' : ''}`} aria-label="Backlog und Detail">
@@ -130,7 +131,7 @@ function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows
         <>
           <Splitter horizontal className="pl-split-h" value={rows} onChange={setRows} onReset={resetRows} />
           <div className="pl-side-detail">
-            <PlanDetail data={data} sel={sel} onSelect={onReveal} onClose={onClose} target={target} texts={texts} />
+            <PlanDetail data={data} sel={sel} onSelect={onReveal} onClose={onClose} target={target} texts={texts} textLoad={textLoad} />
           </div>
         </>
       )}

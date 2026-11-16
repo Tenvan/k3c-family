@@ -27,7 +27,8 @@ describe('applyItems', () => {
   const d = mockPlanningData();
   const id = d.tickets[0]!.nr;
   it('ersetzt ein Ticket aus seiner Datei, ohne die Liste neu zu laden', () => {
-    const r = applyItems(d, [it1(id, 'ticket', text('erledigt'))]);
+    const same = { ...d, tickets: d.tickets.map((x) => (x.nr === id ? { ...x, sprint: 'SP11' } : x)) }; // gleicher Sprint: kein Neuladen
+    const r = applyItems(same, [it1(id, 'ticket', text('erledigt'))]);
     const t = r.data.tickets.find((x) => x.nr === id)!;
     expect([t.title, t.status, t.prio, t.sprint, t.project]).toEqual(['Titel', 'erledigt', 'hoch', 'SP11', '–']);
     expect(r.reload).toBe(false);
@@ -45,5 +46,23 @@ describe('applyItems', () => {
     expect(applyItems(d, [it1('B-99999', 'ticket', text('offen'))]).reload).toBe(true);
     expect(applyItems(d, [it1('ZZ9.1', 'session', 'x')]).reload).toBe(true);
     expect(applyItems(d, [it1('B-99999', 'ticket', '', 'unbekannt')]).reload).toBe(false); // archiviert, war nie in der Liste
+  });
+});
+
+describe('applyItems: veraltete Listen', () => {
+  it('ein Sprintwechsel des Tickets lädt die Liste neu (PlanSprint.tickets)', () => {
+    const d = mockPlanningData();
+    const t = d.tickets.find((x) => x.sprint && x.sprint !== 'ZZ99')!;
+    const text = `# ${t.nr} · ${t.title}\n\n- **Sprint:** ZZ99\n`;
+    expect(applyItems(d, [{ id: t.nr, kind: 'ticket', path: `docs/backlog/${t.nr}-x.md`, text }]).reload).toBe(true);
+  });
+
+  it('geänderte Kopffelder einer Session (Umgebung, Domäne, Abhängigkeiten) laden die Liste neu', () => {
+    const d = mockPlanningData();
+    const x = d.sprints[0]!.sessions[0]!;
+    const same = `# ${x.nr}\n\n- **Umgebung:** ${x.env ?? ''}\n- **Domäne:** ${x.domain ?? ''}\n- **Abhängig von:** ${(x.deps ?? []).join(', ')}\n`;
+    const it = (text: string) => ({ id: x.nr, kind: 'session' as const, path: `docs/sprints/aktiv/${x.nr}-x.md`, text });
+    expect(applyItems(d, [it(same)]).reload).toBe(false);
+    expect(applyItems(d, [it(same.replace('Umgebung:** ', 'Umgebung:** neu'))]).reload).toBe(true);
   });
 });

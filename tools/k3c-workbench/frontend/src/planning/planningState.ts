@@ -1,6 +1,6 @@
 // Zustand der Planungsseite nach `planning:changed` (B-909): nur die genannten IDs nachladen und in die Listen
 // einarbeiten. Reine Logik ohne React, damit Vitest sie prüft.
-import type { PlanItem, PlanningChanged, PlanningData, PlanTicket } from '../api';
+import type { PlanItem, PlanningChanged, PlanningData, PlanSession, PlanTicket } from '../api';
 
 /** Gesammelte Nachlade-Wünsche seit dem letzten Lauf; `all` = ganze Liste neu (erster Aufruf, ids fehlen, zu viele). */
 export interface Pending {
@@ -47,6 +47,15 @@ export function patchTicket(t: PlanTicket, text: string): PlanTicket {
   };
 }
 
+/** Hat die Session-Datei andere Kopffelder (Umgebung, Domäne, Abhängig von) als der Listeneintrag? Dann ist die Liste veraltet. */
+export function sessionHeadChanged(x: PlanSession, text: string): boolean {
+  const f = parseTicket(text);
+  if (f['Umgebung'] === undefined && f['Domäne'] === undefined) return false; // ohne Kopf lässt sich nichts vergleichen
+  const deps = (f['Abhängig von'] ?? '').match(/[A-Z]+\d+\.\d+/g) ?? [];
+  const same = (a: string[], b: string[]) => a.length === b.length && a.every((v, i) => v === b[i]);
+  return (f['Umgebung'] ?? '') !== (x.env ?? '') || (f['Domäne'] ?? '') !== (x.domain ?? '') || !same(deps, x.deps ?? []);
+}
+
 export interface Applied {
   data: PlanningData;
   /** Fließtexte der geladenen Sessions (ID → Markdown, leer ohne Datei). */
@@ -70,9 +79,15 @@ export function applyItems(data: PlanningData, items: PlanItem[]): Applied {
       else if (session) reload = true;
       continue;
     }
-    if (it.kind === 'ticket' && known) tickets = tickets.map((t) => (t.nr === it.id ? patchTicket(t, it.text) : t));
-    else if (it.kind === 'session' && session) continue;
-    else reload = true; // Sprint, Projekt, neues Ticket oder neue Session
+    if (it.kind === 'ticket' && known) {
+      const old = tickets.find((t) => t.nr === it.id)!;
+      const next = patchTicket(old, it.text);
+      if (next.sprint !== first(old.sprint)) reload = true; // Sprintwechsel: PlanSprint.tickets zieht nach
+      tickets = tickets.map((t) => (t.nr === it.id ? next : t));
+    } else if (it.kind === 'session' && session) {
+      const x = data.sprints.flatMap((sp) => sp.sessions).find((y) => y.nr === it.id)!;
+      if (!x.wt && sessionHeadChanged(x, it.text)) reload = true;
+    } else reload = true; // Sprint, Projekt, neues Ticket oder neue Session
   }
   return { data: tickets === data.tickets ? data : { ...data, tickets }, texts, reload };
 }
