@@ -29,7 +29,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | RU0 | Ruckler im Go-Spiel messen: GC, Bildtakt, Laden (Gate G0) | erledigt |
 | RU1 | Rust-Workspace, Toolchain, Taskfile und CI | erledigt |
-| RU2 | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | geplant |
+| RU2 | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | erledigt |
 | RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | geplant |
 | RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | geplant |
 | RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | geplant |
