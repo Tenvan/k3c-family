@@ -1,6 +1,6 @@
 # SI6.1 · Regeltext Friedliche Insel und Fest (B-973)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -57,4 +57,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- **AC-01** umgesetzt: `kampf.md` § 10 „Friedliche Insel und Fest“ (ab wann, alle Stufen, was endet, Flucht und Krone, was weiterläuft, Fest-Zustand, Ausnahmen); `bosse.md` § 1 (Sieg-Zeile) und § 2 (Events) verweisen darauf; `zielkorridore.md` § 6 Vermerk am Korridor „Schiff fertig“ (Wert unverändert). Geprüft: `check_run task:check:diff` grün.
