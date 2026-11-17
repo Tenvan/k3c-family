@@ -18,5 +18,7 @@ k3c-balance = { path = "../k3c-balance" }
 k3c-rig = { path = "../k3c-rig" }
 k3c-platform = { path = "../k3c-platform" }
 png.workspace = true
+# RU38.2: .jsonl.gz entpacken; dieselbe feste Version wie k3c-det (Freigabe RU3).
+flate2 = "=1.1.11"
 serde.workspace = true
 serde_json.workspace = true
