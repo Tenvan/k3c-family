@@ -6,3 +6,7 @@ publish.workspace = true
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+# float_roundtrip: Zahlen korrekt gerundet lesen wie Gos strconv.ParseFloat (bitgleich).
+serde_json = { workspace = true, features = ["float_roundtrip"] }

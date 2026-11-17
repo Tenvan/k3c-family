@@ -72,7 +72,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU3.1 | `RU3.1-rng.md` | Umsetzung | autonom | offen |
+| RU3.1 | `RU3.1-rng.md` | Umsetzung | autonom | fertig |
 | RU3.2 | `RU3.2-go-gleiche-zahlen.md` | Umsetzung | autonom | offen |
 | RU3.3 | `RU3.3-golden-lesen-und-vergleichen.md` | Umsetzung | autonom | offen |
 | RU3.4 | `RU3.4-daten-schemas-teil-1.md` | Umsetzung | autonom | offen |
