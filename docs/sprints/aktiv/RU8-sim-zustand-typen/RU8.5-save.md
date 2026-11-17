@@ -1,6 +1,6 @@
 # RU8.5 · Spielstand: save, save_economy, Rundlauf JSON
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: `rust/crates/k3c-sim/tests/golden_state.rs` lädt jeden Snapshot (`snapshots[i].world`) aller 13 Sim-Golden und beider Kampagnen-Golden (über 500 Zustände) als `World`, schreibt ihn und vergleicht als JSON-Baum (`k3c_det::golden::diff`, Zahlen bitgleich); dazu laufen die zwei Kampagnen-Spielstände (`save`) durch `SaveGame`. Beide Tests grün, Golden nur gelesen.
+Port: `save.rs` (SaveGame, HubSave, PlayerSave, TroopSave, SiteSave, key, keys, without, node_key, pickup_key, hub_save, site_save, parse_save), `save_apply.rs` (apply_hub, apply_site, apply_hub_level, apply_upgrade, set), `save_economy.rs` (CraftSave, PlotSave, craft_save, apply_craft, site_by_key, apply_plots, troops_save, apply_troops, validate_economy), `fehler.rs` (`enum Fehler`). Platzhalter in `pending.rs`: spawn_vagrant, make_fighter, is_soldier, is_fighter, hub_steps, guards_cleared_keys, count_fetching, apply_guards, apply_portals, plot_x (Sprint-Nummern ungeprüft zugeordnet).
+Abweichungen: (1) `Campaign.ToSave` und `FromSave` fehlen, sie hängen an `Campaign` (RU14), kein Ticket nötig. (2) `parse_save` bekommt `biomes` und `defaults` als Parameter statt Paket-Variablen; `apply_craft` bekommt den Wertesatz statt der Welt; `craft_save` die Welt (Baum = Knoten-ID). (3) `nature` mit `omitzero`: leere Maps fehlen wie nil-Maps. (4) Die JSON-Fehlertexte von `serde_json` weichen von Go ab (nur der Teil nach `spielstand: `). Neue Cargo-Abhängigkeiten: keine.
+Tests grün (`cargo test -p k3c-sim`: 41 + 2, 11 `ignore`): 9 Unit-Tests in `save_tests.rs`. `ignore` mit Grund: spielstand_wirtschaft_rundlauf, spielstand_wirtschaft_fixture, spielstand_unbekannte_truppenart_fehler (alle `wartet auf RU21`: Insel, ToSave, FromIslandSave, Fixtures). Aus RU8.4 weiter offen: 8 `ignore` (RU14/RU18). `task rust:lint` und `task check:diff` grün.
