@@ -137,6 +137,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | offen | RU13 | Fluss-Shader in Rust (WGSL) |
 | [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | offen | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
 | [B-1058](B-1058-canvas-reihenfolge-textur.md) | CLI | Problem | mittel | offen | RU13 | Canvas sortiert innerhalb einer Ebene nach Textur statt nach Aufrufreihenfolge |
+| [B-1059](B-1059-abnahme-ru13-welt-akteure.md) | CLI | Schuld | mittel | offen | RU13 | Abnahme RU13: Gen, Bildtests, Race und Sichtprüfung der Standbilder |
 
 ## Archiv
 
