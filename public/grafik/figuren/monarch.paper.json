@@ -1139,6 +1139,21 @@
       "frames": 8,
       "gangart": "galopp",
       "reittier": "wolf"
+    },
+    "galopp-kamel": {
+      "frames": 8,
+      "gangart": "galopp",
+      "reittier": "kamel"
+    },
+    "schritt-kamel": {
+      "frames": 8,
+      "gangart": "schritt",
+      "reittier": "kamel"
+    },
+    "trab-kamel": {
+      "frames": 8,
+      "gangart": "trab",
+      "reittier": "kamel"
     }
   },
   "varianten": {

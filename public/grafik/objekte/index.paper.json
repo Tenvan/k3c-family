@@ -85,6 +85,11 @@
     "manifest": "felsen/manifest.json"
   },
   {
+    "id": "gatter",
+    "rig": "requisite",
+    "manifest": "gatter/manifest.json"
+  },
+  {
     "id": "hoehlenbusch",
     "rig": "requisite",
     "manifest": "hoehlenbusch/manifest.json"

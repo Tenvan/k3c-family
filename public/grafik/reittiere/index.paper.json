@@ -25,6 +25,11 @@
     "manifest": "hoellenhund/manifest.json"
   },
   {
+    "id": "kamel",
+    "rig": "vierbeiner",
+    "manifest": "kamel/manifest.json"
+  },
+  {
     "id": "pegasus",
     "rig": "vierbeiner",
     "manifest": "pegasus/manifest.json"
