@@ -8,7 +8,7 @@ use std::rc::Rc;
 use k3c_sim::state::{Player, Site, World};
 
 use super::pending::{CombatSpot, Economy, SpotState};
-use super::plan::Sheets;
+use super::plan::{Sheets, sheet_size};
 use super::simview::SimView;
 use crate::actors::catalog::UNIT_PX;
 use crate::art::{Sheet, read_manifest};
@@ -81,8 +81,8 @@ pub fn grafik_dir() -> PathBuf {
 pub struct MapSheets(BTreeMap<(String, String), Sheet>);
 
 impl Sheets for MapSheets {
-    fn sheet(&self, asset: &str, anim: &str) -> Option<&Sheet> {
-        self.0.get(&(asset.to_string(), anim.to_string()))
+    fn size_of(&self, asset: &str, anim: &str) -> Option<(f64, f64)> {
+        self.0.get(&(asset.to_string(), anim.to_string())).map(sheet_size)
     }
 }
 
@@ -137,8 +137,8 @@ impl StubSheets {
 }
 
 impl Sheets for StubSheets {
-    fn sheet(&self, _asset: &str, _anim: &str) -> Option<&Sheet> {
-        Some(&self.0)
+    fn size_of(&self, _asset: &str, _anim: &str) -> Option<(f64, f64)> {
+        Some(sheet_size(&self.0))
     }
 }
 

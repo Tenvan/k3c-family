@@ -214,23 +214,19 @@ pub struct BackWall {
 }
 
 /// `back_walls` hängt die Hintergrundmauern zwischen je zwei benachbarten gebauten Mauern derselben Seite an out an:
-/// links, dann rechts, je von innen nach außen. walls ist ein Puffer für die Mauern einer Seite.
-pub fn back_walls<'a>(
-    mut out: Vec<BackWall>,
-    walls: &mut Vec<&'a Site>,
-    sites: &'a [Site],
-    hub_x: f64,
-) -> Vec<BackWall> {
+/// links, dann rechts, je von innen nach außen. `walls` ist ein Puffer für die Mauern einer Seite (Indizes in
+/// `sites`, damit der Puffer über die Bilder erhalten bleibt und je Bild nichts angelegt wird).
+pub fn back_walls(mut out: Vec<BackWall>, walls: &mut Vec<usize>, sites: &[Site], hub_x: f64) -> Vec<BackWall> {
     for side in [-1.0, 1.0] {
         walls.clear();
-        for s in sites {
+        for (i, s) in sites.iter().enumerate() {
             if s.kind == "wall" && sign(s.x - hub_x) == side {
-                walls.push(s);
+                walls.push(i);
             }
         }
-        by_distance(walls, hub_x);
+        by_distance(walls, sites, hub_x);
         for i in 1..walls.len() {
-            let (inner, ex) = (walls[i - 1], walls[i]);
+            let (inner, ex) = (&sites[walls[i - 1]], &sites[walls[i]]);
             if inner.state == "built" && ex.state == "built" {
                 out.push(BackWall {
                     id: ex.id,
@@ -244,12 +240,13 @@ pub fn back_walls<'a>(
     out
 }
 
-/// `by_distance` sortiert die Mauern einer Seite stabil nach Abstand zur Hub-Mitte (Einfügen, wenige Einträge, ohne
-/// Abschluss je Bild). Wie in Go ein Einfügen-Sort, der bei Gleichstand nicht tauscht: stabil, kein `sort_by` nötig.
-pub fn by_distance(walls: &mut [&Site], hub_x: f64) {
+/// `by_distance` sortiert die Mauern (Indizes in `sites`) einer Seite stabil nach Abstand zur Hub-Mitte (Einfügen,
+/// wenige Einträge, ohne Abschluss je Bild). Wie in Go ein Einfügen-Sort, der bei Gleichstand nicht tauscht: stabil.
+pub fn by_distance(walls: &mut [usize], sites: &[Site], hub_x: f64) {
+    let d = |i: usize| (sites[i].x - hub_x).abs();
     for i in 1..walls.len() {
         let mut j = i;
-        while j > 0 && (walls[j].x - hub_x).abs() < (walls[j - 1].x - hub_x).abs() {
+        while j > 0 && d(walls[j]) < d(walls[j - 1]) {
             walls.swap(j, j - 1);
             j -= 1;
         }

@@ -1,12 +1,43 @@
-//! Port von `native/k3c-game/props/` (Paketkopf `props.go`): Auswahl-Regeln für Gebäude und Objekte. RU16.1 liefert
-//! `assets`, `data`, `buildings`, `coin_fountain` und die Naht `simview`; der Drawer (`New`, `Draw`, `Assets`) folgt in RU16.5.
+//! Port von `native/k3c-game/props/` (Paketkopf `props.go`): Zeichnen von Bauten, Natur und Objekten aus dem
+//! Spielzustand (Sprint NG4, B-797): Burg mit Wachstumsreihe, Bauplätze mit Stufe, Schaden und Ruine, Hintergrundmauer,
+//! Baustellen mit Gerüst, Bauschild, Preis-Anzeige und Wartegrund, Bäume, Felsen, Büsche, Adern mit Abbau-Schild,
+//! Plantage, Portal, Ausgang, Hafen, Lager, Truhen, Sterne, Münzen, wie der Browser; Fackeln zeichnet world (Licht).
+//! Alles liegt auf `Layer::BUILDINGS`, Schilder, Balken und Texte wie im Browser hinter den Figuren.
+//!
+//! Aufbau: `listen` rechnet je Update den abgeleiteten Zustand (`Infos`), `plan*` baut je Zelle die Zeichenliste (rein,
+//! getestet), `paint` zeichnet sie; `buildings`, `sites` und `nature` sind die Auswahl-Regeln.
+//!
+//! Abweichungen von Go: Der Drawer hat nur `&self` (Trait `view::Drawer`); Planer, Zeichner und Zustand liegen in einer
+//! `RefCell`. Die Bibliothek ist `Rc<RefCell<Library>>` wie bei `actors` (Schrift und Zeichnen brauchen sie
+//! veränderlich). Die Sim-Sicht (`SimView`) bekommt der Drawer im Konstruktor; `new_pending` nimmt `PendingSimView`
+//! bis RU15 und RU18 die Sim liefern.
+
+use std::cell::RefCell;
+use std::rc::Rc;
+
+use k3c_platform::Canvas;
+use k3c_sim::state::World;
+
+use self::listen::Infos;
+use self::paint::Painter;
+use self::pending::PendingSimView;
+use self::plan::{Planner, Sheets};
+use self::simview::SimView;
+use crate::art::Library;
+use crate::view::cell::Cell;
+use crate::view::frame::Frame;
+use crate::view::layer::{Drawer, Layer, Listener};
+use crate::view::roles::AssetSource;
 
 pub mod assets;
 pub mod buildings;
 pub mod coin_fountain;
 pub mod data;
+pub mod decor;
+pub mod decor_glow;
 pub mod listen;
 pub mod nature;
+pub mod paint;
 pub mod pending;
 pub mod plan;
 pub mod plan_castle;
@@ -25,9 +56,13 @@ mod buildings_tests;
 #[cfg(test)]
 mod coin_fountain_tests;
 #[cfg(test)]
+mod decor_tests;
+#[cfg(test)]
 mod felling_tests;
 #[cfg(test)]
 mod listen_tests;
+#[cfg(test)]
+mod mod_tests;
 #[cfg(test)]
 mod nature_tests;
 #[cfg(test)]
@@ -40,3 +75,81 @@ mod plan_tests;
 mod sites_tests;
 #[cfg(test)]
 mod testutil;
+
+/// `State` ist der Zustand des Drawers über die Bilder: Planer (Puffer bleiben erhalten), Zeichner und Stufen-Zustand.
+struct State {
+    plan: Planner,
+    paint: Painter,
+    infos: Infos,
+}
+
+/// `Props` ist der Beitrag des Pakets: Drawer (`Layer::BUILDINGS`), Listener und AssetSource (Go: `drawer`).
+pub struct Props {
+    lib: Option<Rc<RefCell<Library>>>,
+    view: Box<dyn SimView>,
+    state: RefCell<State>,
+}
+
+/// `new` liefert den Drawer der Bauten; `lib` (Grafik) darf `None` sein, dann zeichnen die Platzhalter-Formen.
+pub fn new(lib: Option<Rc<RefCell<Library>>>, view: Box<dyn SimView>) -> Props {
+    let sheets = lib.clone().map(|l| l as Rc<dyn Sheets>);
+    Props {
+        lib,
+        view,
+        state: RefCell::new(State {
+            plan: Planner::new(sheets),
+            paint: Painter::default(),
+            infos: Infos::default(),
+        }),
+    }
+}
+
+/// `new_pending` wie `new` mit `PendingSimView` (die Sim-Funktionen fehlen bis RU15 und RU18).
+pub fn new_pending(lib: Option<Rc<RefCell<Library>>>) -> Props {
+    new(lib, Box::new(PendingSimView))
+}
+
+impl Drawer for Props {
+    fn layer(&self) -> Layer {
+        Layer::BUILDINGS
+    }
+
+    /// `draw` zeichnet die Bauten der Welt, in der der Spieler der Zelle steht.
+    fn draw(&self, dst: &mut dyn Canvas, f: &Frame, c: &Cell) {
+        let Some(seat) = f.seat(c.player) else {
+            return;
+        };
+        let Some(stage) = f.stage(seat.stage) else {
+            return;
+        };
+        let Some(w) = stage.world.as_deref() else {
+            return;
+        };
+        let mut st = self.state.borrow_mut();
+        let State { plan, paint, infos } = &mut *st;
+        plan.viewer = viewer_of(w, seat.monarch);
+        plan.plan(Some(w), infos.info(stage.index), &c.camera, f.clock, self.view.as_ref());
+        let mut guard = self.lib.as_ref().map(|l| l.borrow_mut());
+        paint.paint(dst, &plan.body, guard.as_deref_mut(), c, f.clock);
+        paint.paint(dst, &plan.top, guard.as_deref_mut(), c, f.clock);
+    }
+}
+
+/// `viewer_of` ist der Index des Monarchen `monarch` in `w.players` (`None`: keiner).
+fn viewer_of(w: &World, monarch: i64) -> Option<usize> {
+    w.players.iter().position(|m| m.index == monarch)
+}
+
+impl Listener for Props {
+    /// `listen` rechnet den abgeleiteten Zustand aller Stufen des Frames (einmal je Update).
+    fn listen(&mut self, f: &Frame) {
+        self.state.get_mut().infos.listen(f, self.view.as_ref());
+    }
+}
+
+impl AssetSource for Props {
+    /// `assets` nennt alle Papier-Assets, die props im Level zeichnen kann.
+    fn assets(&self, level: &str, _w: &World) -> Vec<String> {
+        assets::level_assets(level)
+    }
+}

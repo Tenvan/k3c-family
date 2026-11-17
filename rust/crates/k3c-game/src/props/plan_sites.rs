@@ -85,12 +85,11 @@ impl Planner {
     }
 
     /// `back_walls`: gekachelte Hintergrundmauer hinter den Bauplätzen; ohne Grafik bleibt der Abschnitt leer.
-    /// Die Mauern einer Seite liegen als Verweise auf `w.sites` in einem Puffer, der nur innerhalb des Aufrufs lebt.
+    /// Die Mauern einer Seite liegen als Indizes in `w.sites` im Puffer `self.walls` (keine Allokation je Bild).
     pub fn back_walls(&mut self, w: &World, k: &Camera) {
         let mut backs = std::mem::take(&mut self.backs);
         backs.clear();
-        let mut walls: Vec<&Site> = Vec::with_capacity(self.walls.capacity());
-        backs = back_walls(backs, &mut walls, &w.sites, w.hub_x);
+        backs = back_walls(backs, &mut self.walls, &w.sites, w.hub_x);
         for b in &backs {
             let l = back_wall_look(b.stage);
             if self.size(l).is_some() && visible(k, (b.from + b.to) / 2.0, (b.to - b.from) / 2.0 + 1.0) {

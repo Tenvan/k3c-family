@@ -1,10 +1,11 @@
 //! Port von `native/k3c-game/props/plan.go` (Teil 1: Typen, Puffer, `plan`). Zeichenliste einer Zelle: aus Welt,
 //! abgeleitetem Zustand und Kamera entsteht eine Liste von Bildern und Formen in Welt-Maßen (Units, Höhe über dem
-//! Boden), hinten nach vorn. Rein, ohne Zeichen-Stack; `paint` (RU16.5) zeichnet sie.
+//! Boden), hinten nach vorn. Rein, ohne Zeichen-Stack; `paint` zeichnet sie.
 //! Reihenfolge wie die Tiefen im Browser (worldRenderer.ts): Burg, feste Objekte und Natur (0), Hintergrundmauer (1),
 //! Bauplätze (2), Plantage und Truhen (3), Münzen (6); Schilder, Balken und Texte danach (top).
 //! `castle` steht in `plan_castle.rs`, `entities` und `nodes` in `plan_entities.rs`.
 
+use std::cell::RefCell;
 use std::rc::Rc;
 
 use k3c_sim::state::World;
@@ -69,14 +70,30 @@ pub struct Item {
     pub text: String,
 }
 
-/// `Sheets` liefert die geladenen Sheets (`art::Library`; `None` im Planer = keine Grafik, dann Platzhalter).
+/// `Sheets` liefert die Maße der geladenen Sheets (`art::Library`; `None` im Planer = keine Grafik, dann Platzhalter).
+/// Abweichung von Go: Der Planer braucht nur Breite und Höhe, nicht das Sheet; so kann der Drawer die Bibliothek in
+/// `Rc<RefCell<Library>>` halten (Schrift und Zeichnen brauchen sie veränderlich), ohne Verweise aus der `RefCell`.
 pub trait Sheets {
-    fn sheet(&self, asset: &str, anim: &str) -> Option<&Sheet>;
+    /// Breite und Höhe über dem Fuß in Units (`None`: Sheet nicht geladen).
+    fn size_of(&self, asset: &str, anim: &str) -> Option<(f64, f64)>;
+}
+
+/// `sheet_size` rechnet Breite und Höhe über dem Fuß (Units) eines Sheets.
+#[allow(clippy::cast_precision_loss)]
+pub fn sheet_size(s: &Sheet) -> (f64, f64) {
+    let k = s.units_per_px / UNIT_PX;
+    (s.fw as f64 * k, s.fh as f64 * s.origin_y * k)
 }
 
 impl Sheets for Library {
-    fn sheet(&self, asset: &str, anim: &str) -> Option<&Sheet> {
-        Library::sheet(self, asset, anim)
+    fn size_of(&self, asset: &str, anim: &str) -> Option<(f64, f64)> {
+        Library::sheet(self, asset, anim).map(sheet_size)
+    }
+}
+
+impl Sheets for RefCell<Library> {
+    fn size_of(&self, asset: &str, anim: &str) -> Option<(f64, f64)> {
+        self.borrow().sheet(asset, anim).map(sheet_size)
     }
 }
 
@@ -120,9 +137,7 @@ impl Planner {
         if !l.ok() {
             return None;
         }
-        let s = self.lib.as_ref()?.sheet(l.asset, l.anim)?;
-        let k = s.units_per_px / UNIT_PX;
-        Some((s.fw as f64 * k, s.fh as f64 * s.origin_y * k))
+        self.lib.as_ref()?.size_of(l.asset, l.anim)
     }
 
     /// `sprite` legt ein Bild an; ohne geladenes Sheet `false`.

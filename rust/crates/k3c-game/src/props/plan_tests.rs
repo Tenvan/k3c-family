@@ -1,8 +1,8 @@
-//! Tests zu `plan.go`. Die sieben Go-Tests bauen ihre Welt mit `sim.CreateIsland` (Rust: RU10) und rufen `plan` ganz
-//! (mit `decor`, RU16.5); sie stehen hier mit `#[ignore = "wartet auf RU16"]` und `island()` als Platzhalter. `sites`,
+//! Tests zu `plan.go`. Die sieben Go-Tests bauen ihre Welt mit `sim.CreateIsland` (Rust: RU10); sie stehen hier mit
+//! `#[ignore = "wartet auf RU10"]` und `island()` als Platzhalter (`plan` samt `decor` läuft seit RU16.5). `sites`,
 //! `combat`, `plantation`, `pickups` und `coins` liefert RU16.4; deren Aussagen laufen als Literal-Welten in
-//! `plan_sites_tests.rs`, `plan_combat_tests.rs` und `felling_tests.rs`. Die sieben Tests laufen erst, wenn `decor`
-//! (RU16.5) und die Insel (RU10) vorliegen. Dazu laufen Tests auf Literal-Welten über `castle`, `entities` und `nodes`.
+//! `plan_sites_tests.rs`, `plan_combat_tests.rs` und `felling_tests.rs`. Dazu laufen Tests auf Literal-Welten über
+//! `castle`, `entities` und `nodes`.
 
 use k3c_level::types::Entity;
 use k3c_sim::state::{ResourceNode, Site, World};
@@ -40,7 +40,7 @@ fn labels_of(items: &[Item]) -> Vec<String> {
 }
 
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_burg_und_plaetze_aus_der_simulation() {
     let Some(lib) = fake_sheets() else {
         return;
@@ -59,7 +59,7 @@ fn plan_burg_und_plaetze_aus_der_simulation() {
 }
 
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_gebaute_stufen_schaden_und_ruine() {
     let Some(lib) = fake_sheets() else {
         return;
@@ -99,7 +99,7 @@ fn plan_gebaute_stufen_schaden_und_ruine() {
 }
 
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_ohne_grafik_platzhalter() {
     let w = island();
     let v = FixedSimView::default();
@@ -112,7 +112,7 @@ fn plan_ohne_grafik_platzhalter() {
 }
 
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_nur_sichtbares() {
     let w = island();
     let v = FixedSimView::default();
@@ -122,7 +122,7 @@ fn plan_nur_sichtbares() {
 }
 
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_baustelle_mit_preis_und_geruest() {
     let Some(lib) = fake_sheets() else {
         return;
@@ -154,7 +154,7 @@ fn plan_baustelle_mit_preis_und_geruest() {
 /// Go prüft null Allokationen je Bild (`testing.AllocsPerRun`); Rust hat keinen Allokationszähler: Nach dem zweiten
 /// Planen bleibt die Kapazität der Puffer unverändert.
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_ohne_allokation_nach_dem_ersten_bild() {
     let w = island();
     let v = FixedSimView::default();
@@ -183,7 +183,7 @@ fn plan_ohne_allokation_nach_dem_ersten_bild() {
 }
 
 #[test]
-#[ignore = "wartet auf RU16"]
+#[ignore = "wartet auf RU10"]
 fn plan_ausbau_schild_der_burg() {
     let w = island();
     let v = FixedSimView::default();

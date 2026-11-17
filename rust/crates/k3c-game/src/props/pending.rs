@@ -5,11 +5,7 @@
 //! löschen sie hier.
 
 use k3c_data::hub::Stock;
-use k3c_sim::state::World;
 use serde::{Deserialize, Serialize};
-
-use super::plan::Planner;
-use crate::view::cell::Camera;
 
 fn is_zero_i64(v: &i64) -> bool {
     *v == 0
@@ -96,12 +92,3 @@ pub struct SpotState {
 /// `PendingSimView` meldet bei jedem Aufruf, dass die Sim-Funktion noch fehlt (siehe `SimView`).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct PendingSimView;
-
-/// Planer-Methode aus RU16.5 (`decor`); die Session löscht den Platzhalter beim Portieren (Leitfaden § 7).
-#[allow(clippy::unused_self)]
-impl Planner {
-    /// RU16.5: `decor` (decor.go).
-    pub fn decor(&mut self, _w: &World, _k: &Camera, _clock: f64) {
-        unimplemented!("RU16.5: decor")
-    }
-}
