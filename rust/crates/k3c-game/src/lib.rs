@@ -2,6 +2,7 @@
 
 pub mod actors;
 pub mod art;
+pub mod audio;
 pub mod demo;
 pub mod fx;
 pub mod input;
