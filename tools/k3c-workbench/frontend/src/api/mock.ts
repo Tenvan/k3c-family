@@ -11,7 +11,7 @@ import { mockMcp } from './mockMcp';
 import { mockResources } from './mockResources';
 import { mockServices } from './mockServices';
 import { mockPlanning } from './mockPlanning';
-import { mockGates, mockTasks } from './mockTasks';
+import { mockTasks } from './mockTasks';
 import type { Backend, EventName, Events, Info, McpState, ServiceStatus, Source } from './types';
 
 // Mock ohne Wails-Laufzeit (`npx vite` im Frontend): erfundene Daten, damit die Oberfläche im Browser testbar ist.
@@ -71,7 +71,6 @@ export function mockBackend(): Backend {
     ...mockBalance({ run: (run) => emit('balance:runs', run), reports: () => emit('balance:reports', null) }),
     ...mockBalanceData(),
     tasks: tasks.tasks, tasksReload: tasks.tasksReload, taskStart: tasks.taskStart, taskStop: tasks.taskStop, taskRuns: tasks.taskRuns,
-    ...mockGates(),
     ...mockPlanning(() => emit('planning:changed', null)),
     ...mockAssets(),
     ...mockWorld(),

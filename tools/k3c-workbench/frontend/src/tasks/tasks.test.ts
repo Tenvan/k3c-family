@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { TaskNamespace, TaskRun } from '../api';
 import {
-  countTasks, describeGate, describeRun, favoriteTasks, filterNamespaces, onlyAllowed, pushHistory, splitArgs, upsertRun,
+  countTasks, describeRun, favoriteTasks, filterNamespaces, pushHistory, splitArgs, upsertRun,
 } from './tasks';
 
 const info = (name: string) => t(name);
@@ -38,20 +38,8 @@ describe('tasks', () => {
   });
 });
 
-describe('Schloss, Favoriten und letzte Läufe (Workbench-Spec § 4)', () => {
+describe('Favoriten und letzte Läufe (Workbench-Spec § 4)', () => {
   const ns = [{ name: 'Workspace', tasks: [info('check'), info('dev')] }, { name: 'golden', tasks: [info('golden:update')] }];
-
-  it('describeGate unterscheidet Datei und Schalter bis zum Beenden', () => {
-    expect(describeGate('open')).toMatchObject({ icon: '🔓', temp: false });
-    expect(describeGate('closed-temp')).toMatchObject({ icon: '🔒', temp: true });
-    expect(describeGate(undefined).icon).toBe('🔒');
-  });
-
-  it('onlyAllowed lässt nur offene Schlösser stehen, leere Namensräume fallen weg', () => {
-    expect(onlyAllowed(ns, { check: 'open', dev: 'closed', 'golden:update': 'closed-temp' })).toEqual([
-      { name: 'Workspace', tasks: [info('check')] },
-    ]);
-  });
 
   it('favoriteTasks folgt der Reihenfolge des Baums', () => {
     expect(favoriteTasks(ns, ['golden:update', 'check']).map((t) => t.name)).toEqual(['check', 'golden:update']);

@@ -80,7 +80,7 @@ describe('Regeltabelle Hub-Stufe → Gebäude (WZ15.2, B-462)', () => {
 describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
   const STUDIO = /k3c-studio|check:studio|\b(8091|8182|5192)\b/;
   const FILES = ['Taskfile.yml', '.github/workflows/ci.yml', '.claude/launch.json', '.oxlintrc.json',
-    'tools/k3c-workbench/services.json', 'tools/k3c-workbench/task-freigaben.json'];
+    'tools/k3c-workbench/services.json'];
 
   it.each(FILES)('%s nennt weder Studio-Tasks noch Studio-Ports', (file) => {
     const hits = read(file).split(/\r?\n/).filter((line) => STUDIO.test(line));

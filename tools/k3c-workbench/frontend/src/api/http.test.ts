@@ -33,7 +33,6 @@ describe('RPC', () => {
     ['info', 'Info', []],
     ['serviceStop', 'ServiceStop', ['vite', true]],
     ['taskStart', 'TaskStart', ['check', ['--', 'x']]],
-    ['taskGates', 'TaskGatesView', []],
     ['planningSet', 'PlanningSet', ['B-1', 'Prio', 'hoch']],
     ['githubStatus', 'GitHubStatus', [false]],
   ] as const)('%s ruft %s mit Argumenten und Kopfzeile', async (method, rpc, args) => {

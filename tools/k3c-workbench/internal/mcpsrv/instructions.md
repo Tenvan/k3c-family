@@ -109,8 +109,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 
 ## 4. Tasks
 
-- `task_list {namespace?, query?}`: Taskfile-Baum; `*` = Schloss offen, `task_start` erlaubt. Das Schloss setzt 🧑 auf
-  der Tasks-Seite (Datei `tools/k3c-workbench/task-freigaben.json` plus Schalter bis zum Beenden).
+- `task_list {namespace?, query?}`: Taskfile-Baum; jeder Task ist mit `task_start` startbar, es gibt kein Freigabe-Schloss.
 - `task_start {task, args?}` kehrt sofort zurück; `task_status`, `task_output {task, limit?, since?}`, `task_stop {task}`.
 - Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`, sondern `sim_test`.
 

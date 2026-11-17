@@ -27,14 +27,13 @@ const uiHeader = "X-K3C-Dev"
 const maxUIRPCBytes = 1 << 20 // Größe eines Aufrufs (Prompt für Claude, Task-Argumente)
 
 // uiMethods sind die Methoden von App, die die Oberfläche aufrufen darf: genau die von GoApp in
-// frontend/src/api/wails.ts (TestUIMethodsWieWailsTS hält beide gleich). TaskList, TaskState u. a. bleiben MCP-intern.
+// frontend/src/api/wails.ts (TestUIMethodsWieWailsTS hält beide gleich). TaskList u. a. bleiben MCP-intern.
 var uiMethods = map[string]bool{
 	"Info": true, "Services": true, "ServicesReload": true, "ServiceStart": true, "ServiceStop": true,
 	"ServiceRestart": true, "ServicesStartAll": true, "ServicesStopAll": true, "ServiceLogLevels": true,
 	"Sources": true, "ConsoleTail": true, "LogsQuery": true, "LogsErrors": true,
 	"McpOverview": true, "McpRestart": true, "McpInstructions": true, "McpCalls": true, "McpUsage": true,
 	"Tasks": true, "TasksReload": true, "TaskStart": true, "TaskStop": true, "TaskRuns": true,
-	"TaskGatesView": true, "TaskGateToggle": true, "TaskGateSave": true,
 	"PlanningData": true, "PlanningDocs": true, "PlanningSet": true, "PlanningDoc": true, "PlanningGet": true, "PlanningList": true, "PlanningItems": true,
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,

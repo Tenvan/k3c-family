@@ -7,15 +7,14 @@ import { isStringList, loadJSON, loadText, prefsStore, saveJSON, savePref } from
 import { TasksFoot, TasksHead } from './TaskBars';
 import { TaskDetail } from './TaskDetail';
 import { TaskTree } from './TaskTree';
-import { countTasks, favoriteTasks, filterNamespaces, findTask, onlyAllowed } from './tasks';
+import { countTasks, favoriteTasks, filterNamespaces, findTask } from './tasks';
 import { useTasks } from './useTasks';
 
 const SPLIT_DEFAULT = 40;
 const toggled = (list: string[], x: string) => (list.includes(x) ? list.filter((y) => y !== x) : [...list, x]);
 
-/** Gemerkter Zustand der Seite: Auswahl, 🔑, Eingeklapptes, Favoriten, Splitter (Freitext nicht). */
+/** Gemerkter Zustand der Seite: Auswahl, Eingeklapptes, Favoriten, Splitter (Freitext nicht). */
 function useTaskPrefs() {
-  const [onlyKey, setOnlyKey] = useState(() => loadText('tasks.onlyAllowed', '') === '1');
   const [selected, setSelected] = useState(() => loadText('tasks.selected', ''));
   const [collapsed, setCollapsed] = useState(() => loadJSON('tasks.collapsed', isStringList, []));
   const [pinned, setPinned] = useState(() => loadJSON('tasks.favorites', isStringList, []));
@@ -25,8 +24,7 @@ function useTaskPrefs() {
     saveJSON(key, v);
   };
   return {
-    onlyKey, selected, collapsed, pinned, split, setSplit, resetSplit,
-    setOnlyKey: (v: boolean) => { setOnlyKey(v); savePref('tasks.onlyAllowed', v ? '1' : ''); },
+    selected, collapsed, pinned, split, setSplit, resetSplit,
     select: (n: string) => { setSelected(n); savePref('tasks.selected', n); },
     toggleNs: (ns: string) => keep(setCollapsed, 'tasks.collapsed')(toggled(collapsed, ns)),
     togglePin: (n: string) => keep(setPinned, 'tasks.favorites')(toggled(pinned, n)),
@@ -39,26 +37,21 @@ export function TasksPage({ active = true }: { active?: boolean }) {
   const prefs = useTaskPrefs();
   useTicketPage('tasks', prefs.selected, active);
   const [query, setQuery] = useState('');
-  const { catalog, gates } = data;
-  const visible = useMemo(() => {
-    const ns = filterNamespaces(catalog?.namespaces ?? [], query);
-    return prefs.onlyKey ? onlyAllowed(ns, gates.states) : ns;
-  }, [catalog, query, prefs.onlyKey, gates]);
+  const { catalog } = data;
+  const visible = useMemo(() => filterNamespaces(catalog?.namespaces ?? [], query), [catalog, query]);
 
   if (data.loadError && !catalog) return <NoticeCard title="Task-Katalog nicht abrufbar" tone="error">{data.loadError}</NoticeCard>;
   if (!catalog) return <Text color="gray">Lade Task-Katalog …</Text>;
   const task = findTask(catalog.namespaces, prefs.selected);
-  const filter = [query.trim() && `„${query.trim()}“`, prefs.onlyKey && '🔑'].filter(Boolean).join(' ');
+  const filter = query.trim() && `„${query.trim()}“`;
   return (
     <div className="tk-wrap">
       <div className="tk-page">
-        <TasksHead query={query} onlyKey={prefs.onlyKey} pending={gates.pending} reloading={data.reloading} onQuery={setQuery}
-          onOnlyKey={prefs.setOnlyKey} onSave={data.saveGates} onReload={data.reload} />
-        {data.gateError && <p className="svc-error">{data.gateError}</p>}
+        <TasksHead query={query} reloading={data.reloading} onQuery={setQuery} onReload={data.reload} />
         <div className="tk-body" style={{ '--tk-split': `${prefs.split}%` } as React.CSSProperties}>
-          <TaskTree visible={visible} favorites={favoriteTasks(visible, prefs.pinned)} runs={data.runs} gates={gates.states}
+          <TaskTree visible={visible} favorites={favoriteTasks(visible, prefs.pinned)} runs={data.runs}
             pinned={prefs.pinned} selected={prefs.selected} collapsed={prefs.collapsed} onToggleNs={prefs.toggleNs}
-            onSelect={prefs.select} onGate={data.toggleGate} onPin={prefs.togglePin} />
+            onSelect={prefs.select} onPin={prefs.togglePin} />
           <Splitter className="tk-split" value={prefs.split} onChange={prefs.setSplit} onReset={prefs.resetSplit} />
           <section className="tk-detail">
             {task ? <TaskDetail key={task.name} task={task} run={data.runs.find((r) => r.name === task.name)} history={data.history} /> : (

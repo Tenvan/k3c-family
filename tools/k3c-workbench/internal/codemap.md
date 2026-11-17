@@ -9,7 +9,6 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings, Ober
 | [`mcpsrv/`](mcpsrv/codemap.md) | MCP-Server (Streamable HTTP, 127.0.0.1): Tool-Katalog, Worktree-Scoping, Check-Pipeline, `sim_test` |
 | [`planning/`](planning/codemap.md) | Tickets, Sprints, Sessions, Projekte und Fahrplan unter `docs/`, transaktional mit Vorlagenpflicht; nächste Session, Wellen, Queue |
 | [`services/`](services/codemap.md) | Supervisor für Dev-Dienste aus `services.json` mit Reload im laufenden Betrieb |
-| [`taskgate/`](taskgate/codemap.md) | Freigabe-Schloss für `task_start` (`task-freigaben.json`) |
 | [`proc/`](proc/codemap.md) | Kindprozesse mit Prozessbaum-Kill (Job Object) |
 | [`taskrun/`](taskrun/codemap.md) / [`taskcat/`](taskcat/codemap.md) | Go-Task-Läufe und Task-Katalog |
 | [`console/`](console/codemap.md) / [`applog/`](applog/codemap.md) | Konsolenpuffer je Quelle, eigenes Log `logs/k3c-workbench.jsonl` |

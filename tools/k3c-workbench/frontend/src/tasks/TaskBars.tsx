@@ -1,28 +1,19 @@
 import type { TaskCatalog } from '../api';
-import { Button, Switch, Text, TextField } from '@webkit/atoms';
+import { Button, Text, TextField } from '@webkit/atoms';
 
 interface HeadProps {
   query: string;
-  onlyKey: boolean;
-  pending: number;
   reloading: boolean;
   onQuery: (q: string) => void;
-  onOnlyKey: (v: boolean) => void;
-  onSave: () => void;
   onReload: () => void;
 }
 
-/** Kopf der Tasks-Seite: Filter (Esc leert) · 🔑 nur freigegebene · [n Schalter übernehmen] · Neu laden. */
+/** Kopf der Tasks-Seite: Filter (Esc leert) · Neu laden. */
 export function TasksHead(p: HeadProps) {
   return (
     <div className="tk-head">
       <TextField.Root className="tk-filter" size="2" placeholder="Filter: Name oder Beschreibung (Esc leert)" value={p.query}
         onChange={(e) => p.onQuery(e.target.value)} onKeyDown={(e) => e.key === 'Escape' && p.onQuery('')} />
-      <Text as="label" size="2" className="tk-key">
-        <Switch size="1" checked={p.onlyKey} onCheckedChange={p.onOnlyKey} />
-        🔑 nur freigegebene
-      </Text>
-      {p.pending > 0 && <Button variant="soft" color="amber" onClick={p.onSave}>{p.pending} Schalter übernehmen</Button>}
       <Button variant="soft" loading={p.reloading} onClick={p.onReload}>Neu laden</Button>
     </div>
   );
