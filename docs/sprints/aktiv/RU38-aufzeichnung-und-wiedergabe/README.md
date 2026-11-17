@@ -80,7 +80,7 @@ Keine. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widerspre
 |---|---|---|---|---|
 | RU38.1 | `RU38.1-go-trace-aufzeichnung.md` | Umsetzung | autonom | fertig |
 | RU38.2 | `RU38.2-rust-replay-lesen-wiedergabe.md` | Umsetzung | autonom | fertig |
-| RU38.3 | `RU38.3-replay-befehl-messung.md` | Umsetzung | autonom | offen |
+| RU38.3 | `RU38.3-replay-befehl-messung.md` | Umsetzung | autonom | fertig |
 | RU38.4 | `RU38.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
