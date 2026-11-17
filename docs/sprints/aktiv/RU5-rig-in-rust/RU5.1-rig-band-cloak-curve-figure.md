@@ -1,6 +1,6 @@
 # RU5.1 · rig Teil 1: band, cloak, curve, figure
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 (Teil band, cloak, curve, figure) geprüft: `cargo test -p k3c-rig` grün (8 Tests), Werte gegen Go innerhalb 1e-9 (curve, band inkl. Bein-Stützpunkte und tangent_limits, figure-Posen/Frequenzen/Fehlertexte, cloak). `task rust:lint` (clippy -D warnings) grün.
+
+Referenzwerte: `native/k3c-rig/rig/rustref_test.go` (`-update`) schreibt `testdata/rust/rig/{curve,band,figure}.json`.
+
+Abweichungen vom Plan (Vorgriff, weil der Ladevorgang und figure sie brauchen): `matrix`, `load` (Typen, Load, link), `order`, `keyframes` komplett sowie in `gait` nur Konstanten, `LegIndex`, `leg_indices`. RU5.2 ergänzt den Rest von `gait` und `frames`; RU5.3 `ride` und `expected_test`.
+Nicht portiert, mit Grund: `TestLegStripNeverFolds` und `TestLegStripContinuous` brauchen `GaitPose` (RU5.2), kommen dort. `Cargo.lock` ändert sich (serde, serde_json für k3c-rig).

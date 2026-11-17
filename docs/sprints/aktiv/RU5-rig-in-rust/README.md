@@ -87,10 +87,10 @@ Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Sp
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU5.1 | `RU5.1-rig-band-cloak-curve-figure.md` | Umsetzung | autonom | offen |
-| RU5.2 | `RU5.2-rig-frames-gait-keyframes.md` | Umsetzung | autonom | offen |
-| RU5.3 | `RU5.3-rig-load-matrix-order-ride.md` | Umsetzung | autonom | offen |
-| RU5.4 | `RU5.4-paint-actor-assets-painter.md` | Umsetzung | autonom | offen |
+| RU5.1 | `RU5.1-rig-band-cloak-curve-figure.md` | Umsetzung | autonom | fertig |
+| RU5.2 | `RU5.2-rig-frames-gait-keyframes.md` | Umsetzung | autonom | fertig |
+| RU5.3 | `RU5.3-rig-load-matrix-order-ride.md` | Umsetzung | autonom | fertig |
+| RU5.4 | `RU5.4-paint-actor-assets-painter.md` | Umsetzung | autonom | fertig |
 | RU5.5 | `RU5.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

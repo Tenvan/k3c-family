@@ -1,6 +1,6 @@
 # RU5.4 · paint: actor, assets, painter als Dreiecksnetz
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: `paint/actor.rs`, `assets.rs`, `painter.rs` in Rust; die Figur zeichnet über `k3c_platform::Canvas::mesh` (Bänder, Zügel) und `sprite_tf` (Teile, Elemente). Rüstung und Waffe haben Plätze (`element_at` für `ruestung` und `waffe`); Reiter am Platz `sattel`. `cargo test -p k3c-rig` grün (22 Tests), `task rust:lint` (workspace, -D warnings) grün.
+AC-03 geprüft: `native/k3c-rig/paint/rustref_test.go` (`-update`) schreibt `testdata/rust/rig/paint/figures.json` (225 Figuren und Posen: zu Fuß, Vierbeiner allein, Monarch auf allen Reittieren in 4 Gangarten, Varianten, Rüstung; 2807 Bilder, 646 Netze). `figuren_gegen_go` vergleicht Textur, Matrix, Alpha, Ecken (Position, UV, Farbe) und Indizes. Schwelle: 1e-6 plus 2,5e-7 relativ je Koordinate (Go rundet auf float32), Indizes exakt; alle gleich. Pixelvergleich entfällt (Netze gleich). `painter_alpha` ist portiert, dazu `parse_color`.
+
+Abweichungen: (1) Die Go-Referenz ruft die echten Actor-Funktionen für Zustand, Pose, Umhang-Physik und Painter-Netze auf, bildet aber die Verteilung der Zeichen-Aufrufe (`Actor.Draw`: drawMount, drawRider) im Test nach, weil sich das Ziel-Image von Ebitengine nicht abhören lässt, ohne Produktivcode zu ändern. (2) Neue Abhängigkeiten von k3c-rig: `k3c-platform` (Workspace) und `png` (Workspace-Eintrag, in k3c-game schon genutzt); `read_png` ist dort kopiert (RU7.6 kann es zusammenführen). (3) `WritePNG` aus assets.go ist nicht portiert (kein Aufrufer in Rust; gehört zu Sheets/Shots). (4) Painter hat kein `Dst`-Feld; der `Canvas` wird je Aufruf übergeben. (5) `Actor::start` ist neu (Zustand vor dem ersten Lösen setzen, für Tests und Sheets). Boss-Specs (NA1.6) fehlen nicht: alle 5 Boss-Rigs liegen unter assets/bosse und sind in den Vergleichen enthalten, also kein Ticket nötig.
