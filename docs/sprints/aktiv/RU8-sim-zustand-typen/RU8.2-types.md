@@ -1,6 +1,6 @@
 # RU8.2 · Zustands-Typen: types
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -57,5 +57,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02/AC-03 (Teil types) geprüft: Alle Typen aus `engine/sim/types.go` stehen in `rust/crates/k3c-sim/src/state/` (`types.rs`: PlayerCommand, Player, Coin, Job, Troop; `types_things.rs`: ResourceNode, Plot, Site, Castle; `types_enemy.rs`: Event, Enemy, Storm, Projectile, Hazard, Pickup, Camp, QueuedSpawn, Travel; `types_world.rs`: World samt `new_id`; `Stock` = `k3c_data::hub::Stock`). Typen anderer Go-Dateien, die der Zustand braucht, stehen als reine Daten in `shared.rs` (Drop, Crown, Merchant, WarnZone, ActiveEvent, SwitchState, SwitchTarget, CycleInfo, CombatRuntime, CombatSettings, SkillTable, WorldValues). Level-Typen in `rust/crates/k3c-level/src/types.rs` (Chunk, Entity, Layout, WallSite, Ruin, Guard, NatureValues, Planned*; `Biome`, `Cycle`, `Trait`, `WeightGroup` aus k3c-data wiedergegeben). JSON-Namen wie die Go-Tags; `omitempty` über `state/omit.rs`; Listen als `Vec` in Go-Reihenfolge, Maps als `BTreeMap`. Tests: 14 Rundlauf-Tests (Sim-Golden, alle Snapshots, nur lesen) in `types_tests.rs`, 3 Layout-Tests über die Level-Golden. `cargo test -p k3c-sim -p k3c-level`, `task rust:lint`, `task check:diff` grün.
+Abweichungen: (1) `World` hat kein Feld `island` (Vorentscheidung 4). (2) Die Zwischenspeicher `Site.hubW/hubLv/wall` entfallen (Rückverweis auf die Welt, reine Ableitung). (3) `Plot.tree` ist die Knoten-ID statt Zeiger. (4) `k3c-level/Cargo.toml` bekam `serde` und `serde_json` (dev), nötig für die Level-Typen. (5) `Island`, `WorldDef`, `BossData`-Verhalten gehören nicht zu types.go und kommen mit RU10; `lair_boss` nutzt `k3c_data::bosses::BossData`. Keine Tests fehlen.
