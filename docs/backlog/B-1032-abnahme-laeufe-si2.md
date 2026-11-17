@@ -1,12 +1,12 @@
-# B-1030 · Detvec-Datenbaum kennt data/paper.json objekte.doppel-truhe nicht, check:go ist rot
+# B-1032 · Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün
 
-- **Domäne:** SIM
-- **Typ:** Problem
-- **Prio:** hoch
-- **Umgebung:** ?
+- **Domäne:** INF
+- **Typ:** Schuld
+- **Prio:** mittel
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** SI2
-- **Projekt:** WZG
+- **Projekt:** KMP
 - **Erstellt:** 2026-11-17
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-GS1.6 (2026-11-17): `check_run task:check:go` auf `origin/main` rot: `engine/internal/detvec` `TestDataTree` – `data_test.go:185: Baum weicht ab (neu schreiben mit -write): data.paper.json.objekte.doppel-truhe (Schlüssel nur auf einer Seite)`. Ursache: SI2.2 (#661, B-998) hat `doppel-truhe` in `data/paper.json` ergänzt, der Detvec-Baum wurde nicht neu geschrieben.
+Review SI2.5 (2026-11-17): `task:check` und `task:check:go` grün (Detvec-Baum nach SI2.2 neu geschrieben, B-1030). Sim, Balance, Gen und Race laufen nach B-742 nur hier. SI2.3 (Engine) und SI2.4 (Anzeige) sind verworfen; die Läufe decken daher nur die Assets ab.
 
 ## Ziel
 
-Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
+Die Abnahme-Läufe des Sprints SI2 sind gelaufen, Abweichungen als Tickets erfasst.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,11 +28,13 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- **AC-01** `gen:paper` rendert `doppel-truhe` und `doppel-truhe-offen` ohne Fehler, Grafik-Golden stimmt.
+- **AC-02** `check_run task:check:race` grün (ohne gcc: als übersprungen nennen).
+- **AC-03** Sim und Balance: entfällt bis zur Aufhebung der Sperre (Beschluss 🧑 2026-11-11); danach `sim_test`-Lauf ohne Abweichung zur Baseline.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Engine und Anzeige der Doppel-Truhe (SI2.3/SI2.4 verworfen).
 
 ## Regeln und Einschränkungen
 
@@ -56,8 +58,11 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Detvec-Baum mit `-write` neu geschrieben (Begründung im Commit), `TestDataTree` grün.
-- **AC-02** `check_run task:check:go` grün.
+- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+
+Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_test`), AC-02 Balance, AC-03 Gen
+(`check_run task:test` samt `gen:paper` und Golden), AC-04 Race (`check_run task:check:race`), Einzelheiten in
+`docs/arbeitsweise.md` › Sim, Balance und Gen.
 
 ## Offene Fragen
 
