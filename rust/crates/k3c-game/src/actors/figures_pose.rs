@@ -7,6 +7,7 @@ use super::Actors;
 use super::anim::{ANIM_IDLE, GAIT_STAND, Pose, Want, next, shift};
 use super::catalog::Look;
 use super::figures::{Figure, Key, WarnKey};
+use super::pose::advance;
 use crate::art::{Actor, State};
 
 /// defaultOnce ist die Länge einer Einmal-Animation, wenn weder Rig noch Sheet sie nennen (ohne Grafik, Tests).
@@ -61,6 +62,19 @@ impl Actors {
                 let once = p.dur > 0.0;
                 fg.pose = self.settle(&mut fg, p, once);
                 fg.dirty = true;
+            }
+            // Go legt den Actor schon in Listen an und stellt dort auch seine Pose; hier gleich nach dem Anlegen,
+            // damit die Figur im selben Frame gepostet ist (pose.rs).
+            if fg.actor.is_some()
+                && !fg.broken
+                && let Err(e) = advance(self.now, &mut fg)
+            {
+                fg.posed = false;
+                let key = WarnKey {
+                    what: fg.look.asset.clone(),
+                    name: fg.pose.anim.clone(),
+                };
+                self.warn(key, &e);
             }
             self.figs.insert(k, fg);
         }

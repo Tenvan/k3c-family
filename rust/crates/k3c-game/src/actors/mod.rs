@@ -28,12 +28,15 @@ pub mod combatmarks;
 pub mod draw;
 pub mod figures;
 pub mod figures_pose;
-pub mod pending;
+pub mod levels;
+pub mod markdraw;
+pub mod marks;
+pub mod pose;
 
 use catalog::{Catalog, load_catalog};
 use combatmarks::MARK_ASSETS;
 use figures::{Figure, Key, WarnKey};
-use pending::Ink;
+use markdraw::Ink;
 
 /// Actors ist Drawer (LayerActors), Listener und AssetSource der Figuren (Go: `drawer`). Die `DrawImageOptions` von
 /// Go entfallen.

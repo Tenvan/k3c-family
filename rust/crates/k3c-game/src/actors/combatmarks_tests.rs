@@ -6,7 +6,6 @@ use super::*;
 
 /// Der Wimpel zeigt im Bild nach rechts; gespiegelt, wenn der Stock links der Mitte steht.
 #[test]
-#[ignore = "wartet auf RU13.5"] // load_offset (marks.go) liegt bis dahin in pending.rs
 fn banner_flag_points_away_from_back() {
     for left in [false, true] {
         let flip = banner_flip(left);

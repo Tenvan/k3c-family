@@ -13,7 +13,8 @@ use k3c_sim::state::{Player, Troop, World as SimWorld};
 use super::Actors;
 use super::anim::sheet_frame;
 use super::figures::Figure;
-use super::pending::{Anchor, BoxPx, Ink, LOAD_HEIGHT, LOAD_SIDE, load_offset, marks_anchor, player_color, tint};
+use super::markdraw::{Anchor, Ink, marks_anchor, tint};
+use super::marks::{BoxPx, LOAD_HEIGHT, LOAD_SIDE, load_offset, player_color};
 use crate::art::Sheet;
 use crate::view::cell::Cell;
 

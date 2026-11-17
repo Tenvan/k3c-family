@@ -16,7 +16,8 @@ use k3c_sim::state::World as SimWorld;
 use super::Actors;
 use super::anim::{anim_time, sheet_frame};
 use super::figures::{Class, Figure, Key};
-use super::pending::{new_ink, seated};
+use super::markdraw::new_ink;
+use super::marks::seated;
 use crate::art::{actor_frame, rig_view};
 use crate::view::cell::{Camera, Cell};
 use crate::view::frame::Frame;
@@ -57,7 +58,7 @@ impl Actors {
             return;
         };
         if self.ink.is_none() {
-            self.ink = Some(new_ink());
+            self.ink = Some(new_ink(dst));
         }
         self.ensure_actors(dst);
         for t in &w.troops {

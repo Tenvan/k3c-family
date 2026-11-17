@@ -8,7 +8,7 @@ use std::collections::BTreeMap;
 use k3c_data::{Fehler, Source};
 use serde::Deserialize;
 
-use super::pending::by_depth;
+use super::levels::by_depth;
 
 /// unitPx sind Spiel-Pixel je Unit (UNIT_PX des Browser-Clients); Höhen in data/paper.json stehen in Spiel-Pixeln.
 pub const UNIT_PX: f64 = 32.0;
