@@ -1,6 +1,6 @@
 # SI6.2 · Assets Laterne, Blüte, Fackel für das Fest (B-1002)
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert (Ralf, 2026-11-17): Welt-Assets kommen ganz zum Schluss; vorher nur Standard-Set und Client-Umsetzung.

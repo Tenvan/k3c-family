@@ -1,0 +1,120 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "einsiedler-huette",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Einsiedler-Hütte: kleine Holzhütte mit Strohdach, Steinkamin und Fensterchen; Wohnort der besonderen Figur in Tiefe 1",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-40 0L40 0L40 -48L-40 -48Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-40 0L-26 0L-26 -48L-40 -48Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-40 -16L40 -16M-40 -32L40 -32",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 0L10 0L10 -32L-10 -32Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 0L8 0L8 -30L-8 -30Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M0 0L0 -30",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M18 -22L32 -22L32 -36L18 -36Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M25 -22L25 -36M18 -29L32 -29",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-52 -44L0 -82L52 -44L44 -40L0 -72L-44 -40Z",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-48 -46L0 -80L48 -46C30 -52 -30 -52 -48 -46Z",
+          "material": "stroh"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -80L48 -46C40 -49 30 -50 22 -51Z",
+          "material": "stroh",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-30 -58C-15 -60 15 -60 30 -58M-18 -68C-6 -70 6 -70 18 -68",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -60L-22 -60L-22 -84L-30 -84Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-31 -84L-21 -84L-21 -87L-31 -87Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-46 0L-36 0L-36 -14L-46 -14Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-48 -14L-34 -14L-36 -18L-46 -18Z",
+          "material": "holz"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 90,
+    "rahmen": [-55, -90, 110, 90]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

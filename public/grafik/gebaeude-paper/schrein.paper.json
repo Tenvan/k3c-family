@@ -1,0 +1,162 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "schrein",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Schrein der Priesterin: kleiner Holzschrein mit Strohseil und Papierstreifen hinter einem roten Torii",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-50 0L50 0L50 -8L-50 -8Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-50 0L-32 0L-32 -8L-50 -8Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -8L14 -8L14 -4L-14 -4Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-38 -8L38 -8L38 -54L-38 -54Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-38 -8L-24 -8L-24 -54L-38 -54Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -8L12 -8L12 -44L-12 -44Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -8L10 -8L10 -42L-10 -42Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M0 -8L0 -42",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-60 -54L60 -54L42 -82L-42 -82Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M60 -54L42 -82L10 -82Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-46 -82L-38 -96L-34 -82Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M46 -82L38 -96L34 -82Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-42 -82L42 -82L42 -86L-42 -86Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M-32 -58C-16 -50 16 -50 32 -58",
+          "material": "stroh"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-18 -54L-15 -54L-17 -48L-14 -44L-17 -44Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M15 -54L18 -54L16 -48L19 -44L16 -44Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-76 0L-70 0L-70 -110L-76 -110Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M70 0L76 0L76 -110L70 -110Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-78 0L-68 0L-68 -8L-78 -8Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M68 0L78 0L78 -8L68 -8Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-84 -96L84 -96L84 -102L-84 -102Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-92 -112L92 -112L96 -122C60 -116 -60 -116 -96 -122Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-90 -110L90 -110L92 -114L-92 -114Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -102L5 -102L5 -110L-5 -110Z",
+          "material": "koenigsrot",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 124,
+    "rahmen": [-98, -124, 196, 124]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

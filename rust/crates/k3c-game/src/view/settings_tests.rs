@@ -40,8 +40,8 @@ fn settings_normalized() {
         ),
     ];
     for (input, mut want) in cases {
-        // Stress = DefaultStress() ergänzt RU7.4 (B-1025).
         want.controls = super::super::profile::default_controls();
+        want.stress = super::super::stress_limits::default_stress();
         assert_eq!(input.normalized(), want, "{input:?}.normalized()");
     }
 }

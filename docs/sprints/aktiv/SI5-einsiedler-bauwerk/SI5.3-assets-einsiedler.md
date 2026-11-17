@@ -1,6 +1,6 @@
 # SI5.3 · Assets Hütte, Dojo, Schrein, Schwertschmied, Priesterin (B-1001)
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,4 +58,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert (Ralf, 2026-11-17): Welt-Assets zum Schluss.
+
+**Fertig (eingecheckt, Commit 22c9c7f66):**
+- `gebaeude-paper/einsiedler-huette`, `dojo`, `schrein` (Rig gebaeude, `stand`), `figuren/schwertschmied`, `figuren/priesterin` (Rig figur, vom Bauer abgeleitet, `idle`/`lauf`), alle gültig.
+- `data/paper.json` Block `einsiedler` (Schlüssel `swordsmith`, `priestess`, `dojo`, `shrine`, `huette`), nur vollständige Assets.
+- Geprüft: assets_preview, `k3c-grafik` ohne schweren Befund, `check_run task:check:diff` grün.
+
+**Fehlt beim Fortsetzen:**
+- Engine-Schlüssel: SI5.2 verworfen, die Schlüssel sind nach Spec B-972 gewählt und gegen die Engine abzugleichen; das Spiel liest den Block noch nicht (SI5.4).
+- Maßstab Hütte (90 px) neben Figuren (~130 px) vermutlich zu klein, Augenschein im Spiel.
+- Gen/Golden im Abnahme-Ticket.

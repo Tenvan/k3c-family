@@ -1,12 +1,12 @@
-# B-1025 · Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert
+# B-1031 · Abnahme-Läufe SI3 Wetter je Welt sind grün
 
-- **Domäne:** CLI
+- **Domäne:** PAP
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** RU7
-- **Projekt:** RSU
+- **Sprint:** SI3
+- **Projekt:** KMP
 - **Erstellt:** 2026-11-17
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-RU4.5 hat `native/k3c-game/view/settings.go` nach `rust/crates/k3c-game/src/view/settings.rs` portiert. Das Feld `Stress StressTest` (Typ aus `view/stress.go`) fehlt dort, weil `stress.go` erst RU7.4 portiert und `stress.rs` nicht im Bereich von RU4 liegt.
+Was ist heute so? Problem oder Idee in 1–5 Sätzen, mit Dateipfaden, wenn es um Code geht.
 
 ## Ziel
 
-`Settings` in Rust hat das Feld `stress` wie Go: `default_settings()` setzt `DefaultStress()`, `normalized()` setzt einen Null-Wert auf `DefaultStress()` und wendet `StressTest::normalized()` an; `settings_tests.rs` erwartet wie Go `want.Stress = DefaultStress()`.
+Die nach B-742 aus SI3 herausgehaltenen Läufe (Gen samt Golden, Race) einmal nachts grün fahren.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,11 +28,11 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-Port ohne Regeländerung (B-1014). Reihenfolge der Felder wie in Go (nach `dev_mode`).
+- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
 
 ## Nicht-Ziele
 
-Änderungen am Go-Code.
+Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
@@ -56,8 +56,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** `Settings` hat `stress: StressTest`; `default_settings()` und `normalized()` behandeln es wie `settings.go`.
-- **AC-02** `settings_normalized` prüft `stress` wie `TestSettingsNormalized`; die Hinweise auf B-1025 in `settings.rs` und `settings_tests.rs` sind entfernt.
+- **AC-01** Sim und Balance: entfällt (SI3 ändert weder Sim noch Werte; Sperre 🧑 2026-11-11).
+- **AC-02** Gen: `task gen:paper` rendert `wetter-wolkenbank`, Grafik-Golden `public/grafik/hintergruende/golden.json` grün.
+- **AC-03** Race: `check_run task:check:race` grün (ohne gcc als übersprungen nennen).
+- **AC-04** `check:go` grün, sobald B-1030 (Detvec-Baum) behoben ist; der Baum enthält die Wolkenbank aus `data/paper.json`.
 
 ## Offene Fragen
 
@@ -65,4 +67,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Aufgefallen in RU4.5. Gehört in RU7.4 (nach `stress.rs`); `settings.rs` liegt im Bereich von RU4, RU7.4 braucht die Datei dafür in seinen Erlaubten Dateien.
+Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).

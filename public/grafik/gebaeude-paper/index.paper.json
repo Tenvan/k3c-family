@@ -20,6 +20,16 @@
     "manifest": "burg/manifest.json"
   },
   {
+    "id": "dojo",
+    "rig": "gebaeude",
+    "manifest": "dojo/manifest.json"
+  },
+  {
+    "id": "einsiedler-huette",
+    "rig": "gebaeude",
+    "manifest": "einsiedler-huette/manifest.json"
+  },
+  {
     "id": "farm",
     "rig": "gebaeude",
     "manifest": "farm/manifest.json"
@@ -118,6 +128,11 @@
     "id": "schmiede",
     "rig": "gebaeude",
     "manifest": "schmiede/manifest.json"
+  },
+  {
+    "id": "schrein",
+    "rig": "gebaeude",
+    "manifest": "schrein/manifest.json"
   },
   {
     "id": "taverne",

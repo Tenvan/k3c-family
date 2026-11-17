@@ -69,7 +69,7 @@ Keine blockierenden. Defaults in `B-968 › Offene Fragen` und `B-998 › Offene
 | SI2.2 | `SI2.2-asset-doppel-truhe.md` | Umsetzung | autonom | fertig |
 | SI2.3 | `SI2.3-engine-doppel-truhe.md` | Umsetzung | autonom | verworfen |
 | SI2.4 | `SI2.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | verworfen |
-| SI2.5 | `SI2.5-review.md` | Review | autonom | offen |
+| SI2.5 | `SI2.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,4 +77,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+Review SI2.5 (2026-11-17): AC-01 und AC-02 erfüllt (Regeltext, Assets ohne schweren Befund). AC-03 und AC-04 offen: SI2.3/SI2.4 verworfen, Engine und Spiel unverändert. AC-05 (TV, 🧑) offen. AC-06: `task:check` und `task:check:go` grün nach Neuschreiben des Detvec-Baums (B-1030). Sim, Balance, Gen und Race im Abnahme-Ticket B-1032.
