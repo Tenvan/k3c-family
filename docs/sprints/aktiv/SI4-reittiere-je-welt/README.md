@@ -69,7 +69,7 @@ Keine blockierenden. Defaults in `B-970 › Offene Fragen` und `B-1000 › Offen
 | SI4.2 | `SI4.2-assets-reittiere.md` | Umsetzung | autonom | fertig |
 | SI4.3 | `SI4.3-engine-reittiere.md` | Umsetzung | autonom | verworfen |
 | SI4.4 | `SI4.4-anzeige-reittiere.md` | Umsetzung | autonom | verworfen |
-| SI4.5 | `SI4.5-review.md` | Review | autonom | offen |
+| SI4.5 | `SI4.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,4 +77,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+AC-01 ✅ Regeltext (SI4.1, #663) · AC-02 ✅ Kamel, Gatter, Sengoku-Pferd zugeordnet; Review ergänzt Monarch-Animationen `*-kamel`.
+AC-03/AC-04 ❌ offen: SI4.3/SI4.4 verworfen ohne Ersatz → B-1034 (Frage an Ralf).
+AC-05 offen (TV, Ralf, erst nach Anzeige).
+AC-06 `task:check` grün; `task:check:go` rot nur durch B-1030 (Detvec, Fix in #673) → B-1033 Abnahme-Läufe.

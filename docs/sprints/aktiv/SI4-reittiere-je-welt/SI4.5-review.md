@@ -1,6 +1,6 @@
 # SI4.5 · Review Sprint SI4 Reittiere je Welt
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -62,4 +62,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+AC-01/AC-02: geprüft; Befund behoben: Monarch ohne `*-kamel`-Animationen, Reittier-Zähltest 11→12 (beides machte `task:check` rot).
+AC-03/AC-04: nicht umgesetzt (SI4.3/SI4.4 verworfen) → B-1034.
+AC-06: `task:check` grün; `task:check:go` rot nur B-1030 (#673); Abnahme-Ticket B-1033. Glossar „Gatter“ nicht eingetragen, solange Engine fehlt. Fach-Reviews entfallen: Diff nur Assets, k3c-grafik lief in SI4.2.

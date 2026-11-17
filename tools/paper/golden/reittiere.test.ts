@@ -10,7 +10,7 @@ const IDS = readdirSync(DIR).filter((f) => f.endsWith('.paper.json') && f !== 'i
 const spec = (id: string) => JSON.parse(readFileSync(join(DIR, `${id}.paper.json`), 'utf8')) as Spec;
 
 describe('Reittiere (B-716)', () => {
-  it('Gruppe hat elf Reittiere', () => expect(IDS.length).toBe(11));
+  it('Gruppe hat zwölf Reittiere', () => expect(IDS.length).toBe(12));
 
   it('AC-01: gleicher Maßstab (hoehe_px / Rahmenhöhe) in der ganzen Gruppe', () => {
     const faktoren = new Set(IDS.map((id) => { const a = spec(id).ausgabe!; return a.hoehe_px / a.rahmen![3]; }));
