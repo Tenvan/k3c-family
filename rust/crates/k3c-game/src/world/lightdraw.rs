@@ -12,11 +12,11 @@
 use k3c_platform::{Canvas, Vertex};
 use k3c_sim::state::World as SimWorld;
 
+use super::World;
 use super::backdrop::Rgba;
 use super::cull::visible;
 use super::layers::stage_of;
 use super::light::{LightData, daylight, glow_alpha, torch_side};
-use super::pending::World;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 

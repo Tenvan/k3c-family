@@ -217,10 +217,3 @@ fn follow_stage_switch() {
     let a = s.fade(0, 10.0 + FADE_SECONDS + 0.01);
     assert!(a == 0.0, "Übergang am Ende {a}");
 }
-
-/// New meldet genau eine Kamera-Regel und eine Asset-Quelle (game nimmt höchstens eine Regel an).
-#[test]
-#[ignore = "wartet auf RU13.3"]
-fn new_roles() {
-    // `world::new` (world.go) kommt mit RU13.3.
-}

@@ -8,10 +8,10 @@ use k3c_det::fmin;
 use k3c_platform::Canvas;
 use k3c_sim::state::World as SimWorld;
 
+use super::World;
 use super::backdrop::Rgba;
 use super::cull::visible;
 use super::layers::stage_of;
-use super::pending::World;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 

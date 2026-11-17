@@ -10,10 +10,10 @@
 
 use k3c_platform::{Canvas, Rect, TexId};
 
+use super::World;
 use super::backdrop::Rgba;
 use super::ground::bank_height;
 use super::layers::stage_of;
-use super::pending::World;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 

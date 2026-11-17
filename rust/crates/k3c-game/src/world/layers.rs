@@ -5,9 +5,9 @@
 use k3c_platform::{Affine, Canvas};
 use k3c_sim::state::World as SimWorld;
 
+use super::World;
 use super::backdrop::{FRAME_PER_UNIT, Look, TILE_UNITS, variant};
 use super::cull::tile_range;
-use super::pending::World;
 use crate::view::cell::Cell;
 use crate::view::frame::{Frame, Stage};
 
