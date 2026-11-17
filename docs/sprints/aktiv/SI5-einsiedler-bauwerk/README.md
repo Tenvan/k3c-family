@@ -68,7 +68,7 @@ Keine blockierenden. Defaults in `B-972 › Offene Fragen` und `B-1001 › Offen
 |---|---|---|---|---|
 | SI5.1 | `SI5.1-regeltext-einsiedler.md` | Umsetzung | autonom | fertig |
 | SI5.2 | `SI5.2-engine-einsiedler.md` | Umsetzung | autonom | verworfen |
-| SI5.3 | `SI5.3-assets-einsiedler.md` | Umsetzung | autonom | fertig |
+| SI5.3 | `SI5.3-assets-einsiedler.md` | Umsetzung | autonom | blockiert |
 | SI5.4 | `SI5.4-anzeige-einsiedler.md` | Umsetzung | autonom | verworfen |
 | SI5.5 | `SI5.5-review.md` | Review | autonom | offen |
 
