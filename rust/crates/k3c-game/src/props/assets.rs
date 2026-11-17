@@ -3,7 +3,8 @@
 //! sonst Wurzeln und Höhlenbusch). Fehlt eine Datei, beendet game das Spiel mit dem Pfad (art.ErrMissing).
 
 use super::buildings::{BUILDING_GROUP, OBJECT_GROUP};
-use super::pending::{COIN_LOOK, COMBAT_ASSETS, nature_look};
+use super::nature::{COIN_LOOK, nature_look};
+use super::pending::COMBAT_ASSETS;
 
 /// `BUILDING_ASSETS`: alle Gebäude-Assets, die site_look, hub_look_of, scaffold_look, back_wall_look und entity_look
 /// wählen.

@@ -2,13 +2,10 @@
 //!
 //! `Economy`, `HubUpgrade` und `CombatSpot` heißen und serialisieren wie die Go-Typen (`engine/sim/economy_view.go`,
 //! `combat.go`); RU15 (`CombatSpot`) und RU18 (`Economy`, `HubUpgrade`) ersetzen sie durch die Typen der Sim und
-//! löschen sie hier. `nature_look`, `COIN_LOOK` und `COMBAT_ASSETS` sind Go-Werte aus `nature.go` (RU16.2) und
-//! `plan_combat.go` (RU16.4), die `levelAssets` braucht; die Sessions löschen die Kopien hier beim Portieren.
+//! löschen sie hier. `COMBAT_ASSETS` ist ein Go-Wert aus `plan_combat.go` (RU16.4), den `levelAssets` braucht; die Session löscht die Kopie hier beim Portieren.
 
 use k3c_data::hub::Stock;
 use serde::{Deserialize, Serialize};
-
-use super::buildings::Look;
 
 fn is_zero_i64(v: &i64) -> bool {
     *v == 0
@@ -85,22 +82,6 @@ pub struct CombatSpot {
 /// `PendingSimView` meldet bei jedem Aufruf, dass die Sim-Funktion noch fehlt (siehe `SimView`).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct PendingSimView;
-
-/// `nature_look` ist der Look des Bioms: 1 Wald, 2 Höhle, 3 Mine und alle übrigen; leere ID = Wald (Go: `natureLook`,
-/// RU16.2 liefert `nature.rs`).
-pub fn nature_look(biome: &str) -> i64 {
-    match biome {
-        "" | "forest" => 1,
-        "cave" => 2,
-        _ => 3,
-    }
-}
-
-/// Animation aller Natur- und Objekt-Assets (Go: `idle`, RU16.2).
-pub const IDLE: &str = "idle";
-
-/// `COIN_LOOK` ist die Münze (Go: `coinLook` in nature.go, RU16.2).
-pub const COIN_LOOK: Look = Look::new("icons/muenze", IDLE);
 
 /// `COMBAT_ASSETS` sind die Icons der Kampfregeln, die props in jedem Level anmeldet (Go: `combatAssets` in
 /// plan_combat.go, RU16.4: Krone, Schild, Auslöser, Banner, Gestell).
