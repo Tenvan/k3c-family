@@ -84,8 +84,11 @@ func TestEveryFigureHasRigOrSheet(t *testing.T) {
 	for _, name := range slices.Sorted(maps.Keys(looks)) {
 		checkLook(t, name, looks[name], true)
 	}
-	if len(c.Bosses) != len(bossAssets) {
-		t.Errorf("%d Bosse in den Daten, %d in bossAssets", len(c.Bosses), len(bossAssets))
+	// Endbosse ohne eigenes Asset zeigen die Basisart (B-993): jeder Eintrag in bossAssets ist ein Boss der Daten.
+	for id := range bossAssets {
+		if _, ok := c.Bosses[id]; !ok {
+			t.Errorf("bossAssets kennt %q, die Daten nicht", id)
+		}
 	}
 }
 
