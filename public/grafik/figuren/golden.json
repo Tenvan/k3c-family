@@ -213,5 +213,19 @@
       "trab-wolf@spieler3.png": "aa3aad10acff6993e2cc11e42dfeeda228f24988c298d5df1f2a746818d7fb48",
       "trab-wolf@spieler4.png": "8a0b664f031603ddd16ce2924fc6e68f0ccb1100c122c7d13e5b4c2fd23c900f"
     }
+  },
+  "priesterin": {
+    "renderKey": "0a7a79ad0c7af32f9d82d636708408eb05619286fda69b11230d8635c68dbd34",
+    "dateien": {
+      "idle.png": "d612d4282cc557f49429f0c7bd26c12780bf4276ef2a9725a6cb2175c4e3a6ea",
+      "lauf.png": "99632f7b33ef1e5f45485f2adb3fc0737fba08167321b1822df91f5bef80a4d2"
+    }
+  },
+  "schwertschmied": {
+    "renderKey": "0c2630fb6d3cb1e7dfae3a75cae7dedd04e699c2d29c4c662e008680682aeeb1",
+    "dateien": {
+      "idle.png": "9f17a3af21d9761ca3a6deaf0fbceb6d1bc1d3f1866f33b1b56814ab32d720e9",
+      "lauf.png": "a049cf47af0151cf88598bec4f13ceeb66c4e26f50f7e3379a2a17cfa684ee87"
+    }
   }
 }

@@ -1,0 +1,167 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "dojo",
+  "rig": "gebaeude",
+  "version": 1,
+  "beschreibung": "Dojo des Schwertschmieds: Holzhalle auf Steinsockel mit Shoji-Wänden, zweistufigem geschwungenem Dach und Namenstafel",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-80 0L80 0L80 -10L-80 -10Z",
+          "material": "stein"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-80 0L-60 0L-60 -10L-80 -10Z",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-40 0L-40 -10M0 0L0 -10M40 0L40 -10",
+          "material": "stein",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-70 -10L70 -10L70 -70L-70 -70Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-70 -10L-50 -10L-50 -70L-70 -70Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-60 -16L-24 -16L-24 -62L-60 -62Z",
+          "material": "leinen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 -16L60 -16L60 -62L24 -62Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-48 -16L-48 -62M-36 -16L-36 -62M-60 -31L-24 -31M-60 -46L-24 -46M36 -16L36 -62M48 -16L48 -62M24 -31L60 -31M24 -46L60 -46",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-16 -10L16 -10L16 -54L-16 -54Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -10L14 -10L14 -52L-14 -52Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M0 -10L0 -52",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-100 -76C-80 -70 -70 -72 -64 -80L64 -80C70 -72 80 -70 100 -76C92 -84 84 -96 70 -100L-70 -100C-84 -96 -92 -84 -100 -76Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M64 -80C70 -72 80 -70 100 -76C92 -84 84 -96 70 -100L40 -100Z",
+          "material": "eisen"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-88 -82L88 -82M-78 -90L78 -90",
+          "material": "eisen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-50 -100L50 -100L50 -114L-50 -114Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -102L14 -102L14 -112L-14 -112Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-8 -107L8 -107",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-74 -114C-60 -110 -54 -112 -50 -118L50 -118C54 -112 60 -110 74 -114C66 -124 58 -134 44 -138L-44 -138C-58 -134 -66 -124 -74 -114Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M50 -118C54 -112 60 -110 74 -114C66 -124 58 -134 44 -138L20 -138Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-46 -138L46 -138L46 -142L-46 -142Z",
+          "material": "schwarz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -54L4 -54L4 -60L-4 -60Z",
+          "material": "koenigsrot"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [-74, -64],
+          "radius": 3,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "koenigsrot",
+          "mitte": [74, -64],
+          "radius": 3,
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-74 -70L-74 -67M74 -70L74 -67",
+          "material": "schwarz"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 145,
+    "rahmen": [-102, -145, 204, 145]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

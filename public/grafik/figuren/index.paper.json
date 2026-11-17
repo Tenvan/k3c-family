@@ -3,5 +3,15 @@
     "id": "monarch",
     "rig": "figur",
     "manifest": "monarch/manifest.json"
+  },
+  {
+    "id": "priesterin",
+    "rig": "figur",
+    "manifest": "priesterin/manifest.json"
+  },
+  {
+    "id": "schwertschmied",
+    "rig": "figur",
+    "manifest": "schwertschmied/manifest.json"
   }
 ]
