@@ -10,4 +10,5 @@ workspace = true
 [dependencies]
 k3c-det = { path = "../k3c-det" }
 serde.workspace = true
-serde_json.workspace = true
+# float_roundtrip: Zahlen korrekt gerundet lesen wie Gos strconv.ParseFloat (bitgleich).
+serde_json = { workspace = true, features = ["float_roundtrip"] }

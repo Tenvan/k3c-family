@@ -717,6 +717,11 @@ dependencies = [
 [[package]]
 name = "k3c-det"
 version = "0.1.0"
+dependencies = [
+ "flate2",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "k3c-game"
@@ -761,6 +766,9 @@ version = "0.1.0"
 [[package]]
 name = "k3c-rng"
 version = "0.1.0"
+dependencies = [
+ "serde_json",
+]
 
 [[package]]
 name = "k3c-room"

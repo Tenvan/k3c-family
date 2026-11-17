@@ -38,7 +38,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SI1 | REG, SIM, PAP, CLI | KMP | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | – | `aktiv/SI1-fracht-auf-dem-schiff/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU3 | SIM | RSU | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | – | `aktiv/RU3-rng-zahlen-daten/` |
 | RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
 | RU7 | CLI | RSU | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | – | `aktiv/RU7-grafik-laden-ansicht/` |
 
@@ -443,3 +442,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | `erledigt/FB2-feedback-sim/` |
 | WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | `erledigt/WG2-weltbilder-anzeige/` |
 | FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | `erledigt/FB4-live-test-2/` |
+| RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | `erledigt/RU3-rng-zahlen-daten/` |
