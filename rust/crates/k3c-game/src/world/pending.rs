@@ -3,23 +3,14 @@
 use std::rc::Rc;
 
 use k3c_platform::Canvas;
-use k3c_sim::state::CycleInfo;
 
 use super::backdrop::{Looks, Rgba};
 use super::camera::Cameras;
+use super::light::LightData;
+use super::lightdraw::LightMesh;
+use super::river::RiverTile;
 use crate::art::Library;
 use crate::view::cell::Rectangle;
-
-/// RU13.2: `lightData` (light.go).
-#[derive(Clone, Debug, Default)]
-pub struct LightData;
-
-impl LightData {
-    /// Helligkeit der Kulisse (Go: `lightData.backdrop`).
-    pub fn backdrop(&self, _c: &CycleInfo) -> f64 {
-        unimplemented!("RU13.2: light_data_backdrop")
-    }
-}
 
 /// RU13.3: `World` (world.go); hier nur die Felder, die backdrop, camera, ground und layers lesen.
 pub struct World {
@@ -27,6 +18,9 @@ pub struct World {
     pub looks: Looks,
     pub light: LightData,
     pub cams: Cameras,
+    /// RU13.3: `World.mesh` (Puffer der Lichtkarte, lightdraw.go) und `World.river` (Wellen-Kachel, river.go)
+    pub mesh: LightMesh,
+    pub river: RiverTile,
 }
 
 impl World {

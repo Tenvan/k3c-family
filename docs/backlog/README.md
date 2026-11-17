@@ -134,6 +134,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1052](B-1052-abnahme-laeufe-ru5.md) | CLI | Schuld | mittel | offen | RU5 | Abnahme-Läufe RU5 |
 | [B-1053](B-1053-client-sim-naehte-ersetzen.md) | CLI | Schuld | mittel | eingeplant | RU30 | Sim-Nähte im Rust-Client sind durch die portierte Sim ersetzt |
 | [B-1054](B-1054-verwaiste-sim-tests-zuordnen.md) | SIM | Schuld | mittel | eingeplant | RU22 | Jede Go-Testdatei aus engine/sim ist in Rust portiert oder begründet ausgelassen |
+| [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | offen | RU13 | Fluss-Shader in Rust (WGSL) |
+| [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | offen | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
 
 ## Archiv
 

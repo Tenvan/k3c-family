@@ -2,7 +2,7 @@
 //! Fluss und Licht und führt die Kamera (B-795). Rechnung (Kamera, Culling, Schichten, Fluss, Licht) liegt in reinen
 //! Funktionen ohne Zeichenfläche; die Drawer sind dünn und legen je Bild nichts an.
 //!
-//! RU13.1 legt nur die Module von backdrop, camera, cull, ground und layers an; den Inhalt von `world.go` (World,
+//! RU13.1 legt die Module von backdrop, camera, cull, ground und layers an, RU13.2 light, lightdraw, river und water; den Inhalt von `world.go` (World,
 //! `new`, Drawer) liefert RU13.3.
 
 pub mod backdrop;
@@ -10,4 +10,11 @@ pub mod camera;
 pub mod cull;
 pub mod ground;
 pub mod layers;
+pub mod light;
+pub mod lightdraw;
 pub mod pending;
+pub mod river;
+pub mod water;
+
+#[cfg(test)]
+mod testutil;
