@@ -1,6 +1,6 @@
 # SI4.2 · Assets Kamel und Gatter (B-1000)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,4 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+AC-02: umgesetzt (`kamel` in reittiere: Rig, Pivots, Posen, Anker und Rahmen wie `pferd`, Höcker hinter dem Sattel, Material stroh; `gatter` in objekte: Holzgatter 160 Units mit Strohballen; `data/paper.json`: `camel`→kamel, `sengokuHorse`→rappe, `objekte.gatter`). geprüft: assets_preview, k3c-grafik ohne schweren Befund (Rig per Skript identisch zu pferd), check:diff grün. Ralf prüfen: Höcker mit aufsitzendem Monarchen im Spiel (Augenschein, erst ab SI4.4 sichtbar).

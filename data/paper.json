@@ -5,7 +5,8 @@
   "reittiere": {
     "horse": "pferd", "horseWalk": "pferd", "blackHorse": "rappe", "whiteHorse": "schimmel", "unicorn": "einhorn",
     "pegasus": "pegasus", "elephant": "elefant", "stag": "hirsch", "wolf": "wolf", "hellhound": "hoellenhund",
-    "nightmare": "albtraum", "hellHound": "hoellenhund", "whiteWolf": "weisser-wolf"
+    "nightmare": "albtraum", "hellHound": "hoellenhund", "whiteWolf": "weisser-wolf",
+    "camel": "kamel", "sengokuHorse": "rappe"
   },
   "truppen": {
     "vagrant": "truppen/landstreicher", "peasant": "truppen/bauer", "archer": "truppen/bogenschuetze",
@@ -90,6 +91,7 @@
     "erzbrocken": { "gruppe": "objekte", "frame": [43, 28], "frames": 1, "rahmen": [-20,  -24,  40,  26] },
     "felsen-b": { "gruppe": "objekte", "frame": [51, 57], "frames": 1, "rahmen": [-24,  -52,  48,  54] },
     "felsen-c": { "gruppe": "objekte", "frame": [69, 28], "frames": 1, "rahmen": [-32,  -24,  64,  26] },
+    "gatter": { "gruppe": "objekte", "frame": [178, 72], "frames": 1, "rahmen": [-84,  -66,  168,  68] },
     "felsen": { "gruppe": "objekte", "frame": [64, 36], "frames": 1, "rahmen": [-30,  -32,  60,  34] },
     "horn-pfahl": { "gruppe": "objekte", "frame": [32, 48], "frames": 1, "rahmen": [-16,  -48,  32,  48] },
     "hoehlenbusch": { "gruppe": "objekte", "frame": [63, 42], "frames": 8, "rahmen": [-30,  -38,  60,  40] },

@@ -66,6 +66,20 @@
       "vorn-trab.png": "2472414e86b3770d5d22eedc37fb788455cf69c97218f73bb11c72f72c775b03"
     }
   },
+  "kamel": {
+    "renderKey": "894ef147de8d2977c4f4f52b1a7090ec41e271a0c3072f5934d743a5c227f05c",
+    "dateien": {
+      "galopp.png": "76eedeaa9249b4ef418c065ae5b1991dc2b0bf96dd26d02e9833e567ba5f7399",
+      "hinten-galopp.png": "380f1911d2d6471c76b9df4155adb3348bbf4db9df240f0c3d9536151107fbb3",
+      "hinten-schritt.png": "636aa53783560ec89b2845fc30ae075989b023844965af4b0cc0f610f83b07ea",
+      "hinten-trab.png": "0be13b95e8b12edbe97a5211da18868f3e9851f79dc99418439428bfb6ffdc0a",
+      "schritt.png": "22a5f179d5e12e122c4bc38caf1375d020ad99018888488aaaf8f4ec71a77ce7",
+      "trab.png": "9822be8f572beb813ca7e1c46dcdb709e0189088f6f2925fe6462fdbb8b7623c",
+      "vorn-galopp.png": "610d8e83f7ebd10db5a086644a2e5bb50007f1282b5837b75d43c008296a2ab8",
+      "vorn-schritt.png": "c58351ac389f12d1dcfd4d0f397cca564e12fb5ef033b1af584c8f504fa8a79a",
+      "vorn-trab.png": "06678087fe278bf34ad42b06736c83abb2273cfb0d5327fc0b5e2f1c904cd429"
+    }
+  },
   "pegasus": {
     "renderKey": "ae1448417a280bf210aae8c88a059168c765e547368abeb92a36be4b0c1753ea",
     "dateien": {

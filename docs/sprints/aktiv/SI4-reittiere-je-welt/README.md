@@ -66,7 +66,7 @@ Keine blockierenden. Defaults in `B-970 › Offene Fragen` und `B-1000 › Offen
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SI4.1 | `SI4.1-regeltext-reittiere.md` | Umsetzung | autonom | fertig |
-| SI4.2 | `SI4.2-assets-reittiere.md` | Umsetzung | autonom | in Arbeit |
+| SI4.2 | `SI4.2-assets-reittiere.md` | Umsetzung | autonom | fertig |
 | SI4.3 | `SI4.3-engine-reittiere.md` | Umsetzung | autonom | verworfen |
 | SI4.4 | `SI4.4-anzeige-reittiere.md` | Umsetzung | autonom | verworfen |
 | SI4.5 | `SI4.5-review.md` | Review | autonom | offen |

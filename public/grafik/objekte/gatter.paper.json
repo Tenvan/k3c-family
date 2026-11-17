@@ -1,0 +1,136 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "gatter",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Hölzernes Reittier-Gatter an der Oberfläche der Insel: Pfosten mit zwei Querlatten und Strohballen, breit genug für ein davor stehendes Reittier.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-80 -46H80V-40H-80Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-80 -42H80V-40H-80Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-80 -26H80V-20H-80Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-80 -22H80V-20H-80Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-79 -56L-75 -60L-71 -56V0H-79Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-79 -56L-75 -60V0H-79Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-29 -52L-25 -56L-21 -52V0H-29Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-29 -52L-25 -56V0H-29Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M21 -52L25 -56L29 -52V0H21Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M21 -52L25 -56V0H21Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M71 -56L75 -60L79 -56V0H71Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M71 -56L75 -60V0H71Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M77 -58L79 -56V0H77Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-21 -44L21 -22",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-75 -50L-75 -44M-25 -48L-25 -44M25 -48L25 -44M75 -50L75 -44",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-66 0C-68 -9 -63 -16 -52 -16H-40C-31 -16 -27 -9 -29 0Z",
+          "material": "stroh"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-66 0C-67 -5 -66 -9 -62 -12C-62 -7 -60 -3 -56 0Z",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-48 -15H-40C-34 -15 -31 -11 -31 -7C-35 -11 -40 -13 -48 -13Z",
+          "material": "stroh",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-60 -8H-36M-58 -4H-34",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 72,
+    "rahmen": [-84, -66, 168, 68]
+  }
+}
