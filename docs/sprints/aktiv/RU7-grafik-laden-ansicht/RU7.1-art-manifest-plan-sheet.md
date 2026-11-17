@@ -39,9 +39,9 @@ Quellen: `native/k3c-game/art/manifest.go` (93), `plan.go` (85), `budget.go` (30
 
 ## Fertig, wenn
 
-- [ ] AC-01: `cargo test -p k3c-game art` grün, Manifest und Plan gegen `native/k3c-game/art/testdata/grafik`.
-- [ ] AC-02: `Budget` rechnet für einen Plan dieselben Bytes wie Go (Test mit festen Zahlen aus der Testgrafik).
-- [ ] Demo `--headless --steps 600` Code 0; `task rust:lint` grün.
+- [x] AC-01: `cargo test -p k3c-game art` grün, Manifest und Plan gegen `native/k3c-game/art/testdata/grafik`.
+- [x] AC-02: `Budget` rechnet für einen Plan dieselben Bytes wie Go (Test mit festen Zahlen aus der Testgrafik).
+- [x] Demo `--headless --steps 600` Code 0; `task rust:lint` grün.
 
 ## Prüfen
 
@@ -60,6 +60,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 - AC-01 geprüft: `cargo test -p k3c-game art` grün (16 Tests); `manifest_tests.rs` (TestGroupAssets + Manifest-Lesen) und `plan_tests.rs` (TestPlanLevel, …Budget, …Missing, …MissingSheet, …BadSize, TestSheetFrameIndex, dazu `upload`) gegen `native/k3c-game/art/testdata/grafik`. RU2-Lader (`Library::open/assets/load`) läuft auf dem portierten Manifest, `art/tests.rs` grün.
 - AC-02 geprüft: `plan_level_budget` – 2 Bilder, (12×6+16×6)×4 Byte, Text „2 Bilder, 0.0 MiB RGBA“, `mib()` = 5 wie Go.
 - Demo `--headless --steps 600` Code 0 (Grafik aus dem Hauptcheckout, `--grafik`); `task check:diff` grün (fmt, clippy -D warnings, cargo test k3c-game).
-- **Abweichung:** RU4.2 fehlt noch (`Canvas::sprite_tf`, `Affine`). `Sheet::draw` ruft den Platzhalter `art/pending.rs::sprite_tf` (`unimplemented!("RU4.2: sprite_tf")`), `Affine` liegt vorläufig in `art/pending.rs` (öffentlich re-exportiert). Nach RU4.2: beides löschen, `k3c_platform::Affine` und `canvas.sprite_tf` nutzen (erste Aufgabe von RU7.2).
+- **Abweichung (korrigiert):** Der Commit `6950a6c60` nutzte für `Sheet::draw` einen Platzhalter (`art/pending.rs::sprite_tf` mit `unimplemented!`) und einen eigenen `Affine`, weil RU4.2 als fehlend galt. Das war falsch: RU4 war mit `k3c_platform::Affine` und `Canvas::sprite_tf` schon gemergt (#667). Die Korrektur steht im Folge-Commit `067c62f43`: `Sheet::draw` ruft `canvas.sprite_tf`, `pending.rs` enthält nur noch `load_rigs` (bis RU7.6 ein `Missing`-Fehler statt `unimplemented!`, wie Go bei fehlenden Rigs).
 - `errors.Join` → `ArtError::Joined`, `errors.Is(ErrMissing)` → `ArtError::is_missing()`.
-- Review (Sonnet): keine schweren Befunde. Offen, bewusst wie Go belassen: Überlauf bei absurd großen Manifest-Werten (`plan.rs` `frames*fw`, `Budget::add`) paniken in Debug statt zu wrappen; OS-Fehlertexte weichen im Wortlaut vom Go-`open …` ab.
+- Review (Sonnet): keine schweren Befunde. Offen, bewusst wie Go belassen: Überlauf bei absurd großen Manifest-Werten (`plan.rs` `frames*fw`, `Budget::add`) paniken in Debug statt zu wrappen; OS-Fehlertexte weichen im Wortlaut vom Go-`open …` ab. Zweites Review (Standards und Spec) fand zusätzlich den Doppel-Free in `LevelLoad::step` (Rust und Go, behoben in `c2a32d0e2` und `067c62f43`, je mit Test).
