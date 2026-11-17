@@ -1,5 +1,5 @@
 # Namespace `rust`: Rust-Workspace rust/ (Projekt RSU, Umstieg von Go auf Rust nach G0, B-1014). Workspace, Crates und
-# Port-Leitfaden: docs/standards/rust-port.md. Tasks für das Spiel selbst (rust:game:*) kommen mit RU35.
+# Port-Leitfaden: docs/standards/rust-port.md. Das Spiel als Paket: `rust:game:dist` (Vorgriff auf RU35); der Rest von rust:game:* kommt mit RU35.
 version: '3'
 
 tasks:
@@ -32,3 +32,28 @@ tasks:
     dir: rust
     cmds:
       - cargo fmt --all --check
+
+  # dist: baut k3c-game (Release) und legt EXE, Spieldaten, Grafik und den Demo-Treiber nach dist/k3c-rust/. Eigener
+  # Ordner, damit das Go-Spiel in dist/k3c-game/ unberührt bleibt (bis RU35 das Paket umstellt). Kopiert wird mit
+  # cmd/sync (nur Geändertes, Ordner zusammengeführt); die Grafik kommt aus public/grafik (`task gen:paper` vorher).
+  game:dist:
+    desc: "Rust-Spiel (Release) samt data/, Grafik und Demo-Treiber nach dist/k3c-rust/ bauen; Start: demo.cmd"
+    dir: '{{.ROOT_DIR}}'
+    vars:
+      PAKET: '{{.ROOT_DIR}}/dist/k3c-rust'
+    cmds:
+      - cd rust && cargo build --release -p k3c-game
+      - mkdir -p "{{.PAKET}}"
+      - |
+        set -e
+        p="{{.PAKET}}"
+        if [ ! -d public/grafik ]; then echo "❌ public/grafik fehlt: erst task gen:paper"; exit 1; fi
+        cd native/k3c-game && CGO_ENABLED=0 go run ./cmd/sync \
+          "{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe" \
+          "{{.ROOT_DIR}}/data=$p/data" \
+          "{{.ROOT_DIR}}/public/grafik=$p/public/grafik" \
+          "{{.ROOT_DIR}}/rust/demo=$p/demo"
+        # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
+        rm -f "$p"/data/*.go "$p"/data/*.md
+        printf '%s\r\n' '@echo off' 'cd /d "%~dp0"' 'k3c-game.exe demo --driver demo\reiten.json --grafik public\grafik --data data %*' > "$p/demo.cmd"
+      - 'echo "✅ Rust-Spiel in {{.ROOT_DIR}}/dist/k3c-rust (Start: demo.cmd)"'
