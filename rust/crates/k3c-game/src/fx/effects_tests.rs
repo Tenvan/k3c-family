@@ -6,8 +6,15 @@ use serde_json::{Value, json};
 
 use k3c_sim::state::Event;
 
+use k3c_sim::state::{Player, World};
+
 use super::effects::*;
 use super::looks::*;
+use super::paint::{ENEMY_PROJECTILE, OWN_PROJECTILE, projectile_color};
+use super::stage::{StageFx, cast_for};
+use super::testutil::{event_of, new_fx, stage_of};
+use crate::view::frame::{Frame, Seat};
+use crate::view::layer::Listener;
 
 fn ev(v: Value) -> Event {
     v.as_object().expect("Objekt").clone()
@@ -139,10 +146,35 @@ fn blitzgrenze() {
     );
 }
 
-/// Braucht `StageFx::spawn` und `expire` aus fx.go (RU17.2).
 #[test]
-#[ignore = "wartet auf RU17"]
-fn spawn_grenzen() {}
+fn spawn_grenzen() {
+    let mut s = StageFx::new(0);
+    for i in 0..20 {
+        s.spawn(Effect::new(Kind::Kill, 0.0, 0.0), f64::from(i));
+    }
+    assert!(
+        s.pieces <= MAX_LIVE_PIECES && s.effects.len() as i64 == MAX_LIVE_PIECES / 7,
+        "höchstens {MAX_LIVE_PIECES} Teile: {} in {} Effekten",
+        s.pieces,
+        s.effects.len()
+    );
+    let mut s = StageFx::new(0);
+    let mut no = Effect::new(Kind::NoTarget, 10.0, 0.0);
+    no.text = "kein Ziel".into();
+    s.spawn(no.clone(), 0.0);
+    no.x = 10.5;
+    s.spawn(no, 0.1);
+    assert_eq!(s.effects.len(), 1, "derselbe Text an derselben Stelle nur einmal");
+    s.spawn(Effect::new(Kind::Hit, 0.0, 0.0), 0.0);
+    s.spawn(Effect::new(Kind::Hit, 0.0, 0.0), 0.1);
+    assert_eq!(s.effects.len(), 2, "Blitz im Sperrfenster verworfen");
+    s.expire(0.5);
+    assert!(
+        s.effects.len() == 1 && s.effects[0].kind == Kind::NoTarget,
+        "abgelaufene fallen weg: {:?}",
+        s.effects
+    );
+}
 
 #[test]
 fn skill_looks_eigener_und_unbekannter() {
@@ -154,10 +186,16 @@ fn skill_looks_eigener_und_unbekannter() {
     assert!(skill_look("unbekannt").is_none(), "unbekannter Skill: kein Look");
 }
 
-/// Zweiter Teil von `TestSkillLooks`: `cast_for` steht in fx.go (RU17.2).
+/// Zweiter Teil von `TestSkillLooks`: ein Flächenzauber mit dem Radius des Skills.
 #[test]
-#[ignore = "wartet auf RU17"]
-fn skill_looks_cast_for() {}
+fn skill_looks_cast_for() {
+    let d = ev(json!({"type": "skillCast", "from": 1, "skill": "meteor", "x": 20.0, "radius": 3.0}));
+    let (e, ok) = cast_for(&d);
+    assert!(
+        ok && e.look.radius == 3.0 * UNIT_PX && e.x == 20.0,
+        "Flächenzauber: {e:?}"
+    );
+}
 
 #[test]
 fn partikel() {
@@ -175,20 +213,78 @@ fn partikel() {
     assert!(p.radius == 2.5, "Fortschritt begrenzt: {p:?}");
 }
 
-/// Zwei Läufe mit denselben Ereignissen liefern dieselben Effekte; braucht den Drawer aus RU17.2.
+/// Zwei Läufe mit denselben Ereignissen liefern dieselben Effekte (kein Zufall, Zeit nur aus `Frame::clock`).
+/// Abweichung von Go: Die Simulation (`CreateIsland`, `Step`) gibt es in Rust noch nicht; der Monarch läuft von Hand.
 #[test]
-#[ignore = "wartet auf RU17"]
-fn listen_deterministisch() {}
+fn listen_deterministisch() {
+    let run = || {
+        let mut d = new_fx();
+        let mut w = World::default();
+        w.players.push(Player::default());
+        let mut f = Frame {
+            seats: vec![Seat::default()],
+            ..Frame::default()
+        };
+        for tick in 0..90 {
+            w.players[0].x += 1.0 / 30.0;
+            f.stages = vec![stage_of(0, &w)];
+            f.clock = f64::from(tick) / 30.0;
+            f.events = vec![
+                event_of(0, json!({"type": "strike", "from": 0, "x": 2.0, "hit": 1})),
+                event_of(0, json!({"type": "hit", "x": 3.0, "damage": f64::from(tick)})),
+            ];
+            d.listen(&f);
+        }
+        d.stage(0).expect("Stufe 0").effects.clone()
+    };
+    let (a, b) = (run(), run());
+    assert!(
+        !a.is_empty() && a.len() == b.len(),
+        "Effekte: {} und {}",
+        a.len(),
+        b.len()
+    );
+    for (i, (x, y)) in a.iter().zip(&b).enumerate() {
+        assert_eq!(x, y, "Effekt {i} verschieden");
+    }
+}
 
-/// Geschossfarbe nach Seite; `projectile_color` steht in paint.go (RU17.2).
+/// Geschossfarbe nach Seite (worldRenderer.ts: team === 'player' ? weiß : 0xff4d6d).
 #[test]
-#[ignore = "wartet auf RU17"]
-fn geschoss_farbe_nach_seite() {}
+fn geschoss_farbe_nach_seite() {
+    assert_eq!(projectile_color("enemy"), 0xff4d6d, "Gegner");
+    let own = projectile_color("player");
+    assert!(
+        own == OWN_PROJECTILE && own != ENEMY_PROJECTILE,
+        "eigene Geschosse unverändert: {own:#x}"
+    );
+}
 
-/// Optionen › Blitze aus (Settings.FlashesOff, B-809); braucht den Drawer aus RU17.2.
+/// Optionen › Blitze aus (Settings.FlashesOff, B-809): Treffer-Blitze entfallen, andere Effekte bleiben.
 #[test]
-#[ignore = "wartet auf RU17"]
-fn blitze_aus() {}
+fn blitze_aus() {
+    let count = |off: bool| {
+        let mut d = new_fx();
+        let w = World::default();
+        let mut f = Frame {
+            stages: vec![stage_of(0, &w)],
+            seats: vec![Seat::default()],
+            ..Frame::default()
+        };
+        f.settings.flashes_off = off;
+        f.events = vec![
+            event_of(0, json!({"type": "hit", "x": 3.0, "target": "enemy", "damage": 2.0})),
+            event_of(0, json!({"type": "built", "x": 5.0, "kind": "wall"})),
+        ];
+        d.listen(&f);
+        let list = &d.stage(0).expect("Stufe 0").effects;
+        let flashes = list.iter().filter(|e| config(e.kind).flash).count();
+        (flashes, list.len() - flashes)
+    };
+    assert!(count(false).0 > 0, "ohne Schalter: Treffer-Blitz erwartet");
+    let (off, rest) = count(true);
+    assert!(off == 0 && rest > 0, "Blitze aus: {off} Blitze, {rest} andere Effekte");
+}
 
 /// Jede Skill-Linie aus monarch.json hat eine Ring-Farbe (auch die Linie purse, B-922).
 #[test]

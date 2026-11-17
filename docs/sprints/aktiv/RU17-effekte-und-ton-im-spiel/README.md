@@ -94,7 +94,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU17.1 | `RU17.1-fx-effects-looks-status-texts.md` | Umsetzung | autonom | fertig |
-| RU17.2 | `RU17.2-fx-fx-paint-paintmarks.md` | Umsetzung | autonom | offen |
+| RU17.2 | `RU17.2-fx-fx-paint-paintmarks.md` | Umsetzung | autonom | fertig |
 | RU17.3 | `RU17.3-audio-register-atlas-duck-events.md` | Umsetzung | autonom | offen |
 | RU17.4 | `RU17.4-audio-mix-music.md` | Umsetzung | autonom | offen |
 | RU17.5 | `RU17.5-audio-bank-output-audio.md` | Umsetzung | autonom | offen |

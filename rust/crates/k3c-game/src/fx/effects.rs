@@ -157,7 +157,7 @@ pub fn flash_allowed(now: f64, last: f64) -> bool {
 }
 
 /// `PlayerX` liefert den Ort des Monarchen mit Index i (zweiter Wert false, wenn es ihn nicht gibt).
-pub type PlayerX = dyn Fn(i64) -> (f64, bool);
+pub type PlayerX<'a> = dyn Fn(i64) -> (f64, bool) + 'a;
 
 /// `effect_for` ordnet einem Ereignis genau einen Effekt zu; unbekannte Typen und Ereignisse ohne Ort: ok false.
 /// `spots` merkt den Ort des letzten Baufortschritts je Bauart (Rückfall für built ohne x).

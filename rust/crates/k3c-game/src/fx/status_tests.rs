@@ -7,6 +7,9 @@ use k3c_sim::state::{Castle, Crown, Enemy, Player, Storm, World};
 use super::looks::*;
 use super::pending::Aura;
 use super::status::*;
+use super::testutil::{new_fx, stage_of};
+use crate::view::frame::Frame;
+use crate::view::layer::Listener;
 
 fn no_auras(_: &Player) -> Vec<Aura> {
     Vec::new()
@@ -143,10 +146,38 @@ fn warnkreis() {
     );
 }
 
-/// Lernen eines passiven Skills zeigt seinen Ring am Monarchen; braucht den Drawer aus RU17.2.
+/// Lernen eines passiven Skills zeigt seinen Ring am Monarchen; der erste Stand und ein Stufenwechsel nicht.
 #[test]
-#[ignore = "wartet auf RU17"]
-fn lern_ring() {}
+fn lern_ring() {
+    let mut w = World::default();
+    w.players.push(Player::default());
+    let mut d = new_fx();
+    let mut f = Frame {
+        stages: vec![stage_of(0, &w)],
+        ..Frame::default()
+    };
+    d.listen(&f);
+    let n = d.stage(0).expect("Stufe 0").effects.len();
+    assert_eq!(n, 0, "erster Stand: kein Ring, {n}");
+    w.players[0]
+        .skills
+        .extend(["taunt".to_string(), "thickSkin".to_string()]);
+    f.stages = vec![stage_of(0, &w)];
+    f.clock = 0.1;
+    d.listen(&f);
+    let es = &d.stage(0).expect("Stufe 0").effects;
+    assert!(
+        es.len() == 1 && es[0].look.color == skill_looks()["thickSkin"].color,
+        "nur der passive Skill bekommt einen Ring: {es:?}"
+    );
+    w.players[0].skills.push("guardian".to_string());
+    f.stages = vec![stage_of(1, &w)];
+    d.listen(&f);
+    assert!(
+        d.stage(1).expect("Stufe 1").effects.is_empty(),
+        "nach dem Stufenwechsel zählt der erste Stand nicht"
+    );
+}
 
 /// Der Auren-Zwischenspeicher fragt die Quelle nur bei geänderten Skills oder neuer Welt neu (Go prüft zusätzlich, dass
 /// nichts angelegt wird; in Rust zählt der Test die Aufrufe der Quelle).
