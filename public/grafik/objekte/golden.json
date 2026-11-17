@@ -122,22 +122,16 @@
       "idle@wald.png": "5a08a86cf4880df9ada29d48780639d9d5a3d5c80fa2bc0c38bdb6f15746a9cb"
     }
   },
-  "fest-bluete": {
-    "renderKey": "bdf7c226725e87ac2b99a4c2b39265dcd8707867fc8d7cf06e212d56ecab8530",
+  "fracht-beutel": {
+    "renderKey": "e54ea8776f0d1bb2b70784fedef8a8a673f5080eb1e2d2e2b34ff501e640d561",
     "dateien": {
-      "idle.png": "6737c42ed41d2a31573fc630ca1029ee323b598e610118066a9d607486477544"
+      "idle.png": "0a46d6024a1005f57056e49ba8bab2cde4cc687aecd76fa476de5632b15c7026"
     }
   },
-  "fest-fackel": {
-    "renderKey": "9b19e3f2ee9fa448a1c437ced99a0fbf977d304e605a7b2d9a805f02e2fcb3a7",
+  "fracht-kiste": {
+    "renderKey": "503df62e5a99df56b4499131eda33b6a509960eeb42b002e055a76382b35ed75",
     "dateien": {
-      "idle.png": "346a77c3335c1729c0da2e9a226c0dfa63965ce67ac47873c56bef6fcb480ed3"
-    }
-  },
-  "fest-laterne": {
-    "renderKey": "617907433a25a8086550283410fc4b2502c4561ec3c595d42a21a5e63285ef0c",
-    "dateien": {
-      "idle.png": "6c3059476ca63354aa6c5057598b73c5299c61a5f786f69eab3da55b889e46b0"
+      "idle.png": "275c5ac331e548035f552915f071c9800c437eccf5dcf23ff9f4a330eb01bcb5"
     }
   },
   "gatter": {
@@ -156,6 +150,24 @@
     "renderKey": "15e4c6944661f2c2d4bf45ff0188c0a61d89879f9870dabc3b7bf191a4b2412d",
     "dateien": {
       "idle.png": "eb3205a3b01bc9aa05e5d4609d3abd45eb874df3ed67fafb8dcebfccea52955c"
+    }
+  },
+  "ladeplatz-material": {
+    "renderKey": "9ca9cf97bd18a32d05057891518927e1b6fdaf90e63cf60860534aa672a16a08",
+    "dateien": {
+      "idle.png": "77a5ee902142eb7b4a97688ecb3d0cca759a87c8b540b9f8cc92b58d825bf9b5"
+    }
+  },
+  "ladeplatz-muenzen": {
+    "renderKey": "5cbde9a1046c9c3698496d7463485cc333b0bad31a42c2fe9d7322232a3360c2",
+    "dateien": {
+      "idle.png": "222f650e8371f3c75c1eea1079d51c6dad492613da68eb15a513f7451d772b40"
+    }
+  },
+  "ladeplatz-truppen": {
+    "renderKey": "e32e98cf46754dade360314b84f4e2352359bba4a1f47857ce7f824b84371397",
+    "dateien": {
+      "idle.png": "ab3cae5588a2a39aa9c45ab383391ee322df7c82e36a5b3498f4aa5c15e72022"
     }
   },
   "obelisk": {

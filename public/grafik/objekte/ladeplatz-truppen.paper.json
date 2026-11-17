@@ -1,0 +1,98 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ladeplatz-truppen",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Ladeplatz Truppen am Steg: Holzschild am Pfahl mit Schwert-Symbol, markiert den Platz, an dem Truppen an Bord gehen; wackelt leicht",
+  "teile": [
+    {
+      "id": "schild",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 0L-2 -22L2 -22L2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 -20L-13 -42L13 -42L13 -20Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13 -20L-13 -42L-7 -42L-7 -20Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -27L6.5 -37.5L8.5 -38.5L7.5 -36.5L-3 -26Z",
+          "material": "eisen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -26.5L7.5 -37.5L7.5 -36.5L-3 -26Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 -29.5L-1.5 -23L-0.3 -24.2L-6.8 -30.7Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -26L-8.5 -22.5L-7.5 -21.5L-4 -25Z",
+          "material": "leder"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-9, -21],
+          "radius": 1.4,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 51,
+    "rahmen": [-17, -46, 34, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 4,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "schild": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "schild": 2
+          }
+        }
+      ]
+    }
+  }
+}

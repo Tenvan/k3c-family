@@ -1,6 +1,6 @@
 # SI1.3 · Assets Ladeplätze, Beutel, Kiste, Laderaum (B-997)
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,4 +58,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Pausiert (Ralf, 2026-11-17): Welt-Assets kommen ganz zum Schluss; vorher nur Standard-Set und Client-Umsetzung.
+Pause aufgehoben (Ralf, 2026-11-17: SI-Sprints komplett abarbeiten).
+
+- AC-03: umgesetzt. Über `assets_*` angelegt sind `objekte/ladeplatz-muenzen`, `ladeplatz-truppen`, `ladeplatz-material` (Pfahl mit Schild wie `schild-axt`, Symbol Münzen, Schwert, Kiste), `fracht-beutel` und `fracht-kiste`. `gebaeude-paper/schiff` hat die 4. Stufe `laderaum` (Ladedeck, Luke, Platzmarken). Das Spiel kappt das Schiff weiter auf 3 Stufen (`props/buildings.go`). `data/paper.json` › `objekte` hat fünf Einträge. Geprüft: `assets_preview` und `k3c-grafik` ohne schweren Befund.
+- check:diff: Regel-Tests, Lint und Typecheck sind grün bis auf `projectRules` (1444/1445). Dieser Test schlägt an untracked Resten lokal fehl: `engine/net/.omc` und `tools/k3c-starter` (Build-Ausgabe). Ralf löscht sie; in der CI sind sie nicht vorhanden.
+- Offen: Die Engine-Schlüssel fehlen, weil SI1.2/SI1.4 verworfen sind. Gen/Golden laufen im Abnahme-Ticket.

@@ -1,0 +1,94 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "fracht-kiste",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Fracht Kiste: Holzkiste mit Eisenbändern für Material an Deck, belegt einen Laderaum-Platz",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 0L-12 -20L12 -20L12 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-12 0L-12 -20L-6 -20L-6 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-12 -10L12 -10",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M-12 -20L12 0",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -2L12 -2L12 -4.5L-12 -4.5Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-12 -15.5L12 -15.5L12 -18L-12 -18Z",
+          "material": "eisen",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-9, -3.2],
+          "radius": 0.8
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [9, -3.2],
+          "radius": 0.8
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-9, -16.8],
+          "radius": 0.8
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [9, -16.8],
+          "radius": 0.8
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 28,
+    "rahmen": [-15, -24, 30, 26]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

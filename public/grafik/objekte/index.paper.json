@@ -85,19 +85,14 @@
     "manifest": "felsen/manifest.json"
   },
   {
-    "id": "fest-bluete",
+    "id": "fracht-beutel",
     "rig": "requisite",
-    "manifest": "fest-bluete/manifest.json"
+    "manifest": "fracht-beutel/manifest.json"
   },
   {
-    "id": "fest-fackel",
+    "id": "fracht-kiste",
     "rig": "requisite",
-    "manifest": "fest-fackel/manifest.json"
-  },
-  {
-    "id": "fest-laterne",
-    "rig": "requisite",
-    "manifest": "fest-laterne/manifest.json"
+    "manifest": "fracht-kiste/manifest.json"
   },
   {
     "id": "gatter",
@@ -113,6 +108,21 @@
     "id": "horn-pfahl",
     "rig": "requisite",
     "manifest": "horn-pfahl/manifest.json"
+  },
+  {
+    "id": "ladeplatz-material",
+    "rig": "requisite",
+    "manifest": "ladeplatz-material/manifest.json"
+  },
+  {
+    "id": "ladeplatz-muenzen",
+    "rig": "requisite",
+    "manifest": "ladeplatz-muenzen/manifest.json"
+  },
+  {
+    "id": "ladeplatz-truppen",
+    "rig": "requisite",
+    "manifest": "ladeplatz-truppen/manifest.json"
   },
   {
     "id": "obelisk",
