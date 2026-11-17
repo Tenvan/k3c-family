@@ -1,6 +1,6 @@
 # SI5.5 · Review Sprint SI5 Besondere Figur der Welt
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -64,4 +64,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Pausiert mit SI5.3 (Ralf, 2026-11-17): Review erst, wenn die Welt-Assets zum Schluss kommen.
+- AC-01: umgesetzt (SI5.1, Regeltext), geprüft per Diff.
+- AC-02, AC-04: nicht erfüllt, verworfen (SI5.2 Engine, SI5.4 Anzeige); keine Engine- und Spiel-Änderung im Sprint.
+- AC-03: umgesetzt (SI5.3), geprüft `k3c-grafik` ohne schweren Befund; Schlüssel im Block `einsiedler` stimmen mit B-972.
+- AC-05: entfällt ohne Anzeige im Spiel.
+- AC-06: `task:check:go` go test grün, Lint übersprungen (golangci-lint fehlt); `task:check` 1878/1879 grün, `render.test.ts` rot durch EPERM im Temp-Ordner (Umgebung, Datei unberührt), Nachprüfung in Abnahme-Ticket B-1036. Glossar: Einsiedler, Einsiedler-Hütte, Bauwerk der Welt, Dojo, Schrein.

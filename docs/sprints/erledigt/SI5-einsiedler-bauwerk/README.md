@@ -1,6 +1,6 @@
 # SI5 · REG, SIM, PAP, CLI · Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** REG, SIM, PAP, CLI
 - **Reife:** bereit
@@ -70,7 +70,7 @@ Keine blockierenden. Defaults in `B-972 › Offene Fragen` und `B-1001 › Offen
 | SI5.2 | `SI5.2-engine-einsiedler.md` | Umsetzung | autonom | verworfen |
 | SI5.3 | `SI5.3-assets-einsiedler.md` | Umsetzung | autonom | fertig |
 | SI5.4 | `SI5.4-anzeige-einsiedler.md` | Umsetzung | autonom | verworfen |
-| SI5.5 | `SI5.5-review.md` | Review | autonom | blockiert |
+| SI5.5 | `SI5.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -78,4 +78,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+Review SI5.5 (2026-11-17, Claude):
+- AC-01 erfüllt (SI5.1, Regeltext in `buerger.md` und `materialien-gebaeude.md`). AC-03 erfüllt (SI5.3, fünf Assets, Hütte auf 135 px, `k3c-grafik` ohne schweren Befund).
+- AC-02 und AC-04 nicht erfüllt, verworfen (SI5.2 Engine, SI5.4 Anzeige; Go-Stopp, Rust-Umstellung); Block `einsiedler` in `data/paper.json` wird noch nicht gelesen.
+- AC-05 (TV) entfällt ohne Anzeige im Spiel.
+- AC-06: `task:check:go` go test grün, Lint übersprungen (golangci-lint fehlt lokal); `task:check` 1878/1879, roter Test `render.test.ts` (EPERM im Temp-Ordner, Umgebung) nachprüfen in Abnahme-Ticket B-1036.
