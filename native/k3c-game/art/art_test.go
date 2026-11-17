@@ -260,3 +260,30 @@ func TestAbortLevelLoad(t *testing.T) {
 	}
 	(*LevelLoad)(nil).Abort()
 }
+
+// Fehler im zweiten Sheet: die schon geladenen Sheets sind freigegeben und aus got entfernt, damit ein folgendes Abort
+// sie nicht noch einmal freigibt.
+func TestStepErrorThenAbortFreesOnce(t *testing.T) {
+	dir := t.TempDir()
+	if err := os.CopyFS(dir, os.DirFS(testGrafik)); err != nil {
+		t.Fatal(err)
+	}
+	l := &Library{cfg: Config{GrafikDir: dir}, sheets: map[sheetKey]*Sheet{}, levels: map[string][]string{}}
+	ld, err := l.BeginLevels(map[string][]string{"wald": {"figuren/zwerg"}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(filepath.Join(dir, "figuren", "zwerg", "lauf.png")); err != nil { // nach der Planung
+		t.Fatal(err)
+	}
+	if _, err := ld.Step(2); err == nil {
+		t.Fatal("kaputtes zweites Sheet nicht erkannt")
+	}
+	if len(ld.got) != 0 {
+		t.Errorf("nach dem Fehler noch %d freigegebene Sheets in got", len(ld.got))
+	}
+	ld.Abort()
+	if len(l.sheets) != 0 {
+		t.Errorf("alter Stand verändert: %d Sheets", len(l.sheets))
+	}
+}
