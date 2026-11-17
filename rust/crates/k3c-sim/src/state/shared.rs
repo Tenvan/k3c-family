@@ -22,10 +22,10 @@ pub const CROWN_GROUND: &str = "ground";
 pub const CROWN_ENEMY: &str = "enemy";
 pub const CROWN_PLAYER: &str = "player";
 
-/// Go: `sim.Drop` (unit_warrior.go), Ausrüstung am Boden.
+/// Go: `sim.Drop` (unit_warrior.go), Ausrüstung am Boden; heißt in Rust `ItemDrop`, weil `Drop` den Prelude-Trait schattiert.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 #[serde(default)]
-pub struct Drop {
+pub struct ItemDrop {
     #[serde(rename = "id")]
     pub id: i64,
     #[serde(rename = "kind")]

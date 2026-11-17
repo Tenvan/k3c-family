@@ -13,7 +13,7 @@ use k3c_rng::Rng;
 use serde::{Deserialize, Serialize};
 
 use super::omit::is_zero_i64;
-use super::shared::{ActiveEvent, CombatRuntime, CycleInfo, Drop, Merchant, SwitchState, WorldValues};
+use super::shared::{ActiveEvent, CombatRuntime, CycleInfo, ItemDrop, Merchant, SwitchState, WorldValues};
 use super::types::{Coin, Player, Troop};
 use super::types_enemy::{Camp, Enemy, Event, Hazard, Pickup, Projectile, QueuedSpawn, Storm, Travel};
 use super::types_things::{Castle, ResourceNode, Site};
@@ -135,7 +135,7 @@ pub struct World {
     pub merchant: Option<Merchant>,
     /// Ausrüstung am Boden.
     #[serde(rename = "drops", skip_serializing_if = "Vec::is_empty")]
-    pub drops: Vec<Drop>,
+    pub drops: Vec<ItemDrop>,
     /// Wird bei jedem Step geleert (Vorentscheidung 12).
     #[serde(rename = "events")]
     pub events: Vec<Event>,

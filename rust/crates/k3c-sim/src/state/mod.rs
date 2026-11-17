@@ -25,7 +25,7 @@ pub use fehler::Fehler;
 pub use save::{HubSave, PlayerSave, SaveGame, SiteSave, TroopSave};
 pub use save_economy::{CraftSave, PlotSave};
 pub use shared::{
-    ActiveEvent, CombatRuntime, CombatSettings, Crown, CycleInfo, Drop, Merchant, SkillTable, SwitchState,
+    ActiveEvent, CombatRuntime, CombatSettings, Crown, CycleInfo, ItemDrop, Merchant, SkillTable, SwitchState,
     SwitchTarget, WarnZone, WorldValues,
 };
 pub use types::{Coin, Job, Player, PlayerCommand, Troop};

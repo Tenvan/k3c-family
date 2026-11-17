@@ -110,7 +110,7 @@ keine
 | RU8.3 | `RU8.3-common-data.md` | Umsetzung | autonom | fertig |
 | RU8.4 | `RU8.4-views-purse-torches.md` | Umsetzung | autonom | fertig |
 | RU8.5 | `RU8.5-save.md` | Umsetzung | autonom | fertig |
-| RU8.6 | `RU8.6-review.md` | Review | autonom | offen |
+| RU8.6 | `RU8.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -118,6 +118,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-17, Review RU8.6: AC-01 bis AC-04 geprüft (Standard `rust-sim-zustand.md`, Typen und JSON-Namen, `golden_state`-Rundlauf, kein HashMap/Rc/RefCell/unsafe per grep); `task check` und `task check:go` grün, `cargo test -p k3c-sim` 41 ok, 11 ignoriert. `damage_player` und `apply_damage_by` stimmen in der Reihenfolge der Seiteneffekte mit Go überein; `engine/` und `testdata/golden` unverändert. Behoben: `Drop` heißt jetzt `ItemDrop` (JSON gleich); 4 `#[ignore]`-Tests von RU14 auf RU18 umetikettiert (brauchen `is_ruin`, `site_hub_level`, `gather_of`, die erst RU18 liefert). Außerhalb des Bereichs, ok: `k3c-level/Cargo.toml` (serde, dev: serde_json) für die Level-Typen. Tickets: B-1036 (WorldDef/Island vorziehen, RU10), B-1037 (Abnahme: Race und Golden).

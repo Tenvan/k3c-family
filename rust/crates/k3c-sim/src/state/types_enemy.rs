@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::omit::{is_false, is_zero_f64, is_zero_i64};
-use super::shared::{Crown, Drop, WarnZone};
+use super::shared::{Crown, ItemDrop, WarnZone};
 
 /// Ein Ereignis des letzten Ticks, z. B. `{"type": "night", "day": 1}`. Eine Map, weil die Felder je Typ wechseln und
 /// Werte wie `player: 0` erhalten bleiben müssen (Go: `map[string]any`; die Schlüssel sind sortiert wie bei Go).
@@ -39,7 +39,7 @@ pub struct Enemy {
     pub carried_gold: i64,
     /// Weggetragene Ausrüstung.
     #[serde(rename = "carried", skip_serializing_if = "Option::is_none")]
-    pub carried: Option<Drop>,
+    pub carried: Option<ItemDrop>,
     /// Getragene Krone eines Monarchen: im Portal ist sie geraubt.
     #[serde(rename = "crown", skip_serializing_if = "Option::is_none")]
     pub crown: Option<Crown>,
