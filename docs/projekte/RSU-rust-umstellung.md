@@ -35,8 +35,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | erledigt |
 | RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | erledigt |
 | RU8 | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | erledigt |
-| RU13 | Welt und Akteure zeichnen | geplant |
-| RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | geplant |
+| RU13 | Welt und Akteure zeichnen | aktiv |
+| RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | aktiv |
 | RU16 | Gebäude und Objekte zeichnen | geplant |
 | RU17 | Effekte und Ton im Spiel | geplant |
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | geplant |

@@ -1,11 +1,11 @@
 # RU38 · SIM, CLI · Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
 - **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 983398f2b
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17
