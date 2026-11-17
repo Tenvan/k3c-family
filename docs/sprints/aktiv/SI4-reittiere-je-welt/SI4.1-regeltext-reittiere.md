@@ -1,6 +1,6 @@
 # SI4.1 · Regeltext Reittiere je Welt (B-970)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -55,4 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+AC-01: umgesetzt (`monarch.md` § 7: Katalog, Welt-Feld `mount`, Gatter, Kauf, Mitfahren ohne Frachtplatz, Stärken, Rentier geplant; alte Zeilen „immer beritten“/„weitere Reittiere“ angepasst, Zahlen vorläufig). check:diff: geprüft (grün). Ralf prüfen: Kamel-Stärke als höheres Grundtempo statt „sprintet länger“ (Default), Preis 12, Faktoren 1,2/1,1.
