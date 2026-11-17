@@ -1,6 +1,6 @@
 # SI5.1 · Regeltext besondere Figur und Bauwerk der Welt (B-972)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -56,4 +56,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01: umgesetzt. `buerger.md` § 1 (Zeile „Besondere Figur der Welt“, § 4 Notiz) und `materialien-gebaeude.md` § 3 (Hub-Platz), § 3.2 (Bauwerk der Welt mit Bonus), § 4 (Zerstörung) tragen die Regeln aus B-972, Zahlen als vorläufig. Geprüft: `check_run task:check:diff` grün.
+- Hinweis: `welten.md` unberührt (SI5.2).
