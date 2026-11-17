@@ -122,6 +122,24 @@
       "idle@wald.png": "5a08a86cf4880df9ada29d48780639d9d5a3d5c80fa2bc0c38bdb6f15746a9cb"
     }
   },
+  "fest-bluete": {
+    "renderKey": "bdf7c226725e87ac2b99a4c2b39265dcd8707867fc8d7cf06e212d56ecab8530",
+    "dateien": {
+      "idle.png": "6737c42ed41d2a31573fc630ca1029ee323b598e610118066a9d607486477544"
+    }
+  },
+  "fest-fackel": {
+    "renderKey": "9b19e3f2ee9fa448a1c437ced99a0fbf977d304e605a7b2d9a805f02e2fcb3a7",
+    "dateien": {
+      "idle.png": "346a77c3335c1729c0da2e9a226c0dfa63965ce67ac47873c56bef6fcb480ed3"
+    }
+  },
+  "fest-laterne": {
+    "renderKey": "617907433a25a8086550283410fc4b2502c4561ec3c595d42a21a5e63285ef0c",
+    "dateien": {
+      "idle.png": "6c3059476ca63354aa6c5057598b73c5299c61a5f786f69eab3da55b889e46b0"
+    }
+  },
   "fracht-beutel": {
     "renderKey": "e54ea8776f0d1bb2b70784fedef8a8a673f5080eb1e2d2e2b34ff501e640d561",
     "dateien": {
