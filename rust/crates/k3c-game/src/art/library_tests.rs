@@ -212,3 +212,10 @@ fn fixture_laedt_ueber_library() {
     assert_eq!((s.origin_x, s.origin_y), (0.5, 1.0));
     assert_eq!(s.frame(1).unwrap().src, k3c_platform::Rect::new(4.0, 0.0, 4.0, 4.0));
 }
+
+/// Weltbilder fragen `usable` vor `set_levels`: ein fehlendes Asset ist nicht ladbar, ohne Fehler zu werfen.
+#[test]
+fn usable_meldet_fehlende_assets() {
+    let l = lib();
+    assert!(!l.usable("gibt/es-nicht"));
+}

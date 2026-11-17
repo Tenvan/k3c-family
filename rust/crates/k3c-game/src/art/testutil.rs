@@ -31,3 +31,8 @@ pub fn copy_dir(from: &Path, to: &Path) {
         }
     }
 }
+
+/// Das echte `data/` des Repos (Tests der Zuordnungen lesen es direkt, nicht über den Arbeitsordner).
+pub fn real_data() -> PathBuf {
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../data")
+}

@@ -5,6 +5,7 @@
 //! Aufbau: Planen (Pfade, Maße, Texturbudget; ohne GPU, testbar) getrennt vom Hochladen (`Canvas::texture`).
 
 mod budget;
+mod datafile;
 mod font;
 #[cfg(test)]
 mod font_tests;
@@ -23,9 +24,18 @@ mod plan;
 mod plan_tests;
 mod png;
 mod scales;
+mod seamap;
+#[cfg(test)]
+mod seamap_tests;
 mod sheet;
 #[cfg(test)]
 mod testutil;
+mod voyage;
+#[cfg(test)]
+mod voyage_tests;
+mod worldimages;
+#[cfg(test)]
+mod worldimages_tests;
 
 use std::fmt;
 
@@ -38,7 +48,11 @@ pub use library::{
 pub use manifest::{Anim, Manifest, group_assets, read_manifest};
 pub use outline::{OUTLINE4, OUTLINE8, OutlineCache, outline_pad, outline_stroke, scale_alpha};
 pub use plan::{Plan, SheetSpec, plan_level, plan_sheet};
+pub use scales::{data_scales, parse_scales};
+pub use seamap::{SeaLayers, SeaMap, SeaMarks};
 pub use sheet::{Sheet, SheetFrame, upload};
+pub use voyage::{VoyageLook, parse_voyage, voyage};
+pub use worldimages::{STANDARD_WORLD, WorldImage, WorldImages};
 
 /// Fehler beim Laden; die Meldung nennt immer den Pfad. `Missing` entspricht Gos `ErrMissing`.
 #[derive(Debug)]

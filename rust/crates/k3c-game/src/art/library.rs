@@ -31,14 +31,14 @@ pub struct Config {
     pub scales: BTreeMap<String, f64>,
 }
 
-/// Liefert die Pfade im Repo. `rig_dir` bleibt leer bis RU7.6 (Rigs), `scales` bis RU7.3 (`data_scales`).
+/// Liefert die Pfade im Repo. `rig_dir` bleibt leer bis RU7.6 (Rigs).
 pub fn default_config() -> Config {
     Config {
         grafik_dir: DEFAULT_GRAFIK_DIR.into(),
         rig_dir: PathBuf::new(),
         font_path: DEFAULT_FONT_PATH.into(),
         strict_font: true,
-        scales: BTreeMap::new(),
+        scales: super::scales::data_scales(),
     }
 }
 
@@ -107,6 +107,12 @@ impl Library {
     /// Liefert die Animation `anim` des Assets `gruppe/id` aus den geladenen Leveln, sonst `None`. Ohne Allokation.
     pub fn sheet(&self, asset: &str, anim: &str) -> Option<&Sheet> {
         self.sheets.get(asset)?.get(anim)
+    }
+
+    /// Meldet, ob das Asset (`gruppe/id`) vollständig ladbar ist (Manifest, PNG, Maße). Weltbilder fragen das vor
+    /// `set_levels`, damit ein fehlendes Bild nie ein Level verhindert.
+    pub fn usable(&self, asset: &str) -> bool {
+        plan_level(&self.cfg.grafik_dir, "", &[asset.to_string()]).is_ok()
     }
 
     /// Die geladenen Sheets als Schlüssel (sortiert).
