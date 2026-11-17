@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"k3c/tools/k3c-workbench/internal/taskcat"
-	"k3c/tools/k3c-workbench/internal/taskgate"
 	"k3c/tools/k3c-workbench/internal/taskrun"
 )
 
@@ -34,24 +33,19 @@ func (f *fakeTasks) TaskRuns() []taskrun.Run {
 	return []taskrun.Run{{Name: "check", State: taskrun.Succeeded, DurationMs: 4200}}
 }
 
-func (f *fakeTasks) TaskState(name string) taskgate.State {
-	if name == "check" {
-		return taskgate.Open
-	}
-	return taskgate.Closed
-}
-
 func TestTaskTools(t *testing.T) {
 	t.Parallel()
 	host := &fakeTasks{}
 	s := New(Config{Version: "test", Root: t.TempDir(), Tasks: host})
 	cs := connect(t, s)
-	if text, _ := callText(t, cs, "task_list", nil); !strings.Contains(text, "  * check · Lint und Tests") || !strings.Contains(text, "    golden:update") {
+	if text, _ := callText(t, cs, "task_list", nil); !strings.Contains(text, "  check · Lint und Tests") || !strings.Contains(text, "  golden:update · Golden neu") {
 		t.Errorf("task_list: %q", text)
 	}
-	if text, isErr := callText(t, cs, "task_start", map[string]any{"task": "golden:update"}); !isErr || !strings.Contains(text, "nicht freigegeben") {
-		t.Errorf("gesperrt: %q", text)
+	// kein Freigabe-Schloss: jeder Task aus dem Katalog startet
+	if text, isErr := callText(t, cs, "task_start", map[string]any{"task": "golden:update"}); isErr || !strings.HasPrefix(text, "golden:update · running") {
+		t.Errorf("golden:update: %q", text)
 	}
+	host.started = nil
 	if text, isErr := callText(t, cs, "task_start", map[string]any{"task": "check", "args": "a;b"}); !isErr || len(host.started) != 0 {
 		t.Errorf("Metazeichen: %q", text)
 	}
