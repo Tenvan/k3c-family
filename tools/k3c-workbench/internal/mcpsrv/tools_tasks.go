@@ -10,17 +10,15 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	"k3c/tools/k3c-workbench/internal/taskcat"
-	"k3c/tools/k3c-workbench/internal/taskgate"
 	"k3c/tools/k3c-workbench/internal/taskrun"
 )
 
-// TaskHost ist die Tasks-Seite für die MCP-Tools (Workbench-Spec § 4): Katalog, Läufe und Freigabe-Schloss.
+// TaskHost ist die Tasks-Seite für die MCP-Tools (Workbench-Spec § 4): Katalog und Läufe. Agenten dürfen alle Tasks starten.
 type TaskHost interface {
 	TaskList() ([]taskcat.Task, error)
 	TaskStart(name string, args []string) (taskrun.Run, error)
 	TaskStop(name string) (taskrun.Run, error)
 	TaskRuns() []taskrun.Run
-	TaskState(name string) taskgate.State
 }
 
 type taskListIn struct {
@@ -51,13 +49,13 @@ func registerTasks(s *Server) {
 	no, yes, closed := false, true, false
 	add(s, &mcp.Tool{
 		Name: "task_list",
-		Description: "Taskfile-Baum nach Namensraum; freigegebene Tasks mit * (Schloss offen, task_start erlaubt). " +
-			"Nutze es bei: welcher Task existiert und ob er startbar ist. Statt: task --list-all.",
+		Description: "Taskfile-Baum nach Namensraum; jeder Task ist mit task_start startbar (kein Freigabe-Schloss). " +
+			"Nutze es bei: welcher Task existiert. Statt: task --list-all.",
 		Annotations: readOnly(),
 	}, s.taskList)
 	add(s, &mcp.Tool{
 		Name: "task_start",
-		Description: "Startet einen freigegebenen Task und kehrt sofort zurück; Freigabe laut Schloss der Tasks-Seite, nicht laut Name. " +
+		Description: "Startet einen beliebigen Task aus task_list und kehrt sofort zurück (kein Freigabe-Schloss). " +
 			"Nutze es bei: Werkzeug-Tasks ohne eigenes Tool. Statt: task <name> in der Shell. Auf das Ende warten: check_run.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &no, OpenWorldHint: &closed},
 	}, s.taskStart)
@@ -107,11 +105,7 @@ func (s *Server) taskList(ctx context.Context, in taskListIn) (string, error) {
 		}
 		out = append(out, ns.Name)
 		for _, t := range ns.Tasks {
-			mark := " "
-			if host.TaskState(t.Name).Allowed() {
-				mark = "*"
-			}
-			out = append(out, fmt.Sprintf("  %s %s · %s", mark, t.Name, t.Desc))
+			out = append(out, fmt.Sprintf("  %s · %s", t.Name, t.Desc))
 		}
 	}
 	if len(out) == 0 {
@@ -124,9 +118,6 @@ func (s *Server) taskStart(ctx context.Context, in taskStartIn) (string, error) 
 	host, err := s.taskHost(ctx)
 	if err != nil {
 		return "", err
-	}
-	if st := host.TaskState(in.Task); !st.Allowed() {
-		return "", fmt.Errorf("task %q ist nicht freigegeben (Schloss %s); 🧑 öffnet es auf der Tasks-Seite", in.Task, st)
 	}
 	args := strings.Fields(in.Args)
 	if err := taskrun.ValidateArgs(args); err != nil {
