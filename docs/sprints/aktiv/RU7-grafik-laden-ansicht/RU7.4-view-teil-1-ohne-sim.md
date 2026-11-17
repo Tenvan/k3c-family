@@ -1,6 +1,6 @@
 # RU7.4 · view Teil 1 ohne Sim: cell, crown, keys, stress
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
