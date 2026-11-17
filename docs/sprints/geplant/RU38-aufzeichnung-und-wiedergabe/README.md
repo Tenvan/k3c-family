@@ -1,14 +1,14 @@
-# RU38 · SIM · Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client
+# RU38 · SIM, CLI · Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client
 
 - **Status:** geplant
 - **Projekt:** RSU
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** SIM, CLI
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -49,9 +49,9 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Einzige Go-Änderung: das neue Paket `engine/internal/trace` (Session 1).
 
-- **Bereich:** `engine/internal/trace/**`, `testdata/rust/trace/**`, `rust/crates/k3c-game/src/replay/**`
+- **Bereich:** `engine/internal/trace/**`, `testdata/rust/trace/**`, `rust/crates/k3c-game/src/replay/**`, `rust/crates/k3c-game/src/lib.rs`, `rust/crates/k3c-game/src/main.rs`, `rust/crates/k3c-game/tests/replay_*.rs`
 - **Abhängig von:** RU7, RU8
 - **Braucht 🧑:** –
 - **Sperre:** –
@@ -72,12 +72,16 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Format der Aufzeichnung (Zeile 1 Level, je Takt Zustand und Ereignisse, in RU38.1), `--measure N` zählt Takte, Prüfwert FNV-1a 64 (RU38.3). Braucht der gzip-Leser eine neue Abhängigkeit, entscheidet 🧑 (RU38.2 hält dann an).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU38.1 | `RU38.1-go-trace-aufzeichnung.md` | Umsetzung | autonom | offen |
+| RU38.2 | `RU38.2-rust-replay-lesen-wiedergabe.md` | Umsetzung | autonom | offen |
+| RU38.3 | `RU38.3-replay-befehl-messung.md` | Umsetzung | autonom | offen |
+| RU38.4 | `RU38.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

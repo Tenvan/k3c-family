@@ -1,6 +1,6 @@
 # SI1.5 · Review Sprint SI1 Fracht auf dem Schiff
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -62,4 +62,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Pausiert mit SI1.3 (Ralf, 2026-11-17): Review erst, wenn die Welt-Assets zum Schluss kommen.
+- AC-01: umgesetzt (SI1.1, #655), Diff geprüft.
+- AC-02, AC-04: nicht erfüllt, SI1.2 und SI1.4 verworfen (Go-Stopp). Der Sprint ändert weder Engine noch Spiel.
+- AC-03: umgesetzt (SI1.3). `k3c-grafik` meldet statisch keinen schweren Befund, der Augenschein am TV ist offen. Die Platzmarken an Deck zeigen 6 Grundplätze und nicht die +4 aus dem Laderaum. Die echte Zahl zeichnet später das Spiel.
+- AC-05: offen (🧑, Ralf-Queue).
+- AC-06: `task:check:go` (go test) ist grün, nachdem der Detvec-Baum neu geschrieben wurde. Lint übersprungen, golangci-lint fehlt lokal. `task:check` hat 1878/1879 grün, `projectRules` scheitert nur an lokalen Resten. Abnahme-Ticket: B-1035.

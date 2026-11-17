@@ -1,6 +1,6 @@
 # SI2 · REG, PAP, SIM, CLI · Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** REG, PAP, SIM, CLI
 - **Reife:** bereit

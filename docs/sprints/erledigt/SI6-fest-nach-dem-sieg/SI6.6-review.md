@@ -1,6 +1,6 @@
 # SI6.6 · Review Sprint SI6 Fest nach dem Sieg
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -63,4 +63,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Pausiert mit SI6.2 (Ralf, 2026-11-17): Review erst, wenn die Welt-Assets zum Schluss kommen.
+- AC-01: umgesetzt (SI6.1, `kampf.md` § 10, Verweise `bosse.md`, Vermerk `zielkorridore.md`), geprüft per Diff #665.
+- AC-02: umgesetzt (SI6.2), geprüft `k3c-grafik` statisch ohne schweren Befund; Augenschein am TV offen.
+- AC-03, AC-04, AC-05: nicht erfüllt, verworfen (SI6.3 bis SI6.5, Go-Stopp und Rust-Umstellung); keine Engine-, Spiel- und Musik-Änderung im Sprint. AC-06 entfällt damit.
+- AC-07: `task:check` grün bis auf EPERM-Rename im Temp (`render.test.ts`, Einzellauf grün), `task:check:go` go-test grün, golangci-lint lokal nicht installiert (übersprungen); Abnahme-Ticket B-1037.
+- Glossar: Fest, Friedliche Insel eingetragen.

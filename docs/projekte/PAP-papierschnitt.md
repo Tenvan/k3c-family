@@ -44,6 +44,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PT5 | Abnahme-Läufe CU1 (B-836) | erledigt |
 | PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | erledigt |
 | WG1 | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | aktiv |
+| BB1 | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | geplant |
+| BB2 | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | geplant |
 
 ## Nicht-Ziele
 

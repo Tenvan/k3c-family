@@ -1,0 +1,100 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ladeplatz-material",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Ladeplatz Material am Steg: Holzschild am Pfahl mit Kisten-Symbol, markiert den Platz, an dem Material aufs Schiff geladen wird; wackelt leicht",
+  "teile": [
+    {
+      "id": "schild",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 0L-2 -22L2 -22L2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 -20L-13 -42L13 -42L13 -20Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13 -20L-13 -42L-7 -42L-7 -20Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "flaeche",
+          "form": "M-7 -24L-7 -35L7 -35L7 -24Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-7 -24L-7 -35L-3 -35L-3 -24Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-7 -28.5L7 -28.5L7 -30.5L-7 -30.5Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-1 -24L-1 -35L1 -35L1 -24Z",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M-7 -35L7 -35",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 51,
+    "rahmen": [-17, -46, 34, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 4,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "schild": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "schild": 2
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # SI6 · REG, PAP, SIM, CLI · Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** REG, PAP, SIM, CLI
 - **Reife:** bereit
@@ -67,11 +67,11 @@ Keine blockierenden. Defaults in `B-973 › Offene Fragen` und `B-1002 › Offen
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SI6.1 | `SI6.1-regeltext-friedliche-insel.md` | Umsetzung | autonom | fertig |
-| SI6.2 | `SI6.2-assets-fest.md` | Umsetzung | autonom | blockiert |
+| SI6.2 | `SI6.2-assets-fest.md` | Umsetzung | autonom | fertig |
 | SI6.3 | `SI6.3-engine-friedliche-insel.md` | Umsetzung | autonom | verworfen |
 | SI6.4 | `SI6.4-anzeige-fest.md` | Umsetzung | autonom | verworfen |
 | SI6.5 | `SI6.5-festmusik.md` | Umsetzung | autonom | verworfen |
-| SI6.6 | `SI6.6-review.md` | Review | autonom | blockiert |
+| SI6.6 | `SI6.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -79,4 +79,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+Review SI6.6 (2026-11-17, Claude):
+- AC-01 erfüllt (SI6.1, #665), AC-02 erfüllt (SI6.2, `k3c-grafik` ohne schweren Befund).
+- AC-03, AC-04, AC-05: nicht erfüllt, verworfen (SI6.3 bis SI6.5, Go-Stopp und Rust-Umstellung); AC-06 (TV-Abnahme) entfällt mangels Anzeige.
+- AC-07: `task:check` grün (ein EPERM-Rename im Temp bei `render.test.ts`, Einzellauf grün), `task:check:go` go-test grün, golangci-lint lokal übersprungen; Abnahme-Ticket B-1037.
+- Glossar: Fest, Friedliche Insel.

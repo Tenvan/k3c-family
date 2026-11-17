@@ -30,12 +30,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
-| SI2 | REG, PAP, SIM, CLI | KMP | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | – | `aktiv/SI2-doppel-truhe-koop/` |
-| SI3 | REG, SIM, PAP, CLI | KMP | Wetter je Welt: Regel, Engine, Assets, Anzeige | – | `aktiv/SI3-wetter-je-welt/` |
-| SI4 | REG, PAP, SIM, CLI | KMP | Reittiere je Welt: Regel, Assets, Engine, Anzeige | – | `aktiv/SI4-reittiere-je-welt/` |
-| SI5 | REG, SIM, PAP, CLI | KMP | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | – | `aktiv/SI5-einsiedler-bauwerk/` |
-| SI6 | REG, PAP, SIM, CLI | KMP | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | – | `aktiv/SI6-fest-nach-dem-sieg/` |
-| SI1 | REG, SIM, PAP, CLI | KMP | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | – | `aktiv/SI1-fracht-auf-dem-schiff/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
@@ -60,11 +54,13 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | bereit | `geplant/GS4-flaschenpost/` |
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
+| BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
+| BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
 | RU9 | CLI | RSU | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | – | Entwurf | `geplant/RU9-menues-teil-1/` |
 | RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | Entwurf | `geplant/RU10-sim-insel/` |
 | RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | Entwurf | `geplant/RU11-sim-einheiten-gegner/` |
-| RU13 | CLI | RSU | Welt und Akteure zeichnen | – | Entwurf | `geplant/RU13-welt-und-akteure-zeichnen/` |
+| RU13 | CLI | RSU | Welt und Akteure zeichnen | – | bereit | `geplant/RU13-welt-und-akteure-zeichnen/` |
 | RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | Entwurf | `geplant/RU14-sim-welt-stufen-kampagne/` |
 | RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | Entwurf | `geplant/RU15-sim-kampf-bosse/` |
 | RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | Entwurf | `geplant/RU16-gebaeude-und-objekte-zeichnen/` |
@@ -91,7 +87,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | Entwurf | `geplant/RU33-laeufe-im-client/` |
 | RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | Entwurf | `geplant/RU34-workbench-ruft-spiel-exe/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | Entwurf | `geplant/RU37-go-spiel-entfernen/` |
-| RU38 | SIM | RSU | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | – | Entwurf | `geplant/RU38-aufzeichnung-und-wiedergabe/` |
+| RU38 | SIM, CLI | RSU | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | – | bereit | `geplant/RU38-aufzeichnung-und-wiedergabe/` |
 | RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | Entwurf | `geplant/RU39-ruckler-messung-rust-gegen-go/` |
 | RU40 | CLI | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | Entwurf | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | Entwurf | `geplant/RU41-go-engine-entfernen/` |
@@ -443,3 +439,9 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | `erledigt/WG2-weltbilder-anzeige/` |
 | FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | `erledigt/FB4-live-test-2/` |
 | RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | `erledigt/RU3-rng-zahlen-daten/` |
+| SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | `erledigt/SI1-fracht-auf-dem-schiff/` |
+| SI2 | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | `erledigt/SI2-doppel-truhe-koop/` |
+| SI3 | Wetter je Welt: Regel, Engine, Assets, Anzeige | `erledigt/SI3-wetter-je-welt/` |
+| SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | `erledigt/SI4-reittiere-je-welt/` |
+| SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | `erledigt/SI5-einsiedler-bauwerk/` |
+| SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | `erledigt/SI6-fest-nach-dem-sieg/` |
