@@ -106,6 +106,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | RU1 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
 | [B-1022](B-1022-abnahme-wz61-race.md) | DEV | Schuld | niedrig | offen | WZ61 | Abnahme WZ61: check:race über die geänderten Workbench- und Cleanup-Pakete läuft grün |
 | [B-1026](B-1026-session-karten-responsive.md) | DEV | Problem | mittel | offen | WZ61 | Session-Karten im Sprint nutzen die Breite: Kopfzeile einzeilig, mehrspaltig bei breitem Fenster |
+| [B-1023](B-1023-go-exp-haengt-an-fma.md) | SIM | Problem | mittel | offen | RU22 | Go-math.Exp rechnet auf CPUs ohne AVX/FMA andere Bits als die Golden |
 
 ## Archiv
 

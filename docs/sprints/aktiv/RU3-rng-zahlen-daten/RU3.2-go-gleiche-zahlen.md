@@ -1,6 +1,6 @@
 # RU3.2 · Go-gleiche pow, exp, fmax, fmin mit Vektoren aus Go
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -59,5 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Schritt 1 (Go 1.27.3, windows/amd64, `GOAMD64=v1`): `Exp` → Assembler `exp_amd64.s` (`haveArchExp`), mit Laufzeit-Wahl `useFMA = AVX && FMA`; `Log` → Assembler `log_amd64.s` (`haveArchLog`); `Pow`, `Frexp`, `Ldexp`, `Modf` → reines Go (`haveArchPow` usw. falsch); `Max`/`Min` → `dim_amd64.s` (Regeln wie `dim.go`).
+- AC-02 geprüft: `cargo test -p k3c-det` vergleicht 50 081 Vektoren (`pow`, `exp`, `log`, `fmax`, `fmin` je ≥ 10 000) ohne Abweichung, auch mit `--release`; `go test ./engine/internal/detvec/` grün (Vergleich ohne `-write`); `task check:diff` grün.
+- Port: `exp` = FMA-Pfad aus `exp_amd64.s` über `mul_add` (einzige Stelle für `mul_add`), `log` = `log_amd64.s` (nicht `log.go`: kein Normalisieren denormaler Zahlen, Vergleich mit √2/2 „nicht kleiner“; Mutationsprobe `<` statt `<=` schlägt bei `log(ldexp(√2/2, k))` fehl), `pow`, `frexp`, `ldexp`, `modf` aus der Go-Quelle, NaN mit Gos Bits `0x7FF8000000000001`.
+- Abweichungen vom Plan: zusätzlich `log` (Hilfe von `pow`) mit eigenen Vektoren; die Datei ist eine JSON-Liste der Zeilen `{"f","a","b","r"}`. Gos SSE-Pfad für `Exp` (CPU ohne AVX/FMA) ist nicht portiert: `GODEBUG=cpu.fma=off` wirkt unter Windows nicht, der Pfad ist mit Go hier nicht prüfbar; Go-Test erkennt den Pfad an einem Probe-Wert und überspringt dann `exp`/`pow`. `flate2 =1.1.11` als Test-Abhängigkeit (Spec nennt flate2), `serde_json` mit `float_roundtrip`.
+- Neue Tickets: B-1023 (Go-`math.Exp` hängt an AVX/FMA, Entscheidung 🧑, Sprint RU22).

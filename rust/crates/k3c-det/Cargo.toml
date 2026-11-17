@@ -6,3 +6,9 @@ publish.workspace = true
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+# Freigabe über die Spec RU3 (RU3.2/RU3.3 nennen flate2); RU3.3 macht es zur normalen Abhängigkeit.
+flate2 = "=1.1.11"
+# float_roundtrip: Zahlen korrekt gerundet lesen wie Gos strconv.ParseFloat (bitgleich).
+serde_json = { workspace = true, features = ["float_roundtrip"] }
