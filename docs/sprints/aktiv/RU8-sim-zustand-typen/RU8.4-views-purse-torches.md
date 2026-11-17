@@ -1,6 +1,6 @@
 # RU8.4 · Kleine Typen: action_view, node_mark, purse, site_view, torches
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -54,5 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 (Teil) geprüft: `action_view.rs` (train_at, trade_at), `node_mark.rs` (node_markable, mark_node, marked_by_of, apply_marked_by), `purse.rs` (purse_size, purse_max_of, purse_skill), `site_view.rs` (site_hub_level_of = Go `SiteHubLevel`, site_zone, site_visible), `torches.rs` (torch_xs_of, torch_xs; die Versätze kommen als Parameter statt aus der Paket-Variable `torchOffsets`, Quelle `k3c_data::light::Light::torches`). `save.rs` enthält vorab nur `key` (von node_mark gebraucht, RU8.5 ergänzt die Datei). Neue Platzhalter in `pending.rs`: find_pay_target samt PayTarget/PayOffer, profession_of, stock_field, resource_full, gather_of, skill_ref, purse_max, site_hub_level, level_site (alle RU18, ungeprüft zugeordnet; level_site eher mit der Welt-Linien-Gruppe).
+Tests (`views_tests.rs`): grün 5: fackel_plaetze (Go `TestFackelPlaetze` mit `testdata/torches.json`), knoten_markierer_fehlt_im_alten_stand (ohne Kampagne, über marked_by_of/apply_marked_by), marked_by_of_ohne_markierer_ist_leer, key_rundet_wie_to_fixed, fackel_versaetze_aus_light_json. `ignore` mit Namen und Grund (8): fackeln_der_welt, knoten_markierer_in_snapshot_und_spielstand, site_hub_level_je_art, site_visible_bis_naechste_stufe (alle `wartet auf RU14`: quietWorld, Kampagne), purse_sizes, purse_respec_drops_new_gold, site_hub_level_passt_zu_bezahlbar (`wartet auf RU18`: Insel, Skills, sitePayable). Die ignorierten Rümpfe sind leer; ihre Go-Fälle werden mit dem genannten Sprint portiert. `cargo test -p k3c-sim`, `task rust:lint`, `task check:diff` grün.

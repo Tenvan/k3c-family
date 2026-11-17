@@ -2,11 +2,17 @@
 //!
 //! Modell: `docs/standards/rust-sim-zustand.md`. Die Welt besitzt alles, Verweise sind IDs.
 
+pub mod action_view;
 pub mod common;
 pub mod data;
+pub mod node_mark;
 pub mod omit;
 pub mod pending;
+pub mod purse;
+pub mod save;
 pub mod shared;
+pub mod site_view;
+pub mod torches;
 pub mod types;
 pub mod types_enemy;
 pub mod types_things;
@@ -27,3 +33,5 @@ mod common_tests;
 mod data_tests;
 #[cfg(test)]
 mod types_tests;
+#[cfg(test)]
+mod views_tests;
