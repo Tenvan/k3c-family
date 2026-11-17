@@ -1,6 +1,6 @@
 # SI3.1 · Regeltext Wetter je Welt (B-969)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -55,4 +55,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01: umgesetzt, `docs/rules/wetter.md` mit Katalog, Zeitplan, Vorboten, Taifun, Flut, geplantem Schneesturm, Zuordnung der Welten und „Offen und Annahmen“; alle Zahlen als vorläufig markiert.
+- `check_run task:check:diff` grün (exit 0, 13 s).
