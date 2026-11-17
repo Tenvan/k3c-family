@@ -1,6 +1,6 @@
 # SI3 · REG, SIM, PAP, CLI · Wetter je Welt: Regel, Engine, Assets, Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** REG, SIM, PAP, CLI
 - **Reife:** bereit
@@ -78,4 +78,10 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+Review SI3.5 (2026-11-17):
+- Erfüllt: Regeltext (SI3.1) und Asset Wolkenbank (SI3.3).
+- Nicht erfüllt: Engine (SI3.2) und Anzeige (SI3.4). Beide Sessions sind mit dem Go-Stopp verworfen.
+- Offen: Abnahme am TV durch 🧑.
+- `task:check`: grün, nachdem der Test-Filter um `wetter-*` erweitert wurde.
+- `task:check:go`: rot nur durch B-1030 (Detvec), behoben in #673.
+- Sim, Balance, Gen und Race laufen im Abnahme-Ticket B-1031.
