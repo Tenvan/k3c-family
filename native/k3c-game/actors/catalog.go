@@ -95,6 +95,7 @@ type bossAbility struct {
 
 type bossEntry struct {
 	ID      string       `json:"id"`
+	Base    string       `json:"base"`
 	Depth   int          `json:"depth"`
 	Ability *bossAbility `json:"ability"`
 	Phases  []struct {
@@ -136,8 +137,13 @@ func LoadCatalog(fsys data.FS) (*Catalog, error) {
 	for _, x := range slices.Concat(b.Bosses, b.EndBosses) {
 		asset, ok := bossAssets[x.ID]
 		if !ok {
-			errs = append(errs, fmt.Errorf("bosses.json: Boss %q hat kein Asset (actors › bossAssets)", x.ID))
-			continue
+			// Endboss ohne eigenes Asset: das Asset der Basisart (B-993).
+			base, found := c.Enemies[x.Base]
+			if !found {
+				errs = append(errs, fmt.Errorf("bosses.json: Boss %q hat kein Asset (actors › bossAssets) und keine Basisart %q", x.ID, x.Base))
+				continue
+			}
+			asset = base.Asset
 		}
 		c.Bosses[x.ID] = look(asset, figureSpec{Height: bossHeightPx})
 	}
