@@ -47,6 +47,18 @@
       "stand.s5.png": "aa61c597a58e6f8b26cbc8b31bec41c5411cc67edf55214813de21e0e60d3280"
     }
   },
+  "dojo": {
+    "renderKey": "41db9cc635b98cf934977e2b97e7ec97427e868865fe37a0a4acd16a1b70a48b",
+    "dateien": {
+      "stand.png": "52d284ea870f7a5821a941faef56f08ac1e674d27e9f133fd0ec31add4621a30"
+    }
+  },
+  "einsiedler-huette": {
+    "renderKey": "07a908b6f43061647f0571b60479c838fd7ca9afa5ff1d320758fea261baa08f",
+    "dateien": {
+      "stand.png": "a5436739c0ecc337a07488e5af60b02f2ba789edff5973ad561601ce9fa8d25a"
+    }
+  },
   "farm": {
     "renderKey": "b575f4f1afcaa58e24cb3730b28361fea3d2c10cbfabbb8ca3db602e86d51873",
     "dateien": {
@@ -211,6 +223,12 @@
       "stand.s3.png": "80ee50e3ac918622ab531440c602b8bf2dcc4c67e55d1c20a3bdfc0380b594bd",
       "stand.s4.png": "347ac800b011117435ca73b86fdceff536c1b6792ae8f4085f940eb31967b0ff",
       "stand.s5.png": "d36292823117bd5739e23948ee968b8107dae32dd813b7787ef7e86fb0c56230"
+    }
+  },
+  "schrein": {
+    "renderKey": "dbfed7d297a5036e2e7d284230f4cce55760a4cb498fb03888f57b9113dbf20e",
+    "dateien": {
+      "stand.png": "b750dcd8c6ea470e0b15986214b7eb88686668b7ad5efe97ee31139c5bba4741"
     }
   },
   "taverne": {
