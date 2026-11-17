@@ -136,6 +136,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1054](B-1054-verwaiste-sim-tests-zuordnen.md) | SIM | Schuld | mittel | eingeplant | RU22 | Jede Go-Testdatei aus engine/sim ist in Rust portiert oder begründet ausgelassen |
 | [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | offen | RU13 | Fluss-Shader in Rust (WGSL) |
 | [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | offen | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
+| [B-1058](B-1058-canvas-reihenfolge-textur.md) | CLI | Problem | mittel | offen | RU13 | Canvas sortiert innerhalb einer Ebene nach Textur statt nach Aufrufreihenfolge |
 
 ## Archiv
 

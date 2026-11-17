@@ -94,7 +94,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU13.3 | `RU13.3-world-actors-anim.md` | Umsetzung | autonom | fertig |
 | RU13.4 | `RU13.4-actors-catalog-combatmarks-draw-figures.md` | Umsetzung | autonom | fertig |
 | RU13.5 | `RU13.5-actors-levels-markdraw-marks-pose.md` | Umsetzung | autonom | fertig |
-| RU13.6 | `RU13.6-standbild-bildvergleich.md` | Umsetzung | autonom | offen |
+| RU13.6 | `RU13.6-standbild-bildvergleich.md` | Umsetzung | autonom | fertig |
 | RU13.7 | `RU13.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
