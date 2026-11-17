@@ -85,7 +85,7 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe (Einzelheiten in 
 | GS1.3 | `GS1.3-einblendung-spiel.md` | Umsetzung | autonom | fertig |
 | GS1.4 | `GS1.4-welten-werkzeuge-story.md` | Umsetzung | autonom | fertig |
 | GS1.5 | `GS1.5-geschichten-schreiben.md` | Umsetzung | autonom | fertig |
-| GS1.6 | `GS1.6-review.md` | Review | autonom | offen |
+| GS1.6 | `GS1.6-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

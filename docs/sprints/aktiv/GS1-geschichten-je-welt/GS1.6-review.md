@@ -1,6 +1,6 @@
 # GS1.6 · Review: Sprint-Abnahme GS1
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** REG
