@@ -7,11 +7,18 @@ import { findSession } from './planning';
 
 const DOCS = new Set(['plan', 'fragen', 'glossar']); // Dokumente aus docs/: kein Planungseintrag, die Seite lädt sie selbst
 
+/** Fehler beim Laden von Session-Texten (ID → Meldung) und Wiederholen eines Textes. */
+export interface TextLoad {
+  errors: Record<string, string>;
+  retry: (id: string) => void;
+}
+
 export interface PlanningState {
   data: PlanningData | null;
   error: string;
   /** Fließtexte der Sessions, die geöffnet oder nachgeladen wurden (ID → Markdown, leer ohne Datei). */
   texts: Record<string, string>;
+  textLoad: TextLoad;
   /** Ganze Liste neu laden (nach einer Änderung von Hand). */
   load: () => Promise<void>;
 }
@@ -24,11 +31,16 @@ export function usePlanningData(sel: string): PlanningState {
   const [texts, setTexts] = useState<Record<string, string>>({});
   const pending = useRef<Pending>(FIRST);
   const current = useRef<PlanningData | null>(null);
+  const [textErrors, setTextErrors] = useState<Record<string, string>>({});
   const asked = useRef(new Set<string>());
+  const seq = useRef(0); // Nummer des letzten Listen-Aufrufs: eine ältere Antwort überschreibt keine neuere
   const gen = useRef(0); // zählt jeden Stand, der die Liste ersetzt: eine Antwort auf veralteter Grundlage wird verworfen
   const keep = (d: PlanningData) => { gen.current++; current.current = d; setData(d); setError(''); };
-  const load = () => backend.planningList().then(keep, (e) => setError(errorText(e)));
-  const full = () => { setTexts({}); asked.current.clear(); return load(); };
+  const load = () => {
+    const n = ++seq.current;
+    return backend.planningList().then((d) => { if (n === seq.current) keep(d); }, (e) => { if (n === seq.current) setError(errorText(e)); });
+  };
+  const full = () => { setTexts({}); setTextErrors({}); asked.current.clear(); return load(); };
 
   const run = async () => {
     const p = pending.current;
@@ -58,9 +70,17 @@ export function usePlanningData(sel: string): PlanningState {
     asked.current.add(sessionSel);
     backend.planningItems([sessionSel]).then((items) => {
       const it = items[0];
-      setTexts((t) => ({ ...t, [sessionSel]: it && !it.error ? it.text : '' }));
-    }, () => asked.current.delete(sessionSel));
-  }, [sessionSel, texts]);
+      const text = it && !it.error ? it.text : '';
+      setTexts((t) => (sessionSel in t ? t : { ...t, [sessionSel]: text })); // ein neuerer Text aus `planning:changed` gewinnt
+    }, (e) => {
+      setTextErrors((m) => ({ ...m, [sessionSel]: errorText(e) }));
+    });
+  }, [sessionSel, texts, textErrors]);
 
-  return { data, error, texts, load };
+  const retry = (id: string) => {
+    asked.current.delete(id);
+    setTextErrors((m) => { const { [id]: _gone, ...rest } = m; return rest; }); // löst den Effekt neu aus
+  };
+
+  return { data, error, texts, textLoad: { errors: textErrors, retry }, load };
 }

@@ -1,6 +1,6 @@
 // Zustand der Planungsseite nach `planning:changed` (B-909): nur die genannten IDs nachladen und in die Listen
 // einarbeiten. Reine Logik ohne React, damit Vitest sie prüft.
-import type { PlanItem, PlanningChanged, PlanningData, PlanTicket } from '../api';
+import type { PlanItem, PlanningChanged, PlanningData, PlanSession, PlanTicket } from '../api';
 
 /** Gesammelte Nachlade-Wünsche seit dem letzten Lauf; `all` = ganze Liste neu (erster Aufruf, ids fehlen, zu viele). */
 export interface Pending {
@@ -47,6 +47,15 @@ export function patchTicket(t: PlanTicket, text: string): PlanTicket {
   };
 }
 
+/** Hat die Session-Datei andere Kopffelder (Umgebung, Domäne, Abhängig von) als der Listeneintrag? Dann ist die Liste veraltet. */
+export function sessionHeadChanged(x: PlanSession, text: string): boolean {
+  const f = parseTicket(text);
+  if (f['Umgebung'] === undefined && f['Domäne'] === undefined) return false; // ohne Kopf lässt sich nichts vergleichen
+  const deps = (f['Abhängig von'] ?? '').match(/[A-Z]+\d+\.\d+/g) ?? [];
+  const same = (a: string[], b: string[]) => a.length === b.length && a.every((v, i) => v === b[i]);
+  return (f['Umgebung'] ?? '') !== (x.env ?? '') || (f['Domäne'] ?? '') !== (x.domain ?? '') || !same(deps, x.deps ?? []);
+}
+
 export interface Applied {
   data: PlanningData;
   /** Fließtexte der geladenen Sessions (ID → Markdown, leer ohne Datei). */
@@ -62,17 +71,30 @@ export function applyItems(data: PlanningData, items: PlanItem[]): Applied {
   let tickets = data.tickets;
   let reload = false;
   for (const it of items) {
-    const known = tickets.some((t) => t.nr === it.id);
-    const session = data.sprints.some((s) => s.sessions.some((x) => x.nr === it.id));
     if (it.kind === 'session' && !it.error) texts[it.id] = it.text;
-    if (it.error || (it.kind === 'ticket' && it.path.includes('/archiv/'))) { // archiviert zählt wie entfernt
-      if (known) tickets = tickets.filter((t) => t.nr !== it.id);
-      else if (session) reload = true;
-      continue;
-    }
-    if (it.kind === 'ticket' && known) tickets = tickets.map((t) => (t.nr === it.id ? patchTicket(t, it.text) : t));
-    else if (it.kind === 'session' && session) continue;
-    else reload = true; // Sprint, Projekt, neues Ticket oder neue Session
+    const step = applyItem(data, tickets, it);
+    tickets = step.tickets;
+    reload ||= step.reload;
   }
   return { data: tickets === data.tickets ? data : { ...data, tickets }, texts, reload };
+}
+
+/** Ein nachgeladenes Dokument: neue Ticket-Liste und ob die Liste neu zu laden ist. */
+function applyItem(data: PlanningData, tickets: PlanTicket[], it: PlanItem): { tickets: PlanTicket[]; reload: boolean } {
+  const known = tickets.some((t) => t.nr === it.id);
+  const session = data.sprints.some((s) => s.sessions.some((x) => x.nr === it.id));
+  if (it.error || (it.kind === 'ticket' && it.path.includes('/archiv/'))) { // archiviert zählt wie entfernt
+    return known ? { tickets: tickets.filter((t) => t.nr !== it.id), reload: false } : { tickets, reload: session };
+  }
+  if (it.kind === 'ticket' && known) {
+    const old = tickets.find((t) => t.nr === it.id)!;
+    const next = patchTicket(old, it.text);
+    // Sprintwechsel: PlanSprint.tickets zieht nach
+    return { tickets: tickets.map((t) => (t.nr === it.id ? next : t)), reload: next.sprint !== first(old.sprint) };
+  }
+  if (it.kind === 'session' && session) {
+    const x = data.sprints.flatMap((sp) => sp.sessions).find((y) => y.nr === it.id)!;
+    return { tickets, reload: !x.wt && sessionHeadChanged(x, it.text) };
+  }
+  return { tickets, reload: true }; // Sprint, Projekt, neues Ticket oder neue Session
 }

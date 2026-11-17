@@ -68,7 +68,7 @@ Viele Änderungen auf einmal (Merge) → die Seite lädt einmal alles. Alte EXE 
 | WZ61.1 | `WZ61.1-planungsdaten-backend.md` | Umsetzung | autonom | fertig |
 | WZ61.2 | `WZ61.2-planungsseite-laedt-nur-geaendertes.md` | Umsetzung | autonom | fertig |
 | WZ61.3 | `WZ61.3-bin-alte-exe-aufraeumen.md` | Umsetzung | autonom | fertig |
-| WZ61.4 | `WZ61.4-review.md` | Review | autonom | offen |
+| WZ61.4 | `WZ61.4-review.md` | Review | autonom | fertig |
 | WZ61.5 | `WZ61.5-bin-aufraeumen-am-pc.md` | Workshop | Mensch | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -77,6 +77,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-16: AC-01 bis AC-04 erfüllt (WZ61.4 › Ergebnis), AC-05 offen bei Ralf (WZ61.5).
+Behoben: Nachladefehler ersetzte die Seite, Lint complexity. Keine neuen Tickets. Abnahme-Ticket für `check:race`: B-1022.

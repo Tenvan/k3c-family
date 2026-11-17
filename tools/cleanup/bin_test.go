@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"testing"
@@ -136,5 +138,36 @@ func TestBinCandidatesAreFixed(t *testing.T) {
 				t.Fatalf("lebendes Programm in der Liste: %s", n)
 			}
 		}
+	}
+}
+
+// Eine Junction (Windows, ohne Rechte anlegbar) als bin/ wird wie ein Link abgelehnt: nichts dahinter wird gelöscht.
+func TestCleanBinJunctionDirIsRefused(t *testing.T) {
+	if runtime.GOOS != "windows" {
+		t.Skip("Junctions gibt es nur unter Windows")
+	}
+	root, bin := binFixture(t)
+	junction := filepath.Join(root, "junction")
+	if out, err := exec.Command("cmd", "/c", "mklink", "/J", junction, bin).CombinedOutput(); err != nil {
+		t.Skip("keine Junction möglich:", err, string(out))
+	}
+	var out bytes.Buffer
+	cleanBin(options{Root: root, Out: &out}, junction)
+	if _, err := os.Stat(filepath.Join(bin, "k3c-server.exe")); err != nil {
+		t.Fatalf("über Junction gelöscht:\n%s", out.String())
+	}
+}
+
+// Aus einem Worktree räumt das Werkzeug das bin/ der Repo-Wurzel (git nennt sie zuerst), nicht das des Worktrees.
+func TestMainCheckout(t *testing.T) {
+	trees := []worktree{{path: "C:/repo"}, {path: "C:/repo/.claude/worktrees/x"}}
+	if got := mainCheckout(trees, "C:/repo/.claude/worktrees/x"); got != "C:/repo" {
+		t.Errorf("Wurzel erwartet, bekommen %q", got)
+	}
+	if got := mainCheckout(nil, "C:/top"); got != "C:/top" {
+		t.Errorf("ohne Liste der aktuelle Checkout erwartet, bekommen %q", got)
+	}
+	if got := mainCheckout([]worktree{{path: ""}}, "C:/top"); got != "C:/top" {
+		t.Errorf("leerer Pfad: aktueller Checkout erwartet, bekommen %q", got)
 	}
 }
