@@ -1,6 +1,6 @@
 # SI4 · REG, PAP, SIM, CLI · Reittiere je Welt: Regel, Assets, Engine, Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** REG, PAP, SIM, CLI
 - **Reife:** bereit

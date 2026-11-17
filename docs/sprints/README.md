@@ -30,9 +30,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
-| SI2 | REG, PAP, SIM, CLI | KMP | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | – | `aktiv/SI2-doppel-truhe-koop/` |
-| SI3 | REG, SIM, PAP, CLI | KMP | Wetter je Welt: Regel, Engine, Assets, Anzeige | – | `aktiv/SI3-wetter-je-welt/` |
-| SI4 | REG, PAP, SIM, CLI | KMP | Reittiere je Welt: Regel, Assets, Engine, Anzeige | – | `aktiv/SI4-reittiere-je-welt/` |
 | SI5 | REG, SIM, PAP, CLI | KMP | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | – | `aktiv/SI5-einsiedler-bauwerk/` |
 | SI6 | REG, PAP, SIM, CLI | KMP | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | – | `aktiv/SI6-fest-nach-dem-sieg/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
@@ -443,3 +440,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | `erledigt/FB4-live-test-2/` |
 | RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | `erledigt/RU3-rng-zahlen-daten/` |
 | SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | `erledigt/SI1-fracht-auf-dem-schiff/` |
+| SI2 | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | `erledigt/SI2-doppel-truhe-koop/` |
+| SI3 | Wetter je Welt: Regel, Engine, Assets, Anzeige | `erledigt/SI3-wetter-je-welt/` |
+| SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | `erledigt/SI4-reittiere-je-welt/` |
