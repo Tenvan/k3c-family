@@ -5,7 +5,7 @@ use std::path::Path;
 
 use serde_json::Value;
 
-use super::{ArtError, group_assets};
+use crate::art::{ArtError, group_assets};
 
 /// Nennt alle Assets, die die Zuordnung verwendet (sortiert, ohne Doppelte).
 pub fn paper_assets(dir: &Path, paper: &Value) -> Result<Vec<String>, ArtError> {

@@ -1,9 +1,8 @@
 //! Sheet: eine Animation als Streifen auf der GPU; Vorlage `native/k3c-game/art/sheet.go`.
 
-use k3c_platform::{Canvas, Rect, TexId};
+use k3c_platform::{Affine, Canvas, Rect, TexId};
 
 use super::SheetSpec;
-use super::pending::{Affine, sprite_tf};
 
 /// Ein Frame eines Sheets: Teilbild `src` (Textur-Pixel) der Textur `tex` (statt `*ebiten.Image` als SubImage).
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -57,7 +56,7 @@ impl Sheet {
         let Some(f) = self.frame(i) else {
             return;
         };
-        sprite_tf(dst, f.tex, f.src, g, WHITE);
+        dst.sprite_tf(f.tex, f.src, g, WHITE);
     }
 
     /// Textur des ganzen Streifens (zum Freigeben durch die Library).

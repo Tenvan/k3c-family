@@ -1,6 +1,7 @@
 //! Demo-Client (RU2.3): zeichnet eine Papierschnitt-Welt, durch die die Kamera reitet; Figuren laufen nach
 //! einem Skript (Driver), nicht nach der Sim. Zeichnet nur über `k3c-platform`.
 
+mod assets;
 mod cli;
 mod driver;
 mod scene;
@@ -8,10 +9,11 @@ mod world;
 
 use k3c_platform::{App, Canvas, Config, InputScript, InputState, Key, Rect, STEP, run_headless, run_window};
 
-use crate::art::Library;
+use crate::art::{LevelLoad, Levels, Library, read_manifest};
+pub use assets::paper_assets;
 pub use cli::{Options, parse_args};
 use driver::{Driver, parse_color};
-use scene::{Gpu, sprite_at};
+use scene::{pick, sprite_at};
 use world::World;
 
 /// Höhe der Bodenlinie (Fußpunkte) in logischen Pixeln.
@@ -40,8 +42,11 @@ pub struct Demo {
     driver: Driver,
     ground: [f32; 4],
     world: World,
-    cpu: Vec<crate::art::Asset>,
-    gpu: Vec<Gpu>,
+    lib: Option<Library>,
+    /// Laden der Demo-Sheets (ein Level mit allen Assets), beim ersten Bild ausgeführt.
+    load: Option<LevelLoad>,
+    /// Erste Animation je Asset (Rückfall, wenn der Driver eine unbekannte nennt).
+    first_anim: Vec<String>,
     extra: Extra,
     /// Esc gedrückt: Schleife endet.
     quit: bool,
@@ -51,12 +56,16 @@ pub struct Demo {
 
 impl Demo {
     /// `lib` = None zeichnet Platzhalter-Rechtecke (Tests ohne Grafik).
-    pub fn new(driver: Driver, lib: Option<&Library>, rider_speed: f64, sprites: usize) -> Result<Self, String> {
+    pub fn new(driver: Driver, lib: Option<Library>, rider_speed: f64, sprites: usize) -> Result<Self, String> {
         let world = World::new(&driver, rider_speed);
-        let mut cpu = Vec::new();
-        if let Some(lib) = lib {
+        let mut load = None;
+        let mut first_anim = Vec::new();
+        if let Some(lib) = &lib {
+            let want = Levels::from([("demo".to_string(), world.assets.clone())]);
+            load = Some(lib.begin_levels(&want).map_err(|e| format!("Grafik: {e}"))?);
             for a in &world.assets {
-                cpu.push(lib.load(a).map_err(|e| format!("Asset {a}: {e}"))?);
+                let m = read_manifest(&lib.config().grafik_dir, a).map_err(|e| format!("Asset {a}: {e}"))?;
+                first_anim.push(m.anim_names().into_iter().next().unwrap_or_default());
             }
         }
         let ground = parse_color(&driver.boden)?;
@@ -64,8 +73,9 @@ impl Demo {
             driver,
             ground,
             world,
-            cpu,
-            gpu: Vec::new(),
+            lib,
+            load,
+            first_anim,
             extra: Extra {
                 n: sprites,
                 sprite: None,
@@ -77,22 +87,22 @@ impl Demo {
 
     /// Lädt beim ersten Bild alle Sheets auf die Zeichenfläche.
     fn ready(&mut self, c: &mut dyn Canvas) {
-        if self.gpu.is_empty() && !self.cpu.is_empty() {
-            self.gpu = std::mem::take(&mut self.cpu)
-                .into_iter()
-                .map(|a| Gpu::upload(c, a))
-                .collect();
+        if let (Some(mut ld), Some(lib)) = (self.load.take(), self.lib.as_mut())
+            && let Err(e) = ld.step(lib, usize::MAX, c)
+        {
+            k3c_platform::log::error("❌ Demo-Grafik nicht geladen", &[("fehler", &e)]);
         }
         if self.extra.n > 0 && self.extra.sprite.is_none() {
             let first = self.world.actors.get(1).map_or(0, |a| a.asset);
-            let pick = self.gpu.get(first).and_then(|g| g.pick("idle", 0.0));
-            self.extra.sprite = pick.map(|(t, f, _)| {
-                (
-                    t,
-                    Rect::new(f.rect[0] as f32, f.rect[1] as f32, f.rect[2] as f32, f.rect[3] as f32),
-                )
-            });
+            self.extra.sprite = self.frame(first, "idle", 0.0).map(|(f, _)| (f.tex, f.src));
         }
+    }
+
+    /// Frame der Animation `anim` des Assets Nummer `asset` (Index in `World::assets`).
+    fn frame(&self, asset: usize, anim: &str, ticks: f64) -> Option<(&crate::art::SheetFrame, [f64; 4])> {
+        let name = self.world.assets.get(asset)?;
+        let fallback = self.first_anim.get(asset).map_or("", String::as_str);
+        pick(self.lib.as_ref(), name, anim, fallback, ticks)
     }
 
     fn draw_backdrop(&self, c: &mut dyn Canvas, cam_px: f64) {
@@ -101,10 +111,7 @@ impl Demo {
         c.rect(Rect::new(0.0, 0.0, w, h), SKY);
         for (i, e) in self.driver.ebenen.iter().enumerate() {
             c.layer(L_BACK + i as u32);
-            let Some(g) = self.index_of(&e.asset).and_then(|k| self.gpu.get(k)) else {
-                continue;
-            };
-            let Some((t, f, rahmen)) = g.pick("stand", 0.0) else {
+            let Some((f, rahmen)) = self.index_of(&e.asset).and_then(|k| self.frame(k, "stand", 0.0)) else {
                 continue;
             };
             let s = e.skala as f32;
@@ -112,7 +119,7 @@ impl Demo {
             let off = (cam_px * e.parallaxe) as f32;
             let mut k = (off / tile).floor();
             while k * tile - off < w {
-                sprite_at(c, t, f, rahmen, (k * tile - off, GROUND_Y), s, false);
+                sprite_at(c, f, rahmen, (k * tile - off, GROUND_Y), s, false);
                 k += 1.0;
             }
         }
@@ -132,8 +139,8 @@ impl Demo {
             if !(-500.0..2420.0).contains(&x) {
                 continue;
             }
-            if let Some(g) = self.index_of(&b.asset).and_then(|k| self.gpu.get(k)) {
-                g.draw(c, "stand", 0.0, (x, GROUND_Y), s, false);
+            if let Some((f, rahmen)) = self.index_of(&b.asset).and_then(|k| self.frame(k, "stand", 0.0)) {
+                sprite_at(c, f, rahmen, (x, GROUND_Y), s, false);
             } else {
                 c.rect(Rect::new(x - 40.0, GROUND_Y - 120.0, 80.0, 120.0), [0.5, 0.3, 0.2, 1.0]);
             }
@@ -149,9 +156,9 @@ impl Demo {
                 continue;
             }
             let foot = (x, GROUND_Y + 20.0 + a.row);
-            if let Some(g) = self.gpu.get(a.asset) {
-                let t = self.world.tick as f64 + alpha + a.phase;
-                g.draw(c, &a.anim, t, foot, s, a.dir < 0.0);
+            let t = self.world.tick as f64 + alpha + a.phase;
+            if let Some((f, rahmen)) = self.frame(a.asset, &a.anim, t) {
+                sprite_at(c, f, rahmen, foot, s, a.dir < 0.0);
             } else {
                 c.rect(
                     Rect::new(foot.0 - 12.0, foot.1 - 60.0, 24.0, 60.0),
@@ -215,9 +222,14 @@ impl App for Demo {
 /// Startet die Demo nach den Optionen: Fenster, Messlauf oder headless.
 pub fn run(o: &Options) -> Result<(), String> {
     let driver = Driver::read(&o.driver)?;
-    let lib = Library::open(&o.grafik, &o.data.join("paper.json")).map_err(|e| e.to_string())?;
+    let lib = Library::new(crate::art::Config {
+        grafik_dir: o.grafik.clone(),
+        font_path: crate::art::DEFAULT_FONT_PATH.into(),
+        ..crate::art::Config::default()
+    })
+    .map_err(|e| e.to_string())?;
     let speed = driver.kamera.tempo.map_or_else(|| cli::monarch_speed(&o.data), Ok)?;
-    let mut demo = Demo::new(driver, Some(&lib), speed, o.sprites)?;
+    let mut demo = Demo::new(driver, Some(lib), speed, o.sprites)?;
     demo.full = o.fullscreen;
     if o.headless {
         let script = o.script.as_ref().map(|p| read_script(p)).transpose()?;
