@@ -1,6 +1,6 @@
 # RU7.1 · art Teil 1: manifest, plan, budget, sheet
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `cargo test -p k3c-game art` grün (16 Tests); `manifest_tests.rs` (TestGroupAssets + Manifest-Lesen) und `plan_tests.rs` (TestPlanLevel, …Budget, …Missing, …MissingSheet, …BadSize, TestSheetFrameIndex, dazu `upload`) gegen `native/k3c-game/art/testdata/grafik`. RU2-Lader (`Library::open/assets/load`) läuft auf dem portierten Manifest, `art/tests.rs` grün.
+- AC-02 geprüft: `plan_level_budget` – 2 Bilder, (12×6+16×6)×4 Byte, Text „2 Bilder, 0.0 MiB RGBA“, `mib()` = 5 wie Go.
+- Demo `--headless --steps 600` Code 0 (Grafik aus dem Hauptcheckout, `--grafik`); `task check:diff` grün (fmt, clippy -D warnings, cargo test k3c-game).
+- **Abweichung:** RU4.2 fehlt noch (`Canvas::sprite_tf`, `Affine`). `Sheet::draw` ruft den Platzhalter `art/pending.rs::sprite_tf` (`unimplemented!("RU4.2: sprite_tf")`), `Affine` liegt vorläufig in `art/pending.rs` (öffentlich re-exportiert). Nach RU4.2: beides löschen, `k3c_platform::Affine` und `canvas.sprite_tf` nutzen (erste Aufgabe von RU7.2).
+- `errors.Join` → `ArtError::Joined`, `errors.Is(ErrMissing)` → `ArtError::is_missing()`.
+- Review (Sonnet): keine schweren Befunde. Offen, bewusst wie Go belassen: Überlauf bei absurd großen Manifest-Werten (`plan.rs` `frames*fw`, `Budget::add`) paniken in Debug statt zu wrappen; OS-Fehlertexte weichen im Wortlaut vom Go-`open …` ab.

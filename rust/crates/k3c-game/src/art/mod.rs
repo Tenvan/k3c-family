@@ -1,24 +1,61 @@
-//! Papierschnitt-Grafik laden (RU2.2): Index, Manifest, PNG-Sheets, Zuordnung `data/paper.json`.
-//! Headless, ohne Grafik-Kontext; das Hochladen auf die GPU übernimmt RU2.3 über `Canvas::texture`.
-//! Vorlage: `native/k3c-game/art/`.
+//! Papierschnitt-Grafik laden: Index, Manifest, Level-Plan mit Texturbudget, Sheets, Zuordnung `data/paper.json`.
+//! Planen (Pfade, Maße, Budget; ohne GPU, testbar) getrennt vom Hochladen (`Canvas::texture`).
+//! Vorlage: `native/k3c-game/art/`; RU7.1 portiert manifest, plan, budget, sheet, der RU2-Lader (`Library::open`,
+//! `assets`, `load`) läuft bis RU7.2 auf dem portierten Manifest weiter.
 
+mod budget;
 mod manifest;
+#[cfg(test)]
+mod manifest_tests;
 mod paper;
+mod pending;
+mod plan;
+#[cfg(test)]
+mod plan_tests;
+mod sheet;
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod testutil;
 
 use std::collections::BTreeMap;
 use std::fmt;
 use std::path::{Path, PathBuf};
 
+pub use budget::Budget;
 pub use manifest::{Anim, Manifest, group_assets, read_manifest};
 pub use paper::paper_assets;
+pub use pending::Affine;
+pub use plan::{Plan, SheetSpec, plan_level, plan_sheet};
+pub use sheet::{Sheet, SheetFrame, upload};
 
-/// Fehler beim Laden; die Meldung nennt immer den Pfad.
+/// Fehler beim Laden; die Meldung nennt immer den Pfad. `Missing` entspricht Gos `ErrMissing`.
 #[derive(Debug)]
 pub enum ArtError {
     Missing(String),
     Broken(String),
+    /// Mehrere Fehler wie `errors.Join` (Meldungen durch Zeilenumbruch getrennt).
+    Joined(Vec<ArtError>),
+}
+
+impl ArtError {
+    /// Fasst Fehler zusammen wie `errors.Join`: keiner → `None`.
+    pub fn join(errs: Vec<ArtError>) -> Option<ArtError> {
+        if errs.is_empty() {
+            None
+        } else {
+            Some(Self::Joined(errs))
+        }
+    }
+
+    /// Wie `errors.Is(err, ErrMissing)`: wahr, wenn dieser oder ein enthaltener Fehler fehlende Grafik meldet.
+    pub fn is_missing(&self) -> bool {
+        match self {
+            Self::Missing(_) => true,
+            Self::Broken(_) => false,
+            Self::Joined(errs) => errs.iter().any(Self::is_missing),
+        }
+    }
 }
 
 impl fmt::Display for ArtError {
@@ -26,6 +63,15 @@ impl fmt::Display for ArtError {
         match self {
             Self::Missing(m) => write!(f, "fehlende Grafik: {m}"),
             Self::Broken(m) => write!(f, "{m}"),
+            Self::Joined(errs) => {
+                for (i, e) in errs.iter().enumerate() {
+                    if i > 0 {
+                        writeln!(f)?;
+                    }
+                    write!(f, "{e}")?;
+                }
+                Ok(())
+            }
         }
     }
 }
@@ -110,13 +156,19 @@ fn build_asset(folder: &Path, m: &Manifest) -> Result<Asset, ArtError> {
         frames: Vec::new(),
         animationen: BTreeMap::new(),
     };
-    for (name, a) in &m.animationen {
+    for (name, a) in &m.anims {
         let (fw, fh, rahmen) = m.resolve(a);
-        let img = read_png(&folder.join(&a.datei))?;
-        if fw == 0 || fh == 0 || img.width < fw * a.frames || img.height < fh {
+        let img = read_png(&folder.join(&a.file))?;
+        let (Ok(fw), Ok(fh), Ok(frames)) = (u32::try_from(fw), u32::try_from(fh), u32::try_from(a.frames)) else {
+            return Err(ArtError::Broken(format!(
+                "{}: negative Maße",
+                folder.join(&a.file).display()
+            )));
+        };
+        if fw == 0 || fh == 0 || img.width < fw * frames || img.height < fh {
             return Err(ArtError::Broken(format!(
                 "{}: Sheet {}x{} zu klein für {} Frames à {fw}x{fh}",
-                folder.join(&a.datei).display(),
+                folder.join(&a.file).display(),
                 img.width,
                 img.height,
                 a.frames
@@ -128,12 +180,12 @@ fn build_asset(folder: &Path, m: &Manifest) -> Result<Asset, ArtError> {
             name.clone(),
             AnimRange {
                 start: asset.frames.len(),
-                frames: a.frames as usize,
+                frames: frames as usize,
                 fps: a.fps,
                 rahmen,
             },
         );
-        asset.frames.extend((0..a.frames).map(|i| Frame {
+        asset.frames.extend((0..frames).map(|i| Frame {
             sheet,
             rect: [i * fw, 0, fw, fh],
             anker,
