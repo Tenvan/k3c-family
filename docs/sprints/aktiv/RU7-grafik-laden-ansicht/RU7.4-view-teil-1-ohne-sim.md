@@ -1,6 +1,6 @@
 # RU7.4 · view Teil 1 ohne Sim: cell, crown, keys, stress
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,5 +61,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03** umgesetzt (Teil ohne Sim): `cell.rs` (Rectangle/Point wie `image.Rectangle`, `to_rect` für `Canvas::clip`, Camera, Cell, Stats-Rechtecke), `crown.rs`, `keys.rs`, `stress.rs`, `stress_limits.rs`; `mod.rs` mit vollem Doc-Kommentar aus `doc.go`. geprüft: `cargo test -p k3c-game view` grün (15), `task rust:lint` und `task check:diff` grün, Review ohne schwere Befunde.
+- Tests: `cell_test.go` vollständig portiert, dazu neu `two_halves_stacked` (zwei Bildhälften, Kamera Welt-x → Fenster-x). `crown_states_match_protocol` ist `#[ignore = "wartet auf RU8"]` (sim.Crown* fehlt in `k3c-sim`).
+- Abweichungen: `math.Max/Min` als `go_max/go_min` nachgebaut (NaN, ±0); `KeyTable` als `Box<dyn Fn(&str) -> Vec<KeyRow>>`; `StressStarter` liefert `Result<(), String>`. Niedrige Risiken laut Review: serde bei JSON-`null` strenger als Go, `powf` ±1 ulp gegen `math.Pow` (vermutet, wirkungslos nach Rundung).
+- B-1025 (Feld `stress` in `settings.rs`) nicht umgesetzt: `settings.rs` steht nicht in den Erlaubten Dateien, Spec Entwurf.
