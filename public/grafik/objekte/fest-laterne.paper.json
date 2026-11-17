@@ -1,0 +1,99 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "fest-laterne",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Fest-Laterne (Sengoku): kleine Himmelslaterne aus Papier mit Holzrahmen und warmem Glutschein, steigt beim Fest auf und schwankt leicht",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-8 -26L8 -26L9.5 -8L-9.5 -8Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8 -26L-3 -26L-3.5 -8L-9.5 -8Z",
+          "material": "leinen",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -10L-3 -17L0 -20L3 -17L4 -10Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M-3 -26L-3.5 -8",
+          "material": "leinen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M3 -26L3.5 -8",
+          "material": "leinen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8.5 -28L8.5 -28L8.5 -25.5L-8.5 -25.5Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -9L10 -9L10 -6.5L-10 -6.5Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "lava",
+          "mitte": [0, -4],
+          "radius": 2,
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0.4, -4.4],
+          "radius": 1,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-12, -30, 24, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 4,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": -5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "korpus": 5
+          }
+        }
+      ]
+    }
+  }
+}

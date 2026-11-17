@@ -1,0 +1,103 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "ladeplatz-muenzen",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Ladeplatz Münzen am Steg: Holzschild am Pfahl mit Goldmünzen-Symbol, markiert den Platz, an dem Münzen aufs Schiff geladen werden; wackelt leicht",
+  "teile": [
+    {
+      "id": "schild",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2 0L-2 -22L2 -22L2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-13 -20L-13 -42L13 -42L13 -20Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-13 -20L-13 -42L-7 -42L-7 -20Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [10, -39],
+          "radius": 0.9
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-4.5, -26.5],
+          "radius": 4.6,
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [4.5, -26.5],
+          "radius": 4.6
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0, -34],
+          "radius": 4.8,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0, -34],
+          "radius": 2,
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M2.5 -24.5L6.5 -28.5",
+          "material": "gold",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 51,
+    "rahmen": [-17, -46, 34, 48]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 4,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "schild": -2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "schild": 2
+          }
+        }
+      ]
+    }
+  }
+}

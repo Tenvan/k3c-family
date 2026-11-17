@@ -10,98 +10,98 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-40 0L40 0L40 -48L-40 -48Z",
+          "form": "M-60 0L60 0L60 -72L-60 -72Z",
           "material": "holz"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-40 0L-26 0L-26 -48L-40 -48Z",
+          "form": "M-60 0L-39 0L-39 -72L-60 -72Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 0.8,
-          "form": "M-40 -16L40 -16M-40 -32L40 -32",
+          "breite": 1.2,
+          "form": "M-60 -24L60 -24M-60 -48L60 -48",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-10 0L10 0L10 -32L-10 -32Z",
+          "form": "M-15 0L15 0L15 -48L-15 -48Z",
           "material": "schwarz"
         },
         {
           "art": "flaeche",
-          "form": "M-8 0L8 0L8 -30L-8 -30Z",
+          "form": "M-12 0L12 0L12 -45L-12 -45Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 0.7,
-          "form": "M0 0L0 -30",
+          "breite": 1,
+          "form": "M0 0L0 -45",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M18 -22L32 -22L32 -36L18 -36Z",
+          "form": "M27 -33L48 -33L48 -54L27 -54Z",
           "material": "leinen",
           "ton": "licht"
         },
         {
           "art": "falz",
-          "breite": 0.7,
-          "form": "M25 -22L25 -36M18 -29L32 -29",
+          "breite": 1,
+          "form": "M37.5 -33L37.5 -54M27 -43.5L48 -43.5",
           "material": "holz"
         },
         {
           "art": "flaeche",
-          "form": "M-52 -44L0 -82L52 -44L44 -40L0 -72L-44 -40Z",
+          "form": "M-78 -66L0 -123L78 -66L66 -60L0 -108L-66 -60Z",
           "material": "stroh",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-48 -46L0 -80L48 -46C30 -52 -30 -52 -48 -46Z",
+          "form": "M-72 -69L0 -120L72 -69C45 -78 -45 -78 -72 -69Z",
           "material": "stroh"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M0 -80L48 -46C40 -49 30 -50 22 -51Z",
+          "form": "M0 -120L72 -69C60 -73.5 45 -75 33 -76.5Z",
           "material": "stroh",
           "ton": "licht"
         },
         {
           "art": "falz",
-          "breite": 0.8,
-          "form": "M-30 -58C-15 -60 15 -60 30 -58M-18 -68C-6 -70 6 -70 18 -68",
+          "breite": 1.2,
+          "form": "M-45 -87C-22.5 -90 22.5 -90 45 -87M-27 -102C-9 -105 9 -105 27 -102",
           "material": "stroh",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-30 -60L-22 -60L-22 -84L-30 -84Z",
+          "form": "M-45 -90L-33 -90L-33 -126L-45 -126Z",
           "material": "stein"
         },
         {
           "art": "flaeche",
-          "form": "M-31 -84L-21 -84L-21 -87L-31 -87Z",
+          "form": "M-46.5 -126L-31.5 -126L-31.5 -130.5L-46.5 -130.5Z",
           "material": "stein",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-46 0L-36 0L-36 -14L-46 -14Z",
+          "form": "M-69 0L-54 0L-54 -21L-69 -21Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
-          "form": "M-48 -14L-34 -14L-36 -18L-46 -18Z",
+          "form": "M-72 -21L-51 -21L-54 -27L-69 -27Z",
           "material": "holz"
         }
       ],
@@ -109,8 +109,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 90,
-    "rahmen": [-55, -90, 110, 90]
+    "hoehe_px": 135,
+    "rahmen": [-83, -135, 166, 135]
   },
   "animationen": {
     "stand": {
