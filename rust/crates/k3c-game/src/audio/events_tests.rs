@@ -24,7 +24,7 @@ fn effect_slots() -> BTreeMap<String, String> {
 }
 
 /// Nennt sortiert jeden Eintrag aus slots (Name → Slot), dessen Slot leer ist oder in files keine Datei hat.
-fn missing_files(slots: &BTreeMap<String, String>, files: &BTreeMap<String, String>) -> Vec<String> {
+pub(super) fn missing_files(slots: &BTreeMap<String, String>, files: &BTreeMap<String, String>) -> Vec<String> {
     slots
         .iter()
         .filter(|(_, slot)| slot.is_empty() || files.get(*slot).is_none_or(|f| f.is_empty()))
@@ -46,7 +46,7 @@ fn event_cues_have_files() {
 
 // AC-02: Fehlt einem Slot die Datei im Register, nennt die Prüfung genau diesen Eintrag.
 #[test]
-fn missing_files_names_slot() {
+pub(super) fn missing_files_names_slot() {
     let mut files = real_register().effects;
     files.remove(event_cue("hit").unwrap().slot);
     assert_eq!(missing_files(&effect_slots(), &files), ["hit → sfx:hit"]);
