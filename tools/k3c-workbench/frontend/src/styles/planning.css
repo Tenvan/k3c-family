@@ -85,9 +85,12 @@
 .pl-count-num { color: var(--gray-11); font-size: var(--font-size-1); font-variant-numeric: tabular-nums; }
 .pl-sprint-tickets { color: var(--gray-11); font-size: var(--font-size-1); }
 .pl-gh { display: flex; flex-wrap: wrap; gap: 6px; }
-.pl-sessions { display: flex; flex-direction: column; gap: 2px; margin: 2px 0 0; padding: 0; list-style: none; }
-.pl-row { display: grid; grid-template-columns: 18px auto auto minmax(8rem, 1fr) minmax(0, auto) auto; gap: 8px; align-items: center;
-  padding: 3px 6px; border: 1px solid transparent; border-radius: var(--radius-2); cursor: pointer; }
+/* Sessions als Grid aus Karten (mehrspaltig ab ~380 px je Karte); .pl-sessions .pl-row schlägt .pl-row aus planer.css. */
+.pl-sessions { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2px 8px; margin: 2px 0 0; padding: 0; list-style: none; }
+.pl-sessions .pl-row { display: flex; flex-flow: row wrap; align-items: center; gap: 2px 8px; height: auto; margin: 0; padding: 3px 6px;
+  border: 1px solid transparent; border-radius: var(--radius-2); text-align: left; cursor: pointer; }
+.pl-sessions .pl-row-name { flex: 1 1 8rem; min-width: 0; }
+.pl-sessions .pl-row-meta { flex: 0 1 auto; margin-left: auto; }
 .pl-row .pl-pill { justify-self: start; }
 .pl-row:hover { background: var(--gray-a3); }
 .pl-row:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }
