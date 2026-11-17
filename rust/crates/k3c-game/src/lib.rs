@@ -3,6 +3,7 @@
 pub mod actors;
 pub mod art;
 pub mod demo;
+pub mod fx;
 pub mod input;
 pub mod replay;
 pub mod still;
