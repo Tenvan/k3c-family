@@ -12,3 +12,5 @@ k3c-level = { path = "../k3c-level" }
 k3c-rng = { path = "../k3c-rng" }
 k3c-data = { path = "../k3c-data" }
 k3c-det = { path = "../k3c-det" }
+serde = { workspace = true }
+serde_json = { workspace = true }
