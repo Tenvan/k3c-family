@@ -102,7 +102,7 @@ fn go_text(v: &Value) -> String {
 }
 
 /// `go_float` schreibt eine Zahl wie Gos `%v` (`%g` mit kürzester Darstellung, Exponent ab 1e+06 und unter 1e-04).
-pub(crate) fn go_float(x: f64) -> String {
+pub fn go_float(x: f64) -> String {
     if x == 0.0 {
         return if x.is_sign_negative() { "-0" } else { "0" }.to_string();
     }
