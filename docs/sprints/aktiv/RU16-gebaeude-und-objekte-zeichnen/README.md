@@ -94,7 +94,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU16.1 | `RU16.1-props-assets-data-buildings-coin.md` | Umsetzung | autonom | offen |
+| RU16.1 | `RU16.1-props-assets-data-buildings-coin.md` | Umsetzung | autonom | fertig |
 | RU16.2 | `RU16.2-props-nature-sites.md` | Umsetzung | autonom | offen |
 | RU16.3 | `RU16.3-props-plan-listen.md` | Umsetzung | autonom | offen |
 | RU16.4 | `RU16.4-props-plan-combat-objects-sites.md` | Umsetzung | autonom | offen |

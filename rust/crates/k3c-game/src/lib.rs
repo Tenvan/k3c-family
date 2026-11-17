@@ -4,6 +4,7 @@ pub mod actors;
 pub mod art;
 pub mod demo;
 pub mod input;
+pub mod props;
 pub mod replay;
 pub mod still;
 pub mod view;
