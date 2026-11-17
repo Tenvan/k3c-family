@@ -3,6 +3,7 @@
 pub mod art;
 pub mod demo;
 pub mod input;
+pub mod replay;
 pub mod view;
 
 #[cfg(test)]

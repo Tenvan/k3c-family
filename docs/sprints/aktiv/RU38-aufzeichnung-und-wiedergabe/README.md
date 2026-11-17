@@ -78,10 +78,10 @@ Keine. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widerspre
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU38.1 | `RU38.1-go-trace-aufzeichnung.md` | Umsetzung | autonom | offen |
-| RU38.2 | `RU38.2-rust-replay-lesen-wiedergabe.md` | Umsetzung | autonom | offen |
-| RU38.3 | `RU38.3-replay-befehl-messung.md` | Umsetzung | autonom | offen |
-| RU38.4 | `RU38.4-review.md` | Review | autonom | offen |
+| RU38.1 | `RU38.1-go-trace-aufzeichnung.md` | Umsetzung | autonom | fertig |
+| RU38.2 | `RU38.2-rust-replay-lesen-wiedergabe.md` | Umsetzung | autonom | fertig |
+| RU38.3 | `RU38.3-replay-befehl-messung.md` | Umsetzung | autonom | fertig |
+| RU38.4 | `RU38.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -89,6 +89,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-17: AC-01 bis AC-03 geprüft (Ergebnisse RU38.1 bis RU38.3, `task check` und `task check:go` grün).
+Behoben: `HashMap` in `replay/blend.rs` durch `BTreeMap`. Reviewer: 4 niedrige Befunde, nicht behoben.
+Zur Kenntnis: `flate2 = "=1.1.11"` in `k3c-game/Cargo.toml` (gleiche Version wie `k3c-det`, kein neuer Crate im Lockfile); Blend nur Stufe 0; `pending.rs` zeichnet Rechtecke bis RU13.
+Abnahme-Ticket: B-1057 (Fenster-Lauf `--window --measure 300` für Ralf, `check:race`).
