@@ -903,6 +903,7 @@ dependencies = [
 name = "k3c-game"
 version = "0.1.0"
 dependencies = [
+ "flate2",
  "k3c-balance",
  "k3c-data",
  "k3c-det",
