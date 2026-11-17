@@ -6,7 +6,7 @@
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::cell::Cell;
 
-use k3c_platform::{App, Canvas, Frame, InputState, Key, PadAxis, PadButton, Rect, Runner, TexId};
+use k3c_platform::{Affine, App, Canvas, Frame, InputState, Key, PadAxis, PadButton, Rect, Runner, TexId, Vertex};
 
 thread_local! {
     static COUNT: Cell<u64> = const { Cell::new(0) };
@@ -60,11 +60,47 @@ impl App for Scene {
         c.clip(None);
         c.rect(Rect::new(10.0, 10.0, 100.0, 100.0), [1.0, 0.8, 0.0, 1.0]);
         c.text("PROBE N2000 #1", 60.0, 60.0, 56.0, [1.0; 4]);
+        shapes(c, t, self.tick as f32);
         assert!(alpha < 1.0);
     }
     fn done(&self) -> bool {
         false
     }
+}
+
+/// Alle Zeichenaufrufe aus RU4.2: Transform, Netz, Rahmen, Kreise, Linie, Polygon.
+fn shapes(c: &mut dyn Canvas, t: TexId, k: f32) {
+    let mut m = Affine::IDENTITY;
+    m.translate(-8.0, -8.0)
+        .rotate(k * 0.1)
+        .scale(3.0, 3.0)
+        .translate(500.0, 300.0);
+    c.sprite_tf(t, Rect::new(0.0, 0.0, 16.0, 16.0), m, [1.0; 4]);
+    let v = |x: f32, y: f32| Vertex {
+        pos: [x * 10.0, y * 10.0],
+        uv: [x, y],
+        color: [1.0; 4],
+    };
+    c.mesh(
+        t,
+        &[v(0.0, 0.0), v(16.0, 0.0), v(16.0, 16.0), v(0.0, 16.0)],
+        &[0, 1, 2, 0, 2, 3],
+    );
+    c.stroke_rect(Rect::new(20.0, 20.0, 200.0, 100.0), 4.0, [0.0, 1.0, 0.0, 1.0]);
+    c.fill_circle(300.0, 300.0, 40.0 + k % 5.0, [1.0, 0.0, 0.0, 0.5]);
+    c.stroke_circle(400.0, 300.0, 40.0, 3.0, [1.0; 4]);
+    c.stroke_line(0.0, 0.0, 100.0 + k % 50.0, 80.0, 2.0, [1.0; 4]);
+    c.fill_path(
+        &[
+            [0.0, 0.0],
+            [10.0, 0.0],
+            [10.0, 20.0],
+            [30.0, 20.0],
+            [30.0, 30.0],
+            [0.0, 30.0],
+        ],
+        [1.0; 4],
+    );
 }
 
 fn bild(run: &mut Runner, frame: &mut Frame, i: u32) {
@@ -95,5 +131,9 @@ fn leerlauf_bild_alloziert_nichts() {
     }
     let allocs = COUNT.with(Cell::get) - before;
     assert_eq!(allocs, 0, "{allocs} Allokationen in 120 Bildern");
-    assert_eq!(frame.runs().len(), 3, "zwei Bildhälften und Vollfarbe");
+    assert!(
+        frame.runs().len() >= 5,
+        "zwei Bildhälften, Netz, Instanzen und Formen: {:?}",
+        frame.runs()
+    );
 }

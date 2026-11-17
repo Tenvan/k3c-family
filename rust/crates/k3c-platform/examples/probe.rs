@@ -6,7 +6,7 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use k3c_platform::{App, Canvas, Config, InputState, Key, Rect, STEP, TexId, run_window};
+use k3c_platform::{Affine, App, Canvas, Config, InputState, Key, Rect, STEP, TexId, Vertex, run_window};
 
 const SIZE: u32 = 32;
 
@@ -57,11 +57,57 @@ impl App for Probe {
         let qx = (t * 16.0 % 1800.0) as f32;
         c.rect(Rect::new(qx, 400.0, 120.0, 120.0), [1.0, 0.78, 0.0, 1.0]);
         c.text(&format!("PROBE N{}", self.n), 60.0, 60.0, 84.0, [1.0; 4]);
+        shapes(c, tex, t as f32);
     }
 
     fn done(&self) -> bool {
         self.quit
     }
+}
+
+/// Formen aus RU4.2: gedrehtes Sprite, Netz, Rahmen, Kreise, Linie, Polygon.
+fn shapes(c: &mut dyn Canvas, tex: TexId, t: f32) {
+    c.layer(1);
+    let mut m = Affine::IDENTITY;
+    let h = SIZE as f32 / 2.0;
+    m.translate(-h, -h)
+        .rotate(t * 0.05)
+        .scale(4.0, 4.0)
+        .translate(1500.0, 300.0);
+    c.sprite_tf(tex, Rect::new(0.0, 0.0, SIZE as f32, SIZE as f32), m, [1.0; 4]);
+    let s = SIZE as f32;
+    let v = |x: f32, y: f32, k: f32| Vertex {
+        pos: [1600.0 + x * 6.0, 600.0 + y * 6.0],
+        uv: [x, y],
+        color: [k, 1.0, 1.0 - k, 1.0],
+    };
+    c.mesh(
+        tex,
+        &[v(0.0, 0.0, 0.0), v(s, 0.0, 1.0), v(s, s, 0.5), v(0.0, s, 0.0)],
+        &[0, 1, 2, 0, 2, 3],
+    );
+    c.stroke_rect(Rect::new(1200.0, 500.0, 300.0, 200.0), 6.0, [0.2, 1.0, 0.2, 1.0]);
+    c.fill_circle(1300.0, 850.0, 60.0, [1.0, 0.2, 0.2, 0.6]);
+    c.stroke_circle(1500.0, 850.0, 60.0, 5.0, [1.0; 4]);
+    let a = t * 0.05;
+    c.stroke_line(
+        1700.0,
+        850.0,
+        1700.0 + 120.0 * a.cos(),
+        850.0 + 120.0 * a.sin(),
+        4.0,
+        [1.0, 1.0, 0.0, 1.0],
+    );
+    let l = [
+        [0.0, 0.0],
+        [40.0, 0.0],
+        [40.0, 80.0],
+        [120.0, 80.0],
+        [120.0, 120.0],
+        [0.0, 120.0],
+    ];
+    let pts = l.map(|p| [p[0] + 1000.0, p[1] + 800.0]);
+    c.fill_path(&pts, [0.4, 0.6, 1.0, 1.0]);
 }
 
 fn main() {

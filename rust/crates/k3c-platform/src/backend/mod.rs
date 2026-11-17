@@ -2,6 +2,7 @@
 
 mod gpu;
 mod keys;
+mod setup;
 
 use std::path::PathBuf;
 use std::sync::Arc;

@@ -1,7 +1,7 @@
 //! Headless: Schleife ohne Fenster, Grafik, Tongerät und Gamepad-Abfrage, für Tests und Läufe ohne Anzeige.
 
 use crate::runner::Runner;
-use crate::{App, Canvas, InputScript, LOGICAL, Rect, STEP, TexId};
+use crate::{Affine, App, Canvas, Filter, InputScript, LOGICAL, Rect, STEP, TexId, Vertex};
 
 /// Canvas, der nur zählt, was gezeichnet würde.
 #[derive(Default, Debug, Clone, PartialEq, Eq)]
@@ -11,6 +11,11 @@ pub struct NullCanvas {
     pub rects: u64,
     pub texts: u64,
     pub clips: u64,
+    /// Dreiecksnetze (`mesh`).
+    pub meshes: u64,
+    /// Formen außer Rechtecken: Rahmen, Kreise, Linien, Polygone.
+    pub shapes: u64,
+    pub freed: u32,
 }
 
 impl Canvas for NullCanvas {
@@ -18,13 +23,45 @@ impl Canvas for NullCanvas {
         LOGICAL
     }
 
-    fn texture(&mut self, _rgba: &[u8], _w: u32, _h: u32) -> TexId {
+    fn texture_with(&mut self, _rgba: &[u8], _w: u32, _h: u32, _f: Filter) -> TexId {
         self.textures += 1;
         TexId(self.textures - 1)
     }
 
+    fn free_texture(&mut self, _t: TexId) {
+        self.freed += 1;
+    }
+
     fn sprite(&mut self, _t: TexId, _src: Rect, _dst: Rect, _tint: [f32; 4]) {
         self.sprites += 1;
+    }
+
+    fn sprite_tf(&mut self, _t: TexId, _src: Rect, _tf: Affine, _tint: [f32; 4]) {
+        self.sprites += 1;
+    }
+
+    fn mesh(&mut self, _t: TexId, _verts: &[Vertex], _idx: &[u16]) {
+        self.meshes += 1;
+    }
+
+    fn stroke_rect(&mut self, _r: Rect, _w: f32, _color: [f32; 4]) {
+        self.shapes += 1;
+    }
+
+    fn fill_circle(&mut self, _cx: f32, _cy: f32, _r: f32, _color: [f32; 4]) {
+        self.shapes += 1;
+    }
+
+    fn stroke_circle(&mut self, _cx: f32, _cy: f32, _r: f32, _w: f32, _color: [f32; 4]) {
+        self.shapes += 1;
+    }
+
+    fn stroke_line(&mut self, _x0: f32, _y0: f32, _x1: f32, _y1: f32, _w: f32, _color: [f32; 4]) {
+        self.shapes += 1;
+    }
+
+    fn fill_path(&mut self, _points: &[[f32; 2]], _color: [f32; 4]) {
+        self.shapes += 1;
     }
 
     fn rect(&mut self, _dst: Rect, _color: [f32; 4]) {
