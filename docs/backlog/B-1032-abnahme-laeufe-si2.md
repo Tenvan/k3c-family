@@ -1,12 +1,12 @@
-# B-1025 · Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert
+# B-1032 · Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün
 
-- **Domäne:** CLI
+- **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU7
-- **Projekt:** RSU
+- **Sprint:** SI2
+- **Projekt:** KMP
 - **Erstellt:** 2026-11-17
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-RU4.5 hat `native/k3c-game/view/settings.go` nach `rust/crates/k3c-game/src/view/settings.rs` portiert. Das Feld `Stress StressTest` (Typ aus `view/stress.go`) fehlt dort, weil `stress.go` erst RU7.4 portiert und `stress.rs` nicht im Bereich von RU4 liegt.
+Review SI2.5 (2026-11-17): `task:check` und `task:check:go` grün (Detvec-Baum nach SI2.2 neu geschrieben, B-1030). Sim, Balance, Gen und Race laufen nach B-742 nur hier. SI2.3 (Engine) und SI2.4 (Anzeige) sind verworfen; die Läufe decken daher nur die Assets ab.
 
 ## Ziel
 
-`Settings` in Rust hat das Feld `stress` wie Go: `default_settings()` setzt `DefaultStress()`, `normalized()` setzt einen Null-Wert auf `DefaultStress()` und wendet `StressTest::normalized()` an; `settings_tests.rs` erwartet wie Go `want.Stress = DefaultStress()`.
+Die Abnahme-Läufe des Sprints SI2 sind gelaufen, Abweichungen als Tickets erfasst.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,11 +28,13 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-Port ohne Regeländerung (B-1014). Reihenfolge der Felder wie in Go (nach `dev_mode`).
+- **AC-01** `gen:paper` rendert `doppel-truhe` und `doppel-truhe-offen` ohne Fehler, Grafik-Golden stimmt.
+- **AC-02** `check_run task:check:race` grün (ohne gcc: als übersprungen nennen).
+- **AC-03** Sim und Balance: entfällt bis zur Aufhebung der Sperre (Beschluss 🧑 2026-11-11); danach `sim_test`-Lauf ohne Abweichung zur Baseline.
 
 ## Nicht-Ziele
 
-Änderungen am Go-Code.
+Engine und Anzeige der Doppel-Truhe (SI2.3/SI2.4 verworfen).
 
 ## Regeln und Einschränkungen
 
@@ -56,8 +58,11 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** `Settings` hat `stress: StressTest`; `default_settings()` und `normalized()` behandeln es wie `settings.go`.
-- **AC-02** `settings_normalized` prüft `stress` wie `TestSettingsNormalized`; die Hinweise auf B-1025 in `settings.rs` und `settings_tests.rs` sind entfernt.
+- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
+
+Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_test`), AC-02 Balance, AC-03 Gen
+(`check_run task:test` samt `gen:paper` und Golden), AC-04 Race (`check_run task:check:race`), Einzelheiten in
+`docs/arbeitsweise.md` › Sim, Balance und Gen.
 
 ## Offene Fragen
 
@@ -65,4 +70,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Aufgefallen in RU4.5. Gehört in RU7.4 (nach `stress.rs`); `settings.rs` liegt im Bereich von RU4, RU7.4 braucht die Datei dafür in seinen Erlaubten Dateien.
+Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).

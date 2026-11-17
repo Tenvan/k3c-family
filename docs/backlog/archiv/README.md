@@ -875,3 +875,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-909](B-909-planungsdaten-schlank.md) | DEV | Schuld | mittel | erledigt | WZ61 | Die Planungsseite lädt bei einer Änderung nur das Geänderte statt 5,5 MiB PlanningData |
 | [B-1020](B-1020-ruckler-voller-messlauf-ruhender-pc.md) | CLI | Frage | hoch | verworfen | RU0 | Der volle Ruckler-Messlauf läuft auf dem ruhenden PC mit einer Last-Szene, in der die Gegner überleben |
 | [B-1019](B-1019-ruckler-ursache-messen.md) | CLI | Frage | hoch | erledigt | RU0 | Die Ursache der Ruckler im Go-Spiel ist gemessen: GC, Bildtakt oder Laden (Gate G0) |
+| [B-1025](B-1025-settings-stress-nach-ru7.md) | CLI | Schuld | mittel | erledigt | RU7 | Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert |
