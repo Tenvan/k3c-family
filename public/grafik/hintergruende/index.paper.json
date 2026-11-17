@@ -413,5 +413,10 @@
     "id": "weltbild-standard",
     "rig": "hintergrund",
     "manifest": "weltbild-standard/manifest.json"
+  },
+  {
+    "id": "wetter-wolkenbank",
+    "rig": "hintergrund",
+    "manifest": "wetter-wolkenbank/manifest.json"
   }
 ]

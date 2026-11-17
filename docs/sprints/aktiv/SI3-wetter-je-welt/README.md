@@ -68,9 +68,9 @@ Keine blockierenden. Defaults in `B-969 › Offene Fragen` und `B-999 › Offene
 |---|---|---|---|---|
 | SI3.1 | `SI3.1-regeltext-wetter.md` | Umsetzung | autonom | fertig |
 | SI3.2 | `SI3.2-engine-wetter.md` | Umsetzung | autonom | verworfen |
-| SI3.3 | `SI3.3-asset-wolkenbank.md` | Umsetzung | autonom | offen |
+| SI3.3 | `SI3.3-asset-wolkenbank.md` | Umsetzung | autonom | fertig |
 | SI3.4 | `SI3.4-anzeige-wetter.md` | Umsetzung | autonom | verworfen |
-| SI3.5 | `SI3.5-review.md` | Review | autonom | offen |
+| SI3.5 | `SI3.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

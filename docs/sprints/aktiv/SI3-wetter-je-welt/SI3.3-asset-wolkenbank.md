@@ -1,6 +1,6 @@
 # SI3.3 · Asset Wolkenbank für die Vorboten (B-999)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,4 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-03: umgesetzt – Asset `wetter-wolkenbank` (hintergruende, 768×256, zwei Lagen eisen/schwarz, periodisch kachelnd) über `assets_*`; Zuordnung `data/paper.json` › `wetter.wolkenbank`.
+  geprüft: `k3c-grafik` ohne schweren Befund; Hinweis: Leser für `wetter` fehlt noch im Spiel (SI3.4 verworfen, Folge-Arbeit B-999), Profil wirkt eher zackig (Geschmack, Augenschein 🧑).
+- `check_run task:check:diff` grün.
