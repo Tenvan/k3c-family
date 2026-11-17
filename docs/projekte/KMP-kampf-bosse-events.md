@@ -31,7 +31,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | aktiv |
 | SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | aktiv |
 | SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | geplant |
-| SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | aktiv |
+| SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | erledigt |
 
 ## Nicht-Ziele
 
