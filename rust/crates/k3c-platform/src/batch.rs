@@ -1,4 +1,5 @@
-//! Sprite-Sammlung je Bild: nach Textur sortiert, ein Instanz-Puffer, ein Draw-Call je Textur.
+//! Sprite-Sammlung je Bild: nach Ebene, Ausschnitt und Textur sortiert, ein Instanz-Puffer, ein Draw-Call je
+//! Bündel.
 //!
 //! Reine CPU-Seite ohne Grafikabhängigkeit; das Backend liest [`Frame::runs`] und
 //! [`Frame::write_instances`]. Vollfarbflächen und Schrift tragen den Schlüssel [`SOLID`] und
@@ -23,15 +24,18 @@ pub struct Inst {
 #[derive(Clone, Copy)]
 struct Item {
     layer: u32,
+    clip: u32,
     tex: u32,
     seq: u32,
     inst: Inst,
 }
 
 /// Ein Draw-Call: Textur (`None` = Vollfarbe) und Bereich in der sortierten Instanz-Liste.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Run {
     pub layer: u32,
+    /// Ausschnitt (Scissor) in logischen Einheiten; `None` = ganzes Bild.
+    pub clip: Option<Rect>,
     pub tex: Option<TexId>,
     pub first: u32,
     pub count: u32,
@@ -52,7 +56,10 @@ pub struct Frame {
     runs: Vec<Run>,
     sizes: Vec<(u32, u32)>,
     pending: Vec<Pending>,
+    /// Ausschnitte dieses Bildes; `Item::clip` = Index + 1, 0 = ohne.
+    clips: Vec<Rect>,
     layer: u32,
+    clip: u32,
 }
 
 impl Frame {
@@ -64,18 +71,22 @@ impl Frame {
     pub fn begin(&mut self) {
         self.items.clear();
         self.runs.clear();
+        self.clips.clear();
         self.layer = 0;
+        self.clip = 0;
     }
 
-    /// Sortiert nach Ebene, dann Textur (Reihenfolge innerhalb gleicher Ebene und Textur bleibt)
-    /// und bildet die Draw-Calls.
+    /// Sortiert nach Ebene, Ausschnitt, Textur (Reihenfolge innerhalb eines Bündels bleibt) und bildet die
+    /// Draw-Calls.
     pub fn finish(&mut self) {
-        self.items.sort_unstable_by_key(|i| (i.layer, i.tex, i.seq));
+        self.items.sort_unstable_by_key(|i| (i.layer, i.clip, i.tex, i.seq));
         let mut first = 0;
+        let key = |i: &Item| (i.layer, i.clip, i.tex);
         for i in 1..=self.items.len() {
             let a = self.items[i - 1];
-            if i == self.items.len() || (self.items[i].layer, self.items[i].tex) != (a.layer, a.tex) {
-                self.runs.push(run(a.layer, a.tex, first, i as u32));
+            if i == self.items.len() || key(&self.items[i]) != key(&a) {
+                let clip = a.clip.checked_sub(1).map(|c| self.clips[c as usize]);
+                self.runs.push(run(a.layer, clip, a.tex, first, i as u32));
                 first = i as u32;
             }
         }
@@ -115,6 +126,7 @@ impl Frame {
         let seq = self.items.len() as u32;
         self.items.push(Item {
             layer: self.layer,
+            clip: self.clip,
             tex,
             seq,
             inst,
@@ -122,10 +134,11 @@ impl Frame {
     }
 }
 
-fn run(layer: u32, tex: u32, first: u32, end: u32) -> Run {
+fn run(layer: u32, clip: Option<Rect>, tex: u32, first: u32, end: u32) -> Run {
     let tex = (tex != SOLID).then_some(TexId(tex));
     Run {
         layer,
+        clip,
         tex,
         first,
         count: end - first,
@@ -139,6 +152,22 @@ impl Canvas for Frame {
 
     fn layer(&mut self, z: u32) {
         self.layer = z;
+    }
+
+    fn clip(&mut self, area: Option<Rect>) {
+        let Some(r) = area else {
+            self.clip = 0;
+            return;
+        };
+        // Gleicher Ausschnitt wie ein früherer: denselben Index nehmen, damit die Bündel zusammenfallen.
+        let i = match self.clips.iter().position(|c| *c == r) {
+            Some(i) => i,
+            None => {
+                self.clips.push(r);
+                self.clips.len() - 1
+            }
+        };
+        self.clip = i as u32 + 1;
     }
 
     fn texture(&mut self, rgba: &[u8], w: u32, h: u32) -> TexId {
@@ -238,6 +267,30 @@ mod tests {
         f.begin();
         f.finish();
         assert!(f.runs().is_empty());
+    }
+
+    #[test]
+    fn ausschnitt_trennt_buendel_und_kommt_mit() {
+        let mut f = Frame::new();
+        let t = tex(&mut f);
+        let (src, r) = (Rect::new(0.0, 0.0, 2.0, 2.0), Rect::new(0.0, 0.0, 1.0, 1.0));
+        let (left, right) = (Rect::new(0.0, 0.0, 960.0, 1080.0), Rect::new(960.0, 0.0, 960.0, 1080.0));
+        f.begin();
+        f.clip(Some(right));
+        f.sprite(t, src, r, WHITE);
+        f.clip(Some(left));
+        f.sprite(t, src, r, WHITE);
+        f.clip(Some(right));
+        f.sprite(t, src, r, WHITE);
+        f.clip(None);
+        f.rect(r, WHITE);
+        f.finish();
+        let runs: Vec<_> = f.runs().iter().map(|r| (r.clip, r.count)).collect();
+        assert_eq!(runs, [(None, 1), (Some(right), 2), (Some(left), 1)]);
+        f.begin();
+        f.sprite(t, src, r, WHITE);
+        f.finish();
+        assert_eq!(f.runs()[0].clip, None, "Ausschnitt gilt nur ein Bild");
     }
 
     #[test]

@@ -6,7 +6,7 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use k3c_platform::{App, Canvas, Config, Rect, STEP, TexId, run_window};
+use k3c_platform::{App, Canvas, Config, InputState, Key, Rect, STEP, TexId, run_window};
 
 const SIZE: u32 = 32;
 
@@ -14,6 +14,7 @@ struct Probe {
     n: usize,
     tick: u64,
     tex: Option<TexId>,
+    quit: bool,
 }
 
 /// Runder Fleck mit weichem Rand, vormultipliziertes Alpha.
@@ -37,8 +38,9 @@ fn blob() -> Vec<u8> {
 }
 
 impl App for Probe {
-    fn step(&mut self, _dt: f64) {
+    fn step(&mut self, input: &InputState, _dt: f64) {
         self.tick += 1;
+        self.quit |= input.just_pressed(Key::Escape);
     }
 
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
@@ -58,7 +60,7 @@ impl App for Probe {
     }
 
     fn done(&self) -> bool {
-        false
+        self.quit
     }
 }
 
@@ -74,7 +76,12 @@ fn main() {
         max_seconds: args.get("secs").and_then(|v| v.parse().ok()),
         fullscreen: false,
     };
-    let mut app = Probe { n, tick: 0, tex: None };
+    let mut app = Probe {
+        n,
+        tick: 0,
+        tex: None,
+        quit: false,
+    };
     if let Err(e) = run_window(&mut app, cfg) {
         eprintln!("Fehler: {e}");
         std::process::exit(1);

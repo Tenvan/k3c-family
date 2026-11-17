@@ -750,6 +750,8 @@ name = "k3c-platform"
 version = "0.1.0"
 dependencies = [
  "pollster",
+ "serde",
+ "serde_json",
  "wgpu",
  "winit",
 ]

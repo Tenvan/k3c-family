@@ -1,6 +1,7 @@
 //! Fenster-Backend: winit-Fenster und wgpu. Einziger Ort im Crate, der `winit` und `wgpu` kennt.
 
 mod gpu;
+mod keys;
 
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -10,11 +11,11 @@ use winit::application::ApplicationHandler;
 use winit::dpi::LogicalSize;
 use winit::event::{ElementState, KeyEvent, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
-use winit::keyboard::{KeyCode, PhysicalKey};
+use winit::keyboard::PhysicalKey;
 use winit::window::{Fullscreen, Window, WindowId};
 
 use crate::measure::SecondStat;
-use crate::{App, Clock, Frame, Measure, STEP};
+use crate::{App, Frame, Measure, Runner};
 
 use gpu::Gfx;
 
@@ -32,27 +33,30 @@ pub struct Config {
     pub measure: Option<PathBuf>,
     /// Beendet die Schleife nach so vielen Sekunden (für Messläufe).
     pub max_seconds: Option<f64>,
-    /// Startet im Vollbild (randlos); Taste F schaltet um, Esc beendet.
+    /// Startet im Vollbild (randlos); danach schaltet die App über [`App::fullscreen`].
     pub fullscreen: bool,
 }
 
-/// Öffnet ein Fenster und treibt `app` im Takt [`STEP`], bis `done()`, Schließen oder `max_seconds`.
+/// Öffnet ein Fenster (in der Größe veränderbar) und treibt `app` im Takt [`crate::STEP`], bis `done()`,
+/// Schließen oder `max_seconds`. Tasten gehen als [`crate::InputState`] an die App; das Backend wertet keine aus.
 pub fn run_window(app: &mut dyn App, cfg: Config) -> Result<(), String> {
     let el = EventLoop::new().map_err(|e| e.to_string())?;
     el.set_control_flow(ControlFlow::Poll);
-    let mut r = Runner::new(app, cfg);
+    let mut r = WinLoop::new(app, cfg);
     el.run_app(&mut r).map_err(|e| e.to_string())?;
     r.finish()
 }
 
-struct Runner<'a> {
-    app: &'a mut dyn App,
+struct WinLoop<'a> {
+    run: Runner<'a>,
     cfg: Config,
     win: Option<Arc<Window>>,
     gfx: Option<Gfx>,
     backend: String,
-    clock: Clock,
     frame: Frame,
+    /// Zuletzt umgesetzter Vollbild-Wunsch der App; nur eine Änderung des Wunsches schaltet (das System darf
+    /// das Vollbild sonst selbst umschalten, ohne dass die Schleife es zurücksetzt).
+    full_wish: Option<bool>,
     measure: Measure,
     start: Instant,
     last: Option<Instant>,
@@ -60,16 +64,17 @@ struct Runner<'a> {
     error: Option<String>,
 }
 
-impl<'a> Runner<'a> {
+impl<'a> WinLoop<'a> {
     fn new(app: &'a mut dyn App, cfg: Config) -> Self {
+        let full_wish = Some(cfg.fullscreen);
         Self {
-            app,
+            run: Runner::new(app, None),
             cfg,
             win: None,
             gfx: None,
             backend: String::new(),
-            clock: Clock::new(),
             frame: Frame::new(),
+            full_wish,
             measure: Measure::new(RING),
             start: Instant::now(),
             last: None,
@@ -109,13 +114,10 @@ impl<'a> Runner<'a> {
     fn redraw(&mut self, el: &ActiveEventLoop) {
         let now = Instant::now();
         let dt = self.last.map_or(0.0, |l| now.duration_since(l).as_secs_f64());
-        let (steps, alpha) = self.clock.advance(dt.min(MAX_DT));
-        for _ in 0..steps {
-            self.app.step(STEP);
-        }
         self.frame.begin();
-        self.app.draw(&mut self.frame, alpha);
+        self.run.advance(dt.min(MAX_DT), &mut self.frame);
         self.frame.finish();
+        self.sync_fullscreen();
         let mut cpu_ms = 0.0;
         if let Some(g) = &mut self.gfx {
             g.render(&mut self.frame, || cpu_ms = now.elapsed().as_secs_f64() * 1000.0);
@@ -129,27 +131,40 @@ impl<'a> Runner<'a> {
             .cfg
             .max_seconds
             .is_some_and(|s| now.duration_since(self.start).as_secs_f64() >= s);
-        if self.app.done() || over {
+        if self.run.app().done() || over {
             el.exit();
         } else if let Some(w) = &self.win {
             w.request_redraw();
         }
     }
 
-    /// Nur Esc (Ende) und F (Vollbild); alles andere gehört der Eingabe von RU4.
-    fn key(&mut self, el: &ActiveEventLoop, ev: &KeyEvent) {
-        if ev.state != ElementState::Pressed || ev.repeat {
+    /// Taste in den Eingabe-Zustand; Wiederholungen des Systems zählen nicht.
+    fn key(&mut self, ev: &KeyEvent) {
+        let PhysicalKey::Code(code) = ev.physical_key else {
+            return;
+        };
+        let Some(k) = keys::map(code) else {
+            return;
+        };
+        let keys = &mut self.run.input_mut().keys;
+        match ev.state {
+            ElementState::Pressed if !ev.repeat => keys.press(k),
+            ElementState::Released => keys.release(k),
+            ElementState::Pressed => {}
+        }
+    }
+
+    /// Setzt das Vollbild, wenn sich der Wunsch der App geändert hat und das Fenster davon abweicht.
+    fn sync_fullscreen(&mut self) {
+        let (Some(want), Some(w)) = (self.run.app().fullscreen(), &self.win) else {
+            return;
+        };
+        if self.full_wish == Some(want) {
             return;
         }
-        match ev.physical_key {
-            PhysicalKey::Code(KeyCode::Escape) => el.exit(),
-            PhysicalKey::Code(KeyCode::KeyF) => {
-                if let Some(w) = &self.win {
-                    let on = w.fullscreen().is_none();
-                    w.set_fullscreen(on.then_some(Fullscreen::Borderless(None)));
-                }
-            }
-            _ => {}
+        self.full_wish = Some(want);
+        if w.fullscreen().is_some() != want {
+            w.set_fullscreen(want.then_some(Fullscreen::Borderless(None)));
         }
     }
 
@@ -165,7 +180,7 @@ impl<'a> Runner<'a> {
     }
 }
 
-impl ApplicationHandler for Runner<'_> {
+impl ApplicationHandler for WinLoop<'_> {
     fn resumed(&mut self, el: &ActiveEventLoop) {
         if self.win.is_none()
             && let Err(e) = self.create(el)
@@ -183,7 +198,8 @@ impl ApplicationHandler for Runner<'_> {
                     g.resize(s.width, s.height);
                 }
             }
-            WindowEvent::KeyboardInput { event, .. } => self.key(el, &event),
+            WindowEvent::KeyboardInput { event, .. } => self.key(&event),
+            WindowEvent::Focused(false) => self.run.input_mut().keys.release_all(),
             WindowEvent::RedrawRequested => self.redraw(el),
             _ => {}
         }

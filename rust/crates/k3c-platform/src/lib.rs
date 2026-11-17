@@ -9,13 +9,17 @@ mod batch;
 mod clock;
 mod font;
 mod headless;
+mod input;
 mod measure;
+mod runner;
 
 pub use backend::{Config, run_window};
 pub use batch::{Frame, INST_BYTES, Inst};
 pub use clock::{Clock, MAX_STEPS, STEP};
 pub use headless::{NullCanvas, run_headless};
+pub use input::{InputScript, InputState, Key, KeyState, PadAxis, PadButton, PadState, ScriptEntry, ScriptPad};
 pub use measure::{Measure, Summary};
+pub use runner::Runner;
 
 /// Logische Auflösung; das Fenster skaliert darauf.
 pub const LOGICAL: (f32, f32) = (1920.0, 1080.0);
@@ -41,12 +45,16 @@ pub struct TexId(pub u32);
 
 /// Spiel-Seite der Schleife: Takt-Schritte und Zeichnen.
 pub trait App {
-    /// Ein Simulationsschritt von `dt` Sekunden (fester Takt, siehe [`STEP`]).
-    fn step(&mut self, dt: f64);
+    /// Ein Simulationsschritt von `dt` Sekunden (fester Takt, siehe [`STEP`]) mit der Eingabe dieses Takts.
+    fn step(&mut self, input: &InputState, dt: f64);
     /// Zeichnet das Bild; `alpha` in [0, 1) ist der Rest zum nächsten Takt.
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64);
     /// Wahr, sobald die Schleife enden soll.
     fn done(&self) -> bool;
+    /// Gewünschter Vollbild-Zustand (`None` = egal); die Schleife setzt ihn nach den Takten, wenn er abweicht.
+    fn fullscreen(&self) -> Option<bool> {
+        None
+    }
 }
 
 /// Zeichenfläche in logischen 1920×1080.
@@ -62,4 +70,7 @@ pub trait Canvas {
     fn rect(&mut self, dst: Rect, color: [f32; 4]);
     /// Pixel-Schrift (5×7, nur Großbuchstaben, Ziffern, Satzzeichen); `px` = Zeichenhöhe.
     fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
+    /// Beschneidet die folgenden Aufrufe auf `area` (Scissor, logische Einheiten); `None` hebt das auf.
+    /// Koordinaten bleiben Fensterkoordinaten (wie `SubImage` bei Ebitengine). Standard je Bild: `None`.
+    fn clip(&mut self, _area: Option<Rect>) {}
 }

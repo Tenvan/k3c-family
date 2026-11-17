@@ -108,7 +108,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU4.1 | `RU4.1-schleife-eingabe-bildhaelften.md` | Umsetzung | autonom | offen |
+| RU4.1 | `RU4.1-schleife-eingabe-bildhaelften.md` | Umsetzung | autonom | fertig |
 | RU4.2 | `RU4.2-canvas-transform-netz-formen.md` | Umsetzung | autonom | offen |
 | RU4.3 | `RU4.3-schrift-ttf-umlaute.md` | Umsetzung | autonom | offen |
 | RU4.4 | `RU4.4-gamepads-xbox.md` | Umsetzung | autonom | offen |

@@ -5,7 +5,7 @@ use std::sync::Arc;
 use winit::window::Window;
 
 use crate::batch::Pending;
-use crate::{Frame, INST_BYTES};
+use crate::{Frame, INST_BYTES, LOGICAL, Rect};
 
 const SHADER: &str = include_str!("shader.wgsl");
 const CLEAR: wgpu::Color = wgpu::Color {
@@ -142,12 +142,31 @@ impl Gfx {
         });
         p.set_pipeline(&self.pipe);
         p.set_vertex_buffer(0, self.ibuf.slice(..));
+        let (sw, sh) = (self.config.width, self.config.height);
         for r in frame.runs() {
+            let Some((x, y, w, h)) = scissor(r.clip, sw, sh) else {
+                continue;
+            };
+            p.set_scissor_rect(x, y, w, h);
             let bg = r.tex.and_then(|t| self.texs.get(t.0 as usize)).unwrap_or(&self.white);
             p.set_bind_group(0, Some(bg), &[]);
             p.draw(0..6, r.first..r.first + r.count);
         }
     }
+}
+
+/// Ausschnitt in logischen Einheiten → Scissor in Pixeln der Surface (gleiche Streckung wie der Shader);
+/// `None` bei leerer Fläche.
+fn scissor(clip: Option<Rect>, sw: u32, sh: u32) -> Option<(u32, u32, u32, u32)> {
+    let Some(c) = clip else {
+        return Some((0, 0, sw, sh));
+    };
+    let (kx, ky) = (sw as f32 / LOGICAL.0, sh as f32 / LOGICAL.1);
+    let x0 = (c.x * kx).round().clamp(0.0, sw as f32) as u32;
+    let y0 = (c.y * ky).round().clamp(0.0, sh as f32) as u32;
+    let x1 = ((c.x + c.w) * kx).round().clamp(0.0, sw as f32) as u32;
+    let y1 = ((c.y + c.h) * ky).round().clamp(0.0, sh as f32) as u32;
+    (x1 > x0 && y1 > y0).then_some((x0, y0, x1 - x0, y1 - y0))
 }
 
 fn instance_buffer(device: &wgpu::Device, cap: u64) -> wgpu::Buffer {
@@ -278,4 +297,21 @@ fn upload(
             },
         ],
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn ausschnitt_wird_auf_surface_gestreckt_und_begrenzt() {
+        assert_eq!(scissor(None, 1280, 720), Some((0, 0, 1280, 720)));
+        let right = Rect::new(960.0, 0.0, 960.0, 1080.0);
+        assert_eq!(scissor(Some(right), 1280, 720), Some((640, 0, 640, 720)));
+        assert_eq!(
+            scissor(Some(Rect::new(-100.0, -5.0, 3000.0, 2000.0)), 640, 360),
+            Some((0, 0, 640, 360))
+        );
+        assert_eq!(scissor(Some(Rect::new(2000.0, 0.0, 10.0, 10.0)), 640, 360), None);
+    }
 }

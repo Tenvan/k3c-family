@@ -1,4 +1,4 @@
-//! Befehlszeile der Demo: `k3c-game demo --driver <datei> [--sprites N] [--measure S] [--headless --steps N] …`.
+//! Befehlszeile der Demo: `k3c-game demo --driver <datei> [--sprites N] [--measure S] [--headless --steps N [--script S]] …`.
 
 use std::path::{Path, PathBuf};
 
@@ -13,6 +13,8 @@ pub struct Options {
     pub out: PathBuf,
     pub headless: bool,
     pub steps: u32,
+    /// Eingabe-Skript (JSON) für den Lauf ohne Fenster.
+    pub script: Option<PathBuf>,
     pub fullscreen: bool,
     pub grafik: PathBuf,
     pub data: PathBuf,
@@ -45,6 +47,7 @@ pub fn parse_args(args: &[String]) -> Result<Options, String> {
         out: PathBuf::from("demo-messung.json"),
         headless: false,
         steps: 600,
+        script: None,
         fullscreen: false,
         grafik: root.join("public").join("grafik"),
         data: root.join("data"),
@@ -56,6 +59,7 @@ pub fn parse_args(args: &[String]) -> Result<Options, String> {
             "--sprites" => o.sprites = number(value(&mut it, a)?, a)?,
             "--measure" => o.measure = Some(number(value(&mut it, a)?, a)?),
             "--steps" => o.steps = number(value(&mut it, a)?, a)?,
+            "--script" => o.script = Some(PathBuf::from(value(&mut it, a)?)),
             "--out" => o.out = PathBuf::from(value(&mut it, a)?),
             "--grafik" => o.grafik = PathBuf::from(value(&mut it, a)?),
             "--data" => o.data = PathBuf::from(value(&mut it, a)?),
