@@ -6,7 +6,10 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use k3c_platform::{Affine, App, Canvas, Config, FontId, InputState, Key, Rect, STEP, TexId, Vertex, run_window};
+use k3c_platform::{
+    Affine, App, AudioOut, Canvas, Config, FontId, InputState, Key, Rect, STEP, SoundId, TexId, Vertex, open_audio,
+    run_window,
+};
 
 const SIZE: u32 = 32;
 
@@ -16,6 +19,8 @@ struct Probe {
     tex: Option<TexId>,
     quit: bool,
     font: Option<Option<FontId>>,
+    audio: Box<dyn AudioOut>,
+    beep: Option<SoundId>,
 }
 
 /// Runder Fleck mit weichem Rand, vormultipliziertes Alpha.
@@ -42,6 +47,11 @@ impl App for Probe {
     fn step(&mut self, input: &InputState, _dt: f64) {
         self.tick += 1;
         self.quit |= input.just_pressed(Key::Escape);
+        if input.just_pressed(Key::T)
+            && let Some(s) = self.beep
+        {
+            self.audio.play(s, 0.8);
+        }
     }
 
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
@@ -137,12 +147,17 @@ fn main() {
         max_seconds: args.get("secs").and_then(|v| v.parse().ok()),
         fullscreen: false,
     };
+    let mut audio = open_audio();
+    let ogg = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/audio/probe-a.ogg");
+    let beep = std::fs::read(ogg).ok().and_then(|b| audio.load(&b).ok());
     let mut app = Probe {
         n,
         tick: 0,
         tex: None,
         quit: false,
         font: None,
+        audio,
+        beep,
     };
     if let Err(e) = run_window(&mut app, cfg) {
         eprintln!("Fehler: {e}");

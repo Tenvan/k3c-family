@@ -115,7 +115,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 | RU4.5 | `RU4.5-view-vertraege-eingabe.md` | Umsetzung | autonom | fertig |
 | RU4.6 | `RU4.6-eingabe-port-bindings-tracker.md` | Umsetzung | autonom | offen |
 | RU4.7 | `RU4.7-eingabe-port-source.md` | Umsetzung | autonom | offen |
-| RU4.8 | `RU4.8-ton-audioout.md` | Umsetzung | autonom | offen |
+| RU4.8 | `RU4.8-ton-audioout.md` | Umsetzung | autonom | fertig |
 | RU4.9 | `RU4.9-log-und-probe.md` | Umsetzung | autonom | offen |
 | RU4.10 | `RU4.10-review.md` | Review | autonom | offen |
 

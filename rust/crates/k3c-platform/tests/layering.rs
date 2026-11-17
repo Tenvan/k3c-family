@@ -1,4 +1,4 @@
-//! `winit`, `wgpu` und `gilrs` dürfen nur in `src/backend/` vorkommen (RU2.1, RU4.4).
+//! `winit`, `wgpu`, `gilrs` und `rodio`/`cpal` dürfen nur in `src/backend/` vorkommen (RU2.1, RU4.4, RU4.8).
 
 use std::fs;
 use std::path::Path;
@@ -15,7 +15,7 @@ fn sources(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
 }
 
 #[test]
-fn kein_winit_wgpu_oder_gilrs_ausserhalb_von_backend() {
+fn geraete_crates_nur_in_backend() {
     let root = Path::new(env!("CARGO_MANIFEST_DIR"));
     let mut files = Vec::new();
     sources(&root.join("src"), &mut files);
@@ -33,6 +33,9 @@ fn kein_winit_wgpu_oder_gilrs_ausserhalb_von_backend() {
             "extern crate wgpu",
             "gilrs::",
             "use gilrs",
+            "rodio::",
+            "use rodio",
+            "cpal::",
         ] {
             assert!(
                 !text.contains(pat),

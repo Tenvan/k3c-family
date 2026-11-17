@@ -4,6 +4,11 @@ mod gpu;
 mod keys;
 mod pads;
 mod setup;
+mod sound;
+
+#[cfg(test)]
+pub(crate) use sound::decode as decode_sound;
+pub(crate) use sound::open as open_sound;
 
 use std::path::PathBuf;
 use std::sync::Arc;

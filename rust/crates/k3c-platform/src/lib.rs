@@ -5,6 +5,7 @@
 #![forbid(unsafe_code)]
 
 mod affine;
+mod audio;
 mod backend;
 mod batch;
 mod clock;
@@ -12,12 +13,14 @@ mod font;
 mod frame_canvas;
 mod headless;
 mod input;
+pub mod log;
 mod measure;
 mod runner;
 mod shape;
 mod ttf;
 
 pub use affine::Affine;
+pub use audio::{AudioOut, NullAudio, SoundId, VoiceId, open_audio, open_audio_with};
 pub use backend::{Config, run_window};
 pub use batch::{Frame, INST_BYTES, Inst, Kind, Run, VERT_BYTES, Vertex};
 pub use clock::{Clock, MAX_STEPS, STEP};

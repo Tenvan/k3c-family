@@ -20,3 +20,4 @@ serde.workspace = true
 serde_json.workspace = true
 fontdue.workspace = true
 gilrs.workspace = true
+rodio.workspace = true
