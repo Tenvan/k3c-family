@@ -1,6 +1,6 @@
 # SI1.5 · Review Sprint SI1 Fracht auf dem Schiff
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -62,4 +62,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert mit SI1.3 (Ralf, 2026-11-17): Review erst, wenn die Welt-Assets zum Schluss kommen.
