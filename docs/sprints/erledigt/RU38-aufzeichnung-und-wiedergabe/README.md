@@ -1,6 +1,6 @@
 # RU38 · SIM, CLI · Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM, CLI
 - **Reife:** bereit

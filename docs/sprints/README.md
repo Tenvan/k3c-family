@@ -32,8 +32,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU13 | CLI | RSU | Welt und Akteure zeichnen | – | `aktiv/RU13-welt-und-akteure-zeichnen/` |
-| RU38 | SIM, CLI | RSU | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | – | `aktiv/RU38-aufzeichnung-und-wiedergabe/` |
+| RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | `aktiv/RU16-gebaeude-und-objekte-zeichnen/` |
+| RU17 | CLI | RSU | Effekte und Ton im Spiel | – | `aktiv/RU17-effekte-und-ton-im-spiel/` |
 
 ## Offen am Gerät
 
@@ -60,8 +60,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | bereit | `geplant/RU11-sim-einheiten-gegner/` |
 | RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | bereit | `geplant/RU14-sim-welt-stufen-kampagne/` |
 | RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | bereit | `geplant/RU15-sim-kampf-bosse/` |
-| RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | bereit | `geplant/RU16-gebaeude-und-objekte-zeichnen/` |
-| RU17 | CLI | RSU | Effekte und Ton im Spiel | – | bereit | `geplant/RU17-effekte-und-ton-im-spiel/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
 | RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU20 | CLI | RSU | HUD Teil 1: Anzeigen je Spielerhälfte | – | bereit | `geplant/RU20-hud-teil-1/` |
@@ -445,3 +443,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | `erledigt/RU5-rig-in-rust/` |
 | RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | `erledigt/RU7-grafik-laden-ansicht/` |
 | RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | `erledigt/RU4-plattform-fenster-eingabe-ton/` |
+| RU13 | Welt und Akteure zeichnen | `erledigt/RU13-welt-und-akteure-zeichnen/` |
+| RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | `erledigt/RU38-aufzeichnung-und-wiedergabe/` |
