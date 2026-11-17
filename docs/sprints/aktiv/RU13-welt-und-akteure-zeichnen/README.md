@@ -89,7 +89,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU13.1 | `RU13.1-world-backdrop-camera-cull-ground-layers.md` | Umsetzung | autonom | offen |
+| RU13.1 | `RU13.1-world-backdrop-camera-cull-ground-layers.md` | Umsetzung | autonom | fertig |
 | RU13.2 | `RU13.2-world-light-river-water.md` | Umsetzung | autonom | offen |
 | RU13.3 | `RU13.3-world-actors-anim.md` | Umsetzung | autonom | offen |
 | RU13.4 | `RU13.4-actors-catalog-combatmarks-draw-figures.md` | Umsetzung | autonom | offen |

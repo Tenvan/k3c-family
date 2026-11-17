@@ -4,6 +4,7 @@ pub mod art;
 pub mod demo;
 pub mod input;
 pub mod view;
+pub mod world;
 
 #[cfg(test)]
 mod tests {
