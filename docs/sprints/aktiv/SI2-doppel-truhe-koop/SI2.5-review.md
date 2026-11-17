@@ -1,6 +1,6 @@
 # SI2.5 · Review Sprint SI2 Doppel-Truhe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -60,4 +60,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- AC-01: umgesetzt (SI2.1, `docs/rules/koop.md`), geprüft per Diff #661.
+- AC-02: umgesetzt (SI2.2), geprüft `k3c-grafik` statisch ohne schweren Befund; Augenschein am TV offen.
+- AC-03, AC-04: nicht erfüllt, SI2.3 und SI2.4 verworfen; keine Engine- und Spiel-Änderung im Sprint.
+- AC-06: `task:check` grün, `task:check:go` erst rot (Detvec-Baum, B-1030), Baum neu geschrieben (`testdata/rust/data-tree.json.gz`), danach grün; Abnahme-Ticket B-1032.
+- Branch: `origin/sprint/si2` fehlte (SI2.1/SI2.2 per #661 in main), `sprint/si2` neu von `origin/main`.
