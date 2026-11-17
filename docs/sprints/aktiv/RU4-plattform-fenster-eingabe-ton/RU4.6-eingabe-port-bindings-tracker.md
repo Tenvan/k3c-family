@@ -1,6 +1,6 @@
 # RU4.6 · Eingabe-Port Teil 1: bindings, tracker
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- `k3c-game/src/input/`: `bindings.rs` (Belegung beider Profile, Pad-Aktionen, Layouts), `tracker.rs` (Wiederholung, Stick-Hysterese, Home-Akkord, erster Takt ignoriert gehaltene Tasten), Tests aus `bindings_test.go`, `tracker_test.go`, `profile_test.go` (gleiche Namen in snake_case); gemeinsame Helfer in `test_util.rs`.
+- `cargo test -p k3c-game input` grün, Clippy grün. Review (Sonnet) gegen Go: verhaltensgleich, nur leichte Notizen.
+- Abweichungen: Tracker-`KeyState` ist das Bitfeld der Plattform; `step` hängt an `&mut Vec<Action>` an; Layout als `i64`, Tabelle `LAYOUT_TABLE`.
