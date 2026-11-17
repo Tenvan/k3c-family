@@ -1,11 +1,11 @@
 # RU17 · CLI · Effekte und Ton im Spiel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** be144f5d7
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17

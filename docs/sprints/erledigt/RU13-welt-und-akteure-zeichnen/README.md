@@ -1,6 +1,6 @@
 # RU13 · CLI · Welt und Akteure zeichnen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
