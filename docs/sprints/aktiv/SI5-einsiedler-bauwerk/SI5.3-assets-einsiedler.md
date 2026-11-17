@@ -1,6 +1,6 @@
 # SI5.3 · Assets Hütte, Dojo, Schrein, Schwertschmied, Priesterin (B-1001)
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
