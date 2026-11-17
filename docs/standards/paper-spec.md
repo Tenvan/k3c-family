@@ -5,7 +5,7 @@ Schemas und Regeln: `tools/paper/schema/` · Fixtures: `tools/paper/fixtures/`
 
 Dieser Standard ist ein **Vertrag**: Renderer (RD1), MCP-Tools (MC1), Workbench (WB1, RV1) und Migration (MG*) arbeiten
 dagegen. Änderungen nur über ein Ticket im Projekt PAP. Begriffe: [`glossar.md`](../glossar.md) (Paper-Spec, Stil-Datei,
-Papier-Material, Rig-Typ, Teil, Lage, Ton).
+Papier-Material, Rig-Typ, Teil, Lage, Ton). Bildaufbau, Maßstab und Stimmung der Szene: [`bildaufbau.md`](bildaufbau.md).
 
 ## 1. Dateien und Ablage
 
