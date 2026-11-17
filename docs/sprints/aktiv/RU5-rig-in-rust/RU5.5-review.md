@@ -1,6 +1,6 @@
 # RU5.5 · Review Rig in Rust
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `task check` und `task check:go` grün, Referenzen 1e-9. AC-02 geprüft: Netz über `Canvas::mesh`, Tests grün. AC-03 geprüft: Schwelle in `RIG.md` (Rust-Port: Toleranzen). Abweichung vom Plan: Umhang beim Reiten 1e-6 (Entscheidung Hauptagent). Tickets: B-1038, B-1039. Kein manuelles Prüfen.

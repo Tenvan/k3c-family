@@ -91,7 +91,7 @@ Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Sp
 | RU5.2 | `RU5.2-rig-frames-gait-keyframes.md` | Umsetzung | autonom | fertig |
 | RU5.3 | `RU5.3-rig-load-matrix-order-ride.md` | Umsetzung | autonom | fertig |
 | RU5.4 | `RU5.4-paint-actor-assets-painter.md` | Umsetzung | autonom | fertig |
-| RU5.5 | `RU5.5-review.md` | Review | autonom | offen |
+| RU5.5 | `RU5.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -99,6 +99,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-17 (Claude, autonom): AC-01 bis AC-03 siehe Ergebnisse RU5.1 bis RU5.4; `task check` und `task check:go` grün. `git diff origin/main -- native/k3c-rig` enthält nur `*rustref_test.go`, `RIG.md` bekam die Toleranz-Doku; kein `unsafe`, kein `HashMap` in `k3c-rig`.
+Entscheidung Hauptagent: Umhang-Kette beim Reiten (`ride_cloak_frames`) 1e-6 statt 1e-9 (letztes Bit von sin/cos verstärkt sich, Zeichnen gehört nicht zur Sim); Netz 1e-6 plus 2,5e-7 relativ (float32), beides in `RIG.md`. `rust/Cargo.lock` außerhalb des Bereichs akzeptiert; `testdata/rust/rig` (5,7 MB) ohne Größengrenze in `projectRules` und `.gitattributes`.
+Neue Tickets: B-1038 (`read_png` doppelt, RU7.6), Abnahme-Ticket B-1039.

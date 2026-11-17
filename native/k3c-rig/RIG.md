@@ -85,3 +85,13 @@ zu lassen: Die Ecke kommt per Lot auf die Linie davor, das Dreieck wird zur Lini
 - **Farbvarianten:** eigene PNGs nur für die Teile, die sich unterscheiden.
 - **Papierstruktur:** hängt am Teil (im Sheet am Bild); das Pferd trägt die Struktur des Reiters (Seed `monarch`), weil
   das Reit-Sheet so gerendert ist.
+
+## Rust-Port: Toleranzen (RU5)
+
+`rust/crates/k3c-rig` rechnet wie Go in `f64` und wird gegen Referenzwerte aus `native/k3c-rig/*/rustref_test.go`
+(`testdata/rust/rig/*.json`, neu schreiben mit `go test -update`) geprüft:
+
+- **Knochen, Matrizen, Gangart:** höchstens 1e-9 je Wert.
+- **Umhang-Kette beim Reiten** (`ride_cloak_frames`): höchstens 1e-6. Das letzte Bit von `sin`/`cos` unterscheidet sich
+  zwischen Go und Rust und verstärkt sich in der Kette; Zeichnen gehört nicht zur Sim.
+- **Dreiecksnetz** (`paint`): 1e-6 plus 2,5e-7 relativ je Koordinate, weil Go die Ecken auf `float32` rundet.
