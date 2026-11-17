@@ -1,4 +1,4 @@
-import type { TaskGateState, TaskInfo, TaskNamespace, TaskRun, TaskRunState } from '../api';
+import type { TaskInfo, TaskNamespace, TaskRun, TaskRunState } from '../api';
 import type { Tone } from '@webkit/atoms';
 
 // Reine Funktionen der Tasks-Seite: Filter (dieselbe Regel wie taskcat.Filter in Go, lokal, damit der Baum beim
@@ -90,27 +90,6 @@ export function splitArgs(input: string): string[] {
 export function taskTooltip(t: TaskInfo): string {
   const lines = [t.desc, t.summary, t.file && `${t.file}:${t.line}`, t.aliases.length > 0 && `Aliase: ${t.aliases.join(', ')}`];
   return lines.filter(Boolean).join('\n');
-}
-
-/** Schloss eines Tasks als Symbol und Text; `-temp` gilt nur bis zum Beenden von k3c-workbench (gestrichelter Rahmen). */
-export function describeGate(state: TaskGateState | undefined): { icon: string; label: string; temp: boolean } {
-  switch (state) {
-    case 'open':
-      return { icon: '🔓', label: 'frei für Agenten (Datei)', temp: false };
-    case 'open-temp':
-      return { icon: '🔓', label: 'frei für Agenten bis zum Beenden', temp: true };
-    case 'closed-temp':
-      return { icon: '🔒', label: 'gesperrt bis zum Beenden', temp: true };
-    default:
-      return { icon: '🔒', label: 'gesperrt (Datei)', temp: false };
-  }
-}
-
-/** Nur Tasks, deren Schloss offen ist (🔑-Schalter). */
-export function onlyAllowed(namespaces: TaskNamespace[], gates: Record<string, TaskGateState>): TaskNamespace[] {
-  return namespaces
-    .map((ns) => ({ name: ns.name, tasks: ns.tasks.filter((t) => gates[t.name]?.startsWith('open')) }))
-    .filter((ns) => ns.tasks.length > 0);
 }
 
 /** Favoriten als Sicht auf dieselben Knoten, in der Reihenfolge des Baums. */

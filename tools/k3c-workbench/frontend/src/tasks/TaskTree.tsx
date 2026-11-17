@@ -1,26 +1,24 @@
-import type { TaskGateState, TaskInfo, TaskNamespace, TaskRun } from '../api';
+import type { TaskInfo, TaskNamespace, TaskRun } from '../api';
 import { Button, IconButton, StatusBadge, Text } from '@webkit/atoms';
-import { describeGate, describeRun, taskTooltip } from './tasks';
+import { describeRun, taskTooltip } from './tasks';
 
 interface TaskTreeProps {
   visible: TaskNamespace[];
   favorites: TaskInfo[];
   runs: TaskRun[];
-  gates: Record<string, TaskGateState>;
   pinned: string[];
   selected: string;
   collapsed: string[];
   onToggleNs: (ns: string) => void;
   onSelect: (name: string) => void;
-  onGate: (name: string) => void;
   onPin: (name: string) => void;
 }
 
 /** Baum der Tasks-Seite: ★ Favoriten als Sicht auf dieselben Knoten, darunter die Namensräume (einklappbar). */
 export function TaskTree(p: TaskTreeProps) {
   const row = (t: TaskInfo, key: string) => (
-    <TaskRow key={key} task={t} run={p.runs.find((r) => r.name === t.name)} gate={p.gates[t.name]} pinned={p.pinned.includes(t.name)}
-      active={t.name === p.selected} onSelect={() => p.onSelect(t.name)} onGate={() => p.onGate(t.name)} onPin={() => p.onPin(t.name)} />
+    <TaskRow key={key} task={t} run={p.runs.find((r) => r.name === t.name)} pinned={p.pinned.includes(t.name)}
+      active={t.name === p.selected} onSelect={() => p.onSelect(t.name)} onPin={() => p.onPin(t.name)} />
   );
   return (
     <div className="tk-tree">
@@ -50,23 +48,16 @@ export function TaskTree(p: TaskTreeProps) {
 interface TaskRowProps {
   task: TaskInfo;
   run?: TaskRun;
-  gate?: TaskGateState;
   pinned: boolean;
   active: boolean;
   onSelect: () => void;
-  onGate: () => void;
   onPin: () => void;
 }
 
-function TaskRow({ task, run, gate, pinned, active, onSelect, onGate, onPin }: TaskRowProps) {
+function TaskRow({ task, run, pinned, active, onSelect, onPin }: TaskRowProps) {
   const badge = describeRun(run);
-  const lock = describeGate(gate);
   return (
     <div className={active ? 'tk-row tk-row-on' : 'tk-row'}>
-      <IconButton size="1" variant={lock.temp ? 'outline' : 'ghost'} color={lock.temp ? 'amber' : 'gray'} className="tk-icon"
-        title={`${lock.label} · Klick schaltet bis zum Beenden um`} aria-label={`Schloss ${task.name}: ${lock.label}`} onClick={onGate}>
-        {lock.icon}
-      </IconButton>
       <IconButton size="1" variant="ghost" color="gray" className={pinned ? 'tk-icon' : 'tk-icon tk-pin'} title={pinned ? 'Aus Favoriten nehmen' : 'Zu Favoriten'}
         aria-pressed={pinned} aria-label={`Favorit ${task.name}`} onClick={onPin}>
         📌

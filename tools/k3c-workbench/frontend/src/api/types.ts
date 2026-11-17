@@ -305,15 +305,6 @@ export interface TaskRun {
   reason: string;
 }
 
-/** Freigabe-Schloss eines Tasks (Go: taskgate.State): Datei offen/zu, `-temp` = Laufzeit-Schalter bis zum Beenden. */
-export type TaskGateState = 'open' | 'closed' | 'open-temp' | 'closed-temp';
-
-/** Schlösser aller Tasks (Go: TaskGates); pending = Schalter, die „Schalter übernehmen“ in die Datei schreibt. */
-export interface TaskGates {
-  states: Record<string, TaskGateState>;
-  pending: number;
-}
-
 /** Hinweis eines Agenten an den Nutzer (Go: mcpsrv.Notice, Tool notify_ui). */
 export interface Notice {
   level: 'info' | 'success' | 'warn' | 'error';
@@ -525,12 +516,6 @@ export interface Backend extends GitBackend, TicketBackend, BalanceBackend, Asse
   taskStart(name: string, args: string[]): Promise<TaskRun>;
   taskStop(name: string): Promise<TaskRun>;
   taskRuns(): Promise<TaskRun[]>;
-  /** Freigabe-Schlösser aller Tasks (task_start nur bei offenem Schloss). */
-  taskGates(): Promise<TaskGates>;
-  /** Kehrt das Schloss bis zum Beenden um. */
-  taskGateToggle(name: string): Promise<TaskGates>;
-  /** Schreibt die Laufzeit-Schalter in tools/k3c-workbench/task-freigaben.json. */
-  taskGateSave(): Promise<TaskGates>;
   /** Sprints und Tickets frisch aus docs/ (Go: planning.Load). */
   planningData(): Promise<PlanningData>;
   /** Wie planningData, aber ohne Fließtexte der Sessions (`text` fehlt; Go: planning.LoadList, B-909). */

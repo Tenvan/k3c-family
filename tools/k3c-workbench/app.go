@@ -22,7 +22,6 @@ import (
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
 	"k3c/tools/k3c-workbench/internal/studioview"
-	"k3c/tools/k3c-workbench/internal/taskgate"
 	"k3c/tools/k3c-workbench/internal/taskrun"
 	"k3c/tools/k3c-workbench/internal/usage"
 )
@@ -77,7 +76,6 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
-	taskGate   *taskgate.Gate   // Freigabe-Schloss der Tasks (task_start)
 	gh         *github.Client   // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
 	git        *gitops.Repo     // Seite Git (B-580)
 	game       *studioview.Game // „Im Spiel ansehen“ im Bereich Assets (WB1.4), angelegt beim ersten Aufruf

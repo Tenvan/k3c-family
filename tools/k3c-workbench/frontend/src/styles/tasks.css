@@ -3,7 +3,6 @@
 .tk-page { display: flex; flex-direction: column; gap: 10px; height: calc(100vh - 100px); min-height: 0; }
 .tk-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .tk-filter { flex: 1; min-width: 220px; }
-.tk-key { display: inline-flex; gap: 6px; align-items: center; white-space: nowrap; }
 .tk-body {
   flex: 1; min-height: 0; display: grid; gap: 0;
   grid-template-columns: minmax(260px, var(--tk-split, 40%)) 8px 1fr;

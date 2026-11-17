@@ -101,7 +101,7 @@ func TestUIRPC(t *testing.T) {
 // Nur die Methoden der Oberfläche: exportiert, aber MCP-intern (TaskList) oder unbekannt heißt 404.
 func TestUIRPCUnbekannt(t *testing.T) {
 	a := uiApp(t)
-	for _, m := range []string{"TaskList", "TaskState", "Gibtsnicht", "startup"} {
+	for _, m := range []string{"TaskList", "Gibtsnicht", "startup"} {
 		if code, out := uiCall(t, a, http.MethodPost, uiPrefix+"rpc/"+m, "[]", nil); code != http.StatusNotFound || out["error"] == nil {
 			t.Errorf("%s: %d %v", m, code, out)
 		}

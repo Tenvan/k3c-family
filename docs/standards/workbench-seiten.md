@@ -254,21 +254,19 @@ Servers liefert auch `workbench_status`.
 ## 4. Tasks
 
 ```text
-┌ Kopf: Filter (Esc leert) · 🔑 nur freigegebene · [n Schalter übernehmen] · Neu laden ┐
+┌ Kopf: Filter (Esc leert) · Neu laden ┐
 ├ Baum (scrollt) ───────────┬─ Splitter ─┬ Ausgabe des gewählten Tasks ─────────────┤
 │ ★ Favoriten               │            │ Kopf: Name, Zustand, Argumentfeld,        │
 │ ▾ Namensraum              │            │       Start/Stopp (Enter startet)          │
-│   🔓/🔒 📌 Task  Zustand   │            │ Konsole des Laufs                          │
+│   📌 Task  Zustand         │            │ Konsole des Laufs                          │
 │                           │            │ ▸ Letzte Läufe (Zeit, Ergebnis, Argumente)│
 ├ Fuß: n von m Tasks · Filter · k laufen · Zuletzt geladen hh:mm ───────────────────┤
 ```
 
 - **Baum**: Namensräume einklappbar; gemerkt wird das *Eingeklappte*, damit neue Namensräume
   offen erscheinen. Favoriten sind eine Sicht auf dieselben Knoten (Pin), keine Kopie.
-- **Freigabe-Schloss** je Task: ob ein Agent ihn über `task_start` starten darf. Vier Zustände
-  aus Datei und Laufzeit-Schalter; gestrichelter Rahmen = nur bis zum Beenden. „Schalter
-  übernehmen“ schreibt die Laufzeit-Schalter in die Freigabedatei.
-- **🔑-Toggle** gemerkt, Freitext nicht.
+- **Kein Freigabe-Schloss**: Agenten und Tools dürfen jeden Task über `task_start` starten (Beschluss 🧑 2026-11-17).
+  Gemerkt wird der Freitext nicht.
 - **Splitter** zwischen Baum und Ausgabe, Anteil gemerkt, Doppelklick setzt zurück; unter 1100 px
   untereinander, der Anteil gilt dann nicht.
 - **Ausgabe**: dieselbe Konsolen-Komponente wie unter Dienste & Logs (Ringpuffer `task:<name>`).
@@ -280,8 +278,8 @@ Servers liefert auch `workbench_status`.
 
 | Tool | Zweck | Parameter |
 | --- | --- | --- |
-| `task_list` | Taskfile-Baum; freigegebene Tasks mit `*` (= Schloss offen) | `namespace?`, `query?` |
-| `task_start` | Freigegebenen Task starten (kehrt sofort zurück; Freigabe laut Schloss, nicht laut Name) | `task`, `args?` |
+| `task_list` | Taskfile-Baum | `namespace?`, `query?` |
+| `task_start` | Beliebigen Task starten (kehrt sofort zurück) | `task`, `args?` |
 | `task_stop` | Laufenden Task stoppen | `task` |
 | `task_status` | Läufe dieser Sitzung | `task?` |
 | `task_output` | Konsole eines Laufs = rechte Hälfte | `task`, `limit?`, `since?` |
