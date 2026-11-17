@@ -1,0 +1,69 @@
+# B-1029 · Abnahme-Läufe GS1: Gen samt Golden und Race sind grün
+
+- **Domäne:** REG
+- **Typ:** Schuld
+- **Prio:** mittel
+- **Umgebung:** ?
+- **Status:** offen
+- **Sprint:** GS1
+- **Projekt:** WZG
+- **Erstellt:** 2026-11-17
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+- **Duplikat von:** –
+- **Ersetzt:** –
+
+## Ausgangslage
+
+Sprint-Review GS1.6: Gen- und Race-Läufe gehören nicht in Sessions (B-742). Sim und Balancing sind gesperrt (🧑 2026-11-11) und entfallen hier, GS1 ändert keine Spielwerte.
+
+## Ziel
+
+Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
+
+## Beteiligte und Zielgruppen
+
+Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+
+## Anforderungen
+
+- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+
+## Nicht-Ziele
+
+Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+
+## Regeln und Einschränkungen
+
+Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
+- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
+- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
+- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
+- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+
+## Beispiele
+
+Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+
+## Ausnahme- und Fehlerfälle
+
+Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+
+## Akzeptanzkriterien
+
+- **AC-01** `task gen:paper` samt Grafik-Golden grün (GS1 ändert keine Grafik, Erwartung: unverändert).
+- **AC-02** `check_run task:check:race` grün oder als übersprungen (ohne gcc) vermerkt.
+- **AC-03** Rot → je Befund neues Ticket mit Projekt und Sprint, Messwerte in die Notizen.
+
+## Offene Fragen
+
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+
+## Notizen
+
+Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).

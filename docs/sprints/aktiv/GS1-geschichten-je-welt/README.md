@@ -85,7 +85,7 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe (Einzelheiten in 
 | GS1.3 | `GS1.3-einblendung-spiel.md` | Umsetzung | autonom | fertig |
 | GS1.4 | `GS1.4-welten-werkzeuge-story.md` | Umsetzung | autonom | fertig |
 | GS1.5 | `GS1.5-geschichten-schreiben.md` | Umsetzung | autonom | fertig |
-| GS1.6 | `GS1.6-review.md` | Review | autonom | in Arbeit |
+| GS1.6 | `GS1.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -93,6 +93,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+GS1.6 (2026-11-17, Claude): AC-01 bis AC-06 belegt (welten.md § 2.2/6.2 + Glossar; `engine/sim/story_test.go`; `hud/story*_test.go`; `world/story_test.go`, `tools_world_story_test.go`; GS1.5 `world_check` je Welt gültig), Golden unverändert.
+`task check` grün; `task check:go` rot nur durch fremden Detvec-Baum aus SI2.2 (B-1030), nicht durch GS1.
+Sessions liefen als Einzel-PRs nach `main` (#635–#660); `sengoku`, `nil`, `britannien` liegen nur lokal in der Repo-Wurzel.
+Abnahme-Läufe Gen/Race: B-1029. Offen bei 🧑 (AC-07): Texte abnehmen (B-976/AC-04), Einblendung am TV prüfen (B-974/AC-05).

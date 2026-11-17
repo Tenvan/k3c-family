@@ -1,6 +1,6 @@
 # GS1.6 · Review: Sprint-Abnahme GS1
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** REG
@@ -59,5 +59,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-06 geprüft: Nachweise der Session-Ergebnisse und Testnamen (Fachprüfer k3c-reviewer, keine schweren Befunde); Glossar (Abschlusszeile, Geschichte, Kunstsprache, Wendepunkt, Wortschatz) eingetragen.
+- `task check` grün; `task check:go` rot: `detvec TestDataTree` (doppel-truhe aus SI2.2) → B-1030 (SI2), außerhalb der erlaubten Dateien. `task:check:dev` nicht gefahren (Review-Regel: check und check:go).
+- AC-07 offen bei 🧑. Abnahme-Ticket B-1029 (Gen, Race).
+- Abweichung: kein Branch `sprint/gs1` vorhanden (Sessions per Einzel-PR in `main`), Branch für den Abschluss neu von `origin/main`.
