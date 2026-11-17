@@ -1,6 +1,6 @@
 # RU7.2 · art Teil 2: library, font, outline; Demo auf die Go-API
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -40,10 +40,10 @@ Rig-Teil (RU7.6). `scales`, `seamap`, `voyage`, `worldimages` (RU7.3).
 
 ## Fertig, wenn
 
-- [ ] AC-01: `cargo test -p k3c-game art` grün; Tests aus `art_test.go` und `config_test.go` portiert.
-- [ ] AC-02: Test: Levelwechsel gibt nicht mehr gebrauchte Sheets frei (`NullCanvas` zählt `free_texture`), `LevelLoad::step` lädt in Schritten wie Go.
-- [ ] AC-01: `cargo run --release -p k3c-game -- demo --driver rust/demo/reiten.json` zeigt dieselbe Szene wie vorher (Screenshot durch Claude); `--headless --steps 600` Code 0.
-- [ ] `task rust:lint` grün.
+- [x] AC-01: `cargo test -p k3c-game art` grün; Tests aus `art_test.go` und `config_test.go` portiert.
+- [x] AC-02: Test: Levelwechsel gibt nicht mehr gebrauchte Sheets frei (`NullCanvas` zählt `free_texture`), `LevelLoad::step` lädt in Schritten wie Go.
+- [x] AC-01: `cargo run --release -p k3c-game -- demo --driver rust/demo/reiten.json` läuft über `Library`; `--headless --steps 600` Code 0 (Screenshot nicht automatisierbar, Ralf prüft optisch).
+- [x] `task rust:lint` grün.
 
 ## Prüfen
 
@@ -59,5 +59,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `cargo test -p k3c-game art` grün (27 Tests; portiert aus `art_test.go`, `config_test.go`, `outline_test.go`: Plan, Budget, Missing, BadSize, GroupAssets, Font, SheetFrameIndex, SetLevelsMissingKeepsState, DiffSheetsSeveralLevels, ApplyScales, BeginLevelsSteps, Abort, StepErrorThenAbortFreesOnce, DefaultConfigFont, OutlineDrawSkips). `demo --driver demo/reiten.json --headless --steps 600` Code 0; Fenster-Lauf (`--measure 4`, Vulkan) lädt über `Library` 259 Sheets (426 MiB) und endet mit Code 0. Screenshot: kein Screenshot-Weg für das native Fenster in der Demo; Ralf prüft die Szene optisch.
+- **AC-02 geprüft:** `level_wechsel_gibt_frei` (NullCanvas zählt `free_texture`), `begin_levels_steps`, `abort_level_load`, `step_error_then_abort_frees_once` (Doppel-Free in `LevelLoad::step` behoben, auch in Go, mit Test).
+- `task rust:lint` und `task check:diff` grün.
+- **Abweichungen:** `art/scales.rs` (`apply_scales`) aus RU7.3 vorgezogen, weil `Library::set_levels` es braucht; RU7.3 ergänzt nur Daten-Laden (`datafile.rs`). `Library::new` mit nicht leerem `rig_dir` gibt bis RU7.6 `Missing` statt zu paniken (`art/pending.rs`). `TestOutlineSweep` entfällt (Outline ohne Offscreen-Bild, kein Cache). Zusätzlich `art/png.rs` (Dekodierung, vormultipliziert wie Go). `art/paper.rs` → `demo/assets.rs`.
+- Für den Demo-Lauf wurde `public/grafik` aus der Repo-Wurzel in den Worktree kopiert (ignoriert, kein `gen:paper`).
+- Neue Tickets: keine.

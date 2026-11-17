@@ -129,6 +129,7 @@ func (ld *LevelLoad) Step(n int) (bool, error) {
 		sh, err := uploadOne(spec)
 		if err != nil {
 			freeSheets(ld.got)
+			clear(ld.got) // sonst gibt ein folgendes Abort dieselben Bilder ein zweites Mal frei
 			return false, err
 		}
 		ld.got[sheetKey{spec.Asset, spec.Anim}] = sh

@@ -1,6 +1,6 @@
 # RU7.3 · art Teil 3: scales, seamap, voyage, worldimages
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -36,8 +36,8 @@ Typisierte Daten in `k3c-data`. Zeichnen der Seekarte (HUD, späterer Sprint).
 
 ## Fertig, wenn
 
-- [ ] AC-01: `cargo test -p k3c-game art` grün, inklusive der drei portierten Testdateien gegen das echte `data/`.
-- [ ] `task rust:lint` grün.
+- [x] AC-01: `cargo test -p k3c-game art` grün, inklusive der drei portierten Testdateien gegen das echte `data/`.
+- [x] `task rust:lint` grün.
 
 ## Prüfen
 
@@ -53,5 +53,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `cargo test -p k3c-game art` grün (36 Tests, darunter portierte `seamap`, `voyage`, `worldimages` gegen das echte `data/` über `CARGO_MANIFEST_DIR/../../../data`, plus `data_scales`-Parser und `Library::usable`). `task rust:lint` und `task check:diff` grün; Demo `--headless --steps 600` Code 0.
+- **Umgesetzt:** `art/datafile.rs` (`K3C_DATA_DIR`, sonst `data/`), `seamap.rs`, `voyage.rs` (`OnceLock`), `worldimages.rs` (`STANDARD_WORLD`), `scales::data_scales`/`parse_scales`; `default_config()` setzt `scales` jetzt aus `data/paper.json`.
+- **Abweichungen:** `apply_scales` stand schon seit RU7.2 (vorgezogen). `Library::usable` (Go `worldimages.go`) ergänzt. Go-`nil`-Zuordnung (`*SeaMap == nil`) entfällt: `SeaMap::from_data` liefert `Option`; Go-Test `AllocsPerRun` entfällt (kein Allokationszähler in Rust, die Zugriffe liefern `&str`). `voyage()` liest `data/` relativ zum Arbeitsordner; Tests lesen daher das echte `data/` direkt.
+- Neue Tickets: keine.
