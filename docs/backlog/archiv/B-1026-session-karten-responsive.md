@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** WZ61
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-17
