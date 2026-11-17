@@ -7,6 +7,7 @@
 use gilrs::{Axis, Button, EventType, GamepadId, Gilrs};
 
 use crate::input::clamp_axis;
+use crate::log;
 use crate::{InputState, PadAxis, PadButton};
 
 /// Ab diesem Wert (echt größer) gilt ein Trigger als gedrückt (Ebitengine: 30/255, Totzone von XInput).
@@ -29,11 +30,11 @@ impl Pads {
         let gilrs = match Gilrs::new() {
             Ok(g) => Some(g),
             Err(gilrs::Error::NotImplemented(g)) => {
-                eprintln!("⚠ Gamepads auf diesem System nicht unterstützt");
+                log::warn("🚫 Gamepads auf diesem System nicht unterstützt", &[]);
                 Some(g)
             }
             Err(e) => {
-                eprintln!("⚠ Gamepads nicht verfügbar: {e}");
+                log::warn("🚫 Gamepads nicht verfügbar", &[("grund", &e)]);
                 None
             }
         };

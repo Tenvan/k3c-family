@@ -2,13 +2,18 @@
 //!
 //! `cargo run --release -p k3c-platform --example probe -- n=20000 [secs=10] [measure=probe.json]`
 //! Backend über `WGPU_BACKEND` (vulkan, dx12). Titel zeigt Bilder/s und späte Bilder (> 25 ms).
+//!
+//! Zwei Spieler: `--two` (Fenster mit zwei Bildhälften, siehe `two.rs`);
+//! ohne Fenster und Ton: `--two --headless --steps 1000 --script crates/k3c-platform/examples/probe-script.json`.
+
+mod two;
 
 use std::collections::HashMap;
 use std::path::PathBuf;
 
 use k3c_platform::{
-    Affine, App, AudioOut, Canvas, Config, FontId, InputState, Key, Rect, STEP, SoundId, TexId, Vertex, open_audio,
-    run_window,
+    Affine, App, AudioOut, Canvas, Config, FontId, InputScript, InputState, Key, NullAudio, Rect, STEP, SoundId, TexId,
+    Vertex, log, open_audio, run_headless, run_window,
 };
 
 const SIZE: u32 = 32;
@@ -135,9 +140,70 @@ fn shapes(c: &mut dyn Canvas, tex: TexId, t: f32) {
     c.fill_path(&pts, [0.4, 0.6, 1.0, 1.0]);
 }
 
+/// Wert hinter dem Schalter `name` (`--steps 1000`).
+fn flag(args: &[String], name: &str) -> Option<String> {
+    args.iter()
+        .position(|a| a == name)
+        .and_then(|i| args.get(i + 1).cloned())
+}
+
+/// `--two --headless`: Lauf ohne Fenster und Ton; Code 0, wenn alle Takte liefen.
+fn headless(args: &[String]) -> Result<(), String> {
+    let steps: u32 = flag(args, "--steps").map_or(Ok(1000), |v| v.parse().map_err(|e| format!("--steps: {e}")))?;
+    let script = match flag(args, "--script") {
+        Some(p) => Some(InputScript::from_json(
+            &std::fs::read_to_string(&p).map_err(|e| format!("{p}: {e}"))?,
+        )?),
+        None => None,
+    };
+    let mut app = two::Two::new(Box::new(NullAudio::default()));
+    let canvas = run_headless(&mut app, steps, script.as_ref());
+    let [a, b] = [app.box_pos(0), app.box_pos(1)];
+    log::info(
+        "✅ Probe ohne Fenster fertig",
+        &[
+            ("takte", &app.steps),
+            ("klaenge", &app.sounds),
+            ("kaestchen1", &format!("{:.0},{:.0}", a[0], a[1])),
+            ("kaestchen2", &format!("{:.0},{:.0}", b[0], b[1])),
+            ("texte", &canvas.texts),
+            ("clips", &canvas.clips),
+        ],
+    );
+    if app.steps == u64::from(steps) {
+        Ok(())
+    } else {
+        Err(format!("nur {} von {steps} Takten", app.steps))
+    }
+}
+
+fn fail(e: &str) -> ! {
+    log::error("❌ Probe fehlgeschlagen", &[("grund", &e)]);
+    std::process::exit(1);
+}
+
 fn main() {
-    let args: HashMap<String, String> = std::env::args()
-        .skip(1)
+    let raw: Vec<String> = std::env::args().skip(1).collect();
+    if raw.iter().any(|a| a == "--two") {
+        if raw.iter().any(|a| a == "--headless") {
+            if let Err(e) = headless(&raw) {
+                fail(&e);
+            }
+            return;
+        }
+        let cfg = Config {
+            title: "k3c probe – zwei Spieler".into(),
+            measure: None,
+            max_seconds: flag(&raw, "--secs").and_then(|v| v.parse().ok()),
+            fullscreen: false,
+        };
+        if let Err(e) = run_window(&mut two::Two::new(open_audio()), cfg) {
+            fail(&e.to_string());
+        }
+        return;
+    }
+    let args: HashMap<String, String> = raw
+        .iter()
         .filter_map(|s| s.split_once('=').map(|(k, v)| (k.to_string(), v.to_string())))
         .collect();
     let n = args.get("n").and_then(|v| v.parse().ok()).unwrap_or(20_000);
@@ -160,7 +226,6 @@ fn main() {
         beep,
     };
     if let Err(e) = run_window(&mut app, cfg) {
-        eprintln!("Fehler: {e}");
-        std::process::exit(1);
+        fail(&e.to_string());
     }
 }

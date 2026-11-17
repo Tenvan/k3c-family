@@ -21,6 +21,7 @@ use winit::event_loop::{ActiveEventLoop, ControlFlow, EventLoop};
 use winit::keyboard::PhysicalKey;
 use winit::window::{Fullscreen, Window, WindowId};
 
+use crate::log;
 use crate::measure::SecondStat;
 use crate::{App, Frame, Measure, Runner};
 
@@ -113,7 +114,7 @@ impl<'a> WinLoop<'a> {
             .with_fullscreen(self.cfg.fullscreen.then_some(Fullscreen::Borderless(None)));
         let win = Arc::new(el.create_window(attrs).map_err(|e| e.to_string())?);
         let (gfx, backend) = Gfx::new(win.clone())?;
-        println!("backend: {backend}");
+        log::info("🚀 Fenster offen", &[("backend", &backend)]);
         self.backend = backend;
         self.gfx = Some(gfx);
         win.request_redraw();
