@@ -1,38 +1,70 @@
-//! Sprite-Sammlung je Bild: nach Textur sortiert, ein Instanz-Puffer, ein Draw-Call je Textur.
+//! Sammlung je Bild: Rechteck-Instanzen (mit Matrix) und Dreiecke, sortiert nach Ebene, Ausschnitt, Textur und
+//! Aufruf; ein Draw-Call je Bündel.
 //!
-//! Reine CPU-Seite ohne Grafikabhängigkeit; das Backend liest [`Frame::runs`] und
-//! [`Frame::write_instances`]. Vollfarbflächen und Schrift tragen den Schlüssel [`SOLID`] und
-//! landen deshalb nach allen Sprites (also obenauf).
+//! Reine CPU-Seite ohne Grafikabhängigkeit; das Backend liest [`Frame::runs`], [`Frame::write_instances`],
+//! [`Frame::write_vertices`] und [`Frame::indices`]. Vollfarbe (Rechtecke, Formen, Pixel-Schrift) trägt den
+//! Schlüssel [`SOLID`] und landet innerhalb von Ebene und Ausschnitt nach allen Texturen (also obenauf).
+//! `impl Canvas for Frame` steht in `frame_canvas.rs`.
 
-use crate::{Canvas, LOGICAL, Rect, TexId, font};
+use crate::shape::Tris;
+use crate::ttf::{Atlas, AtlasUpdate, Fonts};
+use crate::{Filter, Rect, TexId};
 
-/// Größe einer Instanz in Byte (12 × f32).
-pub const INST_BYTES: usize = 48;
-/// Sortierschlüssel der Vollfarbflächen: hinter allen Texturen.
+/// Größe einer Instanz in Byte (16 × f32).
+pub const INST_BYTES: usize = 64;
+/// Größe einer Ecke in Byte (8 × f32).
+pub const VERT_BYTES: usize = 32;
+/// Sortierschlüssel der Vollfarbe: hinter allen Texturen.
 pub const SOLID: u32 = u32::MAX;
 
-/// Eine Instanz: Ziel (x, y, w, h), Farbe, Quelle als Anteil der Textur (u, v, w, h).
-/// `uv.z == 0` und `uv.w == 0` bedeutet Vollfarbe.
+/// Eine Rechteck-Instanz: Einheitsquadrat → `m` (a, b, c, d wie GeoM) plus Verschiebung `t.xy`, Farbe `c`,
+/// Quelle als Anteil der Textur `uv` (u, v, w, h). `uv.z == 0` und `uv.w == 0` bedeutet Vollfarbe.
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub struct Inst {
-    pub r: [f32; 4],
+    pub m: [f32; 4],
+    pub t: [f32; 4],
     pub c: [f32; 4],
     pub uv: [f32; 4],
 }
 
-#[derive(Clone, Copy)]
-struct Item {
-    layer: u32,
-    tex: u32,
-    seq: u32,
-    inst: Inst,
+impl Inst {
+    /// Achsenparalleles Rechteck `dst`.
+    pub fn rect(dst: Rect, c: [f32; 4], uv: [f32; 4]) -> Self {
+        Self {
+            m: [dst.w, 0.0, 0.0, dst.h],
+            t: [dst.x, dst.y, 0.0, 0.0],
+            c,
+            uv,
+        }
+    }
 }
 
-/// Ein Draw-Call: Textur (`None` = Vollfarbe) und Bereich in der sortierten Instanz-Liste.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+/// Ecke eines Dreiecksnetzes (wie `ebiten.Vertex`): Ziel in logischen Einheiten, Quelle in Textur-Pixeln,
+/// Farbe als Faktor auf die Textur.
+#[derive(Clone, Copy, Debug, PartialEq, Default)]
+pub struct Vertex {
+    pub pos: [f32; 2],
+    pub uv: [f32; 2],
+    pub color: [f32; 4],
+}
+
+/// Art eines Draw-Calls.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum Kind {
+    /// Instanzen `first..first+count` aus [`Frame::instances`].
+    Quads,
+    /// Indizes `first..first+count` aus [`Frame::indices`].
+    Tris,
+}
+
+/// Ein Draw-Call: Ebene, Ausschnitt, Textur (`None` = Vollfarbe) und Bereich.
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Run {
     pub layer: u32,
+    /// Ausschnitt (Scissor) in logischen Einheiten; `None` = ganzes Bild.
+    pub clip: Option<Rect>,
     pub tex: Option<TexId>,
+    pub kind: Kind,
     pub first: u32,
     pub count: u32,
 }
@@ -42,17 +74,48 @@ pub struct Pending {
     pub id: TexId,
     pub w: u32,
     pub h: u32,
+    pub filter: Filter,
     pub rgba: Vec<u8>,
 }
 
-/// Sammelt die Zeichenaufrufe eines Bildes; implementiert [`Canvas`].
+#[derive(Clone, Copy)]
+enum Body {
+    Quad(Inst),
+    /// Bereich in `raw_idx` (Indizes schon auf `verts` bezogen).
+    Tris(u32, u32),
+}
+
+#[derive(Clone, Copy)]
+struct Item {
+    layer: u32,
+    clip: u32,
+    tex: u32,
+    seq: u32,
+    body: Body,
+}
+
+/// Sammelt die Zeichenaufrufe eines Bildes; implementiert [`crate::Canvas`].
 #[derive(Default)]
 pub struct Frame {
     items: Vec<Item>,
     runs: Vec<Run>,
-    sizes: Vec<(u32, u32)>,
-    pending: Vec<Pending>,
-    layer: u32,
+    quads: Vec<Inst>,
+    verts: Vec<Vertex>,
+    raw_idx: Vec<u32>,
+    idx: Vec<u32>,
+    pub(crate) sizes: Vec<(u32, u32)>,
+    pub(crate) pending: Vec<Pending>,
+    freed: Vec<TexId>,
+    /// Ausschnitte dieses Bildes; `Item::clip` = Index + 1, 0 = ohne.
+    pub(crate) clips: Vec<Rect>,
+    pub(crate) layer: u32,
+    pub(crate) clip: u32,
+    pub(crate) tris: Tris,
+    pub(crate) fonts: Fonts,
+    pub(crate) atlas: Atlas,
+    /// Textur des Glyphen-Atlas (beim ersten TTF-Text angelegt).
+    pub(crate) atlas_tex: Option<TexId>,
+    pub(crate) atlas_updates: Vec<AtlasUpdate>,
 }
 
 impl Frame {
@@ -64,19 +127,44 @@ impl Frame {
     pub fn begin(&mut self) {
         self.items.clear();
         self.runs.clear();
+        self.verts.clear();
+        self.raw_idx.clear();
+        self.clips.clear();
         self.layer = 0;
+        self.clip = 0;
+        self.atlas.begin_frame();
     }
 
-    /// Sortiert nach Ebene, dann Textur (Reihenfolge innerhalb gleicher Ebene und Textur bleibt)
-    /// und bildet die Draw-Calls.
+    /// Sortiert nach Ebene, Ausschnitt, Textur, Aufruf und bildet die Draw-Calls; Instanzen und Indizes liegen
+    /// danach je Bündel zusammenhängend.
     pub fn finish(&mut self) {
-        self.items.sort_unstable_by_key(|i| (i.layer, i.tex, i.seq));
-        let mut first = 0;
-        for i in 1..=self.items.len() {
-            let a = self.items[i - 1];
-            if i == self.items.len() || (self.items[i].layer, self.items[i].tex) != (a.layer, a.tex) {
-                self.runs.push(run(a.layer, a.tex, first, i as u32));
-                first = i as u32;
+        self.items.sort_unstable_by_key(|i| (i.layer, i.clip, i.tex, i.seq));
+        self.quads.clear();
+        self.idx.clear();
+        for it in &self.items {
+            let (kind, first, count) = match it.body {
+                Body::Quad(inst) => {
+                    self.quads.push(inst);
+                    (Kind::Quads, self.quads.len() as u32 - 1, 1)
+                }
+                Body::Tris(a, n) => {
+                    let first = self.idx.len() as u32;
+                    self.idx.extend_from_slice(&self.raw_idx[a as usize..(a + n) as usize]);
+                    (Kind::Tris, first, n)
+                }
+            };
+            let clip = it.clip.checked_sub(1).map(|c| self.clips[c as usize]);
+            let tex = (it.tex != SOLID).then_some(TexId(it.tex));
+            match self.runs.last_mut() {
+                Some(r) if (r.layer, r.clip, r.tex, r.kind) == (it.layer, clip, tex, kind) => r.count += count,
+                _ => self.runs.push(Run {
+                    layer: it.layer,
+                    clip,
+                    tex,
+                    kind,
+                    first,
+                    count,
+                }),
             }
         }
     }
@@ -86,23 +174,37 @@ impl Frame {
     }
 
     pub fn instance_count(&self) -> usize {
-        self.items.len()
+        self.quads.len()
     }
 
     /// Instanzen in Zeichenreihenfolge (nach `finish`).
     pub fn instances(&self) -> impl Iterator<Item = &Inst> {
-        self.items.iter().map(|i| &i.inst)
+        self.quads.iter()
+    }
+
+    /// Ecken der Dreiecke (Quelle schon als Anteil der Textur).
+    pub fn vertices(&self) -> &[Vertex] {
+        &self.verts
+    }
+
+    /// Indizes der Dreiecke in Zeichenreihenfolge (nach `finish`).
+    pub fn indices(&self) -> &[u32] {
+        &self.idx
     }
 
     /// Schreibt die Instanzen als Bytes (`INST_BYTES` je Stück) in `out`.
     pub fn write_instances(&self, out: &mut [u8]) {
         let (chunks, _) = out.as_chunks_mut::<INST_BYTES>();
-        for (chunk, it) in chunks.iter_mut().zip(&self.items) {
-            let floats = it.inst.r.iter().chain(&it.inst.c).chain(&it.inst.uv);
-            let (cells, _) = chunk.as_chunks_mut::<4>();
-            for (cell, v) in cells.iter_mut().zip(floats) {
-                *cell = v.to_ne_bytes();
-            }
+        for (chunk, i) in chunks.iter_mut().zip(&self.quads) {
+            put_floats(chunk, i.m.iter().chain(&i.t).chain(&i.c).chain(&i.uv));
+        }
+    }
+
+    /// Schreibt die Ecken als Bytes (`VERT_BYTES` je Stück) in `out`.
+    pub fn write_vertices(&self, out: &mut [u8]) {
+        let (chunks, _) = out.as_chunks_mut::<VERT_BYTES>();
+        for (chunk, v) in chunks.iter_mut().zip(&self.verts) {
+            put_floats(chunk, v.pos.iter().chain(&v.uv).chain(&v.color));
         }
     }
 
@@ -111,173 +213,93 @@ impl Frame {
         self.pending.drain(..)
     }
 
-    fn push(&mut self, tex: u32, inst: Inst) {
+    /// Texturen, die das Backend am Bildende freigeben soll.
+    pub fn take_freed(&mut self) -> std::vec::Drain<'_, TexId> {
+        self.freed.drain(..)
+    }
+
+    /// Neue Glyphen für die Atlas-Textur (nach dem Hochladen der Textur einzuspielen).
+    pub fn take_atlas_updates(&mut self) -> Option<(TexId, std::vec::Drain<'_, AtlasUpdate>)> {
+        Some((self.atlas_tex?, self.atlas_updates.drain(..)))
+    }
+
+    /// Größe der Textur; `None`, wenn unbekannt oder freigegeben.
+    pub(crate) fn tex_size(&self, t: TexId) -> Option<(f32, f32)> {
+        match self.sizes.get(t.0 as usize) {
+            Some(&(w, h)) if w > 0 => Some((w as f32, h as f32)),
+            _ => None,
+        }
+    }
+
+    pub(crate) fn free(&mut self, t: TexId) {
+        if self.tex_size(t).is_some() {
+            self.sizes[t.0 as usize] = (0, 0);
+            self.pending.retain(|p| p.id != t);
+            self.freed.push(t);
+        }
+    }
+
+    pub(crate) fn push_quad(&mut self, tex: u32, inst: Inst) {
+        self.push(tex, Body::Quad(inst));
+    }
+
+    /// Dreiecke aus `verts` (Quelle in Textur-Pixeln, wird hier auf Anteile umgerechnet) und `idx`.
+    pub(crate) fn push_mesh(&mut self, tex: u32, size: (f32, f32), verts: &[Vertex], idx: &[u16]) {
+        let base = self.verts.len() as u32;
+        self.verts.extend(verts.iter().map(|v| Vertex {
+            uv: [v.uv[0] / size.0, v.uv[1] / size.1],
+            color: premul(v.color),
+            ..*v
+        }));
+        let first = self.raw_idx.len() as u32;
+        let n = verts.len() as u32;
+        self.raw_idx
+            .extend(idx.iter().map(|&i| base + u32::from(i).min(n.saturating_sub(1))));
+        self.push(tex, Body::Tris(first, idx.len() as u32 / 3 * 3));
+    }
+
+    /// Dreiecke aus dem Form-Puffer `tris` in Vollfarbe (vormultipliziert); leert den Puffer.
+    pub(crate) fn push_shape(&mut self, color: [f32; 4]) {
+        let base = self.verts.len() as u32;
+        let color = premul(color);
+        self.verts.extend(self.tris.pos.iter().map(|&pos| Vertex {
+            pos,
+            uv: [0.0; 2],
+            color,
+        }));
+        let first = self.raw_idx.len() as u32;
+        self.raw_idx.extend(self.tris.idx.iter().map(|&i| base + i));
+        let n = self.tris.idx.len() as u32;
+        self.tris.clear();
+        if n > 0 {
+            self.push(SOLID, Body::Tris(first, n));
+        }
+    }
+
+    fn push(&mut self, tex: u32, body: Body) {
         let seq = self.items.len() as u32;
         self.items.push(Item {
             layer: self.layer,
+            clip: self.clip,
             tex,
             seq,
-            inst,
+            body,
         });
     }
 }
 
-fn run(layer: u32, tex: u32, first: u32, end: u32) -> Run {
-    let tex = (tex != SOLID).then_some(TexId(tex));
-    Run {
-        layer,
-        tex,
-        first,
-        count: end - first,
-    }
+/// Gerade Farbe → vormultipliziert (wie `ColorScaleModeStraightAlpha` bei Ebitengine).
+fn premul(c: [f32; 4]) -> [f32; 4] {
+    [c[0] * c[3], c[1] * c[3], c[2] * c[3], c[3]]
 }
 
-impl Canvas for Frame {
-    fn size(&self) -> (f32, f32) {
-        LOGICAL
-    }
-
-    fn layer(&mut self, z: u32) {
-        self.layer = z;
-    }
-
-    fn texture(&mut self, rgba: &[u8], w: u32, h: u32) -> TexId {
-        assert_eq!(rgba.len(), w as usize * h as usize * 4, "RGBA8 erwartet");
-        let id = TexId(self.sizes.len() as u32);
-        self.sizes.push((w, h));
-        self.pending.push(Pending {
-            id,
-            w,
-            h,
-            rgba: rgba.to_vec(),
-        });
-        id
-    }
-
-    fn sprite(&mut self, t: TexId, src: Rect, dst: Rect, tint: [f32; 4]) {
-        let Some(&(w, h)) = self.sizes.get(t.0 as usize) else {
-            return;
-        };
-        let (w, h) = (w as f32, h as f32);
-        let uv = [src.x / w, src.y / h, src.w / w, src.h / h];
-        self.push(
-            t.0,
-            Inst {
-                r: [dst.x, dst.y, dst.w, dst.h],
-                c: tint,
-                uv,
-            },
-        );
-    }
-
-    fn rect(&mut self, dst: Rect, color: [f32; 4]) {
-        self.push(
-            SOLID,
-            Inst {
-                r: [dst.x, dst.y, dst.w, dst.h],
-                c: color,
-                uv: [0.0; 4],
-            },
-        );
-    }
-
-    fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]) {
-        let k = px / font::GLYPH_H as f32;
-        let mut cx = x;
-        for ch in s.chars() {
-            font::runs(ch, |gx, gy, n| {
-                let r = Rect::new(cx + gx as f32 * k, y + gy as f32 * k, n as f32 * k, k);
-                self.rect(r, color);
-            });
-            cx += font::ADVANCE as f32 * k;
-        }
+fn put_floats<'a, const N: usize>(chunk: &mut [u8; N], floats: impl Iterator<Item = &'a f32>) {
+    let (cells, _) = chunk.as_chunks_mut::<4>();
+    for (cell, v) in cells.iter_mut().zip(floats) {
+        *cell = v.to_ne_bytes();
     }
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    const WHITE: [f32; 4] = [1.0; 4];
-
-    fn tex(f: &mut Frame) -> TexId {
-        f.texture(&[255; 16], 2, 2)
-    }
-
-    #[test]
-    fn sortiert_nach_textur_und_behaelt_reihenfolge() {
-        let mut f = Frame::new();
-        let (a, b) = (tex(&mut f), tex(&mut f));
-        f.begin();
-        let src = Rect::new(0.0, 0.0, 2.0, 2.0);
-        for (i, t) in [b, a, b, a, b].into_iter().enumerate() {
-            f.sprite(t, src, Rect::new(i as f32, 0.0, 1.0, 1.0), WHITE);
-        }
-        f.rect(Rect::new(9.0, 0.0, 1.0, 1.0), WHITE);
-        f.finish();
-        let xs: Vec<f32> = f.instances().map(|i| i.r[0]).collect();
-        assert_eq!(xs, [1.0, 3.0, 0.0, 2.0, 4.0, 9.0]);
-        let runs: Vec<_> = f.runs().iter().map(|r| (r.tex, r.first, r.count)).collect();
-        assert_eq!(runs, [(Some(a), 0, 2), (Some(b), 2, 3), (None, 5, 1)]);
-    }
-
-    #[test]
-    fn ebene_geht_vor_textur() {
-        let mut f = Frame::new();
-        let (a, b) = (tex(&mut f), tex(&mut f));
-        f.begin();
-        let (src, r) = (Rect::new(0.0, 0.0, 2.0, 2.0), Rect::new(0.0, 0.0, 1.0, 1.0));
-        f.layer(2);
-        f.sprite(a, src, r, WHITE);
-        f.layer(1);
-        f.sprite(b, src, r, WHITE);
-        f.rect(r, WHITE);
-        f.finish();
-        let runs: Vec<_> = f.runs().iter().map(|r| (r.layer, r.tex)).collect();
-        assert_eq!(runs, [(1, Some(b)), (1, None), (2, Some(a))]);
-        f.begin();
-        f.finish();
-        assert!(f.runs().is_empty());
-    }
-
-    #[test]
-    fn leeres_bild_hat_keine_draw_calls() {
-        let mut f = Frame::new();
-        f.begin();
-        f.finish();
-        assert!(f.runs().is_empty());
-    }
-
-    #[test]
-    fn quelle_wird_auf_textur_anteile_umgerechnet() {
-        let mut f = Frame::new();
-        let t = f.texture(&[0; 4 * 8 * 4], 4, 8);
-        f.begin();
-        f.sprite(t, Rect::new(2.0, 4.0, 2.0, 4.0), Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
-        f.finish();
-        assert_eq!(f.instances().next().map(|i| i.uv), Some([0.5, 0.5, 0.5, 0.5]));
-    }
-
-    #[test]
-    fn text_fasst_pixelstreifen_zu_rechtecken() {
-        let mut f = Frame::new();
-        f.begin();
-        f.text("I", 0.0, 0.0, 7.0, WHITE);
-        f.finish();
-        // I: oben und unten je ein Streifen (5 breit), dazwischen fünf einzelne Pixel
-        assert_eq!(f.instance_count(), 7);
-        assert!(f.instances().all(|i| i.uv == [0.0; 4]));
-    }
-
-    #[test]
-    fn instanzen_belegen_achtundvierzig_byte() {
-        let mut f = Frame::new();
-        f.begin();
-        f.rect(Rect::new(1.0, 2.0, 3.0, 4.0), WHITE);
-        f.finish();
-        let mut out = [0u8; INST_BYTES];
-        f.write_instances(&mut out);
-        assert_eq!(f32::from_ne_bytes(out[4..8].try_into().unwrap()), 2.0);
-        assert_eq!(f32::from_ne_bytes(out[16..20].try_into().unwrap()), 1.0);
-    }
-}
+#[path = "batch_tests.rs"]
+mod tests;

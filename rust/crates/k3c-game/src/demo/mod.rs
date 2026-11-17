@@ -6,7 +6,7 @@ mod driver;
 mod scene;
 mod world;
 
-use k3c_platform::{App, Canvas, Config, Rect, STEP, run_headless, run_window};
+use k3c_platform::{App, Canvas, Config, InputScript, InputState, Key, Rect, STEP, run_headless, run_window};
 
 use crate::art::Library;
 pub use cli::{Options, parse_args};
@@ -43,6 +43,10 @@ pub struct Demo {
     cpu: Vec<crate::art::Asset>,
     gpu: Vec<Gpu>,
     extra: Extra,
+    /// Esc gedrückt: Schleife endet.
+    quit: bool,
+    /// Gewünschtes Vollbild; F schaltet um.
+    full: bool,
 }
 
 impl Demo {
@@ -66,6 +70,8 @@ impl Demo {
                 n: sprites,
                 sprite: None,
             },
+            quit: false,
+            full: false,
         })
     }
 
@@ -172,7 +178,11 @@ impl Demo {
 }
 
 impl App for Demo {
-    fn step(&mut self, _dt: f64) {
+    fn step(&mut self, input: &InputState, _dt: f64) {
+        self.quit |= input.just_pressed(Key::Escape);
+        if input.just_pressed(Key::F) {
+            self.full = !self.full;
+        }
         self.world.step();
     }
 
@@ -194,7 +204,11 @@ impl App for Demo {
     }
 
     fn done(&self) -> bool {
-        false
+        self.quit
+    }
+
+    fn fullscreen(&self) -> Option<bool> {
+        Some(self.full)
     }
 }
 
@@ -204,8 +218,10 @@ pub fn run(o: &Options) -> Result<(), String> {
     let lib = Library::open(&o.grafik, &o.data.join("paper.json")).map_err(|e| e.to_string())?;
     let speed = driver.kamera.tempo.map_or_else(|| cli::monarch_speed(&o.data), Ok)?;
     let mut demo = Demo::new(driver, Some(&lib), speed, o.sprites)?;
+    demo.full = o.fullscreen;
     if o.headless {
-        let n = run_headless(&mut demo, o.steps);
+        let script = o.script.as_ref().map(|p| read_script(p)).transpose()?;
+        let n = run_headless(&mut demo, o.steps, script.as_ref());
         println!(
             "headless: {} Schritte, {} Sprites, {} Flächen, {} Texturen",
             o.steps, n.sprites, n.rects, n.textures
@@ -219,6 +235,11 @@ pub fn run(o: &Options) -> Result<(), String> {
         fullscreen: o.fullscreen,
     };
     run_window(&mut demo, cfg)
+}
+
+fn read_script(p: &std::path::Path) -> Result<InputScript, String> {
+    let text = std::fs::read_to_string(p).map_err(|e| format!("{}: {e}", p.display()))?;
+    InputScript::from_json(&text)
 }
 
 #[cfg(test)]

@@ -1,0 +1,7 @@
+[
+  { "step": 0, "keys": ["D"], "pads": [{ "id": 0, "axes": { "LX": -1.0, "LY": 0.5 } }] },
+  { "step": 30, "keys": ["D", "S", "T"], "pads": [{ "id": 0, "buttons": ["A"] }] },
+  { "step": 31, "keys": ["D", "S"], "pads": [{ "id": 0 }] },
+  { "step": 120, "keys": ["A"], "pads": [{ "id": 0, "buttons": ["Right"] }] },
+  { "step": 400 }
+]

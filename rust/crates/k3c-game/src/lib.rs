@@ -2,6 +2,8 @@
 
 pub mod art;
 pub mod demo;
+pub mod input;
+pub mod view;
 
 #[cfg(test)]
 mod tests {

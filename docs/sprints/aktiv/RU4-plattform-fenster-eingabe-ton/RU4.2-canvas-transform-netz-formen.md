@@ -1,6 +1,6 @@
 # RU4.2 · Canvas Teil 2: Transform, Dreiecksnetz, Formen, Filter, Freigeben
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `cargo test -p k3c-platform` grün (42 Unit-Tests), darin `affine_tests` (Verschieben → Drehen → Skalieren → Verschieben Schritt für Schritt gegen die GeoM-Formeln, Concat-Reihenfolge), `shape_tests` (Kreis 48 Segmente mit Fläche πr², Ring, Quadrat beide Umlaufrichtungen, konkave L-Form, Stern, geschlossener Pfad, entartete Eingaben) und `batch_tests` (Matrix aus `sprite_tf`, Linie als gedrehtes Rechteck, Netze und Formen bündeln nach Aufruf, Freigabe, Filter). `tests/alloc.rs` zeichnet zusätzlich `sprite_tf`, `mesh`, `stroke_rect`, `fill_circle`, `stroke_circle`, `stroke_line`, `fill_path`: 0 Allokationen in 120 Bildern.
+- **AC-01 geprüft (Lauf):** `cargo run --release -p k3c-platform --example probe -- n=20000 secs=3`: Vulkan Median 16,67 ms (60 Bilder/s), CPU Median 1,1 ms; mit allen Formen (`n=2000`) Vulkan und DX12 ohne Validierungsfehler. **Ralf prüft:** In der Probe stehen rechts ein gedrehtes Sprite, ein bunt verlaufendes Netz, ein grüner Rahmen, ein roter halbdurchsichtiger Kreis, ein weißer Ring, ein kreisender gelber Zeiger und eine blaue L-Form – alle sauber und ohne Löcher.
+- **Lauf:** Demo `--headless --steps 600` Code 0; `cargo clippy --workspace --all-targets -D warnings` grün; `task check:diff` grün.
+- **API:** `Affine { a, b, c, d, tx, ty }` (`IDENTITY`, `translate`, `scale`, `rotate`, `concat`, `apply`; Reihenfolge wie GeoM), `Vertex { pos, uv (Textur-Pixel), color }`, `Filter::{Linear, Nearest}`; `Canvas`: `texture` (Standard linear) → `texture_with`, `free_texture`, `sprite_tf`, `mesh`, `fill_rect` (= `rect`), `stroke_rect`, `fill_circle`, `stroke_circle`, `stroke_line`, `fill_path`. `NullCanvas` zählt `meshes`, `shapes`, `freed`. `Frame`: `vertices`, `indices`, `write_vertices`, `take_freed`, `Run.kind` (`Quads`/`Tris`).
+- **Umsetzung:** Instanz = Einheitsquadrat mit 2×2-Matrix + Verschiebung (64 Byte); `sprite(dst)` ist die Achsen-Matrix. `stroke_line` ist ein gedrehtes Instanz-Rechteck, `stroke_rect` vier Rechtecke; Kreise, Ringe und Polygone gehen als Dreiecke über eine zweite Pipeline mit u32-Indexpuffer; `finish` kopiert die Indizes je Bündel zusammenhängend um. Sampler je Filter in der Bind-Group der Textur; `free_texture` entfernt eine noch nicht hochgeladene Textur aus der Warteschlange, sonst gibt das Backend die Bind-Group nach dem Bild frei. `batch.rs` aufgeteilt in `batch.rs`, `frame_canvas.rs`, `batch_tests.rs`; Backend in `gpu.rs` und `setup.rs`.
+- **Review (Sonnet):** keine schweren Befunde. Behoben: Tönung und Netz-Farben mit Alpha < 1 werden jetzt vormultipliziert (vorher wurde ein halbdurchsichtiges Sprite heller statt blasser; galt schon seit RU2), geschlossener Pfad (letzter = erster Punkt) wird gefüllt. Offen gelassen: Vollfarbe liegt innerhalb von Ebene und Ausschnitt über Texturen (Vorentscheidung „gebündelt nach Ebene, Ausschnitt, Textur“; Aufrufer trennen über Ebenen), `TexId` werden nicht wiederverwendet.
+- **Abweichungen:** (1) `textureSample` im Shader vor die Verzweigung gezogen (gleichförmiger Kontrollfluss). (2) Kreise mit fester Segmentzahl 48 statt adaptiver Bögen wie `vector`; Pfade nur aus Geraden (Kurven: Nicht-Ziel). (3) Formen ohne Kantenglättung (`antialias` von `vector.*` entfällt).

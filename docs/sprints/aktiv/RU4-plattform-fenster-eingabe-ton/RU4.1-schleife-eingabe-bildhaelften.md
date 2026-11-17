@@ -1,6 +1,6 @@
 # RU4.1 · Schleife: Eingabe-Schnappschuss, Skript, Bildhälften, Vollbild
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -62,5 +62,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-01 geprüft:** `cargo test -p k3c-platform` grün (28 Unit-Tests); `tests/alloc.rs` läuft jetzt über `Runner` mit Tastenflanken, Pad-Taste/Achse und zwei `clip`-Hälften: 0 Allokationen in 120 Leerlauf-Bildern, 3 Bündel (zwei Hälften + Vollfarbe). `Frame` bündelt nach (Ebene, Ausschnitt, Textur), gleicher Ausschnitt = gleicher Index; `backend/gpu.rs` setzt den Scissor je Bündel (logisch → Surface-Pixel, begrenzt, leere Fläche übersprungen; Test `ausschnitt_wird_auf_surface_gestreckt_und_begrenzt`).
+- **AC-01:** `App::step(&InputState, dt)`, `App::fullscreen() -> Option<bool>`; das Backend wertet keine Taste mehr aus (`backend/keys.rs` winit → `Key`, physisch; Wiederholungen zählen nicht; Fokusverlust lässt alle Tasten los) und setzt Vollbild nach den Takten, wenn die App anderes will. Demo: Esc → `done`, F schaltet `fullscreen()` (Test `esc_beendet_und_f_schaltet_vollbild`). **Ralf prüft:** `cargo run --release -p k3c-game -- demo --driver rust/demo/reiten.json` zeigt die Demo wie vorher, F schaltet Vollbild, Esc beendet, Fenster lässt sich ziehen.
+- **AC-02 geprüft:** `runner_tests.rs` › `tausend_takte_mit_simulierter_uhr_gleich_headless`: 1000 Takte mit unregelmäßiger Bildzeit (2–250 ms, 0 bis 4 Takte je Bild) über `Runner` gegen `run_headless(app, 5000, Some(&script))` mit demselben 50-Einträge-Skript (Tasten, Tipps, Pads kommen und gehen) – Zustand samt Prüfsumme gleich.
+- **Lauf:** `demo --headless --steps 600` Code 0; mit `--script` (F in Takt 5, Esc in Takt 100) endet sie nach Takt 100 mit Code 0. `cargo clippy --workspace --all-targets -D warnings` grün, `task check:diff` grün.
+- **API:** `InputState { keys: KeyState, pads }` mit `held`, `just_pressed` (auch `just_released`, `release_all`), `pads()`, `pad(id)`, `pad_mut(id)` (verbindet), `disconnect`, `end_step`; `PadState { id, held, just_pressed, axis, set_button, set_axis }`; `Key` (48 Tasten aus `ebiten.Key*`, `Key::ALL`, Bitfeld u64), `PadButton` (17 Xbox-Namen), `PadAxis` (6); `InputScript::from_json`/`new`/`apply(step, &mut InputState)`; `Runner::new(app, script)`, `advance(elapsed, canvas) -> Takte`, `input_mut`, `app`, `steps`; `run_headless(app, steps, script)`; `NullCanvas.clips`; Demo-Option `--script <datei>`.
+- **Abweichungen:** (1) Pads haben zusätzlich `just_pressed` (Flanke wie bei Tasten), damit ein kurzer Tipp auch am Pad nicht verloren geht. (2) Das Skript setzt den Zustand nur in dem Takt, in dem ein Eintrag beginnt; dazwischen bleibt er (gleich „gilt bis zum nächsten“). (3) `Runner` löscht die Flanken nach jedem Takt (nach dem ersten Takt eines Bildes kommen ohnehin keine neuen). Die Grafik liegt im Worktree nicht vor (B-737); der Lauf nutzte `--grafik` der Repo-Wurzel.

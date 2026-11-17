@@ -1,6 +1,6 @@
 # RU4.7 · Eingabe-Port Teil 2: source an InputState
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- `k3c-game/src/input/source.rs`: `InputSource` erfüllt `view::input::Source` und `KeyboardSource`; liest den Plattform-Schnappschuss, Hot-Plug nach Pad-ID, neu verbundenes Pad startet frisch, kein Übersprechen.
+- Tests: `devices_hot_plug`, `reconnected_pad_starts_fresh`, `non_standard_pad_warns_once`, `no_crosstalk`, `poll_allocs`, neu `poll_reads_platform_state`. Grün, Clippy grün, Review verhaltensgleich.
+- Abweichungen: `poll_raw` ist allokationsfrei (Test über gleiche Kapazität und Zeiger, da `unsafe_code` verboten); `Source::poll` kopiert, weil `Input` seinen `Vec` besitzt. `standard` ist immer wahr (gilrs kennt kein Standard-Layout-Flag); Lenkräder o. Ä. würden als Pad erscheinen (vermutet, ungeprüft).
+- **Ralf prüft:** Pad im laufenden Spiel ab- und wieder anstecken.

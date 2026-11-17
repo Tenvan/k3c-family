@@ -16,6 +16,10 @@ pollster = "=1.0.1"
 png = "=0.18.1"
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.154"
+# RU4 (B-1014, Freigabe Ralf): Schrift, Gamepads, Ton.
+fontdue = { version = "=0.9.5", default-features = false, features = ["std"] }
+gilrs = "=0.11.2"
+rodio = { version = "=0.23.0", default-features = false, features = ["playback", "vorbis", "mp3", "wav"] }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

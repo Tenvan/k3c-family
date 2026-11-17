@@ -108,16 +108,16 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU4.1 | `RU4.1-schleife-eingabe-bildhaelften.md` | Umsetzung | autonom | offen |
-| RU4.2 | `RU4.2-canvas-transform-netz-formen.md` | Umsetzung | autonom | offen |
-| RU4.3 | `RU4.3-schrift-ttf-umlaute.md` | Umsetzung | autonom | offen |
-| RU4.4 | `RU4.4-gamepads-xbox.md` | Umsetzung | autonom | offen |
-| RU4.5 | `RU4.5-view-vertraege-eingabe.md` | Umsetzung | autonom | offen |
-| RU4.6 | `RU4.6-eingabe-port-bindings-tracker.md` | Umsetzung | autonom | offen |
-| RU4.7 | `RU4.7-eingabe-port-source.md` | Umsetzung | autonom | offen |
-| RU4.8 | `RU4.8-ton-audioout.md` | Umsetzung | autonom | offen |
-| RU4.9 | `RU4.9-log-und-probe.md` | Umsetzung | autonom | offen |
-| RU4.10 | `RU4.10-review.md` | Review | autonom | offen |
+| RU4.1 | `RU4.1-schleife-eingabe-bildhaelften.md` | Umsetzung | autonom | fertig |
+| RU4.2 | `RU4.2-canvas-transform-netz-formen.md` | Umsetzung | autonom | fertig |
+| RU4.3 | `RU4.3-schrift-ttf-umlaute.md` | Umsetzung | autonom | fertig |
+| RU4.4 | `RU4.4-gamepads-xbox.md` | Umsetzung | autonom | fertig |
+| RU4.5 | `RU4.5-view-vertraege-eingabe.md` | Umsetzung | autonom | fertig |
+| RU4.6 | `RU4.6-eingabe-port-bindings-tracker.md` | Umsetzung | autonom | fertig |
+| RU4.7 | `RU4.7-eingabe-port-source.md` | Umsetzung | autonom | fertig |
+| RU4.8 | `RU4.8-ton-audioout.md` | Umsetzung | autonom | fertig |
+| RU4.9 | `RU4.9-log-und-probe.md` | Umsetzung | autonom | fertig |
+| RU4.10 | `RU4.10-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -125,6 +125,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+- 2026-11-17, Claude (RU4.10): AC-01 bis AC-05 mit Tests und Probe nachgewiesen; `task check`, `task check:go`, `cargo clippy/fmt/test --workspace` grün (129 Tests, 1 ignoriert, wartet auf RU8).
+- Offen für Ralf (B-1028): Pad an- und abstecken, Ton hörbar, Vollbild am TV, `check:race`.
+- Abweichungen: Settings ohne `Stress` (B-1025); `standard` ist bei Pads immer wahr (gilrs); WAV wird dekodiert, aber nicht eigens getestet.

@@ -1,6 +1,6 @@
 # RU4.8 · Ton: AudioOut, Gerät, NullAudio
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,5 +59,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- `k3c-platform`: `AudioOut` (load, play, play_loop, set_volume, stop, playing, failed), `NullAudio`, `open_audio()` mit stummem Rückfall und Warnung; Gerät in `backend/sound.rs` über rodio 0.23 (ohne Standard-Features: playback, vorbis, mp3, wav).
+- Klänge werden beim Laden in den Speicher dekodiert (geteilte Samples, keine Kopie je Stimme); kein Entladen, höchstens 32 Stimmen.
+- Nur fatale Gerätefehler (Gerät weg, Host, Rechte, Backend) schalten stumm, Xrun/Gerätewechsel nicht; Lautstärke auf 0 … 1 begrenzt.
+- `log.rs`: Log mit Emoji-Regel (Liste aus CLAUDE.md), Debug-Build prüft per `debug_assert`.
+- Tests: Dekodieren OGG/MP3, kaputte Datei, Öffnen-Fehler → NullAudio, Schleife, Fehlerarten, Lautstärke.
+- **Ralf prüft:** In der Probe (`cargo run -p k3c-platform --example probe`) ist Taste T hörbar; Kopfhörer im Lauf ziehen → Probe läuft weiter.

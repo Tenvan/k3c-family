@@ -2,7 +2,7 @@
 
 use std::path::{Path, PathBuf};
 
-use k3c_platform::{App, Frame, run_headless};
+use k3c_platform::{App, Frame, InputScript, run_headless};
 
 use super::driver::Driver;
 use super::*;
@@ -28,7 +28,7 @@ fn demo(sprites: usize) -> Demo {
 #[test]
 fn headless_sechshundert_schritte() {
     let mut d = demo(0);
-    let n = run_headless(&mut d, 600);
+    let n = run_headless(&mut d, 600, None);
     assert_eq!(d.world.tick, 600);
     assert_eq!(n.textures, 1, "ein Asset, ein Sheet, einmal hochgeladen");
     assert!(n.sprites > 0 && n.rects >= 600 * 2, "Himmel und Boden je Bild: {n:?}");
@@ -39,7 +39,7 @@ fn headless_sechshundert_schritte() {
 fn zusatzlast_zeichnet_n_sprites_je_bild() {
     let mut a = demo(0);
     let mut b = demo(1000);
-    let (na, nb) = (run_headless(&mut a, 10), run_headless(&mut b, 10));
+    let (na, nb) = (run_headless(&mut a, 10, None), run_headless(&mut b, 10, None));
     assert_eq!(nb.sprites - na.sprites, 10 * 1000);
 }
 
@@ -84,4 +84,16 @@ fn fehlendes_asset_nennt_den_namen() {
         serde_json::from_str(&SCRIPT.replace("\"figuren/test\",\"anim\"", "\"figuren/gibtsnicht\",\"anim\"")).unwrap();
     let err = Demo::new(d, Some(&lib), 7.0, 0).err().unwrap();
     assert!(err.contains("figuren/gibtsnicht"), "{err}");
+}
+
+#[test]
+fn esc_beendet_und_f_schaltet_vollbild() {
+    let mut d = demo(0);
+    assert_eq!(d.fullscreen(), Some(false));
+    let s = InputScript::from_json(r#"[{"step": 3, "keys": ["F"]}, {"step": 4}, {"step": 9, "keys": ["Escape"]}]"#)
+        .unwrap();
+    run_headless(&mut d, 600, Some(&s));
+    assert!(d.done());
+    assert_eq!(d.world.tick, 10, "Esc in Takt 9 beendet nach diesem Takt");
+    assert_eq!(d.fullscreen(), Some(true));
 }

@@ -1,6 +1,6 @@
 # RU4.9 · Log-Regel und Probe-Programm für beide Modi
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 geprüft: `cargo test -p k3c-platform --test log_emoji` grün; eine eingefügte Meldung ohne Emoji ließ ihn fehlschlagen (probiert, zurückgenommen). Lage-Meldungen in Plattform, Probe und `k3c-game/src/input` laufen über `log::*`.
+- AC-02 geprüft: `cargo run -p k3c-platform --example probe -- --two --headless --steps 1000 --script crates/k3c-platform/examples/probe-script.json` → Code 0 (1000 Takte, 2 Klänge über NullAudio, beide Kästchen bewegt).
+- AC-05 geprüft (Screenshot durch Claude): Fenster `--two` auf Vulkan, 59 Bilder/s, zwei Hälften mit Ausschnitt, Text „Grüße, ÄÖÜ äöü ß“ aus `k3c.ttf`. Ton und Pad: ungeprüft (kein Pad am Rechner, Ton nicht hörbar prüfbar).
+- Clippy (`-D warnings`) grün.
+- Probe liegt jetzt unter `examples/probe/` (`main.rs`, `two.rs`).
+- **Ralf prüft:** `--two` mit Pad: rechtes Kästchen folgt dem Stick, A und T sind hörbar. Die Hintergründe wirken heller als die Zahlen; vermutet: sRGB-Fläche, wie bei den anderen Farben.

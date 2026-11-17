@@ -1,6 +1,6 @@
 # RU4.3 · Schrift: TTF mit Umlauten, Breite messen, Rückfall Pixel-Schrift
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-05 geprüft:** `cargo test -p k3c-platform ttf` grün (8 Tests): „ÄÖÜäöüß“ hat in `public/schrift/k3c.ttf` je eine eigene Glyphe (Index ≠ 0); Breite wächst mit `px` und ist auf ganze Pixel gerundet; zweites Zeichnen legt keine Glyphe an, andere Größe schon; Glyphen stehen auf der Grundlinie (`y` + Oberlänge) und laufen um die gemessene Breite weiter; `Frame` und `NullCanvas` messen gleich (12, 24,5, 48 px); voller Atlas wird erst am Bildanfang geleert; zu große Glyphe behält ihren Vorschub; kaputte Datei liefert einen Fehler.
+- **AC-05 geprüft:** `tests/alloc.rs` zeichnet zusätzlich `text_font` mit Umlauten und misst `text_width`: nach dem ersten Bild 0 Allokationen in 120 Bildern. Neue Glyphen (Cache-Fehlgriff) allozieren beim Rastern einmalig – erlaubt, weil sie nur im ersten Bild eines Textes vorkommen.
+- **Lauf:** Probe zeigt „Grüße: ÄÖÜ äöü ß – Spieler 1“ in der TTF-Schrift, Vulkan ohne Validierungsfehler. **Ralf prüft:** Text in der Probe ist scharf, Umlaute und ß sind richtig, keine abgeschnittenen Ober- oder Unterlängen. `cargo clippy --workspace --all-targets -D warnings` grün; `task check:diff` grün.
+- **API:** `Canvas::font(ttf) -> Result<FontId, String>`, `text_font(font, s, x, y, px, color)` (`(x, y)` = linke obere Ecke der Zeile wie `text/v2`), `text_width(font, s, px)`; `FontId`. `Frame::take_atlas_updates`. `fontdue = "=0.9.5"` ohne Standard-Features (nur `std`; Freigabe B-1014).
+- **Umsetzung:** `src/ttf.rs`: `Fonts` (Laden, Breite mit Unterschneidung, Oberlänge), `Atlas` 2048² mit Zeilen-Packer und Cache `HashMap` mit fester Kapazität 4096 je (Schrift, Zeichen, px). Die Atlas-Textur legt `Frame` beim ersten Text an; neue Glyphen gehen als Teil-Updates (`write_texture` an der Stelle) ins Backend, das dafür jetzt Textur und Bind-Group hält.
+- **Review (Sonnet):** keine schweren Befunde. Behoben: Atlas-Reset mitten im Bild hätte schon gelegte Glyphen überschrieben (jetzt erst am nächsten Bildanfang), Glyphen auf ganze Pixel gerundet (linearer Filter, sonst unscharf), zu große Glyphe verlor ihren Vorschub. Die Rückfall-Logik (Datei fehlt → Pixel-Schrift mit Warnung) liegt beim Aufrufer: Probe in RU4.9, Spiel in RU7 (`art/font.go`).
