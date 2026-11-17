@@ -38,4 +38,4 @@ mod rustref_load_tests;
 #[cfg(test)]
 mod rustref_tests;
 #[cfg(test)]
-mod testutil;
+pub(crate) mod testutil;
