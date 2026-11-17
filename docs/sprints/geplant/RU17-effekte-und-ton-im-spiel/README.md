@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -28,22 +28,22 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 Welle 6 von 26, 6 Sessions (B-1015; nach der Überarbeitung von RU4 zwei Sessions mehr, weil RU4 nur die Plattform `k3c_platform::AudioOut` liefert und das ganze Go-Paket `audio` hier portiert wird).
 
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`; Session 5 `opus` (Haltepunkt Atlas, Schnittstelle zur Plattform).
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/fx/` → `rust/crates/k3c-game/src/fx/`, `native/k3c-game/audio/` → `rust/crates/k3c-game/src/audio/`; Dateinamen nach Leitfaden § 2. Ebitengine-Audio und oto (`sink.go`, `output.go`, Dekodieren in `bank.go`) gehen auf `k3c_platform::AudioOut` (RU4.8).
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/fx/` → `rust/crates/k3c-game/src/fx/`, `native/k3c-game/audio/` → `rust/crates/k3c-game/src/audio/`; Dateinamen nach Leitfaden § 2. Ebitengine-Audio und oto (`sink.go`, `output.go`, Dekodieren in `bank.go`) gehen auf `k3c_platform::AudioOut` (RU4.8). Die Sessions laufen als Kette auf dem Branch `sprint/ru17`. Der Schnitt weicht von der ursprünglichen Tabelle in der Verteilung ab (gleiche Dateien, gleiche Zahl Sessions): `fx.go` braucht `paint`, `looks` und `status` (die Rust-Datei `mod.rs` kommt nach den reinen Regeln), `audio/output.go` braucht `mix` und `music`, `events` gehört vor `mix`.
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
-| 1 | `native/k3c-game/fx/`: effects (203, T), fx (267) | 470 |
-| 2 | `native/k3c-game/fx/`: looks (117), paint (215), paintmarks (93), status (172, T) | 597 |
-| 3 | `native/k3c-game/fx/`: texts (13); `native/k3c-game/audio/`: register (153), atlas (65, T), duck (52), sink (47) | 330 |
-| 4 | `native/k3c-game/audio/`: bank (140), output (299, T) | 439 |
-| 5 | `native/k3c-game/audio/`: mix (237, T), events (127, T), music (143, T), audio (48, T), dazu `klang_test.go` | 555 |
+| 1 | `native/k3c-game/fx/`: effects (203, T), looks (117), status (172, T), texts (13) | 505 |
+| 2 | `native/k3c-game/fx/`: fx (267), paint (215), paintmarks (93); dazu `textrule_test.go` | 575 |
+| 3 | `native/k3c-game/audio/`: register (153), atlas (65, T), duck (52), events (127, T); `sink` (47) entfällt (AudioOut) | 397 |
+| 4 | `native/k3c-game/audio/`: mix (237, T), music (143, T) | 380 |
+| 5 | `native/k3c-game/audio/`: bank (140), output (299, T), audio (48, T), dazu `klang_test.go` | 487 |
 | 6 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
 
-Summe: 2391 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+Summe: 2391 Zeilen Go (`sink.go` ohne Rust-Entsprechung). Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
 
 ## Nicht-Ziele
 
@@ -51,11 +51,11 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. `native/`, `engine/` und `k3c-platform` bleiben unverändert; eine Erweiterung von `k3c-platform` (Atlas-Ausschnitte, RU17.5) braucht 🧑.
 
-- **Bereich:** `rust/crates/k3c-game/src/fx/**`, `rust/crates/k3c-game/src/audio/**`
+- **Bereich:** `rust/crates/k3c-game/src/fx/**`, `rust/crates/k3c-game/src/audio/**`, `rust/crates/k3c-game/src/lib.rs`
 - **Abhängig von:** RU13
-- **Braucht 🧑:** –
+- **Braucht 🧑:** Haltepunkt in RU17.5 (Atlas-Ausschnitte über `AudioOut`, siehe Offene Fragen)
 - **Sperre:** –
 
 ## Beispiele
@@ -73,7 +73,16 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeiten entstehen direkt im Rust-Client, sobald die Sim-Seite steht. Spec steht im Ticket:
+Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- **Aura-Quelle:** `sim.AurasOf` (skills_status.go) liefert erst RU18. Default: `fx` bekommt die Aura-Funktion als Parameter (wie in Go schon für die Tests), Platzhalter `fx/pending.rs::aura_of`, RU18 löscht ihn.
+- **Textregel-Test:** `textrule_test.go` parst Go-Quelltext. Default: Rust-Test mit Zeichenscan über `fx/*.rs` und derselben Regel.
+- **Ladezeit der Bank:** synchron beim ersten hörbaren Mix, Messung im Ergebnis von RU17.5, Thread nur bei > 100 ms.
+- **Schnitt:** `events` vor `mix`, `bank` mit `output` (Abhängigkeiten), siehe Anforderungen.
+
+**Haltepunkt für 🧑 (RU17.5, Atlas-Ausschnitte):** `AudioOut::load` nimmt ganze Dateien; Go spielt Effekte als Ausschnitt eines dekodierten Atlas (`public/audio/atlas.*`). RU17.5 hält an und fragt 🧑, wenn die Plattform keinen Ausschnitt-Weg bietet: (a) `k3c-platform` um `load_range` erweitern (Vorschlag) oder (b) Effekte als Einzeldateien über den Go-Rückfall laden. Echte Gate-Frage (Änderung eines fertigen Crates), nicht selbst entschieden.
+
+**Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeiten entstehen direkt im Rust-Client, sobald die Sim-Seite steht. Spec steht im Ticket:
 
 - SI3.4 Vorboten, Taifun und Flut mit Ambient (B-999)
 - SI6.4 Jubel, Tanz und Himmels-Effekt je Welt (B-1002)
@@ -84,6 +93,12 @@ Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Sp
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU17.1 | `RU17.1-fx-effects-looks-status-texts.md` | Umsetzung | autonom | offen |
+| RU17.2 | `RU17.2-fx-fx-paint-paintmarks.md` | Umsetzung | autonom | offen |
+| RU17.3 | `RU17.3-audio-register-atlas-duck-events.md` | Umsetzung | autonom | offen |
+| RU17.4 | `RU17.4-audio-mix-music.md` | Umsetzung | autonom | offen |
+| RU17.5 | `RU17.5-audio-bank-output-audio.md` | Umsetzung | autonom | offen |
+| RU17.6 | `RU17.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

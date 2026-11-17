@@ -1,14 +1,14 @@
-# RU40 · CLI · Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE
+# RU40 · CLI, DEV · Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE
 
 - **Status:** geplant
 - **Projekt:** RSU
-- **Domäne:** CLI
-- **Reife:** Entwurf
+- **Domäne:** CLI, DEV
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -24,22 +24,25 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 ## Anforderungen
 
-`B-1017 › Anforderungen` (Schnittstelle, headless und mit Fenster, MCP-Tools).
+`B-1017 › Anforderungen` (Schnittstelle, headless und mit Fenster, MCP-Tools, keine Engine in der Workbench).
 
-Welle 25 von 26, 4 Sessions (B-1015).
-
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Welle 25 von 26, 5 Sessions (B-1015; eine mehr als geplant, siehe Offene Fragen). Modell: `opus` für RU40.2 (neue App für Balancing mit Fenster, neuer Unterbefehl), sonst `sonnet`. Kette auf `sprint/ru40`. Schnittstelle: `docs/standards/k3c-game-laeufe.md` (RU33).
 
 ### Sessions
 
-1. `sim balance` headless: `engine/simcli/balance.go`, `targets.go`, `tune.go`, `sensitivity.go` portieren (CLI, AC-01)
-2. `sim balance --window`: Bots sichtbar, Läufe nacheinander, Vergleich mit headless (CLI, AC-02)
-3. `sim_test` und Balancing der Workbench über die EXE, Parameter `head`; Engine-Importe, `engine/simcli` und `cmd/k3c-sim` entfernen (DEV, AC-03, AC-04)
-4. Review
+| Session | Inhalt | Quellen bzw. Dateien | Zeilen Go |
+|---|---|---|---:|
+| 1 | `sim balance` headless (CLI, AC-01) | `engine/simcli/`: balance (252, T), targets (232), tune (63), sensitivity (80); `input.go` balanceArgs, jsonFlag | 627 |
+| 2 | `sim balance --window` und `sim save` (CLI, AC-02, Vorarbeit AC-04) | neue `BalanceApp`; Port von `room.Manager.FullSave` nutzen | – |
+| 3 | `sim_test`, Balancing, `replay_run` der Workbench über die EXE, Parameter `head` (DEV, AC-03) | `internal/simrun/offline.go`, `spec.go`, `registry.go`; `internal/mcpsrv/simtest*.go`, `tools_replay.go` | – |
+| 4 | Restliche Engine-Importe der Workbench entfernen; Haltepunkt 🧑; `engine/simcli`, `cmd/k3c-sim` und Verweise entfernen (DEV, AC-04) | `internal/studioview/game.go`, `internal/world/override.go`; `Taskfile.yml`, CI, `tools/checkdiff`, `tools/cleanup` | – |
+| 5 | Review | – | – |
 
 ### Hinweise für die Umsetzung
 
-- Die Sim-Sperre gilt bis zum Widerruf durch 🧑: Diese Sessions testen nur mit kurzen, festen Eingaben aus den Go-Tests von `engine/simcli`.
+- Die Sim-Sperre gilt bis zum Widerruf durch 🧑: Diese Sessions testen nur mit kurzen, festen Eingaben aus den Go-Tests von `engine/simcli` (Fixtures unter `testdata/rust/runs/`).
+- Abbruch über `--stop-stdin` (RU33): Die Workbench schließt stdin, die EXE schreibt `aborted` und endet mit 130; nach 5 s beendet das Job-Objekt den Baum.
+- Berichtsnamen mit Zeit in UTC (std hat keine Zeitzone).
 
 ## Nicht-Ziele
 
@@ -47,11 +50,11 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Stand vor diesem Sprint bleibt über Git erreichbar (B-1015 › Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates und Go-Module nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt. Entfernen von Go-Code (`engine/simcli`, `cmd/k3c-sim`) nur nach Freigabe 🧑 in RU40.4.
 
-- **Bereich:** `rust/crates/k3c-game/src/runs/**`, `tools/k3c-workbench/**`, `cmd/k3c-sim/**`, `engine/simcli/**`
+- **Bereich:** `rust/crates/k3c-game/src/runs/**`, `rust/crates/k3c-game/tests/runs_*.rs`, `docs/standards/k3c-game-laeufe.md`, `testdata/rust/runs/**`, `tools/k3c-workbench/**`, `cmd/k3c-sim/**`, `engine/simcli/**`, `Taskfile.yml`, `.github/workflows/ci.yml`, `tools/checkdiff/**`, `tools/cleanup/**`, `CLAUDE.md`, `requirements.md`, `tests/projectRules.test.ts`, `codemap.md`
 - **Abhängig von:** RU31, RU34
-- **Braucht 🧑:** –
+- **Braucht 🧑:** Entscheidung
 - **Sperre:** exe
 
 ## Beispiele
@@ -64,19 +67,32 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Akzeptanzkriterien
 
-- **AC-01** `k3c-game sim balance` meldet Fortschritt zeilenweise, schreibt die Berichtsdateien wie `bin/k3c-sim.exe balance` und endet bei CTRL_BREAK mit `{"event":"aborted"}` und Code 130.
+- **AC-01** `k3c-game sim balance` meldet Fortschritt zeilenweise, schreibt die Berichtsdateien wie `bin/k3c-sim.exe balance` (Inhalt gleich, Zeit im Namen in UTC) und endet beim Abbruch (stdin-Ende) mit `{"event":"aborted"}` und Code 130.
 - **AC-02** Mit `--window` laufen dieselben Läufe sichtbar nacheinander und liefern bei gleicher Eingabe dieselben Berichte wie headless.
-- **AC-03** `sim_test` und Balancing der Workbench starten die Spiel-EXE; `head` wählt den Modus (Standard: headless); `stop` beendet den Lauf, es bleibt kein Prozess übrig.
-- **AC-04** `tools/k3c-workbench` importiert kein `k3c/engine/*` mehr außer `conlog` und `devrun`; `cmd/k3c-sim` und `engine/simcli` sind entfernt.
+- **AC-03** `sim_test`, das Balancing der Workbench und `replay_run` starten die Spiel-EXE; `head` wählt den Modus (Standard: headless); `stop` beendet den Lauf, es bleibt kein Prozess übrig.
+- **AC-04** `tools/k3c-workbench` importiert kein `k3c/engine/*` mehr außer `conlog` und `devrun`; `cmd/k3c-sim` und `engine/simcli` sind nach Freigabe 🧑 entfernt.
 
 ## Offene Fragen
 
-keine
+Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- **Fünf statt vier Sessions:** Die Workbench-Arbeit ist geteilt (RU40.3 Läufe, RU40.4 Importe und Entfernen), weil auch `studioview` (`room.FullSave`) und `world/override.go` (`store.Rename`) Engine-Pakete nutzen; dafür gibt es den neuen Unterbefehl `sim save` (RU40.2).
+- **Abbruch über stdin** statt CTRL_BREAK (wie RU33/RU34); AC-01 entsprechend formuliert.
+- **`replay_run`** kommt aus RU34 hierher (`sim balance --play`), mit `head`.
+- **Mit Fenster** nacheinander, `--speed` 1–64, Standard 1; mit `head` höchstens ein Lauf zugleich in der Workbench.
+- **Zeit** in Berichtsnamen in UTC.
+
+**Haltepunkte für 🧑:** Entfernen von `engine/simcli` und `cmd/k3c-sim` (RU40.4, Schritt 4). Fehlt in `k3c-room` der Port von `FullSave`, hält RU40.2 vor `sim save` an.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU40.1 | `RU40.1-sim-balance-headless.md` | Umsetzung | autonom | offen |
+| RU40.2 | `RU40.2-sim-balance-window-sim-save.md` | Umsetzung | autonom | offen |
+| RU40.3 | `RU40.3-sim-test-balancing-replay-ueber-exe.md` | Umsetzung | autonom | offen |
+| RU40.4 | `RU40.4-engine-importe-simcli-k3c-sim-entfernen.md` | Umsetzung | autonom | offen |
+| RU40.5 | `RU40.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

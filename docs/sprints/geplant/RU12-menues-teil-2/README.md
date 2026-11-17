@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -32,16 +32,16 @@ Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018)
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/menu/` → `rust/crates/k3c-game/src/menu/`; Dateinamen nach Leitfaden § 2.
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/menu/` → `rust/crates/k3c-game/src/menu/`; Dateinamen nach Leitfaden § 2. Die Sessions laufen als Kette auf `sprint/ru12`, die erste hängt an RU9.
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
-| 1 | `native/k3c-game/menu/`: saves (194, T), worldpick (88, T), pause (157, T) | 439 |
+| 1 | `native/k3c-game/menu/`: saves (194, T), worldpick (88, T), pause (157, T); neu: `placeholder.rs` | 439 |
 | 2 | `native/k3c-game/menu/`: padtest (218, T) | 218 |
-| 3 | `native/k3c-game/menu/`: testing (269, T), testing_text (46), stress_presets (62), licenses (58) | 435 |
+| 3 | `native/k3c-game/menu/`: testing (269, T), testing_text (46), stress_presets (62), licenses (58); räumt `pending.rs` und alle `ignore` aus RU9 und RU12 | 435 |
 | 4 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
 
-Summe: 1092 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+Summe: 1092 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle. Der Schnitt bleibt wie vorgegeben.
 
 ## Nicht-Ziele
 
@@ -66,8 +66,8 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Akzeptanzkriterien
 
-- **AC-01** Spielstand-Liste und Weltwahl zeigen Daten über eine Schnittstelle (`menu::Sources`), die RU27 füllt; bis dahin liefert ein Platzhalter feste Einträge.
-- **AC-02** Pause, Pad-Test und Testing-Menü laufen je Spieler wie im Go-Spiel.
+- **AC-01** Spielstand-Liste und Weltwahl zeigen Daten über den vorhandenen Vertrag `view::Session` (`list`, `world_list`), den RU27 mit dem lokalen Spiel füllt; bis dahin liefert `menu::placeholder::PlaceholderSession` feste Einträge.
+- **AC-02** Pause, Pad-Test und Testing-Menü laufen je Spieler wie im Go-Spiel; B und Esc gehen in jedem Menü dieses Sprints zurück (in der Pause: weiterspielen).
 - **AC-03** Kein Test aus `native/k3c-game/menu` fehlt ohne Begründung.
 
 ## Offene Fragen
@@ -76,10 +76,23 @@ Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Sp
 
 - GS3.5 Seekarte als Vorschau in der Spielstand-Auswahl (B-978)
 
+Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- Die in AC-01 genannte Schnittstelle `menu::Sources` entfällt: `view::Session` ist sie schon (Liste, Welten, Plätze); neu ist nur der Platzhalter `menu::placeholder::PlaceholderSession`. AC-01 ist entsprechend umformuliert.
+- Die Ortszeit der Spielstand-Zeile (Go: `Local().Format`) kommt als Versatz in Minuten aus dem Client (`Menus::utc_offset_min`, Standard 0), weil `std` keine Ortszeit kennt und `chrono`/`time` neue Crates wären (Freigabe 🧑, Haltepunkt in RU12.1).
+- Der Pad-Test liest Pads über `trait PadSource` (Standard: keine); `InputPads` baut sie aus `k3c_platform::InputState` ohne Gerätename, SDL-Kennung und rohe Tasten (die `k3c-platform` nicht liefert); die Verdrahtung in der Schleife macht RU26.
+- Den Stresstest startet `Menus::starter` (`Option<Box<dyn StressStarter>>`), weil `dyn Session` keinen Typ-Test erlaubt; eine Methode `Session::stress_starter()` wäre sauberer und ändert `view/` (außerhalb des Bereichs), Vorschlag für RU27.
+- Die Lizenz-Liste wird wörtlich portiert (Go-Bibliotheken); die Liste des Rust-Spiels und die Hilfs-EXE `menu/licensefile` gehören in den Paket-Sprint RU35.
+- `TestWorldPickTwoPlayersAndNoAllocs` verliert die Allokationsprüfung (Go-Werkzeug `testing.AllocsPerRun`), der Zwei-Spieler-Teil bleibt.
+
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU12.1 | `RU12.1-menu-saves-worldpick-pause.md` | Umsetzung | autonom | offen |
+| RU12.2 | `RU12.2-menu-padtest.md` | Umsetzung | autonom | offen |
+| RU12.3 | `RU12.3-menu-testing-licenses.md` | Umsetzung | autonom | offen |
+| RU12.4 | `RU12.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

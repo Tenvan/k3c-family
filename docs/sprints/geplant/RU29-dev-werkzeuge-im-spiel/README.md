@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -32,16 +32,22 @@ Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018)
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/devtools/` → `rust/crates/k3c-game/src/devtools/`; Dateinamen nach Leitfaden § 2.
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/devtools/` → `rust/crates/k3c-game/src/devtools/`; Dateinamen nach Leitfaden § 2. Die Tabelle weicht vom Entwurf ab (Grund unter Offene Fragen): `devtools.go` steht in Session 1 (der Typ `overlay` wird dort gebraucht), `drawcheats.go` in Session 3.
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
-| 1 | `native/k3c-game/devtools/`: cheatlist (104), cheatmenu (83), cheats (124, T), chronicle (138, T) | 449 |
-| 2 | `native/k3c-game/devtools/`: chronicle_stage (149), debuggeo (99, T), devtools (78), drawcheats (69) | 395 |
-| 3 | `native/k3c-game/devtools/`: drawdebug (69), help (90, T), report (80), values (188, T) | 427 |
+| 1 | `native/k3c-game/devtools/`: devtools (78), cheatlist (104), cheatmenu (83), cheats (124, T) | 389 |
+| 2 | `native/k3c-game/devtools/`: chronicle (138, T), chronicle_stage (149), report (80) | 367 |
+| 3 | `native/k3c-game/devtools/`: debuggeo (99, T), drawcheats (69), drawdebug (69), help (90, T), values (188, T) | 515 |
 | 4 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
 
-Summe: 1271 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+Summe: 1271 Zeilen Go (unverändert gegenüber dem Entwurf). Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+
+### Hinweise für die Umsetzung
+
+- Das Overlay (`view.Overlay` und `view.Drawer` in einem Typ) wird in Rust zu zwei Hüllen auf einem gemeinsamen Zustand (`Rc<RefCell<…>>`; im Client-Crate erlaubt, verboten nur in den Sim-Crates).
+- Die Anmeldung im Spiel (`game::packages`, Eintrag `devtools`) ist bis RU29.3 ein Platzhalter aus RU26.2; RU29.3 tauscht ihn.
+- Die Entwickler-Tasten (F-Tasten, `game/devkeys.go`) gehören zu RU30.3, nicht hierher.
 
 ## Nicht-Ziele
 
@@ -51,7 +57,7 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
 
-- **Bereich:** `rust/crates/k3c-game/src/devtools/**`
+- **Bereich:** `rust/crates/k3c-game/src/devtools/**`, `rust/crates/k3c-game/src/lib.rs` (nur `pub mod devtools;`), `rust/crates/k3c-game/src/game/parts.rs`, `rust/crates/k3c-game/src/game/pending.rs` und `rust/crates/k3c-game/src/game/mod.rs` (nur die Zeilen für den Eintrag `devtools`, RU29.3)
 - **Abhängig von:** RU26
 - **Braucht 🧑:** –
 - **Sperre:** –
@@ -71,12 +77,20 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- Schnitt geändert: `devtools.go` (Typ `overlay`) zu Session 1, `report.go` mit der Chronik in Session 2, `drawcheats.go` zu den übrigen Zeichen-Dateien in Session 3 (Abhängigkeitsreihenfolge); alle Sessions bleiben unter 650 Zeilen Go.
+- Die Wanduhr der Chronik und des Berichts nutzt `std::time::SystemTime` in einem kleinen eigenen Zeit-Typ; kein `chrono` (keine neue Abhängigkeit).
+- Die Anmeldung von `devtools` in `game::packages` tauscht RU29.3 (dazu steht `game/parts.rs`, `pending.rs`, `mod.rs` im Bereich), damit das Paket nach dem Sprint im Spiel angemeldet ist.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU29.1 | `RU29.1-devtools-cheats.md` | Umsetzung | autonom | offen |
+| RU29.2 | `RU29.2-devtools-chronicle.md` | Umsetzung | autonom | offen |
+| RU29.3 | `RU29.3-devtools-debug-help-values.md` | Umsetzung | autonom | offen |
+| RU29.4 | `RU29.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

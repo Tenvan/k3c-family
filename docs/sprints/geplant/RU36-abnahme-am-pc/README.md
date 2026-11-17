@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -28,15 +28,21 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 Welle 19 von 26, 5 Sessions (B-1015).
 
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`, G4-Bericht `opus`, Session 2 ist Mensch.
 
 ### Sessions
 
-1. Abnahme-Liste aus den Stationen des Go-Spiels und Messlauf Rust gegen Go (AC-01, AC-02)
-2. Abnahme am PC mit zwei Pads (Mensch, AC-03)
-3. Befunde beheben, Runde 1 (AC-04)
-4. Befunde beheben, Runde 2 (AC-04)
-5. Review
+1. Abnahme-Liste aus den Stationen des Go-Spiels, Schwere-Skala, Messwerkzeug (`measure.ps1 -Engine rustgame`, Startzeit) und Probelauf (AC-01, AC-02 Teil Werkzeug)
+2. Abnahme am PC mit zwei Pads und Messläufe auf ruhigem Rechner (Mensch, AC-02, AC-03)
+3. Befunde beheben, Runde 1: schwere Befunde mit Test, übrige als Ticket (AC-04)
+4. Befunde beheben, Runde 2: Nachprüfung durch 🧑, Rest der schweren Befunde (AC-04)
+5. G4-Bericht, Entscheidung 🧑, Review
+
+### Vorentscheidungen
+
+- Schwere: `schwer` = Absturz/Hänger, Datenverlust beim Speichern/Laden, Station nicht erreichbar, Pad-Eingabe falsch, sichtbares Ruckeln, Regel anders als Go; `mittel`/`leicht` werden Tickets.
+- Schwellen aus G1 (B-1016): längstes Bild ≤ 2 × Median, GPU-Speicher ≤ 1330 MiB, EXE ≤ 40 MB; dazu FPS, Startzeit und Arbeitsspeicher nicht schlechter als Go. Die 1-ms-Schwelle des Spike-Modus `level` entfällt.
+- Startzeit = Prozessstart bis sichtbares Fenster (`MainWindowHandle`), gemessen von `measure.ps1` für beide Spiele.
 
 ## Nicht-Ziele
 
@@ -44,9 +50,9 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Fixes bilden das Go-Verhalten nach. G4 entscheidet 🧑 (RU36.5 hält an); ein schwerer Befund wird nur mit Zustimmung von 🧑 verschoben.
 
-- **Bereich:** `docs/messung/rust-abnahme.md`, `rust/crates/**`
+- **Bereich:** `docs/messung/rust-abnahme.md`, `rust/crates/**`, `native/measure.ps1`
 - **Abhängig von:** RU32, RU35
 - **Braucht 🧑:** Abnahme
 - **Sperre:** –
@@ -68,12 +74,21 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-Entscheidung 🧑 am Gate bzw. vor dem Start (B-1014 › Offene Fragen).
+Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
+
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Die Gate-Messwerte erhebt 🧑 in Session 2 auf ruhigem Rechner zusammen mit der Abnahme; Session 1 baut das Werkzeug und macht einen Probelauf (parallele Sessions verfälschen Messungen, `docs/messung/rust-client-1.md`).
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Bereich um `native/measure.ps1` erweitert (Engine `rustgame`, Startzeit für beide Spiele).
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Runde 2 beginnt mit einer kurzen Nachprüfung der Fixes aus Runde 1 durch 🧑 (Haltepunkt in RU36.4); gibt es nichts mehr zu tun, endet sie ohne Codeänderung.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU36.1 | `RU36.1-abnahme-liste-und-messwerkzeug.md` | Umsetzung | autonom | offen |
+| RU36.2 | `RU36.2-abnahme-am-pc-zwei-pads.md` | Workshop | Mensch | offen |
+| RU36.3 | `RU36.3-befunde-runde-1.md` | Umsetzung | autonom | offen |
+| RU36.4 | `RU36.4-befunde-runde-2.md` | Umsetzung | autonom | offen |
+| RU36.5 | `RU36.5-bericht-g4-und-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
