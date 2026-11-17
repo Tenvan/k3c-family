@@ -1,6 +1,6 @@
 # SI4.2 · Assets Kamel und Gatter (B-1000)
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
