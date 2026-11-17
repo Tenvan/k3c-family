@@ -1,6 +1,6 @@
 # RU8 · SIM · Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit

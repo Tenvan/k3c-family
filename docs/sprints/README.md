@@ -35,7 +35,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
 | RU5 | CLI | RSU | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | – | `aktiv/RU5-rig-in-rust/` |
 | RU7 | CLI | RSU | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | – | `aktiv/RU7-grafik-laden-ansicht/` |
-| RU8 | SIM | RSU | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | – | `aktiv/RU8-sim-zustand-typen/` |
 
 ## Offen am Gerät
 
@@ -445,3 +444,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | `erledigt/SI4-reittiere-je-welt/` |
 | SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | `erledigt/SI5-einsiedler-bauwerk/` |
 | SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | `erledigt/SI6-fest-nach-dem-sieg/` |
+| RU8 | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | `erledigt/RU8-sim-zustand-typen/` |
