@@ -5,8 +5,9 @@ use k3c_sim::state::{ResourceNode, World};
 
 use super::data::values;
 use super::nature::{anim_phase, deco_roots, entity_look, mine_sign_look, node_look, object, on_plot, variant_look};
-use super::pending::{fell_shrink, portal_down};
 use super::plan::{GOLD, Item, Planner, Shape, WHITE, px, visible};
+use super::plan_combat::portal_down;
+use super::plan_objects::fell_shrink;
 use super::sites::{TextKey, TextWhat};
 use crate::view::cell::Camera;
 

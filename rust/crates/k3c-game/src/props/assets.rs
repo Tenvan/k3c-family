@@ -4,7 +4,7 @@
 
 use super::buildings::{BUILDING_GROUP, OBJECT_GROUP};
 use super::nature::{COIN_LOOK, nature_look};
-use super::pending::COMBAT_ASSETS;
+use super::plan_combat::COMBAT_ASSETS;
 
 /// `BUILDING_ASSETS`: alle Gebäude-Assets, die site_look, hub_look_of, scaffold_look, back_wall_look und entity_look
 /// wählen.

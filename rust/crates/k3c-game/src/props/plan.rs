@@ -177,7 +177,7 @@ impl Planner {
     }
 
     /// `plan` baut die Zeichenliste der Welt `w` (`info` = Zustand aus `Listen`, darf fehlen) für Kamera `k`.
-    pub fn plan(&mut self, w: Option<&World>, info: Option<&StageInfo>, k: &Camera, clock: f64, _view: &dyn SimView) {
+    pub fn plan(&mut self, w: Option<&World>, info: Option<&StageInfo>, k: &Camera, clock: f64, view: &dyn SimView) {
         self.body.clear();
         self.top.clear();
         let Some(w) = w else {
@@ -193,7 +193,7 @@ impl Planner {
         self.plantation(w, k);
         self.pickups(w, info, k, clock);
         self.coins(w, k);
-        self.combat(w, info, k);
+        self.combat(w, info, k, view);
     }
 }
 

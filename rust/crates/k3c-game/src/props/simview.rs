@@ -1,12 +1,12 @@
 //! Naht zu den Sim-Funktionen, die erst spätere Sprints nach Rust bringen (Vorentscheidung RU16.1, Abweichung von
 //! Leitfaden § 7): Die Go-Funktionen `sim.EconomyOf`, `SiteGoldLeft`, `SitePayable`, `SiteNeedsClearing`, `ShieldRack`,
-//! `CombatSpots` und `AtLair` rechnen aus Sim-Regeln, die RU15 (combat, boss_endboss) und RU18 (economy_view) liefern.
+//! `CombatSpots`, `NearOf`, `StateFor` und `AtLair` rechnen aus Sim-Regeln, die RU15 (combat, boss_endboss) und RU18 (economy_view) liefern.
 //! Alle Zeichner und `hud` reichen `&dyn SimView` durch; RU15 und RU18 ersetzen `PendingSimView` durch die Sim und
 //! löschen diese Datei samt `pending::{Economy, HubUpgrade, CombatSpot}`.
 
 use k3c_sim::state::{Player, Site, World};
 
-use super::pending::{CombatSpot, Economy, PendingSimView};
+use super::pending::{CombatSpot, Economy, PendingSimView, SpotState};
 
 /// `SimView` ist die Sicht der Anzeige auf abgeleitete Sim-Werte (Signaturen wie in Go).
 pub trait SimView {
@@ -24,6 +24,10 @@ pub trait SimView {
     fn combat_spots(&self, w: &World) -> Vec<CombatSpot>;
     /// Go: `sim.AtLair`.
     fn at_lair(&self, w: &World, p: &Player) -> bool;
+    /// Go: `CombatSpot.NearOf` (in Zahl-Reichweite plus einer Unit, ohne Allokation).
+    fn spot_near(&self, w: &World, s: &CombatSpot, p: &Player) -> bool;
+    /// Go: `CombatSpot.StateFor` (Zahlstand des Ziels für den Monarchen p).
+    fn spot_state(&self, w: &World, s: &CombatSpot, p: &Player) -> SpotState;
 }
 
 impl SimView for PendingSimView {
@@ -47,5 +51,11 @@ impl SimView for PendingSimView {
     }
     fn at_lair(&self, _w: &World, _p: &Player) -> bool {
         unimplemented!("RU15: at_lair")
+    }
+    fn spot_near(&self, _w: &World, _s: &CombatSpot, _p: &Player) -> bool {
+        unimplemented!("RU15: spot_near")
+    }
+    fn spot_state(&self, _w: &World, _s: &CombatSpot, _p: &Player) -> SpotState {
+        unimplemented!("RU15: spot_state")
     }
 }

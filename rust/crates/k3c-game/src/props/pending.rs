@@ -2,15 +2,13 @@
 //!
 //! `Economy`, `HubUpgrade` und `CombatSpot` heißen und serialisieren wie die Go-Typen (`engine/sim/economy_view.go`,
 //! `combat.go`); RU15 (`CombatSpot`) und RU18 (`Economy`, `HubUpgrade`) ersetzen sie durch die Typen der Sim und
-//! löschen sie hier. `COMBAT_ASSETS` ist ein Go-Wert aus `plan_combat.go` (RU16.4), den `levelAssets` braucht; die Session löscht die Kopie hier beim Portieren.
+//! löschen sie hier.
 
 use k3c_data::hub::Stock;
 use k3c_sim::state::World;
 use serde::{Deserialize, Serialize};
 
-use super::listen::StageInfo;
 use super::plan::Planner;
-use super::sites::WaitReason;
 use crate::view::cell::Camera;
 
 fn is_zero_i64(v: &i64) -> bool {
@@ -85,78 +83,25 @@ pub struct CombatSpot {
     pub x: f64,
 }
 
+/// `SpotState` ist der Zahlstand eines Zahlziels für einen Monarchen (Go: `sim.CombatSpotState`): Preis in Münzen,
+/// bereits gezahlter Betrag, ob er hier gerade zahlen kann und ob er in Zahl-Reichweite plus einer Unit steht.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct SpotState {
+    pub price: i64,
+    pub paid: i64,
+    pub payable: bool,
+    pub near: bool,
+}
+
 /// `PendingSimView` meldet bei jedem Aufruf, dass die Sim-Funktion noch fehlt (siehe `SimView`).
 #[derive(Debug, Clone, Copy, Default)]
 pub struct PendingSimView;
 
-/// `COMBAT_ASSETS` sind die Icons der Kampfregeln, die props in jedem Level anmeldet (Go: `combatAssets` in
-/// plan_combat.go, RU16.4: Krone, Schild, Auslöser, Banner, Gestell).
-pub const COMBAT_ASSETS: [&str; 5] = [
-    "icons/icon-krone",
-    "icons/zahlstelle-schild",
-    "objekte/horn-pfahl",
-    "icons/zahlstelle-banner",
-    "objekte/schild-gestell",
-];
-
-/// `portal_down`: Das Portal an x ist zerstört (`World::portals_down`), sein Bild verschwindet. Go: `portalDown` in
-/// plan_combat.go; RU16.4 verschiebt die Funktion nach `plan_combat.rs` und löscht sie hier.
-pub fn portal_down(w: &World, x: f64) -> bool {
-    w.portals_down.iter().any(|d| (d - x).abs() < 0.01)
-}
-
-/// `fell_shrink`: vertikaler Maßstab eines Baums beim Fällen. Go: `fellShrink` in plan_objects.go; RU16.4 verschiebt die
-/// Funktion nach `plan_objects.rs` und löscht sie hier.
-pub fn fell_shrink(progress: f64) -> f64 {
-    1.0 - progress * 0.3
-}
-
-/// Planer-Methoden aus RU16.4 (`plan_sites`, `plan_objects`, `plan_combat`) und RU16.5 (`decor`); die Sessions löschen
-/// die Platzhalter beim Portieren (Leitfaden § 7).
+/// Planer-Methode aus RU16.5 (`decor`); die Session löscht den Platzhalter beim Portieren (Leitfaden § 7).
 #[allow(clippy::unused_self)]
 impl Planner {
     /// RU16.5: `decor` (decor.go).
     pub fn decor(&mut self, _w: &World, _k: &Camera, _clock: f64) {
         unimplemented!("RU16.5: decor")
-    }
-
-    /// RU16.4: `backWalls` (plan_sites.go).
-    pub fn back_walls(&mut self, _w: &World, _k: &Camera) {
-        unimplemented!("RU16.4: back_walls")
-    }
-
-    /// RU16.4: `sites` (plan_sites.go).
-    pub fn sites(&mut self, _w: &World, _info: Option<&StageInfo>, _k: &Camera) {
-        unimplemented!("RU16.4: sites")
-    }
-
-    /// RU16.4: `plantation` (plan_objects.go).
-    pub fn plantation(&mut self, _w: &World, _k: &Camera) {
-        unimplemented!("RU16.4: plantation")
-    }
-
-    /// RU16.4: `pickups` (plan_objects.go).
-    pub fn pickups(&mut self, _w: &World, _info: Option<&StageInfo>, _k: &Camera, _clock: f64) {
-        unimplemented!("RU16.4: pickups")
-    }
-
-    /// RU16.4: `coins` (plan_objects.go).
-    pub fn coins(&mut self, _w: &World, _k: &Camera) {
-        unimplemented!("RU16.4: coins")
-    }
-
-    /// RU16.4: `combat` (plan_combat.go).
-    pub fn combat(&mut self, _w: &World, _info: Option<&StageInfo>, _k: &Camera) {
-        unimplemented!("RU16.4: combat")
-    }
-
-    /// RU16.4: `price` (plan_sites.go): Preisschild mit Münz-Plätzen.
-    pub fn price(&mut self, _x: f64, _y: f64, _total: i64, _paid: i64, _text: &str, _enough: bool) {
-        unimplemented!("RU16.4: price")
-    }
-
-    /// RU16.4: `status` (plan_sites.go): Wartegrund-Schild.
-    pub fn status(&mut self, _x: f64, _y: f64, _r: WaitReason, _text: &str) {
-        unimplemented!("RU16.4: status")
     }
 }

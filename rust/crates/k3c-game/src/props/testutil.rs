@@ -7,9 +7,10 @@ use std::rc::Rc;
 
 use k3c_sim::state::{Player, Site, World};
 
-use super::pending::{CombatSpot, Economy};
+use super::pending::{CombatSpot, Economy, SpotState};
 use super::plan::Sheets;
 use super::simview::SimView;
+use crate::actors::catalog::UNIT_PX;
 use crate::art::{Sheet, read_manifest};
 use crate::view::cell::{Camera, new_camera, rect};
 
@@ -35,6 +36,8 @@ pub struct FixedSimView {
     pub shield_rack: (f64, i64, bool),
     pub combat_spots: Vec<CombatSpot>,
     pub at_lair: bool,
+    pub spot_near: bool,
+    pub spot_state: SpotState,
 }
 
 impl SimView for FixedSimView {
@@ -58,6 +61,12 @@ impl SimView for FixedSimView {
     }
     fn at_lair(&self, _w: &World, _p: &Player) -> bool {
         self.at_lair
+    }
+    fn spot_near(&self, _w: &World, _s: &CombatSpot, _p: &Player) -> bool {
+        self.spot_near
+    }
+    fn spot_state(&self, _w: &World, _s: &CombatSpot, _p: &Player) -> SpotState {
+        self.spot_state
     }
 }
 
@@ -110,6 +119,27 @@ pub fn fake_sheets() -> Option<Rc<dyn Sheets>> {
         }
     }
     Some(Rc::new(out))
+}
+
+/// `StubSheets` liefert für jedes Bild ein 32x32-Sheet ohne Pixel (nur die Größe zählt; Go: `stubSheets`).
+#[derive(Debug)]
+pub struct StubSheets(Sheet);
+
+impl StubSheets {
+    pub fn rc() -> Rc<dyn Sheets> {
+        let mut s = Sheet::default();
+        s.fw = 32;
+        s.fh = 32;
+        s.origin_y = 1.0;
+        s.units_per_px = UNIT_PX;
+        Rc::new(StubSheets(s))
+    }
+}
+
+impl Sheets for StubSheets {
+    fn sheet(&self, _asset: &str, _anim: &str) -> Option<&Sheet> {
+        Some(&self.0)
+    }
 }
 
 /// `camera`: Zelle 1280 × 360 um x, 27 Pixel je Unit.

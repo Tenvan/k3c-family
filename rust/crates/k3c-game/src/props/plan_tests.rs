@@ -1,7 +1,8 @@
 //! Tests zu `plan.go`. Die sieben Go-Tests bauen ihre Welt mit `sim.CreateIsland` (Rust: RU10) und rufen `plan` ganz
-//! (mit `decor`, `sites`, `combat` aus RU16.4 und RU16.5); sie stehen hier mit `#[ignore = "wartet auf RU16"]` und
-//! `island()` als Platzhalter, RU16.4 und RU16.5 schalten sie ein, sobald die Insel (RU10) und die Planer-Methoden
-//! vorliegen. Dazu laufen Tests auf Literal-Welten über `castle`, `entities` und `nodes` (AC-02).
+//! (mit `decor`, RU16.5); sie stehen hier mit `#[ignore = "wartet auf RU16"]` und `island()` als Platzhalter. `sites`,
+//! `combat`, `plantation`, `pickups` und `coins` liefert RU16.4; deren Aussagen laufen als Literal-Welten in
+//! `plan_sites_tests.rs`, `plan_combat_tests.rs` und `felling_tests.rs`. Die sieben Tests laufen erst, wenn `decor`
+//! (RU16.5) und die Insel (RU10) vorliegen. Dazu laufen Tests auf Literal-Welten über `castle`, `entities` und `nodes`.
 
 use k3c_level::types::Entity;
 use k3c_sim::state::{ResourceNode, Site, World};

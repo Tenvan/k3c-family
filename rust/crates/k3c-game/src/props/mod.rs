@@ -10,7 +10,11 @@ pub mod nature;
 pub mod pending;
 pub mod plan;
 pub mod plan_castle;
+pub mod plan_combat;
 pub mod plan_entities;
+pub mod plan_objects;
+pub mod plan_sites;
+pub mod plan_sites_marks;
 pub mod simview;
 pub mod sites;
 
@@ -21,9 +25,15 @@ mod buildings_tests;
 #[cfg(test)]
 mod coin_fountain_tests;
 #[cfg(test)]
+mod felling_tests;
+#[cfg(test)]
 mod listen_tests;
 #[cfg(test)]
 mod nature_tests;
+#[cfg(test)]
+mod plan_combat_tests;
+#[cfg(test)]
+mod plan_sites_tests;
 #[cfg(test)]
 mod plan_tests;
 #[cfg(test)]

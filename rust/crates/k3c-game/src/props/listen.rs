@@ -10,13 +10,10 @@ use k3c_sim::state::World;
 use k3c_sim::state::site_view::site_visible;
 
 use super::pending::CombatSpot;
+use super::plan_combat::SPOTS_EVERY;
 use super::simview::SimView;
 use super::sites::{Candidate, nearest_tags, offers_hub_upgrade, offers_price, shelf_of};
 use crate::view::frame::Frame;
-
-/// `SPOTS_EVERY`: so selten (Sekunden Spielzeit) liest die Anzeige die Zahlstellen neu (`sim.CombatSpots` legt eine
-/// Liste an). Go: `spotsEvery` in plan_combat.go (RU16.4 übernimmt die Konstante von hier).
-pub const SPOTS_EVERY: f64 = 0.5;
 
 /// Dauer der offenen Truhe: steht `CHEST_HOLD` Sekunden, blendet bis `CHEST_GONE` aus.
 pub const CHEST_HOLD: f64 = 0.3;
