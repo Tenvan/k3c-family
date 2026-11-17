@@ -49,9 +49,7 @@ pub fn load_rig(dir: &str) -> Rig {
     Rig::load(&assets().join(dir)).unwrap_or_else(|e| panic!("{e}"))
 }
 
-/// `animation_names`: Animationen des Rigs, sortiert (stabile Reihenfolge der Subtests); die Gangart-Tests aus RU5.2
-/// nutzen sie.
-#[allow(dead_code)]
+/// `animation_names`: Animationen des Rigs, sortiert (stabile Reihenfolge der Subtests).
 pub fn animation_names(r: &Rig) -> Vec<String> {
     r.animations.keys().cloned().collect()
 }

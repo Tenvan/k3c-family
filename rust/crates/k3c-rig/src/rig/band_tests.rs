@@ -1,5 +1,5 @@
 //! Port von native/k3c-rig/rig/band_test.go.
-//! Die Tests mit Gangart-Posen (`TestLegStripNeverFolds`, `TestLegStripContinuous`) folgen in RU5.2 mit `gait`.
+//! Die Tests mit Gangart-Posen (`leg_strip_never_folds`, `leg_strip_continuous`) stehen in `band_leg_tests.rs`.
 
 use super::band::{BAND_SUB, Vertex, area, tangent_limits, unfold};
 use super::curve::{catmull, hermite};
@@ -17,7 +17,7 @@ fn rest_points(b: &Band) -> Vec<Point> {
 const FOLD_EPS: f64 = 1e-9;
 
 /// `fold_at` liefert den ersten Querschnitt, an dem das Band umklappt, oder -1.
-fn fold_at(verts: &[Vertex]) -> i64 {
+pub(super) fn fold_at(verts: &[Vertex]) -> i64 {
     let mut i = 0;
     while i + 3 < verts.len() {
         // Viereck aus zwei Querschnitten: (links, rechts) oben und unten

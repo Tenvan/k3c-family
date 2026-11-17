@@ -220,3 +220,141 @@ func TestRustRefFigure(t *testing.T) {
 	}
 	writeRef(t, "figure", out)
 }
+
+// TestRustRefGait: Gangart-Posen der Vierbeiner (alle Gangarten, mehrere Phasen), Reiter-Winkel und Frequenzen.
+func TestRustRefGait(t *testing.T) {
+	type gaitRef struct {
+		Rig    string    `json:"rig"`
+		Gait   string    `json:"gait"`
+		Phase  float64   `json:"phase"`
+		Err    string    `json:"err,omitempty"`
+		Angles []float64 `json:"angles,omitempty"`
+		Dy     float64   `json:"dy"`
+		Pitch  float64   `json:"pitch"`
+		Wind   float64   `json:"wind"`
+		RiderY float64   `json:"rider_y"`
+		Lean   float64   `json:"lean"`
+		Rider  []float64 `json:"rider,omitempty"`
+		RAngle []float64 `json:"rider_angles,omitempty"`
+		Freq   float64   `json:"freq"`
+	}
+	var out struct {
+		Gaits []gaitRef `json:"gaits"`
+	}
+	for _, dir := range rigDirs(t) {
+		r := loadRig(t, dir)
+		for _, name := range []string{"stand", "schritt", "trab", "galopp", "nichtda"} {
+			for _, ph := range []float64{0, 0.07, 0.25, 0.5, 0.61, 0.93, 1} {
+				var p GaitPose
+				g := gaitRef{Rig: dir, Gait: name, Phase: ph}
+				if f, err := GaitFreq(name); err == nil {
+					g.Freq = f
+				}
+				if err := r.GaitPose(name, ph, &p); err != nil {
+					g.Err = err.Error()
+				} else {
+					g.Angles, g.Dy, g.Pitch, g.Wind, g.RiderY, g.Lean = p.Angles, p.Dy, p.Pitch, p.Wind, p.RiderY, p.Lean
+					g.Rider = p.Rider[:]
+					g.RAngle = r.RiderAngles(&p, nil)
+				}
+				out.Gaits = append(out.Gaits, g)
+			}
+		}
+	}
+	writeRef(t, "gait", out)
+}
+
+// TestRustRefFrames: Umhang je Frame zu Fuß und beim Reiten, Ride-Zustand und Keyframe-Sichtbarkeit.
+func TestRustRefFrames(t *testing.T) {
+	type cloakRef struct {
+		Rig    string    `json:"rig"`
+		Anim   string    `json:"anim"`
+		Err    string    `json:"err,omitempty"`
+		Frames [][]Point `json:"frames,omitempty"`
+	}
+	type rideRef struct {
+		Mount  string    `json:"mount"`
+		Gait   string    `json:"gait"`
+		Phase  float64   `json:"phase"`
+		Base   M         `json:"base"`
+		MountW []M       `json:"mount_world"`
+		RiderW []M       `json:"rider_world"`
+		Anchor Point     `json:"anchor"`
+		Hand   []float64 `json:"rein,omitempty"`
+	}
+	type rideCloak struct {
+		Mount  string    `json:"mount"`
+		Gait   string    `json:"gait"`
+		Err    string    `json:"err,omitempty"`
+		Frames [][]Point `json:"frames,omitempty"`
+	}
+	type hidden struct {
+		Rig   string   `json:"rig"`
+		Anim  string   `json:"anim"`
+		Phase float64  `json:"phase"`
+		Parts []string `json:"parts"`
+	}
+	var out struct {
+		Cloaks     []cloakRef  `json:"cloaks"`
+		Rides      []rideRef   `json:"rides"`
+		RideCloaks []rideCloak `json:"ride_cloaks"`
+		Hidden     []hidden    `json:"hidden"`
+		FrameTimes []float64   `json:"frame_times"`
+	}
+	for _, n := range []int{0, 1, 5} {
+		out.FrameTimes = append(out.FrameTimes, FrameTime(n, 8, 1.6), FrameTime(n, 4, 0.5))
+	}
+	rider := loadRig(t, riderDir)
+	for _, dir := range rigDirs(t) {
+		r := loadRig(t, dir)
+		for _, name := range animationNames(r) {
+			if r.Cloak != nil {
+				c := cloakRef{Rig: dir, Anim: name}
+				if f, err := r.FigureCloakFrames(name); err != nil {
+					c.Err = err.Error()
+				} else {
+					c.Frames = f
+				}
+				out.Cloaks = append(out.Cloaks, c)
+			}
+			for _, ph := range []float64{0, 0.3, 0.8} {
+				h := hidden{Rig: dir, Anim: name, Phase: ph, Parts: []string{}}
+				for _, part := range r.Parts {
+					if r.KeyframeHidden(name, part.ID, ph) {
+						h.Parts = append(h.Parts, part.ID)
+					}
+				}
+				out.Hidden = append(out.Hidden, h)
+			}
+		}
+		if r.Kind != "vierbeiner" {
+			continue
+		}
+		for _, gname := range []string{"stand", "schritt", "trab", "galopp"} {
+			if rider.Cloak != nil {
+				rc := rideCloak{Mount: dir, Gait: gname}
+				if f, err := RideCloakFrames(r, rider, gname, 6); err != nil {
+					rc.Err = err.Error()
+				} else {
+					rc.Frames = f
+				}
+				out.RideCloaks = append(out.RideCloaks, rc)
+			}
+			for _, ph := range []float64{0, 0.35, 0.8} {
+				var s Ride
+				if err := s.Set(r, rider, gname, ph, Translate(10, -3)); err != nil {
+					continue
+				}
+				ref := rideRef{Mount: dir, Gait: gname, Phase: ph, Base: s.Base, MountW: s.MountWorld, RiderW: s.RiderWorld}
+				if rider.Cloak != nil {
+					ref.Anchor = s.CloakAnchor(rider)
+				}
+				if hand, ctrl, mouth, ok := ReinPoints(r, s.MountWorld, rider, s.RiderWorld, s.Base); ok {
+					ref.Hand = []float64{hand[0], hand[1], ctrl[0], ctrl[1], mouth[0], mouth[1]}
+				}
+				out.Rides = append(out.Rides, ref)
+			}
+		}
+	}
+	writeRef(t, "frames", out)
+}

@@ -10,21 +10,21 @@ use super::testutil::{load_rig, rig_dirs, testdata};
 
 const TOL: f64 = 1e-9;
 
-fn read(name: &str) -> Value {
+pub(super) fn read(name: &str) -> Value {
     let path = testdata().join(format!("{name}.json"));
     let text = std::fs::read(&path).unwrap_or_else(|e| panic!("Referenz {} fehlt: {e}", path.display()));
     serde_json::from_slice(&text).expect("gültiges JSON")
 }
 
-fn f(v: &Value) -> f64 {
+pub(super) fn f(v: &Value) -> f64 {
     v.as_f64().expect("Zahl")
 }
 
-fn fs(v: &Value) -> Vec<f64> {
+pub(super) fn fs(v: &Value) -> Vec<f64> {
     v.as_array().map(|a| a.iter().map(f).collect()).unwrap_or_default()
 }
 
-fn pts(v: &Value) -> Vec<[f64; 2]> {
+pub(super) fn pts(v: &Value) -> Vec<[f64; 2]> {
     v.as_array()
         .expect("Liste")
         .iter()
@@ -32,14 +32,20 @@ fn pts(v: &Value) -> Vec<[f64; 2]> {
         .collect()
 }
 
-fn near(what: &str, got: f64, want: f64) {
+pub(super) fn near(what: &str, got: f64, want: f64) {
     assert!((got - want).abs() <= TOL, "{what}: Rust {got}, Go {want}");
 }
 
-fn near_all(what: &str, got: &[f64], want: &[f64]) {
+pub(super) fn near_all(what: &str, got: &[f64], want: &[f64]) {
+    near_all_tol(what, got, want, TOL);
+}
+
+/// Wie `near_all` mit eigener Toleranz: Die Umhang-Physik beim Reiten rechnet 240 Einschwing-Schritte über die
+/// Gangart-Posen (`sin`/`cos`); Go und Rust haben je eigene Kreisfunktionen (letztes Bit), die Kette verstärkt das.
+pub(super) fn near_all_tol(what: &str, got: &[f64], want: &[f64], tol: f64) {
     assert_eq!(got.len(), want.len(), "{what}: Länge");
     for (i, (g, w)) in got.iter().zip(want).enumerate() {
-        near(&format!("{what}[{i}]"), *g, *w);
+        assert!((g - w).abs() <= tol, "{what}[{i}]: Rust {g}, Go {w}");
     }
 }
 

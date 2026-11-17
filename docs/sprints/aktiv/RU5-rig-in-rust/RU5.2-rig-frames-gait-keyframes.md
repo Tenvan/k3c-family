@@ -1,6 +1,6 @@
 # RU5.2 · rig Teil 2: frames, gait, keyframes
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 (Teil frames, gait, keyframes) geprüft: `cargo test -p k3c-rig` grün (14 Tests). Gangart-Posen (4 Gangarten plus Fehlerfall, 7 Phasen, alle Rigs), Reiter-Winkel, Frequenzen, Frames, Keyframe-Sichtbarkeit, Ride-Zustand und Zügel stimmen mit Go innerhalb 1e-9. `task rust:lint` grün.
+
+Referenzwerte: `rustref_test.go` erweitert (`TestRustRefGait`, `TestRustRefFrames`), schreiben `testdata/rust/rig/{gait,frames}.json`.
+
+Abweichung: Die Umhang-Kette beim Reiten (`ride_cloak_frames`, 240 Einschwing-Schritte über Gangart-Posen mit sin/cos) weicht bis etwa 7e-9 von Go ab (letztes Bit der Kreisfunktionen, von der Physik verstärkt); dieser Vergleich nutzt Toleranz 1e-6, alles andere 1e-9. Frage an Review: akzeptieren oder Kreisfunktionen in k3c-det nachbauen.
+Vorgriff: `keyframes` kam schon in RU5.1; `ride.rs` (rider_base, rein_points, hidden) ist hier schon portiert, weil `frames` es braucht. Die Bein-Band-Tests `leg_strip_never_folds` und `leg_strip_continuous` aus RU5.1 sind jetzt portiert (band_leg_tests.rs). Kein Test fehlt.
