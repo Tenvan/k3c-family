@@ -129,7 +129,7 @@ pub fn pipeline(
     })
 }
 
-/// Lädt RGBA8 hoch und liefert die Bind-Group mit dem Sampler `sampler`.
+/// Lädt RGBA8 hoch und liefert Textur und Bind-Group mit dem Sampler `sampler`.
 pub fn upload(
     device: &wgpu::Device,
     queue: &wgpu::Queue,
@@ -137,7 +137,7 @@ pub fn upload(
     sampler: &wgpu::Sampler,
     (w, h): (u32, u32),
     rgba: &[u8],
-) -> wgpu::BindGroup {
+) -> (wgpu::Texture, wgpu::BindGroup) {
     let ext = wgpu::Extent3d {
         width: w.max(1),
         height: h.max(1),
@@ -153,25 +153,9 @@ pub fn upload(
         usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::COPY_DST,
         view_formats: &[],
     });
-    if w > 0 && h > 0 {
-        queue.write_texture(
-            wgpu::TexelCopyTextureInfo {
-                texture: &tex,
-                mip_level: 0,
-                origin: wgpu::Origin3d::ZERO,
-                aspect: wgpu::TextureAspect::All,
-            },
-            rgba,
-            wgpu::TexelCopyBufferLayout {
-                offset: 0,
-                bytes_per_row: Some(w * 4),
-                rows_per_image: Some(h),
-            },
-            ext,
-        );
-    }
+    write(queue, &tex, (0, 0, w, h), rgba);
     let view = tex.create_view(&Default::default());
-    device.create_bind_group(&wgpu::BindGroupDescriptor {
+    let bg = device.create_bind_group(&wgpu::BindGroupDescriptor {
         label: None,
         layout: bgl,
         entries: &[
@@ -184,5 +168,32 @@ pub fn upload(
                 resource: wgpu::BindingResource::Sampler(sampler),
             },
         ],
-    })
+    });
+    (tex, bg)
+}
+
+/// Schreibt RGBA8 in den Ausschnitt `(x, y, w, h)` der Textur (leer: nichts).
+pub fn write(queue: &wgpu::Queue, tex: &wgpu::Texture, (x, y, w, h): (u32, u32, u32, u32), rgba: &[u8]) {
+    if w == 0 || h == 0 {
+        return;
+    }
+    queue.write_texture(
+        wgpu::TexelCopyTextureInfo {
+            texture: tex,
+            mip_level: 0,
+            origin: wgpu::Origin3d { x, y, z: 0 },
+            aspect: wgpu::TextureAspect::All,
+        },
+        rgba,
+        wgpu::TexelCopyBufferLayout {
+            offset: 0,
+            bytes_per_row: Some(w * 4),
+            rows_per_image: Some(h),
+        },
+        wgpu::Extent3d {
+            width: w,
+            height: h,
+            depth_or_array_layers: 1,
+        },
+    );
 }

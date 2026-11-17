@@ -5,7 +5,7 @@ use std::sync::Arc;
 
 use winit::window::Window;
 
-use super::setup::{Grow, bind_layout, pipeline, sampler, upload};
+use super::setup::{Grow, bind_layout, pipeline, sampler, upload, write};
 use crate::batch::Pending;
 use crate::{Filter, Frame, INST_BYTES, Kind, LOGICAL, Rect, VERT_BYTES};
 
@@ -28,8 +28,8 @@ pub struct Gfx {
     linear: wgpu::Sampler,
     nearest: wgpu::Sampler,
     white: wgpu::BindGroup,
-    /// Je `TexId` die Bind-Group; `None` = freigegeben oder nie hochgeladen.
-    texs: Vec<Option<wgpu::BindGroup>>,
+    /// Je `TexId` Textur und Bind-Group; `None` = freigegeben oder nie hochgeladen.
+    texs: Vec<Option<(wgpu::Texture, wgpu::BindGroup)>>,
     inst: Grow,
     verts: Grow,
     idx: Grow,
@@ -59,7 +59,7 @@ impl Gfx {
         let bgl = bind_layout(&device);
         let linear = sampler(&device, wgpu::FilterMode::Linear);
         let nearest = sampler(&device, wgpu::FilterMode::Nearest);
-        let white = upload(&device, &queue, &bgl, &linear, (1, 1), &[255; 4]);
+        let (_, white) = upload(&device, &queue, &bgl, &linear, (1, 1), &[255; 4]);
         use wgpu::BufferUsages as U;
         let g = Self {
             quads: pipeline(&device, &bgl, config.format, false),
@@ -121,12 +121,19 @@ impl Gfx {
                 Filter::Linear => &self.linear,
                 Filter::Nearest => &self.nearest,
             };
-            let bg = upload(&self.device, &self.queue, &self.bgl, s, (w, h), &rgba);
+            let t = upload(&self.device, &self.queue, &self.bgl, s, (w, h), &rgba);
             let i = id.0 as usize;
             if self.texs.len() <= i {
                 self.texs.resize_with(i + 1, || None);
             }
-            self.texs[i] = Some(bg);
+            self.texs[i] = Some(t);
+        }
+        if let Some((id, ups)) = frame.take_atlas_updates()
+            && let Some(Some((tex, _))) = self.texs.get(id.0 as usize)
+        {
+            for u in ups {
+                write(&self.queue, tex, (u.x, u.y, u.w, u.h), &u.rgba);
+            }
         }
     }
 
@@ -178,7 +185,7 @@ impl Gfx {
             let bg = match r.tex {
                 None => &self.white,
                 Some(t) => match self.texs.get(t.0 as usize) {
-                    Some(Some(bg)) => bg,
+                    Some(Some((_, bg))) => bg,
                     _ => continue,
                 },
             };

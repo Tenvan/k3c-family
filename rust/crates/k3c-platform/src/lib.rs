@@ -15,6 +15,7 @@ mod input;
 mod measure;
 mod runner;
 mod shape;
+mod ttf;
 
 pub use affine::Affine;
 pub use backend::{Config, run_window};
@@ -24,6 +25,7 @@ pub use headless::{NullCanvas, run_headless};
 pub use input::{InputScript, InputState, Key, KeyState, PadAxis, PadButton, PadState, ScriptEntry, ScriptPad};
 pub use measure::{Measure, Summary};
 pub use runner::Runner;
+pub use ttf::FontId;
 
 /// Logische Auflösung; das Fenster skaliert darauf.
 pub const LOGICAL: (f32, f32) = (1920.0, 1080.0);
@@ -107,6 +109,14 @@ pub trait Canvas {
     fn stroke_line(&mut self, x0: f32, y0: f32, x1: f32, y1: f32, width: f32, color: [f32; 4]);
     /// Gefülltes einfaches Polygon aus Geraden (konvex oder konkav).
     fn fill_path(&mut self, points: &[[f32; 2]], color: [f32; 4]);
-    /// Pixel-Schrift (5×7, nur Großbuchstaben, Ziffern, Satzzeichen); `px` = Zeichenhöhe.
+    /// Pixel-Schrift (5×7, nur Großbuchstaben, Ziffern, Satzzeichen); `px` = Zeichenhöhe. Rückfall, wenn die
+    /// TTF-Schrift fehlt.
     fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
+    /// Lädt eine TTF-Schrift (z. B. `public/schrift/k3c.ttf`).
+    fn font(&mut self, ttf: &[u8]) -> Result<FontId, String>;
+    /// Text in der Schrift `font` mit Pixelgröße `px` (auf ganze Pixel gerundet); `(x, y)` ist die linke obere
+    /// Ecke der Zeile, die Grundlinie liegt bei `y` + Oberlänge (wie `text/v2`).
+    fn text_font(&mut self, font: FontId, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
+    /// Breite von `s` in Pixeln (Vorschub plus Unterschneidung), im Fenster und headless gleich.
+    fn text_width(&self, font: FontId, s: &str, px: f32) -> f32;
 }

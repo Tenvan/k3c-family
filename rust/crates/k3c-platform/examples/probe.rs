@@ -6,7 +6,7 @@
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use k3c_platform::{Affine, App, Canvas, Config, InputState, Key, Rect, STEP, TexId, Vertex, run_window};
+use k3c_platform::{Affine, App, Canvas, Config, FontId, InputState, Key, Rect, STEP, TexId, Vertex, run_window};
 
 const SIZE: u32 = 32;
 
@@ -15,6 +15,7 @@ struct Probe {
     tick: u64,
     tex: Option<TexId>,
     quit: bool,
+    font: Option<Option<FontId>>,
 }
 
 /// Runder Fleck mit weichem Rand, vormultipliziertes Alpha.
@@ -58,6 +59,20 @@ impl App for Probe {
         c.rect(Rect::new(qx, 400.0, 120.0, 120.0), [1.0, 0.78, 0.0, 1.0]);
         c.text(&format!("PROBE N{}", self.n), 60.0, 60.0, 84.0, [1.0; 4]);
         shapes(c, tex, t as f32);
+        let ttf = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/schrift/k3c.ttf");
+        let font = *self
+            .font
+            .get_or_insert_with(|| std::fs::read(&ttf).ok().and_then(|b| c.font(&b).ok()));
+        if let Some(f) = font {
+            c.text_font(
+                f,
+                "Grüße: ÄÖÜ äöü ß – Spieler 1",
+                60.0,
+                160.0,
+                48.0,
+                [1.0, 0.9, 0.6, 1.0],
+            );
+        }
     }
 
     fn done(&self) -> bool {
@@ -127,6 +142,7 @@ fn main() {
         tick: 0,
         tex: None,
         quit: false,
+        font: None,
     };
     if let Err(e) = run_window(&mut app, cfg) {
         eprintln!("Fehler: {e}");

@@ -6,7 +6,9 @@
 use std::alloc::{GlobalAlloc, Layout, System};
 use std::cell::Cell;
 
-use k3c_platform::{Affine, App, Canvas, Frame, InputState, Key, PadAxis, PadButton, Rect, Runner, TexId, Vertex};
+use k3c_platform::{
+    Affine, App, Canvas, FontId, Frame, InputState, Key, PadAxis, PadButton, Rect, Runner, TexId, Vertex,
+};
 
 thread_local! {
     static COUNT: Cell<u64> = const { Cell::new(0) };
@@ -33,7 +35,13 @@ static A: Counting = Counting;
 
 struct Scene {
     tex: Option<TexId>,
+    font: Option<FontId>,
     tick: u32,
+}
+
+fn k3c_ttf() -> Vec<u8> {
+    let p = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/schrift/k3c.ttf");
+    std::fs::read(p).unwrap()
 }
 
 impl App for Scene {
@@ -61,6 +69,9 @@ impl App for Scene {
         c.rect(Rect::new(10.0, 10.0, 100.0, 100.0), [1.0, 0.8, 0.0, 1.0]);
         c.text("PROBE N2000 #1", 60.0, 60.0, 56.0, [1.0; 4]);
         shapes(c, t, self.tick as f32);
+        let f = *self.font.get_or_insert_with(|| c.font(&k3c_ttf()).unwrap());
+        c.text_font(f, "Grüße aus Öland, Spieler 2", 40.0, 900.0, 32.0, [1.0, 1.0, 0.8, 1.0]);
+        assert!(c.text_width(f, "Äß", 32.0) > 0.0);
         assert!(alpha < 1.0);
     }
     fn done(&self) -> bool {
@@ -119,12 +130,17 @@ fn bild(run: &mut Runner, frame: &mut Frame, i: u32) {
 
 #[test]
 fn leerlauf_bild_alloziert_nichts() {
-    let mut app = Scene { tex: None, tick: 0 };
+    let mut app = Scene {
+        tex: None,
+        font: None,
+        tick: 0,
+    };
     let (mut run, mut frame) = (Runner::new(&mut app, None), Frame::new());
     for i in 0..4 {
         bild(&mut run, &mut frame, i);
     }
     let _uploads = frame.take_pending().count();
+    let _glyphs = frame.take_atlas_updates().map(|(_, u)| u.count());
     let before = COUNT.with(Cell::get);
     for i in 0..120 {
         bild(&mut run, &mut frame, i);

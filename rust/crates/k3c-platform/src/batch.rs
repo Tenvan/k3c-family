@@ -7,6 +7,7 @@
 //! `impl Canvas for Frame` steht in `frame_canvas.rs`.
 
 use crate::shape::Tris;
+use crate::ttf::{Atlas, AtlasUpdate, Fonts};
 use crate::{Filter, Rect, TexId};
 
 /// Größe einer Instanz in Byte (16 × f32).
@@ -110,6 +111,11 @@ pub struct Frame {
     pub(crate) layer: u32,
     pub(crate) clip: u32,
     pub(crate) tris: Tris,
+    pub(crate) fonts: Fonts,
+    pub(crate) atlas: Atlas,
+    /// Textur des Glyphen-Atlas (beim ersten TTF-Text angelegt).
+    pub(crate) atlas_tex: Option<TexId>,
+    pub(crate) atlas_updates: Vec<AtlasUpdate>,
 }
 
 impl Frame {
@@ -126,6 +132,7 @@ impl Frame {
         self.clips.clear();
         self.layer = 0;
         self.clip = 0;
+        self.atlas.begin_frame();
     }
 
     /// Sortiert nach Ebene, Ausschnitt, Textur, Aufruf und bildet die Draw-Calls; Instanzen und Indizes liegen
@@ -209,6 +216,11 @@ impl Frame {
     /// Texturen, die das Backend am Bildende freigeben soll.
     pub fn take_freed(&mut self) -> std::vec::Drain<'_, TexId> {
         self.freed.drain(..)
+    }
+
+    /// Neue Glyphen für die Atlas-Textur (nach dem Hochladen der Textur einzuspielen).
+    pub fn take_atlas_updates(&mut self) -> Option<(TexId, std::vec::Drain<'_, AtlasUpdate>)> {
+        Some((self.atlas_tex?, self.atlas_updates.drain(..)))
     }
 
     /// Größe der Textur; `None`, wenn unbekannt oder freigegeben.

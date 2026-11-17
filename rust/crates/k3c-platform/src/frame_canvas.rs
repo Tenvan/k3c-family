@@ -1,7 +1,8 @@
 //! `impl Canvas for Frame`: Aufrufe → Instanzen und Dreiecke (siehe `batch.rs`).
 
 use crate::batch::{Inst, Pending, SOLID, Vertex};
-use crate::{Affine, Canvas, Filter, Frame, LOGICAL, Rect, TexId, font};
+use crate::ttf::{ATLAS, round_px};
+use crate::{Affine, Canvas, Filter, FontId, Frame, LOGICAL, Rect, TexId, font};
 
 impl Canvas for Frame {
     fn size(&self) -> (f32, f32) {
@@ -136,5 +137,45 @@ impl Canvas for Frame {
             });
             cx += font::ADVANCE as f32 * k;
         }
+    }
+
+    fn font(&mut self, ttf: &[u8]) -> Result<FontId, String> {
+        self.fonts.load(ttf)
+    }
+
+    fn text_font(&mut self, f: FontId, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]) {
+        let tex = self.atlas_texture();
+        self.atlas
+            .layout(&self.fonts, (f, round_px(px)), s, (x, y), &mut self.atlas_updates);
+        let k = 1.0 / ATLAS as f32;
+        for i in 0..self.atlas.quads.len() {
+            let (src, dst) = self.atlas.quads[i];
+            let uv = [src.x * k, src.y * k, src.w * k, src.h * k];
+            self.push_quad(tex.0, Inst::rect(dst, color, uv));
+        }
+    }
+
+    fn text_width(&self, f: FontId, s: &str, px: f32) -> f32 {
+        self.fonts.width(f, s, px)
+    }
+}
+
+impl Frame {
+    /// Legt die Atlas-Textur beim ersten Bedarf an (leer; Glyphen kommen als Teil-Updates).
+    fn atlas_texture(&mut self) -> TexId {
+        if let Some(t) = self.atlas_tex {
+            return t;
+        }
+        let id = TexId(self.sizes.len() as u32);
+        self.sizes.push((ATLAS, ATLAS));
+        self.pending.push(Pending {
+            id,
+            w: ATLAS,
+            h: ATLAS,
+            filter: Filter::Linear,
+            rgba: vec![0; (ATLAS * ATLAS * 4) as usize],
+        });
+        self.atlas_tex = Some(id);
+        id
     }
 }

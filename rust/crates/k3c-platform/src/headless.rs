@@ -1,10 +1,11 @@
 //! Headless: Schleife ohne Fenster, Grafik, Tongerät und Gamepad-Abfrage, für Tests und Läufe ohne Anzeige.
 
 use crate::runner::Runner;
-use crate::{Affine, App, Canvas, Filter, InputScript, LOGICAL, Rect, STEP, TexId, Vertex};
+use crate::ttf::Fonts;
+use crate::{Affine, App, Canvas, Filter, FontId, InputScript, LOGICAL, Rect, STEP, TexId, Vertex};
 
 /// Canvas, der nur zählt, was gezeichnet würde.
-#[derive(Default, Debug, Clone, PartialEq, Eq)]
+#[derive(Default, Debug, Clone)]
 pub struct NullCanvas {
     pub textures: u32,
     pub sprites: u64,
@@ -16,6 +17,8 @@ pub struct NullCanvas {
     /// Formen außer Rechtecken: Rahmen, Kreise, Linien, Polygone.
     pub shapes: u64,
     pub freed: u32,
+    /// Geladene Schriften: misst wie im Fenster.
+    fonts: Fonts,
 }
 
 impl Canvas for NullCanvas {
@@ -70,6 +73,18 @@ impl Canvas for NullCanvas {
 
     fn text(&mut self, _s: &str, _x: f32, _y: f32, _px: f32, _color: [f32; 4]) {
         self.texts += 1;
+    }
+
+    fn font(&mut self, ttf: &[u8]) -> Result<FontId, String> {
+        self.fonts.load(ttf)
+    }
+
+    fn text_font(&mut self, _f: FontId, _s: &str, _x: f32, _y: f32, _px: f32, _color: [f32; 4]) {
+        self.texts += 1;
+    }
+
+    fn text_width(&self, f: FontId, s: &str, px: f32) -> f32 {
+        self.fonts.width(f, s, px)
     }
 
     fn clip(&mut self, _area: Option<Rect>) {
