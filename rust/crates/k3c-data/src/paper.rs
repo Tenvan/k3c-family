@@ -29,16 +29,34 @@ pub struct Paper {
     pub figuren: PaperFiguren,
     #[serde(rename = "gebaeude")]
     pub gebaeude: String,
+    #[serde(rename = "einsiedler")]
+    pub einsiedler: PaperEinsiedler,
     #[serde(rename = "skalierung")]
     pub skalierung: BTreeMap<String, f64>,
     #[serde(rename = "hintergruende")]
     pub hintergruende: PaperHintergruende,
     #[serde(rename = "weltbilder")]
     pub weltbilder: BTreeMap<String, PaperWeltbilder>,
+    #[serde(rename = "wetter")]
+    pub wetter: BTreeMap<String, String>,
     #[serde(rename = "seekarte")]
     pub seekarte: PaperSeekarte,
     #[serde(rename = "objekte")]
     pub objekte: BTreeMap<String, PaperObjekte>,
+}
+
+/// Datei-Aufbau `.einsiedler` (SI5, B-1001).
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct PaperEinsiedler {
+    #[serde(rename = "_hinweis")]
+    pub hinweis: String,
+    #[serde(rename = "figuren")]
+    pub figuren: BTreeMap<String, String>,
+    #[serde(rename = "bauwerke")]
+    pub bauwerke: BTreeMap<String, String>,
+    #[serde(rename = "huette")]
+    pub huette: String,
 }
 
 /// Datei-Aufbau `.objekte.*`.
