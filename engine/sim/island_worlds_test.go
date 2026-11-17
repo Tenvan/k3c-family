@@ -95,7 +95,7 @@ func TestStandardWeltGleichBisherigenInseln(t *testing.T) {
 		t.Fatal(err)
 	}
 	sum := sha256.Sum256(bytes.ReplaceAll(head.Islands, []byte("\r\n"), []byte("\n")))
-	if got := hex.EncodeToString(sum[:]); got != "e6769fbf9c015a49457f517b4518617037f349264e94b5d50ced75ce21b2ff8e" {
+	if got := hex.EncodeToString(sum[:]); got != "ea0213804059ff85c0bea5f3c073c9cead03ca25395d2610e7fe5ba5ef31de57" { // GS1.5 (B-976): plus story der Insel 1
 		t.Errorf("islands geändert (sha256 %s)", got)
 	}
 }
