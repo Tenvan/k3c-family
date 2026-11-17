@@ -1,6 +1,6 @@
 # SI1.3 · Assets Ladeplätze, Beutel, Kiste, Laderaum (B-997)
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,4 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert (Ralf, 2026-11-17): Welt-Assets kommen ganz zum Schluss; vorher nur Standard-Set und Client-Umsetzung.

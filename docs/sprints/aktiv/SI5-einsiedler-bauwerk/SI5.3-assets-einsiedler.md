@@ -1,6 +1,6 @@
 # SI5.3 · Assets Hütte, Dojo, Schrein, Schwertschmied, Priesterin (B-1001)
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -58,4 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert (Ralf, 2026-11-17): Welt-Assets kommen ganz zum Schluss; vorher nur Standard-Set und Client-Umsetzung. Angefangener Stand liegt im Worktree-Branch claude/cranky-kare-e183ca.
