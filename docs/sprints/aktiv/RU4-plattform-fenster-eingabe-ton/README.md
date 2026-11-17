@@ -112,7 +112,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 | RU4.2 | `RU4.2-canvas-transform-netz-formen.md` | Umsetzung | autonom | fertig |
 | RU4.3 | `RU4.3-schrift-ttf-umlaute.md` | Umsetzung | autonom | fertig |
 | RU4.4 | `RU4.4-gamepads-xbox.md` | Umsetzung | autonom | fertig |
-| RU4.5 | `RU4.5-view-vertraege-eingabe.md` | Umsetzung | autonom | offen |
+| RU4.5 | `RU4.5-view-vertraege-eingabe.md` | Umsetzung | autonom | fertig |
 | RU4.6 | `RU4.6-eingabe-port-bindings-tracker.md` | Umsetzung | autonom | offen |
 | RU4.7 | `RU4.7-eingabe-port-source.md` | Umsetzung | autonom | offen |
 | RU4.8 | `RU4.8-ton-audioout.md` | Umsetzung | autonom | offen |

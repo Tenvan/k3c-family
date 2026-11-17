@@ -2,6 +2,7 @@
 
 pub mod art;
 pub mod demo;
+pub mod view;
 
 #[cfg(test)]
 mod tests {
