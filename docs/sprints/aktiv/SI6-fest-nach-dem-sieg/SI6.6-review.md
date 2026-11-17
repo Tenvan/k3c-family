@@ -1,6 +1,6 @@
 # SI6.6 · Review Sprint SI6 Fest nach dem Sieg
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -63,4 +63,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert mit SI6.2 (Ralf, 2026-11-17): Review erst, wenn die Welt-Assets zum Schluss kommen.

@@ -1,6 +1,6 @@
 # SI5.5 · Review Sprint SI5 Besondere Figur der Welt
 
-- **Status:** offen
+- **Status:** blockiert
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -64,4 +64,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Pausiert mit SI5.3 (Ralf, 2026-11-17): Review erst, wenn die Welt-Assets zum Schluss kommen.
