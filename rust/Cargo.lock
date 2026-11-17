@@ -943,6 +943,10 @@ dependencies = [
 [[package]]
 name = "k3c-rig"
 version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "k3c-rng"
