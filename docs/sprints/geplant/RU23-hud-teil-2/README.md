@@ -74,7 +74,10 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeiten entstehen direkt im Rust-Client. Spec steht im Ticket:
+
+- GS3.3 Andenken, Abschlusszeile und Zahlen auf der Seekarte (B-966)
+- GS4.4 Flasche, Geschichtszeile, Pfeil und Leuchten (B-980)
 
 ## Sessions
 

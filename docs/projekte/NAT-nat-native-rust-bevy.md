@@ -1,7 +1,7 @@
 # NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server)
 
-- **Status:** aktiv
-- **Rang:** 1
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** B-775
 
 ## Ziel
@@ -41,16 +41,16 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WR1 | Rückbau von Browser-Client, Spielserver und Online-Werkzeugen | erledigt |
 | WR2 | Reste des Server- und Web-Rückbaus aufräumen | erledigt |
 | CH1 | Cheats, Entwickler-Tasten, Debug-Werte und HUD-Icons im nativen Spiel | erledigt |
-| BI1 | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | aktiv |
+| BI1 | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | erledigt |
 | BI2 | Biom-Eigenschaften sichtbar: Kristallfarben, Decke, Tropfsteine, Verfall, Glut, Leuchten | erledigt |
 | EP1 | Eingabe-Profile je Spieler und Tasten-Icons je Gerät | erledigt |
 | ST2 | Stresstests im Spielmenü (Testing) | erledigt |
-| GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | aktiv |
-| FB1 | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | aktiv |
-| FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | aktiv |
-| WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | aktiv |
-| FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | aktiv |
-| NA1 | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | aktiv |
+| GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | erledigt |
+| FB1 | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | erledigt |
+| FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | erledigt |
+| WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | erledigt |
+| FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | erledigt |
+| NA1 | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | erledigt |
 
 ## Nicht-Ziele
 

@@ -62,8 +62,8 @@ Keine blockierende. Defaults in den Tickets (Größe des Ersatz-Bosses B-993, Um
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE6.1 | `WE6.1-spiel-endboss-bau.md` | Umsetzung | autonom | offen |
-| WE6.2 | `WE6.2-spiel-skins.md` | Umsetzung | autonom | offen |
+| WE6.1 | `WE6.1-spiel-endboss-bau.md` | Umsetzung | autonom | verworfen |
+| WE6.2 | `WE6.2-spiel-skins.md` | Umsetzung | autonom | verworfen |
 | WE6.3 | `WE6.3-welten-mcp-neue-felder.md` | Umsetzung | autonom | offen |
 | WE6.4 | `WE6.4-welten-editor-neue-felder.md` | Umsetzung | autonom | offen |
 | WE6.5 | `WE6.5-review.md` | Review | autonom | offen |

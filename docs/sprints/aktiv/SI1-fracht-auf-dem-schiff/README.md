@@ -66,9 +66,9 @@ Keine blockierenden. Die Defaults stehen in `B-967 › Offene Fragen` und `B-997
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | SI1.1 | `SI1.1-regeltext-fracht.md` | Umsetzung | autonom | fertig |
-| SI1.2 | `SI1.2-engine-fracht.md` | Umsetzung | autonom | offen |
+| SI1.2 | `SI1.2-engine-fracht.md` | Umsetzung | autonom | verworfen |
 | SI1.3 | `SI1.3-assets-fracht.md` | Umsetzung | autonom | offen |
-| SI1.4 | `SI1.4-anzeige-fracht.md` | Umsetzung | autonom | offen |
+| SI1.4 | `SI1.4-anzeige-fracht.md` | Umsetzung | autonom | verworfen |
 | SI1.5 | `SI1.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -78,9 +78,9 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | GS4.1 | `GS4.1-regeltext-flaschenpost.md` | Umsetzung | autonom | offen |
-| GS4.2 | `GS4.2-flaschenpost-sim.md` | Umsetzung | autonom | offen |
+| GS4.2 | `GS4.2-flaschenpost-sim.md` | Umsetzung | autonom | verworfen |
 | GS4.3 | `GS4.3-asset-flaschenpost.md` | Umsetzung | autonom | offen |
-| GS4.4 | `GS4.4-flaschenpost-spiel.md` | Umsetzung | autonom | offen |
+| GS4.4 | `GS4.4-flaschenpost-spiel.md` | Umsetzung | autonom | verworfen |
 | GS4.5 | `GS4.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

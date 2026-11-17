@@ -1,6 +1,6 @@
 # NA1.7 · Review NA1
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI

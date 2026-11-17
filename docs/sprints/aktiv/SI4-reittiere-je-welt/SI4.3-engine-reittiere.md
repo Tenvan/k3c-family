@@ -1,6 +1,6 @@
 # SI4.3 · Reittier-Katalog, Gatter, Kauf und Spielstand in der Engine (B-970)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

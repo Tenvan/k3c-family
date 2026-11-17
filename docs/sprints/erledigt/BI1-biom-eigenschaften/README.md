@@ -1,6 +1,6 @@
 # BI1 · SIM, DEV, CLI · Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** SIM, DEV, CLI
 - **Reife:** bereit

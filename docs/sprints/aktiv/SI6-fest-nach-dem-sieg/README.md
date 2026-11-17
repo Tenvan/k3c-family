@@ -68,9 +68,9 @@ Keine blockierenden. Defaults in `B-973 › Offene Fragen` und `B-1002 › Offen
 |---|---|---|---|---|
 | SI6.1 | `SI6.1-regeltext-friedliche-insel.md` | Umsetzung | autonom | offen |
 | SI6.2 | `SI6.2-assets-fest.md` | Umsetzung | autonom | offen |
-| SI6.3 | `SI6.3-engine-friedliche-insel.md` | Umsetzung | autonom | offen |
-| SI6.4 | `SI6.4-anzeige-fest.md` | Umsetzung | autonom | offen |
-| SI6.5 | `SI6.5-festmusik.md` | Umsetzung | autonom | offen |
+| SI6.3 | `SI6.3-engine-friedliche-insel.md` | Umsetzung | autonom | verworfen |
+| SI6.4 | `SI6.4-anzeige-fest.md` | Umsetzung | autonom | verworfen |
+| SI6.5 | `SI6.5-festmusik.md` | Umsetzung | autonom | verworfen |
 | SI6.6 | `SI6.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

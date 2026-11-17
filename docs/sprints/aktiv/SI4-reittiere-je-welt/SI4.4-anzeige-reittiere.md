@@ -1,6 +1,6 @@
 # SI4.4 · Gatter und Reittier je Monarch im Spiel (B-1000)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

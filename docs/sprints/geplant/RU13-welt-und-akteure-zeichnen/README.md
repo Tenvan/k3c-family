@@ -73,7 +73,10 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeiten entstehen direkt im Rust-Client, sobald die Sim-Seite steht. Spec steht im Ticket:
+
+- SI4.4 Gatter und Reittier je Monarch im Spiel (B-1000)
+- WE6.1 Bau und Endboss in jedem Biom, Ersatz-Asset der Basisart (B-993)
 
 ## Sessions
 

@@ -1,6 +1,6 @@
 # GS3.3 · Spiel: Andenken, Abschlusszeile und Zahlen auf der Seekarte (B-966)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

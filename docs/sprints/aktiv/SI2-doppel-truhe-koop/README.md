@@ -67,8 +67,8 @@ Keine blockierenden. Defaults in `B-968 › Offene Fragen` und `B-998 › Offene
 |---|---|---|---|---|
 | SI2.1 | `SI2.1-regeltext-koop.md` | Umsetzung | autonom | offen |
 | SI2.2 | `SI2.2-asset-doppel-truhe.md` | Umsetzung | autonom | offen |
-| SI2.3 | `SI2.3-engine-doppel-truhe.md` | Umsetzung | autonom | offen |
-| SI2.4 | `SI2.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | offen |
+| SI2.3 | `SI2.3-engine-doppel-truhe.md` | Umsetzung | autonom | verworfen |
+| SI2.4 | `SI2.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | verworfen |
 | SI2.5 | `SI2.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

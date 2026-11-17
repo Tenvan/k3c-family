@@ -67,8 +67,8 @@ Keine blockierenden. Defaults in `B-970 › Offene Fragen` und `B-1000 › Offen
 |---|---|---|---|---|
 | SI4.1 | `SI4.1-regeltext-reittiere.md` | Umsetzung | autonom | offen |
 | SI4.2 | `SI4.2-assets-reittiere.md` | Umsetzung | autonom | offen |
-| SI4.3 | `SI4.3-engine-reittiere.md` | Umsetzung | autonom | offen |
-| SI4.4 | `SI4.4-anzeige-reittiere.md` | Umsetzung | autonom | offen |
+| SI4.3 | `SI4.3-engine-reittiere.md` | Umsetzung | autonom | verworfen |
+| SI4.4 | `SI4.4-anzeige-reittiere.md` | Umsetzung | autonom | verworfen |
 | SI4.5 | `SI4.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

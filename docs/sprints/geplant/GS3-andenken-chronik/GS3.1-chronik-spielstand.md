@@ -1,6 +1,6 @@
 # GS3.1 · Engine: Chronik abgeschlossener Inseln im Spielstand (B-966)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

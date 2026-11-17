@@ -80,6 +80,15 @@ Ein Gate wird verfehlt → Abbruch: `rust/` und die Rust-Schritte in Taskfile un
 7. **Rang von RSU (🧑):** angelegt mit 12.
 8. **Schwacher PC (🧑, Gerät):** Welches Gerät ist die Messlatte für G1 und G2 (Mini-PC)?
 
+### Freigegebene Crates
+
+- RU1/RU2 (🧑 2026-11-16): `winit` 0.30, `wgpu`, `serde`, `serde_json`, `flate2` und die Abhängigkeiten aus `rust/Cargo.toml` mit Stand RU2.
+- RU4 (🧑 2026-11-17): `fontdue` (Schrift), `gilrs` (Gamepads), `rodio` ohne Standard-Features (Ton).
+
+### Beschluss Go-Stopp (🧑 2026-11-16)
+
+Die Go-Engine und das Go-Spiel wachsen nicht weiter. Offene Go-Sessions sind verworfen und als Nachzug in den RU-Sprints vermerkt (Offene Fragen von RU5, RU12, RU13, RU14, RU16, RU17, RU18, RU19, RU23, RU24). Das Projekt NAT ist geschlossen.
+
 ## Notizen
 
 ### Empfehlung

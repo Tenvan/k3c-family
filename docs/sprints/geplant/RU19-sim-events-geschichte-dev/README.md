@@ -71,7 +71,13 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeiten gehören nicht in den bitgleichen Port. Sie entstehen nach dem Golden-Abgleich (RU22) als neuer Rust-Code, angefangener Go-Code wird neu geschrieben statt konvertiert. Spec steht im Ticket:
+
+- SI3.2 Wetter-Katalog, Zeitplan, Taifun und Flut (B-969)
+- SI6.3 Friedliche Insel und Fest-Zustand (B-973)
+- GS4.2 Flaschenpost, Ziel, Markierung, Spielstand (B-971)
+- WE8.2 Event raid (Überfall) (B-991)
+- WE8.3 Events sandstorm und fog (B-992)
 
 ## Sessions
 

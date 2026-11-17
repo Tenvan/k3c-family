@@ -1,7 +1,7 @@
 # KSY · Kampfsystem: Portale, aktiver Angriff, Ausrüstung statt Tod, Krone statt HP
 
 - **Status:** aktiv
-- **Rang:** 2
+- **Rang:** 1
 - **Ziel-Tickets:** –
 
 ## Ziel

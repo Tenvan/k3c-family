@@ -1,6 +1,6 @@
 # GS3.4 · Ablage: Spielstand-Liste liefert Route und Chronik (B-978)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SRV

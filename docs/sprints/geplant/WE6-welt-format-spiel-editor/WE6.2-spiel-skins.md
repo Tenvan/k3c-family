@@ -1,6 +1,6 @@
 # WE6.2 · Spiel: Skins der Welt für Gegner, Objekte, Gebäude und Schiff (B-994)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

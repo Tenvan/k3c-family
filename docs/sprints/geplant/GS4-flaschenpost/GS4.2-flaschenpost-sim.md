@@ -1,6 +1,6 @@
 # GS4.2 · Engine: Flaschenpost, Ziel, Markierung, Spielstand (B-971)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

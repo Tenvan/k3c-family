@@ -73,7 +73,12 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeiten entstehen direkt im Rust-Client, sobald die Sim-Seite steht. Spec steht im Ticket:
+
+- SI1.4 Ladeplätze und Fracht an Deck (B-997)
+- SI2.4 Doppel-Truhe im Spiel (B-998)
+- SI5.4 Hütte, Figur und Bauwerk im Spiel (B-1001)
+- WE6.2 Skins der Welt für Gegner, Objekte, Gebäude und Schiff (B-994)
 
 ## Sessions
 

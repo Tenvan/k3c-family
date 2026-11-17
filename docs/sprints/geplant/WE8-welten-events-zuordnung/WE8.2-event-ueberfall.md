@@ -1,6 +1,6 @@
 # WE8.2 · Engine: Event raid (Überfall) (B-991)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
