@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU7
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, 2026-11-17
 - **Duplikat von:** –
 - **Ersetzt:** –
 
