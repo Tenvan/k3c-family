@@ -1,6 +1,6 @@
 # RU7.7 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-04 geprüft: `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings`, `cargo test --workspace` (k3c-game 104 grün), `task check` (7 min 48 s) und `task check:go` (2 min 16 s) nacheinander grün. Vorher `origin/sprint/ru8` gemergt (Review-Commit ecbba5587 mit `ItemDrop`); k3c-game hatte keine `Drop`-Referenz.
+- Schritt 1: kein `pending.rs` in `art` und `view`, keine `ignore`-Labels mit RU5/RU8, `k3c_rig` nur in `src/art/`.
+- `Stage.world: Option<Rc<World>>` (RU7.5): `Rc` passt, kein Thread in k3c-game, die Welt ist nur lesend; kein `Arc`. Kein Fix nötig.
+- Nicht geprüft: gerenderte Grafik (`K3C_GRAFIK_DIR`, `gen:paper`) und Race; beides im Abnahme-Ticket B-1048.
+- Befunde: keine; keine Fixes. Neues Ticket: B-1048.

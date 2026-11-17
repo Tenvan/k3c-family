@@ -93,7 +93,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 | RU7.4 | `RU7.4-view-teil-1-ohne-sim.md` | Umsetzung | autonom | fertig |
 | RU7.5 | `RU7.5-view-teil-2-frame-vertrag.md` | Umsetzung | autonom | fertig |
 | RU7.6 | `RU7.6-art-rigs.md` | Umsetzung | autonom | fertig |
-| RU7.7 | `RU7.7-review.md` | Review | autonom | offen |
+| RU7.7 | `RU7.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -101,6 +101,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+Review RU7.7 (2026-11-17, autonom, Claude): AC-01 bis AC-04 geprüft über `cargo test --workspace` (104 Tests in k3c-game), `cargo clippy --workspace --all-targets -- -D warnings`, `cargo fmt --all --check`, `task check` und `task check:go`, alles grün; keine `pending.rs`, kein `ignore` mit RU5/RU8 in `art` und `view`, `k3c_rig` nur in `src/art/`.
+`Stage.world: Option<Rc<World>>` bleibt: Schleife und Frame laufen im Hauptfaden (kein Thread in k3c-game), `Rc` ist dort erlaubt, `Arc` brächte nur Kosten.
+Offen für 🧑 und das Abnahme-Ticket B-1048: gerenderte Grafik (`K3C_GRAFIK_DIR`) und Race (B-742); Sim und Balance sind gesperrt.

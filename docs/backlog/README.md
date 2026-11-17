@@ -116,6 +116,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1032](B-1032-abnahme-laeufe-si2.md) | INF | Schuld | mittel | offen | SI2 | Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1036](B-1036-typen-worlddef-island-fuer-ru7-5-vorziehen.md) | SIM | Schuld | mittel | offen | RU10 | Typen WorldDef und Island für RU7.5 vorziehen |
 | [B-1037](B-1037-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | RU8 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
+| [B-1048](B-1048-abnahme-laeufe-ru7.md) | CLI | Schuld | mittel | offen | RU7 | Abnahme-Läufe RU7: Grafik laden samt gerenderter Grafik und Race sind grün |
 
 ## Archiv
 
