@@ -1,6 +1,6 @@
 # SI3.5 · Review Sprint SI3 Wetter je Welt
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -62,4 +62,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+- `task check`: erst rot (`hintergruende.test.ts` zählte `wetter-wolkenbank` als Kulisse), Filter um `wetter-*` erweitert, Test grün.
+- `task check:go`: rot nur in `engine/internal/detvec` (`doppel-truhe`, bekannt B-1030, nicht aus SI3).
+- Diff: Asset Wolkenbank (Spec, Index, Golden, `data/paper.json`); Regeltext aus SI3.1; SI3.2/SI3.4 verworfen.
+- Abnahme-Ticket B-1031 (Gen samt Golden, Race, check:go nach B-1030).

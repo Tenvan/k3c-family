@@ -496,5 +496,11 @@
     "dateien": {
       "stand.png": "a9d05859f088399eb65eb19dd4c8cdec43e354681003afddd6059134c2eca168"
     }
+  },
+  "wetter-wolkenbank": {
+    "renderKey": "cc4e23c6fe328e6c19bfbc6079c7c352b785abab972ed69b7820285094ff210d",
+    "dateien": {
+      "stand.png": "ef30f1673bf4daa4f20f3a68fb7ea03461cc1b66223e9b89e3fda8266861bbd1"
+    }
   }
 }
