@@ -89,13 +89,13 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU13.1 | `RU13.1-world-backdrop-camera-cull-ground-layers.md` | Umsetzung | autonom | offen |
-| RU13.2 | `RU13.2-world-light-river-water.md` | Umsetzung | autonom | offen |
-| RU13.3 | `RU13.3-world-actors-anim.md` | Umsetzung | autonom | offen |
-| RU13.4 | `RU13.4-actors-catalog-combatmarks-draw-figures.md` | Umsetzung | autonom | offen |
-| RU13.5 | `RU13.5-actors-levels-markdraw-marks-pose.md` | Umsetzung | autonom | offen |
-| RU13.6 | `RU13.6-standbild-bildvergleich.md` | Umsetzung | autonom | offen |
-| RU13.7 | `RU13.7-review.md` | Review | autonom | offen |
+| RU13.1 | `RU13.1-world-backdrop-camera-cull-ground-layers.md` | Umsetzung | autonom | fertig |
+| RU13.2 | `RU13.2-world-light-river-water.md` | Umsetzung | autonom | fertig |
+| RU13.3 | `RU13.3-world-actors-anim.md` | Umsetzung | autonom | fertig |
+| RU13.4 | `RU13.4-actors-catalog-combatmarks-draw-figures.md` | Umsetzung | autonom | fertig |
+| RU13.5 | `RU13.5-actors-levels-markdraw-marks-pose.md` | Umsetzung | autonom | fertig |
+| RU13.6 | `RU13.6-standbild-bildvergleich.md` | Umsetzung | autonom | fertig |
+| RU13.7 | `RU13.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -103,6 +103,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-17: AC-01 und AC-02 geprüft, Nachweise in den Ergebnissen RU13.1 bis RU13.6; alle Go-Tests von `world` und `actors` (außer `measure_test.go`) sind in Rust portiert (Ausnahmen mit Grund: Shader-, Alloc-Tests, `LevelSheets(nil)`), kein `pending.rs`, `testdata/golden` und `native/`/`engine/` unverändert bis auf `world/rustref_test.go`. `task check` und `task check:go` grün; Reviewer `k3c-reviewer`: nur drei niedrige Befunde, keine Regelabweichung.
+Bildtests laufen ohne Grafik übersprungen, Sichtprüfung durch Ralf offen. Abnahme-Ticket B-1059 (Gen mit `K3C_STILL_REQUIRE=1`, Race, Sichtprüfung). Weitere Tickets aus dem Sprint: B-1055 (Fluss-Shader), B-1056 (Multiply-Blend), B-1058 (Canvas-Sortierung).
