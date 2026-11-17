@@ -1,6 +1,6 @@
 # RU4.4 · Gamepads im Backend: Xbox-Belegung, Geräte kommen und gehen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- **AC-03 geprüft:** `cargo test -p k3c-platform` grün (55 Unit-Tests): `jede_xbox_taste_hat_genau_eine_quelle` (jede `PadButton`-Variante genau eine gilrs-Taste), `jede_achse_hat_genau_eine_quelle`, `trigger_ist_achse_und_ab_schwelle_taste` (Wert > 30/255 wie Ebitengine `gamepaddb.ButtonPressedThreshold`), `stick_y_nach_unten_positiv_und_tasten` (gilrs zählt Y nach oben, das Spiel nach unten; Steuerkreuz als Achse), `neue_verbindung_neue_id_auch_beim_selben_pad` (erstes Pad `id` 0, doppelte Meldung zählt nicht, Wiederverbinden gibt eine neue `id`). `tests/layering.rs`: auch `gilrs::` nur in `src/backend/`.
+- **AC-03 (Lauf):** Probe-Titel zeigt `… | 60 Bilder/s | spät 0 | Pads 0` (per Fenstertitel ausgelesen). **Ungeprüft:** Ein- und Ausstecken – an diesem Rechner war kein Pad angeschlossen. **Ralf prüft:** Xbox-Pad an- und abstecken, der Titel der Probe zählt hoch und runter.
+- **Umsetzung:** `gilrs = "=0.11.2"` (Standard-Feature `wgi`; Freigabe B-1014). `src/backend/pads.rs`: `Pads::open()` (ohne Gamepad-Unterstützung Warnung, Spiel läuft ohne Pads), `poll` je Bild vor den Takten (beim ersten Mal auch die schon verbundenen Pads), Ereignisse über `PadEv` (ohne gilrs-Kennung, testbar ohne Gerät) auf `InputState`. Headless öffnet gilrs nie. Titel des Fensters zeigt die Zahl der Pads.
+- **Review (Sonnet):** keine schweren Befunde. Behoben: Start-Merker statt `next == 0` (sonst bekam das erste später angesteckte Pad `id` 1), ID-Vergabe getestet. Offen gelassen (bewusst): Pads behalten bei Fokusverlust ihren Zustand (wie Ebitengine, das Pads auch ohne Fokus liest); Trigger über `LeftZ`/`RightZ` mit Ruhe −1 bei manchen Treibern (WGI liefert 0 … 1, vermutet unkritisch); beim Anstecken kein Anfangszustand.

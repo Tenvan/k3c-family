@@ -2,6 +2,7 @@
 
 mod gpu;
 mod keys;
+mod pads;
 mod setup;
 
 use std::path::PathBuf;
@@ -19,6 +20,7 @@ use crate::measure::SecondStat;
 use crate::{App, Frame, Measure, Runner};
 
 use gpu::Gfx;
+use pads::Pads;
 
 /// Bilder im Messring (rund 18 Minuten bei 60 Hz).
 const RING: usize = 1 << 16;
@@ -55,6 +57,7 @@ struct WinLoop<'a> {
     gfx: Option<Gfx>,
     backend: String,
     frame: Frame,
+    pads: Pads,
     /// Zuletzt umgesetzter Vollbild-Wunsch der App; nur eine Änderung des Wunsches schaltet (das System darf
     /// das Vollbild sonst selbst umschalten, ohne dass die Schleife es zurücksetzt).
     full_wish: Option<bool>,
@@ -75,6 +78,7 @@ impl<'a> WinLoop<'a> {
             gfx: None,
             backend: String::new(),
             frame: Frame::new(),
+            pads: Pads::open(),
             full_wish,
             measure: Measure::new(RING),
             start: Instant::now(),
@@ -115,6 +119,7 @@ impl<'a> WinLoop<'a> {
     fn redraw(&mut self, el: &ActiveEventLoop) {
         let now = Instant::now();
         let dt = self.last.map_or(0.0, |l| now.duration_since(l).as_secs_f64());
+        self.pads.poll(self.run.input_mut());
         self.frame.begin();
         self.run.advance(dt.min(MAX_DT), &mut self.frame);
         self.frame.finish();
@@ -174,8 +179,9 @@ impl<'a> WinLoop<'a> {
         let (Some(st), Some(w)) = (self.second.take(), &self.win) else {
             return;
         };
+        let pads = self.run.input_mut().pads().len();
         w.set_title(&format!(
-            "{} | {} | {} Bilder/s | spät {}",
+            "{} | {} | {} Bilder/s | spät {} | Pads {pads}",
             self.cfg.title, self.backend, st.frames, st.late
         ));
     }
