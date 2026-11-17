@@ -1,6 +1,6 @@
 # RU3.6 · Review rng, Zahlen, Daten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -59,5 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- Jedes Kriterium nachgeprüft (Abschnitt Abnahme der Sprint-README): `cargo test -p k3c-rng -p k3c-det -p k3c-data` grün (5, 11, 25 Tests), `go test ./engine/internal/detvec/` grün, `task check` (7 min 33 s) und `task check:go` (2 min 18 s) grün, `cargo clippy` und `cargo fmt --check` grün.
+- Grep `HashMap|powf|.exp(|f64::max|f64::min|unsafe` in den drei Crates: kein Treffer außer `mul_add` in `k3c-det/src/exp.rs` (FMA-Pfad von Go, einzige erlaubte Stelle).
+- Wo der Leitfaden nicht reichte (für B-1018/AC-03): (1) § 5 nennt `math.Exp` nicht als CPU-abhängig; Go wählt auf amd64 zur Laufzeit FMA oder SSE (B-1023). (2) § 3 sagt nichts zu Go-Feldern ohne Tag: Go schreibt den Go-Namen (`HPFactor`) und liest ohne Groß-/Kleinschreibung; Rust braucht `rename` plus `alias`. (3) Nicht exportierte Go-Typen (`economyData`, `shipFile`, `rawWorld`) sind aus einem Test-Paket nur über `reflect` oder eine Kopie erreichbar. (4) Für Dateien, die nur das native Spiel in Teilen liest, gibt es keine eine Go-Struktur; Vorbild war der Aufbau der Datei. (5) `null` ≡ `[]` reicht nicht für Maps; fehlende Maps sind `Option<BTreeMap>`.
+- PR: nicht geöffnet (Auftrag: kein PR, kein Merge); Branch gepusht.
+- Neue Tickets: B-1027 (Abnahme-Läufe RU3).
