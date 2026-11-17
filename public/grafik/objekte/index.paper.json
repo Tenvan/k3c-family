@@ -85,6 +85,21 @@
     "manifest": "felsen/manifest.json"
   },
   {
+    "id": "fest-bluete",
+    "rig": "requisite",
+    "manifest": "fest-bluete/manifest.json"
+  },
+  {
+    "id": "fest-fackel",
+    "rig": "requisite",
+    "manifest": "fest-fackel/manifest.json"
+  },
+  {
+    "id": "fest-laterne",
+    "rig": "requisite",
+    "manifest": "fest-laterne/manifest.json"
+  },
+  {
     "id": "fracht-beutel",
     "rig": "requisite",
     "manifest": "fracht-beutel/manifest.json"

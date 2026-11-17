@@ -1,6 +1,6 @@
 # SI6.2 · Assets Laterne, Blüte, Fackel für das Fest (B-1002)
 
-- **Status:** blockiert
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,4 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Pausiert (Ralf, 2026-11-17): Welt-Assets kommen ganz zum Schluss; vorher nur Standard-Set und Client-Umsetzung.
+- AC-02: umgesetzt – `fest-laterne` (24×32), `fest-bluete` (36×20), `fest-fackel` (20×52), je 4 Frames idle, Gruppe `objekte`, über `assets_*` angelegt; Zuordnung im Block `objekte` von `data/paper.json`, Detvec-Baum neu geschrieben.
+  geprüft: `assets_preview` und Agent `k3c-grafik` ohne schweren Befund (Hinweis: Lesbarkeit am TV und Kontrast der Blüte auf Nil-Wasser per Augenschein in der Abnahme).
+- `check_run task:check:diff`: Regeln, Lint, Typecheck, go vet und `go test -short ./data` grün; Schritt golangci-lint übersprungen (lokal nicht installiert, läuft in der CI).

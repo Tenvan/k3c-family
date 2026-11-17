@@ -1,0 +1,98 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "fest-fackel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Fest-Fackel (Nil): Holzstab mit umwickeltem Kopf und flackernder Flamme, brennt beim Fest am Ufer",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1.5 0L-1.5 -34L1.5 -34L1.5 0Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-1.5 0L-1.5 -34L-0.3 -34L-0.3 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-3.5 -40L3.5 -40L2.5 -33L-2.5 -33Z",
+          "material": "stroh",
+          "ton": "basis"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M-3.2 -38L3.2 -38",
+          "material": "stroh",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M-2.8 -35.5L2.8 -35.5",
+          "material": "stroh",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "flamme",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-4 -40L-3 -45L0 -49L2 -45L4 -40Z",
+          "material": "lava",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2 -40L-1 -44L1 -46L2 -40Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0.5, -41.5],
+          "radius": 1,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -40]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 52,
+    "rahmen": [-10, -50, 20, 52]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 8,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "flamme": -6
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "flamme": 6
+          }
+        }
+      ]
+    }
+  }
+}
