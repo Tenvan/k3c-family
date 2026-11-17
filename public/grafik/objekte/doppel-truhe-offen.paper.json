@@ -1,0 +1,173 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "doppel-truhe-offen",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Doppel-Truhe offen: Deckel aufgeklappt, Gold und Edelsteine im Kasten (B-998)",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-32 -16L32 -16L30 -34L-30 -34Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -34C-24 -40 24 -40 30 -34L30 -31C24 -36 -24 -36 -30 -31Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-26 -16L-24 -16L-23 -35L-25 -35Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 -16L26 -16L25 -35L23 -35Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-30 -16C-22 -24 -10 -26 0 -24C10 -27 22 -24 30 -16Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-30 -16C-22 -24 -10 -26 0 -24C-4 -20 -8 -18 -12 -16Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-16, -20],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-4, -22],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [10, -21],
+          "radius": 2.2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [20, -19],
+          "radius": 2,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [13, -20],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -22L-12 -27L-10 -22Z",
+          "material": "edelstein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M16 -21L18 -26L20 -21Z",
+          "material": "edelstein"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 0L-32 -16L32 -16L32 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-32 0L-32 -16L-22 -16L-22 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-32 -8L32 -8",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-27 0L-27 -16L-24 -16L-24 0Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 0L24 -16L27 -16L27 0Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-1.5 0L-1.5 -16L1.5 -16L1.5 0Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-15 -14L-9 -14L-9 -8L-15 -8Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-12, -10.5],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 -14L15 -14L15 -8L9 -8Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [12, -10.5],
+          "radius": 1
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 49,
+    "rahmen": [-38, -44, 76, 46]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

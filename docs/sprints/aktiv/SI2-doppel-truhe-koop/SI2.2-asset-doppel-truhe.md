@@ -1,6 +1,6 @@
 # SI2.2 · Assets Doppel-Truhe (B-998)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+AC-02 umgesetzt: `doppel-truhe` (Animationen zu, links, rechts; Schlösser leuchten über Teile glut-links/glut-rechts per `sichtbar`) und `doppel-truhe-offen` angelegt, gleiche Höhe und Fußpunkt wie truhe, Zuordnung in `data/paper.json`. Geprüft: `assets_preview`, Agent k3c-grafik ohne schweren Befund, `check:diff` grün. Kein gen:paper, Golden nur durch assets_create ergänzt.

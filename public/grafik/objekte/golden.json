@@ -69,6 +69,20 @@
       "idle.png": "1b89d1f6cda0f27b54f6e9cd5a17c5970d236e261ad5d764bc8acf0e51336825"
     }
   },
+  "doppel-truhe-offen": {
+    "renderKey": "536504e1253063d7e97e2f7d7d784a5f4c10db79a32bff85eca817385a921081",
+    "dateien": {
+      "idle.png": "84aa2046cd43f37193a46e3e762997630ba4659952e6ab7c3f17f0b60f8ae5e6"
+    }
+  },
+  "doppel-truhe": {
+    "renderKey": "327d6571217c66a3c295a7ea621465ea0b9cc8174b2e591df3c1b9a3cf9f9599",
+    "dateien": {
+      "links.png": "9e0b09319ebaecea70ee0e525b29a9c724733d9e7b5052b61bee156dbcad3ca4",
+      "rechts.png": "2396a87afbcc0b015fbb712157578184f17791e11afc83f1338fffc812f87ad4",
+      "zu.png": "5ec2b1b39c2c5524a9f1dd018265d5723d71684271a5a6574f6e1e49c66b3b0c"
+    }
+  },
   "erzbrocken": {
     "renderKey": "ca3fc95f751e5bbdde0716e3310101bd3914c09eb2f7a2756804643f93ff9126",
     "dateien": {

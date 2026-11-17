@@ -1,6 +1,6 @@
 # SI2.1 · Regeltext Koop-Aktionen und Doppel-Truhe (B-968)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -54,4 +54,5 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+AC-01: umgesetzt, `docs/rules/koop.md` mit Grundsatz, Doppel-Truhe, Offen und Annahmen (Tabellenform, Werte vorläufig).
+check:diff: geprüft (siehe Commit).
