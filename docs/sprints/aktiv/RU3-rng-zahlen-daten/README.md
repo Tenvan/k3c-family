@@ -76,7 +76,7 @@ keine
 | RU3.2 | `RU3.2-go-gleiche-zahlen.md` | Umsetzung | autonom | fertig |
 | RU3.3 | `RU3.3-golden-lesen-und-vergleichen.md` | Umsetzung | autonom | fertig |
 | RU3.4 | `RU3.4-daten-schemas-teil-1.md` | Umsetzung | autonom | fertig |
-| RU3.5 | `RU3.5-daten-schemas-teil-2.md` | Umsetzung | autonom | offen |
+| RU3.5 | `RU3.5-daten-schemas-teil-2.md` | Umsetzung | autonom | fertig |
 | RU3.6 | `RU3.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

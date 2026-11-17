@@ -53,7 +53,40 @@ type bossesFile struct {
 	EndBosses []sim.BossData `json:"endBosses"`
 }
 
-// dataFiles sind die Spiel-Daten mit ihrem Lese-Typ (RU3.4: balance-hints bis hub und die Biome).
+// shipFile ist eine Kopie von sim.shipFile (nicht exportiert, engine/sim/ship.go).
+type shipFile struct {
+	Stages []struct {
+		Cost         sim.Cost
+		HP           float64
+		BuildSeconds float64
+	}
+}
+
+// rawCombat und worldFile sind Kopien von sim.rawCombat und sim.rawWorld (nicht exportiert, engine/sim/combat_data.go,
+// island_worlds.go): der Kopf einer Welt-Datei, wie ihn decodeWorld liest; die Inseln bleiben roh.
+type rawCombat struct {
+	Mode      *string `json:"mode"`
+	GroupSize *int    `json:"groupSize"`
+}
+
+type worldFile struct {
+	ID        *string                    `json:"id"`
+	Name      *string                    `json:"name"`
+	Notes     string                     `json:"notes"`
+	Extends   *string                    `json:"extends"`
+	Overrides map[string]json.RawMessage `json:"overrides"`
+	Combat    *rawCombat                 `json:"combat"`
+	Islands   *[]json.RawMessage         `json:"islands"`
+	Story     json.RawMessage            `json:"story"`
+	Skins     json.RawMessage            `json:"skins"`
+}
+
+// raw ist der Baum der Datei selbst: für Dateien, die nur das native Spiel in Teilen liest (eigenes Go-Modul) oder
+// die kein Go-Code liest (render.json).
+func raw(b []byte) (any, error) { return into[any](b) }
+
+// dataFiles sind die Spiel-Daten mit ihrem Lese-Typ (RU3.4: balance-hints bis hub und die Biome; RU3.5: der Rest und
+// die Welten).
 func dataFiles() []dataFile {
 	files := []dataFile{
 		{"balance-hints.json", func(raw []byte) (any, error) { return balance.LoadHints(raw) }},
@@ -67,13 +100,57 @@ func dataFiles() []dataFile {
 		{"goals.json", into[sim.Goals]},
 		{"guards.json", into[level.GuardRules]},
 		{"hub.json", into[sim.HubData]},
+		{"island-sizes.json", into[struct{ Sizes []sim.IslandSize }]},
+		{"light.json", raw},
+		{"monarch.json", intoType(reflect.TypeOf(sim.WorldValues{}.Monarch))},
+		{"native.json", raw},
+		{"paper.json", raw},
+		{"render.json", raw},
+		{"ruins.json", into[level.RuinRules]},
+		{"ship.json", into[shipFile]},
+		{"sounds.json", raw},
+		{"story.json", into[sim.StoryLimits]},
+		{"stresstests.json", raw},
+		{"troops.json", into[map[string]sim.TroopData]},
+		{"waves.json", intoType(reflect.TypeOf(sim.WorldValues{}.Waves))},
 	}
 	biomes, _ := filepath.Glob(filepath.Join(dataDir, "biomes", "*.json"))
 	for _, p := range biomes {
 		id := strings.TrimSuffix(filepath.Base(p), ".json")
 		files = append(files, dataFile{"biomes/" + id + ".json", func([]byte) (any, error) { return level.LoadBiome(id) }})
 	}
+	// Nur die eingebettete Standard-Welt: eigene Welten sind lokal und nicht eingecheckt (welten.md § 6).
+	for _, id := range []string{sim.StandardWorldID} {
+		files = append(files, dataFile{"worlds/" + id + ".json", func(b []byte) (any, error) {
+			if _, err := sim.ParseWorld(b, id); err != nil {
+				return nil, err
+			}
+			return into[worldFile](b)
+		}})
+	}
 	return files
+}
+
+// TestDataFilesComplete: Jede Spiel-Daten-Datei steht in dataFiles (ohne die Workbench-Dateien asset-*, assets-* und
+// ohne data/.omc).
+func TestDataFilesComplete(t *testing.T) {
+	known := map[string]bool{}
+	for _, f := range dataFiles() {
+		known[f.name] = true
+	}
+	for _, pattern := range []string{"*.json", "biomes/*.json", "worlds/" + sim.StandardWorldID + ".json"} {
+		files, _ := filepath.Glob(filepath.Join(dataDir, pattern))
+		for _, p := range files {
+			rel, _ := filepath.Rel(dataDir, p)
+			rel = filepath.ToSlash(rel)
+			if strings.HasPrefix(rel, "asset-") || strings.HasPrefix(rel, "assets-") {
+				continue
+			}
+			if !known[rel] {
+				t.Errorf("%s fehlt in dataFiles", rel)
+			}
+		}
+	}
 }
 
 func buildDataTree(t *testing.T) map[string]any {

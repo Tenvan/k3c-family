@@ -12,10 +12,13 @@ fn enemies() -> BTreeMap<String, enemies::EnemyData> {
     enemies::load(&raw(enemies::FILE)).expect("enemies.json")
 }
 
-const BIOMES: [&str; 5] = ["cave", "crystal", "forest", "ironhold", "mine"];
+/// Biome der Platte (wie der Go-Test `biomes/*.json`), sortiert nach Namen.
+fn biome_ids() -> Vec<String> {
+    crate::data::biome_ids(&crate::Source::Dir(crate::testutil::data_dir())).expect("biomes/")
+}
 
 fn biomes() -> Vec<biome::Biome> {
-    BIOMES
+    biome_ids()
         .iter()
         .map(|id| biome::load(id, &raw(&format!("biomes/{id}.json"))).expect("Biom"))
         .collect()
@@ -88,7 +91,7 @@ fn hub_wie_go() {
 #[test]
 fn biome_wie_go() {
     let en = enemies();
-    for (id, b) in BIOMES.iter().zip(biomes()) {
+    for (id, b) in biome_ids().iter().zip(biomes()) {
         biome::check_pool(&b, &en).expect("Pool");
         same_as_go(&format!("biomes/{id}.json"), &b);
     }

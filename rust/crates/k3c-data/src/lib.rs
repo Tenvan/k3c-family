@@ -11,6 +11,7 @@ pub mod balance_targets;
 pub mod biome;
 pub mod bosses;
 pub mod buildings;
+pub mod data;
 pub mod difficulty;
 pub mod economy;
 pub mod enemies;
@@ -18,8 +19,26 @@ pub mod events;
 pub mod goals;
 pub mod guards;
 pub mod hub;
+pub mod island_sizes;
+pub mod light;
+pub mod monarch;
+pub mod native;
 mod omit;
 pub mod ordered;
+pub mod paper;
+pub mod render;
+pub mod ruins;
+pub mod ship;
+pub mod sounds;
+pub mod source;
+pub mod story;
+pub mod stresstests;
+pub mod troops;
+pub mod waves;
+pub mod world;
+
+pub use data::{Data, load_all};
+pub use source::Source;
 
 /// Fehler beim Laden der Daten; der Text folgt Go (Datei, Feld, Grund).
 #[derive(Debug, Clone, PartialEq)]
@@ -53,6 +72,10 @@ pub(crate) fn check(prefix: &str, r: Result<(), String>) -> Result<(), Fehler> {
 }
 
 #[cfg(test)]
+mod source_tests;
+#[cfg(test)]
 mod testutil;
+#[cfg(test)]
+mod tree_rest_tests;
 #[cfg(test)]
 mod tree_tests;
