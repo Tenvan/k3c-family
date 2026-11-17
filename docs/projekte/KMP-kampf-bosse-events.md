@@ -28,8 +28,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SI2 | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | erledigt |
 | SI3 | Wetter je Welt: Regel, Engine, Assets, Anzeige | erledigt |
 | SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | erledigt |
-| SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | aktiv |
-| SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | erledigt |
+| SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | erledigt |
+| SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | aktiv |
 | SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | geplant |
 | SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | erledigt |
 

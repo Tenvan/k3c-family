@@ -41,6 +41,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Baumschul-Platz | Bauplatz der Baumschule: je Seite einer in einem Wald-Chunk hinter Linie 2 (nur Tiefe 0), vom Generator gewürfelt; kaufbar erst nach dem Roden. | `rules/materialien-gebaeude.md` § 3.3, B-636 |
 | Baumschule | Gebäude der Hub-Stufe 1 auf einem Baumschul-Platz im Wald (Code `nursery`, früher Baumschule); wirkt als Plantage. | `rules/materialien-gebaeude.md` §§ 1, 3.3, B-636 |
 | Bauplatz | Fester Ort, an dem genau ein Gebäude gebaut und am selben Ort ausgebaut wird; kein Platz bewegt sich. Klassen: Hub-Platz, Mauerlinie (Mauer, Turm), Tor-Platz, Baumschul-Platz, Angebots-Anhang. | Q43, `rules/materialien-gebaeude.md` § 3; `data/hub.json` › `sites` |
+| Bauwerk der Welt | Einmaliges Gebäude, das der Einsiedler nach der Zahlung auf dem festen Hub-Platz `hermitHall` errichtet (Dojo, Schrein; Tranhütte mit der Polar-Welt); ein Dauerbonus für die Insel, zerstörbar und reparierbar, kein Ausbau. | `rules/materialien-gebaeude.md` § 3, B-972 |
 | Bauzeit | Zeit, die ein Bauer nach dem Bezahlen baut (z. B. Hub-Ausbau 20/30/40/50 s); Baumeister sind schneller. | `rules/materialien-gebaeude.md` §§ 2–3, Q44, Q45 |
 | Bereich | Planungsangabe an Ticket und Sprint: Pfad-Globs aller Dateien, die die Arbeit anfasst; bei Sessions die Erlaubten Dateien. Überlappende Bereiche laufen nicht in derselben Arbeitswelle. | `arbeitsweise.md` › Parallelität und Wellen |
 | Bereich Assets | Bereich der Workbench neben **Development** (Kopfleiste): Review (Startseite), Katalog, Styleguide, Sound, Quellen; nur Ansehen, ohne schreibende Controls, mit Prompt-Buttons und „Im Spiel ansehen“. Assets ändern nur die MCP-Tools `assets_*` (Entscheidung 005 › 4–5). | B-699 |
@@ -74,6 +75,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Diagnose | Debug-Anzeige oben links (Raum, Takt, Snapshot, Puffer, Latenz, FPS, Version), nur lesend. Aufruf: Ö, RB 3 s, Doppeltap mit einem Finger. | B-093, B-231 |
 | Diagnose-Ereignis | Eintrag der Fehler-Zeitleiste des Servers (`/api/metrics` › `events`): Absturz, 🐢-Tick, Trennung oder Client-Fehler mit Zeit, Raum und Art; die letzten 200. Nicht das Ereignis der Simulation. | B-281, `engine/room/monitor.go` |
 | `disarmed` | Ereignis (geplant): Ein Bürger verliert seine Ausrüstung (Felder `kind`, `x`, `cause`); ersetzt `troopLost`. | `rules/buerger.md` § 3, Q69 |
+| Dojo | Bauwerk der Welt Sengoku (Code `dojo`), vom Schwertschmied im Hub errichtet: Schaden der Krieger und Schützen der Insel × `damageFactor`, solange es steht (vorläufig 1,15). | `rules/materialien-gebaeude.md` § 3, B-972 |
 | Domäne | Fachbereich, dem eine Session genau zugeordnet ist und dessen Dateien sie ändert: REG (Regelwerk), SIM (Spiel-Logik Go), SRV (Server), CLI (Client), PLAT (Plattform), INF (Tooling, Arbeitsweise), DEV (Entwickler-Werkzeug: `tools/k3c-workbench/`, `cmd/k3c-load/`, `cmd/k3c-tui/`, `src/tools/`). Ein Sprint nennt die Domänen seiner Sessions; eine Session `in Arbeit` sperrt ihre Domäne für parallele Läufe. | `arbeitsweise.md` › Domänen, B-356 |
 | Doppel-Truhe | Truhe mit zwei Schlössern, die sich erst öffnet, wenn beide Monarchen je ein Schloss aufschließen (Koop-Aktion). | `rules/koop.md` |
 | Ducking | Kurzes Absenken der Musik bei einer Warnung (`sfx:warn`) mit Anstieg, Halten und Abklingen; Pegel und Zeiten stehen im Mischpegel. | Q16, B-935, `native/k3c-game/audio/duck.go` |
@@ -81,6 +83,8 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Ebene | Spätere Variante: mehrere Inseln je Schwierigkeits-Ebene in freier Reihenfolge, die nächste Ebene öffnet nach k besiegten Inseln. Nicht der Schwierigkeitsgrad. | `rules/stufen.md` § 1 |
 | Eingabe-Profil | Eingabegerät eines Spielers im nativen Spiel: `wasd` (Tastatur, A/D), `pfeile` (Tastatur, ←/→) oder `gamepad` (Xbox-Belegung); Auswahl in Optionen › Steuerung, höchstens ein Spieler hat die Tastatur, Tasten-Hinweise folgen dem Profil (B-893, B-894). | `native/k3c-game/view/profile.go`, `input/bindings.go` |
 | Einschiebbar | Entfallenes Sprint-Feld (B-174, entfallen mit B-361, wie die Sprint-`Prio`). Die Reihenfolge kommt aus dem Rang der Projekte. | `arbeitsweise.md` › Sprint-Lebenslauf |
+| Einsiedler | Besondere Figur der Welt (Feld `hermit` der Welt-Datei: Schwertschmied in Sengoku, Priesterin in Nil): wohnt in der Einsiedler-Hütte; gegen Münzen zieht sie in den Hub und errichtet ihr Bauwerk der Welt. Nicht der Händler (Material gegen Gold). | `rules/buerger.md` § 1, B-972 |
+| Einsiedler-Hütte | Behausung des Einsiedlers, genau eine je Insel mit mindestens zwei Stufen, in Stufe 2 (Tiefe 1) am Rand fern vom Abgang; eine Hütte für alle Welten (Asset `gebaeude-paper/einsiedler-huette`). | `rules/buerger.md` § 1, B-972, B-1001 |
 | Einzelwechsel | Ein Spieler wechselt allein die Stufe (2 s am Tiefen-Eingang oder an einer Treppe); es gibt keine gemeinsame Reise zwischen Stufen. | `rules/stufen.md` § 1 |
 | Eisen | Material der Hub-Stufe 4 aus Adern im Eisenstollen; für Eisenmauer, Eisenturm, Rüstkammer, Rüstung. | `rules/materialien-gebaeude.md` § 1 |
 | Eisenstollen | Stufe der Tiefe 3 (Biom `ironhold`, geplant) mit Eisen-Adern, Lava und 3 Portalen. | `rules/stufen.md` § 1, Q28 |
@@ -235,6 +239,7 @@ Regelwerk in [`rules/`](rules/), und das Glossar wird angepasst. Zahlen sind, wo
 | Schiff-Abschnitt | Bauabschnitt des Schiffs: Kiel, Rumpf, Segel; je Münzen und Material, von einem Bauern gebaut. | `rules/wirtschaft.md` § 8, B-637, B-638 |
 | Schlag | Einfacher Nahkampfangriff des Monarchen (X bzw. E): 10 Schaden, Reichweite 1,5 Units, Abklingzeit 0,7 s. | `rules/monarch.md` § 1 |
 | Schmiede | Gebäude der Hub-Stufe 3: Elite-Upgrades für Bogenschützen und Krieger. | `rules/materialien-gebaeude.md` § 3.2 |
+| Schrein | Bauwerk der Welt Nil (Code `shrine`), von der Priesterin im Hub errichtet: heilt bei Tagesanbruch jede stehende Mauer der Insel um `wallHealFraction` ihrer vollen HP (vorläufig 0,25). | `rules/materialien-gebaeude.md` § 3, B-972 |
 | Schwierigkeitsgrad | Raum-Option Dev, Leicht, Normal, Hart, Ultra (`grade`); ändert nur Wellen und Gegner, nicht die Wirtschaft. Dev nur im Dev-Mode. | `rules/wirtschaft.md` § 4 |
 | SDD | Spec-Driven Development: Ticket und Sprint-README sind die Spec mit Kriterien, Sessions erfüllen genannte Kriterien. | `arbeitsweise.md` › SDD |
 | Seed | Zahl, aus der der Generator ein Level deterministisch erzeugt; gespeichert wird nur der Seed. | `game-design.md` › Prozedurale Generierung |

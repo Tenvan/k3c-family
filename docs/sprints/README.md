@@ -30,7 +30,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
-| SI5 | REG, SIM, PAP, CLI | KMP | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | – | `aktiv/SI5-einsiedler-bauwerk/` |
+| SI6 | REG, PAP, SIM, CLI | KMP | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | – | `aktiv/SI6-fest-nach-dem-sieg/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
@@ -442,4 +442,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SI2 | Koop-Aktion Doppel-Truhe: Regel, Engine, Asset, Anzeige | `erledigt/SI2-doppel-truhe-koop/` |
 | SI3 | Wetter je Welt: Regel, Engine, Assets, Anzeige | `erledigt/SI3-wetter-je-welt/` |
 | SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | `erledigt/SI4-reittiere-je-welt/` |
-| SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | `erledigt/SI6-fest-nach-dem-sieg/` |
+| SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | `erledigt/SI5-einsiedler-bauwerk/` |
