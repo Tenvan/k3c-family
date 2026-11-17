@@ -9,10 +9,11 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 
 use k3c_platform::Canvas;
+use k3c_rig::paint::Assets;
 
 use super::png::read_png;
 use super::scales::apply_scales;
-use super::{ArtError, Budget, Font, Plan, Sheet, SheetSpec, load_font, pending, plan_level, upload};
+use super::{ArtError, Budget, Font, Plan, Sheet, SheetSpec, load_font, plan_level, upload};
 
 /// Pfade relativ zur Repo-Wurzel (Aufruf über `task native:game`).
 pub const DEFAULT_GRAFIK_DIR: &str = "public/grafik";
@@ -31,11 +32,11 @@ pub struct Config {
     pub scales: BTreeMap<String, f64>,
 }
 
-/// Liefert die Pfade im Repo. `rig_dir` bleibt leer bis RU7.6 (Rigs).
+/// Liefert die Pfade im Repo.
 pub fn default_config() -> Config {
     Config {
         grafik_dir: DEFAULT_GRAFIK_DIR.into(),
-        rig_dir: PathBuf::new(),
+        rig_dir: DEFAULT_RIG_DIR.into(),
         font_path: DEFAULT_FONT_PATH.into(),
         strict_font: true,
         scales: super::scales::data_scales(),
@@ -54,8 +55,9 @@ pub type Levels = BTreeMap<String, Vec<String>>;
 pub struct Library {
     pub font: Font,
 
-    cfg: Config,
-    rig_bytes: Option<i64>,
+    pub(super) cfg: Config,
+    /// Rig-Bilder (`load_rigs`, `art/rigs.rs`).
+    pub(super) rigs: Option<Assets>,
     levels: Levels,
     /// Asset → Animation → Sheet (zweistufig, damit `sheet` ohne Schlüssel-Objekt nachschlagen kann).
     sheets: BTreeMap<String, BTreeMap<String, Sheet>>,
@@ -63,17 +65,16 @@ pub struct Library {
 }
 
 impl Library {
-    /// Öffnet die Bibliothek: lädt Rig-Teile und Schrift. Sheets kommen erst mit `set_levels`.
+    /// Öffnet die Bibliothek: prüft den Rig-Ordner (die Bilder lädt `load_rigs` mit der Zeichenfläche) und lädt die Schrift. Sheets kommen erst mit `set_levels`.
     pub fn new(cfg: Config) -> Result<Self, ArtError> {
-        let mut rig_bytes = None;
         if !cfg.rig_dir.as_os_str().is_empty() {
-            rig_bytes = Some(pending::load_rigs(&cfg.rig_dir)?);
+            super::rigs::check_rigs(&cfg.rig_dir)?;
         }
         let font = load_font(&cfg.font_path, cfg.strict_font)?;
         Ok(Self {
             font,
             cfg,
-            rig_bytes,
+            rigs: None,
             levels: Levels::new(),
             sheets: BTreeMap::new(),
             budget: Budget::default(),
@@ -135,7 +136,9 @@ impl Library {
 
     /// Liefert den Speicher der bisher geladenen Rig-Bilder in Mebibyte.
     pub fn rig_mib(&self) -> f64 {
-        self.rig_bytes.map_or(0.0, |b| b as f64 / f64::from(1u32 << 20))
+        self.rigs
+            .as_ref()
+            .map_or(0.0, |a| a.bytes as f64 / f64::from(1u32 << 20))
     }
 
     /// Die Konfiguration, mit der die Bibliothek geöffnet wurde.

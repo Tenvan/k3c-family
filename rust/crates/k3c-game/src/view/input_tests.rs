@@ -1,9 +1,61 @@
+use k3c_sim::state::PlayerCommand;
+
 use super::*;
 
 #[test]
-#[ignore = "wartet auf RU8"]
 fn command_sim_clamps() {
-    // Port von TestCommandSimClamps braucht `Command::sim()` und `sim::PlayerCommand` (RU8, Port in RU7.5).
+    let cases = [
+        (
+            Command {
+                move_: 0.5,
+                pay: true,
+                skill: 2,
+                ..Default::default()
+            },
+            PlayerCommand {
+                move_x: 0.5,
+                pay: true,
+                skill: 2,
+                ..Default::default()
+            },
+        ),
+        (
+            Command {
+                move_: 3.0,
+                sprint: true,
+                ..Default::default()
+            },
+            PlayerCommand {
+                move_x: 1.0,
+                sprint: true,
+                ..Default::default()
+            },
+        ),
+        (
+            Command {
+                move_: -7.0,
+                attack: true,
+                skill: 5,
+                ..Default::default()
+            },
+            PlayerCommand {
+                move_x: -1.0,
+                attack: true,
+                ..Default::default()
+            },
+        ),
+        (
+            Command {
+                move_: f64::NAN,
+                skill: -1,
+                ..Default::default()
+            },
+            PlayerCommand::default(),
+        ),
+    ];
+    for (c, want) in cases {
+        assert_eq!(c.sim(), want, "{c:?}.sim()");
+    }
 }
 
 #[test]

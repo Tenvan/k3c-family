@@ -115,9 +115,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1031](B-1031-abnahme-si3.md) | PAP | Schuld | mittel | offen | SI3 | Abnahme-Läufe SI3 Wetter je Welt sind grün |
 | [B-1032](B-1032-abnahme-laeufe-si2.md) | INF | Schuld | mittel | offen | SI2 | Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1036](B-1036-abnahme-laeufe-si5.md) | INF | Schuld | mittel | offen | SI5 | Abnahme-Läufe SI5: Sim, Balance, Gen samt Golden und Race sind grün |
-| [B-1036](B-1036-typen-worlddef-island-fuer-ru7-5-vorziehen.md) | SIM | Schuld | mittel | offen | RU10 | Typen WorldDef und Island für RU7.5 vorziehen |
 | [B-1037](B-1037-abnahme-laeufe-si6.md) | INF | Schuld | mittel | offen | SI6 | Abnahme-Läufe SI6: Sim, Balance, Gen samt Golden und Race sind grün |
-| [B-1037](B-1037-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | RU8 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
+| [B-1048](B-1048-abnahme-laeufe-ru7.md) | CLI | Schuld | mittel | offen | RU7 | Abnahme-Läufe RU7: Grafik laden samt gerenderter Grafik und Race sind grün |
 | [B-1035](B-1035-abnahme-laeufe-si1.md) | INF | Schuld | mittel | offen | SI1 | Abnahme-Läufe SI1: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1038](B-1038-buerger-truppen-masstab.md) | PAP | Idee | mittel | offen | BB1 | Bürger und Truppen sind 0,55–0,65 Monarchenhöhen groß |
 | [B-1039](B-1039-schiff-masstab.md) | PAP | Idee | mittel | offen | BB1 | Schiff ist mit Segel etwa 3 Monarchenhöhen hoch und 4–5 lang |
@@ -129,6 +128,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1045](B-1045-mehr-welt-sichtbar.md) | CLI | Idee | mittel | offen | BB2 | Die Ansicht zeigt etwa 5 Monarchenhöhen Welt über der Gehlinie |
 | [B-1046](B-1046-toenung-licht-dunst.md) | CLI | Idee | mittel | offen | BB2 | Tageszeit und Ereignis tönen das ganze Bild, Lichtquellen haben einen Lichthof |
 | [B-1047](B-1047-wald-nach-rodung.md) | CLI | Idee | mittel | offen | BB2 | Der Wald wird mit dem Roden offener und heller |
+| [B-1049](B-1049-typen-worlddef-island-fuer-ru7-5-vorziehen.md) | SIM | Schuld | mittel | offen | RU10 | Typen WorldDef und Island für RU7.5 vorziehen |
+| [B-1050](B-1050-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | RU8 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
+| [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | offen | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
+| [B-1052](B-1052-abnahme-laeufe-ru5.md) | CLI | Schuld | mittel | offen | RU5 | Abnahme-Läufe RU5 |
 
 ## Archiv
 

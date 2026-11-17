@@ -18,11 +18,13 @@ mod manifest_tests;
 mod outline;
 #[cfg(test)]
 mod outline_tests;
-mod pending;
 mod plan;
 #[cfg(test)]
 mod plan_tests;
 mod png;
+mod rigs;
+#[cfg(test)]
+mod rigs_tests;
 mod scales;
 mod seamap;
 #[cfg(test)]
@@ -48,6 +50,7 @@ pub use library::{
 pub use manifest::{Anim, Manifest, group_assets, read_manifest};
 pub use outline::{OUTLINE4, OUTLINE8, OutlineCache, outline_pad, outline_stroke, scale_alpha};
 pub use plan::{Plan, SheetSpec, plan_level, plan_sheet};
+pub use rigs::{Actor, M, Painter, Point, State, actor_frame, rig_view};
 pub use scales::{data_scales, parse_scales};
 pub use seamap::{SeaLayers, SeaMap, SeaMarks};
 pub use sheet::{Sheet, SheetFrame, upload};
