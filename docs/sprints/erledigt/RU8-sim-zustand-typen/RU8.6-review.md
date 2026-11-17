@@ -1,6 +1,6 @@
 # RU8.6 · Review Sim-Zustand
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-04 geprüft: `task check` und `task check:go` grün, `cargo test -p k3c-sim` grün. Fixes: `Drop` zu `ItemDrop`, 4 Ignore-Labels RU14 zu RU18. Neue Tickets: B-1036, B-1037. Keine manuelle Prüfung.

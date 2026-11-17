@@ -1,6 +1,6 @@
 # RU8.3 · Zustands-Typen: common, data, Level-Typen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02/AC-03 (Teil common, data, Level-Typen) geprüft. `state/common.rs` portiert alle Funktionen aus `common.go` (approach, sign, int_ptr, shielded, is_dangerous, outer_wall, site_by_id, troop_by_id, node_by_id, is_worker, apply_damage, hit_troop, apply_damage_by, damage_player, cause_or_other, absorb_by_shield, free_hit, destroy_site) in Go-Reihenfolge; dazu die Nachschlage-Methoden `World::troop/node/site(_mut)` (Vorentscheidung 2). Go-Zeiger auf Spieler und Truppen sind Indizes (`pi`, `ti`), Plätze werden per ID gesucht (`destroy_site(w, id)`). Funktionen späterer Sprints stehen als Platzhalter in `state/pending.rs` (crowned, drop_crown, hit_coins, hit_event, troop_damage, each_passive, invulnerable, is_wave_enemy, damage_merchant, protected_night, is_ruin, values; Konstante MERCHANT_ID); die Sprint-Nummern in den Texten sind aus der Projekt-Tabelle abgeleitet, ungeprüft. `state/data.rs`: Die Lese-Typen und das Laden von `data.go` gibt es seit RU3 in `k3c-data`; sie werden wiedergegeben, ergänzt um first_day_night, has_depth, check_waves. Gos Paket-Variablen und `UseData` entfallen (kein globaler Zustand, Wertesatz = `Arc<WorldValues>` aus `k3c_data::load_all`). Level-Typen standen schon aus RU8.2 in `k3c-level/src/types.rs`. Tests: 8 neue für common (1 `ignore = "wartet auf RU18"`: destroy_site braucht values und is_ruin), 5 für data; Go hat für common.go und data.go keine Testdatei. `cargo test -p k3c-sim -p k3c-level`, `task rust:lint`, `task check:diff` grün.

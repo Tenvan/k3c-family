@@ -1,6 +1,6 @@
 # RU8.1 · Zustandsmodell festschreiben, Crate-Gerüst
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `docs/standards/rust-sim-zustand.md` mit den zwölf Vorentscheidungen und je einem Go/Rust-Beispiel (Verweis, Reihenfolge, Löschen, Teilung, Vorrat-Tausch, zwei Dinge zugleich, Rückverweis, JSON-Felder). `cargo build -p k3c-sim`, `task rust:lint` und `task check:diff` grün. Crate-Gerüst: `lib.rs` (`pub mod state`), `state/mod.rs`; `Cargo.toml` hat serde und serde_json aus dem Workspace. Abweichungen: keine.

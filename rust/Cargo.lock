@@ -924,6 +924,8 @@ dependencies = [
  "k3c-data",
  "k3c-det",
  "k3c-rng",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -968,6 +970,8 @@ dependencies = [
  "k3c-det",
  "k3c-level",
  "k3c-rng",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
