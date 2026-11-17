@@ -1,4 +1,4 @@
-# B-1038 · read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt
+# B-1051 · read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt
 
 - **Domäne:** CLI
 - **Typ:** Schuld

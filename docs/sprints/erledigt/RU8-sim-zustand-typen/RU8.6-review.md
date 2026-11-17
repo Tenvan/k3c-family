@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-AC-01 bis AC-04 geprüft: `task check` und `task check:go` grün, `cargo test -p k3c-sim` grün. Fixes: `Drop` zu `ItemDrop`, 4 Ignore-Labels RU14 zu RU18. Neue Tickets: B-1036, B-1037. Keine manuelle Prüfung.
+AC-01 bis AC-04 geprüft: `task check` und `task check:go` grün, `cargo test -p k3c-sim` grün. Fixes: `Drop` zu `ItemDrop`, 4 Ignore-Labels RU14 zu RU18. Neue Tickets: B-1049, B-1050. Keine manuelle Prüfung.

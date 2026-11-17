@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-AC-01 geprüft: `task check` und `task check:go` grün, Referenzen 1e-9. AC-02 geprüft: Netz über `Canvas::mesh`, Tests grün. AC-03 geprüft: Schwelle in `RIG.md` (Rust-Port: Toleranzen). Abweichung vom Plan: Umhang beim Reiten 1e-6 (Entscheidung Hauptagent). Tickets: B-1038, B-1039. Kein manuelles Prüfen.
+AC-01 geprüft: `task check` und `task check:go` grün, Referenzen 1e-9. AC-02 geprüft: Netz über `Canvas::mesh`, Tests grün. AC-03 geprüft: Schwelle in `RIG.md` (Rust-Port: Toleranzen). Abweichung vom Plan: Umhang beim Reiten 1e-6 (Entscheidung Hauptagent). Tickets: B-1051, B-1052. Kein manuelles Prüfen.

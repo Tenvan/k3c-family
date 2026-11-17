@@ -1,4 +1,4 @@
-# B-1036 · Typen WorldDef und Island für RU7.5 vorziehen
+# B-1049 · Typen WorldDef und Island für RU7.5 vorziehen
 
 - **Domäne:** SIM
 - **Typ:** Schuld

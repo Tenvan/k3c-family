@@ -1,4 +1,4 @@
-# B-1037 · Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus
+# B-1050 · Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus
 
 - **Domäne:** SIM
 - **Typ:** Schuld

@@ -101,4 +101,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 2026-11-17 (Claude, autonom): AC-01 bis AC-03 siehe Ergebnisse RU5.1 bis RU5.4; `task check` und `task check:go` grün. `git diff origin/main -- native/k3c-rig` enthält nur `*rustref_test.go`, `RIG.md` bekam die Toleranz-Doku; kein `unsafe`, kein `HashMap` in `k3c-rig`.
 Entscheidung Hauptagent: Umhang-Kette beim Reiten (`ride_cloak_frames`) 1e-6 statt 1e-9 (letztes Bit von sin/cos verstärkt sich, Zeichnen gehört nicht zur Sim); Netz 1e-6 plus 2,5e-7 relativ (float32), beides in `RIG.md`. `rust/Cargo.lock` außerhalb des Bereichs akzeptiert; `testdata/rust/rig` (5,7 MB) ohne Größengrenze in `projectRules` und `.gitattributes`.
-Neue Tickets: B-1038 (`read_png` doppelt, RU7.6), Abnahme-Ticket B-1039.
+Neue Tickets: B-1051 (`read_png` doppelt, RU7.6), Abnahme-Ticket B-1052.
