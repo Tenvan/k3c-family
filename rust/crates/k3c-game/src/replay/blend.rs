@@ -3,7 +3,7 @@
 //! Die Sim taktet mit 30 Hz, gezeichnet wird schneller. `capture` merkt die Lage vom Takt davor, `apply` schiebt
 //! Einheiten, Kameras und Uhr in `draw` um alpha auf die aktuelle Lage, `restore` stellt sie danach wieder her.
 
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use k3c_sim::state::World;
 
@@ -40,7 +40,7 @@ pub fn glide(prev: f64, cur: f64, a: f64) -> f64 {
 /// Zustand der Zwischenbilder.
 #[derive(Default)]
 pub struct Blend {
-    prev: HashMap<u64, f64>,
+    prev: BTreeMap<u64, f64>,
     cam: Vec<f64>,
     clock: f64,
     stage: i64,
