@@ -1,6 +1,6 @@
 # RU5.3 · rig Teil 3: load, matrix, order, ride
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `cargo test -p k3c-rig` grün (19 Tests). Alle 32 Rig-Dateien unter `native/k3c-rig/assets` laden in Rust; Indizes, Eltern, Topo-Reihenfolge, Pose-Faktoren, Zeichenreihenfolge, Bein-Indizes und Keyframe-Teile stimmen mit Go (`load.json`). Knochen-Matrizen je Rig und Pose (Figur-Posen, Gangarten), Platz-Matrizen, Inverse und `hidden` stimmen innerhalb 1e-9 (`world.json`). `expected_test.go` ist portiert (`expected_tests.rs`: `animations_match_paper`, `ride_matches_paper`, Toleranz 0,01 gegen assets/soll) und grün. `task rust:lint` grün.
+
+Referenz: `rustref_test.go` erweitert (`TestRustRefLoad`, `TestRustRefWorld`).
+Vorgriff aus RU5.1/RU5.2: `load`, `matrix`, `order`, `ride` waren schon portiert; diese Session fügte Tests hinzu (Vergleich, expected, `load_fehler` für fehlende Datei, kaputtes JSON, unbekannte Eltern, Kreis, Band/Platz an unbekanntem Teil). Keine neuen Tickets, kein Test fehlt.

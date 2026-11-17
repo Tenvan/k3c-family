@@ -2,7 +2,8 @@ package rig
 
 // Referenzwerte für den Rust-Port (rust/crates/k3c-rig, RU5): Dieser Test schreibt mit `go test ./rig -run RustRef
 // -update` JSON nach testdata/rust/rig/; die Rust-Tests lesen sie und vergleichen mit Toleranz 1e-9. Ohne -update
-// schreibt er nichts. Der Go-Code selbst bleibt unverändert.
+// schreibt er nichts. Der Go-Code selbst bleibt unverändert. Die Einträge sind `map[string]any`, damit die Datei kurz
+// bleibt; die Schlüssel lesen die Rust-Tests in rust/crates/k3c-rig/src/rig/rustref_*_tests.rs.
 
 import (
 	"encoding/json"
@@ -16,6 +17,8 @@ import (
 
 var updateRef = flag.Bool("update", false, "Referenzwerte für Rust nach testdata/rust/rig schreiben")
 
+type rec = map[string]any
+
 // writeRef schreibt v als JSON nach testdata/rust/rig/<name>.json (nur mit -update).
 func writeRef(t *testing.T, name string, v any) {
 	t.Helper()
@@ -23,79 +26,23 @@ func writeRef(t *testing.T, name string, v any) {
 		t.Skip("Referenzwerte schreibt nur -update")
 	}
 	dir := filepath.Join("..", "..", "..", "testdata", "rust", "rig")
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		t.Fatal(err)
-	}
 	text, err := json.Marshal(v)
+	if err == nil {
+		err = os.MkdirAll(dir, 0o755)
+	}
+	if err == nil {
+		err = os.WriteFile(filepath.Join(dir, name+".json"), append(text, '\n'), 0o644)
+	}
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(dir, name+".json"), append(text, '\n'), 0o644); err != nil {
-		t.Fatal(err)
-	}
 }
 
-// TestRustRefCurve: Kurven und IK an festen Stützstellen.
-func TestRustRefCurve(t *testing.T) {
-	type sample struct {
-		Args []float64 `json:"args"`
-		V    []float64 `json:"v"`
+func errText(err error) string {
+	if err == nil {
+		return ""
 	}
-	var out struct {
-		Catmull []sample `json:"catmull"`
-		Hermite []sample `json:"hermite"`
-		Spline  []struct {
-			Pts []Point   `json:"pts"`
-			K   float64   `json:"k"`
-			V   []float64 `json:"v"`
-		} `json:"spline"`
-		IK []sample `json:"ik"`
-	}
-	for _, tt := range []float64{0, 0.1, 0.25, 0.5, 0.75, 0.9, 1} {
-		for _, p := range [][4]float64{{1, 2, 5, 9}, {-11, 0, 1.2, 1.2}, {0, 3, -2, 4.5}} {
-			out.Catmull = append(out.Catmull, sample{[]float64{p[0], p[1], p[2], p[3], tt}, []float64{catmull(p[0], p[1], p[2], p[3], tt)}})
-			for _, f := range [][2]float64{{1, 1}, {0.3, 0.7}} {
-				out.Hermite = append(out.Hermite, sample{[]float64{p[0], p[1], p[2], p[3], tt, f[0], f[1]},
-					[]float64{hermite(p[0], p[1], p[2], p[3], tt, f[0], f[1])}})
-			}
-		}
-	}
-	paths := [][]Point{
-		{{-1, 0}, {-1.35, 0.45}, {-0.7, 1}, {0.3, 0.95}, {1.35, 0.55}, {1.15, 0.12}, {1, 0}},
-		{{-1, 0}, {-1.45, 0.35}, {-0.9, 0.85}, {0.2, 0.75}, {1.1, 0.35}, {1, 0}},
-	}
-	for _, pts := range paths {
-		for _, k := range []float64{0, 0.07, 0.3, 0.5, 0.77, 0.9999, 1} {
-			p := spline(pts, k)
-			out.Spline = append(out.Spline, struct {
-				Pts []Point   `json:"pts"`
-				K   float64   `json:"k"`
-				V   []float64 `json:"v"`
-			}{pts, k, []float64{p[0], p[1]}})
-		}
-	}
-	for _, target := range [][2]float64{{0, 40}, {10, 45}, {-12, 30}, {5, 5}, {30, 60}, {-20, 52}} {
-		for _, front := range []bool{false, true} {
-			a, b := ik(target[0], target[1], front, 25, 31)
-			f := 0.0
-			if front {
-				f = 1
-			}
-			out.IK = append(out.IK, sample{[]float64{target[0], target[1], f, 25, 31}, []float64{a, b}})
-		}
-	}
-	writeRef(t, "curve", out)
-}
-
-// refStrip ist ein Band-Fall: Eingabe-Stützpunkte, Dichte und die Ecken (x, y, u, v).
-type refStrip struct {
-	Rig     string       `json:"rig"`
-	Band    string       `json:"band"`
-	Kind    string       `json:"kind"`
-	Points  []Point      `json:"points"`
-	Density float64      `json:"density"`
-	Verts   [][4]float64 `json:"verts"`
-	Limits  []float64    `json:"limits"`
+	return err.Error()
 }
 
 func vertsOf(v []Vertex) [][4]float64 {
@@ -106,16 +53,43 @@ func vertsOf(v []Vertex) [][4]float64 {
 	return out
 }
 
+// TestRustRefCurve: Kurven und IK an festen Stützstellen.
+func TestRustRefCurve(t *testing.T) {
+	var cat, her, spl, iks []rec
+	for _, tt := range []float64{0, 0.1, 0.25, 0.5, 0.75, 0.9, 1} {
+		for _, p := range [][4]float64{{1, 2, 5, 9}, {-11, 0, 1.2, 1.2}, {0, 3, -2, 4.5}} {
+			cat = append(cat, rec{"args": []float64{p[0], p[1], p[2], p[3], tt}, "v": []float64{catmull(p[0], p[1], p[2], p[3], tt)}})
+			for _, f := range [][2]float64{{1, 1}, {0.3, 0.7}} {
+				her = append(her, rec{"args": []float64{p[0], p[1], p[2], p[3], tt, f[0], f[1]}, "v": []float64{hermite(p[0], p[1], p[2], p[3], tt, f[0], f[1])}})
+			}
+		}
+	}
+	for _, pts := range [][]Point{
+		{{-1, 0}, {-1.35, 0.45}, {-0.7, 1}, {0.3, 0.95}, {1.35, 0.55}, {1.15, 0.12}, {1, 0}},
+		{{-1, 0}, {-1.45, 0.35}, {-0.9, 0.85}, {0.2, 0.75}, {1.1, 0.35}, {1, 0}},
+	} {
+		for _, k := range []float64{0, 0.07, 0.3, 0.5, 0.77, 0.9999, 1} {
+			p := spline(pts, k)
+			spl = append(spl, rec{"pts": pts, "k": k, "v": []float64{p[0], p[1]}})
+		}
+	}
+	for _, target := range [][2]float64{{0, 40}, {10, 45}, {-12, 30}, {5, 5}, {30, 60}, {-20, 52}} {
+		for i, front := range []bool{false, true} {
+			a, b := ik(target[0], target[1], front, 25, 31)
+			iks = append(iks, rec{"args": []float64{target[0], target[1], float64(i), 25, 31}, "v": []float64{a, b}})
+		}
+	}
+	writeRef(t, "curve", rec{"catmull": cat, "hermite": her, "spline": spl, "ik": iks})
+}
+
 // TestRustRefBand: Bänder aller Rigs aus Ruhelage, verbogenen Stützpunkten und (Vierbeiner) Bein-Stützpunkten.
 func TestRustRefBand(t *testing.T) {
-	var out struct {
-		Strips []refStrip `json:"strips"`
-		Legs   []struct {
-			Rig    string    `json:"rig"`
-			Leg    int       `json:"leg"`
-			Angles []float64 `json:"angles"`
-			Points []Point   `json:"points"`
-		} `json:"legs"`
+	var strips, legs []rec
+	add := func(dir string, b *Band, kind string, pts []Point, density float64) {
+		lim := make([]float64, min(len(pts), maxStations))
+		tangentLimits(pts[:len(lim)], lim)
+		strips = append(strips, rec{"rig": dir, "band": b.ID, "kind": kind, "points": pts, "density": density,
+			"verts": vertsOf(b.Strip(pts, density, nil)), "limits": lim})
 	}
 	for _, dir := range rigDirs(t) {
 		r := loadRig(t, dir)
@@ -126,15 +100,8 @@ func TestRustRefBand(t *testing.T) {
 			for k, p := range rest {
 				bent[k] = Point{p[0] + 2.5*math.Sin(0.9*float64(k)+1), p[1] + 0.4*math.Cos(float64(k))}
 			}
-			for _, kp := range []struct {
-				kind string
-				pts  []Point
-			}{{"rest", rest}, {"bent", bent}} {
-				kind, pts := kp.kind, kp.pts
-				lim := make([]float64, min(len(pts), maxStations))
-				tangentLimits(pts[:len(lim)], lim)
-				out.Strips = append(out.Strips, refStrip{dir, b.ID, kind, pts, r.Density, vertsOf(b.Strip(pts, r.Density, nil)), lim})
-			}
+			add(dir, b, "rest", rest, r.Density)
+			add(dir, b, "bent", bent, r.Density)
 		}
 		if r.Kind != "vierbeiner" || len(r.Bands) < legCount {
 			continue
@@ -146,61 +113,41 @@ func TestRustRefBand(t *testing.T) {
 			}
 			for leg := range legCount {
 				pts := r.LegPoints(leg, angles, nil)
-				out.Legs = append(out.Legs, struct {
-					Rig    string    `json:"rig"`
-					Leg    int       `json:"leg"`
-					Angles []float64 `json:"angles"`
-					Points []Point   `json:"points"`
-				}{dir, leg, angles, pts})
-				out.Strips = append(out.Strips, refStrip{dir, r.Bands[leg].ID, fmt.Sprintf("leg%d@%g", leg, phase), pts, r.Density,
-					vertsOf(r.Bands[leg].Strip(pts, r.Density, nil)), nil})
+				legs = append(legs, rec{"rig": dir, "leg": leg, "angles": angles, "points": pts})
+				add(dir, &r.Bands[leg], fmt.Sprintf("leg%d@%g", leg, phase), pts, r.Density)
 			}
 		}
 	}
-	writeRef(t, "band", out)
+	writeRef(t, "band", rec{"strips": strips, "legs": legs})
 }
 
 // TestRustRefFigure: Figur-Posen (Winkel, Versatz, Wind), Frequenzen, Fehlertexte und der Umhang je Rig.
 func TestRustRefFigure(t *testing.T) {
-	type pose struct {
-		Rig    string    `json:"rig"`
-		Anim   string    `json:"anim"`
-		T      float64   `json:"t"`
-		Err    string    `json:"err,omitempty"`
-		Angles []float64 `json:"angles,omitempty"`
-		Offset Point     `json:"offset"`
-		Wind   float64   `json:"wind"`
-		Freq   float64   `json:"freq"`
-		FreqEr string    `json:"freq_err,omitempty"`
-	}
-	type cloak struct {
-		Rig    string    `json:"rig"`
-		Floor  float64   `json:"floor"`
-		Steps  []int     `json:"steps"`
-		Frames [][]Point `json:"frames"`
-	}
-	var out struct {
-		Poses  []pose  `json:"poses"`
-		Cloaks []cloak `json:"cloaks"`
+	var poses, cloaks []rec
+	state := func(k int) (Point, float64) {
+		wind := 0.0
+		if (k+1000)%200 >= 100 {
+			wind = 25
+		}
+		return Point{2 * math.Sin(float64(k)/60), -50 + 3*math.Cos(float64(k)/45)}, wind
 	}
 	for _, dir := range rigDirs(t) {
 		r := loadRig(t, dir)
-		names := append(animationNames(r), "nichtda")
-		for _, name := range names {
+		for _, name := range append(animationNames(r), "nichtda") {
 			for _, tm := range []float64{0, 0.13, 0.5, 0.77, -0.3, 2.6} {
 				var fp FigurePose
-				p := pose{Rig: dir, Anim: name, T: tm}
-				if err := r.FigurePose(name, tm, &fp); err != nil {
-					p.Err = err.Error()
+				err := r.FigurePose(name, tm, &fp)
+				freq, ferr := r.FigureFreq(name)
+				p := rec{"rig": dir, "anim": name, "t": tm, "offset": fp.Offset, "wind": fp.Wind, "freq": freq}
+				if err != nil {
+					p["err"] = err.Error()
 				} else {
-					p.Angles, p.Offset, p.Wind = fp.Angles, fp.Offset, fp.Wind
+					p["angles"] = fp.Angles
 				}
-				if f, err := r.FigureFreq(name); err != nil {
-					p.FreqEr = err.Error()
-				} else {
-					p.Freq = f
+				if ferr != nil {
+					p["freq_err"] = ferr.Error()
 				}
-				out.Poses = append(out.Poses, p)
+				poses = append(poses, p)
 			}
 		}
 		if r.Cloak == nil {
@@ -208,123 +155,58 @@ func TestRustRefFigure(t *testing.T) {
 		}
 		for _, floor := range []float64{0, rideFloor} {
 			steps := FrameSteps(1.3, 6)
-			state := func(k int) (Point, float64) {
-				wind := 0.0
-				if (k+1000)%200 >= 100 {
-					wind = 25
-				}
-				return Point{2 * math.Sin(float64(k)/60), -50 + 3*math.Cos(float64(k)/45)}, wind
-			}
-			out.Cloaks = append(out.Cloaks, cloak{dir, floor, steps, CloakRun(r.Cloak, steps, state, floor)})
+			cloaks = append(cloaks, rec{"rig": dir, "floor": floor, "steps": steps, "frames": CloakRun(r.Cloak, steps, state, floor)})
 		}
 	}
-	writeRef(t, "figure", out)
+	writeRef(t, "figure", rec{"poses": poses, "cloaks": cloaks})
 }
 
 // TestRustRefGait: Gangart-Posen der Vierbeiner (alle Gangarten, mehrere Phasen), Reiter-Winkel und Frequenzen.
 func TestRustRefGait(t *testing.T) {
-	type gaitRef struct {
-		Rig    string    `json:"rig"`
-		Gait   string    `json:"gait"`
-		Phase  float64   `json:"phase"`
-		Err    string    `json:"err,omitempty"`
-		Angles []float64 `json:"angles,omitempty"`
-		Dy     float64   `json:"dy"`
-		Pitch  float64   `json:"pitch"`
-		Wind   float64   `json:"wind"`
-		RiderY float64   `json:"rider_y"`
-		Lean   float64   `json:"lean"`
-		Rider  []float64 `json:"rider,omitempty"`
-		RAngle []float64 `json:"rider_angles,omitempty"`
-		Freq   float64   `json:"freq"`
-	}
-	var out struct {
-		Gaits []gaitRef `json:"gaits"`
-	}
+	var gaits []rec
 	for _, dir := range rigDirs(t) {
 		r := loadRig(t, dir)
 		for _, name := range []string{"stand", "schritt", "trab", "galopp", "nichtda"} {
+			freq, _ := GaitFreq(name)
 			for _, ph := range []float64{0, 0.07, 0.25, 0.5, 0.61, 0.93, 1} {
 				var p GaitPose
-				g := gaitRef{Rig: dir, Gait: name, Phase: ph}
-				if f, err := GaitFreq(name); err == nil {
-					g.Freq = f
-				}
+				g := rec{"rig": dir, "gait": name, "phase": ph, "freq": freq}
 				if err := r.GaitPose(name, ph, &p); err != nil {
-					g.Err = err.Error()
+					g["err"] = err.Error()
 				} else {
-					g.Angles, g.Dy, g.Pitch, g.Wind, g.RiderY, g.Lean = p.Angles, p.Dy, p.Pitch, p.Wind, p.RiderY, p.Lean
-					g.Rider = p.Rider[:]
-					g.RAngle = r.RiderAngles(&p, nil)
+					g["angles"], g["dy"], g["pitch"], g["wind"], g["rider_y"], g["lean"] = p.Angles, p.Dy, p.Pitch, p.Wind, p.RiderY, p.Lean
+					g["rider"], g["rider_angles"] = p.Rider[:], r.RiderAngles(&p, nil)
 				}
-				out.Gaits = append(out.Gaits, g)
+				gaits = append(gaits, g)
 			}
 		}
 	}
-	writeRef(t, "gait", out)
+	writeRef(t, "gait", rec{"gaits": gaits})
 }
 
 // TestRustRefFrames: Umhang je Frame zu Fuß und beim Reiten, Ride-Zustand und Keyframe-Sichtbarkeit.
 func TestRustRefFrames(t *testing.T) {
-	type cloakRef struct {
-		Rig    string    `json:"rig"`
-		Anim   string    `json:"anim"`
-		Err    string    `json:"err,omitempty"`
-		Frames [][]Point `json:"frames,omitempty"`
-	}
-	type rideRef struct {
-		Mount  string    `json:"mount"`
-		Gait   string    `json:"gait"`
-		Phase  float64   `json:"phase"`
-		Base   M         `json:"base"`
-		MountW []M       `json:"mount_world"`
-		RiderW []M       `json:"rider_world"`
-		Anchor Point     `json:"anchor"`
-		Hand   []float64 `json:"rein,omitempty"`
-	}
-	type rideCloak struct {
-		Mount  string    `json:"mount"`
-		Gait   string    `json:"gait"`
-		Err    string    `json:"err,omitempty"`
-		Frames [][]Point `json:"frames,omitempty"`
-	}
-	type hidden struct {
-		Rig   string   `json:"rig"`
-		Anim  string   `json:"anim"`
-		Phase float64  `json:"phase"`
-		Parts []string `json:"parts"`
-	}
-	var out struct {
-		Cloaks     []cloakRef  `json:"cloaks"`
-		Rides      []rideRef   `json:"rides"`
-		RideCloaks []rideCloak `json:"ride_cloaks"`
-		Hidden     []hidden    `json:"hidden"`
-		FrameTimes []float64   `json:"frame_times"`
-	}
+	var cloaks, rides, rideCloaks, hidden []rec
+	var times []float64
 	for _, n := range []int{0, 1, 5} {
-		out.FrameTimes = append(out.FrameTimes, FrameTime(n, 8, 1.6), FrameTime(n, 4, 0.5))
+		times = append(times, FrameTime(n, 8, 1.6), FrameTime(n, 4, 0.5))
 	}
 	rider := loadRig(t, riderDir)
 	for _, dir := range rigDirs(t) {
 		r := loadRig(t, dir)
 		for _, name := range animationNames(r) {
 			if r.Cloak != nil {
-				c := cloakRef{Rig: dir, Anim: name}
-				if f, err := r.FigureCloakFrames(name); err != nil {
-					c.Err = err.Error()
-				} else {
-					c.Frames = f
-				}
-				out.Cloaks = append(out.Cloaks, c)
+				f, err := r.FigureCloakFrames(name)
+				cloaks = append(cloaks, rec{"rig": dir, "anim": name, "err": errText(err), "frames": f})
 			}
 			for _, ph := range []float64{0, 0.3, 0.8} {
-				h := hidden{Rig: dir, Anim: name, Phase: ph, Parts: []string{}}
+				parts := []string{}
 				for _, part := range r.Parts {
 					if r.KeyframeHidden(name, part.ID, ph) {
-						h.Parts = append(h.Parts, part.ID)
+						parts = append(parts, part.ID)
 					}
 				}
-				out.Hidden = append(out.Hidden, h)
+				hidden = append(hidden, rec{"rig": dir, "anim": name, "phase": ph, "parts": parts})
 			}
 		}
 		if r.Kind != "vierbeiner" {
@@ -332,29 +214,83 @@ func TestRustRefFrames(t *testing.T) {
 		}
 		for _, gname := range []string{"stand", "schritt", "trab", "galopp"} {
 			if rider.Cloak != nil {
-				rc := rideCloak{Mount: dir, Gait: gname}
-				if f, err := RideCloakFrames(r, rider, gname, 6); err != nil {
-					rc.Err = err.Error()
-				} else {
-					rc.Frames = f
-				}
-				out.RideCloaks = append(out.RideCloaks, rc)
+				f, err := RideCloakFrames(r, rider, gname, 6)
+				rideCloaks = append(rideCloaks, rec{"mount": dir, "gait": gname, "err": errText(err), "frames": f})
 			}
 			for _, ph := range []float64{0, 0.35, 0.8} {
 				var s Ride
-				if err := s.Set(r, rider, gname, ph, Translate(10, -3)); err != nil {
+				if s.Set(r, rider, gname, ph, Translate(10, -3)) != nil {
 					continue
 				}
-				ref := rideRef{Mount: dir, Gait: gname, Phase: ph, Base: s.Base, MountW: s.MountWorld, RiderW: s.RiderWorld}
+				ref := rec{"mount": dir, "gait": gname, "phase": ph, "base": s.Base, "mount_world": s.MountWorld, "rider_world": s.RiderWorld}
 				if rider.Cloak != nil {
-					ref.Anchor = s.CloakAnchor(rider)
+					ref["anchor"] = s.CloakAnchor(rider)
 				}
 				if hand, ctrl, mouth, ok := ReinPoints(r, s.MountWorld, rider, s.RiderWorld, s.Base); ok {
-					ref.Hand = []float64{hand[0], hand[1], ctrl[0], ctrl[1], mouth[0], mouth[1]}
+					ref["rein"] = []float64{hand[0], hand[1], ctrl[0], ctrl[1], mouth[0], mouth[1]}
 				}
-				out.Rides = append(out.Rides, ref)
+				rides = append(rides, ref)
 			}
 		}
 	}
-	writeRef(t, "frames", out)
+	writeRef(t, "frames", rec{"cloaks": cloaks, "rides": rides, "ride_cloaks": rideCloaks, "hidden": hidden, "frame_times": times})
+}
+
+// TestRustRefLoad: Ladevorgang je Rig-Datei: Index, Eltern, Topo-Reihenfolge, Faktoren, Zeichenreihenfolge, Beine.
+func TestRustRefLoad(t *testing.T) {
+	var rigs []rec
+	for _, dir := range rigDirs(t) {
+		r := loadRig(t, dir)
+		var order []rec
+		for _, it := range r.Order {
+			order = append(order, rec{"kind": int(it.Kind), "index": it.Index, "layer": it.Layer})
+		}
+		var names, files []string
+		var ids [][]string
+		for _, name := range animationNames(r) {
+			names, ids = append(names, name), append(ids, append([]string{}, r.Animations[name].ids...))
+		}
+		for _, p := range r.Parts {
+			files = append(files, r.ImageFile(p.ID, p.File, "x")+"|"+r.ImageFile(p.ID, p.File, ""))
+		}
+		rigs = append(rigs, rec{"rig": dir, "scale": r.Scale, "parent": r.parent, "topo": r.topo, "factor": r.factor,
+			"hide": r.hide, "order": order, "rider": r.rider[:], "upper": r.legs.upper[:], "lower": r.legs.lower[:],
+			"hoof": r.legs.hoof[:], "neck_tail_back": []int{r.legs.neck, r.legs.tail, r.legs.back},
+			"l": []float64{r.legs.l1, r.legs.l2}, "anim_names": names, "anim_ids": ids, "files": files})
+	}
+	writeRef(t, "load", rec{"rigs": rigs})
+}
+
+// TestRustRefWorld: Knochen-Matrizen (World) und Platz-Matrizen je Rig und Pose (Figur-Posen, Gangarten).
+func TestRustRefWorld(t *testing.T) {
+	var worlds []rec
+	add := func(dir string, r *Rig, pose string, tm float64, angles []float64, base M) {
+		world := r.World(angles, base, nil)
+		var slots []M
+		for i := range r.Slots {
+			slots = append(slots, r.SlotWorld(&r.Slots[i], world))
+		}
+		hidden := make([]bool, len(r.Parts))
+		for i := range hidden {
+			hidden[i] = r.Hidden(i)
+		}
+		worlds = append(worlds, rec{"rig": dir, "pose": pose, "t": tm, "world": world, "slots": slots, "hidden": hidden,
+			"inv": Mul(base, Rotation(33, 4, -7)).Invert()})
+	}
+	for _, dir := range rigDirs(t) {
+		r := loadRig(t, dir)
+		for _, name := range animationNames(r) {
+			for _, tm := range []float64{0, 0.3, 0.77} {
+				var fp FigurePose
+				var gp GaitPose
+				switch {
+				case r.Kind == "figur" && r.FigurePose(name, tm, &fp) == nil:
+					add(dir, r, name, tm, fp.Angles, Translate(fp.Offset[0], fp.Offset[1]))
+				case r.Kind != "figur" && r.GaitPose(r.Animations[name].Gait, tm, &gp) == nil:
+					add(dir, r, name, tm, gp.Angles, RideMatrix(gp.Dy, gp.Pitch, r.Scale))
+				}
+			}
+		}
+	}
+	writeRef(t, "world", rec{"worlds": worlds})
 }

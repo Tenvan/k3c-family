@@ -30,7 +30,11 @@ mod band_leg_tests;
 #[cfg(test)]
 mod band_tests;
 #[cfg(test)]
+mod expected_tests;
+#[cfg(test)]
 mod rustref_gait_tests;
+#[cfg(test)]
+mod rustref_load_tests;
 #[cfg(test)]
 mod rustref_tests;
 #[cfg(test)]
