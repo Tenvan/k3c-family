@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -32,10 +32,15 @@ Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018)
 
 ### Sessions
 
-1. Tag `go-final` setzen, `native/k3c-game` und `native/k3c-rig` entfernen (AC-01)
-2. CI, Taskfile und Repo-Regeln ohne Go-Spiel (AC-02)
-3. `CLAUDE.md`, `codemap.md`, Arbeitsweise, Agenten auf das Rust-Spiel (AC-03)
+1. Umzüge vor dem Löschen: Rig-Teile nach `public/rig/` (Kopie), Rig-Export nach `tools/rigexport/`, `cmd/sync` nach `tools/sync/`, Messskript nach `tools/measure/`, Workbench-Start auf die Rust-EXE (AC-01, Vorbereitung)
+2. Haltepunkt 🧑, Tag `go-final`, `native/` entfernen, Taskfile, CI, `checkdiff` und Repo-Regeln ohne Go-Spiel (AC-01, AC-02)
+3. `CLAUDE.md`, `codemap.md`, Arbeitsweise, `requirements.md`, Agenten auf das Rust-Spiel (AC-03)
 4. Review
+
+### Vorentscheidungen
+
+- Das Rust-Spiel lädt heute die Rig-Teile aus `native/k3c-rig/assets`, `rust:game:build` kopiert mit `native/k3c-game/cmd/sync`, die Workbench startet `native/k3c-game/bin/k3c-game.exe`: Diese Abhängigkeiten werden in Session 1 gelöst, bevor Session 2 löscht. So bleibt jeder Commit grün.
+- Gelöscht wird erst nach ausdrücklichem Ja von 🧑 in Session 2; G4 „weiter“ muss in der Abnahme von RU36 stehen.
 
 ## Nicht-Ziele
 
@@ -43,12 +48,12 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Stand vor diesem Sprint bleibt über Git erreichbar (B-1015 › Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt. `engine/` bleibt unverändert (Workbench und Balancing brauchen die Go-Engine bis RU41). Tag und Löschen nur nach Ja von 🧑 (RU37.2 hält an).
 
-- **Bereich:** `native/**`, `Taskfile.yml`, `.github/workflows/ci.yml`, `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md`, `tests/projectRules.test.ts`, `.claude/agents/**`
+- **Bereich:** `native/**`, `Taskfile.yml`, `tools/Taskfile.yml`, `rust/Taskfile.yml`, `.github/workflows/ci.yml`, `.gitignore`, `CLAUDE.md`, `codemap.md`, `requirements.md`, `docs/arbeitsweise.md`, `tests/projectRules.test.ts`, `.claude/agents/**`, `public/rig/**`, `tools/rigexport/**`, `tools/sync/**`, `tools/measure/**`, `tools/checkdiff/**`, `tools/k3c-workbench/internal/studioview/**`, `rust/crates/k3c-game/src/art/library.rs`, `rust/crates/k3c-game/src/art/rigs_tests.rs`, `rust/crates/k3c-rig/src/rig/testutil.rs`, `rust/crates/k3c-rig/src/paint/assets.rs`
 - **Abhängig von:** RU36
 - **Braucht 🧑:** Entscheidung
-- **Sperre:** deps
+- **Sperre:** deps, taskfile
 
 ## Beispiele
 
@@ -66,12 +71,20 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-Entscheidung 🧑 am Gate bzw. vor dem Start (B-1014 › Offene Fragen).
+Entscheidung 🧑 vor dem Löschen (RU37.2 hält an und fragt).
+
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Schnitt geändert: Session 1 zieht zuerst alles aus `native/` um, was Rust-Spiel, Paket und Workbench brauchen (Rig-Teile, Rig-Export, `cmd/sync`, Messskript, Workbench-Start); Tag und Löschen kommen zusammen mit CI, Taskfile und Regeln in Session 2. Grund: Sonst bricht das Rust-Spiel nach dem Löschen (`DEFAULT_RIG_DIR` = `native/k3c-rig/assets`).
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Neue Orte `public/rig/` (Rig-Teile), `tools/rigexport/` (TypeScript-Export, Tasks `gen:rig`, `gen:rig:check`), `tools/sync/` (Wurzel-Modul), `tools/measure/` (Messskript).
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Sperre `deps, taskfile`, weil der Sprint Taskfiles umbaut; Bereich um die Umzugsziele, `.gitignore`, `requirements.md`, `tools/checkdiff` und `studioview` erweitert.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU37.1 | `RU37.1-umzuege-vor-dem-loeschen.md` | Umsetzung | autonom | offen |
+| RU37.2 | `RU37.2-tag-go-final-und-entfernen.md` | Umsetzung | autonom | offen |
+| RU37.3 | `RU37.3-doku-und-agenten-auf-rust.md` | Umsetzung | autonom | offen |
+| RU37.4 | `RU37.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

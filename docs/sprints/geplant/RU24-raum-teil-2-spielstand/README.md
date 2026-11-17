@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** SRV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -28,11 +28,11 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 Welle 14 von 26, 5 Sessions (B-1015).
 
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018) und das Zustandsmodell `docs/standards/rust-sim-zustand.md`. Modell-Empfehlung: `sonnet`, Session 2 `opus` (Speicher-Schreiber, Spielstand-Format).
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `engine/room/` → `rust/crates/k3c-room/src/room/`; Dateinamen nach Leitfaden § 2.
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `engine/room/` → `rust/crates/k3c-room/src/room/`; Dateinamen nach Leitfaden § 2. Die Sessions laufen als Kette auf dem Branch `sprint/ru24`. Gegen das Repo geprüft (2026-11-17): alle Dateien und Zeilenzahlen stimmen. Tests ohne eigene Quelldatei gehören zur passenden Session (`dev_castlefall`, `dev_grade`, `dev_timescale`, `island`, `island_etappe`, `events`, `depths` zu Session 1; `autosave`, `save`, `gameover_save` zu Session 2; `preview_chunkcount`, `preview_planned`, `preview_ruin` zu Session 3; `worlds_values` zu Session 4). `stages_bench_test.go`: nur `TestStufenEreignisBudgetJeGeraet`, die Benchmark-Funktion entfällt (RU39 misst).
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
@@ -50,7 +50,7 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Protokoll (`docs/protocol.md`) und Spielstand-Format (Version 9) bleiben unverändert; keine neuen Fixtures unter `testdata/`. Keine neue Abhängigkeit außer vorhandenen Workspace-Crates.
 
 - **Bereich:** `rust/crates/k3c-room/**`
 - **Abhängig von:** RU21, RU22
@@ -73,7 +73,17 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeit gehört nicht in den bitgleichen Port. Sie entsteht nach dem Golden-Abgleich (RU22) als neuer Rust-Code. Spec steht im Ticket:
+Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- **Spielstand-Format:** unverändert Version 9; Rust liest die Versionen 1 bis 9 (Migration in RU10) und schreibt Version 9 wie Go (B-1014: Port ohne Formatänderung). Die Memory-Regel „keine Rücksicht auf alte Spielstände“ bleibt ohne Wirkung. Ein neues Format wäre eine eigene Entscheidung von 🧑 nach RU22.
+- **Welt-Hash (AC-03):** Vergleich des JSON-Baums aller Stufen vor dem Speichern und nach dem Laden über `k3c_det::golden`; kein neuer Hash und keine neue Golden-Datei.
+- **Hintergrund-Speichern:** `trait SaveWriter` mit `InlineWriter` (synchron, gleiche Zustandsmaschine wie Gos Schreiber); ein Thread-Schreiber gehört in den Aufrufer (RU27). **Risiko (vermutet, ungeprüft):** Mit `InlineWriter` blockiert ein Spielstand den Tick; RU39 misst, vorher soll das Spiel den Thread-Schreiber nutzen.
+- **Benchmark:** `BenchmarkStufenZweiSpieler` wird nicht portiert (RU39 misst).
+- **Zeitraffer und Pause:** AC-02 wird als Vergleich der JSON-Bäume nach n Schritten mit und ohne Zeitraffer geprüft.
+- **`SkillError`:** wird `Fehler::BadRequest { reason }`.
+- **Abweichung vom Schnitt:** keine.
+
+**Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeit gehört nicht in den bitgleichen Port. Sie entsteht nach dem Golden-Abgleich (RU22) als neuer Rust-Code. Spec steht im Ticket:
 
 - GS3.4 Spielstand-Liste liefert Route und Chronik (B-978)
 
@@ -81,6 +91,11 @@ Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-En
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU24.1 | `RU24.1-room-stages-switch-pause-dev.md` | Umsetzung | autonom | offen |
+| RU24.2 | `RU24.2-room-devcombat-fullsave-saver.md` | Umsetzung | autonom | offen |
+| RU24.3 | `RU24.3-room-closeroom-skills-preview.md` | Umsetzung | autonom | offen |
+| RU24.4 | `RU24.4-room-worlds-metrics-observer.md` | Umsetzung | autonom | offen |
+| RU24.5 | `RU24.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

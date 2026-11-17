@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -28,27 +28,29 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 Welle 9 von 26, 6 Sessions (B-1015).
 
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`. Die Sessions laufen als Kette auf dem Branch `sprint/ru6` (eine nach der anderen, ein Commit je Session).
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `engine/level/` → `rust/crates/k3c-level/src/`; Dateinamen nach Leitfaden § 2.
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `engine/level/` → `rust/crates/k3c-level/src/`; Dateinamen nach Leitfaden § 2. Die Reihenfolge ist gegenüber der ersten Fassung nach Abhängigkeiten sortiert (siehe Offene Fragen); `lair.go` (41, T) fehlte in der ersten Fassung und kommt in Session 2.
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
-| 1 | `engine/level/`: backdrop (34, T), biome (172), guards (96, T) | 302 |
-| 2 | `engine/level/`: level (355, T), lines (57), nature (218, T) | 630 |
-| 3 | `engine/level/`: nature_check (173), planned (269, T) | 442 |
-| 4 | `engine/level/`: planned_gen (121, T), planned_totals (88), ruins (158, T) | 367 |
-| 5 | `engine/level/`: sites (275, T), validate (190) | 465 |
+| 1 | `engine/level/`: backdrop (34, T), lines (77), planned (276, T), biome (172, T; fast ganz schon in `k3c-data`); neu in Rust: `rules.rs`, `testutil.rs`, `pending.rs` | 559 |
+| 2 | `engine/level/`: nature (218, T), nature_check (173; großer Teil schon in `k3c-data`), lair (41, T) | 432 |
+| 3 | `engine/level/`: planned_gen (135, T), planned_totals (88), guards (96, T), ruins (158, T); `level.rs` als Rumpf (`Gen`) | 477 |
+| 4 | `engine/level/`: sites (275, T), validate (191) | 466 |
+| 5 | `engine/level/`: level (364 ohne die Typen aus RU8, T) samt allen Golden-Tests | 364 |
 | 6 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
 
-Summe: 2206 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+Summe: 2298 Zeilen Go (die erste Fassung zählte 2206; Dateien sind seither gewachsen: level 364, lines 77, planned 276, planned_gen 135, nature_check 173). Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
 
 ### Hinweise für die Umsetzung
 
 - Der Generator würfelt nur über `k3c-rng`; jede Würfel-Stelle bleibt an derselben Stelle der Reihenfolge, auch wenn das Ergebnis verworfen wird.
 - Die Level-Golden vergleicht `engine/level/*_test.go` über `engine/internal/golden`; denselben Vergleich liefert `k3c_det::golden` (RU3).
+- Daten, Biom-Prüfungen, `GuardRules`, `RuinRules`, `HubData` liegen seit RU3 in `k3c-data`; Gos Paket-Variablen werden in Rust zu `Rules` (`rules.rs`, RU6.1), siehe RU6.1 › Kontext.
+- Tests, die erst mit `generate` laufen können, tragen bis RU6.5 `#[ignore = "wartet auf RU6.5"]`; RU6.5 entfernt sie alle.
 
 ## Nicht-Ziele
 
@@ -74,17 +76,29 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 ## Akzeptanzkriterien
 
 - **AC-01** `level-cave`, `-crystal`, `-forest`, `-ironhold`, `-mine`, `-planned` und `nature.json` werden von Rust bitgleich (gleicher JSON-Baum, jede Zahl mit denselben Bits) erzeugt, ohne Golden-Neuschrieb.
-- **AC-02** Die Tests aus `engine/level` (17 Dateien) sind sinngleich portiert und grün.
+- **AC-02** Die Tests aus `engine/level` (19 Dateien, davon `bench_test.go` nur mit Benchmarks, daher 18 portierte Dateien) sind sinngleich portiert und grün; kein `#[ignore]` mit Marke `RU6` bleibt.
 - **AC-03** Das Review nennt Sessions und Zeilen je Session (Plan: 450 Zeilen Code je Session); bei mehr als dem 1,5-Fachen des Plans empfiehlt es, vor RU10 neu zu schätzen.
 
 ## Offene Fragen
 
-keine
+Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- **Session-Reihenfolge nach Abhängigkeit statt nach Go-Dateiname:** Go-Reihenfolge der ersten Fassung (Session 2: `level.go` vor `sites.go`, `ruins.go`, `planned_gen.go`) hätte jede frühe Session mit Platzhaltern für `Generate` belassen. Neu: Geometrie und Plan-Prüfung zuerst, `level.go` zuletzt, dort laufen alle Golden. Die Zahl der Sessions bleibt 6.
+- **`lair.go` (41, T)** fehlte in der Tabelle und kommt in Session 2.
+- **Paket-Variablen von Go** (`guardRules`, `ruinRules`, `hubSites`, `sitePlacement`, `payGapUnits`) werden ein Struct `Rules` (aus `k3c_data::data::Data`), das `generate` als Parameter bekommt (wie RU8 mit `WorldValues`); kein globaler Zustand.
+- **`bench_test.go`** (nur Benchmarks) wird nicht portiert; die Messung übernimmt RU39. AC-02 zählt 19 Dateien, 18 davon mit Tests.
+- **Abhängigkeit von RU39** (Feld `Abhängig von`) bleibt wie in der ersten Fassung stehen; sie wird vom Koordinator geprüft.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU6.1 | `RU6.1-plan-geometrie-backdrop-lines-biome.md` | Umsetzung | autonom | offen |
+| RU6.2 | `RU6.2-natur-nature-check-lair.md` | Umsetzung | autonom | offen |
+| RU6.3 | `RU6.3-planung-gen-totals-guards-ruins.md` | Umsetzung | autonom | offen |
+| RU6.4 | `RU6.4-sites-validate.md` | Umsetzung | autonom | offen |
+| RU6.5 | `RU6.5-erzeugung-level-golden.md` | Umsetzung | autonom | offen |
+| RU6.6 | `RU6.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

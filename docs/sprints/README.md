@@ -55,38 +55,38 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU9 | CLI | RSU | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | – | Entwurf | `geplant/RU9-menues-teil-1/` |
-| RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | Entwurf | `geplant/RU10-sim-insel/` |
-| RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | Entwurf | `geplant/RU11-sim-einheiten-gegner/` |
-| RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | Entwurf | `geplant/RU14-sim-welt-stufen-kampagne/` |
-| RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | Entwurf | `geplant/RU15-sim-kampf-bosse/` |
-| RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | Entwurf | `geplant/RU16-gebaeude-und-objekte-zeichnen/` |
-| RU17 | CLI | RSU | Effekte und Ton im Spiel | – | Entwurf | `geplant/RU17-effekte-und-ton-im-spiel/` |
-| RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | Entwurf | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
-| RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | Entwurf | `geplant/RU19-sim-events-geschichte-dev/` |
-| RU20 | CLI | RSU | HUD Teil 1: Anzeigen je Spielerhälfte | – | Entwurf | `geplant/RU20-hud-teil-1/` |
-| RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | Entwurf | `geplant/RU21-spielstaende-und-raum-teil-1/` |
-| RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | Entwurf | `geplant/RU22-sim-golden-bitgleich/` |
-| RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | Entwurf | `geplant/RU23-hud-teil-2/` |
-| RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | Entwurf | `geplant/RU24-raum-teil-2-spielstand/` |
-| RU25 | SIM | RSU | Balancing Teil 1: Bots | – | Entwurf | `geplant/RU25-balancing-teil-1-bots/` |
-| RU26 | CLI | RSU | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | – | Entwurf | `geplant/RU26-spielschleife-teil-1/` |
-| RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | Entwurf | `geplant/RU27-lokales-spiel/` |
-| RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | Entwurf | `geplant/RU28-balancing-teil-2-messungen/` |
-| RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | Entwurf | `geplant/RU29-dev-werkzeuge-im-spiel/` |
-| RU30 | CLI | RSU | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | – | Entwurf | `geplant/RU30-spielschleife-teil-2/` |
-| RU32 | CLI | RSU | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | – | Entwurf | `geplant/RU32-ende-zu-ende-test/` |
-| RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | Entwurf | `geplant/RU35-build-paket-ci-umstellen/` |
-| RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | Entwurf | `geplant/RU36-abnahme-am-pc/` |
-| RU12 | CLI | RSU | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | – | Entwurf | `geplant/RU12-menues-teil-2/` |
-| RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | Entwurf | `geplant/RU31-balancing-teil-3-einsichten/` |
-| RU6 | SIM | RSU | Level-Generator in Rust, Level-Golden bitgleich | – | Entwurf | `geplant/RU6-level-generator-rust/` |
-| RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | Entwurf | `geplant/RU33-laeufe-im-client/` |
-| RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | Entwurf | `geplant/RU34-workbench-ruft-spiel-exe/` |
-| RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | Entwurf | `geplant/RU37-go-spiel-entfernen/` |
-| RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | Entwurf | `geplant/RU39-ruckler-messung-rust-gegen-go/` |
-| RU40 | CLI | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | Entwurf | `geplant/RU40-balancing-laeufe-im-client/` |
-| RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | Entwurf | `geplant/RU41-go-engine-entfernen/` |
+| RU9 | CLI | RSU | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | – | bereit | `geplant/RU9-menues-teil-1/` |
+| RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | bereit | `geplant/RU10-sim-insel/` |
+| RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | bereit | `geplant/RU11-sim-einheiten-gegner/` |
+| RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | bereit | `geplant/RU14-sim-welt-stufen-kampagne/` |
+| RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | bereit | `geplant/RU15-sim-kampf-bosse/` |
+| RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | bereit | `geplant/RU16-gebaeude-und-objekte-zeichnen/` |
+| RU17 | CLI | RSU | Effekte und Ton im Spiel | – | bereit | `geplant/RU17-effekte-und-ton-im-spiel/` |
+| RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
+| RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
+| RU20 | CLI | RSU | HUD Teil 1: Anzeigen je Spielerhälfte | – | bereit | `geplant/RU20-hud-teil-1/` |
+| RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | bereit | `geplant/RU21-spielstaende-und-raum-teil-1/` |
+| RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
+| RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | bereit | `geplant/RU23-hud-teil-2/` |
+| RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | bereit | `geplant/RU24-raum-teil-2-spielstand/` |
+| RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
+| RU26 | CLI | RSU | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | – | bereit | `geplant/RU26-spielschleife-teil-1/` |
+| RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | bereit | `geplant/RU27-lokales-spiel/` |
+| RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
+| RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | bereit | `geplant/RU29-dev-werkzeuge-im-spiel/` |
+| RU30 | CLI | RSU | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | – | bereit | `geplant/RU30-spielschleife-teil-2/` |
+| RU32 | CLI | RSU | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | – | bereit | `geplant/RU32-ende-zu-ende-test/` |
+| RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | bereit | `geplant/RU35-build-paket-ci-umstellen/` |
+| RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | bereit | `geplant/RU36-abnahme-am-pc/` |
+| RU12 | CLI | RSU | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | – | bereit | `geplant/RU12-menues-teil-2/` |
+| RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
+| RU6 | SIM | RSU | Level-Generator in Rust, Level-Golden bitgleich | – | bereit | `geplant/RU6-level-generator-rust/` |
+| RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | bereit | `geplant/RU33-laeufe-im-client/` |
+| RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | bereit | `geplant/RU34-workbench-ruft-spiel-exe/` |
+| RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | bereit | `geplant/RU37-go-spiel-entfernen/` |
+| RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | bereit | `geplant/RU39-ruckler-messung-rust-gegen-go/` |
+| RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
+| RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

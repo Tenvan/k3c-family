@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -28,20 +28,20 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 Welle 12 von 26, 4 Sessions (B-1015).
 
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018) und das Zustandsmodell `docs/standards/rust-sim-zustand.md`. Modell-Empfehlung: `sonnet`.
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `engine/sim/` → `rust/crates/k3c-sim/src/{events,story,dev}/`; Dateinamen nach Leitfaden § 2.
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `engine/sim/` → `rust/crates/k3c-sim/src/{events,story,dev}/`; Dateinamen nach Leitfaden § 2. Die Sessions laufen als Kette auf dem Branch `sprint/ru19`. Gegen das Repo geprüft (2026-11-17): `events_moon.go` hat 143 statt 167 Zeilen; `events_values.go` (53) fehlte in der Tabelle, davon bleibt nur `World.night` zu portieren (der Rest steht in `k3c-data`); Tests ohne eigene Quelle (`dev_cheat`, `dev_stress`, `events_budget`, `events_island`, `events_location`, `events_moon_stages`) gehören zur passenden Session.
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
 | 1 | `engine/sim/`: dev (206, T), dev_combat (111, T), dev_spawn (75, T) | 392 |
-| 2 | `engine/sim/`: events (138, T), events_merchant (39, T), events_moon (167, T) | 344 |
+| 2 | `engine/sim/`: events (138, T), events_merchant (39, T), events_moon (143, T), events_values (nur `night`, 3) | 323 |
 | 3 | `engine/sim/`: story (74, T), story_check (198), story_points (106) | 378 |
 | 4 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
 
-Summe: 1114 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+Summe: 1093 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
 
 ## Nicht-Ziele
 
@@ -49,9 +49,9 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Keine neue Abhängigkeit (kein `regex`), kein `HashMap`.
 
-- **Bereich:** `rust/crates/k3c-sim/src/events/**`, `rust/crates/k3c-sim/src/story/**`, `rust/crates/k3c-sim/src/dev/**`
+- **Bereich:** `rust/crates/k3c-sim/src/events/**`, `rust/crates/k3c-sim/src/story/**`, `rust/crates/k3c-sim/src/dev/**`, `rust/crates/k3c-sim/src/lib.rs` (nur `pub mod`-Zeilen), `rust/crates/k3c-sim/src/state/pending.rs`, `rust/crates/k3c-sim/src/world/pending.rs` (nur Platzhalter löschen und Aufrufstellen auf die echte Funktion umstellen)
 - **Abhängig von:** RU14, RU15
 - **Braucht 🧑:** –
 - **Sperre:** –
@@ -71,7 +71,15 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeiten gehören nicht in den bitgleichen Port. Sie entstehen nach dem Golden-Abgleich (RU22) als neuer Rust-Code, angefangener Go-Code wird neu geschrieben statt konvertiert. Spec steht im Ticket:
+Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
+
+- **Globale Ereignis-Helfer:** `fullMoon()`, `bloodMoon()`, `merchantRaid()` lesen in Go die Basis, der Spielablauf nutzt nur `w.night(id)`; die Helfer entfallen in Rust.
+- **Unicode in der Geschichten-Prüfung:** `char::is_alphabetic`/`is_uppercase` ersetzen `unicode.IsLetter`/`IsUpper`; ein Test mit den Zeichen der Fachtexte sichert das; weicht ein Fall aus `data/worlds` ab, entsteht ein Ticket (RU19.3).
+- **Insel-Rückverweis:** `pure`, `event_stage`, `stage_played` lesen in Go `w.island`; in Rust bekommen sie die Insel oder das Flag als Parameter (RU19.1, RU19.2).
+- **Methoden an `WorldDef`/`Island`:** werden freie Funktionen (Rust kennt keine Erweiterung fremder Typen); Namen in `snake_case` mit Typ-Präfix (`story_start`).
+- **Abweichung vom Schnitt:** `events_values` aufgenommen (nur `night`).
+
+**Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeiten gehören nicht in den bitgleichen Port. Sie entstehen nach dem Golden-Abgleich (RU22) als neuer Rust-Code, angefangener Go-Code wird neu geschrieben statt konvertiert. Spec steht im Ticket:
 
 - SI3.2 Wetter-Katalog, Zeitplan, Taifun und Flut (B-969)
 - SI6.3 Friedliche Insel und Fest-Zustand (B-973)
@@ -83,6 +91,10 @@ Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-En
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU19.1 | `RU19.1-dev-eingriffe.md` | Umsetzung | autonom | offen |
+| RU19.2 | `RU19.2-events-moon-merchant.md` | Umsetzung | autonom | offen |
+| RU19.3 | `RU19.3-story.md` | Umsetzung | autonom | offen |
+| RU19.4 | `RU19.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -28,13 +28,19 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 Welle 26 von 26, 3 Sessions (B-1015).
 
-Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
+Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`, Entscheidung 011 und Doku `opus`.
 
 ### Sessions
 
-1. `engine/sim`, `level`, `room`, `store`, `balance`, `rng`, `enginetools` entfernen; `conlog` und `devrun` für die Workbench behalten (AC-01, AC-02)
-2. `CLAUDE.md`, `codemap.md`, Arbeitsweise (Domänen, Sperren, Agenten), Entscheidung 011 (AC-03)
-3. Review
+1. Haltepunkt 🧑, dann `engine/sim`, `level`, `room`, `store`, `balance`, `rng`, `enginetools`, `simcli`, `internal/golden`, `internal/detvec`, `internal/trace` und `cmd/k3c-sim` entfernen; `conlog`, `devrun`, `internal/rules` behalten; Taskfile, CI, `checkdiff`, `go.mod` (AC-01, AC-02)
+2. `CLAUDE.md`, `codemap.md`, Arbeitsweise (Domänen, Sperren, Agenten), Entscheidung 011 mit Annahme durch 🧑 (AC-03)
+3. Review, Abschluss des Projekts vorschlagen
+
+### Vorentscheidungen
+
+- Voraussetzung fürs Löschen: Workbench und Werkzeuge importieren keine der Sim-Pakete mehr (RU34, RU40; Prüfung mit `go list -deps`); sonst hält RU41.1 an.
+- `testdata/` bleibt ganz; ungelesene Dateien werden nur genannt.
+- Nach RU41 sind die Golden eingefroren, bis es einen Rust-Schreibweg gibt; die Arbeitsweise sagt das.
 
 ## Nicht-Ziele
 
@@ -42,12 +48,12 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Stand vor diesem Sprint bleibt über Git erreichbar (B-1015 › Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt. Löschen nur nach Ja von 🧑 (RU41.1 hält an); Entscheidung 011 nimmt nur 🧑 an (RU41.2 hält an).
 
-- **Bereich:** `engine/**`, `cmd/**`, `go.mod`, `testdata/**`, `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md`, `docs/decisions/**`, `tests/projectRules.test.ts`, `.claude/agents/**`
+- **Bereich:** `engine/**`, `cmd/**`, `go.mod`, `go.sum`, `testdata/**`, `Taskfile.yml`, `.github/workflows/ci.yml`, `tools/checkdiff/**`, `tools/k3c-workbench/go.mod`, `tools/k3c-workbench/go.sum`, `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md`, `docs/decisions/**`, `tests/projectRules.test.ts`, `.claude/agents/**`
 - **Abhängig von:** RU37, RU40
 - **Braucht 🧑:** Entscheidung
-- **Sperre:** deps
+- **Sperre:** deps, taskfile
 
 ## Beispiele
 
@@ -65,12 +71,19 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-Entscheidung 🧑 am Gate bzw. vor dem Start (B-1014 › Offene Fragen).
+Entscheidung 🧑 vor dem Löschen (RU41.1) und zur Annahme von 011 (RU41.2).
+
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Zusätzlich entfernt werden `engine/simcli`, `engine/internal/golden`, `engine/internal/detvec`, `engine/internal/trace` und `cmd/k3c-sim`, weil sie nur der Go-Sim dienen; `engine/internal/rules` bleibt für die verbliebenen Go-Pakete.
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Bereich um `Taskfile.yml`, `ci.yml`, `tools/checkdiff` und die `go.mod` der Workbench erweitert, Sperre `deps, taskfile`.
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): `testdata/` wird nicht ausgedünnt; Golden sind nach RU41 eingefroren, bis ein Ticket einen Rust-Schreibweg schafft.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU41.1 | `RU41.1-go-engine-pakete-entfernen.md` | Umsetzung | autonom | offen |
+| RU41.2 | `RU41.2-doku-und-entscheidung-011.md` | Umsetzung | autonom | offen |
+| RU41.3 | `RU41.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

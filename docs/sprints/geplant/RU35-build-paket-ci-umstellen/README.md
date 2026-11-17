@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** INF
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-17
 
 ## Ausgangslage
 
@@ -32,10 +32,16 @@ Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018)
 
 ### Sessions
 
-1. `rust:game:build`, `rust:game:run`, `rust:game:dev` (AC-01)
-2. `task build` und `buildall` auf Rust (AC-02)
-3. CI: Rust-Spiel bauen und testen (AC-03)
+1. `rust:game:exe`, `rust:game:build` (Paket wie das Go-Paket nach `dist/k3c-rust/`), `rust:game:run`, `rust:game:dev` (AC-01)
+2. `task build` und `buildall` auf Rust: Rust-Paket nach `dist/k3c-game/`, Go-Paket nach `dist/k3c-game-go/` (AC-02)
+3. CI: Job `rust` baut das Paket und prüft EXE-Größe, `data` und Grafik (AC-03)
 4. Review
+
+### Vorentscheidungen
+
+- Kopieren weiter mit `native/k3c-game/cmd/sync`; der Umzug des Werkzeugs vor dem Löschen von `native/` gehört zu RU37.
+- Das Rust-Paket enthält ganz `public/grafik` (kein `--assets`-Filter im Rust-Spiel) und `native/k3c-rig/assets` (relativer Rig-Pfad des Rust-Spiels).
+- `rust:game:dev` startet den Debug-Bau ohne Neustart bei Änderungen (`engine/devrun` kennt nur Go).
 
 ## Nicht-Ziele
 
@@ -43,9 +49,9 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Kein Rust- oder Go-Code ändert sich; nur Taskfiles, CI und der Abschnitt Befehle in `CLAUDE.md`.
 
-- **Bereich:** `Taskfile.yml`, `rust/Taskfile.yml`, `native/Taskfile.yml`, `.github/workflows/ci.yml`, `data/embed.go`
+- **Bereich:** `Taskfile.yml`, `rust/Taskfile.yml`, `native/Taskfile.yml`, `.github/workflows/ci.yml`, `CLAUDE.md`
 - **Abhängig von:** RU32
 - **Braucht 🧑:** –
 - **Sperre:** taskfile
@@ -66,12 +72,21 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine offenen.
+
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Das Go-Paket zieht nach `dist/k3c-game-go/`, damit `dist/k3c-game/` das Rust-Spiel ist und beide gleichzeitig baubar bleiben.
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): `LIZENZEN.txt` kommt aus dem Rust-Spiel, wenn es eine Lizenz-Ausgabe hat; sonst Ticket in RU35 und das Paket gilt bis dahin als nicht weitergebbar.
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): `data/embed.go` aus dem Bereich genommen (das Rust-Spiel liest `data/` aus dem Paket), `CLAUDE.md` (Abschnitt Befehle) aufgenommen.
+- Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Die CI prüft die EXE-Größe gegen die G1-Schwelle 40 MB.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU35.1 | `RU35.1-rust-game-build-run-dev.md` | Umsetzung | autonom | offen |
+| RU35.2 | `RU35.2-build-und-buildall-auf-rust.md` | Umsetzung | autonom | offen |
+| RU35.3 | `RU35.3-ci-rust-spiel.md` | Umsetzung | autonom | offen |
+| RU35.4 | `RU35.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
