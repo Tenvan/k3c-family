@@ -207,6 +207,12 @@ impl Texts {
     pub fn get(&mut self, k: &TextKey, make: fn(&TextKey) -> String) -> &str {
         self.0.entry(k.clone()).or_insert_with(|| make(k))
     }
+
+    /// `get_or_insert_with` ist `get` für Texte, deren Bau Werte des Aufrufers braucht (Go: `p.texts[key]` und
+    /// `p.texts[key] = text` am Aufrufort, `castleSign`); `make` läuft nur beim ersten Mal.
+    pub fn get_or_insert_with(&mut self, k: TextKey, make: impl FnOnce() -> String) -> &str {
+        self.0.entry(k).or_insert_with(make)
+    }
 }
 
 /// `site_text` baut die Texte der Bauplätze (`k.kind` = Platzart; `n` = Tiefe bzw. Stufe, `m` = Wartegrund).

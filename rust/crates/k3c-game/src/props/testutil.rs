@@ -1,10 +1,17 @@
 //! Hilfen der props-Tests: Welten und Plätze als Literal (die Go-Tests bauen `&sim.World{…}` ebenso) und eine
 //! `FixedSimView` mit festen Werten für die Tests der Zeichner (RU16.2 bis RU16.5, hud).
 
+use std::collections::BTreeMap;
+use std::path::PathBuf;
+use std::rc::Rc;
+
 use k3c_sim::state::{Player, Site, World};
 
 use super::pending::{CombatSpot, Economy};
+use super::plan::Sheets;
 use super::simview::SimView;
+use crate::art::{Sheet, read_manifest};
+use crate::view::cell::{Camera, new_camera, rect};
 
 /// `wall_at` ist eine Mauer an x (Go: `wallAt` in buildings_test.go).
 pub fn wall_at(id: i64, x: f64, level: i64, state: &str) -> Site {
@@ -52,6 +59,62 @@ impl SimView for FixedSimView {
     fn at_lair(&self, _w: &World, _p: &Player) -> bool {
         self.at_lair
     }
+}
+
+/// `grafik_dir`: gerenderte Papier-Grafik (`task gen:paper`; PNG und Manifeste sind nicht eingecheckt, B-737).
+pub fn grafik_dir() -> PathBuf {
+    PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/../../../public/grafik"))
+}
+
+/// `MapSheets` liefert für jedes Asset ein Sheet mit den Maßen aus dem Manifest unter `public/grafik` (ohne GPU;
+/// Go: `fakeSheets` in plan_test.go).
+#[derive(Debug, Default)]
+pub struct MapSheets(BTreeMap<(String, String), Sheet>);
+
+impl Sheets for MapSheets {
+    fn sheet(&self, asset: &str, anim: &str) -> Option<&Sheet> {
+        self.0.get(&(asset.to_string(), anim.to_string()))
+    }
+}
+
+/// `fake_sheets` liest alle Manifeste; `None` (Test überspringen), wenn die gerenderte Grafik fehlt (Go: `needGrafik`).
+pub fn fake_sheets() -> Option<Rc<dyn Sheets>> {
+    let dir = grafik_dir();
+    if !dir.join("objekte").join("tanne").join("manifest.json").exists() {
+        return None;
+    }
+    let mut out = MapSheets::default();
+    for group in std::fs::read_dir(&dir).ok()?.flatten() {
+        for asset in std::fs::read_dir(group.path()).ok()?.flatten() {
+            let name = format!(
+                "{}/{}",
+                group.file_name().to_string_lossy(),
+                asset.file_name().to_string_lossy()
+            );
+            let Ok(m) = read_manifest(&dir, &name) else {
+                continue;
+            };
+            let r = m.frame;
+            for (anim, a) in &m.anims {
+                let mut s = Sheet::default();
+                s.asset.clone_from(&name);
+                s.anim.clone_from(anim);
+                s.fw = m.frame_w;
+                s.fh = m.frame_h;
+                s.fps = a.fps;
+                s.origin_x = -r[0] / r[2];
+                s.origin_y = -r[1] / r[3];
+                s.units_per_px = r[3] / m.frame_h as f64;
+                out.0.insert((name.clone(), anim.clone()), s);
+            }
+        }
+    }
+    Some(Rc::new(out))
+}
+
+/// `camera`: Zelle 1280 × 360 um x, 27 Pixel je Unit.
+pub fn camera(x: f64) -> Camera {
+    new_camera(rect(0, 0, 1280, 360), x, 27.0)
 }
 
 #[test]

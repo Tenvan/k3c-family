@@ -5,8 +5,12 @@ pub mod assets;
 pub mod buildings;
 pub mod coin_fountain;
 pub mod data;
+pub mod listen;
 pub mod nature;
 pub mod pending;
+pub mod plan;
+pub mod plan_castle;
+pub mod plan_entities;
 pub mod simview;
 pub mod sites;
 
@@ -17,7 +21,11 @@ mod buildings_tests;
 #[cfg(test)]
 mod coin_fountain_tests;
 #[cfg(test)]
+mod listen_tests;
+#[cfg(test)]
 mod nature_tests;
+#[cfg(test)]
+mod plan_tests;
 #[cfg(test)]
 mod sites_tests;
 #[cfg(test)]
