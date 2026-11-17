@@ -1,0 +1,203 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "doppel-truhe",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Doppel-Truhe geschlossen: breite Holztruhe mit zwei Schlössern; Zustände zu, linkes Schloss leuchtet, rechtes Schloss leuchtet (B-998)",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-32 0L-32 -16L32 -16L32 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-32 0L-32 -16L-22 -16L-22 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.7,
+          "form": "M-32 -8L32 -8",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-27 0L-27 -16L-24 -16L-24 0Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 0L24 -16L27 -16L27 0Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-1.5 0L-1.5 -16L1.5 -16L1.5 0Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-15 -14L-9 -14L-9 -8L-15 -8Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [-12, -10.5],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 -14L15 -14L15 -8L9 -8Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "linie",
+          "mitte": [12, -10.5],
+          "radius": 1
+        },
+        {
+          "art": "flaeche",
+          "form": "M-32 -16L-32 -22C-30 -28 30 -28 32 -22L32 -16Z",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-32 -16L-32 -22C-30 -26 -26 -27 -22 -27L-22 -16Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-27 -16L-27 -26.6L-24 -27L-24 -16Z",
+          "material": "gold",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M24 -16L24 -27L27 -26.6L27 -16Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-1.5 -16L-1.5 -28L1.5 -28L1.5 -16Z",
+          "material": "gold",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "glut-links",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-12, -11],
+          "radius": 6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [-12, -11],
+          "radius": 2.5
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "glut-rechts",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [12, -11],
+          "radius": 6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [12, -11],
+          "radius": 2.5
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 36,
+    "rahmen": [-36, -32, 72, 34]
+  },
+  "animationen": {
+    "links": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "sichtbar": {
+            "glut-links": true,
+            "glut-rechts": false
+          },
+          "t": 0,
+          "winkel": {
+            "glut-links": 0,
+            "glut-rechts": 0,
+            "korpus": 0
+          }
+        }
+      ]
+    },
+    "rechts": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "sichtbar": {
+            "glut-links": false,
+            "glut-rechts": true
+          },
+          "t": 0,
+          "winkel": {
+            "glut-links": 0,
+            "glut-rechts": 0,
+            "korpus": 0
+          }
+        }
+      ]
+    },
+    "zu": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "sichtbar": {
+            "glut-links": false,
+            "glut-rechts": false
+          },
+          "t": 0,
+          "winkel": {
+            "glut-links": 0,
+            "glut-rechts": 0,
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

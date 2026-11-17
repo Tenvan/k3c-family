@@ -55,6 +55,16 @@
     "manifest": "busch/manifest.json"
   },
   {
+    "id": "doppel-truhe",
+    "rig": "requisite",
+    "manifest": "doppel-truhe/manifest.json"
+  },
+  {
+    "id": "doppel-truhe-offen",
+    "rig": "requisite",
+    "manifest": "doppel-truhe-offen/manifest.json"
+  },
+  {
     "id": "erzbrocken",
     "rig": "requisite",
     "manifest": "erzbrocken/manifest.json"

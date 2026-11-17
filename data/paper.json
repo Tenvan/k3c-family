@@ -103,6 +103,8 @@
     "pappel-niedrig": { "gruppe": "objekte", "frame": [58, 180], "frames": 8, "rahmen": [-12,  -73,  24,  75] },
     "stern": { "gruppe": "objekte", "frame": [34, 34], "frames": 8, "rahmen": [-16,  -32,  32,  32] },
     "tanne": { "gruppe": "objekte", "frame": [217, 360], "frames": 8, "rahmen": [-44,  -142,  88,  146] },
+    "doppel-truhe": { "gruppe": "objekte", "frame": [76, 36], "frames": 1, "rahmen": [-36,  -32,  72,  34] },
+    "doppel-truhe-offen": { "gruppe": "objekte", "frame": [81, 49], "frames": 1, "rahmen": [-38,  -44,  76,  46] },
     "truhe-offen": { "gruppe": "objekte", "frame": [47, 49], "frames": 1, "rahmen": [-22,  -44,  44,  46] },
     "truhe": { "gruppe": "objekte", "frame": [42, 36], "frames": 1, "rahmen": [-20,  -32,  40,  34] },
     "wurzel": { "gruppe": "objekte", "frame": [68, 98], "frames": 1, "rahmen": [-32,  -88,  64,  92] },
