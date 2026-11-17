@@ -1,6 +1,6 @@
 # WE8.4 · Spiel: Ankündigung und Schleier für Überfall, Sandsturm, Nebel (B-995)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

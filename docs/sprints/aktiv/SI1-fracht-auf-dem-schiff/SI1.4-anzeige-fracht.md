@@ -1,6 +1,6 @@
 # SI1.4 · Ladeplätze und Fracht an Deck im Spiel (B-997)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

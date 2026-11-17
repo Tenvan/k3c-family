@@ -9,13 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BI1 | SIM, DEV, CLI | NAT | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | – | `aktiv/BI1-biom-eigenschaften/` |
-| GP1 | PLAT | NAT | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | – | `aktiv/GP1-pages-bausatz/` |
-| FB1 | CLI | NAT | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | – | `aktiv/FB1-feedback-client/` |
-| FB2 | SIM | NAT | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | – | `aktiv/FB2-feedback-sim/` |
-| WG2 | CLI | NAT | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | – | `aktiv/WG2-weltbilder-anzeige/` |
-| FB4 | CLI | NAT | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | – | `aktiv/FB4-live-test-2/` |
-| NA1 | CLI, PAP | NAT | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | – | `aktiv/NA1-nachtraege-natives-spiel/` |
 | KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
 | KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | `aktiv/KS2-portale-ausruestung/` |
 | KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
@@ -45,6 +38,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SI1 | REG, SIM, PAP, CLI | KMP | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | – | `aktiv/SI1-fracht-auf-dem-schiff/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
+| RU3 | SIM | RSU | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | – | `aktiv/RU3-rng-zahlen-daten/` |
+| RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
+| RU7 | CLI | RSU | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | – | `aktiv/RU7-grafik-laden-ansicht/` |
 
 ## Offen am Gerät
 
@@ -52,7 +48,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 ### PC
 
-- NA1.8 · Abnahme am PC: Tasten-Icons im HUD (Sprint NA1, offen, Agent Mensch)
 - W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
 - WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
 
@@ -65,10 +60,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU3 | SIM | RSU | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | – | Entwurf | `geplant/RU3-rng-zahlen-daten/` |
-| RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | Entwurf | `geplant/RU4-plattform-fenster-eingabe-ton/` |
 | RU5 | CLI | RSU | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | – | Entwurf | `geplant/RU5-rig-in-rust/` |
-| RU7 | CLI | RSU | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | – | Entwurf | `geplant/RU7-grafik-laden-ansicht/` |
 | RU8 | SIM | RSU | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | – | Entwurf | `geplant/RU8-sim-zustand-typen/` |
 | RU9 | CLI | RSU | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | – | Entwurf | `geplant/RU9-menues-teil-1/` |
 | RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | Entwurf | `geplant/RU10-sim-insel/` |
@@ -444,3 +436,10 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU0 | Ruckler im Go-Spiel messen: GC, Bildtakt, Laden (Gate G0) | `erledigt/RU0-ruckler-im-go-spiel-messen/` |
 | RU1 | Rust-Workspace, Toolchain, Taskfile und CI | `erledigt/RU1-rust-workspace-toolchain/` |
 | RU2 | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | `erledigt/RU2-spike-schlanker-rust-client/` |
+| NA1 | Nachträge natives Spiel: rote Tests, Tasten-Icons, Rig-Export, Steg-Eingabe | `erledigt/NA1-nachtraege-natives-spiel/` |
+| BI1 | Biome mit Eigenschaften: Dichte, Chunk-Anteile und Varianten je Welt | `erledigt/BI1-biom-eigenschaften/` |
+| GP1 | Präsentationsseite als Bausatz mit Lizenz und eigenen Welten | `erledigt/GP1-pages-bausatz/` |
+| FB1 | Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD | `erledigt/FB1-feedback-client/` |
+| FB2 | Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill | `erledigt/FB2-feedback-sim/` |
+| WG2 | Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü | `erledigt/WG2-weltbilder-anzeige/` |
+| FB4 | Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume | `erledigt/FB4-live-test-2/` |

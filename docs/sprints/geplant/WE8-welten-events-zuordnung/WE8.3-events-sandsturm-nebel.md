@@ -1,6 +1,6 @@
 # WE8.3 · Engine: Events sandstorm und fog (B-992)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

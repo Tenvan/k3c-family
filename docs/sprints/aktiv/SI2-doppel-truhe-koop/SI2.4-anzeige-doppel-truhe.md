@@ -1,6 +1,6 @@
 # SI2.4 · Doppel-Truhe im Spiel (B-998)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

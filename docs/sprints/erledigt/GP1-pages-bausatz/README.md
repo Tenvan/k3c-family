@@ -1,6 +1,6 @@
 # GP1 · PLAT · Präsentationsseite als Bausatz mit Lizenz und eigenen Welten
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** PLAT
 - **Reife:** bereit

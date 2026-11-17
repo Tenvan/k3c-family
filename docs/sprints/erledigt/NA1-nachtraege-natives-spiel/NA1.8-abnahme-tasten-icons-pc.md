@@ -1,6 +1,6 @@
 # NA1.8 · Abnahme am PC: Tasten-Icons im HUD
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI

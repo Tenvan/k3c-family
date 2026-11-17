@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-`fx` (1080 Zeilen) und der spielnahe Teil von `audio` (Klänge je Zustand, `data/sounds.json`).
+`fx` (1080 Zeilen) und das ganze Paket `audio` (1311 Zeilen: Register, Atlas, Bank, Mischen, Ducking, Wiedergabe, Klänge je Zustand, `data/sounds.json`). Die Ton-Plattform (Gerät, Dekodieren, Stimmen, `NullAudio`) liefert RU4 als `k3c_platform::AudioOut`.
 
 ## Ziel
 
@@ -26,22 +26,24 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 `B-1014 › Anforderungen` (Port ohne Regeländerung, Golden als Orakel, zwei Spieler).
 
-Welle 6 von 26, 4 Sessions (B-1015).
+Welle 6 von 26, 6 Sessions (B-1015; nach der Überarbeitung von RU4 zwei Sessions mehr, weil RU4 nur die Plattform `k3c_platform::AudioOut` liefert und das ganze Go-Paket `audio` hier portiert wird).
 
 Für jede Session gilt der Port-Leitfaden `docs/standards/rust-port.md` (B-1018). Modell-Empfehlung: `sonnet`.
 
 ### Sessions
 
-Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/fx/` → `rust/crates/k3c-game/src/fx/`, `native/k3c-game/audio/` → `rust/crates/k3c-game/src/audio/`; Dateinamen nach Leitfaden § 2.
+Sessions mit den Go-Dateien, die sie portieren (Zeilen ohne Tests; „T“ = es gibt `<name>_test.go`, der Test wird in derselben Session portiert). Ziel: `native/k3c-game/fx/` → `rust/crates/k3c-game/src/fx/`, `native/k3c-game/audio/` → `rust/crates/k3c-game/src/audio/`; Dateinamen nach Leitfaden § 2. Ebitengine-Audio und oto (`sink.go`, `output.go`, Dekodieren in `bank.go`) gehen auf `k3c_platform::AudioOut` (RU4.8).
 
 | Session | Go-Dateien | Zeilen |
 |---|---|---:|
 | 1 | `native/k3c-game/fx/`: effects (203, T), fx (267) | 470 |
 | 2 | `native/k3c-game/fx/`: looks (117), paint (215), paintmarks (93), status (172, T) | 597 |
-| 3 | `native/k3c-game/fx/`: texts (13); `native/k3c-game/audio/`: events (127, T), music (143, T), register (153) | 436 |
-| 4 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
+| 3 | `native/k3c-game/fx/`: texts (13); `native/k3c-game/audio/`: register (153), atlas (65, T), duck (52), sink (47) | 330 |
+| 4 | `native/k3c-game/audio/`: bank (140), output (299, T) | 439 |
+| 5 | `native/k3c-game/audio/`: mix (237, T), events (127, T), music (143, T), audio (48, T), dazu `klang_test.go` | 555 |
+| 6 | Review (alle Kriterien, `docs/arbeitsweise.md` › Review-Session) | – |
 
-Summe: 1503 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
+Summe: 2391 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateien, das Review prüft alle.
 
 ## Nicht-Ziele
 
@@ -71,7 +73,12 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeiten entstehen direkt im Rust-Client, sobald die Sim-Seite steht. Spec steht im Ticket:
+
+- SI3.4 Vorboten, Taifun und Flut mit Ambient (B-999)
+- SI6.4 Jubel, Tanz und Himmels-Effekt je Welt (B-1002)
+- SI6.5 Festmusik je Welt (B-1002)
+- WE8.4 Ankündigung und Schleier für Überfall, Sandsturm, Nebel (B-995)
 
 ## Sessions
 

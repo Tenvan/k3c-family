@@ -1,6 +1,6 @@
 # WE6.1 · Spiel: Bau und Endboss in jedem Biom, Ersatz-Asset der Basisart (B-993)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

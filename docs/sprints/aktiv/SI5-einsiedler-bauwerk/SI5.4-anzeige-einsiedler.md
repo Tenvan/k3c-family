@@ -1,6 +1,6 @@
 # SI5.4 · Hütte, Figur und Bauwerk im Spiel (B-1001)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

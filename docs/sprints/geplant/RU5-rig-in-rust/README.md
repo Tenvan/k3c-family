@@ -47,7 +47,8 @@ Summe: 1836 Zeilen Go. Jede Port-Session erfüllt die Kriterien für ihre Dateie
 ### Hinweise für die Umsetzung
 
 - Matrizen und Kurven rechnen mit `f64` in derselben Reihenfolge wie Go; `sin` und `cos` dürfen hier aus der Standardbibliothek kommen (Zeichnen ist nicht Teil der Sim), die Toleranz steht im Kriterium.
-- `paint` zeichnet über `ebiten.DrawTriangles`; in Rust geht das Dreiecksnetz an `platform::Canvas::mesh`.
+- `paint` zeichnet über `ebiten.DrawTriangles`; in Rust geht das Dreiecksnetz an `k3c_platform::Canvas::mesh`. `mesh` liefert RU4.2: Session 4 (`paint`) bekommt beim Ausarbeiten `Abhängig von: RU4.2`; Sessions 1–3 (`rig`) brauchen RU4 nicht.
+- Die Brücke im Spiel (`native/k3c-game/art/rigs.go` → `rust/crates/k3c-game/src/art/rigs.rs`) portiert RU7.6 nach RU5, nicht dieser Sprint (Bereich bleibt `rust/crates/k3c-rig/**`).
 
 ## Nicht-Ziele
 
@@ -78,7 +79,9 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Das Go-Spiel wächst nicht weiter). Diese Arbeit entsteht direkt im Rust-Rig, angefangener Go-Code wird neu geschrieben statt konvertiert. Spec steht in der Session:
+
+- NA1.6 Nativer Rig-Export der Bosse auf Stand der Specs
 
 ## Sessions
 

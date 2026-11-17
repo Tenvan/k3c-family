@@ -1,6 +1,6 @@
 # SI6.4 · Jubel, Tanz und Himmels-Effekt je Welt im Spiel (B-1002)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

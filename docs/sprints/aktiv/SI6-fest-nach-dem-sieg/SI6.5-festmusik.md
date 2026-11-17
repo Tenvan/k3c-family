@@ -1,6 +1,6 @@
 # SI6.5 · Festmusik je Welt (B-1002)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

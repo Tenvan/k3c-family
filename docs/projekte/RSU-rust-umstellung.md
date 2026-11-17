@@ -1,7 +1,7 @@
 # RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust
 
 - **Status:** aktiv
-- **Rang:** 12
+- **Rang:** 11
 - **Ziel-Tickets:** B-1014
 
 ## Ziel
@@ -30,10 +30,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU0 | Ruckler im Go-Spiel messen: GC, Bildtakt, Laden (Gate G0) | erledigt |
 | RU1 | Rust-Workspace, Toolchain, Taskfile und CI | erledigt |
 | RU2 | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | erledigt |
-| RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | geplant |
-| RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | geplant |
+| RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | aktiv |
+| RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | aktiv |
 | RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | geplant |
-| RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | geplant |
+| RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | aktiv |
 | RU8 | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | geplant |
 | RU13 | Welt und Akteure zeichnen | geplant |
 | RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | geplant |

@@ -1,6 +1,6 @@
 # NA1.6 · Nativer Rig-Export der Bosse auf Stand der Specs
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP

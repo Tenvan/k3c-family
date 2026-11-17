@@ -1,6 +1,6 @@
 # SI5.2 · Figur, Hütte, Bauplatz und Boni in der Engine (B-972)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

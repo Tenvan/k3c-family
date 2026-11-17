@@ -74,7 +74,11 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeiten gehören nicht in den bitgleichen Port. Sie entstehen nach dem Golden-Abgleich (RU22) als neuer Rust-Code, angefangener Go-Code wird neu geschrieben statt konvertiert. Spec steht im Ticket:
+
+- SI2.3 Doppel-Truhe in der Engine (B-968)
+- SI4.3 Reittier-Katalog, Gatter, Kauf und Spielstand (B-970)
+- SI5.2 Figur, Hütte, Bauplatz und Boni (B-972)
 
 ## Sessions
 

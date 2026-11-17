@@ -1,8 +1,8 @@
-# FB1 · CLI · Live-Test-Feedback: Stresstest-Oberfläche, Tasten, HUD
+# FB2 · SIM · Live-Test-Feedback: Gegnerwellen, Stressmodus, Geldsack-Skill
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
-- **Domäne:** CLI
+- **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-Live-Test 🧑 2026-11-15: Overlay überdeckt Radar, Stresstest-Spiel nicht überschreibbar, Auslöser nicht immer Leertaste, Tasten fallen nach Menüs aus, HUD zeigt Healthbar und P1/P2.
+Live-Test 🧑 2026-11-15: Der Stresstest bringt keine Gegnerwellen, ein reiner Stressmodus fehlt, der Geldsack soll per Skill wachsen.
 
 ## Ziel
 
-Diese fünf Punkte im nativen Spiel behoben und der Geldsack im HUD.
+Stresstest mit Wellen, Stressmodus an der Burg und Geldsack-Größen in der Engine.
 
 ## Beteiligte und Zielgruppen
 
@@ -51,11 +51,9 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Radar an der Unterkante, kein Überlappen mit dem Overlay (`B-915`).
-- **AC-02** Neuer Stresstest überschreibt den alten (`B-916`).
-- **AC-03** Leertaste löst immer aus (`B-917`).
-- **AC-04** Tasten bleiben nach Menü-Folgen erhalten (`B-918`).
-- **AC-05** HUD mit Geldsack statt Healthbar und P1/P2, zeigt die Größe (`B-919`, `B-922/AC-02`).
+- **AC-01** Der Stresstest erzeugt Gegnerwellen (`B-920/AC-01`).
+- **AC-02** Reiner Stressmodus: Gegner an der Burg, nur eigene Bevölkerung, deterministisch (`B-921/AC-01` bis `AC-03`).
+- **AC-03** Geldsack in drei Größen als Skill-Stufen mit Münz-Obergrenze je Spieler (`B-922/AC-01`).
 
 ## Offene Fragen
 
@@ -65,7 +63,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| FB1.1 | `FB1.1-overlay-tasten-hud.md` | Umsetzung | autonom | fertig |
+| FB2.1 | `FB2.1-wellen-stressmodus-geldsack.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

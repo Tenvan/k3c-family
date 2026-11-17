@@ -73,7 +73,9 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Offene Fragen
 
-keine
+Keine zum Port. **Nachzug aus Go-Sprints** (Beschluss 🧑 2026-11-16: Die Go-Engine wächst nicht weiter). Diese Arbeit gehört nicht in den bitgleichen Port. Sie entsteht nach dem Golden-Abgleich (RU22) als neuer Rust-Code. Spec steht im Ticket:
+
+- GS3.4 Spielstand-Liste liefert Route und Chronik (B-978)
 
 ## Sessions
 

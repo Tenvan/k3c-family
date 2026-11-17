@@ -1,6 +1,6 @@
 # SI2.3 · Doppel-Truhe in der Engine (B-968)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

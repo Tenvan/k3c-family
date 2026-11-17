@@ -1,6 +1,6 @@
 # GS3.5 · Menü: Seekarte als Vorschau in der Spielstand-Auswahl (B-978)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

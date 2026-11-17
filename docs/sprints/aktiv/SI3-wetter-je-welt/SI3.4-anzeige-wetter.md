@@ -1,6 +1,6 @@
 # SI3.4 · Vorboten, Taifun und Flut im Spiel mit Ambient (B-999)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

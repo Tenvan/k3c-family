@@ -1,6 +1,6 @@
 # SI1.2 · Laderaum, Ladeplätze und Fracht in der Engine (B-967)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

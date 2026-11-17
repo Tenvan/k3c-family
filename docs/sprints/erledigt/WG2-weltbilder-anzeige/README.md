@@ -1,6 +1,6 @@
-# FB4 · CLI · Live-Test 2: Ruckeln, Xbox-Tasten, Menü-Tastatur, Ladescreen, Mauern, Bäume
+# WG2 · CLI · Weltbilder im Spiel: Weltauswahl vor den Spieloptionen, Bild in Spielständen und Pausenmenü
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** NAT
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-Live-Test 2 🧑 2026-11-15.
+Spielauswahl zeigt die Welt nicht als Bild.
 
 ## Ziel
 
-Flüssige Grafik, Xbox-Tasten mit Testseite, Tastatur im Menü, kein störender Hinweis, lückenlose Mauern, größere Bäume, schöner Ladescreen.
+Weltauswahl mit großem Bild, kleines Bild in Spielständen und Pause.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,7 +32,7 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/game/**`, `native/k3c-game/input/**`, `native/k3c-game/menu/**`, `native/k3c-game/devtools/**`, `native/k3c-game/hud/**`, `native/k3c-game/world/**`, `native/k3c-game/view/**`, `native/k3c-game/art/**`, `data/paper.json`, `public/grafik/**`
+- **Bereich:** `native/k3c-game/menu/**`, `native/k3c-game/hud/**`
 - **Sperre:** –
 
 ## Beispiele
@@ -45,10 +45,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Ruckeln gemessen und behoben (`B-943`).
-- **AC-02** Xbox-Tasten und Testseite (`B-944`).
-- **AC-03** Tastatur im Menü, Hinweis weg (`B-945`, `B-946`).
-- **AC-04** Mauern lückenlos, Bäume größer, Ladescreen (`B-947`, `B-948`, `B-949`).
+- **AC-01** Weltauswahl, Spielstand- und Pausenbild (`B-938`).
 
 ## Offene Fragen
 
@@ -58,7 +55,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| FB4.1 | `FB4.1-live-test-2.md` | Umsetzung | autonom | fertig |
+| WG2.1 | `WG2.1-weltauswahl.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

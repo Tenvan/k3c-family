@@ -8,18 +8,17 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 
 | Rang | Projekt | Ziel | Datei |
 |---|---|---|---|
-| 1 | NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server) | – | [NAT-nat-native-rust-bevy.md](NAT-nat-native-rust-bevy.md) |
-| 2 | KSY · Kampfsystem: Portale, aktiver Angriff, Ausrüstung statt Tod, Krone statt HP | – | [KSY-kampfsystem.md](KSY-kampfsystem.md) |
-| 3 | WZG · Werkzeuge | k3c-workbench und Werkzeug-Seiten für Planung, Prüfung und Diagnose | [WZG-werkzeuge-testlaeufe.md](WZG-werkzeuge-testlaeufe.md) |
-| 4 | PAP · Papierschnitt-Grafik, Assets über MCP, Review | – | [PAP-papierschnitt.md](PAP-papierschnitt.md) |
-| 5 | GEB · Gebäude-Grafik | Gebäude und Strukturen einheitlich aus Regeln und Beschreibung im Asset-Manager | [GEB-gebaeude-grafik.md](GEB-gebaeude-grafik.md) |
-| 6 | WRT · Wirtschaft & Spielstand | Wirtschaft sichtbar, Ausrüstung fair, Spielstand vollständig | [WRT-wirtschaft-spielstand.md](WRT-wirtschaft-spielstand.md) |
-| 7 | SND · Sound | Sound und Musik je Zustand (B-011) | [SND-sound.md](SND-sound.md) |
-| 8 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
-| 9 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
-| 10 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
-| 11 | WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen | – | [WIR-wirtschaft-k2c.md](WIR-wirtschaft-k2c.md) |
-| 12 | RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust | – | [RSU-rust-umstellung.md](RSU-rust-umstellung.md) |
+| 1 | KSY · Kampfsystem: Portale, aktiver Angriff, Ausrüstung statt Tod, Krone statt HP | – | [KSY-kampfsystem.md](KSY-kampfsystem.md) |
+| 2 | WZG · Werkzeuge | k3c-workbench und Werkzeug-Seiten für Planung, Prüfung und Diagnose | [WZG-werkzeuge-testlaeufe.md](WZG-werkzeuge-testlaeufe.md) |
+| 3 | PAP · Papierschnitt-Grafik, Assets über MCP, Review | – | [PAP-papierschnitt.md](PAP-papierschnitt.md) |
+| 4 | GEB · Gebäude-Grafik | Gebäude und Strukturen einheitlich aus Regeln und Beschreibung im Asset-Manager | [GEB-gebaeude-grafik.md](GEB-gebaeude-grafik.md) |
+| 5 | WRT · Wirtschaft & Spielstand | Wirtschaft sichtbar, Ausrüstung fair, Spielstand vollständig | [WRT-wirtschaft-spielstand.md](WRT-wirtschaft-spielstand.md) |
+| 6 | SND · Sound | Sound und Musik je Zustand (B-011) | [SND-sound.md](SND-sound.md) |
+| 7 | KMP · Kampf, Bosse, Events | Bosse, Siege, Events und Level-Elemente durchgängig | [KMP-kampf-bosse-events.md](KMP-kampf-bosse-events.md) |
+| 8 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
+| 9 | BAL · Balancing & Spieleabende | – | [BAL-balancing-spieleabende.md](BAL-balancing-spieleabende.md) |
+| 10 | WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen | – | [WIR-wirtschaft-k2c.md](WIR-wirtschaft-k2c.md) |
+| 11 | RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust | – | [RSU-rust-umstellung.md](RSU-rust-umstellung.md) |
 
 ## Ruht
 
@@ -37,6 +36,7 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | GRA · Grafik | [GRA-grafik.md](GRA-grafik.md) |
 | KRT · Kritische Fragen | [KRT-kritische-fragen.md](KRT-kritische-fragen.md) |
 | LST · Leistung & Stabilität | [LST-leistung-stabilitaet.md](LST-leistung-stabilitaet.md) |
+| NAT · Native Umstellung (Go + Ebitengine, lokal, ohne Server) | [NAT-nat-native-rust-bevy.md](NAT-nat-native-rust-bevy.md) |
 | PRZ · Arbeitsweise | [PRZ-arbeitsweise.md](PRZ-arbeitsweise.md) |
 | RST · Rust-Engine | [RST-rust-engine.md](RST-rust-engine.md) |
 | SKL · Monarch & Skills | [SKL-monarch-skills.md](SKL-monarch-skills.md) |

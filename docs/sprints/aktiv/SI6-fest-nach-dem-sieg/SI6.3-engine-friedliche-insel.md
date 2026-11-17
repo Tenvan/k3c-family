@@ -1,6 +1,6 @@
 # SI6.3 · Friedliche Insel und Fest-Zustand in der Engine (B-973)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

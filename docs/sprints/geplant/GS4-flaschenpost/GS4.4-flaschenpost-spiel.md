@@ -1,6 +1,6 @@
 # GS4.4 · Spiel: Flasche, Geschichtszeile, Pfeil und Leuchten (B-980)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI

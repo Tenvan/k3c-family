@@ -1,6 +1,6 @@
 # SI3.2 · Wetter-Katalog, Zeitplan, Taifun und Flut in der Engine (B-969)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
