@@ -1,6 +1,6 @@
 # RU7 · CLI · Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

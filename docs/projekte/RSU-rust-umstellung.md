@@ -31,9 +31,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU1 | Rust-Workspace, Toolchain, Taskfile und CI | erledigt |
 | RU2 | Spike: schlanker Rust-Client gegen die Ebitengine-Messung (Gate G1) | erledigt |
 | RU3 | rng, Go-gleiche Zahlen und Daten-Schemas in Rust | erledigt |
-| RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | aktiv |
-| RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | aktiv |
-| RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | aktiv |
+| RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | erledigt |
+| RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | erledigt |
+| RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | erledigt |
 | RU8 | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | erledigt |
 | RU13 | Welt und Akteure zeichnen | geplant |
 | RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | geplant |

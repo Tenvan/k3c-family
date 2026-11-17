@@ -32,9 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
-| RU5 | CLI | RSU | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | – | `aktiv/RU5-rig-in-rust/` |
-| RU7 | CLI | RSU | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | – | `aktiv/RU7-grafik-laden-ansicht/` |
 
 ## Offen am Gerät
 
@@ -445,3 +442,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | `erledigt/SI5-einsiedler-bauwerk/` |
 | SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | `erledigt/SI6-fest-nach-dem-sieg/` |
 | RU8 | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | `erledigt/RU8-sim-zustand-typen/` |
+| RU5 | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | `erledigt/RU5-rig-in-rust/` |
+| RU7 | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | `erledigt/RU7-grafik-laden-ansicht/` |
+| RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | `erledigt/RU4-plattform-fenster-eingabe-ton/` |

@@ -1,6 +1,6 @@
 # RU5 · CLI · Rig in Rust: Rechnung und Zeichnen der Rig-Figuren
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

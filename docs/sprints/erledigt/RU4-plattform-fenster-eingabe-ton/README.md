@@ -1,6 +1,6 @@
 # RU4 · CLI · Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
