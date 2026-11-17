@@ -106,6 +106,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | RU1 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
 | [B-1022](B-1022-abnahme-wz61-race.md) | DEV | Schuld | niedrig | offen | WZ61 | Abnahme WZ61: check:race über die geänderten Workbench- und Cleanup-Pakete läuft grün |
 | [B-1025](B-1025-settings-stress-nach-ru7.md) | CLI | Schuld | mittel | offen | RU7 | Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert |
+| [B-1028](B-1028-ru4-abnahme-gen-race.md) | CLI | Schuld | mittel | offen | RU4 | Abnahme RU4: Gen- und Race-Läufe sowie Hardware-Prüfung der Rust-Plattform stehen aus |
 
 ## Archiv
 

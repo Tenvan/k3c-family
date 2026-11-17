@@ -1,6 +1,6 @@
 # RU4.10 · Review
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: Runner-, Batch-, Affine- und Formen-Tests grün, Probe auf Vulkan mit 59–60 Bildern/s.
+- AC-02 geprüft: Test `runner_tests` (1000 Takte, simulierte Uhr = headless); Probe `--two --headless` mit Skript → Code 0.
+- AC-03 geprüft: Eingabe-Port mit portierten Go-Tests grün, Review verhaltensgleich. Pad an Hardware ungeprüft → B-1028.
+- AC-04 geprüft: Dekodier- und Rückfall-Tests grün; Hören ungeprüft → B-1028.
+- AC-05 geprüft: TTF-Tests, Screenshot mit Umlauten, `log_emoji` rot/grün probiert.
+- `task check` (5 min 34 s) und `task check:go` grün; clippy, fmt, `cargo test --workspace`: 129 bestanden, 1 ignoriert (wartet auf RU8).
+- Neue Tickets: B-1025 (Settings ohne Stress, RU7), B-1028 (Abnahme).
