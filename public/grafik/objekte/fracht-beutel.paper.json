@@ -1,0 +1,76 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "fracht-beutel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Fracht Beutel: zugebundener Lederbeutel mit Münzen an Deck, belegt einen Laderaum-Platz",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-9 0C-14 -2 -13 -12 -6 -16L6 -16C13 -12 14 -2 9 0Z",
+          "material": "leder"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-9 0C-14 -2 -13 -12 -6 -16L-2 -16C-7 -12 -8 -3 -4 0Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4 -16L-3 -19L3 -19L4 -16Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -19L-6 -23L-2 -21L0 -24L2 -21L6 -23L5 -19Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4.5 -17L4.5 -17L4.5 -18.5L-4.5 -18.5Z",
+          "material": "stroh"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [3, -8],
+          "radius": 2.6,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [3, -8],
+          "radius": 1,
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 28,
+    "rahmen": [-14, -26, 28, 28]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

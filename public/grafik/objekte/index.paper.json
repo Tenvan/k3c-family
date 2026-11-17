@@ -85,6 +85,16 @@
     "manifest": "felsen/manifest.json"
   },
   {
+    "id": "fracht-beutel",
+    "rig": "requisite",
+    "manifest": "fracht-beutel/manifest.json"
+  },
+  {
+    "id": "fracht-kiste",
+    "rig": "requisite",
+    "manifest": "fracht-kiste/manifest.json"
+  },
+  {
     "id": "gatter",
     "rig": "requisite",
     "manifest": "gatter/manifest.json"
@@ -98,6 +108,21 @@
     "id": "horn-pfahl",
     "rig": "requisite",
     "manifest": "horn-pfahl/manifest.json"
+  },
+  {
+    "id": "ladeplatz-material",
+    "rig": "requisite",
+    "manifest": "ladeplatz-material/manifest.json"
+  },
+  {
+    "id": "ladeplatz-muenzen",
+    "rig": "requisite",
+    "manifest": "ladeplatz-muenzen/manifest.json"
+  },
+  {
+    "id": "ladeplatz-truppen",
+    "rig": "requisite",
+    "manifest": "ladeplatz-truppen/manifest.json"
   },
   {
     "id": "obelisk",
