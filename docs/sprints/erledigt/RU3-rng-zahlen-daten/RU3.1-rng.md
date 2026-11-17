@@ -1,6 +1,6 @@
 # RU3.1 · rng in Rust, bitgleich zum Golden
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -54,5 +54,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `cargo test -p k3c-rng` grün (5 Tests); `golden` vergleicht jede Zahl aus `rng.json` (`next` über `to_bits`, `int`, `weighted`, `shuffle`, `pick`, `hash`) für alle Seeds; `task check:diff` grün.
+- Umlauf: `hash_seed` und `next` rechnen nur mit `wrapping_add`/`wrapping_mul` auf `u32`; Test `ueberlauf_rechnet_umlaufend` startet bei `u32::MAX`.
+- Portierte Tests: `TestGolden` → `golden`, `TestUmlauteUndEmoji` → `umlaute_und_emoji`, `TestFehler` → `fehler_pick_leer` und `fehler_weighted_ohne_positives_gewicht` (`should_panic` mit Go-Text).
+- Abweichungen: `shuffle` nimmt und liefert `Vec<T>` (Go: Slice in place, gleiche Reihenfolge). `serde_json` als Test-Abhängigkeit mit Feature `float_roundtrip`, damit Zahlen korrekt gerundet gelesen werden wie in Go (`rust/Cargo.lock` dadurch ergänzt).
+- Neue Tickets: keine.

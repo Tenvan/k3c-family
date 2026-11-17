@@ -30,14 +30,14 @@ func Snapshot(root string) map[string]string {
 	snap := map[string]string{}
 	docs := filepath.Join(root, "docs")
 	rel := func(path string) string { r, _ := filepath.Rel(root, path); return filepath.ToSlash(r) }
-	for _, dir := range []string{"sprints/aktiv", "sprints/geplant", "sprints/erledigt", "backlog"} {
+	for _, dir := range []string{"sprints/aktiv", "sprints/geplant", "sprints/erledigt", "backlog", "projekte"} {
 		top := filepath.Join(docs, filepath.FromSlash(dir))
 		_ = filepath.WalkDir(top, func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return nil
 			}
 			sub := d.IsDir() && path != top
-			if sub && dir == "backlog" {
+			if sub && (dir == "backlog" || dir == "projekte") {
 				return filepath.SkipDir // archiv/ ändert die Anzeige nicht
 			}
 			if sub && strings.HasSuffix(dir, "erledigt") {
@@ -77,6 +77,7 @@ func stampOf(snap map[string]string) string {
 
 var (
 	reChangedTicket  = regexp.MustCompile(`^(B-\d+)-.*\.md$`)
+	reChangedProject = regexp.MustCompile(`^([A-Z][A-Z0-9]*)-.*\.md$`)
 	reChangedSession = regexp.MustCompile(`^([A-Za-z]+\d+\.\d+[a-z]?)-.*\.md$`)
 )
 
@@ -119,8 +120,16 @@ func ChangedIDs(old, cur map[string]string) []string {
 // isIndexFile erkennt die Index-READMEs von Backlog und Sprint-Status-Ordnern.
 func isIndexFile(p string) bool {
 	parts := strings.Split(p, "/")
-	return (len(parts) == 3 && parts[1] == "backlog" && parts[2] == "README.md") ||
+	return (len(parts) == 3 && (parts[1] == "backlog" || parts[1] == "projekte") && parts[2] == "README.md") ||
 		(len(parts) == 4 && parts[1] == "sprints" && parts[3] == "README.md")
+}
+
+// projectIDOf: `WZG-werkzeuge.md` → `WZG`; "" bei anderen Namen.
+func projectIDOf(name string) string {
+	if m := reChangedProject.FindStringSubmatch(name); m != nil {
+		return m[1]
+	}
+	return ""
 }
 
 // idOfPath bildet einen Planungspfad (docs/…) auf die ID ab; "" bei unbekannter Form.
@@ -136,6 +145,8 @@ func idOfPath(p string) string {
 		if m := reChangedTicket.FindStringSubmatch(parts[2]); m != nil {
 			return m[1]
 		}
+	case len(parts) == 3 && parts[1] == "projekte":
+		return projectIDOf(parts[2])
 	case len(parts) >= 4 && parts[1] == "sprints":
 		sprint := strings.SplitN(parts[3], "-", 2)[0]
 		if len(parts) == 4 {

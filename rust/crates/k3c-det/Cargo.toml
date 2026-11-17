@@ -6,3 +6,10 @@ publish.workspace = true
 
 [lints]
 workspace = true
+
+[dependencies]
+# Freigabe über die Spec RU3 (RU3.3 nennt flate2 für .json.gz).
+flate2 = "=1.1.11"
+serde.workspace = true
+# float_roundtrip: Zahlen korrekt gerundet lesen wie Gos strconv.ParseFloat (bitgleich).
+serde_json = { workspace = true, features = ["float_roundtrip"] }

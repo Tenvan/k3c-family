@@ -17,7 +17,7 @@ import { rankedCount, visibleSprints } from './projects';
 import { CopyPrompt } from './PromptParts';
 import { NEW_SPRINT, openSessions, promptSessions, type SprintTarget } from './prompts';
 import { SprintCard } from './SprintCard';
-import { usePlanningData } from './usePlanningData';
+import { usePlanningData, type TextLoad } from './usePlanningData';
 
 const PREF = 'planning.filter';
 
@@ -26,7 +26,7 @@ const PREF = 'planning.filter';
  *  `planning:changed` nur die genannten IDs nach (usePlanningData, B-909); Filter (ohne Freitext), Auswahl und Splitter bleiben gemerkt. */
 export function SprintsBacklog() {
   const [filter, setFilterState] = useState<PlanFilter>(() => parseFilter(loadText(PREF, '{}')));
-  const { data: root, error, texts, load } = usePlanningData(filter.sel);
+  const { data: root, error, texts, textLoad, load } = usePlanningData(filter.sel);
   const wt = useWorktreeDiffs();
   const data = useMemo(() => (root ? withWorktreeEntries(root, wt.diffs) : null), [root, wt.diffs]); // + Einträge nur im Worktree (B-467)
   const wtIndex = useMemo(() => indexChanges(wt.diffs), [wt.diffs]);
@@ -41,8 +41,8 @@ export function SprintsBacklog() {
   };
   // Verschwundene Auswahl (archiviert, gelöscht) schließt das Detail.
   useEffect(() => { if (data && wt.loaded && filter.sel && !exists(data, filter.sel)) setFilter({ ...filter, sel: '' }); }, [data, wt.loaded]);
-  if (error) return <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard>;
-  if (data === null) return <Text color="gray">Lade Planung …</Text>;
+  // Ohne Daten ersetzt der Fehler die Seite; scheitert nur ein Nachladen, bleibt der alte Stand mit Hinweis (B-909).
+  if (data === null) return error ? <NoticeCard title="Planung nicht geladen" tone="error">{error}</NoticeCard> : <Text color="gray">Lade Planung …</Text>;
   const sprints = sortSprints(filterSprints(data, filter), gh?.sprints);
   const tickets = filterTickets(data, filter);
   // Der Projekt-Filter wählt die Projekte, der Backlog-Filter die Sprints darin und den Backlog (B-401).
@@ -59,6 +59,7 @@ export function SprintsBacklog() {
     <WtContext.Provider value={wtIndex}>
     <div className="pl-board">
       <GitHubBar gh={gh} reload={reloadGh} />
+      {error && <ReloadNotice error={error} reload={() => void load()} />}
       {wt.error && <WorktreeNotice error={wt.error} reload={wt.reload} />}
       <PlanToolbar data={data} filter={filter} setFilter={setFilter} hits={(shown.projects?.length ?? 0) + tickets.length} />
       <div className="pl-grid" style={{ '--pl-split': `${cols}%`, '--pl-detail': rows } as CSSProperties}>
@@ -74,7 +75,7 @@ export function SprintsBacklog() {
         </section>
         <Splitter className="pl-split-v" value={cols} onChange={setCols} onReset={resetCols} />
         <SidePane data={data} tickets={tickets} sel={filter.sel} onPick={select} onReveal={reveal} onClose={() => setFilter({ ...filter, sel: '' })}
-          rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} texts={texts} />
+          rows={rows} setRows={setRows} resetRows={resetRows} goal={goal} choose={choose} texts={texts} textLoad={textLoad} />
       </div>
     </div>
     </WtContext.Provider>
@@ -82,6 +83,15 @@ export function SprintsBacklog() {
 }
 
 /** Hinweis, wenn der Workflow-Check der Worktrees scheitert: keine Pills, dafür der Grund und ein neuer Versuch. */
+/** Hinweis, wenn ein Nachladen scheiterte: Die Seite zeigt weiter den alten Stand. */
+function ReloadNotice({ error, reload }: { error: string; reload: () => void }) {
+  return (
+    <Text size="1" color="red" role="alert">
+      Planung nicht aktualisiert, alter Stand: {error} <LinkButton size="1" onClick={reload}>neu laden</LinkButton>
+    </Text>
+  );
+}
+
 function WorktreeNotice({ error, reload }: { error: string; reload: () => void }) {
   return (
     <Text size="1" color="gray" role="status">
@@ -116,10 +126,11 @@ interface SideProps {
   choose: (v: string) => void;
   /** Fließtexte der Sessions (nachgeladen, B-909). */
   texts: Record<string, string>;
+  textLoad?: TextLoad;
 }
 
 /** Rechte Spalte: Backlog, bei einer Auswahl darunter Splitter und Detail. */
-function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows, resetRows, goal, choose, texts }: SideProps) {
+function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows, resetRows, goal, choose, texts, textLoad }: SideProps) {
   const target: SprintTarget = goal === NEW_SPRINT ? { kind: 'new' } : { kind: 'sprint', id: goal };
   return (
     <section className={`pl-pane pl-side${sel ? ' has-detail' : ''}`} aria-label="Backlog und Detail">
@@ -130,7 +141,7 @@ function SidePane({ data, tickets, sel, onPick, onReveal, onClose, rows, setRows
         <>
           <Splitter horizontal className="pl-split-h" value={rows} onChange={setRows} onReset={resetRows} />
           <div className="pl-side-detail">
-            <PlanDetail data={data} sel={sel} onSelect={onReveal} onClose={onClose} target={target} texts={texts} />
+            <PlanDetail data={data} sel={sel} onSelect={onReveal} onClose={onClose} target={target} texts={texts} textLoad={textLoad} />
           </div>
         </>
       )}

@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1026](B-1026-session-karten-responsive.md) | DEV | Problem | mittel | erledigt | WZ61 | Session-Karten im Sprint nutzen die Breite: Kopfzeile einzeilig, mehrspaltig bei breitem Fenster |
 | [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | erledigt | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
 | [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | erledigt | EP1 | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
 | [B-892](B-892-studio-seiten-reihenfolge.md) | DEV | Idee | mittel | erledigt | WZ59 | Studio zeigt die Seiten in der Reihenfolge Styleguide, Katalog, Review, Sound &amp; Quellen (eine Seite), Welten-Editor, Balancing |

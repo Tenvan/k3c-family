@@ -66,7 +66,7 @@ Keine blockierenden. Defaults in `B-973 › Offene Fragen` und `B-1002 › Offen
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SI6.1 | `SI6.1-regeltext-friedliche-insel.md` | Umsetzung | autonom | offen |
+| SI6.1 | `SI6.1-regeltext-friedliche-insel.md` | Umsetzung | autonom | fertig |
 | SI6.2 | `SI6.2-assets-fest.md` | Umsetzung | autonom | offen |
 | SI6.3 | `SI6.3-engine-friedliche-insel.md` | Umsetzung | autonom | verworfen |
 | SI6.4 | `SI6.4-anzeige-fest.md` | Umsetzung | autonom | verworfen |

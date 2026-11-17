@@ -1,6 +1,6 @@
 # RU3 · SIM · rng, Go-gleiche Zahlen und Daten-Schemas in Rust
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -72,12 +72,12 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU3.1 | `RU3.1-rng.md` | Umsetzung | autonom | offen |
-| RU3.2 | `RU3.2-go-gleiche-zahlen.md` | Umsetzung | autonom | offen |
-| RU3.3 | `RU3.3-golden-lesen-und-vergleichen.md` | Umsetzung | autonom | offen |
-| RU3.4 | `RU3.4-daten-schemas-teil-1.md` | Umsetzung | autonom | offen |
-| RU3.5 | `RU3.5-daten-schemas-teil-2.md` | Umsetzung | autonom | offen |
-| RU3.6 | `RU3.6-review.md` | Review | autonom | offen |
+| RU3.1 | `RU3.1-rng.md` | Umsetzung | autonom | fertig |
+| RU3.2 | `RU3.2-go-gleiche-zahlen.md` | Umsetzung | autonom | fertig |
+| RU3.3 | `RU3.3-golden-lesen-und-vergleichen.md` | Umsetzung | autonom | fertig |
+| RU3.4 | `RU3.4-daten-schemas-teil-1.md` | Umsetzung | autonom | fertig |
+| RU3.5 | `RU3.5-daten-schemas-teil-2.md` | Umsetzung | autonom | fertig |
+| RU3.6 | `RU3.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -85,6 +85,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-17, Review RU3.6 (Claude): AC-01 (RU3.1), AC-02 (RU3.2, 50 081 Vektoren bitgleich), AC-03 (RU3.3), AC-04 (RU3.4, RU3.5; Welten nur `standard`, die übrigen sind lokal) geprüft; `task check` und `task check:go` grün, Leitfaden-Grep sauber (nur `mul_add` in `k3c-det/src/exp.rs`, gewollt), `engine/sim` und `testdata/golden` unverändert.
+Befunde: Review-Agent ohne schweren Befund; feste Biom-Liste im Rust-Test behoben, Lese-Abweichungen (Groß-/Kleinschreibung, `null`, `[N]T`) in B-1024. Abweichung: Review im selben Lauf wie die Umsetzung (Auftrag der startenden Session).
+Neue Tickets: B-1023 (Go-`math.Exp` hängt an AVX/FMA, Entscheidung 🧑), B-1024 (Prüfungen mit Tabellen aus Balance/Sim, Welten, Native-Leser).
+Abnahme-Ticket für Sim, Balance, Gen und `check:race`: B-1027.

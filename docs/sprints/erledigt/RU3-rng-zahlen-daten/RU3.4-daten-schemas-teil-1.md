@@ -1,6 +1,6 @@
 # RU3.4 · Daten-Schemas Teil 1: Dateien bis hub.json
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -57,5 +57,20 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 (Teil 1) geprüft: `cargo test -p k3c-data` grün (17 Tests); je Datei lädt `load…`, `golden::tree` gleicht dem Eintrag aus `testdata/rust/data-tree.json.gz`; `go test ./engine/internal/detvec/` grün (`TestDataTree` vergleicht ohne `-write`); `task check:diff` grün. Mutationsprobe (Alias `hpFactor` entfernt) schlägt fehl.
+- Go-Strukturen je Datei (Lese-Typ in Go, Rust-Modul):
+  - `balance-hints.json`: `balance.Hints` über `LoadHints` + `checkGroups` (engine/balance/hints.go, groups.go) → `balance_hints.rs`
+  - `balance-targets.json`: `balance.Targets` über `LoadTargets` + `checkRoles` (engine/balance/targets.go, seedmode.go) → `balance_targets.rs`
+  - `bosses.json`: `{Bosses, EndBosses []sim.BossData}` = Vereinigung von `loadBosses`/`loadEndBosses` (engine/sim/boss_data.go) → `bosses.rs`
+  - `buildings.json`: `map[string]sim.BuildingData` (engine/sim/data.go) → `buildings.rs`
+  - `difficulty.json`: `struct{ Grades map[string]sim.Grade }` (engine/sim/island_options.go) → `difficulty.rs`
+  - `economy.json`: `sim.economyData` (engine/sim/world_values.go) → `economy.rs`
+  - `enemies.json`: `map[string]sim.EnemyData` (engine/sim/enemies_traits.go) → `enemies.rs`
+  - `events.json`: `sim.eventsFile` (engine/sim/events_values.go), Prüfung `checkNightEvents` → `events.rs`
+  - `goals.json`: `sim.Goals` (engine/sim/data.go) → `goals.rs`
+  - `guards.json`: `level.GuardRules` (engine/level/guards.go) → `guards.rs`
+  - `hub.json`: `sim.HubData` (engine/sim/data.go) → `hub.rs`
+  - `biomes/*.json`: `level.Biome` über `LoadBiome` (engine/level/biome.go, nature_check.go), `checkPool` aus engine/sim/data.go → `biome.rs`, `ordered.rs` (`level.Ordered`)
+- Vorgehen: Strukturen mit einem einmaligen Generator aus den Go-Typen (reflect) und den Schlüsseln der Daten erzeugt (nicht eingecheckt), Prüfungen von Hand. Ausgabe-Namen wie Go (`HPFactor`), gelesen über `alias` (Datei-Schlüssel); Balancing-Dateien mit `deny_unknown_fields` wie `DisallowUnknownFields`.
+- Abweichungen: Fehlertexte von JSON-Fehlern kommen von `serde_json`; Prüfungen, die Go über Maps zufällig durchläuft, laufen sortiert. Nicht portiert, weil die Tabellen in engine/balance bzw. die Sim-Logik fehlen: Kennzahl/Bot/Spieler/Grad/Welt/Hilfen bei `balance-*`, `hub_validate` → B-1024 (Sprint RU25). `withShip` (Sim-Logik) nicht Teil des Ladens. `k3c_det::golden::go_float` öffentlich für Go-gleiche Zahlen in Fehlertexten.
+- Neue Tickets: B-1024.

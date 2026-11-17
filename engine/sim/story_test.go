@@ -63,8 +63,9 @@ func TestStoryLaedtMitUndOhne(t *testing.T) {
 		t.Errorf("Zeilen ohne story: %v", got)
 	}
 	std := StandardWorld()
-	if len(std.Story.Start) != 0 || len(std.StoryStart()) != 0 {
-		t.Errorf("Standard-Welt hat Zeilen: %+v", std.Story)
+	// GS1.5 (B-976): Die Standard-Welt erzählt eine Geschichte (Insel 1, ein Bogen).
+	if len(std.Story.Start) == 0 || len(std.StoryStart()) == 0 || len(std.Story.End) == 0 {
+		t.Errorf("Standard-Welt ohne Zeilen: %+v", std.Story)
 	}
 }
 

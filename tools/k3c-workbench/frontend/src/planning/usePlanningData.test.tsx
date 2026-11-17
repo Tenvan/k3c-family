@@ -28,8 +28,8 @@ const listData = () => {
   for (const s of d.sprints) for (const x of s.sessions) delete x.text;
   return d;
 };
-const ticketText = (id: string, status: string) =>
-  `# ${id} · Neuer Titel\n\n- **Domäne:** DEV\n- **Typ:** Idee\n- **Prio:** hoch\n- **Umgebung:** offline\n- **Status:** ${status}\n- **Sprint:** SP11\n- **Spec:** Entwurf\n`;
+const ticketText = (id: string, status: string, sprint = 'SP11') =>
+  `# ${id} · Neuer Titel\n\n- **Domäne:** DEV\n- **Typ:** Idee\n- **Prio:** hoch\n- **Umgebung:** offline\n- **Status:** ${status}\n- **Sprint:** ${sprint}\n- **Spec:** Entwurf\n`;
 const item = (id: string, kind: PlanItem['kind'], text: string): PlanItem => ({ id, kind, path: `docs/${id}.md`, text });
 
 type State = ReturnType<typeof usePlanningData>;
@@ -51,7 +51,7 @@ describe('usePlanningData', () => {
     const m = await mount();
     vi.useFakeTimers();
     const id = m.get().data!.tickets[0]!.nr;
-    items.mockResolvedValue([item(id, 'ticket', ticketText(id, 'eingeplant'))]);
+    items.mockResolvedValue([item(id, 'ticket', ticketText(id, 'eingeplant', m.get().data!.tickets[0]!.sprint))]);
     await fire({ ids: [id] });
     expect(items).toHaveBeenCalledTimes(1);
     expect(items).toHaveBeenCalledWith([id]);
@@ -125,20 +125,19 @@ describe('usePlanningData: Fließtext', () => {
   });
 });
 
-describe('usePlanningData: Fließtext', () => {
-  it('den Text der gewählten Session lädt die Seite beim Öffnen und nach einer Änderung neu', async () => {
+describe('usePlanningData: Fehler beim Session-Text', () => {
+  it('scheitert das Laden, steht der Fehler bereit und Wiederholen lädt den Text', async () => {
     const d = listData();
     list.mockResolvedValue(d);
     const nr = d.sprints[0]!.sessions[1]!.nr;
-    items.mockResolvedValue([item(nr, 'session', '# S\n\nalt\n')]);
+    items.mockRejectedValueOnce(new Error('kaputt'));
     const m = await mount(nr);
-    expect(items).toHaveBeenCalledWith([nr]);
-    expect(m.get().texts[nr]).toBe('# S\n\nalt\n');
-    vi.useFakeTimers();
-    items.mockResolvedValue([item(nr, 'session', '# S\n\nneu\n')]);
-    await fire({ ids: [nr] });
-    expect(m.get().texts[nr]).toBe('# S\n\nneu\n');
-    expect(list).toHaveBeenCalledTimes(1);
+    expect(m.get().textLoad.errors[nr]).toContain('kaputt');
+    expect(m.get().texts[nr]).toBeUndefined();
+    items.mockResolvedValue([item(nr, 'session', '# S\n\nok\n')]);
+    await act(async () => { m.get().textLoad.retry(nr); });
+    expect(m.get().textLoad.errors[nr]).toBeUndefined();
+    expect(m.get().texts[nr]).toBe('# S\n\nok\n');
     m.done();
   });
 });
