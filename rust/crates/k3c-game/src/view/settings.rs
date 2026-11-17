@@ -1,9 +1,8 @@
 //! Port von `native/k3c-game/view/settings.go`.
-//!
-//! Abweichung bis RU7.4: Das Feld `Stress` (`StressTest`, `view/stress.go`) fehlt noch; RU7.4 portiert `stress.go`
-//! und ergänzt Feld, Standardwert und Normalisierung hier (Ticket B-1025).
 
 use super::profile::{Controls, default_controls, normalize_controls};
+use super::stress::StressTest;
+use super::stress_limits::default_stress;
 
 // Sprachen der Einstellungen (wie src/core/settings.ts); DefaultLanguage gilt für jeden anderen Wert.
 pub const DEFAULT_LANGUAGE: &str = "de";
@@ -58,7 +57,8 @@ pub struct Settings {
     /// DevMode zeigt im Hauptmenü die Karte Testing (Optionen › Entwicklermodus, B-896); im Entwickler-Build ist sie
     /// immer da (menu). Null-Wert = aus.
     pub dev_mode: bool,
-    // Stress (StressTest) ergänzt RU7.4 (B-1025).
+    /// Stress sind die zuletzt eingestellten Werte der Seite Testing (B-896, „eigene Einstellungen merken“).
+    pub stress: StressTest,
 }
 
 /// DefaultSettings sind die Werte ohne gespeicherte Einstellungen (wie der Browser: volle Lautstärke, Deutsch, Fenster).
@@ -68,6 +68,7 @@ pub fn default_settings() -> Settings {
         effects: 1.0,
         language: DEFAULT_LANGUAGE.into(),
         controls: default_controls(),
+        stress: default_stress(),
         ..Default::default()
     }
 }
@@ -91,6 +92,10 @@ impl Settings {
         }
         s.guide_seen = s.guide_seen.max(0);
         s.controls = normalize_controls(s.controls);
+        if s.stress == StressTest::default() {
+            s.stress = default_stress();
+        }
+        s.stress = s.stress.normalized();
         s
     }
 
