@@ -107,7 +107,7 @@ keine
 |---|---|---|---|---|
 | RU8.1 | `RU8.1-zustandsmodell-geruest.md` | Umsetzung | autonom | fertig |
 | RU8.2 | `RU8.2-types.md` | Umsetzung | autonom | fertig |
-| RU8.3 | `RU8.3-common-data.md` | Umsetzung | autonom | offen |
+| RU8.3 | `RU8.3-common-data.md` | Umsetzung | autonom | fertig |
 | RU8.4 | `RU8.4-views-purse-torches.md` | Umsetzung | autonom | offen |
 | RU8.5 | `RU8.5-save.md` | Umsetzung | autonom | offen |
 | RU8.6 | `RU8.6-review.md` | Review | autonom | offen |

@@ -2,7 +2,10 @@
 //!
 //! Modell: `docs/standards/rust-sim-zustand.md`. Die Welt besitzt alles, Verweise sind IDs.
 
+pub mod common;
+pub mod data;
 pub mod omit;
+pub mod pending;
 pub mod shared;
 pub mod types;
 pub mod types_enemy;
@@ -18,5 +21,9 @@ pub use types_enemy::{Camp, Enemy, Event, Hazard, Pickup, Projectile, QueuedSpaw
 pub use types_things::{Castle, Plot, ResourceNode, Site};
 pub use types_world::World;
 
+#[cfg(test)]
+mod common_tests;
+#[cfg(test)]
+mod data_tests;
 #[cfg(test)]
 mod types_tests;
