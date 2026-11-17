@@ -88,7 +88,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU7.1 | `RU7.1-art-manifest-plan-sheet.md` | Umsetzung | autonom | fertig |
-| RU7.2 | `RU7.2-art-library-font-outline.md` | Umsetzung | autonom | offen |
+| RU7.2 | `RU7.2-art-library-font-outline.md` | Umsetzung | autonom | fertig |
 | RU7.3 | `RU7.3-art-scales-seamap-voyage-worldimages.md` | Umsetzung | autonom | offen |
 | RU7.4 | `RU7.4-view-teil-1-ohne-sim.md` | Umsetzung | autonom | offen |
 | RU7.5 | `RU7.5-view-teil-2-frame-vertrag.md` | Umsetzung | autonom | offen |
