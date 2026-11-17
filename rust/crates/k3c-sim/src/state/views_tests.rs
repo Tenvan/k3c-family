@@ -46,14 +46,14 @@ fn fackel_versaetze_aus_light_json() {
     );
 }
 
-/// Go: `TestFackelnDerWelt` (torches_test.go) braucht `quietWorld` und `destroySite`.
+/// Go: `TestFackelnDerWelt` (torches_test.go) braucht `quietWorld` und `destroySite` (ruft `is_ruin`, RU18).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18"]
 fn fackeln_der_welt() {}
 
-/// Go: `TestKnotenMarkiererInSnapshotUndSpielstand` (node_mark_test.go) braucht Kampagne und Spielstand.
+/// Go: `TestKnotenMarkiererInSnapshotUndSpielstand` (node_mark_test.go) braucht Kampagne, `gather_of` (RU18) und Spielstand.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18"]
 fn knoten_markierer_in_snapshot_und_spielstand() {}
 
 /// Go: `TestKnotenMarkiererFehltImAltenStand` (node_mark_test.go): Ein Stand ohne `nodesMarkedBy` lädt, der Knoten bleibt
@@ -126,9 +126,9 @@ fn purse_sizes() {}
 #[ignore = "wartet auf RU18"]
 fn purse_respec_drops_new_gold() {}
 
-/// Go: `TestSiteHubLevelJeArt` (site_view_test.go) braucht `quietWorld`.
+/// Go: `TestSiteHubLevelJeArt` (site_view_test.go) braucht `quietWorld` und `site_hub_level` (RU18).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18"]
 fn site_hub_level_je_art() {}
 
 /// Go: `TestSiteHubLevelPasstZuBezahlbar` (site_view_test.go) braucht `quietWorld` und `sitePayable`.
@@ -136,7 +136,7 @@ fn site_hub_level_je_art() {}
 #[ignore = "wartet auf RU18"]
 fn site_hub_level_passt_zu_bezahlbar() {}
 
-/// Go: `TestSiteVisibleBisNaechsteStufe` (site_view_test.go) braucht `quietWorld`.
+/// Go: `TestSiteVisibleBisNaechsteStufe` (site_view_test.go) braucht `quietWorld` und `site_hub_level` (RU18).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18"]
 fn site_visible_bis_naechste_stufe() {}

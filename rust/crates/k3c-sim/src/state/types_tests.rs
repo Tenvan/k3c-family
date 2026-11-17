@@ -85,7 +85,7 @@ fn storm_hazard_drop_rundlauf() {
     // Nicht jedes Golden hat Stürme, Flächen oder Ausrüstung am Boden; die Typen laufen dann leer durch.
     each::<Storm>("storms");
     each::<Hazard>("hazards");
-    each::<Drop>("drops");
+    each::<ItemDrop>("drops");
 }
 
 #[test]
