@@ -1,6 +1,6 @@
 # RU3.3 · Golden lesen und als JSON-Baum vergleichen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -53,5 +53,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `cargo test -p k3c-det` grün (11 Tests); `alle_golden_laden_und_gleichen_sich_selbst` lädt alle 23 Golden (15 als `.json.gz`) und vergleicht jedes mit sich selbst; `geaenderte_zahl`, `kleinste_abweichung_einer_zahl` (1 ULP), `fehlendes_feld` (beide Richtungen) und `vertauschte_liste` liefern je den Pfad wie Go; `null_und_leere_liste_sind_gleich`; `task check:diff` grün.
+- `k3c_det::golden`: `read` (`.json`, `.json.gz` über `flate2`), `tree`, `diff` mit Gos Meldungen (`(Schlüssel nur auf einer Seite)`, `(Länge)`, `<pfad> = <ist>, erwartet <soll>`; Zahlen wie Gos `%v`, Test `zahlen_wie_go`), dazu `testdata()` für Pfade ab dem Repo.
+- Abweichungen: Zahlen gleich nur bei gleichen Bits (Go: `==`, also `-0 == 0`); `null` gleich `[]` (Leitfaden § 3). `flate2`, `serde`, `serde_json` (`float_roundtrip`) jetzt normale Abhängigkeiten von `k3c-det`.
+- Nicht portiert: `File`, `Set`, `Write`, `Raw`, `Update` (Golden schreiben ist Nicht-Ziel); von `TestGzRundreise` nur der lesende Teil (`gz_rundreise_lesen`).
+- Neue Tickets: keine.

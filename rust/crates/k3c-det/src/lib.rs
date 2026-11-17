@@ -6,6 +6,7 @@
 mod bits;
 mod dim;
 mod exp;
+pub mod golden;
 mod log;
 mod pow;
 

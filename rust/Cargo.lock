@@ -719,6 +719,7 @@ name = "k3c-det"
 version = "0.1.0"
 dependencies = [
  "flate2",
+ "serde",
  "serde_json",
 ]
 
