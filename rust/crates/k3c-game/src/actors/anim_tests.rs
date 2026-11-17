@@ -175,10 +175,41 @@ fn figure_want_faelle() {
     }
 }
 
-/// Go-Test `TestTroopWant`: `TroopWant` steht in figures.go (RU13.4).
+/// Go-Test `TestTroopWant`: `TroopWant` steht in figures.go (figures.rs).
 #[test]
-#[ignore = "wartet auf RU13.4"]
-fn troop_want_faelle() {}
+fn troop_want_faelle() {
+    use crate::actors::figures::troop_want;
+    let still = Motion {
+        known: true,
+        prev_x: 3.0,
+        x: 3.0,
+        prev_cd: 0.0,
+        cd: 2.0,
+        ..Motion::default()
+    };
+    let (w, d) = troop_want("vagrant", still, false, 1);
+    assert!(w.anim == ANIM_IDLE && d == 0, "Landstreicher wartet: {w:?} {d}");
+    let (w, _) = troop_want("warrior", still, false, 0);
+    assert!(w.anim == ANIM_ATTACK && w.once, "Krieger schlägt nicht: {w:?}");
+    let at = |x: f64| Motion {
+        known: true,
+        x,
+        prev_x: 3.0,
+        ..Motion::default()
+    };
+    let (w, d) = troop_want("archer", at(3.0), false, -1);
+    assert!(
+        w.anim == ANIM_IDLE && d == -1,
+        "Bogenschütze schaut nicht zum Gegner: {w:?} {d}"
+    );
+    let (w, _) = troop_want("peasant", at(3.0), true, 0);
+    assert!(
+        w.anim == ANIM_ATTACK && !w.once,
+        "Bauer arbeitet nicht in Schleife: {w:?}"
+    );
+    let (w, d) = troop_want("peasant", at(3.5), true, 0);
+    assert!(w.anim == ANIM_RUN && d == 1, "laufender Bauer: {w:?} {d}");
+}
 
 /// Zusatz: `shift` ist fest, auch für negative IDs.
 #[test]

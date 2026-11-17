@@ -7,27 +7,38 @@
 //! Ablauf: Listen (einmal je Frame) gleicht die Figuren über stabile IDs mit der Welt ab, wählt die Pose und schreibt
 //! Animation und Umhang aller Rig-Figuren im Takt fort; Draw zeichnet nur (figures.rs, pose.rs, draw.rs; RU13.4/5).
 //!
-//! RU13.3 legt `anim` und den Aufbau des Drawers an; `Drawer` und `Listener` für `Actors` stehen bis RU13.4 in
-//! `pending.rs`.
+//! Abweichung von Go: Die Rig-Actors brauchen eine Zeichenfläche (Textur-Upload) und die Bibliothek veränderlich;
+//! `lib` ist darum `Rc<RefCell<Library>>`, `check_rigs` nimmt die Zeichenfläche, und `ActorsDrawer` (draw.rs) meldet
+//! den Zustand als Drawer und Listener an. Die Rig-Bilder lädt der Aufrufer vorher (`Library::load_rigs`).
 
+use std::cell::RefCell;
 use std::collections::BTreeMap;
 use std::rc::Rc;
 
 use k3c_data::Source;
+use k3c_platform::Canvas;
 use k3c_sim::state::World as SimWorld;
 
 use crate::art::{Library, Painter};
 use crate::view::roles::AssetSource;
 
 pub mod anim;
+pub mod catalog;
+pub mod combatmarks;
+pub mod draw;
+pub mod figures;
+pub mod figures_pose;
 pub mod pending;
 
-use pending::{Catalog, Figure, Ink, Key, MARK_ASSETS, WarnKey, load_catalog};
+use catalog::{Catalog, load_catalog};
+use combatmarks::MARK_ASSETS;
+use figures::{Figure, Key, WarnKey};
+use pending::Ink;
 
 /// Actors ist Drawer (LayerActors), Listener und AssetSource der Figuren (Go: `drawer`). Die `DrawImageOptions` von
 /// Go entfallen.
 pub struct Actors {
-    pub lib: Option<Rc<Library>>,
+    pub lib: Option<Rc<RefCell<Library>>>,
     pub cat: Option<Catalog>,
     pub painter: Option<Painter>,
     /// Vorlagen der Anzeigen, beim ersten Zeichnen angelegt (markdraw.rs)
@@ -45,8 +56,8 @@ pub struct Actors {
 }
 
 /// New liefert den Drawer der Figuren. lib darf `None` sein (Tests): Dann rechnet er die Posen, zeichnet aber nichts.
-/// Fehlt der Katalog oder ein Rig, steht das beim Start im Log.
-pub fn new(lib: Option<Rc<Library>>) -> Actors {
+/// Fehlt der Katalog, steht das beim Start im Log; die Rigs prüft `check_rigs` (braucht die Zeichenfläche).
+pub fn new(lib: Option<Rc<RefCell<Library>>>) -> Actors {
     let mut d = Actors {
         lib: lib.clone(),
         cat: None,
@@ -75,14 +86,13 @@ pub fn new(lib: Option<Rc<Library>>) -> Actors {
     let Some(lib) = lib else {
         return d;
     };
-    match lib.new_painter() {
+    match lib.borrow().new_painter() {
         Ok(p) => d.painter = Some(p),
         Err(e) => {
             k3c_platform::log::error("❌ Rig-Zeichner fehlt, es erscheinen keine Rig-Figuren", &[("err", &e)]);
             return d;
         }
     }
-    d.check_rigs();
     d
 }
 
@@ -91,27 +101,26 @@ impl Actors {
     /// nicht erst, wenn die Figur auftaucht. In fester Reihenfolge (sortierte Arten, `BTreeMap`): Die Teil-Bilder
     /// landen so bei jedem Start an derselben Stelle im Atlas, sonst weicht das lineare Filtern um ±1 ab (Aufnahme
     /// nicht bildgleich).
-    pub fn check_rigs(&mut self) {
-        let Some(cat) = self.cat.take() else {
+    pub fn check_rigs(&mut self, canvas: &mut dyn Canvas) {
+        let Some(cat) = self.cat.clone() else {
             return;
         };
         let mut n = 0;
         for m in [&cat.troops, &cat.enemies, &cat.bosses] {
             for l in m.values() {
                 if !l.sheet {
-                    let (_, broken) = self.new_actor(l, false);
+                    let (_, broken) = self.new_actor(canvas, l, false);
                     if !broken {
                         n += 1;
                     }
                 }
             }
         }
-        let (_, broken) = self.new_actor(&cat.player(0), true);
+        let (_, broken) = self.new_actor(canvas, &cat.player(0), true);
         if !broken {
             n += 1;
         }
         k3c_platform::log::info("✅ Figuren geladen", &[("rigs", &n), ("sheets", &self.sheets.len())]);
-        self.cat = Some(cat);
     }
 }
 

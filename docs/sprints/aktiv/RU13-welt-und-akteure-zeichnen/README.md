@@ -92,7 +92,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU13.1 | `RU13.1-world-backdrop-camera-cull-ground-layers.md` | Umsetzung | autonom | fertig |
 | RU13.2 | `RU13.2-world-light-river-water.md` | Umsetzung | autonom | fertig |
 | RU13.3 | `RU13.3-world-actors-anim.md` | Umsetzung | autonom | fertig |
-| RU13.4 | `RU13.4-actors-catalog-combatmarks-draw-figures.md` | Umsetzung | autonom | offen |
+| RU13.4 | `RU13.4-actors-catalog-combatmarks-draw-figures.md` | Umsetzung | autonom | fertig |
 | RU13.5 | `RU13.5-actors-levels-markdraw-marks-pose.md` | Umsetzung | autonom | offen |
 | RU13.6 | `RU13.6-standbild-bildvergleich.md` | Umsetzung | autonom | offen |
 | RU13.7 | `RU13.7-review.md` | Review | autonom | offen |

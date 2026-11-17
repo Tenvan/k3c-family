@@ -6,7 +6,7 @@
 
 use k3c_det::{fmax, fmin};
 
-use super::pending::UNIT_PX;
+use super::catalog::UNIT_PX;
 
 // Animationen der Rigs und Sheets (Namen wie in den Papier-Specs) und Gangarten der Reittiere.
 pub const ANIM_IDLE: &str = "idle";
