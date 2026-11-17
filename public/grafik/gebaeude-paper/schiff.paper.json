@@ -3,7 +3,7 @@
   "id": "schiff",
   "rig": "gebaeude",
   "version": 1,
-  "beschreibung": "Segelschiff im Bau (6 × 5 Kacheln): Stufe 1 Kiel mit Heck- und Bugsteven, sieben Spanten und drei Stützklötze der Helling; Stufe 2 Holzrumpf mit roter Reling, vier Schilden, Ruder und Bugfigur; Stufe 3 fertig mit Mast, Rah, rot-hellem Segel und Wimpel, schwimmt im Wasser (Helling versunken).",
+  "beschreibung": "Segelschiff im Bau (6 × 5 Kacheln): Stufe 1 Kiel mit Heck- und Bugsteven, sieben Spanten und drei Stützklötze der Helling; Stufe 2 Holzrumpf mit roter Reling, vier Schilden, Ruder und Bugfigur; Stufe 3 fertig mit Mast, Rah, rot-hellem Segel und Wimpel, schwimmt im Wasser (Helling versunken); Stufe 4 Laderaum: Ladedeck mit Luke und sechs abzählbaren Ladeplätzen (Fracht, B-997).",
   "teile": [
     {
       "id": "korpus",
@@ -253,6 +253,103 @@
               "art": "flaeche",
               "form": "M8 -156L26 -152L8 -148Z",
               "material": "koenigsrot"
+            }
+          ],
+          "pivot": [0, 0]
+        }
+      ]
+    },
+    {
+      "zusaetze": [
+        {
+          "eltern": "korpus",
+          "id": "laderaum",
+          "lagen": [
+            {
+              "art": "flaeche",
+              "form": "M-76 -66L2 -66L2 -70L-76 -70Z",
+              "material": "holz",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M10 -66L84 -66L84 -70L10 -70Z",
+              "material": "holz",
+              "ton": "licht"
+            },
+            {
+              "art": "flaeche",
+              "form": "M-14 -70L-2 -70L-2 -75L-14 -75Z",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.6,
+              "form": "M-14 -72.5L-2 -72.5",
+              "material": "eisen"
+            },
+            {
+              "art": "falz",
+              "breite": 0.6,
+              "form": "M-8 -70L-8 -75",
+              "material": "eisen"
+            },
+            {
+              "art": "falz",
+              "breite": 0.7,
+              "form": "M-72 -70L-72 -66M-58 -70L-58 -66M-44 -70L-44 -66M-30 -70L-30 -66",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "falz",
+              "breite": 0.7,
+              "form": "M28 -70L28 -66M44 -70L44 -66M60 -70L60 -66M76 -70L76 -66",
+              "material": "holz",
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [-65, -68],
+              "radius": 1.1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [-51, -68],
+              "radius": 1.1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [-37, -68],
+              "radius": 1.1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [36, -68],
+              "radius": 1.1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [52, -68],
+              "radius": 1.1,
+              "ton": "schatten"
+            },
+            {
+              "art": "punkt",
+              "material": "gold",
+              "mitte": [68, -68],
+              "radius": 1.1,
+              "ton": "schatten"
             }
           ],
           "pivot": [0, 0]

@@ -1,6 +1,6 @@
 # SI1 · REG, SIM, PAP, CLI · Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** REG, SIM, PAP, CLI
 - **Reife:** bereit
@@ -67,9 +67,9 @@ Keine blockierenden. Die Defaults stehen in `B-967 › Offene Fragen` und `B-997
 |---|---|---|---|---|
 | SI1.1 | `SI1.1-regeltext-fracht.md` | Umsetzung | autonom | fertig |
 | SI1.2 | `SI1.2-engine-fracht.md` | Umsetzung | autonom | verworfen |
-| SI1.3 | `SI1.3-assets-fracht.md` | Umsetzung | autonom | blockiert |
+| SI1.3 | `SI1.3-assets-fracht.md` | Umsetzung | autonom | fertig |
 | SI1.4 | `SI1.4-anzeige-fracht.md` | Umsetzung | autonom | verworfen |
-| SI1.5 | `SI1.5-review.md` | Review | autonom | blockiert |
+| SI1.5 | `SI1.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,4 +77,9 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+Review SI1.5 (2026-11-17, autonom):
+- Erfüllt: Regeltext (AC-01) und Assets (AC-03).
+- Nicht erfüllt: Engine und Anzeige (AC-02, AC-04). Beides ist mit dem Go-Stopp verworfen und kommt mit der Rust-Umstellung neu.
+- Offen: AC-05, die Abnahme am TV durch 🧑.
+- Prüfläufe: grün bis auf lokale Reste (siehe SI1.5).
+- Abnahme-Ticket: B-1035.
