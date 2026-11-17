@@ -64,7 +64,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU9 | CLI | RSU | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | – | Entwurf | `geplant/RU9-menues-teil-1/` |
 | RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | Entwurf | `geplant/RU10-sim-insel/` |
 | RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | Entwurf | `geplant/RU11-sim-einheiten-gegner/` |
-| RU13 | CLI | RSU | Welt und Akteure zeichnen | – | Entwurf | `geplant/RU13-welt-und-akteure-zeichnen/` |
+| RU13 | CLI | RSU | Welt und Akteure zeichnen | – | bereit | `geplant/RU13-welt-und-akteure-zeichnen/` |
 | RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | Entwurf | `geplant/RU14-sim-welt-stufen-kampagne/` |
 | RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | Entwurf | `geplant/RU15-sim-kampf-bosse/` |
 | RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | Entwurf | `geplant/RU16-gebaeude-und-objekte-zeichnen/` |
@@ -91,7 +91,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | Entwurf | `geplant/RU33-laeufe-im-client/` |
 | RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | Entwurf | `geplant/RU34-workbench-ruft-spiel-exe/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | Entwurf | `geplant/RU37-go-spiel-entfernen/` |
-| RU38 | SIM | RSU | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | – | Entwurf | `geplant/RU38-aufzeichnung-und-wiedergabe/` |
+| RU38 | SIM, CLI | RSU | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | – | bereit | `geplant/RU38-aufzeichnung-und-wiedergabe/` |
 | RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | Entwurf | `geplant/RU39-ruckler-messung-rust-gegen-go/` |
 | RU40 | CLI | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | Entwurf | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | Entwurf | `geplant/RU41-go-engine-entfernen/` |
