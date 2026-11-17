@@ -33,7 +33,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU4 | CLI | RSU | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | – | `aktiv/RU4-plattform-fenster-eingabe-ton/` |
+| RU5 | CLI | RSU | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | – | `aktiv/RU5-rig-in-rust/` |
 | RU7 | CLI | RSU | Grafik laden und Ansicht: Papierschnitt-Index, Sheets, Kamera | – | `aktiv/RU7-grafik-laden-ansicht/` |
+| RU8 | SIM | RSU | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | – | `aktiv/RU8-sim-zustand-typen/` |
 
 ## Offen am Gerät
 
@@ -55,8 +57,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU5 | CLI | RSU | Rig in Rust: Rechnung und Zeichnen der Rig-Figuren | – | Entwurf | `geplant/RU5-rig-in-rust/` |
-| RU8 | SIM | RSU | Sim-Zustand in Rust: Zustandsmodell, Typen, Welt-Grundgerüst | – | Entwurf | `geplant/RU8-sim-zustand-typen/` |
 | RU9 | CLI | RSU | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | – | Entwurf | `geplant/RU9-menues-teil-1/` |
 | RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | Entwurf | `geplant/RU10-sim-insel/` |
 | RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | Entwurf | `geplant/RU11-sim-einheiten-gegner/` |
