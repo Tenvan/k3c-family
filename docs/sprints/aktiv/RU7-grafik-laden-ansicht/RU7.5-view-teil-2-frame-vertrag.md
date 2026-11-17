@@ -1,6 +1,6 @@
 # RU7.5 · view Teil 2 mit Sim-Typen: frame, layer, roles, screen, session, story, voyage
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft: `cargo test -p k3c-game view` grün (22 Tests, 0 ignoriert), kein `ignore = "wartet auf RU8"` mehr in `src/view/`; `task rust:lint` und `task check:diff` grün.
+- Portiert: `frame.rs` (Frame, Stage, Seat, Event, Cue, Outcome, RouteIsland; `world`, `monarch`, `events_of` ohne Allokation), `layer.rs` (Layer als Zahl mit Konstanten, Drawer, Listener, `sorted`), `roles.rs`, `screen.rs`, `session.rs` (Trait Session, eigenes `Fehler`), `story.rs`, `voyage.rs`, `Command::sim` in `input.rs`; Tests `frame_tests.rs`, `layer_tests.rs`, `command_sim_clamps` und `crown_states_match_protocol` aktiviert (Kronen-Konstanten aus `k3c_sim::state::shared`).
+- Abweichungen: `Stage.world` ist `Option<Rc<World>>` (Go: Zeiger). Die Go-Messung `AllocsPerRun` entfällt (Iterator borgt nur). `Campaign.world` (`*sim.WorldDef`) fehlt, bis `WorldDef` in `k3c-sim` existiert (RU10); Hinweis steht in `story.rs` und `view/mod.rs`. `Island` wird in `view` nicht gebraucht.
+- Keine neuen Tickets; `k3c-sim` unverändert.

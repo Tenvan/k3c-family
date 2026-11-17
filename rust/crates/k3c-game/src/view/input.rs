@@ -3,6 +3,7 @@
 use std::fmt;
 
 use k3c_platform::InputState;
+use k3c_sim::state::PlayerCommand;
 
 /// DeviceKind ist die Art eines Eingabegeräts.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -52,7 +53,24 @@ pub struct Command {
     pub skill: i64,
 }
 
-// `Command::sim()` (Befehl der Simulation) braucht `sim::PlayerCommand` aus RU8 und kommt mit RU7.5.
+impl Command {
+    /// Sim liefert den Befehl der Simulation; move wird auf -1 … 1 begrenzt, NaN zählt als 0, Skill außerhalb 1 … 4 als 0.
+    pub fn sim(&self) -> PlayerCommand {
+        let m = if self.move_.is_nan() {
+            0.0
+        } else {
+            self.move_.clamp(-1.0, 1.0)
+        };
+        let skill = if (0..=4).contains(&self.skill) { self.skill } else { 0 };
+        PlayerCommand {
+            move_x: m,
+            sprint: self.sprint,
+            pay: self.pay,
+            attack: self.attack,
+            skill,
+        }
+    }
+}
 
 /// Action ist eine Menü-Aktion als Flanke (einmal je Druck, Wiederholung beim Halten liefert input).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]

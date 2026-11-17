@@ -67,18 +67,26 @@
 //!
 //! Rust: `ebiten.Image` als Ziel ist `&mut dyn Canvas` (`k3c_platform`); eine Zelle wird beim Zeichnen mit
 //! `Canvas::clip(Some(cell.rect.to_rect()))` beschnitten, Koordinaten bleiben Fensterkoordinaten. RU4.5 portiert die
-//! Eingabe-Verträge (input, profile, settings, devkeys), RU7.4 cell, crown, keys und stress; Frame-Vertrag und alles
-//! mit Sim-Typen (frame, layer, roles, screen, session, story, voyage) bringt RU7.5.
+//! Eingabe-Verträge (input, profile, settings, devkeys), RU7.4 cell, crown, keys und stress, RU7.5 den Frame-Vertrag mit
+//! Sim-Typen (frame, layer, roles, screen, session, story, voyage) und `Command::sim`. Offen bis RU10: `Campaign::world`
+//! (`WorldDef`).
 
 pub mod cell;
 pub mod crown;
 pub mod devkeys;
+pub mod frame;
 pub mod input;
 pub mod keys;
+pub mod layer;
 pub mod profile;
+pub mod roles;
+pub mod screen;
+pub mod session;
 pub mod settings;
+pub mod story;
 pub mod stress;
 pub mod stress_limits;
+pub mod voyage;
 
 /// MaxPlayers ist die Höchstzahl lokaler Spieler (Zellen) im Split-Screen.
 pub const MAX_PLAYERS: usize = 2;

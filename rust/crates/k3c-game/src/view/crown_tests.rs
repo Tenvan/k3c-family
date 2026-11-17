@@ -2,15 +2,14 @@
 
 use std::path::Path;
 
-/// Die Kronen-Zustände der Engine (sim.CrownFlying, CrownGround, CrownEnemy, CrownPlayer); `k3c-sim` exportiert sie
-/// erst mit RU8, bis dahin ist der Test ignoriert.
+/// Die Kronen-Zustände der Engine (sim.CrownFlying, CrownGround, CrownEnemy, CrownPlayer).
 fn crown_states() -> [&'static str; 4] {
-    unimplemented!("RU8: sim.CrownFlying, CrownGround, CrownEnemy, CrownPlayer")
+    use k3c_sim::state::shared::{CROWN_ENEMY, CROWN_FLYING, CROWN_GROUND, CROWN_PLAYER};
+    [CROWN_FLYING, CROWN_GROUND, CROWN_ENEMY, CROWN_PLAYER]
 }
 
 // Die Kronen-Zustände stehen in docs/protocol.md (Zeile players[].crown); weicht die Engine ab, ändert sich die Doku mit.
 #[test]
-#[ignore = "wartet auf RU8"]
 fn crown_states_match_protocol() {
     let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../docs/protocol.md");
     let Ok(raw) = std::fs::read_to_string(&path) else {
