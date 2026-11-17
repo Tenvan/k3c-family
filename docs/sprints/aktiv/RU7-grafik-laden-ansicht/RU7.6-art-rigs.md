@@ -1,6 +1,6 @@
 # RU7.6 · art/rigs: Brücke zu k3c-rig, Rig-Teil der Bibliothek
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft: `cargo test -p k3c-game` grün (104 Tests, darunter `rigs_tests`: `rig_view_test`, `actor_frame_test`, `library_loads_rig_assets` gegen `native/k3c-rig/assets`, `missing_rig_dir_is_missing`); `grep k3c_rig` trifft nur `src/art/` (`library.rs`, `png.rs`, `rigs.rs`, `rigs_tests.rs`). `task rust:lint` und `task check:diff` grün.
+- Neu: `art/rigs.rs` (Re-Exporte `Actor`, `Painter`, `State`, `M`, `Point`; `actor_frame`, `rig_view`; `Library::load_rigs`, `rig_assets`, `new_painter`, `new_actor`). `pending.rs` gelöscht. `default_config` setzt `rig_dir` auf `native/k3c-rig/assets`.
+- `read_png` zusammengeführt: `art/png.rs` ist nur noch eine Hülle um `k3c_rig::paint::read_png` (Rgba-Struct bleibt); die doppelte Vormultiplikation entfällt, der Test dekodiert jetzt eine echte PNG-Datei.
+- Abweichung von Go: Das Hochladen der Teil-Bilder braucht die Zeichenfläche. `Library::new` prüft deshalb nur den Rig-Ordner (Elemente-Datei, Fehler `Missing` wie Go), `load_rigs(canvas)` lädt die Bilder; `rig_mib` zählt `Assets::bytes` (wächst mit lazy geladenen Rigs). Die Go-Tests der Rig-Typen mit privaten Feldern laufen über `frame_of(rider, mount)`.
+- `AddBytes` in `budget.rs` blieb unverändert (Go ruft es für Rigs nirgends auf).
+- Keine neuen Tickets. B-1014 (Sprint RU1, Sammel-Ticket des Ports) bleibt eingeplant, kein RU7-Ticket vorhanden.
