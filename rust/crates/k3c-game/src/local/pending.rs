@@ -2,9 +2,9 @@
 //! übrig ist. Sie stehen hier, weil `impl view::session::Session for Session` in einem Stück in `view_impl.rs` liegt und die
 //! Methoden der späteren Sessions an Methoden mit Go-Namen weiterreicht.
 //!
-//! - RU27.3: `saves_list`, `saves_delete`, `saves_world_list`, `saves_world` (saves.go), `actions_rebind`, `actions_learn`,
+//! - RU50.1: `saves_list`, `saves_delete`, `saves_world_list`, `saves_world` (saves.go), `actions_rebind`, `actions_learn`,
 //!   `actions_respec`, `actions_choose_island` (actions.go), `free_name` (saves.go)
-#![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU27.3
+#![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU50.1
 
 use super::error::UserError;
 use super::session::Session;
@@ -53,7 +53,7 @@ impl Session {
     }
 
     /// Go: `freeName` (saves.go): der erste freie Name spiel-1, spiel-2 … im Ordner. Läuft schon, weil `new_game` ohne Namen
-    /// es braucht; RU27.3 verschiebt es nach `saves.rs`.
+    /// es braucht; RU50.1 verschiebt es nach `saves.rs`.
     pub(super) fn free_name(&self) -> String {
         let used: Vec<String> = self.saves.list().into_iter().map(|e| e.name).collect();
         (1..)

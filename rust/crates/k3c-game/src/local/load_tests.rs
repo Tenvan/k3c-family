@@ -15,7 +15,7 @@ use super::testutil::{
 use super::worlds::game_data;
 use crate::game::sim::Sim as _;
 use crate::view::frame::Frame;
-use crate::view::session::Session as _;
+use crate::view::session::{NewGame, Session as _};
 
 const LOAD_TICKS: usize = 120;
 
@@ -52,11 +52,15 @@ fn room_load_ticked(dir: &TempDir, name: &str, n: usize) -> BTreeMap<i64, World>
 // Ein geladener Stand läuft über local mit denselben Befehlen genauso weiter wie ein direkt über k3c_room geladener Raum
 // (Welten nach 120 Takten).
 #[test]
-#[ignore = "wartet auf RU18 (Speichern: new_hub_site), RU19 (Laden: decode_world_story; Takt: step_island)"]
 fn load_determinism_like_room() {
     let dir = TempDir::new();
     let mut s: Session = test_session(&dir);
-    start_test_game(&mut s, "spiel-1", &TWO_DEVICES);
+    s.new_game(NewGame {
+        name: "spiel-1".into(),
+        devices: TWO_DEVICES.to_vec(),
+        ..NewGame::default()
+    })
+    .expect("neues Spiel");
     s.save().expect("speichern");
     s.close().expect("beenden");
     s.load("spiel-1", &TWO_DEVICES).expect("laden");

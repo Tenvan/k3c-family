@@ -6,7 +6,7 @@ use crate::view::session::{NewGame, Session as _};
 
 // B-938: WorldList (ohne Dev-Mode nur die Standard-Welt) und World (laufendes Spiel); der Spielstand trägt seine Welt.
 #[test]
-#[ignore = "wartet auf RU27 (world_list, world, list: RU27.3) und RU19 (decode_world_story: new_game braucht die Standard-Welt)"]
+#[ignore = "wartet auf RU50 (world_list, world, list: RU50.1)"]
 fn world_list_and_world_of_running_game() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);
@@ -38,7 +38,7 @@ fn world_list_and_world_of_running_game() {
 // Umgebungsvariable im Test; Rust verbietet `set_var` (unsafe), darum setzt der Test den Ordner der Session (`worlds_dir`,
 // den `Session::open` aus `worlds_fs()` liest).
 #[test]
-#[ignore = "wartet auf RU27 (world_list: RU27.3)"]
+#[ignore = "wartet auf RU50 (world_list: RU50.1)"]
 fn world_list_shows_local_worlds_in_dev_mode() {
     let dir = TempDir::new();
     let std_file = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../data/worlds/standard.json");

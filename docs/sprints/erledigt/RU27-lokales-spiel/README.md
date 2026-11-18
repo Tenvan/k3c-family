@@ -1,6 +1,6 @@
 # RU27 · CLI · Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -91,7 +91,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 | RU27.1 | `RU27.1-session-settings-worlds-route.md` | Umsetzung | autonom | fertig |
 | RU27.2 | `RU27.2-step-campaign.md` | Umsetzung | autonom | fertig |
 | RU27.3 | `RU27.3-saves-actions-dev.md` | Umsetzung | autonom | verworfen |
-| RU27.4 | `RU27.4-review.md` | Review | autonom | offen |
+| RU27.4 | `RU27.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -99,6 +99,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 und AC-02 erfüllt (Nachweis in den Ergebnissen RU27.1, RU27.2, RU27.4): Zwei Sitzungen mit gleicher Eingabe liefern nach 300 Takten dieselbe Welt (Test läuft seit RU19), `_settings.json` im Go-Format im Ordner `saves/`; `local` 42 Tests grün, 2 ignoriert (warten auf RU50.1). Kein Abnahme-Ticket angelegt (Second Worker darf nicht): Der Hauptrechner legt es an (Gen, Race, `step_ms` in RU30.4).
+Prüfliste für Ralf (erst wenn RU30 das Spiel startbar macht): (1) zwei Spieler am selben Rechner starten, jedes Gerät steuert nur seinen Monarchen, der zweite tritt mit Bestätigen bei und verlässt es wieder; (2) F2 zeigt `step_ms` deutlich unter 4 ms, kein Ruckeln bei Autosave und Beenden; (3) Spielstände speichern, beenden, laden, löschen, Go-Spielstand laden (RU50); (4) Einstellungen bleiben nach Neustart, Datei in `saves/` neben der EXE; (5) Inselwechsel am Hafen, Skill-Menü.
+Offen für den Hauptrechner: Dev-Mode-Sperre für Nicht-Standard-Welten beim Manager, tiefe Welt-Kopie je Takt, `pending.rs` vor dem Anschluss ersetzen (Details im Ergebnis RU27.4).

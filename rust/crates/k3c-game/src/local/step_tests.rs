@@ -36,7 +36,6 @@ fn frame_json(f: &Frame) -> String {
 // denselben Befehlen, und zwei Sitzungen mit gleicher Eingabe ergeben byte-gleiche Zustände. (Go startet über `New`; das
 // braucht bis RU19 die Standard-Welt, darum die Insel von Hand.)
 #[test]
-#[ignore = "wartet auf RU19 (step_island: pure, unit_x, emit sind unimplemented!-Platzhalter in k3c-sim)"]
 fn determinism_like_room() {
     let (d1, d2, d3) = (TempDir::new(), TempDir::new(), TempDir::new());
     let (mut a, mut b) = (test_session(&d1), test_session(&d2));
@@ -113,7 +112,6 @@ fn step_in_pause_keeps_tick() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (step_island: pure, unit_x, emit sind unimplemented!-Platzhalter in k3c-sim)"]
 fn step_resumes_after_pause() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);
@@ -131,7 +129,7 @@ fn step_resumes_after_pause() {
     );
 }
 
-// Halt (Entwickler-Taste, RU27.3 setzt `halt` und `single`): nur der Einzelschritt rechnet, nie auf Vorrat.
+// Halt (Entwickler-Taste, RU50.1 setzt `halt` und `single`): nur der Einzelschritt rechnet, nie auf Vorrat.
 #[test]
 fn running_halt_and_single() {
     let dir = TempDir::new();
@@ -212,7 +210,6 @@ fn panic_in_tick() {
 
 // Ein Panic im Zustand des Geräts (Test-Naht `on_state`) im Takt wird ebenso gefangen.
 #[test]
-#[ignore = "wartet auf RU19 (step_island: pure, unit_x, emit sind unimplemented!-Platzhalter in k3c-sim)"]
 fn panic_in_state() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);

@@ -22,7 +22,6 @@ fn event(v: serde_json::Value) -> Event {
 // B-974: Frame::campaign nennt Welt und Insel des laufenden Spiels; `fresh` steht genau im ersten Frame einer neuen
 // Kampagne, nie nach dem Laden eines Spielstands (welten.md § 6.2: Laden ist kein Wendepunkt).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: Standard-Welt für new_game und load) und RU18 (Speichern)"]
 fn campaign_fresh_only_on_new_game() {
     use crate::view::session::NewGame;
     let dir = TempDir::new();

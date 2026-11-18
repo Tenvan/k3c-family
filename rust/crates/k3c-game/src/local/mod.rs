@@ -1,6 +1,6 @@
 //! Port von `native/k3c-game/local/` (RU27): die Sitzung des nativen Spiels über `k3c-room`, synchron getaktet.
 //! Teil 1 (RU27.1): Session-Gerüst, Einstellungen, Welten, Route. Teil 2 (RU27.2): Takt (`step`, `peer`), Kampagne.
-//! `saves`, `actions`, `dev` folgen in RU27.3; bis dahin stehen ihre Platzhalter in `pending.rs`.
+//! `saves`, `actions`, `dev` folgen in RU50.1; bis dahin stehen ihre Platzhalter in `pending.rs`.
 
 pub mod campaign;
 pub mod config;

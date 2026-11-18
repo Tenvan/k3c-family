@@ -1,6 +1,5 @@
 //! Port von `native/k3c-game/local/route.go`: die Inseln der Welt für die Seekarte (`Frame::route`).
 
-use std::panic::{AssertUnwindSafe, catch_unwind};
 use std::path::Path;
 
 use k3c_room::room::Log as _;
@@ -35,7 +34,7 @@ impl Session {
             list: Vec::new(),
             set: true,
         };
-        let def = match read_world_def(self.worlds_dir.as_deref(), &self.world) {
+        let def = match load_world_def(self.worlds_dir.as_deref(), &self.world) {
             Ok(def) => def,
             Err(e) => {
                 let world = self.world.clone();
@@ -78,12 +77,4 @@ pub fn load_world_def(dir: Option<&Path>, id: &str) -> Result<WorldDef, String> 
     };
     let raw = std::fs::read_to_string(file).map_err(|e| e.to_string())?;
     parse_world(&raw, id, &data, &b.rules)
-}
-
-/// `load_world_def`, das einen Abbruch der Welt-Daten als Fehler meldet: `standard_world` bricht bis RU19
-/// (`decode_world_story`) mit `unimplemented!` ab; Seekarte und Geschichte entfallen dann wie bei einer unlesbaren Datei,
-/// das Spiel läuft (Go: Fehler statt Abbruch). RU19 macht den Fang überflüssig.
-pub fn read_world_def(dir: Option<&Path>, id: &str) -> Result<WorldDef, String> {
-    catch_unwind(AssertUnwindSafe(|| load_world_def(dir, id)))
-        .unwrap_or_else(|_| Err("Welt-Daten noch nicht portiert (RU19)".to_string()))
 }

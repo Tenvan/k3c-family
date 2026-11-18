@@ -140,11 +140,10 @@ fn save_now() {
 
 // Ein Spielstand aus der Session lädt mit den Geräten des letzten Spiels.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site: Speichern) und RU19 (decode_world_story: Manager::load)"]
 fn load_game() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);
-    start_test_game(&mut s, "laden", &TWO_DEVICES);
+    s.new_game(game("laden", &TWO_DEVICES)).expect("neues Spiel");
     s.close().expect("beenden");
     s.load("laden", &[]).expect("laden mit den Geräten des letzten Spiels");
     assert_eq!(s.devices(), TWO_DEVICES);
@@ -193,7 +192,6 @@ fn join_leave() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: die Route liest die Standard-Welt)"]
 fn route_list_follows_game() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);

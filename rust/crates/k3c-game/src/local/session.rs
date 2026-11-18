@@ -5,7 +5,7 @@
 //!
 //! Abweichungen von Go: Der Raum liegt im Manager (`Session::code` ist sein Schlüssel). `Manager` kennt weder `new_code`
 //! (der Code ist zufällig, nicht `LOCL`), noch `worlds`, `world_list`, `close_room` (RU24.4); `close_room` unten ist
-//! `Manager.CloseRoom` aus Go. Takt (`step.rs`) und Kampagne (`campaign.rs`) stehen seit RU27.2 daneben, Spielstände (`saves`) folgen in RU27.3. Aufgeteilt (≤ 400
+//! `Manager.CloseRoom` aus Go. Takt (`step.rs`) und Kampagne (`campaign.rs`) stehen seit RU27.2 daneben, Spielstände (`saves`) folgen in RU50.1. Aufgeteilt (≤ 400
 //! Zeilen): `config.rs` (Config, Log, Uhr), `error.rs` (UserError, describe), `view_impl.rs` (`impl view::session::Session`).
 
 use std::collections::BTreeMap;
@@ -46,7 +46,7 @@ pub struct Started {
 }
 
 /// Session erfüllt `view::session::Session` und `Sim` (Takt in `step.rs`). Alle Methoden laufen in der Schleife. Die Felder
-/// von `saves` und `dev` (RU27.3, Halt) stehen schon hier, damit die Struktur nur einmal entsteht.
+/// von `saves` und `dev` (RU50.1, Halt) stehen schon hier, damit die Struktur nur einmal entsteht.
 pub struct Session {
     pub(super) dir: PathBuf,
     pub(super) saves: Saves,

@@ -1,4 +1,4 @@
-//! Port von `watchedStore` aus `native/k3c-game/local/saves.go` (RU27.3 liefert den Rest der Datei: `List`, `Delete`,
+//! Port von `watchedStore` aus `native/k3c-game/local/saves.go` (RU50.1 liefert den Rest der Datei: `List`, `Delete`,
 //! `WorldList`). Hier steht nur, was `Session` zum Anlegen eines Managers braucht: der Spielstand-Speicher des Raums, der
 //! das Ergebnis jeder Speicherung merkt, damit die Session daraus Cues macht (`CueSaved`, `CueSaveFailed`).
 //!

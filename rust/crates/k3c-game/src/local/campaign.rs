@@ -4,8 +4,7 @@
 //! dem Ereignis `islandSwitch`. Es rechnet keine Regel: Welche Zeilen an einem Wendepunkt gelten, sagt die Engine.
 //!
 //! Abweichung von Go: `view::Campaign` hat noch kein Feld `world` (Offen RU10, `WorldDef` fehlt dort); `Campaign::def`
-//! hält die Welt, bis es das Feld gibt. Bis RU19 `standard_world` liefert, fängt `read_world_def` den Abbruch ab (wie Go: Welt
-//! nicht lesbar, die Geschichte entfällt, das Spiel läuft).
+//! hält die Welt, bis es das Feld gibt. Ist die Welt nicht lesbar, entfällt die Geschichte und das Spiel läuft (wie Go).
 
 use k3c_room::fehler::Fehler as RoomFehler;
 use k3c_room::room::Log as _;
@@ -14,7 +13,7 @@ use k3c_sim::island::WorldDef;
 use serde::Deserialize;
 
 use super::peer::StageState;
-use super::route::read_world_def;
+use super::route::load_world_def;
 use super::session::Session;
 use crate::view::story::Campaign as ViewCampaign;
 
@@ -90,7 +89,7 @@ impl Session {
         };
         let world = self.world.clone();
         let dir = self.worlds_dir.clone();
-        let def = match read_world_def(dir.as_deref(), &world) {
+        let def = match load_world_def(dir.as_deref(), &world) {
             Ok(def) => def,
             Err(e) => {
                 self.log.warn(

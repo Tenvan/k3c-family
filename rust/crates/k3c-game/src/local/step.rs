@@ -6,7 +6,7 @@
 //! (2) `Room::tick` speichert synchron (Autosave, Stufenwechsel); `collect_saves` im selben Step sieht die Ergebnisse, ein
 //! Warten auf eine Schreib-Goroutine (`awaitSaves`, `SAVE_WAIT`, Aufnahme-Modus) entfällt. (3) `Frame` besitzt seine Listen:
 //! `stages`, `seats`, `events` sind je Takt neue `Vec`, die Puffer der Session (`seat_buf`, `StageState`) behalten ihre
-//! Kapazität. (4) `running` und `timescale` sind Teil von `dev.go` (RU27.3); sie stehen hier, weil `step` sie braucht.
+//! Kapazität. (4) `running` und `timescale` sind Teil von `dev.go` (RU50.1); sie stehen hier, weil `step` sie braucht.
 
 use std::any::Any;
 use std::collections::BTreeMap;

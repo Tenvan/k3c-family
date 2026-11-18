@@ -4,7 +4,6 @@ use super::testutil::TempDir;
 // Die Standard-Welt liefert ihre Inseln mit Etappe (>= 1) für die Seekarte; eine unbekannte Welt-Datei ist ein Fehler.
 // Go setzt `K3C_WORLDS_DIR` im Test; Rust übergibt den Ordner (`set_var` ist unsafe, der Crate verbietet `unsafe`).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: standard_world)"]
 fn load_world_def_route() {
     let def = load_world_def(None, "").expect("Standard-Welt");
     assert!(!def.islands.is_empty(), "Standard-Welt ohne Inseln");
