@@ -1,6 +1,6 @@
 # RU26 · CLI · Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -99,7 +99,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 | RU26.3 | `RU26.3-devices-keytable-overlay-notice.md` | Umsetzung | autonom | fertig |
 | RU26.4 | `RU26.4-game-schleife.md` | Umsetzung | autonom | fertig |
 | RU26.5 | `RU26.5-window-menu-play.md` | Umsetzung | autonom | fertig |
-| RU26.6 | `RU26.6-review.md` | Review | autonom | offen |
+| RU26.6 | `RU26.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -107,6 +107,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18, Review RU26.6: AC-01 bis AC-03 geprüft (Ergebnis RU26.6: `Stack::apply` und `draw.rs` gegen `game.go`, `loop_tests` headless), `task check` und `task check:go` grün.
+Keine schweren Befunde, keine Fixes nötig; Leitplanken (Dateigröße, Funktionslänge, `unsafe`, Platzhalter RU29/RU30, Bereichsgrenzen) eingehalten.
+Neue Tickets aus den Sessions: B-1090 bis B-1094 (Blend, Importregel, Fenster-API u. a.).
+Abnahme-Ticket für Sim, Balance, Gen und Race: B-1096 (Lane zweit, mit Prüfliste für Ralf zu Takt, Eingabe, Kamera).

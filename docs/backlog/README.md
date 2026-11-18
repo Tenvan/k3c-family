@@ -160,6 +160,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1092](B-1092-ru19-decode-world-story-vorziehen.md) | SIM | Schuld | mittel | offen | RU19 | decode_world_story (RU19) blockiert 91 Tests, Reihenfolge der Sprints prüfen; events_moon_stages_test zu RU19 |
 | [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU14 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
 | [B-1094](B-1094-plattform-fenster-api.md) | PLAT | Schuld | niedrig | offen | RU26 | Die Plattform bekommt eine Fenster-API für Größe, Lage und Rahmen |
+| [B-1096](B-1096-abnahme-laeufe-ru26-spielschleife.md) | CLI | Schuld | mittel | offen | RU26 | Abnahme-Läufe RU26: Sim, Balance, Gen und Race für die Rust-Spielschleife |
 
 ## Archiv
 
