@@ -72,3 +72,36 @@ fn unbekannte_einheit_bleibt() {
     b.apply(&mut w, &mut [], 0.0);
     assert_eq!(w.players[0].x, 50.0);
 }
+
+/// B-1077/AC-01: Nach dem Aufwärmen bleiben alle Puffer stehen (kein Wachsen, keine neue Anlage): `capture`, `apply` und
+/// `restore` allokieren dann nichts. Gemessen wird die Kapazität; den Zähler je Bild misst `tests/alloc_je_bild.rs`.
+#[test]
+fn puffer_bleiben_stehen() {
+    let mut b = Blend::new(0);
+    let mut w = world(10.0, 1.0);
+    let mut cams = [0.0, 1.0];
+    let caps = |b: &Blend| {
+        (
+            b.prev.capacity(),
+            b.cam.capacity(),
+            b.saved.capacity(),
+            b.saved_cam.capacity(),
+        )
+    };
+    for _ in 0..3 {
+        b.capture(&w, &cams);
+        w.players[0].x += 2.0;
+        w.time += 1.0 / 30.0;
+        b.apply(&mut w, &mut cams, 0.5);
+        b.restore(&mut w, &mut cams);
+    }
+    let warm = caps(&b);
+    for _ in 0..50 {
+        b.capture(&w, &cams);
+        w.players[0].x += 2.0;
+        w.time += 1.0 / 30.0;
+        b.apply(&mut w, &mut cams, 0.5);
+        b.restore(&mut w, &mut cams);
+    }
+    assert_eq!(caps(&b), warm, "Kapazitäten nach dem Aufwärmen unverändert");
+}

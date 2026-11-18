@@ -188,11 +188,6 @@ impl Fx {
             l.skills.clone_from(&p.skills);
         }
     }
-
-    /// `coin_needed`: Das Münz-Sheet braucht nur eine Stufe mit Münzschauer.
-    fn coin_needed(s: Option<&StageFx>) -> bool {
-        s.is_some_and(|s| s.effects.iter().any(|e| e.kind == effects::Kind::CoinLoss))
-    }
 }
 
 impl Drawer for Fx {
@@ -219,12 +214,7 @@ impl Drawer for Fx {
         paint.projectiles(dst, w, c);
         if let Some(s) = s {
             let mut lib = self.lib.as_ref().map(|l| l.borrow_mut());
-            let coin = lib
-                .as_ref()
-                .filter(|_| Self::coin_needed(Some(s)))
-                .and_then(|l| l.sheet(COIN_ASSET, COIN_ANIM).cloned());
-            let font = lib.as_mut().map(|l| &mut l.font);
-            paint.effects(dst, &s.effects, font, coin.as_ref(), c, f.clock, k);
+            paint.effects(dst, &s.effects, lib.as_deref_mut(), c, f.clock, k);
             st.marks(dst, &s.marks, c, f.clock, false);
         }
     }
