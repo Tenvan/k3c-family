@@ -95,7 +95,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU26.1 | `RU26.1-args-modi-stapel-pacing.md` | Umsetzung | autonom | fertig |
-| RU26.2 | `RU26.2-layout-parts-blend.md` | Umsetzung | autonom | offen |
+| RU26.2 | `RU26.2-layout-parts-blend.md` | Umsetzung | autonom | fertig |
 | RU26.3 | `RU26.3-devices-keytable-overlay-notice.md` | Umsetzung | autonom | offen |
 | RU26.4 | `RU26.4-game-schleife.md` | Umsetzung | autonom | offen |
 | RU26.5 | `RU26.5-window-menu-play.md` | Umsetzung | autonom | offen |

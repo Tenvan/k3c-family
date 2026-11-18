@@ -156,6 +156,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU10 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
 | [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | offen | RU10 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
 | [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
+| [B-1090](B-1090-replay-blend-auf-game-blend.md) | CLI | Schuld | niedrig | offen | RU26 | replay/blend.rs auf game/blend.rs umstellen |
+| [B-1091](B-1091-importregel-ausnahmen-fachmodule.md) | CLI | Schuld | niedrig | offen | RU26 | Importregel der Fachmodule hat fünf bekannte Ausnahmen |
 
 ## Archiv
 
