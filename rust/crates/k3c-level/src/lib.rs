@@ -14,7 +14,9 @@ pub mod planned_gen;
 mod planned_totals;
 pub mod ruins;
 pub mod rules;
+pub mod sites;
 pub mod types;
+pub mod validate;
 
 #[cfg(test)]
 mod testutil;

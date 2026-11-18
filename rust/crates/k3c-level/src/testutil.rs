@@ -30,7 +30,10 @@ pub(crate) fn data() -> &'static Data {
 /// Der Regelsatz aus `data/`, einmal gebaut (Go: die Paket-Variablen).
 pub(crate) fn rules() -> &'static Rules {
     static RULES: OnceLock<Rules> = OnceLock::new();
-    RULES.get_or_init(|| Rules::from_data(data()).unwrap_or_else(|e| panic!("Rules: {e}")))
+    RULES.get_or_init(|| {
+        let hub = std::fs::read_to_string(data_dir().join("hub.json")).unwrap_or_else(|e| panic!("hub.json: {e}"));
+        Rules::from_data(data(), &hub).unwrap_or_else(|e| panic!("Rules: {e}"))
+    })
 }
 
 /// Go: `biomeIDs`, alle Biome aus `data/biomes/` (nach Namen sortiert).
@@ -63,20 +66,17 @@ pub(crate) fn generate_with(_b: &Biome, _seed: &str, _o: &Options) -> Result<Lay
     unimplemented!("RU6.5")
 }
 
-/// Go: `Validate(l, b)`; läuft ab RU6.5 (RU6.4 liefert `validate`).
-pub(crate) fn validate(_l: &Layout, _b: &Biome) -> Vec<String> {
-    unimplemented!("RU6.5")
+/// Go: `Validate(l, b)` mit dem Regelsatz aus `data/`.
+pub(crate) fn validate(l: &Layout, b: &Biome) -> Vec<String> {
+    crate::validate::validate(l, b, rules())
 }
 
-/// Go: `ValidateWith(l, b, o)`; läuft ab RU6.5.
-pub(crate) fn validate_with(_l: &Layout, _b: &Biome, _o: &Options) -> Vec<String> {
-    unimplemented!("RU6.5")
+/// Go: `ValidateWith(l, b, o)` mit dem Regelsatz aus `data/`.
+pub(crate) fn validate_with(l: &Layout, b: &Biome, o: &Options) -> Vec<String> {
+    crate::validate::validate_with(l, b, o, rules())
 }
 
-/// Go: `countEntities` (RU6.4 liefert die Funktion in `validate.rs`).
-pub(crate) fn count_entities(l: &Layout, kind: &str) -> usize {
-    l.entities.iter().filter(|e| e.kind == kind).count()
-}
+pub(crate) use crate::validate::count_entities;
 
 /// Go: `checkCamp` aus `camps_test.go`; läuft ab RU6.5.
 pub(crate) fn check_camp(_l: &Layout, _x: f64, _id: &str, _seed: i64) {
