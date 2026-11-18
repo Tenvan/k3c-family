@@ -97,8 +97,8 @@ pub fn step_troops(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, dt: 
                     step_peasant(w, v, ti, isl, dt);
                 }
             }
-            "warrior" | "eliteWarrior" => step_warrior(w, v, ti, dt),
-            _ => step_archer(w, v, ti, dt),
+            "warrior" | "eliteWarrior" => step_warrior(w, v, isl, ti, dt),
+            _ => step_archer(w, v, isl, ti, dt),
         }
     }
 }

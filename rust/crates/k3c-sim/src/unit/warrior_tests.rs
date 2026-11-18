@@ -317,7 +317,7 @@ fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
     let ti = add_peasant(&mut w, hub, "");
     crate::unit::jobs::make_fighter(&mut w, ti, "warrior");
     for _ in 0..2400 {
-        super::warrior::step_warrior(&mut w, &v, ti, DT);
+        super::warrior::step_warrior(&mut w, &v, None, ti, DT);
     }
     let want = w.sites[wall].x + v.troops["warrior"].post_units;
     assert!(
@@ -329,7 +329,7 @@ fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
     let e = spawn(&mut w, "skeleton", wx - 8.0);
     let hp = w.enemies[e].hp;
     for _ in 0..600 {
-        super::warrior::step_warrior(&mut w, &v, ti, DT);
+        super::warrior::step_warrior(&mut w, &v, None, ti, DT);
         if w.enemies[e].hp < hp {
             break;
         }

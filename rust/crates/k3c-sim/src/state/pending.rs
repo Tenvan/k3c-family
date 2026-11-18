@@ -11,14 +11,17 @@ use k3c_data::monarch::{SkillData, SkillEffect};
 
 use k3c_level::types::WallSite;
 
-use super::save::HubSave;
 use super::shared::WorldValues;
-use super::{Player, Site, Troop, World};
+use super::{Player, Site, World};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
+pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
+pub use crate::combat::squad::count_fetching; // Von RU15 portiert (combat_squad.go)
+pub use crate::crown::{crowned, drop_crown, hit_coins}; // Von RU15 portiert (crown.go)
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
 pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
 pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
+pub use crate::portal::apply_portals; // Von RU15 portiert (portal.go)
 pub use crate::unit::archer::is_on_tower;
 pub use crate::unit::jobs::make_fighter;
 pub use crate::unit::professions::profession_of;
@@ -27,21 +30,6 @@ pub use crate::unit::warrior::is_fighter;
 
 /// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
 pub const MERCHANT_ID: i64 = -1;
-
-/// Go: `crowned` (crown.go).
-pub fn crowned(_p: &Player) -> bool {
-    unimplemented!("RU15: crowned")
-}
-
-/// Go: `dropCrown` (crown.go).
-pub fn drop_crown(_w: &mut World, _pi: usize, _cause: &str) {
-    unimplemented!("RU15: drop_crown")
-}
-
-/// Go: `hitCoins` (crown.go).
-pub fn hit_coins(_w: &mut World, _pi: usize, _n: i64) {
-    unimplemented!("RU15: hit_coins")
-}
 
 /// Go: `hitEvent` (events.go).
 pub fn hit_event(_w: &mut World, _target: &str, _id: i64, _x: f64, _damage: f64) {
@@ -137,24 +125,9 @@ pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
     unimplemented!("RU18: level_site")
 }
 
-/// Go: `isSoldier` (combat.go): Ist die Truppe ein Nahkämpfer, der einer Gruppe vorstehen kann?
-pub fn is_soldier(_t: &Troop) -> bool {
-    unimplemented!("RU15: is_soldier")
-}
-
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
 pub fn hub_steps(_w: &World) -> i64 {
     unimplemented!("RU18: hub_steps")
-}
-
-/// Go: `countFetching` (combat.go): Zahl der Truppen, die gerade ihr Schild holen.
-pub fn count_fetching(_w: &World) -> i64 {
-    unimplemented!("RU15: count_fetching")
-}
-
-/// Go: `applyPortals` (portal.go): übernimmt die zerstörten Portale eines gespeicherten Hubs.
-pub fn apply_portals(_w: &mut World, _h: &HubSave) {
-    unimplemented!("RU15: apply_portals")
 }
 
 /// Go: `plotX` (building_plantation.go): Position von Platz `i` im Streifen um die Baumschule.

@@ -54,7 +54,7 @@ pub fn strike(w: &mut World, v: &WorldValues, ei: usize, t: &Target, isl: Option
 
 /// Go: `aoeTargets`: Spieler, Truppen (ohne Landstreicher und Schützen auf Türmen), gebaute Plätze und die Burg im Radius
 /// um `x`.
-fn aoe_targets(w: &World, v: &WorldValues, x: f64, radius: f64) -> Vec<Target> {
+pub(crate) fn aoe_targets(w: &World, v: &WorldValues, x: f64, radius: f64) -> Vec<Target> {
     let within = |at: f64, extra: f64| (at - x).abs() <= radius + extra;
     let mut out = Vec::new();
     for (pi, p) in w.players.iter().enumerate() {
