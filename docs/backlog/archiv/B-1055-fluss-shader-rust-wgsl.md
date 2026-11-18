@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** RU13
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-17
@@ -68,4 +68,11 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Geprüft 2026-11-18 (Claude), nicht umgesetzt: größer als eine Session (Größe L) und ohne Fenster nicht prüfbar. Der Fluss-Shader braucht (1) einen WGSL-Port von `native/k3c-game/world/water/river.kage` (66 Zeilen) samt Uniform-Puffer in `backend/setup.rs`/`gpu.rs`, (2) eine neue Canvas-Schnittstelle für Shader-Flächen mit Uniforms (Headless-, Frame- und SoftCanvas-Seite, Run-Art neben Quads/Tris), (3) einen Software-Nachbau für das Standbild und (4) die Wahl der Fassung „shader“ in `world/water.rs`. Vor der Freigabe in Tickets je Teil zerlegen (Schnittstelle und Run-Art; WGSL-Port samt Pipeline; Anbindung `draw_river`) und erst nach Ralfs G2-Messung (RU39.2) angehen, weil Kacheln bis dahin als Fassung genügen.
+Zerlegt in Teil-Tickets (je eine Session, Größe S, Projekt RSU, Sprint RU13, Spec freigegeben autonom, Claude, 2026-11-18):
+
+- B-1070 Canvas-Schnittstelle `river` mit Uniforms (ohne Shader), Voraussetzung für die anderen
+- B-1071 Fluss-Fragment als Rust-Referenz und Software-Nachbau in `SoftCanvas` (abhängig von B-1070)
+- B-1072 `river.wgsl` und Pipeline im GPU-Backend (abhängig von B-1070)
+- B-1073 Anbindung in `world` (`draw_river`, Rückfall auf Kacheln, Standbild-Vergleich; abhängig von B-1070, B-1071, B-1072)
+
+Reihenfolge: B-1070, dann B-1071 und B-1072 parallel, zuletzt B-1073.

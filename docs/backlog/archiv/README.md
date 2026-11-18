@@ -881,3 +881,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1058](B-1058-canvas-reihenfolge-textur.md) | CLI | Problem | mittel | erledigt | RU13 | Canvas sortiert innerhalb einer Ebene nach Textur statt nach Aufrufreihenfolge |
 | [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | erledigt | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
 | [B-1065](B-1065-rust-textmasse-zeilenhoehe-advance.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust misst Textzeilen niedriger und kleine Schrift schmaler als Go |
+| [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | verworfen | RU13 | Fluss-Shader in Rust (WGSL) |

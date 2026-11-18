@@ -135,7 +135,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1053](B-1053-client-sim-naehte-ersetzen.md) | CLI | Schuld | mittel | eingeplant | RU30 | Sim-Nähte im Rust-Client sind durch die portierte Sim ersetzt |
 | [B-1054](B-1054-verwaiste-sim-tests-zuordnen.md) | SIM | Schuld | mittel | eingeplant | RU22 | Jede Go-Testdatei aus engine/sim ist in Rust portiert oder begründet ausgelassen |
 | [B-1059](B-1059-abnahme-ru13-welt-akteure.md) | CLI | Schuld | mittel | offen | RU13 | Abnahme RU13: Gen, Bildtests, Race und Sichtprüfung der Standbilder |
-| [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | offen | RU13 | Fluss-Shader in Rust (WGSL) |
 | [B-1057](B-1057-ru38-abnahme-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU38 | RU38 Abnahme: Fenster-Messung der Wiedergabe, Sim, Balance und Gen |
 | [B-1063](B-1063-text-2px-tiefer-als-go.md) | CLI | Problem | niedrig | offen | RU16 | Rust setzt Text im Software-Rasterer rund 2 px tiefer als Go |
 | [B-1060](B-1060-ton-atlas-ausschnitte-rust.md) | CLI | Schuld | mittel | eingeplant | RU30 | Der Rust-Client spielt Effekte aus Ausschnitten des Ton-Atlas |
@@ -144,6 +143,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | offen | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
 | [B-1067](B-1067-rust-purse-skill-values-pending-draw-glyph-ausleihe.md) | CLI | Problem | niedrig | offen | RU20 | Hud: Spieler mit Skills stürzen in sim::values ab, draw_glyph mit Bibliotheksschrift vermutlich Doppelausleihe |
 | [B-1068](B-1068-abnahme-ru20.md) | CLI | Schuld | mittel | offen | RU20 | Abnahme RU20: Sichtprüfung HUD und Gen-Läufe |
+| [B-1070](B-1070-canvas-river-schnittstelle.md) | CLI | Schuld | niedrig | offen | RU13 | Canvas kennt einen Fluss-Aufruf mit Uniforms (Schnittstelle ohne Shader) |
+| [B-1071](B-1071-river-referenz-softcanvas.md) | CLI | Schuld | niedrig | offen | RU13 | Fluss-Fragment als Referenz in Rust und Software-Nachbau im Standbild-Rasterer |
+| [B-1072](B-1072-river-wgsl-port.md) | CLI | Schuld | niedrig | offen | RU13 | river.kage als WGSL-Pipeline im GPU-Backend |
+| [B-1073](B-1073-river-anbindung-world.md) | CLI | Schuld | niedrig | offen | RU13 | Fluss-Shader in world anbinden (draw_river, ready, Rückfall auf Kacheln) |
 
 ## Archiv
 
