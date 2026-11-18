@@ -1,6 +1,6 @@
 # RU26 · CLI · Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
