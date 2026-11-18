@@ -5,7 +5,7 @@ use std::rc::Rc;
 
 use super::parts::Part;
 use super::pending::devtools_part;
-use super::shared::{HudOverlay, HudVoyage, Shared};
+use super::shared::{HudEnd, HudOverlay, HudVoyage, Shared};
 use crate::actors::{self, draw::ActorsDrawer};
 use crate::art::Library;
 use crate::audio::Sound;
@@ -33,15 +33,22 @@ pub fn packages(libs: &Libs, keys: Option<KeyTable>) -> Vec<Part> {
         devtools_part(lib()),
         hud_part(lib()),
         input_part(),
-        Part {
-            menus: Some(menu::new(lib(), keys)),
-            ..Part::named("menu")
-        },
+        menu_part(lib(), keys),
         Part {
             listener: Some(Box::new(Sound::new())),
             ..Part::named("audio")
         },
     ]
+}
+
+/// Das Menü hinter zwei Rollen: `Menus` (Hauptmenü, Pause) und `MenuPages` (Untermenüs für `--menu`).
+fn menu_part(lib: SharedLib, keys: Option<KeyTable>) -> Part {
+    let m = Shared(Rc::new(RefCell::new(menu::new_set(lib, keys))));
+    Part {
+        menus: Some(Box::new(m.share())),
+        menu_pages: Some(Box::new(m)),
+        ..Part::named("menu")
+    }
 }
 
 /// Die Eingabe-Quelle hinter zwei Rollen: `Source` (Poll) und `KeyboardSource` (Belegung der Tastatur, `game` stellt
@@ -105,6 +112,7 @@ fn hud_part(lib: SharedLib) -> Part {
         drawer_listeners: vec![Box::new(h.share())],
         assets: vec![Box::new(h.share())],
         overlays: vec![Box::new(HudOverlay(h.share()))],
+        end_holders: vec![Box::new(HudEnd(h.share()))],
         voyage: Some(Box::new(HudVoyage(h))),
         ..Part::named("hud")
     }

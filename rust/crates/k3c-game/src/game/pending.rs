@@ -2,7 +2,7 @@
 //! tauscht die `pub use`-Zeile in `mod.rs` aus; RU30.1 liefert `Loader`; RU29.3 tauscht `devtools_part` samt Eintrag in
 //! `WAITING`. Ist alles geliefert, wird diese Datei gelöscht. RU22 prüft, dass keiner übrig ist. Die Platzhalter der
 //! Schleife (`Game`, RU26.4) stehen am Ende der Datei.
-#![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU26.5 und RU30
+#![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU30
 #![allow(dead_code)] // Platzhalter, die erst der liefernde Sprint benutzt
 
 use super::parts::Part;
@@ -33,11 +33,10 @@ pub fn devtools_part(_lib: Option<Rc<RefCell<Library>>>) -> Part {
     Part::named("devtools")
 }
 
-// ---- Platzhalter der Schleife (RU26.4): Teile, die RU26.5 und RU30 liefern ----------------------------------------
+// ---- Platzhalter der Schleife (RU26.4): Teile, die RU30 liefert ----------------------------------------
 //
 // Platzhalter mit `unimplemented!` sind nur über Zustand erreichbar, den `Game::new` nie setzt (`Option` bleibt
-// `None`, Schalter aus). Platzhalter ohne Wirkung (`toggle_window`, `apply_window`, `open_menu`, `play`, `dev_values`,
-// `embark`, `arrive`) laufen in jedem Takt und tun bis zu ihrem Sprint nichts.
+// `None`, Schalter aus). Platzhalter ohne Wirkung (`dev_values`, `embark`, `arrive`) laufen in jedem Takt und tun bis zu ihrem Sprint nichts.
 
 /// Go: `voyage` (`voyage.go`, RU30.2): Schiffsfahrt beim Inselwechsel; `Some` nur während der Fahrt.
 pub struct Voyage;
@@ -157,20 +156,6 @@ impl Game {
     pub(super) fn stress_step(&mut self) {
         unimplemented!("RU30.5: stress_step")
     }
-
-    /// Go: `toggleWindow` (`window.go`, RU26.5): Vollbild-Taste. Bis dahin ohne Wirkung.
-    pub(super) fn toggle_window(&mut self, _input: &Input) {}
-
-    /// Go: `applyWindow` (`window.go`, RU26.5): Anzeige-Modus aus den Einstellungen. Bis dahin ohne Wirkung.
-    pub(super) fn apply_window(&mut self) {}
-
-    /// Go: `openMenu` (`menu.go`, RU26.5): legt das Menü der Szene (`--menu`) auf. Bis dahin ohne Wirkung.
-    pub(super) fn open_menu(&mut self) -> Result<(), String> {
-        Ok(())
-    }
-
-    /// Go: `play` (`play.go`, RU26.5): Overlays, Befehle, Beitritt im laufenden Spiel. Bis dahin ohne Wirkung.
-    pub(super) fn play(&mut self, _input: &Input) {}
 
     /// Go: `devValues` (`devvalues.go`, RU30.3). Bis dahin ohne Wirkung.
     pub(super) fn dev_values(&mut self) {}

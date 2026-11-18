@@ -10,8 +10,8 @@ use k3c_sim::state::{Player, World};
 use super::sim::Sim;
 use super::{Parts, assemble};
 use crate::view::cell::Cell;
-use crate::view::frame::{Frame, Seat, Stage};
-use crate::view::input::{Command, DeviceID, Input, Source};
+use crate::view::frame::{Frame, Outcome, Seat, Stage};
+use crate::view::input::{Command, DeviceID, DeviceKind, Input, Source};
 use crate::view::layer::{Drawer, Layer};
 use crate::view::screen::{Menus, Screen, Step, StepKind};
 use crate::view::session::{Fehler, NewGame, SaveInfo, Session, WorldInfo};
@@ -30,6 +30,28 @@ pub struct Probe {
     pub active: Rc<Counter<bool>>,
     /// Takte der Simulation
     pub steps: Rc<Counter<u64>>,
+    /// Ausgang, den `step` in den Frame schreibt
+    pub outcome: Rc<Counter<Outcome>>,
+    /// Befehle in Reihenfolge der Aufrufe: (Spieler, Befehl)
+    pub cmds: Rc<RefCell<Vec<(i64, Command)>>>,
+    /// Geräte, die `join` aufnahm
+    pub joins: Rc<RefCell<Vec<DeviceID>>>,
+    /// Neuzuordnungen: (Spieler, Gerät)
+    pub rebinds: Rc<RefCell<Vec<(i64, DeviceID)>>>,
+    /// gelernte Skills
+    pub learned: Rc<RefCell<Vec<String>>>,
+    /// Einstellungen, die `set_settings` bekam
+    pub set: Rc<RefCell<Vec<Settings>>>,
+}
+
+/// Tastatur 1 (`keys1`).
+pub fn keys1() -> DeviceID {
+    DeviceID::default()
+}
+
+/// Gamepad `n` (Pad-ID der Plattform; `pad(0)` heißt „pad1“).
+pub fn pad(n: i64) -> DeviceID {
+    DeviceID::new(DeviceKind::Gamepad, n)
 }
 
 /// Ein Spiel mit zwei Plätzen; `step` baut je Takt einen Frame mit einer Welt und zwei Monarchen.
@@ -48,6 +70,7 @@ impl FakeSim {
             .map(|i| Seat {
                 player: i64::try_from(i).unwrap_or(0),
                 monarch: i64::try_from(i).unwrap_or(0),
+                device: if i == 0 { keys1() } else { pad(0) },
                 ..Seat::default()
             })
             .collect();
@@ -74,7 +97,8 @@ impl FakeSim {
 }
 
 impl Sim for FakeSim {
-    fn command(&mut self, _player: i64, _c: Command) -> Result<(), Fehler> {
+    fn command(&mut self, player: i64, c: Command) -> Result<(), Fehler> {
+        self.probe.cmds.borrow_mut().push((player, c));
         Ok(())
     }
 
@@ -86,6 +110,7 @@ impl Sim for FakeSim {
             tick: self.tick,
             clock: self.tick as f64 / 30.0,
             seats: self.seats.clone(),
+            outcome: self.probe.outcome.get(),
             stages: vec![Stage {
                 index: 0,
                 world: Some(Rc::new(self.world())),
@@ -138,19 +163,31 @@ impl Session for FakeSim {
         self.probe.paused.set(on);
     }
 
-    fn join(&mut self, _d: DeviceID) -> Result<i64, Fehler> {
-        Ok(0)
+    fn join(&mut self, d: DeviceID) -> Result<i64, Fehler> {
+        self.probe.joins.borrow_mut().push(d);
+        let player = i64::try_from(self.seats.len()).unwrap_or(0);
+        if self.seats.len() < 2 {
+            self.seats.push(Seat {
+                player,
+                monarch: player,
+                device: d,
+                ..Seat::default()
+            });
+        }
+        Ok(player)
     }
 
     fn leave(&mut self, _player: i64) -> Result<(), Fehler> {
         Ok(())
     }
 
-    fn rebind(&mut self, _player: i64, _d: DeviceID) -> Result<(), Fehler> {
+    fn rebind(&mut self, player: i64, d: DeviceID) -> Result<(), Fehler> {
+        self.probe.rebinds.borrow_mut().push((player, d));
         Ok(())
     }
 
-    fn learn(&mut self, _player: i64, _skill: &str) -> Result<(), Fehler> {
+    fn learn(&mut self, _player: i64, skill: &str) -> Result<(), Fehler> {
+        self.probe.learned.borrow_mut().push(skill.to_string());
         Ok(())
     }
 
@@ -162,7 +199,8 @@ impl Session for FakeSim {
         Ok(())
     }
 
-    fn set_settings(&mut self, _s: Settings) -> Result<(), Fehler> {
+    fn set_settings(&mut self, s: Settings) -> Result<(), Fehler> {
+        self.probe.set.borrow_mut().push(s);
         Ok(())
     }
 

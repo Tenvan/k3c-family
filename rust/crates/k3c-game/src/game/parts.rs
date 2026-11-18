@@ -9,7 +9,8 @@ use super::pending::Loader;
 use crate::view::input::{KeyboardSource, Source};
 use crate::view::layer::{Drawer, Listener};
 use crate::view::roles::{AssetSource, CameraRule, Finisher, Overlay};
-use crate::view::screen::Menus;
+use crate::view::screen::{MenuPages, Menus};
+use crate::view::story::EndHolder;
 use crate::view::voyage::VoyageDrawer;
 
 /// Beitrag eines Fachmoduls; ungenutzte Felder bleiben leer.
@@ -24,10 +25,14 @@ pub struct Part {
     /// Belegung der Tastatur der Eingabe-Quelle (Go: Typ-Zusicherung `Source` → `KeyboardSource`)
     pub keyboard: Option<Box<dyn KeyboardSource>>,
     pub menus: Option<Box<dyn Menus>>,
+    /// Untermenüs für den Aufnahme-Modus `--menu` (Go: Typ-Zusicherung `Menus` → `MenuPages`)
+    pub menu_pages: Option<Box<dyn MenuPages>>,
     pub camera: Option<Box<dyn CameraRule>>,
     pub assets: Vec<Box<dyn AssetSource>>,
     pub overlays: Vec<Box<dyn Overlay>>,
     pub voyage: Option<Box<dyn VoyageDrawer>>,
+    /// Listener, die am Spielende noch etwas zeigen (Go: Typ-Zusicherung `Listener` → `EndHolder`)
+    pub end_holders: Vec<Box<dyn EndHolder>>,
     /// Listener mit `Finish` beim Programmende (Go: Typ-Zusicherung `Listener` → `Finisher`)
     pub finishers: Vec<Box<dyn Finisher>>,
 }
@@ -51,11 +56,14 @@ pub struct Parts {
     pub input: Box<dyn Source>,
     pub keyboard: Option<Box<dyn KeyboardSource>>,
     pub menus: Box<dyn Menus>,
+    /// Untermenüs für `--menu`; `None`, wenn das Menü sie nicht meldet
+    pub menu_pages: Option<Box<dyn MenuPages>>,
     pub camera: Option<Box<dyn CameraRule>>,
     pub assets: Vec<Box<dyn AssetSource>>,
     pub overlays: Vec<Box<dyn Overlay>>,
     /// Schiffsfahrt im Vollbild (hud, B-977); `None`: Ladebildschirm
     pub voyage: Option<Box<dyn VoyageDrawer>>,
+    pub end_holders: Vec<Box<dyn EndHolder>>,
     pub finishers: Vec<Box<dyn Finisher>>,
     pub art: Option<Box<dyn Loader>>,
 }
@@ -81,6 +89,8 @@ struct Acc {
     keyboard: Option<Box<dyn KeyboardSource>>,
     finishers: Vec<Box<dyn Finisher>>,
     menus: Option<Box<dyn Menus>>,
+    menu_pages: Option<Box<dyn MenuPages>>,
+    end_holders: Vec<Box<dyn EndHolder>>,
     camera: Option<Box<dyn CameraRule>>,
     assets: Vec<Box<dyn AssetSource>>,
     overlays: Vec<Box<dyn Overlay>>,
@@ -100,6 +110,8 @@ impl Acc {
         set_once(&mut self.keyboard, p.keyboard, &p.name, "Tastatur-Belegung")?;
         self.finishers.extend(p.finishers);
         set_once(&mut self.menus, p.menus, &p.name, "Menü")?;
+        set_once(&mut self.menu_pages, p.menu_pages, &p.name, "Menü-Seiten")?;
+        self.end_holders.extend(p.end_holders);
         set_once(&mut self.camera, p.camera, &p.name, "Kamera-Regel")?;
         set_once(&mut self.voyage, p.voyage, &p.name, "Schiffsfahrt")?;
         self.assets.extend(p.assets);
@@ -121,6 +133,8 @@ impl Acc {
             input,
             keyboard: self.keyboard,
             menus,
+            menu_pages: self.menu_pages,
+            end_holders: self.end_holders,
             camera: self.camera,
             assets: self.assets,
             overlays: self.overlays,

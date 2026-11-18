@@ -12,18 +12,27 @@ mod draw;
 pub mod flags;
 pub mod keytable;
 pub mod layout;
+mod menu;
 pub mod modes;
 pub mod notice;
 pub mod overlay;
 pub mod packages;
 pub mod parts;
 mod pending;
+mod play;
+#[cfg(test)]
+pub mod play_testutil;
 pub mod scene;
 pub mod shared;
 pub mod sim;
 pub mod stack;
 #[cfg(test)]
 pub mod testutil;
+pub mod window;
+
+#[cfg(test)]
+#[path = "ending_tests.rs"]
+mod ending_tests;
 
 #[cfg(test)]
 #[path = "imports_tests.rs"]
@@ -37,13 +46,21 @@ mod loop_tests;
 #[path = "pacing_tests.rs"]
 mod pacing_tests;
 
+#[cfg(test)]
+#[path = "play_tests.rs"]
+mod play_tests;
+
+#[cfg(test)]
+#[path = "window_tests.rs"]
+mod window_tests;
+
 use k3c_platform::{App, Canvas, InputState, log};
 
 use crate::view::MAX_PLAYERS;
 use crate::view::cell::{Cell, Rectangle, rect};
 use crate::view::devkeys::DevView;
 use crate::view::frame::{Cue, Frame};
-use crate::view::input::{Input, Source};
+use crate::view::input::{DeviceInput, Input, Source};
 use crate::view::screen::Screen;
 use crate::view::session::NewGame;
 
@@ -70,8 +87,8 @@ const CLEAR_COLOR: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 /// Die Schleife: Eingabe, Menü-Stapel, Takt der Simulation, Kameras, Grafik der Level und Zeichnen der Zellen in
 /// Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (`Frame::clock`), nie aus der Wanduhr.
 ///
-/// Felder, die erst spätere Sessions brauchen (`window`, `end_in`, `in_buf`, `tps`, `load_scr`, `lload`, `step_want`,
-/// `menu_art`, `pressed`, `reports`), legt der liefernde Sprint an (RU26.5, RU30.1 bis RU30.5).
+/// Felder, die erst spätere Sessions brauchen (`tps`, `load_scr`, `lload`, `step_want`, `menu_art`, `pressed`,
+/// `reports`), legt der liefernde Sprint an (RU30.1 bis RU30.5).
 pub struct Game {
     parts: Parts,
     sim: Box<dyn Sim>,
@@ -80,6 +97,12 @@ pub struct Game {
     scripted: Option<Box<dyn Source>>,
     stack: Stack,
     mode: Mode,
+    /// angewendeter Anzeige-Modus (`Settings::window`, `window.rs`)
+    window: String,
+    /// Takte im Spiel seit dem Spielende (`play.rs`)
+    end_in: i64,
+    /// Puffer der Eingabe ohne verbrauchte Geräte (`play.rs`)
+    in_buf: Vec<DeviceInput>,
     frame: Frame,
     cues: Vec<Cue>,
     /// Puffer der Zellen zwischen zwei Takten (Kapazität `MAX_PLAYERS`); nach `advance` liegen sie in `frame.cells`
@@ -126,6 +149,9 @@ impl Game {
             scripted: a.script.then(|| pending::scripted(&a.scene)),
             stack: Stack::new(),
             mode: Mode::Menu,
+            window: String::new(),
+            end_in: 0,
+            in_buf: Vec::new(),
             frame: Frame::default(),
             cues: Vec::new(),
             cells: Vec::with_capacity(MAX_PLAYERS),
@@ -323,5 +349,10 @@ impl App for Game {
     /// Go: `ebiten.Termination`.
     fn done(&self) -> bool {
         self.mode == Mode::Quit
+    }
+
+    /// Vollbild nach den Einstellungen (`window.rs`).
+    fn fullscreen(&self) -> Option<bool> {
+        self.fullscreen_wish()
     }
 }

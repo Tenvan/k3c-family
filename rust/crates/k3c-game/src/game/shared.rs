@@ -10,10 +10,12 @@ use k3c_sim::state::World;
 use crate::hud::HudDrawer;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
-use crate::view::input::{Input, KeyboardSource, Source};
+use crate::view::input::{DeviceID, Input, KeyboardSource, Source};
 use crate::view::layer::{Drawer, Layer, Listener};
 use crate::view::roles::{AssetSource, Overlay, OverlayStep};
+use crate::view::screen::{MenuPages, Menus, Screen};
 use crate::view::session::Session;
+use crate::view::story::EndHolder;
 use crate::view::voyage::{Voyage, VoyageDrawer};
 
 /// Eine Rolle über dem geteilten Zustand `T`.
@@ -84,5 +86,31 @@ impl VoyageDrawer for HudVoyage {
 
     fn draw_voyage(&self, dst: &mut dyn Canvas, f: &Frame, v: &Voyage) -> bool {
         self.0.0.borrow().draw_voyage(dst, f, v)
+    }
+}
+
+impl<T: Menus> Menus for Shared<T> {
+    fn main(&mut self) -> Box<dyn Screen> {
+        self.0.borrow_mut().main()
+    }
+
+    fn pause(&mut self) -> Box<dyn Screen> {
+        self.0.borrow_mut().pause()
+    }
+}
+
+impl<T: MenuPages> MenuPages for Shared<T> {
+    fn page(&mut self, name: &str, in_game: bool, by: DeviceID) -> Option<Box<dyn Screen>> {
+        self.0.borrow_mut().page(name, in_game, by)
+    }
+}
+
+/// Geschichte des `Hud` zum Spielende (`EndHolder`).
+pub struct HudEnd(pub Shared<HudDrawer>);
+
+impl EndHolder for HudEnd {
+    fn end_holding(&self) -> bool {
+        let d = self.0.0.borrow();
+        d.hud().borrow().end_holding()
     }
 }

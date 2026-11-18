@@ -98,7 +98,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 | RU26.2 | `RU26.2-layout-parts-blend.md` | Umsetzung | autonom | fertig |
 | RU26.3 | `RU26.3-devices-keytable-overlay-notice.md` | Umsetzung | autonom | fertig |
 | RU26.4 | `RU26.4-game-schleife.md` | Umsetzung | autonom | fertig |
-| RU26.5 | `RU26.5-window-menu-play.md` | Umsetzung | autonom | offen |
+| RU26.5 | `RU26.5-window-menu-play.md` | Umsetzung | autonom | fertig |
 | RU26.6 | `RU26.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
