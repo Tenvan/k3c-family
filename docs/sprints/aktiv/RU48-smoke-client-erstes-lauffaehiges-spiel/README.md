@@ -67,7 +67,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-18; 🧑 kann widersprechen): 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU48.1 | `RU48.1-start-verdrahten.md` | Umsetzung | autonom | fertig |
-| RU48.2 | `RU48.2-smoke-test-run-task-tasten.md` | Umsetzung | autonom | offen |
+| RU48.2 | `RU48.2-smoke-test-run-task-tasten.md` | Umsetzung | autonom | fertig |
 | RU48.3 | `RU48.3-erster-lauf-luecken-schliessen.md` | Umsetzung | autonom | offen |
 | RU48.4 | `RU48.4-review.md` | Umsetzung | autonom | offen |
 

@@ -33,6 +33,16 @@ tasks:
     cmds:
       - cargo fmt --all --check
 
+  # run: startet das Spiel (Hauptmenü, Neues Spiel). Arbeitsordner ist die Repo-Wurzel, damit public/grafik, public/schrift
+  # und native/k3c-rig/assets gefunden werden. gen:paper rendert die Grafik, die nicht eingecheckt ist (B-737); es arbeitet
+  # nur bei geänderten Quellen. Schalter des Spiels hinter `--`, z. B. `task rust:run -- --saves saves-test`.
+  run:
+    desc: "Rust-Spiel starten (Release): Hauptmenü, Neues Spiel; rendert die Grafik bei Bedarf (gen:paper); Schalter: task rust:run -- --players 1"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - task: :gen:paper
+      - cargo run --release --manifest-path rust/Cargo.toml -p k3c-game -- {{.CLI_ARGS}}
+
   # dist: baut k3c-game (Release) und legt EXE, Spieldaten, Grafik und den Demo-Treiber nach dist/k3c-rust/. Eigener
   # Ordner, damit das Go-Spiel in dist/k3c-game/ unberührt bleibt (bis RU35 das Paket umstellt). Kopiert wird mit
   # cmd/sync (nur Geändertes, Ordner zusammengeführt); die Grafik kommt aus public/grafik (`task gen:paper` vorher).
