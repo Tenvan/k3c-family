@@ -84,7 +84,6 @@ fn zerstoerte_portale_bleiben_nach_dem_laden_weg() {
 fn angegriffenes_portal_spawnt_verteidiger() {}
 
 #[test]
-#[ignore = "wartet auf RU19 (emit: portalDestroyed, stageSafe)"]
 fn letztes_portal_macht_stufe_sicher() {}
 
 #[test]

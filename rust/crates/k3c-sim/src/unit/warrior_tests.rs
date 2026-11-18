@@ -349,7 +349,7 @@ fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
 
 /// (e) Zwei Spieler zahlen gleichzeitig: einer am Bogen (Bogner), einer am Schwert-Zahlziel der Werkstatt.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, coin_give_event)"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn zwei_spieler_zahlen_bogen_und_schwert() {
     let mut w = quiet_world();
     let ps = [add_player(&mut w), add_player(&mut w)];

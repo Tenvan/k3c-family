@@ -21,7 +21,7 @@ mod moon_stages_tests;
 #[cfg(test)]
 mod moon_tests;
 #[cfg(test)]
-mod testutil;
+pub(crate) mod testutil;
 
 use serde_json::json;
 
@@ -75,7 +75,7 @@ pub fn build_progress_event(w: &mut World, site_id: i64, before: f64) {
         return;
     };
     let step = (s.build_progress * 4.0).floor();
-    if step > (before * 4.0).floor() && step >= 1.0 && step <= 3.0 {
+    if step > (before * 4.0).floor() && (1.0..=3.0).contains(&step) {
         let ev = event(json!({"site": s.id, "kind": s.kind, "x": unit_x(s.x), "percent": step as i64 * 25}));
         emit(w, "buildProgress", ev);
     }

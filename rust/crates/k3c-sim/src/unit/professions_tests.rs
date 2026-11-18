@@ -254,7 +254,6 @@ fn bogen_verbraucht_material_beim_arbeitsbeginn() {
 
 /// Go: `addPeasant` und `stepOffers` rechnen `emit` (RU19): Der Beruf wird erst mit dem Ereignis vergeben.
 #[test]
-#[ignore = "wartet auf RU19"]
 fn ausbildung_trifft_den_naechsten_freien_bauern() {
     let mut w = bare_world();
     let v = values(&w);

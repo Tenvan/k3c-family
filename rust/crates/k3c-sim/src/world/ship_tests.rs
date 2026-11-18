@@ -57,7 +57,7 @@ fn ship_at(isl: &Island) -> (usize, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn schiff_in_abschnitten_bauen() {
     // BS5.2/AC-02 (B-637/AC-03): Das Schiff wird in drei Abschnitten bezahlt und gebaut (Kosten aus data/ship.json,
     // unabhängig von der Hub-Stufe); erst der letzte Abschnitt macht es fertig.

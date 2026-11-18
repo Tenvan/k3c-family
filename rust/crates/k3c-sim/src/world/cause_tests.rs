@@ -49,21 +49,21 @@ fn down_cause(kind: &str, dx: f64) -> Event {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn cause_nahkampf_nennt_gegnerart() {
     let ev = down_cause("goblin", -0.5);
     assert!(ev["player"] == 1 && ev["cause"] == "goblin", "Nahkampf: {ev:?}");
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn cause_geschoss_nennt_gegnerart() {
     let ev = down_cause("goblinArcher", -6.0);
     assert!(ev["player"] == 1 && ev["cause"] == "goblinArcher", "Geschoss: {ev:?}");
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (each_passive)"]
 fn cause_ohne_gegner_fester_wert() {
     let mut w = quiet_world();
     add_player(&mut w);

@@ -62,7 +62,6 @@ fn boss_goblin_anfuehrer_ruft_goblins() {
 
 // (b) Ratten-Königin ruft Rattenschwärme: 2 Schwärme je swarmSize Ratten.
 #[test]
-#[ignore = "wartet auf RU19"]
 fn boss_ratten_koenigin_ruft_schwaerme() {
     let (mut w, isl) = boss_stage(2, 1);
     let v = boss_values();
@@ -78,7 +77,7 @@ fn boss_ratten_koenigin_ruft_schwaerme() {
 
 // (b) Troll-König trifft alle Truppen im Radius 3 um sich, nicht weiter weg.
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (troop_damage)"]
 fn boss_troll_koenig_flaechenschlag() {
     let (mut w, isl) = boss_stage(1, 1);
     let v = boss_values();

@@ -239,7 +239,7 @@ fn inselwechsel_tabelle_der_insel() {
 
 /// Die Standard-Welt hat eine Geschichte (`story`); `standard_world` meldet bis RU19 den Platzhalter.
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_daten() {
     let data = test_data();
     let d = &standard_world(&data).islands[0];

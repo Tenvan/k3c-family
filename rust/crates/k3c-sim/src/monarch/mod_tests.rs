@@ -17,7 +17,7 @@ use crate::world::step;
 use crate::world::values_room::default_values;
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
+#[ignore = "wartet auf RU18 (damage_mult_of)"]
 fn monarch_schlag_reichweite_und_abklingzeit() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);
@@ -55,7 +55,7 @@ fn monarch_schlag_reichweite_und_abklingzeit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event, step)"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn monarch_schlag_ereignisse() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);

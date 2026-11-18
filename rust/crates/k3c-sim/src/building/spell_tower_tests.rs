@@ -31,7 +31,6 @@ fn spell_world(level: i64, offsets: &[f64]) -> (World, usize, Vec<usize>) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (hit_event)"]
 fn zaubertum_flaechenschaden_im_takt() {
     let sp = vals(&bare_world()).buildings["tower"].spell.clone();
     let near = sp.range_units / 2.0;

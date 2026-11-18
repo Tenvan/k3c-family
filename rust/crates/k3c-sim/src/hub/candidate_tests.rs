@@ -57,7 +57,6 @@ fn create_island_aus_sieben_stufen_kandidat() {
 /// Der Vorschau-Teil von `TestCreateIslandAusSiebenStufenKandidat` (Go): `preview_hub_level` baut die Plätze über
 /// `dev_build_site`.
 #[test]
-#[ignore = "wartet auf RU19 (dev_build_site)"]
 fn create_island_kandidat_vorschau() {
     let h = read_hub7();
     let mut isl = make_island("kandidat", &[0, 1], candidate(h.clone())).unwrap_or_else(|e| panic!("{e}"));

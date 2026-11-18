@@ -66,7 +66,6 @@ fn collect_coins_laesst_unerreichbare_muenzen_liegen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x für coinPickup)"]
 fn collect_coins_gibt_dem_ersten_spieler_in_reichweite_und_zaehlt_die_insel() {
     let mut w = world_with_players(&[0, 0]);
     let v = vals(&w);

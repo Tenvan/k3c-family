@@ -245,7 +245,7 @@ fn walk_travel(c: &mut Campaign, x: f64, players: &[usize]) -> Option<crate::sta
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn freier_monarch_blockiert_nicht() {
     let (mut c, exit) = free_monarch_campaign();
     let tr = walk_travel(&mut c, exit, &[0, 2]);
@@ -272,7 +272,7 @@ fn freier_monarch_blockiert_nicht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn ohne_gesteuerten_monarchen_kein_wechsel() {
     let (mut c, exit) = free_monarch_campaign();
     for p in &mut c.current_world_mut().expect("Stufe").players {

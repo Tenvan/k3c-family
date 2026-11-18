@@ -53,9 +53,9 @@ fn has_near(xs: &[f64], x: f64, tol: f64) -> bool {
     xs.iter().any(|v| (v - x).abs() <= tol)
 }
 
-/// Go: `DevSetPhase` (dev.go): setzt die Tageszeit der Insel; kommt mit RU19.
-fn dev_set_phase(_isl: &mut Island, _phase: &str) -> bool {
-    unimplemented!("RU19: dev_set_phase")
+/// Go: `DevSetPhase` (dev.go): setzt die Tageszeit der Insel.
+fn dev_set_phase(isl: &mut Island, phase: &str) -> bool {
+    crate::dev::dev_set_phase(isl, phase)
 }
 
 /// Go: `TestFesteObjekteStehenWieGeplant`: Feste Objekte stehen an der geplanten Stelle und wirken in der Sim wie
@@ -137,7 +137,7 @@ fn fester_baum_laesst_sich_markieren() {
 
 /// Go: `TestWelleKommtAusDemFestenPortal` (die Nacht setzt `dev_set_phase`, RU19).
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn welle_kommt_aus_dem_festen_portal() {
     let (mut isl, data) = planned_island();
     add_island_player(&mut isl, 0);

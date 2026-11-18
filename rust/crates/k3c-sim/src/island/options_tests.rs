@@ -185,7 +185,6 @@ fn island_options_deterministic() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn island_options_world_without_island_unchanged() {
     // Go: `CreateWorld(biomeForDepth(0), "opt-g", Options{CycleSpeed: islandSpeed})`, `startWave(w)`; jede Warteschlange
     // hat die Faktoren 1/1 (ohne Insel keine Skalierung).

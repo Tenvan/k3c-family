@@ -2,7 +2,7 @@
 //! B-468/AC-03, docs/rules/geplante-chunks.md § 8), mit 2 Spielern über `fixture_island`. Die Tests über `fixture_island`
 //! (`create_world`) warten auf RU18 (Zahlplatz `new_hub_site`); Entwickler-Aktionen (`DevBuildAll`, `DevCastleFall`) und
 //! die Vorschau-Funktionen kommen mit RU19, Insel-Spielstand und Zahlziel (`find_pay_target`, `pay_one_coin`) mit RU18.2.
-#![allow(clippy::unimplemented)] // Rümpfe der Tests, die auf spätere Sessions warten
+#![allow(clippy::unimplemented)] // Rümpfe der Tests, die auf RU18 warten
 
 use super::repair::{repair, repair_job};
 use super::ruin::{add_ruin_sites, is_ruin, kind_hub_level, line_before_ruin, ruin_site};
@@ -163,9 +163,39 @@ fn burgfall_setzt_ruinen_zurueck() {
 /// WZ14.8 (Review-Befund S1, L2): Ausbau der Vorschau und „alles bauen“ lassen eine Ruine beschädigt (HP < MaxHP, MaxHP der
 /// Art), damit Client und Studio sie mit Schaden und Trümmern zeichnen; „nicht gebaut“ in der Vorschau behält die Kennung.
 #[test]
-#[ignore = "wartet auf RU19 (dev_build_all)"]
+#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (site_hub_level)"]
 fn ruine_bleibt_nach_ausbau_beschaedigt() {
-    unimplemented!("RU19: dev_build_all, preview_set_site")
+    let (mut isl, _) = fixture_island();
+    let levels = crate::world::hub_of(&isl.stages[0]).levels.len() as i64;
+    assert!(crate::dev::dev_build_all(&mut isl, levels), "dev_build_all abgelehnt");
+    let w = &mut isl.stages[0];
+    for k in ["smithy", "barracks", "storage"] {
+        let si = ruin_of(w, k);
+        let s = &w.sites[si];
+        let b = &vals(w).buildings[k];
+        let max_hp = if b.levels.is_empty() {
+            b.hp
+        } else {
+            b.levels[(s.level - 1) as usize].hp
+        }; // MaxHP der Stufe (B-569)
+        let start = ruin_start_hp(w, k);
+        assert!(
+            s.hp == start && s.max_hp == max_hp && s.hp < s.max_hp,
+            "Ruine {k} nach Ausbau: HP {}/{}",
+            s.hp,
+            s.max_hp
+        );
+    }
+    let si = ruin_of(w, "smithy");
+    let look = crate::world::preview::SiteLook {
+        unbuilt: true,
+        ..Default::default()
+    };
+    let r = crate::world::preview::preview_set_site(w, si, &look);
+    assert!(
+        r.is_ok() && w.sites[si].ruin && w.sites[si].state == "unpaid",
+        "nicht gebaut in der Vorschau"
+    );
 }
 
 /// Ruinen im Spielstand (kind@x, keine neue Version) und Vorrang der Mauerlinien beim Bezahlen (WZ14.3, B-468/AC-03).

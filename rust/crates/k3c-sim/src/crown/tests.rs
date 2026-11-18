@@ -25,7 +25,6 @@ fn treffer_muenzen_fallen_als_loot_und_sind_fuer_den_getroffenen_gesperrt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn krone_faellt_nach_hinten_weg_vom_gegner() {
     for (dx, dir) in [(1.0, -1.0), (-1.0, 1.0)] {
         let (mut w, v) = crown_world();
@@ -40,7 +39,6 @@ fn krone_faellt_nach_hinten_weg_vom_gegner() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn krone_landet_nach_der_flugzeit_und_der_flug_ist_deterministisch() {
     let land = || {
         let (mut w, v) = crown_world();
@@ -62,7 +60,6 @@ fn krone_landet_nach_der_flugzeit_und_der_flug_ist_deterministisch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn besitzer_hebt_seine_krone_auf() {
     let (mut w, v) = crown_world();
     drop_crown_with(&mut w, &v, 0, "goblin");
@@ -87,7 +84,6 @@ fn kein_raub_ohne_portale() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn gegner_hebt_krone_auf_flieht_und_traegt_sie_als_kopie() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -102,7 +98,6 @@ fn gegner_hebt_krone_auf_flieht_und_traegt_sie_als_kopie() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn traeger_stirbt_die_krone_faellt_an_seiner_stelle() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -118,7 +113,7 @@ fn traeger_stirbt_die_krone_faellt_an_seiner_stelle() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
+#[ignore = "wartet auf RU18 (step_players): Go-Test TestKroneMitspielerBringtZurueck läuft über Step, der Rust-Rumpf nicht"]
 fn mitspieler_traegt_die_krone_zum_besitzer_zurueck() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -140,7 +135,6 @@ fn mitspieler_traegt_die_krone_zum_besitzer_zurueck() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn eine_krone_je_monarch_ein_traeger_nimmt_nur_eine() {
     let (mut w, v) = crown_world();
     let id = w.new_id();

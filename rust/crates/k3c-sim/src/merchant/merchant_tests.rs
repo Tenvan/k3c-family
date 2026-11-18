@@ -19,7 +19,7 @@ fn pay_cmd() -> PlayerCommand {
 
 /// (d) Ankunft am Tag laut Rhythmus, nicht davor, Abreise beim nächsten dawn; mit Taverne früher; nur in Tiefe 0.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
+#[ignore = "wartet auf RU18 (step_passives)"]
 fn merchant_rhythmus_und_abreise() {
     let m = default_values().economy.merchant.clone();
     let mut w = merchant_world(0);
@@ -48,7 +48,7 @@ fn merchant_rhythmus_und_abreise() {
 
 /// (d) Gleicher Seed → gleiches Material, nur aus den freigeschalteten.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
+#[ignore = "wartet auf RU18 (step_passives)"]
 fn merchant_material_aus_rng_und_freigeschaltet() {
     let m = default_values().economy.merchant.clone();
     let pick = |level: i64| -> String {
@@ -64,7 +64,7 @@ fn merchant_material_aus_rng_und_freigeschaltet() {
 
 /// (d) Kaufen: 10 × gold Münzen → 10 × material; Verkaufen umgekehrt; andere Materialien bleiben.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, coin_give_event)"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn merchant_tauscht_in_beide_richtungen() {
     let m = default_values().economy.merchant.clone();
     let trades = 10;
@@ -100,7 +100,7 @@ fn merchant_tauscht_in_beide_richtungen() {
 
 /// (d) Nach einem Tag ist der Händler weg; ein halber Kauf fällt als Münzen zu Boden.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, merchant_raid_end)"]
+#[ignore = "wartet auf RU18 (step_passives)"]
 fn merchant_reist_ab_halber_kauf_zu_boden() {
     let m = default_values().economy.merchant.clone();
     let (mut w, _) = trade_world("wood", "buy", "");
@@ -121,7 +121,7 @@ fn merchant_reist_ab_halber_kauf_zu_boden() {
 
 /// (e) Zwei Spieler tauschen gleichzeitig (einer kauft, einer verkauft); das Ergebnis hängt nicht von der Reihenfolge ab.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, coin_give_event)"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn merchant_zwei_spieler_reihenfolge_egal() {
     let m = default_values().economy.merchant.clone();
     let run = |swap: bool| {

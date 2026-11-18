@@ -79,7 +79,6 @@ fn passiver_spieler_burg_faellt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn take_equipment_nimmt_den_ersten_drop_ausser_hammer() {
     let mut w = bare_world();
     w.portals = vec![w.hub_x - 100.0];

@@ -89,13 +89,13 @@ fn mirror_endboss_phase_und_warnkreis() {
     assert!(s.contains(r#""phase":2"#) && s.contains(r#""warn":{"x":"#), "JSON: {s}");
 }
 
-/// Go: `moonIsland` (events_moon_test.go): Insel mit Wald und Höhle, zwei Spielern und Zyklus kurz vor Nacht `n`, RU19.
-fn moon_island(_n: i64) -> Island {
-    panic!("RU19: moon_island")
+/// Go: `moonIsland` (events_moon_test.go): Insel mit Wald und Höhle, zwei Spielern und Zyklus kurz vor Nacht `n`.
+fn moon_island(n: i64) -> Island {
+    crate::events::testutil::moon_island(n).1
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (moon_island, night_events_start, event_active)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn mirror_event() {
     let data = test_data();
     let mut isl = moon_island(7);

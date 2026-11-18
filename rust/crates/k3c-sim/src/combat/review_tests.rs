@@ -6,7 +6,7 @@ use super::data::COMBAT_GENERAL;
 use super::testutil::{combat_pay, combat_stage, group_ready, run, spawn_soldiers, spot_for};
 
 #[test]
-#[ignore = "wartet auf RU19 (emit: step der Schild-Variante)"]
+#[ignore = "wartet auf RU18 (speed_of)"]
 fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
     for mode in [super::data::COMBAT_GROUPS, super::data::COMBAT_GENERAL] {
         let (mut w, _, _) = combat_stage(mode);

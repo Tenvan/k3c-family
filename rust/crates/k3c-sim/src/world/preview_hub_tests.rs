@@ -11,7 +11,6 @@ fn preview_json(w: &World) -> String {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
 fn preview_hub_level_baut_nach_den_regeln_der_sim() {
     let hub_levels = |w: &World| hub_of(w).levels.len() as i64;
     let mut level = 1;
@@ -59,7 +58,6 @@ fn built_count(w: &World, kind: &str) -> usize {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
 fn preview_hub_level_feste_faelle() {
     // Feste Erwartung aus data/hub.json (healer ab Hub 3, armory ab Hub 4, Mauerlinien 1 bis 5), unabhängig vom Code.
     let mut w = new_world(0, "x", Options::default());
@@ -112,7 +110,6 @@ fn rotation_fehler_erkennt_die_reihum_folge() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
 fn preview_hub_level_stufen_laufen_reihum() {
     // Feste Reihum-Folgen: Mauer und Turm haben fünf Stufen; bei Hub n zählt der Zähler 1…n und beginnt dann von vorn.
     let n = hub_of(&new_world(0, "x", Options::default())).levels.len() as i64;
@@ -143,7 +140,6 @@ fn preview_hub_level_stufen_laufen_reihum() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
 fn preview_hub_level_fehler_und_unabhaengigkeit() {
     let n = hub_of(&new_world(0, "x", Options::default())).levels.len() as i64;
     for level in [0, -1, n + 1] {
@@ -179,7 +175,7 @@ fn own_preview_hub_level_fehler_ohne_create_world() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
+#[ignore = "wartet auf RU18 (step_passives)"]
 fn preview_welt_laeuft_weiter() {
     // Gleiche Eingaben → nach 120 Ticks dieselbe Welt, und der Zyklus läuft von der gesetzten Tageszeit aus weiter.
     let run = || {

@@ -1,7 +1,6 @@
 //! Tests zu `outpost.rs` (Go: `building_outpost_test.go`, WZ14.4, B-468/AC-03, docs/rules/geplante-chunks.md § 8): Plätze
 //! jenseits des äußersten Tors laut Layout, mit 2 Spielern über `fixture_island` (alle drei Ruinen der Fixture liegen dort).
-//! Die Tests über `fixture_island` warten auf RU18 (Zahlplatz `new_hub_site`); `DevCastleFall` kommt mit RU19.
-#![allow(clippy::unimplemented)] // Rumpf des Tests, der auf RU19 wartet
+//! Die Tests über `fixture_island` warten auf RU18 (Zahlplatz `new_hub_site`).
 
 use k3c_level::types::WallSite;
 
@@ -213,9 +212,35 @@ fn vorposten_waffen_nur_ohne_gefahr() {
 
 /// Dev-Funktion Burgfall: Stufenverlust auch ohne gefallene Burg, die zerstörte Ruine steht wieder.
 #[test]
-#[ignore = "wartet auf RU19 (dev_castle_fall)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn dev_castle_fall_stellt_ruine_wieder_her() {
-    unimplemented!("RU19: dev_castle_fall")
+    let (mut isl, data) = fixture_island();
+    let w = &mut isl.stages[0];
+    let si = ruin_of(w, "smithy");
+    let id = w.sites[si].id;
+    destroy_site(w, id);
+    w.players[0].gold = 10;
+    w.players[1].gold = 7;
+    assert!(
+        crate::dev::dev_castle_fall(&mut isl, &data.difficulty, 1),
+        "Spieler 1 nicht gefunden"
+    );
+    let w = &isl.stages[0];
+    let s = &w.sites[si];
+    let hp = ruin_start_hp(w, "smithy");
+    assert!(
+        s.id == id && s.ruin && s.state == "built" && s.hp == hp,
+        "Ruine nach Dev-Burgfall: {s:?}"
+    );
+    assert_eq!((w.players[0].gold, w.players[1].gold), (5, 3), "Gold nach Dev-Burgfall");
+    assert!(
+        w.troops.iter().all(|t| t.kind == "vagrant"),
+        "Truppe überlebt den Burgfall"
+    );
+    assert!(
+        !crate::dev::dev_castle_fall(&mut isl, &data.difficulty, 9),
+        "unbekannter Spieler akzeptiert"
+    );
 }
 
 /// Eigener Test (ohne Go-Gegenstück, läuft ohne `create_world`): Vorposten laut Layout, Mauer-Plätze nach `side`.

@@ -14,7 +14,6 @@ fn fortified_aura_fuer_truppen() {}
 fn kein_raub_in_geschuetzter_nacht() {}
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn ohne_insel_gibt_es_keine_geschuetzte_nacht() {
     // Gegenprobe zum ignorierten Insel-Test: ohne Insel (None) gilt der Raub.
     let (mut w, v) = crown_world();
@@ -26,7 +25,6 @@ fn ohne_insel_gibt_es_keine_geschuetzte_nacht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn freier_monarch_bekommt_die_krone_zurueck() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);

@@ -46,7 +46,7 @@ fn kite_for(w: &mut crate::state::World, ei: usize, seconds: f64) {
 /// (a) Flächenschlag: zwei Truppen im Radius 3 um das Ziel nehmen Schaden, eine außerhalb nicht; der zweite Schlag kommt
 /// erst nach 4 s, dazwischen greift der Troll normal an.
 #[test]
-#[ignore = "wartet auf RU19 (unit_x)"]
+#[ignore = "wartet auf RU18 (troop_damage)"]
 fn gegner_flaechenschlag() {
     let mut w = quiet_world();
     let x = w.hub_x - 30.0;
@@ -80,7 +80,7 @@ fn gegner_flaechenschlag() {
 
 /// (g) Zwei Spieler im Radius: beide nehmen Schaden.
 #[test]
-#[ignore = "wartet auf RU19 (unit_x)"]
+#[ignore = "wartet auf RU18 (each_passive)"]
 fn gegner_flaechenschlag_zwei_spieler() {
     let mut w = quiet_world();
     let (p1, p2) = (add_player(&mut w), add_player(&mut w));
@@ -221,7 +221,7 @@ fn gegner_angriffsrate() {
 
 /// (e) Angriffe in 10 s: 2/s trifft doppelt so oft wie 1/s.
 #[test]
-#[ignore = "wartet auf RU19 (unit_x)"]
+#[ignore = "wartet auf RU18 (troop_damage)"]
 fn gegner_angriffsrate_zaehlt_treffer() {
     let mut w = quiet_world();
     let mut arc = (*w.vals.clone().expect("Wertesatz")).clone();
@@ -274,7 +274,7 @@ fn gegner_wellenplan_deterministisch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (moon_damage)"]
+#[ignore = "wartet auf RU18 (each_passive)"]
 fn gegner_traits_deterministisch() {
     let scenario = || {
         let mut w = quiet_world();
