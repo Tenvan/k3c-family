@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU47
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
@@ -67,4 +67,6 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Stand 2026-11-18 (RU47)**: Ergebnisse in RU47.1 (Cargo-Stand 1381 grün / 326 ignoriert / 4 rot nur `still*`, Marken je RU, `--ignored`-Läufe) und RU47.2 (`go:test` grün, `testdata/` unverändert); Notizen in B-1081, B-1084, B-1086, B-1093 geschrieben (Status unverändert `offen`).
+
+Vorschlag für den Hauptrechner: (1) 39 grüne ignorierte Tests freischalten (26 `k3c-sim`, 3 `k3c-game`, 10 `k3c-room`, Liste im Ergebnis RU47.1), (2) Marke RU10/RU15 an den Insel-Helfern auf RU18 umstellen, (3) Test `island::worlds_tests::eingebettete_welten_gueltig` anpassen (`rom.json` ist eingebettet), (4) Tickets für `overlay_two_players_learn` (Testdaten) und den Atlas-Test (RU17, Ausschnitte in `k3c-platform`), (5) rust-fmt/`still*`-Altlasten aus dem Ergebnis RU45.

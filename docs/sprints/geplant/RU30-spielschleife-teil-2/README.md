@@ -61,10 +61,10 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Seit 2026-11-18 liefert RU48 (Smoke-Client) den Start: `game/launch.rs`, den Verteiler in `main.rs` und `task rust:run`; RU30.6 ergänzt darauf nur Startparameter, Fenster-Fehlerbild und Icon, RU30.1 ersetzt das einmalige Laden der Grafik durch das Laden je Stufe.
 
 - **Bereich:** `rust/crates/k3c-game/src/game/**`, `rust/crates/k3c-game/src/main.rs` (nur Verteiler und Spielstart), `rust/crates/k3c-game/tests/run_*.rs`; nur mit Freigabe von 🧑 (RU30.6): `rust/crates/k3c-game/build.rs`, `rust/crates/k3c-game/assets/**`, `rust/crates/k3c-game/Cargo.toml` (Ressourcen-Crate für das Icon)
-- **Abhängig von:** RU26, RU27
+- **Abhängig von:** RU26, RU27, RU48, RU50
 - **Braucht 🧑:** Freigabe eines Ressourcen-Crates für das EXE-Icon (RU30.6, Haltepunkt)
 - **Sperre:** –
 
