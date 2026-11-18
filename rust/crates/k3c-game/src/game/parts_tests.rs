@@ -253,7 +253,7 @@ fn assemble_roles() {
     );
     let assets: usize = ps.iter().map(|p| p.assets.len()).sum();
     let overlays: usize = ps.iter().map(|p| p.overlays.len()).sum();
-    assert!(assets >= 5 && overlays == 1, "Assets {assets}, Overlays {overlays}");
+    assert!(assets >= 5 && overlays == 2, "Assets {assets}, Overlays {overlays}");
     let p = assemble(ps).unwrap_or_else(|e| panic!("{e}"));
     assert!(p.camera.is_some());
     assert_eq!((p.assets.len(), p.overlays.len()), (assets, overlays));

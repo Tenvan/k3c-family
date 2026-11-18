@@ -1,6 +1,6 @@
 # RU29 · CLI · Testing-, Debug- und Cheat-Menüs im Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -87,10 +87,10 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU29.1 | `RU29.1-devtools-cheats.md` | Umsetzung | autonom | offen |
-| RU29.2 | `RU29.2-devtools-chronicle.md` | Umsetzung | autonom | offen |
-| RU29.3 | `RU29.3-devtools-debug-help-values.md` | Umsetzung | autonom | offen |
-| RU29.4 | `RU29.4-review.md` | Review | autonom | offen |
+| RU29.1 | `RU29.1-devtools-cheats.md` | Umsetzung | autonom | fertig |
+| RU29.2 | `RU29.2-devtools-chronicle.md` | Umsetzung | autonom | fertig |
+| RU29.3 | `RU29.3-devtools-debug-help-values.md` | Umsetzung | autonom | fertig |
+| RU29.4 | `RU29.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -98,6 +98,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18: AC-01 und AC-02 erfüllt (Ergebnisse RU29.1 bis RU29.3; `cargo test -p k3c-game` 733 Lib-Tests plus `run_smoke` grün, `task check` und `task check:go` grün). Alle fünf Go-Tests portiert; Listen von Cheat-Menü und Hilfe gegen Go gelegt, gleich.
+Behoben: Chronik allokierte je Bild den Phasen-Text (`changed_str`). Review (k3c-reviewer, k3c-hud): keine HOCH-Befunde.
+Abweichung: `devtools/pending.rs` bleibt mit `dev_of` (None), weil `view::Session` keine Entwickler-Rolle bietet, Cheats wirken erst mit B-1111 (Sprint RU30); `game/packages.rs` meldet devtools an (statt parts/mod). Tickets: B-1110 (native.json, RU30), B-1111 (Dev-Rolle, RU30).
+Abnahme-Ticket (Race, Gen, Prüfliste für Ralf, Lane zweit): B-1112.
