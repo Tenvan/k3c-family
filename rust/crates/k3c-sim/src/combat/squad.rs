@@ -177,7 +177,7 @@ pub fn step_banners(w: &mut World, v: &WorldValues) {
 }
 
 /// Go: `returnBanner`: stellt das Banner des Monarchen `pi` am Tor wieder auf; sein Trupp kehrt zurück.
-fn return_banner(w: &mut World, pi: usize) {
+pub fn return_banner(w: &mut World, pi: usize) {
     let (id, index) = (w.players[pi].id, w.players[pi].index);
     w.players[pi].banner = 0;
     w.players[pi].banner_out = false;

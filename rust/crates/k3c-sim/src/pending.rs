@@ -3,9 +3,6 @@
 //! aus RU8 stehen weiter in `state/pending.rs`. Go-Zeiger auf Gegner und Truppen sind hier Indizes (`ei`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU19)
 
-use crate::state::World;
-use crate::state::island_ref::IslandRef;
-
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
 pub use crate::boss::{boss_ability, boss_defeated, trigger_boss};
@@ -34,12 +31,6 @@ pub use crate::building::upgrades::armored_hp;
 
 // Von RU14.4 portiert (world_vein.go): die Import-Stelle bleibt `pending`.
 pub use crate::world::vein::{gather_vein, is_vein, node_free};
-
-/// Go: `addStockCapped` (island_storage.go): legt höchstens bis zur Kapazität der Insel ab und liefert die aufgenommene
-/// Menge; `None`: kein Baumaterial (Go: `ok` false).
-pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &str, _amount: i64) -> Option<i64> {
-    unimplemented!("RU10: add_stock_capped")
-}
 
 pub use crate::monarch::add_pool_points; // Von RU18.4 portiert (monarch.go)
 

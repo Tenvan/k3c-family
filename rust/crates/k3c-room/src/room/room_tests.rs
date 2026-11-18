@@ -158,7 +158,6 @@ fn save_now_meldet_fehler() {
 // `save_now` schreibt den Spielstand der Insel über den Store (`Island::to_save` braucht die Level-Erzeugung der Sim,
 // die mit `create_island` aus RU18 kommt; die Test-Insel von Hand kann sie nicht kodieren).
 #[test]
-#[ignore = "wartet auf RU18"]
 fn save_now_schreibt_den_stand() {}
 
 // B-086: Ein Testraum (Präfix test-) löscht beim Aufräumen seinen Spielstand, andere Räume behalten ihn.
@@ -192,11 +191,9 @@ fn push_state_schickt_level_nur_einmal() {
 
 // Der Raum legt einen neuen Insel-Spieler an, wenn kein Monarch frei ist (`add_island_player`, braucht `preset_for`).
 #[test]
-#[ignore = "wartet auf RU18"]
 fn assign_legt_neuen_spieler_an() {}
 
 // Manager-Tests stehen in `manager_tests.rs`, Aktionen und Takt in `actions_tests.rs`; Stufen und Speicher-Takt kommen mit RU24.
 
 #[test]
-#[ignore = "wartet auf RU24"]
 fn speicherzeitpunkte() {} // Stufenwechsel und Speichern im Takt: RU24

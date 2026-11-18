@@ -1,14 +1,16 @@
 //! Naht zu den Sim-Funktionen, die erst spätere Sprints nach Rust bringen (Vorentscheidung RU16.1, Abweichung von
 //! Leitfaden § 7): Die Go-Funktionen `sim.EconomyOf`, `SiteGoldLeft`, `SitePayable`, `SiteNeedsClearing`, `ShieldRack`,
 //! `CombatSpots`, `NearOf`, `StateFor` und `AtLair` rechnen aus Sim-Regeln, die RU15 (combat, boss_endboss) und RU18 (economy_view) liefern.
-//! Alle Zeichner und `hud` reichen `&dyn SimView` durch; RU15 und RU18 ersetzen `PendingSimView` durch die Sim und
+//! Alle Zeichner und `hud` reichen `&dyn SimView` durch; RU15 und RU18 ersetzen `LiveSimView` durch die Sim und
 //! löschen diese Datei samt `pending::{Economy, HubUpgrade, CombatSpot}`.
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use k3c_sim::state::{Player, Site, World};
 
-use super::pending::{CombatSpot, Economy, PendingSimView, SpotState};
+use super::pending::{CombatSpot, Economy, HubUpgrade, LiveSimView, SpotState};
+use k3c_sim::combat::spots::{CombatSpot as SimSpot, SpotKind};
 use k3c_sim::state::site_view;
+use k3c_sim::world::vals;
 
 /// `SimView` ist die Sicht der Anzeige auf abgeleitete Sim-Werte (Signaturen wie in Go).
 pub trait SimView {
@@ -37,32 +39,75 @@ pub trait SimView {
     fn spot_state(&self, w: &World, s: &CombatSpot, p: &Player) -> SpotState;
 }
 
-impl SimView for PendingSimView {
-    fn economy_of(&self, _w: &World) -> Economy {
-        unimplemented!("RU18: economy_of")
+impl SimView for LiveSimView {
+    fn economy_of(&self, w: &World) -> Economy {
+        let e = k3c_sim::economy::economy_of(w, &vals(w), None);
+        Economy {
+            stock_max: e.stock_max,
+            purse_max: e.purse_max,
+            hub_level: e.hub_level,
+            hub_step: e.hub_step,
+            hub_upgrade: e.hub_upgrade.map(|u| HubUpgrade {
+                gold: u.gold,
+                material: u.material,
+                paid: u.paid,
+                state: u.state,
+                steps: u.steps,
+            }),
+            danger: e.danger,
+            fighters: e.fighters,
+            troop_limit: e.troop_limit,
+        }
     }
-    fn site_gold_left(&self, _w: &World, _s: &Site) -> (i64, bool) {
-        unimplemented!("RU18: site_gold_left")
+    fn site_gold_left(&self, w: &World, s: &Site) -> (i64, bool) {
+        k3c_sim::economy::site_gold_left(w, &vals(w), None, s)
     }
-    fn site_payable(&self, _w: &World, _s: &Site) -> bool {
-        unimplemented!("RU18: site_payable")
+    fn site_payable(&self, w: &World, s: &Site) -> bool {
+        k3c_sim::economy::site_payable(w, &vals(w), None, s)
     }
-    fn site_needs_clearing(&self, _w: &World, _s: &Site) -> bool {
-        unimplemented!("RU18: site_needs_clearing")
+    fn site_needs_clearing(&self, w: &World, s: &Site) -> bool {
+        k3c_sim::world::lines::site_needs_clearing(w, s)
     }
-    fn shield_rack(&self, _w: &World) -> (f64, i64, bool) {
-        unimplemented!("RU15: shield_rack")
+    fn shield_rack(&self, w: &World) -> (f64, i64, bool) {
+        k3c_sim::combat::spots::shield_rack(w, &vals(w))
     }
-    fn combat_spots(&self, _w: &World) -> Vec<CombatSpot> {
-        unimplemented!("RU15: combat_spots")
+    fn combat_spots(&self, w: &World) -> Vec<CombatSpot> {
+        k3c_sim::combat::spots::combat_spots(w, &vals(w))
+            .into_iter()
+            .map(|s| CombatSpot {
+                kind: s.kind.as_str().to_string(),
+                side: s.side,
+                x: s.x,
+            })
+            .collect()
     }
-    fn at_lair(&self, _w: &World, _p: &Player) -> bool {
-        unimplemented!("RU15: at_lair")
+    fn at_lair(&self, w: &World, p: &Player) -> bool {
+        k3c_sim::boss::endboss::at_lair(w, None, p)
     }
-    fn spot_near(&self, _w: &World, _s: &CombatSpot, _p: &Player) -> bool {
-        unimplemented!("RU15: spot_near")
+    fn spot_near(&self, w: &World, s: &CombatSpot, p: &Player) -> bool {
+        sim_spot(s).near_of(&vals(w), p)
     }
-    fn spot_state(&self, _w: &World, _s: &CombatSpot, _p: &Player) -> SpotState {
-        unimplemented!("RU15: spot_state")
+    fn spot_state(&self, w: &World, s: &CombatSpot, p: &Player) -> SpotState {
+        let st = sim_spot(s).state_for(w, &vals(w), p);
+        SpotState {
+            price: st.price,
+            paid: st.paid,
+            payable: st.payable,
+            near: st.near,
+        }
+    }
+}
+
+/// Das Zahlziel der Anzeige als Sim-Typ (`kind` ist `shield`, `trigger` oder `banner`).
+fn sim_spot(s: &CombatSpot) -> SimSpot {
+    let kind = match s.kind.as_str() {
+        "trigger" => SpotKind::Trigger,
+        "banner" => SpotKind::Banner,
+        _ => SpotKind::Shield,
+    };
+    SimSpot {
+        kind,
+        side: s.side,
+        x: s.x,
     }
 }

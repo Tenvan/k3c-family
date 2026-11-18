@@ -22,9 +22,13 @@ pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert 
 
 pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
-/// Go: `protectedNight` (World-Methode, `island_options.go`; Sprint-Nummer korrigiert: RU10, nicht RU18).
-pub fn protected_night(_w: &World) -> bool {
-    unimplemented!("RU10: protected_night")
+/// Go: `protectedNight` (World-Methode, `island_options.go`): Die Stufe gehört zu einer Insel, deren Grad die laufende Nacht
+/// schützt. Die Insel steht in Rust nicht an der Stufe; `World::island_events` spiegelt den Grad (`step_island`), ohne
+/// Insel nie (wie `island_ref::protected_night(w, None)`).
+pub fn protected_night(w: &World) -> bool {
+    w.island_events
+        .as_ref()
+        .is_some_and(|i| w.cycle.phase == "night" && w.cycle.day <= i.protected_nights)
 }
 
 pub use crate::building::plantation::plot_x; // Von RU18.1 portiert (building_plantation.go)
@@ -44,10 +48,7 @@ pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portie
 
 pub use crate::economy::to_hub; // Von RU18.2 portiert (economy.go)
 
-/// Go: `returnBanner` (combat_squad.go): stellt das Banner des Monarchen `pi` am Tor wieder auf; sein Trupp kehrt zurück.
-pub fn return_banner(_w: &mut World, _pi: usize) {
-    unimplemented!("RU15: return_banner")
-}
+pub use crate::combat::squad::return_banner; // Von RU15 portiert (combat_squad.go)
 
 pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
 

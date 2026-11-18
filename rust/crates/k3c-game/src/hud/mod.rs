@@ -22,7 +22,7 @@ use self::story::TaleState;
 use self::values::Memo;
 use self::voyage::VoyageView;
 use crate::art::{Font, Library, SeaMap};
-use crate::props::pending::PendingSimView;
+use crate::props::pending::LiveSimView;
 use crate::props::simview::SimView;
 use crate::view::MAX_PLAYERS;
 use crate::view::cell::Cell;
@@ -227,7 +227,7 @@ pub fn new(lib: Option<Rc<RefCell<Library>>>, view: Box<dyn SimView>) -> HudDraw
 
 /// new_pending: wie `new`, mit der Sicht auf Sim-Werte, die RU15 und RU18 liefern.
 pub fn new_pending(lib: Option<Rc<RefCell<Library>>>) -> HudDrawer {
-    new(lib, Box::new(PendingSimView))
+    new(lib, Box::new(LiveSimView))
 }
 
 impl HudDrawer {

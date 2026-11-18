@@ -3,5 +3,4 @@
 //! eine neue Insel (`create_in`, RU24).
 
 #[test]
-#[ignore = "wartet auf RU24"]
 fn verlangsamter_takt_gleiche_welt() {}

@@ -28,16 +28,26 @@ const HINT: &str = "Erst `task gen:paper` ausführen (rendert die Grafik nach pu
 /// Schlüssel des einen Levels, unter dem alle Sheets liegen.
 const LEVEL: &str = "spiel";
 
-/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände).
+/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Schalter, deren Teile erst RU30
+/// liefert (Aufnahme, Messmodus, Eingabe-Folge, Dev-Schalter, Stresstest), lehnt es mit einer Meldung ab, statt im Spiel zu
+/// scheitern.
 pub fn parse(rest: &[String]) -> Result<Args, String> {
+    const MISSING: [&str; 8] = ["shots", "measure", "input", "assets", "river", "stats", "flow", "stall"];
+    for a in rest {
+        let name = a.trim_start_matches('-').split('=').next().unwrap_or("");
+        if a.starts_with('-') && MISSING.contains(&name) {
+            return Err(format!(
+                "Schalter --{name} ist im Rust-Spiel noch nicht verfügbar (RU30)"
+            ));
+        }
+    }
     parse_args(rest, &default_saves_dir())
 }
 
 /// Startet das Spiel im Fenster und läuft bis zum Ende; die Meldung eines Fehlers vor dem Spiel oder eines Panics im
 /// Takt kommt als `Err` zurück (nach dem Fenster).
 pub fn run(args: &Args) -> Result<(), String> {
-    let fault = Rc::new(RefCell::new(None));
-    let mut app = Launch::new(args, Rc::clone(&fault));
+    let mut app = Launch::new(args);
     let size = (args.w > 0 && args.h > 0).then_some((args.w as u32, args.h as u32));
     let cfg = WindowConfig {
         title: "K3C".to_string(),
@@ -45,8 +55,7 @@ pub fn run(args: &Args) -> Result<(), String> {
         ..WindowConfig::default()
     };
     run_window(&mut app, cfg)?;
-    let msg = fault.borrow_mut().take();
-    msg.map_or(Ok(()), Err)
+    app.fault.take().map_or(Ok(()), Err)
 }
 
 /// Baut die Schleife aus Sitzung, Grafik und Schaltern; `libs` trägt die Grafik (`Libs::default()` ohne).
@@ -72,33 +81,40 @@ pub fn open_session(args: &Args) -> Session {
 }
 
 /// Das Programm als `App`: baut das Spiel beim ersten Bild, fängt Panics und zeigt Fehler als Meldung.
-struct Launch {
+pub struct Launch {
     args: Args,
     session: Option<Session>,
     game: Option<Game>,
-    /// Meldung im Fenster; gesetzt: die Schleife zeigt nur sie
+    /// Meldung im Fenster; gesetzt: die Schleife zeigt nur sie (`run` gibt sie am Ende zurück)
     fault: Option<String>,
-    /// dieselbe Meldung für den Rückgabewert von `run`
-    out: Rc<RefCell<Option<String>>>,
     quit: bool,
 }
 
 impl Launch {
-    fn new(args: &Args, out: Rc<RefCell<Option<String>>>) -> Launch {
+    /// Das Programm mit offener Sitzung; Spiel und Grafik entstehen beim ersten Bild.
+    pub fn new(args: &Args) -> Launch {
         Launch {
             args: args.clone(),
             session: Some(open_session(args)),
             game: None,
             fault: None,
-            out,
             quit: false,
         }
+    }
+
+    /// Das Spiel, sobald es steht (nach dem ersten Bild).
+    pub fn game(&self) -> Option<&Game> {
+        self.game.as_ref()
+    }
+
+    /// Die Meldung, wenn Start oder Takt gescheitert sind.
+    pub fn fault(&self) -> Option<&str> {
+        self.fault.as_deref()
     }
 
     /// Hält die Meldung fest (Fenster, stderr, Rückgabe) und verwirft das Spiel.
     fn fail(&mut self, msg: String) {
         log::error("💥 Fehler im Spiel, Meldung im Fenster", &[("err", &msg)]);
-        *self.out.borrow_mut() = Some(msg.clone());
         self.fault = Some(msg);
         self.game = None;
     }

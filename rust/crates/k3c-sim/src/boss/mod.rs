@@ -18,11 +18,10 @@ use k3c_data::bosses::{BossAbility, BossData};
 use crate::enemies::spawn_with;
 use crate::enemies::target::TargetKind;
 use crate::enemies::traits::aoe_targets;
+use crate::island::storage::add_stock_capped;
 use crate::state::common::{apply_damage_by, event};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{
-    add_pool_points, add_stock_capped, emit, frost_armor_hit, moon_damage, scatter_coins, unit_x, values,
-};
+use crate::state::pending::{add_pool_points, emit, frost_armor_hit, moon_damage, scatter_coins, unit_x, values};
 use crate::state::{Enemy, World, WorldValues};
 
 use abilities::{arm_boss, flame_trail, shard_throw};
@@ -170,9 +169,8 @@ pub fn boss_defeated_with(w: &mut World, v: &WorldValues, e: &Enemy, mut isl: Op
     };
     scatter_coins(w, e.x, b.reward.gold + e.carried_gold);
     let res = w.biome.primary_resource.clone(); // einmal je Boss
-    if let Some(taken) = add_stock_capped(w, isl.as_deref(), &res, b.reward.material)
-        && taken > 0
-    {
+    let (taken, ok) = add_stock_capped(w, v, isl.as_deref(), &res, b.reward.material);
+    if ok && taken > 0 {
         emit(w, "gathered", event(json!({"resource": res, "amount": taken})));
     }
     let sources = &v.monarch.skill_point_sources;

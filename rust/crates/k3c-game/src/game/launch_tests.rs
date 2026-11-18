@@ -4,9 +4,9 @@ use super::*;
 use crate::game::stack::Mode;
 use k3c_platform::run_headless;
 
-/// Spielstand-Ordner der Tests (unter `target/`, wird nur gelesen).
+/// Spielstand-Ordner der Tests (im Workspace-`target/`, wird nur gelesen).
 fn saves() -> String {
-    format!("{}/target/launch-test", env!("CARGO_MANIFEST_DIR"))
+    format!("{}/../../target/launch-test", env!("CARGO_MANIFEST_DIR"))
 }
 
 fn args(extra: &[&str]) -> Args {
@@ -42,7 +42,6 @@ fn neues_spiel_mit_zwei_geraeten_steht() {
 
 /// Der erste Takt liefert zwei Spieler und zwei Zellen.
 #[test]
-#[ignore = "wartet auf RU48.3: props/simview.rs panict in economy_of (Platzhalter RU18)"]
 fn neues_spiel_erster_takt_zwei_spieler() {
     let a = args(&["--seed", "smoke", "--players", "2"]);
     let mut g = build_game(&a, open_session(&a), &Libs::default()).unwrap();
@@ -56,16 +55,23 @@ fn neues_spiel_erster_takt_zwei_spieler() {
 #[test]
 fn fehlende_grafik_ist_eine_meldung() {
     let a = args(&["--grafik", "gibt-es-nicht"]);
-    let out = Rc::new(RefCell::new(None));
-    let mut app = Launch::new(&a, Rc::clone(&out));
+    let mut app = Launch::new(&a);
     run_headless(&mut app, 3, None);
-    let msg = out.borrow().clone().unwrap_or_default();
+    let msg = app.fault().unwrap_or_default().to_string();
     assert!(msg.contains("task gen:paper"), "Meldung: {msg}");
-    assert!(app.fault.is_some() && app.game.is_none());
+    assert!(app.game().is_none());
 }
 
 #[test]
 fn umbruch_haelt_die_zeilenlaenge() {
     let lines = wrap("aaa bbb ccc\nddd", 7);
     assert_eq!(lines, ["aaa bbb", "ccc", "ddd"]);
+}
+
+#[test]
+fn schalter_der_dev_teile_werden_abgelehnt() {
+    for f in ["--stats", "--measure=5", "--shots=x"] {
+        let e = parse(&[f.to_string()]).unwrap_err();
+        assert!(e.contains("RU30"), "{f}: {e}");
+    }
 }

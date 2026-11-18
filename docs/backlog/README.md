@@ -157,7 +157,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU14 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
 | [B-1094](B-1094-plattform-fenster-api.md) | PLAT | Schuld | niedrig | offen | RU26 | Die Plattform bekommt eine Fenster-API für Größe, Lage und Rahmen |
 | [B-1096](B-1096-abnahme-laeufe-ru26-spielschleife.md) | CLI | Schuld | mittel | offen | RU26 | Abnahme-Läufe RU26: Sim, Balance, Gen und Race für die Rust-Spielschleife |
-| [B-1097](B-1097-add-stock-capped-platzhalter-rest.md) | SIM | Schuld | niedrig | offen | RU18 | Platzhalter add_stock_capped in k3c-sim pending.rs ist ein Rest aus RU10 |
 | [B-1099](B-1099-port-rumpf-tests-ru18-ausfuellen.md) | SIM | Schuld | mittel | offen | RU18 | Rumpf-Tests der Rust-Sim (leer oder unimplemented) mit echten Rümpfen ausfüllen |
 | [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | RU21 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
 | [B-1100](B-1100-leere-ruempfe-ignorierte-tests.md) | SIM | Schuld | mittel | offen | RU18 | 21 ignorierte k3c-sim-Tests haben leere Rümpfe und zählen als portiert, ohne es zu sein |
@@ -165,6 +164,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
 | [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU19 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
 | [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU19 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
+| [B-1106](B-1106-rust-skills-respec-inselwahl.md) | CLI | Problem | hoch | offen | RU50 | Skills lernen, Respec und Zielinsel-Wahl fehlen im Rust-Spiel |
+| [B-1107](B-1107-rust-client-sim-sicht-ohne-insel.md) | CLI | Problem | mittel | offen | RU36 | Rust-Client: Anzeige rechnet ohne IslandRef (Lager-Maximum, Bau des Endbosses) und ohne Geschichte |
+| [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU36 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
+| [B-1109](B-1109-rust-start-grafik-aller-biome-im-speicher.md) | CLI | Schuld | mittel | offen | RU30 | Rust-Start lädt die Grafik aller Biome auf einmal (ohne Loader und Ladeanzeige je Stufe) |
 
 ## Archiv
 

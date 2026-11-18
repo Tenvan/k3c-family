@@ -35,7 +35,6 @@ fn opts(world: &str) -> Options {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site in create_island_in)"]
 fn welt_wahl_im_dev_mode() {
     let (m, dir) = world_fixture("wahl");
     let isl = m
@@ -64,7 +63,6 @@ fn welt_unbekannte_startstufe_ist_bad_request() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story der Standard-Welt)"]
 fn welt_standard_ohne_angabe() {
     for world in ["", "standard"] {
         let (m, _) = manager(); // ohne Dev-Mode und ohne Welten-Ordner
@@ -75,7 +73,6 @@ fn welt_standard_ohne_angabe() {
 
 // Die Standard-Welt kommt auch im Dev-Mode aus der Einbettung, nie von der Platte (welten.md § 6).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story der Standard-Welt)"]
 fn welt_standard_im_dev_mode_eingebettet() {
     let (m, _) = world_fixture("std");
     let dir = WorldDir::new("std-kaputt", &[("standard", "{")]);
@@ -152,17 +149,14 @@ fn welt_unbekannt_oder_ungueltig_abgelehnt() {
 
 // nordmeer_save braucht `add_island_player` (Insel 2, `eisinsel`, Nummer 1 nach dem Laden).
 #[test]
-#[ignore = "wartet auf RU18 (add_island_player: preset_for)"]
 fn welt_laden_mit_gespeicherter_welt() {}
 
 // Ohne Dev-Mode, Datei fehlt, Datei ungültig: `spielstand: …`, Stand und Raumliste unverändert.
 #[test]
-#[ignore = "wartet auf RU18 (add_island_player: preset_for)"]
 fn welt_laden_abgelehnt_stand_unveraendert() {}
 
 // Zwei Räume mit verschiedenen Welten rechnen mit ihren eigenen Kosten; `site_gold_left` fehlt in `k3c-sim`.
 #[test]
-#[ignore = "wartet auf RU18 (site_gold_left in k3c-sim)"]
 fn wertesatz_zwei_raeume_eigene_kosten() {}
 
 #[test]
@@ -176,7 +170,6 @@ fn wertesatz_ungueltiger_override_abgelehnt() {
 
 // Ein Spielstand, der kein JSON ist, scheitert mit der Meldung der Sim (`spielstand: …`).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story der Standard-Welt)"]
 fn laden_ungueltiger_spielstand_nennt_spielstand() {
     let (m, _) = manager();
     let err = m.load_in(b"{").expect_err("ungültig");
@@ -186,7 +179,6 @@ fn laden_ungueltiger_spielstand_nennt_spielstand() {
 // AC-01: `Manager::create` mit der Standard-Welt und zwei Peers rechnet 10 Takte. Die Standard-Welt braucht
 // `decode_world_story` (RU19), das Anlegen von Spielern `preset_for` und `new_hub_site` (RU18).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (new_hub_site, preset_for)"]
 fn create_standard_welt_zwei_peers_rechnet_10_takte() {
     let (mut m, _) = manager();
     let (x, mut xi) = peer(1);

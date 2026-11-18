@@ -1,5 +1,5 @@
 //! `NeutralSimView` (RU39.1): die Sicht der Bauten und des HUD auf abgeleitete Sim-Werte für die Wiedergabe, ohne
-//! Absturz. `PendingSimView` ruft `unimplemented!`, `FixedSimView` (Standbild) bricht bei unbekannten Fragen ab; die
+//! Absturz. `LiveSimView` ruft `unimplemented!`, `FixedSimView` (Standbild) bricht bei unbekannten Fragen ab; die
 //! Wiedergabe braucht für jeden Takt eine Antwort. Sie liefert neutrale Werte und ruft keine Sim-Funktion.
 //! `site_visible` meldet jeden Platz sichtbar: Die Grundregel (`site_view::site_visible`) braucht `level_site` (RU18,
 //! `unimplemented!`); Go blendet unbezahlte Plätze ab Hub-Stufe + 2 aus, die Wiedergabe zeichnet also etwas mehr.

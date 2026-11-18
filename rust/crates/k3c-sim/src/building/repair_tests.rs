@@ -14,7 +14,6 @@ use crate::world::vals;
 
 /// Mauer Stufe 2 zerstört: unpaid, Stufe 1, MaxHP der Stufe 1, gleiches X; Hub-Stufe und äußere Linie bleiben.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU10: protected_night)"]
 fn zerstoerung_setzt_stufe_zurueck() {
     let mut w = day_world();
     w.hub_level = 3;
