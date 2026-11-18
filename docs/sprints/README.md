@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU49 | SRV | RSU | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | – | `aktiv/RU49-smoke-raum-welt-und-pause/` |
 | RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | `aktiv/RU27-lokales-spiel/` |
 | RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | `aktiv/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
 
