@@ -2,12 +2,15 @@
 //! `hub_level_test.go`, `world_lines_test.go`). Tests, die `create_world` oder `step` brauchen, warten auf die Teilschritte
 //! späterer Sprints (`pending.rs`) und tragen `ignore`; die Gerüste ohne `create_world` (`built_wall_world`) laufen schon.
 
-pub use crate::enemies::testutil::{bare_world, built_site};
+pub use crate::enemies::testutil::{bare_world, built_site, line_site, spawn};
 
 use crate::campaign::new_world as campaign_new_world;
-use crate::state::{PlayerCommand, World};
+use crate::state::common::outer_wall;
+use crate::state::{PlayerCommand, Site, World};
 use crate::unit::spawn_vagrant;
 
+use super::base::base;
+use super::lines::level_site;
 use super::{Options, step, vals};
 
 /// Go: `dt`, ein Tick der Tests.
@@ -79,6 +82,47 @@ pub fn run_until(w: &mut World, seconds: f64, done: impl Fn(&World) -> bool) -> 
         tm += DT;
     }
     -1.0
+}
+
+/// Go: `built` (world_lines_test.go): der Platz ist gebaut, mit voller HP.
+pub fn built(s: &mut Site) {
+    s.state = "built".into();
+    s.hp = s.max_hp;
+}
+
+/// Go: `sturdy` (lines_shim_test.go): gebaut und so fest, dass er während der Messung hält.
+#[allow(dead_code)] // Go-Hilfe für Tests späterer Sprints (Kampf, Bots)
+pub fn sturdy(s: &mut Site) {
+    built(s);
+    s.max_hp = 1e6;
+    s.hp = 1e6;
+}
+
+/// Go: `lineInfo` (lines_shim_test.go): Seite, Zone und Lage eines verteilten Platzes.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct LineInfo {
+    pub side: i64,
+    pub index: i64,
+    pub wall: f64,
+}
+
+/// Go: `siteLine` (lines_shim_test.go): Seite, Zone (früher Linie) und Lage des Platzes `s`; `None` für andere Plätze.
+pub fn site_line(w: &World, s: &Site) -> Option<LineInfo> {
+    level_site(w, s).map(|l| LineInfo {
+        side: l.side,
+        index: l.zone,
+        wall: l.x,
+    })
+}
+
+/// Go: `outermostGate` (lines_shim_test.go): das X der äußersten gebauten Mauer je Seite (-1 links, 1 rechts).
+pub fn outermost_gate(w: &World, side: i64) -> Option<f64> {
+    outer_wall(w, side as f64).map(|s| s.x)
+}
+
+/// Der Freiraum-Radius aus den eingebetteten Daten (Go: `level.DefaultSitePlacement().ClearRadiusUnits`).
+pub fn clear_radius() -> f64 {
+    base().expect("Daten").rules.site_placement.clear_radius_units
 }
 
 /// Eine Stufe von Hand mit einer gebauten Mauer (kein `create_world`): Wertesatz, Hub und Burg wie `bare_world`. Liefert

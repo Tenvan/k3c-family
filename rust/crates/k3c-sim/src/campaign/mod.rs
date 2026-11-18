@@ -17,7 +17,7 @@ use crate::state::save::HubSave;
 use crate::state::save_apply::apply_hub;
 use crate::state::{Event, World, WorldValues};
 use crate::world::base::base;
-use crate::world::pending::cycle_at;
+use crate::world::cycle::cycle_at;
 use crate::world::{Options, add_player, create_world};
 
 mod save;

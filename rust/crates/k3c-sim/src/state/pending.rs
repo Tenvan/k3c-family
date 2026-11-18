@@ -11,11 +11,9 @@ use k3c_data::economy::Gatherable;
 use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
-use k3c_level::types::WallSite;
-
 use super::shared::WorldValues;
 use super::{Player, Site, World};
-use crate::island::{Island, WorldDef};
+use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
@@ -108,11 +106,6 @@ pub fn site_hub_level(_w: &World, _s: &Site) -> i64 {
     unimplemented!("RU18: site_hub_level")
 }
 
-/// Go: `levelSite` (world_lines.go): der verteilte Platz zu `s`; `None` für Plätze, die nicht aus `Layout.sites` stammen.
-pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
-    unimplemented!("RU18: level_site")
-}
-
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
 pub fn hub_steps(_w: &World) -> i64 {
     unimplemented!("RU18: hub_steps")
@@ -160,11 +153,6 @@ pub fn validate_hub_data_in(_h: &HubData, _world: &WorldDef) -> Vec<String> {
     unimplemented!("RU14: validate_hub_data_in")
 }
 
-/// Go: `mirrorState` (world_state_mirror.go): spiegelt den Stand der Stufe für das Protokoll.
-pub fn mirror_state(_w: &mut World) {
-    unimplemented!("RU14: mirror_state")
-}
-
 /// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.
 pub fn decode_island_story(_raw: &serde_json::Value) -> Result<IslandStory, String> {
     unimplemented!("RU19: decode_island_story")
@@ -175,21 +163,10 @@ pub fn decode_world_story(_raw: &serde_json::Value) -> Result<WorldStory, String
     unimplemented!("RU19: decode_world_story")
 }
 
-/// Go: `decodeWorldSkins` (world_skins.go): liest `skins` der Welt (Basis-Asset → Ersatz-Asset); nur gerufen, wenn das Feld
-/// da ist.
-pub fn decode_world_skins(_raw: &serde_json::Value) -> Result<BTreeMap<String, String>, String> {
-    unimplemented!("RU14: decode_world_skins")
-}
-
 /// Go: `checkStory` (story_check.go): prüft die Geschichte der Welt und ihrer Inseln; nur gerufen, wenn die Welt oder eine
 /// Insel `story` hat.
 pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
     unimplemented!("RU19: check_story")
-}
-
-/// Go: `mirrorSwitch` (world_state_mirror.go): spiegelt den Wechselpunkt der Insel in jede Stufe.
-pub fn mirror_switch(_isl: &mut Island) {
-    unimplemented!("RU14: mirror_switch")
 }
 
 /// Go: `travelPoint` (world_travel.go): ein Reisepunkt einer Stufe (`via`: exit, stairsUp, stairsDown).

@@ -13,6 +13,9 @@ use k3c_data::economy::Gatherable;
 pub use crate::boss::abilities::hit_splash;
 pub use crate::boss::{boss_ability, boss_defeated, trigger_boss};
 
+// Von RU14.2 portiert (world_cycle.go): die Import-Stelle bleibt `pending`.
+pub use crate::world::cycle::add_pool;
+
 // Von RU15 portiert (Krone, Portale): die Import-Stelle bleibt `pending`.
 pub use crate::crown::{crown_stolen, drop_crown_of, take_crown_or_loot};
 pub use crate::portal::drop_loot;
@@ -60,11 +63,6 @@ pub fn full_moon_extra(_w: &World, _plan: &[SpawnOrder]) -> Vec<SpawnOrder> {
 /// Go: `moonDrop` (events_moon.go): Blutmond-Faktor auf den Gold-Drop.
 pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
     unimplemented!("RU19: moon_drop")
-}
-
-/// Go: `addPool` (world_cycle.go): Aggressions-Pool um `amount` Prozent.
-pub fn add_pool(_w: &mut World, _amount: f64) {
-    unimplemented!("RU14: add_pool")
 }
 
 /// Go: `addStock` (economy.go): `true`, wenn das Material in den Vorrat kam.

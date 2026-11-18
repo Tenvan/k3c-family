@@ -156,8 +156,15 @@ pub fn build_site(_w: &mut World, _kind: &str) -> usize {
     panic!("RU14: build_site")
 }
 
-pub fn line_site(_w: &mut World, _kind: &str, _side: i64, _n: i64) -> usize {
-    panic!("RU14: line_site")
+/// Go: `lineSite` (world_lines_test.go): der erste Platz `kind` der Zone `n` auf Seite `side` (Index in `w.sites`).
+pub fn line_site(w: &mut World, kind: &str, side: i64, n: i64) -> usize {
+    let found = w.sites.iter().position(|s| {
+        s.kind == kind && crate::world::lines::level_site(w, s).is_some_and(|l| l.side == side && l.zone == n)
+    });
+    match found {
+        Some(si) => si,
+        None => panic!("kein Platz {kind} Linie {n} Seite {side}"),
+    }
 }
 
 pub fn probe(_w: &mut World, _players: &[usize]) {

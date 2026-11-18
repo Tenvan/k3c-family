@@ -2,8 +2,9 @@
 //! Nur lesend, aus den bestehenden Regeln abgelesen (`site_hub_level`, `level_site`); nichts gespeichert, Welt-JSON und
 //! Golden bleiben gleich.
 
-use super::pending::{level_site, site_hub_level};
+use super::pending::site_hub_level;
 use super::{Site, World};
+use crate::world::lines::level_site;
 
 /// Go: `SiteHubLevel`: die Hub-Stufe, ab der ein Platz bezahlbar ist: Mauer und Turm der Zone n ab n, alle übrigen Plätze
 /// nach data/hub.json (`site_hub_level`). Weitere Bedingungen (Freiraum von Bäumen und Felsen) zählen nicht, sie sind

@@ -142,9 +142,9 @@ pub fn nordmeer_island(data: &Data, w: &WorldDef, n: usize) -> Island {
     isl
 }
 
-/// Go: `cyclePhases(globalDayNight)` (world_cycle.go): Länge eines Tages in Sekunden; kommt mit RU14.
+/// Go: `cyclePhases(globalDayNight)` (world_cycle.go): Länge eines Tages in Sekunden.
 pub fn cycle_length() -> f64 {
-    unimplemented!("RU14: cycle_phases")
+    crate::world::cycle::cycle_phases(&crate::world::base::base().expect("Daten").day_night).1
 }
 
 /// Go: `testIsland` (island_worlds_test.go): eine Insel `id` der Test-Welt als JSON; `fields` (beginnt mit `,`) ersetzt

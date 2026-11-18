@@ -28,16 +28,20 @@ use crate::unit::hammer::{spawn_start_peasants, spawn_vagrant_with};
 use crate::unit::jobs::make_archer;
 
 pub mod base;
+pub mod cycle;
+pub mod lava;
+pub mod lines;
 pub mod pending;
 pub mod preview;
 pub mod ship;
+pub mod skins;
+pub mod state_mirror;
 pub mod step;
 
 use base::base;
-use pending::{
-    add_ruin_sites, apply_preset, cycle_at, default_values, new_hub_site, preset_for, ruin_site, validate_hub_data,
-    world_site_specs,
-};
+use cycle::cycle_at;
+use lines::world_site_specs;
+use pending::{add_ruin_sites, apply_preset, default_values, new_hub_site, preset_for, ruin_site, validate_hub_data};
 use ship::add_ship_site;
 
 pub use step::step;
@@ -45,11 +49,23 @@ pub use step::step;
 #[cfg(test)]
 mod cause_tests;
 #[cfg(test)]
+mod cycle_tests;
+#[cfg(test)]
+mod lava_tests;
+#[cfg(test)]
+mod lines_own_tests;
+#[cfg(test)]
+mod lines_tests;
+#[cfg(test)]
 mod preview_hub_tests;
 #[cfg(test)]
 mod preview_tests;
 #[cfg(test)]
 mod ship_tests;
+#[cfg(test)]
+mod skins_tests;
+#[cfg(test)]
+mod state_mirror_tests;
 #[cfg(test)]
 mod step_tests;
 #[cfg(test)]
@@ -155,7 +171,7 @@ pub fn create_world(b: &Biome, seed: &str, opts: &Options) -> Result<World, Stri
     w.castle.id = w.new_id();
     w.hub_site = Some(new_hub_site(&w));
     place_entities(&mut w, &v, &rules);
-    for s in world_site_specs(&w) {
+    for s in world_site_specs(&w)? {
         let site = empty_site(&mut w, &s.kind, s.x);
         w.sites.push(site);
     }

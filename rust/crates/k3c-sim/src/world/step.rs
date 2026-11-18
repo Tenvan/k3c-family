@@ -15,9 +15,11 @@ use crate::state::{IslandRef, PlayerCommand, World};
 use crate::unit::warrior::lose_layer;
 use crate::unit::{step_camps, step_troops};
 
+use super::cycle::step_cycle;
+use super::lava::step_lava;
 use super::pending::{
-    cap_events, step_cycle, step_healing, step_lava, step_passives, step_plantations, step_players, step_sites,
-    step_spell_towers, step_storms, step_travel,
+    cap_events, step_healing, step_passives, step_plantations, step_players, step_sites, step_spell_towers,
+    step_storms, step_travel,
 };
 use super::{castle_fallen, vals};
 
@@ -26,7 +28,7 @@ use super::{castle_fallen, vals};
 pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut IslandRef>, dt: f64) {
     w.events.clear();
     w.time += dt;
-    step_cycle(w, dt);
+    step_cycle(w, isl.as_deref_mut(), dt);
     let v = vals(w);
     spawn_guards(w, &v, isl.as_deref());
     step_spawns(w, &v, isl.as_deref());

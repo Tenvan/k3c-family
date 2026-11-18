@@ -4,7 +4,7 @@
 //! wird, den Weg über `create_world` und `preview_hub_level` (Abweichung von Go, die Prüfung bleibt dieselbe).
 
 use super::base::base;
-use super::pending::{cycle_at, cycle_phases};
+use super::cycle::{cycle_at, cycle_phases};
 use super::preview::{SiteLook, preview_cycle, preview_set_site};
 use super::testutil::*;
 use super::{Options, vals};

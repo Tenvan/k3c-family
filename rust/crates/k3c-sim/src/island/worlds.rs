@@ -17,8 +17,9 @@ use serde_json::Value;
 use super::keys::Keys;
 use super::worlds_decode::decode_islands;
 use crate::island::IslandDef;
-use crate::state::pending::{WorldStory, check_story, decode_world_skins, decode_world_story};
+use crate::state::pending::{WorldStory, check_story, decode_world_story};
 use crate::state::shared::{CombatSettings, WorldValues};
+use crate::world::skins::decode_world_skins;
 
 /// Go: `StandardWorldID`, die ID der Standard-Welt (data/worlds/standard.json).
 pub const STANDARD_WORLD_ID: &str = "standard";

@@ -5,53 +5,42 @@
 
 use std::sync::Arc;
 
-use k3c_data::biome::Cycle;
 use k3c_data::buildings::Cost;
+use k3c_data::events::NightEvent;
 use k3c_data::hub::HubData;
 
-use crate::state::{CycleInfo, IslandRef, PlayerCommand, Site, World, WorldValues};
+use crate::state::{IslandRef, PlayerCommand, Site, World, WorldValues};
 
-// RU14.2 (world_cycle, world_lava, world_lines): Zyklus, Lava, Platzliste.
+// RU18 (Wirtschaft) und RU19 (Ereignisse), gerufen von `step_cycle` (world_cycle.go) und `mirror_state`.
 
-/// Eine Phase des Tag/Nacht-Zyklus (Go: `cyclePhase`, world_cycle.go): Name, Beginn und Länge in Sekunden.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct CyclePhase {
-    pub name: String,
-    pub start: f64,
-    pub length: f64,
+/// Go: `payDawnIncome` (economy.go): Morgengold je lebendem Spieler.
+pub fn pay_dawn_income(_w: &mut World) {
+    unimplemented!("RU18: pay_dawn_income")
 }
 
-/// Go: `cyclePhases` (world_cycle.go): die vier Phasen (day, dusk, night, dawn) und die Länge eines Tages in Sekunden.
-pub fn cycle_phases(_c: &Cycle) -> (Vec<CyclePhase>, f64) {
-    unimplemented!("RU14: cycle_phases")
+/// Go: `tavernDawn` (building_tavern.go): der Wirt bringt zum Morgengrauen Landstreicher.
+pub fn tavern_dawn(_w: &mut World) {
+    unimplemented!("RU18: tavern_dawn")
 }
 
-/// Go: `cycleAt` (world_cycle.go): Phase, Tag und Fortschritt zur Zykluszeit `t` (Sekunden mal Zyklusgeschwindigkeit).
-pub fn cycle_at(_c: &Cycle, _t: f64) -> CycleInfo {
-    unimplemented!("RU14: cycle_at")
+/// Go: `merchantDawn` (merchant.go): der Händler kommt oder geht zum Morgengrauen.
+pub fn merchant_dawn(_w: &mut World) {
+    unimplemented!("RU18: merchant_dawn")
 }
 
-/// Go: `stepCycle` (world_cycle.go): rückt den Zyklus der Stufe um `dt` weiter.
-pub fn step_cycle(_w: &mut World, _dt: f64) {
-    unimplemented!("RU14: step_cycle")
+/// Go: `nightEventsStart` (events_moon.go): Vollmond und Blutmond beginnen mit der Nacht.
+pub fn night_events_start(_w: &mut World) {
+    unimplemented!("RU19: night_events_start")
 }
 
-/// Go: `stepLava` (world_lava.go): Lava-Schaden an allem, was in der Lava steht.
-pub fn step_lava(_w: &mut World, _dt: f64) {
-    unimplemented!("RU14: step_lava")
+/// Go: `nightEventsEnd` (events_moon.go): Belohnung und Ende der Nacht-Events beim Morgengrauen.
+pub fn night_events_end(_w: &mut World) {
+    unimplemented!("RU19: night_events_end")
 }
 
-/// Go: `siteSpec` (world_lines.go): ein anzulegender Platz.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct SiteSpec {
-    pub kind: String,
-    pub x: f64,
-}
-
-/// Go: `worldSiteSpecs` (world_lines.go): die Hub-Plätze dieser Tiefe und alle Mauern und Türme der Stufe, fest nach X
-/// sortiert.
-pub fn world_site_specs(_w: &World) -> Vec<SiteSpec> {
-    unimplemented!("RU14: world_site_specs")
+/// Go: `eventActive` (events_moon.go): Läuft das Nacht-Event `ev` gerade in dieser Stufe?
+pub fn event_active(_w: &World, _ev: &NightEvent) -> bool {
+    unimplemented!("RU19: event_active")
 }
 
 // RU14.3 (world_travel): Stufenwechsel.
