@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1089](B-1089-measure-ps1-novsync-replay.md) | CLI | Problem | mittel | erledigt | RU45 | measure.ps1 gibt -Vsync an die Rust-Wiedergabe nicht weiter |
 | [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
 | [B-1026](B-1026-session-karten-responsive.md) | DEV | Problem | mittel | erledigt | WZ61 | Session-Karten im Sprint nutzen die Breite: Kopfzeile einzeilig, mehrspaltig bei breitem Fenster |
 | [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | erledigt | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
@@ -890,4 +891,3 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
 | [B-1075](B-1075-rust-allokationen-je-bild-messen.md) | CLI | Schuld | mittel | erledigt | RU42 | Allokationen je Bild im Rust-Zeichenpfad sind nicht gemessen |
 | [B-1080](B-1080-abnahme-ru6-level-generator-rust.md) | SIM | Schuld | mittel | erledigt | RU45 | Abnahme RU6: Level-Generator in Rust (Gen, Race, manuell) |
-| [B-1089](B-1089-measure-ps1-novsync-replay.md) | CLI | Problem | mittel | erledigt | RU45 | measure.ps1 gibt -Vsync an die Rust-Wiedergabe nicht weiter |
