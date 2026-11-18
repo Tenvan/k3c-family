@@ -1,6 +1,6 @@
 # RU11 · SIM · Sim: Einheiten und Gegner
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -91,11 +91,11 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU11.1 | `RU11.1-enemies-guard-equipment-inselbezug.md` | Umsetzung | autonom | offen |
-| RU11.2 | `RU11.2-enemies-traits-waves-archer.md` | Umsetzung | autonom | offen |
-| RU11.3 | `RU11.3-unit-common-escort-flee-hammer.md` | Umsetzung | autonom | offen |
-| RU11.4 | `RU11.4-unit-professions-warrior.md` | Umsetzung | autonom | offen |
-| RU11.5 | `RU11.5-review.md` | Review | autonom | offen |
+| RU11.1 | `RU11.1-enemies-guard-equipment-inselbezug.md` | Umsetzung | autonom | fertig |
+| RU11.2 | `RU11.2-enemies-traits-waves-archer.md` | Umsetzung | autonom | fertig |
+| RU11.3 | `RU11.3-unit-common-escort-flee-hammer.md` | Umsetzung | autonom | fertig |
+| RU11.4 | `RU11.4-unit-professions-warrior.md` | Umsetzung | autonom | fertig |
+| RU11.5 | `RU11.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -103,6 +103,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18. AC-01 (unit, disarm, fetch, shelter) und AC-02 (enemies, pools, targets, protect): Ergebnisse RU11.1 bis RU11.4; 72 Go-Testfunktionen, 137 Rust-Tests (72 ignoriert, Marken in RU11.5). `cargo test -p k3c-sim` 119 grün, `task check` und `task check:go` grün. Reviews ohne Verhaltensabweichung; Vorbehalt: `values()` ist Platzhalter bis RU10. Abnahme-Ticket für Sim, Balance und Gen: B-1081.

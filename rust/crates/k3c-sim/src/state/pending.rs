@@ -2,19 +2,28 @@
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
-use std::collections::BTreeMap;
 use std::sync::Arc;
 
 use k3c_data::buildings::Plantation;
 use k3c_data::economy::Gatherable;
 use k3c_data::hub::Stock;
 use k3c_data::monarch::{SkillData, SkillEffect};
-use k3c_data::troops::{ProfessionData, TroopData};
+
 use k3c_level::types::WallSite;
 
 use super::save::HubSave;
 use super::shared::WorldValues;
-use super::{Enemy, Player, Site, Troop, World};
+use super::{Player, Site, Troop, World};
+
+// Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
+pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
+pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
+pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
+pub use crate::unit::archer::is_on_tower;
+pub use crate::unit::jobs::make_fighter;
+pub use crate::unit::professions::profession_of;
+pub use crate::unit::spawn_vagrant;
+pub use crate::unit::warrior::is_fighter;
 
 /// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
 pub const MERCHANT_ID: i64 = -1;
@@ -47,16 +56,6 @@ pub fn troop_damage(_w: &World, _ti: usize, _damage: f64) -> f64 {
 /// Go: `eachPassive` (monarch_passives.go); `f` bekommt den Besitzer und den Effekt.
 pub fn each_passive(_w: &World, _f: &mut dyn FnMut(&Player, &SkillEffect)) {
     unimplemented!("RU18: each_passive")
-}
-
-/// Go: `invulnerable` (enemies_traits.go).
-pub fn invulnerable(_w: &World, _e: &Enemy) -> bool {
-    unimplemented!("RU11: invulnerable")
-}
-
-/// Go: `isWaveEnemy` (enemies_guard.go).
-pub fn is_wave_enemy(_e: &Enemy) -> bool {
-    unimplemented!("RU11: is_wave_enemy")
 }
 
 /// Go: `damageMerchant` (merchant.go).
@@ -103,11 +102,6 @@ pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
     unimplemented!("RU18: find_pay_target")
 }
 
-/// Go: `professionOf` (unit_professions.go): der Beruf `kind` aus den Truppen-Daten.
-pub fn profession_of<'a>(_troops: &'a BTreeMap<String, TroopData>, _kind: &str) -> Option<&'a ProfessionData> {
-    unimplemented!("RU18: profession_of")
-}
-
 /// Go: `stockField` (economy.go): der Vorrat an `resource`; `None` bei unbekanntem Material.
 pub fn stock_field(_stock: &Stock, _resource: &str) -> Option<i64> {
     unimplemented!("RU18: stock_field")
@@ -143,24 +137,9 @@ pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
     unimplemented!("RU18: level_site")
 }
 
-/// Go: `spawnVagrant` (enemies/units): legt einen Landstreicher an und gibt seinen Index in `w.troops` zurück.
-pub fn spawn_vagrant(_w: &mut World, _anchor_x: f64, _x: f64) -> usize {
-    unimplemented!("RU11: spawn_vagrant")
-}
-
-/// Go: `makeFighter` (unit_warrior.go): macht die Truppe `ti` zum Kämpfer der Art `kind`.
-pub fn make_fighter(_w: &mut World, _ti: usize, _kind: &str) {
-    unimplemented!("RU11: make_fighter")
-}
-
 /// Go: `isSoldier` (combat.go): Ist die Truppe ein Nahkämpfer, der einer Gruppe vorstehen kann?
 pub fn is_soldier(_t: &Troop) -> bool {
     unimplemented!("RU15: is_soldier")
-}
-
-/// Go: `isFighter` (unit_warrior.go): Ist `kind` eine Kämpfer-Figur aus den Truppen-Daten?
-pub fn is_fighter(_troops: &BTreeMap<String, TroopData>, _kind: &str) -> bool {
-    unimplemented!("RU11: is_fighter")
 }
 
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
@@ -168,19 +147,9 @@ pub fn hub_steps(_w: &World) -> i64 {
     unimplemented!("RU18: hub_steps")
 }
 
-/// Go: `guardsClearedKeys` (enemies_guard.go): die geräumten Lager `kind@x`, sortiert.
-pub fn guards_cleared_keys(_w: &World) -> Vec<String> {
-    unimplemented!("RU11: guards_cleared_keys")
-}
-
 /// Go: `countFetching` (combat.go): Zahl der Truppen, die gerade ihr Schild holen.
 pub fn count_fetching(_w: &World) -> i64 {
     unimplemented!("RU15: count_fetching")
-}
-
-/// Go: `applyGuards` (enemies_guard.go): übernimmt die geräumten Lager eines gespeicherten Hubs.
-pub fn apply_guards(_w: &mut World, _h: &HubSave) {
-    unimplemented!("RU11: apply_guards")
 }
 
 /// Go: `applyPortals` (portal.go): übernimmt die zerstörten Portale eines gespeicherten Hubs.

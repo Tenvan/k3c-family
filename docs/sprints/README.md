@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | `aktiv/RU11-sim-einheiten-gegner/` |
 | RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | `aktiv/RU23-hud-teil-2/` |
 | RU44 | CLI | RSU | Bild-Pfad ohne Allokationen | – | `aktiv/RU44-bild-pfad-ohne-allokationen/` |
 
@@ -446,5 +445,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | `erledigt/RU20-hud-teil-1/` |
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | `erledigt/RU39-ruckler-messung-rust-gegen-go/` |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | `erledigt/RU9-menues-teil-1/` |
+| RU11 | Sim: Einheiten und Gegner | `erledigt/RU11-sim-einheiten-gegner/` |
 | RU42 | Leitplanken für Leistung und Stabilität | `erledigt/RU42-leitplanken-leistung-stabilitaet/` |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | `erledigt/RU6-level-generator-rust/` |
