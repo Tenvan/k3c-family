@@ -10,7 +10,6 @@ use crate::world::testutil::DT;
 use crate::world::{step, vals};
 
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x, hit_event)"]
 fn skills_tank_und_zauberer_im_selben_tick() {
     let mut w = quiet_world();
     let (tank, mage) = (add_player(&mut w), add_player(&mut w));

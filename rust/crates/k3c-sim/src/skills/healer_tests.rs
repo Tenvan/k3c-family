@@ -45,7 +45,6 @@ fn effect(range: f64, radius: f64, amount: f64) -> SkillEffect {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn healer_heal() {
     let mut w = quiet_world();
     let pi = healer_player(&mut w);
@@ -73,7 +72,6 @@ fn healer_heal() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn healer_group_heal() {
     let mut w = quiet_world();
     let pi = healer_player(&mut w);
@@ -91,7 +89,6 @@ fn healer_group_heal() {
 
 /// Divine Shield fängt Treffer ohne Goldverlust ab, bis die Schild-Punkte aufgebraucht sind (kampf.md § 5).
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn healer_divine_shield() {
     let mut w = quiet_world();
     let pi = healer_player(&mut w);
@@ -122,7 +119,6 @@ fn healer_divine_shield() {
 
 /// Resurrection bringt gefallene Kronen im Radius sofort zu ihrem Monarchen zurück (Umdeutung, kampf.md § 5).
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn healer_resurrection() {
     let mut w = quiet_world();
     let pi = healer_player(&mut w);
@@ -149,7 +145,6 @@ fn healer_resurrection() {
 
 /// `TestHealerAbklingzeit` (b): zweiter Einsatz in der Abklingzeit ohne Wirkung, nach `cooldown` wieder möglich.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn healer_abklingzeit() {
     for slot in 1..=4_usize {
         let mut w = quiet_world();
@@ -193,7 +188,6 @@ fn healer_abklingzeit() {
 /// `TestHealerHeiltZauberer` (d): Zauberer (Spieler 0) und Heiler (Spieler 1) im selben Kampf über `step`. Mit Passiven:
 /// Fireball 30 × (1 + Arcane Power 0,2 + Blessings 0,1) = 39; die Heiler-Linie heilt Truppen, nicht den Zauberer.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x, hit_event)"]
 fn healer_heilt_zauberer() {
     let mut w = quiet_world();
     let (mage, healer) = (add_player(&mut w), add_player(&mut w));

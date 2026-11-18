@@ -6,7 +6,7 @@ use super::testutil::*;
 use crate::state::ItemDrop;
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprüft: Wirtschaft/Spielerschritt, der Test lief erst nach RU19 an)"]
 fn gegner_nimmt_drop_mit_und_flieht() {
     let mut w = quiet_world();
     add_player(&mut w);
@@ -30,7 +30,6 @@ fn gegner_nimmt_drop_mit_und_flieht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn traeger_stirbt_drop_faellt_zu_boden() {
     let mut w = quiet_world();
     add_player(&mut w);

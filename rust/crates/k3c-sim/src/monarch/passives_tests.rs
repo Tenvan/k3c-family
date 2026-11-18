@@ -53,7 +53,6 @@ fn basis_of(w: &World, pi: usize) -> (f64, f64, f64) {
 /// (a) Armor Aura von Spieler 0 senkt den Schaden an Truppen im Radius 8, nicht außerhalb (Monarchen haben keine Verteidigung
 /// mehr).
 #[test]
-#[ignore = "wartet auf RU19 (hit_event)"]
 fn passives_armor_aura() {
     let (mut w, p0, _) = passive_world();
     must_learn(&mut w, p0, &["taunt", "shieldBash", "armorAura"]);
@@ -77,7 +76,6 @@ fn passives_armor_aura() {
 
 /// (b) Healing Aura: Spieler 1 (Heiler) heilt Truppen im Radius 8 mit 2 HP/s, Monarchen nicht (kampf.md § 5).
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn passives_healing_aura() {
     let (mut w, p0, p1) = passive_world();
     must_learn(&mut w, p1, &["heal", "groupHeal", "healingAura"]);
@@ -95,7 +93,6 @@ fn passives_healing_aura() {
 
 /// (c) Thick Skin und Regeneration: Werte des Besitzers, Spieler 1 bleibt unverändert.
 #[test]
-#[ignore = "wartet auf RU19 (pure, hit_event)"]
 fn passives_tank_besitzer() {
     let (mut w, p0, p1) = passive_world();
     add_pool_points(&mut w, 2);
@@ -129,7 +126,6 @@ fn passives_tank_besitzer() {
 
 /// (c) Arcane Power (+20 % Zauberschaden) und Elemental Mastery (−15 % Abklingzeit).
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn passives_zauberer() {
     let (mut w, p0, p1) = passive_world();
     must_learn(&mut w, p0, &["fireball", "iceWall", "arcanePower"]);
@@ -154,7 +150,6 @@ fn passives_zauberer() {
 
 /// (c) Blessings: Tempo und Schlagschaden +10 % für Monarchen im Radius 8.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn passives_blessings() {
     let (mut w, p0, p1) = passive_world();
     must_learn(&mut w, p1, &["heal", "groupHeal", "blessings"]);
@@ -184,7 +179,6 @@ fn passives_blessings() {
 
 /// (d) Guardian: Truppen im Radius 5 um den Besitzer nehmen 20 % weniger Schaden.
 #[test]
-#[ignore = "wartet auf RU19 (hit_event)"]
 fn passives_guardian() {
     let (mut w, p0, _) = passive_world();
     must_learn(&mut w, p0, &["taunt", "shieldBash", "guardian"]);
@@ -203,7 +197,6 @@ fn passives_guardian() {
 
 /// (d) Frost Armor: Ein Gegner, der den Besitzer im Nahkampf trifft, läuft 2 s mit Faktor 0,7; Spieler 1 ohne Passiv nicht.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn passives_frost_armor() {
     let (mut w, p0, p1) = passive_world();
     must_learn(&mut w, p0, &["fireball", "iceWall", "frostArmor"]);
@@ -240,7 +233,6 @@ fn passives_frost_armor() {
 
 /// (d) Holy Ground: Truppen im Burgradius werden geheilt, egal wo der Heiler steht; Monarchen haben keine HP.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn passives_holy_ground() {
     let (mut w, _, p1) = passive_world();
     must_learn(&mut w, p1, &["heal", "groupHeal", "holyGround"]);
@@ -265,7 +257,6 @@ fn echo_run(passive: &str) -> f64 {
 
 /// (e) Spell Echo: gleicher Seed gleiches Ergebnis, Echos treten auf; ohne Spell Echo bleibt `w.rng` unberührt.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn passives_spell_echo() {
     let (a, b) = (echo_run("spellEcho"), echo_run("spellEcho"));
     assert!(

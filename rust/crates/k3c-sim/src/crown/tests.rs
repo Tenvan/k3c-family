@@ -211,7 +211,6 @@ fn steps(w: &mut crate::state::World, cmds: &[crate::state::PlayerCommand], seco
 /// Ein Treffer kostet `hitCoins` Münzen, die als Loot-Münze zu Boden fallen; ohne Gold fällt die Krone nach hinten, weg vom
 /// Gegner, deterministisch.
 #[test]
-#[ignore = "wartet auf RU19 (hit_event, emit, unit_x, pure)"]
 fn treffer_kostet_muenze_krone_faellt_ohne_gold() {
     use crate::state::common::apply_damage;
     let mut w = quiet_crown_world();
@@ -268,7 +267,6 @@ fn treffer_kostet_muenze_krone_faellt_ohne_gold() {
 /// Go: `TestKroneOhneKroneNurLaufen`: Ohne Krone kann der Monarch nur laufen und eine Krone aufheben: kein Schlag, kein Skill,
 /// kein Zahlen, keine Münzen.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
 fn ohne_krone_nur_laufen() {
     use crate::enemies::target::choose_target;
     use crate::state::PlayerCommand;
@@ -317,7 +315,7 @@ fn ohne_krone_nur_laufen() {
 /// Go: `TestKroneRaubIstGameOver` (AC-02, B-931): Ein Gegner hebt die Krone auf, trägt sie ins Portal: Kronenraub, Game Over in
 /// jedem Grad.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprüft: Wirtschaft/Spielerschritt, der Test lief erst nach RU19 an)"]
 fn kronenraub_ist_game_over() {
     let mut w = quiet_crown_world();
     fell(&mut w, 0);
@@ -343,7 +341,6 @@ fn kronenraub_ist_game_over() {
 
 /// Go: `TestKroneRaubStuftMitInselOver`, ohne `Island`: Die Stufe meldet dem `IslandRef`, dass die Insel vorbei ist.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x: crown_stolen und game_over melden Ereignisse)"]
 fn kronenraub_stuft_mit_insel_over() {
     use crate::state::IslandRef;
     let mut w = crate::enemies::testutil::quiet_world();

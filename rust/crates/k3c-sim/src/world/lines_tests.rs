@@ -122,7 +122,6 @@ fn tor_ist_aeusserst_gebaute_mauer() {
 
 // (d) Q54: Ein innerer Turm trägt weiter Schützen, Gegner bleiben an der äußersten gebauten Mauer stehen.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn zone_innerer_turm_und_aeusserste_mauer() {
     use crate::unit::archer::is_on_tower;
     use crate::unit::jobs::make_archer;
@@ -211,7 +210,6 @@ fn pay_together(pick: fn(&mut World) -> (usize, usize), swap: bool) -> PayResult
 
 // (e) AC-06: Zwei Spieler zahlen gleichzeitig an Mauer und Turm derselben Zone bzw. an beiden Seiten.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn zone_zwei_spieler_zahlen_gleichzeitig() {
     type Pick = fn(&mut World) -> (usize, usize);
     let cases: [(&str, Pick); 2] = [

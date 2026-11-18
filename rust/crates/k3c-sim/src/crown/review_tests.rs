@@ -6,7 +6,6 @@ use super::{CROWN_GROUND, step_crowns, take_crown_or_loot};
 use crate::enemies::testutil::spawn;
 
 #[test]
-#[ignore = "wartet auf RU19 (hit_event: apply_damage meldet jeden Treffer)"]
 fn fortified_aura_fuer_truppen() {
     use crate::enemies::testutil::{add_player, quiet_world};
     use crate::island::testutil::{add_pool_points, must_learn};
@@ -96,7 +95,6 @@ fn krone_eines_freien_monarchen_ist_nicht_raubbar() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (hit_event: apply_damage meldet jeden Treffer)"]
 fn last_stand_nur_mit_letzter_muenze() {
     use crate::enemies::testutil::quiet_world;
     use crate::skills::testutil::tank_player;

@@ -87,7 +87,6 @@ fn turm_unter_zaubertum_stufe_schiesst_nicht() {
 
 /// Ausbau auf die Zaubertum-Stufe: der Schütze steigt ab, bleibt Kämpfer, der Turm nimmt keinen mehr auf.
 #[test]
-#[ignore = "wartet auf RU19 (pure, hit_event)"]
 fn zaubertum_schuetzen_steigen_ab() {
     use super::upgrades_sites_tests::upgrade_at;
     use crate::enemies::testutil::run;

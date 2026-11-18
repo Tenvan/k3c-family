@@ -339,7 +339,6 @@ fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
 
 /// Der Bauer nimmt das Schwert aus dem Regal und wird Krieger (Go: `dayWorld`, `runUntil`).
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
     let mut w = day_world();
     let workshop = build_site(&mut w, "workshop");

@@ -83,7 +83,6 @@ fn fackeln_der_welt() {
 /// Go: `TestKnotenMarkiererInSnapshotUndSpielstand` (node_mark_test.go): Wer einen Baum markiert, steht im Snapshot und im
 /// Spielstand; nach dem Laden ist der Markierer derselbe.
 #[test]
-#[ignore = "wartet auf RU19 (pure: pay_at tickt über step)"]
 fn knoten_markierer_in_snapshot_und_spielstand() {
     use crate::campaign::Campaign;
     use crate::world::testutil::pay_at;

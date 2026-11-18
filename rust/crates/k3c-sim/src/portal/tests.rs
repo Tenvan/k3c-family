@@ -103,7 +103,6 @@ fn siege(w: &mut crate::state::World, ti: usize, x: f64, seconds: f64) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit: portalDefense)"]
 fn angegriffenes_portal_spawnt_verteidiger() {
     let mut w = quiet_portal_world();
     crate::enemies::testutil::run(&mut w, 25.0);
@@ -142,7 +141,6 @@ fn letztes_portal_macht_stufe_sicher() {}
 fn sichere_stufe_bleibt_nach_dem_laden() {}
 
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
 fn dieb_ohne_portal_laesst_beute_fallen() {
     let mut w = quiet_portal_world();
     w.portals.clear();
@@ -164,7 +162,6 @@ fn dieb_ohne_portal_laesst_beute_fallen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
 fn portal_simulation_ist_deterministisch() {
     let run = || {
         let mut w = quiet_portal_world();

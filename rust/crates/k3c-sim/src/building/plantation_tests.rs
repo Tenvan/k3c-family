@@ -23,7 +23,6 @@ fn planted_at(w: &World, nursery: usize) -> i64 {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn plantage_waechst_je_platz() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -58,7 +57,6 @@ fn plantage_waechst_je_platz() {
 
 /// Plantage-Bäume sind kein Zahlziel, ein Bauer holt sie ohne Münze; der Platz wächst danach neu.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn plantage_ohne_markierung() {
     let mut w = day_world();
     let p = vals(&w).buildings["nursery"].plantation.clone();

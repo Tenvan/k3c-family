@@ -66,7 +66,6 @@ fn mount_beim_beitritt() {
 
 /// (b) Tempo = Basis × Faktor, Sprint = Basis × Faktor × sprintMultiplier × Sprintfaktor.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn mount_geschwindigkeit() {
     let mut w = quiet_world();
     let (walk, sprint) = mount_speeds(&mut w);
@@ -79,7 +78,6 @@ fn mount_geschwindigkeit() {
 
 /// (c) Ein anderer Faktor in einer Kopie der Daten ändert beide Geschwindigkeiten ohne Codeänderung.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn mount_faktor_aus_daten() {
     let mut w0 = quiet_world();
     let (base_walk, base_sprint) = mount_speeds(&mut w0);
@@ -97,7 +95,6 @@ fn mount_faktor_aus_daten() {
 
 /// (d) Zweimal derselbe Seed und dieselben Eingaben ergeben denselben Weltzustand.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn mount_deterministisch() {
     let run = || {
         let mut w = quiet_world();
