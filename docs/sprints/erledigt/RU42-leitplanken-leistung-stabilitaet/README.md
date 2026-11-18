@@ -1,6 +1,6 @@
 # RU42 · CLI · Leitplanken für Leistung und Stabilität
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -67,7 +67,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU42.1 | `RU42.1-lints-und-allokationsmessung.md` | Umsetzung | autonom | fertig |
-| RU42.2 | `RU42.2-review.md` | Umsetzung | autonom | offen |
+| RU42.2 | `RU42.2-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -75,6 +75,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (autonom, Claude): AC-01 bis AC-06 erfüllt (RU42.1 › Ergebnis). Review ohne schwere Befunde, `task check` und `task check:go` grün. Neue Tickets: B-1076 (STAB Sim), B-1077 und B-1078 (PERF step, draw) in RU43; Allokationen je Bild heute Maximum 805. Kein Abnahme-Ticket für Sim, Balance, Gen (nicht berührt).

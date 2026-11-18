@@ -888,3 +888,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1072](B-1072-river-wgsl-port.md) | CLI | Schuld | niedrig | erledigt | RU13 | river.kage als WGSL-Pipeline im GPU-Backend |
 | [B-1073](B-1073-river-anbindung-world.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Shader in world anbinden (draw_river, ready, Rückfall auf Kacheln) |
 | [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
+| [B-1075](B-1075-rust-allokationen-je-bild-messen.md) | CLI | Schuld | mittel | erledigt | RU42 | Allokationen je Bild im Rust-Zeichenpfad sind nicht gemessen |
