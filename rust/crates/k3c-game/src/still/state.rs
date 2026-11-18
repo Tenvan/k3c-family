@@ -13,6 +13,7 @@ use k3c_level::types::{Layout, NatureValues};
 use k3c_sim::state::World;
 use serde::Deserialize;
 
+use super::frame::FrameExtras;
 use super::inflate::gunzip;
 use super::simview::FixedSimView;
 use crate::view::cell::{Cell, new_camera, rect};
@@ -67,6 +68,8 @@ pub struct StillState {
     pub world: World,
     /// Antworten der Sim-Funktionen für die Bauten (RU16.6), gesetzt mit `with_simview`
     pub simview: Option<FixedSimView>,
+    /// Zusätze des Frames für das HUD (Einstellungen, freie Geräte, Meldungen), gesetzt mit `with_frame` (RU20.7)
+    pub frame_extras: Option<FrameExtras>,
 }
 
 /// Liest einen Zustand aus gzip oder aus JSON (erkannt an der gzip-Kennung).
@@ -107,6 +110,7 @@ pub fn parse_state(raw: &[u8]) -> Result<StillState, String> {
             .collect(),
         world,
         simview: None,
+        frame_extras: None,
     })
 }
 
@@ -143,6 +147,7 @@ impl StillState {
             c.camera = new_camera(r, *x, scale);
             cells.push(c);
         }
+        let extras = self.frame_extras.clone().unwrap_or_default();
         let f = Frame {
             clock: self.clock,
             stages: vec![Stage {
@@ -155,8 +160,10 @@ impl StillState {
             cells: cells.clone(),
             settings: Settings {
                 river: RIVER_TILES.to_string(),
-                ..Settings::default()
+                ..extras.settings
             },
+            unseated: extras.unseated,
+            cues: extras.cues,
             ..Frame::default()
         };
         (f, cells)

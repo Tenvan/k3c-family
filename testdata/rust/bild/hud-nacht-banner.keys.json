@@ -1,0 +1,146 @@
+[
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "confirm",
+  "key": "key:SPACE",
+  "label": "Leertaste",
+  "icon": "icons/taste-kappe-breit"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "pause",
+  "key": "key:ESC",
+  "label": "Esc",
+  "icon": "icons/taste-kappe-breit"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "fullscreen",
+  "key": "key:F11",
+  "label": "F11",
+  "icon": "icons/taste-kappe-breit"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "attack",
+  "key": "key:E",
+  "label": "E",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill1",
+  "key": "key:Q",
+  "label": "Q",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill2",
+  "key": "key:R",
+  "label": "R",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill3",
+  "key": "key:T",
+  "label": "T",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill4",
+  "key": "key:Z",
+  "label": "Z",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skillMenu",
+  "key": "key:K",
+  "label": "K",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "confirm",
+  "key": "pad:A",
+  "label": "A",
+  "icon": "icons/xbox-a"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "pause",
+  "key": "pad:MENU",
+  "label": "MENU",
+  "icon": "icons/xbox-menu"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "fullscreen",
+  "key": "pad:RS",
+  "label": "RS",
+  "icon": "icons/xbox-rs"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "attack",
+  "key": "pad:X",
+  "label": "X",
+  "icon": "icons/xbox-x"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "skill1",
+  "key": "pad:LB",
+  "label": "LB",
+  "icon": "icons/xbox-lb"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "skill2",
+  "key": "pad:RB",
+  "label": "RB",
+  "icon": "icons/xbox-rb"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "skill3",
+  "key": "pad:LT",
+  "label": "LT",
+  "icon": "icons/xbox-lt"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "skill4",
+  "key": "pad:UP",
+  "label": "D-Pad ↑",
+  "icon": "icons/xbox-up"
+ },
+ {
+  "player": 1,
+  "profile": "gamepad",
+  "action": "skillMenu",
+  "key": "pad:DOWN",
+  "label": "D-Pad ↓",
+  "icon": "icons/xbox-down"
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "clock": 12.5,
+ "language": "de",
+ "guideOff": false,
+ "guideSeen": 0,
+ "controls": [
+  "wasd",
+  "gamepad"
+ ],
+ "seats": [
+  {
+   "player": 0,
+   "monarch": 0,
+   "stage": 0,
+   "device": {
+    "kind": 0,
+    "index": 0
+   }
+  }
+ ],
+ "unseated": [],
+ "cues": []
+}

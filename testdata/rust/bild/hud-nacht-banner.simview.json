@@ -1,0 +1,203 @@
+{
+ "economy": {
+  "hubLevel": 1,
+  "hubStep": 1,
+  "hubUpgrade": {
+   "gold": 4,
+   "material": {
+    "wood": 0,
+    "stone": 25,
+    "copper": 0
+   },
+   "paid": 0,
+   "steps": 3
+  },
+  "danger": true,
+  "fighters": 2,
+  "troopLimit": 10
+ },
+ "sites": [
+  {
+   "id": 97,
+   "payable": false
+  },
+  {
+   "id": 98,
+   "payable": false
+  },
+  {
+   "id": 99,
+   "payable": false
+  },
+  {
+   "id": 100,
+   "payable": false
+  },
+  {
+   "id": 101,
+   "payable": false
+  },
+  {
+   "id": 102,
+   "payable": false
+  },
+  {
+   "id": 103,
+   "payable": false
+  },
+  {
+   "id": 104,
+   "payable": false
+  },
+  {
+   "id": 105,
+   "payable": false
+  },
+  {
+   "id": 106,
+   "payable": false
+  },
+  {
+   "id": 107,
+   "payable": false
+  },
+  {
+   "id": 108,
+   "payable": false
+  },
+  {
+   "id": 109,
+   "payable": true
+  },
+  {
+   "id": 110,
+   "payable": true
+  },
+  {
+   "id": 111,
+   "payable": true
+  },
+  {
+   "id": 112,
+   "payable": false
+  },
+  {
+   "id": 113,
+   "payable": true
+  },
+  {
+   "id": 114,
+   "payable": false
+  },
+  {
+   "id": 115,
+   "payable": true
+  },
+  {
+   "id": 116,
+   "payable": true
+  },
+  {
+   "id": 117,
+   "payable": false
+  },
+  {
+   "id": 118,
+   "payable": false
+  },
+  {
+   "id": 119,
+   "payable": false
+  },
+  {
+   "id": 120,
+   "payable": true
+  },
+  {
+   "id": 121,
+   "payable": false
+  },
+  {
+   "id": 122,
+   "payable": true
+  },
+  {
+   "id": 123,
+   "payable": true
+  },
+  {
+   "id": 124,
+   "payable": true
+  },
+  {
+   "id": 125,
+   "payable": false
+  },
+  {
+   "id": 126,
+   "payable": false
+  },
+  {
+   "id": 127,
+   "payable": false
+  },
+  {
+   "id": 128,
+   "payable": false
+  },
+  {
+   "id": 129,
+   "payable": false
+  },
+  {
+   "id": 130,
+   "payable": false
+  },
+  {
+   "id": 131,
+   "payable": false
+  },
+  {
+   "id": 132,
+   "payable": false
+  },
+  {
+   "id": 133,
+   "payable": false
+  },
+  {
+   "id": 134,
+   "payable": false
+  },
+  {
+   "id": 135,
+   "payable": false
+  },
+  {
+   "id": 136,
+   "payable": false
+  },
+  {
+   "id": 137,
+   "payable": false
+  },
+  {
+   "id": 138,
+   "payable": false
+  },
+  {
+   "id": 139,
+   "payable": false
+  }
+ ],
+ "atLair": [
+  {
+   "player": 0,
+   "atLair": false
+  },
+  {
+   "player": 1,
+   "atLair": false
+  }
+ ]
+}

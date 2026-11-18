@@ -32,6 +32,7 @@ Agenten von RU30 setzen um; das Review RU30 prüft.
 
 - `SimView`, `PendingSimView` entfernen; `FixedSimView` bleibt nur, wenn das Standbild-Werkzeug `still` es für Bildvergleiche braucht.
 - `props/pending.rs`, `hud/pending.rs`, `fx/pending.rs` leer und gelöscht.
+- Die RU18-Shims in `hud/pending.rs` (`purse_max_of`, `trade_at`, `train_at`) durch die echten Sim-Funktionen ersetzen (sie liefern bis dahin neutrale Werte: Sack-Größe, Ausbilden, Kaufen und Tauschen fehlen in den Hinweisen).
 - Alle Client-Tests mit `ignore = "wartet auf RU10|RU14|RU15|RU18|RU19"` laufen ohne `ignore`.
 
 ## Nicht-Ziele
