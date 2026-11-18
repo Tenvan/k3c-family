@@ -9,7 +9,8 @@ use k3c_platform::{Canvas, Rect, TexId};
 
 use super::Menus;
 use super::draw::Painter;
-use super::pending::{MAIN_COUNT, PAUSE_ROWS};
+use super::main_screen::MAIN_COUNT;
+use super::pending::PAUSE_ROWS;
 use crate::art::{STANDARD_WORLD, WorldImage, WorldImages};
 
 /// Die Animation, deren erstes Bild die Karte zeigt; die Weltbilder (Rig hintergrund) heißen "stand".

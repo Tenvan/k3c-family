@@ -21,6 +21,8 @@ pub mod draw;
 pub mod hero;
 pub mod keys;
 pub mod layout;
+pub mod lobby;
+pub mod main_screen;
 mod pending;
 pub mod table;
 pub mod texts;
@@ -33,6 +35,10 @@ mod art_tests;
 mod keys_tests;
 #[cfg(test)]
 mod layout_tests;
+#[cfg(test)]
+mod lobby_tests;
+#[cfg(test)]
+mod main_screen_tests;
 #[cfg(test)]
 mod paper_tests;
 #[cfg(test)]
@@ -122,12 +128,19 @@ pub struct MenuSet {
     shared: Shared,
 }
 
+impl MenuSet {
+    /// Das Hauptmenü als eigener Typ; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin, einmal.
+    pub fn main_screen(&mut self) -> main_screen::MainScreen {
+        let mut sc = main_screen::new_main(&self.shared);
+        sc.base.note = std::mem::take(&mut self.shared.borrow_mut().notice);
+        sc
+    }
+}
+
 impl MenusRole for MenuSet {
     /// Das Hauptmenü; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin.
     fn main(&mut self) -> Box<dyn Screen> {
-        let mut sc = pending::new_main(&self.shared);
-        sc.note = std::mem::take(&mut self.shared.borrow_mut().notice);
-        Box::new(sc)
+        Box::new(self.main_screen())
     }
 
     /// Das Pause-Menü.
@@ -144,7 +157,7 @@ impl MenuPages for MenuSet {
         Some(match name {
             "saves" => Box::new(pending::new_saves(m)),
             "options" => Box::new(pending::new_options(m, in_game)),
-            "lobby" => Box::new(pending::new_lobby(m, by)),
+            "lobby" => Box::new(lobby::new_lobby(m, by)),
             "keys" => Box::new(table::new_keys(m)),
             "licenses" => Box::new(table::new_licenses(m)),
             _ => return None,

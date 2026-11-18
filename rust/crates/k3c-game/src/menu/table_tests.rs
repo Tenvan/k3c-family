@@ -1,5 +1,5 @@
 //! Tests aus `native/k3c-game/menu/table_test.go`. `licenses_page` wartet auf RU12.3 (Lizenzliste und `LicenseText`),
-//! `main_shows_version` und `main_first_draw_after_leave` auf das Hauptmenü (RU9.4).
+//! `main_shows_version` und `main_first_draw_after_leave` stehen seit RU9.4 in `main_screen_tests.rs`.
 
 use super::layout::geom_of;
 use super::new_shared;
@@ -77,16 +77,6 @@ fn keys_page() {
 #[test]
 #[ignore = "wartet auf RU12"]
 fn licenses_page() {}
-
-/// Version im Hauptmenü (B-808 AC-02): unter dem Titel, ohne Angabe „unbekannt“.
-#[test]
-#[ignore = "wartet auf RU9.4"]
-fn main_shows_version() {}
-
-/// Erstes Bild nach „Spiel verlassen“ (B-813 AC-03): Das Hauptmenü kennt den Spielstand schon vor seinem ersten Update.
-#[test]
-#[ignore = "wartet auf RU9.4"]
-fn main_first_draw_after_leave() {}
 
 /// Die Tafel liegt im Fenster unter dem Titel und über der Meldung; die Zeilen überlappen nicht.
 #[test]

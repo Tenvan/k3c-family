@@ -134,8 +134,3 @@ fn run_remembers_device_and_counts_version() {
     run(&mut p, &press(KEYS1, &[Action::Up]), &mut s);
     assert!(p.base.by == KEYS1 && p.base.ver == 2);
 }
-
-/// Go: Hauptmenü, Hinweis "bedient: Pad 2" bzw. "operated by: Keyboard" (braucht Hauptmenü und Texte).
-#[test]
-#[ignore = "wartet auf RU9.4"]
-fn run_remembers_operating_device() {}

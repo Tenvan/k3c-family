@@ -3,6 +3,8 @@
 
 use std::sync::RwLock;
 
+use super::texts::{TextKey, tr, tr1};
+
 static VERSION: RwLock<String> = RwLock::new(String::new());
 
 /// Die gesetzte Version (leer, solange keine gesetzt wurde).
@@ -15,4 +17,13 @@ pub fn set_version(v: &str) {
     if let Ok(mut g) = VERSION.write() {
         *g = v.to_string();
     }
+}
+
+/// Die Versionszeile des Hauptmenüs („Version …“, ohne Angabe „unbekannt“; Go: `versionText` in `licenses.go`).
+pub fn version_text(lang: &str) -> String {
+    let mut v = version();
+    if v.is_empty() {
+        v = tr(lang, TextKey::VersionUnknown);
+    }
+    tr1(lang, TextKey::Version, &v)
 }

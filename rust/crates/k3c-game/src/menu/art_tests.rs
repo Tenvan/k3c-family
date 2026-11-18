@@ -78,8 +78,3 @@ fn menu_art_missing_is_text_card() {
         "ohne geladenes Sheet gezeichnet"
     );
 }
-
-/// Haupt- und Pause-Menü geben ihre Illustration an die Zeilen weiter (Hauptmenü: RU9.4).
-#[test]
-#[ignore = "wartet auf RU9.4"]
-fn menu_rows_carry_art() {}

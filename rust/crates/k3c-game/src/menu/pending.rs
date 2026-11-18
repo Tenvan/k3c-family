@@ -12,8 +12,6 @@ use crate::view::input::{DeviceID, Input};
 use crate::view::screen::{Screen, Step};
 use crate::view::session::Session;
 
-/// RU9.4 (`main_screen.go`): Zahl der Karten des Hauptmenüs.
-pub const MAIN_COUNT: i64 = 7;
 /// RU12 (`pause.go`): Zahl der Zeilen des Pause-Menüs.
 pub const PAUSE_ROWS: i64 = 5;
 
@@ -32,11 +30,6 @@ pub fn licenses() -> &'static [License] {
     unimplemented!("RU12: licenses")
 }
 
-/// RU12.3 (`licenses.go`): die Versionszeile des Hauptmenüs.
-pub fn version_text(_lang: &str) -> String {
-    unimplemented!("RU12: version_text")
-}
-
 /// Stellvertreter der Screens aus RU9.2 bis RU9.5 und RU12.
 #[derive(Default)]
 pub struct PendingScreen {
@@ -52,18 +45,18 @@ impl Screen for PendingScreen {
     }
 }
 
-pub fn new_main(_m: &Shared) -> PendingScreen {
-    unimplemented!("RU9.4: new_main")
-}
 pub fn new_pause(_m: &Shared) -> PendingScreen {
     unimplemented!("RU12: new_pause")
 }
 pub fn new_saves(_m: &Shared) -> PendingScreen {
-    unimplemented!("RU9.4: new_saves")
+    unimplemented!("RU12: new_saves")
 }
 pub fn new_options(_m: &Shared, _dim: bool) -> PendingScreen {
     unimplemented!("RU9.5: new_options")
 }
-pub fn new_lobby(_m: &Shared, _d: DeviceID) -> PendingScreen {
-    unimplemented!("RU9.4: new_lobby")
+pub fn new_world_pick(_m: &Shared, _d: DeviceID) -> PendingScreen {
+    unimplemented!("RU12: new_world_pick")
+}
+pub fn new_testing(_m: &Shared) -> PendingScreen {
+    unimplemented!("RU12: new_testing")
 }

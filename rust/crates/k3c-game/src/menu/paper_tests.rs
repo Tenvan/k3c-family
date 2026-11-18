@@ -13,7 +13,8 @@ use super::layout::{
     COL_LINE, MAT_BLUE, MAT_CLOTH, MAT_CORAL, MAT_GOLD, MAT_GREEN, MAT_LINEN, MAT_PURPLE, MAT_RED, Material, Rgba,
     geom_of, rgb,
 };
-use super::pending::{MAIN_COUNT, PAUSE_ROWS};
+use super::main_screen::MAIN_COUNT;
+use super::pending::PAUSE_ROWS;
 use crate::view::cell::{Rectangle, rect};
 use k3c_platform::Filter;
 

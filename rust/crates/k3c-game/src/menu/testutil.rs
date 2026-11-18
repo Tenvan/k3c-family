@@ -232,6 +232,14 @@ pub fn with_menus<R>(m: &Rc<RefCell<Menus>>, f: impl FnOnce(&mut Menus) -> R) ->
     f(&mut m.borrow_mut())
 }
 
+/// Sperre für Tests, die die Version (und damit den Entwickler-Build, `dev_build`) lesen oder ändern.
+static VERSION_LOCK: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
+/// Hält die Sperre, solange der Wert lebt (eine vergiftete Sperre zählt nicht).
+pub fn version_guard() -> std::sync::MutexGuard<'static, ()> {
+    VERSION_LOCK.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
 #[test]
 fn fake_session_fulfils_contract() {
     let mut s = FakeSession::default();
