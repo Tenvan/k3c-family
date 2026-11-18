@@ -129,31 +129,6 @@ pub fn escort_post(_w: &World, _t: &Troop) -> Option<f64> {
     unimplemented!("RU15: escort_post")
 }
 
-/// Go: `stepWarrior` (unit_warrior.go); RU11.4 liefert sie.
-pub fn step_warrior(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
-    unimplemented!("RU11: step_warrior")
-}
-
-/// Go: `weaponToFetch` (unit_warrior.go); RU11.4 liefert sie.
-pub fn weapon_to_fetch(_w: &World, _v: &WorldValues, _ti: usize) -> Option<Job> {
-    unimplemented!("RU11: weapon_to_fetch")
-}
-
-/// Go: `fetchWeapon` (unit_warrior.go); RU11.4 liefert sie.
-pub fn fetch_weapon(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
-    unimplemented!("RU11: fetch_weapon")
-}
-
-/// Go: `workFactor` (unit_professions.go); RU11.4 liefert sie.
-pub fn work_factor(_w: &World, _v: &WorldValues, _ti: usize, _kind: &str) -> f64 {
-    unimplemented!("RU11: work_factor")
-}
-
-/// Go: `mineFactor` (unit_professions.go); RU11.4 liefert sie.
-pub fn mine_factor(_w: &World, _v: &WorldValues, _ti: usize, _resource: &str) -> f64 {
-    unimplemented!("RU11: mine_factor")
-}
-
 /// Go: `repair` (building_repair.go): der Bauer `ti` repariert.
 pub fn repair(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
     unimplemented!("RU18: repair")
@@ -242,4 +217,19 @@ pub fn fighters(_w: &World) -> i64 {
 /// Go: `troopLimit` (building_barracks.go): das Truppenlimit der Kaserne.
 pub fn troop_limit(_w: &World) -> i64 {
     unimplemented!("RU18: troop_limit")
+}
+
+/// Go: `combatSpotNear` (combat.go): Liegt `x` an einem Kampf-Zahlziel?
+pub fn combat_spot_near(_w: &World, _x: f64) -> bool {
+    unimplemented!("RU15: combat_spot_near")
+}
+
+/// Go: `leaveSquad` (combat.go): die Truppe verlässt ihren Trupp.
+pub fn leave_squad(_w: &mut World, _ti: usize) {
+    unimplemented!("RU15: leave_squad")
+}
+
+/// Go: `weaponsInFlight` (building_barracks.go): Waffen, die andere Bürger gerade holen.
+pub fn weapons_in_flight(_w: &World, _ti: usize) -> i64 {
+    unimplemented!("RU18: weapons_in_flight")
 }

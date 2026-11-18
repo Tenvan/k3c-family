@@ -151,7 +151,7 @@ fn hammer_faellt_und_wird_aufgehoben() {
     w.enemies[near].stun = f64::INFINITY;
     let v = w.vals.clone().expect("Wertesatz");
     assert!(
-        crate::state::pending::weapon_to_fetch(&w, &v, other).is_none(),
+        crate::unit::warrior::weapon_to_fetch(&w, &v, other).is_none(),
         "Gegner nahe: kein Auftrag"
     );
     w.enemies.clear();

@@ -171,14 +171,33 @@ pub fn run_until(_w: &mut World, _max_seconds: f64, _done: &dyn Fn(&World) -> bo
     panic!("RU14: run_until")
 }
 
-/// Go: `addPeasant` (unit_professions_test.go, kommt mit RU11.4).
-pub fn add_peasant(_w: &mut World, _x: f64, _profession: &str) -> usize {
-    panic!("RU11.4: add_peasant")
+/// Go: `addPeasant` (unit_professions_test.go): legt einen Bauern mit Beruf `profession` bei `x` an.
+pub fn add_peasant(w: &mut World, x: f64, profession: &str) -> usize {
+    let hp = w
+        .vals
+        .as_ref()
+        .and_then(|v| v.troops.get("peasant"))
+        .map_or(0.0, |t| t.hp);
+    let id = w.new_id();
+    let anchor_x = w.hub_x;
+    w.troops.push(crate::state::Troop {
+        id,
+        kind: "peasant".into(),
+        x,
+        hp,
+        max_hp: hp,
+        anchor_x,
+        profession: profession.into(),
+        ..Default::default()
+    });
+    w.troops.len() - 1
 }
 
-/// Go: `loseLayer` (Kampf-Hilfe der Tests, RU15).
-pub fn lose_layer(_w: &mut World, _ti: usize) {
-    panic!("RU15: lose_layer")
+/// Go: `loseLayer` (unit_warrior.go) mit dem Wertesatz der Welt.
+pub fn lose_layer(w: &mut World, ti: usize) {
+    if let Some(v) = w.vals.clone() {
+        crate::unit::warrior::lose_layer(w, &v, ti);
+    }
 }
 
 pub fn pay_at(_w: &mut World, _players: &[usize], _x: f64, _seconds: f64, _done: &dyn Fn(&World) -> bool) -> bool {

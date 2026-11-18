@@ -1,10 +1,9 @@
 //! Aufträge der Bauern (Port von `engine/sim/unit_common.go`, ab `findJob`): Auftrag suchen, Bauplatz wählen, Auftrag
 //! abgeben, zum Kämpfer befördern.
 
+use super::warrior::weapon_to_fetch;
 use crate::state::common::{is_dangerous, is_worker};
-use crate::state::pending::{
-    armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job, resource_full, weapon_to_fetch,
-};
+use crate::state::pending::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job, resource_full};
 use crate::state::{Job, World, WorldValues};
 
 /// Go: `findJob`: Bogen holen, sonst nächsten wartenden Bauplatz, sonst (ohne Gefahr) die markierte Ressource nächst am

@@ -7,11 +7,13 @@
 //! Truppe). Die Aufträge (`find_job` …) stehen in `jobs.rs`.
 
 pub mod archer;
+pub mod econ;
 pub mod escort;
 pub mod flee;
 pub mod hammer;
 pub mod jobs;
-// RU11.4: pub mod professions; pub mod warrior;
+pub mod professions;
+pub mod warrior;
 
 #[cfg(test)]
 mod archer_tests;
@@ -22,24 +24,31 @@ mod disarm_tests;
 #[cfg(test)]
 mod escort_tests;
 #[cfg(test)]
+mod fetch_tests;
+#[cfg(test)]
 mod hammer_tests;
 #[cfg(test)]
+mod professions_tests;
+#[cfg(test)]
 mod shelter_tests;
+#[cfg(test)]
+mod warrior_tests;
 
 use serde_json::json;
 
 use crate::state::common::{approach, event, is_dangerous};
 use crate::state::island_ref::IslandRef;
 use crate::state::pending::{
-    add_pool, add_stock, build_progress_event, carry_to_stock, fetch_weapon, finish_upgrade, gather_of, gather_vein,
-    is_vein, mine_factor, next_level, outpost_job, pure, repair, scatter_coins, step_warrior, unit_x, upgrade_job,
-    vagrants_at, values, wander_radius, work_factor,
+    add_pool, add_stock, build_progress_event, carry_to_stock, finish_upgrade, gather_of, gather_vein, is_vein,
+    next_level, outpost_job, pure, repair, scatter_coins, unit_x, upgrade_job, vagrants_at, values, wander_radius,
 };
 use crate::state::{Job, World, WorldValues};
 use archer::step_archer;
 use flee::flee;
 use hammer::spawn_vagrant_with;
 use jobs::{find_job, release_job};
+use professions::{mine_factor, work_factor};
+use warrior::{fetch_weapon, step_warrior};
 
 /// Go: `arrive`: so nah gilt ein Ziel als erreicht.
 pub const ARRIVE: f64 = 0.3;

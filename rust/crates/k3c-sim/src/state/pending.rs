@@ -2,14 +2,13 @@
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
-use std::collections::BTreeMap;
 use std::sync::Arc;
 
 use k3c_data::buildings::Plantation;
 use k3c_data::economy::Gatherable;
 use k3c_data::hub::Stock;
 use k3c_data::monarch::{SkillData, SkillEffect};
-use k3c_data::troops::{ProfessionData, TroopData};
+
 use k3c_level::types::WallSite;
 
 use super::save::HubSave;
@@ -22,7 +21,9 @@ pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
 pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
 pub use crate::unit::archer::is_on_tower;
 pub use crate::unit::jobs::make_fighter;
+pub use crate::unit::professions::profession_of;
 pub use crate::unit::spawn_vagrant;
+pub use crate::unit::warrior::is_fighter;
 
 /// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
 pub const MERCHANT_ID: i64 = -1;
@@ -101,11 +102,6 @@ pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
     unimplemented!("RU18: find_pay_target")
 }
 
-/// Go: `professionOf` (unit_professions.go): der Beruf `kind` aus den Truppen-Daten.
-pub fn profession_of<'a>(_troops: &'a BTreeMap<String, TroopData>, _kind: &str) -> Option<&'a ProfessionData> {
-    unimplemented!("RU11: profession_of")
-}
-
 /// Go: `stockField` (economy.go): der Vorrat an `resource`; `None` bei unbekanntem Material.
 pub fn stock_field(_stock: &Stock, _resource: &str) -> Option<i64> {
     unimplemented!("RU18: stock_field")
@@ -144,11 +140,6 @@ pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
 /// Go: `isSoldier` (combat.go): Ist die Truppe ein Nahkämpfer, der einer Gruppe vorstehen kann?
 pub fn is_soldier(_t: &Troop) -> bool {
     unimplemented!("RU15: is_soldier")
-}
-
-/// Go: `isFighter` (unit_warrior.go): Ist `kind` eine Kämpfer-Figur aus den Truppen-Daten?
-pub fn is_fighter(_troops: &BTreeMap<String, TroopData>, _kind: &str) -> bool {
-    unimplemented!("RU11: is_fighter")
 }
 
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.

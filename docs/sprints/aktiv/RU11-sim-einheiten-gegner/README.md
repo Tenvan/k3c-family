@@ -94,7 +94,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU11.1 | `RU11.1-enemies-guard-equipment-inselbezug.md` | Umsetzung | autonom | fertig |
 | RU11.2 | `RU11.2-enemies-traits-waves-archer.md` | Umsetzung | autonom | fertig |
 | RU11.3 | `RU11.3-unit-common-escort-flee-hammer.md` | Umsetzung | autonom | fertig |
-| RU11.4 | `RU11.4-unit-professions-warrior.md` | Umsetzung | autonom | offen |
+| RU11.4 | `RU11.4-unit-professions-warrior.md` | Umsetzung | autonom | fertig |
 | RU11.5 | `RU11.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

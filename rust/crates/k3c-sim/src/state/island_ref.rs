@@ -4,6 +4,7 @@
 //! `Option<&mut IslandRef>` als letzten Parameter vor `dt`; `None` heißt Go `w.island == nil`. RU10 baut den
 //! `IslandRef` vor dem Schritt einer Stufe aus der Insel; RU15 ergänzt besiegte Bosse und den Endboss-Kampf.
 
+use k3c_data::buildings::Cost;
 use k3c_data::difficulty::Grade;
 use k3c_data::waves::WavesDataDepthScaling;
 
@@ -20,6 +21,8 @@ pub struct IslandRef {
     pub players: i64,
     /// Zuschlag der Wellengröße je weiteren Spieler (Go: `isl.values().Waves.PerExtraPlayer`).
     pub per_extra_player: f64,
+    /// Dev-Schalter `CheapBuild` der Insel (Go: `island.Dev.CheapBuild`, dev.go): Preise höchstens 1 je Posten.
+    pub cheap_build: bool,
 }
 
 impl IslandRef {
@@ -32,6 +35,21 @@ impl IslandRef {
             self.grade.enemy_hp,
             self.grade.enemy_damage,
         )
+    }
+}
+
+/// Go: `cheap` (dev.go): der Preis `c` der Stufe; mit dem Dev-Schalter `CheapBuild` höchstens 1 je Posten (0 bleibt 0).
+pub fn cheap(isl: Option<&IslandRef>, c: &Cost) -> Cost {
+    if !isl.is_some_and(|i| i.cheap_build) {
+        return c.clone();
+    }
+    Cost {
+        gold: c.gold.min(1),
+        wood: c.wood.min(1),
+        stone: c.stone.min(1),
+        copper: c.copper.min(1),
+        iron: c.iron.min(1),
+        crystal: c.crystal.min(1),
     }
 }
 
