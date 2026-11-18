@@ -64,7 +64,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU45.1 | `RU45.1-gen-und-race.md` | Umsetzung | autonom | offen |
+| RU45.1 | `RU45.1-gen-und-race.md` | Umsetzung | autonom | fertig |
 | RU45.2 | `RU45.2-level-vergleich-go-rust.md` | Umsetzung | autonom | offen |
 | RU45.3 | `RU45.3-measure-novsync-replay.md` | Umsetzung | autonom | offen |
 | RU45.4 | `RU45.4-review.md` | Review | autonom | offen |
