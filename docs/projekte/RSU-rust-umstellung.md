@@ -55,7 +55,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | geplant |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
 | RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
-| RU21 | Spielstände und Raum Teil 1 | geplant |
+| RU21 | Spielstände und Raum Teil 1 | aktiv |
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | geplant |
 | RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | geplant |
 | RU24 | Raum Teil 2 und Spielstand-Format | geplant |

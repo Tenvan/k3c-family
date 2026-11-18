@@ -1,6 +1,6 @@
 # RU21 · SRV · Spielstände und Raum Teil 1
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -90,7 +90,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU21.1 | `RU21.1-store-atomic-backups-reports-restart.md` | Umsetzung | autonom | offen |
+| RU21.1 | `RU21.1-store-atomic-backups-reports-restart.md` | Umsetzung | autonom | fertig |
 | RU21.2 | `RU21.2-store-saves-room.md` | Umsetzung | autonom | offen |
 | RU21.3 | `RU21.3-room-manager-run.md` | Umsetzung | autonom | offen |
 | RU21.4 | `RU21.4-room-actions-logging-status.md` | Umsetzung | autonom | offen |
