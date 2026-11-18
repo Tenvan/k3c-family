@@ -10,7 +10,7 @@
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
 
-use k3c_platform::{Canvas, TexId};
+use k3c_platform::Canvas;
 
 use self::draw::LayoutCache;
 use self::glyphs::JoinKey;
@@ -19,7 +19,7 @@ use self::paint::Painter;
 use self::pending::{LabelSpot, TaleState, VoyageView};
 use self::state::SeatState;
 use self::values::Memo;
-use crate::art::{Font, Library, SeaMap, Sheet};
+use crate::art::{Font, Library, SeaMap};
 use crate::props::pending::PendingSimView;
 use crate::props::simview::SimView;
 use crate::view::MAX_PLAYERS;
@@ -32,11 +32,13 @@ use crate::view::settings::DEFAULT_LANGUAGE;
 pub mod banner;
 pub mod data;
 pub mod draw;
+pub mod drawglyph;
 pub mod drawstock;
 pub mod fonts;
 pub mod glyphs;
 pub mod hints;
 pub mod icons;
+pub mod keyline;
 pub mod layout;
 pub mod paint;
 pub mod pending;
@@ -63,6 +65,8 @@ mod hints_tests;
 #[cfg(test)]
 mod icons_tests;
 #[cfg(test)]
+mod keyicons_tests;
+#[cfg(test)]
 mod labels_tests;
 #[cfg(test)]
 mod layout_tests;
@@ -83,7 +87,7 @@ mod values_tests;
 
 /// Hud ist der Beitrag des Pakets: Zustand je Spieler (Listener) und, hinter `HudDrawer`, der Drawer (`Layer::HUD`)
 /// und das Overlay (Skill-Menü, RU23).
-#[allow(dead_code)] // cue_buf, paint, lay, spots, cap_of, cap_cut, voy, tale liest der Zeichner (RU20.5, RU20.6, RU23)
+#[allow(dead_code)] // cue_buf, paint, lay, spots, voy, tale liest der Zeichner (RU20.5, RU23)
 pub struct Hud {
     lib: Option<Rc<RefCell<Library>>>,
     view: Box<dyn SimView>,
@@ -109,9 +113,6 @@ pub struct Hud {
     assets: Option<Vec<String>>,
     /// Tasten-Icons gemeldet (`use_key_icons`, B-911)
     key_icons: bool,
-    /// breite Tastenkappe, aus der `cap_cut` geschnitten ist (drawglyph, RU20.6)
-    cap_of: Option<Sheet>,
-    cap_cut: [Option<TexId>; 3],
     /// Schiffsfahrt im Vollbild (voyage.go, B-977)
     voy: VoyageView,
     /// Geschichtszeilen an den Wendepunkten (story.go, B-974)
@@ -139,8 +140,6 @@ impl Hud {
             sea_map: None,
             assets: None,
             key_icons: false,
-            cap_of: None,
-            cap_cut: [None; 3],
             voy: VoyageView::default(),
             tale: TaleState::default(),
         };
