@@ -22,6 +22,9 @@ pub mod hero;
 pub mod keys;
 pub mod layout;
 mod pending;
+pub mod table;
+pub mod texts;
+mod texts_data;
 pub mod version;
 
 #[cfg(test)]
@@ -33,7 +36,11 @@ mod layout_tests;
 #[cfg(test)]
 mod paper_tests;
 #[cfg(test)]
+mod table_tests;
+#[cfg(test)]
 mod testutil;
+#[cfg(test)]
+mod texts_tests;
 
 use std::cell::RefCell;
 use std::path::Path;
@@ -138,8 +145,8 @@ impl MenuPages for MenuSet {
             "saves" => Box::new(pending::new_saves(m)),
             "options" => Box::new(pending::new_options(m, in_game)),
             "lobby" => Box::new(pending::new_lobby(m, by)),
-            "keys" => Box::new(pending::new_keys(m)),
-            "licenses" => Box::new(pending::new_licenses(m)),
+            "keys" => Box::new(table::new_keys(m)),
+            "licenses" => Box::new(table::new_licenses(m)),
             _ => return None,
         })
     }

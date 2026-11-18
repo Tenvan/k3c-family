@@ -5,6 +5,7 @@ use k3c_platform::Canvas;
 
 use super::Shared;
 use super::keys::Note;
+use super::texts::TextKey;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 use crate::view::input::{DeviceID, Input};
@@ -16,22 +17,24 @@ pub const MAIN_COUNT: i64 = 7;
 /// RU12 (`pause.go`): Zahl der Zeilen des Pause-Menüs.
 pub const PAUSE_ROWS: i64 = 5;
 
-/// RU9.3 (`texts.go`): Schlüssel eines Textes.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub struct TextKey(pub u16);
-
-/// RU9.3: Texte, die `keys.rs` nennt.
-pub const TXT_PAD: TextKey = TextKey(1);
-pub const TXT_KEYBOARD: TextKey = TextKey(2);
-
-/// RU9.3 (`texts.go`): Text `k` in der Sprache `lang`.
-pub fn tr(_lang: &str, _k: TextKey) -> String {
-    unimplemented!("RU9.3: tr")
+/// RU12.3 (`licenses.go`): ein Werk mit Lizenzhinweis.
+#[derive(Clone, Copy, Debug)]
+pub struct License {
+    pub part: TextKey,
+    pub work: &'static str,
+    pub holder: &'static str,
+    pub license: &'static str,
+    pub place: &'static str,
 }
 
-/// RU9.3 (`texts.go`): Text `k` mit eingesetztem Platzhalter.
-pub fn tr1(_lang: &str, _k: TextKey, _arg: &str) -> String {
-    unimplemented!("RU9.3: tr1")
+/// RU12.3 (`licenses.go`): die Liste der Werke.
+pub fn licenses() -> &'static [License] {
+    unimplemented!("RU12: licenses")
+}
+
+/// RU12.3 (`licenses.go`): die Versionszeile des Hauptmenüs.
+pub fn version_text(_lang: &str) -> String {
+    unimplemented!("RU12: version_text")
 }
 
 /// Stellvertreter der Screens aus RU9.2 bis RU9.5 und RU12.
@@ -63,10 +66,4 @@ pub fn new_options(_m: &Shared, _dim: bool) -> PendingScreen {
 }
 pub fn new_lobby(_m: &Shared, _d: DeviceID) -> PendingScreen {
     unimplemented!("RU9.4: new_lobby")
-}
-pub fn new_keys(_m: &Shared) -> PendingScreen {
-    unimplemented!("RU9.5: new_keys")
-}
-pub fn new_licenses(_m: &Shared) -> PendingScreen {
-    unimplemented!("RU12: new_licenses")
 }

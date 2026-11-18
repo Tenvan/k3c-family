@@ -4,7 +4,7 @@
 //! Abweichung: Go bettet `base` in jeden Screen ein und ruft `b.run(in, s, h)`. Hier liefert der Screen über den Trait
 //! [`Handler`] seine `Base` und `handle`, und die freie Funktion [`run`] hat dieselbe Schleife.
 
-use super::pending::{TXT_KEYBOARD, TXT_PAD, TextKey, tr, tr1};
+use super::texts::{TextKey, tr, tr1};
 use crate::view::frame::{Cue, CueKind};
 use crate::view::input::{Action, DeviceID, DeviceKind, Input};
 use crate::view::screen::{Screen, Step, StepKind};
@@ -169,9 +169,9 @@ impl Base {
 /// Nennt das Gerät für die Anzeige (Tastatur, Pad n).
 pub fn device_name(lang: &str, d: DeviceID) -> String {
     if d.kind == DeviceKind::Gamepad {
-        return tr1(lang, TXT_PAD, &(d.index + 1).to_string());
+        return tr1(lang, TextKey::Pad, &(d.index + 1).to_string());
     }
-    tr(lang, TXT_KEYBOARD)
+    tr(lang, TextKey::Keyboard)
 }
 
 /// Liefert die nächste wählbare Zeile ab `sel` in Richtung `dir` (-1 hoch, 1 runter) unter `n` Zeilen. Am Rand bleibt
