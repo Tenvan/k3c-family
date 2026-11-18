@@ -12,7 +12,10 @@ use k3c_data::{Data, Source, load_all};
 use k3c_level::nature::neutral_nature as level_neutral_nature;
 use k3c_level::types::NatureValues;
 
-use super::{CreateOptions, Island, WorldDef, create_island, step_island};
+use super::{
+    CreateOptions, Island, SaveTables, WorldDef, create_island, from_island_save, parse_island_save, step_island,
+};
+use crate::state::pending::values_of;
 use crate::state::{Event, PlayerCommand, World};
 
 /// Go: `islandSpeed`: schneller Zyklus, Tag, Dämmerung und Nacht in Sekunden statt Minuten.
@@ -111,4 +114,23 @@ pub fn vagrants(w: &World) -> usize {
 /// und 10 Stein, im Wald ein gebauter Turm und ein Bogenschütze. Braucht `set_options` (RU10.2) und `build_site` (RU14).
 pub fn defeat_island(_data: &Data, _defeat: &str) -> Island {
     unimplemented!("RU14: defeat_island (SetOptions, buildSite)")
+}
+
+/// Go: `saveJSON`: der Spielstand der Insel als JSON-Text.
+pub fn save_json(isl: &Island, saved_at: &str) -> String {
+    serde_json::to_string(&isl.to_save(saved_at).expect("Spielstand")).expect("Spielstand als JSON")
+}
+
+/// Go: `loadIsland`: liest einen Spielstand (`parse_island_save`) und baut die Insel (`from_island_save`). Braucht
+/// `standard_world` (RU10.5) und `create_world_with` (RU14).
+pub fn load_island(data: &Data, raw: &str) -> Island {
+    let world = standard_world(data);
+    let defaults = values_of(&world).expect("Basis-Wertesatz");
+    let t = SaveTables {
+        data,
+        defaults: &defaults,
+        standard_world: &world,
+    };
+    let s = parse_island_save(raw, &t).expect("Spielstand lesen");
+    from_island_save(&t, &s, ISLAND_SPEED).expect("Insel laden")
 }

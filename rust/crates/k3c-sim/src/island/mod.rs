@@ -23,6 +23,9 @@ pub mod data;
 pub mod defeat;
 pub mod nature;
 pub mod options;
+pub mod save;
+pub mod save_load;
+pub mod save_parse;
 pub mod travel;
 pub mod worlds;
 
@@ -30,6 +33,14 @@ pub mod worlds;
 mod defeat_tests;
 #[cfg(test)]
 mod nature_tests;
+#[cfg(test)]
+mod options_tests;
+#[cfg(test)]
+mod save_boss_tests;
+#[cfg(test)]
+mod save_planned_tests;
+#[cfg(test)]
+mod save_tests;
 #[cfg(test)]
 mod start_tests;
 #[cfg(test)]
@@ -39,11 +50,14 @@ pub(crate) mod testutil;
 
 pub use create::{CreateOptions, IslandBuild, create_island, create_island_at, create_island_in};
 pub use data::IslandDef;
-pub use options::IslandOptions;
+pub use options::{IslandOptions, default_options, default_options_for, set_grade, set_options, validate_options};
+pub use save::{ISLAND_SAVE_VERSION, IslandPlayerSave, IslandSave, MerchantSave, SaveTables};
+pub use save_load::{from_island_save, from_island_save_in, saved_create_options};
+pub use save_parse::{parse_island_save, validate_island_save};
 pub use travel::IslandTravel;
 pub use worlds::WorldDef;
 
-/// Go: `Island`, eine Insel mit ihren Stufen. Ohne JSON: der Spielstand ist `IslandSave` (RU10.2).
+/// Go: `Island`, eine Insel mit ihren Stufen. Ohne JSON: der Spielstand ist `IslandSave` (`save.rs`).
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Island {
     /// Gleiche ID = gleiches Spiel (Spielstand).
@@ -118,17 +132,22 @@ impl Island {
         self.stages.iter().map(|w| w.players.len() as i64).sum()
     }
 
-    /// Der Bezug der Stufe `i` zur Insel für ihren Schritt (Vorentscheidung 2): Tabellen und Zahlen werden kopiert, die
-    /// veränderlichen Teile (`defeated_bosses`, `endboss`) herausgenommen; `put_stage_ref` legt sie zurück. Der Grad kommt
-    /// aus `difficulty` (Go: Paket-Variable `difficulty`); ein unbekannter Grad ergibt wie bei Gos Map-Zugriff Nullwerte.
-    pub fn stage_ref(&mut self, i: usize, difficulty: &DifficultyFile) -> IslandRef {
-        let per_extra_player = match self.stages.first() {
+    /// Go: `isl.values().Waves.PerExtraPlayer`: Zuschlag der Wellengröße je weiteren Spieler aus dem Wertesatz der Insel.
+    pub(crate) fn per_extra_player(&self) -> f64 {
+        match self.stages.first() {
             Some(w) => match &w.vals {
                 Some(v) => v.waves.per_extra_player,
                 None => values(w).waves.per_extra_player,
             },
             None => 0.0,
-        };
+        }
+    }
+
+    /// Der Bezug der Stufe `i` zur Insel für ihren Schritt (Vorentscheidung 2): Tabellen und Zahlen werden kopiert, die
+    /// veränderlichen Teile (`defeated_bosses`, `endboss`) herausgenommen; `put_stage_ref` legt sie zurück. Der Grad kommt
+    /// aus `difficulty` (Go: Paket-Variable `difficulty`); ein unbekannter Grad ergibt wie bei Gos Map-Zugriff Nullwerte.
+    pub fn stage_ref(&mut self, i: usize, difficulty: &DifficultyFile) -> IslandRef {
+        let per_extra_player = self.per_extra_player();
         IslandRef {
             scaling: self.scaling.clone(),
             grade: difficulty.grades.get(&self.options.grade).cloned().unwrap_or_default(),

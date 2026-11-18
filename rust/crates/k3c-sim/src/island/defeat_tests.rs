@@ -21,9 +21,9 @@ fn crown_theft(_isl: &mut Island) {
     panic!("RU15: crown_theft")
 }
 
-/// Go: `DefaultOptionsFor(grade).Defeat` (island_options.go); kommt mit RU10.2.
-fn default_defeat_for(_data: &k3c_data::Data, _grade: &str) -> String {
-    panic!("RU10.2: default_options_for")
+/// Go: `DefaultOptionsFor(grade).Defeat` (island_options.go).
+fn default_defeat_for(data: &k3c_data::Data, grade: &str) -> String {
+    super::options::default_options_for(grade, &data.difficulty).defeat
 }
 
 #[test]

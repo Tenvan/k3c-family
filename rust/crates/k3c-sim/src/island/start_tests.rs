@@ -24,7 +24,7 @@ fn island_start_stock() {
     assert_eq!(a.stock, b.stock, "gleicher Seed, anderer Vorrat");
 }
 
-/// Braucht außerdem `to_save`/`from_island_save` (RU10.2).
+/// Braucht `create_island` (RU14).
 #[test]
 #[ignore = "wartet auf RU14"]
 fn island_start_stock_not_added_on_load() {
@@ -35,7 +35,16 @@ fn island_start_stock_not_added_on_load() {
         stone: 3,
         ..Stock::default()
     };
-    panic!("RU10.2: from_island_save(isl.to_save(..), ISLAND_SPEED), Vorrat 7 Holz und 3 Stein ohne Startvorrat");
+    let loaded = load_island(&data, &save_json(&isl, "x"));
+    assert_eq!(
+        loaded.stock,
+        Stock {
+            wood: 7,
+            stone: 3,
+            ..Stock::default()
+        },
+        "Vorrat nach dem Laden: der Stand, ohne Startvorrat"
+    );
 }
 
 #[test]

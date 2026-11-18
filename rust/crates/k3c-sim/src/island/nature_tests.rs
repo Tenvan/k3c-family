@@ -83,15 +83,19 @@ fn insel_natur_fest_im_spiel() {
 }
 
 /// Spielstand: Die Natur der Stufe wird mitgespeichert und beim Laden wieder verwendet, auch wenn die Welt sie nicht mehr
-/// festsetzt. Braucht `to_save`/`from_island_save` (RU10.2) und `create_island`.
+/// festsetzt. Braucht `create_island` (RU14).
 #[test]
 #[ignore = "wartet auf RU14"]
 fn insel_natur_im_spielstand() {
     let data = test_data();
     let world = standard_world(&data);
     let isl = create_island_in(&data, &world, "natur-stand", &[0], 1.0, CreateOptions::default()).expect("Insel");
-    let _want = isl.stages[0].level.nature.clone();
-    panic!("RU10.2: to_save, parse_island_save, from_island_save");
+    let want = isl.stages[0].level.nature.clone();
+    let raw = save_json(&isl, "2026-11-14T00:00:00Z");
+    let s: super::IslandSave = serde_json::from_str(&raw).expect("Spielstand");
+    assert_eq!(s.stages[0].nature, want, "gespeichert");
+    let loaded = load_island(&data, &raw);
+    assert_eq!(loaded.stages[0].level.nature, want, "geladen");
 }
 
 /// AC-04 und Prüfung beim Laden: unbekannte Schlüssel, Bereich, alle Baumarten 0, falsche Tiefe.

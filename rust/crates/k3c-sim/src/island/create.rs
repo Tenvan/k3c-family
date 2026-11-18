@@ -12,12 +12,13 @@ use k3c_data::hub::HubData;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
 use crate::state::pending::{
-    WorldOptions, check_chunk_count, create_world_with, default_options, empty_site, hub_of, lair_options,
-    validate_hub_data_in, values_of,
+    WorldOptions, check_chunk_count, create_world_with, empty_site, hub_of, lair_options, validate_hub_data_in,
+    values_of,
 };
 
 use super::Island;
 use super::data::{IslandDef, biome_for_depth};
+use super::options::default_options;
 use super::worlds::WorldDef;
 
 /// Go: `CreateOptions`, die Parameter der Erzeugung einer Insel (B-461, B-462). Sie gelten nur für die Erzeugung und werden
@@ -109,7 +110,7 @@ pub fn create_island(
 
 /// Go: `CreateIslandIn` baut die erste Insel der Welt `world` mit den Stufen für die angegebenen Tiefen (Reihenfolge =
 /// Stufenindex). `cycle_speed` 0 bedeutet 1. Eine neue Insel startet mit dem Vorrat aus hub.json › islandStartStock;
-/// Spielstände setzen ihren eigenen (`FromIslandSaveIn`, RU10.2).
+/// Spielstände setzen ihren eigenen (`from_island_save_in`).
 pub fn create_island_in(
     data: &Data,
     world: &WorldDef,
