@@ -59,7 +59,6 @@ fn resolve(lookup: LookupFn, id: &str) -> Result<WorldValues, String> {
 
 /// B-680/AC-02: Ohne Overrides gleich der Basis (auch über extends).
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_ohne_overrides() {
     let lookup = test_worlds(vec![
         world(STANDARD_WORLD_ID, "", &[]),
@@ -73,7 +72,6 @@ fn world_values_ohne_overrides() {
 
 /// B-680/AC-02: Ein Override ändert genau das genannte Feld; Einträge in Listen je Index bzw. je id.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_override_aendert_nur_feld() {
     let w = world(
         "nordmeer",
@@ -211,7 +209,6 @@ fn invalid_value_cases() -> [Case; 6] {
 
 /// B-680/AC-03: Ungültige Overrides werden mit Welt, Datei und Pfad abgelehnt (Tabelle wie in Go; ohne den Fall `biomes`).
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_ungueltig() {
     let cases = invalid_cases();
     for (file, json, want) in cases {
@@ -226,7 +223,6 @@ fn world_values_ungueltig() {
 
 /// B-680/AC-05: Kette Basis → A → B; das Kind gewinnt, Geerbtes bleibt, der Fehler nennt die auslösende Welt.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_kette() {
     let a = world("a", "", &[("goals", r#"{"gold": 111, "days": 5}"#)]);
     let b = world("b", "a", &[("goals", r#"{"days": 9}"#)]);
@@ -274,7 +270,6 @@ fn world_values_kette_abgelehnt() {
 
 /// B-680/AC-05: Eine Kette aus 4 Welten ist erlaubt (der Fall in `world_values_kette_abgelehnt` von Go).
 #[test]
-#[ignore = "wartet auf RU18 (values_from: Presets, Skill-Tabelle, Hub-Plätze)"]
 fn world_values_kette_aus_vier_welten() {
     let r = resolve(&test_worlds(chain(&["d", "c", "b", "a"])), "d");
     assert!(r.is_ok(), "Kette aus 4 Welten abgelehnt: {:?}", r.err());
@@ -299,7 +294,6 @@ fn world_removable() {
 
 /// B-682: `resolve_world_files` liefert die Basis-Dateien nach der Kette (Kind sieht den Override der Eltern-Welt), leer = Basis.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn resolve_world_files_nach_kette() {
     let a = world("a", "", &[("waves", r#"{"perExtraPlayer": 0.37}"#)]);
     let b = world("b", "a", &[]);
@@ -314,7 +308,6 @@ fn resolve_world_files_nach_kette() {
 
 /// B-692 Punkt 5: `resolve_world_files` mit leerer ID prüft die Basis wie `resolve_world_values`.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: Presets, Skill-Tabelle, Hub-Plätze)"]
 fn b692_resolve_world_files_prueft_basis() {
     let lookup = test_worlds(vec![world(STANDARD_WORLD_ID, "", &[])]);
     assert!(resolve_world_files(&base_read, &lookup, "").is_ok());
@@ -335,7 +328,6 @@ fn b692_resolve_world_files_prueft_basis() {
 /// B-692 Punkt 3: Felder, die der Level-Generator aus der Basis liest, sind nicht übersteuerbar (welten.md § 1.3). Die
 /// Ablehnung selbst prüft `values_locked_tests`; hier der Weg durch `resolve_world_values` mit Pfad der Welt.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn b692_gesperrte_felder() {
     let cases: [(&str, &str, &str); 4] = [
         ("economy.payRangeUnits", "economy", r#"{"payRangeUnits": 3}"#),

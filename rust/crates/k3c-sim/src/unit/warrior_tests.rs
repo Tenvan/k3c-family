@@ -339,7 +339,7 @@ fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
 
 /// Der Bauer nimmt das Schwert aus dem Regal und wird Krieger (Go: `dayWorld`, `runUntil`).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
     let mut w = day_world();
     let workshop = build_site(&mut w, "workshop");
@@ -349,9 +349,36 @@ fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
 
 /// (e) Zwei Spieler zahlen gleichzeitig: einer am Bogen (Bogner), einer am Schwert-Zahlziel der Werkstatt.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (emit, unit_x, coin_give_event)"]
 fn zwei_spieler_zahlen_bogen_und_schwert() {
     let mut w = quiet_world();
     let ps = [add_player(&mut w), add_player(&mut w)];
-    probe(&mut w, &ps);
+    let (s, shop) = (build_site(&mut w, "bowyer"), build_site(&mut w, "workshop"));
+    let v = crate::world::vals(&w);
+    let spot = sword_spot(&w, &v, shop).expect("Werkstatt ohne Schwert-Zahlziel");
+    let (g1, g2) = (w.players[ps[0]].gold, w.players[ps[1]].gold);
+    let cmds = [
+        crate::state::PlayerCommand {
+            pay: true,
+            ..Default::default()
+        },
+        crate::state::PlayerCommand {
+            pay: true,
+            ..Default::default()
+        },
+    ];
+    let mut tm = 0.0;
+    while tm < 15.0 {
+        w.players[ps[0]].x = w.sites[s].x;
+        w.players[ps[1]].x = spot;
+        step(&mut w, Some(&cmds), DT);
+        tm += DT;
+    }
+    let (bow, sword) = (v.troops["archer"].cost.gold, v.troops["warrior"].cost.gold);
+    let (paid_bow, paid_sword) = (w.sites[s].bow_paid_gold, w.sites[shop].sword_paid_gold);
+    let (d1, d2) = (g1 - w.players[ps[0]].gold, g2 - w.players[ps[1]].gold);
+    assert!(
+        paid_bow == bow && paid_sword == sword && d1 == bow && d2 == sword,
+        "Bogen {paid_bow}/{bow} (Spieler 1 zahlte {d1}), Schwert {paid_sword}/{sword} (Spieler 2 zahlte {d2})"
+    );
 }

@@ -205,7 +205,7 @@ fn inselwechsel_skill_basis() {
         0,
         "mitgebrachte Skills zählen gegen den neuen Pool"
     );
-    add_pool_points(&mut next.stages[0], 2);
+    add_island_pool(&mut next, 0, 2);
     assert_eq!(
         available_points(&next.stages[0], 0),
         2,

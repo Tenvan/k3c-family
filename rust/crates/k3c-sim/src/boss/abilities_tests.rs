@@ -58,8 +58,8 @@ fn boss_flammenspur() {
         a.duration_seconds
     );
     // Schaden an beiden Spielern je Sekunde, keiner an einer Truppe außerhalb, keiner nach Ablauf: braucht Spieler
-    // (`probe`, `wasHit`, `playerHits`) und `Step` (RU18: `step_players`).
-    panic!("RU18: playerHits und Step (step_players)");
+    // (`probe`, `wasHit`, `playerHits`) und `Step` (RU19: `step`).
+    panic!("RU19: playerHits und Step (step_players)");
 }
 
 // (b) Der gehende Golem hinterlässt eine Spur aus mehreren Flächen.
@@ -104,8 +104,8 @@ fn boss_splitter_wurf() {
     );
     crate::enemies::waves::step_projectiles(w, 1.0 / 30.0);
     // Ziel und nahe Truppe verlieren den Schaden, die ferne nicht; danach 200 Takte lang nur Würfe mit Splash:
-    // braucht Truppen (`warriorAt`) und `Step` (RU18: `step_players`).
-    panic!("RU18: Step (step_players)");
+    // braucht Truppen (`warriorAt`) und `Step` (RU19: `step`).
+    panic!("RU19: Step (step_players)");
 }
 
 // (d) Belohnung: 100 Gold als Münzen und 50 Eisen bzw. Kristall im Vorrat der Insel.

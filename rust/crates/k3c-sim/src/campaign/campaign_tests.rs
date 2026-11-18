@@ -167,7 +167,6 @@ fn golden_kampagne_ausbau() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn spielstand_rundreise() {
     let f = load_campaign_at(CAMPAIGN_PATH);
     let biomes = &base().expect("Daten").data.biomes;

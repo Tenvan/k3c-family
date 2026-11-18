@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1095](B-1095-abnahme-stand-rust-sim-teillauf.md) | SIM | Schuld | mittel | erledigt | RU47 | Abnahme-Teillauf Rust-Sim: Stand der ignorierten Tests und Go-Seite für RU10, RU11, RU14, RU15 |
 | [B-1089](B-1089-measure-ps1-novsync-replay.md) | CLI | Problem | mittel | erledigt | RU45 | measure.ps1 gibt -Vsync an die Rust-Wiedergabe nicht weiter |
 | [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
 | [B-1026](B-1026-session-karten-responsive.md) | DEV | Problem | mittel | erledigt | WZ61 | Session-Karten im Sprint nutzen die Breite: Kopfzeile einzeilig, mehrspaltig bei breitem Fenster |
@@ -895,4 +896,3 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1083](B-1083-island-save-null-und-kopf-wie-go.md) | SIM | Schuld | niedrig | erledigt | RU46 | Rust liest Insel-Spielstaende mit null-Feldern und falschem Kopf-Typ strenger als Go |
 | [B-1085](B-1085-welt-lesen-randfaelle.md) | SIM | Schuld | niedrig | erledigt | RU46 | Welt-Datei lesen: null- und Array-Randfälle weichen von Go ab |
 | [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | erledigt | RU46 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
-| [B-1095](B-1095-abnahme-stand-rust-sim-teillauf.md) | SIM | Schuld | mittel | erledigt | RU47 | Abnahme-Teillauf Rust-Sim: Stand der ignorierten Tests und Go-Seite für RU10, RU11, RU14, RU15 |

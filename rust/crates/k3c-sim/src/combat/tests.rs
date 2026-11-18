@@ -60,7 +60,7 @@ fn combat_welt_feld_standard_und_pruefung() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn schild_macht_zum_gruppenfuehrer_und_gruppe_fuellt() {
     let (mut w, _, right) = combat_stage(COMBAT_GROUPS);
     spawn_soldiers(&mut w, 5);
@@ -82,7 +82,7 @@ fn schild_macht_zum_gruppenfuehrer_und_gruppe_fuellt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn schild_nur_mit_freiem_soldaten() {
     let (mut w, _, _) = combat_stage(COMBAT_GROUPS);
     let x = spot_for(&w, SpotKind::Shield, 0).expect("Schild-Zahlstelle").x;
@@ -94,7 +94,7 @@ fn schild_nur_mit_freiem_soldaten() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn ausloeser_schickt_gruppen_zum_portal_und_zurueck() {
     let (mut w, l) = group_ready();
     w.portal_hp[1] = 40.0; // schnell zerstört
@@ -119,7 +119,7 @@ fn ausloeser_schickt_gruppen_zum_portal_und_zurueck() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn ausloeser_nur_mit_gruppe_der_seite() {
     let (mut w, _, _) = combat_stage(COMBAT_GROUPS);
     let x = spot_for(&w, SpotKind::Trigger, 1).expect("Auslöser").x;
@@ -128,7 +128,7 @@ fn ausloeser_nur_mit_gruppe_der_seite() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn fuehrer_faellt_nur_als_letzter_der_gruppe() {
     let (mut w, l) = group_ready();
     let hub = w.hub_x;
@@ -156,7 +156,7 @@ fn fuehrer_faellt_nur_als_letzter_der_gruppe() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn banner_trupp_folgt_und_kehrt_zurueck() {
     let (mut w, _, wall_r) = combat_stage(COMBAT_GENERAL);
     spawn_soldiers(&mut w, 7);
@@ -180,7 +180,7 @@ fn banner_trupp_folgt_und_kehrt_zurueck() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn banner_je_monarch_und_nachbesetzung() {
     let (mut w, _, _) = combat_stage(COMBAT_GENERAL);
     for _ in 0..12 {
@@ -205,7 +205,7 @@ fn banner_je_monarch_und_nachbesetzung() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn trupp_im_angriff_beschaedigt_portal() {
     let (mut w, _, _) = combat_stage(COMBAT_GENERAL);
     spawn_soldiers(&mut w, 5);
@@ -222,7 +222,7 @@ fn trupp_im_angriff_beschaedigt_portal() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn krone_faellt_banner_wird_zurueckgestellt() {
     let (mut w, _, _) = combat_stage(COMBAT_GENERAL);
     take_banner_at(&mut w, 0);

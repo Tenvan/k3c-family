@@ -132,11 +132,15 @@ fn pool_drei_portale_im_biom() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn pool_drei_portale_in_der_welt() {
     for (depth, _) in DEEP_POOLS {
-        let w = quiet_world();
-        assert_eq!(w.portals.len(), 3, "Tiefe {depth}");
+        let w = crate::world::testutil::new_world(depth, "k1-portale", crate::world::Options::default());
+        assert_eq!(
+            biome_for_depth(depth).portals.count,
+            3,
+            "Tiefe {depth}: Portale im Biom"
+        );
+        assert_eq!(w.portals.len(), 3, "Tiefe {depth}: Portale in der Welt");
     }
 }
 
@@ -167,7 +171,7 @@ fn gegner_splitterwicht_schwarm() {
 
 /// (e) Kristallwächter: Flächenschlag trifft beide Spieler im Radius 3, nicht den außen stehenden Krieger.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (unit_x)"]
 fn gegner_kristallwaechter_flaechenschlag() {
     let mut w = quiet_world();
     let (p1, p2) = (add_player(&mut w), add_player(&mut w));
@@ -185,7 +189,7 @@ fn gegner_kristallwaechter_flaechenschlag() {
 
 /// (e) Feuergeist: hält 8 Units Abstand zum Krieger und schießt.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (moon_damage)"]
 fn gegner_feuergeist_kiting() {
     let mut w = quiet_world();
     let x = w.hub_x - 30.0;

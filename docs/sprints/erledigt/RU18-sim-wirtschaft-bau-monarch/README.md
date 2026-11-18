@@ -1,11 +1,11 @@
 # RU18 · SIM · Sim: Wirtschaft, Bau, Hub, Monarch, Skills
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 9932e5b6f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17
@@ -97,12 +97,12 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU18.1 | `RU18.1-building-sites-upgrades.md` | Umsetzung | autonom | offen |
-| RU18.2 | `RU18.2-economy-pay-view.md` | Umsetzung | autonom | offen |
-| RU18.3 | `RU18.3-hub-level-validate.md` | Umsetzung | autonom | offen |
-| RU18.4 | `RU18.4-merchant-monarch-data.md` | Umsetzung | autonom | offen |
-| RU18.5 | `RU18.5-monarch-passives-skills.md` | Umsetzung | autonom | offen |
-| RU18.6 | `RU18.6-review.md` | Review | autonom | offen |
+| RU18.1 | `RU18.1-building-sites-upgrades.md` | Umsetzung | autonom | fertig |
+| RU18.2 | `RU18.2-economy-pay-view.md` | Umsetzung | autonom | fertig |
+| RU18.3 | `RU18.3-hub-level-validate.md` | Umsetzung | autonom | fertig |
+| RU18.4 | `RU18.4-merchant-monarch-data.md` | Umsetzung | autonom | fertig |
+| RU18.5 | `RU18.5-monarch-passives-skills.md` | Umsetzung | autonom | fertig |
+| RU18.6 | `RU18.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -110,6 +110,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18: AC-01 (Wirtschaft, Händler), AC-02 (Bau, Hub), AC-03 (Monarch, Skills, Zwei-Spieler-Tests) gemäß Ergebnissen RU18.1 bis RU18.5 geprüft; `task check` und `task check:go` grün.
+Reviewer `k3c-reviewer`: keine schweren Befunde. Behoben: falsche RU18-Marker in Test-Rumpf (auf RU19), Platzhalter `protected_night` in `state/pending.rs` auf RU10 umbenannt.
+Abnahme-Ticket für Sim, Balance, Gen, Race und Golden-Abgleich: B-1101 (Lane: zweit). Keine weiteren neuen Tickets.

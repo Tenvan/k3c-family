@@ -146,7 +146,7 @@ fn island_save_v3_rundlauf() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-v3", &[0, 1]);
     let (a, b) = (add_island_player(&mut isl, 0), add_island_player(&mut isl, 1));
-    add_pool_points(&mut isl.stages[0], 4);
+    add_island_pool(&mut isl, 0, 4);
     must_learn(&mut isl.stages[0], a, &["taunt", "shieldBash", "armorAura"]);
     must_learn(&mut isl.stages[1], b, &["heal", "fireball"]);
     isl.stages[1].players[b].slots[0] = String::new(); // freier Slot bleibt frei

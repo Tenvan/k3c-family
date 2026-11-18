@@ -75,7 +75,7 @@ pub fn values_from(read: ReadFn) -> Result<WorldValues, String> {
     v.buildings = buildings;
     v.skills = new_skill_table(&v.monarch.skills);
     v.bosses = base()?.data.bosses.clone();
-    check_world_hub_sites(&mut v.hub, &v.economy, &v.buildings)?;
+    check_world_hub_sites(&v.hub, &v.economy, &v.buildings, &base()?.data.biomes)?;
     Ok(v)
 }
 

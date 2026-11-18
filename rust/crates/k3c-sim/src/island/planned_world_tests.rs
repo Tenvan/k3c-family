@@ -61,7 +61,7 @@ fn dev_set_phase(_isl: &mut Island, _phase: &str) -> bool {
 /// Go: `TestFesteObjekteStehenWieGeplant`: Feste Objekte stehen an der geplanten Stelle und wirken in der Sim wie
 /// gewürfelte (der Landstreicher des Camps braucht `vagrants_at`, RU18).
 #[test]
-#[ignore = "wartet auf RU18"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn feste_objekte_stehen_wie_geplant() {
     let (isl, _) = planned_island();
     let w = &isl.stages[0];

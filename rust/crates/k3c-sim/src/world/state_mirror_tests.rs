@@ -37,10 +37,35 @@ fn mirror_steps(isl: &mut Island, seconds: f64) {
     }
 }
 
-/// Go: `endIsland` (boss_endboss_test.go): Insel mit der Kristallhöhle (Tiefe 4) und `players` Spielern, ohne Truppen und
-/// Gegner; dazu die X-Lage des Baus. Braucht `create_island` (Plätze, Ruinen RU18).
-fn end_island(_players: i64) -> (Island, f64) {
-    panic!("RU18: end_island")
+/// Go: `endIsland` (boss_endboss_test.go): Insel mit der Kristallhöhle (Tiefe 4) und `players` Spielern, ohne Truppen,
+/// Gegner und Aggression; dazu die X-Lage des Baus. `create_island` lädt die Standard-Welt (`decode_world_story`, RU19).
+fn end_island(players: i64) -> (Island, f64) {
+    use crate::island::testutil::standard_world;
+    use crate::island::{CreateOptions, add_island_player, create_island};
+    let data = test_data();
+    let mut isl = match create_island(
+        &data,
+        &standard_world(&data),
+        "endboss",
+        &[4],
+        1.0,
+        CreateOptions::default(),
+    ) {
+        Ok(isl) => isl,
+        Err(e) => panic!("{e}"),
+    };
+    for _ in 0..players {
+        add_island_player(&mut isl, 0);
+    }
+    let w = &mut isl.stages[0];
+    w.troops.clear();
+    w.enemies.clear();
+    w.spawn_queue.clear();
+    w.aggression = Default::default();
+    let Some(x) = crate::boss::endboss::lair_x(w) else {
+        panic!("Kristallhöhle ohne Bau");
+    };
+    (isl, x)
 }
 
 /// Go: `warden`: der Endboss der Kristallhöhle in der Stufe (Index).
@@ -49,7 +74,7 @@ fn warden(w: &World) -> Option<usize> {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 und RU19 (end_island: create_island; unit_x)"]
+#[ignore = "wartet auf RU19 (decode_world_story: end_island lädt die Standard-Welt)"]
 fn mirror_endboss_phase_und_warnkreis() {
     let (mut isl, x) = end_island(2);
     isl.stages[0].players[0].x = x + 4.0;
@@ -143,7 +168,7 @@ fn mirror_event() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (create_island: create_world, new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn mirror_inselwechsel() {
     let data = test_data();
     let (world, _) = test_islands(&data);
