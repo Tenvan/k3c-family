@@ -100,7 +100,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU16.4 | `RU16.4-props-plan-combat-objects-sites.md` | Umsetzung | autonom | fertig |
 | RU16.5 | `RU16.5-props-decor-paint-props.md` | Umsetzung | autonom | fertig |
 | RU16.6 | `RU16.6-standbild-bildvergleich.md` | Umsetzung | autonom | fertig |
-| RU16.7 | `RU16.7-review.md` | Review | autonom | offen |
+| RU16.7 | `RU16.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -108,6 +108,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18, Review RU16.7. AC-01 und AC-02 geprüft: Ergebnisse RU16.1 bis RU16.6, Bildvergleich an sieben Ständen (`still_props`, Text maskiert, B-1063), `cargo test -p k3c-game` grün (313 + Integrationstests, 9 ignoriert: acht `wartet auf RU10` in `props`), `task check` und `task check:go` grün; `engine/`, `testdata/golden`, `k3c-platform` unverändert, Go nur `rustref_*_test.go`.
+Review k3c-reviewer: keine HOCH-Befunde; MITTEL: `new_pending` mit `unimplemented!()` (nicht verdrahten bis RU15/RU18), Allokationen je Frame in `label` (RU39), Bildtest nur mit Grafik. `SimView` (inkl. `spot_near`, `spot_state`, `site_visible`) bestätigt, in B-1053 (RU30) genannt.
+Neue Tickets: B-1061 (erledigt), B-1063 (Text 2 px), Abnahme-Ticket B-1064 (Sim, Balance, Gen, Sichtprüfung). Nachzüge B-997, B-998, B-1001, B-994 nicht Teil des Sprints, Stand unverändert offen.
