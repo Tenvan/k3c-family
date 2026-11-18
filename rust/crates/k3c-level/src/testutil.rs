@@ -44,6 +44,7 @@ pub(crate) fn biome(id: &str) -> Biome {
 }
 
 /// Go: `Generate(b, seed)` für die Tests; läuft ab RU6.5.
+#[allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7, RU6.5 ersetzt ihn
 pub(crate) fn generate(_b: &Biome, _seed: &str) -> Layout {
     unimplemented!("RU6.5")
 }

@@ -93,7 +93,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU6.1 | `RU6.1-plan-geometrie-backdrop-lines-biome.md` | Umsetzung | autonom | offen |
+| RU6.1 | `RU6.1-plan-geometrie-backdrop-lines-biome.md` | Umsetzung | autonom | fertig |
 | RU6.2 | `RU6.2-natur-nature-check-lair.md` | Umsetzung | autonom | offen |
 | RU6.3 | `RU6.3-planung-gen-totals-guards-ruins.md` | Umsetzung | autonom | offen |
 | RU6.4 | `RU6.4-sites-validate.md` | Umsetzung | autonom | offen |

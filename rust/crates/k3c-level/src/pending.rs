@@ -1,6 +1,8 @@
 //! Platzhalter für Funktionen aus späteren Sessions von RU6 (Leitfaden § 7). Die Session, die die Funktion liefert,
 //! löscht den Platzhalter; RU6.3 räumt diese Datei leer.
 
+#![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7, RU6.3 löscht sie
+
 use crate::biome::Biome;
 use crate::planned::{Geometry, Placed};
 use crate::rules::Rules;
