@@ -63,7 +63,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU44.1 | `RU44.1-blend-ohne-allokation.md` | Umsetzung | autonom | fertig |
-| RU44.2 | `RU44.2-takt-zustand-ohne-allokation.md` | Umsetzung | autonom | offen |
+| RU44.2 | `RU44.2-takt-zustand-ohne-allokation.md` | Umsetzung | autonom | fertig |
 | RU44.3 | `RU44.3-draw-ohne-allokation.md` | Umsetzung | autonom | offen |
 | RU44.4 | `RU44.4-fenstergroesse-vsync.md` | Umsetzung | autonom | offen |
 | RU44.5 | `RU44.5-review-obergrenze.md` | Review | autonom | offen |

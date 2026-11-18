@@ -184,7 +184,10 @@ impl ReplayApp {
 }
 
 impl App for ReplayApp {
-    // PERF(B-1077): bis zu 788 Allokationen je Takt (Welt kopieren, Zustand je Aufzeichnungs-Takt bauen)
+    // PERF(B-1077): rund 780 Allokationen je Takt, gemessen je Teil (Mittel): `next_world` 316 (`World::clone`: Strings und
+    // Vecs der Welt allokieren einzeln, `clone_from` gibt es in k3c-sim nicht; die Aufzeichnung muss unverändert bleiben,
+    // `playback().world()` liest sie), `update` 155 (Layout, Kameras, Listener von hud und props), `install` 9 (Ereignisse).
+    // Abbau braucht `clone_from` oder geteilte Teile der Welt in k3c-sim, nicht in dieser Datei.
     fn step(&mut self, _input: &InputState, _dt: f64) {
         let cams = self.cam_xs();
         let n = self.cells.len().min(MAX_CAMS);
