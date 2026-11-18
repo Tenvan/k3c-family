@@ -87,6 +87,8 @@ fn overlay() -> Rc<RefCell<DevOverlay>> {
         menus: Default::default(),
         toggles: Default::default(),
         cues: Vec::new(),
+        shapes: Vec::new(),
+        lines: Vec::new(),
     }))
 }
 
@@ -324,4 +326,35 @@ fn straight_color_conversion() {
     assert_eq!(super::straight([255, 255, 255, 255]), [1.0, 1.0, 1.0, 1.0]);
     let c = super::straight([10, 12, 18, 220]);
     assert!((c[3] - 220.0 / 255.0).abs() < 1e-6 && (c[0] - 10.0 / 220.0).abs() < 1e-6);
+}
+
+/// Fenster der Einträge um die Auswahl (Go: `window` in `TestCheatWithoutDevSession`).
+#[test]
+fn window_of_entries() {
+    use super::drawcheats::window;
+    assert_eq!(window(20, 30, 9), 16);
+    assert_eq!((window(2, 30, 9), window(29, 30, 9), window(3, 5, 9)), (0, 21, 0));
+}
+
+/// Ein offenes Menü zeichnet ohne Schrift nur das Feld und die Auswahlzeile, ohne Absturz.
+#[test]
+fn cheat_menu_draws_without_font() {
+    use crate::view::cell::{Cell, rect, window_cell};
+    use crate::view::layer::Drawer;
+    let o = overlay();
+    o.borrow_mut().menus[0].open = true;
+    let drawer = super::DevDrawer(Rc::clone(&o));
+    let c = Cell {
+        index: 0,
+        player: 0,
+        rect: rect(0, 0, 320, 360),
+        ..Cell::default()
+    };
+    let f = Frame {
+        cells: vec![c],
+        ..Frame::default()
+    };
+    let mut dst = k3c_platform::NullCanvas::default();
+    drawer.draw(&mut dst, &f, &window_cell(c.rect));
+    assert_eq!(dst.rects, 2, "Feld und Auswahlzeile");
 }

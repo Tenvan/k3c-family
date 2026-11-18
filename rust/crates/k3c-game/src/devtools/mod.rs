@@ -15,6 +15,7 @@ use std::rc::Rc;
 use k3c_platform::{Canvas, Rect};
 
 use self::cheatmenu::{CheatState, Toggles};
+use self::help::draw_help;
 use crate::art::Library;
 use crate::view::MAX_PLAYERS;
 use crate::view::cell::Cell;
@@ -30,13 +31,24 @@ pub mod cheatmenu;
 pub mod cheats;
 pub mod chronicle;
 pub mod chronicle_stage;
+pub mod debuggeo;
+pub mod drawcheats;
+mod drawdebug;
+pub mod help;
 pub mod pending;
 pub mod report;
+pub mod values;
 
 #[cfg(test)]
 mod cheats_tests;
 #[cfg(test)]
 mod chronicle_tests;
+#[cfg(test)]
+mod debuggeo_tests;
+#[cfg(test)]
+mod help_tests;
+#[cfg(test)]
+mod values_tests;
 
 /// Farbe als RGBA (Go: `color.RGBA`, vormultipliziert).
 pub type Rgba = [u8; 4];
@@ -55,6 +67,10 @@ pub struct DevOverlay {
     pub(crate) menus: [CheatState; MAX_PLAYERS],
     pub(crate) toggles: Toggles,
     pub(crate) cues: Vec<Cue>,
+    /// Puffer der Debug-Formen (`drawdebug`)
+    pub(crate) shapes: Vec<debuggeo::Shape>,
+    /// Puffer der Werte-Zeilen (`values`)
+    pub(crate) lines: Vec<String>,
 }
 
 /// DevParts sind die Beiträge des Pakets: die Drawer (`Layer::OVERLAY`) und das Overlay (Cheat-Menü).
@@ -70,6 +86,8 @@ pub fn new(lib: Option<Rc<RefCell<Library>>>) -> DevParts {
         menus: Default::default(),
         toggles: Toggles::new(),
         cues: Vec::new(),
+        shapes: Vec::new(),
+        lines: Vec::new(),
     }));
     DevParts {
         drawers: vec![Box::new(DevDrawer(Rc::clone(&shared)))],
@@ -93,23 +111,24 @@ impl Drawer for DevDrawer {
         if f.recording {
             return;
         }
-        let o = self.0.borrow();
-        let guard = o.lib.as_ref().map(|l| l.borrow());
-        let lib = guard.as_deref();
+        let lib = self.0.borrow().lib.clone();
+        let mut guard = lib.as_ref().map(|l| l.borrow_mut());
+        let mut font = guard.as_mut().map(|g| &mut g.font);
+        let o = &mut *self.0.borrow_mut();
         for cell in &f.cells {
             if f.dev.debug != DEBUG_OFF {
-                pending::draw_debug(dst, lib, f, cell);
+                o.draw_debug(dst, font.as_deref_mut(), f, cell);
             }
             let open = usize::try_from(cell.player)
                 .ok()
                 .and_then(|p| o.menus.get(p))
                 .filter(|m| m.open);
             if let Some(m) = open {
-                pending::draw_cheats(dst, lib, cell, m);
+                o.draw_cheats(dst, font.as_deref_mut(), cell, m);
             }
         }
         if f.dev.help {
-            pending::draw_help(dst, lib, c);
+            draw_help(dst, font, c);
         }
     }
 }
