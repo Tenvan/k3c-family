@@ -158,6 +158,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
 | [B-1090](B-1090-replay-blend-auf-game-blend.md) | CLI | Schuld | niedrig | offen | RU26 | replay/blend.rs auf game/blend.rs umstellen |
 | [B-1091](B-1091-importregel-ausnahmen-fachmodule.md) | CLI | Schuld | niedrig | offen | RU26 | Importregel der Fachmodule hat fünf bekannte Ausnahmen |
+| [B-1089](B-1089-measure-ps1-novsync-replay.md) | CLI | Problem | mittel | eingeplant | RU45 | measure.ps1 gibt -Vsync an die Rust-Wiedergabe nicht weiter |
 
 ## Archiv
 
