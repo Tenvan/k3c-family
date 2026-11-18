@@ -1,6 +1,6 @@
 # RU46 · CLI, SIM · Rust-Schulden in k3c-level und Insel (Second Worker)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, SIM
 - **Reife:** bereit
@@ -69,7 +69,7 @@ keine
 | RU46.2 | `RU46.2-welt-datei-randfaelle.md` | Umsetzung | autonom | fertig |
 | RU46.3 | `RU46.3-insel-save-null-und-kopf.md` | Umsetzung | autonom | fertig |
 | RU46.4 | `RU46.4-takt-vergleich-null-leer.md` | Umsetzung | autonom | fertig |
-| RU46.5 | `RU46.5-review.md` | Review | autonom | offen |
+| RU46.5 | `RU46.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -77,6 +77,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 bis AC-05 erfüllt, Nachweis in den Ergebnissen RU46.1 bis RU46.5. B-1079 (Marken abgebaut, Level-Vergleich 5000/0), B-1085 (Welt-Datei-Randfälle), B-1083 (Insel-Spielstand) und B-1088 (leer als `null`) umgesetzt. `task check` grün (1950), `check:go` Tests grün (`golangci-lint` lokal fehlt), Rust-Tests grün. Offen für den Hauptrechner (Ergebnis RU46.5): optionale Tickets zu `write_go_float` in `k3c-det` und zu listenfähigen Structs; die End-zu-Ende-Prüfung der Insel (B-1088) folgt mit RU19.

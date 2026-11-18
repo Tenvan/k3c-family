@@ -891,3 +891,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
 | [B-1075](B-1075-rust-allokationen-je-bild-messen.md) | CLI | Schuld | mittel | erledigt | RU42 | Allokationen je Bild im Rust-Zeichenpfad sind nicht gemessen |
 | [B-1080](B-1080-abnahme-ru6-level-generator-rust.md) | SIM | Schuld | mittel | erledigt | RU45 | Abnahme RU6: Level-Generator in Rust (Gen, Race, manuell) |
+| [B-1079](B-1079-stab-perf-level-marker.md) | CLI | Schuld | niedrig | erledigt | RU46 | Level-Generator: STAB- und PERF-Markierungen in k3c-level abbauen |
+| [B-1083](B-1083-island-save-null-und-kopf-wie-go.md) | SIM | Schuld | niedrig | erledigt | RU46 | Rust liest Insel-Spielstaende mit null-Feldern und falschem Kopf-Typ strenger als Go |
+| [B-1085](B-1085-welt-lesen-randfaelle.md) | SIM | Schuld | niedrig | erledigt | RU46 | Welt-Datei lesen: null- und Array-Randfälle weichen von Go ab |
+| [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | erledigt | RU46 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
