@@ -1,6 +1,6 @@
 # RU50 · CLI · Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

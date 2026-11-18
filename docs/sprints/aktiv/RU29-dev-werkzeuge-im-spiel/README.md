@@ -1,6 +1,6 @@
 # RU29 · CLI · Testing-, Debug- und Cheat-Menüs im Spiel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
