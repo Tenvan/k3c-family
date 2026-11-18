@@ -1,6 +1,6 @@
 # RU20 · CLI · HUD Teil 1: Anzeigen je Spielerhälfte
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

@@ -32,7 +32,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU20 | CLI | RSU | HUD Teil 1: Anzeigen je Spielerhälfte | – | `aktiv/RU20-hud-teil-1/` |
+| RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | `aktiv/RU39-ruckler-messung-rust-gegen-go/` |
 
 ## Offen am Gerät
 
@@ -42,6 +42,10 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 - W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
 - WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
+
+### Xbox/TV
+
+- RU39.2 · Messläufe auf ruhigem PC und Mini-PC, Sichtprüfung nebeneinander (Mensch) (Sprint RU39, offen, Agent Mensch)
 
 ## Geplant (nach Projekt-Rang)
 
@@ -80,7 +84,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | bereit | `geplant/RU33-laeufe-im-client/` |
 | RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | bereit | `geplant/RU34-workbench-ruft-spiel-exe/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | bereit | `geplant/RU37-go-spiel-entfernen/` |
-| RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | bereit | `geplant/RU39-ruckler-messung-rust-gegen-go/` |
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 
@@ -445,3 +448,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | `erledigt/RU38-aufzeichnung-und-wiedergabe/` |
 | RU16 | Gebäude und Objekte zeichnen | `erledigt/RU16-gebaeude-und-objekte-zeichnen/` |
 | RU17 | Effekte und Ton im Spiel | `erledigt/RU17-effekte-und-ton-im-spiel/` |
+| RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | `erledigt/RU20-hud-teil-1/` |
