@@ -6,7 +6,7 @@
 
 use std::collections::BTreeMap;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::ordered::Ordered;
 use crate::{Fehler, decode};
@@ -31,8 +31,14 @@ pub struct WorldFile {
     pub islands: Option<Vec<serde_json::Value>>,
     #[serde(rename = "story")]
     pub story: serde_json::Value,
-    #[serde(rename = "skins")]
-    pub skins: serde_json::Value,
+    /// `None` = Feld fehlt, `Some(Null)` = `"skins": null` (Go: `json.RawMessage` ist dann nicht `nil`).
+    #[serde(rename = "skins", deserialize_with = "present")]
+    pub skins: Option<serde_json::Value>,
+}
+
+/// Ein vorhandenes Feld ist `Some`, auch wenn sein Wert `null` ist.
+fn present<'de, D: Deserializer<'de>>(d: D) -> Result<Option<serde_json::Value>, D::Error> {
+    serde_json::Value::deserialize(d).map(Some)
 }
 
 /// Go: `detvec.rawCombat`.

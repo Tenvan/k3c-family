@@ -74,7 +74,26 @@ fn present<'de, D: Deserializer<'de>>(d: D) -> Result<Option<Value>, D::Error> {
 /// Go: `strictDecode`: Schlüssel exakt aus `fields` (Groß-/Kleinschreibung zählt, keiner doppelt), dann Lesen in `T`.
 fn strict_decode<T: for<'de> Deserialize<'de>>(raw: &Value, keys: &Keys, fields: &[&str]) -> Result<T, String> {
     keys.check(fields)?;
-    T::deserialize(raw).map_err(|e| format!("kein gültiges JSON: {e}"))
+    // Go liest nur ein Objekt in ein Struct, `null` lässt es leer; serde nähme auch eine Liste als Struct an.
+    let empty = Value::Object(serde_json::Map::new());
+    let obj = match raw {
+        Value::Null => &empty,
+        Value::Object(_) => raw,
+        other => return Err(format!("kein gültiges JSON: {} statt Objekt", kind(other))),
+    };
+    T::deserialize(obj).map_err(|e| format!("kein gültiges JSON: {e}"))
+}
+
+/// Die Art eines JSON-Werts für Meldungen.
+fn kind(v: &Value) -> &'static str {
+    match v {
+        Value::Null => "null",
+        Value::Bool(_) => "bool",
+        Value::Number(_) => "number",
+        Value::String(_) => "string",
+        Value::Array(_) => "array",
+        Value::Object(_) => "object",
+    }
 }
 
 /// Go: `missingField`, ein fehlendes Pflichtfeld (welten.md § 2).
