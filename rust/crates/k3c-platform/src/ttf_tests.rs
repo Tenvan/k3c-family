@@ -31,10 +31,34 @@ fn ttf_breite_waechst_mit_der_groesse() {
     assert_eq!(f.width(id, "", 32.0), 0.0);
     assert_eq!(f.width(FontId(9), "x", 32.0), 0.0, "unbekannte Schrift");
     assert_eq!(
-        f.width(id, "Ab", 20.4),
+        f.width(id, "Ab", 20.001),
         f.width(id, "Ab", 20.0),
-        "auf ganze Pixel gerundet"
+        "auf 1/64 Pixel gequantelt"
     );
+    assert!(
+        f.width(id, "Hallo Welt", 12.4) > f.width(id, "Hallo Welt", 12.0) + 1.0,
+        "gebrochene Größen bleiben erhalten (B-1065)"
+    );
+}
+
+/// B-1065: Höhe, Oberlänge und Breite wie `text/v2` in Go (Werte aus `GoTextFace.Metrics()` und `text.Measure` mit
+/// `public/schrift/k3c.ttf`, Go v2.10.6).
+#[test]
+fn ttf_masse_wie_go() {
+    let (f, id) = loaded();
+    let go = [
+        // Größe, HAscent, HAscent + HDescent, Breite von „Hallo Welt“
+        (12.0, 11.337_89, 13.869_14, 56.390_625),
+        (16.0, 15.117_187, 18.492_19, 75.218_75),
+        (24.0, 22.675_78, 27.738_28, 112.734_375),
+    ];
+    for (px, asc, h, w) in go {
+        assert!((f.ascent(id, px) - asc).abs() < 0.01, "Oberlänge {px}");
+        assert!((f.height(id, px) - h).abs() < 0.01, "Zeilenhöhe {px}");
+        let dw = (f.width(id, "Hallo Welt", px) - w).abs();
+        assert!(dw < 0.1, "Breite {px}: Abweichung {dw}");
+    }
+    assert_eq!(f.height(FontId(9), 24.0), 0.0, "unbekannte Schrift");
 }
 
 #[test]

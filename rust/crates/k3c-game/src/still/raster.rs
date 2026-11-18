@@ -330,4 +330,7 @@ impl Canvas for SoftCanvas {
     fn text_width(&self, f: FontId, s: &str, px: f32) -> f32 {
         self.frame.text_width(f, s, px)
     }
+    fn text_height(&self, f: FontId, px: f32) -> f32 {
+        self.frame.text_height(f, px)
+    }
 }

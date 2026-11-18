@@ -1,7 +1,7 @@
 //! `impl Canvas for Frame`: Aufrufe → Instanzen und Dreiecke (siehe `batch.rs`).
 
 use crate::batch::{Inst, Pending, SOLID, Vertex};
-use crate::ttf::{ATLAS, round_px};
+use crate::ttf::{ATLAS, quant_px};
 use crate::{Affine, Blend, Canvas, Filter, FontId, Frame, LOGICAL, Rect, TexId, font};
 
 impl Canvas for Frame {
@@ -150,7 +150,7 @@ impl Canvas for Frame {
     fn text_font(&mut self, f: FontId, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]) {
         let tex = self.atlas_texture();
         self.atlas
-            .layout(&self.fonts, (f, round_px(px)), s, (x, y), &mut self.atlas_updates);
+            .layout(&self.fonts, (f, quant_px(px)), s, (x, y), &mut self.atlas_updates);
         let k = 1.0 / ATLAS as f32;
         for i in 0..self.atlas.quads.len() {
             let (src, dst) = self.atlas.quads[i];
@@ -161,6 +161,10 @@ impl Canvas for Frame {
 
     fn text_width(&self, f: FontId, s: &str, px: f32) -> f32 {
         self.fonts.width(f, s, px)
+    }
+
+    fn text_height(&self, f: FontId, px: f32) -> f32 {
+        self.fonts.height(f, px)
     }
 }
 

@@ -2,7 +2,8 @@
 //! GPU; `Frame` lädt den Atlas als Textur und schreibt neue Glyphen als Teil-Updates nach.
 //!
 //! Lage wie bei Ebitengine `text/v2`: `(x, y)` ist die linke obere Ecke der Zeile, die Grundlinie liegt bei
-//! `y + ascent`. Pixelgrößen werden auf ganze Pixel gerundet (Cache-Schlüssel und Messung gleich).
+//! `y + ascent`, die Zeilenhöhe ist Ober- plus Unterlänge (`HAscent + HDescent`). Pixelgrößen bleiben gebrochen
+//! (wie `GoTextFace.Size`) und werden nur auf 1/64 Pixel gequantelt (Cache-Schlüssel und Messung gleich, B-1065).
 
 use std::collections::HashMap;
 
@@ -65,7 +66,7 @@ impl Fonts {
         let Some(f) = self.get(id) else {
             return 0.0;
         };
-        let px = round_px(px);
+        let px = quant_px(px);
         let mut w = 0.0;
         let mut prev = None;
         for ch in s.chars() {
@@ -78,14 +79,21 @@ impl Fonts {
     /// Oberlänge (Abstand Zeilenoberkante → Grundlinie).
     pub fn ascent(&self, id: FontId, px: f32) -> f32 {
         self.get(id)
-            .and_then(|f| f.horizontal_line_metrics(round_px(px)))
+            .and_then(|f| f.horizontal_line_metrics(quant_px(px)))
             .map_or(0.0, |m| m.ascent)
+    }
+
+    /// Höhe einer Zeile: Ober- plus Unterlänge (Go: `HAscent + HDescent`, die Höhe von `text.Measure` für eine Zeile).
+    pub fn height(&self, id: FontId, px: f32) -> f32 {
+        self.get(id)
+            .and_then(|f| f.horizontal_line_metrics(quant_px(px)))
+            .map_or(0.0, |m| m.ascent - m.descent)
     }
 }
 
-/// Pixelgröße, auf ganze Pixel gerundet, mindestens 1.
-pub fn round_px(px: f32) -> f32 {
-    px.round().max(1.0)
+/// Pixelgröße, auf 1/64 Pixel gequantelt, mindestens 1 (gebrochene Größen bleiben erhalten).
+pub fn quant_px(px: f32) -> f32 {
+    (px.max(1.0) * 64.0).round() / 64.0
 }
 
 fn kern(f: &fontdue::Font, prev: Option<char>, ch: char, px: f32) -> f32 {
@@ -94,7 +102,7 @@ fn kern(f: &fontdue::Font, prev: Option<char>, ch: char, px: f32) -> f32 {
 
 /// Glyphen-Atlas mit Zeilen-Packer und Cache je (Schrift, Zeichen, Pixelgröße).
 pub struct Atlas {
-    cache: HashMap<(u32, char, u16), Glyph>,
+    cache: HashMap<(u32, char, u32), Glyph>,
     x: u32,
     y: u32,
     row: u32,
@@ -144,7 +152,7 @@ impl Atlas {
         let Some(f) = fonts.get(id) else {
             return;
         };
-        let px = round_px(px);
+        let px = quant_px(px);
         let base = y + fonts.ascent(id, px);
         let mut pen = x;
         let mut prev = None;
@@ -171,7 +179,7 @@ impl Atlas {
         px: f32,
         updates: &mut Vec<AtlasUpdate>,
     ) -> Option<Glyph> {
-        let key = (id.0, ch, px as u16);
+        let key = (id.0, ch, (px * 64.0).round() as u32);
         if let Some(g) = self.cache.get(&key) {
             return Some(*g);
         }

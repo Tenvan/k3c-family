@@ -28,6 +28,23 @@ fn font_missing() {
     assert_eq!(f.measure("ab\nabcd", 20.0), (24.0, 32.0), "Debug-Maße mit Umbruch");
 }
 
+/// B-1065: Die Höhe einer Zeile ist Ober- plus Unterlänge wie in Go (`text.Measure`: 27,738 bei Größe 24), nicht die
+/// Schriftgröße; mehrere Zeilen im Abstand `LINE_SPACING` × Größe; leerer Text misst 0.
+#[test]
+fn font_measure_hoehe_wie_go() {
+    let f = load_font(&repo_font(), true).unwrap();
+    let (w, h) = f.measure("Hallo Welt", 24.0);
+    assert!((h - 27.738_28).abs() < 0.01, "Höhe {h}");
+    assert!((w - 112.734_375).abs() < 0.1, "Breite {w}");
+    let (_, h2) = f.measure(
+        "Hallo
+Welt",
+        24.0,
+    );
+    assert!((h2 - (1.25 * 24.0 + 27.738_28)).abs() < 0.01, "zwei Zeilen {h2}");
+    assert_eq!(f.measure("", 24.0), (0.0, 0.0));
+}
+
 #[test]
 fn font_load() {
     let f = load_font(&repo_font(), true).unwrap();

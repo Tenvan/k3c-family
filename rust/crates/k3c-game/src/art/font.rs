@@ -3,9 +3,9 @@
 //! Fehler, sonst mit der eingebauten Pixel-Schrift der Plattform und Warnung im Log. Vorlage: `native/k3c-game/art/font.go`.
 //!
 //! Abweichungen: Die Schrift wird bei der ersten Zeichnung auf der Zeichenfläche angemeldet (`Canvas::font`); messen
-//! geht ohne Fenster über eine eigene `NullCanvas`. Faces je Größe gibt es nicht (die Plattform rundet die Größe und
-//! cacht Glyphen selbst). Die Höhe einer Zeile ist die Schriftgröße (Ober- plus Unterlänge stellt `k3c-platform` nicht
-//! bereit; Go nimmt die Metrik der Schrift).
+//! geht ohne Fenster über eine eigene `NullCanvas`. Faces je Größe gibt es nicht (die Plattform quantelt die Größe auf
+//! 1/64 Pixel und cacht Glyphen selbst). Die Höhe einer Zeile ist wie in Go Ober- plus Unterlänge der Schrift
+//! (`Canvas::text_height`, B-1065).
 
 use std::path::{Path, PathBuf};
 
@@ -85,13 +85,19 @@ impl Font {
             let (lines, widest) = debug_lines(s);
             return ((widest * DEBUG_CHAR_W) as f64, (lines * DEBUG_CHAR_H) as f64);
         };
+        if s.is_empty() {
+            return (0.0, 0.0);
+        }
         let mut w = 0.0f64;
         let mut lines = 0;
         for line in s.split('\n') {
             w = w.max(f64::from(self.meter.text_width(id, line, size as f32)));
             lines += 1;
         }
-        (w, LINE_SPACING * size * f64::from(lines - 1) + size)
+        (
+            w,
+            LINE_SPACING * size * f64::from(lines - 1) + f64::from(self.meter.text_height(id, size as f32)),
+        )
     }
 
     /// Zeichnet s mit der linken oberen Ecke bei (x, y); `\n` beginnt eine neue Zeile im Abstand `LINE_SPACING` ×

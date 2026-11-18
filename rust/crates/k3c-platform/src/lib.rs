@@ -130,9 +130,14 @@ pub trait Canvas {
     fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
     /// Lädt eine TTF-Schrift (z. B. `public/schrift/k3c.ttf`).
     fn font(&mut self, ttf: &[u8]) -> Result<FontId, String>;
-    /// Text in der Schrift `font` mit Pixelgröße `px` (auf ganze Pixel gerundet); `(x, y)` ist die linke obere
+    /// Text in der Schrift `font` mit Pixelgröße `px` (gebrochen, auf 1/64 Pixel gequantelt); `(x, y)` ist die linke obere
     /// Ecke der Zeile, die Grundlinie liegt bei `y` + Oberlänge (wie `text/v2`).
     fn text_font(&mut self, font: FontId, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
     /// Breite von `s` in Pixeln (Vorschub plus Unterschneidung), im Fenster und headless gleich.
     fn text_width(&self, font: FontId, s: &str, px: f32) -> f32;
+    /// Höhe einer Textzeile in Pixeln: Ober- plus Unterlänge der Schrift (wie `HAscent + HDescent` bei `text/v2`).
+    /// Standard ohne Schrift-Metrik: die Pixelgröße.
+    fn text_height(&self, _font: FontId, px: f32) -> f32 {
+        px
+    }
 }
