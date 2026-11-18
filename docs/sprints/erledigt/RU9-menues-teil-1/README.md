@@ -1,6 +1,6 @@
 # RU9 · CLI · Menüs Teil 1: Hauptmenü, Lobby, Einstellungen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -96,7 +96,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU9.4 | `RU9.4-menu-main-lobby.md` | Umsetzung | autonom | fertig |
 | RU9.5 | `RU9.5-menu-options-controls.md` | Umsetzung | autonom | fertig |
 | RU9.6 | `RU9.6-menu-bildvergleich.md` | Umsetzung | autonom | fertig |
-| RU9.7 | `RU9.7-review.md` | Review | autonom | offen |
+| RU9.7 | `RU9.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -104,6 +104,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18, Second Worker (Claude). AC-01 geprüft: Tests für B, Esc und Home je Screen (RU9.2, RU9.4, RU9.5), Hauptmenü ohne Wirkung. AC-02 geprüft: Bildvergleich vier Seiten (RU9.6, mittel 2,6 bis 3,0, Text etwa 2 % schmaler, Lizenzen folgt mit RU12.3). AC-03 geprüft: alle Go-Tests der portierten Dateien portiert, 55 grün, 4 mit „wartet auf RU12“. `task check` grün; `task check:go`: Go-Tests grün, `golangci-lint` fehlt auf diesem Rechner. Reviewer (k3c-reviewer, k3c-hud) ohne schwere Befunde, kleine Funde behoben. Abnahme-Ticket für Sim, Balance und Gen: vom Hauptrechner anzulegen (Second Worker darf kein `plan_create`).

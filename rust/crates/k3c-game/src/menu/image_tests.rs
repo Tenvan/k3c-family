@@ -68,6 +68,11 @@ fn library(canvas: &mut SoftCanvas) -> Option<Rc<RefCell<Library>>> {
     let probe = std::fs::read_dir(cfg.grafik_dir.join("hintergruende"))
         .is_ok_and(|d| d.flatten().any(|e| e.path().join("manifest.json").is_file()));
     if !probe {
+        // K3C_STILL_REQUIRE=1 (Abnahme): fehlende Grafik ist ein Fehler statt eines Überspringens
+        assert!(
+            std::env::var("K3C_STILL_REQUIRE").is_err(),
+            "gerenderte Grafik fehlt (task gen:paper)"
+        );
         eprintln!("übersprungen: gerenderte Grafik fehlt (task gen:paper oder K3C_GRAFIK_DIR)");
         return None;
     }
@@ -141,13 +146,18 @@ fn diff(a: &Image, b: &Image) -> (f64, f64) {
 #[test]
 fn menu_pages_match_go_images() {
     let _g = super::testutil::version_guard();
-    let old = super::version::version();
+    struct Restore(String);
+    impl Drop for Restore {
+        fn drop(&mut self) {
+            set_version(&self.0);
+        }
+    }
+    let _restore = Restore(super::version::version());
     set_version("v0.24.1-164-g694bffa1");
     let mut report = String::new();
     let mut fails = Vec::new();
     for name in ["main", "lobby", "options", "keys"] {
         let Some(img) = render(name) else {
-            set_version(&old);
             return;
         };
         if let Some(dir) = std::env::var("K3C_STILL_OUT").ok().filter(|d| !d.is_empty()) {
@@ -160,7 +170,6 @@ fn menu_pages_match_go_images() {
             fails.push(format!("{name}: mittel {mean:.3}, abweichend {share:.4}"));
         }
     }
-    set_version(&old);
     eprintln!("{report}");
     assert!(fails.is_empty(), "Abweichungen über den Schwellen: {fails:?}");
 }

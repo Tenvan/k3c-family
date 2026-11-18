@@ -12,6 +12,11 @@ pub fn version() -> String {
     VERSION.read().map(|v| v.clone()).unwrap_or_default()
 }
 
+/// Meldet, ob keine Version gesetzt ist (Entwicklungs-Bau), ohne den Text zu kopieren.
+pub fn is_unset() -> bool {
+    VERSION.read().is_ok_and(|v| v.is_empty())
+}
+
 /// Setzt die Version.
 pub fn set_version(v: &str) {
     if let Ok(mut g) = VERSION.write() {

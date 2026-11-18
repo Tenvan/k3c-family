@@ -4,8 +4,8 @@
 //! nativ nicht.
 //!
 //! Aufbau: Jeder Bildschirm ist ein `view::Screen`; Untermenüs legt er über den Menü-Stapel von game auf
-//! (`StepKind::Push`), zurück geht es mit `Pop`. Die Stapeltiefe ist höchstens zwei (Hauptmenü bzw. Pause und ein
-//! Untermenü), Rückfragen liegen im Bildschirm selbst; Home (View + Menu, Pos1) ist darum im Untermenü dasselbe wie B.
+//! (`StepKind::Push`), zurück geht es mit `Pop`. Die Stapeltiefe ist höchstens drei (Hauptmenü bzw. Pause, Untermenü, dazu
+//! Optionen › Steuerung), Rückfragen liegen im Bildschirm selbst; Home (View + Menu, Pos1) geht darum wie B eine Ebene zurück.
 //! `update` ändert den Zustand (reine Logik, Tabellen-Tests), `draw` baut daraus nur die Texte und zeichnet.
 //!
 //! Spielende: game schließt das Spiel `view::EndDelay` Takte nach `Frame::outcome` und legt das Hauptmenü auf; das

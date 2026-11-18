@@ -18,7 +18,7 @@ use super::options::new_options;
 use super::pending::{new_saves, new_testing, new_world_pick};
 use super::table::new_licenses;
 use super::texts::{TextKey, tr, tr1};
-use super::version::{version, version_text};
+use super::version::version_text;
 use crate::view::cell::Cell;
 use crate::view::frame::{CueKind, Frame, Outcome};
 use crate::view::input::{DeviceID, Input};
@@ -85,7 +85,7 @@ pub fn new_main(m: &Shared) -> MainScreen {
 
 /// Meldet den Entwickler-Build: ohne Versionsangabe (`cargo run`, Tests).
 pub fn dev_build() -> bool {
-    version().is_empty()
+    super::version::is_unset()
 }
 
 impl MainScreen {
