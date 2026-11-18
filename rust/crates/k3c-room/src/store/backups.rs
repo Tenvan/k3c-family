@@ -24,6 +24,9 @@ fn exists(path: &Path) -> bool {
 impl Saves {
     /// Legt den bisherigen Stand eines Slots als Sicherung ab und behält die `BACKUP_KEEP` neuesten.
     pub fn rotate(&mut self, slot: &str, prev: &[u8]) -> Result<(), Fehler> {
+        if !is_slot(slot) {
+            return Err(Fehler::Slot);
+        }
         let dir = self.backup_dir(slot);
         let mut name = format!("{}.json", self.now().format_backup());
         let mut i = 1;

@@ -313,15 +313,7 @@ impl<S: Store, L: Log> Manager<S, L> {
     pub fn sweep(&mut self) {
         let (rooms, mut env) = self.split();
         let now = env.now;
-        let mut removed = Vec::new();
-        for (code, r) in rooms.iter_mut() {
-            if locked_sweep(r, &mut env, now) {
-                removed.push(code.clone());
-            }
-        }
-        for code in removed {
-            rooms.remove(&code);
-        }
+        rooms.retain(|_, r| !locked_sweep(r, &mut env, now));
     }
 
     /// Speichert alle Räume, meldet ihren Geräten `room_closed` und räumt sie auf (Server fährt herunter). Danach nimmt

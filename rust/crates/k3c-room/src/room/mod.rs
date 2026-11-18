@@ -129,6 +129,9 @@ impl Room {
     /// Nimmt ein Gerät auf oder verbindet es wieder (`docs/protocol.md` › Beitreten, Wiederverbinden). Alles oder nichts.
     pub fn join(&mut self, env: &mut Env, id: &str, peer: Box<dyn Peer>, slots: &[i64]) -> Result<(), Fehler> {
         valid_slots(slots)?;
+        if self.closed {
+            return Err(Fehler::RoomNotFound);
+        }
         let mut keep: BTreeMap<i64, usize> = BTreeMap::new();
         let old_slots = self.devices.get(id).map(|o| o.slots.clone());
         for (slot, idx) in old_slots.iter().flatten() {

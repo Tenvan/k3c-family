@@ -34,7 +34,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU46 | CLI, SIM | RSU | Rust-Schulden in k3c-level und Insel (Second Worker) | – | `aktiv/RU46-rust-schulden-level-und-insel/` |
 | RU47 | SIM | RSU | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | – | `aktiv/RU47-abnahme-stand-rust-sim/` |
-| RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | `aktiv/RU21-spielstaende-und-raum-teil-1/` |
 
 ## Offen am Gerät
 
@@ -451,3 +450,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | `erledigt/RU12-menues-teil-2/` |
 | RU45 | Abnahme- und Messläufe auf dem Second Worker | `erledigt/RU45-abnahme-und-messlaeufe-second-worker/` |
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | `erledigt/RU26-spielschleife-teil-1/` |
+| RU21 | Spielstände und Raum Teil 1 | `erledigt/RU21-spielstaende-und-raum-teil-1/` |
