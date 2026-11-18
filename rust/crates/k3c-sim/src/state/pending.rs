@@ -6,17 +6,15 @@ use std::collections::BTreeMap;
 use std::sync::Arc;
 
 use k3c_data::Data;
-use k3c_data::biome::Biome;
 use k3c_data::buildings::Plantation;
 use k3c_data::economy::Gatherable;
 use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
-use k3c_level::types::{NatureValues, PlannedChunk, WallSite};
+use k3c_level::types::WallSite;
 
-use super::island_ref::IslandRef;
 use super::shared::WorldValues;
-use super::{Player, PlayerCommand, Site, World};
+use super::{Player, Site, World};
 use crate::island::{Island, WorldDef};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
@@ -152,53 +150,6 @@ pub struct IslandStory {
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct WorldStory;
 
-/// Go: `Options` (world.go) für `CreateWorld`; die kleingeschriebenen Felder (`lair`, `hub`, `vals`) sind hier öffentlich.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct WorldOptions {
-    pub cycle_speed: f64,
-    pub time: f64,
-    pub planned: Vec<PlannedChunk>,
-    pub chunk_count: i64,
-    pub nature: NatureValues,
-    /// Trägt die Stufe den Bau (`level.Options.Lair`); `None` = Feld `lair` des Bioms.
-    pub lair: Option<bool>,
-    /// Kandidaten-hub.json; `None` = die hub.json des Wertesatzes.
-    pub hub: Option<Arc<HubData>>,
-    /// Wertesatz der Welt; `None` = Basis-Wertesatz.
-    pub vals: Option<Arc<WorldValues>>,
-}
-
-/// Go: `CreateWorld` (world.go): baut den Startzustand einer Stufe.
-pub fn create_world_with(_b: &Biome, _seed: &str, _opts: &WorldOptions) -> Result<World, String> {
-    unimplemented!("RU14: create_world_with")
-}
-
-/// Go: `Step` (world.go): rechnet einen Tick; `isl` ist der Bezug zur Insel (`None` = Go `w.island == nil`).
-pub fn step(_w: &mut World, _commands: &[PlayerCommand], _isl: Option<&mut IslandRef>, _dt: f64) {
-    unimplemented!("RU14: step")
-}
-
-/// Go: `addPlayerAt` (world.go): stellt den Monarchen mit dem Spielerindex `index` an die Burg; liefert seinen Platz in
-/// `w.players`.
-pub fn add_player_at(_w: &mut World, _index: i64) -> usize {
-    unimplemented!("RU14: add_player_at")
-}
-
-/// Go: `castleLosses` (world.go): Verluste eines Burgfalls im Modus „Stufenverlust“.
-pub fn castle_losses(_w: &mut World, _isl: Option<&IslandRef>) {
-    unimplemented!("RU14: castle_losses")
-}
-
-/// Go: `hubOf` (world.go): die hub.json, aus der die Stufe gebaut ist (Kandidat oder die der Welt).
-pub fn hub_of(_w: &World) -> Arc<HubData> {
-    unimplemented!("RU14: hub_of")
-}
-
-/// Go: `emptySite` (world.go): ein unbezahlter Platz der Art `kind` bei `x`.
-pub fn empty_site(_w: &mut World, _kind: &str, _x: f64) -> Site {
-    unimplemented!("RU14: empty_site")
-}
-
 /// Go: `valuesOf` (world_values_room.go): der aufgelöste Wertesatz der Welt.
 pub fn values_of(_world: &WorldDef) -> Result<Arc<WorldValues>, String> {
     unimplemented!("RU14: values_of")
@@ -252,16 +203,6 @@ pub struct TravelPoint {
 /// Go: `travelPoints` (world_travel.go): die Reisepunkte der Stufe (Tiefen-Eingang nach unten, gebaute Treppen).
 pub fn travel_points(_w: &World) -> Vec<TravelPoint> {
     unimplemented!("RU14: travel_points")
-}
-
-/// Go: `Island.harbor` (ship.go): Stufe mit dem Hafen und der Platz des Schiffs darin (Indizes); `None` ohne Hafen.
-pub fn harbor(_isl: &Island) -> Option<(usize, usize)> {
-    unimplemented!("RU14: harbor")
-}
-
-/// Go: `shipComplete` (ship.go): Alle Abschnitte des Schiffs sind gebaut.
-pub fn ship_complete(_w: &World, _s: &Site) -> bool {
-    unimplemented!("RU14: ship_complete")
 }
 
 /// Go: `refundPending` (economy.go): wirft gezahltes, nicht vollendetes Gold des Spielers `pi` zurück auf den Boden.

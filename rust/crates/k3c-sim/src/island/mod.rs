@@ -15,8 +15,9 @@ use k3c_data::waves::WavesDataDepthScaling;
 use std::sync::Arc;
 
 use crate::boss::endboss::EndbossFight;
-use crate::state::pending::{DevFlags, add_player_at, mirror_state, mirror_switch, step, values};
+use crate::state::pending::{DevFlags, mirror_state, mirror_switch, values};
 use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
+use crate::world::{add_player_at, step};
 
 pub mod create;
 pub mod data;

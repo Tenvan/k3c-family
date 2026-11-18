@@ -109,28 +109,47 @@ pub struct Island {
 
 // Hilfen aus anderen Go-Dateien, die `CreateWorld`/`Step` (RU14) oder Inseln (RU10) brauchen.
 
+/// Go: `quietWorld` (rules_test.go); seit RU14.1 über `create_world`, die Teilschritte späterer Sprints fehlen noch.
 pub fn quiet_world() -> World {
-    panic!("RU14: quiet_world")
+    crate::world::testutil::quiet_world()
 }
 
+/// Go: `dayWorld` (hub_level_test.go).
 pub fn day_world() -> World {
-    panic!("RU14: day_world")
+    crate::world::testutil::day_world()
 }
 
-pub fn add_player(_w: &mut World) -> usize {
-    panic!("RU14: add_player")
+/// Go: `AddPlayer`.
+pub fn add_player(w: &mut World) -> usize {
+    crate::world::add_player(w)
 }
 
-pub fn step(_w: &mut World, _cmds: Option<&[PlayerCommand]>, _dt: f64) {
-    panic!("RU14: step")
+/// Go: `Step(w, cmds, dt)` ohne Insel; `None` = keine Eingaben.
+pub fn step(w: &mut World, cmds: Option<&[PlayerCommand]>, dt: f64) {
+    crate::world::step(w, cmds.unwrap_or(&[]), None, dt);
 }
 
-pub fn step_for(_w: &mut World, _seconds: f64) {
-    panic!("RU14: step_for")
+/// Go: `stepFor` (enemies_traits_test.go): nur `stepEnemies`, `seconds` lang.
+pub fn step_for(w: &mut World, seconds: f64) {
+    let dt = crate::world::testutil::DT;
+    for _ in 0..(seconds / dt).round() as i64 {
+        super::step_enemies(w, None, dt);
+        w.time += dt;
+    }
 }
 
-pub fn warrior_at(_w: &mut World, _x: f64) -> usize {
-    panic!("RU14: warrior_at")
+/// Go: `warriorAt` (enemies_traits_test.go): ein Krieger mit 1000 HP an `x`.
+pub fn warrior_at(w: &mut World, x: f64) -> usize {
+    let id = w.new_id();
+    w.troops.push(crate::state::Troop {
+        id,
+        kind: "warrior".into(),
+        x,
+        hp: 1000.0,
+        max_hp: 1000.0,
+        ..crate::state::Troop::default()
+    });
+    w.troops.len() - 1
 }
 
 pub fn build_site(_w: &mut World, _kind: &str) -> usize {

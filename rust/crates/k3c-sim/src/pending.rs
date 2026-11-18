@@ -187,8 +187,3 @@ pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &st
 pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
     unimplemented!("RU18: add_pool_points")
 }
-
-/// Go: `gameOver` (world_end.go): das Spiel ist verloren (Kronenraub, Burgfall ohne Rückkehr).
-pub fn game_over(_w: &mut World) {
-    unimplemented!("RU14: game_over")
-}

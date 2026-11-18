@@ -9,17 +9,17 @@
 
 use k3c_data::hub::Stock;
 
-use crate::state::pending::{castle_losses, emit};
+use crate::state::pending::emit;
 use crate::state::{Event, IslandRef, World};
+use crate::world::castle_losses;
 
 use super::Island;
 
 /// Go: `defeatLosses` wählt die Verluste eines Burgfalls nach dem Niederlage-Modus.
 pub fn defeat_losses(w: &mut World, isl: Option<&mut IslandRef>) {
     match isl {
-        None => castle_losses(w, None),
         Some(i) if i.defeat_resources => resource_losses_in_stage(w, i),
-        Some(i) => castle_losses(w, Some(&*i)), // stage
+        _ => castle_losses(w), // stage, ohne Insel (Campaign, Golden-Läufe) immer
     }
 }
 

@@ -120,7 +120,9 @@ fn baum_aus_struktur() {
 /// Teil von Gos TestGzRundreise, der liest: `.json.gz` liest sich wie dieselbe `.json`.
 #[test]
 fn gz_rundreise_lesen() {
-    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/tmp").join(format!("k3c-det-golden-{}", std::process::id()));
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
+        .join(format!("k3c-det-golden-{}", std::process::id()));
     std::fs::create_dir_all(&dir).expect("Ordner");
     let text = "{\n  \"name\": \"x\",\n  \"ticks\": 4\n}\n";
     std::fs::write(dir.join("lauf.json"), text).expect("json schreiben");
