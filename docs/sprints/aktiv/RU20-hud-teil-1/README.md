@@ -1,11 +1,11 @@
 # RU20 · CLI · HUD Teil 1: Anzeigen je Spielerhälfte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 314b3ab22
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17

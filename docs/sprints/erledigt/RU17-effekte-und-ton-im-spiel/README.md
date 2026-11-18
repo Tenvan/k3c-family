@@ -1,6 +1,6 @@
 # RU17 · CLI · Effekte und Ton im Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

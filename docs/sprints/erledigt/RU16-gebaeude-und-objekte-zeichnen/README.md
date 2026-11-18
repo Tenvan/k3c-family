@@ -1,6 +1,6 @@
 # RU16 · CLI · Gebäude und Objekte zeichnen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
