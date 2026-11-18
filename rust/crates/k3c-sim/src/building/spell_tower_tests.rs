@@ -87,10 +87,46 @@ fn turm_unter_zaubertum_stufe_schiesst_nicht() {
 
 /// Ausbau auf die Zaubertum-Stufe: der Schütze steigt ab, bleibt Kämpfer, der Turm nimmt keinen mehr auf.
 #[test]
-#[ignore = "wartet auf RU18.3 (upgrade_at)"]
+#[ignore = "wartet auf RU19 (pure, hit_event)"]
 fn zaubertum_schuetzen_steigen_ab() {
-    let _ = fighters;
-    unimplemented!("RU18: upgrade_at (RU18.3), free_tower (RU11), Schütze auf dem Turm")
+    use super::upgrades_sites_tests::upgrade_at;
+    use crate::enemies::testutil::run;
+    use crate::unit::archer::free_tower;
+    use crate::unit::jobs::make_archer;
+    use crate::unit::spawn_vagrant;
+    let sp = vals(&bare_world()).buildings["tower"].spell.clone();
+    let (mut w, tower, _) = spell_world(sp.from_level - 1, &[]);
+    w.hub_level = sp.from_level;
+    let (hub, tx) = (w.hub_x, w.sites[tower].x);
+    let archer = spawn_vagrant(&mut w, hub, tx);
+    make_archer(&mut w, archer);
+    let tower_id = w.sites[tower].id;
+    (w.troops[archer].anchor_x, w.troops[archer].tower_id) = (tx, Some(tower_id));
+    let players: Vec<usize> = (0..w.players.len()).collect();
+    assert!(
+        upgrade_at(&mut w, &players, tower) >= 0.0,
+        "Ausbau auf die Zaubertum-Stufe nicht fertig"
+    );
+    run(&mut w, 1.0);
+    let a = &w.troops[archer];
+    assert!(
+        a.tower_id.is_none() && a.kind == "archer" && fighters(&w) == 1,
+        "Schütze: Turm {:?}, Art {}, Kämpfer {}",
+        a.tower_id,
+        a.kind,
+        fighters(&w)
+    );
+    let v = vals(&w);
+    assert_ne!(
+        free_tower(&w, &v, archer),
+        Some(tower_id),
+        "Zaubertum bietet weiter Plätze für Schützen"
+    );
+    let ei = spawn(&mut w, "skeleton", tx - 2.0);
+    w.enemies[ei].hp = 1000.0;
+    w.enemies[ei].max_hp = 1000.0;
+    crate::world::step(&mut w, &[], None, DT); // der Schuss läuft im Takt der Sim, sofort, ohne Flugzeit
+    assert_eq!(w.enemies[ei].hp, 1000.0 - sp.damage, "Zaubertum schießt im Spiel nicht");
 }
 
 /// Eigener Test (ohne Go-Gegenstück, kein `level_of`-Platzhalter nötig): Ein Turm unter der Zaubertum-Stufe oder ungebaut

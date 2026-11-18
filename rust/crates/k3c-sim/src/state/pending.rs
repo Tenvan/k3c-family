@@ -3,9 +3,8 @@
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use k3c_data::Data;
-use k3c_data::monarch::SkillEffect;
 
-use super::{Player, World};
+use super::World;
 use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.

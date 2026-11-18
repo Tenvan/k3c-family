@@ -6,9 +6,10 @@ use std::collections::BTreeMap;
 use k3c_det::golden;
 use serde::Deserialize;
 
+use super::common::destroy_site;
 use super::node_mark::{apply_marked_by, mark_node, marked_by_of};
 use super::save::key;
-use super::torches::torch_xs;
+use super::torches::{torch_xs, torch_xs_of};
 use super::{Player, ResourceNode, Site, World};
 
 fn node(kind: &str, x: f64) -> ResourceNode {
@@ -46,15 +47,80 @@ fn fackel_versaetze_aus_light_json() {
     );
 }
 
-/// Go: `TestFackelnDerWelt` (torches_test.go) braucht `quietWorld` und `destroySite` (ruft `is_ruin`, RU18).
+/// Go: `TestFackelnDerWelt` (torches_test.go).
 #[test]
-#[ignore = "wartet auf RU18"]
-fn fackeln_der_welt() {}
+fn fackeln_der_welt() {
+    let mut w = crate::world::testutil::quiet_world();
+    let offsets = k3c_data::load_all(&k3c_data::Source::Embedded).unwrap().light.torches;
+    assert!(
+        !offsets["wall"].is_empty() && !offsets["tower"].is_empty(),
+        "data/light.json › torches ohne Mauer oder Turm: {offsets:?}"
+    );
+    assert!(torch_xs_of(&w, &offsets).is_empty(), "ohne gebaute Mauer schon Fackeln");
+    // Go: `leftWall`: die linke Mauer am nächsten zur Hub-Mitte (Plätze liegen nach X sortiert), gebaut mit voller HP
+    let hub = w.hub_x;
+    let wi = w
+        .sites
+        .iter()
+        .rposition(|s| s.kind == "wall" && s.x < hub)
+        .expect("keine linke Mauer");
+    (w.sites[wi].state, w.sites[wi].hp) = ("built".into(), w.sites[wi].max_hp);
+    let got = torch_xs_of(&w, &offsets).len();
+    assert_eq!(
+        got,
+        offsets["wall"].len(),
+        "gebaute Mauer: {got} Fackeln, erwartet {}",
+        offsets["wall"].len()
+    );
+    let id = w.sites[wi].id;
+    destroy_site(&mut w, id);
+    assert!(
+        torch_xs_of(&w, &offsets).is_empty(),
+        "zerstörte Mauer trägt noch Fackeln"
+    );
+}
 
-/// Go: `TestKnotenMarkiererInSnapshotUndSpielstand` (node_mark_test.go) braucht Kampagne, `gather_of` (RU18) und Spielstand.
+/// Go: `TestKnotenMarkiererInSnapshotUndSpielstand` (node_mark_test.go): Wer einen Baum markiert, steht im Snapshot und im
+/// Spielstand; nach dem Laden ist der Markierer derselbe.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn knoten_markierer_in_snapshot_und_spielstand() {}
+#[ignore = "wartet auf RU19 (pure: pay_at tickt über step)"]
+fn knoten_markierer_in_snapshot_und_spielstand() {
+    use crate::campaign::Campaign;
+    use crate::world::testutil::pay_at;
+    let mut c = Campaign::create("markedby", "t", 1e-6).expect("Kampagne");
+    c.join_player();
+    let p1 = c.join_player().expect("Spieler 2");
+    let w = c.current_world_mut().expect("Welt");
+    // der äußerste Baum liegt abseits anderer Zahlziele
+    let (tx, ti) = w.nodes.iter().enumerate().filter(|(_, n)| n.kind == "tree").fold(
+        (f64::MIN, usize::MAX),
+        |(bx, bi), (i, n)| if n.x > bx { (n.x, i) } else { (bx, bi) },
+    );
+    assert!(
+        w.nodes[ti].marked_by.is_none(),
+        "unmarkierter Knoten hat einen Markierer"
+    );
+    let index = w.players[p1].index;
+    pay_at(w, &[p1], tx, 10.0, |w| {
+        w.nodes.iter().any(|n| n.kind == "tree" && n.x == tx && n.marked)
+    });
+    let tree = w.nodes.iter().find(|n| n.kind == "tree" && n.x == tx).expect("Baum");
+    assert!(
+        tree.marked && tree.marked_by == Some(index),
+        "markiert {}, markedBy {:?}, erwartet Spieler {index}",
+        tree.marked,
+        tree.marked_by
+    );
+    let s = c.to_save("2026-10-23T00:00:00Z").expect("Spielstand");
+    let loaded = Campaign::from_save(&s, 1e-6).expect("laden");
+    let got = loaded
+        .current_world()
+        .and_then(|w| w.nodes.iter().find(|n| n.kind == "tree" && n.x == tx));
+    assert!(
+        got.is_some_and(|n| n.marked && n.marked_by == Some(index)),
+        "nach dem Laden: {got:?}"
+    );
+}
 
 /// Go: `TestKnotenMarkiererFehltImAltenStand` (node_mark_test.go): Ein Stand ohne `nodesMarkedBy` lädt, der Knoten bleibt
 /// markiert, der Markierer unbekannt. Hier ohne Kampagne: derselbe Weg über `marked_by_of` und `apply_marked_by`.
@@ -116,15 +182,94 @@ fn key_rundet_wie_to_fixed() {
     }
 }
 
-/// Go: `TestPurseSizes` (purse_test.go) braucht Insel, Skills und `giveGold`.
+/// Go: `TestPurseSizes` (purse_test.go, B-922/AC-01): Geldsack in drei Größen als Skill-Stufen: ohne Skill Größe 1 (Grundwert),
+/// purseMedium Größe 2, purseLarge Größe 3 und erst nach purseMedium; jede Größe ist die Münz-Obergrenze des Spielers.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn purse_sizes() {}
+#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
+fn purse_sizes() {
+    use super::purse::{purse_max_of, purse_size};
+    use crate::economy::give_gold;
+    use crate::island::add_island_player;
+    use crate::island::testutil::{add_island_pool, must_island, on_stage, test_data};
+    use crate::monarch::learn_skill;
+    let data = test_data();
+    let mut isl = must_island(&data, "geldsack", &[0]);
+    let (p, q) = (add_island_player(&mut isl, 0), add_island_player(&mut isl, 0));
+    add_island_pool(&mut isl, 0, 5);
+    let base = data.economy.purse.max_gold;
+    on_stage(&mut isl, &data, 0, |w, r| {
+        let v = crate::world::vals(w);
+        let (size, max) = (purse_size(w, &w.players[p]), purse_max_of(w, &w.players[p], Some(r)));
+        assert!(size == 1 && max == base, "ohne Skill: Größe {size}, Grenze {max}");
+        assert!(
+            learn_skill(w, &v, p, "purseLarge").is_err(),
+            "purseLarge ohne purseMedium gelernt"
+        );
+        for (i, id) in ["purseMedium", "purseLarge"].into_iter().enumerate() {
+            learn_skill(w, &v, p, id).expect("lernen");
+            let want = v
+                .skills
+                .list
+                .iter()
+                .find(|s| s.id == id)
+                .map_or(0, |s| s.effect.max_gold);
+            let (size, max) = (purse_size(w, &w.players[p]), purse_max_of(w, &w.players[p], Some(r)));
+            assert!(
+                size == i as i64 + 2 && max == want && want > base,
+                "{id}: Größe {size}, Grenze {max}, erwartet {want}"
+            );
+        }
+        let (size, max) = (purse_size(w, &w.players[q]), purse_max_of(w, &w.players[q], Some(r)));
+        assert!(
+            size == 1 && max == base,
+            "Mitspieler ohne Skill: Größe {size}, Grenze {max}"
+        );
+        (w.players[p].gold, w.players[q].gold) = (base, base);
+        let (px, qx) = (w.players[p].x, w.players[q].x);
+        give_gold(w, Some(r), p, 1000, px);
+        give_gold(w, Some(r), q, 1000, qx);
+        let want_p = purse_max_of(w, &w.players[p], Some(r));
+        assert!(
+            w.players[p].gold == want_p && w.players[q].gold == base,
+            "Gold p {}, q {}",
+            w.players[p].gold,
+            w.players[q].gold
+        );
+    });
+}
 
-/// Go: `TestPurseRespecDropsNewGold` (purse_test.go) braucht Insel, Skills und Respec.
+/// Go: `TestPurseRespecDropsNewGold` (purse_test.go, Review FB2): nach Respec liegt der Beutel über der Grenze; neues Gold
+/// fällt zu Boden, der Beutel bleibt.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn purse_respec_drops_new_gold() {}
+#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
+fn purse_respec_drops_new_gold() {
+    use super::purse::purse_max_of;
+    use crate::economy::give_gold;
+    use crate::island::add_island_player;
+    use crate::island::testutil::{add_island_pool, must_island, on_stage, test_data};
+    use crate::monarch::{learn_skill, respec};
+    let data = test_data();
+    let mut isl = must_island(&data, "geldsack", &[0]);
+    let p = add_island_player(&mut isl, 0);
+    add_island_pool(&mut isl, 0, 5);
+    on_stage(&mut isl, &data, 0, |w, r| {
+        let v = crate::world::vals(w);
+        for id in ["purseMedium", "purseLarge"] {
+            learn_skill(w, &v, p, id).expect("lernen");
+        }
+        w.players[p].gold = purse_max_of(w, &w.players[p], Some(r));
+        let (full, coins) = (w.players[p].gold, w.coins.len());
+        respec(w, &v, p).expect("Respec");
+        let px = w.players[p].x;
+        give_gold(w, Some(r), p, 5, px);
+        assert!(
+            w.players[p].gold == full && w.coins.len() == coins + 5,
+            "nach Respec: Gold {} (vorher {full}), Münzen +{}",
+            w.players[p].gold,
+            w.coins.len() - coins
+        );
+    });
+}
 
 /// Go: `TestSiteHubLevelJeArt` (site_view_test.go): Platz-Stufe je Art; Linien-Plätze nach ihrer Zone.
 #[test]

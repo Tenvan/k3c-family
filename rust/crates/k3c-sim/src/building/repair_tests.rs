@@ -61,7 +61,7 @@ fn damaged_tower() -> (World, usize) {
 
 /// Reparatur zwischen den Wellen: HP voll nach dem fehlenden Anteil der Bauzeit, Vorrat und Gold unverändert.
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn reparatur_ohne_gold_und_material() {
     let (mut w, tower) = damaged_tower();
     w.stock = Stock {
@@ -87,7 +87,7 @@ fn reparatur_ohne_gold_und_material() {
 
 /// Bei Gefahr (Gegner in der Welt, Nacht) keine Reparatur.
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn reparatur_nicht_bei_gefahr() {
     let (mut w, tower) = damaged_tower();
     let x = w.width_units - 1.0;
@@ -111,9 +111,47 @@ fn reparatur_nicht_bei_gefahr() {
 
 /// Hub-Stufe, Mauer-Stufe (auch auf einer äußeren Linie) und laufender Ausbau überleben Speichern und Laden.
 #[test]
-#[ignore = "wartet auf RU18 (Insel)"]
+#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn spielstand_hub_und_platz_stufen() {
-    unimplemented!("RU18: Insel-Spielstand mit Hub-Ausbau (hub_site.upgrade_paid)")
+    use crate::enemies::testutil::line_site;
+    use crate::island::testutil::{load_island, must_island, save_json, test_data};
+    use crate::world::testutil::built;
+    let data = test_data();
+    let mut isl = must_island(&data, "stufen", &[0, 1]);
+    let a = &mut isl.stages[0];
+    a.hub_level = 3;
+    let oi = line_site(a, "wall", 1, 2);
+    built(&mut a.sites[oi]);
+    let max_hp = crate::world::vals(a).buildings["wall"].levels[2].hp;
+    let o = &mut a.sites[oi];
+    (o.level, o.max_hp, o.hp) = (3, max_hp, 700.0);
+    (o.upgrade, o.upgrade_paid) = ("waitingMaterial".into(), 20);
+    if let Some(h) = a.hub_site.as_mut() {
+        h.upgrade_paid = 30;
+    }
+    let mut loaded = load_island(&data, &save_json(&isl, "2026-10-05T12:00:00Z"));
+    let loi = line_site(&mut loaded.stages[0], "wall", 1, 2);
+    let la = &loaded.stages[0];
+    let lo = &la.sites[loi];
+    assert!(
+        la.hub_level == 3 && loaded.stages[1].hub_level == 1,
+        "Hub-Stufen nach dem Laden {}/{}",
+        la.hub_level,
+        loaded.stages[1].hub_level
+    );
+    assert!(
+        lo.level == 3
+            && lo.max_hp == max_hp
+            && lo.hp == 700.0
+            && lo.upgrade == "waitingMaterial"
+            && lo.upgrade_paid == 20,
+        "äußere Mauer nach dem Laden: {lo:?}"
+    );
+    assert_eq!(
+        la.hub_site.as_ref().map(|h| h.upgrade_paid),
+        Some(30),
+        "Hub-Ausbau nach dem Laden"
+    );
 }
 
 /// Ein beschädigtes Hammer-Bauer-Gerüst ohne `create_world`: ein halb zerstörtes Gebäude (Schmiede, ohne Stufen) und ein

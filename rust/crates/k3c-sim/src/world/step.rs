@@ -34,7 +34,7 @@ pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut Isla
     step_spawns(w, &v, isl.as_deref());
     step_players(w, commands, isl.as_deref_mut(), dt);
     step_crowns(w, &v, dt);
-    step_passives(w, dt);
+    step_passives(w, isl.as_deref(), dt);
     step_camps(w, &v, dt);
     step_sites(w, isl.as_deref_mut());
     step_plantations(w, dt);

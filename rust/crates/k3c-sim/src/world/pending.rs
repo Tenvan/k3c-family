@@ -17,20 +17,14 @@ pub use crate::monarch::check_presets; // Von RU18.4 portiert (monarch_data.go)
 
 pub use crate::economy::{step_players, step_sites}; // Von RU18.2 portiert (economy.go)
 
-/// Go: `stepPassives` (monarch_passives.go): Passiv-Skills der Monarchen.
-pub fn step_passives(_w: &mut World, _dt: f64) {
-    unimplemented!("RU18: step_passives")
-}
+pub use crate::monarch::step_passives; // Von RU18.5 portiert (monarch_passives.go)
 
 // Von RU18.1 portiert (building_plantation.go, building_healer.go, building_spell_tower.go).
 pub use crate::building::healer::step_healing;
 pub use crate::building::plantation::step_plantations;
 pub use crate::building::spell_tower::step_spell_towers;
 
-/// Go: `stepStorms` (skills_caster.go): laufende Lightning Storms.
-pub fn step_storms(_w: &mut World, _dt: f64) {
-    unimplemented!("RU18: step_storms")
-}
+pub use crate::skills::step_storms; // Von RU18.5 portiert (skills_caster.go)
 
 pub use crate::building::ruin::{add_ruin_sites, ruin_site}; // Von RU18.1 portiert (building_ruin.go)
 

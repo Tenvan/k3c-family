@@ -10,20 +10,8 @@ pub use crate::merchant::{merchant_at, pay_merchant, refund_merchant}; // Von RU
 
 pub use crate::monarch::{chest_skill_point, step_attack}; // Von RU18.4 portiert (monarch.go)
 
-/// Go: `stepSkills` (skills.go, RU18.5): Skill-Slots des lebenden Monarchen `pi`.
-pub fn step_skills(_w: &mut World, _v: &WorldValues, _pi: usize, _cmd: &PlayerCommand, _dt: f64) {
-    unimplemented!("RU18: step_skills (RU18.5)")
-}
-
-/// Go: `speedOf` (monarch_passives.go, RU18.5): Grundtempo des Monarchen `pi`.
-pub fn speed_of(_w: &World, _v: &WorldValues, _pi: usize) -> f64 {
-    unimplemented!("RU18: speed_of (RU18.5)")
-}
-
-/// Go: `MountOf` (monarch_mount.go, RU18.5): das Reittier des Monarchen `pi`.
-pub fn mount_of(_v: &WorldValues, _pi: usize) -> &MountData {
-    unimplemented!("RU18: mount_of (RU18.5)")
-}
+pub use crate::monarch::{mount_of, speed_of}; // Von RU18.5 portiert (monarch_passives.go, monarch_mount.go)
+pub use crate::skills::step_skills; // Von RU18.5 portiert (skills.go)
 
 pub use crate::hub::{hub_gate, pay_upgrade, step_upgrade}; // Von RU18.3 portiert (hub_level.go)
 

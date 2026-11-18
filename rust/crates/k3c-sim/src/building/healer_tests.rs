@@ -30,7 +30,7 @@ fn heal_world() -> (World, usize, usize, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn heilplatz_heilt_im_radius_auch_im_kampf() {
     let (mut w, healer, near, far) = heal_world();
     built(&mut w.sites[healer]);
@@ -48,7 +48,7 @@ fn heilplatz_heilt_im_radius_auch_im_kampf() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn heilplatz_ohne_gebaeude_keine_heilung() {
     let (mut w, healer, near, _) = heal_world();
     run(&mut w, 1.0);
@@ -89,7 +89,7 @@ fn heal_w4_krieger_und_spieler_in_reichweite() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn heal_w4_ohne_heilplatz_keine_heilung() {
     let (mut w, _, near, far) = heal_w4_world();
     step_healing(&mut w, 1.0);

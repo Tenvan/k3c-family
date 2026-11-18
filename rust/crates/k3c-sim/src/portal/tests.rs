@@ -79,9 +79,60 @@ fn zerstoerte_portale_bleiben_nach_dem_laden_weg() {
     assert!(!safe(&w));
 }
 
+/// Go: `portalIsland` ohne `CreateIsland`: eine ruhige Welt (Kampagne) mit zwei Spielern, ohne Truppen, Gegner und Camps.
+fn quiet_portal_world() -> crate::state::World {
+    let mut w = crate::enemies::testutil::quiet_world();
+    crate::world::add_player(&mut w);
+    crate::world::add_player(&mut w);
+    w.troops.clear();
+    w.enemies.clear();
+    w.spawn_queue.clear();
+    w.camps.clear();
+    w.aggression = Default::default();
+    w
+}
+
+/// Go: `siege`: rechnet `seconds` Sekunden und hält `ti` dabei bei `x`.
+fn siege(w: &mut crate::state::World, ti: usize, x: f64, seconds: f64) {
+    let mut tm = 0.0;
+    while tm < seconds {
+        w.troops[ti].x = x;
+        crate::world::step(w, &[], None, DT);
+        tm += DT;
+    }
+}
+
 #[test]
-#[ignore = "wartet auf RU19 (emit: portalDefense) und RU18 (Verteidiger-Wellen)"]
-fn angegriffenes_portal_spawnt_verteidiger() {}
+#[ignore = "wartet auf RU19 (pure, emit: portalDefense)"]
+fn angegriffenes_portal_spawnt_verteidiger() {
+    let mut w = quiet_portal_world();
+    crate::enemies::testutil::run(&mut w, 25.0);
+    assert!(
+        w.spawn_queue.is_empty() && w.enemies.is_empty(),
+        "Verteidiger ohne Angriff: {} + {}",
+        w.spawn_queue.len(),
+        w.enemies.len()
+    );
+    let v = crate::world::vals(&w);
+    let a = attacker(&mut w, &v, 0);
+    (w.troops[a].hp, w.troops[a].max_hp) = (1e9, 1e9);
+    let p0 = w.portals[0];
+    siege(&mut w, a, p0, 1.0);
+    let size = w.biome.portals.defense.size;
+    let got = (w.spawn_queue.len() + w.enemies.len()) as i64;
+    assert!(got >= size, "{got} Verteidiger, erwartet {size}");
+    for s in &w.spawn_queue {
+        assert_eq!(s.x, p0, "Verteidiger am falschen Portal: {}", s.x);
+    }
+    let mut waves = 0; // der Krieger erschlägt die Verteidiger: gezählt wird das Ereignis
+    let mut tm = 0.0;
+    while tm < w.biome.portals.defense.interval_seconds + 1.0 {
+        siege(&mut w, a, p0, DT);
+        waves += w.events.iter().filter(|e| e["type"] == "portalDefense").count();
+        tm += DT;
+    }
+    assert_eq!(waves, 1, "{waves} Wellen im Takt, erwartet 1");
+}
 
 #[test]
 fn letztes_portal_macht_stufe_sicher() {}
@@ -91,12 +142,40 @@ fn letztes_portal_macht_stufe_sicher() {}
 fn sichere_stufe_bleibt_nach_dem_laden() {}
 
 #[test]
-#[ignore = "wartet auf RU18 (Step)"]
-fn dieb_ohne_portal_laesst_beute_fallen() {}
+#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
+fn dieb_ohne_portal_laesst_beute_fallen() {
+    let mut w = quiet_portal_world();
+    w.portals.clear();
+    w.portal_hp.clear();
+    let px = w.hub_x + 3.0;
+    (w.players[0].x, w.players[0].gold) = (px, 50);
+    let ei = crate::enemies::testutil::spawn(&mut w, "greed", px + 0.2);
+    w.enemies[ei].cooldown = 0.0;
+    let coins = w.coins.len();
+    crate::enemies::testutil::run(&mut w, 2.0);
+    let e = &w.enemies[ei];
+    assert!(
+        e.carried_gold == 0 && !e.fleeing && w.coins.len() > coins,
+        "Beute {}, flieht {}, Münzen {coins} → {}",
+        e.carried_gold,
+        e.fleeing,
+        w.coins.len()
+    );
+}
 
 #[test]
-#[ignore = "wartet auf RU10 und RU18 (CreateIsland, Step)"]
-fn portal_simulation_ist_deterministisch() {}
+#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
+fn portal_simulation_ist_deterministisch() {
+    let run = || {
+        let mut w = quiet_portal_world();
+        let v = crate::world::vals(&w);
+        let a = attacker(&mut w, &v, 0);
+        w.troops[a].hp = 1e9;
+        crate::enemies::testutil::run(&mut w, 60.0);
+        serde_json::to_string(&w).expect("Weltzustand als JSON")
+    };
+    assert_eq!(run(), run(), "zwei Läufe weichen ab");
+}
 
 #[test]
 #[ignore = "wartet auf RU10 (Island, Miniboss-Punkt)"]

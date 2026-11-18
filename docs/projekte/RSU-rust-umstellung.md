@@ -61,6 +61,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | aktiv |
 | RU19 | Sim: Events, Geschichte, Dev-Eingriffe | aktiv |
 | RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | aktiv |
+| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
 | RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | geplant |
 | RU24 | Raum Teil 2 und Spielstand-Format | geplant |
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | geplant |

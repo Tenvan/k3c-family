@@ -32,7 +32,7 @@ fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn ausloeser_nur_mit_ziel() {
     let (mut w, l) = group_ready();
     w.portals = vec![w.hub_x - 40.0]; // kein Portal und kein Gegner auf der rechten Seite

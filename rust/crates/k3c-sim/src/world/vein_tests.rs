@@ -41,7 +41,7 @@ fn vein_world(peasants: usize) -> (World, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (step_passives)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn ader_zielrate_mit_zwei_bauern() {
     let minutes = 10.0;
     for (kind, v) in &default_values().economy.veins {
@@ -63,7 +63,7 @@ fn ader_zielrate_mit_zwei_bauern() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (step_passives)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn ader_hoechstens_zwei_bauern() {
     let (mut w, vi) = vein_world(3);
     w.nodes[vi].marked = true;
@@ -77,7 +77,7 @@ fn ader_hoechstens_zwei_bauern() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.5 (step_passives)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn ader_ruht_ohne_bauern() {
     let (mut w, vi) = vein_world(0);
     w.nodes[vi].marked = true;
@@ -87,7 +87,7 @@ fn ader_ruht_ohne_bauern() {
 
 /// Zwei Spieler markieren eine Ader gemeinsam für ihren markCost; sie bleibt danach markiert.
 #[test]
-#[ignore = "wartet auf RU18.5 (speed_of)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn ader_einmal_markieren() {
     let (mut w, vi) = vein_world(0);
     let x = w.hub_x + 8.0; // außer Reichweite der Burg (Hub-Ausbau wäre das nähere Zahlziel)
@@ -135,7 +135,7 @@ fn ader_lager_voll() {
 
 /// Adern sind kein endlicher Startvorrat: nicht in gatherables, Level-Objekte bleiben beim Ader-Abbau gleich.
 #[test]
-#[ignore = "wartet auf RU18.5 (step_passives)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn ader_nicht_im_startvorrat() {
     own_adern_nicht_in_gatherables();
     let (mut w, vi) = vein_world(2);

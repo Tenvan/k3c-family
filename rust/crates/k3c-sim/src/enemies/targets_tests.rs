@@ -148,7 +148,7 @@ fn gegner_ignores_walls_laeuft_an_der_mauer_vorbei() {
 
 /// (f) Jeder Tod eines Gegners meldet genau ein `kill` mit Art und Ort, auch fünf in einem Tick und an der Obergrenze.
 #[test]
-#[ignore = "wartet auf RU18.5 (step_passives)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn gegner_kill_je_tod() {
     let mut w = quiet_world();
     for i in 0..5 {
