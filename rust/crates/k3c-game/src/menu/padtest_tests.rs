@@ -1,5 +1,5 @@
 //! Tests aus `native/k3c-game/menu/padtest_test.go` (AC-03) und AC-02: Tasten-Test zeigt Tasten, Achsen und Aktion je
-//! Gerät. `TestTestingOpensPadTest` gehört zu RU12.3 (Testing-Menü).
+//! Gerät. `TestTestingOpensPadTest` kam mit RU12.3 (Testing-Menü).
 
 use k3c_platform::{InputState, PadAxis, PadButton};
 
@@ -211,4 +211,30 @@ fn pad_test_page_texts() {
     assert_eq!(pg.title, super::texts::tr(DEFAULT_LANGUAGE, TextKey::TstPads));
     assert_eq!(pg.sel, pg.n as i64 - 1);
     assert_eq!(pg.note, "Pad 1: Xbox · 0300");
+}
+
+/// Die Zeile Tasten-Test des Testing-Menüs öffnet die Seite (`TestTestingOpensPadTest`; den Typ des Screens kennt
+/// `Box<dyn Screen>` nicht: geprüft wird Push mit Screen, der Zurück-Taste mit Pop beantwortet, dazu der Cue Confirm).
+#[test]
+fn testing_opens_pad_test() {
+    use super::testing::{TST_PADS, new_testing};
+    use super::testutil::{PAD1, has_cue, press};
+    use crate::view::frame::CueKind;
+    use crate::view::screen::StepKind;
+    let m = new_menus();
+    let mut sc = new_testing(&m);
+    let mut s = FakeSession::default();
+    sc.update(&Input::default(), &mut s);
+    sc.sel = TST_PADS;
+    let st = sc.update(&press(PAD1, &[Action::Confirm]), &mut s);
+    assert!(
+        st.kind == StepKind::Push && has_cue(&st, CueKind::Confirm),
+        "Schritt {:?}",
+        st.kind
+    );
+    let Some(mut next) = st.next else {
+        panic!("kein Screen");
+    };
+    let back = next.update(&press(PAD1, &[Action::Back]), &mut s);
+    assert_eq!(back.kind, StepKind::Pop, "Tasten-Test geht mit B zurück");
 }

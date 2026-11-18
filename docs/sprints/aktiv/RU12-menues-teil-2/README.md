@@ -91,7 +91,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 |---|---|---|---|---|
 | RU12.1 | `RU12.1-menu-saves-worldpick-pause.md` | Umsetzung | autonom | fertig |
 | RU12.2 | `RU12.2-menu-padtest.md` | Umsetzung | autonom | fertig |
-| RU12.3 | `RU12.3-menu-testing-licenses.md` | Umsetzung | autonom | offen |
+| RU12.3 | `RU12.3-menu-testing-licenses.md` | Umsetzung | autonom | fertig |
 | RU12.4 | `RU12.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

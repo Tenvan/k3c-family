@@ -15,9 +15,9 @@ use super::draw::{Page, Row};
 use super::keys::{Base, Handler, Key, Note, device_name, first, move_sel, run};
 use super::layout::{MAT_BLUE, MAT_CORAL, MAT_GOLD, MAT_GREEN, MAT_PURPLE, MAT_RED, Material};
 use super::options::new_options;
-use super::pending::new_testing;
 use super::saves::new_saves;
 use super::table::new_licenses;
+use super::testing::new_testing;
 use super::texts::{TextKey, tr, tr1};
 use super::version::version_text;
 use super::worldpick::new_world_pick;
@@ -68,7 +68,7 @@ pub struct MainScreen {
     /// Ausgang des letzten Spiels, für den die Texte gelten (`Frame::outcome`)
     pub ended: StdCell<Outcome>,
     /// Karte Testing sichtbar (Entwickler-Build oder `Settings::dev_mode`, B-896)
-    dev: bool,
+    pub dev: bool,
     pub pg: RefCell<Page>,
 }
 

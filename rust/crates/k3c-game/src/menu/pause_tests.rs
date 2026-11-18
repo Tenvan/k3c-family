@@ -1,5 +1,5 @@
 //! Tests aus `native/k3c-game/menu/pause_test.go` (AC-04): Pause-Menü. `TestMainShowsOutcomeOfFrame` liegt in
-//! `main_screen_tests.rs` (RU9.4), `TestMenusPagesAndFallbackFont` kommt mit RU12.3.
+//! `main_screen_tests.rs` (RU9.4), `TestMenusPagesAndFallbackFont` steht seit RU12.3 hier.
 
 use super::pause::{PAUSE_LEAVE, PAUSE_REMOVE, new_pause};
 use super::testutil::{FakeSession, KEYS1, PAD1, PAD2, PAD3, err_fake, has_cue, new_menus, press, step_through};
@@ -196,4 +196,20 @@ fn pause_remove_disabled_with_one_player() {
     };
     step_through(&mut sc, &mut s, &ins(PAD1, &[Down, Down, Down]));
     assert_eq!(sc.sel, PAUSE_LEAVE, "Abmelden nicht übersprungen");
+}
+
+/// menus liefert die Untermenüs des Aufnahme-Modus; ohne Grafik zeichnet die Debug-Schrift (Go:
+/// `TestMenusPagesAndFallbackFont`; das Overlay-Verbot gibt es in Rust nicht: `MenuSet` ist kein `Overlay`).
+#[test]
+fn menus_pages_and_fallback_font() {
+    use super::new_set;
+    use crate::view::screen::MenuPages;
+    let mut ms = new_set(None, None);
+    for (name, want) in [("saves", true), ("options", true), ("lobby", true), ("x", false)] {
+        assert_eq!(ms.page(name, false, PAD1).is_some(), want, "{name}");
+    }
+    assert!(
+        ms.shared.borrow().paint.font.as_ref().is_some_and(|f| f.fallback),
+        "ohne Grafik keine Debug-Schrift"
+    );
 }

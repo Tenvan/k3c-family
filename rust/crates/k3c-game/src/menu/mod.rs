@@ -22,16 +22,19 @@ pub mod draw;
 pub mod hero;
 pub mod keys;
 pub mod layout;
+pub mod licenses;
 pub mod lobby;
 pub mod main_screen;
 pub mod options;
 pub mod padtest;
 pub mod padtest_read;
 pub mod pause;
-mod pending;
 pub mod placeholder;
 pub mod saves;
+pub mod stress_presets;
 pub mod table;
+pub mod testing;
+mod testing_text;
 pub mod texts;
 mod texts_data;
 pub mod version;
@@ -64,6 +67,8 @@ mod saves_tests;
 #[cfg(test)]
 mod table_tests;
 #[cfg(test)]
+mod testing_tests;
+#[cfg(test)]
 mod testutil;
 #[cfg(test)]
 mod texts_tests;
@@ -84,6 +89,7 @@ use crate::view::input::DeviceID;
 use crate::view::keys::KeyTable;
 use crate::view::screen::{MenuPages, Menus as MenusRole, Screen};
 use crate::view::session::Session;
+use crate::view::stress::StressStarter;
 
 /// Menus hält, was die Bildschirme teilen: Zeichner, Tastenbelegung, Plätze des laufenden Spiels, Meldung fürs
 /// Hauptmenü.
@@ -108,6 +114,9 @@ pub struct Menus {
 
     /// liefert die Pads für den Tasten-Test (Standard: keine; Go: `readPads`)
     pub pads: Box<dyn PadSource>,
+
+    /// startet den Stresstest der Seite Testing (Go: Rolle `view.StressStarter` der Session); `None`: nicht verfügbar
+    pub starter: Option<Box<dyn StressStarter>>,
 }
 
 /// Eine Abfrage nach einem Asset (`usable`, `has`).
@@ -143,6 +152,7 @@ pub fn new_shared(lib: Option<Rc<RefCell<Library>>>, keys: Option<KeyTable>) -> 
         usable,
         has,
         pads: Box::new(NoPads),
+        starter: None,
     }))
 }
 
@@ -206,6 +216,11 @@ impl Menus {
     /// Setzt die Quelle der Pads (der Client: `InputPads`, Tests: Schein-Quelle).
     pub fn set_pad_source(&mut self, p: Box<dyn PadSource>) {
         self.pads = p;
+    }
+
+    /// Setzt den Starter des Stresstests (game; Tests: Schein-Starter).
+    pub fn set_stress_starter(&mut self, st: Box<dyn StressStarter>) {
+        self.starter = Some(st);
     }
 
     /// Übernimmt die Plätze des laufenden Spiels aus der Session (ohne Listen zu halten).

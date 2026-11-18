@@ -1,9 +1,11 @@
 //! Tests aus `native/k3c-game/menu/main_test.go`, dazu `TestMainShowsOutcomeOfFrame` (`pause_test.go`) und die zwei
-//! Hauptmenü-Tests aus `table_test.go`. Tests, die einen Screen aus RU12.2 oder RU12.3 öffnen (Testing, Lizenzen), warten darauf.
+//! Hauptmenü-Tests aus `table_test.go`.
 
 use super::MenuSet;
 use super::keys::Note;
-use super::main_screen::{MAIN_CONTINUE, MAIN_LICENSES, MAIN_LOAD, MAIN_NEW, MAIN_QUIT, new_main, outcome_note};
+use super::main_screen::{
+    MAIN_CONTINUE, MAIN_LICENSES, MAIN_LOAD, MAIN_NEW, MAIN_OPTIONS, MAIN_QUIT, new_main, outcome_note,
+};
 use super::pause::{PAUSE_LEAVE, new_pause};
 use super::testutil::{
     FakeSession, KEYS1, PAD1, PAD2, err_fake, has_cue, new_menus, press, save, step_through, version_guard,
@@ -125,11 +127,33 @@ fn main_confirm_play_quit_licenses() {
     }
 }
 
-/// Neues Spiel (Weltauswahl), Laden (Liste) und Optionen öffnen ihre Screens; die Tabelle läuft erst, wenn RU12.3 das
-/// Testing-Menü (`new_testing`) liefert.
+/// Weiter spielt, Neues Spiel (Weltauswahl), Laden (Liste) und Optionen öffnen ihre Screens, Beenden beendet (Go:
+/// `TestMainConfirmTransitions`; den Namen des Screens kennt `Box<dyn Screen>` nicht, geprüft wird Art und Vorhandensein).
 #[test]
-#[ignore = "wartet auf RU12.3"]
-fn main_confirm_transitions() {}
+fn main_confirm_transitions() {
+    let cases = [
+        ("Weiter spielt", MAIN_CONTINUE, StepKind::Play, false),
+        ("Neues Spiel öffnet die Weltauswahl", MAIN_NEW, StepKind::Push, true),
+        ("Laden öffnet die Liste", MAIN_LOAD, StepKind::Push, true),
+        ("Optionen", MAIN_OPTIONS, StepKind::Push, true),
+        ("Beenden", MAIN_QUIT, StepKind::Quit, false),
+    ];
+    for (name, sel, kind, has_next) in cases {
+        let mut sc = new_main(&new_menus());
+        let mut s = FakeSession {
+            saves: vec![save("spiel-1", 2, true)],
+            ..Default::default()
+        };
+        sc.update(&Input::default(), &mut s);
+        sc.sel = sel;
+        let st = sc.update(&press(PAD2, &[Action::Confirm]), &mut s);
+        assert!(
+            st.kind == kind && st.next.is_some() == has_next && has_cue(&st, CueKind::Confirm),
+            "{name}: Schritt {:?}, erwartet {kind:?}",
+            st.kind
+        );
+    }
+}
 
 #[test]
 fn main_continue_uses_confirming_device() {
