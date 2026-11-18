@@ -1,6 +1,6 @@
 # RU49 · SRV · Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SRV
 - **Reife:** bereit
