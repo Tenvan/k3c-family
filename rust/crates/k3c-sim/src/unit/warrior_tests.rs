@@ -308,7 +308,7 @@ fn fetch_weapon_gibt_auf_wenn_das_ziel_fehlt_oder_ein_gegner_naht() {
 /// Zwei Krieger verteilen sich auf beide Seiten und stehen hinter der äußersten Mauer; der Gegner an der Mauer nimmt
 /// den Schaden aus den Daten (Go: `Step` mit Kampfvariante und Begleitschutz, `escortPost`/`squadPost` sind RU15).
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed)"]
+#[ignore = "offen (Ursache ungeprueft: assertion `left == right` failed)"]
 fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
     let mut w = bare_world();
     let v = values(&w);

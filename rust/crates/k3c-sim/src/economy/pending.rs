@@ -11,5 +11,4 @@ pub use crate::skills::step_skills; // Von RU18.5 portiert (skills.go)
 
 pub use crate::hub::{hub_gate, pay_upgrade, step_upgrade}; // Von RU18.3 portiert (hub_level.go)
 
-// Von RU19.2 portiert (events.go): die Import-Stelle bleibt `pending`.
-pub use crate::events::coin_give_event;
+pub use crate::events::coin_give_event; // Von RU19.2 portiert (events.go)

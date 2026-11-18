@@ -45,7 +45,7 @@ fn stand_for(isl: &mut Island, data: &k3c_data::Data, seconds: f64, hold: &BTree
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: andere Spieler bleiben stehen)"]
+#[ignore = "offen (Ursache ungeprueft: assertion `left == right` failed: andere Spieler bleiben stehen)"]
 fn island_single_player_travels_via_exit() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-a", &[0, 1, 2]);
@@ -83,7 +83,7 @@ fn island_single_player_travels_via_exit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
+#[ignore = "offen (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn island_travel_via_stairs() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-b", &[0, 1]);
@@ -116,7 +116,7 @@ fn island_travel_needs_built_stairs() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
+#[ignore = "offen (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn island_travel_aborts_when_leaving_point() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-d", &[0, 1]);
@@ -160,7 +160,7 @@ fn island_travel_without_target_stage_stays() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
+#[ignore = "offen (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn island_travel_deterministic() {
     let data = test_data();
     let run = || {

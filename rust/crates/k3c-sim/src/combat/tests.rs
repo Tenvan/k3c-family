@@ -92,7 +92,7 @@ fn schild_nur_mit_freiem_soldaten() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 1)"]
+#[ignore = "offen (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 1)"]
 fn ausloeser_schickt_gruppen_zum_portal_und_zurueck() {
     let (mut w, l) = group_ready();
     w.portal_hp[1] = 40.0; // schnell zerstört
@@ -199,7 +199,7 @@ fn banner_je_monarch_und_nachbesetzung() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 1)"]
+#[ignore = "offen (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 1)"]
 fn trupp_im_angriff_beschaedigt_portal() {
     let (mut w, _, _) = combat_stage(COMBAT_GENERAL);
     spawn_soldiers(&mut w, 5);

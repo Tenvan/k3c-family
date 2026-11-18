@@ -275,7 +275,7 @@ fn own_island_from_v1_ueberfuehrt_die_campaign() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern ergibt etwas anderes)"]
+#[ignore = "offen (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern ergibt etwas anderes)"]
 fn island_save_round_trip() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-a", &[0, 1, 2]);
@@ -326,7 +326,7 @@ fn island_save_round_trip() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Version 1: Spielstand(spielstand: Truppenart archer unbekannt))"]
+#[ignore = "offen (Ursache ungeprueft: Version 1: Spielstand(spielstand: Truppenart archer unbekannt))"]
 fn parse_island_save_from_version1() {
     let data = test_data();
     let raw = fixture(1);
@@ -346,7 +346,7 @@ fn parse_island_save_from_version1() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Version 1: Spielstand(spielstand: Truppenart archer unbekannt))"]
+#[ignore = "offen (Ursache ungeprueft: Version 1: Spielstand(spielstand: Truppenart archer unbekannt))"]
 fn version1_players_move_into_stored_stage() {
     let data = test_data();
     let raw = fixture(1);

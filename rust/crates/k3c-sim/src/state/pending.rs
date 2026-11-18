@@ -1,6 +1,6 @@
 //! Platzhalter für Funktionen späterer Sprints (Port-Leitfaden § 7). Der Sprint, der die Funktion liefert, löscht den
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU19, RU23)
 
 use super::World;
 
@@ -22,9 +22,9 @@ pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert 
 
 pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
-/// Go: `protectedNight` (World-Methode, Nacht-Schutz der Gebäude).
+/// Go: `protectedNight` (World-Methode, `island_options.go`; Sprint-Nummer korrigiert: RU10, nicht RU18).
 pub fn protected_night(_w: &World) -> bool {
-    unimplemented!("RU18: protected_night")
+    unimplemented!("RU10: protected_night")
 }
 
 pub use crate::building::plantation::plot_x; // Von RU18.1 portiert (building_plantation.go)
@@ -37,9 +37,6 @@ pub use crate::world::vein::gather_of; // Von RU14.4 portiert (world_vein.go)
 pub use crate::monarch::skill_ref; // Von RU18.4 portiert (monarch_data.go)
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
-
-// Von RU19.3 portiert (story.go, story_check.go): die Import-Stelle bleibt `pending`.
-pub use crate::story::{IslandStory, WorldStory, check_story, decode_island_story, decode_world_story};
 
 pub use crate::world::values_room::values_of; // Von RU14.4 portiert (world_values_room.go)
 
@@ -54,6 +51,7 @@ pub fn return_banner(_w: &mut World, _pi: usize) {
 
 pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
 
-// Von RU19.1 und RU19.2 portiert (dev.go, events.go): die Import-Stelle bleibt `pending`.
+// Von RU19.1 bis RU19.3 portiert (dev.go, events.go, story.go): die Import-Stelle bleibt `pending`.
 pub use crate::dev::DevFlags;
 pub use crate::events::hit_event;
+pub use crate::story::{IslandStory, WorldStory, check_story, decode_island_story, decode_world_story};

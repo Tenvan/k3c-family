@@ -243,7 +243,7 @@ fn island_storage_capacity() {
 
 /// Go: `TestIslandStorageAddCapped`: Aufnahme über zwei Stufen, Zerstörung eines Lagers lässt den Überschuss stehen.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU18: add_stock, destroy_site (Zerstörung des Lagers))"]
+#[ignore = "offen (Ursache ungeprueft: not implemented: RU19: add_stock, destroy_site (Zerstörung des Lagers))"]
 fn island_storage_add_capped() {
     let data = test_data();
     let v = test_values();
@@ -261,18 +261,18 @@ fn island_storage_add_capped() {
         on_stage(&mut isl, &data, 0, |w, r| add_stock_capped(w, &v, Some(r), "wood", 5)).0,
         0
     );
-    unimplemented!("RU18: add_stock, destroy_site (Zerstörung des Lagers)")
+    unimplemented!("RU19: add_stock, destroy_site (Zerstörung des Lagers)")
 }
 
 /// Go: `TestIslandStorageFiveMaterials`: Kosten über fünf Materialien (`can_afford`, `spend`, RU18) und Rundlauf.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU18: add_stock, can_afford, spend)"]
+#[ignore = "offen (Ursache ungeprueft: not implemented: RU19: add_stock, can_afford, spend)"]
 fn island_storage_five_materials() {
     let data = test_data();
     let isl = must_island(&data, "lager-c", &[0]);
     let loaded = load_island(&data, &save_json(&isl, "t"));
     assert_eq!(loaded.stock, isl.stock, "Rundlauf");
-    unimplemented!("RU18: add_stock, can_afford, spend")
+    unimplemented!("RU19: add_stock, can_afford, spend")
 }
 
 /// Go: `TestIslandStorageSiteOnlyInIslands`: Lager-Bauplatz nur in Insel-Stufen, die Campaign-Welt hat keinen.

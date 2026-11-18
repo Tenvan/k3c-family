@@ -49,7 +49,7 @@ fn endboss_schaltet_je_aufruf_eine_phase_weiter() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion failed: w.events.iter().any(|e|)"]
+#[ignore = "offen (Ursache ungeprueft: assertion failed: w.events.iter().any(|e|)"]
 fn blutmond_laeuft_genau_in_der_naechsten_nacht() {
     let (data, mut isl, _) = island_with_player("dev-mond");
     let d = &data.difficulty;

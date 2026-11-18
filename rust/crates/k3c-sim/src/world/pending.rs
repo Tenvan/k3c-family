@@ -33,7 +33,7 @@ pub use crate::monarch::{apply_preset, preset_for}; // Von RU18.4 portiert (mona
 pub use crate::hub::sites::check_world_hub_sites; // Von RU18.3 portiert (world_hub_sites.go)
 pub use crate::hub::{level_of, new_hub_site, site_cost, upgrade_payable, validate_hub_data}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
 
-// Von RU19.1 und RU19.2 portiert (dev.go, events.go, events_moon.go): die Import-Stelle bleibt `pending`.
+// Von RU19.1 und RU19.2 portiert (dev.go, events*.go): die Import-Stelle bleibt `pending`.
 pub use crate::dev::dev_build_site;
 pub use crate::events::cap_events;
 pub use crate::events::moon::{event_active, night_events_end, night_events_start};
