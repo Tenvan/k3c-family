@@ -1,6 +1,6 @@
 # RU9.1 · menu Teil 1: Kern, Layout, Zeichner
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -68,5 +68,13 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: `style_of`, `paper`, `card`, `ask_box` und `page` zeichnen in Go-Reihenfolge (Review k3c-reviewer: keine schweren Befunde); Bildvergleich folgt in RU9.6. Pixel-Schrift: `Painter::text` zeichnet im Rückfall `text_scale`-fach und eingefärbt (Review-Befund behoben).
+AC-03 geprüft: `fake_session_fulfils_contract`, `colors_match_stil_paper`, `cards_in_window_without_overlap`, `geom_fits_window` portiert und grün (`cargo test -p k3c-game menu`). Kein Test mit `ignore`. Fmt und Clippy `-D warnings` grün.
+Dateien: `menu/{mod,layout,draw,pending,version,testutil,layout_tests,paper_tests}.rs`, `lib.rs` (`pub mod menu;`).
+Abweichungen: `menu::new` nimmt `Option<KeyTable>` (Go erlaubt `nil`). `TestBackdropInWindow` und `TestBackdropSwitchesFilterAtMostOnce` aus `paper_test.go` gehören zu RU9.2 (Hintergrund), nicht portiert. Platzhalter in `menu/pending.rs`: `COL_SHADOW` (RU9.2), `MAIN_COUNT` (RU9.4), `PAUSE_ROWS` (RU12), `TextKey` (RU9.3), `Note` (RU9.5), `new_main`/`new_saves`/`new_lobby` (RU9.4), `new_options`/`new_keys` (RU9.5), `new_pause`/`new_licenses` (RU12), `Painter::backdrop`/`hero`/`art_box`/`has_sheet` (RU9.2). `Menus.has` ist bis RU9.2 eine eigene Closure (idle/stand-Sheet); RU9.2 stellt sie auf `has_sheet` um.
+`task check:diff`: Stufe Lint grün, Stufe Test rot durch `tests/still.rs` (`bildvergleich_an_fuenf_staenden`, `lichtkarte_fehlt_in_rust`); beides ist auch auf sauberem `main` rot (per Stash geprüft), nicht von dieser Session.
+
+### Für den Hauptrechner
+- `tests/still.rs` (2 Tests) ist auf `main` rot und blockiert `check:diff` der Rust-Bahn für alle Sessions (vermutlich Grafik nicht neu erzeugt oder Lichtkarte, B-1056); Ticket anlegen.
+- `menu::new` liefert `Box<dyn view::Menus>`; die Rolle `MenuPages` (Aufnahme-Modus) ist so für game nicht erreichbar (kein Typ-Test auf Trait-Objekt). Vor dem game-Port klären, z. B. Methode `as_pages()` an `view::Menus`.
+- Ohne Library ruft `new_shared` `load_font("")` und loggt bei jedem Aufbau „Schrift fehlt“ (Log-Rauschen); ggf. stille Pixel-Schrift ohne Plattenzugriff.

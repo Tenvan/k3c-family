@@ -7,6 +7,7 @@ pub mod demo;
 pub mod fx;
 pub mod hud;
 pub mod input;
+pub mod menu;
 pub mod props;
 pub mod replay;
 pub mod still;

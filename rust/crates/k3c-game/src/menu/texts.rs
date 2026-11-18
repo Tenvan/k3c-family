@@ -1,0 +1,162 @@
+//! Port von `native/k3c-game/menu/texts.go`: Spieltexte der Menüs in Deutsch und Englisch (wie
+//! `src/core/texts.de.ts` und `texts.en.ts`). Die Debug-Schrift kennt nur Latin-1: statt Pfeilen stehen < >. Fehler der
+//! Session sind deutsch (`view::Session`) und erscheinen unübersetzt. Die Texte stehen in `texts_data.rs`.
+
+use super::texts_data::TEXTS;
+use crate::view::settings::LANGUAGE_ENGLISH;
+
+/// TextKey nennt einen Text; die Reihenfolge ist die von `TEXTS` (Go: `textKey` mit `iota`).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[repr(usize)]
+pub enum TextKey {
+    #[default]
+    Title,
+    Continue,
+    ContinueSub,
+    ContinueNone,
+    ContinueLoading,
+    New,
+    NewSub,
+    Load,
+    LoadSub,
+    Options,
+    OptionsSub,
+    Quit,
+    QuitSub,
+    MainHint,
+    LobbyTitle,
+    Grade,
+    Goal,
+    Defeat,
+    World,
+    Seed,
+    SeedAuto,
+    Start,
+    Cancel,
+    Player,
+    PlayerFree,
+    LobbyHint,
+    WorldHint,
+    TooMany,
+    SavesTitle,
+    SavesEmpty,
+    SavesLine,
+    Depth,
+    SavesHint,
+    DeleteAsk,
+    DeleteNo,
+    DeleteYes,
+    Deleted,
+    AskHint,
+    Music,
+    Effects,
+    Fullscreen,
+    Display,
+    Windowed,
+    Borderless,
+    Language,
+    Back,
+    On,
+    Off,
+    OptionsHint,
+    PauseTitle,
+    Resume,
+    Remove,
+    Leave,
+    PauseHint,
+    NoSeat,
+    Lost,
+    Won,
+    By,
+    KeysWASD,
+    KeysArrows,
+    Keyboard,
+    Gamepad,
+    Controls,
+    ControlsHint,
+    Pad,
+    GradeEasy,
+    GradeNormal,
+    GradeHard,
+    GradeUltra,
+    GoalEndboss,
+    GoalGold,
+    GoalDays,
+    GoalMineAll,
+    GoalBuildAll,
+    DefeatResources,
+    DefeatStage,
+    LangName,
+    Flashes,
+    Guide,
+    Keys,
+    KeysHint,
+    KeyAction,
+    PadColumn,
+    KeyMove,
+    KeySprint,
+    KeyPay,
+    KeyAttack,
+    KeySkill,
+    KeySkillMenu,
+    KeyPause,
+    KeyFullscreen,
+    Licenses,
+    LicensesSub,
+    LicensesHint,
+    LicPart,
+    LicWork,
+    LicHolder,
+    LicLicense,
+    LicEngine,
+    LicFont,
+    LicGraphics,
+    LicAudio,
+    Version,
+    VersionUnknown,
+    Testing,
+    TestingSub,
+    TestingHint,
+    TstPreset,
+    TstPlayers,
+    TstDepth,
+    TstEnemies,
+    TstGrowth,
+    TstFactor,
+    TstBuild,
+    TstTroops,
+    TstTimescale,
+    TstWaves,
+    TstMinutes,
+    TstMode,
+    TstModeNormal,
+    TstModePure,
+    TstOwn,
+    TstLinear,
+    TstExp,
+    TstNone,
+    TstNoPresets,
+    TstNoRunner,
+    DevMode,
+    TstStart,
+    TstPads,
+    PadTestHint,
+}
+
+/// Zahl der Texte.
+pub const TEXT_COUNT: usize = 131;
+
+/// Der Index der Sprache in `TEXTS` (unbekannt = Deutsch, wie `Settings::normalized`).
+fn lang_index(lang: &str) -> usize {
+    usize::from(lang == LANGUAGE_ENGLISH)
+}
+
+/// Liefert den Text `k` in der Sprache `lang`.
+pub fn tr(lang: &str, k: TextKey) -> String {
+    TEXTS[k as usize][lang_index(lang)].to_string()
+}
+
+/// Liefert den Text `k` mit `arg` statt des Platzhalters `{}`.
+pub fn tr1(lang: &str, k: TextKey, arg: &str) -> String {
+    TEXTS[k as usize][lang_index(lang)].replacen("{}", arg, 1)
+}
