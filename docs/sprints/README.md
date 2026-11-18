@@ -447,3 +447,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU42 | Leitplanken für Leistung und Stabilität | `erledigt/RU42-leitplanken-leistung-stabilitaet/` |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | `erledigt/RU6-level-generator-rust/` |
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | `erledigt/RU10-sim-insel/` |
+| RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |

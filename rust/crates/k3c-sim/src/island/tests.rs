@@ -11,7 +11,7 @@ use super::testutil::*;
 use super::{
     CreateOptions, Island, IslandBuild, IslandDef, WorldDef, add_island_player, create_island_at, create_island_in,
 };
-use crate::state::pending::EndbossFight;
+use crate::boss::endboss::EndbossFight;
 use crate::state::{Player, PlayerCommand, World, WorldValues};
 
 /// Die Stufe `i` rechnet mit dem Vorrat der Insel (Zustandsmodell, Entscheidung 5): hinein, ändern, zurück.
@@ -250,7 +250,7 @@ fn stage_ref_und_put_stage_ref_geben_vorrat_und_bosse_unveraendert_zurueck() {
     let data = test_data();
     let mut isl = bare_island();
     isl.defeated_bosses = vec!["wald".into(), "hoehle".into()];
-    isl.endboss = Some(EndbossFight);
+    isl.endboss = Some(EndbossFight::default());
     isl.endboss_defeated = true;
     isl.dev.cheap_build = true;
     isl.stages[0].vals = Some(Arc::new(WorldValues {

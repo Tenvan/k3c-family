@@ -9,7 +9,7 @@ use k3c_data::difficulty::Grade;
 use k3c_data::waves::WavesDataDepthScaling;
 
 use super::World;
-use super::pending::EndbossFight;
+use crate::boss::endboss::EndbossFight;
 
 /// Der Teil der Insel, den eine Stufe beim Rechnen braucht.
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -25,7 +25,7 @@ pub struct IslandRef {
     /// Dev-Schalter `CheapBuild` der Insel (Go: `island.Dev.CheapBuild`, dev.go): Preise höchstens 1 je Posten.
     pub cheap_build: bool,
     /// Index der Stufe in der Insel (`Island::stage_ref`, RU10.1).
-    pub stage: i64,
+    pub stage: usize,
     /// Niederlage-Modus `resources` der Insel (Go: `island.Options.Defeat == "resources"`, island_defeat.go).
     pub defeat_resources: bool,
     /// Besiegte Bosse der Insel (Go: `island.DefeatedBosses`); die Insel gibt sie für den Stufenschritt her

@@ -155,6 +155,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1086](B-1086-abnahme-laeufe-sim-insel.md) | SIM | Schuld | mittel | offen | RU10 | Abnahme-Läufe Sim Insel |
 | [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU10 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
 | [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | offen | RU10 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
+| [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
 
 ## Archiv
 

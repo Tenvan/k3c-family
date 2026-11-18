@@ -15,9 +15,8 @@ use k3c_data::monarch::{SkillData, SkillEffect};
 use k3c_level::types::{NatureValues, PlannedChunk, WallSite};
 
 use super::island_ref::IslandRef;
-use super::save::HubSave;
 use super::shared::WorldValues;
-use super::{Player, PlayerCommand, Site, Troop, World};
+use super::{Player, PlayerCommand, Site, World};
 use crate::island::{Island, WorldDef};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
@@ -127,10 +126,6 @@ pub fn plot_x(_s: &Site, _p: &Plantation, _i: usize) -> f64 {
 }
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
-
-/// Go: `endbossFight` (boss_endboss.go): der laufende Kampf gegen den Endboss der Insel. Rumpf bis RU15.2.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct EndbossFight;
 
 /// Go: `DevFlags` (dev.go): Schalter der Dev-Aktionen einer Insel, nur im Speicher, nie im Spielstand. Rumpf bis RU19.
 #[derive(Debug, Clone, PartialEq, Default)]

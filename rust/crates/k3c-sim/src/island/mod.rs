@@ -14,7 +14,8 @@ use k3c_data::waves::WavesDataDepthScaling;
 
 use std::sync::Arc;
 
-use crate::state::pending::{DevFlags, EndbossFight, add_player_at, mirror_state, mirror_switch, step, values};
+use crate::boss::endboss::EndbossFight;
+use crate::state::pending::{DevFlags, add_player_at, mirror_state, mirror_switch, step, values};
 use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 
 pub mod create;
@@ -221,7 +222,7 @@ impl Island {
             players: self.player_count(),
             per_extra_player,
             cheap_build: self.dev.cheap_build,
-            stage: i as i64,
+            stage: i,
             defeat_resources: self.options.defeat == "resources",
             defeated_bosses: std::mem::take(&mut self.defeated_bosses),
             endboss: self.endboss.take(),
@@ -251,7 +252,7 @@ impl Island {
             self.over = true;
         }
         if r.halve_other_gold {
-            let stage = r.stage as usize;
+            let stage = r.stage;
             for (j, w) in self.stages.iter_mut().enumerate() {
                 if j != stage {
                     w.players.iter_mut().for_each(|p| p.gold /= 2);
