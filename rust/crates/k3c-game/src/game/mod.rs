@@ -11,6 +11,7 @@ pub mod devices;
 mod draw;
 pub mod flags;
 pub mod keytable;
+pub mod launch;
 pub mod layout;
 mod menu;
 pub mod modes;

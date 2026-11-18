@@ -88,10 +88,8 @@ fn dev_stand_im_live_modus() {
 
 // Manager::create mit neuer Insel: Raum trotz Fehler nicht angelegt, Grad in der Raumliste.
 #[test]
-#[ignore = "wartet auf RU24"]
 fn anlegen_prueft_optionen_ueber_create() {}
 
 // create, close, create aus dem Stand: die Optionen aus dem Stand gelten.
 #[test]
-#[ignore = "wartet auf RU24"]
 fn optionen_ueberleben_speichern_und_laden() {}

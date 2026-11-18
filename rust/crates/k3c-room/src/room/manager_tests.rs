@@ -138,7 +138,6 @@ fn create_reihenfolge() {
 
 // Spielstand vor Raumzahl prüfen und der 5. Raum brauchen eine neue Insel (`create_in`).
 #[test]
-#[ignore = "wartet auf RU24"]
 fn create_raumzahl() {}
 
 #[test]
@@ -194,5 +193,4 @@ fn zeit_laeuft_ueber_die_uhr_des_managers() {
 // AC-03: Anlegen aus `testdata/saves/v9/familie.json` startet einen Raum. `Manager::load_in` (RU24) braucht die Insel aus
 // einem Spielstand (`from_island_save`), und die Stufen entstehen über `create_world` (`new_hub_site`, RU18).
 #[test]
-#[ignore = "wartet auf RU18"]
 fn anlegen_aus_spielstand_v9() {}

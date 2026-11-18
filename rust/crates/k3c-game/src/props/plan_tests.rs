@@ -41,7 +41,6 @@ fn labels_of(items: &[Item]) -> Vec<String> {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
 fn plan_burg_und_plaetze_aus_der_simulation() {
     let Some(lib) = fake_sheets() else {
         return;
@@ -60,7 +59,6 @@ fn plan_burg_und_plaetze_aus_der_simulation() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
 fn plan_gebaute_stufen_schaden_und_ruine() {
     let Some(lib) = fake_sheets() else {
         return;
@@ -123,7 +121,6 @@ fn plan_nur_sichtbares() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
 fn plan_baustelle_mit_preis_und_geruest() {
     let Some(lib) = fake_sheets() else {
         return;

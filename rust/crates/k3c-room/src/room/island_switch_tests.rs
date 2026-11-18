@@ -62,9 +62,7 @@ fn inselwechsel_ohne_tausch_laesst_geraete_in_ruhe() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (create_island_in: new_hub_site, dev_build_all)"]
 fn inselwechsel_tauscht_mit_geraeten() {} // nordmeerGate: Endboss besiegt, beide am Steg → Insel 2 (`eisinsel`), Level vor Zustand, Spielstand nennt Welt und Insel
 
 #[test]
-#[ignore = "wartet auf RU18 (create_island_in: new_hub_site, dev_build_all)"]
 fn inselwechsel_ereignis_erreicht_geraete() {} // state, islandSwitch, level, state in dieser Reihenfolge je Gerät (B-385)

@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | `aktiv/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
 | RU50 | CLI | RSU | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | – | `aktiv/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
 | RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | `aktiv/RU24-raum-teil-2-spielstand/` |
 | RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | `aktiv/RU29-dev-werkzeuge-im-spiel/` |
@@ -454,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU19 | Sim: Events, Geschichte, Dev-Eingriffe | `erledigt/RU19-sim-events-geschichte-dev/` |
 | RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | `erledigt/RU27-lokales-spiel/` |
 | RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | `erledigt/RU22-sim-golden-bitgleich/` |
+| RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | `erledigt/RU48-smoke-client-erstes-lauffaehiges-spiel/` |

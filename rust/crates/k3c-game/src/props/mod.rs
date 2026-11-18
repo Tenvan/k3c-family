@@ -9,7 +9,7 @@
 //!
 //! Abweichungen von Go: Der Drawer hat nur `&self` (Trait `view::Drawer`); Planer, Zeichner und Zustand liegen in einer
 //! `RefCell`. Die Bibliothek ist `Rc<RefCell<Library>>` wie bei `actors` (Schrift und Zeichnen brauchen sie
-//! veränderlich). Die Sim-Sicht (`SimView`) bekommt der Drawer im Konstruktor; `new_pending` nimmt `PendingSimView`
+//! veränderlich). Die Sim-Sicht (`SimView`) bekommt der Drawer im Konstruktor; `new_pending` nimmt `LiveSimView`
 //! bis RU15 und RU18 die Sim liefern.
 
 use std::cell::RefCell;
@@ -20,7 +20,7 @@ use k3c_sim::state::World;
 
 use self::listen::Infos;
 use self::paint::Painter;
-use self::pending::PendingSimView;
+use self::pending::LiveSimView;
 use self::plan::{Planner, Sheets};
 use self::simview::SimView;
 use crate::art::Library;
@@ -104,9 +104,9 @@ pub fn new(lib: Option<Rc<RefCell<Library>>>, view: Box<dyn SimView>) -> Props {
     }
 }
 
-/// `new_pending` wie `new` mit `PendingSimView` (die Sim-Funktionen fehlen bis RU15 und RU18).
+/// `new_pending` wie `new` mit `LiveSimView` (die Sim-Funktionen fehlen bis RU15 und RU18).
 pub fn new_pending(lib: Option<Rc<RefCell<Library>>>) -> Props {
-    new(lib, Box::new(PendingSimView))
+    new(lib, Box::new(LiveSimView))
 }
 
 impl Drawer for Props {

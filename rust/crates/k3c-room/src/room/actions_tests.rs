@@ -258,7 +258,6 @@ fn tick_zwei_geraete_im_selben_tick() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn tick_rechnet_beide_spieler() {} // wie oben ohne Dev-Pause: beide Spieler laufen in ihre Richtung (`step_players`)
 
 #[test]
