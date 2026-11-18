@@ -6,12 +6,13 @@
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
-use k3c_data::Data;
+use k3c_data::{Data, Source};
 use k3c_rng::Rng;
 use k3c_sim::island::{Island, IslandOptions, default_options_for, set_options};
 
 use super::env::{Env, SnapshotFn, Store};
 use super::log::{Level, Log, list_text, short};
+use super::metrics::{Metrics, SessionStore};
 use super::run::Failure;
 use super::stages::{free_monarchs, start_stage};
 use super::types::{MAX_ROOMS, MAX_SEED_RUNES, Options, Peer, Room};
@@ -34,6 +35,10 @@ pub struct Manager<S: Store, L: Log> {
     pub dev: bool,
     /// Baut den Zustand einer Stufe für `Peer::state`; `None` = die Welt selbst als JSON (Tests).
     pub snapshot: Option<SnapshotFn>,
+    /// Ordner der weiteren Welten (Go `Manager.Worlds`, `worlds/<id>.json`); `None`: keine.
+    pub worlds: Option<Source>,
+    /// Nimmt den Spielmetrik-Report beim Raumende (Go `Manager.Sessions`, B-150); `None`: kein Report.
+    pub sessions: Option<Box<dyn SessionStore>>,
     pub rooms: BTreeMap<String, Room>,
     /// Die letzten abgestürzten Räume (höchstens 10).
     pub failures: Vec<Failure>,
@@ -70,6 +75,8 @@ impl<S: Store, L: Log> Manager<S, L> {
             data,
             dev: false,
             snapshot: None,
+            worlds: None,
+            sessions: None,
             rooms: BTreeMap::new(),
             failures: Vec::new(),
             shut: false,
@@ -79,14 +86,29 @@ impl<S: Store, L: Log> Manager<S, L> {
         }
     }
 
+    /// Setzt den Ordner der weiteren Welten (Go `Manager.Worlds`); `None`: keine.
+    pub fn set_worlds(&mut self, worlds: Option<Source>) {
+        self.worlds = worlds;
+    }
+
+    /// Setzt die Ablage der Spielmetrik-Reports (Go `Manager.Sessions`); `None`: kein Report.
+    pub fn set_sessions(&mut self, sessions: Option<Box<dyn SessionStore>>) {
+        self.sessions = sessions;
+    }
+
     /// Teilt den Manager in die Räume und die Umgebung für einen Raum-Aufruf (die Uhr wird einmal gelesen).
     pub fn split(&mut self) -> (&mut BTreeMap<String, Room>, Env<'_>) {
         let now = (self.now)();
         let env = Env {
             now,
+            clock: &mut *self.now,
             data: &self.data,
             store: &mut self.store,
             log: &mut self.log,
+            sessions: match &mut self.sessions {
+                Some(s) => Some(&mut **s),
+                None => None,
+            },
             dev: self.dev,
             snapshot: self.snapshot,
         };
@@ -113,7 +135,7 @@ impl<S: Store, L: Log> Manager<S, L> {
     }
 
     /// Meldet einen abgelehnten Beitritt (Fehler-Code aus `docs/protocol.md`); `ziel` ist Spielstand-Name oder Raum-Code.
-    fn log_rejected<T>(&mut self, op: &str, id: &str, ziel: &str, res: &Result<T, Fehler>) {
+    pub(super) fn log_rejected<T>(&mut self, op: &str, id: &str, ziel: &str, res: &Result<T, Fehler>) {
         if let Err(e) = res {
             self.log.warn(
                 "🚫 Beitritt abgelehnt",
@@ -201,7 +223,8 @@ impl<S: Store, L: Log> Manager<S, L> {
         }
         let code = self.code();
         let start = start_stage(&isl, depth);
-        let room = Room::new(&code, name, isl, opts.clone(), start, monarchs);
+        let mut room = Room::new(&code, name, isl, opts.clone(), start, monarchs);
+        room.met = Some(Metrics::new((self.now)()));
         self.rooms.insert(code.clone(), room);
         let raeume = self.rooms.len();
         let (rooms, mut env) = self.split();

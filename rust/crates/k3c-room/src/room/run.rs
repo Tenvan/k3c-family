@@ -27,7 +27,7 @@ pub struct Failure {
 }
 
 /// Der Text einer Panic wie Go `fmt.Sprint(p)`.
-fn panic_text(p: &(dyn Any + Send)) -> String {
+pub(super) fn panic_text(p: &(dyn Any + Send)) -> String {
     if let Some(s) = p.downcast_ref::<&str>() {
         return (*s).to_string();
     }
@@ -66,6 +66,7 @@ impl Room {
 
     /// Schließt einen abgestürzten Raum, ohne ihn zu speichern (sein Zustand ist nicht mehr sicher).
     fn close_crashed(&mut self) {
+        self.flush(); // eine schon begonnene Hintergrund-Speicherung läuft zu Ende
         self.closed = true;
         for d in self.devices.values_mut().filter(|d| d.connected) {
             d.peer.closed(false);
