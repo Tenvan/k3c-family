@@ -50,7 +50,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | erledigt |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | geplant |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | erledigt |
-| RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | geplant |
+| RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | aktiv |
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | geplant |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
 | RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
