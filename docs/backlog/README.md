@@ -146,6 +146,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1076](B-1076-stab-sim-panics-in-result-umbauen.md) | CLI | Schuld | niedrig | eingeplant | RU43 | Sim-Panics (Go-Nil-Dereferenz, Ereignis, Tag/Nacht-Zyklus) und Test-Fixtures in Result umbauen |
 | [B-1077](B-1077-perf-allokationen-im-replay-takt.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: Replay-Takt (step) allokiert bis zu 788 mal je Bild, Ziel 0 |
 | [B-1078](B-1078-perf-allokationen-im-draw-pfad.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: draw allokiert bis zu 29 mal je Bild, Ziel 0 |
+| [B-1081](B-1081-abnahme-ru11-sim-einheiten-gegner.md) | SIM | Schuld | mittel | offen | RU11 | Abnahme RU11: Sim, Balance und Gen für Einheiten und Gegner in Rust |
 
 ## Archiv
 
