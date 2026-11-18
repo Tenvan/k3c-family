@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU18
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18

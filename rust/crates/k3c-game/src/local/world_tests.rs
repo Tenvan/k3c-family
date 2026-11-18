@@ -6,7 +6,6 @@ use crate::view::session::{NewGame, Session as _};
 
 // B-938: WorldList (ohne Dev-Mode nur die Standard-Welt) und World (laufendes Spiel); der Spielstand trägt seine Welt.
 #[test]
-#[ignore = "wartet auf RU50 (world_list, world, list: RU50.1)"]
 fn world_list_and_world_of_running_game() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);

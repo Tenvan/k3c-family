@@ -89,6 +89,6 @@ pub struct SpotState {
     pub near: bool,
 }
 
-/// `PendingSimView` meldet bei jedem Aufruf, dass die Sim-Funktion noch fehlt (siehe `SimView`).
+/// `LiveSimView` meldet bei jedem Aufruf, dass die Sim-Funktion noch fehlt (siehe `SimView`).
 #[derive(Debug, Clone, Copy, Default)]
-pub struct PendingSimView;
+pub struct LiveSimView;
