@@ -30,7 +30,6 @@ fn day_night() -> k3c_data::biome::Cycle {
 const PHASES: [&str; 4] = ["day", "dusk", "night", "dawn"];
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn preview_cycle_setzt_phase_und_fortschritt() {
     for phase in PHASES {
         for p in [0.0, 0.25, 0.5, 0.9, 0.999] {
@@ -63,7 +62,6 @@ fn preview_cycle_setzt_phase_und_fortschritt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn preview_cycle_behaelt_den_tag_und_rechnet_mit_zyklus_geschwindigkeit() {
     let mut w = new_world(
         0,
@@ -82,7 +80,6 @@ fn preview_cycle_behaelt_den_tag_und_rechnet_mit_zyklus_geschwindigkeit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn preview_cycle_lehnt_ungueltiges_ab() {
     let cases: [(&str, &str, f64); 8] = [
         ("Dawn", "Dawn", 0.0),
@@ -103,7 +100,6 @@ fn preview_cycle_lehnt_ungueltiges_ab() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn preview_cycle_geschwindigkeiten_und_phasenbeginn() {
     // Nicht-Zweierpotenz-Geschwindigkeiten und spätere Tage: Phasenbeginn (Fortschritt 0) bleibt in der gesetzten Phase.
     let (_, length) = cycle_phases(&day_night());
@@ -132,7 +128,6 @@ fn preview_cycle_geschwindigkeiten_und_phasenbeginn() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn preview_cycle_ohne_zyklus_geschwindigkeit_ist_fehler() {
     let mut w = new_world(0, "x", Options::default());
     w.cycle_speed = 0.0;

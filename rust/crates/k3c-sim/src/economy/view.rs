@@ -90,14 +90,14 @@ pub fn economy_of(w: &World, v: &WorldValues, isl: Option<&IslandRef>) -> Econom
         e.purse_max = purse_max(v, isl);
     }
     if let Some(h) = w.hub_site.as_ref()
-        && let Some(next) = next_level(w, h)
+        && let Some(next) = next_level(w, isl, h)
     {
         e.hub_step = w.hub_step.max(1);
         e.hub_upgrade = Some(HubUpgrade {
             gold: next.cost.gold,
             material: material_of(&next.cost),
             paid: h.upgrade_paid,
-            state: hub_wait_state(w, h, &next.cost),
+            state: hub_wait_state(w, isl, h, &next.cost),
             steps: hub_steps(w),
         });
     }
@@ -107,11 +107,11 @@ pub fn economy_of(w: &World, v: &WorldValues, isl: Option<&IslandRef>) -> Econom
 /// Go: `hubWaitState` ist der Wartegrund des Hub-Ausbaus: `waitingNextIsland`, solange mit bezahltem Gold von einem Material
 /// des Material-Tors nur der Tor-Anteil im Vorrat fehlt (`need` sind die Kosten des Schritts samt Tor; das Tor nutzt das
 /// Material der Stufe selbst, B-631), sonst der Stand des Platzes.
-pub fn hub_wait_state(w: &World, h: &Site, need: &Cost) -> String {
+pub fn hub_wait_state(w: &World, isl: Option<&IslandRef>, h: &Site, need: &Cost) -> String {
     if h.upgrade != "waitingMaterial" {
         return h.upgrade.clone();
     }
-    let (gate, have) = (hub_gate(w), &w.stock);
+    let (gate, have) = (hub_gate(w, isl), &w.stock);
     // je Material: Tor, Vorrat, Bedarf
     let materials = [
         (gate.wood, have.wood, need.wood),
@@ -151,10 +151,10 @@ pub fn site_gold_left(w: &World, v: &WorldValues, isl: Option<&IslandRef>, s: &S
 /// Der Teil von `site_gold_left` für einen zahlenden Platz: Bau, Ausbau oder Produkt am Platz.
 fn gold_left(w: &World, v: &WorldValues, isl: Option<&IslandRef>, s: &Site) -> i64 {
     if s.state == "unpaid" {
-        return site_cost(w, s).gold - s.paid_gold;
+        return site_cost(w, isl, s).gold - s.paid_gold;
     }
     if upgrade_payable(w, s) {
-        return next_level(w, s).map_or(0, |l| l.cost.gold) - s.upgrade_paid;
+        return next_level(w, isl, s).map_or(0, |l| l.cost.gold) - s.upgrade_paid;
     }
     let price = match s.kind.as_str() {
         "workshop" | "bowyer" => cheap(isl, &place_product(v, s).cost).gold,

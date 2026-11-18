@@ -76,12 +76,12 @@ fn wall_cost(world: &WorldDef) -> i64 {
         .iter()
         .find(|s| s.kind == "wall")
         .unwrap_or_else(|| panic!("keine Mauer in Stufe 0"));
-    site_cost(w, s).gold
+    site_cost(w, None, s).gold
 }
 
 /// B-681/AC-01: Zwei Welten mit verschiedenen Kosten rechnen nebeneinander (Threads) mit ihren eigenen Werten.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (site_cost, step_players)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn wertesatz_je_welt_parallel_unabhaengig() {
     let (std, teuer) = (standard_world(&test_data()), teuer_world());
     let base = default_values();
@@ -104,7 +104,7 @@ fn wertesatz_je_welt_parallel_unabhaengig() {
 
 /// B-681/AC-02: Ohne Overrides in der Kette gilt der Basis-Wertesatz; der Zustand ist byte-gleich zur Insel der Basis.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (create_world: new_hub_site, step_players)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn wertesatz_ohne_overrides_byte_gleich() {
     let mut kind = standard_world(&test_data());
     (kind.id, kind.extends) = ("kind".into(), STANDARD_WORLD_ID.into());
@@ -143,7 +143,7 @@ fn resolve_world_ungueltiger_override() {
 
 /// Eine Zahl kommt nie aus zwei Quellen: Münzen je Treffer, Truhen- und Morgengold folgen demselben Wertesatz.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (values_from: check_presets; dawn_gold)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn wertesatz_eine_quelle_je_wert() {
     let mut w = standard_world(&test_data());
     (w.id, w.name, w.extends) = ("stark".into(), "Stark".into(), STANDARD_WORLD_ID.into());
@@ -175,9 +175,9 @@ fn wertesatz_eine_quelle_je_wert() {
     );
 }
 
-/// Go: `dawnGold` (economy.go), RU18.
-fn dawn_gold(_w: &World) -> i64 {
-    panic!("RU18: dawn_gold")
+/// Go: `dawnGold` (economy.go).
+fn dawn_gold(w: &World) -> i64 {
+    crate::economy::dawn_gold(w, &crate::world::vals(w))
 }
 
 /// Test-Welt `id` ohne Geschichte (Kopf wie `skins_world`), optional mit `extends`.

@@ -237,7 +237,7 @@ fn skins_resolve_world_ohne_eltern() {
 
 // B-984/AC-03: `overrides › enemies › <art> › name` ändert den Namen, alle anderen Werte bleiben die der Basisart.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
+#[ignore = "wartet auf RU18.4 (check_presets)"]
 fn world_values_gegner_name_uebersteuerbar() {
     let mut w = WorldDef {
         id: "sengoku".into(),

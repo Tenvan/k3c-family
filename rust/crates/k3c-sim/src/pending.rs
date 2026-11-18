@@ -5,7 +5,7 @@
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
-use crate::state::{Event, Job, Projectile, Site, World};
+use crate::state::{Event, Projectile, World};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
@@ -74,26 +74,6 @@ pub use crate::building::spell_tower::is_spell_tower;
 pub use crate::building::tavern::{vagrants_at, wander_radius};
 pub use crate::building::upgrades::armored_hp;
 
-/// Go: `upgradeJob` (hub_level.go): Ist der Auftrag ein Ausbau?
-pub fn upgrade_job(_w: &World, _j: &Job) -> bool {
-    unimplemented!("RU18: upgrade_job")
-}
-
-/// Go: `nextLevel` (hub_level.go): die nächste Ausbaustufe des Platzes.
-pub fn next_level(_w: &World, _s: &Site) -> Option<k3c_data::buildings::LevelData> {
-    unimplemented!("RU18: next_level")
-}
-
-/// Go: `finishUpgrade` (hub_level.go): schließt den Ausbau des Platzes `site_id` ab.
-pub fn finish_upgrade(_w: &mut World, _site_id: i64) {
-    unimplemented!("RU18: finish_upgrade")
-}
-
-/// Go: `eachSite` (hub_level.go): alle Plätze der Stufe samt Zahlplatz des Hubs.
-pub fn each_site(_w: &World, _f: &mut dyn FnMut(&Site)) {
-    unimplemented!("RU18: each_site")
-}
-
 /// Go: `buildProgressEvent` (events.go): Fortschritts-Ereignis des Platzes `site_id`.
 pub fn build_progress_event(_w: &mut World, _site_id: i64, _before: f64) {
     unimplemented!("RU19: build_progress_event")
@@ -112,3 +92,5 @@ pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &st
 pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
     unimplemented!("RU18: add_pool_points")
 }
+
+pub use crate::hub::{each_site, finish_upgrade, next_level, upgrade_job}; // Von RU18.3 portiert (hub_level.go)

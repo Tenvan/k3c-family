@@ -12,7 +12,7 @@ use crate::world::vals;
 use k3c_level::types::Ruin;
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn ruine_startet_gebaut_mit_kennung() {
     let (isl, _) = fixture_island();
     let w = &isl.stages[0];
@@ -52,7 +52,7 @@ fn ruine_startet_gebaut_mit_kennung() {
 
 /// Ohne Planung gibt es keine Ruinen und keine Kennung im Snapshot (Goldens byte-gleich).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn ohne_planung_keine_ruine() {
     let (isl, _) = ruin_island(vec![]);
     let w = &isl.stages[0];
@@ -65,7 +65,7 @@ fn ohne_planung_keine_ruine() {
 
 /// Die Ruine wirkt wie ein gebautes Gebäude ihrer Art: Kaserne → Truppenlimit, Lager → Kapazität und Abgabestelle.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, Insel-Vorrat)"]
+#[ignore = "wartet auf RU18 (Kapazität)"]
 fn ruine_wirkt_wie_gebaeude() {
     unimplemented!("RU18: Kapazität und Vorrat der Insel (Go: capacity, isl.Stock) mit IslandRef")
 }
@@ -73,14 +73,14 @@ fn ruine_wirkt_wie_gebaeude() {
 /// Hub-neutral: Hub-Stufe, Bezahlbarkeit und Hub-Stufe der Hub-Plätze und Mauerlinien sind wie ohne Ruinen; der Sieg „alles
 /// gebaut“ zählt Ruinen nicht.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, site_payable, EconomyOf)"]
+#[ignore = "wartet auf RU18 (site_payable)"]
 fn ruine_ist_hub_neutral() {
     unimplemented!("RU18: site_payable, EconomyOf(w).HubUpgrade (RU18.3)")
 }
 
 /// Bauern reparieren die Ruine wie jedes beschädigte Gebäude, ohne Gold und Material.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn ruine_wird_repariert() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];
@@ -116,7 +116,7 @@ fn ruine_wird_repariert() {
 
 /// Zerstört: unbezahlt mit Kennung; Wiederaufbau erst ab der Hub-Stufe der Art.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, site_payable)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn ruine_zerstoert_und_wiederaufbau_ab_hub_stufe_der_art() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];
@@ -147,7 +147,7 @@ fn ruine_zerstoert_und_wiederaufbau_ab_hub_stufe_der_art() {
 
 /// Wiederaufbau wie jeder Bau (bezahlen, Bauer baut): volle HP der Art, die Kennung bleibt.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, pay_site, build)"]
+#[ignore = "wartet auf RU18 (pay_site)"]
 fn ruine_wiederaufbau_behaelt_kennung() {
     unimplemented!("RU18: pay_site, build (RU18.2, RU18.3)")
 }
@@ -155,7 +155,7 @@ fn ruine_wiederaufbau_behaelt_kennung() {
 /// Burgfall (castleLosses): Ruinen kehren in den Ausgangszustand zurück, auch nach Zerstörung oder voller Reparatur;
 /// Hub-Plätze werden leer.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, castle_losses)"]
+#[ignore = "wartet auf RU18 (castle_losses)"]
 fn burgfall_setzt_ruinen_zurueck() {
     unimplemented!("RU18: castle_losses und step_island mit Burgfall (RU18.5)")
 }
@@ -163,14 +163,14 @@ fn burgfall_setzt_ruinen_zurueck() {
 /// WZ14.8 (Review-Befund S1, L2): Ausbau der Vorschau und „alles bauen“ lassen eine Ruine beschädigt (HP < MaxHP, MaxHP der
 /// Art), damit Client und Studio sie mit Schaden und Trümmern zeichnen; „nicht gebaut“ in der Vorschau behält die Kennung.
 #[test]
-#[ignore = "wartet auf RU19 (dev_build_all, preview_set_site) und RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (dev_build_all)"]
 fn ruine_bleibt_nach_ausbau_beschaedigt() {
     unimplemented!("RU19: dev_build_all, preview_set_site")
 }
 
 /// Ruinen im Spielstand (kind@x, keine neue Version) und Vorrang der Mauerlinien beim Bezahlen (WZ14.3, B-468/AC-03).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, Insel-Spielstand)"]
+#[ignore = "wartet auf RU18 (Insel)"]
 fn ruine_im_spielstand() {
     unimplemented!("RU18: Insel-Spielstand (to_save, parse_island_save, from_island_save_in) mit Zahlplatz")
 }
@@ -178,7 +178,7 @@ fn ruine_im_spielstand() {
 /// Die Planung steht im Stand (B-489): Ändert sich die Planung der Welt danach, lädt der Stand seine Stufe so, wie er sie
 /// gebaut hat; die Ruinen und ihre Plätze bleiben (vorher verlor der Stand sie, WZ24.2).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, Insel-Spielstand)"]
+#[ignore = "wartet auf RU18 (Insel)"]
 fn ruine_im_spielstand_bleibt_bei_geaenderter_welt_planung() {
     unimplemented!("RU18: Insel-Spielstand (to_save, parse_island_save, from_island_save_in) mit Zahlplatz")
 }
@@ -186,7 +186,7 @@ fn ruine_im_spielstand_bleibt_bei_geaenderter_welt_planung() {
 /// Vorrang beim Bezahlen: Liegt eine Ruine in Zahl-Reichweite eines unbezahlten Bauplatzes der Mauerlinien, gehen die Münzen
 /// an den Linien-Platz, nicht an Produkt oder Ausbau der Ruine; genau auf wall.x und knapp daneben.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, find_pay_target braucht merchant_at (RU18.4), pay_one_coin braucht merchant_at (RU18.4))"]
+#[ignore = "wartet auf RU18 (find_pay_target)"]
 fn linien_platz_vor_ruine_beim_bezahlen() {
     unimplemented!("RU18: find_pay_target, pay_one_coin (RU18.2)")
 }

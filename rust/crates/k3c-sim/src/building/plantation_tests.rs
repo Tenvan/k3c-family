@@ -23,7 +23,7 @@ fn planted_at(w: &World, nursery: usize) -> i64 {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn plantage_waechst_je_platz() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -58,7 +58,7 @@ fn plantage_waechst_je_platz() {
 
 /// Plantage-Bäume sind kein Zahlziel, ein Bauer holt sie ohne Münze; der Platz wächst danach neu.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, find_pay_target braucht merchant_at (RU18.4), step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn plantage_ohne_markierung() {
     let mut w = day_world();
     let p = vals(&w).buildings["nursery"].plantation.clone();
@@ -83,7 +83,6 @@ fn plantage_ohne_markierung() {
 
 /// B-636 (AC-04): Eine Baumschule ist erst nach dem Roden bezahlbar; vorher meldet der Server „erst roden“.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, site_payable)"]
 fn baumschule_erst_nach_dem_roden() {
     let mut w = day_world();
     w.hub_level = 1;

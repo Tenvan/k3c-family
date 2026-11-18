@@ -2,7 +2,6 @@
 //! liefert (RU18.3 bis RU18.5, RU19), löscht den Platzhalter; RU22 prüft, dass keiner übrig ist.
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
 
-use k3c_data::buildings::Cost;
 use k3c_data::monarch::MountData;
 
 use super::PayTarget;
@@ -55,17 +54,4 @@ pub fn mount_of(_v: &WorldValues, _pi: usize) -> &MountData {
     unimplemented!("RU18: mount_of (RU18.5)")
 }
 
-/// Go: `stepUpgrade` (hub_level.go, RU18.3): rechnet den Ausbau des Platzes (ID, auch der Zahlplatz des Hubs).
-pub fn step_upgrade(_w: &mut World, _site_id: i64) {
-    unimplemented!("RU18: step_upgrade (RU18.3)")
-}
-
-/// Go: `payUpgrade` (hub_level.go, RU18.3): eine Münze auf den Ausbau des Platzes (ID).
-pub fn pay_upgrade(_w: &mut World, _site_id: i64) {
-    unimplemented!("RU18: pay_upgrade (RU18.3)")
-}
-
-/// Go: `hubGate` (hub_level.go, RU18.3): das Material-Tor des laufenden Hub-Ausbauschritts.
-pub fn hub_gate(_w: &World) -> Cost {
-    unimplemented!("RU18: hub_gate (RU18.3)")
-}
+pub use crate::hub::{hub_gate, pay_upgrade, step_upgrade}; // Von RU18.3 portiert (hub_level.go)

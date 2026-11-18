@@ -49,7 +49,7 @@ fn warden(w: &World) -> Option<usize> {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 und RU19 (end_island: create_island; unit_x)"]
+#[ignore = "wartet auf RU18 (end_island)"]
 fn mirror_endboss_phase_und_warnkreis() {
     let (mut isl, x) = end_island(2);
     isl.stages[0].players[0].x = x + 4.0;
@@ -143,7 +143,7 @@ fn mirror_event() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (create_island: create_world, new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn mirror_inselwechsel() {
     let data = test_data();
     let (world, _) = test_islands(&data);

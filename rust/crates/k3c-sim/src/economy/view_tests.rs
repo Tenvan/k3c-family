@@ -74,28 +74,34 @@ fn wartegrund_ohne_hub_ausbau_ist_der_stand_des_platzes() {
         upgrade: "waitingWorker".into(),
         ..Site::default()
     };
-    assert_eq!(hub_wait_state(&w, &h, &Cost::default()), "waitingWorker");
+    assert_eq!(hub_wait_state(&w, None, &h, &Cost::default()), "waitingWorker");
     assert_eq!(WAITING_NEXT_ISLAND, "waitingNextIsland");
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, hub_gate, next_level aus RU18.3)"]
 fn wartegrund_nur_tor_anteil_fehlt_ist_wartet_auf_naechste_insel() {
-    let w = World::default();
+    // Schritt 3 von Hub-Stufe 1: Der Stein des Schritts ist da, nur der Tor-Stein fehlt (wie `hub_step_test.go`).
+    let mut w = crate::world::testutil::quiet_world();
+    w.hub_step = 3;
+    let hub_site = w.hub_site.clone().expect("Hub-Platz");
+    let step = next_level(&w, None, &hub_site).expect("Schritt 3");
+    let gate = hub_gate(&w, None);
+    assert!(gate.stone > 0, "Tor von Hub-Stufe 2 ist Stein: {gate:?}");
     let h = Site {
         upgrade: "waitingMaterial".into(),
         ..Site::default()
     };
-    let need = Cost {
-        stone: 25,
+    w.stock = material_of(&Cost {
+        stone: step.cost.stone - gate.stone,
         ..Cost::default()
-    };
-    let _ = (hub_gate(&w), next_level(&w, &h));
-    assert_eq!(hub_wait_state(&w, &h, &need), WAITING_NEXT_ISLAND);
+    });
+    assert_eq!(hub_wait_state(&w, None, &h, &step.cost), WAITING_NEXT_ISLAND);
+    w.stock.stone = 0; // auch vom Stein des Schritts fehlt mehr als das Tor
+    assert_eq!(hub_wait_state(&w, None, &h, &step.cost), "waitingMaterial");
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, upgrade_payable, pay_upgrade aus RU18.3)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn economy_insel_mit_lager_ausbau_und_nacht() {
     let data = load_all(&Source::Embedded).expect("eingebettete Daten");
     let mut isl = must_island(&data, "w9-wirtschaft", &[0, 1, 2]);
@@ -103,7 +109,7 @@ fn economy_insel_mit_lager_ausbau_und_nacht() {
         let si = storage_site(w).expect("Lager");
         w.sites[si].state = "built".into();
         while let Some(h) = w.hub_site.clone().filter(|h| upgrade_payable(w, h)) {
-            super::pending::pay_upgrade(w, h.id);
+            super::pending::pay_upgrade(w, None, h.id);
         }
         w.cycle.phase = "night".into();
         economy_json(w, Some(r))
@@ -124,7 +130,6 @@ fn economy_insel_mit_lager_ausbau_und_nacht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn economy_ohne_insel_und_stufe5() {
     let mut w = quiet_world();
     w.cycle.phase = "day".into();
@@ -147,7 +152,6 @@ fn economy_ohne_insel_und_stufe5() {
 
 /// W10.1 (B-332, Sprint W10 AC-02): Kämpfer-Zahl und Truppen-Limit aus `fighters` und `troop_limit`, noch nicht im JSON.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn economy_kaempfer_und_limit() {
     let mut w = quiet_world();
     let l = vals(&w).buildings["barracks"].troop_limit.clone();

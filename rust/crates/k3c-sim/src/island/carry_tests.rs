@@ -154,7 +154,7 @@ fn island_carry_danger() {
 
 /// Go: `TestIslandCarryNoIslandUnchanged`: Ohne Insel gilt kein Maximum (`carry` ohne `carry_to_stock`).
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site; carry ist privat in unit)"]
+#[ignore = "wartet auf RU18 (create_world)"]
 fn island_carry_no_island_unchanged() {
     unimplemented!("RU18: create_world, carry (Tragen ohne Insel)")
 }
@@ -186,7 +186,7 @@ fn island_carry_deterministic() {
 
 /// Go: `TestIslandFullCarrierStillBuildsAndKeepsMaterial` (Review SP13.4): Ein wartender Träger baut und behält sein Material.
 #[test]
-#[ignore = "wartet auf RU18"]
+#[ignore = "wartet auf RU18 (each_site)"]
 fn island_full_carrier_still_builds_and_keeps_material() {
     unimplemented!("RU18: each_site (build_job), step_peasant im Bau")
 }
@@ -194,7 +194,7 @@ fn island_full_carrier_still_builds_and_keeps_material() {
 /// Go: `TestIslandFindJobSkipsFullResource`: Ein volles Holzlager vergibt keine Sammelaufträge für Holz (`find_job` mit
 /// `resource_full`, `gather_of`, `node_free`).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (create_world: new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_find_job_skips_full_resource() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-d", &[0]);
@@ -239,7 +239,7 @@ fn island_find_job_skips_full_resource() {
 
 /// Go: `TestIslandFullCarrierDoesNotFetchBow`: Ein wartender Träger holt keinen Bogen.
 #[test]
-#[ignore = "wartet auf RU18"]
+#[ignore = "wartet auf RU18 (step_peasant)"]
 fn island_full_carrier_does_not_fetch_bow() {
     unimplemented!("RU18: step_peasant, bowyer")
 }

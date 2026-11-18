@@ -6,9 +6,9 @@
 use k3c_data::buildings::Cost;
 use k3c_data::hub::Stock;
 
-use super::pending::level_of;
 use super::testutil::*;
 use crate::economy::site_payable;
+use crate::hub::level_of;
 use crate::pending::next_level;
 use crate::state::World;
 use crate::state::common::destroy_site;
@@ -78,7 +78,7 @@ fn stufe1_gleich_grundwerte() {
 /// Go: `upgradeAt` bezahlt mit den Spielern den Ausbau von `s` auf die nächste Stufe (Gold je Spieler gleich verteilt,
 /// Material genau im Vorrat) und lässt einen Bauern ohne Weg bauen. Rückgabe: Bauzeit in Sekunden, -1 bei Zeitablauf.
 fn upgrade_at(w: &mut World, players: &[usize], s: usize) -> f64 {
-    let lv = next_level(w, &w.sites[s]).unwrap_or_else(|| panic!("{} nicht ausbaubar", w.sites[s].kind));
+    let lv = next_level(w, None, &w.sites[s]).unwrap_or_else(|| panic!("{} nicht ausbaubar", w.sites[s].kind));
     w.stock = material_of(&lv.cost);
     let n = players.len() as i64;
     let share = lv.cost.gold / n;
@@ -137,7 +137,7 @@ fn want_level(w: &World, s: usize, level: i64, x: f64, took: f64) {
 
 /// Mauer der Linie 1 von Stufe 1 bis 5 am selben Platz; Linie 2 muss dafür nicht gebaut sein.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, next_level, upgrade_payable, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn mauer_ausbau_am_selben_platz() {
     let mut w = day_world();
     let p = add_player(&mut w);
@@ -155,7 +155,6 @@ fn mauer_ausbau_am_selben_platz() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, site_payable)"]
 fn mauer_stufe3_braucht_hub_stufe3() {
     let mut w = day_world();
     let wall = line_site(&mut w, "wall", 1, 1);
@@ -177,7 +176,7 @@ fn mauer_stufe3_braucht_hub_stufe3() {
 /// Turm-Ausbau am selben Platz (Q45); der Bogenschütze bleibt oben, bis der Zaubertum ihn absteigen lässt (Q31,
 /// building_spell_tower_test.go).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, next_level, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn turm_ausbau_schuetze_bleibt() {
     let mut w = day_world();
     let p = add_player(&mut w);
@@ -204,7 +203,7 @@ fn turm_ausbau_schuetze_bleibt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, next_level, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn mauer_ausbau_zwei_spieler() {
     let mut w = day_world();
     let (p0, p1) = (add_player(&mut w), add_player(&mut w));
@@ -220,7 +219,7 @@ fn mauer_ausbau_zwei_spieler() {
 /// lässt einen Bauern bauen. Rückgabe: Bauzeit in Sekunden, -1 bei Zeitablauf.
 fn build_new(w: &mut World, players: &[usize], s: usize) -> f64 {
     let v = vals(w);
-    let cost = site_cost(w, &w.sites[s]);
+    let cost = site_cost(w, None, &w.sites[s]);
     w.stock = material_of(&cost);
     let n = players.len() as i64;
     let share = cost.gold / n;
@@ -300,7 +299,7 @@ fn want_hub_build_from_data(kind: &str) -> World {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, site_cost, site_payable, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn hub_gebaeude_aus_den_daten() {
     for kind in ["barracks", "tavern", "healer", "smithy", "armory"] {
         want_hub_build_from_data(kind);
@@ -310,7 +309,7 @@ fn hub_gebaeude_aus_den_daten() {
 /// W3.2 (B-116/AC-03, Sprint W3 AC-03): Schmiede und Rüstkammer lassen sich bauen (oben, ab ihrer Hub-Stufe) und zerstören;
 /// ihre Wirkung prüft `upgrades_tests.rs` (W4.3b, B-313).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, site_cost, site_payable, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn schmiede_und_ruestkammer_zerstoerbar() {
     for kind in ["smithy", "armory"] {
         let mut w = want_hub_build_from_data(kind);

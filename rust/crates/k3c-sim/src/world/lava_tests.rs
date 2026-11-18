@@ -42,7 +42,7 @@ fn hit_ids(w: &World, target: &str) -> Vec<i64> {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site, add_player: apply_preset, troop_damage; probe, was_hit)"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn lava_schadet_figuren() {
     let (mut w, x) = lava_world();
     let (dps, width) = (w.biome.lava.damage_per_second, w.biome.lava.width_units);
@@ -91,7 +91,7 @@ fn lava_schadet_figuren() {
 
 // Gegner nehmen keinen Lava-Schaden (Startwert, BR1 bestätigt).
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn lava_nicht_fuer_gegner() {
     let (mut w, x) = lava_world();
     let ei = spawn(&mut w, "goblin", x);
@@ -103,7 +103,6 @@ fn lava_nicht_fuer_gegner() {
 
 // Lava liegt nie im Hub, am Eingang oder am Rand (500 Seeds).
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site)"]
 fn lava_nicht_im_hub_oder_am_rand() {
     let data = &base().expect("Daten").data;
     let b = data.biomes.iter().find(|b| b.depth == 3).expect("Biom Tiefe 3");

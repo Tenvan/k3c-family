@@ -49,7 +49,7 @@ pub fn step_sites(w: &mut World, isl: Option<&mut IslandRef>) {
     let isl: Option<&IslandRef> = isl.map(|i| &*i);
     for si in 0..w.sites.len() {
         if w.sites[si].state == "waitingMaterial" {
-            let cost = site_cost(w, &w.sites[si]);
+            let cost = site_cost(w, isl, &w.sites[si]);
             if can_afford(&w.stock, &cost) {
                 spend(&mut w.stock, &cost);
                 w.sites[si].state = "waitingWorker".into();
@@ -64,10 +64,10 @@ pub fn step_sites(w: &mut World, isl: Option<&mut IslandRef>) {
     // Go: `eachSite`: alle Plätze der Stufe, danach der Zahlplatz des Hubs
     for si in 0..w.sites.len() {
         let id = w.sites[si].id;
-        step_upgrade(w, id);
+        step_upgrade(w, isl, id);
     }
     if let Some(id) = w.hub_site.as_ref().map(|h| h.id) {
-        step_upgrade(w, id);
+        step_upgrade(w, isl, id);
     }
     step_offers(w, &v, isl);
     step_crafts(w, &v, isl);

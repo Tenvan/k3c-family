@@ -6,7 +6,7 @@ use crate::state::common::apply_damage;
 use crate::state::{Site, World};
 use crate::world::values_room::values;
 
-use super::pending::level_of;
+use crate::hub::level_of;
 
 /// Go: `isSpellTower`: Ist der Platz ein gebauter Turm ab der Zaubertum-Stufe?
 pub fn is_spell_tower(w: &World, s: &Site) -> bool {

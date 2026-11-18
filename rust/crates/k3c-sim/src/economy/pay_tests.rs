@@ -247,7 +247,6 @@ fn coin_default_ohne_sperre() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (site_cost, upgrade_payable aus RU18.3)"]
 fn pay_site_unbezahlt_wartet_auf_material_wenn_voll() {
     let mut w = bare_world();
     two_players(&mut w, 100.0, 10);
@@ -255,7 +254,7 @@ fn pay_site_unbezahlt_wartet_auf_material_wenn_voll() {
     let si = built_site(&mut w, "workshop", 100.0);
     w.sites[si].state = "unpaid".into();
     let id = w.sites[si].id;
-    let cost = crate::world::pending::site_cost(&w, &w.sites[si]).gold;
+    let cost = crate::world::pending::site_cost(&w, None, &w.sites[si]).gold;
     for n in 0..cost {
         pay_site(&mut w, &v, None, (n % 2) as usize, id);
     }
@@ -263,7 +262,6 @@ fn pay_site_unbezahlt_wartet_auf_material_wenn_voll() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (upgrade_payable aus RU18.3)"]
 fn refund_site_zieht_bogen_gold_vom_gebauten_platz() {
     let mut w = bare_world();
     two_players(&mut w, 100.0, 10);
@@ -276,7 +274,7 @@ fn refund_site_zieht_bogen_gold_vom_gebauten_platz() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (merchant_at aus RU18.4, coin_give_event aus RU19)"]
+#[ignore = "wartet auf RU18.4 (merchant_at)"]
 fn find_pay_target_und_pay_one_coin_zwei_spieler() {
     let mut w = bare_world();
     two_players(&mut w, 100.0, 10);

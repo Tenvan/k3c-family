@@ -3,15 +3,10 @@
 //! `step.rs` (AC-01); jeder Teilschritt anderer Gruppen ist hier ein benannter Platzhalter mit dem liefernden Sprint.
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
 
-use std::collections::BTreeMap;
-
-use k3c_data::buildings::{BuildingData, Cost};
-use k3c_data::economy::EconomyData;
 use k3c_data::events::NightEvent;
-use k3c_data::hub::HubData;
 use k3c_data::monarch::MonarchData;
 
-use crate::state::{Site, World};
+use crate::state::World;
 
 // RU18 (Wirtschaft) und RU19 (Ereignisse), gerufen von `step_cycle` (world_cycle.go) und `mirror_state`.
 
@@ -44,15 +39,6 @@ pub fn check_presets(_m: &MonarchData) -> Result<(), String> {
     unimplemented!("RU18: check_presets")
 }
 
-/// Go: `checkWorldHubSites` (hub_validate.go): prüft die Hub-Plätze des Wertesatzes gegen Wirtschaft und Gebäude.
-pub fn check_world_hub_sites(
-    _h: &mut HubData,
-    _economy: &EconomyData,
-    _buildings: &BTreeMap<String, BuildingData>,
-) -> Result<(), String> {
-    unimplemented!("RU18: check_world_hub_sites")
-}
-
 pub use crate::economy::{step_players, step_sites}; // Von RU18.2 portiert (economy.go)
 
 /// Go: `stepPassives` (monarch_passives.go): Passiv-Skills der Monarchen.
@@ -70,11 +56,6 @@ pub fn step_storms(_w: &mut World, _dt: f64) {
     unimplemented!("RU18: step_storms")
 }
 
-/// Go: `newHubSite` (hub_level.go): der Zahlplatz für den Hub-Ausbau an der Burg.
-pub fn new_hub_site(_w: &World) -> Site {
-    unimplemented!("RU18: new_hub_site")
-}
-
 pub use crate::building::ruin::{add_ruin_sites, ruin_site}; // Von RU18.1 portiert (building_ruin.go)
 
 /// Go: `ApplyPreset` (monarch.go): lernt die Skills eines Presets für den Spieler `pi`, soweit Pool-Punkte frei sind.
@@ -85,26 +66,6 @@ pub fn apply_preset(_w: &mut World, _pi: usize, _id: &str) -> Result<(), String>
 /// Go: `presetFor` (monarch.go): das Standard-Preset beim Beitritt (Tank, Zauberer, sonst Heiler).
 pub fn preset_for(_index: i64) -> &'static str {
     unimplemented!("RU18: preset_for")
-}
-
-/// Go: `levelOf` (hub_level.go): die Ausbau-Stufe des Platzes (mindestens 1).
-pub fn level_of(_w: &World, _s: &Site) -> i64 {
-    unimplemented!("RU18: level_of")
-}
-
-/// Go: `siteCost` (economy.go): der Preis des unbezahlten Platzes.
-pub fn site_cost(_w: &World, _s: &Site) -> Cost {
-    unimplemented!("RU18: site_cost")
-}
-
-/// Go: `upgradePayable` (hub_level.go): Ist der nächste Ausbau des Platzes bezahlbar?
-pub fn upgrade_payable(_w: &World, _s: &Site) -> bool {
-    unimplemented!("RU18: upgrade_payable")
-}
-
-/// Go: `ValidateHubData` (hub_validate.go): Befunde der Prüfung einer Kandidaten-hub.json (leer = gültig).
-pub fn validate_hub_data(_h: &HubData) -> Vec<String> {
-    unimplemented!("RU18: validate_hub_data")
 }
 
 // RU19 (Ereignisse, Dev).
@@ -118,3 +79,6 @@ pub fn cap_events(_w: &mut World) {
 pub fn dev_build_site(_w: &mut World, _si: usize, _level: i64) {
     unimplemented!("RU19: dev_build_site")
 }
+
+pub use crate::hub::sites::check_world_hub_sites; // Von RU18.3 portiert (world_hub_sites.go)
+pub use crate::hub::{level_of, new_hub_site, site_cost, upgrade_payable, validate_hub_data}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)

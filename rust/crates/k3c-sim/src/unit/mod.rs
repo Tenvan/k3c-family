@@ -230,7 +230,7 @@ fn build(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
     let fallback = Default::default();
     let b = v.buildings.get(site.kind.as_str()).unwrap_or(&fallback);
     let seconds = if upgrading {
-        next_level(w, site).map_or(0.0, |l| l.build_seconds)
+        next_level(w, None, site).map_or(0.0, |l| l.build_seconds) // nur die Bauzeit: der Dev-Preis (`cheap`) ändert sie nicht
     } else {
         b.build_seconds
     };

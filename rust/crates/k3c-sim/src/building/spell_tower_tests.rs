@@ -4,9 +4,9 @@
 #![allow(clippy::unimplemented)] // Rumpf des Tests, der `upgrade_at` (RU18.3) braucht
 
 use super::barracks::fighters;
-use super::pending::level_of;
 use super::spell_tower::{is_spell_tower, step_spell_towers};
 use super::testutil::*;
+use crate::hub::level_of;
 use crate::state::World;
 use crate::world::vals;
 
@@ -31,7 +31,7 @@ fn spell_world(level: i64, offsets: &[f64]) -> (World, usize, Vec<usize>) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, level_of)"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn zaubertum_flaechenschaden_im_takt() {
     let sp = vals(&bare_world()).buildings["tower"].spell.clone();
     let near = sp.range_units / 2.0;
@@ -70,7 +70,7 @@ fn zaubertum_flaechenschaden_im_takt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, level_of)"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn turm_unter_zaubertum_stufe_schiesst_nicht() {
     let sp = vals(&bare_world()).buildings["tower"].spell.clone();
     let (mut w, _, es) = spell_world(sp.from_level - 1, &[2.0]);
@@ -89,7 +89,7 @@ fn turm_unter_zaubertum_stufe_schiesst_nicht() {
 
 /// Ausbau auf die Zaubertum-Stufe: der Schütze steigt ab, bleibt Kämpfer, der Turm nimmt keinen mehr auf.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, upgrade_at, free_tower, step)"]
+#[ignore = "wartet auf RU18.3 (upgrade_at)"]
 fn zaubertum_schuetzen_steigen_ab() {
     let _ = fighters;
     unimplemented!("RU18: upgrade_at (RU18.3), free_tower (RU11), Schütze auf dem Turm")
@@ -98,7 +98,6 @@ fn zaubertum_schuetzen_steigen_ab() {
 /// Eigener Test (ohne Go-Gegenstück, kein `level_of`-Platzhalter nötig): Ein Turm unter der Zaubertum-Stufe oder ungebaut
 /// ist kein Zaubertum, die Zahl der Zaubertürme folgt `level_of`.
 #[test]
-#[ignore = "wartet auf RU18 (level_of)"]
 fn is_spell_tower_nach_stufe() {
     let mut w = bare_world();
     let hub = w.hub_x;

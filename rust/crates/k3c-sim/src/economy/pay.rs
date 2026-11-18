@@ -128,7 +128,7 @@ pub fn pay_site(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, pi: usi
         return;
     };
     if s.state == "unpaid" {
-        let cost = site_cost(w, s).gold;
+        let cost = site_cost(w, isl, s).gold;
         if let Some(s) = w.site_mut(id) {
             s.paid_gold += 1;
             if s.paid_gold >= cost {
@@ -136,7 +136,7 @@ pub fn pay_site(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, pi: usi
             }
         }
     } else if upgrade_payable(w, s) {
-        pay_upgrade(w, id);
+        pay_upgrade(w, isl, id);
     } else if let Some(s) = w.site_mut(id) {
         s.bow_paid_gold += 1;
     }

@@ -3,9 +3,9 @@
 //! Tests über `step`, `create_world` und `level_of` warten auf RU18.
 #![allow(clippy::unimplemented)] // Rumpf des Spielstand-Tests: wartet auf RU18 (Insel-Spielstand mit Zahlplatz)
 
-use super::pending::level_of;
 use super::repair::{repair, repair_job};
 use super::testutil::*;
+use crate::hub::level_of;
 use k3c_data::hub::Stock;
 
 use crate::state::World;
@@ -14,7 +14,7 @@ use crate::world::vals;
 
 /// Mauer Stufe 2 zerstört: unpaid, Stufe 1, MaxHP der Stufe 1, gleiches X; Hub-Stufe und äußere Linie bleiben.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, level_of)"]
+#[ignore = "wartet auf RU19 (hit_event)"]
 fn zerstoerung_setzt_stufe_zurueck() {
     let mut w = day_world();
     w.hub_level = 3;
@@ -61,7 +61,7 @@ fn damaged_tower() -> (World, usize) {
 
 /// Reparatur zwischen den Wellen: HP voll nach dem fehlenden Anteil der Bauzeit, Vorrat und Gold unverändert.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn reparatur_ohne_gold_und_material() {
     let (mut w, tower) = damaged_tower();
     w.stock = Stock {
@@ -87,7 +87,7 @@ fn reparatur_ohne_gold_und_material() {
 
 /// Bei Gefahr (Gegner in der Welt, Nacht) keine Reparatur.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn reparatur_nicht_bei_gefahr() {
     let (mut w, tower) = damaged_tower();
     let x = w.width_units - 1.0;
@@ -111,7 +111,7 @@ fn reparatur_nicht_bei_gefahr() {
 
 /// Hub-Stufe, Mauer-Stufe (auch auf einer äußeren Linie) und laufender Ausbau überleben Speichern und Laden.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, hub_site, Insel-Spielstand)"]
+#[ignore = "wartet auf RU18 (Insel)"]
 fn spielstand_hub_und_platz_stufen() {
     unimplemented!("RU18: Insel-Spielstand mit Hub-Ausbau (hub_site.upgrade_paid)")
 }

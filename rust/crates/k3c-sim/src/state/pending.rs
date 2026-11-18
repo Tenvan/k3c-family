@@ -5,11 +5,10 @@
 use std::collections::BTreeMap;
 
 use k3c_data::Data;
-use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
 use super::shared::WorldValues;
-use super::{Player, Site, World};
+use super::{Player, World};
 use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
@@ -66,16 +65,6 @@ pub fn skill_ref<'a>(_v: &'a WorldValues, _id: &str) -> Option<&'a SkillData> {
     unimplemented!("RU18: skill_ref")
 }
 
-/// Go: `siteHubLevel` (hub_level.go): Hub-Stufe, ab der ein Platz bezahlbar ist, nach data/hub.json.
-pub fn site_hub_level(_w: &World, _s: &Site) -> i64 {
-    unimplemented!("RU18: site_hub_level")
-}
-
-/// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
-pub fn hub_steps(_w: &World) -> i64 {
-    unimplemented!("RU18: hub_steps")
-}
-
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
 
 /// Go: `DevFlags` (dev.go): Schalter der Dev-Aktionen einer Insel, nur im Speicher, nie im Spielstand. Rumpf bis RU19.
@@ -105,11 +94,6 @@ pub struct WorldStory;
 
 pub use crate::world::values_room::values_of; // Von RU14.4 portiert (world_values_room.go)
 
-/// Go: `ValidateHubDataIn` (hub_validate.go): Befunde der Prüfung einer Kandidaten-hub.json (leer = gültig).
-pub fn validate_hub_data_in(_h: &HubData, _world: &WorldDef) -> Vec<String> {
-    unimplemented!("RU18: validate_hub_data_in (hub_validate, RU18.3)")
-}
-
 /// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.
 pub fn decode_island_story(_raw: &serde_json::Value) -> Result<IslandStory, String> {
     unimplemented!("RU19: decode_island_story")
@@ -134,3 +118,5 @@ pub use crate::economy::to_hub; // Von RU18.2 portiert (economy.go)
 pub fn return_banner(_w: &mut World, _pi: usize) {
     unimplemented!("RU15: return_banner")
 }
+
+pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)

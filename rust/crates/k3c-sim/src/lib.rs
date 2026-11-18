@@ -7,6 +7,7 @@ pub mod combat;
 pub mod crown;
 pub mod economy;
 pub mod enemies;
+pub mod hub;
 pub mod island;
 pub mod pending;
 pub mod portal;

@@ -5,7 +5,7 @@
 
 use serde_json::json;
 
-use super::pending::level_of;
+use crate::hub::level_of;
 use crate::state::common::{event, is_dangerous, is_worker};
 use crate::state::{Job, Site, World, WorldValues};
 use crate::unit::jobs::release_job;

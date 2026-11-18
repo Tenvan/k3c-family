@@ -146,7 +146,6 @@ fn add_stock_nur_fuer_baumaterial_und_bis_zur_kapazitaet() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (site_cost, step_upgrade aus RU18.3)"]
 fn step_sites_bezahlter_platz_zieht_material_und_wartet_auf_den_bauern() {
     let mut w = world_with_players(&[]);
     let si = crate::enemies::testutil::built_site(&mut w, "workshop", 100.0);

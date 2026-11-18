@@ -4,7 +4,6 @@
 pub mod barracks;
 pub mod healer;
 pub mod outpost;
-pub mod pending;
 pub mod plantation;
 pub mod repair;
 pub mod ruin;

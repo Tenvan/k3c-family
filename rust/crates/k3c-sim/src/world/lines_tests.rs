@@ -10,9 +10,9 @@ use crate::island::testutil::{must_island, test_data};
 use crate::state::common::destroy_site;
 use crate::state::{PlayerCommand, ResourceNode, Site, World};
 
-/// Go: `sitePayable` (economy.go), RU18.
-fn site_payable(_w: &World, _s: &Site) -> bool {
-    panic!("RU18: site_payable")
+/// Go: `sitePayable` (economy.go) ohne Insel.
+fn site_payable(w: &World, s: &Site) -> bool {
+    crate::economy::site_payable(w, &crate::world::vals(w), None, s)
 }
 
 /// Go: `wantPayable`: prüft `site_payable` für `kind` der Zone `k` auf Seite `side`.
@@ -28,7 +28,6 @@ fn want_payable(w: &mut World, kind: &str, side: i64, k: i64, want: bool) {
 
 // Zone n ab Hub-Stufe n, je Seite; innere Mauern müssen nicht gebaut sein.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site; site_payable)"]
 fn zone_freischaltung_je_seite() {
     let mut w = quiet_world();
     clear_nodes(&mut w);
@@ -50,7 +49,6 @@ fn zone_freischaltung_je_seite() {
 
 // Freiraum: Ein Baum oder Fels im Radius sperrt den Platz, nach dem Abbau (gone/entfernt) ist er bezahlbar.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site; site_payable)"]
 fn freiraum_sperrt_platz_bis_zum_abbau() {
     let mut w = quiet_world();
     clear_nodes(&mut w);
@@ -92,7 +90,6 @@ fn freiraum_sperrt_platz_bis_zum_abbau() {
 // Das Tor ist die äußerste gebaute Mauer je Seite: Es wandert nach innen, wenn sie zerstört wird, und nach außen, wenn
 // weiter außen gebaut wird.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site)"]
 fn tor_ist_aeusserst_gebaute_mauer() {
     let mut w = quiet_world();
     let inner = line_site(&mut w, "wall", 1, 1);
@@ -125,7 +122,7 @@ fn tor_ist_aeusserst_gebaute_mauer() {
 
 // (d) Q54: Ein innerer Turm trägt weiter Schützen, Gegner bleiben an der äußersten gebauten Mauer stehen.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site, add_player)"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn zone_innerer_turm_und_aeusserste_mauer() {
     use crate::unit::archer::is_on_tower;
     use crate::unit::jobs::make_archer;
@@ -214,7 +211,7 @@ fn pay_together(pick: fn(&mut World) -> (usize, usize), swap: bool) -> PayResult
 
 // (e) AC-06: Zwei Spieler zahlen gleichzeitig an Mauer und Turm derselben Zone bzw. an beiden Seiten.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site, add_player, step_players braucht speed_of und step_skills (RU18.5))"]
+#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn zone_zwei_spieler_zahlen_gleichzeitig() {
     type Pick = fn(&mut World) -> (usize, usize);
     let cases: [(&str, Pick); 2] = [
@@ -237,7 +234,7 @@ fn zone_zwei_spieler_zahlen_gleichzeitig() {
 
 // Jede Stufe einer Insel hat Mauern und Türme ihres eigenen Layouts, fest nach X angelegt.
 #[test]
-#[ignore = "wartet auf RU18 (create_island: create_world, new_hub_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn zonen_insel_jede_stufe_eigene_sites() {
     use super::ship::SHIP_KIND;
     let isl = must_island(&test_data(), "linien", &[0, 1]);
