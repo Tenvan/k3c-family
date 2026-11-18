@@ -56,6 +56,16 @@ pub enum Filter {
     Nearest,
 }
 
+/// Mischung der Quelle mit dem Ziel (wie `ebiten.Blend`, soweit das Spiel sie braucht).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub enum Blend {
+    /// Quelle (vormultipliziert) über das Ziel.
+    #[default]
+    Over,
+    /// Ziel × Quelle je Farbkanal, die Deckkraft des Ziels bleibt (Lichtkarte, `lightdraw.go`).
+    Multiply,
+}
+
 /// Handle einer hochgeladenen Textur.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct TexId(pub u32);
@@ -84,6 +94,9 @@ pub trait Canvas {
     /// Beschneidet die folgenden Aufrufe auf `area` (Scissor, logische Einheiten); `None` hebt das auf.
     /// Koordinaten bleiben Fensterkoordinaten (wie `SubImage` bei Ebitengine). Standard je Bild: `None`.
     fn clip(&mut self, _area: Option<Rect>) {}
+    /// Setzt die Mischung der folgenden Aufrufe (Standard je Bild: [`Blend::Over`]). Aufrufe mit anderer Mischung
+    /// bilden eigene Draw-Calls; die Reihenfolge bleibt die der Aufrufe.
+    fn blend(&mut self, _mode: Blend) {}
     /// Lädt RGBA8 mit vormultipliziertem Alpha hoch (Filter linear).
     fn texture(&mut self, rgba: &[u8], w: u32, h: u32) -> TexId {
         self.texture_with(rgba, w, h, Filter::Linear)

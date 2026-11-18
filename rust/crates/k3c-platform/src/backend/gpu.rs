@@ -7,7 +7,7 @@ use winit::window::Window;
 
 use super::setup::{Grow, bind_layout, pipeline, sampler, upload, write};
 use crate::batch::Pending;
-use crate::{Filter, Frame, INST_BYTES, Kind, LOGICAL, Rect, VERT_BYTES};
+use crate::{Blend, Filter, Frame, INST_BYTES, Kind, LOGICAL, Rect, VERT_BYTES};
 
 const CLEAR: wgpu::Color = wgpu::Color {
     r: 0.118,
@@ -22,8 +22,8 @@ pub struct Gfx {
     device: wgpu::Device,
     queue: wgpu::Queue,
     config: wgpu::SurfaceConfiguration,
-    quads: wgpu::RenderPipeline,
-    tris: wgpu::RenderPipeline,
+    /// Pipelines je (Art, Mischung): `[Quads, Tris][Over, Multiply]`.
+    pipes: [[wgpu::RenderPipeline; 2]; 2],
     bgl: wgpu::BindGroupLayout,
     linear: wgpu::Sampler,
     nearest: wgpu::Sampler,
@@ -62,8 +62,9 @@ impl Gfx {
         let (_, white) = upload(&device, &queue, &bgl, &linear, (1, 1), &[255; 4]);
         use wgpu::BufferUsages as U;
         let g = Self {
-            quads: pipeline(&device, &bgl, config.format, false),
-            tris: pipeline(&device, &bgl, config.format, true),
+            pipes: [false, true].map(|tris| {
+                [Blend::Over, Blend::Multiply].map(|mode| pipeline(&device, &bgl, config.format, (tris, mode)))
+            }),
             inst: Grow::new(&device, "instanzen", U::VERTEX, START_BYTES),
             verts: Grow::new(&device, "ecken", U::VERTEX, START_BYTES),
             idx: Grow::new(&device, "indizes", U::INDEX, START_BYTES),
@@ -189,19 +190,18 @@ impl Gfx {
                     _ => continue,
                 },
             };
-            if current != Some(r.kind) {
-                current = Some(r.kind);
-                match r.kind {
-                    Kind::Quads => {
-                        p.set_pipeline(&self.quads);
-                        p.set_vertex_buffer(0, self.inst.buf.slice(..));
-                    }
-                    Kind::Tris => {
-                        p.set_pipeline(&self.tris);
-                        p.set_vertex_buffer(0, self.verts.buf.slice(..));
-                        p.set_index_buffer(self.idx.buf.slice(..), wgpu::IndexFormat::Uint32);
+            if current != Some((r.kind, r.blend)) {
+                if current.map(|c| c.0) != Some(r.kind) {
+                    match r.kind {
+                        Kind::Quads => p.set_vertex_buffer(0, self.inst.buf.slice(..)),
+                        Kind::Tris => {
+                            p.set_vertex_buffer(0, self.verts.buf.slice(..));
+                            p.set_index_buffer(self.idx.buf.slice(..), wgpu::IndexFormat::Uint32);
+                        }
                     }
                 }
+                current = Some((r.kind, r.blend));
+                p.set_pipeline(&self.pipes[r.kind as usize][r.blend as usize]);
             }
             p.set_scissor_rect(x, y, w, h);
             p.set_bind_group(0, Some(bg), &[]);

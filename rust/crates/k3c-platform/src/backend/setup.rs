@@ -1,6 +1,6 @@
 //! wgpu-Aufbau: Bind-Layout, die zwei Pipelines (Rechteck-Instanzen, Dreiecke), Puffer, Textur-Upload.
 
-use crate::{INST_BYTES, VERT_BYTES};
+use crate::{Blend, INST_BYTES, VERT_BYTES};
 
 const SHADER: &str = include_str!("shader.wgsl");
 
@@ -69,12 +69,32 @@ pub fn sampler(device: &wgpu::Device, f: wgpu::FilterMode) -> wgpu::Sampler {
     })
 }
 
-/// Pipeline für Rechteck-Instanzen (`vs`/`fs`) oder Dreiecke (`vs_tri`/`fs_tri`).
+/// Mischzustand je [`Blend`]: `Multiply` rechnet Ziel × Quelle (Farbe), die Deckkraft des Ziels bleibt (wie
+/// `multiply` in `lightdraw.go`: Quelle-Faktor Ziel-Farbe bzw. 0, Ziel-Faktor 0 bzw. 1).
+pub fn blend_state(mode: Blend) -> wgpu::BlendState {
+    match mode {
+        Blend::Over => wgpu::BlendState::PREMULTIPLIED_ALPHA_BLENDING,
+        Blend::Multiply => wgpu::BlendState {
+            color: wgpu::BlendComponent {
+                src_factor: wgpu::BlendFactor::Dst,
+                dst_factor: wgpu::BlendFactor::Zero,
+                operation: wgpu::BlendOperation::Add,
+            },
+            alpha: wgpu::BlendComponent {
+                src_factor: wgpu::BlendFactor::Zero,
+                dst_factor: wgpu::BlendFactor::One,
+                operation: wgpu::BlendOperation::Add,
+            },
+        },
+    }
+}
+
+/// Pipeline für Rechteck-Instanzen (`vs`/`fs`) oder Dreiecke (`vs_tri`/`fs_tri`) mit der Mischung `mode`.
 pub fn pipeline(
     device: &wgpu::Device,
     bgl: &wgpu::BindGroupLayout,
     format: wgpu::TextureFormat,
-    tris: bool,
+    (tris, mode): (bool, Blend),
 ) -> wgpu::RenderPipeline {
     let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
         label: None,
@@ -103,7 +123,7 @@ pub fn pipeline(
     let (vs, fs) = if tris { ("vs_tri", "fs_tri") } else { ("vs", "fs") };
     let target = wgpu::ColorTargetState {
         format,
-        blend: Some(wgpu::BlendState::PREMULTIPLIED_ALPHA_BLENDING),
+        blend: Some(blend_state(mode)),
         write_mask: wgpu::ColorWrites::ALL,
     };
     device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {

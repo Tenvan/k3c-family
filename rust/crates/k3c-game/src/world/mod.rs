@@ -49,6 +49,8 @@ pub struct World {
     /// Fassung ohne gewählte Einstellung (K3C_RIVER)
     pub start: RiverMode,
     pub mesh: LightMesh,
+    /// Weißes 1×1-Bild für die Lichtkarte (Go: `w.pixel()`), beim ersten Zeichnen angelegt.
+    pub light_pixel: Option<k3c_platform::TexId>,
 }
 
 /// Parts sind die Beiträge der Welt für game: die Drawer in Anmeldereihenfolge (fern, mitte, nah, Boden, Fluss,
@@ -157,6 +159,7 @@ impl World {
             water: RiverWater::default(),
             start: RiverMode::Tiles,
             mesh: LightMesh::default(),
+            light_pixel: None,
         }
     }
 

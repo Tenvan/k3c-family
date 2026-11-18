@@ -228,3 +228,37 @@ fn filter_kommt_mit_der_textur() {
     let filters: Vec<_> = f.take_pending().map(|p| p.filter).collect();
     assert_eq!(filters, [Filter::Nearest, Filter::Linear]);
 }
+
+#[test]
+fn mischung_trennt_buendel_und_gilt_nur_ein_bild() {
+    // B-1056: Aufrufe mit anderer Mischung bilden eigene Draw-Calls, die Reihenfolge bleibt die der Aufrufe.
+    let mut f = Frame::new();
+    let t = tex(&mut f);
+    let v = |x: f32, y: f32| Vertex {
+        pos: [x, y],
+        uv: [x, y],
+        color: WHITE,
+    };
+    f.begin();
+    f.rect(Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
+    f.blend(Blend::Multiply);
+    f.mesh(t, &[v(0.0, 0.0), v(2.0, 0.0), v(2.0, 2.0)], &[0, 1, 2]);
+    f.mesh(t, &[v(0.0, 0.0), v(2.0, 2.0), v(0.0, 2.0)], &[0, 1, 2]);
+    f.blend(Blend::Over);
+    f.mesh(t, &[v(0.0, 0.0), v(2.0, 0.0), v(2.0, 2.0)], &[0, 1, 2]);
+    f.blend(Blend::Multiply);
+    f.finish();
+    let runs: Vec<_> = f.runs().iter().map(|r| (r.kind, r.blend, r.count)).collect();
+    assert_eq!(
+        runs,
+        [
+            (Kind::Quads, Blend::Over, 1),
+            (Kind::Tris, Blend::Multiply, 6),
+            (Kind::Tris, Blend::Over, 3),
+        ]
+    );
+    f.begin();
+    f.rect(Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
+    f.finish();
+    assert_eq!(f.runs()[0].blend, Blend::Over, "die Mischung gilt nur ein Bild");
+}

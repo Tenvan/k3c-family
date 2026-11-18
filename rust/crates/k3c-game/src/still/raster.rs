@@ -9,7 +9,7 @@
 //! zeichnet zusätzlich jeden Aufruf auf eine eigene Ebene (`layer` des Aufrufers wird ignoriert), damit Ausschnitte
 //! die Reihenfolge gegenüber Go nicht verändern.
 
-use k3c_platform::{Affine, Canvas, Filter, FontId, Frame, Kind, Rect, TexId, Vertex};
+use k3c_platform::{Affine, Blend, Canvas, Filter, FontId, Frame, Kind, Rect, TexId, Vertex};
 
 /// Bild im Speicher: RGBA8, gerade Farben, Zeilen oben nach unten.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -106,12 +106,8 @@ impl SoftCanvas {
                     let idx = &self.frame.indices()[first..first + count];
                     for t in idx.as_chunks::<3>().0 {
                         let v = self.frame.vertices();
-                        draw_tri(
-                            &mut img,
-                            clip,
-                            tex,
-                            [v[t[0] as usize], v[t[1] as usize], v[t[2] as usize]],
-                        );
+                        let corners = [v[t[0] as usize], v[t[1] as usize], v[t[2] as usize]];
+                        draw_tri(&mut img, clip, (tex, run.blend), corners);
                     }
                 }
             }
@@ -177,6 +173,15 @@ fn blend(img: &mut Image, x: i64, y: i64, s: [f32; 4]) {
     }
 }
 
+/// Multipliziert das Ziel mit der Quelle je Farbkanal; die Deckkraft des Ziels bleibt (`Blend::Multiply`).
+#[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+fn blend_multiply(img: &mut Image, x: i64, y: i64, s: [f32; 4]) {
+    let i = (y as usize * img.width as usize + x as usize) * 4;
+    for (d, f) in img.pix[i..i + 3].iter_mut().zip(s) {
+        *d = (f32::from(*d) * f).round().clamp(0.0, 255.0) as u8;
+    }
+}
+
 fn mul(a: [f32; 4], b: [f32; 4]) -> [f32; 4] {
     [a[0] * b[0], a[1] * b[1], a[2] * b[2], a[3] * b[3]]
 }
@@ -224,7 +229,7 @@ fn draw_quad(img: &mut Image, clip: (i64, i64, i64, i64), tex: Option<&Tex>, q: 
 
 /// Dreieck mit Ecken (Ziel in Pixeln, Quelle als Anteil, Farbe als Faktor); ohne Textur gilt Weiß (Formen).
 #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
-fn draw_tri(img: &mut Image, clip: (i64, i64, i64, i64), tex: Option<&Tex>, v: [Vertex; 3]) {
+fn draw_tri(img: &mut Image, clip: (i64, i64, i64, i64), (tex, mode): (Option<&Tex>, Blend), v: [Vertex; 3]) {
     let [p0, p1, p2] = v.map(|v| v.pos);
     let area = (p1[0] - p0[0]) * (p2[1] - p0[1]) - (p2[0] - p0[0]) * (p1[1] - p0[1]);
     if area == 0.0 || !area.is_finite() {
@@ -251,7 +256,10 @@ fn draw_tri(img: &mut Image, clip: (i64, i64, i64, i64), tex: Option<&Tex>, v: [
                 Some(t) => sample(t, lerp(&|v: &Vertex| v.uv[0]), lerp(&|v: &Vertex| v.uv[1])),
                 None => [1.0; 4],
             };
-            blend(img, x, y, mul(base, col));
+            match mode {
+                Blend::Over => blend(img, x, y, mul(base, col)),
+                Blend::Multiply => blend_multiply(img, x, y, mul(base, col)),
+            }
         }
     }
 }
@@ -261,6 +269,9 @@ impl Canvas for SoftCanvas {
         (self.w as f32, self.h as f32)
     }
     fn layer(&mut self, _z: u32) {}
+    fn blend(&mut self, mode: Blend) {
+        self.frame.blend(mode);
+    }
     fn clip(&mut self, area: Option<Rect>) {
         self.frame.clip(area);
     }

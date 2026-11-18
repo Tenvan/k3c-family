@@ -11,7 +11,7 @@
 
 use crate::shape::Tris;
 use crate::ttf::{Atlas, AtlasUpdate, Fonts};
-use crate::{Filter, Rect, TexId};
+use crate::{Blend, Filter, Rect, TexId};
 
 /// Größe einer Instanz in Byte (16 × f32).
 pub const INST_BYTES: usize = 64;
@@ -68,6 +68,7 @@ pub struct Run {
     pub clip: Option<Rect>,
     pub tex: Option<TexId>,
     pub kind: Kind,
+    pub blend: Blend,
     pub first: u32,
     pub count: u32,
 }
@@ -94,6 +95,7 @@ struct Item {
     clip: u32,
     tex: u32,
     seq: u32,
+    blend: Blend,
     body: Body,
 }
 
@@ -113,6 +115,7 @@ pub struct Frame {
     pub(crate) clips: Vec<Rect>,
     pub(crate) layer: u32,
     pub(crate) clip: u32,
+    pub(crate) blend: Blend,
     pub(crate) tris: Tris,
     pub(crate) fonts: Fonts,
     pub(crate) atlas: Atlas,
@@ -135,6 +138,7 @@ impl Frame {
         self.clips.clear();
         self.layer = 0;
         self.clip = 0;
+        self.blend = Blend::Over;
         self.atlas.begin_frame();
     }
 
@@ -159,12 +163,15 @@ impl Frame {
             let clip = it.clip.checked_sub(1).map(|c| self.clips[c as usize]);
             let tex = (it.tex != SOLID).then_some(TexId(it.tex));
             match self.runs.last_mut() {
-                Some(r) if (r.layer, r.clip, r.tex, r.kind) == (it.layer, clip, tex, kind) => r.count += count,
+                Some(r) if (r.layer, r.clip, r.tex, r.kind, r.blend) == (it.layer, clip, tex, kind, it.blend) => {
+                    r.count += count;
+                }
                 _ => self.runs.push(Run {
                     layer: it.layer,
                     clip,
                     tex,
                     kind,
+                    blend: it.blend,
                     first,
                     count,
                 }),
@@ -286,6 +293,7 @@ impl Frame {
             clip: self.clip,
             tex,
             seq,
+            blend: self.blend,
             body,
         });
     }

@@ -1,6 +1,6 @@
 //! Tests des Rasterers: Rechteck, Sprite (nächster Nachbar und linear), Netz, Ausschnitt, Aufrufreihenfolge.
 
-use k3c_platform::{Canvas, Filter, Rect, Vertex};
+use k3c_platform::{Blend, Canvas, Filter, Rect, Vertex};
 
 use super::raster::SoftCanvas;
 
@@ -87,4 +87,37 @@ fn formen_zeichnen() {
     let img = c.finish();
     assert_eq!(px(&img, 8, 8), [255, 255, 0, 255]);
     assert_eq!(px(&img, 0, 0), [0, 0, 0, 255]);
+}
+
+/// B-1056: Multiply rechnet Ziel × Quelle je Farbkanal, die Deckkraft des Ziels bleibt; danach gilt wieder Over.
+#[test]
+fn multiply_blend_rechnet_ziel_mal_quelle() {
+    let mut c = SoftCanvas::new(4, 2);
+    c.rect(Rect::new(0.0, 0.0, 4.0, 2.0), [1.0, 0.8, 0.4, 1.0]);
+    let t = c.texture(&[255; 4], 1, 1);
+    let v = |x: f32, y: f32, col: [f32; 4]| Vertex {
+        pos: [x, y],
+        uv: [0.5, 0.5],
+        color: col,
+    };
+    let half = [0.5, 0.5, 0.5, 1.0];
+    c.blend(Blend::Multiply);
+    c.mesh(
+        t,
+        &[
+            v(0.0, 0.0, half),
+            v(2.0, 0.0, half),
+            v(2.0, 2.0, half),
+            v(0.0, 2.0, half),
+        ],
+        &[0, 1, 2, 0, 2, 3],
+    );
+    c.blend(Blend::Over);
+    c.rect(Rect::new(3.0, 0.0, 1.0, 1.0), [0.0, 0.0, 1.0, 1.0]);
+    let img = c.finish();
+    // Bildpunkte auf der gemeinsamen Diagonale beider Dreiecke zählt der Rasterer doppelt, darum (1, 0) und (0, 1)
+    assert_eq!(px(&img, 1, 0), [128, 102, 51, 255], "Ziel (255, 204, 102) mal 0,5");
+    assert_eq!(px(&img, 0, 1), [128, 102, 51, 255]);
+    assert_eq!(px(&img, 2, 1), [255, 204, 102, 255], "außerhalb des Netzes unverändert");
+    assert_eq!(px(&img, 3, 0), [0, 0, 255, 255], "danach wieder Over");
 }

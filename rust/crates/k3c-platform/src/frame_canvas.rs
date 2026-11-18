@@ -2,7 +2,7 @@
 
 use crate::batch::{Inst, Pending, SOLID, Vertex};
 use crate::ttf::{ATLAS, round_px};
-use crate::{Affine, Canvas, Filter, FontId, Frame, LOGICAL, Rect, TexId, font};
+use crate::{Affine, Blend, Canvas, Filter, FontId, Frame, LOGICAL, Rect, TexId, font};
 
 impl Canvas for Frame {
     fn size(&self) -> (f32, f32) {
@@ -11,6 +11,10 @@ impl Canvas for Frame {
 
     fn layer(&mut self, z: u32) {
         self.layer = z;
+    }
+
+    fn blend(&mut self, mode: Blend) {
+        self.blend = mode;
     }
 
     fn clip(&mut self, area: Option<Rect>) {
