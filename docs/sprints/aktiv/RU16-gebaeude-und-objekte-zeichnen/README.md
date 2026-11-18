@@ -99,7 +99,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU16.3 | `RU16.3-props-plan-listen.md` | Umsetzung | autonom | fertig |
 | RU16.4 | `RU16.4-props-plan-combat-objects-sites.md` | Umsetzung | autonom | fertig |
 | RU16.5 | `RU16.5-props-decor-paint-props.md` | Umsetzung | autonom | fertig |
-| RU16.6 | `RU16.6-standbild-bildvergleich.md` | Umsetzung | autonom | offen |
+| RU16.6 | `RU16.6-standbild-bildvergleich.md` | Umsetzung | autonom | fertig |
 | RU16.7 | `RU16.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

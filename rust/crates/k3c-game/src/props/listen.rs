@@ -7,7 +7,6 @@
 //! nennt die Stufen des laufenden Frames als Indizes in `spare`.
 
 use k3c_sim::state::World;
-use k3c_sim::state::site_view::site_visible;
 
 use super::pending::CombatSpot;
 use super::plan_combat::SPOTS_EVERY;
@@ -151,7 +150,7 @@ impl StageInfo {
         for site in &w.sites {
             let (left, payable) = view.site_gold_left(w, site);
             self.flags.push(SiteFlags {
-                visible: site_visible(w, site),
+                visible: view.site_visible(w, site),
                 payable,
                 clearing: !payable && view.site_needs_clearing(w, site),
                 gold_left: left,

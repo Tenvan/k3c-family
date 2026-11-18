@@ -1,0 +1,381 @@
+{
+ "economy": {
+  "hubLevel": 1,
+  "hubStep": 1,
+  "hubUpgrade": {
+   "gold": 4,
+   "material": {
+    "wood": 0,
+    "stone": 25,
+    "copper": 0
+   },
+   "paid": 0,
+   "steps": 3
+  },
+  "fighters": 2,
+  "troopLimit": 10
+ },
+ "sites": [
+  {
+   "id": 97,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 98,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 99,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 100,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 101,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 102,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 103,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 104,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 105,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 106,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 107,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 108,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 109,
+   "visible": true,
+   "goldLeft": 4,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 110,
+   "visible": true,
+   "goldLeft": 4,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 111,
+   "visible": true,
+   "goldLeft": 2,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 112,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 113,
+   "visible": true,
+   "goldLeft": 4,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 114,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 115,
+   "visible": true,
+   "goldLeft": 4,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 116,
+   "visible": true,
+   "goldLeft": 4,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 117,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 118,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 119,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 120,
+   "visible": true,
+   "goldLeft": 4,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 121,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 122,
+   "visible": true,
+   "goldLeft": 2,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 123,
+   "visible": true,
+   "goldLeft": 2,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 124,
+   "visible": true,
+   "goldLeft": 2,
+   "goldPayable": true,
+   "payable": true,
+   "needsClearing": false
+  },
+  {
+   "id": 125,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 126,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 127,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 128,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 129,
+   "visible": true,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 130,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 131,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 132,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 133,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 134,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 135,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 136,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 137,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 138,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  },
+  {
+   "id": 139,
+   "visible": false,
+   "goldLeft": 0,
+   "goldPayable": false,
+   "payable": false,
+   "needsClearing": false
+  }
+ ],
+ "shieldRack": {
+  "x": 0,
+  "stack": 0,
+  "visible": false
+ },
+ "combatSpots": [],
+ "spotStates": [],
+ "atLair": [
+  {
+   "player": 0,
+   "atLair": false
+  },
+  {
+   "player": 1,
+   "atLair": false
+  }
+ ]
+}

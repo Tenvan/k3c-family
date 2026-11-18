@@ -11,9 +11,12 @@ use std::rc::Rc;
 use k3c_platform::Canvas;
 use k3c_sim::state::World as SimWorld;
 
+use super::simview::FixedSimView;
 use crate::actors::{self, draw::ActorsDrawer};
 use crate::art::{Config, Levels, Library};
-use crate::view::layer::{Drawer, Listener};
+use crate::props::{self, Props};
+use crate::view::frame::Frame;
+use crate::view::layer::{Drawer, Layer, Listener};
 use crate::view::roles::AssetSource;
 use crate::world;
 
@@ -22,6 +25,8 @@ pub struct Setup<'a> {
     pub cfg: Config,
     pub level: &'a str,
     pub world: &'a SimWorld,
+    /// Antworten der Sim-Funktionen für `props` (RU16.6, Orakel); ohne sie lässt sich `props` nicht bauen
+    pub simview: Option<&'a FixedSimView>,
 }
 
 /// Beitrag einer Ebene: Drawer (nach Ebene sortiert beim Zeichnen) und Listener (je Frame einmal, vor dem Zeichnen).
@@ -36,6 +41,10 @@ pub type Builder = fn(&Setup, &mut dyn Canvas) -> Result<Part, String>;
 
 /// Die Ebenen des Standbilds in Anmeldereihenfolge. Spätere Sprints (Gebäude, Effekte, Anzeigen) ergänzen hier.
 pub const LAYERS: &[(&str, Builder)] = &[("world", build_world), ("actors", build_actors)];
+
+/// Die Ebenen des Standbilds der Bauten (`still --props`, RU16.6): Boden der Welt (ohne Fluss und Licht) und props.
+/// Die Figuren fehlen: das Go-Referenzbild (`props/rustref_test.go`) zeichnet sie auch nicht.
+pub const PROPS_LAYERS: &[(&str, Builder)] = &[("ground", build_ground), ("props", build_props)];
 
 fn levels(s: &Setup, assets: Vec<String>) -> Levels {
     Levels::from([(s.level.to_string(), assets)])
@@ -73,5 +82,54 @@ pub fn build_actors(s: &Setup, canvas: &mut dyn Canvas) -> Result<Part, String> 
         name: "actors",
         drawers: vec![Box::new(ActorsDrawer { a: Rc::clone(&a) })],
         listeners: vec![Box::new(ActorsDrawer { a })],
+    })
+}
+
+/// Boden: die Ebenen der Welt bis `Layer::GROUND` (Himmel, Kulissen, Boden), ohne Fluss, Fackeln und Licht.
+pub fn build_ground(s: &Setup, canvas: &mut dyn Canvas) -> Result<Part, String> {
+    let mut part = build_world(s, canvas)?;
+    part.drawers.retain(|d| d.layer() <= Layer::GROUND);
+    part.name = "ground";
+    Ok(part)
+}
+
+/// Drawer und Listener teilen sich den Zustand von `props` (wie `ActorsDrawer`).
+struct PropsDrawer(Rc<RefCell<Props>>);
+
+impl Drawer for PropsDrawer {
+    fn layer(&self) -> Layer {
+        self.0.borrow().layer()
+    }
+    fn draw(&self, dst: &mut dyn Canvas, f: &Frame, c: &crate::view::cell::Cell) {
+        self.0.borrow().draw(dst, f, c);
+    }
+}
+
+impl Listener for PropsDrawer {
+    fn listen(&mut self, f: &Frame) {
+        self.0.borrow_mut().listen(f);
+    }
+}
+
+/// Bibliothek der Bauten: lädt die Assets, die `props` im Level zeichnen kann.
+pub fn props_library(s: &Setup, canvas: &mut dyn Canvas) -> Result<Rc<RefCell<Library>>, String> {
+    let view = s.simview.ok_or(NO_SIMVIEW)?.clone();
+    let assets = props::new(None, Box::new(view)).assets(s.level, s.world);
+    let mut lib = Library::new(s.cfg.clone()).map_err(|e| e.to_string())?;
+    lib.set_levels(&levels(s, assets), canvas).map_err(|e| e.to_string())?;
+    Ok(Rc::new(RefCell::new(lib)))
+}
+
+const NO_SIMVIEW: &str = "props braucht die Sim-Antworten (--simview <props-name.simview.json>)";
+
+/// Bauten, Natur und Objekte (`props`) mit den Sim-Antworten des Standes.
+pub fn build_props(s: &Setup, canvas: &mut dyn Canvas) -> Result<Part, String> {
+    let view = s.simview.ok_or(NO_SIMVIEW)?.clone();
+    let lib = props_library(s, canvas)?;
+    let p = Rc::new(RefCell::new(props::new(Some(lib), Box::new(view))));
+    Ok(Part {
+        name: "props",
+        drawers: vec![Box::new(PropsDrawer(Rc::clone(&p)))],
+        listeners: vec![Box::new(PropsDrawer(p))],
     })
 }

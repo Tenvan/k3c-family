@@ -2,6 +2,9 @@
 //! (`testdata/rust/bild/<name>.state.json.gz`), zeichnet ihn mit den Ebenen des Spiels in ein Bild im Speicher und
 //! schreibt ein PNG. Das Werkzeug öffnet kein Fenster und braucht kein GPU-Backend.
 //!
+//! `--props --simview <props-name.simview.json>` zeichnet nur Boden und Bauten (`PROPS_LAYERS`, RU16.6); die Sim-Antworten
+//! kommen als `FixedSimView` aus der Datei, bis RU15 und RU18 die Sim-Funktionen liefern.
+//!
 //! Schnittstelle für spätere Sprints (RU16, RU20, RU9, RU23, RU30):
 //! - Ebenen sind `compose::Builder` in `compose::LAYERS` (Name, Funktion); ein Builder legt die Bibliothek seines
 //!   Moduls an, lädt dessen Assets (`AssetSource`) und liefert Drawer und Listener als `Part`.
@@ -23,10 +26,12 @@ pub mod pngio;
 pub mod raster;
 #[cfg(test)]
 mod raster_tests;
+pub mod simview;
 pub mod state;
 
-pub use compose::{Builder, LAYERS, Part, Setup};
+pub use compose::{Builder, LAYERS, PROPS_LAYERS, Part, Setup};
 pub use raster::Image;
+pub use simview::FixedSimView;
 pub use state::{StillState, load_state, parse_state};
 
 /// Umgebungsvariable des Grafik-Ordners (gerenderte Grafik, nicht eingecheckt).
@@ -38,17 +43,23 @@ pub struct Options {
     pub state: PathBuf,
     pub out: PathBuf,
     pub grafik: Option<PathBuf>,
+    /// Sim-Antworten der Bauten (`--simview`), nötig mit `--props`
+    pub simview: Option<PathBuf>,
+    /// Nur Boden und Bauten zeichnen (`--props`, RU16.6)
+    pub props: bool,
 }
 
-/// Liest die Schalter: `<zustand> --out <png> [--grafik <ordner>]`.
+/// Liest die Schalter: `<zustand> --out <png> [--grafik <ordner>] [--props --simview <json>]`.
 pub fn parse_args(args: &[String]) -> Result<Options, String> {
-    let (mut state, mut out, mut grafik) = (None, None, None);
+    let (mut state, mut out, mut grafik, mut simview, mut props) = (None, None, None, None, false);
     let mut it = args.iter();
     while let Some(a) = it.next() {
         let mut value = |name: &str| it.next().cloned().ok_or(format!("{name} braucht einen Wert"));
         match a.as_str() {
             "--out" => out = Some(PathBuf::from(value("--out")?)),
             "--grafik" => grafik = Some(PathBuf::from(value("--grafik")?)),
+            "--simview" => simview = Some(PathBuf::from(value("--simview")?)),
+            "--props" => props = true,
             s if !s.starts_with("--") && state.is_none() => state = Some(PathBuf::from(s)),
             s => return Err(format!("unbekannter Schalter {s}")),
         }
@@ -57,6 +68,8 @@ pub fn parse_args(args: &[String]) -> Result<Options, String> {
         state: state.ok_or("Aufruf: k3c-game still <zustand> --out <png> [--grafik <ordner>]")?,
         out: out.ok_or("--out <png> fehlt")?,
         grafik,
+        simview,
+        props,
     })
 }
 
@@ -96,6 +109,7 @@ pub fn render_with(s: &StillState, cfg: &Config, layers: &[(&str, Builder)]) -> 
         cfg: cfg.clone(),
         level: &s.level,
         world: &s.world,
+        simview: s.simview.as_ref(),
     };
     let mut parts = Vec::new();
     for (name, build) in layers {
@@ -120,11 +134,49 @@ pub fn render_with(s: &StillState, cfg: &Config, layers: &[(&str, Builder)]) -> 
     Ok(canvas.finish())
 }
 
+/// Zeichenliste der Bauten je Zelle (Planer mit geladener Grafik wie in `PROPS_LAYERS`, Körper und Oberes nacheinander).
+/// Für Tests: Wo Rust etwas zeichnen will, ohne ein Bild zu vergleichen (Positionen, Textfelder).
+pub fn props_items(s: &StillState, cfg: &Config) -> Result<Vec<Vec<crate::props::plan::Item>>, String> {
+    use crate::props::listen::Infos;
+    use crate::props::plan::{Planner, Sheets};
+    use std::rc::Rc;
+    let view = s.simview.as_ref().ok_or("props braucht die Sim-Antworten")?;
+    let mut canvas = raster::SoftCanvas::new(s.size.0, s.size.1);
+    let setup = Setup {
+        cfg: cfg.clone(),
+        level: &s.level,
+        world: &s.world,
+        simview: s.simview.as_ref(),
+    };
+    let lib = compose::props_library(&setup, &mut canvas)?;
+    let (frame, cells) = s.frame();
+    let mut infos = Infos::default();
+    infos.listen(&frame, view);
+    let w = &s.world;
+    let mut out = Vec::new();
+    for (i, c) in cells.iter().enumerate() {
+        let mut p = Planner::new(Some(lib.clone() as Rc<dyn Sheets>));
+        p.viewer = w.players.iter().position(|m| m.index == s.seats[i].monarch);
+        p.plan(Some(w), infos.info(0), &c.camera, s.clock, view);
+        out.push(p.body.iter().chain(&p.top).cloned().collect());
+    }
+    Ok(out)
+}
+
 /// Führt `k3c-game still` aus.
 pub fn run(o: &Options) -> Result<(), String> {
     let s = load_state(&o.state)?;
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../..");
-    let img = render(&s, &config(&root, o.grafik.as_deref()))?;
+    let s = match &o.simview {
+        Some(p) => s.with_simview(FixedSimView::load(p)?),
+        None => s,
+    };
+    let cfg = config(&root, o.grafik.as_deref());
+    let img = if o.props {
+        render_with(&s, &cfg, PROPS_LAYERS)?
+    } else {
+        render(&s, &cfg)?
+    };
     pngio::write_png(&o.out, &img)?;
     k3c_platform::log::info(
         "💾 Standbild geschrieben",
@@ -147,6 +199,10 @@ mod tests {
         assert_eq!(o.state, PathBuf::from("a.gz"));
         assert_eq!(o.out, PathBuf::from("b.png"));
         assert_eq!(o.grafik, Some(PathBuf::from("g")));
+        assert!(!o.props && o.simview.is_none());
+        let o = parse_args(&args(&["a.gz", "--out", "b.png", "--props", "--simview", "s.json"])).unwrap();
+        assert!(o.props);
+        assert_eq!(o.simview, Some(PathBuf::from("s.json")));
         assert!(parse_args(&args(&["a.gz"])).is_err());
         assert!(parse_args(&args(&["--out", "b.png"])).is_err());
         assert!(parse_args(&args(&["a.gz", "--out"])).is_err());

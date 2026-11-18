@@ -7,6 +7,7 @@
 use k3c_sim::state::{Player, Site, World};
 
 use super::pending::{CombatSpot, Economy, PendingSimView, SpotState};
+use k3c_sim::state::site_view;
 
 /// `SimView` ist die Sicht der Anzeige auf abgeleitete Sim-Werte (Signaturen wie in Go).
 pub trait SimView {
@@ -14,6 +15,11 @@ pub trait SimView {
     fn economy_of(&self, w: &World) -> Economy;
     /// Go: `sim.SiteGoldLeft` (Rest-Gold des Platzes, bezahlbar).
     fn site_gold_left(&self, w: &World, s: &Site) -> (i64, bool);
+    /// Go: `sim.SiteVisible` (steht der Platz im Zustand: Platz-Stufe höchstens Hub-Stufe + 1). Die Grundregel rechnet
+    /// `k3c_sim::state::site_view` (hängt an `level_site`, RU18); eine Sicht mit Antworten (Standbild) überschreibt sie.
+    fn site_visible(&self, w: &World, s: &Site) -> bool {
+        site_view::site_visible(w, s)
+    }
     /// Go: `sim.SitePayable`.
     fn site_payable(&self, w: &World, s: &Site) -> bool;
     /// Go: `sim.SiteNeedsClearing`.

@@ -9,11 +9,12 @@ use std::path::Path;
 use std::rc::Rc;
 
 use k3c_data::biome::Biome;
-use k3c_level::types::Layout;
+use k3c_level::types::{Layout, NatureValues};
 use k3c_sim::state::World;
 use serde::Deserialize;
 
 use super::inflate::gunzip;
+use super::simview::FixedSimView;
 use crate::view::cell::{Cell, new_camera, rect};
 use crate::view::frame::{Frame, Seat, Stage};
 use crate::view::settings::{RIVER_TILES, Settings};
@@ -39,6 +40,17 @@ struct StateFile {
     biome: serde_json::Value,
     layout: serde_json::Value,
     world: serde_json::Value,
+    /// Hub-Stufe und Ausbauschritt (`json:"-"` in Go, die Bauten brauchen sie); fehlen in Ständen ohne Bauten
+    #[serde(rename = "hubLevel", default)]
+    hub_level: i64,
+    #[serde(rename = "hubStep", default)]
+    hub_step: i64,
+    /// Variante je Knoten der Welt, gleiche Reihenfolge wie `world.nodes` (`json:"-"` in Go)
+    #[serde(rename = "nodeVariants", default)]
+    node_variants: Vec<String>,
+    /// geltende Natur-Werte der Stufe (`Layout.Nature` ist `json:"-"` in Go); `props` liest `glow` und `brightness`
+    #[serde(default)]
+    nature: NatureValues,
 }
 
 /// Ein Stand: Welt, Plätze, Kamera je Zelle und Bildgröße.
@@ -53,6 +65,8 @@ pub struct StillState {
     pub cams: Vec<f64>,
     pub seats: Vec<Seat>,
     pub world: World,
+    /// Antworten der Sim-Funktionen für die Bauten (RU16.6), gesetzt mit `with_simview`
+    pub simview: Option<FixedSimView>,
 }
 
 /// Liest einen Zustand aus gzip oder aus JSON (erkannt an der gzip-Kennung).
@@ -66,6 +80,12 @@ pub fn parse_state(raw: &[u8]) -> Result<StillState, String> {
     let mut world: World = serde_json::from_value(f.world).map_err(|e| format!("Zustand › world: {e}"))?;
     world.biome = serde_json::from_value::<Biome>(f.biome).map_err(|e| format!("Zustand › biome: {e}"))?;
     world.level = serde_json::from_value::<Layout>(f.layout).map_err(|e| format!("Zustand › layout: {e}"))?;
+    world.level.nature = f.nature;
+    world.hub_level = f.hub_level;
+    world.hub_step = f.hub_step;
+    for (n, v) in world.nodes.iter_mut().zip(&f.node_variants) {
+        n.variant.clone_from(v);
+    }
     if f.cams.len() != f.seats.len() || f.seats.is_empty() {
         return Err("Zustand: je Platz eine Kamera erwartet".to_string());
     }
@@ -86,6 +106,7 @@ pub fn parse_state(raw: &[u8]) -> Result<StillState, String> {
             })
             .collect(),
         world,
+        simview: None,
     })
 }
 
@@ -96,6 +117,13 @@ pub fn load_state(path: &Path) -> Result<StillState, String> {
 }
 
 impl StillState {
+    /// Setzt die Antworten der Sim-Funktionen (Orakel aus `props-<name>.simview.json`).
+    #[must_use]
+    pub fn with_simview(mut self, v: FixedSimView) -> Self {
+        self.simview = Some(v);
+        self
+    }
+
     /// Frame und Zellen wie die Go-Referenz: Zellen übereinander, Kamera fest auf `cams`, Fluss als Kacheln.
     pub fn frame(&self) -> (Frame, Vec<Cell>) {
         let (w, h) = (i64::from(self.size.0), i64::from(self.size.1));
