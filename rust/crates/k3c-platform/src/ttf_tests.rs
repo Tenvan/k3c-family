@@ -31,10 +31,34 @@ fn ttf_breite_waechst_mit_der_groesse() {
     assert_eq!(f.width(id, "", 32.0), 0.0);
     assert_eq!(f.width(FontId(9), "x", 32.0), 0.0, "unbekannte Schrift");
     assert_eq!(
-        f.width(id, "Ab", 20.4),
+        f.width(id, "Ab", 20.001),
         f.width(id, "Ab", 20.0),
-        "auf ganze Pixel gerundet"
+        "auf 1/64 Pixel gequantelt"
     );
+    assert!(
+        f.width(id, "Hallo Welt", 12.4) > f.width(id, "Hallo Welt", 12.0) + 1.0,
+        "gebrochene Größen bleiben erhalten (B-1065)"
+    );
+}
+
+/// B-1065: Höhe, Oberlänge und Breite wie `text/v2` in Go (Werte aus `GoTextFace.Metrics()` und `text.Measure` mit
+/// `public/schrift/k3c.ttf`, Go v2.10.6).
+#[test]
+fn ttf_masse_wie_go() {
+    let (f, id) = loaded();
+    let go = [
+        // Größe, HAscent, HAscent + HDescent, Breite von „Hallo Welt“
+        (12.0, 11.337_89, 13.869_14, 56.390_625),
+        (16.0, 15.117_187, 18.492_19, 75.218_75),
+        (24.0, 22.675_78, 27.738_28, 112.734_375),
+    ];
+    for (px, asc, h, w) in go {
+        assert!((f.ascent(id, px) - asc).abs() < 0.01, "Oberlänge {px}");
+        assert!((f.height(id, px) - h).abs() < 0.01, "Zeilenhöhe {px}");
+        let dw = (f.width(id, "Hallo Welt", px) - w).abs();
+        assert!(dw < 0.1, "Breite {px}: Abweichung {dw}");
+    }
+    assert_eq!(f.height(FontId(9), 24.0), 0.0, "unbekannte Schrift");
 }
 
 #[test]
@@ -123,4 +147,25 @@ fn ttf_zu_grosse_glyphe_behaelt_vorschub() {
     a.layout(&f, (id, 3000.0), "HH", (0.0, 0.0), &mut up);
     assert_eq!(a.glyphs(), 1, "gemerkt, nicht neu gerastert");
     assert!(f.width(id, "HH", 3000.0) > 1000.0);
+}
+
+/// B-1063: Die Grundlinie wird abgerundet wie in Ebitengine (`origin.Y &^= 63`), nicht gerundet. Größe 8 hat die
+/// Oberlänge 7,56 (Go: `HAscent`, gemessen mit `text.GoTextFace.Metrics`); das H sitzt mit der Unterkante auf Pixelzeile 7.
+#[test]
+fn ttf_grundlinie_wird_abgerundet_wie_in_go() {
+    let (f, id) = loaded();
+    assert!(
+        (f.ascent(id, 8.0) - 7.5586).abs() < 1e-3,
+        "Oberlänge wie Go: {}",
+        f.ascent(id, 8.0)
+    );
+    let bottom = |y: f32| {
+        let (mut a, mut up) = (Atlas::default(), Vec::new());
+        a.layout(&f, (id, 8.0), "H", (0.0, y), &mut up);
+        let (src, dst) = a.quads[0];
+        dst.y + src.h
+    };
+    assert_eq!(bottom(0.0), 7.0, "floor(7,56), nicht round = 8");
+    assert_eq!(bottom(0.4), 7.0, "floor(7,96)");
+    assert_eq!(bottom(0.5), 8.0, "floor(8,06)");
 }

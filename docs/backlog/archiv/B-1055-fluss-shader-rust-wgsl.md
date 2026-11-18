@@ -1,13 +1,13 @@
-# B-1065 · Rust misst Textzeilen niedriger und kleine Schrift schmaler als Go
+# B-1055 · Fluss-Shader in Rust (WGSL)
 
 - **Domäne:** CLI
-- **Typ:** Problem
+- **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** RU20
+- **Status:** verworfen
+- **Sprint:** RU13
 - **Projekt:** RSU
-- **Erstellt:** 2026-11-18
+- **Erstellt:** 2026-11-17
 - **Spec:** Entwurf
 - **Revision:** 1
 - **Freigabe:** –
@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Gemessen im Bildvergleich RU20.7 (tests/still_hud.rs): Rust misst die Höhe einer Textzeile als Schriftgröße (24,0 px), Go als Zeilenhöhe (26,9 px bei derselben Größe); die Boxen der Textelemente sind in Rust 2,5 bis 2,9 px niedriger, darunter gestapelte Elemente liegen entsprechend höher. Der Beitritts-Hinweis (kleine Schrift) ist in Rust 6 % schmaler (183 statt 194 px). x und Breite der Boxen stimmen (Boxbreite in 32-px-Stufen). Zusammenhang mit B-1063 (Text 2 px tiefer), vermutet gleiche Ursache in k3c-platform (Ascent, Zeilenabstand, Advance-Rundung).
+Was ist heute so? Problem oder Idee in 1–5 Sätzen, mit Dateipfaden, wenn es um Code geht.
 
 ## Ziel
 
-Welches Ergebnis, welcher Nutzen (oder welcher Schaden verschwindet)? Kein Umsetzungsschritt.
+`water/river.kage` (Go, Kage) als WGSL-Shader in `k3c-platform` nachbauen, damit der Fluss in Rust wie in Go (Fassung „shader“, F3) gezeichnet werden kann. Bis dahin zeichnet Rust den Fluss immer als Kacheln (RU13.2); die Rechnung der Uniforms (`water_layout`, `RiverWater::set`, Phasen) ist schon portiert und getestet.
 
 ## Beteiligte und Zielgruppen
 
@@ -68,4 +68,11 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Zerlegt in Teil-Tickets (je eine Session, Größe S, Projekt RSU, Sprint RU13, Spec freigegeben autonom, Claude, 2026-11-18):
+
+- B-1070 Canvas-Schnittstelle `river` mit Uniforms (ohne Shader), Voraussetzung für die anderen
+- B-1071 Fluss-Fragment als Rust-Referenz und Software-Nachbau in `SoftCanvas` (abhängig von B-1070)
+- B-1072 `river.wgsl` und Pipeline im GPU-Backend (abhängig von B-1070)
+- B-1073 Anbindung in `world` (`draw_river`, Rückfall auf Kacheln, Standbild-Vergleich; abhängig von B-1070, B-1071, B-1072)
+
+Reihenfolge: B-1070, dann B-1071 und B-1072 parallel, zuletzt B-1073.

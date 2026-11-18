@@ -1,8 +1,11 @@
 //! wgpu-Aufbau: Bind-Layout, die zwei Pipelines (Rechteck-Instanzen, Dreiecke), Puffer, Textur-Upload.
 
-use crate::{INST_BYTES, VERT_BYTES};
+use crate::river::RIVER_BYTES;
+use crate::{Blend, INST_BYTES, VERT_BYTES};
 
 const SHADER: &str = include_str!("shader.wgsl");
+/// Fluss-Shader (B-1072), `river.kage` als WGSL.
+pub const RIVER_SHADER: &str = include_str!("river.wgsl");
 
 /// Wachsender GPU-Puffer (Instanzen, Ecken oder Indizes); wird nur bei Bedarf vergrößert.
 pub struct Grow {
@@ -69,12 +72,32 @@ pub fn sampler(device: &wgpu::Device, f: wgpu::FilterMode) -> wgpu::Sampler {
     })
 }
 
-/// Pipeline für Rechteck-Instanzen (`vs`/`fs`) oder Dreiecke (`vs_tri`/`fs_tri`).
+/// Mischzustand je [`Blend`]: `Multiply` rechnet Ziel × Quelle (Farbe), die Deckkraft des Ziels bleibt (wie
+/// `multiply` in `lightdraw.go`: Quelle-Faktor Ziel-Farbe bzw. 0, Ziel-Faktor 0 bzw. 1).
+pub fn blend_state(mode: Blend) -> wgpu::BlendState {
+    match mode {
+        Blend::Over => wgpu::BlendState::PREMULTIPLIED_ALPHA_BLENDING,
+        Blend::Multiply => wgpu::BlendState {
+            color: wgpu::BlendComponent {
+                src_factor: wgpu::BlendFactor::Dst,
+                dst_factor: wgpu::BlendFactor::Zero,
+                operation: wgpu::BlendOperation::Add,
+            },
+            alpha: wgpu::BlendComponent {
+                src_factor: wgpu::BlendFactor::Zero,
+                dst_factor: wgpu::BlendFactor::One,
+                operation: wgpu::BlendOperation::Add,
+            },
+        },
+    }
+}
+
+/// Pipeline für Rechteck-Instanzen (`vs`/`fs`) oder Dreiecke (`vs_tri`/`fs_tri`) mit der Mischung `mode`.
 pub fn pipeline(
     device: &wgpu::Device,
     bgl: &wgpu::BindGroupLayout,
     format: wgpu::TextureFormat,
-    tris: bool,
+    (tris, mode): (bool, Blend),
 ) -> wgpu::RenderPipeline {
     let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
         label: None,
@@ -103,7 +126,7 @@ pub fn pipeline(
     let (vs, fs) = if tris { ("vs_tri", "fs_tri") } else { ("vs", "fs") };
     let target = wgpu::ColorTargetState {
         format,
-        blend: Some(wgpu::BlendState::PREMULTIPLIED_ALPHA_BLENDING),
+        blend: Some(blend_state(mode)),
         write_mask: wgpu::ColorWrites::ALL,
     };
     device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
@@ -127,6 +150,98 @@ pub fn pipeline(
         multiview_mask: None,
         cache: None,
     })
+}
+
+/// Prüft WGSL ohne GPU (Parser und Validator von `naga`); der Fehlertext nennt die Stelle.
+pub fn validate_wgsl(src: &str) -> Result<wgpu::naga::Module, String> {
+    use wgpu::naga::valid::{Capabilities, ValidationFlags, Validator};
+    let module = wgpu::naga::front::wgsl::parse_str(src).map_err(|e| e.emit_to_string(src))?;
+    Validator::new(ValidationFlags::all(), Capabilities::empty())
+        .validate(&module)
+        .map_err(|e| e.emit_to_string(src))?;
+    Ok(module)
+}
+
+/// Bind-Layout des Fluss-Shaders: ein Uniform-Puffer mit dynamischem Versatz (ein Aufruf je Versatz).
+pub fn river_layout(device: &wgpu::Device) -> wgpu::BindGroupLayout {
+    device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
+        label: Some("fluss"),
+        entries: &[wgpu::BindGroupLayoutEntry {
+            binding: 0,
+            visibility: wgpu::ShaderStages::VERTEX_FRAGMENT,
+            ty: wgpu::BindingType::Buffer {
+                ty: wgpu::BufferBindingType::Uniform,
+                has_dynamic_offset: true,
+                min_binding_size: wgpu::BufferSize::new(RIVER_BYTES as u64),
+            },
+            count: None,
+        }],
+    })
+}
+
+/// Abstand der Aufrufe im Uniform-Puffer: `RIVER_BYTES` aufgerundet auf die Versatz-Ausrichtung des Geräts.
+pub fn river_stride(device: &wgpu::Device) -> u64 {
+    let a = u64::from(device.limits().min_uniform_buffer_offset_alignment).max(1);
+    (RIVER_BYTES as u64).div_ceil(a) * a
+}
+
+/// Pipeline des Flusses mit der Mischung `mode`; `Err`, wenn der Shader nicht übersetzt (Aufrufer meldet es im Log und
+/// überspringt Fluss-Aufrufe).
+pub fn river_pipeline(
+    device: &wgpu::Device,
+    bgl: &wgpu::BindGroupLayout,
+    format: wgpu::TextureFormat,
+    mode: Blend,
+) -> Result<wgpu::RenderPipeline, String> {
+    validate_wgsl(RIVER_SHADER)?;
+    let shader = device.create_shader_module(wgpu::ShaderModuleDescriptor {
+        label: Some("fluss"),
+        source: wgpu::ShaderSource::Wgsl(RIVER_SHADER.into()),
+    });
+    let layout = device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+        label: None,
+        bind_group_layouts: &[Some(bgl)],
+        immediate_size: 0,
+    });
+    let target = wgpu::ColorTargetState {
+        format,
+        blend: Some(blend_state(mode)),
+        write_mask: wgpu::ColorWrites::ALL,
+    };
+    Ok(device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+        label: Some("fluss"),
+        layout: Some(&layout),
+        vertex: wgpu::VertexState {
+            module: &shader,
+            entry_point: Some("vs"),
+            compilation_options: Default::default(),
+            buffers: &[],
+        },
+        fragment: Some(wgpu::FragmentState {
+            module: &shader,
+            entry_point: Some("fs"),
+            compilation_options: Default::default(),
+            targets: &[Some(target)],
+        }),
+        primitive: Default::default(),
+        depth_stencil: None,
+        multisample: Default::default(),
+        multiview_mask: None,
+        cache: None,
+    }))
+}
+
+/// Pipelines des Flusses je Mischung (`Over`, `Multiply`); bei einem Fehler im Log gemeldet und `None`: Der Fluss
+/// fällt über `Canvas::river` auf Kacheln zurück, das Backend überspringt Fluss-Aufrufe.
+pub fn river_pipelines(
+    device: &wgpu::Device,
+    bgl: &wgpu::BindGroupLayout,
+    format: wgpu::TextureFormat,
+) -> Option<[wgpu::RenderPipeline; 2]> {
+    let made = river_pipeline(device, bgl, format, Blend::Over)
+        .and_then(|a| Ok([a, river_pipeline(device, bgl, format, Blend::Multiply)?]));
+    made.map_err(|e| crate::log::error("❌ Fluss-Shader übersetzt nicht, Fluss als Kacheln", &[("err", &e)]))
+        .ok()
 }
 
 /// Lädt RGBA8 hoch und liefert Textur und Bind-Group mit dem Sampler `sampler`.
@@ -196,4 +311,69 @@ pub fn write(queue: &wgpu::Queue, tex: &wgpu::Texture, (x, y, w, h): (u32, u32, 
             depth_or_array_layers: 1,
         },
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::river::{SRC_H, TAU};
+    use wgpu::naga::{Expression, Literal};
+
+    /// Wert einer benannten `const` des Moduls als `f32`.
+    fn constant(m: &wgpu::naga::Module, name: &str) -> f32 {
+        let (_, c) = m
+            .constants
+            .iter()
+            .find(|(_, c)| c.name.as_deref() == Some(name))
+            .unwrap_or_else(|| panic!("const {name} fehlt"));
+        match m.global_expressions[c.init] {
+            Expression::Literal(Literal::F32(v)) => v,
+            Expression::Literal(Literal::AbstractFloat(v)) => v as f32,
+            ref e => panic!("const {name}: {e:?}"),
+        }
+    }
+
+    /// B-1072 AC-01: beide Shader bestehen die Validierung ohne GPU.
+    #[test]
+    fn shader_bestehen_die_naga_validierung() {
+        validate_wgsl(SHADER).expect("shader.wgsl");
+        let m = validate_wgsl(RIVER_SHADER).expect("river.wgsl");
+        let names: Vec<_> = m.entry_points.iter().map(|e| e.name.as_str()).collect();
+        assert_eq!(names, ["vs", "fs"]);
+    }
+
+    /// B-1072 AC-03: Die Konstanten des WGSL sind die der Rust-Referenz (`river_fragment`) und von `river.kage`.
+    #[test]
+    fn konstanten_gleich_der_referenz() {
+        let m = validate_wgsl(RIVER_SHADER).unwrap();
+        assert_eq!(constant(&m, "tau"), TAU);
+        assert_eq!(constant(&m, "srcH"), SRC_H);
+    }
+
+    /// Eine kaputte Quelle meldet einen Fehler statt zu paniken.
+    #[test]
+    fn kaputtes_wgsl_gibt_fehler() {
+        assert!(validate_wgsl("fn fs( {").is_err());
+    }
+
+    /// B-1072 AC-02 auf einem Adapter, falls einer da ist (sonst übersprungen wie die Standbild-Tests ohne Grafik):
+    /// Bind-Layout, Stride und beide Pipelines entstehen ohne Validierungsfehler.
+    #[test]
+    fn fluss_pipeline_entsteht_auf_gpu() {
+        let inst = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle_from_env());
+        let Ok(adapter) = pollster::block_on(inst.request_adapter(&Default::default())) else {
+            eprintln!("kein GPU-Adapter: übersprungen");
+            return;
+        };
+        let Ok((device, _)) = pollster::block_on(adapter.request_device(&Default::default())) else {
+            return;
+        };
+        let scope = device.push_error_scope(wgpu::ErrorFilter::Validation);
+        let bgl = river_layout(&device);
+        let pipes = river_pipelines(&device, &bgl, wgpu::TextureFormat::Bgra8Unorm);
+        let err = pollster::block_on(scope.pop());
+        assert!(err.is_none(), "{err:?}");
+        assert!(pipes.is_some());
+        assert!(river_stride(&device) >= RIVER_BYTES as u64);
+    }
 }

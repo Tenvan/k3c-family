@@ -3,7 +3,8 @@
 //! Die Referenz schreibt `native/k3c-game/world/rustref_test.go` (`-write`): Zustand `<name>.state.json.gz` und das
 //! Go-Bild `<name>.go.png`, dazu `<name>.go-nolight.png` (ohne Lichtkarte), wo das Licht wirkt. Rust zeichnet keine
 //! Lichtkarte (B-1056, kein Multiply-Blend im Canvas), darum vergleicht der Test dort mit dem Bild ohne Lichtkarte.
-//! Der Fluss steht in beiden auf Kacheln (der Shader gehört nicht zum Vergleich, B-1055).
+//! Der Fluss steht in beiden auf Kacheln; der Shader-Fluss hat kein Go-Golden (Go-Lauf gesperrt, B-1059) und wird
+//! gegen die Software-Referenz `river_fragment` geprüft (`fluss_shader_im_standbild`, B-1073).
 //!
 //! Die gerenderte Grafik (`public/grafik`, `task gen:paper`) ist nicht eingecheckt: Ohne sie überspringen die Tests
 //! mit Hinweis; `K3C_GRAFIK_DIR` zeigt auf einen anderen Ordner. Mit `K3C_STILL_OUT=<ordner>` schreiben sie die
@@ -226,4 +227,48 @@ fn lichtkarte_fehlt_in_rust() {
             "{name}: Abweichung {mean:.2} gering, hat Rust jetzt eine Lichtkarte? (B-1056)"
         );
     }
+}
+
+/// B-1073 AC-03: Mit Shader-Fluss ändert sich das Bild nur in der Fluss-Fläche der Zellen; dort trägt die Mehrheit der
+/// Pixel die Farbe der Software-Referenz (`river_fragment`) aus `water_layout`; der Rest wird von Ebenen darüber
+/// (Figuren, Bauten, Licht) gedeckt. Ohne Go-Golden mit Shader gibt es keinen Vergleich gegen Go.
+#[test]
+fn fluss_shader_im_standbild() {
+    if !grafik_da() {
+        return;
+    }
+    let base = state("mittag");
+    let tiles = draw(&base);
+    let shader = draw(&base.clone().with_river_shader());
+    dump("mittag-fluss-shader", &shader);
+    let (_, cells) = base.frame();
+    let (mut inside, mut same, mut outside_diff) = (0u64, 0u64, 0u64);
+    for c in &cells {
+        let p = k3c_game::world::water::water_layout(c, base.clock);
+        let mut r = k3c_game::world::water::RiverWater::default();
+        r.build();
+        r.set(&p);
+        let u = r.uniforms();
+        for y in 0..shader.height {
+            for x in 0..shader.width {
+                let (xi, yi) = (i64::from(x), i64::from(y));
+                if xi < c.rect.min.x || xi >= c.rect.max.x || yi < c.rect.min.y || yi >= c.rect.max.y {
+                    continue;
+                }
+                let i = ((y * shader.width + x) * 4) as usize;
+                if yi < p.top {
+                    outside_diff += u64::from(shader.pix[i..i + 4] != tiles.pix[i..i + 4]);
+                    continue;
+                }
+                inside += 1;
+                let f = k3c_platform::river_fragment(&u, [x as f32 + 0.5, y as f32 + 0.5]);
+                let want = [0, 1, 2].map(|k| (f[k] * 255.0).round() as i32);
+                same += u64::from((0..3).all(|k| (i32::from(shader.pix[i + k]) - want[k]).abs() <= 1));
+            }
+        }
+    }
+    assert_eq!(outside_diff, 0, "über der Fluss-Fläche ändert sich das Bild");
+    let share = same as f64 / inside as f64;
+    eprintln!("Fluss-Fläche {inside} Pixel, {share:.3} wie river_fragment");
+    assert!(share > 0.6, "nur {share:.3} der Fluss-Pixel entsprechen der Referenz");
 }

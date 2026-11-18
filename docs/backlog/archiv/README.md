@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
 | [B-1026](B-1026-session-karten-responsive.md) | DEV | Problem | mittel | erledigt | WZ61 | Session-Karten im Sprint nutzen die Breite: Kopfzeile einzeilig, mehrspaltig bei breitem Fenster |
 | [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | erledigt | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
 | [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | erledigt | EP1 | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
@@ -878,5 +879,12 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1030](B-1030-detvec-baum-doppel-truhe.md) | SIM | Problem | hoch | erledigt | SI2 | Detvec-Datenbaum kennt data/paper.json objekte.doppel-truhe nicht, check:go ist rot |
 | [B-1025](B-1025-settings-stress-nach-ru7.md) | CLI | Schuld | mittel | erledigt | RU7 | Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert |
 | [B-1061](B-1061-actors-toenung-gerade-farbe.md) | CLI | Problem | mittel | erledigt | RU16 | Figuren und Gefechtsmarken tönen mit gerader statt vormultiplizierter Farbe |
+| [B-1058](B-1058-canvas-reihenfolge-textur.md) | CLI | Problem | mittel | erledigt | RU13 | Canvas sortiert innerhalb einer Ebene nach Textur statt nach Aufrufreihenfolge |
+| [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | erledigt | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
+| [B-1065](B-1065-rust-textmasse-zeilenhoehe-advance.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust misst Textzeilen niedriger und kleine Schrift schmaler als Go |
+| [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | verworfen | RU13 | Fluss-Shader in Rust (WGSL) |
+| [B-1070](B-1070-canvas-river-schnittstelle.md) | CLI | Schuld | niedrig | erledigt | RU13 | Canvas kennt einen Fluss-Aufruf mit Uniforms (Schnittstelle ohne Shader) |
+| [B-1071](B-1071-river-referenz-softcanvas.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Fragment als Referenz in Rust und Software-Nachbau im Standbild-Rasterer |
+| [B-1072](B-1072-river-wgsl-port.md) | CLI | Schuld | niedrig | erledigt | RU13 | river.kage als WGSL-Pipeline im GPU-Backend |
+| [B-1073](B-1073-river-anbindung-world.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Shader in world anbinden (draw_river, ready, Rückfall auf Kacheln) |
 | [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
-| [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |

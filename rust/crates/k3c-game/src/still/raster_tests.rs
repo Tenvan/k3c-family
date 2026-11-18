@@ -1,6 +1,6 @@
 //! Tests des Rasterers: Rechteck, Sprite (nächster Nachbar und linear), Netz, Ausschnitt, Aufrufreihenfolge.
 
-use k3c_platform::{Canvas, Filter, Rect, Vertex};
+use k3c_platform::{Blend, Canvas, Filter, Rect, RiverUniforms, Vertex, river_fragment};
 
 use super::raster::SoftCanvas;
 
@@ -87,4 +87,83 @@ fn formen_zeichnen() {
     let img = c.finish();
     assert_eq!(px(&img, 8, 8), [255, 255, 0, 255]);
     assert_eq!(px(&img, 0, 0), [0, 0, 0, 255]);
+}
+
+/// B-1056: Multiply rechnet Ziel × Quelle je Farbkanal, die Deckkraft des Ziels bleibt; danach gilt wieder Over.
+#[test]
+fn multiply_blend_rechnet_ziel_mal_quelle() {
+    let mut c = SoftCanvas::new(4, 2);
+    c.rect(Rect::new(0.0, 0.0, 4.0, 2.0), [1.0, 0.8, 0.4, 1.0]);
+    let t = c.texture(&[255; 4], 1, 1);
+    let v = |x: f32, y: f32, col: [f32; 4]| Vertex {
+        pos: [x, y],
+        uv: [0.5, 0.5],
+        color: col,
+    };
+    let half = [0.5, 0.5, 0.5, 1.0];
+    c.blend(Blend::Multiply);
+    c.mesh(
+        t,
+        &[
+            v(0.0, 0.0, half),
+            v(2.0, 0.0, half),
+            v(2.0, 2.0, half),
+            v(0.0, 2.0, half),
+        ],
+        &[0, 1, 2, 0, 2, 3],
+    );
+    c.blend(Blend::Over);
+    c.rect(Rect::new(3.0, 0.0, 1.0, 1.0), [0.0, 0.0, 1.0, 1.0]);
+    let img = c.finish();
+    // Bildpunkte auf der gemeinsamen Diagonale beider Dreiecke zählt der Rasterer doppelt, darum (1, 0) und (0, 1)
+    assert_eq!(px(&img, 1, 0), [128, 102, 51, 255], "Ziel (255, 204, 102) mal 0,5");
+    assert_eq!(px(&img, 0, 1), [128, 102, 51, 255]);
+    assert_eq!(px(&img, 2, 1), [255, 204, 102, 255], "außerhalb des Netzes unverändert");
+    assert_eq!(px(&img, 3, 0), [0, 0, 255, 255], "danach wieder Over");
+}
+
+fn river_uniforms() -> RiverUniforms {
+    let mut u = RiverUniforms {
+        phase: [0.0, 0.0, std::f32::consts::FRAC_PI_2],
+        base: [0.0, 0.0, 1.0],
+        wave: [1.0, 0.0, 0.0],
+        shade: [0.0, 1.0, 0.0],
+        glint: [1.0, 1.0, 1.0],
+        ..RiverUniforms::default()
+    };
+    for i in 0..6 {
+        u.rows[4 * i..4 * i + 4].copy_from_slice(&[2.0 + 64.0 * i as f32, 64.0, 1.0, 0.0]);
+    }
+    u
+}
+
+/// B-1071 AC-02: Das Rechteck trägt die Farbe von `river_fragment` an der Pixelmitte; Clip schneidet; oberhalb der
+/// ersten Reihe (Alpha 0) bleibt Schwarz.
+#[test]
+fn fluss_faerbt_wie_river_fragment_und_beachtet_clip() {
+    let u = river_uniforms();
+    let mut c = SoftCanvas::new(8, 80);
+    assert!(c.river(Rect::new(0.0, 0.0, 8.0, 80.0), &u));
+    let img = c.finish();
+    for (x, y) in [(0u32, 0u32), (1, 5), (3, 20), (7, 79), (0, 34)] {
+        let f = river_fragment(&u, [x as f32 + 0.5, y as f32 + 0.5]);
+        let want = [0, 1, 2].map(|k| (f[k] * 255.0 * f[3]).round() as u8);
+        let got = px(&img, x, y);
+        assert_eq!(&got[..3], &want, "Pixel {x},{y}");
+    }
+    assert_eq!(
+        px(&img, 0, 0),
+        [0, 0, 0, 255],
+        "oberhalb der ersten Reihe bleibt Schwarz"
+    );
+    assert_ne!(px(&img, 0, 10), [0, 0, 0, 255]);
+
+    let mut c = SoftCanvas::new(8, 80);
+    c.clip(Some(Rect::new(2.0, 10.0, 3.0, 4.0)));
+    assert!(c.river(Rect::new(0.0, 0.0, 8.0, 80.0), &u));
+    let img = c.finish();
+    for (x, y) in [(1, 12), (5, 12), (3, 9), (3, 14)] {
+        assert_eq!(px(&img, x, y), [0, 0, 0, 255], "außerhalb des Clips {x},{y}");
+    }
+    assert_ne!(px(&img, 3, 12), [0, 0, 0, 255]);
 }

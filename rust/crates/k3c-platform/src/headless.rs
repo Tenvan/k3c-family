@@ -87,6 +87,10 @@ impl Canvas for NullCanvas {
         self.fonts.width(f, s, px)
     }
 
+    fn text_height(&self, f: FontId, px: f32) -> f32 {
+        self.fonts.height(f, px)
+    }
+
     fn clip(&mut self, _area: Option<Rect>) {
         self.clips += 1;
     }

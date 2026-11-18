@@ -1,12 +1,20 @@
 //! Port von `native/k3c-game/world/water_test.go`.
 //!
-//! Nicht portiert (Shader entfällt, siehe Kopf von water.rs): `TestRiverShaderCompiles`, `TestRiverShaderFallback`.
+//! Nicht portiert (kein `ebiten.NewShader` in Rust, der Shader steht in der Plattform): `TestRiverShaderCompiles`,
+//! `TestRiverShaderFallback`; dafür prüfen `river_uses_canvas_call` und `river_falls_back_to_tiles` (B-1073) den
+//! Aufruf und den Rückfall, die WGSL-Quelle prüft `k3c-platform` (B-1072).
 
 use std::f64::consts::PI;
 
+use std::rc::Rc;
+
 use super::*;
+use crate::view::frame::{Frame, Seat, Stage};
 use crate::view::settings::Settings;
+use crate::world::World;
 use crate::world::testutil::layer_cell;
+use k3c_platform::{Affine, Filter, FontId, TexId, Vertex};
+use k3c_sim::state::World as SimWorld;
 
 /// Schalter K3C_RIVER: nur "tiles" wählt die Kacheln, alles andere (auch leer) den Shader.
 #[test]
@@ -121,16 +129,142 @@ fn river_mode_for_faelle() {
     assert_eq!(s.river, river_start(), "zweimal umschalten");
 }
 
-/// Go: `TestRiverShaderLazy` prüft Übersetzen beim ersten Bedarf; ohne Shader bleibt nur: `ready` versucht einmal und
-/// meldet immer `false`.
+/// Go: `TestRiverShaderLazy` prüft Übersetzen beim ersten Bedarf: `ready` bereitet einmal vor und meldet dann `true`
+/// (ob der Shader zeichnet, entscheidet `Canvas::river`).
 #[test]
 fn river_shader_lazy() {
     let mut r = RiverWater::default();
     r.init(RiverMode::Tiles);
-    assert!(!r.tried, "Kachel-Start übersetzt schon");
-    assert!(
-        !r.ready() && r.tried,
-        "kein Shader in Rust: Rückfall auf Kacheln, ein Versuch"
-    );
-    assert!(!r.ready());
+    assert!(!r.tried, "Kachel-Start bereitet schon vor");
+    assert!(r.ready() && r.tried, "Shader-Fassung gewählt: bereit, ein Versuch");
+    assert!(r.ready());
+    assert_eq!(r.colors[0], rgb(RIVER_BASE));
+    assert_eq!(r.colors[3], rgb(RIVER_GLINT));
+    let mut s = RiverWater::default();
+    s.init(RiverMode::Shader);
+    assert!(s.tried, "Shader-Start bereitet vor");
+}
+
+/// Zeichenfläche, die Fluss-Aufrufe und Sprites merkt; `river_ok` ist die Antwort auf `river`.
+#[derive(Default)]
+struct Rec {
+    rivers: Vec<(Rect, RiverUniforms)>,
+    sprites: Vec<(Rect, [f32; 4])>,
+    river_ok: bool,
+}
+
+impl Canvas for Rec {
+    fn size(&self) -> (f32, f32) {
+        (1920.0, 1080.0)
+    }
+    fn texture_with(&mut self, _: &[u8], _: u32, _: u32, _: Filter) -> TexId {
+        TexId(0)
+    }
+    fn free_texture(&mut self, _: TexId) {}
+    fn sprite(&mut self, _: TexId, _: Rect, dst: Rect, tint: [f32; 4]) {
+        self.sprites.push((dst, tint));
+    }
+    fn sprite_tf(&mut self, _: TexId, _: Rect, _: Affine, _: [f32; 4]) {}
+    fn mesh(&mut self, _: TexId, _: &[Vertex], _: &[u16]) {}
+    fn rect(&mut self, _: Rect, _: [f32; 4]) {}
+    fn river(&mut self, dst: Rect, u: &RiverUniforms) -> bool {
+        self.rivers.push((dst, *u));
+        self.river_ok
+    }
+    fn stroke_rect(&mut self, _: Rect, _: f32, _: [f32; 4]) {}
+    fn fill_circle(&mut self, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+    fn stroke_circle(&mut self, _: f32, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+    fn stroke_line(&mut self, _: f32, _: f32, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+    fn fill_path(&mut self, _: &[[f32; 2]], _: [f32; 4]) {}
+    fn text(&mut self, _: &str, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+    fn font(&mut self, _: &[u8]) -> Result<FontId, String> {
+        Err("keine Schrift".to_string())
+    }
+    fn text_font(&mut self, _: FontId, _: &str, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+    fn text_width(&self, _: FontId, _: &str, _: f32) -> f32 {
+        0.0
+    }
+}
+
+/// Frame mit einer Stufe samt Welt und einem Platz für Spieler 0.
+fn river_frame(setting: &str, clock: f64) -> Frame {
+    Frame {
+        clock,
+        settings: Settings {
+            river: setting.to_string(),
+            ..Settings::default()
+        },
+        stages: vec![Stage {
+            index: 0,
+            level: "wald".to_string(),
+            world: Some(Rc::new(SimWorld::default())),
+            ..Stage::default()
+        }],
+        seats: vec![Seat::default()],
+        ..Frame::default()
+    }
+}
+
+/// B-1073 AC-01: In Shader-Fassung ruft `draw_river` `Canvas::river` genau einmal je Zelle, mit dem Rechteck und den
+/// Uniforms aus `water_layout`; meldet der Canvas `true`, gibt es keine Kacheln.
+#[test]
+fn river_uses_canvas_call() {
+    let mut w = World::new(None);
+    w.start = RiverMode::Tiles;
+    let c = layer_cell(40.0);
+    let f = river_frame(RIVER_SHADER, 3.0);
+    let mut cv = Rec {
+        river_ok: true,
+        ..Rec::default()
+    };
+    w.draw_river(&mut cv, &f, &c);
+    assert_eq!(cv.rivers.len(), 1, "ein Aufruf je Zelle");
+    assert!(cv.sprites.is_empty(), "Shader gezeichnet, keine Kacheln");
+    let p = water_layout(&c, 3.0);
+    let (r, u) = cv.rivers[0];
+    assert_eq!(r, Rect::new(p.x as f32, p.top as f32, p.w as f32, p.h as f32));
+    let mut want = RiverWater::default();
+    want.build();
+    want.set(&p);
+    assert_eq!(u, want.uniforms());
+    assert_eq!(u.base, rgb(RIVER_BASE));
+    assert_eq!(u.glint, rgb(RIVER_GLINT));
+}
+
+/// B-1073 AC-02: Meldet der Canvas `false`, entstehen dieselben Kachel-Befehle wie in der Kachel-Fassung; die
+/// Kachel-Fassung ruft den Shader nie auf.
+#[test]
+fn river_falls_back_to_tiles() {
+    let c = layer_cell(40.0);
+    let tiles = |setting: &str, ok: bool| {
+        let mut w = World::new(None);
+        w.start = RiverMode::Shader;
+        let mut cv = Rec {
+            river_ok: ok,
+            ..Rec::default()
+        };
+        w.draw_river(&mut cv, &river_frame(setting, 3.0), &c);
+        cv
+    };
+    let want = tiles(RIVER_TILES, true);
+    assert!(want.rivers.is_empty(), "Kachel-Fassung ruft river nicht auf");
+    assert!(!want.sprites.is_empty());
+    let got = tiles(RIVER_SHADER, false);
+    assert_eq!(got.rivers.len(), 1, "Shader versucht");
+    assert_eq!(got.sprites, want.sprites, "Rückfall zeichnet die Kacheln");
+    // "" gilt der Startwert: Shader
+    assert_eq!(tiles("", false).rivers.len(), 1);
+}
+
+/// B-1073: Zelle ohne sichtbare Fläche (Breite 0): nichts zeichnen, weder Shader noch Kacheln.
+#[test]
+fn river_empty_cell_draws_nothing() {
+    let mut c = layer_cell(40.0);
+    // Breite 0 (die Höhe folgt aus dem Boden und wird bei gültiger Zelle nie 0)
+    c.rect.max.x = c.rect.min.x;
+    assert!(water_layout(&c, 1.0).w <= 0);
+    let mut cv = Rec::default();
+    let mut r = RiverWater::default();
+    assert!(r.draw(&mut cv, &c, 1.0));
+    assert!(cv.rivers.is_empty());
 }

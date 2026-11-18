@@ -12,7 +12,8 @@ fn sq() -> (Rect, Rect) {
 }
 
 #[test]
-fn sortiert_nach_textur_und_behaelt_reihenfolge() {
+fn behaelt_aufrufreihenfolge_auch_ueber_texturen() {
+    // B-1058: Figuren verschiedener Sheets in einer Ebene liegen in Aufrufreihenfolge (hinten nach vorn).
     let mut f = Frame::new();
     let (a, b) = (tex(&mut f), tex(&mut f));
     f.begin();
@@ -21,11 +22,37 @@ fn sortiert_nach_textur_und_behaelt_reihenfolge() {
         f.sprite(t, src, Rect::new(i as f32, 0.0, 1.0, 1.0), WHITE);
     }
     f.rect(Rect::new(9.0, 0.0, 1.0, 1.0), WHITE);
+    f.sprite(b, src, Rect::new(10.0, 0.0, 1.0, 1.0), WHITE);
     f.finish();
     let xs: Vec<f32> = f.instances().map(|i| i.t[0]).collect();
-    assert_eq!(xs, [1.0, 3.0, 0.0, 2.0, 4.0, 9.0]);
+    assert_eq!(xs, [0.0, 1.0, 2.0, 3.0, 4.0, 9.0, 10.0]);
     let runs: Vec<_> = f.runs().iter().map(|r| (r.tex, r.first, r.count)).collect();
-    assert_eq!(runs, [(Some(a), 0, 2), (Some(b), 2, 3), (None, 5, 1)]);
+    assert_eq!(
+        runs,
+        [
+            (Some(b), 0, 1),
+            (Some(a), 1, 1),
+            (Some(b), 2, 1),
+            (Some(a), 3, 1),
+            (Some(b), 4, 1),
+            (None, 5, 1),
+            (Some(b), 6, 1)
+        ]
+    );
+}
+
+#[test]
+fn gleiche_textur_nacheinander_bildet_ein_buendel() {
+    let mut f = Frame::new();
+    let (a, b) = (tex(&mut f), tex(&mut f));
+    f.begin();
+    let src = sq().0;
+    for (i, t) in [a, a, a, b, b].into_iter().enumerate() {
+        f.sprite(t, src, Rect::new(i as f32, 0.0, 1.0, 1.0), WHITE);
+    }
+    f.finish();
+    let runs: Vec<_> = f.runs().iter().map(|r| (r.tex, r.first, r.count)).collect();
+    assert_eq!(runs, [(Some(a), 0, 3), (Some(b), 3, 2)]);
 }
 
 #[test]
@@ -159,14 +186,14 @@ fn netze_und_formen_mischen_sich_nach_aufruf() {
     assert_eq!(
         runs,
         [
-            (Some(t), Kind::Tris, 0, 6),
             (None, Kind::Quads, 0, 1),
-            (None, Kind::Tris, 6, 6),
+            (None, Kind::Tris, 0, 6),
             (None, Kind::Quads, 1, 1),
+            (Some(t), Kind::Tris, 6, 6),
         ]
     );
     assert_eq!(
-        &f.indices()[..6],
+        &f.indices()[6..],
         &[4, 5, 6, 7, 8, 9],
         "zwei Netze, ein Bündel, nach den Polygon-Ecken"
     );
@@ -200,4 +227,95 @@ fn filter_kommt_mit_der_textur() {
     f.texture(&[0; 4], 1, 1);
     let filters: Vec<_> = f.take_pending().map(|p| p.filter).collect();
     assert_eq!(filters, [Filter::Nearest, Filter::Linear]);
+}
+
+#[test]
+fn mischung_trennt_buendel_und_gilt_nur_ein_bild() {
+    // B-1056: Aufrufe mit anderer Mischung bilden eigene Draw-Calls, die Reihenfolge bleibt die der Aufrufe.
+    let mut f = Frame::new();
+    let t = tex(&mut f);
+    let v = |x: f32, y: f32| Vertex {
+        pos: [x, y],
+        uv: [x, y],
+        color: WHITE,
+    };
+    f.begin();
+    f.rect(Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
+    f.blend(Blend::Multiply);
+    f.mesh(t, &[v(0.0, 0.0), v(2.0, 0.0), v(2.0, 2.0)], &[0, 1, 2]);
+    f.mesh(t, &[v(0.0, 0.0), v(2.0, 2.0), v(0.0, 2.0)], &[0, 1, 2]);
+    f.blend(Blend::Over);
+    f.mesh(t, &[v(0.0, 0.0), v(2.0, 0.0), v(2.0, 2.0)], &[0, 1, 2]);
+    f.blend(Blend::Multiply);
+    f.finish();
+    let runs: Vec<_> = f.runs().iter().map(|r| (r.kind, r.blend, r.count)).collect();
+    assert_eq!(
+        runs,
+        [
+            (Kind::Quads, Blend::Over, 1),
+            (Kind::Tris, Blend::Multiply, 6),
+            (Kind::Tris, Blend::Over, 3),
+        ]
+    );
+    f.begin();
+    f.rect(Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
+    f.finish();
+    assert_eq!(f.runs()[0].blend, Blend::Over, "die Mischung gilt nur ein Bild");
+}
+
+fn uniforms(n: f32) -> RiverUniforms {
+    RiverUniforms {
+        origin: [n, 2.0 * n],
+        ..RiverUniforms::default()
+    }
+}
+
+#[test]
+fn river_standard_ist_false() {
+    // B-1070 AC-01: Eine Canvas ohne Überschreibung (NullCanvas) meldet „nicht unterstützt“.
+    let mut c = crate::NullCanvas::default();
+    assert!(!c.river(Rect::new(0.0, 0.0, 4.0, 4.0), &uniforms(1.0)));
+}
+
+#[test]
+fn river_ist_eigener_run_in_aufrufreihenfolge() {
+    // B-1070 AC-02: genau ein Run Kind::River je Aufruf, davor und danach bleibt die Reihenfolge.
+    let mut f = Frame::new();
+    f.begin();
+    f.rect(Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
+    assert!(f.river(Rect::new(5.0, 6.0, 7.0, 8.0), &uniforms(3.0)));
+    f.rect(Rect::new(1.0, 0.0, 1.0, 1.0), WHITE);
+    assert!(f.river(Rect::new(0.0, 0.0, 2.0, 2.0), &uniforms(4.0)));
+    f.finish();
+    let kinds: Vec<_> = f.runs().iter().map(|r| (r.kind, r.first, r.count)).collect();
+    assert_eq!(
+        kinds,
+        [
+            (Kind::Quads, 0, 1),
+            (Kind::River, 0, 1),
+            (Kind::Quads, 1, 1),
+            (Kind::River, 1, 1)
+        ]
+    );
+    let calls = f.river_calls();
+    assert_eq!(calls.len(), 2);
+    assert_eq!(calls[0].dst, Rect::new(5.0, 6.0, 7.0, 8.0));
+    assert_eq!(calls[0].u, uniforms(3.0));
+    assert_eq!(calls[1].u, uniforms(4.0));
+}
+
+#[test]
+fn river_leeres_rechteck_ohne_run_und_clip_bleibt() {
+    let mut f = Frame::new();
+    f.begin();
+    assert!(f.river(Rect::new(0.0, 0.0, 0.0, 5.0), &uniforms(1.0)));
+    assert!(f.river(Rect::new(0.0, 0.0, 5.0, -1.0), &uniforms(1.0)));
+    let clip = Rect::new(1.0, 1.0, 2.0, 2.0);
+    f.clip(Some(clip));
+    f.layer(2);
+    assert!(f.river(Rect::new(0.0, 0.0, 9.0, 9.0), &uniforms(1.0)));
+    f.finish();
+    assert_eq!(f.runs().len(), 1);
+    let r = f.runs()[0];
+    assert_eq!((r.kind, r.layer, r.clip), (Kind::River, 2, Some(clip)));
 }

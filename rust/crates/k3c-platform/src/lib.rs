@@ -15,6 +15,7 @@ mod headless;
 mod input;
 pub mod log;
 mod measure;
+mod river;
 mod runner;
 mod shape;
 mod ttf;
@@ -22,11 +23,12 @@ mod ttf;
 pub use affine::Affine;
 pub use audio::{AudioOut, NullAudio, SoundId, VoiceId, open_audio, open_audio_with};
 pub use backend::{Config, run_window};
-pub use batch::{Frame, INST_BYTES, Inst, Kind, Run, VERT_BYTES, Vertex};
+pub use batch::{Frame, INST_BYTES, Inst, Kind, RiverCall, Run, VERT_BYTES, Vertex};
 pub use clock::{Clock, MAX_STEPS, STEP};
 pub use headless::{NullCanvas, run_headless};
 pub use input::{InputScript, InputState, Key, KeyState, PadAxis, PadButton, PadState, ScriptEntry, ScriptPad};
 pub use measure::{Measure, Summary};
+pub use river::{RiverUniforms, river_fragment};
 pub use runner::Runner;
 pub use ttf::FontId;
 
@@ -56,6 +58,16 @@ pub enum Filter {
     Nearest,
 }
 
+/// Mischung der Quelle mit dem Ziel (wie `ebiten.Blend`, soweit das Spiel sie braucht).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub enum Blend {
+    /// Quelle (vormultipliziert) über das Ziel.
+    #[default]
+    Over,
+    /// Ziel × Quelle je Farbkanal, die Deckkraft des Ziels bleibt (Lichtkarte, `lightdraw.go`).
+    Multiply,
+}
+
 /// Handle einer hochgeladenen Textur.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct TexId(pub u32);
@@ -75,15 +87,18 @@ pub trait App {
 }
 
 /// Zeichenfläche in logischen 1920×1080. Farben und Tönungen sind gerade (nicht vormultipliziert, die Plattform
-/// rechnet um); Texturen sind RGBA8 mit vormultipliziertem Alpha. Zeichenreihenfolge: Ebene → Ausschnitt → Textur (Vollfarbe zuletzt) → Aufruf.
+/// rechnet um); Texturen sind RGBA8 mit vormultipliziertem Alpha. Zeichenreihenfolge: Ebene → Ausschnitt → Aufruf (wie Ebitengine, nie nach Textur umsortiert).
 pub trait Canvas {
     fn size(&self) -> (f32, f32);
     /// Setzt die Ebene der folgenden Aufrufe (Standard 0 je Bild): niedrige Ebenen werden zuerst gezeichnet;
-    /// innerhalb einer Ebene wird nach Ausschnitt und Textur gebündelt, Vollfarbe und Schrift zuletzt.
+    /// innerhalb einer Ebene gilt nach Ausschnitt die Aufrufreihenfolge (hinten nach vorn, auch über Texturen).
     fn layer(&mut self, _z: u32) {}
     /// Beschneidet die folgenden Aufrufe auf `area` (Scissor, logische Einheiten); `None` hebt das auf.
     /// Koordinaten bleiben Fensterkoordinaten (wie `SubImage` bei Ebitengine). Standard je Bild: `None`.
     fn clip(&mut self, _area: Option<Rect>) {}
+    /// Setzt die Mischung der folgenden Aufrufe (Standard je Bild: [`Blend::Over`]). Aufrufe mit anderer Mischung
+    /// bilden eigene Draw-Calls; die Reihenfolge bleibt die der Aufrufe.
+    fn blend(&mut self, _mode: Blend) {}
     /// Lädt RGBA8 mit vormultipliziertem Alpha hoch (Filter linear).
     fn texture(&mut self, rgba: &[u8], w: u32, h: u32) -> TexId {
         self.texture_with(rgba, w, h, Filter::Linear)
@@ -112,14 +127,24 @@ pub trait Canvas {
     fn stroke_line(&mut self, x0: f32, y0: f32, x1: f32, y1: f32, width: f32, color: [f32; 4]);
     /// Gefülltes einfaches Polygon aus Geraden (konvex oder konkav).
     fn fill_path(&mut self, points: &[[f32; 2]], color: [f32; 4]);
+    /// Fluss-Shader (`river.kage`): zeichnet das Rechteck `dst` mit den Uniforms `u`; Clip, Ebene und Reihenfolge wie bei
+    /// [`Canvas::rect`]. `false` = nicht unterstützt, der Aufrufer fällt auf Kacheln zurück.
+    fn river(&mut self, _dst: Rect, _u: &RiverUniforms) -> bool {
+        false
+    }
     /// Pixel-Schrift (5×7, nur Großbuchstaben, Ziffern, Satzzeichen); `px` = Zeichenhöhe. Rückfall, wenn die
     /// TTF-Schrift fehlt.
     fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
     /// Lädt eine TTF-Schrift (z. B. `public/schrift/k3c.ttf`).
     fn font(&mut self, ttf: &[u8]) -> Result<FontId, String>;
-    /// Text in der Schrift `font` mit Pixelgröße `px` (auf ganze Pixel gerundet); `(x, y)` ist die linke obere
+    /// Text in der Schrift `font` mit Pixelgröße `px` (gebrochen, auf 1/64 Pixel gequantelt); `(x, y)` ist die linke obere
     /// Ecke der Zeile, die Grundlinie liegt bei `y` + Oberlänge (wie `text/v2`).
     fn text_font(&mut self, font: FontId, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);
     /// Breite von `s` in Pixeln (Vorschub plus Unterschneidung), im Fenster und headless gleich.
     fn text_width(&self, font: FontId, s: &str, px: f32) -> f32;
+    /// Höhe einer Textzeile in Pixeln: Ober- plus Unterlänge der Schrift (wie `HAscent + HDescent` bei `text/v2`).
+    /// Standard ohne Schrift-Metrik: die Pixelgröße.
+    fn text_height(&self, _font: FontId, px: f32) -> f32 {
+        px
+    }
 }

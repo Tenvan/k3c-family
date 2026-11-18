@@ -5,17 +5,18 @@
 //! Die Fassung wählt die Umgebungsvariable K3C_RIVER (tiles oder shader, Standard shader) als Startwert; im Spiel
 //! schaltet F3 um (view.Settings.River, B-816).
 //!
-//! Abweichung (RU13.2): `k3c-platform::Canvas` kennt keine Shader. `water/river.kage` wird nicht portiert, es gibt
-//! kein `embed`, kein Übersetzen und kein `DrawRectShader`; `RiverWater::ready` ist immer `false`, der Fluss bleibt
-//! bei den Kacheln. Rechnung (Uniforms, Tempo, Lage) ist portiert; der Shader folgt mit dem Ticket „Fluss-Shader in
-//! Rust (WGSL)“.
+//! Abweichung: Es gibt kein `embed`, kein Übersetzen und kein `DrawRectShader`. `river.kage` steht als WGSL im
+//! GPU-Backend der Plattform (B-1072) und als Referenz in Rust (`k3c_platform::river_fragment`, B-1071); hier ruft
+//! `RiverWater::draw` den Canvas-Aufruf `river` (B-1070). Meldet der Canvas `false` (headless, ohne Shader), zeichnet
+//! `draw_river` die Kacheln wie in Go.
 
 use std::f64::consts::PI;
 
 use super::backdrop::Rgba;
-use super::river::{RIVER_ROWS, RiverRow, river_layout};
+use super::river::{RIVER_BASE, RIVER_ROWS, RIVER_WAVE, RiverRow, river_layout};
 use crate::view::cell::Cell;
 use crate::view::settings::{RIVER_SHADER, RIVER_TILES};
+use k3c_platform::{Canvas, Rect, RiverUniforms};
 
 /// RIVER_ENV wählt die Fassung des Flusses (tiles oder shader).
 pub const RIVER_ENV: &str = "K3C_RIVER";
@@ -107,40 +108,46 @@ pub fn water_layout(c: &Cell, t: f64) -> WaterParams {
     p
 }
 
-/// RiverWater hält die Uniform-Puffer; je Zelle werden nur deren Werte überschrieben. Ohne Shader (siehe Kopf) gibt
-/// es kein Shader-Feld: `ready` ist immer `false`.
+/// RiverWater hält die Uniform-Puffer und die vier Farben; je Zelle werden nur die Werte der Puffer überschrieben.
+/// Den Shader selbst besitzt die Plattform: `ready` ist wahr, sobald die Fassung gewählt ist, ob er zeichnet, sagt
+/// erst `Canvas::river`.
 #[derive(Clone, Debug, Default)]
 pub struct RiverWater {
-    /// Übersetzen versucht (gelungen oder nicht)
+    /// Vorbereitet (einmal)
     pub tried: bool,
     pub origin: [f32; 2],
     pub rows: [f32; 4 * RIVER_ROWS],
     pub phase: [f32; 3],
+    /// Grund und Wellen-Band wie die Kacheln, Papier-Schatten und Glanz als Töne derselben Farbe
+    pub colors: [[f32; 3]; 4],
 }
 
 impl RiverWater {
-    /// Init merkt die gewählte Fassung und meldet sie im Log; die Shader-Fassung ist in Rust nie aktiv.
+    /// Init merkt die gewählte Fassung und meldet sie im Log (aktiv ist, was gewählt wurde; fällt der Canvas später
+    /// auf Kacheln zurück, steht das nicht im Log).
     pub fn init(&mut self, mode: RiverMode) {
         if mode == RiverMode::Shader {
             self.build();
         }
         k3c_platform::log::info(
             "🚦 Fluss-Fassung",
-            &[("gewählt", &mode.as_str()), ("aktiv", &RiverMode::Tiles.as_str())],
+            &[("gewählt", &mode.as_str()), ("aktiv", &mode.as_str())],
         );
     }
 
-    /// Build ist das Übersetzen der Quelle (einmal): Es gibt keinen Shader, nur der Versuch wird vermerkt.
+    /// Build legt die Farben an (einmal).
     pub fn build(&mut self) {
         self.tried = true;
+        self.colors = [RIVER_BASE, RIVER_WAVE, RIVER_SHADE, RIVER_GLINT].map(rgb);
     }
 
-    /// Ready meldet, ob die Shader-Fassung zur Verfügung steht: in Rust nie (Kachel-Fassung).
+    /// Ready meldet, ob die Shader-Fassung zur Verfügung steht; bereitet beim ersten Aufruf vor, falls noch nicht
+    /// geschehen. Der Rückfall auf Kacheln entscheidet das Ergebnis von `Canvas::river`.
     pub fn ready(&mut self) -> bool {
         if !self.tried {
             self.build();
         }
-        false
+        true
     }
 
     /// Set schreibt die Parameter p in die Uniform-Puffer.
@@ -156,6 +163,33 @@ impl RiverWater {
         for (i, v) in p.phase.iter().enumerate() {
             self.phase[i] = *v as f32;
         }
+    }
+
+    /// Uniforms ist der Inhalt der Puffer als Aufruf-Parameter des Canvas.
+    pub fn uniforms(&self) -> RiverUniforms {
+        let [base, wave, shade, glint] = self.colors;
+        RiverUniforms {
+            origin: self.origin,
+            rows: self.rows,
+            phase: self.phase,
+            base,
+            wave,
+            shade,
+            glint,
+        }
+    }
+
+    /// Draw zeichnet den Fluss der Zelle zur Zeit t mit einem Canvas-Aufruf; `false`, wenn der Canvas den Shader nicht
+    /// kennt (der Aufrufer zeichnet dann die Kacheln). Eine Zelle ohne sichtbare Fläche zeichnet nichts (`true`).
+    #[allow(clippy::cast_precision_loss)]
+    pub fn draw(&mut self, dst: &mut dyn Canvas, c: &Cell, t: f64) -> bool {
+        let p = water_layout(c, t);
+        if p.w <= 0 || p.h <= 0 || p.rows[0].tile <= 0.0 {
+            return true;
+        }
+        self.set(&p);
+        let r = Rect::new(p.x as f32, p.top as f32, p.w as f32, p.h as f32);
+        dst.river(r, &self.uniforms())
     }
 }
 

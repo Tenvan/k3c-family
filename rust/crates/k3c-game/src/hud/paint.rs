@@ -17,9 +17,9 @@ use crate::art::{Font, OUTLINE8, OutlineCache};
 /// DISC_PX: Kantenlänge der Vorlagen für Scheibe, Ring und Dreieck.
 pub const DISC_PX: u32 = 64;
 
-/// Z_BOX und Z_CONTENT: Ebenen des HUD in der Plattform-Schicht. Sie sortiert je Ebene nach Textur, Vollfarbe und Schrift
-/// zuletzt; Go zeichnet in Aufrufreihenfolge (erst Fläche, dann Inhalt). Darum liegen die Flächen der Boxen auf `Z_BOX`,
-/// alles Übrige (Icons, Text, Scheiben, Balken) auf `Z_CONTENT`, beide über der Welt (`Layer::HUD` mal 100).
+/// Z_BOX und Z_CONTENT: Ebenen des HUD in der Plattform-Schicht. Die Plattform ordnet je Ebene nach Aufruf (B-1058),
+/// wie Go; Flächen der Boxen auf `Z_BOX`, alles Übrige (Icons, Text, Scheiben, Balken) auf `Z_CONTENT`, beide über der
+/// Welt (`Layer::HUD` mal 100), hält die Trennung ausdrücklich.
 pub const Z_BOX: u32 = 800;
 pub const Z_CONTENT: u32 = 801;
 

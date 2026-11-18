@@ -5,11 +5,10 @@
 //! linear verlaufen; darüber die Fackeln (Halter immer, Flamme mit ihrem Schein) und der Übergang nach einem
 //! Stufenwechsel (Abblenden aus Schwarz). Am vollen Tag ohne Übergang zeichnet es nichts.
 //!
-//! Abweichung (RU13.2): `k3c-platform::Canvas` kennt keinen Multiply-Blend (`ebiten.Blend` mit Ziel × Quelle). Die
-//! Lichtkarte wird deshalb gerechnet (`LightMesh::fill`, getestet), aber nicht gezeichnet; Ticket „Canvas: Multiply-Blend
-//! für die Lichtkarte“.
+//! Die Lichtkarte zeichnet `Canvas::blend(Blend::Multiply)` mit `mesh` auf einem weißen 1×1-Bild (B-1056, Go:
+//! `ebiten.Blend` mit Ziel × Quelle, Deckkraft des Ziels bleibt).
 
-use k3c_platform::{Canvas, Vertex};
+use k3c_platform::{Blend, Canvas, Vertex};
 use k3c_sim::state::World as SimWorld;
 
 use super::World;
@@ -89,7 +88,7 @@ impl World {
             return;
         };
         if daylight(&wd.cycle) < 1.0 {
-            self.draw_light_map(c, wd);
+            self.draw_light_map(dst, c, wd);
         }
         self.draw_torches(dst, c, wd);
         let a = self.cams.fade(c.player, f.clock);
@@ -107,10 +106,13 @@ impl World {
         }
     }
 
-    /// DrawLightMap multipliziert die Zelle mit der Lichtfarbe je Spalte: hier nur gerechnet (siehe Kopf), der
-    /// Multiply-Aufruf fehlt im Canvas.
-    pub fn draw_light_map(&mut self, c: &Cell, wd: &SimWorld) {
+    /// DrawLightMap multipliziert die Zelle mit der Lichtfarbe je Spalte.
+    pub fn draw_light_map(&mut self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld) {
         self.mesh.fill(c, &self.light, wd);
+        let pixel = *self.light_pixel.get_or_insert_with(|| dst.texture(&[255; 4], 1, 1));
+        dst.blend(Blend::Multiply);
+        dst.mesh(pixel, &self.mesh.verts, &self.mesh.indices);
+        dst.blend(Blend::Over);
     }
 
     /// DrawTorches zeichnet die sichtbaren Fackeln: Halter aus Holz, darüber die Flamme in glowColor mit der Deckkraft

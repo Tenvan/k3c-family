@@ -1,20 +1,23 @@
-//! Sammlung je Bild: Rechteck-Instanzen (mit Matrix) und Dreiecke, sortiert nach Ebene, Ausschnitt, Textur und
-//! Aufruf; ein Draw-Call je Bündel.
+//! Sammlung je Bild: Rechteck-Instanzen (mit Matrix) und Dreiecke, geordnet nach Ebene, Ausschnitt und Aufruf;
+//! aufeinanderfolgende Aufrufe mit gleicher Textur, Art und Mischung bilden einen Draw-Call (Bündel).
+//!
+//! Innerhalb von Ebene und Ausschnitt gilt die Aufrufreihenfolge wie bei Ebitengine (hinten nach vorn, B-1058);
+//! es wird nicht nach Textur umsortiert, sonst verdeckten sich Figuren verschiedener Sheets falsch.
 //!
 //! Reine CPU-Seite ohne Grafikabhängigkeit; das Backend liest [`Frame::runs`], [`Frame::write_instances`],
 //! [`Frame::write_vertices`] und [`Frame::indices`]. Vollfarbe (Rechtecke, Formen, Pixel-Schrift) trägt den
-//! Schlüssel [`SOLID`] und landet innerhalb von Ebene und Ausschnitt nach allen Texturen (also obenauf).
+//! Schlüssel [`SOLID`] statt einer Textur.
 //! `impl Canvas for Frame` steht in `frame_canvas.rs`.
 
 use crate::shape::Tris;
 use crate::ttf::{Atlas, AtlasUpdate, Fonts};
-use crate::{Filter, Rect, TexId};
+use crate::{Blend, Filter, Rect, RiverUniforms, TexId};
 
 /// Größe einer Instanz in Byte (16 × f32).
 pub const INST_BYTES: usize = 64;
 /// Größe einer Ecke in Byte (8 × f32).
 pub const VERT_BYTES: usize = 32;
-/// Sortierschlüssel der Vollfarbe: hinter allen Texturen.
+/// Textur-Schlüssel der Vollfarbe (keine Textur).
 pub const SOLID: u32 = u32::MAX;
 
 /// Eine Rechteck-Instanz: Einheitsquadrat → `m` (a, b, c, d wie GeoM) plus Verschiebung `t.xy`, Farbe `c`,
@@ -55,6 +58,15 @@ pub enum Kind {
     Quads,
     /// Indizes `first..first+count` aus [`Frame::indices`].
     Tris,
+    /// Fluss-Shader: ein Aufruf aus [`Frame::river_calls`] an der Stelle `first` (`count` ist 1, nie gebündelt).
+    River,
+}
+
+/// Ein Fluss-Aufruf: Rechteck und Uniforms (B-1070).
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct RiverCall {
+    pub dst: Rect,
+    pub u: RiverUniforms,
 }
 
 /// Ein Draw-Call: Ebene, Ausschnitt, Textur (`None` = Vollfarbe) und Bereich.
@@ -65,6 +77,7 @@ pub struct Run {
     pub clip: Option<Rect>,
     pub tex: Option<TexId>,
     pub kind: Kind,
+    pub blend: Blend,
     pub first: u32,
     pub count: u32,
 }
@@ -83,6 +96,8 @@ enum Body {
     Quad(Inst),
     /// Bereich in `raw_idx` (Indizes schon auf `verts` bezogen).
     Tris(u32, u32),
+    /// Index in `raw_rivers`.
+    River(u32),
 }
 
 #[derive(Clone, Copy)]
@@ -91,6 +106,7 @@ struct Item {
     clip: u32,
     tex: u32,
     seq: u32,
+    blend: Blend,
     body: Body,
 }
 
@@ -103,6 +119,8 @@ pub struct Frame {
     verts: Vec<Vertex>,
     raw_idx: Vec<u32>,
     idx: Vec<u32>,
+    raw_rivers: Vec<RiverCall>,
+    rivers: Vec<RiverCall>,
     pub(crate) sizes: Vec<(u32, u32)>,
     pub(crate) pending: Vec<Pending>,
     freed: Vec<TexId>,
@@ -110,6 +128,7 @@ pub struct Frame {
     pub(crate) clips: Vec<Rect>,
     pub(crate) layer: u32,
     pub(crate) clip: u32,
+    pub(crate) blend: Blend,
     pub(crate) tris: Tris,
     pub(crate) fonts: Fonts,
     pub(crate) atlas: Atlas,
@@ -129,18 +148,21 @@ impl Frame {
         self.runs.clear();
         self.verts.clear();
         self.raw_idx.clear();
+        self.raw_rivers.clear();
         self.clips.clear();
         self.layer = 0;
         self.clip = 0;
+        self.blend = Blend::Over;
         self.atlas.begin_frame();
     }
 
-    /// Sortiert nach Ebene, Ausschnitt, Textur, Aufruf und bildet die Draw-Calls; Instanzen und Indizes liegen
-    /// danach je Bündel zusammenhängend.
+    /// Ordnet nach Ebene, Ausschnitt und Aufruf und bildet die Draw-Calls; Instanzen und Indizes liegen danach je
+    /// Bündel zusammenhängend.
     pub fn finish(&mut self) {
-        self.items.sort_unstable_by_key(|i| (i.layer, i.clip, i.tex, i.seq));
+        self.items.sort_unstable_by_key(|i| (i.layer, i.clip, i.seq));
         self.quads.clear();
         self.idx.clear();
+        self.rivers.clear();
         for it in &self.items {
             let (kind, first, count) = match it.body {
                 Body::Quad(inst) => {
@@ -152,16 +174,26 @@ impl Frame {
                     self.idx.extend_from_slice(&self.raw_idx[a as usize..(a + n) as usize]);
                     (Kind::Tris, first, n)
                 }
+                Body::River(i) => {
+                    self.rivers.push(self.raw_rivers[i as usize]);
+                    (Kind::River, self.rivers.len() as u32 - 1, 1)
+                }
             };
             let clip = it.clip.checked_sub(1).map(|c| self.clips[c as usize]);
             let tex = (it.tex != SOLID).then_some(TexId(it.tex));
             match self.runs.last_mut() {
-                Some(r) if (r.layer, r.clip, r.tex, r.kind) == (it.layer, clip, tex, kind) => r.count += count,
+                Some(r)
+                    if kind != Kind::River
+                        && (r.layer, r.clip, r.tex, r.kind, r.blend) == (it.layer, clip, tex, kind, it.blend) =>
+                {
+                    r.count += count;
+                }
                 _ => self.runs.push(Run {
                     layer: it.layer,
                     clip,
                     tex,
                     kind,
+                    blend: it.blend,
                     first,
                     count,
                 }),
@@ -190,6 +222,11 @@ impl Frame {
     /// Indizes der Dreiecke in Zeichenreihenfolge (nach `finish`).
     pub fn indices(&self) -> &[u32] {
         &self.idx
+    }
+
+    /// Fluss-Aufrufe in Zeichenreihenfolge (nach `finish`); ein [`Kind::River`]-Run zeigt mit `first` auf einen.
+    pub fn river_calls(&self) -> &[RiverCall] {
+        &self.rivers
     }
 
     /// Schreibt die Instanzen als Bytes (`INST_BYTES` je Stück) in `out`.
@@ -276,6 +313,12 @@ impl Frame {
         }
     }
 
+    /// Fluss-Aufruf (Vollfarbe-Schlüssel, eigener Run).
+    pub(crate) fn push_river(&mut self, dst: Rect, u: &RiverUniforms) {
+        self.raw_rivers.push(RiverCall { dst, u: *u });
+        self.push(SOLID, Body::River(self.raw_rivers.len() as u32 - 1));
+    }
+
     fn push(&mut self, tex: u32, body: Body) {
         let seq = self.items.len() as u32;
         self.items.push(Item {
@@ -283,6 +326,7 @@ impl Frame {
             clip: self.clip,
             tex,
             seq,
+            blend: self.blend,
             body,
         });
     }
