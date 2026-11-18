@@ -1,6 +1,6 @@
 # RU9.7 · Review Menüs Teil 1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-03 geprüft (Nachweis in der Sprint-README, Abschnitt Abnahme). Dateigrößen ≤ 400 Zeilen; Funktionslänge sichert clippy `too_many_lines`; `native/`, `engine/`, `testdata/golden` unverändert; `testdata/rust/bild/menu/` nur neue Dateien; alle `#[ignore]` nennen RU12; kein Fachmodul importiert den Zeichen-Stack. `Rc`/`RefCell` in `menu/`: `mod.rs` (`Shared`, `Menus.paint`-Zugriff, Library-Probes), `draw.rs` (Page-Cache), `main_screen.rs`, `lobby.rs`, `options.rs`, `controls.rs`, `table.rs` (je `RefCell<Page>` bzw. `Shared`), `HashMap` und `unsafe` kommen nicht vor. `task check` grün; `task check:go`: Tests grün, `golangci-lint` fehlt auf diesem Rechner (requirements.md).
+
+Reviewer `k3c-reviewer` und `k3c-hud`: keine hohen Befunde. Behoben: `dev_build` ohne String-Kopie (`version::is_unset`), Kommentar zur Stapeltiefe (drei statt zwei), Bildtest bricht mit `K3C_STILL_REQUIRE=1` bei fehlender Grafik ab und setzt die Version auch bei Panik zurück.
+
+### Für den Hauptrechner
+- Abnahme-Ticket für Sim, Balance und Gen anlegen (genau eins, mit Zeile „Gerät: PC“: Tastatur und Pad, zwei Spieler in der Lobby, `check:race`, `gen:paper`).
+- Lobby (auch in Go): Verliert Spieler 1 sein Pad, kann kein anderes Gerät abbrechen; Home von Spieler 2 schließt die ganze Lobby statt nur seinen Platz. Ticket.
+- Text in Rust etwa 2 % schmaler als in Go (RU9.6), danach Schwellen in `image_tests.rs` senken.
+- Offene kleine Funde: `has`-Probe in `mod.rs` prüft nicht `Frame(0)` wie Go `hasSheet` (`Painter::has_sheet` nutzen); `backdrop_switches_filter_at_most_once` prüft eine Eigenschaft ohne Wirkung im Rust-Zeichenweg; `default_defeat` bleibt nach einem Lesefehler der `difficulty.json` auf Index 0 (OnceLock).
+- game darf `menu::new` erst nach RU12 einbinden (Stubs in `pending.rs` sind `unimplemented!`); ob game beim Zeichnen noch einen Borrow auf `Library` hält, zeigt sich erst im game-Port (RU26).
+- `golangci-lint` fehlt auf diesem Rechner; `tests/still.rs` ist auch auf `main` rot.

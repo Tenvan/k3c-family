@@ -1,6 +1,6 @@
 # RU9.6 · Bildvergleich der Menü-Seiten gegen das Go-Spiel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -67,5 +67,13 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Bildvergleich Rust gegen Go für vier Menü-Seiten (`menu/image_tests.rs`, Test `menu_pages_match_go_images`): Hauptmenü, Lobby, Optionen, Tasten, 1280×720, Version `v0.24.1-164-g694bffa1`, Tastatur als Gerät; die Anzeige „T 0“ oben rechts ist maskiert. Go-Referenzen liegen in `testdata/rust/bild/menu/*.go.png` (Aufnahme-Modus `--menu <seite> --size 1280x720`). Neu: `menu::new_set` (liefert `MenuSet` mit `main_screen()` und `MenuPages`, löst den Punkt aus RU9.2).
+
+Gemessen: mittlere Abweichung 2,6 bis 3,0 je Kanal, 2,6 bis 2,9 % abweichende Pixel (Toleranz 24); Schwellen 3,5 und 3,5 %. Aufbau, Farben, Illustrationen und Kartenrahmen stimmen. Die Abweichung kommt fast nur vom Text, der in Rust durchgehend etwa 2 % schmaler läuft als in Go.
+
+Die Lizenzen-Seite ist nicht im Vergleich: `licenses()` liefert erst RU12.3 (`licenses.go.png` liegt bereit). Zwei-Geräte-Lobby prüfen schon die Tests aus RU9.4. Das Bild des Tests entsteht nur mit gerenderter Grafik; ohne sie überspringt er mit Hinweis.
+
+### Für den Hauptrechner
+- Befund: Text-Breite in Rust etwa 2 % kleiner als in Go (Hinweis im Hauptmenü 459 statt 468 px, Version 350 statt 358 px). Ursache vermutet in Schriftgröße oder Advance-Rundung im Painter bzw. `art::Font`; messen und angleichen, dann Schwellen in `image_tests.rs` senken. Als Ticket anlegen.
+- Lizenzen-Bild in den Vergleich aufnehmen, sobald RU12.3 `licenses()` liefert.
+- `task check:diff` bleibt im Rust-Teil rot wegen `tests/still.rs` (auch auf `main`).
