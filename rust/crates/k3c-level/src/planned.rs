@@ -7,9 +7,11 @@ use k3c_det::golden::go_float;
 
 use crate::biome::Biome;
 use crate::error::Fehler;
+use crate::guards::check_guards;
 use crate::level::{check_count, hub_chunks_of, is_event};
 use crate::lines::{HubSite, HubSiteRef, sites_of};
-use crate::pending;
+use crate::planned_totals::check_totals;
+use crate::ruins::{check_buildings, check_ruins_across};
 use crate::rules::Rules;
 use crate::types::PlannedChunk;
 
@@ -31,7 +33,6 @@ pub(crate) struct Geometry {
     /// Eingestellte Chunk-Anzahl; 0 = kürzeste Länge des Bioms.
     pub count: i64,
     /// Hub- und Insel-Plätze, gegen die Ruinen geprüft werden.
-    #[allow(dead_code)] // RU6.3: ruins.rs liest die Plätze
     pub sites: Vec<HubSiteRef>,
 }
 
@@ -97,6 +98,16 @@ impl Placed {
     }
 }
 
+/// Go: `%+d`, eine Ganzzahl mit Vorzeichen (`+5`, `-3`).
+pub(crate) fn signed(n: i64) -> String {
+    format!("{n:+}")
+}
+
+/// Go: `%v` auf `[]string`, `[a b c]`.
+pub(crate) fn go_list(items: &[String]) -> String {
+    format!("[{}]", items.join(" "))
+}
+
 /// Go: `hasChunkKind`: Chunk-Arten des Bioms (chunkWeights) und die Ereignis-Arten.
 fn has_chunk_kind(b: &Biome, kind: &str) -> bool {
     kind == "portal" || is_event(kind) || b.chunk_weights.get(kind).is_some()
@@ -155,10 +166,10 @@ fn check_plan(
     let g = geometry_of(b, count, sites_of(sites, &rules.hub_sites));
     let mut st = PlanState::default();
     for c in plan {
-        check_one(c, b, &g, rules, &mut st).map_err(|e| format!("auf Platz {:+}: {e}", c.slot))?;
+        check_one(c, b, &g, rules, &mut st).map_err(|e| format!("auf Platz {}: {e}", signed(c.slot)))?;
     }
-    pending::check_ruins_across(&st.all_ruins, &st.all)?;
-    pending::check_totals(b, &g, plan, &st.all, rules)
+    check_ruins_across(&st.all_ruins, &st.all)?;
+    check_totals(b, &g, plan, &st.all)
 }
 
 /// Prüft einen Chunk des Plans (Art, Objekte, Ruine, Wachen, Eindeutigkeit) und nimmt ihn in `st` auf.
@@ -166,8 +177,8 @@ fn check_one(c: &PlannedChunk, b: &Biome, g: &Geometry, rules: &Rules, st: &mut 
     check_chunk(c, b, g, &st.seen)?;
     st.seen.insert(c.slot);
     let items = check_objects(c, b, g, rules)?;
-    let ruins = pending::check_buildings(c, g, &items, rules)?;
-    pending::check_guards(c, b, g, rules)?;
+    let ruins = check_buildings(c, g, &items, rules)?;
+    check_guards(c, b, g, rules)?;
     mark_spots(&mut st.spots, &[&items, &ruins])?;
     st.all.extend(items);
     st.all_ruins.extend(ruins);
@@ -175,7 +186,7 @@ fn check_one(c: &PlannedChunk, b: &Biome, g: &Geometry, rules: &Rules, st: &mut 
 }
 
 /// Go: `markSpots`, trägt Objekte und Ruinen eines Chunks in `spots` ein; `kind@x` muss je Stufe eindeutig sein.
-fn mark_spots(spots: &mut BTreeSet<(String, u64)>, lists: &[&[Placed]]) -> Result<(), String> {
+pub(crate) fn mark_spots(spots: &mut BTreeSet<(String, u64)>, lists: &[&[Placed]]) -> Result<(), String> {
     for list in lists {
         for it in *list {
             if !spots.insert(it.spot()) {

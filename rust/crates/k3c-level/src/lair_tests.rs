@@ -1,16 +1,16 @@
 use super::check_lair_fit;
 use crate::biome::Range;
+use crate::planned_gen::Options;
 use crate::testutil::{
-    TestOptions, biome, biome_ids, camp_behind_portal, check_camp, count_entities, generate, generate_with,
-    validate_with,
+    biome, biome_ids, camp_behind_portal, check_camp, count_entities, generate, generate_with, validate_with,
 };
 
 // Bau in der tiefsten Stufe jedes Bioms (B-981/AC-02): Options.Lair legt ihn fest, das Biom-Feld ist nur der Standard.
 
-fn lair(on: bool) -> TestOptions {
-    TestOptions {
+fn lair(on: bool) -> Options {
+    Options {
         lair: Some(on),
-        ..TestOptions::default()
+        ..Options::default()
     }
 }
 

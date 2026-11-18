@@ -1,31 +1,9 @@
-use super::{geometry_of, validate_plan};
+use super::geometry_of;
 use crate::biome::Biome;
-use crate::testutil::{biome, rules};
+use crate::testutil::{biome, obj, p, plain, plan_ok, rules};
 use crate::types::{PlannedChunk, PlannedObject};
 
-fn p(slot: i64, kind: &str, objects: &[PlannedObject]) -> PlannedChunk {
-    PlannedChunk {
-        slot,
-        kind: kind.into(),
-        objects: objects.to_vec(),
-        ..PlannedChunk::default()
-    }
-}
-
-fn obj(kind: &str, at: f64) -> PlannedObject {
-    PlannedObject { kind: kind.into(), at }
-}
-
-fn plain(kind: &str, slots: &[i64]) -> Vec<PlannedChunk> {
-    slots.iter().map(|&s| p(s, kind, &[])).collect()
-}
-
-fn plan_ok(b: &Biome, plan: &[PlannedChunk]) -> Result<(), String> {
-    validate_plan(b, plan, rules()).map_err(|e| e.to_string())
-}
-
 #[test]
-#[ignore = "wartet auf RU6.3"]
 fn validate_plan_gueltig() {
     let (forest, crystal) = (biome("forest"), biome("crystal"));
     let seed = PlannedChunk {
@@ -189,7 +167,6 @@ fn cases_totals(forest: &Biome, mine: &Biome) -> Vec<Case> {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.3"]
 fn validate_plan_lehnt_ab() {
     let (forest, crystal, mine) = (biome("forest"), biome("crystal"), biome("mine"));
     let mut cases = cases_chunk(&forest, &mine);
@@ -214,7 +191,6 @@ fn validate_plan_nennt_den_platz() {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.3"]
 fn validate_plan_mine_mit_freiem_platz() {
     if let Err(e) = plan_ok(&biome("mine"), &plain("shaft", &[1])) {
         panic!("ein geplanter Chunk in der Mine lässt Platz: {e}");

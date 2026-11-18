@@ -4,7 +4,8 @@ use serde_json::{Value, json};
 
 use super::{merge_nature, scale_count};
 use crate::biome::load_biome;
-use crate::testutil::{TestOptions, biome, biome_ids, count_entities, generate_nature, generate_with, validate};
+use crate::planned_gen::Options;
+use crate::testutil::{biome, biome_ids, count_entities, generate_nature, generate_with, validate};
 use crate::types::{Layout, NatureValues};
 
 fn traits(list: &[(&str, i64)]) -> NatureValues {
@@ -144,9 +145,9 @@ fn natur_feste_werte_abgelehnt() {
         ("Gruppe", weights("pilze", &[("a", 1)])),
     ];
     for (name, v) in cases {
-        let o = TestOptions {
+        let o = Options {
             nature: v,
-            ..TestOptions::default()
+            ..Options::default()
         };
         assert!(generate_with(&b, "x", &o).is_err(), "{name}: nicht abgelehnt");
     }
