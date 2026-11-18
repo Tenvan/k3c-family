@@ -336,6 +336,20 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
 - Ticketnummern: `plan_create` kennt nur den eigenen Checkout. Vor dem Anlegen `git fetch` und die höchste Nummer aller offenen Branches prüfen
   (`git ls-tree -r --name-only <branch> docs/backlog`), sonst vergeben zwei Branches dieselbe Nummer.
 
+### Second Worker (zweiter Rechner, Lane `zweit`)
+
+Ein zweiter Rechner mit kleinerem Account arbeitet einfache autonome Sprints ab; Abstimmung nur über `origin` (🧑 2026-11-18).
+
+- **Zuteilung:** Sessions mit `Lane: zweit` gehören dem Second Worker, alle anderen dem Hauptrechner. Der Hauptrechner
+  vergibt die Lane; der Second Worker nimmt nie Sessions ohne `Lane: zweit`. Geeignet sind Oberflächen-Ports mit eigenem
+  Ordner (`menu/`, `hud/`, `devtools/`), nicht Sim, Level, Plattform oder Planung über mehrere Sprints.
+- **Start je Session:** `git fetch`, Branch `sprint/<präfix>` von `origin/sprint/<präfix>` oder `origin/main`, nächste offene Session
+  mit `Lane: zweit` und erledigten Abhängigkeiten (`plan_list {projekt: "RSU", status: "aktiv"}`). Ein Commit je Session, Push nach jeder Session.
+- **Abschluss:** Review-Session des Sprints öffnet den PR gegen `main` und mergt ihn nach grüner Prüfung (`gh pr merge --squash --auto`).
+- **Keine Tickets und Sprints anlegen:** Befunde schreibt der Second Worker ins Ergebnis seiner Session (Abschnitt „Für den
+  Hauptrechner“); der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
+- **Gemeinsame Dateien** (`Cargo.lock`, `lib.rs`-Modulzeilen, Indizes): vor dem Push `git merge origin/main`; Index-Konflikte über `plan_index` lösen.
+
 ## Projekte und Rang
 
 Ein **Projekt** bündelt die Sprints eines Themas (z. B. Grafik, Sound, Leistung & Stabilität) in fester Reihenfolge.

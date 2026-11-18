@@ -41,10 +41,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU17 | Effekte und Ton im Spiel | erledigt |
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | erledigt |
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | erledigt |
-| RU6 | Level-Generator in Rust, Level-Golden bitgleich | geplant |
-| RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | geplant |
-| RU11 | Sim: Einheiten und Gegner | geplant |
-| RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | geplant |
+| RU6 | Level-Generator in Rust, Level-Golden bitgleich | aktiv |
+| RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | aktiv |
+| RU11 | Sim: Einheiten und Gegner | aktiv |
+| RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | aktiv |
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | geplant |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | geplant |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | geplant |
