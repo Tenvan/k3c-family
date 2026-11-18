@@ -5,7 +5,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::data::{CombatMode, combat_mode};
-use super::pending::{free_warriors, leaders_of, send_groups, take_banner};
+use super::squad::{free_warriors, leaders_of, send_groups, take_banner};
 use super::squad_target;
 use crate::state::common::outer_wall;
 use crate::state::pending::{count_fetching, crowned};

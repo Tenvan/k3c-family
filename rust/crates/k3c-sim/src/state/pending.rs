@@ -17,6 +17,7 @@ use super::{Player, Site, World};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
+pub use crate::combat::squad::count_fetching; // Von RU15 portiert (combat_squad.go)
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
 pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
 pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
@@ -141,11 +142,6 @@ pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
 pub fn hub_steps(_w: &World) -> i64 {
     unimplemented!("RU18: hub_steps")
-}
-
-/// Go: `countFetching` (combat.go): Zahl der Truppen, die gerade ihr Schild holen.
-pub fn count_fetching(_w: &World) -> i64 {
-    unimplemented!("RU15: count_fetching")
 }
 
 /// Go: `applyPortals` (portal.go): übernimmt die zerstörten Portale eines gespeicherten Hubs.

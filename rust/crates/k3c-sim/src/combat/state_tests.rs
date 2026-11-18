@@ -6,7 +6,6 @@ use super::testutil::{combat_stage, spawn_soldiers, spot_for, vals};
 use super::{SpotKind, combat_cost};
 
 #[test]
-#[ignore = "wartet auf RU15 (Gruppen, RU15.3: `free_warriors`, `leaders_of`)"]
 fn combat_spot_state_je_monarch() {
     let (mut w, _, right) = combat_stage(COMBAT_GROUPS);
     spawn_soldiers(&mut w, 1);

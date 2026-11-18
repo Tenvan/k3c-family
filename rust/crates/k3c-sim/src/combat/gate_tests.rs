@@ -84,7 +84,6 @@ fn schild_erst_ab_hub_stufe_mit_gestell() {
 }
 
 #[test]
-#[ignore = "wartet auf RU15 (Gruppen, RU15.3: `free_warriors`)"]
 fn gestell_stapel_begrenzt_und_zahlt_nicht_ueber_max() {
     let (mut w, _, _) = combat_stage(COMBAT_GROUPS);
     spawn_soldiers(&mut w, 8);

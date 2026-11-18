@@ -7,11 +7,11 @@
 //! `spots.rs` hält die Zahlziele (erster Teil von `combat.go`), hier stehen der Takt und die Posten der Trupps.
 
 pub mod data;
-pub mod pending;
 pub mod spots;
+pub mod squad;
 
 use data::{CombatMode, combat_mode};
-use pending::{step_banners, step_groups};
+use squad::{step_banners, step_groups};
 
 use crate::state::common::troop_by_id;
 use crate::state::{Player, Troop, World, WorldValues};
@@ -25,9 +25,9 @@ pub use spots::{
 /// Angriffsflag setzen.
 pub fn step_combat(w: &mut World, v: &WorldValues) {
     if combat_mode(v) == CombatMode::General {
-        step_banners(w);
+        step_banners(w, v);
     } else {
-        step_groups(w);
+        step_groups(w, v);
     }
     for ti in 0..w.troops.len() {
         if w.troops[ti].group != 0 {
@@ -130,11 +130,15 @@ pub fn squad_post(w: &World, v: &WorldValues, t: &Troop) -> Option<f64> {
 }
 
 #[cfg(test)]
+mod data_tests;
+#[cfg(test)]
 mod gate_tests;
 #[cfg(test)]
 mod real_tests;
 #[cfg(test)]
 mod review_tests;
+#[cfg(test)]
+mod squad_tests;
 #[cfg(test)]
 mod state_tests;
 #[cfg(test)]
