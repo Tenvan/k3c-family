@@ -169,6 +169,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU36 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
 | [B-1109](B-1109-rust-start-grafik-aller-biome-im-speicher.md) | CLI | Schuld | mittel | offen | RU30 | Rust-Start lädt die Grafik aller Biome auf einmal (ohne Loader und Ladeanzeige je Stufe) |
 | [B-1105](B-1105-abnahme-laeufe-ru22-durchsatz.md) | SIM | Schuld | mittel | offen | RU22 | Abnahme-Läufe RU22: Durchsatz Rust gegen Go, Sim und Race (Lane: zweit) |
+| [B-1110](B-1110-native-json-bruchwerte.md) | CLI | Schuld | niedrig | offen | RU29 | Rust liest data/native.json mit i64-Feldern, Go mit float64 (Chronik, Wert 0) |
 
 ## Archiv
 

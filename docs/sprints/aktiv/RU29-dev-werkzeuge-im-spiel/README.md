@@ -88,7 +88,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU29.1 | `RU29.1-devtools-cheats.md` | Umsetzung | autonom | fertig |
-| RU29.2 | `RU29.2-devtools-chronicle.md` | Umsetzung | autonom | offen |
+| RU29.2 | `RU29.2-devtools-chronicle.md` | Umsetzung | autonom | fertig |
 | RU29.3 | `RU29.3-devtools-debug-help-values.md` | Umsetzung | autonom | offen |
 | RU29.4 | `RU29.4-review.md` | Review | autonom | offen |
 

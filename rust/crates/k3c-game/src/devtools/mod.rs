@@ -28,10 +28,15 @@ use crate::view::session::Session;
 pub mod cheatlist;
 pub mod cheatmenu;
 pub mod cheats;
+pub mod chronicle;
+pub mod chronicle_stage;
 pub mod pending;
+pub mod report;
 
 #[cfg(test)]
 mod cheats_tests;
+#[cfg(test)]
+mod chronicle_tests;
 
 /// Farbe als RGBA (Go: `color.RGBA`, vormultipliziert).
 pub type Rgba = [u8; 4];
