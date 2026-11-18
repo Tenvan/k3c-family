@@ -6,6 +6,7 @@ pub mod action_view;
 pub mod common;
 pub mod data;
 pub mod fehler;
+pub mod island_ref;
 pub mod node_mark;
 pub mod omit;
 pub mod pending;
@@ -22,6 +23,7 @@ pub mod types_things;
 pub mod types_world;
 
 pub use fehler::Fehler;
+pub use island_ref::IslandRef;
 pub use save::{HubSave, PlayerSave, SaveGame, SiteSave, TroopSave};
 pub use save_economy::{CraftSave, PlotSave};
 pub use shared::{
