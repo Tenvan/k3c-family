@@ -36,3 +36,5 @@ mod lava_tests;
 mod level_tests;
 #[cfg(test)]
 mod testutil;
+#[cfg(test)]
+mod vergleich_go_tests;
