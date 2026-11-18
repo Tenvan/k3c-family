@@ -45,20 +45,3 @@ impl Room {
         }
     }
 }
-
-/// Aus `dev_combat.go` (RU24.2).
-impl Room {
-    /// Go: `devCombat`: Kampf-Aktionen (`boss`, `event`, `bossPhase`, `night`, `spawn`, `spawnCastle`, B-603, B-766). Eine
-    /// Aktion ist bis RU24.2 abgelehnt (`None`), die Kampf-Aktionen warten auf RU24.2.
-    pub fn dev_combat(
-        &mut self,
-        _env: &mut Env,
-        _who: &str,
-        a: &super::dev::DevAction,
-        _map: &super::dev::SlotMap,
-    ) -> Option<super::dev::Attrs> {
-        // Bis RU24.2 lehnt der Raum auch die Kampf-Aktionen ab (BadRequest) statt abzubrechen.
-        let _ = a;
-        None
-    }
-}

@@ -87,6 +87,7 @@ impl<S: Store, L: Log> Manager<S, L> {
         let now = (self.now)();
         let env = Env {
             now,
+            clock: &mut *self.now,
             data: &self.data,
             store: &mut self.store,
             log: &mut self.log,

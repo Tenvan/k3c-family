@@ -1,6 +1,9 @@
 //! Tests aus `room_test.go`: `join` auf dem Raum läuft hier direkt, `Manager` in `manager_tests.rs`, Aktionen und Takt in
-//! `actions_tests.rs`; Stufen und Speicher-Takt (RU24) und neue Insel-Spieler (RU18) warten.
-use super::testutil::{Fixture, peer, room};
+//! `actions_tests.rs`; Speichern und neue Insel-Spieler über den Manager mit neuer Insel.
+use k3c_sim::island::ISLAND_SAVE_VERSION;
+
+use super::save_testutil::saved;
+use super::testutil::{Fixture, create_room, join_room, manager, move_to_exit, peer, rm, room, ticks};
 use super::{Fehler, MAX_MONARCHS, MonarchState, Peer, TEST_PREFIX, valid_slots};
 
 fn join(f: &mut Fixture, r: &mut super::Room, id: &str, p: Box<dyn Peer>, slots: &[i64]) -> Result<(), Fehler> {
@@ -155,12 +158,6 @@ fn save_now_meldet_fehler() {
     assert_eq!(r.save_now(&mut f.env()), Err(Fehler::Closed));
 }
 
-// `save_now` schreibt den Spielstand der Insel über den Store (`Island::to_save` braucht die Level-Erzeugung der Sim,
-// die mit `create_island` aus RU18 kommt; die Test-Insel von Hand kann sie nicht kodieren).
-#[test]
-#[ignore = "wartet auf RU18"]
-fn save_now_schreibt_den_stand() {}
-
 // B-086: Ein Testraum (Präfix test-) löscht beim Aufräumen seinen Spielstand, andere Räume behalten ihn.
 #[test]
 fn test_raum_loescht_spielstand() {
@@ -190,13 +187,58 @@ fn push_state_schickt_level_nur_einmal() {
     assert_eq!(xi.log().iter().filter(|e| e.starts_with("state")).count(), 2);
 }
 
-// Der Raum legt einen neuen Insel-Spieler an, wenn kein Monarch frei ist (`add_island_player`, braucht `preset_for`).
+// `save_now` schreibt den Spielstand der Insel über den Store: Version 9, die Spieler mit ihrer Tiefe.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn assign_legt_neuen_spieler_an() {}
+fn save_now_schreibt_den_stand() {
+    let (mut m, _) = manager();
+    let (code, _xi) = create_room(&mut m, "xbox", 1, "sofort", 0, &[0]);
+    assert_eq!(m.with_room(&code, |r, env| r.save_now(env)), Some(Ok(String::new())));
+    assert_eq!(m.store.saves, 1);
+    let s = saved(&m, "sofort");
+    assert_eq!(
+        (s.version, s.campaign_id.starts_with("sofort-")),
+        (ISLAND_SAVE_VERSION, true)
+    );
+    assert_eq!((s.players.len(), s.players[0].depth), (1, 0), "Spieler im Stand");
+}
 
-// Manager-Tests stehen in `manager_tests.rs`, Aktionen und Takt in `actions_tests.rs`; Stufen und Speicher-Takt kommen mit RU24.
-
+// Der Raum legt einen neuen Insel-Spieler an, wenn kein Monarch frei ist (`add_island_player`), in der Stufe des Geräts.
 #[test]
-#[ignore = "wartet auf RU24"]
-fn speicherzeitpunkte() {} // Stufenwechsel und Speichern im Takt: RU24
+fn assign_legt_neuen_spieler_an() {
+    let (mut m, _) = manager();
+    let (code, _xi) = create_room(&mut m, "xbox", 1, "neu", 0, &[0]);
+    let _hi = join_room(&mut m, "handy", 2, &code, &[0, 1]);
+    let r = rm(&mut m, &code);
+    assert_eq!(r.monarchs.len(), 3, "Monarchen");
+    let players: Vec<i64> = r.isl.stages[0].players.iter().map(|p| p.index).collect();
+    assert_eq!(players, [0, 1, 2], "Insel-Spieler in Stufe 0");
+    assert_eq!(r.devices["handy"].slots.values().copied().collect::<Vec<_>>(), [1, 2]);
+}
+
+// Stufenwechsel speichert (nach dem Tick), Herunterfahren speichert noch einmal und schließt alle Geräte (Go
+// `TestSpeicherzeitpunkte`).
+#[test]
+fn speicherzeitpunkte() {
+    let (mut m, _) = manager();
+    let (code, mut xi) = create_room(&mut m, "xbox", 1, "reise", 0, &[0]);
+    let saves = m.store.saves;
+    move_to_exit(rm(&mut m, &code), 0);
+    ticks(&mut m, &code, 70); // 2 s am Tiefen-Eingang
+    assert_eq!(rm(&mut m, &code).isl.stage_of(0), Some(1), "Stufenwechsel");
+    assert_eq!(m.store.saves, saves + 1, "Speicherungen beim Stufenwechsel");
+    assert!(xi.has("level 1"), "{:?}", xi.log());
+    let s = saved(&m, "reise");
+    assert!(
+        s.version == ISLAND_SAVE_VERSION && s.stages.len() == 5 && s.players[0].depth == 1,
+        "gespeicherter Stand: {:?}",
+        s.players
+    );
+    let mut hi = join_room(&mut m, "handy", 2, &code, &[0]);
+    m.close();
+    assert_eq!(m.store.saves, saves + 2, "Beenden");
+    assert!(
+        xi.has("closed") && hi.has("closed") && m.rooms.is_empty(),
+        "{:?}",
+        xi.log()
+    );
+}

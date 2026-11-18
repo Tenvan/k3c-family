@@ -36,6 +36,8 @@ pub type SnapshotFn = fn(&World, i64, bool) -> serde_json::Value;
 pub struct Env<'a> {
     /// Die Uhr des Manager zu Beginn des Aufrufs (Wanduhr, nur für Fristen und Stempel, nicht für den Spielverlauf).
     pub now: Stamp,
+    /// Die Uhr des Managers selbst: misst Dauern innerhalb eines Aufrufs (Speicherdauer im Log, `saver.rs`).
+    pub clock: &'a mut dyn FnMut() -> Stamp,
     /// Spiel-Daten des Managers (Schwierigkeitsgrade für `step_island`).
     pub data: &'a Data,
     pub store: &'a mut dyn Store,

@@ -1,5 +1,7 @@
 //! Test aus `victory_test.go`: `victory` meldet den Tick, in dem die Insel gewonnen wird, genau einmal (B-813).
-use super::testutil::room;
+use super::Options;
+use super::save_testutil::create_with;
+use super::testutil::{manager, rm, room, ticks};
 
 #[test]
 fn victory_gibt_den_merker_des_letzten_ticks_wieder() {
@@ -9,7 +11,20 @@ fn victory_gibt_den_merker_des_letzten_ticks_wieder() {
     assert!(r.victory());
 }
 
-// Room::tick: Sieg im Tick des Ziels, nicht im Folgetick. Braucht eine Insel mit Ziel (`create_in`, RU24).
+// Room::tick: Sieg im Tick des Ziels, nicht im Folgetick (Ziel `gold`).
 #[test]
-#[ignore = "wartet auf RU24"]
-fn victory_einmal() {}
+fn victory_einmal() {
+    let (mut m, _) = manager();
+    let opts = Options {
+        goal: "gold".into(),
+        ..Options::default()
+    };
+    let (code, _xi) = create_with(&mut m, "x", 1, "stand", true, opts);
+    ticks(&mut m, &code, 1);
+    assert!(!rm(&mut m, &code).victory(), "Sieg ohne erreichtes Ziel");
+    rm(&mut m, &code).isl.gold_collected = 1 << 20;
+    ticks(&mut m, &code, 1);
+    assert!(rm(&mut m, &code).victory(), "Sieg im Tick des Ziels nicht gemeldet");
+    ticks(&mut m, &code, 1);
+    assert!(!rm(&mut m, &code).victory(), "Sieg im Folgetick erneut gemeldet");
+}

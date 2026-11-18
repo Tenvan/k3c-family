@@ -1,7 +1,6 @@
 //! Hilfen der Raum-Tests (Go: `memstore_test.go`, der `peer` und `fixture` aus `room_test.go`): Spielstand-Speicher im
 //! Speicher, mitschreibender Peer, feste Uhr und eine kleine Insel. Kein `Mutex`, kein `Rc`: der Peer meldet über einen
 //! Kanal, den der Test im `Inbox` ausliest.
-use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, OnceLock};
@@ -11,39 +10,13 @@ use k3c_level::types::Layout;
 use k3c_sim::island::{Island, IslandOptions, STANDARD_WORLD_ID};
 use k3c_sim::state::{Player, World};
 
-use super::env::{Env, Store};
+use super::env::Env;
 use super::log::RecordingLog;
 use super::manager::Manager;
+pub use super::memstore::MemStore;
 use super::types::{MonarchState, Options, Peer, Room, Seat};
 use super::{free_monarchs, start_stage};
-use crate::fehler::Fehler;
 use crate::store::Stamp;
-
-/// Spielstand-Speicher im Speicher (Go `memStore`).
-#[derive(Debug, Default)]
-pub struct MemStore {
-    pub data: BTreeMap<String, Vec<u8>>,
-    pub saves: usize,
-    pub deleted: Vec<String>,
-}
-
-impl Store for MemStore {
-    fn load(&mut self, name: &str) -> Result<Vec<u8>, Fehler> {
-        self.data.get(name).cloned().ok_or(Fehler::NotFound)
-    }
-
-    fn store(&mut self, name: &str, data: &[u8]) -> Result<String, Fehler> {
-        self.data.insert(name.to_string(), data.to_vec());
-        self.saves += 1;
-        Ok(String::new())
-    }
-
-    fn delete(&mut self, name: &str) -> Result<(), Fehler> {
-        self.data.remove(name);
-        self.deleted.push(name.to_string());
-        Ok(())
-    }
-}
 
 enum Ev {
     Entry(String),
@@ -208,21 +181,26 @@ pub struct Fixture {
     pub log: RecordingLog,
     pub now: Stamp,
     pub data: Arc<Data>,
+    /// Die Uhr für Dauern (`Env::clock`): steht still auf `now` beim Anlegen.
+    clock: Box<dyn FnMut() -> Stamp>,
 }
 
 impl Fixture {
     pub fn new() -> Fixture {
+        let now = Stamp::from_civil(2026, 10, 1, 12, 0, 0, 0);
         Fixture {
             store: MemStore::default(),
             log: RecordingLog::default(),
-            now: Stamp::from_civil(2026, 10, 1, 12, 0, 0, 0),
+            now,
             data: test_data(),
+            clock: Box::new(move || now),
         }
     }
 
     pub fn env(&mut self) -> Env<'_> {
         Env {
             now: self.now,
+            clock: &mut *self.clock,
             data: &self.data,
             store: &mut self.store,
             log: &mut self.log,

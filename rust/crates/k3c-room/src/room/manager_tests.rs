@@ -191,8 +191,28 @@ fn zeit_laeuft_ueber_die_uhr_des_managers() {
     assert_eq!((m.now)().since_nanos(a), 61_000_000_000);
 }
 
-// AC-03: Anlegen aus `testdata/saves/v9/familie.json` startet einen Raum. `Manager::load_in` (RU24) braucht die Insel aus
-// einem Spielstand (`from_island_save`), und die Stufen entstehen über `create_world` (`new_hub_site`, RU18).
+// AC-03: Anlegen aus `testdata/saves/v9/familie.json` startet einen Raum mit den Spielern des Stands als freie Monarchen
+// (das Gerät nimmt den ersten), in der gespeicherten Welt.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn anlegen_aus_spielstand_v9() {}
+fn anlegen_aus_spielstand_v9() {
+    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../../testdata/saves/v9/familie.json");
+    let raw = std::fs::read(path).expect("familie.json");
+    let file: serde_json::Value = serde_json::from_slice(&raw).expect("JSON");
+    let (mut m, _) = manager();
+    m.store.data.insert("familie".into(), raw);
+    let code = create(&mut m, "xbox", "familie", false, &[0], Options::default()).expect("create");
+    let r = m.room(&code).expect("Raum");
+    let players = file["players"].as_array().map_or(0, Vec::len);
+    assert!(
+        players > 0 && r.monarchs.len() == players,
+        "Monarchen {} statt {players}",
+        r.monarchs.len()
+    );
+    assert_eq!(
+        r.isl.stages.len(),
+        file["stages"].as_array().map_or(0, Vec::len),
+        "Stufen"
+    );
+    assert_eq!(r.isl.world_id(), "standard", "Welt");
+    assert_eq!(r.connected(), 1);
+}

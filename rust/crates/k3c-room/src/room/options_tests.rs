@@ -1,9 +1,10 @@
 //! Tests aus `options_test.go`. Die Optionen-Logik (`island_options`, `set_options`, `live_grade`) läuft direkt; `create`
-//! mit neuer Insel und das Laden brauchen `create_in` und `load_in` (RU24).
+//! mit neuer Insel prüft `anlegen_prueft_optionen_ueber_create` (wartet), Speichern und Laden läuft über den Manager.
 use k3c_sim::island::set_options;
 
 use super::Options;
-use super::testutil::{island, manager};
+use super::save_testutil::create_with;
+use super::testutil::{island, manager, rm};
 
 // Name, Dev-Mode, Optionen, erwartet Grad, Ziel, Niederlage (Grad leer = bad_request).
 type Case = (&'static str, bool, Options, &'static str, &'static str, &'static str);
@@ -91,7 +92,19 @@ fn dev_stand_im_live_modus() {
 #[ignore = "wartet auf RU24"]
 fn anlegen_prueft_optionen_ueber_create() {}
 
-// create, close, create aus dem Stand: die Optionen aus dem Stand gelten.
+// create, close, create aus dem Stand: die Optionen aus dem Stand gelten, die aus `create` werden ignoriert.
 #[test]
-#[ignore = "wartet auf RU24"]
-fn optionen_ueberleben_speichern_und_laden() {}
+fn optionen_ueberleben_speichern_und_laden() {
+    let (mut f, _) = manager();
+    create_with(&mut f, "x", 1, "stand", true, o("hard", "days", "stage"));
+    f.close();
+    let (mut g, _) = manager();
+    g.store = std::mem::take(&mut f.store);
+    let (code, _xi) = create_with(&mut g, "x", 2, "stand", false, o("easy", "gold", ""));
+    let opts = &rm(&mut g, &code).isl.options;
+    assert_eq!(
+        (opts.grade.as_str(), opts.goal.as_str(), opts.defeat.as_str()),
+        ("hard", "days", "stage"),
+        "Optionen nach dem Laden"
+    );
+}

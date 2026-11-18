@@ -4,7 +4,7 @@
 //! `night`, `dawn`, B-232); `grade` braucht `grade` (Name aus `data/difficulty.json`, gilt ab der nächsten Welle, B-080).
 //! `maxStock` (+100 je Aufruf), `fillStock` und `nextPhase` brauchen nichts; `cheapBuild` und `timescaleAuto` brauchen
 //! `on`, `buildAll` braucht `level` (1 bis 5), `pure` braucht `on` (reiner Stressmodus, B-921). Kampf (B-603,
-//! `dev_combat.go`, RU24.2): `boss`, `event`, `bossPhase`, `night`, `spawn`, `spawnCastle` (siehe `pending.rs`).
+//! `dev_combat.rs`): `boss`, `event`, `bossPhase`, `night`, `spawn`, `spawnCastle`.
 //! `dev_extra.rs` führt die selteneren Aktionen aus.
 use std::collections::BTreeMap;
 use std::fmt::Display;

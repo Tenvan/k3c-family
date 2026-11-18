@@ -14,12 +14,17 @@ mod actions;
 #[cfg(test)]
 mod actions_tests;
 #[cfg(test)]
+mod autosave_tests;
+#[cfg(test)]
 mod depths_tests;
 #[cfg(test)]
 mod determinism_tests;
 mod dev;
 #[cfg(test)]
 mod dev_castlefall_tests;
+mod dev_combat;
+#[cfg(test)]
+mod dev_combat_tests;
 mod dev_extra;
 #[cfg(test)]
 mod dev_grade_tests;
@@ -31,6 +36,13 @@ mod early;
 mod env;
 #[cfg(test)]
 mod events_tests;
+mod fullsave;
+#[cfg(test)]
+mod fullsave_rules_tests;
+#[cfg(test)]
+mod fullsave_tests;
+#[cfg(test)]
+mod gameover_save_tests;
 mod info;
 #[cfg(test)]
 mod island_etappe_tests;
@@ -47,6 +59,8 @@ mod manager;
 #[cfg(test)]
 mod manager_tests;
 #[cfg(test)]
+mod memstore;
+#[cfg(test)]
 mod options_tests;
 mod pause;
 #[cfg(test)]
@@ -61,6 +75,13 @@ mod run;
 mod run_tests;
 #[cfg(test)]
 mod safetick_tests;
+#[cfg(test)]
+mod save_tests;
+#[cfg(test)]
+mod save_testutil;
+mod saver;
+#[cfg(test)]
+mod saver_tests;
 mod stages;
 #[cfg(test)]
 mod stages_tests;
@@ -79,12 +100,14 @@ mod worlds_tests;
 
 pub use dev::{DEV_MAX_AMOUNT, DevAction, MAX_TIMESCALE, SlotMap};
 pub use env::{Env, SnapshotFn, Store};
+pub use fullsave::FULL_SAVE_PREFIX;
 pub use info::Info;
 pub use log::{Level, Log, NullLog, RecordingLog, list_text, short};
 pub use manager::{CODE_LETTERS, Manager};
 pub use pause::PROTECT_TICKS;
 pub use pending::Metrics;
 pub use run::Failure;
+pub use saver::{InlineWriter, SLOW_SAVE_MS, SaveWriter, write_save};
 pub use stages::{free_monarchs, start_stage};
 pub use status::{DeviceInfo, StageStatus, Status, Summary, TickMs, unique_prefixes};
 pub use types::*;
@@ -147,6 +170,7 @@ impl Room {
             slow_logged: None,
             slow_count: 0,
             save_due: 0,
+            saves: Box::new(InlineWriter::default()),
         }
     }
 
@@ -330,62 +354,5 @@ impl Room {
                 &[("room", &self.code), ("save", &self.name), ("err", &e)],
             );
         }
-    }
-
-    /// Die Insel ist komplett verloren: der Raum speichert nicht mehr (B-344).
-    pub fn game_over(&self, env: &mut Env) -> bool {
-        if !self.isl.over {
-            return false;
-        }
-        self.log(
-            env,
-            Level::Info,
-            "🚫 Spielstand nicht gespeichert, Insel komplett verloren",
-            &[("tick", &self.tick)],
-        );
-        true
-    }
-
-    /// Kodiert den Spielstand der Insel als JSON (Format wie Go, Version 9).
-    pub fn encode(&self, env: &Env) -> Result<Vec<u8>, Fehler> {
-        let save = self
-            .isl
-            .to_save(&env.now.format_report())
-            .map_err(|e| Fehler::Io(e.to_string()))?;
-        serde_json::to_vec(&save).map_err(|e| Fehler::Io(e.to_string()))
-    }
-
-    /// Speichert synchron (Aufräumen, Herunterfahren) und meldet das Ergebnis im Log (Go `saveNow`). Ohne Hintergrund-
-    /// Schreiber (RU24) gibt es keine ausstehenden Stände; die Dauer der Speicherung misst RU24 mit dem Schreiber.
-    pub fn save_sync(&mut self, env: &mut Env) {
-        if self.game_over(env) {
-            return;
-        }
-        let data = match self.encode(env) {
-            Ok(d) => d,
-            Err(e) => return self.log(env, Level::Error, "💥 Spielstand nicht gespeichert", &[("err", &e)]),
-        };
-        match env.store.store(&self.name, &data) {
-            Ok(backup) => self.log(
-                env,
-                Level::Debug,
-                "💾 Spielstand gespeichert",
-                &[("tick", &self.tick), ("sicherung", &backup)],
-            ),
-            Err(e) => self.log(env, Level::Error, "💥 Spielstand nicht gespeichert", &[("err", &e)]),
-        }
-    }
-
-    /// Sichert den Spielstand sofort (Diagnose, B-088) und meldet den Fehler, statt ihn nur zu loggen. Schreibt synchron;
-    /// den Hintergrund-Schreiber (`flush`) bringt RU24.
-    pub fn save_now(&mut self, env: &mut Env) -> Result<String, Fehler> {
-        if self.closed {
-            return Err(Fehler::Closed);
-        }
-        if self.game_over(env) {
-            return Err(Fehler::GameOver);
-        }
-        let data = self.encode(env)?;
-        env.store.store(&self.name, &data)
     }
 }
