@@ -1,10 +1,13 @@
 //! Port von `native/k3c-game/hud/hints_test.go` und `guide_test.go`.
 //!
-//! `anleitung_aus`, `anleitung_gesehen_gespeichert` und `anleitung_mit_bild` (Lage-Teil) brauchen `hud` (RU20.4) und
-//! `guideLayout` (RU20.5): ignoriert, der Zeichner-Sprint schaltet sie ein. Der Teil von `anleitung_mit_bild`, der nur
-//! `guide_image` prüft, läuft als `anleitung_bild_wahl`.
+//! `anleitung_aus` und `anleitung_gesehen_gespeichert` laufen mit `Listen` (RU20.4); der Teil von
+//! `anleitung_gesehen_gespeichert`, den in Go `hud.Update` (Overlay, RU23) erledigt, ist unten nachgebaut. Der Lage-Teil
+//! von `anleitung_mit_bild` braucht `guideLayout` (RU20.5): ignoriert, der Zeichner-Sprint schaltet ihn ein. Der Teil von
+//! `anleitung_mit_bild`, der nur `guide_image` prüft, läuft als `anleitung_bild_wahl`.
 
 use super::hints::*;
+use super::testutil::{hud, set_world, two_players};
+use crate::view::frame::Frame;
 use k3c_sim::state::{Coin, CycleInfo, Site, Troop, World};
 
 fn guide_world(phase: &str) -> World {
@@ -225,20 +228,74 @@ fn anleitung_bild_wahl() {
     }
 }
 
-/// Anleitung aus (Settings.GuideOff, B-809 AC-02): kein Hinweis; an: der Münz-Hinweis. Go: `guide_test.go`, braucht
-/// `hud::Listen` und `seatState` (RU20.4).
-#[test]
-#[ignore = "wartet auf RU20"]
-fn anleitung_aus() {
-    unimplemented!("RU20.4: hud.Listen, seats[0].guide/guideS (Go: TestAnleitungAus)");
+/// guide_frame ist ein Spieler mit einer Münze in Reichweite des Preisschilds.
+fn guide_frame() -> (World, Frame) {
+    let (mut w, mut f) = two_players(0);
+    f.seats.truncate(1);
+    w.coins = vec![coin(900, w.players[0].x + 2.0)];
+    set_world(&mut f, &w);
+    (w, f)
 }
 
-/// „Anleitung gesehen“ (B-809 AC-03): erledigter Hinweis geht über das Overlay in Settings.GuideSeen, nach Neustart
-/// kommt er nicht wieder. Go: `guide_test.go`, braucht `hud.Update`/`Listen` (RU20.4).
+/// Anleitung aus (Settings.GuideOff, B-809 AC-02): kein Hinweis; an: der Münz-Hinweis. Go: `TestAnleitungAus`.
 #[test]
-#[ignore = "wartet auf RU20"]
+fn anleitung_aus() {
+    let (_, mut f) = guide_frame();
+    let mut h = hud();
+    h.listen(&f);
+    assert!(
+        !h.seats[0].guide_s.is_empty() && h.seats[0].guide.id == GuideId::Coin,
+        "Anleitung an: Münz-Hinweis erwartet, {:?} {:?}",
+        h.seats[0].guide,
+        h.seats[0].guide_s
+    );
+    f.settings.guide_off = true;
+    h.listen(&f);
+    assert!(
+        h.seats[0].guide_s.is_empty() && h.seats[0].guide.id == GuideId::None,
+        "Anleitung aus: kein Hinweis, {:?} {:?}",
+        h.seats[0].guide,
+        h.seats[0].guide_s
+    );
+}
+
+/// „Anleitung gesehen“ (B-809 AC-03): Ein erledigter Hinweis geht in `Settings.guide_seen`; aus den Einstellungen
+/// gelesen kommt er nach einem Neustart (neues Hud) nicht wieder. In Go speichert `hud.Update` (Overlay, RU23) die
+/// Bits über `Session.SetSettings` und setzt `pending` zurück; der Test macht dasselbe von Hand
+/// (`guide_seen |= pending`, `pending = 0`). Go: `TestAnleitungGesehenGespeichert`.
+#[test]
 fn anleitung_gesehen_gespeichert() {
-    unimplemented!("RU20.4: hud.Update, Settings.GuideSeen (Go: TestAnleitungGesehenGespeichert)");
+    let (mut w, mut f) = guide_frame();
+    let mut h = hud();
+    h.listen(&f);
+    w.coins.clear();
+    set_world(&mut f, &w);
+    h.listen(&f);
+    assert_eq!(
+        h.pending,
+        GuideSeen(1 << GuideId::Coin as u8),
+        "gesehen, noch nicht gespeichert"
+    );
+    f.settings.guide_seen |= i64::from(h.pending.0);
+    h.pending = GuideSeen(0);
+    h.listen(&f);
+    assert_eq!(h.pending, GuideSeen(0), "nur neue Hinweise speichern");
+    w.coins = vec![coin(901, w.players[0].x + 1.0)];
+    set_world(&mut f, &w);
+    let mut again = hud();
+    again.listen(&f);
+    assert_ne!(
+        again.seats[0].guide.id,
+        GuideId::Coin,
+        "nach Neustart: gesehener Hinweis kommt nicht wieder"
+    );
+    f.settings.guide_seen = 0;
+    again.listen(&f);
+    assert_eq!(
+        again.seats[0].guide.id,
+        GuideId::Coin,
+        "zurückgesetzt (Anleitung wieder an): Hinweis kommt wieder"
+    );
 }
 
 /// Lage-Teil von TestAnleitungMitBild: Bild links neben dem Text, beide zusammen mittig (`guideLayout`, RU20.5).

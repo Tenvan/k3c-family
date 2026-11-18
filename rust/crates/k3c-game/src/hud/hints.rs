@@ -8,11 +8,11 @@
 //! (`action_hint` und `offers_price` nehmen `&dyn SimView`); Go-`[...]`-Tabellen sind Funktionen mit `match`.
 
 use super::data::building_info;
+use super::pending::{trade_at, train_at};
 use super::texts::{tf, tr};
 use super::values::res_name;
 use super::values_texts::profession_text;
 use crate::props::simview::SimView;
-use k3c_sim::state::action_view::{trade_at, train_at};
 use k3c_sim::state::{Player, Site, World};
 
 /// Höhen über dem Boden in Units (Browser: Welt-Pixel / 32): Aktions-Hinweis über dem Monarchen, Hinweis über einem

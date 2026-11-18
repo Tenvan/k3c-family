@@ -16,10 +16,16 @@ use k3c_sim::state::{CycleInfo, Merchant};
 pub const SEP: &str = "  ·  ";
 
 /// Memo hält einen Text, bis sich sein Schlüssel ändert: so entsteht je Bild kein neuer Text.
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct Memo<K: PartialEq + Clone> {
     key: Option<K>,
     text: String,
+}
+
+impl<K: PartialEq + Clone> Default for Memo<K> {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl<K: PartialEq + Clone> Memo<K> {
@@ -139,7 +145,7 @@ pub(super) fn res_name(lang: &str, res: &str) -> String {
 }
 
 /// StockKey: Vorrat je Rohstoff, Primärrohstoff des Bioms, Lager-Maximum (0 = keins), Skill-Punkte.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct StockKey {
     pub lang: String,
     pub primary: String,

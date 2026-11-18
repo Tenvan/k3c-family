@@ -1,10 +1,31 @@
 //! Port von `native/k3c-game/hud/profile_test.go`.
+//!
+//! Der Teil mit dem Footer des Skill-Menüs (`seats[i].menuV.footer`, `hud.Update` öffnet das Menü) braucht Overlay und
+//! Menü-Text aus RU23 und läuft dort als `menu_footer_per_device` (glyphs_tests.rs); hier läuft der Rest.
+
+use super::testutil::{hud, two_players};
+use crate::view::input::{DeviceID, DeviceKind};
+use crate::view::profile::{PROFILE_ARROWS, PROFILE_GAMEPAD, PROFILE_WASD};
+use crate::view::settings::default_settings;
 
 /// B-894/AC-05: Ein Wechsel des Eingabe-Profils in den Einstellungen ändert die Hinweise sofort: Nach dem nächsten
-/// Listen zeigt das offene Skill-Menü des Tastatur-Spielers den Bedienhinweis des neuen Profils, der Pad-Spieler
-/// bleibt beim Xbox-Hinweis; der Beitritts-Hinweis nennt die Bestätigen-Taste des Profils. Braucht `seatState` (RU20.4).
+/// Listen hat der Tastatur-Spieler das neue Profil, der Pad-Spieler bleibt beim Gamepad-Profil; der Beitritts-Hinweis
+/// nennt die Bestätigen-Taste des Profils.
 #[test]
-#[ignore = "wartet auf RU20"]
 fn profile_switch_changes_hints() {
-    unimplemented!("RU20.4: hud.Update/Listen, seats[i].menuV.footer, joinS (Go: TestProfileSwitchChangesHints)");
+    let (_, mut f) = two_players(1);
+    f.settings = default_settings();
+    let mut h = hud();
+    h.listen(&f);
+    assert_eq!(h.seats[0].profile, PROFILE_WASD, "WASD");
+    f.settings.controls[0] = PROFILE_ARROWS.to_string();
+    f.unseated = vec![DeviceID::new(DeviceKind::Gamepad, 9), super::testutil::KEYS1];
+    h.listen(&f);
+    assert_eq!(h.seats[0].profile, PROFILE_ARROWS, "nach Wechsel auf Pfeile");
+    assert_eq!(h.seats[1].profile, PROFILE_GAMEPAD, "Pad bleibt");
+    assert!(
+        !h.join_s.contains("Leertaste") && h.join_s.contains("Enter"),
+        "Beitritt im Profil pfeile: {:?}",
+        h.join_s
+    );
 }
