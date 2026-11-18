@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU13
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
@@ -70,3 +70,7 @@ keine
 ## Notizen
 
 Aus B-1055 zerlegt. Sichtvergleich Shader auf GPU: Ralf im Spiel, Teil von B-1059.
+
+### Ergebnis
+
+`RiverWater` hält die vier Farben (`build`), `uniforms()` baut `RiverUniforms`, `draw` ruft `Canvas::river` mit dem Rechteck aus `water_layout` (leere Zelle: nichts, `true`); `ready` ist `true`. `draw_river` nimmt in Shader-Fassung (Einstellung oder Startwert) den Canvas-Aufruf und fällt bei `false` auf Kacheln zurück; Log „Fluss-Fassung“ meldet `aktiv` nach Wahl. Tests in `water_tests.rs`: `river_shader_lazy` angepasst, neu `river_uses_canvas_call` (AC-01), `river_falls_back_to_tiles` (AC-02), `river_empty_cell_draws_nothing`. Standbild: `StillState::with_river_shader`, Test `fluss_shader_im_standbild` in `tests/still.rs` (gegen die Software-Referenz `river_fragment`, nichts über der Fluss-Fläche geändert; die fünf Go-Vergleiche bleiben auf Kacheln, es gibt kein Go-Golden mit Shader). Der Test wird ohne gerenderte Grafik übersprungen (hier der Fall, `gen:paper` gesperrt); die Logik lief einmalig ohne Grafik in einem verworfenen Probelauf: 98,8 % der Fluss-Pixel gleich der Referenz, 0 Abweichung über der Fläche. `cargo test -p k3c-platform -p k3c-game` und `task rust:lint` grün. Offen (Ralf, B-1059): Bild des GPU-Pfads im Fenster.

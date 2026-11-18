@@ -885,3 +885,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1070](B-1070-canvas-river-schnittstelle.md) | CLI | Schuld | niedrig | erledigt | RU13 | Canvas kennt einen Fluss-Aufruf mit Uniforms (Schnittstelle ohne Shader) |
 | [B-1071](B-1071-river-referenz-softcanvas.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Fragment als Referenz in Rust und Software-Nachbau im Standbild-Rasterer |
 | [B-1072](B-1072-river-wgsl-port.md) | CLI | Schuld | niedrig | erledigt | RU13 | river.kage als WGSL-Pipeline im GPU-Backend |
+| [B-1073](B-1073-river-anbindung-world.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Shader in world anbinden (draw_river, ready, Rückfall auf Kacheln) |

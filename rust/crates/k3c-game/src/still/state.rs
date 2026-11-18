@@ -18,7 +18,7 @@ use super::inflate::gunzip;
 use super::simview::FixedSimView;
 use crate::view::cell::{Cell, new_camera, rect};
 use crate::view::frame::{Frame, Seat, Stage};
-use crate::view::settings::{RIVER_TILES, Settings};
+use crate::view::settings::{RIVER_SHADER, RIVER_TILES, Settings};
 
 /// Welt-Höhe der Zelle in Units (game/layout.go: 420/32).
 pub const VIEW_UNITS: f64 = 420.0 / 32.0;
@@ -70,6 +70,8 @@ pub struct StillState {
     pub simview: Option<FixedSimView>,
     /// Zusätze des Frames für das HUD (Einstellungen, freie Geräte, Meldungen), gesetzt mit `with_frame` (RU20.7)
     pub frame_extras: Option<FrameExtras>,
+    /// Fluss mit Shader statt Kacheln (B-1073, gesetzt mit `with_river_shader`); Go-Referenzbilder stehen auf Kacheln
+    pub river_shader: bool,
 }
 
 /// Liest einen Zustand aus gzip oder aus JSON (erkannt an der gzip-Kennung).
@@ -111,6 +113,7 @@ pub fn parse_state(raw: &[u8]) -> Result<StillState, String> {
         world,
         simview: None,
         frame_extras: None,
+        river_shader: false,
     })
 }
 
@@ -125,6 +128,13 @@ impl StillState {
     #[must_use]
     pub fn with_simview(mut self, v: FixedSimView) -> Self {
         self.simview = Some(v);
+        self
+    }
+
+    /// Zeichnet den Fluss mit dem Shader (`Canvas::river`) statt mit Kacheln.
+    #[must_use]
+    pub fn with_river_shader(mut self) -> Self {
+        self.river_shader = true;
         self
     }
 
@@ -159,7 +169,7 @@ impl StillState {
             seats: self.seats.clone(),
             cells: cells.clone(),
             settings: Settings {
-                river: RIVER_TILES.to_string(),
+                river: if self.river_shader { RIVER_SHADER } else { RIVER_TILES }.to_string(),
                 ..extras.settings
             },
             unseated: extras.unseated,

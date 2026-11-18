@@ -6,7 +6,8 @@
 //! eine Kamerafahrt verschiebt sie mit demselben Faktor (die Reihe am Ufer wie die Welt). Die Wellen-Kachel entsteht
 //! beim ersten Zeichnen im Code, ein Bild für alle Reihen.
 //!
-//! Abweichung (RU13.2): Der Kage-Shader entfällt in Rust; der Fluss wird immer als Kacheln gezeichnet.
+//! Abweichung: Der Shader steht in der Plattform (WGSL, `Canvas::river`, siehe `water.rs`); `draw_river` fällt auf die
+//! Kacheln zurück, wenn der Canvas ihn nicht kennt.
 
 use k3c_platform::{Canvas, Rect, TexId};
 
@@ -14,6 +15,7 @@ use super::World;
 use super::backdrop::Rgba;
 use super::ground::bank_height;
 use super::layers::stage_of;
+use super::water::{RiverMode, river_mode_for};
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 
@@ -130,11 +132,18 @@ pub fn mix(a: Rgba, b: Rgba, t: f64) -> Rgba {
 }
 
 impl World {
-    /// DrawRiver zeichnet die Wellen-Reihen der Zelle zur Zeit Frame.Clock als Kacheln (der Shader der Go-Fassung
-    /// entfällt in Rust).
+    /// DrawRiver zeichnet die Wellen-Reihen der Zelle zur Zeit Frame.Clock: mit dem Shader, sonst als Kacheln. Die
+    /// Fassung folgt `Frame::settings.river` (F3), solange nichts gewählt ist dem Startwert aus K3C_RIVER; kennt der
+    /// Canvas den Shader nicht, kommen die Kacheln.
     #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
     pub fn draw_river(&mut self, dst: &mut dyn Canvas, f: &Frame, c: &Cell) {
         if stage_of(f, c).is_none() {
+            return;
+        }
+        if river_mode_for(&f.settings.river, self.start) == RiverMode::Shader
+            && self.water.ready()
+            && self.water.draw(dst, c, f.clock)
+        {
             return;
         }
         let img = self.river.image(dst);
