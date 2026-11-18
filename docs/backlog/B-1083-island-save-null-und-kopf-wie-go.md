@@ -3,14 +3,14 @@
 - **Domäne:** SIM
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU10
+- **Sprint:** RU46
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-18
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,39 +28,38 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Go-Referenz: `engine/sim/island_save.go` (`ParseIslandSave`, Zeile 90) und `island_save_v3.go` (`decodeIsland`, Zeile 21); Rust: `rust/crates/k3c-sim/src/island/save_parse.rs` (`parse_island_save`, `decode_island`).
+- (1) `version` und `island` im Kopf: Ist der Wert vorhanden und kein Integer (z. B. String, Fliesskommazahl, Objekt), meldet Rust einen Fehler wie Go (`spielstand: json: cannot unmarshal …`; Wortlaut aus dem Go-Test `TestParseIslandSaveRejectsBadInput` ableiten oder, wenn Go-Text nicht reproduzierbar, den vorhandenen Stil von `fail(...)` nutzen und im Ergebnis nennen). Fehlt das Feld, bleibt 0 (wie heute und wie Go).
+- (2) Ein ausdrückliches `null` in String-, Vec- oder Zahl-Feldern von `IslandSave` und `IslandPlayerSave` (Typen in `save.rs`) lässt den Standardwert stehen (Go: `null` ist No-Op beim Unmarshal). Umsetzung z. B. mit `#[serde(default, deserialize_with = "null_default")]` oder einer Vorverarbeitung in `decode_island`, die `null`-Felder (außer den Pflichtfeldern `campaignId`, `seed`, `time`, `stock`, `stages`, `players`, die bleiben Fehler `Feld X fehlt`) aus dem `Value` entfernt.
+- Verhalten sonst unverändert, deterministisch, 2+ Spieler (die Spielerliste bleibt wie gelesen).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Neue Spielstand-Versionen, Änderung des Schreibformats (Go schreibt nie `null`), Migrationslogik, Go-Code ändern.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Spielstand-Format bleibt (Sperre `spielstand` gilt nur für Formatänderungen, hier keine). Keine Rücksicht auf alte Spielstände jenseits der Go-Verhalten-Gleichheit. Leitfaden `docs/standards/rust-port.md` § 6, § 11. Datei <= 400 Zeilen (`save_parse.rs` hat 265).
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-sim/src/island/save_parse.rs`, `rust/crates/k3c-sim/src/island/save.rs`, `rust/crates/k3c-sim/src/island/save_tests.rs`, `rust/crates/k3c-sim/src/island/save_null_tests.rs`
+- **Abhängig von:** RU10
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+`{"version":"9"}` -> Fehler. `"seed":null` -> `Feld seed fehlt`. `"worldId":null` oder `"skillPool":null` -> Standardwert, kein Fehler.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Pflichtfelder mit `null` bleiben Fehler (`Feld X fehlt`).
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
-
-Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_test`), AC-02 Balance, AC-03 Gen
-(`check_run task:test` samt `gen:paper` und Golden), AC-04 Race (`check_run task:check:race`), Einzelheiten in
-`docs/arbeitsweise.md` › Sim, Balance und Gen.
+- **AC-01** Test: `version` und `island` mit Nicht-Integer-Wert (String, 1.5, Objekt) ergeben einen Fehler; fehlend ergibt 0.
+- **AC-02** Test: `null` in je einem String-, Vec- und Zahl-Feld von `IslandSave` und `IslandPlayerSave` wird wie ein fehlendes Feld gelesen (Standardwert), Pflichtfelder mit `null` bleiben Fehler.
+- **AC-03** `cargo test --release -p k3c-sim island::save` grün (alle bisherigen Save-Tests unverändert), `cargo clippy -p k3c-sim --all-targets -- -D warnings` ohne Warnungen.
 
 ## Offene Fragen
 
