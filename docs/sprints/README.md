@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU45 | SIM, CLI | RSU | Abnahme- und Messläufe auf dem Second Worker | – | `aktiv/RU45-abnahme-und-messlaeufe-second-worker/` |
 | RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | `aktiv/RU21-spielstaende-und-raum-teil-1/` |
 
 ## Offen am Gerät

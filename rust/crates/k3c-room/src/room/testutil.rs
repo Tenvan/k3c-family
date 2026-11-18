@@ -2,14 +2,18 @@
 //! Speicher, mitschreibender Peer, feste Uhr und eine kleine Insel. Kein `Mutex`, kein `Rc`: der Peer meldet über einen
 //! Kanal, den der Test im `Inbox` ausliest.
 use std::collections::BTreeMap;
+use std::sync::atomic::{AtomicI64, Ordering};
 use std::sync::mpsc::{Receiver, Sender, channel};
+use std::sync::{Arc, OnceLock};
 
+use k3c_data::{Data, Source, load_all};
 use k3c_level::types::Layout;
-use k3c_sim::island::{Island, STANDARD_WORLD_ID};
+use k3c_sim::island::{Island, IslandOptions, STANDARD_WORLD_ID};
 use k3c_sim::state::{Player, World};
 
 use super::env::{Env, Store};
 use super::log::RecordingLog;
+use super::manager::Manager;
 use super::types::{MonarchState, Options, Peer, Room, Seat};
 use super::{free_monarchs, start_stage};
 use crate::fehler::Fehler;
@@ -195,6 +199,11 @@ pub fn island(seed: &str, players: i64) -> Island {
         ..Island::default()
     };
     isl.world.id = STANDARD_WORLD_ID.into();
+    isl.options = IslandOptions {
+        grade: "normal".into(),
+        goal: "endboss".into(),
+        defeat: "resources".into(),
+    };
     for depth in [0, 1] {
         let mut w = World::default();
         w.biome.depth = depth;
@@ -216,4 +225,31 @@ pub fn room(code: &str, name: &str, players: i64) -> Room {
     let monarchs = free_monarchs(&isl).expect("keine Spieler");
     let start = start_stage(&isl, 0);
     Room::new(code, name, isl, Options::default(), start, monarchs)
+}
+
+/// Die eingebetteten Spiel-Daten, einmal geladen und geteilt.
+pub fn test_data() -> Arc<Data> {
+    static DATA: OnceLock<Arc<Data>> = OnceLock::new();
+    DATA.get_or_init(|| Arc::new(load_all(&Source::Embedded).expect("eingebettete Daten")))
+        .clone()
+}
+
+/// Ein Manager mit Speicher im Speicher und Log zum Mitlesen; die Uhr zählt Sekunden aus dem zweiten Wert und steht auf
+/// dem 1.10.2026 12:00:00 UTC (Go `fixture`, `f.wait`: den Wert erhöhen).
+pub fn manager() -> (Manager<MemStore, RecordingLog>, Arc<AtomicI64>) {
+    let secs = Arc::new(AtomicI64::new(Stamp::from_civil(2026, 10, 1, 12, 0, 0, 0).secs));
+    let clock = secs.clone();
+    let m = Manager::new(
+        MemStore::default(),
+        RecordingLog::default(),
+        move || Stamp::new(clock.load(Ordering::SeqCst), 0),
+        "codes",
+        test_data(),
+    );
+    (m, secs)
+}
+
+/// Legt einen Raum mit `players` freien Monarchen unter `code` in den Manager (ohne `create_in`, RU24).
+pub fn add_room(m: &mut Manager<MemStore, RecordingLog>, code: &str, name: &str, players: i64) {
+    m.rooms.insert(code.to_string(), room(code, name, players));
 }

@@ -25,6 +25,8 @@ pub const SAVE_EVERY_SECS: i64 = 60;
 /// Reserviert Spielstandnamen für Testläufe (Testseite, B-086): Räume mit diesem Präfix löschen ihren Spielstand, wenn sie
 /// aufgeräumt werden.
 pub const TEST_PREFIX: &str = "test-";
+/// Tick-Dauern, die der Raum für p99 behält (10 s).
+pub const DURATIONS: usize = 300;
 /// Höchstlänge von `create.seed` (wie beim Level-Generator).
 pub const MAX_SEED_RUNES: usize = 64;
 
@@ -70,6 +72,17 @@ pub struct Options {
     pub defeat: String,
     pub seed: String,
     pub world: String,
+}
+
+/// Wie Go `%+v` einer `Options`-Struktur im Log.
+impl std::fmt::Display for Options {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "{{Grade:{} Goal:{} Defeat:{} Seed:{} World:{}}}",
+            self.grade, self.goal, self.defeat, self.seed, self.world
+        )
+    }
 }
 
 /// Die Verbindung eines Geräts. Der Raum ruft die Methoden auf, sie dürfen nicht blockieren und nicht in den Raum oder
@@ -156,6 +169,10 @@ pub struct Room {
     pub reset_phase: String,
     /// Dev-Pause (dev pause, B-231): Ticks rechnen keine Schritte.
     pub paused: bool,
+    /// Dauern der letzten Ticks in Nanosekunden (`run`), höchstens `DURATIONS`.
+    pub durations: Vec<i64>,
+    /// Test-Naht: läuft im Tick vor dem Schritt der Insel.
+    pub before_step: Option<Box<dyn FnMut()>>,
     /// Spielmetrik des Raumlaufs (`metrics`, RU24); `None` = kein Sammler.
     pub met: Option<Metrics>,
 }

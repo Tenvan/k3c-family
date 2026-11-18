@@ -10,19 +10,37 @@ use std::fmt::Display;
 use k3c_sim::island::{Island, add_island_player};
 use k3c_sim::state::PlayerCommand;
 
+#[cfg(test)]
+mod determinism_tests;
 mod env;
+mod info;
 mod log;
+mod manager;
+#[cfg(test)]
+mod manager_tests;
+#[cfg(test)]
+mod options_tests;
 mod pending;
 #[cfg(test)]
 mod room_tests;
+mod run;
+#[cfg(test)]
+mod run_tests;
+#[cfg(test)]
+mod safetick_tests;
 mod stages;
 #[cfg(test)]
 mod testutil;
 mod types;
+#[cfg(test)]
+mod victory_tests;
 
 pub use env::{Env, SnapshotFn, Store};
+pub use info::Info;
 pub use log::{Level, Log, NullLog, RecordingLog, list_text, short};
+pub use manager::{CODE_LETTERS, Manager};
 pub use pending::Metrics;
+pub use run::Failure;
 pub use stages::{free_monarchs, start_stage};
 pub use types::*;
 
@@ -78,6 +96,8 @@ impl Room {
             auto_reset: false,
             reset_phase: String::new(),
             paused: false,
+            durations: Vec::new(),
+            before_step: None,
             met: None,
         }
     }
@@ -282,6 +302,27 @@ impl Room {
             .to_save(&env.now.format_report())
             .map_err(|e| Fehler::Io(e.to_string()))?;
         serde_json::to_vec(&save).map_err(|e| Fehler::Io(e.to_string()))
+    }
+
+    /// Speichert synchron (Aufräumen, Herunterfahren) und meldet das Ergebnis im Log (Go `saveNow`). Ohne Hintergrund-
+    /// Schreiber (RU24) gibt es keine ausstehenden Stände; die Dauer der Speicherung misst RU24 mit dem Schreiber.
+    pub fn save_sync(&mut self, env: &mut Env) {
+        if self.game_over(env) {
+            return;
+        }
+        let data = match self.encode(env) {
+            Ok(d) => d,
+            Err(e) => return self.log(env, Level::Error, "💥 Spielstand nicht gespeichert", &[("err", &e)]),
+        };
+        match env.store.store(&self.name, &data) {
+            Ok(backup) => self.log(
+                env,
+                Level::Debug,
+                "💾 Spielstand gespeichert",
+                &[("tick", &self.tick), ("sicherung", &backup)],
+            ),
+            Err(e) => self.log(env, Level::Error, "💥 Spielstand nicht gespeichert", &[("err", &e)]),
+        }
     }
 
     /// Sichert den Spielstand sofort (Diagnose, B-088) und meldet den Fehler, statt ihn nur zu loggen. Schreibt synchron;

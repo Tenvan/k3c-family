@@ -6,6 +6,7 @@ use std::fmt::Display;
 /// Stufe einer Meldung (Go `slog.Level`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Level {
+    Debug,
     Info,
     Warn,
     Error,
@@ -15,6 +16,9 @@ pub enum Level {
 pub trait Log {
     fn log(&mut self, level: Level, msg: &str, fields: &[(&str, &dyn Display)]);
 
+    fn debug(&mut self, msg: &str, fields: &[(&str, &dyn Display)]) {
+        self.log(Level::Debug, msg, fields);
+    }
     fn info(&mut self, msg: &str, fields: &[(&str, &dyn Display)]) {
         self.log(Level::Info, msg, fields);
     }

@@ -95,6 +95,12 @@ impl Stamp {
         format!("{y:04}{mo:02}{d:02}T{h:02}{mi:02}{s:02}.{:09}Z", self.nanos)
     }
 
+    /// `20060102T150405.000` (Insel-IDs neuer Spielstände, Millisekunden).
+    pub fn format_compact_ms(&self) -> String {
+        let (y, mo, d, h, mi, s) = self.civil();
+        format!("{y:04}{mo:02}{d:02}T{h:02}{mi:02}{s:02}.{:03}", self.nanos / 1_000_000)
+    }
+
     /// `2006-01-02T15:04:05.000Z` (Berichte; Millisekunden abgeschnitten wie in Go).
     pub fn format_report(&self) -> String {
         let (y, mo, d, h, mi, s) = self.civil();
