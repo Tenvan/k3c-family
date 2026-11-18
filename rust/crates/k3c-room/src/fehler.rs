@@ -32,6 +32,40 @@ pub enum Fehler {
     GameOver,
     /// Dateisystem-Fehler (Text des Betriebssystems, Code in `os`).
     Io(String),
+    /// Gos `fmt.Errorf("%s (%w)", text, code)`: Meldung mit dem Fehlerwert `code` in Klammern (`is` ersetzt `errors.Is`).
+    Meldung {
+        code: Box<Fehler>,
+        text: String,
+    },
+}
+
+impl Fehler {
+    /// Meldung `text` mit dem Fehlerwert `code` (Welt-Fehler, welten.md § 5/6).
+    pub fn meldung(code: Fehler, text: impl Into<String>) -> Fehler {
+        Fehler::Meldung {
+            code: Box::new(code),
+            text: text.into(),
+        }
+    }
+
+    /// Gos `errors.Is`: der Fehler ist `code` oder trägt ihn in einer Meldung.
+    pub fn is(&self, code: &Fehler) -> bool {
+        match self {
+            Fehler::Meldung { code: inner, .. } => inner.is(code),
+            other => other == code,
+        }
+    }
+
+    /// Gos `fmt.Errorf("prefix: %w", err)`: stellt `prefix` vor den Text und behält den Fehlerwert.
+    pub fn mit_vorsatz(self, prefix: &str) -> Fehler {
+        match self {
+            Fehler::Meldung { code, text } => Fehler::Meldung {
+                code,
+                text: format!("{prefix}{text}"),
+            },
+            other => Fehler::Io(format!("{prefix}{other}")),
+        }
+    }
 }
 
 impl fmt::Display for Fehler {
@@ -54,6 +88,7 @@ impl fmt::Display for Fehler {
             Fehler::WorldUnknown => f.write_str("world_unknown"),
             Fehler::GameOver => f.write_str("game_over"),
             Fehler::Io(s) => f.write_str(s),
+            Fehler::Meldung { code, text } => write!(f, "{text} ({code})"),
         }
     }
 }

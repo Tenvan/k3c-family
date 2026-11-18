@@ -45,7 +45,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU44 | Bild-Pfad ohne Allokationen | erledigt |
 | RU45 | Abnahme- und Messläufe auf dem Second Worker | erledigt |
 | RU46 | Rust-Schulden in k3c-level und Insel (Second Worker) | erledigt |
-| RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | aktiv |
+| RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | erledigt |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | erledigt |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | erledigt |
 | RU11 | Sim: Einheiten und Gegner | erledigt |
@@ -57,7 +57,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | erledigt |
 | RU21 | Spielstände und Raum Teil 1 | erledigt |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
-| RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | aktiv |
+| RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | erledigt |
 | RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | aktiv |
 | RU19 | Sim: Events, Geschichte, Dev-Eingriffe | aktiv |
 | RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | aktiv |

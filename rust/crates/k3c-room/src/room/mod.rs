@@ -18,6 +18,9 @@ mod determinism_tests;
 mod early;
 mod env;
 mod info;
+mod island_switch;
+#[cfg(test)]
+mod island_switch_tests;
 mod log;
 mod logging;
 #[cfg(test)]
@@ -27,6 +30,9 @@ mod manager;
 mod manager_tests;
 #[cfg(test)]
 mod options_tests;
+mod pause;
+#[cfg(test)]
+mod pause_tests;
 mod pending;
 #[cfg(test)]
 mod review_tests;
@@ -47,11 +53,15 @@ mod tick;
 mod types;
 #[cfg(test)]
 mod victory_tests;
+mod worlds;
+#[cfg(test)]
+mod worlds_tests;
 
 pub use env::{Env, SnapshotFn, Store};
 pub use info::Info;
 pub use log::{Level, Log, NullLog, RecordingLog, list_text, short};
 pub use manager::{CODE_LETTERS, Manager};
+pub use pause::PROTECT_TICKS;
 pub use pending::Metrics;
 pub use run::Failure;
 pub use stages::{free_monarchs, start_stage};
