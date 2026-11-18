@@ -66,7 +66,7 @@ keine
 |---|---|---|---|---|
 | RU45.1 | `RU45.1-gen-und-race.md` | Umsetzung | autonom | fertig |
 | RU45.2 | `RU45.2-level-vergleich-go-rust.md` | Umsetzung | autonom | fertig |
-| RU45.3 | `RU45.3-measure-novsync-replay.md` | Umsetzung | autonom | offen |
+| RU45.3 | `RU45.3-measure-novsync-replay.md` | Umsetzung | autonom | fertig |
 | RU45.4 | `RU45.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
