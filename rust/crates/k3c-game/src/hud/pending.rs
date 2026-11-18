@@ -12,10 +12,6 @@ use k3c_sim::state::{ActiveEvent, Enemy, Merchant, Player, World};
 
 use crate::view::frame::Frame;
 
-/// SeaSizes sind die gemessenen Maße der Seekarte (Go: `seaSizes`, drawsea.go, RU23.4): Platzhalter ohne Felder.
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct SeaSizes;
-
 /// VoyageView ist die Schiffsfahrt im Vollbild (Go: `voyageView`, voyage.go).
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct VoyageView {
@@ -81,11 +77,6 @@ pub fn can_respec(_w: &World, _p: &Player) -> bool {
 
 /// Go: `(*hud).drawWorldTexts` (drawworld.go, RU23). Platzhalter: zeichnet nichts (Labels, Hinweise, Radar fehlen bis RU23).
 pub fn draw_world_texts() {}
-
-/// Go: `(*hud).drawSea` (drawsea.go, RU23).
-pub fn draw_sea() {
-    unimplemented!("RU23: draw_sea")
-}
 
 /// Go: `(*hud).drawRadar` (RU23).
 pub fn draw_radar() {

@@ -8,9 +8,9 @@
 //! Abweichung von Go: `SeaShown::route` merkt den Zeiger auf den ersten Eintrag der Route und ihre Länge als
 //! `(usize, usize)` (`as_ptr`), verglichen wie in Go (keine tiefe Gleichheit, kein `unsafe`).
 
+use super::drawsea::SeaSizes;
 use super::glyphs::glyph_of;
 use super::keyline::{KeyLine, arg, new_key_line};
-use super::pending::SeaSizes;
 use super::seekarte_look::{SeaLook, look_of};
 use super::skilltext::move_arg;
 use super::texts::{tf, tr};

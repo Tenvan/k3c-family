@@ -368,8 +368,8 @@ impl Hud {
     }
 
     /// draw_cell zeichnet die Anzeigen des Spielers der Zelle c (Go: `Draw` des Drawers): Vorlagen, Maßstab, Welt-Texte
-    /// (RU23), die Elemente der Zelle, Seekarte und Menü (RU23, hier nie offen). Invariante: Ab dem Ausleihen der
-    /// Bibliothek (Schrift) ruft nichts im Zeichenweg `Hud::icon`/`Hud::font` (Doppelausleihe); Icons stehen vorher in `Icons`.
+    /// (RU23), die Elemente der Zelle, Seekarte und Menü. Invariante: Ab dem Ausleihen der Bibliothek (Schrift) ruft
+    /// nichts im Zeichenweg `Hud::icon`/`Hud::font` (Doppelausleihe); Icons und Sheets der Karte stehen vorher bereit.
     pub fn draw_cell(&mut self, dst: &mut dyn Canvas, c: &Cell) {
         let Some(i) = usize::try_from(c.player)
             .ok()
@@ -377,20 +377,19 @@ impl Hud {
         else {
             return;
         };
-        // der Zustand wird für den Durchlauf herausgenommen: Draw ändert nur gemessene Texte und den Layout-Cache
+        // der Zustand wird für den Durchlauf herausgenommen (Draw ändert nur Messungen und Layout-Cache)
         let mut st = std::mem::take(&mut self.seats[i]);
         self.paint.stencils(dst);
         self.refresh_icon_cache();
         let k = scale_of(c, self.cells as i64);
         let icons = self.icons();
+        let sea_art = st.sea.open.then(|| self.sea_art_of(&st.sea)).flatten();
         let lib = self.lib.clone();
         let mut guard = lib.as_ref().map(|l| l.borrow_mut());
         let mut font = guard.as_mut().map(|g| &mut g.font);
         super::pending::draw_world_texts();
         self.draw_items(dst, &st, c, k, font.as_deref_mut(), &icons);
-        if st.sea.open {
-            super::pending::draw_sea();
-        }
+        self.draw_sea(dst, &mut st.sea, c, k, font.as_deref_mut(), sea_art);
         if st.menu.open {
             self.draw_menu(dst, &mut st, c, k, font);
         }

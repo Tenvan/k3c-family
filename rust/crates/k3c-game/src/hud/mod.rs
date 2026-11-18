@@ -35,6 +35,9 @@ pub mod data;
 pub mod draw;
 pub mod drawglyph;
 pub mod drawmenu;
+pub mod drawsea;
+pub mod drawsea_paper;
+pub mod drawsea_scene;
 pub mod drawstock;
 pub mod drawstory;
 pub mod fonts;
@@ -95,6 +98,8 @@ mod seekarte_hold_tests;
 #[cfg(test)]
 mod seekarte_look_tests;
 #[cfg(test)]
+mod seekarte_paper_tests;
+#[cfg(test)]
 mod seekarte_tests;
 #[cfg(test)]
 mod skillmenu_tests;
@@ -135,6 +140,8 @@ pub struct Hud {
     spots: Vec<LabelSpot>,
     /// Assets der Seekarte (None: Karte aus Formen)
     sea_map: Option<SeaMap>,
+    /// Puffer der Insel-Sheets des Dioramas, je Bild wiederverwendet (`sea_art_of`)
+    sea_isl: Vec<[drawsea_paper::SeaSheet; 2]>,
     /// gemeldete Assets (None: nur die Icons)
     assets: Option<Vec<String>>,
     /// Tasten-Icons gemeldet (`use_key_icons`, B-911)
@@ -166,6 +173,7 @@ impl Hud {
             lay: Default::default(),
             spots: Vec::new(),
             sea_map: None,
+            sea_isl: Vec::new(),
             assets: None,
             key_icons: false,
             icon_cache: Vec::new(),
