@@ -101,7 +101,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU23.3 | `RU23.3-hud-seekarte-logik.md` | Umsetzung | autonom | fertig |
 | RU23.4 | `RU23.4-hud-drawsea-drawsea-paper.md` | Umsetzung | autonom | fertig |
 | RU23.5 | `RU23.5-hud-voyage-drawworld-kampf.md` | Umsetzung | autonom | fertig |
-| RU23.6 | `RU23.6-hud-bildvergleich.md` | Umsetzung | autonom | offen |
+| RU23.6 | `RU23.6-hud-bildvergleich.md` | Umsetzung | autonom | fertig |
 | RU23.7 | `RU23.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
