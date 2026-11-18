@@ -5,7 +5,7 @@
 //!
 //! Abweichungen von Go: Der Raum liegt im Manager (`Session::code` ist sein Schlüssel). `Manager` kennt weder `new_code`
 //! (der Code ist zufällig, nicht `LOCL`), noch `worlds`, `world_list`, `close_room` (RU24.4); `close_room` unten ist
-//! `Manager.CloseRoom` aus Go. Takt (`step`), Kampagne und Spielstände (`saves`) folgen in RU27.2 und RU27.3. Aufgeteilt (≤ 400
+//! `Manager.CloseRoom` aus Go. Takt (`step.rs`) und Kampagne (`campaign.rs`) stehen seit RU27.2 daneben, Spielstände (`saves`) folgen in RU27.3. Aufgeteilt (≤ 400
 //! Zeilen): `config.rs` (Config, Log, Uhr), `error.rs` (UserError, describe), `view_impl.rs` (`impl view::session::Session`).
 
 use std::collections::BTreeMap;
@@ -17,9 +17,10 @@ use k3c_room::room::{Env, Level, Log as _, Manager, Options, Room};
 use k3c_room::store::Saves;
 use k3c_sim::state::{PlayerCommand, World};
 
+use super::campaign::Campaign;
 use super::config::{Config, LogHandle, Zeit, clock, default_saves_dir, wall_clock};
 use super::error::{UserError, describe, err_no_game, user_err};
-use super::peer::{LocalPeer, PeerData, SharedPeer};
+use super::peer::{LocalPeer, PeerData, SharedPeer, StageState};
 use super::route::RouteCache;
 use super::settings::{SETTINGS_FILE, load_settings};
 use super::watched::{SaveResults, SharedResults, WatchedStore};
@@ -44,10 +45,8 @@ pub struct Started {
     pub peer: SharedPeer,
 }
 
-/// Session erfüllt `view::session::Session` und taktet das Spiel mit `step` (RU27.2). Alle Methoden laufen in der Schleife.
-/// Die Felder der Schritte `step`, `saves` und `dev` (Zähler, Puffer, Halt) stehen schon hier, damit die Struktur nur
-/// einmal entsteht.
-#[allow(dead_code)] // Felder, die erst RU27.2 und RU27.3 lesen
+/// Session erfüllt `view::session::Session` und `Sim` (Takt in `step.rs`). Alle Methoden laufen in der Schleife. Die Felder
+/// von `saves` und `dev` (RU27.3, Halt) stehen schon hier, damit die Struktur nur einmal entsteht.
 pub struct Session {
     pub(super) dir: PathBuf,
     pub(super) saves: Saves,
@@ -82,6 +81,8 @@ pub struct Session {
     pub(super) cues: Vec<Cue>,
     /// Ausgang des laufenden bzw. zuletzt beendeten Spiels (`Frame::outcome`)
     pub(super) ended: Outcome,
+    /// Aufnahme-Modus: Der Raum speichert synchron im Takt, `CueSaved` liegt darum ohne Warten im Frame des Takts
+    #[allow(dead_code)]
     pub(super) recording: bool,
     pub(super) settings: Settings,
     pub(super) settings_path: PathBuf,
@@ -89,8 +90,10 @@ pub struct Session {
     pub(super) cmd: BTreeMap<i64, PlayerCommand>,
     /// Puffer von `Frame::seats`
     pub(super) seat_buf: Vec<Seat>,
-    /// Puffer von `seats` (getrennt von `Frame::seats`, dort setzt game `lost`)
-    pub(super) seat_out: Vec<Seat>,
+    /// Die Stufen des letzten Takts (Welten, Ereignisse, Zeiten; Go: der `peer`)
+    pub(super) stages: StageState,
+    /// Stand der Kampagne (`campaign.rs`)
+    pub(super) camp: Campaign,
 }
 
 /// Der Zustand der Stufen kommt aus dem Raum selbst, nicht als JSON durch `Peer::state` (RU27.2).
@@ -145,7 +148,8 @@ impl Session {
             settings_path,
             cmd: BTreeMap::new(),
             seat_buf: Vec::new(),
-            seat_out: Vec::new(),
+            stages: StageState::default(),
+            camp: Campaign::default(),
         }
     }
 
@@ -214,7 +218,9 @@ impl Session {
         self.devs = (0..).zip(devices.iter().copied()).collect();
         (self.m, self.code, self.peer, self.name) = (Some(st.m), st.code, Some(st.peer), name.to_string());
         (self.paused, self.ended, self.world) = (false, Outcome::None, world);
+        self.stages = StageState::default();
         self.last = devices.to_vec();
+        self.sync_stages();
         self.begin_campaign(name, fresh);
         self.log.info(
             "🚀 Spiel gestartet",
@@ -241,6 +247,7 @@ impl Session {
         self.code.clear();
         self.name.clear();
         self.devs.clear();
+        self.stages = StageState::default();
     }
 
     /// Speichert das laufende Spiel sofort (synchron).
@@ -292,6 +299,7 @@ impl Session {
         res.unwrap_or(Err(RoomFehler::RoomNotFound))
             .map_err(|e| describe(&e, &name))?;
         self.devs.insert(slot, d);
+        self.sync_stages();
         self.last = self.devices();
         self.cue(CueKind::Joined, slot, "");
         self.log
@@ -320,6 +328,7 @@ impl Session {
             None => return Err(describe(&RoomFehler::RoomNotFound, &name)),
         }
         self.devs.remove(&player);
+        self.sync_stages();
         self.last = self.devices();
         self.cue(CueKind::Left, player, "");
         self.log.info("👋 Spieler geht", &[("player", &player)]);

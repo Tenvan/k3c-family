@@ -89,7 +89,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU27.1 | `RU27.1-session-settings-worlds-route.md` | Umsetzung | autonom | fertig |
-| RU27.2 | `RU27.2-step-campaign.md` | Umsetzung | autonom | offen |
+| RU27.2 | `RU27.2-step-campaign.md` | Umsetzung | autonom | fertig |
 | RU27.3 | `RU27.3-saves-actions-dev.md` | Umsetzung | autonom | verworfen |
 | RU27.4 | `RU27.4-review.md` | Review | autonom | offen |
 

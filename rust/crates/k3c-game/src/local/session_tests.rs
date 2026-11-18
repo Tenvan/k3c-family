@@ -1,6 +1,5 @@
-//! Tests des Session-Gerüsts (Go: die Teile von `local_test.go`, die ohne `step` laufen: `TestJoinLeaveRejects`,
-//! `TestJoinLeave` ohne Frames). Die Tests mit `step` und `command` (`TestDeterminismLikeRoom`, `TestStepWithoutGameAndPaused`,
-//! `TestPanicInTick`, `TestAutosaveWithoutRun`) kommen mit RU27.2.
+//! Tests des Session-Gerüsts (Go: die Teile von `local_test.go` ohne Takt: `TestJoinLeaveRejects`, `TestJoinLeave`; der Takt
+//! steht in `step_tests.rs`).
 //!
 //! `Manager::create` und `Manager::load` brauchen die Standard-Welt, und `standard_world` bricht bis RU19
 //! (`decode_world_story`) mit `unimplemented!` ab. Die Tests starten darum über `start_test_game` mit einer Insel von Hand
@@ -127,7 +126,6 @@ fn save_without_game_and_after_game_over() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site: Island::to_save erzeugt die Vergleichswelt)"]
 fn save_now() {
     let dir = TempDir::new();
     let mut s = test_session(&dir);

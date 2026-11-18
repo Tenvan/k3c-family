@@ -24,8 +24,8 @@ pub struct Config {
     pub log: Option<Box<dyn LogSink + Send>>,
     /// Uhr der Spielstände und der Insel-ID; `None` = Wanduhr
     pub now: Option<Box<dyn Fn() -> Zeit>>,
-    /// Aufnahme-Modus. Go wartet im Takt auf die Schreib-Goroutine; `k3c-room` speichert synchron, das Warten entfällt
-    /// (RU27.2).
+    /// Aufnahme-Modus. Go wartet im Takt auf die Schreib-Goroutine; `k3c-room` speichert synchron im Takt, `CueSaved` liegt
+    /// darum ohne Warten im Frame desselben Takts (`step.rs`).
     pub recording: bool,
 }
 
