@@ -12,7 +12,8 @@ fn sq() -> (Rect, Rect) {
 }
 
 #[test]
-fn sortiert_nach_textur_und_behaelt_reihenfolge() {
+fn behaelt_aufrufreihenfolge_auch_ueber_texturen() {
+    // B-1058: Figuren verschiedener Sheets in einer Ebene liegen in Aufrufreihenfolge (hinten nach vorn).
     let mut f = Frame::new();
     let (a, b) = (tex(&mut f), tex(&mut f));
     f.begin();
@@ -21,11 +22,37 @@ fn sortiert_nach_textur_und_behaelt_reihenfolge() {
         f.sprite(t, src, Rect::new(i as f32, 0.0, 1.0, 1.0), WHITE);
     }
     f.rect(Rect::new(9.0, 0.0, 1.0, 1.0), WHITE);
+    f.sprite(b, src, Rect::new(10.0, 0.0, 1.0, 1.0), WHITE);
     f.finish();
     let xs: Vec<f32> = f.instances().map(|i| i.t[0]).collect();
-    assert_eq!(xs, [1.0, 3.0, 0.0, 2.0, 4.0, 9.0]);
+    assert_eq!(xs, [0.0, 1.0, 2.0, 3.0, 4.0, 9.0, 10.0]);
     let runs: Vec<_> = f.runs().iter().map(|r| (r.tex, r.first, r.count)).collect();
-    assert_eq!(runs, [(Some(a), 0, 2), (Some(b), 2, 3), (None, 5, 1)]);
+    assert_eq!(
+        runs,
+        [
+            (Some(b), 0, 1),
+            (Some(a), 1, 1),
+            (Some(b), 2, 1),
+            (Some(a), 3, 1),
+            (Some(b), 4, 1),
+            (None, 5, 1),
+            (Some(b), 6, 1)
+        ]
+    );
+}
+
+#[test]
+fn gleiche_textur_nacheinander_bildet_ein_buendel() {
+    let mut f = Frame::new();
+    let (a, b) = (tex(&mut f), tex(&mut f));
+    f.begin();
+    let src = sq().0;
+    for (i, t) in [a, a, a, b, b].into_iter().enumerate() {
+        f.sprite(t, src, Rect::new(i as f32, 0.0, 1.0, 1.0), WHITE);
+    }
+    f.finish();
+    let runs: Vec<_> = f.runs().iter().map(|r| (r.tex, r.first, r.count)).collect();
+    assert_eq!(runs, [(Some(a), 0, 3), (Some(b), 3, 2)]);
 }
 
 #[test]
@@ -159,14 +186,14 @@ fn netze_und_formen_mischen_sich_nach_aufruf() {
     assert_eq!(
         runs,
         [
-            (Some(t), Kind::Tris, 0, 6),
             (None, Kind::Quads, 0, 1),
-            (None, Kind::Tris, 6, 6),
+            (None, Kind::Tris, 0, 6),
             (None, Kind::Quads, 1, 1),
+            (Some(t), Kind::Tris, 6, 6),
         ]
     );
     assert_eq!(
-        &f.indices()[..6],
+        &f.indices()[6..],
         &[4, 5, 6, 7, 8, 9],
         "zwei Netze, ein Bündel, nach den Polygon-Ecken"
     );

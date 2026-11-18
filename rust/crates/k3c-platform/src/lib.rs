@@ -75,11 +75,11 @@ pub trait App {
 }
 
 /// Zeichenfläche in logischen 1920×1080. Farben und Tönungen sind gerade (nicht vormultipliziert, die Plattform
-/// rechnet um); Texturen sind RGBA8 mit vormultipliziertem Alpha. Zeichenreihenfolge: Ebene → Ausschnitt → Textur (Vollfarbe zuletzt) → Aufruf.
+/// rechnet um); Texturen sind RGBA8 mit vormultipliziertem Alpha. Zeichenreihenfolge: Ebene → Ausschnitt → Aufruf (wie Ebitengine, nie nach Textur umsortiert).
 pub trait Canvas {
     fn size(&self) -> (f32, f32);
     /// Setzt die Ebene der folgenden Aufrufe (Standard 0 je Bild): niedrige Ebenen werden zuerst gezeichnet;
-    /// innerhalb einer Ebene wird nach Ausschnitt und Textur gebündelt, Vollfarbe und Schrift zuletzt.
+    /// innerhalb einer Ebene gilt nach Ausschnitt die Aufrufreihenfolge (hinten nach vorn, auch über Texturen).
     fn layer(&mut self, _z: u32) {}
     /// Beschneidet die folgenden Aufrufe auf `area` (Scissor, logische Einheiten); `None` hebt das auf.
     /// Koordinaten bleiben Fensterkoordinaten (wie `SubImage` bei Ebitengine). Standard je Bild: `None`.

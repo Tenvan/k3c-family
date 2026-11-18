@@ -878,3 +878,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1030](B-1030-detvec-baum-doppel-truhe.md) | SIM | Problem | hoch | erledigt | SI2 | Detvec-Datenbaum kennt data/paper.json objekte.doppel-truhe nicht, check:go ist rot |
 | [B-1025](B-1025-settings-stress-nach-ru7.md) | CLI | Schuld | mittel | erledigt | RU7 | Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert |
 | [B-1061](B-1061-actors-toenung-gerade-farbe.md) | CLI | Problem | mittel | erledigt | RU16 | Figuren und Gefechtsmarken tönen mit gerader statt vormultiplizierter Farbe |
+| [B-1058](B-1058-canvas-reihenfolge-textur.md) | CLI | Problem | mittel | erledigt | RU13 | Canvas sortiert innerhalb einer Ebene nach Textur statt nach Aufrufreihenfolge |

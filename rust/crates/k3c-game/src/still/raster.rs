@@ -5,9 +5,9 @@
 //! Glyphen-Atlas. Dieser Rasterer rechnet die Befehle wie `shader.wgsl` nach: Pixelmitte, Abtasten linear oder nächster
 //! Nachbar mit Rand-Klemmung, Tönung (vormultipliziert) mal Textur, Mischen "vormultipliziert über" in 8 Bit.
 //!
-//! Abweichung von der Plattform: Der `Frame` sortiert nach (Ebene, Ausschnitt, Textur, Aufruf), das GPU-Bild
-//! innerhalb einer Ebene also nach Textur statt nach Aufrufreihenfolge. Das Standbild vergleicht mit Go und zeichnet
-//! darum in Aufrufreihenfolge: jeder Aufruf bekommt seine eigene Ebene (`layer` des Aufrufers wird ignoriert).
+//! Abweichung von der Plattform: Der `Frame` ordnet je (Ebene, Ausschnitt) nach Aufruf (B-1058). Das Standbild
+//! zeichnet zusätzlich jeden Aufruf auf eine eigene Ebene (`layer` des Aufrufers wird ignoriert), damit Ausschnitte
+//! die Reihenfolge gegenüber Go nicht verändern.
 
 use k3c_platform::{Affine, Canvas, Filter, FontId, Frame, Kind, Rect, TexId, Vertex};
 

@@ -1,9 +1,12 @@
-//! Sammlung je Bild: Rechteck-Instanzen (mit Matrix) und Dreiecke, sortiert nach Ebene, Ausschnitt, Textur und
-//! Aufruf; ein Draw-Call je Bündel.
+//! Sammlung je Bild: Rechteck-Instanzen (mit Matrix) und Dreiecke, geordnet nach Ebene, Ausschnitt und Aufruf;
+//! aufeinanderfolgende Aufrufe mit gleicher Textur, Art und Mischung bilden einen Draw-Call (Bündel).
+//!
+//! Innerhalb von Ebene und Ausschnitt gilt die Aufrufreihenfolge wie bei Ebitengine (hinten nach vorn, B-1058);
+//! es wird nicht nach Textur umsortiert, sonst verdeckten sich Figuren verschiedener Sheets falsch.
 //!
 //! Reine CPU-Seite ohne Grafikabhängigkeit; das Backend liest [`Frame::runs`], [`Frame::write_instances`],
 //! [`Frame::write_vertices`] und [`Frame::indices`]. Vollfarbe (Rechtecke, Formen, Pixel-Schrift) trägt den
-//! Schlüssel [`SOLID`] und landet innerhalb von Ebene und Ausschnitt nach allen Texturen (also obenauf).
+//! Schlüssel [`SOLID`] statt einer Textur.
 //! `impl Canvas for Frame` steht in `frame_canvas.rs`.
 
 use crate::shape::Tris;
@@ -14,7 +17,7 @@ use crate::{Filter, Rect, TexId};
 pub const INST_BYTES: usize = 64;
 /// Größe einer Ecke in Byte (8 × f32).
 pub const VERT_BYTES: usize = 32;
-/// Sortierschlüssel der Vollfarbe: hinter allen Texturen.
+/// Textur-Schlüssel der Vollfarbe (keine Textur).
 pub const SOLID: u32 = u32::MAX;
 
 /// Eine Rechteck-Instanz: Einheitsquadrat → `m` (a, b, c, d wie GeoM) plus Verschiebung `t.xy`, Farbe `c`,
@@ -135,10 +138,10 @@ impl Frame {
         self.atlas.begin_frame();
     }
 
-    /// Sortiert nach Ebene, Ausschnitt, Textur, Aufruf und bildet die Draw-Calls; Instanzen und Indizes liegen
-    /// danach je Bündel zusammenhängend.
+    /// Ordnet nach Ebene, Ausschnitt und Aufruf und bildet die Draw-Calls; Instanzen und Indizes liegen danach je
+    /// Bündel zusammenhängend.
     pub fn finish(&mut self) {
-        self.items.sort_unstable_by_key(|i| (i.layer, i.clip, i.tex, i.seq));
+        self.items.sort_unstable_by_key(|i| (i.layer, i.clip, i.seq));
         self.quads.clear();
         self.idx.clear();
         for it in &self.items {
