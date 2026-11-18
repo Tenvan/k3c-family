@@ -164,7 +164,6 @@ fn step_banners_loest_trupps_ohne_banner_auf() {
 }
 
 #[test]
-#[ignore = "wartet auf RU15 (Krone, RU15.4: `crowned`)"]
 fn step_banners_fuellt_den_trupp_je_art_einen_je_tick() {
     let (mut w, _, _) = combat_stage(COMBAT_GENERAL);
     let v = vals(&w);

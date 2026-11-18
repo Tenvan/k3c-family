@@ -38,7 +38,7 @@ pub fn take_equipment(w: &mut World, v: &WorldValues, ei: usize) {
 /// Go: `dropCarried`: legt die getragene Ausrüstung und Krone eines gefallenen Gegners wieder ab. Der Gegner ist schon
 /// aus `w.enemies` genommen (Zustandsmodell, Vorentscheidung 7).
 pub fn drop_carried(w: &mut World, e: &mut Enemy) {
-    drop_crown_of(e);
+    drop_crown_of(w, e);
     if let Some(mut d) = e.carried.take() {
         d.x = e.x;
         w.drops.push(d);

@@ -6,32 +6,16 @@
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
 use crate::state::shared::WorldValues;
-use crate::state::{Enemy, Event, Job, Projectile, Site, Troop, World};
+use crate::state::{Event, Job, Projectile, Site, Troop, World};
 use k3c_data::economy::Gatherable;
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
 pub use crate::boss::{boss_ability, boss_defeated, trigger_boss};
 
-/// Go: `takeCrownOrLoot` (crown.go).
-pub fn take_crown_or_loot(_w: &mut World, _ei: usize) {
-    unimplemented!("RU15: take_crown_or_loot")
-}
-
-/// Go: `crownStolen` (crown.go): `thief` ist schon aus `w.enemies` genommen.
-pub fn crown_stolen(_w: &mut World, _thief: &Enemy) {
-    unimplemented!("RU15: crown_stolen")
-}
-
-/// Go: `dropLoot` (portal.go): die Beute des Gegners `ei` fällt als Münzen zu Boden.
-pub fn drop_loot(_w: &mut World, _ei: usize) {
-    unimplemented!("RU15: drop_loot")
-}
-
-/// Go: `dropCrownOf` (crown.go).
-pub fn drop_crown_of(_e: &mut Enemy) {
-    unimplemented!("RU15: drop_crown_of")
-}
+// Von RU15 portiert (Krone, Portale): die Import-Stelle bleibt `pending`.
+pub use crate::crown::{crown_stolen, drop_crown_of, take_crown_or_loot};
+pub use crate::portal::drop_loot;
 
 /// Go: `merchantX` (merchant.go).
 pub fn merchant_x(_w: &World, _what: &str) -> f64 {
@@ -207,4 +191,9 @@ pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &st
 /// Go: `addPoolPoints` (monarch.go): Punkte in den Fund-Pool der Insel (ohne Insel: Zähler der Welt).
 pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
     unimplemented!("RU18: add_pool_points")
+}
+
+/// Go: `gameOver` (world_end.go): das Spiel ist verloren (Kronenraub, Burgfall ohne Rückkehr).
+pub fn game_over(_w: &mut World) {
+    unimplemented!("RU14: game_over")
 }
