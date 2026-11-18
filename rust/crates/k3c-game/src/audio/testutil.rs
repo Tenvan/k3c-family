@@ -84,7 +84,9 @@ impl AudioOut for FakeAudio {
 
 /// Neuer, leerer Ordner je Test (Go: `t.TempDir()`).
 pub fn temp_dir(name: &str) -> PathBuf {
-    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/tmp").join(format!("k3c-audio-{}-{name}", std::process::id()));
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
+        .join(format!("k3c-audio-{}-{name}", std::process::id()));
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).expect("Test-Ordner");
     dir

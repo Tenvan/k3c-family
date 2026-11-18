@@ -1,6 +1,6 @@
 //! Hilfen der Tests dieser Gruppe: `combatIsland`, `spawnSoldiers`, `combatPay`, `firstLeader`, `spotFor`, `groupReady`,
-//! `squadSize` und `takeBannerAt` aus den Go-Testdateien `combat_test.go`. Hilfen, die den Takt (RU14), Inseln (RU10)
-//! oder die Gruppen (RU15.3) brauchen, melden den liefernden Sprint; Tests, die sie rufen, tragen `ignore`.
+//! `squadSize` und `takeBannerAt` aus den Go-Testdateien `combat_test.go`. Hilfen, die Inseln (RU10) oder die Gruppen
+//! (RU15.3) brauchen, melden den liefernden Sprint; Tests, die sie rufen, tragen `ignore`.
 //! `combat_stage` ersetzt `combatIsland` ohne `CreateIsland`: eine Welt mit Wertesatz, Toren und zwei Spielern.
 
 use std::sync::Arc;
@@ -8,7 +8,7 @@ use std::sync::Arc;
 use super::spots::{CombatSpot, SpotKind, combat_spots};
 use crate::enemies::testutil::{bare_world, test_values};
 use crate::state::shared::CombatSettings;
-use crate::state::{Player, Site, Troop, World, WorldValues};
+use crate::state::{Player, PlayerCommand, Site, Troop, World, WorldValues};
 
 /// Go: `combatIsland` ohne Insel: eine Welt mit der Variante `mode` (Gruppengröße 3), je einer gebauten Mauer als Tor
 /// links und rechts (Hub ± 10), zwei Monarchen mit 40 Gold und zwei Portalen bei Hub ∓ 40. Liefert Welt, linkes und
@@ -81,14 +81,20 @@ pub fn spawn_soldiers(w: &mut World, n: usize) -> Vec<usize> {
     (0..n).map(|_| troop(w, "warrior", 0.0, 1.0)).collect()
 }
 
-/// Go: `combatPay`: Spieler `i` steht an `x` und zahlt `ticks` Takte lang (`Step`, RU14).
-pub fn combat_pay(_w: &mut World, _i: usize, _x: f64, _ticks: usize) {
-    panic!("RU14: combat_pay (Step)")
+/// Go: `combatPay`: Spieler `i` steht an `x` und zahlt `ticks` Takte lang.
+pub fn combat_pay(w: &mut World, i: usize, x: f64, ticks: usize) {
+    for _ in 0..ticks {
+        w.players[i].x = x;
+        w.players[i].vx = 0.0;
+        let mut cmds = vec![PlayerCommand::default(); w.players.len()];
+        cmds[i].pay = true;
+        crate::world::step(w, &cmds, None, crate::world::testutil::DT);
+    }
 }
 
-/// Go: `run`: tickt die Stufe `seconds` lang (`Step`, RU14).
-pub fn run(_w: &mut World, _seconds: f64) {
-    panic!("RU14: run (Step)")
+/// Go: `run` (rules_test.go): tickt die Stufe `seconds` lang.
+pub fn run(w: &mut World, seconds: f64) {
+    crate::enemies::testutil::run(w, seconds);
 }
 
 /// Go: `firstLeader`: der erste Gruppenführer (Index).
@@ -96,12 +102,20 @@ pub fn first_leader(w: &World) -> Option<usize> {
     w.troops.iter().position(|t| t.leader)
 }
 
-/// Go: `groupReady`: ein Führer mit voller Gruppe am rechten Tor (`Step` und Gruppen, RU14/RU15.3).
+/// Go: `groupReady`: ein Führer mit voller Gruppe am rechten Tor.
 pub fn group_ready() -> (World, usize) {
-    panic!("RU14: group_ready (Step, combat_squad)")
+    let (mut w, _, _) = combat_stage("groups");
+    spawn_soldiers(&mut w, 5);
+    let x = spot_for(&w, SpotKind::Shield, 0).map_or(0.0, |s| s.x);
+    combat_pay(&mut w, 0, x, 76);
+    run(&mut w, 8.0);
+    match first_leader(&w) {
+        Some(l) if super::squad::group_count(&w, l) == 3 => (w, l),
+        _ => panic!("Gruppe nicht bereit"),
+    }
 }
 
-/// Go: `takeBannerAt`: Spieler `i` nimmt das Banner am rechten Tor (`Step`, RU14).
+/// Go: `takeBannerAt`: Spieler `i` nimmt das Banner am rechten Tor.
 pub fn take_banner_at(w: &mut World, i: usize) {
     let x = spot_for(w, SpotKind::Banner, 1).map_or(0.0, |s| s.x);
     combat_pay(w, i, x, 20);

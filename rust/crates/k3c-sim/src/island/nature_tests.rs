@@ -64,7 +64,7 @@ fn insel_natur_vorgabe_und_tiefe() {
 
 /// AC-03: Der fest gesetzte Wert gilt in der erzeugten Stufe, unabhängig vom Seed; die Baumart kommt beim Knoten an.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn insel_natur_fest_im_spiel() {
     let data = test_data();
     let mut world = standard_world(&data);
@@ -85,7 +85,7 @@ fn insel_natur_fest_im_spiel() {
 /// Spielstand: Die Natur der Stufe wird mitgespeichert und beim Laden wieder verwendet, auch wenn die Welt sie nicht mehr
 /// festsetzt. Braucht `create_island` (RU14).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn insel_natur_im_spielstand() {
     let data = test_data();
     let world = standard_world(&data);

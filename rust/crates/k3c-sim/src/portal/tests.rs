@@ -92,11 +92,11 @@ fn letztes_portal_macht_stufe_sicher() {}
 fn sichere_stufe_bleibt_nach_dem_laden() {}
 
 #[test]
-#[ignore = "wartet auf RU14 (Step)"]
+#[ignore = "wartet auf RU18 (Step)"]
 fn dieb_ohne_portal_laesst_beute_fallen() {}
 
 #[test]
-#[ignore = "wartet auf RU10 und RU14 (CreateIsland, Step)"]
+#[ignore = "wartet auf RU10 und RU18 (CreateIsland, Step)"]
 fn portal_simulation_ist_deterministisch() {}
 
 #[test]

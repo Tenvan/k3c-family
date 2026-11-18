@@ -7,8 +7,9 @@ use serde_json::Value;
 
 use super::travel::insert_player;
 use super::{CreateOptions, Island, IslandBuild, IslandDef, create_island_at};
-use crate::state::pending::{crowned, emit, harbor, ship_complete, to_hub, unit_x};
+use crate::state::pending::{crowned, emit, to_hub, unit_x};
 use crate::state::{Event, World};
+use crate::world::ship::{harbor, ship_complete};
 use k3c_data::Data;
 
 impl Island {

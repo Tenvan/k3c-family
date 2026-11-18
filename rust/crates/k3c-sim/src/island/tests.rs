@@ -22,7 +22,7 @@ fn with_stage_stock(isl: &mut Island, i: usize, f: impl FnOnce(&mut World)) {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_stages_tick_together() {
     let data = test_data();
     let mut isl = must_island(&data, "insel-a", &[0, 1]);
@@ -62,7 +62,7 @@ fn island_stages_tick_together() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_stage_without_player_keeps_running() {
     let data = test_data();
     let mut isl = must_island(&data, "insel-b", &[0, 1]);
@@ -83,7 +83,7 @@ fn island_stage_without_player_keeps_running() {
 /// Go: `TestIslandSharedStock`. In Rust besitzt die Insel den Vorrat (Entscheidung 5); jede Stufe sieht ihn, solange sie
 /// rechnet (`with_stage_stock`), und keine Stufe hat einen eigenen.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_shared_stock() {
     let data = test_data();
     let mut isl = must_island(&data, "insel-c", &[0, 1, 2]);
@@ -114,7 +114,7 @@ fn island_shared_stock() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_player_index_is_unique() {
     let data = test_data();
     let mut isl = must_island(&data, "insel-d", &[0, 1, 2]);
@@ -128,7 +128,7 @@ fn island_player_index_is_unique() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_deterministic() {
     let data = test_data();
     let run = |seed: &str| -> Vec<String> {
@@ -170,7 +170,7 @@ fn island_deterministic() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn create_island_rejects_bad_input() {
     let data = test_data();
     let world = standard_world(&data);
