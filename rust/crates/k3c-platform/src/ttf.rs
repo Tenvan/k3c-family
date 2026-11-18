@@ -163,8 +163,9 @@ impl Atlas {
                 continue;
             };
             if g.src.w > 0.0 {
-                // Ganze Pixel: der Atlas wird linear gefiltert, Bruchteile machen Glyphen unscharf.
-                let dst = Rect::new((pen + g.dx).round(), (base + g.dy).round(), g.src.w, g.src.h);
+                // Ganze Pixel: der Atlas wird linear gefiltert, Bruchteile machen Glyphen unscharf. Waagrecht gerundet,
+                // senkrecht abgerundet wie Ebitengine (`goTextGlyphImageInfo`: `origin.Y &^= 63`, B-1063); `dy` ist ganzzahlig.
+                let dst = Rect::new((pen + g.dx).round(), (base + g.dy).floor(), g.src.w, g.src.h);
                 self.quads.push((g.src, dst));
             }
             pen += g.advance;

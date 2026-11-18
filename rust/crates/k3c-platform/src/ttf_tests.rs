@@ -148,3 +148,24 @@ fn ttf_zu_grosse_glyphe_behaelt_vorschub() {
     assert_eq!(a.glyphs(), 1, "gemerkt, nicht neu gerastert");
     assert!(f.width(id, "HH", 3000.0) > 1000.0);
 }
+
+/// B-1063: Die Grundlinie wird abgerundet wie in Ebitengine (`origin.Y &^= 63`), nicht gerundet. Größe 8 hat die
+/// Oberlänge 7,56 (Go: `HAscent`, gemessen mit `text.GoTextFace.Metrics`); das H sitzt mit der Unterkante auf Pixelzeile 7.
+#[test]
+fn ttf_grundlinie_wird_abgerundet_wie_in_go() {
+    let (f, id) = loaded();
+    assert!(
+        (f.ascent(id, 8.0) - 7.5586).abs() < 1e-3,
+        "Oberlänge wie Go: {}",
+        f.ascent(id, 8.0)
+    );
+    let bottom = |y: f32| {
+        let (mut a, mut up) = (Atlas::default(), Vec::new());
+        a.layout(&f, (id, 8.0), "H", (0.0, y), &mut up);
+        let (src, dst) = a.quads[0];
+        dst.y + src.h
+    };
+    assert_eq!(bottom(0.0), 7.0, "floor(7,56), nicht round = 8");
+    assert_eq!(bottom(0.4), 7.0, "floor(7,96)");
+    assert_eq!(bottom(0.5), 8.0, "floor(8,06)");
+}
