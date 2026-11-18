@@ -73,7 +73,7 @@ fn schreibfehler_laesst_stand_unveraendert() {
 }
 
 /// Der Pfad der ersten Abweichung zweier JSON-Bäume ("" = gleich; Zahlen über `==` von `serde_json`, also als `f64`).
-fn diff(at: &str, want: &Value, got: &Value) -> String {
+pub(super) fn diff(at: &str, want: &Value, got: &Value) -> String {
     match (want, got) {
         (Value::Object(a), Value::Object(b)) => {
             if !a.keys().eq(b.keys()) {

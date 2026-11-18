@@ -204,6 +204,7 @@ impl Fixture {
             data: &self.data,
             store: &mut self.store,
             log: &mut self.log,
+            sessions: None,
             dev: false,
             snapshot: None,
         }
@@ -290,7 +291,9 @@ impl WorldDir {
     /// Schreibt die Dateien `(id, Inhalt)` in einen eigenen Ordner; `tag` hält die Ordner der Tests auseinander.
     pub fn new(tag: &str, files: &[(&str, &str)]) -> WorldDir {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work");
-        let dir = root.join(format!("room-worlds-{tag}-{}", std::process::id()));
+        static NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        let n = NEXT.fetch_add(1, Ordering::SeqCst); // gleiche Marke in parallelen Tests: eigener Ordner je Aufruf
+        let dir = root.join(format!("room-worlds-{tag}-{}-{n}", std::process::id()));
         std::fs::create_dir_all(dir.join("worlds")).expect("Ordner der Welten");
         for (id, text) in files {
             std::fs::write(dir.join("worlds").join(format!("{id}.json")), text).expect("Welt-Datei");

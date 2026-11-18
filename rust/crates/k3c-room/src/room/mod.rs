@@ -38,7 +38,6 @@ mod dev_grade_tests;
 mod dev_tests;
 #[cfg(test)]
 mod dev_timescale_tests;
-mod early;
 mod env;
 #[cfg(test)]
 mod events_tests;
@@ -66,12 +65,17 @@ mod manager;
 mod manager_tests;
 #[cfg(test)]
 mod memstore;
+mod metrics;
+#[cfg(test)]
+mod metrics_tests;
+mod observer;
+#[cfg(test)]
+mod observer_tests;
 #[cfg(test)]
 mod options_tests;
 mod pause;
 #[cfg(test)]
 mod pause_tests;
-mod pending;
 mod preview;
 mod preview_candidate;
 #[cfg(test)]
@@ -91,6 +95,8 @@ mod preview_tests;
 mod review_tests;
 #[cfg(test)]
 mod room_tests;
+#[cfg(test)]
+mod roundtrip_tests;
 mod run;
 #[cfg(test)]
 mod run_tests;
@@ -121,6 +127,8 @@ mod victory_tests;
 mod worlds;
 #[cfg(test)]
 mod worlds_tests;
+#[cfg(test)]
+mod worlds_values_tests;
 
 pub use dev::{DEV_MAX_AMOUNT, DevAction, MAX_TIMESCALE, SlotMap};
 pub use env::{Env, SnapshotFn, Store};
@@ -128,8 +136,8 @@ pub use fullsave::FULL_SAVE_PREFIX;
 pub use info::Info;
 pub use log::{Level, Log, NullLog, RecordingLog, list_text, short};
 pub use manager::{CODE_LETTERS, Manager};
+pub use metrics::{Metrics, SessionReport, SessionStore};
 pub use pause::PROTECT_TICKS;
-pub use pending::Metrics;
 pub use preview::{PreviewOptions, PreviewSource, build_preview, preview_site_key, valid_preview_biome};
 pub use preview_chunk::{preview_chunk_objects, preview_chunk_ruins};
 pub use run::Failure;
@@ -137,6 +145,7 @@ pub use saver::{InlineWriter, SLOW_SAVE_MS, SaveWriter, write_save};
 pub use stages::{free_monarchs, start_stage};
 pub use status::{DeviceInfo, StageStatus, Status, Summary, TickMs, unique_prefixes};
 pub use types::*;
+pub use worlds::WorldInfo;
 
 use crate::fehler::Fehler;
 

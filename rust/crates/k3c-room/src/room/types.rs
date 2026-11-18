@@ -8,7 +8,7 @@ use k3c_sim::island::Island;
 use k3c_sim::state::PlayerCommand;
 use serde::Serialize;
 
-use super::pending::Metrics;
+use super::metrics::Metrics;
 use crate::store::Stamp;
 
 /// Grenzen und Fristen aus `docs/protocol.md`.

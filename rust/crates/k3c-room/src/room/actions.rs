@@ -169,7 +169,7 @@ impl Room {
     /// Plätze melden und speichern, bei jedem Verlassen und jedem Abbruch eines Geräts (B-147, S2.2); ist kein Gerät
     /// mehr verbunden, ist der Raum zusätzlich pausiert und die Frist `EMPTY_FOR_SECS` läuft. Ein geschlossener Raum
     /// speichert nicht (nach einem Absturz ist sein Zustand nicht sicher).
-    fn after_disconnect(&mut self, env: &mut Env) {
+    pub(super) fn after_disconnect(&mut self, env: &mut Env) {
         if self.closed {
             return;
         }

@@ -11,7 +11,7 @@ use super::env::Env;
 use super::types::{Device, MAX_MONARCHS, Monarch, MonarchState, Room};
 
 /// Die Stufen aller Monarchen, aufsteigend und ohne Doppelte; ohne Monarchen die Startstufe.
-fn observer_stages(isl: &Island, monarchs: usize, start: usize) -> Vec<usize> {
+pub(super) fn observer_stages(isl: &Island, monarchs: usize, start: usize) -> Vec<usize> {
     if monarchs == 0 {
         return vec![start];
     }
