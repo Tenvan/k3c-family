@@ -1,6 +1,6 @@
 # RU45 · SIM, CLI · Abnahme- und Messläufe auf dem Second Worker
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
@@ -67,7 +67,7 @@ keine
 | RU45.1 | `RU45.1-gen-und-race.md` | Umsetzung | autonom | fertig |
 | RU45.2 | `RU45.2-level-vergleich-go-rust.md` | Umsetzung | autonom | fertig |
 | RU45.3 | `RU45.3-measure-novsync-replay.md` | Umsetzung | autonom | fertig |
-| RU45.4 | `RU45.4-review.md` | Review | autonom | offen |
+| RU45.4 | `RU45.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -75,6 +75,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 bis AC-04 erfüllt, Nachweis in den Ergebnissen RU45.1 bis RU45.4. `gen:paper` grün, `check:race` grün (gcc 16.2.0, 749 s, kein DATA RACE), Level-Vergleich Go gegen Rust 5000 Level ohne Abweichung, `measure.ps1` hängt `--novsync` an die Wiedergabe, wenn `-Vsync` fehlt. `task check` grün (1942), `check:go` Tests grün (`golangci-lint` lokal fehlt). Befunde zum `check:race`-Exit-Code und `requirements.md` für den Hauptrechner im Ergebnis RU45.1; Messlauf von `measure.ps1` bleibt Ralfs Gate G2.
