@@ -101,7 +101,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 |---|---|---|---|---|
 | RU30.1 | `RU30.1-levels-loading-loadscreen.md` | Umsetzung | autonom | fertig |
 | RU30.2 | `RU30.2-assets-voyage-script-shots.md` | Umsetzung | autonom | fertig |
-| RU30.3 | `RU30.3-dev-tasten-fehlerfenster.md` | Umsetzung | autonom | offen |
+| RU30.3 | `RU30.3-dev-tasten-fehlerfenster.md` | Umsetzung | autonom | fertig |
 | RU30.4 | `RU30.4-measure-bericht.md` | Umsetzung | autonom | offen |
 | RU30.5 | `RU30.5-stresstest.md` | Umsetzung | autonom | offen |
 | RU30.6 | `RU30.6-start-main-icon.md` | Umsetzung | autonom | offen |

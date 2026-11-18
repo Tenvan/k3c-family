@@ -20,9 +20,7 @@ impl Game {
             self.draw_loading(c);
         } else {
             self.draw_game(c, alpha);
-            if self.shot_next {
-                self.dev_shot(c);
-            }
+            self.dev_shot(alpha);
             return;
         }
         if let Some(sh) = self.shots.as_mut() {
@@ -33,7 +31,7 @@ impl Game {
     /// Zeichnet je Zelle die Zellen-Ebenen, dann das Overlay, den obersten Screen und zuletzt die Anzeige oben. Die
     /// Zwischenbilder (`Blend`) schieben den Frame für das Zeichnen; `restore` läuft auch nach einem Panic eines
     /// Drawers (Go: `defer`), danach geht der Panic weiter.
-    fn draw_game(&mut self, c: &mut dyn Canvas, alpha: f64) {
+    pub(super) fn draw_game(&mut self, c: &mut dyn Canvas, alpha: f64) {
         let t0 = self.meter.is_some().then(super::clock::clock);
         let s0 = self.stats.timing(&self.frame).then(|| (self.stats.now)());
         let (w, h) = c.size();

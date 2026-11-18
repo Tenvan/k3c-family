@@ -7,9 +7,14 @@ use std::rc::Rc;
 use k3c_platform::{Canvas, InputState};
 use k3c_sim::state::{Player, World};
 
+#[path = "dev_testutil.rs"]
+pub mod dev_testutil;
+
+use self::dev_testutil::{DevHandle, DevLog};
 use super::sim::Sim;
 use super::{Parts, assemble};
 use crate::view::cell::Cell;
+use crate::view::devkeys::DevSession;
 use crate::view::frame::{Frame, Outcome, Seat, Stage};
 use crate::view::input::{Command, DeviceID, DeviceKind, Input, Source};
 use crate::view::layer::{Drawer, Layer};
@@ -42,6 +47,8 @@ pub struct Probe {
     pub learned: Rc<RefCell<Vec<String>>>,
     /// Einstellungen, die `set_settings` bekam
     pub set: Rc<RefCell<Vec<Settings>>>,
+    /// Aufrufe der Entwickler-Rolle (`FakeSim::with_dev`)
+    pub dev: Rc<RefCell<DevLog>>,
 }
 
 /// Tastatur 1 (`keys1`).
@@ -61,6 +68,8 @@ pub struct FakeSim {
     tick: u64,
     /// Frames, die `step` der Reihe nach liefert (danach den letzten ohne Ereignisse); leer = der eigene Frame
     script: Vec<Frame>,
+    /// Entwickler-Rolle (`with_dev`), sonst keine
+    dev: Option<DevHandle>,
 }
 
 impl FakeSim {
@@ -81,8 +90,15 @@ impl FakeSim {
             seats,
             tick: 0,
             script: Vec::new(),
+            dev: None,
         };
         (sim, probe)
+    }
+
+    /// Hängt die Entwickler-Rolle ein; ihre Aufrufe stehen in `Probe::dev` (Go: `devSim`).
+    pub fn with_dev(mut self) -> FakeSim {
+        self.dev = Some(DevHandle(Rc::clone(&self.probe.dev)));
+        self
     }
 
     /// Liefert je Takt den nächsten Frame der Liste (danach den letzten ohne Ereignisse), Uhr und Takt setzt `step`
@@ -110,6 +126,10 @@ impl Sim for FakeSim {
     fn command(&mut self, player: i64, c: Command) -> Result<(), Fehler> {
         self.probe.cmds.borrow_mut().push((player, c));
         Ok(())
+    }
+
+    fn dev_session(&mut self) -> Option<&mut dyn DevSession> {
+        self.dev.as_mut().map(|d| d as &mut dyn DevSession)
     }
 
     #[allow(clippy::cast_precision_loss)]

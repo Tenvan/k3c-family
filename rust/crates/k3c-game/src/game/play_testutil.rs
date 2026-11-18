@@ -24,6 +24,11 @@ pub fn press(d: DeviceID, c: Command, a: &[Action]) -> DeviceInput {
 /// Go: `playGame`); der Frame trägt die Plätze, aber noch keine Stufe.
 pub fn play_game(overlays: Vec<Box<dyn Overlay>>) -> (Game, Probe) {
     let (sim, probe) = FakeSim::new(2);
+    play_game_with(sim, probe, overlays)
+}
+
+/// Wie `play_game` mit einer fertigen Simulation (z. B. `FakeSim::with_dev`).
+pub fn play_game_with(sim: FakeSim, probe: Probe, overlays: Vec<Box<dyn Overlay>>) -> (Game, Probe) {
     let mut p = parts(StepKind::Stay, &Log::default(), Vec::new());
     p.overlays = overlays;
     let args = Args {

@@ -3,7 +3,6 @@
 use k3c_platform::{InputState, NullCanvas};
 
 use super::*;
-use crate::game::Mode;
 use crate::game::levels::levels_tests::{AssetsOf, FakeLoader};
 use crate::game::testutil::{keys1, pad};
 use crate::game::voyage_testutil::{VoyDrawer, deep_harbor, harbor, switched, voy_game, voy_game_with};
@@ -74,30 +73,15 @@ fn loading_voyage() -> (Game, FakeLoader) {
 /// GS2.4: Schlägt das Laden der Zielinsel während der Fahrt fehl, meldet die Schleife den Fehler im Fenster (Draw zeigt
 /// ihn vor der Fahrt); nichts rechnet weiter, die Fahrt hängt nicht in der Ladeanzeige.
 #[test]
-#[ignore = "wartet auf RU30.3"]
 fn voyage_load_failure_is_fault() {
-    // Das Fehlerfenster (`fault.go`, `Game::fault`) liefert RU30.3; bis dahin gilt `voyage_load_failure_ends_game`.
-    let (mut g, ld) = loading_voyage();
-    ld.fail.set(true);
-    g.draw_voyage(&mut NullCanvas::default(), 0.0); // ein Bild der Fahrt gibt das Laden frei
-    advance(&mut g, 1);
-    g.run_pending_load(&mut NullCanvas::default());
-    assert!(g.fault.is_some() && !g.loading(), "Ladefehler in der Fahrt");
-}
-
-/// Übergang bis RU30.3: Der Ladefehler in der Fahrt beendet das Spiel mit Meldung (Log), nichts rechnet weiter und die
-/// Fahrt hängt nicht in der Ladeanzeige.
-#[test]
-fn voyage_load_failure_ends_game() {
     let (mut g, ld) = loading_voyage();
     ld.fail.set(true);
     g.draw_voyage(&mut NullCanvas::default(), 0.0); // ein Bild der Fahrt gibt das Laden frei
     advance(&mut g, 1);
     g.run_pending_load(&mut NullCanvas::default()); // das Hochladen scheitert im Zeichen-Takt
     assert!(
-        g.mode == Mode::Quit && !g.loading(),
-        "Ladefehler: Modus {:?}, lädt {}",
-        g.mode,
+        g.fault.is_some() && g.fault().is_some() && !g.loading(),
+        "Ladefehler in der Fahrt: lädt {}",
         g.loading()
     );
     let steps = ld.calls.borrow().len();

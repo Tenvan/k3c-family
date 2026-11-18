@@ -9,7 +9,11 @@ pub mod assets;
 pub mod blend;
 pub mod clock;
 pub mod devices;
+pub mod devkeys;
+pub mod devshot;
+pub mod devvalues;
 mod draw;
+pub mod fault;
 pub mod flags;
 pub mod keytable;
 pub mod launch;
@@ -82,12 +86,14 @@ use crate::view::screen::Screen;
 use crate::view::session::NewGame;
 
 pub use blend::Blend;
+pub use devvalues::TpsMeter;
+pub use fault::Fault;
 pub use layout::{Cameras, VIEW_UNITS, cell_rect, cells, place, scale};
 pub use levels::{LibLoader, Loader};
 pub use modes::Measure;
 pub use packages::{Libs, packages};
 pub use parts::{Part, Parts, assemble};
-pub use pending::{DevSession, Fault, Meter, StressRun};
+pub use pending::{Meter, StressRun};
 pub use scene::{Args, Hold, Scene, USAGE, parse_args};
 pub use script::parse_script;
 pub use shots::Shooter;
@@ -107,7 +113,6 @@ const CLEAR_COLOR: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 /// Die Schleife: Eingabe, Menü-Stapel, Takt der Simulation, Kameras, Grafik der Level und Zeichnen der Zellen in
 /// Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (`Frame::clock`), nie aus der Wanduhr.
 ///
-/// Felder, die erst spätere Sessions brauchen (`tps`, `pressed`, `reports`), legt der liefernde Sprint an (RU30.1 bis RU30.5).
 pub struct Game {
     parts: Parts,
     sim: Box<dyn Sim>,
@@ -131,6 +136,10 @@ pub struct Game {
     cams: Cameras,
     devs: Devices,
     dev: DevView,
+    /// Eingabe des Takts (Go: `pressed`), Takte je Sekunde der Seite Werte, Fehler im Messmodus (beendet das Programm)
+    raw_input: InputState,
+    tps: TpsMeter,
+    err: Option<String>,
     blend: Blend,
     stats: StatsOverlay,
     /// gemessene Bildrate und Zeit des letzten Bilds für die Leistungsanzeige (nur mit `StatsOverlay::timing`)
@@ -180,6 +189,9 @@ impl Game {
             cams,
             devs: Devices::default(),
             dev: DevView::default(),
+            raw_input: InputState::new(),
+            tps: TpsMeter::default(),
+            err: None,
             blend: Blend::new(blend_on),
             stats,
             fps: 0.0,
@@ -200,9 +212,7 @@ impl Game {
 
     /// Zweiter Teil von `new`: Dev-Schalter, Aufnahme, Messmodus, Szene bzw. Hauptmenü, Vorlauf, Menü der Szene.
     fn start(&mut self) -> Result<(), String> {
-        if !self.args.river.is_empty() || self.args.stats {
-            self.apply_dev_args();
-        }
+        self.apply_dev_args();
         if !self.args.shots.is_empty() {
             self.shots = Some(Shooter::new(&self.args)?);
         }
@@ -280,7 +290,10 @@ impl Game {
             return;
         }
         if self.fault.is_some() {
-            self.fault_update();
+            self.fault_update(raw);
+            return;
+        }
+        if self.err_exit() {
             return;
         }
         if self.meter.as_ref().is_some_and(Meter::done) {

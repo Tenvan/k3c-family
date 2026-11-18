@@ -16,6 +16,7 @@ impl Game {
         if self.fault.is_some() {
             return; // Fehler im Fenster: nichts mehr rechnen
         }
+        self.raw_input.clone_from(raw);
         if self.scripted.is_none()
             && let Some(k) = self.parts.keyboard.as_mut()
         {
@@ -64,6 +65,7 @@ impl Game {
     /// Schiffsfahrt, wenn der Takt den Inselwechsel meldet.
     fn tick(&mut self, input: &Input) {
         self.toggle_window(input);
+        self.dev_keys();
         self.menu_or_play(input);
         self.blend.capture(&self.frame, &self.frame.cells);
         self.voy.note(&self.frame);

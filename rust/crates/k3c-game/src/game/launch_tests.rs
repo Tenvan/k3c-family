@@ -70,9 +70,16 @@ fn umbruch_haelt_die_zeilenlaenge() {
 
 #[test]
 fn schalter_der_dev_teile_werden_abgelehnt() {
-    for f in ["--stats", "--measure=5", "--river=shader"] {
-        let e = parse(&[f.to_string()]).unwrap_err();
-        assert!(e.contains("RU30"), "{f}: {e}");
+    let e = parse(&["--measure=5".to_string()]).unwrap_err();
+    assert!(e.contains("RU30.4"), "--measure: {e}");
+}
+
+/// Seit RU30.3 sind die Dev-Schalter `--river` und `--stats` freigegeben.
+#[test]
+fn dev_schalter_river_und_stats_werden_angenommen() {
+    for f in ["--stats", "--river=tiles"] {
+        let a = parse(&[f.to_string()]);
+        assert!(a.is_ok(), "{f}: {:?}", a.err());
     }
 }
 

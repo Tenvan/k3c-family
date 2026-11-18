@@ -29,15 +29,15 @@ const HINT: &str = "Erst `task gen:paper` ausführen (rendert die Grafik nach pu
 /// Schlüssel des einen Levels, unter dem alle Sheets liegen.
 const LEVEL: &str = "spiel";
 
-/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Schalter, deren Teile erst RU30.3
-/// bis RU30.5 liefern (Messmodus, Dev-Schalter), lehnt es mit einer Meldung ab, statt im Spiel zu scheitern.
+/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Schalter, deren Teile erst RU30.4
+/// liefert (Messmodus), lehnt es mit einer Meldung ab, statt im Spiel zu scheitern.
 pub fn parse(rest: &[String]) -> Result<Args, String> {
-    const MISSING: [&str; 3] = ["measure", "river", "stats"];
+    const MISSING: [&str; 1] = ["measure"];
     for a in rest {
         let name = a.trim_start_matches('-').split('=').next().unwrap_or("");
         if a.starts_with('-') && MISSING.contains(&name) {
             return Err(format!(
-                "Schalter --{name} ist im Rust-Spiel noch nicht verfügbar (RU30.3 bis RU30.5)"
+                "Schalter --{name} ist im Rust-Spiel noch nicht verfügbar (RU30.4)"
             ));
         }
     }
@@ -61,7 +61,7 @@ pub fn run(args: &Args) -> Result<(), String> {
         ..WindowConfig::default()
     };
     run_window(&mut app, cfg)?;
-    app.fault.take().map_or(Ok(()), Err)
+    app.fault().map(str::to_string).map_or(Ok(()), Err)
 }
 
 /// Gibt die Grafik-Ordner aller Level aus (`--assets`, je Zeile `gruppe/id` unter `public/grafik`), Go: `printAssets`.
@@ -127,9 +127,12 @@ impl Launch {
         self.game.as_ref()
     }
 
-    /// Die Meldung, wenn Start oder Takt gescheitert sind.
+    /// Die Meldung, wenn Start oder Takt gescheitert sind, sonst der Fehler, den das Spiel im Fenster gemeldet hat
+    /// (`Game::fault`).
     pub fn fault(&self) -> Option<&str> {
-        self.fault.as_deref()
+        self.fault
+            .as_deref()
+            .or_else(|| self.game.as_ref().and_then(Game::fault))
     }
 
     /// Hält die Meldung fest (Fenster, stderr, Rückgabe) und verwirft das Spiel.

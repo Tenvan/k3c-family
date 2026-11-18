@@ -123,7 +123,7 @@ fn wanted_assets_vereinigt() {
     assert_eq!(got, want);
 }
 
-/// Die Schleife lädt nur, wenn sich die Level ändern; ein Fehler (fehlende Grafik) beendet hier das Spiel (RU30.3: Fenster, B-810).
+/// Die Schleife lädt nur, wenn sich die Level ändern; ein Fehler (fehlende Grafik) zeigt das Fehlerfenster (B-810).
 #[test]
 fn load_levels_nur_bei_aenderung() {
     let ld = FakeLoader::default();
@@ -162,6 +162,11 @@ fn load_levels_nur_bei_aenderung() {
     g.frame.stages = stages(&["mine"]);
     g.load_levels();
     g.run_pending_load(&mut NullCanvas::default());
-    assert_eq!(g.mode(), Mode::Quit, "Fehler nicht gemeldet");
+    assert!(g.fault.is_some(), "Fehler nicht gemeldet");
+    assert_eq!(
+        g.mode(),
+        Mode::Menu,
+        "der Fehler zeigt das Fenster, beendet nicht von selbst"
+    );
     assert!(g.load.levels.is_empty());
 }

@@ -1,11 +1,11 @@
 //! Platzhalter für Teile, die spätere Sprints liefern (Leitfaden § 7). RU30.2 hat `script`, `voyage`, `shots` und
-//! `assets` geliefert; Ist alles geliefert (RU30.3 bis RU30.5), wird diese Datei gelöscht. RU22 prüft, dass keiner übrig
+//! `assets` geliefert, RU30.3 Entwickler-Tasten, Werte, Bildschirmfoto und Fehlerfenster; Ist alles geliefert (RU30.4
+//! und RU30.5), wird diese Datei gelöscht. RU22 prüft, dass keiner übrig
 //! ist. Die Platzhalter der Schleife (`Game`, RU26.4) stehen am Ende der Datei.
 #![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU30
 #![allow(dead_code)] // Platzhalter, die erst der liefernde Sprint benutzt
 
 use super::{Game, Measure};
-use k3c_platform::Canvas;
 
 /// Fachmodule, die `packages()` noch nicht liefern kann: Name und liefernder Sprint. `parts_tests` zählt sie als
 /// „wartet auf RUnn“ und prüft, dass der Platzhalter verschwindet, sobald der Modulordner existiert.
@@ -16,15 +16,6 @@ pub const WAITING: &[(&str, &str)] = &[];
 //
 // Platzhalter mit `unimplemented!` sind nur über Zustand erreichbar, den `Game::new` nie setzt (`Option` bleibt
 // `None`, Schalter aus). Platzhalter ohne Wirkung (`dev_values`) läuft in jedem Takt und tun bis zu ihrem Sprint nichts.
-
-/// Go: `Fault` (`fault.go`, RU30.3): Fehler im Fenster (fehlende Grafik).
-pub struct Fault;
-
-impl Fault {
-    pub fn draw(&self, _c: &mut dyn Canvas) {
-        unimplemented!("RU30.3: Fault::draw")
-    }
-}
 
 /// Go: `meter` (`measure.go`, RU30.4): Messmodus (`--measure`).
 pub struct Meter;
@@ -54,28 +45,7 @@ impl Meter {
 /// Go: `stressRun` (`stress.go`, RU30.5): laufender Stresstest.
 pub struct StressRun;
 
-/// Go: `view.DevSession` (RU30.3): Entwickler-Rolle der Sitzung.
-pub trait DevSession {
-    /// Go: `Halt`: hält die Simulation an (F7) bzw. gibt sie frei.
-    fn halt(&mut self, on: bool);
-}
-
 impl Game {
-    /// Go: `devShot` (`devshot.go`, RU30.3); erreicht nur mit `shot_next`.
-    pub(super) fn dev_shot(&mut self, _c: &mut dyn Canvas) {
-        unimplemented!("RU30.3: dev_shot")
-    }
-
-    /// Go: `applyDevArgs` (`devargs.go`, RU30.3); erreicht nur mit `--river` oder `--stats`.
-    pub(super) fn apply_dev_args(&mut self) {
-        unimplemented!("RU30.3: apply_dev_args")
-    }
-
-    /// Go: `faultUpdate` (`fault.go`, RU30.3); erreicht nur mit `fault`.
-    pub(super) fn fault_update(&mut self) {
-        unimplemented!("RU30.3: fault_update")
-    }
-
     /// Go: `refillMeasureLoad` (`measure_load.go`, RU30.4); erreicht nur mit `meter`.
     pub(super) fn refill_measure_load(&mut self) {
         unimplemented!("RU30.4: refill_measure_load")
@@ -90,7 +60,4 @@ impl Game {
     pub(super) fn stress_step(&mut self) {
         unimplemented!("RU30.5: stress_step")
     }
-
-    /// Go: `devValues` (`devvalues.go`, RU30.3). Bis dahin ohne Wirkung.
-    pub(super) fn dev_values(&mut self) {}
 }

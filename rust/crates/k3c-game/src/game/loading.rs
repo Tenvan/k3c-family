@@ -10,10 +10,10 @@ use std::mem::take;
 
 use k3c_platform::{Canvas, log};
 
+use super::Game;
 use super::levels::{MENU_LEVEL, wanted_assets};
 use super::loadscreen::LoadScreen;
 use super::notice::Notice;
-use super::{Game, Mode};
 use crate::art::{LevelLoad, Levels};
 use crate::view::frame::Stage;
 
@@ -147,7 +147,7 @@ impl Game {
             None => false,
             Some(Err(e)) => {
                 self.loading = false;
-                self.fail(e);
+                self.fail(&e);
                 true
             }
             Some(Ok(ld)) => {
@@ -196,19 +196,13 @@ impl Game {
             self.load.lload = None;
             self.load.levels.clear();
             self.loading = false;
-            self.fail(e);
+            self.fail(&e);
         } else if done {
             self.load.lload = None;
             self.loading = false;
             let want = take(&mut self.load.step_want);
             self.set_levels(&want);
         }
-    }
-
-    /// Fehler beim Laden der Grafik (Go: `fail`). Das Fehlerfenster liefert RU30.3; bis dahin Log und Ende.
-    pub(super) fn fail(&mut self, err: impl std::fmt::Display) {
-        log::error("💥 Grafik fehlt, Spiel endet", &[("err", &err.to_string())]);
-        self.mode = Mode::Quit;
     }
 }
 
