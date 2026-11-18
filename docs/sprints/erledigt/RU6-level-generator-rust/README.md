@@ -1,6 +1,6 @@
 # RU6 · SIM · Level-Generator in Rust, Level-Golden bitgleich
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -93,12 +93,12 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU6.1 | `RU6.1-plan-geometrie-backdrop-lines-biome.md` | Umsetzung | autonom | offen |
-| RU6.2 | `RU6.2-natur-nature-check-lair.md` | Umsetzung | autonom | offen |
-| RU6.3 | `RU6.3-planung-gen-totals-guards-ruins.md` | Umsetzung | autonom | offen |
-| RU6.4 | `RU6.4-sites-validate.md` | Umsetzung | autonom | offen |
-| RU6.5 | `RU6.5-erzeugung-level-golden.md` | Umsetzung | autonom | offen |
-| RU6.6 | `RU6.6-review.md` | Review | autonom | offen |
+| RU6.1 | `RU6.1-plan-geometrie-backdrop-lines-biome.md` | Umsetzung | autonom | fertig |
+| RU6.2 | `RU6.2-natur-nature-check-lair.md` | Umsetzung | autonom | fertig |
+| RU6.3 | `RU6.3-planung-gen-totals-guards-ruins.md` | Umsetzung | autonom | fertig |
+| RU6.4 | `RU6.4-sites-validate.md` | Umsetzung | autonom | fertig |
+| RU6.5 | `RU6.5-erzeugung-level-golden.md` | Umsetzung | autonom | fertig |
+| RU6.6 | `RU6.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -106,6 +106,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (autonom, Claude). AC-01 geprüft: `cargo test -p k3c-level` 87 grün, alle fünf Level-Golden, `level-planned.json` und `nature.json` bitgleich (RU6.5), Golden unverändert (`git diff origin/main -- engine native testdata` leer). AC-02 geprüft: alle 82 Go-Testfunktionen aus 18 Dateien haben ein Rust-Gegenstück (84 Rust-Tests, 2 eigene in `validate_tests.rs`), kein `#[ignore]`, `pending.rs` gelöscht; `bench_test.go` bleibt bei RU39. AC-03: Rust-Code ohne Tests je Session 583, 320, 532, 545, 374 Zeilen (Plan 450, Grenze 675): keine Session über dem 1,5-Fachen, die Schätzung für RU10 bleibt.
+Review (`k3c-reviewer`, Sonnet): kein schwerer Befund; offen und in B-1079 erfasst: Variantenstrom hängt an bitgleichen Entity-x (nicht nur 1e-6), `STAB`/`PERF`-Marker, `null` statt Liste in Welt-Dateien (vermutet, Go liest `null` als leere Liste).
+Neue Tickets: B-1079 (STAB/PERF in RU43), Abnahme-Ticket B-1080 (`gen:paper`, `check:race`, Level-Vergleich Go gegen Rust). `task check` und `task check:go` grün (siehe Session RU6.6).

@@ -1,6 +1,6 @@
 # RU6.3 · Level Teil 3: planned_gen, planned_totals, guards, ruins
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -66,5 +66,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Port von `planned_gen` (`Options`, `reserve`, `chunk_stream`, `planned_entities`, `clear_of_ruin`), `planned_totals`, `guards`, `ruins` und dem Rumpf `level.rs` (`Gen`, `center`, `free`, `inside`). `cargo test -p k3c-level`: 29 grün, 24 ignoriert; `task rust:lint` grün. Rust-Code ohne Tests: etwa 550 Zeilen (planned_gen 160, planned_totals 114, ruins 136, guards 86, Gen in level.rs etwa 50).
+
+`pending.rs` ist gelöscht; die drei in RU6.1 mit `wartet auf RU6.3` markierten Tests (`validate_plan_gueltig`, `validate_plan_lehnt_ab`, `validate_plan_mine_mit_freiem_platz`) laufen und sind grün.
+
+Ignoriert (wartet auf RU6.5, brauchen `generate`): generate_with_nullwert_ist_generate, geplante_chunks_sind_deterministisch_und_gueltig, festes_portal_liegt_am_erwarteten_ort, chunk_seed_ist_ueber_level_seeds_stabil, inhalt_geplanter_chunks_stoert_den_haupt_strom_nicht, generate_with_lehnt_ungueltige_planung_ab (planned_gen); gegnerlager_im_level_ohne_wuerfe, gegnerlager_alle_biome_generiert_deterministisch (guards); ruinen_fixture, ruine_im_level_ohne_wuerfe, zufalls_ressourcen_halten_abstand_zur_ruine (ruins).
+
+Abweichungen: `inside` ist eine freie Funktion `inside(cw, r, c)` statt Methode (Borrow auf `Gen::r`). `check_totals` bekommt kein `rules` (Go braucht es nicht). `TestOptions` in `testutil.rs` ist durch `Options` ersetzt, dazu `gen2`, `PlannedCase`, `p`, `obj`, `plain`, `plan_ok`, `with_ruin`. Die Werteprüfungen `checkGuardRules` und `checkRuinRules` laufen als Tests über `k3c_data::guards::load` und `k3c_data::ruins::load` (privat in `k3c-data`). `RUIN_HP` heißt `ruin_hp(rules, hp)`.
