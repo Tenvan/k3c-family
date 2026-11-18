@@ -14,7 +14,7 @@ use crate::world::vals;
 
 /// Mauer Stufe 2 zerstört: unpaid, Stufe 1, MaxHP der Stufe 1, gleiches X; Hub-Stufe und äußere Linie bleiben.
 #[test]
-#[ignore = "wartet auf RU19 (hit_event)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU10: protected_night)"]
 fn zerstoerung_setzt_stufe_zurueck() {
     let mut w = day_world();
     w.hub_level = 3;
@@ -61,7 +61,6 @@ fn damaged_tower() -> (World, usize) {
 
 /// Reparatur zwischen den Wellen: HP voll nach dem fehlenden Anteil der Bauzeit, Vorrat und Gold unverändert.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn reparatur_ohne_gold_und_material() {
     let (mut w, tower) = damaged_tower();
     w.stock = Stock {
@@ -87,7 +86,6 @@ fn reparatur_ohne_gold_und_material() {
 
 /// Bei Gefahr (Gegner in der Welt, Nacht) keine Reparatur.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn reparatur_nicht_bei_gefahr() {
     let (mut w, tower) = damaged_tower();
     let x = w.width_units - 1.0;
@@ -111,7 +109,6 @@ fn reparatur_nicht_bei_gefahr() {
 
 /// Hub-Stufe, Mauer-Stufe (auch auf einer äußeren Linie) und laufender Ausbau überleben Speichern und Laden.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn spielstand_hub_und_platz_stufen() {
     use crate::enemies::testutil::line_site;
     use crate::island::testutil::{load_island, must_island, save_json, test_data};

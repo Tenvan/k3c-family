@@ -274,7 +274,6 @@ fn refund_site_zieht_bogen_gold_vom_gebauten_platz() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (coin_give_event)"]
 fn find_pay_target_und_pay_one_coin_zwei_spieler() {
     let mut w = bare_world();
     two_players(&mut w, 100.0, 10);

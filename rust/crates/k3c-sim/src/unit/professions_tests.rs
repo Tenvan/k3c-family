@@ -254,7 +254,6 @@ fn bogen_verbraucht_material_beim_arbeitsbeginn() {
 
 /// Go: `addPeasant` und `stepOffers` rechnen `emit` (RU19): Der Beruf wird erst mit dem Ereignis vergeben.
 #[test]
-#[ignore = "wartet auf RU19"]
 fn ausbildung_trifft_den_naechsten_freien_bauern() {
     let mut w = bare_world();
     let v = values(&w);
@@ -300,7 +299,6 @@ fn baumeister_baut_schneller() {
 /// (b) Ausbildung kostet das Gold aus den Daten, trifft den nächsten freien Bauern; Umschulung kostet erneut; zu wenig
 /// Gold lässt den Beruf unverändert (Go: `holdAt` mit `Step` und Spieler).
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn ausbildung_und_umschulung() {
     let mut w = quiet_world();
     let p = add_player(&mut w);
@@ -309,7 +307,6 @@ fn ausbildung_und_umschulung() {
 
 /// (c) Ein dritter Handwerker je Gebäude wird nicht ausgebildet (Go: `holdAt`).
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn dritter_handwerker_wird_nicht_ausgebildet() {
     let mut w = quiet_world();
     let p = add_player(&mut w);

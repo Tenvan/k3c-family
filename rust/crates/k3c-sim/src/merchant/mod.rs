@@ -40,7 +40,7 @@ pub fn merchant_dawn(w: &mut World, mut isl: Option<&mut IslandRef>) {
     let v = vals(w);
     let (m, day) = (&v.economy.merchant, w.cycle.day);
     if w.merchant.as_ref().is_some_and(|mm| day >= mm.leaves) {
-        merchant_leaves(w, "merchantLeft");
+        merchant_leaves(w, isl.as_deref(), "merchantLeft");
     }
     let every = if tavern_on_island(w, isl.as_deref()) {
         m.every_days_with_tavern
@@ -81,8 +81,8 @@ pub fn merchant_arrive(w: &mut World, v: &WorldValues, isl: Option<&mut IslandRe
 
 /// Go: `merchantLeaves`: Der Händler reist ab (Typ `merchantLeft`) oder flieht (`merchantFled`); ein halber Kauf fällt als
 /// Münzen.
-pub fn merchant_leaves(w: &mut World, typ: &str) {
-    merchant_raid_end(w, typ == "merchantLeft");
+pub fn merchant_leaves(w: &mut World, isl: Option<&IslandRef>, typ: &str) {
+    merchant_raid_end(w, isl, typ == "merchantLeft");
     let (paid, x) = (w.merchant.as_ref().map_or(0, |m| m.buy_paid), merchant_x(w, "buy"));
     for _ in 0..paid {
         let id = w.new_id();
@@ -105,7 +105,7 @@ pub fn damage_merchant(w: &mut World, damage: f64) {
     let hp = m.hp;
     hit_event(w, "merchant", MERCHANT_ID, merchant_x(w, "buy"), damage);
     if hp <= 0.0 {
-        merchant_leaves(w, "merchantFled");
+        merchant_leaves(w, None, "merchantFled");
     }
 }
 

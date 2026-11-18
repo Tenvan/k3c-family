@@ -34,7 +34,6 @@ fn skills_leer_oder_nicht_gelernt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn skills_abklingzeit_blockiert_zweiten_einsatz() {
     let mut w = quiet_world();
     let pi = tank_player(&mut w);
@@ -67,7 +66,6 @@ fn skills_abklingzeit_blockiert_zweiten_einsatz() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
 fn skills_zwei_spieler_getrennt() {
     let mut w = quiet_world();
     let (p0, p1) = (add_player(&mut w), add_player(&mut w));

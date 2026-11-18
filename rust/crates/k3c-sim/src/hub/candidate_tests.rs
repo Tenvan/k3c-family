@@ -57,7 +57,6 @@ fn create_island_aus_sieben_stufen_kandidat() {
 /// Der Vorschau-Teil von `TestCreateIslandAusSiebenStufenKandidat` (Go): `preview_hub_level` baut die Plätze über
 /// `dev_build_site`.
 #[test]
-#[ignore = "wartet auf RU19 (dev_build_site)"]
 fn create_island_kandidat_vorschau() {
     let h = read_hub7();
     let mut isl = make_island("kandidat", &[0, 1], candidate(h.clone())).unwrap_or_else(|e| panic!("{e}"));
@@ -123,7 +122,6 @@ fn create_island_kopiert_den_kandidaten() {
 
 /// WZ9.1: `create_world_with` baut eine Stufe ohne Insel aus dem Kandidaten (Vorschau des Gebäude-Planers).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: create_world lädt die Standard-Welt)"]
 fn create_world_with_kandidat() {
     let data = test_data();
     let b = biome_for_depth(&data.biomes, 0).expect("Biom Tiefe 0").clone();

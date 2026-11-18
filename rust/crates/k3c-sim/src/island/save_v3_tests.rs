@@ -141,7 +141,7 @@ fn own_restore_pool_spiegelt_pool_und_zaehlt_truhen() {
 /// Go: `TestIslandSaveV3Rundlauf`: Pool, Verteilung und Slots zweier Spieler bleiben erhalten; Speichern, Laden, Speichern
 /// ist gleich.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern)"]
 fn island_save_v3_rundlauf() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-v3", &[0, 1]);
@@ -163,7 +163,6 @@ fn island_save_v3_rundlauf() {
 
 /// Go: `TestIslandSaveV3Migration`: v1 und v2 laden mit leerer Verteilung, der Pool folgt der Migrationsregel.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_v3_migration() {
     let data = test_data();
     for (name, raw, pool) in [
@@ -187,7 +186,6 @@ fn island_save_v3_migration() {
 
 /// Go: `TestIslandSaveV3FixtureLaedt`: Das Fixture v3 lädt mit Pool und Verteilung.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_v3_fixture_laedt() {
     let isl = load_island(&test_data(), &fixture(3));
     let players: Vec<_> = isl.stages.iter().flat_map(|w| &w.players).collect();
@@ -199,7 +197,6 @@ fn island_save_v3_fixture_laedt() {
 /// Go: `TestIslandSaveV3TruhenZaehler`: Der Truhen-Zähler folgt aus den geöffneten Truhen des Stands: nach zwei Truhen gibt
 /// die dritte den Punkt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_v3_truhen_zaehler() {
     let data = test_data();
     let mut s = Env::standard().parse(&fixture(3)).expect("v3");
@@ -237,7 +234,6 @@ fn island_save_v3_truhen_zaehler() {
 
 /// Go: `TestIslandSaveV3SpaeterBeitritt`: Wer nach dem Laden beitritt, hat alle Pool-Punkte für sich (Preset plus frei).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_v3_spaeter_beitritt() {
     let data = test_data();
     let mut isl = load_island(&data, &fixture(3));

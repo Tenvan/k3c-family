@@ -144,13 +144,11 @@ fn run_golden_kampagne(path: &str, want_depth: i64) -> Value {
 }
 
 #[test]
-#[ignore = "wartet auf RU22"]
 fn golden_kampagne() {
     run_golden_kampagne(CAMPAIGN_PATH, 2);
 }
 
 #[test]
-#[ignore = "wartet auf RU22"]
 fn golden_kampagne_ausbau() {
     // B-075: Spielstand mit ausgebautem Hub (Bauern angeworben, Bäume markiert und gefällt, Truhe geöffnet, Werkstatt gebaut,
     // Bogen bezahlt, Fels markiert), danach speichern, laden, weiterlaufen.
@@ -245,7 +243,6 @@ fn walk_travel(c: &mut Campaign, x: f64, players: &[usize]) -> Option<crate::sta
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
 fn freier_monarch_blockiert_nicht() {
     let (mut c, exit) = free_monarch_campaign();
     let tr = walk_travel(&mut c, exit, &[0, 2]);
@@ -272,7 +269,6 @@ fn freier_monarch_blockiert_nicht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"]
 fn ohne_gesteuerten_monarchen_kein_wechsel() {
     let (mut c, exit) = free_monarch_campaign();
     for p in &mut c.current_world_mut().expect("Stufe").players {

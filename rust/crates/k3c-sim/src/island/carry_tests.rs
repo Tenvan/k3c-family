@@ -88,7 +88,6 @@ fn own_carry_gefahr_geht_zur_burg() {
 /// Go: `TestIslandCarryNearestDeposit`: Lager näher als die Burg, dann die Burg, Gleichstand (siehe
 /// `own_deposit_point_gleichstand_burg_vor_lager`). Der Auftrag endet mit `add_pool` (RU14).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_nearest_deposit() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-a", &[0]);
@@ -113,7 +112,6 @@ fn island_carry_nearest_deposit() {
 
 /// Go: `TestIslandCarryWaitsWhenFull`: der volle Ablauf mit Abgabe des Rests, sobald Platz ist.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_waits_when_full() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-b", &[0]);
@@ -132,7 +130,6 @@ fn island_carry_waits_when_full() {
 
 /// Go: `TestIslandCarryDanger`: dasselbe an einer gebauten Insel mit Lager bei Hub + 30.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_danger() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-c", &[0]);
@@ -188,7 +185,6 @@ fn island_carry_no_island_unchanged() {
 
 /// Go: `TestIslandCarryDeterministic`: Zwei Läufe ergeben dieselben Ereignisse.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_deterministic() {
     let data = test_data();
     let run = || {
@@ -213,7 +209,6 @@ fn island_carry_deterministic() {
 
 /// Go: `TestIslandFullCarrierStillBuildsAndKeepsMaterial` (Review SP13.4): Ein wartender Träger baut und behält sein Material.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn island_full_carrier_still_builds_and_keeps_material() {
     use crate::unit::step_peasant;
     let data = test_data();
@@ -267,7 +262,6 @@ fn island_full_carrier_still_builds_and_keeps_material() {
 /// Go: `TestIslandFindJobSkipsFullResource`: Ein volles Holzlager vergibt keine Sammelaufträge für Holz (`find_job` mit
 /// `resource_full`, `gather_of`, `node_free`).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_find_job_skips_full_resource() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-d", &[0]);
@@ -312,7 +306,6 @@ fn island_find_job_skips_full_resource() {
 
 /// Go: `TestIslandFullCarrierDoesNotFetchBow`: Ein wartender Träger holt keinen Bogen.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn island_full_carrier_does_not_fetch_bow() {
     use crate::unit::step_peasant;
     let data = test_data();

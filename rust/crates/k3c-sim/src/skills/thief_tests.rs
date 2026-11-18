@@ -25,7 +25,6 @@ fn thief_player(w: &mut World) -> usize {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn thief_backstab_vorn_und_hinten() {
     // (Name, dx, fliehend, erwarteter Schaden)
     let cases = [
@@ -50,7 +49,6 @@ fn thief_backstab_vorn_und_hinten() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x: castFailed beim ersten Druck)"]
 fn thief_backstab_ohne_ziel_keine_abklingzeit() {
     let mut w = quiet_world();
     let pi = thief_player(&mut w);
@@ -67,7 +65,6 @@ fn thief_backstab_ohne_ziel_keine_abklingzeit() {
 
 /// Unsichtbar: kein Ziel (auch nicht verspottet), kein Schaden, nach 5 s wieder sichtbar; Abklingzeit 25 s.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn thief_smoke_bomb_unsichtbar() {
     let mut w = quiet_world();
     let pi = thief_player(&mut w);
@@ -106,7 +103,6 @@ fn thief_smoke_bomb_unsichtbar() {
 
 /// Ein eigener Schlag oder Backstab beendet die Unsichtbarkeit vorzeitig (Annahme B-577).
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn thief_smoke_bomb_endet_bei_angriff() {
     let mut w = quiet_world();
     let pi = thief_player(&mut w);
@@ -139,7 +135,6 @@ fn thief_smoke_bomb_endet_bei_angriff() {
 
 /// Zwei Diebe im selben Tick: Wirkung und Abklingzeit je Spieler getrennt.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x, hit_event)"]
 fn thief_zwei_spieler_im_selben_tick() {
     let mut w = quiet_world();
     let (a, b) = (add_player(&mut w), add_player(&mut w));

@@ -34,6 +34,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | `aktiv/RU27-lokales-spiel/` |
 | RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | `aktiv/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
+| RU50 | CLI | RSU | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | – | `aktiv/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
+| RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | `aktiv/RU24-raum-teil-2-spielstand/` |
+| RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | `aktiv/RU29-dev-werkzeuge-im-spiel/` |
 
 ## Offen am Gerät
 
@@ -55,12 +58,9 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
-| RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | bereit | `geplant/RU24-raum-teil-2-spielstand/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
-| RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | bereit | `geplant/RU29-dev-werkzeuge-im-spiel/` |
 | RU30 | CLI | RSU | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | – | bereit | `geplant/RU30-spielschleife-teil-2/` |
 | RU32 | CLI | RSU | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | – | bereit | `geplant/RU32-ende-zu-ende-test/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | bereit | `geplant/RU35-build-paket-ci-umstellen/` |
@@ -72,7 +72,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
-| RU50 | CLI | RSU | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | – | bereit | `geplant/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -454,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | `erledigt/RU47-abnahme-stand-rust-sim/` |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | `erledigt/RU18-sim-wirtschaft-bau-monarch/` |
 | RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | `erledigt/RU49-smoke-raum-welt-und-pause/` |
+| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | `erledigt/RU19-sim-events-geschichte-dev/` |

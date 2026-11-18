@@ -30,7 +30,6 @@ fn night_island(data: &k3c_data::Data) -> super::Island {
 
 /// Go: `TestIslandSaveV4Rundlauf`: `to_save` schreibt Tag, Phase und Tiefen; Speichern, Laden, Speichern ist gleich.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_v4_rundlauf() {
     let data = test_data();
     let isl = night_island(&data);
@@ -88,7 +87,6 @@ fn island_save_v4_fixture_und_v3() {
 
 /// Go: `TestIslandSaveV4FixtureUndV3` (Lade-Seite): Das Fixture v3 lädt als Insel.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_v4_v3_laedt_insel() {
     let data = test_data();
     let isl = load_island(&data, &fixture(3));

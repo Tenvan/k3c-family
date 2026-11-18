@@ -1,6 +1,6 @@
 # RU24 · SRV · Raum Teil 2 und Spielstand-Format
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SRV
 - **Reife:** bereit

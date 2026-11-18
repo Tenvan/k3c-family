@@ -42,7 +42,6 @@ fn hit_ids(w: &World, target: &str) -> Vec<i64> {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn lava_schadet_figuren() {
     let (mut w, x) = lava_world();
     let (dps, width) = (w.biome.lava.damage_per_second, w.biome.lava.width_units);
@@ -91,7 +90,6 @@ fn lava_schadet_figuren() {
 
 // Gegner nehmen keinen Lava-Schaden (Startwert, BR1 bestätigt).
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn lava_nicht_fuer_gegner() {
     let (mut w, x) = lava_world();
     let ei = spawn(&mut w, "goblin", x);

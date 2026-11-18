@@ -24,7 +24,6 @@ fn treffer_muenzen_fallen_als_loot_und_sind_fuer_den_getroffenen_gesperrt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn krone_faellt_nach_hinten_weg_vom_gegner() {
     for (dx, dir) in [(1.0, -1.0), (-1.0, 1.0)] {
         let (mut w, v) = crown_world();
@@ -39,7 +38,6 @@ fn krone_faellt_nach_hinten_weg_vom_gegner() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn krone_landet_nach_der_flugzeit_und_der_flug_ist_deterministisch() {
     let land = || {
         let (mut w, v) = crown_world();
@@ -61,7 +59,6 @@ fn krone_landet_nach_der_flugzeit_und_der_flug_ist_deterministisch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn besitzer_hebt_seine_krone_auf() {
     let (mut w, v) = crown_world();
     drop_crown_with(&mut w, &v, 0, "goblin");
@@ -86,7 +83,6 @@ fn kein_raub_ohne_portale() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn gegner_hebt_krone_auf_flieht_und_traegt_sie_als_kopie() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -101,7 +97,6 @@ fn gegner_hebt_krone_auf_flieht_und_traegt_sie_als_kopie() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn traeger_stirbt_die_krone_faellt_an_seiner_stelle() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -117,7 +112,7 @@ fn traeger_stirbt_die_krone_faellt_an_seiner_stelle() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Krone)"]
 fn mitspieler_traegt_die_krone_zum_besitzer_zurueck() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -139,7 +134,6 @@ fn mitspieler_traegt_die_krone_zum_besitzer_zurueck() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn eine_krone_je_monarch_ein_traeger_nimmt_nur_eine() {
     let (mut w, v) = crown_world();
     let id = w.new_id();
@@ -217,7 +211,6 @@ fn steps(w: &mut crate::state::World, cmds: &[crate::state::PlayerCommand], seco
 /// Ein Treffer kostet `hitCoins` Münzen, die als Loot-Münze zu Boden fallen; ohne Gold fällt die Krone nach hinten, weg vom
 /// Gegner, deterministisch.
 #[test]
-#[ignore = "wartet auf RU19 (hit_event, emit, unit_x, pure)"]
 fn treffer_kostet_muenze_krone_faellt_ohne_gold() {
     use crate::state::common::apply_damage;
     let mut w = quiet_crown_world();
@@ -274,7 +267,6 @@ fn treffer_kostet_muenze_krone_faellt_ohne_gold() {
 /// Go: `TestKroneOhneKroneNurLaufen`: Ohne Krone kann der Monarch nur laufen und eine Krone aufheben: kein Schlag, kein Skill,
 /// kein Zahlen, keine Münzen.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
 fn ohne_krone_nur_laufen() {
     use crate::enemies::target::choose_target;
     use crate::state::PlayerCommand;
@@ -323,7 +315,7 @@ fn ohne_krone_nur_laufen() {
 /// Go: `TestKroneRaubIstGameOver` (AC-02, B-931): Ein Gegner hebt die Krone auf, trägt sie ins Portal: Kronenraub, Game Over in
 /// jedem Grad.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Träger flieht nicht)"]
 fn kronenraub_ist_game_over() {
     let mut w = quiet_crown_world();
     fell(&mut w, 0);
@@ -349,7 +341,6 @@ fn kronenraub_ist_game_over() {
 
 /// Go: `TestKroneRaubStuftMitInselOver`, ohne `Island`: Die Stufe meldet dem `IslandRef`, dass die Insel vorbei ist.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x: crown_stolen und game_over melden Ereignisse)"]
 fn kronenraub_stuft_mit_insel_over() {
     use crate::state::IslandRef;
     let mut w = crate::enemies::testutil::quiet_world();

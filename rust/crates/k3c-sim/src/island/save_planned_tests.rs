@@ -24,7 +24,6 @@ fn forest_plan() -> Vec<PlannedChunk> {
 
 /// Go: `TestStandLaedtMitGespeicherterPlanungUndAnzahl`.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn stand_laedt_mit_gespeicherter_planung_und_anzahl() {
     let data = test_data();
     let world = standard_world(&data);
@@ -56,7 +55,6 @@ fn stand_laedt_mit_gespeicherter_planung_und_anzahl() {
 
 /// Go: `TestStandOhneFelderLaedtReinenZufall`: Ein Stand ohne die Felder lädt in der Länge des Bioms ohne Planung.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn stand_ohne_felder_laedt_reinen_zufall() {
     let data = test_data();
     let world = standard_world(&data);

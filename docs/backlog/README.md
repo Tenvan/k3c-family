@@ -162,6 +162,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | RU21 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
 | [B-1100](B-1100-leere-ruempfe-ignorierte-tests.md) | SIM | Schuld | mittel | offen | RU18 | 21 ignorierte k3c-sim-Tests haben leere Rümpfe und zählen als portiert, ohne es zu sein |
 | [B-1101](B-1101-abnahme-ru18-sim-wirtschaft-bau-monarch.md) | SIM | Schuld | mittel | offen | RU18 | Abnahme RU18: Sim, Balance, Gen, Race und Golden-Abgleich der neuen Rust-Sim-Teile |
+| [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
+| [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU19 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
+| [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU19 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
 
 ## Archiv
 

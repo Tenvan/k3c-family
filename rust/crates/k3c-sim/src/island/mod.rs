@@ -15,6 +15,7 @@ use k3c_data::waves::WavesDataDepthScaling;
 use std::sync::Arc;
 
 use crate::boss::endboss::EndbossFight;
+use crate::state::island_ref::IslandEvents;
 use crate::state::pending::{DevFlags, values};
 use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 use crate::world::state_mirror::{mirror_state, mirror_switch};
@@ -253,8 +254,12 @@ impl Island {
     /// Go: alle Stufen zeigen auf denselben Vorrat. Rust spiegelt den Vorrat der Insel in jede Stufe, damit `to_save` und
     /// Leser zwischen den Schritten den echten Wert sehen (der Tausch im Schritt bleibt, Entscheidung 5).
     pub fn sync_stock(&mut self) {
-        for w in &mut self.stages {
+        for (i, w) in self.stages.iter_mut().enumerate() {
             w.stock.clone_from(&self.stock);
+            w.island_events = Some(IslandEvents {
+                first_stage: i == 0,
+                nights: self.dev.nights.clone(),
+            });
         }
     }
 

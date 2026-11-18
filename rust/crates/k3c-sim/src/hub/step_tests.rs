@@ -82,7 +82,6 @@ fn hub_upgrade_of(w: &World) -> String {
 /// Schritt 3 von Hub-Stufe 1 wartet mit bezahltem Gold auf die 20 Stein des Tors (Material der eigenen neuen Stufe,
 /// B-631/AC-03, kein Kupfer), meldet dann „Material der nächsten Insel“ und hebt mit dem Tor-Stein die Hub-Stufe.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn hub_material_tor() {
     let mut w = day_world();
     add_player(&mut w);
@@ -126,7 +125,6 @@ fn hub_material_tor() {
 
 /// Fehlt im Tor-Schritt mehr als der Tor-Anteil (der Stein des Schritts selbst), bleibt der Wartegrund waitingMaterial.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn hub_tor_schritt_ohne_eigenes_material() {
     let mut w = day_world();
     add_player(&mut w);
@@ -147,7 +145,6 @@ fn hub_tor_schritt_ohne_eigenes_material() {
 
 /// Schritt 2 nach dem Bau von Schritt 1: Zustand und Spielstand nennen ihn, das Laden stellt ihn wieder her.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: load_island lädt die Standard-Welt)"]
 fn hub_schritt_im_spielstand() {
     let data = test_data();
     let mut isl = must_island(&data, "geb17-schritt", &[0, 1]);
