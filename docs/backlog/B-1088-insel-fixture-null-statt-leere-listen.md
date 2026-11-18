@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU10
+- **Sprint:** RU46
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-18
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,17 +28,18 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Entweder Go-Test schreibt leere Listen als `[]` und die Fixture wird einmal neu erzeugt, oder Rust bildet leer auf `null` ab (`island_fields`).
+- Entscheidung (Claude, autonom): Rust bildet leere Listen im Vergleich auf `null` ab, die Go-Fixture bleibt unverändert (kein Go-Lauf, keine Neuerzeugung, `testdata/` unberührt). Eine kleine Hilfsfunktion `null_if_empty(&[String]) -> Value` in `rust/crates/k3c-sim/src/island/takt_tests.rs` (`island_fields`) liefert `Value::Null` für leere `defeated_bosses` und `completed`, sonst das Array. Gilt nur, solange Go `nil`-Slices schreibt; ein Kommentar nennt `engine/sim/rustref_island_test.go:63,66`.
+- Die Hilfsfunktion bekommt einen eigenen, nicht ignorierten Test (leer -> null, nicht leer -> Array). Der Test `insel_nach_1000_schritten_wie_go` bleibt `#[ignore = "wartet auf RU19 (decode_world_story)"]` (Aufbau der Insel braucht `decode_world_story`); im Ergebnis vermerken, dass die End-zu-Ende-Prüfung mit RU19 folgt.
 
 ## Nicht-Ziele
 
-Änderungen an der Sim.
+Änderungen an der Sim, am Go-Test oder an der Fixture, Freischalten des ignorierten Takt-Tests (RU19).
 
 ## Regeln und Einschränkungen
 
-Einzige erlaubte Go-Änderung bleibt `rustref_island_test.go`.
+Fixture und Golden werden nicht neu geschrieben. Entscheidung 012.
 
-- **Bereich:** `engine/sim/rustref_island_test.go`, `testdata/rust/insel/**`, `rust/crates/k3c-sim/src/island/takt_tests.rs`
+- **Bereich:** `rust/crates/k3c-sim/src/island/takt_tests.rs`
 - **Abhängig von:** RU10
 - **Braucht 🧑:** –
 - **Größe:** S
@@ -54,7 +55,8 @@ nicht relevant.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `insel_nach_1000_schritten_wie_go` zeigt bei Freischaltung (RU14) keinen Diff in `defeatedBosses` und `completed`.
+- **AC-01** `island_fields` bildet leere `defeatedBosses` und `completed` auf `null` ab; Hilfsfunktion mit nicht ignoriertem Test (leer -> null, nicht leer -> Array).
+- **AC-02** `cargo test --release -p k3c-sim island::takt` grün (der End-zu-Ende-Test bleibt ignoriert, RU19), `testdata/` unverändert (`git status --short testdata` leer), clippy ohne Warnungen.
 
 ## Offene Fragen
 

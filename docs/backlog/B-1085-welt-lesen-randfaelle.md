@@ -3,14 +3,14 @@
 - **Domäne:** SIM
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU10
+- **Sprint:** RU46
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-18
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,35 +28,38 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Go-Referenz: `engine/sim/island_worlds.go` (`decodeIslands` Zeile 186, Welt-Kopf) und `engine/sim/island_nature.go`; Rust: `rust/crates/k3c-sim/src/island/worlds.rs`, `worlds_decode.rs`, Kopf `rust/crates/k3c-data/src/world.rs` (`skins: serde_json::Value`).
+- Fall 1: `"skins": null` lehnt Rust wie Go ab (Fehlertext wie Go: Pflichtfeld fehlt bzw. null nicht erlaubt; Wortlaut aus dem Go-Test `engine/sim/island_worlds_test.go` ableiten). Fehlt das Feld, bleibt der bisherige Fehler.
+- Fall 2: Eine Insel, `depthScaling` oder `nature` als JSON-Array statt Objekt ist ein Fehler `kein gültiges JSON` (vor dem Lesen den Typ prüfen, z. B. `Value::is_object`, statt `T::deserialize(&Value)` Arrays als Struct anzunehmen).
+- Fall 3: `natureByDepth: {"0": null}` wird wie in Go als leerer Wert angenommen; eine Insel `null` in `islands` meldet `id fehlt` statt eines JSON-Fehlers.
+- Reihenfolge und Text aller übrigen Fehlermeldungen bleiben (bestehende Tests in `worlds_error_tests.rs`, `worlds_tests.rs` müssen unverändert grün bleiben).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Neue Welt-Felder, Änderungen an `data/worlds/*.json`, Go-Code ändern (Go ist das Orakel, Entscheidung 012), `k3c-data`-Umbauten außer dem Feld `skins` in `world.rs`.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Port-Leitfaden `docs/standards/rust-port.md` (§ 6 Fehler, § 11). Golden nicht neu schreiben. Datei <= 400 Zeilen, Funktion <= 60 Zeilen: `worlds_decode.rs` hat 250 Zeilen, neue Prüfungen bei Bedarf in eine neue Datei `worlds_shape.rs` auslagern.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-sim/src/island/worlds.rs`, `rust/crates/k3c-sim/src/island/worlds_decode.rs`, `rust/crates/k3c-sim/src/island/worlds_shape.rs`, `rust/crates/k3c-sim/src/island/worlds_tests.rs`, `rust/crates/k3c-sim/src/island/worlds_error_tests.rs`, `rust/crates/k3c-data/src/world.rs`
+- **Abhängig von:** RU10
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+`"skins": null` -> Fehler wie Go. Insel `[]` -> `kein gültiges JSON`. `"natureByDepth": {"0": null}` -> geladen, Wert leer.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Unbekannte Felder und fehlende Pflichtfelder bleiben Fehler wie bisher.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Die genannten Fälle verhalten sich wie in Go (je ein Test in `worlds_tests.rs`), Reihenfolge und Text der übrigen Meldungen bleiben.
+- **AC-01** Die genannten Fälle (skins null, Insel/depthScaling/nature als Array, natureByDepth-null-Wert, Insel null) verhalten sich wie in Go: je ein Test in `worlds_tests.rs` bzw. `worlds_error_tests.rs`; Reihenfolge und Text der übrigen Meldungen bleiben.
+- **AC-02** `cargo test --release -p k3c-sim island::worlds` und `cargo test --release -p k3c-data` grün; `cargo clippy -p k3c-sim -p k3c-data --all-targets -- -D warnings` ohne Warnungen.
 
 ## Offene Fragen
 
