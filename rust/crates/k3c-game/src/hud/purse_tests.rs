@@ -1,5 +1,4 @@
 //! Port von `native/k3c-game/hud/purse_test.go`.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use super::data::purse_max_gold;
 use super::drawstock::ICON_SCALE;

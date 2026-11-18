@@ -1,5 +1,4 @@
 //! Tests zu `glyphs.rs` (Port von `glyphs_test.go`; `TestSchriftrollen` steht in `texts_tests.rs`, es prüft `fonts.rs`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use super::fonts::contrast_ratio;
 use super::glyphs::*;
