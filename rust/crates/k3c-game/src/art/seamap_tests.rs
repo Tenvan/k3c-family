@@ -64,3 +64,18 @@ fn sea_map_unvollstaendig() {
         assert!(SeaMap::parse(raw.as_bytes()).is_err(), "{name}: kein Fehler");
     }
 }
+
+/// B-1066: Die eingebetteten Daten tragen die Seekarte; der Arbeitsordner (hier `rust/crates/k3c-game`, ohne `data/`)
+/// spielt keine Rolle.
+#[test]
+fn sea_map_aus_eingebetteten_daten() {
+    let raw = super::datafile::read_from(&k3c_data::Source::Embedded, "paper.json").expect("eingebettet");
+    assert!(SeaMap::parse(&raw).is_ok());
+    assert!(
+        !std::path::Path::new("data").is_dir(),
+        "Test setzt Arbeitsordner ohne data/ voraus"
+    );
+    assert!(SeaMap::from_data().is_some());
+    let err = super::datafile::read_from(&k3c_data::Source::Embedded, "worlds/x.json").unwrap_err();
+    assert_eq!(err, "data/worlds/x.json: open worlds/x.json: file does not exist");
+}

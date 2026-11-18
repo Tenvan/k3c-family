@@ -1,22 +1,22 @@
-//! Liest Dateien aus `data/` (Go: `data.Files`, `data/embed.go` ohne Einbetten): Ordner aus `K3C_DATA_DIR`, sonst
-//! `data/` relativ zum Arbeitsordner. Typisierte Daten liegen nicht hier (k3c-data), nur die Zuordnungen der Grafik.
+//! Liest Dateien aus `data/` (Go: `data.Files`, `data/embed.go`): Ordner aus `K3C_DATA_DIR`, sonst `data/` neben der
+//! EXE, sonst die eingebetteten Dateien (`k3c_data::Source::from_env`), unabhängig vom Arbeitsordner (B-1066).
+//! Typisierte Daten liegen nicht hier (k3c-data), nur die Zuordnungen der Grafik.
 
-use std::path::{Path, PathBuf};
+#[cfg(test)]
+use std::path::Path;
 
-/// Ordner der Daten: `K3C_DATA_DIR`, sonst `data`.
-pub fn data_dir() -> PathBuf {
-    match std::env::var_os("K3C_DATA_DIR") {
-        Some(d) if !d.is_empty() => PathBuf::from(d),
-        _ => PathBuf::from("data"),
-    }
-}
-
-/// Liest `name` aus dem Datenordner; der Fehlertext nennt den Pfad.
+/// Liest `name` aus der Datenquelle wie Go; der Fehlertext nennt den Pfad (`data/<name>: …`).
 pub fn read(name: &str) -> Result<Vec<u8>, String> {
-    read_in(&data_dir(), name)
+    read_from(&k3c_data::Source::from_env(), name)
 }
 
-/// Wie `read`, mit ausdrücklichem Ordner.
+/// Wie `read`, mit ausdrücklicher Quelle.
+pub fn read_from(src: &k3c_data::Source, name: &str) -> Result<Vec<u8>, String> {
+    src.read(name).map(String::into_bytes).map_err(|e| e.to_string())
+}
+
+/// Wie `read`, mit ausdrücklichem Ordner (Tests).
+#[cfg(test)]
 pub fn read_in(dir: &Path, name: &str) -> Result<Vec<u8>, String> {
     let path = dir.join(name);
     std::fs::read(&path).map_err(|e| format!("{}: {e}", path.display()))
