@@ -43,6 +43,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | erledigt |
 | RU42 | Leitplanken für Leistung und Stabilität | erledigt |
 | RU44 | Bild-Pfad ohne Allokationen | erledigt |
+| RU45 | Abnahme- und Messläufe auf dem Second Worker | aktiv |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | erledigt |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | erledigt |
 | RU11 | Sim: Einheiten und Gegner | erledigt |
