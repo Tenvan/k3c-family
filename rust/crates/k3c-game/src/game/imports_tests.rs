@@ -16,7 +16,7 @@ pub const FACHMODULE: [&str; 9] = [
 ];
 
 /// Ordner von `src/` mit eigener Regel: Zusammenbau und Werkzeuge (dürfen alles), `art` (eigene Grafik-Schicht).
-const NOT_FACH: [&str; 5] = ["game", "replay", "still", "demo", "art"];
+const NOT_FACH: [&str; 6] = ["game", "replay", "still", "demo", "art", "local"];
 
 /// `k3c_det` ist die Mathematik (Gegenstück zu Gos `math`), keine Fachschicht, und gilt wie die Standardbibliothek.
 const ALLOWED_CRATES: [&str; 4] = ["k3c_sim", "k3c_data", "k3c_platform", "k3c_det"];

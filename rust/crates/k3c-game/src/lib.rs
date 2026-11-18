@@ -8,6 +8,7 @@ pub mod fx;
 pub mod game;
 pub mod hud;
 pub mod input;
+pub mod local;
 pub mod menu;
 pub mod props;
 pub mod replay;
