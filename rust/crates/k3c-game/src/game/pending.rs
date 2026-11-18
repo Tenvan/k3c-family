@@ -25,7 +25,7 @@ pub trait Loader {}
 /// Fachmodule, die `packages()` noch nicht liefern kann: Name und liefernder Sprint. `parts_tests` zählt sie als
 /// „wartet auf RUnn“ und prüft, dass der Platzhalter verschwindet, sobald der Modulordner existiert.
 #[cfg_attr(not(test), allow(dead_code))]
-pub const WAITING: &[(&str, &str)] = &[("devtools", "RU29")];
+pub const WAITING: &[(&str, &str)] = &[];
 
 /// Go: `devtools.New` mit Chronik (Cheat-Menü, Testing, Sitzungsbericht; RU29): bis dahin ein leerer Beitrag mit dem
 /// Namen des Moduls (ein `unimplemented!` ließe jeden Zusammenbau abstürzen). RU29.3 tauscht diese Funktion.

@@ -4,6 +4,7 @@ pub mod actors;
 pub mod art;
 pub mod audio;
 pub mod demo;
+pub mod devtools;
 pub mod fx;
 pub mod game;
 pub mod hud;
