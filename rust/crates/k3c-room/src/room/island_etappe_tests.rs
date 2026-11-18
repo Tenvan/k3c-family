@@ -1,12 +1,10 @@
-//! Test aus `island_etappe_test.go` (B-961, AC-03): Etappen im Raum. Die Wahl des Ziels läuft in Go über
-//! `Room.ChooseIsland` (`skills.go`, RU24.3); hier ruft der Test `choose_island` der Sim mit Stufe und Platz des Monarchen
-//! (die Geräteprüfung von `ChooseIsland` entfällt). Der Spielstand trägt Wahl und abgeschlossene Inseln. Welt `etappen`:
+//! Test aus `island_etappe_test.go` (B-961, AC-03): Etappen im Raum. Die Wahl des Ziels läuft über `Room::choose_island`
+//! (`skills.rs`, Gos `Room.ChooseIsland`). Der Spielstand trägt Wahl und abgeschlossene Inseln. Welt `etappen`:
 //! Insel `ia` (Etappe 1), danach `ib` und `ic` (Etappe 2, frei wählbar), 2 Spieler.
-use k3c_sim::island::{Island, choose_island};
-
 use super::Options;
 use super::island_switch_tests::board_harbor;
 use super::testutil::{TestManager, WorldDir, dev_manager, join_room, peer, rm, ticks};
+use crate::fehler::Fehler;
 
 const ETAPPEN_RAW: &str = r#"{"id":"etappen","name":"Etappen","islands":[{"id":"ia","name":"A","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},{"id":"ib","name":"B","etappe":2,"depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},{"id":"ic","name":"C","etappe":2,"depths":[0,4],"depthScaling":{"hp":1.7,"damage":1.5,"speed":1.2},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}}]}"#;
 
@@ -17,15 +15,10 @@ fn etappen_manager(tag: &str) -> (TestManager, WorldDir) {
     (m, dir)
 }
 
-/// Wählt für den Monarchen `index` das Ziel `id` (Platz und Stufe sucht der Test).
-fn choose(isl: &mut Island, index: i64, id: &str) -> Result<(), String> {
-    let stage = isl.stage_of(index).ok_or("kein Spieler")?;
-    let pi = isl.stages[stage]
-        .players
-        .iter()
-        .position(|p| p.index == index)
-        .ok_or("kein Spieler")?;
-    choose_island(isl, stage, pi, id)
+/// Wählt für den Monarchen im Slot 0 des Geräts `id` (Verbindung `conn`) das Ziel `target` (Gos `Room.ChooseIsland`).
+fn choose(m: &mut TestManager, code: &str, id: &str, conn: u64, target: &str) -> Result<(), Fehler> {
+    m.with_room(code, |r, env| r.choose_island(env, id, conn, 0, target))
+        .expect("Raum")
 }
 
 fn json(bytes: &[u8]) -> serde_json::Value {
@@ -54,12 +47,11 @@ fn etappen_wahl_speichern_laden_und_wechsel() {
     board_harbor(&mut rm(&mut m, &code).isl);
     rm(&mut m, &code).isl.endboss_defeated = true;
     ticks(&mut m, &code, 1); // Wechselpunkt offen
-    let isl = &mut rm(&mut m, &code).isl;
     assert!(
-        choose(isl, 0, "unbekannt").is_err(),
+        choose(&mut m, &code, "xbox", 1, "unbekannt").is_err(),
         "Wahl außerhalb der Ziele angenommen"
     );
-    assert_eq!(choose(isl, 1, "ic"), Ok(()));
+    assert_eq!(choose(&mut m, &code, "handy", 2, "ic"), Ok(()));
     ticks(&mut m, &code, 1);
     let r = rm(&mut m, &code);
     assert!(

@@ -20,6 +20,15 @@ pub enum Fehler {
     SaveExists,
     SaveNotFound,
     BadRequest,
+    /// Go `SkillError`: von der Sim abgelehnter Skill-Befehl mit ihrem Grund; Text `bad_request: <reason>`. Zählt als
+    /// `BadRequest` (`is`); der Code im Protokoll bleibt `bad_request`.
+    BadRequestReason {
+        reason: String,
+    },
+    /// Go `CandidateError`: die Kandidaten-hub.json der Vorschau ist kein JSON oder hat Befunde (Text wie in Go).
+    Candidate(String),
+    /// Fehler der Vorschau (Go `fmt.Errorf("vorschau: …")`), der ganze Text.
+    Preview(String),
     /// `room_closed`: der Server fährt herunter.
     Closed,
     /// `forbidden`: dev ohne Dev-Mode (B-178).
@@ -52,6 +61,7 @@ impl Fehler {
     pub fn is(&self, code: &Fehler) -> bool {
         match self {
             Fehler::Meldung { code: inner, .. } => inner.is(code),
+            Fehler::BadRequestReason { .. } => *code == Fehler::BadRequest || self == code,
             other => other == code,
         }
     }
@@ -82,6 +92,8 @@ impl fmt::Display for Fehler {
             Fehler::SaveExists => f.write_str("save_exists"),
             Fehler::SaveNotFound => f.write_str("save_not_found"),
             Fehler::BadRequest => f.write_str("bad_request"),
+            Fehler::BadRequestReason { reason } => write!(f, "bad_request: {reason}"),
+            Fehler::Candidate(text) | Fehler::Preview(text) => f.write_str(text),
             Fehler::Closed => f.write_str("room_closed"),
             Fehler::Forbidden => f.write_str("forbidden"),
             Fehler::SaveInUse => f.write_str("save_in_use"),

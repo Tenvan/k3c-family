@@ -15,6 +15,12 @@ mod actions;
 mod actions_tests;
 #[cfg(test)]
 mod autosave_tests;
+mod closeroom;
+#[cfg(test)]
+mod closeroom_tests;
+mod deletesave;
+#[cfg(test)]
+mod deletesave_tests;
 #[cfg(test)]
 mod depths_tests;
 #[cfg(test)]
@@ -66,6 +72,21 @@ mod pause;
 #[cfg(test)]
 mod pause_tests;
 mod pending;
+mod preview;
+mod preview_candidate;
+#[cfg(test)]
+mod preview_candidate_tests;
+mod preview_chunk;
+#[cfg(test)]
+mod preview_chunk_tests;
+#[cfg(test)]
+mod preview_chunkcount_tests;
+#[cfg(test)]
+mod preview_planned_tests;
+#[cfg(test)]
+mod preview_ruin_tests;
+#[cfg(test)]
+mod preview_tests;
 #[cfg(test)]
 mod review_tests;
 #[cfg(test)]
@@ -82,6 +103,9 @@ mod save_testutil;
 mod saver;
 #[cfg(test)]
 mod saver_tests;
+mod skills;
+#[cfg(test)]
+mod skills_tests;
 mod stages;
 #[cfg(test)]
 mod stages_tests;
@@ -106,6 +130,8 @@ pub use log::{Level, Log, NullLog, RecordingLog, list_text, short};
 pub use manager::{CODE_LETTERS, Manager};
 pub use pause::PROTECT_TICKS;
 pub use pending::Metrics;
+pub use preview::{PreviewOptions, PreviewSource, build_preview, preview_site_key, valid_preview_biome};
+pub use preview_chunk::{preview_chunk_objects, preview_chunk_ruins};
 pub use run::Failure;
 pub use saver::{InlineWriter, SLOW_SAVE_MS, SaveWriter, write_save};
 pub use stages::{free_monarchs, start_stage};

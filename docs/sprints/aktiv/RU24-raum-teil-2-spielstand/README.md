@@ -93,7 +93,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 |---|---|---|---|---|
 | RU24.1 | `RU24.1-room-stages-switch-pause-dev.md` | Umsetzung | autonom | fertig |
 | RU24.2 | `RU24.2-room-devcombat-fullsave-saver.md` | Umsetzung | autonom | fertig |
-| RU24.3 | `RU24.3-room-closeroom-skills-preview.md` | Umsetzung | autonom | offen |
+| RU24.3 | `RU24.3-room-closeroom-skills-preview.md` | Umsetzung | autonom | fertig |
 | RU24.4 | `RU24.4-room-worlds-metrics-observer.md` | Umsetzung | autonom | offen |
 | RU24.5 | `RU24.5-review.md` | Review | autonom | offen |
 
