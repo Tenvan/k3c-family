@@ -1,6 +1,6 @@
 # RU21 · SRV · Spielstände und Raum Teil 1
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -90,11 +90,11 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU21.1 | `RU21.1-store-atomic-backups-reports-restart.md` | Umsetzung | autonom | offen |
-| RU21.2 | `RU21.2-store-saves-room.md` | Umsetzung | autonom | offen |
-| RU21.3 | `RU21.3-room-manager-run.md` | Umsetzung | autonom | offen |
-| RU21.4 | `RU21.4-room-actions-logging-status.md` | Umsetzung | autonom | offen |
-| RU21.5 | `RU21.5-review.md` | Review | autonom | offen |
+| RU21.1 | `RU21.1-store-atomic-backups-reports-restart.md` | Umsetzung | autonom | fertig |
+| RU21.2 | `RU21.2-store-saves-room.md` | Umsetzung | autonom | fertig |
+| RU21.3 | `RU21.3-room-manager-run.md` | Umsetzung | autonom | fertig |
+| RU21.4 | `RU21.4-room-actions-logging-status.md` | Umsetzung | autonom | fertig |
+| RU21.5 | `RU21.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -102,6 +102,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+- AC-01 geprüft: `testdata/saves/v1` bis `v9` laden und parsen (`cargo test -p k3c-room`, 84 grün); `task check` und `task check:go` grün.
+- AC-02 teilweise: Aktionen, Status, Logging, Fristen und Panic-Schutz geprüft; der Inselschritt im Takt fehlt bis RU18 (`step_players`), `tick_rechnet_beide_spieler` ist `ignore = "wartet auf RU18"`.
+- AC-03 teilweise: 10 Tests warten mit Grund (4 RU18, 6 RU24), kein Platzhalter und kein `ignore` mit RU21; Platzhalter nur für RU24 in `pending.rs`.
+- Review (k3c-reviewer): Befunde behoben (`rotate` prüft den Slot, `Room::join` lehnt geschlossene Räume ab, `Manager::sweep` entfernt in der Schleife); offen als Hinweis in B-1098: `create` bis RU24 `unimplemented!`.
+- Abnahme-Ticket für Sim, Balance, Gen, Race: B-1098 (Lane zweit).
