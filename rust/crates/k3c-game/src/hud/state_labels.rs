@@ -1,7 +1,9 @@
 //! Zweiter Teil von `native/k3c-game/hud/state.go` (nach dem Abschnitt „Farben der Berufssymbole“): Bürger-Labels und
 //! Skill-Menü-Zustand des Spielers.
 
-use super::pending::{available_points, build_menu, can_learn, can_respec, menu_entries, new_menu_key};
+use super::pending::{available_points, can_learn, can_respec};
+use super::skillmenu::menu_entries;
+use super::skilltext::{build_menu, new_menu_key};
 use super::state::{Label, SeatState};
 use super::values::PlaceKey;
 use super::values_texts::{merchant_text, profession_text};

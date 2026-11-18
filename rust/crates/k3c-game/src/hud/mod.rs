@@ -40,10 +40,13 @@ pub mod hints;
 pub mod icons;
 pub mod keyline;
 pub mod layout;
+pub mod overlay;
 pub mod paint;
 pub mod pending;
 pub mod purse;
 pub mod radar;
+pub mod skillmenu;
+pub mod skilltext;
 pub mod state;
 mod state_labels;
 pub mod texts;
@@ -71,11 +74,15 @@ mod labels_tests;
 #[cfg(test)]
 mod layout_tests;
 #[cfg(test)]
+mod overlay_tests;
+#[cfg(test)]
 mod profile_tests;
 #[cfg(test)]
 mod purse_tests;
 #[cfg(test)]
 mod radar_tests;
+#[cfg(test)]
+mod skillmenu_tests;
 #[cfg(test)]
 mod state_tests;
 #[cfg(test)]

@@ -11,41 +11,9 @@
 use k3c_sim::state::{ActiveEvent, Enemy, Merchant, Player, SwitchState, World};
 
 use super::Hud;
-use crate::view::frame::{Frame, RouteIsland};
-
-/// MenuState ist der Zustand des Skill-Menüs eines Spielers (Go: `menuState`, skillmenu.go).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct MenuState {
-    pub open: bool,
-    pub cursor: i64,
-}
-
-/// MenuEntry ist ein Eintrag des Skill-Menüs (Go: `menuEntry`).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct MenuEntry {
-    pub id: String,
-}
-
-/// MenuKey ist alles, wovon der Text des Menüs abhängt (Go: `menuKey`).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct MenuKey {
-    pub lang: String,
-    pub profile: String,
-}
-
-/// MenuView ist der Text des Menüs (Go: `menuView`).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct MenuView {
-    pub title: String,
-    pub footer: String,
-}
-
-/// SlotView ist ein Skill-Slot: Skill ("" = frei) und Abklingzeit in Sekunden (Go: `slotView`).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct SlotView {
-    pub skill: String,
-    pub cooldown: f64,
-}
+use crate::view::frame::{Frame, RouteIsland, Seat};
+use crate::view::input::Input;
+use crate::view::session::Session;
 
 /// SeaView ist die Seekarte am Hafen eines Spielers (Go: `seaView`, seekarte.go).
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -90,42 +58,12 @@ pub struct EventsKey {
     pub lang: String,
 }
 
-/// BarKey ist die Skill-Leiste (Go: `barKey`, skilltext.go).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct BarKey {
-    pub lang: String,
-    pub skills: [String; 4],
-    pub cd: [i64; 4],
-}
-
 /// LabelSpot ist ein sichtbares Label: Index in `SeatState::labels` und Fenster-Punkt (Go: `labelSpot`, drawworld.go).
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct LabelSpot {
     pub i: usize,
     pub x: f64,
     pub y: f64,
-}
-
-/// Go: `slotViews` (skillmenu.go): liest die Slots 1 bis 4 (fehlende Felder: frei bzw. bereit).
-pub fn slot_views(slots: &[String], cooldowns: &[f64]) -> [SlotView; 4] {
-    std::array::from_fn(|i| SlotView {
-        skill: slots.get(i).cloned().unwrap_or_default(),
-        cooldown: cooldowns.get(i).map_or(0.0, |c| if *c > 0.0 { *c } else { 0.0 }),
-    })
-}
-
-/// Go: `newBarKey` (skilltext.go): Skill und Abklingzeit (ganze Sekunden, aufgerundet) je Slot.
-pub fn new_bar_key(lang: &str, slots: &[SlotView; 4]) -> BarKey {
-    BarKey {
-        lang: lang.to_string(),
-        skills: std::array::from_fn(|i| slots[i].skill.clone()),
-        cd: std::array::from_fn(|i| slots[i].cooldown.ceil() as i64),
-    }
-}
-
-/// Go: `slotBar` (skilltext.go, RU23). Platzhalter: leere Leiste.
-pub fn slot_bar(_k: &BarKey) -> String {
-    String::new()
 }
 
 /// Go: `bossBar` (kampf.go, RU23). Platzhalter: kein Boss.
@@ -148,50 +86,27 @@ pub fn event_banner(_k: &EventsKey) -> String {
     String::new()
 }
 
-/// Go: `menuEntries` (skillmenu.go, RU23): läuft nur bei offenem Menü, das ohne Overlay (RU23) nie öffnet.
-pub fn menu_entries(
-    _out: Vec<MenuEntry>,
-    _learned: &[String],
-    _points: i64,
-    _can_learn: &dyn Fn(&str) -> bool,
-    _respec: bool,
-) -> Vec<MenuEntry> {
-    unimplemented!("RU23: menu_entries")
-}
-
-/// Go: `sim.AvailablePoints` (Skill-Logik, RU23): läuft nur bei offenem Menü.
+/// Go: `sim.AvailablePoints` (RU18): 0 freie Punkte, bis RU18 die Skill-Logik liefert; nichts ist lernbar.
 pub fn available_points(_w: &World, _p: &Player) -> i64 {
-    unimplemented!("RU23: available_points")
+    0
 }
 
-/// Go: `sim.CanLearn` (RU23): läuft nur bei offenem Menü.
+/// Go: `sim.CanLearn` (RU18): nichts ist lernbar.
 pub fn can_learn(_w: &World, _p: &Player, _id: &str) -> bool {
-    unimplemented!("RU23: can_learn")
+    false
 }
 
-/// Go: `sim.CanRespec` (RU23): läuft nur bei offenem Menü.
+/// Go: `sim.CanRespec` (RU18): kein Respec.
 pub fn can_respec(_w: &World, _p: &Player) -> bool {
-    unimplemented!("RU23: can_respec")
-}
-
-/// Go: `newMenuKey` (skilltext.go, RU23): läuft nur bei offenem Menü.
-pub fn new_menu_key(
-    _lang: &str,
-    _profile: &str,
-    _cursor: i64,
-    _points: i64,
-    _entries: &[MenuEntry],
-    _slots: &[SlotView; 4],
-) -> MenuKey {
-    unimplemented!("RU23: new_menu_key")
-}
-
-/// Go: `buildMenu` (skilltext.go, RU23): läuft nur bei offenem Menü.
-pub fn build_menu(_k: &MenuKey, _entries: &[MenuEntry]) -> MenuView {
-    unimplemented!("RU23: build_menu")
+    false
 }
 
 impl Hud {
+    /// Go: `(*hud).updateSea` (seekarte.go, RU23.3). Platzhalter: kein Hafen-Menü, nichts verbraucht.
+    pub fn update_sea(&mut self, _in: &Input, _f: &Frame, _s: &mut dyn Session, _seat: &Seat, _menu: bool) -> bool {
+        false
+    }
+
     /// Go: `(*hud).story` (story.go, RU23): schreibt die Geschichtszeilen fort. Platzhalter: tut nichts.
     pub fn story(&mut self, _f: &Frame) {}
 }

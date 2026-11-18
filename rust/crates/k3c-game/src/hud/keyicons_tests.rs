@@ -218,15 +218,45 @@ fn bedienhinweis_als_zeile() {
     );
 }
 
-/// Die Zeilen von Skill-Menü und Seekarte (Go: `menuLine`, `seaLine`, Dateien von RU23).
+/// Die Zeilen des Skill-Menüs und eine Vorlage mit unbekanntem Platzhalter (Go: Fälle 1, 2 und 5 von `TestKeyLine`).
 #[test]
-#[ignore = "wartet auf RU23"]
-fn bedienhinweis_menu_und_seekarte() {
+fn bedienhinweis_menu() {
+    let cases = [
+        (
+            super::skilltext::menu_line("de", WASD),
+            "A / D wählen · Leertaste bestätigen · K schließen",
+            "<key:A>[/]<key:D>[wählen ·]<key:SPACE>[bestätigen ·]<key:K>[schließen]",
+        ),
+        (
+            super::skilltext::menu_line("de", GP),
+            "◄ ► wählen · A bestätigen · B schließen",
+            "[◄ ► wählen ·]<pad:A>[bestätigen · B schließen]",
+        ),
+        (
+            new_key_line("{x} und {ok}", &[arg("ok", vec![new_glyph("key:E", "E")])]),
+            "{x} und E",
+            "[{x} und]<key:E>",
+        ),
+    ];
+    for (line, plain, segs) in cases {
+        assert!(
+            line.plain == plain && kinds(&line) == segs,
+            "Zeile {:?}: {}, erwartet {plain:?}: {segs}",
+            line.plain,
+            kinds(&line)
+        );
+    }
+}
+
+/// Die Zeilen der Seekarte (Go: `seaLine`, Datei von RU23.3).
+#[test]
+#[ignore = "wartet auf RU23.3"]
+fn bedienhinweis_seekarte() {
     // Erwartet (Go): menuLine("de", wasd) = "A / D wählen · Leertaste bestätigen · K schließen",
     // "<key:A>[/]<key:D>[wählen ·]<key:SPACE>[bestätigen ·]<key:K>[schließen]"; menuLine("de", gp) =
     // "◄ ► wählen · A bestätigen · B schließen", "[◄ ► wählen ·]<pad:A>[bestätigen · B schließen]";
     // seaLine("en", arrows, true) und seaLine("de", gp, false) wie in keyicons_test.go.
-    unimplemented!("menu_line und sea_line kommen mit RU23");
+    unimplemented!("sea_line kommt mit RU23.3");
 }
 
 fn font() -> Font {

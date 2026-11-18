@@ -1,14 +1,17 @@
 //! Hilfen der HUD-Tests (Go: `twoPlayers`, `keys1`, `pad` aus `overlay_test.go`; die Insel kommt mit RU10 aus
 //! `sim.CreateIsland`, hier baut `two_players` die Welt von Hand).
 
+#![allow(clippy::unimplemented)] // HudSession bedient nur learn, respec und Einstellungen
+
 use std::rc::Rc;
 
 use super::Hud;
 use crate::props::pending::{CombatSpot, Economy, SpotState};
 use crate::props::simview::SimView;
-use crate::view::frame::{Frame, Seat, Stage};
-use crate::view::input::{DeviceID, DeviceKind};
-use crate::view::settings::default_settings;
+use crate::view::frame::{Cue, CueKind, Frame, Seat, Stage};
+use crate::view::input::{Action, DeviceID, DeviceInput, DeviceKind, Input};
+use crate::view::session::{Fehler, NewGame, SaveInfo, Session, WorldInfo};
+use crate::view::settings::{Settings, default_settings};
 use k3c_data::biome::Biome;
 use k3c_sim::state::{CycleInfo, Player, Site, World};
 
@@ -103,4 +106,111 @@ pub fn two_players(points: i64) -> (World, Frame) {
 /// set_world zeigt dem Frame den aktuellen Stand der Welt (der Frame hält eine Kopie).
 pub fn set_world(f: &mut Frame, w: &World) {
     f.stages[0].world = Some(Rc::new(w.clone()));
+}
+
+/// HudSession erfüllt `Session` für Overlay-Tests: Lernen und Respec werden mitgeschrieben (Go: `session`,
+/// `settingsSession`), Einstellungen gelesen und geschrieben; der Rest ist unbenutzt (`unimplemented!`).
+pub struct HudSession {
+    /// mitgeschriebene Aufrufe: "learn <id>", "respec"
+    pub sent: Vec<String>,
+    /// Antwort auf `learn` und `respec`
+    pub fail: Option<Fehler>,
+    pub cur: Settings,
+    /// Zahl der `set_settings`-Aufrufe
+    pub sets: usize,
+}
+
+impl Default for HudSession {
+    fn default() -> Self {
+        Self {
+            sent: Vec::new(),
+            fail: None,
+            cur: default_settings(),
+            sets: 0,
+        }
+    }
+}
+
+impl Session for HudSession {
+    fn new_game(&mut self, _g: NewGame) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn continue_game(&mut self, _devices: &[DeviceID]) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn load(&mut self, _name: &str, _devices: &[DeviceID]) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn list(&mut self) -> Result<Vec<SaveInfo>, Fehler> {
+        unimplemented!()
+    }
+    fn delete(&mut self, _name: &str) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn save(&mut self) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn close(&mut self) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn active(&self) -> bool {
+        unimplemented!()
+    }
+    fn pause(&mut self, _on: bool) {
+        unimplemented!()
+    }
+    fn join(&mut self, _d: DeviceID) -> Result<i64, Fehler> {
+        unimplemented!()
+    }
+    fn leave(&mut self, _player: i64) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn rebind(&mut self, _player: i64, _d: DeviceID) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn learn(&mut self, _player: i64, skill: &str) -> Result<(), Fehler> {
+        self.sent.push(format!("learn {skill}"));
+        self.fail.clone().map_or(Ok(()), Err)
+    }
+    fn respec(&mut self, _player: i64) -> Result<(), Fehler> {
+        self.sent.push("respec".to_string());
+        self.fail.clone().map_or(Ok(()), Err)
+    }
+    fn choose_island(&mut self, _player: i64, _island: &str) -> Result<(), Fehler> {
+        unimplemented!()
+    }
+    fn set_settings(&mut self, s: Settings) -> Result<(), Fehler> {
+        self.cur = s.normalized();
+        self.sets += 1;
+        Ok(())
+    }
+    fn settings(&self) -> Settings {
+        self.cur.clone()
+    }
+    fn seats(&self) -> Vec<Seat> {
+        unimplemented!()
+    }
+    fn world_list(&self) -> Vec<WorldInfo> {
+        unimplemented!()
+    }
+    fn world(&self) -> String {
+        unimplemented!()
+    }
+}
+
+/// input baut die Eingabe der Tastatur (`a`) und des Pads (`b`) für ein Update (Go: `input`).
+pub fn input(a: &[Action], b: &[Action]) -> Input {
+    let dev = |device, actions: &[Action]| DeviceInput {
+        device,
+        actions: actions.to_vec(),
+        ..DeviceInput::default()
+    };
+    Input {
+        devices: vec![dev(KEYS1, a), dev(PAD, b)],
+    }
+}
+
+/// has_cue meldet, ob unter `cues` einer der Art `k` für Spieler `p` ist.
+pub fn has_cue(cues: &[Cue], k: CueKind, p: i64) -> bool {
+    cues.iter().any(|c| c.kind == k && c.player == p)
 }

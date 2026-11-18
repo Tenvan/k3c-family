@@ -1,7 +1,7 @@
 //! Port von `native/k3c-game/hud/profile_test.go`.
 //!
-//! Der Teil mit dem Footer des Skill-Menüs (`seats[i].menuV.footer`, `hud.Update` öffnet das Menü) braucht Overlay und
-//! Menü-Text aus RU23 und läuft dort als `menu_footer_per_device` (glyphs_tests.rs); hier läuft der Rest.
+//! Der Teil mit dem Footer des Skill-Menüs (`seats[i].menuV.footer`, `hud.Update` öffnet das Menü) steht in
+//! `overlay_tests.rs` (`profile_switch_changes_hints`); hier läuft der Rest.
 
 use super::testutil::{hud, two_players};
 use crate::view::input::{DeviceID, DeviceKind};
