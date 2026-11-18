@@ -165,6 +165,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
 | [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU19 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
 | [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU19 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
+| [B-1105](B-1105-abnahme-laeufe-ru22-durchsatz.md) | SIM | Schuld | mittel | offen | RU22 | Abnahme-Läufe RU22: Durchsatz Rust gegen Go, Sim und Race (Lane: zweit) |
 
 ## Archiv
 
