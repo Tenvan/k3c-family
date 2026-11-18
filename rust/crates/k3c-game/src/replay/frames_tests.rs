@@ -56,7 +56,7 @@ fn puffer_hat_obergrenze() {
 
 #[test]
 fn schreibt_je_bild_eine_zeile() {
-    let path = std::env::temp_dir().join(format!("k3c-frames-{}.jsonl", std::process::id()));
+    let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/tmp").join(format!("k3c-frames-{}.jsonl", std::process::id()));
     let mut log = FrameLog::new(&path, 0.0);
     log.add(sample());
     log.add(sample());

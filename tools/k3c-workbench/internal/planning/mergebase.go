@@ -45,11 +45,15 @@ func loadAt(root, rev string) (Data, error) {
 	if err != nil {
 		return Data{}, err
 	}
-	dir, err := os.MkdirTemp("", "k3c-planbase-")
+	tdir := filepath.Join(root, ".work", "tmp") // Regel „Schreiben nur im Repo“
+	if err := os.MkdirAll(tdir, 0o755); err != nil {
+		return Data{}, err
+	}
+	dir, err := os.MkdirTemp(tdir, "k3c-planbase-")
 	if err != nil {
 		return Data{}, err
 	}
-	defer func() { _ = os.RemoveAll(dir) }() // Wegwerf-Ordner; bleibt er liegen, räumt das System ihn auf
+	defer func() { _ = os.RemoveAll(dir) }() // Wegwerf-Ordner; bleibt er liegen, räumt `.work` ihn auf
 	if err := untar(bytes.NewReader(out), dir); err != nil {
 		return Data{}, err
 	}

@@ -2,8 +2,6 @@ package studioview
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -63,14 +61,9 @@ func NewGame(ctx context.Context, root, savesDir string, log *slog.Logger) *Game
 	return &Game{ctx: ctx, root: root, saves: savesDir, log: log, launch: startDetached}
 }
 
-// DefaultSavesDir ist `<Cache des Nutzers>/k3c/studioview/<Hash des Checkouts>/saves`, nie im Repo.
+// DefaultSavesDir ist `<Checkout>/.work/studioview/saves` (ignoriert, Regel „Schreiben nur im Repo“).
 func DefaultSavesDir(root string) string {
-	base, err := os.UserCacheDir()
-	if err != nil {
-		base = os.TempDir()
-	}
-	sum := sha256.Sum256([]byte(filepath.Clean(root)))
-	return filepath.Join(base, "k3c", "studioview", hex.EncodeToString(sum[:6]), "saves")
+	return filepath.Join(root, ".work", "studioview", "saves")
 }
 
 // Open legt den Testspielstand `voll-<seed>` an und startet das native Spiel, das ihn lädt; die Antwort sagt, was

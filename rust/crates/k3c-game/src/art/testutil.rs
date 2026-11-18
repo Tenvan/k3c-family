@@ -12,7 +12,7 @@ pub fn test_grafik() -> PathBuf {
 pub fn temp_dir(name: &str) -> PathBuf {
     static N: AtomicU32 = AtomicU32::new(0);
     let n = N.fetch_add(1, Ordering::Relaxed);
-    let dir = std::env::temp_dir().join(format!("k3c-art-{}-{name}-{n}", std::process::id()));
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/tmp").join(format!("k3c-art-{}-{name}-{n}", std::process::id()));
     let _ = std::fs::remove_dir_all(&dir); // Reste eines alten Laufs, Fehlen ist kein Fehler
     std::fs::create_dir_all(&dir).unwrap();
     dir

@@ -1,8 +1,7 @@
 // Erzeugt die RPC-Beispielantworten fixtures/ui/*.json (Vertrag docs/standards/paper-mcp.md › Oberfläche) aus den
 // Fixtures und der CLI-Attrappe; Zustand wie im Review-Test-Repo (review-repo/erzeuge.ts, Basis HEAD~1).
 // Aufruf: bun tools/paper/fixtures/beispiele.ts
-import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { Resvg } from '@resvg/resvg-js';
 import { run } from './cli-stub';
@@ -11,6 +10,7 @@ import { erzeugeReviewRepo } from './review-repo/erzeuge';
 
 const FIX = import.meta.dirname;
 const ROOT = join(FIX, '../../..');
+const WORK_TMP = join(ROOT, '.work', 'tmp'); // Regel „Schreiben nur im Repo“ (🧑 2026-11-18)
 const png = (p: string) => readFileSync(join(FIX, 'render', p));
 const dataUrl = (b: Buffer) => `data:image/png;base64,${b.toString('base64')}`;
 const json = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
@@ -40,7 +40,8 @@ export const REVIEW = {
 };
 
 if (import.meta.main) {
-  const tmp = mkdtempSync(join(tmpdir(), 'paper-'));
+  mkdirSync(WORK_TMP, { recursive: true });
+  const tmp = mkdtempSync(join(WORK_TMP, 'paper-'));
   REVIEW.basisCommit = erzeugeReviewRepo(join(tmp, 'repo')).basis;
   const umhang = pixeldiff(png('monarch/monarch-galopp-0.png'), png('monarch/monarch-galopp-0-purpur.png'));
   const stil = mauerNachStil();
@@ -64,4 +65,5 @@ if (import.meta.main) {
   schreibe('AssetsReview', REVIEW);
   schreibe('AssetsFrame', { bild: dataUrl(png('monarch/monarch-galopp-0-purpur.png')), teile: frame.teile });
   schreibe('AssetsPixelDiff', { anteil: umhang.anteil, boxen: umhang.boxen, overlay: dataUrl(umhang.overlay) });
+  rmSync(tmp, { recursive: true, force: true }); // Wegwerf-Ordner nach Gebrauch löschen
 }
