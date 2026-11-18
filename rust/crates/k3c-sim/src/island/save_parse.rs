@@ -35,8 +35,7 @@ pub fn parse_island_save(raw: &str, t: &SaveTables) -> Result<IslandSave, Fehler
             "spielstand: json: cannot unmarshal into Go value of type struct".to_string(),
         ));
     };
-    let int = |k: &str| obj.get(k).and_then(Value::as_i64).unwrap_or(0);
-    let (version, island) = (int("version"), int("island")); // `island`: bis Version 7 der Index der Insel
+    let (version, island) = (head_int(obj, "version")?, head_int(obj, "island")?); // `island`: bis Version 7 der Index
     let s = match version {
         ISLAND_SAVE_VERSION | 8 => return parse_island_v3(raw, &["world", "islandId"], t),
         SAVE_VERSION => {
@@ -52,6 +51,37 @@ pub fn parse_island_save(raw: &str, t: &SaveTables) -> Result<IslandSave, Fehler
         }
     };
     migrate_world(s, island, t.standard_world)
+}
+
+/// Go liest den Kopf in ein `int`: fehlend und `null` sind 0, jeder andere Wert als eine ganze Zahl ist ein Fehler.
+fn head_int(obj: &serde_json::Map<String, Value>, key: &str) -> Result<i64, Fehler> {
+    let kind = match obj.get(key) {
+        None | Some(Value::Null) => return Ok(0),
+        Some(Value::Number(n)) => match n.as_i64() {
+            Some(i) => return Ok(i),
+            None => format!("number {n}"),
+        },
+        Some(Value::String(_)) => "string".to_string(),
+        Some(Value::Bool(_)) => "bool".to_string(),
+        Some(Value::Array(_)) => "array".to_string(),
+        Some(Value::Object(_)) => "object".to_string(),
+    };
+    Err(fail(format!(
+        "spielstand: json: cannot unmarshal {kind} into Go struct field .{key} of type int"
+    )))
+}
+
+/// Go lässt ein Feld mit `null` auf dem Standardwert: Einträge mit `null` in Objekten fallen weg (`default` füllt sie);
+/// Arrays bleiben, ihre Objekte werden ebenso gelesen.
+fn strip_nulls(v: &mut Value) {
+    match v {
+        Value::Object(m) => {
+            m.retain(|_, x| !x.is_null());
+            m.values_mut().for_each(strip_nulls);
+        }
+        Value::Array(a) => a.iter_mut().for_each(strip_nulls),
+        _ => {}
+    }
 }
 
 /// Go: `decodeIsland` prüft die Pflichtfelder (dazu `extra`, z. B. das Feld des Pools) und liest `raw`. Felder, die im Stand
@@ -70,6 +100,7 @@ pub fn decode_island(raw: &str, defaults: IslandOptions, extra: &[&str]) -> Resu
         }
     }
     let options = merge_options(obj.remove("options").as_ref(), defaults)?; // `null` ist für serde kein Objekt
+    strip_nulls(&mut check);
     let mut s: IslandSave = serde_json::from_value(check).map_err(|e| fail(format!("spielstand: {e}")))?;
     s.options = options;
     Ok(s)

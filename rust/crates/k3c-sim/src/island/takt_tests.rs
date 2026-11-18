@@ -18,20 +18,31 @@ fn reference() -> Value {
     golden::read(golden::testdata().join("rust/insel/insel-1000.json"))
 }
 
+/// Go schreibt leere `nil`-Slices als `null` (`engine/sim/rustref_island_test.go:63,66`): leer wird `null`, sonst ein Array.
+fn null_if_empty<T: serde::Serialize>(v: &[T]) -> Value {
+    if v.is_empty() { Value::Null } else { json!(v) }
+}
+
+#[test]
+fn null_if_empty_bildet_leer_auf_null_ab() {
+    assert_eq!(null_if_empty::<String>(&[]), Value::Null);
+    assert_eq!(null_if_empty(&["a".to_string()]), json!(["a"]));
+}
+
 /// Die Felder der Insel wie in der Datei (`island`): was Go in `rustref_island_test.go` schreibt.
 fn island_fields(isl: &Island) -> Value {
     json!({
         "stock": golden::tree(&isl.stock),
         "skillPool": isl.skill_pool,
         "chestsOpened": isl.chests_opened,
-        "defeatedBosses": isl.defeated_bosses,
+        "defeatedBosses": null_if_empty(&isl.defeated_bosses),
         "endbossDefeated": isl.endboss_defeated,
         "goldCollected": isl.gold_collected,
         "won": isl.won,
         "number": isl.number,
         "gateOpen": isl.gate_open,
         "switchReady": isl.switch_ready,
-        "completed": isl.completed,
+        "completed": null_if_empty(&isl.completed),
         "chosen": isl.chosen,
         "over": isl.over,
         "merchantVisits": isl.merchant_visits,

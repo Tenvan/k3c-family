@@ -8,10 +8,10 @@
 
 use std::fmt::Write;
 
-use k3c_det::golden::go_float;
 use k3c_rng::{Rng, Weight};
 
 use crate::biome::{Biome, Trait};
+use crate::float_text::write_go_float;
 use crate::nature_check::check_nature_values;
 use crate::types::{Entity, NatureValues};
 
@@ -185,9 +185,10 @@ pub fn assign_variants(b: &Biome, seed: &str, v: &NatureValues, es: &mut [Entity
             .collect();
         for e in es.iter_mut().filter(|e| e.kind == g.value.kind) {
             stream.clear();
-            // PERF(B-1079): `go_float` allokiert einen Text je Entität; läuft einmal je Level, nicht je Bild.
-            // Der Strom-Name wird in einem wiederverwendeten Puffer gebaut.
-            let _ = write!(stream, "{}:{seed}:variant:{}:{}", b.id, g.key, go_float(e.x));
+            // Der Strom-Name wird in einem wiederverwendeten Puffer gebaut, `write_go_float` schreibt den Text von
+            // `go_float(e.x)` ohne eigenen `String` (gemessen B-1079: forest 2448 auf 313 Allokationen je Level).
+            let _ = write!(stream, "{}:{seed}:variant:{}:", b.id, g.key);
+            let _ = write_go_float(&mut stream, e.x);
             e.variant = Rng::new(&stream).weighted(&w);
         }
     }

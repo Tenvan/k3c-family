@@ -44,7 +44,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU42 | Leitplanken für Leistung und Stabilität | erledigt |
 | RU44 | Bild-Pfad ohne Allokationen | erledigt |
 | RU45 | Abnahme- und Messläufe auf dem Second Worker | erledigt |
-| RU46 | Rust-Schulden in k3c-level und Insel (Second Worker) | aktiv |
+| RU46 | Rust-Schulden in k3c-level und Insel (Second Worker) | erledigt |
 | RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | aktiv |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | erledigt |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | erledigt |
