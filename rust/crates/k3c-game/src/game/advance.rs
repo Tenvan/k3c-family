@@ -84,9 +84,11 @@ impl Game {
             self.play(input);
             return;
         };
-        // Bis RU30.5 ist die Session des Menüs die Simulation selbst (Go: `menuSession{Sim, g}`).
+        // Go: `menuSession{Sim, g}`; in Rust ist die Session die Simulation, den Starter hält das Menü (`stress.rs`).
+        self.sync_stress_link();
         let st = top.update(input, self.sim.as_mut());
         self.stack.put_top(top);
+        self.run_stress_request();
         self.apply_step(st);
     }
 

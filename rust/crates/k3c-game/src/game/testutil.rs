@@ -49,6 +49,14 @@ pub struct Probe {
     pub set: Rc<RefCell<Vec<Settings>>>,
     /// Aufrufe der Entwickler-Rolle (`FakeSim::with_dev`)
     pub dev: Rc<RefCell<DevLog>>,
+    /// Spiele, die `new_game` bekam
+    pub games: Rc<RefCell<Vec<NewGame>>>,
+    /// Spielstände, die `list` meldet
+    pub saves: Rc<RefCell<Vec<SaveInfo>>>,
+    /// Namen, die `delete` angenommen hat
+    pub deleted: Rc<RefCell<Vec<String>>>,
+    /// Name des laufenden Spiels: `delete` lehnt ihn ab, solange es aktiv ist
+    pub running: Rc<RefCell<String>>,
 }
 
 /// Tastatur 1 (`keys1`).
@@ -162,7 +170,8 @@ impl Sim for FakeSim {
 }
 
 impl Session for FakeSim {
-    fn new_game(&mut self, _g: NewGame) -> Result<(), Fehler> {
+    fn new_game(&mut self, g: NewGame) -> Result<(), Fehler> {
+        self.probe.games.borrow_mut().push(g);
         self.probe.active.set(true);
         Ok(())
     }
@@ -178,10 +187,14 @@ impl Session for FakeSim {
     }
 
     fn list(&mut self) -> Result<Vec<SaveInfo>, Fehler> {
-        Ok(Vec::new())
+        Ok(self.probe.saves.borrow().clone())
     }
 
-    fn delete(&mut self, _name: &str) -> Result<(), Fehler> {
+    fn delete(&mut self, name: &str) -> Result<(), Fehler> {
+        if self.probe.active.get() && *self.probe.running.borrow() == name {
+            return Err(Fehler::Session("läuft".to_string()));
+        }
+        self.probe.deleted.borrow_mut().push(name.to_string());
         Ok(())
     }
 

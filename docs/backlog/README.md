@@ -176,6 +176,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1114](B-1114-aufnahme-sichtpruefung-grafik.md) | CLI | Schuld | mittel | offen | RU30 | Aufnahme-Modus im Rust-Spiel mit echter Grafik gegen Go prüfen und Speicher von ShotCanvas messen |
 | [B-1115](B-1115-rust-f12-pixel-und-maus.md) | CLI | Schuld | niedrig | offen | RU30 | Rust-Spiel: F12 zeigt keine Sprites und die Werte-Seite hat keine Maus-Auswahl |
 | [B-1116](B-1116-replay-report-auf-game-measure.md) | CLI | Schuld | niedrig | offen | RU30 | replay/report.rs nutzt Report, FrameStats und FrameLog aus game/measure.rs |
+| [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU30 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
 
 ## Archiv
 

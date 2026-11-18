@@ -198,8 +198,7 @@ fn checked_modules() -> Vec<String> {
 fn import_rule() {
     let pkgs = checked_modules();
     for want in FACHMODULE.iter().chain(&["view"]) {
-        let waiting = super::pending::WAITING.iter().any(|(n, _)| n == want);
-        assert!(waiting || pkgs.iter().any(|p| p == want), "Modul {want} fehlt");
+        assert!(pkgs.iter().any(|p| p == want), "Modul {want} fehlt");
     }
     let mut all = Vec::new();
     for pkg in &pkgs {

@@ -30,7 +30,6 @@ pub mod notice;
 pub mod overlay;
 pub mod packages;
 pub mod parts;
-mod pending;
 mod play;
 #[cfg(test)]
 pub mod play_testutil;
@@ -43,6 +42,8 @@ mod shots_image;
 pub mod shots_run;
 pub mod sim;
 pub mod stack;
+pub mod stress;
+pub mod stressreport;
 #[cfg(test)]
 pub mod testutil;
 pub mod voyage;
@@ -98,16 +99,18 @@ pub use measure_load::MeasureLoad;
 pub use modes::Measure;
 pub use packages::{Libs, packages};
 pub use parts::{Part, Parts, assemble};
-pub use pending::StressRun;
 pub use scene::{Args, Hold, Scene, USAGE, parse_args};
 pub use script::parse_script;
 pub use shots::Shooter;
 pub use sim::Sim;
 pub use stack::{Mode, Stack};
+pub use stress::StarterLink;
+pub use stressreport::{StressReport, StressRun};
 pub use voyage::Voyage;
 
 use devices::Devices;
 use overlay::StatsOverlay;
+use stress::StressEnv;
 
 /// Takte der Simulation je Sekunde.
 pub const TPS: i64 = 30;
@@ -167,6 +170,8 @@ pub struct Game {
     mload: MeasureLoad,
     /// laufender Stresstest, sonst `None` (RU30.5)
     stress: Option<StressRun>,
+    /// Uhr, Bildrate, Berichtsordner und Starter des Stresstests (`stress.rs`)
+    stress_env: StressEnv,
 }
 
 impl Game {
@@ -212,6 +217,7 @@ impl Game {
             meter: None,
             mload: MeasureLoad::default(),
             stress: None,
+            stress_env: StressEnv::default(),
             args: a,
         };
         g.start()?;
