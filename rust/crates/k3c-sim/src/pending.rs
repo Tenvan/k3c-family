@@ -9,10 +9,9 @@ use crate::state::shared::WorldValues;
 use crate::state::{Enemy, Event, Job, Projectile, Site, Troop, World};
 use k3c_data::economy::Gatherable;
 
-/// Go: `bossAbility` (boss.go): Boss-Fähigkeit des Gegners `ei`.
-pub fn boss_ability(_w: &mut World, _ei: usize, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU15: boss_ability")
-}
+// Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
+pub use crate::boss::abilities::hit_splash;
+pub use crate::boss::{boss_ability, boss_defeated, trigger_boss};
 
 /// Go: `takeCrownOrLoot` (crown.go).
 pub fn take_crown_or_loot(_w: &mut World, _ei: usize) {
@@ -77,21 +76,6 @@ pub fn full_moon_extra(_w: &World, _plan: &[SpawnOrder]) -> Vec<SpawnOrder> {
 /// Go: `moonDrop` (events_moon.go): Blutmond-Faktor auf den Gold-Drop.
 pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
     unimplemented!("RU19: moon_drop")
-}
-
-/// Go: `triggerBoss` (boss.go).
-pub fn trigger_boss(_w: &mut World, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU15: trigger_boss")
-}
-
-/// Go: `bossDefeated` (boss.go): `e` ist der besiegte Boss.
-pub fn boss_defeated(_w: &mut World, _e: &Enemy, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU15: boss_defeated")
-}
-
-/// Go: `hitSplash` (boss_abilities.go): Splitter-Wurf des Geschosses `p` bei `x`.
-pub fn hit_splash(_w: &mut World, _p: &Projectile, _x: f64) {
-    unimplemented!("RU15: hit_splash")
 }
 
 /// Go: `addPool` (world_cycle.go): Aggressions-Pool um `amount` Prozent.
@@ -232,4 +216,15 @@ pub fn leave_squad(_w: &mut World, _ti: usize) {
 /// Go: `weaponsInFlight` (building_barracks.go): Waffen, die andere Bürger gerade holen.
 pub fn weapons_in_flight(_w: &World, _ti: usize) -> i64 {
     unimplemented!("RU18: weapons_in_flight")
+}
+
+/// Go: `addStockCapped` (island_storage.go): legt höchstens bis zur Kapazität der Insel ab und liefert die aufgenommene
+/// Menge; `None`: kein Baumaterial (Go: `ok` false).
+pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &str, _amount: i64) -> Option<i64> {
+    unimplemented!("RU10: add_stock_capped")
+}
+
+/// Go: `addPoolPoints` (monarch.go): Punkte in den Fund-Pool der Insel (ohne Insel: Zähler der Welt).
+pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
+    unimplemented!("RU18: add_pool_points")
 }

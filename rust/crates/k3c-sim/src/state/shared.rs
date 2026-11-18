@@ -3,6 +3,7 @@
 
 use std::collections::BTreeMap;
 
+use k3c_data::bosses::BossesFile;
 use k3c_data::buildings::BuildingData;
 use k3c_data::economy::EconomyData;
 use k3c_data::enemies::EnemyData;
@@ -187,4 +188,6 @@ pub struct WorldValues {
     pub goals: Goals,
     pub events: Vec<NightEvent>,
     pub skills: SkillTable,
+    /// Go: die Paket-Variablen `bosses` und `endBosses` (boss_data.go); RU14 füllt sie beim Aufbau des Wertesatzes.
+    pub bosses: BossesFile,
 }
