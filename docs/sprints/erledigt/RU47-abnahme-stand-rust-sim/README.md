@@ -1,6 +1,6 @@
 # RU47 · SIM · Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -68,7 +68,7 @@ keine
 | RU47.1 | `RU47.1-cargo-stand-und-marken.md` | Umsetzung | autonom | fertig |
 | RU47.2 | `RU47.2-go-seite-sim-tests.md` | Umsetzung | autonom | fertig |
 | RU47.3 | `RU47.3-notizen-in-abnahme-tickets.md` | Umsetzung | autonom | fertig |
-| RU47.4 | `RU47.4-review.md` | Review | autonom | offen |
+| RU47.4 | `RU47.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -76,6 +76,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 bis AC-05 erfüllt, Nachweis in den Ergebnissen RU47.1 bis RU47.4. Rust-Workspace 1381 grün / 326 ignoriert / 4 rot (nur `still*`), `go:test` grün und `testdata/` unverändert, 39 grüne ignorierte Tests als Kandidaten zum Freischalten, Notizen in B-1081, B-1084, B-1086, B-1093 geschrieben (Status `offen`). `task check` grün (1953). Vorschläge und Befunde für den Hauptrechner im Ergebnis RU47.1 und RU47.4.
