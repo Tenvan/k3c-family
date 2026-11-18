@@ -447,3 +447,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | `erledigt/RU39-ruckler-messung-rust-gegen-go/` |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | `erledigt/RU9-menues-teil-1/` |
 | RU11 | Sim: Einheiten und Gegner | `erledigt/RU11-sim-einheiten-gegner/` |
+| RU42 | Leitplanken für Leistung und Stabilität | `erledigt/RU42-leitplanken-leistung-stabilitaet/` |
