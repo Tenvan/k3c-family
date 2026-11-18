@@ -32,8 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU6 | SIM | RSU | Level-Generator in Rust, Level-Golden bitgleich | – | `aktiv/RU6-level-generator-rust/` |
-| RU11 | SIM | RSU | Sim: Einheiten und Gegner | – | `aktiv/RU11-sim-einheiten-gegner/` |
 | RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | `aktiv/RU23-hud-teil-2/` |
 | RU44 | CLI | RSU | Bild-Pfad ohne Allokationen | – | `aktiv/RU44-bild-pfad-ohne-allokationen/` |
 
@@ -57,9 +55,7 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | bereit | `geplant/RU10-sim-insel/` |
 | RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | bereit | `geplant/RU14-sim-welt-stufen-kampagne/` |
-| RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | bereit | `geplant/RU15-sim-kampf-bosse/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
 | RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | bereit | `geplant/RU21-spielstaende-und-raum-teil-1/` |
@@ -447,3 +443,8 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | `erledigt/RU20-hud-teil-1/` |
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | `erledigt/RU39-ruckler-messung-rust-gegen-go/` |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | `erledigt/RU9-menues-teil-1/` |
+| RU11 | Sim: Einheiten und Gegner | `erledigt/RU11-sim-einheiten-gegner/` |
+| RU42 | Leitplanken für Leistung und Stabilität | `erledigt/RU42-leitplanken-leistung-stabilitaet/` |
+| RU6 | Level-Generator in Rust, Level-Golden bitgleich | `erledigt/RU6-level-generator-rust/` |
+| RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | `erledigt/RU10-sim-insel/` |
+| RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |

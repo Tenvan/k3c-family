@@ -72,7 +72,7 @@ fn purse_groesse_und_obergrenze_mit_skills() {
         set_world(&mut f, &w);
         h.listen(&f);
         let st = &h.seats[0];
-        let want = k3c_sim::state::purse::purse_max_of(&w, &w.players[0]);
+        let want = k3c_sim::state::purse::purse_max_of(&w, &w.players[0], None);
         assert_eq!(st.purse, i as i64 + 2, "{id}: Größe {}", st.purse);
         assert!(
             st.gold_s.ends_with(&format!("/{want}")),

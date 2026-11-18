@@ -3,6 +3,9 @@ name: second-worker
 description: Ablauf für den zweiten Rechner (Second Worker) in K3C – arbeitet autonom nur Sessions mit „Lane: zweit“ ab, pusht nach jeder Session, mergt per Review-Session, legt keine Tickets an. Use ONLY when Ralf ausdrücklich sagt, dass dieser Agent der Second Worker ist („du bist der Second Worker“, „Second Worker starten“, „/second-worker“). Nie von selbst annehmen; ohne diese Aussage gilt der Hauptrechner-Ablauf (k3c-session).
 ---
 
+> Schreiben nur im Repo: kein Temp, `%TEMP%`, `/tmp` oder Scratchpad; temporäre Dateien und Worktrees in `.work/`, nach Gebrauch löschen (CLAUDE.md).
+
+
 # Second Worker
 
 Regelquelle: `docs/arbeitsweise.md` › Second Worker. Für den Ablauf je Session gilt `k3c-session`, mit den Abweichungen unten.
