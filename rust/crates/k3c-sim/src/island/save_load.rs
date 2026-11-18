@@ -17,7 +17,7 @@ use super::save_v5::restore_progress;
 use super::save_v8::island_in;
 use super::{Island, WorldDef};
 use crate::state::Fehler;
-use crate::state::pending::{add_player_at, stage_by_depth, targets, values_of};
+use crate::state::pending::{add_player_at, values_of};
 use crate::state::save_apply::apply_hub;
 
 /// Go: `FromIslandSave` baut die Insel aus einem Spielstand der Standard-Welt (`from_island_save_in`).
@@ -83,7 +83,7 @@ pub fn from_island_save_in(
     restore_progress(&mut isl, s, t.data);
     isl.completed = s.completed.clone();
     isl.chosen = s.chosen.clone();
-    if !s.chosen.is_empty() && !targets(&isl).iter().any(|x| x.id == s.chosen) {
+    if !s.chosen.is_empty() && !isl.targets().iter().any(|x| x.id == s.chosen) {
         return Err(fail(format!(
             "spielstand: gewähltes Ziel {:?} ist kein Ziel der Insel {:?}",
             s.chosen, current.id
@@ -98,7 +98,8 @@ fn place_players(isl: &mut Island, s: &IslandSave) -> Result<(), Fehler> {
     // Die Stelle des Monarchen ist flüchtig wie Gegner und Münzen am Boden (B-814, gewollt): `IslandPlayerSave` trägt keine
     // Position, `add_player_at` stellt den Monarchen wie beim Beitritt an die Burg seiner Stufe (hub_x ± 3).
     for p in &s.players {
-        let si = stage_by_depth(isl, p.depth)
+        let si = isl
+            .stage_by_depth(p.depth)
             .ok_or_else(|| Fehler::Spielstand(format!("spielstand: Spieler {} ungültig", p.index)))?;
         let pi = add_player_at(&mut isl.stages[si], p.index);
         let q = &mut isl.stages[si].players[pi];

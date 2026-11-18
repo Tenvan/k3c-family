@@ -19,7 +19,6 @@ use super::{
     ISLAND_SAVE_VERSION, IslandDef, IslandSave, SaveTables, WorldDef, add_island_player, default_options,
     parse_island_save,
 };
-use crate::state::pending::island_players;
 use crate::state::save::parse_save;
 use crate::state::{Fehler, PlayerCommand, SkillTable, WorldValues};
 
@@ -308,7 +307,7 @@ fn island_save_round_trip() {
     let loaded = load_island(&data, &first);
     let second = save_json(&loaded, "2026-10-02T10:00:00Z");
     assert_eq!(first, second, "Speichern, Laden, Speichern ergibt etwas anderes");
-    let (want, got) = (island_players(&isl), island_players(&loaded));
+    let (want, got) = (isl.players(), loaded.players());
     for (p, q) in want.iter().zip(&got) {
         assert!(
             q.index == p.index && q.gold == p.gold,
@@ -353,11 +352,11 @@ fn version1_players_move_into_stored_stage() {
     let raw = fixture(1);
     let isl = load_island(&data, &raw);
     let old = parse_save(&raw, &data.biomes, &WorldValues::default()).expect("Version 1");
-    let got = island_players(&isl);
+    let got = isl.players();
     assert_eq!(got.len(), old.players.len());
     for (q, o) in got.iter().zip(&old.players) {
         assert_eq!(q.gold, o.gold, "Gold der Spieler stimmt nicht");
-        let si = crate::state::pending::stage_of(&isl, q.index).expect("Stufe des Spielers");
+        let si = isl.stage_of(q.index).expect("Stufe des Spielers");
         assert_eq!(
             isl.stages[si].biome.depth, old.depth,
             "Spieler steht in der gespeicherten Tiefe"

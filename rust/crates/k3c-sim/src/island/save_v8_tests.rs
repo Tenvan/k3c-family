@@ -124,14 +124,49 @@ fn spielstand_welt_oder_insel_unbekannt_laden() {
 }
 
 /// Go: `TestSpielstandV8WeltUndInsel` (AC-03): Version 8 speichert `world` und `islandId`, nicht mehr den Index `island`;
-/// Speichern, Laden, Speichern ist gleich (braucht `LoadWorld`, `complete_ship`, `NextIsland`: RU10.4 und RU10.5).
+/// Speichern, Laden, Speichern ist gleich (braucht `LoadWorld` RU10.5, `complete_ship`, `create_world_with` RU14).
 #[test]
 #[ignore = "wartet auf RU14"]
 fn spielstand_v8_welt_und_insel() {
     let data = test_data();
     let w = nordmeer_loaded(&data);
-    assert_eq!(w.islands[1].id, "eisinsel");
-    unimplemented!("RU10.4: complete_ship, next_island")
+    let cur = super::switch_testutil::nordmeer_island(&data, &w, 2);
+    let next = super::next_island(&data, &cur, &w.islands[1]).expect("nächste Insel");
+    let s = next.to_save("2026-10-19T20:00:00Z").expect("Spielstand");
+    let first = serde_json::to_string(&s).expect("Spielstand als JSON");
+    assert!(
+        s.version == ISLAND_SAVE_VERSION
+            && s.world == "nordmeer"
+            && s.island_id == "eisinsel"
+            && first.contains(r#""world":"nordmeer","islandId":"eisinsel""#)
+            && !first.contains(r#""island":"#),
+        "Version {}, Welt {:?}, Insel {:?}: {first}",
+        s.version,
+        s.world,
+        s.island_id
+    );
+    let defaults = crate::state::pending::values_of(&w).expect("Wertesatz");
+    let t = super::SaveTables {
+        data: &data,
+        defaults: &defaults,
+        standard_world: &w,
+    };
+    let parsed = super::parse_island_save(&first, &t).expect("Spielstand lesen");
+    let got = super::from_island_save_in(&t, &parsed, ISLAND_SPEED, &w).expect("Insel laden");
+    assert!(
+        got.world_id() == "nordmeer"
+            && got.island_id() == "eisinsel"
+            && got.number == 1
+            && got.scaling == w.islands[1].depth_scaling
+            && got.is_last(),
+        "Welt {:?}, Insel {:?} ({}), letzte {}",
+        got.world_id(),
+        got.island_id(),
+        got.number,
+        got.is_last()
+    );
+    let second = serde_json::to_string(&got.to_save("2026-10-19T20:00:00Z").expect("Spielstand")).expect("JSON");
+    assert_eq!(first, second, "Speichern, Laden, Speichern ergibt etwas anderes");
 }
 
 /// Der Händler im Stand: `saved_merchant` ohne Händler ist `None`; mit Händler in einer Stufe kommt er heraus.

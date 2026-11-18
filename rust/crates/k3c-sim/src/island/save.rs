@@ -17,7 +17,7 @@ use super::options::IslandOptions;
 use super::save_v5::saved_merchant;
 use super::{Island, WorldDef};
 use crate::state::omit::{is_false, is_zero_i64};
-use crate::state::pending::{WorldOptions, create_world_with, island_players, stage_of};
+use crate::state::pending::{WorldOptions, create_world_with};
 use crate::state::save::{HubSave, SaveGame, hub_save};
 use crate::state::{Fehler, WorldValues};
 
@@ -168,8 +168,10 @@ impl Island {
             let base = create_world_with(&w.biome, &self.seed, &opts).map_err(Fehler::Spielstand)?;
             s.stages.push(hub_save(w, &base));
         }
-        for p in island_players(self) {
-            let si = stage_of(self, p.index).ok_or_else(|| fail("insel: Spieler ohne Stufe"))?;
+        for p in self.players() {
+            let si = self
+                .stage_of(p.index)
+                .ok_or_else(|| fail("insel: Spieler ohne Stufe"))?;
             s.players.push(IslandPlayerSave {
                 index: p.index,
                 gold: p.gold,

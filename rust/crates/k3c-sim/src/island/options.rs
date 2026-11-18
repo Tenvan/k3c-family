@@ -1,5 +1,5 @@
 //! Raum-Optionen der Insel (Port von `engine/sim/island_options.go`, B-101): Schwierigkeitsgrad, Ziel und Niederlage-Modus.
-//! Das Ziel prüft `island_victory` (RU10.4); der Niederlage-Modus ist hier nur ein Wert, seine Wirkung steht in `defeat.rs`.
+//! Das Ziel prüft `victory.rs` (`check_victory`); der Niederlage-Modus ist hier nur ein Wert, seine Wirkung steht in `defeat.rs`.
 //! Die Regeln gelten nur für Inseln.
 //!
 //! Gos Paket-Variable `difficulty` (`loadDifficulty`) gibt es nicht: Die Tabelle kommt als `&DifficultyFile`.

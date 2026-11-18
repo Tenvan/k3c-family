@@ -12,11 +12,10 @@ use k3c_data::difficulty::DifficultyFile;
 use k3c_data::hub::Stock;
 use k3c_data::waves::WavesDataDepthScaling;
 
-use crate::state::pending::{
-    DevFlags, EndbossFight, add_player_at, check_victory, mirror_state, mirror_switch, step, step_island_switch,
-    step_island_travel, values,
-};
-use crate::state::{Event, IslandRef, PlayerCommand, World};
+use std::sync::Arc;
+
+use crate::state::pending::{DevFlags, EndbossFight, add_player_at, mirror_state, mirror_switch, step, values};
+use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 
 pub mod create;
 pub mod data;
@@ -31,13 +30,18 @@ pub mod save_v5;
 pub mod save_v8;
 pub mod sizes;
 pub mod storage;
+pub mod switch;
+pub mod targets;
 pub mod travel;
+pub mod victory;
 pub mod worlds;
 
 #[cfg(test)]
 mod carry_tests;
 #[cfg(test)]
 mod defeat_tests;
+#[cfg(test)]
+mod depths_tests;
 #[cfg(test)]
 mod nature_tests;
 #[cfg(test)]
@@ -61,9 +65,21 @@ mod start_tests;
 #[cfg(test)]
 mod storage_tests;
 #[cfg(test)]
+mod switch_etappe_tests;
+#[cfg(test)]
+mod switch_tests;
+#[cfg(test)]
+pub(crate) mod switch_testutil;
+#[cfg(test)]
+mod switch_world_tests;
+#[cfg(test)]
 mod tests;
 #[cfg(test)]
 pub(crate) mod testutil;
+#[cfg(test)]
+mod travel_tests;
+#[cfg(test)]
+mod victory_tests;
 
 pub use create::{CreateOptions, IslandBuild, create_island, create_island_at, create_island_in};
 pub use data::IslandDef;
@@ -71,7 +87,10 @@ pub use options::{IslandOptions, default_options, default_options_for, set_grade
 pub use save::{ISLAND_SAVE_VERSION, IslandPlayerSave, IslandSave, MerchantSave, SaveTables};
 pub use save_load::{from_island_save, from_island_save_in, saved_create_options};
 pub use save_parse::{parse_island_save, validate_island_save};
-pub use travel::IslandTravel;
+pub use switch::{next_island, step_island_switch};
+pub use targets::choose_island;
+pub use travel::{IslandTravel, insert_player, remove_player, step_island_travel};
+pub use victory::check_victory;
 pub use worlds::WorldDef;
 
 /// Go: `Island`, eine Insel mit ihren Stufen. Ohne JSON: der Spielstand ist `IslandSave` (`save.rs`).
@@ -144,20 +163,22 @@ impl Island {
         &self.island_id
     }
 
-    /// Anzahl aller Spieler der Insel (Go: `len(isl.Players())`; die Liste selbst kommt mit RU10.4).
+    /// Anzahl aller Spieler der Insel (Go: `len(isl.Players())`, die Liste ist `players()`).
     pub fn player_count(&self) -> i64 {
         self.stages.iter().map(|w| w.players.len() as i64).sum()
     }
 
+    /// Go: `values`, der Wertesatz der Insel, gleich dem ihrer ersten Stufe (ohne Stufen der Standard-Wertesatz).
+    pub(crate) fn values(&self) -> Arc<WorldValues> {
+        match self.stages.first() {
+            Some(w) => w.vals.clone().unwrap_or_else(|| values(w)),
+            None => Arc::default(),
+        }
+    }
+
     /// Go: `isl.values().Waves.PerExtraPlayer`: Zuschlag der Wellengröße je weiteren Spieler aus dem Wertesatz der Insel.
     pub(crate) fn per_extra_player(&self) -> f64 {
-        match self.stages.first() {
-            Some(w) => match &w.vals {
-                Some(v) => v.waves.per_extra_player,
-                None => values(w).waves.per_extra_player,
-            },
-            None => 0.0,
-        }
+        self.values().waves.per_extra_player
     }
 
     /// Gebaute Lager aller Stufen außer `i` (Lager-Maximum der Insel, `storage.rs`).

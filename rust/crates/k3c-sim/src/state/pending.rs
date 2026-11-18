@@ -17,7 +17,7 @@ use k3c_level::types::{NatureValues, PlannedChunk, WallSite};
 
 use super::island_ref::IslandRef;
 use super::save::HubSave;
-use super::shared::{SwitchTarget, WorldValues};
+use super::shared::WorldValues;
 use super::{Player, PlayerCommand, Site, Troop, World};
 use crate::island::{Island, IslandDef, WorldDef};
 
@@ -256,44 +256,45 @@ pub fn lair_options(_def: &IslandDef, _depth: i64, _data: &Data) -> (Option<bool
     unimplemented!("RU10.5: lair_options")
 }
 
-/// Go: `stepIslandTravel` (island_travel.go).
-pub fn step_island_travel(_isl: &mut Island, _dt: f64) {
-    unimplemented!("RU10.4: step_island_travel")
-}
-
-/// Go: `stepIslandSwitch` (island_switch.go).
-pub fn step_island_switch(_isl: &mut Island, _dt: f64) {
-    unimplemented!("RU10.4: step_island_switch")
-}
-
 /// Go: `mirrorSwitch` (world_state_mirror.go): spiegelt den Wechselpunkt der Insel in jede Stufe.
 pub fn mirror_switch(_isl: &mut Island) {
-    unimplemented!("RU10.4: mirror_switch")
+    unimplemented!("RU14: mirror_switch")
 }
 
-/// Go: `checkVictory` (island_victory.go).
-pub fn check_victory(_isl: &mut Island) {
-    unimplemented!("RU10.4: check_victory")
+/// Go: `travelPoint` (world_travel.go): ein Reisepunkt einer Stufe (`via`: exit, stairsUp, stairsDown).
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct TravelPoint {
+    pub x: f64,
+    pub to_depth: i64,
+    pub via: String,
 }
 
-// RU10.2: Platzhalter für Funktionen aus `island_travel/targets.go` (RU10.4), die `to_save` und `from_island_save_in` rufen.
-
-/// Go: `Island.Players` (island_travel.go): alle Spieler der Insel nach Index sortiert.
-pub fn island_players(_isl: &Island) -> Vec<&Player> {
-    unimplemented!("RU10.4: island_players")
+/// Go: `travelPoints` (world_travel.go): die Reisepunkte der Stufe (Tiefen-Eingang nach unten, gebaute Treppen).
+pub fn travel_points(_w: &World) -> Vec<TravelPoint> {
+    unimplemented!("RU14: travel_points")
 }
 
-/// Go: `Island.StageOf` (island_travel.go): Index der Stufe des Spielers mit dem Index `index`; `None` statt Gos -1.
-pub fn stage_of(_isl: &Island, _index: i64) -> Option<usize> {
-    unimplemented!("RU10.4: stage_of")
+/// Go: `Island.harbor` (ship.go): Stufe mit dem Hafen und der Platz des Schiffs darin (Indizes); `None` ohne Hafen.
+pub fn harbor(_isl: &Island) -> Option<(usize, usize)> {
+    unimplemented!("RU14: harbor")
 }
 
-/// Go: `stageByDepth` (island_travel.go): Index der Stufe mit dieser Tiefe; `None` statt Gos -1.
-pub fn stage_by_depth(_isl: &Island, _depth: i64) -> Option<usize> {
-    unimplemented!("RU10.4: stage_by_depth")
+/// Go: `shipComplete` (ship.go): Alle Abschnitte des Schiffs sind gebaut.
+pub fn ship_complete(_w: &World, _s: &Site) -> bool {
+    unimplemented!("RU14: ship_complete")
 }
 
-/// Go: `Island.Targets` (island_targets.go): die Ziele am Hafen.
-pub fn targets(_isl: &Island) -> Vec<SwitchTarget> {
-    unimplemented!("RU10.4: targets")
+/// Go: `refundPending` (economy.go): wirft gezahltes, nicht vollendetes Gold des Spielers `pi` zurück auf den Boden.
+pub fn refund_pending(_w: &mut World, _pi: usize) {
+    unimplemented!("RU18: refund_pending")
+}
+
+/// Go: `toHub` (economy.go): stellt den Monarchen `pi` neben die Burg (Burgfall, Stufenwechsel).
+pub fn to_hub(_w: &mut World, _pi: usize) {
+    unimplemented!("RU18: to_hub")
+}
+
+/// Go: `returnBanner` (combat_squad.go): stellt das Banner des Monarchen `pi` am Tor wieder auf; sein Trupp kehrt zurück.
+pub fn return_banner(_w: &mut World, _pi: usize) {
+    unimplemented!("RU15: return_banner")
 }
