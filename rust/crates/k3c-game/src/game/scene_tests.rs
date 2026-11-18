@@ -19,7 +19,6 @@ fn parse_args_defaults() {
 
 /// Zweiter Teil von `TestParseArgsDefaults`: die Aufnahme lädt die Standard-Folge (`parse_script`).
 #[test]
-#[ignore = "wartet auf RU30"]
 fn parse_args_defaults_aufnahme() {
     let a = parse_args(&argv(&["--shots", "out"]), "s").unwrap();
     let ok = a.scene.seed == "k3c" && a.count == 8 && a.every == 3 && a.scene.players == 2;
@@ -27,7 +26,6 @@ fn parse_args_defaults_aufnahme() {
 }
 
 #[test]
-#[ignore = "wartet auf RU30"]
 fn parse_args_scene() {
     let v = [
         "--shots",
@@ -151,7 +149,6 @@ fn parse_args_rejects() {
 
 /// Die Fälle mit `--input` brauchen `parse_script` (RU30.2).
 #[test]
-#[ignore = "wartet auf RU30"]
 fn parse_args_rejects_input() {
     let bad: &[&[&str]] = &[
         &["--players", "1", "--input", "1@0=R"],

@@ -14,8 +14,8 @@ impl Game {
         self.run_pending_load(c);
         if let Some(f) = self.fault.as_ref() {
             f.draw(c);
-        } else if self.voy.is_some() {
-            self.draw_voyage(c);
+        } else if self.voy.on {
+            self.draw_voyage(c, alpha);
         } else if self.loading {
             self.draw_loading(c);
         } else {

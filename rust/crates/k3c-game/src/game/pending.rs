@@ -1,18 +1,11 @@
-//! Platzhalter für Teile, die spätere Sprints liefern (Leitfaden § 7). RU30.2 liefert `script.go` samt `ParseScript`,
-//! tauscht die `pub use`-Zeile in `mod.rs` aus; Ist alles geliefert, wird diese Datei gelöscht. RU22 prüft, dass keiner übrig ist. Die Platzhalter der
-//! Schleife (`Game`, RU26.4) stehen am Ende der Datei.
+//! Platzhalter für Teile, die spätere Sprints liefern (Leitfaden § 7). RU30.2 hat `script`, `voyage`, `shots` und
+//! `assets` geliefert; Ist alles geliefert (RU30.3 bis RU30.5), wird diese Datei gelöscht. RU22 prüft, dass keiner übrig
+//! ist. Die Platzhalter der Schleife (`Game`, RU26.4) stehen am Ende der Datei.
 #![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU30
 #![allow(dead_code)] // Platzhalter, die erst der liefernde Sprint benutzt
 
-use super::scene::Hold;
-use super::{Args, Game, Measure, Scene};
-use crate::view::input::{Input, Source};
+use super::{Game, Measure};
 use k3c_platform::Canvas;
-
-/// Go: `ParseScript` (`script.go`, RU30.2): liest die feste Eingabe-Folge „p@t=…,…“.
-pub fn parse_script(_s: &str) -> Result<Vec<Hold>, String> {
-    unimplemented!("RU30: parse_script")
-}
 
 /// Fachmodule, die `packages()` noch nicht liefern kann: Name und liefernder Sprint. `parts_tests` zählt sie als
 /// „wartet auf RUnn“ und prüft, dass der Platzhalter verschwindet, sobald der Modulordner existiert.
@@ -22,27 +15,7 @@ pub const WAITING: &[(&str, &str)] = &[];
 // ---- Platzhalter der Schleife (RU26.4): Teile, die RU30 liefert ----------------------------------------
 //
 // Platzhalter mit `unimplemented!` sind nur über Zustand erreichbar, den `Game::new` nie setzt (`Option` bleibt
-// `None`, Schalter aus). Platzhalter ohne Wirkung (`dev_values`, `embark`, `arrive`) laufen in jedem Takt und tun bis zu ihrem Sprint nichts.
-
-/// Go: `voyage` (`voyage.go`, RU30.2): Schiffsfahrt beim Inselwechsel; `Some` nur während der Fahrt.
-pub struct Voyage;
-
-/// Go: `shooter` (`shots.go`, RU30.2): Aufnahme-Modus (`--shots`).
-pub struct Shooter;
-
-impl Shooter {
-    pub fn new(_a: &Args) -> Result<Shooter, String> {
-        unimplemented!("RU30.2: Shooter::new")
-    }
-
-    pub fn update(&mut self, _g: &mut Game) {
-        unimplemented!("RU30.2: Shooter::update")
-    }
-
-    pub fn capture(&mut self, _c: &mut dyn Canvas) {
-        unimplemented!("RU30.2: Shooter::capture")
-    }
-}
+// `None`, Schalter aus). Platzhalter ohne Wirkung (`dev_values`) läuft in jedem Takt und tun bis zu ihrem Sprint nichts.
 
 /// Go: `Fault` (`fault.go`, RU30.3): Fehler im Fenster (fehlende Grafik).
 pub struct Fault;
@@ -87,22 +60,7 @@ pub trait DevSession {
     fn halt(&mut self, on: bool);
 }
 
-/// Go: `newScripted` (`script.go`, RU30.2): Quelle mit der festen Eingabe-Folge der Szene.
-pub fn scripted(_s: &Scene) -> Box<dyn Source> {
-    unimplemented!("RU30.2: scripted")
-}
-
 impl Game {
-    /// Go: `sail` (`voyage.go`, RU30.2); erreicht nur mit `voy`.
-    pub(super) fn sail(&mut self, _input: &Input) {
-        unimplemented!("RU30.2: sail")
-    }
-
-    /// Go: `drawVoyage` (`voyage.go`, RU30.2); erreicht nur mit `voy`.
-    pub(super) fn draw_voyage(&mut self, _c: &mut dyn Canvas) {
-        unimplemented!("RU30.2: draw_voyage")
-    }
-
     /// Go: `devShot` (`devshot.go`, RU30.3); erreicht nur mit `shot_next`.
     pub(super) fn dev_shot(&mut self, _c: &mut dyn Canvas) {
         unimplemented!("RU30.3: dev_shot")
@@ -135,10 +93,4 @@ impl Game {
 
     /// Go: `devValues` (`devvalues.go`, RU30.3). Bis dahin ohne Wirkung.
     pub(super) fn dev_values(&mut self) {}
-
-    /// Go: `embark` (`voyage.go`, RU30.2): beginnt die Schiffsfahrt beim Inselwechsel. Bis dahin ohne Wirkung.
-    pub(super) fn embark(&mut self) {}
-
-    /// Go: `arrive` (`voyage.go`, RU30.2). Bis dahin ohne Wirkung.
-    pub(super) fn arrive(&mut self) {}
 }

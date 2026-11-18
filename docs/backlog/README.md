@@ -173,6 +173,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1111](B-1111-dev-session-rolle-im-view.md) | CLI | Schuld | mittel | offen | RU30 | view::Session liefert keine Entwickler-Rolle (DevSession), Cheats im Rust-Spiel wirkungslos |
 | [B-1112](B-1112-abnahme-laeufe-ru29.md) | CLI | Schuld | niedrig | offen | RU29 | Abnahme-Läufe RU29 (Race, Gen) und Prüfliste für Ralf, Lane zweit |
 | [B-1113](B-1113-rust-welt-bibliothek-je-stufe.md) | CLI | Schuld | mittel | offen | RU30 | Rust: Welt-Grafik wird beim Start für alle Biome geladen, nicht je Stufe |
+| [B-1114](B-1114-aufnahme-sichtpruefung-grafik.md) | CLI | Schuld | mittel | offen | RU30 | Aufnahme-Modus im Rust-Spiel mit echter Grafik gegen Go prüfen und Speicher von ShotCanvas messen |
 
 ## Archiv
 

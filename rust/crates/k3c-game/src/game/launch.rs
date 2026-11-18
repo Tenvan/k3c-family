@@ -29,16 +29,15 @@ const HINT: &str = "Erst `task gen:paper` ausführen (rendert die Grafik nach pu
 /// Schlüssel des einen Levels, unter dem alle Sheets liegen.
 const LEVEL: &str = "spiel";
 
-/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Schalter, deren Teile erst RU30
-/// liefert (Aufnahme, Messmodus, Eingabe-Folge, Dev-Schalter, Stresstest), lehnt es mit einer Meldung ab, statt im Spiel zu
-/// scheitern.
+/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Schalter, deren Teile erst RU30.3
+/// bis RU30.5 liefern (Messmodus, Dev-Schalter), lehnt es mit einer Meldung ab, statt im Spiel zu scheitern.
 pub fn parse(rest: &[String]) -> Result<Args, String> {
-    const MISSING: [&str; 8] = ["shots", "measure", "input", "assets", "river", "stats", "flow", "stall"];
+    const MISSING: [&str; 3] = ["measure", "river", "stats"];
     for a in rest {
         let name = a.trim_start_matches('-').split('=').next().unwrap_or("");
         if a.starts_with('-') && MISSING.contains(&name) {
             return Err(format!(
-                "Schalter --{name} ist im Rust-Spiel noch nicht verfügbar (RU30)"
+                "Schalter --{name} ist im Rust-Spiel noch nicht verfügbar (RU30.3 bis RU30.5)"
             ));
         }
     }
@@ -48,6 +47,12 @@ pub fn parse(rest: &[String]) -> Result<Args, String> {
 /// Startet das Spiel im Fenster und läuft bis zum Ende; die Meldung eines Fehlers vor dem Spiel oder eines Panics im
 /// Takt kommt als `Err` zurück (nach dem Fenster).
 pub fn run(args: &Args) -> Result<(), String> {
+    if args.assets {
+        return print_assets(); // --assets: ohne Fenster und ohne Grafik
+    }
+    if !args.shots.is_empty() {
+        return super::shots_run::run(args); // --shots: Bilder gegen den Software-Rasterer, ohne Fenster
+    }
     let mut app = Launch::new(args);
     let size = (args.w > 0 && args.h > 0).then_some((args.w as u32, args.h as u32));
     let cfg = WindowConfig {
@@ -57,6 +62,15 @@ pub fn run(args: &Args) -> Result<(), String> {
     };
     run_window(&mut app, cfg)?;
     app.fault.take().map_or(Ok(()), Err)
+}
+
+/// Gibt die Grafik-Ordner aller Level aus (`--assets`, je Zeile `gruppe/id` unter `public/grafik`), Go: `printAssets`.
+fn print_assets() -> Result<(), String> {
+    let parts = assemble(packages(&Libs::default(), None))?;
+    for d in super::assets::asset_dirs(&parts.assets)? {
+        println!("{d}");
+    }
+    Ok(())
 }
 
 /// Baut die Schleife aus Sitzung, Grafik und Schaltern; `libs` trägt die Grafik (`Libs::default()` ohne).
@@ -244,7 +258,7 @@ fn levels(assets: Vec<String>) -> Levels {
 
 /// Lädt die Grafik auf `c`: Welt-Bibliothek ohne Rigs, geteilte Bibliothek mit Rigs und den Illustrationen des Menüs
 /// (fehlende Menü-Bilder lässt das Menü weg, `usable`).
-fn load_libs(args: &Args, c: &mut dyn Canvas) -> Result<Libs, String> {
+pub(super) fn load_libs(args: &Args, c: &mut dyn Canvas) -> Result<Libs, String> {
     let cfg = art_config(args);
     let fail = |what: &str, e: &dyn std::fmt::Display| format!("{what}: {e}\n{HINT}");
     let for_world = world_assets()?;

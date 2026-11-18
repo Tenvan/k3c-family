@@ -25,7 +25,7 @@ impl Game {
         }
         let input = self.poll(raw);
         self.devs.observe(&input, &self.frame.seats, &mut self.cues);
-        if self.voy.is_some() {
+        if self.voy.on {
             self.sail(&input); // Schiffsfahrt: keine Spiel-Eingabe, kein Takt der Simulation
         } else {
             self.tick(&input);
@@ -66,6 +66,7 @@ impl Game {
         self.toggle_window(input);
         self.menu_or_play(input);
         self.blend.capture(&self.frame, &self.frame.cells);
+        self.voy.note(&self.frame);
         self.cells = take(&mut self.frame.cells); // der Puffer überlebt den neuen Frame
         self.frame = self.sim.step();
         if self.stress.is_some() {

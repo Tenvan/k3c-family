@@ -5,6 +5,7 @@
 //! 4 Takte je Bild, `alpha`) ersetzt sie; `deps.go` (Go-Modul-Pins) entfällt.
 
 mod advance;
+pub mod assets;
 pub mod blend;
 pub mod clock;
 pub mod devices;
@@ -27,11 +28,19 @@ mod play;
 #[cfg(test)]
 pub mod play_testutil;
 pub mod scene;
+pub mod script;
 pub mod shared;
+pub mod shots;
+mod shots_canvas;
+mod shots_image;
+pub mod shots_run;
 pub mod sim;
 pub mod stack;
 #[cfg(test)]
 pub mod testutil;
+pub mod voyage;
+#[cfg(test)]
+pub mod voyage_testutil;
 pub mod window;
 
 #[cfg(test)]
@@ -55,6 +64,10 @@ mod pacing_tests;
 mod play_tests;
 
 #[cfg(test)]
+#[path = "story_tests.rs"]
+mod story_tests;
+
+#[cfg(test)]
 #[path = "window_tests.rs"]
 mod window_tests;
 
@@ -74,11 +87,13 @@ pub use levels::{LibLoader, Loader};
 pub use modes::Measure;
 pub use packages::{Libs, packages};
 pub use parts::{Part, Parts, assemble};
-// RU30.2 tauscht `parse_script` gegen `script::parse_script`; danach entfällt `pending.rs`.
-pub use pending::{DevSession, Fault, Meter, Shooter, StressRun, Voyage, parse_script};
+pub use pending::{DevSession, Fault, Meter, StressRun};
 pub use scene::{Args, Hold, Scene, USAGE, parse_args};
+pub use script::parse_script;
+pub use shots::Shooter;
 pub use sim::Sim;
 pub use stack::{Mode, Stack};
+pub use voyage::Voyage;
 
 use devices::Devices;
 use overlay::StatsOverlay;
@@ -128,7 +143,7 @@ pub struct Game {
     /// Fehler im Fenster; gesetzt: die Schleife zeigt nur die Meldung (RU30.3)
     fault: Option<Fault>,
     /// Schiffsfahrt beim Inselwechsel (RU30.2)
-    voy: Option<Voyage>,
+    voy: Voyage,
     /// F12: das nächste Bild nach reports/ schreiben (RU30.3)
     shot_next: bool,
     shots: Option<Shooter>,
@@ -152,7 +167,7 @@ impl Game {
         let mut g = Game {
             parts: p,
             sim: s,
-            scripted: a.script.then(|| pending::scripted(&a.scene)),
+            scripted: a.script.then(|| script::scripted(&a.scene)),
             stack: Stack::new(),
             mode: Mode::Menu,
             window: String::new(),
@@ -172,7 +187,7 @@ impl Game {
             loading: false,
             load: loading::LoadState::default(),
             fault: None,
-            voy: None,
+            voy: Voyage::default(),
             shot_next: false,
             shots: None,
             meter: None,
@@ -260,7 +275,7 @@ impl Game {
             return;
         }
         if let Some(mut sh) = self.shots.take() {
-            sh.update(self);
+            sh.update(self, raw);
             self.shots = Some(sh);
             return;
         }

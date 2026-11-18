@@ -59,6 +59,8 @@ pub struct FakeSim {
     pub probe: Probe,
     seats: Vec<Seat>,
     tick: u64,
+    /// Frames, die `step` der Reihe nach liefert (danach den letzten ohne Ereignisse); leer = der eigene Frame
+    script: Vec<Frame>,
 }
 
 impl FakeSim {
@@ -78,8 +80,16 @@ impl FakeSim {
             probe: probe.clone(),
             seats,
             tick: 0,
+            script: Vec::new(),
         };
         (sim, probe)
+    }
+
+    /// Liefert je Takt den nächsten Frame der Liste (danach den letzten ohne Ereignisse), Uhr und Takt setzt `step`
+    /// (Go: `voySim`).
+    pub fn with_script(mut self, frames: Vec<Frame>) -> FakeSim {
+        self.script = frames;
+        self
     }
 
     fn world(&self) -> World {
@@ -106,6 +116,16 @@ impl Sim for FakeSim {
     fn step(&mut self) -> Frame {
         self.tick += 1;
         self.probe.steps.set(self.tick);
+        if !self.script.is_empty() {
+            let i = usize::try_from(self.tick).unwrap_or(usize::MAX).min(self.script.len()) - 1;
+            let mut f = self.script[i].clone();
+            if self.tick > self.script.len() as u64 {
+                f.events.clear();
+            }
+            f.tick = self.tick;
+            f.clock = self.tick as f64 / 30.0;
+            return f;
+        }
         Frame {
             tick: self.tick,
             clock: self.tick as f64 / 30.0,
