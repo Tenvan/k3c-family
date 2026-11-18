@@ -61,6 +61,8 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Einzige Go-Änderung: die neue Testdatei `engine/sim/rustref_island_test.go` (RU10.5; Referenz-Zustand der Insel aus Go, schreibt nur mit `K3C_RUSTREF=write`).
 
+**Port-Orakel (Entscheidung 012):** Idiomatisches, performantes Rust ist erwünscht; Hinweise „wie Go“ und „Go-Reihenfolge“ in Sprint und Sessions gelten nicht für Rechenreihenfolge, `k3c-det`-Mathematik, lineare Suche und Go-Datenstrukturen. Verbindlich bleiben Reihenfolge der Ereignisse und der rng-Aufrufe, Ganzzahl-Werte und Determinismus innerhalb von Rust; Fließkomma gilt mit Toleranz 1e-4 relativ (`docs/standards/rust-port.md` § 1).
+
 - **Bereich:** `rust/crates/k3c-sim/src/island/**`, `rust/crates/k3c-sim/src/state/pending.rs` (Platzhalter löschen und anlegen), `rust/crates/k3c-sim/src/state/island_ref.rs` (nur Aufbau aus der Insel), `rust/crates/k3c-sim/src/state/omit.rs` (nur neue Hilfen), `rust/crates/k3c-sim/src/lib.rs` (nur `pub mod island;`), `engine/sim/rustref_island_test.go`, `testdata/rust/insel/**`
 - **Abhängig von:** RU6, RU8
 - **Braucht 🧑:** –
