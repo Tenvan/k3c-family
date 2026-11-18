@@ -25,6 +25,8 @@ pub mod layout;
 pub mod lobby;
 pub mod main_screen;
 pub mod options;
+pub mod padtest;
+pub mod padtest_read;
 pub mod pause;
 mod pending;
 pub mod placeholder;
@@ -52,6 +54,8 @@ mod main_screen_tests;
 #[cfg(test)]
 mod options_tests;
 #[cfg(test)]
+mod padtest_tests;
+#[cfg(test)]
 mod paper_tests;
 #[cfg(test)]
 mod pause_tests;
@@ -72,6 +76,7 @@ use std::rc::Rc;
 
 use self::draw::Painter;
 use self::keys::Note;
+use self::padtest_read::{NoPads, PadSource};
 use crate::art::{Font, Library, WorldImages, load_font};
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::Seat;
@@ -100,6 +105,9 @@ pub struct Menus {
     pub usable: Option<Probe>,
     /// meldet, ob das Sheet eines Assets geladen ist (`None`: unbekannt, Bild gilt als da)
     pub has: Option<Probe>,
+
+    /// liefert die Pads für den Tasten-Test (Standard: keine; Go: `readPads`)
+    pub pads: Box<dyn PadSource>,
 }
 
 /// Eine Abfrage nach einem Asset (`usable`, `has`).
@@ -134,6 +142,7 @@ pub fn new_shared(lib: Option<Rc<RefCell<Library>>>, keys: Option<KeyTable>) -> 
         worlds: WorldImages::from_data(),
         usable,
         has,
+        pads: Box::new(NoPads),
     }))
 }
 
@@ -194,6 +203,11 @@ impl MenuPages for MenuSet {
 }
 
 impl Menus {
+    /// Setzt die Quelle der Pads (der Client: `InputPads`, Tests: Schein-Quelle).
+    pub fn set_pad_source(&mut self, p: Box<dyn PadSource>) {
+        self.pads = p;
+    }
+
     /// Übernimmt die Plätze des laufenden Spiels aus der Session (ohne Listen zu halten).
     pub fn sync(&mut self, s: &dyn Session) {
         self.n_seats = 0;
