@@ -9,11 +9,11 @@ use std::rc::Rc;
 
 use k3c_platform::{Canvas, Rect};
 
+use super::backdrop::COL_SHADOW;
 use super::layout::{
     COL_BAD, COL_DIM, COL_LINE, COL_LINE_OFF, COL_PICKED, COL_TEXT, COL_TITLE, Geom, MAT_BLUE, MAT_CLOTH, MAT_GOLD,
     MAT_LINEN, MAT_RED, MAX_ROWS, Material, Rgba, SHADOW_LAYERS, fade, geom_of, text_scale,
 };
-use super::pending::COL_SHADOW;
 use crate::art::{Font, Library};
 use crate::view::cell::Cell;
 
@@ -107,9 +107,14 @@ pub struct Painter {
     pub lib: Option<Rc<RefCell<Library>>>,
 }
 
-/// Der Farbton für die Zeichenfläche: vormultipliziert, `u8` → `f32`.
+/// Der Farbton für die Zeichenfläche: aus vormultiplizierten Bytes (Go `color.RGBA`) die gerade Farbe, denn die
+/// `Canvas` multipliziert selbst vor (wie `fx::paint::tint`).
 pub fn tint(c: Rgba) -> [f32; 4] {
-    c.map(|v| f32::from(v) / 255.0)
+    if c[3] == 0 {
+        return [0.0; 4];
+    }
+    let d = f32::from(c[3]);
+    [f32::from(c[0]) / d, f32::from(c[1]) / d, f32::from(c[2]) / d, d / 255.0]
 }
 
 impl Painter {

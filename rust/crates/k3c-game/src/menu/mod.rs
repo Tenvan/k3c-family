@@ -15,11 +15,19 @@
 //! `Font::draw` aber `&mut self`, und der Painter cachet Bilder. Eine Borrow-Dauer reicht nie über einen Aufruf von
 //! `update` oder einem anderen Screen.
 
+pub mod art;
+pub mod backdrop;
 pub mod draw;
+pub mod hero;
+pub mod keys;
 pub mod layout;
 mod pending;
 pub mod version;
 
+#[cfg(test)]
+mod art_tests;
+#[cfg(test)]
+mod keys_tests;
 #[cfg(test)]
 mod layout_tests;
 #[cfg(test)]
@@ -32,7 +40,7 @@ use std::path::Path;
 use std::rc::Rc;
 
 use self::draw::Painter;
-use self::pending::Note;
+use self::keys::Note;
 use crate::art::{Font, Library, WorldImages, load_font};
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::Seat;

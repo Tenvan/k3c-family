@@ -6,13 +6,16 @@ use std::path::Path;
 
 use serde::Deserialize;
 
+use super::backdrop::{BAND_STEPS, Backdrop, COL_SHADOW};
 use super::draw::style_of;
+use super::layout::SHADOW_LAYERS;
 use super::layout::{
     COL_LINE, MAT_BLUE, MAT_CLOTH, MAT_CORAL, MAT_GOLD, MAT_GREEN, MAT_LINEN, MAT_PURPLE, MAT_RED, Material, Rgba,
     geom_of, rgb,
 };
-use super::pending::{COL_SHADOW, MAIN_COUNT, PAUSE_ROWS};
+use super::pending::{MAIN_COUNT, PAUSE_ROWS};
 use crate::view::cell::{Rectangle, rect};
+use k3c_platform::Filter;
 
 #[derive(Deserialize)]
 struct Stil {
@@ -114,4 +117,48 @@ fn check_cards(win: Rectangle, n: i64) {
             i - 1
         );
     }
+}
+
+/// Der Papier-Hintergrund liegt im Fenster: Bahnen unten, Mond oben rechts ganz sichtbar.
+#[test]
+fn backdrop_in_window() {
+    for win in [rect(0, 0, 1280, 720), rect(0, 0, 1920, 1080)] {
+        let b = Backdrop::of(&geom_of(win));
+        let (wx, wy) = (win.dx() as f64, win.dy() as f64);
+        for bd in &b.bands {
+            for j in 0..BAND_STEPS.len() {
+                let (x, w, y) = b.segment(bd, j);
+                assert!(
+                    !(x < 0.0 || x + w > wx + 1e-9 || y < wy / 3.0 || y > wy),
+                    "{win:?}: Bahn-Abschnitt {j} bei {x}/{y}"
+                );
+            }
+        }
+        assert!(
+            !(b.moon_x + b.moon_r > wx || b.moon_y - b.moon_r < 0.0 || b.moon_x < wx / 2.0),
+            "{win:?}: Mond bei {}/{} r {}",
+            b.moon_x,
+            b.moon_y,
+            b.moon_r
+        );
+    }
+}
+
+/// B-820 AC-01: Der Hintergrund wechselt den Filter je Bild höchstens einmal (erst alle Rechtecke, dann alle Scheiben);
+/// Mond, Schatten und Ausschnitt bleiben Scheiben.
+#[test]
+fn backdrop_switches_filter_at_most_once() {
+    let s = Backdrop::of(&geom_of(rect(0, 0, 1920, 1080))).shapes();
+    let discs = s.iter().filter(|x| x.disc).count();
+    let switches = s.windows(2).filter(|w| w[0].filter() != w[1].filter()).count();
+    assert!(
+        switches <= 1,
+        "Filter wechselt {switches}-mal je Bild, erlaubt ist höchstens einmal"
+    );
+    let want = SHADOW_LAYERS.len() + 2;
+    assert!(
+        discs == want && s[0].filter() == Filter::Nearest,
+        "Scheiben {discs} (erwartet {want}), erste Form mit Filter {:?}",
+        s[0].filter()
+    );
 }
