@@ -1,6 +1,6 @@
 # RU44 · CLI · Bild-Pfad ohne Allokationen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -66,7 +66,7 @@ keine
 | RU44.2 | `RU44.2-takt-zustand-ohne-allokation.md` | Umsetzung | autonom | fertig |
 | RU44.3 | `RU44.3-draw-ohne-allokation.md` | Umsetzung | autonom | fertig |
 | RU44.4 | `RU44.4-fenstergroesse-vsync.md` | Umsetzung | autonom | fertig |
-| RU44.5 | `RU44.5-review-obergrenze.md` | Review | autonom | offen |
+| RU44.5 | `RU44.5-review-obergrenze.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 bis AC-04 geprüft, Nachweis in den Ergebnissen RU44.1–RU44.5. Messung `alloc_je_bild`: Maximum 805 → 782 (step 788 → 782, draw 29 → 19), Mittel 478 → 460,9; Grenze `MAX_ALLOCS_JE_BILD` = 782. Ziel 0 nicht erreicht: Rest in `step` (`World::clone`, braucht k3c-sim) und `draw` (neue Figuren/Texte), mit `PERF`-Marken begründet. `--size`/`--novsync` umgesetzt. `task check` grün, `check:go` Tests grün (`golangci-lint` lokal fehlt). Neue Tickets und Abnahme-Ticket (Gen/Race, Bildrate mit `--novsync`) legt der Hauptrechner an (siehe Ergebnis RU44.5).

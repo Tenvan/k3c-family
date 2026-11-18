@@ -202,7 +202,7 @@ impl App for ReplayApp {
         self.update();
     }
 
-    // PERF(B-1078): bis zu 29 Allokationen je Bild in den Zeichnern
+    // PERF(B-1078): bis zu 19 Allokationen je Bild in den Zeichnern (neue Figur, neuer Text; siehe dort)
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
         self.frames += 1;
         self.last_rects = 0;
