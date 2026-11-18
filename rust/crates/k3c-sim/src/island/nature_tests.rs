@@ -1,6 +1,6 @@
 //! Natur-Werte der Insel (Go: `island_nature_test.go`, B-891): lesen, zusammenlegen und prüfen. `neutralNature` steht in
-//! `testutil.rs`. Go baut die Inseln der Tests mit `parseTestWorld` (strenges Lesen der Welt-Datei, RU10.5); hier ist es
-//! die `IslandDef` von Hand (Insel „a“ mit den Tiefen 0 bis 4, wie `testIsland`), die Prüfung ist dieselbe.
+//! `testutil.rs`. Go baut die Inseln der Tests mit `parseTestWorld` (strenges Lesen der Welt-Datei); hier ist es
+//! (bis auf `insel_natur_abgelehnt_feld`) die `IslandDef` von Hand (Insel „a“ mit den Tiefen 0 bis 4, wie `testIsland`), die Prüfung ist dieselbe.
 
 use std::collections::BTreeMap;
 
@@ -145,11 +145,11 @@ fn with_depth(key: &str, v: NatureValues) -> IslandDef {
     isl
 }
 
-/// Das sechste Go-Argument (`"nature":{"dichte":{}}`, unbekanntes Feld) ist strenges JSON-Lesen: kommt mit `parse_world`.
+/// Das sechste Go-Argument (`"nature":{"dichte":{}}`, unbekanntes Feld) ist strenges JSON-Lesen der Welt-Datei.
 #[test]
-#[ignore = "wartet auf RU10.5"]
 fn insel_natur_abgelehnt_feld() {
-    panic!("RU10.5: parse_world (unbekanntes Feld dichte)");
+    let err = parse_test_world(r#","nature":{"dichte":{}}"#).expect_err("unbekanntes Feld");
+    assert!(err.contains("dichte"), "Fehler {err:?} nennt das Feld nicht");
 }
 
 // Ab hier: Tests ohne Go-Gegenstück, sie laufen schon.

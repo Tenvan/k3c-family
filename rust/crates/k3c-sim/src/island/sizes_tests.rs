@@ -1,5 +1,5 @@
 //! Inselgrößen (Go: `island_sizes_test.go`, WZ17.2, B-485/AC-02, AC-03; docs/rules/geplante-chunks.md § 7). Tests, die eine
-//! Welt-Datei lesen (`parseTestWorld`, RU10.5) oder eine Insel bauen (`create_island`, RU14), tragen `ignore`; `own_*` prüft,
+//! Insel bauen (`create_island`, RU14), tragen `ignore`; die Welt-Datei liest `parse_test_world`; `own_*` prüft,
 //! was schon läuft: `check_chunk_count(s)` auf einer von Hand gebauten `IslandDef`.
 
 #![allow(clippy::unimplemented)] // Rümpfe der ignorierten Tests: warten auf den genannten Sprint
@@ -110,16 +110,56 @@ fn own_chunk_anzahl_wird_geprueft() {
 
 /// Go: `TestChunkAnzahlWirdBeimLadenGeprueft`: dieselben Fälle über die Welt-Datei (`parseTestWorld`).
 #[test]
-#[ignore = "wartet auf RU10.5"]
 fn chunk_anzahl_wird_beim_laden_geprueft() {
-    unimplemented!("RU10.5: parse_test_world (island_worlds_test.go)")
+    let w = parse_test_world(r#","chunkCounts":{"0":24,"4":160}"#).expect("gültige Anzahl abgelehnt");
+    let data = test_data();
+    let d = &w.islands[0];
+    let o = d.create_options(&data.biomes);
+    let counts = o.chunk_counts.expect("Anzahlen");
+    assert!(
+        d.chunk_counts["0"] == 24 && counts[&0] == 24 && counts[&4] == 160 && counts.len() == 2,
+        "Anzahl nicht geladen: {:?}, CreateOptions {counts:?}",
+        d.chunk_counts
+    );
+    let bad: [(&str, &[&str]); 5] = [
+        (
+            r#","chunkCounts":{"0":18}"#,
+            &["Tiefe 0", "18", "16, 24, 40, 64, 100, 160"],
+        ),
+        (
+            r#","chunkCounts":{"3":12}"#,
+            &["Tiefe 3", "12", "16, 24, 40, 64, 100, 160"],
+        ),
+        (r#","chunkCounts":{"7":24}"#, &["Tiefe \"7\""]),
+        (r#","chunkCounts":{"x":24}"#, &["Tiefe \"x\""]),
+        (r#","chunkCounts":{"01":24}"#, &["Tiefe \"01\""]),
+    ];
+    for (fields, want) in bad {
+        let err = parse_test_world(fields).expect_err(fields);
+        assert!(
+            err.contains("data/worlds/test.json: Insel a:"),
+            "{fields}: Fehler {err:?}"
+        );
+        for w in want {
+            assert!(err.contains(w), "{fields}: Fehler {err:?} nennt {w:?} nicht");
+        }
+    }
 }
 
 /// Go: `TestPlanungGegenChunkAnzahl` (AC-03): Die Planung wird gegen die eingestellte Anzahl geprüft (`parseTestWorld`).
 #[test]
-#[ignore = "wartet auf RU10.5"]
 fn planung_gegen_chunk_anzahl() {
-    unimplemented!("RU10.5: parse_test_world (island_worlds_test.go)")
+    let plan = r#","plannedChunks":{"0":[{"slot":9,"kind":"forest"}]}"#;
+    if let Err(e) = parse_test_world(&format!(r#"{plan},"chunkCounts":{{"0":24}}"#)) {
+        panic!("Platz +9 bei 24 Chunks abgelehnt: {e}");
+    }
+    for counts in ["", r#","chunkCounts":{"0":16}"#] {
+        let err = parse_test_world(&format!("{plan}{counts}")).expect_err(counts);
+        assert!(
+            err.contains("Tiefe 0") && err.contains("Platz +9"),
+            "{counts:?}: Fehler {err:?}"
+        );
+    }
 }
 
 /// Go: `TestInselMitChunkAnzahl`: Breite der Stufen nach Chunk-Anzahl (50 Units je Chunk bei Tiefe 0, 25 bei Tiefe 4).
@@ -150,14 +190,15 @@ fn insel_mit_chunk_anzahl() {
 
 /// Go: `TestEingebetteteInselnOhneChunkAnzahl`: Die eingebetteten Daten der Standard-Welt enthalten keine Chunk-Anzahl.
 #[test]
-#[ignore = "wartet auf RU10.5"]
 fn eingebettete_inseln_ohne_chunk_anzahl() {
+    // Die Inseln der Standard-Welt als Rohdaten: `standard_world` selbst liest auch die Geschichte (RU19).
     let data = test_data();
-    for d in &standard_world(&data).islands {
+    for d in data.standard_world.islands.iter().flatten() {
+        let counts = d.get("chunkCounts").and_then(|c| c.as_object());
         assert!(
-            d.chunk_counts.is_empty(),
+            counts.is_none_or(|c| c.is_empty()),
             "{}: eingebettete Daten enthalten eine Chunk-Anzahl",
-            d.id
+            d["id"]
         );
     }
 }

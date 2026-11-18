@@ -10,6 +10,7 @@ use k3c_data::biome::Biome;
 use k3c_data::hub::Stock;
 use k3c_data::{Data, Source, load_all};
 use k3c_level::nature::neutral_nature as level_neutral_nature;
+use k3c_level::rules::Rules;
 use k3c_level::types::NatureValues;
 
 use super::{
@@ -40,9 +41,28 @@ pub fn neutral_nature(biomes: &[Biome], depths: &[i64]) -> BTreeMap<i64, NatureV
     out
 }
 
-/// Go: `standardWorld` (island_worlds.go): die Standard-Welt als `WorldDef`; kommt mit RU10.5 (`resolve_world`).
-pub fn standard_world(_data: &Data) -> WorldDef {
-    unimplemented!("RU10.5: standard_world")
+/// Die Regeln des Level-Generators aus den eingebetteten Daten (Go: die Paket-Variablen, `Rules::from_data`).
+pub fn test_rules(data: &Data) -> Rules {
+    let hub = Source::Embedded.read("hub.json").expect("hub.json");
+    Rules::from_data(data, &hub).expect("Regeln")
+}
+
+/// Go: `standardWorld` (island_worlds.go): die Standard-Welt als `WorldDef`. Sie hat eine Geschichte (`story`), deren
+/// Lesen und Prüfen mit RU19 kommt (`decode_world_story`, `check_story`): bis dahin melden die Platzhalter dort.
+pub fn standard_world(data: &Data) -> WorldDef {
+    super::worlds::standard_world(data, &test_rules(data)).expect("Standard-Welt")
+}
+
+/// Go: `parseTestWorld` (island_worlds_test.go): liest eine Test-Welt mit einer Insel „a“; `fields` wie bei `test_island`.
+pub fn parse_test_world(fields: &str) -> Result<WorldDef, String> {
+    use super::switch_testutil::{test_island, test_world};
+    parse_world_in(&test_world(&test_island("a", fields)), "test")
+}
+
+/// Go: `ParseWorld` (island_worlds.go) mit den eingebetteten Daten.
+pub fn parse_world_in(raw: &str, id: &str) -> Result<WorldDef, String> {
+    let data = test_data();
+    super::worlds::parse_world(raw, id, &data, &test_rules(&data))
 }
 
 /// Go: `newIsland`: `create_island` mit Startvorrat, wie ein neues Spiel, mit neutraler Natur (B-891): Die Tests prüfen
@@ -166,7 +186,12 @@ pub fn available_points(_w: &World, _pi: usize) -> i64 {
     unimplemented!("RU18: available_points")
 }
 
-/// Go: `LoadWorld` (island_worlds.go) für die Test-Welt `nordmeer`; kommt mit RU10.5.
-pub fn nordmeer_loaded(_data: &Data) -> WorldDef {
-    unimplemented!("RU10.5: load_world")
+/// Go: `nordmeer` (island_save_v8_test.go): die Test-Welt mit zwei Inseln, aus dem Text gelesen (nicht aus data/worlds/).
+pub fn nordmeer_loaded(data: &Data) -> WorldDef {
+    let raw = concat!(
+        r#"{"id":"nordmeer","name":"Nordmeer","islands":["#,
+        r#"{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},"#,
+        r#"{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}"#
+    );
+    super::worlds::parse_world(raw, "nordmeer", data, &test_rules(data)).expect("Welt nordmeer")
 }

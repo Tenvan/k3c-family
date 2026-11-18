@@ -11,12 +11,11 @@ use k3c_data::Data;
 use k3c_data::hub::HubData;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
-use crate::state::pending::{
-    WorldOptions, create_world_with, empty_site, hub_of, lair_options, validate_hub_data_in, values_of,
-};
+use crate::state::pending::{WorldOptions, create_world_with, empty_site, hub_of, validate_hub_data_in, values_of};
 
 use super::Island;
 use super::data::{IslandDef, biome_for_depth};
+use super::endboss::lair_options;
 use super::options::default_options;
 use super::sizes::check_chunk_count;
 use super::worlds::WorldDef;

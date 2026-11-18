@@ -1,5 +1,5 @@
 //! Inselwechsel (Go: `island_switch_test.go`, B-103, K2.3a). Alle zehn Go-Tests bauen eine Insel mit `create_island_in`
-//! (`create_world_with`, RU14) oder lesen die Standard-Welt (`standard_world`, RU10.5) und tragen `ignore`. Die Tests ab
+//! (`create_world_with`, RU14) oder lesen die Standard-Welt (`standard_world`, Geschichte: RU19) und tragen `ignore`. Die Tests ab
 //! `own_` prüfen, was schon läuft: die Schritt-Abkürzungen von `step_island_switch`, `next_island` mit einem Ziel, das keines
 //! ist, und das Zusammenspiel von `is_last`, `next_def` und der Wahl.
 use super::switch_testutil::*;
@@ -237,8 +237,9 @@ fn inselwechsel_tabelle_der_insel() {
     );
 }
 
+/// Die Standard-Welt hat eine Geschichte (`story`); `standard_world` meldet bis RU19 den Platzhalter.
 #[test]
-#[ignore = "wartet auf RU10.5"]
+#[ignore = "wartet auf RU19"]
 fn inselwechsel_daten() {
     let data = test_data();
     let d = &standard_world(&data).islands[0];
@@ -253,6 +254,11 @@ fn inselwechsel_daten() {
             "Insel 1: kein Miniboss in Tiefe {depth}"
         );
     }
+}
+
+/// Der Rest von `inselwechsel_daten` (Go: Welten, die das Laden ablehnt) läuft ohne Standard-Welt.
+#[test]
+fn own_inselwechsel_ungueltige_welten_werden_abgelehnt() {
     let bad = [
         (
             "doppelt",

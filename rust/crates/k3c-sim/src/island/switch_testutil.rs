@@ -155,9 +155,9 @@ pub fn test_world(islands: &str) -> String {
     format!(r#"{{"id":"test","name":"Test","islands":[{islands}]}}"#)
 }
 
-/// Go: `ParseWorld` (island_worlds.go): liest und prüft eine Welt-Datei; kommt mit RU10.5.
-pub fn parse_world(_raw: &str, _name: &str) -> Result<WorldDef, String> {
-    unimplemented!("RU10.5: parse_world")
+/// Go: `ParseWorld` (island_worlds.go): liest und prüft eine Welt-Datei mit den eingebetteten Daten.
+pub fn parse_world(raw: &str, name: &str) -> Result<WorldDef, String> {
+    super::testutil::parse_world_in(raw, name)
 }
 
 /// Go: `defaultValues()` (world_values.go): der Basis-Wertesatz; kommt mit RU14 (`values_of`).

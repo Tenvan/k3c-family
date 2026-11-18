@@ -1,6 +1,6 @@
 //! Inseln als Daten (Port von `engine/sim/island_data.go`; Welt-Datei data/worlds/<id>.json, B-103, B-488): Liste in fester
 //! Reihenfolge, je Insel ihre Tiefen und ihre Tabelle der Gegner-Skalierung. Welten ohne Insel skalieren nach
-//! waves.json › depthScaling. Laden und strenges Lesen: `worlds.rs` (RU10.5).
+//! waves.json › depthScaling. Laden und strenges Lesen: `worlds.rs`, `worlds_decode.rs`.
 //!
 //! Gos Paket-Tabellen (`biomes`, `bosses`) gibt es in Rust nicht: Sie kommen als `&Data` (`k3c_data::load_all`).
 
@@ -15,8 +15,9 @@ use k3c_level::rules::Rules;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
 use crate::state::data::has_depth;
-use crate::state::pending::{IslandStory, check_end_boss};
+use crate::state::pending::IslandStory;
 
+use super::endboss::check_end_boss;
 use super::nature::check_nature;
 use super::sizes::check_chunk_counts;
 

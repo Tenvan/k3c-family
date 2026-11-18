@@ -7,7 +7,6 @@ use std::sync::Arc;
 
 use k3c_data::Data;
 use k3c_data::biome::Biome;
-use k3c_data::bosses::BossData;
 use k3c_data::buildings::Plantation;
 use k3c_data::economy::Gatherable;
 use k3c_data::hub::HubData;
@@ -19,7 +18,7 @@ use super::island_ref::IslandRef;
 use super::save::HubSave;
 use super::shared::WorldValues;
 use super::{Player, PlayerCommand, Site, Troop, World};
-use crate::island::{Island, IslandDef, WorldDef};
+use crate::island::{Island, WorldDef};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
@@ -246,14 +245,26 @@ pub fn mirror_state(_w: &mut World) {
     unimplemented!("RU14: mirror_state")
 }
 
-/// Go: `checkEndBoss` (island_endboss.go): prüft Endboss und Bau der Insel.
-pub fn check_end_boss(_d: &IslandDef, _data: &Data) -> Result<(), String> {
-    unimplemented!("RU10.5: check_end_boss")
+/// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.
+pub fn decode_island_story(_raw: &serde_json::Value) -> Result<IslandStory, String> {
+    unimplemented!("RU19: decode_island_story")
 }
 
-/// Go: `lairOptions` (island_endboss.go): trägt die Stufe der Tiefe `depth` den Bau (nur die tiefste), und ihr Endboss.
-pub fn lair_options(_def: &IslandDef, _depth: i64, _data: &Data) -> (Option<bool>, Option<BossData>) {
-    unimplemented!("RU10.5: lair_options")
+/// Go: `decodeWorldStory` (story.go): liest `story` der Welt streng; nur gerufen, wenn das Feld da ist.
+pub fn decode_world_story(_raw: &serde_json::Value) -> Result<WorldStory, String> {
+    unimplemented!("RU19: decode_world_story")
+}
+
+/// Go: `decodeWorldSkins` (world_skins.go): liest `skins` der Welt (Basis-Asset → Ersatz-Asset); nur gerufen, wenn das Feld
+/// da ist.
+pub fn decode_world_skins(_raw: &serde_json::Value) -> Result<BTreeMap<String, String>, String> {
+    unimplemented!("RU14: decode_world_skins")
+}
+
+/// Go: `checkStory` (story_check.go): prüft die Geschichte der Welt und ihrer Inseln; nur gerufen, wenn die Welt oder eine
+/// Insel `story` hat.
+pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
+    unimplemented!("RU19: check_story")
 }
 
 /// Go: `mirrorSwitch` (world_state_mirror.go): spiegelt den Wechselpunkt der Insel in jede Stufe.

@@ -20,6 +20,8 @@ use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 pub mod create;
 pub mod data;
 pub mod defeat;
+pub mod endboss;
+pub mod keys;
 pub mod nature;
 pub mod options;
 pub mod save;
@@ -35,6 +37,7 @@ pub mod targets;
 pub mod travel;
 pub mod victory;
 pub mod worlds;
+pub mod worlds_decode;
 
 #[cfg(test)]
 mod carry_tests;
@@ -43,9 +46,15 @@ mod defeat_tests;
 #[cfg(test)]
 mod depths_tests;
 #[cfg(test)]
+mod endboss_tests;
+#[cfg(test)]
 mod nature_tests;
 #[cfg(test)]
 mod options_tests;
+#[cfg(test)]
+mod planned_tests;
+#[cfg(test)]
+mod planned_world_tests;
 #[cfg(test)]
 mod save_boss_tests;
 #[cfg(test)]
@@ -73,6 +82,8 @@ pub(crate) mod switch_testutil;
 #[cfg(test)]
 mod switch_world_tests;
 #[cfg(test)]
+mod takt_tests;
+#[cfg(test)]
 mod tests;
 #[cfg(test)]
 pub(crate) mod testutil;
@@ -80,6 +91,12 @@ pub(crate) mod testutil;
 mod travel_tests;
 #[cfg(test)]
 mod victory_tests;
+#[cfg(test)]
+mod worlds_error_tests;
+#[cfg(test)]
+mod worlds_etappe_tests;
+#[cfg(test)]
+mod worlds_tests;
 
 pub use create::{CreateOptions, IslandBuild, create_island, create_island_at, create_island_in};
 pub use data::IslandDef;
@@ -91,7 +108,7 @@ pub use switch::{next_island, step_island_switch};
 pub use targets::choose_island;
 pub use travel::{IslandTravel, insert_player, remove_player, step_island_travel};
 pub use victory::check_victory;
-pub use worlds::WorldDef;
+pub use worlds::{STANDARD_WORLD_ID, WorldDef, load_world, parse_world, standard_world};
 
 /// Go: `Island`, eine Insel mit ihren Stufen. Ohne JSON: der Spielstand ist `IslandSave` (`save.rs`).
 #[derive(Debug, Clone, PartialEq, Default)]

@@ -151,6 +151,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1080](B-1080-abnahme-ru6-level-generator-rust.md) | SIM | Schuld | niedrig | offen | RU6 | Abnahme RU6: Level-Generator in Rust (Gen, Race, manuell) |
 | [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU10 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
 | [B-1083](B-1083-island-save-null-und-kopf-wie-go.md) | SIM | Schuld | niedrig | offen | RU10 | Rust liest Insel-Spielstaende mit null-Feldern und falschem Kopf-Typ strenger als Go |
+| [B-1085](B-1085-welt-lesen-randfaelle.md) | SIM | Schuld | niedrig | offen | RU10 | Welt-Datei lesen: null- und Array-Randfälle weichen von Go ab |
 
 ## Archiv
 
