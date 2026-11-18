@@ -169,18 +169,7 @@ pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
     unimplemented!("RU19: check_story")
 }
 
-/// Go: `travelPoint` (world_travel.go): ein Reisepunkt einer Stufe (`via`: exit, stairsUp, stairsDown).
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct TravelPoint {
-    pub x: f64,
-    pub to_depth: i64,
-    pub via: String,
-}
-
-/// Go: `travelPoints` (world_travel.go): die Reisepunkte der Stufe (Tiefen-Eingang nach unten, gebaute Treppen).
-pub fn travel_points(_w: &World) -> Vec<TravelPoint> {
-    unimplemented!("RU14: travel_points")
-}
+pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portiert (world_travel.go)
 
 /// Go: `refundPending` (economy.go): wirft gezahltes, nicht vollendetes Gold des Spielers `pi` zurück auf den Boden.
 pub fn refund_pending(_w: &mut World, _pi: usize) {

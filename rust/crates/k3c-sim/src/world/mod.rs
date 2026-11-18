@@ -37,6 +37,10 @@ pub mod ship;
 pub mod skins;
 pub mod state_mirror;
 pub mod step;
+pub mod travel;
+pub mod values;
+pub mod values_from;
+pub mod values_locked;
 
 use base::base;
 use cycle::cycle_at;
@@ -70,6 +74,12 @@ mod state_mirror_tests;
 mod step_tests;
 #[cfg(test)]
 pub(crate) mod testutil;
+#[cfg(test)]
+mod travel_tests;
+#[cfg(test)]
+mod values_locked_tests;
+#[cfg(test)]
+mod values_tests;
 
 /// Go: `Options` für `CreateWorld`; die kleingeschriebenen Felder (`lair`, `hub`, `vals`) sind hier öffentlich.
 /// `cycle_speed` 0 bedeutet 1 (wie `?? 1` in TS).

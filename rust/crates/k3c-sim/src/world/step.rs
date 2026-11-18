@@ -18,9 +18,9 @@ use crate::unit::{step_camps, step_troops};
 use super::cycle::step_cycle;
 use super::lava::step_lava;
 use super::pending::{
-    cap_events, step_healing, step_passives, step_plantations, step_players, step_sites, step_spell_towers,
-    step_storms, step_travel,
+    cap_events, step_healing, step_passives, step_plantations, step_players, step_sites, step_spell_towers, step_storms,
 };
+use super::travel::step_travel;
 use super::{castle_fallen, vals};
 
 /// Go: `Step`: rechnet einen Tick. `commands[i]` gehört zu `players[i]`; `isl` ist der Bezug zur Insel (`None` = Go
