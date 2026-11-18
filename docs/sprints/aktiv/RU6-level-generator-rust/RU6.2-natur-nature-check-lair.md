@@ -1,6 +1,6 @@
 # RU6.2 · Level Teil 2: nature, nature_check, lair
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -63,5 +63,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Port von `nature`, `nature_check` (`check_nature_values`) und `lair` (`check_lair_fit`); `cargo test -p k3c-level`: 14 grün, 16 ignoriert; `task rust:lint` grün. Rust-Code ohne Tests: 313 Zeilen (nature 198, nature_check 63, lair 52).
+
+Ignoriert (wartet auf RU6.5, brauchen `generate`): natur_gleicher_seed_gleiche_natur, natur_seeds_unterscheiden_sich, natur_walddichte_skaliert_baeume, natur_fester_wert_gilt, natur_monokultur, natur_feste_werte_abgelehnt, natur_neutraler_wert_aendert_nichts, natur_chunk_gewichte, natur_adern, natur_kristallfarben, bau_in_jedem_biom_500_seeds, bau_standard_ist_biom_feld (Rumpf in `testutil.rs`: `generate_nature`, `generate_with`, `validate`, `validate_with`, `check_camp`, `camp_behind_portal`; RU6.5 ersetzt sie).
+
+Abweichungen: `nature_check.rs` baut `prefixed` und die Biom-Datenprüfung nicht nach (liegen in `k3c-data` und laufen beim Laden); `natur_datenpruefung` prüft sie über `load_biome` mit JSON. Gos Methoden an `Biome` (`withNature`, `traitOf`) sind freie Funktionen (`with_nature`, `trait_of`), weil `Biome` in `k3c-data` liegt. `LAIR_CAMP_GAP_UNITS` steht schon in `level.rs`. `assign_variants`: `go_float` allokiert je Entität (Markierung PERF(B-LVL), einmal je Level).

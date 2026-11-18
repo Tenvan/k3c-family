@@ -7,6 +7,10 @@ use crate::biome::Biome;
 /// einem festen Objekt in der Mitte, kein Zufalls-Ereignis (nicht in `EVENT_KINDS`) und nicht in den Biom-Summen.
 pub const HARBOR_KIND: &str = "harbor";
 
+/// Go: `lairCampGapUnits`: So nah am Bau des Endbosses liegt kein Camp: lair.noticeUnits (40) plus 40 Units Rand
+/// (docs/rules/bosse.md § 1, B-645).
+pub const LAIR_CAMP_GAP_UNITS: i64 = 80;
+
 /// Go: `eventKinds` in fester Reihenfolge wie `EVENT_KINDS` in TS.
 pub const EVENT_KINDS: [&str; 2] = ["chest", "recruitCamp"];
 
