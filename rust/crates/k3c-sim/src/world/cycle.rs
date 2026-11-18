@@ -9,7 +9,7 @@ use k3c_data::biome::Cycle;
 use serde_json::json;
 
 use super::base::base;
-use super::pending::{merchant_dawn, night_events_end, night_events_start, tavern_dawn};
+use super::links::{merchant_dawn, night_events_end, night_events_start, tavern_dawn};
 use super::vals;
 use crate::economy::pay_dawn_income;
 use crate::enemies::send_enemies_home;

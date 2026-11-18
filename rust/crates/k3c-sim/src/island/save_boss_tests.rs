@@ -135,7 +135,7 @@ fn spielstand_boss_alte_versionen() {
 fn spielstand_boss_ungueltig() {
     let data = test_data();
     let world = standard_world(&data);
-    let defaults = crate::state::pending::values_of(&world).expect("Basis-Wertesatz");
+    let defaults = crate::state::links::values_of(&world).expect("Basis-Wertesatz");
     let t = SaveTables {
         data: &data,
         defaults: &defaults,

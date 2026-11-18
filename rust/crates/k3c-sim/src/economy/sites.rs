@@ -1,6 +1,6 @@
 //! Gold und Material, Bauplätze (Port von `engine/sim/economy.go`: `giveGold`, `scatterCoins`, `addStock`, `stepSites`).
 
-use super::pending::step_upgrade;
+use super::links::step_upgrade;
 use super::{can_afford, spend};
 use crate::building::upgrades::step_crafts;
 use crate::island::storage::add_stock_capped;
@@ -9,7 +9,7 @@ use crate::state::purse::purse_max_of;
 use crate::state::{Coin, World, WorldValues};
 use crate::unit::professions::{step_bow_craft, step_offers};
 use crate::unit::warrior::step_sword_craft;
-use crate::world::pending::site_cost;
+use crate::world::links::site_cost;
 use crate::world::vals;
 
 /// Go: `giveGold` füllt den Beutel des Spielers `pi`, was nicht mehr passt, fällt bei `x` als Münzen auf den Boden.

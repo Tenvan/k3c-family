@@ -1,7 +1,5 @@
-//! Platzhalter der Gruppe `world` für Funktionen späterer Sprints (Port-Leitfaden § 7). Der Sprint, der die Funktion
-//! liefert, löscht den Platzhalter; RU22 prüft, dass keiner übrig ist. Die Reihenfolge der Aufrufe in `step` steht in
-//! `step.rs` (AC-01); jeder Teilschritt anderer Gruppen ist hier ein benannter Platzhalter mit dem liefernden Sprint.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
+//! Import-Stelle der Gruppe `world` (Port-Leitfaden § 7): Die Reihenfolge der Aufrufe in `step` steht in `step.rs` (AC-01);
+//! jeder Teilschritt anderer Gruppen wird hier eingebunden. Alle Platzhalter sind portiert (RU22).
 
 // RU18 (Wirtschaft) und RU19 (Ereignisse), gerufen von `step_cycle` (world_cycle.go) und `mirror_state`.
 
@@ -33,7 +31,7 @@ pub use crate::monarch::{apply_preset, preset_for}; // Von RU18.4 portiert (mona
 pub use crate::hub::sites::check_world_hub_sites; // Von RU18.3 portiert (world_hub_sites.go)
 pub use crate::hub::{level_of, new_hub_site, site_cost, upgrade_payable, validate_hub_data}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
 
-// Von RU19.1 und RU19.2 portiert (dev.go, events*.go): die Import-Stelle bleibt `pending`.
+// Von RU19.1 und RU19.2 portiert (dev.go, events*.go): die Import-Stelle bleibt `links`.
 pub use crate::dev::dev_build_site;
 pub use crate::events::cap_events;
 pub use crate::events::moon::{event_active, night_events_end, night_events_start};

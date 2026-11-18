@@ -17,7 +17,7 @@ use serde_json::Value;
 use super::keys::Keys;
 use super::worlds_decode::decode_islands;
 use crate::island::IslandDef;
-use crate::state::pending::{WorldStory, check_story, decode_world_story};
+use crate::state::links::{WorldStory, check_story, decode_world_story};
 use crate::state::shared::{CombatSettings, WorldValues};
 use crate::world::skins::decode_world_skins;
 

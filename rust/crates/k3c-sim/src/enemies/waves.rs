@@ -12,7 +12,7 @@ use super::guard::mark_cleared;
 use crate::economy::add_stock;
 use crate::state::common::{apply_damage_by, event, sign};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{
+use crate::state::links::{
     MERCHANT_ID, add_pool, boss_defeated, emit, full_moon_extra, hit_splash, merchant_x, moon_drop, pure, scaled_gold,
     scatter_coins, trigger_boss, unit_x, values,
 };
@@ -161,7 +161,7 @@ pub fn target_x(w: &World, id: i64) -> Option<f64> {
 }
 
 /// Go: `stepProjectiles`.
-pub fn step_projectiles(w: &mut World, dt: f64) {
+pub fn step_projectiles(w: &mut World, isl: Option<&IslandRef>, dt: f64) {
     let mut projectiles = std::mem::take(&mut w.projectiles);
     projectiles.retain_mut(|pr| {
         let Some(x) = target_x(w, pr.target_id) else {
@@ -169,9 +169,9 @@ pub fn step_projectiles(w: &mut World, dt: f64) {
         };
         if (x - pr.x).abs() <= pr.speed * dt {
             if pr.splash > 0.0 {
-                hit_splash(w, pr, x); // Splitter-Wurf (boss_abilities.go)
+                hit_splash(w, isl, pr, x); // Splitter-Wurf (boss_abilities.go)
             } else {
-                apply_damage_by(w, pr.target_id, pr.damage, &pr.cause);
+                apply_damage_by(w, pr.target_id, pr.damage, &pr.cause, isl);
             }
             return false;
         }

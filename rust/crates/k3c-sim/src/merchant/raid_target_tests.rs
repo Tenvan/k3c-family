@@ -74,7 +74,7 @@ fn haendler_flieht_bei_null_hp() {
     w.merchant.as_mut().expect("Händler").buy_paid = 2;
     let coins = w.coins.len();
     w.events.clear();
-    apply_damage_by(w, MERCHANT_ID, m.hp, "wolf");
+    apply_damage_by(w, MERCHANT_ID, m.hp, "wolf", None);
     assert!(
         w.merchant.is_none() && count(&w.events, "merchantFled") == 1 && w.coins.len() == coins + 2,
         "Flucht mit zwei Münzen erwartet: Händler {:?}, Ereignisse {:?}",

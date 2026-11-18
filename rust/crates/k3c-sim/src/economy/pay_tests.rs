@@ -3,7 +3,7 @@
 //! `create_world`; was `site_cost`, `upgrade_payable` (RU18.3), `merchant_at` (RU18.4) oder `step_players` (RU18.5) braucht,
 //! trägt `ignore`.
 
-use super::pending::{coin_give_event, merchant_at};
+use super::links::{coin_give_event, merchant_at};
 use super::*;
 use crate::enemies::testutil::{bare_world, built_site};
 use crate::state::{Coin, ResourceNode, Troop};
@@ -254,7 +254,7 @@ fn pay_site_unbezahlt_wartet_auf_material_wenn_voll() {
     let si = built_site(&mut w, "workshop", 100.0);
     w.sites[si].state = "unpaid".into();
     let id = w.sites[si].id;
-    let cost = crate::world::pending::site_cost(&w, None, &w.sites[si]).gold;
+    let cost = crate::world::links::site_cost(&w, None, &w.sites[si]).gold;
     for n in 0..cost {
         pay_site(&mut w, &v, None, (n % 2) as usize, id);
     }

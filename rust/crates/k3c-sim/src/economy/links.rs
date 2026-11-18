@@ -1,6 +1,5 @@
-//! Platzhalter der Gruppe `economy` für Funktionen späterer Sessions (Port-Leitfaden § 7). Die Session, die die Funktion
-//! liefert (RU18.3 bis RU18.5, RU19), löscht den Platzhalter; RU22 prüft, dass keiner übrig ist.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
+//! Import-Stelle der Gruppe `economy` (Port-Leitfaden § 7): Funktionen anderer Gruppen, die die Wirtschaft ruft. Alle
+//! Platzhalter sind portiert (RU22).
 
 pub use crate::merchant::{merchant_at, pay_merchant, refund_merchant}; // Von RU18.4 portiert (merchant.go)
 

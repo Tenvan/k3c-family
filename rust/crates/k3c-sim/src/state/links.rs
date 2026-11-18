@@ -1,16 +1,14 @@
-//! Platzhalter für Funktionen späterer Sprints (Port-Leitfaden § 7). Der Sprint, der die Funktion liefert, löscht den
-//! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU19, RU23)
+//! Import-Stelle der Zustandsdateien (Port-Leitfaden § 7): Sie holen Funktionen anderer Gruppen über `state::links`, damit
+//! ihre Imports den Go-Dateien folgen. Alle Platzhalter sind portiert (RU22). Go-Zeiger auf Spieler und Truppen sind hier
+//! Indizes (`pi`, `ti`).
 
-use super::World;
-
-// Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
+// Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `links`, damit Zustandsdateien unverändert bleiben.
 pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
 pub use crate::combat::squad::count_fetching; // Von RU15 portiert (combat_squad.go)
 pub use crate::crown::{crowned, drop_crown, hit_coins}; // Von RU15 portiert (crown.go)
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
 pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
-pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
+pub use crate::links::*; // Platzhalter der Gruppen enemies und unit
 pub use crate::portal::apply_portals; // Von RU15 portiert (portal.go)
 pub use crate::unit::archer::is_on_tower;
 pub use crate::unit::jobs::make_fighter;
@@ -21,11 +19,6 @@ pub use crate::unit::warrior::is_fighter;
 pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert (merchant.go)
 
 pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
-
-/// Go: `protectedNight` (World-Methode, `island_options.go`; Sprint-Nummer korrigiert: RU10, nicht RU18).
-pub fn protected_night(_w: &World) -> bool {
-    unimplemented!("RU10: protected_night")
-}
 
 pub use crate::building::plantation::plot_x; // Von RU18.1 portiert (building_plantation.go)
 pub use crate::building::ruin::is_ruin; // Von RU18.1 portiert (building_ruin.go)
@@ -44,14 +37,11 @@ pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portie
 
 pub use crate::economy::to_hub; // Von RU18.2 portiert (economy.go)
 
-/// Go: `returnBanner` (combat_squad.go): stellt das Banner des Monarchen `pi` am Tor wieder auf; sein Trupp kehrt zurück.
-pub fn return_banner(_w: &mut World, _pi: usize) {
-    unimplemented!("RU15: return_banner")
-}
+pub use crate::combat::squad::return_banner; // Von RU15 portiert (combat_squad.go)
 
 pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
 
-// Von RU19.1 bis RU19.3 portiert (dev.go, events.go, story.go): die Import-Stelle bleibt `pending`.
+// Von RU19.1 bis RU19.3 portiert (dev.go, events.go, story.go): die Import-Stelle bleibt `links`.
 pub use crate::dev::DevFlags;
 pub use crate::events::hit_event;
 pub use crate::story::{IslandStory, WorldStory, check_story, decode_island_story, decode_world_story};

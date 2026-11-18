@@ -2,7 +2,7 @@
 //! abgelesen, das ein Takt A am Ort des Spielers bezahlen würde (`find_pay_target`); nichts gespeichert, Welt-JSON und
 //! Golden bleiben gleich.
 
-use super::pending::{profession_of, values};
+use super::links::{profession_of, values};
 use super::{IslandRef, Player, World};
 use crate::economy::{PayTarget, find_pay_target, offer_target};
 use crate::island::storage::{resource_full, stock_get};

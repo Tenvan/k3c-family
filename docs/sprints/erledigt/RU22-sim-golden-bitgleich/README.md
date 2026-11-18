@@ -1,6 +1,6 @@
 # RU22 · SIM · Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3)
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -95,12 +95,12 @@ Die Golden-Vergleiche sind Sim-Läufe als Tests; sie brauchen die Ausnahme von d
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU22.1 | `RU22.1-abgleich-werkzeug.md` | Umsetzung | autonom | offen |
-| RU22.2 | `RU22.2-golden-wald.md` | Umsetzung | autonom | offen |
-| RU22.3 | `RU22.3-golden-biome.md` | Umsetzung | autonom | offen |
-| RU22.4 | `RU22.4-golden-kampagnen.md` | Umsetzung | autonom | offen |
-| RU22.5 | `RU22.5-durchsatz-und-g3-bericht.md` | Umsetzung | autonom | offen |
-| RU22.6 | `RU22.6-review.md` | Review | autonom | offen |
+| RU22.1 | `RU22.1-abgleich-werkzeug.md` | Umsetzung | autonom | fertig |
+| RU22.2 | `RU22.2-golden-wald.md` | Umsetzung | autonom | fertig |
+| RU22.3 | `RU22.3-golden-biome.md` | Umsetzung | autonom | fertig |
+| RU22.4 | `RU22.4-golden-kampagnen.md` | Umsetzung | autonom | fertig |
+| RU22.5 | `RU22.5-durchsatz-und-g3-bericht.md` | Umsetzung | autonom | fertig |
+| RU22.6 | `RU22.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -108,6 +108,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18: AC-01 und AC-02 geprüft (RU22.1 bis RU22.4, 15 Golden gleich, 13 Sim-Golden bitgleich); AC-03 Bericht steht, Durchsatz verschoben (B-1105, Lane zweit). Behoben: 3 Platzhalter-Lücken im Inselpfad, 4 Ignore-Tests aktiviert (70 offen, B-1103).
+Review ohne schwere Befunde, `task check` und `task check:go` grün. Abnahme-Ticket: B-1105. Entscheidung G3 (🧑): offen, Empfehlung bestanden.

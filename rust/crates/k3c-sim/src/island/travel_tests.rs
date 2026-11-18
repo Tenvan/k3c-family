@@ -8,7 +8,7 @@ use super::switch_testutil::{built, fell};
 use super::testutil::*;
 use super::travel::{insert_player, point_near, remove_player};
 use super::{Island, add_island_player, step_island};
-use crate::state::pending::TravelPoint;
+use crate::state::links::TravelPoint;
 use crate::state::{Player, PlayerCommand, World};
 
 /// Go: `exitX`, die X-Position des Tiefen-Eingangs der Stufe.

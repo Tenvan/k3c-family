@@ -169,7 +169,6 @@ fn ruine_wird_repariert() {
 
 /// Zerstört: unbezahlt mit Kennung; Wiederaufbau erst ab der Hub-Stufe der Art.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU10: protected_night)"]
 fn ruine_zerstoert_und_wiederaufbau_ab_hub_stufe_der_art() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];

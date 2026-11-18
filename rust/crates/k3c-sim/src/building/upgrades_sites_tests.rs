@@ -9,11 +9,11 @@ use k3c_data::hub::Stock;
 use super::testutil::*;
 use crate::economy::site_payable;
 use crate::hub::level_of;
-use crate::pending::next_level;
+use crate::links::next_level;
 use crate::state::World;
 use crate::state::common::destroy_site;
 use crate::unit::spawn_vagrant;
-use crate::world::pending::{site_cost, upgrade_payable};
+use crate::world::links::{site_cost, upgrade_payable};
 use crate::world::{hub_of, vals};
 
 /// Go: `materialOf`: der Vorrat, der genau den Preis (ohne Gold) deckt.

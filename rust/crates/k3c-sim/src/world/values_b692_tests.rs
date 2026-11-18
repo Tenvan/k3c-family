@@ -12,7 +12,7 @@ use k3c_data::{Source, load_all};
 use serde_json::json;
 
 use super::base::base;
-use super::pending::ruin_site;
+use super::links::ruin_site;
 use super::values_room::{default_values, default_values_from, resolve_world, values};
 use crate::island::testutil::{standard_world, test_data};
 use crate::island::worlds::STANDARD_WORLD_ID;
