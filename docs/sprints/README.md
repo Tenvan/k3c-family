@@ -43,10 +43,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 - W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
 - WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
 
-### Xbox/TV
-
-- RU39.2 · Messläufe auf ruhigem PC und Mini-PC, Sichtprüfung nebeneinander (Mensch) (Sprint RU39, offen, Agent Mensch)
-
 ## Geplant (nach Projekt-Rang)
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
