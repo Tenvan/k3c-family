@@ -69,7 +69,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU32 | CLI | RSU | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | – | bereit | `geplant/RU32-ende-zu-ende-test/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | bereit | `geplant/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | bereit | `geplant/RU36-abnahme-am-pc/` |
-| RU12 | CLI | RSU | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | – | bereit | `geplant/RU12-menues-teil-2/` |
 | RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
 | RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | bereit | `geplant/RU33-laeufe-im-client/` |
 | RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | bereit | `geplant/RU34-workbench-ruft-spiel-exe/` |
@@ -448,3 +447,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | `erledigt/RU10-sim-insel/` |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |
 | RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | `erledigt/RU23-hud-teil-2/` |
+| RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | `erledigt/RU12-menues-teil-2/` |
