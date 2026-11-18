@@ -1,6 +1,6 @@
 # RU49 · SRV · Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -64,11 +64,9 @@ Mit Default entschieden (autonom, Claude, 2026-11-18; 🧑 kann widersprechen): 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU49.1 | `RU49.1-room-worlds-switch-pause.md` | Umsetzung | autonom | offen |
-| RU49.2 | `RU49.2-review.md` | Umsetzung | autonom | offen |
+| RU49.1 | `RU49.1-room-worlds-switch-pause.md` | Umsetzung | autonom | fertig |
+| RU49.2 | `RU49.2-review.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-02 und AC-03 erfüllt, AC-01 teilweise (Nachweis in den Ergebnissen RU49.1 und RU49.2): `create_in`, `load_in`, `switch_island` und die Pause laufen in Rust wie in Go, `cargo test --release -p k3c-room` 99 grün / 22 ignoriert / 0 rot, `task check` grün (1953), `check:go` Tests grün (`golangci-lint` lokal fehlt). `Manager::create` mit der Standard-Welt rechnet erst, wenn RU18 und RU19 in `k3c-sim` stehen (Pflichttest ignoriert, Grund `unimplemented!`); `Manager.worlds` fehlt in `manager.rs` (Ticket für den Hauptrechner, in RU24 mitnehmen).
