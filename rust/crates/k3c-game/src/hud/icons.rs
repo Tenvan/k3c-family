@@ -3,7 +3,7 @@
 
 use super::Hud;
 use super::glyphs::{CAP_NARROW, CAP_WIDE};
-use super::pending::PURSE_ASSET;
+use super::purse::PURSE_ASSET;
 use super::texts::tf;
 use super::values::{RESOURCE_ORDER, StockKey};
 use crate::art::SeaMap;

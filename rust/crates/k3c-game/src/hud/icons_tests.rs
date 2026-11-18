@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use serde_json::Value;
 
 use super::icons::*;
-use super::pending::PURSE_ASSET;
+use super::purse::PURSE_ASSET;
 use super::testutil::hud;
 use super::values::{RESOURCE_ORDER, StockKey};
 use k3c_data::hub::Stock;

@@ -12,9 +12,11 @@ use std::rc::Rc;
 
 use k3c_platform::{Canvas, TexId};
 
+use self::draw::LayoutCache;
 use self::glyphs::JoinKey;
 use self::hints::GuideSeen;
-use self::pending::{LabelSpot, LayoutCache, Painter, TaleState, VoyageView, draw_menu, draw_sea, draw_world_texts};
+use self::paint::Painter;
+use self::pending::{LabelSpot, TaleState, VoyageView};
 use self::state::SeatState;
 use self::values::Memo;
 use crate::art::{Font, Library, SeaMap, Sheet};
@@ -29,12 +31,16 @@ use crate::view::settings::DEFAULT_LANGUAGE;
 
 pub mod banner;
 pub mod data;
+pub mod draw;
+pub mod drawstock;
 pub mod fonts;
 pub mod glyphs;
 pub mod hints;
 pub mod icons;
 pub mod layout;
+pub mod paint;
 pub mod pending;
+pub mod purse;
 pub mod radar;
 pub mod state;
 mod state_labels;
@@ -49,6 +55,8 @@ mod banner_fit_tests;
 #[cfg(test)]
 mod banner_tests;
 #[cfg(test)]
+mod draw_tests;
+#[cfg(test)]
 mod glyphs_tests;
 #[cfg(test)]
 mod hints_tests;
@@ -60,6 +68,8 @@ mod labels_tests;
 mod layout_tests;
 #[cfg(test)]
 mod profile_tests;
+#[cfg(test)]
+mod purse_tests;
 #[cfg(test)]
 mod radar_tests;
 #[cfg(test)]
@@ -184,23 +194,11 @@ impl Drawer for HudDrawer {
         Layer::HUD
     }
 
-    /// Zeichnet die Anzeigen des Spielers der Zelle c. Ab RU20.5 kommen `paint` und die Anzeigen der Zelle dazu; bis
-    /// dahin ruft sie die Platzhalter (pending.rs).
-    fn draw(&self, _dst: &mut dyn Canvas, _f: &Frame, c: &Cell) {
-        let h = self.hud.borrow();
-        let Some(st) = h.seat(c.player) else {
-            return;
-        };
-        draw_world_texts();
-        if st.sea.open {
-            draw_sea();
-        }
-        if st.menu.open {
-            draw_menu();
-        }
+    /// Zeichnet die Anzeigen des Spielers der Zelle c (`Hud::draw_cell`, draw.rs).
+    fn draw(&self, dst: &mut dyn Canvas, _f: &Frame, c: &Cell) {
+        self.hud.borrow_mut().draw_cell(dst, c);
     }
 }
-
 impl Listener for HudDrawer {
     fn listen(&mut self, f: &Frame) {
         self.hud.get_mut().listen(f);

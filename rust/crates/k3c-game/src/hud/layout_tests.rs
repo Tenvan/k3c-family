@@ -1,20 +1,10 @@
 //! Port von `native/k3c-game/hud/layout_test.go`.
-//!
-//! `rect_of` (draw.go, RU20.5) steht bis dahin als Hilfe des Tests hier.
 
+use super::draw::rect_of;
 use super::fonts::{REF_HEIGHT, scale_of};
 use super::layout::*;
 use super::radar::radar_size;
 use crate::view::cell::{Cell, Rectangle, WORLD_SHARE, rect, stats_rect, stats_rect_lines};
-
-fn rect_of(r: Rectangle) -> Rect {
-    Rect {
-        x: r.min.x as f64,
-        y: r.min.y as f64,
-        w: r.dx() as f64,
-        h: r.dy() as f64,
-    }
-}
 
 /// sizes_at: Größen wie im Spiel (Browser-Test hudLayout.test.ts, 28 px fett, Innenabstand 8/4 px) beim Maßstab k.
 fn sizes_at(k: f64, cell_w: f64) -> Items {

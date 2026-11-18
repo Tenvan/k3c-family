@@ -1,6 +1,6 @@
 //! Platzhalter für Teile des HUD, die spätere Sprints liefern (Leitfaden § 7, Plan RU20.4). RU23 (Skill-Menü, Seekarte,
-//! Kampf-Anzeige, Geschichte, Schiffsfahrt, Welt-Texte) löscht seine Platzhalter; RU20.5 ersetzt `Painter` und
-//! `LayoutCache` durch `paint.rs` und `draw.rs`. RU22 prüft, dass keiner übrig ist.
+//! Kampf-Anzeige, Geschichte, Schiffsfahrt, Welt-Texte) löscht seine Platzhalter; RU18 löscht die Shims für Sim-Werte
+//! am Ende. RU22 prüft, dass keiner übrig ist.
 //!
 //! Abweichung von Leitfaden § 7 (steht im Ergebnis von RU20.4): Wo Go einen Wert braucht, damit `listen` ohne RU23 läuft
 //! (`slot_views`, `new_bar_key`, `boss_bar`, `SeaView::refresh`, `Hud::story`, `Painter::outline.sweep`), liefern die
@@ -11,9 +11,6 @@ use k3c_sim::state::{ActiveEvent, Enemy, Merchant, Player, SwitchState, World};
 
 use super::Hud;
 use crate::view::frame::{Frame, RouteIsland};
-
-/// PURSE_ASSET ist das Geldsack-Icon (Go: `purseAsset`, purse.go; RU20.5 verschiebt die Konstante nach `purse.rs`).
-pub const PURSE_ASSET: &str = "icons/geldsack";
 
 /// MenuState ist der Zustand des Skill-Menüs eines Spielers (Go: `menuState`, skillmenu.go).
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -82,6 +79,8 @@ pub struct StoryQueue {
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct BossView {
     pub ok: bool,
+    /// Anteil der Lebensleiste 0 … 1 (Go: `bossView.share`)
+    pub share: f64,
 }
 
 /// EventsKey sind die laufenden Nacht-Events (Go: `eventsKey`, kampf.go).
@@ -105,24 +104,6 @@ pub struct LabelSpot {
     pub x: f64,
     pub y: f64,
 }
-
-/// Painter ist der Zeichen-Zustand des HUD (Go: `painter`, paint.go; RU20.5 ersetzt ihn durch `paint.rs`).
-#[derive(Debug, Default)]
-pub struct Painter {
-    pub outline: Outline,
-}
-
-/// Outline ist der Umriss-Cache des Painters; `sweep` ist bis RU20.5 ein leerer Aufruf.
-#[derive(Debug, Default)]
-pub struct Outline;
-
-impl Outline {
-    pub fn sweep(&mut self) {}
-}
-
-/// LayoutCache ist die gemerkte Anordnung der Anzeigen einer Zelle (Go: `layoutCache`, draw.go; RU20.5).
-#[derive(Clone, Debug, Default)]
-pub struct LayoutCache;
 
 /// Go: `slotViews` (skillmenu.go): liest die Slots 1 bis 4 (fehlende Felder: frei bzw. bereit).
 pub fn slot_views(slots: &[String], cooldowns: &[f64]) -> [SlotView; 4] {
@@ -214,10 +195,8 @@ impl Hud {
     pub fn story(&mut self, _f: &Frame) {}
 }
 
-/// Go: `(*hud).drawWorldTexts` (drawworld.go, RU23).
-pub fn draw_world_texts() {
-    unimplemented!("RU23: draw_world_texts")
-}
+/// Go: `(*hud).drawWorldTexts` (drawworld.go, RU23). Platzhalter: zeichnet nichts (Labels, Hinweise, Radar fehlen bis RU23).
+pub fn draw_world_texts() {}
 
 /// Go: `(*hud).drawSea` (drawsea.go, RU23).
 pub fn draw_sea() {
@@ -239,45 +218,22 @@ pub fn draw_guide() {
     unimplemented!("RU23: draw_guide")
 }
 
-/// Go: `sim.PurseMaxOf` (RU18): `k3c_sim::state::purse::purse_max_of` ruft `purse_max` der Insel-Wirtschaft (RU18) und
-/// stürzt bis dahin ab. Ohne gelernten Geldsack-Skill (immer, solange der Spieler keinen hat) liefert Go den Grundwert
-/// samt Dev-Bonus; hier 0, damit `SeatState::card` auf `purse_max_gold()` zurückfällt (wie Go bei `<= 0`). Der Dev-Bonus
-/// fehlt bis RU18; RU18 löscht diese Funktion und `state.rs` ruft wieder `k3c_sim::state::purse::purse_max_of`.
-pub fn purse_max_of(w: &World, p: &Player) -> i64 {
-    if p.skills.is_empty() {
-        return 0;
-    }
-    k3c_sim::state::purse::purse_max_of(w, p)
+// RU18: ersetzen. Die drei Shims rufen die Sim nicht (deren Gegenstücke sind bis RU18 `unimplemented!`, `Listen` und
+// Draw stürzten sonst mit einer echten Welt ab) und liefern neutrale Werte wie eine Welt ohne gelernten Skill und ohne
+// Zahlziel. RU18 löscht sie; `state.rs` und `hints.rs` rufen dann wieder die Sim-Funktionen.
+
+/// Go: `sim.PurseMaxOf` (RU18): 0, damit `SeatState::card` auf `purse_max_gold()` zurückfällt (wie Go bei `<= 0`). Der
+/// Dev-Bonus und die gelernte Größe fehlen bis RU18.
+pub fn purse_max_of(_w: &World, _p: &Player) -> i64 {
+    0
 }
 
-/// nothing_to_pay: Die Welt hat nichts, was `find_pay_target` (Go: economy.go) als Zahlziel finden könnte (Plätze, Hub,
-/// Truppen, Knoten, Händler, Kampfziele, Aufheb-Dinge); dann ist das Ziel in Go `nil`.
-fn nothing_to_pay(w: &World) -> bool {
-    w.sites.is_empty()
-        && w.hub_site.is_none()
-        && w.troops.is_empty()
-        && w.nodes.is_empty()
-        && w.merchant.is_none()
-        && w.camps.is_empty()
-        && w.portals.is_empty()
-        && w.enemies.is_empty()
-        && w.pickups.is_empty()
-        && w.drops.is_empty()
+/// Go: `sim.TrainAt` (RU18): "" (kein Zahlziel).
+pub fn train_at(_w: &World, _p: &Player) -> String {
+    String::new()
 }
 
-/// Go: `sim.TrainAt` (RU18): `k3c_sim::state::action_view::train_at` ruft `find_pay_target` (RU18) und stürzt bis dahin
-/// ab. In einer Welt ohne Zahlziel ist die Antwort "" (wie Go); sonst gilt die Sim-Funktion. RU18 löscht diese Funktion.
-pub fn train_at(w: &World, p: &Player) -> String {
-    if nothing_to_pay(w) {
-        return String::new();
-    }
-    k3c_sim::state::action_view::train_at(w, p)
-}
-
-/// Go: `sim.TradeAt` (RU18): wie `train_at`; ohne Zahlziel `("", "")`. RU18 löscht diese Funktion.
-pub fn trade_at(w: &World, p: &Player) -> (String, String) {
-    if nothing_to_pay(w) {
-        return (String::new(), String::new());
-    }
-    k3c_sim::state::action_view::trade_at(w, p)
+/// Go: `sim.TradeAt` (RU18): `("", "")` (kein Zahlziel).
+pub fn trade_at(_w: &World, _p: &Player) -> (String, String) {
+    (String::new(), String::new())
 }
