@@ -6,7 +6,7 @@
 //! (2) `Room::tick` speichert synchron (Autosave, Stufenwechsel); `collect_saves` im selben Step sieht die Ergebnisse, ein
 //! Warten auf eine Schreib-Goroutine (`awaitSaves`, `SAVE_WAIT`, Aufnahme-Modus) entfällt. (3) `Frame` besitzt seine Listen:
 //! `stages`, `seats`, `events` sind je Takt neue `Vec`, die Puffer der Session (`seat_buf`, `StageState`) behalten ihre
-//! Kapazität. (4) `running` und `timescale` sind Teil von `dev.go` (RU50.1); sie stehen hier, weil `step` sie braucht.
+//! Kapazität.
 
 use std::any::Any;
 use std::collections::BTreeMap;
@@ -119,23 +119,6 @@ impl Session {
         f.route = self.route_list().to_vec();
         f.campaign = self.camp.frame(!f.stages.is_empty() && !f.seats.is_empty());
         f
-    }
-
-    /// Meldet, ob `step` in diesem Aufruf einen Takt rechnet (Spiel läuft, keine Pause, kein Halt außer Einzelschritt).
-    pub(super) fn running(&mut self) -> bool {
-        if self.m.is_none() || self.paused {
-            self.single = false; // kein Einzelschritt auf Vorrat
-            return false;
-        }
-        if !self.halt {
-            return true;
-        }
-        std::mem::take(&mut self.single)
-    }
-
-    /// Der Zeitraffer des Raums (1 ohne Spiel).
-    pub(super) fn timescale(&mut self) -> i64 {
-        self.with_room(|r, _| r.scale()).unwrap_or(1)
     }
 
     /// Taktet den Raum einmal und bestimmt den Ausgang. Ein Panic im Takt schließt der Raum selbst ohne Speichern

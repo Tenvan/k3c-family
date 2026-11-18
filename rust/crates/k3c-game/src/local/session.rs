@@ -3,17 +3,18 @@
 //! Raum), Spielstände über `k3c_room::store`. Je laufendem Spiel gibt es einen eigenen `Manager` mit genau einem Raum;
 //! stürzt der Takt ab, wird er verworfen, ohne zu speichern.
 //!
-//! Abweichungen von Go: Der Raum liegt im Manager (`Session::code` ist sein Schlüssel). `Manager` kennt weder `new_code`
-//! (der Code ist zufällig, nicht `LOCL`), noch `worlds`, `world_list`, `close_room` (RU24.4); `close_room` unten ist
-//! `Manager.CloseRoom` aus Go. Takt (`step.rs`) und Kampagne (`campaign.rs`) stehen seit RU27.2 daneben, Spielstände (`saves`) folgen in RU50.1. Aufgeteilt (≤ 400
-//! Zeilen): `config.rs` (Config, Log, Uhr), `error.rs` (UserError, describe), `view_impl.rs` (`impl view::session::Session`).
+//! Abweichungen von Go: Der Raum liegt im Manager (`Session::code` ist sein Schlüssel); der Manager kennt weder `new_code`
+//! (der Code ist zufällig, nicht `LOCL`) noch einen `fs.FS` für Welten (`worlds_source`). Takt (`step.rs`), Kampagne
+//! (`campaign.rs`), Spielstände (`saves.rs`), Aktionen (`actions.rs`) und Entwickler-Rolle (`dev.rs`) stehen daneben.
+//! Gespeichert wird im Takt (`InlineWriter` des Raums), nicht in einem Thread. Aufgeteilt (≤ 400 Zeilen): `config.rs`
+//! (Config, Log, Uhr), `error.rs` (UserError, describe), `view_impl.rs` (`impl view::session::Session`).
 
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 use k3c_room::fehler::Fehler as RoomFehler;
-use k3c_room::room::{Env, Level, Log as _, Manager, Options, Room};
+use k3c_room::room::{Env, Log as _, Manager, Options, Room};
 use k3c_room::store::Saves;
 use k3c_sim::state::{PlayerCommand, World};
 
@@ -24,7 +25,7 @@ use super::peer::{LocalPeer, PeerData, SharedPeer, StageState};
 use super::route::RouteCache;
 use super::settings::{SETTINGS_FILE, load_settings};
 use super::watched::{SaveResults, SharedResults, WatchedStore};
-use super::worlds::{game_data, worlds_fs};
+use super::worlds::{game_data, worlds_fs, worlds_source};
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::{Cue, CueKind, Outcome, Seat};
 use crate::view::input::DeviceID;
@@ -154,8 +155,8 @@ impl Session {
     }
 
     /// Legt den Manager eines Spiels an (Go `manager`): Dev = `settings.dev_mode`. Die Spieldaten lädt der erste Aufruf.
-    /// `Manager` hat noch kein Feld für den Ordner der Welten, weitere Welten gehen darum nur über die Standard-Daten.
-    pub(super) fn manager(&mut self) -> Result<GameManager, UserError> {
+    /// Weitere Welten (`Manager::set_worlds`) gibt es nur im Dev-Mode (fail closed: ohne ihn kein Ordner).
+    pub(super) fn manager(&self) -> Result<GameManager, UserError> {
         let data = game_data()?;
         let store = WatchedStore::new(
             Saves::new(self.dir.clone(), clock(&self.now)),
@@ -163,6 +164,24 @@ impl Session {
         );
         let mut m = Manager::new(store, self.log.clone(), clock(&self.now), "local", data);
         m.dev = self.settings.dev_mode;
+        if m.dev {
+            let src = worlds_source(self.worlds_dir.as_deref());
+            if src.is_none() && self.worlds_dir.is_some() {
+                // Go nimmt jeden Ordner; der Manager liest nur `<Datenordner>/worlds/<id>.json` (fail closed).
+                let mut log = self.log.clone();
+                log.warn(
+                    "🚫 Welten-Ordner heißt nicht „worlds“, keine weiteren Welten",
+                    &[(
+                        "dir",
+                        &self
+                            .worlds_dir
+                            .as_deref()
+                            .map_or(String::new(), |d| d.display().to_string()),
+                    )],
+                );
+            }
+            m.set_worlds(src);
+        }
         m.snapshot = Some(no_snapshot);
         Ok(m)
     }
@@ -234,7 +253,7 @@ impl Session {
             return Ok(());
         };
         let name = self.name.clone();
-        let res = close_room(&mut m, &self.code);
+        let res = m.close_room(&name);
         self.reset();
         res.map_err(|e| describe(&e, &name))?;
         self.log.info("🛑 Spiel beendet", &[("save", &name)]);
@@ -350,33 +369,4 @@ impl Session {
             device: DeviceID::default(),
         });
     }
-}
-
-/// `Manager.CloseRoom` aus Go (`closeroom.go`, `k3c-room` hat es noch nicht): Ablauf wie das Aufräumen eines leeren Raums:
-/// speichern, Report schreiben, schließen, Test-Stand löschen; verbundene Geräte bekommen `closed`. Danach ist der Code
-/// frei.
-fn close_room(m: &mut GameManager, code: &str) -> Result<(), RoomFehler> {
-    let (rooms, mut env) = m.split();
-    let Some(mut r) = rooms.remove(code) else {
-        env.log.info(
-            "🚫 Raum schließen abgelehnt, kein Raum offen",
-            &[("ns", &"room"), ("save", &code)],
-        );
-        return Err(RoomFehler::RoomNotFound);
-    };
-    let geraete = r.connected();
-    r.log(
-        &mut env,
-        Level::Info,
-        "🛑 Raum schließt",
-        &[("grund", &"vom Gerät geschlossen"), ("geraete", &geraete)],
-    );
-    r.save_sync(&mut env);
-    r.write_report(&mut env);
-    r.closed = true;
-    r.drop_test_save(&mut env);
-    for d in r.devices.values_mut().filter(|d| d.connected) {
-        d.peer.closed(false);
-    }
-    Ok(())
 }
