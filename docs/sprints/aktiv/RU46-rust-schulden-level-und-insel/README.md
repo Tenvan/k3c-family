@@ -65,7 +65,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU46.1 | `RU46.1-level-marker-abbauen.md` | Umsetzung | autonom | offen |
+| RU46.1 | `RU46.1-level-marker-abbauen.md` | Umsetzung | autonom | fertig |
 | RU46.2 | `RU46.2-welt-datei-randfaelle.md` | Umsetzung | autonom | offen |
 | RU46.3 | `RU46.3-insel-save-null-und-kopf.md` | Umsetzung | autonom | offen |
 | RU46.4 | `RU46.4-takt-vergleich-null-leer.md` | Umsetzung | autonom | offen |
