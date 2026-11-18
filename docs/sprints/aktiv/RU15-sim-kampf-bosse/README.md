@@ -1,11 +1,11 @@
 # RU15 · SIM · Sim: Kampf, Bosse, Krone, Portale
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** e14dd7f17
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17
@@ -95,7 +95,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU15.1 | `RU15.1-boss-abilities-data.md` | Umsetzung | autonom | offen |
+| RU15.1 | `RU15.1-boss-abilities-data.md` | Umsetzung | autonom | in Arbeit |
 | RU15.2 | `RU15.2-boss-endboss-combat.md` | Umsetzung | autonom | offen |
 | RU15.3 | `RU15.3-combat-data-squad.md` | Umsetzung | autonom | offen |
 | RU15.4 | `RU15.4-crown-portal.md` | Umsetzung | autonom | offen |

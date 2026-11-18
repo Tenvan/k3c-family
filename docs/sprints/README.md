@@ -34,6 +34,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | `aktiv/RU23-hud-teil-2/` |
 | RU44 | CLI | RSU | Bild-Pfad ohne Allokationen | – | `aktiv/RU44-bild-pfad-ohne-allokationen/` |
+| RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | `aktiv/RU15-sim-kampf-bosse/` |
 
 ## Offen am Gerät
 
@@ -57,7 +58,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
 | RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | bereit | `geplant/RU10-sim-insel/` |
 | RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | bereit | `geplant/RU14-sim-welt-stufen-kampagne/` |
-| RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | bereit | `geplant/RU15-sim-kampf-bosse/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
 | RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | bereit | `geplant/RU21-spielstaende-und-raum-teil-1/` |

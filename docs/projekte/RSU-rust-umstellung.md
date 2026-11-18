@@ -49,7 +49,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | aktiv |
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | geplant |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | geplant |
-| RU15 | Sim: Kampf, Bosse, Krone, Portale | geplant |
+| RU15 | Sim: Kampf, Bosse, Krone, Portale | aktiv |
 | RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | geplant |
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | geplant |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
