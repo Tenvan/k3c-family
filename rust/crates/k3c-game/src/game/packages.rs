@@ -4,12 +4,13 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use super::parts::Part;
-use super::pending::devtools_part;
 use super::shared::{HudEnd, HudOverlay, HudVoyage, Shared};
 use crate::actors::{self, draw::ActorsDrawer};
 use crate::art::Library;
 use crate::audio::Sound;
+use crate::devtools::chronicle::{ChronicleHandle, new_chronicle};
 use crate::view::keys::KeyTable;
+use crate::view::roles::REPORTS_DIR;
 use crate::{fx, hud, input, menu, props, world};
 
 /// Grafik-Bibliotheken der Module. Go reicht eine `*art.Library` an alle; in Rust liest `world` sie nur (`Rc`), die
@@ -102,6 +103,24 @@ fn fx_part(lib: SharedLib) -> Part {
         drawer_listeners: vec![Box::new(x.share())],
         assets: vec![Box::new(x)],
         ..Part::named("fx")
+    }
+}
+
+/// Go: `devtools.New` mit `devtools.NewChronicle` (Cheat-Menü, Debug-Overlay, Hilfe; Chronik hört mit und schreibt den
+/// Sitzungsbericht beim Programmende). Die Chronik ist zugleich Listener und Finisher.
+fn devtools_part(lib: SharedLib) -> Part {
+    let chronicle = {
+        let guard = lib.as_ref().map(|l| l.borrow());
+        new_chronicle(guard.as_deref(), REPORTS_DIR)
+    };
+    let c = ChronicleHandle(Rc::new(RefCell::new(chronicle)));
+    let d = crate::devtools::new(lib);
+    Part {
+        drawers: d.drawers,
+        listener: Some(Box::new(c.clone())),
+        overlays: vec![d.overlay],
+        finishers: vec![Box::new(c)],
+        ..Part::named("devtools")
     }
 }
 
