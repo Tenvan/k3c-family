@@ -1,5 +1,6 @@
 //! Platzhalter für Dinge späterer Sessions (Leitfaden § 7); die liefernde Session löscht sie.
 #![allow(dead_code)]
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf RU12
 
 use k3c_platform::Canvas;
 
