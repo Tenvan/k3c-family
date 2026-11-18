@@ -119,8 +119,8 @@ fn build_world(file: &WorldFile, keys: &[Keys], data: &Data, rules: &Rules) -> R
     if !file.story.is_null() {
         w.story = decode_world_story(&file.story)?;
     }
-    if !file.skins.is_null() {
-        w.skins = decode_world_skins(&file.skins)?;
+    if let Some(skins) = &file.skins {
+        w.skins = decode_world_skins(skins)?;
     }
     w.islands = decode_islands(islands, keys, data, rules)?;
     if has_story(file, islands) {

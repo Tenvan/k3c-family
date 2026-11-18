@@ -11,3 +11,6 @@ workspace = true
 k3c-sim = { path = "../k3c-sim" }
 k3c-level = { path = "../k3c-level" }
 k3c-data = { path = "../k3c-data" }
+k3c-rng = { path = "../k3c-rng" }
+serde_json.workspace = true
+serde.workspace = true

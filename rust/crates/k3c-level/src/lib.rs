@@ -3,10 +3,13 @@
 pub mod backdrop;
 pub mod biome;
 pub mod error;
+mod float_text;
 pub mod guards;
 pub mod lair;
 pub mod level;
 mod level_entities;
+#[cfg(test)]
+mod level_entities_tests;
 mod level_gen;
 pub mod lines;
 pub mod nature;

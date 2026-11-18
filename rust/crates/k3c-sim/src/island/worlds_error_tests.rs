@@ -91,3 +91,50 @@ fn welt_fehler_nennen_ort() {
         }
     }
 }
+
+/// B-1085 Fall 1: `"skins": null` ist wie in Go ein Fehler (das Feld ist vorhanden, aber kein Objekt); fehlt es, lädt die Welt.
+#[test]
+fn skins_null_wird_wie_in_go_abgelehnt() {
+    let a = test_island("a", "");
+    let raw = with_islands(r#""id":"test","name":"Test","skins":null"#, &a);
+    let e = parse_world_in(&raw, "test").expect_err("skins null");
+    let want = format!("{FILE}skins: Objekt Basis-Asset → Ersatz-Asset erwartet");
+    assert!(e.contains(&want), "{e:?}");
+    assert!(
+        parse_world_in(&test_world(&a), "test").is_ok(),
+        "ohne skins lädt die Welt"
+    );
+}
+
+/// B-1085 Fall 2: Insel, `depthScaling` und `nature` als Liste statt Objekt melden `kein gültiges JSON`.
+#[test]
+fn array_statt_objekt_ist_kein_gueltiges_json() {
+    let cases = [
+        (test_world("[]"), "Insel Nr. 1: kein gültiges JSON"),
+        (
+            island(r#","depthScaling":[1,1,1]"#),
+            "Insel a: depthScaling: kein gültiges JSON",
+        ),
+        (island(r#","nature":[]"#), "Insel a: nature: kein gültiges JSON"),
+        (
+            island(r#","natureByDepth":{"0":[]}"#),
+            "Insel a: natureByDepth.0: kein gültiges JSON",
+        ),
+    ];
+    for (raw, want) in cases {
+        let e = parse_world_in(&raw, "test").expect_err(want);
+        assert!(e.contains(&format!("{FILE}{want}")), "{want}: {e:?}");
+    }
+}
+
+/// B-1085 Fall 3: ein `null`-Wert in `natureByDepth` ist ein leerer Wert; eine Insel `null` meldet `id fehlt`.
+#[test]
+fn null_werte_in_nature_by_depth_und_null_insel() {
+    let w = parse_world_in(&island(r#","natureByDepth":{"0":null}"#), "test").expect("null-Wert");
+    assert!(w.islands[0].nature_by_depth["0"].is_empty(), "leerer Wert");
+    let e = parse_world_in(&test_world("null"), "test").expect_err("Insel null");
+    assert!(
+        e.contains(&format!("{FILE}Insel Nr. 1: id fehlt (Pflichtfeld)")),
+        "{e:?}"
+    );
+}
