@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU39 | CLI | RSU | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | – | `aktiv/RU39-ruckler-messung-rust-gegen-go/` |
 
 ## Offen am Gerät
 
@@ -42,10 +41,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 - W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
 - WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
-
-### Xbox/TV
-
-- RU39.2 · Messläufe auf ruhigem PC und Mini-PC, Sichtprüfung nebeneinander (Mensch) (Sprint RU39, offen, Agent Mensch)
 
 ## Geplant (nach Projekt-Rang)
 
@@ -449,3 +444,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU16 | Gebäude und Objekte zeichnen | `erledigt/RU16-gebaeude-und-objekte-zeichnen/` |
 | RU17 | Effekte und Ton im Spiel | `erledigt/RU17-effekte-und-ton-im-spiel/` |
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | `erledigt/RU20-hud-teil-1/` |
+| RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | `erledigt/RU39-ruckler-messung-rust-gegen-go/` |
