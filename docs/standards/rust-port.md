@@ -9,7 +9,8 @@ Dieser Text ist der Port-Leitfaden. RU1.1 legt ihn wörtlich als `docs/standards
 - **Go ist die Wahrheit.** Lies jede Go-Datei der Session ganz, samt Test, bevor du schreibst.
 - Übersetze Funktion für Funktion in derselben Reihenfolge, mit denselben Namen in `snake_case`; Typen in `CamelCase`. Deutsche Kommentare übernehmen.
 - Nichts verbessern, nichts umbauen, nichts beschleunigen. Fällt ein Fehler in Go auf: Ticket anlegen und in Rust so nachbauen, wie Go rechnet.
-- **Bitgleich** heißt: gleicher JSON-Baum, jede Zahl als `f64` mit denselben Bits. Golden werden nie geändert.
+- **Bitgleich** heißt: gleicher JSON-Baum, jede Zahl als `f64` mit denselben Bits. Es gilt nur für rng, Ganzzahlen und den Level-Aufbau (Level-Generator). Golden werden nie geändert.
+- **Gleiches Verhalten** gilt für Sim-Fließkomma (Entscheidung 012): dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte (Gold, Tag, IDs, Zählungen), dieselben Kampagnen-Ergebnisse; Fließkommawerte mit Toleranz 1e-6 relativ, nahe 0 absolut 1e-9. Bitgleichheit zu Go ist dort ein Prüfwerkzeug des Ports, keine Anforderung an das Spiel.
 
 ### § 2 Ablage
 
@@ -45,8 +46,10 @@ JSON: `json:"name"` → `#[serde(rename = "name")]`; `omitempty` → `skip_seria
 ### § 5 Determinismus
 
 - Gewürfelt wird nur mit `k3c_rng::Rng`. Jeder Würfel-Aufruf steht an derselben Stelle der Reihenfolge wie in Go, auch wenn das Ergebnis verworfen wird.
-- Gleitkomma: dieselbe Reihenfolge und Klammerung der Rechenschritte wie in Go. `float64(…)`-Hüllen um Produkte in Go fallen weg, die Reihenfolge bleibt. Kein `mul_add`.
-- Verboten in den Sim-Crates: `powf`, `powi`, `exp`, `ln`, `sin`, `cos`, `f64::max`, `f64::min`. Dafür `k3c_det::pow`, `exp`, `fmax`, `fmin` (auch für Gos eingebautes `min`/`max` auf Gleitkommazahlen).
+- Determinismus innerhalb von Rust bleibt Pflicht: gleicher Seed ergibt bitgleich dasselbe Spiel (Wiedergabe, Spielstände, Koop).
+- Gleitkomma in rng und Level-Aufbau: dieselbe Reihenfolge und Klammerung der Rechenschritte wie in Go (bitgleich). `float64(…)`-Hüllen um Produkte in Go fallen weg, die Reihenfolge bleibt. Kein `mul_add`.
+- Gleitkomma in der Sim: gleiches Verhalten (§ 1) reicht. Umsortieren, schnellere Datenstrukturen und std-Funktionen (`powf`, `powi`, `exp`, `ln`, `sin`, `cos`, `f64::max`, `f64::min`) statt `k3c_det` sind erlaubt, solange Toleranz und Ereignis-Abgleich halten. `k3c_det::pow`, `exp`, `fmax`, `fmin` bleiben Pflicht in rng und Level-Aufbau (auch für Gos eingebautes `min`/`max` auf Gleitkommazahlen).
+- Nach RU41 (Go-Engine entfernt) schreibt Rust eigene Golden; die Go-Golden werden dann ersetzt.
 - Erlaubt, weil exakt gleich: `abs`, `floor`, `ceil`, `trunc`, `round` (wie `math.Round`), `sqrt`, `%` (wie `math.Mod`), `copysign`.
 - Ganzzahlen: `/` und `%` runden in beiden Sprachen zur Null. Überlauf nur im rng, dort `wrapping_*`. `int(f)` → `f as i64`.
 - Sortieren: `sort.SliceStable`, `slices.SortStableFunc` → `sort_by`. `slices.Sort` auf Zahlen oder Texten → `sort_unstable` (Gleitkomma: `sort_by(f64::total_cmp)`). `slices.SortFunc` und `sort.Slice` sind nicht stabil: Zeige im Kommentar, dass der Vergleich keinen Gleichstand kennt (zum Beispiel weil die ID mitvergleicht), und nimm `sort_by`. Ist Gleichstand möglich: anhalten, Ticket.

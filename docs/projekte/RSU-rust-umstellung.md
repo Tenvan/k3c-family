@@ -82,7 +82,8 @@ Workbench, `tools/assetkit`, `tools/paper` und die übrigen Werkzeuge nach Rust 
 - **Analyse und Empfehlung:** B-1014. Die GC-Vermutung ist ungeprüft; B-943 beschreibt Ruckler bei stabilen 60 FPS auch auf schnellen Rechnern, was eher auf den Bildtakt zeigt (Sim 30 Hz, Bild 60 Hz, Zwischenbilder aus der Wanduhr). Ist der Bildtakt die Ursache, behebt Rust nichts von selbst. Deshalb zuerst RU0.
 - **Reihenfolge „Client zuerst“:** Der Rust-Client zeichnet bis G2 aus Aufzeichnungen des Go-Spiels (RU38), ohne portierte Sim. So ist nach 69 Sessions belegt, ob Rust die Ruckler beseitigt, bevor die übrigen 139 Sessions anfallen.
 - **Wellen- und Kostenplan:** B-1015. 42 Sprints in 26 Wellen, rund 208 Sessions (Spanne ±20 %, ungeprüft).
-- **Gates:** G0 nach 3 Sessions (Ursache der Ruckler), G1 nach 11 (Spike), G2 nach 69 (Client ruckelfrei bei echter Last), G3 nach 143 (Sim-Golden bitgleich), G4 nach 171 (Abnahme am PC). An jedem Gate entscheidet 🧑.
+- **Gates:** G0 nach 3 Sessions (Ursache der Ruckler), G1 nach 11 (Spike), G2 nach 69 (Client ruckelfrei bei echter Last), G3 nach 143 (Sim-Golden mit gleichem Verhalten, Entscheidung 012; Level-Golden bleiben bitgleich), G4 nach 171 (Abnahme am PC). An jedem Gate entscheidet 🧑.
+- **Port-Orakel (🧑 2026-11-18, Entscheidung 012):** Bitgleichheit zu Go gilt nur für rng, Ganzzahlen und Level-Aufbau (RU3, RU6). Sim-Fließkomma (RU22): gleiches Verhalten, also dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte und Kampagnen-Ergebnisse, Fließkommawerte mit Toleranz (1e-6 relativ, absolut 1e-9 nahe 0). Determinismus innerhalb von Rust bleibt Pflicht; nach RU41 schreibt Rust eigene Golden.
 - **Rückfall:** Bis G4 bleibt das Go-Spiel unverändert spielbar, Rust liegt nur unter `rust/`.
 - **Läufe im Game-Client (🧑 2026-11-16):** Sim und Balancing laufen mit der Spiel-EXE, headless oder mit Fenster per Parameter; die MCP-Tools der Workbench rufen die EXE (B-1017). Umsetzung nach G4: RU33, RU34; Balancing zuletzt: RU25, RU28, RU31, RU40.
 - **Sonnet-tauglich (🧑 2026-11-16):** Port-Leitfaden B-1018, Tabelle „Session → Go-Dateien“ je Port-Sprint, Vorentscheidungen in RU4, RU8, RU22, RU33, RU34.
@@ -105,7 +106,7 @@ Workbench, `tools/assetkit`, `tools/paper` und die übrigen Werkzeuge nach Rust 
 | 10 | RU10, RU12, RU15 | Sim Insel; Menüs 2; Sim Kampf | 15 | – |
 | 11 | RU14, RU26 | Sim Welt-Schritt; Spielschleife 1 | 11 | – |
 | 12 | RU18, RU19, RU21, RU29 | Sim Wirtschaft bis Skills; Sim Events; Spielstände, Raum 1; Dev-Menüs | 19 | – |
-| 13 | RU22 | Sim-Abgleich | 6 | **G3** (🧑): alle Sim- und Kampagnen-Golden bitgleich |
+| 13 | RU22 | Sim-Abgleich | 6 | **G3** (🧑): alle Sim- und Kampagnen-Golden mit gleichem Verhalten (Ereignis-Abgleich, Toleranz) |
 | 14 | RU24 | Raum 2 | 5 | – |
 | 15 | RU27 | Lokales Spiel | 4 | – |
 | 16 | RU30 | Spielschleife 2 | 5 | – |
