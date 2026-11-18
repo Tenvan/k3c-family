@@ -62,3 +62,6 @@ pub fn cap_events(_w: &mut World) {
 
 // Von RU19.1 portiert (dev.go): die Import-Stelle bleibt `pending`.
 pub use crate::dev::dev_build_site;
+
+pub use crate::hub::sites::check_world_hub_sites; // Von RU18.3 portiert (world_hub_sites.go)
+pub use crate::hub::{level_of, new_hub_site, site_cost, upgrade_payable, validate_hub_data}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)

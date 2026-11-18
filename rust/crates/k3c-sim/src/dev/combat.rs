@@ -4,13 +4,14 @@
 
 use k3c_data::difficulty::DifficultyFile;
 
-use super::pending::{merchant_arrive, raid_merchant};
+use super::pending::raid_merchant;
 use super::{dev_set_phase, on_stage};
 use crate::boss::abilities::arm_boss;
 use crate::boss::data::boss_by_id;
 use crate::boss::endboss::{EndbossFight, endboss_phase};
 use crate::boss::spawn_boss;
 use crate::island::Island;
+use crate::merchant::merchant_arrive;
 use crate::state::pending::values;
 use crate::state::{Fehler, World};
 use crate::world::hub_of;
@@ -82,7 +83,7 @@ fn boss_phase_of(isl: &mut Island, f: &mut EndbossFight) -> Option<i64> {
 /// Go: `DevStartEvent`: startet ein Event aus data/events.json: `fullMoon` und `bloodMoon` laufen in der nächsten Nacht,
 /// zu deren Beginn alle Stufen springen (`dev_set_phase`); `merchantRaid` lässt den Händler in seiner Stufe ankommen, wenn
 /// er fehlt, und überfällt seinen Besuch. `false`: unbekannte Id, keine Händler-Stufe oder der Besuch wird schon überfallen.
-pub fn dev_start_event(isl: &mut Island, id: &str) -> bool {
+pub fn dev_start_event(isl: &mut Island, difficulty: &DifficultyFile, id: &str) -> bool {
     match id {
         "fullMoon" | "bloodMoon" => {
             if !dev_set_phase(isl, "night") {
@@ -92,25 +93,29 @@ pub fn dev_start_event(isl: &mut Island, id: &str) -> bool {
             isl.dev.nights.insert(id.to_string(), day); // die Nacht gehört zum Tag davor
             true
         }
-        "merchantRaid" => dev_merchant_raid(isl),
+        "merchantRaid" => dev_merchant_raid(isl, difficulty),
         _ => false,
     }
 }
 
 /// Go: `devMerchantRaid`: Händler-Überfall in der Stufe des Händlers (`hub.merchant.onlyDepth`).
-fn dev_merchant_raid(isl: &mut Island) -> bool {
-    for w in &mut isl.stages {
-        if w.biome.depth != hub_of(w).merchant.only_depth {
-            continue;
-        }
+fn dev_merchant_raid(isl: &mut Island, difficulty: &DifficultyFile) -> bool {
+    let Some(stage) = isl
+        .stages
+        .iter()
+        .position(|w| w.biome.depth == hub_of(w).merchant.only_depth)
+    else {
+        return false;
+    };
+    on_stage(isl, difficulty, stage, |w, r| {
         if w.merchant.is_none() {
-            merchant_arrive(w);
+            let v = values(w);
+            merchant_arrive(w, &v, Some(r));
         }
         if w.merchant.as_ref().is_some_and(|m| m.raid) {
             return false;
         }
         raid_merchant(w);
-        return true;
-    }
-    false
+        true
+    })
 }

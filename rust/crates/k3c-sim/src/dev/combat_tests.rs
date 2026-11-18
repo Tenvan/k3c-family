@@ -56,7 +56,10 @@ fn blutmond_laeuft_genau_in_der_naechsten_nacht() {
     let (data, mut isl, _) = island_with_player("dev-mond");
     let d = &data.difficulty;
     step_island(&mut isl, &[], d, DT);
-    assert!(dev_start_event(&mut isl, "bloodMoon"), "bloodMoon abgelehnt");
+    assert!(
+        dev_start_event(&mut isl, &data.difficulty, "bloodMoon"),
+        "bloodMoon abgelehnt"
+    );
     step_island(&mut isl, &[], d, DT);
     let w = &isl.stages[0];
     assert_eq!(w.cycle.phase, "night");
@@ -66,20 +69,26 @@ fn blutmond_laeuft_genau_in_der_naechsten_nacht() {
             .any(|e| e["type"] == "eventStarted" && e["event"] == "bloodMoon")
     );
     assert!(w.night_events.len() == 1 && w.night_events[0].id == "bloodMoon");
-    assert!(!dev_start_event(&mut isl, "neumond"), "unbekanntes Event angenommen");
+    assert!(
+        !dev_start_event(&mut isl, &data.difficulty, "neumond"),
+        "unbekanntes Event angenommen"
+    );
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (merchant_arrive)"]
+#[ignore = "wartet auf RU19 (decode_world_story) und RU19 (raid_merchant)"]
 fn haendler_ueberfall_wird_gestartet_und_nicht_doppelt() {
-    let (_, mut isl, _) = island_with_player("dev-raid");
+    let (data, mut isl, _) = island_with_player("dev-raid");
     let queued = isl.stages[0].spawn_queue.len();
-    assert!(dev_start_event(&mut isl, "merchantRaid"), "merchantRaid abgelehnt");
+    assert!(
+        dev_start_event(&mut isl, &data.difficulty, "merchantRaid"),
+        "merchantRaid abgelehnt"
+    );
     let w = &isl.stages[0];
     assert!(w.merchant.as_ref().is_some_and(|m| m.raid) && w.spawn_queue.len() > queued);
     assert_eq!(isl.merchant_visits, 1);
     assert!(
-        !dev_start_event(&mut isl, "merchantRaid"),
+        !dev_start_event(&mut isl, &data.difficulty, "merchantRaid"),
         "zweiter Überfall angenommen"
     );
 }

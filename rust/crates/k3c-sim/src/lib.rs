@@ -6,6 +6,7 @@ pub mod campaign;
 pub mod combat;
 pub mod crown;
 pub mod dev;
+pub mod economy;
 pub mod enemies;
 pub mod hub;
 pub mod island;
