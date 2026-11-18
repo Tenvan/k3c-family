@@ -6,7 +6,7 @@ use super::{dev_set_pure, dev_start_wave};
 use crate::island::Island;
 use crate::island::step_island;
 use crate::state::PlayerCommand;
-use crate::state::pending::values;
+use crate::state::links::values;
 
 const DT: f64 = 1.0 / 30.0;
 

@@ -9,7 +9,7 @@
 
 use k3c_data::hub::Stock;
 
-use crate::state::pending::emit;
+use crate::state::links::emit;
 use crate::state::{Event, IslandRef, World};
 use crate::world::castle_losses;
 

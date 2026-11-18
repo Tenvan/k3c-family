@@ -17,7 +17,7 @@ use crate::unit::{step_camps, step_troops};
 
 use super::cycle::step_cycle;
 use super::lava::step_lava;
-use super::pending::{
+use super::links::{
     cap_events, step_healing, step_passives, step_plantations, step_players, step_sites, step_spell_towers, step_storms,
 };
 use super::travel::step_travel;
@@ -46,9 +46,9 @@ pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut Isla
     step_endboss(w, &v, isl.as_deref_mut(), dt);
     step_enemies(w, isl.as_deref_mut(), dt);
     step_lava(w, dt);
-    step_hazards(w, &v, dt);
+    step_hazards(w, &v, isl.as_deref(), dt);
     step_storms(w, dt);
-    step_projectiles(w, dt);
+    step_projectiles(w, isl.as_deref(), dt);
     remove_dead_enemies(w, isl.as_deref_mut());
     for ti in 0..w.troops.len() {
         // Bürger sterben nicht: Verlust-Kaskade (Q67, unit_warrior.go)

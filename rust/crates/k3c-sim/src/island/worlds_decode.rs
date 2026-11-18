@@ -17,7 +17,7 @@ use serde_json::Value;
 
 use super::data::{IslandDef, check_island};
 use super::keys::Keys;
-use crate::state::pending::decode_island_story;
+use crate::state::links::decode_island_story;
 
 /// Erlaubte Felder einer Insel (`strictDecode` in `decodeIslands`).
 const ISLAND_FIELDS: [&str; 11] = [

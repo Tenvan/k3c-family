@@ -99,7 +99,7 @@ Die Golden-Vergleiche sind Sim-Läufe als Tests; sie brauchen die Ausnahme von d
 | RU22.2 | `RU22.2-golden-wald.md` | Umsetzung | autonom | fertig |
 | RU22.3 | `RU22.3-golden-biome.md` | Umsetzung | autonom | fertig |
 | RU22.4 | `RU22.4-golden-kampagnen.md` | Umsetzung | autonom | fertig |
-| RU22.5 | `RU22.5-durchsatz-und-g3-bericht.md` | Umsetzung | autonom | offen |
+| RU22.5 | `RU22.5-durchsatz-und-g3-bericht.md` | Umsetzung | autonom | fertig |
 | RU22.6 | `RU22.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

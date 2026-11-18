@@ -11,7 +11,7 @@ use k3c_data::Data;
 use k3c_data::hub::HubData;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
-use crate::state::pending::{validate_hub_data_in, values_of};
+use crate::state::links::{validate_hub_data_in, values_of};
 use crate::world::{Options as WorldOptions, create_world, empty_site, hub_of};
 
 use super::Island;

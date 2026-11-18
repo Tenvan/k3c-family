@@ -8,7 +8,7 @@ use k3c_data::ship::{ShipFile, ShipFileStages};
 use k3c_level::level::HARBOR_KIND;
 use k3c_level::types::Entity;
 
-use super::pending::{dev_build_site, level_of, upgrade_payable};
+use super::links::{dev_build_site, level_of, upgrade_payable};
 use super::ship::{SHIP_KIND, add_ship_site, harbor, ship_complete, with_ship};
 use super::testutil::*;
 use super::vals;

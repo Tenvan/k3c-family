@@ -11,11 +11,11 @@ use k3c_data::ship::ShipFile;
 use k3c_level::level::HARBOR_KIND;
 
 use crate::island::Island;
-use crate::pending::next_level;
+use crate::links::next_level;
 use crate::state::island_ref::IslandRef;
 use crate::state::{Site, World};
 
-use super::pending::{level_of, site_cost, upgrade_payable};
+use super::links::{level_of, site_cost, upgrade_payable};
 use super::{empty_site, vals};
 
 /// Go: `shipKind`, die Art des Schiffs-Platzes.

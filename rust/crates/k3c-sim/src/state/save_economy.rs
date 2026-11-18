@@ -7,8 +7,8 @@
 use serde::{Deserialize, Serialize};
 
 use super::fehler::Fehler;
+use super::links::{is_fighter, is_soldier, make_fighter, plot_x, profession_of, spawn_vagrant, values};
 use super::omit::{is_zero_f64, is_zero_i64};
-use super::pending::{is_fighter, is_soldier, make_fighter, plot_x, profession_of, spawn_vagrant, values};
 use super::save::{HubSave, TroopSave, key};
 use super::{Plot, ResourceNode, Site, World, WorldValues};
 

@@ -20,7 +20,7 @@ use crate::enemies::target::TargetKind;
 use crate::enemies::traits::aoe_targets;
 use crate::state::common::{apply_damage_by, event};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{
+use crate::state::links::{
     add_pool_points, add_stock_capped, emit, frost_armor_hit, moon_damage, scatter_coins, unit_x, values,
 };
 use crate::state::{Enemy, World, WorldValues};
@@ -110,13 +110,13 @@ pub fn boss_ability_with(w: &mut World, v: &WorldValues, ei: usize, isl: Option<
         }
         "flameTrail" => flame_trail(w, ei, a),
         "shardThrow" => shard_throw(w, v, ei, a),
-        "aoe" => boss_aoe(w, v, ei, a),
+        "aoe" => boss_aoe(w, v, ei, a, isl),
         _ => {}
     }
 }
 
 /// Der Flächenschlag des Bosses (`aoe`): trifft, sobald ein Ziel im Radius steht, alle Ziele dort je einmal.
-fn boss_aoe(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility) {
+fn boss_aoe(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility, isl: Option<&IslandRef>) {
     let (x, id, damage) = (w.enemies[ei].x, w.enemies[ei].id, w.enemies[ei].damage);
     let targets = aoe_targets(w, v, x, a.radius);
     if targets.is_empty() {
@@ -127,7 +127,7 @@ fn boss_aoe(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility) {
     let kind = w.enemies[ei].kind.clone(); // ein Schlag je Intervall
     for c in &targets {
         let dmg = moon_damage(w, damage); // Blutmond (events_moon.go)
-        apply_damage_by(w, c.id, dmg, &kind);
+        apply_damage_by(w, c.id, dmg, &kind, isl);
         if c.kind == TargetKind::Player
             && let Some(pi) = c.player
         {
@@ -170,9 +170,8 @@ pub fn boss_defeated_with(w: &mut World, v: &WorldValues, e: &Enemy, mut isl: Op
     };
     scatter_coins(w, e.x, b.reward.gold + e.carried_gold);
     let res = w.biome.primary_resource.clone(); // einmal je Boss
-    if let Some(taken) = add_stock_capped(w, isl.as_deref(), &res, b.reward.material)
-        && taken > 0
-    {
+    let (taken, ok) = add_stock_capped(w, v, isl.as_deref(), &res, b.reward.material);
+    if ok && taken > 0 {
         emit(w, "gathered", event(json!({"resource": res, "amount": taken})));
     }
     let sources = &v.monarch.skill_point_sources;

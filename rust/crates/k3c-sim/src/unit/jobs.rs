@@ -5,7 +5,7 @@ use super::warrior::weapon_to_fetch;
 use crate::island::storage::resource_full;
 use crate::state::common::{is_dangerous, is_worker};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job};
+use crate::state::links::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job};
 use crate::state::{Job, World, WorldValues};
 
 /// Go: `findJob`: Bogen holen, sonst nächsten wartenden Bauplatz, sonst (ohne Gefahr) die markierte Ressource nächst am

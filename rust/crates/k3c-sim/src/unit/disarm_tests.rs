@@ -40,7 +40,7 @@ fn disarm_krieger_wird_bauer_und_hebt_schwert_auf() {
         "{events:?}"
     );
     assert_eq!(
-        crate::state::pending::fighters(&w),
+        crate::state::links::fighters(&w),
         0,
         "entwaffneter Krieger zählt noch zum Limit"
     );

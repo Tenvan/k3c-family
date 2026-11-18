@@ -4,7 +4,7 @@
 use super::add_island_player;
 use super::switch_testutil::built;
 use super::testutil::*;
-use crate::state::pending::travel_points;
+use crate::state::links::travel_points;
 use crate::state::{PlayerCommand, World};
 
 #[test]

@@ -90,7 +90,7 @@ fn thief_smoke_bomb_unsichtbar() {
         "Gegner zielt auf {c:?}, erwartet den sichtbaren Spieler {oid}"
     );
     probe(&mut w, &[pi]);
-    apply_damage_by(&mut w, pid, 50.0, "skeleton");
+    apply_damage_by(&mut w, pid, 50.0, "skeleton", None);
     assert_eq!(w.players[pi].gold, PROBE_GOLD, "Unsichtbarer verliert Gold");
     step_idle(&mut w, pi, 151); // 151 Ticks > 5 s
     assert_eq!(w.players[pi].stealth_for, 0.0, "nach 5 s noch unsichtbar");

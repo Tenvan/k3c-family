@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use super::pending::{gather_of, values};
+use super::links::{gather_of, values};
 use super::save::key;
 use super::{Player, ResourceNode, World};
 

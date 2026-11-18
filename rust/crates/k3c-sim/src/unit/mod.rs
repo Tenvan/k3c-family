@@ -39,7 +39,7 @@ use crate::economy::add_stock;
 use crate::island::storage::carry_to_stock;
 use crate::state::common::{approach, event, is_dangerous};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{
+use crate::state::links::{
     add_pool, build_progress_event, finish_upgrade, gather_of, gather_vein, is_vein, next_level, outpost_job, pure,
     repair, scatter_coins, unit_x, upgrade_job, vagrants_at, values, wander_radius,
 };

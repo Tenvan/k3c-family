@@ -66,7 +66,7 @@ fn forced_attack(grade: &str, day: i64) -> (ProtectState, ProtectState) {
         super::target::attack(w, &v, greed, &t, None); // die Insel liefert RU10 (`IslandRef`)
     }
     let (sid, smax) = (w.sites[site].id, w.sites[site].max_hp);
-    crate::state::common::apply_damage_by(w, sid, smax * 10.0, "goblin");
+    crate::state::common::apply_damage_by(w, sid, smax * 10.0, "goblin", None);
     w.castle.hp = 0.0;
     // `castleFallen` (RU15/RU18) folgt dem Burgfall.
     (before, snapshot(w))

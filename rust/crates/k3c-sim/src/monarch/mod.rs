@@ -10,7 +10,7 @@
 use serde_json::json;
 
 use crate::economy::nearest;
-use crate::pending::{emit, unit_x};
+use crate::links::{emit, unit_x};
 use crate::state::common::{apply_damage, event};
 use crate::state::island_ref::IslandRef;
 use crate::state::{PlayerCommand, World, WorldValues};

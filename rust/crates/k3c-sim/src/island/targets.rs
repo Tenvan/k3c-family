@@ -5,7 +5,7 @@
 //! Spieler-Index (`apply_choices`).
 
 use super::{Island, WorldDef};
-use crate::state::pending::crowned;
+use crate::state::links::crowned;
 use crate::state::shared::SwitchTarget;
 
 impl WorldDef {

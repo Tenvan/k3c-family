@@ -109,7 +109,7 @@ fn spielstand_welt_oder_insel_unbekannt() {
 fn spielstand_welt_oder_insel_unbekannt_laden() {
     let data = test_data();
     let world = standard_world(&data);
-    let defaults = crate::state::pending::values_of(&world).expect("Basis-Wertesatz");
+    let defaults = crate::state::links::values_of(&world).expect("Basis-Wertesatz");
     let t = super::SaveTables {
         data: &data,
         defaults: &defaults,
@@ -142,7 +142,7 @@ fn spielstand_v8_welt_und_insel() {
         s.world,
         s.island_id
     );
-    let defaults = crate::state::pending::values_of(&w).expect("Wertesatz");
+    let defaults = crate::state::links::values_of(&w).expect("Wertesatz");
     let t = super::SaveTables {
         data: &data,
         defaults: &defaults,

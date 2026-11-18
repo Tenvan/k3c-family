@@ -2,7 +2,7 @@
 //! Nur lesend, aus den bestehenden Regeln abgelesen (`site_hub_level`, `level_site`); nichts gespeichert, Welt-JSON und
 //! Golden bleiben gleich.
 
-use super::pending::site_hub_level;
+use super::links::site_hub_level;
 use super::{Site, World};
 use crate::world::lines::level_site;
 

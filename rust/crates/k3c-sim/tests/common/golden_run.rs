@@ -5,7 +5,7 @@
 
 use std::sync::Arc;
 
-use k3c_data::hub::Stock;
+use k3c_data::hub::{HubData, Stock};
 use k3c_det::golden::{self, SIM_TOL};
 use k3c_level::nature::neutral_nature;
 use k3c_sim::monarch::{add_pool_points, learn_skill};
@@ -98,6 +98,11 @@ pub fn load(name: &str) -> GoldenRun {
 /// Go: `goldenWorld` samt `goldenPurse`: baut die Startwelt eines Laufs. Der Beutel steht wie in Go auf 100 Gold (nur im
 /// Test, nicht in den Daten).
 pub fn build_world(run: &GoldenRun) -> World {
+    build_world_with(run, None)
+}
+
+/// `build_world` mit abweichender hub.json (`None` = die des Wertesatzes), Go: `goldenWorld(t, run, h)`.
+pub fn build_world_with(run: &GoldenRun, hub: Option<Arc<HubData>>) -> World {
     let data = &base().expect("Daten").data;
     let b = data
         .biomes
@@ -111,6 +116,7 @@ pub fn build_world(run: &GoldenRun) -> World {
         cycle_speed: run.cycle_speed,
         nature: neutral_nature(b),
         vals: Some(Arc::new(vals)),
+        hub,
         ..Options::default()
     };
     let mut w = create_world(b, &run.seed, &opts).unwrap_or_else(|e| panic!("sim-{}: {e}", run.name));
@@ -172,7 +178,7 @@ pub fn replay(run: &GoldenRun) -> Option<Divergence> {
         for _ in 0..seg.ticks {
             step(&mut w, &seg.commands, None, run.dt);
             tick += 1;
-            if tick % run.snapshot_every != 0 {
+            if !tick.is_multiple_of(run.snapshot_every) {
                 continue;
             }
             snap += 1;

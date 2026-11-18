@@ -265,7 +265,3 @@ pub fn first_node(w: &World, kind: &str) -> usize {
 pub fn end_island(_players: i64) -> (Island, f64) {
     panic!("RU15: end_island")
 }
-
-pub fn golden_runs() -> Vec<String> {
-    panic!("RU22: golden_runs")
-}
