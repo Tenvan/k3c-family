@@ -18,10 +18,11 @@ use k3c_data::bosses::{BossAbility, BossData};
 use crate::enemies::spawn_with;
 use crate::enemies::target::TargetKind;
 use crate::enemies::traits::aoe_targets;
-use crate::island::storage::add_stock_capped;
 use crate::state::common::{apply_damage_by, event};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{add_pool_points, emit, frost_armor_hit, moon_damage, scatter_coins, unit_x, values};
+use crate::state::links::{
+    add_pool_points, add_stock_capped, emit, frost_armor_hit, moon_damage, scatter_coins, unit_x, values,
+};
 use crate::state::{Enemy, World, WorldValues};
 
 use abilities::{arm_boss, flame_trail, shard_throw};

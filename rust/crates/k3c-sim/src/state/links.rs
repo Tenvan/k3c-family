@@ -20,15 +20,6 @@ pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert 
 
 pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
-/// Go: `protectedNight` (World-Methode, `island_options.go`): Die Stufe gehört zu einer Insel, deren Grad die laufende Nacht
-/// schützt. Die Insel steht in Rust nicht an der Stufe; `World::island_events` spiegelt den Grad (`step_island`), ohne
-/// Insel nie (wie `island_ref::protected_night(w, None)`).
-pub fn protected_night(w: &World) -> bool {
-    w.island_events
-        .as_ref()
-        .is_some_and(|i| w.cycle.phase == "night" && w.cycle.day <= i.protected_nights)
-}
-
 pub use crate::building::plantation::plot_x; // Von RU18.1 portiert (building_plantation.go)
 pub use crate::building::ruin::is_ruin; // Von RU18.1 portiert (building_ruin.go)
 

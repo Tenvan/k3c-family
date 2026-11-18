@@ -256,11 +256,9 @@ impl Island {
     pub fn sync_stock(&mut self) {
         for (i, w) in self.stages.iter_mut().enumerate() {
             w.stock.clone_from(&self.stock);
-            let protected_nights = w.island_events.as_ref().map_or(0, |e| e.protected_nights);
             w.island_events = Some(IslandEvents {
                 first_stage: i == 0,
                 nights: self.dev.nights.clone(),
-                protected_nights,
             });
         }
     }
@@ -313,9 +311,6 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
     }
     for i in 0..isl.stages.len() {
         let mut r = isl.stage_ref(i, difficulty);
-        if let Some(e) = isl.stages[i].island_events.as_mut() {
-            e.protected_nights = r.grade.protected_nights; // Spiegel für `World::protected_night` (state/common.rs)
-        }
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock); // Entscheidung 5: der Vorrat gehört der Stufe, solange sie rechnet
         step(&mut isl.stages[i], commands, Some(&mut r), dt);
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);

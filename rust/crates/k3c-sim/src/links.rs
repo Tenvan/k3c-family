@@ -3,7 +3,7 @@
 //! prüft in `tests/kein_platzhalter.rs`, dass kein `unimplemented!`/`todo!` mehr im Quelltext steht. Go-Zeiger auf Gegner
 //! und Truppen sind hier Indizes (`ei`, `ti`).
 
-// Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
+// Von RU15 portiert (Bosse): Die Import-Stelle bleibt `links`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
 pub use crate::boss::{boss_ability, boss_defeated, trigger_boss};
 
@@ -31,6 +31,8 @@ pub use crate::building::upgrades::armored_hp;
 
 // Von RU14.4 portiert (world_vein.go): die Import-Stelle bleibt `links`.
 pub use crate::world::vein::{gather_vein, is_vein, node_free};
+
+pub use crate::island::storage::add_stock_capped; // Von RU10 portiert (island_storage.go)
 
 pub use crate::monarch::add_pool_points; // Von RU18.4 portiert (monarch.go)
 

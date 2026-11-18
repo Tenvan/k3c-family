@@ -69,9 +69,6 @@ pub struct IslandEvents {
     pub first_stage: bool,
     /// Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (Go: `island.Dev.Nights`).
     pub nights: std::collections::BTreeMap<String, i64>,
-    /// Die ersten n Nächte ohne Verlust (Go: `island.Options.Grade.ProtectedNights`); `step_island` setzt es vor jedem Schritt der Stufe
-    /// aus dem Grad (`World::protected_night`).
-    pub protected_nights: i64,
 }
 
 impl IslandRef {
