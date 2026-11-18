@@ -28,6 +28,28 @@ einfache, abgegrenzte Oberflächen-Sprints, sobald sie frei werden, und lege aus
 Second Workers Tickets an.
 ```
 
+## 0a. Weg zur Smoke-Version (Stand 2026-11-18)
+
+Ziel (🧑): Rust-Fenster-Programm, Hauptmenü → Neues Spiel → laufende Sim → Zeichnen/HUD → Eingabe. Speichern, Dev-Menüs,
+Go-Vergleich, Balancing, Optimierung und Optik kommen danach. Die Smoke-Version braucht **nicht** RU22 (nur Go-Vergleich),
+RU24 (Rest-Raum, Speichern) und RU30 (Ladeanzeige je Stufe, Messen, Icon); sie braucht die Platzhalter aus RU18 und RU19,
+weil `world::step` jeden Teilschritt ruft (`step_players`, `emit`, `decode_world_story` usw. sind sonst `unimplemented!`).
+
+| Schritt | Sprint | Rechner | hängt an |
+|---|---|---|---|
+| 1 | RU18.1–.5 Sim: Wirtschaft, Bau, Hub, Monarch, Skills (RU18.2 zuerst: `step_players`) | Haupt (Agent läuft) | – |
+| 1 | RU49 Smoke-Raum: `create_in`, Inselwechsel, Pause (k3c-room) | zweit | RU21 |
+| 2 | RU27.1–.2 Sitzung und Takt (`local`); .3 ist nach RU50 gewandert | zweit | RU49 |
+| 3 | RU19.1–.3 Events, Geschichte, `pure` (Review .4 zuletzt) | Haupt | RU18 |
+| 3 | RU48.1–.2 Start verdrahten, Smoke-Test, `task rust:run`, Tasten | zweit | RU27, RU49 |
+| 4 | RU48.3 erster Lauf: Panics im Spielpfad beheben | Haupt | RU18, RU19, RU48.2 |
+| 5 | RU48.4 Review, PR: Smoke-Version startbar | Haupt | RU48.3 |
+| danach | RU50, RU24, RU29, RU22, RU30, RU32, RU35, RU43, RU36 (Abnahme G4) | beide | Smoke |
+
+Rechner-Aufteilung: Haupt hält die k3c-sim-Kette (RU18 → RU19); zweit macht alles in `k3c-room` und `k3c-game` (keine
+Dateikollision mit k3c-sim). Läuft zweit vor Haupt leer, nimmt er RU46, RU47, dann RU50, RU24, RU29. Option, die Kette
+zu kürzen: RU19 parallel zu RU18 auf zweit (Kollision nur in `lib.rs` und den `pending.rs`, beim Merge trivial).
+
 ## 1. Ausgangslage (belegt)
 
 - **Fertig:** Insel/Stufen-Kern (SP12), Optionen/Grade/Material/Lager in Go (SP13), Raum auf Insel + Protokoll v3 (SP14), Regelwerk R1–R4 beschlossen (`docs/rules/*.md`), Go-Server, Diagnose-TUI, k3c-workbench, Logging (heute ausgebaut).
