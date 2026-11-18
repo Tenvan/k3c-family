@@ -5,6 +5,32 @@
 - **Grundlage:** [`roadmap.md`](roadmap.md), [`backlog/README.md`](backlog/README.md) (≈30 offene Umsetzungs-Tickets), `docs/arbeitsweise.md`
   (ein Sprint = eine Domäne, SIM → SRV → CLI), Lückenanalyse unten.
 
+## 0. Prompts für parallele Rechner
+
+Wiederverwendbare Startprompts; Regeln in [`arbeitsweise.md`](arbeitsweise.md) › Second Worker. Der Hauptrechner vergibt
+die Lane `zweit` an Sessions, die der zweite Rechner abarbeiten soll.
+
+### Second Worker (zweiter Rechner, kleinerer Account)
+
+Auf dem zweiten Rechner im Repo, frisch von `origin/main`:
+
+```text
+Du bist der Second Worker für K3C. Lies CLAUDE.md und docs/arbeitsweise.md › Second Worker. Arbeite autonom nur
+Sessions mit „Lane: zweit“ ab (aktive Sprints, Abhängigkeiten erledigt; Überblick mit plan_list), in der Reihenfolge
+der Projekt-Ränge. Je Session ein Commit auf sprint/<präfix>, nach jeder Session pushen; die Review-Session öffnet den
+PR gegen main und mergt mit gh pr merge --squash --auto. Keine Tickets oder Sprints anlegen, Befunde ins Ergebnis
+unter „Für den Hauptrechner“. Kein Sim, kein Balancing, kein gen:paper; gemessen wird erst am Ende. Mach weiter, bis
+keine Session mit Lane zweit mehr frei ist, dann melde den Stand.
+```
+
+### Hauptrechner (Lanes vergeben und Ergebnisse einsammeln)
+
+```text
+Arbeite RSU autonom in Wellen ab und merge auf main. Nimm keine Sessions mit „Lane: zweit“. Vergib Lane zweit an
+einfache, abgegrenzte Oberflächen-Sprints, sobald sie frei werden, und lege aus den „Für den Hauptrechner“-Notizen des
+Second Workers Tickets an.
+```
+
 ## 1. Ausgangslage (belegt)
 
 - **Fertig:** Insel/Stufen-Kern (SP12), Optionen/Grade/Material/Lager in Go (SP13), Raum auf Insel + Protokoll v3 (SP14), Regelwerk R1–R4 beschlossen (`docs/rules/*.md`), Go-Server, Diagnose-TUI, k3c-workbench, Logging (heute ausgebaut).
