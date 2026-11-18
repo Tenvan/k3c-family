@@ -3,12 +3,19 @@
 
 pub mod data;
 pub mod fonts;
+pub mod glyphs;
 pub mod layout;
 pub mod texts;
 mod texts_de;
 mod texts_en;
+pub mod values;
+mod values_texts;
 
+#[cfg(test)]
+mod glyphs_tests;
 #[cfg(test)]
 mod layout_tests;
 #[cfg(test)]
 mod texts_tests;
+#[cfg(test)]
+mod values_tests;
