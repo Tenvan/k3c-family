@@ -64,7 +64,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-18; 🧑 kann widersprechen): 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU49.1 | `RU49.1-room-worlds-switch-pause.md` | Umsetzung | autonom | offen |
+| RU49.1 | `RU49.1-room-worlds-switch-pause.md` | Umsetzung | autonom | fertig |
 | RU49.2 | `RU49.2-review.md` | Umsetzung | autonom | offen |
 
 ## Abnahme

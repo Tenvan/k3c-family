@@ -259,3 +259,31 @@ pub fn manager() -> (Manager<MemStore, RecordingLog>, Arc<AtomicI64>) {
 pub fn add_room(m: &mut Manager<MemStore, RecordingLog>, code: &str, name: &str, players: i64) {
     m.rooms.insert(code.to_string(), room(code, name, players));
 }
+
+/// Ein Datenordner mit `worlds/<id>.json` unter `.work/` (Go: `fstest.MapFS` mit den Welten); er verschwindet mit dem Wert.
+pub struct WorldDir {
+    pub src: Source,
+    dir: std::path::PathBuf,
+}
+
+impl WorldDir {
+    /// Schreibt die Dateien `(id, Inhalt)` in einen eigenen Ordner; `tag` hält die Ordner der Tests auseinander.
+    pub fn new(tag: &str, files: &[(&str, &str)]) -> WorldDir {
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work");
+        let dir = root.join(format!("room-worlds-{tag}-{}", std::process::id()));
+        std::fs::create_dir_all(dir.join("worlds")).expect("Ordner der Welten");
+        for (id, text) in files {
+            std::fs::write(dir.join("worlds").join(format!("{id}.json")), text).expect("Welt-Datei");
+        }
+        WorldDir {
+            src: Source::Dir(dir.clone()),
+            dir,
+        }
+    }
+}
+
+impl Drop for WorldDir {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.dir); // ein Rest in `.work/` stört nicht
+    }
+}
