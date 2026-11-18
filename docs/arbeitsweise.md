@@ -336,6 +336,11 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
 - Ticketnummern: `plan_create` kennt nur den eigenen Checkout. Vor dem Anlegen `git fetch` und die höchste Nummer aller offenen Branches prüfen
   (`git ls-tree -r --name-only <branch> docs/backlog`), sonst vergeben zwei Branches dieselbe Nummer.
 
+### Temporäre Dateien
+
+Regel (🧑 2026-11-18): Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien und Worktrees liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht.
+Gilt für Agenten, Skills und Werkzeuge; der Code der Produkte (z. B. `t.TempDir()` in Tests) bleibt davon unberührt.
+
 ### Second Worker (zweiter Rechner, Lane `zweit`)
 
 Ein zweiter Rechner mit kleinerem Account arbeitet einfache autonome Sprints ab; Abstimmung nur über `origin` (🧑 2026-11-18).
