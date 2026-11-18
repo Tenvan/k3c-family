@@ -81,7 +81,7 @@ fn island_stage_without_player_keeps_running() {
 /// Go: `TestIslandSharedStock`. In Rust besitzt die Insel den Vorrat (Entscheidung 5); jede Stufe sieht ihn, solange sie
 /// rechnet (`with_stage_stock`), und keine Stufe hat einen eigenen.
 #[test]
-#[ignore = "offen (Ursache ungeprueft: assertion `left == right` failed: Stufe 0 hat einen eigenen Vorrat)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Stufe 0 hat einen eigenen Vorrat)"]
 fn island_shared_stock() {
     let data = test_data();
     let mut isl = must_island(&data, "insel-c", &[0, 1, 2]);

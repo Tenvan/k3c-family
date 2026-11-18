@@ -112,7 +112,7 @@ fn traeger_stirbt_die_krone_faellt_an_seiner_stelle() {
 }
 
 #[test]
-#[ignore = "offen (Ursache ungeprueft: Krone)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Krone)"]
 fn mitspieler_traegt_die_krone_zum_besitzer_zurueck() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -315,7 +315,7 @@ fn ohne_krone_nur_laufen() {
 /// Go: `TestKroneRaubIstGameOver` (AC-02, B-931): Ein Gegner hebt die Krone auf, trägt sie ins Portal: Kronenraub, Game Over in
 /// jedem Grad.
 #[test]
-#[ignore = "offen (Ursache ungeprueft: Träger flieht nicht)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Träger flieht nicht)"]
 fn kronenraub_ist_game_over() {
     let mut w = quiet_crown_world();
     fell(&mut w, 0);

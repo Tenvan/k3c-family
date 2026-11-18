@@ -33,7 +33,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | `aktiv/RU27-lokales-spiel/` |
-| RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | `aktiv/RU19-sim-events-geschichte-dev/` |
 | RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | `aktiv/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
 
 ## Offen am Gerät
@@ -56,7 +55,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
 | RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | bereit | `geplant/RU24-raum-teil-2-spielstand/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
@@ -455,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | `erledigt/RU47-abnahme-stand-rust-sim/` |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | `erledigt/RU18-sim-wirtschaft-bau-monarch/` |
 | RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | `erledigt/RU49-smoke-raum-welt-und-pause/` |
+| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | `erledigt/RU19-sim-events-geschichte-dev/` |

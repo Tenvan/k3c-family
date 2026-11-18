@@ -82,7 +82,7 @@ fn handwerker_mindestens_einer() {
 
 /// B-951: Zwei Spieler zahlen den Hammer der Werkstatt; nach der Herstellung holt ihn ein Bauer ohne Hammer.
 #[test]
-#[ignore = "offen (Ursache ungeprueft: Bauer holt den Hammer nicht)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Bauer holt den Hammer nicht)"]
 fn werkstatt_hammer_herstellen_und_holen() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -107,7 +107,7 @@ fn werkstatt_hammer_herstellen_und_holen() {
 
 /// B-951: Der Bogner stellt Bögen her (Preis des Bogens), die Werkstatt keine; ein Bauer wird Bogenschütze.
 #[test]
-#[ignore = "offen (Ursache ungeprueft: Bauer wird nicht Bogenschütze)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Bauer wird nicht Bogenschütze)"]
 fn bogner_stellt_boegen_her() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -158,7 +158,7 @@ fn hammer_faellt_und_wird_aufgehoben() {
 
 /// B-952: Ein gefällter Baum wirft 1 bis 3 Goldmünzen (aus den Daten), deterministisch für gleichen Seed.
 #[test]
-#[ignore = "offen (Ursache ungeprueft: Baum nicht gefällt)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Baum nicht gefällt)"]
 fn baum_wirft_gold() {
     let mut counts = [0usize; 2];
     for c in &mut counts {

@@ -166,7 +166,7 @@ fn mirror_event() {
 }
 
 #[test]
-#[ignore = "offen (Ursache ungeprueft: JSON: {seed:wechsel,time:5.099999999999992,cycleSpeed:60.0,nextId:206,widthUnits:1000.0,hu)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: JSON: {seed:wechsel,time:5.099999999999992,cycleSpeed:60.0,nextId:206,widthUnits:1000.0,hu)"]
 fn mirror_inselwechsel() {
     let data = test_data();
     let (world, _) = test_islands(&data);

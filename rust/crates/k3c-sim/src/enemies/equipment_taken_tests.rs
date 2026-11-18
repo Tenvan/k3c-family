@@ -6,7 +6,7 @@ use super::testutil::*;
 use crate::state::ItemDrop;
 
 #[test]
-#[ignore = "offen (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn gegner_nimmt_drop_mit_und_flieht() {
     let mut w = quiet_world();
     add_player(&mut w);

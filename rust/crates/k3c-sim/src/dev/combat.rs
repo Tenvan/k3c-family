@@ -91,6 +91,7 @@ pub fn dev_start_event(isl: &mut Island, difficulty: &DifficultyFile, id: &str) 
             }
             let day = isl.stages.first().map_or(0, |w| w.cycle.day);
             isl.dev.nights.insert(id.to_string(), day); // die Nacht gehört zum Tag davor
+            isl.sync_stock(); // Spiegel `island_events` für die erste Nacht (Go liest `Dev.Nights` direkt)
             true
         }
         "merchantRaid" => dev_merchant_raid(isl, difficulty),

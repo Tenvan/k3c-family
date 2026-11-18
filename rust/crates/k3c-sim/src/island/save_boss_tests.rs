@@ -20,7 +20,7 @@ fn fixture(version: i64) -> String {
 
 /// Go: `TestSpielstandBossRundlauf`: alles Neue bleibt erhalten, Speichern, Laden, Speichern ist gleich.
 #[test]
-#[ignore = "offen (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern ergibt etwas anderes)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern ergibt etwas anderes)"]
 fn spielstand_boss_rundlauf() {
     let data = test_data();
     let mut isl = must_island(&data, "boss-a", &[0]);
