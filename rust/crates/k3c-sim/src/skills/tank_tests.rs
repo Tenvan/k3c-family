@@ -15,7 +15,6 @@ use crate::world::vals;
 use k3c_data::monarch::SkillEffect;
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn tank_taunt() {
     let mut w = quiet_world();
     let p0 = tank_player(&mut w);
@@ -60,7 +59,6 @@ fn tank_taunt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, pure)"]
 fn tank_shield_bash() {
     let mut w = quiet_world();
     let pi = tank_player(&mut w);
@@ -106,7 +104,6 @@ fn tank_shield_bash() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn tank_iron_wall() {
     let mut w = quiet_world();
     let pi = tank_player(&mut w);
@@ -153,7 +150,6 @@ fn tank_iron_wall() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn tank_last_stand() {
     let mut w = quiet_world();
     let pi = tank_player(&mut w);

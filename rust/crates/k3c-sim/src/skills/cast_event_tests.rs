@@ -13,7 +13,6 @@ use crate::pending::unit_x;
 use crate::world::vals;
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn skill_cast_wirkort_und_radius() {
     let mut w = quiet_world();
     let pi = caster_player(&mut w);
@@ -31,7 +30,6 @@ fn skill_cast_wirkort_und_radius() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn skill_cast_ohne_ziel_kein_ereignis() {
     let mut w = quiet_world();
     let pi = caster_player(&mut w);
@@ -48,7 +46,6 @@ fn skill_cast_ohne_ziel_kein_ereignis() {
 
 /// Ziel stirbt im selben Takt: Das Ereignis trägt den Ort, an dem gewirkt wurde; zweiter Spieler meldet getrennt.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn skill_cast_ziel_stirbt_zwei_spieler() {
     let mut w = quiet_world();
     let p = caster_player(&mut w);
@@ -95,7 +92,6 @@ fn skill_cast_ziel_stirbt_zwei_spieler() {
 
 /// Skills ohne Fläche melden am Wirkenden mit Radius 0 (B-674: wie heute am Monarchen).
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn skill_cast_ohne_flaeche_am_monarchen() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);

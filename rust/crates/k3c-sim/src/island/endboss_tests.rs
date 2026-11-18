@@ -50,7 +50,7 @@ fn end_steps(_w: &mut World, _seconds: f64, _both: bool) -> Vec<crate::state::Ev
 /// Go: `TestInselTiefsteStufeTraegtBauUndEndboss` (AC-01): Eine Insel mit tiefster Stufe 0, 1, 2 oder 3 lädt und hat ihren
 /// Endboss; den Bau trägt nur die tiefste Stufe.
 #[test]
-#[ignore = "wartet auf RU15"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU15: at_lair)"]
 fn insel_tiefste_stufe_traegt_bau_und_endboss() {
     let data = test_data();
     for deepest in 0..4i64 {
@@ -83,7 +83,7 @@ fn insel_tiefste_stufe_traegt_bau_und_endboss() {
 /// Go: `TestInselEndbossWahl` (AC-01): `endBoss` wählt eine andere ID; der gewählte Endboss erscheint im Bau der tiefsten
 /// Stufe, ausgelöst von einem von zwei Spielern.
 #[test]
-#[ignore = "wartet auf RU15"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU15: end_steps)"]
 fn insel_endboss_wahl() {
     let (mut isl, def) = lair_island(&[0, 3], &format!(r#","endBoss":"{WARDEN_ID}""#), 2);
     let data = test_data();

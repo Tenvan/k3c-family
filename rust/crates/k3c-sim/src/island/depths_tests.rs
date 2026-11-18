@@ -8,7 +8,6 @@ use crate::state::pending::travel_points;
 use crate::state::{PlayerCommand, World};
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn insel_fuenf_stufen() {
     let data = test_data();
     let mut isl = must_island(&data, "fuenf", &[0, 1, 2, 3, 4]);
@@ -54,7 +53,6 @@ fn want_stairs(w: &mut World, up: bool, down: bool) {
 
 /// Ein Spieler geht über den Eingang von Tiefe 3 nach 4 und über die Treppe zurück.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn insel_wechsel_tiefe_3_und_4() {
     let data = test_data();
     let mut isl = must_island(&data, "tief", &[0, 1, 2, 3, 4]);

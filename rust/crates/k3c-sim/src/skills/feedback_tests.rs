@@ -38,7 +38,6 @@ fn step_strikes(w: &mut World, pi: usize) -> (usize, Option<serde_json::Value>) 
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn schlag_ohne_ziel_meldet_strike_hit_false() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);
@@ -60,7 +59,6 @@ fn schlag_ohne_ziel_meldet_strike_hit_false() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn skill_ohne_ziel_meldet_cast_failed() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);
@@ -112,7 +110,6 @@ fn learn_fireball_only(p: &mut Player) {
 
 /// Gehaltene Skill-Taste ohne Ziel: ein `castFailed` je Tastendruck, nicht je Tick (B-378).
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn gehaltene_skill_taste_meldet_cast_failed_einmal() {
     let mut w = quiet_world();
     let (p, q) = (add_player(&mut w), add_player(&mut w));
@@ -145,7 +142,6 @@ fn gehaltene_skill_taste_meldet_cast_failed_einmal() {
 /// B-524/AC-01: Der Tod vergisst die gehaltene Skill-Taste. Halten ohne Ziel (ein castFailed), sterben, wiederbeleben, neu
 /// drücken → ein zweites castFailed; Spieler 2 hält durchgehend und meldet kein weiteres.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, pure)"]
 fn skill_taste_nach_tod_meldet_cast_failed_neu() {
     let mut w = quiet_world();
     let (p, q) = (add_player(&mut w), add_player(&mut w));
@@ -179,7 +175,6 @@ fn skill_taste_nach_tod_meldet_cast_failed_neu() {
 /// Teil von Go (`benchIsland`, `tickBytes`, `meanP99`, `events_budget_test.go`) kommt mit RU19, wenn die Ereignisse portiert
 /// sind; hier läuft dieselbe Zählung auf einer Welt mit zwei Spielern.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x; Budget-Hilfen bench_island, tick_bytes aus events_budget_test.go)"]
 fn gehaltene_skill_tasten_im_ereignis_budget() {
     let mut w = quiet_world();
     let players = [add_player(&mut w), add_player(&mut w)];

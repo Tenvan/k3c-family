@@ -55,7 +55,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
 | RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | bereit | `geplant/RU24-raum-teil-2-spielstand/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
@@ -454,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | `erledigt/RU47-abnahme-stand-rust-sim/` |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | `erledigt/RU18-sim-wirtschaft-bau-monarch/` |
 | RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | `erledigt/RU49-smoke-raum-welt-und-pause/` |
+| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | `erledigt/RU19-sim-events-geschichte-dev/` |

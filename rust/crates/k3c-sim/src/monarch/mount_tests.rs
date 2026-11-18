@@ -40,7 +40,6 @@ fn want_speeds(v: &WorldValues) -> (f64, f64) {
 
 /// (a) Jeder Monarch hat beim Beitritt das Reittier aus den Daten: Welt mit 2 Spielern und Insel mit 2 Stufen.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn mount_beim_beitritt() {
     let data = test_data();
     let mut w = quiet_world();
@@ -66,7 +65,6 @@ fn mount_beim_beitritt() {
 
 /// (b) Tempo = Basis × Faktor, Sprint = Basis × Faktor × sprintMultiplier × Sprintfaktor.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn mount_geschwindigkeit() {
     let mut w = quiet_world();
     let (walk, sprint) = mount_speeds(&mut w);
@@ -79,7 +77,6 @@ fn mount_geschwindigkeit() {
 
 /// (c) Ein anderer Faktor in einer Kopie der Daten ändert beide Geschwindigkeiten ohne Codeänderung.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn mount_faktor_aus_daten() {
     let mut w0 = quiet_world();
     let (base_walk, base_sprint) = mount_speeds(&mut w0);
@@ -97,7 +94,6 @@ fn mount_faktor_aus_daten() {
 
 /// (d) Zweimal derselbe Seed und dieselben Eingaben ergeben denselben Weltzustand.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn mount_deterministisch() {
     let run = || {
         let mut w = quiet_world();
@@ -138,7 +134,6 @@ fn mount_sprite_bekannt() {
 
 /// (f) Ein Stufenwechsel ändert das Reittier nicht: Der Wertesatz einer Stufe ist derselbe wie der der Welt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story, pure)"]
 fn mount_nach_stufenwechsel() {
     let data = test_data();
     let mut isl = must_island(&data, "reittier-f", &[0, 1]);

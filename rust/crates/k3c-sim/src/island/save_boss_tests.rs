@@ -20,7 +20,7 @@ fn fixture(version: i64) -> String {
 
 /// Go: `TestSpielstandBossRundlauf`: alles Neue bleibt erhalten, Speichern, Laden, Speichern ist gleich.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern ergibt etwas anderes)"]
 fn spielstand_boss_rundlauf() {
     let data = test_data();
     let mut isl = must_island(&data, "boss-a", &[0]);
@@ -47,7 +47,6 @@ fn spielstand_boss_rundlauf() {
 /// Go: `TestSpielstandBossMinibossKehrtNichtZurueck`: Nach dem Laden kommt ein besiegter Miniboss in seiner Welle nicht,
 /// ein nicht besiegter schon (`trigger_boss`, RU15).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_boss_miniboss_kehrt_nicht_zurueck() {
     let data = test_data();
     let mut isl = must_island(&data, "boss-b", &[0, 1]);
@@ -67,7 +66,6 @@ fn spielstand_boss_miniboss_kehrt_nicht_zurueck() {
 /// Go: `TestSpielstandBossEndbossBleibtBesiegt`: Ein besiegter Endboss bleibt besiegt (aus der Liste abgeleitet), sein
 /// Bau bleibt leer (`step_endboss`, RU15).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_boss_endboss_bleibt_besiegt() {
     let data = test_data();
     let mut isl = must_island(&data, "familie", &[0, 4]);
@@ -86,7 +84,6 @@ fn spielstand_boss_endboss_bleibt_besiegt() {
 /// Go: `TestSpielstandBossStufenverlust`: Ein Stufenverlust und erneutes Speichern ändern die Liste nicht (`castle_fallen`,
 /// RU14).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_boss_stufenverlust() {
     let data = test_data();
     let mut isl = must_island(&data, "boss-c", &[0]);
@@ -104,7 +101,6 @@ fn spielstand_boss_stufenverlust() {
 /// Go: `TestSpielstandBossAlteVersionen`: Versionen vor 5 laden mit leerer Bossliste, Insel 0 und Zählern 0; die Fixtures ab
 /// v5 mit ihrem Boss (Version-Parser und `restore_progress` stehen seit RU10.3; die Lade-Seite braucht RU14).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_boss_alte_versionen() {
     let data = test_data();
     for v in 1..5 {
@@ -136,7 +132,6 @@ fn spielstand_boss_alte_versionen() {
 /// Go: `TestSpielstandBossUngueltig`: Unbekannter Boss, doppelter Boss, Insel oder Welt unbekannt, negative Zähler: Fehler
 /// mit Meldung (`from_island_save`: `values_of`, RU14; `island_in` seit RU10.3, geprüft in `save_v8_tests.rs`).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_boss_ungueltig() {
     let data = test_data();
     let world = standard_world(&data);

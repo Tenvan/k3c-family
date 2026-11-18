@@ -1,6 +1,6 @@
 # RU19 · SIM · Sim: Events, Geschichte, Dev-Eingriffe
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -93,10 +93,10 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU19.1 | `RU19.1-dev-eingriffe.md` | Umsetzung | autonom | offen |
-| RU19.2 | `RU19.2-events-moon-merchant.md` | Umsetzung | autonom | offen |
-| RU19.3 | `RU19.3-story.md` | Umsetzung | autonom | offen |
-| RU19.4 | `RU19.4-review.md` | Review | autonom | offen |
+| RU19.1 | `RU19.1-dev-eingriffe.md` | Umsetzung | autonom | fertig |
+| RU19.2 | `RU19.2-events-moon-merchant.md` | Umsetzung | autonom | fertig |
+| RU19.3 | `RU19.3-story.md` | Umsetzung | autonom | fertig |
+| RU19.4 | `RU19.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -104,6 +104,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+AC-01 geprüft: task check, task check:go, cargo test -p k3c-sim (910 grün, 74 ignoriert mit genauer Marke, B-1103), clippy grün.
+AC-02 geprüft: Dev-Funktionen und Story gegen Go-Tests portiert, Review durch k3c-reviewer, schwerer Befund behoben.
+Sim, Balance, Gen, Race: Abnahme-Ticket B-1104 (Lane zweit). Story im Spiel: B-1102.

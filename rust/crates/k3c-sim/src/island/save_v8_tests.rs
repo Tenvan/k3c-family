@@ -48,7 +48,6 @@ fn spielstand_migration_auf_standard() {
 
 /// Go: `TestSpielstandMigrationAufStandard` (Lade-Seite): Die Stände bis Version 7 laden als Insel der Standard-Welt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_migration_auf_standard_insel() {
     let data = test_data();
     for v in 1..ISLAND_SAVE_VERSION {
@@ -107,7 +106,6 @@ fn spielstand_welt_oder_insel_unbekannt() {
 
 /// Go: `TestSpielstandWeltOderInselUnbekannt` (Lade-Seite): dieselben Fälle über `from_island_save_in`.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn spielstand_welt_oder_insel_unbekannt_laden() {
     let data = test_data();
     let world = standard_world(&data);
@@ -126,7 +124,6 @@ fn spielstand_welt_oder_insel_unbekannt_laden() {
 /// Go: `TestSpielstandV8WeltUndInsel` (AC-03): Version 8 speichert `world` und `islandId`, nicht mehr den Index `island`;
 /// Speichern, Laden, Speichern ist gleich (braucht `LoadWorld` RU10.5, `complete_ship`, `create_world_with` RU14).
 #[test]
-#[ignore = "wartet auf RU19 (dev_build_site)"]
 fn spielstand_v8_welt_und_insel() {
     let data = test_data();
     let w = nordmeer_loaded(&data);

@@ -33,7 +33,6 @@ fn lost_of(e: &Enemy) -> f64 {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn caster_fireball_und_meteor() {
     for (slot, radius, damage) in [(1, 3.0, 30.0), (4, 15.0, 200.0)] {
         let mut w = quiet_world();
@@ -58,7 +57,6 @@ fn caster_fireball_und_meteor() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, pure)"]
 fn caster_ice_wall() {
     let mut w = quiet_world();
     let pi = caster_player(&mut w);
@@ -94,7 +92,6 @@ fn caster_ice_wall() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn caster_lightning_storm() {
     let mut w = quiet_world();
     let pi = caster_player(&mut w);
@@ -136,7 +133,6 @@ fn caster_lightning_storm() {
 /// `TestCasterAbklingzeitUndOhneZiel`: je Zauber (c) kein Gegner in Range: keine Wirkung, keine Abklingzeit; (b) zweiter
 /// Einsatz in der Abklingzeit ohne Wirkung, nach `cooldown` wieder möglich.
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, hit_event)"]
 fn caster_abklingzeit_und_ohne_ziel() {
     for slot in 1..=4_usize {
         let mut w = quiet_world();

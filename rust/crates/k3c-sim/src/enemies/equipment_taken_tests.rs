@@ -6,7 +6,7 @@ use super::testutil::*;
 use crate::state::ItemDrop;
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn gegner_nimmt_drop_mit_und_flieht() {
     let mut w = quiet_world();
     add_player(&mut w);
@@ -30,7 +30,6 @@ fn gegner_nimmt_drop_mit_und_flieht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn traeger_stirbt_drop_faellt_zu_boden() {
     let mut w = quiet_world();
     add_player(&mut w);
@@ -55,7 +54,7 @@ fn traeger_stirbt_drop_faellt_zu_boden() {
 /// Passiver Spieler (Bot passive): ohne Eingaben fällt die Burg in mindestens einem Seed. Go: `-short` überspringt ihn
 /// nicht, er rechnet aber eine ganze Insel durch.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (island_with)"]
 fn passiver_spieler_burg_faellt() {
     let mut fell = false;
     for seed in ["1", "2", "3"] {
@@ -79,7 +78,6 @@ fn passiver_spieler_burg_faellt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x)"]
 fn take_equipment_nimmt_den_ersten_drop_ausser_hammer() {
     let mut w = bare_world();
     w.portals = vec![w.hub_x - 100.0];

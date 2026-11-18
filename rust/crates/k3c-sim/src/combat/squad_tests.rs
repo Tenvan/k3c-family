@@ -124,7 +124,6 @@ fn step_groups_laesst_die_gruppe_mit_ziel_im_einsatz() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"] // `emit` (groupReturned)
 fn step_groups_beendet_den_einsatz_ohne_ziel() {
     let (mut w, _, _) = combat_stage(COMBAT_GROUPS);
     let v = vals(&w);
@@ -138,7 +137,6 @@ fn step_groups_beendet_den_einsatz_ohne_ziel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19"] // `emit` (attackOrdered, bannerTaken)
 fn send_groups_und_take_banner_melden_und_setzen() {
     let (mut w, _, _) = combat_stage(COMBAT_GROUPS);
     let l = troop(&mut w, "warrior", 0.0, 1.0);

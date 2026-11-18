@@ -6,7 +6,6 @@ use super::{CROWN_GROUND, step_crowns, take_crown_or_loot};
 use crate::enemies::testutil::spawn;
 
 #[test]
-#[ignore = "wartet auf RU19 (hit_event: apply_damage meldet jeden Treffer)"]
 fn fortified_aura_fuer_truppen() {
     use crate::enemies::testutil::{add_player, quiet_world};
     use crate::island::testutil::{add_pool_points, must_learn};
@@ -61,7 +60,6 @@ fn kein_raub_in_geschuetzter_nacht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn ohne_insel_gibt_es_keine_geschuetzte_nacht() {
     // Gegenprobe zum ignorierten Insel-Test: ohne Insel (None) gilt der Raub.
     let (mut w, v) = crown_world();
@@ -73,7 +71,6 @@ fn ohne_insel_gibt_es_keine_geschuetzte_nacht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit)"]
 fn freier_monarch_bekommt_die_krone_zurueck() {
     let (mut w, v) = crown_world();
     fell(&mut w, 0);
@@ -98,7 +95,6 @@ fn krone_eines_freien_monarchen_ist_nicht_raubbar() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (hit_event: apply_damage meldet jeden Treffer)"]
 fn last_stand_nur_mit_letzter_muenze() {
     use crate::enemies::testutil::quiet_world;
     use crate::skills::testutil::tank_player;

@@ -58,7 +58,6 @@ fn spawn_due(isl: &mut Island, data: &Data, time: f64) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_options_wave_size_by_players() {
     let data = test_data();
     let base = wave_count(&mut island_with(&data, "opt-a", "normal", 1), &data, 1);
@@ -75,7 +74,6 @@ fn island_options_wave_size_by_players() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_options_grade_factors() {
     let data = test_data();
     let mut reference = island_with(&data, "opt-b", "normal", 1);
@@ -110,7 +108,6 @@ fn island_options_grade_factors() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_options_grade_change_applies_next_wave() {
     let data = test_data();
     let mut isl = island_with(&data, "opt-c", "hard", 1);
@@ -141,7 +138,6 @@ fn island_options_grade_change_applies_next_wave() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_options_set_options() {
     let data = test_data();
     let mut isl = must_island(&data, "opt-d", &[0]);
@@ -154,7 +150,6 @@ fn island_options_set_options() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_options_save_round_trip() {
     let data = test_data();
     let mut isl = must_island(&data, "opt-e", &[0, 1]);
@@ -170,7 +165,6 @@ fn island_options_save_round_trip() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_options_deterministic() {
     let data = test_data();
     let run = || {
@@ -185,7 +179,6 @@ fn island_options_deterministic() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn island_options_world_without_island_unchanged() {
     // Go: `CreateWorld(biomeForDepth(0), "opt-g", Options{CycleSpeed: islandSpeed})`, `startWave(w)`; jede Warteschlange
     // hat die Faktoren 1/1 (ohne Insel keine Skalierung).

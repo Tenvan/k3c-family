@@ -13,7 +13,7 @@ use crate::state::{Troop, World};
 
 // (a) Wald ab Welle 5, Höhle und Mine ab Welle 3, über das erste Portal; kein zweiter, solange einer lebt.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_miniboss_kommt_mit_seiner_welle() {
     let mut isl = boss_island(1);
     for (i, (wave, id)) in [(5, "goblinLeader"), (3, "trollKing"), (3, "ratQueen")]
@@ -40,7 +40,7 @@ fn boss_miniboss_kommt_mit_seiner_welle() {
 
 // (b) Goblin-Anführer ruft 2 Goblins je 10 s an seinen Ort.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island)"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_goblin_anfuehrer_ruft_goblins() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];
@@ -62,7 +62,6 @@ fn boss_goblin_anfuehrer_ruft_goblins() {
 
 // (b) Ratten-Königin ruft Rattenschwärme: 2 Schwärme je swarmSize Ratten.
 #[test]
-#[ignore = "wartet auf RU19"]
 fn boss_ratten_koenigin_ruft_schwaerme() {
     let (mut w, isl) = boss_stage(2, 1);
     let v = boss_values();
@@ -78,7 +77,6 @@ fn boss_ratten_koenigin_ruft_schwaerme() {
 
 // (b) Troll-König trifft alle Truppen im Radius 3 um sich, nicht weiter weg.
 #[test]
-#[ignore = "wartet auf RU19"]
 fn boss_troll_koenig_flaechenschlag() {
     let (mut w, isl) = boss_stage(1, 1);
     let v = boss_values();
@@ -112,7 +110,7 @@ fn boss_troll_koenig_flaechenschlag() {
 
 // (c) Belohnung: 14 Gold als Münzen, 50 Material in den Insel-Vorrat, 1 Skill-Punkt für beide Spieler.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_belohnung_fuer_alle() {
     let mut isl = boss_island(2);
     let w = &mut isl.stages[0];
@@ -130,7 +128,7 @@ fn boss_belohnung_fuer_alle() {
 
 // (c) Über dem Lager-Maximum verfällt der Rest des Materials.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_material_bis_zum_lager_maximum() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];
@@ -175,7 +173,7 @@ fn boss_skalierung() {
 
 // (e) Ein Boss flieht weder bei Tagesanbruch noch bei halber HP; seine Beschwörungen schon.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island)"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_flieht_nie() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];
@@ -197,7 +195,7 @@ fn boss_flieht_nie() {
 // (f) Ein besiegter Boss kommt nie wieder, auch nicht nach einem Burgfall; ein lebender kommt nach dem Burgfall
 // mit der nächsten Welle erneut.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_besiegt_kommt_nie_wieder() {
     let mut isl = boss_island(1);
     wave_until(&mut isl.stages[1], 3);
@@ -213,7 +211,7 @@ fn boss_besiegt_kommt_nie_wieder() {
 
 // (g) bossSpawned und bossDefeated je genau einmal (kein `kill` für den Boss).
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_ereignisse_genau_einmal() {
     let mut isl = boss_island(2);
     wave_until(&mut isl.stages[1], 5);
@@ -236,7 +234,7 @@ fn boss_ereignisse_genau_einmal() {
 
 // (h) Gleicher Seed, gleicher Verlauf (zwei Spieler, Boss kämpft, beschwört und fällt).
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_deterministisch() {
     let trace = || {
         let mut isl = boss_island(2);

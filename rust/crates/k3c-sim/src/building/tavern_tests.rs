@@ -33,7 +33,6 @@ fn to_dawn(w: &mut World) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn taverne_landstreicher_je_dawn_bis_max() {
     let mut w = quiet_world();
     add_player(&mut w);

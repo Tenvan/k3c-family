@@ -70,7 +70,7 @@ fn shelter_of(w: &mut crate::state::World, id: i64) -> f64 {
 /// Golden-Läufen nur IDs und den neuen Platz. Jeder Lauf rechnet mit und ohne Eintrag; verglichen wird jeder Snapshot ohne
 /// ID-Felder und ohne den neuen Platz. Go überspringt ihn mit `-short`.
 #[test]
-#[ignore = "lang"]
+#[ignore = "wartet auf RU22 (golden_runs)"]
 fn golden_zusatzplatz_nur_ids() {
     let runs = golden_runs(); // `goldenRuns`/`goldenWorld`/`Step` liefern RU14 und RU22
     assert!(!runs.is_empty());

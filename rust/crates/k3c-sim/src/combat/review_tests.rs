@@ -6,7 +6,7 @@ use super::data::COMBAT_GENERAL;
 use super::testutil::{combat_pay, combat_stage, group_ready, run, spawn_soldiers, spot_for};
 
 #[test]
-#[ignore = "wartet auf RU19 (emit: step der Schild-Variante)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: groups: Zahlziel Some(Site(8)) überdeckt vom Bauplatz)"]
 fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
     for mode in [super::data::COMBAT_GROUPS, super::data::COMBAT_GENERAL] {
         let (mut w, _, _) = combat_stage(mode);
@@ -32,7 +32,7 @@ fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (coin_give_event)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: Auslöser ohne Ziel nahm Gold)"]
 fn ausloeser_nur_mit_ziel() {
     let (mut w, l) = group_ready();
     w.portals = vec![w.hub_x - 40.0]; // kein Portal und kein Gegner auf der rechten Seite
@@ -68,13 +68,13 @@ fn schluessel_von_schild_und_ausloeser_ohne_monarch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (mustIsland, moveToStage (Banner, bannerOut))"]
 fn banner_bleibt_beim_stufenwechsel_am_tor() {
     panic!("RU10: mustIsland, moveToStage (Banner, bannerOut)");
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (mustIsland, ToSave, loadIsland (Leader, Group, combat.shields))"]
 fn gruppenfuehrer_und_schild_im_spielstand() {
     panic!("RU10: mustIsland, ToSave, loadIsland (Leader, Group, combat.shields)");
 }

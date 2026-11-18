@@ -278,7 +278,6 @@ fn befund_text_regel_platz_detail() {
 /// Wie `site_data_hub_json_gueltig` und `site_data_sieben_stufen`, aber über `validate_hub` und `validate_hub_data` mit der
 /// echten Standard-Welt (Go: `StandardWorld`); ihr Laden liest `story`.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn validate_hub_mit_standard_welt() {
     let raw = Source::Embedded.read("hub.json").expect("hub.json");
     let r = validate_hub(&raw);

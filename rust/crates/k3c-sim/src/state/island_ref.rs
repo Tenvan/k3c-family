@@ -62,6 +62,15 @@ pub struct IslandRef {
     pub tavern_elsewhere: bool,
 }
 
+/// Was die Ereignisse einer Stufe von ihrer Insel lesen (Go: `w.island` in `eventInNight` und `eventStage`).
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct IslandEvents {
+    /// Die Stufe ist Stufe 0 der Insel und meldet die Events (Go: `eventStage`).
+    pub first_stage: bool,
+    /// Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (Go: `island.Dev.Nights`).
+    pub nights: std::collections::BTreeMap<String, i64>,
+}
+
 impl IslandRef {
     /// Go: `Island.waveFactors`: Wellengröße (Spieleranzahl der Insel mal Grad), HP- und Schadensfaktor zum Zeitpunkt
     /// des Wellenstarts.

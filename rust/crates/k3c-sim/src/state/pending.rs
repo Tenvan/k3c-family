@@ -2,12 +2,7 @@
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU19, RU23)
 
-use std::collections::BTreeMap;
-
-use k3c_data::Data;
-
 use super::World;
-use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
@@ -24,11 +19,6 @@ pub use crate::unit::spawn_vagrant;
 pub use crate::unit::warrior::is_fighter;
 
 pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert (merchant.go)
-
-/// Go: `hitEvent` (events.go).
-pub fn hit_event(_w: &mut World, _target: &str, _id: i64, _x: f64, _damage: f64) {
-    unimplemented!("RU19: hit_event")
-}
 
 pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
@@ -48,48 +38,7 @@ pub use crate::monarch::skill_ref; // Von RU18.4 portiert (monarch_data.go)
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
 
-/// Go: `DevFlags` (dev.go): Schalter der Dev-Aktionen einer Insel, nur im Speicher, nie im Spielstand. Rumpf bis RU19.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct DevFlags {
-    /// Alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten.
-    pub cheap_build: bool,
-    /// Reiner Stressmodus (`DevSetPure`): keine Wellen, Lager, Wachen, Händler, Schänke.
-    pub pure: bool,
-    /// Zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (`devMaxStock`).
-    pub stock_bonus: i64,
-    /// Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (`DevStartEvent`).
-    pub nights: BTreeMap<String, i64>,
-}
-
-/// Go: `IslandStory` (story.go): Ankunft, vor dem Endboss und Abschlusszeile nach dem Sieg über ihn. Rumpf bis RU19.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct IslandStory {
-    pub arrival: Vec<String>,
-    pub boss: Vec<String>,
-    pub done: Vec<String>,
-}
-
-/// Go: `WorldStory` (story.go): die Geschichte einer Welt. Rumpf bis RU19.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct WorldStory;
-
 pub use crate::world::values_room::values_of; // Von RU14.4 portiert (world_values_room.go)
-
-/// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.
-pub fn decode_island_story(_raw: &serde_json::Value) -> Result<IslandStory, String> {
-    unimplemented!("RU19: decode_island_story")
-}
-
-/// Go: `decodeWorldStory` (story.go): liest `story` der Welt streng; nur gerufen, wenn das Feld da ist.
-pub fn decode_world_story(_raw: &serde_json::Value) -> Result<WorldStory, String> {
-    unimplemented!("RU19: decode_world_story")
-}
-
-/// Go: `checkStory` (story_check.go): prüft die Geschichte der Welt und ihrer Inseln; nur gerufen, wenn die Welt oder eine
-/// Insel `story` hat.
-pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
-    unimplemented!("RU19: check_story")
-}
 
 pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portiert (world_travel.go)
 
@@ -101,3 +50,8 @@ pub fn return_banner(_w: &mut World, _pi: usize) {
 }
 
 pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
+
+// Von RU19.1 bis RU19.3 portiert (dev.go, events.go, story.go): die Import-Stelle bleibt `pending`.
+pub use crate::dev::DevFlags;
+pub use crate::events::hit_event;
+pub use crate::story::{IslandStory, WorldStory, check_story, decode_island_story, decode_world_story};

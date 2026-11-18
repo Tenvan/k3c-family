@@ -32,7 +32,6 @@ fn default_defeat_for(data: &k3c_data::Data, grade: &str) -> String {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_gold_material() {
     let data = test_data();
     let mut isl = defeat_island(&data, "resources");
@@ -61,7 +60,6 @@ fn niederlage_gold_material() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_stufenverlust() {
     let data = test_data();
     let mut isl = defeat_island(&data, "stage");
@@ -94,7 +92,7 @@ fn niederlage_stufenverlust() {
 
 /// Kronenraub ist die Niederlage (kampf.md § 6): Game Over, die Insel steht danach.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU15 (crown_theft)"]
 fn niederlage_kronenraub() {
     let data = test_data();
     let mut isl = defeat_island(&data, "stage");
@@ -133,7 +131,6 @@ fn niederlage_kronenraub() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_standard_je_grad() {
     let data = test_data();
     let want = [
@@ -180,7 +177,6 @@ fn niederlage_ohne_insel_stufenverlust() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_deterministisch() {
     let data = test_data();
     let mut runs = Vec::new();

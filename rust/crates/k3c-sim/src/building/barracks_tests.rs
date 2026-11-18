@@ -42,7 +42,6 @@ fn limit_world() -> (World, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn limit_voll_bogen_bleibt_im_regal() {
     let (mut w, workshop) = limit_world();
     run(&mut w, 20.0);
@@ -66,7 +65,6 @@ fn limit_voll_bogen_bleibt_im_regal() {
 
 /// Eine zerstörte Kaserne senkt das Limit, bestehende Kämpfer bleiben.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn kaserne_zerstoert_kaempfer_bleiben() {
     let (mut w, _) = limit_world();
     let barracks = build_site(&mut w, "barracks");
@@ -97,7 +95,6 @@ fn kaserne_zerstoert_kaempfer_bleiben() {
 /// W4.3a (Q40): Das Limit zählt Bogenschützen und Krieger gemischt; Bauern mit Beruf und Landstreicher nicht. Bei vollem
 /// Limit bleibt das Schwert im Regal.
 #[test]
-#[ignore = "wartet auf RU19 (pure)"]
 fn limit_zaehlt_bogenschuetzen_und_krieger() {
     let mut w = day_world();
     add_player(&mut w);

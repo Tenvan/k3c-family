@@ -31,7 +31,6 @@ fn spell_world(level: i64, offsets: &[f64]) -> (World, usize, Vec<usize>) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (hit_event)"]
 fn zaubertum_flaechenschaden_im_takt() {
     let sp = vals(&bare_world()).buildings["tower"].spell.clone();
     let near = sp.range_units / 2.0;
@@ -88,7 +87,6 @@ fn turm_unter_zaubertum_stufe_schiesst_nicht() {
 
 /// Ausbau auf die Zaubertum-Stufe: der Schütze steigt ab, bleibt Kämpfer, der Turm nimmt keinen mehr auf.
 #[test]
-#[ignore = "wartet auf RU19 (pure, hit_event)"]
 fn zaubertum_schuetzen_steigen_ab() {
     use super::upgrades_sites_tests::upgrade_at;
     use crate::enemies::testutil::run;

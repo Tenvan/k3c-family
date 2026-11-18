@@ -101,7 +101,6 @@ fn wartegrund_nur_tor_anteil_fehlt_ist_wartet_auf_naechste_insel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn economy_insel_mit_lager_ausbau_und_nacht() {
     let data = load_all(&Source::Embedded).expect("eingebettete Daten");
     let mut isl = must_island(&data, "w9-wirtschaft", &[0, 1, 2]);

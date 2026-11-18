@@ -9,7 +9,6 @@ use crate::enemies::spawn_enemy;
 use crate::state::World;
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_erst_nach_endboss() {
     let data = test_data();
     let (w, _) = test_islands(&data);
@@ -35,7 +34,6 @@ fn inselwechsel_erst_nach_endboss() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_letzte_insel_ohne_wechsel() {
     let data = test_data();
     let mut isl = gate_island(&data, &standard_world(&data), 2);
@@ -50,7 +48,6 @@ fn inselwechsel_letzte_insel_ohne_wechsel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_alle_lebenden_am_punkt() {
     type Setup = fn(&mut Island);
     let cases: Vec<(&str, usize, Setup, bool)> = vec![
@@ -102,7 +99,6 @@ fn inselwechsel_alle_lebenden_am_punkt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_abbruch_beim_weggehen() {
     let data = test_data();
     let secs = data.hub.travel.seconds;
@@ -139,7 +135,6 @@ fn switched_island(data: &k3c_data::Data) -> (Island, Island) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_neue_insel() {
     let data = test_data();
     let (cur, next) = switched_island(&data);
@@ -163,7 +158,6 @@ fn inselwechsel_neue_insel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_spieler_ziehen_mit() {
     let data = test_data();
     let (_, next) = switched_island(&data);
@@ -196,7 +190,6 @@ fn inselwechsel_spieler_ziehen_mit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_skill_basis() {
     let data = test_data();
     let (_, mut next) = switched_island(&data);
@@ -219,7 +212,6 @@ fn inselwechsel_skill_basis() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_tabelle_der_insel() {
     let data = test_data();
     let (mut cur, mut next) = switched_island(&data);
@@ -239,7 +231,6 @@ fn inselwechsel_tabelle_der_insel() {
 
 /// Die Standard-Welt hat eine Geschichte (`story`); `standard_world` meldet bis RU19 den Platzhalter.
 #[test]
-#[ignore = "wartet auf RU19"]
 fn inselwechsel_daten() {
     let data = test_data();
     let d = &standard_world(&data).islands[0];
@@ -277,7 +268,6 @@ fn own_inselwechsel_ungueltige_welten_werden_abgelehnt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_deterministisch() {
     let data = test_data();
     let (_, mut a) = switched_island(&data);
