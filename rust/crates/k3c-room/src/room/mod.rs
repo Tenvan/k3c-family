@@ -14,13 +14,31 @@ mod actions;
 #[cfg(test)]
 mod actions_tests;
 #[cfg(test)]
+mod depths_tests;
+#[cfg(test)]
 mod determinism_tests;
+mod dev;
+#[cfg(test)]
+mod dev_castlefall_tests;
+mod dev_extra;
+#[cfg(test)]
+mod dev_grade_tests;
+#[cfg(test)]
+mod dev_tests;
+#[cfg(test)]
+mod dev_timescale_tests;
 mod early;
 mod env;
+#[cfg(test)]
+mod events_tests;
 mod info;
+#[cfg(test)]
+mod island_etappe_tests;
 mod island_switch;
 #[cfg(test)]
 mod island_switch_tests;
+#[cfg(test)]
+mod island_tests;
 mod log;
 mod logging;
 #[cfg(test)]
@@ -44,6 +62,8 @@ mod run_tests;
 #[cfg(test)]
 mod safetick_tests;
 mod stages;
+#[cfg(test)]
+mod stages_tests;
 mod status;
 #[cfg(test)]
 mod status_tests;
@@ -57,6 +77,7 @@ mod worlds;
 #[cfg(test)]
 mod worlds_tests;
 
+pub use dev::{DEV_MAX_AMOUNT, DevAction, MAX_TIMESCALE, SlotMap};
 pub use env::{Env, SnapshotFn, Store};
 pub use info::Info;
 pub use log::{Level, Log, NullLog, RecordingLog, list_text, short};

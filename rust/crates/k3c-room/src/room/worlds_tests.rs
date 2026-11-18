@@ -7,7 +7,7 @@ use super::testutil::{TestManager, WorldDir, manager, peer};
 use crate::fehler::Fehler;
 
 /// Eine Test-Welt mit zwei Inseln (nicht aus `data/worlds/`).
-const NORDMEER_RAW: &str = r#"{"id":"nordmeer","name":"Nordmeer","islands":[{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}"#;
+pub(super) const NORDMEER_RAW: &str = r#"{"id":"nordmeer","name":"Nordmeer","islands":[{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}"#;
 
 /// Erbt von `nordmeer` (`extends` aus dem Ordner der Welten) und macht die Mauer teurer.
 const NORDTEUER_RAW: &str = r#"{"id":"nordteuer","name":"Nordmeer teuer","extends":"nordmeer","overrides":{"buildings":{"wall":{"cost":{"gold":9}}}},"islands":[{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1}}]}"#;

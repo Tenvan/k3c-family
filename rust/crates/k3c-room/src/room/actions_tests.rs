@@ -257,9 +257,25 @@ fn tick_zwei_geraete_im_selben_tick() {
     assert_eq!((r.monarchs[0].input.move_x, r.monarchs[1].input.move_x), (1.0, -1.0));
 }
 
+// Wie oben ohne Dev-Pause, mit echter Insel: beide Spieler laufen in ihre Richtung (Schritte der Sim, RU18).
 #[test]
-#[ignore = "wartet auf RU18"]
-fn tick_rechnet_beide_spieler() {} // wie oben ohne Dev-Pause: beide Spieler laufen in ihre Richtung (`step_players`)
+fn tick_rechnet_beide_spieler() {
+    let (mut m, _) = manager();
+    let (code, _ai) = super::testutil::create_room(&mut m, "a", 1, "takt2", 0, &[0]);
+    let _bi = super::testutil::join_room(&mut m, "b", 2, &code, &[0]);
+    let r = super::testutil::rm(&mut m, &code);
+    assert_eq!(r.input("a", 1, &go(1.0)), Ok(()));
+    assert_eq!(r.input("b", 2, &go(-1.0)), Ok(()));
+    let (x0, x1) = (r.isl.players()[0].x, r.isl.players()[1].x);
+    super::testutil::ticks(&mut m, &code, 5);
+    let ps = super::testutil::rm(&mut m, &code)
+        .isl
+        .players()
+        .iter()
+        .map(|p| p.x)
+        .collect::<Vec<_>>();
+    assert!(ps[0] > x0 && ps[1] < x1, "{x0}->{} {x1}->{}", ps[0], ps[1]);
+}
 
 #[test]
 fn drei_raeume_nacheinander() {

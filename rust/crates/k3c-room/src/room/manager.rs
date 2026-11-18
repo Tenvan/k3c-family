@@ -6,7 +6,7 @@
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
-use k3c_data::Data;
+use k3c_data::{Data, Source};
 use k3c_rng::Rng;
 use k3c_sim::island::{Island, IslandOptions, default_options_for, set_options};
 
@@ -34,6 +34,8 @@ pub struct Manager<S: Store, L: Log> {
     pub dev: bool,
     /// Baut den Zustand einer Stufe für `Peer::state`; `None` = die Welt selbst als JSON (Tests).
     pub snapshot: Option<SnapshotFn>,
+    /// Ordner der weiteren Welten (Go `Manager.Worlds`, `worlds/<id>.json`); `None`: keine.
+    pub worlds: Option<Source>,
     pub rooms: BTreeMap<String, Room>,
     /// Die letzten abgestürzten Räume (höchstens 10).
     pub failures: Vec<Failure>,
@@ -70,6 +72,7 @@ impl<S: Store, L: Log> Manager<S, L> {
             data,
             dev: false,
             snapshot: None,
+            worlds: None,
             rooms: BTreeMap::new(),
             failures: Vec::new(),
             shut: false,

@@ -4,8 +4,8 @@
 //! geladene Welt, solange er läuft (sie steckt in seiner Insel).
 //!
 //! Abweichungen von Go: Gos `Manager.Worlds` (`fs.FS` mit `<id>.json`) ist hier der Datenordner (`Source`) mit
-//! `worlds/<id>.json`, weil `k3c_sim::island::load_world` so liest. `Manager` hat noch kein Feld dafür (`manager.rs` gehört
-//! RU49.1 nicht): `worlds_source` liefert vorläufig `None`, die `*_from`-Funktionen nehmen die Quelle als Parameter.
+//! `worlds/<id>.json`, weil `k3c_sim::island::load_world` so liest; `Manager::worlds` hält ihn (seit RU24.1), die
+//! `*_from`-Funktionen nehmen die Quelle zusätzlich als Parameter.
 use k3c_data::Source;
 use k3c_sim::island::save::SaveTables;
 use k3c_sim::island::{
@@ -37,7 +37,7 @@ fn missing(src: &Source, id: &str) -> bool {
 impl<S: Store, L: Log> Manager<S, L> {
     /// Der Ordner der weiteren Welten (Gos `Manager.Worlds`); `None`: keine.
     pub fn worlds_source(&self) -> Option<&Source> {
-        None
+        self.worlds.as_ref()
     }
 
     /// Gos `world`: die Welt `id` (leer = standard) mit ihrem aufgelösten Wertesatz (`resolve_world`, welten.md § 1,
