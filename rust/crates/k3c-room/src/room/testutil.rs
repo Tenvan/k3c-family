@@ -1,7 +1,6 @@
 //! Hilfen der Raum-Tests (Go: `memstore_test.go`, der `peer` und `fixture` aus `room_test.go`): Spielstand-Speicher im
 //! Speicher, mitschreibender Peer, feste Uhr und eine kleine Insel. Kein `Mutex`, kein `Rc`: der Peer meldet über einen
 //! Kanal, den der Test im `Inbox` ausliest.
-use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, OnceLock};
@@ -11,44 +10,22 @@ use k3c_level::types::Layout;
 use k3c_sim::island::{Island, IslandOptions, STANDARD_WORLD_ID};
 use k3c_sim::state::{Player, World};
 
-use super::env::{Env, Store};
+use super::env::Env;
 use super::log::RecordingLog;
 use super::manager::Manager;
+pub use super::memstore::MemStore;
 use super::types::{MonarchState, Options, Peer, Room, Seat};
 use super::{free_monarchs, start_stage};
-use crate::fehler::Fehler;
 use crate::store::Stamp;
-
-/// Spielstand-Speicher im Speicher (Go `memStore`).
-#[derive(Debug, Default)]
-pub struct MemStore {
-    pub data: BTreeMap<String, Vec<u8>>,
-    pub saves: usize,
-    pub deleted: Vec<String>,
-}
-
-impl Store for MemStore {
-    fn load(&mut self, name: &str) -> Result<Vec<u8>, Fehler> {
-        self.data.get(name).cloned().ok_or(Fehler::NotFound)
-    }
-
-    fn store(&mut self, name: &str, data: &[u8]) -> Result<String, Fehler> {
-        self.data.insert(name.to_string(), data.to_vec());
-        self.saves += 1;
-        Ok(String::new())
-    }
-
-    fn delete(&mut self, name: &str) -> Result<(), Fehler> {
-        self.data.remove(name);
-        self.deleted.push(name.to_string());
-        Ok(())
-    }
-}
 
 enum Ev {
     Entry(String),
     You(Vec<Seat>),
     Monarchs(Vec<MonarchState>),
+    /// `level N` oder `state N` mit der Stufe N (Go `stagePeer`).
+    Stage(String),
+    /// Ereignisse eines Zustands: (Tick, Stufe, Liste).
+    Events(i64, i64, Vec<serde_json::Value>),
 }
 
 /// Go `fmt.Sprint([]Seat)`: `[{0 2 0 0}]`.
@@ -86,10 +63,25 @@ impl Peer for FakePeer {
         self.send(Ev::You(you.to_vec()));
         self.send(Ev::Entry(format!("joined {room} {name} {}", seats_text(you))));
     }
-    fn level(&mut self, _stage: i64, depth: i64, _layout: &Layout) {
+    fn level(&mut self, stage: i64, depth: i64, _layout: &Layout) {
+        self.send(Ev::Stage(format!("level {stage}")));
         self.send(Ev::Entry(format!("level {depth}")));
     }
-    fn state(&mut self, tick: i64, _stage: i64, _state: &serde_json::Value) {
+    fn state(&mut self, tick: i64, stage: i64, state: &serde_json::Value) {
+        self.send(Ev::Stage(format!("state {stage}")));
+        let switched = state
+            .get("events")
+            .and_then(|e| e.as_array())
+            .is_some_and(|a| a.iter().any(|e| e["type"] == "islandSwitch"));
+        if switched {
+            self.send(Ev::Stage(format!("islandSwitch {stage}")));
+        }
+        let events = state
+            .get("events")
+            .and_then(|e| e.as_array())
+            .cloned()
+            .unwrap_or_default();
+        self.send(Ev::Events(tick, stage, events));
         self.send(Ev::Entry(format!("state {tick}")));
     }
     fn seats(&mut self, you: &[Seat], monarchs: &[MonarchState]) {
@@ -111,6 +103,8 @@ pub struct Inbox {
     log: Vec<String>,
     you: Vec<Seat>,
     monarchs: Vec<MonarchState>,
+    stage_log: Vec<String>,
+    events: Vec<(i64, i64, Vec<serde_json::Value>)>,
 }
 
 /// Ein neuer Peer mit der Verbindungs-Nummer `id` und sein `Inbox`.
@@ -123,6 +117,8 @@ pub fn peer(id: u64) -> (Box<FakePeer>, Inbox) {
             log: Vec::new(),
             you: Vec::new(),
             monarchs: Vec::new(),
+            stage_log: Vec::new(),
+            events: Vec::new(),
         },
     )
 }
@@ -134,6 +130,8 @@ impl Inbox {
                 Ev::Entry(e) => self.log.push(e),
                 Ev::You(y) => self.you = y,
                 Ev::Monarchs(m) => self.monarchs = m,
+                Ev::Stage(s) => self.stage_log.push(s),
+                Ev::Events(t, s, e) => self.events.push((t, s, e)),
             }
         }
     }
@@ -158,6 +156,23 @@ impl Inbox {
         self.pump();
         states_text(&self.monarchs)
     }
+
+    /// Die Nachrichten `level N` und `state N` mit ihrer Stufe, in der Reihenfolge des Eintreffens (Go `stagePeer.msgs`).
+    pub fn msgs(&mut self) -> Vec<String> {
+        self.pump();
+        self.stage_log.clone()
+    }
+
+    /// Die Ereignisse jedes Zustands: (Tick, Stufe, Ereignisse).
+    pub fn events(&mut self) -> Vec<(i64, i64, Vec<serde_json::Value>)> {
+        self.pump();
+        self.events.clone()
+    }
+
+    /// Plätze des Geräts als Text (wie `you()`).
+    pub fn seats_now(&mut self) -> String {
+        self.you()
+    }
 }
 
 /// Die feste Welt der Tests: Uhr, Speicher, Log (Go `fixture`).
@@ -166,24 +181,30 @@ pub struct Fixture {
     pub log: RecordingLog,
     pub now: Stamp,
     pub data: Arc<Data>,
+    /// Die Uhr für Dauern (`Env::clock`): steht still auf `now` beim Anlegen.
+    clock: Box<dyn FnMut() -> Stamp>,
 }
 
 impl Fixture {
     pub fn new() -> Fixture {
+        let now = Stamp::from_civil(2026, 10, 1, 12, 0, 0, 0);
         Fixture {
             store: MemStore::default(),
             log: RecordingLog::default(),
-            now: Stamp::from_civil(2026, 10, 1, 12, 0, 0, 0),
+            now,
             data: test_data(),
+            clock: Box::new(move || now),
         }
     }
 
     pub fn env(&mut self) -> Env<'_> {
         Env {
             now: self.now,
+            clock: &mut *self.clock,
             data: &self.data,
             store: &mut self.store,
             log: &mut self.log,
+            sessions: None,
             dev: false,
             snapshot: None,
         }
@@ -270,7 +291,9 @@ impl WorldDir {
     /// Schreibt die Dateien `(id, Inhalt)` in einen eigenen Ordner; `tag` hält die Ordner der Tests auseinander.
     pub fn new(tag: &str, files: &[(&str, &str)]) -> WorldDir {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work");
-        let dir = root.join(format!("room-worlds-{tag}-{}", std::process::id()));
+        static NEXT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+        let n = NEXT.fetch_add(1, Ordering::SeqCst); // gleiche Marke in parallelen Tests: eigener Ordner je Aufruf
+        let dir = root.join(format!("room-worlds-{tag}-{}-{n}", std::process::id()));
         std::fs::create_dir_all(dir.join("worlds")).expect("Ordner der Welten");
         for (id, text) in files {
             std::fs::write(dir.join("worlds").join(format!("{id}.json")), text).expect("Welt-Datei");
@@ -286,4 +309,68 @@ impl Drop for WorldDir {
     fn drop(&mut self) {
         let _ = std::fs::remove_dir_all(&self.dir); // ein Rest in `.work/` stört nicht
     }
+}
+
+/// Ein Manager im Dev-Mode (Go `f.m.Dev = true`).
+pub fn dev_manager() -> TestManager {
+    let (mut m, _) = manager();
+    m.dev = true;
+    m
+}
+
+/// Legt einen Raum an (`create`, neuer Stand, Tiefe `depth`) und liefert den Code.
+pub fn create_room(m: &mut TestManager, id: &str, conn: u64, name: &str, depth: i64, slots: &[i64]) -> (String, Inbox) {
+    let (p, i) = peer(conn);
+    let code = m
+        .create(id, p, name, true, depth, slots, Options::default())
+        .expect("create");
+    (code, i)
+}
+
+/// Tritt dem Raum `code` bei.
+pub fn join_room(m: &mut TestManager, id: &str, conn: u64, code: &str, slots: &[i64]) -> Inbox {
+    let (p, i) = peer(conn);
+    m.join(id, p, code, slots).expect("join");
+    i
+}
+
+/// Der Raum `code` (Test-Zugriff).
+pub fn rm<'a>(m: &'a mut TestManager, code: &str) -> &'a mut Room {
+    m.rooms.get_mut(code).expect("Raum")
+}
+
+/// `n` Takte des Raums `code` (Go `ticks`).
+pub fn ticks(m: &mut TestManager, code: &str, n: usize) {
+    for _ in 0..n {
+        assert_eq!(m.with_room(code, |r, env| r.tick(env)), Some(true));
+    }
+}
+
+/// Stellt Monarch `i` an den Tiefen-Eingang seiner Stufe (Ausgang nach unten, Go `moveToExit`).
+pub fn move_to_exit(r: &mut Room, i: i64) {
+    let Some(stage) = r.isl.stage_of(i) else {
+        panic!("Monarch {i} ohne Stufe")
+    };
+    let w = &mut r.isl.stages[stage];
+    let Some(x) = w.level.entities.iter().find(|e| e.kind == "exit").map(|e| e.x) else {
+        panic!("kein Ausgang für Monarch {i}")
+    };
+    if let Some(p) = w.players.iter_mut().find(|p| p.index == i) {
+        p.x = x;
+        return;
+    }
+    panic!("kein Spieler {i} in Stufe {stage}");
+}
+
+impl WorldDir {
+    /// Der Ordner (für Spielstände im Test).
+    pub fn path(&self) -> &std::path::Path {
+        &self.dir
+    }
+}
+
+/// Lässt die Uhr des Managers um `secs` Sekunden weiterlaufen und prüft die Fristen (Go `f.wait`).
+pub fn wait(m: &mut Manager<MemStore, RecordingLog>, clock: &AtomicI64, secs: i64) {
+    clock.fetch_add(secs, Ordering::SeqCst);
+    m.sweep();
 }

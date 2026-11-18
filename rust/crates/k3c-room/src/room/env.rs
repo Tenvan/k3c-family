@@ -5,6 +5,7 @@ use k3c_data::Data;
 use k3c_sim::state::World;
 
 use super::log::Log;
+use super::metrics::SessionStore;
 use crate::fehler::Fehler;
 use crate::store::{Saves, Stamp};
 
@@ -36,10 +37,14 @@ pub type SnapshotFn = fn(&World, i64, bool) -> serde_json::Value;
 pub struct Env<'a> {
     /// Die Uhr des Manager zu Beginn des Aufrufs (Wanduhr, nur für Fristen und Stempel, nicht für den Spielverlauf).
     pub now: Stamp,
+    /// Die Uhr des Managers selbst: misst Dauern innerhalb eines Aufrufs (Speicherdauer im Log, `saver.rs`).
+    pub clock: &'a mut dyn FnMut() -> Stamp,
     /// Spiel-Daten des Managers (Schwierigkeitsgrade für `step_island`).
     pub data: &'a Data,
     pub store: &'a mut dyn Store,
     pub log: &'a mut dyn Log,
+    /// Ablage der Spielmetrik-Reports (Go `Manager.Sessions`); `None`: kein Report.
+    pub sessions: Option<&'a mut dyn SessionStore>,
     /// Dev-Mode (`K3C_DEV`): `timescale` erscheint dann im Zustand.
     pub dev: bool,
     /// `None`: der Zustand ist die Welt selbst als JSON (Tests); sonst der Aufbau des Aufrufers.

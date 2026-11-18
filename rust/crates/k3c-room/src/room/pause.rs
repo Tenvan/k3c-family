@@ -3,13 +3,13 @@
 //! Tick keinen Schritt. Sonst läuft der Raum weiter, die Monarchen des Geräts stehen still und sind `PROTECT_TICKS` lang
 //! geschützt (`Player::protected`), danach verwundbar. Die Frist zählt Ticks (deterministisch), nicht die Wanduhr.
 //!
-//! `couch_paused`, `device_paused` und `pause_tick` hat RU21 mit `early.rs` vorgezogen (`Room::tick` und `steps` brauchen
-//! sie); sie rechnen wie Go. Hier steht die Aktion `pause`.
+//! `couch_paused`, `device_paused` und `pause_tick` hat RU21 vorgezogen (`Room::tick` und `steps` brauchen
+//! sie); sie stehen seit RU24.1 hier neben der Aktion `pause`.
 use k3c_sim::state::PlayerCommand;
 
 use super::env::Env;
 use super::log::{Level, short};
-use super::types::{Room, TICK_HZ, WAIT_FOR_SECS};
+use super::types::{MonarchState, Room, TICK_HZ, WAIT_FOR_SECS};
 use crate::fehler::Fehler;
 
 /// Höchstdauer des Schutzes online: `WAIT_FOR_SECS` (60 s) in Ticks (Go `protectTicks`).
@@ -47,5 +47,65 @@ impl Room {
             &[("device", &device), ("pausiert", &on), ("couch", &couch)],
         );
         Ok(())
+    }
+}
+
+impl Room {
+    /// Couch-Pause: genau ein Gerät mit Platz ist verbunden und pausiert, der Raum steht (B-214).
+    pub fn couch_paused(&self) -> bool {
+        let mut seated = self.devices.values().filter(|d| d.connected && !d.observer);
+        match (seated.next(), seated.next()) {
+            (Some(d), None) => d.paused,
+            _ => false,
+        }
+    }
+
+    /// Das Gerät `id` ist verbunden und pausiert; seine Eingaben zählen nicht.
+    pub fn device_paused(&self, id: &str) -> bool {
+        self.devices.get(id).is_some_and(|d| d.connected && d.paused)
+    }
+
+    /// Setzt vor den Schritten eines Ticks den Schutz je Monarch und zählt die Frist der pausierten Geräte herunter; im
+    /// Couch-Raum und in der Dev-Pause steht sie.
+    pub fn pause_tick(&mut self, env: &mut Env) {
+        let couch = self.couch_paused();
+        let protected: Vec<bool> = self
+            .monarchs
+            .iter()
+            .map(|mo| {
+                let d = self.devices.get(&mo.device);
+                !couch
+                    && mo.state == MonarchState::Taken
+                    && self.device_paused(&mo.device)
+                    && d.is_some_and(|d| d.protect > 0)
+            })
+            .collect();
+        for p in self.isl.stages.iter_mut().flat_map(|w| w.players.iter_mut()) {
+            if let Some(&on) = usize::try_from(p.index).ok().and_then(|i| protected.get(i)) {
+                p.protected = on;
+            }
+        }
+        if couch || self.paused {
+            return;
+        }
+        let mut ended = Vec::new();
+        for (id, d) in self.devices.iter_mut() {
+            if !d.connected || !d.paused || d.protect == 0 {
+                continue;
+            }
+            d.protect -= 1;
+            if d.protect == 0 {
+                ended.push(short(id));
+            }
+        }
+        for device in ended {
+            let frist = format!("{}m0s", WAIT_FOR_SECS / 60);
+            self.log(
+                env,
+                Level::Info,
+                "⏳ Schutz der Pause endet",
+                &[("device", &device), ("frist", &frist)],
+            );
+        }
     }
 }

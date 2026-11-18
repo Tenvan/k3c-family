@@ -8,7 +8,7 @@ use k3c_sim::island::Island;
 use k3c_sim::state::PlayerCommand;
 use serde::Serialize;
 
-use super::pending::Metrics;
+use super::metrics::Metrics;
 use crate::store::Stamp;
 
 /// Grenzen und Fristen aus `docs/protocol.md`.
@@ -181,6 +181,9 @@ pub struct Room {
     pub slow_logged: Option<Stamp>,
     /// Langsame Ticks seit dieser Meldung.
     pub slow_count: i64,
-    /// Ticks seit der letzten Speicherung (`early.rs`, Go `saves.due`).
+    /// Ticks seit der letzten Speicherung (`saver.rs`, Go `saves.due`).
     pub save_due: i64,
+    /// Schreiber der Spielstände (`saver.rs`, Go `saves`); Standard `InlineWriter`, der Aufrufer darf einen eigenen
+    /// setzen (Thread-Schreiber, RU27).
+    pub saves: Box<dyn super::saver::SaveWriter>,
 }

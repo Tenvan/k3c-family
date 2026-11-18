@@ -1,9 +1,9 @@
-//! Tests des Managers (Go: Teile von `room_test.go`, `testsave_test.go`; `create` mit neuer Insel braucht `create_in`, RU24).
+//! Tests des Managers (Go: Teile von `room_test.go`, `testsave_test.go`; `create` mit neuer Insel über `create_in`).
 use std::sync::atomic::Ordering;
 
 use super::manager::Manager;
 use super::testutil::{MemStore, add_room, manager, peer};
-use super::{CODE_LETTERS, Info, Options, RecordingLog};
+use super::{CODE_LETTERS, Info, MAX_ROOMS, Options, RecordingLog};
 use crate::fehler::Fehler;
 
 type M = Manager<MemStore, RecordingLog>;
@@ -136,9 +136,33 @@ fn create_reihenfolge() {
     assert_eq!(m.rooms().len(), 1, "Raum trotz Fehler angelegt");
 }
 
-// Spielstand vor Raumzahl prüfen und der 5. Raum brauchen eine neue Insel (`create_in`).
+// Startstufe, Spielstand vor Raumzahl prüfen und der 5. Raum (Go `TestCreateReihenfolge`, Teil mit `create_in`).
 #[test]
-fn create_raumzahl() {}
+fn create_raumzahl() {
+    let (mut m, _) = manager();
+    let (p, _) = peer(1);
+    assert_eq!(
+        m.create("a", p, "tief", true, 7, &[0], Options::default()),
+        Err(Fehler::BadRequest),
+        "Startstufe 7"
+    );
+    create(&mut m, "a", "offen", true, &[0], Options::default()).expect("offen");
+    for i in 0..MAX_ROOMS - 1 {
+        create(&mut m, "d", &format!("voll-{i}"), true, &[0], Options::default()).expect("Raum");
+    }
+    m.store.data.insert("alt".into(), b"{}".to_vec());
+    assert_eq!(
+        create(&mut m, "e", "alt", true, &[0], Options::default()),
+        Err(Fehler::SaveExists),
+        "Spielstand vor Raumzahl prüfen"
+    );
+    assert_eq!(
+        create(&mut m, "e", "noch-einer", true, &[0], Options::default()),
+        Err(Fehler::TooManyRooms),
+        "5. Raum"
+    );
+    assert_eq!(m.rooms().len(), MAX_ROOMS);
+}
 
 #[test]
 fn code_besteht_aus_buchstaben_und_ist_frei() {
@@ -190,7 +214,28 @@ fn zeit_laeuft_ueber_die_uhr_des_managers() {
     assert_eq!((m.now)().since_nanos(a), 61_000_000_000);
 }
 
-// AC-03: Anlegen aus `testdata/saves/v9/familie.json` startet einen Raum. `Manager::load_in` (RU24) braucht die Insel aus
-// einem Spielstand (`from_island_save`), und die Stufen entstehen über `create_world` (`new_hub_site`, RU18).
+// AC-03: Anlegen aus `testdata/saves/v9/familie.json` startet einen Raum mit den Spielern des Stands als freie Monarchen
+// (das Gerät nimmt den ersten), in der gespeicherten Welt.
 #[test]
-fn anlegen_aus_spielstand_v9() {}
+fn anlegen_aus_spielstand_v9() {
+    let path = concat!(env!("CARGO_MANIFEST_DIR"), "/../../../testdata/saves/v9/familie.json");
+    let raw = std::fs::read(path).expect("familie.json");
+    let file: serde_json::Value = serde_json::from_slice(&raw).expect("JSON");
+    let (mut m, _) = manager();
+    m.store.data.insert("familie".into(), raw);
+    let code = create(&mut m, "xbox", "familie", false, &[0], Options::default()).expect("create");
+    let r = m.room(&code).expect("Raum");
+    let players = file["players"].as_array().map_or(0, Vec::len);
+    assert!(
+        players > 0 && r.monarchs.len() == players,
+        "Monarchen {} statt {players}",
+        r.monarchs.len()
+    );
+    assert_eq!(
+        r.isl.stages.len(),
+        file["stages"].as_array().map_or(0, Vec::len),
+        "Stufen"
+    );
+    assert_eq!(r.isl.world_id(), "standard", "Welt");
+    assert_eq!(r.connected(), 1);
+}

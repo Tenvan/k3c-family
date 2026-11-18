@@ -6,7 +6,7 @@ use std::collections::BTreeMap;
 
 use k3c_sim::state::PlayerCommand;
 
-use super::testutil::{Fixture, Inbox, peer, room};
+use super::testutil::{Fixture, Inbox, TestManager, create_room, join_room, manager, peer, rm, room, ticks};
 use super::{PROTECT_TICKS, Room};
 use crate::fehler::Fehler;
 
@@ -147,23 +147,6 @@ fn pause_couch_raum_steht() {
     assert_eq!(r.steps(), 1);
 }
 
-// Nach resume läuft der Couch-Raum weiter (die Schritte rechnet `step_players`, RU18).
-#[test]
-#[ignore = "wartet auf RU18 (step_players)"]
-fn pause_couch_raum_laeuft_nach_resume() {
-    let mut f = Fixture::new();
-    let mut r = room("KRNZ", "couch", 2);
-    joined(&mut f, &mut r, "xbox", 1, &[0, 1]);
-    r.pause(&mut f.env(), "xbox", 1, true).expect("pause");
-    r.pause(&mut f.env(), "xbox", 1, false).expect("resume");
-    let before = stages_text(&r);
-    assert_eq!(r.input("xbox", 1, &go(0, 1.0)), Ok(()));
-    for _ in 0..30 {
-        assert!(r.tick(&mut f.env()));
-    }
-    assert_ne!(stages_text(&r), before, "Zustand steht nach resume weiter");
-}
-
 // BD3.3, B-214/AC-02 (Schutz, zwei Geräte): Pausiert das eine Gerät, steht sein Monarch geschützt, das andere Gerät läuft
 // unverändert und ungeschützt (der Raum rechnet weiter: `steps`). Der Schutz gilt `PROTECT_TICKS` Ticks, danach ist der
 // Monarch verwundbar; ein zweites pause verlängert nicht. `pause_tick` zählt, ohne dass ein Schritt rechnet.
@@ -206,28 +189,6 @@ fn pause_online_schutz_60s() {
     r.pause_tick(&mut f.env());
     assert_eq!(protected(&r), (false, false));
     assert_eq!(r.devices["xbox"].protect, 0);
-}
-
-// Der Monarch des pausierten Geräts läuft nicht, der des anderen schon (Schritte: `step_players`, RU18).
-#[test]
-#[ignore = "wartet auf RU18 (step_players)"]
-fn pause_online_monarch_steht_still() {
-    let mut f = Fixture::new();
-    let mut r = online_room(&mut f);
-    r.pause(&mut f.env(), "xbox", 1, true).expect("pause");
-    assert_eq!(r.input("xbox", 1, &go(0, 1.0)), Ok(()));
-    assert_eq!(r.input("handy", 2, &go(0, 1.0)), Ok(()));
-    let (ax, bx) = (r.isl.players()[0].x, r.isl.players()[1].x);
-    for _ in 0..100 {
-        assert!(r.tick(&mut f.env()));
-    }
-    let players = r.isl.players();
-    assert!(
-        players[0].x == ax && players[1].x > bx,
-        "A x {ax} → {} (soll stehen), B x {bx} → {} (soll laufen)",
-        players[0].x,
-        players[1].x
-    );
 }
 
 // BD3.3, B-214: Bricht die Verbindung des pausierten Geräts ab, endet die Pause (Frist laut § 3).
@@ -276,5 +237,59 @@ fn pause_zwei_spieler_am_geraet() {
         stages_text(&r),
         before,
         "Couch-Raum nach dem Gehen des Handys läuft weiter"
+    );
+}
+
+// ---- Tests mit echter Insel (`Manager::create`, Schritte der Sim) ----
+
+fn real_json(m: &mut TestManager, code: &str) -> String {
+    serde_json::to_string(&rm(m, code).isl.stages).expect("Stufen")
+}
+
+fn manager_pause(m: &mut TestManager, code: &str, id: &str, conn: u64, on: bool) {
+    let r = m.with_room(code, |r, env| r.pause(env, id, conn, on)).expect("Raum");
+    assert_eq!(r, Ok(()));
+}
+
+// Nach resume läuft der Couch-Raum weiter (BD3.3, B-214/AC-01): Zustand steht in der Pause, danach nicht mehr.
+#[test]
+fn pause_couch_raum_laeuft_nach_resume() {
+    let (mut m, _) = manager();
+    let (code, _x) = create_room(&mut m, "xbox", 1, "couch", 0, &[0, 1]);
+    ticks(&mut m, &code, 5);
+    manager_pause(&mut m, &code, "xbox", 1, true);
+    assert_eq!(rm(&mut m, &code).input("xbox", 1, &go(0, 1.0)), Ok(()));
+    let before = real_json(&mut m, &code);
+    ticks(&mut m, &code, 90);
+    assert_eq!(
+        real_json(&mut m, &code),
+        before,
+        "Zustand hat sich während der Couch-Pause geändert"
+    );
+    manager_pause(&mut m, &code, "xbox", 1, false);
+    let before = real_json(&mut m, &code);
+    assert_eq!(rm(&mut m, &code).input("xbox", 1, &go(0, 1.0)), Ok(()));
+    ticks(&mut m, &code, 30);
+    assert_ne!(real_json(&mut m, &code), before, "Zustand steht nach resume weiter");
+}
+
+// Der Monarch des pausierten Geräts läuft nicht, der des anderen schon (BD3.3, B-214/AC-02).
+#[test]
+fn pause_online_monarch_steht_still() {
+    let (mut m, _) = manager();
+    let (code, _x) = create_room(&mut m, "xbox", 1, "online", 0, &[0]);
+    let _h = join_room(&mut m, "handy", 2, &code, &[0]);
+    manager_pause(&mut m, &code, "xbox", 1, true);
+    assert_eq!(rm(&mut m, &code).input("xbox", 1, &go(0, 1.0)), Ok(()));
+    assert_eq!(rm(&mut m, &code).input("handy", 2, &go(0, 1.0)), Ok(()));
+    let r = rm(&mut m, &code);
+    let (ax, bx) = (r.isl.players()[0].x, r.isl.players()[1].x);
+    ticks(&mut m, &code, 100);
+    let players = rm(&mut m, &code).isl.players().iter().map(|p| p.x).collect::<Vec<_>>();
+    assert!(
+        players[0] == ax && players[1] > bx,
+        "A x {ax} -> {} (soll stehen), B x {bx} -> {} (soll laufen)",
+        players[0],
+        players[1]
     );
 }

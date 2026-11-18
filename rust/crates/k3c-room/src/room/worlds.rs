@@ -1,11 +1,11 @@
-//! Welten im Raum (WZ18.4, `docs/rules/welten.md` § 5/6). Port von `world`, `loadWorld`, `createIn`, `loadIn` und
-//! `worldErrorf` aus `worlds.go` (`WorldList` bleibt RU24.4): Die Standard-Welt kommt immer aus der Einbettung, weitere
+//! Welten im Raum (WZ18.4, `docs/rules/welten.md` § 5/6). Port von `world`, `loadWorld`, `createIn`, `loadIn`,
+//! `worldErrorf` und `WorldList` aus `worlds.go`: Die Standard-Welt kommt immer aus der Einbettung, weitere
 //! Welten nur im Dev-Mode frisch aus dem Ordner der Welten, bei jedem Anlegen und Laden eines Raums. Der Raum behält die
 //! geladene Welt, solange er läuft (sie steckt in seiner Insel).
 //!
 //! Abweichungen von Go: Gos `Manager.Worlds` (`fs.FS` mit `<id>.json`) ist hier der Datenordner (`Source`) mit
-//! `worlds/<id>.json`, weil `k3c_sim::island::load_world` so liest. `Manager` hat noch kein Feld dafür (`manager.rs` gehört
-//! RU49.1 nicht): `worlds_source` liefert vorläufig `None`, die `*_from`-Funktionen nehmen die Quelle als Parameter.
+//! `worlds/<id>.json`, weil `k3c_sim::island::load_world` so liest; `Manager::worlds` hält ihn (seit RU24.1), die
+//! `*_from`-Funktionen nehmen die Quelle zusätzlich als Parameter.
 use k3c_data::Source;
 use k3c_sim::island::save::SaveTables;
 use k3c_sim::island::{
@@ -14,6 +14,7 @@ use k3c_sim::island::{
 };
 use k3c_sim::world::base::base;
 use k3c_sim::world::values_room::{default_values_from, resolve_world};
+use serde::Serialize;
 
 use super::env::Store;
 use super::log::Log;
@@ -37,7 +38,7 @@ fn missing(src: &Source, id: &str) -> bool {
 impl<S: Store, L: Log> Manager<S, L> {
     /// Der Ordner der weiteren Welten (Gos `Manager.Worlds`); `None`: keine.
     pub fn worlds_source(&self) -> Option<&Source> {
-        None
+        self.worlds.as_ref()
     }
 
     /// Gos `world`: die Welt `id` (leer = standard) mit ihrem aufgelösten Wertesatz (`resolve_world`, welten.md § 1,
@@ -118,5 +119,59 @@ impl<S: Store, L: Log> Manager<S, L> {
             .world_from(worlds, &s.world)
             .map_err(|e| e.mit_vorsatz("spielstand: "))?;
         from_island_save_in(&tables, &s, 1.0, &w).map_err(|e| Fehler::Io(e.to_string()))
+    }
+}
+
+/// Ein Eintrag der Weltliste für die Lobby (Go `WorldInfo`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct WorldInfo {
+    pub id: String,
+    pub name: String,
+}
+
+/// Die Dateinamen `<id>` der Welt-Dateien in `src`, nach Dateiname sortiert (Go `fs.ReadDir`); eingebettet gibt es nur die
+/// Standard-Welt, keine weiteren.
+fn world_ids(src: &Source) -> Vec<String> {
+    let Source::Dir(dir) = src else {
+        return Vec::new();
+    };
+    let Ok(entries) = std::fs::read_dir(dir.join("worlds")) else {
+        return Vec::new();
+    };
+    let mut files: Vec<(String, bool)> = entries
+        .flatten()
+        .map(|e| (e.file_name().to_string_lossy().into_owned(), e.path().is_dir()))
+        .collect();
+    files.sort();
+    files
+        .into_iter()
+        .filter_map(|(name, is_dir)| name.strip_suffix(".json").filter(|_| !is_dir).map(str::to_string))
+        .collect()
+}
+
+impl<S: Store, L: Log> Manager<S, L> {
+    /// Gos `WorldList`: die Welten, die ein neuer Spielstand wählen darf: die Standard-Welt immer zuerst, im Dev-Mode dazu
+    /// jede gültige Welt-Datei aus `worlds` (nach Dateiname sortiert). Ungültige Dateien fehlen in der Liste (Fehler beim
+    /// Anlegen).
+    pub fn world_list(&self) -> Vec<WorldInfo> {
+        let mut out = Vec::new();
+        if let Ok(std) = self.load_world_from(None, STANDARD_WORLD_ID) {
+            out.push(WorldInfo {
+                id: std.id,
+                name: std.name,
+            });
+        }
+        let Some(src) = self.worlds.as_ref().filter(|_| self.dev) else {
+            return out;
+        };
+        for id in world_ids(src) {
+            if id == STANDARD_WORLD_ID {
+                continue;
+            }
+            if let Ok(w) = self.load_world_from(Some(src), &id) {
+                out.push(WorldInfo { id: w.id, name: w.name });
+            }
+        }
+        out
     }
 }

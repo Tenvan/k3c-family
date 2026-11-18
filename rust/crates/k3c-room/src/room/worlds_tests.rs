@@ -1,13 +1,15 @@
 //! Tests aus `worlds_test.go` und `worlds_values_test.go` (WZ18.4, B-488/AC-03; BAL8.2, B-681/AC-01; `docs/rules/welten.md`
 //! § 1/5/6): Der Raum legt neue Inseln in der gewählten Welt an (Wahl nur im Dev-Mode, sonst nur standard), lädt Spielstände
 //! mit ihrer gespeicherten Welt und lehnt unbekannte oder ungültige Welten ab. Gos `m.Worlds` (`MapFS`) ist ein Ordner unter
-//! `.work/` (`WorldDir`); `Manager` hat noch kein Feld dafür, die Tests rufen `create_in_from` und `load_in_from` mit der Quelle.
+//! `.work/` (`WorldDir`) und gehört dem Manager (`m.worlds`); einige Tests rufen `create_in_from` mit der Quelle direkt.
+use k3c_sim::island::{CreateOptions, add_island_player, create_island_in, next_island};
+
 use super::Options;
 use super::testutil::{TestManager, WorldDir, manager, peer};
 use crate::fehler::Fehler;
 
 /// Eine Test-Welt mit zwei Inseln (nicht aus `data/worlds/`).
-const NORDMEER_RAW: &str = r#"{"id":"nordmeer","name":"Nordmeer","islands":[{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}"#;
+pub(super) const NORDMEER_RAW: &str = r#"{"id":"nordmeer","name":"Nordmeer","islands":[{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}},{"id":"eisinsel","name":"Eisinsel","depths":[0,4],"depthScaling":{"hp":1.6,"damage":1.4,"speed":1.15}}]}"#;
 
 /// Erbt von `nordmeer` (`extends` aus dem Ordner der Welten) und macht die Mauer teurer.
 const NORDTEUER_RAW: &str = r#"{"id":"nordteuer","name":"Nordmeer teuer","extends":"nordmeer","overrides":{"buildings":{"wall":{"cost":{"gold":9}}}},"islands":[{"id":"island1","name":"Insel 1","depths":[0,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1}}]}"#;
@@ -15,7 +17,7 @@ const NORDTEUER_RAW: &str = r#"{"id":"nordteuer","name":"Nordmeer teuer","extend
 const WERTKAPUTT_RAW: &str = r#"{"id":"wertkaputt","name":"Kaputt","overrides":{"buildings":{"wall":{"cost":{"gold":"viel"}}}},"islands":[{"id":"island1","name":"Insel 1","depths":[0]}]}"#;
 
 /// Ein Manager im Dev-Mode und der Ordner der Test-Welten (Go `worldFixture`).
-fn world_fixture(tag: &str) -> (TestManager, WorldDir) {
+pub(super) fn world_fixture(tag: &str) -> (TestManager, WorldDir) {
     let (mut m, _) = manager();
     m.dev = true;
     let files = [
@@ -147,25 +149,96 @@ fn welt_unbekannt_oder_ungueltig_abgelehnt() {
     }
 }
 
-// nordmeer_save braucht `add_island_player` (Insel 2, `eisinsel`, Nummer 1 nach dem Laden).
+/// Ein Spielstand auf Insel 2 der Test-Welt nordmeer (Go `nordmeerSave`).
+fn nordmeer_save(m: &TestManager, dir: &WorldDir) -> Vec<u8> {
+    let w = m.world_from(Some(&dir.src), "nordmeer").expect("nordmeer");
+    let mut isl = create_island_in(&m.data, &w, "nord", &[0, 4], 1.0, CreateOptions::default()).expect("Insel");
+    add_island_player(&mut isl, 0);
+    add_island_player(&mut isl, 0);
+    let next = next_island(&m.data, &isl, &w.islands[1]).expect("nächste Insel");
+    serde_json::to_vec(&next.to_save("2026-10-19T20:00:00Z").expect("Spielstand")).expect("JSON")
+}
+
 #[test]
-fn welt_laden_mit_gespeicherter_welt() {}
+fn welt_laden_mit_gespeicherter_welt() {
+    let (mut m, dir) = world_fixture("laden");
+    m.worlds = Some(dir.src.clone());
+    let save = nordmeer_save(&m, &dir);
+    m.store.data.insert("nord".into(), save);
+    let (p, _inbox) = peer(1);
+    let code = m
+        .create("xbox", p, "nord", false, 0, &[0, 1], Options::default())
+        .expect("create");
+    let isl = &m.room(&code).expect("Raum").isl;
+    assert_eq!(
+        (isl.world_id(), isl.island_id(), isl.number),
+        ("nordmeer", "eisinsel", 1),
+        "Welt, Insel, Nummer"
+    );
+}
 
 // Ohne Dev-Mode, Datei fehlt, Datei ungültig: `spielstand: …`, Stand und Raumliste unverändert.
 #[test]
-fn welt_laden_abgelehnt_stand_unveraendert() {}
+fn welt_laden_abgelehnt_stand_unveraendert() {
+    let (m0, dir0) = world_fixture("abgelehnt-save");
+    let save = nordmeer_save(&m0, &dir0);
+    let cases: [(&str, bool, Option<WorldDir>, Fehler, &str); 3] = [
+        (
+            "ohne Dev-Mode",
+            false,
+            None,
+            Fehler::Forbidden,
+            r#"spielstand: Welt "nordmeer" nur im Dev-Mode"#,
+        ),
+        (
+            "Datei fehlt",
+            true,
+            Some(WorldDir::new("abgelehnt-fehlt", &[])),
+            Fehler::WorldUnknown,
+            r#"spielstand: Welt "nordmeer" unbekannt"#,
+        ),
+        (
+            "Datei ungültig",
+            true,
+            Some(WorldDir::new("abgelehnt-kaputt", &[("nordmeer", "{")])),
+            Fehler::WorldUnknown,
+            "data/worlds/nordmeer.json: kein gültiges JSON",
+        ),
+    ];
+    for (name, dev, dir, want, msg) in cases {
+        let (mut m, _) = manager();
+        m.dev = dev;
+        m.worlds = dir.as_ref().map(|d| d.src.clone());
+        m.store.data.insert("nord".into(), save.clone());
+        let (p, _inbox) = peer(1);
+        let err = m
+            .create("xbox", p, "nord", false, 0, &[0], Options::default())
+            .expect_err("abgelehnt");
+        assert!(
+            err.is(&want) && err.to_string().contains(msg),
+            "{name}: {err}, erwartet {msg:?}"
+        );
+        assert!(
+            m.store.data.get("nord") == Some(&save)
+                && m.rooms().is_empty()
+                && m.log.lines.iter().any(|l| l.contains("🚫")),
+            "{name}: Stand geändert, Raum angelegt oder kein 🚫 im Log"
+        );
+    }
+}
 
-// Zwei Räume mit verschiedenen Welten rechnen mit ihren eigenen Kosten; `site_gold_left` fehlt in `k3c-sim`.
+// Die Weltliste: standard zuerst, im Dev-Mode dazu jede gültige Datei (ungültige fehlen), sonst nur standard.
 #[test]
-fn wertesatz_zwei_raeume_eigene_kosten() {}
-
-#[test]
-fn wertesatz_ungueltiger_override_abgelehnt() {
-    let (m, dir) = world_fixture("override");
-    let err = m
-        .create_in_from(Some(&dir.src), "kaputt", 0, &opts("wertkaputt"))
-        .expect_err("abgelehnt");
-    assert!(err.to_string().contains("data/worlds/wertkaputt.json"), "{err}");
+fn weltliste_standard_zuerst_dann_gueltige_dateien() {
+    let (mut m, dir) = world_fixture("liste");
+    let ids = |m: &TestManager| m.world_list().into_iter().map(|w| w.id).collect::<Vec<_>>();
+    assert_eq!(ids(&m), ["standard"], "ohne Ordner");
+    m.worlds = Some(dir.src.clone());
+    // wertkaputt (ohne depthScaling) und kaputt (unbekanntes Feld) sind ungültig und fehlen
+    assert_eq!(ids(&m), ["standard", "nordmeer", "nordteuer"]);
+    assert_eq!(m.world_list()[1].name, "Nordmeer");
+    m.dev = false;
+    assert_eq!(ids(&m), ["standard"], "ohne Dev-Mode");
 }
 
 // Ein Spielstand, der kein JSON ist, scheitert mit der Meldung der Sim (`spielstand: …`).
