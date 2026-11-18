@@ -32,8 +32,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU16 | CLI | RSU | Gebäude und Objekte zeichnen | – | `aktiv/RU16-gebaeude-und-objekte-zeichnen/` |
-| RU17 | CLI | RSU | Effekte und Ton im Spiel | – | `aktiv/RU17-effekte-und-ton-im-spiel/` |
+| RU20 | CLI | RSU | HUD Teil 1: Anzeigen je Spielerhälfte | – | `aktiv/RU20-hud-teil-1/` |
 
 ## Offen am Gerät
 
@@ -62,7 +61,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | bereit | `geplant/RU15-sim-kampf-bosse/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
 | RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
-| RU20 | CLI | RSU | HUD Teil 1: Anzeigen je Spielerhälfte | – | bereit | `geplant/RU20-hud-teil-1/` |
 | RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | bereit | `geplant/RU21-spielstaende-und-raum-teil-1/` |
 | RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
 | RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | bereit | `geplant/RU23-hud-teil-2/` |
@@ -445,3 +443,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU4 | Plattform-Schicht: Schleife mit und ohne Fenster, Eingabe, Ton, Text | `erledigt/RU4-plattform-fenster-eingabe-ton/` |
 | RU13 | Welt und Akteure zeichnen | `erledigt/RU13-welt-und-akteure-zeichnen/` |
 | RU38 | Zustands-Aufzeichnung aus Go und Wiedergabe im Rust-Client | `erledigt/RU38-aufzeichnung-und-wiedergabe/` |
+| RU16 | Gebäude und Objekte zeichnen | `erledigt/RU16-gebaeude-und-objekte-zeichnen/` |
+| RU17 | Effekte und Ton im Spiel | `erledigt/RU17-effekte-und-ton-im-spiel/` |
