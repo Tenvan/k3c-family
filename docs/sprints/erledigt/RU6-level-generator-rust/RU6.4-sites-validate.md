@@ -1,6 +1,6 @@
 # RU6.4 · Level Teil 4: sites, validate
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -64,5 +64,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Port von `sites` (`place_sites`, `place_nurseries`, `free_near`, `ZonePlacer`, `blocked_xs`, `side_limit`, `free_ground`, `Layout::on_free_ground`) und `validate` (`validate`, `validate_with`). `cargo test -p k3c-level`: 31 grün, 31 ignoriert; `task rust:lint` grün. Rust-Code ohne Tests: etwa 430 Zeilen (sites 270, validate 160).
+
+Ignoriert (wartet auf RU6.5, brauchen `generate`): sites_verteilt_500_seeds, sites_jede_zone_hat_mauer_und_turm, sites_aendern_nichts_an_den_entitaeten, sites_baugrund_zone1_frei, sites_zone1_jedes_biom, nursery_plaetze_im_wald, nursery_hat_baeume_im_freiraum.
+
+Neu in Rust (Go hat keine `validate_test.go`): `validate_tests.rs` mit `golden_level_sind_gueltig` (alle fünf Biom-Golden validieren sauber, Natur aus dem Seed gewürfelt) und `kaputtes_golden_level_meldet_die_go_texte`; beide laufen und prüfen `validate`, `resolve_nature` und `with_nature` schon vor RU6.5. Diese zwei zählen beim Test-Vergleich im Review als Zusatz.
+
+Abweichungen: `SitePlacement` (Go: 13 Felder in `sites.go`) ist die volle Struktur in `sites.rs`; `k3c_data::hub::SitePlacementData` kennt nur drei Felder. Darum ist `Rules::site_placement` jetzt `SitePlacement` und `Rules::from_data(d, hub_raw)` liest `sitePlacement` aus dem Text von `hub.json`; `serde_json` ist dafür reguläre Abhängigkeit von `k3c-level` (Workspace-Crate, nicht neu). Ausgaben `%v` bei `FormatFloat('f', -1)` sind Rusts `{}` (`fmt_f` in `validate.rs`). `count_entities` liegt in `validate.rs` (i64) und `testutil.rs` führt es wieder.

@@ -146,6 +146,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1076](B-1076-stab-sim-panics-in-result-umbauen.md) | CLI | Schuld | niedrig | eingeplant | RU43 | Sim-Panics (Go-Nil-Dereferenz, Ereignis, Tag/Nacht-Zyklus) und Test-Fixtures in Result umbauen |
 | [B-1077](B-1077-perf-allokationen-im-replay-takt.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: Replay-Takt (step) allokiert bis zu 788 mal je Bild, Ziel 0 |
 | [B-1078](B-1078-perf-allokationen-im-draw-pfad.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: draw allokiert bis zu 29 mal je Bild, Ziel 0 |
+| [B-1079](B-1079-stab-perf-level-marker.md) | CLI | Schuld | niedrig | offen | RU43 | Level-Generator: STAB- und PERF-Markierungen in k3c-level abbauen |
+| [B-1080](B-1080-abnahme-ru6-level-generator-rust.md) | SIM | Schuld | niedrig | offen | RU6 | Abnahme RU6: Level-Generator in Rust (Gen, Race, manuell) |
 
 ## Archiv
 

@@ -1,6 +1,6 @@
 # RU6.1 · Level Teil 1: Gerüst, backdrop, lines, planned, biome
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -73,5 +73,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 (Teil backdrop, lines, planned, biome) geprüft: `cargo test -p k3c-level` 11 grün, 4 ignoriert; `task rust:lint` grün (mit RU42-Lints).
+
+Rust-Code ohne Tests: rund 480 Zeilen (backdrop, biome, error, level, lines, pending, planned, rules).
+
+Ignoriert: `level_backdrops` (wartet auf RU6.5, braucht generate); `validate_plan_gueltig`, `validate_plan_lehnt_ab`, `validate_plan_mine_mit_freiem_platz` (wartet auf RU6.3, erreichen die Platzhalter in `pending.rs`).
+
+Abweichungen: `level.rs` entsteht schon hier (nur `is_event`, `hub_chunks_of`, `check_count`, `HARBOR_KIND`, `EVENT_KINDS`), weil die Plan-Prüfung sie braucht. Neu `error.rs` (`Fehler`). `portal_werte_sind_pflicht` prüft `checkPortals` über den Lader `load_biome` mit verändertem JSON, da die Prüfung in `k3c-data` privat ist. `testmodule` per `#[path]`. Platzhalter tragen `allow(clippy::unimplemented)` (RU42, § 11). `check_totals` bekommt zusätzlich `&Rules`.
