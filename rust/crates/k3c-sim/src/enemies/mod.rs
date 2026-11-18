@@ -160,7 +160,7 @@ pub fn step_enemies(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
         }
         boss_ability(w, ei, isl.as_deref_mut());
         take_equipment(w, &v, ei);
-        take_crown_or_loot(w, ei);
+        take_crown_or_loot(w, &v, ei, isl.as_deref());
         step_one(w, &v, ei, isl.as_deref(), dt);
     }
     leave_through_portal(w);

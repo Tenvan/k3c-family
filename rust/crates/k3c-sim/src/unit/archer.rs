@@ -4,9 +4,12 @@
 
 use k3c_data::troops::TroopData;
 
+use super::escort::escort_post;
 use super::{ARRIVE, ARROW_SPEED, walk_to};
+use crate::combat::squad_post;
 use crate::state::common::{outer_wall, sign};
-use crate::state::pending::{arrow_event, escort_post, is_spell_tower, squad_post};
+use crate::state::island_ref::IslandRef;
+use crate::state::pending::{arrow_event, is_spell_tower};
 use crate::state::{Projectile, Troop, World, WorldValues};
 
 /// Go: `isOnTower`: Steht der Schütze auf seinem Turm?
@@ -60,7 +63,7 @@ pub fn archer_tower(w: &mut World, v: &WorldValues, ti: usize) -> Option<i64> {
 }
 
 /// Go: `stepArcher`: Posten ist ein freier Platz auf einem Turm, sonst hinter der äußersten Mauer seiner Seite.
-pub fn step_archer(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
+pub fn step_archer(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti: usize, dt: f64) {
     let tower = archer_tower(w, v, ti);
     let side = if w.troops[ti].anchor_x < w.hub_x { -1.0 } else { 1.0 };
     let mut post = w.hub_x + side * 10.0;
@@ -70,7 +73,7 @@ pub fn step_archer(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
         post = wall.x - side * 2.0;
     }
     // Begleitschutz: der Schütze verlässt Turm und Mauer (unit_escort.go); Trupp hinter dem Banner (combat.go)
-    if let Some(x) = escort_post(w, &w.troops[ti]).or_else(|| squad_post(w, &w.troops[ti])) {
+    if let Some(x) = escort_post(w, v, isl, &w.troops[ti]).or_else(|| squad_post(w, v, &w.troops[ti])) {
         post = x;
     }
     walk_to(w, v, ti, post, dt);
