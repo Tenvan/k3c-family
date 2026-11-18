@@ -7,11 +7,13 @@ use super::banner::{BannerQueue, event_text};
 use super::glyphs::{JoinKey, join_from_key, new_join_key};
 use super::hints::{GuideHint, GuideId, GuideSeen, action_hint, guide_keys, hint_text, step_guide};
 use super::icons::{StockPart, stock_parts};
-use super::pending::{
-    BarKey, BossView, EventsKey, MenuEntry, MenuKey, MenuState, MenuView, SeaView, SlotView, StoryQueue, boss_bar,
-    boss_title, event_banner, new_bar_key, new_events_key, purse_max_of, slot_bar, slot_views,
-};
+use super::kampf::{BossView, EventsKey, boss_bar, boss_title, event_banner, new_events_key};
+use super::pending::purse_max_of;
 use super::radar::{RadarMarker, radar_markers};
+use super::seekarte::SeaView;
+use super::skillmenu::{MenuEntry, MenuState, SlotView, slot_views};
+use super::skilltext::{BarKey, MenuKey, MenuView, new_bar_key, slot_bar};
+use super::story::StoryQueue;
 use super::texts::tr;
 use super::values::*;
 use crate::props::pending::Economy;

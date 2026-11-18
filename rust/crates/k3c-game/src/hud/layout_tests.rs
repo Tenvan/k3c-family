@@ -7,7 +7,7 @@ use super::radar::radar_size;
 use crate::view::cell::{Cell, Rectangle, WORLD_SHARE, rect, stats_rect, stats_rect_lines};
 
 /// sizes_at: Größen wie im Spiel (Browser-Test hudLayout.test.ts, 28 px fett, Innenabstand 8/4 px) beim Maßstab k.
-fn sizes_at(k: f64, cell_w: f64) -> Items {
+pub(super) fn sizes_at(k: f64, cell_w: f64) -> Items {
     let mut inp: Items = [Size::default(); ITEM_COUNT];
     let mut set = |id: ItemId, w: f64, h: f64| inp[id] = Size { w: w * k, h: h * k };
     set(ITEM_PLAYER, 224.0, 92.0); // Geldsack-Karte (cardSize): Sack 84 px + Gold, B-919

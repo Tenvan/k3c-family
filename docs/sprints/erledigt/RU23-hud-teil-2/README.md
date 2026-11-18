@@ -1,6 +1,6 @@
 # RU23 · CLI · HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -96,13 +96,13 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU23.1 | `RU23.1-hud-overlay-skillmenu-skilltext.md` | Umsetzung | autonom | offen |
-| RU23.2 | `RU23.2-hud-drawmenu-story-drawstory.md` | Umsetzung | autonom | offen |
-| RU23.3 | `RU23.3-hud-seekarte-logik.md` | Umsetzung | autonom | offen |
-| RU23.4 | `RU23.4-hud-drawsea-drawsea-paper.md` | Umsetzung | autonom | offen |
-| RU23.5 | `RU23.5-hud-voyage-drawworld-kampf.md` | Umsetzung | autonom | offen |
-| RU23.6 | `RU23.6-hud-bildvergleich.md` | Umsetzung | autonom | offen |
-| RU23.7 | `RU23.7-review.md` | Review | autonom | offen |
+| RU23.1 | `RU23.1-hud-overlay-skillmenu-skilltext.md` | Umsetzung | autonom | fertig |
+| RU23.2 | `RU23.2-hud-drawmenu-story-drawstory.md` | Umsetzung | autonom | fertig |
+| RU23.3 | `RU23.3-hud-seekarte-logik.md` | Umsetzung | autonom | fertig |
+| RU23.4 | `RU23.4-hud-drawsea-drawsea-paper.md` | Umsetzung | autonom | fertig |
+| RU23.5 | `RU23.5-hud-voyage-drawworld-kampf.md` | Umsetzung | autonom | fertig |
+| RU23.6 | `RU23.6-hud-bildvergleich.md` | Umsetzung | autonom | fertig |
+| RU23.7 | `RU23.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -110,6 +110,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18, Second Worker (Claude): AC-01 bis AC-03 geprüft in den Ergebnissen RU23.1 bis RU23.6; `task check` grün bis auf zwei Last-Timeouts in `tools/paper` (einzeln grün), `check:diff`/Rust-Test nur rot durch `tests/still.rs` (auch auf main); `task check:go`: Go-Tests grün, `golangci-lint` fehlt auf diesem Rechner. Reviews: `k3c-hud` je Session, `k3c-reviewer` für den Sprint, keine schweren Befunde; behoben: Panic-Gefahr `VoyageDrawer`, Wellen-Clip, veraltete `allow`-Zeilen.
+Ignorierte Tests und Platzhalter (Eingabe für RU22): `overlay_two_players_learn` (RU18), `purse_groesse_und_obergrenze_mit_skills` (RU10, RU18), drei `story_*` (RU19), `pending.rs`: RU18-Shims (`available_points`, `can_learn`, `can_respec`, `purse_max_of`, `train_at`, `trade_at`) und RU19 (`WorldDef`, `story_*`); `testutil.rs` hat Test-Doubles mit `unimplemented!()` (keine Port-Platzhalter).
+Abnahme-Ticket für Sim, Balance und Gen: vom Hauptrechner anzulegen (Second Worker darf kein `plan_create`); Sichtprüfung am PC mit Tastatur und zwei Pads: Skill-Auswahl, Geschichtszeile, Seekarte, Schiffsfahrt, Zeile „Gerät: PC“.

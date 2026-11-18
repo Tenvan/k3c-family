@@ -46,7 +46,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | erledigt |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | erledigt |
 | RU11 | Sim: Einheiten und Gegner | erledigt |
-| RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | aktiv |
+| RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | erledigt |
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | erledigt |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | geplant |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | erledigt |

@@ -1,9 +1,7 @@
 //! Port von `native/k3c-game/hud/draw.go`: Zeichnen der HUD-Elemente einer Zelle: Größen messen, Lage über `layout`
 //! (gemerkt, nur bei Änderung neu gerechnet), dann Fläche und Inhalt je Element.
 //!
-//! Noch nicht gezeichnet (Platzhalter, RU23): Geschichtszeile (`story_size`, `draw_story`) und Radar (`draw_radar`);
-//! ihre Größe bleibt 0, das Layout der übrigen Elemente ändert das nicht (Radar und Geschichtszeile sind
-//! nachrangig bzw. zuletzt). RU23 ergänzt beide in `draw_items` und `measure_items`.
+//! Die Geschichtszeile (`story_size`, `draw_story`) zeichnet `drawstory.rs`, Welt-Texte und Radar `drawworld.rs`.
 
 use k3c_platform::Canvas;
 
@@ -16,6 +14,7 @@ use super::fonts::{
 use super::layout::*;
 use super::paint::TextSlot;
 use super::purse::{draw_purse, purse_side};
+use super::radar::radar_size;
 use super::state::SeatState;
 use crate::art::Font;
 use crate::view::cell::{Cell, Rectangle, stats_rect};
@@ -139,19 +138,6 @@ pub fn space_w(size: f64) -> f64 {
     size * 0.3
 }
 
-/// guide_layout legt Bild und Text eines Hinweises der Breite tw und Höhe th mittig über (x, y) (Unterkante): mit Bild
-/// steht links ein Quadrat der Texthöhe, dann ein Abstand, dann der Text; ohne Bild nur der Text (rein, getestet). Go:
-/// `guideLayout` in drawworld.go; RU23 ruft sie dort.
-pub fn guide_layout(x: f64, y: f64, tw: f64, th: f64, icon: bool, k: f64) -> (Rect, f64, f64) {
-    let ty = y - th;
-    if !icon {
-        return (Rect::default(), x - tw / 2.0, ty);
-    }
-    let (s, gap_x) = (th, 8.0 * k);
-    let left = x - (s + gap_x + tw) / 2.0;
-    (Rect::new(left, ty, s, s), left + s + gap_x, ty)
-}
-
 impl Hud {
     /// draw_items misst, legt ab und zeichnet die Elemente der Zelle c.
     pub fn draw_items(
@@ -186,7 +172,13 @@ impl Hud {
             self.draw_stock(dst, st, f.as_deref_mut(), icons, p, pl.at[ITEM_SHARED], shared_px, k);
         }
         if pl.ok[ITEM_BOSS] {
-            self.draw_boss(dst, st, f, p, pl.at[ITEM_BOSS], k);
+            self.draw_boss(dst, st, f.as_deref_mut(), p, pl.at[ITEM_BOSS], k);
+        }
+        if pl.ok[ITEM_STORY] {
+            self.draw_story(dst, st, f, p, pl.at[ITEM_STORY], k, c.rect.dx() as f64);
+        }
+        if pl.ok[ITEM_RADAR] {
+            self.draw_radar(dst, st, c, pl.at[ITEM_RADAR], k);
         }
     }
 
@@ -222,6 +214,10 @@ impl Hud {
         let shared_px = font_px(ROLE_SHARED, cells) * k;
         (inp[ITEM_SHARED].w, inp[ITEM_SHARED].h) = self.stock_size(st, f, icons, p, shared_px, k);
         (inp[ITEM_BOSS].w, inp[ITEM_BOSS].h) = self.boss_size(st, f, p, k, cell_w);
+        self.story_size(st, f, p, k, cell_w, &mut inp);
+        if st.width_units > 0.0 {
+            (inp[ITEM_RADAR].w, inp[ITEM_RADAR].h) = radar_size(cell_w, k);
+        }
         (inp, px)
     }
 
@@ -363,9 +359,9 @@ impl Hud {
         self.paint.frame(dst, bar, 2.0 * k, WHITE);
     }
 
-    /// draw_cell zeichnet die Anzeigen des Spielers der Zelle c (Go: `Draw` des Drawers): Vorlagen, Maßstab, Welt-Texte
-    /// (RU23), die Elemente der Zelle, Seekarte und Menü (RU23, hier nie offen). Invariante: Ab dem Ausleihen der
-    /// Bibliothek (Schrift) ruft nichts im Zeichenweg `Hud::icon`/`Hud::font` (Doppelausleihe); Icons stehen vorher in `Icons`.
+    /// draw_cell zeichnet die Anzeigen des Spielers der Zelle c (Go: `Draw` des Drawers): Vorlagen, Maßstab, Welt-Texte,
+    /// die Elemente der Zelle, Seekarte und Menü. Invariante: Ab dem Ausleihen der Bibliothek (Schrift) ruft
+    /// nichts im Zeichenweg `Hud::icon`/`Hud::font` (Doppelausleihe); Icons und Sheets der Karte stehen vorher bereit.
     pub fn draw_cell(&mut self, dst: &mut dyn Canvas, c: &Cell) {
         let Some(i) = usize::try_from(c.player)
             .ok()
@@ -373,21 +369,21 @@ impl Hud {
         else {
             return;
         };
-        // der Zustand wird für den Durchlauf herausgenommen: Draw ändert nur gemessene Texte und den Layout-Cache
-        let st = std::mem::take(&mut self.seats[i]);
+        // der Zustand wird für den Durchlauf herausgenommen (Draw ändert nur Messungen und Layout-Cache)
+        let mut st = std::mem::take(&mut self.seats[i]);
         self.paint.stencils(dst);
+        self.refresh_icon_cache();
         let k = scale_of(c, self.cells as i64);
         let icons = self.icons();
+        let sea_art = st.sea.open.then(|| self.sea_art_of(&st.sea)).flatten();
         let lib = self.lib.clone();
         let mut guard = lib.as_ref().map(|l| l.borrow_mut());
-        let font = guard.as_mut().map(|g| &mut g.font);
-        super::pending::draw_world_texts();
-        self.draw_items(dst, &st, c, k, font, &icons);
-        if st.sea.open {
-            super::pending::draw_sea();
-        }
+        let mut font = guard.as_mut().map(|g| &mut g.font);
+        self.draw_world_texts(dst, &st, c, k, font.as_deref_mut());
+        self.draw_items(dst, &st, c, k, font.as_deref_mut(), &icons);
+        self.draw_sea(dst, &mut st.sea, c, k, font.as_deref_mut(), sea_art);
         if st.menu.open {
-            super::pending::draw_menu();
+            self.draw_menu(dst, &mut st, c, k, font);
         }
         self.seats[i] = st;
         dst.layer(0);

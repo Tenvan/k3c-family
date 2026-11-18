@@ -1,5 +1,4 @@
 //! Port von `native/k3c-game/hud/purse_test.go`.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use super::data::purse_max_gold;
 use super::drawstock::ICON_SCALE;
@@ -84,7 +83,24 @@ fn purse_groesse_und_obergrenze_mit_skills() {
 
 /// Das Skill-Menü führt die Linie „Geldsack“ mit beiden Skills hinter den anderen Linien und hat Zeilen dafür.
 #[test]
-#[ignore = "wartet auf RU23"]
 fn skill_menu_geldsack_linie() {
-    unimplemented!("RU23: skillmenu (menu_entries, entry_text, line_index; Go: TestSkillMenuGeldsackLinie)");
+    use super::data::{line_index, skill_lines};
+    use super::skillmenu::menu_entries;
+    use super::skilltext::entry_text;
+    assert!(
+        line_index("purse") < skill_lines().len(),
+        "Linie purse fehlt in monarch.json › lines"
+    );
+    let mut ids = Vec::new();
+    for e in menu_entries(Vec::new(), &[], 1, &|_| true, false) {
+        if e.line == "purse" {
+            let txt = entry_text("de", &e, false, "");
+            assert!(
+                txt.contains("Geldsack") && txt.contains("Purse"),
+                "Zeile {txt:?} ohne Linie und Namen"
+            );
+            ids.push(e.id);
+        }
+    }
+    assert_eq!(ids, ["purseMedium", "purseLarge"], "Skills der Linie purse");
 }

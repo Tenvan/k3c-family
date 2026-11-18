@@ -2,9 +2,7 @@
 //! ein Papierschnitt-Icon aus data/paper.json, ohne Icon bleibt die gemalte Glyphe; Kappen wachsen mit der Beschriftung,
 //! Bedienhinweise stehen als Zeile mit Icons.
 //!
-//! Nicht portiert (Go braucht Dateien aus RU23): `menuLine`, `seaLine`, `menuEntries`, `buildMenu`; die Zeilen daraus und
-//! `TestGlyphenMitIcons` stehen als `#[ignore = "wartet auf RU23"]`. `checkLines` (Allokationen je Bild) entfällt mit ihm.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
+//! `TestGlyphenMitIcons` steht in `keyicons_menu_tests.rs`.
 
 use std::cell::RefCell;
 use std::collections::BTreeSet;
@@ -53,7 +51,7 @@ fn paper_icons() -> BTreeSet<String> {
 }
 
 /// all_glyphs liefert (Sprache, Profil, Aktion, Glyph) aus `glyph_of` über alle Aktionen, Eingabe-Profile und Sprachen.
-fn all_glyphs() -> Vec<(&'static str, &'static str, &'static str, Glyph)> {
+pub(super) fn all_glyphs() -> Vec<(&'static str, &'static str, &'static str, Glyph)> {
     let mut out = Vec::new();
     for lang in ["de", "en"] {
         for p in [WASD, ARROWS, GP] {
@@ -218,15 +216,44 @@ fn bedienhinweis_als_zeile() {
     );
 }
 
-/// Die Zeilen von Skill-Menü und Seekarte (Go: `menuLine`, `seaLine`, Dateien von RU23).
+/// Die Zeilen des Skill-Menüs und eine Vorlage mit unbekanntem Platzhalter (Go: Fälle 1, 2 und 5 von `TestKeyLine`).
 #[test]
-#[ignore = "wartet auf RU23"]
-fn bedienhinweis_menu_und_seekarte() {
-    // Erwartet (Go): menuLine("de", wasd) = "A / D wählen · Leertaste bestätigen · K schließen",
-    // "<key:A>[/]<key:D>[wählen ·]<key:SPACE>[bestätigen ·]<key:K>[schließen]"; menuLine("de", gp) =
-    // "◄ ► wählen · A bestätigen · B schließen", "[◄ ► wählen ·]<pad:A>[bestätigen · B schließen]";
-    // seaLine("en", arrows, true) und seaLine("de", gp, false) wie in keyicons_test.go.
-    unimplemented!("menu_line und sea_line kommen mit RU23");
+fn bedienhinweis_menu() {
+    let cases = [
+        (
+            super::skilltext::menu_line("de", WASD),
+            "A / D wählen · Leertaste bestätigen · K schließen",
+            "<key:A>[/]<key:D>[wählen ·]<key:SPACE>[bestätigen ·]<key:K>[schließen]",
+        ),
+        (
+            super::skilltext::menu_line("de", GP),
+            "◄ ► wählen · A bestätigen · B schließen",
+            "[◄ ► wählen ·]<pad:A>[bestätigen · B schließen]",
+        ),
+        (
+            super::seekarte::sea_line("en", ARROWS, true),
+            "Left arrow / Right arrow choose destination · Enter confirm",
+            "<key:LEFT>[/]<key:RIGHT>[choose destination ·]<key:ENTER>[confirm]",
+        ),
+        (
+            super::seekarte::sea_line("de", GP, false),
+            "A bestätigen",
+            "<pad:A>[bestätigen]",
+        ),
+        (
+            new_key_line("{x} und {ok}", &[arg("ok", vec![new_glyph("key:E", "E")])]),
+            "{x} und E",
+            "[{x} und]<key:E>",
+        ),
+    ];
+    for (line, plain, segs) in cases {
+        assert!(
+            line.plain == plain && kinds(&line) == segs,
+            "Zeile {:?}: {}, erwartet {plain:?}: {segs}",
+            line.plain,
+            kinds(&line)
+        );
+    }
 }
 
 fn font() -> Font {
@@ -332,12 +359,4 @@ fn kappe_in_drei_streifen() {
     assert_eq!(sprites(48.0), 1, "eigene Breite: ein Bild");
     assert_eq!(sprites(100.0), 3, "breiter: drei Streifen");
     assert_eq!(sprites(30.0), 1, "schmaler: ein Bild");
-}
-
-/// Mit geladenen Icons: jede Glyph hat ihr Sheet, zwei Spieler mit verschiedenen Profilen je ihre Glyphen, die lange
-/// Beschriftung liegt auf der gestreckten Kappe (Go: `TestGlyphenMitIcons`, braucht `buildMenu` und gerenderte PNG, RU23).
-#[test]
-#[ignore = "wartet auf RU23"]
-fn glyphen_mit_icons() {
-    unimplemented!("seaLib, buildMenu und menuEntries kommen mit RU23");
 }

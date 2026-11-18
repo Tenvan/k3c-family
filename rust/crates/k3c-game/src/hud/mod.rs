@@ -13,12 +13,14 @@ use std::rc::Rc;
 use k3c_platform::Canvas;
 
 use self::draw::LayoutCache;
+use self::drawworld::LabelSpot;
 use self::glyphs::JoinKey;
 use self::hints::GuideSeen;
 use self::paint::Painter;
-use self::pending::{LabelSpot, TaleState, VoyageView};
 use self::state::SeatState;
+use self::story::TaleState;
 use self::values::Memo;
+use self::voyage::VoyageView;
 use crate::art::{Font, Library, SeaMap};
 use crate::props::pending::PendingSimView;
 use crate::props::simview::SimView;
@@ -33,24 +35,40 @@ pub mod banner;
 pub mod data;
 pub mod draw;
 pub mod drawglyph;
+pub mod drawmenu;
+pub mod drawsea;
+pub mod drawsea_paper;
+pub mod drawsea_scene;
 pub mod drawstock;
+pub mod drawstory;
+pub mod drawvoyage;
+pub mod drawworld;
 pub mod fonts;
 pub mod glyphs;
 pub mod hints;
 pub mod icons;
+pub mod kampf;
 pub mod keyline;
 pub mod layout;
+pub mod overlay;
 pub mod paint;
 pub mod pending;
 pub mod purse;
 pub mod radar;
+pub mod seekarte;
+pub mod seekarte_input;
+pub mod seekarte_look;
+pub mod skillmenu;
+pub mod skilltext;
 pub mod state;
 mod state_labels;
+pub mod story;
 pub mod texts;
 mod texts_de;
 mod texts_en;
 pub mod values;
 mod values_texts;
+pub mod voyage;
 
 #[cfg(test)]
 mod banner_fit_tests;
@@ -59,11 +77,17 @@ mod banner_tests;
 #[cfg(test)]
 mod draw_tests;
 #[cfg(test)]
+mod drawworld_tests;
+#[cfg(test)]
 mod glyphs_tests;
 #[cfg(test)]
 mod hints_tests;
 #[cfg(test)]
 mod icons_tests;
+#[cfg(test)]
+mod kampf_tests;
+#[cfg(test)]
+mod keyicons_menu_tests;
 #[cfg(test)]
 mod keyicons_tests;
 #[cfg(test)]
@@ -71,23 +95,42 @@ mod labels_tests;
 #[cfg(test)]
 mod layout_tests;
 #[cfg(test)]
+mod menubox_tests;
+#[cfg(test)]
+mod overlay_tests;
+#[cfg(test)]
 mod profile_tests;
 #[cfg(test)]
 mod purse_tests;
 #[cfg(test)]
 mod radar_tests;
 #[cfg(test)]
+mod seekarte_hold_tests;
+#[cfg(test)]
+mod seekarte_look_tests;
+#[cfg(test)]
+mod seekarte_paper_tests;
+#[cfg(test)]
+mod seekarte_tests;
+#[cfg(test)]
+mod skillmenu_tests;
+#[cfg(test)]
 mod state_tests;
+#[cfg(test)]
+mod story_fit_tests;
+#[cfg(test)]
+mod story_tests;
 #[cfg(test)]
 mod testutil;
 #[cfg(test)]
 mod texts_tests;
 #[cfg(test)]
 mod values_tests;
+#[cfg(test)]
+mod voyage_tests;
 
 /// Hud ist der Beitrag des Pakets: Zustand je Spieler (Listener) und, hinter `HudDrawer`, der Drawer (`Layer::HUD`)
 /// und das Overlay (Skill-Menü, RU23).
-#[allow(dead_code)] // cue_buf, paint, lay, spots, voy, tale liest der Zeichner (RU20.5, RU23)
 pub struct Hud {
     lib: Option<Rc<RefCell<Library>>>,
     view: Box<dyn SimView>,
@@ -109,10 +152,14 @@ pub struct Hud {
     spots: Vec<LabelSpot>,
     /// Assets der Seekarte (None: Karte aus Formen)
     sea_map: Option<SeaMap>,
+    /// Puffer der Insel-Sheets des Dioramas, je Bild wiederverwendet (`sea_art_of`)
+    sea_isl: Vec<[drawsea_paper::SeaSheet; 2]>,
     /// gemeldete Assets (None: nur die Icons)
     assets: Option<Vec<String>>,
     /// Tasten-Icons gemeldet (`use_key_icons`, B-911)
     key_icons: bool,
+    /// Tasten-Icons für den Zeichendurchlauf, solange die Bibliothek geliehen ist (`refresh_icon_cache`)
+    icon_cache: Vec<(&'static str, drawstock::Icon)>,
     /// Schiffsfahrt im Vollbild (voyage.go, B-977)
     voy: VoyageView,
     /// Geschichtszeilen an den Wendepunkten (story.go, B-974)
@@ -138,8 +185,10 @@ impl Hud {
             lay: Default::default(),
             spots: Vec::new(),
             sea_map: None,
+            sea_isl: Vec::new(),
             assets: None,
             key_icons: false,
+            icon_cache: Vec::new(),
             voy: VoyageView::default(),
             tale: TaleState::default(),
         };

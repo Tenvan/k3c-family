@@ -1,5 +1,4 @@
 //! Tests zu `glyphs.rs` (Port von `glyphs_test.go`; `TestSchriftrollen` steht in `texts_tests.rs`, es prüft `fonts.rs`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use super::fonts::contrast_ratio;
 use super::glyphs::*;
@@ -140,12 +139,18 @@ fn beitritts_hinweis() {
     assert_eq!(hint("de", &[]), "", "alle beigetreten");
 }
 
-/// Bedienhinweis des Skill-Menüs mit den Tasten des Profils (Go ruft `menuLine`, Datei von RU23).
+/// Bedienhinweis des Skill-Menüs mit den Tasten des Profils: Profil pfeile nennt Pfeile und Enter.
 #[test]
-#[ignore = "wartet auf RU23"]
 fn menu_footer_per_device() {
-    // Erwartet: wasd "A / D wählen · Leertaste bestätigen · K schließen";
-    // pfeile "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Pfeil unten schließen";
-    // gamepad "◄ ► wählen · A bestätigen · B schließen". RU23 schaltet den Test mit `menu_line` ein.
-    unimplemented!("menu_line kommt mit RU23");
+    let cases = [
+        (WASD, "A / D wählen · Leertaste bestätigen · K schließen"),
+        (
+            ARROWS,
+            "Pfeil links / Pfeil rechts wählen · Enter bestätigen · Pfeil unten schließen",
+        ),
+        (GP, "◄ ► wählen · A bestätigen · B schließen"),
+    ];
+    for (dev, want) in cases {
+        assert_eq!(super::skilltext::menu_line("de", dev).plain, want, "{dev}");
+    }
 }
