@@ -6,14 +6,15 @@
 
 use serde_json::json;
 
+use super::traits::attack_rate;
 use super::{BODY, is_barrier, is_building};
 use crate::state::common::{apply_damage_by, event, shielded};
 use crate::state::island_ref::{IslandRef, protected_night};
 use crate::state::pending::{
-    MERCHANT_ID, arrow_event, attack_rate, crowned, drop_loot, emit, frost_armor_hit, is_on_tower, merchant_x,
-    moon_damage, unit_x,
+    MERCHANT_ID, arrow_event, crowned, drop_loot, emit, frost_armor_hit, merchant_x, moon_damage, unit_x,
 };
 use crate::state::{Enemy, Projectile, World, WorldValues};
+use crate::unit::archer::is_on_tower;
 
 /// Art eines Ziels (Go: Texte `player`, `troop`, `merchant`, `wall`, `castle`, `site`, `building`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

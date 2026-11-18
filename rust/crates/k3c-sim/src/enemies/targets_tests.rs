@@ -103,7 +103,6 @@ fn die_burg_ist_ein_ziel_im_burgradius() {
 /// (d) `prefersBuildings` (Höhlentroll) nimmt die Werkstatt vor einem Krieger im selben Abstand; ein Gegner ohne die
 /// Eigenschaft nimmt den Krieger und die Werkstatt erst, wenn nichts anderes in Reichweite ist.
 #[test]
-#[ignore = "wartet auf RU11 (Session RU11.2: is_on_tower)"]
 fn gegner_gebaeude_als_ziel() {
     let mut w = bare_world();
     let at = w.hub_x - 20.0;

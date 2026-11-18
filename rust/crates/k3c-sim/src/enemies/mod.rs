@@ -8,6 +8,8 @@
 pub mod equipment_taken;
 pub mod guard;
 pub mod target;
+pub mod traits;
+pub mod waves;
 
 #[cfg(test)]
 mod behaviour_tests;
@@ -16,15 +18,21 @@ mod equipment_taken_tests;
 #[cfg(test)]
 mod guard_tests;
 #[cfg(test)]
+mod pools_tests;
+#[cfg(test)]
 mod protect_tests;
 #[cfg(test)]
 mod targets_tests;
 #[cfg(test)]
-mod testutil;
+pub(crate) mod testutil;
+#[cfg(test)]
+mod traits_tests;
+#[cfg(test)]
+mod waves_tests;
 
 use crate::state::common::sign;
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{boss_ability, crown_stolen, kite, strike, take_crown_or_loot, values};
+use crate::state::pending::{boss_ability, crown_stolen, take_crown_or_loot, values};
 use crate::state::{Enemy, QueuedSpawn, Site, World, WorldValues};
 
 pub use guard::is_wave_enemy;
@@ -33,6 +41,7 @@ pub use target::{Target, TargetKind, Wall};
 use equipment_taken::take_equipment;
 use guard::step_guard;
 use target::{blocking_wall, choose_target};
+use traits::{kite, strike};
 
 /// Go: `body`, halbe Körperbreite der Gegner in Units.
 pub const BODY: f64 = 0.6;
@@ -109,7 +118,7 @@ pub fn spawn_with(
 }
 
 /// Go: `stepSpawns`: Gegner aus der Warteschlange, deren Zeit gekommen ist.
-pub fn step_spawns(w: &mut World, isl: Option<&IslandRef>) {
+pub fn step_spawns(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
     if !w.spawn_queue.iter().any(|s| s.at <= w.time) {
         return; // meistens nichts fällig: keine neuen Listen je Tick
     }
@@ -119,7 +128,7 @@ pub fn step_spawns(w: &mut World, isl: Option<&IslandRef>) {
         .partition(|s| s.at <= time);
     w.spawn_queue = rest;
     for s in due {
-        spawn_scaled(w, &s.kind, s.x, s.hp_factor, s.damage_factor, isl);
+        spawn_with(w, v, &s.kind, s.x, s.hp_factor, s.damage_factor, isl);
     }
 }
 

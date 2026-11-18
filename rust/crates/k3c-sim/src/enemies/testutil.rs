@@ -157,6 +157,6 @@ pub fn island_with(_grade: &str, _players: i64) -> Island {
     panic!("RU10: island_with")
 }
 
-pub fn remove_dead_enemies(_w: &mut World) {
-    panic!("RU11: remove_dead_enemies (enemies_waves.go, Session RU11.2)")
+pub fn remove_dead_enemies(w: &mut World) {
+    super::waves::remove_dead_enemies(w, None)
 }

@@ -9,12 +9,14 @@ use std::sync::OnceLock;
 use k3c_data::{Source, guards};
 
 use super::target::{Target, TargetKind};
+use super::traits::strike;
 use super::{BODY, spawn_with};
 use crate::state::common::{shielded, sign};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{crowned, is_on_tower, strike};
+use crate::state::pending::crowned;
 use crate::state::save::{HubSave, key};
 use crate::state::{Enemy, World, WorldValues};
+use crate::unit::archer::is_on_tower;
 
 /// Go: `level.DefaultGuardRules().AggroRadiusUnits`: der Radius aus den eingebetteten Daten, einmal gelesen. Die
 /// eingebetteten Daten prüft `k3c-data`; ein Lesefehler ist dort nicht möglich, der Rückfall 0 hielte die Wachen ruhig.

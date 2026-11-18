@@ -17,7 +17,7 @@ use super::save::HubSave;
 use super::shared::WorldValues;
 use super::{Enemy, Player, Site, Troop, World};
 use super::{Event, Projectile};
-use crate::enemies::Target;
+use crate::enemies::waves::SpawnOrder;
 
 /// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
 pub const MERCHANT_ID: i64 = -1;
@@ -50,11 +50,6 @@ pub fn troop_damage(_w: &World, _ti: usize, _damage: f64) -> f64 {
 /// Go: `eachPassive` (monarch_passives.go); `f` bekommt den Besitzer und den Effekt.
 pub fn each_passive(_w: &World, _f: &mut dyn FnMut(&Player, &SkillEffect)) {
     unimplemented!("RU18: each_passive")
-}
-
-/// Go: `invulnerable` (enemies_traits.go).
-pub fn invulnerable(_w: &World, _e: &Enemy) -> bool {
-    unimplemented!("RU11: invulnerable")
 }
 
 /// Go: `damageMerchant` (merchant.go).
@@ -212,26 +207,6 @@ pub fn drop_crown_of(_e: &mut Enemy) {
     unimplemented!("RU15: drop_crown_of")
 }
 
-/// Go: `strike` (enemies_traits.go): der Gegner `ei` schlägt auf das Ziel zu.
-pub fn strike(_w: &mut World, _v: &WorldValues, _ei: usize, _t: &Target, _isl: Option<&IslandRef>) {
-    unimplemented!("RU11: strike")
-}
-
-/// Go: `kite` (enemies_traits.go): `true`, wenn der Gegner Abstand hält und sich bewegt hat.
-pub fn kite(_w: &mut World, _v: &WorldValues, _ei: usize, _dt: f64) -> bool {
-    unimplemented!("RU11: kite")
-}
-
-/// Go: `attackRate` (enemies_traits.go).
-pub fn attack_rate(_v: &WorldValues, _kind: &str) -> f64 {
-    unimplemented!("RU11: attack_rate")
-}
-
-/// Go: `isOnTower` (unit_archer.go).
-pub fn is_on_tower(_w: &World, _t: &Troop) -> bool {
-    unimplemented!("RU11: is_on_tower")
-}
-
 /// Go: `merchantX` (merchant.go).
 pub fn merchant_x(_w: &World, _what: &str) -> f64 {
     unimplemented!("RU18: merchant_x")
@@ -260,4 +235,84 @@ pub fn arrow_event(_w: &mut World, _p: &Projectile, _from: i64) {
 /// Go: `frostArmorHit` (monarch_passives.go): Frost Armor des Spielers `pi` gegen den Gegner `ei`.
 pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
     unimplemented!("RU18: frost_armor_hit")
+}
+
+// Von RU11.2 portiert: Gegner-Traits, Wellen, Bogenschützen. Die Import-Stelle bleibt `pending`.
+pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
+pub use crate::unit::archer::is_on_tower;
+
+/// Go: `arrive` (unit_common.go); RU11.3 verschiebt die Konstante nach `unit/common.rs`.
+pub const ARRIVE: f64 = 0.3;
+
+/// Go: `arrowSpeed` (unit_common.go); RU11.3 verschiebt die Konstante nach `unit/common.rs`.
+pub const ARROW_SPEED: f64 = 25.0;
+
+/// Go: `World.pure` (dev.go): reiner Stressmodus der Insel.
+pub fn pure(_w: &World) -> bool {
+    unimplemented!("RU19: pure")
+}
+
+/// Go: `fullMoonExtra` (events_moon.go): zusätzliche Plätze bei Vollmond.
+pub fn full_moon_extra(_w: &World, _plan: &[SpawnOrder]) -> Vec<SpawnOrder> {
+    unimplemented!("RU19: full_moon_extra")
+}
+
+/// Go: `moonDrop` (events_moon.go): Blutmond-Faktor auf den Gold-Drop.
+pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
+    unimplemented!("RU19: moon_drop")
+}
+
+/// Go: `triggerBoss` (boss.go).
+pub fn trigger_boss(_w: &mut World, _isl: Option<&mut IslandRef>) {
+    unimplemented!("RU15: trigger_boss")
+}
+
+/// Go: `bossDefeated` (boss.go): `e` ist der besiegte Boss.
+pub fn boss_defeated(_w: &mut World, _e: &Enemy, _isl: Option<&mut IslandRef>) {
+    unimplemented!("RU15: boss_defeated")
+}
+
+/// Go: `hitSplash` (boss_abilities.go): Splitter-Wurf des Geschosses `p` bei `x`.
+pub fn hit_splash(_w: &mut World, _p: &Projectile, _x: f64) {
+    unimplemented!("RU15: hit_splash")
+}
+
+/// Go: `addPool` (world_cycle.go): Aggressions-Pool um `amount` Prozent.
+pub fn add_pool(_w: &mut World, _amount: f64) {
+    unimplemented!("RU14: add_pool")
+}
+
+/// Go: `addStock` (economy.go): `true`, wenn das Material in den Vorrat kam.
+pub fn add_stock(_w: &mut World, _resource: &str, _amount: i64) -> bool {
+    unimplemented!("RU18: add_stock")
+}
+
+/// Go: `scaledGold` (economy_fountain.go).
+pub fn scaled_gold(_w: &World, _gold: i64) -> i64 {
+    unimplemented!("RU18: scaled_gold")
+}
+
+/// Go: `scatterCoins` (economy.go): `count` Münzen um `x` auf den Boden.
+pub fn scatter_coins(_w: &mut World, _x: f64, _count: i64) {
+    unimplemented!("RU18: scatter_coins")
+}
+
+/// Go: `isSpellTower` (building_spell_tower.go).
+pub fn is_spell_tower(_w: &World, _s: &Site) -> bool {
+    unimplemented!("RU18: is_spell_tower")
+}
+
+/// Go: `squadPost` (combat.go): Posten hinter dem Banner.
+pub fn squad_post(_w: &World, _t: &Troop) -> Option<f64> {
+    unimplemented!("RU15: squad_post")
+}
+
+/// Go: `escortPost` (unit_escort.go); RU11.3 liefert sie.
+pub fn escort_post(_w: &World, _t: &Troop) -> Option<f64> {
+    unimplemented!("RU11: escort_post")
+}
+
+/// Go: `walkTo` (unit_common.go); RU11.3 liefert sie. `ti` ist der Index der Truppe.
+pub fn walk_to(_w: &mut World, _ti: usize, _x: f64, _dt: f64) -> bool {
+    unimplemented!("RU11: walk_to")
 }
