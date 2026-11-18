@@ -18,6 +18,8 @@
 
 Die Client-Sprints RU16, RU17, RU20 und RU23 laufen vor den Sim-Sprints RU14, RU15, RU18, RU19. Fehlende Sim-Funktionen stehen deshalb hinter Nähten: `trait SimView` mit `PendingSimView`/`FixedSimView` in `props` (RU16.1, auch von `hud` genutzt), Platzhalter in `props/pending.rs`, `hud/pending.rs`, `fx/pending.rs` (z. B. `aura_of`, `can_learn`, `can_respec`, `learn_skill`, `respec`, `story_*`) und Tests mit `ignore = "wartet auf RU1x"`.
 
+Die Methoden von `SimView` (Stand RU16): `economy_of`, `site_gold_left`, `site_payable`, `site_needs_clearing`, `shield_rack`, `combat_spots`, `at_lair` sowie die in RU16.3 bis RU16.6 ergänzten `spot_near`, `spot_state` (Go: `NearOf`, `StateFor`) und `site_visible`. Alle gehören zur Naht und fallen mit ihr weg.
+
 ## Ziel
 
 Nach dem Sim-Port ruft der Client die echten Funktionen aus `k3c-sim`; keine Naht und kein Platzhalter bleibt im Client.

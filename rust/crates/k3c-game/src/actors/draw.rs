@@ -192,9 +192,15 @@ impl Actors {
         g.translate(k.screen_x(x) as f32, y as f32);
         let al = fg.alpha as f32;
         if let Some(f) = s.frame(i) {
-            dst.sprite_tf(f.tex, f.src, g, [al, al, al, al]);
+            dst.sprite_tf(f.tex, f.src, g, straight_tint(al));
         }
     }
+}
+
+/// Tönung eines Sprites mit Deckkraft `al`: gerade Farbe (weiß, Alpha), wie der Canvas-Shader sie erwartet; Go
+/// skaliert die vormultiplizierte Farbe mit `ScaleAlpha`, das ist dieselbe Wirkung (B-1061).
+pub fn straight_tint(al: f32) -> [f32; 4] {
+    [1.0, 1.0, 1.0, al]
 }
 
 /// rigSize liefert Welt-Units je Rig-Einheit (Spielhöhe / Rahmenhöhe der eigenen Figur; beritten bleibt der Maßstab
@@ -221,3 +227,67 @@ pub fn rig_size(fg: &Figure) -> (f64, [f64; 4]) {
 #[cfg(test)]
 #[path = "draw_tests.rs"]
 mod draw_tests;
+
+#[cfg(test)]
+mod tint_tests {
+    use k3c_platform::{Affine, Canvas, Filter, FontId, Rect, TexId, Vertex};
+
+    use super::straight_tint;
+    use crate::actors::markdraw::{Anchor, Ink};
+    use crate::art::{Sheet, SheetFrame};
+
+    /// Zeichenfläche, die nur die Tönung der Sprites merkt.
+    #[derive(Default)]
+    struct Tints(Vec<[f32; 4]>);
+
+    impl Canvas for Tints {
+        fn size(&self) -> (f32, f32) {
+            (1.0, 1.0)
+        }
+        fn texture_with(&mut self, _: &[u8], _: u32, _: u32, _: Filter) -> TexId {
+            TexId(0)
+        }
+        fn free_texture(&mut self, _: TexId) {}
+        fn sprite(&mut self, _: TexId, _: Rect, _: Rect, _: [f32; 4]) {}
+        fn sprite_tf(&mut self, _: TexId, _: Rect, _: Affine, tint: [f32; 4]) {
+            self.0.push(tint);
+        }
+        fn mesh(&mut self, _: TexId, _: &[Vertex], _: &[u16]) {}
+        fn rect(&mut self, _: Rect, _: [f32; 4]) {}
+        fn stroke_rect(&mut self, _: Rect, _: f32, _: [f32; 4]) {}
+        fn fill_circle(&mut self, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+        fn stroke_circle(&mut self, _: f32, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+        fn stroke_line(&mut self, _: f32, _: f32, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+        fn fill_path(&mut self, _: &[[f32; 2]], _: [f32; 4]) {}
+        fn text(&mut self, _: &str, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+        fn font(&mut self, _: &[u8]) -> Result<FontId, String> {
+            Err("keine Schrift".to_string())
+        }
+        fn text_font(&mut self, _: FontId, _: &str, _: f32, _: f32, _: f32, _: [f32; 4]) {}
+        fn text_width(&self, _: FontId, _: &str, _: f32) -> f32 {
+            0.0
+        }
+    }
+
+    /// B-1061: Die Tönung bei halber Deckkraft ist weiß mit Alpha 0,5, nicht 0,5 grau (zu dunkel); die Gefechtsmarken
+    /// (`Ink::sprite`) tönen genauso.
+    #[test]
+    fn tint_is_straight() {
+        assert_eq!(straight_tint(0.5), [1.0, 1.0, 1.0, 0.5]);
+        assert_eq!(straight_tint(1.0), [1.0; 4]);
+        let mut s = Sheet::default();
+        s.frames = vec![SheetFrame {
+            tex: TexId(0),
+            src: Rect::new(0.0, 0.0, 8.0, 8.0),
+        }];
+        (s.fw, s.fh, s.units_per_px) = (8, 8, 1.0);
+        let a = Anchor {
+            sx: 0.0,
+            sy: 0.0,
+            s: 1.0,
+        };
+        let mut c = Tints::default();
+        Ink::default().sprite(&mut c, a, &s, 0, (0.0, 0.0), 1.0, false, 0.5);
+        assert_eq!(c.0, vec![[1.0, 1.0, 1.0, 0.5]]);
+    }
+}

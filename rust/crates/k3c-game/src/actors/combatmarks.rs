@@ -12,6 +12,7 @@ use k3c_sim::state::{Player, Troop, World as SimWorld};
 
 use super::Actors;
 use super::anim::sheet_frame;
+use super::draw::straight_tint;
 use super::figures::Figure;
 use super::markdraw::{Anchor, Ink, marks_anchor, tint};
 use super::marks::{BoxPx, LOAD_HEIGHT, LOAD_SIDE, load_offset, player_color};
@@ -99,7 +100,7 @@ impl Ink {
         g.scale(px as f32, px as f32);
         g.translate((a.sx + ox * a.s) as f32, (a.sy - oy * a.s) as f32);
         let al = alpha as f32;
-        dst.sprite_tf(f.tex, f.src, g, [al, al, al, al]);
+        dst.sprite_tf(f.tex, f.src, g, straight_tint(al)); // gerade Tönung (B-1061)
     }
 }
 
