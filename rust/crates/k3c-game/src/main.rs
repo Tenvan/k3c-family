@@ -2,11 +2,16 @@
 
 use std::process::ExitCode;
 
-use k3c_game::{demo, replay, still};
+use k3c_game::{demo, game, replay, still};
 
-const USAGE: &str = "Aufruf: k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad] | k3c-game still <zustand> --out <png> [--grafik ordner] [--props --simview <json>] | k3c-game demo --driver <datei> [--sprites N] [--measure S] [--out datei] [--headless --steps N] [--fullscreen] [--grafik ordner] [--data ordner]";
+const USAGE: &str = "Aufruf: k3c-game [play] [Schalter des Spiels, --saves ordner --grafik ordner] | k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad] | k3c-game still <zustand> --out <png> [--grafik ordner] [--props --simview <json>] | k3c-game demo --driver <datei> [--sprites N] [--measure S] [--out datei] [--headless --steps N] [--fullscreen] [--grafik ordner] [--data ordner]";
 const REPLAY_USAGE: &str =
     "Aufruf: k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad]";
+
+/// Startet das Spiel im Fenster (RU48.1).
+fn play(rest: &[String]) -> Result<(), String> {
+    game::launch::run(&game::launch::parse(rest)?)
+}
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -23,7 +28,10 @@ fn main() -> ExitCode {
                 return ExitCode::from(2);
             }
         },
-        _ => Err(USAGE.to_string()),
+        Some((cmd, rest)) if cmd == "play" => play(rest),
+        None => play(&[]),
+        Some((cmd, _)) if !cmd.starts_with("--") => Err(USAGE.to_string()),
+        Some(_) => play(&args),
     };
     match result {
         Ok(()) => ExitCode::SUCCESS,
