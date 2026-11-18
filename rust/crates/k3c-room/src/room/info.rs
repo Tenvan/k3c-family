@@ -1,5 +1,5 @@
 //! Ein Eintrag der Raumliste (`docs/protocol.md` › Nachrichten, rooms). Port von `Info` und `Room.info` aus `actions.go`
-//! (vorgezogen aus RU21.4, weil `Manager::rooms` sie braucht).
+//! (vorgezogen aus RU21.4 (`actions.go`), weil `Manager::rooms` sie braucht).
 use serde::Serialize;
 
 use super::types::{MAX_MONARCHS, MonarchState, Room};

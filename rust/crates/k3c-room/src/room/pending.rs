@@ -9,7 +9,6 @@ use super::log::Log;
 use super::manager::Manager;
 use super::types::{Options, Room};
 use crate::fehler::Fehler;
-use crate::store::Stamp;
 
 /// Go: `metrics` (metrics.go), die Spielmetrik des Raumlaufs; RU24. Ohne Sammler ist `Room::met` `None`.
 #[derive(Debug, Clone, Default)]
@@ -20,23 +19,32 @@ impl Metrics {
     pub fn join(&mut self, _id: &str) {
         unimplemented!("RU24: metrics join")
     }
+
+    /// Go: `metrics.drop`: ein Gerät trennt sich.
+    pub fn disconnect(&mut self, _id: &str) {
+        unimplemented!("RU24: metrics disconnect")
+    }
+
+    /// Go: `metrics.observe`: wertet die Ereignisse und Stände eines Schritts aus.
+    pub fn observe(&mut self, _isl: &Island) {
+        unimplemented!("RU24: metrics observe")
+    }
 }
 
-/// Aus `actions.go` und `logging.go` (RU21.4).
+/// Aus `island_switch.go` und `observer.go` (RU24). `Room::tick` ruft `switch_island` jeden Tick; ohne bereiten Wechsel
+/// ist es wie in Go `false`.
 impl Room {
-    /// Go: `Room.Tick` (actions.go): rechnet einen Tick; `false`: der Raum ist geschlossen.
-    pub fn tick(&mut self, _env: &mut Env) -> bool {
-        unimplemented!("RU21.4: tick")
+    /// Go: `switchIsland`: tauscht die Insel, wenn die Sim `switch_ready` meldet und es eine nächste gibt.
+    pub fn switch_island(&mut self, _env: &mut Env) -> bool {
+        if !self.isl.switch_ready {
+            return false;
+        }
+        unimplemented!("RU24: switch_island")
     }
 
-    /// Go: `Room.sweep` (actions.go): prüft die Fristen nach Wanduhr; `(changed, remove)`.
-    pub fn sweep(&mut self, _env: &mut Env, _now: Stamp) -> (bool, bool) {
-        unimplemented!("RU21.4: sweep")
-    }
-
-    /// Go: `noteTick` (logging.go): merkt langsame Ticks vor und meldet sie gesammelt.
-    pub fn note_tick(&mut self, _env: &mut Env, _took_nanos: i64) {
-        unimplemented!("RU21.4: note_tick")
+    /// Go: `unobserve`: ein Beobachter verlässt den Raum; Beobachter entstehen erst mit RU24.
+    pub fn unobserve(&mut self, _env: &mut Env, _id: &str) {
+        unimplemented!("RU24: unobserve")
     }
 }
 

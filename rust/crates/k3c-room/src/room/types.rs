@@ -22,6 +22,8 @@ pub const WAIT_FOR_SECS: i64 = 60;
 pub const EMPTY_FOR_SECS: i64 = 10 * 60;
 /// Takt des Speicherns (B-186, Q10), gezählt in Raum-Ticks: ein Tick ist 1/`TICK_HZ` s echter Zeit (Go `SaveEvery`, 60 s).
 pub const SAVE_EVERY_SECS: i64 = 60;
+/// `SAVE_EVERY_SECS` in Raum-Ticks (Go `saveTicks`).
+pub const SAVE_TICKS: i64 = SAVE_EVERY_SECS * TICK_HZ;
 /// Reserviert Spielstandnamen für Testläufe (Testseite, B-086): Räume mit diesem Präfix löschen ihren Spielstand, wenn sie
 /// aufgeräumt werden.
 pub const TEST_PREFIX: &str = "test-";
@@ -145,7 +147,7 @@ impl Device {
 }
 
 /// Ein laufendes Spiel: eine Insel, ein Spielstand, ein Code. Monarch `i` ist der Insel-Spieler mit Index `i`. Felder
-/// späterer Sessions (Tick-Dauern, Speicher-Schreiber, Zeitraffer-Teile …) kommen mit RU21.3, RU21.4 und RU24.
+/// späterer Sessions (Tick-Dauern, Speicher-Schreiber, Zeitraffer-Teile …) kommen mit RU24.
 pub struct Room {
     pub code: String,
     pub name: String,
@@ -175,4 +177,10 @@ pub struct Room {
     pub before_step: Option<Box<dyn FnMut()>>,
     /// Spielmetrik des Raumlaufs (`metrics`, RU24); `None` = kein Sammler.
     pub met: Option<Metrics>,
+    /// Letzte Meldung eines langsamen Ticks (`logging.rs`); `None`: noch keine.
+    pub slow_logged: Option<Stamp>,
+    /// Langsame Ticks seit dieser Meldung.
+    pub slow_count: i64,
+    /// Ticks seit der letzten Speicherung (`early.rs`, Go `saves.due`).
+    pub save_due: i64,
 }

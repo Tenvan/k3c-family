@@ -1,15 +1,14 @@
-//! Tests aus `room_test.go`. Was `Manager` (`create`, `join` per Code, `sweep`) braucht, wartet auf RU21.3, was `actions`
-//! (`add_slot`, `drop`, `input`, `sweep`) braucht, auf RU21.4, Stufen und Speicher-Takt auf RU24; `join` auf dem Raum läuft
-//! hier direkt.
+//! Tests aus `room_test.go`: `join` auf dem Raum läuft hier direkt, `Manager` in `manager_tests.rs`, Aktionen und Takt in
+//! `actions_tests.rs`; Stufen und Speicher-Takt (RU24) und neue Insel-Spieler (RU18) warten.
 use super::testutil::{Fixture, peer, room};
-use super::{Env, Fehler, MAX_MONARCHS, MonarchState, Peer, TEST_PREFIX, valid_slots};
+use super::{Fehler, MAX_MONARCHS, MonarchState, Peer, TEST_PREFIX, valid_slots};
 
 fn join(f: &mut Fixture, r: &mut super::Room, id: &str, p: Box<dyn Peer>, slots: &[i64]) -> Result<(), Fehler> {
     r.join(&mut f.env(), id, p, slots)
 }
 
 // Ablauf aus docs/protocol.md › Beispiel: 2 Controller an der Xbox + 1 Handy (Beitreten; Drop und Wiederverbinden
-// folgen mit RU21.4).
+// stehen in `actions_tests.rs`).
 #[test]
 fn xbox_und_handy_beitreten() {
     let mut f = Fixture::new();
@@ -69,7 +68,7 @@ fn rueckkehr_bevorzugt_alte_monarchen() {
     let (h, _hi) = peer(2);
     join(&mut f, &mut r, "handy", h, &[0, 1]).expect("handy");
     r.release(1);
-    r.release(2); // Frist abgelaufen (das Aufräumen selbst bringt RU21.4)
+    r.release(2); // Frist abgelaufen
     r.devices.remove("handy"); // wie `sweep` ein getrenntes Gerät ohne Plätze entfernt
     let (h2, mut h2i) = peer(3);
     join(&mut f, &mut r, "handy", h2, &[1, 0]).expect("Rückkehr");
@@ -185,17 +184,7 @@ fn push_state_schickt_level_nur_einmal() {
     let mut r = room("KRNZ", "level", 1);
     let (x, mut xi) = peer(1);
     join(&mut f, &mut r, "xbox", x, &[0]).expect("xbox");
-    assert!(!r.push_state(
-        &Env {
-            now: f.now,
-            store: &mut f.store,
-            log: &mut f.log,
-            dev: false,
-            snapshot: None
-        },
-        "xbox",
-        None
-    ));
+    assert!(!r.push_state(&f.env(), "xbox", None));
     let levels = xi.log().iter().filter(|e| e.starts_with("level")).count();
     assert_eq!(levels, 1, "{:?}", xi.log());
     assert_eq!(xi.log().iter().filter(|e| e.starts_with("state")).count(), 2);
@@ -206,40 +195,8 @@ fn push_state_schickt_level_nur_einmal() {
 #[ignore = "wartet auf RU18"]
 fn assign_legt_neuen_spieler_an() {}
 
-// Die folgenden Tests brauchen `Manager` (RU21.3), `actions` (RU21.4) oder Stufen und Speicher-Takt (RU24).
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn xbox_und_handy() {} // Create, add_slot, input, drop, sweep: RU21.3 und RU21.4
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn nach_60_sekunden_frei_und_bevorzugt() {} // sweep: RU21.4
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn pausierter_raum_fristen_und_aufraeumen() {} // Manager::tick_all, sweep: RU21.3 und RU21.4
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn grenzen_manager() {} // Manager::create (5. Raum), add_slot im vollen Raum: RU21.3 und RU21.4
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn create_reihenfolge() {} // Manager::create: RU21.3
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn geladener_stand() {} // Manager::create mit gespeichertem Stand: RU21.3
+// Manager-Tests stehen in `manager_tests.rs`, Aktionen und Takt in `actions_tests.rs`; Stufen und Speicher-Takt kommen mit RU24.
 
 #[test]
 #[ignore = "wartet auf RU24"]
 fn speicherzeitpunkte() {} // Stufenwechsel und Speichern im Takt: RU24
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn eingabe_nur_eigene_slots() {} // Room::input, remove_slot: RU21.4
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn raumliste() {} // Manager::rooms: RU21.3

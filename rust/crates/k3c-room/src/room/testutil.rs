@@ -165,6 +165,7 @@ pub struct Fixture {
     pub store: MemStore,
     pub log: RecordingLog,
     pub now: Stamp,
+    pub data: Arc<Data>,
 }
 
 impl Fixture {
@@ -173,12 +174,14 @@ impl Fixture {
             store: MemStore::default(),
             log: RecordingLog::default(),
             now: Stamp::from_civil(2026, 10, 1, 12, 0, 0, 0),
+            data: test_data(),
         }
     }
 
     pub fn env(&mut self) -> Env<'_> {
         Env {
             now: self.now,
+            data: &self.data,
             store: &mut self.store,
             log: &mut self.log,
             dev: false,
@@ -233,6 +236,9 @@ pub fn test_data() -> Arc<Data> {
     DATA.get_or_init(|| Arc::new(load_all(&Source::Embedded).expect("eingebettete Daten")))
         .clone()
 }
+
+/// Der Manager der Tests.
+pub type TestManager = Manager<MemStore, RecordingLog>;
 
 /// Ein Manager mit Speicher im Speicher und Log zum Mitlesen; die Uhr zählt Sekunden aus dem zweiten Wert und steht auf
 /// dem 1.10.2026 12:00:00 UTC (Go `fixture`, `f.wait`: den Wert erhöhen).

@@ -9,7 +9,7 @@ fn victory_gibt_den_merker_des_letzten_ticks_wieder() {
     assert!(r.victory());
 }
 
-// Room::tick (RU21.4): Sieg im Tick des Ziels, nicht im Folgetick.
+// Room::tick: Sieg im Tick des Ziels, nicht im Folgetick. Braucht eine Insel mit Ziel (`create_in`, RU24).
 #[test]
-#[ignore = "wartet auf RU21"]
+#[ignore = "wartet auf RU24"]
 fn victory_einmal() {}

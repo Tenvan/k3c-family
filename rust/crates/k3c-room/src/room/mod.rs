@@ -10,17 +10,26 @@ use std::fmt::Display;
 use k3c_sim::island::{Island, add_island_player};
 use k3c_sim::state::PlayerCommand;
 
+mod actions;
+#[cfg(test)]
+mod actions_tests;
 #[cfg(test)]
 mod determinism_tests;
+mod early;
 mod env;
 mod info;
 mod log;
+mod logging;
+#[cfg(test)]
+mod logging_tests;
 mod manager;
 #[cfg(test)]
 mod manager_tests;
 #[cfg(test)]
 mod options_tests;
 mod pending;
+#[cfg(test)]
+mod review_tests;
 #[cfg(test)]
 mod room_tests;
 mod run;
@@ -29,8 +38,12 @@ mod run_tests;
 #[cfg(test)]
 mod safetick_tests;
 mod stages;
+mod status;
+#[cfg(test)]
+mod status_tests;
 #[cfg(test)]
 mod testutil;
+mod tick;
 mod types;
 #[cfg(test)]
 mod victory_tests;
@@ -42,6 +55,7 @@ pub use manager::{CODE_LETTERS, Manager};
 pub use pending::Metrics;
 pub use run::Failure;
 pub use stages::{free_monarchs, start_stage};
+pub use status::{DeviceInfo, StageStatus, Status, Summary, TickMs, unique_prefixes};
 pub use types::*;
 
 use crate::fehler::Fehler;
@@ -99,6 +113,9 @@ impl Room {
             durations: Vec::new(),
             before_step: None,
             met: None,
+            slow_logged: None,
+            slow_count: 0,
+            save_due: 0,
         }
     }
 

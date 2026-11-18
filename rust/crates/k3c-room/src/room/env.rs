@@ -1,6 +1,7 @@
 //! Die Umgebung eines Raum-Aufrufs (`Env`): Uhr, Store, Log und Snapshot gehören dem Manager und kommen als `&mut Env`
 //! in jede Raum-Methode, die sie braucht (Gos Rückverweis `r.m` entfällt). `Env` ist ein kurzlebiger Verleih ohne
 //! `Rc`/`RefCell`: der Manager baut ihn je Aufruf aus seinen Feldern.
+use k3c_data::Data;
 use k3c_sim::state::World;
 
 use super::log::Log;
@@ -35,6 +36,8 @@ pub type SnapshotFn = fn(&World, i64, bool) -> serde_json::Value;
 pub struct Env<'a> {
     /// Die Uhr des Manager zu Beginn des Aufrufs (Wanduhr, nur für Fristen und Stempel, nicht für den Spielverlauf).
     pub now: Stamp,
+    /// Spiel-Daten des Managers (Schwierigkeitsgrade für `step_island`).
+    pub data: &'a Data,
     pub store: &'a mut dyn Store,
     pub log: &'a mut dyn Log,
     /// Dev-Mode (`K3C_DEV`): `timescale` erscheint dann im Zustand.

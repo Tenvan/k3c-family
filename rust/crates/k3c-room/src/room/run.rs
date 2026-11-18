@@ -1,7 +1,7 @@
 //! Der Lauf der Räume: Takt, Absturz-Schutz, Sieg, Tick-Zeiten. Port von `engine/room/run.go`.
 //!
 //! Gos `Manager.Run` (Goroutinen, `time.Ticker`, `context`) entfällt: der Aufrufer (RU27) ruft `tick_all` mit 30 Hz und
-//! `sweep_if_due` regelmäßig; `Room::tick` steht in `actions.rs` (RU21.4). Ein Panic im Tick schließt nur diesen Raum
+//! `sweep_if_due` regelmäßig; `Room::tick` steht in `tick.rs`. Ein Panic im Tick schließt nur diesen Raum
 //! (`room_closed` an seine Geräte), der Fehler bleibt im Log und in `Manager::failures`.
 use std::any::Any;
 use std::panic::{AssertUnwindSafe, catch_unwind};

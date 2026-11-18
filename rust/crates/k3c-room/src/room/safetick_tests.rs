@@ -1,6 +1,6 @@
 //! Test aus `safetick_test.go` (B-803/AC-01): Ein Panic im Takt schließt den Raum wie im Server ohne Speichern. Der Absturz
-//! über `guard` läuft hier; der Teil mit der begonnenen Hintergrund-Speicherung (`blockStore`, `saver`) und `Room::tick`
-//! kommen mit RU21.4 und RU24.
+//! über `guard` läuft hier, der Panic im Takt in `actions_tests.rs`; der Teil mit der begonnenen Hintergrund-Speicherung
+//! (`blockStore`, `saver`) kommt mit RU24.
 use super::testutil::{add_room, manager, peer};
 use crate::fehler::Fehler;
 
@@ -27,8 +27,3 @@ fn save_now_nach_absturz_ist_closed() {
     let (_, mut env) = m.split();
     assert_eq!(room.save_now(&mut env), Err(Fehler::Closed));
 }
-
-// Panic im Takt über `safe_tick` mit begonnener Hintergrund-Speicherung (`blockStore`): braucht `Room::tick` und `saver`.
-#[test]
-#[ignore = "wartet auf RU21"]
-fn safe_tick_panic_schliesst_raum() {}

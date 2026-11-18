@@ -1,4 +1,4 @@
-//! Tests aus `run_test.go`. Takt und Status (`Room::tick`, `summary`) kommen mit RU21.4; hier läuft der Absturz-Schutz.
+//! Tests aus `run_test.go`. Takt und Status stehen in `actions_tests.rs` und `status_tests.rs`; hier läuft der Absturz-Schutz.
 use super::testutil::{add_room, manager, peer};
 
 fn logged(lines: &[String], text: &str) -> bool {
@@ -59,11 +59,6 @@ fn guard_ohne_raum_und_nur_die_letzten_zehn_abstuerze() {
     assert_eq!(m.failures[9].error, "Absturz 11");
 }
 
-// Gos `safeSweep`: Ein Panic beim Aufräumen beendet nicht den Server. (`Room::sweep` kommt mit RU21.4.)
-#[test]
-#[ignore = "wartet auf RU21"]
-fn safe_sweep_faengt_panic() {}
-
 #[test]
 fn tick_dauern_und_p99() {
     let (_, _) = manager();
@@ -108,17 +103,3 @@ fn sweep_if_due_setzt_erst_die_zeitbasis() {
     assert_ne!(m.last_sweep, base);
     assert_eq!(m.last_stats, base, "die Statistik kommt erst nach einer Minute");
 }
-
-// Gos Test `TestDreiRaeumeParallel` heißt in Rust sinngemäß `drei_raeume_nacheinander` (kein Ticker, `tick_all`).
-#[test]
-#[ignore = "wartet auf RU21"]
-fn drei_raeume_nacheinander() {}
-
-// `Summary` und `deviceInfos` stehen in `status.go` (RU21.4).
-#[test]
-#[ignore = "wartet auf RU21"]
-fn summary() {}
-
-#[test]
-#[ignore = "wartet auf RU21"]
-fn geraete_kennungen() {}
