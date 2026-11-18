@@ -889,3 +889,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1073](B-1073-river-anbindung-world.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Shader in world anbinden (draw_river, ready, Rückfall auf Kacheln) |
 | [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
 | [B-1075](B-1075-rust-allokationen-je-bild-messen.md) | CLI | Schuld | mittel | erledigt | RU42 | Allokationen je Bild im Rust-Zeichenpfad sind nicht gemessen |
+| [B-1080](B-1080-abnahme-ru6-level-generator-rust.md) | SIM | Schuld | mittel | erledigt | RU45 | Abnahme RU6: Level-Generator in Rust (Gen, Race, manuell) |
+| [B-1089](B-1089-measure-ps1-novsync-replay.md) | CLI | Problem | mittel | erledigt | RU45 | measure.ps1 gibt -Vsync an die Rust-Wiedergabe nicht weiter |

@@ -11,7 +11,7 @@
 # native\k3c-rig\assets); Bericht nach reports/native-game-<rechner>-<zeit>.json (Feld `szene` je Lauf).
 # Rust-Wiedergabe (RU39.1, -Engine replay): k3c-game.exe aus dist\k3c-rust (Repo) bzw. ..\k3c-rust (Paket) spielt die
 # Aufzeichnung -Trace (Szene `nacht` als `messung-nacht`) im Fenster; --measure in Takten (Sekunden x 30), 60 Takte
-# Aufwärmen; immer mit VSync. Nur auf ausdrücklichen Wunsch, ohne -Engine läuft sie nicht mit.
+# Aufwärmen; ohne -Vsync mit --novsync (wie Go), mit -Vsync ohne den Schalter. Nur auf ausdrücklichen Wunsch, ohne -Engine läuft sie nicht mit.
 # -Vsync: ohne --novsync messen (G2: Ruckler bei 60 Hz); -Frames: je Lauf eine Zeilen-Datei je Bild nach reports\ und
 # deren Auswertung (Get-FrameStats, gleiche Formel für Go und Rust) im Feld `bilder` des Laufs. -StatsOnly <datei>: nur
 # eine Zeilen-Datei auswerten und ausgeben.
@@ -114,7 +114,7 @@ if (-not $Trace) {
 if ($engines -contains 'replay' -and -not (Test-Path $Trace)) {
     throw "Aufzeichnung fehlt: $Trace (go test ./engine/internal/trace/ -run TestMessungNacht -write)"
 }
-if ($engines -contains 'replay' -and -not $Vsync) { Write-Host "⏳ Hinweis: Die Rust-Wiedergabe misst immer mit VSync" }
+if ($engines -contains 'replay' -and -not $Vsync) { Write-Host "⏳ Hinweis: Wiedergabe ohne -Vsync misst mit --novsync" }
 
 $reports = Join-Path $Root 'reports'
 New-Item -ItemType Directory -Force $reports | Out-Null
@@ -189,8 +189,9 @@ foreach ($eng in $engines) {
         # Das Spiel liest seine Dateien relativ zum Arbeitsordner, die Prototypen über --root
         if ($eng -eq 'game') { $argList += @('--size', $Size) } elseif ($eng -ne 'replay') { $argList = @('--root', "`"$Root`"") + $argList }
         if ($eng -eq 'replay') {
-            # Wiedergabe: Takte statt Sekunden (30 Hz), 60 Takte Aufwärmen fest, VSync immer an
+            # Wiedergabe: Takte statt Sekunden (30 Hz), 60 Takte Aufwärmen fest, ohne -Vsync mit --novsync (wie Go)
             $argList = @('replay', "`"$Trace`"", '--window', '--measure', ($Seconds * 30), '--out', "`"$tmp`"", '--size', $Size)
+            if (-not $Vsync) { $argList += '--novsync' }
         }
         if ($Frames -and $eng -in @('game', 'replay')) { $argList += @('--measure-frames', "`"$framesFile`"") }
         # Ebitengine wählt seine Grafik-Bibliothek selbst (Windows: DirectX 11)

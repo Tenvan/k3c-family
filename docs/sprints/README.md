@@ -449,3 +449,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | `erledigt/RU14-sim-welt-stufen-kampagne/` |
 | RU44 | Bild-Pfad ohne Allokationen | `erledigt/RU44-bild-pfad-ohne-allokationen/` |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | `erledigt/RU12-menues-teil-2/` |
+| RU45 | Abnahme- und Messläufe auf dem Second Worker | `erledigt/RU45-abnahme-und-messlaeufe-second-worker/` |
