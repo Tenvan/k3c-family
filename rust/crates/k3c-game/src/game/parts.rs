@@ -6,9 +6,9 @@
 //! `imports_tests.rs`).
 
 use super::pending::Loader;
-use crate::view::input::Source;
+use crate::view::input::{KeyboardSource, Source};
 use crate::view::layer::{Drawer, Listener};
-use crate::view::roles::{AssetSource, CameraRule, Overlay};
+use crate::view::roles::{AssetSource, CameraRule, Finisher, Overlay};
 use crate::view::screen::Menus;
 use crate::view::voyage::VoyageDrawer;
 
@@ -21,11 +21,15 @@ pub struct Part {
     /// Listener der Drawer (Go: ein Drawer, der zugleich `Listener` ist, hört mit), in Reihenfolge der Drawer
     pub drawer_listeners: Vec<Box<dyn Listener>>,
     pub source: Option<Box<dyn Source>>,
+    /// Belegung der Tastatur der Eingabe-Quelle (Go: Typ-Zusicherung `Source` → `KeyboardSource`)
+    pub keyboard: Option<Box<dyn KeyboardSource>>,
     pub menus: Option<Box<dyn Menus>>,
     pub camera: Option<Box<dyn CameraRule>>,
     pub assets: Vec<Box<dyn AssetSource>>,
     pub overlays: Vec<Box<dyn Overlay>>,
     pub voyage: Option<Box<dyn VoyageDrawer>>,
+    /// Listener mit `Finish` beim Programmende (Go: Typ-Zusicherung `Listener` → `Finisher`)
+    pub finishers: Vec<Box<dyn Finisher>>,
 }
 
 impl Part {
@@ -45,12 +49,14 @@ pub struct Parts {
     pub drawers: Vec<Box<dyn Drawer>>,
     pub listeners: Vec<Box<dyn Listener>>,
     pub input: Box<dyn Source>,
+    pub keyboard: Option<Box<dyn KeyboardSource>>,
     pub menus: Box<dyn Menus>,
     pub camera: Option<Box<dyn CameraRule>>,
     pub assets: Vec<Box<dyn AssetSource>>,
     pub overlays: Vec<Box<dyn Overlay>>,
     /// Schiffsfahrt im Vollbild (hud, B-977); `None`: Ladebildschirm
     pub voyage: Option<Box<dyn VoyageDrawer>>,
+    pub finishers: Vec<Box<dyn Finisher>>,
     pub art: Option<Box<dyn Loader>>,
 }
 
@@ -72,6 +78,8 @@ struct Acc {
     drawers: Vec<Box<dyn Drawer>>,
     listeners: Vec<Box<dyn Listener>>,
     input: Option<Box<dyn Source>>,
+    keyboard: Option<Box<dyn KeyboardSource>>,
+    finishers: Vec<Box<dyn Finisher>>,
     menus: Option<Box<dyn Menus>>,
     camera: Option<Box<dyn CameraRule>>,
     assets: Vec<Box<dyn AssetSource>>,
@@ -89,6 +97,8 @@ impl Acc {
         self.listeners.extend(p.listener);
         self.drawers.extend(p.drawers);
         set_once(&mut self.input, p.source, &p.name, "Eingabe")?;
+        set_once(&mut self.keyboard, p.keyboard, &p.name, "Tastatur-Belegung")?;
+        self.finishers.extend(p.finishers);
         set_once(&mut self.menus, p.menus, &p.name, "Menü")?;
         set_once(&mut self.camera, p.camera, &p.name, "Kamera-Regel")?;
         set_once(&mut self.voyage, p.voyage, &p.name, "Schiffsfahrt")?;
@@ -109,11 +119,13 @@ impl Acc {
             drawers: self.drawers,
             listeners: self.listeners,
             input,
+            keyboard: self.keyboard,
             menus,
             camera: self.camera,
             assets: self.assets,
             overlays: self.overlays,
             voyage: self.voyage,
+            finishers: self.finishers,
             art: None,
         })
     }

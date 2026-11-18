@@ -10,6 +10,7 @@ use k3c_sim::state::World;
 use crate::hud::HudDrawer;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
+use crate::view::input::{Input, KeyboardSource, Source};
 use crate::view::layer::{Drawer, Layer, Listener};
 use crate::view::roles::{AssetSource, Overlay, OverlayStep};
 use crate::view::session::Session;
@@ -38,6 +39,22 @@ impl<T: Drawer> Drawer for Shared<T> {
 impl<T: Listener> Listener for Shared<T> {
     fn listen(&mut self, f: &Frame) {
         self.0.borrow_mut().listen(f);
+    }
+}
+
+impl<T: Source> Source for Shared<T> {
+    fn poll(&mut self, raw: &k3c_platform::InputState) -> Input {
+        self.0.borrow_mut().poll(raw)
+    }
+}
+
+impl<T: KeyboardSource> KeyboardSource for Shared<T> {
+    fn set_keyboard(&mut self, profile: &str) {
+        self.0.borrow_mut().set_keyboard(profile);
+    }
+
+    fn set_menu(&mut self, open: bool) {
+        self.0.borrow_mut().set_menu(open);
     }
 }
 

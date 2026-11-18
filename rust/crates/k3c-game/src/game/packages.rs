@@ -32,10 +32,7 @@ pub fn packages(libs: &Libs, keys: Option<KeyTable>) -> Vec<Part> {
         fx_part(lib()),
         devtools_part(lib()),
         hud_part(lib()),
-        Part {
-            source: Some(Box::new(input::new())),
-            ..Part::named("input")
-        },
+        input_part(),
         Part {
             menus: Some(menu::new(lib(), keys)),
             ..Part::named("menu")
@@ -45,6 +42,17 @@ pub fn packages(libs: &Libs, keys: Option<KeyTable>) -> Vec<Part> {
             ..Part::named("audio")
         },
     ]
+}
+
+/// Die Eingabe-Quelle hinter zwei Rollen: `Source` (Poll) und `KeyboardSource` (Belegung der Tastatur, `game` stellt
+/// sie vor jedem Poll).
+fn input_part() -> Part {
+    let i = Shared(Rc::new(RefCell::new(input::new())));
+    Part {
+        source: Some(Box::new(i.share())),
+        keyboard: Some(Box::new(i)),
+        ..Part::named("input")
+    }
 }
 
 fn world_part(libs: &Libs) -> Part {

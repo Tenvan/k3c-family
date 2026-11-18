@@ -34,6 +34,17 @@ impl Stack {
         self.screens.last_mut()
     }
 
+    /// Nimmt den obersten Screen heraus (für `Screen::update`, solange `Game` selbst ausgeliehen ist); `put_top` legt
+    /// ihn danach wieder oben auf.
+    pub fn take_top(&mut self) -> Option<Box<dyn Screen>> {
+        self.screens.pop()
+    }
+
+    /// Legt einen mit `take_top` entnommenen Screen wieder oben auf.
+    pub fn put_top(&mut self, sc: Box<dyn Screen>) {
+        self.screens.push(sc);
+    }
+
     /// Zahl der Screens.
     pub fn len(&self) -> usize {
         self.screens.len()
