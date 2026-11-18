@@ -146,6 +146,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1065](B-1065-rust-textmasse-zeilenhoehe-advance.md) | CLI | Problem | niedrig | offen | RU20 | Rust misst Textzeilen niedriger und kleine Schrift schmaler als Go |
 | [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | offen | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
 | [B-1067](B-1067-rust-purse-skill-values-pending-draw-glyph-ausleihe.md) | CLI | Problem | niedrig | offen | RU20 | Hud: Spieler mit Skills stürzen in sim::values ab, draw_glyph mit Bibliotheksschrift vermutlich Doppelausleihe |
+| [B-1068](B-1068-abnahme-ru20.md) | CLI | Schuld | mittel | offen | RU20 | Abnahme RU20: Sichtprüfung HUD und Gen-Läufe |
 
 ## Archiv
 

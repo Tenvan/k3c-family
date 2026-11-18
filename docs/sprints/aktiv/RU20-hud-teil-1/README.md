@@ -97,7 +97,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU20.5 | `RU20.5-hud-paint-draw-purse-drawstock.md` | Umsetzung | autonom | fertig |
 | RU20.6 | `RU20.6-hud-drawglyph-keyline.md` | Umsetzung | autonom | fertig |
 | RU20.7 | `RU20.7-standbild-bildvergleich.md` | Umsetzung | autonom | fertig |
-| RU20.8 | `RU20.8-review.md` | Review | autonom | offen |
+| RU20.8 | `RU20.8-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -105,6 +105,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18: AC-01 bis AC-03 geprüft (Ergebnis RU20.8, Sessions RU20.1 bis RU20.7); `task check` und `task check:go` grün. Review ohne schwere Befunde; mittlere Befunde gehen an RU23 (B-1067) und RU30 (B-1053). Abweichung gegen die Tabelle: `drawglyph.rs` und `keyline.rs` portiert (8 statt 6 Sessions).
+Neue Tickets: B-1065, B-1066, B-1067. Abnahme-Ticket für Sim, Balance und Gen und die Sichtprüfung am PC mit Pad: B-1068 (enthält die Monarch-Daten-Abweichung).
