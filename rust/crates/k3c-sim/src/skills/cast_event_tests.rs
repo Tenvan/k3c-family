@@ -8,8 +8,8 @@ use super::testutil::*;
 use crate::enemies::events_of_type;
 use crate::enemies::testutil::{add_player, quiet_world};
 use crate::island::testutil::{add_pool_points, must_learn};
+use crate::links::unit_x;
 use crate::monarch::can_learn;
-use crate::pending::unit_x;
 use crate::world::vals;
 
 #[test]

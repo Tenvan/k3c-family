@@ -10,7 +10,7 @@ use super::traits::attack_rate;
 use super::{BODY, is_barrier, is_building};
 use crate::state::common::{apply_damage_by, event, shielded};
 use crate::state::island_ref::{IslandRef, protected_night};
-use crate::state::pending::{
+use crate::state::links::{
     MERCHANT_ID, arrow_event, crowned, drop_loot, emit, frost_armor_hit, merchant_x, moon_damage, unit_x,
 };
 use crate::state::{Enemy, Projectile, World, WorldValues};
@@ -275,7 +275,7 @@ pub fn attack(w: &mut World, v: &WorldValues, ei: usize, t: &Target, isl: Option
         arrow_event(w, &p, from);
         w.projectiles.push(p);
     } else {
-        melee(w, ei, t);
+        melee(w, ei, t, isl);
     }
 }
 
@@ -293,12 +293,12 @@ fn steal_gold(w: &mut World, v: &WorldValues, ei: usize, pi: usize) {
         .push(event(json!({"type": "goldStolen", "player": index, "amount": amount})));
 }
 
-fn melee(w: &mut World, ei: usize, t: &Target) {
+fn melee(w: &mut World, ei: usize, t: &Target, isl: Option<&IslandRef>) {
     let (id, x, damage) = (w.enemies[ei].id, w.enemies[ei].x, w.enemies[ei].damage);
     emit(w, "strike", event(json!({"from": id, "x": unit_x(x)})));
     let kind = std::mem::take(&mut w.enemies[ei].kind); // ohne Kopie als Ursache; sofort zurück
     let dmg = moon_damage(w, damage); // Blutmond (events_moon.go)
-    apply_damage_by(w, t.id, dmg, &kind);
+    apply_damage_by(w, t.id, dmg, &kind, isl);
     w.enemies[ei].kind = kind;
     if let Some(pi) = t.player {
         frost_armor_hit(w, pi, ei);

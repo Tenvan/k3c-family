@@ -9,7 +9,7 @@ use super::squad::{free_warriors, leaders_of, send_groups, take_banner};
 use super::squad_target;
 use crate::economy::clear_pending;
 use crate::state::common::outer_wall;
-use crate::state::pending::{count_fetching, crowned};
+use crate::state::links::{count_fetching, crowned};
 use crate::state::{Player, Site, World, WorldValues};
 
 /// Die Art eines Zahlziels der Kampfvariante (Go: `CombatSpot.Kind` als Text).

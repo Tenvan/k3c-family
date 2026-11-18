@@ -5,7 +5,7 @@
 //!     und Ziele kommen aus dem rng, deterministisch.
 //!   - Ein gefällter Baum wirft `treeGold` Münzen, das Gold der Gegner skaliert `enemyGoldFactor` (`scaled_gold`).
 
-use crate::state::pending::values;
+use crate::state::links::values;
 use crate::state::{Coin, World, WorldValues};
 
 /// Go: `fountainCoins`: lässt `count` Münzen aus der Truhe bei `x` als Fontäne auf den Boden fallen.

@@ -6,9 +6,10 @@
 use k3c_det::fmax;
 use serde_json::{Value, json};
 
-use super::pending::{
+use super::island_ref::{IslandRef, protected_night};
+use super::links::{
     MERCHANT_ID, crowned, damage_merchant, drop_crown, each_passive, hit_coins, hit_event, invulnerable, is_ruin,
-    is_wave_enemy, protected_night, troop_damage, values,
+    is_wave_enemy, troop_damage, values,
 };
 use super::{Event, Player, ResourceNode, Site, Troop, World};
 
@@ -119,9 +120,10 @@ pub fn is_worker(w: &World, id: Option<i64>) -> bool {
     id.is_some_and(|id| w.troops.iter().any(|o| o.id == id))
 }
 
-/// Go: `applyDamage`, Schaden ohne Gegner als Quelle auf ein Ziel per ID.
+/// Go: `applyDamage`, Schaden ohne Gegner als Quelle auf ein Ziel per ID. Die Aufrufer (Zauberturm, Monarch, Zauber)
+/// treffen Gegner und Truppen, nie Plätze; darum braucht der Schaden den Bezug zur Insel (geschützte Nacht) nicht.
 pub fn apply_damage(w: &mut World, target_id: i64, damage: f64) {
-    apply_damage_by(w, target_id, damage, CAUSE_OTHER);
+    apply_damage_by(w, target_id, damage, CAUSE_OTHER, None);
 }
 
 /// Go: `hitTroop`: Eine getroffene Truppe verliert HP; ein getroffener Bürger flieht zur Burg. `ti` ist der Index.
@@ -139,7 +141,7 @@ pub fn hit_troop(w: &mut World, ti: usize, damage: f64, cause: &str) {
 
 /// Go: `applyDamageBy`: Schaden auf ein Ziel per ID; `cause` ist die Gegnerart für crownFallen, "" = `CAUSE_OTHER`.
 /// Tod und Zerstörung behandelt der Tick.
-pub fn apply_damage_by(w: &mut World, target_id: i64, damage: f64, cause: &str) {
+pub fn apply_damage_by(w: &mut World, target_id: i64, damage: f64, cause: &str, isl: Option<&IslandRef>) {
     if let Some(pi) = w.players.iter().position(|p| p.id == target_id) {
         damage_player(w, pi, damage, cause);
         return;
@@ -168,18 +170,18 @@ pub fn apply_damage_by(w: &mut World, target_id: i64, damage: f64, cause: &str) 
         hit_event(w, "castle", id, x, damage);
         return;
     }
-    hit_site(w, target_id, damage);
+    hit_site(w, target_id, damage, isl);
 }
 
 /// Der Platz-Zweig von `applyDamageBy`: nur gebaute Plätze nehmen Schaden; ein zerstörter wird wieder leer.
-fn hit_site(w: &mut World, id: i64, damage: f64) {
+fn hit_site(w: &mut World, id: i64, damage: f64, isl: Option<&IslandRef>) {
     let Some(s) = w.site_mut(id).filter(|s| s.state == "built") else {
         return;
     };
     s.hp -= damage;
     let (hp, sid, x) = (s.hp, s.id, s.x);
     hit_event(w, "site", sid, x, damage);
-    if hp <= 0.0 && protected_night(w) {
+    if hp <= 0.0 && protected_night(w, isl) {
         if let Some(s) = w.site_mut(id) {
             s.hp = 1.0;
         }

@@ -127,7 +127,7 @@ fn step_projectiles_bewegt_und_entfernt_geschosse_ohne_ziel() {
             ..Projectile::default()
         },
     ];
-    step_projectiles(&mut w, 0.5);
+    step_projectiles(&mut w, None, 0.5);
     assert_eq!(w.projectiles.len(), 1, "das Geschoss ohne Ziel fällt weg");
     assert_eq!(w.projectiles[0].id, a);
     assert_eq!(w.projectiles[0].x, 20.0);

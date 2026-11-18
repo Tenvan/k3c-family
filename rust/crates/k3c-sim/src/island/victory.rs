@@ -8,7 +8,7 @@ use std::collections::BTreeSet;
 use serde_json::Value;
 
 use super::Island;
-use crate::state::pending::{emit, is_vein};
+use crate::state::links::{emit, is_vein};
 use crate::state::{Event, World};
 
 /// Go: `shipKind`, die Art des Schiffs-Platzes (ship.go): dient dem Inselwechsel, nicht dem Sieg.
@@ -45,7 +45,7 @@ pub fn all_mined(isl: &mut Island) -> bool {
     let mut finite = false;
     for w in &isl.stages {
         let planted = planted_trees(w);
-        let v = w.vals.clone().unwrap_or_else(|| crate::state::pending::values(w));
+        let v = w.vals.clone().unwrap_or_else(|| crate::state::links::values(w));
         if w.nodes.iter().any(|n| !is_vein(&v, n) && !planted.contains(&n.id)) {
             finite = true;
             break;

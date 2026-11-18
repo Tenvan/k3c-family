@@ -30,7 +30,7 @@ pub use build::{dev_build_all, dev_build_site};
 use crate::enemies::waves::start_wave;
 use crate::island::Island;
 use crate::island::storage::{add_stock_capped, capacity, stock_field};
-use crate::state::pending::values;
+use crate::state::links::values;
 use crate::state::purse::purse_max_of;
 use crate::state::{Coin, IslandRef, World};
 use crate::world::base::base;

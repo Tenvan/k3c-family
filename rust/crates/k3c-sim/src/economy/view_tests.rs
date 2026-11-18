@@ -6,17 +6,17 @@ use k3c_data::buildings::Cost;
 use k3c_data::{Source, load_all};
 use serde_json::{Value, json};
 
-use super::pending::hub_gate;
+use super::links::hub_gate;
 use super::view::{WAITING_NEXT_ISLAND, economy_of, hub_wait_state, material_of};
 use crate::enemies::testutil::{bare_world, build_site};
 use crate::island::testutil::{must_island, on_stage, storage_site};
 use crate::state::common::destroy_site;
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::next_level;
+use crate::state::links::next_level;
 use crate::state::{Site, World};
 use crate::unit::jobs::make_archer;
 use crate::unit::spawn_vagrant;
-use crate::world::pending::upgrade_payable;
+use crate::world::links::upgrade_payable;
 use crate::world::testutil::quiet_world;
 use crate::world::vals;
 
@@ -108,7 +108,7 @@ fn economy_insel_mit_lager_ausbau_und_nacht() {
         let si = storage_site(w).expect("Lager");
         w.sites[si].state = "built".into();
         while let Some(h) = w.hub_site.clone().filter(|h| upgrade_payable(w, h)) {
-            super::pending::pay_upgrade(w, None, h.id);
+            super::links::pay_upgrade(w, None, h.id);
         }
         w.cycle.phase = "night".into();
         economy_json(w, Some(r))

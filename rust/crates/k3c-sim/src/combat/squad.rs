@@ -7,7 +7,7 @@ use serde_json::json;
 use super::data::group_size;
 use super::{is_soldier, leave_squad, player_by_id, squad_target, troop_side};
 use crate::state::common::{event, outer_wall};
-use crate::state::pending::{crowned, emit, unit_x};
+use crate::state::links::{crowned, emit, unit_x};
 use crate::state::{World, WorldValues};
 use crate::unit::warrior::is_fighter;
 
@@ -177,7 +177,7 @@ pub fn step_banners(w: &mut World, v: &WorldValues) {
 }
 
 /// Go: `returnBanner`: stellt das Banner des Monarchen `pi` am Tor wieder auf; sein Trupp kehrt zurück.
-fn return_banner(w: &mut World, pi: usize) {
+pub fn return_banner(w: &mut World, pi: usize) {
     let (id, index) = (w.players[pi].id, w.players[pi].index);
     w.players[pi].banner = 0;
     w.players[pi].banner_out = false;

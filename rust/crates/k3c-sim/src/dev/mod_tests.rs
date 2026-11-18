@@ -4,7 +4,7 @@ use super::testutil::{coins_at, island_with_player};
 use super::{dev_add_stock, dev_drop_gold, dev_set_phase, dev_start_wave};
 use crate::island::step_island;
 use crate::island::storage::capacity;
-use crate::state::pending::values;
+use crate::state::links::values;
 
 const DT: f64 = 1.0 / 30.0;
 

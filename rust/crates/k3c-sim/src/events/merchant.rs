@@ -11,7 +11,7 @@ use super::values::night;
 use crate::enemies::waves::{plan_wave, queue_wave};
 use crate::island::storage::add_stock_capped;
 use crate::state::common::event;
-use crate::state::pending::values;
+use crate::state::links::values;
 use crate::state::{IslandRef, World};
 
 /// Go: `merchantRaidStart`: nach der Ankunft (`merchant_dawn`); ohne Insel oder außerhalb des Rhythmus kein Überfall.

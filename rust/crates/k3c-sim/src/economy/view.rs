@@ -6,19 +6,19 @@ use k3c_data::buildings::Cost;
 use k3c_data::hub::Stock;
 use serde::Serialize;
 
-use super::pending::hub_gate;
+use super::links::hub_gate;
 use super::site_payable;
 use crate::building::barracks::{fighters, troop_limit};
 use crate::building::upgrades::armor_stage;
 use crate::island::storage::{capacity, purse_max};
 use crate::state::common::is_dangerous;
 use crate::state::island_ref::{IslandRef, cheap};
+use crate::state::links::hub_steps;
+use crate::state::links::next_level;
 use crate::state::omit::{is_false, is_zero_i64};
-use crate::state::pending::hub_steps;
-use crate::state::pending::next_level;
 use crate::state::{Site, World, WorldValues};
 use crate::unit::hammer::place_product;
-use crate::world::pending::{site_cost, upgrade_payable};
+use crate::world::links::{site_cost, upgrade_payable};
 
 /// Go: `WaitingNextIsland` ist der Wartegrund „Material der nächsten Insel“ (B-592): Gold ist bezahlt, aber das
 /// Material-Tor fehlt im Vorrat. Die Simulation wartet wie bei `waitingMaterial`; nur der Zustand nennt den eigenen Grund,

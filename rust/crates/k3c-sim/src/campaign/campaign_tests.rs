@@ -11,7 +11,7 @@ use serde_json::Value;
 
 use super::{Campaign, new_world};
 use crate::enemies::testutil::test_values;
-use crate::state::pending::travel_points;
+use crate::state::links::travel_points;
 use crate::state::save::{SaveGame, key, parse_save};
 use crate::state::{PlayerCommand, WorldValues};
 use crate::world::base::base;

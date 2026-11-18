@@ -102,7 +102,7 @@ fn boss_splitter_wurf() {
         w.enemies[boss].cooldown == a.interval_seconds && w.enemies[boss].aoe_in == a.interval_seconds,
         "Abklingzeit"
     );
-    crate::enemies::waves::step_projectiles(w, 1.0 / 30.0);
+    crate::enemies::waves::step_projectiles(w, None, 1.0 / 30.0);
     // Ziel und nahe Truppe verlieren den Schaden, die ferne nicht; danach 200 Takte lang nur Würfe mit Splash:
     // braucht Truppen (`warriorAt`) und `Step` (`step`).
     panic!("B-1103: Step (step_players)");
@@ -240,10 +240,10 @@ mod real_tests {
             cause: "lavaGolem".into(),
             ..Hazard::default()
         });
-        step_hazards(&mut w, &v, 4.0);
+        step_hazards(&mut w, &v, None, 4.0);
         assert_eq!(w.hazards.len(), 1);
         assert_eq!(w.hazards[0].seconds_left, 1.0);
-        step_hazards(&mut w, &v, 1.0);
+        step_hazards(&mut w, &v, None, 1.0);
         assert!(w.hazards.is_empty(), "Fläche nicht ausgelaufen");
     }
 
@@ -257,9 +257,9 @@ mod real_tests {
             seconds_left: 5.0,
             ..Hazard::default()
         });
-        step_hazards(&mut w, &v, 0.5); // erster Takt zündet sofort (tick_in startet bei 0) und springt auf 0,5
+        step_hazards(&mut w, &v, None, 0.5); // erster Takt zündet sofort (tick_in startet bei 0) und springt auf 0,5
         assert_eq!(w.hazards[0].tick_in, 0.5);
-        step_hazards(&mut w, &v, 0.5);
+        step_hazards(&mut w, &v, None, 0.5);
         assert_eq!(w.hazards[0].tick_in, 1.0, "zündet erneut und springt auf eine Sekunde");
     }
 }

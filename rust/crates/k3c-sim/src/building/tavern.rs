@@ -2,7 +2,7 @@
 //! Landstreicher, solange dort weniger als das Maximum stehen; sie sind an die Taverne gebunden (`anchor_x`) und wandern in
 //! ihrem Radius (data/buildings.json › tavern.vagrants).
 
-use crate::pending::pure;
+use crate::links::pure;
 use crate::state::World;
 use crate::unit::hammer::spawn_vagrant_with;
 use crate::world::values_room::values;

@@ -6,8 +6,8 @@
 
 pub mod dawn;
 pub mod fountain;
+pub mod links;
 pub mod pay;
-pub mod pending;
 pub mod players;
 pub mod sites;
 pub mod util;
@@ -36,14 +36,14 @@ use crate::building::ruin::line_before_ruin;
 use crate::building::upgrades::{offer_at, place_payable};
 use crate::combat::spots::{CombatSpot, SpotKind, combat_target};
 use crate::state::island_ref::IslandRef;
+use crate::state::links::site_hub_level;
 use crate::state::node_mark::node_markable;
-use crate::state::pending::site_hub_level;
 use crate::state::{Player, Site, World, WorldValues};
 use crate::unit::professions::OfferTarget;
 use crate::unit::warrior::sword_at;
 use crate::world::lines::line_open;
-use crate::world::pending::upgrade_payable;
-use pending::merchant_at;
+use crate::world::links::upgrade_payable;
+use links::merchant_at;
 
 /// Go: `payTarget`, das Zahlziel am Ort eines Spielers. Go hält Zeiger, Rust die ID (Platz, Landstreicher, Ressource) oder
 /// den Index (`Offer`, `Sword`: Platz in `w.sites`); genau eines gilt.

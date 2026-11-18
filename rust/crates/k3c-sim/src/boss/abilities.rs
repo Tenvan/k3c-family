@@ -13,8 +13,8 @@ use k3c_data::bosses::BossAbility;
 use crate::enemies::target::{TargetKind, blocking_wall, choose_target};
 use crate::enemies::traits::aoe_targets;
 use crate::state::common::{apply_damage_by, sign};
-use crate::state::pending::{arrow_event, moon_damage, values};
-use crate::state::{Enemy, Hazard, Projectile, World, WorldValues};
+use crate::state::links::{arrow_event, moon_damage, values};
+use crate::state::{Enemy, Hazard, IslandRef, Projectile, World, WorldValues};
 
 /// Go: `shardSpeed`: Tempo des Splitters in Units/s (wie die Geschosse der Fernkämpfer, enemies.go).
 const SHARD_SPEED: f64 = 20.0;
@@ -78,24 +78,24 @@ pub fn shard_throw(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility) {
 }
 
 /// Go: `hitSplash`: Einschlag eines Geschosses mit Splash bei `x`: das Ziel und alle übrigen Ziele im Radius je einmal.
-pub fn hit_splash(w: &mut World, p: &Projectile, x: f64) {
+pub fn hit_splash(w: &mut World, isl: Option<&IslandRef>, p: &Projectile, x: f64) {
     let v = values(w);
-    hit_splash_with(w, &v, p, x);
+    hit_splash_with(w, &v, isl, p, x);
 }
 
 /// `hit_splash` mit bereits geholtem Wertesatz.
-pub fn hit_splash_with(w: &mut World, v: &WorldValues, p: &Projectile, x: f64) {
-    apply_damage_by(w, p.target_id, p.damage, &p.cause);
+pub fn hit_splash_with(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, p: &Projectile, x: f64) {
+    apply_damage_by(w, p.target_id, p.damage, &p.cause, isl);
     for c in aoe_targets(w, v, x, p.splash) {
         if c.id != p.target_id {
-            apply_damage_by(w, c.id, p.damage, &p.cause);
+            apply_damage_by(w, c.id, p.damage, &p.cause, isl);
         }
     }
 }
 
 /// Go: `stepHazards`: lässt die Flächen auslaufen und zieht allen Zielen darin einmal je Sekunde den Schaden einer
 /// Sekunde ab (wie Lava, world_lava.go); ausgelaufene Flächen fallen in Listen-Reihenfolge heraus.
-pub fn step_hazards(w: &mut World, v: &WorldValues, dt: f64) {
+pub fn step_hazards(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, dt: f64) {
     if w.hazards.is_empty() {
         return;
     }
@@ -108,7 +108,7 @@ pub fn step_hazards(w: &mut World, v: &WorldValues, dt: f64) {
         h.tick_in -= dt;
         if h.tick_in <= 0.0 {
             h.tick_in += 1.0;
-            burn(w, v, h);
+            burn(w, v, isl, h);
         }
         true
     });
@@ -116,11 +116,11 @@ pub fn step_hazards(w: &mut World, v: &WorldValues, dt: f64) {
 }
 
 /// Go: `burn`: Schaden an allen Zielen der Fläche außer der Burg und getrennten Monarchen.
-fn burn(w: &mut World, v: &WorldValues, h: &Hazard) {
+fn burn(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, h: &Hazard) {
     for c in aoe_targets(w, v, h.x, h.radius) {
         if c.kind == TargetKind::Castle || c.player.is_some_and(|pi| w.players[pi].free) {
             continue;
         }
-        apply_damage_by(w, c.id, h.damage_per_second, &h.cause);
+        apply_damage_by(w, c.id, h.damage_per_second, &h.cause, isl);
     }
 }

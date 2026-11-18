@@ -43,6 +43,26 @@ pub fn tree<T: Serialize + ?Sized>(v: &T) -> Value {
 /// `diff` liefert den Pfad der ersten Abweichung zwischen zwei JSON-Bäumen ("" = gleich). Zahlen als `f64`
 /// mit denselben Bits; Meldungen wie Gos `golden.Diff`.
 pub fn diff(at: &str, want: &Value, got: &Value) -> String {
+    diff_with(at, want, got, None)
+}
+
+/// Toleranz des Vergleichs mit gleichem Verhalten (Entscheidung 012): Fließkommawerte relativ `rel`, nahe 0 absolut `abs`.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Tol {
+    pub rel: f64,
+    pub abs: f64,
+}
+
+/// Standard der Sim: 1e-4 relativ, 1e-9 absolut nahe 0 (Entscheidung 012).
+pub const SIM_TOL: Tol = Tol { rel: 1e-4, abs: 1e-9 };
+
+/// `diff_tol` wie `diff`, aber Fließkommawerte (`got` ist ein JSON-Fließkomma) innerhalb von `tol` gelten als gleich.
+/// Ganzzahlen (`got` ist eine Ganzzahl), Texte, Wahrheitswerte, Längen und Schlüssel bleiben exakt.
+pub fn diff_tol(at: &str, want: &Value, got: &Value, tol: Tol) -> String {
+    diff_with(at, want, got, Some(tol))
+}
+
+fn diff_with(at: &str, want: &Value, got: &Value, tol: Option<Tol>) -> String {
     match want {
         Value::Object(w) => {
             let Value::Object(g) = got else {
@@ -53,7 +73,7 @@ pub fn diff(at: &str, want: &Value, got: &Value) -> String {
                 let (Some(wv), Some(gv)) = (w.get(k), g.get(k)) else {
                     return format!("{at}.{k} (Schlüssel nur auf einer Seite)");
                 };
-                let d = diff(&format!("{at}.{k}"), wv, gv);
+                let d = diff_with(&format!("{at}.{k}"), wv, gv, tol);
                 if !d.is_empty() {
                     return d;
                 }
@@ -67,7 +87,7 @@ pub fn diff(at: &str, want: &Value, got: &Value) -> String {
                 _ => return format!("{at} (Länge)"),
             };
             for (i, (wv, gv)) in w.iter().zip(g).enumerate() {
-                let d = diff(&format!("{at}[{i}]"), wv, gv);
+                let d = diff_with(&format!("{at}[{i}]"), wv, gv, tol);
                 if !d.is_empty() {
                     return d;
                 }
@@ -75,16 +95,25 @@ pub fn diff(at: &str, want: &Value, got: &Value) -> String {
             String::new()
         }
         Value::Null if matches!(got, Value::Array(g) if g.is_empty()) => String::new(),
-        _ if same_scalar(want, got) => String::new(),
+        _ if same_scalar(want, got, tol) => String::new(),
         _ => format!("{at} = {}, erwartet {}", go_text(got), go_text(want)),
     }
 }
 
-fn same_scalar(want: &Value, got: &Value) -> bool {
+fn same_scalar(want: &Value, got: &Value, tol: Option<Tol>) -> bool {
     match (want, got) {
-        (Value::Number(w), Value::Number(g)) => number(w).to_bits() == number(g).to_bits(),
+        (Value::Number(w), Value::Number(g)) => match tol {
+            Some(t) if g.is_f64() => near(number(w), number(g), t),
+            Some(_) => number(w) == number(g),
+            None => number(w).to_bits() == number(g).to_bits(),
+        },
         _ => want == got,
     }
+}
+
+fn near(w: f64, g: f64, t: Tol) -> bool {
+    let d = (w - g).abs();
+    d <= t.abs || d <= t.rel * w.abs().max(g.abs())
 }
 
 fn number(n: &serde_json::Number) -> f64 {

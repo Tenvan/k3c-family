@@ -7,7 +7,7 @@ use k3c_data::difficulty::DifficultyFile;
 use super::on_stage;
 use crate::enemies::spawn_enemy;
 use crate::island::Island;
-use crate::state::pending::values;
+use crate::state::links::values;
 use crate::state::{Fehler, Troop};
 
 /// Go: `DevMaxSpawn`: die größte Zahl je Aufruf; Aufrufe lassen sich wiederholen, die Obergrenze schützt das Tick-Budget.

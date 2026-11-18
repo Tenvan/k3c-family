@@ -12,7 +12,7 @@ use serde_json::json;
 use crate::economy::{can_afford, clear_pending, nearest, spend};
 use crate::state::common::event;
 use crate::state::island_ref::{IslandRef, cheap};
-use crate::state::pending::{emit, unit_x};
+use crate::state::links::{emit, unit_x};
 use crate::state::{World, WorldValues};
 use k3c_data::buildings::Offer;
 use k3c_data::troops::{ProfessionData, TroopData};
