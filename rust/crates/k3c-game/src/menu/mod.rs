@@ -17,12 +17,14 @@
 
 pub mod art;
 pub mod backdrop;
+pub mod controls;
 pub mod draw;
 pub mod hero;
 pub mod keys;
 pub mod layout;
 pub mod lobby;
 pub mod main_screen;
+pub mod options;
 mod pending;
 pub mod table;
 pub mod texts;
@@ -32,6 +34,8 @@ pub mod version;
 #[cfg(test)]
 mod art_tests;
 #[cfg(test)]
+mod controls_tests;
+#[cfg(test)]
 mod keys_tests;
 #[cfg(test)]
 mod layout_tests;
@@ -39,6 +43,8 @@ mod layout_tests;
 mod lobby_tests;
 #[cfg(test)]
 mod main_screen_tests;
+#[cfg(test)]
+mod options_tests;
 #[cfg(test)]
 mod paper_tests;
 #[cfg(test)]
@@ -156,7 +162,7 @@ impl MenuPages for MenuSet {
         let m = &self.shared;
         Some(match name {
             "saves" => Box::new(pending::new_saves(m)),
-            "options" => Box::new(pending::new_options(m, in_game)),
+            "options" => Box::new(options::new_options(m, in_game)),
             "lobby" => Box::new(lobby::new_lobby(m, by)),
             "keys" => Box::new(table::new_keys(m)),
             "licenses" => Box::new(table::new_licenses(m)),

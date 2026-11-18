@@ -1,6 +1,6 @@
 # RU9.5 · menu Teil 5: Optionen und Steuerung
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -66,5 +66,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: Navigation mit Hoch/Runter (im Kreis), Links/Rechts, A; B, Esc (Back + Menu zugleich) und Home schließen Optionen und Steuerung mit `Pop` und Cue `Back`, auch mit `dim = true` (aus dem Pause-Menü): `options_back_and_esc_close_also_from_pause`, `controls_back_and_esc_close_also_from_pause`, `options_navigation`. Die Zeile Steuerung öffnet mit A die Tastenbelegung, Links/Rechts tun dort nichts (`options_open_controls`).
+AC-02 geprüft: Wertetexte (Lautstärke, Anzeige-Modi in beiden Sprachen, Sprache, Profile) wie Go (`option_value_texts`, `option_window_modes`, `controls_back_and_texts`); Bildvergleich folgt in RU9.6.
+AC-03 geprüft: alle zehn Tests aus `options_test.go` und alle drei aus `controls_test.go` portiert (`TestOptionsOpenControls` steht in `options_tests.rs`); `cargo test -p k3c-game menu`: 54 grün, 4 ignoriert; Fmt und Clippy `-D warnings` grün. Review k3c-reviewer: keine schweren Befunde (apply_option, Rundung, Handler-Ablauf, Schreiben nur bei Änderung gleich Go).
+Ignorierte Tests (alle RU12, kein Test wartet nur auf `new_options`): `main_confirm_transitions`, `main_rereads_list_after_load_menu`, `main_first_draw_after_leave`, `licenses_page`.
+Dateien: `options.rs`, `controls.rs`, `options_tests.rs`, `controls_tests.rs`; `pending.rs` ohne `new_options`. Abweichungen: keine über die Vorgaben hinaus; Tabellen-Tests tragen `allow(clippy::too_many_lines)`.
+`task check:diff`: Rust-Test-Stufe rot nur durch `tests/still.rs` (auch auf `main` rot, siehe RU9.1).
+
+### Für den Hauptrechner
+- Leichte Test-Lücken (Review): `options_open_controls` prüft nur `next.is_some()` statt des Typs; `controls_switch_profiles` prüft nach dem ersten Wechsel nicht einzeln, was die Session bekam (am Ende zählt `settings.len() == 3`).

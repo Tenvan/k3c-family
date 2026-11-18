@@ -51,9 +51,6 @@ pub fn new_pause(_m: &Shared) -> PendingScreen {
 pub fn new_saves(_m: &Shared) -> PendingScreen {
     unimplemented!("RU12: new_saves")
 }
-pub fn new_options(_m: &Shared, _dim: bool) -> PendingScreen {
-    unimplemented!("RU9.5: new_options")
-}
 pub fn new_world_pick(_m: &Shared, _d: DeviceID) -> PendingScreen {
     unimplemented!("RU12: new_world_pick")
 }
