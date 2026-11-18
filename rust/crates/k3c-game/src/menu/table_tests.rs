@@ -1,10 +1,12 @@
-//! Tests aus `native/k3c-game/menu/table_test.go`. `licenses_page` wartet auf RU12.3 (Lizenzliste und `LicenseText`),
-//! `main_shows_version` und `main_first_draw_after_leave` stehen seit RU9.4 in `main_screen_tests.rs`.
+//! Tests aus `native/k3c-game/menu/table_test.go`. `main_shows_version` und `main_first_draw_after_leave` stehen seit RU9.4 in `main_screen_tests.rs`.
 
 use super::layout::geom_of;
-use super::new_shared;
-use super::table::{TableKind, new_keys, table_of};
-use super::testutil::{FakeSession, KEYS1, PAD1, has_cue, press};
+use super::licenses::{license_text, licenses};
+use super::main_screen::MAIN_LICENSES;
+use super::table::{TableKind, new_keys, new_licenses, table_of};
+use super::testutil::{FakeSession, KEYS1, PAD1, has_cue, new_menus, press, step_through, version_guard};
+use super::texts::{TextKey, tr};
+use super::{new_set, new_shared};
 use crate::view::cell::rect;
 use crate::view::frame::CueKind;
 use crate::view::input::{Action, DeviceInput, Input};
@@ -75,8 +77,48 @@ fn keys_page() {
 
 /// Lizenz-Seite (B-808 AC-01): nennt Ebitengine, die Schrift (Go Regular) und Audio; die Lizenzdatei kommt aus derselben Liste.
 #[test]
-#[ignore = "wartet auf RU12"]
-fn licenses_page() {}
+fn licenses_page() {
+    let _g = version_guard();
+    let m = new_menus();
+    for lang in ["de", "en"] {
+        let sc = new_licenses(&m);
+        sc.fill(lang);
+        let tb = sc.tb.borrow();
+        let text: String = tb.rows.iter().map(|r| r.join(" ") + "\n").collect();
+        for want in [
+            "Ebitengine",
+            "Go Regular",
+            &tr(lang, TextKey::LicFont),
+            &tr(lang, TextKey::LicAudio),
+            "go-mp3",
+            "CC0",
+        ] {
+            assert!(text.contains(want), "{lang}: Lizenz-Seite ohne {want:?}:\n{text}");
+        }
+    }
+    let file = license_text();
+    for l in licenses() {
+        let line = format!("{} – {} – {}", l.work, l.holder, l.license);
+        assert!(file.contains(&line), "Lizenzdatei ohne {}", l.work);
+    }
+    // Hauptmenü › Lizenzen (über Testing, Entwickler-Build)
+    let mut set = new_set(None, None);
+    let mut main = set.main_screen();
+    let down = press(PAD1, &[Action::Down]);
+    let ins = [
+        down.clone(),
+        down.clone(),
+        down.clone(),
+        down,
+        press(PAD1, &[Action::Confirm]),
+    ];
+    let st = step_through(&mut main, &mut FakeSession::default(), &ins);
+    assert!(
+        st.kind == StepKind::Push && st.next.is_some() && main.sel == MAIN_LICENSES,
+        "Hauptmenü › Lizenzen: {:?}",
+        st.kind
+    );
+}
 
 /// Die Tafel liegt im Fenster unter dem Titel und über der Meldung; die Zeilen überlappen nicht.
 #[test]

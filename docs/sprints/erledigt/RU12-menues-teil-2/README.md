@@ -1,6 +1,6 @@
 # RU12 · CLI · Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -89,10 +89,10 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU12.1 | `RU12.1-menu-saves-worldpick-pause.md` | Umsetzung | autonom | offen |
-| RU12.2 | `RU12.2-menu-padtest.md` | Umsetzung | autonom | offen |
-| RU12.3 | `RU12.3-menu-testing-licenses.md` | Umsetzung | autonom | offen |
-| RU12.4 | `RU12.4-review.md` | Review | autonom | offen |
+| RU12.1 | `RU12.1-menu-saves-worldpick-pause.md` | Umsetzung | autonom | fertig |
+| RU12.2 | `RU12.2-menu-padtest.md` | Umsetzung | autonom | fertig |
+| RU12.3 | `RU12.3-menu-testing-licenses.md` | Umsetzung | autonom | fertig |
+| RU12.4 | `RU12.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -100,6 +100,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 (RU12.1: `PlaceholderSession`, Liste und Weltwahl nur über `view::Session`), AC-02 (RU12.1–12.3: Pause, Pad-Test, Testing je Spieler mit zwei Geräten, B/Esc zurück je Test), AC-03 (79 von 81 Go-Tests unter gleichem Namen, `Move` → `move_cases`, `WorldPickTwoPlayersAndNoAllocs` → `world_pick_two_players` ohne Allokationsprüfung) geprüft: `cargo test -p k3c-game --lib menu` 127 grün, kein `ignore`, kein `pending.rs`, kein `unimplemented`, clippy sauber, Dateien ≤ 400 Zeilen, `native/`, `engine/`, `view/` und Golden unverändert; `task check` grün (1938), `task check:go` Tests grün, `golangci-lint` lokal nicht installiert. Reviews k3c-hud/k3c-reviewer ohne schwere Befunde. Abweichungen zu Go: Ortszeit mit Versatz, Pad-Name ohne SDL-Kennung/rohe Tasten, kein Allokations-Test, Lizenz-Liste wörtlich, Starter über `Menus` statt Session. Abnahme-Ticket (Sim, Balance, Gen; Sichtprüfung am PC) legt der Hauptrechner an (Second Worker darf kein `plan_create`); bekannte rote Punkte auf main: rust-fmt aus #722, `tests/still.rs`.

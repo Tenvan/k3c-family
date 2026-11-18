@@ -102,7 +102,7 @@ impl Page {
 /// Painter zeichnet Seiten: Rechtecke über `Canvas::rect`, Text über die Schrift (die der Library, sonst eine eigene).
 pub struct Painter {
     /// eigene Schrift, wenn es keine Library gibt
-    font: Option<Font>,
+    pub font: Option<Font>,
     /// Illustrationen der Karten (B-818); `None` = nur Text
     pub lib: Option<Rc<RefCell<Library>>>,
 }
