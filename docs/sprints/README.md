@@ -454,3 +454,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | `erledigt/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | `erledigt/RU29-dev-werkzeuge-im-spiel/` |
 | RU24 | Raum Teil 2 und Spielstand-Format | `erledigt/RU24-raum-teil-2-spielstand/` |
+| RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | `erledigt/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |

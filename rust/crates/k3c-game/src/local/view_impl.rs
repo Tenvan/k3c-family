@@ -1,5 +1,5 @@
 //! `view::session::Session` für die lokale Sitzung (Go: die exportierten Methoden von `session.go`); die Arbeit steht in
-//! `session.rs`, `settings.rs` und, bis RU27.2/RU50.1 sie liefern, in `pending.rs`.
+//! `session.rs`, `settings.rs`, `saves.rs` und `actions.rs`.
 
 use k3c_room::room::Options;
 

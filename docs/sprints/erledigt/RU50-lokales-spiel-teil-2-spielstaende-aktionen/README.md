@@ -1,6 +1,6 @@
 # RU50 · CLI · Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -61,11 +61,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU50.1 | `RU50.1-saves-actions-dev.md` | Umsetzung | autonom | offen |
-| RU50.2 | `RU50.2-review.md` | Umsetzung | autonom | offen |
+| RU50.1 | `RU50.1-saves-actions-dev.md` | Umsetzung | autonom | fertig |
+| RU50.2 | `RU50.2-review.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01 und AC-02 erfüllt (Nachweis in den Ergebnissen RU50.1 und RU50.2): zwei Spieler tauschen Geräte, lernen Skills und wählen Inseln je Slot, Dev-Rolle (Halt, Einzelschritt, Neu-Laden) läuft; Spielstände im Go-Format am Go-Ort, `testdata/saves/v9/familie.json` lässt sich laden; `local` 63 Tests grün, 0 ignoriert, `pending.rs` gelöscht; `task check` 1967 von 1968 grün (ein Paper-Test mit `EPERM` in `%TEMP%`, einzeln grün), `check:go` Tests ok (`golangci-lint` lokal fehlt).
+Offen für den Hauptrechner: Welten-Ordner (`K3C_WORLDS_DIR` nur mit Namen `worlds`, Änderung in `k3c-room`), `dev()` verwirft die Ablehnungsursache, `set_sessions` nicht verdrahtet, Speichern im Frame (`InlineWriter`, Messung RU39).
