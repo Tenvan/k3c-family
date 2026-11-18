@@ -154,9 +154,36 @@ fn island_carry_danger() {
 
 /// Go: `TestIslandCarryNoIslandUnchanged`: Ohne Insel gilt kein Maximum (`carry` ohne `carry_to_stock`).
 #[test]
-#[ignore = "wartet auf RU18 (create_world)"]
 fn island_carry_no_island_unchanged() {
-    unimplemented!("RU18: create_world, carry (Tragen ohne Insel)")
+    use crate::unit::step_peasant;
+    use crate::world::testutil::new_world;
+    use crate::world::{Options, vals};
+    let mut w = new_world(
+        0,
+        "trag-d",
+        Options {
+            cycle_speed: super::testutil::ISLAND_SPEED,
+            ..Options::default()
+        },
+    );
+    w.stock.wood = 5000; // kein Maximum
+    let hub = w.hub_x;
+    let ti = carrier(&mut w, hub + 3.0, 40, false);
+    let v = vals(&w);
+    // Go: `runCarry` (`carry`); der Auftrag `carry` läuft in `step_peasant` über `carry`
+    for _ in 0..500 {
+        if w.troops[ti].job.is_none() {
+            break;
+        }
+        w.events.clear();
+        step_peasant(&mut w, &v, ti, None, super::testutil::DT);
+    }
+    assert!(
+        w.troops[ti].job.is_none() && w.stock.wood == 5040,
+        "ohne Insel: Job {:?}, Holz {}",
+        w.troops[ti].job,
+        w.stock.wood
+    );
 }
 
 /// Go: `TestIslandCarryDeterministic`: Zwei Läufe ergeben dieselben Ereignisse.
@@ -186,9 +213,55 @@ fn island_carry_deterministic() {
 
 /// Go: `TestIslandFullCarrierStillBuildsAndKeepsMaterial` (Review SP13.4): Ein wartender Träger baut und behält sein Material.
 #[test]
-#[ignore = "wartet auf RU18 (each_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn island_full_carrier_still_builds_and_keeps_material() {
-    unimplemented!("RU18: each_site (build_job), step_peasant im Bau")
+    use crate::unit::step_peasant;
+    let data = test_data();
+    let mut isl = must_island(&data, "trag-c", &[0]);
+    isl.stock.wood = 300; // voll
+    let hub = isl.stages[0].hub_x;
+    carrier(&mut isl.stages[0], hub, 10, true);
+    let own = isl.stages[0].troops.pop().expect("Träger");
+    isl.stages[0].troops = vec![own];
+    let v = values(&isl.stages[0]);
+    let si = isl.stages[0]
+        .sites
+        .iter()
+        .position(|s| s.kind == "wall")
+        .expect("Mauer");
+    isl.stages[0].sites[si].state = "waitingWorker".into();
+    for _ in 0..2000 {
+        isl.stages[0].cycle.phase = "day".into();
+        isl.stages[0].enemies.clear();
+        on_stage(&mut isl, &data, 0, |w, r| step_peasant(w, &v, 0, Some(r), DT));
+        if isl.stages[0].sites[si].state == "built" {
+            break;
+        }
+    }
+    assert_eq!(
+        isl.stages[0].sites[si].state, "built",
+        "der wartende Träger muss den Bauplatz bauen"
+    );
+    on_stage(&mut isl, &data, 0, |w, r| step_peasant(w, &v, 0, Some(r), DT));
+    let job = isl.stages[0].troops[0].job.clone();
+    assert!(
+        job.as_ref().is_some_and(|j| j.r#type == "carry" && j.amount == 10),
+        "danach trägt er das behaltene Material weiter: {job:?}"
+    );
+    isl.stock.wood = 0; // Platz
+    for _ in 0..2000 {
+        if isl.stages[0].troops[0].job.is_none() {
+            break;
+        }
+        isl.stages[0].events.clear();
+        on_stage(&mut isl, &data, 0, |w, r| step_peasant(w, &v, 0, Some(r), DT));
+    }
+    assert!(
+        isl.stages[0].troops[0].job.is_none() && isl.stock.wood == 10,
+        "Abgabe nach dem Bau: Job {:?}, Holz {}",
+        isl.stages[0].troops[0].job,
+        isl.stock.wood
+    );
 }
 
 /// Go: `TestIslandFindJobSkipsFullResource`: Ein volles Holzlager vergibt keine Sammelaufträge für Holz (`find_job` mit
@@ -239,7 +312,32 @@ fn island_find_job_skips_full_resource() {
 
 /// Go: `TestIslandFullCarrierDoesNotFetchBow`: Ein wartender Träger holt keinen Bogen.
 #[test]
-#[ignore = "wartet auf RU18 (step_peasant)"]
+#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn island_full_carrier_does_not_fetch_bow() {
-    unimplemented!("RU18: step_peasant, bowyer")
+    use crate::unit::step_peasant;
+    let data = test_data();
+    let mut isl = must_island(&data, "trag-e", &[0]);
+    isl.stock.wood = 300;
+    let hub = isl.stages[0].hub_x;
+    carrier(&mut isl.stages[0], hub, 10, true);
+    let own = isl.stages[0].troops.pop().expect("Träger");
+    isl.stages[0].troops = vec![own];
+    for s in &mut isl.stages[0].sites {
+        if s.kind == "bowyer" {
+            s.state = "built".into();
+            s.bows = 1;
+        }
+    }
+    let v = values(&isl.stages[0]);
+    for _ in 0..30 {
+        on_stage(&mut isl, &data, 0, |w, r| step_peasant(w, &v, 0, Some(r), DT));
+    }
+    let t = &isl.stages[0].troops[0];
+    assert!(
+        t.job.as_ref().is_some_and(|j| j.r#type == "carry") && t.kind == "peasant" && t.carried.is_none(),
+        "wartender Träger bleibt Träger: Kind {}, Job {:?}, carried {:?}",
+        t.kind,
+        t.job,
+        t.carried
+    );
 }

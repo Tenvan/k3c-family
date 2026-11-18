@@ -5,9 +5,8 @@
 use std::collections::BTreeMap;
 
 use k3c_data::Data;
-use k3c_data::monarch::SkillEffect;
 
-use super::{Player, World};
+use super::World;
 use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
@@ -31,15 +30,7 @@ pub fn hit_event(_w: &mut World, _target: &str, _id: i64, _x: f64, _damage: f64)
     unimplemented!("RU19: hit_event")
 }
 
-/// Go: `troopDamage` (monarch_passives.go).
-pub fn troop_damage(_w: &World, _ti: usize, _damage: f64) -> f64 {
-    unimplemented!("RU18: troop_damage")
-}
-
-/// Go: `eachPassive` (monarch_passives.go); `f` bekommt den Besitzer und den Effekt.
-pub fn each_passive(_w: &World, _f: &mut dyn FnMut(&Player, &SkillEffect)) {
-    unimplemented!("RU18: each_passive")
-}
+pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
 /// Go: `protectedNight` (World-Methode, Nacht-Schutz der Gebäude).
 pub fn protected_night(_w: &World) -> bool {

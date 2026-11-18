@@ -65,17 +65,75 @@ fn ohne_planung_keine_ruine() {
 
 /// Die Ruine wirkt wie ein gebautes Gebäude ihrer Art: Kaserne → Truppenlimit, Lager → Kapazität und Abgabestelle.
 #[test]
-#[ignore = "wartet auf RU18 (Kapazität)"]
+#[ignore = "wartet auf RU19 (decode_world_story: fixture_island)"]
 fn ruine_wirkt_wie_gebaeude() {
-    unimplemented!("RU18: Kapazität und Vorrat der Insel (Go: capacity, isl.Stock) mit IslandRef")
+    use super::barracks::troop_limit;
+    use crate::island::storage::{capacity, deposit_point};
+    let (mut isl, data) = fixture_island();
+    let (mut isl0, _) = ruin_island(vec![]);
+    let v = vals(&isl.stages[0]);
+    let per = v.buildings["barracks"].troop_limit.per_building;
+    let got = troop_limit(&isl.stages[0]) - troop_limit(&isl0.stages[0]);
+    assert_eq!(got, per, "Kaserne als Ruine: Truppenlimit +{got}, erwartet +{per}");
+    let r = isl.stage_ref(0, &data.difficulty);
+    let r0 = isl0.stage_ref(0, &data.difficulty);
+    let c = capacity(&isl.stages[0], &v, Some(&r)).unwrap_or(0);
+    let c0 = capacity(&isl0.stages[0], &v, Some(&r0)).unwrap_or(0);
+    assert_eq!(
+        c - c0,
+        v.economy.storage.per_storage,
+        "Lager als Ruine: Kapazität +{}",
+        c - c0
+    );
+    assert_eq!(isl.stock, isl0.stock, "Lager als Ruine ändert den Bestand");
+    let w = &isl.stages[0];
+    let sx = w.sites[ruin_of(w, "storage")].x;
+    assert_eq!(deposit_point(w, sx), sx, "das Lager als Ruine ist keine Abgabestelle");
 }
 
 /// Hub-neutral: Hub-Stufe, Bezahlbarkeit und Hub-Stufe der Hub-Plätze und Mauerlinien sind wie ohne Ruinen; der Sieg „alles
 /// gebaut“ zählt Ruinen nicht.
 #[test]
-#[ignore = "wartet auf RU18 (site_payable)"]
+#[ignore = "wartet auf RU19 (decode_world_story: fixture_island)"]
 fn ruine_ist_hub_neutral() {
-    unimplemented!("RU18: site_payable, EconomyOf(w).HubUpgrade (RU18.3)")
+    use crate::economy::{economy_of, site_payable};
+    use crate::hub::site_hub_level;
+    use crate::island::victory::all_built;
+    use crate::world::lines::{level_site, line_open};
+    let (mut isl, _) = fixture_island();
+    let (isl0, _) = ruin_island(vec![]);
+    let (w, w0) = (&isl.stages[0], &isl0.stages[0]);
+    let v = vals(w);
+    let (e, e0) = (economy_of(w, &v, None), economy_of(w0, &v, None));
+    assert!(
+        w.hub_level == 1 && e.hub_upgrade.is_some() && e.hub_upgrade == e0.hub_upgrade,
+        "Hub-Stufe/Hub-Ausbau mit Ruinen"
+    );
+    for s in w.sites.iter().filter(|s| !s.ruin && level_site(w, s).is_none()) {
+        let i0 = site_at(w0, &s.kind, s.x).unwrap_or_else(|| panic!("Platz {}@{} fehlt ohne Planung", s.kind, s.x));
+        let s0 = &w0.sites[i0];
+        assert!(
+            site_payable(w, &v, None, s) == site_payable(w0, &v, None, s0)
+                && site_hub_level(w, s) == site_hub_level(w0, s0)
+                && line_open(w, s) == line_open(w0, s0),
+            "Platz {}@{} verhält sich mit Ruinen anders",
+            s.kind,
+            s.x
+        );
+    }
+    // Sieg „alles gebaut“: eine Ruine ist ein Bauplatz wie jeder andere, erst ihr Wiederaufbau zählt.
+    for s in &mut isl.stages[0].sites {
+        s.state = "built".into();
+    }
+    assert!(all_built(&isl), "alles gebaut inklusive Ruine muss gewinnen");
+    let w = &mut isl.stages[0];
+    let si = ruin_of(w, "smithy");
+    let id = w.sites[si].id;
+    destroy_site(w, id);
+    assert!(
+        !all_built(&isl),
+        "eine zerstörte Ruine muss den Sieg „alles gebaut“ sperren"
+    );
 }
 
 /// Bauern reparieren die Ruine wie jedes beschädigte Gebäude, ohne Gold und Material.
@@ -147,17 +205,17 @@ fn ruine_zerstoert_und_wiederaufbau_ab_hub_stufe_der_art() {
 
 /// Wiederaufbau wie jeder Bau (bezahlen, Bauer baut): volle HP der Art, die Kennung bleibt.
 #[test]
-#[ignore = "wartet auf RU18 (pay_site)"]
+#[ignore = "wartet auf RU19 (decode_world_story: fixture_island; Rumpf nicht portiert, `build` ist in unit privat)"]
 fn ruine_wiederaufbau_behaelt_kennung() {
-    unimplemented!("RU18: pay_site, build (RU18.2, RU18.3)")
+    unimplemented!("RU19: fixture_island, unit::build (pub(crate) machen), pay_site")
 }
 
 /// Burgfall (castleLosses): Ruinen kehren in den Ausgangszustand zurück, auch nach Zerstörung oder voller Reparatur;
 /// Hub-Plätze werden leer.
 #[test]
-#[ignore = "wartet auf RU18 (castle_losses)"]
+#[ignore = "wartet auf RU19 (step_island, decode_world_story: fixture_island; Rumpf nicht portiert)"]
 fn burgfall_setzt_ruinen_zurueck() {
-    unimplemented!("RU18: castle_losses und step_island mit Burgfall (RU18.5)")
+    unimplemented!("RU19: step_island mit Burgfall, fixture_island")
 }
 
 /// WZ14.8 (Review-Befund S1, L2): Ausbau der Vorschau und „alles bauen“ lassen eine Ruine beschädigt (HP < MaxHP, MaxHP der
@@ -170,25 +228,25 @@ fn ruine_bleibt_nach_ausbau_beschaedigt() {
 
 /// Ruinen im Spielstand (kind@x, keine neue Version) und Vorrang der Mauerlinien beim Bezahlen (WZ14.3, B-468/AC-03).
 #[test]
-#[ignore = "wartet auf RU18 (Insel)"]
+#[ignore = "wartet auf RU19 (decode_world_story: fixture_island, Insel-Spielstand; Rumpf nicht portiert)"]
 fn ruine_im_spielstand() {
-    unimplemented!("RU18: Insel-Spielstand (to_save, parse_island_save, from_island_save_in) mit Zahlplatz")
+    unimplemented!("RU19: fixture_island, save_json, load_island")
 }
 
 /// Die Planung steht im Stand (B-489): Ändert sich die Planung der Welt danach, lädt der Stand seine Stufe so, wie er sie
 /// gebaut hat; die Ruinen und ihre Plätze bleiben (vorher verlor der Stand sie, WZ24.2).
 #[test]
-#[ignore = "wartet auf RU18 (Insel)"]
+#[ignore = "wartet auf RU19 (decode_world_story: fixture_island, Insel-Spielstand; Rumpf nicht portiert)"]
 fn ruine_im_spielstand_bleibt_bei_geaenderter_welt_planung() {
-    unimplemented!("RU18: Insel-Spielstand (to_save, parse_island_save, from_island_save_in) mit Zahlplatz")
+    unimplemented!("RU19: fixture_island, save_json, load_island")
 }
 
 /// Vorrang beim Bezahlen: Liegt eine Ruine in Zahl-Reichweite eines unbezahlten Bauplatzes der Mauerlinien, gehen die Münzen
 /// an den Linien-Platz, nicht an Produkt oder Ausbau der Ruine; genau auf wall.x und knapp daneben.
 #[test]
-#[ignore = "wartet auf RU18 (find_pay_target)"]
+#[ignore = "wartet auf RU19 (decode_world_story: fixture_island; Rumpf nicht portiert)"]
 fn linien_platz_vor_ruine_beim_bezahlen() {
-    unimplemented!("RU18: find_pay_target, pay_one_coin (RU18.2)")
+    unimplemented!("RU19: fixture_island, find_pay_target, pay_one_coin")
 }
 
 /// Eigener Test (ohne Go-Gegenstück, läuft ohne `create_world`): `is_ruin` kennt nur Ruinen der Planung, `ruin_site` baut

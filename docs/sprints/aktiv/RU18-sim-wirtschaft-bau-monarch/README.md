@@ -101,7 +101,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU18.2 | `RU18.2-economy-pay-view.md` | Umsetzung | autonom | fertig |
 | RU18.3 | `RU18.3-hub-level-validate.md` | Umsetzung | autonom | fertig |
 | RU18.4 | `RU18.4-merchant-monarch-data.md` | Umsetzung | autonom | fertig |
-| RU18.5 | `RU18.5-monarch-passives-skills.md` | Umsetzung | autonom | offen |
+| RU18.5 | `RU18.5-monarch-passives-skills.md` | Umsetzung | autonom | fertig |
 | RU18.6 | `RU18.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -13,6 +13,7 @@ pub mod merchant;
 pub mod monarch;
 pub mod pending;
 pub mod portal;
+pub mod skills;
 pub mod state;
 pub mod unit;
 pub mod world;

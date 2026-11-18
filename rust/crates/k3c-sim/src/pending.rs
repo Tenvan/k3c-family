@@ -5,7 +5,7 @@
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
-use crate::state::{Event, Projectile, World, WorldValues};
+use crate::state::{Event, Projectile, World};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
@@ -30,10 +30,7 @@ pub fn merchant_raid_end(_w: &mut World, _protected: bool) {
     unimplemented!("RU19: merchant_raid_end")
 }
 
-/// Go: `damageMultOf` (monarch_passives.go): Faktor auf Schlag- und Zauberschaden des Spielers `pi` (Blessings).
-pub fn damage_mult_of(_w: &World, _v: &WorldValues, _pi: usize, _spell: bool) -> f64 {
-    unimplemented!("RU18: damage_mult_of (RU18.5)")
-}
+pub use crate::monarch::{damage_mult_of, frost_armor_hit}; // Von RU18.5 portiert (monarch_passives.go)
 
 /// Go: `moonDamage` (events_moon.go).
 pub fn moon_damage(_w: &World, _damage: f64) -> f64 {
@@ -53,11 +50,6 @@ pub fn unit_x(_x: f64) -> f64 {
 /// Go: `arrowEvent` (events.go): Ereignis zum Pfeil `p` (noch nicht in `w.projectiles`) vom Schützen `from`.
 pub fn arrow_event(_w: &mut World, _p: &Projectile, _from: i64) {
     unimplemented!("RU19: arrow_event")
-}
-
-/// Go: `frostArmorHit` (monarch_passives.go): Frost Armor des Spielers `pi` gegen den Gegner `ei`.
-pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
-    unimplemented!("RU18: frost_armor_hit")
 }
 
 /// Go: `World.pure` (dev.go): reiner Stressmodus der Insel.

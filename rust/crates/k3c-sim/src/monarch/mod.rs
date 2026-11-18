@@ -5,29 +5,41 @@
 //! Zustandsmodell: Go-Zeiger `p *Player` sind `pi: usize`, Gos `w.island` ist `Option<&mut IslandRef>`. Der Pool einer Insel
 //! steht in `IslandRef::skill_pool` und wird in jeder Stufe nach `World::skill_points` gespiegelt (`add_pool_points`,
 //! `Island::put_stage_ref`); darum liest `pool_of` immer `w.skill_points`, in einer Insel wie ohne sie. Fehler sind
-//! `Result<(), String>` mit dem Text von Go. `mount.rs` und `passives.rs` folgen in RU18.5.
+//! `Result<(), String>` mit dem Text von Go. Reittier und Passive stehen in `mount.rs` und `passives.rs` (RU18.5).
 
 use serde_json::json;
 
 use crate::economy::nearest;
-use crate::pending::{damage_mult_of, emit, unit_x};
+use crate::pending::{emit, unit_x};
 use crate::state::common::{apply_damage, event};
 use crate::state::island_ref::IslandRef;
 use crate::state::{PlayerCommand, World, WorldValues};
 use crate::world::vals;
 
 pub mod data;
+pub mod mount;
+pub mod passives;
 
 #[cfg(test)]
 mod can_tests;
 #[cfg(test)]
 mod mod_tests;
 #[cfg(test)]
+mod mount_tests;
+#[cfg(test)]
+mod passives_own_tests;
+#[cfg(test)]
+mod passives_tests;
+#[cfg(test)]
 mod presets_tests;
 #[cfg(test)]
 mod testutil;
 
 pub use data::{check_presets, new_skill_table, skill_by_id, skill_ref};
+pub use mount::mount_of;
+pub use passives::{
+    cooldown_mult_of, damage_mult_of, each_passive, frost_armor_hit, speed_of, step_passives, troop_damage,
+};
 
 /// Go: `stepAttack`: Schlag (Taste X) auf den nächsten lebenden Gegner in Reichweite, beide Seiten. Ohne Gegner gilt dieselbe
 /// Abklingzeit, `strike` meldet es mit `hit` false (B-321). Nur für lebende Monarchen aufgerufen.
