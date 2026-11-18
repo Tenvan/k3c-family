@@ -346,6 +346,9 @@ Ein zweiter Rechner mit kleinerem Account arbeitet einfache autonome Sprints ab;
 - **Start je Session:** `git fetch`, Branch `sprint/<präfix>` von `origin/sprint/<präfix>` oder `origin/main`, nächste offene Session
   mit `Lane: zweit` und erledigten Abhängigkeiten (`plan_list {projekt: "RSU", status: "aktiv"}`). Ein Commit je Session, Push nach jeder Session.
 - **Abschluss:** Review-Session des Sprints öffnet den PR gegen `main` und mergt ihn nach grüner Prüfung (`gh pr merge --squash --auto`).
+- **Sim, Balancing und Messläufe (🧑 2026-11-18):** Die Sperre gilt nur für den Hauptrechner. Der Second Worker hat die bessere Hardware
+  (Grafikkarte, CPU, Speicher) und darf `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` in Sessions mit `Lane: zweit` fahren; die
+  langen Läufe gehören dorthin. Läufe nur über `sim_test`, blockierend gewartet. Sim-Code ändert er nur im eigenen Worktree (B-925).
 - **Keine Tickets und Sprints anlegen:** Befunde schreibt der Second Worker ins Ergebnis seiner Session (Abschnitt „Für den
   Hauptrechner“); der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
 - **Gemeinsame Dateien** (`Cargo.lock`, `lib.rs`-Modulzeilen, Indizes): vor dem Push `git merge origin/main`; Index-Konflikte über `plan_index` lösen.
