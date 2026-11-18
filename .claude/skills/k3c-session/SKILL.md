@@ -3,6 +3,9 @@ name: k3c-session
 description: Schlanker Ablauf für eine K3C-Session (Sprint-Session umsetzen, Review-Session, Planungs-Session) mit plan_next, parallelen Agenten, gezielten Tests, einem check:diff und Review nur bei Risiko. Use when Ralf "nächste Session", "weiter mit <Sprint>", "Session <ID> umsetzen", "Review-Session" oder "autonom weiterarbeiten" sagt, oder wenn eine Nachricht nur aus der Kurzform eines Workbench-Buttons besteht: "Session <ID>", "Sessions <ID>, <ID>", "Sprint <ID>", "Projekt <Kürzel>" (B-639). Nicht für reine Fragen oder Ticket-Anlage ohne Umsetzung.
 ---
 
+> Schreiben nur im Repo: kein Temp, `%TEMP%`, `/tmp` oder Scratchpad; temporäre Dateien und Worktrees in `.work/`, nach Gebrauch löschen (CLAUDE.md).
+
+
 # K3C-Session
 
 Regelquelle ist `docs/arbeitsweise.md` (Autonomer Ablauf, Tempo im Lauf). Dieser Skill ist die Kurzfassung für den Lauf;
