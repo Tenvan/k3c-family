@@ -1,6 +1,7 @@
 //! Simulation: Port von engine/sim (deterministisch, bitgleich zu Go).
 
 pub mod boss;
+pub mod combat;
 pub mod enemies;
 pub mod pending;
 pub mod state;

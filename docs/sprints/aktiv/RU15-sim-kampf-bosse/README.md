@@ -96,7 +96,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU15.1 | `RU15.1-boss-abilities-data.md` | Umsetzung | autonom | fertig |
-| RU15.2 | `RU15.2-boss-endboss-combat.md` | Umsetzung | autonom | offen |
+| RU15.2 | `RU15.2-boss-endboss-combat.md` | Umsetzung | autonom | fertig |
 | RU15.3 | `RU15.3-combat-data-squad.md` | Umsetzung | autonom | offen |
 | RU15.4 | `RU15.4-crown-portal.md` | Umsetzung | autonom | offen |
 | RU15.5 | `RU15.5-review.md` | Review | autonom | offen |

@@ -103,16 +103,6 @@ pub fn is_spell_tower(_w: &World, _s: &Site) -> bool {
     unimplemented!("RU18: is_spell_tower")
 }
 
-/// Go: `squadPost` (combat.go): Posten hinter dem Banner.
-pub fn squad_post(_w: &World, _t: &Troop) -> Option<f64> {
-    unimplemented!("RU15: squad_post")
-}
-
-/// Go: `escortPost` (unit_escort.go): liest den Endboss-Kampf der Insel; den Ort liefert `unit::escort::escort_post_at`.
-pub fn escort_post(_w: &World, _t: &Troop) -> Option<f64> {
-    unimplemented!("RU15: escort_post")
-}
-
 /// Go: `repair` (building_repair.go): der Bauer `ti` repariert.
 pub fn repair(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
     unimplemented!("RU18: repair")
@@ -201,16 +191,6 @@ pub fn fighters(_w: &World) -> i64 {
 /// Go: `troopLimit` (building_barracks.go): das Truppenlimit der Kaserne.
 pub fn troop_limit(_w: &World) -> i64 {
     unimplemented!("RU18: troop_limit")
-}
-
-/// Go: `combatSpotNear` (combat.go): Liegt `x` an einem Kampf-Zahlziel?
-pub fn combat_spot_near(_w: &World, _x: f64) -> bool {
-    unimplemented!("RU15: combat_spot_near")
-}
-
-/// Go: `leaveSquad` (combat.go): die Truppe verlässt ihren Trupp.
-pub fn leave_squad(_w: &mut World, _ti: usize) {
-    unimplemented!("RU15: leave_squad")
 }
 
 /// Go: `weaponsInFlight` (building_barracks.go): Waffen, die andere Bürger gerade holen.

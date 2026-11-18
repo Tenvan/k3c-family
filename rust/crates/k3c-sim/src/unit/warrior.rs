@@ -12,18 +12,17 @@ use std::collections::BTreeMap;
 use serde_json::json;
 
 use super::econ::{can_afford, clear_pending, nearest, spend};
+use super::escort::escort_post;
 use super::flee::enemy_within;
 use super::hammer::{HAMMER_KIND, drop_hammer};
 use super::jobs::{make_fighter, release_job};
 use super::professions::{craft_seconds, near_offer};
 use super::walk_to;
+use crate::combat::{combat_spot_near, leave_squad, squad_post};
 use crate::enemies::BODY;
 use crate::state::common::{apply_damage, cause_or_other, event, is_dangerous, outer_wall};
 use crate::state::island_ref::{IslandRef, cheap};
-use crate::state::pending::{
-    combat_spot_near, emit, escort_post, fighters, leave_squad, outpost, squad_post, troop_limit, unit_x,
-    weapons_in_flight,
-};
+use crate::state::pending::{emit, fighters, outpost, troop_limit, unit_x, weapons_in_flight};
 use crate::state::{ItemDrop, Job, World, WorldValues};
 use k3c_data::troops::TroopData;
 
@@ -65,7 +64,7 @@ pub fn sword_payable(w: &World, v: &WorldValues, isl: Option<&IslandRef>, si: us
 pub fn near_full_target(w: &World, v: &WorldValues, x: f64) -> bool {
     near_offer(w, v, x)
         || sword_at(w, v, None, x, false).is_some()
-        || combat_spot_near(w, x)
+        || combat_spot_near(w, v, x)
         || nearest(&w.sites, |s| s.x, x, v.economy.pay_range_units, |_| true).is_some()
 }
 
@@ -315,12 +314,12 @@ pub fn warrior_post(w: &World, v: &WorldValues, side: f64) -> (f64, f64) {
 /// Go: `stepWarrior`: zum Posten, dann den nächsten Gegner in Reichweite schlagen. Gemessen wird wie bei Gegnern an
 /// einer Mauer (Reichweite + Körper + 0.1, `buildingTargets`), am Posten von der Sperre aus, sonst von der eigenen
 /// Position.
-pub fn step_warrior(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
+pub fn step_warrior(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti: usize, dt: f64) {
     let side = if w.troops[ti].anchor_x < w.hub_x { -1.0 } else { 1.0 };
     let (mut post, mut front) = warrior_post(w, v, side);
-    if let Some(ex) = escort_post(w, &w.troops[ti]) {
+    if let Some(ex) = escort_post(w, v, isl, &w.troops[ti]) {
         (post, front) = (ex, ex); // Begleitschutz: der Krieger geht zum Endboss (unit_escort.go)
-    } else if let Some(sx) = squad_post(w, &w.troops[ti]) {
+    } else if let Some(sx) = squad_post(w, v, &w.troops[ti]) {
         (post, front) = (sx, sx); // Angriff der Kampfvariante (combat.go)
     }
     let mut from = w.troops[ti].x;

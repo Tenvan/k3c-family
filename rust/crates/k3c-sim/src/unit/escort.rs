@@ -5,10 +5,10 @@
 //! in den Nahkampf. Der Begleitschutz rastet ein, weil ein Monarch dem Boss sonst allein entgegenrennt und fällt, bevor
 //! die Truppen ankommen; er endet mit dem Tod des Bosses. Kein rng.
 //!
-//! `escortCheck` und die Prüfung in `escortPost` lesen den Endboss-Kampf der Insel (`boss_endboss.go`, RU15.2); die
-//! Platzhalter `escort_check` und `escort_post` in `state/pending.rs` warten darauf. Hier steht, was ohne ihn rechnet:
-//! der Ort, an dem der Kämpfer den Boss angreift.
+//! `escortCheck` (`boss::endboss::escort_check`) und `escort_post` lesen den Endboss-Kampf der Insel (`EndbossFight`,
+//! RU15.2). Hier stehen `escort_post` und der Ort, an dem der Kämpfer den Boss angreift.
 
+use crate::state::island_ref::IslandRef;
 use crate::state::{Troop, World, WorldValues};
 
 /// Der Ort, an dem der Kämpfer `t` den Endboss bei `boss_x` angreift (Ende von Go `escortPost`, nach den Prüfungen
@@ -17,4 +17,16 @@ pub fn escort_post_at(w: &World, v: &WorldValues, t: &Troop, boss_x: f64) -> f64
     let side = if w.hub_x < boss_x { -1.0 } else { 1.0 };
     let range = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.range);
     boss_x + side * (range * 0.8).max(1.0)
+}
+
+/// Go: `escortPost`: der Ort, an dem der Kämpfer `t` den Endboss angreift; `None`, wenn kein Begleitschutz gilt (kein
+/// Kampf in dieser Stufe, Boss tot, `escortUnits` 0 oder noch nicht eingerastet).
+pub fn escort_post(w: &World, v: &WorldValues, isl: Option<&IslandRef>, t: &Troop) -> Option<f64> {
+    let f = isl?.endboss.as_ref().filter(|f| f.home == isl.map_or(0, |i| i.stage))?;
+    let boss = w.enemies.iter().find(|e| e.id == f.boss_id).or(f.parked.as_ref())?; // nach einem Burgfall liegt der Boss geparkt im Kampf
+    let b = w.lair_boss.as_ref()?;
+    if boss.hp <= 0.0 || b.lair.escort_units <= 0.0 || !f.escort {
+        return None;
+    }
+    Some(escort_post_at(w, v, t, boss.x))
 }

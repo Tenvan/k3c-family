@@ -1,7 +1,7 @@
 //! Begleitschutz (Go: `unit_escort_test.go`, B-647 Weg A): Ist ein Monarch beim kämpfenden Endboss, marschieren die
 //! Kämpfer der Stufe zu ihm und treffen ihn; ohne Monarch in der Nähe bleiben sie auf ihrem Posten.
 
-use super::escort::escort_post_at;
+use super::escort::{escort_post, escort_post_at};
 use crate::enemies::testutil::*;
 use crate::state::Troop;
 
@@ -36,14 +36,15 @@ fn escort_post_at_liegt_auf_der_seite_des_hubs_in_reichweite() {
 }
 
 #[test]
-#[ignore = "wartet auf RU15 (Endboss-Kampf)"]
+#[ignore = "wartet auf RU10"] // der Bezug zur Insel (`IslandRef`) kommt mit dem Insel-Schritt (`None` hier ist Platzhalter)
 fn truppen_begleiten_den_monarchen_zum_endboss() {
     let (mut isl, lair) = end_island(1);
     let w = &mut isl.stages[0];
+    let v0 = w.vals.clone().expect("Wertesatz");
     let (archers, warriors) = unverwundbare_truppen(w);
     // Ohne Monarch am Boss: kein Begleitschutz (der Boss ist gar nicht erschienen).
     assert!(
-        crate::state::pending::escort_post(w, &w.troops[archers[0]]).is_none(),
+        escort_post(w, &v0, None, &w.troops[archers[0]]).is_none(),
         "Begleitschutz ohne Endboss"
     );
     w.players[0].x = lair - 10.0; // näher als triggerUnits: der Boss erscheint und der Begleitschutz rastet ein
@@ -70,12 +71,12 @@ fn truppen_begleiten_den_monarchen_zum_endboss() {
     w.players[0].x = w.hub_x;
     step(w, None, DT);
     assert!(
-        crate::state::pending::escort_post(w, &w.troops[archers[0]]).is_some(),
+        escort_post(w, &v0, None, &w.troops[archers[0]]).is_some(),
         "Begleitschutz hörte mit dem Monarchen auf"
     );
     w.enemies[boss].hp = 0.0;
     assert!(
-        crate::state::pending::escort_post(w, &w.troops[archers[0]]).is_none(),
+        escort_post(w, &v0, None, &w.troops[archers[0]]).is_none(),
         "Begleitschutz trotz totem Boss"
     );
 }

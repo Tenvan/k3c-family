@@ -28,6 +28,8 @@ pub struct IslandRef {
     pub defeated_bosses: Vec<String>,
     /// Der Endboss der Insel ist besiegt (Go: `Island.EndbossDefeated`, boss_endboss.go).
     pub endboss_defeated: bool,
+    /// Index dieser Stufe in der Insel (Go: der Zeigervergleich `isl.endboss.home != w`); setzt der Insel-Schritt (RU10).
+    pub stage: usize,
     /// Der laufende Kampf gegen den Endboss (Go: `Island.endboss`, boss_endboss.go).
     pub endboss: Option<EndbossFight>,
 }

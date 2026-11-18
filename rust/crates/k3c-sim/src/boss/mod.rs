@@ -199,6 +199,8 @@ mod abilities_tests;
 #[cfg(test)]
 mod data_tests;
 #[cfg(test)]
+mod endboss_tests;
+#[cfg(test)]
 mod real_tests;
 #[cfg(test)]
 mod tests;

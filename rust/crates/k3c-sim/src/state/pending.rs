@@ -13,9 +13,10 @@ use k3c_level::types::WallSite;
 
 use super::save::HubSave;
 use super::shared::WorldValues;
-use super::{Player, Site, Troop, World};
+use super::{Player, Site, World};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
+pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
 pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
 pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
@@ -135,11 +136,6 @@ pub fn site_hub_level(_w: &World, _s: &Site) -> i64 {
 /// Go: `levelSite` (world_lines.go): der verteilte Platz zu `s`; `None` für Plätze, die nicht aus `Layout.sites` stammen.
 pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
     unimplemented!("RU18: level_site")
-}
-
-/// Go: `isSoldier` (combat.go): Ist die Truppe ein Nahkämpfer, der einer Gruppe vorstehen kann?
-pub fn is_soldier(_t: &Troop) -> bool {
-    unimplemented!("RU15: is_soldier")
 }
 
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
