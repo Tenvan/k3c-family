@@ -59,7 +59,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
 | RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | aktiv |
 | RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | aktiv |
-| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
+| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | aktiv |
 | RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | aktiv |
 | RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | geplant |
 | RU24 | Raum Teil 2 und Spielstand-Format | geplant |
