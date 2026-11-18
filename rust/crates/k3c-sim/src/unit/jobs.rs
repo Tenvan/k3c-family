@@ -2,13 +2,15 @@
 //! abgeben, zum Kämpfer befördern.
 
 use super::warrior::weapon_to_fetch;
+use crate::island::storage::resource_full;
 use crate::state::common::{is_dangerous, is_worker};
-use crate::state::pending::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job, resource_full};
+use crate::state::island_ref::IslandRef;
+use crate::state::pending::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job};
 use crate::state::{Job, World, WorldValues};
 
 /// Go: `findJob`: Bogen holen, sonst nächsten wartenden Bauplatz, sonst (ohne Gefahr) die markierte Ressource nächst am
 /// Hub. Bei gleichem Abstand gewinnt das frühere Element, wie das stabile `sort(...)[0]` in TS.
-pub fn find_job(w: &mut World, v: &WorldValues, ti: usize) -> Option<Job> {
+pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRef>) -> Option<Job> {
     if let Some(j) = site_job(w, v, ti) {
         return Some(j);
     }
@@ -21,7 +23,9 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize) -> Option<Job> {
             continue;
         }
         let resource = gather_of(v, &n.kind).map_or("", |g| g.resource.as_str());
-        if !resource_full(w, resource) && best.is_none_or(|(_, bx)| (n.x - w.hub_x).abs() < (bx - w.hub_x).abs()) {
+        if !resource_full(w, v, isl, resource)
+            && best.is_none_or(|(_, bx)| (n.x - w.hub_x).abs() < (bx - w.hub_x).abs())
+        {
             best = Some((n.id, n.x));
         }
     }

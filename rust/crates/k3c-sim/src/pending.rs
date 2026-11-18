@@ -157,11 +157,6 @@ pub fn wander_radius(_w: &World, _ti: usize) -> f64 {
     unimplemented!("RU18: wander_radius")
 }
 
-/// Go: `carryToStock` (island_storage.go): Tragen in den Vorrat der Insel.
-pub fn carry_to_stock(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
-    unimplemented!("RU10: carry_to_stock")
-}
-
 /// Go: `armoredHP` (building_upgrades.go): HP der Figur `kind` mit der Rüstung des Hubs.
 pub fn armored_hp(_w: &World, _kind: &str) -> f64 {
     unimplemented!("RU18: armored_hp")

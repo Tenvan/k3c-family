@@ -55,7 +55,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU10 | SIM | RSU | Sim: Insel mit Stufen, Takt und Material-Vorrat | – | bereit | `geplant/RU10-sim-insel/` |
 | RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | bereit | `geplant/RU14-sim-welt-stufen-kampagne/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
 | RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
@@ -447,4 +446,5 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU11 | Sim: Einheiten und Gegner | `erledigt/RU11-sim-einheiten-gegner/` |
 | RU42 | Leitplanken für Leistung und Stabilität | `erledigt/RU42-leitplanken-leistung-stabilitaet/` |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | `erledigt/RU6-level-generator-rust/` |
+| RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | `erledigt/RU10-sim-insel/` |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |

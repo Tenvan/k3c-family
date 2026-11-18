@@ -24,14 +24,29 @@ pub struct IslandRef {
     pub per_extra_player: f64,
     /// Dev-Schalter `CheapBuild` der Insel (Go: `island.Dev.CheapBuild`, dev.go): Preise höchstens 1 je Posten.
     pub cheap_build: bool,
-    /// Besiegte Bosse in der Reihenfolge des Siegs (Go: `Island.DefeatedBosses`, boss.go); ein besiegter Boss kommt nie wieder.
-    pub defeated_bosses: Vec<String>,
-    /// Der Endboss der Insel ist besiegt (Go: `Island.EndbossDefeated`, boss_endboss.go).
-    pub endboss_defeated: bool,
-    /// Index dieser Stufe in der Insel (Go: der Zeigervergleich `isl.endboss.home != w`); setzt der Insel-Schritt (RU10).
+    /// Index der Stufe in der Insel (`Island::stage_ref`, RU10.1).
     pub stage: usize,
-    /// Der laufende Kampf gegen den Endboss (Go: `Island.endboss`, boss_endboss.go).
+    /// Niederlage-Modus `resources` der Insel (Go: `island.Options.Defeat == "resources"`, island_defeat.go).
+    pub defeat_resources: bool,
+    /// Besiegte Bosse der Insel (Go: `island.DefeatedBosses`); die Insel gibt sie für den Stufenschritt her
+    /// (`std::mem::take`) und bekommt sie in `put_stage_ref` zurück.
+    pub defeated_bosses: Vec<String>,
+    /// Der laufende Endboss-Kampf (Go: `island.endboss`), wie `defeated_bosses` herausgenommen.
     pub endboss: Option<EndbossFight>,
+    /// Der Endboss der Insel ist besiegt (Go: `island.EndbossDefeated`).
+    pub endboss_defeated: bool,
+    /// Die Stufe hat die Insel beendet (Go: `island.Over = true`, `game_over`); die Insel übernimmt es in `put_stage_ref`.
+    pub over: bool,
+    /// Gold-Verlust des Modus `resources`: Die Stufe hat ihren Teil schon halbiert, die Insel halbiert das Gold der Spieler
+    /// aller anderen Stufen in `put_stage_ref` (ein Stufenschritt erreicht sie nicht).
+    pub halve_other_gold: bool,
+    /// Zahl der Stufen der Insel (Go: `len(isl.Stages)`), für das Lager-Maximum (`island/storage.rs`, RU10.3).
+    pub stages: i64,
+    /// Gebaute Lager aller anderen Stufen (Go: `Kind == "storage" && State == "built"` über `isl.Stages` ohne diese Stufe);
+    /// die Lager der eigenen Stufe liest `capacity` live aus `w.sites`, die anderen Stufen rechnen nicht mit.
+    pub storages_elsewhere: i64,
+    /// Dev-Bonus des Lager- und Gold-Maximums (Go: `island.Dev.StockBonus`, `devMaxStock`).
+    pub stock_bonus: i64,
 }
 
 impl IslandRef {
