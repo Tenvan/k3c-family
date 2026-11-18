@@ -164,7 +164,6 @@ fn planung_gegen_chunk_anzahl() {
 
 /// Go: `TestInselMitChunkAnzahl`: Breite der Stufen nach Chunk-Anzahl (50 Units je Chunk bei Tiefe 0, 25 bei Tiefe 4).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn insel_mit_chunk_anzahl() {
     let data = test_data();
     let world = standard_world(&data);

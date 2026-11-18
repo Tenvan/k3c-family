@@ -175,7 +175,6 @@ fn own_preview_hub_level_fehler_ohne_create_world() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_passives)"]
 fn preview_welt_laeuft_weiter() {
     // Gleiche Eingaben → nach 120 Ticks dieselbe Welt, und der Zyklus läuft von der gesetzten Tageszeit aus weiter.
     let run = || {

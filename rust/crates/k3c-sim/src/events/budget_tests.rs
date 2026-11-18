@@ -11,7 +11,6 @@ use crate::world::testutil::DT;
 const EVENT_BUDGET_BYTES: f64 = 200.0;
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players); Messlauf, Abnahme-Ticket"]
 fn ereignis_budget_je_tick() {
     let data = test_data();
     let world = crate::island::testutil::standard_world(&data);

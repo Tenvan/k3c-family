@@ -17,5 +17,6 @@ pub mod pending;
 pub mod portal;
 pub mod skills;
 pub mod state;
+pub mod story;
 pub mod unit;
 pub mod world;

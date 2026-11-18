@@ -9,7 +9,6 @@ use crate::state::pending::values;
 const DT: f64 = 1.0 / 30.0;
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn dev_gold_faellt_und_wird_bis_zum_beutel_maximum_aufgehoben() {
     let (data, mut isl, index) = island_with_player("dev-gold");
     let max = values(&isl.stages[0]).economy.purse.max_gold;
@@ -25,7 +24,6 @@ fn dev_gold_faellt_und_wird_bis_zum_beutel_maximum_aufgehoben() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn dev_material_fuellt_den_vorrat_bis_zum_lager_maximum() {
     let (data, mut isl, index) = island_with_player("dev-stock");
     let d = &data.difficulty;
@@ -47,7 +45,6 @@ fn dev_material_fuellt_den_vorrat_bis_zum_lager_maximum() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn dev_welle_startet_sofort() {
     let (data, mut isl, index) = island_with_player("dev-welle");
     assert!(dev_start_wave(&mut isl, &data.difficulty, index));
@@ -65,7 +62,6 @@ fn dev_welle_startet_sofort() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn dev_tageszeit_springt_in_jede_phase() {
     let (data, mut isl, _) = island_with_player("dev-phase");
     step_island(&mut isl, &[], &data.difficulty, DT);

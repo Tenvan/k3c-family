@@ -137,7 +137,6 @@ fn angegriffenes_portal_spawnt_verteidiger() {
 fn letztes_portal_macht_stufe_sicher() {}
 
 #[test]
-#[ignore = "wartet auf RU10 (Island, Speichern und Laden)"]
 fn sichere_stufe_bleibt_nach_dem_laden() {}
 
 #[test]
@@ -175,5 +174,4 @@ fn portal_simulation_ist_deterministisch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (Island, Miniboss-Punkt)"]
 fn letztes_portal_ohne_doppel_punkt_bei_miniboss() {}

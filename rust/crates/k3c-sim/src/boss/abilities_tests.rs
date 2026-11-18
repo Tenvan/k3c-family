@@ -13,7 +13,7 @@ use crate::state::Hazard;
 
 // (a) Lava-Golem und Splitter-Titan kommen mit Welle 3 ihrer Stufe über das erste Portal, nicht mit Welle 2.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (deep_island (CreateIsland, AddIslandPlayer))"]
 fn boss_miniboss_eisenstollen_und_kristallhoehle() {
     let mut isl = deep_island(1, 0);
     for (stage, id) in [(3, "lavaGolem"), (4, "shardTitan")] {
@@ -32,7 +32,7 @@ fn boss_miniboss_eisenstollen_und_kristallhoehle() {
 // (b) Flammenspur: Die Fläche trifft beide Spieler darin je Sekunde, eine Truppe außerhalb nicht; ein stehender Boss
 // stapelt keine Flächen; nach Ablauf ist die Fläche weg und schadet nicht mehr.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (deep_island (CreateIsland, AddIslandPlayer))"]
 fn boss_flammenspur() {
     let mut isl = deep_island(2, 3);
     let w = &mut isl.stages[3];
@@ -64,7 +64,7 @@ fn boss_flammenspur() {
 
 // (b) Der gehende Golem hinterlässt eine Spur aus mehreren Flächen.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (deep_island (CreateIsland, AddIslandPlayer))"]
 fn boss_flammenspur_beim_gehen() {
     let mut isl = deep_island(1, 0);
     let w = &mut isl.stages[3];
@@ -83,7 +83,7 @@ fn boss_flammenspur_beim_gehen() {
 // (c) Splitter-Wurf: Der Einschlag trifft das Ziel und eine nahe Truppe, eine ferne nicht; jeder Angriff des
 // Splitter-Titans ist ein Wurf mit Splash.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (deep_island (CreateIsland, AddIslandPlayer))"]
 fn boss_splitter_wurf() {
     let mut isl = deep_island(1, 0);
     let w = &mut isl.stages[4];
@@ -110,7 +110,7 @@ fn boss_splitter_wurf() {
 
 // (d) Belohnung: 100 Gold als Münzen und 50 Eisen bzw. Kristall im Vorrat der Insel.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (deep_island (CreateIsland, AddIslandPlayer))"]
 fn boss_belohnung_eisen_und_kristall() {
     let mut isl = deep_island(2, 0);
     let v = boss_values();
@@ -149,7 +149,7 @@ fn boss_jede_stufe_ein_miniboss() {
 
 // (f) Gleicher Seed, gleicher Verlauf: zwei Spieler, beide Bosse kämpfen, Flächen und Splitter wirken.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (deep_island (CreateIsland, AddIslandPlayer))"]
 fn boss_flaechen_deterministisch() {
     let trace = || {
         let mut isl = deep_island(1, 3);

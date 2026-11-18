@@ -171,7 +171,6 @@ fn gegner_splitterwicht_schwarm() {
 
 /// (e) Kristallwächter: Flächenschlag trifft beide Spieler im Radius 3, nicht den außen stehenden Krieger.
 #[test]
-#[ignore = "wartet auf RU18 (each_passive)"]
 fn gegner_kristallwaechter_flaechenschlag() {
     let mut w = quiet_world();
     let (p1, p2) = (add_player(&mut w), add_player(&mut w));

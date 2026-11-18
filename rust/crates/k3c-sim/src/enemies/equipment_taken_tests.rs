@@ -6,7 +6,7 @@ use super::testutil::*;
 use crate::state::ItemDrop;
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprüft: Wirtschaft/Spielerschritt, der Test lief erst nach RU19 an)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn gegner_nimmt_drop_mit_und_flieht() {
     let mut w = quiet_world();
     add_player(&mut w);
@@ -54,7 +54,7 @@ fn traeger_stirbt_drop_faellt_zu_boden() {
 /// Passiver Spieler (Bot passive): ohne Eingaben fällt die Burg in mindestens einem Seed. Go: `-short` überspringt ihn
 /// nicht, er rechnet aber eine ganze Insel durch.
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (island_with)"]
 fn passiver_spieler_burg_faellt() {
     let mut fell = false;
     for seed in ["1", "2", "3"] {

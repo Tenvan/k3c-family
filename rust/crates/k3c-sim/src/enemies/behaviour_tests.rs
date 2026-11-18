@@ -57,7 +57,6 @@ fn gegner_traits_getestet() {
 
 /// Gegner ohne Traits laufen auf die Burg zu und schlagen eine Truppe in Reichweite mit dem Schaden aus den Daten.
 #[test]
-#[ignore = "wartet auf RU18 (troop_damage)"]
 fn gegner_ohne_traits_nahkampf() {
     let probe_world = bare_world();
     let v = probe_world.vals.clone().expect("Wertesatz");
@@ -108,7 +107,6 @@ fn gegner_steals_gold() {
 
 /// `fleesAtHalfHp`: Bei halber HP kämpft der Gegner noch, darunter flieht er ohne Angriff und verschwindet im Portal.
 #[test]
-#[ignore = "wartet auf RU18 (troop_damage)"]
 fn gegner_flees_at_half_hp() {
     for kind in kinds_with(&bare_world(), "fleesAtHalfHp") {
         let mut w = quiet_world();
@@ -152,7 +150,6 @@ fn gegner_ranged() {
 
 /// `prefersTroops`: greift die Truppe an, obwohl zwei Spieler näher stehen.
 #[test]
-#[ignore = "wartet auf RU18 (troop_damage)"]
 fn gegner_prefers_troops() {
     for kind in kinds_with(&bare_world(), "prefersTroops") {
         let mut w = quiet_world();
@@ -174,7 +171,6 @@ fn gegner_prefers_troops() {
 
 /// `prefersMonarch`: greift den nächsten Spieler an, obwohl eine Truppe näher steht.
 #[test]
-#[ignore = "wartet auf RU18 (each_passive)"]
 fn gegner_prefers_monarch() {
     for kind in kinds_with(&bare_world(), "prefersMonarch") {
         let mut w = quiet_world();

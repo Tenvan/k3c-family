@@ -103,7 +103,6 @@ fn ader_einmal_markieren() {
 
 /// Lager voll → der Bauer nimmt die Ader nicht an.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn ader_lager_voll() {
     let data = test_data();
     let mut isl = must_island(&data, "adern-voll", &[0, 1]);

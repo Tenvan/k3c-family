@@ -232,7 +232,6 @@ fn zone_zwei_spieler_zahlen_gleichzeitig() {
 
 // Jede Stufe einer Insel hat Mauern und Türme ihres eigenen Layouts, fest nach X angelegt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn zonen_insel_jede_stufe_eigene_sites() {
     use super::ship::SHIP_KIND;
     let isl = must_island(&test_data(), "linien", &[0, 1]);

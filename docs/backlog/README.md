@@ -162,6 +162,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1099](B-1099-port-rumpf-tests-ru18-ausfuellen.md) | SIM | Schuld | mittel | offen | RU18 | Rumpf-Tests der Rust-Sim (leer oder unimplemented) mit echten Rümpfen ausfüllen |
 | [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | RU21 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
 | [B-1100](B-1100-leere-ruempfe-ignorierte-tests.md) | SIM | Schuld | mittel | offen | RU18 | 21 ignorierte k3c-sim-Tests haben leere Rümpfe und zählen als portiert, ohne es zu sein |
+| [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
 
 ## Archiv
 

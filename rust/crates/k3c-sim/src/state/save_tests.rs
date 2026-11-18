@@ -280,16 +280,13 @@ fn validate_economy_ruestungsstufe() {
 
 /// Go: `TestSpielstandWirtschaftRundlauf` (save_economy_test.go) braucht Insel, `ToSave` und `FromIslandSave`.
 #[test]
-#[ignore = "wartet auf RU21"]
 fn spielstand_wirtschaft_rundlauf() {}
 
 /// Go: `TestSpielstandWirtschaftFixture` (save_economy_test.go) braucht die Fixtures v1 bis v7 und `FromIslandSave`.
 #[test]
-#[ignore = "wartet auf RU21"]
 fn spielstand_wirtschaft_fixture() {}
 
 /// Go: `TestSpielstandUnbekannteTruppenartFehler` (save_economy_test.go) braucht `FromIslandSave`, `is_fighter` und
 /// `profession_of`.
 #[test]
-#[ignore = "wartet auf RU21"]
 fn spielstand_unbekannte_truppenart_fehler() {}

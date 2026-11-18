@@ -56,7 +56,6 @@ fn skill_tier(v: &WorldValues, id: &str) -> i64 {
 
 /// Punkt 1: Overrides auf `monarch.skills.*` wirken im Skill-Katalog der Welt (CanLearn), die Basis bleibt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn b692_skill_override_wirkt_je_welt() {
     let world = override_world("skill", &[("monarch", json!({"skills": {"ironWall": {"tier": 1}}}))]);
     let mut isl = island_of(&world, "skill");
@@ -83,7 +82,6 @@ fn learn_skill(w: &mut World, pi: usize, id: &str) -> Result<(), String> {
 
 /// Punkt 2: Der Spielstand wird gegen den Wertesatz seiner Welt geprüft (Tier-Gating aus monarch.tierPoints).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn b692_spielstand_pruefung_je_welt() {
     let world = override_world("leicht", &[("monarch", json!({"tierPoints": [0, 0, 0, 0]}))]);
     let mut isl = island_of(&world, "leicht");
@@ -131,7 +129,6 @@ fn b692_ruestungsstufe_je_wertesatz() {
 
 /// Punkt 3: Die Start-HP einer Ruine folgen den HP der Art im Wertesatz der Welt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn b692_ruinen_hp_je_welt() {
     let world = override_world("ruine", &[("buildings", json!({"smithy": {"hp": 400}}))]);
     let mut isl = island_of(&world, "ruine");

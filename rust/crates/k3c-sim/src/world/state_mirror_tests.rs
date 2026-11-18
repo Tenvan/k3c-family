@@ -74,7 +74,6 @@ fn warden(w: &World) -> Option<usize> {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: end_island lädt die Standard-Welt)"]
 fn mirror_endboss_phase_und_warnkreis() {
     let (mut isl, x) = end_island(2);
     isl.stages[0].players[0].x = x + 4.0;
@@ -120,7 +119,6 @@ fn moon_island(n: i64) -> Island {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn mirror_event() {
     let data = test_data();
     let mut isl = moon_island(7);
@@ -168,7 +166,7 @@ fn mirror_event() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: JSON: {seed:wechsel,time:5.099999999999992,cycleSpeed:60.0,nextId:206,widthUnits:1000.0,hu)"]
 fn mirror_inselwechsel() {
     let data = test_data();
     let (world, _) = test_islands(&data);

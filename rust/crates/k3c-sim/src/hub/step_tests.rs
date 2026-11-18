@@ -145,7 +145,6 @@ fn hub_tor_schritt_ohne_eigenes_material() {
 
 /// Schritt 2 nach dem Bau von Schritt 1: Zustand und Spielstand nennen ihn, das Laden stellt ihn wieder her.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: load_island lädt die Standard-Welt)"]
 fn hub_schritt_im_spielstand() {
     let data = test_data();
     let mut isl = must_island(&data, "geb17-schritt", &[0, 1]);

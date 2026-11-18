@@ -17,7 +17,6 @@ fn spawn_x_verteilt_gleichmaessig() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn gegner_stehen_um_den_spieler() {
     let (data, mut isl, index) = island_with_player("dev-spawn");
     let px = isl.stages[0].players[0].x;
@@ -35,7 +34,6 @@ fn gegner_stehen_um_den_spieler() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn truppen_haben_hp_und_eigene_ids() {
     let (data, mut isl, index) = island_with_player("dev-spawn-t");
     let before = isl.stages[0].troops.len();
@@ -52,7 +50,6 @@ fn truppen_haben_hp_und_eigene_ids() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn ungueltiges_wird_abgelehnt() {
     let (data, mut isl, index) = island_with_player("dev-spawn-bad");
     let cases: [(&str, i64, &str, &str, i64); 6] = [
@@ -73,7 +70,6 @@ fn ungueltiges_wird_abgelehnt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn einzelne_figur_steht_am_spieler() {
     let (data, mut isl, index) = island_with_player("dev-spawn-1");
     let px = isl.stages[0].players[0].x;

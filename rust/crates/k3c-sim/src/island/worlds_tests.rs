@@ -46,7 +46,6 @@ fn welt_aus_map_fs_laden() {
 /// Go: `TestEingebetteteWeltenGueltig` (AC-02): Jede eingebettete Welt-Datei (heute nur standard.json) besteht die Prüfung;
 /// die Standard-Welt ist Voreinstellung.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn eingebettete_welten_gueltig() {
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../data/worlds");
     let names: Vec<String> = std::fs::read_dir(dir)

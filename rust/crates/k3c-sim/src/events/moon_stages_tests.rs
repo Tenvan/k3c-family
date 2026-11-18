@@ -24,7 +24,6 @@ fn full_moon_reward(isl: &mut Island) -> Vec<usize> {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn vollmond_belohnung_in_der_bespielten_stufe() {
     let data = test_data();
     let mut isl = must_island(&data, "mond", &[0, 1]);
@@ -37,7 +36,6 @@ fn vollmond_belohnung_in_der_bespielten_stufe() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn vollmond_belohnung_je_stufe_mit_spielern() {
     let data = test_data();
     let mut isl = must_island(&data, "mond", &[0, 1, 2]);

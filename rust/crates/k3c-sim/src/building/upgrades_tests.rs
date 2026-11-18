@@ -100,7 +100,7 @@ fn upgrade_elite_bogenschuetze() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Testhilfen)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU18: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go))"]
 fn upgrade_elite_krieger() {
     let (_w, _) = want_elite("eliteWarrior", |w, s| elite_spot(w, s).0);
     unimplemented!("RU18: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go)")

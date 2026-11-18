@@ -184,7 +184,6 @@ fn key_rundet_wie_to_fixed() {
 /// Go: `TestPurseSizes` (purse_test.go, B-922/AC-01): Geldsack in drei Größen als Skill-Stufen: ohne Skill Größe 1 (Grundwert),
 /// purseMedium Größe 2, purseLarge Größe 3 und erst nach purseMedium; jede Größe ist die Münz-Obergrenze des Spielers.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn purse_sizes() {
     use super::purse::{purse_max_of, purse_size};
     use crate::economy::give_gold;
@@ -240,7 +239,6 @@ fn purse_sizes() {
 /// Go: `TestPurseRespecDropsNewGold` (purse_test.go, Review FB2): nach Respec liegt der Beutel über der Grenze; neues Gold
 /// fällt zu Boden, der Beutel bleibt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn purse_respec_drops_new_gold() {
     use super::purse::purse_max_of;
     use crate::economy::give_gold;

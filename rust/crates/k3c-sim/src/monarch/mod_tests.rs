@@ -17,7 +17,6 @@ use crate::world::step;
 use crate::world::values_room::default_values;
 
 #[test]
-#[ignore = "wartet auf RU18 (damage_mult_of)"]
 fn monarch_schlag_reichweite_und_abklingzeit() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);
@@ -55,7 +54,6 @@ fn monarch_schlag_reichweite_und_abklingzeit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (speed_of)"]
 fn monarch_schlag_ereignisse() {
     let mut w = quiet_world();
     let pi = add_player(&mut w);
@@ -90,7 +88,6 @@ fn monarch_schlag_ereignisse() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn monarch_pool_je_spieler_und_stufe() {
     let data = test_data();
     let mut isl = must_island(&data, "pool", &[0, 1]);
@@ -186,7 +183,6 @@ fn monarch_respec_nur_am_tag_an_der_burg() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (emit, unit_x, step_island)"]
 fn monarch_dritte_truhe_der_insel() {
     let data = test_data();
     let mut isl = must_island(&data, "truhen", &[0, 1]);

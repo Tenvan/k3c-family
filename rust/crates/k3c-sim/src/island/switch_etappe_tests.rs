@@ -18,7 +18,6 @@ fn choose(isl: &mut Island, index: i64, id: &str) -> Result<(), String> {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn etappen_ziele_und_erste_linie() {
     let data = test_data();
     let (w, two, three) = etappen_welt(&data);
@@ -41,7 +40,6 @@ fn etappen_ziele_und_erste_linie() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn etappen_wahl_rest_und_sieg() {
     let data = test_data();
     let (w, two, three) = etappen_welt(&data);
@@ -97,7 +95,6 @@ fn etappen_kette(data: &k3c_data::Data, isl: &Island, mut next: Island, two: &su
 
 /// Der Seed hängt am Listenplatz des Ziels: gleiche Wahl, gleiche Insel; andere Wahl, andere Insel.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn etappen_seed_am_listenplatz() {
     let data = test_data();
     let (w, two, three) = etappen_welt(&data);
@@ -119,7 +116,6 @@ fn etappen_seed_am_listenplatz() {
 
 /// Linear wie heute: ohne Etappen zwei Inseln, ein Ziel.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn etappen_linear_ohne_feld() {
     let data = test_data();
     let (w, two) = test_islands(&data);

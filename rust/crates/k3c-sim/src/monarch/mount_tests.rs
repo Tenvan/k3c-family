@@ -40,7 +40,6 @@ fn want_speeds(v: &WorldValues) -> (f64, f64) {
 
 /// (a) Jeder Monarch hat beim Beitritt das Reittier aus den Daten: Welt mit 2 Spielern und Insel mit 2 Stufen.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: must_island lädt die Standard-Welt)"]
 fn mount_beim_beitritt() {
     let data = test_data();
     let mut w = quiet_world();
@@ -135,7 +134,6 @@ fn mount_sprite_bekannt() {
 
 /// (f) Ein Stufenwechsel ändert das Reittier nicht: Der Wertesatz einer Stufe ist derselbe wie der der Welt.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story, pure)"]
 fn mount_nach_stufenwechsel() {
     let data = test_data();
     let mut isl = must_island(&data, "reittier-f", &[0, 1]);

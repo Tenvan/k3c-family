@@ -22,7 +22,6 @@ fn enemies_after(isl: &mut Island, data: &k3c_data::Data, cmds: &[PlayerCommand]
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn erste_nacht_bringt_gegner_und_dev_welle_schon_am_tag() {
     let (data, mut isl, _) = island_with_player("stress-nacht");
     let cmds = [PlayerCommand::default()];
@@ -70,7 +69,6 @@ fn pure_run() -> (Vec<f64>, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn reiner_stressmodus_ist_reproduzierbar() {
     let (x1, t1) = pure_run();
     let (x2, t2) = pure_run();

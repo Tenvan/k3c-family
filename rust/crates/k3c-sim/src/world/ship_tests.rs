@@ -57,7 +57,6 @@ fn ship_at(isl: &Island) -> (usize, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (speed_of)"]
 fn schiff_in_abschnitten_bauen() {
     // BS5.2/AC-02 (B-637/AC-03): Das Schiff wird in drei Abschnitten bezahlt und gebaut (Kosten aus data/ship.json,
     // unabhängig von der Hub-Stufe); erst der letzte Abschnitt macht es fertig.
@@ -109,7 +108,6 @@ fn schiff_in_abschnitten_bauen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_braucht_fertiges_schiff() {
     // BS5.2/AC-02: Ohne fertiges Schiff öffnet der besiegte Endboss den Inselwechsel nicht; mit letztem Abschnitt öffnet er.
     let data = test_data();
@@ -138,7 +136,6 @@ fn inselwechsel_braucht_fertiges_schiff() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_am_steg_nicht_an_der_burg() {
     // Der Wechselpunkt liegt am Steg, nicht an der Burg: wer an der Burg des Hafens (Stufe 0) steht, lässt den Wechsel warten.
     let data = test_data();
@@ -166,7 +163,6 @@ fn schiff_kein_gegner_ziel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn schiff_spielstand_rundlauf() {
     // BS5.3/AC-03 (B-637/AC-04): Der Schiff-Fortschritt überlebt Speichern und Laden: gebaute Abschnitte, ein laufender
     // Ausbau (der Endboss-Sieg steht in den besiegten Bossen, `save_boss_tests.rs`).
@@ -200,7 +196,6 @@ fn schiff_spielstand_rundlauf() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn hafen_chunk_auf_insel_eins() {
     // BS5.1/AC-01 (B-637/AC-02): Insel 1, Tiefe 0 hat genau einen Hafen am geplanten Platz (−7), andere Tiefen keinen.
     let data = test_data();

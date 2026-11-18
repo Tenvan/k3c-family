@@ -2,10 +2,7 @@
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
-use k3c_data::Data;
-
 use super::World;
-use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
@@ -41,35 +38,10 @@ pub use crate::monarch::skill_ref; // Von RU18.4 portiert (monarch_data.go)
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
 
-/// Go: `IslandStory` (story.go): Ankunft, vor dem Endboss und Abschlusszeile nach dem Sieg über ihn. Rumpf bis RU19.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct IslandStory {
-    pub arrival: Vec<String>,
-    pub boss: Vec<String>,
-    pub done: Vec<String>,
-}
-
-/// Go: `WorldStory` (story.go): die Geschichte einer Welt. Rumpf bis RU19.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct WorldStory;
+// Von RU19.3 portiert (story.go, story_check.go): die Import-Stelle bleibt `pending`.
+pub use crate::story::{IslandStory, WorldStory, check_story, decode_island_story, decode_world_story};
 
 pub use crate::world::values_room::values_of; // Von RU14.4 portiert (world_values_room.go)
-
-/// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.
-pub fn decode_island_story(_raw: &serde_json::Value) -> Result<IslandStory, String> {
-    unimplemented!("RU19: decode_island_story")
-}
-
-/// Go: `decodeWorldStory` (story.go): liest `story` der Welt streng; nur gerufen, wenn das Feld da ist.
-pub fn decode_world_story(_raw: &serde_json::Value) -> Result<WorldStory, String> {
-    unimplemented!("RU19: decode_world_story")
-}
-
-/// Go: `checkStory` (story_check.go): prüft die Geschichte der Welt und ihrer Inseln; nur gerufen, wenn die Welt oder eine
-/// Insel `story` hat.
-pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
-    unimplemented!("RU19: check_story")
-}
 
 pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portiert (world_travel.go)
 

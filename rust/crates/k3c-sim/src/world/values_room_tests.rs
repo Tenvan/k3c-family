@@ -81,7 +81,6 @@ fn wall_cost(world: &WorldDef) -> i64 {
 
 /// B-681/AC-01: Zwei Welten mit verschiedenen Kosten rechnen nebeneinander (Threads) mit ihren eigenen Werten.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn wertesatz_je_welt_parallel_unabhaengig() {
     let (std, teuer) = (standard_world(&test_data()), teuer_world());
     let base = default_values();
@@ -104,7 +103,6 @@ fn wertesatz_je_welt_parallel_unabhaengig() {
 
 /// B-681/AC-02: Ohne Overrides in der Kette gilt der Basis-Wertesatz; der Zustand ist byte-gleich zur Insel der Basis.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn wertesatz_ohne_overrides_byte_gleich() {
     let mut kind = standard_world(&test_data());
     (kind.id, kind.extends) = ("kind".into(), STANDARD_WORLD_ID.into());
@@ -129,7 +127,6 @@ fn wertesatz_ohne_overrides_byte_gleich() {
 
 /// Ein ungültiger Override lehnt die Welt beim Auflösen ab (welten.md § 1.2), die Meldung nennt die Welt-Datei.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn resolve_world_ungueltiger_override() {
     let mut w = standard_world(&test_data());
     w.id = "kaputt".into();
@@ -143,7 +140,6 @@ fn resolve_world_ungueltiger_override() {
 
 /// Eine Zahl kommt nie aus zwei Quellen: Münzen je Treffer, Truhen- und Morgengold folgen demselben Wertesatz.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn wertesatz_eine_quelle_je_wert() {
     let mut w = standard_world(&test_data());
     (w.id, w.name, w.extends) = ("stark".into(), "Stark".into(), STANDARD_WORLD_ID.into());

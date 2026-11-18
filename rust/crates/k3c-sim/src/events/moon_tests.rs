@@ -146,7 +146,6 @@ fn vollmond_belohnung_braucht_spieler_und_portale() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn vollmond_ereignisse_je_nacht_einmal() {
     let (data, mut isl) = moon_island(7);
     let events = crate::island::testutil::run_island(&mut isl, &data, &[], 8.0);

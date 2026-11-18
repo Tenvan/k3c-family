@@ -8,7 +8,6 @@ use crate::state::{Coin, PlayerCommand};
 const DT: f64 = 1.0 / 30.0;
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn ereignis_traegt_die_stufe() {
     let data = test_data();
     let mut isl = must_island(&data, "ereignis-insel", &[0, 1]);

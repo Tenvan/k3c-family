@@ -15,7 +15,6 @@ use crate::state::purse::purse_max_of;
 const DT: f64 = 1.0 / 30.0;
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn lager_maximum_und_fuellen() {
     let (data, mut isl, _) = island_with_player("dev-lager");
     let d = &data.difficulty;
@@ -42,7 +41,6 @@ fn lager_maximum_und_fuellen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn gold_maximum_und_fuellen() {
     let (data, mut isl, _) = island_with_player("dev-gold-max");
     let d = &data.difficulty;
@@ -63,7 +61,6 @@ fn gold_maximum_und_fuellen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn baukosten_sind_mit_dem_schalter_hoechstens_eins() {
     let (data, mut isl, _) = island_with_player("dev-kosten");
     let c = Cost {
@@ -86,7 +83,6 @@ fn baukosten_sind_mit_dem_schalter_hoechstens_eins() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (site_hub_level)"]
 fn dev_ausbau_baut_hub_stufe_mauern_und_tuerme() {
     let (_, mut isl, _) = island_with_player("dev-ausbau");
     assert!(
@@ -106,7 +102,6 @@ fn dev_ausbau_baut_hub_stufe_mauern_und_tuerme() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn naechste_tageszeit_wechselt_im_naechsten_schritt() {
     let (data, mut isl, _) = island_with_player("dev-next-phase");
     for want in ["dusk", "night", "dawn", "day", "dusk"] {

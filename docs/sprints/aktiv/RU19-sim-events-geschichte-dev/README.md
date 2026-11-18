@@ -95,7 +95,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 |---|---|---|---|---|
 | RU19.1 | `RU19.1-dev-eingriffe.md` | Umsetzung | autonom | fertig |
 | RU19.2 | `RU19.2-events-moon-merchant.md` | Umsetzung | autonom | fertig |
-| RU19.3 | `RU19.3-story.md` | Umsetzung | autonom | offen |
+| RU19.3 | `RU19.3-story.md` | Umsetzung | autonom | fertig |
 | RU19.4 | `RU19.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

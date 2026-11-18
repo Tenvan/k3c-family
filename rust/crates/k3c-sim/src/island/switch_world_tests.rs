@@ -33,7 +33,6 @@ fn nordmeer_switch(data: &k3c_data::Data) -> (Island, Island) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (speed_of)"]
 fn inselwechsel_in_welt_mit_zwei_spielern() {
     let data = test_data();
     let (_, next) = nordmeer_switch(&data);
@@ -54,7 +53,6 @@ fn inselwechsel_in_welt_mit_zwei_spielern() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (speed_of)"]
 fn inselwechsel_letzte_insel_der_welt() {
     let data = test_data();
     let (_, mut next) = nordmeer_switch(&data);

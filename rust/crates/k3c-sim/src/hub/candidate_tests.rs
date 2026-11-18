@@ -122,7 +122,6 @@ fn create_island_kopiert_den_kandidaten() {
 
 /// WZ9.1: `create_world_with` baut eine Stufe ohne Insel aus dem Kandidaten (Vorschau des Gebäude-Planers).
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story: create_world lädt die Standard-Welt)"]
 fn create_world_with_kandidat() {
     let data = test_data();
     let b = biome_for_depth(&data.biomes, 0).expect("Biom Tiefe 0").clone();

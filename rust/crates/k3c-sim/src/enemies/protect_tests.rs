@@ -73,7 +73,7 @@ fn forced_attack(grade: &str, day: i64) -> (ProtectState, ProtectState) {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (island_with)"]
 fn protected_night_easy_keeps_everything() {
     let (before, after) = forced_attack("easy", 1);
     assert_eq!(after, before, "easy, Nacht 1: Verlust");
@@ -94,14 +94,14 @@ fn assert_lost(name: &str, before: &ProtectState, after: &ProtectState) {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (island_with)"]
 fn protected_night_normal_loses() {
     let (before, after) = forced_attack("normal", 1);
     assert_lost("normal, Nacht 1", &before, &after);
 }
 
 #[test]
-#[ignore = "wartet auf RU10"]
+#[ignore = "wartet auf RU10 (island_with)"]
 fn protected_night_easy_second_night_loses() {
     let (before, after) = forced_attack("easy", 2);
     assert_lost("easy, Nacht 2", &before, &after);

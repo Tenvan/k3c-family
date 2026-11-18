@@ -17,7 +17,6 @@ use crate::world::values_room::default_values;
 
 /// (a) Jede Ankunft zählt einen Besuch, ohne und mit Taverne.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn haendler_besuche_zaehlen() {
     let data = test_data();
     let every = default_values().economy.merchant.every_days;
@@ -66,7 +65,6 @@ fn haendler_wird_angegriffen() {
 
 /// (c) Bei 0 HP flieht der Händler (`merchantFled`), ein halber Kauf fällt zu Boden; der nächste Besuch kommt normal.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn haendler_flieht_bei_null_hp() {
     let data = test_data();
     let m = default_values().economy.merchant.clone();
@@ -94,7 +92,6 @@ fn haendler_flieht_bei_null_hp() {
 
 /// (d) Besuchszähler und anwesender Händler mit HP überstehen Speichern und Laden; Version 5 lädt mit 0 ohne Händler.
 #[test]
-#[ignore = "wartet auf RU19 (pure, emit, unit_x, decode_world_story)"]
 fn haendler_im_spielstand() {
     let data = test_data();
     let every = default_values().economy.merchant.every_days;

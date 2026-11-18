@@ -221,7 +221,6 @@ fn own_fuenf_materialien_im_stand() {
 
 /// Go: `TestIslandStorageCapacity`: dieselben Zahlen an einer gebauten Insel.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_storage_capacity() {
     let data = test_data();
     let v = test_values();
@@ -244,7 +243,7 @@ fn island_storage_capacity() {
 
 /// Go: `TestIslandStorageAddCapped`: Aufnahme über zwei Stufen, Zerstörung eines Lagers lässt den Überschuss stehen.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU18: add_stock, destroy_site (Zerstörung des Lagers))"]
 fn island_storage_add_capped() {
     let data = test_data();
     let v = test_values();
@@ -267,7 +266,7 @@ fn island_storage_add_capped() {
 
 /// Go: `TestIslandStorageFiveMaterials`: Kosten über fünf Materialien (`can_afford`, `spend`, RU18) und Rundlauf.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU18: add_stock, can_afford, spend)"]
 fn island_storage_five_materials() {
     let data = test_data();
     let isl = must_island(&data, "lager-c", &[0]);
@@ -278,7 +277,6 @@ fn island_storage_five_materials() {
 
 /// Go: `TestIslandStorageSiteOnlyInIslands`: Lager-Bauplatz nur in Insel-Stufen, die Campaign-Welt hat keinen.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_storage_site_only_in_islands() {
     let data = test_data();
     let isl = must_island(&data, "lager-d", &[0, 1]);
@@ -303,7 +301,6 @@ fn island_storage_site_only_in_islands() {
 
 /// Go: `TestIslandStorageDeterministic`: Zwei Läufe einer Insel mit Lager ergeben denselben Zustand.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_storage_deterministic() {
     let data = test_data();
     let run = || {

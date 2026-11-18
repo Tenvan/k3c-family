@@ -10,7 +10,6 @@ const DT: f64 = 1.0 / 30.0;
 const WARDEN_ID: &str = "crystalHeartWarden";
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn miniboss_erscheint_am_naechsten_portal() {
     let (data, mut isl, index) = island_with_player("dev-boss");
     let d = &data.difficulty;
@@ -27,7 +26,6 @@ fn miniboss_erscheint_am_naechsten_portal() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (step_players)"]
 fn endboss_schaltet_je_aufruf_eine_phase_weiter() {
     let (data, mut isl, index) = island_with_player("dev-phase-boss");
     let d = &data.difficulty;
@@ -51,7 +49,7 @@ fn endboss_schaltet_je_aufruf_eine_phase_weiter() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story), RU19 (night_events_start, event_active) und RU18 (step_players)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion failed: w.events.iter().any(|e|)"]
 fn blutmond_laeuft_genau_in_der_naechsten_nacht() {
     let (data, mut isl, _) = island_with_player("dev-mond");
     let d = &data.difficulty;
@@ -76,7 +74,6 @@ fn blutmond_laeuft_genau_in_der_naechsten_nacht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story) und RU19 (raid_merchant)"]
 fn haendler_ueberfall_wird_gestartet_und_nicht_doppelt() {
     let (data, mut isl, _) = island_with_player("dev-raid");
     let queued = isl.stages[0].spawn_queue.len();

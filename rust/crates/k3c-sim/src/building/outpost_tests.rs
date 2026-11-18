@@ -50,7 +50,7 @@ fn endanger(w: &mut World) {
 }
 
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
+#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: wall@429: äußerste Mauern 0/0)"]
 fn vorposten_lage_laut_layout() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];
@@ -82,7 +82,6 @@ fn vorposten_lage_laut_layout() {
 
 /// Reparatur am Vorposten tagsüber; bei Gefahr bleibt sie liegen und der Bauer kehrt zur Burg zurück.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn vorposten_reparatur_nur_ohne_gefahr() {
     let (mut isl, data) = fixture_island();
     let w = &mut isl.stages[0];
@@ -118,7 +117,6 @@ fn vorposten_reparatur_nur_ohne_gefahr() {
 
 /// Bau am Vorposten nur ohne Gefahr; ein Bauplatz innerhalb der Mauern wird auch bei Gefahr gebaut.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn vorposten_bau_nur_ohne_gefahr() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];
@@ -169,7 +167,6 @@ fn vorposten_bau_nur_ohne_gefahr() {
 
 /// Waffen holen: an einer Werkstatt jenseits des Tors nur ohne Gefahr, innerhalb der Mauern auch bei Gefahr.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn vorposten_waffen_nur_ohne_gefahr() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];
@@ -212,7 +209,6 @@ fn vorposten_waffen_nur_ohne_gefahr() {
 
 /// Dev-Funktion Burgfall: Stufenverlust auch ohne gefallene Burg, die zerstörte Ruine steht wieder.
 #[test]
-#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn dev_castle_fall_stellt_ruine_wieder_her() {
     let (mut isl, data) = fixture_island();
     let w = &mut isl.stages[0];
