@@ -9,7 +9,9 @@
 //! zeichnet zusätzlich jeden Aufruf auf eine eigene Ebene (`layer` des Aufrufers wird ignoriert), damit Ausschnitte
 //! die Reihenfolge gegenüber Go nicht verändern.
 
-use k3c_platform::{Affine, Blend, Canvas, Filter, FontId, Frame, Kind, Rect, TexId, Vertex};
+use k3c_platform::{
+    Affine, Blend, Canvas, Filter, FontId, Frame, Kind, Rect, RiverCall, RiverUniforms, TexId, Vertex, river_fragment,
+};
 
 /// Bild im Speicher: RGBA8, gerade Farben, Zeilen oben nach unten.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -110,7 +112,11 @@ impl SoftCanvas {
                         draw_tri(&mut img, clip, (tex, run.blend), corners);
                     }
                 }
-                Kind::River => {}
+                Kind::River => {
+                    if let Some(c) = self.frame.river_calls().get(first) {
+                        draw_river(&mut img, clip, run.blend, c);
+                    }
+                }
             }
         }
         img
@@ -265,6 +271,25 @@ fn draw_tri(img: &mut Image, clip: (i64, i64, i64, i64), (tex, mode): (Option<&T
     }
 }
 
+/// Fluss-Aufruf: Pixel mit Mitte im Rechteck, Farbe aus `river_fragment` an der Pixelmitte (Fenster-px).
+#[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
+fn draw_river(img: &mut Image, clip: (i64, i64, i64, i64), mode: Blend, c: &RiverCall) {
+    let r = c.dst;
+    let x0 = clip.0.max((r.x - 0.5).ceil() as i64);
+    let x1 = clip.2.min((r.x + r.w - 0.5).ceil() as i64);
+    let y0 = clip.1.max((r.y - 0.5).ceil() as i64);
+    let y1 = clip.3.min((r.y + r.h - 0.5).ceil() as i64);
+    for y in y0..y1 {
+        for x in x0..x1 {
+            let s = river_fragment(&c.u, [x as f32 + 0.5, y as f32 + 0.5]);
+            match mode {
+                Blend::Over => blend(img, x, y, s),
+                Blend::Multiply => blend_multiply(img, x, y, s),
+            }
+        }
+    }
+}
+
 impl Canvas for SoftCanvas {
     fn size(&self) -> (f32, f32) {
         (self.w as f32, self.h as f32)
@@ -296,6 +321,10 @@ impl Canvas for SoftCanvas {
     fn rect(&mut self, dst: Rect, color: [f32; 4]) {
         self.next();
         self.frame.rect(dst, color);
+    }
+    fn river(&mut self, dst: Rect, u: &RiverUniforms) -> bool {
+        self.next();
+        self.frame.river(dst, u)
     }
     fn stroke_rect(&mut self, r: Rect, width: f32, color: [f32; 4]) {
         self.next();

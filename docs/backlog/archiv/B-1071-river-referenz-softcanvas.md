@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU13
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
@@ -69,3 +69,7 @@ keine
 ## Notizen
 
 Aus B-1055 zerlegt. Die Referenz-Funktion dient B-1072 als Vergleichswert (Testwerte teilen).
+
+### Ergebnis
+
+`river_fragment` (`k3c-platform/src/river.rs`, `f32`, Konstanten `TAU`, `SRC_H = 64`) und `SoftCanvas::river` samt `draw_river` im Rasterer (Pixelmitte, Clip, Blend Over/Multiply). Tests: `river_tests.rs` (Zweige oberhalb, Grund, Band, Schatten, Glanz an/aus, erste und letzte Reihe, Höhe 0 ohne NaN; dazu Vergleich mit unabhängiger `f64`-Rechnung über alle Reihen, höchstens 1 % Ausreißer an Zweigkanten) und `raster_tests.rs` (Farbe wie `river_fragment`, Clip). `cargo test -p k3c-platform -p k3c-game` und `task rust:lint` grün.

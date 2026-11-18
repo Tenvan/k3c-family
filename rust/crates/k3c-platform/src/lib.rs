@@ -28,7 +28,7 @@ pub use clock::{Clock, MAX_STEPS, STEP};
 pub use headless::{NullCanvas, run_headless};
 pub use input::{InputScript, InputState, Key, KeyState, PadAxis, PadButton, PadState, ScriptEntry, ScriptPad};
 pub use measure::{Measure, Summary};
-pub use river::RiverUniforms;
+pub use river::{RiverUniforms, river_fragment};
 pub use runner::Runner;
 pub use ttf::FontId;
 
