@@ -131,7 +131,7 @@ pub fn player_near(w: &World, x: f64, dist: f64) -> bool {
 /// Go: `endbossPhase`: wechselt in jede Phase, deren HP-Schwelle unterschritten ist (je einmal, mit Meldung), stellt ihre
 /// Fähigkeit ein und lässt bei Tempo > 1 Abklingzeit und Fähigkeit entsprechend schneller ablaufen (`stepEnemies` zieht
 /// `dt` ab, hier kommt der Rest dazu).
-fn endboss_phase(w: &mut World, v: &WorldValues, f: &mut EndbossFight, dt: f64) {
+pub(crate) fn endboss_phase(w: &mut World, v: &WorldValues, f: &mut EndbossFight, dt: f64) {
     let Some(ei) = w.enemies.iter().position(|e| e.id == f.boss_id) else {
         return;
     };

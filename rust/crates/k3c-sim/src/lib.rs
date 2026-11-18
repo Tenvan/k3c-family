@@ -4,6 +4,7 @@ pub mod boss;
 pub mod campaign;
 pub mod combat;
 pub mod crown;
+pub mod dev;
 pub mod enemies;
 pub mod island;
 pub mod pending;

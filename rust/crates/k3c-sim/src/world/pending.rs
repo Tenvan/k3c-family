@@ -148,7 +148,5 @@ pub fn cap_events(_w: &mut World) {
     unimplemented!("RU19: cap_events")
 }
 
-/// Go: `devBuildSite` (dev.go): baut den Platz `si` ohne Zahlung bis zur Stufe `level` fertig.
-pub fn dev_build_site(_w: &mut World, _si: usize, _level: i64) {
-    unimplemented!("RU19: dev_build_site")
-}
+// Von RU19.1 portiert (dev.go): die Import-Stelle bleibt `pending`.
+pub use crate::dev::dev_build_site;

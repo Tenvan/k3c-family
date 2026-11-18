@@ -2,8 +2,6 @@
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
-use std::collections::BTreeMap;
-
 use k3c_data::Data;
 use k3c_data::buildings::Plantation;
 use k3c_data::hub::HubData;
@@ -110,18 +108,8 @@ pub fn plot_x(_s: &Site, _p: &Plantation, _i: usize) -> f64 {
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
 
-/// Go: `DevFlags` (dev.go): Schalter der Dev-Aktionen einer Insel, nur im Speicher, nie im Spielstand. Rumpf bis RU19.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct DevFlags {
-    /// Alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten.
-    pub cheap_build: bool,
-    /// Reiner Stressmodus (`DevSetPure`): keine Wellen, Lager, Wachen, Händler, Schänke.
-    pub pure: bool,
-    /// Zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (`devMaxStock`).
-    pub stock_bonus: i64,
-    /// Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (`DevStartEvent`).
-    pub nights: BTreeMap<String, i64>,
-}
+// Von RU19.1 portiert (dev.go): die Import-Stelle bleibt `pending`.
+pub use crate::dev::DevFlags;
 
 /// Go: `IslandStory` (story.go): Ankunft, vor dem Endboss und Abschlusszeile nach dem Sieg über ihn. Rumpf bis RU19.
 #[derive(Debug, Clone, PartialEq, Default)]

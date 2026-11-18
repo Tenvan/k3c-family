@@ -168,6 +168,9 @@ pub struct World {
     /// Geräumte Lager `kind@x` (Go: `map[string]bool`); ohne JSON.
     #[serde(skip)]
     pub guards_cleared: BTreeMap<String, bool>,
+    /// Spiegel von `island.Dev.Pure` (Go: `w.pure()` liest `w.island`): reiner Stressmodus, gesetzt von `dev_set_pure`; ohne JSON.
+    #[serde(skip)]
+    pub pure: bool,
 }
 
 impl Default for World {
@@ -228,6 +231,7 @@ impl Default for World {
             castle_fell_night: Default::default(),
             guards_spawned: Default::default(),
             guards_cleared: Default::default(),
+            pure: false,
         }
     }
 }

@@ -49,10 +49,8 @@ pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
     unimplemented!("RU18: frost_armor_hit")
 }
 
-/// Go: `World.pure` (dev.go): reiner Stressmodus der Insel.
-pub fn pure(_w: &World) -> bool {
-    unimplemented!("RU19: pure")
-}
+// Von RU19.1 portiert (dev.go): die Import-Stelle bleibt `pending`.
+pub use crate::dev::pure;
 
 /// Go: `fullMoonExtra` (events_moon.go): zusätzliche Plätze bei Vollmond.
 pub fn full_moon_extra(_w: &World, _plan: &[SpawnOrder]) -> Vec<SpawnOrder> {
