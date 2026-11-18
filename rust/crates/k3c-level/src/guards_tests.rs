@@ -129,7 +129,6 @@ fn gegnerlager_lehnt_ab() {
 
 /// Die Wachen liegen im Layout; sie würfeln nichts: Level mit und ohne Lager sind bis auf `Layout::guards` gleich.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn gegnerlager_im_level_ohne_wuerfe() {
     let forest = biome("forest");
     let plain = [p(3, "forest", &[])];
@@ -158,7 +157,6 @@ fn gegnerlager_im_level_ohne_wuerfe() {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn gegnerlager_alle_biome_generiert_deterministisch() {
     for id in biome_ids() {
         let b = biome(&id);

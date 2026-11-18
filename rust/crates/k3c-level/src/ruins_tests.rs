@@ -247,7 +247,6 @@ fn ruine_liest_streng() {
 
 /// testdata/planned/forest-ruin.json ist gültig und trägt je Seed alle drei Ruinen (Fixture für die Sim, WZ14.3).
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn ruinen_fixture() {
     let raw = std::fs::read_to_string(k3c_det::golden::testdata().join("planned/forest-ruin.json")).expect("Fixture");
     let c: PlannedCase = serde_json::from_str(&raw).expect("PlannedCase");
@@ -263,7 +262,6 @@ fn ruinen_fixture() {
 
 /// Die Ruine würfelt nichts: Level mit und ohne Ruine sind bis auf `Layout::ruins` gleich.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn ruine_im_level_ohne_wuerfe() {
     let forest = biome("forest");
     let plain = [p(3, "clearing", &[obj("tree", 10.0)])];
@@ -313,7 +311,6 @@ fn ruine_auf_hub_platz_gleicher_art_wird_abgelehnt() {
 
 /// B-522: Zufalls-Ressourcen halten Abstand zur Ruine ihres Chunks; ohne Ruine bleibt der Inhalt unverändert.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn zufalls_ressourcen_halten_abstand_zur_ruine() {
     let forest = biome("forest");
     for at in [10.0, 25.0, 40.0] {

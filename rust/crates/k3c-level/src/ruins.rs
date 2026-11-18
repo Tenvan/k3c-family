@@ -114,7 +114,6 @@ pub(crate) fn check_ruins_across(ruins: &[Placed], objects: &[Placed]) -> Result
     Ok(())
 }
 
-#[allow(dead_code)] // RU6.5: generate ruft ruins_of
 impl Gen {
     /// Go: `ruinsOf`, die Ruinen der geplanten Chunks mit ihrer X-Position; ohne Würfe, die Ströme bleiben unberührt.
     pub(crate) fn ruins_of(&self, chunks: &[Chunk]) -> Vec<Ruin> {

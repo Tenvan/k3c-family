@@ -30,7 +30,6 @@ fn example_plan(b: &Biome) -> Vec<PlannedChunk> {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn generate_with_nullwert_ist_generate() {
     for id in biome_ids() {
         let b = biome(&id);
@@ -49,7 +48,6 @@ fn generate_with_nullwert_ist_generate() {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn geplante_chunks_sind_deterministisch_und_gueltig() {
     for id in biome_ids() {
         let b = biome(&id);
@@ -73,7 +71,6 @@ fn geplante_chunks_sind_deterministisch_und_gueltig() {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn festes_portal_liegt_am_erwarteten_ort() {
     let b = biome("forest");
     let plan = [p(6, "portal", &[])]; // Hub + 300 … + 350, Mitte bei + 325
@@ -109,7 +106,6 @@ fn contents(b: &Biome, l: &Layout) -> Vec<Entity> {
 
 /// AC-03: Der Chunk-Seed macht den Inhalt in jedem Level gleich, gemessen am Abstand zum Hub.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn chunk_seed_ist_ueber_level_seeds_stabil() {
     let b = biome("forest");
     let seeded = PlannedChunk {
@@ -130,7 +126,6 @@ fn chunk_seed_ist_ueber_level_seeds_stabil() {
 
 /// AC-04: Der Inhalt eines geplanten Chunks würfelt nur aus seinem eigenen Strom; alle anderen Chunks bleiben gleich.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn inhalt_geplanter_chunks_stoert_den_haupt_strom_nicht() {
     let b = biome("forest");
     let seeded = |s: &str| PlannedChunk {
@@ -168,7 +163,6 @@ fn inhalt_geplanter_chunks_stoert_den_haupt_strom_nicht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn generate_with_lehnt_ungueltige_planung_ab() {
     let o = Options {
         planned: vec![p(0, "forest", &[])],

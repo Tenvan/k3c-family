@@ -1,6 +1,6 @@
 # RU6.5 · Level Teil 5: level (Erzeugung) und Level-Golden bitgleich
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -66,5 +66,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Level Teil 5 in Rust: `level_gen.rs` (`generate`, `generate_with`, `frame`, `place_portals`, `place_events`, Camp-Sortierung, sichere Camp-Plätze) und `level_entities.rs` (Entitäten je Chunk, Adern) in `rust/crates/k3c-level`. Reihenfolge der rng-Aufrufe wie in Go (Prüfung der Anzahl, Planung, Natur, Rahmen, Reservierung, Portale, Ereignisse, Gewichte, Entitäten, Bau, stabile Sortierung nach x, Varianten, Plätze).
+
+- Tests: alle Level-Tests von Go portiert (`camps`, `chunkcount`, `deco`, `hub_sites`, `lava`, `level`, `golden`, `nature`-Golden); die `ignore`-Marken aus RU6.1 bis RU6.4 sind entfernt, die zurückgestellten Generate-Tests laufen. `cargo test -p k3c-level`: 87 grün, Debug und Release.
+- Golden (alle Biome, `level-planned.json`, `nature.json`) stimmt bitgleich, ohne Toleranz und ohne Änderung der Golden-Dateien.
+- Clippy mit `-D warnings` grün, Dateien ≤ 400 Zeilen, Funktionen ≤ 60 Zeilen.
+- Abweichung: `generate_with` bekommt den Regelsatz als `Arc<Rules>` übergeben (Go: Paketvariablen).
+- Marker: `STAB(B-LVL)` in `level_entities.rs` (Fehler statt panic bei leerer Liste), `PERF(B-LVL)` in `nature.rs` (go_float-Text je Entität, einmal je Level). Ticket im Sprint RU43 folgt in RU6.6.
+- Mehr Sims und Gen: keine gefahren.

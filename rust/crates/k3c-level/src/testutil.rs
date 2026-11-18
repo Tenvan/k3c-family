@@ -1,11 +1,9 @@
 //! Test-Hilfen (Port der Hilfen aus `engine/level/*_test.go`).
 //!
-//! Die Platzhalter unten (`unimplemented!`, Leitfaden § 7) ersetzt RU6.5 durch die echten Aufrufe.
-#![allow(clippy::unimplemented)]
 
 use std::collections::BTreeSet;
 use std::path::PathBuf;
-use std::sync::OnceLock;
+use std::sync::{Arc, OnceLock};
 
 use k3c_data::{Data, Source, load_all};
 use k3c_det::golden;
@@ -29,10 +27,15 @@ pub(crate) fn data() -> &'static Data {
 
 /// Der Regelsatz aus `data/`, einmal gebaut (Go: die Paket-Variablen).
 pub(crate) fn rules() -> &'static Rules {
-    static RULES: OnceLock<Rules> = OnceLock::new();
+    rules_arc()
+}
+
+/// Derselbe Regelsatz als `Arc` für `generate` und `Gen`.
+pub(crate) fn rules_arc() -> &'static Arc<Rules> {
+    static RULES: OnceLock<Arc<Rules>> = OnceLock::new();
     RULES.get_or_init(|| {
         let hub = std::fs::read_to_string(data_dir().join("hub.json")).unwrap_or_else(|e| panic!("hub.json: {e}"));
-        Rules::from_data(data(), &hub).unwrap_or_else(|e| panic!("Rules: {e}"))
+        Arc::new(Rules::from_data(data(), &hub).unwrap_or_else(|e| panic!("Rules: {e}")))
     })
 }
 
@@ -51,19 +54,23 @@ pub(crate) fn biome(id: &str) -> Biome {
     }
 }
 
-/// Go: `Generate(b, seed)`; läuft ab RU6.5.
-pub(crate) fn generate(_b: &Biome, _seed: &str) -> Layout {
-    unimplemented!("RU6.5")
+/// Go: `Generate(b, seed)`; ein Fehler bricht den Test ab (Gos `t.Fatal`).
+pub(crate) fn generate(b: &Biome, seed: &str) -> Layout {
+    crate::level::generate(b, seed, rules_arc()).unwrap_or_else(|e| panic!("Biom {}, Seed {seed}: {e}", b.id))
 }
 
-/// Go: der Test-Helfer `generate(t, b, seed, fixed)` aus `nature_test.go`; läuft ab RU6.5.
-pub(crate) fn generate_nature(_b: &Biome, _seed: &str, _fixed: &NatureValues) -> Layout {
-    unimplemented!("RU6.5")
+/// Go: der Test-Helfer `generate(t, b, seed, fixed)` aus `nature_test.go`.
+pub(crate) fn generate_nature(b: &Biome, seed: &str, fixed: &NatureValues) -> Layout {
+    let o = Options {
+        nature: fixed.clone(),
+        ..Options::default()
+    };
+    generate_with(b, seed, &o).unwrap_or_else(|e| panic!("Biom {}, Seed {seed}: {e}", b.id))
 }
 
-/// Go: `GenerateWith(b, seed, o)`; läuft ab RU6.5.
-pub(crate) fn generate_with(_b: &Biome, _seed: &str, _o: &Options) -> Result<Layout, String> {
-    unimplemented!("RU6.5")
+/// Go: `GenerateWith(b, seed, o)`; der Fehler als Text.
+pub(crate) fn generate_with(b: &Biome, seed: &str, o: &Options) -> Result<Layout, String> {
+    crate::level::generate_with(b, seed, o, rules_arc()).map_err(|e| e.to_string())
 }
 
 /// Go: `Validate(l, b)` mit dem Regelsatz aus `data/`.
@@ -77,16 +84,6 @@ pub(crate) fn validate_with(l: &Layout, b: &Biome, o: &Options) -> Vec<String> {
 }
 
 pub(crate) use crate::validate::count_entities;
-
-/// Go: `checkCamp` aus `camps_test.go`; läuft ab RU6.5.
-pub(crate) fn check_camp(_l: &Layout, _x: f64, _id: &str, _seed: i64) {
-    unimplemented!("RU6.5")
-}
-
-/// Go: `campBehindPortal` aus `camps_test.go`; läuft ab RU6.5.
-pub(crate) fn camp_behind_portal(_l: &Layout, _id: &str, _seed: i64) -> bool {
-    unimplemented!("RU6.5")
-}
 
 /// Go: der Test-Helfer `gen2` aus `planned_gen_test.go`, ein Level mit Planung; läuft ab RU6.5.
 pub(crate) fn gen2(b: &Biome, seed: &str, plan: &[PlannedChunk]) -> Layout {
@@ -135,4 +132,26 @@ pub(crate) fn plan_ok(b: &Biome, plan: &[PlannedChunk]) -> Result<(), String> {
 pub(crate) fn with_ruin(mut c: PlannedChunk, kind: &str, at: f64) -> PlannedChunk {
     c.buildings = vec![PlannedBuilding { kind: kind.into(), at }];
     c
+}
+
+/// Go: `&gen{b: b, r: rng.New(stream), cw: b.ChunkWidthUnits, count: count}`, ein Erzeuger-Zustand für Einzeltests.
+pub(crate) fn test_gen(b: &Biome, stream: &str, count: i64) -> crate::level::Gen {
+    let rules = rules_arc();
+    crate::level::Gen {
+        b: b.clone(),
+        r: k3c_rng::Rng::new(stream),
+        seed: String::new(),
+        kinds: Vec::new(),
+        cw: b.chunk_width_units,
+        hub: 0.0,
+        count,
+        sites: crate::lines::sites_of(None, &rules.hub_sites),
+        hub_start: 0,
+        hub_chunks: 0,
+        planned: std::collections::BTreeMap::new(),
+        fixed: std::collections::BTreeMap::new(),
+        side_fixed: [0, 0],
+        planned_res: b.resources_per_chunk.clone(),
+        rules: Arc::clone(rules),
+    }
 }

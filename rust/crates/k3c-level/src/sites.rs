@@ -136,7 +136,6 @@ impl ZonePlacer {
     }
 }
 
-#[allow(dead_code)] // RU6.5: generate ruft die Methoden
 impl Gen {
     /// Go: `placeSites`, verteilt je Seite und Zone 1 bis `perZoneMax` Mauern und Türme aus dem eigenen Strom
     /// `<biom>:<seed>:wallsites` (die übrigen Ströme bleiben unberührt). Mindestabstand zweier Zahlziele ist

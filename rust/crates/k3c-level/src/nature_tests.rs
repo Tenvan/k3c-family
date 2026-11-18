@@ -42,7 +42,6 @@ fn nature_counts(l: &Layout) -> (usize, usize, BTreeMap<String, usize>) {
 
 /// AC-01: gleicher Seed, gleiche Werte und gleiche Natur; die Werte liegen in den Bereichen des Bioms.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_gleicher_seed_gleiche_natur() {
     let b = biome("forest");
     let none = NatureValues::default();
@@ -72,7 +71,6 @@ fn natur_gleicher_seed_gleiche_natur() {
 
 /// AC-02: Zwei Seeds unterscheiden sich im selben Biom in Walddichte oder Mischung.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_seeds_unterscheiden_sich() {
     let b = biome("forest");
     let none = NatureValues::default();
@@ -85,7 +83,6 @@ fn natur_seeds_unterscheiden_sich() {
 
 /// AC-02: Die Walddichte ändert die Zahl der Bäume messbar (1 gegen 5).
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_walddichte_skaliert_baeume() {
     let b = biome("forest");
     let (low, _, _) = nature_counts(&generate_nature(&b, "dichte", &traits(&[("forestDensity", 1)])));
@@ -100,7 +97,6 @@ fn natur_walddichte_skaliert_baeume() {
 
 /// AC-03: Ein fest gesetzter Wert gilt unabhängig vom Seed.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_fester_wert_gilt() {
     let b = biome("forest");
     let mut fixed = traits(&[("forestDensity", 4)]);
@@ -117,7 +113,6 @@ fn natur_fester_wert_gilt() {
 
 /// AC-04: Monokultur erzeugt nur die eine Art.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_monokultur() {
     let b = biome("forest");
     let mono = weights("treeSpecies", &[("tanne", 0), ("pappel", 3), ("birke", 0)]);
@@ -131,7 +126,6 @@ fn natur_monokultur() {
 /// AC-04: Alle Baumarten fest auf 0 lehnt die Prüfung ab; ebenso ein Wert außerhalb des Bereichs und ein unbekannter
 /// Schlüssel.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_feste_werte_abgelehnt() {
     let b = biome("forest");
     let cases = [
@@ -241,7 +235,6 @@ fn natur_datenpruefung() {
 
 /// Ohne Eigenschaften bleibt das Level wie zuvor: neutrale Werte ändern keinen Wurf.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_neutraler_wert_aendert_nichts() {
     let b = biome("forest");
     let mut neutral = NatureValues::default();
@@ -286,7 +279,6 @@ fn natur_scale_count_rundet() {
 
 /// Chunk-Eigenschaften verschieben die Chunk-Arten: Lichtungen 0 und Bachläufe 0 lassen keine dieser Chunks übrig.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_chunk_gewichte() {
     let b = biome("forest");
     let l = generate_nature(&b, "chunks", &traits(&[("clearings", 0), ("streams", 0)]));
@@ -308,7 +300,6 @@ fn natur_chunk_gewichte() {
 
 /// Adern-Eigenschaften ändern die Zahl der Adern, die Prüfung zählt mit den Natur-Werten der Stufe.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_adern() {
     let b = biome("cave");
     for (v, want) in [(1, 1), (2, 2), (3, 3)] {
@@ -322,7 +313,6 @@ fn natur_adern() {
 
 /// Kristallfarben: Gewichts-Gruppe auf Adern, jede Ader bekommt eine Farbe.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn natur_kristallfarben() {
     let fixed = weights("crystalColors", &[("blau", 0), ("violett", 4), ("gruen", 0)]);
     let l = generate_nature(&biome("crystal"), "farben", &fixed);

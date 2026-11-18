@@ -37,7 +37,6 @@ fn backdrops_folge() {
 
 /// Das Level trägt die Folge aus den Biom-Daten, Chunks und Entities bleiben wie ohne sie.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn level_backdrops() {
     for id in ["forest", "cave", "mine", "ironhold", "crystal"] {
         let mut b = biome(id);

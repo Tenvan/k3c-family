@@ -56,7 +56,6 @@ pub(crate) fn fixed_objects(c: &PlannedChunk, cw: f64) -> Option<Cow<'_, [Planne
     None
 }
 
-#[allow(dead_code)] // RU6.5: generate ruft die Methoden
 impl Gen {
     /// Go: `slotIndex`, der Chunk-Index eines Platzes: +n liegt n Chunks rechts der Hub-Chunks, −n links davon.
     pub(crate) fn slot_index(&self, slot: i64) -> i64 {

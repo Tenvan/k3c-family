@@ -64,7 +64,6 @@ pub(crate) fn check_guards(c: &PlannedChunk, b: &Biome, g: &Geometry, rules: &Ru
     Ok(())
 }
 
-#[allow(dead_code)] // RU6.5: generate ruft guards_of
 impl Gen {
     /// Go: `guardsOf`, die Wachen der geplanten Chunks mit ihrer X-Position; ohne Würfe, die Ströme bleiben unberührt.
     pub(crate) fn guards_of(&self, chunks: &[Chunk]) -> Vec<Guard> {

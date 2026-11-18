@@ -11,6 +11,8 @@ use crate::lines::HubSiteRef;
 use crate::rules::Rules;
 use crate::types::{Chunk, PlannedChunk};
 
+pub use crate::level_gen::{generate, generate_with};
+
 /// Go: `HarborKind`, die Chunk-Art des Hafens (BAS, B-637, geplante-chunks.md § 10): ein geplanter Chunk mit genau
 /// einem festen Objekt in der Mitte, kein Zufalls-Ereignis (nicht in `EVENT_KINDS`) und nicht in den Biom-Summen.
 pub const HARBOR_KIND: &str = "harbor";
@@ -48,7 +50,6 @@ pub fn check_count(b: &Biome, n: i64) -> Result<(), String> {
 /// Go: `gen`, der Zustand während der Erzeugung; "" in `kinds` heißt: Chunk noch frei. Die Methoden stehen in den
 /// Modulen, die Go in derselben Datei hat (`planned_gen`, `guards`, `ruins`, `sites`, `level`).
 #[derive(Debug, Clone)]
-#[allow(dead_code)] // RU6.5: generate baut Gen
 pub(crate) struct Gen {
     pub b: Biome,
     pub r: Rng,
@@ -74,7 +75,6 @@ pub(crate) struct Gen {
     pub rules: Arc<Rules>,
 }
 
-#[allow(dead_code)] // RU6.5: generate ruft die Methoden
 impl Gen {
     /// Go: `gen.center`, die Mitte von Chunk `i`.
     pub(crate) fn center(&self, i: i64) -> f64 {

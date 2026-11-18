@@ -14,7 +14,6 @@ fn key(s: &WallSite) -> String {
 /// B-652 (AC-02, AC-03): je Zone und Seite 1 bis 3 Mauern und 1 bis 3 Türme, deterministisch, Mindestabstand der
 /// Zahlziele, ein Teil der Türme 4 bis 10 Units neben einer Mauer.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn sites_verteilt_500_seeds() {
     let p = rules().site_placement;
     let b = biome("forest");
@@ -105,7 +104,6 @@ fn near_wall(lay: &Layout, tower: &WallSite, p: &SitePlacement) -> bool {
 
 /// Jede Seite und Zone mit genug Platz bekommt mindestens eine Mauer und einen Turm.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn sites_jede_zone_hat_mauer_und_turm() {
     let b = biome("forest");
     for i in 0..100 {
@@ -132,7 +130,6 @@ fn required_zone_keys(zones: i64) -> Vec<String> {
 
 /// Die Plätze ändern die übrigen Würfe nicht: Entitäten und Chunks bleiben gleich (eigener Strom).
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn sites_aendern_nichts_an_den_entitaeten() {
     let lay = generate(&biome("forest"), "k3c-dev");
     assert!(
@@ -146,7 +143,6 @@ fn sites_aendern_nichts_an_den_entitaeten() {
 /// Baugrund (Variante A): Die erste Mauer und der erste Turm der Zone 1 liegen je Seite auf freiem Grund (FreeGround),
 /// das Layout bleibt unverändert und `on_free_ground` meldet genau deren Freiraum.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn sites_baugrund_zone1_frei() {
     let p = rules().site_placement;
     let b = biome("forest");
@@ -169,7 +165,6 @@ fn sites_baugrund_zone1_frei() {
 /// Untergrenze je Biom (B-652, Review BS12): Zone 1 hat in jedem Biom und Seed Mauer und Turm (fester Baugrund), auch
 /// mit 25-Units-Chunks.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn sites_zone1_jedes_biom() {
     for id in biome_ids() {
         let b = biome(&id);
@@ -191,7 +186,6 @@ fn sites_zone1_jedes_biom() {
 /// B-636 (AC-03): Das Wald-Biom hat je Seite einen Baumschul-Platz in einem Wald-Chunk, deterministisch; andere Biome
 /// keinen.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn nursery_plaetze_im_wald() {
     let p = rules().site_placement;
     for id in biome_ids() {
@@ -246,7 +240,6 @@ fn check_nursery_on_forest(id: &str, seed: &str, lay: &Layout, s: &WallSite, p: 
 /// B-636 (AC-03): Auf dem Baumschul-Platz stehen Bäume (der Wald-Chunk liefert sie), erst nach dem Roden wird er
 /// bezahlbar.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn nursery_hat_baeume_im_freiraum() {
     let p = rules().site_placement;
     let b: Biome = biome("forest");

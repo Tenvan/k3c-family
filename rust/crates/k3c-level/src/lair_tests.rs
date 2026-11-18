@@ -1,9 +1,8 @@
 use super::check_lair_fit;
 use crate::biome::Range;
+use crate::camps_tests::{camp_behind_portal, check_camp};
 use crate::planned_gen::Options;
-use crate::testutil::{
-    biome, biome_ids, camp_behind_portal, check_camp, count_entities, generate, generate_with, validate_with,
-};
+use crate::testutil::{biome, biome_ids, count_entities, generate, generate_with, validate_with};
 
 // Bau in der tiefsten Stufe jedes Bioms (B-981/AC-02): Options.Lair legt ihn fest, das Biom-Feld ist nur der Standard.
 
@@ -17,7 +16,6 @@ fn lair(on: bool) -> Options {
 /// Der Bau entsteht mit Options.Lair in jedem Biom genau einmal, ohne nie; Level und Prüfung sind sauber, der Abstand
 /// des Camps zum Bau (und zu den Linien) gilt über 500 Seeds in jedem Biom.
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn bau_in_jedem_biom_500_seeds() {
     for id in biome_ids() {
         let b = biome(&id);
@@ -54,7 +52,6 @@ fn bau_in_jedem_biom_500_seeds() {
 
 /// Ohne Options.Lair gilt das Feld des Bioms, das Level bleibt bytegleich zu Generate (Golden).
 #[test]
-#[ignore = "wartet auf RU6.5"]
 fn bau_standard_ist_biom_feld() {
     for id in biome_ids() {
         let b = biome(&id);

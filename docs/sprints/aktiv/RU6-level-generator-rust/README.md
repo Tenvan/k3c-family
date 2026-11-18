@@ -97,7 +97,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU6.2 | `RU6.2-natur-nature-check-lair.md` | Umsetzung | autonom | fertig |
 | RU6.3 | `RU6.3-planung-gen-totals-guards-ruins.md` | Umsetzung | autonom | fertig |
 | RU6.4 | `RU6.4-sites-validate.md` | Umsetzung | autonom | fertig |
-| RU6.5 | `RU6.5-erzeugung-level-golden.md` | Umsetzung | autonom | offen |
+| RU6.5 | `RU6.5-erzeugung-level-golden.md` | Umsetzung | autonom | fertig |
 | RU6.6 | `RU6.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
