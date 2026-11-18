@@ -15,10 +15,12 @@ use super::draw::{Page, Row};
 use super::keys::{Base, Handler, Key, Note, device_name, first, move_sel, run};
 use super::layout::{MAT_BLUE, MAT_CORAL, MAT_GOLD, MAT_GREEN, MAT_PURPLE, MAT_RED, Material};
 use super::options::new_options;
-use super::pending::{new_saves, new_testing, new_world_pick};
+use super::pending::new_testing;
+use super::saves::new_saves;
 use super::table::new_licenses;
 use super::texts::{TextKey, tr, tr1};
 use super::version::version_text;
+use super::worldpick::new_world_pick;
 use crate::view::cell::Cell;
 use crate::view::frame::{CueKind, Frame, Outcome};
 use crate::view::input::{DeviceID, Input};
@@ -90,7 +92,7 @@ pub fn dev_build() -> bool {
 
 impl MainScreen {
     /// Sucht den neuesten ladbaren Spielstand und wählt „Weiter“, wenn es ihn gibt, sonst „Neues Spiel“.
-    fn refresh(&mut self, s: &mut dyn Session) {
+    pub fn refresh(&mut self, s: &mut dyn Session) {
         self.listed = true;
         self.latest = SaveInfo::default();
         match s.list() {

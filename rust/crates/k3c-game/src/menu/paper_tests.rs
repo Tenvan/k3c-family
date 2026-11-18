@@ -14,7 +14,7 @@ use super::layout::{
     geom_of, rgb,
 };
 use super::main_screen::MAIN_COUNT;
-use super::pending::PAUSE_ROWS;
+use super::pause::PAUSE_ROWS;
 use crate::view::cell::{Rectangle, rect};
 use k3c_platform::Filter;
 

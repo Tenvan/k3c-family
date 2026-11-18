@@ -1,6 +1,6 @@
 # RU12 · CLI · Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -89,7 +89,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU12.1 | `RU12.1-menu-saves-worldpick-pause.md` | Umsetzung | autonom | offen |
+| RU12.1 | `RU12.1-menu-saves-worldpick-pause.md` | Umsetzung | autonom | fertig |
 | RU12.2 | `RU12.2-menu-padtest.md` | Umsetzung | autonom | offen |
 | RU12.3 | `RU12.3-menu-testing-licenses.md` | Umsetzung | autonom | offen |
 | RU12.4 | `RU12.4-review.md` | Review | autonom | offen |

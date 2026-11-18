@@ -25,11 +25,15 @@ pub mod layout;
 pub mod lobby;
 pub mod main_screen;
 pub mod options;
+pub mod pause;
 mod pending;
+pub mod placeholder;
+pub mod saves;
 pub mod table;
 pub mod texts;
 mod texts_data;
 pub mod version;
+pub mod worldpick;
 
 #[cfg(test)]
 mod art_tests;
@@ -50,11 +54,17 @@ mod options_tests;
 #[cfg(test)]
 mod paper_tests;
 #[cfg(test)]
+mod pause_tests;
+#[cfg(test)]
+mod saves_tests;
+#[cfg(test)]
 mod table_tests;
 #[cfg(test)]
 mod testutil;
 #[cfg(test)]
 mod texts_tests;
+#[cfg(test)]
+mod worldpick_tests;
 
 use std::cell::RefCell;
 use std::path::Path;
@@ -81,6 +91,8 @@ pub struct Menus {
     pub n_seats: usize,
     /// zeigt das nächste Hauptmenü (Fehler beim Verlassen)
     pub notice: Note,
+    /// Versatz der Ortszeit zu UTC in Minuten für die Zeit der Spielstand-Zeilen (Standard 0; der Client setzt ihn)
+    pub utc_offset_min: i64,
 
     /// Bilder je Welt (`data/paper.json › weltbilder`)
     pub worlds: WorldImages,
@@ -118,6 +130,7 @@ pub fn new_shared(lib: Option<Rc<RefCell<Library>>>, keys: Option<KeyTable>) -> 
         seats: [Seat::default(); MAX_PLAYERS],
         n_seats: 0,
         notice: Note::default(),
+        utc_offset_min: 0,
         worlds: WorldImages::from_data(),
         usable,
         has,
@@ -160,7 +173,7 @@ impl MenusRole for MenuSet {
 
     /// Das Pause-Menü.
     fn pause(&mut self) -> Box<dyn Screen> {
-        Box::new(pending::new_pause(&self.shared))
+        Box::new(pause::new_pause(&self.shared))
     }
 }
 
@@ -170,7 +183,7 @@ impl MenuPages for MenuSet {
     fn page(&mut self, name: &str, in_game: bool, by: DeviceID) -> Option<Box<dyn Screen>> {
         let m = &self.shared;
         Some(match name {
-            "saves" => Box::new(pending::new_saves(m)),
+            "saves" => Box::new(saves::new_saves(m)),
             "options" => Box::new(options::new_options(m, in_game)),
             "lobby" => Box::new(lobby::new_lobby(m, by)),
             "keys" => Box::new(table::new_keys(m)),

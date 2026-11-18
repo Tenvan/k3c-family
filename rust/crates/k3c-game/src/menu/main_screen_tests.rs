@@ -1,16 +1,16 @@
 //! Tests aus `native/k3c-game/menu/main_test.go`, dazu `TestMainShowsOutcomeOfFrame` (`pause_test.go`) und die zwei
-//! Hauptmenü-Tests aus `table_test.go`. Tests, die einen Screen aus RU12 öffnen (Spielstand-Liste, Weltauswahl, Pause,
-//! Testing), warten auf RU12; Optionen liefert RU9.5.
+//! Hauptmenü-Tests aus `table_test.go`. Tests, die einen Screen aus RU12.2 oder RU12.3 öffnen (Testing, Lizenzen), warten darauf.
 
 use super::MenuSet;
 use super::keys::Note;
 use super::main_screen::{MAIN_CONTINUE, MAIN_LICENSES, MAIN_LOAD, MAIN_NEW, MAIN_QUIT, new_main, outcome_note};
+use super::pause::{PAUSE_LEAVE, new_pause};
 use super::testutil::{
     FakeSession, KEYS1, PAD1, PAD2, err_fake, has_cue, new_menus, press, save, step_through, version_guard,
 };
 use super::texts::{TextKey, tr};
 use super::version::{set_version, version};
-use crate::view::frame::{CueKind, Outcome};
+use crate::view::frame::{CueKind, Outcome, Seat};
 use crate::view::input::{Action, DeviceInput, Input};
 use crate::view::screen::{Screen, StepKind};
 use crate::view::session::{SaveInfo, Session};
@@ -125,9 +125,10 @@ fn main_confirm_play_quit_licenses() {
     }
 }
 
-/// Neues Spiel (Weltauswahl), Laden (Liste) und Optionen öffnen Screens aus RU12 bzw. RU9.5.
+/// Neues Spiel (Weltauswahl), Laden (Liste) und Optionen öffnen ihre Screens; die Tabelle läuft erst, wenn RU12.3 das
+/// Testing-Menü (`new_testing`) liefert.
 #[test]
-#[ignore = "wartet auf RU12"]
+#[ignore = "wartet auf RU12.3"]
 fn main_confirm_transitions() {}
 
 #[test]
@@ -190,8 +191,19 @@ fn main_list_error_is_shown() {
 
 /// Nach dem Laden-Menü (Liste, in der gelöscht wurde) liest das Hauptmenü die Spielstände neu.
 #[test]
-#[ignore = "wartet auf RU12"]
-fn main_rereads_list_after_load_menu() {}
+fn main_rereads_list_after_load_menu() {
+    let mut sc = new_main(&new_menus());
+    let mut s = FakeSession {
+        saves: vec![save("a", 1, true)],
+        ..Default::default()
+    };
+    sc.update(&Input::default(), &mut s);
+    sc.sel = MAIN_LOAD;
+    sc.update(&press(PAD1, &[Action::Confirm]), &mut s);
+    s.saves.clear(); // in der Liste gelöscht
+    sc.update(&Input::default(), &mut s);
+    assert!(sc.off(MAIN_CONTINUE), "Weiter bleibt nach Löschen wählbar");
+}
 
 #[test]
 fn main_shows_notice_once() {
@@ -236,10 +248,51 @@ fn main_first_draw_shows_loading() {
     );
 }
 
-/// Erstes Bild nach „Spiel verlassen“: braucht das Pause-Menü (RU12).
+/// Erstes Bild nach „Spiel verlassen“ (B-813 AC-03, Go: `TestMainFirstDrawAfterLeave`): Das Hauptmenü kennt den
+/// Spielstand schon vor seinem ersten Update; ein Hauptmenü ohne gelesene Liste zeigt „lädt“, nie „Kein Spielstand
+/// vorhanden“. Rust hat kein Downcast auf `Box<dyn Screen>`: Das Hauptmenü kommt aus `PauseScreen::leave`.
 #[test]
-#[ignore = "wartet auf RU12"]
-fn main_first_draw_after_leave() {}
+fn main_first_draw_after_leave() {
+    let mut s = FakeSession {
+        active: true,
+        saves: vec![save("burg", 3, true)],
+        seats: vec![Seat {
+            player: 0,
+            device: PAD1,
+            ..Default::default()
+        }],
+        ..Default::default()
+    };
+    let mut pause = new_pause(&new_menus());
+    pause.sel = PAUSE_LEAVE;
+    let st = pause.update(&press(PAD1, &[Action::Confirm]), &mut s);
+    assert!(
+        st.kind == StepKind::Replace && st.next.is_some(),
+        "Verlassen: {:?}",
+        st.kind
+    );
+    let main = pause.leave(&mut s);
+    main.fill("de");
+    {
+        let pg = main.pg.borrow();
+        let row = &pg.rows[MAIN_CONTINUE as usize];
+        assert!(
+            row.value.contains("burg") && !row.off,
+            "erstes Bild: Weiter {:?} (aus {})",
+            row.value,
+            row.off
+        );
+    }
+    let fresh = new_main(&new_menus());
+    fresh.fill("de");
+    let pg = fresh.pg.borrow();
+    let row = &pg.rows[MAIN_CONTINUE as usize];
+    assert!(
+        row.value == tr("de", TextKey::ContinueLoading) && !row.off,
+        "vor dem ersten Update: {:?}",
+        row.value
+    );
+}
 
 #[test]
 fn main_shows_outcome_of_frame() {
