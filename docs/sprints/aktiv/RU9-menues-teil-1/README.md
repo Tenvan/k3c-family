@@ -95,7 +95,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU9.3 | `RU9.3-menu-table-texts.md` | Umsetzung | autonom | fertig |
 | RU9.4 | `RU9.4-menu-main-lobby.md` | Umsetzung | autonom | fertig |
 | RU9.5 | `RU9.5-menu-options-controls.md` | Umsetzung | autonom | fertig |
-| RU9.6 | `RU9.6-menu-bildvergleich.md` | Umsetzung | autonom | offen |
+| RU9.6 | `RU9.6-menu-bildvergleich.md` | Umsetzung | autonom | fertig |
 | RU9.7 | `RU9.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

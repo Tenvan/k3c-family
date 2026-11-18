@@ -36,6 +36,8 @@ mod art_tests;
 #[cfg(test)]
 mod controls_tests;
 #[cfg(test)]
+mod image_tests;
+#[cfg(test)]
 mod keys_tests;
 #[cfg(test)]
 mod layout_tests;
@@ -127,6 +129,13 @@ pub fn new(lib: Option<Rc<RefCell<Library>>>, keys: Option<KeyTable>) -> Box<dyn
     Box::new(MenuSet {
         shared: new_shared(lib, keys),
     })
+}
+
+/// Wie [`new`], aber als [`MenuSet`] mit Zugriff auf die Seiten (`MenuPages`) und das Hauptmenü als eigener Typ.
+pub fn new_set(lib: Option<Rc<RefCell<Library>>>, keys: Option<KeyTable>) -> MenuSet {
+    MenuSet {
+        shared: new_shared(lib, keys),
+    }
 }
 
 /// MenuSet erfüllt `view::Menus` und `view::MenuPages` (Go: `*menus`).
