@@ -7,6 +7,7 @@ use winit::window::Window;
 
 use super::setup::{Grow, bind_layout, pipeline, river_layout, river_pipelines, river_stride, sampler, upload, write};
 use crate::batch::Pending;
+use crate::log;
 use crate::river::{RIVER_BYTES, pack_river};
 use crate::{Blend, Filter, Frame, INST_BYTES, Kind, LOGICAL, Rect, VERT_BYTES};
 
@@ -46,7 +47,7 @@ pub struct Gfx {
 
 impl Gfx {
     /// Erzeugt Gerät und Pipelines für `win`; liefert zusätzlich den Namen des Backends (Vulkan, Dx12 …).
-    pub fn new(win: Arc<Window>) -> Result<(Self, String), String> {
+    pub fn new(win: Arc<Window>, novsync: bool) -> Result<(Self, String), String> {
         let desc = wgpu::InstanceDescriptor::new_without_display_handle_from_env();
         let inst = wgpu::Instance::new(desc);
         let surface = inst.create_surface(win.clone()).map_err(|e| e.to_string())?;
@@ -62,7 +63,8 @@ impl Gfx {
         let mut config = surface
             .get_default_config(&adapter, size.width.max(1), size.height.max(1))
             .ok_or("Surface nicht nutzbar")?;
-        config.present_mode = wgpu::PresentMode::Fifo;
+        let modes = surface.get_capabilities(&adapter).present_modes;
+        config.present_mode = pick_present_mode(novsync, &modes);
         surface.configure(&device, &config);
         let bgl = bind_layout(&device);
         let linear = sampler(&device, wgpu::FilterMode::Linear);
@@ -272,6 +274,22 @@ impl Gfx {
     }
 }
 
+/// Präsentationsmodus: mit `novsync` ohne Warten (`Immediate`, sonst `Mailbox`), sonst oder ohne Treffer `Fifo`
+/// (immer verfügbar).
+fn pick_present_mode(novsync: bool, modes: &[wgpu::PresentMode]) -> wgpu::PresentMode {
+    use wgpu::PresentMode as M;
+    if !novsync {
+        return M::Fifo;
+    }
+    match [M::Immediate, M::Mailbox].into_iter().find(|m| modes.contains(m)) {
+        Some(m) => m,
+        None => {
+            log::info("🐢 novsync: kein Modus ohne Warten, Fifo", &[]);
+            M::Fifo
+        }
+    }
+}
+
 /// Ausschnitt in logischen Einheiten → Scissor in Pixeln der Surface (gleiche Streckung wie der Shader);
 /// `None` bei leerer Fläche.
 fn scissor(clip: Option<Rect>, sw: u32, sh: u32) -> Option<(u32, u32, u32, u32)> {
@@ -289,6 +307,17 @@ fn scissor(clip: Option<Rect>, sw: u32, sh: u32) -> Option<(u32, u32, u32, u32)>
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn present_modus_nach_wunsch_und_angebot() {
+        use wgpu::PresentMode as M;
+        let all = [M::Fifo, M::Mailbox, M::Immediate];
+        assert_eq!(pick_present_mode(false, &all), M::Fifo);
+        assert_eq!(pick_present_mode(true, &all), M::Immediate);
+        assert_eq!(pick_present_mode(true, &[M::Fifo, M::Mailbox]), M::Mailbox);
+        assert_eq!(pick_present_mode(true, &[M::Fifo]), M::Fifo);
+        assert_eq!(pick_present_mode(true, &[]), M::Fifo);
+    }
 
     #[test]
     fn ausschnitt_wird_auf_surface_gestreckt_und_begrenzt() {

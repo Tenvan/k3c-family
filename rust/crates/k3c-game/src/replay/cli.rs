@@ -1,5 +1,5 @@
 //! Befehlszeile: `k3c-game replay <datei> [--headless|--window] [--measure N] [--out pfad] [--measure-frames datei]
-//! [--size BxH]`.
+//! [--size BxH] [--novsync]`.
 
 use std::path::PathBuf;
 
@@ -31,6 +31,8 @@ pub struct Options {
     pub frames: Option<PathBuf>,
     /// Fenstergröße (`--size BxH`, Standard 1280x720).
     pub size: (u32, u32),
+    /// Ohne Warten auf die Bildwiederholung präsentieren (`--novsync`).
+    pub novsync: bool,
 }
 
 /// Liest `BxH` wie `parseSize` des Go-Spiels.
@@ -46,13 +48,14 @@ pub fn parse_size(s: &str) -> Result<(u32, u32), String> {
 
 /// Liest die Argumente nach `replay`; Fehler sind Meldungen für Exit-Code 2.
 pub fn parse_args(args: &[String]) -> Result<Options, String> {
-    let (mut file, mut headless, mut window) = (None, false, false);
+    let (mut file, mut headless, mut window, mut novsync) = (None, false, false, false);
     let (mut measure, mut out, mut frames, mut size) = (None, None, None, DEFAULT_SIZE);
     let mut it = args.iter();
     while let Some(a) = it.next() {
         match a.as_str() {
             "--headless" => headless = true,
             "--window" => window = true,
+            "--novsync" => novsync = true,
             "--measure" => {
                 let v = it.next().ok_or("--measure braucht eine Zahl von Takten")?;
                 let n: u64 = v.parse().map_err(|_| format!("--measure: `{v}` ist keine Zahl"))?;
@@ -84,6 +87,7 @@ pub fn parse_args(args: &[String]) -> Result<Options, String> {
         out,
         frames,
         size,
+        novsync,
     })
 }
 
@@ -116,6 +120,8 @@ mod tests {
         assert_eq!(o.frames, Some(PathBuf::from("f.jsonl")));
         assert_eq!(o.size, (1920, 1080));
         assert_eq!(p(&["x.gz"]).unwrap().size, DEFAULT_SIZE);
+        assert!(!p(&["x.gz"]).unwrap().novsync);
+        assert!(p(&["x.gz", "--novsync"]).unwrap().novsync);
     }
 
     #[test]

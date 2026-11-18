@@ -22,14 +22,23 @@ pub mod draw;
 pub mod hero;
 pub mod keys;
 pub mod layout;
+pub mod licenses;
 pub mod lobby;
 pub mod main_screen;
 pub mod options;
-mod pending;
+pub mod padtest;
+pub mod padtest_read;
+pub mod pause;
+pub mod placeholder;
+pub mod saves;
+pub mod stress_presets;
 pub mod table;
+pub mod testing;
+mod testing_text;
 pub mod texts;
 mod texts_data;
 pub mod version;
+pub mod worldpick;
 
 #[cfg(test)]
 mod art_tests;
@@ -48,13 +57,23 @@ mod main_screen_tests;
 #[cfg(test)]
 mod options_tests;
 #[cfg(test)]
+mod padtest_tests;
+#[cfg(test)]
 mod paper_tests;
 #[cfg(test)]
+mod pause_tests;
+#[cfg(test)]
+mod saves_tests;
+#[cfg(test)]
 mod table_tests;
+#[cfg(test)]
+mod testing_tests;
 #[cfg(test)]
 mod testutil;
 #[cfg(test)]
 mod texts_tests;
+#[cfg(test)]
+mod worldpick_tests;
 
 use std::cell::RefCell;
 use std::path::Path;
@@ -62,6 +81,7 @@ use std::rc::Rc;
 
 use self::draw::Painter;
 use self::keys::Note;
+use self::padtest_read::{NoPads, PadSource};
 use crate::art::{Font, Library, WorldImages, load_font};
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::Seat;
@@ -69,6 +89,7 @@ use crate::view::input::DeviceID;
 use crate::view::keys::KeyTable;
 use crate::view::screen::{MenuPages, Menus as MenusRole, Screen};
 use crate::view::session::Session;
+use crate::view::stress::StressStarter;
 
 /// Menus hält, was die Bildschirme teilen: Zeichner, Tastenbelegung, Plätze des laufenden Spiels, Meldung fürs
 /// Hauptmenü.
@@ -81,6 +102,8 @@ pub struct Menus {
     pub n_seats: usize,
     /// zeigt das nächste Hauptmenü (Fehler beim Verlassen)
     pub notice: Note,
+    /// Versatz der Ortszeit zu UTC in Minuten für die Zeit der Spielstand-Zeilen (Standard 0; der Client setzt ihn)
+    pub utc_offset_min: i64,
 
     /// Bilder je Welt (`data/paper.json › weltbilder`)
     pub worlds: WorldImages,
@@ -88,6 +111,12 @@ pub struct Menus {
     pub usable: Option<Probe>,
     /// meldet, ob das Sheet eines Assets geladen ist (`None`: unbekannt, Bild gilt als da)
     pub has: Option<Probe>,
+
+    /// liefert die Pads für den Tasten-Test (Standard: keine; Go: `readPads`)
+    pub pads: Box<dyn PadSource>,
+
+    /// startet den Stresstest der Seite Testing (Go: Rolle `view.StressStarter` der Session); `None`: nicht verfügbar
+    pub starter: Option<Box<dyn StressStarter>>,
 }
 
 /// Eine Abfrage nach einem Asset (`usable`, `has`).
@@ -118,9 +147,12 @@ pub fn new_shared(lib: Option<Rc<RefCell<Library>>>, keys: Option<KeyTable>) -> 
         seats: [Seat::default(); MAX_PLAYERS],
         n_seats: 0,
         notice: Note::default(),
+        utc_offset_min: 0,
         worlds: WorldImages::from_data(),
         usable,
         has,
+        pads: Box::new(NoPads),
+        starter: None,
     }))
 }
 
@@ -160,7 +192,7 @@ impl MenusRole for MenuSet {
 
     /// Das Pause-Menü.
     fn pause(&mut self) -> Box<dyn Screen> {
-        Box::new(pending::new_pause(&self.shared))
+        Box::new(pause::new_pause(&self.shared))
     }
 }
 
@@ -170,7 +202,7 @@ impl MenuPages for MenuSet {
     fn page(&mut self, name: &str, in_game: bool, by: DeviceID) -> Option<Box<dyn Screen>> {
         let m = &self.shared;
         Some(match name {
-            "saves" => Box::new(pending::new_saves(m)),
+            "saves" => Box::new(saves::new_saves(m)),
             "options" => Box::new(options::new_options(m, in_game)),
             "lobby" => Box::new(lobby::new_lobby(m, by)),
             "keys" => Box::new(table::new_keys(m)),
@@ -181,6 +213,16 @@ impl MenuPages for MenuSet {
 }
 
 impl Menus {
+    /// Setzt die Quelle der Pads (der Client: `InputPads`, Tests: Schein-Quelle).
+    pub fn set_pad_source(&mut self, p: Box<dyn PadSource>) {
+        self.pads = p;
+    }
+
+    /// Setzt den Starter des Stresstests (game; Tests: Schein-Starter).
+    pub fn set_stress_starter(&mut self, st: Box<dyn StressStarter>) {
+        self.starter = Some(st);
+    }
+
     /// Übernimmt die Plätze des laufenden Spiels aus der Session (ohne Listen zu halten).
     pub fn sync(&mut self, s: &dyn Session) {
         self.n_seats = 0;

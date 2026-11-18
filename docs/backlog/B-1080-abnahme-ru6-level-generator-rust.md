@@ -2,14 +2,14 @@
 
 - **Domäne:** SIM
 - **Typ:** Schuld
-- **Prio:** niedrig
+- **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
-- **Sprint:** RU6
+- **Status:** eingeplant
+- **Sprint:** RU45
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
 - **Spec:** freigegeben
-- **Revision:** 1
+- **Revision:** 2
 - **Freigabe:** autonom, Claude, 2026-11-18
 - **Duplikat von:** –
 - **Ersetzt:** –
@@ -37,7 +37,9 @@ Neue Level-Regeln.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `rust/crates/k3c-level/**`
+Läuft nur auf dem Second Worker (Lane `zweit`; die Sim-Sperre gilt dort nicht, `docs/arbeitsweise.md` › Second Worker). Der Level-Vergleich braucht ein Go-Werkzeug auf der Go-Seite, weil `k3c-sim level` nur Text liefert, kein Baum im Golden-Format.
+
+- **Bereich:** `rust/crates/k3c-level/**`, `engine/level/vergleich_dump_test.go`
 - **Abhängig von:** RU6
 - **Braucht 🧑:** –
 - **Größe:** M
@@ -45,16 +47,16 @@ Neue Level-Regeln.
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+`K3C_LEVEL_DUMP=.work/level-vergleich go test ./engine/level -run TestVergleichDump` schreibt je Biom und Seed eine Datei im Golden-Format; `K3C_LEVEL_VERGLEICH=.work/level-vergleich cargo test --release -p k3c-level vergleich_go -- --nocapture` meldet 0 Abweichungen oder nennt Biom, Seed und Pfad der ersten Abweichung.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Fehlt auf dem Rechner ein C-Compiler, läuft `check:race` nicht (still übersprungen): AC-01 gilt dann nur für `gen:paper`, das Ergebnis nennt es, `check:race` bleibt als Ticket offen. Eine Abweichung im Level-Vergleich wird ein Ticket (Typ Problem) und bricht den Lauf nicht ab (alle Biome fertig vergleichen).
 
 ## Akzeptanzkriterien
 
-- **AC-01** `task check:race` und `task gen:paper` laufen grün.
-- **AC-02** Level-Vergleich Go gegen Rust über mindestens 1000 Seeds je Biom ohne Abweichung (oder Befund als Ticket).
+- **AC-01** `task check:race` und `task gen:paper` laufen grün (ohne C-Compiler: `gen:paper` grün, `check:race` als übersprungen genannt, Ticket).
+- **AC-02** Level-Vergleich Go gegen Rust über mindestens 1000 Seeds je Biom (alle Biome aus `data/biomes/`) ohne Abweichung (oder Befund als Ticket). Fließkomma 1e-6 relativ, sonst gleich (Entscheidung 012).
 
 ## Offene Fragen
 
@@ -62,4 +64,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Verschoben von RU6 nach RU45 (2026-11-18, Hauptrechner). Umgebung: Second Worker. Sessions RU45.1 (AC-01) und RU45.2 (AC-02).

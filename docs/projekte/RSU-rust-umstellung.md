@@ -42,13 +42,14 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | erledigt |
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | erledigt |
 | RU42 | Leitplanken für Leistung und Stabilität | erledigt |
-| RU44 | Bild-Pfad ohne Allokationen | aktiv |
+| RU44 | Bild-Pfad ohne Allokationen | erledigt |
+| RU45 | Abnahme- und Messläufe auf dem Second Worker | aktiv |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | erledigt |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | erledigt |
 | RU11 | Sim: Einheiten und Gegner | erledigt |
 | RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | erledigt |
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | erledigt |
-| RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | geplant |
+| RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | erledigt |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | erledigt |
 | RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | erledigt |
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | geplant |

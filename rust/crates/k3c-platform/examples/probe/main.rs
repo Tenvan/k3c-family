@@ -196,6 +196,7 @@ fn main() {
             measure: None,
             max_seconds: flag(&raw, "--secs").and_then(|v| v.parse().ok()),
             fullscreen: false,
+            ..Default::default()
         };
         if let Err(e) = run_window(&mut two::Two::new(open_audio()), cfg) {
             fail(&e.to_string());
@@ -212,6 +213,7 @@ fn main() {
         measure: args.get("measure").map(PathBuf::from),
         max_seconds: args.get("secs").and_then(|v| v.parse().ok()),
         fullscreen: false,
+        ..Default::default()
     };
     let mut audio = open_audio();
     let ogg = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/audio/probe-a.ogg");

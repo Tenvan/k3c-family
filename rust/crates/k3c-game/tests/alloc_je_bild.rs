@@ -19,9 +19,10 @@ static ALLOC: CountingAlloc = CountingAlloc;
 
 const WARMUP: usize = 120;
 /// Obergrenze der Allokationen in einem Bild (`step` + `draw`) nach dem Aufwaermen.
-/// Gemessen 2026-11-18 (deterministisch, zwei Laeufe gleich): Maximum 805 (step 788, draw 29), Mittel 478, alle 179 Bilder
-/// allokieren. Abbau: B-1077 (step) und B-1078 (draw); danach die Grenze senken.
-const MAX_ALLOCS_JE_BILD: u64 = 805;
+/// Gemessen 2026-11-18 nach RU44 (deterministisch): Maximum 782 (step 782, draw 19), Mittel 460.9, alle 179 Bilder
+/// allokieren (vorher 805, step 788, draw 29, Mittel 478). Rest: `World::clone` je Takt in `step` (B-1077, braucht
+/// Aenderungen in k3c-sim) und neue Figuren/Texte in `draw` (B-1078, `PERF`-Marken); Ziel 0, Grenze beim Abbau mitsenken.
+const MAX_ALLOCS_JE_BILD: u64 = 782;
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../../..")

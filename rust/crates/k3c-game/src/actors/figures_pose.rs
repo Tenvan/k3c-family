@@ -45,6 +45,8 @@ impl Actors {
         fg
     }
 
+    // PERF(B-1078): Eine neue Figur legt ihren Actor an (rund 10 bis 19 Allokationen: Strings, Posen, Rc-Zähler); das
+    // geschieht einmal je Figur beim Erscheinen, nicht je Bild. Ein Actor-Pool bräuchte Änderungen an k3c-game/art.
     /// ensureActors legt die Rig-Actors der Figuren an, die noch keinen haben (Zeichenfläche für die Texturen), und
     /// stellt ihre Pose am Actor ein.
     pub fn ensure_actors(&mut self, canvas: &mut dyn Canvas) {

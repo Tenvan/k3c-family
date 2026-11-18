@@ -13,7 +13,7 @@ use super::Shared;
 use super::draw::Painter;
 use super::keys::{Base, Handler, Key, run};
 use super::layout::{COL_LINE, COL_TEXT, COL_TITLE, Geom, MAT_LINEN, geom_of};
-use super::pending::licenses;
+use super::licenses::licenses;
 use super::texts::{TextKey, tr, tr1};
 use crate::view::cell::{Cell, Rectangle};
 use crate::view::frame::{CueKind, Frame};

@@ -245,6 +245,7 @@ pub fn run(o: &Options) -> Result<(), String> {
         measure: o.measure.map(|_| o.out.clone()),
         max_seconds: o.measure,
         fullscreen: o.fullscreen,
+        ..Default::default()
     };
     run_window(&mut demo, cfg)
 }
