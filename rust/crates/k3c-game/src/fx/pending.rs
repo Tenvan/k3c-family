@@ -14,5 +14,6 @@ pub struct Aura {
 
 /// Go: `sim.AurasOf`.
 pub fn aura_of(_w: &World, _p: &Player) -> Vec<Aura> {
-    unimplemented!("RU18: auras_of")
+    // Bis RU18: keine Auren statt Absturz im Standardpfad (Review RU17.6).
+    Vec::new()
 }
