@@ -143,7 +143,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1068](B-1068-abnahme-ru20.md) | CLI | Schuld | mittel | offen | RU20 | Abnahme RU20: Sichtprüfung HUD und Gen-Läufe |
 | [B-1069](B-1069-rust-fenstergroesse-aus-config.md) | CLI | Schuld | niedrig | offen | RU30 | k3c-platform öffnet das Fenster fest mit 1280x720, --size der Wiedergabe wirkt nicht |
 | [B-1074](B-1074-gate-messung-g2-ruhiger-pc-mini-pc.md) | CLI | Schuld | mittel | offen | RU36 | Gate-Messung G2 am ruhigen PC und Mini-PC samt Sichtprüfung (aus RU39.2) |
-| [B-1075](B-1075-rust-allokationen-je-bild-messen.md) | CLI | Schuld | mittel | offen | RU36 | Allokationen je Bild im Rust-Zeichenpfad sind nicht gemessen |
+| [B-1076](B-1076-stab-sim-panics-in-result-umbauen.md) | CLI | Schuld | niedrig | eingeplant | RU43 | Sim-Panics (Go-Nil-Dereferenz, Ereignis, Tag/Nacht-Zyklus) und Test-Fixtures in Result umbauen |
+| [B-1077](B-1077-perf-allokationen-im-replay-takt.md) | CLI | Schuld | mittel | eingeplant | RU43 | PERF: Replay-Takt (step) allokiert bis zu 788 mal je Bild, Ziel 0 |
+| [B-1078](B-1078-perf-allokationen-im-draw-pfad.md) | CLI | Schuld | mittel | eingeplant | RU43 | PERF: draw allokiert bis zu 29 mal je Bild, Ziel 0 |
 
 ## Archiv
 

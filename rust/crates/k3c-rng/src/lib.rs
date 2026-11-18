@@ -49,6 +49,7 @@ impl Rng {
     }
 
     /// `weighted` zieht einen Schlüssel nach Gewicht, in der Reihenfolge der Liste.
+    #[allow(clippy::panic)] // Vertrag wie Go/TS: keine positiven Gewichte ist ein Programmfehler (Test should_panic)
     pub fn weighted(&mut self, weights: &[Weight]) -> String {
         let mut total = 0.0;
         for w in weights {
@@ -70,6 +71,7 @@ impl Rng {
 }
 
 /// `pick` wählt ein Element; wie in TS ein Fehler bei leerer Liste.
+#[allow(clippy::panic)] // Vertrag wie TS: leere Liste ist ein Programmfehler (Test should_panic)
 pub fn pick<T: Clone>(r: &mut Rng, items: &[T]) -> T {
     if items.is_empty() {
         panic!("Pick auf leerer Liste");

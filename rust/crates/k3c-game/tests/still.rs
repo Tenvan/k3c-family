@@ -9,6 +9,7 @@
 //! Die gerenderte Grafik (`public/grafik`, `task gen:paper`) ist nicht eingecheckt: Ohne sie überspringen die Tests
 //! mit Hinweis; `K3C_GRAFIK_DIR` zeigt auf einen anderen Ordner. Mit `K3C_STILL_OUT=<ordner>` schreiben sie die
 //! Rust-Bilder (zum Ansehen) und die Abweichungsbilder.
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)] // Testcode: Fehlschlag ist der Befund
 
 use std::path::{Path, PathBuf};
 

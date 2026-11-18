@@ -2,6 +2,7 @@
 //!
 //! Golden schreibt nur Go (`task go:golden`); hier gibt es kein `-update`. Bewusste Abweichung von Go
 //! (Leitfaden § 3): `null` und die leere Liste gelten als gleich, weil Go eine `nil`-Liste als `null` schreibt.
+#![allow(clippy::panic)] // Testhilfe wie Gos `t.Fatalf`: ein unlesbares Golden bricht den Test ab
 
 use std::collections::BTreeSet;
 use std::io::Read;
@@ -108,8 +109,12 @@ pub fn go_float(x: f64) -> String {
     }
     let sign = if x < 0.0 { "-" } else { "" };
     let e = format!("{:e}", x.abs()); // kürzeste Ziffern, z. B. 1.5e-7
-    let (mant, exp) = e.split_once('e').expect("Exponent");
-    let exp: i32 = exp.parse().expect("Exponent als Zahl");
+    let Some((mant, exp)) = e.split_once('e') else {
+        return x.to_string(); // `{:e}` schreibt immer einen Exponenten
+    };
+    let Ok(exp) = exp.parse::<i32>() else {
+        return x.to_string();
+    };
     if !(-4..6).contains(&exp) {
         let es = if exp < 0 { '-' } else { '+' };
         return format!("{sign}{mant}e{es}{:02}", exp.abs());

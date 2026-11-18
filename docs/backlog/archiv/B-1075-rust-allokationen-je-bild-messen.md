@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** RU36
+- **Umgebung:** offline
+- **Status:** erledigt
+- **Sprint:** RU42
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-18
 - **Duplikat von:** –
 - **Ersetzt:** –
 
