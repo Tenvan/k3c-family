@@ -55,8 +55,8 @@ fn endboss_phasen() {
     step_for(w, 10.5);
     assert!(count_kind(w, "crystalSpider") >= 2, "Phase 1: Kristallspinnen");
     assert_eq!(count_events(w, "bossPhase"), 0);
-    // Phase 2 und 3: Schläge im Takt 6 s bzw. 4 s, je ein `bossPhase`: braucht Spieler und Takt (RU18: `step_players`).
-    panic!("RU18: strikesOf, protect (Step: step_players)");
+    // Phase 2 und 3: Schläge im Takt 6 s bzw. 4 s, je ein `bossPhase`: braucht Spieler und Takt (RU19: `step`).
+    panic!("RU19: strikesOf, protect (Step: step_players)");
 }
 
 // (d) HP bei 3 Spielern = 2 × HP bei 1 Spieler (1 + 0,5 × 2); später beitretende Spieler ändern sie nicht.

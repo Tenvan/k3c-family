@@ -104,7 +104,7 @@ fn upgrade_elite_bogenschuetze() {
 #[ignore = "wartet auf RU19 (pure)"]
 fn upgrade_elite_krieger() {
     let (_w, _) = want_elite("eliteWarrior", |w, s| elite_spot(w, s).0);
-    unimplemented!("RU18: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go)")
+    unimplemented!("RU19: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go)")
 }
 
 /// (d) Zwei Spieler zahlen gleichzeitig am Schmiede-Platz (Elite-Bogenschütze) und am Elite-Krieger-Angebot; wer vor dem

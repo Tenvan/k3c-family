@@ -1,6 +1,6 @@
 //! Platzhalter für Funktionen späterer Sprints (Port-Leitfaden § 7). Der Sprint, der die Funktion liefert, löscht den
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU19, RU23)
 
 use std::collections::BTreeMap;
 
@@ -32,9 +32,9 @@ pub fn hit_event(_w: &mut World, _target: &str, _id: i64, _x: f64, _damage: f64)
 
 pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
-/// Go: `protectedNight` (World-Methode, Nacht-Schutz der Gebäude).
+/// Go: `protectedNight` (World-Methode, `island_options.go`; Sprint-Nummer korrigiert: RU10, nicht RU18).
 pub fn protected_night(_w: &World) -> bool {
-    unimplemented!("RU18: protected_night")
+    unimplemented!("RU10: protected_night")
 }
 
 pub use crate::building::plantation::plot_x; // Von RU18.1 portiert (building_plantation.go)
