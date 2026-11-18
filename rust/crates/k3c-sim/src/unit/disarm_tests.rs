@@ -24,7 +24,7 @@ fn hit_until(w: &mut World, ti: usize, done: &dyn Fn(&World) -> bool) -> Vec<Eve
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn disarm_krieger_wird_bauer_und_hebt_schwert_auf() {
     let mut w = day_world();
     add_player(&mut w);
@@ -53,7 +53,7 @@ fn disarm_krieger_wird_bauer_und_hebt_schwert_auf() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn disarm_beruf_faellt_zu_boden() {
     let mut w = quiet_world();
     let hub = w.hub_x;
@@ -70,7 +70,7 @@ fn disarm_beruf_faellt_zu_boden() {
 
 /// B-928: Ein Treffer macht nie einen Landstreicher; ein getroffener Bauer behält Status und Münze und flieht zur Burg.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn treffer_macht_keinen_landstreicher() {
     let mut w = quiet_world();
     let hub = w.hub_x;
@@ -97,7 +97,7 @@ fn treffer_macht_keinen_landstreicher() {
 
 /// Beim Burgfall gibt es kein `disarmed`.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn disarm_nicht_beim_burgfall() {
     let mut w = day_world();
     crate::unit::jobs::make_fighter(&mut w, 0, "warrior");
@@ -113,7 +113,7 @@ fn disarm_nicht_beim_burgfall() {
 /// B-928: Die Flucht verwirft ein getragenes Material nicht (über `Step`; der Aufruf von `flee` steht in
 /// `common_tests.rs`).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (step_passives)"]
 fn flucht_behaelt_den_trage_auftrag_ueber_step() {
     let mut w = quiet_world();
     let hub = w.hub_x;

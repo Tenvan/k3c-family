@@ -47,6 +47,19 @@ pub struct IslandRef {
     pub storages_elsewhere: i64,
     /// Dev-Bonus des Lager- und Gold-Maximums (Go: `island.Dev.StockBonus`, `devMaxStock`).
     pub stock_bonus: i64,
+    /// Münzen, die Spieler dieser Stufe im Schritt aufgehoben haben (Go: `island.GoldCollected++`, Siegvariante gold); die
+    /// Insel zählt sie in `put_stage_ref` zu ihrem Zähler.
+    pub gold_collected: i64,
+    /// Fund-Pool der Insel (Go: `island.SkillPool`, monarch.go); `add_pool_points` erhöht ihn, `put_stage_ref` übernimmt
+    /// ihn und spiegelt ihn nach `World::skill_points` aller Stufen.
+    pub skill_pool: i64,
+    /// Geöffnete Truhen aller Stufen (Go: `island.ChestsOpened`); jede n-te gibt einen Pool-Punkt.
+    pub chests_opened: i64,
+    /// Ankünfte des Händlers auf der Insel (Go: `island.MerchantVisits`, merchant.go).
+    pub merchant_visits: i64,
+    /// Eine andere Stufe der Insel hat eine gebaute Taverne (Go: `tavernOnIsland` über `isl.Stages`); die eigene Stufe
+    /// liest `tavern_on_island` live aus `w.sites`.
+    pub tavern_elsewhere: bool,
 }
 
 impl IslandRef {

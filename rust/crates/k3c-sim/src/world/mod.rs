@@ -236,7 +236,7 @@ pub fn create_world_with(
         ..Options::default()
     };
     if let Some(candidate) = &o.candidate {
-        if let Some(first) = validate_hub_data(candidate).first() {
+        if let Some(first) = validate_hub_data(candidate).findings.first() {
             return Err(format!("welt: Kandidaten-hub.json abgelehnt: {first}"));
         }
         opts.hub = Some(Arc::new(candidate.clone()));

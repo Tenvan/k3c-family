@@ -236,7 +236,18 @@ impl Island {
             stages: self.stages.len() as i64,
             storages_elsewhere: self.storages_except(i),
             stock_bonus: self.dev.stock_bonus,
+            gold_collected: 0,
+            skill_pool: self.skill_pool,
+            chests_opened: self.chests_opened,
+            merchant_visits: self.merchant_visits,
+            tavern_elsewhere: self.tavern_except(i),
         }
+    }
+
+    /// Steht in einer anderen Stufe als `i` eine gebaute Taverne (Go: `tavernOnIsland` über `isl.Stages`)?
+    fn tavern_except(&self, i: usize) -> bool {
+        let built = |w: &World| w.sites.iter().any(|s| s.kind == "tavern" && s.state == "built");
+        self.stages.iter().enumerate().any(|(j, w)| j != i && built(w))
     }
 
     /// Go: alle Stufen zeigen auf denselben Vorrat. Rust spiegelt den Vorrat der Insel in jede Stufe, damit `to_save` und
@@ -252,6 +263,14 @@ impl Island {
         self.defeated_bosses = r.defeated_bosses;
         self.endboss = r.endboss;
         self.endboss_defeated = r.endboss_defeated;
+        self.gold_collected += r.gold_collected;
+        self.chests_opened = r.chests_opened;
+        self.merchant_visits = r.merchant_visits;
+        if r.skill_pool != self.skill_pool {
+            // `add_pool_points`: alle Stufen spiegeln den Pool nach `skill_points` (der Spielstand speichert ihn)
+            self.skill_pool = r.skill_pool;
+            self.stages.iter_mut().for_each(|w| w.skill_points = r.skill_pool);
+        }
         if r.over {
             self.over = true;
         }

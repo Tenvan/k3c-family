@@ -132,8 +132,55 @@ fn event_baut_ein_objekt() {
     assert_eq!(e["type"], "destroyed");
 }
 
+/// Go: `TestZerstoerteMauerIstWiederLeer` (rules_test.go) ohne `Step`: Der Bauplatz ist wieder leer und muss neu bezahlt
+/// werden; eine Ruine der Planung bleibt Ruine; Türme und Aufträge am Platz werden frei.
 #[test]
-#[ignore = "wartet auf RU18"]
 fn destroy_site_macht_den_platz_wieder_leer() {
-    // Ruft values, is_ruin (pending.rs); die Fälle der Go-Tests laufen mit RU18.
+    let mut w = World {
+        next_id: 1,
+        ..World::default()
+    };
+    let wall_hp = super::pending::values(&w).buildings["wall"].hp;
+    let mut wall = site(7, "wall", 100.0, "built");
+    wall.hp = 5.0;
+    wall.paid_gold = 5;
+    wall.level = 2;
+    wall.upgrade = "waitingMaterial".into();
+    w.sites.push(wall);
+    w.sites.push(site(8, "wall", 140.0, "built"));
+    w.level.ruins.push(k3c_level::types::Ruin {
+        kind: "wall".into(),
+        x: 140.0,
+    });
+    w.troops.push(Troop {
+        id: 20,
+        tower_id: Some(7),
+        job: Some(crate::state::Job {
+            r#type: "build".into(),
+            site_id: 7,
+            ..Default::default()
+        }),
+        ..Troop::default()
+    });
+    destroy_site(&mut w, 7);
+    let s = &w.sites[0];
+    assert!(
+        s.state == "unpaid" && s.paid_gold == 0 && s.hp == 0.0 && s.max_hp == wall_hp && s.x == 100.0 && s.id == 7,
+        "Mauer nach Zerstörung: {s:?}"
+    );
+    assert!(
+        s.level == 0 && s.upgrade.is_empty() && !s.ruin,
+        "Stufe und Ausbau gehen verloren: {s:?}"
+    );
+    assert!(
+        w.troops[0].tower_id.is_none() && w.troops[0].job.is_none(),
+        "Turm und Bau-Auftrag frei"
+    );
+    assert_eq!(w.events.len(), 1);
+    assert!(w.events[0]["type"] == "destroyed" && w.events[0]["kind"] == "wall");
+    destroy_site(&mut w, 8);
+    assert!(
+        w.sites[1].ruin && w.sites[1].state == "unpaid",
+        "eine Ruine bleibt Ruine"
+    );
 }

@@ -1,5 +1,5 @@
-//! Kleine Wirtschaftshilfen der Einheiten (Go: `economy.go`). RU18 verschiebt sie an ihren Ort (`economy`), solange
-//! rechnen die Berufe und Krieger von RU11 damit.
+//! Kleine Wirtschaftshilfen (Go: `economy.go`: `nearest`, `clearPending`, `canAfford`, `spend`); von RU11 nach `economy`
+//! verschoben (RU18.2).
 
 use k3c_data::buildings::Cost;
 use k3c_data::hub::Stock;

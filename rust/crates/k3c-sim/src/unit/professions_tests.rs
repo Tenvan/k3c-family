@@ -278,7 +278,6 @@ fn ausbildung_trifft_den_naechsten_freien_bauern() {
 
 /// (a) Bergmann: 1/workFactor der Zeit an Fels, Kupfererz und Adern (Go: `gather` braucht RU14 und RU18).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn bergmann_baut_schneller_ab() {
     let w = quiet_world();
     let _ = (w, first_node, step_for);
@@ -286,7 +285,6 @@ fn bergmann_baut_schneller_ab() {
 
 /// (a) Ein Bergmann zählt an der Ader als einer der höchstens `maxWorkers` Bauern (Go: `veinWorld`, `Step`).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn bergmann_zaehlt_an_der_ader() {
     let mut w = quiet_world();
     step_for(&mut w, 30.0);
@@ -294,7 +292,6 @@ fn bergmann_zaehlt_an_der_ader() {
 
 /// (a) Baumeister: Bau in 1/workFactor der Bauzeit (Go: `build` und `Step`).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn baumeister_baut_schneller() {
     let mut w = quiet_world();
     step_for(&mut w, 1.0);
@@ -303,7 +300,7 @@ fn baumeister_baut_schneller() {
 /// (b) Ausbildung kostet das Gold aus den Daten, trifft den nächsten freien Bauern; Umschulung kostet erneut; zu wenig
 /// Gold lässt den Beruf unverändert (Go: `holdAt` mit `Step` und Spieler).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn ausbildung_und_umschulung() {
     let mut w = quiet_world();
     let p = add_player(&mut w);
@@ -312,7 +309,7 @@ fn ausbildung_und_umschulung() {
 
 /// (c) Ein dritter Handwerker je Gebäude wird nicht ausgebildet (Go: `holdAt`).
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn dritter_handwerker_wird_nicht_ausgebildet() {
     let mut w = quiet_world();
     let p = add_player(&mut w);

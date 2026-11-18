@@ -33,7 +33,7 @@ fn nordmeer_switch(data: &k3c_data::Data) -> (Island, Island) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (dev_build_site)"]
 fn inselwechsel_in_welt_mit_zwei_spielern() {
     let data = test_data();
     let (_, next) = nordmeer_switch(&data);
@@ -54,7 +54,7 @@ fn inselwechsel_in_welt_mit_zwei_spielern() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (dev_build_site)"]
 fn inselwechsel_letzte_insel_der_welt() {
     let data = test_data();
     let (_, mut next) = nordmeer_switch(&data);
@@ -75,7 +75,7 @@ fn inselwechsel_letzte_insel_der_welt() {
 
 /// `next_island` baut nur die nächste Insel der Welt (WZ18.4, Review WZ18.3): eine andere Insel ist ein Fehler.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (dev_build_site)"]
 fn inselwechsel_nur_zur_naechsten_insel() {
     let data = test_data();
     let w = nordmeer_loaded(&data);

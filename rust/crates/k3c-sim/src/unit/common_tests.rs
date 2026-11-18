@@ -177,7 +177,6 @@ fn flucht_dauert_an_solange_ein_gegner_in_hoerweite_ist() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (armored_hp)"]
 fn make_archer_waehlt_die_schwaechere_seite() {
     let mut w = bare_world();
     let v = w.vals.clone().expect("Wertesatz");

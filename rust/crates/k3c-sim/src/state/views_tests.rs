@@ -126,17 +126,75 @@ fn purse_sizes() {}
 #[ignore = "wartet auf RU18"]
 fn purse_respec_drops_new_gold() {}
 
-/// Go: `TestSiteHubLevelJeArt` (site_view_test.go) braucht `quietWorld` und `site_hub_level` (RU18).
+/// Go: `TestSiteHubLevelJeArt` (site_view_test.go): Platz-Stufe je Art; Linien-Plätze nach ihrer Zone.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn site_hub_level_je_art() {}
+fn site_hub_level_je_art() {
+    let w = crate::world::testutil::quiet_world();
+    let mut lines = 0;
+    for s in &w.sites {
+        let mut want = crate::hub::site_hub_level(&w, s);
+        if let Some(l) = crate::world::testutil::site_line(&w, s) {
+            lines += 1;
+            want = l.index;
+        }
+        let got = super::site_view::site_hub_level_of(&w, s);
+        assert_eq!(got, want, "{}@{}: Platz-Stufe {got}, erwartet {want}", s.kind, s.x);
+    }
+    assert!(lines > 0, "keine Linien-Plätze in der Welt");
+    let armory = w.sites.iter().find(|s| s.kind == "armory").expect("Rüstkammer");
+    assert_eq!(
+        super::site_view::site_hub_level_of(&w, armory),
+        4,
+        "Rüstkammer: Platz-Stufe laut data/hub.json 4"
+    );
+}
 
-/// Go: `TestSiteHubLevelPasstZuBezahlbar` (site_view_test.go) braucht `quietWorld` und `sitePayable`.
+/// Go: `TestSiteHubLevelPasstZuBezahlbar` (site_view_test.go): Nie bezahlbar unter der Platz-Stufe: Bei Hub-Stufe h ist
+/// jeder bezahlbare Platz höchstens Stufe h.
 #[test]
-#[ignore = "wartet auf RU18"]
-fn site_hub_level_passt_zu_bezahlbar() {}
+fn site_hub_level_passt_zu_bezahlbar() {
+    let mut w = crate::world::testutil::quiet_world();
+    let v = crate::world::vals(&w);
+    for h in 1..=5 {
+        w.hub_level = h;
+        for s in &w.sites {
+            let level = super::site_view::site_hub_level_of(&w, s);
+            assert!(
+                !(s.state == "unpaid" && crate::economy::site_payable(&w, &v, None, s) && level > h),
+                "Hub {h}: {}@{} bezahlbar, Platz-Stufe {level}",
+                s.kind,
+                s.x
+            );
+        }
+    }
+}
 
-/// Go: `TestSiteVisibleBisNaechsteStufe` (site_view_test.go) braucht `quietWorld` und `site_hub_level` (RU18).
+/// Go: `TestSiteVisibleBisNaechsteStufe` (site_view_test.go).
 #[test]
-#[ignore = "wartet auf RU18"]
-fn site_visible_bis_naechste_stufe() {}
+fn site_visible_bis_naechste_stufe() {
+    let mut w = crate::world::testutil::quiet_world();
+    w.hub_level = 1;
+    let si = w.sites.iter().position(|s| s.kind == "armory").expect("Rüstkammer"); // Platz-Stufe 4
+    assert_eq!(w.sites[si].state, "unpaid", "Rüstkammer ist nicht unbezahlt");
+    assert!(
+        !super::site_view::site_visible(&w, &w.sites[si]),
+        "Hub 1: Rüstkammer (Stufe 4) unbezahlt sichtbar"
+    );
+    w.hub_level = 3;
+    assert!(
+        super::site_view::site_visible(&w, &w.sites[si]),
+        "Hub 3: Rüstkammer (Stufe 4) unsichtbar"
+    );
+    w.hub_level = 1;
+    w.sites[si].paid_gold = 1;
+    assert!(
+        super::site_view::site_visible(&w, &w.sites[si]),
+        "angezahlter Platz unsichtbar"
+    );
+    w.sites[si].paid_gold = 0;
+    w.sites[si].state = "built".into();
+    assert!(
+        super::site_view::site_visible(&w, &w.sites[si]),
+        "gebauter Platz unsichtbar"
+    );
+}

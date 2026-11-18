@@ -121,7 +121,7 @@ pub fn create_island_in(
 ) -> Result<Island, String> {
     let mut hub = None;
     if let Some(candidate) = opts.candidate.take() {
-        if let Some(finding) = validate_hub_data_in(&candidate, world).first() {
+        if let Some(finding) = validate_hub_data_in(&candidate, world).findings.first() {
             return Err(format!("insel: Kandidaten-hub.json abgelehnt: {finding}"));
         }
         hub = Some(Arc::new(candidate)); // geprüft wird die Kopie, die die Welt behält: spätere Änderungen des Aufrufers wirken nicht
