@@ -269,7 +269,7 @@ func downloadHit(ctx context.Context, root, slotID, hitID, stand string, client 
 	}
 	c := *client
 	c.CheckRedirect = downloadRedirect
-	tmp, err := fetchToTemp(ctx, &c, u, path.Ext(u.Path))
+	tmp, err := fetchToTemp(ctx, &c, root, u, path.Ext(u.Path))
 	if err != nil {
 		return "", err
 	}
@@ -297,7 +297,13 @@ func downloadAllowed(u *url.URL) bool {
 	return u.User == nil && DownloadPorts[u.Port()] && DownloadHosts[strings.ToLower(u.Hostname())]
 }
 
-func fetchToTemp(ctx context.Context, client *http.Client, u *url.URL, ext string) (string, error) {
+// workTmp liefert den Wegwerf-Ordner im Repo (.work/tmp, Regel „Schreiben nur im Repo“, 🧑 2026-11-18).
+func workTmp(root string) (string, error) {
+	dir := filepath.Join(root, ".work", "tmp")
+	return dir, os.MkdirAll(dir, 0o755)
+}
+
+func fetchToTemp(ctx context.Context, client *http.Client, root string, u *url.URL, ext string) (string, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
 	if err != nil {
 		return "", err
@@ -311,7 +317,11 @@ func fetchToTemp(ctx context.Context, client *http.Client, u *url.URL, ext strin
 	if res.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("download: HTTP %d", res.StatusCode)
 	}
-	f, err := os.CreateTemp("", "k3c-import-*"+strings.ToLower(ext))
+	tdir, err := workTmp(root)
+	if err != nil {
+		return "", err
+	}
+	f, err := os.CreateTemp(tdir, "k3c-import-*"+strings.ToLower(ext))
 	if err != nil {
 		return "", err
 	}

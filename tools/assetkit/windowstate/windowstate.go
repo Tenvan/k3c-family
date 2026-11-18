@@ -62,7 +62,7 @@ func Save(path string, w State) error {
 func ConfigPath(name string) string {
 	dir, err := os.UserConfigDir()
 	if err != nil {
-		dir = os.TempDir()
+		dir = filepath.Join(".work", "config")
 	}
 	return filepath.Join(dir, "k3c", name)
 }

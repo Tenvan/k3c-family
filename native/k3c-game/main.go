@@ -150,7 +150,10 @@ func printAssets() error {
 // shotSaves legt den Wegwerf-Ordner der Spielstände einer Aufnahme bzw. Messung an; mit --load liegt der Spielstand als
 // Kopie darin, damit Autosave den Stand im Ordner --saves nicht verändert.
 func shotSaves(args game.Args) (string, error) {
-	tmp, err := os.MkdirTemp("", "k3c-shots-")
+	if err := os.MkdirAll(args.Saves, 0o755); err != nil {
+		return "", err
+	}
+	tmp, err := os.MkdirTemp(args.Saves, ".k3c-shots-") // neben den Spielständen, nie in %TEMP%
 	if err != nil {
 		return "", err
 	}

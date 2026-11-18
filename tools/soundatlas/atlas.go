@@ -139,7 +139,11 @@ func decode(ffmpeg, path string) ([]byte, error) {
 // write kodiert erst in temporäre Dateien und benennt danach um: ein Fehler hinterlässt keinen halben Atlas.
 func write(root, ffmpeg string, pcm []byte, sprites map[string]sprite) error {
 	dir := filepath.Join(root, "public", "audio")
-	tmp, err := os.MkdirTemp("", "soundatlas-")
+	tdir := filepath.Join(root, ".work", "tmp") // Regel „Schreiben nur im Repo“
+	if err := os.MkdirAll(tdir, 0o755); err != nil {
+		return err
+	}
+	tmp, err := os.MkdirTemp(tdir, "soundatlas-")
 	if err != nil {
 		return err
 	}

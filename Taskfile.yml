@@ -20,12 +20,11 @@
 # bei jeder Go-Änderung selbst neu, engine/devrun; Wails-Apps zeigen die Oberfläche über Vite im Browser). Der Name des Projekts allein (`task k3c-workbench`) startet `dev`.
 version: '3'
 
-# Go-Build-Temp (go-build, Test-EXEs, t.TempDir) und Wails-Bindings-EXE liegen an einem festen Ort statt in %TEMP%:
-# Nur so reicht EINE Norton-Ausnahme (`%USERPROFILE%\.k3c\tmp`). Der Ort liegt außerhalb des Repos, sonst hasht `go test`
-# die wechselnden Temp-Ordner als Eingabe und der Testcache greift nie (B-619). Nicht unter AppData: Die Claude-App (MSIX)
-# leitet Schreibzugriffe dorthin um, Git und Go sähen verschiedene Pfade. Ohne USERPROFILE (CI) `.work/tmp`.
+# Go-Build-Temp (go-build, Test-EXEs, t.TempDir) und Wails-Bindings-EXE liegen im Repo unter `.work/tmp` statt in %TEMP%
+# (Regel "Schreiben nur im Repo", Ralf 2026-11-18). Folge: `go test` hasht die wechselnden Temp-Ordner im Modul als Eingabe,
+# Tests mit t.TempDir laufen darum nie aus dem Testcache (B-619, bewusst in Kauf genommen). Norton-Ausnahme: `<Repo>\.work`.
 vars:
-  K3C_TMP: '{{if .USERPROFILE}}{{toSlash .USERPROFILE}}/.k3c/tmp{{else}}{{.ROOT_DIR}}/.work/tmp{{end}}'
+  K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
 
 env:
   GOTMPDIR: '{{.K3C_TMP}}'

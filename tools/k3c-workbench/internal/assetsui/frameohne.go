@@ -45,7 +45,11 @@ func (d Dienst) AssetsFrameOhne(id, anim string, frame int, ohne []string) (Fram
 	if err != nil {
 		return Frame{}, err
 	}
-	dir, err := os.MkdirTemp("", "k3c-ohne-")
+	tdir := filepath.Join(d.Root, ".work", "tmp") // Regel „Schreiben nur im Repo“
+	if err := os.MkdirAll(tdir, 0o755); err != nil {
+		return Frame{}, err
+	}
+	dir, err := os.MkdirTemp(tdir, "k3c-ohne-")
 	if err != nil {
 		return Frame{}, err
 	}
