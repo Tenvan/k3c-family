@@ -878,3 +878,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1030](B-1030-detvec-baum-doppel-truhe.md) | SIM | Problem | hoch | erledigt | SI2 | Detvec-Datenbaum kennt data/paper.json objekte.doppel-truhe nicht, check:go ist rot |
 | [B-1025](B-1025-settings-stress-nach-ru7.md) | CLI | Schuld | mittel | erledigt | RU7 | Rust-Settings fehlt das Feld Stress, bis RU7.4 stress.go portiert |
 | [B-1061](B-1061-actors-toenung-gerade-farbe.md) | CLI | Problem | mittel | erledigt | RU16 | Figuren und Gefechtsmarken tönen mit gerader statt vormultiplizierter Farbe |
+| [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
+| [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
