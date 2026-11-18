@@ -32,18 +32,6 @@ pub struct VoyageView {
     pub ok: bool,
 }
 
-/// TaleState sind die Geschichtszeilen an den Wendepunkten (Go: `taleState`, story.go).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct TaleState {
-    pub run: u64,
-}
-
-/// StoryQueue ist die Geschichtszeile eines Spielers (Go: `storyQueue`, story.go).
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct StoryQueue {
-    pub age: f64,
-}
-
 /// BossView ist die Boss-Leiste (Go: `bossView`, kampf.go).
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct BossView {
@@ -106,9 +94,6 @@ impl Hud {
     pub fn update_sea(&mut self, _in: &Input, _f: &Frame, _s: &mut dyn Session, _seat: &Seat, _menu: bool) -> bool {
         false
     }
-
-    /// Go: `(*hud).story` (story.go, RU23): schreibt die Geschichtszeilen fort. Platzhalter: tut nichts.
-    pub fn story(&mut self, _f: &Frame) {}
 }
 
 /// Go: `(*hud).drawWorldTexts` (drawworld.go, RU23). Platzhalter: zeichnet nichts (Labels, Hinweise, Radar fehlen bis RU23).
@@ -119,11 +104,6 @@ pub fn draw_sea() {
     unimplemented!("RU23: draw_sea")
 }
 
-/// Go: `(*hud).drawMenu` (drawmenu.go, RU23).
-pub fn draw_menu() {
-    unimplemented!("RU23: draw_menu")
-}
-
 /// Go: `(*hud).drawRadar` (RU23).
 pub fn draw_radar() {
     unimplemented!("RU23: draw_radar")
@@ -132,6 +112,48 @@ pub fn draw_radar() {
 /// Go: `(*hud).drawGuide` (RU23).
 pub fn draw_guide() {
     unimplemented!("RU23: draw_guide")
+}
+
+/// WorldDef ist die Welt-Definition der Kampagne (Go: `sim.WorldDef`, RU19): Platzhalter ohne Inhalt; `Campaign::world`
+/// gibt es in Rust erst mit RU19, `campaign_world` liefert bis dahin `None`.
+#[derive(Clone, Debug, Default)]
+pub struct WorldDef;
+
+impl WorldDef {
+    /// Go: `StoryStart` (RU19).
+    pub fn story_start(&self) -> Vec<String> {
+        unimplemented!("RU19: story_start")
+    }
+    /// Go: `len(w.Story.Start)` (RU19).
+    pub fn story_start_len(&self) -> usize {
+        unimplemented!("RU19: story_start_len")
+    }
+    /// Go: `StoryArrival` (RU19).
+    pub fn story_arrival(&self, _island: &str) -> Vec<String> {
+        unimplemented!("RU19: story_arrival")
+    }
+    /// Go: `StoryBoss` (RU19).
+    pub fn story_boss(&self, _island: &str) -> Vec<String> {
+        unimplemented!("RU19: story_boss")
+    }
+    /// Go: `StoryDefeated` (RU19).
+    pub fn story_defeated(&self, _island: &str, _completed: &[String]) -> Vec<String> {
+        unimplemented!("RU19: story_defeated")
+    }
+    /// Go: `StoryVictory` (RU19).
+    pub fn story_victory(&self, _island: &str, _completed: &[String]) -> Vec<String> {
+        unimplemented!("RU19: story_victory")
+    }
+}
+
+/// Go: `f.Campaign.World` (RU19): `None`, solange `Campaign` die Welt nicht trägt.
+pub fn campaign_world(_f: &Frame) -> Option<&WorldDef> {
+    None
+}
+
+/// Go: `storyDoneLines` (story.go, RU19): Zahl der Zeilen der Abschlusszeile der Insel.
+pub fn story_done_lines(_w: &WorldDef, _island: &str) -> usize {
+    unimplemented!("RU19: story_done_lines")
 }
 
 // RU18: ersetzen. Die drei Shims rufen die Sim nicht (deren Gegenstücke sind bis RU18 `unimplemented!`, `Listen` und

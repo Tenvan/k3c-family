@@ -58,13 +58,28 @@ impl Hud {
         if asset.is_empty() {
             return None;
         }
-        let lib = self.lib.as_ref()?.borrow();
+        // Beim Zeichnen hält `draw_cell` die Bibliothek (Schrift) geliehen: Tasten-Icons kommen dann aus dem Cache
+        let Ok(lib) = self.lib.as_ref()?.try_borrow() else {
+            return self.icon_cache.iter().find(|(a, _)| *a == asset).map(|(_, ic)| *ic);
+        };
         let s = lib.sheet(asset, ICON_ANIM)?;
         Some(Icon {
             frame: *s.frame(0)?,
             fw: s.fw,
             fh: s.fh,
         })
+    }
+
+    /// refresh_icon_cache legt die Tasten-Icons für den Zeichendurchlauf zurück (vor dem Ausleihen der Bibliothek).
+    pub fn refresh_icon_cache(&mut self) {
+        let mut cache = std::mem::take(&mut self.icon_cache);
+        cache.clear();
+        cache.extend(
+            super::icons::KEY_ASSETS
+                .iter()
+                .filter_map(|a| self.icon(a).map(|ic| (*a, ic))),
+        );
+        self.icon_cache = cache;
     }
 
     /// icons sammelt die Icons für einen Zeichendurchlauf.

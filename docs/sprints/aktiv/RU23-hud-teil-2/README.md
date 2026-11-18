@@ -97,7 +97,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU23.1 | `RU23.1-hud-overlay-skillmenu-skilltext.md` | Umsetzung | autonom | fertig |
-| RU23.2 | `RU23.2-hud-drawmenu-story-drawstory.md` | Umsetzung | autonom | offen |
+| RU23.2 | `RU23.2-hud-drawmenu-story-drawstory.md` | Umsetzung | autonom | fertig |
 | RU23.3 | `RU23.3-hud-seekarte-logik.md` | Umsetzung | autonom | offen |
 | RU23.4 | `RU23.4-hud-drawsea-drawsea-paper.md` | Umsetzung | autonom | offen |
 | RU23.5 | `RU23.5-hud-voyage-drawworld-kampf.md` | Umsetzung | autonom | offen |

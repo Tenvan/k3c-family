@@ -1,9 +1,9 @@
 //! Port von `native/k3c-game/hud/draw.go`: Zeichnen der HUD-Elemente einer Zelle: Größen messen, Lage über `layout`
 //! (gemerkt, nur bei Änderung neu gerechnet), dann Fläche und Inhalt je Element.
 //!
-//! Noch nicht gezeichnet (Platzhalter, RU23): Geschichtszeile (`story_size`, `draw_story`) und Radar (`draw_radar`);
-//! ihre Größe bleibt 0, das Layout der übrigen Elemente ändert das nicht (Radar und Geschichtszeile sind
-//! nachrangig bzw. zuletzt). RU23 ergänzt beide in `draw_items` und `measure_items`.
+//! Noch nicht gezeichnet (Platzhalter, RU23.5): Radar (`draw_radar`); seine Größe bleibt 0, das Layout der übrigen
+//! Elemente ändert das nicht (der Radar ist nachrangig). Die Geschichtszeile (`story_size`, `draw_story`) zeichnet
+//! `drawstory.rs`.
 
 use k3c_platform::Canvas;
 
@@ -186,7 +186,10 @@ impl Hud {
             self.draw_stock(dst, st, f.as_deref_mut(), icons, p, pl.at[ITEM_SHARED], shared_px, k);
         }
         if pl.ok[ITEM_BOSS] {
-            self.draw_boss(dst, st, f, p, pl.at[ITEM_BOSS], k);
+            self.draw_boss(dst, st, f.as_deref_mut(), p, pl.at[ITEM_BOSS], k);
+        }
+        if pl.ok[ITEM_STORY] {
+            self.draw_story(dst, st, f, p, pl.at[ITEM_STORY], k, c.rect.dx() as f64);
         }
     }
 
@@ -222,6 +225,7 @@ impl Hud {
         let shared_px = font_px(ROLE_SHARED, cells) * k;
         (inp[ITEM_SHARED].w, inp[ITEM_SHARED].h) = self.stock_size(st, f, icons, p, shared_px, k);
         (inp[ITEM_BOSS].w, inp[ITEM_BOSS].h) = self.boss_size(st, f, p, k, cell_w);
+        self.story_size(st, f, p, k, cell_w, &mut inp);
         (inp, px)
     }
 
@@ -374,20 +378,21 @@ impl Hud {
             return;
         };
         // der Zustand wird für den Durchlauf herausgenommen: Draw ändert nur gemessene Texte und den Layout-Cache
-        let st = std::mem::take(&mut self.seats[i]);
+        let mut st = std::mem::take(&mut self.seats[i]);
         self.paint.stencils(dst);
+        self.refresh_icon_cache();
         let k = scale_of(c, self.cells as i64);
         let icons = self.icons();
         let lib = self.lib.clone();
         let mut guard = lib.as_ref().map(|l| l.borrow_mut());
-        let font = guard.as_mut().map(|g| &mut g.font);
+        let mut font = guard.as_mut().map(|g| &mut g.font);
         super::pending::draw_world_texts();
-        self.draw_items(dst, &st, c, k, font, &icons);
+        self.draw_items(dst, &st, c, k, font.as_deref_mut(), &icons);
         if st.sea.open {
             super::pending::draw_sea();
         }
         if st.menu.open {
-            super::pending::draw_menu();
+            self.draw_menu(dst, &mut st, c, k, font);
         }
         self.seats[i] = st;
         dst.layer(0);

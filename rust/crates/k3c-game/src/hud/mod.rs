@@ -16,8 +16,9 @@ use self::draw::LayoutCache;
 use self::glyphs::JoinKey;
 use self::hints::GuideSeen;
 use self::paint::Painter;
-use self::pending::{LabelSpot, TaleState, VoyageView};
+use self::pending::{LabelSpot, VoyageView};
 use self::state::SeatState;
+use self::story::TaleState;
 use self::values::Memo;
 use crate::art::{Font, Library, SeaMap};
 use crate::props::pending::PendingSimView;
@@ -33,7 +34,9 @@ pub mod banner;
 pub mod data;
 pub mod draw;
 pub mod drawglyph;
+pub mod drawmenu;
 pub mod drawstock;
+pub mod drawstory;
 pub mod fonts;
 pub mod glyphs;
 pub mod hints;
@@ -49,6 +52,7 @@ pub mod skillmenu;
 pub mod skilltext;
 pub mod state;
 mod state_labels;
+pub mod story;
 pub mod texts;
 mod texts_de;
 mod texts_en;
@@ -74,6 +78,8 @@ mod labels_tests;
 #[cfg(test)]
 mod layout_tests;
 #[cfg(test)]
+mod menubox_tests;
+#[cfg(test)]
 mod overlay_tests;
 #[cfg(test)]
 mod profile_tests;
@@ -85,6 +91,10 @@ mod radar_tests;
 mod skillmenu_tests;
 #[cfg(test)]
 mod state_tests;
+#[cfg(test)]
+mod story_fit_tests;
+#[cfg(test)]
+mod story_tests;
 #[cfg(test)]
 mod testutil;
 #[cfg(test)]
@@ -120,6 +130,8 @@ pub struct Hud {
     assets: Option<Vec<String>>,
     /// Tasten-Icons gemeldet (`use_key_icons`, B-911)
     key_icons: bool,
+    /// Tasten-Icons für den Zeichendurchlauf, solange die Bibliothek geliehen ist (`refresh_icon_cache`)
+    icon_cache: Vec<(&'static str, drawstock::Icon)>,
     /// Schiffsfahrt im Vollbild (voyage.go, B-977)
     voy: VoyageView,
     /// Geschichtszeilen an den Wendepunkten (story.go, B-974)
@@ -147,6 +159,7 @@ impl Hud {
             sea_map: None,
             assets: None,
             key_icons: false,
+            icon_cache: Vec::new(),
             voy: VoyageView::default(),
             tale: TaleState::default(),
         };
