@@ -4,8 +4,9 @@
 
 use k3c_data::troops::TroopData;
 
+use super::{ARRIVE, ARROW_SPEED, walk_to};
 use crate::state::common::{outer_wall, sign};
-use crate::state::pending::{ARRIVE, ARROW_SPEED, arrow_event, escort_post, is_spell_tower, squad_post, walk_to};
+use crate::state::pending::{arrow_event, escort_post, is_spell_tower, squad_post};
 use crate::state::{Projectile, Troop, World, WorldValues};
 
 /// Go: `isOnTower`: Steht der Schütze auf seinem Turm?
@@ -72,7 +73,7 @@ pub fn step_archer(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
     if let Some(x) = escort_post(w, &w.troops[ti]).or_else(|| squad_post(w, &w.troops[ti])) {
         post = x;
     }
-    walk_to(w, ti, post, dt);
+    walk_to(w, v, ti, post, dt);
 
     let fallback = TroopData::default(); // unbekannte Art: Nullwerte wie Gos Map-Zugriff
     let a = v.troops.get(w.troops[ti].kind.as_str()).unwrap_or(&fallback);

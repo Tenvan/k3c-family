@@ -160,3 +160,39 @@ pub fn island_with(_grade: &str, _players: i64) -> Island {
 pub fn remove_dead_enemies(w: &mut World) {
     super::waves::remove_dead_enemies(w, None)
 }
+
+// Hilfen für die Tests der Truppen (`unit/`), aus anderen Go-Testdateien.
+
+pub fn run(_w: &mut World, _seconds: f64) {
+    panic!("RU14: run")
+}
+
+pub fn run_until(_w: &mut World, _max_seconds: f64, _done: &dyn Fn(&World) -> bool) -> f64 {
+    panic!("RU14: run_until")
+}
+
+/// Go: `addPeasant` (unit_professions_test.go, kommt mit RU11.4).
+pub fn add_peasant(_w: &mut World, _x: f64, _profession: &str) -> usize {
+    panic!("RU11.4: add_peasant")
+}
+
+/// Go: `loseLayer` (Kampf-Hilfe der Tests, RU15).
+pub fn lose_layer(_w: &mut World, _ti: usize) {
+    panic!("RU15: lose_layer")
+}
+
+pub fn pay_at(_w: &mut World, _players: &[usize], _x: f64, _seconds: f64, _done: &dyn Fn(&World) -> bool) -> bool {
+    panic!("RU14: pay_at")
+}
+
+pub fn first_node(_w: &World, _kind: &str) -> usize {
+    panic!("RU14: first_node")
+}
+
+pub fn end_island(_players: i64) -> (Island, f64) {
+    panic!("RU15: end_island")
+}
+
+pub fn golden_runs() -> Vec<String> {
+    panic!("RU22: golden_runs")
+}

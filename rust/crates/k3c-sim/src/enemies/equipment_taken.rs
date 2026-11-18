@@ -6,8 +6,9 @@
 use serde_json::json;
 
 use crate::state::common::event;
-use crate::state::pending::{HAMMER_KIND, drop_crown_of, emit, unit_x};
+use crate::state::pending::{drop_crown_of, emit, unit_x};
 use crate::state::{Enemy, World, WorldValues};
+use crate::unit::hammer::HAMMER_KIND;
 
 /// Go: `takeEquipment`: lässt `w.enemies[ei]` einen Drop in Reichweite aufheben; nicht fliehende Gegner ohne Last, keine
 /// Bosse.

@@ -12,12 +12,17 @@ use k3c_data::monarch::{SkillData, SkillEffect};
 use k3c_data::troops::{ProfessionData, TroopData};
 use k3c_level::types::WallSite;
 
-use super::island_ref::IslandRef;
 use super::save::HubSave;
 use super::shared::WorldValues;
-use super::{Enemy, Player, Site, Troop, World};
-use super::{Event, Projectile};
-use crate::enemies::waves::SpawnOrder;
+use super::{Player, Site, Troop, World};
+
+// Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
+pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
+pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
+pub use crate::pending::*; // Platzhalter der Gruppen enemies und unit
+pub use crate::unit::archer::is_on_tower;
+pub use crate::unit::jobs::make_fighter;
+pub use crate::unit::spawn_vagrant;
 
 /// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
 pub const MERCHANT_ID: i64 = -1;
@@ -98,7 +103,7 @@ pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
 
 /// Go: `professionOf` (unit_professions.go): der Beruf `kind` aus den Truppen-Daten.
 pub fn profession_of<'a>(_troops: &'a BTreeMap<String, TroopData>, _kind: &str) -> Option<&'a ProfessionData> {
-    unimplemented!("RU18: profession_of")
+    unimplemented!("RU11: profession_of")
 }
 
 /// Go: `stockField` (economy.go): der Vorrat an `resource`; `None` bei unbekanntem Material.
@@ -136,16 +141,6 @@ pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
     unimplemented!("RU18: level_site")
 }
 
-/// Go: `spawnVagrant` (enemies/units): legt einen Landstreicher an und gibt seinen Index in `w.troops` zurück.
-pub fn spawn_vagrant(_w: &mut World, _anchor_x: f64, _x: f64) -> usize {
-    unimplemented!("RU11: spawn_vagrant")
-}
-
-/// Go: `makeFighter` (unit_warrior.go): macht die Truppe `ti` zum Kämpfer der Art `kind`.
-pub fn make_fighter(_w: &mut World, _ti: usize, _kind: &str) {
-    unimplemented!("RU11: make_fighter")
-}
-
 /// Go: `isSoldier` (combat.go): Ist die Truppe ein Nahkämpfer, der einer Gruppe vorstehen kann?
 pub fn is_soldier(_t: &Troop) -> bool {
     unimplemented!("RU15: is_soldier")
@@ -174,145 +169,4 @@ pub fn apply_portals(_w: &mut World, _h: &HubSave) {
 /// Go: `plotX` (building_plantation.go): Position von Platz `i` im Streifen um die Baumschule.
 pub fn plot_x(_s: &Site, _p: &Plantation, _i: usize) -> f64 {
     unimplemented!("RU18: plot_x")
-}
-
-// Von RU11.1 portiert: Gegner-Wache. Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
-pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
-
-/// Go: `hammerKind` (unit_hammer.go); RU11.3 verschiebt die Konstante nach `unit/hammer.rs`.
-pub const HAMMER_KIND: &str = "hammer";
-
-/// Go: `bossAbility` (boss.go): Boss-Fähigkeit des Gegners `ei`.
-pub fn boss_ability(_w: &mut World, _ei: usize, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU15: boss_ability")
-}
-
-/// Go: `takeCrownOrLoot` (crown.go).
-pub fn take_crown_or_loot(_w: &mut World, _ei: usize) {
-    unimplemented!("RU15: take_crown_or_loot")
-}
-
-/// Go: `crownStolen` (crown.go): `thief` ist schon aus `w.enemies` genommen.
-pub fn crown_stolen(_w: &mut World, _thief: &Enemy) {
-    unimplemented!("RU15: crown_stolen")
-}
-
-/// Go: `dropLoot` (portal.go): die Beute des Gegners `ei` fällt als Münzen zu Boden.
-pub fn drop_loot(_w: &mut World, _ei: usize) {
-    unimplemented!("RU15: drop_loot")
-}
-
-/// Go: `dropCrownOf` (crown.go).
-pub fn drop_crown_of(_e: &mut Enemy) {
-    unimplemented!("RU15: drop_crown_of")
-}
-
-/// Go: `merchantX` (merchant.go).
-pub fn merchant_x(_w: &World, _what: &str) -> f64 {
-    unimplemented!("RU18: merchant_x")
-}
-
-/// Go: `moonDamage` (events_moon.go).
-pub fn moon_damage(_w: &World, _damage: f64) -> f64 {
-    unimplemented!("RU19: moon_damage")
-}
-
-/// Go: `emit` (events.go): hängt das Ereignis mit `type` an `w.events`.
-pub fn emit(_w: &mut World, _typ: &str, _fields: Event) {
-    unimplemented!("RU19: emit")
-}
-
-/// Go: `unitX` (events.go): X auf eine Nachkommastelle gerundet.
-pub fn unit_x(_x: f64) -> f64 {
-    unimplemented!("RU19: unit_x")
-}
-
-/// Go: `arrowEvent` (events.go): Ereignis zum Pfeil `p` (noch nicht in `w.projectiles`) vom Schützen `from`.
-pub fn arrow_event(_w: &mut World, _p: &Projectile, _from: i64) {
-    unimplemented!("RU19: arrow_event")
-}
-
-/// Go: `frostArmorHit` (monarch_passives.go): Frost Armor des Spielers `pi` gegen den Gegner `ei`.
-pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
-    unimplemented!("RU18: frost_armor_hit")
-}
-
-// Von RU11.2 portiert: Gegner-Traits, Wellen, Bogenschützen. Die Import-Stelle bleibt `pending`.
-pub use crate::enemies::traits::{attack_rate, invulnerable, kite, strike};
-pub use crate::unit::archer::is_on_tower;
-
-/// Go: `arrive` (unit_common.go); RU11.3 verschiebt die Konstante nach `unit/common.rs`.
-pub const ARRIVE: f64 = 0.3;
-
-/// Go: `arrowSpeed` (unit_common.go); RU11.3 verschiebt die Konstante nach `unit/common.rs`.
-pub const ARROW_SPEED: f64 = 25.0;
-
-/// Go: `World.pure` (dev.go): reiner Stressmodus der Insel.
-pub fn pure(_w: &World) -> bool {
-    unimplemented!("RU19: pure")
-}
-
-/// Go: `fullMoonExtra` (events_moon.go): zusätzliche Plätze bei Vollmond.
-pub fn full_moon_extra(_w: &World, _plan: &[SpawnOrder]) -> Vec<SpawnOrder> {
-    unimplemented!("RU19: full_moon_extra")
-}
-
-/// Go: `moonDrop` (events_moon.go): Blutmond-Faktor auf den Gold-Drop.
-pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
-    unimplemented!("RU19: moon_drop")
-}
-
-/// Go: `triggerBoss` (boss.go).
-pub fn trigger_boss(_w: &mut World, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU15: trigger_boss")
-}
-
-/// Go: `bossDefeated` (boss.go): `e` ist der besiegte Boss.
-pub fn boss_defeated(_w: &mut World, _e: &Enemy, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU15: boss_defeated")
-}
-
-/// Go: `hitSplash` (boss_abilities.go): Splitter-Wurf des Geschosses `p` bei `x`.
-pub fn hit_splash(_w: &mut World, _p: &Projectile, _x: f64) {
-    unimplemented!("RU15: hit_splash")
-}
-
-/// Go: `addPool` (world_cycle.go): Aggressions-Pool um `amount` Prozent.
-pub fn add_pool(_w: &mut World, _amount: f64) {
-    unimplemented!("RU14: add_pool")
-}
-
-/// Go: `addStock` (economy.go): `true`, wenn das Material in den Vorrat kam.
-pub fn add_stock(_w: &mut World, _resource: &str, _amount: i64) -> bool {
-    unimplemented!("RU18: add_stock")
-}
-
-/// Go: `scaledGold` (economy_fountain.go).
-pub fn scaled_gold(_w: &World, _gold: i64) -> i64 {
-    unimplemented!("RU18: scaled_gold")
-}
-
-/// Go: `scatterCoins` (economy.go): `count` Münzen um `x` auf den Boden.
-pub fn scatter_coins(_w: &mut World, _x: f64, _count: i64) {
-    unimplemented!("RU18: scatter_coins")
-}
-
-/// Go: `isSpellTower` (building_spell_tower.go).
-pub fn is_spell_tower(_w: &World, _s: &Site) -> bool {
-    unimplemented!("RU18: is_spell_tower")
-}
-
-/// Go: `squadPost` (combat.go): Posten hinter dem Banner.
-pub fn squad_post(_w: &World, _t: &Troop) -> Option<f64> {
-    unimplemented!("RU15: squad_post")
-}
-
-/// Go: `escortPost` (unit_escort.go); RU11.3 liefert sie.
-pub fn escort_post(_w: &World, _t: &Troop) -> Option<f64> {
-    unimplemented!("RU11: escort_post")
-}
-
-/// Go: `walkTo` (unit_common.go); RU11.3 liefert sie. `ti` ist der Index der Truppe.
-pub fn walk_to(_w: &mut World, _ti: usize, _x: f64, _dt: f64) -> bool {
-    unimplemented!("RU11: walk_to")
 }
