@@ -453,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU46 | Rust-Schulden in k3c-level und Insel (Second Worker) | `erledigt/RU46-rust-schulden-level-und-insel/` |
 | RU47 | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | `erledigt/RU47-abnahme-stand-rust-sim/` |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | `erledigt/RU18-sim-wirtschaft-bau-monarch/` |
+| RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | `erledigt/RU49-smoke-raum-welt-und-pause/` |

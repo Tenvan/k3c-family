@@ -57,7 +57,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | erledigt |
 | RU21 | Spielstände und Raum Teil 1 | erledigt |
 | RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | erledigt |
-| RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | aktiv |
+| RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | erledigt |
 | RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | aktiv |
 | RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | aktiv |
 | RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
