@@ -12,7 +12,7 @@
 
 ## Ausgangslage
 
-Nach RU21 fehlen Stufenwechsel, Inselwechsel, Zeitraffer und der Rest des Raums.
+Nach RU21 und RU49 fehlen Stufen je Gerät, Dev-Aktionen, Speichern, Vorschau, Metriken und Beobachter. `worlds.go` (`create_in`, `load_in`; ohne `WorldList`), `island_switch.go` und `pause.go` hat RU49 schon geliefert (Smoke-Version): RU24.1 und RU24.4 überspringen diese Teile und portieren nur den Rest ihrer Dateiliste.
 
 ## Ziel
 
@@ -50,10 +50,10 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Protokoll (`docs/protocol.md`) und Spielstand-Format (Version 9) bleiben unverändert; keine neuen Fixtures unter `testdata/`. Keine neue Abhängigkeit außer vorhandenen Workspace-Crates.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Protokoll (`docs/protocol.md`) und Spielstand-Format (Version 9) bleiben unverändert; keine neuen Fixtures unter `testdata/`. Keine neue Abhängigkeit außer vorhandenen Workspace-Crates. RU24 wartet nicht mehr auf RU22 (Go-Vergleich), sondern nur auf den vorgezogenen Raum-Teil RU49; die Smoke-Version geht vor.
 
 - **Bereich:** `rust/crates/k3c-room/**`
-- **Abhängig von:** RU21, RU22
+- **Abhängig von:** RU21, RU49
 - **Braucht 🧑:** –
 - **Sperre:** spielstand
 

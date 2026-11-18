@@ -16,7 +16,7 @@
 
 ## Ziel
 
-Das Rust-Spiel rechnet die Rust-Sim im selben Prozess und speichert. Am Ende sichtbar: portierte Tests aus `local` grün.
+Das Rust-Spiel rechnet die Rust-Sim im selben Prozess (Sitzung, Takt, Kampagne, Einstellungen). Am Ende sichtbar: portierte Tests aus `local` (ohne Spielstände) grün. Spielstände, Aktionen und Entwickler-Rolle (frühere RU27.3) liegen seit 2026-11-18 in RU50, damit die Smoke-Version (RU48) nicht auf den Raum-Rest aus RU24 wartet. Tests der Sessions RU27.1 und RU27.2, die Spielstände brauchen, tragen `ignore` mit „wartet auf RU50“.
 
 ## Beteiligte und Zielgruppen
 
@@ -58,7 +58,7 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Keine Rücksicht auf ältere Spielstände (Beschluss bis auf Widerruf): Es gilt das Format von Go.
 
 - **Bereich:** `rust/crates/k3c-game/src/local/**`, `rust/crates/k3c-game/src/lib.rs` (nur `pub mod local;`), `rust/crates/k3c-game/Cargo.toml` (nur Abhängigkeiten auf vorhandene Workspace-Crates)
-- **Abhängig von:** RU24
+- **Abhängig von:** RU49
 - **Braucht 🧑:** –
 - **Sperre:** –
 
@@ -73,7 +73,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 ## Akzeptanzkriterien
 
 - **AC-01** Eine Sitzung mit zwei Spielern rechnet den Raum Schritt für Schritt.
-- **AC-02** Spielstände und Einstellungen liegen an denselben Orten wie beim Go-Spiel.
+- **AC-02** Einstellungen liegen an demselben Ort wie beim Go-Spiel (Spielstände: RU50).
 
 ## Offene Fragen
 
@@ -90,7 +90,7 @@ Keine offenen. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann w
 |---|---|---|---|---|
 | RU27.1 | `RU27.1-session-settings-worlds-route.md` | Umsetzung | autonom | offen |
 | RU27.2 | `RU27.2-step-campaign.md` | Umsetzung | autonom | offen |
-| RU27.3 | `RU27.3-saves-actions-dev.md` | Umsetzung | autonom | offen |
+| RU27.3 | `RU27.3-saves-actions-dev.md` | Umsetzung | autonom | verworfen |
 | RU27.4 | `RU27.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

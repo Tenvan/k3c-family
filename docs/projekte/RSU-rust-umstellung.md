@@ -55,13 +55,16 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | erledigt |
 | RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | erledigt |
 | RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | erledigt |
-| RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
-| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
 | RU21 | Spielstände und Raum Teil 1 | erledigt |
+| RU18 | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | geplant |
+| RU49 | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | geplant |
+| RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | geplant |
+| RU19 | Sim: Events, Geschichte, Dev-Eingriffe | geplant |
+| RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | geplant |
+| RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | geplant |
+| RU24 | Raum Teil 2 und Spielstand-Format | geplant |
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | geplant |
 | RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | geplant |
-| RU24 | Raum Teil 2 und Spielstand-Format | geplant |
-| RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | geplant |
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | geplant |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | geplant |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | geplant |

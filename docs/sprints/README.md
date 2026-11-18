@@ -73,6 +73,9 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
+| RU49 | SRV | RSU | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | – | bereit | `geplant/RU49-smoke-raum-welt-und-pause/` |
+| RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | bereit | `geplant/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
+| RU50 | CLI | RSU | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | – | bereit | `geplant/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
