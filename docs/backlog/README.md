@@ -130,7 +130,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1047](B-1047-wald-nach-rodung.md) | CLI | Idee | mittel | offen | BB2 | Der Wald wird mit dem Roden offener und heller |
 | [B-1049](B-1049-typen-worlddef-island-fuer-ru7-5-vorziehen.md) | SIM | Schuld | mittel | offen | RU10 | Typen WorldDef und Island für RU7.5 vorziehen |
 | [B-1050](B-1050-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | RU8 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
-| [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | offen | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
 | [B-1052](B-1052-abnahme-laeufe-ru5.md) | CLI | Schuld | mittel | offen | RU5 | Abnahme-Läufe RU5 |
 | [B-1053](B-1053-client-sim-naehte-ersetzen.md) | CLI | Schuld | mittel | eingeplant | RU30 | Sim-Nähte im Rust-Client sind durch die portierte Sim ersetzt |
 | [B-1054](B-1054-verwaiste-sim-tests-zuordnen.md) | SIM | Schuld | mittel | eingeplant | RU22 | Jede Go-Testdatei aus engine/sim ist in Rust portiert oder begründet ausgelassen |
