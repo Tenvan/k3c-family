@@ -1,0 +1,16 @@
+[package]
+name = "k3c-alloc-probe"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+
+# Bewusst ohne `workspace = true`: Der Workspace setzt `unsafe_code = "forbid"`, ein `GlobalAlloc` braucht `unsafe`.
+# Das Crate ist reines Test-Hilfsmittel (B-1075), kein Spiel-Crate hat es als normale Abhaengigkeit.
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+too_many_lines = "deny"
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"

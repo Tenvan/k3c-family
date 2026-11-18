@@ -184,6 +184,7 @@ impl ReplayApp {
 }
 
 impl App for ReplayApp {
+    // PERF(B-1077): bis zu 788 Allokationen je Takt (Welt kopieren, Zustand je Aufzeichnungs-Takt bauen)
     fn step(&mut self, _input: &InputState, _dt: f64) {
         let cams = self.cam_xs();
         let n = self.cells.len().min(MAX_CAMS);
@@ -198,6 +199,7 @@ impl App for ReplayApp {
         self.update();
     }
 
+    // PERF(B-1078): bis zu 29 Allokationen je Bild in den Zeichnern
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
         self.frames += 1;
         self.last_rects = 0;

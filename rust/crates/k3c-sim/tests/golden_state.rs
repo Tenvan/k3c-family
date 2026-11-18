@@ -4,6 +4,7 @@
 //! Snapshot (`snapshots[i].world`) wird als `World` geladen und als JSON-Baum verglichen (`k3c_det::golden::diff`: Zahlen
 //! als `f64` mit denselben Bits, `null` und leere Liste gelten als gleich). Die Spielstände der Kampagnen-Golden (`save`)
 //! laufen ebenso durch `SaveGame`. Golden werden nie geschrieben.
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)] // Testcode: Fehlschlag ist der Befund
 
 use k3c_det::golden;
 use k3c_sim::state::World;

@@ -6,6 +6,7 @@
 //! (`slot_views`, `new_bar_key`, `boss_bar`, `SeaView::refresh`, `Hud::story`, `Painter::outline.sweep`), liefern die
 //! Platzhalter neutrale Werte statt `unimplemented!`; alles, was nur beim Zeichnen oder bei offenem Menü läuft, stürzt
 //! mit `RU23: <name>` ab.
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use k3c_sim::state::{ActiveEvent, Enemy, Merchant, Player, SwitchState, World};
 

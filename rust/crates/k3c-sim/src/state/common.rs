@@ -288,6 +288,7 @@ pub fn destroy_site(w: &mut World, id: i64) {
 }
 
 /// Baut aus einem JSON-Objekt ein Ereignis (Go: `Event{...}`).
+#[allow(clippy::panic)] // STAB(B-1076): Ereignis ist immer ein Objekt, Fehlerweg folgt
 pub fn event(v: Value) -> Event {
     match v {
         Value::Object(m) => m,

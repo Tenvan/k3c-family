@@ -87,3 +87,14 @@ Nur die Erlaubten Dateien ändern. Kommst du dreimal am selben Fehler nicht vorb
 ### § 10 Log
 
 Jede Log-Meldung beginnt mit einem Emoji aus der Liste in `CLAUDE.md` (ein Codepunkt, kein U+FE0F).
+
+### § 11 Leistung und Stabilität
+
+Ziel: ruckelfrei und absturzfrei (Leitplanken RU42, Ralf 2026-11-18). Die Lints in `rust/Cargo.toml` erzwingen den Teil Stabilität, `k3c-game/tests/alloc_je_bild.rs` den Teil Allokationen.
+
+- **Kein Allokieren im Bild- und Takt-Pfad** (`step`, `draw`, Sim-Takt): Puffer anlegen, wiederverwenden (`clear()` statt neuer `Vec`), kein `format!`, `to_string()`, `clone()` von `String`/`Vec` je Bild. Der Test zählt Allokationen je Bild mit `k3c-alloc-probe` und schreibt eine Obergrenze fest; sinkt der Wert, die Grenze mitsenken.
+- **Keine `Rc`/`RefCell`-Geflechte im Zustand:** Besitz klar, Daten flach und per Index verweisen; geteilt wird nur Unveränderliches.
+- **Draw-Calls bündeln:** gleiche Textur und gleicher Blend nacheinander, Sprites in einem Rutsch (`canvas.sprite`-Folgen statt Einzelaufrufe mit Zustandswechsel).
+- **`Result` statt `panic`:** `unwrap`, `expect`, `panic!`, `todo!`, `unimplemented!` sind im Workspace `deny` (in Tests erlaubt). Fehler mit `?` weiterreichen oder mit begründetem Fallback abfangen; `unimplemented!` nur als Platzhalter nach § 7 mit gezieltem `allow` und Sprint-Nummer.
+- **Bewusste Schwachstellen markieren:** `// PERF(B-xxxx): Grund` bei bekannter Leistungsschuld, `// STAB(B-xxxx): Grund` mit gezieltem `#[allow(clippy::…)]` bei bekanntem Panic-Risiko; beides mit Ticket im Sprint RU43. Ohne Ticket keine Markierung, neuer Code fügt keine hinzu.
+- **Messung und Feinoptimierung am Ende** (Ralf 2026-11-18): erst bauen, dann messen (`messung_cpu`, `alloc_je_bild`), dann nach Messung optimieren (RU43); keine Optimierung ohne Zahl.

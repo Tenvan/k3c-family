@@ -3,6 +3,7 @@
 //! `CombatSpots`, `NearOf`, `StateFor` und `AtLair` rechnen aus Sim-Regeln, die RU15 (combat, boss_endboss) und RU18 (economy_view) liefern.
 //! Alle Zeichner und `hud` reichen `&dyn SimView` durch; RU15 und RU18 ersetzen `PendingSimView` durch die Sim und
 //! löschen diese Datei samt `pending::{Economy, HubUpgrade, CombatSpot}`.
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use k3c_sim::state::{Player, Site, World};
 

@@ -4,6 +4,7 @@
 //!
 //! Nicht portiert (Go braucht Dateien aus RU23): `menuLine`, `seaLine`, `menuEntries`, `buildMenu`; die Zeilen daraus und
 //! `TestGlyphenMitIcons` stehen als `#[ignore = "wartet auf RU23"]`. `checkLines` (Allokationen je Bild) entfällt mit ihm.
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use std::cell::RefCell;
 use std::collections::BTreeSet;

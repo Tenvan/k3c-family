@@ -125,7 +125,9 @@ impl Actor {
             };
             return Ok(());
         }
-        let mount = self.mount.as_ref().expect("Vierbeiner");
+        let Some(mount) = self.mount.as_ref() else {
+            return Err(Fehler::Rig("Figur ohne Reiter und ohne Reittier".to_string()));
+        };
         match mount.animations.get(name) {
             Some(anim) if !anim.gait.is_empty() => {
                 self.state = State {
@@ -171,10 +173,10 @@ impl Actor {
         if self.riding() {
             return gait_freq(&self.state.gait);
         }
-        self.rider
-            .as_ref()
-            .expect("Figur zu Fuß hat einen Reiter-Rig")
-            .figure_freq(&self.state.name)
+        let Some(rider) = self.rider.as_ref() else {
+            return Err(Fehler::Rig("Figur zu Fuß ohne Reiter-Rig".to_string()));
+        };
+        rider.figure_freq(&self.state.name)
     }
 
     /// `solve` rechnet Pose und Welt-Matrizen zur Zeit t (Figur am Ursprung, Füße bei y = 0).
@@ -185,7 +187,9 @@ impl Actor {
         let freq = self.freq()?;
         self.phase = ((self.t * freq) % 1.0 + 1.0) % 1.0;
         if self.riding() {
-            let m = self.mount.clone().expect("Reittier");
+            let Some(m) = self.mount.clone() else {
+                return Err(Fehler::Rig("Reiten ohne Reittier".to_string()));
+            };
             return match self.rider.clone() {
                 None => {
                     m.gait_pose(&self.state.gait, self.phase, &mut self.ride.pose)?;
@@ -196,7 +200,9 @@ impl Actor {
                 Some(r) => self.ride.set(&m, &r, &self.state.gait, self.phase, IDENTITY),
             };
         }
-        let r = self.rider.clone().expect("Reiter-Rig");
+        let Some(r) = self.rider.clone() else {
+            return Err(Fehler::Rig("Figur zu Fuß ohne Reiter-Rig".to_string()));
+        };
         r.figure_pose(&self.state.name, self.t, &mut self.pose)?;
         r.world(
             &self.pose.angles,
@@ -207,16 +213,16 @@ impl Actor {
     }
 
     /// `cloak_state`: Anker und Wind des Umhangs und sein Boden; reitend in der Ride-Gruppe, zu Fuß in der Welt.
-    fn cloak_state(&self) -> (Point, f64, f64) {
-        let rider = self.rider.as_ref().expect("Reiter-Rig");
+    fn cloak_state(&self) -> Option<(Point, f64, f64)> {
+        let rider = self.rider.as_ref()?;
         if self.riding() {
-            return (
+            return Some((
                 self.ride.cloak_anchor(rider),
                 self.ride.pose.wind * self.tempo,
                 crate::rig::ride_floor(),
-            );
+            ));
         }
-        (rider.cloak_anchor(&self.world), self.pose.wind * self.tempo, 0.0)
+        Some((rider.cloak_anchor(&self.world), self.pose.wind * self.tempo, 0.0))
     }
 
     /// `update` dreht die Animation um dt weiter und rechnet den Umhang in festen Schritten nach.
@@ -231,13 +237,17 @@ impl Actor {
         let Some(spec) = self.rider.as_ref().and_then(|r| r.cloak.clone()) else {
             return;
         };
-        let (anchor, wind, floor) = self.cloak_state();
+        let Some((anchor, wind, floor)) = self.cloak_state() else {
+            return;
+        };
         let mode = if self.riding() { 2 } else { 1 };
         if self.cloak.is_none() || self.cloak_on != mode {
             (self.cloak, self.cloak_on, self.cloak_acc) = (Some(Cloak::new(&spec, anchor)), mode, 0.0);
         }
         self.cloak_acc = f64::min(self.cloak_acc + dt, MAX_CLOAK_STEPS * CLOAK_DT);
-        let cloak = self.cloak.as_mut().expect("Umhang");
+        let Some(cloak) = self.cloak.as_mut() else {
+            return;
+        };
         while self.cloak_acc >= CLOAK_DT {
             cloak.step(anchor, wind, floor);
             self.cloak_acc -= CLOAK_DT;
@@ -267,10 +277,9 @@ impl Actor {
 
     /// `draw_mount` zeichnet das Reittier in Ebenen-Reihenfolge; am Platz `sattel` kommt der Reiter, danach Hals und Zügel.
     fn draw_mount(&mut self, p: &mut Painter, c: &mut dyn Canvas, a: &Assets) {
-        let (r, s) = (
-            self.mount.clone().expect("Reittier"),
-            self.mount_skin.clone().expect("Bilder"),
-        );
+        let (Some(r), Some(s)) = (self.mount.clone(), self.mount_skin.clone()) else {
+            return;
+        };
         for it in &r.order {
             match it.kind {
                 ItemKind::Part => {
@@ -281,7 +290,9 @@ impl Actor {
                 }
                 ItemKind::Band => {
                     r.leg_points(it.index, &self.ride.pose.angles, &mut self.legs);
-                    let at = usize::try_from(s.band_part[it.index]).expect("Band hängt an einem Teil");
+                    let Ok(at) = usize::try_from(s.band_part[it.index]) else {
+                        continue; // Band ohne Teil: nichts zu zeichnen
+                    };
                     if let Some(img) = s.bands[it.index] {
                         p.band(
                             c,
@@ -310,10 +321,9 @@ impl Actor {
     }
 
     fn draw_reins(&self, p: &mut Painter, c: &mut dyn Canvas) {
-        let (mount, rider) = (
-            self.mount.as_ref().expect("Reittier"),
-            self.rider.as_ref().expect("Reiter"),
-        );
+        let (Some(mount), Some(rider)) = (self.mount.as_ref(), self.rider.as_ref()) else {
+            return;
+        };
         let ends = rein_points(
             mount,
             &self.ride.mount_world,
@@ -329,10 +339,9 @@ impl Actor {
     /// `draw_rider` zeichnet die Figur: Umhang (in cloak_base), Teile und Elemente an den Plätzen; reitend ohne das
     /// hintere Bein.
     fn draw_rider(&self, p: &mut Painter, c: &mut dyn Canvas, a: &Assets, world: &[M], cloak_base: M, mounted: bool) {
-        let (r, s) = (
-            self.rider.as_ref().expect("Reiter"),
-            self.skin.as_ref().expect("Bilder"),
-        );
+        let (Some(r), Some(s)) = (self.rider.as_ref(), self.skin.as_ref()) else {
+            return;
+        };
         for it in &r.order {
             match it.kind {
                 ItemKind::Part => {

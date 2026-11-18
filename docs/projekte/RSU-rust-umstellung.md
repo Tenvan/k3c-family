@@ -41,6 +41,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU17 | Effekte und Ton im Spiel | erledigt |
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | erledigt |
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | erledigt |
+| RU42 | Leitplanken für Leistung und Stabilität | aktiv |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | geplant |
 | RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | geplant |
 | RU11 | Sim: Einheiten und Gegner | geplant |
@@ -60,6 +61,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | geplant |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | geplant |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | geplant |
+| RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | geplant |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | geplant |
 | RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | geplant |
