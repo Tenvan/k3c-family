@@ -90,7 +90,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU20.1 | `RU20.1-hud-texts-data-fonts-layout.md` | Umsetzung | autonom | offen |
+| RU20.1 | `RU20.1-hud-texts-data-fonts-layout.md` | Umsetzung | autonom | fertig |
 | RU20.2 | `RU20.2-hud-values-glyphs.md` | Umsetzung | autonom | offen |
 | RU20.3 | `RU20.3-hud-hints-banner-radar.md` | Umsetzung | autonom | offen |
 | RU20.4 | `RU20.4-hud-state-hud-icons.md` | Umsetzung | autonom | offen |
