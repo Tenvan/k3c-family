@@ -12,9 +12,12 @@ use k3c_data::monarch::{SkillData, SkillEffect};
 use k3c_data::troops::{ProfessionData, TroopData};
 use k3c_level::types::WallSite;
 
+use super::island_ref::IslandRef;
 use super::save::HubSave;
 use super::shared::WorldValues;
 use super::{Enemy, Player, Site, Troop, World};
+use super::{Event, Projectile};
+use crate::enemies::Target;
 
 /// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
 pub const MERCHANT_ID: i64 = -1;
@@ -52,11 +55,6 @@ pub fn each_passive(_w: &World, _f: &mut dyn FnMut(&Player, &SkillEffect)) {
 /// Go: `invulnerable` (enemies_traits.go).
 pub fn invulnerable(_w: &World, _e: &Enemy) -> bool {
     unimplemented!("RU11: invulnerable")
-}
-
-/// Go: `isWaveEnemy` (enemies_guard.go).
-pub fn is_wave_enemy(_e: &Enemy) -> bool {
-    unimplemented!("RU11: is_wave_enemy")
 }
 
 /// Go: `damageMerchant` (merchant.go).
@@ -168,19 +166,9 @@ pub fn hub_steps(_w: &World) -> i64 {
     unimplemented!("RU18: hub_steps")
 }
 
-/// Go: `guardsClearedKeys` (enemies_guard.go): die geräumten Lager `kind@x`, sortiert.
-pub fn guards_cleared_keys(_w: &World) -> Vec<String> {
-    unimplemented!("RU11: guards_cleared_keys")
-}
-
 /// Go: `countFetching` (combat.go): Zahl der Truppen, die gerade ihr Schild holen.
 pub fn count_fetching(_w: &World) -> i64 {
     unimplemented!("RU15: count_fetching")
-}
-
-/// Go: `applyGuards` (enemies_guard.go): übernimmt die geräumten Lager eines gespeicherten Hubs.
-pub fn apply_guards(_w: &mut World, _h: &HubSave) {
-    unimplemented!("RU11: apply_guards")
 }
 
 /// Go: `applyPortals` (portal.go): übernimmt die zerstörten Portale eines gespeicherten Hubs.
@@ -191,4 +179,85 @@ pub fn apply_portals(_w: &mut World, _h: &HubSave) {
 /// Go: `plotX` (building_plantation.go): Position von Platz `i` im Streifen um die Baumschule.
 pub fn plot_x(_s: &Site, _p: &Plantation, _i: usize) -> f64 {
     unimplemented!("RU18: plot_x")
+}
+
+// Von RU11.1 portiert: Gegner-Wache. Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
+pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
+
+/// Go: `hammerKind` (unit_hammer.go); RU11.3 verschiebt die Konstante nach `unit/hammer.rs`.
+pub const HAMMER_KIND: &str = "hammer";
+
+/// Go: `bossAbility` (boss.go): Boss-Fähigkeit des Gegners `ei`.
+pub fn boss_ability(_w: &mut World, _ei: usize, _isl: Option<&mut IslandRef>) {
+    unimplemented!("RU15: boss_ability")
+}
+
+/// Go: `takeCrownOrLoot` (crown.go).
+pub fn take_crown_or_loot(_w: &mut World, _ei: usize) {
+    unimplemented!("RU15: take_crown_or_loot")
+}
+
+/// Go: `crownStolen` (crown.go): `thief` ist schon aus `w.enemies` genommen.
+pub fn crown_stolen(_w: &mut World, _thief: &Enemy) {
+    unimplemented!("RU15: crown_stolen")
+}
+
+/// Go: `dropLoot` (portal.go): die Beute des Gegners `ei` fällt als Münzen zu Boden.
+pub fn drop_loot(_w: &mut World, _ei: usize) {
+    unimplemented!("RU15: drop_loot")
+}
+
+/// Go: `dropCrownOf` (crown.go).
+pub fn drop_crown_of(_e: &mut Enemy) {
+    unimplemented!("RU15: drop_crown_of")
+}
+
+/// Go: `strike` (enemies_traits.go): der Gegner `ei` schlägt auf das Ziel zu.
+pub fn strike(_w: &mut World, _v: &WorldValues, _ei: usize, _t: &Target, _isl: Option<&IslandRef>) {
+    unimplemented!("RU11: strike")
+}
+
+/// Go: `kite` (enemies_traits.go): `true`, wenn der Gegner Abstand hält und sich bewegt hat.
+pub fn kite(_w: &mut World, _v: &WorldValues, _ei: usize, _dt: f64) -> bool {
+    unimplemented!("RU11: kite")
+}
+
+/// Go: `attackRate` (enemies_traits.go).
+pub fn attack_rate(_v: &WorldValues, _kind: &str) -> f64 {
+    unimplemented!("RU11: attack_rate")
+}
+
+/// Go: `isOnTower` (unit_archer.go).
+pub fn is_on_tower(_w: &World, _t: &Troop) -> bool {
+    unimplemented!("RU11: is_on_tower")
+}
+
+/// Go: `merchantX` (merchant.go).
+pub fn merchant_x(_w: &World, _what: &str) -> f64 {
+    unimplemented!("RU18: merchant_x")
+}
+
+/// Go: `moonDamage` (events_moon.go).
+pub fn moon_damage(_w: &World, _damage: f64) -> f64 {
+    unimplemented!("RU19: moon_damage")
+}
+
+/// Go: `emit` (events.go): hängt das Ereignis mit `type` an `w.events`.
+pub fn emit(_w: &mut World, _typ: &str, _fields: Event) {
+    unimplemented!("RU19: emit")
+}
+
+/// Go: `unitX` (events.go): X auf eine Nachkommastelle gerundet.
+pub fn unit_x(_x: f64) -> f64 {
+    unimplemented!("RU19: unit_x")
+}
+
+/// Go: `arrowEvent` (events.go): Ereignis zum Pfeil `p` (noch nicht in `w.projectiles`) vom Schützen `from`.
+pub fn arrow_event(_w: &mut World, _p: &Projectile, _from: i64) {
+    unimplemented!("RU19: arrow_event")
+}
+
+/// Go: `frostArmorHit` (monarch_passives.go): Frost Armor des Spielers `pi` gegen den Gegner `ei`.
+pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
+    unimplemented!("RU18: frost_armor_hit")
 }
