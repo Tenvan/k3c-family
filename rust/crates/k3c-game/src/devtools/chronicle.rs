@@ -221,6 +221,18 @@ pub(super) fn changed(m: &mut BTreeMap<i64, Value>, key: i64, v: Value) -> bool 
     old.is_some_and(|o| o != v)
 }
 
+/// changed_str wie `changed` für Texte, ohne je Bild zu allokieren (nur beim Wechsel).
+pub(super) fn changed_str(m: &mut BTreeMap<i64, Value>, key: i64, v: &str) -> bool {
+    match m.get(&key) {
+        Some(Value::String(s)) if s == v => false,
+        old => {
+            let was = old.is_some();
+            m.insert(key, Value::from(v));
+            was
+        }
+    }
+}
+
 /// outcome_name ist die Ende-Ursache.
 pub fn outcome_name(o: Outcome) -> &'static str {
     match o {

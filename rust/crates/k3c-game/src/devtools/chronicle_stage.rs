@@ -4,7 +4,7 @@
 use k3c_sim::state::{Event as SimEvent, World};
 use serde_json::Value;
 
-use super::chronicle::{Chronicle, changed};
+use super::chronicle::{Chronicle, changed, changed_str};
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::{Frame, Stage};
 
@@ -47,7 +47,7 @@ impl Chronicle {
         let Some(w) = st.world.as_deref() else {
             return;
         };
-        if changed(&mut self.run.phase, st.index, Value::from(w.cycle.phase.clone())) {
+        if changed_str(&mut self.run.phase, st.index, &w.cycle.phase) {
             self.log.info(
                 "🚦 Tageszeit",
                 &[

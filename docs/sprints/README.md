@@ -34,7 +34,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU50 | CLI | RSU | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | – | `aktiv/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
 | RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | `aktiv/RU24-raum-teil-2-spielstand/` |
-| RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | `aktiv/RU29-dev-werkzeuge-im-spiel/` |
 
 ## Offen am Gerät
 
@@ -454,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU27 | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | `erledigt/RU27-lokales-spiel/` |
 | RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | `erledigt/RU22-sim-golden-bitgleich/` |
 | RU48 | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | `erledigt/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
+| RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | `erledigt/RU29-dev-werkzeuge-im-spiel/` |
