@@ -234,6 +234,7 @@ impl Island {
             stages: self.stages.len() as i64,
             storages_elsewhere: self.storages_except(i),
             stock_bonus: self.dev.stock_bonus,
+            gold_collected: 0,
         }
     }
 
@@ -250,6 +251,7 @@ impl Island {
         self.defeated_bosses = r.defeated_bosses;
         self.endboss = r.endboss;
         self.endboss_defeated = r.endboss_defeated;
+        self.gold_collected += r.gold_collected;
         if r.over {
             self.over = true;
         }

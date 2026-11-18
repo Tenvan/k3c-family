@@ -32,7 +32,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU45 | SIM, CLI | RSU | Abnahme- und Messläufe auf dem Second Worker | – | `aktiv/RU45-abnahme-und-messlaeufe-second-worker/` |
+| RU46 | CLI, SIM | RSU | Rust-Schulden in k3c-level und Insel (Second Worker) | – | `aktiv/RU46-rust-schulden-level-und-insel/` |
+| RU47 | SIM | RSU | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | – | `aktiv/RU47-abnahme-stand-rust-sim/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | `aktiv/RU18-sim-wirtschaft-bau-monarch/` |
 
 ## Offen am Gerät

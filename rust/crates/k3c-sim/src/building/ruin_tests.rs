@@ -137,7 +137,7 @@ fn ruine_zerstoert_und_wiederaufbau_ab_hub_stufe_der_art() {
         );
         for hub in 1..=crate::world::hub_of(w).levels.len() as i64 {
             w.hub_level = hub;
-            let payable = super::pending::site_payable(w, &v, None, &w.sites[s]);
+            let payable = crate::economy::site_payable(w, &v, None, &w.sites[s]);
             assert_eq!(payable, hub >= from, "{kind} auf Hub-Stufe {hub}: erwartet ab {from}");
         }
         w.hub_level = 1;
@@ -186,7 +186,7 @@ fn ruine_im_spielstand_bleibt_bei_geaenderter_welt_planung() {
 /// Vorrang beim Bezahlen: Liegt eine Ruine in Zahl-Reichweite eines unbezahlten Bauplatzes der Mauerlinien, gehen die Münzen
 /// an den Linien-Platz, nicht an Produkt oder Ausbau der Ruine; genau auf wall.x und knapp daneben.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, find_pay_target, pay_one_coin)"]
+#[ignore = "wartet auf RU18 (new_hub_site, find_pay_target braucht merchant_at (RU18.4), pay_one_coin braucht merchant_at (RU18.4))"]
 fn linien_platz_vor_ruine_beim_bezahlen() {
     unimplemented!("RU18: find_pay_target, pay_one_coin (RU18.2)")
 }

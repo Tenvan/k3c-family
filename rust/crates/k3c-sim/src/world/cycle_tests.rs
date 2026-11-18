@@ -73,7 +73,7 @@ fn dawn_gold(_w: &World) -> i64 {
 
 // Über zwei Zyklen: dawn genau einmal je Zyklus, im ersten Schritt des Morgengrauens, samt Gold je lebendem Spieler.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site, add_player: apply_preset, step_players, pay_dawn_income)"]
+#[ignore = "wartet auf RU18 (create_world: new_hub_site, add_player: apply_preset, step_players braucht speed_of und step_skills (RU18.5), pay_dawn_income)"]
 fn dawn_bei_beginn_des_morgengrauens() {
     let opts = Options {
         cycle_speed: 60.0,

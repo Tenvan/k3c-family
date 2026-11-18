@@ -23,7 +23,7 @@ fn planted_at(w: &World, nursery: usize) -> i64 {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players)"]
+#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5))"]
 fn plantage_waechst_je_platz() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -58,7 +58,7 @@ fn plantage_waechst_je_platz() {
 
 /// Plantage-Bäume sind kein Zahlziel, ein Bauer holt sie ohne Münze; der Platz wächst danach neu.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, find_pay_target, step_players)"]
+#[ignore = "wartet auf RU18 (new_hub_site, find_pay_target braucht merchant_at (RU18.4), step_players braucht speed_of und step_skills (RU18.5))"]
 fn plantage_ohne_markierung() {
     let mut w = day_world();
     let p = vals(&w).buildings["nursery"].plantation.clone();
@@ -68,7 +68,7 @@ fn plantage_ohne_markierung() {
     run(&mut w, p.grow_seconds + DT);
     let pi = add_player(&mut w);
     w.players[pi].x = plot_x(&w.sites[nursery], &p, 0);
-    let target = crate::state::pending::find_pay_target(&w, &w.players[pi]);
+    let target = crate::economy::find_pay_target(&w, &vals(&w), None, &w.players[pi]);
     assert!(target.is_none(), "Plantage-Baum ist Zahlziel");
     let gold = w.players[pi].gold;
     run(&mut w, 300.0); // der Platz liegt weit draußen im Wald, der Bauer muss hinlaufen
@@ -97,7 +97,7 @@ fn baumschule_erst_nach_dem_roden() {
         ..ResourceNode::default()
     }];
     let v = vals(&w);
-    let payable = |w: &World| super::pending::site_payable(w, &v, None, &w.sites[nursery]);
+    let payable = |w: &World| crate::economy::site_payable(w, &v, None, &w.sites[nursery]);
     assert!(
         !payable(&w) && site_needs_clearing(&w, &w.sites[nursery]),
         "mit Baum im Freiraum"

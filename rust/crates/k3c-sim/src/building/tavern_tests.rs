@@ -33,7 +33,7 @@ fn to_dawn(w: &mut World) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players) und RU19 (pure)"]
+#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5)) und RU19 (pure)"]
 fn taverne_landstreicher_je_dawn_bis_max() {
     let mut w = quiet_world();
     add_player(&mut w);

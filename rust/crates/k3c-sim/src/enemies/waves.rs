@@ -9,11 +9,12 @@ use serde_json::json;
 
 use super::equipment_taken::drop_carried;
 use super::guard::mark_cleared;
+use crate::economy::add_stock;
 use crate::state::common::{apply_damage_by, event, sign};
 use crate::state::island_ref::IslandRef;
 use crate::state::pending::{
-    MERCHANT_ID, add_pool, add_stock, boss_defeated, emit, full_moon_extra, hit_splash, merchant_x, moon_drop, pure,
-    scaled_gold, scatter_coins, trigger_boss, unit_x, values,
+    MERCHANT_ID, add_pool, boss_defeated, emit, full_moon_extra, hit_splash, merchant_x, moon_drop, pure, scaled_gold,
+    scatter_coins, trigger_boss, unit_x, values,
 };
 use crate::state::{Enemy, QueuedSpawn, World, WorldValues};
 
@@ -199,7 +200,7 @@ pub fn remove_dead_enemies(w: &mut World, mut isl: Option<&mut IslandRef>) {
         if e.boss {
             boss_defeated(w, &e, isl.as_deref_mut());
         } else {
-            enemy_drop(w, &v, &mut e);
+            enemy_drop(w, &v, isl.as_deref(), &mut e);
         }
         if e.guard {
             mark_cleared(w, &e); // keine Wirkung auf den Aggressionspool, kein Respawn
@@ -212,7 +213,7 @@ pub fn remove_dead_enemies(w: &mut World, mut isl: Option<&mut IslandRef>) {
 }
 
 /// Go: `enemyDrop`: Gold laut Daten plus geklautes Gold als Münzen, mit Chance die Stufen-Ressource in den Vorrat.
-pub fn enemy_drop(w: &mut World, v: &WorldValues, e: &mut Enemy) {
+pub fn enemy_drop(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, e: &mut Enemy) {
     let gold = v.enemies.get(e.kind.as_str()).map_or([0, 0], |d| d.gold);
     let rolled = w.rng.int(gold[0], gold[1]);
     // Blutmond: Drop mal Faktor, geklautes Gold nicht
@@ -227,7 +228,7 @@ pub fn enemy_drop(w: &mut World, v: &WorldValues, e: &mut Enemy) {
     let drop = &v.economy.enemy_resource_drop;
     if w.rng.next() < drop.chance {
         let resource = w.biome.primary_resource.clone(); // nur im seltenen Treffer
-        if add_stock(w, &resource, drop.amount) {
+        if add_stock(w, v, isl, &resource, drop.amount) {
             w.events.push(event(
                 json!({"type": "gathered", "resource": resource, "amount": drop.amount}),
             ));

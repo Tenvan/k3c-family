@@ -158,6 +158,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1092](B-1092-ru19-decode-world-story-vorziehen.md) | SIM | Schuld | mittel | offen | RU19 | decode_world_story (RU19) blockiert 91 Tests, Reihenfolge der Sprints prüfen; events_moon_stages_test zu RU19 |
 | [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU14 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
 | [B-1095](B-1095-abnahme-stand-rust-sim-teillauf.md) | SIM | Schuld | mittel | offen | RU47 | Abnahme-Teillauf Rust-Sim: Stand der ignorierten Tests und Go-Seite für RU10, RU11, RU14, RU15 |
+| [B-1097](B-1097-add-stock-capped-platzhalter-rest.md) | SIM | Schuld | niedrig | offen | RU18 | Platzhalter add_stock_capped in k3c-sim pending.rs ist ein Rest aus RU10 |
 
 ## Archiv
 

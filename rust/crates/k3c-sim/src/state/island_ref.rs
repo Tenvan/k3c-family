@@ -47,6 +47,9 @@ pub struct IslandRef {
     pub storages_elsewhere: i64,
     /// Dev-Bonus des Lager- und Gold-Maximums (Go: `island.Dev.StockBonus`, `devMaxStock`).
     pub stock_bonus: i64,
+    /// Münzen, die Spieler dieser Stufe im Schritt aufgehoben haben (Go: `island.GoldCollected++`, Siegvariante gold); die
+    /// Insel zählt sie in `put_stage_ref` zu ihrem Zähler.
+    pub gold_collected: i64,
 }
 
 impl IslandRef {

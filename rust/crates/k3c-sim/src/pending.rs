@@ -63,20 +63,7 @@ pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
     unimplemented!("RU19: moon_drop")
 }
 
-/// Go: `addStock` (economy.go): `true`, wenn das Material in den Vorrat kam.
-pub fn add_stock(_w: &mut World, _resource: &str, _amount: i64) -> bool {
-    unimplemented!("RU18: add_stock")
-}
-
-/// Go: `scaledGold` (economy_fountain.go).
-pub fn scaled_gold(_w: &World, _gold: i64) -> i64 {
-    unimplemented!("RU18: scaled_gold")
-}
-
-/// Go: `scatterCoins` (economy.go): `count` Münzen um `x` auf den Boden.
-pub fn scatter_coins(_w: &mut World, _x: f64, _count: i64) {
-    unimplemented!("RU18: scatter_coins")
-}
+pub use crate::economy::{scaled_gold, scatter_coins}; // Von RU18.2 portiert (economy_fountain.go, economy.go)
 
 // Von RU18.1 portiert (building_*.go): die Import-Stelle bleibt `pending`, damit die Gruppen `unit` und `enemies`
 // unverändert bleiben.

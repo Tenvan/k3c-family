@@ -5,6 +5,7 @@ pub mod building;
 pub mod campaign;
 pub mod combat;
 pub mod crown;
+pub mod economy;
 pub mod enemies;
 pub mod island;
 pub mod pending;

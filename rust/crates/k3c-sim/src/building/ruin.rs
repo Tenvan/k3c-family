@@ -6,10 +6,10 @@
 //! kommt immer aus dem Level (kind@x wie `site_line`), damit `empty_site` und `destroy_site` die Kennung `Site::ruin` neu
 //! setzen; der Spielstand ordnet den Platz über kind@x zu.
 
-use super::pending::site_payable;
+use crate::economy::nearest;
+use crate::economy::site_payable;
 use crate::state::island_ref::IslandRef;
 use crate::state::{Site, World, WorldValues};
-use crate::unit::econ::nearest;
 use crate::world::base::base;
 use crate::world::lines::level_site;
 use crate::world::{empty_site, hub_of, vals};

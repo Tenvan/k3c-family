@@ -61,7 +61,7 @@ fn damaged_tower() -> (World, usize) {
 
 /// Reparatur zwischen den Wellen: HP voll nach dem fehlenden Anteil der Bauzeit, Vorrat und Gold unverändert.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players)"]
+#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5))"]
 fn reparatur_ohne_gold_und_material() {
     let (mut w, tower) = damaged_tower();
     w.stock = Stock {
@@ -87,7 +87,7 @@ fn reparatur_ohne_gold_und_material() {
 
 /// Bei Gefahr (Gegner in der Welt, Nacht) keine Reparatur.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site, step_players)"]
+#[ignore = "wartet auf RU18 (new_hub_site, step_players braucht speed_of und step_skills (RU18.5))"]
 fn reparatur_nicht_bei_gefahr() {
     let (mut w, tower) = damaged_tower();
     let x = w.width_units - 1.0;

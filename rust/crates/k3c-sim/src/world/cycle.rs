@@ -9,8 +9,9 @@ use k3c_data::biome::Cycle;
 use serde_json::json;
 
 use super::base::base;
-use super::pending::{merchant_dawn, night_events_end, night_events_start, pay_dawn_income, tavern_dawn};
+use super::pending::{merchant_dawn, night_events_end, night_events_start, tavern_dawn};
 use super::vals;
+use crate::economy::pay_dawn_income;
 use crate::enemies::send_enemies_home;
 use crate::enemies::waves::start_wave;
 use crate::state::common::event;
@@ -127,7 +128,7 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
     }
     if changed && w.cycle.phase == "dawn" {
         // der Übergang Morgengrauen → Tag löst nichts aus (Q65)
-        dawn_break(w, day_night);
+        dawn_break(w, isl.as_deref(), day_night);
     }
     if w.aggression.is_some() && w.biome.cycle.r#type == "aggressionPool" {
         add_pool(w, w.biome.cycle.percent_per_minute / 60.0 * dt * w.cycle_speed);
@@ -139,13 +140,13 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
 }
 
 /// Der Beginn des Morgengrauens in `step_cycle`: Ereignis `dawn`, Gegner fliehen, Morgengold, Ersatz-Hammer, Wirt, Händler.
-fn dawn_break(w: &mut World, day_night: bool) {
+fn dawn_break(w: &mut World, isl: Option<&IslandRef>, day_night: bool) {
     w.events.push(event(json!({"type": "dawn", "day": w.cycle.day})));
     if day_night {
         send_enemies_home(w);
     }
-    pay_dawn_income(w);
     let v = vals(w);
+    pay_dawn_income(w, &v, isl);
     spare_hammer(w, &v);
     tavern_dawn(w);
     merchant_dawn(w);

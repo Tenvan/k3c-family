@@ -6,17 +6,20 @@ use super::data::COMBAT_GENERAL;
 use super::testutil::{combat_stage, group_ready, spot_for};
 
 #[test]
-#[ignore = "wartet auf RU18"] // `find_pay_target` (economy_pay.go)
+#[ignore = "wartet auf RU18"] // `find_pay_target braucht merchant_at (RU18.4)` (economy_pay.go)
 fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
     let (w, _, _) = combat_stage(super::data::COMBAT_GROUPS);
     let spot = spot_for(&w, SpotKind::Shield, 0).expect("Schild");
     // Turm-Bauplatz in Zahl-Reichweite außerhalb von spotClearUnits, `findPayTarget` liefert dennoch das Zahlziel.
-    let _ = (spot, crate::state::pending::find_pay_target(&w, &w.players[1]));
+    let _ = (
+        spot,
+        crate::economy::find_pay_target(&w, &super::testutil::vals(&w), None, &w.players[1]),
+    );
     panic!("RU18: find_pay_target");
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step_players)"]
+#[ignore = "wartet auf RU18 (step_players braucht speed_of und step_skills (RU18.5))"]
 fn ausloeser_nur_mit_ziel() {
     let (mut w, l) = group_ready();
     w.portals = vec![w.hub_x - 40.0]; // kein Portal und kein Gegner auf der rechten Seite

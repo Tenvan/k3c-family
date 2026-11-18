@@ -13,9 +13,9 @@
 
 use k3c_data::buildings::{ArmorStage, Cost};
 
+use crate::economy::{can_afford, nearest, spend};
 use crate::state::island_ref::{IslandRef, cheap};
 use crate::state::{Site, World, WorldValues};
-use crate::unit::econ::{can_afford, nearest, spend};
 use crate::unit::hammer::place_product;
 use crate::unit::professions::{OfferTarget, bows_crafting, craft_seconds, find_offer, pay_offer};
 use crate::unit::warrior::is_fighter;

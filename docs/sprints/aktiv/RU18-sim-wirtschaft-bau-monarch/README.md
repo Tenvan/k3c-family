@@ -98,7 +98,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU18.1 | `RU18.1-building-sites-upgrades.md` | Umsetzung | autonom | fertig |
-| RU18.2 | `RU18.2-economy-pay-view.md` | Umsetzung | autonom | offen |
+| RU18.2 | `RU18.2-economy-pay-view.md` | Umsetzung | autonom | fertig |
 | RU18.3 | `RU18.3-hub-level-validate.md` | Umsetzung | autonom | offen |
 | RU18.4 | `RU18.4-merchant-monarch-data.md` | Umsetzung | autonom | offen |
 | RU18.5 | `RU18.5-monarch-passives-skills.md` | Umsetzung | autonom | offen |

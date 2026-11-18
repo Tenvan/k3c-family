@@ -59,30 +59,6 @@ pub use crate::building::ruin::is_ruin; // Von RU18.1 portiert (building_ruin.go
 
 pub use crate::world::values_room::values; // Von RU14.4 portiert (world_values_room.go)
 
-/// Go: `payTarget` (economy_pay.go), das Zahlziel am Ort eines Spielers; hier nur die Felder, die RU8 liest.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct PayTarget {
-    pub offer: Option<PayOffer>,
-    /// "buy", "sell" oder "" (kein Händler-Ziel).
-    pub merchant: String,
-}
-
-/// Go: das Angebot eines Zahlziels (`offer`, unit_professions.go).
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct PayOffer;
-
-impl PayOffer {
-    /// Go: `offer.kind()`.
-    pub fn kind(&self) -> &str {
-        unimplemented!("RU18: PayOffer::kind")
-    }
-}
-
-/// Go: `findPayTarget` (economy_pay.go).
-pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
-    unimplemented!("RU18: find_pay_target")
-}
-
 pub use crate::world::vein::gather_of; // Von RU14.4 portiert (world_vein.go)
 
 /// Go: `WorldValues.skillRef` (monarch_data.go): der Skill `id` im Katalog des Wertesatzes.
@@ -152,15 +128,7 @@ pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
 
 pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portiert (world_travel.go)
 
-/// Go: `refundPending` (economy.go): wirft gezahltes, nicht vollendetes Gold des Spielers `pi` zurück auf den Boden.
-pub fn refund_pending(_w: &mut World, _pi: usize) {
-    unimplemented!("RU18: refund_pending")
-}
-
-/// Go: `toHub` (economy.go): stellt den Monarchen `pi` neben die Burg (Burgfall, Stufenwechsel).
-pub fn to_hub(_w: &mut World, _pi: usize) {
-    unimplemented!("RU18: to_hub")
-}
+pub use crate::economy::to_hub; // Von RU18.2 portiert (economy.go)
 
 /// Go: `returnBanner` (combat_squad.go): stellt das Banner des Monarchen `pi` am Tor wieder auf; sein Trupp kehrt zurück.
 pub fn return_banner(_w: &mut World, _pi: usize) {

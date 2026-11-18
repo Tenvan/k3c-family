@@ -11,14 +11,9 @@ use k3c_data::events::NightEvent;
 use k3c_data::hub::HubData;
 use k3c_data::monarch::MonarchData;
 
-use crate::state::{IslandRef, PlayerCommand, Site, World};
+use crate::state::{Site, World};
 
 // RU18 (Wirtschaft) und RU19 (Ereignisse), gerufen von `step_cycle` (world_cycle.go) und `mirror_state`.
-
-/// Go: `payDawnIncome` (economy.go): Morgengold je lebendem Spieler.
-pub fn pay_dawn_income(_w: &mut World) {
-    unimplemented!("RU18: pay_dawn_income")
-}
 
 pub use crate::building::tavern::tavern_dawn; // Von RU18.1 portiert (building_tavern.go)
 
@@ -58,19 +53,11 @@ pub fn check_world_hub_sites(
     unimplemented!("RU18: check_world_hub_sites")
 }
 
-/// Go: `stepPlayers` (economy.go): Bewegung, Zahlen, Einsammeln der Spieler.
-pub fn step_players(_w: &mut World, _commands: &[PlayerCommand], _isl: Option<&mut IslandRef>, _dt: f64) {
-    unimplemented!("RU18: step_players")
-}
+pub use crate::economy::{step_players, step_sites}; // Von RU18.2 portiert (economy.go)
 
 /// Go: `stepPassives` (monarch_passives.go): Passiv-Skills der Monarchen.
 pub fn step_passives(_w: &mut World, _dt: f64) {
     unimplemented!("RU18: step_passives")
-}
-
-/// Go: `stepSites` (economy.go): Bau, Ausbau und Handwerk der Plätze.
-pub fn step_sites(_w: &mut World, _isl: Option<&mut IslandRef>) {
-    unimplemented!("RU18: step_sites")
 }
 
 // Von RU18.1 portiert (building_plantation.go, building_healer.go, building_spell_tower.go).
