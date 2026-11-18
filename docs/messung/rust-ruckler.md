@@ -1,7 +1,7 @@
 # Messung: Ruckler Rust-Wiedergabe gegen Go-Spiel (RU39, Gate G2)
 
-Stand: Werkzeug und Probelauf (RU39.1, 2026-11-18). Die Gate-Werte erhebt 🧑 in RU39.2, die Bewertung und Entscheidung
-G2 folgen in RU39.3.
+Stand: Werkzeug, Probelauf (RU39.1) und vorläufige Messung mit eigenem Messcode (RU39.3, 2026-11-18). Die Gate-Werte
+(ruhiger PC, Mini-PC, Sichtprüfung) sind auf das Ende verschoben (B-1074, Ralf 2026-11-18: Messungen zum Schluss).
 
 ## Aufbau
 
@@ -70,7 +70,7 @@ Aus der Sprint-README: längstes Bild höchstens das Doppelte des Medians; kein 
 das Programm verursacht (`lang_programm` = 0). Ist Rust nicht sichtbar besser als das Go-Spiel nach B-943, empfiehlt
 RU39.3 den Abbruch.
 
-## Gate-Läufe (RU39.2, 🧑)
+## Gate-Läufe (verschoben nach B-1074, 🧑)
 
 | Rechner | Programm | Lauf | Median | p99 | p99,9 | längstes | lang | lang_programm | Rechenzeit Median/p99 | GPU ded./geteilt | RAM |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -92,3 +92,46 @@ Agenten-Sessions; die Werte belegen nur, dass die Kette läuft.
 |---|---|---|---|---|---|---|---|---|---|---|
 | Go | 3 454 | 16,64 ms | 48,55 ms | 86,17 ms | 570,45 ms | 155 | 11 | 0,44 / 3,39 ms | 0 / 201 MiB | 588 MiB |
 | Rust | 3 601 | 16,67 ms | 26,25 ms | 46,73 ms | 72,91 ms | 42 | 0 | 0,15 / 0,37 ms | 0 / 357 MiB | 872 MiB |
+
+## Vorläufige Messung (eigener Messcode)
+
+**Vorläufig, unruhiger Rechner** (WS1285, integrierte Grafik, parallel laufende Agenten-Sessions und Builds). Kein
+Gate-Wert, keine Entscheidung G2. Werkzeug: `rust/crates/k3c-game/tests/messung_cpu.rs` (`--ignored`, Aufruf im Kopf der
+Datei). Es spielt die Aufzeichnung `messung-nacht` (Szene `nacht`, 2 Spieler, 9 060 Takte, mit
+`go test ./engine/internal/trace/ -run TestMessungNacht -write` geschrieben, fester Seed `k3c`) 9 000 Bilder lang ab
+(60 Bilder Aufwärmen), mit den echten Zeichnern des Spiels (Welt, Bauten, Figuren, Effekte, HUD, zwei Zellen) und der
+gerenderten Grafik (21 + 8 MiB RGBA, 24 Rigs) gegen `NullCanvas`, Release-Build. Gemessen ist nur der **CPU-Teil**: Befehlsliste
+erzeugen (je Bild im Mittel 510 Zeichenbefehle, davon 363 Sprites) plus Kopie des Zustands. Nicht enthalten: Textur-Upload,
+GPU, VSync, Treiber. Die Werte sind eine Untergrenze der Rechenzeit je Bild, kein Bildzeit-Ersatz.
+
+Bild = `step` + `draw` in ms, drei Läufe nacheinander:
+
+| Lauf | Mittel | p50 | p99 | p99,9 | längstes | über 1,5 × p50 | über 8,3 ms | über 16,7 ms | davon `draw` p50 / p99 / max |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | 0,074 | 0,062 | 0,273 | 0,945 | 3,07 | 788 | 0 | 0 | 0,029 / 0,117 / 3,02 |
+| 2 | 0,102 | 0,081 | 0,259 | 2,644 | 9,15 | 1 723 | 1 | 0 | 0,038 / 0,105 / 5,84 |
+| 3 | 0,078 | 0,063 | 0,224 | 0,827 | 3,03 | 1 216 | 0 | 0 | 0,029 / 0,106 / 2,72 |
+
+- **Budget:** Das längste CPU-Bild liegt bei 9,2 ms (Lauf 2, ein einziges Bild über der halben Bildzeit von 8,3 ms), kein Bild
+  über 16,7 ms. Der Median (0,06 bis 0,08 ms) belegt nur 0,4 bis 0,5 % der Bildzeit.
+- **Verhältnis längstes zu Median** (G2-Schwelle 1) liegt wegen des Mikrosekunden-Medians bei 48 bis 113 und taugt
+  auf der CPU-Basis nicht als Maß; maßgeblich ist die absolute Zeit im Bildbudget. Schwelle 1 wird erst mit den Bildzeiten
+  des Fensters entschieden (B-1074).
+- **Verlauf:** Die Drittel der Läufe zeigen keinen Anstieg über die Nacht (p50 0,06 bis 0,09 ms in allen), kein Wachstum der
+  Bildzeit; die Ausreißer (p99,9 bis 2,6 ms) streuen zwischen den Läufen und folgen vermutlich dem unruhigen Rechner, nicht
+  der Szene (ungeprüft).
+- **Allokationen je Bild:** nicht messbar. Ein zählender `GlobalAlloc` braucht `unsafe`, der Workspace setzt
+  `unsafe_code = "forbid"`. Ticket B-1075.
+
+Zum Vergleich der Probelauf von oben (60 s im Fenster, ebenfalls unruhig): Rust Rechenzeit je Bild 0,15 / 0,37 ms
+(Median/p99), `lang_programm` 0, längstes Bild 72,9 ms; Go 0,44 / 3,39 ms, `lang_programm` 11, längstes Bild 570 ms.
+Die Rust-Zeichner brauchen also auch mit GPU-Übergabe nur einen Bruchteil des Bildbudgets; die langen Bilder beider
+Programme liegen außerhalb der Zeichner (Go: GC und Sim im selben Prozess, vermutet; Rust: Treiber, Präsentation oder
+Rechner, ungeprüft).
+
+### Vorläufige Einschätzung G2
+
+**Vorläufig bestanden, Gate-Messung am Ende (B-1074).** Kein klares Leistungsrisiko im CPU-Teil der Zeichner: kein
+Bild über dem Bildbudget, kein Anstieg über die Nacht. Offen und nicht belegt: Allokationen je Bild (B-1075), Bildzeiten
+am ruhigen PC und Mini-PC, die Sichtprüfung „sichtbar besser als Go“ und der Vorbehalt, dass die Wiedergabe keine Sim
+rechnet (in Go 12 bis 21 µs je Takt, 008). Die Entscheidung G2 bleibt bei 🧑.
