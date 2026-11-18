@@ -1,0 +1,74 @@
+[
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "confirm",
+  "key": "key:SPACE",
+  "label": "Leertaste",
+  "icon": "icons/taste-kappe-breit"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "pause",
+  "key": "key:ESC",
+  "label": "Esc",
+  "icon": "icons/taste-kappe-breit"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "fullscreen",
+  "key": "key:F11",
+  "label": "F11",
+  "icon": "icons/taste-kappe-breit"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "attack",
+  "key": "key:E",
+  "label": "E",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill1",
+  "key": "key:Q",
+  "label": "Q",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill2",
+  "key": "key:R",
+  "label": "R",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill3",
+  "key": "key:T",
+  "label": "T",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skill4",
+  "key": "key:Z",
+  "label": "Z",
+  "icon": "icons/taste-kappe"
+ },
+ {
+  "player": 0,
+  "profile": "wasd",
+  "action": "skillMenu",
+  "key": "key:K",
+  "label": "K",
+  "icon": "icons/taste-kappe"
+ }
+]

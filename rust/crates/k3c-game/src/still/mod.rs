@@ -5,6 +5,9 @@
 //! `--props --simview <props-name.simview.json>` zeichnet nur Boden und Bauten (`PROPS_LAYERS`, RU16.6); die Sim-Antworten
 //! kommen als `FixedSimView` aus der Datei, bis RU15 und RU18 die Sim-Funktionen liefern.
 //!
+//! `--hud --simview <hud-name.simview.json> --frame <hud-name.frame.json>` zeichnet nur die Anzeigen je Hälfte
+//! (`HUD_LAYERS`, RU20.7): Sitze, Geräte, Sprache und Meldungen kommen aus der Frame-Datei.
+//!
 //! Schnittstelle für spätere Sprints (RU16, RU20, RU9, RU23, RU30):
 //! - Ebenen sind `compose::Builder` in `compose::LAYERS` (Name, Funktion); ein Builder legt die Bibliothek seines
 //!   Moduls an, lädt dessen Assets (`AssetSource`) und liefert Drawer und Listener als `Part`.
@@ -18,9 +21,10 @@
 use std::path::{Path, PathBuf};
 
 use crate::art::{Config, parse_scales};
-use crate::view::layer::Drawer;
+use crate::view::layer::{Drawer, Listener};
 
 pub mod compose;
+pub mod frame;
 mod inflate;
 pub mod pngio;
 pub mod raster;
@@ -29,7 +33,8 @@ mod raster_tests;
 pub mod simview;
 pub mod state;
 
-pub use compose::{Builder, LAYERS, PROPS_LAYERS, Part, Setup};
+pub use compose::{Builder, HUD_LAYERS, LAYERS, PROPS_LAYERS, Part, Setup};
+pub use frame::{FrameExtras, FrameFile};
 pub use raster::Image;
 pub use simview::FixedSimView;
 pub use state::{StillState, load_state, parse_state};
@@ -47,11 +52,17 @@ pub struct Options {
     pub simview: Option<PathBuf>,
     /// Nur Boden und Bauten zeichnen (`--props`, RU16.6)
     pub props: bool,
+    /// Nur die Anzeigen je Hälfte zeichnen (`--hud`, RU20.7), nötig mit `--simview` und `--frame`
+    pub hud: bool,
+    /// Sitze, Sprache, Eingabe-Profile und Meldungen des Frames (`--frame`, RU20.7)
+    pub frame: Option<PathBuf>,
 }
 
-/// Liest die Schalter: `<zustand> --out <png> [--grafik <ordner>] [--props --simview <json>]`.
+/// Liest die Schalter: `<zustand> --out <png> [--grafik <ordner>] [--props --simview <json>]` oder
+/// `[--hud --simview <json> --frame <json>]`.
 pub fn parse_args(args: &[String]) -> Result<Options, String> {
     let (mut state, mut out, mut grafik, mut simview, mut props) = (None, None, None, None, false);
+    let (mut hud, mut frame) = (false, None);
     let mut it = args.iter();
     while let Some(a) = it.next() {
         let mut value = |name: &str| it.next().cloned().ok_or(format!("{name} braucht einen Wert"));
@@ -59,7 +70,9 @@ pub fn parse_args(args: &[String]) -> Result<Options, String> {
             "--out" => out = Some(PathBuf::from(value("--out")?)),
             "--grafik" => grafik = Some(PathBuf::from(value("--grafik")?)),
             "--simview" => simview = Some(PathBuf::from(value("--simview")?)),
+            "--frame" => frame = Some(PathBuf::from(value("--frame")?)),
             "--props" => props = true,
+            "--hud" => hud = true,
             s if !s.starts_with("--") && state.is_none() => state = Some(PathBuf::from(s)),
             s => return Err(format!("unbekannter Schalter {s}")),
         }
@@ -70,6 +83,8 @@ pub fn parse_args(args: &[String]) -> Result<Options, String> {
         grafik,
         simview,
         props,
+        hud,
+        frame,
     })
 }
 
@@ -163,6 +178,39 @@ pub fn props_items(s: &StillState, cfg: &Config) -> Result<Vec<Vec<crate::props:
     Ok(out)
 }
 
+/// Plätze einer Zelle: Index der Zelle, Rechtecke der gezeigten Elemente nach Element-Index.
+pub type HudCellLayout = (i64, Vec<(usize, crate::hud::layout::Rect)>);
+
+/// Plätze der Elemente des HUD je Zelle nach dem Zeichnen (`Hud::placed`): je Zelle (Index der Zelle, Rechtecke der
+/// gezeigten Elemente nach Element-Index). Für den Platz-Test gegen `hud-<name>.layout.json` (RU20.7).
+pub fn hud_layout(s: &StillState, cfg: &Config) -> Result<Vec<HudCellLayout>, String> {
+    use k3c_platform::Canvas;
+    let mut canvas = raster::SoftCanvas::new(s.size.0, s.size.1);
+    let setup = Setup {
+        cfg: cfg.clone(),
+        level: &s.level,
+        world: &s.world,
+        simview: s.simview.as_ref(),
+    };
+    let hud = compose::hud_drawer(&setup, &mut canvas)?;
+    let (frame, cells) = s.frame();
+    hud.borrow_mut().listen(&frame);
+    let mut out = Vec::new();
+    for c in &cells {
+        canvas.clip(Some(c.rect.to_rect()));
+        hud.borrow().draw(&mut canvas, &frame, c);
+        canvas.clip(None);
+        let p = usize::try_from(c.player).map_err(|e| e.to_string())?;
+        let placed = hud.borrow().hud().borrow().placed(p).ok_or("HUD ohne Plätze")?;
+        let items = (0..placed.ok.len())
+            .filter(|i| placed.ok[*i])
+            .map(|i| (i, placed.at[i]))
+            .collect();
+        out.push((c.index, items));
+    }
+    Ok(out)
+}
+
 /// Führt `k3c-game still` aus.
 pub fn run(o: &Options) -> Result<(), String> {
     let s = load_state(&o.state)?;
@@ -171,9 +219,15 @@ pub fn run(o: &Options) -> Result<(), String> {
         Some(p) => s.with_simview(FixedSimView::load(p)?),
         None => s,
     };
+    let s = match &o.frame {
+        Some(p) => s.with_frame(FrameFile::load(p)?)?,
+        None => s,
+    };
     let cfg = config(&root, o.grafik.as_deref());
     let img = if o.props {
         render_with(&s, &cfg, PROPS_LAYERS)?
+    } else if o.hud {
+        render_with(&s, &cfg, HUD_LAYERS)?
     } else {
         render(&s, &cfg)?
     };
@@ -203,6 +257,19 @@ mod tests {
         let o = parse_args(&args(&["a.gz", "--out", "b.png", "--props", "--simview", "s.json"])).unwrap();
         assert!(o.props);
         assert_eq!(o.simview, Some(PathBuf::from("s.json")));
+        let o = parse_args(&args(&[
+            "a.gz",
+            "--out",
+            "b.png",
+            "--hud",
+            "--simview",
+            "s.json",
+            "--frame",
+            "f.json",
+        ]))
+        .unwrap();
+        assert!(o.hud && !o.props);
+        assert_eq!(o.frame, Some(PathBuf::from("f.json")));
         assert!(parse_args(&args(&["a.gz"])).is_err());
         assert!(parse_args(&args(&["--out", "b.png"])).is_err());
         assert!(parse_args(&args(&["a.gz", "--out"])).is_err());

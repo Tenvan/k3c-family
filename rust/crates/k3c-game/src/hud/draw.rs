@@ -248,6 +248,12 @@ impl Hud {
         lc.out
     }
 
+    /// placed liefert die zuletzt gelegten Plätze der Elemente des Spielers p (None vor dem ersten Zeichnen). Für den
+    /// Platz-Test des Standbilds (RU20.7); Go liest dafür `h.lay[p].out`.
+    pub fn placed(&self, p: usize) -> Option<Placed> {
+        self.lay.get(p).filter(|l| l.set).map(|l| l.out)
+    }
+
     /// text_box zeichnet einen Text der Größe size auf seiner Fläche, bündig links.
     #[allow(clippy::too_many_arguments)] // Signatur wie Go
     pub fn text_box(
