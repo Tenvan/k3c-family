@@ -5,6 +5,7 @@ am PC, Simulation in `engine/` (Go). Browser-Client, Spielserver und Online-Spie
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
+- **Second Worker:** Nur wenn Ralf sagt „Du bist der Second Worker“, gilt der Skill `second-worker` (Lane `zweit`); sonst ist jeder Agent Hauptrechner.
 - **Arbeitsweise:** `docs/arbeitsweise.md` (Domänen, autonomer Ablauf, Review, Komplexitäts-Budget). Für eine Session
   genügt der Skill `k3c-session` mit `plan_next`; die ganze Datei nur beim Planen oder bei Regelfragen lesen.
 - **Glossar:** `docs/glossar.md` – verbindliche Begriffe; beim Schreiben von Specs und Texten lesen, neue Begriffe dort zuerst eintragen.

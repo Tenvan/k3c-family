@@ -15,13 +15,10 @@ die Lane `zweit` an Sessions, die der zweite Rechner abarbeiten soll.
 Auf dem zweiten Rechner im Repo, frisch von `origin/main`:
 
 ```text
-Du bist der Second Worker für K3C. Lies CLAUDE.md und docs/arbeitsweise.md › Second Worker. Arbeite autonom nur
-Sessions mit „Lane: zweit“ ab (aktive Sprints, Abhängigkeiten erledigt; Überblick mit plan_list), in der Reihenfolge
-der Projekt-Ränge. Je Session ein Commit auf sprint/<präfix>, nach jeder Session pushen; die Review-Session öffnet den
-PR gegen main und mergt mit gh pr merge --squash --auto. Keine Tickets oder Sprints anlegen, Befunde ins Ergebnis
-unter „Für den Hauptrechner“. Kein Sim, kein Balancing, kein gen:paper; gemessen wird erst am Ende. Mach weiter, bis
-keine Session mit Lane zweit mehr frei ist, dann melde den Stand.
+Du bist der Second Worker.
 ```
+
+Der Satz startet den Repo-Skill `second-worker` (`.claude/skills/second-worker/SKILL.md`), der den Ablauf enthält.
 
 ### Hauptrechner (Lanes vergeben und Ergebnisse einsammeln)
 
