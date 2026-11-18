@@ -147,16 +147,17 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1077](B-1077-perf-allokationen-im-replay-takt.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: Replay-Takt (step) allokiert bis zu 788 mal je Bild, Ziel 0 |
 | [B-1078](B-1078-perf-allokationen-im-draw-pfad.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: draw allokiert bis zu 29 mal je Bild, Ziel 0 |
 | [B-1081](B-1081-abnahme-ru11-sim-einheiten-gegner.md) | SIM | Schuld | mittel | offen | RU11 | Abnahme RU11: Sim, Balance und Gen für Einheiten und Gegner in Rust |
-| [B-1079](B-1079-stab-perf-level-marker.md) | CLI | Schuld | niedrig | offen | RU43 | Level-Generator: STAB- und PERF-Markierungen in k3c-level abbauen |
+| [B-1079](B-1079-stab-perf-level-marker.md) | CLI | Schuld | niedrig | offen | RU46 | Level-Generator: STAB- und PERF-Markierungen in k3c-level abbauen |
 | [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU10 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
-| [B-1083](B-1083-island-save-null-und-kopf-wie-go.md) | SIM | Schuld | niedrig | offen | RU10 | Rust liest Insel-Spielstaende mit null-Feldern und falschem Kopf-Typ strenger als Go |
-| [B-1085](B-1085-welt-lesen-randfaelle.md) | SIM | Schuld | niedrig | offen | RU10 | Welt-Datei lesen: null- und Array-Randfälle weichen von Go ab |
+| [B-1083](B-1083-island-save-null-und-kopf-wie-go.md) | SIM | Schuld | niedrig | offen | RU46 | Rust liest Insel-Spielstaende mit null-Feldern und falschem Kopf-Typ strenger als Go |
+| [B-1085](B-1085-welt-lesen-randfaelle.md) | SIM | Schuld | niedrig | offen | RU46 | Welt-Datei lesen: null- und Array-Randfälle weichen von Go ab |
 | [B-1086](B-1086-abnahme-laeufe-sim-insel.md) | SIM | Schuld | mittel | offen | RU10 | Abnahme-Läufe Sim Insel |
 | [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU10 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
-| [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | offen | RU10 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
+| [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | offen | RU46 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
 | [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
 | [B-1092](B-1092-ru19-decode-world-story-vorziehen.md) | SIM | Schuld | mittel | offen | RU19 | decode_world_story (RU19) blockiert 91 Tests, Reihenfolge der Sprints prüfen; events_moon_stages_test zu RU19 |
 | [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU14 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
+| [B-1095](B-1095-abnahme-stand-rust-sim-teillauf.md) | SIM | Schuld | mittel | offen | RU47 | Abnahme-Teillauf Rust-Sim: Stand der ignorierten Tests und Go-Seite für RU10, RU11, RU14, RU15 |
 
 ## Archiv
 
