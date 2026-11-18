@@ -8,6 +8,7 @@ pub mod crown;
 pub mod dev;
 pub mod economy;
 pub mod enemies;
+pub mod events;
 pub mod hub;
 pub mod island;
 pub mod merchant;

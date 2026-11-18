@@ -4,15 +4,9 @@
 
 use k3c_data::monarch::MountData;
 
-use super::PayTarget;
 use crate::state::{PlayerCommand, World, WorldValues};
 
 pub use crate::merchant::{merchant_at, pay_merchant, refund_merchant}; // Von RU18.4 portiert (merchant.go)
-
-/// Go: `coinGiveEvent` (events.go, RU19): meldet eine Münze, die ein Ziel bezahlt.
-pub fn coin_give_event(_w: &mut World, _pi: usize, _t: &PayTarget) {
-    unimplemented!("RU19: coin_give_event")
-}
 
 pub use crate::monarch::{chest_skill_point, step_attack}; // Von RU18.4 portiert (monarch.go)
 
@@ -32,3 +26,6 @@ pub fn mount_of(_v: &WorldValues, _pi: usize) -> &MountData {
 }
 
 pub use crate::hub::{hub_gate, pay_upgrade, step_upgrade}; // Von RU18.3 portiert (hub_level.go)
+
+// Von RU19.2 portiert (events.go): die Import-Stelle bleibt `pending`.
+pub use crate::events::coin_give_event;

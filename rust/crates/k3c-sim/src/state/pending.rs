@@ -24,11 +24,6 @@ pub use crate::unit::warrior::is_fighter;
 
 pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert (merchant.go)
 
-/// Go: `hitEvent` (events.go).
-pub fn hit_event(_w: &mut World, _target: &str, _id: i64, _x: f64, _damage: f64) {
-    unimplemented!("RU19: hit_event")
-}
-
 /// Go: `troopDamage` (monarch_passives.go).
 pub fn troop_damage(_w: &World, _ti: usize, _damage: f64) -> f64 {
     unimplemented!("RU18: troop_damage")
@@ -98,3 +93,6 @@ pub fn return_banner(_w: &mut World, _pi: usize) {
 }
 
 pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
+
+// Von RU19.2 portiert (events.go): die Import-Stelle bleibt `pending`.
+pub use crate::events::hit_event;

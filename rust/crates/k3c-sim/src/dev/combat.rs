@@ -4,12 +4,12 @@
 
 use k3c_data::difficulty::DifficultyFile;
 
-use super::pending::raid_merchant;
 use super::{dev_set_phase, on_stage};
 use crate::boss::abilities::arm_boss;
 use crate::boss::data::boss_by_id;
 use crate::boss::endboss::{EndbossFight, endboss_phase};
 use crate::boss::spawn_boss;
+use crate::events::merchant::raid_merchant;
 use crate::island::Island;
 use crate::merchant::merchant_arrive;
 use crate::state::pending::values;
@@ -115,7 +115,7 @@ fn dev_merchant_raid(isl: &mut Island, difficulty: &DifficultyFile) -> bool {
         if w.merchant.as_ref().is_some_and(|m| m.raid) {
             return false;
         }
-        raid_merchant(w);
+        raid_merchant(w, r);
         true
     })
 }

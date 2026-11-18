@@ -6,7 +6,6 @@
 
 mod build;
 pub mod combat;
-mod pending;
 pub mod spawn;
 
 #[cfg(test)]
