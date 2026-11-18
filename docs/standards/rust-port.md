@@ -6,11 +6,12 @@ Dieser Text ist der Port-Leitfaden. RU1.1 legt ihn wörtlich als `docs/standards
 
 ### § 1 Grundsatz
 
-- **Go ist die Wahrheit.** Lies jede Go-Datei der Session ganz, samt Test, bevor du schreibst.
-- Übersetze Funktion für Funktion in derselben Reihenfolge, mit denselben Namen in `snake_case`; Typen in `CamelCase`. Deutsche Kommentare übernehmen.
-- Nichts verbessern, nichts umbauen, nichts beschleunigen. Fällt ein Fehler in Go auf: Ticket anlegen und in Rust so nachbauen, wie Go rechnet.
-- **Bitgleich** heißt: gleicher JSON-Baum, jede Zahl als `f64` mit denselben Bits. Es gilt nur für rng, Ganzzahlen und den Level-Aufbau (Level-Generator). Golden werden nie geändert.
-- **Gleiches Verhalten** gilt für Sim-Fließkomma (Entscheidung 012): dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte (Gold, Tag, IDs, Zählungen), dieselben Kampagnen-Ergebnisse; Fließkommawerte mit Toleranz 1e-6 relativ, nahe 0 absolut 1e-9. Bitgleichheit zu Go ist dort ein Prüfwerkzeug des Ports, keine Anforderung an das Spiel.
+- **Go ist das Orakel für Verhalten, nicht für Code.** Lies jede Go-Datei der Session ganz, samt Test, bevor du schreibst. Namen in `snake_case`, Typen in `CamelCase`, deutsche Kommentare übernehmen.
+- **Idiomatisches, performantes Rust ist erwünscht** (Entscheidung 012): keine Pflicht zur Go-Rechenreihenfolge, zu `k3c-det`-Mathematik und zu Go-Datenstrukturen (Maps, lineare Suche, Slices). Hinweise in Sprints und Sessions wie „wie Go“ oder „Go-Reihenfolge“ gelten nur für das, was unten verbindlich ist.
+- **Verbindlich bleiben:** Reihenfolge der Ereignisse und der rng-Aufrufe, Ganzzahl-Werte, Kampagnen-Ergebnisse und Determinismus innerhalb von Rust (gleicher Seed ergibt bitgleich dasselbe Spiel). Fällt ein Fehler in Go auf: Ticket anlegen; ob Rust ihn nachbaut, entscheidet das Ticket.
+- **Bitgleich** (gleicher JSON-Baum, jede Zahl als `f64` mit denselben Bits) gilt nur für den rng. Golden werden nie geändert.
+- **Gleiches Ergebnis** gilt für den Level-Generator (RU6): gleiche Chunks und Objekte (Art, Anzahl, Reihenfolge), Fließkomma mit Toleranz 1e-6 relativ (absolut 1e-9 nahe 0).
+- **Gleiches Verhalten** gilt für die Sim (RU22, G3): gleiche Ereignisse in gleicher Reihenfolge, gleiche Ganzzahl-Werte (Gold, Tag, IDs, Zählungen), gleiche Kampagnen-Ergebnisse; Fließkomma mit grober Toleranz, Standard 1e-4 relativ (absolut 1e-9 nahe 0). Zweck des Abgleichs: nur Port-Fehler finden. Alte Sim- und Balancing-Ergebnisse zählen nicht; Balancing und Sim-Läufe werden nach der Umsetzung komplett neu gemacht.
 
 ### § 2 Ablage
 
@@ -47,8 +48,8 @@ JSON: `json:"name"` → `#[serde(rename = "name")]`; `omitempty` → `skip_seria
 
 - Gewürfelt wird nur mit `k3c_rng::Rng`. Jeder Würfel-Aufruf steht an derselben Stelle der Reihenfolge wie in Go, auch wenn das Ergebnis verworfen wird.
 - Determinismus innerhalb von Rust bleibt Pflicht: gleicher Seed ergibt bitgleich dasselbe Spiel (Wiedergabe, Spielstände, Koop).
-- Gleitkomma in rng und Level-Aufbau: dieselbe Reihenfolge und Klammerung der Rechenschritte wie in Go (bitgleich). `float64(…)`-Hüllen um Produkte in Go fallen weg, die Reihenfolge bleibt. Kein `mul_add`.
-- Gleitkomma in der Sim: gleiches Verhalten (§ 1) reicht. Umsortieren, schnellere Datenstrukturen und std-Funktionen (`powf`, `powi`, `exp`, `ln`, `sin`, `cos`, `f64::max`, `f64::min`) statt `k3c_det` sind erlaubt, solange Toleranz und Ereignis-Abgleich halten. `k3c_det::pow`, `exp`, `fmax`, `fmin` bleiben Pflicht in rng und Level-Aufbau (auch für Gos eingebautes `min`/`max` auf Gleitkommazahlen).
+- Gleitkomma im rng: dieselben Rechenschritte wie in Go (bitgleich), kein `mul_add`. Im Level-Aufbau und in der Sim ist die Rechenreihenfolge frei, solange Toleranz (§ 1) und Ereignis-Abgleich halten.
+- Sim und Level dürfen std-Funktionen (`powf`, `powi`, `exp`, `ln`, `sin`, `cos`, `f64::max`, `f64::min`) und schnellere Datenstrukturen nutzen; `k3c_det`-Mathematik ist nur im rng Pflicht. Die Reihenfolge der Ereignisse und der rng-Aufrufe bleibt Pflicht.
 - Nach RU41 (Go-Engine entfernt) schreibt Rust eigene Golden; die Go-Golden werden dann ersetzt.
 - Erlaubt, weil exakt gleich: `abs`, `floor`, `ceil`, `trunc`, `round` (wie `math.Round`), `sqrt`, `%` (wie `math.Mod`), `copysign`.
 - Ganzzahlen: `/` und `%` runden in beiden Sprachen zur Null. Überlauf nur im rng, dort `wrapping_*`. `int(f)` → `f as i64`.

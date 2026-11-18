@@ -5,6 +5,29 @@
 - **Grundlage:** [`roadmap.md`](roadmap.md), [`backlog/README.md`](backlog/README.md) (≈30 offene Umsetzungs-Tickets), `docs/arbeitsweise.md`
   (ein Sprint = eine Domäne, SIM → SRV → CLI), Lückenanalyse unten.
 
+## 0. Prompts für parallele Rechner
+
+Wiederverwendbare Startprompts; Regeln in [`arbeitsweise.md`](arbeitsweise.md) › Second Worker. Der Hauptrechner vergibt
+die Lane `zweit` an Sessions, die der zweite Rechner abarbeiten soll.
+
+### Second Worker (zweiter Rechner, kleinerer Account)
+
+Auf dem zweiten Rechner im Repo, frisch von `origin/main`:
+
+```text
+Du bist der Second Worker.
+```
+
+Der Satz startet den Repo-Skill `second-worker` (`.claude/skills/second-worker/SKILL.md`), der den Ablauf enthält.
+
+### Hauptrechner (Lanes vergeben und Ergebnisse einsammeln)
+
+```text
+Arbeite RSU autonom in Wellen ab und merge auf main. Nimm keine Sessions mit „Lane: zweit“. Vergib Lane zweit an
+einfache, abgegrenzte Oberflächen-Sprints, sobald sie frei werden, und lege aus den „Für den Hauptrechner“-Notizen des
+Second Workers Tickets an.
+```
+
 ## 1. Ausgangslage (belegt)
 
 - **Fertig:** Insel/Stufen-Kern (SP12), Optionen/Grade/Material/Lager in Go (SP13), Raum auf Insel + Protokoll v3 (SP14), Regelwerk R1–R4 beschlossen (`docs/rules/*.md`), Go-Server, Diagnose-TUI, k3c-workbench, Logging (heute ausgebaut).

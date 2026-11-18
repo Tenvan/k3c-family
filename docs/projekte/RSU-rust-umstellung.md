@@ -41,11 +41,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU17 | Effekte und Ton im Spiel | erledigt |
 | RU20 | HUD Teil 1: Anzeigen je Spielerhälfte | erledigt |
 | RU39 | Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2) | erledigt |
-| RU42 | Leitplanken für Leistung und Stabilität | erledigt |
-| RU6 | Level-Generator in Rust, Level-Golden bitgleich | geplant |
-| RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | geplant |
-| RU11 | Sim: Einheiten und Gegner | geplant |
-| RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | geplant |
+| RU6 | Level-Generator in Rust, Level-Golden bitgleich | aktiv |
+| RU9 | Menüs Teil 1: Hauptmenü, Lobby, Einstellungen | aktiv |
+| RU11 | Sim: Einheiten und Gegner | aktiv |
+| RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | aktiv |
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | geplant |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | geplant |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | geplant |
@@ -84,8 +83,8 @@ Workbench, `tools/assetkit`, `tools/paper` und die übrigen Werkzeuge nach Rust 
 - **Analyse und Empfehlung:** B-1014. Die GC-Vermutung ist ungeprüft; B-943 beschreibt Ruckler bei stabilen 60 FPS auch auf schnellen Rechnern, was eher auf den Bildtakt zeigt (Sim 30 Hz, Bild 60 Hz, Zwischenbilder aus der Wanduhr). Ist der Bildtakt die Ursache, behebt Rust nichts von selbst. Deshalb zuerst RU0.
 - **Reihenfolge „Client zuerst“:** Der Rust-Client zeichnet bis G2 aus Aufzeichnungen des Go-Spiels (RU38), ohne portierte Sim. So ist nach 69 Sessions belegt, ob Rust die Ruckler beseitigt, bevor die übrigen 139 Sessions anfallen.
 - **Wellen- und Kostenplan:** B-1015. 42 Sprints in 26 Wellen, rund 208 Sessions (Spanne ±20 %, ungeprüft).
-- **Gates:** G0 nach 3 Sessions (Ursache der Ruckler), G1 nach 11 (Spike), G2 nach 69 (Client ruckelfrei bei echter Last), G3 nach 143 (Sim-Golden mit gleichem Verhalten, Entscheidung 012; Level-Golden bleiben bitgleich), G4 nach 171 (Abnahme am PC). An jedem Gate entscheidet 🧑.
-- **Port-Orakel (🧑 2026-11-18, Entscheidung 012):** Bitgleichheit zu Go gilt nur für rng, Ganzzahlen und Level-Aufbau (RU3, RU6). Sim-Fließkomma (RU22): gleiches Verhalten, also dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte und Kampagnen-Ergebnisse, Fließkommawerte mit Toleranz (1e-6 relativ, absolut 1e-9 nahe 0). Determinismus innerhalb von Rust bleibt Pflicht; nach RU41 schreibt Rust eigene Golden.
+- **Gates:** G0 nach 3 Sessions (Ursache der Ruckler), G1 nach 11 (Spike), G2 nach 69 (Client ruckelfrei bei echter Last), G3 nach 143 (Sim-Golden mit gleichem Verhalten, Toleranz 1e-4, Entscheidung 012), G4 nach 171 (Abnahme am PC). An jedem Gate entscheidet 🧑.
+- **Port-Orakel (🧑 2026-11-18, Entscheidung 012):** rng bitgleich. Level-Generator (RU6): gleiches Ergebnis (gleiche Chunks und Objekte nach Art, Anzahl, Reihenfolge; Fließkomma 1e-6 relativ). Sim (RU22): gleiches Verhalten (gleiche Ereignisse in gleicher Reihenfolge, gleiche Ganzzahl-Werte und Kampagnen-Ergebnisse; Fließkomma grob, Standard 1e-4 relativ; Zweck nur Port-Fehler finden). Keine Pflicht zu Go-Rechenreihenfolge, `k3c-det`-Mathematik und Go-Datenstrukturen; idiomatisches, performantes Rust ist erwünscht. Verbindlich bleiben Reihenfolge der Ereignisse und der rng-Aufrufe sowie Determinismus innerhalb von Rust. Alte Sim- und Balancing-Ergebnisse zählen nicht; Balancing und Sim-Läufe werden nach der Umsetzung komplett neu gemacht; nach RU41 schreibt Rust eigene Golden.
 - **Rückfall:** Bis G4 bleibt das Go-Spiel unverändert spielbar, Rust liegt nur unter `rust/`.
 - **Läufe im Game-Client (🧑 2026-11-16):** Sim und Balancing laufen mit der Spiel-EXE, headless oder mit Fenster per Parameter; die MCP-Tools der Workbench rufen die EXE (B-1017). Umsetzung nach G4: RU33, RU34; Balancing zuletzt: RU25, RU28, RU31, RU40.
 - **Sonnet-tauglich (🧑 2026-11-16):** Port-Leitfaden B-1018, Tabelle „Session → Go-Dateien“ je Port-Sprint, Vorentscheidungen in RU4, RU8, RU22, RU33, RU34.
@@ -108,7 +107,7 @@ Workbench, `tools/assetkit`, `tools/paper` und die übrigen Werkzeuge nach Rust 
 | 10 | RU10, RU12, RU15 | Sim Insel; Menüs 2; Sim Kampf | 15 | – |
 | 11 | RU14, RU26 | Sim Welt-Schritt; Spielschleife 1 | 11 | – |
 | 12 | RU18, RU19, RU21, RU29 | Sim Wirtschaft bis Skills; Sim Events; Spielstände, Raum 1; Dev-Menüs | 19 | – |
-| 13 | RU22 | Sim-Abgleich | 6 | **G3** (🧑): alle Sim- und Kampagnen-Golden mit gleichem Verhalten (Ereignis-Abgleich, Toleranz) |
+| 13 | RU22 | Sim-Abgleich | 6 | **G3** (🧑): alle Sim- und Kampagnen-Golden mit gleichem Verhalten (Ereignis-Abgleich, Toleranz 1e-4) |
 | 14 | RU24 | Raum 2 | 5 | – |
 | 15 | RU27 | Lokales Spiel | 4 | – |
 | 16 | RU30 | Spielschleife 2 | 5 | – |

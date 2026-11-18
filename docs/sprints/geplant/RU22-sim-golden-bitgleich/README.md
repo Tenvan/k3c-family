@@ -16,7 +16,7 @@ Nach RU19 sind alle Sim-Gruppen portiert und einzeln getestet. 13 Sim-Golden und
 
 ## Ziel
 
-Die Rust-Sim zeigt in jedem Sim- und Kampagnen-Golden gleiches Verhalten wie Go (Entscheidung 012): dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte (Gold, Tag, IDs, Zählungen), dieselben Kampagnen-Ergebnisse; Fließkommawerte mit Toleranz (1e-6 relativ, absolut 1e-9 nahe 0). Bitgleichheit gilt hier nur für rng, Ganzzahlen und Level-Aufbau. Am Ende sichtbar: Bericht für Gate G3 mit Liste der Golden, Abweichungen und größter Fließkomma-Abweichung.
+Die Rust-Sim zeigt in jedem Sim- und Kampagnen-Golden gleiches Verhalten wie Go (Entscheidung 012): dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte (Gold, Tag, IDs, Zählungen), dieselben Kampagnen-Ergebnisse; Fließkommawerte mit grober Toleranz (Standard 1e-4 relativ, absolut 1e-9 nahe 0). Zweck ist nur, Port-Fehler zu finden; alte Sim- und Balancing-Ergebnisse zählen nicht, Balancing und Sim-Läufe werden nach der Umsetzung komplett neu gemacht. Am Ende sichtbar: Bericht für Gate G3 mit Liste der Golden, Abweichungen und größter Fließkomma-Abweichung.
 
 ## Beteiligte und Zielgruppen
 
@@ -24,7 +24,7 @@ Agenten setzen um, die Review-Session prüft. 🧑 gibt die Spec frei und entsch
 
 ## Anforderungen
 
-`B-1014 › Anforderungen` (Port ohne Regeländerung, Golden als Orakel, zwei Spieler); Abgleich nach Entscheidung 012 (gleiches Verhalten statt bitgleich für Sim-Fließkomma).
+`B-1014 › Anforderungen` (Port ohne Regeländerung, Golden als Orakel, zwei Spieler); Abgleich nach Entscheidung 012 (gleiches Verhalten statt bitgleich für die Sim).
 
 Welle 13 von 26, 6 Sessions (B-1015).
 
@@ -43,7 +43,7 @@ Gezählt 2026-11-17: `testdata/golden/` hat 23 Dateien, davon 13 `sim-*.json.gz`
 
 ### Vorentscheidungen
 
-- Der Abgleich läuft als Test je Golden: Eingaben und Zwischenstände aus dem Golden lesen, die Rust-Sim rechnen lassen, JSON-Bäume vergleichen. Ereignisse, Reihenfolge und Ganzzahlen müssen exakt gleich sein, Fließkommawerte innerhalb 1e-6 relativ (absolut 1e-9 nahe 0); der Vergleich mit Toleranz ergänzt `k3c_det::golden::diff` (Entscheidung 012). Tests unter `rust/crates/k3c-sim/tests/` (`common/`, `golden_abgleich.rs`, `golden_forest.rs`, `golden_biome.rs`, `golden_campaign.rs`, `golden_durchsatz.rs`, `kein_platzhalter.rs`).
+- Der Abgleich läuft als Test je Golden: Eingaben und Zwischenstände aus dem Golden lesen, die Rust-Sim rechnen lassen, JSON-Bäume vergleichen. Ereignisse, Reihenfolge und Ganzzahlen müssen exakt gleich sein, Fließkommawerte innerhalb 1e-4 relativ (absolut 1e-9 nahe 0); der Vergleich mit Toleranz ergänzt `k3c_det::golden::diff` (Entscheidung 012). Tests unter `rust/crates/k3c-sim/tests/` (`common/`, `golden_abgleich.rs`, `golden_forest.rs`, `golden_biome.rs`, `golden_campaign.rs`, `golden_durchsatz.rs`, `kein_platzhalter.rs`).
 - Für die Fehlersuche schreibt die Go-Testdatei `engine/sim/golden_trace_test.go` (Schalter `-trace`, sonst übersprungen) je Schritt den Zustand als JSON-Zeile nach `.work/trace/sim-<name>.jsonl`; das Rust-Werkzeug nennt den ersten Schritt und den ersten Pfad, die abweichen. Die Spur-Dateien werden nicht eingecheckt. Die Testdatei fällt unter B-925 (eigener Worktree, Agent `k3c-sim-dev`).
 - Reihenfolge der Golden: zuerst `sim-forest-ohne-spieler` (kein Spieler, wenig Regeln), dann `sim-forest-tag`, `-nacht`, `-aufbau`, danach die übrigen Wald-Golden, dann die Biome, zuletzt die Kampagnen.
 - Wie Go stellt jeder Lauf den Beutel auf 100 Gold (`goldenPurse`), nur im Test.
@@ -53,12 +53,12 @@ Gezählt 2026-11-17: `testdata/golden/` hat 23 Dateien, davon 13 `sim-*.json.gz`
 ### Hinweise für die Umsetzung
 
 - Bei einer Abweichung zuerst den ersten abweichenden Schritt suchen (Zustand je Schritt aus Go schreiben lassen), dann das erste abweichende Feld; erst Ereignisse und Ganzzahlen prüfen, dann Fließkomma gegen die Toleranz. Typische Ursachen: Reihenfolge eines Würfel-Aufrufs, `fmax`/`fmin` mit NaN, Reihenfolge beim Löschen aus Listen, Sortierung mit Gleichstand.
-- Ein Golden wird nie geändert. Zeigt die Suche einen Fehler in Go, entsteht ein Ticket; Rust bildet den Fehler nach.
-- Fließkomma darf in der Sim von Go abweichen, solange Toleranz und Ereignis-Abgleich halten; Umsortieren, schnellere Datenstrukturen und std-Funktionen statt `k3c-det` sind erlaubt. Determinismus innerhalb von Rust bleibt Pflicht: gleicher Seed, bitgleich dasselbe Spiel.
+- Ein Golden wird nie geändert. Zeigt die Suche einen Fehler in Go, entsteht ein Ticket; Rust bildet den Fehler nur nach, wenn das Ticket es verlangt.
+- Fließkomma darf in der Sim von Go abweichen, solange Toleranz und Ereignis-Abgleich halten; Umsortieren, schnellere Datenstrukturen und std-Funktionen statt `k3c-det` sind erlaubt. Verbindlich bleiben Reihenfolge der Ereignisse und der rng-Aufrufe sowie der Determinismus innerhalb von Rust (gleicher Seed, bitgleich dasselbe Spiel).
 
 ## Nicht-Ziele
 
-Regel-, Wert- oder Formatänderungen. Änderungen am Go-Produktionscode (einzige Go-Datei: die Testdatei `engine/sim/golden_trace_test.go`). Bitgleichheit der Sim-Fließkommawerte zu Go (entfällt, Entscheidung 012). Optimierungen über den Go-Stand hinaus sind erlaubt, solange der Abgleich hält.
+Regel-, Wert- oder Formatänderungen. Änderungen am Go-Produktionscode (einzige Go-Datei: die Testdatei `engine/sim/golden_trace_test.go`). Bitgleichheit der Sim-Fließkommawerte zu Go (entfällt, Entscheidung 012). Balancing und Sim-Läufe (kommen nach der Umsetzung komplett neu). Optimierungen über den Go-Stand hinaus sind erlaubt, solange der Abgleich hält.
 
 ## Regeln und Einschränkungen
 
@@ -75,12 +75,12 @@ nicht relevant: Port ohne neues Verhalten; die Beispiele sind die Go-Tests des B
 
 ## Ausnahme- und Fehlerfälle
 
-Weicht Rust von Go in Ereignissen, Reihenfolge, Ganzzahlen oder außerhalb der Toleranz ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfasst, nie durch ein geändertes Golden verdeckt. Fließkomma innerhalb der Toleranz ist keine Abweichung. Fehlt eine Voraussetzung aus einem anderen Sprint, entsteht ein Ticket statt einer Änderung außerhalb des Bereichs.
+Weicht Rust von Go in Ereignissen, Reihenfolge, Ganzzahlen oder außerhalb der Toleranz (1e-4 relativ) ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfasst, nie durch ein geändertes Golden verdeckt. Fließkomma innerhalb der Toleranz ist keine Abweichung. Fehlt eine Voraussetzung aus einem anderen Sprint, entsteht ein Ticket statt einer Änderung außerhalb des Bereichs.
 
 ## Akzeptanzkriterien
 
 - **AC-01** Ein Test nennt bei einer Abweichung den ersten Schritt und das erste Feld (Ereignis, Ganzzahl oder Fließkomma außerhalb der Toleranz).
-- **AC-02** Alle 13 `sim-*.json.gz` und beide `campaign-*.json.gz` zeigen gleiches Verhalten: dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte und Kampagnen-Ergebnisse, Fließkommawerte innerhalb 1e-6 relativ (absolut 1e-9 nahe 0), ohne Golden-Neuschrieb.
+- **AC-02** Alle 13 `sim-*.json.gz` und beide `campaign-*.json.gz` zeigen gleiches Verhalten: dieselben Ereignisse in derselben Reihenfolge, dieselben Ganzzahl-Werte und Kampagnen-Ergebnisse, Fließkommawerte innerhalb 1e-4 relativ (absolut 1e-9 nahe 0), ohne Golden-Neuschrieb.
 - **AC-03** Der G3-Bericht nennt Schritte je Sekunde Rust und Go für denselben Lauf, die größte Fließkomma-Abweichung je Golden und alle behobenen Abweichungen mit Ursache.
 
 ## Offene Fragen
