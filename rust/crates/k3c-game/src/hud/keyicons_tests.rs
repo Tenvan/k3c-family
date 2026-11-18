@@ -233,6 +233,16 @@ fn bedienhinweis_menu() {
             "[◄ ► wählen ·]<pad:A>[bestätigen · B schließen]",
         ),
         (
+            super::seekarte::sea_line("en", ARROWS, true),
+            "Left arrow / Right arrow choose destination · Enter confirm",
+            "<key:LEFT>[/]<key:RIGHT>[choose destination ·]<key:ENTER>[confirm]",
+        ),
+        (
+            super::seekarte::sea_line("de", GP, false),
+            "A bestätigen",
+            "<pad:A>[bestätigen]",
+        ),
+        (
             new_key_line("{x} und {ok}", &[arg("ok", vec![new_glyph("key:E", "E")])]),
             "{x} und E",
             "[{x} und]<key:E>",
@@ -246,17 +256,6 @@ fn bedienhinweis_menu() {
             kinds(&line)
         );
     }
-}
-
-/// Die Zeilen der Seekarte (Go: `seaLine`, Datei von RU23.3).
-#[test]
-#[ignore = "wartet auf RU23.3"]
-fn bedienhinweis_seekarte() {
-    // Erwartet (Go): menuLine("de", wasd) = "A / D wählen · Leertaste bestätigen · K schließen",
-    // "<key:A>[/]<key:D>[wählen ·]<key:SPACE>[bestätigen ·]<key:K>[schließen]"; menuLine("de", gp) =
-    // "◄ ► wählen · A bestätigen · B schließen", "[◄ ► wählen ·]<pad:A>[bestätigen · B schließen]";
-    // seaLine("en", arrows, true) und seaLine("de", gp, false) wie in keyicons_test.go.
-    unimplemented!("sea_line kommt mit RU23.3");
 }
 
 fn font() -> Font {

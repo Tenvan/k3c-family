@@ -183,7 +183,7 @@ pub fn menu_line(lang: &str, profile: &str) -> KeyLine {
 
 /// move_arg sind die Tasten zum Wählen (Platzhalter `move`): am Pad die Pfeile als Text, an der Tastatur Links und
 /// Rechts des Eingabe-Profils.
-fn move_arg(lang: &str, profile: &str) -> super::keyline::LineArg {
+pub(super) fn move_arg(lang: &str, profile: &str) -> super::keyline::LineArg {
     if profile == PROFILE_GAMEPAD {
         return arg("move", vec![text_part("◄ ►")]);
     }

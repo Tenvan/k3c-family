@@ -48,6 +48,9 @@ pub mod paint;
 pub mod pending;
 pub mod purse;
 pub mod radar;
+pub mod seekarte;
+pub mod seekarte_input;
+pub mod seekarte_look;
 pub mod skillmenu;
 pub mod skilltext;
 pub mod state;
@@ -87,6 +90,12 @@ mod profile_tests;
 mod purse_tests;
 #[cfg(test)]
 mod radar_tests;
+#[cfg(test)]
+mod seekarte_hold_tests;
+#[cfg(test)]
+mod seekarte_look_tests;
+#[cfg(test)]
+mod seekarte_tests;
 #[cfg(test)]
 mod skillmenu_tests;
 #[cfg(test)]

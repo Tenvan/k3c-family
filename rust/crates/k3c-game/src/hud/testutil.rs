@@ -8,12 +8,12 @@ use std::rc::Rc;
 use super::Hud;
 use crate::props::pending::{CombatSpot, Economy, SpotState};
 use crate::props::simview::SimView;
-use crate::view::frame::{Cue, CueKind, Frame, Seat, Stage};
+use crate::view::frame::{Cue, CueKind, Frame, RouteIsland, Seat, Stage};
 use crate::view::input::{Action, DeviceID, DeviceInput, DeviceKind, Input};
 use crate::view::session::{Fehler, NewGame, SaveInfo, Session, WorldInfo};
 use crate::view::settings::{Settings, default_settings};
 use k3c_data::biome::Biome;
-use k3c_sim::state::{CycleInfo, Player, Site, World};
+use k3c_sim::state::{CycleInfo, Player, Site, SwitchState, SwitchTarget, World};
 
 pub const KEYS1: DeviceID = DeviceID::new(DeviceKind::Keyboard, 0);
 pub const PAD: DeviceID = DeviceID::new(DeviceKind::Gamepad, 0);
@@ -118,6 +118,10 @@ pub struct HudSession {
     pub cur: Settings,
     /// Zahl der `set_settings`-Aufrufe
     pub sets: usize,
+    /// mitgeschriebene Wahlen der Seekarte: "<Spieler>:<Insel>"
+    pub picks: Vec<String>,
+    /// Antwort auf `choose_island`
+    pub choose_err: Option<Fehler>,
 }
 
 impl Default for HudSession {
@@ -127,6 +131,8 @@ impl Default for HudSession {
             fail: None,
             cur: default_settings(),
             sets: 0,
+            picks: Vec::new(),
+            choose_err: None,
         }
     }
 }
@@ -176,8 +182,9 @@ impl Session for HudSession {
         self.sent.push("respec".to_string());
         self.fail.clone().map_or(Ok(()), Err)
     }
-    fn choose_island(&mut self, _player: i64, _island: &str) -> Result<(), Fehler> {
-        unimplemented!()
+    fn choose_island(&mut self, player: i64, island: &str) -> Result<(), Fehler> {
+        self.picks.push(format!("{player}:{island}"));
+        self.choose_err.clone().map_or(Ok(()), Err)
     }
     fn set_settings(&mut self, s: Settings) -> Result<(), Fehler> {
         self.cur = s.normalized();
@@ -213,4 +220,54 @@ pub fn input(a: &[Action], b: &[Action]) -> Input {
 /// has_cue meldet, ob unter `cues` einer der Art `k` für Spieler `p` ist.
 pub fn has_cue(cues: &[Cue], k: CueKind, p: i64) -> bool {
     cues.iter().any(|c| c.kind == k && c.player == p)
+}
+
+/// sea_route: Welt mit Etappen: a (1), b und c (2), d (3); abgelegt wird von a, Ziele sind b und c (Go: `seaRoute`).
+pub fn sea_route() -> Vec<RouteIsland> {
+    let isl = |id: &str, etappe| RouteIsland {
+        id: id.to_string(),
+        name: id.to_uppercase(),
+        etappe,
+        ..RouteIsland::default()
+    };
+    vec![isl("a", 1), isl("b", 2), isl("c", 2), isl("d", 3)]
+}
+
+/// open_switch: offener Wechselpunkt mit Wahl `choice`; die Simulation nennt die aktuelle Insel a (Go: `openSwitch`).
+pub fn open_switch(choice: &str) -> SwitchState {
+    let target = |id: &str| SwitchTarget {
+        id: id.to_string(),
+        name: id.to_uppercase(),
+        etappe: 2,
+    };
+    SwitchState {
+        open: true,
+        choice: choice.to_string(),
+        completed: vec!["a".to_string()],
+        targets: vec![target("b"), target("c")],
+        ..SwitchState::default()
+    }
+}
+
+/// sea_world: zwei Monarchen am Schiff (Spieler 0 Tastatur, 1 Pad), Frame mit Route (Go: `seaWorld`). Nach jeder Änderung
+/// der Welt `set_world` aufrufen.
+pub fn sea_world() -> (World, Frame) {
+    let (mut w, mut f) = two_players(0);
+    w.sites.push(Site {
+        kind: "ship".to_string(),
+        x: 50.0,
+        ..Site::default()
+    });
+    (w.players[0].x, w.players[1].x) = (50.0, 51.0); // Steg-Radius 3 (data/hub.json)
+    f.route = sea_route();
+    set_world(&mut f, &w);
+    (w, f)
+}
+
+/// pay_input: Eingabe beider Spieler mit gehaltener Bezahl-Taste (`pay1`, `pay2`) und den Flanken `a`, `b`.
+pub fn pay_input(pay1: bool, pay2: bool, a: &[Action], b: &[Action]) -> Input {
+    let mut inp = input(a, b);
+    inp.devices[0].command.pay = pay1;
+    inp.devices[1].command.pay = pay2;
+    inp
 }

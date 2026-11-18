@@ -8,23 +8,13 @@
 //! mit `RU23: <name>` ab.
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
-use k3c_sim::state::{ActiveEvent, Enemy, Merchant, Player, SwitchState, World};
+use k3c_sim::state::{ActiveEvent, Enemy, Merchant, Player, World};
 
-use super::Hud;
-use crate::view::frame::{Frame, RouteIsland, Seat};
-use crate::view::input::Input;
-use crate::view::session::Session;
+use crate::view::frame::Frame;
 
-/// SeaView ist die Seekarte am Hafen eines Spielers (Go: `seaView`, seekarte.go).
+/// SeaSizes sind die gemessenen Maße der Seekarte (Go: `seaSizes`, drawsea.go, RU23.4): Platzhalter ohne Felder.
 #[derive(Clone, Debug, Default, PartialEq)]
-pub struct SeaView {
-    pub open: bool,
-}
-
-impl SeaView {
-    /// refresh liest die Karte aus Sprache, Profil, Inselwechsel und Route (Platzhalter: tut nichts).
-    pub fn refresh(&mut self, _lang: &str, _profile: &str, _sw: Option<&SwitchState>, _route: &[RouteIsland]) {}
-}
+pub struct SeaSizes;
 
 /// VoyageView ist die Schiffsfahrt im Vollbild (Go: `voyageView`, voyage.go).
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -87,13 +77,6 @@ pub fn can_learn(_w: &World, _p: &Player, _id: &str) -> bool {
 /// Go: `sim.CanRespec` (RU18): kein Respec.
 pub fn can_respec(_w: &World, _p: &Player) -> bool {
     false
-}
-
-impl Hud {
-    /// Go: `(*hud).updateSea` (seekarte.go, RU23.3). Platzhalter: kein Hafen-Menü, nichts verbraucht.
-    pub fn update_sea(&mut self, _in: &Input, _f: &Frame, _s: &mut dyn Session, _seat: &Seat, _menu: bool) -> bool {
-        false
-    }
 }
 
 /// Go: `(*hud).drawWorldTexts` (drawworld.go, RU23). Platzhalter: zeichnet nichts (Labels, Hinweise, Radar fehlen bis RU23).
