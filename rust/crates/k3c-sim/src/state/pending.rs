@@ -23,15 +23,7 @@ pub use crate::unit::warrior::is_fighter;
 
 pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert (merchant.go)
 
-/// Go: `troopDamage` (monarch_passives.go).
-pub fn troop_damage(_w: &World, _ti: usize, _damage: f64) -> f64 {
-    unimplemented!("RU18: troop_damage")
-}
-
-/// Go: `eachPassive` (monarch_passives.go); `f` bekommt den Besitzer und den Effekt.
-pub fn each_passive(_w: &World, _f: &mut dyn FnMut(&Player, &SkillEffect)) {
-    unimplemented!("RU18: each_passive")
-}
+pub use crate::monarch::{each_passive, troop_damage}; // Von RU18.5 portiert (monarch_passives.go)
 
 /// Go: `protectedNight` (World-Methode, Nacht-Schutz der Gebäude).
 pub fn protected_night(_w: &World) -> bool {
@@ -48,9 +40,6 @@ pub use crate::world::vein::gather_of; // Von RU14.4 portiert (world_vein.go)
 pub use crate::monarch::skill_ref; // Von RU18.4 portiert (monarch_data.go)
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
-
-// Von RU19.1 portiert (dev.go): die Import-Stelle bleibt `pending`.
-pub use crate::dev::DevFlags;
 
 /// Go: `IslandStory` (story.go): Ankunft, vor dem Endboss und Abschlusszeile nach dem Sieg über ihn. Rumpf bis RU19.
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -93,5 +82,6 @@ pub fn return_banner(_w: &mut World, _pi: usize) {
 
 pub use crate::hub::{hub_steps, site_hub_level, validate_hub_data_in}; // Von RU18.3 portiert (hub_level.go, hub_validate.go)
 
-// Von RU19.2 portiert (events.go): die Import-Stelle bleibt `pending`.
+// Von RU19.1 und RU19.2 portiert (dev.go, events.go): die Import-Stelle bleibt `pending`.
+pub use crate::dev::DevFlags;
 pub use crate::events::hit_event;

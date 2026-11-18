@@ -3,8 +3,8 @@
 //! aus RU8 stehen weiter in `state/pending.rs`. Go-Zeiger auf Gegner und Truppen sind hier Indizes (`ei`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU19)
 
+use crate::state::World;
 use crate::state::island_ref::IslandRef;
-use crate::state::{World, WorldValues};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
@@ -19,18 +19,7 @@ pub use crate::portal::drop_loot;
 
 pub use crate::merchant::merchant_x; // Von RU18.4 portiert (merchant.go)
 
-/// Go: `damageMultOf` (monarch_passives.go): Faktor auf Schlag- und Zauberschaden des Spielers `pi` (Blessings).
-pub fn damage_mult_of(_w: &World, _v: &WorldValues, _pi: usize, _spell: bool) -> f64 {
-    unimplemented!("RU18: damage_mult_of (RU18.5)")
-}
-
-/// Go: `frostArmorHit` (monarch_passives.go): Frost Armor des Spielers `pi` gegen den Gegner `ei`.
-pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
-    unimplemented!("RU18: frost_armor_hit")
-}
-
-// Von RU19.1 portiert (dev.go): die Import-Stelle bleibt `pending`.
-pub use crate::dev::pure;
+pub use crate::monarch::{damage_mult_of, frost_armor_hit}; // Von RU18.5 portiert (monarch_passives.go)
 
 pub use crate::economy::{scaled_gold, scatter_coins}; // Von RU18.2 portiert (economy_fountain.go, economy.go)
 
@@ -56,7 +45,8 @@ pub use crate::monarch::add_pool_points; // Von RU18.4 portiert (monarch.go)
 
 pub use crate::hub::{each_site, finish_upgrade, next_level, upgrade_job}; // Von RU18.3 portiert (hub_level.go)
 
-// Von RU19.2 portiert (events*.go): die Import-Stelle bleibt `pending`.
+// Von RU19.1 und RU19.2 portiert (dev.go, events*.go): die Import-Stelle bleibt `pending`.
+pub use crate::dev::pure;
 pub use crate::events::merchant::{merchant_raid_end, merchant_raid_start};
 pub use crate::events::moon::{full_moon_extra, moon_damage, moon_drop};
 pub use crate::events::{arrow_event, build_progress_event, emit, unit_x};
