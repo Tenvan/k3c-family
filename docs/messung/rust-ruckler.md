@@ -98,10 +98,10 @@ Agenten-Sessions; die Werte belegen nur, dass die Kette läuft.
 **Vorläufig, unruhiger Rechner** (WS1285, integrierte Grafik, parallel laufende Agenten-Sessions und Builds). Kein
 Gate-Wert, keine Entscheidung G2. Werkzeug: `rust/crates/k3c-game/tests/messung_cpu.rs` (`--ignored`, Aufruf im Kopf der
 Datei). Es spielt die Aufzeichnung `messung-nacht` (Szene `nacht`, 2 Spieler, 9 060 Takte, mit
-`go test ./engine/internal/trace/ -run TestMessungNacht -write` geschrieben, fester Seed `k3c`) 9 000 Bilder lang ab
+`go test ./engine/internal/trace/ -run TestMessungNacht -write` geschrieben, fester Seed `k3c`) rund 9 000 Bilder (8 998 gezählt) lang ab
 (60 Bilder Aufwärmen), mit den echten Zeichnern des Spiels (Welt, Bauten, Figuren, Effekte, HUD, zwei Zellen) und der
 gerenderten Grafik (21 + 8 MiB RGBA, 24 Rigs) gegen `NullCanvas`, Release-Build. Gemessen ist nur der **CPU-Teil**: Befehlsliste
-erzeugen (je Bild im Mittel 510 Zeichenbefehle, davon 363 Sprites) plus Kopie des Zustands. Nicht enthalten: Textur-Upload,
+erzeugen (je Bild im Mittel 510 Zeichenbefehle, davon 363 Sprites) plus `step` (Zustand kopieren, Blend, Kameras, Zellen, Listener). Nicht enthalten: Textur-Upload,
 GPU, VSync, Treiber. Die Werte sind eine Untergrenze der Rechenzeit je Bild, kein Bildzeit-Ersatz.
 
 Bild = `step` + `draw` in ms, drei Läufe nacheinander:
@@ -125,13 +125,13 @@ Bild = `step` + `draw` in ms, drei Läufe nacheinander:
 
 Zum Vergleich der Probelauf von oben (60 s im Fenster, ebenfalls unruhig): Rust Rechenzeit je Bild 0,15 / 0,37 ms
 (Median/p99), `lang_programm` 0, längstes Bild 72,9 ms; Go 0,44 / 3,39 ms, `lang_programm` 11, längstes Bild 570 ms.
-Die Rust-Zeichner brauchen also auch mit GPU-Übergabe nur einen Bruchteil des Bildbudgets; die langen Bilder beider
-Programme liegen außerhalb der Zeichner (Go: GC und Sim im selben Prozess, vermutet; Rust: Treiber, Präsentation oder
-Rechner, ungeprüft).
+Die Rust-Zeichner brauchen also auch mit GPU-Übergabe nur einen Bruchteil des Bildbudgets; die langen Bilder
+entstehen vermutlich außerhalb der Rust-Zeichner (Treiber, Präsentation oder Rechner, ungeprüft); beim Go-Lauf
+zählen 11 Bilder als vom Programm verursacht (vermutet: GC und Sim im selben Prozess).
 
 ### Vorläufige Einschätzung G2
 
-**Vorläufig bestanden, Gate-Messung am Ende (B-1074).** Kein klares Leistungsrisiko im CPU-Teil der Zeichner: kein
+**Vorläufig bestanden, nur für den CPU-Teil der Zeichner; Gate-Messung am Ende (B-1074).** Schwelle 1, Schwelle 2 und „sichtbar besser als Go“ sind nicht gemessen und damit offen. Kein klares Leistungsrisiko im CPU-Teil der Zeichner: kein
 Bild über dem Bildbudget, kein Anstieg über die Nacht. Offen und nicht belegt: Allokationen je Bild (B-1075), Bildzeiten
 am ruhigen PC und Mini-PC, die Sichtprüfung „sichtbar besser als Go“ und der Vorbehalt, dass die Wiedergabe keine Sim
 rechnet (in Go 12 bis 21 µs je Takt, 008). Die Entscheidung G2 bleibt bei 🧑.

@@ -1,5 +1,5 @@
 //! RU39 (vorläufige Messung, eigener Messcode): CPU-Zeit der Zeichner in der Wiedergabe gegen `NullCanvas`, ohne
-//! Fenster und ohne GPU. Misst je Bild `step` (Kopie des Zustands) und `draw` (Befehlsliste aller Zeichner, zwei
+//! Fenster und ohne GPU. Misst je Bild `step` (Zustand kopieren, Blend, Kameras, Listener) und `draw` (Befehlsliste aller Zeichner, zwei
 //! Zellen) und wertet Mittel, Perzentile, längstes Bild und Ausreißer aus. Nur mit `--ignored`:
 //!
 //! `K3C_TRACE=<datei.jsonl.gz> K3C_GRAFIK_DIR=<public/grafik> cargo test --release -p k3c-game --test messung_cpu -- --ignored --nocapture`

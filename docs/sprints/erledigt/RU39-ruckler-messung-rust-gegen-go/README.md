@@ -1,6 +1,6 @@
 # RU39 · CLI · Ruckler-Messung: Rust-Client in Wiedergabe gegen das Go-Spiel (Gate G2)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -84,7 +84,7 @@ Entscheidung 🧑 am Gate G2 (RU39.3 hält an) und Gerät für den schwachen PC 
 |---|---|---|---|---|
 | RU39.1 | `RU39.1-messwerkzeug-rust-gegen-go.md` | Umsetzung | autonom | fertig |
 | RU39.2 | `RU39.2-messlaeufe-und-sichtpruefung.md` | Workshop | Mensch | verworfen |
-| RU39.3 | `RU39.3-bericht-g2-und-review.md` | Review | autonom | offen |
+| RU39.3 | `RU39.3-bericht-g2-und-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -92,6 +92,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18: RU39.1 Werkzeug fertig; RU39.2 verworfen und verschoben nach B-1074 (Ralf: Messungen zum Schluss); RU39.3 Bericht mit vorläufiger Messung (CPU-Teil, unruhiger Rechner), G2 vorläufig bestanden nur für den CPU-Teil, Gate-Messung am Ende (B-1074).
+Prüfungen: task check, task check:go, task check:diff grün; Review-Befunde (Formulierungen) behoben.
+Neue Tickets: B-1074 (Gate-Messung, RU36), B-1075 (Allokationsmessung, RU36). AC-02 und AC-03 offen bis B-1074. Abnahme-Ticket Sim/Balance/Gen: kein eigenes (keine Sim-, Balance- oder Gen-Änderung; Sim-Sperre gilt).
