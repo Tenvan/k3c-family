@@ -185,7 +185,7 @@ pub fn assign_variants(b: &Biome, seed: &str, v: &NatureValues, es: &mut [Entity
             .collect();
         for e in es.iter_mut().filter(|e| e.kind == g.value.kind) {
             stream.clear();
-            // PERF(B-LVL): `go_float` allokiert einen Text je Entität; läuft einmal je Level, nicht je Bild.
+            // PERF(B-1079): `go_float` allokiert einen Text je Entität; läuft einmal je Level, nicht je Bild.
             // Der Strom-Name wird in einem wiederverwendeten Puffer gebaut.
             let _ = write!(stream, "{}:{seed}:variant:{}:{}", b.id, g.key, go_float(e.x));
             e.variant = Rng::new(&stream).weighted(&w);

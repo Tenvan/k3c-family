@@ -71,6 +71,6 @@ Level Teil 5 in Rust: `level_gen.rs` (`generate`, `generate_with`, `frame`, `pla
 - Tests: alle Level-Tests von Go portiert (`camps`, `chunkcount`, `deco`, `hub_sites`, `lava`, `level`, `golden`, `nature`-Golden); die `ignore`-Marken aus RU6.1 bis RU6.4 sind entfernt, die zurückgestellten Generate-Tests laufen. `cargo test -p k3c-level`: 87 grün, Debug und Release.
 - Golden (alle Biome, `level-planned.json`, `nature.json`) stimmt bitgleich, ohne Toleranz und ohne Änderung der Golden-Dateien.
 - Clippy mit `-D warnings` grün, Dateien ≤ 400 Zeilen, Funktionen ≤ 60 Zeilen.
-- Abweichung: `generate_with` bekommt den Regelsatz als `Arc<Rules>` übergeben (Go: Paketvariablen).
-- Marker: `STAB(B-LVL)` in `level_entities.rs` (Fehler statt panic bei leerer Liste), `PERF(B-LVL)` in `nature.rs` (go_float-Text je Entität, einmal je Level). Ticket im Sprint RU43 folgt in RU6.6.
-- Mehr Sims und Gen: keine gefahren.
+- Abweichung: `generate_with` bekommt den Regelsatz als `Arc<Rules>` übergeben (Go: Paketvariablen). Bei leerer Liste der Verstecke meldet Rust einen Fehler (neuer Text), Go bricht mit `panic` ab; der rng-Strom bleibt gleich.
+- Marker: `STAB(B-1079)` in `level_entities.rs`, `PERF(B-1079)` in `nature.rs` (go_float-Text je Entität, einmal je Level); Ticket B-1079 im Sprint RU43.
+- Keine Sims und kein Gen gefahren.

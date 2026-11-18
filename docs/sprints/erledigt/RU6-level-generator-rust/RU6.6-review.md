@@ -1,6 +1,6 @@
 # RU6.6 · Review Level-Generator in Rust
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `cargo test -p k3c-level` 87 grün, Golden bitgleich. AC-02 geprüft: 82 Go-Tests, 84 Rust-Tests, kein `#[ignore]`, kein `pending.rs`. AC-03 geprüft: 583, 320, 532, 545, 374 Zeilen je Session, alle unter 675.
+
+Dateien ≤ 400 Zeilen, keine verbotenen Muster (`HashMap`, `unsafe`, `Rc`, `RefCell`, `powf`, `exp`, `sin`, `cos`, `f64::max`, `f64::min`: kein Treffer). Reviewer `k3c-reviewer`: kein schwerer Befund, vier mittlere und leichte in B-1079 (Marker mit Ticketnummer versehen). `task check` und `task check:go` grün.
+
+Abweichungen vom Plan: keine. Neue Tickets: B-1079, B-1080 (Abnahme). Manuell geprüft hat niemand.

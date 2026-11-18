@@ -47,7 +47,7 @@ impl Gen {
             .filter(|c| c.kind != "hub" && c.kind != "edge" && !self.planned.contains_key(&c.index))
             .collect();
         for _ in 0..self.r.int(self.b.skill_points.min, self.b.skill_points.max) {
-            // STAB(B-LVL): Go bricht bei leerer Liste mit panic ab; hier ein Fehler (unerreichbar bei echten Biomen).
+            // STAB(B-1079): Go bricht bei leerer Liste mit panic ab; hier ein Fehler (unerreichbar bei echten Biomen).
             if hideouts.is_empty() {
                 return Err("keine Chunks für Skill-Punkte".into());
             }
