@@ -38,3 +38,18 @@ pub fn game_data() -> Result<Arc<Data>, UserError> {
 pub fn world_file(dir: &Path, id: &str) -> Option<PathBuf> {
     k3c_data::world::valid_id(id).then(|| dir.join(format!("{id}.json")))
 }
+
+/// Die Quelle der weiteren Welten für `Manager::set_worlds`: Der Manager liest `worlds/<id>.json` aus einem Datenordner
+/// (`Source::Dir`), Go gab ihm den Ordner der Dateien selbst (`fs.FS`). Heißt `dir` darum `worlds` (wie `data/worlds`),
+/// ist der Datenordner sein Elternordner; jeder andere Name ergibt `None` (keine weiteren Welten, fail closed).
+pub fn worlds_source(dir: Option<&Path>) -> Option<k3c_data::Source> {
+    let dir = dir?;
+    if dir.file_name()? != "worlds" {
+        return None;
+    }
+    let parent = dir
+        .parent()
+        .filter(|p| !p.as_os_str().is_empty())
+        .unwrap_or(Path::new("."));
+    Some(Source::Dir(parent.to_path_buf()))
+}

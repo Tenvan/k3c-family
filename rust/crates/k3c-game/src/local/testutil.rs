@@ -212,3 +212,34 @@ pub fn reference_worlds(dir: &TempDir, name: &str, ticks: usize) -> BTreeMap<i64
     }
     states.take()
 }
+
+/// Taktet `n` Mal mit Bewegung nach rechts und liefert den letzten Frame (Go: `stepN`).
+pub fn step_n(s: &mut Session, n: usize) -> crate::view::frame::Frame {
+    use crate::game::sim::Sim as _;
+    let mut f = crate::view::frame::Frame::default();
+    for _ in 0..n {
+        let c = Command {
+            move_: 1.0,
+            ..Command::default()
+        };
+        s.command(0, c).expect("Befehl");
+        f = s.step();
+    }
+    f
+}
+
+/// Enthält der Frame einen Hinweis der Art `kind` (Go: `hasCue`)?
+pub fn has_cue(f: &crate::view::frame::Frame, kind: crate::view::frame::CueKind) -> bool {
+    f.cues.iter().any(|c| c.kind == kind)
+}
+
+/// Eine Session in einem Ordner, der nicht angelegt werden kann (unter einer Datei).
+pub fn unwritable_session(dir: &TempDir) -> Session {
+    let file = dir.path().join("datei");
+    std::fs::write(&file, b"").expect("Datei");
+    Session::open(Config {
+        dir: file.join("saves").to_string_lossy().into_owned(),
+        now: Some(Box::new(fixed_now)),
+        ..Config::default()
+    })
+}

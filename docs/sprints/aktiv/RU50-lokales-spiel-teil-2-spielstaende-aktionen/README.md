@@ -61,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU50.1 | `RU50.1-saves-actions-dev.md` | Umsetzung | autonom | offen |
+| RU50.1 | `RU50.1-saves-actions-dev.md` | Umsetzung | autonom | fertig |
 | RU50.2 | `RU50.2-review.md` | Umsetzung | autonom | offen |
 
 ## Abnahme

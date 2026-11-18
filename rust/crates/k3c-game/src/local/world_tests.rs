@@ -34,20 +34,20 @@ fn world_list_and_world_of_running_game() {
 }
 
 // Lokale Welten erscheinen nur im Dev-Mode und nur, wenn der Ordner sie enthält (K3C_WORLDS_DIR). Go setzt die
-// Umgebungsvariable im Test; Rust verbietet `set_var` (unsafe), darum setzt der Test den Ordner der Session (`worlds_dir`,
+// Umgebungsvariable im Test; Rust verbietet `set_var` (unsafe), darum setzt der Test den Ordner der Session (`worlds_dir`, er muss `worlds` heißen,
 // den `Session::open` aus `worlds_fs()` liest).
 #[test]
-#[ignore = "wartet auf RU50 (world_list: RU50.1)"]
 fn world_list_shows_local_worlds_in_dev_mode() {
     let dir = TempDir::new();
     let std_file = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../data/worlds/standard.json");
     let std = std::fs::read_to_string(std_file).expect("Standard-Welt");
     let raw = std.replacen(r#""id": "standard""#, r#""id": "lokal""#, 1);
     let raw = raw.replacen(r#""name": "Standard""#, r#""name": "Lokal""#, 1);
-    std::fs::write(dir.path().join("lokal.json"), raw).expect("schreiben");
+    std::fs::create_dir_all(dir.path().join("worlds")).expect("Ordner");
+    std::fs::write(dir.path().join("worlds/lokal.json"), raw).expect("schreiben");
     let saves = TempDir::new();
     let mut s = test_session(&saves);
-    s.worlds_dir = Some(dir.path().to_path_buf());
+    s.worlds_dir = Some(dir.path().join("worlds"));
     let l = s.world_list();
     assert_eq!(l.len(), 1, "ohne Dev-Mode: {l:?}");
     s.settings.dev_mode = true;
