@@ -1,6 +1,6 @@
 # RU9.2 · menu Teil 2: Illustrationen, Hintergrund, Held, Tasten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -67,5 +67,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `key_of` bildet B (Back), Menu und Esc auf `Key::Back`, Home auf `Key::Home` ab; `key_of_maps_back_menu_home` nennt Pad und Tastatur, ein zweites Back desselben Geräts im selben Update wird verworfen, je Gerät zählt eins.
+AC-02 geprüft: Hintergrund-Formen erst Rechtecke, dann Scheiben, Filter wechselt höchstens einmal (`backdrop_switches_filter_at_most_once`, `backdrop_in_window`).
+AC-03 geprüft: `art_tests` (2), `keys_tests` (5), Backdrop-Tests (2) grün, `cargo test -p k3c-game menu`; Fmt und Clippy `-D warnings` grün. Review k3c-reviewer: Befund `tint` (Farben aus RU9.1 doppelt vormultipliziert) behoben: `menu::draw::tint` rechnet wie `fx::paint::tint` auf gerade Farbe zurück.
+Ignorierte Tests: `menu_rows_carry_art` (wartet auf RU9.4, braucht `new_main`), `run_remembers_operating_device` (wartet auf RU9.4).
+Dateien: `art.rs`, `backdrop.rs`, `hero.rs`, `keys.rs`, `art_tests.rs`, `keys_tests.rs`, Backdrop-Tests in `paper_tests.rs`; `pending.rs` ohne Backdrop, Hero, Art, `COL_SHADOW`, `Note` (jetzt in `keys.rs`), dafür `TXT_PAD`, `TXT_KEYBOARD`, `tr`, `tr1` (RU9.3).
+Abweichungen: `Art(lib)` ist `art(usable)`, `menus.Assets` ist `Menus::assets()`; Scheiben über `fill_circle` (Rand im Bildvergleich RU9.6 prüfen). `Menus.has` bleibt die eigene Closure aus RU9.1 (Umstellung auf `Painter::has_sheet` nicht nötig).
+`task check:diff`: Rust-Test-Stufe rot nur durch `tests/still.rs`, auch auf `main` rot (siehe RU9.1).
+
+### Für den Hauptrechner
+- `keys.rs`: `run` gibt `cues` per `mem::take` ab (Kapazität geht verloren, Go nutzt `[:0]`); nur eine kleine Allokation bei Eingaben, bei Bedarf in RU9.7/RU22 anschauen.
+- Wer `deny`, `device_name` oder `Note::text` vor RU9.3 ruft, löst einen Panic aus (`tr` ist Platzhalter); aktuell ruft sie niemand.

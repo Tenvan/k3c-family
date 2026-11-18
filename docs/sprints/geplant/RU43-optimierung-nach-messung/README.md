@@ -4,7 +4,7 @@
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** Entwurf
-- **Tickets:** B-1076, B-1077, B-1078
+- **Tickets:** B-1076
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1

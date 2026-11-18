@@ -31,8 +31,9 @@ Regelquelle: `docs/arbeitsweise.md` › Second Worker. Für den Ablauf je Sessio
 - `plan_create`, also keine Tickets, Sprints oder Sessions anlegen. Befunde kommen ins Ergebnis der Session unter
   `### Für den Hauptrechner`; der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
 - Lanes ändern oder Sessions ohne `Lane: zweit` anfassen.
-- Sim, Balancing, `sim_test`, `gen:paper`, `check:race`. Gemessen wird erst am Ende (Ralf 2026-11-18); der eigene Messcode
-  im Test ist erlaubt.
+- Sim-Läufe außerhalb einer Session mit `Lane: zweit`. Innerhalb gilt die Sperre für dich nicht (Ralf 2026-11-18):
+  `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` sind erlaubt, nur über `sim_test`, blockierend gewartet;
+  Sim-Code nur im eigenen Worktree (B-925). Gemessen wird sonst erst am Ende.
 
 ## Abschlussbericht
 

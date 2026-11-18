@@ -1,6 +1,6 @@
 # RU9.3 · menu Teil 3: Tabellen-Seiten und Texte
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -64,5 +64,13 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: B (Back), Esc (Back + Menu zugleich), Home und A (Confirm) schließen die Tasten-Seite mit `StepKind::Pop` und Cue `Back`, je Taste an Pad und Tastatur; Hoch/Runter bleibt (`keys_page`). Die Lizenz-Seite teilt denselben Handler, ihr eigener Test (`licenses_page`) wartet auf RU12.
+AC-02 geprüft: Zeilenmaße und Zeichen-Reihenfolge wie Go (`table_geometry`; Review: Reihenfolge backdrop, Titel, Fit-Cache, Papier, Zeilen, Hinweis gleich).
+AC-03 geprüft: `texts_complete`, `keys_page`, `table_geometry` grün (`cargo test -p k3c-game menu`: 17 grün, 5 ignoriert); Fmt und Clippy `-D warnings` grün. Review k3c-reviewer: keine schweren Befunde; alle 131 Texte per Skript gegen `texts.go` verglichen (Wortlaut, Reihenfolge).
+Ignorierte Tests: `licenses_page` (wartet auf RU12), `main_shows_version` (RU9.4), `main_first_draw_after_leave` (RU9.4), dazu aus RU9.2 `menu_rows_carry_art` und `run_remembers_operating_device` (RU9.4).
+Dateien: `table.rs`, `texts.rs` (Enum `TextKey`, `tr`, `tr1`), `texts_data.rs` (Texte, aus `texts.go` per Skript erzeugt), `table_tests.rs`, `texts_tests.rs`; `pending.rs` ohne `TextKey`, `tr`, `new_keys`, `new_licenses`, dafür `License`, `licenses()`, `version_text` (RU12). `keys.rs` nutzt `TextKey::Pad`/`Keyboard`.
+Abweichungen: Der Test `keys_page` öffnet die Seite direkt statt über Pause › Tasten (Pause-Menü kommt in RU12; der Weg wird dort geprüft). `TableScreen` hält den Text-Zwischenspeicher in einer `RefCell` (`Screen::draw` nimmt `&self`). Texte liegen aus Zeilenlängengründen in `texts_data.rs` statt in `texts_more.rs`.
+`task check:diff`: Rust-Test-Stufe rot nur durch `tests/still.rs` (auch auf `main` rot, siehe RU9.1).
+
+### Für den Hauptrechner
+- `table::new_licenses` ist über `MenuSet::page("licenses")` erreichbar, `licenses()` aber noch Platzhalter (`unimplemented!`): Panic beim ersten `draw`, falls RU9.4 (Hauptmenü mit Karte Lizenzen) vor RU12.3 fertig wird. Reihenfolge beachten.

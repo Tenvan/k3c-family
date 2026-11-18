@@ -1,6 +1,6 @@
 # RU9.4 · menu Teil 4: Hauptmenü und Lobby
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -66,5 +66,13 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: Auswahl mit Hoch/Runter (überspringt ausgegrautes Weiter), Home, Weiter spielt mit dem bestätigenden Gerät; Lobby: Beitritt eines zweiten Geräts mit A, Austritt mit B, Start mit zwei Spielern in Beitritts-Reihenfolge (`lobby_starts_with_two_players_in_join_order`). B und Esc: im Hauptmenü ohne Wirkung (`main_ignores_back`), in der Lobby liefern B am Pad und Esc an der Tastatur denselben Schritt (`lobby_back_and_esc_do_the_same`: Spieler 1 → `Pop`, Spieler 2 → tritt aus, bleibt).
+AC-02 geprüft: Zeilen, Farben (`MAIN_MATS`) und Texte wie Go (Review k3c-reviewer: Handler-Ablauf, Standard-Niederlage, `fill`-Texte gleich); Bildvergleich folgt in RU9.6.
+AC-03 geprüft: alle Tests aus `main_test.go`, `lobby_test.go` und `TestMainShowsOutcomeOfFrame` portiert; `cargo test -p k3c-game menu`: 39 grün, 4 ignoriert. Aktiviert: `main_shows_version`, `run_remembers_operating_device` (RU9.2), `menu_rows_carry_art` (RU9.2). Fmt und Clippy `-D warnings` grün.
+Ignorierte Tests (alle auf RU12, weil sie Spielstand-Liste, Weltauswahl, Pause oder Testing öffnen): `main_confirm_transitions`, `main_rereads_list_after_load_menu`, `main_first_draw_after_leave`; dazu aus RU9.3 `licenses_page` (RU12). Ersatz ohne diese Screens: `main_confirm_play_quit_licenses`, `main_first_draw_shows_loading`.
+Dateien: `main_screen.rs`, `lobby.rs`, `main_screen_tests.rs`, `lobby_tests.rs`; `version.rs` mit `version_text` (Go: `licenses.go`, hier schon gebraucht; RU12.3 baut darauf auf); `pending.rs` ohne `new_main`, `new_lobby`, `MAIN_COUNT`, `version_text`, dafür `new_world_pick`, `new_testing` (RU12; `new_saves` ebenfalls RU12, nicht RU9.4). Abweichungen: `default_defeat` liest `data/difficulty.json` (loggt bei Lesefehler), Standard-Welt als Wert `STANDARD_WORLD_ID` (RU14 ersetzt); `MenuSet::main_screen()` liefert den konkreten Typ (für Tests und die Meldung des nächsten Hauptmenüs); Test-Sperre `version_guard` für Tests, die die globale Version lesen oder ändern.
+`task check:diff`: Rust-Test-Stufe rot nur durch `tests/still.rs` (auch auf `main` rot, siehe RU9.1).
+
+### Für den Hauptrechner
+- Im Rust-Spiel führen „Neues Spiel“, „Laden“, „Optionen“, „Testing“ bis RU9.5/RU12 in `unimplemented!`; der Rust-Client darf das Menü erst einbinden (RU26), wenn die Platzhalter weg sind.
+- `version_guard` schützen nur zwei Tests; ein künftiger Test mit Index auf Zeilen ab Testing sollte ihn ebenfalls nehmen.
