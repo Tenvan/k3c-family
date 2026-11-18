@@ -1,4 +1,5 @@
 //! Port von `native/k3c-game/hud/labels_test.go`.
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use super::state::SeatState;
 use k3c_sim::state::{Merchant, Troop, World};

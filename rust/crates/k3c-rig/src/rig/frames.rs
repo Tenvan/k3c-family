@@ -21,7 +21,9 @@ pub fn frame_time(n: i64, frames: i64, freq: f64) -> f64 {
 impl Rig {
     /// `cloak_anchor`: Anker des Umhangs in Welt-Einheiten (Punkt am Anker-Teil).
     pub fn cloak_anchor(&self, world: &[M]) -> Point {
-        let cloak = self.cloak.as_ref().expect("Rig hat einen Umhang");
+        let Some(cloak) = self.cloak.as_ref() else {
+            return [0.0, 0.0]; // Rig ohne Umhang: kein Anker
+        };
         apply(&world[self.index_of(&cloak.anchor) as usize], cloak.point)
     }
 
@@ -40,7 +42,9 @@ impl Rig {
             (self.cloak_anchor(&world), pose.wind)
         };
         let frames = self.animations[name].frames;
-        let cloak = self.cloak.as_ref().expect("Rig hat einen Umhang");
+        let Some(cloak) = self.cloak.as_ref() else {
+            return Err(Fehler::Rig(format!("Rig {} hat keinen Umhang", self.id)));
+        };
         let out = cloak_run(cloak, &frame_steps(freq, frames), &mut state, 0.0);
         match err {
             Some(e) => Err(e),
@@ -104,7 +108,9 @@ pub fn ride_cloak_frames(mount: &Rig, rider: &Rig, gait_name: &str, frames: i64)
         }
         (s.cloak_anchor(rider), s.pose.wind)
     };
-    let cloak = rider.cloak.as_ref().expect("Reiter hat einen Umhang");
+    let Some(cloak) = rider.cloak.as_ref() else {
+        return Err(Fehler::Rig(format!("Reiter {} hat keinen Umhang", rider.id)));
+    };
     let out = cloak_run(cloak, &frame_steps(freq, frames), &mut state, RIDE_FLOOR);
     match err {
         Some(e) => Err(e),

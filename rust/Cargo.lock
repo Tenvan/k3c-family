@@ -874,6 +874,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "k3c-alloc-probe"
+version = "0.1.0"
+
+[[package]]
 name = "k3c-balance"
 version = "0.1.0"
 dependencies = [
@@ -904,6 +908,7 @@ name = "k3c-game"
 version = "0.1.0"
 dependencies = [
  "flate2",
+ "k3c-alloc-probe",
  "k3c-balance",
  "k3c-data",
  "k3c-det",

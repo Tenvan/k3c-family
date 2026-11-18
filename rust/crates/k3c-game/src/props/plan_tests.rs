@@ -3,6 +3,7 @@
 //! `combat`, `plantation`, `pickups` und `coins` liefert RU16.4; deren Aussagen laufen als Literal-Welten in
 //! `plan_sites_tests.rs`, `plan_combat_tests.rs` und `felling_tests.rs`. Dazu laufen Tests auf Literal-Welten über
 //! `castle`, `entities` und `nodes`.
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use k3c_level::types::Entity;
 use k3c_sim::state::{ResourceNode, Site, World};

@@ -20,6 +20,7 @@ pub fn train_at(w: &World, p: &Player) -> String {
 
 /// Go: `TradeAt`: die Seite des Händlers ("buy", "sell"), an der der Spieler jetzt tauschen kann, mit dem Material des
 /// Händlers: Kaufen braucht Gold und Platz im Lager, Verkaufen genug Material im Vorrat; sonst `("", "")`.
+#[allow(clippy::expect_used)] // STAB(B-1076): Go-Nil-Dereferenz, bis RU22 den Fehlerweg festlegt
 pub fn trade_at(w: &World, p: &Player) -> (String, String) {
     let none = (String::new(), String::new());
     let t = match find_pay_target(w, p) {

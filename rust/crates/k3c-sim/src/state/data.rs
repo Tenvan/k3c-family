@@ -24,6 +24,7 @@ pub use k3c_data::biome::check_pool;
 
 /// Go: `firstDayNight`, der globale Zyklus: der des ersten Tag/Nacht-Bioms (Oberwelt), wie `globalDayNight()` in TS.
 /// `biomes` ist die nach Tiefe sortierte Liste (`Data::biomes`).
+#[allow(clippy::panic)] // STAB(B-1076): Daten ohne Tag/Nacht-Biom, Fehlerweg folgt
 pub fn first_day_night(biomes: &[Biome]) -> Cycle {
     for b in biomes {
         if b.cycle.r#type == "dayNight" {
