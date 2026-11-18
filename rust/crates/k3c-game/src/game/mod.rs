@@ -3,9 +3,14 @@
 //! (`k3c_platform::Clock`, 30 Hz, höchstens 4 Takte je Bild, `alpha`) ersetzt sie; `deps.go` (Go-Modul-Pins) entfällt.
 
 pub mod blend;
+pub mod clock;
+pub mod devices;
 pub mod flags;
+pub mod keytable;
 pub mod layout;
 pub mod modes;
+pub mod notice;
+pub mod overlay;
 pub mod packages;
 pub mod parts;
 mod pending;
