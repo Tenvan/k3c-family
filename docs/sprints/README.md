@@ -54,7 +54,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | Entwurf | `geplant/BB1-bildaufbau-assets/` |
 | BB2 | CLI | PAP | Bildaufbau im Spiel: Gehlinie, Spiegel-Fluss, Weite, Licht und Tönung | – | Entwurf | `geplant/BB2-bildaufbau-spiel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | bereit | `geplant/RU14-sim-welt-stufen-kampagne/` |
 | RU18 | SIM | RSU | Sim: Wirtschaft, Bau, Hub, Monarch, Skills | – | bereit | `geplant/RU18-sim-wirtschaft-bau-monarch/` |
 | RU19 | SIM | RSU | Sim: Events, Geschichte, Dev-Eingriffe | – | bereit | `geplant/RU19-sim-events-geschichte-dev/` |
 | RU21 | SRV | RSU | Spielstände und Raum Teil 1 | – | bereit | `geplant/RU21-spielstaende-und-raum-teil-1/` |
@@ -447,5 +446,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | `erledigt/RU10-sim-insel/` |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |
 | RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | `erledigt/RU23-hud-teil-2/` |
-| RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | `erledigt/RU12-menues-teil-2/` |
+| RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | `erledigt/RU14-sim-welt-stufen-kampagne/` |
 | RU44 | Bild-Pfad ohne Allokationen | `erledigt/RU44-bild-pfad-ohne-allokationen/` |
+| RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | `erledigt/RU12-menues-teil-2/` |

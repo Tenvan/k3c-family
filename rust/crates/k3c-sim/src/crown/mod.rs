@@ -13,9 +13,10 @@ use serde_json::json;
 
 use k3c_data::monarch::CrownData;
 
+use crate::island::defeat::game_over;
 use crate::state::common::{event, sign};
 use crate::state::island_ref::{IslandRef, protected_night};
-use crate::state::pending::{emit, game_over, unit_x, values};
+use crate::state::pending::{emit, unit_x, values};
 use crate::state::shared::Crown;
 use crate::state::{Coin, Enemy, World, WorldValues};
 
@@ -303,11 +304,11 @@ pub fn drop_crown_of(w: &mut World, e: &mut Enemy) {
 }
 
 /// Go: `crownStolen`: Ein Gegner trägt eine Krone ins Portal: Kronenraub, das Spiel ist verloren (kampf.md § 6), in jedem
-/// Grad.
-pub fn crown_stolen(w: &mut World, e: &Enemy) {
+/// Grad. Mit Insel endet sie (`IslandRef::over`, `game_over`).
+pub fn crown_stolen(w: &mut World, e: &Enemy, isl: Option<&mut IslandRef>) {
     let owner = e.crown.as_ref().map_or(0, |c| c.owner);
     emit(w, "crownStolen", event(json!({"player": owner, "x": unit_x(e.x)})));
-    game_over(w);
+    game_over(w, isl);
 }
 
 /// Go: `hitCoins`: Münzen eines Treffers fallen neben dem Monarchen `pi` auf den Boden, aufsammelbar für alle; der

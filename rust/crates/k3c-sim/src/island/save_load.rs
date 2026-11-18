@@ -17,8 +17,9 @@ use super::save_v5::restore_progress;
 use super::save_v8::island_in;
 use super::{Island, WorldDef};
 use crate::state::Fehler;
-use crate::state::pending::{add_player_at, values_of};
+use crate::state::pending::values_of;
 use crate::state::save_apply::apply_hub;
+use crate::world::add_player_at;
 
 /// Go: `FromIslandSave` baut die Insel aus einem Spielstand der Standard-Welt (`from_island_save_in`).
 pub fn from_island_save(t: &SaveTables, s: &IslandSave, cycle_speed: f64) -> Result<Island, Fehler> {

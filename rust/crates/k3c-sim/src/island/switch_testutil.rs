@@ -32,9 +32,21 @@ pub fn test_islands(data: &Data) -> (WorldDef, IslandDef) {
     (world, two)
 }
 
-/// Go: `completeShip` (ship_test.go): baut das Schiff der Insel fertig und liefert die X-Position des Stegs; kommt mit RU14.
-pub fn complete_ship(_isl: &mut Island) -> f64 {
-    unimplemented!("RU14: complete_ship (devBuildSite)")
+/// Go: `completeShip` (ship_test.go): baut das Schiff der Insel fertig und liefert die X-Position des Stegs. Der Rumpf
+/// ruft `dev_build_site` (RU19).
+pub fn complete_ship(isl: &mut Island) -> f64 {
+    use crate::world::pending::dev_build_site;
+    use crate::world::ship::{SHIP_KIND, harbor};
+    let Some((wi, si)) = harbor(isl) else {
+        panic!("kein Hafen auf der Insel");
+    };
+    let w = &mut isl.stages[wi];
+    let stages = crate::world::vals(w)
+        .buildings
+        .get(SHIP_KIND)
+        .map_or(0, |b| b.levels.len() as i64);
+    dev_build_site(w, si, stages);
+    w.sites[si].x
 }
 
 /// Go: `gateIsland`: erste Insel der Welt `w` mit Wald und Höhle, fertiges Schiff, `n` Spieler am Steg des Hafens (Wald),
@@ -130,9 +142,9 @@ pub fn nordmeer_island(data: &Data, w: &WorldDef, n: usize) -> Island {
     isl
 }
 
-/// Go: `cyclePhases(globalDayNight)` (world_cycle.go): Länge eines Tages in Sekunden; kommt mit RU14.
+/// Go: `cyclePhases(globalDayNight)` (world_cycle.go): Länge eines Tages in Sekunden.
 pub fn cycle_length() -> f64 {
-    unimplemented!("RU14: cycle_phases")
+    crate::world::cycle::cycle_phases(&crate::world::base::base().expect("Daten").day_night).1
 }
 
 /// Go: `testIsland` (island_worlds_test.go): eine Insel `id` der Test-Welt als JSON; `fields` (beginnt mit `,`) ersetzt

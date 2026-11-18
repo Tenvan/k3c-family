@@ -136,7 +136,9 @@ fn world_gegen_go() {
 }
 
 fn temp_rig(name: &str, json: &str) -> std::path::PathBuf {
-    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/tmp").join(format!("k3c-rig-test-{name}-{}", std::process::id()));
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
+        .join(format!("k3c-rig-test-{name}-{}", std::process::id()));
     std::fs::create_dir_all(&dir).expect("Ordner");
     std::fs::write(dir.join("rig.json"), json).expect("Datei");
     dir

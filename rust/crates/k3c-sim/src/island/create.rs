@@ -11,7 +11,8 @@ use k3c_data::Data;
 use k3c_data::hub::HubData;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
-use crate::state::pending::{WorldOptions, create_world_with, empty_site, hub_of, validate_hub_data_in, values_of};
+use crate::state::pending::{validate_hub_data_in, values_of};
+use crate::world::{Options as WorldOptions, create_world, empty_site, hub_of};
 
 use super::Island;
 use super::data::{IslandDef, biome_for_depth};
@@ -205,11 +206,12 @@ fn create_stage(
         lair,
         hub: b.hub.clone(),
         vals: Some(Arc::clone(vals)),
+        rules: None,
     };
-    let mut w = create_world_with(biome, seed, &wo).map_err(|e| format!("insel: Stufe mit Tiefe {d}: {e}"))?;
+    let mut w = create_world(biome, seed, &wo).map_err(|e| format!("insel: Stufe mit Tiefe {d}: {e}"))?;
     w.lair_boss = boss;
-    let hub = hub_of(&w);
-    for s in &hub.island_sites {
+    let island_sites = hub_of(&w).island_sites.clone();
+    for s in &island_sites {
         let x = w.hub_x + s.offset_units;
         let site = empty_site(&mut w, &s.kind, x);
         w.sites.push(site);

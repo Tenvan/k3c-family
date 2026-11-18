@@ -163,7 +163,7 @@ pub fn step_enemies(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
         take_crown_or_loot(w, &v, ei, isl.as_deref());
         step_one(w, &v, ei, isl.as_deref(), dt);
     }
-    leave_through_portal(w);
+    leave_through_portal(w, isl);
 }
 
 /// Der Rest von `stepEnemies` für einen Gegner: Flucht, Ziel wählen, zuschlagen, vorrücken.
@@ -200,7 +200,7 @@ fn step_one(w: &mut World, v: &WorldValues, ei: usize, isl: Option<&IslandRef>, 
 
 /// Go: `leaveThroughPortal`: Geflohene lebende Gegner verschwinden im Portal (mitsamt geklautem Gold); besiegte nie
 /// (B-189). Trägt einer eine Krone, ist das Kronenraub und das Spiel verloren (crown.go).
-pub fn leave_through_portal(w: &mut World) {
+pub fn leave_through_portal(w: &mut World, isl: Option<&mut IslandRef>) {
     let mut thief: Option<Enemy> = None;
     w.enemies.retain(|e| {
         let stays = e.hp <= 0.0 || e.guard || !(e.fleeing && (e.x - e.home_x).abs() < 0.3);
@@ -210,7 +210,7 @@ pub fn leave_through_portal(w: &mut World) {
         stays
     });
     if let Some(t) = thief {
-        crown_stolen(w, &t);
+        crown_stolen(w, &t, isl);
     }
 }
 

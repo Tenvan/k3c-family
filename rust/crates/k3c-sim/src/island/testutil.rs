@@ -131,9 +131,36 @@ pub fn vagrants(w: &World) -> usize {
 }
 
 /// Go: `defeatIsland` (island_defeat_test.go): Insel mit Wald und Höhle, je ein Spieler (Gold 40 bzw. 30), Vorrat 20 Holz
-/// und 10 Stein, im Wald ein gebauter Turm und ein Bogenschütze. Braucht `set_options` (RU10.2) und `build_site` (RU14).
-pub fn defeat_island(_data: &Data, _defeat: &str) -> Island {
-    unimplemented!("RU14: defeat_island (SetOptions, buildSite)")
+/// und 10 Stein, im Wald ein gebauter Turm und ein Bogenschütze.
+pub fn defeat_island(data: &Data, defeat: &str) -> Island {
+    let mut isl = must_island(data, "niederlage", &[0, 1]);
+    let o = super::options::IslandOptions {
+        grade: "normal".into(),
+        goal: "endboss".into(),
+        defeat: defeat.into(),
+    };
+    super::options::set_options(&mut isl, o, false).expect("Optionen");
+    for (stage, gold) in [(0, 40), (1, 30)] {
+        let pi = super::add_island_player(&mut isl, stage);
+        isl.stages[stage].players[pi].gold = gold;
+    }
+    isl.stock = Stock {
+        wood: 20,
+        stone: 10,
+        ..Stock::default()
+    };
+    let w = &mut isl.stages[0];
+    crate::enemies::testutil::build_site(w, "tower");
+    let (id, x) = (w.new_id(), w.hub_x);
+    w.troops.push(crate::state::Troop {
+        id,
+        kind: "archer".into(),
+        x,
+        hp: 10.0,
+        max_hp: 10.0,
+        ..crate::state::Troop::default()
+    });
+    isl
 }
 
 /// Go: `saveJSON`: der Spielstand der Insel als JSON-Text.

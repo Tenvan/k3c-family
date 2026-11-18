@@ -1,6 +1,6 @@
 # RU14 · SIM · Sim: Welt-Schritt, Kampagne, Schiff und Vorschau
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -97,11 +97,11 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU14.1 | `RU14.1-world-campaign-ship-preview.md` | Umsetzung | autonom | offen |
-| RU14.2 | `RU14.2-world-cycle-lava-lines-mirror-skins.md` | Umsetzung | autonom | offen |
-| RU14.3 | `RU14.3-world-travel-values-locked.md` | Umsetzung | autonom | offen |
-| RU14.4 | `RU14.4-world-values-merge-room-vein.md` | Umsetzung | autonom | offen |
-| RU14.5 | `RU14.5-review.md` | Review | autonom | offen |
+| RU14.1 | `RU14.1-world-campaign-ship-preview.md` | Umsetzung | autonom | fertig |
+| RU14.2 | `RU14.2-world-cycle-lava-lines-mirror-skins.md` | Umsetzung | autonom | fertig |
+| RU14.3 | `RU14.3-world-travel-values-locked.md` | Umsetzung | autonom | fertig |
+| RU14.4 | `RU14.4-world-values-merge-room-vein.md` | Umsetzung | autonom | fertig |
+| RU14.5 | `RU14.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -109,6 +109,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18. AC-01 teilweise (`step` in Go-Reihenfolge, Test `world/step_tests.rs`, Reviewer Zeile für Zeile gegen `Step`; 26 Teilschritte), AC-02 teilweise: alle Go-Tests des Bereichs portiert, nur die ohne RU18/RU19-Platzhalter grün (375 grün, 296 ignoriert, 0 rot), die übrigen mit echtem Blocker markiert, keine Marke RU14 mehr (Ergebnisse RU14.1 bis RU14.4).
+`task check` und `task check:go` grün, `task check:diff` je Session grün, `engine/native/testdata` unverändert, kein HashMap, Dateien ≤ 400 Zeilen; Reviewer `k3c-reviewer`: keine schweren Befunde (nur niedrige Randfälle: `default_values` bei Lesefehler leer, `{:?}` statt `%q` in Skins-Fehlern, Groß-/Kleinschreibung bei `plantation` in `values_locked`).
+Neue Tickets: B-1093 (Abnahme-Läufe, Lane zweit), B-1092 (`decode_world_story` vorziehen, RU19). Offen: `protected_night` (B-1087) braucht `IslandRef` in 8 Aufrufern aus RU11/RU15 und bleibt; `cargo fmt --all` zog Format-Drift fremder Crates mit.

@@ -1,5 +1,5 @@
 //! Niederlage-Modi (Go: `island_defeat_test.go`, B-102, K2.2b, docs/rules/stufen.md § 4). Die sechs Go-Tests bauen eine
-//! Insel (`defeat_island`) oder lassen die Burg fallen und warten auf RU14. Die Tests darunter (ohne Go-Gegenstück) prüfen
+//! Insel (`defeat_island`) oder lassen die Burg fallen und warten auf RU18 (`create_world`: `new_hub_site`). Die Tests darunter (ohne Go-Gegenstück) prüfen
 //! die Rechnung von `resource_losses` und `halve_stock`, die ohne `World`-Aufbau laufen.
 
 use k3c_data::hub::Stock;
@@ -11,9 +11,14 @@ use std::sync::Arc;
 use super::{Island, step_island};
 use crate::state::{Player, PlayerCommand, World, WorldValues};
 
-/// Go: `castleFallen` (world.go) an der Stufe `stage` der Insel; kommt mit RU14.
-fn castle_fallen(_isl: &mut Island, _stage: usize) {
-    panic!("RU14: castle_fallen")
+/// Go: `castleFallen` (world.go) an der Stufe `stage` der Insel (Vorrat und Bosse über den `IslandRef` wie `on_stage`).
+fn castle_fallen(isl: &mut Island, stage: usize) {
+    let data = test_data();
+    let mut r = isl.stage_ref(stage, &data.difficulty);
+    std::mem::swap(&mut isl.stock, &mut isl.stages[stage].stock);
+    crate::world::castle_fallen(&mut isl.stages[stage], Some(&mut r));
+    std::mem::swap(&mut isl.stock, &mut isl.stages[stage].stock);
+    isl.put_stage_ref(r);
 }
 
 /// Go: `fell(p)` und der Kronenraub mit `leaveThroughPortal` (crown.go, enemies.go); kommt mit RU14/RU15.
@@ -27,7 +32,7 @@ fn default_defeat_for(data: &k3c_data::Data, grade: &str) -> String {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_gold_material() {
     let data = test_data();
     let mut isl = defeat_island(&data, "resources");
@@ -56,7 +61,7 @@ fn niederlage_gold_material() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_stufenverlust() {
     let data = test_data();
     let mut isl = defeat_island(&data, "stage");
@@ -89,7 +94,7 @@ fn niederlage_stufenverlust() {
 
 /// Kronenraub ist die Niederlage (kampf.md § 6): Game Over, die Insel steht danach.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_kronenraub() {
     let data = test_data();
     let mut isl = defeat_island(&data, "stage");
@@ -128,7 +133,7 @@ fn niederlage_kronenraub() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_standard_je_grad() {
     let data = test_data();
     let want = [
@@ -151,7 +156,7 @@ fn niederlage_standard_je_grad() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn niederlage_ohne_insel_stufenverlust() {
     let mut w = crate::enemies::testutil::quiet_world();
     crate::enemies::testutil::build_site(&mut w, "tower");
@@ -165,11 +170,18 @@ fn niederlage_ohne_insel_stufenverlust() {
     let pi = crate::enemies::testutil::add_player(&mut w);
     w.players[pi].gold = 40;
     w.castle.hp = 0.0;
-    panic!("RU14: castleFallen(w) ohne Insel");
+    crate::world::castle_fallen(&mut w, None);
+    assert!(
+        built_sites(&w) == 0 && w.troops.is_empty() && w.players[pi].gold == 20,
+        "ohne Insel: {} Bauten, {} Truppen, Gold {}",
+        built_sites(&w),
+        w.troops.len(),
+        w.players[pi].gold
+    );
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn niederlage_deterministisch() {
     let data = test_data();
     let mut runs = Vec::new();

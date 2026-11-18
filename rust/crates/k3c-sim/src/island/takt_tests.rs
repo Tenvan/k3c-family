@@ -40,7 +40,7 @@ fn island_fields(isl: &Island) -> Value {
 
 /// Go: `TestRustrefInsel`: 1000 Schritte einer Insel. Aufbau und Schritt sind RU14; der Test läuft ab dann.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn insel_nach_1000_schritten_wie_go() {
     let want = reference();
     let data = test_data();

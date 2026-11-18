@@ -17,9 +17,9 @@ use super::options::IslandOptions;
 use super::save_v5::saved_merchant;
 use super::{Island, WorldDef};
 use crate::state::omit::{is_false, is_zero_i64};
-use crate::state::pending::{WorldOptions, create_world_with};
 use crate::state::save::{HubSave, SaveGame, hub_save};
 use crate::state::{Fehler, WorldValues};
+use crate::world::{Options as WorldOptions, create_world};
 
 /// Go: `IslandSaveVersion`, die Version des Insel-Spielstands.
 pub const ISLAND_SAVE_VERSION: i64 = 9;
@@ -165,7 +165,7 @@ impl Island {
                 nature: neutral_nature(&w.biome),
                 ..WorldOptions::default()
             };
-            let base = create_world_with(&w.biome, &self.seed, &opts).map_err(Fehler::Spielstand)?;
+            let base = create_world(&w.biome, &self.seed, &opts).map_err(Fehler::Spielstand)?;
             s.stages.push(hub_save(w, &base));
         }
         for p in self.players() {

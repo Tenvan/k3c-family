@@ -56,7 +56,7 @@ fn want_once(isl: &mut Island, data: &k3c_data::Data) {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_endboss() {
     let data = test_data();
     let mut isl = goal_island(&data, "endboss");
@@ -79,7 +79,7 @@ fn coin_at_player(isl: &mut Island, stage: usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_gold_summe_aller_spieler() {
     let data = test_data();
     let goal = data.goals.gold;
@@ -102,7 +102,7 @@ fn set_day(isl: &mut Island, day: i64) {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_tage_ueberleben() {
     let data = test_data();
     let days = data.goals.days;
@@ -136,7 +136,7 @@ fn only_veins(v: &WorldValues, nodes: &[ResourceNode]) -> Vec<ResourceNode> {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_alles_abbauen() {
     let data = test_data();
     let vals = default_values(&data);
@@ -169,7 +169,7 @@ fn sieg_alles_abbauen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_alles_abbauen_ohne_plantage() {
     let data = test_data();
     let mut isl = goal_island(&data, "mineAll");
@@ -201,7 +201,7 @@ fn sieg_alles_abbauen_ohne_plantage() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_alles_abbauen_ohne_endliche_objekte_nie() {
     let data = test_data();
     let vein = vein_kind(&data);
@@ -221,7 +221,7 @@ fn sieg_alles_abbauen_ohne_endliche_objekte_nie() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_alles_ausbauen_ueber_alle_stufen() {
     let data = test_data();
     let mut isl = goal_island(&data, "buildAll");
@@ -249,7 +249,7 @@ fn sieg_alles_ausbauen_ueber_alle_stufen() {
 
 /// Mehrere Bedingungen im selben Tick und ein späterer Wechsel des Ziels geben zusammen genau ein `victory`.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_zwei_bedingungen_ein_victory() {
     let data = test_data();
     let mut isl = goal_island(&data, "gold");
@@ -271,7 +271,7 @@ fn sieg_werte_aus_daten() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn sieg_deterministisch() {
     let data = test_data();
     let play = || {

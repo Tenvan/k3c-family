@@ -7,8 +7,8 @@
 use k3c_data::Data;
 
 use super::{Island, IslandSave, MerchantSave};
-use crate::state::pending::hub_of;
 use crate::state::shared::Merchant;
+use crate::world::hub_of;
 
 /// Go: `bossByID(id).Kind == "end"`: Ist `id` ein Endboss? Eine unbekannte ID (Go: `nil`, nach `validate_progress` nie)
 /// gilt nicht als Endboss.

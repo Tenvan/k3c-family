@@ -32,7 +32,11 @@ fn welt_aus_map_fs_laden() {
         "Insel 2: {d:?}"
     );
     let data = test_data();
-    let leer = Source::Dir(std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/tmp").join("k3c-ru10-5-ohne-welten"));
+    let leer = Source::Dir(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../../.work/tmp")
+            .join("k3c-ru10-5-ohne-welten"),
+    );
     match load_world(&leer, "nordmeer", &data, &test_rules(&data)) {
         Err(e) if e.contains("nordmeer") => {}
         other => panic!("fehlende Datei: {other:?}"),

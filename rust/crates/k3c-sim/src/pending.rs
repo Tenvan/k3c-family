@@ -1,17 +1,19 @@
-//! Platzhalter der Gruppen `enemies` und `unit` (Port-Leitfaden § 7): Funktionen späterer Sprints (RU10, RU14, RU15, RU18,
-//! RU19), die RU11 ruft. Der liefernde Sprint löscht den Platzhalter; RU22 prüft, dass keiner übrig ist. Die Platzhalter
+//! Platzhalter der Gruppen `enemies` und `unit` (Port-Leitfaden § 7): Funktionen späterer Sprints (RU10, RU15, RU18, RU19),
+//! die RU11 ruft. Der liefernde Sprint löscht den Platzhalter; RU22 prüft, dass keiner übrig ist. Die Platzhalter
 //! aus RU8 stehen weiter in `state/pending.rs`. Go-Zeiger auf Gegner und Truppen sind hier Indizes (`ei`, `ti`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU14, RU15, RU18, RU19)
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU19)
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
 use crate::state::shared::WorldValues;
-use crate::state::{Event, Job, Projectile, Site, Troop, World};
-use k3c_data::economy::Gatherable;
+use crate::state::{Event, Job, Projectile, Site, World};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
 pub use crate::boss::{boss_ability, boss_defeated, trigger_boss};
+
+// Von RU14.2 portiert (world_cycle.go): die Import-Stelle bleibt `pending`.
+pub use crate::world::cycle::add_pool;
 
 // Von RU15 portiert (Krone, Portale): die Import-Stelle bleibt `pending`.
 pub use crate::crown::{crown_stolen, drop_crown_of, take_crown_or_loot};
@@ -60,11 +62,6 @@ pub fn full_moon_extra(_w: &World, _plan: &[SpawnOrder]) -> Vec<SpawnOrder> {
 /// Go: `moonDrop` (events_moon.go): Blutmond-Faktor auf den Gold-Drop.
 pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
     unimplemented!("RU19: moon_drop")
-}
-
-/// Go: `addPool` (world_cycle.go): Aggressions-Pool um `amount` Prozent.
-pub fn add_pool(_w: &mut World, _amount: f64) {
-    unimplemented!("RU14: add_pool")
 }
 
 /// Go: `addStock` (economy.go): `true`, wenn das Material in den Vorrat kam.
@@ -132,20 +129,8 @@ pub fn build_progress_event(_w: &mut World, _site_id: i64, _before: f64) {
     unimplemented!("RU19: build_progress_event")
 }
 
-/// Go: `nodeFree` (world_vein.go).
-pub fn node_free(_w: &World, _n: &crate::state::ResourceNode) -> bool {
-    unimplemented!("RU14: node_free")
-}
-
-/// Go: `isVein` (world_vein.go).
-pub fn is_vein(_v: &WorldValues, _n: &crate::state::ResourceNode) -> bool {
-    unimplemented!("RU14: is_vein")
-}
-
-/// Go: `gatherVein` (world_vein.go).
-pub fn gather_vein(_t: &mut Troop, _g: &Gatherable, _dt: f64) {
-    unimplemented!("RU14: gather_vein")
-}
+// Von RU14.4 portiert (world_vein.go): die Import-Stelle bleibt `pending`.
+pub use crate::world::vein::{gather_vein, is_vein, node_free};
 
 /// Go: `vagrantsAt` (building_tavern.go): Landstreicher um `x`.
 pub fn vagrants_at(_w: &World, _x: f64) -> i64 {
@@ -186,9 +171,4 @@ pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &st
 /// Go: `addPoolPoints` (monarch.go): Punkte in den Fund-Pool der Insel (ohne Insel: Zähler der Welt).
 pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
     unimplemented!("RU18: add_pool_points")
-}
-
-/// Go: `gameOver` (world_end.go): das Spiel ist verloren (Kronenraub, Burgfall ohne Rückkehr).
-pub fn game_over(_w: &mut World) {
-    unimplemented!("RU14: game_over")
 }
