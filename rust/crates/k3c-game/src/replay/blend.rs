@@ -2,8 +2,9 @@
 //!
 //! Die Sim taktet mit 30 Hz, gezeichnet wird schneller. `capture` merkt die Lage vom Takt davor, `apply` schiebt
 //! Einheiten, Kameras und Uhr in `draw` um alpha auf die aktuelle Lage, `restore` stellt sie danach wieder her.
-
-use std::collections::BTreeMap;
+//!
+//! Alle Puffer bleiben stehen (`clear` statt neu anlegen, B-1077): Die Lage vom Takt davor liegt als nach Schlüssel
+//! sortierter `Vec` (Suche per `binary_search_by_key`), nach dem Aufwärmen legt kein Aufruf mehr etwas an.
 
 use k3c_sim::state::World;
 
@@ -40,7 +41,8 @@ pub fn glide(prev: f64, cur: f64, a: f64) -> f64 {
 /// Zustand der Zwischenbilder.
 #[derive(Default)]
 pub struct Blend {
-    prev: BTreeMap<u64, f64>,
+    /// Lage (x) je Schlüssel, nach Schlüssel sortiert (`capture`)
+    prev: Vec<(u64, f64)>,
     cam: Vec<f64>,
     clock: f64,
     stage: i64,
@@ -63,22 +65,14 @@ impl Blend {
         self.prev.clear();
         let s = self.stage;
         let ps = &mut self.prev;
-        w.players
-            .iter()
-            .for_each(|p| _ = ps.insert(key(s, Kind::Player, p.id), p.x));
-        w.troops
-            .iter()
-            .for_each(|p| _ = ps.insert(key(s, Kind::Troop, p.id), p.x));
-        w.enemies
-            .iter()
-            .for_each(|p| _ = ps.insert(key(s, Kind::Enemy, p.id), p.x));
-        w.projectiles
-            .iter()
-            .for_each(|p| _ = ps.insert(key(s, Kind::Projectile, p.id), p.x));
-        w.coins
-            .iter()
-            .for_each(|p| _ = ps.insert(key(s, Kind::Coin, p.id), p.x));
-        self.cam = cams.iter().copied().take(MAX_CAMS).collect();
+        ps.extend(w.players.iter().map(|p| (key(s, Kind::Player, p.id), p.x)));
+        ps.extend(w.troops.iter().map(|p| (key(s, Kind::Troop, p.id), p.x)));
+        ps.extend(w.enemies.iter().map(|p| (key(s, Kind::Enemy, p.id), p.x)));
+        ps.extend(w.projectiles.iter().map(|p| (key(s, Kind::Projectile, p.id), p.x)));
+        ps.extend(w.coins.iter().map(|p| (key(s, Kind::Coin, p.id), p.x)));
+        ps.sort_unstable_by_key(|e| e.0); // in place, ohne Allokation
+        self.cam.clear();
+        self.cam.extend(cams.iter().copied().take(MAX_CAMS));
         self.clock = w.time;
     }
 
@@ -91,8 +85,8 @@ impl Blend {
         let mut saved = std::mem::take(&mut self.saved);
         saved.clear();
         let mut shift = |kind: Kind, i: usize, id: i64, x: &mut f64| {
-            if let Some(&p) = prev.get(&key(s, kind, id)) {
-                let g = glide(p, *x, a);
+            if let Ok(j) = prev.binary_search_by_key(&key(s, kind, id), |e| e.0) {
+                let g = glide(prev[j].1, *x, a);
                 if g != *x {
                     saved.push((kind, i, *x));
                     *x = g;
@@ -120,7 +114,8 @@ impl Blend {
             .enumerate()
             .for_each(|(i, p)| shift(Kind::Coin, i, p.id, &mut p.x));
         self.saved = saved;
-        self.saved_cam = cams.to_vec();
+        self.saved_cam.clear();
+        self.saved_cam.extend_from_slice(cams);
         for (c, &p) in cams.iter_mut().zip(self.cam.iter()) {
             *c = glide(p, *c, a);
         }
