@@ -2,9 +2,7 @@
 //! ein Papierschnitt-Icon aus data/paper.json, ohne Icon bleibt die gemalte Glyphe; Kappen wachsen mit der Beschriftung,
 //! Bedienhinweise stehen als Zeile mit Icons.
 //!
-//! Nicht portiert (Go braucht Dateien aus RU23): `menuLine`, `seaLine`, `menuEntries`, `buildMenu`; die Zeilen daraus und
-//! `TestGlyphenMitIcons` stehen als `#[ignore = "wartet auf RU23"]`. `checkLines` (Allokationen je Bild) entfällt mit ihm.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
+//! `TestGlyphenMitIcons` steht in `keyicons_menu_tests.rs`.
 
 use std::cell::RefCell;
 use std::collections::BTreeSet;
@@ -53,7 +51,7 @@ fn paper_icons() -> BTreeSet<String> {
 }
 
 /// all_glyphs liefert (Sprache, Profil, Aktion, Glyph) aus `glyph_of` über alle Aktionen, Eingabe-Profile und Sprachen.
-fn all_glyphs() -> Vec<(&'static str, &'static str, &'static str, Glyph)> {
+pub(super) fn all_glyphs() -> Vec<(&'static str, &'static str, &'static str, Glyph)> {
     let mut out = Vec::new();
     for lang in ["de", "en"] {
         for p in [WASD, ARROWS, GP] {
@@ -361,12 +359,4 @@ fn kappe_in_drei_streifen() {
     assert_eq!(sprites(48.0), 1, "eigene Breite: ein Bild");
     assert_eq!(sprites(100.0), 3, "breiter: drei Streifen");
     assert_eq!(sprites(30.0), 1, "schmaler: ein Bild");
-}
-
-/// Mit geladenen Icons: jede Glyph hat ihr Sheet, zwei Spieler mit verschiedenen Profilen je ihre Glyphen, die lange
-/// Beschriftung liegt auf der gestreckten Kappe (Go: `TestGlyphenMitIcons`, braucht `buildMenu` und gerenderte PNG, RU23).
-#[test]
-#[ignore = "wartet auf RU23"]
-fn glyphen_mit_icons() {
-    unimplemented!("seaLib, buildMenu und menuEntries kommen mit RU23");
 }

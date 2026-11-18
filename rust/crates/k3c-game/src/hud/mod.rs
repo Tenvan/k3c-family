@@ -13,13 +13,14 @@ use std::rc::Rc;
 use k3c_platform::Canvas;
 
 use self::draw::LayoutCache;
+use self::drawworld::LabelSpot;
 use self::glyphs::JoinKey;
 use self::hints::GuideSeen;
 use self::paint::Painter;
-use self::pending::{LabelSpot, VoyageView};
 use self::state::SeatState;
 use self::story::TaleState;
 use self::values::Memo;
+use self::voyage::VoyageView;
 use crate::art::{Font, Library, SeaMap};
 use crate::props::pending::PendingSimView;
 use crate::props::simview::SimView;
@@ -40,10 +41,13 @@ pub mod drawsea_paper;
 pub mod drawsea_scene;
 pub mod drawstock;
 pub mod drawstory;
+pub mod drawvoyage;
+pub mod drawworld;
 pub mod fonts;
 pub mod glyphs;
 pub mod hints;
 pub mod icons;
+pub mod kampf;
 pub mod keyline;
 pub mod layout;
 pub mod overlay;
@@ -64,6 +68,7 @@ mod texts_de;
 mod texts_en;
 pub mod values;
 mod values_texts;
+pub mod voyage;
 
 #[cfg(test)]
 mod banner_fit_tests;
@@ -72,11 +77,17 @@ mod banner_tests;
 #[cfg(test)]
 mod draw_tests;
 #[cfg(test)]
+mod drawworld_tests;
+#[cfg(test)]
 mod glyphs_tests;
 #[cfg(test)]
 mod hints_tests;
 #[cfg(test)]
 mod icons_tests;
+#[cfg(test)]
+mod kampf_tests;
+#[cfg(test)]
+mod keyicons_menu_tests;
 #[cfg(test)]
 mod keyicons_tests;
 #[cfg(test)]
@@ -115,10 +126,11 @@ mod testutil;
 mod texts_tests;
 #[cfg(test)]
 mod values_tests;
+#[cfg(test)]
+mod voyage_tests;
 
 /// Hud ist der Beitrag des Pakets: Zustand je Spieler (Listener) und, hinter `HudDrawer`, der Drawer (`Layer::HUD`)
 /// und das Overlay (Skill-Menü, RU23).
-#[allow(dead_code)] // cue_buf, paint, lay, spots, voy, tale liest der Zeichner (RU20.5, RU23)
 pub struct Hud {
     lib: Option<Rc<RefCell<Library>>>,
     view: Box<dyn SimView>,

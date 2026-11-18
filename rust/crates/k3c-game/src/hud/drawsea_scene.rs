@@ -4,9 +4,10 @@
 //! Rahmen: gewähltes Ziel (gilt für alle). Die Inseln einer Etappe stehen hintereinander, jede Reihe hinter ihrer
 //! eigenen Welle.
 //!
-//! Abweichung von Go: Die bewegte vordere Welle der Fahrt (`SeaExtra::moving`) zeichnet es versetzt direkt auf das Ziel,
-//! ohne Beschnitt (Go: Zwischenbild). `Canvas::clip` taugt nicht: Die Plattform sortiert nach (Ebene, Clip, Folge), die
-//! Welle läge über dem Text, und `clip(None)` löschte den Clip des Aufrufers. RU23.5 entscheidet über den Beschnitt.
+//! Abweichung von Go: Die bewegte vordere Welle der Fahrt (`SeaExtra::moving`) beschneidet nicht über ein Zwischenbild
+//! (Go: `SubImage`), sondern stutzt ihre Kacheln auf die Tafel (`draw_sea_strip_in`). `Canvas::clip` taugt nicht: Die
+//! Plattform sortiert nach (Ebene, Clip, Folge), die Welle läge über dem Text, und `clip(None)` löschte den Clip des
+//! Aufrufers.
 
 use k3c_platform::Canvas;
 
@@ -100,18 +101,27 @@ impl Hud {
         }
     }
 
-    /// draw_sea_front zeichnet die vordere Welle, bei der Fahrt versetzt (ohne Beschnitt, siehe Kopf).
+    /// draw_sea_front zeichnet die vordere Welle, bei der Fahrt versetzt und auf die Tafel beschnitten (Go: `SubImage`
+    /// von `box.X`, `front` bis `box.Y + box.H`, siehe Kopf).
     fn draw_sea_front(&self, dst: &mut dyn Canvas, front: &SeaSheet, p: &SeaPlan, x: &SeaExtra) {
         if x.moving {
             // breiter als die Tafel, damit der Versatz keine Lücke am Rand lässt
             let over = x.shift.abs() + p.u;
-            self.draw_sea_strip(
+            let (x0, y0) = (p.box_.x.trunc(), p.front.trunc());
+            let clip = Rect::new(
+                x0,
+                y0,
+                (p.box_.x + p.box_.w).ceil() - x0,
+                (p.box_.y + p.box_.h).ceil() - y0,
+            );
+            self.draw_sea_strip_in(
                 dst,
                 front,
                 p.box_.x - over + x.shift,
                 p.front,
                 p.box_.w + 2.0 * over,
                 p.u,
+                Some(clip),
             );
         } else {
             self.draw_sea_strip(dst, front, p.box_.x, p.front, p.box_.w, p.u);

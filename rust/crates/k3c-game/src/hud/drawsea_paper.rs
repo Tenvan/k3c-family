@@ -8,7 +8,7 @@
 //! reicht sie als Werte (`SeaSheet`, `SeaArt`) herein; der Puffer der Insel-Sheets (`Hud::sea_isl`) wird je Bild
 //! wiederverwendet.
 
-use k3c_platform::Canvas;
+use k3c_platform::{Canvas, Rect as PRect};
 
 use super::Hud;
 use super::drawsea::SeaSizes;
@@ -208,12 +208,35 @@ impl Hud {
     /// draw_sea_strip kachelt die Papierschicht s ab (x, y) über die Breite w: so viele ganze Kacheln, wie am besten
     /// passen, leicht gestreckt statt beschnitten, je 1 Bildpunkt überlappt (keine Naht).
     pub fn draw_sea_strip(&self, dst: &mut dyn Canvas, s: &SeaSheet, x: f64, y: f64, w: f64, u: f64) {
-        let n = ((w / (s.fw * u)).round() as i64).max(1);
+        self.draw_sea_strip_in(dst, s, x, y, w, u, None);
+    }
+
+    /// draw_sea_strip_in wie `draw_sea_strip`, mit `clip` = Ausschnitt (Fensterpixel), auf den die Kacheln gestutzt
+    /// werden: Ziel- und Quellrechteck schrumpfen gleich, was außerhalb liegt, entfällt (Ersatz für `SubImage` in Go).
+    #[allow(clippy::too_many_arguments)] // Signatur wie Go, dazu der Ausschnitt
+    pub fn draw_sea_strip_in(
+        &self,
+        dst: &mut dyn Canvas,
+        s: &SeaSheet,
+        x: f64,
+        y: f64,
+        w: f64,
+        u: f64,
+        clip: Option<Rect>,
+    ) {
+        let n = ((w / (s.fw * u)).round() as i64).clamp(1, 10_000); // Obergrenze gegen u = 0
         let tw = w / n as f64;
         for i in 0..n {
             let over = if i == n - 1 { 0.0 } else { 1.0 };
             let r = Rect::new(x + i as f64 * tw, y, tw + over, s.fh * u);
-            self.paint.stamp(dst, s.frame.tex, s.frame.src, r, WHITE);
+            match clip {
+                None => self.paint.stamp(dst, s.frame.tex, s.frame.src, r, WHITE),
+                Some(c) => {
+                    if let Some((r, src)) = trim_tile(r, s.frame.src, c) {
+                        self.paint.stamp(dst, s.frame.tex, src, r, WHITE);
+                    }
+                }
+            }
         }
     }
 
@@ -227,7 +250,7 @@ impl Hud {
 
 /// SeaExtra sind die Zusätze der Schiffsfahrt im Diorama (`drawvoyage.rs`, RU23.5): das fahrende Schiff mit Fußpunkt
 /// (x, y), gezeichnet nach den Inseln der Reihe `lane` (es liegt vor ihnen), und die bewegte vordere Welle (um `shift`
-/// Bildpunkte versetzt, beschnitten auf den Ausschnitt `front`). Der Nullwert zeichnet die Karte am Hafen.
+/// Bildpunkte versetzt, beschnitten auf die Tafel). Der Nullwert zeichnet die Karte am Hafen.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct SeaExtra {
     pub ship: bool,
@@ -236,6 +259,24 @@ pub struct SeaExtra {
     pub y: f64,
     pub moving: bool,
     pub shift: f64,
+}
+
+/// trim_tile stutzt die Kachel mit Ziel `r` und Quelle `src` auf den Ausschnitt `c`; Quelle und Ziel schrumpfen im
+/// gleichen Verhältnis. None, wenn nichts übrig bleibt.
+pub(super) fn trim_tile(r: Rect, src: PRect, c: Rect) -> Option<(Rect, PRect)> {
+    let (x0, y0) = (r.x.max(c.x), r.y.max(c.y));
+    let (x1, y1) = ((r.x + r.w).min(c.x + c.w), (r.y + r.h).min(c.y + c.h));
+    if x1 <= x0 || y1 <= y0 || r.w <= 0.0 || r.h <= 0.0 {
+        return None;
+    }
+    let (kx, ky) = (f64::from(src.w) / r.w, f64::from(src.h) / r.h);
+    let cut = PRect::new(
+        src.x + ((x0 - r.x) * kx) as f32,
+        src.y + ((y0 - r.y) * ky) as f32,
+        ((x1 - x0) * kx) as f32,
+        ((y1 - y0) * ky) as f32,
+    );
+    Some((Rect::new(x0, y0, x1 - x0, y1 - y0), cut))
 }
 
 /// tint ist die weiße Tönung mit Deckung alpha.

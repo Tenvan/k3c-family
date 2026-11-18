@@ -5,7 +5,6 @@
 //! von `anleitung_mit_bild` braucht `guideLayout` (RU20.5): ignoriert, der Zeichner-Sprint schaltet ihn ein. Der Teil von
 //! `anleitung_mit_bild`, der nur `guide_image` prüft, läuft als `anleitung_bild_wahl`.
 
-use super::draw::guide_layout;
 use super::hints::*;
 use super::testutil::{hud, set_world, two_players};
 use crate::view::frame::Frame;
@@ -296,21 +295,5 @@ fn anleitung_gesehen_gespeichert() {
         again.seats[0].guide.id,
         GuideId::Coin,
         "zurückgesetzt (Anleitung wieder an): Hinweis kommt wieder"
-    );
-}
-
-/// Lage-Teil von TestAnleitungMitBild: Bild links neben dem Text, beide zusammen mittig (`guide_layout`).
-#[test]
-fn anleitung_mit_bild() {
-    let (img, tx, ty) = guide_layout(500.0, 300.0, 200.0, 30.0, true, 1.0);
-    assert!(
-        img.w == 30.0 && img.h == 30.0 && img.y == ty && img.x + img.w <= tx && ty == 270.0,
-        "Bild links neben dem Text: {img:?}, Text bei {tx}/{ty}"
-    );
-    assert_eq!((img.x + tx + 200.0) / 2.0, 500.0, "Bild und Text mittig um x");
-    let (img, tx, _) = guide_layout(500.0, 300.0, 200.0, 30.0, false, 1.0);
-    assert!(
-        img.w == 0.0 && tx == 400.0,
-        "ohne Bild nur der Text mittig: {img:?} {tx}"
     );
 }

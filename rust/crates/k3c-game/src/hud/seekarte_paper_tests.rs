@@ -87,7 +87,7 @@ fn sea_fallback_without_assets() {
 }
 
 /// sea_lib: HUD mit den geladenen Assets aus dem Repo; ohne gerenderte Grafik None (Go: `t.Skip`).
-fn sea_lib() -> Option<Hud> {
+pub(super) fn sea_lib() -> Option<Hud> {
     let cfg = Config {
         grafik_dir: root().join("public/grafik"),
         font_path: root().join("public/schrift/k3c.ttf"),
