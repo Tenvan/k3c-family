@@ -61,7 +61,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
 | RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | bereit | `geplant/RU24-raum-teil-2-spielstand/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
-| RU26 | CLI | RSU | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | – | bereit | `geplant/RU26-spielschleife-teil-1/` |
 | RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | bereit | `geplant/RU27-lokales-spiel/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
 | RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | bereit | `geplant/RU29-dev-werkzeuge-im-spiel/` |
@@ -451,3 +450,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU44 | Bild-Pfad ohne Allokationen | `erledigt/RU44-bild-pfad-ohne-allokationen/` |
 | RU12 | Menüs Teil 2: Spielstände, Weltwahl, Pause, Test-Menüs | `erledigt/RU12-menues-teil-2/` |
 | RU45 | Abnahme- und Messläufe auf dem Second Worker | `erledigt/RU45-abnahme-und-messlaeufe-second-worker/` |
+| RU26 | Spielschleife Teil 1: Zustände, Split-Screen, Zeichnen | `erledigt/RU26-spielschleife-teil-1/` |
