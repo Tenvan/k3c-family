@@ -34,7 +34,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU23 | CLI | RSU | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | – | `aktiv/RU23-hud-teil-2/` |
 | RU44 | CLI | RSU | Bild-Pfad ohne Allokationen | – | `aktiv/RU44-bild-pfad-ohne-allokationen/` |
-| RU15 | SIM | RSU | Sim: Kampf, Bosse, Krone, Portale | – | `aktiv/RU15-sim-kampf-bosse/` |
 
 ## Offen am Gerät
 
@@ -448,3 +447,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU11 | Sim: Einheiten und Gegner | `erledigt/RU11-sim-einheiten-gegner/` |
 | RU42 | Leitplanken für Leistung und Stabilität | `erledigt/RU42-leitplanken-leistung-stabilitaet/` |
 | RU6 | Level-Generator in Rust, Level-Golden bitgleich | `erledigt/RU6-level-generator-rust/` |
+| RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |

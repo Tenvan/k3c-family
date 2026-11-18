@@ -1,6 +1,6 @@
 # RU15 · SIM · Sim: Kampf, Bosse, Krone, Portale
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -99,7 +99,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU15.2 | `RU15.2-boss-endboss-combat.md` | Umsetzung | autonom | fertig |
 | RU15.3 | `RU15.3-combat-data-squad.md` | Umsetzung | autonom | fertig |
 | RU15.4 | `RU15.4-crown-portal.md` | Umsetzung | autonom | fertig |
-| RU15.5 | `RU15.5-review.md` | Review | autonom | offen |
+| RU15.5 | `RU15.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -107,6 +107,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18. AC-01, AC-02: erfüllt, Nachweis in den Ergebnissen RU15.1 bis RU15.5 (`task check`, `task check:go` grün, cargo test und clippy grün).
+Reviewer ohne schwere Befunde; Abweichungen und Ignore-Marken stehen im Ergebnis RU15.5.
+Abnahme-Ticket für Sim, Balance, Gen, Race: B-1084 (Lane zweit).
+Hinweis an den Koordinator: `cause_test.go` und `events_moon_stages_test.go` ohne Session.
