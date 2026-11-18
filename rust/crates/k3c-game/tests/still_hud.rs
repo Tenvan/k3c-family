@@ -10,6 +10,7 @@
 //! Bild- und Platz-Test mit Hinweis (`K3C_STILL_REQUIRE=1`: Fehler); `K3C_GRAFIK_DIR` zeigt auf einen anderen Ordner (die
 //! Plätze hängen an den Maßen der Icons des Vorrats). Der Test der Glyph-Schlüssel braucht die Grafik nicht. `K3C_STILL_OUT=<ordner>` schreibt die
 //! Rust-Bilder zum Ansehen.
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)] // Testcode: Fehlschlag ist der Befund
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};

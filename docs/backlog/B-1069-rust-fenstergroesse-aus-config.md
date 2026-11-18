@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
-- **Status:** offen
-- **Sprint:** RU30
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** RU44
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-18
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,45 +24,43 @@ Fenstergröße und VSync kommen aus `Config`, `k3c-game` (Start, Wiedergabe) gib
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Agenten setzen um; Ralf misst mit `--size` und `--novsync` (Gate G2).
 
 ## Anforderungen
 
-Port ohne Regeländerung (B-1014).
+Port ohne Regeländerung (B-1014). `Config` bekommt `size: Option<(u32, u32)>` (logisch, `None` = 1280x720) und `novsync: bool` (Standard `false` = `PresentMode::Fifo`, `true` = Modus ohne Warten, z. B. `Immediate`, sonst `Mailbox`, sonst `Fifo`). Bestehende Aufrufer behalten ihr Verhalten.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+`native/measure.ps1` (Go-Messskript, außerhalb des Sprints): die Weitergabe von `-Vsync` an `replay` übernimmt der Hauptrechner als eigenes Ticket. `--size` im Spiel-Start außerhalb der Wiedergabe.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Rust-Standard `docs/standards/rust-port.md`; Fenster-Setup nur in `k3c-platform`, keine Regeländerung in `k3c-sim` und `k3c-level`.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-platform/src/backend/mod.rs`, `rust/crates/k3c-platform/src/backend/gpu.rs`, `rust/crates/k3c-platform/examples/probe/main.rs`, `rust/crates/k3c-game/src/replay/cli.rs`, `rust/crates/k3c-game/src/replay/run.rs`, `rust/crates/k3c-game/src/demo/mod.rs`
+- **Abhängig von:** B-1078
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+`k3c-game replay nacht-300.jsonl.gz --size 1920x1080` → Fenster mit 1920x1080 logisch, Bericht nennt 1920x1080. `--novsync` → Fenster ohne Warten auf die Bildwiederholung.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Größe außerhalb Breite 640 bis 3840 lehnt `cli.rs` bereits ab (unverändert). Unterstützt die Grafikkarte keinen Modus ohne Warten, fällt `novsync` auf `Fifo` zurück und loggt es.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `k3c-game replay <datei> --size 1920x1080` öffnet ein Fenster mit 1920x1080 (logisch); der Bericht nennt dieselbe Größe.
-- **AC-02** Ein Schalter ohne VSync (`--novsync`) setzt einen Present-Modus ohne Warten; `measure.ps1 -Engine replay` ohne `-Vsync` gibt ihn weiter.
+- **AC-01** `k3c-game replay <datei> --size 1920x1080` öffnet ein Fenster mit 1920x1080 (logisch); der Bericht nennt dieselbe Größe, die Warnung „nur im Bericht“ in `run.rs` entfällt.
+- **AC-02** `--novsync` setzt einen Present-Modus ohne Warten (Test auf die Modus-Auswahl als reine Funktion); ohne den Schalter bleibt `Fifo`. Die Weitergabe in `native/measure.ps1` ist Folgeticket des Hauptrechners.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 
-Gefunden in RU39.1 (Messwerkzeug). Für G2 unkritisch: Messanleitung nimmt `-Size 1280x720` für beide Programme und `-Vsync`.
+Gefunden in RU39.1 (Messwerkzeug). Für G2 unkritisch: Messanleitung nimmt `-Size 1280x720` für beide Programme und `-Vsync`. Die Struktur-Literale in `demo/mod.rs` und `examples/probe/main.rs` brauchen nur `..Default::default()`.

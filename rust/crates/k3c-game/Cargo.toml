@@ -22,3 +22,6 @@ png.workspace = true
 flate2 = "=1.1.11"
 serde.workspace = true
 serde_json.workspace = true
+
+[dev-dependencies]
+k3c-alloc-probe = { path = "../k3c-alloc-probe" }

@@ -5,8 +5,8 @@
 //! `K3C_TRACE=<datei.jsonl.gz> K3C_GRAFIK_DIR=<public/grafik> cargo test --release -p k3c-game --test messung_cpu -- --ignored --nocapture`
 //!
 //! Aussagekraft: nur der CPU-Teil der Zeichner (Befehle erzeugen), nicht Textur-Upload, GPU, VSync oder Treiber;
-//! auf einem unruhigen Rechner vorläufig. Allokationen je Bild sind nicht messbar, weil der Workspace
-//! `unsafe_code = "forbid"` setzt (ein zählender `GlobalAlloc` braucht `unsafe`).
+//! auf einem unruhigen Rechner vorläufig. Allokationen je Bild zählt `alloc_je_bild.rs` (RU42, `k3c-alloc-probe`).
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)] // Testcode: Fehlschlag ist der Befund
 
 use std::path::{Path, PathBuf};
 use std::time::Instant;

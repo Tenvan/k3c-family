@@ -135,3 +135,7 @@ zählen 11 Bilder als vom Programm verursacht (vermutet: GC und Sim im selben Pr
 Bild über dem Bildbudget, kein Anstieg über die Nacht. Offen und nicht belegt: Allokationen je Bild (B-1075), Bildzeiten
 am ruhigen PC und Mini-PC, die Sichtprüfung „sichtbar besser als Go“ und der Vorbehalt, dass die Wiedergabe keine Sim
 rechnet (in Go 12 bis 21 µs je Takt, 008). Die Entscheidung G2 bleibt bei 🧑.
+
+## Allokationen je Bild (RU42, B-1075)
+
+`cargo test --release -p k3c-game --test alloc_je_bild -- --nocapture` (Zähler `k3c-alloc-probe`, je Thread; Wiedergabe `nacht-300` gegen `NullCanvas`, nach 120 Aufwärmbildern, 2026-11-18, zwei Läufe gleich): 179 Bilder, Allokationen je Bild Mittel 478, Maximum 805 (`step` 788, `draw` 29), alle 179 Bilder allokieren, Summe 85 588 mit 9,3 MB angeforderten Bytes. Die Obergrenze 805 steht fest im Test. Treffer: `step` (Welt kopieren, Zustand je Aufzeichnungs-Takt bauen, B-1077) und `draw` (Zeichner, `Rc`-Klone, B-1078); beide Tickets im Sprint RU43. Ob `step` nur im Replay oder auch im echten Spiel so viel allokiert, klärt B-1077 (vermutet: nur Replay).

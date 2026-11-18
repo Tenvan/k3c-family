@@ -4,6 +4,7 @@
 //!
 //! Plätze erkennt die Sicht an der ID, Zahlziele an Art und Seite, Monarchen am Index. Eine Frage, zu der die Datei
 //! nichts sagt, ist ein Fehler im Test-Aufbau und bricht ab (`panic`), statt still etwas Falsches zu zeichnen.
+#![allow(clippy::panic)] // Test-Fixture: fehlende Antwort in der Fixture bricht den Test ab
 
 use std::path::Path;
 
