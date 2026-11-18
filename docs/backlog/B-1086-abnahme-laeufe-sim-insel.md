@@ -65,4 +65,11 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Stand 2026-11-18 (RU47)** (Second Worker; Details im Ergebnis RU47.1 und RU47.2, Sprint RU47)
+
+- Rust: `cargo test --release -p k3c-sim` 384 grün, 0 rot, 296 ignoriert.
+- Marken: `island` 103 ignoriert (RU19 91, RU18 11, RU15 2), `boss` 23 (RU10 21, RU19 2). Die Marke RU10 steht nur noch an `boss`, `enemies` und `combat` (insgesamt 48 Tests nur mit RU10, 53 mit RU10 überhaupt).
+- `cargo test -- --ignored`: `island` 0 grün / 103 rot (Platzhalter `decode_world_story` RU19 und `new_hub_site` RU18), `boss` 0 / 23 rot (Helfer `boss_island`, `deep_island`; vermutlich echte Abhängigkeit RU18, weil `create_island` `create_world` und `new_hub_site` braucht).
+- Echter Befund: `island::worlds_tests::eingebettete_welten_gueltig` schlägt fehl, weil die eingebetteten Welten `rom.json` und `standard.json` sind, der Test aber nur `standard.json` erwartet (Test veraltet).
+- AC-01 Sim und AC-02 Balance: bis RU18/RU19/RU22 nicht möglich. AC-03: `task go:test` grün, `testdata/` unverändert (RU47.2), `gen:paper` grün (RU45.1). AC-04: `check:race` grün, 749 s (RU45.1).
+- Status bleibt `offen`.
