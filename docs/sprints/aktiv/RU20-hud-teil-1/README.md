@@ -92,7 +92,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 |---|---|---|---|---|
 | RU20.1 | `RU20.1-hud-texts-data-fonts-layout.md` | Umsetzung | autonom | fertig |
 | RU20.2 | `RU20.2-hud-values-glyphs.md` | Umsetzung | autonom | fertig |
-| RU20.3 | `RU20.3-hud-hints-banner-radar.md` | Umsetzung | autonom | offen |
+| RU20.3 | `RU20.3-hud-hints-banner-radar.md` | Umsetzung | autonom | fertig |
 | RU20.4 | `RU20.4-hud-state-hud-icons.md` | Umsetzung | autonom | offen |
 | RU20.5 | `RU20.5-hud-paint-draw-purse-drawstock.md` | Umsetzung | autonom | offen |
 | RU20.6 | `RU20.6-hud-drawglyph-keyline.md` | Umsetzung | autonom | offen |

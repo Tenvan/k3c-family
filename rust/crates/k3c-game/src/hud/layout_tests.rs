@@ -1,15 +1,11 @@
 //! Port von `native/k3c-game/hud/layout_test.go`.
 //!
-//! `rect_of` (draw.go, RU20.5) und `radar_size` (radar.go, RU20.3) stehen bis dahin als Hilfen des Tests hier.
+//! `rect_of` (draw.go, RU20.5) steht bis dahin als Hilfe des Tests hier.
 
 use super::fonts::{REF_HEIGHT, scale_of};
 use super::layout::*;
+use super::radar::radar_size;
 use crate::view::cell::{Cell, Rectangle, WORLD_SHARE, rect, stats_rect, stats_rect_lines};
-
-/// radar_size wie radar.go: halb so breit wie die Zelle, höchstens 640 px bei 1080, 20 px hoch.
-fn radar_size(cell_w: f64, k: f64) -> (f64, f64) {
-    ((cell_w / 2.0).min(640.0 * k), 20.0 * k)
-}
 
 fn rect_of(r: Rectangle) -> Rect {
     Rect {
