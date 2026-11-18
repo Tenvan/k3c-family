@@ -1,7 +1,6 @@
 //! Gemerkte Räume für einen geplanten Neustart (WZ25.1, B-508): eine Datei im Spielstand-Ordner, die kein Spielstand
 //! ist (Endung `.state`, nicht `.json`, deshalb nicht in der Spielstandliste). Port von `engine/store/restart.go`.
 use std::io::ErrorKind;
-use std::time::UNIX_EPOCH;
 
 use super::saves::Saves;
 use super::stamp::Stamp;
@@ -30,14 +29,11 @@ impl Saves {
         };
         // Eine alte Datei stammt von einem Neustart, der nicht stattfand (Supervisor gestoppt, Build gescheitert):
         // verwerfen, ein späterer normaler Start öffnet keine alten Räume.
-        let mtime = std::fs::metadata(&path)
+        let modified = std::fs::metadata(&path)
             .and_then(|m| m.modified())
             .ok()
-            .and_then(|t| t.duration_since(UNIX_EPOCH).ok());
-        let stale = mtime.is_some_and(|d| {
-            let modified = Stamp::new(i64::try_from(d.as_secs()).unwrap_or(i64::MAX), d.subsec_nanos());
-            self.now().since_nanos(modified) > REMEMBERED_ROOMS_MAX_AGE
-        });
+            .and_then(Stamp::from_modified);
+        let stale = modified.is_some_and(|m| self.now().since_nanos(m) > REMEMBERED_ROOMS_MAX_AGE);
         std::fs::remove_file(&path)?;
         if stale {
             return Err(Fehler::NotFound);

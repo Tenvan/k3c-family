@@ -1,5 +1,8 @@
-//! Tests aus `backups_test.go`. Tests mit `Saves::store` warten auf RU21.2; die Rotation selbst wird direkt über
-//! `rotate` geprüft. `TestGleichzeitigesSpeichern` entfällt: kein `Mutex` und keine Threads im Crate (RU27).
+//! Tests aus `backups_test.go`. Die Rotation wird zusätzlich direkt über `rotate` geprüft. `TestGleichzeitigesSpeichern`
+//! entfällt: kein `Mutex` und keine Threads im Crate (RU27).
+use std::io;
+use std::sync::Arc;
+use std::sync::atomic::{AtomicU32, Ordering};
 use std::time::Duration;
 
 use super::backups::BACKUP_KEEP;
@@ -86,24 +89,6 @@ fn backups_ignoriert_fremde_dateien() {
     assert_eq!(list.iter().filter(|b| b.saved_at.is_none()).count(), 1);
 }
 
-// B-028/AC-02: eine Sicherung wird der aktuelle Stand, der bisherige wird selbst gesichert.
-#[test]
-#[ignore = "wartet auf RU21"]
-fn restore() {
-    let dir = TempDir::new();
-    let mut s = saves(&dir);
-    for i in 1..=3 {
-        let _ = s.store("autosave", &save(i));
-    }
-    let list = s.backups("autosave").expect("Liste");
-    let oldest = list[list.len() - 1].name.clone(); // Stand 1
-    s.restore("autosave", &oldest).expect("restore");
-    for bad in ["fehlt.json", "../autosave.json", "..\\autosave.json", ""] {
-        assert_eq!(s.restore("autosave", bad), Err(Fehler::NotFound), "{bad:?}");
-    }
-    assert_eq!(s.restore("../x", &oldest), Err(Fehler::Slot));
-}
-
 #[test]
 fn restore_prueft_name_und_slot() {
     let dir = TempDir::new();
@@ -115,16 +100,95 @@ fn restore_prueft_name_und_slot() {
     assert_eq!(s.restore("../x", "a.json"), Err(Fehler::Slot));
 }
 
-// B-028/AC-01 (Spielstand-Schreiben): wartet auf `Saves::store`.
+// B-028/AC-01: nach 7 Speichervorgängen liegen genau die 5 zuletzt überschriebenen Stände vor (2 bis 6).
 #[test]
-#[ignore = "wartet auf RU21"]
-fn rotation_behaelt_fuenf() {}
+fn rotation_behaelt_fuenf() {
+    let dir = TempDir::new();
+    let mut s = saves(&dir);
+    for i in 1..=7 {
+        s.store("autosave", &save(i)).expect("store");
+    }
+    let list = s.backups("autosave").expect("Backups");
+    assert_eq!(list.len(), BACKUP_KEEP);
+    for (i, b) in list.iter().enumerate() {
+        // neueste zuerst: 6, 5, 4, 3, 2
+        let data = std::fs::read(s.backup_dir("autosave").join(&b.name)).expect("lesen");
+        assert_eq!(
+            data,
+            save(6 - i64::try_from(i).expect("klein")),
+            "Sicherung {i} ({b:?})"
+        );
+        assert!(b.saved_at.is_some() && b.size > 0, "{b:?}");
+    }
+    assert_eq!(s.load("autosave").expect("aktuell"), save(7));
+    assert_eq!(s.count(), 1, "Sicherungen zählen nicht mit");
+}
 
+// Slots mit gemeinsamem Präfix teilen keine Sicherungen.
 #[test]
-#[ignore = "wartet auf RU21"]
-fn rotation_je_slot() {}
+fn rotation_je_slot() {
+    let dir = TempDir::new();
+    let mut s = saves(&dir);
+    for i in 1..=3 {
+        s.store("auto", &save(i)).expect("auto");
+        s.store("auto-save", &save(i)).expect("auto-save");
+    }
+    assert_eq!(s.backups("auto").expect("a").len(), 2);
+    assert_eq!(s.backups("auto-save").expect("b").len(), 2);
+}
 
-// B-274: nie ohne Sicherung überschreiben.
+// B-028/AC-02: eine Sicherung wird der aktuelle Stand, der bisherige wird selbst gesichert.
 #[test]
-#[ignore = "wartet auf RU21"]
-fn store_ueberschreibt_nie_ohne_sicherung() {}
+fn restore() {
+    let dir = TempDir::new();
+    let mut s = saves(&dir);
+    for i in 1..=3 {
+        s.store("autosave", &save(i)).expect("store");
+    }
+    let list = s.backups("autosave").expect("Liste");
+    let oldest = list[list.len() - 1].name.clone(); // Stand 1
+    s.restore("autosave", &oldest).expect("restore");
+    assert_eq!(s.load("autosave").expect("load"), save(1), "nach Wiederherstellen");
+    let after = s.backups("autosave").expect("Liste");
+    let newest = std::fs::read(s.backup_dir("autosave").join(&after[0].name)).expect("lesen");
+    assert_eq!(newest, save(3), "bisheriger Stand nicht gesichert");
+    for bad in ["fehlt.json", "../autosave.json", "..\\autosave.json", ""] {
+        assert_eq!(s.restore("autosave", bad), Err(Fehler::NotFound), "Restore({bad:?})");
+    }
+    assert_eq!(s.restore("../x", &oldest), Err(Fehler::Slot));
+}
+
+// B-274: Scheitert das Lesen des bisherigen Stands (Virenscanner hält die Datei), wird nie ohne Sicherung überschrieben:
+// dauerhaft gesperrt -> Fehler und alter Stand bleibt; kurz gesperrt (Windows) -> wiederholt und gesichert.
+#[test]
+fn store_ueberschreibt_nie_ohne_sicherung() {
+    let dir = TempDir::new();
+    let mut s = saves(&dir);
+    s.store("autosave", &save(1)).expect("1");
+    s.fs.read = Box::new(|_| Err(io::Error::from(io::ErrorKind::InvalidInput)));
+    assert!(
+        s.store("autosave", &save(2)).is_err(),
+        "Store ohne lesbaren bisherigen Stand gelungen"
+    );
+    s.fs.read = Box::new(|p| std::fs::read(p));
+    assert_eq!(
+        s.load("autosave").expect("load"),
+        save(1),
+        "bisheriger Stand überschrieben"
+    );
+    #[cfg(windows)]
+    {
+        let calls = Arc::new(AtomicU32::new(0));
+        let c = calls.clone();
+        s.fs.read = Box::new(move |p| {
+            if c.fetch_add(1, Ordering::SeqCst) + 1 < 3 {
+                return Err(io::Error::from_raw_os_error(32));
+            }
+            std::fs::read(p)
+        });
+        s.store("autosave", &save(2)).expect("kurz gesperrt");
+        let list = s.backups("autosave").expect("Liste");
+        let got = std::fs::read(s.backup_dir("autosave").join(&list[0].name)).expect("lesen");
+        assert_eq!(got, save(1), "Sicherung");
+    }
+}

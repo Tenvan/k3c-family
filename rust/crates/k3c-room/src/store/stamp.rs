@@ -63,6 +63,15 @@ impl Stamp {
         (y, m, d, rem / 3600, rem % 3600 / 60, rem % 60)
     }
 
+    /// Wandelt eine Dateizeit (`Metadata::modified`) um; nur Umrechnung, die Uhr liest der Aufrufer. Vor 1970: `None`.
+    pub fn from_modified(t: std::time::SystemTime) -> Option<Stamp> {
+        let d = t.duration_since(std::time::UNIX_EPOCH).ok()?;
+        Some(Stamp {
+            secs: i64::try_from(d.as_secs()).ok()?,
+            nanos: d.subsec_nanos(),
+        })
+    }
+
     pub fn add_secs(self, n: i64) -> Stamp {
         Stamp {
             secs: self.secs + n,
