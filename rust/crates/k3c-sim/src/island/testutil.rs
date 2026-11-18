@@ -16,7 +16,7 @@ use super::{
     CreateOptions, Island, SaveTables, WorldDef, create_island, from_island_save, parse_island_save, step_island,
 };
 use crate::state::pending::values_of;
-use crate::state::{Event, PlayerCommand, World};
+use crate::state::{Event, IslandRef, PlayerCommand, World};
 
 /// Go: `islandSpeed`: schneller Zyklus, Tag, Dämmerung und Nacht in Sekunden statt Minuten.
 pub const ISLAND_SPEED: f64 = 60.0;
@@ -133,4 +133,40 @@ pub fn load_island(data: &Data, raw: &str) -> Island {
     };
     let s = parse_island_save(raw, &t).expect("Spielstand lesen");
     from_island_save(&t, &s, ISLAND_SPEED).expect("Insel laden")
+}
+
+/// Go: `storageSite` (island_storage_test.go): Index des Lager-Bauplatzes der Stufe.
+pub fn storage_site(w: &World) -> Option<usize> {
+    w.sites.iter().position(|s| s.kind == "storage")
+}
+
+/// Ruft `f` auf der Stufe `i` wie `step_island` (Entscheidung 4 und 5): der Vorrat der Insel liegt per `swap` in der Stufe,
+/// der `IslandRef` kommt aus der Insel; danach geht beides zurück.
+pub fn on_stage<R>(isl: &mut Island, data: &Data, i: usize, f: impl FnOnce(&mut World, &IslandRef) -> R) -> R {
+    let r = isl.stage_ref(i, &data.difficulty);
+    std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
+    let out = f(&mut isl.stages[i], &r);
+    std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
+    isl.put_stage_ref(r);
+    out
+}
+
+/// Go: `mustLearn` (monarch_test.go): lässt Spieler `pi` die Skills lernen; kommt mit RU18 (Monarch).
+pub fn must_learn(_w: &mut World, _pi: usize, _ids: &[&str]) {
+    unimplemented!("RU18: must_learn")
+}
+
+/// Go: `addPoolPoints` (monarch_test.go): legt Punkte in den Fund-Pool; kommt mit RU18 (Monarch).
+pub fn add_pool_points(_w: &mut World, _n: i64) {
+    unimplemented!("RU18: add_pool_points")
+}
+
+/// Go: `AvailablePoints` (monarch.go): freie Skill-Punkte des Spielers `pi`; kommt mit RU18 (Monarch).
+pub fn available_points(_w: &World, _pi: usize) -> i64 {
+    unimplemented!("RU18: available_points")
+}
+
+/// Go: `LoadWorld` (island_worlds.go) für die Test-Welt `nordmeer`; kommt mit RU10.5.
+pub fn nordmeer_loaded(_data: &Data) -> WorldDef {
+    unimplemented!("RU10.5: load_world")
 }

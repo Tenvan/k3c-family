@@ -14,9 +14,10 @@ use k3c_level::nature::neutral_nature;
 use serde::{Deserialize, Serialize};
 
 use super::options::IslandOptions;
+use super::save_v5::saved_merchant;
 use super::{Island, WorldDef};
 use crate::state::omit::{is_false, is_zero_i64};
-use crate::state::pending::{WorldOptions, create_world_with, island_players, saved_merchant, stage_of};
+use crate::state::pending::{WorldOptions, create_world_with, island_players, stage_of};
 use crate::state::save::{HubSave, SaveGame, hub_save};
 use crate::state::{Fehler, WorldValues};
 

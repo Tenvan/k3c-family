@@ -1,7 +1,7 @@
 //! Spielstand der Insel lesen und prüfen (Port von `ParseIslandSave` und `validateIslandSave` aus `island_save.go`, dazu
 //! aus `island_save_v3.go` und `island_save_v5.go` der Teil, den der aktuelle Stand (Version 8 und 9) braucht:
 //! `decodeIsland`, `parseIslandV3`, `validateSkills`, `validateProgress`). Die älteren Versionen (`parse_island_v2`,
-//! `migrate_world`) bleiben bis RU10.3 Platzhalter in `state/pending.rs`.
+//! `migrate_world`) stehen seit RU10.3 in `save_v3.rs` und `save_v8.rs`.
 //!
 //! Geprüft wird beim Lesen nur, was ohne Welt geht (Form, Tiefen, Skill-IDs gegen die Basis); Tier-Gating und Wirtschaft
 //! prüft erst `from_island_save_in` gegen den Wertesatz der Welt. Ein Ergebnis ohne `from_island_save_in` gilt nicht als
@@ -13,8 +13,9 @@ use serde_json::Value;
 
 use super::options::{IslandOptions, default_options, validate_options};
 use super::save::{ISLAND_SAVE_VERSION, IslandPlayerSave, IslandSave, SaveTables, island_from_v1};
+use super::save_v3::parse_island_v2;
+use super::save_v8::migrate_world;
 use crate::state::data::has_depth;
-use crate::state::pending::{migrate_world, parse_island_v2};
 use crate::state::save::{SAVE_VERSION, parse_save};
 use crate::state::save_economy::validate_economy;
 use crate::state::{Fehler, WorldValues};

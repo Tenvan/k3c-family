@@ -36,11 +36,12 @@ mod warrior_tests;
 
 use serde_json::json;
 
+use crate::island::storage::carry_to_stock;
 use crate::state::common::{approach, event, is_dangerous};
 use crate::state::island_ref::IslandRef;
 use crate::state::pending::{
-    add_pool, add_stock, build_progress_event, carry_to_stock, finish_upgrade, gather_of, gather_vein, is_vein,
-    next_level, outpost_job, pure, repair, scatter_coins, unit_x, upgrade_job, vagrants_at, values, wander_radius,
+    add_pool, add_stock, build_progress_event, finish_upgrade, gather_of, gather_vein, is_vein, next_level,
+    outpost_job, pure, repair, scatter_coins, unit_x, upgrade_job, vagrants_at, values, wander_radius,
 };
 use crate::state::{Job, World, WorldValues};
 use archer::step_archer;
@@ -157,7 +158,7 @@ pub fn step_peasant(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&Isla
         t.job = t.carried.take(); // nach dem Bauauftrag das behaltene Material weitertragen
     }
     if w.troops[ti].job.is_none() {
-        w.troops[ti].job = find_job(w, v, ti);
+        w.troops[ti].job = find_job(w, v, ti, isl);
     }
     let danger = is_dangerous(w);
     // Bei Gefahr: Arbeit außerhalb der Mauern und Ausbauten liegen lassen und in die Burg.
@@ -311,7 +312,7 @@ fn gather(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
 /// Go: `carry`.
 fn carry(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRef>, dt: f64) {
     if isl.is_some() {
-        carry_to_stock(w, v, ti, dt);
+        carry_to_stock(w, v, ti, isl, dt);
         return;
     }
     let hub_x = w.hub_x;
@@ -329,7 +330,7 @@ fn carry(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRef>, dt:
 }
 
 /// Go: `gatherPressure` erhöht den Aggressionspool je vollständig abgegebenem Sammel-Auftrag.
-fn gather_pressure(w: &mut World) {
+pub(crate) fn gather_pressure(w: &mut World) {
     let percent = w.biome.cycle.percent_per_gather;
     add_pool(w, percent);
 }

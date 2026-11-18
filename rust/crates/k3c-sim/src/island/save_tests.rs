@@ -9,43 +9,59 @@
 use std::path::PathBuf;
 
 use k3c_data::Data;
+use k3c_data::monarch::SkillData;
 use k3c_det::golden;
 use serde_json::{Value, json};
 
 use super::save::island_from_v1;
 use super::testutil::*;
 use super::{
-    ISLAND_SAVE_VERSION, IslandSave, SaveTables, WorldDef, add_island_player, default_options, parse_island_save,
+    ISLAND_SAVE_VERSION, IslandDef, IslandSave, SaveTables, WorldDef, add_island_player, default_options,
+    parse_island_save,
 };
 use crate::state::pending::island_players;
 use crate::state::save::parse_save;
-use crate::state::{Fehler, PlayerCommand, WorldValues};
+use crate::state::{Fehler, PlayerCommand, SkillTable, WorldValues};
 
 type Mutate = fn(&mut Value);
 
 /// Go: `readFixture`: `testdata/saves/v<version>/familie.json`.
-fn fixture(version: i64) -> String {
+pub(super) fn fixture(version: i64) -> String {
     let path: PathBuf = golden::testdata().join(format!("saves/v{version}/familie.json"));
     std::fs::read_to_string(&path).unwrap_or_else(|e| panic!("{}: {e}", path.display()))
 }
 
 /// Die Tabellen zum Lesen eines Stands der Version 8 oder 9 (kein `migrate_world`, daher keine Standard-Welt nötig).
-struct Env {
-    data: Data,
-    defaults: WorldValues,
-    world: WorldDef,
+pub(super) struct Env {
+    pub(super) data: Data,
+    pub(super) defaults: WorldValues,
+    pub(super) world: WorldDef,
 }
 
 impl Env {
-    fn new() -> Self {
+    pub(super) fn new() -> Self {
+        let data = test_data();
+        // Der Basis-Wertesatz mit Skill-Katalog (Go: `defaultValues()`, `skillTable`: nach ID sortiert, mit Stelle je ID).
+        let list: Vec<_> = data
+            .monarch
+            .skills
+            .iter()
+            .map(|(id, s)| SkillData {
+                id: id.clone(),
+                ..s.clone()
+            })
+            .collect();
+        let index = list.iter().enumerate().map(|(i, s)| (s.id.clone(), i)).collect();
+        let mut defaults = crate::enemies::testutil::test_values();
+        defaults.skills = SkillTable { list, index };
         Env {
-            data: test_data(),
-            defaults: crate::enemies::testutil::test_values(),
+            data,
+            defaults,
             world: WorldDef::default(),
         }
     }
 
-    fn tables(&self) -> SaveTables<'_> {
+    pub(super) fn tables(&self) -> SaveTables<'_> {
         SaveTables {
             data: &self.data,
             defaults: &self.defaults,
@@ -53,8 +69,31 @@ impl Env {
         }
     }
 
-    fn parse(&self, raw: &str) -> Result<IslandSave, Fehler> {
+    pub(super) fn parse(&self, raw: &str) -> Result<IslandSave, Fehler> {
         parse_island_save(raw, &self.tables())
+    }
+
+    /// Wie `new`, mit der Standard-Welt aus einer Insel `island1` (Go: `standardWorld`): Stände bis Version 7 kommen dorthin
+    /// (`migrate_world`).
+    pub(super) fn standard() -> Self {
+        let mut env = Env::new();
+        env.world = world_of(&["island1"]);
+        env
+    }
+}
+
+/// Eine Welt `standard` mit Inseln dieser IDs, von Hand (Go: eine `WorldDef` aus der Welt-Datei, RU10.5).
+pub(super) fn world_of(ids: &[&str]) -> WorldDef {
+    WorldDef {
+        id: "standard".into(),
+        islands: ids
+            .iter()
+            .map(|id| IslandDef {
+                id: (*id).into(),
+                ..IslandDef::default()
+            })
+            .collect(),
+        ..WorldDef::default()
     }
 }
 
@@ -207,7 +246,7 @@ fn own_options_fehlen_im_stand_bleiben_standard() {
 
 /// `island_from_v1`: Die Hubs werden Stufen (fehlende Tiefen 0..2 kommen leer dazu), die Vorräte zählen zusammen, alle
 /// Spieler stehen in der gespeicherten Tiefe. Der Stand ist die Fixture der Version 1; das Lesen selbst (`parse_save`,
-/// `migrate_world`) gehört zu RU8 und RU10.3.
+/// `migrate_world`) gehört zu RU8 und RU10.3 (dort `save_v8_tests.rs`).
 #[test]
 fn own_island_from_v1_ueberfuehrt_die_campaign() {
     let env = Env::new();

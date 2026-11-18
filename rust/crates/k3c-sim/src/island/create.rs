@@ -12,13 +12,13 @@ use k3c_data::hub::HubData;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
 use crate::state::pending::{
-    WorldOptions, check_chunk_count, create_world_with, empty_site, hub_of, lair_options, validate_hub_data_in,
-    values_of,
+    WorldOptions, create_world_with, empty_site, hub_of, lair_options, validate_hub_data_in, values_of,
 };
 
 use super::Island;
 use super::data::{IslandDef, biome_for_depth};
 use super::options::default_options;
+use super::sizes::check_chunk_count;
 use super::worlds::WorldDef;
 
 /// Go: `CreateOptions`, die Parameter der Erzeugung einer Insel (B-461, B-462). Sie gelten nur für die Erzeugung und werden

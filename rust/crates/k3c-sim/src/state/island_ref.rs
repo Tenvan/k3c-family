@@ -40,6 +40,13 @@ pub struct IslandRef {
     /// Gold-Verlust des Modus `resources`: Die Stufe hat ihren Teil schon halbiert, die Insel halbiert das Gold der Spieler
     /// aller anderen Stufen in `put_stage_ref` (ein Stufenschritt erreicht sie nicht).
     pub halve_other_gold: bool,
+    /// Zahl der Stufen der Insel (Go: `len(isl.Stages)`), für das Lager-Maximum (`island/storage.rs`, RU10.3).
+    pub stages: i64,
+    /// Gebaute Lager aller anderen Stufen (Go: `Kind == "storage" && State == "built"` über `isl.Stages` ohne diese Stufe);
+    /// die Lager der eigenen Stufe liest `capacity` live aus `w.sites`, die anderen Stufen rechnen nicht mit.
+    pub storages_elsewhere: i64,
+    /// Dev-Bonus des Lager- und Gold-Maximums (Go: `island.Dev.StockBonus`, `devMaxStock`).
+    pub stock_bonus: i64,
 }
 
 impl IslandRef {

@@ -12,11 +12,12 @@ use k3c_level::types::NatureValues;
 use super::create::{CreateOptions, IslandBuild, create_island_at};
 use super::save::{IslandSave, SaveTables};
 use super::save_parse::validate_island_save;
+use super::save_v3::restore_pool;
+use super::save_v5::restore_progress;
+use super::save_v8::island_in;
 use super::{Island, WorldDef};
 use crate::state::Fehler;
-use crate::state::pending::{
-    add_player_at, island_in, restore_pool, restore_progress, stage_by_depth, targets, values_of,
-};
+use crate::state::pending::{add_player_at, stage_by_depth, targets, values_of};
 use crate::state::save_apply::apply_hub;
 
 /// Go: `FromIslandSave` baut die Insel aus einem Spielstand der Standard-Welt (`from_island_save_in`).

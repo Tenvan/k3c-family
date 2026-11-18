@@ -10,18 +10,16 @@ use k3c_data::biome::Biome;
 use k3c_data::bosses::BossData;
 use k3c_data::buildings::Plantation;
 use k3c_data::economy::Gatherable;
-use k3c_data::hub::{HubData, Stock};
-use k3c_data::island_sizes::IslandSizesFile;
+use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
 use k3c_level::types::{NatureValues, PlannedChunk, WallSite};
 
-use super::fehler::Fehler;
 use super::island_ref::IslandRef;
 use super::save::HubSave;
 use super::shared::{SwitchTarget, WorldValues};
 use super::{Player, PlayerCommand, Site, Troop, World};
-use crate::island::{Island, IslandDef, IslandSave, MerchantSave, SaveTables, WorldDef};
+use crate::island::{Island, IslandDef, WorldDef};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
@@ -110,16 +108,6 @@ pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
     unimplemented!("RU18: find_pay_target")
 }
 
-/// Go: `stockField` (economy.go): der Vorrat an `resource`; `None` bei unbekanntem Material.
-pub fn stock_field(_stock: &Stock, _resource: &str) -> Option<i64> {
-    unimplemented!("RU18: stock_field")
-}
-
-/// Go: `resourceFull` (economy.go): Ist das Lager für `resource` voll?
-pub fn resource_full(_w: &World, _resource: &str) -> bool {
-    unimplemented!("RU18: resource_full")
-}
-
 /// Go: `gatherOf` (economy.go): die sammelbare Ressource zu einer Knoten-Art.
 pub fn gather_of<'a>(_v: &'a WorldValues, _kind: &str) -> Option<&'a Gatherable> {
     unimplemented!("RU18: gather_of")
@@ -128,11 +116,6 @@ pub fn gather_of<'a>(_v: &'a WorldValues, _kind: &str) -> Option<&'a Gatherable>
 /// Go: `WorldValues.skillRef` (monarch_data.go): der Skill `id` im Katalog des Wertesatzes.
 pub fn skill_ref<'a>(_v: &'a WorldValues, _id: &str) -> Option<&'a SkillData> {
     unimplemented!("RU18: skill_ref")
-}
-
-/// Go: `purseMax` (economy.go): Münz-Obergrenze der Insel samt Dev-Bonus.
-pub fn purse_max(_w: &World) -> i64 {
-    unimplemented!("RU18: purse_max")
 }
 
 /// Go: `siteHubLevel` (hub_level.go): Hub-Stufe, ab der ein Platz bezahlbar ist, nach data/hub.json.
@@ -263,16 +246,6 @@ pub fn mirror_state(_w: &mut World) {
     unimplemented!("RU14: mirror_state")
 }
 
-/// Go: `CheckChunkCount` (island_sizes.go): lehnt eine Chunk-Anzahl ab, die keine Inselgröße ist.
-pub fn check_chunk_count(_sizes: &IslandSizesFile, _n: i64) -> Result<(), String> {
-    unimplemented!("RU10.3: check_chunk_count")
-}
-
-/// Go: `checkChunkCounts` (island_sizes.go): prüft `chunkCounts` einer Insel.
-pub fn check_chunk_counts(_d: &IslandDef, _sizes: &IslandSizesFile) -> Result<(), String> {
-    unimplemented!("RU10.3: check_chunk_counts")
-}
-
 /// Go: `checkEndBoss` (island_endboss.go): prüft Endboss und Bau der Insel.
 pub fn check_end_boss(_d: &IslandDef, _data: &Data) -> Result<(), String> {
     unimplemented!("RU10.5: check_end_boss")
@@ -303,40 +276,7 @@ pub fn check_victory(_isl: &mut Island) {
     unimplemented!("RU10.4: check_victory")
 }
 
-// RU10.2: Platzhalter für Funktionen aus `island_save_v3/v5/v8.go` (RU10.3) und `island_travel/targets.go` (RU10.4), die
-// `to_save` und `from_island_save_in` rufen.
-
-/// Go: `parseIslandV2` (island_save_v3.go): liest einen Stand der Version 2 (Pool = Summe der Zähler je Stufe).
-pub fn parse_island_v2(_raw: &str, _t: &SaveTables) -> Result<IslandSave, Fehler> {
-    unimplemented!("RU10.3: parse_island_v2")
-}
-
-/// Go: `migrateWorld` (island_save_v8.go): setzt Welt und Insel eines Stands bis Version 7 (Standard-Welt, Insel am alten
-/// Index `index`).
-pub fn migrate_world(_s: IslandSave, _index: i64, _standard_world: &WorldDef) -> Result<IslandSave, Fehler> {
-    unimplemented!("RU10.3: migrate_world")
-}
-
-/// Go: `islandIn` (island_save_v8.go): der Index der Insel des Stands in der Welt `w`.
-pub fn island_in(_w: &WorldDef, _s: &IslandSave) -> Result<usize, Fehler> {
-    unimplemented!("RU10.3: island_in")
-}
-
-/// Go: `restorePool` (island_save_v3.go): setzt den Pool der Insel, spiegelt ihn in alle Stufen und leitet den
-/// Truhen-Zähler ab.
-pub fn restore_pool(_isl: &mut Island, _s: &IslandSave) {
-    unimplemented!("RU10.3: restore_pool")
-}
-
-/// Go: `restoreProgress` (island_save_v5.go): besiegte Bosse, Zähler und Händler; `data` ist Gos Paket-Variable `bosses`.
-pub fn restore_progress(_isl: &mut Island, _s: &IslandSave, _data: &Data) {
-    unimplemented!("RU10.3: restore_progress")
-}
-
-/// Go: `savedMerchant` (island_save_v5.go): der anwesende Händler der Insel oder `None`.
-pub fn saved_merchant(_isl: &Island) -> Option<MerchantSave> {
-    unimplemented!("RU10.3: saved_merchant")
-}
+// RU10.2: Platzhalter für Funktionen aus `island_travel/targets.go` (RU10.4), die `to_save` und `from_island_save_in` rufen.
 
 /// Go: `Island.Players` (island_travel.go): alle Spieler der Insel nach Index sortiert.
 pub fn island_players(_isl: &Island) -> Vec<&Player> {

@@ -26,9 +26,16 @@ pub mod options;
 pub mod save;
 pub mod save_load;
 pub mod save_parse;
+pub mod save_v3;
+pub mod save_v5;
+pub mod save_v8;
+pub mod sizes;
+pub mod storage;
 pub mod travel;
 pub mod worlds;
 
+#[cfg(test)]
+mod carry_tests;
 #[cfg(test)]
 mod defeat_tests;
 #[cfg(test)]
@@ -42,7 +49,17 @@ mod save_planned_tests;
 #[cfg(test)]
 mod save_tests;
 #[cfg(test)]
+mod save_v3_tests;
+#[cfg(test)]
+mod save_v4_tests;
+#[cfg(test)]
+mod save_v8_tests;
+#[cfg(test)]
+mod sizes_tests;
+#[cfg(test)]
 mod start_tests;
+#[cfg(test)]
+mod storage_tests;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]
@@ -143,6 +160,18 @@ impl Island {
         }
     }
 
+    /// Gebaute Lager aller Stufen außer `i` (Lager-Maximum der Insel, `storage.rs`).
+    fn storages_except(&self, i: usize) -> i64 {
+        let built = |w: &World| {
+            w.sites
+                .iter()
+                .filter(|s| s.kind == "storage" && s.state == "built")
+                .count()
+        };
+        let others = self.stages.iter().enumerate().filter(|(j, _)| *j != i);
+        others.map(|(_, w)| built(w) as i64).sum()
+    }
+
     /// Der Bezug der Stufe `i` zur Insel für ihren Schritt (Vorentscheidung 2): Tabellen und Zahlen werden kopiert, die
     /// veränderlichen Teile (`defeated_bosses`, `endboss`) herausgenommen; `put_stage_ref` legt sie zurück. Der Grad kommt
     /// aus `difficulty` (Go: Paket-Variable `difficulty`); ein unbekannter Grad ergibt wie bei Gos Map-Zugriff Nullwerte.
@@ -161,6 +190,9 @@ impl Island {
             endboss_defeated: self.endboss_defeated,
             over: false,
             halve_other_gold: false,
+            stages: self.stages.len() as i64,
+            storages_elsewhere: self.storages_except(i),
+            stock_bonus: self.dev.stock_bonus,
         }
     }
 

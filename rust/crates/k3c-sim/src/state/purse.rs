@@ -2,8 +2,9 @@
 //! (`economy.purse.maxGold`), Größe 2 und 3 lernt der Spieler als Passive purseMedium und purseLarge. Jede Größe ist die
 //! Münz-Obergrenze des Spielers; die Größe wird berechnet, nicht gespeichert.
 
-use super::pending::{purse_max, skill_ref, values};
-use super::{Player, World};
+use super::pending::{skill_ref, values};
+use super::{IslandRef, Player, World};
+use crate::island::storage::purse_max;
 
 /// Go: `PurseSize`: die Größe 1 bis 3 des Geldsacks von `p`, für das HUD (die höchste gelernte Stufe).
 pub fn purse_size(w: &World, p: &Player) -> i64 {
@@ -11,12 +12,13 @@ pub fn purse_size(w: &World, p: &Player) -> i64 {
 }
 
 /// Go: `PurseMaxOf`: die Münz-Obergrenze von `p`: Grundwert oder gelernte Größe, dazu der Dev-Bonus der Insel (`purse_max`).
-pub fn purse_max_of(w: &World, p: &Player) -> i64 {
+pub fn purse_max_of(w: &World, p: &Player, isl: Option<&IslandRef>) -> i64 {
     let (_, gold) = purse_skill(w, p);
+    let v = values(w);
     if gold == 0 {
-        return purse_max(w);
+        return purse_max(&v, isl);
     }
-    gold + purse_max(w) - values(w).economy.purse.max_gold
+    gold + purse_max(&v, isl) - v.economy.purse.max_gold
 }
 
 /// Go: `purseSkill`: Größe und Obergrenze des besten gelernten Geldsack-Skills von `p` (Größe 1 und Obergrenze 0 ohne Skill).

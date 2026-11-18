@@ -1,6 +1,6 @@
 //! Spielstand Version 5 (Go: `island_save_boss_test.go`, K2.3b, B-130/AC-04, B-103/AC-04): besiegte Bosse, aktuelle Insel,
 //! Münzzähler, Skill-Basis. Die Go-Tests bauen oder laden eine Insel (`create_world_with`, RU14) und brauchen die Version-
-//! Parser und `restore_progress` (RU10.3): Sie tragen `ignore`. Unter den Ports steht `own_*`, was schon läuft: die
+//! Parser und `restore_progress` (seit RU10.3 da, die Lese-Seite prüft `save_v8_tests.rs`): Sie tragen `ignore`. Unter den Ports steht `own_*`, was schon läuft: die
 //! Felder der Version 5 im geschriebenen Stand und die Prüfungen von `validate_progress`.
 
 use serde_json::Value;
@@ -102,7 +102,7 @@ fn spielstand_boss_stufenverlust() {
 }
 
 /// Go: `TestSpielstandBossAlteVersionen`: Versionen vor 5 laden mit leerer Bossliste, Insel 0 und Zählern 0; die Fixtures ab
-/// v5 mit ihrem Boss (Version-Parser, `restore_progress`: RU10.3).
+/// v5 mit ihrem Boss (Version-Parser und `restore_progress` stehen seit RU10.3; die Lade-Seite braucht RU14).
 #[test]
 #[ignore = "wartet auf RU14"]
 fn spielstand_boss_alte_versionen() {
@@ -134,7 +134,7 @@ fn spielstand_boss_alte_versionen() {
 }
 
 /// Go: `TestSpielstandBossUngueltig`: Unbekannter Boss, doppelter Boss, Insel oder Welt unbekannt, negative Zähler: Fehler
-/// mit Meldung (`from_island_save`: `values_of`, RU14; `island_in`, RU10.3).
+/// mit Meldung (`from_island_save`: `values_of`, RU14; `island_in` seit RU10.3, geprüft in `save_v8_tests.rs`).
 #[test]
 #[ignore = "wartet auf RU14"]
 fn spielstand_boss_ungueltig() {
