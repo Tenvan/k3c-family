@@ -51,9 +51,14 @@ impl Game {
         if let Err(p) = drawn {
             resume_unwind(p);
         }
-        if let (Some(t0), Some(m)) = (t0, self.meter.as_mut()) {
+        if let (Some(t0), Some(mut m)) = (t0, self.meter.take()) {
+            // Der Meter liegt außerhalb von `self`, solange der Bericht den Stand des Spiels liest (Go: `g.report(m)`)
             let now = super::clock::clock();
-            m.frame(now, now - t0);
+            if m.frame(now, now - t0, alpha, self.frame.tick) {
+                let r = self.report(&m);
+                m.finish(r);
+            }
+            self.meter = Some(m);
         }
     }
 

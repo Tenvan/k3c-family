@@ -104,4 +104,32 @@ impl Game {
             }
         }
     }
+
+    /// Rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige.
+    pub(super) fn advance_timed(&mut self, raw: &InputState) {
+        if self.meter.is_some() {
+            self.advance_metered(raw);
+        } else if self.stats.timing(&self.frame) {
+            let t0 = (self.stats.now)();
+            self.advance(raw);
+            let dt = (self.stats.now)() - t0;
+            self.stats.upd.add(dt);
+        } else {
+            self.advance(raw);
+        }
+    }
+
+    /// Ein Takt im Messmodus (`--measure`).
+    fn advance_metered(&mut self, raw: &InputState) {
+        let t0 = super::clock::clock();
+        if let Some(m) = self.meter.as_mut() {
+            m.started(t0);
+        }
+        self.advance(raw);
+        self.refill_measure_load();
+        let dur = super::clock::clock() - t0;
+        if let Some(m) = self.meter.as_mut() {
+            m.tick(dur);
+        }
+    }
 }

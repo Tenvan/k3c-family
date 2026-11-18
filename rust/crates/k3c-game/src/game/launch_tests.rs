@@ -68,10 +68,29 @@ fn umbruch_haelt_die_zeilenlaenge() {
     assert_eq!(lines, ["aaa bbb", "ccc", "ddd"]);
 }
 
+/// Seit RU30.4 ist der Messmodus freigegeben: `--measure` mit allen Begleit-Schaltern wird angenommen und gelesen.
 #[test]
-fn schalter_der_dev_teile_werden_abgelehnt() {
-    let e = parse(&["--measure=5".to_string()]).unwrap_err();
-    assert!(e.contains("RU30.4"), "--measure: {e}");
+fn schalter_des_messmodus_werden_angenommen() {
+    let v: Vec<String> = [
+        "--seed=t",
+        "--measure=5",
+        "--warmup=2",
+        "--report=r.json",
+        "--novsync",
+        "--measure-frames=b.jsonl",
+        "--measure-load=5,160,120",
+        "--pacing=x",
+    ]
+    .iter()
+    .map(|s| (*s).to_string())
+    .collect();
+    let a = parse(&v).unwrap_or_else(|e| unreachable!("{e}"));
+    let m = &a.measure;
+    assert!(m.seconds == 5.0 && m.warmup == 2.0 && m.no_vsync, "{m:?}");
+    assert_eq!(
+        (m.report.as_str(), m.frames.as_str(), m.load.as_str()),
+        ("r.json", "b.jsonl", "5,160,120")
+    );
 }
 
 /// Seit RU30.3 sind die Dev-Schalter `--river` und `--stats` freigegeben.

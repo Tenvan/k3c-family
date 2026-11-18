@@ -29,18 +29,10 @@ const HINT: &str = "Erst `task gen:paper` ausführen (rendert die Grafik nach pu
 /// Schlüssel des einen Levels, unter dem alle Sheets liegen.
 const LEVEL: &str = "spiel";
 
-/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Schalter, deren Teile erst RU30.4
-/// liefert (Messmodus), lehnt es mit einer Meldung ab, statt im Spiel zu scheitern.
+/// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Seit RU30.4 sind alle Schalter
+/// des Go-Spiels freigegeben (Messmodus: `--measure`, `--warmup`, `--report`, `--measure-frames`, `--measure-load`,
+/// `--novsync` und `--pacing`; die beiden letzten wirken in Rust nicht, `scene.rs` meldet es).
 pub fn parse(rest: &[String]) -> Result<Args, String> {
-    const MISSING: [&str; 1] = ["measure"];
-    for a in rest {
-        let name = a.trim_start_matches('-').split('=').next().unwrap_or("");
-        if a.starts_with('-') && MISSING.contains(&name) {
-            return Err(format!(
-                "Schalter --{name} ist im Rust-Spiel noch nicht verfügbar (RU30.4)"
-            ));
-        }
-    }
     parse_args(rest, &default_saves_dir())
 }
 

@@ -21,6 +21,9 @@ pub mod layout;
 pub mod levels;
 pub mod loading;
 pub mod loadscreen;
+pub mod measure;
+pub mod measure_frames;
+pub mod measure_load;
 mod menu;
 pub mod modes;
 pub mod notice;
@@ -90,10 +93,12 @@ pub use devvalues::TpsMeter;
 pub use fault::Fault;
 pub use layout::{Cameras, VIEW_UNITS, cell_rect, cells, place, scale};
 pub use levels::{LibLoader, Loader};
+pub use measure::{Meter, Report};
+pub use measure_load::MeasureLoad;
 pub use modes::Measure;
 pub use packages::{Libs, packages};
 pub use parts::{Part, Parts, assemble};
-pub use pending::{Meter, StressRun};
+pub use pending::StressRun;
 pub use scene::{Args, Hold, Scene, USAGE, parse_args};
 pub use script::parse_script;
 pub use shots::Shooter;
@@ -158,6 +163,8 @@ pub struct Game {
     shots: Option<Shooter>,
     /// Messmodus (`--measure`), sonst `None` (RU30.4)
     meter: Option<Meter>,
+    /// Last-Szene des Messmodus (`--measure-load`, Go: `load`)
+    mload: MeasureLoad,
     /// laufender Stresstest, sonst `None` (RU30.5)
     stress: Option<StressRun>,
 }
@@ -203,6 +210,7 @@ impl Game {
             shot_next: false,
             shots: None,
             meter: None,
+            mload: MeasureLoad::default(),
             stress: None,
             args: a,
         };
@@ -319,34 +327,6 @@ impl Game {
     fn finish(&mut self) {
         for f in &mut self.parts.finishers {
             f.finish();
-        }
-    }
-
-    /// Rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige.
-    fn advance_timed(&mut self, raw: &InputState) {
-        if self.meter.is_some() {
-            self.advance_metered(raw);
-        } else if self.stats.timing(&self.frame) {
-            let t0 = (self.stats.now)();
-            self.advance(raw);
-            let dt = (self.stats.now)() - t0;
-            self.stats.upd.add(dt);
-        } else {
-            self.advance(raw);
-        }
-    }
-
-    /// Ein Takt im Messmodus (`--measure`).
-    fn advance_metered(&mut self, raw: &InputState) {
-        let t0 = clock::clock();
-        if let Some(m) = self.meter.as_mut() {
-            m.started(t0);
-        }
-        self.advance(raw);
-        self.refill_measure_load();
-        let dur = clock::clock() - t0;
-        if let Some(m) = self.meter.as_mut() {
-            m.tick(dur);
         }
     }
 
