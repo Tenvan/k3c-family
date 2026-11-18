@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
 | [B-1026](B-1026-session-karten-responsive.md) | DEV | Problem | mittel | erledigt | WZ61 | Session-Karten im Sprint nutzen die Breite: Kopfzeile einzeilig, mehrspaltig bei breitem Fenster |
 | [B-893](B-893-eingabe-profile-je-spieler.md) | CLI | Idee | mittel | erledigt | EP1 | Ein Tastenlayout: jeder Spieler wählt WASD, Pfeiltasten oder Gamepad, die Tastatur hat höchstens ein Spieler |
 | [B-894](B-894-tasten-icons-je-eingabegeraet.md) | CLI | Idee | mittel | erledigt | EP1 | Die Oberfläche zeigt Tasten-Hinweise als Icon des Eingabegeräts des jeweiligen Spielers (Tastenkappe oder Xbox-Taste) |
@@ -886,3 +887,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1071](B-1071-river-referenz-softcanvas.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Fragment als Referenz in Rust und Software-Nachbau im Standbild-Rasterer |
 | [B-1072](B-1072-river-wgsl-port.md) | CLI | Schuld | niedrig | erledigt | RU13 | river.kage als WGSL-Pipeline im GPU-Backend |
 | [B-1073](B-1073-river-anbindung-world.md) | CLI | Schuld | niedrig | erledigt | RU13 | Fluss-Shader in world anbinden (draw_river, ready, Rückfall auf Kacheln) |
+| [B-1051](B-1051-read-png-zusammenfuehren.md) | CLI | Schuld | niedrig | erledigt | RU7 | read_png ist doppelt in k3c-rig und k3c-game und wird in RU7.6 zusammengeführt |
