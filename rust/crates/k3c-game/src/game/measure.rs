@@ -6,8 +6,8 @@
 //! Der Bericht hat dieselben Namen und dieselbe Reihenfolge wie der von Go (`Report`, `measure.rs` sammelt ihn im Spiel;
 //! `replay/report.rs` baut ihn für die Wiedergabe, ohne das Feld `bilder`). Felder ohne Rust-Gegenstück bleiben 0:
 //! `go_heap_mib`, `go_sys_mib`, `gc_laeufe`, `gc_pause_ms`. `ebitengine` nennt die Plattform samt wgpu-Version, `backend`
-//! das Grafik-Backend (`wgpu`; die Plattform nennt den Treiber nicht). `--novsync` kann die Plattform nicht (Fifo): Das
-//! Feld `vsync` bleibt `true`, das Log meldet es.
+//! das Grafik-Backend (`wgpu`; die Plattform nennt den Treiber nicht). `--novsync` setzt `Config::novsync` der Plattform
+//! (RU30.6); das Feld `vsync` ist dann `false`.
 //!
 //! Die Zeit kommt nur hier und nur im Messmodus aus der Wanduhr; `Frame::tick` zählt weiter nur Takte. Die Zeitsammlung
 //! der Plattform rechnet ein Bild mit 0, 1 oder 2 Takten; `bilder_ohne_takt` zählt die ohne neuen Takt (bei 60 Hz Bild
@@ -99,9 +99,6 @@ pub struct Meter {
 impl Meter {
     /// Legt die Puffer vor der Messung an (kein Wachsen im Lauf).
     pub fn new(cfg: &Measure) -> Meter {
-        if cfg.no_vsync {
-            log::info("🚦 --novsync wirkt in Rust nicht (Fifo)", &[]); // die Plattform kennt nur Fifo
-        }
         let seconds = cfg.seconds.max(0.0);
         let frames = ((seconds * FRAME_CAP as f64) as usize + FRAME_CAP).min(FRAME_CAP_MAX);
         let takes = (seconds * (TPS * 4) as f64) as usize + 64;
@@ -246,7 +243,7 @@ impl Game {
             ebitengine: engine_name(),
             backend: BACKEND.to_string(),
             fenster: [self.win.dx(), self.win.dy()],
-            vsync: true, // --novsync wirkt in Rust nicht (Fifo)
+            vsync: !self.args.measure.no_vsync, // --novsync: die Plattform präsentiert ohne Warten (`Config::novsync`)
             messdauer_s: total / 1000.0,
             frames: sorted.len(),
             fps_mittel: ratio(sorted.len() as f64 * 1000.0, total),

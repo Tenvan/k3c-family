@@ -5,7 +5,7 @@
 //!
 //! Abweichungen von Go: Die Grafik der Welt aller Biome liegt gemeinsam im Speicher, weil `world` seine Bibliothek nur
 //! liest (`Rc<Library>`); je Stufe lädt nur die geteilte Bibliothek (B-1109, Rest siehe Ticket). Ein Fehler vor dem Spiel und ein Panic im Takt stehen als Meldung im
-//! Fenster (Go: `showFault`, `fault.go`); Enter oder Esc schließt es, `run` gibt die Meldung danach zurück.
+//! Fenster (Go: `showFault`, `fault.go`); Enter, Esc, Leertaste oder A/B am Pad schließt es, `run` gibt die Meldung danach zurück.
 
 use std::any::Any;
 use std::cell::RefCell;
@@ -14,10 +14,12 @@ use std::panic::{AssertUnwindSafe, catch_unwind};
 use std::rc::Rc;
 
 use k3c_data::{Source, load_all};
-use k3c_platform::{App, Canvas, Config as WindowConfig, InputState, Key, Rect, log, run_window};
+use k3c_platform::{App, Canvas, Config as WindowConfig, InputState, Rect, log, run_window};
 use k3c_sim::state::World;
 
+use super::fault::Fault;
 use super::keytable::key_rows;
+use super::sim::Sim;
 use super::{Args, Game, LibLoader, Libs, Loader, assemble, packages, parse_args};
 use crate::art::{Config as ArtConfig, Levels, Library, default_config};
 use crate::local::config::{Config as SessionConfig, default_saves_dir};
@@ -31,7 +33,7 @@ const LEVEL: &str = "spiel";
 
 /// Liest die Schalter des Spiels (`parse_args` mit dem Standard-Ordner der Spielstände). Seit RU30.4 sind alle Schalter
 /// des Go-Spiels freigegeben (Messmodus: `--measure`, `--warmup`, `--report`, `--measure-frames`, `--measure-load`,
-/// `--novsync` und `--pacing`; die beiden letzten wirken in Rust nicht, `scene.rs` meldet es).
+/// `--novsync` und `--pacing`; `--novsync` setzt `Config::novsync` der Plattform, `--pacing` wirkt in Rust nicht).
 pub fn parse(rest: &[String]) -> Result<Args, String> {
     parse_args(rest, &default_saves_dir())
 }
@@ -50,6 +52,7 @@ pub fn run(args: &Args) -> Result<(), String> {
     let cfg = WindowConfig {
         title: "K3C".to_string(),
         size,
+        novsync: args.measure.no_vsync,
         ..WindowConfig::default()
     };
     run_window(&mut app, cfg)?;
@@ -67,6 +70,11 @@ fn print_assets() -> Result<(), String> {
 
 /// Baut die Schleife aus Sitzung, Grafik und Schaltern; `libs` trägt die Grafik (`Libs::default()` ohne).
 pub fn build_game(args: &Args, session: Session, libs: &Libs) -> Result<Game, String> {
+    build_game_with(args, Box::new(session), libs)
+}
+
+/// Wie `build_game` mit einer beliebigen Simulation (Tests umhüllen die echte Sitzung).
+pub fn build_game_with(args: &Args, sim: Box<dyn Sim>, libs: &Libs) -> Result<Game, String> {
     let mut parts = assemble(packages(libs, Some(Box::new(key_rows))))?;
     // Die Grafik der übrigen Module lädt die Schleife je Stufe (`LibLoader`, RU30.1, B-1109)
     parts.art = libs
@@ -81,7 +89,7 @@ pub fn build_game(args: &Args, session: Session, libs: &Libs) -> Result<Game, St
             ("spielstaende", &args.saves),
         ],
     );
-    Game::new(parts, Box::new(session), args.clone())
+    Game::new(parts, sim, args.clone())
 }
 
 /// Öffnet die Sitzung mit dem Ordner der Spielstände aus den Schaltern.
@@ -98,7 +106,7 @@ pub struct Launch {
     session: Option<Session>,
     game: Option<Game>,
     /// Meldung im Fenster; gesetzt: die Schleife zeigt nur sie (`run` gibt sie am Ende zurück)
-    fault: Option<String>,
+    fault: Option<Fault>,
     quit: bool,
 }
 
@@ -123,14 +131,19 @@ impl Launch {
     /// (`Game::fault`).
     pub fn fault(&self) -> Option<&str> {
         self.fault
-            .as_deref()
+            .as_ref()
+            .map(Fault::err)
             .or_else(|| self.game.as_ref().and_then(Game::fault))
     }
 
     /// Hält die Meldung fest (Fenster, stderr, Rückgabe) und verwirft das Spiel.
     fn fail(&mut self, msg: String) {
         log::error("💥 Fehler im Spiel, Meldung im Fenster", &[("err", &msg)]);
-        self.fault = Some(msg);
+        self.fault = Some(if msg.starts_with("Grafik") {
+            Fault::missing(msg)
+        } else {
+            Fault::new(msg)
+        });
         self.game = None;
     }
 
@@ -140,24 +153,12 @@ impl Launch {
         let libs = load_libs(&self.args, c)?;
         build_game(&self.args, session, &libs)
     }
-
-    fn draw_fault(&self, c: &mut dyn Canvas) {
-        let (w, h) = c.size();
-        c.rect(Rect::new(0.0, 0.0, w, h), [0.12, 0.02, 0.02, 1.0]);
-        c.layer(30);
-        let msg = self.fault.as_deref().unwrap_or("");
-        c.text("K3C: Fehler beim Start", 60.0, 60.0, 36.0, [1.0, 0.8, 0.3, 1.0]);
-        for (i, line) in wrap(msg, 90).iter().enumerate() {
-            c.text(line, 60.0, 120.0 + 34.0 * i as f32, 26.0, [1.0; 4]);
-        }
-        c.text("Enter oder Esc beendet", 60.0, h - 60.0, 24.0, [0.8; 4]);
-    }
 }
 
 impl App for Launch {
     fn step(&mut self, input: &InputState, dt: f64) {
-        if self.fault.is_some() {
-            self.quit |= input.just_pressed(Key::Enter) || input.just_pressed(Key::Escape);
+        if let Some(f) = &self.fault {
+            self.quit |= f.update(input); // Enter, Esc, Leertaste oder A/B am Pad (Go: `Fault.Update`)
             return;
         }
         let Some(g) = self.game.as_mut() else {
@@ -181,8 +182,11 @@ impl App for Launch {
         {
             self.fail(format!("Panic beim Zeichnen: {}", panic_text(p.as_ref())));
         }
-        if self.fault.is_some() {
-            self.draw_fault(c);
+        if let Some(f) = &self.fault {
+            let (w, h) = c.size();
+            c.rect(Rect::new(0.0, 0.0, w, h), [0.0, 0.0, 0.0, 1.0]);
+            c.layer(30);
+            f.draw(c);
         }
     }
 
@@ -201,25 +205,6 @@ fn panic_text(p: &(dyn Any + Send)) -> String {
         .map(|s| (*s).to_string())
         .or_else(|| p.downcast_ref::<String>().cloned())
         .unwrap_or_else(|| "unbekannt".to_string())
-}
-
-/// Bricht `s` in Zeilen von höchstens `n` Zeichen (an Leerzeichen).
-fn wrap(s: &str, n: usize) -> Vec<String> {
-    let mut out: Vec<String> = Vec::new();
-    for para in s.lines() {
-        let mut cur = String::new();
-        for word in para.split_whitespace() {
-            if !cur.is_empty() && cur.chars().count() + 1 + word.chars().count() > n {
-                out.push(std::mem::take(&mut cur));
-            }
-            if !cur.is_empty() {
-                cur.push(' ');
-            }
-            cur.push_str(word);
-        }
-        out.push(cur);
-    }
-    out
 }
 
 /// Grafik-Pfade: Standard im Repo, `--grafik` ersetzt den Grafik-Ordner.

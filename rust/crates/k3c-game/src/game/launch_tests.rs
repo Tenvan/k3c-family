@@ -62,10 +62,34 @@ fn fehlende_grafik_ist_eine_meldung() {
     assert!(app.game().is_none());
 }
 
+/// Das Fehlerfenster vor dem Spiel läuft, bis eine Beenden-Taste kommt (Go: `showFault`): Leertaste beendet wie Enter,
+/// eine andere Taste nicht.
 #[test]
-fn umbruch_haelt_die_zeilenlaenge() {
-    let lines = wrap("aaa bbb ccc\nddd", 7);
-    assert_eq!(lines, ["aaa bbb", "ccc", "ddd"]);
+fn fehlerfenster_endet_mit_der_beenden_taste() {
+    use k3c_platform::{InputScript, Key, ScriptEntry};
+    let press = |step: u64, key: Key| {
+        [
+            ScriptEntry {
+                step,
+                keys: vec![key],
+                pads: Vec::new(),
+            },
+            ScriptEntry {
+                step: step + 1,
+                keys: Vec::new(),
+                pads: Vec::new(),
+            },
+        ]
+    };
+    let a = args(&["--grafik", "gibt-es-nicht"]);
+    let mut app = Launch::new(&a);
+    let other = InputScript::new(press(5, Key::A).to_vec());
+    run_headless(&mut app, 12, Some(&other));
+    assert!(app.fault().is_some() && !app.done(), "eine andere Taste beendet nicht");
+    let space = InputScript::new(press(2, Key::Space).to_vec());
+    run_headless(&mut app, 12, Some(&space));
+    assert!(app.done(), "Leertaste beendet das Fehlerfenster");
+    assert!(app.fault().is_some(), "die Meldung bleibt für stderr und Exit 1");
 }
 
 /// Seit RU30.4 ist der Messmodus freigegeben: `--measure` mit allen Begleit-Schaltern wird angenommen und gelesen.

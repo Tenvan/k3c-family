@@ -33,6 +33,7 @@ pub mod parts;
 mod play;
 #[cfg(test)]
 pub mod play_testutil;
+pub mod run;
 pub mod scene;
 pub mod script;
 pub mod shared;

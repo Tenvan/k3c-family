@@ -177,6 +177,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1115](B-1115-rust-f12-pixel-und-maus.md) | CLI | Schuld | niedrig | offen | RU30 | Rust-Spiel: F12 zeigt keine Sprites und die Werte-Seite hat keine Maus-Auswahl |
 | [B-1116](B-1116-replay-report-auf-game-measure.md) | CLI | Schuld | niedrig | offen | RU30 | replay/report.rs nutzt Report, FrameStats und FrameLog aus game/measure.rs |
 | [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU30 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
+| [B-1118](B-1118-rust-spiel-icon-manifest-ressource.md) | CLI | Schuld | mittel | offen | RU30 | Rust-EXE trägt Spiel-Icon und Manifest (Ressourcen-Crate braucht Freigabe) |
 
 ## Archiv
 
