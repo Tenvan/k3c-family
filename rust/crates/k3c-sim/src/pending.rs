@@ -5,7 +5,6 @@
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
-use crate::state::shared::WorldValues;
 use crate::state::{Event, Job, Projectile, Site, World};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
@@ -79,34 +78,18 @@ pub fn scatter_coins(_w: &mut World, _x: f64, _count: i64) {
     unimplemented!("RU18: scatter_coins")
 }
 
-/// Go: `isSpellTower` (building_spell_tower.go).
-pub fn is_spell_tower(_w: &World, _s: &Site) -> bool {
-    unimplemented!("RU18: is_spell_tower")
-}
-
-/// Go: `repair` (building_repair.go): der Bauer `ti` repariert.
-pub fn repair(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
-    unimplemented!("RU18: repair")
-}
-
-/// Go: `repairJob` (building_repair.go).
-pub fn repair_job(_w: &World, _v: &WorldValues, _ti: usize) -> Option<Job> {
-    unimplemented!("RU18: repair_job")
-}
+// Von RU18.1 portiert (building_*.go): die Import-Stelle bleibt `pending`, damit die Gruppen `unit` und `enemies`
+// unverändert bleiben.
+pub use crate::building::barracks::{fighters, troop_limit, weapons_in_flight};
+pub use crate::building::outpost::{outpost, outpost_job};
+pub use crate::building::repair::{repair, repair_job};
+pub use crate::building::spell_tower::is_spell_tower;
+pub use crate::building::tavern::{vagrants_at, wander_radius};
+pub use crate::building::upgrades::armored_hp;
 
 /// Go: `upgradeJob` (hub_level.go): Ist der Auftrag ein Ausbau?
 pub fn upgrade_job(_w: &World, _j: &Job) -> bool {
     unimplemented!("RU18: upgrade_job")
-}
-
-/// Go: `outpostJob` (building_outpost.go).
-pub fn outpost_job(_w: &World, _j: &Job) -> bool {
-    unimplemented!("RU18: outpost_job")
-}
-
-/// Go: `outpost` (building_outpost.go): Liegt `x` an einem Vorposten?
-pub fn outpost(_w: &World, _x: f64) -> bool {
-    unimplemented!("RU18: outpost")
 }
 
 /// Go: `nextLevel` (hub_level.go): die nächste Ausbaustufe des Platzes.
@@ -131,36 +114,6 @@ pub fn build_progress_event(_w: &mut World, _site_id: i64, _before: f64) {
 
 // Von RU14.4 portiert (world_vein.go): die Import-Stelle bleibt `pending`.
 pub use crate::world::vein::{gather_vein, is_vein, node_free};
-
-/// Go: `vagrantsAt` (building_tavern.go): Landstreicher um `x`.
-pub fn vagrants_at(_w: &World, _x: f64) -> i64 {
-    unimplemented!("RU18: vagrants_at")
-}
-
-/// Go: `wanderRadius` (building_tavern.go): Wanderradius des Landstreichers `ti`.
-pub fn wander_radius(_w: &World, _ti: usize) -> f64 {
-    unimplemented!("RU18: wander_radius")
-}
-
-/// Go: `armoredHP` (building_upgrades.go): HP der Figur `kind` mit der Rüstung des Hubs.
-pub fn armored_hp(_w: &World, _kind: &str) -> f64 {
-    unimplemented!("RU18: armored_hp")
-}
-
-/// Go: `fighters` (building_barracks.go): Zahl der Kämpfer, die zum Truppenlimit zählen.
-pub fn fighters(_w: &World) -> i64 {
-    unimplemented!("RU18: fighters")
-}
-
-/// Go: `troopLimit` (building_barracks.go): das Truppenlimit der Kaserne.
-pub fn troop_limit(_w: &World) -> i64 {
-    unimplemented!("RU18: troop_limit")
-}
-
-/// Go: `weaponsInFlight` (building_barracks.go): Waffen, die andere Bürger gerade holen.
-pub fn weapons_in_flight(_w: &World, _ti: usize) -> i64 {
-    unimplemented!("RU18: weapons_in_flight")
-}
 
 /// Go: `addStockCapped` (island_storage.go): legt höchstens bis zur Kapazität der Insel ab und liefert die aufgenommene
 /// Menge; `None`: kein Baumaterial (Go: `ok` false).

@@ -20,7 +20,6 @@ fn fetch_fixture() -> (World, usize, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn buerger_holen_das_naechste_boden_vor_regal_bei_gleichstand() {
     let (mut w, p, shop) = fetch_fixture();
     let v = w.vals.clone().expect("Wertesatz");
@@ -58,7 +57,6 @@ fn buerger_holen_das_naechste_boden_vor_regal_bei_gleichstand() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn buerger_warten_mit_gegner_in_der_naehe() {
     let (mut w, p, shop) = fetch_fixture();
     let v = w.vals.clone().expect("Wertesatz");

@@ -39,9 +39,9 @@ fn nur_handwerker_bauen() {
     w.sites[site].hp = w.sites[site].max_hp / 2.0;
     let other = hammerless_peasant(&mut w, sx);
     w.troops[peasant].hammer = false;
-    assert!(crate::state::pending::repair_job(&w, &w.vals.clone().expect("Werte"), other).is_none());
+    assert!(crate::building::repair::repair_job(&mut w, other).is_none());
     w.troops[other].hammer = true;
-    let j = crate::state::pending::repair_job(&w, &w.vals.clone().expect("Werte"), other).expect("Reparatur");
+    let j = crate::building::repair::repair_job(&mut w, other).expect("Reparatur");
     assert_eq!(j.site_id, w.sites[site].id);
 }
 

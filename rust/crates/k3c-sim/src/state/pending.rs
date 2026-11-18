@@ -5,7 +5,6 @@
 use std::collections::BTreeMap;
 
 use k3c_data::Data;
-use k3c_data::buildings::Plantation;
 use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
@@ -55,10 +54,8 @@ pub fn protected_night(_w: &World) -> bool {
     unimplemented!("RU18: protected_night")
 }
 
-/// Go: `isRuin` (building_ruin.go).
-pub fn is_ruin(_w: &World, _kind: &str, _x: f64) -> bool {
-    unimplemented!("RU18: is_ruin")
-}
+pub use crate::building::plantation::plot_x; // Von RU18.1 portiert (building_plantation.go)
+pub use crate::building::ruin::is_ruin; // Von RU18.1 portiert (building_ruin.go)
 
 pub use crate::world::values_room::values; // Von RU14.4 portiert (world_values_room.go)
 
@@ -101,11 +98,6 @@ pub fn site_hub_level(_w: &World, _s: &Site) -> i64 {
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
 pub fn hub_steps(_w: &World) -> i64 {
     unimplemented!("RU18: hub_steps")
-}
-
-/// Go: `plotX` (building_plantation.go): Position von Platz `i` im Streifen um die Baumschule.
-pub fn plot_x(_s: &Site, _p: &Plantation, _i: usize) -> f64 {
-    unimplemented!("RU18: plot_x")
 }
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.

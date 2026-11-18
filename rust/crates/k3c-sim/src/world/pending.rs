@@ -20,10 +20,7 @@ pub fn pay_dawn_income(_w: &mut World) {
     unimplemented!("RU18: pay_dawn_income")
 }
 
-/// Go: `tavernDawn` (building_tavern.go): der Wirt bringt zum Morgengrauen Landstreicher.
-pub fn tavern_dawn(_w: &mut World) {
-    unimplemented!("RU18: tavern_dawn")
-}
+pub use crate::building::tavern::tavern_dawn; // Von RU18.1 portiert (building_tavern.go)
 
 /// Go: `merchantDawn` (merchant.go): der Händler kommt oder geht zum Morgengrauen.
 pub fn merchant_dawn(_w: &mut World) {
@@ -76,20 +73,10 @@ pub fn step_sites(_w: &mut World, _isl: Option<&mut IslandRef>) {
     unimplemented!("RU18: step_sites")
 }
 
-/// Go: `stepPlantations` (building_plantation.go): Wachstum der Plantagen.
-pub fn step_plantations(_w: &mut World, _dt: f64) {
-    unimplemented!("RU18: step_plantations")
-}
-
-/// Go: `stepHealing` (building_healer.go): Heiler heilen Truppen und Monarchen.
-pub fn step_healing(_w: &mut World, _dt: f64) {
-    unimplemented!("RU18: step_healing")
-}
-
-/// Go: `stepSpellTowers` (building_spell_tower.go): Zauberturm-Schüsse.
-pub fn step_spell_towers(_w: &mut World, _dt: f64) {
-    unimplemented!("RU18: step_spell_towers")
-}
+// Von RU18.1 portiert (building_plantation.go, building_healer.go, building_spell_tower.go).
+pub use crate::building::healer::step_healing;
+pub use crate::building::plantation::step_plantations;
+pub use crate::building::spell_tower::step_spell_towers;
 
 /// Go: `stepStorms` (skills_caster.go): laufende Lightning Storms.
 pub fn step_storms(_w: &mut World, _dt: f64) {
@@ -101,15 +88,7 @@ pub fn new_hub_site(_w: &World) -> Site {
     unimplemented!("RU18: new_hub_site")
 }
 
-/// Go: `ruinSite` (building_ruin.go): der Ausgangszustand eines Ruinen-Platzes (zieht wie `empty_site` eine ID).
-pub fn ruin_site(_w: &mut World, _kind: &str, _x: f64) -> Site {
-    unimplemented!("RU18: ruin_site")
-}
-
-/// Go: `addRuinSites` (building_ruin.go): legt die Ruinen der Stufe als Plätze an.
-pub fn add_ruin_sites(_w: &mut World) {
-    unimplemented!("RU18: add_ruin_sites")
-}
+pub use crate::building::ruin::{add_ruin_sites, ruin_site}; // Von RU18.1 portiert (building_ruin.go)
 
 /// Go: `ApplyPreset` (monarch.go): lernt die Skills eines Presets für den Spieler `pi`, soweit Pool-Punkte frei sind.
 pub fn apply_preset(_w: &mut World, _pi: usize, _id: &str) -> Result<(), String> {
