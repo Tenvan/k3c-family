@@ -199,21 +199,21 @@ fn dieb_raubt_treffermuenze_und_flieht() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14 (Step) und RU18 (applyDamage)"]
+#[ignore = "wartet auf RU18 (Step) und RU18 (applyDamage)"]
 fn treffer_kostet_muenze_krone_faellt_ohne_gold() {}
 
 #[test]
-#[ignore = "wartet auf RU14 (Step, stepPlayers)"]
+#[ignore = "wartet auf RU18 (Step, stepPlayers)"]
 fn ohne_krone_nur_laufen() {}
 
 #[test]
-#[ignore = "wartet auf RU14 (Step, game_over)"]
+#[ignore = "wartet auf RU18 (Step, game_over)"]
 fn kronenraub_ist_game_over() {}
 
 #[test]
-#[ignore = "wartet auf RU10 (Island) und RU14"]
+#[ignore = "wartet auf RU10 (Island) und RU18"]
 fn kronenraub_stuft_mit_insel_over() {}
 
 #[test]
-#[ignore = "wartet auf RU14 (Step) und RU10 (Island, Defeat-Modi)"]
+#[ignore = "wartet auf RU18 (Step) und RU10 (Island, Defeat-Modi)"]
 fn burgfall_beendet_das_spiel_nicht() {}

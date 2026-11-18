@@ -10,7 +10,7 @@ use crate::enemies::testutil::*;
 /// Schutzplatz. Nach der Gefahr legt die nächste den Platz neu fest. (Die Bauern rechnen über `step_peasant`, das
 /// `find_job` und damit RU14 und RU18 braucht.)
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn schutzplatz_stabil_bei_truppenwechsel() {
     let mut w = quiet_world();
     let v = w.vals.clone().expect("Wertesatz");

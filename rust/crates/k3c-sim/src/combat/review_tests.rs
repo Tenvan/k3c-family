@@ -16,7 +16,7 @@ fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (step_players)"]
 fn ausloeser_nur_mit_ziel() {
     let (mut w, l) = group_ready();
     w.portals = vec![w.hub_x - 40.0]; // kein Portal und kein Gegner auf der rechten Seite

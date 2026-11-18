@@ -8,7 +8,7 @@ use super::{add_island_player, step_island};
 use crate::state::PlayerCommand;
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_start_stock() {
     let data = test_data();
     let a = new_island(&data, "start-a", &[0, 1, 2]);
@@ -26,7 +26,7 @@ fn island_start_stock() {
 
 /// Braucht `create_island` (RU14).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_start_stock_not_added_on_load() {
     let data = test_data();
     let mut isl = new_island(&data, "start-b", &[0, 1]);
@@ -68,7 +68,7 @@ fn island_start_stock_within_storage_limit() {
 
 /// Beide Mauern und ein Turm sind ohne vorheriges Holzfällen bezahlbar: Gold ist gezahlt, das Material liegt im Vorrat.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_start_builds_walls_and_tower_without_chopping() {
     let data = test_data();
     let mut isl = new_island(&data, "start-c", &[0, 1, 2]);

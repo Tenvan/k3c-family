@@ -45,7 +45,7 @@ fn stand_for(isl: &mut Island, data: &k3c_data::Data, seconds: f64, hold: &BTree
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_single_player_travels_via_exit() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-a", &[0, 1, 2]);
@@ -83,7 +83,7 @@ fn island_single_player_travels_via_exit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_travel_via_stairs() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-b", &[0, 1]);
@@ -101,7 +101,7 @@ fn island_travel_via_stairs() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_travel_needs_built_stairs() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-c", &[0, 1]);
@@ -117,7 +117,7 @@ fn island_travel_needs_built_stairs() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_travel_aborts_when_leaving_point() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-d", &[0, 1]);
@@ -136,7 +136,7 @@ fn island_travel_aborts_when_leaving_point() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_dead_and_free_players_do_not_travel() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-e", &[0, 1]);
@@ -152,7 +152,7 @@ fn island_dead_and_free_players_do_not_travel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_travel_without_target_stage_stays() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-f", &[0, 1]); // Tiefe 2 gibt es global, aber nicht in dieser Insel
@@ -163,7 +163,7 @@ fn island_travel_without_target_stage_stays() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_travel_deterministic() {
     let data = test_data();
     let run = || {

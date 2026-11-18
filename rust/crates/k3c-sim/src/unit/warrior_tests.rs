@@ -339,7 +339,7 @@ fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
 
 /// Der Bauer nimmt das Schwert aus dem Regal und wird Krieger (Go: `dayWorld`, `runUntil`).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
     let mut w = day_world();
     let workshop = build_site(&mut w, "workshop");
@@ -349,7 +349,7 @@ fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
 
 /// (e) Zwei Spieler zahlen gleichzeitig: einer am Bogen (Bogner), einer am Schwert-Zahlziel der Werkstatt.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn zwei_spieler_zahlen_bogen_und_schwert() {
     let mut w = quiet_world();
     let ps = [add_player(&mut w), add_player(&mut w)];

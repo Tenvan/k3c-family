@@ -3,21 +3,15 @@
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use std::collections::BTreeMap;
-use std::sync::Arc;
 
 use k3c_data::Data;
-use k3c_data::biome::Biome;
 use k3c_data::buildings::Plantation;
-use k3c_data::economy::Gatherable;
 use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
-use k3c_level::types::{NatureValues, PlannedChunk, WallSite};
-
-use super::island_ref::IslandRef;
 use super::shared::WorldValues;
-use super::{Player, PlayerCommand, Site, World};
-use crate::island::{Island, WorldDef};
+use super::{Player, Site, World};
+use crate::island::WorldDef;
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::combat::is_soldier; // Von RU15 portiert (combat.go)
@@ -66,10 +60,7 @@ pub fn is_ruin(_w: &World, _kind: &str, _x: f64) -> bool {
     unimplemented!("RU18: is_ruin")
 }
 
-/// Go: `World.values` (world_values_room.go), der Wertesatz der Welt (Standard, wenn `vals` fehlt).
-pub fn values(_w: &World) -> Arc<WorldValues> {
-    unimplemented!("RU10: values")
-}
+pub use crate::world::values_room::values; // Von RU14.4 portiert (world_values_room.go)
 
 /// Go: `payTarget` (economy_pay.go), das Zahlziel am Ort eines Spielers; hier nur die Felder, die RU8 liest.
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -95,10 +86,7 @@ pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
     unimplemented!("RU18: find_pay_target")
 }
 
-/// Go: `gatherOf` (economy.go): die sammelbare Ressource zu einer Knoten-Art.
-pub fn gather_of<'a>(_v: &'a WorldValues, _kind: &str) -> Option<&'a Gatherable> {
-    unimplemented!("RU18: gather_of")
-}
+pub use crate::world::vein::gather_of; // Von RU14.4 portiert (world_vein.go)
 
 /// Go: `WorldValues.skillRef` (monarch_data.go): der Skill `id` im Katalog des Wertesatzes.
 pub fn skill_ref<'a>(_v: &'a WorldValues, _id: &str) -> Option<&'a SkillData> {
@@ -108,11 +96,6 @@ pub fn skill_ref<'a>(_v: &'a WorldValues, _id: &str) -> Option<&'a SkillData> {
 /// Go: `siteHubLevel` (hub_level.go): Hub-Stufe, ab der ein Platz bezahlbar ist, nach data/hub.json.
 pub fn site_hub_level(_w: &World, _s: &Site) -> i64 {
     unimplemented!("RU18: site_hub_level")
-}
-
-/// Go: `levelSite` (world_lines.go): der verteilte Platz zu `s`; `None` für Plätze, die nicht aus `Layout.sites` stammen.
-pub fn level_site(_w: &World, _s: &Site) -> Option<WallSite> {
-    unimplemented!("RU18: level_site")
 }
 
 /// Go: `hubSteps` (hub_level.go): Zahl der Ausbauschritte der aktuellen Hub-Stufe.
@@ -152,66 +135,11 @@ pub struct IslandStory {
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct WorldStory;
 
-/// Go: `Options` (world.go) für `CreateWorld`; die kleingeschriebenen Felder (`lair`, `hub`, `vals`) sind hier öffentlich.
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct WorldOptions {
-    pub cycle_speed: f64,
-    pub time: f64,
-    pub planned: Vec<PlannedChunk>,
-    pub chunk_count: i64,
-    pub nature: NatureValues,
-    /// Trägt die Stufe den Bau (`level.Options.Lair`); `None` = Feld `lair` des Bioms.
-    pub lair: Option<bool>,
-    /// Kandidaten-hub.json; `None` = die hub.json des Wertesatzes.
-    pub hub: Option<Arc<HubData>>,
-    /// Wertesatz der Welt; `None` = Basis-Wertesatz.
-    pub vals: Option<Arc<WorldValues>>,
-}
-
-/// Go: `CreateWorld` (world.go): baut den Startzustand einer Stufe.
-pub fn create_world_with(_b: &Biome, _seed: &str, _opts: &WorldOptions) -> Result<World, String> {
-    unimplemented!("RU14: create_world_with")
-}
-
-/// Go: `Step` (world.go): rechnet einen Tick; `isl` ist der Bezug zur Insel (`None` = Go `w.island == nil`).
-pub fn step(_w: &mut World, _commands: &[PlayerCommand], _isl: Option<&mut IslandRef>, _dt: f64) {
-    unimplemented!("RU14: step")
-}
-
-/// Go: `addPlayerAt` (world.go): stellt den Monarchen mit dem Spielerindex `index` an die Burg; liefert seinen Platz in
-/// `w.players`.
-pub fn add_player_at(_w: &mut World, _index: i64) -> usize {
-    unimplemented!("RU14: add_player_at")
-}
-
-/// Go: `castleLosses` (world.go): Verluste eines Burgfalls im Modus „Stufenverlust“.
-pub fn castle_losses(_w: &mut World, _isl: Option<&IslandRef>) {
-    unimplemented!("RU14: castle_losses")
-}
-
-/// Go: `hubOf` (world.go): die hub.json, aus der die Stufe gebaut ist (Kandidat oder die der Welt).
-pub fn hub_of(_w: &World) -> Arc<HubData> {
-    unimplemented!("RU14: hub_of")
-}
-
-/// Go: `emptySite` (world.go): ein unbezahlter Platz der Art `kind` bei `x`.
-pub fn empty_site(_w: &mut World, _kind: &str, _x: f64) -> Site {
-    unimplemented!("RU14: empty_site")
-}
-
-/// Go: `valuesOf` (world_values_room.go): der aufgelöste Wertesatz der Welt.
-pub fn values_of(_world: &WorldDef) -> Result<Arc<WorldValues>, String> {
-    unimplemented!("RU14: values_of")
-}
+pub use crate::world::values_room::values_of; // Von RU14.4 portiert (world_values_room.go)
 
 /// Go: `ValidateHubDataIn` (hub_validate.go): Befunde der Prüfung einer Kandidaten-hub.json (leer = gültig).
 pub fn validate_hub_data_in(_h: &HubData, _world: &WorldDef) -> Vec<String> {
-    unimplemented!("RU14: validate_hub_data_in")
-}
-
-/// Go: `mirrorState` (world_state_mirror.go): spiegelt den Stand der Stufe für das Protokoll.
-pub fn mirror_state(_w: &mut World) {
-    unimplemented!("RU14: mirror_state")
+    unimplemented!("RU18: validate_hub_data_in (hub_validate, RU18.3)")
 }
 
 /// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.
@@ -224,45 +152,13 @@ pub fn decode_world_story(_raw: &serde_json::Value) -> Result<WorldStory, String
     unimplemented!("RU19: decode_world_story")
 }
 
-/// Go: `decodeWorldSkins` (world_skins.go): liest `skins` der Welt (Basis-Asset → Ersatz-Asset); nur gerufen, wenn das Feld
-/// da ist.
-pub fn decode_world_skins(_raw: &serde_json::Value) -> Result<BTreeMap<String, String>, String> {
-    unimplemented!("RU14: decode_world_skins")
-}
-
 /// Go: `checkStory` (story_check.go): prüft die Geschichte der Welt und ihrer Inseln; nur gerufen, wenn die Welt oder eine
 /// Insel `story` hat.
 pub fn check_story(_w: &WorldDef, _data: &Data) -> Result<(), String> {
     unimplemented!("RU19: check_story")
 }
 
-/// Go: `mirrorSwitch` (world_state_mirror.go): spiegelt den Wechselpunkt der Insel in jede Stufe.
-pub fn mirror_switch(_isl: &mut Island) {
-    unimplemented!("RU14: mirror_switch")
-}
-
-/// Go: `travelPoint` (world_travel.go): ein Reisepunkt einer Stufe (`via`: exit, stairsUp, stairsDown).
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct TravelPoint {
-    pub x: f64,
-    pub to_depth: i64,
-    pub via: String,
-}
-
-/// Go: `travelPoints` (world_travel.go): die Reisepunkte der Stufe (Tiefen-Eingang nach unten, gebaute Treppen).
-pub fn travel_points(_w: &World) -> Vec<TravelPoint> {
-    unimplemented!("RU14: travel_points")
-}
-
-/// Go: `Island.harbor` (ship.go): Stufe mit dem Hafen und der Platz des Schiffs darin (Indizes); `None` ohne Hafen.
-pub fn harbor(_isl: &Island) -> Option<(usize, usize)> {
-    unimplemented!("RU14: harbor")
-}
-
-/// Go: `shipComplete` (ship.go): Alle Abschnitte des Schiffs sind gebaut.
-pub fn ship_complete(_w: &World, _s: &Site) -> bool {
-    unimplemented!("RU14: ship_complete")
-}
+pub use crate::world::travel::{TravelPoint, travel_points}; // Von RU14.3 portiert (world_travel.go)
 
 /// Go: `refundPending` (economy.go): wirft gezahltes, nicht vollendetes Gold des Spielers `pi` zurück auf den Boden.
 pub fn refund_pending(_w: &mut World, _pi: usize) {

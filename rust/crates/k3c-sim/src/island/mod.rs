@@ -15,8 +15,10 @@ use k3c_data::waves::WavesDataDepthScaling;
 use std::sync::Arc;
 
 use crate::boss::endboss::EndbossFight;
-use crate::state::pending::{DevFlags, add_player_at, mirror_state, mirror_switch, step, values};
+use crate::state::pending::{DevFlags, values};
 use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
+use crate::world::state_mirror::{mirror_state, mirror_switch};
+use crate::world::{add_player_at, step};
 
 pub mod create;
 pub mod data;
@@ -295,8 +297,8 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         mirror_switch(isl);
         check_victory(isl);
     }
-    for w in &mut isl.stages {
-        mirror_state(w);
+    for (i, w) in isl.stages.iter_mut().enumerate() {
+        mirror_state(w, i, isl.endboss.as_ref());
     }
     for (i, w) in isl.stages.iter_mut().enumerate() {
         // nach dem Wechsel, damit auch `arrived` seine Stufe trägt
