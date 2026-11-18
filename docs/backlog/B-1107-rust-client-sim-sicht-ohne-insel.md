@@ -16,7 +16,7 @@
 
 ## Ausgangslage
 
-`props/simview.rs` (`LiveSimView`, RU48.3) ruft die Sim ohne `IslandRef`: `stock_max`/`purse_max` der Wirtschaft fehlen (Lager unbegrenzt angezeigt), `at_lair` ist immer false (kein Auslöser am Endboss-Bau). `hud/pending.rs::WorldDef` und `Campaign::world` sind Platzhalter: die Geschichte (Einblendungen) erscheint im Rust-Spiel nicht. Gefahrene Nächte mit geschützten Nächten nutzen den Spiegel `World::island_events.protected_nights` (RU48.3).
+`props/simview.rs` (`LiveSimView`, RU48.3) ruft die Sim ohne `IslandRef`: `stock_max`/`purse_max` der Wirtschaft fehlen (Lager unbegrenzt angezeigt), `at_lair` ist immer false (kein Auslöser am Endboss-Bau), `site_gold_left`/`site_payable` rechnen ohne `cheap_build`, `stock_bonus` und `storages_elsewhere` (Anzeige „zahlbar“ kann von der Sim abweichen). `hud/pending.rs::WorldDef` und `Campaign::world` sind Platzhalter: die Geschichte (Einblendungen) erscheint im Rust-Spiel nicht.
 
 ## Ziel
 

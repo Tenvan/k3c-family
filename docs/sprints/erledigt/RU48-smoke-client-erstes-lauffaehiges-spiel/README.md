@@ -1,6 +1,6 @@
 # RU48 · CLI · Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -69,10 +69,8 @@ Mit Default entschieden (autonom, Claude, 2026-11-18; 🧑 kann widersprechen): 
 | RU48.1 | `RU48.1-start-verdrahten.md` | Umsetzung | autonom | fertig |
 | RU48.2 | `RU48.2-smoke-test-run-task-tasten.md` | Umsetzung | autonom | fertig |
 | RU48.3 | `RU48.3-erster-lauf-luecken-schliessen.md` | Umsetzung | autonom | fertig |
-| RU48.4 | `RU48.4-review.md` | Umsetzung | autonom | offen |
+| RU48.4 | `RU48.4-review.md` | Umsetzung | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18, Claude (Hauptrechner): AC-01 bis AC-05 gegen die Ergebnisse von RU48.1 bis RU48.3 geprüft (AC-01 ohne Sichtprüfung des Spielens im Fenster: Fenster startete 10 bis 14 s ohne Panic, Rest über Tests mit Grafik; AC-02 mit 17 000 statt 6000 Takten, weil die Nacht erst bei 14 400 Takten beginnt). Review (k3c-reviewer): kein schwerer Befund; behoben: Einzelstrich-Schalter in `main.rs`, `chdir`-Test in eigene Datei `run_smoke_grafik.rs`; als Tickets: B-1106 bis B-1109. Abnahme-Ticket für Sim, Balance und Gen (Lane zweit): B-1108. 🧑 prüft im Spiel: Tempo, Eingabe (Tastatur und Pad), Kamera im Split-Screen, erste Nacht mit Gegnern, Zahlen, HUD.

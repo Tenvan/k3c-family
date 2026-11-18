@@ -30,7 +30,7 @@ fn main() -> ExitCode {
         },
         Some((cmd, rest)) if cmd == "play" => play(rest),
         None => play(&[]),
-        Some((cmd, _)) if !cmd.starts_with("--") => Err(USAGE.to_string()),
+        Some((cmd, _)) if !cmd.starts_with('-') => Err(USAGE.to_string()),
         Some(_) => play(&args),
     };
     match result {

@@ -46,6 +46,8 @@ weil `world::step` jeden Teilschritt ruft (`step_players`, `emit`, `decode_world
 | 5 | RU48.4 Review, PR: Smoke-Version startbar | Haupt | RU48.3 |
 | danach | RU50, RU24, RU29, RU22, RU30, RU32, RU35, RU43, RU36 (Abnahme G4) | beide | Smoke |
 
+**Erreicht (2026-11-18, RU48):** Die Smoke-Version ist startbar: `task rust:run` (oder `k3c-game.exe`) öffnet das Hauptmenü, Neues Spiel startet eine Insel mit laufender Sim, Zeichnen, HUD und Eingabe (Tastatur, Pad). Nicht dabei: Skills lernen, Zielinsel-Wahl, Geschichte, Ladeanzeige je Stufe, Dev-Schalter (B-1106, B-1107, B-1109, RU30). Die Abnahme mit Bildvergleich und Ignore-Marken steht in B-1108 (Lane zweit). RU48.1 bis RU48.3 machte der Hauptrechner.
+
 Rechner-Aufteilung: Haupt hält die k3c-sim-Kette (RU18 → RU19); zweit macht alles in `k3c-room` und `k3c-game` (keine
 Dateikollision mit k3c-sim). Läuft zweit vor Haupt leer, nimmt er RU46, RU47, dann RU50, RU24, RU29. Option, die Kette
 zu kürzen: RU19 parallel zu RU18 auf zweit (Kollision nur in `lib.rs` und den `pending.rs`, beim Merge trivial).

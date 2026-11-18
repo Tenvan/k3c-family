@@ -16,7 +16,7 @@
 
 ## Ausgangslage
 
-Im Rust-Spiel (RU48.3) melden `actions_learn`, `actions_respec` und `actions_choose_island` in `rust/crates/k3c-game/src/local/pending.rs` „noch nicht verfügbar“, weil `k3c-room` die Raum-Aktionen `Learn`, `Respec`, `ChooseIsland` nicht kennt. Die HUD-Shims `available_points`, `can_learn`, `can_respec` (`hud/pending.rs`) liefern 0/false: im Spiel ist nichts lernbar, der Inselwechsel am Hafen ist nicht wählbar.
+Im Rust-Spiel (RU48.3) melden `actions_learn`, `actions_respec` und `actions_choose_island` in `rust/crates/k3c-game/src/local/pending.rs` „noch nicht verfügbar“, weil `k3c-room` die Raum-Aktionen `Learn`, `Respec`, `ChooseIsland` nicht kennt. Die HUD-Shims `available_points`, `can_learn`, `can_respec` (`hud/pending.rs`) liefern 0/false: im Spiel ist nichts lernbar, der Inselwechsel am Hafen ist nicht wählbar. Vermuteter Soft-Lock (Review RU48.4, ungeprüft): Verlangt der Fortgang nach einem Inselsieg die Zielinsel-Wahl, kommt der Spieler nicht weiter.
 
 ## Ziel
 
