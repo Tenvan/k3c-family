@@ -13,6 +13,9 @@ pub mod flags;
 pub mod keytable;
 pub mod launch;
 pub mod layout;
+pub mod levels;
+pub mod loading;
+pub mod loadscreen;
 mod menu;
 pub mod modes;
 pub mod notice;
@@ -67,11 +70,12 @@ use crate::view::session::NewGame;
 
 pub use blend::Blend;
 pub use layout::{Cameras, VIEW_UNITS, cell_rect, cells, place, scale};
+pub use levels::{LibLoader, Loader};
 pub use modes::Measure;
 pub use packages::{Libs, packages};
 pub use parts::{Part, Parts, assemble};
-// RU30.2 tauscht `parse_script` gegen `script::parse_script`, RU30.1 `Loader`; danach entfällt `pending.rs`.
-pub use pending::{DevSession, Fault, Loader, Meter, Shooter, StressRun, Voyage, parse_script};
+// RU30.2 tauscht `parse_script` gegen `script::parse_script`; danach entfällt `pending.rs`.
+pub use pending::{DevSession, Fault, Meter, Shooter, StressRun, Voyage, parse_script};
 pub use scene::{Args, Hold, Scene, USAGE, parse_args};
 pub use sim::Sim;
 pub use stack::{Mode, Stack};
@@ -88,8 +92,7 @@ const CLEAR_COLOR: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 /// Die Schleife: Eingabe, Menü-Stapel, Takt der Simulation, Kameras, Grafik der Level und Zeichnen der Zellen in
 /// Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (`Frame::clock`), nie aus der Wanduhr.
 ///
-/// Felder, die erst spätere Sessions brauchen (`tps`, `load_scr`, `lload`, `step_want`, `menu_art`, `pressed`,
-/// `reports`), legt der liefernde Sprint an (RU30.1 bis RU30.5).
+/// Felder, die erst spätere Sessions brauchen (`tps`, `pressed`, `reports`), legt der liefernde Sprint an (RU30.1 bis RU30.5).
 pub struct Game {
     parts: Parts,
     sim: Box<dyn Sim>,
@@ -120,6 +123,8 @@ pub struct Game {
     last_draw: f64,
     /// Stufenwechsel wartet auf das Laden (Ladeanzeige statt Spiel)
     loading: bool,
+    /// Zustand des Ladens der Grafik (`loading.rs`)
+    load: loading::LoadState,
     /// Fehler im Fenster; gesetzt: die Schleife zeigt nur die Meldung (RU30.3)
     fault: Option<Fault>,
     /// Schiffsfahrt beim Inselwechsel (RU30.2)
@@ -165,6 +170,7 @@ impl Game {
             fps: 0.0,
             last_draw: 0.0,
             loading: false,
+            load: loading::LoadState::default(),
             fault: None,
             voy: None,
             shot_next: false,
@@ -195,7 +201,11 @@ impl Game {
             self.stack.push(main);
         }
         self.prerun()?;
-        self.open_menu()
+        self.open_menu()?;
+        if !self.args.scene.direct() && self.parts.art.is_some() {
+            self.sync_levels(); // Menü-Illustrationen vor dem ersten Bild
+        }
+        Ok(())
     }
 
     /// Lässt `Scene::tick` Takte vorlaufen; im Messmodus baut es nach dem ersten Takt die Last-Szene auf (die Plätze

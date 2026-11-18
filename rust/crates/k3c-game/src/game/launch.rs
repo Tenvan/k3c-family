@@ -1,9 +1,10 @@
 //! Port von `run` und `build` aus `native/k3c-game/main.go` (RU48.1): `k3c-game` ohne Unterbefehl und `k3c-game play` öffnen das
 //! Fenster mit dem Hauptmenü. Die Sitzung (`local::Session`) ist die Simulation der Schleife, die Grafik lädt das
-//! Programm einmal beim ersten Bild (`LevelLoad` braucht die Zeichenfläche); die Ladeanzeige je Stufe liefert RU30.1.
+//! Programm beim ersten Bild (`LevelLoad` braucht die Zeichenfläche): die Welt (alle Biome) und die Rigs sofort, die
+//! übrige Grafik je Stufe mit Ladeanzeige (`LibLoader`, RU30.1).
 //!
-//! Abweichungen von Go: Die Grafik aller Biome liegt gemeinsam im Speicher (`set_levels` mit einem Level), weil `Game`
-//! den `Loader` noch nicht kennt (`pending.rs`). Ein Fehler vor dem Spiel und ein Panic im Takt stehen als Meldung im
+//! Abweichungen von Go: Die Grafik der Welt aller Biome liegt gemeinsam im Speicher, weil `world` seine Bibliothek nur
+//! liest (`Rc<Library>`); je Stufe lädt nur die geteilte Bibliothek (B-1109, Rest siehe Ticket). Ein Fehler vor dem Spiel und ein Panic im Takt stehen als Meldung im
 //! Fenster (Go: `showFault`, `fault.go`); Enter oder Esc schließt es, `run` gibt die Meldung danach zurück.
 
 use std::any::Any;
@@ -17,11 +18,11 @@ use k3c_platform::{App, Canvas, Config as WindowConfig, InputState, Key, Rect, l
 use k3c_sim::state::World;
 
 use super::keytable::key_rows;
-use super::{Args, Game, Libs, assemble, packages, parse_args};
+use super::{Args, Game, LibLoader, Libs, Loader, assemble, packages, parse_args};
 use crate::art::{Config as ArtConfig, Levels, Library, default_config};
 use crate::local::config::{Config as SessionConfig, default_saves_dir};
 use crate::local::session::Session;
-use crate::{menu, world};
+use crate::world;
 
 /// Hinweis an jede Grafik-Meldung vor dem Spiel.
 const HINT: &str = "Erst `task gen:paper` ausführen (rendert die Grafik nach public/grafik), dann neu starten.";
@@ -60,7 +61,12 @@ pub fn run(args: &Args) -> Result<(), String> {
 
 /// Baut die Schleife aus Sitzung, Grafik und Schaltern; `libs` trägt die Grafik (`Libs::default()` ohne).
 pub fn build_game(args: &Args, session: Session, libs: &Libs) -> Result<Game, String> {
-    let parts = assemble(packages(libs, Some(Box::new(key_rows))))?;
+    let mut parts = assemble(packages(libs, Some(Box::new(key_rows))))?;
+    // Die Grafik der übrigen Module lädt die Schleife je Stufe (`LibLoader`, RU30.1, B-1109)
+    parts.art = libs
+        .shared
+        .as_ref()
+        .map(|l| Box::new(LibLoader::new(Rc::clone(l), libs.skip.clone())) as Box<dyn Loader>);
     log::info(
         "🚀 K3C natives Spiel",
         &[
@@ -216,24 +222,20 @@ fn art_config(args: &Args) -> ArtConfig {
     cfg
 }
 
-/// Die Assets aller Biome: Welt (eigene Bibliothek, `Rc<Library>`) und alle übrigen Module (geteilte Bibliothek).
-fn wanted() -> Result<(Vec<String>, Vec<String>), String> {
+/// Die Assets der Welt in allen Biomen (eigene Bibliothek, `Rc<Library>`, liegt wegen des Nur-Lesens von `world`
+/// gemeinsam im Speicher; die übrigen Module laden je Stufe, `LibLoader`).
+fn world_assets() -> Result<Vec<String>, String> {
     let data = load_all(&Source::from_env()).map_err(|e| format!("Daten: {e}"))?;
     let world_src = world::new(None).asset_source.ok_or("world ohne Asset-Quelle")?;
-    let all = assemble(packages(&Libs::default(), None))?;
-    let (mut for_world, mut others) = (BTreeSet::new(), BTreeSet::new());
+    let mut out = BTreeSet::new();
     for b in &data.biomes {
         let w = World {
             biome: b.clone(),
             ..World::default()
         };
-        for_world.extend(world_src.assets(&b.id, &w));
-        for s in &all.assets {
-            others.extend(s.assets(&b.id, &w));
-        }
+        out.extend(world_src.assets(&b.id, &w));
     }
-    others.retain(|a| !for_world.contains(a));
-    Ok((for_world.into_iter().collect(), others.into_iter().collect()))
+    Ok(out.into_iter().collect())
 }
 
 fn levels(assets: Vec<String>) -> Levels {
@@ -245,7 +247,8 @@ fn levels(assets: Vec<String>) -> Levels {
 fn load_libs(args: &Args, c: &mut dyn Canvas) -> Result<Libs, String> {
     let cfg = art_config(args);
     let fail = |what: &str, e: &dyn std::fmt::Display| format!("{what}: {e}\n{HINT}");
-    let (for_world, mut others) = wanted()?;
+    let for_world = world_assets()?;
+    let skip: BTreeSet<String> = for_world.iter().cloned().collect();
     let mut wlib = Library::new(ArtConfig {
         rig_dir: std::path::PathBuf::new(),
         ..cfg.clone()
@@ -254,14 +257,10 @@ fn load_libs(args: &Args, c: &mut dyn Canvas) -> Result<Libs, String> {
     wlib.set_levels(&levels(for_world), c).map_err(|e| fail("Grafik", &e))?;
     let mut slib = Library::new(cfg).map_err(|e| fail("Grafik", &e))?;
     slib.load_rigs(c).map_err(|e| fail("Rigs", &e))?;
-    let menu_assets = menu::new_shared(None, None).borrow().assets();
-    others.extend(menu_assets.into_iter().filter(|a| slib.usable(a)));
-    others.sort();
-    others.dedup();
-    slib.set_levels(&levels(others), c).map_err(|e| fail("Grafik", &e))?;
     Ok(Libs {
         world: Some(Rc::new(wlib)),
         shared: Some(Rc::new(RefCell::new(slib))),
+        skip,
     })
 }
 

@@ -1,6 +1,6 @@
 # RU30 · CLI · Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -99,7 +99,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU30.1 | `RU30.1-levels-loading-loadscreen.md` | Umsetzung | autonom | offen |
+| RU30.1 | `RU30.1-levels-loading-loadscreen.md` | Umsetzung | autonom | fertig |
 | RU30.2 | `RU30.2-assets-voyage-script-shots.md` | Umsetzung | autonom | offen |
 | RU30.3 | `RU30.3-dev-tasten-fehlerfenster.md` | Umsetzung | autonom | offen |
 | RU30.4 | `RU30.4-measure-bericht.md` | Umsetzung | autonom | offen |

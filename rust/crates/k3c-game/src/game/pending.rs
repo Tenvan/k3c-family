@@ -1,5 +1,5 @@
 //! Platzhalter für Teile, die spätere Sprints liefern (Leitfaden § 7). RU30.2 liefert `script.go` samt `ParseScript`,
-//! tauscht die `pub use`-Zeile in `mod.rs` aus; RU30.1 liefert `Loader`. Ist alles geliefert, wird diese Datei gelöscht. RU22 prüft, dass keiner übrig ist. Die Platzhalter der
+//! tauscht die `pub use`-Zeile in `mod.rs` aus; Ist alles geliefert, wird diese Datei gelöscht. RU22 prüft, dass keiner übrig ist. Die Platzhalter der
 //! Schleife (`Game`, RU26.4) stehen am Ende der Datei.
 #![allow(clippy::unimplemented)] // Platzhalter nach Leitfaden § 7: wartet auf RU30
 #![allow(dead_code)] // Platzhalter, die erst der liefernde Sprint benutzt
@@ -13,9 +13,6 @@ use k3c_platform::Canvas;
 pub fn parse_script(_s: &str) -> Result<Vec<Hold>, String> {
     unimplemented!("RU30: parse_script")
 }
-
-/// Go: `Loader` (`levels.go`, RU30.1): lädt die Grafik der Level (`Parts::art`).
-pub trait Loader {}
 
 /// Fachmodule, die `packages()` noch nicht liefern kann: Name und liefernder Sprint. `parts_tests` zählt sie als
 /// „wartet auf RUnn“ und prüft, dass der Platzhalter verschwindet, sobald der Modulordner existiert.
@@ -96,16 +93,6 @@ pub fn scripted(_s: &Scene) -> Box<dyn Source> {
 }
 
 impl Game {
-    /// Go: `syncLevels` (`levels.go`, RU30.1); erreicht nur mit `Parts::art`.
-    pub(super) fn sync_levels(&mut self) {
-        unimplemented!("RU30.1: sync_levels")
-    }
-
-    /// Go: `drawLoading` (`loading.go`, RU30.1); erreicht nur mit `loading`.
-    pub(super) fn draw_loading(&mut self, _c: &mut dyn Canvas) {
-        unimplemented!("RU30.1: draw_loading")
-    }
-
     /// Go: `sail` (`voyage.go`, RU30.2); erreicht nur mit `voy`.
     pub(super) fn sail(&mut self, _input: &Input) {
         unimplemented!("RU30.2: sail")

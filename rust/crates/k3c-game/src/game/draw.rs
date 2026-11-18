@@ -11,6 +11,7 @@ use crate::view::cell::{rect, window_cell};
 impl Game {
     /// Zeichnet den Fehler, die Schiffsfahrt bzw. die Ladeanzeige, sonst das Spiel (`draw_game`).
     pub(super) fn draw_frame(&mut self, c: &mut dyn Canvas, alpha: f64) {
+        self.run_pending_load(c);
         if let Some(f) = self.fault.as_ref() {
             f.draw(c);
         } else if self.voy.is_some() {
