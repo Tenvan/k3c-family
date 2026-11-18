@@ -81,6 +81,22 @@ pub fn parse(lines: &[String]) -> Result<Trace, TraceError> {
     Ok(Trace { head, rows })
 }
 
+/// Lädt eine Aufzeichnung Zeile für Zeile aus der `.jsonl.gz` (RU39.1): ohne den ganzen Text im Speicher, damit die
+/// Messung des Arbeitsspeichers nur die geladenen Zustände sieht.
+pub fn load_stream(path: impl AsRef<Path>) -> Result<Trace, TraceError> {
+    use std::io::BufRead;
+    let f = std::fs::File::open(path).map_err(TraceError::Io)?;
+    let mut lines = std::io::BufReader::new(flate2::read::GzDecoder::new(std::io::BufReader::new(f))).lines();
+    let first = lines.next().ok_or(TraceError::Empty)?.map_err(TraceError::Io)?;
+    let head = serde_json::from_str(&first).map_err(|e| TraceError::Line(1, e))?;
+    let mut rows = Vec::new();
+    for (i, l) in lines.enumerate() {
+        let l = l.map_err(TraceError::Io)?;
+        rows.push(serde_json::from_str(&l).map_err(|e| TraceError::Line(i + 2, e))?);
+    }
+    Ok(Trace { head, rows })
+}
+
 /// Liest und lädt eine Aufzeichnung von der Platte.
 pub fn load(path: impl AsRef<Path>) -> Result<Trace, TraceError> {
     parse(&read_lines(path)?)

@@ -9,6 +9,7 @@ use k3c_platform::{App, Canvas, InputState};
 use serde::Serialize;
 
 use super::app::ReplayApp;
+use super::frames::{FrameLog, Sample};
 
 /// Kennwerte der Zeiten in Millisekunden.
 #[derive(Debug, Clone, Copy, Default, Serialize)]
@@ -59,7 +60,8 @@ fn percentile(sorted: &[f64], q: f64) -> f64 {
     if sorted.is_empty() {
         return 0.0;
     }
-    sorted[((sorted.len() as f64 * q).ceil() as usize).clamp(1, sorted.len()) - 1]
+    // nächster Rang wie `percentile` in native/k3c-game/game/measure.go: sorted[round((n-1)*p)] (RU39.1)
+    sorted[(((sorted.len() - 1) as f64) * q).round() as usize]
 }
 
 fn stats(mut v: Vec<f64>) -> FrameStats {
@@ -86,6 +88,12 @@ pub struct Metered {
     ticks: Vec<f64>,
     gaps: Vec<f64>,
     repeated: usize,
+    /// Messung je Bild (`--measure-frames`, RU39.1)
+    pub log: Option<FrameLog>,
+    /// Sekunden seit Messbeginn (Go: `meter.t`)
+    t: f64,
+    /// Fenstergröße für den Bericht (`--size`)
+    pub size: (u32, u32),
 }
 
 impl Metered {
@@ -103,7 +111,16 @@ impl Metered {
             ticks: Vec::new(),
             gaps: Vec::new(),
             repeated: 0,
+            log: None,
+            t: 0.0,
+            size: (1920, 1080),
         }
+    }
+
+    /// Misst zusätzlich je Bild in `log` (Puffer vor der Messung angelegt).
+    pub fn with_frames(mut self, log: Option<FrameLog>) -> Self {
+        self.log = log;
+        self
     }
 
     fn measuring(&self) -> bool {
@@ -126,7 +143,7 @@ impl Metered {
             ),
             spieler: self.app.playback().head.spieler,
             backend: backend.into(),
-            fenster: [1920, 1080],
+            fenster: [self.size.0, self.size.1],
             vsync: true,
             messdauer_s: total / 1000.0,
             frames: frames_n,
@@ -183,6 +200,16 @@ impl App for Metered {
             if tick == self.last_tick {
                 self.repeated += 1;
             }
+            if let Some(log) = &mut self.log {
+                log.add(Sample {
+                    t: self.t,
+                    dt,
+                    draw: work,
+                    ticks: u32::try_from(tick.saturating_sub(self.last_tick)).unwrap_or(u32::MAX),
+                    alpha: alpha as f32,
+                });
+            }
+            self.t += dt / 1000.0;
         }
         self.last_tick = tick;
     }

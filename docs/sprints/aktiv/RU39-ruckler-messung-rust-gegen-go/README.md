@@ -82,7 +82,7 @@ Entscheidung 🧑 am Gate G2 (RU39.3 hält an) und Gerät für den schwachen PC 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU39.1 | `RU39.1-messwerkzeug-rust-gegen-go.md` | Umsetzung | autonom | offen |
+| RU39.1 | `RU39.1-messwerkzeug-rust-gegen-go.md` | Umsetzung | autonom | fertig |
 | RU39.2 | `RU39.2-messlaeufe-und-sichtpruefung.md` | Workshop | Mensch | offen |
 | RU39.3 | `RU39.3-bericht-g2-und-review.md` | Review | autonom | offen |
 
