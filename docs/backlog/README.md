@@ -149,6 +149,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1081](B-1081-abnahme-ru11-sim-einheiten-gegner.md) | SIM | Schuld | mittel | offen | RU11 | Abnahme RU11: Sim, Balance und Gen für Einheiten und Gegner in Rust |
 | [B-1079](B-1079-stab-perf-level-marker.md) | CLI | Schuld | niedrig | offen | RU43 | Level-Generator: STAB- und PERF-Markierungen in k3c-level abbauen |
 | [B-1080](B-1080-abnahme-ru6-level-generator-rust.md) | SIM | Schuld | niedrig | offen | RU6 | Abnahme RU6: Level-Generator in Rust (Gen, Race, manuell) |
+| [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU10 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
 
 ## Archiv
 

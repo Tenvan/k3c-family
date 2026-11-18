@@ -2,18 +2,26 @@
 //! Platzhalter; RU22 prüft, dass keiner übrig ist. Go-Zeiger auf Spieler und Truppen sind hier Indizes (`pi`, `ti`).
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
+use std::collections::BTreeMap;
 use std::sync::Arc;
 
+use k3c_data::Data;
+use k3c_data::biome::Biome;
+use k3c_data::bosses::BossData;
 use k3c_data::buildings::Plantation;
+use k3c_data::difficulty::DifficultyFile;
 use k3c_data::economy::Gatherable;
-use k3c_data::hub::Stock;
+use k3c_data::hub::{HubData, Stock};
+use k3c_data::island_sizes::IslandSizesFile;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
-use k3c_level::types::WallSite;
+use k3c_level::types::{NatureValues, PlannedChunk, WallSite};
 
+use super::island_ref::IslandRef;
 use super::save::HubSave;
 use super::shared::WorldValues;
-use super::{Player, Site, Troop, World};
+use super::{Player, PlayerCommand, Site, Troop, World};
+use crate::island::{Island, IslandDef, IslandOptions, WorldDef};
 
 // Von RU11 portiert (Gegner, Truppen): Die Import-Stelle bleibt `pending`, damit Zustandsdateien unverändert bleiben.
 pub use crate::enemies::guard::{apply_guards, guards_cleared_keys, is_wave_enemy};
@@ -160,4 +168,142 @@ pub fn apply_portals(_w: &mut World, _h: &HubSave) {
 /// Go: `plotX` (building_plantation.go): Position von Platz `i` im Streifen um die Baumschule.
 pub fn plot_x(_s: &Site, _p: &Plantation, _i: usize) -> f64 {
     unimplemented!("RU18: plot_x")
+}
+
+// RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
+
+/// Go: `endbossFight` (boss_endboss.go): der laufende Kampf gegen den Endboss der Insel. Rumpf bis RU15.2.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct EndbossFight;
+
+/// Go: `DevFlags` (dev.go): Schalter der Dev-Aktionen einer Insel, nur im Speicher, nie im Spielstand. Rumpf bis RU19.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct DevFlags {
+    /// Alle Bau-, Ausbau- und Angebotskosten höchstens 1 je Posten.
+    pub cheap_build: bool,
+    /// Reiner Stressmodus (`DevSetPure`): keine Wellen, Lager, Wachen, Händler, Schänke.
+    pub pure: bool,
+    /// Zusätzliches Lager-Maximum je Rohstoff und Gold-Maximum je Spieler (`devMaxStock`).
+    pub stock_bonus: i64,
+    /// Event-Id → Nacht, in der das Event zusätzlich zum Rhythmus läuft (`DevStartEvent`).
+    pub nights: BTreeMap<String, i64>,
+}
+
+/// Go: `IslandStory` (story.go): Ankunft, vor dem Endboss und Abschlusszeile nach dem Sieg über ihn. Rumpf bis RU19.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct IslandStory {
+    pub arrival: Vec<String>,
+    pub boss: Vec<String>,
+    pub done: Vec<String>,
+}
+
+/// Go: `WorldStory` (story.go): die Geschichte einer Welt. Rumpf bis RU19.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct WorldStory;
+
+/// Go: `Options` (world.go) für `CreateWorld`; die kleingeschriebenen Felder (`lair`, `hub`, `vals`) sind hier öffentlich.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct WorldOptions {
+    pub cycle_speed: f64,
+    pub time: f64,
+    pub planned: Vec<PlannedChunk>,
+    pub chunk_count: i64,
+    pub nature: NatureValues,
+    /// Trägt die Stufe den Bau (`level.Options.Lair`); `None` = Feld `lair` des Bioms.
+    pub lair: Option<bool>,
+    /// Kandidaten-hub.json; `None` = die hub.json des Wertesatzes.
+    pub hub: Option<Arc<HubData>>,
+    /// Wertesatz der Welt; `None` = Basis-Wertesatz.
+    pub vals: Option<Arc<WorldValues>>,
+}
+
+/// Go: `CreateWorld` (world.go): baut den Startzustand einer Stufe.
+pub fn create_world_with(_b: &Biome, _seed: &str, _opts: &WorldOptions) -> Result<World, String> {
+    unimplemented!("RU14: create_world_with")
+}
+
+/// Go: `Step` (world.go): rechnet einen Tick; `isl` ist der Bezug zur Insel (`None` = Go `w.island == nil`).
+pub fn step(_w: &mut World, _commands: &[PlayerCommand], _isl: Option<&mut IslandRef>, _dt: f64) {
+    unimplemented!("RU14: step")
+}
+
+/// Go: `addPlayerAt` (world.go): stellt den Monarchen mit dem Spielerindex `index` an die Burg; liefert seinen Platz in
+/// `w.players`.
+pub fn add_player_at(_w: &mut World, _index: i64) -> usize {
+    unimplemented!("RU14: add_player_at")
+}
+
+/// Go: `castleLosses` (world.go): Verluste eines Burgfalls im Modus „Stufenverlust“.
+pub fn castle_losses(_w: &mut World, _isl: Option<&IslandRef>) {
+    unimplemented!("RU14: castle_losses")
+}
+
+/// Go: `hubOf` (world.go): die hub.json, aus der die Stufe gebaut ist (Kandidat oder die der Welt).
+pub fn hub_of(_w: &World) -> Arc<HubData> {
+    unimplemented!("RU14: hub_of")
+}
+
+/// Go: `emptySite` (world.go): ein unbezahlter Platz der Art `kind` bei `x`.
+pub fn empty_site(_w: &mut World, _kind: &str, _x: f64) -> Site {
+    unimplemented!("RU14: empty_site")
+}
+
+/// Go: `valuesOf` (world_values_room.go): der aufgelöste Wertesatz der Welt.
+pub fn values_of(_world: &WorldDef) -> Result<Arc<WorldValues>, String> {
+    unimplemented!("RU14: values_of")
+}
+
+/// Go: `ValidateHubDataIn` (hub_validate.go): Befunde der Prüfung einer Kandidaten-hub.json (leer = gültig).
+pub fn validate_hub_data_in(_h: &HubData, _world: &WorldDef) -> Vec<String> {
+    unimplemented!("RU14: validate_hub_data_in")
+}
+
+/// Go: `mirrorState` (world_state_mirror.go): spiegelt den Stand der Stufe für das Protokoll.
+pub fn mirror_state(_w: &mut World) {
+    unimplemented!("RU14: mirror_state")
+}
+
+/// Go: `DefaultOptions` (island_options.go): Normal, Endboss, Gold/Material-Verlust (Tabelle aus `difficulty.json`).
+pub fn default_options(_difficulty: &DifficultyFile) -> IslandOptions {
+    unimplemented!("RU10.2: default_options")
+}
+
+/// Go: `CheckChunkCount` (island_sizes.go): lehnt eine Chunk-Anzahl ab, die keine Inselgröße ist.
+pub fn check_chunk_count(_sizes: &IslandSizesFile, _n: i64) -> Result<(), String> {
+    unimplemented!("RU10.3: check_chunk_count")
+}
+
+/// Go: `checkChunkCounts` (island_sizes.go): prüft `chunkCounts` einer Insel.
+pub fn check_chunk_counts(_d: &IslandDef, _sizes: &IslandSizesFile) -> Result<(), String> {
+    unimplemented!("RU10.3: check_chunk_counts")
+}
+
+/// Go: `checkEndBoss` (island_endboss.go): prüft Endboss und Bau der Insel.
+pub fn check_end_boss(_d: &IslandDef, _data: &Data) -> Result<(), String> {
+    unimplemented!("RU10.5: check_end_boss")
+}
+
+/// Go: `lairOptions` (island_endboss.go): trägt die Stufe der Tiefe `depth` den Bau (nur die tiefste), und ihr Endboss.
+pub fn lair_options(_def: &IslandDef, _depth: i64, _data: &Data) -> (Option<bool>, Option<BossData>) {
+    unimplemented!("RU10.5: lair_options")
+}
+
+/// Go: `stepIslandTravel` (island_travel.go).
+pub fn step_island_travel(_isl: &mut Island, _dt: f64) {
+    unimplemented!("RU10.4: step_island_travel")
+}
+
+/// Go: `stepIslandSwitch` (island_switch.go).
+pub fn step_island_switch(_isl: &mut Island, _dt: f64) {
+    unimplemented!("RU10.4: step_island_switch")
+}
+
+/// Go: `mirrorSwitch` (world_state_mirror.go): spiegelt den Wechselpunkt der Insel in jede Stufe.
+pub fn mirror_switch(_isl: &mut Island) {
+    unimplemented!("RU10.4: mirror_switch")
+}
+
+/// Go: `checkVictory` (island_victory.go).
+pub fn check_victory(_isl: &mut Island) {
+    unimplemented!("RU10.4: check_victory")
 }

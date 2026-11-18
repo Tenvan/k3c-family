@@ -1,0 +1,114 @@
+//! Hilfen der Tests der Gruppe `island`. Die Hilfen aus den Go-Testdateien dieser Session (`mustIsland`, `newIsland`,
+//! `runIsland`, `count`, `islandJSON`, `neutralNature`, `defeatIsland`, `builtSites` …) stehen hier. Go-Hilfen aus anderen
+//! Dateien (`CreateWorld`, `Step`, `ParseWorld`, `SetOptions`, `buildSite` …) kommen mit RU14 und RU10.2/RU10.5: Ihre Rümpfe
+//! melden den liefernden Sprint, Tests, die sie rufen, tragen `ignore`.
+#![allow(clippy::unimplemented, clippy::panic)] // Rümpfe der Test-Hilfen: warten auf den genannten Sprint
+
+use std::collections::BTreeMap;
+
+use k3c_data::biome::Biome;
+use k3c_data::hub::Stock;
+use k3c_data::{Data, Source, load_all};
+use k3c_level::nature::neutral_nature as level_neutral_nature;
+use k3c_level::types::NatureValues;
+
+use super::{CreateOptions, Island, WorldDef, create_island, step_island};
+use crate::state::{Event, PlayerCommand, World};
+
+/// Go: `islandSpeed`: schneller Zyklus, Tag, Dämmerung und Nacht in Sekunden statt Minuten.
+pub const ISLAND_SPEED: f64 = 60.0;
+
+/// Go: `dt` der Tests.
+pub const DT: f64 = 1.0 / 30.0;
+
+/// Die eingebetteten Spiel-Daten (Go: die Paket-Variablen).
+pub fn test_data() -> Data {
+    load_all(&Source::Embedded).expect("eingebettete Daten")
+}
+
+/// Go: `neutralNature`, die neutralen Natur-Werte je Tiefe (`level.NeutralNature`).
+pub fn neutral_nature(biomes: &[Biome], depths: &[i64]) -> BTreeMap<i64, NatureValues> {
+    let mut out = BTreeMap::new();
+    for &d in depths {
+        if let Some(b) = super::data::biome_for_depth(biomes, d) {
+            out.insert(d, level_neutral_nature(b));
+        }
+    }
+    out
+}
+
+/// Go: `standardWorld` (island_worlds.go): die Standard-Welt als `WorldDef`; kommt mit RU10.5 (`resolve_world`).
+pub fn standard_world(_data: &Data) -> WorldDef {
+    unimplemented!("RU10.5: standard_world")
+}
+
+/// Go: `newIsland`: `create_island` mit Startvorrat, wie ein neues Spiel, mit neutraler Natur (B-891): Die Tests prüfen
+/// Mechanik, nicht die gewürfelte Dichte des Seeds.
+pub fn new_island(data: &Data, seed: &str, depths: &[i64]) -> Island {
+    let opts = CreateOptions {
+        nature: Some(neutral_nature(&data.biomes, depths)),
+        ..CreateOptions::default()
+    };
+    match create_island(data, &standard_world(data), seed, depths, ISLAND_SPEED, opts) {
+        Ok(isl) => isl,
+        Err(e) => panic!("{e}"),
+    }
+}
+
+/// Go: `mustIsland`: wie `new_island`, mit leerem Vorrat; den Startvorrat prüft `start_tests.rs`.
+pub fn must_island(data: &Data, seed: &str, depths: &[i64]) -> Island {
+    let mut isl = new_island(data, seed, depths);
+    isl.stock = Stock::default();
+    isl
+}
+
+/// Go: `runIsland` tickt die Insel `seconds` lang und liefert alle Ereignisse je Stufe.
+pub fn run_island(isl: &mut Island, data: &Data, cmds: &[PlayerCommand], seconds: f64) -> Vec<Vec<Event>> {
+    let mut events: Vec<Vec<Event>> = vec![Vec::new(); isl.stages.len()];
+    let mut tm = 0.0;
+    while tm < seconds {
+        step_island(isl, cmds, &data.difficulty, DT);
+        for (i, w) in isl.stages.iter().enumerate() {
+            events[i].extend(w.events.iter().cloned());
+        }
+        tm += DT;
+    }
+    events
+}
+
+/// Go: `count`, die Zahl der Ereignisse einer Art.
+pub fn count(events: &[Event], typ: &str) -> usize {
+    events
+        .iter()
+        .filter(|e| e.get("type").and_then(|t| t.as_str()) == Some(typ))
+        .count()
+}
+
+/// Go: `islandJSON`, der Zustand jeder Stufe als JSON-Text.
+pub fn island_json(isl: &Island) -> Vec<String> {
+    isl.stages
+        .iter()
+        .map(|w| serde_json::to_string(w).expect("Stufe als JSON"))
+        .collect()
+}
+
+/// Go: `islandState`, alle Stufen als ein Text.
+pub fn island_state(isl: &Island) -> String {
+    island_json(isl).join("\n")
+}
+
+/// Go: `builtSites`, die Zahl der gebauten Plätze der Stufe.
+pub fn built_sites(w: &World) -> usize {
+    w.sites.iter().filter(|s| s.state == "built").count()
+}
+
+/// Go: `vagrants`, die Zahl der Landstreicher der Stufe.
+pub fn vagrants(w: &World) -> usize {
+    w.troops.iter().filter(|t| t.kind == "vagrant").count()
+}
+
+/// Go: `defeatIsland` (island_defeat_test.go): Insel mit Wald und Höhle, je ein Spieler (Gold 40 bzw. 30), Vorrat 20 Holz
+/// und 10 Stein, im Wald ein gebauter Turm und ein Bogenschütze. Braucht `set_options` (RU10.2) und `build_site` (RU14).
+pub fn defeat_island(_data: &Data, _defeat: &str) -> Island {
+    unimplemented!("RU14: defeat_island (SetOptions, buildSite)")
+}

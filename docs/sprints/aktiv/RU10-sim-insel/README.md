@@ -96,7 +96,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU10.1 | `RU10.1-island-data-defeat-nature.md` | Umsetzung | autonom | in Arbeit |
+| RU10.1 | `RU10.1-island-data-defeat-nature.md` | Umsetzung | autonom | fertig |
 | RU10.2 | `RU10.2-island-options-save.md` | Umsetzung | autonom | offen |
 | RU10.3 | `RU10.3-island-save-versionen-sizes-storage.md` | Umsetzung | autonom | offen |
 | RU10.4 | `RU10.4-island-switch-targets-travel-victory.md` | Umsetzung | autonom | offen |

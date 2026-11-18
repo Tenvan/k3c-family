@@ -1,0 +1,213 @@
+//! Insel (Port von `engine/sim/island.go`, Entscheidung 003, B-100): Ein Level mit mehreren Stufen. Alle Stufen laufen im
+//! selben Takt weiter, auch ohne Spieler; jeder Spieler ist an genau eine Stufe gebunden. Das Baumaterial gehört der Insel
+//! (ein Vorrat für alle Stufen), Gold gehört dem Spieler.
+//!
+//! Zustandsmodell (`docs/standards/rust-sim-zustand.md`): Die Insel besitzt ihre Stufen und den Vorrat. Vor dem Schritt einer
+//! Stufe tauscht sie den Vorrat per `std::mem::swap` in die Stufe (Entscheidung 5) und reicht ihr einen `IslandRef`
+//! (`stage_ref`, Entscheidung 4); danach geht beides zurück (`put_stage_ref`).
+
+use std::collections::BTreeMap;
+
+use k3c_data::difficulty::DifficultyFile;
+use k3c_data::hub::Stock;
+use k3c_data::waves::WavesDataDepthScaling;
+
+use crate::state::pending::{
+    DevFlags, EndbossFight, add_player_at, check_victory, mirror_state, mirror_switch, step, step_island_switch,
+    step_island_travel, values,
+};
+use crate::state::{Event, IslandRef, PlayerCommand, World};
+
+pub mod create;
+pub mod data;
+pub mod defeat;
+pub mod nature;
+pub mod options;
+pub mod travel;
+pub mod worlds;
+
+#[cfg(test)]
+mod defeat_tests;
+#[cfg(test)]
+mod nature_tests;
+#[cfg(test)]
+mod start_tests;
+#[cfg(test)]
+mod tests;
+#[cfg(test)]
+pub(crate) mod testutil;
+
+pub use create::{CreateOptions, IslandBuild, create_island, create_island_at, create_island_in};
+pub use data::IslandDef;
+pub use options::IslandOptions;
+pub use travel::IslandTravel;
+pub use worlds::WorldDef;
+
+/// Go: `Island`, eine Insel mit ihren Stufen. Ohne JSON: der Spielstand ist `IslandSave` (RU10.2).
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct Island {
+    /// Gleiche ID = gleiches Spiel (Spielstand).
+    pub id: String,
+    pub seed: String,
+    pub cycle_speed: f64,
+    /// Stufe i ist die Welt der i-ten Tiefe aus `create_island`.
+    pub stages: Vec<World>,
+    /// Vorrat der Insel; kein Zeiger wie in Go: Während eine Stufe rechnet, liegt er in ihr (`step_island`).
+    pub stock: Stock,
+    /// Grad, Ziel, Niederlage-Modus (`options.rs`).
+    pub options: IslandOptions,
+    /// Fund-Pool der Insel (monarch.md § 3), alle Stufen spiegeln ihn nach `World::skill_points`.
+    pub skill_pool: i64,
+    /// Geöffnete Truhen aller Stufen (jede n-te gibt einen Pool-Punkt).
+    pub chests_opened: i64,
+    /// IDs der besiegten Bosse in Reihenfolge des Siegs (boss.go); ein besiegter Boss kommt nie wieder.
+    pub defeated_bosses: Vec<String>,
+    /// Der Endboss der Insel ist besiegt (Siegvariante, Inselwechsel).
+    pub endboss_defeated: bool,
+    /// Der laufende Kampf gegen den Endboss (boss_endboss.go); `None`, solange er wartet oder nach dem Sieg.
+    pub endboss: Option<EndbossFight>,
+    /// Münzen, die Spieler auf der Insel aufgehoben haben (Siegvariante gold, island_victory.go).
+    pub gold_collected: i64,
+    /// Die Insel hat ihr Ziel erreicht, `victory` kam schon.
+    pub won: bool,
+    /// Es stand ein endliches Ressourcenobjekt (mineAll). Nur im Speicher.
+    pub had_finite: bool,
+    /// Die Welt der Insel (welten.md, B-488).
+    pub world: WorldDef,
+    /// Ihre Insel-ID darin (Spielstand, welten.md § 5).
+    pub island_id: String,
+    /// Index der Insel in ihrer Welt (0 = Insel 1).
+    pub number: i64,
+    /// Tabelle der Gegner-Skalierung der Insel.
+    pub scaling: WavesDataDepthScaling,
+    /// Wechselpunkt offen (island_switch.go).
+    pub gate_open: bool,
+    /// Alle stehen am Wechselpunkt, der Raum tauscht die Insel.
+    pub switch_ready: bool,
+    pub switch_progress: f64,
+    /// IDs der abgeschlossenen Inseln der Welt (Endboss beim Ablegen besiegt, B-961).
+    pub completed: Vec<String>,
+    /// Gewähltes Ziel am Hafen (leer = erstes Ziel).
+    pub chosen: String,
+    /// Wahlen des Takts je Spielerindex (island_targets.go); nur über den Schlüssel zugreifen.
+    pub pending_choice: BTreeMap<i64, String>,
+    /// Niederlage-Modus „Komplett verloren“ (defeat.rs): Die Insel ist zu Ende, `step_island` ändert nichts mehr.
+    pub over: bool,
+    /// Schalter der Dev-Aktionen (dev.go), nur im Speicher.
+    pub dev: DevFlags,
+    /// Ankünfte des Händlers auf der Insel (merchant.go), Rhythmus des Händler-Überfalls (K3.2).
+    pub merchant_visits: i64,
+    pub next_player: i64,
+    /// Reisefortschritt je Spielerindex (island_travel.go); nur über den Schlüssel zugreifen.
+    pub travel: BTreeMap<i64, IslandTravel>,
+}
+
+impl Island {
+    /// Go: `WorldID`, die ID der Welt der Insel (Spielstand `world`, welten.md § 5).
+    pub fn world_id(&self) -> &str {
+        &self.world.id
+    }
+
+    /// Go: `IslandID`, die ID der Insel in ihrer Welt (Spielstand `islandId`).
+    pub fn island_id(&self) -> &str {
+        &self.island_id
+    }
+
+    /// Anzahl aller Spieler der Insel (Go: `len(isl.Players())`; die Liste selbst kommt mit RU10.4).
+    pub fn player_count(&self) -> i64 {
+        self.stages.iter().map(|w| w.players.len() as i64).sum()
+    }
+
+    /// Der Bezug der Stufe `i` zur Insel für ihren Schritt (Vorentscheidung 2): Tabellen und Zahlen werden kopiert, die
+    /// veränderlichen Teile (`defeated_bosses`, `endboss`) herausgenommen; `put_stage_ref` legt sie zurück. Der Grad kommt
+    /// aus `difficulty` (Go: Paket-Variable `difficulty`); ein unbekannter Grad ergibt wie bei Gos Map-Zugriff Nullwerte.
+    pub fn stage_ref(&mut self, i: usize, difficulty: &DifficultyFile) -> IslandRef {
+        let per_extra_player = match self.stages.first() {
+            Some(w) => match &w.vals {
+                Some(v) => v.waves.per_extra_player,
+                None => values(w).waves.per_extra_player,
+            },
+            None => 0.0,
+        };
+        IslandRef {
+            scaling: self.scaling.clone(),
+            grade: difficulty.grades.get(&self.options.grade).cloned().unwrap_or_default(),
+            players: self.player_count(),
+            per_extra_player,
+            cheap_build: self.dev.cheap_build,
+            stage: i as i64,
+            defeat_resources: self.options.defeat == "resources",
+            defeated_bosses: std::mem::take(&mut self.defeated_bosses),
+            endboss: self.endboss.take(),
+            endboss_defeated: self.endboss_defeated,
+            over: false,
+            halve_other_gold: false,
+        }
+    }
+
+    /// Legt den Bezug nach dem Schritt einer Stufe zurück und übernimmt, was die Stufe an der Insel geändert hat.
+    pub fn put_stage_ref(&mut self, r: IslandRef) {
+        self.defeated_bosses = r.defeated_bosses;
+        self.endboss = r.endboss;
+        self.endboss_defeated = r.endboss_defeated;
+        if r.over {
+            self.over = true;
+        }
+        if r.halve_other_gold {
+            let stage = r.stage as usize;
+            for (j, w) in self.stages.iter_mut().enumerate() {
+                if j != stage {
+                    w.players.iter_mut().for_each(|p| p.gold /= 2);
+                }
+            }
+        }
+    }
+}
+
+/// Go: `AddIslandPlayer`: stellt einen neuen Monarchen an die Burg der Stufe `stage`; liefert seinen Platz in
+/// `stages[stage].players`. Der Index zählt inselweit hoch und bleibt auch nach einem Stufenwechsel derselbe (Eingaben
+/// werden über ihn zugeordnet).
+pub fn add_island_player(isl: &mut Island, stage: usize) -> usize {
+    let pi = add_player_at(&mut isl.stages[stage], isl.next_player);
+    isl.next_player += 1;
+    pi
+}
+
+/// Go: `StepIsland`: rechnet einen Tick in allen Stufen, von Stufe 0 aufwärts. `commands` wird nach dem Spielerindex der
+/// Insel gelesen (`commands[p.index]`); jede Stufe bekommt dasselbe Feld und nimmt sich ihre Spieler heraus.
+pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &DifficultyFile, dt: f64) {
+    if isl.over {
+        // Komplett verloren: alle Stufen stehen, keine Ereignisse mehr
+        for w in &mut isl.stages {
+            w.events.clear();
+        }
+        return;
+    }
+    for i in 0..isl.stages.len() {
+        let mut r = isl.stage_ref(i, difficulty);
+        std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock); // Entscheidung 5: der Vorrat gehört der Stufe, solange sie rechnet
+        step(&mut isl.stages[i], commands, Some(&mut r), dt);
+        std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
+        isl.put_stage_ref(r);
+    }
+    if !isl.over {
+        step_island_travel(isl, dt);
+        step_island_switch(isl, dt);
+        mirror_switch(isl);
+        check_victory(isl);
+    }
+    for w in &mut isl.stages {
+        mirror_state(w);
+    }
+    for (i, w) in isl.stages.iter_mut().enumerate() {
+        // nach dem Wechsel, damit auch `arrived` seine Stufe trägt
+        for ev in &mut w.events {
+            tag_stage(ev, i);
+        }
+    }
+}
+
+/// Setzt `stage` im Ereignis.
+fn tag_stage(ev: &mut Event, stage: usize) {
+    ev.insert("stage".to_string(), serde_json::Value::from(stage as i64));
+}
