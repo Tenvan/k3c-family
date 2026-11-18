@@ -1,11 +1,11 @@
 # RU18 · SIM · Sim: Wirtschaft, Bau, Hub, Monarch, Skills
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
 - **Tickets:** –
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 9932e5b6f
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17
