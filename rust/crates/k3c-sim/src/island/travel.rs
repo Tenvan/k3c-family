@@ -9,7 +9,7 @@ use serde_json::Value;
 
 use super::Island;
 use crate::economy::refund_pending;
-use crate::state::pending::{TravelPoint, crowned, return_banner, travel_points, values};
+use crate::state::links::{TravelPoint, crowned, return_banner, travel_points, values};
 use crate::state::{Event, IslandRef, Player};
 
 /// Go: `islandTravel`, der Reisefortschritt eines Spielers an einem Punkt.

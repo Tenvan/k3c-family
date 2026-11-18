@@ -127,7 +127,7 @@ fn vein_kind(data: &k3c_data::Data) -> String {
 fn only_veins(v: &WorldValues, nodes: &[ResourceNode]) -> Vec<ResourceNode> {
     nodes
         .iter()
-        .filter(|n| crate::state::pending::is_vein(v, n))
+        .filter(|n| crate::state::links::is_vein(v, n))
         .cloned()
         .collect()
 }
@@ -152,7 +152,7 @@ fn sieg_alles_abbauen() {
     let last = isl.stages[1]
         .nodes
         .iter()
-        .position(|n| !crate::state::pending::is_vein(&vals, n))
+        .position(|n| !crate::state::links::is_vein(&vals, n))
         .expect("Höhle ohne endliches Ressourcenobjekt");
     isl.stages[0].nodes = only_veins(&vals, &isl.stages[0].nodes);
     let keep = isl.stages[1].nodes[last].clone();

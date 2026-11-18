@@ -11,7 +11,7 @@ use super::values::night;
 use crate::enemies::waves::{SpawnOrder, spawn_orders};
 use crate::state::World;
 use crate::state::common::event;
-use crate::state::pending::{scatter_coins, values};
+use crate::state::links::{scatter_coins, values};
 
 /// Go: `eventInNight`: Das Event läuft in Nacht `n` der Insel (Nacht n = `cycle.day` n, die Nacht gehört zum Tag davor), nach
 /// Rhythmus oder erzwungen von der Dev-Aktion event (`DevFlags::nights`).

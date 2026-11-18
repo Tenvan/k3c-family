@@ -22,7 +22,7 @@ use crate::economy::{can_afford, clear_pending, nearest, spend};
 use crate::enemies::BODY;
 use crate::state::common::{apply_damage, cause_or_other, event, is_dangerous, outer_wall};
 use crate::state::island_ref::{IslandRef, cheap};
-use crate::state::pending::{emit, fighters, outpost, troop_limit, unit_x, weapons_in_flight};
+use crate::state::links::{emit, fighters, outpost, troop_limit, unit_x, weapons_in_flight};
 use crate::state::{ItemDrop, Job, World, WorldValues};
 use k3c_data::troops::TroopData;
 

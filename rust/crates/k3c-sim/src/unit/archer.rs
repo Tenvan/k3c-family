@@ -9,7 +9,7 @@ use super::{ARRIVE, ARROW_SPEED, walk_to};
 use crate::combat::squad_post;
 use crate::state::common::{outer_wall, sign};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{arrow_event, is_spell_tower};
+use crate::state::links::{arrow_event, is_spell_tower};
 use crate::state::{Projectile, Troop, World, WorldValues};
 
 /// Go: `isOnTower`: Steht der Schütze auf seinem Turm?

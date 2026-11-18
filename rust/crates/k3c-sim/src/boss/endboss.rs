@@ -16,7 +16,7 @@ use super::data::boss_by_id;
 use super::spawn_boss;
 use crate::state::common::event;
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{crowned, emit};
+use crate::state::links::{crowned, emit};
 use crate::state::{Enemy, Player, World, WorldValues};
 
 /// Go: `endbossFight`, der laufende Kampf gegen den Endboss einer Insel. `boss_id` ist die ID des Gegners (Go: Zeiger

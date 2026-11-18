@@ -4,7 +4,7 @@ use std::io::Write;
 
 use serde_json::{Value, json};
 
-use super::{diff, go_float, read, testdata, tree};
+use super::{SIM_TOL, diff, diff_tol, go_float, read, testdata, tree};
 
 fn golden_files() -> Vec<std::path::PathBuf> {
     let mut files: Vec<_> = std::fs::read_dir(testdata().join("golden"))
@@ -158,4 +158,28 @@ fn zahlen_wie_go() {
     for (x, want) in cases {
         assert_eq!(go_float(x), want, "{x:e}");
     }
+}
+
+#[test]
+fn diff_tol_laesst_kleine_fliesskomma_abweichungen_zu() {
+    let want = serde_json::json!({"x": 100.0, "t": 1e-12, "n": 5});
+    let near = serde_json::json!({"x": 100.005, "t": 3e-12, "n": 5});
+    assert_eq!(diff_tol("w", &want, &near, SIM_TOL), "");
+    assert_ne!(diff("w", &want, &near), "");
+}
+
+#[test]
+fn diff_tol_meldet_abweichung_ausserhalb_mit_pfad() {
+    let want = serde_json::json!({"a": [1.0, {"x": 100.0}]});
+    let far = serde_json::json!({"a": [1.0, {"x": 100.02}]});
+    assert_eq!(diff_tol("w", &want, &far, SIM_TOL), "w.a[1].x = 100.02, erwartet 100");
+}
+
+#[test]
+fn diff_tol_haelt_ganzzahlen_und_laengen_exakt() {
+    let want = serde_json::json!({"gold": 100, "ids": [1, 2]});
+    let gold = serde_json::json!({"gold": 101, "ids": [1, 2]});
+    assert_eq!(diff_tol("w", &want, &gold, SIM_TOL), "w.gold = 101, erwartet 100");
+    let ids = serde_json::json!({"gold": 100, "ids": [1]});
+    assert_eq!(diff_tol("w", &want, &ids, SIM_TOL), "w.ids (Länge)");
 }

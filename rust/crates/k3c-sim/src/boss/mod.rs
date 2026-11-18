@@ -109,13 +109,13 @@ pub fn boss_ability_with(w: &mut World, v: &WorldValues, ei: usize, isl: Option<
         }
         "flameTrail" => flame_trail(w, ei, a),
         "shardThrow" => shard_throw(w, v, ei, a),
-        "aoe" => boss_aoe(w, v, ei, a),
+        "aoe" => boss_aoe(w, v, ei, a, isl),
         _ => {}
     }
 }
 
 /// Der Flächenschlag des Bosses (`aoe`): trifft, sobald ein Ziel im Radius steht, alle Ziele dort je einmal.
-fn boss_aoe(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility) {
+fn boss_aoe(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility, isl: Option<&IslandRef>) {
     let (x, id, damage) = (w.enemies[ei].x, w.enemies[ei].id, w.enemies[ei].damage);
     let targets = aoe_targets(w, v, x, a.radius);
     if targets.is_empty() {
@@ -126,7 +126,7 @@ fn boss_aoe(w: &mut World, v: &WorldValues, ei: usize, a: &BossAbility) {
     let kind = w.enemies[ei].kind.clone(); // ein Schlag je Intervall
     for c in &targets {
         let dmg = moon_damage(w, damage); // Blutmond (events_moon.go)
-        apply_damage_by(w, c.id, dmg, &kind);
+        apply_damage_by(w, c.id, dmg, &kind, isl);
         if c.kind == TargetKind::Player
             && let Some(pi) = c.player
         {

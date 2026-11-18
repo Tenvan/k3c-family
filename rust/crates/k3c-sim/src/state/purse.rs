@@ -2,7 +2,7 @@
 //! (`economy.purse.maxGold`), Größe 2 und 3 lernt der Spieler als Passive purseMedium und purseLarge. Jede Größe ist die
 //! Münz-Obergrenze des Spielers; die Größe wird berechnet, nicht gespeichert.
 
-use super::pending::{skill_ref, values};
+use super::links::{skill_ref, values};
 use super::{IslandRef, Player, World};
 use crate::island::storage::purse_max;
 

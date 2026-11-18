@@ -8,7 +8,7 @@
 use super::storage::carry_to_stock;
 use super::testutil::*;
 use crate::enemies::testutil::{bare_world, built_site, test_values};
-use crate::state::pending::values;
+use crate::state::links::values;
 use crate::state::{IslandRef, Job, Troop, World};
 
 /// Go: `carrier`: ein tagsüber wartender Träger mit Holz bei `x`; `hammer` false (Go: true) hält `build_job` aus `each_site`.

@@ -16,7 +16,7 @@ use std::sync::Arc;
 
 use crate::boss::endboss::EndbossFight;
 use crate::state::island_ref::IslandEvents;
-use crate::state::pending::{DevFlags, values};
+use crate::state::links::{DevFlags, values};
 use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 use crate::world::state_mirror::{mirror_state, mirror_switch};
 use crate::world::{add_player_at, step};

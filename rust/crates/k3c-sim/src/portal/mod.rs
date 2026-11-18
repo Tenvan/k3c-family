@@ -14,7 +14,7 @@ use crate::enemies::equipment_taken::drop_carried;
 use crate::enemies::waves::{queue_wave, scaled, spawn_orders};
 use crate::state::common::event;
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{add_pool_points, emit, scatter_coins, unit_x};
+use crate::state::links::{add_pool_points, emit, scatter_coins, unit_x};
 use crate::state::save::HubSave;
 use crate::state::{World, WorldValues};
 use crate::unit::warrior::is_fighter;

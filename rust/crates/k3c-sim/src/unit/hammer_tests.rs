@@ -222,7 +222,7 @@ fn hammer_bei_voller_truppe_geholt() {
     w.cycle_speed = 1e-6;
     add_player(&mut w);
     add_player(&mut w);
-    let limit = crate::state::pending::troop_limit(&w);
+    let limit = crate::state::links::troop_limit(&w);
     let hub = w.hub_x;
     for _ in 0..limit {
         let ti = crate::unit::spawn_vagrant(&mut w, hub, hub);

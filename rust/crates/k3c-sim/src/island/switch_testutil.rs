@@ -35,7 +35,7 @@ pub fn test_islands(data: &Data) -> (WorldDef, IslandDef) {
 /// Go: `completeShip` (ship_test.go): baut das Schiff der Insel fertig und liefert die X-Position des Stegs. Der Rumpf
 /// ruft `dev_build_site` (RU19).
 pub fn complete_ship(isl: &mut Island) -> f64 {
-    use crate::world::pending::dev_build_site;
+    use crate::world::links::dev_build_site;
     use crate::world::ship::{SHIP_KIND, harbor};
     let Some((wi, si)) = harbor(isl) else {
         panic!("kein Hafen auf der Insel");
@@ -174,5 +174,5 @@ pub fn parse_world(raw: &str, name: &str) -> Result<WorldDef, String> {
 
 /// Go: `defaultValues()` (world_values.go): der Basis-Wertesatz; kommt mit RU14 (`values_of`).
 pub fn default_values(data: &Data) -> std::sync::Arc<crate::state::WorldValues> {
-    crate::state::pending::values_of(&standard_world(data)).expect("Basis-Wertesatz")
+    crate::state::links::values_of(&standard_world(data)).expect("Basis-Wertesatz")
 }

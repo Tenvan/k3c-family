@@ -9,7 +9,7 @@ use k3c_level::types::{PlannedChunk, PlannedObject};
 
 use super::testutil::*;
 use super::{CreateOptions, Island, add_island_player, create_island, step_island};
-use crate::pending::vagrants_at;
+use crate::links::vagrants_at;
 use crate::state::PlayerCommand;
 
 /// Go: `fixedPlan` setzt im Wald je ein festes Objekt: Baum (Platz +2), Truhe (+1), Camp (−1, Chunk-Mitte), Portal (+6).

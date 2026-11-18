@@ -13,7 +13,7 @@ use super::traits::strike;
 use super::{BODY, spawn_with};
 use crate::state::common::{shielded, sign};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::crowned;
+use crate::state::links::crowned;
 use crate::state::save::{HubSave, key};
 use crate::state::{Enemy, World, WorldValues};
 use crate::unit::archer::is_on_tower;

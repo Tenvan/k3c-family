@@ -16,7 +16,7 @@ use k3c_data::monarch::CrownData;
 use crate::island::defeat::game_over;
 use crate::state::common::{event, sign};
 use crate::state::island_ref::{IslandRef, protected_night};
-use crate::state::pending::{emit, unit_x, values};
+use crate::state::links::{emit, unit_x, values};
 use crate::state::shared::Crown;
 use crate::state::{Coin, Enemy, World, WorldValues};
 

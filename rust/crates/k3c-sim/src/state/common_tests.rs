@@ -1,5 +1,5 @@
 //! Tests der reinen Helfer aus `common.rs`. Go hat dafür keine eigene Testdatei (`common.go` wird über die Sim-Golden
-//! geprüft); hier die Fälle, die ohne spätere Sprints laufen. Pfade, die `pending.rs` rufen, sind `ignore` mit Sprint.
+//! geprüft); hier die Fälle, die ohne spätere Sprints laufen. Pfade, die `links.rs` rufen, sind `ignore` mit Sprint.
 
 use super::common::*;
 use super::{Player, ResourceNode, Site, Troop, World};
@@ -140,7 +140,7 @@ fn destroy_site_macht_den_platz_wieder_leer() {
         next_id: 1,
         ..World::default()
     };
-    let wall_hp = super::pending::values(&w).buildings["wall"].hp;
+    let wall_hp = super::links::values(&w).buildings["wall"].hp;
     let mut wall = site(7, "wall", 100.0, "built");
     wall.hp = 5.0;
     wall.paid_gold = 5;

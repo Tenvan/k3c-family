@@ -15,7 +15,7 @@ use k3c_level::rules::Rules;
 use k3c_level::types::{NatureValues, PlannedChunk};
 
 use crate::state::data::has_depth;
-use crate::state::pending::IslandStory;
+use crate::state::links::IslandStory;
 
 use super::endboss::check_end_boss;
 use super::nature::check_nature;

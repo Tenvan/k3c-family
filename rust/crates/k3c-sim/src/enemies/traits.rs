@@ -9,7 +9,7 @@ use super::target::{Target, TargetKind, attack};
 use super::{BODY, is_barrier};
 use crate::state::common::{apply_damage_by, approach, event, shielded, sign};
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{crowned, emit, frost_armor_hit, is_on_tower, unit_x, values};
+use crate::state::links::{crowned, emit, frost_armor_hit, is_on_tower, unit_x, values};
 use crate::state::{Enemy, World, WorldValues};
 
 /// Go: `shipKind` (ship.go).
@@ -42,7 +42,7 @@ pub fn strike(w: &mut World, v: &WorldValues, ei: usize, t: &Target, isl: Option
     let targets = aoe_targets(w, v, t.x, radius); // alle zehn Sekunden oder seltener, nie je Takt
     let mut kind = std::mem::take(&mut w.enemies[ei].kind); // ohne Kopie als Ursache; danach zurück
     for c in &targets {
-        apply_damage_by(w, c.id, damage, &kind);
+        apply_damage_by(w, c.id, damage, &kind, isl);
         if let Some(pi) = c.player {
             std::mem::swap(&mut w.enemies[ei].kind, &mut kind); // der Gegner braucht seine Art kurz zurück
             frost_armor_hit(w, pi, ei);

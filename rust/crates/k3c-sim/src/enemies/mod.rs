@@ -32,7 +32,7 @@ mod waves_tests;
 
 use crate::state::common::sign;
 use crate::state::island_ref::IslandRef;
-use crate::state::pending::{boss_ability, crown_stolen, take_crown_or_loot, values};
+use crate::state::links::{boss_ability, crown_stolen, take_crown_or_loot, values};
 use crate::state::{Enemy, QueuedSpawn, Site, World, WorldValues};
 
 pub use guard::is_wave_enemy;

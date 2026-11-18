@@ -5,7 +5,7 @@
 use k3c_data::events::{NightEvent, find_event};
 
 use crate::state::World;
-use crate::state::pending::values;
+use crate::state::links::values;
 
 /// Go: `World.night`: das Event `id` aus dem Wertesatz der Stufe (`None`, wenn es fehlt); eine Kopie, weil der Wertesatz
 /// ein `Arc` ist.

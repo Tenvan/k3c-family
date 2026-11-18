@@ -12,7 +12,7 @@ use crate::boss::spawn_boss;
 use crate::events::merchant::raid_merchant;
 use crate::island::Island;
 use crate::merchant::merchant_arrive;
-use crate::state::pending::values;
+use crate::state::links::values;
 use crate::state::{Fehler, World};
 use crate::world::hub_of;
 

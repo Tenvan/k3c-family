@@ -9,7 +9,7 @@ use std::collections::BTreeMap;
 use serde_json::{Value, json};
 
 use super::base::base;
-use super::pending::site_cost;
+use super::links::site_cost;
 use super::values_room::{default_values, resolve_world, values, values_of};
 use crate::island::switch_testutil::{test_island, test_world};
 use crate::island::testutil::{ISLAND_SPEED, parse_world_in, standard_world, test_data};

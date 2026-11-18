@@ -7,12 +7,12 @@
 
 use std::sync::Arc;
 
-use super::pending::event_active;
+use super::links::event_active;
 use super::vals;
 use crate::boss::data::boss_by_id;
 use crate::boss::endboss::{EndbossFight, boss_ability_of};
 use crate::island::Island;
-use crate::pending::unit_x;
+use crate::links::unit_x;
 use crate::state::shared::{ActiveEvent, SwitchState, WarnZone, WorldValues};
 use crate::state::{IslandRef, World};
 

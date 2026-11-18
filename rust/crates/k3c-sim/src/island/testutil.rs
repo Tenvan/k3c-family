@@ -16,7 +16,7 @@ use k3c_level::types::NatureValues;
 use super::{
     CreateOptions, Island, SaveTables, WorldDef, create_island, from_island_save, parse_island_save, step_island,
 };
-use crate::state::pending::values_of;
+use crate::state::links::values_of;
 use crate::state::{Event, IslandRef, PlayerCommand, World};
 
 /// Go: `islandSpeed`: schneller Zyklus, Tag, Dämmerung und Nacht in Sekunden statt Minuten.
