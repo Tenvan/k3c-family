@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU13
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
@@ -69,3 +69,7 @@ keine
 ## Notizen
 
 Aus B-1055 zerlegt. Kann parallel zu B-1071 laufen (andere Dateien); AC-03 nutzt B-1071 nur als Wertquelle, notfalls Zahlen aus `river.kage` direkt.
+
+### Ergebnis
+
+`backend/river.wgsl` (Fragment 1:1 nach `river.kage`, Uniform-Struct aus vec4-Feldern, 208 Byte), Pipelines je Mischung und Bind-Layout mit dynamischem Versatz in `setup.rs` (`river_layout`, `river_stride`, `river_pipeline`, `river_pipelines`), Packung `pack_river` in `river.rs`, `gpu.rs` zeichnet `Kind::River` (ein Uniform-Puffer je Bild, Versatz je Aufruf, Scissor und Blend wie die anderen Runs); übersetzt der Shader nicht, Log-Zeile und Fluss-Aufrufe werden übersprungen. Keine neue Abhängigkeit: `wgpu::naga` (Re-Export, naga 30.0.2 schon im Lockfile) validiert ohne GPU. Tests: naga-Validierung beider Shader, Konstanten `tau`/`srcH` gleich `river.rs` (dafür im WGSL als `const …: f32`), Packungs-Layout, Pipeline-Aufbau auf einem Adapter (ohne Adapter übersprungen; lief hier). `cargo test -p k3c-platform -p k3c-game` und `task rust:lint` grün. Nicht geprüft: Bild der GPU-Fassung im Fenster (Ralf, B-1059).

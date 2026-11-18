@@ -131,3 +131,25 @@ fn stimmt_mit_f64_referenz_ueber_alle_reihen() {
     }
     assert!(off * 100 < total, "{off} Abweichungen von {total} Punkten");
 }
+
+#[test]
+fn pack_river_legt_felder_wie_im_shader_ab() {
+    let mut u = uni([0.1, 0.2, 0.3]);
+    u.origin = [5.0, 6.0];
+    let c = crate::RiverCall {
+        dst: crate::Rect::new(1.0, 2.0, 3.0, 4.0),
+        u,
+    };
+    let mut out = [0u8; RIVER_BYTES];
+    pack_river(&c, &mut out);
+    let f: Vec<f32> = out
+        .chunks(4)
+        .map(|b| f32::from_ne_bytes(b.try_into().unwrap()))
+        .collect();
+    assert_eq!(f.len(), 52);
+    assert_eq!(&f[..8], &[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 0.0, 0.0]);
+    assert_eq!(&f[8..32], &u.rows);
+    assert_eq!(&f[32..36], &[0.1, 0.2, 0.3, 0.0]);
+    assert_eq!(&f[36..40], &[0.0, 0.0, 1.0, 0.0]);
+    assert_eq!(&f[48..52], &[1.0, 1.0, 1.0, 0.0]);
+}

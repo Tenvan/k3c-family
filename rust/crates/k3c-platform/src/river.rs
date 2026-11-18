@@ -16,10 +16,27 @@ pub struct RiverUniforms {
 }
 
 /// 2π wie `tau` in `river.kage`.
-const TAU: f32 = std::f32::consts::TAU;
+pub(crate) const TAU: f32 = std::f32::consts::TAU;
 /// Höhe der Wellen-Kachel in Quell-px (`srcH` in `river.kage`, `riverSrcH` in Go); Band und Schatten rechnen in
 /// dieser Einheit.
-const SRC_H: f32 = 64.0;
+pub(crate) const SRC_H: f32 = 64.0;
+
+/// Größe der Uniforms eines Fluss-Aufrufs im GPU-Puffer in Byte (52 × f32, Layout `struct River` in `river.wgsl`).
+pub(crate) const RIVER_BYTES: usize = 208;
+
+/// Packt einen Fluss-Aufruf für `river.wgsl`: Rechteck, Ursprung, 6 Reihen, Phasen und vier Farben, jedes Feld als vec4
+/// (Füllwert 0).
+pub(crate) fn pack_river(c: &crate::RiverCall, out: &mut [u8]) {
+    let (d, u) = (c.dst, &c.u);
+    let v3 = |a: [f32; 3]| [a[0], a[1], a[2], 0.0];
+    let floats = [d.x, d.y, d.w, d.h, u.origin[0], u.origin[1], 0.0, 0.0]
+        .into_iter()
+        .chain(u.rows)
+        .chain([u.phase, u.base, u.wave, u.shade, u.glint].into_iter().flat_map(v3));
+    for (chunk, f) in out[..RIVER_BYTES].as_chunks_mut::<4>().0.iter_mut().zip(floats) {
+        *chunk = f.to_ne_bytes();
+    }
+}
 
 /// Mischt `a` nach `b` um den Anteil `t` (wie `mix` in Kage).
 fn mix3(a: [f32; 3], b: [f32; 3], t: f32) -> [f32; 3] {

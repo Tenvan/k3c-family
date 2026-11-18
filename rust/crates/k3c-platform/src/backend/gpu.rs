@@ -5,8 +5,9 @@ use std::sync::Arc;
 
 use winit::window::Window;
 
-use super::setup::{Grow, bind_layout, pipeline, sampler, upload, write};
+use super::setup::{Grow, bind_layout, pipeline, river_layout, river_pipelines, river_stride, sampler, upload, write};
 use crate::batch::Pending;
+use crate::river::{RIVER_BYTES, pack_river};
 use crate::{Blend, Filter, Frame, INST_BYTES, Kind, LOGICAL, Rect, VERT_BYTES};
 
 const CLEAR: wgpu::Color = wgpu::Color {
@@ -25,6 +26,13 @@ pub struct Gfx {
     /// Pipelines je (Art, Mischung): `[Quads, Tris][Over, Multiply]`.
     pipes: [[wgpu::RenderPipeline; 2]; 2],
     bgl: wgpu::BindGroupLayout,
+    /// Fluss-Shader (B-1072): Pipelines je Mischung; `None`, wenn der Shader nicht übersetzt (Fluss-Aufrufe entfallen).
+    river_pipes: Option<[wgpu::RenderPipeline; 2]>,
+    river_bgl: wgpu::BindGroupLayout,
+    river_stride: u64,
+    river_u: Grow,
+    /// Bind-Group über `river_u`, je Bild neu (der Puffer kann gewachsen sein).
+    river_bg: Option<wgpu::BindGroup>,
     linear: wgpu::Sampler,
     nearest: wgpu::Sampler,
     white: wgpu::BindGroup,
@@ -61,7 +69,14 @@ impl Gfx {
         let nearest = sampler(&device, wgpu::FilterMode::Nearest);
         let (_, white) = upload(&device, &queue, &bgl, &linear, (1, 1), &[255; 4]);
         use wgpu::BufferUsages as U;
+        let river_bgl = river_layout(&device);
+        let river_pipes = river_pipelines(&device, &river_bgl, config.format);
         let g = Self {
+            river_stride: river_stride(&device),
+            river_u: Grow::new(&device, "fluss", U::UNIFORM, START_BYTES),
+            river_bg: None,
+            river_pipes,
+            river_bgl,
             pipes: [false, true].map(|tris| {
                 [Blend::Over, Blend::Multiply].map(|mode| pipeline(&device, &bgl, config.format, (tris, mode)))
             }),
@@ -138,6 +153,35 @@ impl Gfx {
         }
     }
 
+    /// Schreibt die Uniforms der Fluss-Aufrufe (ein Abstand `river_stride` je Aufruf) und bindet sie.
+    fn fill_rivers(&mut self, frame: &Frame) {
+        let calls = frame.river_calls();
+        self.river_bg = None;
+        if calls.is_empty() || self.river_pipes.is_none() {
+            return;
+        }
+        let stride = self.river_stride as usize;
+        self.river_u.reserve(&self.device, (calls.len() * stride) as u64);
+        self.scratch.clear();
+        self.scratch.resize(calls.len() * stride, 0);
+        for (c, slot) in calls.iter().zip(self.scratch.chunks_mut(stride)) {
+            pack_river(c, slot);
+        }
+        self.queue.write_buffer(&self.river_u.buf, 0, &self.scratch);
+        self.river_bg = Some(self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+            label: Some("fluss"),
+            layout: &self.river_bgl,
+            entries: &[wgpu::BindGroupEntry {
+                binding: 0,
+                resource: wgpu::BindingResource::Buffer(wgpu::BufferBinding {
+                    buffer: &self.river_u.buf,
+                    offset: 0,
+                    size: wgpu::BufferSize::new(RIVER_BYTES as u64),
+                }),
+            }],
+        }));
+    }
+
     fn fill_buffers(&mut self, frame: &Frame) {
         let n = frame.instance_count() * INST_BYTES;
         if n > 0 {
@@ -153,6 +197,7 @@ impl Gfx {
             frame.write_vertices(&mut self.scratch);
             self.queue.write_buffer(&self.verts.buf, 0, &self.scratch);
         }
+        self.fill_rivers(frame);
         let idx = frame.indices();
         if !idx.is_empty() {
             let n = idx.len() * 4;
@@ -180,13 +225,20 @@ impl Gfx {
         let (sw, sh) = (self.config.width, self.config.height);
         let mut current = None;
         for r in frame.runs() {
-            if r.kind == Kind::River {
-                // B-1070: Der Backend-Pfad folgt mit B-1072.
-                continue;
-            }
             let Some((x, y, w, h)) = scissor(r.clip, sw, sh) else {
                 continue;
             };
+            if r.kind == Kind::River {
+                if let (Some(pipes), Some(bg)) = (&self.river_pipes, &self.river_bg) {
+                    p.set_pipeline(&pipes[r.blend as usize]);
+                    p.set_scissor_rect(x, y, w, h);
+                    p.set_bind_group(0, Some(bg), &[(u64::from(r.first) * self.river_stride) as u32]);
+                    p.draw(0..6, 0..1);
+                    // Pipeline und Gruppe 0 gehören jetzt dem Fluss: der nächste Run setzt alles neu.
+                    current = None;
+                }
+                continue;
+            }
             let bg = match r.tex {
                 None => &self.white,
                 Some(t) => match self.texs.get(t.0 as usize) {
