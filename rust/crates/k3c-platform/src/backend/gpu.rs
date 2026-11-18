@@ -180,6 +180,10 @@ impl Gfx {
         let (sw, sh) = (self.config.width, self.config.height);
         let mut current = None;
         for r in frame.runs() {
+            if r.kind == Kind::River {
+                // B-1070: Der Backend-Pfad folgt mit B-1072.
+                continue;
+            }
             let Some((x, y, w, h)) = scissor(r.clip, sw, sh) else {
                 continue;
             };
@@ -198,6 +202,7 @@ impl Gfx {
                             p.set_vertex_buffer(0, self.verts.buf.slice(..));
                             p.set_index_buffer(self.idx.buf.slice(..), wgpu::IndexFormat::Uint32);
                         }
+                        Kind::River => {}
                     }
                 }
                 current = Some((r.kind, r.blend));
@@ -209,6 +214,7 @@ impl Gfx {
             match r.kind {
                 Kind::Quads => p.draw(0..6, range),
                 Kind::Tris => p.draw_indexed(range, 0, 0..1),
+                Kind::River => {}
             }
         }
     }

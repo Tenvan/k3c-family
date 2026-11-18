@@ -262,3 +262,60 @@ fn mischung_trennt_buendel_und_gilt_nur_ein_bild() {
     f.finish();
     assert_eq!(f.runs()[0].blend, Blend::Over, "die Mischung gilt nur ein Bild");
 }
+
+fn uniforms(n: f32) -> RiverUniforms {
+    RiverUniforms {
+        origin: [n, 2.0 * n],
+        ..RiverUniforms::default()
+    }
+}
+
+#[test]
+fn river_standard_ist_false() {
+    // B-1070 AC-01: Eine Canvas ohne Überschreibung (NullCanvas) meldet „nicht unterstützt“.
+    let mut c = crate::NullCanvas::default();
+    assert!(!c.river(Rect::new(0.0, 0.0, 4.0, 4.0), &uniforms(1.0)));
+}
+
+#[test]
+fn river_ist_eigener_run_in_aufrufreihenfolge() {
+    // B-1070 AC-02: genau ein Run Kind::River je Aufruf, davor und danach bleibt die Reihenfolge.
+    let mut f = Frame::new();
+    f.begin();
+    f.rect(Rect::new(0.0, 0.0, 1.0, 1.0), WHITE);
+    assert!(f.river(Rect::new(5.0, 6.0, 7.0, 8.0), &uniforms(3.0)));
+    f.rect(Rect::new(1.0, 0.0, 1.0, 1.0), WHITE);
+    assert!(f.river(Rect::new(0.0, 0.0, 2.0, 2.0), &uniforms(4.0)));
+    f.finish();
+    let kinds: Vec<_> = f.runs().iter().map(|r| (r.kind, r.first, r.count)).collect();
+    assert_eq!(
+        kinds,
+        [
+            (Kind::Quads, 0, 1),
+            (Kind::River, 0, 1),
+            (Kind::Quads, 1, 1),
+            (Kind::River, 1, 1)
+        ]
+    );
+    let calls = f.river_calls();
+    assert_eq!(calls.len(), 2);
+    assert_eq!(calls[0].dst, Rect::new(5.0, 6.0, 7.0, 8.0));
+    assert_eq!(calls[0].u, uniforms(3.0));
+    assert_eq!(calls[1].u, uniforms(4.0));
+}
+
+#[test]
+fn river_leeres_rechteck_ohne_run_und_clip_bleibt() {
+    let mut f = Frame::new();
+    f.begin();
+    assert!(f.river(Rect::new(0.0, 0.0, 0.0, 5.0), &uniforms(1.0)));
+    assert!(f.river(Rect::new(0.0, 0.0, 5.0, -1.0), &uniforms(1.0)));
+    let clip = Rect::new(1.0, 1.0, 2.0, 2.0);
+    f.clip(Some(clip));
+    f.layer(2);
+    assert!(f.river(Rect::new(0.0, 0.0, 9.0, 9.0), &uniforms(1.0)));
+    f.finish();
+    assert_eq!(f.runs().len(), 1);
+    let r = f.runs()[0];
+    assert_eq!((r.kind, r.layer, r.clip), (Kind::River, 2, Some(clip)));
+}

@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU13
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
@@ -70,3 +70,7 @@ keine
 ## Notizen
 
 Aus B-1055 zerlegt. Reihenfolge: B-1070, dann B-1071 und B-1072 parallel, zuletzt B-1073.
+
+### Ergebnis
+
+Umgesetzt: `RiverUniforms` (`k3c-platform/src/river.rs`), `Canvas::river` mit Standard `false`, `Frame::river` mit eigenem Run `Kind::River` (nie gebündelt; `Frame::river_calls` liefert Rechteck und Uniforms in Zeichenreihenfolge), leeres Rechteck: kein Run, `true`. GPU-Backend und `SoftCanvas` überspringen `Kind::River` bis B-1071/B-1072. Tests in `batch_tests.rs` (AC-01 bis AC-03). `cargo test -p k3c-platform -p k3c-game` und `task rust:lint` grün.

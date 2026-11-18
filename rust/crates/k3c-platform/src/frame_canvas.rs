@@ -2,7 +2,7 @@
 
 use crate::batch::{Inst, Pending, SOLID, Vertex};
 use crate::ttf::{ATLAS, quant_px};
-use crate::{Affine, Blend, Canvas, Filter, FontId, Frame, LOGICAL, Rect, TexId, font};
+use crate::{Affine, Blend, Canvas, Filter, FontId, Frame, LOGICAL, Rect, RiverUniforms, TexId, font};
 
 impl Canvas for Frame {
     fn size(&self) -> (f32, f32) {
@@ -71,6 +71,13 @@ impl Canvas for Frame {
             uv: [src.x / w, src.y / h, src.w / w, src.h / h],
         };
         self.push_quad(t.0, inst);
+    }
+
+    fn river(&mut self, dst: Rect, u: &RiverUniforms) -> bool {
+        if dst.w > 0.0 && dst.h > 0.0 {
+            self.push_river(dst, u);
+        }
+        true
     }
 
     fn mesh(&mut self, t: TexId, verts: &[Vertex], idx: &[u16]) {

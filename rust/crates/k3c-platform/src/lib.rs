@@ -15,6 +15,7 @@ mod headless;
 mod input;
 pub mod log;
 mod measure;
+mod river;
 mod runner;
 mod shape;
 mod ttf;
@@ -22,11 +23,12 @@ mod ttf;
 pub use affine::Affine;
 pub use audio::{AudioOut, NullAudio, SoundId, VoiceId, open_audio, open_audio_with};
 pub use backend::{Config, run_window};
-pub use batch::{Frame, INST_BYTES, Inst, Kind, Run, VERT_BYTES, Vertex};
+pub use batch::{Frame, INST_BYTES, Inst, Kind, RiverCall, Run, VERT_BYTES, Vertex};
 pub use clock::{Clock, MAX_STEPS, STEP};
 pub use headless::{NullCanvas, run_headless};
 pub use input::{InputScript, InputState, Key, KeyState, PadAxis, PadButton, PadState, ScriptEntry, ScriptPad};
 pub use measure::{Measure, Summary};
+pub use river::RiverUniforms;
 pub use runner::Runner;
 pub use ttf::FontId;
 
@@ -125,6 +127,11 @@ pub trait Canvas {
     fn stroke_line(&mut self, x0: f32, y0: f32, x1: f32, y1: f32, width: f32, color: [f32; 4]);
     /// Gefülltes einfaches Polygon aus Geraden (konvex oder konkav).
     fn fill_path(&mut self, points: &[[f32; 2]], color: [f32; 4]);
+    /// Fluss-Shader (`river.kage`): zeichnet das Rechteck `dst` mit den Uniforms `u`; Clip, Ebene und Reihenfolge wie bei
+    /// [`Canvas::rect`]. `false` = nicht unterstützt, der Aufrufer fällt auf Kacheln zurück.
+    fn river(&mut self, _dst: Rect, _u: &RiverUniforms) -> bool {
+        false
+    }
     /// Pixel-Schrift (5×7, nur Großbuchstaben, Ziffern, Satzzeichen); `px` = Zeichenhöhe. Rückfall, wenn die
     /// TTF-Schrift fehlt.
     fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]);

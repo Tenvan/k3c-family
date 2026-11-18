@@ -882,3 +882,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | erledigt | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
 | [B-1065](B-1065-rust-textmasse-zeilenhoehe-advance.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust misst Textzeilen niedriger und kleine Schrift schmaler als Go |
 | [B-1055](B-1055-fluss-shader-rust-wgsl.md) | CLI | Schuld | niedrig | verworfen | RU13 | Fluss-Shader in Rust (WGSL) |
+| [B-1070](B-1070-canvas-river-schnittstelle.md) | CLI | Schuld | niedrig | erledigt | RU13 | Canvas kennt einen Fluss-Aufruf mit Uniforms (Schnittstelle ohne Shader) |

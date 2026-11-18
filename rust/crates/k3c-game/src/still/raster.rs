@@ -110,6 +110,7 @@ impl SoftCanvas {
                         draw_tri(&mut img, clip, (tex, run.blend), corners);
                     }
                 }
+                Kind::River => {}
             }
         }
         img

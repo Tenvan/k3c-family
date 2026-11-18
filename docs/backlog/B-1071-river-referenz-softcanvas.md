@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** RU13
 - **Projekt:** RSU
