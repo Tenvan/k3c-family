@@ -85,7 +85,7 @@ fn feste_objekte_stehen_wie_geplant() {
 
 /// Go: `TestFesteTruheIstAufhebbar`.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn feste_truhe_ist_aufhebbar() {
     let (mut isl, data) = planned_island();
     let p0 = add_island_player(&mut isl, 0);
@@ -107,7 +107,7 @@ fn feste_truhe_ist_aufhebbar() {
 
 /// Go: `TestFesterBaumLaesstSichMarkieren`.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn fester_baum_laesst_sich_markieren() {
     let (mut isl, data) = planned_island();
     add_island_player(&mut isl, 0);

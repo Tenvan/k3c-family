@@ -100,8 +100,8 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU14.1 | `RU14.1-world-campaign-ship-preview.md` | Umsetzung | autonom | fertig |
 | RU14.2 | `RU14.2-world-cycle-lava-lines-mirror-skins.md` | Umsetzung | autonom | fertig |
 | RU14.3 | `RU14.3-world-travel-values-locked.md` | Umsetzung | autonom | fertig |
-| RU14.4 | `RU14.4-world-values-merge-room-vein.md` | Umsetzung | autonom | in Arbeit |
-| RU14.5 | `RU14.5-review.md` | Review | autonom | offen |
+| RU14.4 | `RU14.4-world-values-merge-room-vein.md` | Umsetzung | autonom | fertig |
+| RU14.5 | `RU14.5-review.md` | Review | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

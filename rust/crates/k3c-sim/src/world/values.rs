@@ -14,9 +14,9 @@ use std::collections::BTreeMap;
 use k3c_data::Fehler;
 use serde_json::Value;
 
-use super::pending::merge_file;
 use super::values_from::{ReadFn, values_from};
 use super::values_locked::check_locked;
+use super::values_merge::merge_file;
 use crate::island::WorldDef;
 use crate::island::worlds::world_path;
 use crate::state::WorldValues;

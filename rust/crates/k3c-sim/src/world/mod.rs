@@ -22,13 +22,15 @@ use crate::island::create::CreateOptions;
 use crate::island::defeat::{defeat_losses, halve_stock};
 use crate::island::sizes::check_chunk_count;
 use crate::state::island_ref::protected_night;
-use crate::state::pending::{gather_of, is_ruin, to_hub, values};
+use crate::state::pending::{gather_of, is_ruin, to_hub};
 use crate::state::{Camp, Castle, Event, IslandRef, Pickup, Player, ResourceNode, Site, World, WorldValues};
 use crate::unit::hammer::{spawn_start_peasants, spawn_vagrant_with};
 use crate::unit::jobs::make_archer;
+use values_room::values;
 
 pub mod base;
 pub mod cycle;
+pub mod hub_sites;
 pub mod lava;
 pub mod lines;
 pub mod pending;
@@ -41,12 +43,19 @@ pub mod travel;
 pub mod values;
 pub mod values_from;
 pub mod values_locked;
+pub mod values_merge;
+pub mod values_room;
+pub mod values_shape;
+pub mod values_shape_buildings;
+pub mod values_shape_monarch;
+pub mod vein;
 
 use base::base;
 use cycle::cycle_at;
 use lines::world_site_specs;
-use pending::{add_ruin_sites, apply_preset, default_values, new_hub_site, preset_for, ruin_site, validate_hub_data};
+use pending::{add_ruin_sites, apply_preset, new_hub_site, preset_for, ruin_site, validate_hub_data};
 use ship::add_ship_site;
+use values_room::default_values;
 
 pub use step::step;
 
@@ -77,9 +86,19 @@ pub(crate) mod testutil;
 #[cfg(test)]
 mod travel_tests;
 #[cfg(test)]
+mod values_b692_tests;
+#[cfg(test)]
 mod values_locked_tests;
 #[cfg(test)]
+mod values_merge_tests;
+#[cfg(test)]
+mod values_room_tests;
+#[cfg(test)]
+mod values_shape_tests;
+#[cfg(test)]
 mod values_tests;
+#[cfg(test)]
+mod vein_tests;
 
 /// Go: `Options` für `CreateWorld`; die kleingeschriebenen Felder (`lair`, `hub`, `vals`) sind hier öffentlich.
 /// `cycle_speed` 0 bedeutet 1 (wie `?? 1` in TS).
@@ -105,7 +124,7 @@ pub struct Options {
     pub rules: Option<Arc<Rules>>,
 }
 
-/// Der Wertesatz der Stufe; fehlt `vals`, gilt wie in Go die Basis (`values`, RU14.4).
+/// Der Wertesatz der Stufe; fehlt `vals`, gilt wie in Go die Basis (`values`).
 pub fn vals(w: &World) -> Arc<WorldValues> {
     w.vals.clone().unwrap_or_else(|| values(w))
 }

@@ -1,6 +1,6 @@
 //! Tests des Schiffs und des Hafens (Go: `ship_test.go`, `harbor_test.go`; BS5.1 bis BS5.3, B-637). Die Tests, die eine
-//! Welt oder Insel bauen und rechnen, brauchen Plätze, Ruinen und Zahlen (RU18), `dev_build_site` (RU19) und den
-//! Wertesatz der Welt (RU14.4) und tragen `ignore`; `own_*` prüft Teile ohne diese Voraussetzungen.
+//! Welt oder Insel bauen und rechnen, brauchen Plätze, Ruinen und Zahlen (RU18), `dev_build_site` und die
+//! Geschichte der Standard-Welt (RU19) und tragen `ignore`; `own_*` prüft Teile ohne diese Voraussetzungen.
 
 use k3c_data::buildings::{Cost, LevelData};
 use k3c_data::hub::Stock;
@@ -109,7 +109,7 @@ fn schiff_in_abschnitten_bauen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_braucht_fertiges_schiff() {
     // BS5.2/AC-02: Ohne fertiges Schiff öffnet der besiegte Endboss den Inselwechsel nicht; mit letztem Abschnitt öffnet er.
     let data = test_data();
@@ -138,7 +138,7 @@ fn inselwechsel_braucht_fertiges_schiff() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn inselwechsel_am_steg_nicht_an_der_burg() {
     // Der Wechselpunkt liegt am Steg, nicht an der Burg: wer an der Burg des Hafens (Stufe 0) steht, lässt den Wechsel warten.
     let data = test_data();
@@ -167,7 +167,7 @@ fn schiff_kein_gegner_ziel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn schiff_spielstand_rundlauf() {
     // BS5.3/AC-03 (B-637/AC-04): Der Schiff-Fortschritt überlebt Speichern und Laden: gebaute Abschnitte, ein laufender
     // Ausbau (der Endboss-Sieg steht in den besiegten Bossen, `save_boss_tests.rs`).
@@ -201,7 +201,7 @@ fn schiff_spielstand_rundlauf() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn hafen_chunk_auf_insel_eins() {
     // BS5.1/AC-01 (B-637/AC-02): Insel 1, Tiefe 0 hat genau einen Hafen am geplanten Platz (−7), andere Tiefen keinen.
     let data = test_data();

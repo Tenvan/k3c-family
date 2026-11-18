@@ -88,7 +88,7 @@ fn own_carry_gefahr_geht_zur_burg() {
 /// Go: `TestIslandCarryNearestDeposit`: Lager näher als die Burg, dann die Burg, Gleichstand (siehe
 /// `own_deposit_point_gleichstand_burg_vor_lager`). Der Auftrag endet mit `add_pool` (RU14).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_nearest_deposit() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-a", &[0]);
@@ -113,7 +113,7 @@ fn island_carry_nearest_deposit() {
 
 /// Go: `TestIslandCarryWaitsWhenFull`: der volle Ablauf mit Abgabe des Rests, sobald Platz ist.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_waits_when_full() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-b", &[0]);
@@ -132,7 +132,7 @@ fn island_carry_waits_when_full() {
 
 /// Go: `TestIslandCarryDanger`: dasselbe an einer gebauten Insel mit Lager bei Hub + 30.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_danger() {
     let data = test_data();
     let mut isl = must_island(&data, "trag-c", &[0]);
@@ -154,14 +154,14 @@ fn island_carry_danger() {
 
 /// Go: `TestIslandCarryNoIslandUnchanged`: Ohne Insel gilt kein Maximum (`carry` ohne `carry_to_stock`).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (create_world: new_hub_site; carry ist privat in unit)"]
 fn island_carry_no_island_unchanged() {
-    unimplemented!("RU14: create_world_with, add_stock (Tragen ohne Insel)")
+    unimplemented!("RU18: create_world, carry (Tragen ohne Insel)")
 }
 
 /// Go: `TestIslandCarryDeterministic`: Zwei Läufe ergeben dieselben Ereignisse.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_carry_deterministic() {
     let data = test_data();
     let run = || {
@@ -192,11 +192,49 @@ fn island_full_carrier_still_builds_and_keeps_material() {
 }
 
 /// Go: `TestIslandFindJobSkipsFullResource`: Ein volles Holzlager vergibt keine Sammelaufträge für Holz (`find_job` mit
-/// `resource_full`, `gather_of`, `node_free`: RU14 und RU18).
+/// `resource_full`, `gather_of`, `node_free`).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story) und RU18 (create_world: new_hub_site)"]
 fn island_find_job_skips_full_resource() {
-    unimplemented!("RU14: node_free, create_world_with")
+    let data = test_data();
+    let mut isl = must_island(&data, "trag-d", &[0]);
+    let w = &mut isl.stages[0];
+    w.cycle.phase = "day".into();
+    w.enemies.clear();
+    for n in &mut w.nodes {
+        n.marked = true;
+    }
+    for s in &mut w.sites {
+        s.state = "unpaid".into();
+    }
+    let hub = w.hub_x;
+    w.troops.push(Troop {
+        id: 901,
+        kind: "peasant".into(),
+        x: hub,
+        hp: 1.0,
+        max_hp: 1.0,
+        ..Troop::default()
+    });
+    let ti = w.troops.len() - 1;
+    isl.stock.wood = 300; // Bäume liefern Holz: voll
+    let v = values(&isl.stages[0]);
+    let job = on_stage(&mut isl, &data, 0, |w, r| {
+        crate::unit::jobs::find_job(w, &v, ti, Some(r))
+    });
+    let wood = job.filter(|j| j.r#type == "gather").is_some_and(|j| {
+        let kind = isl.stages[0]
+            .nodes
+            .iter()
+            .find(|n| n.id == j.node_id)
+            .map(|n| n.kind.clone());
+        kind.and_then(|k| v.economy.gatherables.get(&k))
+            .is_some_and(|g| g.resource == "wood")
+    });
+    assert!(
+        !wood,
+        "ein volles Holzlager darf keine Sammelaufträge für Holz vergeben"
+    );
 }
 
 /// Go: `TestIslandFullCarrierDoesNotFetchBow`: Ein wartender Träger holt keinen Bogen.

@@ -1,18 +1,18 @@
 //! Port von `engine/sim/world_values_test.go` und `world_values_b692_test.go` (B-680, B-682, B-692): Welt-Werte erben und
-//! übersteuern. Was Merge (`merge_file`, RU14.4), den Basis-Wertesatz (`default_values`, RU14.4) oder `values_from` bis zum
-//! Ende (Presets, Skill-Tabelle, Hub-Plätze: RU18) braucht, trägt `ignore` mit dem liefernden Sprint. Die Fälle, die vor
-//! diesen Schritten enden (Kette, Zyklus, unbekannte Datei, Entfernen), laufen schon. Tests des Welt-Dateikopfs
-//! (`TestParseWorldExtendsOverrides`) stehen bei `k3c_data::world`.
+//! übersteuern. Merge (`merge_file`) und Basis-Wertesatz (`default_values`) kommen seit RU14.4; was `values_from` bis zum
+//! Ende braucht (Presets, Hub-Plätze: RU18), trägt `ignore`. Die Formfehler laufen ohne `values_from` in
+//! `values_merge_tests.rs`; die Fälle, die vor diesen Schritten enden (Kette, Zyklus, unbekannte Datei, Entfernen), laufen
+//! hier. Tests des Welt-Dateikopfs (`TestParseWorldExtendsOverrides`) stehen bei `k3c_data::world`.
 
 use std::collections::BTreeMap;
 
 use k3c_data::{Fehler, Source};
 use serde_json::Value;
 
-use super::pending::default_values;
 use super::values::{
     LookupFn, check_world_removable, override_files, resolve_world_files, resolve_world_values, world_children,
 };
+use super::values_room::default_values;
 use crate::island::WorldDef;
 use crate::island::worlds::{STANDARD_WORLD_ID, world_path};
 use crate::state::WorldValues;
@@ -59,7 +59,7 @@ fn resolve(lookup: LookupFn, id: &str) -> Result<WorldValues, String> {
 
 /// B-680/AC-02: Ohne Overrides gleich der Basis (auch über extends).
 #[test]
-#[ignore = "wartet auf RU14.4 (default_values) und RU18 (values_from: Presets, Skill-Tabelle, Hub-Plätze)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_ohne_overrides() {
     let lookup = test_worlds(vec![
         world(STANDARD_WORLD_ID, "", &[]),
@@ -73,7 +73,7 @@ fn world_values_ohne_overrides() {
 
 /// B-680/AC-02: Ein Override ändert genau das genannte Feld; Einträge in Listen je Index bzw. je id.
 #[test]
-#[ignore = "wartet auf RU14.4 (merge_file, default_values) und RU18 (values_from)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_override_aendert_nur_feld() {
     let w = world(
         "nordmeer",
@@ -211,7 +211,7 @@ fn invalid_value_cases() -> [Case; 6] {
 
 /// B-680/AC-03: Ungültige Overrides werden mit Welt, Datei und Pfad abgelehnt (Tabelle wie in Go; ohne den Fall `biomes`).
 #[test]
-#[ignore = "wartet auf RU14.4 (merge_file: Formfehler) und RU18 (values_from: Prüfungen nach dem Merge)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_ungueltig() {
     let cases = invalid_cases();
     for (file, json, want) in cases {
@@ -226,7 +226,7 @@ fn world_values_ungueltig() {
 
 /// B-680/AC-05: Kette Basis → A → B; das Kind gewinnt, Geerbtes bleibt, der Fehler nennt die auslösende Welt.
 #[test]
-#[ignore = "wartet auf RU14.4 (merge_file) und RU18 (values_from)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_kette() {
     let a = world("a", "", &[("goals", r#"{"gold": 111, "days": 5}"#)]);
     let b = world("b", "a", &[("goals", r#"{"days": 9}"#)]);
@@ -299,7 +299,7 @@ fn world_removable() {
 
 /// B-682: `resolve_world_files` liefert die Basis-Dateien nach der Kette (Kind sieht den Override der Eltern-Welt), leer = Basis.
 #[test]
-#[ignore = "wartet auf RU14.4 (merge_file) und RU18 (values_from)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn resolve_world_files_nach_kette() {
     let a = world("a", "", &[("waves", r#"{"perExtraPlayer": 0.37}"#)]);
     let b = world("b", "a", &[]);
@@ -335,7 +335,7 @@ fn b692_resolve_world_files_prueft_basis() {
 /// B-692 Punkt 3: Felder, die der Level-Generator aus der Basis liest, sind nicht übersteuerbar (welten.md § 1.3). Die
 /// Ablehnung selbst prüft `values_locked_tests`; hier der Weg durch `resolve_world_values` mit Pfad der Welt.
 #[test]
-#[ignore = "wartet auf RU14.4 (merge_file) und RU18 (values_from)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn b692_gesperrte_felder() {
     let cases: [(&str, &str, &str); 4] = [
         ("economy.payRangeUnits", "economy", r#"{"payRangeUnits": 3}"#),
@@ -371,9 +371,4 @@ fn b692_gesperrte_felder() {
     }
 }
 
-// Nicht portiert, mit Grund: `TestB692UseDataFrischMitGoalsUndSkills` (Gos `UseData` und die Paket-Variablen gibt es in
-// Rust nicht; `values_from(read)` liest je Aufruf frisch und teilt keine Maps) und `TestB692WertesatzOhneCreateWorldGemerkt`
-// (Gos Zwischenspeicher `w.vals` in `values()`; die Rust-Entsprechung `vals` ist RU14.4). Die Tests mit `CreateIslandIn`,
-// `CanLearn`, `FromIslandSaveIn`, `validateEconomy` und `ruinSite` (`TestB692SkillOverrideWirktJeWelt`,
-// `…SpielstandPruefungJeWelt`, `…RuestungsstufeJeWertesatz`, `…RuinenHPJeWelt`) brauchen `ResolveWorld` (RU14.4) und
-// Wirtschaft (RU18); sie folgen mit RU14.4.
+// Die übrigen Tests aus `world_values_b692_test.go` stehen in `values_b692_tests.rs` (RU14.4).

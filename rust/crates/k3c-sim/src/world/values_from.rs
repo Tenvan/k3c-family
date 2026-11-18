@@ -9,8 +9,9 @@ use k3c_data::enemies::EnemyData;
 use k3c_data::{Fehler, buildings, economy, enemies, events, goals, hub, monarch, ship, troops, waves};
 
 use super::base::base;
-use super::pending::{check_presets, check_world_hub_sites, new_skill_table};
+use super::pending::{check_presets, check_world_hub_sites};
 use super::ship::with_ship;
+use super::values_room::new_skill_table;
 use crate::state::WorldValues;
 use crate::state::data::check_waves;
 

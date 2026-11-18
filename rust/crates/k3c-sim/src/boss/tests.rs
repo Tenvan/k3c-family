@@ -40,7 +40,7 @@ fn boss_miniboss_kommt_mit_seiner_welle() {
 
 // (b) Goblin-Anführer ruft 2 Goblins je 10 s an seinen Ort.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU10 (boss_island)"]
 fn boss_goblin_anfuehrer_ruft_goblins() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];
@@ -175,7 +175,7 @@ fn boss_skalierung() {
 
 // (e) Ein Boss flieht weder bei Tagesanbruch noch bei halber HP; seine Beschwörungen schon.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU10 (boss_island)"]
 fn boss_flieht_nie() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];

@@ -3,11 +3,9 @@
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU23)
 
 use std::collections::BTreeMap;
-use std::sync::Arc;
 
 use k3c_data::Data;
 use k3c_data::buildings::Plantation;
-use k3c_data::economy::Gatherable;
 use k3c_data::hub::HubData;
 use k3c_data::monarch::{SkillData, SkillEffect};
 
@@ -62,10 +60,7 @@ pub fn is_ruin(_w: &World, _kind: &str, _x: f64) -> bool {
     unimplemented!("RU18: is_ruin")
 }
 
-/// Go: `World.values` (world_values_room.go), der Wertesatz der Welt (Standard, wenn `vals` fehlt).
-pub fn values(_w: &World) -> Arc<WorldValues> {
-    unimplemented!("RU10: values")
-}
+pub use crate::world::values_room::values; // Von RU14.4 portiert (world_values_room.go)
 
 /// Go: `payTarget` (economy_pay.go), das Zahlziel am Ort eines Spielers; hier nur die Felder, die RU8 liest.
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -91,10 +86,7 @@ pub fn find_pay_target(_w: &World, _p: &Player) -> Option<PayTarget> {
     unimplemented!("RU18: find_pay_target")
 }
 
-/// Go: `gatherOf` (economy.go): die sammelbare Ressource zu einer Knoten-Art.
-pub fn gather_of<'a>(_v: &'a WorldValues, _kind: &str) -> Option<&'a Gatherable> {
-    unimplemented!("RU18: gather_of")
-}
+pub use crate::world::vein::gather_of; // Von RU14.4 portiert (world_vein.go)
 
 /// Go: `WorldValues.skillRef` (monarch_data.go): der Skill `id` im Katalog des Wertesatzes.
 pub fn skill_ref<'a>(_v: &'a WorldValues, _id: &str) -> Option<&'a SkillData> {
@@ -143,14 +135,11 @@ pub struct IslandStory {
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct WorldStory;
 
-/// Go: `valuesOf` (world_values_room.go): der aufgelöste Wertesatz der Welt.
-pub fn values_of(_world: &WorldDef) -> Result<Arc<WorldValues>, String> {
-    unimplemented!("RU14: values_of")
-}
+pub use crate::world::values_room::values_of; // Von RU14.4 portiert (world_values_room.go)
 
 /// Go: `ValidateHubDataIn` (hub_validate.go): Befunde der Prüfung einer Kandidaten-hub.json (leer = gültig).
 pub fn validate_hub_data_in(_h: &HubData, _world: &WorldDef) -> Vec<String> {
-    unimplemented!("RU14: validate_hub_data_in")
+    unimplemented!("RU18: validate_hub_data_in (hub_validate, RU18.3)")
 }
 
 /// Go: `decodeIslandStory` (story.go): liest `story` der Insel streng (arrival, boss, done); nur gerufen, wenn das Feld da ist.

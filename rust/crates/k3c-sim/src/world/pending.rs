@@ -1,19 +1,17 @@
 //! Platzhalter der Gruppe `world` für Funktionen späterer Sprints (Port-Leitfaden § 7). Der Sprint, der die Funktion
 //! liefert, löscht den Platzhalter; RU22 prüft, dass keiner übrig ist. Die Reihenfolge der Aufrufe in `step` steht in
 //! `step.rs` (AC-01); jeder Teilschritt anderer Gruppen ist hier ein benannter Platzhalter mit dem liefernden Sprint.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU14, RU18, RU19)
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
 
 use std::collections::BTreeMap;
-use std::sync::Arc;
 
 use k3c_data::buildings::{BuildingData, Cost};
 use k3c_data::economy::EconomyData;
 use k3c_data::events::NightEvent;
 use k3c_data::hub::HubData;
-use k3c_data::monarch::{MonarchData, SkillData};
+use k3c_data::monarch::MonarchData;
 
-use crate::state::shared::SkillTable;
-use crate::state::{IslandRef, PlayerCommand, Site, World, WorldValues};
+use crate::state::{IslandRef, PlayerCommand, Site, World};
 
 // RU18 (Wirtschaft) und RU19 (Ereignisse), gerufen von `step_cycle` (world_cycle.go) und `mirror_state`.
 
@@ -47,29 +45,11 @@ pub fn event_active(_w: &World, _ev: &NightEvent) -> bool {
     unimplemented!("RU19: event_active")
 }
 
-// RU14.4 (world_values): Basis-Wertesatz und Merge der Overrides.
-
-/// Go: `mergeFile` (world_values_merge.go): legt das Override `ov` der Datei `name` über den Inhalt `raw` und prüft es gegen
-/// den Lese-Typ der Datei (Formtabelle `values_shape`, RU14.4); das Ergebnis ist der neue Dateiinhalt.
-pub fn merge_file(_name: &str, _raw: &str, _ov: &serde_json::Value) -> Result<String, String> {
-    unimplemented!("RU14.4: merge_file")
-}
-
-/// Go: `defaultValues` (world_values.go): der Basis-Wertesatz aus den eingebetteten Daten.
-pub fn default_values() -> Arc<WorldValues> {
-    unimplemented!("RU14: default_values")
-}
-
-// RU18 (Wirtschaft, Bau, Monarch); `check_presets`, `new_skill_table` und `check_world_hub_sites` rufen `values_from`.
+// RU18 (Wirtschaft, Bau, Monarch); `check_presets` und `check_world_hub_sites` rufen `values_from`.
 
 /// Go: `checkPresets` (monarch_data.go): jedes Preset nennt nur bekannte Skills (RU18.4).
 pub fn check_presets(_m: &MonarchData) -> Result<(), String> {
     unimplemented!("RU18: check_presets")
-}
-
-/// Go: `newSkillTable` (monarch_data.go): `monarch.skills` als nach ID sortierte Liste samt Stelle jeder ID.
-pub fn new_skill_table(_skills: &BTreeMap<String, SkillData>) -> SkillTable {
-    unimplemented!("RU18: new_skill_table")
 }
 
 /// Go: `checkWorldHubSites` (hub_validate.go): prüft die Hub-Plätze des Wertesatzes gegen Wirtschaft und Gebäude.

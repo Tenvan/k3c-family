@@ -107,7 +107,7 @@ pub struct Island {
     pub stages: Vec<World>,
 }
 
-// Hilfen aus anderen Go-Dateien, die `CreateWorld`/`Step` (RU14) oder Inseln (RU10) brauchen.
+// Hilfen aus anderen Go-Dateien, die `CreateWorld`/`Step` oder Inseln (RU10) brauchen.
 
 /// Go: `quietWorld` (rules_test.go); seit RU14.1 über `create_world`, die Teilschritte späterer Sprints fehlen noch.
 pub fn quiet_world() -> World {
@@ -152,8 +152,16 @@ pub fn warrior_at(w: &mut World, x: f64) -> usize {
     w.troops.len() - 1
 }
 
-pub fn build_site(_w: &mut World, _kind: &str) -> usize {
-    panic!("RU14: build_site")
+/// Go: `buildSite` (rules_test.go): der erste Platz `kind` ist gebaut, mit voller HP (Index in `w.sites`).
+pub fn build_site(w: &mut World, kind: &str) -> usize {
+    let Some(si) = w.sites.iter().position(|s| s.kind == kind) else {
+        panic!("kein Bauplatz {kind}");
+    };
+    let s = &mut w.sites[si];
+    s.state = "built".into();
+    s.hp = s.max_hp;
+    s.build_progress = 1.0;
+    si
 }
 
 /// Go: `lineSite` (world_lines_test.go): der erste Platz `kind` der Zone `n` auf Seite `side` (Index in `w.sites`).
@@ -167,12 +175,20 @@ pub fn line_site(w: &mut World, kind: &str, side: i64, n: i64) -> usize {
     }
 }
 
-pub fn probe(_w: &mut World, _players: &[usize]) {
-    panic!("RU14: probe")
+/// Go: `probeGold` (crown_helpers_test.go).
+pub const PROBE_GOLD: i64 = 20;
+
+/// Go: `probe` (crown_helpers_test.go): gibt den Spielern `players` genau `PROBE_GOLD`.
+pub fn probe(w: &mut World, players: &[usize]) {
+    for &pi in players {
+        w.players[pi].gold = PROBE_GOLD;
+    }
 }
 
-pub fn was_hit(_w: &World, _pi: usize) -> bool {
-    panic!("RU14: was_hit")
+/// Go: `wasHit` (crown_helpers_test.go): Der Monarch wurde seit `probe` getroffen (Gold weg oder Krone gefallen).
+pub fn was_hit(w: &World, pi: usize) -> bool {
+    let p = &w.players[pi];
+    p.gold < PROBE_GOLD || p.crown.is_some()
 }
 
 pub fn ruin_island(_plan: Vec<PlannedChunk>) -> Island {
@@ -189,12 +205,19 @@ pub fn remove_dead_enemies(w: &mut World) {
 
 // Hilfen für die Tests der Truppen (`unit/`), aus anderen Go-Testdateien.
 
-pub fn run(_w: &mut World, _seconds: f64) {
-    panic!("RU14: run")
+/// Go: `run` (rules_test.go): rechnet ohne Eingaben, bis `seconds` um sind.
+pub fn run(w: &mut World, seconds: f64) {
+    let dt = crate::world::testutil::DT;
+    let mut t = 0.0;
+    while t < seconds {
+        step(w, None, dt);
+        t += dt;
+    }
 }
 
-pub fn run_until(_w: &mut World, _max_seconds: f64, _done: &dyn Fn(&World) -> bool) -> f64 {
-    panic!("RU14: run_until")
+/// Go: `runUntil` (rules_test.go), siehe `world::testutil::run_until`.
+pub fn run_until(w: &mut World, max_seconds: f64, done: &dyn Fn(&World) -> bool) -> f64 {
+    crate::world::testutil::run_until(w, max_seconds, done)
 }
 
 /// Go: `addPeasant` (unit_professions_test.go): legt einen Bauern mit Beruf `profession` bei `x` an.
@@ -226,12 +249,17 @@ pub fn lose_layer(w: &mut World, ti: usize) {
     }
 }
 
-pub fn pay_at(_w: &mut World, _players: &[usize], _x: f64, _seconds: f64, _done: &dyn Fn(&World) -> bool) -> bool {
-    panic!("RU14: pay_at")
+/// Go: `payAt` (rules_test.go), siehe `world::testutil::pay_at`.
+pub fn pay_at(w: &mut World, players: &[usize], x: f64, seconds: f64, done: &dyn Fn(&World) -> bool) -> bool {
+    crate::world::testutil::pay_at(w, players, x, seconds, done)
 }
 
-pub fn first_node(_w: &World, _kind: &str) -> usize {
-    panic!("RU14: first_node")
+/// Go: `firstNode` (mine_test.go): der erste Knoten `kind` (Index in `w.nodes`).
+pub fn first_node(w: &World, kind: &str) -> usize {
+    match w.nodes.iter().position(|n| n.kind == kind) {
+        Some(ni) => ni,
+        None => panic!("kein {kind} in der Mine"),
+    }
 }
 
 pub fn end_island(_players: i64) -> (Island, f64) {

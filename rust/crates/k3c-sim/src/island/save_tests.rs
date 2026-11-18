@@ -275,7 +275,7 @@ fn own_island_from_v1_ueberfuehrt_die_campaign() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_round_trip() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-a", &[0, 1, 2]);
@@ -326,7 +326,7 @@ fn island_save_round_trip() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn parse_island_save_from_version1() {
     let data = test_data();
     let raw = fixture(1);
@@ -346,7 +346,7 @@ fn parse_island_save_from_version1() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn version1_players_move_into_stored_stage() {
     let data = test_data();
     let raw = fixture(1);
@@ -367,7 +367,7 @@ fn version1_players_move_into_stored_stage() {
 /// B-814/AC-02: Die Stelle des Monarchen steht nicht im Spielstand; nach dem Laden steht er wie beim Beitritt an der Burg
 /// seiner Stufe, nicht an der gespeicherten Stelle (gewollt, `from_island_save_in`).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU19 (decode_world_story)"]
 fn island_save_monarch_an_der_burg() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-burg", &[0, 1]);

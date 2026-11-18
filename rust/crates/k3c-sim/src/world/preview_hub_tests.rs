@@ -48,9 +48,9 @@ fn site_hub_level(_w: &World, _s: &Site) -> i64 {
     panic!("RU18: site_hub_level")
 }
 
-/// Go: `siteLine` (world_lines.go), RU14.2: der Index der Mauerlinie des Platzes.
-fn site_line(_w: &World, _s: &Site) -> Option<i64> {
-    panic!("RU14: site_line")
+/// Go: `siteLine` (lines_shim_test.go): der Index der Mauerlinie des Platzes.
+fn site_line(w: &World, s: &Site) -> Option<i64> {
+    super::testutil::site_line(w, s).map(|l| l.index)
 }
 
 /// Go: `builtCount`: zählt die gebauten Plätze einer Art.

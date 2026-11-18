@@ -1,13 +1,17 @@
 //! Tests des Welt-Felds `skins` (Go: `world_skins_test.go`; B-984, WE5.5, AC-01 bis AC-03): laden, prüfen, mit `extends`
-//! mischen; Name-Override für Gegner. Die Fälle, die `ResolveWorld` und `ResolveWorldValues` brauchen (RU14.4), tragen
-//! `ignore = "wartet auf RU14"`; ihre Teile ohne diese Funktionen laufen in den `own_*`-Tests (Laden, Prüfen, `chain_skins`).
+//! mischen; Name-Override für Gegner. `ResolveWorld` und `ResolveWorldValues` kommen seit RU14.4 aus `values_room` und
+//! `values`; der Fall mit Override wartet auf `values_from` (RU18). Die `own_*`-Tests prüfen Laden, Prüfen, `chain_skins`.
 
+use k3c_data::Source;
 use serde_json::json;
 
+use super::base::base;
 use super::skins::{chain_skins, decode_world_skins};
+use super::{values, values_room};
 use crate::island::WorldDef;
 use crate::island::switch_testutil::{test_island, test_world};
 use crate::island::testutil::parse_world_in;
+use crate::island::worlds::world_path;
 use crate::state::shared::WorldValues;
 use std::sync::Arc;
 
@@ -22,14 +26,26 @@ fn skins_world(id: &str, extra: &str) -> WorldDef {
     }
 }
 
-/// Go: `ResolveWorld` (world_values.go), RU14.4.
-fn resolve_world(_w: &WorldDef, _worlds: &[WorldDef]) -> Result<WorldDef, String> {
-    panic!("RU14.4: resolve_world")
+/// Go: `testWorlds`: `lookup` über die Welten `worlds`.
+fn lookup_in(worlds: &[WorldDef]) -> impl Fn(&str) -> Result<WorldDef, String> + '_ {
+    move |id| {
+        worlds
+            .iter()
+            .find(|w| w.id == id)
+            .cloned()
+            .ok_or_else(|| format!("{}: Datei fehlt", world_path(id)))
+    }
 }
 
-/// Go: `ResolveWorldValues` (world_values.go), RU14.4.
-fn resolve_world_values(_worlds: &[WorldDef], _id: &str) -> Result<Arc<WorldValues>, String> {
-    panic!("RU14.4: resolve_world_values")
+/// Go: `ResolveWorld(w, testWorlds(worlds...))` auf den eingebetteten Daten.
+fn resolve_world(w: &WorldDef, worlds: &[WorldDef]) -> Result<WorldDef, String> {
+    let b = base()?;
+    values_room::resolve_world(w, &Source::Embedded, &b.data, &b.rules, &lookup_in(worlds))
+}
+
+/// Go: `ResolveWorldValues(data.Files, testWorlds(worlds...), id)`.
+fn resolve_world_values(worlds: &[WorldDef], id: &str) -> Result<Arc<WorldValues>, String> {
+    values::resolve_world_values(&|name| Source::Embedded.read(name), &lookup_in(worlds), id).map(Arc::new)
 }
 
 fn map(pairs: &[(&str, &str)]) -> std::collections::BTreeMap<String, String> {
@@ -37,7 +53,6 @@ fn map(pairs: &[(&str, &str)]) -> std::collections::BTreeMap<String, String> {
 }
 
 #[test]
-#[ignore = "wartet auf RU14 (RU14.4: resolve_world)"]
 fn skins_laedt_und_mischt_mit_extends() {
     let parent = skins_world(
         "eltern",
@@ -209,7 +224,6 @@ fn own_ersatz_asset_gleiche_gruppe_und_nicht_selbst() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14 (RU14.4: resolve_world)"]
 fn skins_resolve_world_ohne_eltern() {
     let w = skins_world("test", r#""skins":{"gegner/wolf":"gegner/ninja"},"#);
     let r = resolve_world(&w, std::slice::from_ref(&w)).expect("auflösen");
@@ -223,7 +237,7 @@ fn skins_resolve_world_ohne_eltern() {
 
 // B-984/AC-03: `overrides › enemies › <art> › name` ändert den Namen, alle anderen Werte bleiben die der Basisart.
 #[test]
-#[ignore = "wartet auf RU14 (RU14.4: resolve_world_values)"]
+#[ignore = "wartet auf RU18 (values_from: check_presets, check_world_hub_sites)"]
 fn world_values_gegner_name_uebersteuerbar() {
     let mut w = WorldDef {
         id: "sengoku".into(),

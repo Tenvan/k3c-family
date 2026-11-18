@@ -14,7 +14,7 @@ fn hammerless_peasant(w: &mut World, x: f64) -> usize {
 
 /// B-950: Ohne Hammer baut kein Bauer; mit Hammer baut er, während beide Spieler am Bauplatz zahlen.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn nur_handwerker_bauen() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -47,7 +47,7 @@ fn nur_handwerker_bauen() {
 
 /// B-950: Das Welt-Feld `startTroops.craftsman` bestimmt die Start-Handwerker (Standard 1, mindestens ein Handwerker).
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn start_handwerker() {
     let w = quiet_world();
     let n = w.troops.iter().filter(|t| t.kind == "peasant" && t.hammer).count() as i64;
@@ -84,7 +84,7 @@ fn handwerker_mindestens_einer() {
 
 /// B-951: Zwei Spieler zahlen den Hammer der Werkstatt; nach der Herstellung holt ihn ein Bauer ohne Hammer.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn werkstatt_hammer_herstellen_und_holen() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -109,7 +109,7 @@ fn werkstatt_hammer_herstellen_und_holen() {
 
 /// B-951: Der Bogner stellt Bögen her (Preis des Bogens), die Werkstatt keine; ein Bauer wird Bogenschütze.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn bogner_stellt_boegen_her() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -131,7 +131,7 @@ fn bogner_stellt_boegen_her() {
 
 /// B-950: Fällt der Handwerker, bleibt der Hammer liegen; ein anderer Bauer holt ihn, aber nicht mit einem Gegner in 8 Units.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn hammer_faellt_und_wird_aufgehoben() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -161,7 +161,7 @@ fn hammer_faellt_und_wird_aufgehoben() {
 
 /// B-952: Ein gefällter Baum wirft 1 bis 3 Goldmünzen (aus den Daten), deterministisch für gleichen Seed.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn baum_wirft_gold() {
     let mut counts = [0usize; 2];
     for c in &mut counts {
@@ -189,7 +189,7 @@ fn w_values() -> Arc<crate::state::WorldValues> {
 
 /// B-953: Die Truhe wirft ihr Gold als Fontäne: Münzen im Flug sind noch nicht aufsammelbar, danach liegen sie am Boden.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn truhe_wirft_fontaene() {
     let v = w_values();
     assert!(v.economy.chest_gold[0] >= 30, "Truhen-Gold {:?}", v.economy.chest_gold);
@@ -221,7 +221,7 @@ fn truhe_wirft_fontaene() {
 
 /// Review WI1: Hämmer gelten nicht als Kämpfer-Waffe und werden auch bei voller Truppe geholt.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn hammer_bei_voller_truppe_geholt() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -285,7 +285,7 @@ fn gegner_traegt_den_ersatzhammer_nicht_weg() {
 
 /// Review WI1: Plantagen-Bäume geben kein Gold; ein Handwerker wird nicht ausgebildet.
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn kein_plantagen_gold_und_handwerker_nicht_ausgebildet() {
     let mut w2 = day_world();
     let id = w2.new_id();

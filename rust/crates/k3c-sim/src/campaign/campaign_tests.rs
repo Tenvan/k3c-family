@@ -15,8 +15,8 @@ use crate::state::pending::travel_points;
 use crate::state::save::{SaveGame, key, parse_save};
 use crate::state::{PlayerCommand, WorldValues};
 use crate::world::base::base;
-use crate::world::pending::default_values;
 use crate::world::testutil::DT;
+use crate::world::values_room::default_values;
 use crate::world::{Options, step};
 
 const CAMPAIGN_PATH: &str = "golden/campaign-abstieg.json.gz";
@@ -167,7 +167,7 @@ fn golden_kampagne_ausbau() {
 }
 
 #[test]
-#[ignore = "wartet auf RU14"]
+#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn spielstand_rundreise() {
     let f = load_campaign_at(CAMPAIGN_PATH);
     let biomes = &base().expect("Daten").data.biomes;

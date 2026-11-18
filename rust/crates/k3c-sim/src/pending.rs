@@ -1,13 +1,12 @@
-//! Platzhalter der Gruppen `enemies` und `unit` (Port-Leitfaden § 7): Funktionen späterer Sprints (RU10, RU14, RU15, RU18,
-//! RU19), die RU11 ruft. Der liefernde Sprint löscht den Platzhalter; RU22 prüft, dass keiner übrig ist. Die Platzhalter
+//! Platzhalter der Gruppen `enemies` und `unit` (Port-Leitfaden § 7): Funktionen späterer Sprints (RU10, RU15, RU18, RU19),
+//! die RU11 ruft. Der liefernde Sprint löscht den Platzhalter; RU22 prüft, dass keiner übrig ist. Die Platzhalter
 //! aus RU8 stehen weiter in `state/pending.rs`. Go-Zeiger auf Gegner und Truppen sind hier Indizes (`ei`, `ti`).
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU14, RU15, RU18, RU19)
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU10, RU15, RU18, RU19)
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
 use crate::state::shared::WorldValues;
-use crate::state::{Event, Job, Projectile, Site, Troop, World};
-use k3c_data::economy::Gatherable;
+use crate::state::{Event, Job, Projectile, Site, World};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
@@ -130,20 +129,8 @@ pub fn build_progress_event(_w: &mut World, _site_id: i64, _before: f64) {
     unimplemented!("RU19: build_progress_event")
 }
 
-/// Go: `nodeFree` (world_vein.go).
-pub fn node_free(_w: &World, _n: &crate::state::ResourceNode) -> bool {
-    unimplemented!("RU14: node_free")
-}
-
-/// Go: `isVein` (world_vein.go).
-pub fn is_vein(_v: &WorldValues, _n: &crate::state::ResourceNode) -> bool {
-    unimplemented!("RU14: is_vein")
-}
-
-/// Go: `gatherVein` (world_vein.go).
-pub fn gather_vein(_t: &mut Troop, _g: &Gatherable, _dt: f64) {
-    unimplemented!("RU14: gather_vein")
-}
+// Von RU14.4 portiert (world_vein.go): die Import-Stelle bleibt `pending`.
+pub use crate::world::vein::{gather_vein, is_vein, node_free};
 
 /// Go: `vagrantsAt` (building_tavern.go): Landstreicher um `x`.
 pub fn vagrants_at(_w: &World, _x: f64) -> i64 {
