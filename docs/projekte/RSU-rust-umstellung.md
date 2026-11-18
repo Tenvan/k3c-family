@@ -64,7 +64,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | aktiv |
 | RU24 | Raum Teil 2 und Spielstand-Format | aktiv |
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | aktiv |
-| RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | geplant |
+| RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | aktiv |
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | geplant |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | geplant |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | geplant |

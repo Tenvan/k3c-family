@@ -1,6 +1,6 @@
 # RU22 · SIM · Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3)
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -95,7 +95,7 @@ Die Golden-Vergleiche sind Sim-Läufe als Tests; sie brauchen die Ausnahme von d
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU22.1 | `RU22.1-abgleich-werkzeug.md` | Umsetzung | autonom | offen |
+| RU22.1 | `RU22.1-abgleich-werkzeug.md` | Umsetzung | autonom | fertig |
 | RU22.2 | `RU22.2-golden-wald.md` | Umsetzung | autonom | offen |
 | RU22.3 | `RU22.3-golden-biome.md` | Umsetzung | autonom | offen |
 | RU22.4 | `RU22.4-golden-kampagnen.md` | Umsetzung | autonom | offen |
