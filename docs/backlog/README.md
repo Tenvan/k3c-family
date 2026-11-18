@@ -139,6 +139,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1056](B-1056-canvas-multiply-blend-lichtkarte.md) | CLI | Schuld | mittel | offen | RU13 | Canvas: Multiply-Blend für die Lichtkarte |
 | [B-1058](B-1058-canvas-reihenfolge-textur.md) | CLI | Problem | mittel | offen | RU13 | Canvas sortiert innerhalb einer Ebene nach Textur statt nach Aufrufreihenfolge |
 | [B-1057](B-1057-ru38-abnahme-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU38 | RU38 Abnahme: Fenster-Messung der Wiedergabe, Sim, Balance und Gen |
+| [B-1060](B-1060-ton-atlas-ausschnitte-rust.md) | CLI | Schuld | mittel | eingeplant | RU30 | Der Rust-Client spielt Effekte aus Ausschnitten des Ton-Atlas |
+| [B-1062](B-1062-ru17-abnahme-sim-balance-gen.md) | CLI | Schuld | mittel | offen | RU17 | RU17 Abnahme: Sim, Balance, Gen und Sichtprüfung Effekte und Ton |
 
 ## Archiv
 

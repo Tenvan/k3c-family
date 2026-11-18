@@ -93,12 +93,12 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU17.1 | `RU17.1-fx-effects-looks-status-texts.md` | Umsetzung | autonom | offen |
-| RU17.2 | `RU17.2-fx-fx-paint-paintmarks.md` | Umsetzung | autonom | offen |
-| RU17.3 | `RU17.3-audio-register-atlas-duck-events.md` | Umsetzung | autonom | offen |
-| RU17.4 | `RU17.4-audio-mix-music.md` | Umsetzung | autonom | offen |
-| RU17.5 | `RU17.5-audio-bank-output-audio.md` | Umsetzung | autonom | offen |
-| RU17.6 | `RU17.6-review.md` | Review | autonom | offen |
+| RU17.1 | `RU17.1-fx-effects-looks-status-texts.md` | Umsetzung | autonom | fertig |
+| RU17.2 | `RU17.2-fx-fx-paint-paintmarks.md` | Umsetzung | autonom | fertig |
+| RU17.3 | `RU17.3-audio-register-atlas-duck-events.md` | Umsetzung | autonom | fertig |
+| RU17.4 | `RU17.4-audio-mix-music.md` | Umsetzung | autonom | fertig |
+| RU17.5 | `RU17.5-audio-bank-output-audio.md` | Umsetzung | autonom | fertig |
+| RU17.6 | `RU17.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -106,6 +106,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18. AC-01 und AC-02 geprüft: `task check` und `task check:go` grün, alle Go-Tests von `fx` und `audio` in Rust portiert (Ergebnisse RU17.1 bis RU17.5), ein ignorierter Test `load_bank_atlas_clips_match_sprites` mit Grund B-1060 (Atlas-Haltepunkt, RU30, Braucht 🧑). Behobener Befund: `aura_of` stürzte per `unimplemented!` im Standardpfad ab, liefert jetzt eine leere Liste bis RU18. Abnahme-Ticket: B-1062 (check:race, Sichtprüfung, RU39-Prüfpunkte). Nachzüge B-999, B-1002, B-995 nicht Teil dieses Sprints, Stand unverändert offen.
