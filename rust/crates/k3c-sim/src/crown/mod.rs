@@ -188,7 +188,7 @@ fn pick_up_crown(w: &mut World, d: &CrownData, oi: usize) {
 }
 
 /// Go: `restoreCrown`: setzt dem Besitzer `oi` seine Krone wieder auf; `bi` ist, wer sie zurückgebracht hat.
-fn restore_crown(w: &mut World, oi: usize, bi: usize) {
+pub fn restore_crown(w: &mut World, oi: usize, bi: usize) {
     w.players[oi].crown = None;
     let (owner, by, x) = (w.players[oi].index, w.players[bi].index, w.players[oi].x);
     emit(

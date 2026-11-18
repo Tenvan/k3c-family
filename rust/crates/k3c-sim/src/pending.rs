@@ -5,8 +5,7 @@
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
-use crate::state::shared::WorldValues;
-use crate::state::{Event, Job, Projectile, Site, World};
+use crate::state::{Event, Projectile, World};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
@@ -19,10 +18,19 @@ pub use crate::world::cycle::add_pool;
 pub use crate::crown::{crown_stolen, drop_crown_of, take_crown_or_loot};
 pub use crate::portal::drop_loot;
 
-/// Go: `merchantX` (merchant.go).
-pub fn merchant_x(_w: &World, _what: &str) -> f64 {
-    unimplemented!("RU18: merchant_x")
+pub use crate::merchant::merchant_x; // Von RU18.4 portiert (merchant.go)
+
+/// Go: `merchantRaidStart` (events_merchant.go): nach der Ankunft; jeder n-te Besuch wird überfallen.
+pub fn merchant_raid_start(_w: &mut World, _isl: Option<&IslandRef>) {
+    unimplemented!("RU19: merchant_raid_start")
 }
+
+/// Go: `merchantRaidEnd` (events_merchant.go): beendet den Überfall des anwesenden Händlers; `protected`: er reist ab.
+pub fn merchant_raid_end(_w: &mut World, _protected: bool) {
+    unimplemented!("RU19: merchant_raid_end")
+}
+
+pub use crate::monarch::{damage_mult_of, frost_armor_hit}; // Von RU18.5 portiert (monarch_passives.go)
 
 /// Go: `moonDamage` (events_moon.go).
 pub fn moon_damage(_w: &World, _damage: f64) -> f64 {
@@ -44,11 +52,6 @@ pub fn arrow_event(_w: &mut World, _p: &Projectile, _from: i64) {
     unimplemented!("RU19: arrow_event")
 }
 
-/// Go: `frostArmorHit` (monarch_passives.go): Frost Armor des Spielers `pi` gegen den Gegner `ei`.
-pub fn frost_armor_hit(_w: &mut World, _pi: usize, _ei: usize) {
-    unimplemented!("RU18: frost_armor_hit")
-}
-
 /// Go: `World.pure` (dev.go): reiner Stressmodus der Insel.
 pub fn pure(_w: &World) -> bool {
     unimplemented!("RU19: pure")
@@ -64,65 +67,16 @@ pub fn moon_drop(_w: &World, _gold: i64) -> i64 {
     unimplemented!("RU19: moon_drop")
 }
 
-/// Go: `addStock` (economy.go): `true`, wenn das Material in den Vorrat kam.
-pub fn add_stock(_w: &mut World, _resource: &str, _amount: i64) -> bool {
-    unimplemented!("RU18: add_stock")
-}
+pub use crate::economy::{scaled_gold, scatter_coins}; // Von RU18.2 portiert (economy_fountain.go, economy.go)
 
-/// Go: `scaledGold` (economy_fountain.go).
-pub fn scaled_gold(_w: &World, _gold: i64) -> i64 {
-    unimplemented!("RU18: scaled_gold")
-}
-
-/// Go: `scatterCoins` (economy.go): `count` Münzen um `x` auf den Boden.
-pub fn scatter_coins(_w: &mut World, _x: f64, _count: i64) {
-    unimplemented!("RU18: scatter_coins")
-}
-
-/// Go: `isSpellTower` (building_spell_tower.go).
-pub fn is_spell_tower(_w: &World, _s: &Site) -> bool {
-    unimplemented!("RU18: is_spell_tower")
-}
-
-/// Go: `repair` (building_repair.go): der Bauer `ti` repariert.
-pub fn repair(_w: &mut World, _v: &WorldValues, _ti: usize, _dt: f64) {
-    unimplemented!("RU18: repair")
-}
-
-/// Go: `repairJob` (building_repair.go).
-pub fn repair_job(_w: &World, _v: &WorldValues, _ti: usize) -> Option<Job> {
-    unimplemented!("RU18: repair_job")
-}
-
-/// Go: `upgradeJob` (hub_level.go): Ist der Auftrag ein Ausbau?
-pub fn upgrade_job(_w: &World, _j: &Job) -> bool {
-    unimplemented!("RU18: upgrade_job")
-}
-
-/// Go: `outpostJob` (building_outpost.go).
-pub fn outpost_job(_w: &World, _j: &Job) -> bool {
-    unimplemented!("RU18: outpost_job")
-}
-
-/// Go: `outpost` (building_outpost.go): Liegt `x` an einem Vorposten?
-pub fn outpost(_w: &World, _x: f64) -> bool {
-    unimplemented!("RU18: outpost")
-}
-
-/// Go: `nextLevel` (hub_level.go): die nächste Ausbaustufe des Platzes.
-pub fn next_level(_w: &World, _s: &Site) -> Option<k3c_data::buildings::LevelData> {
-    unimplemented!("RU18: next_level")
-}
-
-/// Go: `finishUpgrade` (hub_level.go): schließt den Ausbau des Platzes `site_id` ab.
-pub fn finish_upgrade(_w: &mut World, _site_id: i64) {
-    unimplemented!("RU18: finish_upgrade")
-}
-
-/// Go: `eachSite` (hub_level.go): alle Plätze der Stufe samt Zahlplatz des Hubs.
-pub fn each_site(_w: &World, _f: &mut dyn FnMut(&Site)) {
-    unimplemented!("RU18: each_site")
-}
+// Von RU18.1 portiert (building_*.go): die Import-Stelle bleibt `pending`, damit die Gruppen `unit` und `enemies`
+// unverändert bleiben.
+pub use crate::building::barracks::{fighters, troop_limit, weapons_in_flight};
+pub use crate::building::outpost::{outpost, outpost_job};
+pub use crate::building::repair::{repair, repair_job};
+pub use crate::building::spell_tower::is_spell_tower;
+pub use crate::building::tavern::{vagrants_at, wander_radius};
+pub use crate::building::upgrades::armored_hp;
 
 /// Go: `buildProgressEvent` (events.go): Fortschritts-Ereignis des Platzes `site_id`.
 pub fn build_progress_event(_w: &mut World, _site_id: i64, _before: f64) {
@@ -132,43 +86,12 @@ pub fn build_progress_event(_w: &mut World, _site_id: i64, _before: f64) {
 // Von RU14.4 portiert (world_vein.go): die Import-Stelle bleibt `pending`.
 pub use crate::world::vein::{gather_vein, is_vein, node_free};
 
-/// Go: `vagrantsAt` (building_tavern.go): Landstreicher um `x`.
-pub fn vagrants_at(_w: &World, _x: f64) -> i64 {
-    unimplemented!("RU18: vagrants_at")
-}
-
-/// Go: `wanderRadius` (building_tavern.go): Wanderradius des Landstreichers `ti`.
-pub fn wander_radius(_w: &World, _ti: usize) -> f64 {
-    unimplemented!("RU18: wander_radius")
-}
-
-/// Go: `armoredHP` (building_upgrades.go): HP der Figur `kind` mit der Rüstung des Hubs.
-pub fn armored_hp(_w: &World, _kind: &str) -> f64 {
-    unimplemented!("RU18: armored_hp")
-}
-
-/// Go: `fighters` (building_barracks.go): Zahl der Kämpfer, die zum Truppenlimit zählen.
-pub fn fighters(_w: &World) -> i64 {
-    unimplemented!("RU18: fighters")
-}
-
-/// Go: `troopLimit` (building_barracks.go): das Truppenlimit der Kaserne.
-pub fn troop_limit(_w: &World) -> i64 {
-    unimplemented!("RU18: troop_limit")
-}
-
-/// Go: `weaponsInFlight` (building_barracks.go): Waffen, die andere Bürger gerade holen.
-pub fn weapons_in_flight(_w: &World, _ti: usize) -> i64 {
-    unimplemented!("RU18: weapons_in_flight")
-}
-
 /// Go: `addStockCapped` (island_storage.go): legt höchstens bis zur Kapazität der Insel ab und liefert die aufgenommene
 /// Menge; `None`: kein Baumaterial (Go: `ok` false).
 pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &str, _amount: i64) -> Option<i64> {
     unimplemented!("RU10: add_stock_capped")
 }
 
-/// Go: `addPoolPoints` (monarch.go): Punkte in den Fund-Pool der Insel (ohne Insel: Zähler der Welt).
-pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
-    unimplemented!("RU18: add_pool_points")
-}
+pub use crate::monarch::add_pool_points; // Von RU18.4 portiert (monarch.go)
+
+pub use crate::hub::{each_site, finish_upgrade, next_level, upgrade_job}; // Von RU18.3 portiert (hub_level.go)

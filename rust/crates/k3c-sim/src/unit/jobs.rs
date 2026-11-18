@@ -52,7 +52,7 @@ pub fn site_job(w: &mut World, v: &WorldValues, ti: usize) -> Option<Job> {
     if let Some(j) = build_job(w, ti) {
         return Some(j);
     }
-    repair_job(w, v, ti)
+    repair_job(w, ti)
 }
 
 /// Go: `buildJob`: nächster wartender Bauplatz ohne Bauer, Ausbauten und Vorposten nur ohne Gefahr; `None`, wenn es

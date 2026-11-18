@@ -22,7 +22,7 @@ pub fn is_on_tower(w: &World, t: &Troop) -> bool {
 
 /// Go: `freeTower`: der nächste gebaute Turm auf der Seite des Schützen mit freiem Platz; ein Zaubertum hat keine.
 /// Liefert die Platz-ID.
-fn free_tower(w: &World, v: &WorldValues, ti: usize) -> Option<i64> {
+pub(crate) fn free_tower(w: &World, v: &WorldValues, ti: usize) -> Option<i64> {
     let t = &w.troops[ti];
     let slots = v.buildings.get("tower").map_or(0, |b| b.archer_slots);
     let mut best: Option<(i64, f64)> = None;

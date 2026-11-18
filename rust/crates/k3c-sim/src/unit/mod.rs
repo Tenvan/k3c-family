@@ -7,7 +7,6 @@
 //! Truppe). Die Aufträge (`find_job` …) stehen in `jobs.rs`.
 
 pub mod archer;
-pub mod econ;
 pub mod escort;
 pub mod flee;
 pub mod hammer;
@@ -36,12 +35,13 @@ mod warrior_tests;
 
 use serde_json::json;
 
+use crate::economy::add_stock;
 use crate::island::storage::carry_to_stock;
 use crate::state::common::{approach, event, is_dangerous};
 use crate::state::island_ref::IslandRef;
 use crate::state::pending::{
-    add_pool, add_stock, build_progress_event, finish_upgrade, gather_of, gather_vein, is_vein, next_level,
-    outpost_job, pure, repair, scatter_coins, unit_x, upgrade_job, vagrants_at, values, wander_radius,
+    add_pool, build_progress_event, finish_upgrade, gather_of, gather_vein, is_vein, next_level, outpost_job, pure,
+    repair, scatter_coins, unit_x, upgrade_job, vagrants_at, values, wander_radius,
 };
 use crate::state::{Job, World, WorldValues};
 use archer::step_archer;
@@ -230,7 +230,7 @@ fn build(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
     let fallback = Default::default();
     let b = v.buildings.get(site.kind.as_str()).unwrap_or(&fallback);
     let seconds = if upgrading {
-        next_level(w, site).map_or(0.0, |l| l.build_seconds)
+        next_level(w, None, site).map_or(0.0, |l| l.build_seconds) // nur die Bauzeit: der Dev-Preis (`cheap`) ändert sie nicht
     } else {
         b.build_seconds
     };
@@ -322,7 +322,7 @@ fn carry(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRef>, dt:
     let Some(job) = w.troops[ti].job.take() else {
         return;
     };
-    add_stock(w, &job.resource, job.amount);
+    add_stock(w, v, isl, &job.resource, job.amount);
     w.events.push(event(
         json!({"type": "gathered", "resource": job.resource, "amount": job.amount}),
     ));

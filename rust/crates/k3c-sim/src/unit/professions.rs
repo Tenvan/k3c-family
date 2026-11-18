@@ -9,7 +9,7 @@ use std::collections::BTreeMap;
 
 use serde_json::json;
 
-use super::econ::{can_afford, clear_pending, nearest, spend};
+use crate::economy::{can_afford, clear_pending, nearest, spend};
 use crate::state::common::event;
 use crate::state::island_ref::{IslandRef, cheap};
 use crate::state::pending::{emit, unit_x};

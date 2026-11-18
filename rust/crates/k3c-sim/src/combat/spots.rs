@@ -7,10 +7,10 @@ use serde::{Deserialize, Serialize};
 use super::data::{CombatMode, combat_mode};
 use super::squad::{free_warriors, leaders_of, send_groups, take_banner};
 use super::squad_target;
+use crate::economy::clear_pending;
 use crate::state::common::outer_wall;
 use crate::state::pending::{count_fetching, crowned};
 use crate::state::{Player, Site, World, WorldValues};
-use crate::unit::econ::clear_pending;
 
 /// Die Art eines Zahlziels der Kampfvariante (Go: `CombatSpot.Kind` als Text).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]

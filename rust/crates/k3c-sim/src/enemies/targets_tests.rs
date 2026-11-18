@@ -131,11 +131,11 @@ fn gegner_gebaeude_als_ziel() {
 
 /// (c) Gegner mit `ignoresWalls` (auch mit Phasen) laufen an der gebauten Mauer (dem Tor) vorbei, ohne sie anzugreifen.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
 fn gegner_ignores_walls_laeuft_an_der_mauer_vorbei() {
     for kind in ["bat", "mineGhost"] {
         let mut w = day_world();
         let gate = line_site(&mut w, "wall", -1, 1);
+        crate::world::testutil::sturdy(&mut w.sites[gate]);
         let (gx, gmax) = (w.sites[gate].x, w.sites[gate].max_hp);
         let e = spawn(&mut w, kind, gx - 4.0);
         step_for(&mut w, 3.0);
@@ -148,7 +148,7 @@ fn gegner_ignores_walls_laeuft_an_der_mauer_vorbei() {
 
 /// (f) Jeder Tod eines Gegners meldet genau ein `kill` mit Art und Ort, auch fünf in einem Tick und an der Obergrenze.
 #[test]
-#[ignore = "wartet auf RU18 (new_hub_site)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn gegner_kill_je_tod() {
     let mut w = quiet_world();
     for i in 0..5 {

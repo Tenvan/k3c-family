@@ -9,10 +9,8 @@
 //! Aufruf neu, teilt aber die Maps; Rust ändert ihn nie). `values` merkt sich bei einer Stufe ohne Wertesatz nichts (die
 //! Stufe ist nur geliehen), liefert aber jedes Mal denselben `Arc` (Go: B-692, keine Allokation je Aufruf).
 
-use std::collections::BTreeMap;
 use std::sync::{Arc, OnceLock};
 
-use k3c_data::monarch::SkillData;
 use k3c_data::{Data, Source};
 use k3c_level::rules::Rules;
 
@@ -25,7 +23,7 @@ use super::values_from::ReadFn;
 use crate::combat::data::chain_combat;
 use crate::island::WorldDef;
 use crate::island::worlds::load_world;
-use crate::state::shared::SkillTable;
+pub use crate::monarch::new_skill_table; // Von RU18.4 portiert (monarch_data.go)
 use crate::state::{World, WorldValues};
 
 /// Go: `defaultValues` für die Daten `data`: der Basis-Wertesatz (Gebäude samt Platz `ship`, Skill-Katalog, Bosse).
@@ -126,18 +124,4 @@ pub fn values_of(world: &WorldDef) -> Result<Arc<WorldValues>, String> {
         &lookup,
     )?;
     resolved.values.ok_or_else(|| "ResolveWorld ohne Wertesatz".to_string())
-}
-
-/// Go: `newSkillTable` (monarch_data.go): `monarch.skills` als nach ID sortierte Liste samt Stelle jeder ID; jeder Skill
-/// trägt seine ID. Vorgezogen aus RU18.4, weil der Basis-Wertesatz sie braucht; RU18.4 verschiebt sie zu `monarch_data`.
-pub fn new_skill_table(skills: &BTreeMap<String, SkillData>) -> SkillTable {
-    let mut t = SkillTable::default();
-    for (id, s) in skills {
-        t.index.insert(id.clone(), t.list.len());
-        t.list.push(SkillData {
-            id: id.clone(),
-            ..s.clone()
-        });
-    }
-    t
 }

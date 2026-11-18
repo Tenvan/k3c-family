@@ -8,8 +8,9 @@
 use serde_json::Value;
 
 use super::Island;
-use crate::state::pending::{TravelPoint, crowned, refund_pending, return_banner, travel_points};
-use crate::state::{Event, Player};
+use crate::economy::refund_pending;
+use crate::state::pending::{TravelPoint, crowned, return_banner, travel_points, values};
+use crate::state::{Event, IslandRef, Player};
 
 /// Go: `islandTravel`, der Reisefortschritt eines Spielers an einem Punkt.
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -79,7 +80,17 @@ fn move_to_stage(isl: &mut Island, m: &IslandMove) {
     let Some(pos) = isl.stages[m.from].players.iter().position(|p| p.index == m.index) else {
         return;
     };
-    refund_pending(&mut isl.stages[m.from], pos); // bezahlte, nicht fertige Münzen bleiben in der alten Stufe liegen
+    // bezahlte, nicht fertige Münzen bleiben in der alten Stufe liegen; `site_payable` liest vom Bezug nur die Dev-Preise
+    let iref = IslandRef {
+        cheap_build: isl.dev.cheap_build,
+        stock_bonus: isl.dev.stock_bonus,
+        stage: m.from,
+        stages: isl.stages.len() as i64,
+        storages_elsewhere: isl.storages_except(m.from),
+        ..IslandRef::default()
+    };
+    let v = values(&isl.stages[m.from]);
+    refund_pending(&mut isl.stages[m.from], &v, Some(&iref), pos);
     if isl.stages[m.from].players[pos].banner != 0 {
         return_banner(&mut isl.stages[m.from], pos); // das Banner bleibt am Tor der alten Stufe
     }

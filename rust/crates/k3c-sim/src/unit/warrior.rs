@@ -11,7 +11,6 @@ use std::collections::BTreeMap;
 
 use serde_json::json;
 
-use super::econ::{can_afford, clear_pending, nearest, spend};
 use super::escort::escort_post;
 use super::flee::enemy_within;
 use super::hammer::{HAMMER_KIND, drop_hammer};
@@ -19,6 +18,7 @@ use super::jobs::{make_fighter, release_job};
 use super::professions::{craft_seconds, near_offer};
 use super::walk_to;
 use crate::combat::{combat_spot_near, leave_squad, squad_post};
+use crate::economy::{can_afford, clear_pending, nearest, spend};
 use crate::enemies::BODY;
 use crate::state::common::{apply_damage, cause_or_other, event, is_dangerous, outer_wall};
 use crate::state::island_ref::{IslandRef, cheap};

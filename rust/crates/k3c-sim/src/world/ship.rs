@@ -12,6 +12,7 @@ use k3c_level::level::HARBOR_KIND;
 
 use crate::island::Island;
 use crate::pending::next_level;
+use crate::state::island_ref::IslandRef;
 use crate::state::{Site, World};
 
 use super::pending::{level_of, site_cost, upgrade_payable};
@@ -81,13 +82,13 @@ pub fn ship_complete(w: &World, s: &Site) -> bool {
 /// Go: `ShipNextCost`: der Preis des nächsten Schiffs-Abschnitts am Platz `s` (Kiel am unbezahlten Platz, danach Rumpf und
 /// Segel); `None`, wenn der Platz kein Schiff ist, nichts mehr zu bauen ist oder gerade ein Ausbau läuft. Nur gelesen, für
 /// die Bots des Balancing-Testers (BS9).
-pub fn ship_next_cost(w: &World, s: &Site) -> Option<Cost> {
+pub fn ship_next_cost(w: &World, isl: Option<&IslandRef>, s: &Site) -> Option<Cost> {
     if s.kind != SHIP_KIND {
         None
     } else if s.state == "unpaid" {
-        Some(site_cost(w, s))
+        Some(site_cost(w, isl, s))
     } else if upgrade_payable(w, s) {
-        Some(next_level(w, s).map_or_else(Cost::default, |l| l.cost))
+        Some(next_level(w, isl, s).map_or_else(Cost::default, |l| l.cost))
     } else {
         None
     }

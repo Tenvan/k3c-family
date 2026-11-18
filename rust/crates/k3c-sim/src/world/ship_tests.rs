@@ -35,9 +35,9 @@ fn ship_world() -> (World, usize) {
     (w, si)
 }
 
-/// Go: `sitePayable` (economy.go), RU18.
-fn site_payable(_w: &World, _s: &Site) -> bool {
-    panic!("RU18: site_payable")
+/// Go: `sitePayable` (economy.go) ohne Insel.
+fn site_payable(w: &World, s: &Site) -> bool {
+    crate::economy::site_payable(w, &crate::world::vals(w), None, s)
 }
 
 /// Go: `materialOf` (economy.go): der Material-Anteil eines Preises als Vorrat.
@@ -155,7 +155,6 @@ fn inselwechsel_am_steg_nicht_an_der_burg() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18"]
 fn schiff_kein_gegner_ziel() {
     // Gegner zerstören das Schiff nicht (B-637, Default): es ist kein Gebäude-Ziel.
     let (mut w, si) = ship_world();

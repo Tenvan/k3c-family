@@ -198,19 +198,32 @@ pub fn on_stage<R>(isl: &mut Island, data: &Data, i: usize, f: impl FnOnce(&mut 
     out
 }
 
-/// Go: `mustLearn` (monarch_test.go): lässt Spieler `pi` die Skills lernen; kommt mit RU18 (Monarch).
-pub fn must_learn(_w: &mut World, _pi: usize, _ids: &[&str]) {
-    unimplemented!("RU18: must_learn")
+/// Go: `mustLearn` (monarch_test.go): lässt Spieler `pi` die Skills lernen; bricht bei einem Fehler ab wie Gos `t.Fatal`.
+pub fn must_learn(w: &mut World, pi: usize, ids: &[&str]) {
+    let v = crate::world::vals(w);
+    for id in ids {
+        if let Err(e) = crate::monarch::learn_skill(w, &v, pi, id) {
+            panic!("{e}");
+        }
+    }
 }
 
-/// Go: `addPoolPoints` (monarch_test.go): legt Punkte in den Fund-Pool; kommt mit RU18 (Monarch).
-pub fn add_pool_points(_w: &mut World, _n: i64) {
-    unimplemented!("RU18: add_pool_points")
+/// Go: `addPoolPoints` (monarch_test.go) ohne Insel: legt Punkte in den Zähler der Welt. Für eine Stufe in einer Insel gilt
+/// `add_island_pool`.
+pub fn add_pool_points(w: &mut World, n: i64) {
+    crate::monarch::add_pool_points(w, None, n);
 }
 
-/// Go: `AvailablePoints` (monarch.go): freie Skill-Punkte des Spielers `pi`; kommt mit RU18 (Monarch).
-pub fn available_points(_w: &World, _pi: usize) -> i64 {
-    unimplemented!("RU18: available_points")
+/// Go: `addPoolPoints(isl.Stages[i], n)`: legt Punkte in den Fund-Pool der Insel; alle Stufen spiegeln ihn nach `skill_points`.
+pub fn add_island_pool(isl: &mut Island, i: usize, n: i64) {
+    let mut r = isl.stage_ref(i, &Default::default());
+    crate::monarch::add_pool_points(&mut isl.stages[i], Some(&mut r), n);
+    isl.put_stage_ref(r);
+}
+
+/// Go: `AvailablePoints` (monarch.go): freie Skill-Punkte des Spielers `pi`.
+pub fn available_points(w: &World, pi: usize) -> i64 {
+    crate::monarch::available_points(w, pi)
 }
 
 /// Go: `nordmeer` (island_save_v8_test.go): die Test-Welt mit zwei Inseln, aus dem Text gelesen (nicht aus data/worlds/).

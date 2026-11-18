@@ -43,9 +43,9 @@ fn preview_hub_level_baut_nach_den_regeln_der_sim() {
     }
 }
 
-/// Go: `siteHubLevel` (hub_level.go), RU18.
-fn site_hub_level(_w: &World, _s: &Site) -> i64 {
-    panic!("RU18: site_hub_level")
+/// Go: `siteHubLevel` (hub_level.go).
+fn site_hub_level(w: &World, s: &Site) -> i64 {
+    crate::hub::site_hub_level(w, s)
 }
 
 /// Go: `siteLine` (lines_shim_test.go): der Index der Mauerlinie des Platzes.

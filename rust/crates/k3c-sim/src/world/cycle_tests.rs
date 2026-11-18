@@ -66,14 +66,14 @@ fn total_gold(w: &World) -> i64 {
     w.coins.len() as i64 + w.players.iter().map(|p| p.gold).sum::<i64>()
 }
 
-/// Go: `dawnGold` (economy.go), RU18.
-fn dawn_gold(_w: &World) -> i64 {
-    panic!("RU18: dawn_gold")
+/// Go: `dawnGold` (economy.go).
+fn dawn_gold(w: &World) -> i64 {
+    crate::economy::dawn_gold(w, &crate::world::vals(w))
 }
 
 // Über zwei Zyklen: dawn genau einmal je Zyklus, im ersten Schritt des Morgengrauens, samt Gold je lebendem Spieler.
 #[test]
-#[ignore = "wartet auf RU18 (create_world: new_hub_site, add_player: apply_preset, step_players, pay_dawn_income)"]
+#[ignore = "wartet auf RU19 (pure)"]
 fn dawn_bei_beginn_des_morgengrauens() {
     let opts = Options {
         cycle_speed: 60.0,
@@ -124,7 +124,6 @@ fn dawn_bei_beginn_des_morgengrauens() {
 
 // B-645: Das Morgengold wächst mit der Tiefe der Stufe (Wald: Grundeinkommen, tiefer: plus dawnGoldPerDepth je Tiefe).
 #[test]
-#[ignore = "wartet auf RU18 (dawn_gold)"]
 fn morgengold_nach_tiefe() {
     let eco = vals(&bare_world()).economy.clone();
     for depth in 0..=4 {
