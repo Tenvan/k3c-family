@@ -152,6 +152,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU10 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
 | [B-1083](B-1083-island-save-null-und-kopf-wie-go.md) | SIM | Schuld | niedrig | offen | RU10 | Rust liest Insel-Spielstaende mit null-Feldern und falschem Kopf-Typ strenger als Go |
 | [B-1085](B-1085-welt-lesen-randfaelle.md) | SIM | Schuld | niedrig | offen | RU10 | Welt-Datei lesen: null- und Array-Randfälle weichen von Go ab |
+| [B-1086](B-1086-abnahme-laeufe-sim-insel.md) | SIM | Schuld | mittel | offen | RU10 | Abnahme-Läufe Sim Insel |
+| [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU10 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
+| [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | offen | RU10 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
 
 ## Archiv
 

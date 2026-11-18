@@ -119,6 +119,7 @@ pub fn next_island(data: &Data, cur: &Island, def: &IslandDef) -> Result<Island,
         next.completed.push(d.id.clone());
     }
     next.stock = next.values().hub.island_start_stock.clone();
+    next.sync_stock();
     next.id = cur.id.clone();
     next.number = number;
     next.island_id = def.id.clone();

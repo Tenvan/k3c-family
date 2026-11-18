@@ -79,6 +79,7 @@ pub fn from_island_save_in(
         w.stock = Stock::default(); // der Vorrat gehört der Insel (Entscheidung 5), nicht der Stufe
     }
     isl.stock = s.stock.clone(); // `apply_hub` setzt den Vorrat je Hub; maßgeblich ist der der Insel
+    isl.sync_stock();
     restore_pool(&mut isl, s);
     restore_progress(&mut isl, s, t.data);
     isl.completed = s.completed.clone();

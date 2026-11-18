@@ -234,6 +234,14 @@ impl Island {
         }
     }
 
+    /// Go: alle Stufen zeigen auf denselben Vorrat. Rust spiegelt den Vorrat der Insel in jede Stufe, damit `to_save` und
+    /// Leser zwischen den Schritten den echten Wert sehen (der Tausch im Schritt bleibt, Entscheidung 5).
+    pub fn sync_stock(&mut self) {
+        for w in &mut self.stages {
+            w.stock.clone_from(&self.stock);
+        }
+    }
+
     /// Legt den Bezug nach dem Schritt einer Stufe zurück und übernimmt, was die Stufe an der Insel geändert hat.
     pub fn put_stage_ref(&mut self, r: IslandRef) {
         self.defeated_bosses = r.defeated_bosses;
@@ -279,6 +287,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
         isl.put_stage_ref(r);
     }
+    isl.sync_stock();
     if !isl.over {
         step_island_travel(isl, dt);
         step_island_switch(isl, dt);

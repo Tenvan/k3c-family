@@ -137,6 +137,7 @@ pub fn create_island_in(
     };
     let mut isl = create_island_at(&build, seed, depths, cycle_speed, 0.0, &opts)?;
     isl.stock = hub_of(&isl.stages[0]).island_start_stock.clone(); // Kandidat oder hub.json der Welt
+    isl.sync_stock();
     Ok(isl)
 }
 

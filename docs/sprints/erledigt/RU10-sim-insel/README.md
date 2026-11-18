@@ -1,6 +1,6 @@
 # RU10 · SIM · Sim: Insel mit Stufen, Takt und Material-Vorrat
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -101,7 +101,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU10.3 | `RU10.3-island-save-versionen-sizes-storage.md` | Umsetzung | autonom | fertig |
 | RU10.4 | `RU10.4-island-switch-targets-travel-victory.md` | Umsetzung | autonom | fertig |
 | RU10.5 | `RU10.5-island-worlds-endboss-takt.md` | Umsetzung | autonom | fertig |
-| RU10.6 | `RU10.6-review.md` | Review | autonom | offen |
+| RU10.6 | `RU10.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -109,6 +109,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Review RU10.6, Details dort): AC-01 Fixture eingecheckt, Test ignoriert bis RU14; AC-02 alle 125 Go-Tests portiert, Ignore-Marken RU14/15/18/19; AC-03 Rundlauf v9 und Migrationen grün.
+`task check` und `task check:go` grün. Reviewer-Befund HOCH (Vorrat je Stufe, `sync_stock`) behoben.
+Neue Tickets: B-1087, B-1088. Abnahme-Ticket für Sim, Balance, Gen, Race: B-1086.
