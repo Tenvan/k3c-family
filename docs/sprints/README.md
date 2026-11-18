@@ -33,7 +33,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU44 | CLI | RSU | Bild-Pfad ohne Allokationen | – | `aktiv/RU44-bild-pfad-ohne-allokationen/` |
-| RU14 | SIM | RSU | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | – | `aktiv/RU14-sim-welt-stufen-kampagne/` |
 
 ## Offen am Gerät
 
@@ -448,3 +447,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU10 | Sim: Insel mit Stufen, Takt und Material-Vorrat | `erledigt/RU10-sim-insel/` |
 | RU15 | Sim: Kampf, Bosse, Krone, Portale | `erledigt/RU15-sim-kampf-bosse/` |
 | RU23 | HUD Teil 2: Overlays, Skills, Geschichte, Seekarte im Spiel | `erledigt/RU23-hud-teil-2/` |
+| RU14 | Sim: Welt-Schritt, Kampagne, Schiff und Vorschau | `erledigt/RU14-sim-welt-stufen-kampagne/` |

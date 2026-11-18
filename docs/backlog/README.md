@@ -156,6 +156,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU10 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
 | [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | offen | RU10 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
 | [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
+| [B-1092](B-1092-ru19-decode-world-story-vorziehen.md) | SIM | Schuld | mittel | offen | RU19 | decode_world_story (RU19) blockiert 91 Tests, Reihenfolge der Sprints prüfen; events_moon_stages_test zu RU19 |
+| [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU14 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
 
 ## Archiv
 
