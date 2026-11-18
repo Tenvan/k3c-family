@@ -5,7 +5,7 @@
 
 use crate::enemies::waves::SpawnOrder;
 use crate::state::island_ref::IslandRef;
-use crate::state::{Event, Projectile, World};
+use crate::state::{Event, Projectile, World, WorldValues};
 
 // Von RU15 portiert (Bosse): Die Import-Stelle bleibt `pending`, damit die Gegner-Dateien unverändert bleiben.
 pub use crate::boss::abilities::hit_splash;
@@ -18,9 +18,21 @@ pub use crate::world::cycle::add_pool;
 pub use crate::crown::{crown_stolen, drop_crown_of, take_crown_or_loot};
 pub use crate::portal::drop_loot;
 
-/// Go: `merchantX` (merchant.go).
-pub fn merchant_x(_w: &World, _what: &str) -> f64 {
-    unimplemented!("RU18: merchant_x")
+pub use crate::merchant::merchant_x; // Von RU18.4 portiert (merchant.go)
+
+/// Go: `merchantRaidStart` (events_merchant.go): nach der Ankunft; jeder n-te Besuch wird überfallen.
+pub fn merchant_raid_start(_w: &mut World, _isl: Option<&IslandRef>) {
+    unimplemented!("RU19: merchant_raid_start")
+}
+
+/// Go: `merchantRaidEnd` (events_merchant.go): beendet den Überfall des anwesenden Händlers; `protected`: er reist ab.
+pub fn merchant_raid_end(_w: &mut World, _protected: bool) {
+    unimplemented!("RU19: merchant_raid_end")
+}
+
+/// Go: `damageMultOf` (monarch_passives.go): Faktor auf Schlag- und Zauberschaden des Spielers `pi` (Blessings).
+pub fn damage_mult_of(_w: &World, _v: &WorldValues, _pi: usize, _spell: bool) -> f64 {
+    unimplemented!("RU18: damage_mult_of (RU18.5)")
 }
 
 /// Go: `moonDamage` (events_moon.go).
@@ -88,9 +100,6 @@ pub fn add_stock_capped(_w: &mut World, _isl: Option<&IslandRef>, _resource: &st
     unimplemented!("RU10: add_stock_capped")
 }
 
-/// Go: `addPoolPoints` (monarch.go): Punkte in den Fund-Pool der Insel (ohne Insel: Zähler der Welt).
-pub fn add_pool_points(_w: &mut World, _isl: Option<&mut IslandRef>, _n: i64) {
-    unimplemented!("RU18: add_pool_points")
-}
+pub use crate::monarch::add_pool_points; // Von RU18.4 portiert (monarch.go)
 
 pub use crate::hub::{each_site, finish_upgrade, next_level, upgrade_job}; // Von RU18.3 portiert (hub_level.go)

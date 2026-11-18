@@ -80,7 +80,7 @@ fn gegner_flaechenschlag() {
 
 /// (g) Zwei Spieler im Radius: beide nehmen Schaden.
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU19 (unit_x)"]
 fn gegner_flaechenschlag_zwei_spieler() {
     let mut w = quiet_world();
     let (p1, p2) = (add_player(&mut w), add_player(&mut w));
@@ -274,7 +274,7 @@ fn gegner_wellenplan_deterministisch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU19 (moon_damage)"]
 fn gegner_traits_deterministisch() {
     let scenario = || {
         let mut w = quiet_world();

@@ -4,7 +4,6 @@
 #![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
 
 use k3c_data::events::NightEvent;
-use k3c_data::monarch::MonarchData;
 
 use crate::state::World;
 
@@ -12,10 +11,7 @@ use crate::state::World;
 
 pub use crate::building::tavern::tavern_dawn; // Von RU18.1 portiert (building_tavern.go)
 
-/// Go: `merchantDawn` (merchant.go): der Händler kommt oder geht zum Morgengrauen.
-pub fn merchant_dawn(_w: &mut World) {
-    unimplemented!("RU18: merchant_dawn")
-}
+pub use crate::merchant::merchant_dawn; // Von RU18.4 portiert (merchant.go)
 
 /// Go: `nightEventsStart` (events_moon.go): Vollmond und Blutmond beginnen mit der Nacht.
 pub fn night_events_start(_w: &mut World) {
@@ -34,10 +30,7 @@ pub fn event_active(_w: &World, _ev: &NightEvent) -> bool {
 
 // RU18 (Wirtschaft, Bau, Monarch); `check_presets` und `check_world_hub_sites` rufen `values_from`.
 
-/// Go: `checkPresets` (monarch_data.go): jedes Preset nennt nur bekannte Skills (RU18.4).
-pub fn check_presets(_m: &MonarchData) -> Result<(), String> {
-    unimplemented!("RU18: check_presets")
-}
+pub use crate::monarch::check_presets; // Von RU18.4 portiert (monarch_data.go)
 
 pub use crate::economy::{step_players, step_sites}; // Von RU18.2 portiert (economy.go)
 
@@ -58,15 +51,7 @@ pub fn step_storms(_w: &mut World, _dt: f64) {
 
 pub use crate::building::ruin::{add_ruin_sites, ruin_site}; // Von RU18.1 portiert (building_ruin.go)
 
-/// Go: `ApplyPreset` (monarch.go): lernt die Skills eines Presets für den Spieler `pi`, soweit Pool-Punkte frei sind.
-pub fn apply_preset(_w: &mut World, _pi: usize, _id: &str) -> Result<(), String> {
-    unimplemented!("RU18: apply_preset")
-}
-
-/// Go: `presetFor` (monarch.go): das Standard-Preset beim Beitritt (Tank, Zauberer, sonst Heiler).
-pub fn preset_for(_index: i64) -> &'static str {
-    unimplemented!("RU18: preset_for")
-}
+pub use crate::monarch::{apply_preset, preset_for}; // Von RU18.4 portiert (monarch.go)
 
 // RU19 (Ereignisse, Dev).
 

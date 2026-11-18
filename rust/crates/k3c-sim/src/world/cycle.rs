@@ -128,7 +128,7 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
     }
     if changed && w.cycle.phase == "dawn" {
         // der Übergang Morgengrauen → Tag löst nichts aus (Q65)
-        dawn_break(w, isl.as_deref(), day_night);
+        dawn_break(w, isl.as_deref_mut(), day_night);
     }
     if w.aggression.is_some() && w.biome.cycle.r#type == "aggressionPool" {
         add_pool(w, w.biome.cycle.percent_per_minute / 60.0 * dt * w.cycle_speed);
@@ -140,16 +140,16 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
 }
 
 /// Der Beginn des Morgengrauens in `step_cycle`: Ereignis `dawn`, Gegner fliehen, Morgengold, Ersatz-Hammer, Wirt, Händler.
-fn dawn_break(w: &mut World, isl: Option<&IslandRef>, day_night: bool) {
+fn dawn_break(w: &mut World, isl: Option<&mut IslandRef>, day_night: bool) {
     w.events.push(event(json!({"type": "dawn", "day": w.cycle.day})));
     if day_night {
         send_enemies_home(w);
     }
     let v = vals(w);
-    pay_dawn_income(w, &v, isl);
+    pay_dawn_income(w, &v, isl.as_deref());
     spare_hammer(w, &v);
     tavern_dawn(w);
-    merchant_dawn(w);
+    merchant_dawn(w, isl);
     night_events_end(w);
 }
 

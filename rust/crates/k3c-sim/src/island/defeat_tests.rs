@@ -156,7 +156,6 @@ fn niederlage_standard_je_grad() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
 fn niederlage_ohne_insel_stufenverlust() {
     let mut w = crate::enemies::testutil::quiet_world();
     crate::enemies::testutil::build_site(&mut w, "tower");

@@ -62,7 +62,7 @@ fn build_hub_step(w: &mut World, pi: usize, st: &k3c_data::buildings::LevelData)
 /// GEB17.4 (B-592/AC-02): Jede Hub-Stufe wird in ihren Ausbauschritten bezahlt und gebaut, Kosten samt Material-Tor und
 /// Bauzeit aus data/hub.json; erst der letzte Schritt hebt die Hub-Stufe.
 #[test]
-#[ignore = "wartet auf RU18 (step: step_passives RU18.5, merchant_dawn RU18.4)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn hub_ausbau_stufe2_bis5() {
     let mut w = day_world();
     let p = add_player(&mut w);
@@ -94,7 +94,7 @@ fn hub_ausbau_stufe2_bis5() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step: step_passives RU18.5, merchant_dawn RU18.4)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn hub_ausbau_wartet_auf_material() {
     let mut w = day_world();
     let p = add_player(&mut w);
@@ -120,7 +120,7 @@ fn hub_ausbau_wartet_auf_material() {
 
 /// Während einer Welle bezahlt: Der Bauer baut erst nach der Gefahr.
 #[test]
-#[ignore = "wartet auf RU18 (step: step_passives RU18.5, merchant_dawn RU18.4)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn hub_ausbau_nach_der_gefahr() {
     let mut w = day_world();
     let p = add_player(&mut w);
@@ -150,7 +150,7 @@ fn hub_ausbau_nach_der_gefahr() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (step: step_passives RU18.5, merchant_dawn RU18.4)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn hub_ausbau_zwei_spieler_zahlen_gemeinsam() {
     let mut w = day_world();
     let (p0, p1) = (add_player(&mut w), add_player(&mut w));

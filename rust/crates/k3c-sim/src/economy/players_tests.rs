@@ -106,7 +106,6 @@ fn collect_pickups_laesst_ferne_truhen_liegen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (chest_skill_point)"]
 fn collect_pickups_truhe_wirft_gold_als_fontaene() {
     let mut w = world_with_players(&[0]);
     let v = vals(&w);
@@ -126,7 +125,6 @@ fn collect_pickups_truhe_wirft_gold_als_fontaene() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (add_pool_points)"]
 fn collect_pickups_skill_punkt_geht_in_den_pool() {
     let mut w = world_with_players(&[0]);
     let v = vals(&w);

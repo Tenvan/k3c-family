@@ -42,7 +42,7 @@ fn hit_ids(w: &World, target: &str) -> Vec<i64> {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn lava_schadet_figuren() {
     let (mut w, x) = lava_world();
     let (dps, width) = (w.biome.lava.damage_per_second, w.biome.lava.width_units);

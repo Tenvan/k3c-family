@@ -3,19 +3,32 @@
 
 use super::SpotKind;
 use super::data::COMBAT_GENERAL;
-use super::testutil::{combat_stage, group_ready, spot_for};
+use super::testutil::{combat_pay, combat_stage, group_ready, run, spawn_soldiers, spot_for};
 
 #[test]
-#[ignore = "wartet auf RU18"] // `find_pay_target braucht merchant_at (RU18.4)` (economy_pay.go)
+#[ignore = "wartet auf RU19 (emit: step der Schild-Variante)"]
 fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
-    let (w, _, _) = combat_stage(super::data::COMBAT_GROUPS);
-    let spot = spot_for(&w, SpotKind::Shield, 0).expect("Schild");
-    // Turm-Bauplatz in Zahl-Reichweite außerhalb von spotClearUnits, `findPayTarget` liefert dennoch das Zahlziel.
-    let _ = (
-        spot,
-        crate::economy::find_pay_target(&w, &super::testutil::vals(&w), None, &w.players[1]),
-    );
-    panic!("RU18: find_pay_target");
+    for mode in [super::data::COMBAT_GROUPS, super::data::COMBAT_GENERAL] {
+        let (mut w, _, _) = combat_stage(mode);
+        w.hub_level = 9;
+        let kind = if mode == super::data::COMBAT_GENERAL {
+            SpotKind::Banner
+        } else {
+            spawn_soldiers(&mut w, 2);
+            let shield = spot_for(&w, SpotKind::Shield, 0).expect("Schild").x;
+            combat_pay(&mut w, 0, shield, 76);
+            run(&mut w, 10.0);
+            SpotKind::Trigger
+        };
+        let spot = spot_for(&w, kind, 1).expect("Zahlziel");
+        // Turm-Bauplatz in Zahl-Reichweite, außerhalb von spotClearUnits (sonst wiche das Ziel aus, B-941)
+        let s = crate::world::empty_site(&mut w, "tower", spot.x - 1.6);
+        w.sites.push(s);
+        w.players[1].x = spot.x;
+        let tg = crate::economy::find_pay_target(&w, &super::testutil::vals(&w), None, &w.players[1]);
+        let covered = !matches!(&tg, Some(crate::economy::PayTarget::Combat { spot: s, .. }) if s.kind == kind);
+        assert!(!covered, "{mode}: Zahlziel {tg:?} überdeckt vom Bauplatz");
+    }
 }
 
 #[test]

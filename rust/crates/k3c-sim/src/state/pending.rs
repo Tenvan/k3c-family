@@ -5,9 +5,8 @@
 use std::collections::BTreeMap;
 
 use k3c_data::Data;
-use k3c_data::monarch::{SkillData, SkillEffect};
+use k3c_data::monarch::SkillEffect;
 
-use super::shared::WorldValues;
 use super::{Player, World};
 use crate::island::WorldDef;
 
@@ -25,8 +24,7 @@ pub use crate::unit::professions::profession_of;
 pub use crate::unit::spawn_vagrant;
 pub use crate::unit::warrior::is_fighter;
 
-/// Go: `merchantID` (merchant.go), die ID des Händlers als Ziel.
-pub const MERCHANT_ID: i64 = -1;
+pub use crate::merchant::{MERCHANT_ID, damage_merchant}; // Von RU18.4 portiert (merchant.go)
 
 /// Go: `hitEvent` (events.go).
 pub fn hit_event(_w: &mut World, _target: &str, _id: i64, _x: f64, _damage: f64) {
@@ -43,11 +41,6 @@ pub fn each_passive(_w: &World, _f: &mut dyn FnMut(&Player, &SkillEffect)) {
     unimplemented!("RU18: each_passive")
 }
 
-/// Go: `damageMerchant` (merchant.go).
-pub fn damage_merchant(_w: &mut World, _damage: f64) {
-    unimplemented!("RU18: damage_merchant")
-}
-
 /// Go: `protectedNight` (World-Methode, Nacht-Schutz der Gebäude).
 pub fn protected_night(_w: &World) -> bool {
     unimplemented!("RU18: protected_night")
@@ -60,10 +53,7 @@ pub use crate::world::values_room::values; // Von RU14.4 portiert (world_values_
 
 pub use crate::world::vein::gather_of; // Von RU14.4 portiert (world_vein.go)
 
-/// Go: `WorldValues.skillRef` (monarch_data.go): der Skill `id` im Katalog des Wertesatzes.
-pub fn skill_ref<'a>(_v: &'a WorldValues, _id: &str) -> Option<&'a SkillData> {
-    unimplemented!("RU18: skill_ref")
-}
+pub use crate::monarch::skill_ref; // Von RU18.4 portiert (monarch_data.go)
 
 // RU10.1: Platzhalter der Gruppe `island` für Funktionen und Typen späterer Sprints.
 

@@ -211,7 +211,7 @@ fn pay_together(pick: fn(&mut World) -> (usize, usize), swap: bool) -> PayResult
 
 // (e) AC-06: Zwei Spieler zahlen gleichzeitig an Mauer und Turm derselben Zone bzw. an beiden Seiten.
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn zone_zwei_spieler_zahlen_gleichzeitig() {
     type Pick = fn(&mut World) -> (usize, usize);
     let cases: [(&str, Pick); 2] = [

@@ -9,6 +9,8 @@ pub mod economy;
 pub mod enemies;
 pub mod hub;
 pub mod island;
+pub mod merchant;
+pub mod monarch;
 pub mod pending;
 pub mod portal;
 pub mod state;

@@ -87,7 +87,7 @@ fn ader_ruht_ohne_bauern() {
 
 /// Zwei Spieler markieren eine Ader gemeinsam für ihren markCost; sie bleibt danach markiert.
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn ader_einmal_markieren() {
     let (mut w, vi) = vein_world(0);
     let x = w.hub_x + 8.0; // außer Reichweite der Burg (Hub-Ausbau wäre das nähere Zahlziel)

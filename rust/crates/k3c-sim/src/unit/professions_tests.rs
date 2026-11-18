@@ -300,7 +300,7 @@ fn baumeister_baut_schneller() {
 /// (b) Ausbildung kostet das Gold aus den Daten, trifft den nächsten freien Bauern; Umschulung kostet erneut; zu wenig
 /// Gold lässt den Beruf unverändert (Go: `holdAt` mit `Step` und Spieler).
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn ausbildung_und_umschulung() {
     let mut w = quiet_world();
     let p = add_player(&mut w);
@@ -309,7 +309,7 @@ fn ausbildung_und_umschulung() {
 
 /// (c) Ein dritter Handwerker je Gebäude wird nicht ausgebildet (Go: `holdAt`).
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn dritter_handwerker_wird_nicht_ausgebildet() {
     let mut w = quiet_world();
     let p = add_player(&mut w);

@@ -24,7 +24,7 @@ fn hit_until(w: &mut World, ti: usize, done: &dyn Fn(&World) -> bool) -> Vec<Eve
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn disarm_krieger_wird_bauer_und_hebt_schwert_auf() {
     let mut w = day_world();
     add_player(&mut w);

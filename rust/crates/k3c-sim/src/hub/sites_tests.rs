@@ -48,7 +48,6 @@ fn site_x(w: &World, kind: &str) -> Option<f64> {
 /// AC-01: Welt mit geänderten Plätzen: Level und Simulation zeigen denselben Platz, die Basis bleibt.
 #[test]
 #[allow(clippy::float_cmp)] // Lage exakt wie in Go
-#[ignore = "wartet auf RU18 (values_from: check_presets, RU18.4)"]
 fn welt_plaetze_wirken_in_level_und_sim() {
     let world = resolve_hub_override(json!({"sites": {"1": {"offsetUnits": -32}, "5": {"offsetUnits": -28}}}))
         .unwrap_or_else(|e| panic!("{e}"));
@@ -91,7 +90,6 @@ fn welt_plaetze_wirken_in_level_und_sim() {
 
 /// AC-02: Fehlerfälle beim Laden: außerhalb, Überlappung, Pflichtplatz, unbekannte Art; Meldung nennt Welt und Datei.
 #[test]
-#[ignore = "wartet auf RU18 (values_from: check_presets, RU18.4)"]
 fn welt_plaetze_fehlerfaelle() {
     let cases = [
         (json!({"sites": {"7": {"offsetUnits": 55}}}), "hub-breite"),

@@ -82,7 +82,7 @@ fn want_elite(kind: &str, at: impl Fn(&World, usize) -> f64) -> (World, usize) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn upgrade_elite_bogenschuetze() {
     let (mut w, _) = want_elite("eliteArcher", |w, s| w.sites[s].x);
     // Start in Reichweite, vor der Schmiede: Sonst greift das Skelett sie an (gegner.md § 4, B-325).
@@ -101,7 +101,7 @@ fn upgrade_elite_bogenschuetze() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn upgrade_elite_krieger() {
     let (_w, _) = want_elite("eliteWarrior", |w, s| elite_spot(w, s).0);
     unimplemented!("RU18: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go)")
@@ -110,7 +110,7 @@ fn upgrade_elite_krieger() {
 /// (d) Zwei Spieler zahlen gleichzeitig am Schmiede-Platz (Elite-Bogenschütze) und am Elite-Krieger-Angebot; wer vor dem
 /// vollen Preis loslässt, bekommt die Münzen zurück.
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn upgrade_zwei_spieler_an_beiden_schmiede_zielen() {
     let mut w = quiet_world();
     let (p1, p2) = (add_player(&mut w), add_player(&mut w));
@@ -194,7 +194,7 @@ fn buy_armor(w: &mut World, p: usize, s: usize) -> bool {
 
 /// (b) Stufe 1 ab Hub-Stufe 4, Stufe 2 ab 5; Zuschlag auf MaxHP und HP ohne Vollheilung, nur Kämpfer, auch neue.
 #[test]
-#[ignore = "wartet auf RU18.4 (preset_for)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn armor_zwei_stufen_nur_kaempfer() {
     let v = vals(&bare_world());
     let stages = v.buildings["armory"].armor.clone();

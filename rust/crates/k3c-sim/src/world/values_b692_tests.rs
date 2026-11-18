@@ -1,6 +1,6 @@
 //! Port der übrigen Tests aus `engine/sim/world_values_b692_test.go` (Review BAL8.2, B-692); `TestB692GesperrteFelder`
 //! und `TestB692ResolveWorldFilesPrueftBasis` stehen in `values_tests.rs`. Die Fälle mit Standard-Welt (`story`: RU19),
-//! Skill-Katalog (`CanLearn`, `LearnSkill`: RU18.4) oder Ruinen (`ruin_site`: RU18) tragen `ignore`.
+//! Skill-Katalog (`CanLearn`, `LearnSkill`) oder Ruinen (`ruin_site`: RU18) tragen `ignore`.
 //!
 //! Abweichung: Rust hat kein `UseData` (keine Paket-Variablen); `TestB692UseDataFrischMitGoalsUndSkills` prüft hier, dass
 //! `default_values_from` aus geänderten Daten einen frischen Wertesatz baut (goals, Skill-Katalog, Gebäude) und der Basis-
@@ -44,14 +44,14 @@ fn island_of(world: &WorldDef, seed: &str) -> Island {
         .unwrap_or_else(|e| panic!("{e}"))
 }
 
-/// Go: `CanLearn` (monarch.go), RU18.4.
-fn can_learn(_w: &World, _pi: usize, _id: &str) -> Result<(), String> {
-    panic!("RU18: can_learn")
+/// Go: `CanLearn` (monarch.go).
+fn can_learn(w: &World, pi: usize, id: &str) -> Result<(), String> {
+    crate::monarch::can_learn(w, &values(w), pi, id)
 }
 
-/// Go: `skillByID` (monarch_data.go), RU18.4.
-fn skill_tier(_v: &WorldValues, _id: &str) -> i64 {
-    panic!("RU18: skill_by_id")
+/// Go: `skillByID(id).Tier` (monarch_data.go).
+fn skill_tier(v: &WorldValues, id: &str) -> i64 {
+    crate::monarch::skill_by_id(v, id).map_or(0, |s| s.tier)
 }
 
 /// Punkt 1: Overrides auf `monarch.skills.*` wirken im Skill-Katalog der Welt (CanLearn), die Basis bleibt.
@@ -61,8 +61,8 @@ fn b692_skill_override_wirkt_je_welt() {
     let world = override_world("skill", &[("monarch", json!({"skills": {"ironWall": {"tier": 1}}}))]);
     let mut isl = island_of(&world, "skill");
     let pi = add_island_player(&mut isl, 0);
+    crate::island::testutil::add_island_pool(&mut isl, 0, 1);
     let w = &mut isl.stages[0];
-    crate::island::testutil::add_pool_points(w, 1);
     assert_eq!(skill_tier(&values(w), "ironWall"), 1, "Welt: ironWall Tier");
     assert!(can_learn(w, pi, "ironWall").is_ok(), "Welt mit Tier 1");
     assert_eq!(skill_tier(&default_values(), "ironWall"), 3, "Basis: ironWall Tier");
@@ -75,9 +75,10 @@ fn b692_skill_override_wirkt_je_welt() {
     );
 }
 
-/// Go: `LearnSkill` (monarch.go), RU18.4.
-fn learn_skill(_w: &mut World, _pi: usize, _id: &str) -> Result<(), String> {
-    panic!("RU18: learn_skill")
+/// Go: `LearnSkill` (monarch.go).
+fn learn_skill(w: &mut World, pi: usize, id: &str) -> Result<(), String> {
+    let v = values(w);
+    crate::monarch::learn_skill(w, &v, pi, id)
 }
 
 /// Punkt 2: Der Spielstand wird gegen den Wertesatz seiner Welt geprüft (Tier-Gating aus monarch.tierPoints).
@@ -87,7 +88,7 @@ fn b692_spielstand_pruefung_je_welt() {
     let world = override_world("leicht", &[("monarch", json!({"tierPoints": [0, 0, 0, 0]}))]);
     let mut isl = island_of(&world, "leicht");
     let pi = add_island_player(&mut isl, 0);
-    crate::island::testutil::add_pool_points(&mut isl.stages[0], 1);
+    crate::island::testutil::add_island_pool(&mut isl, 0, 1);
     learn_skill(&mut isl.stages[0], pi, "ironWall").unwrap_or_else(|e| panic!("{e}"));
     let data = test_data();
     let std_world = standard_world(&data);

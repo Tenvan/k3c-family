@@ -53,7 +53,7 @@ fn treppen_kosten_je_tiefe() {
 /// Höhle: Zwei Spieler bezahlen die Treppe hoch, der Bau zieht 100 Holz aus dem Vorrat (kein Stein). Der Test braucht
 /// `step` (Go: `buildNew`).
 #[test]
-#[ignore = "wartet auf RU18 (step: step_passives RU18.5, merchant_dawn RU18.4)"]
+#[ignore = "wartet auf RU18.5 (speed_of)"]
 fn treppe_hoch_in_der_hoehle_kostet_holz() {
     let mut w = new_world(1, "b631", Options::default());
     w.troops.clear();
