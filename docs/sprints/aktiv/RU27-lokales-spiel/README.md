@@ -1,6 +1,6 @@
 # RU27 · CLI · Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

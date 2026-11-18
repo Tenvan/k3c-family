@@ -33,6 +33,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU47 | SIM | RSU | Abnahme-Stand Rust-Sim: ignorierte Tests und Go-Seite (Second Worker) | – | `aktiv/RU47-abnahme-stand-rust-sim/` |
+| RU49 | SRV | RSU | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | – | `aktiv/RU49-smoke-raum-welt-und-pause/` |
+| RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | `aktiv/RU27-lokales-spiel/` |
+| RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | `aktiv/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
 
 ## Offen am Gerät
 
@@ -59,7 +62,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU22 | SIM | RSU | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | – | bereit | `geplant/RU22-sim-golden-bitgleich/` |
 | RU24 | SRV | RSU | Raum Teil 2 und Spielstand-Format | – | bereit | `geplant/RU24-raum-teil-2-spielstand/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
-| RU27 | CLI | RSU | Lokales Spiel: Sitzung, Kampagne, Spielstände, Einstellungen | – | bereit | `geplant/RU27-lokales-spiel/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
 | RU29 | CLI | RSU | Testing-, Debug- und Cheat-Menüs im Spiel | – | bereit | `geplant/RU29-dev-werkzeuge-im-spiel/` |
 | RU30 | CLI | RSU | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | – | bereit | `geplant/RU30-spielschleife-teil-2/` |
@@ -73,8 +75,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
-| RU49 | SRV | RSU | Smoke-Raum: Welt anlegen, Inselwechsel und Pause im Raum | – | bereit | `geplant/RU49-smoke-raum-welt-und-pause/` |
-| RU48 | CLI | RSU | Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage | – | bereit | `geplant/RU48-smoke-client-erstes-lauffaehiges-spiel/` |
 | RU50 | CLI | RSU | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | – | bereit | `geplant/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

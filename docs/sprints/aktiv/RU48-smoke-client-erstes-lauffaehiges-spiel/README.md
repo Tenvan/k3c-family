@@ -1,6 +1,6 @@
 # RU48 · CLI · Smoke-Client: erstes lauffähiges Spiel vom Hauptmenü bis zur Niederlage
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
