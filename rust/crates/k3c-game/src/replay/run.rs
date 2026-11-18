@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 use k3c_platform::{App, Config, InputState, NullCanvas, STEP, run_window};
 
 use super::app::ReplayApp;
-use super::cli::{DEFAULT_SIZE, Mode, Options, WARMUP_STEPS};
+use super::cli::{Mode, Options, WARMUP_STEPS};
 use super::frames::FrameLog;
 use super::report::{Metered, Report};
 use super::trace;
@@ -121,20 +121,14 @@ fn run_window_mode(o: &Options) -> Result<(), String> {
         measure,
     )
     .with_frames(log);
-    // Der Bericht nennt die echte Fenstergröße; --size wirkt erst mit B-1069
-    app.size = DEFAULT_SIZE;
-    if o.size != DEFAULT_SIZE {
-        // k3c-platform öffnet das Fenster fest mit 1280x720 (logisch); --size steht nur im Bericht (B-1069)
-        eprintln!(
-            "⚠ replay: --size {}x{} nur im Bericht, das Fenster hat 1280x720",
-            o.size.0, o.size.1
-        );
-    }
+    app.size = o.size;
     let cfg = Config {
         title: format!("k3c replay ({:.0} Hz)", 1.0 / STEP),
         measure: None,
         max_seconds: None,
         fullscreen: false,
+        size: Some(o.size),
+        novsync: o.novsync,
     };
     run_window(&mut app, cfg)?;
     if o.measure.is_some() {

@@ -18,7 +18,7 @@ use k3c_sim::state::World;
 use super::effects::{Effect, Kind, UNIT_PX};
 use super::looks::piece_at;
 use super::status::urgency;
-use crate::art::{Font, OUTLINE4, OutlineCache, Sheet};
+use crate::art::{Font, Library, OUTLINE4, OutlineCache, Sheet};
 use crate::view::cell::Cell;
 
 /// Kantenlänge der Vorlagen in Bildpunkten
@@ -47,7 +47,10 @@ pub struct Stencils {
 #[derive(Debug, Default)]
 pub struct Painter {
     pub st: Option<Stencils>,
-    widths: HashMap<(String, u64), (f64, f64)>,
+    /// Größe (Bits) → Text → Maße; verschachtelt, damit der Abruf ohne Schlüssel-String auskommt
+    widths: HashMap<u64, HashMap<String, (f64, f64)>>,
+    /// Zahl der gemerkten Texte (alle Größen)
+    n_widths: usize,
     /// aufsteigende Texte mit Kontur; Sweep je Takt in Listen
     pub outline: OutlineCache,
 }
@@ -199,8 +202,7 @@ impl Painter {
         &mut self,
         dst: &mut dyn Canvas,
         list: &[Effect],
-        mut font: Option<&mut Font>,
-        coin: Option<&Sheet>,
+        mut lib: Option<&mut Library>,
         c: &Cell,
         now: f64,
         k: f64,
@@ -212,7 +214,7 @@ impl Painter {
             }
             let p = (now - e.start) / e.look.duration;
             if !e.text.is_empty() {
-                self.rising(dst, e, font.as_deref_mut(), c, p, k);
+                self.rising(dst, e, lib.as_deref_mut().map(|l| &mut l.font), c, p, k);
                 continue;
             }
             let (x, y, s) = at(c, e.x, e.y);
@@ -220,7 +222,9 @@ impl Painter {
                 let q = piece_at(e.look, j, p);
                 if e.kind == Kind::CoinLoss
                     && j > 0
-                    && let Some(sh) = coin
+                    && let Some(sh) = lib
+                        .as_deref()
+                        .and_then(|l| l.sheet(super::COIN_ASSET, super::COIN_ANIM))
                 {
                     // Münzschauer: Münz-Sprite statt Scheibe (B-940)
                     coin_at(dst, sh, j, x + q.dx * s, y + q.dy * s, q.radius * s, q.alpha);
@@ -258,21 +262,24 @@ impl Painter {
 
     /// `measure` misst einen Text, gemerkt je Text und Größe.
     pub fn measure(&mut self, f: &Font, s: &str, size: f64) -> (f64, f64) {
-        let key = (s.to_string(), size.to_bits());
-        if let Some(m) = self.widths.get(&key) {
+        let bits = size.to_bits();
+        if let Some(m) = self.widths.get(&bits).and_then(|t| t.get(s)) {
             return *m;
         }
-        if self.widths.len() >= MAX_WIDTHS {
-            self.widths.clear();
+        if self.n_widths >= MAX_WIDTHS {
+            // Tabellen leeren statt verwerfen: die inneren Maps bleiben als Puffer
+            self.widths.values_mut().for_each(HashMap::clear);
+            self.n_widths = 0;
         }
         let m = f.measure(s, size);
-        self.widths.insert(key, m);
+        self.widths.entry(bits).or_default().insert(s.to_string(), m);
+        self.n_widths += 1;
         m
     }
 
     /// Zahl der gemerkten Textbreiten (Tests).
     pub fn measured(&self) -> usize {
-        self.widths.len()
+        self.n_widths
     }
 
     /// `warn` zeichnet die Warnkreise vor dem Flächenschlag um den Boden (kampfView.ts › drawWarn).

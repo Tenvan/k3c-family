@@ -105,6 +105,8 @@ impl Painter {
         }
     }
 
+    // PERF(B-1078): Ein Textwert mit neuer Größe misst und merkt sich die Breite (1 Allokation, Schlüssel und Vec); die
+    // Tabelle wächst nur mit neuen Texten und Größen, nicht je Bild.
     /// `text` zeichnet den Text mittig über y (Unterkante), mit schwarzer Kontur; Breiten werden je Text einmal
     /// gemessen.
     fn text(&mut self, dst: &mut dyn Canvas, it: &Item, font: &mut Font, c: &Cell) {

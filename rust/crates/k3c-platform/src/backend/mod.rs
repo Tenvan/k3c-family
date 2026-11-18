@@ -44,6 +44,10 @@ pub struct Config {
     pub max_seconds: Option<f64>,
     /// Startet im Vollbild (randlos); danach schaltet die App über [`App::fullscreen`].
     pub fullscreen: bool,
+    /// Innengröße des Fensters in logischen Pixeln; `None` = 1280x720.
+    pub size: Option<(u32, u32)>,
+    /// Präsentiert ohne Warten auf die Bildwiederholung (`Immediate`, sonst `Mailbox`), statt `Fifo` (für Messläufe).
+    pub novsync: bool,
 }
 
 /// Öffnet ein Fenster (in der Größe veränderbar) und treibt `app` im Takt [`crate::STEP`], bis `done()`,
@@ -108,12 +112,13 @@ impl<'a> WinLoop<'a> {
     }
 
     fn create(&mut self, el: &ActiveEventLoop) -> Result<(), String> {
+        let (w, h) = self.cfg.size.unwrap_or((1280, 720));
         let attrs = Window::default_attributes()
             .with_title(self.cfg.title.clone())
-            .with_inner_size(LogicalSize::new(1280, 720))
+            .with_inner_size(LogicalSize::new(w, h))
             .with_fullscreen(self.cfg.fullscreen.then_some(Fullscreen::Borderless(None)));
         let win = Arc::new(el.create_window(attrs).map_err(|e| e.to_string())?);
-        let (gfx, backend) = Gfx::new(win.clone())?;
+        let (gfx, backend) = Gfx::new(win.clone(), self.cfg.novsync)?;
         log::info("🚀 Fenster offen", &[("backend", &backend)]);
         self.backend = backend;
         self.gfx = Some(gfx);
