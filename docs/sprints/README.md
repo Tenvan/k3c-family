@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
-| RU30 | CLI | RSU | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | – | `aktiv/RU30-spielschleife-teil-2/` |
 
 ## Offen am Gerät
 
@@ -454,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | `erledigt/RU29-dev-werkzeuge-im-spiel/` |
 | RU24 | Raum Teil 2 und Spielstand-Format | `erledigt/RU24-raum-teil-2-spielstand/` |
 | RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | `erledigt/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
+| RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | `erledigt/RU30-spielschleife-teil-2/` |

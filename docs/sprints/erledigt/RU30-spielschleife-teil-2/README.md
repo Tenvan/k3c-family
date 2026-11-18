@@ -1,6 +1,6 @@
 # RU30 · CLI · Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -105,7 +105,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU30.4 | `RU30.4-measure-bericht.md` | Umsetzung | autonom | fertig |
 | RU30.5 | `RU30.5-stresstest.md` | Umsetzung | autonom | fertig |
 | RU30.6 | `RU30.6-start-main-icon.md` | Umsetzung | autonom | fertig |
-| RU30.7 | `RU30.7-review.md` | Review | autonom | offen |
+| RU30.7 | `RU30.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -113,6 +113,7 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19: AC-01 (RU30.6 `run_flow`, RU30.1), AC-02 (RU30.2, Software-Rasterer, F12 ohne Sprites B-1115), AC-04 (RU30.4/RU30.5, Feldtests) erfüllt; AC-03 Teil Startparameter erfüllt, Teil Icon verschoben (B-1118, wartet auf Freigabe von Ralf für ein Ressourcen-Crate).
+Review: k3c-reviewer ohne schwere Befunde; mittlerer Befund (Messlauf hängt im Fehlerfenster) behoben (`Launch::fail` beendet bei `--measure`).
+Neue Tickets: B-1113 (Welt-Grafik je Stufe), B-1114 (Aufnahme-Sichtvergleich), B-1115 (F12-Sprites, Maus), B-1116 (replay/report.rs), B-1117 (Menü-Starter Stresstest, Cheat-Menü B-1111 offen), B-1118 (Icon).
+Abnahme-Ticket für Messen, Stresstest, Aufnahme (Lane: zweit): B-1119.

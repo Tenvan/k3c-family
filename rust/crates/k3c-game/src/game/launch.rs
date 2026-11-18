@@ -145,6 +145,10 @@ impl Launch {
             Fault::new(msg)
         });
         self.game = None;
+        // Messlauf ohne Fenster-Fehlerbild (Go: `showFault` nur ohne `--measure`): sofort mit Fehler enden
+        if self.args.measure.seconds > 0.0 {
+            self.quit = true;
+        }
     }
 
     /// Baut das Spiel mit der Grafik auf `c`.
