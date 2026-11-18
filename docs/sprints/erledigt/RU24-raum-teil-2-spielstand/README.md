@@ -1,6 +1,6 @@
 # RU24 · SRV · Raum Teil 2 und Spielstand-Format
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SRV
 - **Reife:** bereit
@@ -95,7 +95,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU24.2 | `RU24.2-room-devcombat-fullsave-saver.md` | Umsetzung | autonom | fertig |
 | RU24.3 | `RU24.3-room-closeroom-skills-preview.md` | Umsetzung | autonom | fertig |
 | RU24.4 | `RU24.4-room-worlds-metrics-observer.md` | Umsetzung | autonom | fertig |
-| RU24.5 | `RU24.5-review.md` | Review | autonom | offen |
+| RU24.5 | `RU24.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -103,6 +103,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-18 (Second Worker, autonom): AC-01, AC-02, AC-03 erfüllt (Nachweis in den Ergebnissen RU24.1 bis RU24.5): `k3c-room` 233 Tests grün, 0 ignoriert; `task check` 1965 grün; `check:go` Tests ok (`golangci-lint` lokal fehlt); Format Version 9 unverändert, `spielstand_rundlauf` über `testdata/saves/v1` bis `v9` grün; `engine/`, `native/`, `testdata/`, `docs/protocol.md` unverändert; `pending.rs` gelöscht.
+Kein Abnahme-Ticket angelegt (Second Worker darf nicht): Hauptrechner legt es an (Gen, Race, Messung der Speicherdauer im Takt, `InlineWriter` blockiert den Frame, Thread-Schreiber und RU39).
+Offen für den Hauptrechner: `set_worlds`/`set_sessions` in `k3c-game` verdrahten (RU50), `close_room`-Nachbau ersetzen, Report-JSON-Format (`1.0`/Escapes), `familie.json` passt nicht mehr zum Level-Aufbau, Vorschau ohne Aufrufer (Details im Ergebnis RU24.5).
