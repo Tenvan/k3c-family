@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useContext, type ReactNode } from 'react';
 import type { PlanningData, PlanSprint } from '../api';
 import { Button } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
@@ -8,7 +8,8 @@ import { sessionProgress, stepRank, type ProjectView } from './projects';
 import { CopyPrompt, DepLinks } from './PromptParts';
 import { promptProject, promptSession } from './prompts';
 import { scrollToSprint } from './SprintCard';
-import { WtPills } from './WorktreePills';
+import { WtContext, WtPills } from './WorktreePills';
+import { marksFor, pillTitle } from './wtPills';
 
 interface Props {
   view: ProjectView;
@@ -116,9 +117,17 @@ const chipColor = (kind: string) => (kind === 'aktiv' ? undefined : kind === 'bl
 function SprintChip({ s, onPick }: { s: PlanSprint; onPick: () => void }) {
   const [done, all] = sessionProgress(s);
   const kind = s.sessions.some((x) => x.status === 'blockiert') ? 'blockiert' : s.status;
+  // Worktree-Arbeit: Branches, die den Sprint bearbeiten, plus Änderungen aus dem Worktree-Check (auch an seinen Sessions)
+  const index = useContext(WtContext);
+  const marks = [marksFor(index, 'Sprint', s.id), ...s.sessions.map((x) => marksFor(index, 'Session', x.nr))].flat();
+  const branches = [...new Set([...(s.worktrees ?? (s.worktree ? [s.worktree] : [])), ...marks.map((m) => m.branch)])];
+  const wtTitle = branches.length ? `
+⎇ ${branches.join(', ')}${marks.length ? `
+${pillTitle(marks)}` : ''}` : '';
   return (
-    <Button size="1" variant="outline" radius="small" color={chipColor(kind)} className="pl-chip" data-kind={kind} title={s.title} onClick={onPick}>
-      {s.id} · {s.status} · {done}/{all}
+    <Button size="1" variant="outline" radius="small" color={chipColor(kind)} className="pl-chip" data-kind={kind} data-wt={branches.length || undefined}
+      title={s.title + wtTitle} onClick={onPick}>
+      {branches.length > 0 && '⎇ '}{s.id} · {s.status} · {done}/{all}
     </Button>
   );
 }

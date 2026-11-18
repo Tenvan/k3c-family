@@ -150,3 +150,4 @@
   .pl-side.has-detail > .pl-side-backlog, .pl-side.has-detail > .pl-side-detail { flex: 1 1 0; }
   .pl-split-v, .pl-split-h { display: none; }
 }
+.pl-chip[data-wt] { box-shadow: inset 0 0 0 1px var(--violet-8, #8e4ec6); }
