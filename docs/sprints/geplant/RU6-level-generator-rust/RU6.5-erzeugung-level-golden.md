@@ -14,7 +14,7 @@
 
 ## Ziel
 
-`generate`/`generate_with` laufen in Rust; die sechs Level-Golden und `nature.json` stimmen bitgleich. Alle in RU6.1 bis RU6.4 ignorierten Tests laufen.
+`generate`/`generate_with` laufen in Rust; die sechs Level-Golden und `nature.json` zeigen das gleiche Ergebnis wie Go (Entscheidung 012): gleiche Chunks und Objekte (Art, Anzahl, Reihenfolge), Fließkomma innerhalb 1e-6 relativ (absolut 1e-9 nahe 0); Hinweise „bitgleich“ im Kontext lesen sich als diese Regel. Alle in RU6.1 bis RU6.4 ignorierten Tests laufen.
 
 ## Kontext
 
@@ -35,7 +35,7 @@ Abweichungen suchen: Weicht ein Golden ab, gilt Go (Leitfaden § 1). Ersten abwe
 
 ## Nicht-Ziele
 
-Änderungen an Go-Code und `testdata/golden` (kein Neuschrieb, auch nicht mit Begründung). `bench_test.go`. Neue Crates.
+Änderungen an Go-Code und `testdata/golden` (kein Neuschrieb, auch nicht mit Begründung). `bench_test.go`. Neue Crates. Bitgleichheit der Fließkommawerte zu Go (entfällt, Entscheidung 012).
 
 ## Schritte
 
@@ -48,7 +48,7 @@ Abweichungen suchen: Weicht ein Golden ab, gilt Go (Leitfaden § 1). Ersten abwe
 
 ## Fertig, wenn
 
-- [ ] AC-01: `level-cave`, `-crystal`, `-forest`, `-ironhold`, `-mine`, `-planned` und `nature.json` stimmen bitgleich (`cargo test -p k3c-level golden`), ohne Golden-Neuschrieb (`git diff --stat testdata/golden` leer).
+- [ ] AC-01: `level-cave`, `-crystal`, `-forest`, `-ironhold`, `-mine`, `-planned` und `nature.json` zeigen gleiches Ergebnis (Chunks und Objekte nach Art, Anzahl, Reihenfolge; Fließkomma innerhalb 1e-6 relativ; `cargo test -p k3c-level golden`), ohne Golden-Neuschrieb (`git diff --stat testdata/golden` leer).
 - [ ] AC-02 (Teil level und Rest): Tests aus `level_test.go`, `camps_test.go`, `chunkcount_test.go`, `deco_test.go`, `hub_sites_test.go`, `lava_test.go`, `nature_golden_test.go`, `planned_golden_test.go` portiert und grün; keine Marke `wartet auf RU6.5` mehr.
 - [ ] `task rust:lint` grün, Dateien ≤ 400 Zeilen, Funktionen ≤ 60 Zeilen, kein `HashMap`.
 

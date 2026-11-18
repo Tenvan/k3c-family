@@ -16,7 +16,7 @@
 
 ## Ziel
 
-Der Level-Generator läuft in Rust und trifft alle Level-Golden bitgleich; damit ist der Weg „Golden als Orakel“ belegt. Am Ende sichtbar: `task rust:test -- -p k3c-level` grün mit allen Level-Golden.
+Der Level-Generator läuft in Rust und liefert in allen Level-Golden das gleiche Ergebnis wie Go (Entscheidung 012): gleiche Chunks und Objekte (Art, Anzahl, Reihenfolge), Fließkomma mit Toleranz 1e-6 relativ (absolut 1e-9 nahe 0). Bitgleich bleibt nur der rng. Die Rechenreihenfolge und die Datenstrukturen von Go sind keine Pflicht, idiomatisches, performantes Rust ist erwünscht; verbindlich bleiben die Reihenfolge der rng-Aufrufe und der Determinismus innerhalb von Rust. Am Ende sichtbar: `task rust:test -- -p k3c-level` grün mit allen Level-Golden.
 
 ## Beteiligte und Zielgruppen
 
@@ -54,7 +54,7 @@ Summe: 2298 Zeilen Go (die erste Fassung zählte 2206; Dateien sind seither gewa
 
 ## Nicht-Ziele
 
-Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen über den Go-Stand hinaus.
+Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Bitgleichheit der Level-Fließkommawerte zu Go (entfällt, Entscheidung 012).
 
 ## Regeln und Einschränkungen
 
@@ -75,7 +75,7 @@ Weicht Rust von Go ab, gilt Go: Die Abweichung wird behoben oder als Ticket erfa
 
 ## Akzeptanzkriterien
 
-- **AC-01** `level-cave`, `-crystal`, `-forest`, `-ironhold`, `-mine`, `-planned` und `nature.json` werden von Rust bitgleich (gleicher JSON-Baum, jede Zahl mit denselben Bits) erzeugt, ohne Golden-Neuschrieb.
+- **AC-01** `level-cave`, `-crystal`, `-forest`, `-ironhold`, `-mine`, `-planned` und `nature.json` werden von Rust mit gleichem Ergebnis erzeugt: gleiche Chunks und Objekte (Art, Anzahl, Reihenfolge), Fließkomma innerhalb 1e-6 relativ (absolut 1e-9 nahe 0), ohne Golden-Neuschrieb.
 - **AC-02** Die Tests aus `engine/level` (19 Dateien, davon `bench_test.go` nur mit Benchmarks, daher 18 portierte Dateien) sind sinngleich portiert und grün; kein `#[ignore]` mit Marke `RU6` bleibt.
 - **AC-03** Das Review nennt Sessions und Zeilen je Session (Plan: 450 Zeilen Code je Session); bei mehr als dem 1,5-Fachen des Plans empfiehlt es, vor RU10 neu zu schätzen.
 

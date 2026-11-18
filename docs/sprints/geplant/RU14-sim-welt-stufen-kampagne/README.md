@@ -52,7 +52,9 @@ Regel-, Wert- oder Formatänderungen. Änderungen am Go-Code. Optimierungen übe
 
 ## Regeln und Einschränkungen
 
-Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Keine neue Abhängigkeit (kein `regex`, kein `chrono`), kein `HashMap`, keine Reflection-Nachbildung per Makro.
+Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Keine neue Abhängigkeit (kein `regex`, kein `chrono`), kein `HashMap` (Iterationsreihenfolge, Determinismus), keine Reflection-Nachbildung per Makro.
+
+**Port-Orakel (Entscheidung 012):** Idiomatisches, performantes Rust ist erwünscht; Hinweise „wie Go“ und „Go-Reihenfolge“ in Sprint und Sessions gelten nicht für Rechenreihenfolge, `k3c-det`-Mathematik, lineare Suche und Go-Datenstrukturen. Verbindlich bleiben Reihenfolge der Ereignisse und der rng-Aufrufe (damit die Reihenfolge der Teilschritte, AC-01), Ganzzahl-Werte und Determinismus innerhalb von Rust; Fließkomma gilt mit Toleranz 1e-4 relativ (`docs/standards/rust-port.md` § 1).
 
 - **Bereich:** `rust/crates/k3c-sim/src/world/**`, `rust/crates/k3c-sim/src/campaign/**`, `rust/crates/k3c-sim/src/lib.rs` (nur `pub mod`-Zeilen), `rust/crates/k3c-sim/src/state/pending.rs` (nur Platzhalter löschen), `rust/crates/k3c-sim/src/state/site_view.rs` (nur der Aufruf von `level_site`)
 - **Abhängig von:** RU10
