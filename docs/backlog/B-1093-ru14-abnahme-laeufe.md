@@ -67,4 +67,11 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Stand 2026-11-18 (RU47)** (Second Worker; Details im Ergebnis RU47.1 und RU47.2, Sprint RU47)
+
+- AC-01: `cargo test --release -p k3c-sim` grün: 384 grün, 296 ignoriert, 0 rot (Stand RU14 war 375 / 296; die neun zusätzlichen Tests stammen aus RU46). Ganzer Workspace: 1381 grün, 326 ignoriert, 4 rot (nur `still.rs`/`still_hud.rs`, nicht Sim).
+- Marken: `campaign` 5 ignoriert (RU19 2, RU22 2, RU18 1), `world` 55 (RU18 40, RU19 23). `cargo test -- --ignored`: `campaign` 0 grün / 5 rot, `world` 0 grün / 55 rot (Platzhalter RU18 `new_hub_site`, RU19 `decode_world_story`, RU22 `golden_runs`); kein Kandidat zum Freischalten.
+- AC-02: `check:race` grün, 749 s, kein DATA RACE (RU45.1, gcc 16.2.0).
+- AC-03: `task go:test` grün (21 Pakete, 99 s), `testdata/` unverändert (RU47.2); `gen:paper` grün (RU45.1).
+- AC-04: Läufe liefen auf dem Second Worker (Lane zweit); kein rotes Sim-Ergebnis, kein neues Ticket nötig.
+- Offen an RU18/RU19/RU22: die 60 ignorierten Tests in `campaign` und `world`. Status bleibt `offen`.

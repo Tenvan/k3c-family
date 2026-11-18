@@ -67,7 +67,7 @@ keine
 |---|---|---|---|---|
 | RU47.1 | `RU47.1-cargo-stand-und-marken.md` | Umsetzung | autonom | fertig |
 | RU47.2 | `RU47.2-go-seite-sim-tests.md` | Umsetzung | autonom | fertig |
-| RU47.3 | `RU47.3-notizen-in-abnahme-tickets.md` | Umsetzung | autonom | offen |
+| RU47.3 | `RU47.3-notizen-in-abnahme-tickets.md` | Umsetzung | autonom | fertig |
 | RU47.4 | `RU47.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

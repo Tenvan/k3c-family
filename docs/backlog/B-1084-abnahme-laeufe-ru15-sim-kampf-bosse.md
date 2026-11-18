@@ -72,4 +72,12 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Stand 2026-11-18 (RU47)** (Second Worker; Details im Ergebnis RU47.1 und RU47.2, Sprint RU47)
+
+- Rust: `cargo test --release -p k3c-sim` 384 grün, 0 rot, 296 ignoriert.
+- Marken: `combat` 15 ignoriert (RU18 11, RU10 2, RU19 2), `boss` 23 (RU10 21, RU19 2), `crown` 17 (RU19 9, RU18 8, RU10 3), `portal` 6 (RU18 3, RU10 3, RU19 2).
+- `cargo test -- --ignored`: `crown` 8 grün / 9 rot, `portal` 6 grün / 0 rot, `combat` 0 / 15, `boss` 0 / 23. Kandidaten zum Freischalten (grün): `crown::tests::{ohne_krone_nur_laufen, kronenraub_ist_game_over, treffer_kostet_muenze_krone_faellt_ohne_gold, burgfall_beendet_das_spiel_nicht, kronenraub_stuft_mit_insel_over}`, `crown::review_tests::{fortified_aura_fuer_truppen, last_stand_nur_mit_letzter_muenze, kein_raub_in_geschuetzter_nacht}` und alle sechs ignorierten `portal::tests` (`dieb_ohne_portal_laesst_beute_fallen`, `letztes_portal_ohne_doppel_punkt_bei_miniboss`, `sichere_stufe_bleibt_nach_dem_laden`, `portal_simulation_ist_deterministisch`, `angegriffenes_portal_spawnt_verteidiger`, `letztes_portal_macht_stufe_sicher`). Rot: `boss` (Helfer `boss_island`, `deep_island`: Platzhalter, Marke RU10), `combat` (RU10 `mustIsland`, RU18, RU19), `crown` Rest (RU19 `emit`, RU18 `applyDamage`-Pfade).
+- AC-01 teilweise (14 freischaltbare Tests, Rest an RU18/RU19); AC-02 (Balance gegen Go) wartet auf RU18/RU19/RU22.
+- AC-03 Gen/Golden: `task go:test` grün, `testdata/` unverändert (RU47.2); `gen:paper` grün (RU45.1).
+- AC-04 Race: `check:race` grün, 749 s, kein DATA RACE (RU45.1, gcc 16.2.0); gilt, solange sich `engine/` Go-seitig nicht ändert (Hauptrechner entscheidet).
+- Status bleibt `offen`.
