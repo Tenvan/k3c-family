@@ -68,4 +68,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Geprüft 2026-11-18 (Claude), nicht umgesetzt: größer als eine Session (Größe L) und ohne Fenster nicht prüfbar. Der Fluss-Shader braucht (1) einen WGSL-Port von `native/k3c-game/world/water/river.kage` (66 Zeilen) samt Uniform-Puffer in `backend/setup.rs`/`gpu.rs`, (2) eine neue Canvas-Schnittstelle für Shader-Flächen mit Uniforms (Headless-, Frame- und SoftCanvas-Seite, Run-Art neben Quads/Tris), (3) einen Software-Nachbau für das Standbild und (4) die Wahl der Fassung „shader“ in `world/water.rs`. Vor der Freigabe in Tickets je Teil zerlegen (Schnittstelle und Run-Art; WGSL-Port samt Pipeline; Anbindung `draw_river`) und erst nach Ralfs G2-Messung (RU39.2) angehen, weil Kacheln bis dahin als Fassung genügen.

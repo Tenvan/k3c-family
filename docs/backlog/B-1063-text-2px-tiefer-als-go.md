@@ -64,4 +64,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Geprüft 2026-11-18 (Claude), nicht umgesetzt, Ursache nicht belegt. Befund: Oberlänge der Schrift ist in Rust und Go gleich (`k3c.ttf`, 24 px: 22,676; fontdue gegen Go `HAscent`), Go setzt die Grundlinie bei `y + HAscent` (`text/v2` layout.go, oben ausgerichtet), Rust bei `y + ascent` (`ttf.rs`): die Formel in der Plattform stimmt. Vermutung (ungeprüft): Die 2 px kommen aus der zu niedrigen Zeilenhöhe in `art/font.rs` (B-1065, jetzt behoben): unten verankerte Elemente stehen dadurch 2,5 bis 2,9 px tiefer. Für Welttexte (`props/paint.rs`, y unabhängig von der Zeilenhöhe) erklärt das die Abweichung nicht. Prüfen und Maske entfernen geht nur mit erzeugter Grafik (`gen:paper`, in diesem Lauf gesperrt): `tests/still_props.rs` und `tests/still_hud.rs` nach dem Merge von B-1065 ohne Maske laufen lassen; bleibt eine Abweichung, Glyph-Raster (Hinting, `dy` aus `ymin`) gegen Go vergleichen.
