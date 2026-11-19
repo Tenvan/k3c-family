@@ -42,6 +42,8 @@ jobs:
       - run: cargo test --workspace
         working-directory: rust
       - run: task rust:game:build
+      # streng (ohne -lokal): keine saves/, reports/, trace/, keine Go-Reste
+      - run: task rust:game:dist:check
       - name: Paket schnüren (Rust-Spiel)
         shell: pwsh
         run: Compress-Archive -Path dist/k3c-game/* -DestinationPath "k3c-$env:GITHUB_REF_NAME-windows.zip"

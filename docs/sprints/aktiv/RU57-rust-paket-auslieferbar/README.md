@@ -69,7 +69,7 @@ keine (Defaults autonom entschieden, 2026-11-19): kein cargo-about, Werkzeug in 
 | RU57.1 | `RU57.1-lizenzen-txt-im-paket.md` | Umsetzung | autonom | fertig |
 | RU57.2 | `RU57.2-paketpruefung-readme-version.md` | Umsetzung | autonom | fertig |
 | RU57.3 | `RU57.3-pfade-release-sichtpruefung.md` | Umsetzung | autonom | fertig |
-| RU57.4 | `RU57.4-review.md` | Review | autonom | offen |
+| RU57.4 | `RU57.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

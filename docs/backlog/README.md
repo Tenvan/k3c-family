@@ -184,6 +184,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU37 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
 | [B-1139](B-1139-menue-lizenzliste-nennt-go-bibliotheken.md) | CLI | Problem | mittel | offen | RU37 | Die Lizenz-Seite des Rust-Spiels nennt Go-Bibliotheken statt der Rust-Crates |
+| [B-1141](B-1141-rust-paket-auf-anderem-pc-abnehmen.md) | INF | Schuld | mittel | offen | RU57 | Abnahme: Das Rust-Paket dist/k3c-game startet auf einem anderen PC und die Lizenzdatei genügt |
 
 ## Archiv
 

@@ -9,8 +9,8 @@ neben der EXE liegen bleiben. Eine Grafikkarte mit DirectX 12, Vulkan oder OpenG
 
 Spieler
 -------
-1 bis 2 Spieler am selben PC (geteilter Bildschirm): Spieler 1 mit Tastatur oder Controller, Spieler 2 mit einem
-Controller. Die Tastenbelegung zeigt das Spiel im Menü unter den Optionen (Steuerung); ein Controller-Test steht im Menü.
+1 bis 2 Spieler am selben PC (geteilter Bildschirm): ein Spieler kann die Tastatur nutzen, alle anderen brauchen
+einen Controller; wer beitritt, wählt es in der Lobby. Die Tastenbelegung zeigt das Spiel im Menü unter den Optionen (Steuerung); ein Controller-Test steht im Menü.
 Im Menü geht die Controller-Taste B (oder Esc) einen Schritt zurück.
 
 Spielstände
@@ -36,4 +36,4 @@ LICENSE-ASSETS und LIZENZEN.txt.
 Probleme
 --------
 Startet das Spiel nicht oder bleibt der Bildschirm schwarz: Grafikkartentreiber aktualisieren, dann erneut
-starten. Meldungen erscheinen, wenn das Spiel aus einer Konsole gestartet wird (cmd: k3c-game.exe).
+starten. Neben dem Spiel öffnet sich ein Konsolenfenster mit Meldungen; es kann offen bleiben.

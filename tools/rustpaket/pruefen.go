@@ -25,7 +25,7 @@ var requiredDirs = []struct{ dir, suffix string }{
 var (
 	forbiddenExt   = []string{".go", ".rs", ".pdb", ".tmp"}
 	forbiddenNames = []string{"go.mod", "go.sum", "assets.txt", "Cargo.toml", "Cargo.lock"}
-	forbiddenDirs  = []string{"saves", "reports", ".git", ".work", "target"}
+	forbiddenDirs  = []string{"saves", "reports", ".git", ".work", "target", "trace"}
 	// runtimeDirs entstehen beim Spielen aus dem Paket (Spielstände, Berichte, Aufzeichnung): im Entwicklungsordner
 	// erlaubt (-lokal), im Paket zum Weitergeben nicht.
 	runtimeDirs = []string{"saves", "reports", "trace"}

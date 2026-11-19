@@ -1,0 +1,3 @@
+# Statische C-Laufzeit (RU57): die Release-EXE braucht auf einem fremden PC kein Visual-C++-Redistributable (VCRUNTIME140.dll).
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
