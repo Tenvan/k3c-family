@@ -64,7 +64,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU54.1 | `RU54.1-pausenmenue-ueber-welt-und-hud.md` | Umsetzung | autonom | fertig |
-| RU54.2 | `RU54.2-flaeche-ohne-srgb.md` | Umsetzung | autonom | offen |
+| RU54.2 | `RU54.2-flaeche-ohne-srgb.md` | Umsetzung | autonom | fertig |
 | RU54.3 | `RU54.3-review.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

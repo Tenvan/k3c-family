@@ -28,7 +28,7 @@ Ralf (Abnahme am PC), Second Worker (Bildvergleich B-1129).
 
 ## Anforderungen
 
-- Nicht-sRGB-Fläche wählen (erstes Format ohne sRGB, sonst `remove_srgb_suffix` mit Ansicht).
+- Nicht-sRGB-Fläche wählen (bevorzugt `Bgra8Unorm`/`Rgba8Unorm`, sonst erstes Format ohne sRGB, sonst das erste).
 - Reine Auswahlfunktion mit Test.
 - Keine neue Abhängigkeit, keine Allokation je Bild.
 
@@ -40,7 +40,7 @@ Neues Farbmanagement, Nacht-/Licht-Overlay (B-1056), Bildvergleich Go/Rust (B-11
 
 Rust-Leitplanken RU42; Plattform-Crate bleibt `unsafe`-frei in der Bibliothek.
 
-- **Bereich:** `rust/crates/k3c-platform/src/backend/setup.rs`, `rust/crates/k3c-platform/src/backend/gpu.rs`
+- **Bereich:** `rust/crates/k3c-platform/src/backend/gpu.rs`
 - **Abhängig von:** –
 - **Braucht 🧑:** Abnahme
 - **Größe:** S
@@ -52,7 +52,7 @@ Fläche meldet [Bgra8UnormSrgb, Bgra8Unorm] → Bgra8Unorm.
 
 ## Ausnahme- und Fehlerfälle
 
-Fläche kennt nur sRGB-Formate: das Format ohne Suffix als Ansicht (`view_formats`) wählen; der Test deckt die Auswahl ab.
+Fläche kennt nur sRGB-Formate: das erste bleibt, Warnung im Log (`🚦 Fläche nur als sRGB`); eine sRGB-Ansicht mit Shader-Umrechnung wäre ein größerer Umbau und würde erst bei Bedarf Ticket (nicht beobachtet).
 
 ## Akzeptanzkriterien
 
