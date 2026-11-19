@@ -75,7 +75,7 @@ Weite 4, 4,5 oder 5 M (B-1045): Default 5 M, 🧑 entscheidet am TV nach B-1130 
 | RU55.3 | `RU55.3-spiegel-fluss.md` | Umsetzung | autonom | fertig |
 | RU55.4 | `RU55.4-toenung-dunst.md` | Umsetzung | autonom | fertig |
 | RU55.5 | `RU55.5-lichthoefe.md` | Umsetzung | autonom | fertig |
-| RU55.6 | `RU55.6-wald-parallax-je-welt.md` | Umsetzung | autonom | offen |
+| RU55.6 | `RU55.6-wald-parallax-je-welt.md` | Umsetzung | autonom | fertig |
 | RU55.7 | `RU55.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

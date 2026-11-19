@@ -112,7 +112,7 @@ impl HaloMesh {
 
 /// Collect sammelt die Höfe der Zelle in `out` (leert ihn zuerst): Lagerfeuer, Fackeln, dann der Mond mit Scheibe.
 /// Nur Lichter im Ausschnitt, nur nachts (Deckkraft > 0), höchstens `g.max` am Boden.
-pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, level: &str, out: &mut Vec<Halo>) {
+pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, (level, boost): (&str, f64), out: &mut Vec<Halo>) {
     out.clear();
     if !g.enabled {
         return;
@@ -128,7 +128,7 @@ pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, level: &str
         core: g.core,
         color,
     };
-    let a = glow_alpha(light.campfire.strength, &wd.cycle) * g.strength;
+    let a = (glow_alpha(light.campfire.strength, &wd.cycle) * g.strength * boost).min(1.0);
     if light.campfire.valid()
         && has_campfire(wd)
         && a > 0.0
@@ -136,7 +136,7 @@ pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, level: &str
     {
         out.push(make(Kind::Campfire, wd.castle.x, 1.0, light.campfire.radius, a));
     }
-    let a = glow_alpha(light.torch.strength, &wd.cycle) * g.strength;
+    let a = (glow_alpha(light.torch.strength, &wd.cycle) * g.strength * boost).min(1.0);
     if light.torch.valid() && a > 0.0 {
         for s in wd.sites.iter().filter(|s| s.state == "built") {
             let side = torch_side(s.x, wd.hub_x);
@@ -186,9 +186,9 @@ fn collect_moon(g: &Glow, c: &Cell, wd: &SimWorld, out: &mut Vec<Halo>) {
 
 impl World {
     /// DrawHalos zeichnet die Höfe der Zelle (Profil `k2c`; sonst nichts).
-    pub fn draw_halos(&mut self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, level: &str) {
+    pub fn draw_halos(&mut self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, level: &str, boost: f64) {
         let g = current().glow;
-        collect(&self.light, &g, c, wd, level, &mut self.halos);
+        collect(&self.light, &g, c, wd, (level, boost), &mut self.halos);
         if self.halos.is_empty() {
             return;
         }

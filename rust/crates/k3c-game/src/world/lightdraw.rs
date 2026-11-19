@@ -8,12 +8,14 @@
 //! Die Lichtkarte zeichnet `Canvas::blend(Blend::Multiply)` mit `mesh` auf einem weißen 1×1-Bild (B-1056, Go:
 //! `ebiten.Blend` mit Ziel × Quelle, Deckkraft des Ziels bleibt).
 
+use k3c_data::look::current;
 use k3c_platform::{Blend, Canvas, Vertex};
 use k3c_sim::state::World as SimWorld;
 
 use super::World;
 use super::backdrop::Rgba;
 use super::cull::visible;
+use super::forest::forest_tint;
 use super::layers::stage_of;
 use super::light::{LightData, daylight, glow_alpha, torch_side};
 use super::tint::{NEUTRAL, is_neutral, tint_of};
@@ -94,12 +96,19 @@ impl World {
         let Some(wd) = st.world.as_deref() else {
             return;
         };
+        let d = self.density(c, wd, f.clock, &st.level);
         let tint = tint_of(&st.level, wd);
+        let tint = if d > 0.0 {
+            let ft = forest_tint(d);
+            [0, 1, 2].map(|i| tint[i] * ft[i])
+        } else {
+            tint
+        };
         if daylight(&wd.cycle) < 1.0 || !is_neutral(tint) {
             self.draw_light_map(dst, c, wd, tint);
         }
         self.draw_torches(dst, c, wd);
-        self.draw_halos(dst, c, wd, &st.level);
+        self.draw_halos(dst, c, wd, &st.level, 1.0 + current().forest.fire * d);
         if self.mirror_wanted(f, dst) {
             self.draw_mirror(dst, c, f.clock, wd);
         }

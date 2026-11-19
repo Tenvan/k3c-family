@@ -19,6 +19,7 @@ pub mod backdrop;
 pub mod bank;
 pub mod camera;
 pub mod cull;
+pub mod forest;
 pub mod ground;
 pub mod halo;
 pub mod layers;
@@ -57,6 +58,8 @@ pub struct World {
     /// Höfe der Zelle und ihr Netz (RU55.5), je Bild wiederverwendet.
     pub halos: Vec<Halo>,
     pub halo_mesh: HaloMesh,
+    /// Geglättete Walddichte je Zelle (RU55.6).
+    pub dens: forest::Densities,
     /// Weißes 1×1-Bild für die Lichtkarte (Go: `w.pixel()`), beim ersten Zeichnen angelegt.
     pub light_pixel: Option<k3c_platform::TexId>,
 }
@@ -176,6 +179,7 @@ impl World {
             mesh: LightMesh::default(),
             halos: Vec::with_capacity(16),
             halo_mesh: HaloMesh::default(),
+            dens: forest::Densities::default(),
             light_pixel: None,
         }
     }

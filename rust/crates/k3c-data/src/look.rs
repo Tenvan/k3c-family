@@ -57,6 +57,10 @@ pub struct Look {
     pub haze: [f64; 3],
     /// Lichthöfe an Lichtquellen und Mond (RU55.5); im Profil `go` aus.
     pub glow: Glow,
+    /// Wald nach Rodung (RU55.6); im Profil `go` aus.
+    pub forest: crate::look_world::Forest,
+    /// Parallax-Satz je Welt (Level-ID); ohne Eintrag der Standard.
+    pub worlds: BTreeMap<String, crate::look_world::WorldLook>,
 }
 
 /// Lichthöfe (`.profiles.*.glow`): weicher Hof um Lagerfeuer und Fackeln, Mond mit weitem Hof am Himmel.
@@ -231,6 +235,8 @@ const GO_LOOK: Look = Look {
     },
     haze: [0.0; 3],
     glow: GLOW_OFF,
+    forest: crate::look_world::FOREST_OFF,
+    worlds: BTreeMap::new(),
 };
 
 impl Default for Look {
@@ -280,6 +286,11 @@ fn builtin() -> BTreeMap<String, &'static Look> {
             enabled: true,
             ..GLOW_OFF
         },
+        forest: crate::look_world::Forest {
+            enabled: true,
+            ..crate::look_world::FOREST_OFF
+        },
+        worlds: crate::look_world::builtin_worlds(),
         ..GO_LOOK
     };
     BTreeMap::from([

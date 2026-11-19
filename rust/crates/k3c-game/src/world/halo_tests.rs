@@ -38,7 +38,7 @@ fn run(level: &str, wd: &SimWorld, x: f64) -> Vec<Halo> {
     crate::world::register_look();
     let (light, g) = (load_light(), current().glow);
     let mut out = Vec::new();
-    collect(&light, &g, &layer_cell(x), wd, level, &mut out);
+    collect(&light, &g, &layer_cell(x), wd, (level, 1.0), &mut out);
     out
 }
 
@@ -124,7 +124,7 @@ fn profil_go_zeichnet_keinen_hof() {
         assert!(run("meadow", &night_world(2), 40.0).is_empty());
         let mut w = World::new(None);
         let (mut cv, wd) = (NullCanvas::default(), night_world(2));
-        w.draw_halos(&mut cv, &layer_cell(40.0), &wd, "meadow");
+        w.draw_halos(&mut cv, &layer_cell(40.0), &wd, "meadow", 1.0);
         assert!(w.halos.is_empty());
     });
 }
@@ -135,7 +135,7 @@ fn hof_netz_verlaeuft_von_der_mitte_nach_aussen() {
         let mut w = World::new(None);
         let mut b = Batch::new();
         b.begin();
-        w.draw_halos(&mut b, &layer_cell(40.0), &night_world(1), "meadow");
+        w.draw_halos(&mut b, &layer_cell(40.0), &night_world(1), "meadow", 1.0);
         b.finish();
         let meshes = w.halos.len();
         assert!(meshes >= 4, "Feuer, Fackeln und Mond: {meshes}");

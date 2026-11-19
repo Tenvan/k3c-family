@@ -14,7 +14,7 @@ use super::light::daylight;
 pub const NEUTRAL: [f64; 3] = [1.0; 3];
 
 /// Mix mischt `a` nach `b` um `t` (0 … 1).
-fn mix(a: [f64; 3], b: [f64; 3], t: f64) -> [f64; 3] {
+pub(super) fn mix(a: [f64; 3], b: [f64; 3], t: f64) -> [f64; 3] {
     let t = t.clamp(0.0, 1.0);
     [0, 1, 2].map(|i| a[i] + (b[i] - a[i]) * t)
 }
@@ -63,7 +63,7 @@ pub fn haze_of(level: &str, i: usize) -> f64 {
     if l.tint.no_sky.iter().any(|b| b == level) {
         return 0.0;
     }
-    l.haze.get(i).copied().unwrap_or(0.0).clamp(0.0, 1.0)
+    l.haze_for(level, i).clamp(0.0, 1.0)
 }
 
 /// HasSky meldet, ob das Level einen Himmel hat (Mond, Dunst, Tönung); Höhle und Mine nicht.
