@@ -1,0 +1,104 @@
+{
+  "script": "0@2=a:confirm,0@3=a:confirm,1@4=a:confirm,0@6=a:right,0@8=a:right,0@10=a:down,0@12=a:down,0@14=a:down,0@16=a:down,0@18=a:down,0@20=a:confirm,0@21=R,1@21=RS,0@298=P,0@700=-,1@535=-,1@555=a:skillmenu,1@560=a:confirm,1@565=a:skillmenu,1@570=LS,1@1084=-,0@15900=a:menu,0@15902=a:down,0@15904=a:down,0@15906=a:down,0@15908=a:down,0@15912=a:confirm,0@15916=a:confirm,1@15920=a:confirm,1@15925=RS,1@16439=-",
+  "found": 535,
+  "stations": [
+    {
+      "name": "hauptmenue",
+      "tick": 1,
+      "hash": "-"
+    },
+    {
+      "name": "lobby",
+      "tick": 20,
+      "hash": "-"
+    },
+    {
+      "name": "spielstart",
+      "tick": 21,
+      "hash": "5af544635f3b4655"
+    },
+    {
+      "name": "muenzen",
+      "tick": 299,
+      "hash": "c6a46322ac3a2a2e"
+    },
+    {
+      "name": "skillpunkt",
+      "tick": 535,
+      "hash": "4b2c17157f29116c"
+    },
+    {
+      "name": "skillmenue",
+      "tick": 559,
+      "hash": "50a03e6141e0e334"
+    },
+    {
+      "name": "gebaut",
+      "tick": 823,
+      "hash": "d2b31cb2f16b3620"
+    },
+    {
+      "name": "nacht",
+      "tick": 15539,
+      "hash": "d44b9d2ad78b1268"
+    },
+    {
+      "name": "pause",
+      "tick": 15901,
+      "hash": "05b39573d54e253a"
+    },
+    {
+      "name": "verlassen",
+      "tick": 15913,
+      "hash": "-"
+    },
+    {
+      "name": "weiter",
+      "tick": 15917,
+      "hash": "a9a881685ce59a29"
+    },
+    {
+      "name": "zu-zweit",
+      "tick": 15921,
+      "hash": "d9c019323de70d96"
+    },
+    {
+      "name": "niederlage",
+      "tick": 41309,
+      "hash": "91b0ebd9831ad7be"
+    },
+    {
+      "name": "ende",
+      "tick": 41401,
+      "hash": "-"
+    }
+  ],
+  "probe": {
+    "tree": {
+      "zahl": 0.1,
+      "ganz": 42,
+      "neg": -1.5e-7,
+      "leer": [],
+      "nichts": null,
+      "text": "Grüße \"Ä\" <b>&\n",
+      "tief": {
+        "b": [
+          1,
+          {
+            "y": true,
+            "x": false
+          }
+        ],
+        "a": {
+          "k": "v"
+        }
+      },
+      "liste": [
+        3,
+        2,
+        1
+      ]
+    },
+    "hash": "9638788f450bde8d"
+  }
+}
