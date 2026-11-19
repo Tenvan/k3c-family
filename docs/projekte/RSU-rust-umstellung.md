@@ -67,11 +67,14 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | erledigt |
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | erledigt |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | erledigt |
+| RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
+| RU58 | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | aktiv |
+| RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | aktiv |
+| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | aktiv |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | aktiv |
 | RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | aktiv |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | geplant |
-| RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | geplant |
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | geplant |
 | RU25 | Balancing Teil 1: Bots | geplant |
 | RU28 | Balancing Teil 2: Messungen und Auswertung | geplant |
@@ -80,7 +83,6 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | geplant |
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | aktiv |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | aktiv |
-| RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
 | RU57 | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | aktiv |
 | RU54 | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | aktiv |
 | RU55 | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | aktiv |

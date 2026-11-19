@@ -70,6 +70,8 @@ Weite 4, 4,5 oder 5 M: 🧑 entscheidet am TV; Default 5 M (B-1045).
 
 Aufgeteilt aus den Abnahme-Punkten von B-1043 bis B-1047 (AC-02 und AC-03 dort sind 🧑-Abnahmen am TV).
 
+**Go-Seite aus der Referenz (Ralf 2026-11-19, RU58):** Das Go-Spiel wird entfernt. "Bildvergleich gegen Go" heißt jetzt: `e2e_compare` gegen die gesicherten Go-Bilder `testdata/rust/e2e/go/a/` (RU58.2) und das Rust-Profil `K3C_LOOK=go`; Go-Messwerte (Frame, Start, Speicher) stehen in `docs/messung/go-referenz.json` (RU58.3). `native/measure.ps1` zieht in RU37.1 nach `tools/measure/`.
+
 **Szenenliste (RU55.7, Messungen offen, Lane zweit).** Je Szene eine Ansicht (1920 × 1080) und zwei Ansichten; Profil `K3C_LOOK=k2c`, Vergleich je Szene zusätzlich mit `K3C_LOOK=go`; Aufnahme per Standbild (`k3c-game --shots`, `tests/still*.rs`) oder Wiedergabe, Seed 1, Ablage `.work/`; Bericht `docs/messung/look-k2c.md` mit Szene, Seed, Befehl, Messwert. Voraussetzung: `task gen:paper` (Grafik ist nicht eingecheckt).
 
 | Szene | Zustand | Messziel |

@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** RU37
+- **Sprint:** RU58
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19 (Ralf: ausdrücklich)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -30,7 +30,7 @@ Entwickler; 🧑 Ralf entscheidet, ob Rust-Checks im PR laufen sollen.
 
 ## Anforderungen
 
-- Jeder der drei Jobs grün oder bewusst entfernt (Go-Job mit RU37).
+- Jeder der drei Jobs grün oder bewusst entfernt. Ralf 2026-11-19: Go-Spiel wird entfernt (alle drei Schritte jetzt). Aufteilung: AC-01 und AC-03 in RU58 (RU58.4 Job `Natives Spiel` und Go-Bezüge in CI und Release entfernt, RU58.5 Vitest), AC-02 in RU37.2 (Job `Go · Tests arm64` wird entfernt, weil die Go-Engine nur noch der Workbench auf Windows dient; die Ursache der FMA-Abweichung bleibt ungeprüft und wird ein Ticket des Hauptrechners, falls die Workbench-Engine arm64 braucht).
 
 ## Nicht-Ziele
 
@@ -40,11 +40,11 @@ Golden zugunsten von Rust neu schreiben (verboten).
 
 Golden nie neu schreiben, um Rust zu bedienen.
 
-- **Bereich:** `.github/workflows/ci.yml`, `native/k3c-game/**`, `tools/k3c-workbench/frontend/**`, `engine/**`
-- **Abhängig von:** RU35
+- **Bereich:** `.github/workflows/ci.yml`, `.github/workflows/release.yml`, `Taskfile.yml`, `tools/k3c-workbench/frontend/**`
+- **Abhängig von:** – (RU35 ist umgesetzt; Ralf 2026-11-19: sofort)
 - **Braucht 🧑:** –
 - **Größe:** M
-- **Sperre:** golden
+- **Sperre:** taskfile
 
 ## Beispiele
 

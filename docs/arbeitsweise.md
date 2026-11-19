@@ -348,6 +348,11 @@ Ein zweiter Rechner mit kleinerem Account arbeitet einfache autonome Sprints ab;
 - **Zuteilung:** Sessions mit `Lane: zweit` gehören dem Second Worker, alle anderen dem Hauptrechner. Der Hauptrechner
   vergibt die Lane; der Second Worker nimmt nie Sessions ohne `Lane: zweit`. Geeignet sind Oberflächen-Ports mit eigenem
   Ordner (`menu/`, `hud/`, `devtools/`), nicht Sim, Level, Plattform oder Planung über mehrere Sprints.
+- **Vorrang (Ralf 2026-11-19):** Die Sprints des Go-Abbaus **RU58, RU37 und RU59** (Projekt RSU, in dieser Reihenfolge)
+  gehen vor jeder anderen `zweit`-Session, auch vor RU51 und RU52. Der Second Worker nimmt zuerst deren freie Sessions
+  (Abhängigkeiten beachten: RU58 vor RU37 vor RU59, die Sessions in Tabellen-Reihenfolge); erst wenn dort keine frei ist
+  oder alle erledigt sind, folgen die übrigen. Technisch ordnet die Sprint-Reihenfolge in `docs/projekte/RSU-rust-umstellung.md`
+  (`plan_next` liest sie); diese Regel gilt, bis die drei Sprints erledigt sind, danach entfällt sie.
 - **Start je Session:** `git fetch`, Branch `sprint/<präfix>` von `origin/sprint/<präfix>` oder `origin/main`, nächste offene Session
   mit `Lane: zweit` und erledigten Abhängigkeiten (`plan_list {projekt: "RSU", status: "aktiv"}`). Ein Commit je Session, Push nach jeder Session.
 - **Abschluss:** Review-Session des Sprints öffnet den PR gegen `main` und mergt ihn nach grüner Prüfung (`gh pr merge --squash --auto`).

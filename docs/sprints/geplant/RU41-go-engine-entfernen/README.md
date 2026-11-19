@@ -14,6 +14,8 @@
 
 Nach RU40 braucht nichts mehr die Go-Sim; `engine/sim`, `level`, `room`, `store`, `balance`, `rng` liegen doppelt im Repo.
 
+**Stand 2026-11-19 (Ralf):** Der Go-Abbau läuft vorgezogen in RU58 (Referenz, Build und CI, Lizenzliste), RU37 (Go-Spiel entfernen) und RU59 (ungenutzte Go-Engine entfernen). RU41 ist der **späte Rest**: Was RU59 wegen der Workbench stehen lässt (Balancing: `engine/balance`, `simcli`, `enginetools`, `cmd/k3c-sim`; alles, was sie transitiv brauchen), entfernt RU41 erst, wenn RU40 die Workbench von der Engine gelöst hat. Die Vorbedingung (Workbench importiert keine der Sim-Pakete mehr) bleibt.
+
 ## Ziel
 
 Sim und Balancing gibt es nur noch in Rust; Go bleibt für Workbench und Werkzeuge. Am Ende sichtbar: `task check:all` grün ohne `engine/sim`.
@@ -50,8 +52,10 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt. Löschen nur nach Ja von 🧑 (RU41.1 hält an); Entscheidung 011 nimmt nur 🧑 an (RU41.2 hält an).
 
+Vom 2026-11-19: RU59 hat den Bestand schon belegt und Ungenutztes entfernt (Belegtabelle in `docs/arbeitsweise.md` › Go-Engine-Bestand); RU41.1 geht davon aus und entfernt den verbliebenen Rest samt `engine/simcli`/`cmd/k3c-sim`, falls RU40.4 sie nicht schon entfernt hat.
+
 - **Bereich:** `engine/**`, `cmd/**`, `go.mod`, `go.sum`, `testdata/**`, `Taskfile.yml`, `.github/workflows/ci.yml`, `tools/checkdiff/**`, `tools/k3c-workbench/go.mod`, `tools/k3c-workbench/go.sum`, `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md`, `docs/decisions/**`, `tests/projectRules.test.ts`, `.claude/agents/**`
-- **Abhängig von:** RU37, RU40
+- **Abhängig von:** RU37, RU40, RU59
 - **Braucht 🧑:** Entscheidung
 - **Sperre:** deps, taskfile
 

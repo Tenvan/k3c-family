@@ -65,4 +65,4 @@ keine
 
 ## Notizen
 
-–
+**Go-Seite aus der Referenz (Ralf 2026-11-19, RU58.3):** Das Go-Spiel wird entfernt. Die Go-Farbwerte (Himmel, Papierkarte, HUD) und das Go-Pausenbild im Fenster entstehen einmal in RU58.3 und liegen in `testdata/rust/go-referenz/farben.json` und `pause.png`; diese Abnahme vergleicht das Rust-Fenster gegen diese Dateien statt gegen eine laufende Go-EXE. Nachaufnahmen: Tag `go-referenz-final`, `docs/standards/go-referenz.md`.

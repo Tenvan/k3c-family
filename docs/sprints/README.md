@@ -32,6 +32,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
+| RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
+| RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
+| RU59 | SIM, INF | RSU | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | – | `aktiv/RU59-go-engine-ungenutztes-entfernen/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | `aktiv/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 | RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
@@ -69,7 +72,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
 | RU33 | CLI | RSU | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | – | bereit | `geplant/RU33-laeufe-im-client/` |
 | RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | bereit | `geplant/RU34-workbench-ruft-spiel-exe/` |
-| RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | bereit | `geplant/RU37-go-spiel-entfernen/` |
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |

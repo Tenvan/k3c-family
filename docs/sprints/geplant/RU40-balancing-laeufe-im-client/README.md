@@ -14,6 +14,8 @@
 
 Nach RU34 laufen Sim, Level, Welten und Hub über die Spiel-EXE; Balancing rechnet die Workbench noch mit der Go-Engine im eigenen Prozess.
 
+**Ralf 2026-11-19 (Ergänzung zum Go-Abbau):** Das Go-Balancing soll aus der Workbench heraus und durch CLI-Aufrufe der Spiel-EXE ersetzt werden, aber **ganz zum Schluss**: nach dem Go-Abbau (RU58, RU37, RU59) und nach den Balancing-Sprints RU25, RU28, RU31. Bis dahin bleiben `engine/balance`, `engine/simcli`, `engine/enginetools`, `cmd/k3c-sim` und `internal/balance`/`internal/simrun` der Workbench voll funktionsfähig (RU59 rührt sie nicht an). Dieser Sprint ist dieser letzte Schritt; er bleibt `geplant` und wird nicht vor Abschluss der genannten Sprints aktiviert.
+
 ## Ziel
 
 Auch Balancing läuft mit der Spiel-EXE, headless oder mit Fenster; die Workbench linkt keine Engine mehr. Am Ende sichtbar: `sim_test start` mit `head: true` zeigt die Bots im Spiel.
@@ -52,8 +54,10 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 
 Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates und Go-Module nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt. Entfernen von Go-Code (`engine/simcli`, `cmd/k3c-sim`) nur nach Freigabe 🧑 in RU40.4.
 
+**Ralf 2026-11-19:** ganz zum Schluss, nach dem Go-Abbau-Sprint RU59 und den Balancing-Sprints RU25, RU28, RU31; zusätzliche Abhängigkeit RU59 (und damit RU58, RU37).
+
 - **Bereich:** `rust/crates/k3c-game/src/runs/**`, `rust/crates/k3c-game/tests/runs_*.rs`, `docs/standards/k3c-game-laeufe.md`, `testdata/rust/runs/**`, `tools/k3c-workbench/**`, `cmd/k3c-sim/**`, `engine/simcli/**`, `Taskfile.yml`, `.github/workflows/ci.yml`, `tools/checkdiff/**`, `tools/cleanup/**`, `CLAUDE.md`, `requirements.md`, `tests/projectRules.test.ts`, `codemap.md`
-- **Abhängig von:** RU31, RU34
+- **Abhängig von:** RU31, RU34, RU59 (Ralf 2026-11-19: Balancing aus der Workbench ganz zum Schluss; RU25, RU28 sind über RU31 erledigt)
 - **Braucht 🧑:** Entscheidung
 - **Sperre:** exe
 

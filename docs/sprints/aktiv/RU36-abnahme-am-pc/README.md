@@ -79,6 +79,7 @@ Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
 - Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Die Gate-Messwerte erhebt 🧑 in Session 2 auf ruhigem Rechner zusammen mit der Abnahme; Session 1 baut das Werkzeug und macht einen Probelauf (parallele Sessions verfälschen Messungen, `docs/messung/rust-client-1.md`).
 - Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Bereich um `native/measure.ps1` erweitert (Engine `rustgame`, Startzeit für beide Spiele).
 - Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen): Runde 2 beginnt mit einer kurzen Nachprüfung der Fixes aus Runde 1 durch 🧑 (Haltepunkt in RU36.4); gibt es nichts mehr zu tun, endet sie ohne Codeänderung.
+- **Ralf 2026-11-19 (Go-Abbau): Das Go-Spiel wird vor G4 entfernt (RU58, RU37, RU59; alle drei Schritte sofort).** Der Vergleich Rust gegen Go in dieser Abnahme läuft gegen die gesicherte Referenz (Messwerte `docs/messung/go-referenz.json`, Bilder `testdata/rust/e2e/go/`, Farben und Pause `testdata/rust/go-referenz/`; RU58.2, RU58.3) oder gegen eine Go-EXE, die sich 🧑 aus dem Tag `go-referenz-final` baut (`docs/standards/go-referenz.md`, RU58.1). Das Messskript zieht in RU37.1 von `native/measure.ps1` nach `tools/measure/measure.ps1`; sein Zweig `-Engine game` gibt ohne Go-EXE die Referenzwerte aus. RU36 hängt nicht mehr an RU37; RU37 hängt nicht mehr an RU36.
 
 ## Sessions
 
