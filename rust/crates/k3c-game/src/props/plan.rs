@@ -211,6 +211,7 @@ impl Planner {
         self.sites(w, info, k);
         self.cargo(w, k);
         self.mount_gate(w, k);
+        self.hermit_hut(w, k);
         self.plantation(w, k);
         self.pickups(w, info, k, clock);
         self.coins(w, k);

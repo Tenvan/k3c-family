@@ -84,7 +84,7 @@ pub fn nature_assets(forest: bool) -> &'static [&'static str] {
 /// `level_assets` nennt die Assets `gruppe/id` des Levels (Biom-ID), sortiert und jedes einmal.
 pub fn level_assets(level: &str) -> Vec<String> {
     let mut out: Vec<String> =
-        Vec::with_capacity(BUILDING_ASSETS.len() + OBJECT_ASSETS.len() + COMBAT_ASSETS.len() + 5);
+        Vec::with_capacity(BUILDING_ASSETS.len() + OBJECT_ASSETS.len() + COMBAT_ASSETS.len() + 10);
     for id in BUILDING_ASSETS {
         out.push(format!("{BUILDING_GROUP}{id}"));
     }
@@ -95,6 +95,7 @@ pub fn level_assets(level: &str) -> Vec<String> {
         out.push(format!("{OBJECT_GROUP}{id}"));
     }
     out.push(COIN_LOOK.asset.to_string());
+    out.extend(super::plan_hermit::HERMIT_ASSETS.iter().map(|a| a.to_string())); // RU62.11: Hütte, Figuren, Bauwerke
     out.push(WEATHER_CLOUD_ASSET.to_string()); // RU62.7: Wolkenbank der Taifun-Vorboten (nur sichtbar bei Wetter)
     out.extend(COMBAT_ASSETS.iter().map(|a| a.to_string()));
     // Sortieren wie `slices.Sort` (Texte, Gleichstand ohne Folgen), danach Doppelte entfernen (`slices.Compact`).

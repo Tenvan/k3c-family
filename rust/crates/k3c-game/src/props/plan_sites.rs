@@ -7,7 +7,7 @@ use std::f64::consts::PI;
 use k3c_sim::state::{Site, World};
 
 use super::buildings::{
-    DAMAGE_SHADE, Marker, back_wall_look, back_walls, damage_stage, scaffold_look, show_rubble, sign_variant,
+    DAMAGE_SHADE, Look, Marker, back_wall_look, back_walls, damage_stage, scaffold_look, show_rubble, sign_variant,
     site_look, site_marker, site_stage,
 };
 use super::data::{build_cost, cost_of, site_name, values};
@@ -112,7 +112,9 @@ impl Planner {
             if !fl.visible || !visible(k, s.x, 5.0) {
                 continue;
             }
-            if s.state == "built" {
+            if Planner::is_hall(w, s) {
+                self.hall_site(w, s, info, fl);
+            } else if s.state == "built" {
                 self.built_site(w, s, info, fl);
             } else {
                 self.open_site(w, s, info, fl);
@@ -123,8 +125,13 @@ impl Planner {
     /// `built_site`: Gebäude der Stufe mit Schaden, Ruine, Treppen-Schild, Lebensbalken, Bögen und Bogen-Preis,
     /// Wartegrund.
     pub fn built_site(&mut self, w: &World, s: &Site, info: Option<&StageInfo>, fl: SiteFlags) {
+        self.built_site_look(w, s, info, fl, None);
+    }
+
+    /// `built_site_look`: wie `built_site`, mit eigener Grafik (Bauwerk des Einsiedlers, RU62.11).
+    pub fn built_site_look(&mut self, w: &World, s: &Site, info: Option<&StageInfo>, fl: SiteFlags, own: Option<Look>) {
         let hub_level = w.hub_level.max(1);
-        let mut l = site_look(&s.kind, &s.state, site_stage(&s.kind, s.level, hub_level));
+        let mut l = own.unwrap_or_else(|| site_look(&s.kind, &s.state, site_stage(&s.kind, s.level, hub_level)));
         if self.size(l).is_none() {
             l = site_look(&s.kind, &s.state, 1); // Stufe nicht geladen: Grundform statt leerer Fläche
         }

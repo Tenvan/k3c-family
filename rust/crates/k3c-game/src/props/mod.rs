@@ -43,6 +43,7 @@ pub mod plan;
 pub mod plan_castle;
 pub mod plan_combat;
 pub mod plan_entities;
+pub mod plan_hermit;
 pub mod plan_objects;
 pub mod plan_sites;
 pub mod plan_sites_cargo;
@@ -71,6 +72,8 @@ mod nature_tests;
 mod plan_chest_tests;
 #[cfg(test)]
 mod plan_combat_tests;
+#[cfg(test)]
+mod plan_hermit_tests;
 #[cfg(test)]
 mod plan_sites_cargo_tests;
 #[cfg(test)]
