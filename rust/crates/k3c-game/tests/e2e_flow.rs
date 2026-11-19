@@ -18,6 +18,7 @@ use common::flow::{Run, Station, enemy_near, has_cue, has_event};
 use k3c_det::golden;
 use k3c_game::game::stack::Mode;
 use k3c_game::view::frame::{CueKind, END_DELAY, Outcome};
+use k3c_game::view::input::DeviceKind;
 use serde_json::Value;
 
 // Takte der Eingabe-Folge (wie `flow_test.go`).
@@ -31,7 +32,7 @@ const MENU_AFTER: u32 = 20;
 const SAVE_NAME: &str = "spiel-1";
 
 /// Stationen, deren kanonischer Welt-Hash von Go abweicht. Einzige Ursache (geprüft an `gebaut` und `nacht` mit einem
-/// Diff der Welt-Bäume gegen Go, Toleranz 1e-9): Spieler 2 lernt im Rust-Spiel keinen Skill (B-1106), `players[1].skills`
+/// Diff der Welt-Bäume gegen Go, Toleranz 1e-9; bei `pause`, `weiter`, `zu-zweit`, `niederlage` nur vermutet): Spieler 2 lernt im Rust-Spiel keinen Skill (B-1106), `players[1].skills`
 /// und `slots` fehlen; alle übrigen Felder sind gleich. Ist B-1106 behoben, schlägt dieser Test fehl und die Liste
 /// gehört geleert (nie die Referenz ändern).
 const KNOWN_DIVERGENT: [&str; 6] = ["gebaut", "nacht", "pause", "weiter", "zu-zweit", "niederlage"];
@@ -71,8 +72,8 @@ fn flow(tag: &str, r: &Reference) -> Run {
     menus(&mut run);
     day(&mut run, r.found);
     night(&mut run);
-    pause_and_leave(&mut run);
-    continue_game(&mut run);
+    let at = pause_and_leave(&mut run);
+    continue_game(&mut run, at);
     defeat(&mut run);
     run
 }
@@ -92,6 +93,8 @@ fn menus(r: &mut Run) {
     assert_eq!(f.seats.len(), 2, "Plätze");
     assert_eq!(f.stages.len(), 1, "Stufen");
     assert_eq!(f.stages[0].level, "forest");
+    let kinds: Vec<_> = f.seats.iter().map(|x| x.device.kind).collect();
+    assert_eq!(kinds, [DeviceKind::Keyboard, DeviceKind::Gamepad], "Geräte der Plätze");
     r.mark("spielstart");
 }
 
@@ -138,10 +141,11 @@ fn night(r: &mut Run) {
 }
 
 /// Pause hält die Simulation an, „Spiel verlassen“ speichert und führt ins Hauptmenü.
-fn pause_and_leave(r: &mut Run) {
+fn pause_and_leave(r: &mut Run) -> f64 {
     r.to(PAUSE_AT + 1);
     assert!(r.screen() && r.frame().paused, "Pause-Menü oben, Spiel pausiert");
     let tick = r.frame().tick;
+    let at = r.frame().stages[0].world.as_deref().expect("Welt").time;
     r.mark("pause");
     r.to(LEAVE_AT);
     assert_eq!(r.frame().tick, tick, "Simulation lief in der Pause weiter");
@@ -154,14 +158,20 @@ fn pause_and_leave(r: &mut Run) {
         r.dir.display()
     );
     r.mark("verlassen");
+    at
 }
 
 /// Weiter lädt denselben Stand, Spieler 2 tritt wieder bei.
-fn continue_game(r: &mut Run) {
+fn continue_game(r: &mut Run, at: f64) {
     r.to(CONTINUE_AT + 1);
     assert!(!r.screen(), "Weiter: Spiel läuft");
     let f = r.frame();
     assert_eq!((f.seats.len(), f.stages.len()), (1, 1), "Weiter: Plätze und Stufen");
+    let t = f.stages[0].world.as_deref().expect("Welt").time;
+    assert!(
+        (t - (at + 1.0 / 30.0)).abs() < 1e-6,
+        "Weiter: Spielzeit {t} statt {at} + 1 Takt"
+    );
     r.mark("weiter");
     r.until("Spieler 2 spielt wieder mit", REJOIN_AT + 3, |f| f.seats.len() == 2);
     r.mark("zu-zweit");

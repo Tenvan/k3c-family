@@ -1,6 +1,6 @@
 # RU32 · CLI · Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -87,7 +87,7 @@ Keine offenen.
 | RU32.2 | `RU32.2-ablauf-ohne-fenster.md` | Umsetzung | autonom | fertig |
 | RU32.3 | `RU32.3-aufnahme-je-station.md` | Umsetzung | autonom | fertig |
 | RU32.4 | `RU32.4-bildvergleich-und-bericht.md` | Umsetzung | autonom | fertig |
-| RU32.5 | `RU32.5-review.md` | Review | autonom | offen |
+| RU32.5 | `RU32.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -95,6 +95,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+AC-01 geprüft: `go test ./e2e -run TestRustRef`, `cargo test -p k3c-game --test e2e_canon --test e2e_flow` grün (Takte aller 14 Stationen gleich Go, zwei Läufe gleich; Welt-Hash gleich an 8 Stationen, ab `gebaut` Abweichung durch B-1106, Test hält sie fest).
+AC-02 verschoben: Aufnahme und Bildvergleich laufen im Abnahme-Ticket B-1120 (Lane zweit, braucht gen:paper und beide EXE); Werkzeug und Berichtsgerüst fertig. `task check`, `task check:go` grün. Manuell geprüft: nichts. Review: k3c-reviewer, Befunde nachgezogen oder im Ergebnis von RU32.5 genannt.
