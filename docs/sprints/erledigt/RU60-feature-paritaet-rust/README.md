@@ -1,6 +1,6 @@
 # RU60 · INF, CLI, SIM · Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF, CLI, SIM
 - **Reife:** bereit
@@ -74,7 +74,7 @@ keine (alle mit Default entschieden, autonom, Claude, 2026-11-19: Parität wird 
 | RU60.4 | `RU60.4-luecken-sim-level-room.md` | Umsetzung | autonom | fertig |
 | RU60.5 | `RU60.5-abschluss-ks-we4-wi1.md` | Umsetzung | autonom | fertig |
 | RU60.6 | `RU60.6-abschluss-gs-we5-w15.md` | Umsetzung | autonom | fertig |
-| RU60.7 | `RU60.7-review.md` | Review | autonom | offen |
+| RU60.7 | `RU60.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -82,6 +82,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19, Review RU60.7 (Claude, Second Worker): AC-01 bis AC-06 gegen die Ergebnisse RU60.1 bis RU60.6 geprüft; zwölf Sprints erledigt (KS2 bis KS7, WE4, WE5, WI1, GS1, GS2, W15), Geräte-Punkte in `docs/messung/rust-abnahme.md` (G-1 bis G-11).
+`task check`: nur bekannte Fehler von main (planning B-784, Hintergründe und Bäume aus BB1), nichts aus RU60; Rust k3c-sim und k3c-game: 927 grün, `actors::draw::rig_foot_and_size` rot (Grafik-Bestand, nicht aus RU60). `task check:go` lokal nicht möglich (golangci-lint fehlt); portcheck-Test grün.
+Befunde für den Hauptrechner stehen in den Ergebnissen von RU60.2 bis RU60.6 (B-1008 Format, B-1012 Punkte 2 und 3, B-940 Assets). Abnahme-Ticket für Sim, Balance und Gen: nicht angelegt (Second Worker darf kein `plan_create`), vom Hauptrechner nachzutragen.

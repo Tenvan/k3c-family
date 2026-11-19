@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU54 | CLI | RSU | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | – | `aktiv/RU54-smoke-befunde-pause-und-farben/` |
 | RU55 | CLI | RSU | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | – | `aktiv/RU55-look-k2c-im-rust-spiel/` |
 | RU56 | CLI | RSU | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | – | `aktiv/RU56-cheat-fenster-win32/` |
-| RU60 | INF, CLI, SIM | RSU | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | – | `aktiv/RU60-feature-paritaet-rust/` |
 | RU61 | CLI, SIM, PAP | RSU | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | – | `aktiv/RU61-rust-spiel-nachtraege-go-sprints/` |
 | RU62 | SIM, CLI | RSU | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | – | `aktiv/RU62-welt-features-si-rust/` |
 | RU63 | CLI | RSU | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | – | `aktiv/RU63-smoke-nachtraege-hud-und-menues/` |
@@ -471,3 +470,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | `erledigt/GS2-seekarte-papierschnitt/` |
 | WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | `erledigt/WE5-welt-format-nachtraege/` |
 | W15 | Fackeln als Spielobjekt mit Licht in der Nacht | `erledigt/W15-fackeln-spielobjekt/` |
+| RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | `erledigt/RU60-feature-paritaet-rust/` |
