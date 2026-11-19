@@ -5,6 +5,9 @@ version: '3'
 vars:
   # Paketordner des Rust-Spiels (RU35.2); das Go-Paket liegt in dist/k3c-game-go
   PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
+  # Version des Spiels (B-1138): git describe, ohne Git leer (das Menü zeigt dann „unbekannt“)
+  VERSION:
+    sh: git describe --tags --always --dirty 2>/dev/null || true
 
 tasks:
   build:
@@ -55,6 +58,9 @@ tasks:
     desc: "Nur die Release-EXE des Rust-Spiels bauen (cargo build --release -p k3c-game) nach rust/target/release/"
     dir: '{{.ROOT_DIR}}/rust'
     # ohne sources/generates: Cargo baut selbst inkrementell (Shader, include_str!-Daten, Toolchain wären sonst blinde Flecken)
+    # K3C_VERSION liest main.rs per option_env! (Cargo baut bei neuer Version neu, B-1138)
+    env:
+      K3C_VERSION: '{{.VERSION}}'
     cmds:
       - cargo build --release -p k3c-game
 
@@ -75,12 +81,26 @@ tasks:
         set -e
         p="{{.PAKET}}"
         if [ ! -d public/grafik ]; then echo "❌ public/grafik fehlt: erst task gen:paper"; exit 1; fi
-        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/native/k3c-rig/assets=$p/native/k3c-rig/assets {{.ROOT_DIR}}/public/audio=$p/public/audio"
+        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/native/k3c-rig/assets=$p/native/k3c-rig/assets {{.ROOT_DIR}}/public/audio=$p/public/audio {{.ROOT_DIR}}/LICENSE=$p/LICENSE {{.ROOT_DIR}}/LICENSE-ASSETS=$p/LICENSE-ASSETS {{.ROOT_DIR}}/rust/paket/README.txt=$p/README.txt"
         if [ -d public/schrift ]; then args="$args {{.ROOT_DIR}}/public/schrift=$p/public/schrift"; fi
         cd native/k3c-game && go run ./cmd/sync $args
         # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
-        rm -f "$p"/data/*.go "$p"/data/*.md
-      - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe; LIZENZEN.txt fehlt noch, Paket nicht weitergebbar)"'
+        rm -f "$p"/data/*.go "$p"/data/*.md "$p"/data/*/*.md
+      # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates
+      # (tools/rustpaket, `cargo metadata`); erst in eine .tmp-Datei, damit ein Abbruch keine halbe Datei hinterlässt
+      - 'go run ./tools/rustpaket lizenzen -exe "{{.PAKET}}/k3c-game.exe" -rust rust > "{{.PAKET}}/LIZENZEN.txt.tmp" && mv "{{.PAKET}}/LIZENZEN.txt.tmp" "{{.PAKET}}/LIZENZEN.txt"'
+      # Paketliste prüfen (B-1137): Pflichtdateien, keine Go- oder Entwickler-Reste, EXE-Größe; -lokal duldet saves/, reports/
+      # und trace/, die beim Spielen aus dem Paketordner entstehen (der strenge Lauf `game:dist:check` und die CI melden sie)
+      - go run ./tools/rustpaket pruefen -lokal "{{.PAKET}}"
+      - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe)"'
+
+  game:dist:check:
+    desc: "Rust-Paket prüfen (ohne Neubau): Pflicht- und verbotene Dateien, EXE höchstens 40 MiB, Lizenzdatei mit Crate-Abschnitten (tools/rustpaket pruefen)"
+    dir: '{{.ROOT_DIR}}'
+    env:
+      CGO_ENABLED: '0'
+    cmds:
+      - go run ./tools/rustpaket pruefen "{{.PAKET}}"
 
   game:run:
     desc: "Rust-Spiel bauen (game:build) und aus dem Paket-Ordner starten; Schalter: task rust:game:run -- --players 1"

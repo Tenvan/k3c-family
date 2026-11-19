@@ -66,4 +66,4 @@ keine
 
 ## Notizen
 
-Schritte aus RU39.2: 1. `task gen:paper`, `task native:game:build`, `task rust:game:dist`; Aufzeichnung `.work/trace/messung-nacht.jsonl.gz` nach `dist/k3c-rust/trace/`. 2. Alle anderen Sessions und Builds beenden, vier Läufe abwechselnd. 3. Beide Ordner auf den Mini-PC, dieselben vier Läufe, Rechnername notieren. 4. Sichtprüfung wie AC-03. 5. Pfade und Notizen ins Ergebnis. Typ „Schuld“ gewählt, weil „Aufgabe“ kein gültiger Typ ist.
+Schritte aus RU39.2 (Pfade seit RU35/RU57 aktualisiert): 1. `task gen:paper`, `task native:game:build` (Go-Paket `dist/k3c-game-go`), `task rust:game:build` (Rust-Paket `dist/k3c-game`); Aufzeichnung `.work/trace/messung-nacht.jsonl.gz` nach `dist/k3c-game/trace/`. 2. Alle anderen Sessions und Builds beenden, vier Läufe abwechselnd. 3. Beide Ordner auf den Mini-PC, dieselben vier Läufe, Rechnername notieren. 4. Sichtprüfung wie AC-03. 5. Pfade und Notizen ins Ergebnis. Typ „Schuld“ gewählt, weil „Aufgabe“ kein gültiger Typ ist.

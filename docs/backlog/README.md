@@ -181,10 +181,13 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1120](B-1120-ru32-abnahme-aufnahme-bildvergleich-bericht.md) | CLI | Schuld | mittel | offen | RU32 | RU32 Abnahme (Lane zweit): Aufnahme beider EXE, Bildvergleich Go gegen Rust, Bericht, Gen |
 | [B-1125](B-1125-rust-hud-insel-fuer-wirtschaft-werte.md) | CLI | Problem | mittel | offen | RU52 | Rust-HUD rechnet Beutel-Obergrenze und Tausch-Hinweis ohne Insel (Abweichung von Go) |
 | [B-1126](B-1126-ru53-abnahme-skills-inselwahl.md) | CLI | Schuld | mittel | offen | RU53 | RU53 Abnahme: Skills lernen und Inselwahl im Rust-Spiel (Sim, Gen, Race, Spieltest) |
-| [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | eingeplant | RU37 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |
-| [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | eingeplant | RU37 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU37 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
+| [B-1139](B-1139-menue-lizenzliste-nennt-go-bibliotheken.md) | CLI | Problem | mittel | offen | RU37 | Die Lizenz-Seite des Rust-Spiels nennt Go-Bibliotheken statt der Rust-Crates |
+| [B-1141](B-1141-rust-paket-auf-anderem-pc-abnehmen.md) | INF | Schuld | mittel | offen | RU57 | Abnahme: Das Rust-Paket dist/k3c-game startet auf einem anderen PC und die Lizenzdatei genügt |
+| [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
+| [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
+| [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | offen | RU54 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
 | [B-1130](B-1130-ru55-abnahme-look-aufnahmen-referenz.md) | CLI | Schuld | mittel | eingeplant | RU55 | RU55 Abnahme: Aufnahmen gegen K2C-Referenz, Bildvergleich und Frame-Zeit (Lane zweit) |
 | [B-1131](B-1131-cheatfenster-protokoll-client-fenster.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Protokoll zwischen Spiel und Fenster als eigenes Crate k3c-devproto |
 | [B-1132](B-1132-cheatfenster-win32-fenster-dark-layout.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Win32-Fenster mit Dark-Look, Layout und Pipe-Server als Crate k3c-devwin |

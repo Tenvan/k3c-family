@@ -1,5 +1,6 @@
-# Release: Tag v* (z.B. v0.2.0) → natives Spiel für Windows (task native:game:build, Paket dist/k3c-game-go/) als Zip am
-# GitHub-Release. Browser-Client, Spielserver und Docker-Image sind entfernt (B-848, B-887).
+# Release: Tag v* (z.B. v0.2.0) → Rust-Spiel für Windows (task rust:game:build, Paket dist/k3c-game/ mit LIZENZEN.txt, geprüft
+# von rust:game:dist:check) als Zip am GitHub-Release (RU57, B-1122). Das Go-Spiel (dist/k3c-game-go) wird nicht mehr
+# ausgeliefert. Browser-Client, Spielserver und Docker-Image sind entfernt (B-848, B-887).
 name: Release
 
 on:
@@ -11,21 +12,25 @@ permissions:
 
 jobs:
   release:
-    # Windows wie der CI-Job k3c-game: Ebitengine baut dort ohne cgo.
+    # Windows (MSVC) wie der CI-Job rust.
     runs-on: windows-latest
-    timeout-minutes: 30
-    env:
-      CGO_ENABLED: "0"
+    timeout-minutes: 60
     defaults:
       run:
         shell: bash
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 0 # git describe für die Version im Spiel (B-808)
+          fetch-depth: 0 # git describe für die Version im Spiel (K3C_VERSION, B-1138)
+      - run: rustup show
+        working-directory: rust
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
+      # Go: cmd/sync (Kopierwerkzeug) und tools/rustpaket (LIZENZEN.txt, Paketprüfung)
       - uses: actions/setup-go@v7
         with:
           go-version-file: native/k3c-game/go.mod
@@ -33,13 +38,15 @@ jobs:
       - uses: go-task/setup-task@v2
       # Papierschnitt-Renderer (gen:paper) braucht die Werkzeuge der Wurzel.
       - run: bun install --frozen-lockfile
-      # Vor dem Paket: Tests ohne Fenster und GPU (wie CI-Job k3c-game).
-      - run: go test -short ./...
-        working-directory: native/k3c-game
-      - run: task native:game:build
-      - name: Paket schnüren (natives Spiel)
+      # Vor dem Paket: Tests ohne Fenster und GPU (wie CI-Job rust).
+      - run: cargo test --workspace
+        working-directory: rust
+      - run: task rust:game:build
+      # streng (ohne -lokal): keine saves/, reports/, trace/, keine Go-Reste
+      - run: task rust:game:dist:check
+      - name: Paket schnüren (Rust-Spiel)
         shell: pwsh
-        run: Compress-Archive -Path dist/k3c-game-go/* -DestinationPath "k3c-$env:GITHUB_REF_NAME-windows.zip"
+        run: Compress-Archive -Path dist/k3c-game/* -DestinationPath "k3c-$env:GITHUB_REF_NAME-windows.zip"
       - name: GitHub-Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}

@@ -9,7 +9,7 @@
 # Natives Spiel (B-802/AC-03, `task native:game:measure`, -Engine game): k3c-game im Messmodus, Fenster 1920x1080, VSync
 # aus, 2 Spieler, je einmal die Szenen `tag` und `nacht` (Gegner an der Burg); Arbeitsordner ist -Root (public\grafik,
 # native\k3c-rig\assets); Bericht nach reports/native-game-<rechner>-<zeit>.json (Feld `szene` je Lauf).
-# Rust-Wiedergabe (RU39.1, -Engine replay): k3c-game.exe aus dist\k3c-rust (Repo) bzw. ..\k3c-rust (Paket) spielt die
+# Rust-Wiedergabe (RU39.1, -Engine replay): dieselbe Rust-EXE wie -Engine rustgame (dist\k3c-game im Repo, ..\k3c-game im Paket) spielt die
 # Aufzeichnung -Trace (Szene `nacht` als `messung-nacht`) im Fenster; --measure in Takten (Sekunden x 30), 60 Takte
 # Aufwärmen; ohne -Vsync mit --novsync (wie Go), mit -Vsync ohne den Schalter. Nur auf ausdrücklichen Wunsch, ohne -Engine läuft sie nicht mit.
 # Rust-Spiel (RU36.1, -Engine rustgame): dieselben Szenen `tag` und `nacht` mit denselben Schaltern wie -Engine game, EXE aus
@@ -82,21 +82,21 @@ function Find-Exe($name, $repoPath) {
     if (-not (Test-Path $p)) { $p = Join-Path $here $repoPath }
     $p
 }
+# Rust-Spiel (rustgame und replay): im Paket neben dem Go-Paket (..\k3c-game), im Repo aus task rust:game:build (dist\k3c-game)
+$rustExe = if (Test-Path (Join-Path $here '..\k3c-game\k3c-game.exe')) { Join-Path $here '..\k3c-game\k3c-game.exe' } else { Join-Path $here '..\dist\k3c-game\k3c-game.exe' }
 $exes = [ordered]@{
     ebiten = Find-Exe 'k3c-ebiten' 'k3c-ebiten\bin\k3c-ebiten.exe'
     rig    = Find-Exe 'k3c-rig' 'k3c-rig\bin\k3c-rig.exe'
     game   = Find-Exe 'k3c-game' 'k3c-game\bin\k3c-game.exe'
-    # Rust-Spiel: im Paket neben dem Go-Paket (..\k3c-game), im Repo aus task rust:game:build (dist\k3c-game)
-    rustgame = if (Test-Path (Join-Path $here '..\k3c-game\k3c-game.exe')) { Join-Path $here '..\k3c-game\k3c-game.exe' } else { Join-Path $here '..\dist\k3c-game\k3c-game.exe' }
-    # Rust: im Paket neben dem Go-Paket (..\k3c-rust), im Repo aus task rust:game:dist
-    replay = if (Test-Path (Join-Path $here '..\k3c-rust\k3c-game.exe')) { Join-Path $here '..\k3c-rust\k3c-game.exe' } else { Join-Path $here '..\dist\k3c-rust\k3c-game.exe' }
+    rustgame = $rustExe
+    replay = $rustExe
 }
 # Go-Spiel im Repo: Bau-Ordner, sonst das Paket nach task native:game:build (dist\k3c-game-go)
 if (-not (Test-Path $exes.game)) {
     $goPaket = Join-Path $here '..\dist\k3c-game-go\k3c-game.exe'
     if (Test-Path $goPaket) { $exes.game = $goPaket }
 }
-$buildTask = @{ ebiten = 'native:ebiten:build'; rig = 'native:rig:build'; game = 'native:game:build'; rustgame = 'rust:game:build'; replay = 'rust:game:dist' }
+$buildTask = @{ ebiten = 'native:ebiten:build'; rig = 'native:rig:build'; game = 'native:game:build'; rustgame = 'rust:game:build'; replay = 'rust:game:build' }
 if ($Exe) {
     # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
     if (-not $Engine) {
@@ -123,7 +123,7 @@ if (-not $Root) {
 }
 if (-not (Test-Path (Join-Path $Root 'public\grafik'))) { throw "public\grafik fehlt unter $Root (erst task gen:paper)" }
 if (-not $Trace) {
-    $Trace = Join-Path $here '..\k3c-rust\trace\messung-nacht.jsonl.gz'
+    $Trace = Join-Path $here '..\k3c-game\trace\messung-nacht.jsonl.gz'
     if (-not (Test-Path $Trace)) { $Trace = Join-Path $Root '.work\trace\messung-nacht.jsonl.gz' }
 }
 if ($engines -contains 'replay' -and -not (Test-Path $Trace)) {

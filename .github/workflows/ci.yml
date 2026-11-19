@@ -135,7 +135,7 @@ jobs:
 
   # Rust-Workspace (Projekt RSU, RU1.3): nur Windows (MSVC), wie das Spiel. `rustup show` installiert die Toolchain aus
   # rust/rust-toolchain.toml; es laufen nur Tests ohne Fenster und GPU. Danach baut `task rust:game:build` das Paket
-  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data; Go nur für cmd/sync (Kopierwerkzeug des Pakets).
+  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für cmd/sync (Kopierwerkzeug) und tools/rustpaket.
   rust:
     if: github.event_name != 'pull_request'
     name: Rust · fmt · clippy · Tests · Paket (Windows)
@@ -165,18 +165,11 @@ jobs:
         working-directory: .
       - run: task rust:game:build
         working-directory: .
-      # Paket prüfen: EXE (Schwelle G1, B-1016: höchstens 40 MB), data und Grafik müssen da sein. Kein Artefakt-Upload.
+      # Paket prüfen (RU57, B-1137): Pflicht- und verbotene Dateien, EXE höchstens 40 MB (Schwelle G1, B-1016), LIZENZEN.txt
+      # mit Crate-Abschnitten. Der Bau ruft dieselbe Prüfung schon; der eigene Schritt macht ein Scheitern sichtbar. Kein Artefakt-Upload.
       - name: Paket prüfen
-        shell: pwsh
         working-directory: .
-        run: |
-          $exe = Get-Item dist/k3c-game/k3c-game.exe
-          $mb = [math]::Round($exe.Length / 1MB, 1)
-          Write-Host "k3c-game.exe: $mb MB"
-          if ($exe.Length -gt 40MB) { throw "k3c-game.exe $mb MB > 40 MB (G1)" }
-          foreach ($d in 'dist/k3c-game/data', 'dist/k3c-game/public/grafik') {
-            if (-not (Test-Path $d -PathType Container)) { throw "$d fehlt im Paket" }
-          }
+        run: task rust:game:dist:check
 
   k3c-workbench:
     if: github.event_name != 'pull_request'
