@@ -4,3 +4,4 @@
 
 pub mod canon;
 pub mod flow;
+pub mod images;
