@@ -162,6 +162,12 @@ pub struct World {
     /// Mindestens zwei gesteuerte Monarchen auf der Insel (RU62.3, die Insel setzt es je Takt); ohne JSON.
     #[serde(skip)]
     pub coop_active: bool,
+    /// Das Reittier-Gatter der Insel (RU62.8, B-970); nur in der Oberflächen-Stufe einer Welt mit Welt-Reittier.
+    #[serde(rename = "mountGate", skip_serializing_if = "Option::is_none")]
+    pub mount_gate: Option<super::mount_view::MountGate>,
+    /// Der Reittier-Katalog der Welt (RU62.8); `None` = Welt ohne Welt-Reittier; ohne JSON.
+    #[serde(skip)]
+    pub mounts_cfg: Option<std::sync::Arc<k3c_data::mounts::MountsFile>>,
     /// Art und Phase des Wetters (RU62.5, B-969); fehlt, solange keine Wetternacht ansteht oder die Welt kein Wetter hat.
     #[serde(rename = "weather", skip_serializing_if = "Option::is_none")]
     pub weather: Option<super::weather_view::WeatherState>,
@@ -272,6 +278,8 @@ impl Default for World {
             coop: Default::default(),
             coop_cfg: None,
             coop_active: false,
+            mount_gate: None,
+            mounts_cfg: None,
             weather: None,
             weather_cfg: None,
             weather_speed: 1.0,

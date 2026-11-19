@@ -20,7 +20,7 @@ pub enum Source {
 }
 
 /// Eingebettete Dateien: Name unter data/ und Inhalt.
-pub const EMBEDDED: [(&str, &str); 37] = [
+pub const EMBEDDED: [(&str, &str); 38] = [
     (
         "asset-prompts.json",
         include_str!("../../../../data/asset-prompts.json"),
@@ -70,6 +70,7 @@ pub const EMBEDDED: [(&str, &str); 37] = [
     ("light.json", include_str!("../../../../data/light.json")),
     ("look.json", include_str!("../../../../data/look.json")),
     ("monarch.json", include_str!("../../../../data/monarch.json")),
+    ("mounts.json", include_str!("../../../../data/mounts.json")),
     ("native.json", include_str!("../../../../data/native.json")),
     ("paper.json", include_str!("../../../../data/paper.json")),
     ("render.json", include_str!("../../../../data/render.json")),

@@ -16,6 +16,7 @@ pub mod island;
 pub mod links;
 pub mod merchant;
 pub mod monarch;
+pub mod mounts;
 pub mod portal;
 pub mod skills;
 pub mod state;

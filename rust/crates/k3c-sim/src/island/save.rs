@@ -1,4 +1,4 @@
-//! Spielstand der Insel (Port von `engine/sim/island_save.go` bis `islandFromV1`; Version 10 (RU62.1), B-100, S1.4, S2.2, K2.3b,
+//! Spielstand der Insel (Port von `engine/sim/island_save.go` bis `islandFromV1`; Version 11 (RU62.8; 10: RU62.1), B-100, S1.4, S2.2, K2.3b,
 //! K3.2a, W7.2, WZ18.3, WZ27.1). Die Campaign schreibt weiter Version 1 (`state/save.rs`). Gespeichert wird wie dort nur,
 //! was sich nicht aus dem Seed ergibt: Hubs, Truppen, Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden,
 //! Geschosse, Zufallsstand) geht beim Laden verloren.
@@ -22,7 +22,7 @@ use crate::state::{Fehler, WorldValues};
 use crate::world::{Options as WorldOptions, create_world};
 
 /// Go: `IslandSaveVersion`, die Version des Insel-Spielstands.
-pub const ISLAND_SAVE_VERSION: i64 = 10;
+pub const ISLAND_SAVE_VERSION: i64 = 11;
 
 /// Die Tabellen, die Go als Paket-Variablen hält: die Daten (`biomes`, `bosses`, `difficulty`), der Basis-Wertesatz
 /// (`defaultValues()`, Skill-Katalog für Stände ohne Welt) und die Standard-Welt (`standardWorld`).
@@ -132,6 +132,9 @@ pub struct IslandPlayerSave {
     /// Mitgebrachte Skills einer früheren Insel (Version 5), zählen nicht gegen den Pool.
     #[serde(rename = "skillBase", skip_serializing_if = "is_zero_i64")]
     pub skill_base: i64,
+    /// Version 11 (RU62.8, B-970): gekauftes Welt-Reittier (Katalog-ID); fehlt beim Standard-Pferd.
+    #[serde(rename = "mount", skip_serializing_if = "String::is_empty")]
+    pub mount: String,
 }
 
 impl Island {
@@ -184,6 +187,7 @@ impl Island {
                 skills: p.skills.clone(),
                 slots: p.slots.clone(),
                 skill_base: p.skill_base,
+                mount: p.mount.clone(),
             });
         }
         Ok(s)

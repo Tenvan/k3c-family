@@ -181,6 +181,7 @@ pub fn create_island_at(
     if crate::coop::world_has_coop(b.data, &b.world.id) {
         isl.enable_coop(b.data); // RU62.3: Doppel-Truhe nur in Welten aus data/coop.json
     }
+    isl.enable_mounts(b.data); // RU62.8: Welt-Reittier und Gatter nur in Welten aus data/mounts.json
     isl.enable_weather(b.data); // RU62.5: Wetter nur in Welten aus data/weather.json
 
     Ok(isl)

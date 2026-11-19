@@ -53,7 +53,7 @@ fn ruine_im_spielstand() {
     let _ = sm;
     destroy_site(w, sid);
     let at = "2026-10-21T10:00:00Z";
-    assert_eq!(crate::island::ISLAND_SAVE_VERSION, 10, "Version");
+    assert_eq!(crate::island::ISLAND_SAVE_VERSION, 11, "Version");
     let first = save_json(&isl, at);
     assert!(
         !first.contains("\"ruin\":"),

@@ -110,6 +110,7 @@ fn place_players(isl: &mut Island, s: &IslandSave) -> Result<(), Fehler> {
         q.skills = p.skills.clone(); // schon geprüft (validate_skills)
         q.slots = p.slots.clone();
         q.skill_base = p.skill_base;
+        q.mount.clone_from(&p.mount); // RU62.8: schon gegen den Katalog geprüft (validate_mounts)
         isl.next_player = isl.next_player.max(p.index + 1);
     }
     for w in &mut isl.stages {

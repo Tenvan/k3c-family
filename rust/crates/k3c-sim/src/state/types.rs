@@ -66,6 +66,9 @@ pub struct Player {
     /// Zahl der Skills beim Betreten der Insel.
     #[serde(rename = "skillBase", skip_serializing_if = "is_zero_i64")]
     pub skill_base: i64,
+    /// Gekauftes Welt-Reittier (Katalog-ID aus data/mounts.json, RU62.8, B-970); leer = Standard-Pferd.
+    #[serde(rename = "mount", skip_serializing_if = "String::is_empty")]
+    pub mount: String,
     /// Sekunden bis zum nächsten Schlag.
     #[serde(rename = "attackCooldown", skip_serializing_if = "is_zero_f64")]
     pub attack_cooldown: f64,

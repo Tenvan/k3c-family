@@ -4,10 +4,11 @@
 use serde_json::json;
 
 use super::fountain::fountain_coins;
-use super::links::{chest_skill_point, merchant_at, mount_of, speed_of, step_attack, step_skills};
+use super::links::{chest_skill_point, merchant_at, speed_of, step_attack, step_skills};
 use super::pay::{pay_one_coin, refund_pending};
 use super::{PayTarget, find_pay_target, key_of};
 use crate::crown::crowned;
+use crate::mounts::mount_factors;
 use crate::state::common::{event, sign};
 use crate::state::island_ref::IslandRef;
 use crate::state::links::{add_pool_points, emit, unit_x};
@@ -33,19 +34,27 @@ pub fn step_players(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&
         move_player(w, &v, pi, &cmd, dt);
         step_attack(w, &v, pi, &cmd, dt);
         step_skills(w, &v, pi, &cmd, dt);
+        let pressed = cmd.pay && !w.players[pi].paying;
         w.players[pi].paying = cmd.pay;
-        step_pay(w, &v, isl.as_deref(), pi, &cmd);
+        // RU62.8: Am Gatter kauft der Einwurf das Welt-Reittier; die Münze fällt nicht auf den Boden.
+        let at_gate = crate::mounts::buy::step_gate(w, pi, cmd.pay, pressed);
+        step_pay(w, &v, isl.as_deref(), pi, &cmd, at_gate);
     }
     collect_coins(w, &v, isl.as_deref_mut());
     collect_pickups(w, &v, isl);
 }
 
 /// Der Zahl-Teil von `step_players` für den lebenden Monarchen `pi`: eine Münze im Takt, Erstattung beim Loslassen.
-fn step_pay(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, pi: usize, cmd: &PlayerCommand) {
+fn step_pay(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, pi: usize, cmd: &PlayerCommand, at_gate: bool) {
     let p = &w.players[pi];
     // RU62.1: An einem nutzbaren Ladeplatz zahlt `cargo::step` in die Fracht; hier fiele die Münze sonst auf den Boden.
     let at_cargo_bay = w.cargo_bays.iter().any(|b| (p.x - b.x).abs() <= b.range);
-    if cmd.pay && !at_cargo_bay && p.pay_cooldown <= 0.0 && (p.gold > 0 || merchant_at(w, v, p.x) == Some("sell")) {
+    if cmd.pay
+        && !at_cargo_bay
+        && !at_gate
+        && p.pay_cooldown <= 0.0
+        && (p.gold > 0 || merchant_at(w, v, p.x) == Some("sell"))
+    {
         pay_one_coin(w, v, isl, pi);
         w.players[pi].pay_cooldown = v.economy.pay_interval_seconds;
     }
@@ -65,7 +74,7 @@ fn step_pay(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, pi: usize, 
 pub fn move_player(w: &mut World, v: &WorldValues, pi: usize, cmd: &PlayerCommand, dt: f64) {
     let mut mult = 1.0;
     if cmd.sprint {
-        mult = v.monarch.sprint_multiplier * mount_of(v, pi).sprint_factor; // Sprint auf dem Reittier
+        mult = v.monarch.sprint_multiplier * mount_factors(w, v, pi).1; // Sprint auf dem Reittier (RU62.8: gekauftes)
     }
     let target = cmd.move_x * speed_of(w, v, pi) * mult;
     let width = w.width_units;

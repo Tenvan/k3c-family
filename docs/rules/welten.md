@@ -109,6 +109,8 @@ Insel, Tiefe und Platz. `hub.sitePlacement` bleibt gesperrt.
 
 ## 2. Format
 
+**Welt-Reittier (B-970, RU62.8):** Das Reittier einer Welt steht vorerst nicht in der Welt-Datei, sondern in `data/mounts.json` › `worlds` (Welt-ID auf Katalog-ID; `sengoku`, `nil`; `standard` und `britannien` ohne). Die Welt-Dateien bleiben unverändert (Go und `k3c-data/src/world.rs` lehnen unbekannte Felder ab); das optionale Feld `mount` der Welt-Datei folgt nach RU41. Regeln: [`monarch.md`](monarch.md) § 7.
+
 Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderungen und Empfehlung 1 der Session WZ18.1.
 
 **Welt** (oberste Ebene, Reihenfolge der Felder beim Schreiben wie in der Tabelle):
@@ -255,6 +257,8 @@ Eine **Gegner-Variante** hat keine eigene ID: Basisart (alle Werte), optional We
 Das Feld `weather` der Welt-Datei ist **geplant nach RU41**: Die Welt-Dateien lehnen unbekannte Felder ab (Rust `deny_unknown_fields`, Go bis RU41). Bis dahin steht die Zuordnung in `data/weather.json` › `worlds` (Welt-ID → Art, genau eine): `sengoku` auf `taifun`, `nil` auf `flut`; `standard` und `britannien` fehlen und haben damit kein Wetter. Eine unbekannte Art in `worlds` lässt das Laden mit klarer Meldung scheitern (Prüfung in § 3 sinngemäß, `k3c-data/src/weather.rs`). Regeln: [`wetter.md`](wetter.md).
 
 ## 3. Prüfung beim Laden
+
+**Welt-Reittier (RU62.8):** Eine unbekannte Reittier-ID in `data/mounts.json` › `worlds` lässt das Laden der Daten mit klarer Meldung fehlschlagen (`k3c-data/src/mounts.rs`); bis RU41 prüft das nicht die Welt-Datei.
 
 Die Prüfung gilt für **jede** Welt-Datei, gleich ob eingebettet, im Dev-Mode von der Platte gelesen oder im Welten Editor als
 Entwurf (B-488 › Anforderungen). Sie ist die heutige Prüfung von `engine/sim/island_data.go` (`loadIslands`, `checkIsland`,

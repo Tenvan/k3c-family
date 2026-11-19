@@ -157,7 +157,7 @@ fn order_conflict(want: &[u8], got: &[u8]) -> String {
 }
 
 // B-1014/AC-03: `familie.json` (Version 9) laden, über den Raum speichern und wieder laden: der Zustands-Baum aller
-// Stufen ist gleich, der gespeicherte Stand ist Version 10 (RU62.1) mit den Feldern in der Reihenfolge der Datei, und ein zweites
+// Stufen ist gleich, der gespeicherte Stand ist Version 11 (RU62.8) mit den Feldern in der Reihenfolge der Datei, und ein zweites
 // Speichern ergibt dieselben Bytes.
 #[test]
 fn spielstand_v9_laden_speichern_gleicher_zustand() {
@@ -173,7 +173,7 @@ fn spielstand_v9_laden_speichern_gleicher_zustand() {
     assert_eq!(diff("stages", &before, &after), "", "Zustand nach Speichern und Laden");
 
     let out: Value = serde_json::from_slice(&first).expect("JSON");
-    assert_eq!(out["version"], 10, "Version");
+    assert_eq!(out["version"], 11, "Version");
     assert_eq!(
         order_conflict(&raw, &first),
         "",

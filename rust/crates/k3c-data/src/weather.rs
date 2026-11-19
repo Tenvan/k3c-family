@@ -145,8 +145,9 @@ mod tests {
                 "\"firstNight\": 0,\n    \"speedFactor\"",
             ),
         ] {
-            assert!(RAW.contains(from), "{from}");
-            assert!(load(&RAW.replace(from, to)).is_err(), "{to}");
+            let raw = RAW.replace("\r\n", "\n"); // Windows-Checkout mit CRLF (autocrlf)
+            assert!(raw.contains(from), "{from}");
+            assert!(load(&raw.replace(from, to)).is_err(), "{to}");
         }
     }
 }
