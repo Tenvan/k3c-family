@@ -32,8 +32,13 @@ Es gibt keinen Schalter `--version`; die Version steht in `native/k3c-game/bin/v
 
 ## Gesicherte Referenz
 
-Die Aufnahmen und Messwerte, die ohne Neubau auskommen, sichern RU58.2 und RU58.3 (unter `testdata/rust/go-referenz/` und
-`docs/messung/go-referenz.*`). Wer sie braucht, baut das Go-Spiel nur, um neue Werte zu gewinnen.
+- **Bilder (RU58.2):** `testdata/rust/e2e/go/a/shot-01..14.png` (1280x720) samt `stationen.txt`, aufgenommen aus dem Tag
+  (Lauf a und b waren pixelgleich; Summe 3,3 MiB). Aufnahme: in `native/k3c-game` des Tag-Worktrees
+  `K3C_GAME_EXE=<abs>/native/k3c-game/bin/k3c-game.exe K3C_ROOT=<abs Tag-Worktree> K3C_E2E_OUT=<abs>/.work/e2e/go go test ./e2e -run TestFlowImages`.
+- **Vergleich:** `rust/crates/k3c-game/tests/e2e_compare.rs` liest die Go-Seite fest aus dieser Referenz, die Rust-Seite aus
+  `K3C_E2E_OUT/rust/a` (Standard `.work/e2e`; Aufnahme mit `K3C_RUST_EXE=<exe> cargo test -p k3c-game --test e2e_images`).
+  Ohne Rust-Bilder überspringt der Test; eine Go-EXE ist nicht mehr nötig.
+- **Messwerte, Farbwerte, Pause-Fenster:** RU58.3.
 
 ## Aufräumen
 
