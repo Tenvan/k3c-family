@@ -1,6 +1,6 @@
 # KS7 · SIM · Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -69,6 +69,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; Go-Abnahme entfällt mit RU37. Auslöser am Pfahl vor dem Tor (B-941) und Schild-Gestell ab Burgstufe (B-942): Tests `combat/gate_tests.rs` (Abstand und Mindest-Burgstufe aus `data/economy.json`), Anzeige `TRIGGER_LOOK` und `RACK_LOOK` in `props/plan_combat.rs` (RU60.2).
+Offen: Sichtprüfung am TV (AC-03 beider Tickets, Rust-Abnahme-Liste); Gestell-Stapelhöhe nicht belegt (B-942/AC-02).

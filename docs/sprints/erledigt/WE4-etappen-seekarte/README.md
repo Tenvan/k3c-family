@@ -1,6 +1,6 @@
 # WE4 · SIM, CLI, DEV · Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** SIM, CLI, DEV
 - **Reife:** bereit
@@ -72,6 +72,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; Go-Abnahme entfällt mit RU37. Etappen und Zielwahl am Hafen (B-961), Seekarte im Spiel (B-962), Welten-Editor Querschnitt und Seekarte (B-963): Seekarten-Tests und Diorama im Rust-Spiel belegt (RU60.3: `hud/seekarte_*_tests.rs`, `world/state_mirror_tests.rs`), Chunk-Grenzen und Namen gegen die Daten geprüft.
+Offen: B-1012 Punkte 2 und 3 (gehaltenes A über die Fahrt, Frame des Wechsels), Sichtprüfung am TV (Stationen 41 und 42 der Rust-Abnahme-Liste, noch nicht getestet).

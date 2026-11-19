@@ -1,6 +1,6 @@
 # KS3 · SIM · Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -69,6 +69,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; Go-Abnahme entfällt mit RU37. Monarch zahlt Treffer mit Gold, Krone fällt und wird geraubt: alle 15 Go-Krone-Tests haben Rust-Gegenstücke (`k3c-sim/src/crown/`, Beleg RU60.4).
+Befund: B-1008 (laufender Kronenraub nach Verlassen und Weiter) betrifft auch Rust, `ignore`-Test `island/save_crown_tests.rs`; Behebung braucht Format-Entscheidung 🧑 (Ticket bleibt offen).
+Sichtprüfung am TV: Rust-Abnahme-Liste.

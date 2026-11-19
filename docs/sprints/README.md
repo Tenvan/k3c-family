@@ -10,18 +10,11 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
-| KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | `aktiv/KS2-portale-ausruestung/` |
-| KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
-| KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | `aktiv/KS4-angriff-gruppen-general/` |
-| KS5 | CLI | KSY | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | – | `aktiv/KS5-kampf-anzeige/` |
-| KS6 | SIM, PAP | KSY | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | – | `aktiv/KS6-kampf-nachtraege/` |
-| KS7 | SIM | KSY | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | – | `aktiv/KS7-kampf-abnahme-feedback/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
 | FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
 | WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
-| WE4 | SIM, CLI, DEV | WZG | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | – | `aktiv/WE4-etappen-seekarte/` |
 | GS1 | REG, SIM, CLI, DEV | WZG | Geschichten je Welt und Insel in Kunstsprache | – | `aktiv/GS1-geschichten-je-welt/` |
 | GS2 | PAP, CLI | WZG | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | – | `aktiv/GS2-seekarte-papierschnitt/` |
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
@@ -32,7 +25,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
-| WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
 | RU59 | SIM, INF | RSU | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | – | `aktiv/RU59-go-engine-ungenutztes-entfernen/` |
@@ -472,3 +464,11 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | `erledigt/RU30-spielschleife-teil-2/` |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | `erledigt/RU32-ende-zu-ende-test/` |
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | `erledigt/RU53-rust-skills-respec-inselwahl/` |
+| KS2 | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | `erledigt/KS2-portale-ausruestung/` |
+| KS3 | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | `erledigt/KS3-krone-gold/` |
+| KS4 | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | `erledigt/KS4-angriff-gruppen-general/` |
+| KS5 | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | `erledigt/KS5-kampf-anzeige/` |
+| KS6 | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | `erledigt/KS6-kampf-nachtraege/` |
+| KS7 | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | `erledigt/KS7-kampf-abnahme-feedback/` |
+| WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | `erledigt/WE4-etappen-seekarte/` |
+| WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | `erledigt/WI1-handwerker-gold/` |

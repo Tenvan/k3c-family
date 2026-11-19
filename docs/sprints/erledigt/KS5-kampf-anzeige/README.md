@@ -1,6 +1,6 @@
 # KS5 · CLI · Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -68,6 +68,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; Go-Abnahme entfällt mit RU37. Anzeige im Spiel (Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser, B-934): HUD-Tests im Rust-Spiel vorhanden (RU60.2: Skill-Menü, Overlay, Börse, Zahlstellen), Abgleich nach Namen vollständig gedeckt bis auf Go-spezifische Tests.
+Offen: Sichtprüfung am TV (Rust-Abnahme-Liste); Befund: Papierschnitt-Assets für Krone (Zustände), Portal-HP und Münzschauer unter `data/paper.json` nicht gefunden (B-940).

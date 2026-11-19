@@ -201,3 +201,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File native\measure.ps1 -Engine r
 
 Erwartung: je Spiel zwei Läufe (tag, nacht) mit `fps_mittel`, `gpu_dediziert_mib_max`, `ram_mib_max`, `start_ms` (größer 0)
 und `exe_mib`. Zeigt `start_ms` den Wert -1, kam das Fenster nicht in der Zeit oder der Prozess endete vorher.
+
+## Aus Go-Sprints übernommen (RU60.5, 2026-11-19)
+
+Sichtprüfungen am TV, die in den Go-Sprints offen waren; das Go-Spiel entfällt (RU37), sie gelten jetzt im Rust-Spiel. 🧑 trägt „ok“ oder Befund ein.
+
+| Nr. | Sprint | Ticket | Prüfung | Rust ok | Befund |
+|---|---|---|---|---|---|
+| G-1 | KS7 | B-941 AC-03 | Auslöser als Horn auf Pfahl vor dem Tor (Zahlstelle außerhalb des Tors) | – | – |
+| G-2 | KS7 | B-942 AC-03 | Schild-Gestell neben der Burg erst ab Burgstufe 2, Stapel sichtbar | – | – |
+| G-3 | KS6 | B-940 AC-03 | Krone, Banner, Schild, Zahlstellen, Portal-HP, Münzschauer als Papierschnitt (nicht die gezeichneten Formen); Krone, Portal-HP und Münzschauer: Assets noch nicht belegt | – | – |
+| G-4 | KS2 bis KS5 | B-927 bis B-934 | Portale zerstörbar, Kämpfer werden Bürger, Monarch zahlt mit Gold, Krone fällt, Gruppen mit Schild und General mit Banner, Kampf-Anzeige | – | – |
+| G-5 | WI1 | B-953 AC-03 | Truhen ×10 mit Münz-Fontäne, Handwerker mit Hammer, Bogner-Shop | – | – |
+| G-6 | WE4 | B-962 | Seekarte und Schiffsfahrt (Station 41 und 42), gehaltenes A über die Fahrt (B-1012 Punkt 2) | – | – |

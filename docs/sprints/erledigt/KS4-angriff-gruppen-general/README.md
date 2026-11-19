@@ -1,6 +1,6 @@
 # KS4 · SIM · Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -69,6 +69,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; Go-Abnahme entfällt mit RU37. Aktiver Angriff (Gruppen mit Schild und Auslöser, General mit Banner, B-932, B-933): Regeln in `k3c-sim/src/combat/` mit Tests (`gate_tests.rs`: `gateOutUnits`, `shieldMinHubLevel`); Anzeige in `props/plan_combat.rs` (Beleg RU60.2).
+Sichtprüfung am TV: Rust-Abnahme-Liste. Keine neuen Tickets.

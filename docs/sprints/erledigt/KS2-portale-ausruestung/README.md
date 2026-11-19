@@ -1,6 +1,6 @@
 # KS2 · SIM · Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -70,6 +70,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; die Abnahme am Go-Spiel entfällt mit RU37 (Tag `go-referenz-final`). Parität im Rust-Spiel: Portale, sichere Stufe und Kämpfer-werden-Bürger sind in `k3c-sim` portiert und getestet (`combat/`, `portal/`, Test-Abgleich RU60.1: Bereich sim 520 von 631 Go-Tests mit Namensgegenstück, übrige Namen siehe RU60.4).
+Offen für den Hauptrechner: Sichtprüfung am TV (Rust-Abnahme-Liste `docs/messung/rust-abnahme.md` › Aus Go-Sprints übernommen). Kein Abnahme-Ticket angelegt (Second Worker).

@@ -1,6 +1,6 @@
 # KS6 · SIM, PAP · Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** SIM, PAP
 - **Reife:** bereit
@@ -70,6 +70,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker, RU60.5): Alle Sessions fertig; Go-Abnahme entfällt mit RU37. Engine exportiert Zahlstellen und Kronen-Zustände, das Spiel nutzt sie (B-939); Papierschnitt-Assets für Kampf-Elemente (B-940): Banner, Schild, Auslöser, Horn-Pfahl, Schild-Gestell und Münze stehen in `data/paper.json` und werden gelesen (RU60.2).
+Offen: Assets für Krone (Zustände), Portal-HP und Münzschauer nicht belegt (B-940/AC-01, AC-02 teilweise), Sichtprüfung am TV (Rust-Abnahme-Liste). Ticket B-940 bleibt offen.
