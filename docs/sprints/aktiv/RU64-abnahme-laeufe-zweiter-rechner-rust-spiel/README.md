@@ -73,7 +73,7 @@ keine
 | RU64.3 | `RU64.3-abnahme-b1126-skills-inselwahl.md` | Umsetzung | autonom | fertig |
 | RU64.4 | `RU64.4-abnahme-b1129-farbe-pause-fenster.md` | Umsetzung | autonom | fertig |
 | RU64.5 | `RU64.5-abnahme-b1130-szenen-pixelmessung.md` | Umsetzung | autonom | fertig |
-| RU64.6 | `RU64.6-abnahme-b1130-frame-zeit-alloc.md` | Umsetzung | autonom | offen |
+| RU64.6 | `RU64.6-abnahme-b1130-frame-zeit-alloc.md` | Umsetzung | autonom | fertig |
 | RU64.7 | `RU64.7-abnahme-b1141-paket-zweiter-rechner.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

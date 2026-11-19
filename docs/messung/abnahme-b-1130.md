@@ -24,3 +24,29 @@
 ## Prüfliste für Ralf (AC-04, am TV)
 
 Nacht, Blutmond, Wald und Hub wirken wie das K2C-Vorbild; Weite 4, 4,5 oder 5 M wählen (Default 5 M, B-1045).
+Dazu (Teil 2): Frame-Zeit am Mini-PC prüfen (`messen.cmd -Engine rustgame`), schlechtester Frame unter 16,7 ms.
+
+## Teil 2: Frame-Zeit und Allokationen (RU64.6)
+
+2026-11-19, STIRA-PC (AMD Ryzen 7 5800X, 32 GB RAM, Radeon RX 6700 XT; kein Mini-PC), Commit 440dfd48, Rust-Release-EXE `dist/k3c-game` (wgpu 30.0.2), Fenster 1920 × 1080, 2 Spieler.
+
+Befehl: `powershell -NoProfile -ExecutionPolicy Bypass -File tools\measure\measure.ps1 -Engine rustgame -Runs 5 -Frames` (je Szene 5 Läufe zu 20 s nach 5 s Aufwärmen; 4 min 37 s; Bericht `reports/native-rustgame-STIRA-PC-20261119-224927.json`, ignoriert, nicht eingecheckt). Der Bericht meldet `vsync: false`, die Bilder laufen trotzdem mit 60 FPS (Takt 16,7 ms); die Frame-Zeit ist damit Taktung, nicht Rechenzeit (Rechenzeit je Bild 0,25 bis 0,27 ms).
+
+| Szene (2 Ansichten) | FPS Mittel / 1-%-Low | Frame p50 (Median, Min, Max der 5 Läufe) | p99 (Median) | Frame max je Lauf (Median, Min, Max) | Takt max | Start | RAM / GPU |
+|---|---|---|---|---|---|---|---|
+| tag | 60,0 / 57,0 | 16,75 ms (16,70 bis 16,76) | 17,38 ms | 17,84 ms (17,71 bis **18,21**) | 0,88 ms | 210 ms | 351 / 534 MiB |
+| nacht | 60,0 / 55,9 | 16,72 ms (16,71 bis 16,74) | 17,50 ms | 20,76 ms (20,69 bis **21,71**) | 4,88 ms | 214 ms | 353 / 534 MiB |
+
+Schlechtester Frame (zwei Ansichten): **18,2 ms (tag), 21,7 ms (nacht)**, also über 16,7 ms. Nur berichtet, kein Gate (Messungen zum Schluss). Go-Referenz (`docs/messung/go-referenz.json`, Szene tag/nacht, 1028 × 749, ohne VSync): Frame p50 0,30 / 0,43 ms, schlechtester 5,0 / 7,4 ms, Start 1298 / 2102 ms, RAM 371 / 331 MiB, GPU 162 MiB, EXE 25,1 MiB; mit VSync p50 78 ms (13 FPS). Rust: Start 210 ms (schneller), GPU 534 MiB (mehr), EXE 19,3 MiB. Die Werte sind wegen der 60-FPS-Taktung und der anderen Fenstergröße nicht direkt vergleichbar.
+
+| Lauf | Befehl | Ergebnis |
+|---|---|---|
+| `alloc_je_bild` (mit Grafik) | `cargo test --release -p k3c-game --test alloc_je_bild -- --nocapture` | grün, 0,2 s: 179 Bilder, Mittel 464,9, Maximum **786** (step 786, draw 19), Obergrenze 786 unverändert |
+| Workspace | Zitat RU64.3 (gleicher Code, seither nur Docs) | 5 rot (still mittag, still_hud 2, still_props 1, `worlds_tests` rom.json), 2668 grün |
+| `check:race` | Zitat RU64.2 (`abnahme-b-1123.md`) | keine Data Races; nur `engine/internal/detvec` rot |
+
+### Für den Hauptrechner (Teil 2)
+
+- Schlechtester Frame nacht 21,7 ms (Takt max 4,88 ms in der Nacht, gegen 0,88 ms am Tag): Nachtszene prüfen (RU43), nur gemessen, nicht optimiert.
+- Rust läuft trotz `vsync: false` im Bericht mit 60 FPS: Ob der Schalter `--novsync` im wgpu-Fenster wirkt, ungeprüft (Go lief mit über 3000 FPS).
+- Mini-PC (🧑): „schlechtester Frame unter 16,7 ms“ bleibt offen.
