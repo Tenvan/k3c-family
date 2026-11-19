@@ -67,7 +67,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU22 | Sim-Abgleich: alle Sim- und Kampagnen-Golden bitgleich (Gate G3) | erledigt |
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | erledigt |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | erledigt |
-| RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | geplant |
+| RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | aktiv |
 | RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | geplant |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | geplant |

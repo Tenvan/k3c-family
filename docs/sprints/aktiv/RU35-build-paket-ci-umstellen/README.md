@@ -1,6 +1,6 @@
 # RU35 · INF · Build, Paket und CI auf das Rust-Spiel umstellen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** INF
 - **Reife:** bereit
@@ -83,7 +83,7 @@ Keine offenen.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU35.1 | `RU35.1-rust-game-build-run-dev.md` | Umsetzung | autonom | offen |
+| RU35.1 | `RU35.1-rust-game-build-run-dev.md` | Umsetzung | autonom | fertig |
 | RU35.2 | `RU35.2-build-und-buildall-auf-rust.md` | Umsetzung | autonom | offen |
 | RU35.3 | `RU35.3-ci-rust-spiel.md` | Umsetzung | autonom | offen |
 | RU35.4 | `RU35.4-review.md` | Review | autonom | offen |

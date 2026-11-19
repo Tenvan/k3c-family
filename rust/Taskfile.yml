@@ -1,6 +1,10 @@
 # Namespace `rust`: Rust-Workspace rust/ (Projekt RSU, Umstieg von Go auf Rust nach G0, B-1014). Workspace, Crates und
-# Port-Leitfaden: docs/standards/rust-port.md. Das Spiel als Paket: `rust:game:dist` (Vorgriff auf RU35); der Rest von rust:game:* kommt mit RU35.
+# Port-Leitfaden: docs/standards/rust-port.md. Das Spiel: `rust:game:exe`, `:build`, `:run`, `:dev` (RU35); Paket nach PAKET.
 version: '3'
+
+vars:
+  # Paketordner des Rust-Spiels (RU35.2 stellt auf dist/k3c-game um)
+  PAKET: '{{.ROOT_DIR}}/dist/k3c-rust'
 
 tasks:
   build:
@@ -43,27 +47,57 @@ tasks:
       - task: :gen:paper
       - cargo run --release --manifest-path rust/Cargo.toml -p k3c-game -- {{.CLI_ARGS}}
 
-  # dist: baut k3c-game (Release) und legt EXE, Spieldaten, Grafik und den Demo-Treiber nach dist/k3c-rust/. Eigener
-  # Ordner, damit das Go-Spiel in dist/k3c-game/ unberührt bleibt (bis RU35 das Paket umstellt). Kopiert wird mit
-  # cmd/sync (nur Geändertes, Ordner zusammengeführt); die Grafik kommt aus public/grafik (`task gen:paper` vorher).
-  game:dist:
-    desc: "Rust-Spiel (Release) samt data/, Grafik und Demo-Treiber nach dist/k3c-rust/ bauen; Start: demo.cmd"
-    dir: '{{.ROOT_DIR}}'
-    vars:
-      PAKET: '{{.ROOT_DIR}}/dist/k3c-rust'
+  # game:*: das Spiel als EXE-Projekt (RU35.1): exe (Release-EXE), build (EXE, Grafik, Paket nach PAKET), run (Paket bauen
+  # und starten), dev (Debug-Bau, Start aus der Repo-Wurzel). Kopiert wird mit cmd/sync (nur Geändertes, Ordner
+  # zusammengeführt; der Umzug des Werkzeugs gehört zu RU37). Das Rust-Spiel lädt ganz public/grafik (kein --assets-Filter)
+  # und die Rig-Teile relativ (native/k3c-rig/assets, DEFAULT_RIG_DIR).
+  game:exe:
+    desc: "Nur die Release-EXE des Rust-Spiels bauen (cargo build --release -p k3c-game) nach rust/target/release/"
+    dir: '{{.ROOT_DIR}}/rust'
+    sources:
+      - crates/**/*.rs
+      - crates/**/Cargo.toml
+      - Cargo.lock
+    generates:
+      - target/release/k3c-game.exe
     cmds:
-      - cd rust && cargo build --release -p k3c-game
+      - cargo build --release -p k3c-game
+
+  game:build:
+    desc: "Rust-Spiel bauen: Release-EXE, Papierschnitt-Grafik (gen:paper) und das Paket (EXE, data, Grafik, Ton, Schrift, Rig-Teile) in den Paketordner (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
+    deps: [game:exe, ':gen:paper', ':tmp']
+    cmds:
+      - task: game:dist
+
+  game:dist:
+    internal: true
+    dir: '{{.ROOT_DIR}}'
+    env:
+      CGO_ENABLED: '0'
+    cmds:
       - mkdir -p "{{.PAKET}}"
       - |
         set -e
         p="{{.PAKET}}"
         if [ ! -d public/grafik ]; then echo "❌ public/grafik fehlt: erst task gen:paper"; exit 1; fi
-        cd native/k3c-game && CGO_ENABLED=0 go run ./cmd/sync \
-          "{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe" \
-          "{{.ROOT_DIR}}/data=$p/data" \
-          "{{.ROOT_DIR}}/public/grafik=$p/public/grafik" \
-          "{{.ROOT_DIR}}/rust/demo=$p/demo"
+        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/native/k3c-rig/assets=$p/native/k3c-rig/assets {{.ROOT_DIR}}/public/audio=$p/public/audio"
+        if [ -d public/schrift ]; then args="$args {{.ROOT_DIR}}/public/schrift=$p/public/schrift"; fi
+        cd native/k3c-game && go run ./cmd/sync $args
         # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
         rm -f "$p"/data/*.go "$p"/data/*.md
-        printf '%s\r\n' '@echo off' 'cd /d "%~dp0"' 'k3c-game.exe demo --driver demo\reiten.json --grafik public\grafik --data data %*' > "$p/demo.cmd"
-      - 'echo "✅ Rust-Spiel in {{.ROOT_DIR}}/dist/k3c-rust (Start: demo.cmd)"'
+      - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe; LIZENZEN.txt fehlt noch, Paket nicht weitergebbar)"'
+
+  game:run:
+    desc: "Rust-Spiel bauen (game:build) und aus dem Paket-Ordner starten; Schalter: task rust:game:run -- --players 1"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - task: game:build
+      - 'cd "{{.PAKET}}" && ./k3c-game.exe {{.CLI_ARGS}}'
+
+  game:dev:
+    desc: "Rust-Spiel im Debug-Bau starten (Arbeitsordner Repo-Wurzel, findet data/ und Grafik direkt); kein Neustart bei Änderungen (cargo-watch wäre ein neues Werkzeug, engine/devrun kennt nur Go)"
+    dir: '{{.ROOT_DIR}}'
+    deps: [':gen:paper']
+    cmds:
+      - cargo build --manifest-path rust/Cargo.toml -p k3c-game
+      - '"{{.ROOT_DIR}}/rust/target/debug/k3c-game.exe" {{.CLI_ARGS}}'
