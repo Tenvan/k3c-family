@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** live
-- **Status:** offen
-- **Sprint:** BB2
-- **Projekt:** PAP
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** RU55
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -39,11 +39,12 @@ Spiegelung von HUD und Text; Wetter auf dem Wasser.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `rust/crates/k3c-game/**`
+- **Bereich:** `rust/crates/k3c-game/src/world/water.rs`, `rust/crates/k3c-game/src/world/river.rs`, `rust/crates/k3c-game/src/game/draw.rs`, `rust/crates/k3c-platform/src/river.rs`, `rust/crates/k3c-platform/src/backend/river.wgsl`, `rust/crates/k3c-platform/src/backend/gpu.rs`, `data/look.json`
 - **Abhängig von:** B-1043
-- **Braucht 🧑:** Freigabe, Abnahme
+- **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
+- Umsetzung bevorzugt im Fluss-Shader (`river.wgsl`): die fertige Welt-Zelle als Textur gespiegelt abtasten, statt Objekte doppelt zu zeichnen. Werte (Helligkeit 0,65, Stauchung, Wasserfarbe, Glanz) in `data/look.json`. Die Fluss-Fassung `K3C_RIVER` bleibt als Rückfall (Wellen-Reihen). RU42-Leitplanken gelten; die Allokations-Obergrenze in `tests/alloc_je_bild.rs` bleibt unverändert grün. Messung des schlechtesten Frames im Abnahme-Ticket (Lane zweit).
 
 ## Beispiele
 

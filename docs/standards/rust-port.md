@@ -100,3 +100,14 @@ Ziel: ruckelfrei und absturzfrei (Leitplanken RU42, Ralf 2026-11-18). Die Lints 
 - **`Result` statt `panic`:** `unwrap`, `expect`, `panic!`, `todo!`, `unimplemented!` sind im Workspace `deny` (in Tests erlaubt). Fehler mit `?` weiterreichen oder mit begründetem Fallback abfangen; `unimplemented!` nur als Platzhalter nach § 7 mit gezieltem `allow` und Sprint-Nummer.
 - **Bewusste Schwachstellen markieren:** `// PERF(B-xxxx): Grund` bei bekannter Leistungsschuld, `// STAB(B-xxxx): Grund` mit gezieltem `#[allow(clippy::…)]` bei bekanntem Panic-Risiko; beides mit Ticket im Sprint RU43. Ohne Ticket keine Markierung, neuer Code fügt keine hinzu.
 - **Messung und Feinoptimierung am Ende** (Ralf 2026-11-18): erst bauen, dann messen (`messung_cpu`, `alloc_je_bild`), dann nach Messung optimieren (RU43); keine Optimierung ohne Zahl.
+
+### § 12 Abhängigkeiten und unsafe
+
+Fremde Crates stehen mit fester Version (`=`) in `rust/Cargo.toml` › `[workspace.dependencies]`, mit Kommentar zu Datum und Freigabe; neue nur mit Freigabe von Ralf. Der Workspace verbietet `unsafe` (`unsafe_code = forbid`).
+
+| Crate | Version | Zweck | Freigabe |
+|---|---|---|---|
+| `windows` (Microsoft) | fest gepinnt in RU56.2 (aktuelle stabile Version, mindestens zwei Wochen alt), `default-features = false`, nur die begründeten Features | Win32-Fenster des Cheat-Fensters `k3c-devwin` (RU56, B-1132) | Ralf, 2026-11-19 (Auftrag RU56) |
+
+- **Einzige Ausnahme für `unsafe`:** `rust/crates/k3c-devwin/src/win32/` (Win32-Aufrufe). Das Crate setzt eigene `[lints]` (`unsafe_code = "deny"`, die clippy-Lints des Workspace), das Modul `#![allow(unsafe_code)]`, jeder `unsafe`-Block trägt einen `// SAFETY:`-Kommentar. Ein Test in `k3c-devwin/tests/no_unsafe.rs` hält `unsafe` aus dem restlichen Rust-Workspace heraus.
+- `k3c-game` und `k3c-devproto` bleiben `forbid`: Das Spiel spricht das Cheat-Fenster über eine Named Pipe als Client mit `std::fs` an, ohne `unsafe` und ohne `windows`.
