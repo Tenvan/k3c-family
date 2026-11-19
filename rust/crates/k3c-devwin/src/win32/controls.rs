@@ -14,10 +14,10 @@ use windows::Win32::UI::Controls::{
 };
 use windows::Win32::UI::Input::KeyboardAndMouse::{TME_LEAVE, TRACKMOUSEEVENT, TrackMouseEvent};
 use windows::Win32::UI::WindowsAndMessaging::{
-    BS_OWNERDRAW, CB_ADDSTRING, CB_SETCURSEL, CBS_DROPDOWNLIST, CallWindowProcW, CreateWindowExW, ES_AUTOHSCROLL,
-    GWLP_USERDATA, GWLP_WNDPROC, GetWindowLongPtrW, GetWindowTextW, HMENU, SendMessageW, SetWindowLongPtrW,
-    WINDOW_EX_STYLE, WINDOW_STYLE, WM_MOUSEMOVE, WM_SETFONT, WNDPROC, WS_BORDER, WS_CHILD, WS_TABSTOP, WS_VISIBLE,
-    WS_VSCROLL,
+    BS_OWNERDRAW, CB_ADDSTRING, CB_GETCURSEL, CB_SETCURSEL, CBS_DROPDOWNLIST, CallWindowProcW, CreateWindowExW,
+    ES_AUTOHSCROLL, GWLP_USERDATA, GWLP_WNDPROC, GetWindowLongPtrW, GetWindowTextW, HMENU, SendMessageW,
+    SetWindowLongPtrW, WINDOW_EX_STYLE, WINDOW_STYLE, WM_MOUSEMOVE, WM_SETFONT, WNDPROC, WS_BORDER, WS_CHILD,
+    WS_TABSTOP, WS_VISIBLE, WS_VSCROLL,
 };
 use windows::core::{PCWSTR, Result, w};
 
@@ -120,6 +120,24 @@ fn set_flag(hwnd: HWND, bit: isize, on: bool) {
             let _ = InvalidateRect(Some(hwnd), None, false);
         }
     }
+}
+
+/// is_on sagt, ob ein Umschalter an ist.
+pub(super) fn is_on(hwnd: HWND) -> bool {
+    flags(hwnd) & FLAG_ON != 0
+}
+
+/// selected liefert den gewählten Index einer Auswahlliste.
+pub(super) fn selected(hwnd: HWND) -> Option<usize> {
+    usize::try_from(send(hwnd, CB_GETCURSEL, 0, 0).0).ok()
+}
+
+/// text liest den Text eines Controls (höchstens 512 Zeichen).
+pub(super) fn text(hwnd: HWND) -> String {
+    let mut buf = [0u16; 512];
+    // SAFETY: buf ist ein beschreibbarer Puffer; GetWindowTextW schneidet auf dessen Länge.
+    let n = unsafe { GetWindowTextW(hwnd, &mut buf) }.max(0) as usize;
+    String::from_utf16_lossy(buf.get(..n).unwrap_or_default())
 }
 
 /// toggle schaltet den Zustand eines Umschalters um und liefert den neuen Wert.

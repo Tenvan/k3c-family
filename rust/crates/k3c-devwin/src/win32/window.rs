@@ -12,14 +12,20 @@ use windows::Win32::UI::WindowsAndMessaging::{
     GWLP_USERDATA, GetMessageW, GetSystemMetrics, GetWindowLongPtrW, IDC_ARROW, LoadCursorW, MINMAXINFO, MSG,
     PostQuitMessage, RegisterClassExW, SM_CYSCREEN, SW_SHOW, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOZORDER,
     SetWindowLongPtrW, SetWindowPos, ShowWindow, TranslateMessage, WINDOW_EX_STYLE, WINDOW_STYLE, WM_CREATE,
-    WM_DESTROY, WM_DPICHANGED, WM_GETMINMAXINFO, WM_NCCREATE, WM_NCDESTROY, WM_NOTIFY, WM_SIZE, WNDCLASSEXW,
-    WS_CLIPCHILDREN, WS_OVERLAPPEDWINDOW,
+    WM_CTLCOLORSTATIC, WM_DESTROY, WM_DPICHANGED, WM_GETMINMAXINFO, WM_NCCREATE, WM_NCDESTROY, WM_NOTIFY, WM_SIZE,
+    WNDCLASSEXW, WS_CLIPCHILDREN, WS_OVERLAPPEDWINDOW,
 };
 use windows::core::{Error, PCWSTR, Result, w};
 
+use super::app::{App, WM_APP_CMD, WM_APP_LOST, WM_APP_MSG};
+use super::controls;
 use super::{tabs, theme};
+use crate::args::Args;
+use crate::layout::{Control, Kind};
 use crate::style::{self, GRID, MIN_SIZE, START_SIZE, scale};
 
+/// Höhe der Statuszeile in dip.
+const STATUS_H: i32 = 28;
 const CLASS: PCWSTR = w!("K3CDevWin");
 const STYLE: WINDOW_STYLE = WINDOW_STYLE(WS_OVERLAPPEDWINDOW.0 | WS_CLIPCHILDREN.0);
 
@@ -31,6 +37,7 @@ struct Ui {
     bg: HBRUSH,
     tab: Cell<HWND>,
     page: Cell<HWND>,
+    app: App,
 }
 
 impl Drop for Ui {
@@ -40,15 +47,15 @@ impl Drop for Ui {
 }
 
 /// run öffnet das Fenster und läuft die Schleife; der Hintergrundpinsel lebt so lange wie der Prozess.
-pub(super) fn run() -> Result<u8> {
+pub(super) fn run(args: &Args) -> Result<u8> {
     theme::enable_dpi_awareness();
     let bg = theme::solid_brush(style::BG)?;
-    let r = open_and_loop(bg);
+    let r = open_and_loop(bg, args);
     theme::delete_object(bg);
     r
 }
 
-fn open_and_loop(bg: HBRUSH) -> Result<u8> {
+fn open_and_loop(bg: HBRUSH, args: &Args) -> Result<u8> {
     // SAFETY: GetModuleHandleW(None) liefert das Handle der eigenen EXE und braucht keine Zeiger.
     let hinst = HINSTANCE(unsafe { GetModuleHandleW(None) }?.0);
     register(hinst, bg)?;
@@ -60,6 +67,7 @@ fn open_and_loop(bg: HBRUSH) -> Result<u8> {
         bg,
         tab: Cell::new(HWND::default()),
         page: Cell::new(HWND::default()),
+        app: App::new(),
     });
     let (w, h) = start_size(dpi);
     let title: Vec<u16> = style::TITLE.encode_utf16().chain(std::iter::once(0)).collect();
@@ -86,12 +94,14 @@ fn open_and_loop(bg: HBRUSH) -> Result<u8> {
     }?;
     theme::dark_titlebar(hwnd);
     sync_dpi(hwnd);
+    let failed = ui_of(hwnd).is_some_and(|ui| ui.app.start(hwnd, args, ui.page.get()));
     // SAFETY: hwnd wurde eben erzeugt und gehört diesem Thread.
     unsafe {
         let _ = ShowWindow(hwnd, SW_SHOW);
         let _ = UpdateWindow(hwnd);
     }
-    message_loop()
+    let code = message_loop()?;
+    Ok(if failed { 1 } else { code })
 }
 
 fn register(hinst: HINSTANCE, bg: HBRUSH) -> Result<()> {
@@ -202,6 +212,29 @@ extern "system" fn wndproc(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRES
             return LRESULT(0);
         }
         WM_CREATE => return create_children(hwnd, lp),
+        WM_APP_MSG => {
+            if let Some(ui) = ui_of(hwnd) {
+                ui.app.take_msg(ui.page.get(), lp);
+            }
+            return LRESULT(0);
+        }
+        WM_APP_LOST => {
+            if let Some(ui) = ui_of(hwnd) {
+                ui.app.on_lost(ui.page.get());
+            }
+            return LRESULT(0);
+        }
+        WM_APP_CMD => {
+            if let Some(ui) = ui_of(hwnd) {
+                ui.app.take_cmd(ui.page.get(), lp);
+            }
+            return LRESULT(0);
+        }
+        WM_CTLCOLORSTATIC => {
+            if let Some(r) = ui_of(hwnd).and_then(|ui| ui.app.status_color(wp, lp, ui.bg)) {
+                return r;
+            }
+        }
         WM_SIZE => {
             arrange(hwnd, lp);
             return LRESULT(0);
@@ -310,6 +343,11 @@ fn create_children(hwnd: HWND, lp: LPARAM) -> LRESULT {
         Ok((tab, page)) => {
             ui.tab.set(tab);
             ui.page.set(page);
+            let status = Control::new("status", Kind::Label, "");
+            match controls::create(hwnd, inst, 900, &status, ui.font.get()) {
+                Ok(h) => ui.app.set_status_window(h),
+                Err(e) => eprintln!("❌ Statuszeile nicht erzeugt: {e}"),
+            }
             LRESULT(0)
         }
         Err(e) => {
@@ -323,7 +361,22 @@ fn create_children(hwnd: HWND, lp: LPARAM) -> LRESULT {
 fn arrange(hwnd: HWND, lp: LPARAM) {
     let Some(ui) = ui_of(hwnd) else { return };
     let (w, h) = ((lp.0 & 0xFFFF) as i32, ((lp.0 >> 16) & 0xFFFF) as i32);
-    if !ui.tab.get().is_invalid() && !ui.page.get().is_invalid() {
-        tabs::arrange(ui.tab.get(), ui.page.get(), (w, h), ui.dpi.get());
+    if ui.tab.get().is_invalid() || ui.page.get().is_invalid() {
+        return;
     }
+    let dpi = ui.dpi.get();
+    let bar = scale(STATUS_H, dpi).min(h);
+    tabs::arrange(ui.tab.get(), ui.page.get(), (w, h - bar), dpi);
+    // SAFETY: die Statuszeile ist ein Kind dieses Fensters (oder leer, dann scheitert der Aufruf folgenlos).
+    let _ = unsafe {
+        SetWindowPos(
+            ui.app.status_window(),
+            None,
+            scale(GRID, dpi),
+            h - bar + scale(4, dpi),
+            (w - scale(2 * GRID, dpi)).max(0),
+            (bar - scale(6, dpi)).max(0),
+            SWP_NOZORDER | SWP_NOACTIVATE,
+        )
+    };
 }

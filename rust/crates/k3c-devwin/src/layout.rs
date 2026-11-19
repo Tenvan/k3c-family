@@ -4,6 +4,10 @@
 //! Schaltflächen und Umschalter in Reihen (mindestens [`MIN_BUTTON_W`] breit), Auswahl, Eingabe und Beschriftung
 //! belegen je eine ganze Reihe. Ist der Inhalt höher als das Fenster, scrollt die Seite senkrecht.
 
+use std::collections::BTreeMap;
+
+use k3c_devproto::Msg;
+
 use crate::style::GRID;
 
 /// Mindestbreite einer Schaltfläche.
@@ -43,8 +47,25 @@ impl Kind {
     }
 }
 
-/// Control ist ein Element einer Gruppe; `key` benennt die Aktion für die Seiten (RU56.6 bis RU56.10).
-#[derive(Clone, Debug, PartialEq, Eq)]
+/// Values sind die Werte der Controls einer Seite beim Klick: Umschalter `"1"`/`"0"`, Auswahl der gewählte Text
+/// (und `<key>.index` der Index), Eingabe der Text; Schaltflächen und Beschriftungen fehlen.
+pub type Values = BTreeMap<String, String>;
+
+/// Action sagt, was ein Control beim Klick (Schaltfläche, Umschalter) oder Ändern (Auswahl) an das Spiel schickt.
+/// Die Kennung `id` der Nachricht setzt das Fenster.
+#[derive(Clone, Debug, Default)]
+pub enum Action {
+    /// Nichts (Eingabefelder, Beschriftungen, reine Werteträger).
+    #[default]
+    None,
+    /// Eine feste Nachricht.
+    Msg(Box<Msg>),
+    /// Eine Nachricht aus den Werten der Seite; `None` meldet "unvollständig" in der Statuszeile nicht, sondern tut nichts.
+    Form(fn(&Values) -> Option<Msg>),
+}
+
+/// Control ist ein Element einer Gruppe; `key` benennt es (Schlüssel in `Values`).
+#[derive(Clone, Debug)]
 pub struct Control {
     pub key: String,
     pub kind: Kind,
@@ -52,6 +73,7 @@ pub struct Control {
     /// Einträge einer Auswahlliste (nur `Kind::Select`).
     pub options: Vec<String>,
     pub min_w: i32,
+    pub action: Action,
 }
 
 impl Control {
@@ -63,7 +85,20 @@ impl Control {
             text: text.to_owned(),
             options: Vec::new(),
             min_w,
+            action: Action::None,
         }
+    }
+
+    /// sends macht das Control zu einer festen Nachricht.
+    pub fn sends(mut self, msg: Msg) -> Self {
+        self.action = Action::Msg(Box::new(msg));
+        self
+    }
+
+    /// builds macht das Control zu einer Nachricht aus den Werten der Seite.
+    pub fn builds(mut self, f: fn(&Values) -> Option<Msg>) -> Self {
+        self.action = Action::Form(f);
+        self
     }
 
     /// with_options setzt die Einträge einer Auswahlliste.
@@ -74,7 +109,7 @@ impl Control {
 }
 
 /// Group ist ein Knoten des Layouts: ein Titel mit seinen Controls.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug)]
 pub struct Group {
     pub title: String,
     pub controls: Vec<Control>,

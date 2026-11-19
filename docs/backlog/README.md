@@ -195,6 +195,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
 | [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
 | [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | offen | RU54 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
+| [B-1142](B-1142-cheatfenster-pipe-haerten.md) | CLI | Schuld | niedrig | offen | RU56 | Cheat-Fenster-Pipe härten: Zugriffsrechte, Pipe-Squatting, blockierendes Schreiben |
 
 ## Archiv
 

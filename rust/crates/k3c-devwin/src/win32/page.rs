@@ -7,26 +7,26 @@ use std::ffi::c_void;
 use k3c_devproto::Catalog;
 use windows::Win32::Foundation::{COLORREF, HINSTANCE, HWND, LPARAM, LRESULT, RECT, WPARAM};
 use windows::Win32::Graphics::Gdi::{HBRUSH, HDC, HFONT, InvalidateRect, SetBkColor, SetTextColor};
-use windows::Win32::UI::Controls::{DRAWITEMSTRUCT, SetScrollInfo, SetWindowTheme};
+use windows::Win32::UI::Controls::{DRAWITEMSTRUCT, SetWindowTheme};
+use windows::Win32::UI::Input::KeyboardAndMouse::EnableWindow;
 use windows::Win32::UI::WindowsAndMessaging::{
     CB_SETITEMHEIGHT, CREATESTRUCTW, CS_HREDRAW, CS_VREDRAW, CreateWindowExW, DefWindowProcW, DestroyWindow,
-    GWLP_USERDATA, GetClientRect, GetScrollInfo, GetWindowLongPtrW, GetWindowRect, IDC_ARROW, LoadCursorW,
-    RegisterClassExW, SB_VERT, SCROLLINFO, SIF_PAGE, SIF_POS, SIF_RANGE, SIF_TRACKPOS, SWP_NOACTIVATE, SWP_NOZORDER,
-    SetWindowLongPtrW, SetWindowPos, WINDOW_EX_STYLE, WM_COMMAND, WM_CTLCOLOREDIT, WM_CTLCOLORLISTBOX,
-    WM_CTLCOLORSTATIC, WM_DRAWITEM, WM_MOUSEWHEEL, WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SETFONT, WM_SIZE,
-    WM_VSCROLL, WNDCLASSEXW, WS_CHILD, WS_CLIPCHILDREN, WS_VISIBLE, WS_VSCROLL,
+    GWLP_USERDATA, GetClientRect, GetParent, GetWindowLongPtrW, GetWindowRect, IDC_ARROW, LoadCursorW, PostMessageW,
+    RegisterClassExW, SWP_NOACTIVATE, SWP_NOZORDER, SetWindowLongPtrW, SetWindowPos, WINDOW_EX_STYLE, WM_COMMAND,
+    WM_CTLCOLOREDIT, WM_CTLCOLORLISTBOX, WM_CTLCOLORSTATIC, WM_DRAWITEM, WM_MOUSEWHEEL, WM_NCCREATE, WM_NCDESTROY,
+    WM_PAINT, WM_SETFONT, WM_SIZE, WM_VSCROLL, WNDCLASSEXW, WS_CHILD, WS_CLIPCHILDREN, WS_VISIBLE, WS_VSCROLL,
 };
 use windows::core::{Error, PCWSTR, Result, w};
 
+use super::app::WM_APP_CMD;
 use super::controls::{self, FIELD};
-use super::{pagedraw, theme};
+use super::pageevents::{self, ID_BASE};
+use super::{pagedraw, pagescroll, theme};
 use crate::layout::{Group, Kind, Layout, Rect, layout};
 use crate::pages::PAGES;
 use crate::style::{self, TEXT, scale, unscale};
 
 const CLASS: PCWSTR = w!("K3CDevPage");
-/// Kennungen der Controls: `ID_BASE` + flacher Index (Gruppe für Gruppe).
-const ID_BASE: usize = 1000;
 
 /// Content ist der Inhalt der aktiven Seite: Gruppen, ihre Control-Fenster (flach, Gruppe für Gruppe) und das
 /// zuletzt berechnete Layout.
@@ -46,6 +46,7 @@ struct PageState {
     bg: HBRUSH,
     field: HBRUSH,
     page: Cell<usize>,
+    enabled: Cell<bool>,
     scroll: Cell<i32>,
     catalog: RefCell<Catalog>,
     content: RefCell<Content>,
@@ -67,6 +68,7 @@ pub(super) fn create(parent: HWND, inst: HINSTANCE, bg: HBRUSH, dpi: u32, font: 
         bg,
         field: theme::solid_brush(FIELD)?,
         page: Cell::new(0),
+        enabled: Cell::new(false),
         scroll: Cell::new(0),
         catalog: RefCell::new(Catalog::default()),
         content: RefCell::new(Content::default()),
@@ -175,6 +177,7 @@ fn rebuild(hwnd: HWND, st: &PageState) {
             layout: Layout::default(),
         };
     }
+    apply_enabled(st);
     relayout(hwnd, st);
 }
 
@@ -197,25 +200,11 @@ fn relayout(hwnd: HWND, st: &PageState) {
         let content_px = scale(c.layout.content_height, dpi);
         let max = (content_px - page_h).max(0);
         st.scroll.set(st.scroll.get().clamp(0, max));
-        set_scrollbar(hwnd, content_px, page_h, st.scroll.get());
+        pagescroll::set_scrollbar(hwnd, content_px, page_h, st.scroll.get());
     }
     position(st);
     // SAFETY: hwnd ist das eigene Fenster; None heißt das ganze Client-Rechteck.
     let _ = unsafe { InvalidateRect(Some(hwnd), None, true) };
-}
-
-fn set_scrollbar(hwnd: HWND, content_px: i32, page_px: i32, pos: i32) {
-    let si = SCROLLINFO {
-        cbSize: size_of::<SCROLLINFO>() as u32,
-        fMask: SIF_RANGE | SIF_PAGE | SIF_POS,
-        nMin: 0,
-        nMax: (content_px - 1).max(0),
-        nPage: page_px.max(0) as u32,
-        nPos: pos,
-        ..Default::default()
-    };
-    // SAFETY: si ist vollständig initialisiert und lebt über den Aufruf.
-    unsafe { SetScrollInfo(hwnd, SB_VERT, &si, true) };
 }
 
 /// position setzt jedes Control an seinen Platz (Layout in dip, Scroll-Versatz in Pixel).
@@ -261,7 +250,7 @@ fn scroll_to(hwnd: HWND, st: &PageState, pos: i32) {
     let pos = pos.clamp(0, max);
     if pos != st.scroll.get() {
         st.scroll.set(pos);
-        set_scrollbar(hwnd, scale(ch, dpi), cli.bottom - cli.top, pos);
+        pagescroll::set_scrollbar(hwnd, scale(ch, dpi), cli.bottom - cli.top, pos);
         position(st);
         // SAFETY: hwnd ist das eigene Fenster.
         let _ = unsafe { InvalidateRect(Some(hwnd), None, true) };
@@ -269,46 +258,56 @@ fn scroll_to(hwnd: HWND, st: &PageState, pos: i32) {
 }
 
 fn on_vscroll(hwnd: HWND, st: &PageState, code: u16) {
-    let mut si = SCROLLINFO {
-        cbSize: size_of::<SCROLLINFO>() as u32,
-        fMask: SIF_RANGE | SIF_PAGE | SIF_POS | SIF_TRACKPOS,
-        ..Default::default()
-    };
-    // SAFETY: si lebt über den Aufruf und trägt cbSize und Maske.
-    let _ = unsafe { GetScrollInfo(hwnd, SB_VERT, &mut si) };
     let line = scale(40, st.dpi.get());
-    let cur = st.scroll.get();
-    let to = match code {
-        0 => cur - line,
-        1 => cur + line,
-        2 => cur - si.nPage as i32,
-        3 => cur + si.nPage as i32,
-        4 | 5 => si.nTrackPos,
-        6 => 0,
-        7 => i32::MAX,
-        _ => return,
-    };
-    scroll_to(hwnd, st, to);
-}
-
-fn on_command(st: &PageState, wp: WPARAM) {
-    let (id, note) = (wp.0 & 0xFFFF, (wp.0 >> 16) & 0xFFFF);
-    if note != 0 || id < ID_BASE {
-        return;
+    if let Some(to) = pagescroll::target(hwnd, code, st.scroll.get(), line) {
+        scroll_to(hwnd, st, to);
     }
-    let Ok(c) = st.content.try_borrow() else { return };
-    let flat = id - ID_BASE;
-    let found = c.groups.iter().flat_map(|g| g.controls.iter()).nth(flat);
-    let (Some(ctl), Some(h)) = (found, c.hwnds.get(flat)) else {
-        return;
-    };
-    let on = (ctl.kind == Kind::Toggle).then(|| controls::toggle(*h));
-    on_action(&ctl.key, on);
 }
 
-/// on_action meldet einen Klick auf ein Control (RU56.4 schickt daraus Nachrichten an das Spiel).
-fn on_action(key: &str, on: Option<bool>) {
-    eprintln!("🐛 Aktion {key} {on:?}");
+fn on_command(hwnd: HWND, st: &PageState, wp: WPARAM) {
+    let (id, note) = (wp.0 & 0xFFFF, (wp.0 >> 16) & 0xFFFF);
+    let found = st
+        .content
+        .try_borrow()
+        .ok()
+        .and_then(|c| pageevents::command(&c.groups, &c.hwnds, id, note));
+    let Some(cmd) = found else { return };
+    let boxed = Box::into_raw(Box::new(cmd));
+    // SAFETY: lParam trägt den Box-Zeiger, den das Hauptfenster in WM_APP_CMD freigibt; GetParent liefert das
+    // Hauptfenster dieses Kindfensters.
+    let sent = unsafe {
+        let parent = GetParent(hwnd).unwrap_or_default();
+        PostMessageW(Some(parent), WM_APP_CMD, WPARAM(0), LPARAM(boxed as isize))
+    };
+    if sent.is_err() {
+        // SAFETY: die Nachricht wurde nicht zugestellt, der Zeiger stammt aus Box::into_raw und gehört noch uns.
+        drop(unsafe { Box::from_raw(boxed) });
+    }
+}
+
+/// set_catalog übernimmt den Katalog des Spiels und baut die Seite neu auf.
+pub(super) fn set_catalog(hwnd: HWND, catalog: Catalog) {
+    if let Some(st) = state_of(hwnd) {
+        if let Ok(mut c) = st.catalog.try_borrow_mut() {
+            *c = catalog;
+        }
+        rebuild(hwnd, st);
+    }
+}
+
+/// set_enabled sperrt oder gibt alle Controls der Seite frei (gesperrt, solange das Spiel nicht verbunden ist).
+pub(super) fn set_enabled(hwnd: HWND, on: bool) {
+    let Some(st) = state_of(hwnd) else { return };
+    st.enabled.set(on);
+    apply_enabled(st);
+}
+
+fn apply_enabled(st: &PageState) {
+    let hwnds = st.content.try_borrow().map(|c| c.hwnds.clone()).unwrap_or_default();
+    for h in hwnds {
+        // SAFETY: h ist ein Kind dieses Fensters oder ein ungültiges Handle (dann scheitert der Aufruf folgenlos).
+        let _ = unsafe { EnableWindow(h, st.enabled.get()) };
+    }
 }
 
 fn paint(hwnd: HWND, st: &PageState) {
@@ -357,7 +356,7 @@ extern "system" fn wndproc(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRES
                 scroll_to(hwnd, st, st.scroll.get() - delta * scale(40, st.dpi.get()) / 120);
             }
             WM_PAINT => paint(hwnd, st),
-            WM_COMMAND => on_command(st, wp),
+            WM_COMMAND => on_command(hwnd, st, wp),
             WM_CTLCOLOREDIT | WM_CTLCOLORLISTBOX | WM_CTLCOLORSTATIC => return ctl_color(st, msg, wp),
             WM_DRAWITEM => {
                 // SAFETY: bei WM_DRAWITEM zeigt lParam auf eine DRAWITEMSTRUCT, gültig während der Nachricht.
