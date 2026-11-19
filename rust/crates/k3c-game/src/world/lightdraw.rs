@@ -91,6 +91,9 @@ impl World {
             self.draw_light_map(dst, c, wd);
         }
         self.draw_torches(dst, c, wd);
+        if self.mirror_wanted(f, dst) {
+            self.draw_mirror(dst, c, f.clock, wd);
+        }
         let a = self.cams.fade(c.player, f.clock);
         if a > 0.0 {
             self.fill(

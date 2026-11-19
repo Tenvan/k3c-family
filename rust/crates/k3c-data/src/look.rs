@@ -49,6 +49,44 @@ pub struct Look {
     pub split_scale: f64,
     /// Mindestgröße des Monarchen in px (0 = aus); der Maßstab fällt nie darunter.
     pub min_figure_px: f64,
+    /// Fluss als Spiegel der Welt (RU55.3); im Profil `go` aus (Wellen).
+    pub mirror: Mirror,
+}
+
+/// Spiegel-Fluss (`.profiles.*.mirror`, Standard `docs/standards/bildaufbau.md` § 4).
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct Mirror {
+    /// Spiegel statt Wellen (nur mit Fluss-Fassung `shader` und einem Canvas, der ihn kann).
+    pub enabled: bool,
+    /// Helligkeit der Spiegelung (0,65).
+    pub brightness: f64,
+    /// Stauchung senkrecht (1 = unverzerrt).
+    pub squash: f64,
+    /// Schwanken waagerecht, Amplitude in Units.
+    pub wobble: f64,
+    /// Anteil der Wasserfarbe in der Spiegelung.
+    pub tint: f64,
+    /// Verlauf zum Wasser nach unten (Anteil der Flusshöhe).
+    pub depth_fade: f64,
+    /// Deckkraft der Glanzstriche.
+    pub glint: f64,
+}
+
+const MIRROR_OFF: Mirror = Mirror {
+    enabled: false,
+    brightness: 0.65,
+    squash: 0.85,
+    wobble: 0.07,
+    tint: 0.18,
+    depth_fade: 0.3,
+    glint: 0.55,
+};
+
+impl Default for Mirror {
+    fn default() -> Self {
+        MIRROR_OFF
+    }
 }
 
 /// Der Stand des Go-Spiels.
@@ -59,6 +97,7 @@ const GO_LOOK: Look = Look {
     view_units: 420.0 / 32.0,
     split_scale: 0.5,
     min_figure_px: 0.0,
+    mirror: MIRROR_OFF,
 };
 
 impl Default for Look {
@@ -98,6 +137,10 @@ fn builtin() -> BTreeMap<String, &'static Look> {
         view_units: 5.0 * MONARCH_UNITS,
         split_scale: 0.7,
         min_figure_px: 40.0,
+        mirror: Mirror {
+            enabled: true,
+            ..MIRROR_OFF
+        },
         ..GO_LOOK
     };
     BTreeMap::from([

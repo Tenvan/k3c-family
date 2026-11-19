@@ -10,7 +10,8 @@
 //! die Reihenfolge gegenüber Go nicht verändern.
 
 use k3c_platform::{
-    Affine, Blend, Canvas, Filter, FontId, Frame, Kind, Rect, RiverCall, RiverUniforms, TexId, Vertex, river_fragment,
+    Affine, Blend, Canvas, Filter, FontId, Frame, Kind, MirrorUniforms, Rect, RiverCall, RiverUniforms, TexId, Vertex,
+    river_fragment,
 };
 
 /// Bild im Speicher: RGBA8, gerade Farben, Zeilen oben nach unten.
@@ -117,6 +118,7 @@ impl SoftCanvas {
                         draw_river(&mut img, clip, run.blend, c);
                     }
                 }
+                Kind::Mirror => super::raster_mirror::run(&mut img, clip, self.frame.mirror_calls().get(first)),
             }
         }
         img
@@ -172,7 +174,7 @@ fn sample(t: &Tex, u: f32, v: f32) -> [f32; 4] {
 
 /// Mischt die vormultiplizierte Quelle über das Ziel (`PREMULTIPLIED_ALPHA_BLENDING`, 8 Bit).
 #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-fn blend(img: &mut Image, x: i64, y: i64, s: [f32; 4]) {
+pub(super) fn blend(img: &mut Image, x: i64, y: i64, s: [f32; 4]) {
     let i = (y as usize * img.width as usize + x as usize) * 4;
     for k in 0..4 {
         let d = f32::from(img.pix[i + k]);
@@ -321,6 +323,13 @@ impl Canvas for SoftCanvas {
     fn rect(&mut self, dst: Rect, color: [f32; 4]) {
         self.next();
         self.frame.rect(dst, color);
+    }
+    fn can_mirror(&self) -> bool {
+        true
+    }
+    fn mirror(&mut self, dst: Rect, u: &MirrorUniforms) -> bool {
+        self.next();
+        self.frame.mirror(dst, u)
     }
     fn river(&mut self, dst: Rect, u: &RiverUniforms) -> bool {
         self.next();

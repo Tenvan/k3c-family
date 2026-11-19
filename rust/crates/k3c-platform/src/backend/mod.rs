@@ -2,6 +2,7 @@
 
 mod gpu;
 mod keys;
+mod mirror_setup;
 mod pads;
 mod setup;
 mod sound;
@@ -121,6 +122,7 @@ impl<'a> WinLoop<'a> {
         let (gfx, backend) = Gfx::new(win.clone(), self.cfg.novsync)?;
         log::info("🚀 Fenster offen", &[("backend", &backend)]);
         self.backend = backend;
+        self.frame.set_mirror_support(gfx.mirror_ok());
         self.gfx = Some(gfx);
         win.request_redraw();
         self.win = Some(win);

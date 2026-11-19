@@ -23,6 +23,7 @@ pub mod ground;
 pub mod layers;
 pub mod light;
 pub mod lightdraw;
+pub mod mirror;
 pub mod river;
 pub mod water;
 

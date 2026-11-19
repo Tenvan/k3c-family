@@ -1,12 +1,13 @@
 {
-  "notes": "Look des Rust-Spiels (RU55, Standard docs/standards/bildaufbau.md). Nur das Rust-Spiel liest diese Datei; Go ignoriert sie. Profil k2c (Standard) = Aufbau, Maßstab und Licht nach K2C-Vorbild, Profil go = Stand des Go-Spiels (Bildvergleiche gegen Go laufen darin). Das Profil wählt die Umgebungsvariable K3C_LOOK (k2c oder go). worldShare = Anteil der Welt bis zur Gehlinie an der Zellenhöhe; bankShare = Ufer als Anteil der Zellenhöhe (0 = bankPx); bankPx = Ufer in Spiel-px bei 32 px je Unit (Go: 20). viewUnits = sichtbare Welthöhe über der Gehlinie in Units bei einer Ansicht (k2c: 5 M zu je 3,796875 Units = 18,984375; die Weite 4, 4,5 oder 5 M wählt Ralf am TV, ein Wert); splitScale = Maßstab einer Hälfte im Split-Screen gegen die ganze Ansicht (k2c 0,7; go 0,5 = halbe Höhe, gleiche Units); minFigurePx = Mindestgröße des berittenen Monarchen in px (0 = aus). Fehlende Felder gelten als Wert des Profils go.",
+  "notes": "Look des Rust-Spiels (RU55, Standard docs/standards/bildaufbau.md). Nur das Rust-Spiel liest diese Datei; Go ignoriert sie. Profil k2c (Standard) = Aufbau, Maßstab und Licht nach K2C-Vorbild, Profil go = Stand des Go-Spiels (Bildvergleiche gegen Go laufen darin). Das Profil wählt die Umgebungsvariable K3C_LOOK (k2c oder go). worldShare = Anteil der Welt bis zur Gehlinie an der Zellenhöhe; bankShare = Ufer als Anteil der Zellenhöhe (0 = bankPx); bankPx = Ufer in Spiel-px bei 32 px je Unit (Go: 20). viewUnits = sichtbare Welthöhe über der Gehlinie in Units bei einer Ansicht (k2c: 5 M zu je 3,796875 Units = 18,984375; die Weite 4, 4,5 oder 5 M wählt Ralf am TV, ein Wert); splitScale = Maßstab einer Hälfte im Split-Screen gegen die ganze Ansicht (k2c 0,7; go 0,5 = halbe Höhe, gleiche Units); minFigurePx = Mindestgröße des berittenen Monarchen in px (0 = aus). mirror = Fluss als Spiegel der Welt (RU55.3, nur mit Fluss-Fassung shader und einem Canvas, der ihn kann; sonst Wellen): brightness = Helligkeit der Spiegelung, squash = Stauchung senkrecht, wobble = Schwanken waagerecht in Units, tint = Anteil Wasserfarbe, depthFade = Verlauf zum Wasser nach unten, glint = Deckkraft der Glanzstriche. Fehlende Felder gelten als Wert des Profils go.",
   "profiles": {
     "k2c": {
       "worldShare": 0.58,
       "bankShare": 0.07,
       "viewUnits": 18.984375,
       "splitScale": 0.7,
-      "minFigurePx": 40
+      "minFigurePx": 40,
+      "mirror": { "enabled": true, "brightness": 0.65, "squash": 0.85, "wobble": 0.07, "tint": 0.18, "depthFade": 0.3, "glint": 0.55 }
     },
     "go": {
       "worldShare": 0.6666666666666666,
@@ -14,7 +15,8 @@
       "bankPx": 20,
       "viewUnits": 13.125,
       "splitScale": 0.5,
-      "minFigurePx": 0
+      "minFigurePx": 0,
+      "mirror": { "enabled": false }
     }
   }
 }

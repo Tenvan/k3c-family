@@ -5,6 +5,7 @@ use std::sync::Arc;
 
 use winit::window::Window;
 
+use super::mirror_setup::mirror_stride;
 use super::setup::{Grow, bind_layout, pipeline, river_layout, river_pipelines, river_stride, sampler, upload, write};
 use crate::batch::Pending;
 use crate::log;
@@ -18,6 +19,10 @@ const CLEAR: wgpu::Color = wgpu::Color {
     a: 1.0,
 };
 const START_BYTES: u64 = 1 << 18;
+
+#[path = "gpu_mirror.rs"]
+mod mirror;
+use mirror::init_mirror;
 
 pub struct Gfx {
     surface: wgpu::Surface<'static>,
@@ -34,6 +39,13 @@ pub struct Gfx {
     river_u: Grow,
     /// Bind-Group über `river_u`, je Bild neu (der Puffer kann gewachsen sein).
     river_bg: Option<wgpu::BindGroup>,
+    /// Spiegel (RU55.3, gpu_mirror.rs): Pipeline nur mit kopierbarer Fläche; Zwischentextur lazy in Flächengröße.
+    mirror_pipe: Option<wgpu::RenderPipeline>,
+    mirror_bgl: wgpu::BindGroupLayout,
+    mirror_stride: u64,
+    mirror_u: Grow,
+    mirror_tex: Option<(wgpu::Texture, wgpu::TextureView)>,
+    mirror_bg: Option<wgpu::BindGroup>,
     linear: wgpu::Sampler,
     nearest: wgpu::Sampler,
     white: wgpu::BindGroup,
@@ -63,18 +75,7 @@ impl Gfx {
         let mut config = surface
             .get_default_config(&adapter, size.width.max(1), size.height.max(1))
             .ok_or("Surface nicht nutzbar")?;
-        let modes = surface.get_capabilities(&adapter).present_modes;
-        config.present_mode = pick_present_mode(novsync, &modes);
-        let formats = surface.get_capabilities(&adapter).formats;
-        if let Some(f) = pick_surface_format(&formats) {
-            config.format = f;
-        }
-        if config.format.is_srgb() {
-            log::warn(
-                "🚦 Fläche nur als sRGB, Farben können blasser sein",
-                &[("format", &format!("{:?}", config.format))],
-            );
-        }
+        let copy_src = tune_config(&mut config, &surface.get_capabilities(&adapter), novsync);
         surface.configure(&device, &config);
         let bgl = bind_layout(&device);
         let linear = sampler(&device, wgpu::FilterMode::Linear);
@@ -83,7 +84,14 @@ impl Gfx {
         use wgpu::BufferUsages as U;
         let river_bgl = river_layout(&device);
         let river_pipes = river_pipelines(&device, &river_bgl, config.format);
+        let (mirror_bgl, mirror_pipe) = init_mirror(&device, &config, copy_src);
         let g = Self {
+            mirror_pipe,
+            mirror_stride: mirror_stride(&device),
+            mirror_u: Grow::new(&device, "spiegel", U::UNIFORM, START_BYTES),
+            mirror_tex: None,
+            mirror_bg: None,
+            mirror_bgl,
             river_stride: river_stride(&device),
             river_u: Grow::new(&device, "fluss", U::UNIFORM, START_BYTES),
             river_bg: None,
@@ -113,6 +121,12 @@ impl Gfx {
         self.config.width = w.max(1);
         self.config.height = h.max(1);
         self.surface.configure(&self.device, &self.config);
+        self.mirror_tex = None;
+    }
+
+    /// Ob der Spiegel zeichnen kann (Pipeline steht, Fläche ist kopierbar).
+    pub fn mirror_ok(&self) -> bool {
+        self.mirror_pipe.is_some()
     }
 
     /// Lädt neue Texturen hoch, schreibt Instanzen und Dreiecke, zeichnet ein Bild und gibt danach
@@ -131,7 +145,7 @@ impl Gfx {
         if let Some(st) = st {
             let view = st.texture.create_view(&Default::default());
             let mut enc = self.device.create_command_encoder(&Default::default());
-            self.draw(&mut enc, &view, frame);
+            self.draw(&mut enc, (&view, &st.texture), frame);
             self.queue.submit([enc.finish()]);
             pre_present();
             self.queue.present(st);
@@ -210,6 +224,7 @@ impl Gfx {
             self.queue.write_buffer(&self.verts.buf, 0, &self.scratch);
         }
         self.fill_rivers(frame);
+        self.fill_mirrors(frame);
         let idx = frame.indices();
         if !idx.is_empty() {
             let n = idx.len() * 4;
@@ -220,33 +235,33 @@ impl Gfx {
         }
     }
 
-    fn draw(&self, enc: &mut wgpu::CommandEncoder, view: &wgpu::TextureView, frame: &Frame) {
-        let att = wgpu::RenderPassColorAttachment {
-            view,
-            depth_slice: None,
-            resolve_target: None,
-            ops: wgpu::Operations {
-                load: wgpu::LoadOp::Clear(CLEAR),
-                store: wgpu::StoreOp::Store,
-            },
-        };
-        let mut p = enc.begin_render_pass(&wgpu::RenderPassDescriptor {
-            color_attachments: &[Some(att)],
-            ..Default::default()
-        });
+    fn draw(&self, enc: &mut wgpu::CommandEncoder, (view, tex): (&wgpu::TextureView, &wgpu::Texture), frame: &Frame) {
+        let mut p = begin_pass(enc, view, wgpu::LoadOp::Clear(CLEAR));
         let (sw, sh) = (self.config.width, self.config.height);
         let mut current = None;
         for r in frame.runs() {
-            let Some((x, y, w, h)) = scissor(r.clip, sw, sh) else {
+            let Some(sc) = scissor(r.clip, sw, sh) else {
                 continue;
             };
+            let (x, y, w, h) = sc;
             if r.kind == Kind::River {
-                if let (Some(pipes), Some(bg)) = (&self.river_pipes, &self.river_bg) {
-                    p.set_pipeline(&pipes[r.blend as usize]);
-                    p.set_scissor_rect(x, y, w, h);
-                    p.set_bind_group(0, Some(bg), &[(u64::from(r.first) * self.river_stride) as u32]);
-                    p.draw(0..6, 0..1);
+                if self.draw_river(&mut p, r, sc) {
                     // Pipeline und Gruppe 0 gehören jetzt dem Fluss: der nächste Run setzt alles neu.
+                    current = None;
+                }
+                continue;
+            }
+            if r.kind == Kind::Mirror {
+                if let (Some(_), Some(_), Some(call)) = (
+                    &self.mirror_pipe,
+                    &self.mirror_bg,
+                    frame.mirror_calls().get(r.first as usize),
+                ) {
+                    // Das bisher Gezeichnete über der Gehlinie wandert in die Zwischentextur: neuer Durchgang ohne Löschen.
+                    drop(p);
+                    self.copy_strip(enc, tex, call);
+                    p = begin_pass(enc, view, wgpu::LoadOp::Load);
+                    self.draw_mirror(&mut p, r.first, sc);
                     current = None;
                 }
                 continue;
@@ -266,7 +281,7 @@ impl Gfx {
                             p.set_vertex_buffer(0, self.verts.buf.slice(..));
                             p.set_index_buffer(self.idx.buf.slice(..), wgpu::IndexFormat::Uint32);
                         }
-                        Kind::River => {}
+                        Kind::River | Kind::Mirror => {}
                     }
                 }
                 current = Some((r.kind, r.blend));
@@ -278,10 +293,62 @@ impl Gfx {
             match r.kind {
                 Kind::Quads => p.draw(0..6, range),
                 Kind::Tris => p.draw_indexed(range, 0, 0..1),
-                Kind::River => {}
+                Kind::River | Kind::Mirror => {}
             }
         }
     }
+
+    /// Zeichnet einen Fluss-Aufruf; `false`, wenn der Shader fehlt.
+    fn draw_river(&self, p: &mut wgpu::RenderPass<'_>, r: &crate::Run, (x, y, w, h): (u32, u32, u32, u32)) -> bool {
+        let (Some(pipes), Some(bg)) = (&self.river_pipes, &self.river_bg) else {
+            return false;
+        };
+        p.set_pipeline(&pipes[r.blend as usize]);
+        p.set_scissor_rect(x, y, w, h);
+        p.set_bind_group(0, Some(bg), &[(u64::from(r.first) * self.river_stride) as u32]);
+        p.draw(0..6, 0..1);
+        true
+    }
+}
+
+/// Beginnt einen Durchgang auf `view` mit der Anfangs-Operation `load` (Löschen im ersten, Laden nach einem Spiegel).
+fn begin_pass<'e>(
+    enc: &'e mut wgpu::CommandEncoder,
+    view: &wgpu::TextureView,
+    load: wgpu::LoadOp<wgpu::Color>,
+) -> wgpu::RenderPass<'e> {
+    let att = wgpu::RenderPassColorAttachment {
+        view,
+        depth_slice: None,
+        resolve_target: None,
+        ops: wgpu::Operations {
+            load,
+            store: wgpu::StoreOp::Store,
+        },
+    };
+    enc.begin_render_pass(&wgpu::RenderPassDescriptor {
+        color_attachments: &[Some(att)],
+        ..Default::default()
+    })
+}
+
+/// Stellt Präsentationsmodus, Format und Nutzung der Fläche ein; liefert, ob die Fläche kopierbar ist (Spiegel).
+fn tune_config(config: &mut wgpu::SurfaceConfiguration, caps: &wgpu::SurfaceCapabilities, novsync: bool) -> bool {
+    config.present_mode = pick_present_mode(novsync, &caps.present_modes);
+    let copy_src = caps.usages.contains(wgpu::TextureUsages::COPY_SRC);
+    if copy_src {
+        config.usage |= wgpu::TextureUsages::COPY_SRC;
+    }
+    if let Some(f) = pick_surface_format(&caps.formats) {
+        config.format = f;
+    }
+    if config.format.is_srgb() {
+        log::warn(
+            "🚦 Fläche nur als sRGB, Farben können blasser sein",
+            &[("format", &format!("{:?}", config.format))],
+        );
+    }
+    copy_src
 }
 
 /// Format der Fläche ohne sRGB-Kodierung (B-1128): Shader und Texturen liefern schon sRGB-kodierte Werte (wie Go),
@@ -329,49 +396,5 @@ fn scissor(clip: Option<Rect>, sw: u32, sh: u32) -> Option<(u32, u32, u32, u32)>
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn present_modus_nach_wunsch_und_angebot() {
-        use wgpu::PresentMode as M;
-        let all = [M::Fifo, M::Mailbox, M::Immediate];
-        assert_eq!(pick_present_mode(false, &all), M::Fifo);
-        assert_eq!(pick_present_mode(true, &all), M::Immediate);
-        assert_eq!(pick_present_mode(true, &[M::Fifo, M::Mailbox]), M::Mailbox);
-        assert_eq!(pick_present_mode(true, &[M::Fifo]), M::Fifo);
-        assert_eq!(pick_present_mode(true, &[]), M::Fifo);
-    }
-
-    /// B-1128: nie eine sRGB-Fläche, wenn eine lineare angeboten wird (sonst blasse Farben); sonst das erste Format.
-    #[test]
-    fn flaeche_ohne_srgb_kodierung() {
-        use wgpu::TextureFormat as F;
-        assert_eq!(
-            pick_surface_format(&[F::Bgra8UnormSrgb, F::Bgra8Unorm]),
-            Some(F::Bgra8Unorm)
-        );
-        assert_eq!(
-            pick_surface_format(&[F::Rgba8UnormSrgb, F::Rgba16Float]),
-            Some(F::Rgba16Float)
-        );
-        assert_eq!(
-            pick_surface_format(&[F::Bgra8Unorm, F::Bgra8UnormSrgb]),
-            Some(F::Bgra8Unorm)
-        );
-        assert_eq!(pick_surface_format(&[F::Bgra8UnormSrgb]), Some(F::Bgra8UnormSrgb));
-        assert_eq!(pick_surface_format(&[]), None);
-    }
-
-    #[test]
-    fn ausschnitt_wird_auf_surface_gestreckt_und_begrenzt() {
-        assert_eq!(scissor(None, 1280, 720), Some((0, 0, 1280, 720)));
-        let right = Rect::new(960.0, 0.0, 960.0, 1080.0);
-        assert_eq!(scissor(Some(right), 1280, 720), Some((640, 0, 640, 720)));
-        assert_eq!(
-            scissor(Some(Rect::new(-100.0, -5.0, 3000.0, 2000.0)), 640, 360),
-            Some((0, 0, 640, 360))
-        );
-        assert_eq!(scissor(Some(Rect::new(2000.0, 0.0, 10.0, 10.0)), 640, 360), None);
-    }
-}
+#[path = "gpu_tests.rs"]
+mod tests;
