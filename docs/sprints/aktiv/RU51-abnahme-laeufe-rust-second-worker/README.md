@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU51.1 | `RU51.1-abnahme-ru14-welt-schritt.md` | Umsetzung | autonom | offen |
+| RU51.1 | `RU51.1-abnahme-ru14-welt-schritt.md` | Umsetzung | autonom | fertig |
 | RU51.2 | `RU51.2-abnahme-ru21-store-room.md` | Umsetzung | autonom | offen |
 | RU51.3 | `RU51.3-abnahme-ru18-sim-wirtschaft.md` | Umsetzung | autonom | offen |
 | RU51.4 | `RU51.4-abnahme-ru19-events-geschichte.md` | Umsetzung | autonom | offen |
