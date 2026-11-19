@@ -97,6 +97,8 @@ describe('useWorktreeDiffs: Zustand und Reihenfolge', () => {
 describe('Fehlerfall der Planungsseite', () => {
   it('ohne Diffs (Fehler des Checks) gibt es keine Pills', () => {
     const d = mockPlanningData();
+    // Der Sprint-Chip zeigt ⎇ auch für den Branch eines Worktrees am Sprint selbst (#720); hier zählen nur Pills aus dem Check.
+    d.sprints = d.sprints.map((s) => ({ ...s, worktree: undefined, worktrees: undefined }));
     const html = renderToStaticMarkup(
       <Theme>
         <WtContext.Provider value={indexChanges([])}>

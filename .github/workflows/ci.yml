@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; natives Spiel: vet, Build, Tests unter Windows ohne cgo; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; k3c-workbench: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; k3c-workbench: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -61,7 +61,7 @@ jobs:
       - run: task lint
       - run: task typecheck
       # Vitest (Regel-, Planungs- und Papierschnitt-Tests; rendert vorher gen:paper). Der Browser-Build entfällt (B-848),
-      # das native Spiel baut der Job k3c-game; die GitHub-Pages-Seite site/ baut nichts (B-507).
+      # das Rust-Spiel baut der Job rust; die GitHub-Pages-Seite site/ baut nichts (B-507).
       - run: task test
 
   go:
@@ -111,31 +111,9 @@ jobs:
       - run: go env GOARCH
       - run: task go:test GO_TEST_FLAGS=-short GO_PKGS="$(go list ./... | grep -Ev "$GO_SIM_PKGS" | tr '\n' ' ')"
 
-  # Natives Spiel (Projekt NAT, B-794): Go + Ebitengine, eigenes Modul native/k3c-game. Nur Windows ohne cgo (unter Linux
-  # bräuchte Ebitengine cgo und X11); es laufen nur Tests ohne Fenster und GPU (-short).
-  k3c-game:
-    if: github.event_name != 'pull_request'
-    name: Natives Spiel · vet · Build · Tests (Windows)
-    runs-on: windows-latest
-    timeout-minutes: 15
-    env:
-      CGO_ENABLED: "0"
-    defaults:
-      run:
-        working-directory: native/k3c-game
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: native/k3c-game/go.mod
-          cache-dependency-path: native/k3c-game/go.sum
-      - run: go vet ./...
-      - run: go build ./...
-      - run: go test -short ./...
-
   # Rust-Workspace (Projekt RSU, RU1.3): nur Windows (MSVC), wie das Spiel. `rustup show` installiert die Toolchain aus
   # rust/rust-toolchain.toml; es laufen nur Tests ohne Fenster und GPU. Danach baut `task rust:game:build` das Paket
-  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für cmd/sync (Kopierwerkzeug) und tools/rustpaket.
+  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für cmd/sync (Kopierwerkzeug, liegt bis RU37.1 im Modul native/k3c-game) und tools/rustpaket.
   rust:
     if: github.event_name != 'pull_request'
     name: Rust · fmt · clippy · Tests · Paket (Windows)

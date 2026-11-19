@@ -1,5 +1,5 @@
 //! Bildvergleich der Menü-Seiten gegen das Go-Spiel (RU9.6, B-1014): Hauptmenü, Lobby, Optionen, Tasten
-//! (Lizenzen folgen mit `licenses()` in RU12.3; `licenses.go.png` liegt schon bereit) mit Tastatur als Gerät. Die Go-Bilder stehen in `testdata/rust/bild/menu/<seite>.go.png` (Aufnahme-Modus,
+//! mit Tastatur als Gerät. Die Lizenz-Seite hat seit RU58.6 (B-1139) eine eigene Rust-Baseline `licenses.png` (Text ändert sich absichtlich, Ralf 2026-11-19). Die Go-Bilder stehen in `testdata/rust/bild/menu/<seite>.go.png` (Aufnahme-Modus,
 //! `--menu <seite> --size 1280x720`, Version `v0.24.1-164-g694bffa1`); die Anzeige „T 0“ oben rechts zeichnet game
 //! selbst und ist ausgenommen. Ohne gerenderte Grafik (`task gen:paper`) überspringt der Test.
 //! Mit `K3C_STILL_OUT=<ordner>` schreibt er die Rust-Bilder zum Ansehen.
@@ -172,4 +172,31 @@ fn menu_pages_match_go_images() {
     }
     eprintln!("{report}");
     assert!(fails.is_empty(), "Abweichungen über den Schwellen: {fails:?}");
+}
+
+/// Lizenz-Seite gegen die eigene Baseline `licenses.png` (RU58.6): Stabilität, keine Go-Vorlage; Abweichung null je Pixel.
+/// Neu aufnehmen: `K3C_STILL_OUT=<ordner>` schreibt `menu-licenses.png`, nach `testdata/rust/bild/menu/licenses.png` kopieren.
+#[test]
+fn licenses_page_matches_own_baseline() {
+    let _g = super::testutil::version_guard();
+    struct Restore(String);
+    impl Drop for Restore {
+        fn drop(&mut self) {
+            set_version(&self.0);
+        }
+    }
+    let _restore = Restore(super::version::version());
+    set_version("v0.24.1-164-g694bffa1");
+    let Some(img) = render("licenses") else {
+        return;
+    };
+    if let Some(dir) = std::env::var("K3C_STILL_OUT").ok().filter(|d| !d.is_empty()) {
+        pngio::write_png(&Path::new(&dir).join("menu-licenses.png"), &img).unwrap();
+    }
+    let base = pngio::read_png(&root().join("testdata/rust/bild/menu/licenses.png")).unwrap();
+    let (mean, share) = diff(&img, &base);
+    assert!(
+        mean == 0.0 && share == 0.0,
+        "licenses: mittel {mean:.3}, abweichend {share:.4}"
+    );
 }

@@ -36,6 +36,11 @@ pub fn out_dir() -> PathBuf {
         .map_or_else(|| repo().join(".work/e2e"), PathBuf::from)
 }
 
+/// Ordner der gesicherten Go-Bilder der Stationen (`testdata/rust/e2e/go/a`, RU58.2): die Referenz, keine Go-EXE nötig.
+pub fn go_reference_dir() -> PathBuf {
+    golden::testdata().join("rust/e2e/go/a")
+}
+
 /// Ist die gerenderte Grafik da (`task gen:paper`)? Wie Go: das Manifest der Tanne.
 pub fn grafik_da() -> bool {
     exe_root().join("public/grafik/objekte/tanne/manifest.json").is_file()

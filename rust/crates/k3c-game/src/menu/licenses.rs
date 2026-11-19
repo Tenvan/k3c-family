@@ -2,8 +2,8 @@
 //! und `lizenzen.html`). Eine Liste ist die Quelle für die Lizenz-Seite im Menü und die Lizenzdatei im Paket
 //! ([`license_text`], Go: `LicenseText`). Die Schrift liegt mit ihrer Lizenzdatei unter `public/schrift/` (B-815).
 //!
-//! Die Einträge stehen wörtlich wie in Go (Go-Bibliotheken wie Ebitengine): Port ohne Wertänderung. Welche Bibliotheken
-//! das Rust-Spiel wirklich nutzt, klärt der Paket-Sprint RU35. Die Versionszeile ([`version_text`]) liegt in
+//! Seit RU58.6 (B-1139) nennt die Liste die Rust-Bibliotheken des Spiels statt der Go-Bibliotheken der Vorlage (Ralf
+//! 2026-11-19). Die Versionszeile ([`version_text`]) liegt in
 //! `version.rs`; die Hilfs-EXE `menu/licensefile` des Go-Pakets gibt es nicht (Paketbau, RU35).
 
 use super::texts::{TextKey, tr};
@@ -36,22 +36,37 @@ const fn lic(
     }
 }
 
-/// Die Werke mit Lizenzhinweis (Lizenzen aus den LICENSE-Dateien der Module in `go.mod` bzw. aus `public/schrift` und
-/// `public/audio/README.md`).
-static LICENSES: [License; 8] = [
+/// Die Werke mit Lizenzhinweis: die direkten Abhängigkeiten des Rust-Spiels (Lizenzen aus `cargo metadata`, B-1139) und die
+/// Werke aus `public/schrift` und `public/audio/README.md`. `work` nennt Crates mit ihrem Namen aus `Cargo.toml`
+/// (`table_tests.rs` prüft, dass jeder in den `Cargo.toml` der Spiel-Crates steht). Eingabe (gilrs) steht unter Engine.
+static LICENSES: [License; 10] = [
     lic(
         TextKey::LicEngine,
-        "Ebitengine",
-        "Hajime Hoshi",
-        "Apache-2.0",
-        "github.com/hajimehoshi/ebiten",
+        "wgpu",
+        "gfx-rs developers",
+        "MIT OR Apache-2.0",
+        "github.com/gfx-rs/wgpu",
     ),
     lic(
         TextKey::LicEngine,
-        "Oto, purego",
-        "The Ebitengine Authors",
+        "winit",
+        "The winit contributors",
         "Apache-2.0",
-        "github.com/ebitengine",
+        "github.com/rust-windowing/winit",
+    ),
+    lic(
+        TextKey::LicEngine,
+        "pollster",
+        "Joshua Barretto",
+        "Apache-2.0 OR MIT",
+        "github.com/zesterer/pollster",
+    ),
+    lic(
+        TextKey::LicEngine,
+        "gilrs",
+        "Arvamer",
+        "Apache-2.0 OR MIT",
+        "gitlab.com/gilrs-project/gilrs",
     ),
     lic(
         TextKey::LicFont,
@@ -62,31 +77,31 @@ static LICENSES: [License; 8] = [
     ),
     lic(
         TextKey::LicFont,
-        "go-text/typesetting",
-        "The go-text Authors",
-        "Unlicense / BSD-3-Clause",
-        "github.com/go-text/typesetting",
+        "fontdue",
+        "Joe Cumbo",
+        "MIT OR Apache-2.0 OR Zlib",
+        "github.com/mooman219/fontdue",
     ),
     lic(
         TextKey::LicGraphics,
-        "x/image, rasterx",
-        "The Go Authors, Steven R. Wiley",
-        "BSD-3-Clause",
-        "golang.org/x/image",
+        "png",
+        "The image-rs Developers",
+        "MIT OR Apache-2.0",
+        "github.com/image-rs/image-png",
+    ),
+    lic(
+        TextKey::LicGraphics,
+        "flate2",
+        "Alex Crichton, Josh Triplett",
+        "MIT OR Apache-2.0",
+        "github.com/rust-lang/flate2-rs",
     ),
     lic(
         TextKey::LicAudio,
-        "go-mp3",
-        "Hajime Hoshi",
-        "Apache-2.0",
-        "github.com/hajimehoshi/go-mp3",
-    ),
-    lic(
-        TextKey::LicAudio,
-        "oggvorbis, vorbis",
-        "Johann Freymuth",
-        "MIT",
-        "github.com/jfreymuth/oggvorbis",
+        "rodio",
+        "The RustAudio contributors",
+        "MIT OR Apache-2.0",
+        "github.com/RustAudio/rodio",
     ),
     lic(
         TextKey::LicAudio,

@@ -35,7 +35,7 @@ tasks:
       - mkdir -p bin && printf '%s' "{{.GAME_VERSION}}" > bin/version.txt
 
   game:build:
-    desc: "Natives Spiel bauen: EXE (Go, ohne cgo), Papierschnitt-Grafik (gen:paper) und das komplette Spiel nach dist/k3c-game-go/ (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
+    desc: "Go-Referenz (nicht Teil von build, buildall, check:all, RU58.4): Go-Spiel bauen: EXE (Go, ohne cgo), Papierschnitt-Grafik (gen:paper) und das komplette Spiel nach dist/k3c-game-go/ (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
     deps: [game:exe, ':gen:paper']
     cmds:
       - task: game:dist
@@ -71,7 +71,7 @@ tasks:
       - 'echo "✅ Spiel in {{.GAME_PAKET}}"'
 
   game:exe:
-    desc: "Nur die EXE des nativen Spiels bauen (Go, ohne cgo) nach native/k3c-game/bin/"
+    desc: "Go-Referenz (RU58.4): nur die EXE des Go-Spiels bauen (ohne cgo) nach native/k3c-game/bin/"
     dir: '{{.GAME}}'
     deps: [':tmp', game:version]
     env:

@@ -1,6 +1,6 @@
-//! Bildvergleich Go gegen Rust je Station (RU32.4, AC-02). Eingabe: die Bilder aus RU32.3
-//! (`K3C_E2E_OUT/go/a/shot-NN.png` und `K3C_E2E_OUT/rust/a/shot-NN.png`, Standard `.work/e2e`; fehlen sie, überspringt der
-//! Test). Je Station: mittlere absolute Abweichung je Kanal (RGB, 0 … 255) und Anteil der Pixel, bei denen ein Kanal um mehr
+//! Bildvergleich Go gegen Rust je Station (RU32.4, AC-02). Eingabe: die gesicherten Go-Bilder
+//! `testdata/rust/e2e/go/a/shot-NN.png` (Referenz aus dem Tag `go-referenz-final`, RU58.2; keine Go-EXE nötig) und die
+//! Rust-Bilder `K3C_E2E_OUT/rust/a/shot-NN.png` (Standard `.work/e2e`, `e2e_images`; fehlen sie, überspringt der Test). Je Station: mittlere absolute Abweichung je Kanal (RGB, 0 … 255) und Anteil der Pixel, bei denen ein Kanal um mehr
 //! als `PIXEL_TOL` abweicht, auf voller Auflösung. Formel und Schwellen wie der Standbild-Vergleich `tests/still.rs`
 //! (RU13.6), damit beide gleich bewertet werden; die Schwellen werden nie angehoben, um einen Stand grün zu machen.
 //!
@@ -12,7 +12,7 @@
 
 mod common;
 
-use common::images::{out_dir, reference, shot_name};
+use common::images::{go_reference_dir, out_dir, reference, shot_name};
 use k3c_game::still::Image;
 use k3c_game::still::pngio::{read_png, write_png};
 use serde_json::json;
@@ -99,11 +99,12 @@ fn kennzahlen_der_formel() {
 fn bildvergleich_je_station() {
     let out = out_dir();
     let (_, stations) = reference();
-    let go = |i| out.join("go/a").join(shot_name(i));
+    let go = |i| go_reference_dir().join(shot_name(i));
     let rs = |i| out.join("rust/a").join(shot_name(i));
     if !(0..stations.len()).all(|i| go(i).is_file() && rs(i).is_file()) {
         eprintln!(
-            "übersprungen: Bilder fehlen unter {} (go/a, rust/a; RU32.3)",
+            "übersprungen: Bilder fehlen (Go-Referenz {}, Rust {}/rust/a)",
+            go_reference_dir().display(),
             out.display()
         );
         return;
