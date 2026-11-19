@@ -37,7 +37,7 @@ pub fn parse_island_save(raw: &str, t: &SaveTables) -> Result<IslandSave, Fehler
     };
     let (version, island) = (head_int(obj, "version")?, head_int(obj, "island")?); // `island`: bis Version 7 der Index
     let s = match version {
-        ISLAND_SAVE_VERSION | 8 => return parse_island_v3(raw, &["world", "islandId"], t),
+        ISLAND_SAVE_VERSION | 11 | 10 | 9 | 8 => return parse_island_v3(raw, &["world", "islandId"], t),
         SAVE_VERSION => {
             let old = parse_save(raw, &t.data.biomes, t.defaults)?;
             island_from_v1(&old, default_options(&t.data.difficulty))
@@ -202,6 +202,13 @@ pub fn validate_progress(s: &IslandSave, t: &SaveTables) -> Result<(), Fehler> {
                 p.index,
                 p.skill_base,
                 p.skills.len()
+            )));
+        }
+        // RU62.8: das gekaufte Welt-Reittier muss im Katalog (data/mounts.json) stehen
+        if !p.mount.is_empty() && t.data.mounts.entry(&p.mount).is_none() {
+            return Err(fail(format!(
+                "spielstand: Spieler {}: unbekanntes Reittier {:?}",
+                p.index, p.mount
             )));
         }
     }

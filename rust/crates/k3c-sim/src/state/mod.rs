@@ -3,11 +3,16 @@
 //! Modell: `docs/standards/rust-sim-zustand.md`. Die Welt besitzt alles, Verweise sind IDs.
 
 pub mod action_view;
+pub mod cargo_view;
 pub mod common;
+pub mod coop_view;
 pub mod data;
 pub mod fehler;
+pub mod festival_view;
+pub mod hermit_view;
 pub mod island_ref;
 pub mod links;
+pub mod mount_view;
 pub mod node_mark;
 pub mod omit;
 pub mod purse;
@@ -21,6 +26,7 @@ pub mod types;
 pub mod types_enemy;
 pub mod types_things;
 pub mod types_world;
+pub mod weather_view;
 
 pub use fehler::Fehler;
 pub use island_ref::{IslandRef, IslandView};

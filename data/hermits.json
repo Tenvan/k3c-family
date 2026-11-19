@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "notes": "Einsiedler (RU62.10, B-972, docs/rules/buerger.md § 1, materialien-gebaeude.md § 3). Neue Datei, weil data/hub.json, data/buildings.json und die Welt-Dateien unverändert bleiben (die Go-Ladepfade lehnen unbekannte Felder ab); das Feld `hermit` der Welt-Datei folgt nach RU41. Alles vorläufig (Balancing später). Je Einsiedler: `price` Münzen an der Hütte lösen den Bau des Bauwerks `building` auf dem Hub-Platz `hubSite` aus (`buildSeconds`, `hp`); genau ein Bonus: `damageFactor` (> 1, Schaden der Krieger und Schützen, Dojo) oder `wallHealFraction` (0 bis 1, Mauerheilung bei Tagesanbruch, Schrein). `hut`: Rand der Hütte in Tiefe 1 (Abstand zum fernen Rand aus dem Insel-Seed zwischen Min und Max) und Reichweite des Einwurfs. `hubSite`: der Platz auf der Hub-Oberfläche (Tiefe 0), ab Hub-Stufe `hubLevel`, Versatz von der Hub-Mitte; er steht nicht in data/hub.json und besteht dessen Prüfung (Test in k3c-sim). `worlds` ordnet einer Welt ihren Einsiedler zu; `standard` und `britannien` haben keinen. Ein zerstörtes Bauwerk steht am nächsten Morgen ohne neue Zahlung nach `buildSeconds` wieder.",
+  "hermits": [
+    { "id": "swordsmith", "building": "dojo", "price": 20, "buildSeconds": 20, "hp": 250, "damageFactor": 1.15 },
+    { "id": "priestess", "building": "shrine", "price": 20, "buildSeconds": 20, "hp": 200, "wallHealFraction": 0.25 }
+  ],
+  "hut": {
+    "edgeMarginMinUnits": 10,
+    "edgeMarginMaxUnits": 16,
+    "rangeUnits": 2.5
+  },
+  "hubSite": { "id": "hermitHall", "offsetUnits": -48, "hubLevel": 2 },
+  "worlds": {
+    "sengoku": "swordsmith",
+    "nil": "priestess"
+  }
+}

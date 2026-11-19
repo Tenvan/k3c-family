@@ -135,7 +135,7 @@ pub fn kite(w: &mut World, v: &WorldValues, ei: usize, dt: f64) -> bool {
     if back == 0.0 || sign(e.x - threat) == -back {
         return true; // am Portal, oder der Weg zurück führt zum Ziel hin
     }
-    let mut x = approach(e.x, e.home_x, e.speed(), dt);
+    let mut x = approach(e.x, e.home_x, e.speed() * w.weather_speed, dt);
     for s in &w.sites {
         let stop = s.x - back * BODY;
         if is_barrier(s) && (s.x - e.x) * back > 0.0 && (x - stop) * back > 0.0 {

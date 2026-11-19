@@ -80,12 +80,14 @@ pub fn step_archer(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti: 
 
     let fallback = TroopData::default(); // unbekannte Art: Nullwerte wie Gos Map-Zugriff
     let a = v.troops.get(w.troops[ti].kind.as_str()).unwrap_or(&fallback);
+    let weather_range = w.weather_range; // RU62.5: Taifun verkürzt Pfeile (sonst 1.0)
     let t = &mut w.troops[ti];
     t.cooldown = (t.cooldown - dt).max(0.0);
     let mut reach = a.range;
     if is_on_tower(w, &w.troops[ti]) {
         reach += v.buildings.get("tower").map_or(0, |b| b.range_bonus) as f64;
     }
+    reach *= weather_range;
     let t = &w.troops[ti];
     if t.cooldown > 0.0 {
         return;
@@ -108,7 +110,7 @@ pub fn step_archer(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti: 
         x,
         target_id,
         team: "player".into(),
-        damage: a.damage,
+        damage: a.damage * crate::hermit::bonus::damage_factor(w), // RU62.10: Dojo
         speed: ARROW_SPEED,
         ..Default::default()
     };

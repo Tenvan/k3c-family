@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "notes": "Welt-Reittiere (RU62.8, B-970, docs/rules/monarch.md § 7). Neue Datei, weil data/monarch.json und die Welt-Dateien unverändert bleiben (die Go-Ladepfade lehnen unbekannte Felder ab). Alles vorläufig (Balancing später). `sprite` ist der Schlüssel unter `mounts` in data/paper.json. Faktoren und Preis gelten absolut (nicht auf das Standard-Pferd aufgeschlagen); Faktoren >= 1, Preis > 0. `worlds` ordnet einer Welt ihr Reittier zu; `standard` und `britannien` haben keins. Das Kamel sprintet nicht länger (der Sprint kennt keine Dauer), es sprintet schneller.",
+  "mounts": [
+    { "id": "sengokuHorse", "sprite": "sengokuHorse", "speedFactor": 1.0, "sprintFactor": 1.3, "price": 30 },
+    { "id": "camel", "sprite": "camel", "speedFactor": 1.0, "sprintFactor": 1.5, "price": 30 }
+  ],
+  "mountGate": {
+    "minHubDistanceUnits": 40,
+    "rangeUnits": 2.5
+  },
+  "worlds": {
+    "sengoku": "sengokuHorse",
+    "nil": "camel"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "notes": "Fracht auf dem Schiff (RU62.1, B-967, docs/rules/stufen.md § 1, wirtschaft.md § 8): Laderaum mit Plätzen, drei Ladeplätze am Steg (Münzen, Truppen, Material), optionaler Abschnitt Laderaum. Alles vorläufig (Balancing später). Neue Datei, weil data/ship.json unverändert bleibt (die Go-Ladepfade lehnen unbekannte Felder ab). Nur Welten aus `worlds` tragen Fracht; `standard` nicht.",
+  "purseCoins": 10,
+  "crateUnits": 20,
+  "baseSlots": 6,
+  "troopCoins": 5,
+  "crateCoins": 5,
+  "carrierSpeed": 3,
+  "bayRangeUnits": 2,
+  "bays": { "coins": -6, "troops": 6, "crates": 12 },
+  "worlds": ["sengoku", "nil"],
+  "hold": {
+    "id": "hold",
+    "name": "Laderaum",
+    "optional": true,
+    "extraSlots": 4,
+    "cost": { "gold": 20, "wood": 60 },
+    "hp": 300,
+    "buildSeconds": 10
+  }
+}

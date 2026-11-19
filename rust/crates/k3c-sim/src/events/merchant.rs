@@ -19,8 +19,8 @@ pub fn merchant_raid_start(w: &mut World, isl: Option<&IslandRef>) {
     let (Some(raid), Some(isl)) = (night(w, "merchantRaid"), isl) else {
         return;
     };
-    // every_visits 0 = aus
-    if w.merchant.is_none() || raid.every_visits <= 0 || isl.merchant_visits % raid.every_visits != 0 {
+    // every_visits 0 = aus; im Frieden kommt der Händler ohne Überfall (RU62.12)
+    if w.peace || w.merchant.is_none() || raid.every_visits <= 0 || isl.merchant_visits % raid.every_visits != 0 {
         return;
     }
     raid_merchant(w, isl);

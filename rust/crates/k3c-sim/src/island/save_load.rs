@@ -91,6 +91,8 @@ pub fn from_island_save_in(
             s.chosen, current.id
         )));
     }
+    crate::cargo::save::restore_opt(&mut isl.cargo, s.cargo.as_ref(), t.data)?; // RU62.1: Fracht und Aufträge
+    isl.restore_hermit(t.data, s.hermit_paid).map_err(fail)?; // RU62.10: Einsiedler bezahlt?
     place_players(&mut isl, s)?;
     Ok(isl)
 }
@@ -109,6 +111,7 @@ fn place_players(isl: &mut Island, s: &IslandSave) -> Result<(), Fehler> {
         q.skills = p.skills.clone(); // schon geprüft (validate_skills)
         q.slots = p.slots.clone();
         q.skill_base = p.skill_base;
+        q.mount.clone_from(&p.mount); // RU62.8: schon gegen den Katalog geprüft (validate_mounts)
         isl.next_player = isl.next_player.max(p.index + 1);
     }
     for w in &mut isl.stages {

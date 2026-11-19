@@ -75,8 +75,20 @@ pub fn harbor(isl: &Island) -> Option<(usize, usize)> {
 
 /// Go: `shipComplete`: Alle Abschnitte des Schiffs sind gebaut.
 pub fn ship_complete(w: &World, s: &Site) -> bool {
-    let stages = vals(w).buildings.get(SHIP_KIND).map_or(0, |b| b.levels.len() as i64);
-    s.state == "built" && s.upgrade.is_empty() && level_of(w, s) >= stages
+    let stages = base_stages(w);
+    // der Ausbau zum Laderaum (RU62.1, 4. Stufe) hält die Abfahrt nicht auf: nur die Grundstufen zählen
+    s.state == "built" && (s.upgrade.is_empty() || w.cargo_hold) && level_of(w, s) >= stages
+}
+
+/// Zahl der Grundstufen des Schiffs (Kiel, Rumpf, Segel); der Laderaum (RU62.1) zählt nicht mit.
+fn base_stages(w: &World) -> i64 {
+    let all = vals(w).buildings.get(SHIP_KIND).map_or(0, |b| b.levels.len() as i64);
+    all - i64::from(w.cargo_hold)
+}
+
+/// RU62.1: Der Abschnitt Laderaum steht (4. Stufe des Schiffs gebaut, Platz intakt).
+pub fn ship_hold_built(w: &World, s: &Site) -> bool {
+    w.cargo_hold && s.state == "built" && level_of(w, s) > base_stages(w)
 }
 
 /// Go: `ShipNextCost`: der Preis des nächsten Schiffs-Abschnitts am Platz `s` (Kiel am unbezahlten Platz, danach Rumpf und

@@ -84,18 +84,18 @@ Keine. Freigegebene Defaults (autonom, Claude, 2026-11-19): (1) keine REG-Sessio
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU62.1 | `RU62.1-sim-fracht.md` | Umsetzung | autonom | offen |
+| RU62.1 | `RU62.1-sim-fracht.md` | Umsetzung | autonom | fertig |
 | RU62.2 | `RU62.2-anzeige-fracht.md` | Umsetzung | autonom | offen |
-| RU62.3 | `RU62.3-sim-doppel-truhe.md` | Umsetzung | autonom | offen |
+| RU62.3 | `RU62.3-sim-doppel-truhe.md` | Umsetzung | autonom | fertig |
 | RU62.4 | `RU62.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | offen |
-| RU62.5 | `RU62.5-sim-wetter-kern-taifun.md` | Umsetzung | autonom | offen |
-| RU62.6 | `RU62.6-sim-flut.md` | Umsetzung | autonom | offen |
+| RU62.5 | `RU62.5-sim-wetter-kern-taifun.md` | Umsetzung | autonom | fertig |
+| RU62.6 | `RU62.6-sim-flut.md` | Umsetzung | autonom | fertig |
 | RU62.7 | `RU62.7-anzeige-wetter.md` | Umsetzung | autonom | offen |
-| RU62.8 | `RU62.8-sim-reittiere.md` | Umsetzung | autonom | offen |
+| RU62.8 | `RU62.8-sim-reittiere.md` | Umsetzung | autonom | fertig |
 | RU62.9 | `RU62.9-anzeige-reittiere.md` | Umsetzung | autonom | offen |
-| RU62.10 | `RU62.10-sim-einsiedler.md` | Umsetzung | autonom | offen |
+| RU62.10 | `RU62.10-sim-einsiedler.md` | Umsetzung | autonom | fertig |
 | RU62.11 | `RU62.11-anzeige-einsiedler.md` | Umsetzung | autonom | offen |
-| RU62.12 | `RU62.12-sim-friede-fest.md` | Umsetzung | autonom | offen |
+| RU62.12 | `RU62.12-sim-friede-fest.md` | Umsetzung | autonom | fertig |
 | RU62.13 | `RU62.13-anzeige-fest-musik.md` | Umsetzung | autonom | offen |
 | RU62.14 | `RU62.14-review.md` | Review | autonom | offen |
 

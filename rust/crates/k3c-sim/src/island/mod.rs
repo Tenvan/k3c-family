@@ -177,6 +177,12 @@ pub struct Island {
     pub next_player: i64,
     /// Reisefortschritt je Spielerindex (island_travel.go); nur über den Schlüssel zugreifen.
     pub travel: BTreeMap<i64, IslandTravel>,
+    /// Fracht auf dem Schiff (RU62.1, B-967); ohne `cfg` trägt die Insel keine.
+    pub cargo: crate::cargo::Cargo,
+    /// Der Einsiedler der Insel (RU62.10, B-972); ohne `cfg` hat die Insel keinen.
+    pub hermit: crate::hermit::Hermit,
+    /// Das Fest der Insel (RU62.12, B-973); ohne Eintrag in festival.json trägt die Insel keines.
+    pub festival: crate::festival::Festival,
 }
 
 impl Island {
@@ -327,6 +333,10 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         }
         return;
     }
+    isl.prepare_coop(); // RU62.3: zwei gesteuerte Monarchen auf der Insel? (Doppel-Truhe)
+    isl.prepare_weather(); // RU62.5: Wetter-Zustand und Taifun-Faktoren je Stufe
+    isl.prepare_hermit(); // RU62.10: Hütte offen? Bonus des Bauwerks je Stufe
+    isl.prepare_festival(); // RU62.12: Ziel Endboss? (Frieden und Fest)
     for i in 0..isl.stages.len() {
         let mut r = isl.stage_ref(i, difficulty);
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock); // Entscheidung 5: der Vorrat gehört der Stufe, solange sie rechnet
@@ -335,7 +345,10 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         isl.put_stage_ref(r);
     }
     isl.sync_stock();
+    crate::hermit::step::step_hermit(isl, dt); // RU62.10: Einwurf an der Hütte startet den Bau im Hub
+    crate::festival::step_festival(isl); // RU62.12: Sieg über den Endboss: Fest-Zustand und festivalStart
     if !isl.over {
+        crate::cargo::step::step_cargo(isl, commands, dt);
         step_island_travel(isl, dt);
         step_island_switch(isl, dt);
         mirror_switch(isl);

@@ -28,9 +28,12 @@ use super::{castle_fallen, vals};
 pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut IslandRef>, dt: f64) {
     w.events.clear();
     w.time += dt;
+    w.peace = crate::festival::is_peace(w, isl.as_deref()); // RU62.12: friedliche Insel nach dem Sieg über den Endboss
     step_cycle(w, isl.as_deref_mut(), dt);
     let v = vals(w);
-    spawn_guards(w, &v, isl.as_deref());
+    if !w.peace {
+        spawn_guards(w, &v, isl.as_deref());
+    }
     step_spawns(w, &v, isl.as_deref());
     step_players(w, commands, isl.as_deref_mut(), dt);
     step_crowns(w, &v, dt);
@@ -44,7 +47,11 @@ pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut Isla
     step_healing(w, dt);
     step_spell_towers(w, dt);
     step_endboss(w, &v, isl.as_deref_mut(), dt);
-    step_enemies(w, isl.as_deref_mut(), dt);
+    if w.peace {
+        crate::festival::flee::step_flee(w, dt); // RU62.12: Gegner fliehen, greifen nicht an
+    } else {
+        step_enemies(w, isl.as_deref_mut(), dt);
+    }
     step_lava(w, dt);
     step_hazards(w, &v, isl.as_deref(), dt);
     step_storms(w, dt);
@@ -61,6 +68,7 @@ pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut Isla
     if w.castle.hp <= 0.0 {
         castle_fallen(w, isl);
     }
+    crate::weather::flood::apply(w, dt); // RU62.6: Flut sperrt die Randzonen (Bodeneinheiten laufen heraus)
     step_travel(w, dt);
     cap_events(w);
 }

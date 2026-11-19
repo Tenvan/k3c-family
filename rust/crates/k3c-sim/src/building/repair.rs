@@ -15,7 +15,7 @@ use crate::unit::walk_to;
 /// Go: `levelSeconds` ist die Bauzeit der aktuellen Stufe eines gebauten Platzes.
 pub fn level_seconds(w: &World, v: &WorldValues, s: &Site) -> f64 {
     let Some(b) = v.buildings.get(&s.kind) else {
-        return 0.0;
+        return crate::hermit::bonus::hall_seconds(w, s); // RU62.10: das Bauwerk des Einsiedlers steht in keiner buildings.json
     };
     if b.levels.is_empty() {
         return b.build_seconds;

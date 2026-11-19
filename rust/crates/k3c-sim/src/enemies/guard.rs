@@ -58,20 +58,26 @@ pub fn spawn_guards(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
 pub fn step_guard(w: &mut World, v: &WorldValues, ei: usize, isl: Option<&IslandRef>, dt: f64) {
     w.enemies[ei].fleeing = false;
     let foe = guard_foe(w, &w.enemies[ei]);
+    let (weather_speed, weather_range) = (w.weather_speed, w.weather_range); // RU62.5: Taifun (sonst 1.0)
     let e = &mut w.enemies[ei];
     let Some(foe) = foe else {
         let d = e.home_x - e.x;
-        e.x += sign(d) * d.abs().min(e.speed() * dt);
+        e.x += sign(d) * d.abs().min(e.speed() * weather_speed * dt);
         return;
     };
     let dist = foe.x - e.x;
-    if dist.abs() <= e.range + BODY {
+    let range = if e.has("ranged") {
+        e.range * weather_range
+    } else {
+        e.range
+    };
+    if dist.abs() <= range + BODY {
         if e.cooldown <= 0.0 {
             strike(w, v, ei, &foe, isl);
         }
         return;
     }
-    e.x += sign(dist) * dist.abs().min(e.speed() * dt);
+    e.x += sign(dist) * dist.abs().min(e.speed() * weather_speed * dt);
 }
 
 /// Go: `guardFoe`: das nächste Ziel (Spieler, Truppen ohne Landstreicher) im Aggro-Radius um den Heimatpunkt; `None`

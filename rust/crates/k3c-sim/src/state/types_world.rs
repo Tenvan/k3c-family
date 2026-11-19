@@ -144,6 +144,64 @@ pub struct World {
     pub night_events: Vec<ActiveEvent>,
     #[serde(rename = "islandSwitch", skip_serializing_if = "Option::is_none")]
     pub island_switch: Option<SwitchState>,
+    /// Fracht des Schiffs (RU62.1, B-967); fehlt auf Inseln ohne Fracht.
+    #[serde(rename = "cargo", skip_serializing_if = "Option::is_none")]
+    pub cargo: Option<super::cargo_view::CargoState>,
+    /// Nutzbare Ladeplätze dieser Stufe (RU62.1); ohne JSON.
+    #[serde(skip)]
+    pub cargo_bays: Vec<super::cargo_view::CargoBay>,
+    /// Der Wertesatz der Stufe trägt den Abschnitt Laderaum als 4. Schiffsstufe (RU62.1); ohne JSON.
+    #[serde(skip)]
+    pub cargo_hold: bool,
+    /// Wirksame Doppel-Truhen der Stufe (RU62.3, B-968); fehlt ohne Koop-Aktion.
+    #[serde(rename = "coop", skip_serializing_if = "super::coop_view::CoopState::is_empty")]
+    pub coop: super::coop_view::CoopState,
+    /// Die Koop-Regeln der Welt (RU62.3); `None` = Welt ohne Koop-Aktionen; ohne JSON.
+    #[serde(skip)]
+    pub coop_cfg: Option<std::sync::Arc<k3c_data::coop::CoopFile>>,
+    /// Mindestens zwei gesteuerte Monarchen auf der Insel (RU62.3, die Insel setzt es je Takt); ohne JSON.
+    #[serde(skip)]
+    pub coop_active: bool,
+    /// Das Reittier-Gatter der Insel (RU62.8, B-970); nur in der Oberflächen-Stufe einer Welt mit Welt-Reittier.
+    #[serde(rename = "mountGate", skip_serializing_if = "Option::is_none")]
+    pub mount_gate: Option<super::mount_view::MountGate>,
+    /// Der Reittier-Katalog der Welt (RU62.8); `None` = Welt ohne Welt-Reittier; ohne JSON.
+    #[serde(skip)]
+    pub mounts_cfg: Option<std::sync::Arc<k3c_data::mounts::MountsFile>>,
+    /// Zustand des Einsiedlers (RU62.10, B-972); nur in Welten mit Einsiedler.
+    #[serde(rename = "hermit", skip_serializing_if = "Option::is_none")]
+    pub hermit: Option<super::hermit_view::HermitState>,
+    /// Der Einsiedler-Katalog der Welt (RU62.10); `None` = Welt ohne Einsiedler; ohne JSON.
+    #[serde(skip)]
+    pub hermit_cfg: Option<std::sync::Arc<k3c_data::hermits::HermitsFile>>,
+    /// Das Fest nach dem Sieg über den Endboss (RU62.12, B-973); fehlt ohne Sieg und in Welten ohne Fest.
+    #[serde(rename = "festival", skip_serializing_if = "Option::is_none")]
+    pub festival: Option<super::festival_view::FestivalState>,
+    /// Die Fest-Regel der Welt (RU62.12); `None` = Welt ohne Fest (Verhalten wie heute); ohne JSON.
+    #[serde(skip)]
+    pub festival_rule: Option<std::sync::Arc<super::festival_view::FestivalRule>>,
+    /// Das Ziel der Insel ist der Endboss, nur dann gibt es Frieden und Fest (RU62.12); die Insel setzt es je Takt; ohne JSON.
+    #[serde(skip)]
+    pub festival_goal: bool,
+    /// Friedliche Insel in diesem Schritt (RU62.12): Fest-Regel, Ziel Endboss und Endboss besiegt; `step` setzt es zu Beginn
+    /// jedes Takts; ohne JSON.
+    #[serde(skip)]
+    pub peace: bool,
+    /// Art und Phase des Wetters (RU62.5, B-969); fehlt, solange keine Wetternacht ansteht oder die Welt kein Wetter hat.
+    #[serde(rename = "weather", skip_serializing_if = "Option::is_none")]
+    pub weather: Option<super::weather_view::WeatherState>,
+    /// Der Wetter-Plan der Insel (RU62.5); `None` = Welt ohne Wetter; ohne JSON.
+    #[serde(skip)]
+    pub weather_cfg: Option<std::sync::Arc<crate::weather::WeatherPlan>>,
+    /// Tempo-Faktor des Wetters dieser Stufe (1.0 = keine Wirkung, Taifun an der Oberfläche < 1); je Takt gesetzt, ohne JSON.
+    #[serde(skip)]
+    pub weather_speed: f64,
+    /// Reichweiten-Faktor der Fernkämpfer (1.0 = keine Wirkung); je Takt gesetzt, ohne JSON.
+    #[serde(skip)]
+    pub weather_range: f64,
+    /// Gesperrte Bereiche der aktiven Flut (RU62.6), berechnet je Takt aus dem Wetter-Plan, nie im Spielstand; leer sonst.
+    #[serde(rename = "floodZones", default, skip_serializing_if = "Vec::is_empty")]
+    pub flood_zones: Vec<super::weather_view::FloodZone>,
     /// Verworfene Ereignisse dieses Steps (Obergrenze je Tick).
     #[serde(rename = "eventsDropped", skip_serializing_if = "is_zero_i64")]
     pub events_dropped: i64,
@@ -183,6 +241,7 @@ pub struct World {
 }
 
 impl Default for World {
+    #[allow(clippy::too_many_lines)] // eine Zeile je Feld der Stufe
     fn default() -> Self {
         World {
             seed: Default::default(),
@@ -232,6 +291,25 @@ impl Default for World {
             events: Default::default(),
             night_events: Default::default(),
             island_switch: Default::default(),
+            cargo: None,
+            cargo_bays: Vec::new(),
+            cargo_hold: false,
+            coop: Default::default(),
+            coop_cfg: None,
+            coop_active: false,
+            mount_gate: None,
+            mounts_cfg: None,
+            hermit: None,
+            hermit_cfg: None,
+            festival: None,
+            festival_rule: None,
+            festival_goal: false,
+            peace: false,
+            weather: None,
+            weather_cfg: None,
+            weather_speed: 1.0,
+            weather_range: 1.0,
+            flood_zones: Vec::new(),
             events_dropped: Default::default(),
             no_travel: Default::default(),
             lava_in: Default::default(),

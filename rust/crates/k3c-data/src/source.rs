@@ -20,7 +20,7 @@ pub enum Source {
 }
 
 /// Eingebettete Dateien: Name unter data/ und Inhalt.
-pub const EMBEDDED: [(&str, &str); 34] = [
+pub const EMBEDDED: [(&str, &str); 40] = [
     (
         "asset-prompts.json",
         include_str!("../../../../data/asset-prompts.json"),
@@ -57,6 +57,8 @@ pub const EMBEDDED: [(&str, &str); 34] = [
     ("biomes/mine.json", include_str!("../../../../data/biomes/mine.json")),
     ("bosses.json", include_str!("../../../../data/bosses.json")),
     ("buildings.json", include_str!("../../../../data/buildings.json")),
+    ("cargo.json", include_str!("../../../../data/cargo.json")),
+    ("coop.json", include_str!("../../../../data/coop.json")),
     ("difficulty.json", include_str!("../../../../data/difficulty.json")),
     ("economy.json", include_str!("../../../../data/economy.json")),
     ("enemies.json", include_str!("../../../../data/enemies.json")),
@@ -68,6 +70,9 @@ pub const EMBEDDED: [(&str, &str); 34] = [
     ("light.json", include_str!("../../../../data/light.json")),
     ("look.json", include_str!("../../../../data/look.json")),
     ("monarch.json", include_str!("../../../../data/monarch.json")),
+    ("mounts.json", include_str!("../../../../data/mounts.json")),
+    ("festival.json", include_str!("../../../../data/festival.json")),
+    ("hermits.json", include_str!("../../../../data/hermits.json")),
     ("native.json", include_str!("../../../../data/native.json")),
     ("paper.json", include_str!("../../../../data/paper.json")),
     ("render.json", include_str!("../../../../data/render.json")),
@@ -78,6 +83,7 @@ pub const EMBEDDED: [(&str, &str); 34] = [
     ("stresstests.json", include_str!("../../../../data/stresstests.json")),
     ("troops.json", include_str!("../../../../data/troops.json")),
     ("waves.json", include_str!("../../../../data/waves.json")),
+    ("weather.json", include_str!("../../../../data/weather.json")),
     (
         "worlds/standard.json",
         include_str!("../../../../data/worlds/standard.json"),

@@ -65,6 +65,7 @@ pub fn step_island_switch(isl: &mut Island, dt: f64) {
     isl.switch_progress += dt / isl.values().hub.travel.seconds;
     if isl.switch_progress >= 1.0 {
         isl.switch_ready = true;
+        crate::cargo::arrive::release_for_departure(isl); // RU62.1: offene Träger lassen ihre Kiste zurück
         let ev = event(&[("island", island), ("target", Value::from(isl.chosen_target()))]);
         emit(&mut isl.stages[wi], "islandSwitch", ev);
     }
@@ -130,6 +131,7 @@ pub fn next_island(data: &Data, cur: &Island, def: &IslandDef) -> Result<Island,
     if let Some(first) = next.stages.first_mut() {
         bring_players(cur, first);
     }
+    crate::cargo::arrive::board_next(&mut next, cur); // RU62.1: die Fracht kommt zusätzlich zum Startvorrat an
     Ok(next)
 }
 

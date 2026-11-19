@@ -175,6 +175,17 @@ pub fn create_island_at(
         let w = create_stage(b, d, seed, cycle_speed, start_time, opts, &vals)?;
         isl.stages.push(w);
     }
+    if crate::cargo::world_has_cargo(b.data, &b.world.id) {
+        isl.enable_cargo(b.data); // RU62.1: Fracht nur in Welten aus data/cargo.json
+    }
+    if crate::coop::world_has_coop(b.data, &b.world.id) {
+        isl.enable_coop(b.data); // RU62.3: Doppel-Truhe nur in Welten aus data/coop.json
+    }
+    isl.enable_mounts(b.data); // RU62.8: Welt-Reittier und Gatter nur in Welten aus data/mounts.json
+    isl.enable_weather(b.data); // RU62.5: Wetter nur in Welten aus data/weather.json
+    isl.enable_festival(b.data); // RU62.12: Frieden und Fest nur in Welten aus data/festival.json
+    isl.enable_hermit(b.data)?; // RU62.10: Einsiedler, Hütte und Hub-Platz nur in Welten aus data/hermits.json
+
     Ok(isl)
 }
 
