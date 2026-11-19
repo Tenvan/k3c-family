@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU14
+- **Sprint:** RU51
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
 - **Spec:** Entwurf

@@ -147,38 +147,38 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1077](B-1077-perf-allokationen-im-replay-takt.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: Replay-Takt (step) allokiert bis zu 788 mal je Bild, Ziel 0 |
 | [B-1078](B-1078-perf-allokationen-im-draw-pfad.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: draw allokiert bis zu 29 mal je Bild, Ziel 0 |
 | [B-1081](B-1081-abnahme-ru11-sim-einheiten-gegner.md) | SIM | Schuld | mittel | offen | RU11 | Abnahme RU11: Sim, Balance und Gen für Einheiten und Gegner in Rust |
-| [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU10 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
+| [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU52 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
 | [B-1086](B-1086-abnahme-laeufe-sim-insel.md) | SIM | Schuld | mittel | offen | RU10 | Abnahme-Läufe Sim Insel |
-| [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU10 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
+| [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU52 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
 | [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
 | [B-1090](B-1090-replay-blend-auf-game-blend.md) | CLI | Schuld | niedrig | offen | RU26 | replay/blend.rs auf game/blend.rs umstellen |
 | [B-1091](B-1091-importregel-ausnahmen-fachmodule.md) | CLI | Schuld | niedrig | offen | RU26 | Importregel der Fachmodule hat fünf bekannte Ausnahmen |
 | [B-1092](B-1092-ru19-decode-world-story-vorziehen.md) | SIM | Schuld | mittel | offen | RU19 | decode_world_story (RU19) blockiert 91 Tests, Reihenfolge der Sprints prüfen; events_moon_stages_test zu RU19 |
-| [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU14 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
+| [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
 | [B-1094](B-1094-plattform-fenster-api.md) | PLAT | Schuld | niedrig | offen | RU26 | Die Plattform bekommt eine Fenster-API für Größe, Lage und Rahmen |
-| [B-1096](B-1096-abnahme-laeufe-ru26-spielschleife.md) | CLI | Schuld | mittel | offen | RU26 | Abnahme-Läufe RU26: Sim, Balance, Gen und Race für die Rust-Spielschleife |
-| [B-1099](B-1099-port-rumpf-tests-ru18-ausfuellen.md) | SIM | Schuld | mittel | offen | RU18 | Rumpf-Tests der Rust-Sim (leer oder unimplemented) mit echten Rümpfen ausfüllen |
-| [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | RU21 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
-| [B-1100](B-1100-leere-ruempfe-ignorierte-tests.md) | SIM | Schuld | mittel | offen | RU18 | 21 ignorierte k3c-sim-Tests haben leere Rümpfe und zählen als portiert, ohne es zu sein |
-| [B-1101](B-1101-abnahme-ru18-sim-wirtschaft-bau-monarch.md) | SIM | Schuld | mittel | offen | RU18 | Abnahme RU18: Sim, Balance, Gen, Race und Golden-Abgleich der neuen Rust-Sim-Teile |
+| [B-1096](B-1096-abnahme-laeufe-ru26-spielschleife.md) | CLI | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU26: Sim, Balance, Gen und Race für die Rust-Spielschleife |
+| [B-1099](B-1099-port-rumpf-tests-ru18-ausfuellen.md) | SIM | Schuld | mittel | offen | RU52 | Rumpf-Tests der Rust-Sim (leer oder unimplemented) mit echten Rümpfen ausfüllen |
+| [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
+| [B-1100](B-1100-leere-ruempfe-ignorierte-tests.md) | SIM | Schuld | mittel | offen | RU52 | 21 ignorierte k3c-sim-Tests haben leere Rümpfe und zählen als portiert, ohne es zu sein |
+| [B-1101](B-1101-abnahme-ru18-sim-wirtschaft-bau-monarch.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme RU18: Sim, Balance, Gen, Race und Golden-Abgleich der neuen Rust-Sim-Teile |
 | [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
-| [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU19 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
-| [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU19 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
+| [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU52 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
+| [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
 | [B-1106](B-1106-rust-skills-respec-inselwahl.md) | CLI | Problem | hoch | offen | RU50 | Skills lernen, Respec und Zielinsel-Wahl fehlen im Rust-Spiel |
 | [B-1107](B-1107-rust-client-sim-sicht-ohne-insel.md) | CLI | Problem | mittel | offen | RU36 | Rust-Client: Anzeige rechnet ohne IslandRef (Lager-Maximum, Bau des Endbosses) und ohne Geschichte |
-| [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU36 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
+| [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU51 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
 | [B-1109](B-1109-rust-start-grafik-aller-biome-im-speicher.md) | CLI | Schuld | mittel | offen | RU30 | Rust-Start lädt die Grafik aller Biome auf einmal (ohne Loader und Ladeanzeige je Stufe) |
-| [B-1105](B-1105-abnahme-laeufe-ru22-durchsatz.md) | SIM | Schuld | mittel | offen | RU22 | Abnahme-Läufe RU22: Durchsatz Rust gegen Go, Sim und Race (Lane: zweit) |
-| [B-1110](B-1110-native-json-bruchwerte.md) | CLI | Schuld | niedrig | offen | RU30 | Rust liest data/native.json mit i64-Feldern, Go mit float64 (Chronik, Wert 0) |
-| [B-1111](B-1111-dev-session-rolle-im-view.md) | CLI | Schuld | mittel | offen | RU30 | view::Session liefert keine Entwickler-Rolle (DevSession), Cheats im Rust-Spiel wirkungslos |
-| [B-1112](B-1112-abnahme-laeufe-ru29.md) | CLI | Schuld | niedrig | offen | RU29 | Abnahme-Läufe RU29 (Race, Gen) und Prüfliste für Ralf, Lane zweit |
+| [B-1105](B-1105-abnahme-laeufe-ru22-durchsatz.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU22: Durchsatz Rust gegen Go, Sim und Race (Lane: zweit) |
+| [B-1110](B-1110-native-json-bruchwerte.md) | CLI | Schuld | niedrig | offen | RU52 | Rust liest data/native.json mit i64-Feldern, Go mit float64 (Chronik, Wert 0) |
+| [B-1111](B-1111-dev-session-rolle-im-view.md) | CLI | Schuld | mittel | offen | RU52 | view::Session liefert keine Entwickler-Rolle (DevSession), Cheats im Rust-Spiel wirkungslos |
+| [B-1112](B-1112-abnahme-laeufe-ru29.md) | CLI | Schuld | niedrig | offen | RU51 | Abnahme-Läufe RU29 (Race, Gen) und Prüfliste für Ralf, Lane zweit |
 | [B-1113](B-1113-rust-welt-bibliothek-je-stufe.md) | CLI | Schuld | mittel | offen | RU30 | Rust: Welt-Grafik wird beim Start für alle Biome geladen, nicht je Stufe |
 | [B-1114](B-1114-aufnahme-sichtpruefung-grafik.md) | CLI | Schuld | mittel | offen | RU30 | Aufnahme-Modus im Rust-Spiel mit echter Grafik gegen Go prüfen und Speicher von ShotCanvas messen |
 | [B-1115](B-1115-rust-f12-pixel-und-maus.md) | CLI | Schuld | niedrig | offen | RU30 | Rust-Spiel: F12 zeigt keine Sprites und die Werte-Seite hat keine Maus-Auswahl |
 | [B-1116](B-1116-replay-report-auf-game-measure.md) | CLI | Schuld | niedrig | offen | RU30 | replay/report.rs nutzt Report, FrameStats und FrameLog aus game/measure.rs |
 | [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU30 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
 | [B-1118](B-1118-rust-spiel-icon-manifest-ressource.md) | CLI | Schuld | mittel | offen | RU30 | Rust-EXE trägt Spiel-Icon und Manifest (Ressourcen-Crate braucht Freigabe) |
-| [B-1119](B-1119-ru30-abnahme-messen-stresstest-aufnahme.md) | CLI | Schuld | mittel | offen | RU30 | RU30 Abnahme: Messläufe, Stresstest und Aufnahmevergleich des Rust-Spiels |
+| [B-1119](B-1119-ru30-abnahme-messen-stresstest-aufnahme.md) | CLI | Schuld | mittel | offen | RU51 | RU30 Abnahme: Messläufe, Stresstest und Aufnahmevergleich des Rust-Spiels |
 
 ## Archiv
 
