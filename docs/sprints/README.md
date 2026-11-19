@@ -34,6 +34,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
 | RU52 | SIM, CLI | RSU | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | – | `aktiv/RU52-rust-sim-schuld-und-spiel-nacharbeit/` |
+| RU53 | CLI | RSU | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | – | `aktiv/RU53-rust-skills-respec-inselwahl/` |
 
 ## Offen am Gerät
 

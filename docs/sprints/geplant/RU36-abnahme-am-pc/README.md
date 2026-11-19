@@ -53,7 +53,7 @@ Regel- oder Wertänderungen. Die Workbench in Rust. Alles, was ein anderer Sprin
 Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Der Go-Code bleibt unverändert lauffähig (Rückfall). Golden werden nie zugunsten von Rust neu geschrieben. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur mit Freigabe 🧑. Die Sim-Sperre vom 2026-11-11 gilt; Golden-Vergleiche laufen nur als Tests und nur mit der Ausnahme aus B-1014. Fixes bilden das Go-Verhalten nach. G4 entscheidet 🧑 (RU36.5 hält an); ein schwerer Befund wird nur mit Zustimmung von 🧑 verschoben.
 
 - **Bereich:** `docs/messung/rust-abnahme.md`, `rust/crates/**`, `native/measure.ps1`
-- **Abhängig von:** RU32, RU35
+- **Abhängig von:** RU32, RU35, RU53
 - **Braucht 🧑:** Abnahme
 - **Sperre:** –
 
