@@ -53,7 +53,7 @@ bleiben die Testhelfer von B-1103 in `*_tests.rs` und `testutil.rs` (70 `#[ignor
 
 ## Durchsatz
 
-Nicht gemessen. Eine Messung braucht einen ruhigen Rechner im Release-Bau; auf dem Hauptrechner arbeitet Ralf, die
+Gemessen am 2026-11-19 (RU51.5). Eine Messung braucht einen ruhigen Rechner im Release-Bau; auf dem Hauptrechner arbeitet Ralf, die
 Sim-Sperre gilt. Messwerkzeug steht bereit und läuft im Abnahme-Ticket (`Lane: zweit`, der Second Worker fährt sie):
 
 - Rust: `cargo test --release -p k3c-sim --test golden_durchsatz -- --ignored --nocapture` (5 Messungen à 10 Läufe von
@@ -62,7 +62,11 @@ Sim-Sperre gilt. Messwerkzeug steht bereit und läuft im Abnahme-Ticket (`Lane: 
 
 | Messgröße | Rust | Go | Rechner | Datum |
 |---|---|---|---|---|
-| Schritte je Sekunde, Median (Spanne) | offen | offen | | |
+| Schritte je Sekunde, Median (Spanne) | 243 304 (240 368 bis 245 864; 5 Messungen) | 476 884 (470 778 bis 482 759; 5 Läufe von `-count 5`) | AMD Ryzen 7 5800X (8 Kerne), 32 GB RAM, Windows 11, Release-Bau | 2026-11-19 |
+
+Rust erreicht damit etwa 51 % des Go-Durchsatzes am selben Lauf (`sim-forest-aufbau`, 6000 Takte, 2 Spieler). Nur berichtet,
+keine Schwelle bewertet; Optimierung gehört zu RU43. Die Messgrößen sind nicht streng gleich (Rust: 5 Messungen à 10 Läufe;
+Go: `testing.Benchmark` je Zählung, 96 bis 98 Läufe), die Größenordnung ist trotzdem belastbar (Streuung unter 3 %).
 
 ## Empfehlung für G3
 

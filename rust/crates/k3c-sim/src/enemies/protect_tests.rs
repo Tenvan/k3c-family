@@ -1,6 +1,5 @@
 //! Grad „leicht“: die ersten `protectedNights` Nächte ohne Verlust (Go: `difficulty_protect_test.go`, S6.1, B-148,
-//! AC-02). Der Test des Zustandsprüfers (`protectSnapshot`) braucht `CreateIsland`, `castleFallen` und `buildSite`; er
-//! wartet auf RU10 und RU14. Die Entscheidung selbst (`protected_night`) prüft der Test in `island_ref.rs`.
+//! AC-02). Der Zustandsprüfer (`protectSnapshot`) läuft mit dem `IslandRef` der Insel und `castle_fallen`.
 
 use super::testutil::*;
 
@@ -30,6 +29,9 @@ fn snapshot(w: &crate::state::World) -> ProtectState {
 /// dann fällt die Burg. Liefert den Stand davor und danach.
 fn forced_attack(grade: &str, day: i64) -> (ProtectState, ProtectState) {
     let mut isl = island_with(grade, 2);
+    isl.options.defeat = "stage".into(); // der Test prüft den Stufenverlust, unabhängig vom Standard des Grads
+    let data = crate::island::testutil::test_data();
+    let mut r = isl.stage_ref(0, &data.difficulty);
     let w = &mut isl.stages[0];
     w.cycle.phase = "night".into();
     w.cycle.day = day;
@@ -63,17 +65,18 @@ fn forced_attack(grade: &str, day: i64) -> (ProtectState, ProtectState) {
             player: Some(pi),
         };
         let v = w.vals.clone().expect("Wertesatz");
-        super::target::attack(w, &v, greed, &t, None); // die Insel liefert RU10 (`IslandRef`)
+        super::target::attack(w, &v, greed, &t, Some(&r));
     }
     let (sid, smax) = (w.sites[site].id, w.sites[site].max_hp);
-    crate::state::common::apply_damage_by(w, sid, smax * 10.0, "goblin", None);
+    crate::state::common::apply_damage_by(w, sid, smax * 10.0, "goblin", Some(&r));
     w.castle.hp = 0.0;
-    // `castleFallen` (RU15/RU18) folgt dem Burgfall.
-    (before, snapshot(w))
+    crate::world::castle_fallen(w, Some(&mut r)); // Go: `castleFallen(w)`
+    let after = snapshot(w);
+    isl.put_stage_ref(r);
+    (before, after)
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (island_with)"]
 fn protected_night_easy_keeps_everything() {
     let (before, after) = forced_attack("easy", 1);
     assert_eq!(after, before, "easy, Nacht 1: Verlust");
@@ -94,14 +97,12 @@ fn assert_lost(name: &str, before: &ProtectState, after: &ProtectState) {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (island_with)"]
 fn protected_night_normal_loses() {
     let (before, after) = forced_attack("normal", 1);
     assert_lost("normal, Nacht 1", &before, &after);
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (island_with)"]
 fn protected_night_easy_second_night_loses() {
     let (before, after) = forced_attack("easy", 2);
     assert_lost("easy, Nacht 2", &before, &after);

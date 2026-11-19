@@ -44,6 +44,10 @@ pub fn combat_stage(mode: &str) -> (World, f64, f64) {
         });
     }
     w.portals = vec![w.hub_x - 40.0, w.hub_x + 40.0];
+    w.biome.portals.hp = 500.0; // Go: `CreateIsland` legt HP und Verteidiger-Takt der Portale an
+    w.biome.portals.defense.interval_seconds = 15.0;
+    w.biome.portals.defense.size = 3;
+    crate::portal::sync_portals(&mut w);
     let (left, right) = (w.hub_x - 10.0, w.hub_x + 10.0);
     (w, left, right)
 }

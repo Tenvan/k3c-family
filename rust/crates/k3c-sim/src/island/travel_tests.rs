@@ -32,12 +32,22 @@ fn built_site(w: &mut World, kind: &str) -> f64 {
 /// Platz.
 fn stand_for(isl: &mut Island, data: &k3c_data::Data, seconds: f64, hold: &BTreeMap<(usize, usize), f64>) {
     let cmds = vec![PlayerCommand::default(); isl.next_player as usize];
+    // Go hält die Spieler (Zeiger) fest, auch nach einem Stufenwechsel: Der Platz (Stufe, Position) gilt zu Beginn, danach
+    // folgt der Halt dem Spieler über seinen Index.
+    let holds: Vec<(i64, f64)> = hold
+        .iter()
+        .map(|(&(si, pi), &x)| (isl.stages[si].players[pi].index, x))
+        .collect();
     let mut tm = 0.0;
     while tm < seconds {
-        for (&(si, pi), &x) in hold {
-            let p = &mut isl.stages[si].players[pi];
-            p.x = x;
-            p.vx = 0.0;
+        for &(index, x) in &holds {
+            let Some(si) = isl.stage_of(index) else {
+                continue;
+            };
+            if let Some(p) = isl.stages[si].players.iter_mut().find(|p| p.index == index) {
+                p.x = x;
+                p.vx = 0.0;
+            }
         }
         step_island(isl, &cmds, &data.difficulty, DT);
         tm += DT;
@@ -45,7 +55,6 @@ fn stand_for(isl: &mut Island, data: &k3c_data::Data, seconds: f64, hold: &BTree
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: andere Spieler bleiben stehen)"]
 fn island_single_player_travels_via_exit() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-a", &[0, 1, 2]);
@@ -83,7 +92,6 @@ fn island_single_player_travels_via_exit() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn island_travel_via_stairs() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-b", &[0, 1]);
@@ -116,7 +124,6 @@ fn island_travel_needs_built_stairs() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn island_travel_aborts_when_leaving_point() {
     let data = test_data();
     let mut isl = must_island(&data, "reise-d", &[0, 1]);
@@ -160,7 +167,6 @@ fn island_travel_without_target_stage_stays() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn island_travel_deterministic() {
     let data = test_data();
     let run = || {

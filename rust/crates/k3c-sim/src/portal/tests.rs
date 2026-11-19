@@ -133,11 +133,123 @@ fn angegriffenes_portal_spawnt_verteidiger() {
     assert_eq!(waves, 1, "{waves} Wellen im Takt, erwartet 1");
 }
 
-#[test]
-fn letztes_portal_macht_stufe_sicher() {}
+/// Go: `portalIsland`: Insel mit einer Stufe (zwei Spieler, zwei Portale), ohne Truppen, Gegner und Camps.
+fn portal_island() -> (crate::island::Island, k3c_data::Data) {
+    use crate::island::testutil::{ISLAND_SPEED, standard_world, test_data};
+    let data = test_data();
+    let mut isl = crate::island::create_island(
+        &data,
+        &standard_world(&data),
+        "portal",
+        &[0],
+        ISLAND_SPEED,
+        Default::default(),
+    )
+    .expect("Insel");
+    crate::island::add_island_player(&mut isl, 0);
+    crate::island::add_island_player(&mut isl, 0);
+    let w = &mut isl.stages[0];
+    w.troops.clear();
+    w.enemies.clear();
+    w.spawn_queue.clear();
+    w.camps.clear();
+    w.aggression = Default::default();
+    assert!(
+        w.players.len() == 2 && w.portals.len() == 2,
+        "{} Spieler, {} Portale",
+        w.players.len(),
+        w.portals.len()
+    );
+    (isl, data)
+}
+
+/// Go: `attacker` auf der Stufe 0 der Insel: ein Krieger im Angriff vor Portal `i`.
+fn island_attacker(isl: &mut crate::island::Island, data: &k3c_data::Data, i: usize) -> usize {
+    let v = crate::world::vals(&isl.stages[0]);
+    let _ = data;
+    attacker(&mut isl.stages[0], &v, i)
+}
+
+fn run_island(isl: &mut crate::island::Island, data: &k3c_data::Data, seconds: f64) {
+    crate::island::testutil::run_island(isl, data, &[], seconds);
+}
 
 #[test]
-fn sichere_stufe_bleibt_nach_dem_laden() {}
+fn letztes_portal_macht_stufe_sicher() {
+    let (mut isl, data) = portal_island();
+    let pool = isl.skill_pool;
+    island_attacker(&mut isl, &data, 0);
+    isl.stages[0].portal_hp[0] = 1.0;
+    run_island(&mut isl, &data, 1.0);
+    let w = &isl.stages[0];
+    assert!(
+        w.portals.len() == 1 && w.portals_down.len() == 1 && !safe(w),
+        "nach dem ersten Portal: {:?} / {:?}",
+        w.portals,
+        w.portals_down
+    );
+    assert_eq!(isl.skill_pool, pool, "Skill-Punkt schon beim ersten Portal");
+    let a = island_attacker(&mut isl, &data, 0);
+    let w = &mut isl.stages[0];
+    w.troops[a].x = w.portals[0];
+    w.portal_hp[0] = 1.0;
+    run_island(&mut isl, &data, 1.0);
+    let mini = crate::world::vals(&isl.stages[0]).monarch.skill_point_sources.miniboss;
+    assert!(
+        safe(&isl.stages[0]) && isl.skill_pool == pool + mini,
+        "sicher {}, Pool {pool} → {}",
+        safe(&isl.stages[0]),
+        isl.skill_pool
+    );
+    let w = &mut isl.stages[0];
+    w.cycle.phase = "night".into();
+    crate::enemies::waves::start_wave(w, None);
+    run_island(&mut isl, &data, 20.0);
+    let w = &isl.stages[0];
+    assert!(
+        w.spawn_queue.is_empty() && w.enemies.is_empty(),
+        "Welle in sicherer Stufe: {} + {}",
+        w.spawn_queue.len(),
+        w.enemies.len()
+    );
+}
+
+#[test]
+fn sichere_stufe_bleibt_nach_dem_laden() {
+    use crate::island::testutil::{load_island, save_json};
+    let (mut isl, data) = portal_island();
+    island_attacker(&mut isl, &data, 0);
+    isl.stages[0].portal_hp[0] = 1.0;
+    run_island(&mut isl, &data, 1.0);
+    let saved_at = "2026-11-15T10:00:00Z";
+    let raw = save_json(&isl, saved_at);
+    let mut loaded = load_island(&data, &raw);
+    let lw = &loaded.stages[0];
+    assert!(
+        lw.portals.len() == 1 && lw.portals_down.len() == 1 && lw.portals[0] != lw.portals_down[0],
+        "geladen: {:?} / {:?}",
+        lw.portals,
+        lw.portals_down
+    );
+    assert_eq!(save_json(&loaded, saved_at), raw, "Stand ändert sich beim Neuladen");
+    loaded.stages[0].troops.clear();
+    island_attacker(&mut loaded, &data, 0);
+    loaded.stages[0].portal_hp[0] = 1.0;
+    run_island(&mut loaded, &data, 1.0);
+    let mut again = load_island(&data, &save_json(&loaded, saved_at));
+    let aw = &mut again.stages[0];
+    aw.cycle.phase = "night".into();
+    crate::enemies::waves::start_wave(aw, None);
+    run_island(&mut again, &data, 20.0);
+    let aw = &again.stages[0];
+    assert!(
+        safe(aw) && aw.spawn_queue.is_empty() && aw.enemies.is_empty(),
+        "sicher {}, Welle {} + {}",
+        safe(aw),
+        aw.spawn_queue.len(),
+        aw.enemies.len()
+    );
+}
 
 #[test]
 fn dieb_ohne_portal_laesst_beute_fallen() {
@@ -174,4 +286,38 @@ fn portal_simulation_ist_deterministisch() {
 }
 
 #[test]
-fn letztes_portal_ohne_doppel_punkt_bei_miniboss() {}
+fn letztes_portal_ohne_doppel_punkt_bei_miniboss() {
+    let (mut isl, data) = portal_island();
+    let v = crate::world::vals(&isl.stages[0]);
+    let Some(b) = crate::boss::data::mini_boss(&v.bosses, isl.stages[0].biome.depth).cloned() else {
+        return; // Go: t.Skip("kein Miniboss in dieser Stufe")
+    };
+    let _ = &data;
+    let mini = v.monarch.skill_point_sources.miniboss;
+    let pool = isl.skill_pool;
+    let secure = |isl: &mut crate::island::Island| {
+        let mut r = isl.stage_ref(0, &data.difficulty);
+        crate::portal::secure_stage(&mut isl.stages[0], &v, Some(&mut r));
+        isl.put_stage_ref(r);
+    };
+    secure(&mut isl); // Miniboss lebt noch oder ist nie erschienen: der Punkt kommt einmal
+    assert!(
+        isl.skill_pool == pool + mini && isl.defeated_bosses.contains(&b.id),
+        "Pool {pool} → {}, besiegt {:?}",
+        isl.skill_pool,
+        isl.defeated_bosses
+    );
+    secure(&mut isl);
+    let hub_x = isl.stages[0].hub_x;
+    let mut r = isl.stage_ref(0, &data.difficulty);
+    let e = crate::boss::spawn_boss(&mut isl.stages[0], &v, &b, hub_x + 100.0, Some(&r));
+    isl.stages[0].enemies[e].hp = 0.0;
+    crate::enemies::waves::remove_dead_enemies(&mut isl.stages[0], Some(&mut r));
+    isl.put_stage_ref(r);
+    assert_eq!(
+        isl.skill_pool,
+        pool + mini,
+        "Doppelter Punkt: Pool {pool} → {}",
+        isl.skill_pool
+    );
+}

@@ -102,10 +102,7 @@ pub fn count_events(w: &World, typ: &str) -> usize {
     super::events_of_type(w, typ).len()
 }
 
-/// Eine Insel aus Stufen (Platzhalter für Gos `Island`, kommt mit RU10).
-pub struct Island {
-    pub stages: Vec<World>,
-}
+pub use crate::island::Island;
 
 // Hilfen aus anderen Go-Dateien, die `CreateWorld`/`Step` oder Inseln (RU10) brauchen.
 
@@ -191,12 +188,31 @@ pub fn was_hit(w: &World, pi: usize) -> bool {
     p.gold < PROBE_GOLD || p.crown.is_some()
 }
 
-pub fn ruin_island(_plan: Vec<PlannedChunk>) -> Island {
-    panic!("RU10: ruin_island")
+/// Go: `ruinIsland` (building_ruin_test.go): Insel "ruine-1" mit der geplanten Ruine und zwei Spielern in Stufe 0.
+pub fn ruin_island(plan: Vec<PlannedChunk>) -> Island {
+    use crate::island::testutil::{ISLAND_SPEED, standard_world, test_data};
+    let data = test_data();
+    let opts = crate::island::CreateOptions {
+        planned: Some(std::collections::BTreeMap::from([(0, plan)])),
+        ..Default::default()
+    };
+    let mut isl = crate::island::create_island(&data, &standard_world(&data), "ruine-1", &[0], ISLAND_SPEED, opts)
+        .expect("Insel");
+    crate::island::add_island_player(&mut isl, 0);
+    crate::island::add_island_player(&mut isl, 0);
+    isl
 }
 
-pub fn island_with(_grade: &str, _players: i64) -> Island {
-    panic!("RU10: island_with")
+/// Go: `islandWith` (island_options_test.go): Insel mit Grad `grade` (Dev erlaubt) und `players` Spielern in Stufe 0.
+pub fn island_with(grade: &str, players: i64) -> Island {
+    use crate::island::testutil::{must_island, test_data};
+    let data = test_data();
+    let mut isl = must_island(&data, "opt", &[0]);
+    crate::island::set_grade(&mut isl, grade, true).expect("Grad");
+    for _ in 0..players {
+        crate::island::add_island_player(&mut isl, 0);
+    }
+    isl
 }
 
 pub fn remove_dead_enemies(w: &mut World) {
@@ -262,6 +278,23 @@ pub fn first_node(w: &World, kind: &str) -> usize {
     }
 }
 
-pub fn end_island(_players: i64) -> (Island, f64) {
-    panic!("RU15: end_island")
+/// Go: `endIsland` (boss_endboss_test.go): Insel mit der Kristallhöhle (Tiefe 4), `players` Spieler in Stufe 0, ohne
+/// Truppen, Gegner und Aggression; dazu der Ort des Baus.
+pub fn end_island(players: i64) -> (Island, f64) {
+    use crate::island::testutil::{standard_world, test_data};
+    let data = test_data();
+    let mut isl = crate::island::create_island(&data, &standard_world(&data), "endboss", &[4], 1.0, Default::default())
+        .expect("Insel");
+    for _ in 0..players {
+        crate::island::add_island_player(&mut isl, 0);
+    }
+    let w = &mut isl.stages[0];
+    w.troops.clear();
+    w.enemies.clear();
+    w.spawn_queue.clear();
+    w.aggression = None;
+    let Some(x) = crate::boss::endboss::lair_x(w) else {
+        panic!("Kristallhöhle ohne Bau");
+    };
+    (isl, x)
 }

@@ -278,15 +278,46 @@ fn validate_economy_ruestungsstufe() {
     }
 }
 
-/// Go: `TestSpielstandWirtschaftRundlauf` (save_economy_test.go) braucht Insel, `ToSave` und `FromIslandSave`.
-#[test]
-fn spielstand_wirtschaft_rundlauf() {}
-
-/// Go: `TestSpielstandWirtschaftFixture` (save_economy_test.go) braucht die Fixtures v1 bis v7 und `FromIslandSave`.
-#[test]
-fn spielstand_wirtschaft_fixture() {}
-
 /// Go: `TestSpielstandUnbekannteTruppenartFehler` (save_economy_test.go) braucht `FromIslandSave`, `is_fighter` und
 /// `profession_of`.
 #[test]
-fn spielstand_unbekannte_truppenart_fehler() {}
+fn spielstand_unbekannte_truppenart_fehler() {
+    use crate::island::testutil::{ISLAND_SPEED, standard_world, test_data};
+    use crate::island::{ISLAND_SAVE_VERSION, SaveTables, from_island_save, parse_island_save};
+    use crate::state::links::values_of;
+    let data = test_data();
+    let world = standard_world(&data);
+    let defaults = values_of(&world).expect("Basis-Wertesatz");
+    let t = SaveTables {
+        data: &data,
+        defaults: &defaults,
+        standard_world: &world,
+    };
+    let path = k3c_det::golden::testdata().join(format!("saves/v{ISLAND_SAVE_VERSION}/familie.json"));
+    let raw = std::fs::read_to_string(&path).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+    let fresh = || parse_island_save(&raw, &t).expect("Fixture lesen");
+    let cases = [
+        ("Art", "dragon", ""),
+        ("Landstreich", "vagrant", ""),
+        ("Beruf", "peasant", "wizard"),
+        ("Beruf Krieg", "warrior", "miner"),
+    ];
+    for (name, kind, profession) in cases {
+        let mut s = fresh();
+        s.stages[0].troops.push(TroopSave {
+            kind: kind.into(),
+            profession: profession.into(),
+            ..TroopSave::default()
+        });
+        match from_island_save(&t, &s, ISLAND_SPEED) {
+            Err(e) if e.to_string().starts_with("spielstand:") => {}
+            other => panic!("{name}: Fehler {:?}", other.map(|_| ())),
+        }
+    }
+    let mut s = fresh();
+    s.stages[0].armor_level = 9;
+    assert!(
+        from_island_save(&t, &s, ISLAND_SPEED).is_err(),
+        "Rüstungsstufe 9: kein Fehler"
+    );
+}
