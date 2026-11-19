@@ -69,7 +69,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | erledigt |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | aktiv |
 | RU43 | Optimierung nach Messung | geplant |
-| RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | geplant |
+| RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | aktiv |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | geplant |
 | RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | geplant |
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | geplant |
