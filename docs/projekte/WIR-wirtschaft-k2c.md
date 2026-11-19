@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | aktiv |
+| WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | erledigt |
 
 ## Nicht-Ziele
 

@@ -88,6 +88,8 @@ mod travel_tests;
 #[cfg(test)]
 mod values_b692_tests;
 #[cfg(test)]
+mod values_events_tests;
+#[cfg(test)]
 mod values_locked_tests;
 #[cfg(test)]
 mod values_merge_tests;

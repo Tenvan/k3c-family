@@ -10,29 +10,17 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
 | KS1 | REG | KSY | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | – | `aktiv/KS1-kampfregeln/` |
-| KS2 | SIM | KSY | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | – | `aktiv/KS2-portale-ausruestung/` |
-| KS3 | SIM | KSY | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | – | `aktiv/KS3-krone-gold/` |
-| KS4 | SIM | KSY | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | – | `aktiv/KS4-angriff-gruppen-general/` |
-| KS5 | CLI | KSY | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | – | `aktiv/KS5-kampf-anzeige/` |
-| KS6 | SIM, PAP | KSY | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | – | `aktiv/KS6-kampf-nachtraege/` |
-| KS7 | SIM | KSY | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | – | `aktiv/KS7-kampf-abnahme-feedback/` |
 | WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
 | FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
 | WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
-| WE4 | SIM, CLI, DEV | WZG | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | – | `aktiv/WE4-etappen-seekarte/` |
-| GS1 | REG, SIM, CLI, DEV | WZG | Geschichten je Welt und Insel in Kunstsprache | – | `aktiv/GS1-geschichten-je-welt/` |
-| GS2 | PAP, CLI | WZG | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | – | `aktiv/GS2-seekarte-papierschnitt/` |
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
-| WE5 | SIM, DEV | WZG | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | – | `aktiv/WE5-welt-format-nachtraege/` |
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
-| W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
-| WI1 | SIM | WIR | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | – | `aktiv/WI1-handwerker-gold/` |
 | RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
 | RU59 | SIM, INF | RSU | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | – | `aktiv/RU59-go-engine-ungenutztes-entfernen/` |
@@ -44,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU54 | CLI | RSU | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | – | `aktiv/RU54-smoke-befunde-pause-und-farben/` |
 | RU55 | CLI | RSU | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | – | `aktiv/RU55-look-k2c-im-rust-spiel/` |
 | RU56 | CLI | RSU | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | – | `aktiv/RU56-cheat-fenster-win32/` |
-| RU60 | INF, CLI, SIM | RSU | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | – | `aktiv/RU60-feature-paritaet-rust/` |
 | RU61 | CLI, SIM, PAP | RSU | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | – | `aktiv/RU61-rust-spiel-nachtraege-go-sprints/` |
 | RU62 | SIM, CLI | RSU | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | – | `aktiv/RU62-welt-features-si-rust/` |
 | RU63 | CLI | RSU | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | – | `aktiv/RU63-smoke-nachtraege-hud-und-menues/` |
@@ -56,7 +43,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 ### PC
 
-- W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
 - WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
 
 ### Xbox/TV
@@ -472,3 +458,16 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | `erledigt/RU30-spielschleife-teil-2/` |
 | RU32 | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | `erledigt/RU32-ende-zu-ende-test/` |
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | `erledigt/RU53-rust-skills-respec-inselwahl/` |
+| KS2 | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | `erledigt/KS2-portale-ausruestung/` |
+| KS3 | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | `erledigt/KS3-krone-gold/` |
+| KS4 | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | `erledigt/KS4-angriff-gruppen-general/` |
+| KS5 | Anzeige im Spiel: Portal-HP, Krone, Münzverlust, Schild, Banner, Auslöser | `erledigt/KS5-kampf-anzeige/` |
+| KS6 | Kampf-Nachträge: Engine-Export für Zahlstellen und Kronen, Papierschnitt-Assets für Kampf | `erledigt/KS6-kampf-nachtraege/` |
+| KS7 | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | `erledigt/KS7-kampf-abnahme-feedback/` |
+| WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | `erledigt/WE4-etappen-seekarte/` |
+| WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | `erledigt/WI1-handwerker-gold/` |
+| GS1 | Geschichten je Welt und Insel in Kunstsprache | `erledigt/GS1-geschichten-je-welt/` |
+| GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | `erledigt/GS2-seekarte-papierschnitt/` |
+| WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | `erledigt/WE5-welt-format-nachtraege/` |
+| W15 | Fackeln als Spielobjekt mit Licht in der Nacht | `erledigt/W15-fackeln-spielobjekt/` |
+| RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | `erledigt/RU60-feature-paritaet-rust/` |
