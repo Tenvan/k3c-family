@@ -113,7 +113,8 @@ impl Host for Game {
     }
 
     fn dev_session(&mut self) -> Option<&mut dyn DevSession> {
-        if !self.sim.active() {
+        // nur im laufenden Spiel, nicht unter einem Menü (wie die F-Tasten; F6 hebt sonst dessen Pause auf)
+        if !self.sim.active() || self.mode != Mode::Play {
             return None;
         }
         self.sim.dev_session()
@@ -129,6 +130,10 @@ impl Host for Game {
 
     fn dev_cmd(&mut self, c: DevCmd) -> Result<(), String> {
         self.dev_cmd_allowed(c)?;
+        if c == DevCmd::Save {
+            // ehrliches ack: der Speicherfehler kommt zurück statt nur als Hinweis im Spiel
+            return self.sim.save().map_err(|e| e.to_string());
+        }
         let mut set = self.frame.settings.clone();
         if c == DevCmd::Fullscreen {
             set.window = toggled_window(&set.window).to_string();

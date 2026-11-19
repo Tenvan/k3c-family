@@ -16,6 +16,11 @@ pub struct Throttle {
 }
 
 impl Throttle {
+    /// rejected nimmt den Zustand als nicht gesendet zurück (Warteschlange voll): er geht beim nächsten Mal erneut hinaus.
+    pub fn rejected(&mut self) {
+        self.sent = None;
+    }
+
     /// next liefert den Zustand, wenn seit der letzten Nachricht `MIN_GAP` vergangen ist und er sich geändert hat;
     /// `make` läuft nur bei abgelaufener Frist.
     pub fn next(&mut self, now: Instant, make: impl FnOnce() -> State) -> Option<State> {

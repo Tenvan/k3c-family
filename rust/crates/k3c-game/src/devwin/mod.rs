@@ -134,8 +134,11 @@ impl DevWin {
                     None => break,
                 }
             }
-            if !lost && let Some(st) = run.throttle.next(now, || host.state()) {
-                link.send_state(Msg::State(st));
+            if !lost
+                && let Some(st) = run.throttle.next(now, || host.state())
+                && !link.send_state(Msg::State(st))
+            {
+                run.throttle.rejected();
             }
         }
         if lost {
