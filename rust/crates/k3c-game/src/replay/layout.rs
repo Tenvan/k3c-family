@@ -25,7 +25,7 @@ pub fn cell_rect(win: Rectangle, n: usize, i: usize) -> Rectangle {
 /// Maßstab der Zelle in Bildpunkten je Unit (Go: `Scale`).
 #[allow(clippy::cast_precision_loss)]
 pub fn scale(c: &Cell) -> f64 {
-    c.world_rect().dy() as f64 / VIEW_UNITS
+    crate::game::layout::scale_n(c, 1)
 }
 
 /// Baut die Zellen der Plätze in `f` nach `dst` (Go: `Cells`); `Camera.x` ist 0, bis `Cameras::follow` es setzt.
@@ -39,7 +39,7 @@ pub fn cells(dst: &mut Vec<Cell>, win: Rectangle, f: &Frame) {
             rect: cell_rect(win, n, i),
             ..Cell::default()
         };
-        c.camera = new_camera(c.rect, 0.0, scale(&c));
+        c.camera = new_camera(c.rect, 0.0, crate::game::layout::scale_n(&c, n));
         dst.push(c);
     }
 }

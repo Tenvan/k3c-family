@@ -27,7 +27,7 @@ pub const ASPECT: f64 = 16.0 / 9.0;
 
 /// Sichtbare Breite einer Zelle in Units (Look-Profil: `world_share`).
 pub fn span_per_seat() -> f64 {
-    ASPECT * VIEW_UNITS / world_share()
+    ASPECT * k3c_data::look::current().view_units / world_share()
 }
 
 /// Ein Effekt-Auftrag des Takts: Slot und Pegel 0 … 1 vor der Bus-Lautstärke.

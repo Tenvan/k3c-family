@@ -22,6 +22,8 @@ pub mod levels;
 pub mod loading;
 pub mod loadscreen;
 #[cfg(test)]
+mod look_scale_tests;
+#[cfg(test)]
 mod look_tests;
 pub mod measure;
 pub mod measure_frames;

@@ -43,15 +43,45 @@ pub struct Look {
     pub bank_share: f64,
     /// Ufer in Spiel-px bei 32 px je Unit (nur wenn `bank_share` 0 ist).
     pub bank_px: f64,
+    /// Sichtbare Welthöhe über der Gehlinie in Units bei einer Ansicht (k2c: 5 M zu 121,5 px bei 32 px je Unit).
+    pub view_units: f64,
+    /// Maßstab einer Hälfte im Split-Screen gegen die ganze Ansicht (k2c 0,7, go 0,5 = nur die halbe Höhe).
+    pub split_scale: f64,
+    /// Mindestgröße des Monarchen in px (0 = aus); der Maßstab fällt nie darunter.
+    pub min_figure_px: f64,
 }
+
+/// Der Stand des Go-Spiels.
+const GO_LOOK: Look = Look {
+    world_share: 2.0 / 3.0,
+    bank_share: 0.0,
+    bank_px: 20.0,
+    view_units: 420.0 / 32.0,
+    split_scale: 0.5,
+    min_figure_px: 0.0,
+};
 
 impl Default for Look {
     fn default() -> Self {
-        Look {
-            world_share: 2.0 / 3.0,
-            bank_share: 0.0,
-            bank_px: 20.0,
-        }
+        GO_LOOK
+    }
+}
+
+/// Höhe des berittenen Monarchen in Units (121,5 Spiel-px bei 32 px je Unit): Maß M des Standards.
+pub const MONARCH_UNITS: f64 = 121.5 / 32.0;
+
+impl Look {
+    /// Maßstab (px je Unit) einer Zelle der Höhe `cell_h` px, wenn `n` Zellen übereinanderliegen: Höhe der Welt durch
+    /// `view_units`; bei mehreren Zellen mal `split_scale · n` (die natürliche Skalierung ist 1/n der Höhe), nie unter
+    /// der Mindestgröße des Monarchen.
+    pub fn cell_scale(&self, world_h: f64, n: usize) -> f64 {
+        let f = if n >= 2 { self.split_scale * n as f64 } else { 1.0 };
+        (world_h / self.view_units * f).max(self.min_figure_px / MONARCH_UNITS)
+    }
+
+    /// Sichtbare Welthöhe der kleinsten Ansicht in Units (Höhle: Decke).
+    pub fn view_top(&self) -> f64 {
+        self.view_units * (0.5 / self.split_scale).min(1.0)
     }
 }
 
@@ -65,7 +95,10 @@ fn builtin() -> BTreeMap<String, &'static Look> {
     let k2c = Look {
         world_share: 0.58,
         bank_share: 0.07,
-        ..Look::default()
+        view_units: 5.0 * MONARCH_UNITS,
+        split_scale: 0.7,
+        min_figure_px: 40.0,
+        ..GO_LOOK
     };
     BTreeMap::from([
         (K2C.to_string(), &*Box::leak(Box::new(k2c))),
@@ -118,11 +151,7 @@ fn pick(env: &str) -> &'static Look {
     }
 }
 
-static FALLBACK: Look = Look {
-    world_share: 2.0 / 3.0,
-    bank_share: 0.0,
-    bank_px: 20.0,
-};
+static FALLBACK: Look = GO_LOOK;
 
 thread_local! {
     static FORCED: Cell<Option<&'static Look>> = const { Cell::new(None) };
