@@ -88,6 +88,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU55 | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | aktiv |
 | RU56 | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | aktiv |
 | RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | aktiv |
+| RU64 | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | aktiv |
 | RU61 | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | geplant |
 | RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | geplant |
 | RU63 | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | aktiv |

@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU32
+- **Sprint:** RU64
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 

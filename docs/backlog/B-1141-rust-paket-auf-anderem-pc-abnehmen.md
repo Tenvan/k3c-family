@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** RU57
+- **Sprint:** RU64
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
 - **Spec:** freigegeben
@@ -66,3 +66,4 @@ siehe Anforderungen.
 ## Notizen
 
 Station 70–72 in `docs/messung/rust-abnahme.md`.
+**Teil Second Worker (Sprint RU64, Session RU64.7):** Der zweite Rechner kann das Paket in einen fremden Ordner kopieren und aus einer Konsole starten (Dateiliste, Start, `saves\\` neben der EXE, Beendigung ohne Fehler, Lizenzdateien vorhanden), nicht aber Doppelklick, Ton am Gerät oder die Entscheidungen. Ergebnis `docs/messung/abnahme-b-1141.md`. Doppelklick, Ton, Mini-PC und AC-02 bleiben bei Ralf; das Ticket bleibt offen.

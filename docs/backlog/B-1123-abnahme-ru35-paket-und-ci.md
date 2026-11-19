@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** RU35
+- **Sprint:** RU64
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -54,12 +54,12 @@ nicht relevant: rote Läufe werden eigene Tickets.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Sim: `sim_test` ohne Befund.
-- **AC-02** Balance: Balancing-Lauf ohne Befund.
+- **AC-01** Sim: `sim_test` ohne Befund (nur wenn 🧑 die Sperre aufgehoben hat, `K3C_SIM_ENTSPERRT=1`; sonst mit Grund als nicht gefahren vermerkt).
+- **AC-02** Balance: Balancing-Lauf ohne Befund (gleiche Einschränkung wie AC-01).
 - **AC-03** Gen: `check_run task:test` samt `gen:paper` und Golden grün.
 - **AC-04** Race: `check_run task:check:race` grün.
-- **AC-05** `task buildall` auf sauberem Stand legt `dist/k3c-game/` (Rust-EXE, data, Grafik) und `dist/k3c-game-go/` an; Rust-EXE startet. Der CI-Job `rust` des Branches (Paketprüfung EXE ≤ 40 MB) ist grün.
-- **AC-06** 🧑 Ralf: `dist/k3c-game/k3c-game.exe` startet am Zielgerät mit Grafik und Ton.
+- **AC-05** `task buildall` auf sauberem Stand legt `dist/k3c-game/` (Rust-EXE, data, Grafik) an; Rust-EXE startet. Das Go-Spiel baut seit RU58 nicht mehr: `dist/k3c-game-go/` entfällt. Der CI-Job `rust` des Branches (Paketprüfung EXE ≤ 40 MB) ist grün.
+- **AC-06** 🧑 Ralf: `dist/k3c-game/k3c-game.exe` startet am Zielgerät mit Grafik und Ton (B-1141).
 
 ## Offene Fragen
 
@@ -68,3 +68,4 @@ keine
 ## Notizen
 
 Lane: zweit (Second Worker). Hauptrechner hat Build, Start beider Pakete und den CI-Lauf geprüft, keine Sim-/Balance-/Gen-/Race-Läufe.
+**Go-Referenz (RU58, 2026-11-19):** Das Go-Spiel baut nicht mehr; Go-Vergleichswerte liegen in `docs/messung/go-referenz.json`, Go-Bilder in `testdata/rust/e2e/go/`, Bauquelle ist der Tag `go-referenz-final`. Umgesetzt in Sprint RU64 (Session RU64.2), Ergebnis `docs/messung/abnahme-b-1123.md`; AC-06 bleibt bei Ralf (B-1141).
