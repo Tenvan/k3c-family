@@ -375,6 +375,11 @@
     "manifest": "hg-wald-nah-v5/manifest.json"
   },
   {
+    "id": "hg-wald-wand",
+    "rig": "hintergrund",
+    "manifest": "hg-wald-wand/manifest.json"
+  },
+  {
     "id": "weltbild-britannien-klein",
     "rig": "hintergrund",
     "manifest": "weltbild-britannien-klein/manifest.json"

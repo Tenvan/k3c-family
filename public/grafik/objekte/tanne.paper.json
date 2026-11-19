@@ -10,20 +10,20 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-9 0L-5 -6L-4 -30L4 -30L5 -6L9 0Z",
+          "form": "M-20.5 0L-11.4 -13.6L-9.1 -68.2L9.1 -68.2L11.4 -13.6L20.5 0Z",
           "material": "holz"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-9 0L-5 -6L-4 -30L-1.5 -30L-1.5 0Z",
+          "form": "M-20.5 0L-11.4 -13.6L-9.1 -68.2L-3.4 -68.2L-3.4 0Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "falz",
-          "breite": 0.8,
-          "form": "M1.5 -4L1 -18",
+          "breite": 1.8,
+          "form": "M3.4 -9.1L2.3 -40.9",
           "material": "holz",
           "ton": "schatten"
         }
@@ -36,68 +36,68 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-38 -24L0 -82L38 -24L21.28 -27L0 -25L-21.28 -27Z",
+          "form": "M-86.4 -54.6L0 -186.5L86.4 -54.6L48.4 -61.4L0 -56.9L-48.4 -61.4Z",
           "material": "smaragd"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-38 -24L0 -82L-7.6 -25L-21.28 -27Z",
+          "form": "M-86.4 -54.6L0 -186.5L-17.3 -56.9L-48.4 -61.4Z",
           "material": "smaragd",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M0 -82L9.12 -55.9L22.8 -38.5L6.08 -47.2Z",
+          "form": "M0 -186.5L20.7 -127.2L51.9 -87.6L13.8 -107.4Z",
           "material": "smaragd",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-30 -58L0 -110L30 -58L16.8 -61L0 -59L-16.8 -61Z",
+          "form": "M-68.2 -131.9L0 -250.2L68.2 -131.9L38.2 -138.8L0 -134.2L-38.2 -138.8Z",
           "material": "smaragd"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-30 -58L0 -110L-6 -59L-16.8 -61Z",
+          "form": "M-68.2 -131.9L0 -250.2L-13.6 -134.2L-38.2 -138.8Z",
           "material": "smaragd",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M0 -110L7.2 -86.6L18 -71L4.8 -78.8Z",
+          "form": "M0 -250.2L16.4 -197L40.9 -161.5L10.9 -179.2Z",
           "material": "smaragd",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-22 -90L0 -138L22 -90L12.32 -93L0 -91L-12.32 -93Z",
+          "form": "M-50 -204.7L0 -313.9L50 -204.7L28 -211.5L0 -207L-28 -211.5Z",
           "material": "smaragd"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-22 -90L0 -138L-4.4 -91L-12.32 -93Z",
+          "form": "M-50 -204.7L0 -313.9L-10 -207L-28 -211.5Z",
           "material": "smaragd",
           "ton": "schatten"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M0 -138L5.28 -116.4L13.2 -102L3.52 -109.2Z",
+          "form": "M0 -313.9L12 -264.8L30 -232L8 -248.4Z",
           "material": "smaragd",
           "ton": "licht"
         }
       ],
-      "pivot": [0, -24]
+      "pivot": [0, -54.6]
     }
   ],
   "ausgabe": {
-    "hoehe_px": 360,
-    "rahmen": [-44, -142, 88, 146]
+    "hoehe_px": 374,
+    "rahmen": [-100, -323, 200, 332]
   },
   "animationen": {
     "idle": {

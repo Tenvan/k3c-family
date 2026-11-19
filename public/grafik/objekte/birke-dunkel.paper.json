@@ -1,0 +1,82 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "birke-dunkel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Dunkle Birke für die hintere Reihe des Waldes: Ton schatten, kühles Waldgrün, wenige Lagen.",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-11.2 0L-7.5 -10.7L-5.6 -142.7L5.6 -142.7L7.5 -10.7L11.2 0Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -153.4C0 -169.2 -13.4 -182 -30 -182C-46.6 -182 -60 -169.2 -60 -153.4C-60 -137.6 -46.6 -124.8 -30 -124.8C-13.4 -124.8 0 -137.6 0 -153.4Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M60 -160.5C60 -177.2 45.7 -190.8 28.1 -190.8C10.5 -190.8 -3.7 -177.2 -3.7 -160.5C-3.7 -143.7 10.5 -130.1 28.1 -130.1C45.7 -130.1 60 -143.7 60 -160.5Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M37.5 -192.6C37.5 -212.4 20.7 -228.3 0 -228.3C-20.7 -228.3 -37.5 -212.4 -37.5 -192.6C-37.5 -172.9 -20.7 -157 0 -157C20.7 -157 37.5 -172.9 37.5 -192.6Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M13.1 -139.1C13.1 -151.9 2.2 -162.3 -11.2 -162.3C-24.7 -162.3 -35.6 -151.9 -35.6 -139.1C-35.6 -126.3 -24.7 -116 -11.2 -116C2.2 -116 13.1 -126.3 13.1 -139.1Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M41.2 -132C41.2 -143.8 31.2 -153.4 18.7 -153.4C6.3 -153.4 -3.7 -143.8 -3.7 -132C-3.7 -120.1 6.3 -110.6 18.7 -110.6C31.2 -110.6 41.2 -120.1 41.2 -132Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -124.8]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 273,
+    "rahmen": [-68, -235, 134, 243]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}

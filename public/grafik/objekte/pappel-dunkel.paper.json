@@ -1,0 +1,64 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "pappel-dunkel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Dunkle Pappel für die hintere Reihe des Waldes: Ton schatten, kühles Waldgrün, wenige Lagen.",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-11.6 0L-6.3 -9.7L-4.5 -55.1L4.5 -55.1L6.3 -9.7L11.6 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M30.3 -136.1C30.3 -188 16.7 -230 0 -230C-16.7 -230 -30.3 -188 -30.3 -136.1C-30.3 -84.2 -16.7 -42.1 0 -42.1C16.7 -42.1 30.3 -84.2 30.3 -136.1Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M21.3 -142.6C21.3 -181.9 14.2 -213.8 5.4 -213.8C-3.5 -213.8 -10.7 -181.9 -10.7 -142.6C-10.7 -103.2 -3.5 -71.3 5.4 -71.3C14.2 -71.3 21.3 -103.2 21.3 -142.6Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -48.6]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 273,
+    "rahmen": [-43, -237, 86, 243]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 1.5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -1.5
+          }
+        }
+      ]
+    }
+  }
+}

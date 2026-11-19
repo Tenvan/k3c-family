@@ -82,3 +82,47 @@ describe('Hub-Gebäude-Maßstab (BB1.2)', () => {
     expect(f('geruest-1')).toBe(f('mauer'));
   });
 });
+
+// BB1.3: Waldbäume in drei Höhen je Art plus dunkler Variante, Waldwand im Mittelgrund (Standard § 2, § 5).
+const BAEUME: Record<string, { min: number; max: number; ids: string[] }> = {
+  tanne: { min: 4, max: 6, ids: ['tanne', 'tanne-mittel', 'tanne-hoch', 'tanne-dunkel'] },
+  pappel: { min: 2.5, max: 3.5, ids: ['pappel-niedrig', 'pappel', 'pappel-hoch', 'pappel-dunkel'] },
+  birke: { min: 2.5, max: 3.5, ids: ['birke', 'birke-mittel', 'birke-hoch', 'birke-dunkel'] },
+};
+
+// Höhe = rahmen-Höhe (Spiel-px) × skalierung ÷ M.
+const baumHoeheM = (id: string): number => {
+  const e = paper.objekte[id];
+  const faktor: number = paper.skalierung[`objekte/${id}`] ?? 1;
+  return (e.rahmen[3] * faktor) / M;
+};
+
+describe('Waldbäume und Waldwand (BB1.3)', () => {
+  for (const [art, k] of Object.entries(BAEUME)) {
+    it(`${art}: ${k.min}–${k.max} M, mindestens drei verschiedene Höhen`, () => {
+      const hoehen = k.ids.map((id) => {
+        const m = baumHoeheM(id);
+        expect(m, id).toBeGreaterThanOrEqual(k.min);
+        expect(m, id).toBeLessThanOrEqual(k.max);
+        return Math.round(m * 10);
+      });
+      expect(new Set(hoehen).size).toBeGreaterThanOrEqual(3);
+    });
+
+    it(`${art}: dunkle Variante im Katalog, alle Specs vorhanden`, () => {
+      expect(k.ids.some((id) => id.endsWith('-dunkel'))).toBe(true);
+      for (const id of k.ids) {
+        expect(paper.objekte[id], id).toBeDefined();
+        expect(() => json(`public/grafik/objekte/${id}.paper.json`), id).not.toThrow();
+      }
+    });
+  }
+
+  it('waldwand zeigt auf eine vorhandene Spec in hintergruende', () => {
+    const ziel: string = paper.waldwand;
+    expect(ziel).toMatch(/^hintergruende\//);
+    const spec = json(`public/grafik/${ziel}.paper.json`);
+    expect(spec.rig).toBe('hintergrund');
+    expect(spec.ausgabe.hoehe_px).toBe(480);
+  });
+});

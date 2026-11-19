@@ -449,6 +449,12 @@
       "stand.png": "fe0944c1f27b6f8ecb7958d0bca70cd903acf564e4434b81e93bec8077dc002d"
     }
   },
+  "hg-wald-wand": {
+    "renderKey": "e8ba3b8145f3db145398d94841c2cda37f96eaba984b12dc7c222a6053c188e7",
+    "dateien": {
+      "stand.png": "d4878051fc6a28058a4c8ab2d8f0a066e8c551e4a93f7cb8ef95b33ce7afd240"
+    }
+  },
   "weltbild-britannien-klein": {
     "renderKey": "dbc5995d1e08a8f7d7242c5edf7b019f9ba70d837669ed8110cb921feff520bb",
     "dateien": {

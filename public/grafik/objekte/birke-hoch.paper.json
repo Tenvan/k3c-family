@@ -1,0 +1,148 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "birke-hoch",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Hohe Birke (3,4 M).",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-10.3 0L-6.9 -12.1L-5.1 -161.7L5.1 -161.7L6.9 -12.1L10.3 0Z",
+          "material": "hermelin"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-10.3 0L-6.9 -12.1L-5.1 -161.7L-1.7 -161.7L-1.7 0Z",
+          "material": "hermelin",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -24.3L0.9 -27.3L1.7 -21.8Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -52.6L-0.9 -55.6L-1.7 -50.1Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -76.7L0.9 -79.9L1.7 -74.4Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -105.1L-0.9 -108.1L-1.7 -102.7Z",
+          "material": "linie"
+        },
+        {
+          "art": "flaeche",
+          "form": "M6 -133.4L0.9 -136.4L1.7 -130.9Z",
+          "material": "linie"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -173.9C0 -191.7 -12.3 -206.2 -27.5 -206.2C-42.7 -206.2 -55 -191.7 -55 -173.9C-55 -156 -42.7 -141.5 -27.5 -141.5C-12.3 -141.5 0 -156 0 -173.9Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-27.5 -206.2C-42.6 -206.2 -55 -191.6 -55 -173.9C-55 -156 -42.6 -141.5 -27.5 -141.5C-35.7 -157.7 -35.7 -190 -27.5 -206.2Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M55 -181.9C55 -200.9 41.9 -216.3 25.7 -216.3C9.7 -216.3 -3.4 -200.9 -3.4 -181.9C-3.4 -162.9 9.7 -147.5 25.7 -147.5C41.9 -147.5 55 -162.9 55 -181.9Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M25.7 -216.3C9.7 -216.3 -3.4 -200.7 -3.4 -181.9C-3.4 -163 9.7 -147.5 25.7 -147.5C17 -164.7 17 -199 25.7 -216.3Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M34.4 -218.2C34.4 -240.7 19 -258.7 0 -258.7C-19 -258.7 -34.4 -240.7 -34.4 -218.2C-34.4 -195.9 -19 -177.9 0 -177.9C19 -177.9 34.4 -195.9 34.4 -218.2Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -258.7C-18.9 -258.7 -34.4 -240.6 -34.4 -218.2C-34.4 -196 -18.9 -177.9 0 -177.9C-10.3 -198.1 -10.3 -238.5 0 -258.7Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -157.7C12 -172.2 2 -183.9 -10.3 -183.9C-22.6 -183.9 -32.6 -172.2 -32.6 -157.7C-32.6 -143.2 -22.6 -131.4 -10.3 -131.4C2 -131.4 12 -143.2 12 -157.7Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-10.3 -183.9C-22.6 -183.9 -32.6 -172.2 -32.6 -157.7C-32.6 -143.2 -22.6 -131.4 -10.3 -131.4C-17 -144.5 -17 -170.9 -10.3 -183.9Z",
+          "material": "smaragd",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M37.8 -149.6C37.8 -163 28.6 -173.9 17.2 -173.9C5.8 -173.9 -3.4 -163 -3.4 -149.6C-3.4 -136.1 5.8 -125.3 17.2 -125.3C28.6 -125.3 37.8 -136.1 37.8 -149.6Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M17.2 -173.9C5.9 -173.9 -3.4 -162.9 -3.4 -149.6C-3.4 -136.3 5.9 -125.3 17.2 -125.3C11 -137.4 11 -161.7 17.2 -173.9Z",
+          "material": "smaragd",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [0, -141.5]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 310,
+    "rahmen": [-62, -266, 123, 275]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}
