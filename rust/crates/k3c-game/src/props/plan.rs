@@ -116,6 +116,9 @@ pub struct Planner {
     pub texts: Texts,
     /// Monarch der gezeichneten Zelle (Preis der Zahlstellen), `None` = keiner
     pub viewer: Option<usize>,
+    /// Orte der Doppel-Truhen, die zuletzt gezeichnet wurden (höchstens 16): beim Aufheben ist die Truhe aus der Welt
+    /// verschwunden, das Offen-Bild soll trotzdem das doppelte sein (RU62.4)
+    pub double_seen: Vec<f64>,
 }
 
 impl Planner {
@@ -129,6 +132,7 @@ impl Planner {
             roots: Vec::new(),
             texts: Texts::default(),
             viewer: None,
+            double_seen: Vec::new(),
         }
     }
 

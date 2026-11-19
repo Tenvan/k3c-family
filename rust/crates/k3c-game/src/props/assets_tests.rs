@@ -169,4 +169,28 @@ fn fracht_objekte_sind_in_paper_json_zugeordnet() {
     for id in ["coins", "crate"].iter().filter_map(|k| load_asset(k)) {
         assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
     }
+    for id in ["doppel-truhe", "doppel-truhe-offen"] {
+        assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
+    }
+}
+
+/// RU62.2/RU62.4: Die Fracht- und Truhen-Objekte stehen in der Ladeliste jedes Bioms, sonst fehlt ihr Sheet und das Spiel
+/// zeichnet nur den Platzhalter.
+#[test]
+fn fracht_und_doppel_truhe_werden_geladen() {
+    let wald = level_assets("forest");
+    for id in [
+        "ladeplatz-muenzen",
+        "ladeplatz-truppen",
+        "ladeplatz-material",
+        "fracht-beutel",
+        "fracht-kiste",
+        "doppel-truhe",
+        "doppel-truhe-offen",
+    ] {
+        assert!(
+            wald.iter().any(|a| a == &format!("objekte/{id}")),
+            "{id} fehlt in der Ladeliste"
+        );
+    }
 }

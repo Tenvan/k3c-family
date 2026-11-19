@@ -67,6 +67,8 @@ mod mod_tests;
 #[cfg(test)]
 mod nature_tests;
 #[cfg(test)]
+mod plan_chest_tests;
+#[cfg(test)]
 mod plan_combat_tests;
 #[cfg(test)]
 mod plan_sites_cargo_tests;

@@ -37,8 +37,8 @@ pub const BUILDING_ASSETS: [&str; 25] = [
 ];
 
 /// `OBJECT_ASSETS`: Objekte in jedem Biom (Felsen, Erz, Adern mit den Kristallfarben, Abbau-Schilder, Plantage,
-/// Portal, Ausgang, Truhen, Stern).
-pub const OBJECT_ASSETS: [&str; 19] = [
+/// Portal, Ausgang, Truhen, Stern, Ladeplätze, Fracht, Doppel-Truhe).
+pub const OBJECT_ASSETS: [&str; 26] = [
     "felsen",
     "felsen-b",
     "felsen-c",
@@ -58,6 +58,14 @@ pub const OBJECT_ASSETS: [&str; 19] = [
     "truhe",
     "truhe-offen",
     "stern",
+    // RU62.2 Fracht am Steg und an Deck, RU62.4 Doppel-Truhe
+    "ladeplatz-muenzen",
+    "ladeplatz-truppen",
+    "ladeplatz-material",
+    "fracht-beutel",
+    "fracht-kiste",
+    "doppel-truhe",
+    "doppel-truhe-offen",
 ];
 
 /// `nature_assets`: Natur je Look (true = 1 Wald, sonst Höhle und Mine).
