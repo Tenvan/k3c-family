@@ -14,8 +14,11 @@ import (
 
 // Pflichtdateien des Rust-Pakets (relativ zum Paketordner).
 var requiredFiles = []string{
-	"k3c-game.exe", "README.txt", "LICENSE", "LICENSE-ASSETS", "LIZENZEN.txt", "public/schrift/LICENSE",
+	"k3c-game.exe", "k3c-devwin.exe", "README.txt", "LICENSE", "LICENSE-ASSETS", "LIZENZEN.txt", "public/schrift/LICENSE",
 }
+
+// maxDevwinBytes ist die größte erlaubte Fenster-EXE (RU56, B-1135: Schwelle 5 MB, kein GUI-Framework).
+const maxDevwinBytes = 5 << 20
 
 // requiredDirs müssen mindestens eine Datei enthalten; das Suffix (falls nicht leer) muss auf mindestens eine zutreffen.
 var requiredDirs = []struct{ dir, suffix string }{
@@ -99,6 +102,9 @@ func missing(files map[string]int64, maxExeBytes int64) []string {
 	}
 	if size := files["k3c-game.exe"]; maxExeBytes > 0 && size > maxExeBytes {
 		mangel = append(mangel, fmt.Sprintf("k3c-game.exe zu groß: %.1f MiB, erlaubt %.1f MiB", float64(size)/(1<<20), float64(maxExeBytes)/(1<<20)))
+	}
+	if size := files["k3c-devwin.exe"]; size > maxDevwinBytes {
+		mangel = append(mangel, fmt.Sprintf("k3c-devwin.exe zu groß: %.1f MiB, erlaubt %.1f MiB", float64(size)/(1<<20), float64(maxDevwinBytes)/(1<<20)))
 	}
 	for _, r := range requiredDirs {
 		found := false

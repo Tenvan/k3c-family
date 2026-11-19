@@ -11,6 +11,7 @@ func fullPackage() fstest.MapFS {
 	f := func(s string) *fstest.MapFile { return &fstest.MapFile{Data: []byte(s)} }
 	return fstest.MapFS{
 		"k3c-game.exe":                           f("exe"),
+		"k3c-devwin.exe":                         f("exe"),
 		"README.txt":                             f("Start"),
 		"LICENSE":                                f("l"),
 		"LICENSE-ASSETS":                         f("la"),
@@ -27,7 +28,7 @@ func joined(m []string) string { return strings.Join(m, "\n") }
 
 func TestPruefeVollstaendig(t *testing.T) {
 	m, n := pruefe(fullPackage(), 40<<20, false)
-	if len(m) != 0 || n != 10 {
+	if len(m) != 0 || n != 11 {
 		t.Fatalf("Mängel = %v, Dateien = %d", m, n)
 	}
 }
@@ -68,6 +69,20 @@ func TestPruefeZuGrosseExeUndLeereLizenzen(t *testing.T) {
 		if !strings.Contains(got, want) {
 			t.Errorf("Mängel enthalten %q nicht:\n%s", want, got)
 		}
+	}
+}
+
+func TestPruefeFensterExe(t *testing.T) {
+	p := fullPackage()
+	p["k3c-devwin.exe"] = &fstest.MapFile{Data: make([]byte, 6<<20)}
+	got := joined(func() []string { m, _ := pruefe(p, 40<<20, false); return m }())
+	if !strings.Contains(got, "k3c-devwin.exe zu groß: 6.0 MiB, erlaubt 5.0 MiB") {
+		t.Errorf("zu große Fenster-EXE nicht gemeldet:\n%s", got)
+	}
+	delete(p, "k3c-devwin.exe")
+	got = joined(func() []string { m, _ := pruefe(p, 40<<20, false); return m }())
+	if !strings.Contains(got, "Pflichtdatei fehlt: k3c-devwin.exe") {
+		t.Errorf("fehlende Fenster-EXE nicht gemeldet:\n%s", got)
 	}
 }
 

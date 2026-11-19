@@ -214,9 +214,35 @@ func cmdLizenzen(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	// Spiel und Cheat-Fenster (RU56, B-1135) liegen im Paket; das Fenster bindet das `windows`-Crate
 	pkgs, err := linkedPackages(m, "k3c-game")
 	if err != nil {
 		return err
 	}
+	win, err := linkedPackages(m, "k3c-devwin")
+	if err != nil {
+		return err
+	}
+	pkgs = mergePackages(pkgs, win)
 	return render(out, strings.TrimRight(strings.ReplaceAll(string(head), "\r", ""), "\n"), pkgs, licenseFiles)
+}
+
+// mergePackages vereinigt zwei sortierte Listen ohne doppelte Name-Version-Paare, sortiert nach Name, Version.
+func mergePackages(a, b []pkg) []pkg {
+	seen := map[string]bool{}
+	var res []pkg
+	for _, p := range append(append([]pkg{}, a...), b...) {
+		k := p.Name + " " + p.Version
+		if !seen[k] {
+			seen[k] = true
+			res = append(res, p)
+		}
+	}
+	sort.Slice(res, func(i, j int) bool {
+		if res[i].Name != res[j].Name {
+			return res[i].Name < res[j].Name
+		}
+		return res[i].Version < res[j].Version
+	})
+	return res
 }

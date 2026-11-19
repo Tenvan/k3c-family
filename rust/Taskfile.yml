@@ -64,9 +64,16 @@ tasks:
     cmds:
       - cargo build --release -p k3c-game
 
+  # devwin:exe: das Cheat-Fenster (RU56, B-1135) als eigene Release-EXE neben dem Spiel; F4 im Spiel startet sie.
+  devwin:exe:
+    desc: "Cheat-Fenster k3c-devwin.exe bauen (cargo build --release -p k3c-devwin) nach rust/target/release/"
+    dir: '{{.ROOT_DIR}}/rust'
+    cmds:
+      - cargo build --release -p k3c-devwin
+
   game:build:
-    desc: "Rust-Spiel bauen: Release-EXE, Papierschnitt-Grafik (gen:paper) und das Paket (EXE, data, Grafik, Ton, Schrift, Rig-Teile) in den Paketordner (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
-    deps: [game:exe, ':gen:paper', ':tmp']
+    desc: "Rust-Spiel bauen: Release-EXE, Cheat-Fenster, Papierschnitt-Grafik (gen:paper) und das Paket (EXE, data, Grafik, Ton, Schrift, Rig-Teile) in den Paketordner (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
+    deps: [game:exe, devwin:exe, ':gen:paper', ':tmp']
     cmds:
       - task: game:dist
 
@@ -86,6 +93,8 @@ tasks:
         cd native/k3c-game && go run ./cmd/sync $args
         # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
         rm -f "$p"/data/*.go "$p"/data/*.md "$p"/data/*/*.md
+      # Cheat-Fenster neben die Spiel-EXE (RU56, B-1135)
+      - cp "{{.ROOT_DIR}}/rust/target/release/k3c-devwin.exe" "{{.PAKET}}/k3c-devwin.exe"
       # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates
       # (tools/rustpaket, `cargo metadata`); erst in eine .tmp-Datei, damit ein Abbruch keine halbe Datei hinterlässt
       - 'go run ./tools/rustpaket lizenzen -exe "{{.PAKET}}/k3c-game.exe" -rust rust > "{{.PAKET}}/LIZENZEN.txt.tmp" && mv "{{.PAKET}}/LIZENZEN.txt.tmp" "{{.PAKET}}/LIZENZEN.txt"'
