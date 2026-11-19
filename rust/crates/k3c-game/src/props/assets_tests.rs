@@ -169,7 +169,7 @@ fn fracht_objekte_sind_in_paper_json_zugeordnet() {
     for id in ["coins", "crate"].iter().filter_map(|k| load_asset(k)) {
         assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
     }
-    for id in ["doppel-truhe", "doppel-truhe-offen"] {
+    for id in ["doppel-truhe", "doppel-truhe-offen", "gatter"] {
         assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
     }
     // RU62.7: die Wolkenbank der Taifun-Vorboten ist zugeordnet und wird mit jedem Level geladen
@@ -199,6 +199,7 @@ fn fracht_und_doppel_truhe_werden_geladen() {
         "fracht-kiste",
         "doppel-truhe",
         "doppel-truhe-offen",
+        "gatter",
     ] {
         assert!(
             wald.iter().any(|a| a == &format!("objekte/{id}")),

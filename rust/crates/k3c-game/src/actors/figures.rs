@@ -55,6 +55,8 @@ pub struct Figure {
     pub pending: bool,
     /// Monarch auf dem Reittier des Katalogs (für das Anlegen des Actors)
     pub mounted: bool,
+    /// Rig-Pfad des Reittiers des Monarchen (leer = Katalog-Standard, RU62.9)
+    pub mount: String,
     pub pose: Pose,
     pub left: bool,
     pub shift: f64,
@@ -134,6 +136,13 @@ impl Actors {
                 id: p.id,
             };
             let mut fg = self.figure(k, look, true);
+            let mount = self.cat.as_ref().map_or("", |c| c.mount_of(&p.mount));
+            if fg.mount != mount {
+                fg.mount = mount.to_string();
+                fg.actor = None;
+                fg.broken = false;
+                fg.pending = !fg.look.sheet && self.lib.is_some();
+            }
             let prev = MonarchFrame {
                 known: fg.known,
                 ..MonarchFrame::default()

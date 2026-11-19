@@ -65,6 +65,8 @@ pub struct Catalog {
     pub players: Vec<Look>,
     /// Reittier des Monarchen `reittiere/<id>`
     pub mount: String,
+    /// Welt-Reittiere nach Katalog-ID (`mounts` in data/paper.json): `reittiere/<id>` (RU62.9)
+    pub world_mounts: BTreeMap<String, String>,
     /// Referenz-Tempo des Reittiers (Units/s) für die Gangart
     pub mount_ref: f64,
     /// nach Troop.Kind
@@ -197,6 +199,11 @@ pub fn load_catalog_from(read: &dyn Fn(&str) -> Result<String, Fehler>) -> Resul
         }
     };
     c.mount = format!("reittiere/{mount}");
+    c.world_mounts = p
+        .mounts
+        .iter()
+        .map(|(k, v)| (k.clone(), format!("reittiere/{v}")))
+        .collect();
     for (i, r) in p.players.iter().enumerate() {
         match p.figures.players.get(i) {
             Some(s) => c.players.push(look(r, s)),
@@ -305,6 +312,14 @@ impl Catalog {
     pub fn player(&self, i: i64) -> Look {
         let n = self.players.len() as i64;
         self.players[(((i % n) + n) % n) as usize].clone()
+    }
+
+    /// `mount_of`: Rig-Pfad des Reittiers eines Monarchen mit Welt-Reittier `id` (leer oder unbekannt: das Standard-Pferd).
+    pub fn mount_of(&self, id: &str) -> &str {
+        self.world_mounts
+            .get(id)
+            .filter(|_| !id.is_empty())
+            .unwrap_or(&self.mount)
     }
 
     /// Enemy liefert den Look eines Gegners bzw. Bosses (`None`: unbekannte Art).

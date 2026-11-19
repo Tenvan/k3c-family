@@ -207,3 +207,35 @@ fn unknown_kind_and_pause() {
     d.listen(&f);
     assert!(d.now == 1.0, "Zeit läuft in der Pause: {}", d.now);
 }
+
+// RU62.9 (B-1000): Jeder Monarch reitet das Reittier aus seinem Zustand, auch zwei verschiedene Tiere nebeneinander;
+// ohne gekauftes Tier das Standard-Pferd.
+#[test]
+fn each_monarch_rides_the_mount_of_its_state() {
+    let mut d = new_test_drawer();
+    let w = SimWorld {
+        players: vec![
+            Player {
+                mount: "camel".to_string(),
+                ..player(1, 0, 10.0)
+            },
+            Player {
+                mount: "sengokuHorse".to_string(),
+                ..player(2, 1, 12.0)
+            },
+            player(3, 2, 14.0),
+        ],
+        ..SimWorld::default()
+    };
+    d.listen(&frame_of(0.0, &w));
+    let cat = d.cat.as_ref().unwrap().clone();
+    let m = |id| d.figs[&key(Class::Player, id)].mount.clone();
+    assert_eq!(m(1), "reittiere/kamel");
+    assert_eq!(m(2), "reittiere/rappe");
+    assert_eq!(m(3), cat.mount, "ohne Kauf das Standard-Pferd");
+    // der Kauf im nächsten Bild wechselt das Tier
+    let mut w2 = w.clone();
+    w2.players[2].mount = "camel".to_string();
+    d.listen(&frame_of(0.1, &w2));
+    assert_eq!(d.figs[&key(Class::Player, 3)].mount, "reittiere/kamel");
+}

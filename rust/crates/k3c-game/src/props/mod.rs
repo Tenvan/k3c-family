@@ -46,6 +46,7 @@ pub mod plan_entities;
 pub mod plan_objects;
 pub mod plan_sites;
 pub mod plan_sites_cargo;
+pub mod plan_sites_gate;
 pub mod plan_sites_marks;
 pub mod simview;
 pub mod sites;
@@ -72,6 +73,8 @@ mod plan_chest_tests;
 mod plan_combat_tests;
 #[cfg(test)]
 mod plan_sites_cargo_tests;
+#[cfg(test)]
+mod plan_sites_gate_tests;
 #[cfg(test)]
 mod plan_sites_tests;
 #[cfg(test)]

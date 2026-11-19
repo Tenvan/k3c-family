@@ -37,8 +37,8 @@ pub const BUILDING_ASSETS: [&str; 25] = [
 ];
 
 /// `OBJECT_ASSETS`: Objekte in jedem Biom (Felsen, Erz, Adern mit den Kristallfarben, Abbau-Schilder, Plantage,
-/// Portal, Ausgang, Truhen, Stern, Ladeplätze, Fracht, Doppel-Truhe).
-pub const OBJECT_ASSETS: [&str; 26] = [
+/// Portal, Ausgang, Truhen, Stern, Ladeplätze, Fracht, Doppel-Truhe, Reittier-Gatter).
+pub const OBJECT_ASSETS: [&str; 27] = [
     "felsen",
     "felsen-b",
     "felsen-c",
@@ -66,6 +66,7 @@ pub const OBJECT_ASSETS: [&str; 26] = [
     "fracht-kiste",
     "doppel-truhe",
     "doppel-truhe-offen",
+    "gatter",
 ];
 
 /// Die Wolkenbank der Vorboten (Gruppe `hintergruende`, `data/paper.json › wetter`).
