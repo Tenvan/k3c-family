@@ -59,6 +59,9 @@ pub struct Flut {
     /// Breite der überfluteten Randzone je Rand in Units.
     #[serde(rename = "floodUnits")]
     pub flood_units: i64,
+    /// Tempo in Units je Sekunde, mit dem Einheiten aus der Randzone laufen (muss über dem schnellsten Bodentempo liegen).
+    #[serde(rename = "runUnits")]
+    pub run_units: f64,
 }
 
 impl WeatherFile {
@@ -96,8 +99,10 @@ fn validate(f: &WeatherFile) -> Result<(), String> {
         return Err("taifun.speedFactor und taifun.rangeFactor müssen größer 0 sein".to_string());
     }
     let fl = &f.flut;
-    if fl.every_nights <= 0 || fl.first_night <= 0 || fl.flood_units <= 0 {
-        return Err("flut.everyNights, flut.firstNight und flut.floodUnits müssen größer 0 sein".to_string());
+    if fl.every_nights <= 0 || fl.first_night <= 0 || fl.flood_units <= 0 || !positive(fl.run_units) {
+        return Err(
+            "flut.everyNights, flut.firstNight, flut.floodUnits und flut.runUnits müssen größer 0 sein".to_string(),
+        );
     }
     Ok(())
 }
@@ -134,6 +139,7 @@ mod tests {
             ("\"speedFactor\": 0.7", "\"speedFactor\": 0"),
             ("\"rangeFactor\": 0.7", "\"rangeFactor\": 0"),
             ("\"floodUnits\": 24", "\"floodUnits\": 0"),
+            ("\"runUnits\": 20", "\"runUnits\": 0"),
             (
                 "\"firstNight\": 3,\n    \"speedFactor\"",
                 "\"firstNight\": 0,\n    \"speedFactor\"",

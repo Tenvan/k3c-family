@@ -89,7 +89,7 @@ Keine. Freigegebene Defaults (autonom, Claude, 2026-11-19): (1) keine REG-Sessio
 | RU62.3 | `RU62.3-sim-doppel-truhe.md` | Umsetzung | autonom | fertig |
 | RU62.4 | `RU62.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | offen |
 | RU62.5 | `RU62.5-sim-wetter-kern-taifun.md` | Umsetzung | autonom | fertig |
-| RU62.6 | `RU62.6-sim-flut.md` | Umsetzung | autonom | offen |
+| RU62.6 | `RU62.6-sim-flut.md` | Umsetzung | autonom | fertig |
 | RU62.7 | `RU62.7-anzeige-wetter.md` | Umsetzung | autonom | offen |
 | RU62.8 | `RU62.8-sim-reittiere.md` | Umsetzung | autonom | offen |
 | RU62.9 | `RU62.9-anzeige-reittiere.md` | Umsetzung | autonom | offen |

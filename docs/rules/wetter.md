@@ -18,7 +18,7 @@ Umsetzung: Regeltext SI3.1, Engine SI3.2 (`engine/sim`), Darstellung B-999, Ausw
 | Welt | Wetterart | Stand |
 |---|---|---|
 | `sengoku` | `taifun` | Rust RU62.5 (Kern, Zeitplan, Taifun) |
-| `nil` | `flut` | Rust: Zeitplan RU62.5, Wirkung RU62.6 |
+| `nil` | `flut` | Rust: Zeitplan RU62.5, Wirkung RU62.6 (`weather/flood.rs`) |
 | `standard` | keins | – |
 | `britannien` | keins | – |
 | Polar (Welt gibt es noch nicht) | `schneesturm` | **geplant**, kommt mit der Polar-Welt (§ 4) |
@@ -38,7 +38,7 @@ Umsetzung: Regeltext SI3.1, Engine SI3.2 (`engine/sim`), Darstellung B-999, Ausw
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
 | **Wirkung nur an der Oberfläche** (Stufe mit Tiefe 0). Unter Tage gibt es keine Wirkung, der Zeitplan läuft trotzdem mit. Mit zwei Spielern auf verschiedenen Stufen sind nur Monarch und Einheiten der Oberfläche betroffen. | Wetter gehört unter freien Himmel; Spieler in Höhlen bleiben unberührt. | – | Go-Test: zwei Spieler auf verschiedenen Stufen |
-| **Zustand für die Darstellung:** Der Zustand nennt `weather` mit **Art** und **Phase** (`forecast`, `active`) sowie bei Flut die **gesperrten Bereiche**, damit B-999 zeichnen kann. | Darstellung (B-999) braucht keine eigene Rechnung. | `docs/protocol.md` | – |
+| **Zustand für die Darstellung:** Der Zustand nennt `weather` mit **Art** und **Phase** (`forecast`, `active`) sowie bei Flut die **gesperrten Bereiche** (`floodZones`, Liste von `{from, to}` in Units, nur in der aktiven Flut an der Oberfläche; berechnet, nicht im Spielstand), damit B-999 zeichnen kann. | Darstellung (B-999) braucht keine eigene Rechnung. | `docs/protocol.md` | – |
 
 ### 3.1 Taifun (`sengoku`)
 
@@ -52,8 +52,8 @@ Umsetzung: Regeltext SI3.1, Engine SI3.2 (`engine/sim`), Darstellung B-999, Ausw
 | Regel | Begründung | Daten | Zielkorridor |
 |---|---|---|---|
 | **Randzonen unter Wasser:** An **beiden Rändern der Insel** stehen `floodUnits` Units (Start 24) unter Wasser und sind für **alle Bodeneinheiten** unpassierbar. Die Flut nimmt immer die beiden Randzonen; Höhen kennt die Welt nicht. | „Setzt tiefe Abschnitte unter Wasser und sperrt Wege“, ohne neues Höhenmodell. | `data/weather.json` › `flut.floodUnits` | – |
-| **Wer bei Beginn in der Zone steht, läuft heraus** und kommt nicht zurück, bis die Flut vorbei ist. | Niemand wird eingeschlossen oder verdrängt. | – | – |
-| **Portale in der Zone** halten ihre Gegner bis zum Morgen: Gegner aus überfluteten Portalen kommen erst nach der Flut. | Sonst liefen Gegner durch gesperrte Zonen. | – | – |
+| **Wer bei Beginn in der Zone steht, läuft heraus** (mit `runUnits` Units je Sekunde, Start 20, schneller als jedes Bodentempo) und kommt nicht zurück, bis die Flut vorbei ist. Gegner mit `ignoresWalls` (Flieger) ignorieren die Flut. | Niemand wird eingeschlossen oder verdrängt. | `data/weather.json` › `flut.runUnits` | – |
+| **Portale in der Zone** halten ihre Gegner bis zum Morgen: Gegner aus überfluteten Portalen kommen erst nach der Flut: ihre Spawns bleiben in der Warteschlange, solange das Portal im Wasser steht; bei Tagesanbruch gilt die übliche Regel (die Nachtwelle endet, Reste verfallen). | Sonst liefen Gegner durch gesperrte Zonen. | – | – |
 | **Gebäude nehmen keinen Schaden.** | Wetter soll Wege verändern, nicht Burgen zerstören. | – | – |
 | **Schmale Insel:** Ist die Insel schmaler als zwei Flutzonen plus Hub, endet die Zone vor dem Burg-Radius (`castleRadiusUnits`). | Die Burg bleibt immer erreichbar. | `data/hub.json` | – |
 

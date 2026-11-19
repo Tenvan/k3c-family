@@ -119,13 +119,15 @@ pub fn spawn_with(
 
 /// Go: `stepSpawns`: Gegner aus der Warteschlange, deren Zeit gekommen ist.
 pub fn step_spawns(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
-    if !w.spawn_queue.iter().any(|s| s.at <= w.time) {
+    // RU62.6: Portale in der Flut-Zone halten ihre Gegner (sie bleiben in der Warteschlange)
+    let due_now = |s: &QueuedSpawn| s.at <= w.time && !crate::weather::flood::in_zone(&w.flood_zones, s.x);
+    if !w.spawn_queue.iter().any(due_now) {
         return; // meistens nichts fällig: keine neuen Listen je Tick
     }
     let time = w.time;
     let (due, rest): (Vec<QueuedSpawn>, Vec<QueuedSpawn>) = std::mem::take(&mut w.spawn_queue)
         .into_iter()
-        .partition(|s| s.at <= time);
+        .partition(|s| s.at <= time && !crate::weather::flood::in_zone(&w.flood_zones, s.x));
     w.spawn_queue = rest;
     for s in due {
         spawn_with(w, v, &s.kind, s.x, s.hp_factor, s.damage_factor, isl);

@@ -38,3 +38,16 @@ pub struct WeatherState {
     #[serde(rename = "phase")]
     pub phase: WeatherPhase,
 }
+
+/// Ein überfluteter Bereich der Flut (RU62.6): Welt-X in Units, von `from` bis `to`, am Inselrand; nur während der aktiven
+/// Flut an der Oberfläche gesetzt (`World::flood_zones`).
+#[derive(Debug, Clone, Copy, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct FloodZone {
+    /// Anfang in Units.
+    #[serde(rename = "from")]
+    pub from: f64,
+    /// Ende in Units.
+    #[serde(rename = "to")]
+    pub to: f64,
+}

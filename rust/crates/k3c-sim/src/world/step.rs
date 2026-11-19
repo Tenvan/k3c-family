@@ -61,6 +61,7 @@ pub fn step(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&mut Isla
     if w.castle.hp <= 0.0 {
         castle_fallen(w, isl);
     }
+    crate::weather::flood::apply(w, dt); // RU62.6: Flut sperrt die Randzonen (Bodeneinheiten laufen heraus)
     step_travel(w, dt);
     cap_events(w);
 }

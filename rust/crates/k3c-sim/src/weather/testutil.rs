@@ -12,6 +12,13 @@ pub fn taifun_data() -> Data {
     data
 }
 
+/// Die Daten mit der Flut in der Welt `test` (Rhythmus, Zonenbreite und Lauftempo aus `data/weather.json`).
+pub fn flood_data() -> Data {
+    let mut data = test_data();
+    data.weather.worlds.insert("test".to_string(), "flut".to_string());
+    data
+}
+
 /// Eine Insel der Welt `test` (Stufe 0 Tiefe 0, Stufe 1 Tiefe 1) mit `n` Spielern.
 pub fn weather_island(data: &Data, n: usize) -> Island {
     let (world, _) = test_islands(data);

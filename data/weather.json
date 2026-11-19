@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "notes": "Wetter je Welt (RU62.5, B-969, docs/rules/wetter.md). Neue Datei, weil die Welt-Dateien kein Feld `weather` kennen (Go lehnt unbekannte Felder bis RU41 ab). `worlds` ordnet einer Welt genau eine Art zu und ist der Schalter: Welten ohne Eintrag (standard, britannien) haben kein Wetter. Alle Zahlen vorläufig (Balancing später). Flut folgt in RU62.6, Schneesturm mit der Polar-Welt.",
+  "notes": "Wetter je Welt (RU62.5, B-969, docs/rules/wetter.md). Neue Datei, weil die Welt-Dateien kein Feld `weather` kennen (Go lehnt unbekannte Felder bis RU41 ab). `worlds` ordnet einer Welt genau eine Art zu und ist der Schalter: Welten ohne Eintrag (standard, britannien) haben kein Wetter. Alle Zahlen vorläufig (Balancing später). Flut seit RU62.6 (runUnits = Tempo in Units je Sekunde, mit dem Einheiten aus der Randzone laufen), Schneesturm mit der Polar-Welt.",
   "worlds": {
     "sengoku": "taifun",
     "nil": "flut"
@@ -14,6 +14,7 @@
   "flut": {
     "everyNights": 5,
     "firstNight": 3,
-    "floodUnits": 24
+    "floodUnits": 24,
+    "runUnits": 20
   }
 }
