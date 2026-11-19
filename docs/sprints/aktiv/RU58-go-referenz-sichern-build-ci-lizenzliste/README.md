@@ -84,7 +84,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19; Ralf kann widerspre
 | RU58.2 | `RU58.2-go-referenzbilder-e2e.md` | Umsetzung | autonom | offen |
 | RU58.3 | `RU58.3-go-referenz-messwerte-farben-pause.md` | Umsetzung | autonom | offen |
 | RU58.4 | `RU58.4-go-spiel-aus-build-ci-release.md` | Umsetzung | autonom | offen |
-| RU58.5 | `RU58.5-workbench-vitest-ci-rot.md` | Umsetzung | autonom | offen |
+| RU58.5 | `RU58.5-workbench-vitest-ci-rot.md` | Umsetzung | autonom | fertig |
 | RU58.6 | `RU58.6-lizenzliste-rust-crates.md` | Umsetzung | autonom | offen |
 | RU58.7 | `RU58.7-review.md` | Review | autonom | offen |
 
