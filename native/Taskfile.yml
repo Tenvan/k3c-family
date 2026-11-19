@@ -14,9 +14,9 @@ vars:
   # Natives Spiel (Sprint NG1, B-792): eigenes Go-Modul unter native/k3c-game, bindet k3c und k3c-rig per replace ein
   GAME: '{{.ROOT_DIR}}/native/k3c-game'
   GAME_EXE: '{{.ROOT_DIR}}/native/k3c-game/bin/k3c-game.exe'
-  # Paket zum Weitergeben (Wunsch 🧑 2026-11-13): fertige EXE mit allen Dateien unter dist/k3c-game; die Probe-Aufnahme
-  # bleibt in .work. Der Web-Build, der dist/ leerte, ist mit dem Browser-Client entfernt (B-848).
-  GAME_PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
+  # Paket zum Weitergeben (Wunsch 🧑 2026-11-13): fertige EXE mit allen Dateien unter dist/k3c-game-go (RU35.2: dist/k3c-game gehört dem Rust-Spiel);
+  # die Probe-Aufnahme bleibt in .work. Der Web-Build, der dist/ leerte, ist mit dem Browser-Client entfernt (B-848).
+  GAME_PAKET: '{{.ROOT_DIR}}/dist/k3c-game-go'
   GAME_PROBE: '{{.ROOT_DIR}}/.work/native-game-probe'
   # Version des nativen Spiels (B-808): git describe, ohne Git leer (das Spiel zeigt dann „unbekannt“)
   GAME_VERSION:
@@ -35,7 +35,7 @@ tasks:
       - mkdir -p bin && printf '%s' "{{.GAME_VERSION}}" > bin/version.txt
 
   game:build:
-    desc: "Natives Spiel bauen: EXE (Go, ohne cgo), Papierschnitt-Grafik (gen:paper) und das komplette Spiel nach dist/k3c-game/ (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
+    desc: "Natives Spiel bauen: EXE (Go, ohne cgo), Papierschnitt-Grafik (gen:paper) und das komplette Spiel nach dist/k3c-game-go/ (nur Geändertes wird kopiert; laufendes Spiel dort vorher schließen)"
     deps: [game:exe, ':gen:paper']
     cmds:
       - task: game:dist
@@ -130,7 +130,7 @@ tasks:
       - '{{.MEASURE}} -Engine game'
 
   game:paket:
-    desc: "Sauberes Paket: dist/k3c-game/ leeren und neu füllen (wie game:build), dann Probe-Aufnahme aus dem Paket-Ordner nach .work/native-game-probe/; Ordner kopieren, dort k3c-game.exe oder messen.cmd starten"
+    desc: "Sauberes Paket: dist/k3c-game-go/ leeren und neu füllen (wie game:build), dann Probe-Aufnahme aus dem Paket-Ordner nach .work/native-game-probe/; Ordner kopieren, dort k3c-game.exe oder messen.cmd starten"
     dir: '{{.ROOT_DIR}}'
     cmds:
       - rm -rf "{{.GAME_PAKET}}" "{{.GAME_PROBE}}"

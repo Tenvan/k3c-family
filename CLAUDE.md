@@ -49,8 +49,9 @@ task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
 task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
-task build         # natives Spiel bauen (wie native:game:build, Paket nach dist/k3c-game/)
-task buildall      # alle EXE bauen: Workbench, Engine-CLI k3c-sim nach bin/, Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/, weitergebbar; laufende EXE vorher schließen
+task build         # Rust-Spiel bauen (wie rust:game:build, Paket nach dist/k3c-game/; Einzelschritte rust:game:exe, :run, :dev)
+task buildall      # alle EXE bauen: Workbench, Engine-CLI k3c-sim nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
+task native:game:build  # Go-Spiel (Rückfall bis RU37) bauen, Paket nach dist/k3c-game-go/
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
