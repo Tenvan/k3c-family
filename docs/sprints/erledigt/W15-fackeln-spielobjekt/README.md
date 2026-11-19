@@ -1,6 +1,6 @@
 # W15 · SIM · Fackeln als Spielobjekt mit Licht in der Nacht
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WRT
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -63,7 +63,7 @@ keine. Entschieden (🧑, 2026-10-31): Fackeln sind Teil von Mauer und Turm, kei
 |---|---|---|---|---|
 | W15.1 | `W15.1-fackeln-an-mauer-und-turm.md` | Umsetzung | autonom | fertig |
 | W15.2 | `W15.2-review.md` | Review | autonom | fertig |
-| W15.3 | `W15.3-abnahme-am-geraet.md` | Workshop | Mensch | offen |
+| W15.3 | `W15.3-abnahme-am-geraet.md` | Workshop | Mensch | verworfen |
 
 Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.md` schreiben, die Kriterien in Klammern werden ihr Feld `Kriterien`.
 
@@ -72,6 +72,4 @@ Entwurf. Vor dem Aktivieren jede Session als Datei nach `docs/vorlagen/session.m
 
 ## Abnahme
 
-2026-11-02, Review W15.2: AC-01 geprüft (go:test Fackel, nightLight, noSim, projectRules grün; Sim und Client teilen testdata/torches.json).
-Befund niedrig: TorchXs in der Sim nur von Tests genutzt, kein Fix. Keine neuen Tickets.
-Offen: Abnahme am Gerät (W15.3, Mensch), B-622 bleibt bis dahin offen; check, check:go, check:race stehen vor dem Commit aus.
+Review W15.2 (2026-11-02): AC-01 geprüft. RU60.6 (2026-11-19, Claude): Go-Spiel entfällt (RU37); W15.3 verworfen, die Abnahme der Fackeln steht als G-11 in `docs/messung/rust-abnahme.md`. B-622 bleibt bis dahin offen; Sprint abgeschlossen.

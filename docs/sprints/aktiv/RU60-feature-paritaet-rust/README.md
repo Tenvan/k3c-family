@@ -73,7 +73,7 @@ keine (alle mit Default entschieden, autonom, Claude, 2026-11-19: Parität wird 
 | RU60.3 | `RU60.3-luecken-geschichte-seekarte-fahrt.md` | Umsetzung | autonom | fertig |
 | RU60.4 | `RU60.4-luecken-sim-level-room.md` | Umsetzung | autonom | fertig |
 | RU60.5 | `RU60.5-abschluss-ks-we4-wi1.md` | Umsetzung | autonom | fertig |
-| RU60.6 | `RU60.6-abschluss-gs-we5-w15.md` | Umsetzung | autonom | offen |
+| RU60.6 | `RU60.6-abschluss-gs-we5-w15.md` | Umsetzung | autonom | fertig |
 | RU60.7 | `RU60.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -1,6 +1,6 @@
 # GS2 · PAP, CLI · Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** PAP, CLI
 - **Reife:** bereit
@@ -87,8 +87,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-15, GS2.4 (Claude): AC-01 bis AC-04 belegt (Ergebnisse GS2.1 bis GS2.3, Fachprüfung k3c-grafik und k3c-hud), AC-05 offen bei 🧑 (TV).
-Behoben: Fahrt blieb aus, wenn der Hafen nicht in Stufe 0 lag; Schiff wechselte in der Streckenmitte die Zeichen-Reihe.
-Werte der Fahrt stehen in `data/native.json` › `voyage`; Tests für Ladefehler und Geräteverlust während der Fahrt ergänzt.
-Neue Tickets: B-1012 (Nachträge: Reihenfolge von completed, gehaltenes A nach der Fahrt, Stufen der alten Insel, Chunk-Grenzen).
-Abnahme-Ticket: B-1011 (Gen samt Grafik-Golden, check:race, Shot-Messung, TV-Abnahme 🧑).
+GS2.4 (2026-11-15, Claude): AC-01 bis AC-04 belegt. RU60.6 (2026-11-19, Claude): Go-Spiel entfällt (RU37), Parität der Seekarte und Fahrt im Rust-Spiel durch RU60.3 geprüft (B-1012 Punkte 1 und 4). AC-05 (Diorama und Fahrt am TV, B-1011) steht als G-9 in `docs/messung/rust-abnahme.md`; Sprint abgeschlossen.

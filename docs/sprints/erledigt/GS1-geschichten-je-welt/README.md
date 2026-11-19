@@ -1,6 +1,6 @@
 # GS1 · REG, SIM, CLI, DEV · Geschichten je Welt und Insel in Kunstsprache
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, CLI, DEV
 - **Reife:** bereit
@@ -96,7 +96,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-GS1.6 (2026-11-17, Claude): AC-01 bis AC-06 belegt (welten.md § 2.2/6.2 + Glossar; `engine/sim/story_test.go`; `hud/story*_test.go`; `world/story_test.go`, `tools_world_story_test.go`; GS1.5 `world_check` je Welt gültig), Golden unverändert.
-`task check` grün; `task check:go` rot nur durch fremden Detvec-Baum aus SI2.2 (B-1030), nicht durch GS1.
-Sessions liefen als Einzel-PRs nach `main` (#635–#660); `sengoku`, `nil`, `britannien` liegen nur lokal in der Repo-Wurzel.
-Abnahme-Läufe Gen/Race: B-1029. Offen bei 🧑 (AC-07): Texte abnehmen (B-976/AC-04), Einblendung am TV prüfen (B-974/AC-05).
+GS1.6 (2026-11-17, Claude): AC-01 bis AC-06 belegt, Golden unverändert. RU60.6 (2026-11-19, Claude): Go-Spiel entfällt (RU37), Parität im Rust-Spiel durch RU60.3 geprüft. AC-07 (Texte B-976/AC-04, Einblendung am TV B-974/AC-05) steht als G-7 und G-8 in `docs/messung/rust-abnahme.md`; Sprint abgeschlossen.

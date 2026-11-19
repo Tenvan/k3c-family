@@ -15,14 +15,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
 | WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
-| GS1 | REG, SIM, CLI, DEV | WZG | Geschichten je Welt und Insel in Kunstsprache | – | `aktiv/GS1-geschichten-je-welt/` |
-| GS2 | PAP, CLI | WZG | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | – | `aktiv/GS2-seekarte-papierschnitt/` |
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
-| WE5 | SIM, DEV | WZG | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | – | `aktiv/WE5-welt-format-nachtraege/` |
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
-| W15 | SIM | WRT | Fackeln als Spielobjekt mit Licht in der Nacht | – | `aktiv/W15-fackeln-spielobjekt/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
@@ -48,7 +44,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 
 ### PC
 
-- W15.3 · Abnahme am Gerät: Fackeln an Mauer und Turm nachts (Sprint W15, offen, Agent Mensch)
 - WZ61.5 · Ralf räumt bin/ am PC auf (Sprint WZ61, offen, Agent Mensch)
 
 ### Xbox/TV
@@ -472,3 +467,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | KS7 | Kampf-Feedback aus der Sichtprüfung: Auslöser am Pfahl vor dem Tor, Schild-Gestell an der Burg | `erledigt/KS7-kampf-abnahme-feedback/` |
 | WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | `erledigt/WE4-etappen-seekarte/` |
 | WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | `erledigt/WI1-handwerker-gold/` |
+| GS1 | Geschichten je Welt und Insel in Kunstsprache | `erledigt/GS1-geschichten-je-welt/` |
+| GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | `erledigt/GS2-seekarte-papierschnitt/` |
+| WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | `erledigt/WE5-welt-format-nachtraege/` |
+| W15 | Fackeln als Spielobjekt mit Licht in der Nacht | `erledigt/W15-fackeln-spielobjekt/` |

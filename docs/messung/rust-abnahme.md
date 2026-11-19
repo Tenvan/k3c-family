@@ -214,3 +214,8 @@ Sichtprüfungen am TV, die in den Go-Sprints offen waren; das Go-Spiel entfällt
 | G-4 | KS2 bis KS5 | B-927 bis B-934 | Portale zerstörbar, Kämpfer werden Bürger, Monarch zahlt mit Gold, Krone fällt, Gruppen mit Schild und General mit Banner, Kampf-Anzeige | – | – |
 | G-5 | WI1 | B-953 AC-03 | Truhen ×10 mit Münz-Fontäne, Handwerker mit Hammer, Bogner-Shop | – | – |
 | G-6 | WE4 | B-962 | Seekarte und Schiffsfahrt (Station 41 und 42), gehaltenes A über die Fahrt (B-1012 Punkt 2) | – | – |
+| G-7 | GS1 | B-976 AC-04 | Geschichten-Texte der vier Welten (standard, sengoku, nil, britannien) lesen und abnehmen | – | – |
+| G-8 | GS1 | B-974 AC-05 | Einblendung der Geschichte am TV, in beiden Hälften, ohne Eingabe zu verbrauchen | – | – |
+| G-9 | GS2 | B-964 AC-05, B-977 AC-05, B-1011 | Seekarte als Papierschnitt-Diorama und Schiffsfahrt im Vollbild (Station 41 und 42), Sicht am TV | – | – |
+| G-10 | WE5 | B-981 bis B-984 | Endboss je Insel, Event-Overrides und Skins im Rust-Spiel spielen (Sengoku: Etappen 1, 2, 2; Camp hinter Portal außerhalb der Kristallhöhle, Entscheidung offen) | – | – |
+| G-11 | W15 | B-622 AC-01 | Nachts Fackeln an Mauer (eine) und Turm (zwei), am Tag nur Halter ohne Schein, an zerstörter Mauer keine (F9 „Nacht sofort“, „Welle jetzt“) | – | – |

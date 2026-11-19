@@ -1,6 +1,6 @@
 # WE5 · SIM, DEV · Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** SIM, DEV
 - **Reife:** bereit
@@ -84,8 +84,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-15, Review WE5.7 (acf3fce12, Merge origin/main ddd5d85fb). AC-01 bis AC-08 erfüllt, Nachweise in den Ergebnissen WE5.1 bis WE5.6.
-Behoben: Workbench-Tests und Tool-Text nach dem Merge mit WE5.6; `simcli level` setzt den Bau in die tiefste Stufe; leerer Gegner-Name abgelehnt.
-Offen, Entscheidung 🧑: Camp hinter einem Portal außerhalb der Kristallhöhle (Mine 147/500), `bosse.md` § 1 als vorläufig markiert.
-Neue Tickets: skins für Asset-Varianten mit @; Abnahme-Läufe WE5.
-`task check`, `check:go`, `check:diff` grün; Sim und Balance verschoben (Sperre 2026-11-11).
+Review WE5.7 (2026-11-15): AC-01 bis AC-08 erfüllt. RU60.6 (2026-11-19, Claude): Parität von Endboss je Insel, Event-Overrides, Hub-Sites und Skins im Rust-Spiel durch RU60.4 geprüft (Events-Override-Tests ergänzt). Offene Sichtprüfung und die Entscheidung zum Camp hinter dem Portal stehen als G-10 in `docs/messung/rust-abnahme.md`; Sprint abgeschlossen.
