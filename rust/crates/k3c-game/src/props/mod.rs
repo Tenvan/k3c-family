@@ -72,6 +72,8 @@ mod plan_sites_tests;
 #[cfg(test)]
 mod plan_tests;
 #[cfg(test)]
+mod simview_tests;
+#[cfg(test)]
 mod sites_tests;
 #[cfg(test)]
 mod testutil;
