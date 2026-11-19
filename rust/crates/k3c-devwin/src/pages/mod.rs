@@ -5,6 +5,7 @@ use k3c_devproto::Catalog;
 
 use crate::layout::Group;
 
+mod build;
 mod eco;
 mod foes;
 mod players;

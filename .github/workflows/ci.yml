@@ -128,6 +128,8 @@ jobs:
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace
+      # Cheat-Fenster (RU56, B-1135): eigene EXE neben dem Spiel; Datei und Größe (höchstens 5 MB) prüft `task rust:game:dist:check`
+      - run: cargo test -p k3c-devproto -p k3c-devwin
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc

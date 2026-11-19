@@ -85,14 +85,14 @@ Pad-Kombination View + Y (`ActionCheats`) nach der Entfernung des F9-Menüs (B-1
 | RU56.2 | `RU56.2-fenster-geruest.md` | Umsetzung | autonom | fertig |
 | RU56.3 | `RU56.3-layout-reiter.md` | Umsetzung | autonom | fertig |
 | RU56.4 | `RU56.4-pipe-server.md` | Umsetzung | autonom | fertig |
-| RU56.5 | `RU56.5-spielseite.md` | Umsetzung | autonom | offen |
-| RU56.6 | `RU56.6-controls-welt-zeit.md` | Umsetzung | autonom | offen |
-| RU56.7 | `RU56.7-controls-wirtschaft.md` | Umsetzung | autonom | offen |
-| RU56.8 | `RU56.8-controls-spieler-skills.md` | Umsetzung | autonom | offen |
-| RU56.9 | `RU56.9-controls-gegner-welle.md` | Umsetzung | autonom | offen |
-| RU56.10 | `RU56.10-controls-anzeige.md` | Umsetzung | autonom | offen |
-| RU56.11 | `RU56.11-start-paket-ci.md` | Umsetzung | autonom | offen |
-| RU56.12 | `RU56.12-review.md` | Review | autonom | offen |
+| RU56.5 | `RU56.5-spielseite.md` | Umsetzung | autonom | fertig |
+| RU56.6 | `RU56.6-controls-welt-zeit.md` | Umsetzung | autonom | fertig |
+| RU56.7 | `RU56.7-controls-wirtschaft.md` | Umsetzung | autonom | fertig |
+| RU56.8 | `RU56.8-controls-spieler-skills.md` | Umsetzung | autonom | fertig |
+| RU56.9 | `RU56.9-controls-gegner-welle.md` | Umsetzung | autonom | fertig |
+| RU56.10 | `RU56.10-controls-anzeige.md` | Umsetzung | autonom | fertig |
+| RU56.11 | `RU56.11-start-paket-ci.md` | Umsetzung | autonom | fertig |
+| RU56.12 | `RU56.12-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -35,6 +35,8 @@ pub enum DevCmd {
     Fullscreen,
     /// Screenshot nach reports/
     Shot,
+    /// Cheat-Fenster öffnen bzw. nach vorn holen (RU56)
+    Window,
 }
 
 /// DevKey ist eine Zeile der Tabelle: Taste, Befehl, Beschriftung in der Übersicht und, falls die Taste über input als
@@ -65,10 +67,11 @@ const fn dev(key: Key, cmd: DevCmd, label: &'static str, text: &'static str) -> 
 }
 
 /// DevKeys ist die Tabelle der Entwickler-Tasten in der Reihenfolge der Übersicht.
-pub const DEV_KEYS: [DevKey; 11] = [
+pub const DEV_KEYS: [DevKey; 12] = [
     dev(Key::F1, DevCmd::Help, "F1", "Tastenübersicht ein/aus"),
     dev(Key::F2, DevCmd::Stats, "F2", "Leistungsanzeige ein/aus"),
     dev(Key::F3, DevCmd::River, "F3", "Fluss-Fassung wechseln"),
+    dev(Key::F4, DevCmd::Window, "F4", "Cheat-Fenster öffnen / nach vorn"),
     dev(Key::F5, DevCmd::Save, "F5", "Schnellspeichern"),
     dev(Key::F6, DevCmd::Load, "F6", "Spielstand neu laden"),
     dev(Key::F7, DevCmd::Pause, "F7", "Pause · in der Pause: ein Takt"),

@@ -66,6 +66,7 @@ impl Game {
     fn tick(&mut self, input: &Input) {
         self.toggle_window(input);
         self.dev_keys();
+        self.devwin_tick();
         self.menu_or_play(input);
         self.blend.capture(&self.frame, &self.frame.cells);
         self.voy.note(&self.frame);

@@ -44,6 +44,7 @@ const GOOD: &[&[&str]] = &[
     &["--river", "shader"],
     &["--river", "tiles"],
     &["--stats"],
+    &["--devwin"],
     &["--stall", "--shots", "bilder", "--seed", "s"],
 ];
 
