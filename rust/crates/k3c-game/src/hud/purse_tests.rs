@@ -39,9 +39,8 @@ fn card_ohne_healthbar_und_marke() {
     assert!(!st.gold_s.contains("P1"), "Goldtext ohne Spielermarke: {:?}", st.gold_s);
 }
 
-/// B-922/AC-02 (ohne Skill): Das HUD zeigt Größe 1 und die Münz-Obergrenze des Spielers (`purse_max_of`). Die Sim-Seite
-/// (gelernte Größe samt Dev-Bonus) liefert erst RU18; bis dahin gilt der Grundwert aus `economy.json` (Shim in
-/// `pending.rs`, RU18: ersetzen).
+/// B-922/AC-02 (ohne Skill): Das HUD zeigt Größe 1 und die Münz-Obergrenze des Spielers (`purse_max_of` der Sim: der
+/// Grundwert aus `economy.json`).
 #[test]
 fn purse_groesse_und_obergrenze_ohne_skill() {
     let (_, mut f) = two_players(0);
@@ -58,10 +57,8 @@ fn purse_groesse_und_obergrenze_ohne_skill() {
     );
 }
 
-/// B-922/AC-02 (mit Skills): gelernte Größe 2 und 3. `purse_size` liest die Werte der Insel (`values`, RU10) und
-/// stürzt mit gelerntem Skill bis dahin ab; die Obergrenze je Größe kommt von `purse_max_of` (RU18).
+/// B-922/AC-02 (mit Skills): gelernte Größe 2 und 3; die Obergrenze je Größe kommt von `purse_max_of` der Sim (B-1106).
 #[test]
-#[ignore = "wartet auf RU10 und RU18"]
 fn purse_groesse_und_obergrenze_mit_skills() {
     let (mut w, mut f) = two_players(0);
     f.settings = default_settings();

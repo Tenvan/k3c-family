@@ -8,11 +8,11 @@
 //! (`action_hint` und `offers_price` nehmen `&dyn SimView`); Go-`[...]`-Tabellen sind Funktionen mit `match`.
 
 use super::data::building_info;
-use super::pending::{trade_at, train_at};
 use super::texts::{tf, tr};
 use super::values::res_name;
 use super::values_texts::profession_text;
 use crate::props::simview::SimView;
+use k3c_sim::state::action_view::{trade_at, train_at};
 use k3c_sim::state::{Player, Site, World};
 
 /// Höhen über dem Boden in Units (Browser: Welt-Pixel / 32): Aktions-Hinweis über dem Monarchen, Hinweis über einem
@@ -80,10 +80,11 @@ pub fn action_hint(lang: &str, w: &World, p: &Player, sv: &dyn SimView) -> HintK
             ..Default::default()
         };
     }
-    let (side, res) = trade_at(w, p);
+    // Ohne Insel (`None`): Das HUD liest nur die Welt der Stufe; wie Go bei `w.island == nil` ist der Vorrat nie voll.
+    let (side, res) = trade_at(w, p, None);
     let (kind, name) = choose_hint(
         false,
-        &train_at(w, p),
+        &train_at(w, p, None),
         &side,
         &res,
         at_price_tag(w, p.x, sv),

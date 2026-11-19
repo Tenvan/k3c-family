@@ -8,7 +8,6 @@ use super::glyphs::{JoinKey, join_from_key, new_join_key};
 use super::hints::{GuideHint, GuideId, GuideSeen, action_hint, guide_keys, hint_text, step_guide};
 use super::icons::{StockPart, stock_parts};
 use super::kampf::{BossView, EventsKey, boss_bar, boss_title, event_banner, new_events_key};
-use super::pending::purse_max_of;
 use super::radar::{RadarMarker, radar_markers};
 use super::seekarte::SeaView;
 use super::skillmenu::{MenuEntry, MenuState, SlotView, slot_views};
@@ -22,7 +21,7 @@ use crate::view::MAX_PLAYERS;
 use crate::view::frame::{CueKind, Frame, Seat, Stage};
 use crate::view::input::DeviceID;
 use crate::view::settings::Settings;
-use k3c_sim::state::purse::purse_size;
+use k3c_sim::state::purse::{purse_max_of, purse_size};
 use k3c_sim::state::{Player, World};
 
 /// SAVED_SECONDS: so lange zeigt die Uhr nach dem Speichern „gesichert“ (B-186).
@@ -217,7 +216,7 @@ impl SeatState {
     fn card(&mut self, lang: &str, w: &World, m: &Player, now: f64) {
         self.down = m.crown.is_some();
         self.purse = purse_size(w, m);
-        let mut purse = purse_max_of(w, m);
+        let mut purse = purse_max_of(w, m, None); // ohne Insel: Grundwert oder gelernte Größe, kein Dev-Bonus
         if purse <= 0 {
             purse = super::data::purse_max_gold();
         }
