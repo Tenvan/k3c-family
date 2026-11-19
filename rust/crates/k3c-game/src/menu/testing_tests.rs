@@ -167,6 +167,24 @@ fn testing_start() {
     );
 }
 
+/// B-1117/AC-01: `MenuSet::set_stress_starter` (auch über die Rolle `Menus`) gibt der Testing-Seite den Starter: Start
+/// ruft ihn auf, statt `TstNoRunner` zu zeigen.
+#[test]
+fn menu_set_gives_starter_to_testing() {
+    use crate::view::screen::Menus;
+    let mut set = super::new_set(None, None);
+    let fs = FakeStarter::default();
+    Menus::set_stress_starter(&mut set, Box::new(fs.clone()));
+    let mut sc = new_testing(&set.shared);
+    let mut s = FakeSession::default();
+    sc.update(&Input::default(), &mut s);
+    sc.sel = TST_START;
+    let kind = hit(&mut sc, &mut s, PAD1, Action::Confirm);
+    assert_eq!(kind, StepKind::Play, "Start");
+    assert_eq!(fs.started.borrow().len(), 1);
+    assert_ne!(sc.base.note.key, TextKey::TstNoRunner);
+}
+
 /// Die Werte folgen den Kurven: linear + Faktor, exponentiell × Faktor, gedeckelt.
 #[test]
 fn testing_value_texts() {

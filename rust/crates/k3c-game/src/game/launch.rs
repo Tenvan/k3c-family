@@ -89,7 +89,9 @@ pub fn build_game_with(args: &Args, sim: Box<dyn Sim>, libs: &Libs) -> Result<Ga
             ("spielstaende", &args.saves),
         ],
     );
-    Game::new(parts, sim, args.clone())
+    let mut game = Game::new(parts, sim, args.clone())?;
+    game.wire_stress_starter();
+    Ok(game)
 }
 
 /// Öffnet die Sitzung mit dem Ordner der Spielstände aus den Schaltern.

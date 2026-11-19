@@ -182,9 +182,18 @@ impl MenuSet {
         sc.base.note = std::mem::take(&mut self.shared.borrow_mut().notice);
         sc
     }
+
+    /// Setzt den Starter des Stresstests im gemeinsamen Zustand (B-1117); das Testing-Menü startet danach den Lauf.
+    pub fn set_stress_starter(&mut self, st: Box<dyn StressStarter>) {
+        self.shared.borrow_mut().set_stress_starter(st);
+    }
 }
 
 impl MenusRole for MenuSet {
+    fn set_stress_starter(&mut self, st: Box<dyn StressStarter>) {
+        MenuSet::set_stress_starter(self, st);
+    }
+
     /// Das Hauptmenü; eine vorgemerkte Meldung (Fehler beim Verlassen) erscheint darin.
     fn main(&mut self) -> Box<dyn Screen> {
         Box::new(self.main_screen())

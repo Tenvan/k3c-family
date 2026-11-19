@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Schuld
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU30
+- **Sprint:** RU63
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -24,35 +24,35 @@ Ein Bericht, ein Satz Rechenfunktionen: `replay/` benutzt per `pub use` die Type
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Entwickler; Second Worker liest die Berichte.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+Ein Bericht, ein Satz Rechenfunktionen; Berichtsformat der Wiedergabe bleibt lesbar (Felder nur ergänzt).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Neue Messläufe (Hauptrechner führt keine Messungen aus).
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+RU42; Dateien <= 400 Zeilen.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+Planungsangaben:
 
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-game/src/replay/report.rs`, `rust/crates/k3c-game/src/replay/frames.rs`, `rust/crates/k3c-game/src/replay/mod.rs`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+`replay_headless` schreibt den Bericht mit `bilder`, wenn `--measure-frames` gesetzt ist.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+nicht relevant, reine Zusammenführung.
 
 ## Akzeptanzkriterien
 
@@ -62,7 +62,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

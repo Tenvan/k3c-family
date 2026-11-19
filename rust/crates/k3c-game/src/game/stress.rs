@@ -92,6 +92,13 @@ impl Game {
         Box::new(self.stress_env.link.clone())
     }
 
+    /// Gibt dem Menü den Starter dieser Schleife (nach `Game::new`, B-1117); ohne diesen Aufruf zeigt Testing
+    /// `TstNoRunner`.
+    pub fn wire_stress_starter(&mut self) {
+        let st = self.stress_starter();
+        self.parts.menus.set_stress_starter(st);
+    }
+
     /// Meldet dem Starter, ob die Simulation Dev-Aktionen kann (vor dem `update` der Menüs).
     pub(super) fn sync_stress_link(&mut self) {
         let dev = self.sim.dev_session().is_some();

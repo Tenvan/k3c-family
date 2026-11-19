@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU52
+- **Sprint:** RU63
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,15 +28,23 @@ Spieler am PC; Second Worker (RU52, `k3c-sim`, `local/peer.rs`).
 
 ## Anforderungen
 
-Go ist das Orakel. Eine lesende Insel-Sicht (`stock_bonus`, Stufenzahl, Lager anderer Stufen) über `Stage` oder `Frame` ins HUD, ohne `stage_ref` (nimmt Zustände heraus); Änderung in `k3c-sim` gegebenenfalls nötig (`storages_except` ist privat).
+Go ist das Orakel. Die Sim spiegelt die lesbaren Teile der Insel in jede Stufen-Welt (`World::island_view`, `#[serde(skip)]`, gesetzt in `Island::sync_stock`, Vorbild `island_events`): Stufenzahl, Lager der anderen Stufen, `stock_bonus`, `cheap_build`, Lair-Sperre. `World::island_ref_view()` baut daraus allokationsfrei einen `IslandRef` (nur lesende Felder). Das HUD (`hud/state.rs`, `hud/hints.rs`) nutzt ihn statt `None`. Kein Eingriff in Spielregeln, Protokoll oder Spielstand (Spiegel ohne JSON).
 
 ## Nicht-Ziele
 
-Spielregeln, Protokoll, Spielstand-Format.
+Spielregeln, Protokoll, Spielstand-Format; Anzeige-Naht `props/simview.rs` (B-1107).
 
 ## Regeln und Einschränkungen
 
-Dateien <= 400 Zeilen, Funktionen <= 60 Zeilen.
+Dateien <= 400 Zeilen, Funktionen <= 60 Zeilen; RU42 (kein unwrap/expect/panic außerhalb Tests, keine Allokation je Bild); keine neue Abhängigkeit.
+
+Planungsangaben:
+
+- **Bereich:** `rust/crates/k3c-sim/src/state/island_ref.rs`, `rust/crates/k3c-sim/src/state/types_world.rs`, `rust/crates/k3c-sim/src/island/mod.rs`, `rust/crates/k3c-game/src/hud/state.rs`, `rust/crates/k3c-game/src/hud/hints.rs`, `rust/crates/k3c-game/src/hud/purse_tests.rs`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
@@ -50,10 +58,12 @@ Ohne Insel (Standbild, Replay): `None` bleibt der Fallback.
 
 - **AC-01** Test: Welt mit `stock_bonus > 0` zeigt das erhöhte Beutel-Maximum im HUD.
 - **AC-02** Test: volles Lager am Händler ergibt keinen Kaufen-Hinweis.
+- **AC-03** Test in `k3c-sim`: `sync_stock` setzt den Spiegel je Stufe (Lager der anderen Stufen, Bonus, Lair-Sperre); `island_ref_view()` ist `None` ohne Insel und allokiert nicht.
+- **AC-04** Ralf sieht bei Dev-Bonus Lager das erhöhte Maximum auf der Spielerkarte (manuelle Abnahme).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 
