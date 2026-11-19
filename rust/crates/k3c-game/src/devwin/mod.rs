@@ -154,3 +154,6 @@ impl Run {
         }
     }
 }
+
+#[cfg(test)]
+mod menu_tests;
