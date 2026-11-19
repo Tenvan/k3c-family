@@ -86,3 +86,10 @@ tasks:
     dir: '{{.ROOT_DIR}}'
     cmds:
       - bun tools/rigexport/export.ts --pruefen
+
+  # Test-Abgleich Go gegen Rust (RU60.1): liest den Tag go-referenz-final und den Arbeitsbaum, schreibt docs/messung/port-testabgleich.md
+  portcheck:
+    desc: "Go-Tests des Tags go-referenz-final gegen die Rust-Tests abgleichen, Bericht nach docs/messung/port-testabgleich.md (nur git, kein Go-Compiler für das Spiel)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - go run ./tools/portcheck

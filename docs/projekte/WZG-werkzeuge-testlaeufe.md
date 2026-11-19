@@ -83,13 +83,13 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WE1 | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | aktiv |
 | WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | aktiv |
 | WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | aktiv |
-| WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | aktiv |
-| GS1 | Geschichten je Welt und Insel in Kunstsprache | aktiv |
-| GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | aktiv |
+| WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | erledigt |
+| GS1 | Geschichten je Welt und Insel in Kunstsprache | erledigt |
+| GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | erledigt |
 | WE7 | Papierschnitt-Assets für Sengoku, Nil und Britannien | aktiv |
 | GS3 | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | geplant |
 | GS4 | Flaschenpost am Strand mit Geschichtszeile und Markierung | geplant |
-| WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | aktiv |
+| WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | erledigt |
 | WE6 | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | geplant |
 | WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | geplant |
 | WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | aktiv |
