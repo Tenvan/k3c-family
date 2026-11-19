@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** NA1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-15
@@ -62,7 +62,7 @@ Ein Slot der nativen Tabelle fehlt im Register → der Test scheitert mit dem Sl
 
 ## Offene Fragen
 
-- Tests streichen oder umbauen? → Default: umbauen auf native Tabelle gegen Register, weil die Register-Prüfung der einzige Schutz gegen stumme Slots ist (vorläufig, 🧑 bestätigt).
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Die Go-Tests liegen in `native/k3c-game/audio`, das mit RU37 gelöscht wird.
 
 ## Notizen
 

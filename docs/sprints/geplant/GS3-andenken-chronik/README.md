@@ -33,12 +33,15 @@ Abbild der Burg, ganze Geschichte zum Nachlesen, eigener Menüpunkt „Chronik�
 
 ## Regeln und Einschränkungen
 
-- Reihenfolge SIM → PAP → CLI → SRV → CLI → Review; ein Commit je Session auf `sprint/gs3`, ein PR.
-- GS3.1 ändert das Spielstand-Format (Version erhöhen, Fixture; keine Rücksicht auf alte Stände) und läuft im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`); Review vor dem Commit.
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim, Raum und Spielstand liegen in `rust/crates/k3c-sim`, `k3c-room` (Spielstand-Speicher `src/store/`), die Anzeige in `rust/crates/k3c-game` (Entscheidung 013). Die Go-Sessions GS3.1, GS3.3, GS3.4, GS3.5 sind verworfen; GS3.7 und GS3.8 ersetzen sie. Der Sprint wartet auf RU37 und RU60.
+- Reihenfolge SIM → PAP → CLI → Review; ein Commit je Session auf `sprint/gs3`, ein PR.
+- GS3.7 ändert das Spielstand-Format (Version erhöhen, Fixture; keine Rücksicht auf alte Stände); Review vor dem Commit.
 - Assets nur über `assets_*`, Fachprüfung `k3c-grafik`; HUD und Menü prüft `k3c-hud`.
 
-- **Bereich:** `docs/rules/welten.md`, `engine/sim/**`, `engine/store/**`, `public/grafik/objekte/**`, `data/paper.json`, `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/local/**`, `native/k3c-game/menu/**`
-- **Abhängig von:** GS1, GS2
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `public/grafik/objekte/**`, `data/paper.json`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/local/**`, `rust/crates/k3c-game/src/menu/**`
+- **Abhängig von:** GS1, GS2, RU37, RU60
 - **Braucht 🧑:** Abnahme
 - **Sperre:** spielstand
 
@@ -80,6 +83,8 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 | GS3.4 | `GS3.4-spielstand-liste-route.md` | Umsetzung | autonom | verworfen |
 | GS3.5 | `GS3.5-vorschau-spielstand-auswahl.md` | Umsetzung | autonom | verworfen |
 | GS3.6 | `GS3.6-review.md` | Review | autonom | offen |
+| GS3.7 | `GS3.7-chronik-und-spielstandliste-rust.md` | Umsetzung | autonom | offen |
+| GS3.8 | `GS3.8-andenken-und-vorschau-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

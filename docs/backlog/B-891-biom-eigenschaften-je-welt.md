@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** BI1
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
 - **Revision:** 2
@@ -82,9 +82,13 @@ Balancing der Erträge (gesperrt bis auf Widerruf); neue Biome.
 
 ## Regeln und Einschränkungen
 
-Determinismus nur über `engine/rng`; keine Map-Iteration ohne Sortierung. Balancing der Erträge bleibt gesperrt (Beschluss 2026-11-11): Die Dichte ändert nur die Anzahl der Objekte, nicht den Ertrag je Objekt. Golden-Änderungen über `task go:golden` mit Begründung im Commit.
+Determinismus nur über `k3c-rng`; keine Map-Iteration ohne Sortierung. Balancing der Erträge bleibt gesperrt (Beschluss 2026-11-11): Die Dichte ändert nur die Anzahl der Objekte, nicht den Ertrag je Objekt.
 
-- **Bereich:** `data/biomes/**`, `engine/level/**`, `engine/sim/island*.go`, `engine/sim/save.go`, `engine/sim/types.go`, `engine/sim/world.go`, `engine/sim/campaign.go`, `cmd/k3c-sim/world.go`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/frontend/src/world/**`, `native/k3c-game/props/nature.go`, `native/k3c-game/props/plan.go`, `testdata/golden/**`, `docs/rules/welten.md`
+Umgehängt auf Rust (B-1143, 2026-11-19): Level in `rust/crates/k3c-level`, Sim in `rust/crates/k3c-sim`, Anzeige in `rust/crates/k3c-game/src/props/` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr, `cmd/k3c-sim` entfällt mit RU40. Golden: Rust schreibt eigene Golden erst nach RU41; bis dahin keine Golden-Änderung ohne Begründung im Commit.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `data/biomes/**`, `rust/crates/k3c-level/**`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-game/src/props/**`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/frontend/src/world/**`, `testdata/golden/**`, `docs/rules/welten.md`
 - **Abhängig von:** –
 - **Braucht 🧑:** Abnahme
 - **Größe:** M

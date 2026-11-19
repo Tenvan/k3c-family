@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** SI5
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -40,12 +40,15 @@ Walfänger und Tranhütte (kommen mit der Polar-Welt), Anzeige des Bonus im HUD,
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/gebaeude-paper/**`, `public/grafik/figuren/**`, `data/paper.json`, `native/k3c-game/**`
-- **Abhängig von:** B-972
+- Umgehängt auf Rust (B-1143, 2026-11-19): Anzeige in `rust/crates/k3c-game`; die Go-Sessions des Sprints SI5 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Assets PAP, Anzeige CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/gebaeude-paper/**`, `public/grafik/figuren/**`, `data/paper.json`, `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-972, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI5.3 Assets (PAP), SI5.4 Anzeige (CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
 
 ## Beispiele
 

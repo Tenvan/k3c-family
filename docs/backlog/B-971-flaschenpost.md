@@ -58,14 +58,17 @@ Schwäche des Endgegners als Hinweis, feste sammelbare Flaschen je Insel, Flasch
 
 ## Regeln und Einschränkungen
 
-- Berührt Spielregeln und Sim; Häufigkeit später über Balancing (derzeit gesperrt). Sim-Code im eigenen Worktree (B-925, Agent `k3c-sim-dev`). Keine Simulation, kein Balancing; `task go:golden` ist erlaubt, weil sich das Golden gewollt ändert.
-- Zufall nur über `engine/rng`. Werte nach `data/bottle.json` (neu, eingebettet über `data/embed.go` › `*.json`), nicht übersteuerbar je Welt (vorerst).
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik.
+- Berührt Spielregeln und Sim; Häufigkeit später über Balancing (derzeit gesperrt). Keine Simulation, kein Balancing. Das Golden ändert sich gewollt; Rust schreibt eigene Golden erst nach RU41, bis dahin ändert die Sim-Session `testdata/golden/**` nur mit Begründung im Commit.
+- Zufall nur über `k3c-rng`. Werte nach `data/bottle.json` (neu, über `rust/crates/k3c-data` geladen), nicht übersteuerbar je Welt (vorerst).
 - Spielstand-Format: Version erhöhen, Fixture (`docs/arbeitsweise.md` › Spielstand-Format ändern); keine Rücksicht auf alte Spielstände. Die Version steigt nach B-966 (beide ändern das Format, daher die Abhängigkeit).
 - Das Feld `story.bottles` und seine Prüfung stammen aus B-965, die Texte aus B-976; dieses Ticket nutzt sie nur.
 - Review vor dem Commit (Domäne SIM, Spielstand).
 
-- **Bereich:** `docs/rules/wirtschaft.md`, `engine/sim/**`, `data/bottle.json`, `testdata/golden/**`
-- **Abhängig von:** B-965, B-966
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/wirtschaft.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-data/**`, `data/bottle.json`, `testdata/golden/**`
+- **Abhängig von:** B-965, B-966, RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** golden

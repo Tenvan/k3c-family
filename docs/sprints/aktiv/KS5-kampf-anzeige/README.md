@@ -32,9 +32,13 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/**`, `data/paper.json`
-- **Sperre:** –
+- Hinweis (B-1143, 2026-11-19): Die Session ist fertig. Das Go-Spiel entfällt mit RU37; die Parität der Anzeige im Rust-Spiel prüft RU60.2 (nach RU52.3), der Abschluss folgt in RU60.5. Die Pfade `native/k3c-game/*` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-game/src/*` (Entscheidung 013).
 - Grafik nur über `assets_*`; fehlt ein Asset, vorläufig gezeichnet und gemeldet.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-game/src/**`, `data/paper.json`
+- **Sperre:** –
 
 ## Beispiele
 

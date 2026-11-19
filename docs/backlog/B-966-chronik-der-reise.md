@@ -55,13 +55,16 @@ Abbild der eigenen Burg je Ausbaustufe, ganze Geschichte der Insel zum Nachlesen
 
 ## Regeln und Einschränkungen
 
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Anzeige in `rust/crates/k3c-game` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik.
 - Berührt das Spielstand-Format; keine Rücksicht auf alte Spielstände (`docs/arbeitsweise.md` › Spielstand-Format ändern: Version erhöhen, Fixture).
-- Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`); Review vor dem Commit (Domäne SIM, Spielstand).
+- Review vor dem Commit (Domäne SIM, Spielstand).
 - Assets nur über `assets_*` (Entscheidung 005), Fachprüfung `k3c-grafik`.
 - Regeltext: `docs/rules/welten.md` § 5/§ 6.1 nennt die Chronik im Spielstand.
 
-- **Bereich:** `docs/rules/welten.md`, `engine/sim/**`, `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/local/**`, `public/grafik/objekte/**`, `data/paper.json`
-- **Abhängig von:** B-964, B-965
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/local/**`, `public/grafik/objekte/**`, `data/paper.json`
+- **Abhängig von:** B-964, B-965, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** spielstand

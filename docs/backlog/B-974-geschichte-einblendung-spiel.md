@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** GS1
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -49,10 +49,13 @@ Format und Wendepunkt-Regeln (B-965), Texte (B-976), Vertonung, Nachlesen frühe
 
 ## Regeln und Einschränkungen
 
-- Das native Spiel zeichnet nur (CLAUDE.md › Regeln); jede Mechanik funktioniert mit 2 Spielern gleichzeitig.
+- Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+- Das Spiel zeichnet nur (CLAUDE.md › Regeln); jede Mechanik funktioniert mit 2 Spielern gleichzeitig.
 - HUD-Prüfung durch den Agenten `k3c-hud` vor dem Commit.
 
-- **Bereich:** `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/game/**`, `native/k3c-game/local/**`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/game/**`, `rust/crates/k3c-game/src/local/**`
 - **Abhängig von:** B-965
 - **Braucht 🧑:** Abnahme
 - **Größe:** S

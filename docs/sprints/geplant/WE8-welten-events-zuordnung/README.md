@@ -32,10 +32,14 @@ Taifun, Flut, Schneesturm (B-969), Ton der Events, Balancing, Simulationen.
 
 ## Regeln und Einschränkungen
 
-Kette REG → SIM → CLI → Zuordnung, alle Sessions nacheinander. Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`); WE8.5 läuft im Hauptcheckout über `world_*`.
+Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Raum in `rust/crates/k3c-room`, Anzeige in `rust/crates/k3c-game` (Entscheidung 013). Die Go-Sessions WE8.2, WE8.3 und WE8.4 sind verworfen; WE8.7 und WE8.8 ersetzen sie. Der Sprint wartet auf RU37 und RU60.
 
-- **Bereich:** `docs/rules/bosse.md`, `docs/protocol.md`, `engine/sim/**`, `engine/room/**`, `data/events.json`, `native/k3c-game/**`, `data/worlds/sengoku.json`, `data/worlds/nil.json`, `data/worlds/britannien.json`
-- **Abhängig von:** WE5, WE6, WE7, B-969
+Kette REG → SIM → CLI → Zuordnung, alle Sessions nacheinander. WE8.5 läuft im Hauptcheckout über `world_*`.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `docs/rules/bosse.md`, `docs/protocol.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `data/events.json`, `rust/crates/k3c-game/src/**`, `data/worlds/sengoku.json`, `data/worlds/nil.json`, `data/worlds/britannien.json`
+- **Abhängig von:** WE5, WE6, WE7, B-969, RU37, RU60
 - **Braucht 🧑:** Abnahme
 - **Sperre:** protokoll
 
@@ -70,6 +74,8 @@ Keine blockierende außer der Abhängigkeit von B-969 (Wetter-Rahmen). Defaults 
 | WE8.4 | `WE8.4-spiel-zeigt-events.md` | Umsetzung | autonom | verworfen |
 | WE8.5 | `WE8.5-welten-zuordnen.md` | Umsetzung | autonom | offen |
 | WE8.6 | `WE8.6-review.md` | Review | autonom | offen |
+| WE8.7 | `WE8.7-events-sim-rust.md` | Umsetzung | autonom | offen |
+| WE8.8 | `WE8.8-spiel-zeigt-events-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

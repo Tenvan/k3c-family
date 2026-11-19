@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** NG3
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-11
@@ -62,12 +62,7 @@ Die größte Welle des Spiels läuft als Rig nicht flüssig → Vorschlag: Misch
 
 ## Offene Fragen
 
-keine.
-
-Entschieden von 🧑 am 2026-11-11 (Chat):
-
-- **Maßstab:** 60 FPS bei 2 Spielern mit der Gegnerzahl der größten Welle laut `data/` (gelesen, nicht simuliert).
-- **Waffen und Rüstungen für Gegner:** erst nach der Messung, als eigenes Ticket.
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Die Rig-Darstellung im Go-Spiel (Ebitengine) entfällt mit RU37; Gegnerzahl und Bildzeit im Rust-Spiel messen RU42, RU44 und RU45.
 
 ## Notizen
 

@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** CH1
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,7 +41,11 @@ Das HUD zeigt je Ressource Icon und Zahl, gut lesbar auf dem TV (Xbox-Abstand) u
 
 Grafik nur über die Papierschnitt-Assets (Entscheidung 005). Datei ≤ 400 Zeilen, Funktion ≤ 60.
 
-- **Bereich:** `native/k3c-game/**`, `data/paper.json`
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/hud/**`, `data/paper.json`
 - **Abhängig von:** –
 - **Braucht 🧑:** Abnahme
 - **Größe:** S

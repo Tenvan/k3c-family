@@ -8,7 +8,7 @@
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/we8
-- **Abhängig von:** WE8.1, WE8.2, WE8.3, WE8.4, WE8.5
+- **Abhängig von:** WE8.1, WE8.7, WE8.8, WE8.5
 - **Tickets:** B-991, B-992, B-995, B-996
 - **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06
 
@@ -24,10 +24,10 @@ Sprint-README `docs/sprints/*/WE8-welten-events-zuordnung/README.md` mit AC-01 b
 
 - `docs/rules/bosse.md`
 - `docs/protocol.md`
-- `engine/sim/**`
-- `engine/room/**`
+- `rust/crates/k3c-sim/**`
+- `rust/crates/k3c-room/**`
 - `data/events.json`
-- `native/k3c-game/**`
+- `rust/crates/k3c-game/src/**`
 
 ## Nicht-Ziele
 

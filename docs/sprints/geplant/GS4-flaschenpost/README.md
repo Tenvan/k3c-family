@@ -33,13 +33,16 @@ Schwäche des Endgegners als Hinweis, sammelbare Flaschen, Hinweis auf der Seeka
 
 ## Regeln und Einschränkungen
 
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Anzeige in `rust/crates/k3c-game` (Entscheidung 013). Die Go-Sessions GS4.2 und GS4.4 sind verworfen; GS4.6 und GS4.7 ersetzen sie. Der Sprint wartet auf RU37 und RU60.
 - Reihenfolge REG → SIM → PAP → CLI → Review; ein Commit je Session auf `sprint/gs4`, ein PR.
-- GS4.2 (Sim-Code, Spielstand, Golden) läuft im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`); Review vor dem Commit; `task go:golden` mit Begründung im Commit. Keine Simulation, kein Balancing.
+- GS4.6 (Sim-Code, Spielstand, Golden) braucht Review vor dem Commit. Rust schreibt eigene Golden erst nach RU41; bis dahin ändert die Session `testdata/golden/**` nur mit Begründung im Commit. Keine Simulation, kein Balancing.
 - Das Spielstand-Format ändert auch GS3; deshalb hängt GS4 von GS3 ab (Versionen steigen nacheinander).
 - Asset nur über `assets_*`, Fachprüfung `k3c-grafik`; HUD prüft `k3c-hud`.
 
-- **Bereich:** `docs/rules/wirtschaft.md`, `engine/sim/**`, `data/bottle.json`, `testdata/golden/**`, `public/grafik/objekte/**`, `data/paper.json`, `native/k3c-game/props/**`, `native/k3c-game/world/**`, `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/fx/**`
-- **Abhängig von:** GS1, GS3
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `docs/rules/wirtschaft.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-data/**`, `data/bottle.json`, `testdata/golden/**`, `public/grafik/objekte/**`, `data/paper.json`, `rust/crates/k3c-game/src/props/**`, `rust/crates/k3c-game/src/world/**`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/fx/**`
+- **Abhängig von:** GS1, GS3, RU37, RU60
 - **Braucht 🧑:** Abnahme
 - **Sperre:** golden
 
@@ -82,6 +85,8 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 | GS4.3 | `GS4.3-asset-flaschenpost.md` | Umsetzung | autonom | offen |
 | GS4.4 | `GS4.4-flaschenpost-spiel.md` | Umsetzung | autonom | verworfen |
 | GS4.5 | `GS4.5-review.md` | Review | autonom | offen |
+| GS4.6 | `GS4.6-flaschenpost-sim-rust.md` | Umsetzung | autonom | offen |
+| GS4.7 | `GS4.7-flaschenpost-spiel-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

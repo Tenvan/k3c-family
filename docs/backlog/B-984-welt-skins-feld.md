@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WE5
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,9 +41,11 @@ Neue Gegnerarten mit eigenen IDs, Zeichnen im Spiel (B-994), Editor (B-987), die
 
 ## Regeln und Einschränkungen
 
-Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). Die Engine liest keine Grafik-Dateien.
+Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr. Die Sim liest keine Grafik-Dateien.
 
-- **Bereich:** `engine/sim/**`, `docs/rules/welten.md`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `docs/rules/welten.md`
 - **Abhängig von:** B-983
 - **Braucht 🧑:** Freigabe
 - **Größe:** S

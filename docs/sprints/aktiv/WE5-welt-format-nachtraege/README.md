@@ -32,9 +32,13 @@ Anzeige im Spiel und Editor (WE6), Assets (WE7), neue Events und Zuordnung in de
 
 ## Regeln und Einschränkungen
 
-Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`); WE5.1 läuft im Hauptcheckout über `world_*` (Weltdateien sind gitignored). Die SIM-Sessions WE5.2 bis WE5.5 laufen nacheinander (gleicher Bereich), WE5.1 (Lane `welt`) und WE5.6 (DEV, Lane `mcp`) parallel dazu. Code-Review vor dem Commit bei SIM (Agent `k3c-welten`, `k3c-reviewer`).
+Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Sim, Level und Raum liegen seit RU10 bis RU22 in Rust; die Parität prüft RU60.4 (B-981 bis B-984), der Abschluss folgt in RU60.6. Die Pfade `engine/*` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-sim`, `k3c-level`, `k3c-room` (Entscheidung 013).
 
-- **Bereich:** `engine/sim/**`, `engine/level/**`, `engine/room/**`, `data/bosses.json`, `data/biomes/**`, `data/worlds/sengoku.json`, `docs/rules/welten.md`, `docs/rules/bosse.md`, `docs/rules/stufen.md`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/internal/mcpsrv/tools_world.go`, `tools/k3c-workbench/internal/mcpsrv/tools_world_test.go`
+Sim-Code lief im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`); WE5.1 lief im Hauptcheckout über `world_*` (Weltdateien sind gitignored). Die SIM-Sessions WE5.2 bis WE5.5 liefen nacheinander (gleicher Bereich), WE5.1 (Lane `welt`) und WE5.6 (DEV, Lane `mcp`) parallel dazu. Code-Review vor dem Commit bei SIM (Agent `k3c-welten`, `k3c-reviewer`).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-level/**`, `rust/crates/k3c-room/**`, `data/bosses.json`, `data/biomes/**`, `data/worlds/sengoku.json`, `docs/rules/welten.md`, `docs/rules/bosse.md`, `docs/rules/stufen.md`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/internal/mcpsrv/tools_world.go`, `tools/k3c-workbench/internal/mcpsrv/tools_world_test.go`
 - **Abhängig von:** –
 - **Braucht 🧑:** Freigabe
 - **Sperre:** –

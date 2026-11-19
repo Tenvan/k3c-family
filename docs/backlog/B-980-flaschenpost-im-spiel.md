@@ -52,11 +52,14 @@ Regeln und Simulation der Flaschenpost (B-971), Ton (eigenes Ticket bei Bedarf),
 
 ## Regeln und Einschränkungen
 
+- Umgehängt auf Rust (B-1143, 2026-11-19): Anzeige in `rust/crates/k3c-game`; die Go-Vorlage entfällt (Entscheidung 013).
 - Entscheidung 005: Asset nur über `assets_*`, Fachprüfung `k3c-grafik`; HUD-Prüfung `k3c-hud`.
 - Gen-Läufe (`gen:paper`, Grafik-Golden) am Feature bzw. im Abnahme-Ticket (B-742).
 
-- **Bereich:** `public/grafik/objekte/**`, `data/paper.json`, `native/k3c-game/props/**`, `native/k3c-game/world/**`, `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/fx/**`
-- **Abhängig von:** B-971, B-974
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/objekte/**`, `data/paper.json`, `rust/crates/k3c-game/src/props/**`, `rust/crates/k3c-game/src/world/**`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/fx/**`
+- **Abhängig von:** B-971, B-974, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –

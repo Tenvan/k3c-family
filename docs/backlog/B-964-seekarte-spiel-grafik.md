@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** GS2
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -57,10 +57,13 @@ Regeln der Zielwahl (B-961), Bedienung der Karte (B-962), Editor-Seekarte (B-963
 
 ## Regeln und Einschränkungen
 
+- Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
 - Entscheidung 005: Assets nur über `assets_*`, Review im Bereich Assets der Workbench, Fachprüfung `k3c-grafik`; PNG und `manifest.json` sind nicht eingecheckt (B-737), eingecheckt werden Specs, `index.paper.json`, `golden.json`.
 - Gen-Läufe (`gen:paper`, Grafik-Golden) nur am Feature bzw. im Abnahme-Ticket (B-742).
 
-- **Bereich:** `native/k3c-game/hud/**`, `native/k3c-game/art/**`, `native/k3c-game/view/**`, `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `data/paper.json`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/art/**`, `rust/crates/k3c-game/src/view/**`, `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `data/paper.json`
 - **Abhängig von:** WE4.2
 - **Braucht 🧑:** Abnahme
 - **Größe:** M

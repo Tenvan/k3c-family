@@ -36,12 +36,15 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `tools/k3c-workbench/**`, `engine/sim/**`, `docs/rules/welten.md`
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim-Anteile in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr. Die Workbench-Anteile bleiben unter `tools/k3c-workbench/**`.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `tools/k3c-workbench/**`, `rust/crates/k3c-sim/**`, `docs/rules/welten.md`
 - **Abhängig von:** B-954
 - **Braucht 🧑:** –
 - **Größe:** L
 - **Sperre:** –
-- Sim-Code im eigenen Worktree (B-925).
 
 ## Beispiele
 

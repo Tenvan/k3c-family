@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI1
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -54,14 +54,17 @@ Lade-Menü oder Overlay, automatische Beladung nach Profil, Wegfall des Startvor
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `docs/rules/stufen.md`, `docs/rules/wirtschaft.md`, `engine/sim/**`, `engine/room/**`, `data/ship.json`
-- **Abhängig von:** B-961
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Raum in `rust/crates/k3c-room` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Die Go-Sessions des Sprints SI1 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Regeltext REG, Sim SIM).
+- Keine Simulation, kein Balancing (gesperrt); Werte sind vorläufig. Keine Rücksicht auf alte Spielstände.
+- Koop-Werte nur über Multiplikator-Felder; die Platzzahl hat vorläufig keinen Koop-Multiplikator.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/stufen.md`, `docs/rules/wirtschaft.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `data/ship.json`
+- **Abhängig von:** B-961, RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** spielstand
-- Zwei Sessions: SI1.1 Regeltext (REG), SI1.2 Engine (SIM). Sim-Code im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`).
-- Keine Simulation, kein Balancing (gesperrt); Werte sind vorläufig. Keine Rücksicht auf alte Spielstände.
-- Koop-Werte nur über Multiplikator-Felder; die Platzzahl hat vorläufig keinen Koop-Multiplikator.
 
 ## Beispiele
 

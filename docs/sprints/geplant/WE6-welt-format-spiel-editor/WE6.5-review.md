@@ -8,7 +8,7 @@
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/we6
-- **Abhängig von:** WE6.1, WE6.2, WE6.3, WE6.4
+- **Abhängig von:** WE6.6, WE6.3, WE6.4
 - **Tickets:** B-987, B-993, B-994
 - **Kriterien:** AC-01, AC-02, AC-03, AC-04
 
@@ -22,7 +22,7 @@ Sprint-README `docs/sprints/*/WE6-welt-format-spiel-editor/README.md` mit AC-01 
 
 ## Erlaubte Dateien
 
-- `native/k3c-game/**`
+- `rust/crates/k3c-game/src/**`
 - `data/paper.json`
 - `tools/k3c-workbench/internal/world/**`
 - `tools/k3c-workbench/internal/mcpsrv/**`

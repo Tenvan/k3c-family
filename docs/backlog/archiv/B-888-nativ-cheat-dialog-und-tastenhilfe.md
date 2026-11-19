@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** CH1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
@@ -66,7 +66,7 @@ Dev-Befehle über `engine/room/dev.go` (`Room.Dev`) und `engine/sim/dev*.go`, ni
 
 ## Offene Fragen
 
-Keine (Tastenbelegung von 🧑 am 2026-11-14 bestätigt: „Ja, alle so“).
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Das Go-Spiel entfällt mit RU37; Cheat-Dialog und Tastenhilfe liefert im Rust-Spiel das Cheat-Fenster (Sprint RU56).
 
 ## Notizen
 

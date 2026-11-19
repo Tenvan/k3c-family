@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** SI1
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,13 +41,16 @@ Lade-Menü oder Overlay, neue Sounds, Animation des Tragens über das vorhandene
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/objekte/**`, `public/grafik/gebaeude-paper/**`, `data/paper.json`, `native/k3c-game/**`
-- **Abhängig von:** B-967
+- Umgehängt auf Rust (B-1143, 2026-11-19): Anzeige in `rust/crates/k3c-game`; die Go-Sessions des Sprints SI1 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Assets PAP, Anzeige CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
+- Texturbudget und Stil prüft `k3c-grafik`; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/objekte/**`, `public/grafik/gebaeude-paper/**`, `data/paper.json`, `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-967, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI1.3 Assets (PAP), SI1.4 Anzeige (CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
-- Texturbudget und Stil prüft `k3c-grafik`; Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen.
 
 ## Beispiele
 

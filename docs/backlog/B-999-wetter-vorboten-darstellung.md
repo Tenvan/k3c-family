@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** SI3
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,12 +41,15 @@ Schneesturm (kommt mit der Polar-Welt), Wetter als reine Kulisse ohne Engine-Zus
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/hintergruende/**`, `public/audio/**`, `data/paper.json`, `data/sounds.json`, `native/k3c-game/**`
-- **Abhängig von:** B-969
+- Umgehängt auf Rust (B-1143, 2026-11-19): Anzeige und Ton in `rust/crates/k3c-game`; die Go-Sessions des Sprints SI3 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Assets PAP, Anzeige und Ton CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742). Ton prüft `k3c-sound`.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/hintergruende/**`, `public/audio/**`, `data/paper.json`, `data/sounds.json`, `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-969, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI3.3 Assets (PAP), SI3.4 Anzeige und Ton (CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742). Ton prüft `k3c-sound`.
 
 ## Beispiele
 

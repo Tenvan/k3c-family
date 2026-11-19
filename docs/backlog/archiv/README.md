@@ -903,3 +903,11 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1138](B-1138-rust-spiel-version-im-bau.md) | INF | Problem | niedrig | erledigt | RU57 | Das Rust-Spiel zeigt im Menü immer Version unbekannt, weil der Bau K3C_VERSION nicht setzt |
 | [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | erledigt | RU57 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
 | [B-1140](B-1140-rust-spiel-start-aus-fremdem-ordner.md) | INF | Problem | mittel | erledigt | RU57 | Das Rust-Spiel findet Grafik und Schrift nicht, wenn es aus einem fremden Arbeitsordner startet |
+| [B-780](B-780-rig-fuer-alle-figuren-gegnerzahl.md) | CLI | Frage | mittel | verworfen | NG3 | Prototypen zeigen, wie viele Gegner, Truppen und Bosse gleichzeitig als Rig-Modelle laufen |
+| [B-888](B-888-nativ-cheat-dialog-und-tastenhilfe.md) | CLI | Idee | hoch | verworfen | CH1 | Das native Spiel hat wieder einen Cheat-Dialog (F9) und eine Tastenhilfe der UI-Tasten (F1) |
+| [B-899](B-899-abnahme-ch1.md) | CLI | Schuld | mittel | verworfen | CH1 | Abnahme CH1: Sichtprüfung der Entwickler-Tasten, Cheats, Debug-Werte und HUD-Icons und Gen-Läufe sind erledigt |
+| [B-912](B-912-e2e-flow-skillpunkt-rot.md) | CLI | Problem | hoch | verworfen | NA1 | Der Ende-zu-Ende-Lauf TestFlow scheitert, weil Spieler 2 bis Takt 600 keinen Skill-Punkt findet |
+| [B-943](B-943-ruckeln-trotz-60fps.md) | CLI | Problem | hoch | verworfen | FB4 | Die Grafik ruckelt trotz stabiler 60 FPS, auch auf schnellen Rechnern |
+| [B-1004](B-1004-audio-tests-ohne-browser-quelle.md) | CLI | Schuld | hoch | verworfen | NA1 | Die drei MatchBrowser-Tests in native/k3c-game/audio prüfen ohne die entfernten Browser-Quellen |
+| [B-1005](B-1005-lint-qf1001-licensefile.md) | CLI | Schuld | niedrig | verworfen | NA1 | golangci-lint meldet in native/k3c-game/menu/licensefile kein QF1001 mehr |
+| [B-1143](B-1143-feature-sprints-mit-go-spiel-bereich-umplanen.md) | INF | Problem | hoch | erledigt | RU37 | Offene Sprints und Tickets mit Bereich native/k3c-game müssen nach dem Löschen des Go-Spiels auf Rust umgeplant oder verworfen werden |

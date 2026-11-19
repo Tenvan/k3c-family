@@ -32,9 +32,13 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/**`, `native/k3c-game/**`, `public/grafik/**`, `data/paper.json`
+- Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Sim in Rust seit RU10 bis RU22, das Go-Spiel entfällt mit RU37; die Parität prüft RU60.2, der Abschluss folgt in RU60.5. Die Pfade `engine/sim` und `native/k3c-game/*` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-sim`, `rust/crates/k3c-game/src/*` (Entscheidung 013).
+- Sim-Code lief im eigenen Worktree (B-925); Assets nur über `assets_*`.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-game/src/**`, `public/grafik/**`, `data/paper.json`
 - **Sperre:** golden
-- Sim-Code im eigenen Worktree (B-925); Assets nur über `assets_*`.
 
 ## Beispiele
 

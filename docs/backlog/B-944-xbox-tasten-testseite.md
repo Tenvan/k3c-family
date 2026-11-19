@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** FB4
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -36,7 +36,11 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/input/**`, `native/k3c-game/menu/**`, `native/k3c-game/devtools/**`
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game` (Eingabe über `k3c-platform`); die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/input/**`, `rust/crates/k3c-game/src/menu/**`, `rust/crates/k3c-game/src/devtools/**`, `rust/crates/k3c-platform/src/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** Gerät
 - **Größe:** S

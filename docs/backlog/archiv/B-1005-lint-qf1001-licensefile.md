@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** NA1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-15
@@ -60,7 +60,7 @@ nicht relevant: reine Umformung.
 
 ## Offene Fragen
 
-keine
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Die Lint-Meldung betrifft Go-Code in `native/k3c-game/menu/licensefile`, der mit RU37 gelöscht wird.
 
 ## Notizen
 

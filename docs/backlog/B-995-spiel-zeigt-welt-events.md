@@ -41,10 +41,14 @@ Ton für die Events (eigenes Ticket bei Bedarf), neue Papierschnitt-Assets, Spie
 
 ## Regeln und Einschränkungen
 
-Das native Spiel zeichnet nur. Controller-Belegung unverändert.
+Das Rust-Spiel zeichnet nur. Controller-Belegung unverändert.
 
-- **Bereich:** `native/k3c-game/**`
-- **Abhängig von:** B-991, B-992, B-994
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-991, B-992, B-994, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** S
 - **Sperre:** –

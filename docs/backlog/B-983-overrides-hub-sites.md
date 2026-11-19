@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WE5
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,9 +41,11 @@ Welten-Autoren (🧑, Claude über `world_override_set`), Spieler sehen je Welt 
 
 ## Regeln und Einschränkungen
 
-Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). `engine/level` importiert weiterhin nichts aus `engine/sim` (Werte werden übergeben).
+Umgehängt auf Rust (B-1143, 2026-11-19): Level in `rust/crates/k3c-level`, Sim in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr. `k3c-level` importiert weiterhin nichts aus `k3c-sim` (Werte werden übergeben).
 
-- **Bereich:** `engine/level/**`, `engine/sim/**`, `docs/rules/welten.md`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-level/**`, `rust/crates/k3c-sim/**`, `docs/rules/welten.md`
 - **Abhängig von:** B-982
 - **Braucht 🧑:** Freigabe
 - **Größe:** M

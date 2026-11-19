@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** NA1
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -40,9 +40,13 @@ Andere Taste für die Seekarte; Änderungen am Bezahlen selbst (`engine/sim`); S
 
 ## Regeln und Einschränkungen
 
-Das Spiel zeichnet und bedient nur, Regeln bleiben in `engine/sim`. B bleibt unbelegt. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Agent `k3c-hud` prüft vor dem Commit.
+Das Spiel zeichnet und bedient nur, Regeln bleiben in `rust/crates/k3c-sim`. B bleibt unbelegt. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Agent `k3c-hud` prüft vor dem Commit.
 
-- **Bereich:** `native/k3c-game/hud/**`, `native/k3c-game/game/**`
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game` (Zielwahl am Steg liegt seit RU53 im HUD); die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013). Vor Beginn mit einem Test prüfen, ob der Fehler im Rust-Spiel auftritt.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/game/**`
 - **Abhängig von:** B-962
 - **Braucht 🧑:** Freigabe
 - **Größe:** S

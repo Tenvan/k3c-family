@@ -8,7 +8,7 @@
 - **Modell:** sonnet
 - **Umgebung:** live
 - **Branch:** sprint/gs3
-- **Abhängig von:** GS3.1
+- **Abhängig von:** GS3.7
 - **Tickets:** B-966
 - **Kriterien:** AC-02
 

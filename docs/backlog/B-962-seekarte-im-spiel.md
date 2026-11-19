@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WE4
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -40,7 +40,11 @@ Grafik-Assets der Karte (vorerst gezeichnete Formen), Editor (B-963).
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/game/**`, `native/k3c-game/input/**`
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/game/**`, `rust/crates/k3c-game/src/input/**`
 - **Abhängig von:** B-961
 - **Braucht 🧑:** TV-Abnahme
 - **Größe:** M
