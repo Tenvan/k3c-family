@@ -54,17 +54,19 @@ fn traeger_stirbt_drop_faellt_zu_boden() {
 /// Passiver Spieler (Bot passive): ohne Eingaben fällt die Burg in mindestens einem Seed. Go: `-short` überspringt ihn
 /// nicht, er rechnet aber eine ganze Insel durch.
 #[test]
-#[ignore = "wartet auf RU10 (island_with)"]
 fn passiver_spieler_burg_faellt() {
+    use crate::island::testutil::{standard_world, test_data};
+    let data = test_data();
     let mut fell = false;
     for seed in ["1", "2", "3"] {
-        let mut isl = island_with("normal", 1);
-        let _ = seed; // `CreateIsland(seed, …)` und `StepIsland` liefern RU10
-        let w = &mut isl.stages[0];
+        let mut isl = crate::island::create_island(&data, &standard_world(&data), seed, &[0], 1.0, Default::default())
+            .expect("Insel");
+        crate::island::add_island_player(&mut isl, 0);
+        let cmds = [crate::state::PlayerCommand::default()];
         let mut tick = 1;
-        while w.cycle.day <= 5 && tick < 5 * 600 * 30 {
-            step(w, None, DT);
-            if count_events(w, "castleFallen") > 0 {
+        while isl.stages[0].cycle.day <= 5 && tick < 5 * 600 * 30 {
+            crate::island::step_island(&mut isl, &cmds, &data.difficulty, DT);
+            if count_events(&isl.stages[0], "castleFallen") > 0 {
                 fell = true;
                 break;
             }

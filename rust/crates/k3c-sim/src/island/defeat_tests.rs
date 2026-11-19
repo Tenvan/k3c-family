@@ -1,5 +1,5 @@
 //! Niederlage-Modi (Go: `island_defeat_test.go`, B-102, K2.2b, docs/rules/stufen.md § 4). Die sechs Go-Tests bauen eine
-//! Insel (`defeat_island`) oder lassen die Burg fallen und warten auf RU18 (`create_world`: `new_hub_site`). Die Tests darunter (ohne Go-Gegenstück) prüfen
+//! Insel (`defeat_island`) oder lassen die Burg fallen. Die Tests darunter (ohne Go-Gegenstück) prüfen
 //! die Rechnung von `resource_losses` und `halve_stock`, die ohne `World`-Aufbau laufen.
 
 use k3c_data::hub::Stock;
@@ -21,9 +21,36 @@ fn castle_fallen(isl: &mut Island, stage: usize) {
     isl.put_stage_ref(r);
 }
 
-/// Go: `fell(p)` und der Kronenraub mit `leaveThroughPortal` (crown.go, enemies.go); kommt mit RU14/RU15.
-fn crown_theft(_isl: &mut Island) {
-    panic!("RU15: crown_theft")
+/// Go: `fell(p)` und der Kronenraub mit `leaveThroughPortal` (crown.go, enemies.go): Ein Gegner trägt die Krone des ersten
+/// Spielers durchs Portal (Vorrat und Insel-Zustand über den `IslandRef` wie `castle_fallen`).
+fn crown_theft(isl: &mut Island) {
+    use crate::crown::{CROWN_ENEMY, CROWN_GROUND};
+    let data = test_data();
+    let mut r = isl.stage_ref(0, &data.difficulty);
+    std::mem::swap(&mut isl.stock, &mut isl.stages[0].stock);
+    let w = &mut isl.stages[0];
+    let (index, px) = (w.players[0].index, w.players[0].x);
+    w.players[0].crown = Some(crate::state::Crown {
+        owner: index,
+        state: CROWN_GROUND.into(),
+        x: px,
+        ..Default::default()
+    });
+    let ei = crate::enemies::testutil::spawn(w, "goblin", px);
+    let eid = w.enemies[ei].id;
+    let crown = w.players[0].crown.clone().map(|mut c| {
+        c.state = CROWN_ENEMY.into();
+        c.carrier = eid;
+        c
+    });
+    if let Some(c) = w.players[0].crown.as_mut() {
+        (c.state, c.carrier) = (CROWN_ENEMY.into(), eid);
+    }
+    let e = &mut w.enemies[ei];
+    (e.crown, e.fleeing, e.home_x) = (crown, true, e.x);
+    crate::enemies::leave_through_portal(w, Some(&mut r));
+    std::mem::swap(&mut isl.stock, &mut isl.stages[0].stock);
+    isl.put_stage_ref(r);
 }
 
 /// Go: `DefaultOptionsFor(grade).Defeat` (island_options.go).
@@ -92,7 +119,6 @@ fn niederlage_stufenverlust() {
 
 /// Kronenraub ist die Niederlage (kampf.md § 6): Game Over, die Insel steht danach.
 #[test]
-#[ignore = "wartet auf RU15 (crown_theft)"]
 fn niederlage_kronenraub() {
     let data = test_data();
     let mut isl = defeat_island(&data, "stage");

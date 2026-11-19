@@ -68,13 +68,13 @@ fn schluessel_von_schild_und_ausloeser_ohne_monarch() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (mustIsland, moveToStage (Banner, bannerOut))"]
+#[ignore = "Port offen (B-1103): Rumpf nur `panic!`; Go-Test braucht Stufenwechsel am Tor (`moveToStage`, Banner `bannerOut`)"]
 fn banner_bleibt_beim_stufenwechsel_am_tor() {
     panic!("RU10: mustIsland, moveToStage (Banner, bannerOut)");
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (mustIsland, ToSave, loadIsland (Leader, Group, combat.shields))"]
+#[ignore = "Port offen (B-1103): Rumpf nur `panic!`; Go-Test braucht Insel-Spielstand mit Gruppenführer, Gruppe und `combat.shields`"]
 fn gruppenfuehrer_und_schild_im_spielstand() {
     panic!("RU10: mustIsland, ToSave, loadIsland (Leader, Group, combat.shields)");
 }

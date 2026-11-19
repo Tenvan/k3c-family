@@ -100,7 +100,7 @@ fn upgrade_elite_bogenschuetze() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go))"]
+#[ignore = "Port offen (B-1103): Go-Hilfen `warriorPostOf` und `firstHit` (unit_warrior_test.go) fehlen in Rust"]
 fn upgrade_elite_krieger() {
     let (_w, _) = want_elite("eliteWarrior", |w, s| elite_spot(w, s).0);
     unimplemented!("B-1103: Testhilfen warriorPostOf und firstHit (unit_warrior_test.go)")
