@@ -151,7 +151,7 @@ fn boss_skalierung() {
     let v = boss_values();
     let hp_of = |players: i64, depth: i64, grade: &str| -> f64 {
         let (mut w, mut isl) = boss_stage(depth, players);
-        isl.grade = d.difficulty.grades[grade].clone();
+        isl.grade = (&d.difficulty.grades[grade]).into();
         let b = mini_boss(&v.bosses, depth).expect("Miniboss");
         let x = w.portals[0];
         let ei = place_boss(&mut w, &v, b, x, Some(&isl));

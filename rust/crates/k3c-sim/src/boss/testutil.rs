@@ -29,7 +29,7 @@ pub fn boss_stage(depth: i64, players: i64) -> (World, IslandRef) {
     let isl = IslandRef {
         scaling: boss_values().waves.depth_scaling.clone(), // die Tabelle der Insel ist die der Daten (island_data.go)
         players,
-        grade: k3c_data::difficulty::Grade {
+        grade: crate::state::island_ref::GradeValues {
             enemy_hp: 1.0,
             enemy_damage: 1.0,
             wave_size: 1.0,

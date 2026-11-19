@@ -11,13 +11,34 @@ use k3c_data::waves::WavesDataDepthScaling;
 use super::World;
 use crate::boss::endboss::EndbossFight;
 
+/// Die Zahlen des Grads, die der Takt liest (Go: `Grade` ohne `DefaultDefeat`). `Copy`, damit `Island::stage_ref` je
+/// Stufenschritt keinen String klont (B-1082).
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
+pub struct GradeValues {
+    pub wave_size: f64,
+    pub enemy_hp: f64,
+    pub enemy_damage: f64,
+    pub protected_nights: i64,
+}
+
+impl From<&Grade> for GradeValues {
+    fn from(g: &Grade) -> Self {
+        Self {
+            wave_size: g.wave_size,
+            enemy_hp: g.enemy_hp,
+            enemy_damage: g.enemy_damage,
+            protected_nights: g.protected_nights,
+        }
+    }
+}
+
 /// Der Teil der Insel, den eine Stufe beim Rechnen braucht.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct IslandRef {
     /// Tabelle der Tiefen-Skalierung der Insel (Go: `island.Scaling`, island_data.go).
     pub scaling: WavesDataDepthScaling,
     /// Der Grad der Insel (Go: `difficulty[island.Options.Grade]`).
-    pub grade: Grade,
+    pub grade: GradeValues,
     /// Zahl der Spieler der Insel (Go: `len(isl.Players())`).
     pub players: i64,
     /// Zuschlag der Wellengröße je weiteren Spieler (Go: `isl.values().Waves.PerExtraPlayer`).
@@ -109,13 +130,12 @@ pub fn protected_night(w: &World, isl: Option<&IslandRef>) -> bool {
 mod tests {
     use super::*;
 
-    fn grade() -> Grade {
-        Grade {
+    fn grade() -> GradeValues {
+        GradeValues {
             wave_size: 1.5,
             enemy_hp: 1.2,
             enemy_damage: 1.1,
             protected_nights: 2,
-            ..Grade::default()
         }
     }
 
