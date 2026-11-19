@@ -126,3 +126,26 @@ describe('Waldbäume und Waldwand (BB1.3)', () => {
     expect(spec.ausgabe.hoehe_px).toBe(480);
   });
 });
+
+// BB1.4: Leitmotiv je Welt in der Ferne des Hubs (3–5 M, Anschnitt oben erlaubt).
+describe('Leitmotive (BB1.4)', () => {
+  const WELTEN = ['britannien', 'nil', 'sengoku', 'standard'];
+
+  it('leitmotive hat genau die vier Welten', () => {
+    expect(Object.keys(paper.leitmotive ?? {}).sort()).toEqual(WELTEN);
+  });
+
+  for (const welt of WELTEN) {
+    it(`${welt}: Spec in hintergruende, Höhe 3–5 M`, () => {
+      const ziel: string = paper.leitmotive?.[welt];
+      expect(ziel).toMatch(/^hintergruende\//);
+      const spec = json(`public/grafik/${ziel}.paper.json`);
+      expect(spec.rig).toBe('hintergrund');
+      const m = spec.ausgabe.hoehe_px / M;
+      expect(m).toBeGreaterThanOrEqual(3);
+      expect(m).toBeLessThanOrEqual(5);
+      const index = json('public/grafik/hintergruende/index.paper.json');
+      expect(JSON.stringify(index)).toContain(ziel.split('/')[1]);
+    });
+  }
+});

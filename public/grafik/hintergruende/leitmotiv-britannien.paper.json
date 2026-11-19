@@ -1,0 +1,62 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "leitmotiv-britannien",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Leitmotiv Britannien: Steinkreis mit Trilith auf einem Hügel, blasse Fern-Ebene (BB1.4)",
+  "teile": [
+    {
+      "id": "huegel",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 0L0 -110L130 -170L260 -240L384 -270L520 -240L650 -170L768 -110L768 0Z",
+          "material": "biom-wald",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M384 -270L520 -240L650 -170L768 -110L768 0L520 0L470 -130Z",
+          "material": "biom-wald",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [384, -130]
+    },
+    {
+      "id": "steine",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M235 -232L237 -330L253 -330L255 -232ZM280 -250L282 -355L298 -355L300 -250ZM326 -262L328 -385L344 -385L346 -262ZM395 -262L397 -385L413 -385L415 -262ZM441 -250L443 -355L459 -355L461 -250ZM487 -232L489 -330L505 -330L507 -232Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M322 -403L417 -403L417 -385L322 -385Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M344 -385L346 -262L340 -262L338 -385ZM413 -385L415 -262L409 -262L407 -385ZM459 -355L461 -250L455 -250L453 -355Z",
+          "material": "stein",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [384, -330]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "leitmotiv-nil",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Leitmotiv Nil: Pyramiden und Sphinx, blasse Fern-Ebene (BB1.4)",
+  "teile": [
+    {
+      "id": "pyramide-gross",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M70 0L290 -420L510 0Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M290 -420L510 0L290 0Z",
+          "material": "leinen",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [300, -200]
+    },
+    {
+      "id": "pyramide-klein",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M430 0L530 -210L630 0Z",
+          "material": "leinen",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M530 -210L630 0L530 0Z",
+          "material": "leinen",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [530, -100]
+    },
+    {
+      "id": "sphinx",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M610 0L612 -45L638 -55L690 -58L736 -50L752 -30L752 0Z",
+          "material": "leinen",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M618 -48L612 -98L618 -126L634 -138L650 -126L656 -98L650 -52Z",
+          "material": "leinen",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M652 -56L690 -58L736 -50L752 -30L752 0L652 0Z",
+          "material": "leinen",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [680, -60]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

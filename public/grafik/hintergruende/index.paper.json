@@ -380,6 +380,26 @@
     "manifest": "hg-wald-wand/manifest.json"
   },
   {
+    "id": "leitmotiv-britannien",
+    "rig": "hintergrund",
+    "manifest": "leitmotiv-britannien/manifest.json"
+  },
+  {
+    "id": "leitmotiv-nil",
+    "rig": "hintergrund",
+    "manifest": "leitmotiv-nil/manifest.json"
+  },
+  {
+    "id": "leitmotiv-sengoku",
+    "rig": "hintergrund",
+    "manifest": "leitmotiv-sengoku/manifest.json"
+  },
+  {
+    "id": "leitmotiv-standard",
+    "rig": "hintergrund",
+    "manifest": "leitmotiv-standard/manifest.json"
+  },
+  {
     "id": "weltbild-britannien-klein",
     "rig": "hintergrund",
     "manifest": "weltbild-britannien-klein/manifest.json"

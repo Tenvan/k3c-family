@@ -1,0 +1,79 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "leitmotiv-sengoku",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Leitmotiv Sengoku: Vulkanberg mit Rauchsäule und Torii auf dem Grat, blasse Fern-Ebene (BB1.4)",
+  "teile": [
+    {
+      "id": "rauch",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M392 -325L388 -370L404 -410L394 -445L420 -475L458 -468L462 -438L446 -410L452 -372L438 -330Z",
+          "material": "leinen",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -400]
+    },
+    {
+      "id": "berg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M90 0L250 -215L330 -310L355 -335L384 -325L413 -335L438 -310L518 -215L678 0Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M384 -325L413 -335L438 -310L518 -215L678 0L470 0L430 -150Z",
+          "material": "stein",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [384, -200]
+    },
+    {
+      "id": "torii",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M345 -312L348 -380L356 -380L355 -312Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M413 -312L412 -380L420 -380L423 -312Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M334 -378L338 -388L430 -388L434 -378L430 -380L338 -380Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M342 -366L426 -366L426 -360L342 -360Z",
+          "material": "koenigsrot",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [384, -345]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

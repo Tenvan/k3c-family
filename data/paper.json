@@ -93,6 +93,12 @@
   },
   "wetter": { "wolkenbank": "hintergruende/wetter-wolkenbank" },
   "waldwand": "hintergruende/hg-wald-wand",
+  "leitmotive": {
+    "standard": "hintergruende/leitmotiv-standard",
+    "sengoku": "hintergruende/leitmotiv-sengoku",
+    "nil": "hintergruende/leitmotiv-nil",
+    "britannien": "hintergruende/leitmotiv-britannien"
+  },
   "seekarte": {
     "inseln": {
       "standard": "objekte/seekarte-insel-standard",
