@@ -80,7 +80,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19; Ralf kann widerspre
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU58.1 | `RU58.1-tag-go-referenz-final.md` | Umsetzung | autonom | offen |
+| RU58.1 | `RU58.1-tag-go-referenz-final.md` | Umsetzung | autonom | fertig |
 | RU58.2 | `RU58.2-go-referenzbilder-e2e.md` | Umsetzung | autonom | offen |
 | RU58.3 | `RU58.3-go-referenz-messwerte-farben-pause.md` | Umsetzung | autonom | offen |
 | RU58.4 | `RU58.4-go-spiel-aus-build-ci-release.md` | Umsetzung | autonom | offen |

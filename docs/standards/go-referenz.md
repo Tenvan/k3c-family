@@ -4,7 +4,7 @@ Das Go-Spiel (`native/k3c-game`, Go + Ebitengine) ist das Orakel für Bildvergle
 B-1129, B-1130, RU36). RU37 entfernt es aus dem Arbeitsbaum; der letzte Stand mit Go-Spiel steht im Tag
 `go-referenz-final` (nie verschieben oder löschen; Entscheidung Ralf 2026-11-19).
 
-**Stand:** Der Tag zeigt auf `origin/main` zu Beginn von RU58.1 (Commit `dbb87c33`, Version `v0.24.1-216-gdbb87c33`).
+**Stand:** Der Tag (gesetzt 2026-11-19) zeigt auf `origin/main` zu Beginn von RU58.1 (Commit `dbb87c33`, Version `v0.24.1-216-gdbb87c33`).
 Hinweis: Der Tag ist erst gesetzt, wenn `git ls-remote --tags origin go-referenz-final` ihn zeigt; bis dahin gilt dieser Commit.
 
 Nach RU37 fehlt `native/` im Arbeitsbaum. Das Go-Spiel gibt es dann nur in einem Worktree des Tags, immer unter `.work/`.
