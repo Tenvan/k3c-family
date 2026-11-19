@@ -26,7 +26,7 @@ func main() {
 func run(tag, out string) error {
 	files, err := git("ls-tree", "-r", "--name-only", tag)
 	if err != nil {
-		return fmt.Errorf("Tag %s nicht lesbar: %w", tag, err)
+		return fmt.Errorf("tag %s nicht lesbar: %w", tag, err)
 	}
 	goTests := collectGo(tag, strings.Split(files, "\n"))
 	rustNames := map[string]map[string]bool{}
