@@ -2,6 +2,11 @@
 //! jeder Block trägt einen `// SAFETY:`-Kommentar, `tests/no_unsafe.rs` prüft beides.
 #![allow(unsafe_code)]
 
+mod controls;
+mod page;
+mod pagedraw;
+mod tabdraw;
+mod tabs;
 mod theme;
 mod window;
 

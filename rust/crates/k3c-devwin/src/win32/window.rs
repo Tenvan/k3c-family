@@ -3,24 +3,21 @@
 use std::cell::Cell;
 use std::ffi::c_void;
 
-use windows::Win32::Foundation::{COLORREF, HINSTANCE, HWND, LPARAM, LRESULT, POINT, RECT, WPARAM};
-use windows::Win32::Graphics::Gdi::{
-    BeginPaint, DT_NOPREFIX, DT_WORDBREAK, DrawTextW, EndPaint, HBRUSH, HFONT, InvalidateRect, PAINTSTRUCT,
-    SelectObject, SetBkMode, SetTextColor, TRANSPARENT, UpdateWindow,
-};
+use windows::Win32::Foundation::{HINSTANCE, HWND, LPARAM, LRESULT, POINT, RECT, WPARAM};
+use windows::Win32::Graphics::Gdi::{HBRUSH, HFONT, InvalidateRect, UpdateWindow};
 use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::UI::HiDpi::{AdjustWindowRectExForDpi, GetDpiForSystem, GetDpiForWindow};
 use windows::Win32::UI::WindowsAndMessaging::{
     CREATESTRUCTW, CS_HREDRAW, CS_VREDRAW, CW_USEDEFAULT, CreateWindowExW, DefWindowProcW, DispatchMessageW,
-    GWLP_USERDATA, GetClientRect, GetMessageW, GetSystemMetrics, GetWindowLongPtrW, IDC_ARROW, LoadCursorW, MINMAXINFO,
-    MSG, PostQuitMessage, RegisterClassExW, SM_CYSCREEN, SW_SHOW, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOZORDER,
-    SetWindowLongPtrW, SetWindowPos, ShowWindow, TranslateMessage, WINDOW_EX_STYLE, WINDOW_STYLE, WM_DESTROY,
-    WM_DPICHANGED, WM_GETMINMAXINFO, WM_NCCREATE, WM_NCDESTROY, WM_PAINT, WM_SIZE, WNDCLASSEXW, WS_CLIPCHILDREN,
-    WS_OVERLAPPEDWINDOW,
+    GWLP_USERDATA, GetMessageW, GetSystemMetrics, GetWindowLongPtrW, IDC_ARROW, LoadCursorW, MINMAXINFO, MSG,
+    PostQuitMessage, RegisterClassExW, SM_CYSCREEN, SW_SHOW, SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOZORDER,
+    SetWindowLongPtrW, SetWindowPos, ShowWindow, TranslateMessage, WINDOW_EX_STYLE, WINDOW_STYLE, WM_CREATE,
+    WM_DESTROY, WM_DPICHANGED, WM_GETMINMAXINFO, WM_NCCREATE, WM_NCDESTROY, WM_NOTIFY, WM_SIZE, WNDCLASSEXW,
+    WS_CLIPCHILDREN, WS_OVERLAPPEDWINDOW,
 };
 use windows::core::{Error, PCWSTR, Result, w};
 
-use super::theme;
+use super::{tabs, theme};
 use crate::style::{self, GRID, MIN_SIZE, START_SIZE, scale};
 
 const CLASS: PCWSTR = w!("K3CDevWin");
@@ -31,6 +28,9 @@ const STYLE: WINDOW_STYLE = WINDOW_STYLE(WS_OVERLAPPEDWINDOW.0 | WS_CLIPCHILDREN
 struct Ui {
     dpi: Cell<u32>,
     font: Cell<HFONT>,
+    bg: HBRUSH,
+    tab: Cell<HWND>,
+    page: Cell<HWND>,
 }
 
 impl Drop for Ui {
@@ -57,6 +57,9 @@ fn open_and_loop(bg: HBRUSH) -> Result<u8> {
     let ui = Box::new(Ui {
         dpi: Cell::new(dpi),
         font: Cell::new(theme::create_font(dpi)?),
+        bg,
+        tab: Cell::new(HWND::default()),
+        page: Cell::new(HWND::default()),
     });
     let (w, h) = start_size(dpi);
     let title: Vec<u16> = style::TITLE.encode_utf16().chain(std::iter::once(0)).collect();
@@ -198,12 +201,15 @@ extern "system" fn wndproc(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRES
             min_info(hwnd, lp);
             return LRESULT(0);
         }
+        WM_CREATE => return create_children(hwnd, lp),
         WM_SIZE => {
-            invalidate(hwnd);
+            arrange(hwnd, lp);
             return LRESULT(0);
         }
-        WM_PAINT => {
-            paint(hwnd);
+        WM_NOTIFY => {
+            if let Some(ui) = ui_of(hwnd) {
+                tabs::on_notify(ui.tab.get(), ui.page.get(), lp);
+            }
             return LRESULT(0);
         }
         WM_DPICHANGED => {
@@ -241,8 +247,9 @@ fn min_info(hwnd: HWND, lp: LPARAM) {
 fn apply_dpi(ui: &Ui, dpi: u32) {
     match theme::create_font(dpi) {
         Ok(f) => {
-            theme::delete_object(ui.font.replace(f));
             ui.dpi.set(dpi);
+            tabs::set_font(ui.tab.get(), ui.page.get(), dpi, f);
+            theme::delete_object(ui.font.replace(f));
         }
         Err(e) => eprintln!("❌ Schrift für {dpi} dpi: {e}"),
     }
@@ -292,26 +299,31 @@ fn dpi_changed(hwnd: HWND, wp: WPARAM, lp: LPARAM) {
     invalidate(hwnd);
 }
 
-/// paint zeichnet das Gerüst: einen Hinweistext in Schrift und Farbe des Looks (RU56.3 ersetzt ihn durch Controls).
-fn paint(hwnd: HWND) {
+/// create_children erzeugt Reiter und Seitenfläche (WM_CREATE); -1 bricht die Fenstererzeugung ab.
+fn create_children(hwnd: HWND, lp: LPARAM) -> LRESULT {
+    // SAFETY: bei WM_CREATE zeigt lParam auf eine CREATESTRUCTW, gültig während der Nachricht.
+    let inst = unsafe { (lp.0 as *const CREATESTRUCTW).as_ref() }.map(|cs| cs.hInstance);
+    let (Some(ui), Some(inst)) = (ui_of(hwnd), inst) else {
+        return LRESULT(-1);
+    };
+    match tabs::create(hwnd, inst, ui.bg, ui.dpi.get(), ui.font.get()) {
+        Ok((tab, page)) => {
+            ui.tab.set(tab);
+            ui.page.set(page);
+            LRESULT(0)
+        }
+        Err(e) => {
+            eprintln!("❌ Reiter nicht erzeugt: {e}");
+            LRESULT(-1)
+        }
+    }
+}
+
+/// arrange legt Reiter und Seitenfläche nach WM_SIZE an (lParam: Breite und Höhe des Client-Bereichs).
+fn arrange(hwnd: HWND, lp: LPARAM) {
     let Some(ui) = ui_of(hwnd) else { return };
-    let mut ps = PAINTSTRUCT::default();
-    let mut r = RECT::default();
-    let text = format!("K3C Cheat-Fenster (Gerüst)\n{} dpi", ui.dpi.get());
-    let mut wide: Vec<u16> = text.encode_utf16().collect();
-    // SAFETY: ps und r leben über die Aufrufe, BeginPaint/EndPaint sind gepaart, die Schrift gehört ui; wide ist
-    // ein beschreibbarer Puffer ohne Nullterminator (DrawTextW nimmt die Länge aus der Slice).
-    unsafe {
-        let hdc = BeginPaint(hwnd, &mut ps);
-        let _ = GetClientRect(hwnd, &mut r);
-        let pad = scale(2 * GRID, ui.dpi.get());
-        r.left += pad;
-        r.top += pad;
-        r.right -= pad;
-        SelectObject(hdc, ui.font.get().into());
-        SetBkMode(hdc, TRANSPARENT);
-        SetTextColor(hdc, COLORREF(style::TEXT.colorref()));
-        DrawTextW(hdc, &mut wide, &mut r, DT_WORDBREAK | DT_NOPREFIX);
-        let _ = EndPaint(hwnd, &ps);
+    let (w, h) = ((lp.0 & 0xFFFF) as i32, ((lp.0 >> 16) & 0xFFFF) as i32);
+    if !ui.tab.get().is_invalid() && !ui.page.get().is_invalid() {
+        tabs::arrange(ui.tab.get(), ui.page.get(), (w, h), ui.dpi.get());
     }
 }

@@ -3,7 +3,7 @@
 use std::ffi::c_void;
 use std::mem::size_of;
 
-use windows::Win32::Foundation::COLORREF;
+use windows::Win32::Foundation::{COLORREF, E_ACCESSDENIED};
 use windows::Win32::Graphics::Dwm::{DWMWA_USE_IMMERSIVE_DARK_MODE, DwmSetWindowAttribute};
 use windows::Win32::Graphics::Gdi::{
     CreateFontIndirectW, CreateSolidBrush, DeleteObject, HBRUSH, HFONT, HGDIOBJ, LOGFONTW,
@@ -21,7 +21,10 @@ use crate::style::{self, Rgb};
 pub(super) fn enable_dpi_awareness() {
     // SAFETY: Aufruf ohne Zeiger, wirkt nur auf den eigenen Prozess; die Konstante ist ein gültiger Kontext.
     let r = unsafe { SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) };
-    if let Err(e) = r {
+    // Zugriff verweigert heißt: der Modus steht schon (Manifest), das ist der Normalfall.
+    if let Err(e) = r
+        && e.code() != E_ACCESSDENIED
+    {
         eprintln!("🐛 DPI-Modus nicht gesetzt: {e}");
     }
 }

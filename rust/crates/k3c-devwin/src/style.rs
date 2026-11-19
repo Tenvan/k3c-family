@@ -35,9 +35,22 @@ pub fn scale(dip: i32, dpi: u32) -> i32 {
     i32::try_from(r).unwrap_or(if dip < 0 { i32::MIN } else { i32::MAX })
 }
 
+/// unscale rechnet Pixel bei der Auflösung dpi zurück in dip (gerundet).
+pub fn unscale(px: i32, dpi: u32) -> i32 {
+    let dpi = i64::from(dpi.max(1));
+    i32::try_from((i64::from(px) * 96 + dpi / 2) / dpi).unwrap_or(0)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn unscale_ist_die_umkehrung() {
+        assert_eq!(unscale(780, 144), 520);
+        assert_eq!(unscale(scale(333, 120), 120), 333);
+        assert_eq!(unscale(5, 0), 480);
+    }
 
     #[test]
     fn scale_rundet_und_skaliert() {
