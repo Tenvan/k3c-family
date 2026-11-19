@@ -1,6 +1,6 @@
 # RU32 · CLI · Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -83,7 +83,7 @@ Keine offenen.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU32.1 | `RU32.1-go-referenz-und-welt-hash.md` | Umsetzung | autonom | offen |
+| RU32.1 | `RU32.1-go-referenz-und-welt-hash.md` | Umsetzung | autonom | fertig |
 | RU32.2 | `RU32.2-ablauf-ohne-fenster.md` | Umsetzung | autonom | offen |
 | RU32.3 | `RU32.3-aufnahme-je-station.md` | Umsetzung | autonom | offen |
 | RU32.4 | `RU32.4-bildvergleich-und-bericht.md` | Umsetzung | autonom | offen |
