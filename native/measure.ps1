@@ -12,6 +12,12 @@
 # Rust-Wiedergabe (RU39.1, -Engine replay): k3c-game.exe aus dist\k3c-rust (Repo) bzw. ..\k3c-rust (Paket) spielt die
 # Aufzeichnung -Trace (Szene `nacht` als `messung-nacht`) im Fenster; --measure in Takten (Sekunden x 30), 60 Takte
 # Aufwärmen; ohne -Vsync mit --novsync (wie Go), mit -Vsync ohne den Schalter. Nur auf ausdrücklichen Wunsch, ohne -Engine läuft sie nicht mit.
+# Rust-Spiel (RU36.1, -Engine rustgame): dieselben Szenen `tag` und `nacht` mit denselben Schaltern wie -Engine game, EXE aus
+# dist\k3c-game (Repo: task build bzw. task rust:game:build; Paket: ..\k3c-game neben dem Go-Paket), Arbeitsordner ist der
+# Ordner der EXE (data, public\grafik). Das Go-Spiel liegt seit RU35 in dist\k3c-game-go (task native:game:build).
+# Neu für game und rustgame: Feld `start_ms` (Prozessstart bis sichtbares Fenster, MainWindowHandle ungleich 0, Abfrage alle
+# 50 ms; bei `nacht` zählt der Vorlauf --tick mit, für die Gate-Startzeit gilt die Szene `tag`), `exe_mib` (Größe der EXE),
+# -Runs (Läufe je Szene, Feld `lauf`).
 # -Vsync: ohne --novsync messen (G2: Ruckler bei 60 Hz); -Frames: je Lauf eine Zeilen-Datei je Bild nach reports\ und
 # deren Auswertung (Get-FrameStats, gleiche Formel für Go und Rust) im Feld `bilder` des Laufs. -StatsOnly <datei>: nur
 # eine Zeilen-Datei auswerten und ausgeben.
@@ -21,13 +27,14 @@ param(
     [int]$Seconds = 20,
     [int]$Warmup = 5,
     [string[]]$Modes = @('level', 'alle'),
-    [ValidateSet('', 'ebiten', 'rig', 'game', 'replay')]
+    [ValidateSet('', 'ebiten', 'rig', 'game', 'rustgame', 'replay')]
     [string]$Engine = '',
     [string[]]$EbitenArgs = @(),
     [int[]]$Figuren = @(2, 50, 200),
     [string[]]$Arten = @('rig', 'sheet'),
     [string[]]$Szenen = @('tag', 'nacht'),
     [string]$Size = '1920x1080',
+    [int]$Runs = 1,
     [string]$Trace = '',
     [switch]$Vsync,
     [switch]$Frames,
@@ -79,10 +86,17 @@ $exes = [ordered]@{
     ebiten = Find-Exe 'k3c-ebiten' 'k3c-ebiten\bin\k3c-ebiten.exe'
     rig    = Find-Exe 'k3c-rig' 'k3c-rig\bin\k3c-rig.exe'
     game   = Find-Exe 'k3c-game' 'k3c-game\bin\k3c-game.exe'
+    # Rust-Spiel: im Paket neben dem Go-Paket (..\k3c-game), im Repo aus task rust:game:build (dist\k3c-game)
+    rustgame = if (Test-Path (Join-Path $here '..\k3c-game\k3c-game.exe')) { Join-Path $here '..\k3c-game\k3c-game.exe' } else { Join-Path $here '..\dist\k3c-game\k3c-game.exe' }
     # Rust: im Paket neben dem Go-Paket (..\k3c-rust), im Repo aus task rust:game:dist
     replay = if (Test-Path (Join-Path $here '..\k3c-rust\k3c-game.exe')) { Join-Path $here '..\k3c-rust\k3c-game.exe' } else { Join-Path $here '..\dist\k3c-rust\k3c-game.exe' }
 }
-$buildTask = @{ ebiten = 'native:ebiten:build'; rig = 'native:rig:build'; game = 'native:game:build'; replay = 'rust:game:dist' }
+# Go-Spiel im Repo: Bau-Ordner, sonst das Paket nach task native:game:build (dist\k3c-game-go)
+if (-not (Test-Path $exes.game)) {
+    $goPaket = Join-Path $here '..\dist\k3c-game-go\k3c-game.exe'
+    if (Test-Path $goPaket) { $exes.game = $goPaket }
+}
+$buildTask = @{ ebiten = 'native:ebiten:build'; rig = 'native:rig:build'; game = 'native:game:build'; rustgame = 'rust:game:build'; replay = 'rust:game:dist' }
 if ($Exe) {
     # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
     if (-not $Engine) {
@@ -95,8 +109,9 @@ $engines = @(switch ($Engine) {
         'ebiten' { 'ebiten' }
         'rig' { 'rig' }
         'game' { 'game' }
+        'rustgame' { 'rustgame' }
         'replay' { 'replay' }
-        default { $exes.Keys | Where-Object { $_ -ne 'replay' -and (Test-Path $exes[$_]) } }
+        default { $exes.Keys | Where-Object { $_ -notin @('replay', 'rustgame') -and (Test-Path $exes[$_]) } }
     })
 if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:ebiten:build, native:rig:build oder native:game:build)" }
 foreach ($e in $engines) {
@@ -161,6 +176,17 @@ function Watch-Process($proc, $limit) {
     $max
 }
 
+# Startzeit: Zeit vom Prozessstart (Stopwatch vor Start-Process) bis das Fenster sichtbar ist (MainWindowHandle ungleich 0),
+# Abfrage alle 50 ms; -1, wenn der Prozess vorher endet oder das Fenster nach $limit Sekunden fehlt
+function Wait-Window($proc, $watch, $limit) {
+    while (-not $proc.HasExited -and $watch.Elapsed.TotalSeconds -lt $limit) {
+        $proc.Refresh()
+        if ($proc.MainWindowHandle -ne [IntPtr]::Zero) { return [math]::Round($watch.Elapsed.TotalMilliseconds) }
+        Start-Sleep -Milliseconds 50
+    }
+    -1
+}
+
 # Szenen des nativen Spiels: fester Seed, 2 Spieler, Vorlauf über --tick (ohne Fenster), feste Eingabe-Folge.
 # tag: Spieler 1 läuft rechts, Spieler 2 links. nacht: erste Nacht, beide stehen an der Burg, die Welle kommt dort an.
 $gameScenes = @{
@@ -170,7 +196,7 @@ $gameScenes = @{
 
 # Läufe je Engine: Lastfälle `level` und `alle` (Ebitengine), Art × Figurenzahl (Rig-Prototyp) oder Szenen (Spiel)
 function Get-Jobs($eng) {
-    if ($eng -eq 'game') { return @($Szenen | ForEach-Object { @{ name = $_; args = $gameScenes[$_] } }) }
+    if ($eng -in @('game', 'rustgame')) { return @($Szenen | ForEach-Object { @{ name = $_; args = $gameScenes[$_] } }) }
     if ($eng -eq 'replay') { return @(@{ name = ((Split-Path $Trace -Leaf) -replace '\.jsonl\.gz$', ''); args = @() }) }
     if ($eng -ne 'rig') { return @($Modes | ForEach-Object { @{ name = $_; args = @('--mode', $_, '--auto') } }) }
     $jobs = @()
@@ -180,14 +206,18 @@ function Get-Jobs($eng) {
 
 $runs = @()
 foreach ($eng in $engines) {
-    foreach ($job in (Get-Jobs $eng)) {
+    $jobList = @(Get-Jobs $eng)
+    if ($eng -notin @('game', 'rustgame')) { $jobList = $jobList | ForEach-Object { @{ name = $_.name; args = $_.args; lauf = 1 } } }
+    else { $jobList = foreach ($j in $jobList) { foreach ($n in 1..$Runs) { @{ name = $j.name; args = $j.args; lauf = $n } } } }
+    foreach ($job in $jobList) {
         $mode = $job.name
-        $tmp = Join-Path $reports "native-proto-$stamp-$eng-$mode.tmp.json"
-        $framesFile = Join-Path $reports "native-$stamp-$eng-$mode.frames.jsonl"
+        $suffix = if ($Runs -gt 1) { "-l$($job.lauf)" } else { '' }
+        $tmp = Join-Path $reports "native-proto-$stamp-$eng-$mode$suffix.tmp.json"
+        $framesFile = Join-Path $reports "native-$stamp-$eng-$mode$suffix.frames.jsonl"
         $argList = @('--measure', $Seconds, '--warmup', $Warmup, '--report', "`"$tmp`"") + $job.args
         if (-not $Vsync) { $argList += '--novsync' }
         # Das Spiel liest seine Dateien relativ zum Arbeitsordner, die Prototypen über --root
-        if ($eng -eq 'game') { $argList += @('--size', $Size) } elseif ($eng -ne 'replay') { $argList = @('--root', "`"$Root`"") + $argList }
+        if ($eng -in @('game', 'rustgame')) { $argList += @('--size', $Size) } elseif ($eng -ne 'replay') { $argList = @('--root', "`"$Root`"") + $argList }
         if ($eng -eq 'replay') {
             # Wiedergabe: Takte statt Sekunden (30 Hz), 60 Takte Aufwärmen fest, ohne -Vsync mit --novsync (wie Go)
             $argList = @('replay', "`"$Trace`"", '--window', '--measure', ($Seconds * 30), '--out', "`"$tmp`"", '--size', $Size)
@@ -198,7 +228,11 @@ foreach ($eng in $engines) {
         if ($eng -eq 'ebiten') { $argList += $EbitenArgs }
         $warm = if ($eng -eq 'replay') { 2 } else { $Warmup }
         Write-Host "🚀 Messe $eng $mode ($Seconds s nach $warm s Aufwärmen)"
-        $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -WorkingDirectory $Root -PassThru
+        # Das Rust-Spiel läuft im Ordner seiner EXE (Paket mit data und public\grafik), die anderen im Arbeitsordner -Root
+        $cwd = if ($eng -eq 'rustgame') { Split-Path (Resolve-Path $exes[$eng]) -Parent } else { $Root }
+        $startWatch = [Diagnostics.Stopwatch]::StartNew()
+        $proc = Start-Process -FilePath $exes[$eng] -ArgumentList $argList -WorkingDirectory $cwd -PassThru
+        $startMs = if ($eng -in @('game', 'rustgame')) { Wait-Window $proc $startWatch $limit } else { $null }
         $max = Watch-Process $proc $limit
         if ($max.timeout) { Write-Host "❌ $eng $mode nach $limit s nicht fertig, Prozess beendet"; Remove-Item $tmp -ErrorAction SilentlyContinue; continue }
         if (-not (Test-Path $tmp)) { Write-Host "❌ Kein Bericht für $eng $mode (Exit $($proc.ExitCode))"; continue }
@@ -210,6 +244,11 @@ foreach ($eng in $engines) {
         $r | Add-Member gpu_dediziert_mib_max ([math]::Round($max.ded / 1MB))
         $r | Add-Member gpu_geteilt_mib_max ([math]::Round($max.shr / 1MB))
         $r | Add-Member ram_mib_max ([math]::Round($max.ws / 1MB))
+        if ($eng -in @('game', 'rustgame')) {
+            $r | Add-Member lauf $job.lauf
+            $r | Add-Member start_ms $startMs
+            $r | Add-Member exe_mib ([math]::Round((Get-Item $exes[$eng]).Length / 1MB, 1))
+        }
         if ($Frames -and (Test-Path $framesFile)) {
             # Go schreibt eigene Kennwerte ins Feld `bilder`; sie bleiben als `bilder_go`, `bilder` rechnet dieses Skript
             if ($r.PSObject.Properties['bilder']) { $r | Add-Member bilder_go $r.bilder -Force }
@@ -221,7 +260,7 @@ foreach ($eng in $engines) {
     }
 }
 
-$kind = if ($engines.Count -eq 1 -and $engines[0] -in @('rig', 'game', 'replay')) { $engines[0] } else { 'proto' }
+$kind = if ($engines.Count -eq 1 -and $engines[0] -in @('rig', 'game', 'rustgame', 'replay')) { $engines[0] } else { 'proto' }
 $out = Join-Path $reports "native-$kind-$($env:COMPUTERNAME)-$stamp.json"
 $json = [ordered]@{ zeit = (Get-Date -Format 'o'); rechner = (Get-Machine); laeufe = $runs } | ConvertTo-Json -Depth 6
 # UTF-8 ohne BOM (Set-Content -Encoding UTF8 schreibt in PowerShell 5.1 eine BOM, an der JSON-Leser scheitern)
