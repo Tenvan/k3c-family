@@ -75,7 +75,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19, Ralf ausdrücklich)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU59.1 | `RU59.1-engine-bestand-belegen-und-abbauen.md` | Umsetzung | autonom | offen |
+| RU59.1 | `RU59.1-engine-bestand-belegen-und-abbauen.md` | Umsetzung | autonom | blockiert |
 | RU59.2 | `RU59.2-doku-engine-bestand.md` | Umsetzung | autonom | offen |
 | RU59.3 | `RU59.3-review.md` | Review | autonom | offen |
 
