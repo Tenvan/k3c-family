@@ -8,9 +8,10 @@ use k3c_platform::{Canvas, InputState};
 
 use super::tests::{cfg, step_with, stress_game_of};
 use super::*;
-use crate::game::Mode;
+use crate::game::packages::Libs;
 use crate::game::play_testutil::play_game_with;
 use crate::game::testutil::{FakeSim, keys1, pad};
+use crate::game::{Args, Mode};
 use crate::view::cell::Cell as ViewCell;
 use crate::view::input::Input;
 use crate::view::screen::{Screen, Step, StepKind};
@@ -88,6 +89,37 @@ fn starter_of_menu_starts_stress_with_two_players() {
     assert_eq!(games.len(), 1);
     assert_eq!(games[0].devices, vec![keys1(), pad(STRESS_PAD_BASE + 1)]);
     assert_eq!(g.dev.debug, DEBUG_VALUES);
+}
+
+/// B-1117/AC-02: `wire_stress_starter` (Aufruf von `build_game_with` nach `Game::new`) gibt dem Menü den Starter.
+#[test]
+fn wire_gives_menu_the_starter() {
+    use crate::game::testutil::{Log, parts};
+    let log = Log::default();
+    let (sim, _) = FakeSim::new(2);
+    let mut g = Game::new(
+        parts(StepKind::Stay, &log, Vec::new()),
+        Box::new(sim.with_dev()),
+        Args::default(),
+    )
+    .unwrap_or_else(|e| unreachable!("{e}"));
+    assert!(
+        !log.borrow().iter().any(|l| l == "stress-starter"),
+        "vor der Verdrahtung"
+    );
+    g.wire_stress_starter();
+    assert!(
+        log.borrow().iter().any(|l| l == "stress-starter"),
+        "Starter nicht im Menü"
+    );
+}
+
+/// B-1117/AC-02: Die echten Pakete (Menü samt Testing-Seite) bauen mit der Verdrahtung ohne Fehler.
+#[test]
+fn build_game_with_real_packages_wires_menu() {
+    let (sim, _) = FakeSim::new(2);
+    let g = crate::game::launch::build_game_with(&Args::default(), Box::new(sim.with_dev()), &Libs::default());
+    assert!(g.is_ok(), "{:?}", g.err());
 }
 
 /// Ohne Entwickler-Rolle lehnt der Starter ab, mit dem Fehlertext von Go; es entsteht kein Spiel.

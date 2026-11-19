@@ -216,7 +216,7 @@ impl SeatState {
     fn card(&mut self, lang: &str, w: &World, m: &Player, now: f64) {
         self.down = m.crown.is_some();
         self.purse = purse_size(w, m);
-        let mut purse = purse_max_of(w, m, None); // Abweichung von Go (B-1125): ohne Insel, kein Dev-Bonus
+        let mut purse = purse_max_of(w, m, w.island_ref_view().as_ref()); // Go: `w.island` (B-1125)
         if purse <= 0 {
             purse = super::data::purse_max_gold();
         }

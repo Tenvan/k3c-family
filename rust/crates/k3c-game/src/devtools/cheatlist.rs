@@ -31,27 +31,27 @@ pub struct CheatGroup {
 const GOLD_AMOUNTS: [i64; 3] = [10, 100, 500];
 const MATERIAL_AMOUNT: i64 = 50;
 const UPGRADE_LEVELS: [i64; 5] = [1, 2, 3, 4, 5];
-const RESOURCES: [(&str, &str); 5] = [
+pub const RESOURCES: [(&str, &str); 5] = [
     ("wood", "Holz"),
     ("stone", "Stein"),
     ("copper", "Kupfer"),
     ("iron", "Eisen"),
     ("crystal", "Kristall"),
 ];
-const PHASES: [(&str, &str); 4] = [
+pub const PHASES: [(&str, &str); 4] = [
     ("day", "Tag"),
     ("dusk", "Abend"),
     ("night", "Nacht"),
     ("dawn", "Morgen"),
 ];
 // grades ohne dev: der Grad dev geht nur mit Dev-Mode des Raums, den das native Spiel nicht setzt (local/dev.go).
-const GRADES: [(&str, &str); 4] = [
+pub const GRADES: [(&str, &str); 4] = [
     ("easy", "Leicht"),
     ("normal", "Normal"),
     ("hard", "Hart"),
     ("ultra", "Ultra"),
 ];
-const EVENTS: [(&str, &str); 3] = [
+pub const EVENTS: [(&str, &str); 3] = [
     ("fullMoon", "Vollmond"),
     ("bloodMoon", "Blutmond"),
     ("merchantRaid", "Händler-Überfall"),
@@ -211,6 +211,11 @@ struct BossRef {
     id: String,
     #[serde(rename = "Name", alias = "name")]
     name: String,
+}
+
+/// bosses sind Id und Name der Mini- und Endbosse (für das Cheat-Fenster, RU56).
+pub fn bosses() -> Vec<(String, String)> {
+    load_bosses()
 }
 
 /// load_bosses liest Id und Name der Mini- und Endbosse aus data/bosses.json (Fehler: keine Bosse, Log).

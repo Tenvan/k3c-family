@@ -928,6 +928,8 @@ dependencies = [
  "k3c-balance",
  "k3c-data",
  "k3c-det",
+ "k3c-devproto",
+ "k3c-devwin",
  "k3c-level",
  "k3c-platform",
  "k3c-rig",

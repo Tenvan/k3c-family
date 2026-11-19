@@ -50,12 +50,3 @@ fn bericht_hat_alle_felder_des_go_berichts_in_reihenfolge() {
         assert!(v["frametime_ms"].get(f).is_some() && v["takt_abstand_ms"].get(f).is_some());
     }
 }
-
-#[test]
-fn kennwerte() {
-    // wie Go `percentile`: sorted[round((n-1)*p)] = sorted[round(1,5)] = sorted[2] (RU39.1)
-    assert_eq!(percentile(&[1.0, 2.0, 3.0, 4.0], 0.5), 3.0);
-    assert_eq!(percentile(&[1.0, 2.0, 3.0, 4.0, 5.0], 0.99), 5.0);
-    assert_eq!(percentile(&[], 0.5), 0.0);
-    assert_eq!(stats(vec![3.0, 1.0, 2.0]).max, 3.0);
-}

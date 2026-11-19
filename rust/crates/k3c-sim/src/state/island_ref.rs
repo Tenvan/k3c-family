@@ -92,6 +92,48 @@ pub struct IslandEvents {
     pub nights: std::collections::BTreeMap<String, i64>,
 }
 
+/// Die lesbaren Teile der Insel für die Anzeige (HUD, Lager-Maximum, Zahlbarkeit, Lair; B-1125). Klein und `Copy`:
+/// `Island::sync_stock` spiegelt sie je Stufe in `World::island_view`, ohne die veränderlichen Teile der Insel zu berühren.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub struct IslandView {
+    /// Index der Stufe in der Insel (`IslandRef::stage`).
+    pub stage: usize,
+    /// Zahl der Stufen der Insel (`IslandRef::stages`).
+    pub stages: i64,
+    /// Gebaute Lager aller anderen Stufen (`IslandRef::storages_elsewhere`).
+    pub storages_elsewhere: i64,
+    /// Dev-Bonus des Lager- und Gold-Maximums (`IslandRef::stock_bonus`).
+    pub stock_bonus: i64,
+    /// Dev-Schalter `CheapBuild` (`IslandRef::cheap_build`).
+    pub cheap_build: bool,
+    /// Der Endboss-Bau der Stufe löst nicht mehr aus: Endboss im Kampf oder besiegt, oder der Boss des Baus ist besiegt
+    /// (Go: `AtLair` liest `island.endboss`, `EndbossDefeated`, `DefeatedBosses`).
+    pub lair_closed: bool,
+}
+
+impl IslandView {
+    /// Der `IslandRef` für lesende Funktionen (`purse_max_of`, `economy_of`, `at_lair` …). Nur die Felder der Sicht sind
+    /// gesetzt, der Rest ist leer und allokiert nicht; `lair_closed` steht als `endboss_defeated`.
+    pub fn to_ref(&self) -> IslandRef {
+        IslandRef {
+            stage: self.stage,
+            stages: self.stages,
+            storages_elsewhere: self.storages_elsewhere,
+            stock_bonus: self.stock_bonus,
+            cheap_build: self.cheap_build,
+            endboss_defeated: self.lair_closed,
+            ..IslandRef::default()
+        }
+    }
+}
+
+impl World {
+    /// Die Insel-Sicht als `IslandRef` (Go: `w.island`); `None` ohne Insel (Kampagne, Standbild, Wiedergabe).
+    pub fn island_ref_view(&self) -> Option<IslandRef> {
+        self.island_view.as_ref().map(IslandView::to_ref)
+    }
+}
+
 impl IslandRef {
     /// Go: `Island.waveFactors`: Wellengröße (Spieleranzahl der Insel mal Grad), HP- und Schadensfaktor zum Zeitpunkt
     /// des Wellenstarts.

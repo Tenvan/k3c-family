@@ -6,6 +6,7 @@ use super::cell::Cell;
 use super::frame::{Cue, Frame};
 use super::input::{DeviceID, Input};
 use super::session::Session;
+use super::stress::StressStarter;
 
 /// StepKind sagt game, was nach `Screen::update` geschieht.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -49,6 +50,9 @@ pub trait Screen {
 pub trait Menus {
     fn main(&mut self) -> Box<dyn Screen>;
     fn pause(&mut self) -> Box<dyn Screen>;
+    /// Gibt dem Menü den Starter des Stresstests (game, nach dem Bau der Schleife; B-1117). Ein Menü ohne Testing-Seite
+    /// ignoriert ihn.
+    fn set_stress_starter(&mut self, _st: Box<dyn StressStarter>) {}
 }
 
 /// MenuPages ist eine optionale Rolle von Menus für den Aufnahme-Modus (--menu): `page` liefert das Untermenü `name`

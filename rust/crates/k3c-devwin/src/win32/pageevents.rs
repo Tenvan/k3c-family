@@ -5,7 +5,7 @@ use windows::Win32::Foundation::HWND;
 use windows::Win32::UI::WindowsAndMessaging::CBN_SELCHANGE;
 
 use super::controls;
-use crate::layout::{Action, Control, Group, Kind, Values};
+use crate::layout::{Control, Group, Kind, Values};
 
 /// Kennungen der Controls: `ID_BASE` + flacher Index (Gruppe für Gruppe).
 pub(super) const ID_BASE: usize = 1000;
@@ -60,10 +60,6 @@ pub(super) fn command(groups: &[Group], hwnds: &[HWND], id: usize, note: usize) 
         controls::toggle(h);
     }
     let values = collect(groups, hwnds);
-    let msg = match &c.action {
-        Action::None => None,
-        Action::Msg(m) => Some((**m).clone()),
-        Action::Form(f) => f(&values),
-    }?;
+    let msg = c.fire(&values)?;
     Some((msg, label(c, &values)))
 }

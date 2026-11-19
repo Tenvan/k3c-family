@@ -157,7 +157,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
 | [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU52 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
 | [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
-| [B-1107](B-1107-rust-client-sim-sicht-ohne-insel.md) | CLI | Problem | mittel | offen | RU36 | Rust-Client: Anzeige rechnet ohne IslandRef (Lager-Maximum, Bau des Endbosses) und ohne Geschichte |
+| [B-1107](B-1107-rust-client-sim-sicht-ohne-insel.md) | CLI | Problem | mittel | offen | RU63 | Rust-Client: Anzeige rechnet ohne IslandRef (Lager-Maximum, Bau des Endbosses) und ohne Geschichte |
 | [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU51 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
 | [B-1109](B-1109-rust-start-grafik-aller-biome-im-speicher.md) | CLI | Schuld | mittel | offen | RU30 | Rust-Start lädt die Grafik aller Biome auf einmal (ohne Loader und Ladeanzeige je Stufe) |
 | [B-1105](B-1105-abnahme-laeufe-ru22-durchsatz.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU22: Durchsatz Rust gegen Go, Sim und Race (Lane: zweit) |
@@ -167,12 +167,12 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1113](B-1113-rust-welt-bibliothek-je-stufe.md) | CLI | Schuld | mittel | offen | RU30 | Rust: Welt-Grafik wird beim Start für alle Biome geladen, nicht je Stufe |
 | [B-1114](B-1114-aufnahme-sichtpruefung-grafik.md) | CLI | Schuld | mittel | offen | RU30 | Aufnahme-Modus im Rust-Spiel mit echter Grafik gegen Go prüfen und Speicher von ShotCanvas messen |
 | [B-1115](B-1115-rust-f12-pixel-und-maus.md) | CLI | Schuld | niedrig | offen | RU30 | Rust-Spiel: F12 zeigt keine Sprites und die Werte-Seite hat keine Maus-Auswahl |
-| [B-1116](B-1116-replay-report-auf-game-measure.md) | CLI | Schuld | niedrig | offen | RU30 | replay/report.rs nutzt Report, FrameStats und FrameLog aus game/measure.rs |
-| [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU30 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
+| [B-1116](B-1116-replay-report-auf-game-measure.md) | CLI | Schuld | niedrig | offen | RU63 | replay/report.rs nutzt Report, FrameStats und FrameLog aus game/measure.rs |
+| [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU63 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
 | [B-1118](B-1118-rust-spiel-icon-manifest-ressource.md) | CLI | Schuld | mittel | offen | RU30 | Rust-EXE trägt Spiel-Icon und Manifest (Ressourcen-Crate braucht Freigabe) |
 | [B-1119](B-1119-ru30-abnahme-messen-stresstest-aufnahme.md) | CLI | Schuld | mittel | offen | RU51 | RU30 Abnahme: Messläufe, Stresstest und Aufnahmevergleich des Rust-Spiels |
 | [B-1120](B-1120-ru32-abnahme-aufnahme-bildvergleich-bericht.md) | CLI | Schuld | mittel | offen | RU32 | RU32 Abnahme (Lane zweit): Aufnahme beider EXE, Bildvergleich Go gegen Rust, Bericht, Gen |
-| [B-1125](B-1125-rust-hud-insel-fuer-wirtschaft-werte.md) | CLI | Problem | mittel | offen | RU52 | Rust-HUD rechnet Beutel-Obergrenze und Tausch-Hinweis ohne Insel (Abweichung von Go) |
+| [B-1125](B-1125-rust-hud-insel-fuer-wirtschaft-werte.md) | CLI | Problem | mittel | offen | RU63 | Rust-HUD rechnet Beutel-Obergrenze und Tausch-Hinweis ohne Insel (Abweichung von Go) |
 | [B-1126](B-1126-ru53-abnahme-skills-inselwahl.md) | CLI | Schuld | mittel | offen | RU53 | RU53 Abnahme: Skills lernen und Inselwahl im Rust-Spiel (Sim, Gen, Race, Spieltest) |
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU58 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
@@ -189,6 +189,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1135](B-1135-cheatfenster-start-paket-ci.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Start per F4 und Schalter, Paket, Build und CI |
 | [B-1136](B-1136-cheatmenues-im-spiel-entfernen.md) | CLI | Schuld | niedrig | eingeplant | RU56 | In-Game-Cheat-Menü (F9) entfernen, sobald das Cheat-Fenster abgenommen ist |
 | [B-1142](B-1142-cheatfenster-pipe-haerten.md) | CLI | Schuld | niedrig | offen | RU56 | Cheat-Fenster-Pipe härten: Zugriffsrechte, Pipe-Squatting, blockierendes Schreiben |
+| [B-1144](B-1144-cheatfenster-restpunkte-rev2.md) | CLI | Problem | mittel | offen | RU56 | Cheat-Fenster: Zielspieler und Schalterzustand bleiben erhalten, goto, Fokus und Skillpunkte fehlen |
 
 ## Archiv
 

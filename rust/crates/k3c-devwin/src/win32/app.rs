@@ -11,7 +11,9 @@ use k3c_devproto::Msg;
 use windows::Win32::Foundation::{COLORREF, CloseHandle, HWND, LPARAM, LRESULT, WPARAM};
 use windows::Win32::Graphics::Gdi::{HBRUSH, HDC, SetBkColor, SetTextColor};
 use windows::Win32::System::Threading::{INFINITE, OpenProcess, PROCESS_SYNCHRONIZE, WaitForSingleObject};
-use windows::Win32::UI::WindowsAndMessaging::{PostMessageW, SetWindowTextW, WM_APP, WM_CLOSE};
+use windows::Win32::UI::WindowsAndMessaging::{
+    GetParent, PostMessageW, SW_RESTORE, SetForegroundWindow, SetWindowTextW, ShowWindow, WM_APP, WM_CLOSE,
+};
 use windows::core::PCWSTR;
 
 use super::controls::wide;
@@ -91,6 +93,11 @@ impl App {
 
     /// on_msg nimmt eine Nachricht des Spiels entgegen.
     pub(super) fn on_msg(&self, page: HWND, msg: Msg) {
+        if matches!(msg, Msg::Focus { .. }) {
+            // Zweites F4 im Spiel: das Fenster nach vorn holen (das Betriebssystem darf es verweigern, dann blinkt es).
+            bring_to_front(page);
+            return;
+        }
         let change = self
             .model
             .try_borrow_mut()
@@ -172,6 +179,17 @@ impl App {
         // SAFETY: t ist nullterminiert und lebt über den Aufruf; status ist ein Control dieses Threads (oder leer,
         // dann scheitert der Aufruf folgenlos).
         let _ = unsafe { SetWindowTextW(self.status.get(), PCWSTR(t.as_ptr())) };
+    }
+}
+
+/// bring_to_front holt das Hauptfenster (Elternfenster der Seite) nach vorn und stellt es aus der Symbolleiste her.
+fn bring_to_front(page: HWND) {
+    // SAFETY: page ist das eigene Seitenfenster; GetParent liefert das Hauptfenster; die Aufrufe haben nur Zahlen- und
+    // Handle-Argumente.
+    unsafe {
+        let main = GetParent(page).unwrap_or_default();
+        let _ = ShowWindow(main, SW_RESTORE);
+        let _ = SetForegroundWindow(main);
     }
 }
 

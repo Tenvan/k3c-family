@@ -85,6 +85,8 @@ mod hints_tests;
 #[cfg(test)]
 mod icons_tests;
 #[cfg(test)]
+mod island_tests;
+#[cfg(test)]
 mod kampf_tests;
 #[cfg(test)]
 mod keyicons_menu_tests;

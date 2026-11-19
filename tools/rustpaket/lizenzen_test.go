@@ -105,3 +105,12 @@ func TestSpdxURLs(t *testing.T) {
 		t.Fatalf("URLs = %q", got)
 	}
 }
+
+func TestMergePackages(t *testing.T) {
+	a := []pkg{{Name: "b", Version: "1"}, {Name: "c", Version: "1"}}
+	b := []pkg{{Name: "a", Version: "2"}, {Name: "b", Version: "1"}}
+	got := mergePackages(a, b)
+	if len(got) != 3 || got[0].Name != "a" || got[1].Name != "b" || got[2].Name != "c" {
+		t.Fatalf("Vereinigung = %v", got)
+	}
+}

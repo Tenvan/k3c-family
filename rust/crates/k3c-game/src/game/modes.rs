@@ -45,6 +45,7 @@ pub const MODE_FLAGS: &[Spec] = &[
     spec("river", Kind::Str, ""),
     spec("stats", Kind::Bool, "false"),
     spec("stall", Kind::Bool, "false"),
+    spec("devwin", Kind::Bool, "false"),
 ];
 
 impl Args {

@@ -5,6 +5,7 @@
 //! belegen je eine ganze Reihe. Ist der Inhalt höher als das Fenster, scrollt die Seite senkrecht.
 
 use std::collections::BTreeMap;
+use std::sync::Arc;
 
 use k3c_devproto::Msg;
 
@@ -51,9 +52,12 @@ impl Kind {
 /// (und `<key>.index` der Index), Eingabe der Text; Schaltflächen und Beschriftungen fehlen.
 pub type Values = BTreeMap<String, String>;
 
+/// Func ist eine Nachricht aus den Werten der Seite (Auswahllisten und Eingaben).
+pub type Func = Arc<dyn Fn(&Values) -> Option<Msg> + Send + Sync>;
+
 /// Action sagt, was ein Control beim Klick (Schaltfläche, Umschalter) oder Ändern (Auswahl) an das Spiel schickt.
 /// Die Kennung `id` der Nachricht setzt das Fenster.
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Default)]
 pub enum Action {
     /// Nichts (Eingabefelder, Beschriftungen, reine Werteträger).
     #[default]
@@ -62,7 +66,24 @@ pub enum Action {
     Msg(Box<Msg>),
     /// Eine Nachricht aus den Werten der Seite; `None` meldet "unvollständig" in der Statuszeile nicht, sondern tut nichts.
     Form(fn(&Values) -> Option<Msg>),
+    /// Wie `Form`, mit Daten aus dem Katalog im Closure (Kennungen hinter den Anzeigenamen der Auswahllisten).
+    Func(Func),
 }
+
+impl std::fmt::Debug for Action {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Action::None => f.write_str("None"),
+            Action::Msg(m) => write!(f, "Msg({m:?})"),
+            Action::Form(_) => f.write_str("Form(..)"),
+            Action::Func(_) => f.write_str("Func(..)"),
+        }
+    }
+}
+
+/// PLAYER_KEY ist der Schlüssel der Auswahl "Zielspieler": Hat eine Seite sie, gilt ihr Index für jeden `dev`-Befehl
+/// der Seite.
+pub const PLAYER_KEY: &str = "player";
 
 /// Control ist ein Element einer Gruppe; `key` benennt es (Schlüssel in `Values`).
 #[derive(Clone, Debug)]
@@ -99,6 +120,32 @@ impl Control {
     pub fn builds(mut self, f: fn(&Values) -> Option<Msg>) -> Self {
         self.action = Action::Form(f);
         self
+    }
+
+    /// builds_with macht das Control zu einer Nachricht aus den Werten der Seite und Daten des Katalogs.
+    pub fn builds_with(mut self, f: impl Fn(&Values) -> Option<Msg> + Send + Sync + 'static) -> Self {
+        self.action = Action::Func(Arc::new(f));
+        self
+    }
+
+    /// fire liefert die Nachricht, die das Control bei Klick oder Auswahl auslöst (ohne Kennung); ein `dev`-Befehl
+    /// trägt den Zielspieler der Seite, falls sie die Auswahl [`PLAYER_KEY`] hat.
+    pub fn fire(&self, values: &Values) -> Option<Msg> {
+        let mut msg = match &self.action {
+            Action::None => None,
+            Action::Msg(m) => Some((**m).clone()),
+            Action::Form(f) => f(values),
+            Action::Func(f) => f(values),
+        }?;
+        let target = values
+            .get(&format!("{PLAYER_KEY}.index"))
+            .and_then(|v| v.parse::<i64>().ok());
+        if let (Msg::Dev { player, .. }, Some(t)) = (&mut msg, target)
+            && t >= 0
+        {
+            *player = t;
+        }
+        Some(msg)
     }
 
     /// with_options setzt die Einträge einer Auswahlliste.

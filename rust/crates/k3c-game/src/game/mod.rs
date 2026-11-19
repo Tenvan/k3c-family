@@ -12,6 +12,7 @@ pub mod devices;
 pub mod devkeys;
 pub mod devshot;
 pub mod devvalues;
+mod devwinhost;
 mod draw;
 pub mod fault;
 pub mod flags;
@@ -186,6 +187,7 @@ pub struct Game {
     stress: Option<StressRun>,
     /// Uhr, Bildrate, Berichtsordner und Starter des Stresstests (`stress.rs`)
     stress_env: StressEnv,
+    dw: devwinhost::DevWinState, // Cheat-Fenster (RU56)
 }
 
 impl Game {
@@ -232,6 +234,7 @@ impl Game {
             mload: MeasureLoad::default(),
             stress: None,
             stress_env: StressEnv::default(),
+            dw: devwinhost::DevWinState::default(),
             args: a,
         };
         g.start()?;

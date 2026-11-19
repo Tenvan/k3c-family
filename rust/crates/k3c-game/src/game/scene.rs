@@ -87,6 +87,8 @@ pub struct Args {
     pub stats: bool,
     /// --stall: dauerhaft die Ladeanzeige (nur Aufnahme-Modus)
     pub stall: bool,
+    /// --devwin (oder K3C_DEVWIN=1): das Cheat-Fenster beim Start öffnen (RU56)
+    pub devwin: bool,
 }
 
 impl Scene {
@@ -120,7 +122,7 @@ pub const USAGE: &str = concat!(
     "[--tick <n>] [--input <p@t=LRSPA1234-|a:aktion,…>] [--menu main|saves|options|lobby|pause|keys|licenses] [--size <B>x<H>] ",
     "[--shots <ordner> [--count <n>] [--every <takte>] [--at <t>,…]] ",
     "[--measure <s> [--warmup <s>] [--report <datei>] [--novsync]] [--assets] ",
-    "[--grafik <ordner>] [--river shader|tiles] [--stats] [--stall]"
+    "[--grafik <ordner>] [--river shader|tiles] [--stats] [--stall] [--devwin]"
 );
 
 /// Die Schalter der Szene (Go: `newFlagSet`; `saves` bekommt `def_saves` als Standard).
@@ -197,6 +199,7 @@ fn collect(fs: &FlagSet) -> (Args, RawArgs) {
         river: fs.str("river").to_string(),
         stats: fs.bool("stats"),
         stall: fs.bool("stall"),
+        devwin: fs.bool("devwin"),
         ..Args::default()
     };
     let r = RawArgs {
