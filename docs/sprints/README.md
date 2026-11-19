@@ -46,6 +46,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU56 | CLI | RSU | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | – | `aktiv/RU56-cheat-fenster-win32/` |
 | RU60 | INF, CLI, SIM | RSU | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | – | `aktiv/RU60-feature-paritaet-rust/` |
 | RU61 | CLI, SIM, PAP | RSU | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | – | `aktiv/RU61-rust-spiel-nachtraege-go-sprints/` |
+| RU62 | SIM, CLI | RSU | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | – | `aktiv/RU62-welt-features-si-rust/` |
 | RU63 | CLI | RSU | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | – | `aktiv/RU63-smoke-nachtraege-hud-und-menues/` |
 | RU64 | CLI, INF | RSU | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | – | `aktiv/RU64-abnahme-laeufe-zweiter-rechner-rust-spiel/` |
 
@@ -79,7 +80,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
-| RU62 | SIM | RSU | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | – | Entwurf | `geplant/RU62-welt-features-si-rust/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
