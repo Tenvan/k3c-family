@@ -38,7 +38,7 @@ Neue Funktionen; Lizenzdatei und Pfad-Nachzug (B-1121, B-1122).
 
 Abnahme-Ticket nach B-742.
 
-- **Bereich:** –
+- **Bereich:** `docs/messung/abnahme-b-1123.md`
 - **Abhängig von:** –
 - **Braucht 🧑:** Abnahme
 - **Größe:** S

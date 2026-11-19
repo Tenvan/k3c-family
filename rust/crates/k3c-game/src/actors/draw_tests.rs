@@ -110,7 +110,13 @@ fn rig_foot_and_size() {
     #[allow(clippy::cast_precision_loss)]
     let ground = c.ground_y() as f64;
     assert!(foot[1] == ground, "Fußpunkt y {}, Boden {ground}", foot[1]);
-    let want_px = 102.5 / UNIT_PX * c.camera.scale * (-frame[1] / frame[3]);
+    // Spielhöhe aus data/paper.json lesen, damit der Test Asset-Maßstab-Änderungen (z. B. BB1) mitgeht.
+    let raw = std::fs::read_to_string(Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../data/paper.json")).unwrap();
+    let paper: serde_json::Value = serde_json::from_str(&raw).unwrap();
+    let hoehe = paper["figuren"]["truppen"]["warrior"]["hoehe"]
+        .as_f64()
+        .expect("figuren.truppen.warrior.hoehe");
+    let want_px = hoehe / UNIT_PX * c.camera.scale * (-frame[1] / frame[3]);
     assert!(
         ((foot[1] - top[1]) - want_px).abs() <= 0.01,
         "Höhe bis Rahmen-Oberkante {} px, erwartet {want_px}",
