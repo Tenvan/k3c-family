@@ -65,7 +65,7 @@ keine (Defaults autonom entschieden, 2026-11-19: Umfang ist die HUD-Anbindung, w
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU53.1 | `RU53.1-room-aktionen-gegen-go-pruefen.md` | Umsetzung | autonom | offen |
+| RU53.1 | `RU53.1-room-aktionen-gegen-go-pruefen.md` | Umsetzung | autonom | fertig |
 | RU53.2 | `RU53.2-hud-skill-shims-an-die-sim.md` | Umsetzung | autonom | offen |
 | RU53.3 | `RU53.3-hud-wirtschaft-shims-und-inselwahl.md` | Umsetzung | autonom | offen |
 | RU53.4 | `RU53.4-e2e-abweichungen-leeren.md` | Umsetzung | autonom | offen |
