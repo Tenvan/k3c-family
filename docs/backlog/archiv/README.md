@@ -898,3 +898,8 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | erledigt | RU46 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
 | [B-1097](B-1097-add-stock-capped-platzhalter-rest.md) | SIM | Schuld | niedrig | erledigt | RU18 | Platzhalter add_stock_capped in k3c-sim pending.rs ist ein Rest aus RU10 |
 | [B-1106](B-1106-rust-skills-respec-inselwahl.md) | CLI | Problem | hoch | erledigt | RU53 | Skills lernen, Respec und Zielinsel-Wahl fehlen im Rust-Spiel |
+| [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |
+| [B-1137](B-1137-rust-paket-pruefung-readme.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket wird beim Bau nicht auf Vollständigkeit geprüft und hat keinen Start-Hinweis |
+| [B-1138](B-1138-rust-spiel-version-im-bau.md) | INF | Problem | niedrig | erledigt | RU57 | Das Rust-Spiel zeigt im Menü immer Version unbekannt, weil der Bau K3C_VERSION nicht setzt |
+| [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | erledigt | RU57 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
+| [B-1140](B-1140-rust-spiel-start-aus-fremdem-ordner.md) | INF | Problem | mittel | erledigt | RU57 | Das Rust-Spiel findet Grafik und Schrift nicht, wenn es aus einem fremden Arbeitsordner startet |

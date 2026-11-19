@@ -4,13 +4,13 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
-- **Sprint:** RU37
+- **Status:** erledigt
+- **Sprint:** RU57
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -54,13 +54,13 @@ nicht relevant: Pfadkorrektur.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `grep -rn "k3c-rust\|rust:game:dist"` findet außerhalb erledigter Sprints und Backlog-Archiv nichts mehr.
-- **AC-02** `release.yml` zippt das Rust-Paket (nach B-1121) oder bleibt bewusst beim Go-Paket, mit Kommentar.
+- **AC-01** `grep -rn "k3c-rust\|rust:game:dist\b"` (altes Ziel, ohne `:check`) findet außerhalb erledigter Sprints und Backlog-Archiv nichts mehr (der interne Task `game:dist` und `game:dist:check` bleiben).
+- **AC-02** `release.yml` zippt das Rust-Paket `dist/k3c-game/` (nach B-1121), mit Kommentar im Kopf.
 
 ## Offene Fragen
 
-Spielstand-Standardordner des Rust-Pakets für `ops:backup` klären; Go/Rust-Spielstandformat bei „Im Spiel ansehen“ ungeprüft.
+Entschieden (autonom, Claude, 2026-11-19): Spielstand-Standardordner des Rust-Pakets ist `saves/` neben der EXE (`default_saves_dir()`), also `dist/k3c-game/saves` wie im Skript `ops:backup`; Go/Rust-Spielstandformat bei „Im Spiel ansehen“ bleibt ungeprüft.
 
 ## Notizen
 
-Aus RU35.1/RU35.2.
+Aus RU35.1/RU35.2. Umgesetzt in RU57.3: `measure.ps1` (replay und rustgame nutzen dieselbe Rust-EXE), `rust-ruckler.md`, `release.yml` (Rust-Bau und Zip), Kommentar in `scripts/backup-saves.sh`.

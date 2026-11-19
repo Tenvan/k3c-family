@@ -119,9 +119,9 @@ zeichnet Rust nicht (B-1056), Nachtstationen weichen darum voraussichtlich ab (m
 
 | Nr. | Gruppe | Station | So kommt man hin | Erwartung | Rust ok | Befund | Schwere |
 |---|---|---|---|---|---|---|---|
-| 70 | Paket | Rust-Paket startet am Zielgerät | `dist\k3c-game\k3c-game.exe` (B-1123 AC-06) | startet mit Grafik und Ton | – | – | – |
-| 71 | Paket | Lizenzdatei | `dist\k3c-game\LIZENZEN.txt` (B-1121) | fehlt bis RU37: Paket gilt dann als nicht weitergebbar (mittel, Ticket B-1121) | – | – | – |
-| 72 | Paket | EXE-Größe | `exe_mib` im Messbericht | höchstens 40 MB (Schwelle G1) | – | – | – |
+| 70 | Paket | Rust-Paket startet am Zielgerät | Ordner `dist\k3c-game` auf einen anderen PC kopieren, `k3c-game.exe` per Doppelklick und aus einer Konsole in einem fremden Ordner starten (B-1123 AC-06, RU57) | startet mit Grafik und Ton, `README.txt` erklärt Start und `saves\`, `saves\` entsteht neben der EXE | – | – | – |
+| 71 | Paket | Lizenzdatei | `dist\k3c-game\LIZENZEN.txt`, `LICENSE`, `LICENSE-ASSETS` (B-1121, RU57) | nennt die Werke der Menü-Seite und rund 130 Rust-Crates mit Lizenztext; 14 Crates liefern keinen Text (u. a. `symphonia-*` MPL-2.0), dort stehen Quelle und Adresse des Standardtexts; Kopf nennt noch Go-Bibliotheken (B-1139). Entscheidung 🧑: genügt das für die Weitergabe | – | – | – |
+| 72 | Paket | EXE-Größe und Paketliste | `exe_mib` im Messbericht; `task rust:game:dist:check` (B-1137) | EXE höchstens 40 MB (Schwelle G1); Prüfung meldet vollständig, keine Go-Reste (`*.go`, `assets.txt`) im Paket | – | – | – |
 | 73 | CI | CI auf main | `gh run list --branch main --limit 5` (B-1124) | alle Jobs grün; heute rot: Natives Spiel, Go arm64, k3c-workbench (nicht Rust, Ticket B-1124) | – | – | – |
 | 74 | CI | Prüfhinweise RU32 | `docs/messung/rust-bildvergleich.md` (B-1120) | Tabelle der 14 Stationen gefüllt, Stationen über der Schwelle mit Ticket | – | – | – |
 | 75 | Skills | Prüfhinweise RU53 | B-1126 AC-03 | Station 25, 26, 41, 42 | – | – | – |
