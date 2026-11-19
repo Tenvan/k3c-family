@@ -69,7 +69,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU64.1 | `RU64.1-abnahme-b1120-bildvergleich-rust.md` | Umsetzung | autonom | fertig |
-| RU64.2 | `RU64.2-abnahme-b1123-paket-ci-schwere-laeufe.md` | Umsetzung | autonom | offen |
+| RU64.2 | `RU64.2-abnahme-b1123-paket-ci-schwere-laeufe.md` | Umsetzung | autonom | fertig |
 | RU64.3 | `RU64.3-abnahme-b1126-skills-inselwahl.md` | Umsetzung | autonom | offen |
 | RU64.4 | `RU64.4-abnahme-b1129-farbe-pause-fenster.md` | Umsetzung | autonom | offen |
 | RU64.5 | `RU64.5-abnahme-b1130-szenen-pixelmessung.md` | Umsetzung | autonom | offen |
