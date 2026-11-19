@@ -134,7 +134,6 @@ fn apply_guards_uebernimmt_geraeumte_und_entfernt_ihre_wachen() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn ohne_lager_keine_wachen_in_der_insel() {
     let mut isl = ruin_island(vec![k3c_level::types::PlannedChunk {
         slot: 4,
@@ -146,7 +145,6 @@ fn ohne_lager_keine_wachen_in_der_insel() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn lager_stellt_wachen_auf_ueber_die_insel() {
     let mut isl = ruin_island(guard_plan());
     step(&mut isl.stages[0], None, DT); // erster Tick: Wachen stehen
@@ -156,7 +154,6 @@ fn lager_stellt_wachen_auf_ueber_die_insel() {
 
 /// Wachen stehen still und zählen nicht als Welle (über `Step`).
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn wachen_stehen_und_zaehlen_nicht_als_welle_ueber_step() {
     let mut isl = ruin_island(guard_plan());
     let w = &mut isl.stages[0];
@@ -175,7 +172,6 @@ fn wachen_stehen_und_zaehlen_nicht_als_welle_ueber_step() {
 
 /// Ziel im Radius: die Wache greift an (Spieler verliert Gold), das Ziel außerhalb des Radius bleibt unbehelligt.
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn wache_greift_im_radius_an_und_kehrt_zurueck() {
     let mut isl = ruin_island(guard_plan());
     let w = &mut isl.stages[0];
@@ -201,7 +197,6 @@ fn wache_greift_im_radius_an_und_kehrt_zurueck() {
 
 /// Der Dieb-Trait gilt nicht für Wachen: kein Goldklau, keine Flucht.
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn wache_klaut_kein_gold() {
     let mut isl = ruin_island(guard_plan());
     let w = &mut isl.stages[0];
@@ -214,7 +209,6 @@ fn wache_klaut_kein_gold() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn besiegte_wache_ist_geraeumt_ohne_aggression() {
     let mut isl = ruin_island(guard_plan());
     let w = &mut isl.stages[0];
@@ -229,7 +223,6 @@ fn besiegte_wache_ist_geraeumt_ohne_aggression() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn geraeumtes_lager_bleibt_im_spielstand() {
     let mut isl = ruin_island(guard_plan());
     let w = &mut isl.stages[0];
@@ -244,7 +237,6 @@ fn geraeumtes_lager_bleibt_im_spielstand() {
 
 /// Burgfall: die Gegner der Welle verschwinden, die Wachen bleiben.
 #[test]
-#[ignore = "wartet auf RU10 (ruin_island)"]
 fn burgfall_laesst_wachen_stehen() {
     let mut isl = ruin_island(guard_plan());
     let w = &mut isl.stages[0];

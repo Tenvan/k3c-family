@@ -308,7 +308,6 @@ fn fetch_weapon_gibt_auf_wenn_das_ziel_fehlt_oder_ein_gegner_naht() {
 /// Zwei Krieger verteilen sich auf beide Seiten und stehen hinter der äußersten Mauer; der Gegner an der Mauer nimmt
 /// den Schaden aus den Daten (Go: `Step` mit Kampfvariante und Begleitschutz, `escortPost`/`squadPost` sind RU15).
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed)"]
 fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
     let mut w = bare_world();
     let v = values(&w);
@@ -327,14 +326,15 @@ fn krieger_steht_hinter_der_aeussersten_mauer_und_schlaegt() {
     );
     let wx = w.sites[wall].x;
     let e = spawn(&mut w, "skeleton", wx - 8.0);
-    let hp = w.enemies[e].hp;
+    let (hp, eid) = (w.enemies[e].hp, w.enemies[e].id);
     for _ in 0..600 {
-        super::warrior::step_warrior(&mut w, &v, None, ti, DT);
-        if w.enemies[e].hp < hp {
+        crate::world::step(&mut w, &[], None, DT); // Go: `Step` (der Schlag des Kriegers fällt im Takt der Welt)
+        if w.enemies.iter().find(|en| en.id == eid).is_none_or(|en| en.hp < hp) {
             break;
         }
     }
-    assert_eq!(hp - w.enemies[e].hp, v.troops["warrior"].damage);
+    let after = w.enemies.iter().find(|en| en.id == eid).map_or(0.0, |en| en.hp);
+    assert_eq!(hp - after, v.troops["warrior"].damage);
 }
 
 /// Der Bauer nimmt das Schwert aus dem Regal und wird Krieger (Go: `dayWorld`, `runUntil`).

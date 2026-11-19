@@ -1,8 +1,5 @@
 //! Endboss je Insel und Bau in der tiefsten Stufe (Go: `island_endboss_test.go`, B-981, WE5.2): jede Tiefe als tiefste
-//! Stufe, Wahl über `endBoss`, Fehlerfälle, zwei Spieler. `insel_endboss_fehler` läuft; die zwei anderen Go-Tests bauen
-//! eine Insel und lösen den Endboss aus (`create_world_with` RU14, `AtLair`, `endSteps`, `warden` RU15) und tragen
-//! `ignore`; `own_*` prüft Wahl, Tiefe und Bau-Optionen an den Daten.
-#![allow(clippy::unimplemented)] // Rümpfe der ignorierten Tests: warten auf den genannten Sprint
+//! Stufe, Wahl über `endBoss`, Fehlerfälle, zwei Spieler; `own_*` prüft Wahl, Tiefe und Bau-Optionen an den Daten.
 
 use super::endboss::{boss_by_id, check_end_boss, end_boss, lair_options};
 use super::testutil::*;
@@ -32,25 +29,39 @@ fn lair_x(w: &World) -> Option<f64> {
     w.level.entities.iter().find(|e| e.kind == "lair").map(|e| e.x)
 }
 
-/// Go: `AtLair` (boss_endboss.go): kommt mit RU15.
-fn at_lair(_w: &World, _pi: usize) -> bool {
-    unimplemented!("RU15: at_lair")
+/// Go: `AtLair` (boss_endboss.go) für Spieler `pi` der Stufe `stage`; liest die Insel über ihren Bezug (`w.island`).
+fn at_lair(isl: &mut Island, stage: usize, pi: usize) -> bool {
+    let data = test_data();
+    let r = isl.stage_ref(stage, &data.difficulty);
+    let w = &isl.stages[stage];
+    let out = crate::boss::endboss::at_lair(w, Some(&r), &w.players[pi]);
+    isl.put_stage_ref(r);
+    out
 }
 
-/// Go: `warden` (boss_endboss_test.go): der Endboss in der Stufe; kommt mit RU15.
-fn warden_x(_w: &World) -> Option<f64> {
-    unimplemented!("RU15: warden")
+/// Go: `warden` (boss_endboss_test.go): Ort des Endbosses in der Stufe (`None`: keiner).
+fn warden_x(w: &World) -> Option<f64> {
+    w.enemies.iter().find(|e| e.kind == WARDEN_ID).map(|e| e.x)
 }
 
-/// Go: `endSteps` (boss_endboss_test.go): tickt die Stufe; kommt mit RU15.
-fn end_steps(_w: &mut World, _seconds: f64, _both: bool) -> Vec<crate::state::Event> {
-    unimplemented!("RU15: end_steps")
+/// Go: `endSteps` (boss_endboss_test.go): tickt die Insel `seconds` lang, die Spieler der Stufe `stage` am Leben, und
+/// liefert die Ereignisse dieser Stufe.
+fn end_steps(isl: &mut Island, stage: usize, seconds: f64) -> Vec<crate::state::Event> {
+    let data = test_data();
+    let mut events = Vec::new();
+    for _ in 0..(seconds / DT).round() as usize {
+        for p in &mut isl.stages[stage].players {
+            (p.crown, p.gold, p.last_stand_for) = (None, 1000, 1.0);
+        }
+        super::step_island(isl, &[], &data.difficulty, DT);
+        events.extend(isl.stages[stage].events.iter().cloned());
+    }
+    events
 }
 
 /// Go: `TestInselTiefsteStufeTraegtBauUndEndboss` (AC-01): Eine Insel mit tiefster Stufe 0, 1, 2 oder 3 lädt und hat ihren
 /// Endboss; den Bau trägt nur die tiefste Stufe.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU15: at_lair)"]
 fn insel_tiefste_stufe_traegt_bau_und_endboss() {
     let data = test_data();
     for deepest in 0..4i64 {
@@ -70,12 +81,13 @@ fn insel_tiefste_stufe_traegt_bau_und_endboss() {
                 w.lair_boss
             );
         }
-        let w = &mut isl.stages[deepest as usize];
+        let stage = deepest as usize;
+        let w = &mut isl.stages[stage];
         w.players[0].x = lair_x(w).expect("Bau");
         assert!(
-            w.lair_boss == want && at_lair(w, 0),
+            isl.stages[stage].lair_boss == want && at_lair(&mut isl, stage, 0),
             "tiefste Stufe {deepest}: lairBoss {:?}",
-            w.lair_boss
+            isl.stages[stage].lair_boss
         );
     }
 }
@@ -83,7 +95,6 @@ fn insel_tiefste_stufe_traegt_bau_und_endboss() {
 /// Go: `TestInselEndbossWahl` (AC-01): `endBoss` wählt eine andere ID; der gewählte Endboss erscheint im Bau der tiefsten
 /// Stufe, ausgelöst von einem von zwei Spielern.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: RU15: end_steps)"]
 fn insel_endboss_wahl() {
     let (mut isl, def) = lair_island(&[0, 3], &format!(r#","endBoss":"{WARDEN_ID}""#), 2);
     let data = test_data();
@@ -97,7 +108,8 @@ fn insel_endboss_wahl() {
     assert_eq!(w.biome.depth, 3, "Bau in Tiefe {}", w.biome.depth);
     w.players[0].x = x - 500.0;
     w.players[1].x = x - 10.0;
-    let events = end_steps(w, 5.0, true);
+    let events = end_steps(&mut isl, 1, 5.0);
+    let w = &isl.stages[1];
     let spawned = count(&events, "bossSpawned");
     assert!(
         spawned == 1 && warden_x(w) == Some(x),

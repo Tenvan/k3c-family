@@ -1,5 +1,4 @@
-//! Port von `engine/sim/crown_test.go` (B-930, B-931, docs/rules/kampf.md §§ 5 und 6). Tests über `step` (RU19), `emit`
-//! oder Inseln (RU10) tragen `ignore`; die Krone selbst läuft über `step_crowns`.
+//! Port von `engine/sim/crown_test.go` (B-930, B-931, docs/rules/kampf.md §§ 5 und 6).
 
 use super::testutil::{PROBE_GOLD, crown_world, fell, probe};
 use super::{
@@ -111,26 +110,34 @@ fn traeger_stirbt_die_krone_faellt_an_seiner_stelle() {
     assert!(dead.crown.is_none());
 }
 
+/// Go: `TestKroneMitspielerBringtZurueck` (AC-04, B-931): Der Mitspieler bringt die Krone zurück (Besitzer wie in Go an ihr).
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Krone)"]
 fn mitspieler_traegt_die_krone_zum_besitzer_zurueck() {
-    let (mut w, v) = crown_world();
+    use crate::state::PlayerCommand;
+    let (mut w, _) = crown_world();
     fell(&mut w, 0);
     let cx = w.players[0].x - 10.0;
     w.players[0].x = cx;
     if let Some(c) = w.players[0].crown.as_mut() {
         c.x = cx;
     }
-    w.players[1].x = cx + 1.0;
-    step_crowns(&mut w, &v, DT);
-    let c = w.players[0].crown.as_ref().expect("Krone");
-    assert_eq!(c.state, CROWN_PLAYER, "der Mitspieler hebt auf");
-    assert_eq!(c.carrier, w.players[1].id);
-    w.players[1].x = cx + 0.5; // beim Besitzer angekommen
-    for _ in 0..3 {
-        step_crowns(&mut w, &v, DT);
+    w.players[1].x = cx + 3.0;
+    w.players[1].crown = None;
+    let mut cmd = [PlayerCommand::default(), PlayerCommand::default()];
+    cmd[1].move_x = -1.0;
+    for _ in 0..30 * 5 {
+        crate::world::step(&mut w, &cmd, None, DT);
+        if w.players[0].crown.is_none() {
+            break;
+        }
     }
-    assert!(w.players[0].crown.is_none(), "{:?}", w.players[0].crown);
+    assert!(
+        w.players[0].crown.is_none() && w.players[1].crown.is_none(),
+        "Krone nicht zurückgebracht: P0 {:?}, P1 {:?}, P1 bei {}",
+        w.players[0].crown,
+        w.players[1].crown,
+        w.players[1].x
+    );
 }
 
 #[test]
@@ -315,7 +322,6 @@ fn ohne_krone_nur_laufen() {
 /// Go: `TestKroneRaubIstGameOver` (AC-02, B-931): Ein Gegner hebt die Krone auf, trägt sie ins Portal: Kronenraub, Game Over in
 /// jedem Grad.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Träger flieht nicht)"]
 fn kronenraub_ist_game_over() {
     let mut w = quiet_crown_world();
     fell(&mut w, 0);
@@ -328,7 +334,8 @@ fn kronenraub_ist_game_over() {
         crate::world::step(&mut w, &[], None, DT);
         let carried = w.players[0].crown.as_ref().is_some_and(|c| c.state == CROWN_ENEMY);
         assert!(
-            !(carried && !w.enemies.get(e).is_some_and(|en| en.fleeing)),
+            // Go: `e.Fleeing` am Zeiger; verlässt der Träger die Stufe, ist er schon aus `w.enemies` entfernt
+            !(carried && w.enemies.get(e).is_some_and(|en| !en.fleeing)),
             "Träger flieht nicht"
         );
         over = over || w.events.iter().any(|ev| ev["type"] == "gameOver");

@@ -2,8 +2,6 @@
 //! Lager-Bauplatz nur in Inseln. Die Go-Tests bauen eine Insel (`create_world_with`, RU14) und tragen `ignore`; `own_*` prüft
 //! dieselben Zahlen an einer von Hand gebauten Stufe mit einem `IslandRef` (Stufenzahl, Lager der anderen Stufen).
 
-#![allow(clippy::unimplemented)] // Rümpfe der ignorierten Tests: warten auf den genannten Sprint
-
 use k3c_data::hub::Stock;
 use serde_json::Value;
 
@@ -243,7 +241,6 @@ fn island_storage_capacity() {
 
 /// Go: `TestIslandStorageAddCapped`: Aufnahme über zwei Stufen, Zerstörung eines Lagers lässt den Überschuss stehen.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: add_stock, destroy_site (Zerstörung des Lagers))"]
 fn island_storage_add_capped() {
     let data = test_data();
     let v = test_values();
@@ -261,18 +258,87 @@ fn island_storage_add_capped() {
         on_stage(&mut isl, &data, 0, |w, r| add_stock_capped(w, &v, Some(r), "wood", 5)).0,
         0
     );
-    unimplemented!("B-1103: add_stock, destroy_site (Zerstörung des Lagers)")
+    // Zerstörung: Überschuss bleibt, aufgenommen wird erst wieder unter dem Maximum.
+    let si = storage_site(&isl.stages[0]).expect("Lager-Bauplatz");
+    isl.stages[0].sites[si].state = "built".into();
+    on_stage(&mut isl, &data, 0, |w, r| {
+        crate::economy::add_stock(w, &crate::world::vals(w), Some(r), "wood", 100)
+    });
+    let sid = isl.stages[0].sites[si].id;
+    crate::state::common::destroy_site(&mut isl.stages[0], sid);
+    assert_eq!(isl.stock.wood, 700, "Überschuss gelöscht");
+    assert_eq!(
+        on_stage(&mut isl, &data, 0, |w, r| add_stock_capped(w, &v, Some(r), "wood", 5)).0,
+        0,
+        "über Kapazität"
+    );
+    isl.stock.wood -= 150;
+    assert_eq!(
+        on_stage(&mut isl, &data, 0, |w, r| add_stock_capped(w, &v, Some(r), "wood", 100)).0,
+        50
+    );
+    assert!(
+        !on_stage(&mut isl, &data, 0, |w, r| add_stock_capped(w, &v, Some(r), "gold", 1)).1,
+        "gold ist kein Baumaterial"
+    );
 }
 
 /// Go: `TestIslandStorageFiveMaterials`: Kosten über fünf Materialien (`can_afford`, `spend`, RU18) und Rundlauf.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: add_stock, can_afford, spend)"]
 fn island_storage_five_materials() {
+    use crate::economy::{add_stock, can_afford, spend};
+    use k3c_data::buildings::Cost;
     let data = test_data();
-    let isl = must_island(&data, "lager-c", &[0]);
-    let loaded = load_island(&data, &save_json(&isl, "t"));
-    assert_eq!(loaded.stock, isl.stock, "Rundlauf");
-    unimplemented!("B-1103: add_stock, can_afford, spend")
+    let mut isl = must_island(&data, "lager-c", &[0]);
+    on_stage(&mut isl, &data, 0, |w, r| {
+        for res in ["wood", "stone", "copper", "iron", "crystal"] {
+            add_stock(w, &crate::world::vals(w), Some(r), res, 10);
+        }
+    });
+    let cost = Cost {
+        wood: 1,
+        stone: 2,
+        copper: 3,
+        iron: 4,
+        crystal: 5,
+        ..Cost::default()
+    };
+    assert!(can_afford(&isl.stock, &cost), "alle fünf sollten reichen");
+    spend(&mut isl.stock, &cost);
+    let want = Stock {
+        wood: 9,
+        stone: 8,
+        copper: 7,
+        iron: 6,
+        crystal: 5,
+    };
+    assert_eq!(isl.stock, want, "Vorrat");
+    let c6 = Cost {
+        crystal: 6,
+        ..Cost::default()
+    };
+    assert!(!can_afford(&isl.stock, &c6), "Kristall 6 darf nicht reichen");
+    // Spielstand: Rundlauf mit fünf Materialien.
+    let raw = save_json(&isl, "t");
+    assert_eq!(load_island(&data, &raw).stock, isl.stock, "Rundlauf");
+    // Alter Stand ohne Eisen und Kristall lädt unverändert.
+    let old = raw.replacen(r#","iron":6,"crystal":5"#, "", 1);
+    assert_ne!(old, raw, "Eisen/Kristall nicht im Stand");
+    let world = standard_world(&data);
+    let defaults = crate::state::links::values_of(&world).expect("Basis-Wertesatz");
+    let t = super::SaveTables {
+        data: &data,
+        defaults: &defaults,
+        standard_world: &world,
+    };
+    let s = super::parse_island_save(&old, &t).expect("alter Stand");
+    let want_old = Stock {
+        wood: 9,
+        stone: 8,
+        copper: 7,
+        ..Stock::default()
+    };
+    assert_eq!(s.stock, want_old, "alter Stand");
 }
 
 /// Go: `TestIslandStorageSiteOnlyInIslands`: Lager-Bauplatz nur in Insel-Stufen, die Campaign-Welt hat keinen.

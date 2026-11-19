@@ -2,7 +2,8 @@
 //! B-468/AC-03, docs/rules/geplante-chunks.md § 8), mit 2 Spielern über `fixture_island`. Die Tests über `fixture_island`
 //! (`create_world`) warten auf RU18 (Zahlplatz `new_hub_site`); Entwickler-Aktionen (`DevBuildAll`, `DevCastleFall`) und
 //! die Vorschau-Funktionen kommen mit RU19, Insel-Spielstand und Zahlziel (`find_pay_target`, `pay_one_coin`) mit RU18.2.
-#![allow(clippy::unimplemented)] // Rümpfe der Tests, die auf RU18 warten
+
+#![allow(clippy::unimplemented)] // Rümpfe der zwei ignorierten Tests (Port offen, B-1103)
 
 use super::repair::{repair, repair_job};
 use super::ruin::{add_ruin_sites, is_ruin, kind_hub_level, line_before_ruin, ruin_site};
@@ -199,7 +200,7 @@ fn ruine_zerstoert_und_wiederaufbau_ab_hub_stufe_der_art() {
 
 /// Wiederaufbau wie jeder Bau (bezahlen, Bauer baut): volle HP der Art, die Kennung bleibt.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: fixture_island, unit::build (pub(crate) machen), pay_site)"]
+#[ignore = "Port offen (B-1103): `unit::build` und `pay_site` sind für Tests nicht sichtbar (Produktionscode, nicht pub(crate))"]
 fn ruine_wiederaufbau_behaelt_kennung() {
     unimplemented!("B-1103: fixture_island, unit::build (pub(crate) machen), pay_site")
 }
@@ -207,9 +208,43 @@ fn ruine_wiederaufbau_behaelt_kennung() {
 /// Burgfall (castleLosses): Ruinen kehren in den Ausgangszustand zurück, auch nach Zerstörung oder voller Reparatur;
 /// Hub-Plätze werden leer.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: step_island mit Burgfall, fixture_island)"]
 fn burgfall_setzt_ruinen_zurueck() {
-    unimplemented!("B-1103: step_island mit Burgfall, fixture_island")
+    let (mut isl, data) = fixture_island();
+    isl.options.defeat = "stage".into();
+    let kinds = ["smithy", "barracks", "storage"];
+    let w = &mut isl.stages[0];
+    let ids: Vec<i64> = kinds.iter().map(|k| w.sites[ruin_of(w, k)].id).collect();
+    let sid = w.sites[ruin_of(w, "smithy")].id;
+    destroy_site(w, sid);
+    let (bar, sto) = (ruin_of(w, "barracks"), ruin_of(w, "storage"));
+    w.sites[bar].hp = vals(w).buildings["barracks"].hp;
+    w.sites[sto].hp = 7.0;
+    let workshop = crate::enemies::testutil::build_site(w, "workshop");
+    assert_eq!(w.cycle.phase, "day", "Ausgangslage");
+    w.castle.hp = 0.0;
+    crate::island::step_island(
+        &mut isl,
+        &[Default::default(), Default::default()],
+        &data.difficulty,
+        crate::island::testutil::DT,
+    );
+    let w = &isl.stages[0];
+    assert!(
+        w.events.iter().any(|e| e["type"] == "castleFallen"),
+        "die Burg ist nicht gefallen"
+    );
+    for (kind, id) in kinds.iter().zip(ids) {
+        let s = &w.sites[ruin_of(w, kind)];
+        assert!(
+            s.id == id
+                && s.state == "built"
+                && s.hp == ruin_start_hp(w, kind)
+                && s.max_hp == vals(w).buildings[*kind].hp,
+            "Ruine {kind} nach Burgfall: {s:?}"
+        );
+    }
+    let hub = &w.sites[workshop];
+    assert!(hub.state == "unpaid" && !hub.ruin, "Hub-Platz nach Burgfall: {hub:?}");
 }
 
 /// WZ14.8 (Review-Befund S1, L2): Ausbau der Vorschau und „alles bauen“ lassen eine Ruine beschädigt (HP < MaxHP, MaxHP der
@@ -249,25 +284,10 @@ fn ruine_bleibt_nach_ausbau_beschaedigt() {
     );
 }
 
-/// Ruinen im Spielstand (kind@x, keine neue Version) und Vorrang der Mauerlinien beim Bezahlen (WZ14.3, B-468/AC-03).
-#[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: fixture_island, save_json, load_island)"]
-fn ruine_im_spielstand() {
-    unimplemented!("B-1103: fixture_island, save_json, load_island")
-}
-
-/// Die Planung steht im Stand (B-489): Ändert sich die Planung der Welt danach, lädt der Stand seine Stufe so, wie er sie
-/// gebaut hat; die Ruinen und ihre Plätze bleiben (vorher verlor der Stand sie, WZ24.2).
-#[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: fixture_island, save_json, load_island)"]
-fn ruine_im_spielstand_bleibt_bei_geaenderter_welt_planung() {
-    unimplemented!("B-1103: fixture_island, save_json, load_island")
-}
-
 /// Vorrang beim Bezahlen: Liegt eine Ruine in Zahl-Reichweite eines unbezahlten Bauplatzes der Mauerlinien, gehen die Münzen
 /// an den Linien-Platz, nicht an Produkt oder Ausbau der Ruine; genau auf wall.x und knapp daneben.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: not implemented: B-1103: fixture_island, find_pay_target, pay_one_coin)"]
+#[ignore = "Port offen (B-1103): `find_pay_target` und `pay_one_coin` sind für Tests nicht sichtbar (Produktionscode, nicht pub(crate))"]
 fn linien_platz_vor_ruine_beim_bezahlen() {
     unimplemented!("B-1103: fixture_island, find_pay_target, pay_one_coin")
 }

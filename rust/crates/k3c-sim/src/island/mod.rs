@@ -223,7 +223,11 @@ impl Island {
         let per_extra_player = self.per_extra_player();
         IslandRef {
             scaling: self.scaling.clone(),
-            grade: difficulty.grades.get(&self.options.grade).cloned().unwrap_or_default(),
+            grade: difficulty
+                .grades
+                .get(&self.options.grade)
+                .map(Into::into)
+                .unwrap_or_default(),
             players: self.player_count(),
             per_extra_player,
             cheap_build: self.dev.cheap_build,

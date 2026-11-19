@@ -81,7 +81,6 @@ fn island_stage_without_player_keeps_running() {
 /// Go: `TestIslandSharedStock`. In Rust besitzt die Insel den Vorrat (Entscheidung 5); jede Stufe sieht ihn, solange sie
 /// rechnet (`with_stage_stock`), und keine Stufe hat einen eigenen.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Stufe 0 hat einen eigenen Vorrat)"]
 fn island_shared_stock() {
     let data = test_data();
     let mut isl = must_island(&data, "insel-c", &[0, 1, 2]);
@@ -262,7 +261,11 @@ fn stage_ref_und_put_stage_ref_geben_vorrat_und_bosse_unveraendert_zurueck() {
     assert_eq!(r.players, 2, "Spieler aller Stufen der Insel");
     assert!(r.cheap_build && r.endboss_defeated && r.defeat_resources);
     assert_eq!(r.per_extra_player, 0.5);
-    assert_eq!(r.grade, data.difficulty.grades["normal"], "Grad aus der Tabelle");
+    assert_eq!(
+        r.grade,
+        (&data.difficulty.grades["normal"]).into(),
+        "Grad aus der Tabelle"
+    );
     assert_eq!(r.defeated_bosses, vec!["wald".to_string(), "hoehle".to_string()]);
     assert!(
         isl.defeated_bosses.is_empty() && isl.endboss.is_none(),

@@ -184,3 +184,29 @@ fn destroy_site_macht_den_platz_wieder_leer() {
         "eine Ruine bleibt Ruine"
     );
 }
+
+/// B-1087: Ein gebauter Platz auf 0 HP panict nicht mehr; ohne Schutz wird er zerstört, in einer geschützten Nacht
+/// bleibt er mit 1 HP stehen (Go: `applyDamageBy`, `protectedNight`).
+#[test]
+fn platz_auf_null_hp_zerstoert_oder_haelt_in_geschuetzter_nacht() {
+    use super::island_ref::IslandRef;
+    let mut wall = site(7, "wall", 100.0, "built");
+    wall.hp = 5.0;
+    wall.max_hp = 5.0;
+    let mut w = World {
+        sites: vec![wall],
+        ..Default::default()
+    };
+    w.cycle.phase = "night".into();
+    w.cycle.day = 1;
+    let mut isl = IslandRef::default();
+    isl.grade.protected_nights = 2;
+    apply_damage_by(&mut w, 7, 9.0, "goblin", Some(&isl));
+    assert!(
+        w.sites[0].state == "built" && w.sites[0].hp == 1.0,
+        "geschützt: {:?}",
+        w.sites[0]
+    );
+    apply_damage_by(&mut w, 7, 9.0, "goblin", None);
+    assert_eq!(w.sites[0].state, "unpaid", "ungeschützt zerstört: {:?}", w.sites[0]);
+}

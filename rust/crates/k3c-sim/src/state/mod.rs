@@ -40,6 +40,8 @@ mod common_tests;
 #[cfg(test)]
 mod data_tests;
 #[cfg(test)]
+mod save_economy_tests;
+#[cfg(test)]
 mod save_tests;
 #[cfg(test)]
 mod types_tests;
