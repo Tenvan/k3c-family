@@ -8,9 +8,9 @@
 - **Sprint:** BB1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -37,11 +37,12 @@ Zeichnen im Spiel und Parallaxe (RU55, B-1047), Polar-Welt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/hintergruende/**`, `data/paper.json`
+- **Bereich:** `public/grafik/hintergruende/**`, `data/paper.json`, `tests/bildaufbauMasstab.test.ts`
 - **Abhängig von:** –
-- **Braucht 🧑:** Entscheidung, Freigabe
+- **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
+- Neuer Schlüssel `leitmotive` in `data/paper.json`; die Anbindung im Spiel ist ein Folge-Ticket der Review (BB1.5).
 
 ## Beispiele
 
@@ -58,7 +59,7 @@ Tiefe Stufen zeigen das Leitmotiv nicht.
 
 ## Offene Fragen
 
-Motiv je Welt: Vorschläge unter Beispiele, 🧑 entscheidet.
+Entschieden (autonom, Claude, 2026-11-19): die Vorschläge unter Beispiele (standard Burgberg, sengoku Vulkanberg mit Torii, nil Pyramide und Sphinx, britannien Steinkreis auf einem Hügel); 🧑 ändert, was ihm nicht gefällt.
 
 ## Notizen
 

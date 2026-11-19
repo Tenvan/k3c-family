@@ -8,9 +8,9 @@
 - **Sprint:** BB1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -38,9 +38,9 @@ Monarch und Reittiere ändern; Trefferzonen und Werte der Engine.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `data/paper.json`, `public/grafik/truppen/**`
+- **Bereich:** `data/paper.json`, `public/grafik/truppen/**`, `tests/bildaufbauMasstab.test.ts`
 - **Abhängig von:** –
-- **Braucht 🧑:** Freigabe, Abnahme
+- **Braucht 🧑:** Abnahme
 - **Größe:** S
 - **Sperre:** –
 - Assets nur über `assets_*`; Golden und `gen:paper` im Abnahme-Ticket (B-742).
@@ -61,7 +61,7 @@ Schwarm-Gegner (Ratten) und Bosse behalten eigene Größen nach Tabelle § 2.
 
 ## Offene Fragen
 
-Genauer Wert 0,55 oder 0,65 M entscheidet 🧑 am TV; Default 0,6 M.
+Entschieden (autonom, Claude, 2026-11-19): 0,6 M (Truppen 0,58–0,60 M); 🧑 justiert am TV (ein Wert je Rolle in `data/paper.json`).
 
 ## Notizen
 

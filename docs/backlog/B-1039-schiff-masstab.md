@@ -8,9 +8,9 @@
 - **Sprint:** BB1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -38,11 +38,12 @@ Neue Schiffsmechanik, Schiffsfahrt-Animation (`art/voyage`).
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/gebaeude-paper/schiff.paper.json`, `data/paper.json`
+- **Bereich:** `public/grafik/gebaeude-paper/schiff.paper.json`, `data/paper.json`, `tests/bildaufbauMasstab.test.ts`
 - **Abhängig von:** –
-- **Braucht 🧑:** Freigabe, Abnahme
+- **Braucht 🧑:** Abnahme
 - **Größe:** S
 - **Sperre:** –
+- Größe über `data/paper.json` › `skalierung` (Default 2,2 → 2,97 M), Spec nur bei Bedarf.
 
 ## Beispiele
 
