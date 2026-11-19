@@ -904,6 +904,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "k3c-devproto"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "k3c-game"
 version = "0.1.0"
 dependencies = [
