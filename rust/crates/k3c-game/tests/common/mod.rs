@@ -3,3 +3,4 @@
 #![allow(dead_code)] // jedes Testprogramm nutzt nur einen Teil
 
 pub mod canon;
+pub mod flow;
