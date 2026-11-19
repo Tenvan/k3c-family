@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** RU37
+- **Sprint:** RU57
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,7 +28,10 @@ Entwickler; 🧑 Ralf entscheidet über Weitergabe.
 
 ## Anforderungen
 
-- Dieselbe Liste wie die Lizenz-Seite im Menü; Crate-Lizenzen aus `Cargo.lock` (z. B. cargo-about oder Handliste; neues Werkzeug nur mit Freigabe 🧑).
+- `LIZENZEN.txt` beginnt mit `license_text()` des Rust-Spiels (Aufruf `k3c-game licenses`, Rust-Seite, Menü-Liste unverändert) und hängt je gelinktem Rust-Crate Name, Version, SPDX-Ausdruck und die Volltexte der LICENSE-, COPYING- und NOTICE-Dateien aus dem Cargo-Cache an (Vorbild `native/k3c-game/menu/licensefile`).
+- Das Werkzeug ist ein kleines Go-Programm `tools/rustpaket` (Unterbefehl `lizenzen`, liest `cargo metadata`), **ohne neues Crate und ohne neues Go-Modul**; der Task `rust:game:dist` ruft es auf.
+- Fehlt einem gelinkten Crate jede Lizenzdatei, bricht der Aufruf mit dem Crate-Namen ab (wie im Go-Werkzeug), außer das Crate steht in einer kleinen Ausnahmeliste mit SPDX-Text aus dem Werkzeug.
+- `LICENSE` und `LICENSE-ASSETS` des Repos kommen ins Paket.
 
 ## Nicht-Ziele
 
@@ -54,12 +57,15 @@ nicht relevant: Werkzeugfehler lässt den Build rot werden.
 
 ## Akzeptanzkriterien
 
-- **AC-01** `dist/k3c-game/LIZENZEN.txt` existiert nach `task rust:game:build` und nennt alle Werke der Menü-Seite.
+- **AC-01** `dist/k3c-game/LIZENZEN.txt` existiert nach `task rust:game:build` und enthält alle Werke der Menü-Liste (`license_text()`).
+- **AC-02** `LIZENZEN.txt` nennt jedes gelinkte Rust-Crate (`cargo metadata`, Ziel Windows MSVC, normale Abhängigkeiten von `k3c-game`) mit Version und Lizenztext; ein Crate ohne Lizenzdatei lässt den Bau scheitern.
+- **AC-03** `LICENSE` und `LICENSE-ASSETS` liegen im Paket.
+- **AC-04** Das Go-Werkzeug hat Tests (Auswahl der gelinkten Crates, Ausgabe, Fehlerfall).
 
 ## Offene Fragen
 
-Welches Werkzeug erzeugt die Crate-Lizenzen (neues Werkzeug nur mit Freigabe 🧑).
+Entschieden (autonom, Claude, 2026-11-19): kein cargo-about; `cargo metadata` genügt für die Crate-Liste. 🧑 widerspricht, falls er ein Fremdwerkzeug wünscht. Die Menü-Liste nennt noch Go-Bibliotheken (B-1139, RU37).
 
 ## Notizen
 
-Aus RU35.1 (Vorentscheidung 3). Bis dahin gilt das Rust-Paket als nicht weitergebbar.
+Aus RU35.1 (Vorentscheidung 3). Bis zur Umsetzung gilt das Rust-Paket als nicht weitergebbar. Von RU37 nach RU57 verschoben (2026-11-19), weil RU37 Go-Rückbau ist.

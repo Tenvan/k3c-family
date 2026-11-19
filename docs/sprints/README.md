@@ -36,6 +36,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 | RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
 | RU52 | SIM, CLI | RSU | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | – | `aktiv/RU52-rust-sim-schuld-und-spiel-nacharbeit/` |
+| RU57 | INF | RSU | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | – | `aktiv/RU57-rust-paket-auslieferbar/` |
 
 ## Offen am Gerät
 
