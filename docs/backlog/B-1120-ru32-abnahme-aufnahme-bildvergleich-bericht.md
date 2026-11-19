@@ -44,6 +44,12 @@ Zeichen-Fehler beheben (eigene Tickets), Schwellen anheben, Bilder einchecken, R
 
 Schreiben nur im Repo (`.work/`), danach `.work/e2e` löschen. Golden nie neu schreiben. Bilder nicht einchecken.
 
+- **Bereich:** `docs/messung/abnahme-b-1120.md`, `docs/messung/rust-bildvergleich.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** –
+
 ## Beispiele
 
 nicht relevant: Abnahme-Ticket; das Ergebnis ist die Tabelle im Bericht.

@@ -38,6 +38,12 @@ Neue Funktionen, Balancing-Änderungen.
 
 Nur auf dem Second Worker (Sim/Race/Gen erlaubt, Beschluss 2026-11-18).
 
+- **Bereich:** `docs/messung/abnahme-b-1126.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
+
 ## Beispiele
 
 Spieler 2 holt einen Skill-Punkt, lernt im Menü einen Skill; Respec am Tag an der Burg; nach Endboss-Sieg Zielinsel an der Seekarte wählen.
