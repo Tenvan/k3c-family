@@ -151,3 +151,22 @@ fn jede_gewaehlte_grafik_liegt_vor_und_ist_gemeldet() {
         }
     }
 }
+
+/// RU62.2 (B-997): Die Fracht-Objekte sind in data/paper.json zugeordnet; fehlt eine Zuordnung, scheitert der Test
+/// (anders als die Tests mit gerenderter Grafik läuft er ohne `task gen:paper`).
+#[test]
+fn fracht_objekte_sind_in_paper_json_zugeordnet() {
+    use super::plan_sites_cargo::{bay_asset, load_asset};
+    let src = Source::from_env();
+    let paper: Value = serde_json::from_str(&src.read("paper.json").expect("paper.json")).expect("paper.json JSON");
+    let objekte = paper
+        .get("objekte")
+        .and_then(Value::as_object)
+        .expect("Abschnitt objekte");
+    for id in ["coins", "troops", "crates"].iter().filter_map(|k| bay_asset(k)) {
+        assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
+    }
+    for id in ["coins", "crate"].iter().filter_map(|k| load_asset(k)) {
+        assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
+    }
+}

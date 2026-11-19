@@ -205,6 +205,7 @@ impl Planner {
         self.nodes(w, k, biome);
         self.back_walls(w, k);
         self.sites(w, info, k);
+        self.cargo(w, k);
         self.plantation(w, k);
         self.pickups(w, info, k, clock);
         self.coins(w, k);

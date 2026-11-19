@@ -45,6 +45,7 @@ pub mod plan_combat;
 pub mod plan_entities;
 pub mod plan_objects;
 pub mod plan_sites;
+pub mod plan_sites_cargo;
 pub mod plan_sites_marks;
 pub mod simview;
 pub mod sites;
@@ -67,6 +68,8 @@ mod mod_tests;
 mod nature_tests;
 #[cfg(test)]
 mod plan_combat_tests;
+#[cfg(test)]
+mod plan_sites_cargo_tests;
 #[cfg(test)]
 mod plan_sites_tests;
 #[cfg(test)]

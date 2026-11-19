@@ -16,7 +16,7 @@ const fn cue(slot: &'static str, global: bool) -> SoundCue {
 }
 
 /// Zuordnung Ereignis → Klang wie src/audio/events.ts › CUES; Warnungen (global) senken die Musik.
-pub const EVENT_CUES: [(&str, SoundCue); 15] = [
+pub const EVENT_CUES: [(&str, SoundCue); 16] = [
     ("coinPickup", cue("sfx:coin", false)),
     ("hit", cue("sfx:hit", false)),
     ("kill", cue("sfx:kill", false)),
@@ -32,6 +32,8 @@ pub const EVENT_CUES: [(&str, SoundCue); 15] = [
     ("dusk", cue("sfx:warn", true)),
     ("wave", cue("sfx:warn", true)),
     ("castleFallen", cue("sfx:warn", true)),
+    // RU62.2: abgelehnter Einwurf bei vollem Schiff; kein eigener Ablehn-Ton, ein vorhandener, nur beim Zuhörer in der Nähe
+    ("cargoFull", cue("sfx:warn", false)),
 ];
 
 /// Der Klang des Ereignisses `name` (None = still).
