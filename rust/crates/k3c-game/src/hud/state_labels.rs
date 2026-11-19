@@ -1,13 +1,14 @@
 //! Zweiter Teil von `native/k3c-game/hud/state.go` (nach dem Abschnitt „Farben der Berufssymbole“): Bürger-Labels und
 //! Skill-Menü-Zustand des Spielers.
 
-use super::pending::{available_points, can_learn, can_respec};
 use super::skillmenu::menu_entries;
 use super::skilltext::{build_menu, new_menu_key};
 use super::state::{Label, SeatState};
 use super::values::PlaceKey;
 use super::values_texts::{merchant_text, profession_text};
+use k3c_sim::monarch::{available_points, can_learn, can_respec};
 use k3c_sim::state::{Player, World};
+use k3c_sim::world::vals;
 
 /// Farben der Berufssymbole (citizenView.ts › ICON_COLOR).
 pub fn profession_color(profession: &str) -> Option<u32> {
@@ -87,9 +88,15 @@ impl SeatState {
 
     /// refresh_entries liest die Einträge des Menüs aus der Simulation und liefert die freien Punkte.
     pub fn refresh_entries(&mut self, w: &World, m: &Player) -> i64 {
-        let points = available_points(w, m);
-        let can = |id: &str| can_learn(w, m, id);
-        let respec = m.crown.is_none() && can_respec(w, m);
+        // Go: `sim.AvailablePoints`, `sim.CanLearn`, `sim.CanRespec` (Spieler `m` der Stufe `w`; fehlt er dort: nichts lernbar).
+        let Some(pi) = w.players.iter().position(|p| p.index == m.index) else {
+            self.entries = menu_entries(std::mem::take(&mut self.entries), &m.skills, 0, &|_| false, false);
+            return 0;
+        };
+        let v = vals(w);
+        let points = available_points(w, pi);
+        let can = |id: &str| can_learn(w, &v, pi, id).is_ok();
+        let respec = m.crown.is_none() && can_respec(w, &v, pi).is_ok();
         let out = std::mem::take(&mut self.entries);
         self.entries = menu_entries(out, &m.skills, points, &can, respec);
         points

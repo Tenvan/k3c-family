@@ -31,14 +31,6 @@ const MAX_TICKS: u32 = 60000;
 const MENU_AFTER: u32 = 20;
 const SAVE_NAME: &str = "spiel-1";
 
-/// Stationen, deren kanonischer Welt-Hash von Go abweicht. Einzige Ursache (geprüft an `gebaut` und `nacht` mit einem
-/// Diff der Welt-Bäume gegen Go, Toleranz 1e-9; bei `pause`, `weiter`, `zu-zweit`, `niederlage` nur vermutet): Spieler 2 lernt im Rust-Spiel keinen Skill (B-1106), `players[1].skills`
-/// und `slots` fehlen; alle übrigen Felder sind gleich. Ist B-1106 behoben, schlägt dieser Test fehl und die Liste
-/// gehört geleert (nie die Referenz ändern).
-const KNOWN_DIVERGENT: [&str; 6] = ["gebaut", "nacht", "pause", "weiter", "zu-zweit", "niederlage"];
-/// Weiche Bedingungen, die im Rust-Spiel verfehlt werden (B-1106).
-const KNOWN_DEVIATIONS: [&str; 1] = ["Takt 575: Spieler 2 lernt keinen Skill (B-1106)"];
-
 /// Die Go-Referenz (`flow.json`).
 struct Reference {
     script: String,
@@ -117,7 +109,7 @@ fn day(r: &mut Run, found: u32) {
     r.to(menu + 4);
     r.mark("skillmenue");
     r.to(menu + 20);
-    // Bekannte Abweichung: Skills lernen fehlt im Rust-Spiel (B-1106, `hud/pending.rs` liefert nichts Lernbares).
+    // Spieler 2 lernt über das Skill-Menü genau einen Skill (B-1106); `deviations` muss am Ende leer sein.
     let learned = r.frame().monarch(1).is_some_and(|m| m.skills.len() == 1);
     r.soft(learned, "Spieler 2 lernt keinen Skill (B-1106)");
     r.until("Mauer gebaut", 3000, |f| has_event(f, "built", -1));
@@ -226,15 +218,14 @@ fn ablauf_wie_go_zwei_laeufe_gleich() {
         .filter(|(x, y)| x.hash != y.hash)
         .map(|(x, _)| x.name.as_str())
         .collect();
-    assert_eq!(
-        diverged,
-        KNOWN_DIVERGENT,
-        "Welt-Hash gegen Go: abweichende Stationen {diverged:?}, erwartet {KNOWN_DIVERGENT:?} (B-1106); Hashes:
+    assert!(
+        diverged.is_empty(),
+        "Welt-Hash gegen Go: abweichende Stationen {diverged:?}; Hashes:
 {}
 Go:
 {}",
         describe(&a.stations),
         describe(&r.stations)
     );
-    assert_eq!(a.deviations, KNOWN_DEVIATIONS, "weiche Bedingungen");
+    assert!(a.deviations.is_empty(), "weiche Bedingungen: {:?}", a.deviations);
 }

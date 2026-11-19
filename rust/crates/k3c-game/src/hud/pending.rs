@@ -10,21 +10,6 @@ use k3c_sim::state::{Player, World};
 
 use crate::view::frame::Frame;
 
-/// Go: `sim.AvailablePoints` (RU18): 0 freie Punkte, bis RU18 die Skill-Logik liefert; nichts ist lernbar.
-pub fn available_points(_w: &World, _p: &Player) -> i64 {
-    0
-}
-
-/// Go: `sim.CanLearn` (RU18): nichts ist lernbar.
-pub fn can_learn(_w: &World, _p: &Player, _id: &str) -> bool {
-    false
-}
-
-/// Go: `sim.CanRespec` (RU18): kein Respec.
-pub fn can_respec(_w: &World, _p: &Player) -> bool {
-    false
-}
-
 /// WorldDef ist die Welt-Definition der Kampagne (Go: `sim.WorldDef`, RU19): Platzhalter ohne Inhalt; `Campaign::world`
 /// gibt es in Rust erst mit RU19, `campaign_world` liefert bis dahin `None`.
 #[derive(Clone, Debug, Default)]
