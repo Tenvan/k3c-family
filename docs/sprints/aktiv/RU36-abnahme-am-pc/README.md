@@ -1,6 +1,6 @@
 # RU36 · CLI · Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4)
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -84,7 +84,7 @@ Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU36.1 | `RU36.1-abnahme-liste-und-messwerkzeug.md` | Umsetzung | autonom | offen |
+| RU36.1 | `RU36.1-abnahme-liste-und-messwerkzeug.md` | Umsetzung | autonom | fertig |
 | RU36.2 | `RU36.2-abnahme-am-pc-zwei-pads.md` | Workshop | Mensch | offen |
 | RU36.3 | `RU36.3-befunde-runde-1.md` | Umsetzung | autonom | offen |
 | RU36.4 | `RU36.4-befunde-runde-2.md` | Umsetzung | autonom | offen |
