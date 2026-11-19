@@ -68,7 +68,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU52.1 | `RU52.1-protected-night-platzhalter.md` | Umsetzung | autonom | offen |
+| RU52.1 | `RU52.1-protected-night-platzhalter.md` | Umsetzung | autonom | fertig |
 | RU52.2 | `RU52.2-island-grade-ohne-klon.md` | Umsetzung | autonom | offen |
 | RU52.3 | `RU52.3-leere-ruempfe-crown-portal-views.md` | Umsetzung | autonom | offen |
 | RU52.4 | `RU52.4-unimplemented-ruempfe-ru18.md` | Umsetzung | autonom | offen |
