@@ -11,10 +11,10 @@ func testRepo() repo {
 	goDirs := map[string]bool{
 		"data": true, "engine/sim": true, "engine/balance": true, "engine/room": true, "tools/checkdiff": true,
 		"tools/k3c-workbench": true, "tools/k3c-workbench/internal/planning": true, "tools/k3c-workbench/internal/simrun": true,
-		"tools/assetkit": true, "native/k3c-rig": true, "native/k3c-rig/rig": true, "native/k3c-game/view": true, "engine/balance/report": false,
+		"tools/assetkit": true, "tools/assetkit/rig": true, "tools/assetkit/view": true, "engine/balance/report": false,
 	}
 	return repo{
-		modules: []string{".", "native/k3c-game", "native/k3c-rig", "tools/assetkit", "tools/k3c-workbench"},
+		modules: []string{".", "tools/assetkit", "tools/k3c-workbench"},
 		hasGo:   func(dir string) bool { return goDirs[dir] },
 	}
 }
@@ -61,9 +61,9 @@ func TestClassify(t *testing.T) {
 			[]string{"tools/k3c-workbench/internal/planning/next.go", "tools/k3c-workbench/frontend/src/App.tsx"},
 			want{"RW", []string{"tools/k3c-workbench:internal/planning"}}},
 		{"webkit: Vitest der Workbench", []string{"tools/webkit/atoms/Button.tsx"}, want{"RW", nil}},
-		{"natives Modul: Paket und Modul-Wurzel",
-			[]string{"native/k3c-rig/rig/matrix.go", "native/k3c-rig/main.go", "native/k3c-rig/export/export.ts"},
-			want{"R", []string{"native/k3c-rig:.", "native/k3c-rig:rig"}}},
+		{"eigenes Modul: Paket und Modul-Wurzel",
+			[]string{"tools/assetkit/rig/matrix.go", "tools/assetkit/main.go", "tools/assetkit/export/export.ts"},
+			want{"R", []string{"tools/assetkit:.", "tools/assetkit:rig"}}},
 		{"eingebettete Datei im Unterordner: Paket darüber", []string{"data/biomes/wald.json", "engine/balance/report/chart.json"}, want{"RC", []string{".:data", ".:engine/balance"}}},
 		{"Lockfile zählt als Client", []string{"bun.lock"}, want{"RC", nil}},
 		{"Wurzel: Tests und Konfiguration", []string{"tests/planning.test.ts", "vitest.config.ts"}, want{"RC", nil}},
@@ -139,12 +139,12 @@ func TestJsSteps(t *testing.T) {
 // Spiel-Modul (B-794, AC-01): Änderung im Paket löst vet, Lint und Test im Modul aus (Lint seit dem NG1-Review, das
 // Modul steht in lintMods). Eine Änderung in engine/ übersetzt das Modul als Abnehmer (nur vet).
 func TestSpielModul(t *testing.T) {
-	p := classify(testRepo(), []string{"native/k3c-game/view/frame.go"})
-	if w := summary(p); !reflect.DeepEqual(w, want{"R", []string{"native/k3c-game:view"}}) {
+	p := classify(testRepo(), []string{"tools/assetkit/view/frame.go"})
+	if w := summary(p); !reflect.DeepEqual(w, want{"R", []string{"tools/assetkit:view"}}) {
 		t.Fatalf("Auswahl %+v", w)
 	}
-	got := goSteps([]goTargets{targetsOf("native/k3c-game", p.Mods["native/k3c-game"], nil, false)})
-	if names(got) != "k3c-game-vet k3c-game-lint k3c-game-test" || got[0].Dir != "native/k3c-game" {
+	got := goSteps([]goTargets{targetsOf("tools/assetkit", p.Mods["tools/assetkit"], nil, false)})
+	if names(got) != "assetkit-vet assetkit-lint assetkit-test" || got[0].Dir != "tools/assetkit" {
 		t.Fatalf("Schritte %q in %q", names(got), got[0].Dir)
 	}
 	if strings.Join(got[1].Cmd, " ") != "golangci-lint run --allow-serial-runners ./view" {
@@ -153,8 +153,8 @@ func TestSpielModul(t *testing.T) {
 	if strings.Join(got[2].Cmd, " ") != "go test -short ./view" {
 		t.Errorf("Test: %v", got[2].Cmd)
 	}
-	got = goSteps([]goTargets{targetsOf("native/k3c-game", nil, []string{"k3c/native/k3c-game/world"}, false)})
-	if names(got) != "k3c-game-vet" {
+	got = goSteps([]goTargets{targetsOf("tools/assetkit", nil, []string{"k3c/tools/assetkit/rig"}, false)})
+	if names(got) != "assetkit-vet" {
 		t.Errorf("Abnehmer aus engine/: %q", names(got))
 	}
 }

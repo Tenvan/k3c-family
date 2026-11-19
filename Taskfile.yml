@@ -11,7 +11,6 @@
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
-#   native       native/Taskfile.yml            Natives Spiel und Prototypen (Projekt NAT, Entscheidung 008): game, ebiten, rig, measure
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Werkzeuge und Tests (lint, typecheck, test) · Bauen und Ausliefern
 # (build, buildall, pages) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:all).
@@ -38,7 +37,6 @@ includes:
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
-  native: native/Taskfile.yml
   rust: rust/Taskfile.yml
 
 tasks:
@@ -89,10 +87,10 @@ tasks:
       - bunx vitest
 
   # --- Bauen und Ausliefern -----------------------------------------------------------------------------------------
-  # `build` baut das Rust-Spiel (dist/k3c-game/; das Go-Spiel: native:game:build nach dist/k3c-game-go/), `buildall` die Werkzeug-EXE nach bin/, `pages` die statische Präsentationsseite.
+  # `build` baut das Rust-Spiel (dist/k3c-game/), `buildall` die Werkzeug-EXE nach bin/, `pages` die statische Präsentationsseite.
 
   build:
-    desc: Rust-Spiel bauen (wie rust:game:build; Release-EXE, Papierschnitt-Grafik über gen:paper und Paket nach dist/k3c-game/, RU35); das Go-Spiel baut native:game:build nach dist/k3c-game-go/
+    desc: Rust-Spiel bauen (wie rust:game:build; Release-EXE, Papierschnitt-Grafik über gen:paper und Paket nach dist/k3c-game/, RU35)
     cmds:
       - task: rust:game:build
 

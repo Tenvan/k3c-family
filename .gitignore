@@ -40,9 +40,6 @@ data/worlds/*
 # Sperrdatei der Ticket-Nummernvergabe (B-615)
 docs/backlog/.ticket.lock
 
-# Bau-Ordner der nativen Go-Prototypen (NAT)
-/native/k3c-rig/bin/
-
 # Gerenderte Papierschnitt-Grafik (B-737): Arbeitsordner und Asset-Ordner entstehen durch `task gen:paper`; eingecheckt bleiben
 # Specs, index.paper.json und golden.json je Gruppe
 /.work/
@@ -56,9 +53,8 @@ docs/backlog/.ticket.lock
 /public/grafik/reittiere/*/
 /public/grafik/truppen/*/
 graphify-out/
-/native/k3c-game/bin/
 
-# generierte Windows-Ressourcen (go-winres, native:game:exe)
+# generierte Windows-Ressourcen (go-winres)
 *.syso
 
 rust/target/
