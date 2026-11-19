@@ -53,6 +53,10 @@ pub mod voyage_testutil;
 pub mod window;
 
 #[cfg(test)]
+#[path = "draw_tests.rs"]
+mod draw_tests;
+
+#[cfg(test)]
 #[path = "ending_tests.rs"]
 mod ending_tests;
 

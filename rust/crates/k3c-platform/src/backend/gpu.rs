@@ -65,6 +65,16 @@ impl Gfx {
             .ok_or("Surface nicht nutzbar")?;
         let modes = surface.get_capabilities(&adapter).present_modes;
         config.present_mode = pick_present_mode(novsync, &modes);
+        let formats = surface.get_capabilities(&adapter).formats;
+        if let Some(f) = pick_surface_format(&formats) {
+            config.format = f;
+        }
+        if config.format.is_srgb() {
+            log::warn(
+                "🚦 Fläche nur als sRGB, Farben können blasser sein",
+                &[("format", &format!("{:?}", config.format))],
+            );
+        }
         surface.configure(&device, &config);
         let bgl = bind_layout(&device);
         let linear = sampler(&device, wgpu::FilterMode::Linear);
@@ -274,6 +284,20 @@ impl Gfx {
     }
 }
 
+/// Format der Fläche ohne sRGB-Kodierung (B-1128): Shader und Texturen liefern schon sRGB-kodierte Werte (wie Go),
+/// eine `*Srgb`-Fläche kodierte sie ein zweites Mal und die Farben würden blass. `Surface::get_default_config` nimmt
+/// das erste Format und das ist unter Windows ein sRGB-Format. Ohne lineares Format bleibt das erste.
+fn pick_surface_format(formats: &[wgpu::TextureFormat]) -> Option<wgpu::TextureFormat> {
+    use wgpu::TextureFormat as F;
+    let linear8 = |f: &&F| matches!(f, F::Bgra8Unorm | F::Rgba8Unorm);
+    formats
+        .iter()
+        .find(linear8)
+        .or_else(|| formats.iter().find(|f| !f.is_srgb()))
+        .or(formats.first())
+        .copied()
+}
+
 /// Präsentationsmodus: mit `novsync` ohne Warten (`Immediate`, sonst `Mailbox`), sonst oder ohne Treffer `Fifo`
 /// (immer verfügbar).
 fn pick_present_mode(novsync: bool, modes: &[wgpu::PresentMode]) -> wgpu::PresentMode {
@@ -317,6 +341,26 @@ mod tests {
         assert_eq!(pick_present_mode(true, &[M::Fifo, M::Mailbox]), M::Mailbox);
         assert_eq!(pick_present_mode(true, &[M::Fifo]), M::Fifo);
         assert_eq!(pick_present_mode(true, &[]), M::Fifo);
+    }
+
+    /// B-1128: nie eine sRGB-Fläche, wenn eine lineare angeboten wird (sonst blasse Farben); sonst das erste Format.
+    #[test]
+    fn flaeche_ohne_srgb_kodierung() {
+        use wgpu::TextureFormat as F;
+        assert_eq!(
+            pick_surface_format(&[F::Bgra8UnormSrgb, F::Bgra8Unorm]),
+            Some(F::Bgra8Unorm)
+        );
+        assert_eq!(
+            pick_surface_format(&[F::Rgba8UnormSrgb, F::Rgba16Float]),
+            Some(F::Rgba16Float)
+        );
+        assert_eq!(
+            pick_surface_format(&[F::Bgra8Unorm, F::Bgra8UnormSrgb]),
+            Some(F::Bgra8Unorm)
+        );
+        assert_eq!(pick_surface_format(&[F::Bgra8UnormSrgb]), Some(F::Bgra8UnormSrgb));
+        assert_eq!(pick_surface_format(&[]), None);
     }
 
     #[test]
