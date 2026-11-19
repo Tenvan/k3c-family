@@ -16,6 +16,7 @@ impl Game {
         if self.fault.is_some() {
             return; // Fehler im Fenster: nichts mehr rechnen
         }
+        self.raw_input.clone_from(raw);
         if self.scripted.is_none()
             && let Some(k) = self.parts.keyboard.as_mut()
         {
@@ -25,7 +26,7 @@ impl Game {
         }
         let input = self.poll(raw);
         self.devs.observe(&input, &self.frame.seats, &mut self.cues);
-        if self.voy.is_some() {
+        if self.voy.on {
             self.sail(&input); // Schiffsfahrt: keine Spiel-Eingabe, kein Takt der Simulation
         } else {
             self.tick(&input);
@@ -64,8 +65,10 @@ impl Game {
     /// Schiffsfahrt, wenn der Takt den Inselwechsel meldet.
     fn tick(&mut self, input: &Input) {
         self.toggle_window(input);
+        self.dev_keys();
         self.menu_or_play(input);
         self.blend.capture(&self.frame, &self.frame.cells);
+        self.voy.note(&self.frame);
         self.cells = take(&mut self.frame.cells); // der Puffer überlebt den neuen Frame
         self.frame = self.sim.step();
         if self.stress.is_some() {
@@ -81,9 +84,11 @@ impl Game {
             self.play(input);
             return;
         };
-        // Bis RU30.5 ist die Session des Menüs die Simulation selbst (Go: `menuSession{Sim, g}`).
+        // Go: `menuSession{Sim, g}`; in Rust ist die Session die Simulation, den Starter hält das Menü (`stress.rs`).
+        self.sync_stress_link();
         let st = top.update(input, self.sim.as_mut());
         self.stack.put_top(top);
+        self.run_stress_request();
         self.apply_step(st);
     }
 
@@ -99,6 +104,34 @@ impl Game {
             if let Some(ds) = self.sim.dev_session() {
                 ds.halt(false); // ein vergessener Halt (F7) ließ das Spiel nach dem Fortsetzen unsichtbar stehen (B-918)
             }
+        }
+    }
+
+    /// Rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige.
+    pub(super) fn advance_timed(&mut self, raw: &InputState) {
+        if self.meter.is_some() {
+            self.advance_metered(raw);
+        } else if self.stats.timing(&self.frame) {
+            let t0 = (self.stats.now)();
+            self.advance(raw);
+            let dt = (self.stats.now)() - t0;
+            self.stats.upd.add(dt);
+        } else {
+            self.advance(raw);
+        }
+    }
+
+    /// Ein Takt im Messmodus (`--measure`).
+    fn advance_metered(&mut self, raw: &InputState) {
+        let t0 = super::clock::clock();
+        if let Some(m) = self.meter.as_mut() {
+            m.started(t0);
+        }
+        self.advance(raw);
+        self.refill_measure_load();
+        let dur = super::clock::clock() - t0;
+        if let Some(m) = self.meter.as_mut() {
+            m.tick(dur);
         }
     }
 }

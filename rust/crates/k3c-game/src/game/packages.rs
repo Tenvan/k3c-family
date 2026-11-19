@@ -19,6 +19,8 @@ use crate::{fx, hud, input, menu, props, world};
 pub struct Libs {
     pub world: Option<Rc<Library>>,
     pub shared: Option<Rc<RefCell<Library>>>,
+    /// Assets, die `world` in seiner eigenen Bibliothek hält; der `Loader` der geteilten lädt sie nicht noch einmal.
+    pub skip: std::collections::BTreeSet<String>,
 }
 
 /// Liefert die Beiträge aller Fachmodule in der Reihenfolge von Go: world, props, actors, fx, devtools, hud, input,

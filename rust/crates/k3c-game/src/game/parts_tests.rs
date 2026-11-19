@@ -11,7 +11,6 @@ use k3c_sim::state::World;
 
 use super::*;
 use crate::game::imports_tests::FACHMODULE;
-use crate::game::pending::WAITING;
 use crate::game::{Libs, packages};
 use crate::view::cell::{Camera, Cell};
 use crate::view::frame::Frame;
@@ -29,35 +28,16 @@ fn src_dir() -> std::path::PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("src")
 }
 
-/// Jedes Fachmodul hat genau einen Eintrag; Einträge ohne Modul zählen als „wartet auf RUnn“.
+/// Jedes Fachmodul hat genau einen Eintrag und seinen Modulordner.
 #[test]
 fn every_package_registered() {
     let ps = base();
     let mut names: Vec<&str> = ps.iter().map(|p| p.name.as_str()).collect();
     names.sort_unstable();
     assert_eq!(names, FACHMODULE, "Pakete");
-    let (mut waiting, mut present) = (0, 0);
     for name in FACHMODULE {
-        let dir = src_dir().join(name);
-        match WAITING.iter().find(|(n, _)| *n == name) {
-            Some((_, sprint)) => {
-                waiting += 1;
-                assert!(
-                    !dir.is_dir(),
-                    "{name}: Modul existiert, der Platzhalter (wartet auf {sprint}) ist veraltet"
-                );
-            }
-            None => {
-                present += 1;
-                assert!(
-                    dir.is_dir(),
-                    "{name}: Modulordner fehlt, Eintrag gehört in pending::WAITING"
-                );
-            }
-        }
+        assert!(src_dir().join(name).is_dir(), "{name}: Modulordner fehlt");
     }
-    assert_eq!(waiting + present, FACHMODULE.len());
-    assert_eq!(waiting, WAITING.len());
 }
 
 #[test]

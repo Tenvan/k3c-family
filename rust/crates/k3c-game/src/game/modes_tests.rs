@@ -25,7 +25,6 @@ fn parse_args_flow_at() {
 
 /// Wie Go `TestParseArgsFlowAt` mit `--input` (braucht `parse_script`).
 #[test]
-#[ignore = "wartet auf RU30"]
 fn parse_args_flow_at_input() {
     let a = parse_args(
         &argv(&["--flow", "--shots", "o", "--at", "1,20,300", "--input", "0@2=a:confirm"]),
@@ -92,7 +91,6 @@ fn parse_args_modes_reject() {
 
 /// Die Fälle mit `--shots` ohne `--menu` laden die Standard-Folge und brauchen `parse_script` (RU30.2).
 #[test]
-#[ignore = "wartet auf RU30"]
 fn parse_args_modes_reject_shots() {
     let bad: &[&[&str]] = &[
         &["--shots", "o", "--at", "5,5"],

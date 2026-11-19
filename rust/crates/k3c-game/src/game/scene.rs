@@ -2,7 +2,7 @@
 
 use super::flags::{FlagSet, Kind, Spec, spec};
 use super::modes::{MODE_FLAGS, Measure};
-use super::pending::parse_script;
+use super::script::parse_script;
 use crate::view::MAX_PLAYERS;
 use crate::view::input::{Action, Command, DeviceID, DeviceKind};
 use k3c_platform::log;

@@ -62,16 +62,81 @@ fn fehlende_grafik_ist_eine_meldung() {
     assert!(app.game().is_none());
 }
 
+/// Das Fehlerfenster vor dem Spiel läuft, bis eine Beenden-Taste kommt (Go: `showFault`): Leertaste beendet wie Enter,
+/// eine andere Taste nicht.
 #[test]
-fn umbruch_haelt_die_zeilenlaenge() {
-    let lines = wrap("aaa bbb ccc\nddd", 7);
-    assert_eq!(lines, ["aaa bbb", "ccc", "ddd"]);
+fn fehlerfenster_endet_mit_der_beenden_taste() {
+    use k3c_platform::{InputScript, Key, ScriptEntry};
+    let press = |step: u64, key: Key| {
+        [
+            ScriptEntry {
+                step,
+                keys: vec![key],
+                pads: Vec::new(),
+            },
+            ScriptEntry {
+                step: step + 1,
+                keys: Vec::new(),
+                pads: Vec::new(),
+            },
+        ]
+    };
+    let a = args(&["--grafik", "gibt-es-nicht"]);
+    let mut app = Launch::new(&a);
+    let other = InputScript::new(press(5, Key::A).to_vec());
+    run_headless(&mut app, 12, Some(&other));
+    assert!(app.fault().is_some() && !app.done(), "eine andere Taste beendet nicht");
+    let space = InputScript::new(press(2, Key::Space).to_vec());
+    run_headless(&mut app, 12, Some(&space));
+    assert!(app.done(), "Leertaste beendet das Fehlerfenster");
+    assert!(app.fault().is_some(), "die Meldung bleibt für stderr und Exit 1");
 }
 
+/// Seit RU30.4 ist der Messmodus freigegeben: `--measure` mit allen Begleit-Schaltern wird angenommen und gelesen.
 #[test]
-fn schalter_der_dev_teile_werden_abgelehnt() {
-    for f in ["--stats", "--measure=5", "--shots=x"] {
-        let e = parse(&[f.to_string()]).unwrap_err();
-        assert!(e.contains("RU30"), "{f}: {e}");
+fn schalter_des_messmodus_werden_angenommen() {
+    let v: Vec<String> = [
+        "--seed=t",
+        "--measure=5",
+        "--warmup=2",
+        "--report=r.json",
+        "--novsync",
+        "--measure-frames=b.jsonl",
+        "--measure-load=5,160,120",
+        "--pacing=x",
+    ]
+    .iter()
+    .map(|s| (*s).to_string())
+    .collect();
+    let a = parse(&v).unwrap_or_else(|e| unreachable!("{e}"));
+    let m = &a.measure;
+    assert!(m.seconds == 5.0 && m.warmup == 2.0 && m.no_vsync, "{m:?}");
+    assert_eq!(
+        (m.report.as_str(), m.frames.as_str(), m.load.as_str()),
+        ("r.json", "b.jsonl", "5,160,120")
+    );
+}
+
+/// Seit RU30.3 sind die Dev-Schalter `--river` und `--stats` freigegeben.
+#[test]
+fn dev_schalter_river_und_stats_werden_angenommen() {
+    for f in ["--stats", "--river=tiles"] {
+        let a = parse(&[f.to_string()]);
+        assert!(a.is_ok(), "{f}: {:?}", a.err());
+    }
+}
+
+/// Seit RU30.2 sind Aufnahme, Eingabe-Folge, Ablauf, Ladeanzeige und `--assets` freigegeben.
+#[test]
+fn schalter_der_aufnahme_werden_angenommen() {
+    for f in [
+        &["--shots=x"][..],
+        &["--shots=x", "--input", "0@0=R"],
+        &["--shots=x", "--flow"],
+        &["--shots=x", "--stall"],
+        &["--assets"],
+    ] {
+        let v: Vec<String> = f.iter().map(|s| (*s).to_string()).collect();
+        assert!(parse(&v).is_ok(), "{f:?}");
     }
 }

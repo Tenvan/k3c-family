@@ -5,7 +5,7 @@
 //! mit Zustand für mehrere Rollen teilt ihn über `Shared` (`shared.rs`). Nur game kennt alle Module (Importregel:
 //! `imports_tests.rs`).
 
-use super::pending::Loader;
+use super::levels::Loader;
 use crate::view::input::{KeyboardSource, Source};
 use crate::view::layer::{Drawer, Listener};
 use crate::view::roles::{AssetSource, CameraRule, Finisher, Overlay};

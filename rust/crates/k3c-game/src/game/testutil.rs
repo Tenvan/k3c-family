@@ -7,9 +7,14 @@ use std::rc::Rc;
 use k3c_platform::{Canvas, InputState};
 use k3c_sim::state::{Player, World};
 
+#[path = "dev_testutil.rs"]
+pub mod dev_testutil;
+
+use self::dev_testutil::{DevHandle, DevLog};
 use super::sim::Sim;
 use super::{Parts, assemble};
 use crate::view::cell::Cell;
+use crate::view::devkeys::DevSession;
 use crate::view::frame::{Frame, Outcome, Seat, Stage};
 use crate::view::input::{Command, DeviceID, DeviceKind, Input, Source};
 use crate::view::layer::{Drawer, Layer};
@@ -42,6 +47,16 @@ pub struct Probe {
     pub learned: Rc<RefCell<Vec<String>>>,
     /// Einstellungen, die `set_settings` bekam
     pub set: Rc<RefCell<Vec<Settings>>>,
+    /// Aufrufe der Entwickler-Rolle (`FakeSim::with_dev`)
+    pub dev: Rc<RefCell<DevLog>>,
+    /// Spiele, die `new_game` bekam
+    pub games: Rc<RefCell<Vec<NewGame>>>,
+    /// Spielstände, die `list` meldet
+    pub saves: Rc<RefCell<Vec<SaveInfo>>>,
+    /// Namen, die `delete` angenommen hat
+    pub deleted: Rc<RefCell<Vec<String>>>,
+    /// Name des laufenden Spiels: `delete` lehnt ihn ab, solange es aktiv ist
+    pub running: Rc<RefCell<String>>,
 }
 
 /// Tastatur 1 (`keys1`).
@@ -59,6 +74,10 @@ pub struct FakeSim {
     pub probe: Probe,
     seats: Vec<Seat>,
     tick: u64,
+    /// Frames, die `step` der Reihe nach liefert (danach den letzten ohne Ereignisse); leer = der eigene Frame
+    script: Vec<Frame>,
+    /// Entwickler-Rolle (`with_dev`), sonst keine
+    dev: Option<DevHandle>,
 }
 
 impl FakeSim {
@@ -78,8 +97,23 @@ impl FakeSim {
             probe: probe.clone(),
             seats,
             tick: 0,
+            script: Vec::new(),
+            dev: None,
         };
         (sim, probe)
+    }
+
+    /// Hängt die Entwickler-Rolle ein; ihre Aufrufe stehen in `Probe::dev` (Go: `devSim`).
+    pub fn with_dev(mut self) -> FakeSim {
+        self.dev = Some(DevHandle(Rc::clone(&self.probe.dev)));
+        self
+    }
+
+    /// Liefert je Takt den nächsten Frame der Liste (danach den letzten ohne Ereignisse), Uhr und Takt setzt `step`
+    /// (Go: `voySim`).
+    pub fn with_script(mut self, frames: Vec<Frame>) -> FakeSim {
+        self.script = frames;
+        self
     }
 
     fn world(&self) -> World {
@@ -102,10 +136,24 @@ impl Sim for FakeSim {
         Ok(())
     }
 
+    fn dev_session(&mut self) -> Option<&mut dyn DevSession> {
+        self.dev.as_mut().map(|d| d as &mut dyn DevSession)
+    }
+
     #[allow(clippy::cast_precision_loss)]
     fn step(&mut self) -> Frame {
         self.tick += 1;
         self.probe.steps.set(self.tick);
+        if !self.script.is_empty() {
+            let i = usize::try_from(self.tick).unwrap_or(usize::MAX).min(self.script.len()) - 1;
+            let mut f = self.script[i].clone();
+            if self.tick > self.script.len() as u64 {
+                f.events.clear();
+            }
+            f.tick = self.tick;
+            f.clock = self.tick as f64 / 30.0;
+            return f;
+        }
         Frame {
             tick: self.tick,
             clock: self.tick as f64 / 30.0,
@@ -122,7 +170,8 @@ impl Sim for FakeSim {
 }
 
 impl Session for FakeSim {
-    fn new_game(&mut self, _g: NewGame) -> Result<(), Fehler> {
+    fn new_game(&mut self, g: NewGame) -> Result<(), Fehler> {
+        self.probe.games.borrow_mut().push(g);
         self.probe.active.set(true);
         Ok(())
     }
@@ -138,10 +187,14 @@ impl Session for FakeSim {
     }
 
     fn list(&mut self) -> Result<Vec<SaveInfo>, Fehler> {
-        Ok(Vec::new())
+        Ok(self.probe.saves.borrow().clone())
     }
 
-    fn delete(&mut self, _name: &str) -> Result<(), Fehler> {
+    fn delete(&mut self, name: &str) -> Result<(), Fehler> {
+        if self.probe.active.get() && *self.probe.running.borrow() == name {
+            return Err(Fehler::Session("läuft".to_string()));
+        }
+        self.probe.deleted.borrow_mut().push(name.to_string());
         Ok(())
     }
 

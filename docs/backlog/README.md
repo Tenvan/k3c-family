@@ -172,6 +172,13 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1110](B-1110-native-json-bruchwerte.md) | CLI | Schuld | niedrig | offen | RU30 | Rust liest data/native.json mit i64-Feldern, Go mit float64 (Chronik, Wert 0) |
 | [B-1111](B-1111-dev-session-rolle-im-view.md) | CLI | Schuld | mittel | offen | RU30 | view::Session liefert keine Entwickler-Rolle (DevSession), Cheats im Rust-Spiel wirkungslos |
 | [B-1112](B-1112-abnahme-laeufe-ru29.md) | CLI | Schuld | niedrig | offen | RU29 | Abnahme-Läufe RU29 (Race, Gen) und Prüfliste für Ralf, Lane zweit |
+| [B-1113](B-1113-rust-welt-bibliothek-je-stufe.md) | CLI | Schuld | mittel | offen | RU30 | Rust: Welt-Grafik wird beim Start für alle Biome geladen, nicht je Stufe |
+| [B-1114](B-1114-aufnahme-sichtpruefung-grafik.md) | CLI | Schuld | mittel | offen | RU30 | Aufnahme-Modus im Rust-Spiel mit echter Grafik gegen Go prüfen und Speicher von ShotCanvas messen |
+| [B-1115](B-1115-rust-f12-pixel-und-maus.md) | CLI | Schuld | niedrig | offen | RU30 | Rust-Spiel: F12 zeigt keine Sprites und die Werte-Seite hat keine Maus-Auswahl |
+| [B-1116](B-1116-replay-report-auf-game-measure.md) | CLI | Schuld | niedrig | offen | RU30 | replay/report.rs nutzt Report, FrameStats und FrameLog aus game/measure.rs |
+| [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU30 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
+| [B-1118](B-1118-rust-spiel-icon-manifest-ressource.md) | CLI | Schuld | mittel | offen | RU30 | Rust-EXE trägt Spiel-Icon und Manifest (Ressourcen-Crate braucht Freigabe) |
+| [B-1119](B-1119-ru30-abnahme-messen-stresstest-aufnahme.md) | CLI | Schuld | mittel | offen | RU30 | RU30 Abnahme: Messläufe, Stresstest und Aufnahmevergleich des Rust-Spiels |
 
 ## Archiv
 

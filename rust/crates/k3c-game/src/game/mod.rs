@@ -5,30 +5,51 @@
 //! 4 Takte je Bild, `alpha`) ersetzt sie; `deps.go` (Go-Modul-Pins) entfällt.
 
 mod advance;
+pub mod assets;
 pub mod blend;
 pub mod clock;
 pub mod devices;
+pub mod devkeys;
+pub mod devshot;
+pub mod devvalues;
 mod draw;
+pub mod fault;
 pub mod flags;
 pub mod keytable;
 pub mod launch;
 pub mod layout;
+pub mod levels;
+pub mod loading;
+pub mod loadscreen;
+pub mod measure;
+pub mod measure_frames;
+pub mod measure_load;
 mod menu;
 pub mod modes;
 pub mod notice;
 pub mod overlay;
 pub mod packages;
 pub mod parts;
-mod pending;
 mod play;
 #[cfg(test)]
 pub mod play_testutil;
+pub mod run;
 pub mod scene;
+pub mod script;
 pub mod shared;
+pub mod shots;
+mod shots_canvas;
+mod shots_image;
+pub mod shots_run;
 pub mod sim;
 pub mod stack;
+pub mod stress;
+pub mod stressreport;
 #[cfg(test)]
 pub mod testutil;
+pub mod voyage;
+#[cfg(test)]
+pub mod voyage_testutil;
 pub mod window;
 
 #[cfg(test)]
@@ -52,6 +73,10 @@ mod pacing_tests;
 mod play_tests;
 
 #[cfg(test)]
+#[path = "story_tests.rs"]
+mod story_tests;
+
+#[cfg(test)]
 #[path = "window_tests.rs"]
 mod window_tests;
 
@@ -66,18 +91,27 @@ use crate::view::screen::Screen;
 use crate::view::session::NewGame;
 
 pub use blend::Blend;
+pub use devvalues::TpsMeter;
+pub use fault::Fault;
 pub use layout::{Cameras, VIEW_UNITS, cell_rect, cells, place, scale};
+pub use levels::{LibLoader, Loader};
+pub use measure::{Meter, Report};
+pub use measure_load::MeasureLoad;
 pub use modes::Measure;
 pub use packages::{Libs, packages};
 pub use parts::{Part, Parts, assemble};
-// RU30.2 tauscht `parse_script` gegen `script::parse_script`, RU30.1 `Loader`; danach entfällt `pending.rs`.
-pub use pending::{DevSession, Fault, Loader, Meter, Shooter, StressRun, Voyage, parse_script};
 pub use scene::{Args, Hold, Scene, USAGE, parse_args};
+pub use script::parse_script;
+pub use shots::Shooter;
 pub use sim::Sim;
 pub use stack::{Mode, Stack};
+pub use stress::StarterLink;
+pub use stressreport::{StressReport, StressRun};
+pub use voyage::Voyage;
 
 use devices::Devices;
 use overlay::StatsOverlay;
+use stress::StressEnv;
 
 /// Takte der Simulation je Sekunde.
 pub const TPS: i64 = 30;
@@ -88,8 +122,6 @@ const CLEAR_COLOR: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 /// Die Schleife: Eingabe, Menü-Stapel, Takt der Simulation, Kameras, Grafik der Level und Zeichnen der Zellen in
 /// Ebenen-Reihenfolge. Alle Zeit kommt aus dem Takt (`Frame::clock`), nie aus der Wanduhr.
 ///
-/// Felder, die erst spätere Sessions brauchen (`tps`, `load_scr`, `lload`, `step_want`, `menu_art`, `pressed`,
-/// `reports`), legt der liefernde Sprint an (RU30.1 bis RU30.5).
 pub struct Game {
     parts: Parts,
     sim: Box<dyn Sim>,
@@ -113,6 +145,10 @@ pub struct Game {
     cams: Cameras,
     devs: Devices,
     dev: DevView,
+    /// Eingabe des Takts (Go: `pressed`), Takte je Sekunde der Seite Werte, Fehler im Messmodus (beendet das Programm)
+    raw_input: InputState,
+    tps: TpsMeter,
+    err: Option<String>,
     blend: Blend,
     stats: StatsOverlay,
     /// gemessene Bildrate und Zeit des letzten Bilds für die Leistungsanzeige (nur mit `StatsOverlay::timing`)
@@ -120,17 +156,23 @@ pub struct Game {
     last_draw: f64,
     /// Stufenwechsel wartet auf das Laden (Ladeanzeige statt Spiel)
     loading: bool,
+    /// Zustand des Ladens der Grafik (`loading.rs`)
+    load: loading::LoadState,
     /// Fehler im Fenster; gesetzt: die Schleife zeigt nur die Meldung (RU30.3)
     fault: Option<Fault>,
     /// Schiffsfahrt beim Inselwechsel (RU30.2)
-    voy: Option<Voyage>,
+    voy: Voyage,
     /// F12: das nächste Bild nach reports/ schreiben (RU30.3)
     shot_next: bool,
     shots: Option<Shooter>,
     /// Messmodus (`--measure`), sonst `None` (RU30.4)
     meter: Option<Meter>,
+    /// Last-Szene des Messmodus (`--measure-load`, Go: `load`)
+    mload: MeasureLoad,
     /// laufender Stresstest, sonst `None` (RU30.5)
     stress: Option<StressRun>,
+    /// Uhr, Bildrate, Berichtsordner und Starter des Stresstests (`stress.rs`)
+    stress_env: StressEnv,
 }
 
 impl Game {
@@ -147,7 +189,7 @@ impl Game {
         let mut g = Game {
             parts: p,
             sim: s,
-            scripted: a.script.then(|| pending::scripted(&a.scene)),
+            scripted: a.script.then(|| script::scripted(&a.scene)),
             stack: Stack::new(),
             mode: Mode::Menu,
             window: String::new(),
@@ -160,17 +202,23 @@ impl Game {
             cams,
             devs: Devices::default(),
             dev: DevView::default(),
+            raw_input: InputState::new(),
+            tps: TpsMeter::default(),
+            err: None,
             blend: Blend::new(blend_on),
             stats,
             fps: 0.0,
             last_draw: 0.0,
             loading: false,
+            load: loading::LoadState::default(),
             fault: None,
-            voy: None,
+            voy: Voyage::default(),
             shot_next: false,
             shots: None,
             meter: None,
+            mload: MeasureLoad::default(),
             stress: None,
+            stress_env: StressEnv::default(),
             args: a,
         };
         g.start()?;
@@ -179,9 +227,7 @@ impl Game {
 
     /// Zweiter Teil von `new`: Dev-Schalter, Aufnahme, Messmodus, Szene bzw. Hauptmenü, Vorlauf, Menü der Szene.
     fn start(&mut self) -> Result<(), String> {
-        if !self.args.river.is_empty() || self.args.stats {
-            self.apply_dev_args();
-        }
+        self.apply_dev_args();
         if !self.args.shots.is_empty() {
             self.shots = Some(Shooter::new(&self.args)?);
         }
@@ -195,7 +241,11 @@ impl Game {
             self.stack.push(main);
         }
         self.prerun()?;
-        self.open_menu()
+        self.open_menu()?;
+        if !self.args.scene.direct() && self.parts.art.is_some() {
+            self.sync_levels(); // Menü-Illustrationen vor dem ersten Bild
+        }
+        Ok(())
     }
 
     /// Lässt `Scene::tick` Takte vorlaufen; im Messmodus baut es nach dem ersten Takt die Last-Szene auf (die Plätze
@@ -250,12 +300,15 @@ impl Game {
             return;
         }
         if let Some(mut sh) = self.shots.take() {
-            sh.update(self);
+            sh.update(self, raw);
             self.shots = Some(sh);
             return;
         }
         if self.fault.is_some() {
-            self.fault_update();
+            self.fault_update(raw);
+            return;
+        }
+        if self.err_exit() {
             return;
         }
         if self.meter.as_ref().is_some_and(Meter::done) {
@@ -281,34 +334,6 @@ impl Game {
     fn finish(&mut self) {
         for f in &mut self.parts.finishers {
             f.finish();
-        }
-    }
-
-    /// Rechnet einen Takt; die Wanduhr läuft nur im Messmodus bzw. mit Leistungsanzeige.
-    fn advance_timed(&mut self, raw: &InputState) {
-        if self.meter.is_some() {
-            self.advance_metered(raw);
-        } else if self.stats.timing(&self.frame) {
-            let t0 = (self.stats.now)();
-            self.advance(raw);
-            let dt = (self.stats.now)() - t0;
-            self.stats.upd.add(dt);
-        } else {
-            self.advance(raw);
-        }
-    }
-
-    /// Ein Takt im Messmodus (`--measure`).
-    fn advance_metered(&mut self, raw: &InputState) {
-        let t0 = clock::clock();
-        if let Some(m) = self.meter.as_mut() {
-            m.started(t0);
-        }
-        self.advance(raw);
-        self.refill_measure_load();
-        let dur = clock::clock() - t0;
-        if let Some(m) = self.meter.as_mut() {
-            m.tick(dur);
         }
     }
 

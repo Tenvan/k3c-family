@@ -55,7 +55,6 @@ Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext d
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
-| RU30 | CLI | RSU | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | – | bereit | `geplant/RU30-spielschleife-teil-2/` |
 | RU32 | CLI | RSU | Ende-zu-Ende-Test und Bildvergleich gegen das Go-Spiel | – | bereit | `geplant/RU32-ende-zu-ende-test/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | bereit | `geplant/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | bereit | `geplant/RU36-abnahme-am-pc/` |
@@ -454,3 +453,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU29 | Testing-, Debug- und Cheat-Menüs im Spiel | `erledigt/RU29-dev-werkzeuge-im-spiel/` |
 | RU24 | Raum Teil 2 und Spielstand-Format | `erledigt/RU24-raum-teil-2-spielstand/` |
 | RU50 | Lokales Spiel Teil 2: Spielstände, Aktionen, Entwickler-Rolle | `erledigt/RU50-lokales-spiel-teil-2-spielstaende-aktionen/` |
+| RU30 | Spielschleife Teil 2: echtes Spiel, Aufnahme-Modus, Start | `erledigt/RU30-spielschleife-teil-2/` |

@@ -11,17 +11,16 @@ use crate::view::cell::{rect, window_cell};
 impl Game {
     /// Zeichnet den Fehler, die Schiffsfahrt bzw. die Ladeanzeige, sonst das Spiel (`draw_game`).
     pub(super) fn draw_frame(&mut self, c: &mut dyn Canvas, alpha: f64) {
+        self.run_pending_load(c);
         if let Some(f) = self.fault.as_ref() {
             f.draw(c);
-        } else if self.voy.is_some() {
-            self.draw_voyage(c);
+        } else if self.voy.on {
+            self.draw_voyage(c, alpha);
         } else if self.loading {
             self.draw_loading(c);
         } else {
             self.draw_game(c, alpha);
-            if self.shot_next {
-                self.dev_shot(c);
-            }
+            self.dev_shot(alpha);
             return;
         }
         if let Some(sh) = self.shots.as_mut() {
@@ -32,7 +31,7 @@ impl Game {
     /// Zeichnet je Zelle die Zellen-Ebenen, dann das Overlay, den obersten Screen und zuletzt die Anzeige oben. Die
     /// Zwischenbilder (`Blend`) schieben den Frame für das Zeichnen; `restore` läuft auch nach einem Panic eines
     /// Drawers (Go: `defer`), danach geht der Panic weiter.
-    fn draw_game(&mut self, c: &mut dyn Canvas, alpha: f64) {
+    pub(super) fn draw_game(&mut self, c: &mut dyn Canvas, alpha: f64) {
         let t0 = self.meter.is_some().then(super::clock::clock);
         let s0 = self.stats.timing(&self.frame).then(|| (self.stats.now)());
         let (w, h) = c.size();
@@ -52,9 +51,14 @@ impl Game {
         if let Err(p) = drawn {
             resume_unwind(p);
         }
-        if let (Some(t0), Some(m)) = (t0, self.meter.as_mut()) {
+        if let (Some(t0), Some(mut m)) = (t0, self.meter.take()) {
+            // Der Meter liegt außerhalb von `self`, solange der Bericht den Stand des Spiels liest (Go: `g.report(m)`)
             let now = super::clock::clock();
-            m.frame(now, now - t0);
+            if m.frame(now, now - t0, alpha, self.frame.tick) {
+                let r = self.report(&m);
+                m.finish(r);
+            }
+            self.meter = Some(m);
         }
     }
 

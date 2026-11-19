@@ -19,6 +19,7 @@ use super::error::{UserError, describe, err_no_game, user_err};
 use super::session::{CONN, DEVICE_ID, Session};
 use super::watched::lock;
 use crate::game::sim::Sim;
+use crate::view::devkeys::DevSession;
 use crate::view::frame::{CueKind, Frame, Outcome, Seat};
 use crate::view::input::{Command, DeviceID};
 use crate::view::session::Fehler;
@@ -58,6 +59,11 @@ impl Sim for Session {
     /// Frame. Die Schleife ruft `step` einmal je Update bei 30 Updates je Sekunde.
     fn step(&mut self) -> Frame {
         self.step_frame()
+    }
+
+    /// Die Sitzung hat die Entwickler-Rolle (`dev.rs`): F5 bis F8 der Schleife und das Cheat-Menü.
+    fn dev_session(&mut self) -> Option<&mut dyn DevSession> {
+        Some(self)
     }
 }
 
