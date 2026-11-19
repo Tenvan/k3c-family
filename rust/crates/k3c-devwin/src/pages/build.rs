@@ -1,5 +1,4 @@
 //! Bausteine der Seiten (ohne Win32): kurze Konstruktoren für Controls und Nachrichten.
-#![allow(dead_code)] // bis RU56.10: Bausteine, die noch nicht jede Seite nutzt
 
 use k3c_devproto::{DevCommand, Entry, Msg};
 
