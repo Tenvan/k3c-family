@@ -15,9 +15,15 @@ use super::plan::{Item, Planner, Shape, px};
 use super::plan_castle::bits_arr;
 use super::testutil::{FixedSimView, camera, fake_sheets};
 
-/// Go: `island(t)`; die Insel kommt mit RU10.
+/// Go: `island(t)`: die erste Stufe einer neuen Insel der Standard-Welt (`create_island`, RU10).
 fn island() -> World {
-    unimplemented!("RU10: create_island")
+    let data = k3c_data::load_all(&k3c_data::Source::Embedded).expect("eingebettete Daten");
+    let hub = k3c_data::Source::Embedded.read("hub.json").expect("hub.json");
+    let rules = k3c_level::rules::Rules::from_data(&data, &hub).expect("Regeln");
+    let world = k3c_sim::island::worlds::standard_world(&data, &rules).expect("Standard-Welt");
+    let isl =
+        k3c_sim::island::create::create_island(&data, &world, "plan", &[0], 1.0, Default::default()).expect("Insel");
+    isl.stages[0].clone()
 }
 
 fn assets_of(items: &[Item]) -> Vec<String> {
@@ -128,6 +134,7 @@ fn plan_baustelle_mit_preis_und_geruest() {
     let mut w = island();
     let v = FixedSimView {
         payable: true,
+        gold_left: (10, true),
         ..Default::default()
     };
     let mut p = Planner::new(Some(lib));

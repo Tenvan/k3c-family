@@ -94,7 +94,10 @@ pub fn fake_sheets() -> Option<Rc<dyn Sheets>> {
     }
     let mut out = MapSheets::default();
     for group in std::fs::read_dir(&dir).ok()?.flatten() {
-        for asset in std::fs::read_dir(group.path()).ok()?.flatten() {
+        let Ok(assets) = std::fs::read_dir(group.path()) else {
+            continue; // Datei statt Gruppe (z. B. stil.paper.json)
+        };
+        for asset in assets.flatten() {
             let name = format!(
                 "{}/{}",
                 group.file_name().to_string_lossy(),
