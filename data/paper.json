@@ -63,7 +63,16 @@
     "bauwerke": { "dojo": "gebaeude-paper/dojo", "shrine": "gebaeude-paper/schrein" },
     "huette": "gebaeude-paper/einsiedler-huette"
   },
-  "skalierung": { "gebaeude-paper/schiff": 2.2, "objekte/tanne": 1.5, "objekte/pappel": 1.5, "objekte/birke": 1.5 },
+  "skalierung": {
+    "gebaeude-paper/schiff": 2.2,
+    "gebaeude-paper/burg": 1.64,
+    "gebaeude-paper/burg-ausbau": 1.64,
+    "gebaeude-paper/hub-geruest": 1.64,
+    "gebaeude-paper/mauer": 0.7,
+    "gebaeude-paper/geruest-1": 0.7,
+    "gebaeude-paper/rekrutierungslager": 1.8,
+    "objekte/tanne": 1.5, "objekte/pappel": 1.5, "objekte/birke": 1.5
+  },
   "hintergruende": { "gruppe": "hintergruende", "varianten": 2 },
   "weltbilder": {
     "standard": { "gross": "hintergruende/weltbild-standard", "klein": "hintergruende/weltbild-standard-klein" },

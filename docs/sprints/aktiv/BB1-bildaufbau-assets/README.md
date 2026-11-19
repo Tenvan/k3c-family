@@ -84,7 +84,7 @@ Entschieden am 2026-11-19 mit Default (autonom, Claude; Ralf ändert, was ihm ni
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | BB1.1 | `BB1.1-masstab-figuren-schiff.md` | Umsetzung | autonom | fertig |
-| BB1.2 | `BB1.2-masstab-hub-gebaeude.md` | Umsetzung | autonom | offen |
+| BB1.2 | `BB1.2-masstab-hub-gebaeude.md` | Umsetzung | autonom | fertig |
 | BB1.3 | `BB1.3-waldwand-baumvarianten.md` | Umsetzung | autonom | offen |
 | BB1.4 | `BB1.4-leitmotive-je-welt.md` | Umsetzung | autonom | offen |
 | BB1.5 | `BB1.5-review.md` | Review | autonom | offen |
