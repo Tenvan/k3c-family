@@ -51,6 +51,7 @@ fn hud_key_name_je_taste() {
         (Key::F1, "F1"),
         (Key::F2, "F2"),
         (Key::F3, "F3"),
+        (Key::F4, "F4"),
         (Key::F5, "F5"),
         (Key::F6, "F6"),
         (Key::F7, "F7"),

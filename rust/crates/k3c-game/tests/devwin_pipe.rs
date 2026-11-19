@@ -375,14 +375,15 @@ fn ohne_fenster_nichts() {
     assert!(!dw.is_on() && !dw.connected());
     assert_eq!(host.state_calls.get(), 0);
     assert_eq!(*calls.lock().unwrap(), 0, "nie versucht zu verbinden");
-    // gewollt, aber ohne Fenster: nur Versuche im Abstand RETRY, kein Thread
+    // gewollt, aber ohne Fenster: nur Versuche im Abstand FAST_RETRY, kein Thread
     let (op, calls) = opener(Vec::new());
     dw.start(op, game());
     let t0 = Instant::now();
     for k in 0..100 {
         dw.update(&mut host, t0 + Duration::from_millis(10) * k);
     }
-    assert_eq!(*calls.lock().unwrap(), 1, "ein Versuch je RETRY");
+    let n = *calls.lock().unwrap();
+    assert!((3..=5).contains(&n), "{n} Versuche in 1 s (alle 250 ms nach dem Start)");
     assert!(!dw.connected());
     dw.stop();
     assert!(!dw.is_on());

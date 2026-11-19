@@ -22,6 +22,7 @@ fn dev_keys_only_function_keys() {
         Key::F1,
         Key::F2,
         Key::F3,
+        Key::F4,
         Key::F5,
         Key::F6,
         Key::F7,

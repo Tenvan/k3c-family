@@ -102,7 +102,7 @@ impl Host for MockHost {
         self.focused += 1;
         Ok(())
     }
-    fn state(&self) -> State {
+    fn state(&mut self) -> State {
         self.state_calls.set(self.state_calls.get() + 1);
         self.state.clone()
     }

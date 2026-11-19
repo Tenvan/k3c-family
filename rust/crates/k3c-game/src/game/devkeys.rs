@@ -48,6 +48,7 @@ impl Game {
                 log::info("🐛 Debug-Overlay", &[("seite", &self.dev.debug)]);
             }
             DevCmd::Shot => self.shot_next = true,
+            DevCmd::Window => self.dev_window(),
             DevCmd::Stats | DevCmd::River => dev_settings(c, set),
             DevCmd::Save | DevCmd::Load | DevCmd::Pause | DevCmd::Speed => self.dev_session_cmd(c),
             _ => return false,
@@ -156,3 +157,7 @@ mod devkeys_tests;
 #[cfg(test)]
 #[path = "devtable_tests.rs"]
 mod devtable_tests;
+
+#[cfg(test)]
+#[path = "devwinhost_tests.rs"]
+mod devwinhost_tests;

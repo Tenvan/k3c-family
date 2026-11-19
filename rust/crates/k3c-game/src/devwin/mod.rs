@@ -12,6 +12,7 @@ pub mod foes;
 pub mod link;
 pub mod mock;
 pub mod players;
+pub mod spawn;
 pub mod state;
 pub mod view;
 pub mod world;
@@ -27,6 +28,9 @@ use crate::view::devkeys::{DevCmd, DevSession};
 
 /// RETRY ist der Abstand der Verbindungsversuche, solange das Fenster gewollt ist.
 pub const RETRY: Duration = Duration::from_secs(2);
+/// FAST_RETRY ist der Abstand der ersten Versuche nach dem Start (das Fenster legt seine Pipe erst an), `FAST_FOR` ihre Dauer.
+pub const FAST_RETRY: Duration = Duration::from_millis(250);
+const FAST_FOR: Duration = Duration::from_secs(10);
 /// MAX_PER_UPDATE sind die Befehle, die ein Takt höchstens abarbeitet (der Rest folgt im nächsten).
 const MAX_PER_UPDATE: usize = 32;
 
@@ -48,7 +52,7 @@ pub trait Host {
     /// Holt das Spielfenster nach vorn.
     fn focus(&mut self) -> Result<(), String>;
     /// Der aktuelle Zustand für die Anzeige im Fenster.
-    fn state(&self) -> State;
+    fn state(&mut self) -> State;
     /// Die Auswahllisten für die Controls.
     fn catalog(&self) -> Catalog;
 }
@@ -57,6 +61,9 @@ struct Run {
     opener: Opener,
     link: Option<Link>,
     next_try: Option<Instant>,
+    /// Bis dahin gilt `FAST_RETRY`, solange noch nie verbunden war.
+    fast_until: Instant,
+    ever: bool,
     throttle: Throttle,
     game: GameInfo,
 }
@@ -84,9 +91,18 @@ impl DevWin {
             opener,
             link: None,
             next_try: None,
+            fast_until: Instant::now() + FAST_FOR,
+            ever: false,
             throttle: Throttle::default(),
             game,
         });
+    }
+
+    /// focus bittet das Fenster, sich nach vorn zu holen (zweites F4); ohne Verbindung geschieht nichts.
+    pub fn focus(&mut self) {
+        if let Some(link) = self.run.as_ref().and_then(|r| r.link.as_ref()) {
+            link.send_ctl(Msg::Focus { id: 0 });
+        }
     }
 
     /// stop beendet die Verbindung (`bye`) und verwirft den Wunsch.
@@ -135,7 +151,12 @@ impl Run {
         if self.next_try.is_some_and(|t| now < t) {
             return;
         }
-        self.next_try = Some(now + RETRY);
+        let gap = if !self.ever && now < self.fast_until {
+            FAST_RETRY
+        } else {
+            RETRY
+        };
+        self.next_try = Some(now + gap);
         let Ok(streams) = (self.opener)() else {
             return;
         };
@@ -147,6 +168,7 @@ impl Run {
                 });
                 link.send_ctl(Msg::Catalog(host.catalog()));
                 self.throttle = Throttle::default();
+                self.ever = true;
                 self.link = Some(link);
                 k3c_platform::log::info("🔌 Cheat-Fenster verbunden", &[]);
             }
