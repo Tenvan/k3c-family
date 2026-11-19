@@ -68,7 +68,7 @@ keine (alle mit Default entschieden, autonom, Claude, 2026-11-19: Parität wird 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU60.1 | `RU60.1-test-abgleich-go-rust.md` | Umsetzung | autonom | offen |
+| RU60.1 | `RU60.1-test-abgleich-go-rust.md` | Umsetzung | autonom | fertig |
 | RU60.2 | `RU60.2-luecken-kampf-anzeige-welt.md` | Umsetzung | autonom | offen |
 | RU60.3 | `RU60.3-luecken-geschichte-seekarte-fahrt.md` | Umsetzung | autonom | offen |
 | RU60.4 | `RU60.4-luecken-sim-level-room.md` | Umsetzung | autonom | offen |
