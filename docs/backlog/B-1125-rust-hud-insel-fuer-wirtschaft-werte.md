@@ -58,7 +58,7 @@ Ohne Insel (Standbild, Replay): `None` bleibt der Fallback.
 
 - **AC-01** Test: Welt mit `stock_bonus > 0` zeigt das erhöhte Beutel-Maximum im HUD.
 - **AC-02** Test: volles Lager am Händler ergibt keinen Kaufen-Hinweis.
-- **AC-03** Test in `k3c-sim`: `sync_stock` setzt den Spiegel je Stufe (Lager der anderen Stufen, Bonus, Lair-Sperre); `island_ref_view()` ist `None` ohne Insel und allokiert nicht.
+- **AC-03** Test in `k3c-sim`: `sync_stock` setzt den Spiegel je Stufe (Lager der anderen Stufen, Bonus, Lair-Sperre); `island_ref_view()` ist `None` ohne Insel.
 - **AC-04** Ralf sieht bei Dev-Bonus Lager das erhöhte Maximum auf der Spielerkarte (manuelle Abnahme).
 
 ## Offene Fragen

@@ -80,11 +80,12 @@ pub fn action_hint(lang: &str, w: &World, p: &Player, sv: &dyn SimView) -> HintK
             ..Default::default()
         };
     }
-    // Abweichung von Go (B-1125): Das HUD hat keine Insel-Sicht (`None`), der Vorrat gilt nie als voll; Go rechnet mit `w.island`.
-    let (side, res) = trade_at(w, p, None);
+    // Insel-Sicht wie Go `w.island` (B-1125): volles Lager am Händler, Dev-Bonus; ohne Insel `None` (Standbild, Replay).
+    let isl = w.island_ref_view();
+    let (side, res) = trade_at(w, p, isl.as_ref());
     let (kind, name) = choose_hint(
         false,
-        &train_at(w, p, None),
+        &train_at(w, p, isl.as_ref()),
         &side,
         &res,
         at_price_tag(w, p.x, sv),

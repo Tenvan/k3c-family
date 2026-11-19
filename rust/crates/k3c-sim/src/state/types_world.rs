@@ -175,6 +175,11 @@ pub struct World {
     /// (Kampagne, einzelne Welt). `Island::sync_stock` setzt ihn; ohne JSON.
     #[serde(skip)]
     pub island_events: Option<super::island_ref::IslandEvents>,
+    /// Lesende Sicht der Insel für HUD und Anzeige (Go: `w.island` in `purse_max_of`, `economy_of`, `at_lair`; B-1125);
+    /// `None` = Go `w.island == nil`. `Island::sync_stock` setzt sie, `island_ref_view` macht daraus einen `IslandRef`;
+    /// ohne JSON.
+    #[serde(skip)]
+    pub island_view: Option<super::island_ref::IslandView>,
 }
 
 impl Default for World {
@@ -237,6 +242,7 @@ impl Default for World {
             guards_cleared: Default::default(),
             pure: false,
             island_events: None,
+            island_view: None,
         }
     }
 }
