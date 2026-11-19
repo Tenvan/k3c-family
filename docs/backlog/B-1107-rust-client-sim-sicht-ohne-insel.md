@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU36
+- **Sprint:** RU63
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,23 +28,23 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+Baut auf dem Spiegel aus B-1125 auf: `LiveSimView` (`props/simview.rs`) reicht `w.island_ref_view()` an `economy_of`, `site_gold_left`, `site_payable` und `at_lair` statt `None`. Die Geschichte (`WorldDef`-Platzhalter in `hud/pending.rs`, `Campaign::world`) gehört zu B-974 (RU60) und bleibt dort; sie ist nicht Teil dieses Tickets.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Geschichte und Einblendungen (B-974); Spielregeln, Protokoll, Spielstand.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Dateien <= 400 Zeilen, Funktionen <= 60 Zeilen; RU42; keine neue Abhängigkeit.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+Planungsangaben:
 
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-game/src/props/simview.rs`, `rust/crates/k3c-game/src/props/simview_tests.rs`
+- **Abhängig von:** B-1125
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** –
 
 ## Beispiele
 
@@ -56,15 +56,14 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
-
-Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_test`), AC-02 Balance, AC-03 Gen
-(`check_run task:test` samt `gen:paper` und Golden), AC-04 Race (`check_run task:check:race`), Einzelheiten in
-`docs/arbeitsweise.md` › Sim, Balance und Gen.
+- **AC-01** Test: `LiveSimView::economy_of` zeigt mit gespiegeltem Lager das Maximum der Insel (`stock_max` > 0 bei Lager, mit `stock_bonus` erhöht).
+- **AC-02** Test: `site_payable` und `site_gold_left` rechnen mit `cheap_build` der Insel.
+- **AC-03** Test: `at_lair` ist false, sobald der Endboss besiegt oder im Kampf ist, sonst true am Bau.
+- **AC-04** Ralf sieht am Endboss-Bau den Auslöser und die zahlbaren Preise wie in Go (manuelle Abnahme).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine
 
 ## Notizen
 

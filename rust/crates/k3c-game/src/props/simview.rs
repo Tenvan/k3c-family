@@ -41,7 +41,7 @@ pub trait SimView {
 
 impl SimView for LiveSimView {
     fn economy_of(&self, w: &World) -> Economy {
-        let e = k3c_sim::economy::economy_of(w, &vals(w), None);
+        let e = k3c_sim::economy::economy_of(w, &vals(w), w.island_ref_view().as_ref());
         Economy {
             stock_max: e.stock_max,
             purse_max: e.purse_max,
@@ -60,10 +60,10 @@ impl SimView for LiveSimView {
         }
     }
     fn site_gold_left(&self, w: &World, s: &Site) -> (i64, bool) {
-        k3c_sim::economy::site_gold_left(w, &vals(w), None, s)
+        k3c_sim::economy::site_gold_left(w, &vals(w), w.island_ref_view().as_ref(), s)
     }
     fn site_payable(&self, w: &World, s: &Site) -> bool {
-        k3c_sim::economy::site_payable(w, &vals(w), None, s)
+        k3c_sim::economy::site_payable(w, &vals(w), w.island_ref_view().as_ref(), s)
     }
     fn site_needs_clearing(&self, w: &World, s: &Site) -> bool {
         k3c_sim::world::lines::site_needs_clearing(w, s)
@@ -82,7 +82,7 @@ impl SimView for LiveSimView {
             .collect()
     }
     fn at_lair(&self, w: &World, p: &Player) -> bool {
-        k3c_sim::boss::endboss::at_lair(w, None, p)
+        k3c_sim::boss::endboss::at_lair(w, w.island_ref_view().as_ref(), p)
     }
     fn spot_near(&self, w: &World, s: &CombatSpot, p: &Player) -> bool {
         sim_spot(s).near_of(&vals(w), p)

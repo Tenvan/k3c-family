@@ -15,7 +15,7 @@ use k3c_data::waves::WavesDataDepthScaling;
 use std::sync::Arc;
 
 use crate::boss::endboss::EndbossFight;
-use crate::state::island_ref::IslandEvents;
+use crate::state::island_ref::{IslandEvents, IslandView};
 use crate::state::links::{DevFlags, values};
 use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 use crate::world::state_mirror::{mirror_state, mirror_switch};
@@ -97,6 +97,8 @@ pub(crate) mod testutil;
 mod travel_tests;
 #[cfg(test)]
 mod victory_tests;
+#[cfg(test)]
+mod view_tests;
 #[cfg(test)]
 mod worlds_error_tests;
 #[cfg(test)]
@@ -206,14 +208,8 @@ impl Island {
 
     /// Gebaute Lager aller Stufen außer `i` (Lager-Maximum der Insel, `storage.rs`).
     fn storages_except(&self, i: usize) -> i64 {
-        let built = |w: &World| {
-            w.sites
-                .iter()
-                .filter(|s| s.kind == "storage" && s.state == "built")
-                .count()
-        };
         let others = self.stages.iter().enumerate().filter(|(j, _)| *j != i);
-        others.map(|(_, w)| built(w) as i64).sum()
+        others.map(|(_, w)| built_storages(w)).sum()
     }
 
     /// Der Bezug der Stufe `i` zur Insel für ihren Schritt (Vorentscheidung 2): Tabellen und Zahlen werden kopiert, die
@@ -258,11 +254,27 @@ impl Island {
     /// Go: alle Stufen zeigen auf denselben Vorrat. Rust spiegelt den Vorrat der Insel in jede Stufe, damit `to_save` und
     /// Leser zwischen den Schritten den echten Wert sehen (der Tausch im Schritt bleibt, Entscheidung 5).
     pub fn sync_stock(&mut self) {
+        let total: i64 = self.stages.iter().map(built_storages).sum();
+        let (stages, stock_bonus, cheap_build) = (self.stages.len() as i64, self.dev.stock_bonus, self.dev.cheap_build);
+        let boss_gone = self.endboss.is_some() || self.endboss_defeated;
         for (i, w) in self.stages.iter_mut().enumerate() {
             w.stock.clone_from(&self.stock);
             w.island_events = Some(IslandEvents {
                 first_stage: i == 0,
                 nights: self.dev.nights.clone(),
+            });
+            // Lesende Sicht für HUD und Anzeige (B-1125): `IslandView::to_ref` baut daraus den `IslandRef` ohne Allokation
+            let lair_closed = boss_gone
+                || w.lair_boss
+                    .as_ref()
+                    .is_some_and(|b| self.defeated_bosses.contains(&b.id));
+            w.island_view = Some(IslandView {
+                stage: i,
+                stages,
+                storages_elsewhere: total - built_storages(w),
+                stock_bonus,
+                cheap_build,
+                lair_closed,
             });
         }
     }
@@ -341,4 +353,12 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
 /// Setzt `stage` im Ereignis.
 fn tag_stage(ev: &mut Event, stage: usize) {
     ev.insert("stage".to_string(), serde_json::Value::from(stage as i64));
+}
+
+/// Gebaute Lager einer Stufe (Go: `Kind == "storage" && State == "built"`).
+fn built_storages(w: &World) -> i64 {
+    w.sites
+        .iter()
+        .filter(|s| s.kind == "storage" && s.state == "built")
+        .count() as i64
 }

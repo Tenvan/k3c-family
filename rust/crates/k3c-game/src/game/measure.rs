@@ -300,7 +300,7 @@ pub fn engine_name() -> String {
 }
 
 /// Kennwerte aus sortierten Werten (leer = alles 0).
-fn stats(sorted: &[f64]) -> FrameStats {
+pub fn stats(sorted: &[f64]) -> FrameStats {
     FrameStats {
         p50: percentile(sorted, 0.5),
         p95: percentile(sorted, 0.95),

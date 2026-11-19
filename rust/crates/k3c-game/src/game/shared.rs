@@ -16,6 +16,7 @@ use crate::view::roles::{AssetSource, Overlay, OverlayStep};
 use crate::view::screen::{MenuPages, Menus, Screen};
 use crate::view::session::Session;
 use crate::view::story::EndHolder;
+use crate::view::stress::StressStarter;
 use crate::view::voyage::{Voyage, VoyageDrawer};
 
 /// Eine Rolle über dem geteilten Zustand `T`.
@@ -96,6 +97,10 @@ impl<T: Menus> Menus for Shared<T> {
 
     fn pause(&mut self) -> Box<dyn Screen> {
         self.0.borrow_mut().pause()
+    }
+
+    fn set_stress_starter(&mut self, st: Box<dyn StressStarter>) {
+        self.0.borrow_mut().set_stress_starter(st);
     }
 }
 

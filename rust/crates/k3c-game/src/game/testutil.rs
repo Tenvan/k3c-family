@@ -358,6 +358,10 @@ impl Menus for TestMenus {
     fn pause(&mut self) -> Box<dyn Screen> {
         self.main()
     }
+
+    fn set_stress_starter(&mut self, _st: Box<dyn crate::view::stress::StressStarter>) {
+        self.log.borrow_mut().push("stress-starter".to_string());
+    }
 }
 
 /// Teile für die Schleife: Eingabe ohne Tasten, Test-Menüs und die gegebenen Drawer.
