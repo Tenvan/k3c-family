@@ -81,7 +81,7 @@ pub fn step_portals(w: &mut World, v: &WorldValues, mut isl: Option<&mut IslandR
     }
     for i in 0..w.portals.len() {
         let hit = 1u64.checked_shl(i as u32).is_some_and(|m| attacked & m != 0);
-        if hit && w.portal_hp[i] > 0.0 {
+        if hit && w.portal_hp[i] > 0.0 && !w.peace {
             w.portal_defense[i] -= dt;
             if w.portal_defense[i] <= 0.0 {
                 let x = w.portals[i];

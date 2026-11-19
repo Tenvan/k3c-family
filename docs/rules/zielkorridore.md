@@ -210,7 +210,7 @@ Die Ankunft in der Höhle bis Tag 5 aus § 1 misst derselbe Lauf (`caveBeforeDay
 | M4 | BS6 | Client fertig, alle Seeds | Baseline M3, keine Gruppe kippt |
 
 **Schiff (B-638):** Korridor „Schiff fertig“ (Startwert): zwischen **2 Tage vor und 1 Tag nach** dem Sieg über den Endboss. Bis zum Schiffsbau (BS5) misst der Bericht nur, ab wann die Bots jeden Abschnitt hätten bezahlen können (Bedarf gegen Bestand, BS3.3); danach den Bau-Tag je Abschnitt (BS9).
-**Vermerk Friedliche Insel (B-973):** Der Wert des Korridors bleibt unverändert. Nach dem Sieg über den Endboss gilt die friedliche Insel (`kampf.md` § 10): Es gibt keine Angriffe mehr, das Schiff entsteht ohne Druck. „1 Tag nach dem Sieg“ ist deshalb eine Obergrenze ohne Spielzwang; die Neubewertung folgt im Balancing (derzeit gesperrt).
+**Vermerk Friedliche Insel (B-973):** Der Wert des Korridors bleibt unverändert. Nach dem Sieg über den Endboss gilt die friedliche Insel (`kampf.md` § 10): Es gibt keine Angriffe mehr, das Schiff entsteht ohne Druck. „1 Tag nach dem Sieg“ ist deshalb eine Obergrenze ohne Spielzwang; die Neubewertung folgt im Balancing (derzeit gesperrt). Umgesetzt RU62.12 (Schalter `data/festival.json` › `worlds`, `kampf.md` § 10): Der Korridor ist abgeglichen, kein Wert geändert.
 
 ## 7. Rahmenregeln für Berichte (B-648)
 

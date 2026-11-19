@@ -121,8 +121,10 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
     }
     if changed && w.cycle.phase == "night" {
         w.events.push(event(json!({"type": "night", "day": w.cycle.day})));
-        night_events_start(w); // Vollmond, Blutmond (events_moon.go)
-        if day_night {
+        if !w.peace {
+            night_events_start(w); // Vollmond, Blutmond (events_moon.go); im Frieden entfallen sie (RU62.12)
+        }
+        if day_night && !w.peace {
             start_wave(w, isl.as_deref_mut());
         }
     }
@@ -130,7 +132,7 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
         // der Übergang Morgengrauen → Tag löst nichts aus (Q65)
         dawn_break(w, isl.as_deref_mut(), day_night);
     }
-    if w.aggression.is_some() && w.biome.cycle.r#type == "aggressionPool" {
+    if w.aggression.is_some() && w.biome.cycle.r#type == "aggressionPool" && !w.peace {
         add_pool(w, w.biome.cycle.percent_per_minute / 60.0 * dt * w.cycle_speed);
         if w.aggression.is_some_and(|a| a >= 100.0) {
             w.aggression = Some(0.0);
@@ -142,8 +144,8 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
 /// Der Beginn des Morgengrauens in `step_cycle`: Ereignis `dawn`, Gegner fliehen, Morgengold, Ersatz-Hammer, Wirt, Händler.
 fn dawn_break(w: &mut World, isl: Option<&mut IslandRef>, day_night: bool) {
     w.events.push(event(json!({"type": "dawn", "day": w.cycle.day})));
-    if day_night {
-        send_enemies_home(w);
+    if day_night && !w.peace {
+        send_enemies_home(w); // im Frieden fliehen die Gegner ohnehin (`festival::flee`)
     }
     let v = vals(w);
     pay_dawn_income(w, &v, isl.as_deref());
@@ -151,7 +153,9 @@ fn dawn_break(w: &mut World, isl: Option<&mut IslandRef>, day_night: bool) {
     tavern_dawn(w);
     crate::hermit::bonus::heal_walls(w); // RU62.10: Schrein
     merchant_dawn(w, isl);
-    night_events_end(w);
+    if !w.peace {
+        night_events_end(w); // im Frieden gab es keine Events der Nacht (RU62.12)
+    }
 }
 
 /// Go: `minWaveGapSeconds`: der Mindestabstand zweier Wellen unter Tage (4 min Spielzeit, zielkorridore.md § 1, B-646).

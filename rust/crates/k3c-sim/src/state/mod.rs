@@ -8,6 +8,7 @@ pub mod common;
 pub mod coop_view;
 pub mod data;
 pub mod fehler;
+pub mod festival_view;
 pub mod hermit_view;
 pub mod island_ref;
 pub mod links;

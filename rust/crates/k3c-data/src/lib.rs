@@ -18,6 +18,7 @@ pub mod difficulty;
 pub mod economy;
 pub mod enemies;
 pub mod events;
+pub mod festival;
 pub mod goals;
 pub mod guards;
 pub mod hermits;

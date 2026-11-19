@@ -174,6 +174,19 @@ pub struct World {
     /// Der Einsiedler-Katalog der Welt (RU62.10); `None` = Welt ohne Einsiedler; ohne JSON.
     #[serde(skip)]
     pub hermit_cfg: Option<std::sync::Arc<k3c_data::hermits::HermitsFile>>,
+    /// Das Fest nach dem Sieg über den Endboss (RU62.12, B-973); fehlt ohne Sieg und in Welten ohne Fest.
+    #[serde(rename = "festival", skip_serializing_if = "Option::is_none")]
+    pub festival: Option<super::festival_view::FestivalState>,
+    /// Die Fest-Regel der Welt (RU62.12); `None` = Welt ohne Fest (Verhalten wie heute); ohne JSON.
+    #[serde(skip)]
+    pub festival_rule: Option<std::sync::Arc<super::festival_view::FestivalRule>>,
+    /// Das Ziel der Insel ist der Endboss, nur dann gibt es Frieden und Fest (RU62.12); die Insel setzt es je Takt; ohne JSON.
+    #[serde(skip)]
+    pub festival_goal: bool,
+    /// Friedliche Insel in diesem Schritt (RU62.12): Fest-Regel, Ziel Endboss und Endboss besiegt; `step` setzt es zu Beginn
+    /// jedes Takts; ohne JSON.
+    #[serde(skip)]
+    pub peace: bool,
     /// Art und Phase des Wetters (RU62.5, B-969); fehlt, solange keine Wetternacht ansteht oder die Welt kein Wetter hat.
     #[serde(rename = "weather", skip_serializing_if = "Option::is_none")]
     pub weather: Option<super::weather_view::WeatherState>,
@@ -288,6 +301,10 @@ impl Default for World {
             mounts_cfg: None,
             hermit: None,
             hermit_cfg: None,
+            festival: None,
+            festival_rule: None,
+            festival_goal: false,
+            peace: false,
             weather: None,
             weather_cfg: None,
             weather_speed: 1.0,

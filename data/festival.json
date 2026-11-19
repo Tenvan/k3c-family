@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "notes": "Friedliche Insel und Fest nach dem Sieg über den Endboss (RU62.12, B-973, docs/rules/kampf.md § 10, bosse.md § 1 und § 2). Neue Datei, damit tests/golden_*.rs und testdata/golden/ unverändert bleiben: Die Regel gilt zunächst nur in Welten, die in `worlds` stehen (Welt-ID auf Himmels-Effekt des Fests); `standard` und `britannien` fehlen, ihr Verhalten bleibt wie heute. Der Schalter `worlds` entfällt zusammen mit dem Golden-Neuschreiben nach RU41; das Feld `festival` der Welt-Datei folgt dann. Erlaubte Effekte (Anzeige RU62.13 liest dieselbe Datei): `lanterns`, `torches`. `fleeSpeedFactor`: Laufgeschwindigkeit fliehender Gegner als Vielfaches ihres Tempos (wie die Flucht bei Tagesanbruch), `exitMarginUnits`: Abstand zum Portal oder Inselrand, ab dem ein fliehender Gegner verschwindet. Vorläufig, Balancing später.",
+  "fleeSpeedFactor": 1.2,
+  "exitMarginUnits": 0.3,
+  "worlds": {
+    "sengoku": "lanterns",
+    "nil": "torches"
+  }
+}
