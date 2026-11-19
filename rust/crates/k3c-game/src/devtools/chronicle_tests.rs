@@ -304,6 +304,28 @@ fn chronicle_finish_on_exit() {
     assert!(log.all().is_empty());
 }
 
+/// B-889 Ausnahmefall: Ist `reports/` nicht beschreibbar (hier: der Pfad ist eine Datei), steht eine 💥-Warnung im
+/// Log, `finish` kehrt zurück und die Chronik läuft weiter (kein zweiter Versuch, kein Absturz).
+#[test]
+fn chronicle_report_dir_not_writable() {
+    let blocker = scratch_dir("blockiert");
+    std::fs::create_dir_all(blocker.parent().expect("Elternordner")).expect("Ordner");
+    std::fs::write(&blocker, "Datei statt Ordner").expect("Datei");
+    let (mut c, log) = chronicle_for(blocker.to_str().expect("Pfad"));
+    c.listen(&chron_frame(5));
+    c.finish();
+    let all = log.text();
+    assert!(all.contains("💥 Sitzungsbericht nicht geschrieben"), "Log: {all}");
+    c.finish();
+    c.listen(&chron_frame(6));
+    assert_eq!(
+        all.matches("💥").count(),
+        log.text().matches("💥").count(),
+        "nur eine Warnung"
+    );
+    let _ = std::fs::remove_file(&blocker);
+}
+
 /// Der Aufnahme-Modus loggt und schreibt nichts.
 #[test]
 fn chronicle_silent_when_recording() {

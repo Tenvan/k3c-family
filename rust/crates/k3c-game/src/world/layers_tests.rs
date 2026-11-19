@@ -143,3 +143,35 @@ fn tiles_have_no_gap() {
         }
     }
 }
+
+/// B-947/AC-01 (RU61.1): Die Maßstäbe der Look-Profile `k2c` (viewUnits ≈ 19, Split-Screen 0,7) und `go` aus
+/// `data/look.json`, bei einer bis vier Zellen: Kachel k deckt bis zur linken Kante von k+1.
+#[test]
+fn tiles_have_no_gap_look_profiles() {
+    for name in [k3c_data::look::K2C, k3c_data::look::GO] {
+        let look = k3c_data::look::profile(name).unwrap_or_else(|| panic!("Profil {name} fehlt"));
+        for n in 1..=4usize {
+            let h = 1080 / n.min(2) as i64;
+            let r = rect(0, 0, 1920, h);
+            let mut c = Cell {
+                rect: r,
+                ..Cell::default()
+            };
+            let scale = look.cell_scale(c.world_rect().dy() as f64, n);
+            assert!(scale > 0.0, "Profil {name}, {n} Zellen: Maßstab {scale}");
+            for x in [0.0, 13.3, 77.77, 1234.567] {
+                c.camera = new_camera(r, x, scale);
+                for factor in [0.0, 0.2, 0.35, 0.5, 1.0] {
+                    for k in -3..6 {
+                        let (a, b) = (tile_x(&c, factor, k), tile_x(&c, factor, k + 1));
+                        assert!(
+                            a.x + a.w >= b.x,
+                            "Lücke {} px: Profil {name}, {n} Zellen, Maßstab {scale}, x {x}, Faktor {factor}, Kachel {k}",
+                            b.x - a.x - a.w
+                        );
+                    }
+                }
+            }
+        }
+    }
+}

@@ -44,6 +44,14 @@ pub fn rig_dirs() -> Vec<String> {
     dirs
 }
 
+/// `is_boss`: Rigs unter `bosse/` sind nach MG10 (B-885, RU61.6) auf Spec-`version` 3 neu exportiert. Die Go-Referenzwerte
+/// in `testdata/rust/rig/` stammen vom alten Export (Go ist eingefroren, Tag `go-referenz-final`); Port-Orakel ist das
+/// Verhalten (Entscheidung 012), die Spec ist die Wahrheit. Die `*_gegen_go`-Tests lassen Bosse darum aus, `boss_tests`
+/// prüft sie stattdessen Rust-eigen. Die übrigen Figuren bleiben mit unveränderter Toleranz am Go-Orakel.
+pub fn is_boss(dir: &str) -> bool {
+    dir.starts_with("bosse/")
+}
+
 /// `load_rig` lädt ein Rig aus `assets/<dir>`.
 pub fn load_rig(dir: &str) -> Rig {
     Rig::load(&assets().join(dir)).unwrap_or_else(|e| panic!("{e}"))

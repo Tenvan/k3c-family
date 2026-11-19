@@ -233,6 +233,20 @@ fn stick_down_is_no_skill_menu() {
     assert_eq!(out, vec![Action::Down], "Stick ↓: erwartet nur Action::Down");
 }
 
+/// B-944/AC-02: Jede Menü-Aktion (`ALL_ACTIONS`, Länge `ACTION_COUNT`) ist über eine Taste mindestens eines
+/// Tastatur-Profils (Profil oder `MENU_KEYS`) und über das Gamepad erreichbar; einzige Ausnahme ist `Home`
+/// (Pad: Kombi View + Menu, keine Einzeltaste). `ALL_ACTIONS` folgt dem Index der Aktionen.
+#[test]
+fn every_action_has_key_and_pad_button() {
+    assert_eq!(ALL_ACTIONS.len(), ACTION_COUNT);
+    for (i, a) in ALL_ACTIONS.iter().copied().enumerate() {
+        assert_eq!(a as usize, i, "ALL_ACTIONS folgt dem Index: {a:?}");
+        let key = (0..LAYOUTS as i64).any(|l| !action_keys(l, a).is_empty()) || !MENU_KEYS[i].is_empty();
+        assert!(key, "{a:?}: auf keiner Tastatur belegt");
+        assert_eq!(PAD_ACTIONS[i].is_none(), a == Action::Home, "{a:?}: Pad-Taste");
+    }
+}
+
 /// Jede Taste der Belegung wird beim Backend abgefragt; keine Taste liegt doppelt in den Befehlen eines Profils.
 #[test]
 fn used_keys_and_layouts() {

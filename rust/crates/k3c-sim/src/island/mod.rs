@@ -62,6 +62,8 @@ mod planned_world_tests;
 #[cfg(test)]
 mod save_boss_tests;
 #[cfg(test)]
+mod save_crown_tests;
+#[cfg(test)]
 mod save_null_tests;
 #[cfg(test)]
 mod save_planned_tests;

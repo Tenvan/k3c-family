@@ -197,6 +197,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1149](B-1149-plantage-wachstumsstufen-pappel.md) | CLI | Problem | mittel | offen | LA1 | Plantage-Wachstumsstufen wieder unterscheidbar machen |
 | [B-1150](B-1150-leitmotive-luftperspektive.md) | PAP | Problem | niedrig | offen | LA1 | Leitmotive mit Luftperspektive: weniger Kontrast |
 | [B-1151](B-1151-texturbudget-baeume.md) | PAP | Schuld | niedrig | offen | LA1 | Texturbudget der Bäume um 15 MiB senken |
+| [B-1152](B-1152-rig-export-drift-ausserhalb-bosse.md) | PAP | Schuld | niedrig | eingeplant | LA1 | Rig-Export unter public/rig weicht außerhalb der Bosse von den Specs ab, gen:rig:check ist rot |
+| [B-1153](B-1153-kristallherz-waechter-ohne-rig-export.md) | PAP | Problem | niedrig | eingeplant | LA1 | kristallherz-waechter hat keinen Rig-Export, gen:rig schreibt ihn nicht |
 
 ## Archiv
 

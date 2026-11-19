@@ -6,7 +6,7 @@ use super::band::{BAND_SUB, Vertex, tangent_limits};
 use super::cloak::{cloak_run, frame_steps};
 use super::curve::{catmull, hermite, ik, spline};
 use super::figure::FigurePose;
-use super::testutil::{load_rig, rig_dirs, testdata};
+use super::testutil::{is_boss, load_rig, rig_dirs, testdata};
 
 const TOL: f64 = 1e-9;
 
@@ -120,6 +120,9 @@ fn figure_gegen_go() {
     let r = read("figure");
     let mut n = 0;
     for s in r["poses"].as_array().expect("poses") {
+        if is_boss(s["rig"].as_str().expect("rig")) {
+            continue; // Bosse: neuer Export (version 3), siehe `testutil::is_boss`
+        }
         let rig = load_rig(s["rig"].as_str().expect("rig"));
         let (name, t) = (s["anim"].as_str().expect("anim"), f(&s["t"]));
         let what = format!("{} {name} t={t}", s["rig"]);

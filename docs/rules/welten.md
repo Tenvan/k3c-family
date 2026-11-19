@@ -183,8 +183,12 @@ Jedes Biom nennt in `data/biomes/<biom>.json` seine Eigenschaften und Gewichts-G
   bekommt eine Variante mit der Wahrscheinlichkeit Gewicht / Summe; Monokultur = eine Variante > 0. Ergeben gewürfelte
   Gewichte zusammen 0, bekommt die erste gewürfelte Variante mit `max` > 0 das Gewicht 1.
 
+Die Eigenschaften je Biom (Name, Bereich, Wirkung; Gewichte Baumarten tanne/pappel/birke und Kristallfarben
+blau/violett/gruen) stehen in der Tabelle von B-891; der Test `biome_traits_vollstaendig`
+(`rust/crates/k3c-level/src/nature_tests.rs`) hält die echten Biom-Dateien dagegen.
+
 Je Stufe gilt ein Wert: fest gesetzt in der Welt (`natureByDepth` vor `nature`) oder aus dem Seed gewürfelt
-(`engine/rng`, Strom `<biom>:<seed>:nature`, in Datei-Reihenfolge; ein fester Wert verschiebt die übrigen Würfe nicht).
+(`k3c-rng`, Strom `<biom>:<seed>:nature`, in Datei-Reihenfolge; ein fester Wert verschiebt die übrigen Würfe nicht).
 Varianten würfeln je Objekt aus dem Strom `<biom>:<seed>:variant:<gruppe>:<x>`. Geplante Chunks würfeln ihren Inhalt
 ohne Natur-Faktoren. Feste Werte prüft das Laden: Bereich, bekannte Eigenschaft und Gruppe (die Vorgabe der Insel muss
 in mindestens einem Biom der Insel gelten), nicht alle Varianten einer Gruppe fest auf 0. Der Spielstand speichert die

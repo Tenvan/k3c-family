@@ -197,3 +197,6 @@ pub fn assign_variants(b: &Biome, seed: &str, v: &NatureValues, es: &mut [Entity
 #[cfg(test)]
 #[path = "nature_tests.rs"]
 mod nature_tests;
+#[cfg(test)]
+#[path = "nature_traits_tests.rs"]
+mod nature_traits_tests;

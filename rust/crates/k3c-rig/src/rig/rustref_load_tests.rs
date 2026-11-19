@@ -11,7 +11,7 @@ use super::gait::{GaitPose, ride_matrix};
 use super::load::Rig;
 use super::matrix::{M, invert, mul, rotation, translate};
 use super::rustref_tests::{f, fs, near_all, read};
-use super::testutil::load_rig;
+use super::testutil::{is_boss, load_rig};
 
 fn s(v: &Value) -> &str {
     v.as_str().expect("Text")
@@ -21,11 +21,16 @@ fn ints(v: &Value) -> Vec<i64> {
     fs(v).iter().map(|x| *x as i64).collect()
 }
 
+/// Go-Referenz-Rigs ohne Bosse: Bosse sind neu exportiert (version 3), siehe `testutil::is_boss`.
+fn go_rigs(v: &Value) -> impl Iterator<Item = &Value> {
+    v.as_array().expect("rigs").iter().filter(|l| !is_boss(s(&l["rig"])))
+}
+
 #[test]
 fn load_gegen_go() {
     let r = read("load");
     let mut n = 0;
-    for l in r["rigs"].as_array().expect("rigs") {
+    for l in go_rigs(&r["rigs"]) {
         let rig = load_rig(s(&l["rig"]));
         let what = s(&l["rig"]).to_string();
         near_all(&format!("{what} Maßstab"), &[rig.scale], &[f(&l["scale"])]);
@@ -100,6 +105,9 @@ fn world_gegen_go() {
     let r = read("world");
     let mut n = 0;
     for w in r["worlds"].as_array().expect("worlds") {
+        if is_boss(s(&w["rig"])) {
+            continue; // Bosse: neuer Export (version 3), siehe `testutil::is_boss`
+        }
         let rig = load_rig(s(&w["rig"]));
         let (name, t) = (s(&w["pose"]), f(&w["t"]));
         let what = format!("{} {name} t={t}", w["rig"]);
