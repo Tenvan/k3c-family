@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** live
-- **Status:** offen
-- **Sprint:** BB2
-- **Projekt:** PAP
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** RU55
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -38,12 +38,12 @@ Spieler am TV. Umsetzung: Claude (CLI, Rust-Client), Fachprüfung `k3c-welten`. 
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `rust/crates/k3c-game/**`
-- **Abhängig von:** B-1041, B-1042, B-1046
-- **Braucht 🧑:** Freigabe, Abnahme
+- **Bereich:** `rust/crates/k3c-game/src/world/backdrop.rs`, `rust/crates/k3c-game/src/world/layers.rs`, `rust/crates/k3c-game/src/world/forest.rs`, `rust/crates/k3c-game/src/props/decor.rs`, `data/look.json`, `data/paper.json`
+- **Abhängig von:** B-1046
+- **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
-- Das Spiel liest nur den Zustand, rechnet keine Regeln.
+- Das Spiel liest nur den Zustand, rechnet keine Regeln. Die Waldwand nutzt die vorhandenen Baum- und Kulissen-Assets; neue Varianten und Leitmotive aus BB1 (B-1041, B-1042) werden über `data/paper.json` und den Gruppen-Index aufgenommen, sobald sie vorliegen (keine harte Abhängigkeit). Je Welt ein Parallax-Satz (Ebenen, Dunst, Leitmotiv-Platz) aus `data/look.json` (`worlds`), Standard für Welten ohne Eintrag.
 
 ## Beispiele
 
