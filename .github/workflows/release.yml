@@ -1,4 +1,4 @@
-# Release: Tag v* (z.B. v0.2.0) → natives Spiel für Windows (task native:game:build, Paket dist/k3c-game/) als Zip am
+# Release: Tag v* (z.B. v0.2.0) → natives Spiel für Windows (task native:game:build, Paket dist/k3c-game-go/) als Zip am
 # GitHub-Release. Browser-Client, Spielserver und Docker-Image sind entfernt (B-848, B-887).
 name: Release
 
@@ -39,7 +39,7 @@ jobs:
       - run: task native:game:build
       - name: Paket schnüren (natives Spiel)
         shell: pwsh
-        run: Compress-Archive -Path dist/k3c-game/* -DestinationPath "k3c-$env:GITHUB_REF_NAME-windows.zip"
+        run: Compress-Archive -Path dist/k3c-game-go/* -DestinationPath "k3c-$env:GITHUB_REF_NAME-windows.zip"
       - name: GitHub-Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
