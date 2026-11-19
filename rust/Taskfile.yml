@@ -3,8 +3,8 @@
 version: '3'
 
 vars:
-  # Paketordner des Rust-Spiels (RU35.2 stellt auf dist/k3c-game um)
-  PAKET: '{{.ROOT_DIR}}/dist/k3c-rust'
+  # Paketordner des Rust-Spiels (RU35.2); das Go-Paket liegt in dist/k3c-game-go
+  PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
 
 tasks:
   build:

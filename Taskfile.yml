@@ -89,19 +89,19 @@ tasks:
       - bunx vitest
 
   # --- Bauen und Ausliefern -----------------------------------------------------------------------------------------
-  # `build` baut das native Spiel (dist/k3c-game/), `buildall` die Werkzeug-EXE nach bin/, `pages` die statische Präsentationsseite.
+  # `build` baut das Rust-Spiel (dist/k3c-game/; das Go-Spiel: native:game:build nach dist/k3c-game-go/), `buildall` die Werkzeug-EXE nach bin/, `pages` die statische Präsentationsseite.
 
   build:
-    desc: Natives Spiel bauen (wie native:game:build; EXE, Papierschnitt-Grafik über gen:paper und Paket nach dist/k3c-game/, B-848)
+    desc: Rust-Spiel bauen (wie rust:game:build; Release-EXE, Papierschnitt-Grafik über gen:paper und Paket nach dist/k3c-game/, RU35); das Go-Spiel baut native:game:build nach dist/k3c-game-go/
     cmds:
-      - task: native:game:build
+      - task: rust:game:build
 
   buildall:
-    desc: Alle EXE bauen (Workbench und Engine-CLI k3c-sim nach bin/, Spiel nach dist/k3c-game/); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen (Workbench und Engine-CLI k3c-sim nach bin/, Rust-Spiel nach dist/k3c-game/); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
       - task: k3c-sim:build
-      - task: native:game:build
+      - task: rust:game:build
 
   pages:
     desc: GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build, B-507)
