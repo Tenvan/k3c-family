@@ -4,7 +4,7 @@ K3C – Family Three Crowns (Couch-Koop-Side-Scroller)
 Start
 -----
 Doppelklick auf k3c-game.exe. Das Spiel läuft unter Windows 10/11 (64 Bit) ohne Installation; der ganze Ordner
-kann an einen anderen Ort oder auf einen anderen PC kopiert werden. Die Ordner data, public und native müssen
+kann an einen anderen Ort oder auf einen anderen PC kopiert werden. Die Ordner data und public müssen
 neben der EXE liegen bleiben. Eine Grafikkarte mit DirectX 12, Vulkan oder OpenGL wird gebraucht.
 
 Spieler
@@ -25,7 +25,7 @@ Inhalt des Ordners
   public/grafik/      Papierschnitt-Grafik
   public/audio/       Klänge und Musik
   public/schrift/     Schrift samt Lizenz
-  native/k3c-rig/     Teile der Figuren
+  public/rig/         Teile der Figuren
   LICENSE             Lizenz des Spiels (PolyForm Noncommercial 1.0.0)
   LICENSE-ASSETS      Lizenz der eigenen Grafiken, Animationen, Klänge und Musik
   LIZENZEN.txt        Lizenzen der verwendeten Fremdwerke (Rust-Bibliotheken, Schrift, Klänge)

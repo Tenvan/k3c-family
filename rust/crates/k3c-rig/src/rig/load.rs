@@ -229,11 +229,8 @@ pub struct Element {
 
 fn read_json<T: DeserializeOwned>(path: &Path, what: &str) -> Result<T, Fehler> {
     let shown = path.display();
-    let text = std::fs::read(path).map_err(|e| {
-        Fehler::Fehlt(format!(
-            "{what} fehlt: {shown} (erst `task native:rig:export` ausführen): {e}"
-        ))
-    })?;
+    let text = std::fs::read(path)
+        .map_err(|e| Fehler::Fehlt(format!("{what} fehlt: {shown} (erst `task gen:rig` ausführen): {e}")))?;
     serde_json::from_slice(&text).map_err(|e| Fehler::Kaputt(format!("{what} kaputt: {shown}: {e}")))
 }
 

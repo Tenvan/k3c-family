@@ -25,10 +25,10 @@ describe('Im Spiel ansehen (B-847)', () => {
 
   it('zeigt den Fehler mit dem Build-Task', async () => {
     vi.spyOn(backend, 'studioGameOpen').mockRejectedValue(
-      new Error('Natives Spiel fehlt (native/k3c-game/bin/k3c-game.exe) – erst bauen: task native:game:build'));
+      new Error('Natives Spiel fehlt (rust/target/release/k3c-game.exe) – erst bauen: task build'));
     const host = await mount(<CatalogPage />);
     await until('Knopf Im Spiel ansehen', () => buttons(host, 'Im Spiel ansehen')[0]);
     await click(buttons(host, 'Im Spiel ansehen')[0]);
-    await until('Fehlertext', () => host.textContent?.includes('task native:game:build'));
+    await until('Fehlertext', () => host.textContent?.includes('task build'));
   });
 });

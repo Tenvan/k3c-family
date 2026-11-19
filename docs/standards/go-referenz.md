@@ -27,7 +27,7 @@ Es gibt keinen Schalter `--version`; die Version steht in `native/k3c-game/bin/v
 
 - Bilder aller Stationen: in `native/k3c-game`
   `K3C_GAME_EXE=<repo>/.work/go-referenz/native/k3c-game/bin/k3c-game.exe K3C_E2E_OUT=<repo>/.work/e2e/go go test ./e2e -run TestFlowImages`.
-- Messung: `native/measure.ps1 -Engine game` im Worktree (Messlauf mit Fenster, ruhiger Rechner).
+- Messung: `tools/measure/measure.ps1 -Engine game` im Worktree (Messlauf mit Fenster, ruhiger Rechner).
 - Das Go-Paket baut `task native:game:build` (nach `dist/k3c-game-go/`).
 
 ## Gesicherte Referenz
@@ -39,7 +39,7 @@ Es gibt keinen Schalter `--version`; die Version steht in `native/k3c-game/bin/v
   `K3C_E2E_OUT/rust/a` (Standard `.work/e2e`; Aufnahme mit `K3C_RUST_EXE=<exe> cargo test -p k3c-game --test e2e_images`).
   Ohne Rust-Bilder überspringt der Test; eine Go-EXE ist nicht mehr nötig.
 - **Messwerte, Farbwerte, Pause-Fenster (RU58.3):** `docs/messung/go-referenz.json` und `.md` (Frame-Zeit, Start, Speicher je Szene,
-  mit und ohne VSync), `testdata/rust/go-referenz/farben.json` und `pause.png`. `native/measure.ps1 -Engine game` gibt sie aus,
+  mit und ohne VSync), `testdata/rust/go-referenz/farben.json` und `pause.png`. `tools/measure/measure.ps1 -Engine game` gibt sie aus,
   wenn keine Go-EXE da ist (Hinweis „Referenz, nicht live“, Exit 0).
 
 ## Aufräumen

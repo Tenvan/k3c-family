@@ -1,6 +1,6 @@
 //! Port von native/k3c-rig/rig/expected_test.go: Tests gegen die Sollwerte aus tools/paper (B-778/AC-02, B-789/AC-03):
 //! Teil-Matrizen und Stützpunkte je Frame, Toleranz 0,01, für alle exportierten Figuren. Die Sollwerte schreibt
-//! `task native:rig:export` nach assets/soll/<gruppe>/<id>/<animation>.json, beim Reittier dazu reiten-<gangart>.json
+//! `task gen:rig` nach assets/soll/<gruppe>/<id>/<animation>.json, beim Reittier dazu reiten-<gangart>.json
 //! (Reiter: der Monarch).
 
 use serde_json::Value;
@@ -18,7 +18,7 @@ const RIDER_DIR: &str = "figuren/monarch";
 
 fn read_expected(dir: &str, name: &str) -> Vec<Value> {
     let path = assets().join("soll").join(dir).join(format!("{name}.json"));
-    let text = std::fs::read(&path).unwrap_or_else(|e| panic!("Sollwerte fehlen (erst `task native:rig:export`): {e}"));
+    let text = std::fs::read(&path).unwrap_or_else(|e| panic!("Sollwerte fehlen (erst `task gen:rig`): {e}"));
     let doc: Value = serde_json::from_slice(&text).expect("gültiges JSON");
     let frames = doc["frames"].as_array().cloned().unwrap_or_default();
     assert!(!frames.is_empty(), "{dir}/{name}: keine Frames");

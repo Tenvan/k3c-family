@@ -88,10 +88,10 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19, Ralf ausdrücklich:
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU37.1 | `RU37.1-umzuege-vor-dem-loeschen.md` | Umsetzung | autonom | offen |
-| RU37.2 | `RU37.2-tag-go-final-und-entfernen.md` | Umsetzung | autonom | offen |
-| RU37.3 | `RU37.3-doku-und-agenten-auf-rust.md` | Umsetzung | autonom | offen |
-| RU37.4 | `RU37.4-review.md` | Review | autonom | offen |
+| RU37.1 | `RU37.1-umzuege-vor-dem-loeschen.md` | Umsetzung | autonom | fertig |
+| RU37.2 | `RU37.2-tag-go-final-und-entfernen.md` | Umsetzung | autonom | fertig |
+| RU37.3 | `RU37.3-doku-und-agenten-auf-rust.md` | Umsetzung | autonom | fertig |
+| RU37.4 | `RU37.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -99,6 +99,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (Second Worker): AC-01 bis AC-03 geprüft, Nachweise in RU37.1 bis RU37.3 (`native/` entfernt, Tag `go-referenz-final` auf `origin`, `engine/`, `cmd/`, `testdata/golden` unverändert, `public/rig` gleich dem Tag-Stand, `task build` und `task check` grün).
+Behoben aus dem Review (k3c-reviewer): Rust-Testgrafik nach `testdata/rust/art/grafik` (zeigte auf gelöschtes `native/`), neuer Task `rust:game:measure`, Doku-Reste (Paket-README, Codemaps, Kommentare).
+Offen für den Hauptrechner: `gen:rig:check` rot (Spec-Drift, auch auf `main`), kein Abnahme-Ticket und kein PR von mir angelegt, `RIG.md` nur im Tag, `docs/agenten-fundorte.md`/`docs/rules` zeigen noch auf `native/`; `sprint/ru37` baut auf `sprint/ru58` (zuerst mergen).

@@ -30,11 +30,11 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.4.2
-      # Go: cmd/sync (Kopierwerkzeug) und tools/rustpaket (LIZENZEN.txt, Paketprüfung)
+      # Go: tools/sync (Kopierwerkzeug) und tools/rustpaket (LIZENZEN.txt, Paketprüfung)
       - uses: actions/setup-go@v7
         with:
-          go-version-file: native/k3c-game/go.mod
-          cache-dependency-path: native/k3c-game/go.sum
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
       - uses: go-task/setup-task@v2
       # Papierschnitt-Renderer (gen:paper) braucht die Werkzeuge der Wurzel.
       - run: bun install --frozen-lockfile

@@ -12,7 +12,7 @@ use super::*;
 use crate::view::cell::{new_camera, rect};
 
 fn rig_dir() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../native/k3c-rig/assets")
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/rig")
 }
 
 fn rig_with_frame(frame: [f64; 4]) -> Rig {

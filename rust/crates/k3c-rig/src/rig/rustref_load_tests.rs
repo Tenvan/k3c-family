@@ -148,9 +148,7 @@ fn temp_rig(name: &str, json: &str) -> std::path::PathBuf {
 #[test]
 fn load_fehler() {
     let missing = Rig::load(Path::new("gibt-es-nicht")).expect_err("fehlt");
-    assert!(
-        matches!(&missing, Fehler::Fehlt(m) if m.starts_with("Rig-Datei fehlt: ") && m.contains("task native:rig:export"))
-    );
+    assert!(matches!(&missing, Fehler::Fehlt(m) if m.starts_with("Rig-Datei fehlt: ") && m.contains("task gen:rig")));
     let broken = Rig::load(&temp_rig("kaputt", "{")).expect_err("kaputt");
     assert!(matches!(&broken, Fehler::Kaputt(m) if m.starts_with("Rig-Datei kaputt: ")));
     let cases = [

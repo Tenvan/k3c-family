@@ -26,7 +26,7 @@ fn lib_drawer() -> (Actors, NullCanvas) {
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../..");
     let mut lib = Library::new(Config {
         grafik_dir: root.join("public/grafik"),
-        rig_dir: root.join("native/k3c-rig/assets"),
+        rig_dir: root.join("public/rig"),
         ..Config::default()
     })
     .unwrap();

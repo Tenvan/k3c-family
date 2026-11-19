@@ -15,9 +15,9 @@ use super::png::read_png;
 use super::scales::apply_scales;
 use super::{ArtError, Budget, Font, Plan, Sheet, SheetSpec, load_font, plan_level, upload};
 
-/// Pfade relativ zur Repo-Wurzel (Aufruf über `task native:game`).
+/// Pfade relativ zur Repo-Wurzel (Aufruf über `task rust:game:run`).
 pub const DEFAULT_GRAFIK_DIR: &str = "public/grafik";
-pub const DEFAULT_RIG_DIR: &str = "native/k3c-rig/assets";
+pub const DEFAULT_RIG_DIR: &str = "public/rig";
 pub const DEFAULT_FONT_PATH: &str = "public/schrift/k3c.ttf";
 
 /// Config sagt, woher die Grafik kommt. `rig_dir` leer = ohne Rig-Bibliothek (Tests). `strict_font`: fehlende Schrift

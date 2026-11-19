@@ -20,7 +20,7 @@ func fullPackage() fstest.MapFS {
 		"public/grafik/figuren/index.paper.json": f("{}"),
 		"public/audio/README.md":                 f("CC0"),
 		"public/schrift/LICENSE":                 f("BSD"),
-		"native/k3c-rig/assets/rig.json":         f("{}"),
+		"public/rig/rig.json":         f("{}"),
 	}
 }
 
@@ -48,12 +48,12 @@ func TestPruefePflichtFehlt(t *testing.T) {
 
 func TestPruefeVerboteneDateien(t *testing.T) {
 	p := fullPackage()
-	for _, name := range []string{"data/x.go", "assets.txt", "saves/s1.json", "data/README.md", "LIZENZEN.txt.tmp", "native/k3c-rig/assets/go.mod"} {
+	for _, name := range []string{"data/x.go", "assets.txt", "saves/s1.json", "data/README.md", "LIZENZEN.txt.tmp", "public/rig/go.mod"} {
 		p[name] = &fstest.MapFile{Data: []byte("x")}
 	}
 	got := joined(func() []string { m, _ := pruefe(p, 40<<20, false); return m }())
 	for _, want := range []string{"verbotene Datei: data/x.go", "verbotene Datei: assets.txt", "verbotener Ordner: saves",
-		"verbotene Datei: data/README.md", "verbotene Datei: LIZENZEN.txt.tmp", "verbotene Datei: native/k3c-rig/assets/go.mod"} {
+		"verbotene Datei: data/README.md", "verbotene Datei: LIZENZEN.txt.tmp", "verbotene Datei: public/rig/go.mod"} {
 		if !strings.Contains(got, want) {
 			t.Errorf("Mängel enthalten %q nicht:\n%s", want, got)
 		}

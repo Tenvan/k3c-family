@@ -6,7 +6,7 @@ use super::load::Rig;
 
 /// `assets` ist `native/k3c-rig/assets`.
 pub fn assets() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../native/k3c-rig/assets")
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/rig")
 }
 
 /// `testdata` ist `testdata/rust/rig`.
@@ -37,7 +37,7 @@ pub fn rig_dirs() -> Vec<String> {
     walk(&root, &root, &mut dirs);
     assert!(
         !dirs.is_empty(),
-        "keine Rigs unter {} (erst `task native:rig:export`)",
+        "keine Rigs unter {} (erst `task gen:rig`)",
         root.display()
     );
     dirs.sort();

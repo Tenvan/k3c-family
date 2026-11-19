@@ -3,9 +3,9 @@
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU32, Ordering};
 
-/// Testgrafik des Go-Pakets (`native/k3c-game/art/testdata/grafik`), direkt gelesen.
+/// Testgrafik (`testdata/rust/art/grafik`, aus dem Go-Paket übernommen), direkt gelesen.
 pub fn test_grafik() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../native/k3c-game/art/testdata/grafik")
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../testdata/rust/art/grafik")
 }
 
 /// Leerer, eigener Ordner je Aufruf wie `t.TempDir()` (wird vor dem Anlegen geleert).

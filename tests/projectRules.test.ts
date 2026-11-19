@@ -17,12 +17,12 @@ function filesIn(dir: string, keep: (name: string) => boolean): string[] {
   });
 }
 
-// Browser-Client und Spielserver sind entfernt (B-848, B-887, Entscheidung B-850): Das Spiel ist nativ (native/k3c-game).
+// Browser-Client und Spielserver sind entfernt (B-848, B-887, Entscheidung B-850): Das Spiel ist nativ (Rust, rust/crates/k3c-game); das Go-Spiel native/ ist seit RU37 entfernt, der letzte Stand steht im Tag go-referenz-final.
 describe('Browser-Client und Spielserver entfernt (B-848, B-887)', () => {
-  it('keine Spielseiten, kein src/, keine Vite-Konfiguration des Spiels', () => {
+  it('keine Spielseiten, kein src/, keine Vite-Konfiguration des Spiels, kein Go-Spiel native/ (RU37.2)', () => {
     expect(readdirSync(ROOT).filter((f) => f.endsWith('.html'))).toEqual([]);
     for (const gone of ['src', 'vite.config.ts', 'Dockerfile', 'compose.yaml', 'cmd/k3c-server', 'cmd/k3c-load', 'cmd/k3c-tui',
-      'engine/net', 'engine/watch', 'tools/k3c-starter']) {
+      'engine/net', 'engine/watch', 'tools/k3c-starter', 'native']) {
       expect(existsSync(join(ROOT, gone)), gone).toBe(false);
     }
   });
@@ -42,7 +42,7 @@ describe('Komplexität & Schichten', () => {
   const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Go dieser Test
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
-  const goDirs = ['data', 'engine', 'cmd', 'tools', 'native'];
+  const goDirs = ['data', 'engine', 'cmd', 'tools'];
   const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
 
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
@@ -88,7 +88,7 @@ describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
   });
 
   it('K3C_STUDIO_LAN kommt im Code nicht mehr vor', () => {
-    const code = ['engine', 'cmd', 'tools', 'native'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
+    const code = ['engine', 'cmd', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
     expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
   });
 });

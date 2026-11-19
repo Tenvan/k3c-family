@@ -190,7 +190,7 @@ Ergebnis AC-02 (Rust in keinem Wert schlechter als die Schwellen): – (offen, �
 ## Probelauf (RU36.1)
 
 Offen: Der Hauptrechner führt keine Messläufe aus (Sperre 2026-11-11, B-742; parallele Sessions verfälschen die Werte).
-`native/measure.ps1` ist gebaut und auf Syntax geprüft (PowerShell-Parser), die EXE wurden nicht gestartet. 🧑 macht den
+`tools/measure/measure.ps1` ist gebaut und auf Syntax geprüft (PowerShell-Parser), die EXE wurden nicht gestartet. 🧑 macht den
 Probelauf als ersten Schritt in RU36.2 (je Spiel `-Seconds 20`, ein Lauf), damit eine fehlerhafte Kette vor der langen
 Messung auffällt:
 

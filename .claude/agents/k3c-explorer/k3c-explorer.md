@@ -28,16 +28,16 @@ Erst das Thema bestimmen, dann gezielt dort suchen. Vollständig: `docs/agenten-
 | Simulation | `engine/sim/` (`world*.go`, `island*.go`, `building*.go`, `economy*.go`, `monarch*.go`), `engine/room/`, `engine/level/`, `engine/simcli/` | `docs/rules/stufen.md`, `docs/game-design.md` |
 | Balancing | `engine/balance/` | `data/economy.json`, `data/difficulty.json`, `data/balance-targets.json`, `docs/rules/zielkorridore.md`, `docs/rules/wirtschaft.md` |
 | Welten | `engine/level/`, `engine/sim/island*.go` | `data/worlds/`, `data/biomes/`, `docs/rules/welten.md` |
-| Grafik | `tools/paper/`, `native/k3c-rig/`, `native/k3c-game/art/`, `native/k3c-game/actors/`, gezeichnete HUD-Grafik `native/k3c-game/hud/purse.go` | `public/grafik/<gruppe>/`, `data/paper.json`, `docs/standards/paper-spec.md` |
-| Sound | `native/k3c-game/audio/` (gespielt wird der erste `wahl`-Eintrag ohne `sprite`, `register.go`), `tools/soundatlas/` | `data/sounds.json`, `public/audio/atlas.json` |
-| HUD, Eingabe | `native/k3c-game/hud/`, `native/k3c-game/menu/`, `native/k3c-game/input/`, `native/k3c-game/game/` | `docs/rules/bedienung.md` |
+| Grafik | `tools/paper/`, `rust/crates/k3c-rig/`, `rust/crates/k3c-game/src/art/`, `rust/crates/k3c-game/src/actors/`, gezeichnete HUD-Grafik `rust/crates/k3c-game/src/hud/` | `public/grafik/<gruppe>/`, `data/paper.json`, `docs/standards/paper-spec.md` |
+| Sound | `rust/crates/k3c-game/src/audio/` (gespielt wird der erste `wahl`-Eintrag ohne `sprite`, `register.rs`), `tools/soundatlas/` | `data/sounds.json`, `public/audio/atlas.json` |
+| HUD, Eingabe | `rust/crates/k3c-game/src/hud/`, `rust/crates/k3c-game/src/menu/`, `rust/crates/k3c-game/src/input/`, `rust/crates/k3c-game/src/game/` | `docs/rules/bedienung.md` |
 | Workbench | `tools/k3c-workbench/` (MCP `internal/mcpsrv/`), `tools/webkit/` | `docs/standards/workbench-seiten.md` |
 | Planung | nur lesen: `docs/backlog/`, `docs/sprints/`, `docs/projekte/` | `docs/arbeitsweise.md` |
 
 ## Vorgehen
 
 1. Erst Code und Daten (Wahrheit), dann Regeln und Tickets (Absicht). Grep auf Bezeichner und Feldnamen aus `data/`, nur die Treffer-Umgebung lesen.
-2. „Im Spiel umgesetzt“ heißt: Code in `engine/` oder `native/` plus Wert in `data/`, erreichbar im Spiel. „Nur geplant“ heißt: steht nur in `docs/rules`, `docs/game-design.md`, Tickets oder Sprints.
+2. „Im Spiel umgesetzt“ heißt: Code in `engine/` oder `rust/` plus Wert in `data/`, erreichbar im Spiel. „Nur geplant“ heißt: steht nur in `docs/rules`, `docs/game-design.md`, Tickets oder Sprints.
 3. Was du nicht im Code gesehen hast, ist „ungeprüft“ oder „vermutet“, nie eine Feststellung.
 
 ## Antwort

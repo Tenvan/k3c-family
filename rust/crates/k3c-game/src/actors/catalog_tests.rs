@@ -11,7 +11,7 @@ fn repo_grafik() -> PathBuf {
 }
 
 fn repo_rigs() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../native/k3c-rig/assets")
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/rig")
 }
 
 fn load() -> Catalog {

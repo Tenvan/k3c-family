@@ -9,14 +9,15 @@ holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange d
 | Git | aktuell | Repo, Branches | – | `git --version` |
 | Node.js | 22 (neuere laufen lokal meist auch) | Laufzeit der Werkzeuge (`bunx` startet Vitest, tsc darüber) | `.nvmrc` | `node --version` |
 | Bun | 1.4.2 | Pakete installieren (`bun install`), Werkzeuge starten (`bunx`) | `.github/workflows/ci.yml` | `bun --version` |
-| Go | 1.27 | Engine, natives Spiel, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
+| Rust | laut `rust/rust-toolchain.toml` (MSVC, Windows) | Rust-Spiel: `cargo`, `task build`, `task rust:game:run` | `rust/rust-toolchain.toml` | `rustc --version` |
+| Go | 1.27 | Engine, Workbench, Werkzeuge, `data/embed.go`, `task check:go` | `go.mod` | `go version` |
 | golangci-lint | 2.14 | Go-Lint mit Komplexitäts-Budget | `.github/workflows/ci.yml` | `golangci-lint --version` |
 | Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`) | `tools/k3c-workbench/go.mod` | `wails version` |
 | WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` | – | `wails doctor` |
 | Go Task | ab 3.54.0 (geprüft von `check_run`: Testmuster an Task-Ziele brauchen das Quoten von `CLI_ARGS` und `GO_TEST_FLAGS`, B-868; Zahl in `tools/k3c-workbench/internal/mcpsrv/check_taskversion.go`) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
 | C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task go:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 
-Zum Testen am Gerät, keine Installation im Repo: ein Windows-PC mit Controllern für das native Spiel (`task native:game`).
+Zum Testen am Gerät, keine Installation im Repo: ein Windows-PC mit Controllern für das Rust-Spiel (`task rust:game:run`).
 
 ## Installation unter Windows
 

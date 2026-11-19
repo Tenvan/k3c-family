@@ -72,3 +72,17 @@ tasks:
     cmds:
       - go build -o bin/soundatlas{{exeExt}} ./tools/soundatlas
       - ./bin/soundatlas{{exeExt}}
+
+  # Rig-Teile der Figuren (aus native/k3c-rig/export hierher, RU37.1): Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach public/rig
+  # (eingecheckt); das Rust-Spiel liest sie von dort. Liest Specs und Stil nur.
+  rig:
+    desc: "Rig-Teile: Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach public/rig/ schreiben (eingecheckt; liest Specs und Stil nur)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bun tools/rigexport/export.ts
+
+  rig:check:
+    desc: "Rig-Teile: Export wiederholen und byte-genau mit public/rig/ vergleichen (schreibt nichts)"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bun tools/rigexport/export.ts --pruefen

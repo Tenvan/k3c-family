@@ -31,9 +31,9 @@ Wohin was gehört (vollständig: `docs/agenten-fundorte.md`, tiefer die `codemap
 | Spielwert, Zahl | `data/*.json` (nie im Code), Laden `engine/sim/*_data.go` | Test liest den Wert aus `data/` |
 | Level, Platzierung | `engine/level/` | `engine/level/*_test.go`, Golden `testdata/golden/` nur bei gewollter Änderung |
 | Raum, Spielstand, Dev-Aktion | `engine/room/` | `engine/room/*_test.go` |
-| Anzeige, HUD | `native/k3c-game/hud/` (zeichnet nur, rechnet keine Regel) | `hud/*_test.go` (Layout: `layout_test.go`) |
-| Menü, Eingabe, Ablauf | `native/k3c-game/menu/`, `input/`, `game/` | dort, Durchlauf `native/k3c-game/e2e/` |
-| Ton | `data/sounds.json`, `native/k3c-game/audio/` | `audio/*_test.go` |
+| Anzeige, HUD | `rust/crates/k3c-game/src/hud/` (zeichnet nur, rechnet keine Regel) | `hud/*_tests.rs` (Layout: `banner_fit_tests.rs`) |
+| Menü, Eingabe, Ablauf | `rust/crates/k3c-game/src/menu/`, `input/`, `game/` | dort, Durchlauf `rust/crates/k3c-game/tests/` |
+| Ton | `data/sounds.json`, `rust/crates/k3c-game/src/audio/` | `audio/*_tests.rs` |
 | Grafik | nur MCP `assets_*`, Zuordnung `data/paper.json` | – (melden, nicht selbst anlegen) |
 | Workbench, MCP-Tool | `tools/k3c-workbench/` (Tool: `internal/mcpsrv/`, Seite: `frontend/src/<feature>/` über `@webkit`) | Roundtrip-Test, Vitest |
 | Regeltext | `docs/rules/*.md`, Begriffe zuerst in `docs/glossar.md` | `tests/*.test.ts` |

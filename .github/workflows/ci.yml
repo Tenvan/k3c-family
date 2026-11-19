@@ -89,31 +89,9 @@ jobs:
       - run: GOOS=windows GOARCH=amd64 go build ./...
       - run: GOOS=linux GOARCH=arm64 go build ./...
 
-  # Golden-Tests auf arm64 (Raspberry Pi, B-071): Go darf dort x*y + z zu FMA fusionieren, dann weichen Gleitkommawerte
-  # ab. Nativer GitHub-Runner (Repo öffentlich), Rückfall wäre qemu-Emulation.
-  go-arm64:
-    if: github.event_name != 'pull_request'
-    name: Go · Tests arm64
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-      - uses: go-task/setup-task@v2
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.2
-      # Die Papierschnitt-Grafik ist nicht eingecheckt (B-737): Tests lesen sie aus public/grafik, hier rendern (B-756)
-      - run: bun install --frozen-lockfile
-      - run: task gen:paper
-      - run: go env GOARCH
-      - run: task go:test GO_TEST_FLAGS=-short GO_PKGS="$(go list ./... | grep -Ev "$GO_SIM_PKGS" | tr '\n' ' ')"
-
   # Rust-Workspace (Projekt RSU, RU1.3): nur Windows (MSVC), wie das Spiel. `rustup show` installiert die Toolchain aus
   # rust/rust-toolchain.toml; es laufen nur Tests ohne Fenster und GPU. Danach baut `task rust:game:build` das Paket
-  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für cmd/sync (Kopierwerkzeug, liegt bis RU37.1 im Modul native/k3c-game) und tools/rustpaket.
+  # dist/k3c-game (RU35.3): Release-EXE, Grafik (gen:paper), data, LIZENZEN.txt; Go für tools/sync (Kopierwerkzeug) und tools/rustpaket.
   rust:
     if: github.event_name != 'pull_request'
     name: Rust · fmt · clippy · Tests · Paket (Windows)
@@ -138,8 +116,8 @@ jobs:
           bun-version: 1.4.2
       - uses: actions/setup-go@v7
         with:
-          go-version-file: native/k3c-game/go.mod
-          cache-dependency-path: native/k3c-game/go.sum
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
       - uses: go-task/setup-task@v2
       - run: bun install --frozen-lockfile
         working-directory: .

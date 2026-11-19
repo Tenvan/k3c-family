@@ -102,7 +102,7 @@ pub fn config(root: &Path, grafik: Option<&Path>) -> Config {
         .unwrap_or_else(|| root.join("public/grafik"));
     Config {
         grafik_dir,
-        rig_dir: root.join("native/k3c-rig/assets"),
+        rig_dir: root.join("public/rig"),
         font_path: root.join("public/schrift/k3c.ttf"),
         strict_font: true,
         // Maßstäbe aus data/paper.json des Repos (nicht vom Arbeitsordner abhängig); fehlt die Datei, gilt überall 1

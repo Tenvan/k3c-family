@@ -231,8 +231,8 @@ Arbeit ist. Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Sch
 | **REG** | Regelwerk & Balancing | `docs/game-design.md`, `docs/rules/`, `docs/playtests/`, **Werte** in `data/*.json` |
 | **SIM** | Spiel-Logik (Go) | `engine/sim/`, `engine/level/`, **neue Felder** in `data/*.json` |
 | **SRV** | Räume und Spielstände (Go) | `engine/room/`, `engine/store/` (Spielserver, `engine/net/`, `cmd/k3c-server/` und Docker sind entfallen, B-850) |
-| **CLI** | Natives Spiel: Darstellung, HUD, Menü, Grafik, Audio | `native/k3c-game/`, `native/k3c-rig/` (Browser-Client entfallen, B-848) |
-| **PLAT** | Plattform: Eingabe, Fenster, Pages-Präsentation | `native/k3c-game/input/`, Pages-Präsentation `site/` |
+| **CLI** | Natives Spiel (Rust): Darstellung, HUD, Menü, Grafik, Audio | `rust/crates/k3c-game/`, `rust/crates/k3c-rig/` (Go-Spiel seit RU37 entfernt, Browser-Client entfallen, B-848) |
+| **PLAT** | Plattform: Eingabe, Fenster, Pages-Präsentation | `rust/crates/k3c-game/src/input/`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vitest.config.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
 | **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
 | **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche – Bereiche Development und Assets, Entscheidung 005 › 5 – und MCP-Server), `tools/assetkit/` (Asset-Logik der Workbench, eigenes Modul), `cmd/k3c-sim/` (Engine-CLI der Workbench) |
@@ -474,13 +474,13 @@ Niedrige Komplexität ist in **jeder** Session Pflicht, nicht erst im Review.
 - **Ausnahmen für Bestandscode** stehen mit ihrem Wert in `.oxlintrc.json`; der Wert darf nicht steigen.
 - Keine neue Abhängigkeit ohne Ticket und Zustimmung von 🧑 (mit der Spec-Freigabe). Keine Abstraktion für nur einen Fall.
 - Schichtgrenzen: `engine/sim` und `engine/level` importieren nichts aus `engine/room` und `cmd/`; `engine/` nichts aus
-  `cmd/` und `tools/`. Das native Spiel rechnet nicht selbst, es ruft `engine/room` und zeichnet den Zustand.
+  `cmd/` und `tools/`. Das Rust-Spiel zeichnet nur und ruft die Simulation in `rust/crates/k3c-sim`/`k3c-room`; die Go-Engine `engine/` dient der Workbench (Entscheidung 013, Entwurf: keine neuen Mechaniken in Go).
 - Werkzeuge: Oxlint (TypeScript), `golangci-lint` mit `funlen`, `gocyclo`, `depguard` (Go);
   Go-Verschachtelung: `engine/internal/rules/nesting_test.go`; Dateilänge beider Sprachen: `tests/projectRules.test.ts`.
 
 ### Namen und Ablage im Code
 
-- **Datei- und Ordnernamen im Code sind englisch** (`engine/`, `cmd/`, `native/`, `tools/`), camelCase in TypeScript,
+- **Datei- und Ordnernamen im Code sind englisch** (`engine/`, `cmd/`, `rust/`, `tools/`), camelCase in TypeScript,
   snake_case in Go, React-Komponenten wie ihre Komponente. Deutsch bleiben Doku, Spieltexte, Task-Namen, Seiten
   (`*.html`) und Begriffe aus dem Glossar in Kommentaren und Texten. Bestand wird angepasst, wenn eine Session die Datei
   ohnehin ändert.
@@ -547,11 +547,11 @@ Eine Session baut keine Migration, kein neues Fixture und keinen Ladetest nur f�
 | Punkt | Prüfen mit | Erwartet |
 |---|---|---|
 | Golden amd64 | CI-Job `go` (`task go:test`) auf dem Stand, der getaggt wird | grün |
-| Golden arm64 | CI-Job `go-arm64` (nativer arm64-Runner, B-071) | grün |
+| Golden arm64 | entfällt (Job `go-arm64` seit RU37.2 entfernt; die Go-Engine dient nur noch der Workbench auf Windows amd64) | – |
 | Alles grün | `task check:all` | Exit 0 (Client, Build, Go, k3c-workbench) |
 | Spielstand-Migration (Beschluss 2026-10-05, B-288: bis auf Widerruf keine Rücksicht auf alte Stände) | `engine/sim/save_migration_test.go` | vorhandene Tests grün; neue Version ohne Migration zulässig (Abschnitt „Spielstand-Format ändern“) |
-| Dev-Reste aus (B-098, B-107, B-080) | Release-Build des nativen Spiels ohne Dev-Modus (`engine/room/dev.go` lehnt Dev-Aktionen ab); Prüfweg im nativen Spiel noch offen (Spielserver und Browser-Client entfallen, B-850) | Dev-Aktion wird abgelehnt |
-| Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`) und die Version im Menü › Lizenzen des nativen Spiels (B-808) | beide nennen den Tag |
-| Credits vollständig (B-165) | Menü › Lizenzen des nativen Spiels (`native/k3c-game/menu/licenses.go`; der Browser-Test `src/tools/credits.test.ts` ist entfallen, B-850) | jede Grafik- und Audio-Quelle hat einen Eintrag |
+| Dev-Reste aus (B-098, B-107, B-080) | Release-Build des Rust-Spiels ohne Dev-Modus (`engine/room/dev.go` lehnt Dev-Aktionen ab); Prüfweg im nativen Spiel noch offen (Spielserver und Browser-Client entfallen, B-850) | Dev-Aktion wird abgelehnt |
+| Version stimmt (B-141) | `VERSION` im `Taskfile.yml` (`git describe`) und die Version im Menü › Lizenzen des Rust-Spiels (B-808) | beide nennen den Tag |
+| Credits vollständig (B-165) | Menü › Lizenzen des Rust-Spiels (`rust/crates/k3c-game/src/menu/licenses.rs`; der Browser-Test `src/tools/credits.test.ts` ist entfallen, B-850) | jede Grafik- und Audio-Quelle hat einen Eintrag |
 | Aufgeräumt (B-302) | `task ops:aufraeumen -- --dry` | keine Reste, sonst Hinweis (blockiert den Tag nicht) |
 | Tag-Schema | „Entscheidungen und Versionen“ | Minor bei Wirkung, Patch bei Doku oder Korrektur |
