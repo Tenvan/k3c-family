@@ -185,6 +185,16 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU37 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
 | [B-1139](B-1139-menue-lizenzliste-nennt-go-bibliotheken.md) | CLI | Problem | mittel | offen | RU37 | Die Lizenz-Seite des Rust-Spiels nennt Go-Bibliotheken statt der Rust-Crates |
 | [B-1141](B-1141-rust-paket-auf-anderem-pc-abnehmen.md) | INF | Schuld | mittel | offen | RU57 | Abnahme: Das Rust-Paket dist/k3c-game startet auf einem anderen PC und die Lizenzdatei genügt |
+| [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
+| [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
+| [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | offen | RU54 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
+| [B-1130](B-1130-ru55-abnahme-look-aufnahmen-referenz.md) | CLI | Schuld | mittel | eingeplant | RU55 | RU55 Abnahme: Aufnahmen gegen K2C-Referenz, Bildvergleich und Frame-Zeit (Lane zweit) |
+| [B-1131](B-1131-cheatfenster-protokoll-client-fenster.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Protokoll zwischen Spiel und Fenster als eigenes Crate k3c-devproto |
+| [B-1132](B-1132-cheatfenster-win32-fenster-dark-layout.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Win32-Fenster mit Dark-Look, Layout und Pipe-Server als Crate k3c-devwin |
+| [B-1133](B-1133-cheatfenster-spielseite-pipe-zustand-befehle.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Spielseite mit Pipe-Client, Zustandsabzug und Befehlen über die Cheat-Pfade |
+| [B-1134](B-1134-cheatfenster-controls-je-bereich.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Controls je Bereich (Welt und Zeit, Wirtschaft, Spieler und Skills, Gegner und Welle, Anzeige) |
+| [B-1135](B-1135-cheatfenster-start-paket-ci.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Start per F4 und Schalter, Paket, Build und CI |
+| [B-1136](B-1136-cheatmenues-im-spiel-entfernen.md) | CLI | Schuld | niedrig | eingeplant | RU56 | In-Game-Cheat-Menü (F9) entfernen, sobald das Cheat-Fenster abgenommen ist |
 
 ## Archiv
 
