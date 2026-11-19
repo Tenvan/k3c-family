@@ -6,7 +6,6 @@ use super::testutil::*;
 use crate::state::ItemDrop;
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: index out of bounds: the len is 0 but the index is 0)"]
 fn gegner_nimmt_drop_mit_und_flieht() {
     let mut w = quiet_world();
     add_player(&mut w);
@@ -20,13 +19,20 @@ fn gegner_nimmt_drop_mit_und_flieht() {
     }];
     let at = w.hub_x - 20.0;
     let e = spawn(&mut w, "skeleton", at);
+    let eid = w.enemies[e].id;
     let mut taken = 0;
     for _ in 0..90 {
         step(&mut w, None, DT);
         taken += count_events(&w, "equipmentTaken");
     }
-    let en = &w.enemies[e];
-    assert!(taken == 1 && w.drops.is_empty() && en.carried.is_some() && en.fleeing);
+    // Go liest `e.Carried` und `e.Fleeing` am Zeiger, auch nachdem der Flüchtende das Portal erreicht hat; in Rust ist er
+    // dann aus `w.enemies` entfernt: erwartet wird, dass er entweder fort ist oder trägt und flieht.
+    let en = w.enemies.iter().find(|en| en.id == eid);
+    assert!(
+        taken == 1 && w.drops.is_empty() && en.is_none_or(|en| en.carried.is_some() && en.fleeing),
+        "Ereignisse {taken}, am Boden {}",
+        w.drops.len()
+    );
 }
 
 #[test]

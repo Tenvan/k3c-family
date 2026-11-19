@@ -275,7 +275,6 @@ fn own_island_from_v1_ueberfuehrt_die_campaign() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern ergibt etwas anderes)"]
 fn island_save_round_trip() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-a", &[0, 1, 2]);
@@ -285,7 +284,7 @@ fn island_save_round_trip() {
     isl.stages[0].players[a].gold = 61;
     isl.stages[2].players[b].gold = 22;
     isl.stages[0].players[c].gold = 5;
-    crate::enemies::testutil::built_site(&mut isl.stages[0], "wall", 0.0);
+    crate::enemies::testutil::build_site(&mut isl.stages[0], "wall");
     isl.skill_pool += 3; // Pool der Insel, alle Stufen spiegeln ihn (S1.4)
     isl.stock.wood += 40;
     isl.stock.copper += 9;
@@ -326,14 +325,13 @@ fn island_save_round_trip() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Version 1: Spielstand(spielstand: Truppenart archer unbekannt))"]
 fn parse_island_save_from_version1() {
     let data = test_data();
     let raw = fixture(1);
     let isl = load_island(&data, &raw);
     let depths: Vec<i64> = isl.stages.iter().map(|w| w.biome.depth).collect();
     assert_eq!(depths, [0, 1, 2], "drei Stufen (Tiefe 0, 1, 2) erwartet");
-    let old = parse_save(&raw, &data.biomes, &WorldValues::default()).expect("Version 1");
+    let old = parse_save(&raw, &data.biomes, &crate::world::vals(&isl.stages[0])).expect("Version 1");
     assert_eq!(
         (isl.id.as_str(), isl.seed.as_str()),
         (old.campaign_id.as_str(), old.seed.as_str())
@@ -346,12 +344,11 @@ fn parse_island_save_from_version1() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Version 1: Spielstand(spielstand: Truppenart archer unbekannt))"]
 fn version1_players_move_into_stored_stage() {
     let data = test_data();
     let raw = fixture(1);
     let isl = load_island(&data, &raw);
-    let old = parse_save(&raw, &data.biomes, &WorldValues::default()).expect("Version 1");
+    let old = parse_save(&raw, &data.biomes, &crate::world::vals(&isl.stages[0])).expect("Version 1");
     let got = isl.players();
     assert_eq!(got.len(), old.players.len());
     for (q, o) in got.iter().zip(&old.players) {

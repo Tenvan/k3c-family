@@ -4,14 +4,13 @@
 
 use k3c_level::types::WallSite;
 
-use super::outpost::outpost;
+use super::outpost::{outermost_wall as outermost_gate, outpost}; // Go: `outermostGate` ist `outermostWall` (Mauer-Plätze des Levels)
 use super::testutil::*;
 use crate::state::common::{destroy_site, is_dangerous};
 use crate::state::{Job, World};
 use crate::unit::jobs::build_job;
 use crate::unit::warrior::weapon_to_fetch;
 use crate::unit::{leave_on_danger, step_peasant};
-use crate::world::testutil::outermost_gate;
 use crate::world::vals;
 
 /// Go: `edgeWalls` setzt die äußersten Mauer-Plätze der Fixture auf Hub ± 124 (alte Linie 5): Die Ruinen der Fixture
@@ -50,7 +49,6 @@ fn endanger(w: &mut World) {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: wall@429: äußerste Mauern 0/0)"]
 fn vorposten_lage_laut_layout() {
     let (mut isl, _) = fixture_island();
     let w = &mut isl.stages[0];

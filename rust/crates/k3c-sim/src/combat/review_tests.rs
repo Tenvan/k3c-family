@@ -6,7 +6,6 @@ use super::data::COMBAT_GENERAL;
 use super::testutil::{combat_pay, combat_stage, group_ready, run, spawn_soldiers, spot_for};
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: groups: Zahlziel Some(Site(8)) überdeckt vom Bauplatz)"]
 fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
     for mode in [super::data::COMBAT_GROUPS, super::data::COMBAT_GENERAL] {
         let (mut w, _, _) = combat_stage(mode);
@@ -32,13 +31,13 @@ fn ausloeser_baner_nicht_von_bauplatz_ueberdeckt() {
 }
 
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Auslöser ohne Ziel nahm Gold)"]
 fn ausloeser_nur_mit_ziel() {
     let (mut w, l) = group_ready();
     w.portals = vec![w.hub_x - 40.0]; // kein Portal und kein Gegner auf der rechten Seite
     w.portal_hp.truncate(1);
     let before = w.players[1].gold;
-    super::testutil::combat_pay(&mut w, 1, 0.0, 30);
+    let x = spot_for(&w, SpotKind::Trigger, 1).map_or(0.0, |s| s.x); // Go: `spotFor(w, "trigger", 1).X`
+    super::testutil::combat_pay(&mut w, 1, x, 30);
     assert!(
         w.players[1].gold == before && w.troops[l].sortie == 0.0,
         "Auslöser ohne Ziel nahm Gold"

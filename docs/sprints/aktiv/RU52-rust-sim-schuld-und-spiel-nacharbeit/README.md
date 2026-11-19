@@ -73,7 +73,7 @@ keine
 | RU52.3 | `RU52.3-leere-ruempfe-crown-portal-views.md` | Umsetzung | autonom | fertig |
 | RU52.4 | `RU52.4-unimplemented-ruempfe-ru18.md` | Umsetzung | autonom | fertig |
 | RU52.5 | `RU52.5-testhelfer-inseln.md` | Umsetzung | autonom | fertig |
-| RU52.6 | `RU52.6-ignore-tests-ursache.md` | Umsetzung | autonom | offen |
+| RU52.6 | `RU52.6-ignore-tests-ursache.md` | Umsetzung | autonom | fertig |
 | RU52.7 | `RU52.7-dev-session-rolle-im-view.md` | Umsetzung | autonom | offen |
 | RU52.8 | `RU52.8-native-json-bruchwerte.md` | Umsetzung | autonom | offen |
 
