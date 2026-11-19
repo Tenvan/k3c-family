@@ -190,6 +190,13 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1136](B-1136-cheatmenues-im-spiel-entfernen.md) | CLI | Schuld | niedrig | eingeplant | RU56 | In-Game-Cheat-Menü (F9) entfernen, sobald das Cheat-Fenster abgenommen ist |
 | [B-1142](B-1142-cheatfenster-pipe-haerten.md) | CLI | Schuld | niedrig | offen | RU56 | Cheat-Fenster-Pipe härten: Zugriffsrechte, Pipe-Squatting, blockierendes Schreiben |
 | [B-1144](B-1144-cheatfenster-restpunkte-rev2.md) | CLI | Problem | mittel | offen | RU56 | Cheat-Fenster: Zielspieler und Schalterzustand bleiben erhalten, goto, Fokus und Skillpunkte fehlen |
+| [B-1145](B-1145-abnahme-laeufe-bb1.md) | PAP | Schuld | mittel | offen | BB1 | Abnahme-Läufe BB1: gen:paper und Grafik-Golden |
+| [B-1146](B-1146-waldwand-baeume-leitmotive-im-spiel.md) | CLI | Idee | mittel | offen | LA1 | Waldwand, acht neue Bäume und Leitmotive im Rust-Spiel anbinden |
+| [B-1147](B-1147-schiff-geruest-bauplatz-breiten.md) | CLI | Problem | mittel | offen | LA1 | Schiff-Baustelle mit eigenem Gerüst, Bauplatz-Breiten für Schiff und Burg |
+| [B-1148](B-1148-schiffsrumpf-4-bis-5-m.md) | PAP | Problem | niedrig | offen | LA1 | Schiffsrumpf auf 4 bis 5 M Länge zeichnen |
+| [B-1149](B-1149-plantage-wachstumsstufen-pappel.md) | CLI | Problem | mittel | offen | LA1 | Plantage-Wachstumsstufen wieder unterscheidbar machen |
+| [B-1150](B-1150-leitmotive-luftperspektive.md) | PAP | Problem | niedrig | offen | LA1 | Leitmotive mit Luftperspektive: weniger Kontrast |
+| [B-1151](B-1151-texturbudget-baeume.md) | PAP | Schuld | niedrig | offen | LA1 | Texturbudget der Bäume um 15 MiB senken |
 
 ## Archiv
 
