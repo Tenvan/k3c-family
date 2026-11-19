@@ -898,3 +898,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1088](B-1088-insel-fixture-null-statt-leere-listen.md) | SIM | Problem | mittel | erledigt | RU46 | Insel-Fixture schreibt null für leere Listen, der Takt-Vergleich erwartet leere Listen |
 | [B-1097](B-1097-add-stock-capped-platzhalter-rest.md) | SIM | Schuld | niedrig | erledigt | RU18 | Platzhalter add_stock_capped in k3c-sim pending.rs ist ein Rest aus RU10 |
 | [B-1106](B-1106-rust-skills-respec-inselwahl.md) | CLI | Problem | hoch | erledigt | RU53 | Skills lernen, Respec und Zielinsel-Wahl fehlen im Rust-Spiel |
+| [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |

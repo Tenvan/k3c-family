@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Problem
 - **Prio:** niedrig
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** RU57
 - **Projekt:** RSU

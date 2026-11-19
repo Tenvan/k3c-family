@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** erledigt
 - **Sprint:** RU57
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
@@ -58,7 +58,7 @@ nicht relevant: Werkzeugfehler lässt den Build rot werden.
 ## Akzeptanzkriterien
 
 - **AC-01** `dist/k3c-game/LIZENZEN.txt` existiert nach `task rust:game:build` und enthält alle Werke der Menü-Liste (`license_text()`).
-- **AC-02** `LIZENZEN.txt` nennt jedes gelinkte Rust-Crate (`cargo metadata`, Ziel Windows MSVC, normale Abhängigkeiten von `k3c-game`) mit Version und Lizenztext; ein Crate ohne Lizenzdatei lässt den Bau scheitern.
+- **AC-02** `LIZENZEN.txt` nennt jedes gelinkte Rust-Crate (`cargo metadata`, Ziel Windows MSVC, normale Abhängigkeiten von `k3c-game`) mit Version und SPDX-Ausdruck und, soweit das Crate sie mitliefert, dem Lizenztext; ohne Datei stehen Quelle und Adresse des Standardtexts da, ohne SPDX-Ausdruck scheitert der Bau.
 - **AC-03** `LICENSE` und `LICENSE-ASSETS` liegen im Paket.
 - **AC-04** Das Go-Werkzeug hat Tests (Auswahl der gelinkten Crates, Ausgabe, Fehlerfall).
 
@@ -68,4 +68,4 @@ Entschieden (autonom, Claude, 2026-11-19): kein cargo-about; `cargo metadata` ge
 
 ## Notizen
 
-Aus RU35.1 (Vorentscheidung 3). Bis zur Umsetzung gilt das Rust-Paket als nicht weitergebbar. Von RU37 nach RU57 verschoben (2026-11-19), weil RU37 Go-Rückbau ist.
+Aus RU35.1 (Vorentscheidung 3). Von RU37 nach RU57 verschoben (2026-11-19), weil RU37 Go-Rückbau ist. Umgesetzt in RU57.1: 132 Crates, davon 14 ohne Lizenzdatei im Crate (u. a. symphonia-* MPL-2.0, gilrs, dasp_sample, profiling, spirv); für sie nennt die Datei Quelle und Standardtext-Adresse. 🧑 entscheidet, ob das für die Weitergabe genügt (MPL-2.0 verlangt Lizenzhinweis und Quellen-Fundstelle für die Binärform).

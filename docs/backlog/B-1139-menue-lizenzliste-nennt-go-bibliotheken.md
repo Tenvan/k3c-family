@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** RU37
 - **Projekt:** RSU

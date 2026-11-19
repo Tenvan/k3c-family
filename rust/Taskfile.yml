@@ -75,12 +75,15 @@ tasks:
         set -e
         p="{{.PAKET}}"
         if [ ! -d public/grafik ]; then echo "❌ public/grafik fehlt: erst task gen:paper"; exit 1; fi
-        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/native/k3c-rig/assets=$p/native/k3c-rig/assets {{.ROOT_DIR}}/public/audio=$p/public/audio"
+        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/native/k3c-rig/assets=$p/native/k3c-rig/assets {{.ROOT_DIR}}/public/audio=$p/public/audio {{.ROOT_DIR}}/LICENSE=$p/LICENSE {{.ROOT_DIR}}/LICENSE-ASSETS=$p/LICENSE-ASSETS"
         if [ -d public/schrift ]; then args="$args {{.ROOT_DIR}}/public/schrift=$p/public/schrift"; fi
         cd native/k3c-game && go run ./cmd/sync $args
         # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
         rm -f "$p"/data/*.go "$p"/data/*.md
-      - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe; LIZENZEN.txt fehlt noch, Paket nicht weitergebbar)"'
+      # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates
+      # (tools/rustpaket, `cargo metadata`); erst in eine .tmp-Datei, damit ein Abbruch keine halbe Datei hinterlässt
+      - 'go run ./tools/rustpaket lizenzen -exe "{{.PAKET}}/k3c-game.exe" -rust rust > "{{.PAKET}}/LIZENZEN.txt.tmp" && mv "{{.PAKET}}/LIZENZEN.txt.tmp" "{{.PAKET}}/LIZENZEN.txt"'
+      - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe)"'
 
   game:run:
     desc: "Rust-Spiel bauen (game:build) und aus dem Paket-Ordner starten; Schalter: task rust:game:run -- --players 1"

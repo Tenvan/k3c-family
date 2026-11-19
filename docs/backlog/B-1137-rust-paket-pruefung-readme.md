@@ -3,7 +3,7 @@
 - **Domäne:** INF
 - **Typ:** Schuld
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** RU57
 - **Projekt:** RSU

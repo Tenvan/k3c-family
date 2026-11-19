@@ -181,7 +181,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1120](B-1120-ru32-abnahme-aufnahme-bildvergleich-bericht.md) | CLI | Schuld | mittel | offen | RU32 | RU32 Abnahme (Lane zweit): Aufnahme beider EXE, Bildvergleich Go gegen Rust, Bericht, Gen |
 | [B-1125](B-1125-rust-hud-insel-fuer-wirtschaft-werte.md) | CLI | Problem | mittel | offen | RU52 | Rust-HUD rechnet Beutel-Obergrenze und Tausch-Hinweis ohne Insel (Abweichung von Go) |
 | [B-1126](B-1126-ru53-abnahme-skills-inselwahl.md) | CLI | Schuld | mittel | offen | RU53 | RU53 Abnahme: Skills lernen und Inselwahl im Rust-Spiel (Sim, Gen, Race, Spieltest) |
-| [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | eingeplant | RU57 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |
 | [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | eingeplant | RU57 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU37 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |

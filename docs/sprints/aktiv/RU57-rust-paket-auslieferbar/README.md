@@ -66,7 +66,7 @@ keine (Defaults autonom entschieden, 2026-11-19): kein cargo-about, Werkzeug in 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU57.1 | `RU57.1-lizenzen-txt-im-paket.md` | Umsetzung | autonom | offen |
+| RU57.1 | `RU57.1-lizenzen-txt-im-paket.md` | Umsetzung | autonom | fertig |
 | RU57.2 | `RU57.2-paketpruefung-readme-version.md` | Umsetzung | autonom | offen |
 | RU57.3 | `RU57.3-pfade-release-sichtpruefung.md` | Umsetzung | autonom | offen |
 | RU57.4 | `RU57.4-review.md` | Review | autonom | offen |
