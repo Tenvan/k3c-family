@@ -43,7 +43,9 @@ pub fn step_players(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&
 /// Der Zahl-Teil von `step_players` für den lebenden Monarchen `pi`: eine Münze im Takt, Erstattung beim Loslassen.
 fn step_pay(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, pi: usize, cmd: &PlayerCommand) {
     let p = &w.players[pi];
-    if cmd.pay && p.pay_cooldown <= 0.0 && (p.gold > 0 || merchant_at(w, v, p.x) == Some("sell")) {
+    // RU62.1: An einem nutzbaren Ladeplatz zahlt `cargo::step` in die Fracht; hier fiele die Münze sonst auf den Boden.
+    let at_cargo_bay = w.cargo_bays.iter().any(|b| (p.x - b.x).abs() <= b.range);
+    if cmd.pay && !at_cargo_bay && p.pay_cooldown <= 0.0 && (p.gold > 0 || merchant_at(w, v, p.x) == Some("sell")) {
         pay_one_coin(w, v, isl, pi);
         w.players[pi].pay_cooldown = v.economy.pay_interval_seconds;
     }

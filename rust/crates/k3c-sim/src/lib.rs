@@ -3,6 +3,7 @@
 pub mod boss;
 pub mod building;
 pub mod campaign;
+pub mod cargo;
 pub mod combat;
 pub mod crown;
 pub mod dev;

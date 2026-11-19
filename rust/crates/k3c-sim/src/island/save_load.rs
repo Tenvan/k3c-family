@@ -91,6 +91,7 @@ pub fn from_island_save_in(
             s.chosen, current.id
         )));
     }
+    crate::cargo::save::restore_opt(&mut isl.cargo, s.cargo.as_ref(), t.data)?; // RU62.1: Fracht und Aufträge
     place_players(&mut isl, s)?;
     Ok(isl)
 }

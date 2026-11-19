@@ -11,6 +11,7 @@ pub mod balance_targets;
 pub mod biome;
 pub mod bosses;
 pub mod buildings;
+pub mod cargo;
 pub mod data;
 pub mod difficulty;
 pub mod economy;

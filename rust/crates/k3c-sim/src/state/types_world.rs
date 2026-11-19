@@ -144,6 +144,15 @@ pub struct World {
     pub night_events: Vec<ActiveEvent>,
     #[serde(rename = "islandSwitch", skip_serializing_if = "Option::is_none")]
     pub island_switch: Option<SwitchState>,
+    /// Fracht des Schiffs (RU62.1, B-967); fehlt auf Inseln ohne Fracht.
+    #[serde(rename = "cargo", skip_serializing_if = "Option::is_none")]
+    pub cargo: Option<super::cargo_view::CargoState>,
+    /// Nutzbare Ladeplätze dieser Stufe (RU62.1); ohne JSON.
+    #[serde(skip)]
+    pub cargo_bays: Vec<super::cargo_view::CargoBay>,
+    /// Der Wertesatz der Stufe trägt den Abschnitt Laderaum als 4. Schiffsstufe (RU62.1); ohne JSON.
+    #[serde(skip)]
+    pub cargo_hold: bool,
     /// Verworfene Ereignisse dieses Steps (Obergrenze je Tick).
     #[serde(rename = "eventsDropped", skip_serializing_if = "is_zero_i64")]
     pub events_dropped: i64,
@@ -183,6 +192,7 @@ pub struct World {
 }
 
 impl Default for World {
+    #[allow(clippy::too_many_lines)] // eine Zeile je Feld der Stufe
     fn default() -> Self {
         World {
             seed: Default::default(),
@@ -232,6 +242,9 @@ impl Default for World {
             events: Default::default(),
             night_events: Default::default(),
             island_switch: Default::default(),
+            cargo: None,
+            cargo_bays: Vec::new(),
+            cargo_hold: false,
             events_dropped: Default::default(),
             no_travel: Default::default(),
             lava_in: Default::default(),

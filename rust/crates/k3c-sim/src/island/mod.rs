@@ -175,6 +175,8 @@ pub struct Island {
     pub next_player: i64,
     /// Reisefortschritt je Spielerindex (island_travel.go); nur über den Schlüssel zugreifen.
     pub travel: BTreeMap<i64, IslandTravel>,
+    /// Fracht auf dem Schiff (RU62.1, B-967); ohne `cfg` trägt die Insel keine.
+    pub cargo: crate::cargo::Cargo,
 }
 
 impl Island {
@@ -334,6 +336,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
     }
     isl.sync_stock();
     if !isl.over {
+        crate::cargo::step::step_cargo(isl, commands, dt);
         step_island_travel(isl, dt);
         step_island_switch(isl, dt);
         mirror_switch(isl);

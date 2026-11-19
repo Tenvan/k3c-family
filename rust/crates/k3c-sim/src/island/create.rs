@@ -175,6 +175,9 @@ pub fn create_island_at(
         let w = create_stage(b, d, seed, cycle_speed, start_time, opts, &vals)?;
         isl.stages.push(w);
     }
+    if crate::cargo::world_has_cargo(b.data, &b.world.id) {
+        isl.enable_cargo(b.data); // RU62.1: Fracht nur in Welten aus data/cargo.json
+    }
     Ok(isl)
 }
 

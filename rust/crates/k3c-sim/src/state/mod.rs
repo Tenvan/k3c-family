@@ -3,6 +3,7 @@
 //! Modell: `docs/standards/rust-sim-zustand.md`. Die Welt besitzt alles, Verweise sind IDs.
 
 pub mod action_view;
+pub mod cargo_view;
 pub mod common;
 pub mod data;
 pub mod fehler;

@@ -84,7 +84,7 @@ Keine. Freigegebene Defaults (autonom, Claude, 2026-11-19): (1) keine REG-Sessio
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU62.1 | `RU62.1-sim-fracht.md` | Umsetzung | autonom | offen |
+| RU62.1 | `RU62.1-sim-fracht.md` | Umsetzung | autonom | fertig |
 | RU62.2 | `RU62.2-anzeige-fracht.md` | Umsetzung | autonom | offen |
 | RU62.3 | `RU62.3-sim-doppel-truhe.md` | Umsetzung | autonom | offen |
 | RU62.4 | `RU62.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | offen |
