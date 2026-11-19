@@ -6,7 +6,7 @@
 version: '3'
 
 vars:
-  MEASURE: 'powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/native/measure.ps1"'
+  MEASURE: 'powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/tools/measure/measure.ps1"'
   # Rig-Prototyp (Sprint NV2, B-778): eigenes Go-Modul unter native/k3c-rig, Teile und Rig-Dateien eingecheckt in assets/
   RIG: '{{.ROOT_DIR}}/native/k3c-rig'
   RIG_EXE: '{{.ROOT_DIR}}/native/k3c-rig/bin/k3c-rig.exe'
@@ -41,7 +41,7 @@ tasks:
       - task: game:dist
 
   # dist: bringt EXE, geladene Grafik, Ton, Schrift, Rig-Teile, Lizenzdatei und Messskript nach GAME_PAKET. Das Kopieren
-  # macht cmd/sync (nur Geändertes, Ordner zusammengeführt): Tasks eingebautes cp kann unter Windows weder -u noch das.
+  # macht tools/sync (nur Geändertes, Ordner zusammengeführt): Tasks eingebautes cp kann unter Windows weder -u noch das.
   game:dist:
     internal: true
     dir: '{{.ROOT_DIR}}'
@@ -54,7 +54,7 @@ tasks:
       - |
         set -e
         p="{{.GAME_PAKET}}"
-        args="{{.GAME_EXE}}=$p/k3c-game.exe native/measure.ps1=$p/measure.ps1 native/messen.cmd=$p/messen.cmd public/audio=$p/public/audio data=$p/data {{.RIG}}/assets=$p/native/k3c-rig/assets"
+        args="{{.GAME_EXE}}=$p/k3c-game.exe tools/measure/measure.ps1=$p/measure.ps1 tools/measure/messen.cmd=$p/messen.cmd public/audio=$p/public/audio data=$p/data {{.RIG}}/assets=$p/native/k3c-rig/assets"
         if [ -d public/schrift ]; then args="$args public/schrift=$p/public/schrift"; fi
         # ohne tr (fehlt dem Runner der Workbench, dann blieb die Liste still leer und die Grafik fehlte im Paket)
         n=0
@@ -63,7 +63,7 @@ tasks:
           if [ -n "$a" ]; then args="$args public/grafik/$a=$p/public/grafik/$a"; n=$((n+1)); fi
         done < "$p/assets.txt"
         if [ "$n" -eq 0 ]; then echo "❌ $p/assets.txt ist leer: keine Grafik fürs Paket"; exit 1; fi
-        cd "{{.GAME}}" && go run ./cmd/sync $(for x in $args; do case "$x" in /*|?:*) echo "$x";; *) echo "{{.ROOT_DIR}}/$x";; esac; done)
+        go run ./tools/sync $(for x in $args; do case "$x" in /*|?:*) echo "$x";; *) echo "{{.ROOT_DIR}}/$x";; esac; done)
         # Spieldaten samt lokaler Welten liegen als data/ neben der EXE (data.Files liest sie), ohne Go-Quellen und Doku
         rm -f "$p"/data/*.go "$p"/data/*.md
       # Lizenzdatei aus derselben Liste wie die Lizenz-Seite im Menü (menu.LicenseText, B-808)
@@ -139,16 +139,14 @@ tasks:
       - 'cd "{{.GAME_PAKET}}" && ./k3c-game.exe --shots "{{.GAME_PROBE}}/tag" --seed k3c --tick 300 --count 2 && ./k3c-game.exe --shots "{{.GAME_PROBE}}/nacht" --seed k3c --tick 15600 --count 2 --input 0@0=-,1@0=-'
 
   rig:export:
-    desc: "Rig-Prototyp: Teil-PNGs, Rig-Dateien, Elemente und Sollwerte nach native/k3c-rig/assets/ schreiben (eingecheckt; liest Specs und Stil nur)"
-    dir: '{{.ROOT_DIR}}'
+    desc: "Rig-Prototyp (RU37.1: ruft gen:rig, Export liegt in tools/rigexport und schreibt nach public/rig/)"
     cmds:
-      - bun native/k3c-rig/export/export.ts
+      - task: ':gen:rig'
 
   rig:export:check:
-    desc: "Rig-Prototyp: Export wiederholen und byte-genau mit native/k3c-rig/assets/ vergleichen (schreibt nichts)"
-    dir: '{{.ROOT_DIR}}'
+    desc: "Rig-Prototyp (RU37.1: ruft gen:rig:check gegen public/rig/)"
     cmds:
-      - bun native/k3c-rig/export/export.ts --pruefen
+      - task: ':gen:rig:check'
 
   rig:test:
     desc: "Rig-Prototyp prüfen: gofmt, go vet, go test (Rig-Rechnung gegen die Sollwerte aus tools/paper)"
@@ -210,6 +208,6 @@ tasks:
     cmds:
       - rm -rf "{{.RIG_PAKET}}"
       - mkdir -p "{{.RIG_PAKET}}/public/grafik/figuren"
-      - cp "{{.RIG_EXE}}" "{{.ROOT_DIR}}/native/measure.ps1" "{{.ROOT_DIR}}/native/messen.cmd" "{{.RIG_PAKET}}/"
+      - cp "{{.RIG_EXE}}" "{{.ROOT_DIR}}/tools/measure/measure.ps1" "{{.ROOT_DIR}}/tools/measure/messen.cmd" "{{.RIG_PAKET}}/"
       - cp -r "{{.RIG}}/assets" "{{.RIG_PAKET}}/assets"
       - cp -r "{{.ROOT_DIR}}/public/grafik/figuren/monarch" "{{.RIG_PAKET}}/public/grafik/figuren/monarch"

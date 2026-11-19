@@ -1,0 +1,288 @@
+{
+  "id": "goblin",
+  "rig": "figur",
+  "version": 1,
+  "dichte": 2.1215469613259668,
+  "massstab": 1,
+  "rahmen": [
+    -60,
+    -175,
+    135,
+    181
+  ],
+  "teile": [
+    {
+      "id": "oberarm-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 0,
+      "bild": "oberarm-h.png",
+      "versatz": [
+        -10.8125,
+        -95.1745
+      ],
+      "groesse": [
+        50,
+        73
+      ]
+    },
+    {
+      "id": "unterarm-h",
+      "eltern": "oberarm-h",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 10,
+      "bild": "unterarm-h.png",
+      "versatz": [
+        -9.3984,
+        -74.9062
+      ],
+      "groesse": [
+        41,
+        71
+      ]
+    },
+    {
+      "id": "oberschenkel-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 20,
+      "bild": "oberschenkel-h.png",
+      "versatz": [
+        -11.2839,
+        -57.4661
+      ],
+      "groesse": [
+        52,
+        80
+      ]
+    },
+    {
+      "id": "unterschenkel-h",
+      "eltern": "oberschenkel-h",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 30,
+      "bild": "unterschenkel-h.png",
+      "versatz": [
+        -10.3411,
+        -32.013
+      ],
+      "groesse": [
+        63,
+        87
+      ]
+    },
+    {
+      "id": "oberschenkel-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 40,
+      "bild": "oberschenkel-v.png",
+      "versatz": [
+        -11.2839,
+        -57.4661
+      ],
+      "groesse": [
+        52,
+        80
+      ]
+    },
+    {
+      "id": "unterschenkel-v",
+      "eltern": "oberschenkel-v",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 50,
+      "bild": "unterschenkel-v.png",
+      "versatz": [
+        -10.3411,
+        -32.013
+      ],
+      "groesse": [
+        63,
+        87
+      ]
+    },
+    {
+      "id": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 60,
+      "bild": "rumpf.png",
+      "versatz": [
+        -19.7682,
+        -96.1172
+      ],
+      "groesse": [
+        88,
+        128
+      ]
+    },
+    {
+      "id": "kopf",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -90
+      ],
+      "ebene": 70,
+      "bild": "kopf.png",
+      "versatz": [
+        -15.9974,
+        -124.8698
+      ],
+      "groesse": [
+        83,
+        84
+      ]
+    },
+    {
+      "id": "ohr",
+      "eltern": "kopf",
+      "pivot": [
+        0,
+        -104
+      ],
+      "ebene": 80,
+      "bild": "ohr.png",
+      "versatz": [
+        -29.1953,
+        -123.9271
+      ],
+      "groesse": [
+        122,
+        67
+      ]
+    },
+    {
+      "id": "oberarm-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 90,
+      "bild": "oberarm-v.png",
+      "versatz": [
+        -10.8125,
+        -95.1745
+      ],
+      "groesse": [
+        50,
+        73
+      ]
+    },
+    {
+      "id": "unterarm-v",
+      "eltern": "oberarm-v",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 100,
+      "bild": "unterarm-v.png",
+      "versatz": [
+        -9.3984,
+        -74.9062
+      ],
+      "groesse": [
+        41,
+        71
+      ]
+    },
+    {
+      "id": "dolch",
+      "eltern": "unterarm-v",
+      "pivot": [
+        0,
+        -49
+      ],
+      "ebene": 110,
+      "bild": "dolch.png",
+      "versatz": [
+        -10.3411,
+        -68.7786
+      ],
+      "groesse": [
+        78,
+        63
+      ]
+    }
+  ],
+  "plaetze": [],
+  "baender": [],
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "dolch": 70,
+            "oberarm-h": 10,
+            "oberarm-v": -50,
+            "unterarm-v": -40
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "dolch": 21,
+            "kopf": 4,
+            "oberarm-h": 25,
+            "oberarm-v": -165,
+            "rumpf": -6,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "dolch": 137,
+            "kopf": -3,
+            "oberarm-h": -10,
+            "oberarm-v": -85,
+            "rumpf": 8,
+            "unterarm-v": 0
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "dolch": 141,
+            "oberarm-h": 0,
+            "oberarm-v": -55,
+            "rumpf": 4,
+            "unterarm-v": -10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "frames": 8
+    },
+    "lauf": {
+      "frames": 8
+    }
+  },
+  "varianten": {}
+}

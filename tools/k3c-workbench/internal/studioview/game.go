@@ -18,19 +18,19 @@ import (
 )
 
 // „Im Spiel ansehen“ (Entscheidung 005 › 5, B-847): legt den Testspielstand voll-<seed> (voll ausgebaut, Standard-Welt)
-// außerhalb des Repos an und startet das native Spiel mit festem Pfad (keine Firewall-Abfrage, kein go run), das ihn
+// außerhalb des Repos an und startet das Rust-Spiel mit festem Pfad (keine Firewall-Abfrage, kein cargo run), das ihn
 // lädt. Der Browser-Client (dist/index.html, game.html) wird nicht mehr gebraucht (Entscheidung 009).
 
 // fullSeed: `voll-<seed>` muss ins Namensformat eines Spielstands passen (wie fullSeed in engine/room).
 var fullSeed = regexp.MustCompile(`^[a-z0-9-]{1,27}$`)
 
 // nativeBuildTask baut die native EXE; die Meldung bei fehlender EXE nennt ihn (B-847/AC-02).
-const nativeBuildTask = "task native:game:build"
+const nativeBuildTask = "task build"
 
 // nativeExe sind die Orte der nativen EXE, zuerst der Build im Checkout, dann das Spiel-Paket; dir ist der
 // Arbeitsordner, unter dem das Spiel public/ findet. Pfade relativ zur Wurzel des Checkouts.
 var nativeExe = []struct{ exe, dir string }{
-	{"native/k3c-game/bin/k3c-game.exe", "."},
+	{"rust/target/release/k3c-game.exe", "."},
 	{"dist/k3c-game/k3c-game.exe", "dist/k3c-game"},
 }
 

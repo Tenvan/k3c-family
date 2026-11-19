@@ -1,0 +1,333 @@
+{
+  "id": "ratten-koenigin",
+  "rig": "figur",
+  "version": 1,
+  "dichte": 3.18232044198895,
+  "massstab": 1,
+  "rahmen": [
+    -68,
+    -175,
+    158,
+    181
+  ],
+  "teile": [
+    {
+      "id": "schwanz",
+      "eltern": "rumpf",
+      "pivot": [
+        -8,
+        -52
+      ],
+      "ebene": 0,
+      "bild": "schwanz.png",
+      "versatz": [
+        -60.2917,
+        -54.4809
+      ],
+      "groesse": [
+        174,
+        160
+      ]
+    },
+    {
+      "id": "oberarm-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 10,
+      "bild": "oberarm-h.png",
+      "versatz": [
+        -9.6997,
+        -94.3889
+      ],
+      "groesse": [
+        66,
+        99
+      ]
+    },
+    {
+      "id": "unterarm-h",
+      "eltern": "oberarm-h",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 20,
+      "bild": "unterarm-h.png",
+      "versatz": [
+        -8.1285,
+        -74.2778
+      ],
+      "groesse": [
+        56,
+        102
+      ]
+    },
+    {
+      "id": "schild",
+      "eltern": "unterarm-h",
+      "pivot": [
+        0,
+        -49
+      ],
+      "ebene": 30
+    },
+    {
+      "id": "oberschenkel-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 40,
+      "bild": "oberschenkel-h.png",
+      "versatz": [
+        -10.0139,
+        -56.6806
+      ],
+      "groesse": [
+        68,
+        110
+      ]
+    },
+    {
+      "id": "unterschenkel-h",
+      "eltern": "oberschenkel-h",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 50,
+      "bild": "unterschenkel-h.png",
+      "versatz": [
+        -9.0712,
+        -32.1701
+      ],
+      "groesse": [
+        84,
+        123
+      ]
+    },
+    {
+      "id": "oberschenkel-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 60,
+      "bild": "oberschenkel-v.png",
+      "versatz": [
+        -10.0139,
+        -56.6806
+      ],
+      "groesse": [
+        68,
+        110
+      ]
+    },
+    {
+      "id": "unterschenkel-v",
+      "eltern": "oberschenkel-v",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 70,
+      "bild": "unterschenkel-v.png",
+      "versatz": [
+        -9.0712,
+        -32.1701
+      ],
+      "groesse": [
+        84,
+        123
+      ]
+    },
+    {
+      "id": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 80,
+      "bild": "rumpf.png",
+      "versatz": [
+        -19.1267,
+        -95.3316
+      ],
+      "groesse": [
+        125,
+        190
+      ]
+    },
+    {
+      "id": "ohren",
+      "eltern": "kopf",
+      "pivot": [
+        0,
+        -100
+      ],
+      "ebene": 90,
+      "bild": "ohren.png",
+      "versatz": [
+        -22.5833,
+        -135.2396
+      ],
+      "groesse": [
+        154,
+        72
+      ]
+    },
+    {
+      "id": "kopf",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -90
+      ],
+      "ebene": 100,
+      "bild": "kopf.png",
+      "versatz": [
+        -15.9844,
+        -125.8125
+      ],
+      "groesse": [
+        118,
+        127
+      ]
+    },
+    {
+      "id": "helm",
+      "eltern": "kopf",
+      "pivot": [
+        2,
+        -120
+      ],
+      "ebene": 110,
+      "bild": "helm.png",
+      "versatz": [
+        -15.0417,
+        -127.3837
+      ],
+      "groesse": [
+        111,
+        56
+      ]
+    },
+    {
+      "id": "oberarm-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 120,
+      "bild": "oberarm-v.png",
+      "versatz": [
+        -9.6997,
+        -94.3889
+      ],
+      "groesse": [
+        66,
+        99
+      ]
+    },
+    {
+      "id": "unterarm-v",
+      "eltern": "oberarm-v",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 130,
+      "bild": "unterarm-v.png",
+      "versatz": [
+        -8.1285,
+        -74.2778
+      ],
+      "groesse": [
+        56,
+        102
+      ]
+    },
+    {
+      "id": "schwert",
+      "eltern": "unterarm-v",
+      "pivot": [
+        0,
+        -49
+      ],
+      "ebene": 140,
+      "bild": "schwert.png",
+      "versatz": [
+        -10.0139,
+        -85.5903
+      ],
+      "groesse": [
+        155,
+        149
+      ]
+    }
+  ],
+  "plaetze": [],
+  "baender": [],
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-h": 10,
+            "oberarm-v": -50,
+            "schwert": 75,
+            "unterarm-v": -40
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "kopf": 4,
+            "oberarm-h": 25,
+            "oberarm-v": -165,
+            "rumpf": -6,
+            "schwert": 26,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "kopf": -3,
+            "oberarm-h": -10,
+            "oberarm-v": -85,
+            "rumpf": 8,
+            "schwert": 142,
+            "unterarm-v": 0
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "oberarm-h": 0,
+            "oberarm-v": -55,
+            "rumpf": 4,
+            "schwert": 146,
+            "unterarm-v": -10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "frames": 8
+    },
+    "lauf": {
+      "frames": 8
+    }
+  },
+  "varianten": {}
+}

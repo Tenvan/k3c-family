@@ -1,0 +1,304 @@
+{
+  "id": "hoehlentroll",
+  "rig": "figur",
+  "version": 1,
+  "dichte": 3.225806451612903,
+  "massstab": 1,
+  "rahmen": [
+    -75,
+    -180,
+    185,
+    186
+  ],
+  "teile": [
+    {
+      "id": "oberarm-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 0,
+      "bild": "oberarm-h.png",
+      "versatz": [
+        -13.55,
+        -94.37
+      ],
+      "groesse": [
+        93,
+        100
+      ]
+    },
+    {
+      "id": "unterarm-h",
+      "eltern": "oberarm-h",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 10,
+      "bild": "unterarm-h.png",
+      "versatz": [
+        -11.07,
+        -74.22
+      ],
+      "groesse": [
+        78,
+        104
+      ]
+    },
+    {
+      "id": "oberschenkel-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 20,
+      "bild": "oberschenkel-h.png",
+      "versatz": [
+        -12.93,
+        -56.55
+      ],
+      "groesse": [
+        90,
+        111
+      ]
+    },
+    {
+      "id": "unterschenkel-h",
+      "eltern": "oberschenkel-h",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 30,
+      "bild": "unterschenkel-h.png",
+      "versatz": [
+        -11.07,
+        -32.37
+      ],
+      "groesse": [
+        108,
+        125
+      ]
+    },
+    {
+      "id": "oberschenkel-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 40,
+      "bild": "oberschenkel-v.png",
+      "versatz": [
+        -12.93,
+        -56.55
+      ],
+      "groesse": [
+        90,
+        111
+      ]
+    },
+    {
+      "id": "unterschenkel-v",
+      "eltern": "oberschenkel-v",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 50,
+      "bild": "unterschenkel-v.png",
+      "versatz": [
+        -11.07,
+        -32.37
+      ],
+      "groesse": [
+        108,
+        125
+      ]
+    },
+    {
+      "id": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 60,
+      "bild": "rumpf.png",
+      "versatz": [
+        -28.43,
+        -95.3
+      ],
+      "groesse": [
+        190,
+        199
+      ]
+    },
+    {
+      "id": "kopf",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -90
+      ],
+      "ebene": 70,
+      "bild": "kopf.png",
+      "versatz": [
+        -15.72,
+        -124.13
+      ],
+      "groesse": [
+        125,
+        124
+      ]
+    },
+    {
+      "id": "oberarm-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 80,
+      "bild": "oberarm-v.png",
+      "versatz": [
+        -13.55,
+        -94.37
+      ],
+      "groesse": [
+        93,
+        100
+      ]
+    },
+    {
+      "id": "unterarm-v",
+      "eltern": "oberarm-v",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 90,
+      "bild": "unterarm-v.png",
+      "versatz": [
+        -11.07,
+        -74.22
+      ],
+      "groesse": [
+        78,
+        104
+      ]
+    },
+    {
+      "id": "keule",
+      "eltern": "unterarm-v",
+      "pivot": [
+        0,
+        -49
+      ],
+      "ebene": 100,
+      "bild": "keule.png",
+      "versatz": [
+        -9.52,
+        -102.43
+      ],
+      "groesse": [
+        192,
+        213
+      ]
+    }
+  ],
+  "plaetze": [],
+  "baender": [],
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "keule": 80,
+            "oberarm-h": 10,
+            "oberarm-v": -50,
+            "unterarm-v": -40,
+            "oberschenkel-v": -25,
+            "unterschenkel-v": 10,
+            "oberschenkel-h": 22,
+            "unterschenkel-h": -5
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "keule": 31,
+            "kopf": 4,
+            "oberarm-h": 25,
+            "oberarm-v": -165,
+            "rumpf": -6,
+            "unterarm-v": -10,
+            "oberschenkel-v": -30,
+            "unterschenkel-v": 15,
+            "oberschenkel-h": 25,
+            "unterschenkel-h": -10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "keule": 147,
+            "kopf": -3,
+            "oberarm-h": -10,
+            "oberarm-v": -85,
+            "rumpf": 8,
+            "unterarm-v": 0,
+            "oberschenkel-v": -35,
+            "unterschenkel-v": 20,
+            "oberschenkel-h": 28,
+            "unterschenkel-h": -8
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "keule": 151,
+            "oberarm-h": 0,
+            "oberarm-v": -55,
+            "rumpf": 4,
+            "unterarm-v": -10,
+            "oberschenkel-v": -28,
+            "unterschenkel-v": 12,
+            "oberschenkel-h": 24,
+            "unterschenkel-h": -6
+          }
+        }
+      ]
+    },
+    "idle": {
+      "frames": 8
+    },
+    "lauf": {
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-v": -20,
+            "unterarm-v": -20,
+            "keule": 120
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "oberarm-v": -12,
+            "unterarm-v": -20,
+            "keule": 120
+          }
+        }
+      ]
+    }
+  },
+  "varianten": {}
+}

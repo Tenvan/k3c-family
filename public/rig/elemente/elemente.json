@@ -1,0 +1,44 @@
+[
+  {
+    "id": "schwert",
+    "platz": "waffe",
+    "dichte": 2.543046357615894,
+    "bild": "schwert.png",
+    "versatz": [
+      -20.4766,
+      -7.5703
+    ],
+    "groesse": [
+      69,
+      98
+    ]
+  },
+  {
+    "id": "axt",
+    "platz": "waffe",
+    "dichte": 2.543046357615894,
+    "bild": "axt.png",
+    "versatz": [
+      -28.7344,
+      -6.3906
+    ],
+    "groesse": [
+      92,
+      99
+    ]
+  },
+  {
+    "id": "brustpanzer",
+    "platz": "ruestung",
+    "dichte": 2.543046357615894,
+    "bild": "brustpanzer.png",
+    "versatz": [
+      -17.6458,
+      -21.2422
+    ],
+    "groesse": [
+      95,
+      127
+    ]
+  }
+]

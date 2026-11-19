@@ -1,6 +1,6 @@
 # Go-Referenz: Messwerte, Farbwerte, Pause (RU58.3)
 
-Stand 2026-11-19. Das Go-Spiel aus dem Tag `go-referenz-final` (Commit `dbb87c33`), gemessen mit `native/measure.ps1 -Engine game
+Stand 2026-11-19. Das Go-Spiel aus dem Tag `go-referenz-final` (Commit `dbb87c33`), gemessen mit `tools/measure/measure.ps1 -Engine game
 -Runs 3 -Frames` (20 s nach 5 s Aufwärmen, 2 Spieler, Seed `k3c`). Rechner: Micro-Star International Co., Ltd. MS-7C56, AMD Ryzen 7 5800X 8-Core Processor, 32 GB, AMD Radeon RX 6700 XT (Treiber 32.0.21030.2001).
 Rohdaten und Zahlen je Lauf: `go-referenz.json` (Median der drei Läufe, schlechtester Frame über die Läufe). Referenz, nicht live.
 
@@ -45,7 +45,7 @@ damit kein Abgleich mit dem Go-Bild, sondern ein Rust-Entwurf.
 
 ```bash
 # Messung (Tag-Worktree als Root, EXE aus dem Worktree), wie in docs/standards/go-referenz.md gebaut
-powershell -File native/measure.ps1 -Engine game -Root <worktree> -Exe <worktree>/native/k3c-game/bin/k3c-game.exe -Runs 3 -Frames [-Vsync]
+powershell -File tools/measure/measure.ps1 -Engine game -Root <worktree> -Exe <worktree>/native/k3c-game/bin/k3c-game.exe -Runs 3 -Frames [-Vsync]
 ```
 
 `measure.ps1 -Engine game` gibt ohne Go-EXE diese Referenz (`go-referenz.json`) aus und endet mit Code 0.

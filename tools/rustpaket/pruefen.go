@@ -19,7 +19,7 @@ var requiredFiles = []string{
 
 // requiredDirs müssen mindestens eine Datei enthalten; das Suffix (falls nicht leer) muss auf mindestens eine zutreffen.
 var requiredDirs = []struct{ dir, suffix string }{
-	{"data", ".json"}, {"public/grafik", "index.paper.json"}, {"public/audio", ""}, {"native/k3c-rig/assets", ""},
+	{"data", ".json"}, {"public/grafik", "index.paper.json"}, {"public/audio", ""}, {"public/rig", ""},
 }
 
 var (

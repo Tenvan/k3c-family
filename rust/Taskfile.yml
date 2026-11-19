@@ -41,7 +41,7 @@ tasks:
       - cargo fmt --all --check
 
   # run: startet das Spiel (Hauptmenü, Neues Spiel). Arbeitsordner ist die Repo-Wurzel, damit public/grafik, public/schrift
-  # und native/k3c-rig/assets gefunden werden. gen:paper rendert die Grafik, die nicht eingecheckt ist (B-737); es arbeitet
+  # und public/rig gefunden werden. gen:paper rendert die Grafik, die nicht eingecheckt ist (B-737); es arbeitet
   # nur bei geänderten Quellen. Schalter des Spiels hinter `--`, z. B. `task rust:run -- --saves saves-test`.
   run:
     desc: "Rust-Spiel starten (Release): Hauptmenü, Neues Spiel; rendert die Grafik bei Bedarf (gen:paper); Schalter: task rust:run -- --players 1"
@@ -51,9 +51,9 @@ tasks:
       - cargo run --release --manifest-path rust/Cargo.toml -p k3c-game -- {{.CLI_ARGS}}
 
   # game:*: das Spiel als EXE-Projekt (RU35.1): exe (Release-EXE), build (EXE, Grafik, Paket nach PAKET), run (Paket bauen
-  # und starten), dev (Debug-Bau, Start aus der Repo-Wurzel). Kopiert wird mit cmd/sync (nur Geändertes, Ordner
+  # und starten), dev (Debug-Bau, Start aus der Repo-Wurzel). Kopiert wird mit tools/sync (nur Geändertes, Ordner
   # zusammengeführt; der Umzug des Werkzeugs gehört zu RU37). Das Rust-Spiel lädt ganz public/grafik (kein --assets-Filter)
-  # und die Rig-Teile relativ (native/k3c-rig/assets, DEFAULT_RIG_DIR).
+  # und die Rig-Teile relativ (public/rig, DEFAULT_RIG_DIR).
   game:exe:
     desc: "Nur die Release-EXE des Rust-Spiels bauen (cargo build --release -p k3c-game) nach rust/target/release/"
     dir: '{{.ROOT_DIR}}/rust'
@@ -81,9 +81,9 @@ tasks:
         set -e
         p="{{.PAKET}}"
         if [ ! -d public/grafik ]; then echo "❌ public/grafik fehlt: erst task gen:paper"; exit 1; fi
-        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/native/k3c-rig/assets=$p/native/k3c-rig/assets {{.ROOT_DIR}}/public/audio=$p/public/audio {{.ROOT_DIR}}/LICENSE=$p/LICENSE {{.ROOT_DIR}}/LICENSE-ASSETS=$p/LICENSE-ASSETS {{.ROOT_DIR}}/rust/paket/README.txt=$p/README.txt"
+        args="{{.ROOT_DIR}}/rust/target/release/k3c-game.exe=$p/k3c-game.exe {{.ROOT_DIR}}/data=$p/data {{.ROOT_DIR}}/public/grafik=$p/public/grafik {{.ROOT_DIR}}/public/rig=$p/public/rig {{.ROOT_DIR}}/public/audio=$p/public/audio {{.ROOT_DIR}}/LICENSE=$p/LICENSE {{.ROOT_DIR}}/LICENSE-ASSETS=$p/LICENSE-ASSETS {{.ROOT_DIR}}/rust/paket/README.txt=$p/README.txt"
         if [ -d public/schrift ]; then args="$args {{.ROOT_DIR}}/public/schrift=$p/public/schrift"; fi
-        cd native/k3c-game && go run ./cmd/sync $args
+        go run ./tools/sync $args
         # Spieldaten ohne Go-Quellen und Doku, wie im Go-Paket
         rm -f "$p"/data/*.go "$p"/data/*.md "$p"/data/*/*.md
       # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates

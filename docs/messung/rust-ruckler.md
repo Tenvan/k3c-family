@@ -5,7 +5,7 @@ Stand: Werkzeug, Probelauf (RU39.1) und vorläufige Messung mit eigenem Messcode
 
 ## Aufbau
 
-- **Szene:** `nacht` aus `native/measure.ps1`: Seed `k3c`, 2 Spieler, 15 600 Takte Vorlauf (520 s, erste Nacht), beide
+- **Szene:** `nacht` aus `tools/measure/measure.ps1`: Seed `k3c`, 2 Spieler, 15 600 Takte Vorlauf (520 s, erste Nacht), beide
   stehen an der Burg, die Welle kommt dort an. Gemessen werden 300 s danach.
 - **Go:** `k3c-game.exe --seed k3c --players 2 --tick 15600 --input 0@0=-,1@0=- --measure 300 --warmup 5`, das Spiel
   rechnet die Sim selbst.

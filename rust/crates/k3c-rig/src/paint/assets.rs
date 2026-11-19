@@ -98,7 +98,7 @@ impl Assets {
         let path = self.dir.join(rel);
         let (pix, w, h) = read_png(&path).map_err(|e| {
             Fehler::Fehlt(format!(
-                "Teil-Bild fehlt oder ist kaputt: {} (erst `task native:rig:export` ausführen): {e}",
+                "Teil-Bild fehlt oder ist kaputt: {} (erst `task gen:rig` ausführen): {e}",
                 path.display()
             ))
         })?;

@@ -1,0 +1,324 @@
+{
+  "id": "troll-koenig",
+  "rig": "figur",
+  "version": 1,
+  "dichte": 3.18232044198895,
+  "massstab": 1,
+  "rahmen": [
+    -60,
+    -175,
+    150,
+    181
+  ],
+  "teile": [
+    {
+      "id": "oberarm-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 0,
+      "bild": "oberarm-h.png",
+      "versatz": [
+        -9.5556,
+        -94.3889
+      ],
+      "groesse": [
+        65,
+        99
+      ]
+    },
+    {
+      "id": "unterarm-h",
+      "eltern": "oberarm-h",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 10,
+      "bild": "unterarm-h.png",
+      "versatz": [
+        -7.9844,
+        -74.2778
+      ],
+      "groesse": [
+        55,
+        102
+      ]
+    },
+    {
+      "id": "schild",
+      "eltern": "unterarm-h",
+      "pivot": [
+        0,
+        -49
+      ],
+      "ebene": 20,
+      "bild": "schild.png",
+      "versatz": [
+        -16.4687,
+        -67.6788
+      ],
+      "groesse": [
+        109,
+        128
+      ]
+    },
+    {
+      "id": "oberschenkel-h",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 30,
+      "bild": "oberschenkel-h.png",
+      "versatz": [
+        -9.8698,
+        -56.6806
+      ],
+      "groesse": [
+        67,
+        110
+      ]
+    },
+    {
+      "id": "unterschenkel-h",
+      "eltern": "oberschenkel-h",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 40,
+      "bild": "unterschenkel-h.png",
+      "versatz": [
+        -9.2413,
+        -32.1701
+      ],
+      "groesse": [
+        85,
+        123
+      ]
+    },
+    {
+      "id": "oberschenkel-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 50,
+      "bild": "oberschenkel-v.png",
+      "versatz": [
+        -9.8698,
+        -56.6806
+      ],
+      "groesse": [
+        67,
+        110
+      ]
+    },
+    {
+      "id": "unterschenkel-v",
+      "eltern": "oberschenkel-v",
+      "pivot": [
+        0,
+        -28
+      ],
+      "ebene": 60,
+      "bild": "unterschenkel-v.png",
+      "versatz": [
+        -9.2413,
+        -32.1701
+      ],
+      "groesse": [
+        85,
+        123
+      ]
+    },
+    {
+      "id": "rumpf",
+      "pivot": [
+        0,
+        -50
+      ],
+      "ebene": 70,
+      "bild": "rumpf.png",
+      "versatz": [
+        -18.9826,
+        -95.3316
+      ],
+      "groesse": [
+        125,
+        190
+      ]
+    },
+    {
+      "id": "kopf",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -90
+      ],
+      "ebene": 80,
+      "bild": "kopf.png",
+      "versatz": [
+        -16.1545,
+        -125.8125
+      ],
+      "groesse": [
+        118,
+        127
+      ]
+    },
+    {
+      "id": "helm",
+      "eltern": "kopf",
+      "pivot": [
+        2,
+        -120
+      ],
+      "ebene": 90,
+      "bild": "helm.png",
+      "versatz": [
+        -15.2118,
+        -127.3837
+      ],
+      "groesse": [
+        112,
+        56
+      ]
+    },
+    {
+      "id": "oberarm-v",
+      "eltern": "rumpf",
+      "pivot": [
+        0,
+        -84
+      ],
+      "ebene": 100,
+      "bild": "oberarm-v.png",
+      "versatz": [
+        -9.5556,
+        -94.3889
+      ],
+      "groesse": [
+        65,
+        99
+      ]
+    },
+    {
+      "id": "unterarm-v",
+      "eltern": "oberarm-v",
+      "pivot": [
+        0,
+        -70
+      ],
+      "ebene": 110,
+      "bild": "unterarm-v.png",
+      "versatz": [
+        -7.9844,
+        -74.2778
+      ],
+      "groesse": [
+        55,
+        102
+      ]
+    },
+    {
+      "id": "schwert",
+      "eltern": "unterarm-v",
+      "pivot": [
+        0,
+        -49
+      ],
+      "ebene": 120,
+      "bild": "schwert.png",
+      "versatz": [
+        -9.8698,
+        -85.5903
+      ],
+      "groesse": [
+        155,
+        149
+      ]
+    },
+    {
+      "id": "hauer",
+      "eltern": "kopf",
+      "pivot": [
+        0,
+        -100
+      ],
+      "ebene": 130,
+      "bild": "hauer.png",
+      "versatz": [
+        11.4983,
+        -104.1302
+      ],
+      "groesse": [
+        28,
+        43
+      ]
+    }
+  ],
+  "plaetze": [],
+  "baender": [],
+  "animationen": {
+    "angriff": {
+      "fps": 14,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "oberarm-h": 10,
+            "oberarm-v": -50,
+            "schwert": 75,
+            "unterarm-v": -40
+          }
+        },
+        {
+          "t": 0.35,
+          "winkel": {
+            "kopf": 4,
+            "oberarm-h": 25,
+            "oberarm-v": -165,
+            "rumpf": -6,
+            "schwert": 26,
+            "unterarm-v": -10
+          }
+        },
+        {
+          "t": 0.55,
+          "winkel": {
+            "kopf": -3,
+            "oberarm-h": -10,
+            "oberarm-v": -85,
+            "rumpf": 8,
+            "schwert": 142,
+            "unterarm-v": 0
+          }
+        },
+        {
+          "t": 0.75,
+          "winkel": {
+            "oberarm-h": 0,
+            "oberarm-v": -55,
+            "rumpf": 4,
+            "schwert": 146,
+            "unterarm-v": -10
+          }
+        }
+      ]
+    },
+    "idle": {
+      "frames": 8
+    },
+    "lauf": {
+      "frames": 8
+    }
+  },
+  "varianten": {}
+}

@@ -54,7 +54,7 @@ func newGame(t *testing.T, root string) (g *Game, saves string, started *[]*exec
 
 // AC-01: Die Befehlszeile zeigt auf die native EXE mit festem Pfad und lädt voll-<seed>; kein game.html.
 func TestImSpielAnsehenStartetNativesSpiel(t *testing.T) {
-	root := gameRoot(t, "native/k3c-game/bin/k3c-game.exe")
+	root := gameRoot(t, "rust/target/release/k3c-game.exe")
 	g, saves, started := newGame(t, root)
 	msg, err := g.Open("abc")
 	if err != nil {
@@ -67,7 +67,7 @@ func TestImSpielAnsehenStartetNativesSpiel(t *testing.T) {
 		t.Fatalf("%d Starts", len(*started))
 	}
 	cmd := (*started)[0]
-	if want := filepath.Join(root, "native", "k3c-game", "bin", "k3c-game.exe"); cmd.Path != want || cmd.Dir != filepath.Clean(root) {
+	if want := filepath.Join(root, "rust", "target", "release", "k3c-game.exe"); cmd.Path != want || cmd.Dir != filepath.Clean(root) {
 		t.Errorf("EXE %q in %q, erwartet %q in %q", cmd.Path, cmd.Dir, want, root)
 	}
 	if want := []string{"--saves", saves, "--load", "voll-abc", "--players", "1"}; !slices.Equal(cmd.Args[1:], want) {
@@ -100,16 +100,16 @@ func TestImSpielAnsehenSpielPaket(t *testing.T) {
 	}
 }
 
-// AC-02: Fehlt die EXE, nennt die Meldung task native:game:build und startet nichts; ungültige Seeds lehnt Open ab.
+// AC-02: Fehlt die EXE, nennt die Meldung task build und startet nichts; ungültige Seeds lehnt Open ab.
 func TestImSpielAnsehenAblehnungen(t *testing.T) {
 	g, saves, started := newGame(t, gameRoot(t, ""))
-	if _, err := g.Open("abc"); err == nil || !strings.Contains(err.Error(), "task native:game:build") {
+	if _, err := g.Open("abc"); err == nil || !strings.Contains(err.Error(), "task build") {
 		t.Errorf("ohne EXE: %v", err)
 	}
 	if _, err := os.Stat(filepath.Join(saves, "voll-abc.json")); !os.IsNotExist(err) {
 		t.Errorf("Spielstand trotz fehlender EXE angelegt: %v", err)
 	}
-	g2, _, _ := newGame(t, gameRoot(t, "native/k3c-game/bin/k3c-game.exe"))
+	g2, _, _ := newGame(t, gameRoot(t, "rust/target/release/k3c-game.exe"))
 	for _, seed := range []string{"", "Abc", "a b", "../x", strings.Repeat("a", 28)} {
 		if _, err := g2.Open(seed); err == nil {
 			t.Errorf("Seed %q angenommen", seed)
@@ -126,7 +126,7 @@ func TestImSpielAnsehenAblehnungen(t *testing.T) {
 
 // Nach Close startet Open nichts mehr; doppeltes Close ist harmlos.
 func TestOpenNachCloseAbgelehnt(t *testing.T) {
-	g, _, _ := newGame(t, gameRoot(t, "native/k3c-game/bin/k3c-game.exe"))
+	g, _, _ := newGame(t, gameRoot(t, "rust/target/release/k3c-game.exe"))
 	if _, err := g.Open("abc"); err != nil {
 		t.Fatal(err)
 	}
