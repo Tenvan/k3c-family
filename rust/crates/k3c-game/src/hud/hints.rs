@@ -80,7 +80,7 @@ pub fn action_hint(lang: &str, w: &World, p: &Player, sv: &dyn SimView) -> HintK
             ..Default::default()
         };
     }
-    // Ohne Insel (`None`): Das HUD liest nur die Welt der Stufe; wie Go bei `w.island == nil` ist der Vorrat nie voll.
+    // Abweichung von Go (B-1125): Das HUD hat keine Insel-Sicht (`None`), der Vorrat gilt nie als voll; Go rechnet mit `w.island`.
     let (side, res) = trade_at(w, p, None);
     let (kind, name) = choose_hint(
         false,

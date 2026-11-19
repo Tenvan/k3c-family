@@ -1,6 +1,6 @@
 # RU53 · CLI · Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -69,7 +69,7 @@ keine (Defaults autonom entschieden, 2026-11-19: Umfang ist die HUD-Anbindung, w
 | RU53.2 | `RU53.2-hud-skill-shims-an-die-sim.md` | Umsetzung | autonom | fertig |
 | RU53.3 | `RU53.3-hud-wirtschaft-shims-und-inselwahl.md` | Umsetzung | autonom | fertig |
 | RU53.4 | `RU53.4-e2e-abweichungen-leeren.md` | Umsetzung | autonom | fertig |
-| RU53.5 | `RU53.5-review.md` | Review | autonom | offen |
+| RU53.5 | `RU53.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
