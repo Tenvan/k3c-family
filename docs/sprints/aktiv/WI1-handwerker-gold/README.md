@@ -32,9 +32,13 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/**`, `engine/balance/**`, `data/**`, `docs/rules/**`, `docs/data/**`, `testdata/**`, `native/k3c-game/props/**`, `native/k3c-game/hud/hints.go`, `tools/ruletable/**`
+- Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Sim in Rust seit RU10 bis RU22, das Go-Spiel entfällt mit RU37; die Parität prüft RU60.2, der Abschluss folgt in RU60.5. Die Pfade `engine/*` und `native/k3c-game/*` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-sim`, `k3c-balance`, `rust/crates/k3c-game/src/*` (Entscheidung 013).
+- Sim-Code lief im eigenen Worktree (B-925); keine Sim-/Balancing-Läufe.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-balance/**`, `data/**`, `docs/rules/**`, `docs/data/**`, `testdata/**`, `rust/crates/k3c-game/src/props/**`, `rust/crates/k3c-game/src/hud/**`, `tools/ruletable/**`
 - **Sperre:** golden, spielstand
-- Sim-Code im eigenen Worktree (B-925); keine Sim-/Balancing-Läufe.
 
 ## Beispiele
 

@@ -47,11 +47,14 @@ Eigener Menüpunkt „Chronik“, Blättern durch alle Abschlusszeilen, Vorschau
 
 ## Regeln und Einschränkungen
 
+- Umgehängt auf Rust (B-1143, 2026-11-19): Spielstände liegen in `rust/crates/k3c-room/src/store/`, die Anzeige in `rust/crates/k3c-game` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik.
 - Controller-Taste B geht in jedem Menü zurück (CLAUDE.md).
-- Die Session an `engine/store` ist Domäne SRV, die am Menü CLI; Fachprüfung `k3c-hud`.
+- Die Session an `store` ist Domäne SRV, die am Menü CLI; Fachprüfung `k3c-hud`.
 
-- **Bereich:** `engine/store/**`, `native/k3c-game/local/**`, `native/k3c-game/view/**`, `native/k3c-game/menu/**`, `native/k3c-game/hud/**`
-- **Abhängig von:** B-966
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-room/src/store/**`, `rust/crates/k3c-game/src/local/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/menu/**`, `rust/crates/k3c-game/src/hud/**`
+- **Abhängig von:** B-966, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –

@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** SI4
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -40,12 +40,15 @@ Rentier (kommt mit der Polar-Welt), Umstiegs-Animation, neue Sounds, Reittier-An
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/reittiere/**`, `public/grafik/objekte/**`, `data/paper.json`, `native/k3c-game/**`
-- **Abhängig von:** B-970
+- Umgehängt auf Rust (B-1143, 2026-11-19): Anzeige in `rust/crates/k3c-game`; die Go-Sessions des Sprints SI4 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Assets PAP, vor der Sim möglich; Anzeige CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/reittiere/**`, `public/grafik/objekte/**`, `data/paper.json`, `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-970, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI4.2 Assets (PAP, vor der Engine möglich), SI4.4 Anzeige (CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
 
 ## Beispiele
 

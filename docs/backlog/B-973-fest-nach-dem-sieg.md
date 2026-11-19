@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI6
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -52,14 +52,17 @@ Ein Fest für alle Welten, Fest nur für eine Nacht, kurzer Jubel-Moment ohne Zu
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `docs/rules/kampf.md`, `docs/rules/bosse.md`, `docs/rules/zielkorridore.md`, `engine/sim/**`, `testdata/golden/**`
-- **Abhängig von:** –
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Die Go-Sessions des Sprints SI6 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Regeltext REG, Sim SIM).
+- Gewollte Regeländerung: Golden-Läufe, die über den Sieg hinausgehen, ändern sich (vermutet). Rust schreibt eigene Golden erst nach RU41; bis dahin ändert die Sim-Session `testdata/golden/**` nur mit Begründung im Commit (`docs/arbeitsweise.md` › Golden aktualisieren).
+- Keine Simulation, kein Balancing (gesperrt). Keine Belohnungen durch das Fest.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/kampf.md`, `docs/rules/bosse.md`, `docs/rules/zielkorridore.md`, `rust/crates/k3c-sim/**`, `testdata/golden/**`
+- **Abhängig von:** RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** golden
-- Zwei Sessions: SI6.1 Regeltext (REG), SI6.3 Engine (SIM). Sim-Code im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`).
-- Gewollte Regeländerung: Golden-Läufe, die über den Sieg hinausgehen, ändern sich (vermutet); `task go:golden` nur in SI6.3 mit Begründung im Commit (`docs/arbeitsweise.md` › Golden aktualisieren).
-- Keine Simulation, kein Balancing (gesperrt). Keine Belohnungen durch das Fest.
 
 ## Beispiele
 

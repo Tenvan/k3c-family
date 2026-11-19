@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** GS2
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -39,12 +39,15 @@ Entwickler; Spieler (Punkt 2).
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/world_state_mirror_test.go`, `docs/protocol.md`, `native/k3c-game/local/step.go`, `native/k3c-game/game/voyage.go`, `native/k3c-game/hud/seekarte_look.go`, `native/k3c-game/art/seamap_test.go`
+- Umgehängt auf Rust (B-1143, 2026-11-19): Die Pendants der Go-Dateien liegen in `rust/crates/k3c-sim`, `rust/crates/k3c-game/src/local/step.rs`, `game/voyage.rs`, `hud/` und `art/`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `docs/protocol.md`, `rust/crates/k3c-game/src/local/**`, `rust/crates/k3c-game/src/game/**`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/art/**`
 - **Abhängig von:** GS2.4
 - **Braucht 🧑:** –
 - **Größe:** M
 - **Sperre:** –
-- Der Sim-Test läuft im eigenen Worktree (B-925).
 
 ## Beispiele
 

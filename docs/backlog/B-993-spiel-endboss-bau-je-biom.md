@@ -40,10 +40,14 @@ Eigene Grafik für die neuen Endbosse, neue Animationen, Änderungen an der Engi
 
 ## Regeln und Einschränkungen
 
-Das native Spiel zeichnet nur (CLAUDE.md › Regeln). Texturbudget beachten (Agent `k3c-grafik` prüft bei Bedarf).
+Das Rust-Spiel zeichnet nur (CLAUDE.md › Regeln). Texturbudget beachten (Agent `k3c-grafik` prüft bei Bedarf).
 
-- **Bereich:** `native/k3c-game/**`, `data/paper.json`
-- **Abhängig von:** B-981
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/**`, `data/paper.json`
+- **Abhängig von:** B-981, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** S
 - **Sperre:** –

@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** SI6
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,13 +41,16 @@ Nordlicht und Polar (kommen mit der Polar-Welt), neue Tanz-Animationen, Belohnun
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/objekte/**`, `public/audio/**`, `data/paper.json`, `data/native.json`, `data/sounds.json`, `native/k3c-game/**`
-- **Abhängig von:** B-973
+- Umgehängt auf Rust (B-1143, 2026-11-19): Anzeige und Ton in `rust/crates/k3c-game`; die Go-Sessions des Sprints SI6 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Assets PAP, Anzeige CLI, Festmusik CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
+- Musik entsteht auf dem Weg der vorhandenen Musik-Varianten (B-936, `docs/rules/klang.md`); keine neue Abhängigkeit. Geht das nicht ohne neues Werkzeug, hält die Festmusik-Session an und meldet es.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/objekte/**`, `public/audio/**`, `data/paper.json`, `data/native.json`, `data/sounds.json`, `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-973, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
-- Drei Sessions: SI6.2 Assets (PAP, vor der Engine möglich), SI6.4 Anzeige (CLI), SI6.5 Festmusik (CLI). Grafik-Golden und `gen:paper` laufen im Abnahme-Ticket des Sprints (B-742).
-- Musik entsteht auf dem Weg der vorhandenen Musik-Varianten (B-936, `docs/rules/klang.md`); keine neue Abhängigkeit. Geht das nicht ohne neues Werkzeug, hält SI6.5 an und meldet es.
 
 ## Beispiele
 

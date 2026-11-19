@@ -8,7 +8,7 @@
 - **Modell:** sonnet
 - **Umgebung:** live
 - **Branch:** sprint/we8
-- **Abhängig von:** WE8.4
+- **Abhängig von:** WE8.8
 - **Tickets:** B-996
 - **Kriterien:** AC-05
 

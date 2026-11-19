@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** WI1
-- **Projekt:** WIR
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -36,7 +36,11 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/**`, `data/**`, `native/k3c-game/**`, `testdata/golden/**`
+Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Anzeige in `rust/crates/k3c-game`; Go-Vorlage nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `data/**`, `rust/crates/k3c-game/src/**`, `testdata/golden/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** Abnahme
 - **Größe:** S

@@ -41,8 +41,12 @@ Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `data/sounds.json`, `public/audio/**`, `native/k3c-game/menu/licensefile/**`
-- **Abhängig von:** B-935
+Umgehängt (B-1143, 2026-11-19): Die Lizenz- und Quellenangaben der Musik stehen im Rust-Paket (`rust/paket/**`, RU57.1 Lizenzen); das Go-Menü `licensefile` entfällt mit RU37.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `data/sounds.json`, `public/audio/**`, `rust/paket/**`
+- **Abhängig von:** B-935, RU57
 - **Braucht 🧑:** Entscheidung
 - **Größe:** M
 - **Sperre:** –

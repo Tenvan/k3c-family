@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** NA1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
@@ -62,7 +62,7 @@ Ursache ist ein Fehler im Spiel → neues Ticket, `TestFlow` bleibt rot, Session
 
 ## Offene Fragen
 
-- Skript anpassen oder Position aus dem Frame lesen? → Default: Position des nächsten Skill-Punkts aus dem Frame lesen und die Laufzeit daraus ableiten, damit die nächste Daten-Änderung den Test nicht wieder bricht (vorläufig, 🧑 bestätigt).
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Der Ende-zu-Ende-Lauf liegt im Go-Spiel (`native/k3c-game/e2e`), das mit RU37 entfällt; das Rust-Pendant `rust/crates/k3c-game/tests/e2e_flow.rs` ist grün zu halten (RU51, RU58.2).
 
 ## Notizen
 

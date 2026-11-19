@@ -41,10 +41,14 @@ Die Assets selbst (B-988 bis B-990), Skins für Monarch, Truppen und Weltbilder,
 
 ## Regeln und Einschränkungen
 
-Das native Spiel zeichnet nur.
+Das Rust-Spiel zeichnet nur.
 
-- **Bereich:** `native/k3c-game/**`
-- **Abhängig von:** B-984, B-993
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/**`
+- **Abhängig von:** B-984, B-993, RU37
 - **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –

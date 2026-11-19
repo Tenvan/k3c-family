@@ -4,7 +4,7 @@
 - **Typ:** Schuld
 - **Prio:** mittel
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** CH1
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-14
@@ -62,7 +62,7 @@ Golden-Abweichung bei `gen:paper` → Ursache klären (beim Nachweis-Lauf in CH1
 
 ## Offene Fragen
 
-keine
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Die Sichtprüfung gilt dem Go-Spiel, das mit RU37 entfällt; Entwickler-Tasten und Cheats im Rust-Spiel prüft RU56, den Gesamteindruck die Abnahme am PC (RU36).
 
 ## Notizen
 

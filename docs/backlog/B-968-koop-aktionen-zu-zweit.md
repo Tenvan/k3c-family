@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI2
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -52,14 +52,17 @@ Gemeinsames Bauen, gemeinsamer Angriff, besondere Beute (Ausrüstung, Material),
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `docs/rules/koop.md`, `engine/sim/**`, `data/economy.json`
-- **Abhängig von:** –
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Die Go-Sessions des Sprints SI2 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Regeltext REG, Sim SIM).
+- Kein Eingriff in `rust/crates/k3c-level` und kein neues Feld im Spielstand; braucht die Umsetzung eines von beiden, hält die Session an und meldet es (dann Sperre `golden` bzw. `spielstand`).
+- Keine Simulation, kein Balancing (gesperrt); Koop-Werte nur über Multiplikator-Felder.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/koop.md`, `rust/crates/k3c-sim/**`, `data/economy.json`
+- **Abhängig von:** RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI2.1 Regeltext (REG), SI2.3 Engine (SIM). Sim-Code im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`).
-- Kein Eingriff in `engine/level/**` und kein neues Feld im Spielstand; braucht die Umsetzung eines von beiden, hält die Session an und meldet es (dann Sperre `golden` bzw. `spielstand`).
-- Keine Simulation, kein Balancing (gesperrt); Koop-Werte nur über Multiplikator-Felder.
 
 ## Beispiele
 

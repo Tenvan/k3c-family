@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** BI2
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,7 +41,11 @@ Simulationen und Balancing (gesperrt).
 
 Genau ein Abnahme-Ticket je Sprint (B-742). Manuelle Abnahme nur durch Ralf.
 
-- **Bereich:** `public/grafik/objekte/**`, `native/k3c-game/props/**`
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/objekte/**`, `rust/crates/k3c-game/src/props/**`
 - **Abhängig von:** BI2.5
 - **Braucht 🧑:** Abnahme
 - **Größe:** S

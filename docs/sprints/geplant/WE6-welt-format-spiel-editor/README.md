@@ -32,10 +32,14 @@ Assets (WE7), Events und Zuordnung in den Welten (WE8), Engine-Änderungen (Fehl
 
 ## Regeln und Einschränkungen
 
-CLI-Sessions (WE6.1, WE6.2) und DEV-Sessions (WE6.3, WE6.4) laufen parallel zueinander, innerhalb der Domäne nacheinander. Das Spiel zeichnet nur. Wails-Oberfläche nach Atomic Design (`@webkit`).
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game` (Entscheidung 013). Die Go-Sessions WE6.1 und WE6.2 sind verworfen; WE6.6 ersetzt sie. Der Sprint wartet auf RU37 und RU60.
 
-- **Bereich:** `native/k3c-game/**`, `data/paper.json`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/internal/mcpsrv/**`, `tools/k3c-workbench/frontend/src/world/**`
-- **Abhängig von:** WE5
+CLI-Session (WE6.6) und DEV-Sessions (WE6.3, WE6.4) laufen parallel zueinander, innerhalb der Domäne nacheinander. Das Spiel zeichnet nur. Wails-Oberfläche nach Atomic Design (`@webkit`).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-game/src/**`, `data/paper.json`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/internal/mcpsrv/**`, `tools/k3c-workbench/frontend/src/world/**`
+- **Abhängig von:** WE5, RU37, RU60
 - **Braucht 🧑:** Abnahme
 - **Sperre:** –
 
@@ -67,6 +71,7 @@ Keine blockierende. Defaults in den Tickets (Größe des Ersatz-Bosses B-993, Um
 | WE6.3 | `WE6.3-welten-mcp-neue-felder.md` | Umsetzung | autonom | offen |
 | WE6.4 | `WE6.4-welten-editor-neue-felder.md` | Umsetzung | autonom | offen |
 | WE6.5 | `WE6.5-review.md` | Review | autonom | offen |
+| WE6.6 | `WE6.6-spiel-endboss-bau-skins-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

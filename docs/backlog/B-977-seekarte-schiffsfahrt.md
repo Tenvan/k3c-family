@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** GS2
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -49,10 +49,13 @@ Diorama und Assets (B-964), Regeln der Zielwahl (B-961), Fahrt beim Laden eines 
 
 ## Regeln und Einschränkungen
 
-- Das Spiel zeichnet nur; der Wechsel selbst bleibt in der Engine.
+- Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013).
+- Das Spiel zeichnet nur; der Wechsel selbst bleibt in der Sim (`rust/crates/k3c-sim`).
 - Fachprüfung `k3c-hud` vor dem Commit.
 
-- **Bereich:** `native/k3c-game/game/**`, `native/k3c-game/hud/**`, `native/k3c-game/view/**`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/game/**`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`
 - **Abhängig von:** B-964
 - **Braucht 🧑:** Abnahme
 - **Größe:** S

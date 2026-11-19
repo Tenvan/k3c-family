@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** GS2
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -38,12 +38,16 @@ Simulation, Balancing; neue Funktionen.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `native/k3c-game/hud/**`, `native/k3c-game/game/voyage.go`, `data/native.json`
+- Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; die Go-Vorlage steht nur im Tag `go-referenz-final` (Entscheidung 013). Die Fahrt liegt in `rust/crates/k3c-game/src/game/voyage.rs`.
+- Werte der Fahrt stellt 🧑 in `data/native.json` › `voyage` nach.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/game/voyage.rs`, `data/native.json`
 - **Abhängig von:** GS2.4
 - **Braucht 🧑:** Abnahme
 - **Größe:** S
 - **Sperre:** –
-- Werte der Fahrt stellt 🧑 in `data/native.json` › `voyage` nach.
 
 ## Beispiele
 

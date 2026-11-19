@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WE5
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -41,9 +41,11 @@ Neue Events (B-991, B-992), Events je Insel oder Stufe, Anzeige im Editor (B-987
 
 ## Regeln und Einschränkungen
 
-Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). Keine Simulation.
+Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Raum in `rust/crates/k3c-room` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr. Keine Simulation.
 
-- **Bereich:** `engine/sim/**`, `engine/room/**`, `docs/rules/welten.md`, `docs/rules/bosse.md`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `docs/rules/welten.md`, `docs/rules/bosse.md`
 - **Abhängig von:** B-981
 - **Braucht 🧑:** Freigabe
 - **Größe:** S

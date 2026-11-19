@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI4
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -51,13 +51,16 @@ Nachteile je Reittier, Reittier als reine Grafik, Reittier als Fracht, Reittier 
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `docs/rules/monarch.md`, `docs/rules/welten.md`, `engine/sim/**`, `engine/room/**`, `data/monarch.json`, `data/worlds/sengoku.json`, `data/worlds/nil.json`
-- **Abhängig von:** –
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Raum in `rust/crates/k3c-room` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Die Go-Sessions des Sprints SI4 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Regeltext REG, Sim SIM).
+- Keine Rücksicht auf alte Spielstände. Keine Simulation, kein Balancing (gesperrt). Kein Eingriff in `rust/crates/k3c-level`.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/monarch.md`, `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `data/monarch.json`, `data/worlds/sengoku.json`, `data/worlds/nil.json`
+- **Abhängig von:** RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** spielstand
-- Zwei Sessions: SI4.1 Regeltext (REG), SI4.3 Engine (SIM). Sim-Code im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`).
-- Keine Rücksicht auf alte Spielstände. Keine Simulation, kein Balancing (gesperrt). Kein Eingriff in `engine/level/**`.
 
 ## Beispiele
 

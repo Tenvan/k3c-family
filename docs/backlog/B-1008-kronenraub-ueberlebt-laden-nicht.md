@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** NA1
-- **Projekt:** NAT
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -38,12 +38,15 @@ Gegner im Spielstand speichern.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/island_save.go`, `engine/sim/crown.go`, `engine/room/**`
+- Umgehängt auf Rust (B-1143, 2026-11-19): Pendants in `rust/crates/k3c-sim` (Insel-Speicherung, Krone) und `rust/crates/k3c-room` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** Entscheidung
 - **Größe:** S
 - **Sperre:** spielstand
-- Sim-Code im eigenen Worktree (B-925).
 
 ## Beispiele
 

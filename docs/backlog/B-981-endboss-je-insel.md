@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WE5
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -42,9 +42,11 @@ Eigene Grafik der neuen Endbosse (das Spiel nimmt bis dahin das Asset der Basisa
 
 ## Regeln und Einschränkungen
 
-Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). Keine Simulation, kein Balancing. Werte nur in `data/`.
+Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Level in `rust/crates/k3c-level` (Entscheidung 013); die Go-Engine bekommt keine Änderung mehr. Keine Simulation, kein Balancing. Werte nur in `data/`.
 
-- **Bereich:** `engine/sim/**`, `engine/level/**`, `data/bosses.json`, `data/biomes/**`, `docs/rules/welten.md`, `docs/rules/bosse.md`, `docs/rules/stufen.md`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-level/**`, `data/bosses.json`, `data/biomes/**`, `docs/rules/welten.md`, `docs/rules/bosse.md`, `docs/rules/stufen.md`
 - **Abhängig von:** –
 - **Braucht 🧑:** Freigabe
 - **Größe:** M

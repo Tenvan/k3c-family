@@ -32,9 +32,13 @@ Startinsel wählbar, Rückkehr auf abgeschlossene Inseln, Drag & Drop im Editor.
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/**`, `engine/room/**`, `native/k3c-game/**`, `tools/k3c-workbench/**`, `docs/rules/**`, `data/worlds/sengoku.json`
+- Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Sim in Rust seit RU10 bis RU22, das Go-Spiel entfällt mit RU37; die Parität prüfen RU60.3 und RU60.4, der Abschluss folgt in RU60.5. Die Pfade `engine/*` und `native/k3c-game/*` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-sim`, `k3c-room`, `rust/crates/k3c-game/src/*` (Entscheidung 013).
+- Sim-Code lief im eigenen Worktree (B-925); keine Simulation.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `rust/crates/k3c-game/src/**`, `tools/k3c-workbench/**`, `docs/rules/**`, `data/worlds/sengoku.json`
 - **Sperre:** spielstand
-- Sim-Code im eigenen Worktree (B-925); keine Simulation.
 
 ## Beispiele
 

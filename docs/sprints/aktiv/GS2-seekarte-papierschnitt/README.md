@@ -33,12 +33,15 @@ Regeln der Zielwahl (B-961), Bedienung der Karte (B-962), Editor-Seekarte (B-963
 
 ## Regeln und Einschränkungen
 
+- Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Das Go-Spiel entfällt mit RU37; die Parität im Rust-Spiel prüft RU60.3, der Abschluss folgt in RU60.6 (die Abnahme am TV, AC-05, geht in die RU36-Liste). Die Pfade `native/k3c-game/<x>` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-game/src/<x>` (Entscheidung 013).
 - Reihenfolge PAP → CLI → CLI → Review; ein Commit je Session auf `sprint/gs2`, ein PR.
 - Assets nur über `assets_*` (Entscheidung 005), Fachprüfung `k3c-grafik`; HUD und Szene prüft `k3c-hud`.
 - Gen-Läufe (`gen:paper`, Grafik-Golden) in GS2.1 am Feature, sonst im Abnahme-Ticket (B-742).
-- Überlappt im Bereich `native/k3c-game/hud/**` mit GS1 (Einblendung): die beiden Sprints laufen nicht in derselben Welle.
+- Überlappt im Bereich `hud/**` mit GS1 (Einblendung): die beiden Sprints liefen nicht in derselben Welle.
 
-- **Bereich:** `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `data/paper.json`, `native/k3c-game/hud/**`, `native/k3c-game/art/**`, `native/k3c-game/view/**`, `native/k3c-game/game/**`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `public/grafik/hintergruende/**`, `public/grafik/objekte/**`, `data/paper.json`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/art/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/game/**`
 - **Abhängig von:** WE4.2
 - **Braucht 🧑:** Abnahme
 - **Sperre:** golden

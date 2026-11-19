@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** GS1
-- **Projekt:** WZG
+- **Sprint:** RU60
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -63,12 +63,15 @@ Ausformulierte Texte, Dialoge, Vertonung (vorerst). Anzeige im Spiel (B-974). We
 
 ## Regeln und Einschränkungen
 
-- Entscheidung 001: Logik in `engine/`, das Spiel zeichnet nur. Welt-Format und Prüfung nach `docs/rules/welten.md` § 2–3 (strikter Decoder, Meldungen deutsch).
-- Sim-Code läuft im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`). Keine Simulation, kein Balancing.
+- Umgehängt auf Rust (B-1143, 2026-11-19): Logik in `rust/crates/k3c-sim` (Entscheidung 013); die Go-Vorlage steht nur im Tag `go-referenz-final`.
+- Entscheidung 001 (Logik in der Engine, das Spiel zeichnet nur) gilt sinngemäß für Rust. Welt-Format und Prüfung nach `docs/rules/welten.md` § 2–3 (strikter Decoder, Meldungen deutsch).
+- Keine Simulation, kein Balancing.
 - Werte (Obergrenzen) nach `data/story.json`, vorläufig.
 - Dateien ≤ 400 Zeilen, Funktionen ≤ 60 Zeilen.
 
-- **Bereich:** `docs/rules/welten.md`, `engine/sim/**`, `data/story.json`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `data/story.json`
 - **Abhängig von:** –
 - **Braucht 🧑:** Freigabe
 - **Größe:** M

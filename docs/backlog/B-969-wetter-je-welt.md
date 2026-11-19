@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI3
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -52,14 +52,17 @@ Wetter je Biom, frei einstellbare Wirkung je Welt, Belohnungen durch Wetter (ang
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `docs/rules/wetter.md`, `docs/rules/welten.md`, `engine/sim/**`, `data/weather.json`, `data/embed.go`, `data/worlds/sengoku.json`, `data/worlds/nil.json`
-- **Abhängig von:** –
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Daten über `rust/crates/k3c-data` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Die Go-Sessions des Sprints SI3 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Regeltext REG, Sim SIM).
+- Kein neues Feld im Spielstand (Zeitplan wird berechnet); braucht die Umsetzung doch eines, hält die Session an und meldet es (dann Sperre `spielstand`).
+- Das Format der Welt-Datei ändert sich um ein optionales Feld; `docs/rules/welten.md` § 2 und § 3 ziehen mit. Keine Simulation, kein Balancing (gesperrt).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/wetter.md`, `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-data/**`, `data/weather.json`, `data/worlds/sengoku.json`, `data/worlds/nil.json`
+- **Abhängig von:** RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI3.1 Regeltext (REG), SI3.2 Engine (SIM). Sim-Code im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`).
-- Kein neues Feld im Spielstand (Zeitplan wird berechnet); braucht die Umsetzung doch eines, hält die Session an und meldet es (dann Sperre `spielstand`).
-- Das Format der Welt-Datei ändert sich um ein optionales Feld; `docs/rules/welten.md` § 2 und § 3 ziehen mit. Keine Simulation, kein Balancing (gesperrt).
 
 ## Beispiele
 

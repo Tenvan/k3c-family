@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** NA1
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
 - **Revision:** 2
@@ -42,7 +42,11 @@ Neue Belegungen oder weitere Geräte-Familien (B-339 verworfen); je Taste und Sp
 
 Icons nur über `assets_*` (Entscheidung 005); `gen:paper` und Grafik-Golden nur in der Icon-Session (am Feature, B-742). Das Spiel zeichnet nur.
 
-- **Bereich:** `public/grafik/icons/**`, `data/paper.json`, `native/k3c-game/hud/**`, `native/k3c-game/e2e/glyphs_test.go`
+Umgehängt auf Rust (B-1143, 2026-11-19): Das Spiel ist `rust/crates/k3c-game`; der Go-Test `e2e/glyphs_test.go` hat sein Pendant unter `rust/crates/k3c-game/tests/` (Vorlage nur im Tag `go-referenz-final`, Entscheidung 013).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/grafik/icons/**`, `data/paper.json`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/tests/**`
 - **Abhängig von:** B-894
 - **Braucht 🧑:** Abnahme
 - **Größe:** M

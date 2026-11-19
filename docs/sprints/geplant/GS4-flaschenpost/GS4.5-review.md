@@ -8,7 +8,7 @@
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/gs4
-- **Abhängig von:** GS4.4
+- **Abhängig von:** GS4.7
 - **Tickets:** B-971, B-980
 - **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07
 
@@ -22,9 +22,9 @@ Ablauf: `docs/arbeitsweise.md` › Review-Session. Kriterien: README des Sprints
 
 ## Erlaubte Dateien
 
-- `engine/sim/**`
-- `native/k3c-game/hud/**`
-- `native/k3c-game/world/**`
+- `rust/crates/k3c-sim/**`
+- `rust/crates/k3c-game/src/hud/**`
+- `rust/crates/k3c-game/src/world/**`
 - `docs/rules/wirtschaft.md`
 
 ## Nicht-Ziele

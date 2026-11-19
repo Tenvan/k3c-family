@@ -42,10 +42,12 @@ Gegner, die Mauern überspringen oder unsichtbar sind, Anzeige im Spiel (B-995),
 
 ## Regeln und Einschränkungen
 
-Sim-Code im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). Werte in `data/events.json`, vorläufig. Keine Simulation.
+Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Raum in `rust/crates/k3c-room` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Werte in `data/events.json`, vorläufig. Keine Simulation.
 
-- **Bereich:** `engine/sim/**`, `engine/room/**`, `data/events.json`, `docs/rules/bosse.md`, `docs/protocol.md`
-- **Abhängig von:** B-982
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `data/events.json`, `docs/rules/bosse.md`, `docs/protocol.md`
+- **Abhängig von:** B-982, RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** protokoll

@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI5
-- **Projekt:** KMP
+- **Sprint:** RU62
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -52,14 +52,17 @@ Segen für eine Nacht, besondere Truppenart, Ausbau des Bauwerks in Stufen, frei
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `docs/rules/buerger.md`, `docs/rules/materialien-gebaeude.md`, `docs/rules/welten.md`, `engine/sim/**`, `data/hermits.json`, `data/embed.go`, `data/hub.json`, `data/buildings.json`, `data/worlds/sengoku.json`, `data/worlds/nil.json`
-- **Abhängig von:** –
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim in `rust/crates/k3c-sim`, Daten über `rust/crates/k3c-data` (Entscheidung 013); die Go-Engine bekommt keine neue Mechanik. Die Go-Sessions des Sprints SI5 sind verworfen; Sessions entstehen beim Aktivieren von RU62 (Regeltext REG, Sim SIM).
+- Kein Eingriff in `rust/crates/k3c-level`, kein neues Feld im Spielstand; braucht die Umsetzung eines von beiden, hält die Session an und meldet es (dann Sperre `golden` bzw. `spielstand`).
+- Der neue Hub-Platz muss die Hub-Prüfung bestehen (Pendant von `hub_validate_layout` in `rust/crates/k3c-sim/src/hub/`). Keine Simulation, kein Balancing (gesperrt).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `docs/rules/buerger.md`, `docs/rules/materialien-gebaeude.md`, `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-data/**`, `data/hermits.json`, `data/hub.json`, `data/buildings.json`, `data/worlds/sengoku.json`, `data/worlds/nil.json`
+- **Abhängig von:** RU37
 - **Braucht 🧑:** Freigabe
 - **Größe:** M
 - **Sperre:** –
-- Zwei Sessions: SI5.1 Regeltext (REG), SI5.2 Engine (SIM). Sim-Code im eigenen Worktree mit eigener Dev-Workbench (B-925, Agent `k3c-sim-dev`).
-- Kein Eingriff in `engine/level/**`, kein neues Feld im Spielstand; braucht die Umsetzung eines von beiden, hält die Session an und meldet es (dann Sperre `golden` bzw. `spielstand`).
-- Der neue Hub-Platz muss die Hub-Prüfung bestehen (`engine/sim/hub_validate_layout.go`). Keine Simulation, kein Balancing (gesperrt).
 
 ## Beispiele
 

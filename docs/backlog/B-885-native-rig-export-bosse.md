@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** NA1
-- **Projekt:** NAT
+- **Sprint:** RU61
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -40,8 +40,12 @@ Agent PAP (Agent `k3c-grafik` prüft); Rig-Prototyp `native/k3c-rig`.
 
 Gen-Lauf am Feature (B-742): Dieses Ticket ist das Feature. Der Export liest Specs und Stil nur.
 
-- **Bereich:** `native/k3c-rig/assets/**`
-- **Abhängig von:** B-720
+Umgehängt (B-1143, 2026-11-19): Die Rig-Dateien ziehen mit RU37.1 nach `public/rig/**` um; der Rust-Client (`rust/crates/k3c-rig`) liest sie dort.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+
+- **Bereich:** `public/rig/**`
+- **Abhängig von:** B-720, RU37.1
 - **Braucht 🧑:** –
 - **Größe:** S
 - **Sperre:** –

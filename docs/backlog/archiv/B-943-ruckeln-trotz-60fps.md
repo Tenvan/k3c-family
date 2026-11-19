@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** live
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** FB4
 - **Projekt:** NAT
 - **Erstellt:** 2026-11-15
@@ -58,7 +58,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-keine
+Verworfen (B-1143, 2026-11-19, autonom, Claude): Das Ruckeln des Go-Spiels (Ebitengine, GC) war der Anlass der Rust-Umstellung (RU0, RU39); Bildzeit im Rust-Spiel messen RU42, RU44, RU45, Abnahme im Rust-Spiel RU36.
 
 ## Notizen
 

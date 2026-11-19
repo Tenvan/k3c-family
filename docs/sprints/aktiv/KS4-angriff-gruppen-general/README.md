@@ -32,9 +32,13 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `engine/sim/**`, `engine/room/**`, `engine/level/**`, `engine/balance/**`, `data/**`, `testdata/golden/**`, `docs/protocol.md`, `docs/rules/kampf.md`, `native/k3c-game/**` (nur Eingabe für Banner/Auslöser)
+- Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Die Sim liegt seit RU10 bis RU22 in Rust, das Go-Spiel entfällt mit RU37; die Parität prüfen RU60.2 und RU60.4, der Abschluss folgt in RU60.5. Die Pfade `engine/*` und `native/k3c-game/*` stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-sim`, `k3c-level`, `k3c-room`, `k3c-balance`, `rust/crates/k3c-game/src` (Entscheidung 013).
+- Sim-Code lief im eigenen Worktree (B-925).
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `rust/crates/k3c-level/**`, `rust/crates/k3c-balance/**`, `data/**`, `testdata/golden/**`, `docs/protocol.md`, `docs/rules/kampf.md`, `rust/crates/k3c-game/src/**` (nur Eingabe für Banner/Auslöser)
 - **Sperre:** golden, protokoll, spielstand
-- Sim-Code im eigenen Worktree (B-925).
 
 ## Beispiele
 

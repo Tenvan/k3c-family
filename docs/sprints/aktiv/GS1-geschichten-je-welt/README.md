@@ -35,12 +35,15 @@ Ausformulierte Texte, Dialoge, Vertonung. Seekarte als Diorama (GS2, B-964), And
 
 ## Regeln und Einschränkungen
 
+- Hinweis (B-1143, 2026-11-19): Alle Sessions sind fertig. Das Go-Spiel entfällt mit RU37; die Parität im Rust-Spiel prüft RU60.3, der Abschluss folgt in RU60.6. Die Pfade `native/k3c-game/<x>` der Sessions stehen nur noch im Tag `go-referenz-final` und entsprechen `rust/crates/k3c-game/src/<x>` (Entscheidung 013).
 - Reihenfolge REG → SIM → CLI → DEV → REG → Review; ein Commit je Session auf `sprint/gs1`, ein PR für den Sprint.
-- GS1.2 (Sim-Code) läuft im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). Keine Simulation, kein Balancing.
+- GS1.2 (Sim-Code) lief im eigenen Worktree mit Dev-Workbench (B-925, Agent `k3c-sim-dev`). Keine Simulation, kein Balancing.
 - GS1.5 braucht die neu gebaute Workbench mit `world_story_set` (Neubau und Neustart durch 🧑, Sperre `exe`) und läuft im Hauptcheckout, weil die lokalen Welten in Worktrees fehlen.
 - Golden und Spielstand bleiben unverändert (B-965/R7).
 
-- **Bereich:** `docs/rules/welten.md`, `engine/sim/**`, `data/story.json`, `native/k3c-game/hud/**`, `native/k3c-game/view/**`, `native/k3c-game/game/**`, `native/k3c-game/local/**`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/internal/mcpsrv/**`, `tools/k3c-workbench/frontend/src/world/**`, `tools/k3c-workbench/frontend/src/api/typesWorld.ts`, `docs/standards/workbench-seiten.md`, `data/worlds/**`
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `data/story.json`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/game/**`, `rust/crates/k3c-game/src/local/**`, `tools/k3c-workbench/internal/world/**`, `tools/k3c-workbench/internal/mcpsrv/**`, `tools/k3c-workbench/frontend/src/world/**`, `tools/k3c-workbench/frontend/src/api/typesWorld.ts`, `docs/standards/workbench-seiten.md`, `data/worlds/**`
 - **Abhängig von:** WE4.2
 - **Braucht 🧑:** Abnahme
 - **Sperre:** exe
