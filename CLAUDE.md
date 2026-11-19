@@ -93,7 +93,7 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Engine und
   Rust-Spiel (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
-- `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/` (Raum mit Stufen und Spielstand,
+- `engine/` – Go, bleibt, weil die Workbench die Engine im Prozess rechnet; ungenutzte Teile sind seit RU59 entfernt (Belegtabelle: `docs/arbeitsweise.md` › Go-Engine-Bestand): `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/` (Raum mit Stufen und Spielstand,
   Zustand und Ereignisse wie in `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `engine/`
   importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
 - `cmd/` – Go-Binary `k3c-sim` (Engine-CLI: Simulation, Balancing, Level). Spielserver, Lasttest und TUI sind entfernt (B-887).
