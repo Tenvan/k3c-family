@@ -1,247 +1,229 @@
 {
   "id": "splitter-titan",
   "rig": "figur",
-  "version": 1,
-  "dichte": 3.18232044198895,
+  "version": 3,
+  "dichte": 3.1783783783783783,
   "massstab": 1,
   "rahmen": [
     -60,
     -175,
-    150,
-    181
+    170,
+    185
   ],
   "teile": [
+    {
+      "id": "kristalle",
+      "eltern": "rumpf",
+      "pivot": [
+        -6,
+        -110
+      ],
+      "ebene": 0,
+      "bild": "kristalle.png",
+      "versatz": [
+        -41.8622,
+        -170.7058
+      ],
+      "groesse": [
+        157,
+        327
+      ]
+    },
     {
       "id": "oberarm-h",
       "eltern": "rumpf",
       "pivot": [
-        0,
-        -84
+        -6,
+        -116
       ],
-      "ebene": 0,
+      "ebene": 10,
       "bild": "oberarm-h.png",
       "versatz": [
-        -9.5556,
-        -94.3889
+        -14.4898,
+        -123.8265
       ],
       "groesse": [
-        65,
-        99
+        58,
+        123
       ]
     },
     {
       "id": "unterarm-h",
       "eltern": "oberarm-h",
       "pivot": [
-        0,
-        -70
+        -6,
+        -90
       ],
-      "ebene": 10,
+      "ebene": 20,
       "bild": "unterarm-h.png",
       "versatz": [
-        -7.9844,
-        -74.2778
+        -14.4898,
+        -93.6224
       ],
       "groesse": [
-        55,
-        102
+        58,
+        124
       ]
-    },
-    {
-      "id": "schild",
-      "eltern": "unterarm-h",
-      "pivot": [
-        0,
-        -49
-      ],
-      "ebene": 20
     },
     {
       "id": "oberschenkel-h",
       "eltern": "rumpf",
       "pivot": [
-        0,
-        -50
+        -2,
+        -62
       ],
       "ebene": 30,
       "bild": "oberschenkel-h.png",
       "versatz": [
-        -9.8698,
-        -56.6806
+        -10.3997,
+        -67.8231
       ],
       "groesse": [
-        67,
-        110
+        61,
+        123
       ]
     },
     {
       "id": "unterschenkel-h",
       "eltern": "oberschenkel-h",
       "pivot": [
-        0,
-        -28
+        -2,
+        -34
       ],
       "ebene": 40,
       "bild": "unterschenkel-h.png",
       "versatz": [
-        -9.2413,
-        -32.1701
+        -10.3997,
+        -37.619
       ],
       "groesse": [
-        85,
-        123
-      ]
-    },
-    {
-      "id": "oberschenkel-v",
-      "eltern": "rumpf",
-      "pivot": [
-        0,
-        -50
-      ],
-      "ebene": 50,
-      "bild": "oberschenkel-v.png",
-      "versatz": [
-        -9.8698,
-        -56.6806
-      ],
-      "groesse": [
-        67,
-        110
-      ]
-    },
-    {
-      "id": "unterschenkel-v",
-      "eltern": "oberschenkel-v",
-      "pivot": [
-        0,
-        -28
-      ],
-      "ebene": 60,
-      "bild": "unterschenkel-v.png",
-      "versatz": [
-        -9.2413,
-        -32.1701
-      ],
-      "groesse": [
-        85,
-        123
+        87,
+        141
       ]
     },
     {
       "id": "rumpf",
       "pivot": [
         0,
-        -50
+        -62
       ],
-      "ebene": 70,
+      "ebene": 50,
       "bild": "rumpf.png",
       "versatz": [
-        -26.5243,
-        -97.5312
+        -24.5578,
+        -129.4898
       ],
       "groesse": [
-        173,
-        197
+        160,
+        243
       ]
     },
     {
-      "id": "kristalle",
+      "id": "oberschenkel-v",
       "eltern": "rumpf",
       "pivot": [
-        0,
-        -88
+        2,
+        -62
       ],
-      "ebene": 80,
-      "bild": "kristalle.png",
+      "ebene": 60,
+      "bild": "oberschenkel-v.png",
       "versatz": [
-        -20.2396,
-        -118.8993
+        -6.6241,
+        -67.8231
       ],
       "groesse": [
-        118,
-        119
+        62,
+        123
+      ]
+    },
+    {
+      "id": "unterschenkel-v",
+      "eltern": "oberschenkel-v",
+      "pivot": [
+        2,
+        -34
+      ],
+      "ebene": 70,
+      "bild": "unterschenkel-v.png",
+      "versatz": [
+        -6.6241,
+        -37.619
+      ],
+      "groesse": [
+        87,
+        141
       ]
     },
     {
       "id": "kopf",
       "eltern": "rumpf",
       "pivot": [
-        0,
-        -90
+        8,
+        -124
       ],
-      "ebene": 90,
+      "ebene": 80,
       "bild": "kopf.png",
       "versatz": [
-        -16.1545,
-        -125.8125
+        -4.1071,
+        -160.9524
       ],
       "groesse": [
-        118,
-        127
+        96,
+        133
       ]
-    },
-    {
-      "id": "helm",
-      "eltern": "kopf",
-      "pivot": [
-        2,
-        -120
-      ],
-      "ebene": 100
     },
     {
       "id": "oberarm-v",
       "eltern": "rumpf",
       "pivot": [
-        0,
-        -84
+        8,
+        -116
       ],
-      "ebene": 110,
+      "ebene": 90,
       "bild": "oberarm-v.png",
       "versatz": [
-        -9.5556,
-        -94.3889
+        -4.4218,
+        -133.2653
       ],
       "groesse": [
-        65,
-        99
+        89,
+        153
       ]
     },
     {
       "id": "unterarm-v",
       "eltern": "oberarm-v",
       "pivot": [
-        0,
-        -70
+        9,
+        -90
       ],
-      "ebene": 120,
+      "ebene": 100,
       "bild": "unterarm-v.png",
       "versatz": [
-        -7.9844,
-        -74.2778
+        0.2976,
+        -93.6224
       ],
       "groesse": [
-        55,
-        102
+        59,
+        103
       ]
     },
     {
-      "id": "schwert",
+      "id": "klinge",
       "eltern": "unterarm-v",
       "pivot": [
-        0,
-        -49
+        9,
+        -66
       ],
-      "ebene": 130,
-      "bild": "schwert.png",
+      "ebene": 110,
+      "bild": "klinge.png",
       "versatz": [
-        -9.5556,
-        -85.5903
+        0.2976,
+        -69.7109
       ],
       "groesse": [
-        154,
-        149
+        71,
+        165
       ]
     }
   ],
@@ -249,47 +231,38 @@
   "baender": [],
   "animationen": {
     "angriff": {
-      "fps": 14,
+      "fps": 12,
       "frames": 8,
       "keyframes": [
         {
           "t": 0,
           "winkel": {
-            "oberarm-h": 10,
-            "oberarm-v": -50,
-            "schwert": 75,
-            "unterarm-v": -40
+            "oberarm-v": -15
           }
         },
         {
           "t": 0.35,
           "winkel": {
-            "kopf": 4,
-            "oberarm-h": 25,
-            "oberarm-v": -165,
+            "kopf": -3,
+            "oberarm-v": 30,
             "rumpf": -6,
-            "schwert": 26,
-            "unterarm-v": -10
+            "unterarm-v": -40
           }
         },
         {
           "t": 0.55,
           "winkel": {
-            "kopf": -3,
-            "oberarm-h": -10,
-            "oberarm-v": -85,
+            "kopf": 3,
+            "oberarm-v": -75,
             "rumpf": 8,
-            "schwert": 142,
-            "unterarm-v": 0
+            "unterarm-v": -10
           }
         },
         {
-          "t": 0.75,
+          "t": 0.8,
           "winkel": {
-            "oberarm-h": 0,
             "oberarm-v": -55,
             "rumpf": 4,
-            "schwert": 146,
             "unterarm-v": -10
           }
         }

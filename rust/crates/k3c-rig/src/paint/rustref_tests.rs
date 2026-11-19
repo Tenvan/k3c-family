@@ -13,7 +13,7 @@ use super::assets::Assets;
 use super::painter::Painter;
 use super::testutil::{Call, RecCanvas};
 use crate::rig::matrix::{mul, scale, translate};
-use crate::rig::testutil::{assets, testdata};
+use crate::rig::testutil::{assets, is_boss, testdata};
 
 fn text(v: &Value) -> &str {
     v.as_str().expect("Text")
@@ -87,6 +87,9 @@ fn figuren_gegen_go() {
     let (mut figures, mut meshes, mut images) = (0, 0, 0);
     for sc in want.as_array().expect("Figuren") {
         let id = text(&sc["id"]);
+        if is_boss(id) {
+            continue; // Bosse: neuer Export (version 3), siehe `rig::testutil::is_boss`
+        }
         let mut rig = |key: &str| (!text(&sc[key]).is_empty()).then(|| a.rig(text(&sc[key])).expect("Rig"));
         let (rider, mount) = (rig("rider"), rig("mount"));
         let state = State {

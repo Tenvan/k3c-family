@@ -111,7 +111,28 @@ impl LoadScreen {
 
 #[cfg(test)]
 mod tests {
-    use super::percent;
+    use super::{LoadScreen, percent};
+    use crate::art::{Config, Library};
+    use k3c_platform::NullCanvas;
+
+    /// B-949/AC-01 (RU61.1): Ohne Schrift (Ersatz-Schrift) und ohne Krieger zeichnet das Ladebild nichts, meldet
+    /// `false` (der Aufrufer nimmt die Textmeldung) und zählt keinen Takt.
+    #[test]
+    fn draw_ohne_schrift_und_figur_zeichnet_nichts() {
+        let mut lib = Library::new(Config {
+            font_path: std::path::PathBuf::from("gibt-es-nicht.ttf"),
+            strict_font: false,
+            ..Config::default()
+        })
+        .unwrap_or_else(|e| unreachable!("{e}"));
+        assert!(lib.font.fallback, "Ersatz-Schrift erwartet");
+        let mut ls = LoadScreen::default();
+        assert!(!ls.draw(&mut NullCanvas::default(), &mut lib, 0.5), "Schrift fehlt");
+        assert!(ls.label.is_empty(), "kein Prozent-Text ohne Bild");
+        lib.font.fallback = false;
+        assert!(!ls.draw(&mut NullCanvas::default(), &mut lib, 0.5), "Krieger fehlt");
+        assert!(ls.label.is_empty(), "kein Prozent-Text ohne Krieger");
+    }
 
     /// Go: `TestLoadPercent` (`loading_test.go`).
     #[test]
