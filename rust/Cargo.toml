@@ -21,6 +21,29 @@ fontdue = { version = "=0.9.5", default-features = false, features = ["std"] }
 gilrs = "=0.11.2"
 rodio = { version = "=0.23.0", default-features = false, features = ["playback", "vorbis", "mp3", "wav"] }
 
+# RU56 (B-1132, Freigabe Ralf 2026-11-19): Win32-Fenster des Cheat-Fensters `k3c-devwin` (nur dort, `unsafe` nur in
+# `k3c-devwin/src/win32/`). 0.62.2 ist die aktuelle stabile Version (crates.io, 2025-10-06). Features je Zweck:
+#  Foundation (HWND, RECT, BOOL), Graphics_Gdi (Pinsel, Schrift, Zeichnen), Graphics_Dwm (dunkle Titelleiste),
+#  UI_WindowsAndMessaging (Fenster, Schleife, Metriken), UI_Controls (Reiter, Theme, NONCLIENTMETRICS),
+#  UI_HiDpi (Per-Monitor-DPI), UI_Input_KeyboardAndMouse (Fokus, Tasten), System_LibraryLoader (Modul-Handle),
+#  System_Threading (OpenProcess/WaitForSingleObject für --exit-with-game), System_Pipes + Storage_FileSystem +
+#  System_IO + Security (Named-Pipe-Server, RU56.4).
+windows = { version = "=0.62.2", default-features = false, features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_Dwm",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Controls",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Threading",
+    "Win32_System_Pipes",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO",
+    "Win32_Security",
+] }
+
 [workspace.lints.rust]
 unsafe_code = "forbid"
 

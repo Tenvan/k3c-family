@@ -81,10 +81,10 @@ Pad-Kombination View + Y (`ActionCheats`) nach der Entfernung des F9-Menüs (B-1
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU56.1 | `RU56.1-protokoll-devproto.md` | Umsetzung | autonom | offen |
-| RU56.2 | `RU56.2-fenster-geruest.md` | Umsetzung | autonom | offen |
-| RU56.3 | `RU56.3-layout-reiter.md` | Umsetzung | autonom | offen |
-| RU56.4 | `RU56.4-pipe-server.md` | Umsetzung | autonom | offen |
+| RU56.1 | `RU56.1-protokoll-devproto.md` | Umsetzung | autonom | fertig |
+| RU56.2 | `RU56.2-fenster-geruest.md` | Umsetzung | autonom | fertig |
+| RU56.3 | `RU56.3-layout-reiter.md` | Umsetzung | autonom | fertig |
+| RU56.4 | `RU56.4-pipe-server.md` | Umsetzung | autonom | fertig |
 | RU56.5 | `RU56.5-spielseite.md` | Umsetzung | autonom | offen |
 | RU56.6 | `RU56.6-controls-welt-zeit.md` | Umsetzung | autonom | offen |
 | RU56.7 | `RU56.7-controls-wirtschaft.md` | Umsetzung | autonom | offen |

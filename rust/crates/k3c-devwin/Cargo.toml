@@ -1,0 +1,25 @@
+[package]
+name = "k3c-devwin"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+
+[dependencies]
+k3c-devproto = { path = "../k3c-devproto" }
+
+# Win32 nur unter Windows; `unsafe` nur in src/win32/ (RU56, rust-port.md § 12).
+[target.'cfg(windows)'.dependencies]
+windows = { workspace = true }
+
+# Eigene Lints statt `workspace = true`: `unsafe_code` ist `deny` (das Modul win32 erlaubt es), die übrigen
+# Regeln sind die des Workspace (RU42).
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+too_many_lines = "deny"
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
