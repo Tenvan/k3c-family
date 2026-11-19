@@ -2,7 +2,7 @@
 
 use std::collections::BTreeSet;
 
-use crate::testutil::{go_tree, raw, same_as_go};
+use crate::testutil::{go_tree, raw, same_as_go, same_as_go_zahlen_aus_daten};
 use crate::{
     Fehler, buildings, island_sizes, light, monarch, native, paper, render, ruins, ship, sounds, story, stresstests,
     troops, waves, world,
@@ -18,7 +18,8 @@ fn rest_wie_go() {
     same_as_go(light::FILE, &light::load(&raw(light::FILE)).expect("laden"));
     same_as_go(monarch::FILE, &monarch::load(&raw(monarch::FILE)).expect("laden"));
     same_as_go(native::FILE, &native::load(&raw(native::FILE)).expect("laden"));
-    same_as_go(paper::FILE, &paper::load(&raw(paper::FILE)).expect("laden"));
+    // paper.json: Maße ändern die Asset-Sprints weiter (BB1, #772); Schlüssel aus Go und Texte bleiben wie Go, neue Einträge sind erlaubt.
+    same_as_go_zahlen_aus_daten(paper::FILE, &paper::load(&raw(paper::FILE)).expect("laden"));
     same_as_go(render::FILE, &render::load(&raw(render::FILE)).expect("laden"));
     same_as_go(ruins::FILE, &ruins::load(&raw(ruins::FILE), &b).expect("laden"));
     same_as_go(ship::FILE, &ship::load(&raw(ship::FILE)).expect("laden"));
