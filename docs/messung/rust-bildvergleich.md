@@ -53,6 +53,6 @@ Takte und Namen stammen aus der Go-Referenz. Spalten Mittel, Anteil, Ergebnis un
 ## Vorab bekannt (ungeprüft für die Bilder)
 
 - Welt-Hash gegen Go (`tests/e2e_flow.rs`, gemessen auf dem Hauptrechner): gleich an `hauptmenue`, `lobby`, `spielstart`,
-  `muenzen`, `skillpunkt`, `skillmenue`, `verlassen`, `ende`; abweichend ab `gebaut`, einzige Ursache `players[1].skills` und
-  `slots` (Skills lernen fehlt im Rust-Spiel, B-1106). Takte und Ereignisse aller 14 Stationen sind gleich Go.
+  `muenzen`, `skillpunkt`, `skillmenue`, `gebaut`, `nacht`, `pause`, `weiter`, `zu-zweit`, `niederlage`, `verlassen`, `ende`
+  (alle 14 Stationen, seit B-1106 ohne Ausnahmeliste). Takte und Ereignisse aller 14 Stationen sind gleich Go.
 - Das Licht (Lichtkarte) zeichnet Rust nicht (B-1056); Nachtstationen weichen darum voraussichtlich über der Schwelle ab.

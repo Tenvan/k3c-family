@@ -200,3 +200,61 @@ fn skills_grund() {
         "fremder Slot"
     );
 }
+
+// Respec am Tag, aber fern der Burg: bad_request mit Grund, die Skills bleiben (Go `CanRespec`).
+#[test]
+fn skills_respec_ferne_burg() {
+    let (mut m, code, _i) = dev_room();
+    let i0 = slot_idx(rm(&mut m, &code), 0);
+    {
+        let r = rm(&mut m, &code);
+        let pool = isl_player(r, i0).skills.len() as i64 + 1;
+        set_pool(r, pool);
+    }
+    assert_eq!(learn(&mut m, &code, "a", 1, 0, "taunt"), Ok(()));
+    {
+        let r = rm(&mut m, &code);
+        let stage = r.isl.stage_of(i0).expect("Stufe");
+        r.isl.stages[stage].cycle.phase = "day".into();
+        let far = r.isl.stages[stage].castle.x + 1000.0;
+        player_mut(r, i0).x = far;
+    }
+    let res = respec(&mut m, &code, 0);
+    assert!(
+        is_bad_request(&res) && reason(&res) == "respec nur an der Burg",
+        "ferne Burg: {res:?}"
+    );
+    assert!(isl_player(rm(&mut m, &code), i0).skills.iter().any(|s| s == "taunt"));
+}
+
+// Inselwahl: ohne offenen Wechselpunkt, mit Krone im Flug und mit fremdem Slot bad_request mit Grund der Sim (B-961).
+#[test]
+fn skills_choose_island_ablehnung() {
+    let (mut m, code, _i) = dev_room();
+    let choose = |m: &mut TestManager, slot: i64, isle: &str| {
+        m.with_room(&code, |r, env| r.choose_island(env, "a", 1, slot, isle))
+            .expect("Raum")
+    };
+    let res = choose(&mut m, 0, "x");
+    assert!(
+        is_bad_request(&res) && reason(&res) == "insel: Wechselpunkt nicht offen",
+        "zu: {res:?}"
+    );
+    let i0 = slot_idx(rm(&mut m, &code), 0);
+    {
+        let r = rm(&mut m, &code);
+        r.isl.gate_open = true;
+        r.isl.switch_ready = false;
+        player_mut(r, i0).crown = Some(k3c_sim::state::Crown {
+            owner: i0,
+            ..Default::default()
+        });
+    }
+    let res = choose(&mut m, 0, "x");
+    assert!(
+        is_bad_request(&res) && reason(&res) == "insel: ohne Krone keine Wahl",
+        "ohne Krone: {res:?}"
+    );
+    assert_eq!(choose(&mut m, 3, "x"), Err(Fehler::BadRequest), "fremder Slot");
+    assert!(rm(&mut m, &code).isl.pending_choice.is_empty());
+}

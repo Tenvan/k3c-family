@@ -164,7 +164,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
 | [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU52 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
 | [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
-| [B-1106](B-1106-rust-skills-respec-inselwahl.md) | CLI | Problem | hoch | offen | RU53 | Skills lernen, Respec und Zielinsel-Wahl fehlen im Rust-Spiel |
 | [B-1107](B-1107-rust-client-sim-sicht-ohne-insel.md) | CLI | Problem | mittel | offen | RU36 | Rust-Client: Anzeige rechnet ohne IslandRef (Lager-Maximum, Bau des Endbosses) und ohne Geschichte |
 | [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU51 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
 | [B-1109](B-1109-rust-start-grafik-aller-biome-im-speicher.md) | CLI | Schuld | mittel | offen | RU30 | Rust-Start lädt die Grafik aller Biome auf einmal (ohne Loader und Ladeanzeige je Stufe) |
@@ -180,6 +179,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1118](B-1118-rust-spiel-icon-manifest-ressource.md) | CLI | Schuld | mittel | offen | RU30 | Rust-EXE trägt Spiel-Icon und Manifest (Ressourcen-Crate braucht Freigabe) |
 | [B-1119](B-1119-ru30-abnahme-messen-stresstest-aufnahme.md) | CLI | Schuld | mittel | offen | RU51 | RU30 Abnahme: Messläufe, Stresstest und Aufnahmevergleich des Rust-Spiels |
 | [B-1120](B-1120-ru32-abnahme-aufnahme-bildvergleich-bericht.md) | CLI | Schuld | mittel | offen | RU32 | RU32 Abnahme (Lane zweit): Aufnahme beider EXE, Bildvergleich Go gegen Rust, Bericht, Gen |
+| [B-1125](B-1125-rust-hud-insel-fuer-wirtschaft-werte.md) | CLI | Problem | mittel | offen | RU52 | Rust-HUD rechnet Beutel-Obergrenze und Tausch-Hinweis ohne Insel (Abweichung von Go) |
+| [B-1126](B-1126-ru53-abnahme-skills-inselwahl.md) | CLI | Schuld | mittel | offen | RU53 | RU53 Abnahme: Skills lernen und Inselwahl im Rust-Spiel (Sim, Gen, Race, Spieltest) |
 | [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | eingeplant | RU37 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |
 | [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | eingeplant | RU37 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |

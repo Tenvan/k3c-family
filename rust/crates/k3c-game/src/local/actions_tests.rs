@@ -9,6 +9,7 @@ use crate::view::frame::CueKind;
 use crate::view::input::{DeviceID, DeviceKind};
 use crate::view::session::{NewGame, Session as _};
 use crate::view::settings::{DEFAULT_LANGUAGE, Settings, default_settings};
+use k3c_sim::dev::dev_build_all;
 use k3c_sim::monarch::learnable_skills;
 use k3c_sim::world::vals;
 
@@ -132,6 +133,78 @@ fn choose_island_rejects() {
     assert_eq!(
         s.choose_island(1, "x").expect_err("fehlender Spieler").to_string(),
         "Spieler 2 spielt nicht"
+    );
+}
+
+/// Öffnet den Wechselpunkt: zweite Insel, alle Spieler am Schiff, Endboss besiegt; liefert Inselnummer und erstes Ziel.
+fn open_harbor(s: &mut Session) -> (i64, Option<String>) {
+    s.with_room(|r, _| {
+        // Die Standard-Welt hat eine Insel: eine zweite (Kopie) macht den Wechselpunkt zum Hafen mit Ziel.
+        let mut zwei = r.isl.world.islands[0].clone();
+        zwei.id = "zwei".to_string();
+        r.isl.world.islands.push(zwei);
+        dev_build_all(&mut r.isl, 5);
+        let ships: Vec<f64> = r.isl.stages[0]
+            .sites
+            .iter()
+            .filter(|t| t.kind == "ship")
+            .map(|t| t.x)
+            .collect();
+        assert!(!ships.is_empty(), "kein Schiff am Steg");
+        let moved: Vec<_> = r
+            .isl
+            .stages
+            .iter_mut()
+            .skip(1)
+            .flat_map(|w| std::mem::take(&mut w.players))
+            .collect();
+        r.isl.stages[0].players.extend(moved);
+        for p in &mut r.isl.stages[0].players {
+            p.x = ships[0];
+        }
+        r.isl.endboss_defeated = true;
+        (r.isl.number, r.isl.targets().into_iter().next().map(|t| t.id))
+    })
+    .expect("Raum")
+}
+
+// B-1106/AC-03: Nach dem Sieg über den Endboss steht der Wechselpunkt offen; die Wahl der Zielinsel über die Session
+// (wie die Seekarte) wirkt, die Insel wechselt und das Spiel läuft mit beiden Spielern weiter (kein Soft-Lock).
+#[test]
+fn choose_island_wechselt_und_spiel_laeuft_weiter() {
+    let dir = TempDir::new();
+    let mut s = test_session(&dir);
+    new_game(&mut s, "wahl", &TWO_DEVICES);
+    s.step();
+    let (before, target) = open_harbor(&mut s);
+    let target = target.expect("Zielinsel am Hafen");
+    for _ in 0..3 {
+        s.step();
+    }
+    s.choose_island(1, &target).expect("Wahl Spieler 2");
+    let chosen = s.with_room(|r, _| r.isl.chosen_target()).expect("Raum");
+    assert!(
+        chosen.is_empty() || chosen == target,
+        "Wahl {chosen:?} statt {target:?}"
+    );
+    let mut f = s.step();
+    for _ in 0..400 {
+        if s.with_room(|r, _| r.isl.number).expect("Raum") != before {
+            break;
+        }
+        f = s.step();
+    }
+    let after = s.with_room(|r, _| r.isl.number).expect("Raum");
+    assert!(
+        after != before,
+        "Insel wechselt nicht (Soft-Lock): Nummer {before} -> {after}"
+    );
+    for _ in 0..30 {
+        f = s.step();
+    }
+    assert!(
+        f.monarch(0).is_some() && f.monarch(1).is_some() && f.outcome == crate::view::frame::Outcome::None,
+        "Spiel läuft nach dem Wechsel nicht weiter"
     );
 }
 

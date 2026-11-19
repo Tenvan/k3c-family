@@ -1,8 +1,6 @@
 //! Port von `native/k3c-game/hud/overlay_test.go`, dazu der Footer-Teil von `profile_test.go`
 //! (`TestProfileSwitchChangesHints`) und `TestAnleitungGesehenGespeichert` (`guide_test.go`), soweit sie das Overlay
-//! brauchen. Dazu ein Test für die Schließ-Tasten (B am Pad, Esc, Home, K). Die Tests, die wirklich lernen, brauchen
-//! `can_learn` und `learn_skill` der Sim (RU18) und warten dort.
-
+//! brauchen. Dazu ein Test für die Schließ-Tasten (B am Pad, Esc, Home, K).
 use super::hints::{GuideId, GuideSeen};
 use super::testutil::{HudSession, KEYS1, PAD, has_cue, hud, input, set_world, two_players};
 use crate::view::frame::CueKind;
@@ -51,9 +49,37 @@ fn overlay_two_players_menus_are_separate() {
     assert!(s.sent.is_empty(), "ohne Lernen nichts an die Session");
 }
 
-/// Spieler 1 lernt über die Session; Spieler 2 bleibt unberührt (braucht `can_learn` aus RU18).
+/// B-1106: Das Menü liest Punkte, lernbar und Respec aus der Sim; Respec nur mit Spieler am Tag an der Burg und nur für
+/// den, dessen Skill gelernt ist (Go: `TestOverlayZweiSpieler`, `sim.CanRespec`).
 #[test]
-#[ignore = "wartet auf RU18"]
+fn overlay_respec_entry_follows_sim() {
+    let (mut w, mut f) = two_players(2);
+    w.players[0].skills = vec!["fireball".to_string()];
+    set_world(&mut f, &w);
+    let mut h = hud();
+    let mut s = HudSession::default();
+    h.update(&input(&[SkillMenu], &[]), &f, &mut s);
+    let last = h.seats[0].entries.last().expect("Einträge");
+    assert!(
+        last.id == super::skillmenu::RESPEC_ID,
+        "Respec am Tag an der Burg: {}",
+        last.id
+    );
+    assert!(
+        h.seats[0].entries.iter().any(|e| e.learnable),
+        "ein freier Punkt macht Skills lernbar"
+    );
+    w.cycle.phase = "night".to_string();
+    set_world(&mut f, &w);
+    h.update(&input(&[], &[]), &f, &mut s);
+    assert!(
+        h.seats[0].entries.iter().all(|e| e.id != super::skillmenu::RESPEC_ID),
+        "nachts kein Respec"
+    );
+}
+
+/// Spieler 1 lernt über die Session; Spieler 2 bleibt unberührt.
+#[test]
 fn overlay_two_players_learn() {
     let (_, f) = two_players(2);
     let mut h = hud();

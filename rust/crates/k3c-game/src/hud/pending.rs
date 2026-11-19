@@ -1,29 +1,12 @@
 //! Platzhalter für Teile des HUD, die spätere Sprints liefern (Leitfaden § 7, Plan RU20.4). RU23 hat seine Platzhalter (Skill-Menü,
-//! Seekarte, Kampf-Anzeige, Geschichte, Schiffsfahrt, Welt-Texte) gelöscht; RU18 löscht die Shims für Sim-Werte
-//! am Ende. RU22 prüft, dass keiner übrig ist.
+//! Seekarte, Kampf-Anzeige, Geschichte, Schiffsfahrt, Welt-Texte) gelöscht; RU53 (B-1106) hat die Shims für Sim-Werte
+//! (Skills, Beutel, Zahlziele) durch `k3c_sim` ersetzt. RU22 prüft, dass keiner übrig ist.
 //!
-//! Übrig sind nur die Shims für RU18 (Sim-Werte) und RU19 (`WorldDef`, Geschichte); alles, was RU23 lieferte, steht in
+//! Übrig sind nur die Shims für RU19 (`WorldDef`, Geschichte); alles, was RU23 lieferte, steht in
 //! `kampf.rs`, `voyage.rs`, `drawvoyage.rs` und `drawworld.rs`.
-#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU18, RU19)
-
-use k3c_sim::state::{Player, World};
+#![allow(clippy::unimplemented)] // Platzhalter: wartet auf den genannten Sprint (RU19)
 
 use crate::view::frame::Frame;
-
-/// Go: `sim.AvailablePoints` (RU18): 0 freie Punkte, bis RU18 die Skill-Logik liefert; nichts ist lernbar.
-pub fn available_points(_w: &World, _p: &Player) -> i64 {
-    0
-}
-
-/// Go: `sim.CanLearn` (RU18): nichts ist lernbar.
-pub fn can_learn(_w: &World, _p: &Player, _id: &str) -> bool {
-    false
-}
-
-/// Go: `sim.CanRespec` (RU18): kein Respec.
-pub fn can_respec(_w: &World, _p: &Player) -> bool {
-    false
-}
 
 /// WorldDef ist die Welt-Definition der Kampagne (Go: `sim.WorldDef`, RU19): Platzhalter ohne Inhalt; `Campaign::world`
 /// gibt es in Rust erst mit RU19, `campaign_world` liefert bis dahin `None`.
@@ -65,24 +48,4 @@ pub fn campaign_world(_f: &Frame) -> Option<&WorldDef> {
 /// Go: `storyDoneLines` (story.go, RU19): Zahl der Zeilen der Abschlusszeile der Insel.
 pub fn story_done_lines(_w: &WorldDef, _island: &str) -> usize {
     unimplemented!("RU19: story_done_lines")
-}
-
-// RU18: ersetzen. Die drei Shims rufen die Sim nicht (deren Gegenstücke sind bis RU18 `unimplemented!`, `Listen` und
-// Draw stürzten sonst mit einer echten Welt ab) und liefern neutrale Werte wie eine Welt ohne gelernten Skill und ohne
-// Zahlziel. RU18 löscht sie; `state.rs` und `hints.rs` rufen dann wieder die Sim-Funktionen.
-
-/// Go: `sim.PurseMaxOf` (RU18): 0, damit `SeatState::card` auf `purse_max_gold()` zurückfällt (wie Go bei `<= 0`). Der
-/// Dev-Bonus und die gelernte Größe fehlen bis RU18.
-pub fn purse_max_of(_w: &World, _p: &Player) -> i64 {
-    0
-}
-
-/// Go: `sim.TrainAt` (RU18): "" (kein Zahlziel).
-pub fn train_at(_w: &World, _p: &Player) -> String {
-    String::new()
-}
-
-/// Go: `sim.TradeAt` (RU18): `("", "")` (kein Zahlziel).
-pub fn trade_at(_w: &World, _p: &Player) -> (String, String) {
-    (String::new(), String::new())
 }
