@@ -99,6 +99,7 @@ impl World {
             self.draw_light_map(dst, c, wd, tint);
         }
         self.draw_torches(dst, c, wd);
+        self.draw_halos(dst, c, wd, &st.level);
         if self.mirror_wanted(f, dst) {
             self.draw_mirror(dst, c, f.clock, wd);
         }

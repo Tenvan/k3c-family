@@ -20,6 +20,7 @@ pub mod bank;
 pub mod camera;
 pub mod cull;
 pub mod ground;
+pub mod halo;
 pub mod layers;
 pub mod light;
 pub mod lightdraw;
@@ -30,6 +31,7 @@ pub mod water;
 
 use backdrop::{Looks, Rgba, load_looks};
 use camera::Cameras;
+use halo::{Halo, HaloMesh};
 use light::{LightData, load_light};
 use lightdraw::LightMesh;
 use river::RiverTile;
@@ -52,6 +54,9 @@ pub struct World {
     /// Fassung ohne gewählte Einstellung (K3C_RIVER)
     pub start: RiverMode,
     pub mesh: LightMesh,
+    /// Höfe der Zelle und ihr Netz (RU55.5), je Bild wiederverwendet.
+    pub halos: Vec<Halo>,
+    pub halo_mesh: HaloMesh,
     /// Weißes 1×1-Bild für die Lichtkarte (Go: `w.pixel()`), beim ersten Zeichnen angelegt.
     pub light_pixel: Option<k3c_platform::TexId>,
 }
@@ -169,6 +174,8 @@ impl World {
             water: RiverWater::default(),
             start: RiverMode::Tiles,
             mesh: LightMesh::default(),
+            halos: Vec::with_capacity(16),
+            halo_mesh: HaloMesh::default(),
             light_pixel: None,
         }
     }

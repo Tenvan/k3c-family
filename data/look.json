@@ -1,5 +1,5 @@
 {
-  "notes": "Look des Rust-Spiels (RU55, Standard docs/standards/bildaufbau.md). Nur das Rust-Spiel liest diese Datei; Go ignoriert sie. Profil k2c (Standard) = Aufbau, Maßstab und Licht nach K2C-Vorbild, Profil go = Stand des Go-Spiels (Bildvergleiche gegen Go laufen darin). Das Profil wählt die Umgebungsvariable K3C_LOOK (k2c oder go). worldShare = Anteil der Welt bis zur Gehlinie an der Zellenhöhe; bankShare = Ufer als Anteil der Zellenhöhe (0 = bankPx); bankPx = Ufer in Spiel-px bei 32 px je Unit (Go: 20). viewUnits = sichtbare Welthöhe über der Gehlinie in Units bei einer Ansicht (k2c: 5 M zu je 3,796875 Units = 18,984375; die Weite 4, 4,5 oder 5 M wählt Ralf am TV, ein Wert); splitScale = Maßstab einer Hälfte im Split-Screen gegen die ganze Ansicht (k2c 0,7; go 0,5 = halbe Höhe, gleiche Units); minFigurePx = Mindestgröße des berittenen Monarchen in px (0 = aus). mirror = Fluss als Spiegel der Welt (RU55.3, nur mit Fluss-Fassung shader und einem Canvas, der ihn kann; sonst Wellen): brightness = Helligkeit der Spiegelung, squash = Stauchung senkrecht, wobble = Schwanken waagerecht in Units, tint = Anteil Wasserfarbe, depthFade = Verlauf zum Wasser nach unten, glint = Deckkraft der Glanzstriche. tint = Multiply-Farbe und Stärke je Phase des Tages (Übergänge weich über die Phasen-Fortschritte) und je Nacht-Event, sie tönt Himmel, Ebenen, Figuren und Spiegelung gleich (Lichtkarte); noSky = Biome ohne Himmel (keine Tönung, kein Dunst). haze = Dunst in Himmelsfarbe nach der fernen, mittleren und nahen Kulisse (Deckkraft; Luftperspektive). Fehlende Felder gelten als Wert des Profils go.",
+  "notes": "Look des Rust-Spiels (RU55, Standard docs/standards/bildaufbau.md). Nur das Rust-Spiel liest diese Datei; Go ignoriert sie. Profil k2c (Standard) = Aufbau, Maßstab und Licht nach K2C-Vorbild, Profil go = Stand des Go-Spiels (Bildvergleiche gegen Go laufen darin). Das Profil wählt die Umgebungsvariable K3C_LOOK (k2c oder go). worldShare = Anteil der Welt bis zur Gehlinie an der Zellenhöhe; bankShare = Ufer als Anteil der Zellenhöhe (0 = bankPx); bankPx = Ufer in Spiel-px bei 32 px je Unit (Go: 20). viewUnits = sichtbare Welthöhe über der Gehlinie in Units bei einer Ansicht (k2c: 5 M zu je 3,796875 Units = 18,984375; die Weite 4, 4,5 oder 5 M wählt Ralf am TV, ein Wert); splitScale = Maßstab einer Hälfte im Split-Screen gegen die ganze Ansicht (k2c 0,7; go 0,5 = halbe Höhe, gleiche Units); minFigurePx = Mindestgröße des berittenen Monarchen in px (0 = aus). mirror = Fluss als Spiegel der Welt (RU55.3, nur mit Fluss-Fassung shader und einem Canvas, der ihn kann; sonst Wellen): brightness = Helligkeit der Spiegelung, squash = Stauchung senkrecht, wobble = Schwanken waagerecht in Units, tint = Anteil Wasserfarbe, depthFade = Verlauf zum Wasser nach unten, glint = Deckkraft der Glanzstriche. tint = Multiply-Farbe und Stärke je Phase des Tages (Übergänge weich über die Phasen-Fortschritte) und je Nacht-Event, sie tönt Himmel, Ebenen, Figuren und Spiegelung gleich (Lichtkarte); noSky = Biome ohne Himmel (keine Tönung, kein Dunst). haze = Dunst in Himmelsfarbe nach der fernen, mittleren und nahen Kulisse (Deckkraft; Luftperspektive). glow = Lichthöfe: weicher Hof in glowColor um Lagerfeuer und Fackeln (radius = Faktor auf den Radius aus light.json, strength = Faktor auf die Stärke, core = Anteil mit vollem Kern, falloff = Stärke auf halbem Weg, max = Höchstzahl je Zelle) und der Mond (Lage als Anteil der Welt-Zelle, Radius in Units, disc = Scheibe), nur nachts (1 - daylight); Biome aus noSky ohne Mond. Fehlende Felder gelten als Wert des Profils go.",
   "profiles": {
     "k2c": {
       "worldShare": 0.58,
@@ -18,7 +18,16 @@
         "merchantRaid": { "color": [1, 0.86, 0.55], "strength": 0.35 },
         "noSky": ["cave", "mine", "ironhold", "crystal"]
       },
-      "haze": [0.3, 0.15, 0]
+      "haze": [0.3, 0.15, 0],
+      "glow": {
+        "enabled": true,
+        "radius": 1,
+        "strength": 0.55,
+        "core": 0.1,
+        "falloff": 0.4,
+        "max": 8,
+        "moon": { "x": 0.78, "y": 0.2, "radius": 9, "strength": 0.55, "disc": 0.12 }
+      }
     },
     "go": {
       "worldShare": 0.6666666666666666,

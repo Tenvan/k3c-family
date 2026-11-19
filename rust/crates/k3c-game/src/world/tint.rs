@@ -66,6 +66,11 @@ pub fn haze_of(level: &str, i: usize) -> f64 {
     l.haze.get(i).copied().unwrap_or(0.0).clamp(0.0, 1.0)
 }
 
+/// HasSky meldet, ob das Level einen Himmel hat (Mond, Dunst, Tönung); Höhle und Mine nicht.
+pub fn has_sky(level: &str) -> bool {
+    !current().tint.no_sky.iter().any(|b| b == level)
+}
+
 /// IsNeutral meldet, ob die Tönung nichts ändert (dann genügt der Tag ohne Lichtkarte).
 pub fn is_neutral(t: [f64; 3]) -> bool {
     t.iter().all(|c| (c - 1.0).abs() < 1e-9)

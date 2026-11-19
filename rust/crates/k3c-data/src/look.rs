@@ -55,6 +55,68 @@ pub struct Look {
     pub tint: Tint,
     /// Dunst in Himmelsfarbe nach der fernen, der mittleren und der nahen Kulisse: Deckkraft 0 … 1 (RU55.4).
     pub haze: [f64; 3],
+    /// Lichthöfe an Lichtquellen und Mond (RU55.5); im Profil `go` aus.
+    pub glow: Glow,
+}
+
+/// Lichthöfe (`.profiles.*.glow`): weicher Hof um Lagerfeuer und Fackeln, Mond mit weitem Hof am Himmel.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct Glow {
+    pub enabled: bool,
+    /// Faktor auf den Radius der Lichtquelle aus `data/light.json` (dort schon Darstellungs-Reichweite).
+    pub radius: f64,
+    /// Faktor auf die Stärke der Quelle (Deckkraft des Hofs in der Mitte).
+    pub strength: f64,
+    /// Anteil des Radius mit vollem Kern (0 = nur Verlauf).
+    pub core: f64,
+    /// Stärke des Hofs auf halbem Weg nach außen (Anteil der Mitte; kleiner = steilerer Abfall).
+    pub falloff: f64,
+    /// Höchstzahl Höfe je Zelle (ohne Mond).
+    pub max: usize,
+    pub moon: Moon,
+}
+
+/// Mond mit Hof (`glow.moon`): Lage als Anteil der Welt-Zelle, Radius in Units.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct Moon {
+    pub x: f64,
+    pub y: f64,
+    pub radius: f64,
+    pub strength: f64,
+    /// Anteil des Radius, den die Scheibe selbst einnimmt.
+    pub disc: f64,
+}
+
+const MOON_DEFAULT: Moon = Moon {
+    x: 0.78,
+    y: 0.2,
+    radius: 9.0,
+    strength: 0.55,
+    disc: 0.12,
+};
+
+const GLOW_OFF: Glow = Glow {
+    enabled: false,
+    radius: 1.0,
+    strength: 0.55,
+    core: 0.1,
+    falloff: 0.4,
+    max: 8,
+    moon: MOON_DEFAULT,
+};
+
+impl Default for Glow {
+    fn default() -> Self {
+        GLOW_OFF
+    }
+}
+
+impl Default for Moon {
+    fn default() -> Self {
+        MOON_DEFAULT
+    }
 }
 
 /// Eine Multiply-Farbe und ihre Stärke (0 = keine Wirkung, 1 = die Farbe voll).
@@ -168,6 +230,7 @@ const GO_LOOK: Look = Look {
         no_sky: Vec::new(),
     },
     haze: [0.0; 3],
+    glow: GLOW_OFF,
 };
 
 impl Default for Look {
@@ -213,6 +276,10 @@ fn builtin() -> BTreeMap<String, &'static Look> {
         },
         tint: builtin_tint(),
         haze: [0.3, 0.15, 0.0],
+        glow: Glow {
+            enabled: true,
+            ..GLOW_OFF
+        },
         ..GO_LOOK
     };
     BTreeMap::from([
