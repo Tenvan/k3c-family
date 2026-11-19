@@ -51,6 +51,65 @@ pub struct Look {
     pub min_figure_px: f64,
     /// Fluss als Spiegel der Welt (RU55.3); im Profil `go` aus (Wellen).
     pub mirror: Mirror,
+    /// Tönung je Tageszeit und Ereignis (RU55.4); im Profil `go` ohne Wirkung.
+    pub tint: Tint,
+    /// Dunst in Himmelsfarbe nach der fernen, der mittleren und der nahen Kulisse: Deckkraft 0 … 1 (RU55.4).
+    pub haze: [f64; 3],
+}
+
+/// Eine Multiply-Farbe und ihre Stärke (0 = keine Wirkung, 1 = die Farbe voll).
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct TintColor {
+    pub color: [f64; 3],
+    pub strength: f64,
+}
+
+impl Default for TintColor {
+    fn default() -> Self {
+        NO_TINT
+    }
+}
+
+/// Weiß, Stärke 0: keine Tönung.
+const NO_TINT: TintColor = TintColor {
+    color: [1.0; 3],
+    strength: 0.0,
+};
+
+impl TintColor {
+    /// Multiplikator je Kanal: Weiß gemischt mit der Farbe um die Stärke.
+    pub fn rgb(&self) -> [f64; 3] {
+        let s = self.strength.clamp(0.0, 1.0);
+        self.color.map(|c| 1.0 + (c - 1.0) * s)
+    }
+}
+
+/// Tönung (`.profiles.*.tint`): je Phase des Tages und je Ereignis; Assets bleiben neutral (Standard § 6).
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct Tint {
+    pub day: TintColor,
+    pub dusk: TintColor,
+    pub night: TintColor,
+    pub dawn: TintColor,
+    pub full_moon: TintColor,
+    pub blood_moon: TintColor,
+    pub merchant_raid: TintColor,
+    /// Biome ohne Himmel (Höhle, Mine): keine Himmels-Tönung und kein Dunst, nur das Licht.
+    pub no_sky: Vec<String>,
+}
+
+impl Tint {
+    /// Tönung des Ereignisses `id` (Nacht-Event); unbekannt: keine.
+    pub fn event(&self, id: &str) -> Option<&TintColor> {
+        match id {
+            "fullMoon" => Some(&self.full_moon),
+            "bloodMoon" => Some(&self.blood_moon),
+            "merchantRaid" => Some(&self.merchant_raid),
+            _ => None,
+        }
+    }
 }
 
 /// Spiegel-Fluss (`.profiles.*.mirror`, Standard `docs/standards/bildaufbau.md` § 4).
@@ -98,6 +157,17 @@ const GO_LOOK: Look = Look {
     split_scale: 0.5,
     min_figure_px: 0.0,
     mirror: MIRROR_OFF,
+    tint: Tint {
+        day: NO_TINT,
+        dusk: NO_TINT,
+        night: NO_TINT,
+        dawn: NO_TINT,
+        full_moon: NO_TINT,
+        blood_moon: NO_TINT,
+        merchant_raid: NO_TINT,
+        no_sky: Vec::new(),
+    },
+    haze: [0.0; 3],
 };
 
 impl Default for Look {
@@ -141,12 +211,29 @@ fn builtin() -> BTreeMap<String, &'static Look> {
             enabled: true,
             ..MIRROR_OFF
         },
+        tint: builtin_tint(),
+        haze: [0.3, 0.15, 0.0],
         ..GO_LOOK
     };
     BTreeMap::from([
         (K2C.to_string(), &*Box::leak(Box::new(k2c))),
         (GO.to_string(), &*Box::leak(Box::<Look>::default())),
     ])
+}
+
+/// Tönung des Profils k2c (Werte wie `data/look.json`).
+fn builtin_tint() -> Tint {
+    let t = |color, strength| TintColor { color, strength };
+    Tint {
+        day: NO_TINT,
+        dusk: t([1.0, 0.7, 0.85], 0.6),
+        night: t([0.55, 0.6, 1.0], 0.7),
+        dawn: t([1.0, 0.82, 0.78], 0.5),
+        full_moon: t([0.78, 0.86, 1.0], 0.5),
+        blood_moon: t([1.0, 0.35, 0.3], 0.8),
+        merchant_raid: t([1.0, 0.86, 0.55], 0.35),
+        no_sky: ["cave", "mine", "ironhold", "crystal"].map(String::from).to_vec(),
+    }
 }
 
 /// Die Profile einmal aus `data/look.json` (Fehler: Meldung auf stderr, eingebaute Werte).

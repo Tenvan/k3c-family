@@ -25,6 +25,7 @@ pub mod light;
 pub mod lightdraw;
 pub mod mirror;
 pub mod river;
+pub mod tint;
 pub mod water;
 
 use backdrop::{Looks, Rgba, load_looks};

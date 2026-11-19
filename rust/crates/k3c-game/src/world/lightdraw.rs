@@ -16,6 +16,7 @@ use super::backdrop::Rgba;
 use super::cull::visible;
 use super::layers::stage_of;
 use super::light::{LightData, daylight, glow_alpha, torch_side};
+use super::tint::{NEUTRAL, is_neutral, tint_of};
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 
@@ -55,6 +56,12 @@ impl LightMesh {
     /// Fill füllt die Ecken mit der Lichtfarbe je Spalte der Zelle (Go: Schleife in `drawLightMap`).
     #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
     pub fn fill(&mut self, c: &Cell, light: &LightData, wd: &SimWorld) {
+        self.fill_tinted(c, light, wd, NEUTRAL);
+    }
+
+    /// FillTinted wie `fill`, die Lichtfarbe je Kanal mit der Tönung `tint` (RU55.4) multipliziert.
+    #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
+    pub fn fill_tinted(&mut self, c: &Cell, light: &LightData, wd: &SimWorld, tint: [f64; 3]) {
         self.ensure();
         let (top, bottom) = (c.rect.min.y as f32, c.rect.max.y as f32);
         for i in 0..=LIGHT_COLUMNS {
@@ -64,7 +71,7 @@ impl LightMesh {
                 self.verts[2 * i + j] = Vertex {
                     pos: [sx as f32, y],
                     uv: [0.5, 0.5],
-                    color: [r as f32, g as f32, b as f32, 1.0],
+                    color: [(r * tint[0]) as f32, (g * tint[1]) as f32, (b * tint[2]) as f32, 1.0],
                 };
             }
         }
@@ -87,8 +94,9 @@ impl World {
         let Some(wd) = st.world.as_deref() else {
             return;
         };
-        if daylight(&wd.cycle) < 1.0 {
-            self.draw_light_map(dst, c, wd);
+        let tint = tint_of(&st.level, wd);
+        if daylight(&wd.cycle) < 1.0 || !is_neutral(tint) {
+            self.draw_light_map(dst, c, wd, tint);
         }
         self.draw_torches(dst, c, wd);
         if self.mirror_wanted(f, dst) {
@@ -109,9 +117,9 @@ impl World {
         }
     }
 
-    /// DrawLightMap multipliziert die Zelle mit der Lichtfarbe je Spalte.
-    pub fn draw_light_map(&mut self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld) {
-        self.mesh.fill(c, &self.light, wd);
+    /// DrawLightMap multipliziert die Zelle mit der Lichtfarbe je Spalte und der Tönung `tint`.
+    pub fn draw_light_map(&mut self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, tint: [f64; 3]) {
+        self.mesh.fill_tinted(c, &self.light, wd, tint);
         let pixel = *self.light_pixel.get_or_insert_with(|| dst.texture(&[255; 4], 1, 1));
         dst.blend(Blend::Multiply);
         dst.mesh(pixel, &self.mesh.verts, &self.mesh.indices);
