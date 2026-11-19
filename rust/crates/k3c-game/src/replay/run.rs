@@ -101,11 +101,13 @@ fn write_report(o: &Options, r: &Report) -> Result<(), String> {
     Ok(())
 }
 
-/// Schreibt die Zeilen der Messung je Bild (nach der Messung).
-fn write_frames(app: &Metered) -> Result<(), String> {
+/// Schreibt die Zeilen der Messung je Bild (nach der Messung) und trägt die Kennwerte als `bilder` in den Bericht.
+fn write_frames(app: &Metered, r: &mut Report) -> Result<(), String> {
     if let Some(log) = &app.log {
-        log.write().map_err(|e| format!("{}: {e}", log.path.display()))?;
-        println!("Bilder: {} ({} verworfen)", log.path.display(), log.dropped);
+        let (frames, written) = log.report();
+        written.map_err(|e| format!("{}: {e}", log.path))?;
+        println!("Bilder: {} ({} verworfen)", log.path, log.dropped);
+        r.bilder = Some(frames);
     }
     Ok(())
 }
@@ -114,7 +116,10 @@ fn write_frames(app: &Metered) -> Result<(), String> {
 fn run_window_mode(o: &Options) -> Result<(), String> {
     let t = trace::load_stream(&o.file).map_err(|e| format!("{}: {e}", o.file.display()))?;
     let measure = o.measure.unwrap_or(u64::MAX - WARMUP_STEPS);
-    let log = o.frames.as_deref().map(|p| FrameLog::new(p, measure as f64 * STEP));
+    let log = o
+        .frames
+        .as_deref()
+        .and_then(|p| FrameLog::new(&p.to_string_lossy(), measure as f64 * STEP));
     let mut app = Metered::new(
         ReplayApp::with_config(t, Some(art_config())),
         if o.measure.is_some() { WARMUP_STEPS } else { u64::MAX },
@@ -132,8 +137,9 @@ fn run_window_mode(o: &Options) -> Result<(), String> {
     };
     run_window(&mut app, cfg)?;
     if o.measure.is_some() {
-        write_report(o, &app.report("wgpu"))?;
-        write_frames(&app)?;
+        let mut r = app.report("wgpu");
+        write_frames(&app, &mut r)?;
+        write_report(o, &r)?;
     }
     Ok(())
 }
@@ -154,3 +160,6 @@ pub fn run(o: &Options) -> Result<(), String> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests;

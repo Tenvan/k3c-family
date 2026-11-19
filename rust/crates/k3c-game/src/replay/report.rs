@@ -1,77 +1,23 @@
-//! Messbericht der Wiedergabe: dieselben JSON-Namen und Reihenfolge wie `Report` in `native/k3c-game/game/measure.go`.
+//! Messbericht der Wiedergabe: derselbe `Report` wie im Spiel (`game/measure.rs`, B-1116), dieselben JSON-Namen und
+//! Reihenfolge wie `Report` in `native/k3c-game/game/measure.go`.
 //!
 //! Felder ohne Rust-Gegenstück (`go_heap_mib`, `go_sys_mib`, `gc_*`, `ebitengine`) bleiben 0 bzw. leer;
-//! `backend` nennt das Rust-Backend.
+//! `backend` nennt das Rust-Backend. Die Kennwerte je Bild (`bilder`) füllt der Lauf aus dem `FrameLog` des Spiels.
 
 use std::time::Instant;
 
 use k3c_platform::{App, Canvas, InputState};
-use serde::Serialize;
 
 use super::app::ReplayApp;
-use super::frames::{FrameLog, Sample};
+use super::frames::FrameLog;
+use crate::game::measure::{stats, sum};
 
-/// Kennwerte der Zeiten in Millisekunden.
-#[derive(Debug, Clone, Copy, Default, Serialize)]
-pub struct FrameStats {
-    pub p50: f64,
-    pub p95: f64,
-    pub p99: f64,
-    pub max: f64,
-}
+pub use crate::game::measure::{FrameStats, Report};
 
-/// Messbericht (Feldreihenfolge wie Go).
-#[derive(Debug, Clone, Default, Serialize)]
-pub struct Report {
-    pub szene: String,
-    pub spieler: u32,
-    pub ebitengine: String,
-    pub backend: String,
-    pub fenster: [u32; 2],
-    pub vsync: bool,
-    pub sheets: u32,
-    pub textur_mib_rgba: f64,
-    pub rig_mib_rgba: f64,
-    pub messdauer_s: f64,
-    pub frames: usize,
-    pub fps_mittel: f64,
-    pub fps_1pct_low: f64,
-    pub frametime_ms: FrameStats,
-    pub rechenzeit_ms: f64,
-    pub takt_ms: f64,
-    pub takt_max_ms: f64,
-    pub takte: usize,
-    pub takt_ende: u64,
-    pub phase: String,
-    pub gegner: usize,
-    pub go_heap_mib: f64,
-    pub go_sys_mib: f64,
-    pub bilder_ohne_takt: usize,
-    pub takt_abstand_ms: FrameStats,
-    pub gc_laeufe: u32,
-    pub gc_pause_ms: f64,
-}
-
-fn sum(v: &[f64]) -> f64 {
-    v.iter().sum()
-}
-
-fn percentile(sorted: &[f64], q: f64) -> f64 {
-    if sorted.is_empty() {
-        return 0.0;
-    }
-    // nächster Rang wie `percentile` in native/k3c-game/game/measure.go: sorted[round((n-1)*p)] (RU39.1)
-    sorted[(((sorted.len() - 1) as f64) * q).round() as usize]
-}
-
-fn stats(mut v: Vec<f64>) -> FrameStats {
+/// Kennwerte aus unsortierten Zeiten.
+fn stats_of(mut v: Vec<f64>) -> FrameStats {
     v.sort_unstable_by(f64::total_cmp);
-    FrameStats {
-        p50: percentile(&v, 0.5),
-        p95: percentile(&v, 0.95),
-        p99: percentile(&v, 0.99),
-        max: v.last().copied().unwrap_or(0.0),
-    }
+    stats(&v)
 }
 
 /// Misst eine Wiedergabe: `warmup` Takte aufwärmen, dann `measure` Takte messen, danach `done`.
@@ -141,18 +87,18 @@ impl Metered {
                 self.app.playback().head.seed,
                 self.app.playback().head.spieler
             ),
-            spieler: self.app.playback().head.spieler,
+            spieler: usize::try_from(self.app.playback().head.spieler).unwrap_or_default(),
             backend: backend.into(),
-            fenster: [self.size.0, self.size.1],
+            fenster: [i64::from(self.size.0), i64::from(self.size.1)],
             vsync: true,
             messdauer_s: total / 1000.0,
             frames: frames_n,
-            frametime_ms: stats(self.frames.clone()),
+            frametime_ms: stats_of(self.frames.clone()),
             rechenzeit_ms: sum(&self.draw_ms) / self.draw_ms.len().max(1) as f64,
             takte: self.ticks.len(),
             takt_ende: self.app.playback().pos() as u64,
             bilder_ohne_takt: self.repeated,
-            takt_abstand_ms: stats(self.gaps.clone()),
+            takt_abstand_ms: stats_of(self.gaps.clone()),
             ..Report::default()
         };
         if total > 0.0 && frames_n > 0 {
@@ -201,13 +147,7 @@ impl App for Metered {
                 self.repeated += 1;
             }
             if let Some(log) = &mut self.log {
-                log.add(Sample {
-                    t: self.t,
-                    dt,
-                    draw: work,
-                    ticks: u32::try_from(tick.saturating_sub(self.last_tick)).unwrap_or(u32::MAX),
-                    alpha: alpha as f32,
-                });
+                log.add(self.t, dt, work, tick.saturating_sub(self.last_tick) as u64, alpha);
             }
             self.t += dt / 1000.0;
         }
