@@ -184,8 +184,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | eingeplant | RU57 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU37 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
-| [B-1137](B-1137-rust-paket-pruefung-readme.md) | INF | Schuld | mittel | offen | RU57 | Das Rust-Paket wird beim Bau nicht auf Vollständigkeit geprüft und hat keinen Start-Hinweis |
-| [B-1138](B-1138-rust-spiel-version-im-bau.md) | INF | Problem | niedrig | offen | RU57 | Das Rust-Spiel zeigt im Menü immer Version unbekannt, weil der Bau K3C_VERSION nicht setzt |
 | [B-1139](B-1139-menue-lizenzliste-nennt-go-bibliotheken.md) | CLI | Problem | mittel | offen | RU37 | Die Lizenz-Seite des Rust-Spiels nennt Go-Bibliotheken statt der Rust-Crates |
 
 ## Archiv

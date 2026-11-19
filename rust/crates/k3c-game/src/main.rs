@@ -9,6 +9,10 @@ const REPLAY_USAGE: &str =
     "Aufruf: k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad]";
 
 fn main() -> ExitCode {
+    // Version des Baus (K3C_VERSION aus git describe, Task rust:game:exe, B-1138); ohne Angabe zeigt das Menü „unbekannt“
+    if let Some(v) = option_env!("K3C_VERSION") {
+        menu::version::set_version(v);
+    }
     let args: Vec<String> = std::env::args().skip(1).collect();
     let result = match args.split_first() {
         Some((cmd, rest)) if cmd == "demo" => demo::parse_args(rest).and_then(|o| demo::run(&o)),

@@ -8,7 +8,8 @@ import (
 	"os"
 )
 
-const usage = `Aufruf: rustpaket lizenzen -exe <k3c-game.exe> [-rust rust] [-target x86_64-pc-windows-msvc]`
+const usage = `Aufruf: rustpaket lizenzen -exe <k3c-game.exe> [-rust rust] [-target x86_64-pc-windows-msvc]
+        rustpaket pruefen [-max-exe-mib 40] <paketordner>`
 
 func main() {
 	if len(os.Args) < 2 {
@@ -19,6 +20,8 @@ func main() {
 	switch os.Args[1] {
 	case "lizenzen":
 		err = cmdLizenzen(os.Args[2:], os.Stdout)
+	case "pruefen":
+		err = cmdPruefen(os.Args[2:], os.Stdout)
 	default:
 		fmt.Fprintln(os.Stderr, usage)
 		os.Exit(2)

@@ -899,3 +899,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1097](B-1097-add-stock-capped-platzhalter-rest.md) | SIM | Schuld | niedrig | erledigt | RU18 | Platzhalter add_stock_capped in k3c-sim pending.rs ist ein Rest aus RU10 |
 | [B-1106](B-1106-rust-skills-respec-inselwahl.md) | CLI | Problem | hoch | erledigt | RU53 | Skills lernen, Respec und Zielinsel-Wahl fehlen im Rust-Spiel |
 | [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |
+| [B-1137](B-1137-rust-paket-pruefung-readme.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket wird beim Bau nicht auf Vollständigkeit geprüft und hat keinen Start-Hinweis |
+| [B-1138](B-1138-rust-spiel-version-im-bau.md) | INF | Problem | niedrig | erledigt | RU57 | Das Rust-Spiel zeigt im Menü immer Version unbekannt, weil der Bau K3C_VERSION nicht setzt |

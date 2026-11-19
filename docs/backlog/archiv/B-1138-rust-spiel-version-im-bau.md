@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU57
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
@@ -57,7 +57,7 @@ Kein git (Quellarchiv): Variable leer, Menü zeigt „unbekannt“.
 ## Akzeptanzkriterien
 
 - **AC-01** Ein per `task rust:game:build` gebautes Paket zeigt die Version aus `git describe` (`LIZENZEN.txt` Kopfzeile nennt sie).
-- **AC-02** Ohne `K3C_VERSION` bleibt die Anzeige „unbekannt“ (Test).
+- **AC-02** Ohne `K3C_VERSION` bleibt die Anzeige „unbekannt“ (bestehender Test `main_shows_version`).
 
 ## Offene Fragen
 
