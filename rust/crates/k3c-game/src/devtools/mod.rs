@@ -19,7 +19,7 @@ use self::help::draw_help;
 use crate::art::Library;
 use crate::view::MAX_PLAYERS;
 use crate::view::cell::Cell;
-use crate::view::devkeys::DEBUG_OFF;
+use crate::view::devkeys::{DEBUG_OFF, DevSession};
 use crate::view::frame::{Cue, Frame};
 use crate::view::input::Input;
 use crate::view::layer::{Drawer, Layer};
@@ -35,7 +35,6 @@ pub mod debuggeo;
 pub mod drawcheats;
 mod drawdebug;
 pub mod help;
-pub mod pending;
 pub mod report;
 pub mod values;
 
@@ -133,9 +132,15 @@ impl Drawer for DevDrawer {
     }
 }
 
+/// Go: Typ-Zusicherung `s.(view.DevSession)`; `None`, wenn die Session keine Entwickler-Rolle hat (das Cheat-Menü meldet
+/// dann „nur im lokalen Spiel“).
+pub fn dev_of(s: &mut dyn Session) -> Option<&mut dyn DevSession> {
+    s.dev_role()
+}
+
 impl Overlay for DevOverlayRole {
     fn update(&mut self, input: &Input, f: &Frame, s: &mut dyn Session) -> OverlayStep {
-        let mut dev = pending::dev_of(s);
+        let mut dev = dev_of(s);
         self.0.borrow_mut().update_with(input, f, &mut dev)
     }
 }

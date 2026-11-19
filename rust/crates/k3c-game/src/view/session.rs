@@ -118,4 +118,8 @@ pub trait Session {
     fn world_list(&self) -> Vec<WorldInfo>;
     /// Welt-ID des laufenden Spiels (leer ohne Spiel)
     fn world(&self) -> String;
+    /// Go: Typ-Zusicherung `s.(DevSession)`: die Entwickler-Rolle der Session; `None`, wenn sie keine hat.
+    fn dev_role(&mut self) -> Option<&mut dyn super::devkeys::DevSession> {
+        None
+    }
 }

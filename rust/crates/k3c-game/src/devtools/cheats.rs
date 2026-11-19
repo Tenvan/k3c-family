@@ -6,7 +6,7 @@
 //! Spieler und Wert); nicht im Aufnahme-Modus.
 //!
 //! Abweichung von Go: `update_with` bekommt die Entwickler-Rolle der Session als Parameter (Go: Typ-Zusicherung im
-//! Overlay, siehe `pending::dev_of`), damit Tests sie ohne volle `Session` einsetzen.
+//! Overlay, siehe `dev_of`), damit Tests sie ohne volle `Session` einsetzen.
 
 use super::DevOverlay;
 use super::cheatlist::cheat_groups;

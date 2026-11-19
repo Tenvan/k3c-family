@@ -11,6 +11,10 @@ use crate::view::session::{Fehler, NewGame, SaveInfo, Session as ViewSession, Wo
 use crate::view::settings::Settings;
 
 impl ViewSession for Session {
+    fn dev_role(&mut self) -> Option<&mut dyn crate::view::devkeys::DevSession> {
+        Some(self)
+    }
+
     /// Legt ein neues Spiel an und startet es; ein laufendes wird vorher gespeichert und beendet.
     fn new_game(&mut self, g: NewGame) -> Result<(), Fehler> {
         let name = if g.name.is_empty() { self.free_name() } else { g.name };
