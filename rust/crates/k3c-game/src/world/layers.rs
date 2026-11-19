@@ -6,10 +6,13 @@ use k3c_platform::{Affine, Canvas};
 use k3c_sim::state::World as SimWorld;
 
 use super::World;
-use super::backdrop::{FRAME_PER_UNIT, Look, TILE_UNITS, variant};
+use super::backdrop::{FRAME_PER_UNIT, Look, Rgba, TILE_UNITS, variant};
 use super::cull::tile_range;
+use super::forest::wall_alpha;
+use super::tint::haze_of;
 use crate::view::cell::Cell;
 use crate::view::frame::{Frame, Stage};
+use k3c_data::look::current;
 
 /// ANIM_STAND ist die Animation der Kulissen-Kacheln.
 pub const ANIM_STAND: &str = "stand";
@@ -27,7 +30,28 @@ impl World {
         let lk = self.looks.of(&st.level);
         let back = self.light.backdrop(&wd.cycle);
         self.fill_rect(dst, c.world_rect(), lk.sky, back);
-        self.draw_layer(dst, c, wd, lk, 0, back);
+        let factor = current().scroll_for(&st.level, 0, lk.scroll[0]);
+        self.draw_layer_with(dst, c, wd, lk, 0, (back, factor, 1.0));
+        self.draw_haze(dst, c, &st.level, lk.sky, back, 0);
+    }
+
+    /// DrawHaze legt Dunst in Himmelsfarbe über die Welt der Zelle nach der Schicht `i` (Luftperspektive, RU55.4).
+    #[allow(clippy::cast_precision_loss)]
+    pub fn draw_haze(&self, dst: &mut dyn Canvas, c: &Cell, level: &str, sky: Rgba, back: f64, i: usize) {
+        let a = haze_of(level, i);
+        if a > 0.0 {
+            let r = c.world_rect();
+            self.fill(
+                dst,
+                r.min.x as f64,
+                r.min.y as f64,
+                r.dx() as f64,
+                r.dy() as f64,
+                sky,
+                back,
+                a,
+            );
+        }
     }
 
     pub fn draw_mid(&self, dst: &mut dyn Canvas, f: &Frame, c: &Cell) {
@@ -46,7 +70,16 @@ impl World {
         let Some(wd) = st.world.as_deref() else {
             return;
         };
-        self.draw_layer(dst, c, wd, self.looks.of(&st.level), i, self.light.backdrop(&wd.cycle));
+        let (lk, back) = (self.looks.of(&st.level), self.light.backdrop(&wd.cycle));
+        let (look, d) = (current(), self.density(c, wd, f.clock, &st.level));
+        let alpha = if look.forest.enabled && look.world(&st.level).forest {
+            wall_alpha(i, d, look.forest.open_alpha)
+        } else {
+            1.0
+        };
+        let factor = look.scroll_for(&st.level, i, lk.scroll[i]);
+        self.draw_layer_with(dst, c, wd, lk, i, (back, factor, alpha));
+        self.draw_haze(dst, c, &st.level, lk.sky, back, i);
     }
 
     /// DrawLayer zeichnet die sichtbaren Kacheln der Schicht i, Fußlinie auf der Boden-Linie, getönt mit Helligkeit
@@ -57,6 +90,25 @@ impl World {
         clippy::cast_sign_loss
     )]
     pub fn draw_layer(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, lk: &Look, i: usize, back: f64) {
+        self.draw_layer_with(dst, c, wd, lk, i, (back, lk.scroll[i], 1.0));
+    }
+
+    /// DrawLayerWith wie `draw_layer` mit Scroll-Faktor und Deckkraft der Schicht (Parallax-Satz der Welt, Waldwand,
+    /// RU55.6); `(back, factor, alpha)`.
+    #[allow(
+        clippy::cast_precision_loss,
+        clippy::cast_possible_truncation,
+        clippy::cast_sign_loss
+    )]
+    pub fn draw_layer_with(
+        &self,
+        dst: &mut dyn Canvas,
+        c: &Cell,
+        wd: &SimWorld,
+        lk: &Look,
+        i: usize,
+        (back, factor, alpha): (f64, f64, f64),
+    ) {
         let names = &lk.assets[i];
         let Some(lib) = self.lib.as_ref() else {
             return;
@@ -64,7 +116,6 @@ impl World {
         if names.is_empty() {
             return;
         }
-        let factor = lk.scroll[i];
         let (first, last) = tile_range(&c.camera, factor, TILE_UNITS);
         for k in first..=last {
             let v = variant(&wd.level.backdrops, k, names.len() as i64);
@@ -82,7 +133,7 @@ impl World {
             g.scale((r.w / sh.fw as f64) as f32, (r.h / sh.fh as f64) as f32);
             g.translate(r.x as f32, r.y as f32);
             let b = back as f32;
-            dst.sprite_tf(fr.tex, fr.src, g, [b, b, b, 1.0]);
+            dst.sprite_tf(fr.tex, fr.src, g, [b, b, b, alpha as f32]);
         }
     }
 }

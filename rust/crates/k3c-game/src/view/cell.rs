@@ -3,6 +3,8 @@
 //! `image.Rectangle` und `image.Point` aus Go stehen hier als [`Rectangle`] und [`Point`] (ganze Fensterpixel, `i64`);
 //! [`Rectangle::to_rect`] liefert das Rechteck der Plattform für `Canvas::clip`.
 
+use std::sync::OnceLock;
+
 use k3c_platform::Rect;
 
 /// Point ist ein Punkt im Fenster in px (wie `image.Point`).
@@ -47,9 +49,22 @@ impl Rectangle {
     }
 }
 
-/// WorldShare ist der Anteil der Welt an der Zellenhöhe (obere zwei Drittel, Boden-Linie an der Grenze); der Rest ist
-/// der Fluss (wie NV3, native/k3c-ebiten).
-pub const WORLD_SHARE: f64 = 2.0 / 3.0;
+/// Welt-Anteil im Look-Profil `go` (obere zwei Drittel wie NV3); gilt, solange keine Quelle gesetzt ist.
+const GO_SHARE: f64 = 2.0 / 3.0;
+
+static SHARE_SOURCE: OnceLock<fn() -> f64> = OnceLock::new();
+
+/// Setzt die Quelle des Welt-Anteils (einmal; die Welt meldet sie beim Aufbau: Look-Profil aus `data/look.json`).
+/// `view` kennt `k3c_data` nicht (Importregel), die Quelle ist darum eine Funktion von außen.
+pub fn set_world_share_source(f: fn() -> f64) {
+    let _ = SHARE_SOURCE.set(f);
+}
+
+/// WorldShare ist der Anteil der Welt an der Zellenhöhe (Boden-Linie an der Grenze), aus dem Look-Profil
+/// (RU55.1): `k2c` 58 %, `go` obere zwei Drittel wie NV3; der Rest ist Ufer und Fluss.
+pub fn world_share() -> f64 {
+    SHARE_SOURCE.get().map_or(GO_SHARE, |f| f())
+}
 
 /// Camera bildet Welt-x (Units) auf Fenster-x (px) einer Zelle ab. Reine Rechnung; X setzt game je Update über die
 /// CameraRule, Scale, Center und Half folgen aus der Lage der Zelle.
@@ -178,15 +193,15 @@ impl Cell {
     #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
     pub fn ground_y(&self) -> i64 {
         // Go: int(float64(Dy)*WorldShare + 0.5) schneidet zur Null hin ab wie `as i64`.
-        self.rect.min.y + (self.rect.dy() as f64 * WORLD_SHARE + 0.5) as i64
+        self.rect.min.y + (self.rect.dy() as f64 * world_share() + 0.5) as i64
     }
 
-    /// WorldRect ist der Welt-Teil der Zelle (obere zwei Drittel).
+    /// WorldRect ist der Welt-Teil der Zelle (bis zur Boden-Linie).
     pub fn world_rect(&self) -> Rectangle {
         rect(self.rect.min.x, self.rect.min.y, self.rect.max.x, self.ground_y())
     }
 
-    /// RiverRect ist der Fluss-Teil der Zelle (unteres Drittel).
+    /// RiverRect ist der Teil der Zelle unter der Boden-Linie (Ufer und Fluss).
     pub fn river_rect(&self) -> Rectangle {
         rect(self.rect.min.x, self.ground_y(), self.rect.max.x, self.rect.max.y)
     }

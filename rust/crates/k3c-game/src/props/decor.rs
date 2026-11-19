@@ -10,8 +10,14 @@ use super::nature::mix;
 use super::plan::{Item, Planner, Shape};
 use crate::view::cell::Camera;
 
-/// `VIEW_TOP` ist die sichtbare Welthöhe über dem Boden in Units (game.ViewUnits: 420 px bei 32 px je Unit).
+/// `VIEW_TOP` ist die sichtbare Welthöhe über dem Boden in Units im Look-Profil `go` (game.ViewUnits: 420 px bei 32 px
+/// je Unit); `view_top` liefert den Wert des gewählten Profils (kleinste Ansicht, damit die Höhlendecke immer sichtbar ist).
 pub const VIEW_TOP: f64 = 420.0 / 32.0;
+
+/// Sichtbare Welthöhe der kleinsten Ansicht im gewählten Look-Profil (RU55.2).
+pub fn view_top() -> f64 {
+    k3c_data::look::current().view_top()
+}
 
 /// Raster der Decken-Zacken und der Tropfsteine in Units.
 pub const CEILING_STEP: f64 = 1.5;
@@ -50,7 +56,7 @@ pub fn cell_hash(x: f64, step: f64, salt: i64) -> u32 {
 /// `ceiling_bottom` ist die Unterkante der Decke in Units über dem Boden zum Wert `v` der Deckenhöhe (1 tief, 3 hoch):
 /// Dicke 3,5 Units bei 1, 2,15 bei 2, 0,8 bei 3.
 pub fn ceiling_bottom(v: i64) -> f64 {
-    VIEW_TOP - (3.5 - (v - 1) as f64 * 1.35)
+    view_top() - (3.5 - (v - 1) as f64 * 1.35)
 }
 
 impl Planner {
@@ -75,7 +81,7 @@ impl Planner {
             (from + to) / 2.0,
             y,
             to - from,
-            VIEW_TOP + 2.0 - y,
+            k3c_data::look::current().view_units + 2.0 - y,
             CEILING_ROCK,
         );
         let mut x = from;

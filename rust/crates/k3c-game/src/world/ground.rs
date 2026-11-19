@@ -15,16 +15,20 @@ use super::layers::stage_of;
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
 
-/// BANK_UNITS ist die Höhe des Uferstreifens unter der Boden-Linie in Units (20 px wie NV3).
-pub const BANK_UNITS: f64 = 20.0 / 32.0;
-
 /// LAVA_COLOR ist die Farbe eines Lava-Streifens (nur Darstellung).
 pub const LAVA_COLOR: Rgba = [232, 96, 32, 255];
 
-/// BankHeight ist die Höhe des Uferstreifens der Zelle in px, höchstens das Fluss-Drittel.
+/// BankHeight ist die Höhe des Uferstreifens der Zelle in px. Profil `k2c`: `bank_share` der Zellenhöhe (7 %), höchstens
+/// ein Drittel des Flusses; Profil `go`: `bank_px` (20 px bei 32 px je Unit, wie NV3) mal Maßstab, höchstens der Fluss.
 #[allow(clippy::cast_precision_loss)]
 pub fn bank_height(c: &Cell) -> f64 {
-    fmin(BANK_UNITS * c.camera.scale, c.river_rect().dy() as f64)
+    let l = k3c_data::look::current();
+    let river = c.river_rect().dy() as f64;
+    if l.bank_share > 0.0 {
+        fmin(l.bank_share * c.rect.dy() as f64, river / 3.0)
+    } else {
+        fmin(l.bank_px / 32.0 * c.camera.scale, river)
+    }
 }
 
 /// LavaSpan liefert links und rechts (Units) des Lava-Streifens im Chunk i der Welt; `None` ohne Lava.
@@ -50,16 +54,14 @@ impl World {
         };
         let k = &c.camera;
         let (top, h) = (c.ground_y() as f64, bank_height(c));
-        self.fill(
-            dst,
-            c.rect.min.x as f64,
-            top,
-            c.rect.dx() as f64,
-            h,
-            self.looks.of(&st.level).ground,
-            1.0,
-            1.0,
-        );
+        let ground = self.looks.of(&st.level).ground;
+        let k2c = k3c_data::look::current().bank_share > 0.0;
+        // k2c: dunkle Erde mit Rissen, Wurzeln und Grasbüscheln (bank.rs); go: Streifen in der Boden-Farbe
+        let earth = if k2c { super::bank::EARTH_BRIGHTNESS } else { 1.0 };
+        self.fill(dst, c.rect.min.x as f64, top, c.rect.dx() as f64, h, ground, earth, 1.0);
+        if k2c {
+            self.draw_bank(dst, c, ground, h);
+        }
         for i in 0..wd.level.chunks.len() {
             let Some((l, r)) = lava_span(wd, i) else {
                 continue;

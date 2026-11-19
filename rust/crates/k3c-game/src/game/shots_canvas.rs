@@ -4,7 +4,7 @@
 //! sie aber einmal (Grafik der Level) und hält ihre Handles über viele Bilder. `ShotCanvas` merkt darum jeden Upload
 //! (Textur und Schrift), vergibt eigene Handles und lädt sie in den Rasterer des nächsten Bilds neu hoch (`next_image`).
 
-use k3c_platform::{Affine, Blend, Canvas, Filter, FontId, Rect, RiverUniforms, TexId, Vertex};
+use k3c_platform::{Affine, Blend, Canvas, Filter, FontId, MirrorUniforms, Rect, RiverUniforms, TexId, Vertex};
 
 use crate::still::Image;
 use crate::still::raster::SoftCanvas;
@@ -144,6 +144,12 @@ impl Canvas for ShotCanvas {
     }
     fn river(&mut self, dst: Rect, u: &RiverUniforms) -> bool {
         self.inner.river(dst, u)
+    }
+    fn can_mirror(&self) -> bool {
+        self.inner.can_mirror()
+    }
+    fn mirror(&mut self, dst: Rect, u: &MirrorUniforms) -> bool {
+        self.inner.mirror(dst, u)
     }
     fn text(&mut self, s: &str, x: f32, y: f32, px: f32, color: [f32; 4]) {
         self.inner.text(s, x, y, px, color);

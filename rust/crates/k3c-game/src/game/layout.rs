@@ -5,8 +5,8 @@ use crate::view::cell::{Camera, Cell, Rectangle, new_camera, rect};
 use crate::view::frame::Frame;
 use crate::view::roles::CameraRule;
 
-/// Sichtbare Welthöhe über dem Boden in Units (wie NV3: 420 px Welt bei 32 px je Unit). Der Maßstab einer Zelle folgt
-/// daraus: Höhe des Welt-Teils / `VIEW_UNITS`.
+/// Sichtbare Welthöhe über dem Boden in Units im Look-Profil `go` (wie NV3: 420 px Welt bei 32 px je Unit); das Profil
+/// `k2c` zeigt mehr (`data/look.json › viewUnits`). Der Maßstab einer Zelle folgt daraus: Höhe des Welt-Teils / Units.
 pub const VIEW_UNITS: f64 = 420.0 / 32.0;
 
 /// Lage der Zelle `i` von `n` im Fenster `win`: eine Zelle füllt das Fenster, zwei liegen übereinander (wie der
@@ -23,10 +23,16 @@ pub fn cell_rect(win: Rectangle, n: usize, i: usize) -> Rectangle {
     }
 }
 
-/// Maßstab der Zelle `c` in Bildpunkten je Unit.
-#[allow(clippy::cast_precision_loss)]
+/// Maßstab der Zelle `c` in Bildpunkten je Unit bei einer Ansicht.
 pub fn scale(c: &Cell) -> f64 {
-    c.world_rect().dy() as f64 / VIEW_UNITS
+    scale_n(c, 1)
+}
+
+/// Maßstab der Zelle `c`, wenn `n` Zellen im Fenster liegen: Höhe des Welt-Teils / `view_units` des Look-Profils
+/// (RU55.2); im Split-Screen mal `split_scale · n`, nie unter der Mindestgröße des Monarchen (`min_figure_px`).
+#[allow(clippy::cast_precision_loss)]
+pub fn scale_n(c: &Cell, n: usize) -> f64 {
+    k3c_data::look::current().cell_scale(c.world_rect().dy() as f64, n)
 }
 
 /// Baut die Zellen der Plätze in `f` (höchstens `MAX_PLAYERS`; Zelle i zeigt `f.seats[i]`) in `dst`, mit Lage und
@@ -42,7 +48,7 @@ pub fn cells(dst: &mut Vec<Cell>, win: Rectangle, f: &Frame) {
             rect: cell_rect(win, n, i),
             camera: Camera::default(),
         };
-        c.camera = new_camera(c.rect, 0.0, scale(&c));
+        c.camera = new_camera(c.rect, 0.0, scale_n(&c, n));
         dst.push(c);
     }
 }
@@ -55,7 +61,7 @@ pub fn place(cells: &mut [Cell], win: Rectangle) {
         let r = cell_rect(win, n, i);
         if r != c.rect {
             c.rect = r;
-            c.camera = new_camera(r, c.camera.x, scale(c));
+            c.camera = new_camera(r, c.camera.x, scale_n(c, n));
         }
     }
 }

@@ -137,7 +137,11 @@ impl World {
     /// Canvas den Shader nicht, kommen die Kacheln.
     #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
     pub fn draw_river(&mut self, dst: &mut dyn Canvas, f: &Frame, c: &Cell) {
-        if stage_of(f, c).is_none() {
+        let Some(st) = stage_of(f, c) else {
+            return;
+        };
+        // k2c: Der Spiegel (mirror.rs, nach dem Licht) füllt den Fluss, die Wellen entfallen.
+        if st.world.is_some() && self.mirror_wanted(f, dst) {
             return;
         }
         if river_mode_for(&f.settings.river, self.start) == RiverMode::Shader

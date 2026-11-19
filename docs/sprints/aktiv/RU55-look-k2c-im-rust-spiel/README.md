@@ -70,13 +70,13 @@ Weite 4, 4,5 oder 5 M (B-1045): Default 5 M, 🧑 entscheidet am TV nach B-1130 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU55.1 | `RU55.1-baender-look-profil.md` | Umsetzung | autonom | offen |
-| RU55.2 | `RU55.2-masstab-weite-monarchenhoehen.md` | Umsetzung | autonom | offen |
-| RU55.3 | `RU55.3-spiegel-fluss.md` | Umsetzung | autonom | offen |
-| RU55.4 | `RU55.4-toenung-dunst.md` | Umsetzung | autonom | offen |
-| RU55.5 | `RU55.5-lichthoefe.md` | Umsetzung | autonom | offen |
-| RU55.6 | `RU55.6-wald-parallax-je-welt.md` | Umsetzung | autonom | offen |
-| RU55.7 | `RU55.7-review.md` | Review | autonom | offen |
+| RU55.1 | `RU55.1-baender-look-profil.md` | Umsetzung | autonom | fertig |
+| RU55.2 | `RU55.2-masstab-weite-monarchenhoehen.md` | Umsetzung | autonom | fertig |
+| RU55.3 | `RU55.3-spiegel-fluss.md` | Umsetzung | autonom | fertig |
+| RU55.4 | `RU55.4-toenung-dunst.md` | Umsetzung | autonom | fertig |
+| RU55.5 | `RU55.5-lichthoefe.md` | Umsetzung | autonom | fertig |
+| RU55.6 | `RU55.6-wald-parallax-je-welt.md` | Umsetzung | autonom | fertig |
+| RU55.7 | `RU55.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -84,4 +84,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+- RU55.1 bis RU55.6 umgesetzt (Bänder 58/7/35, Maßstab und Weite 5 M, Spiegel-Fluss im Shader, Tönung und Dunst, Lichthöfe, Walddichte und Parallax-Satz je Welt); Tests und `task check:diff` je Session grün, Profil `go` bleibt Standard der Tests.
+- Review RU55.7 (k3c-reviewer, k3c-hud, k3c-grafik): kein schwerer Befund; GPU-Kopie gegen die Flächengröße geklemmt, Waldwand-Bedingung angeglichen; Übriges steht in B-1130.
+- Offen (Lane zweit, B-1130): Pixelmessung, Bildvergleich Go, Frame-Zeit, `check:race`, Gen-Lauf. 🧑 am TV: Weite 4 / 4,5 / 5 M (`viewUnits` in `data/look.json`), Nacht, Blutmond, Wald, Spiegel.

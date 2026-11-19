@@ -153,7 +153,7 @@ impl StillState {
                 ..Cell::default()
             };
             #[allow(clippy::cast_precision_loss)]
-            let scale = c.world_rect().dy() as f64 / VIEW_UNITS;
+            let scale = crate::game::layout::scale_n(&c, n as usize);
             c.camera = new_camera(r, *x, scale);
             cells.push(c);
         }

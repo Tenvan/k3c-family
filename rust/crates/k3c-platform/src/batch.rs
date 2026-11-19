@@ -11,7 +11,7 @@
 
 use crate::shape::Tris;
 use crate::ttf::{Atlas, AtlasUpdate, Fonts};
-use crate::{Blend, Filter, Rect, RiverUniforms, TexId};
+use crate::{Blend, Filter, MirrorUniforms, Rect, RiverUniforms, TexId};
 
 /// Größe einer Instanz in Byte (16 × f32).
 pub const INST_BYTES: usize = 64;
@@ -60,6 +60,9 @@ pub enum Kind {
     Tris,
     /// Fluss-Shader: ein Aufruf aus [`Frame::river_calls`] an der Stelle `first` (`count` ist 1, nie gebündelt).
     River,
+    /// Spiegel-Shader (RU55.3): ein Aufruf aus [`Frame::mirror_calls`] an der Stelle `first` (`count` ist 1, nie gebündelt);
+    /// das Backend kopiert dafür das bisher Gezeichnete in eine Zwischentextur.
+    Mirror,
 }
 
 /// Ein Fluss-Aufruf: Rechteck und Uniforms (B-1070).
@@ -67,6 +70,13 @@ pub enum Kind {
 pub struct RiverCall {
     pub dst: Rect,
     pub u: RiverUniforms,
+}
+
+/// Ein Spiegel-Aufruf: Rechteck und Uniforms (RU55.3).
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct MirrorCall {
+    pub dst: Rect,
+    pub u: MirrorUniforms,
 }
 
 /// Ein Draw-Call: Ebene, Ausschnitt, Textur (`None` = Vollfarbe) und Bereich.
@@ -98,6 +108,8 @@ enum Body {
     Tris(u32, u32),
     /// Index in `raw_rivers`.
     River(u32),
+    /// Index in `raw_mirrors`.
+    Mirror(u32),
 }
 
 #[derive(Clone, Copy)]
@@ -121,6 +133,10 @@ pub struct Frame {
     idx: Vec<u32>,
     raw_rivers: Vec<RiverCall>,
     rivers: Vec<RiverCall>,
+    raw_mirrors: Vec<MirrorCall>,
+    mirrors: Vec<MirrorCall>,
+    /// Wahr, wenn das Backend keinen Spiegel kann (`Canvas::can_mirror` meldet dann `false`).
+    pub(crate) no_mirror: bool,
     pub(crate) sizes: Vec<(u32, u32)>,
     pub(crate) pending: Vec<Pending>,
     freed: Vec<TexId>,
@@ -149,6 +165,7 @@ impl Frame {
         self.verts.clear();
         self.raw_idx.clear();
         self.raw_rivers.clear();
+        self.raw_mirrors.clear();
         self.clips.clear();
         self.layer = 0;
         self.clip = 0;
@@ -163,6 +180,7 @@ impl Frame {
         self.quads.clear();
         self.idx.clear();
         self.rivers.clear();
+        self.mirrors.clear();
         for it in &self.items {
             let (kind, first, count) = match it.body {
                 Body::Quad(inst) => {
@@ -178,12 +196,17 @@ impl Frame {
                     self.rivers.push(self.raw_rivers[i as usize]);
                     (Kind::River, self.rivers.len() as u32 - 1, 1)
                 }
+                Body::Mirror(i) => {
+                    self.mirrors.push(self.raw_mirrors[i as usize]);
+                    (Kind::Mirror, self.mirrors.len() as u32 - 1, 1)
+                }
             };
             let clip = it.clip.checked_sub(1).map(|c| self.clips[c as usize]);
             let tex = (it.tex != SOLID).then_some(TexId(it.tex));
             match self.runs.last_mut() {
                 Some(r)
                     if kind != Kind::River
+                        && kind != Kind::Mirror
                         && (r.layer, r.clip, r.tex, r.kind, r.blend) == (it.layer, clip, tex, kind, it.blend) =>
                 {
                     r.count += count;
@@ -227,6 +250,16 @@ impl Frame {
     /// Fluss-Aufrufe in Zeichenreihenfolge (nach `finish`); ein [`Kind::River`]-Run zeigt mit `first` auf einen.
     pub fn river_calls(&self) -> &[RiverCall] {
         &self.rivers
+    }
+
+    /// Spiegel-Aufrufe in Zeichenreihenfolge (nach `finish`); ein [`Kind::Mirror`]-Run zeigt mit `first` auf einen.
+    pub fn mirror_calls(&self) -> &[MirrorCall] {
+        &self.mirrors
+    }
+
+    /// Das Backend meldet, ob es den Spiegel kann (Standard ja); ohne ihn zeichnet das Spiel die Wellen.
+    pub fn set_mirror_support(&mut self, ok: bool) {
+        self.no_mirror = !ok;
     }
 
     /// Schreibt die Instanzen als Bytes (`INST_BYTES` je Stück) in `out`.
@@ -317,6 +350,12 @@ impl Frame {
     pub(crate) fn push_river(&mut self, dst: Rect, u: &RiverUniforms) {
         self.raw_rivers.push(RiverCall { dst, u: *u });
         self.push(SOLID, Body::River(self.raw_rivers.len() as u32 - 1));
+    }
+
+    /// Spiegel-Aufruf (Vollfarbe-Schlüssel, eigener Run).
+    pub(crate) fn push_mirror(&mut self, dst: Rect, u: &MirrorUniforms) {
+        self.raw_mirrors.push(MirrorCall { dst, u: *u });
+        self.push(SOLID, Body::Mirror(self.raw_mirrors.len() as u32 - 1));
     }
 
     fn push(&mut self, tex: u32, body: Body) {

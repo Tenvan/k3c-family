@@ -15,6 +15,7 @@ mod headless;
 mod input;
 pub mod log;
 mod measure;
+mod mirror;
 mod river;
 mod runner;
 mod shape;
@@ -23,11 +24,12 @@ mod ttf;
 pub use affine::Affine;
 pub use audio::{AudioOut, NullAudio, SoundId, VoiceId, open_audio, open_audio_with};
 pub use backend::{Config, run_window};
-pub use batch::{Frame, INST_BYTES, Inst, Kind, RiverCall, Run, VERT_BYTES, Vertex};
+pub use batch::{Frame, INST_BYTES, Inst, Kind, MirrorCall, RiverCall, Run, VERT_BYTES, Vertex};
 pub use clock::{Clock, MAX_STEPS, STEP};
 pub use headless::{NullCanvas, run_headless};
 pub use input::{InputScript, InputState, Key, KeyState, PadAxis, PadButton, PadState, ScriptEntry, ScriptPad};
 pub use measure::{Measure, Summary};
+pub use mirror::{MirrorUniforms, mirror_fragment};
 pub use river::{RiverUniforms, river_fragment};
 pub use runner::Runner;
 pub use ttf::FontId;
@@ -130,6 +132,16 @@ pub trait Canvas {
     /// Fluss-Shader (`river.kage`): zeichnet das Rechteck `dst` mit den Uniforms `u`; Clip, Ebene und Reihenfolge wie bei
     /// [`Canvas::rect`]. `false` = nicht unterstützt, der Aufrufer fällt auf Kacheln zurück.
     fn river(&mut self, _dst: Rect, _u: &RiverUniforms) -> bool {
+        false
+    }
+    /// Spiegel-Shader (RU55.3): zeichnet in `dst` die Spiegelung des bisher über der Gehlinie Gezeichneten (siehe
+    /// [`MirrorUniforms`]); Clip, Ebene und Reihenfolge wie bei [`Canvas::rect`]. `false` = nicht unterstützt, der Aufrufer
+    /// zeichnet die Wellen.
+    fn mirror(&mut self, _dst: Rect, _u: &MirrorUniforms) -> bool {
+        false
+    }
+    /// Ob [`Canvas::mirror`] zeichnet (vorab fragen, um die Wellen zu sparen).
+    fn can_mirror(&self) -> bool {
         false
     }
     /// Pixel-Schrift (5×7, nur Großbuchstaben, Ziffern, Satzzeichen); `px` = Zeichenhöhe. Rückfall, wenn die

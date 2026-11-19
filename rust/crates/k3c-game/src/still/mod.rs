@@ -28,6 +28,7 @@ pub mod frame;
 mod inflate;
 pub mod pngio;
 pub mod raster;
+mod raster_mirror;
 #[cfg(test)]
 mod raster_tests;
 pub mod simview;
