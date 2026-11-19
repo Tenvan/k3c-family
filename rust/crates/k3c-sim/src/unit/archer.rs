@@ -110,7 +110,7 @@ pub fn step_archer(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti: 
         x,
         target_id,
         team: "player".into(),
-        damage: a.damage,
+        damage: a.damage * crate::hermit::bonus::damage_factor(w), // RU62.10: Dojo
         speed: ARROW_SPEED,
         ..Default::default()
     };

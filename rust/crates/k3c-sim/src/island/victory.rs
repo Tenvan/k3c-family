@@ -72,8 +72,8 @@ pub fn all_built(isl: &Island) -> bool {
     let mut n = 0;
     for w in &isl.stages {
         for s in &w.sites {
-            if s.kind == SHIP_KIND {
-                continue; // das Schiff dient dem Inselwechsel, nicht dem Sieg (letzte Insel: nutzlos)
+            if s.kind == SHIP_KIND || isl.hermit.is_hall(s) {
+                continue; // das Schiff dient dem Inselwechsel, nicht dem Sieg (letzte Insel: nutzlos); das Bauwerk des Einsiedlers ist freiwillig (RU62.10)
             }
             if s.state != "built" {
                 return false;

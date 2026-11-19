@@ -32,7 +32,7 @@ fn reittier_uebersteht_speichern_und_laden() {
     tick(&mut isl, &data, &[0]);
     let s = isl.to_save("x").expect("Spielstand");
     assert_eq!(s.version, ISLAND_SAVE_VERSION);
-    assert_eq!(ISLAND_SAVE_VERSION, 11);
+    assert_eq!(ISLAND_SAVE_VERSION, 12);
     assert_eq!(s.players[0].mount, "camel");
     assert_eq!(s.players[1].mount, "");
     let json = serde_json::to_value(&s).expect("json");

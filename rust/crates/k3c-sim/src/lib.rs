@@ -11,6 +11,7 @@ pub mod dev;
 pub mod economy;
 pub mod enemies;
 pub mod events;
+pub mod hermit;
 pub mod hub;
 pub mod island;
 pub mod links;

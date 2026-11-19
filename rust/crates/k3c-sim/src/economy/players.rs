@@ -38,6 +38,8 @@ pub fn step_players(w: &mut World, commands: &[PlayerCommand], mut isl: Option<&
         w.players[pi].paying = cmd.pay;
         // RU62.8: Am Gatter kauft der Einwurf das Welt-Reittier; die Münze fällt nicht auf den Boden.
         let at_gate = crate::mounts::buy::step_gate(w, pi, cmd.pay, pressed);
+        // RU62.10: An der Hütte des Einsiedlers zahlt der Einwurf den Bau seines Bauwerks; auch dort fällt keine Münze zu Boden.
+        let at_gate = at_gate || crate::hermit::pay::step_hut(w, pi, cmd.pay, pressed);
         step_pay(w, &v, isl.as_deref(), pi, &cmd, at_gate);
     }
     collect_coins(w, &v, isl.as_deref_mut());

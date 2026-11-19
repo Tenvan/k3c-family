@@ -149,6 +149,7 @@ fn dawn_break(w: &mut World, isl: Option<&mut IslandRef>, day_night: bool) {
     pay_dawn_income(w, &v, isl.as_deref());
     spare_hammer(w, &v);
     tavern_dawn(w);
+    crate::hermit::bonus::heal_walls(w); // RU62.10: Schrein
     merchant_dawn(w, isl);
     night_events_end(w);
 }

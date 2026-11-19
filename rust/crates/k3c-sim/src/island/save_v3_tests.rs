@@ -70,7 +70,7 @@ fn own_migration_v1_v2_liest_pool_und_leere_verteilung() {
         ("v2 mit drei Stufen", v2, 3),
     ] {
         let s = env.parse(&raw).unwrap_or_else(|e| panic!("{name}: {e}"));
-        assert_eq!((s.version, s.skill_pool), (11, pool), "{name}: Version und Pool");
+        assert_eq!((s.version, s.skill_pool), (12, pool), "{name}: Version und Pool");
         for p in &s.players {
             assert!(
                 p.skills.is_empty() && p.slots.is_empty(),

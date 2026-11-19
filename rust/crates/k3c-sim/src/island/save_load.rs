@@ -92,6 +92,7 @@ pub fn from_island_save_in(
         )));
     }
     crate::cargo::save::restore_opt(&mut isl.cargo, s.cargo.as_ref(), t.data)?; // RU62.1: Fracht und Aufträge
+    isl.restore_hermit(t.data, s.hermit_paid).map_err(fail)?; // RU62.10: Einsiedler bezahlt?
     place_players(&mut isl, s)?;
     Ok(isl)
 }

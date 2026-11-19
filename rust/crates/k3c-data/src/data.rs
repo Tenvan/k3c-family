@@ -5,8 +5,8 @@ use std::collections::BTreeMap;
 use crate::source::{EMBEDDED, Source};
 use crate::{
     Fehler, balance_hints, balance_targets, biome, bosses, buildings, cargo, coop, difficulty, economy, enemies,
-    events, goals, guards, hub, island_sizes, light, monarch, mounts, native, paper, render, ruins, ship, sounds,
-    story, stresstests, troops, waves, weather, world,
+    events, goals, guards, hermits, hub, island_sizes, light, monarch, mounts, native, paper, render, ruins, ship,
+    sounds, story, stresstests, troops, waves, weather, world,
 };
 
 /// `Data` hält jede Spiel-Daten-Datei in ihrer Struktur.
@@ -24,6 +24,7 @@ pub struct Data {
     pub events: events::EventsFile,
     pub goals: goals::Goals,
     pub guards: guards::GuardRules,
+    pub hermits: hermits::HermitsFile,
     pub hub: hub::HubData,
     pub island_sizes: island_sizes::IslandSizesFile,
     pub light: light::Light,
@@ -99,6 +100,7 @@ pub fn load_all(src: &Source) -> Result<Data, Fehler> {
         light: light::load(&read(light::FILE)?)?,
         monarch: monarch::load(&read(monarch::FILE)?)?,
         mounts: mounts::load(&read(mounts::FILE)?)?,
+        hermits: hermits::load(&read(hermits::FILE)?)?,
         native: native::load(&read(native::FILE)?)?,
         paper: paper::load(&read(paper::FILE)?)?,
         render: render::load(&read(render::FILE)?)?,

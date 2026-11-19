@@ -51,7 +51,7 @@ pub fn apply_site(w: &mut World, saved: &SiteSave) {
         return;
     };
     let state = match saved.state.as_str() {
-        st @ ("waitingWorker" | "waitingMaterial" | "built") => st.to_string(),
+        st @ ("waitingWorker" | "waitingMaterial" | "built" | crate::hermit::BUILDING_STATE) => st.to_string(),
         _ => "unpaid".to_string(),
     };
     let v = values(w);

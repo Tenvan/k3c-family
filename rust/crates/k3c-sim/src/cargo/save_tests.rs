@@ -1,4 +1,4 @@
-//! Spielstand der Fracht (RU62.1, AC-01): Speichern und Laden mitten im Beladen, Version 11 (RU62.8; die Fracht kam mit 10).
+//! Spielstand der Fracht (RU62.1, AC-01): Speichern und Laden mitten im Beladen, Version 12 (RU62.10; die Fracht kam mit 10).
 
 use super::testutil::{add_troop, cargo_data, cargo_island, run};
 use super::{CargoItem, CrateOrder, KIND_COINS, KIND_TROOP};
@@ -21,7 +21,7 @@ fn reload(data: &Data, world: &WorldDef, isl: &Island) -> Island {
 
 #[test]
 fn spielstand_version_ist_10() {
-    assert_eq!(ISLAND_SAVE_VERSION, 11);
+    assert_eq!(ISLAND_SAVE_VERSION, 12);
 }
 
 #[test]
@@ -49,7 +49,7 @@ fn speichern_und_laden_mitten_im_beladen_erhaelt_fracht_und_auftraege() {
     });
     add_troop(&mut isl, "peasant", steg + 12.0);
     let s = isl.to_save("x").expect("Spielstand");
-    assert_eq!(s.version, 11);
+    assert_eq!(s.version, 12);
     assert!(s.cargo.is_some());
     let mut loaded = reload(&data, &world, &isl);
     assert_eq!(loaded.cargo.load, isl.cargo.load);

@@ -168,6 +168,12 @@ pub struct World {
     /// Der Reittier-Katalog der Welt (RU62.8); `None` = Welt ohne Welt-Reittier; ohne JSON.
     #[serde(skip)]
     pub mounts_cfg: Option<std::sync::Arc<k3c_data::mounts::MountsFile>>,
+    /// Zustand des Einsiedlers (RU62.10, B-972); nur in Welten mit Einsiedler.
+    #[serde(rename = "hermit", skip_serializing_if = "Option::is_none")]
+    pub hermit: Option<super::hermit_view::HermitState>,
+    /// Der Einsiedler-Katalog der Welt (RU62.10); `None` = Welt ohne Einsiedler; ohne JSON.
+    #[serde(skip)]
+    pub hermit_cfg: Option<std::sync::Arc<k3c_data::hermits::HermitsFile>>,
     /// Art und Phase des Wetters (RU62.5, B-969); fehlt, solange keine Wetternacht ansteht oder die Welt kein Wetter hat.
     #[serde(rename = "weather", skip_serializing_if = "Option::is_none")]
     pub weather: Option<super::weather_view::WeatherState>,
@@ -280,6 +286,8 @@ impl Default for World {
             coop_active: false,
             mount_gate: None,
             mounts_cfg: None,
+            hermit: None,
+            hermit_cfg: None,
             weather: None,
             weather_cfg: None,
             weather_speed: 1.0,

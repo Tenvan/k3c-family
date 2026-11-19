@@ -1,4 +1,4 @@
-//! Spielstand der Insel (Port von `engine/sim/island_save.go` bis `islandFromV1`; Version 11 (RU62.8; 10: RU62.1), B-100, S1.4, S2.2, K2.3b,
+//! Spielstand der Insel (Port von `engine/sim/island_save.go` bis `islandFromV1`; Version 12 (RU62.10; 11: RU62.8; 10: RU62.1), B-100, S1.4, S2.2, K2.3b,
 //! K3.2a, W7.2, WZ18.3, WZ27.1). Die Campaign schreibt weiter Version 1 (`state/save.rs`). Gespeichert wird wie dort nur,
 //! was sich nicht aus dem Seed ergibt: Hubs, Truppen, Vorrat, Gold und Entferntes. Flüchtiges (Gegner, Münzen am Boden,
 //! Geschosse, Zufallsstand) geht beim Laden verloren.
@@ -22,7 +22,7 @@ use crate::state::{Fehler, WorldValues};
 use crate::world::{Options as WorldOptions, create_world};
 
 /// Go: `IslandSaveVersion`, die Version des Insel-Spielstands.
-pub const ISLAND_SAVE_VERSION: i64 = 11;
+pub const ISLAND_SAVE_VERSION: i64 = 12;
 
 /// Die Tabellen, die Go als Paket-Variablen hält: die Daten (`biomes`, `bosses`, `difficulty`), der Basis-Wertesatz
 /// (`defaultValues()`, Skill-Katalog für Stände ohne Welt) und die Standard-Welt (`standardWorld`).
@@ -112,6 +112,10 @@ pub struct IslandSave {
     /// Version 10 (RU62.1, B-967): Fracht an Bord und offene Träger-Aufträge; fehlt, wenn nichts an Bord ist.
     #[serde(rename = "cargo", skip_serializing_if = "Option::is_none")]
     pub cargo: Option<crate::cargo::save::CargoSave>,
+    /// Version 12 (RU62.10, B-972): Der Einsiedler ist bezahlt (bleibt wahr, auch wenn sein Bauwerk zerstört wird); fehlt, solange
+    /// nicht gezahlt wurde. Das Bauwerk selbst steht als Platz in den Stufen.
+    #[serde(rename = "hermitPaid", skip_serializing_if = "is_false")]
+    pub hermit_paid: bool,
 }
 
 /// Go: `IslandPlayerSave`, ein Spieler der Insel: inselweiter Index, Gold, die Tiefe seiner Stufe und seine Verteilung
@@ -164,6 +168,7 @@ impl Island {
             completed: self.completed.clone(),
             chosen: self.chosen.clone(),
             cargo: crate::cargo::save::to_save(&self.cargo),
+            hermit_paid: self.hermit.paid,
             ..IslandSave::default()
         };
         for w in &self.stages {

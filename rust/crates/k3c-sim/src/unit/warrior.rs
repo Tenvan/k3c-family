@@ -334,6 +334,7 @@ pub fn step_warrior(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti:
     let fallback = TroopData::default();
     let d = v.troops.get(&t.kind).unwrap_or(&fallback);
     let (range, damage, rate) = (d.range, d.damage, d.attacks_per_second);
+    let damage = damage * crate::hermit::bonus::damage_factor(w); // RU62.10: Dojo
     let Some(ei) = nearest(&w.enemies, |e| e.x, from, range + BODY + 0.1, |_| true) else {
         return;
     };

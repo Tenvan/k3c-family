@@ -111,6 +111,8 @@ Insel, Tiefe und Platz. `hub.sitePlacement` bleibt gesperrt.
 
 **Welt-Reittier (B-970, RU62.8):** Das Reittier einer Welt steht vorerst nicht in der Welt-Datei, sondern in `data/mounts.json` › `worlds` (Welt-ID auf Katalog-ID; `sengoku`, `nil`; `standard` und `britannien` ohne). Die Welt-Dateien bleiben unverändert (Go und `k3c-data/src/world.rs` lehnen unbekannte Felder ab); das optionale Feld `mount` der Welt-Datei folgt nach RU41. Regeln: [`monarch.md`](monarch.md) § 7.
 
+**Einsiedler (B-972, RU62.10):** Der Einsiedler einer Welt steht vorerst nicht in der Welt-Datei, sondern in `data/hermits.json` › `worlds` (Welt-ID auf Katalog-ID; `sengoku` auf `swordsmith`, `nil` auf `priestess`; `standard` und `britannien` ohne). Die Welt-Dateien bleiben unverändert (Go und `k3c-data/src/world.rs` lehnen unbekannte Felder ab); das optionale Feld `hermit` der Welt-Datei folgt nach RU41. Regeln: [`buerger.md`](buerger.md) § 1, [`materialien-gebaeude.md`](materialien-gebaeude.md) § 3.2.
+
 Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderungen und Empfehlung 1 der Session WZ18.1.
 
 **Welt** (oberste Ebene, Reihenfolge der Felder beim Schreiben wie in der Tabelle):
@@ -259,6 +261,8 @@ Das Feld `weather` der Welt-Datei ist **geplant nach RU41**: Die Welt-Dateien le
 ## 3. Prüfung beim Laden
 
 **Welt-Reittier (RU62.8):** Eine unbekannte Reittier-ID in `data/mounts.json` › `worlds` lässt das Laden der Daten mit klarer Meldung fehlschlagen (`k3c-data/src/mounts.rs`); bis RU41 prüft das nicht die Welt-Datei.
+
+**Einsiedler (RU62.10):** Eine unbekannte Einsiedler-ID in `data/hermits.json` › `worlds` lässt das Laden der Daten mit klarer Meldung fehlschlagen (`k3c-data/src/hermits.rs`); bis RU41 prüft das nicht die Welt-Datei. Der Hub-Platz `hermitHall` besteht die Hub-Prüfung (`k3c-sim/src/hermit/validate.rs`), sonst scheitert das Bauen der Insel.
 
 Die Prüfung gilt für **jede** Welt-Datei, gleich ob eingebettet, im Dev-Mode von der Platte gelesen oder im Welten Editor als
 Entwurf (B-488 › Anforderungen). Sie ist die heutige Prüfung von `engine/sim/island_data.go` (`loadIslands`, `checkIsland`,

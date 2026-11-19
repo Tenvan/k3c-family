@@ -132,7 +132,8 @@ fn find_other_target(
 /// (`building/upgrades.rs`).
 pub fn site_payable(w: &World, v: &WorldValues, isl: Option<&IslandRef>, s: &Site) -> bool {
     if s.state == "unpaid" {
-        return w.hub_level >= site_hub_level(w, s) && line_open(w, s);
+        // RU62.10: der Hub-Platz des Einsiedler-Bauwerks nimmt keine Münzen, nur die Hütte bezahlt ihn
+        return w.hub_level >= site_hub_level(w, s) && line_open(w, s) && !crate::hermit::bonus::is_hall(w, s);
     }
     if upgrade_payable(w, s) {
         return true;

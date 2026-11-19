@@ -20,6 +20,7 @@ pub mod enemies;
 pub mod events;
 pub mod goals;
 pub mod guards;
+pub mod hermits;
 pub mod hub;
 pub mod island_sizes;
 pub mod light;
