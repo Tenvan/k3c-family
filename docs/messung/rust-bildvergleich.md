@@ -56,3 +56,19 @@ Takte und Namen stammen aus der Go-Referenz. Spalten Mittel, Anteil, Ergebnis un
   `muenzen`, `skillpunkt`, `skillmenue`, `gebaut`, `nacht`, `pause`, `weiter`, `zu-zweit`, `niederlage`, `verlassen`, `ende`
   (alle 14 Stationen, seit B-1106 ohne Ausnahmeliste). Takte und Ereignisse aller 14 Stationen sind gleich Go.
 - Das Licht (Lichtkarte) zeichnet Rust nicht (B-1056); Nachtstationen weichen darum voraussichtlich über der Schwelle ab.
+
+## Standbild-Vergleich `still.rs` (RU51.8, B-1108)
+
+Stand 2026-11-19, mit gerenderter Grafik (`task gen:paper`). Ursache der roten Tests `bildvergleich_an_fuenf_staenden` und
+`lichtkarte_fehlt_in_rust`: RU55 hat die Lichtkarte (Tönung über die Lichtkarte) in Rust eingeführt (B-1056); der Test
+verglich weiter mit dem Go-Bild **ohne** Lichtkarte (`*.go-nolight.png`) und erwartete, dass Rust sie nicht zeichnet. Korrektur
+im Test, nicht im Zeichner und **ohne die Schwellen zu ändern** (Mittel 0,5, Anteil 0,005, Pixeltoleranz 24): Der Vergleich nimmt
+jetzt das vollständige Go-Bild `*.go.png`; `lichtkarte_fehlt_in_rust` entfällt (sein Text verlangte genau diese Umstellung).
+Ergebnis: `cargo test --release -p k3c-game --test still` 4 grün; die fünf Stände liegen unter den Schwellen (Rust zeichnet
+Lichtkarte wie Go).
+
+Offen, nicht in den erlaubten Dateien dieser Session: `tests/still_hud.rs` (`plaetze_stimmen_mit_go_ueberein`: Element 13
+(Radar) erscheint in `tag-allein` Zelle 0 zusätzlich; `bilder_stimmen_mit_go_ueberein`: vier Stände über der Schwelle,
+`englisch-hub` Element 3 (Uhr) Boxfarbe Rust [60, 90, 130] gegen Go [27, 41, 59]). Bisektion: rot schon auf dem Commit, der
+die Referenz schrieb (`bb03554c`, RU23), und ebenso auf RU32, RU53, RU54, RU55; keine dieser Änderungen ist die Ursache.
+Vermutung (ungeprüft): die Referenz hängt von der lokal gerenderten Grafik oder der Schrift ab.

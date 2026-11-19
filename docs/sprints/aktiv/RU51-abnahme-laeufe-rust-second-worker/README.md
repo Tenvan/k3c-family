@@ -69,7 +69,7 @@ keine
 | RU51.5 | `RU51.5-messung-ru22-durchsatz.md` | Umsetzung | autonom | fertig |
 | RU51.6 | `RU51.6-abnahme-ru26-spielschleife.md` | Umsetzung | autonom | fertig |
 | RU51.7 | `RU51.7-abnahme-ru29-ru30-messen.md` | Umsetzung | autonom | fertig |
-| RU51.8 | `RU51.8-abnahme-bildvergleich-ignore-marken.md` | Umsetzung | autonom | offen |
+| RU51.8 | `RU51.8-abnahme-bildvergleich-ignore-marken.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
