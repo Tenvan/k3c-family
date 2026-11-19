@@ -172,6 +172,18 @@ fn fracht_objekte_sind_in_paper_json_zugeordnet() {
     for id in ["doppel-truhe", "doppel-truhe-offen"] {
         assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
     }
+    // RU62.7: die Wolkenbank der Taifun-Vorboten ist zugeordnet und wird mit jedem Level geladen
+    let wolke = paper.pointer("/wetter/wolkenbank").and_then(Value::as_str);
+    assert_eq!(
+        wolke,
+        Some(super::assets::WEATHER_CLOUD_ASSET),
+        "wetter.wolkenbank in data/paper.json"
+    );
+    assert!(
+        level_assets("forest")
+            .iter()
+            .any(|a| a == super::assets::WEATHER_CLOUD_ASSET)
+    );
 }
 
 /// RU62.2/RU62.4: Die Fracht- und Truhen-Objekte stehen in der Ladeliste jedes Bioms, sonst fehlt ihr Sheet und das Spiel

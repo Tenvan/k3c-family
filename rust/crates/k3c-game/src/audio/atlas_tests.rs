@@ -11,7 +11,7 @@ use serde_json::Value;
 
 use super::atlas::{PCM_FRAME, Sprite, parse_atlas, sprite_range};
 use super::bank::{clip, load_bank};
-use super::events::SLOT_RIDE;
+use super::events::{SLOT_RIDE, SLOT_WATER, SLOT_WIND};
 use super::mix::Planner;
 use super::register::Register;
 use super::testutil::{public_dir, real_register, temp_dir};
@@ -39,7 +39,7 @@ fn atlas_start_and_duration_per_slot() {
     }
     for slot in real_register().effects.keys() {
         assert!(
-            a.sprites.contains_key(slot) || slot == SLOT_RIDE,
+            a.sprites.contains_key(slot) || [SLOT_RIDE, SLOT_WIND, SLOT_WATER].contains(&slot.as_str()),
             "Effekt-Slot {slot} fehlt im Atlas"
         );
     }

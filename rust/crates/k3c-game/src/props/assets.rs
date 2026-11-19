@@ -68,6 +68,9 @@ pub const OBJECT_ASSETS: [&str; 26] = [
     "doppel-truhe-offen",
 ];
 
+/// Die Wolkenbank der Vorboten (Gruppe `hintergruende`, `data/paper.json › wetter`).
+pub const WEATHER_CLOUD_ASSET: &str = "hintergruende/wetter-wolkenbank";
+
 /// `nature_assets`: Natur je Look (true = 1 Wald, sonst Höhle und Mine).
 pub fn nature_assets(forest: bool) -> &'static [&'static str] {
     if forest {
@@ -91,6 +94,7 @@ pub fn level_assets(level: &str) -> Vec<String> {
         out.push(format!("{OBJECT_GROUP}{id}"));
     }
     out.push(COIN_LOOK.asset.to_string());
+    out.push(WEATHER_CLOUD_ASSET.to_string()); // RU62.7: Wolkenbank der Taifun-Vorboten (nur sichtbar bei Wetter)
     out.extend(COMBAT_ASSETS.iter().map(|a| a.to_string()));
     // Sortieren wie `slices.Sort` (Texte, Gleichstand ohne Folgen), danach Doppelte entfernen (`slices.Compact`).
     out.sort_unstable();

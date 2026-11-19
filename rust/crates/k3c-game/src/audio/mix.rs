@@ -12,7 +12,8 @@ use k3c_sim::state::World;
 
 use super::duck::{DuckWindow, duck_gain, extend_duck};
 use super::events::{
-    Ear, RIDE_GAIN, SKILL_CAST_EVENT, SLOT_HUB, attenuation, cue_slot, event_cue, event_x, night_gain, riding,
+    Ear, RIDE_GAIN, SKILL_CAST_EVENT, SLOT_HUB, SLOT_RIDE, attenuation, cue_slot, event_cue, event_x, night_gain,
+    riding, weather_ambient,
 };
 use super::music::{Fader, MusicState, MusicView, MusicVoice, TPS, next_music_state};
 use super::register::Register;
@@ -37,10 +38,12 @@ pub struct Request {
     pub gain: f64,
 }
 
-/// Eine laufende Schleife (Hufschlag) je Monarch (`key` = `Player::index`) mit Pegel vor dem Bus.
+/// Eine laufende Schleife (Hufschlag je Monarch, Wetter-Ambient je Stufe) (`key` = `Player::index`) mit Pegel vor dem Bus.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Loop {
     pub key: i64,
+    /// Slot im Register, aus dem die Schleife klingt
+    pub slot: &'static str,
     pub gain: f64,
 }
 
@@ -233,6 +236,11 @@ impl Planner {
     fn loops(&mut self, f: &Frame) {
         for st in &f.stages {
             let Some(w) = st.world.as_deref() else { continue };
+            if let Some((key, slot, gain)) = weather_ambient(w)
+                && !self.mix.loops.iter().any(|l| l.key == key)
+            {
+                self.mix.loops.push(Loop { key, slot, gain });
+            }
             let night = night_gain(&w.cycle.phase);
             for m in &w.players {
                 if !riding(Some(m)) {
@@ -240,7 +248,11 @@ impl Planner {
                 }
                 let g = attenuation(m.x, true, self.ears_of(f, st.index), false) * night * RIDE_GAIN;
                 if g > 0.0 {
-                    self.mix.loops.push(Loop { key: m.index, gain: g });
+                    self.mix.loops.push(Loop {
+                        key: m.index,
+                        slot: SLOT_RIDE,
+                        gain: g,
+                    });
                 }
             }
         }

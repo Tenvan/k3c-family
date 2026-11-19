@@ -49,6 +49,13 @@ pub const SLOT_UI_SELECT: &str = "sfx:uiSelect";
 pub const SLOT_UI_CONFIRM: &str = "sfx:uiConfirm";
 pub const SLOT_HUB: &str = "sfx:hub";
 pub const SLOT_RIDE: &str = "sfx:ride";
+/// Wetter-Ambient (RU62.7): Wind für den Taifun, Wasser für die Flut; als Schleife, solange die Wetternacht wirkt.
+pub const SLOT_WIND: &str = "sfx:wetter-wind";
+pub const SLOT_WATER: &str = "sfx:wetter-wasser";
+/// Schleifen-Schlüssel des Wetters (Hufschlag nutzt den Spieler-Index 0 … 3).
+pub const WEATHER_LOOP_KEY: i64 = 1000;
+/// Pegel des Wetter-Teppichs vor dem Bus (überall gleich laut, ohne Dämpfung).
+pub const WEATHER_GAIN: f64 = 0.35;
 
 /// Menü-Klang eines Cues ("" = still).
 pub fn cue_slot(k: CueKind) -> &'static str {
@@ -119,4 +126,21 @@ pub fn number(v: Option<&serde_json::Value>) -> Option<f64> {
 /// Meldet, ob man den Hufschlag eines Monarchen hört (events.ts › rideLoops): lebt und bewegt sich.
 pub fn riding(p: Option<&Player>) -> bool {
     p.is_some_and(|p| p.crown.is_none() && p.vx.abs() >= RIDE_MIN_SPEED)
+}
+
+/// Wetter-Ambient der Stufe `w`: Schlüssel, Slot und Pegel, solange die Wetternacht wirkt (Phase `active`) und die Stufe an
+/// der Oberfläche liegt; Vorboten, Morgen und Tiefe: still (RU62.7).
+pub fn weather_ambient(w: &World) -> Option<(i64, &'static str, f64)> {
+    use k3c_sim::state::weather_view::{WeatherKind, WeatherPhase};
+    if w.biome.depth != 0 {
+        return None;
+    }
+    let s = w.weather?;
+    if s.phase != WeatherPhase::Active {
+        return None;
+    }
+    Some(match s.kind {
+        WeatherKind::Taifun => (WEATHER_LOOP_KEY, SLOT_WIND, WEATHER_GAIN),
+        WeatherKind::Flut => (WEATHER_LOOP_KEY + 1, SLOT_WATER, WEATHER_GAIN),
+    })
 }

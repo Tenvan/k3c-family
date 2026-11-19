@@ -33,6 +33,7 @@ impl World {
         let factor = current().scroll_for(&st.level, 0, lk.scroll[0]);
         self.draw_layer_with(dst, c, wd, lk, 0, (back, factor, 1.0));
         self.draw_haze(dst, c, &st.level, lk.sky, back, 0);
+        self.draw_weather_sky(dst, f, c);
     }
 
     /// DrawHaze legt Dunst in Himmelsfarbe über die Welt der Zelle nach der Schicht `i` (Luftperspektive, RU55.4).

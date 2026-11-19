@@ -260,6 +260,43 @@ fn plan_ride_loops_and_pause() {
     assert_eq!(m.music[0].slot, "", "ohne Register still: {:?}", m.music);
 }
 
+// RU62.7: Wetter-Ambient startet mit `active` und endet am Morgen; Vorboten und Tiefe sind still; je Art ein Slot.
+#[test]
+fn plan_weather_ambient_starts_active_and_ends_at_dawn() {
+    use super::super::events::{SLOT_WATER, SLOT_WIND, WEATHER_GAIN, WEATHER_LOOP_KEY};
+    use k3c_sim::state::weather_view::{WeatherKind, WeatherPhase, WeatherState};
+    let mut p = planner();
+    let mut w = stage_world("night", &[0.0]);
+    let set = |w: &mut k3c_sim::state::World, k, ph, depth: i64| {
+        w.weather = Some(WeatherState { kind: k, phase: ph });
+        w.biome.depth = depth;
+    };
+    set(&mut w, WeatherKind::Taifun, WeatherPhase::Forecast, 0);
+    assert!(p.plan(&game_frame(&w, 1, &[])).loops.is_empty(), "Vorboten: still");
+    set(&mut w, WeatherKind::Taifun, WeatherPhase::Active, 0);
+    let l = p.plan(&game_frame(&w, 1, &[])).loops.clone();
+    assert_eq!(
+        l.iter().map(|x| (x.key, x.slot, x.gain)).collect::<Vec<_>>(),
+        vec![(WEATHER_LOOP_KEY, SLOT_WIND, WEATHER_GAIN)],
+        "Taifun: Wind"
+    );
+    set(&mut w, WeatherKind::Flut, WeatherPhase::Active, 0);
+    let l = p.plan(&game_frame(&w, 1, &[])).loops.clone();
+    assert_eq!(
+        (l[0].key, l[0].slot),
+        (WEATHER_LOOP_KEY + 1, SLOT_WATER),
+        "Flut: Wasser"
+    );
+    set(&mut w, WeatherKind::Flut, WeatherPhase::Active, 2);
+    assert!(p.plan(&game_frame(&w, 1, &[])).loops.is_empty(), "unter Tage: still");
+    w.weather = None; // Morgen: der Sim meldet kein Wetter mehr
+    w.biome.depth = 0;
+    assert!(
+        p.plan(&game_frame(&w, 1, &[])).loops.is_empty(),
+        "Morgen: Ambient endet"
+    );
+}
+
 // Der Listen-Pfad legt ab dem zweiten Aufruf keine Puffer neu an (Go: AllocsPerRun; hier: Kapazitäten bleiben).
 #[test]
 fn plan_no_new_buffers_per_frame() {
