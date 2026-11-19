@@ -5,6 +5,7 @@ pub mod art;
 pub mod audio;
 pub mod demo;
 pub mod devtools;
+pub mod devwin;
 pub mod fx;
 pub mod game;
 pub mod hud;

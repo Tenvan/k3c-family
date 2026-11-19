@@ -6,7 +6,7 @@
 use std::sync::Arc;
 use std::sync::mpsc::{self, Receiver, RecvTimeoutError, Sender};
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use k3c_devproto::{MAX_LINE, Msg, PROTO_VERSION, ProtoError, decode_line, encode_line};
 use windows::Win32::Foundation::{CloseHandle, ERROR_PIPE_CONNECTED, HANDLE};
@@ -21,6 +21,11 @@ use super::controls::wide;
 
 const BUF: u32 = 64 * 1024;
 const POLL: Duration = Duration::from_millis(10);
+/// Abstand der Herzschläge zum Spiel. Das Spiel liest mit einem blockierenden `ReadFile`; ein synchrones Handle
+/// serialisiert Lesen und Schreiben, sein Schreiben käme sonst erst nach der nächsten Nachricht des Fensters durch.
+/// Der Herzschlag (`{"t":"ping"}`, dem Spiel eine unbekannte Art und damit ignoriert) beendet das Lesen alle 50 ms.
+const HEARTBEAT: Duration = Duration::from_millis(50);
+const PING: &[u8] = b"{\"t\":\"ping\"}\n";
 
 /// Sink nimmt zu, was die Pipe liefert; `false` beendet den Thread (das Fenster ist weg).
 pub trait Sink: Send + Sync + 'static {
@@ -113,7 +118,10 @@ fn connect(h: HANDLE) -> Result<()> {
 
 fn write_msg(h: HANDLE, m: &Msg) -> Result<()> {
     let line = encode_line(m).map_err(|e| Error::new(HRESULT(-1), e.to_string()))?;
-    let mut rest = line.as_bytes();
+    write_bytes(h, line.as_bytes())
+}
+
+fn write_bytes(h: HANDLE, mut rest: &[u8]) -> Result<()> {
     while !rest.is_empty() {
         let mut n = 0u32;
         // SAFETY: rest und n leben über den Aufruf; kein OVERLAPPED (synchron).
@@ -132,7 +140,14 @@ fn available(h: HANDLE) -> Result<u32> {
 
 fn session(h: HANDLE, rx: &Receiver<Msg>, sink: &dyn Sink) -> Exit {
     let mut acc: Vec<u8> = Vec::new();
+    let mut last_ping = Instant::now();
     loop {
+        if last_ping.elapsed() >= HEARTBEAT {
+            last_ping = Instant::now();
+            if write_bytes(h, PING).is_err() {
+                return Exit::Lost;
+            }
+        }
         loop {
             match rx.try_recv() {
                 Ok(m) => {

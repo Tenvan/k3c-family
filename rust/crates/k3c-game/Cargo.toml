@@ -22,6 +22,11 @@ png.workspace = true
 flate2 = "=1.1.11"
 serde.workspace = true
 serde_json.workspace = true
+# RU56.5: Nachrichten des Cheat-Fensters (eigenes Crate, ohne windows und unsafe).
+k3c-devproto = { path = "../k3c-devproto" }
+
+[target.'cfg(windows)'.dev-dependencies]
+k3c-devwin = { path = "../k3c-devwin" }
 
 [dev-dependencies]
 # Tests laufen im Look-Profil `go` (RU55.1), der Bildvergleich gegen Go bleibt gültig.
