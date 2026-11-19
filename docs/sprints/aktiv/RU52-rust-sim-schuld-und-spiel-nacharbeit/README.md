@@ -68,14 +68,14 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU52.1 | `RU52.1-protected-night-platzhalter.md` | Umsetzung | autonom | offen |
-| RU52.2 | `RU52.2-island-grade-ohne-klon.md` | Umsetzung | autonom | offen |
-| RU52.3 | `RU52.3-leere-ruempfe-crown-portal-views.md` | Umsetzung | autonom | offen |
-| RU52.4 | `RU52.4-unimplemented-ruempfe-ru18.md` | Umsetzung | autonom | offen |
-| RU52.5 | `RU52.5-testhelfer-inseln.md` | Umsetzung | autonom | offen |
-| RU52.6 | `RU52.6-ignore-tests-ursache.md` | Umsetzung | autonom | offen |
-| RU52.7 | `RU52.7-dev-session-rolle-im-view.md` | Umsetzung | autonom | offen |
-| RU52.8 | `RU52.8-native-json-bruchwerte.md` | Umsetzung | autonom | offen |
+| RU52.1 | `RU52.1-protected-night-platzhalter.md` | Umsetzung | autonom | fertig |
+| RU52.2 | `RU52.2-island-grade-ohne-klon.md` | Umsetzung | autonom | fertig |
+| RU52.3 | `RU52.3-leere-ruempfe-crown-portal-views.md` | Umsetzung | autonom | fertig |
+| RU52.4 | `RU52.4-unimplemented-ruempfe-ru18.md` | Umsetzung | autonom | fertig |
+| RU52.5 | `RU52.5-testhelfer-inseln.md` | Umsetzung | autonom | fertig |
+| RU52.6 | `RU52.6-ignore-tests-ursache.md` | Umsetzung | autonom | fertig |
+| RU52.7 | `RU52.7-dev-session-rolle-im-view.md` | Umsetzung | autonom | fertig |
+| RU52.8 | `RU52.8-native-json-bruchwerte.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

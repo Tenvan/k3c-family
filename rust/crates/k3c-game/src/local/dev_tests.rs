@@ -157,3 +157,15 @@ fn reload_without_save() {
     );
     assert!(s.active());
 }
+
+// RU52.7: Die Entwickler-Rolle ist über `view::Session` erreichbar (Go: Typ-Zusicherung), `devtools::dev_of` liefert sie,
+// und ein Cheat aus dem Menü wirkt im lokalen Spiel mit zwei Spielern.
+#[test]
+fn dev_role_via_view_session() {
+    let (mut s, _) = dev_game(&TempDir::new());
+    let before = coins_and_wood(&mut s).1;
+    let vs: &mut dyn crate::view::session::Session = &mut s;
+    let dev = crate::devtools::dev_of(vs).expect("Entwickler-Rolle");
+    dev.dev(1, &act_with("material", 5, "wood")).expect("Cheat");
+    assert!(coins_and_wood(&mut s).1 > before, "Holz nicht gestiegen");
+}

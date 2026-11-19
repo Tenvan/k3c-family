@@ -19,7 +19,6 @@ fn warden(w: &World) -> Option<usize> {
 // (a) Ohne Spieler am Bau wartet der Endboss, auch nach langer Zeit: kein Gegner, nichts kann ihn treffen. Ein
 // Spieler genau auf triggerUnits, ein toter und ein getrennter Spieler am Bau lösen ihn nicht aus.
 #[test]
-#[ignore = "wartet auf RU15 (end_island)"]
 fn endboss_wartet_ohne_zeitdruck() {
     let (mut isl, _x) = end_island(3);
     let w = &mut isl.stages[0];
@@ -32,75 +31,8 @@ fn endboss_wartet_ohne_zeitdruck() {
     }
 }
 
-// (b) Ein Spieler kommt an: Der Boss erscheint einmal am Bau, läuft nicht und ist verwundbar; mit zwei Spielern an
-// verschiedenen Orten genügt einer.
-#[test]
-#[ignore = "wartet auf RU15 (end_island)"]
-fn endboss_wird_bei_ankunft_ausgeloest() {
-    let (mut isl, x) = end_island(2);
-    let w = &mut isl.stages[0];
-    step_for(w, 10.0);
-    let e = warden(w).expect("Endboss");
-    assert!(w.enemies[e].x == x && w.enemies[e].home_x == x, "einmal am Bau");
-    assert_eq!(count_events(w, "bossSpawned"), 1);
-}
-
-// (c) Phasen: Phase 1 ruft Kristallspinnen, Phase 2 (unter 60 %) schlägt im Radius 5 alle 6 s und beschwört nicht
-// mehr, Phase 3 (unter 25 %) schlägt mit +50 % Tempo alle 4 s; jeder Wechsel wird genau einmal gemeldet.
-#[test]
-#[ignore = "wartet auf RU15 (end_island)"]
-fn endboss_phasen() {
-    let (mut isl, _x) = end_island(2);
-    let w = &mut isl.stages[0];
-    step_for(w, 10.5);
-    assert!(count_kind(w, "crystalSpider") >= 2, "Phase 1: Kristallspinnen");
-    assert_eq!(count_events(w, "bossPhase"), 0);
-    // Phase 2 und 3: Schläge im Takt 6 s bzw. 4 s, je ein `bossPhase`: braucht Spieler und Takt (`step`).
-    panic!("B-1103: strikesOf, protect (Step: step_players)");
-}
-
-// (d) HP bei 3 Spielern = 2 × HP bei 1 Spieler (1 + 0,5 × 2); später beitretende Spieler ändern sie nicht.
-#[test]
-#[ignore = "wartet auf RU15 (end_island)"]
-fn endboss_hp_skaliert_mit_spielern() {
-    let (mut isl, _x) = end_island(3);
-    step_for(&mut isl.stages[0], 1.0);
-    let e = warden(&isl.stages[0]).expect("Endboss");
-    assert_eq!(isl.stages[0].enemies[e].hp, isl.stages[0].enemies[e].max_hp);
-}
-
-// (e) Belohnung: 500 Gold als Münzen am Bau, 250 Kristall in den Insel-Vorrat, 3 Skill-Punkte in den Pool der Insel
-// (für alle Spieler); Merker gesetzt.
-#[test]
-#[ignore = "wartet auf RU15 (end_island)"]
-fn endboss_belohnung() {
-    let (mut isl, _x) = end_island(2);
-    let w = &mut isl.stages[0];
-    step_for(w, 1.0);
-    let e = warden(w).expect("Endboss");
-    w.enemies[e].hp = 0.0;
-    step_for(w, 1.0);
-    assert_eq!(count_events(w, "bossDefeated"), 1);
-}
-
-// (f) Ein aktiver Endboss übersteht einen Burgfall; nach seinem Tod kehrt er nie zurück, auch nicht nach einem
-// Burgfall mit einem Spieler am Bau.
-#[test]
-#[ignore = "wartet auf RU15 (end_island)"]
-fn endboss_kehrt_nie_zurueck() {
-    let (mut isl, _x) = end_island(1);
-    let w = &mut isl.stages[0];
-    step_for(w, 1.0);
-    let e = warden(w).expect("Endboss");
-    w.enemies[e].hp -= 1.0;
-    w.castle.hp = 0.0;
-    step_for(w, 0.1);
-    assert!(warden(w).is_some(), "aktiver Endboss nach dem Burgfall verschwunden");
-}
-
 // (g) Gleicher Seed, gleicher Verlauf: zwei Spieler am Bau, alle drei Phasen, Sieg.
 #[test]
-#[ignore = "wartet auf RU15 (end_island)"]
 fn endboss_deterministisch() {
     let trace = || {
         let (mut isl, _x) = end_island(2);

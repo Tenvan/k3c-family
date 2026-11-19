@@ -12,6 +12,17 @@ fn hammerless_peasant(w: &mut World, x: f64) -> usize {
     add_peasant(w, x, "")
 }
 
+/// Go: `materialOf`: der Vorrat, der genau die Baustoffe von `c` enthält (Gold gehört nicht in den Vorrat).
+fn material_of(c: &k3c_data::buildings::Cost) -> k3c_data::hub::Stock {
+    k3c_data::hub::Stock {
+        wood: c.wood,
+        stone: c.stone,
+        copper: c.copper,
+        iron: c.iron,
+        crystal: c.crystal,
+    }
+}
+
 /// B-950: Ohne Hammer baut kein Bauer; mit Hammer baut er, während beide Spieler am Bauplatz zahlen.
 #[test]
 fn nur_handwerker_bauen() {
@@ -82,7 +93,6 @@ fn handwerker_mindestens_einer() {
 
 /// B-951: Zwei Spieler zahlen den Hammer der Werkstatt; nach der Herstellung holt ihn ein Bauer ohne Hammer.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Bauer holt den Hammer nicht)"]
 fn werkstatt_hammer_herstellen_und_holen() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
@@ -93,6 +103,7 @@ fn werkstatt_hammer_herstellen_und_holen() {
         .as_ref()
         .map(|v| v.buildings["workshop"].hammer_cost.clone())
         .unwrap_or_default();
+    w.stock = material_of(&cost);
     let sx = w.sites[shop].x;
     let paid = |w: &World| w.sites[shop].bow_paid_gold >= cost.gold || w.sites[shop].craft_done > 0.0;
     assert!(pay_at(&mut w, &players, sx, 10.0, &paid), "Hammer nicht bezahlt");
@@ -107,14 +118,19 @@ fn werkstatt_hammer_herstellen_und_holen() {
 
 /// B-951: Der Bogner stellt Bögen her (Preis des Bogens), die Werkstatt keine; ein Bauer wird Bogenschütze.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Bauer wird nicht Bogenschütze)"]
 fn bogner_stellt_boegen_her() {
     let mut w = quiet_world();
     w.cycle_speed = 1e-6;
     let players = [add_player(&mut w), add_player(&mut w)];
     let bowyer = build_site(&mut w, "bowyer");
     let shop = build_site(&mut w, "workshop");
-    let bow_gold = w.vals.as_ref().map_or(0, |v| v.troops["archer"].cost.gold);
+    let bow = w
+        .vals
+        .as_ref()
+        .map(|v| v.troops["archer"].cost.clone())
+        .unwrap_or_default();
+    let bow_gold = bow.gold;
+    w.stock = material_of(&bow);
     let bx = w.sites[bowyer].x;
     let paid = |w: &World| w.sites[bowyer].bow_paid_gold >= bow_gold || w.sites[bowyer].craft_done > 0.0;
     assert!(pay_at(&mut w, &players, bx, 10.0, &paid), "Bogen nicht bezahlt");
@@ -158,7 +174,6 @@ fn hammer_faellt_und_wird_aufgehoben() {
 
 /// B-952: Ein gefällter Baum wirft 1 bis 3 Goldmünzen (aus den Daten), deterministisch für gleichen Seed.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: Baum nicht gefällt)"]
 fn baum_wirft_gold() {
     let mut counts = [0usize; 2];
     for c in &mut counts {
@@ -169,7 +184,8 @@ fn baum_wirft_gold() {
         w.nodes[tree].marked = true;
         w.troops[0].x = w.nodes[tree].x;
         let before = w.coins.len();
-        let gone = |w: &World| w.nodes.get(tree).is_none_or(|n| n.gone);
+        let tid = w.nodes[tree].id; // Go hält den Knoten per Zeiger; Indizes verschieben sich beim Entfernen
+        let gone = |w: &World| w.nodes.iter().find(|n| n.id == tid).is_none_or(|n| n.gone);
         assert!(run_until(&mut w, 60.0, &gone) >= 0.0, "Baum nicht gefällt");
         *c = w.coins.len() - before;
     }

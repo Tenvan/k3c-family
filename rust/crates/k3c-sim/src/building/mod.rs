@@ -25,6 +25,8 @@ mod plantation_tests;
 #[cfg(test)]
 mod repair_tests;
 #[cfg(test)]
+mod ruin_save_tests;
+#[cfg(test)]
 mod ruin_tests;
 #[cfg(test)]
 mod spell_tower_tests;

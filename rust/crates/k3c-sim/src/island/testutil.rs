@@ -82,6 +82,7 @@ pub fn new_island(data: &Data, seed: &str, depths: &[i64]) -> Island {
 pub fn must_island(data: &Data, seed: &str, depths: &[i64]) -> Island {
     let mut isl = new_island(data, seed, depths);
     isl.stock = Stock::default();
+    isl.sync_stock(); // Go: alle Stufen zeigen auf denselben Vorrat
     isl
 }
 

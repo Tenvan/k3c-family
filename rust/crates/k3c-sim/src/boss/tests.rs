@@ -5,7 +5,9 @@
 use k3c_data::{Source, load_all};
 
 use super::data::mini_boss;
-use super::testutil::{boss_island, boss_stage, boss_values, bosses_in, count_kind, start_wave, wave_until};
+use super::testutil::{
+    boss_island, boss_stage, boss_values, bosses_in, count_kind, on_stage_mut, start_wave, wave_until,
+};
 use super::{boss_ability_with, place_boss, trigger_boss_with};
 use crate::enemies::testutil::{count_events, run, step_for};
 use crate::enemies::waves::remove_dead_enemies;
@@ -13,14 +15,13 @@ use crate::state::{Troop, World};
 
 // (a) Wald ab Welle 5, Höhle und Mine ab Welle 3, über das erste Portal; kein zweiter, solange einer lebt.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_miniboss_kommt_mit_seiner_welle() {
     let mut isl = boss_island(1);
     for (i, (wave, id)) in [(5, "goblinLeader"), (3, "trollKing"), (3, "ratQueen")]
         .into_iter()
         .enumerate()
     {
-        wave_until(&mut isl.stages[i], wave - 1);
+        wave_until(&mut isl, i, wave - 1);
         assert!(bosses_in(&isl.stages[i]).is_empty(), "{id} schon vor Welle {wave}");
         start_wave(&mut isl, i);
         let w = &isl.stages[i];
@@ -40,7 +41,6 @@ fn boss_miniboss_kommt_mit_seiner_welle() {
 
 // (b) Goblin-Anführer ruft 2 Goblins je 10 s an seinen Ort.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_goblin_anfuehrer_ruft_goblins() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];
@@ -110,36 +110,50 @@ fn boss_troll_koenig_flaechenschlag() {
 
 // (c) Belohnung: 14 Gold als Münzen, 50 Material in den Insel-Vorrat, 1 Skill-Punkt für beide Spieler.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_belohnung_fuer_alle() {
     let mut isl = boss_island(2);
-    let w = &mut isl.stages[0];
     let v = boss_values();
     let b = mini_boss(&v.bosses, 0).expect("Miniboss");
-    let x = w.hub_x + 15.0;
-    let boss = super::spawn_boss(w, &v, b, x, None);
-    let coins = w.coins.len();
-    w.enemies[boss].hp = 0.0;
-    remove_dead_enemies(w, None);
-    assert_eq!(w.coins.len() - coins, 14, "Münzen");
-    // Holz +50, Skill-Pool +1 für beide Spieler und Spiegelung in jede Stufe: braucht `Island` (RU10).
-    panic!("RU10: Insel-Vorrat, Skill-Pool, AvailablePoints");
+    let (coins, wood, pool) = (isl.stages[0].coins.len(), isl.stock.wood, isl.skill_pool);
+    on_stage_mut(&mut isl, 0, |w, r| {
+        let x = w.hub_x + 15.0;
+        let boss = super::spawn_boss(w, &v, b, x, Some(&*r));
+        w.enemies[boss].hp = 0.0;
+        remove_dead_enemies(w, Some(r));
+    });
+    assert_eq!(isl.stages[0].coins.len() - coins, 14, "Münzen");
+    assert_eq!(isl.stock.wood - wood, 50, "Holz");
+    assert_eq!(isl.skill_pool, pool + 1, "Skill-Pool");
+    for pi in 0..isl.stages[0].players.len() {
+        assert_eq!(
+            crate::monarch::available_points(&isl.stages[0], pi),
+            pool + 1,
+            "Spieler {pi}"
+        );
+    }
+    assert!(
+        isl.stages.iter().all(|s| s.skill_points == isl.skill_pool),
+        "Stufe spiegelt den Pool nicht"
+    );
 }
 
 // (c) Über dem Lager-Maximum verfällt der Rest des Materials.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_material_bis_zum_lager_maximum() {
     let mut isl = boss_island(1);
-    let w = &mut isl.stages[0];
     let v = boss_values();
     let b = mini_boss(&v.bosses, 0).expect("Miniboss");
-    let x = w.hub_x + 15.0;
-    let boss = super::spawn_boss(w, &v, b, x, None);
-    w.enemies[boss].hp = 0.0;
-    remove_dead_enemies(w, None);
-    // Vorrat Holz = Lager-Maximum (`capacity(w)`) – 10 vorher, danach genau das Maximum: braucht `Island` (RU10).
-    panic!("RU10: capacity, Insel-Vorrat");
+    let limit = on_stage_mut(&mut isl, 0, |w, r| {
+        crate::island::storage::capacity(w, &crate::world::vals(w), Some(&*r)).expect("Lager-Maximum")
+    });
+    isl.stock.wood = limit - 10;
+    on_stage_mut(&mut isl, 0, |w, r| {
+        let x = w.hub_x + 15.0;
+        let boss = super::spawn_boss(w, &v, b, x, Some(&*r));
+        w.enemies[boss].hp = 0.0;
+        remove_dead_enemies(w, Some(r));
+    });
+    assert_eq!(isl.stock.wood, limit, "Holz");
 }
 
 // (d) HP × (1 + bossHpPerExtraPlayer je Zusatzspieler der Insel) × enemyHp des Grads, nicht × waveSize; Tiefenfaktor
@@ -151,7 +165,7 @@ fn boss_skalierung() {
     let v = boss_values();
     let hp_of = |players: i64, depth: i64, grade: &str| -> f64 {
         let (mut w, mut isl) = boss_stage(depth, players);
-        isl.grade = d.difficulty.grades[grade].clone();
+        isl.grade = (&d.difficulty.grades[grade]).into();
         let b = mini_boss(&v.bosses, depth).expect("Miniboss");
         let x = w.portals[0];
         let ei = place_boss(&mut w, &v, b, x, Some(&isl));
@@ -173,7 +187,6 @@ fn boss_skalierung() {
 
 // (e) Ein Boss flieht weder bei Tagesanbruch noch bei halber HP; seine Beschwörungen schon.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_flieht_nie() {
     let mut isl = boss_island(1);
     let w = &mut isl.stages[0];
@@ -195,30 +208,37 @@ fn boss_flieht_nie() {
 // (f) Ein besiegter Boss kommt nie wieder, auch nicht nach einem Burgfall; ein lebender kommt nach dem Burgfall
 // mit der nächsten Welle erneut.
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_besiegt_kommt_nie_wieder() {
     let mut isl = boss_island(1);
-    wave_until(&mut isl.stages[1], 3);
-    wave_until(&mut isl.stages[2], 3);
+    wave_until(&mut isl, 1, 3);
+    wave_until(&mut isl, 2, 3);
+    on_stage_mut(&mut isl, 2, |w, r| crate::world::castle_fallen(w, Some(r)));
     start_wave(&mut isl, 2);
     assert_eq!(
         bosses_in(&isl.stages[2]).len(),
         1,
         "unbesiegter Boss kommt nach dem Burgfall nicht wieder"
     );
-    panic!("RU10: castleFallen, DefeatedBosses der Insel");
+    let cave = bosses_in(&isl.stages[1])[0];
+    isl.stages[1].enemies[cave].hp = 0.0;
+    on_stage_mut(&mut isl, 1, |w, r| remove_dead_enemies(w, Some(r)));
+    assert_eq!(isl.defeated_bosses, ["trollKing"], "Merker");
+    start_wave(&mut isl, 1);
+    on_stage_mut(&mut isl, 1, |w, r| crate::world::castle_fallen(w, Some(r)));
+    start_wave(&mut isl, 1);
+    start_wave(&mut isl, 1);
+    assert!(bosses_in(&isl.stages[1]).is_empty(), "besiegter Boss kehrt zurück");
 }
 
 // (g) bossSpawned und bossDefeated je genau einmal (kein `kill` für den Boss).
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_ereignisse_genau_einmal() {
     let mut isl = boss_island(2);
-    wave_until(&mut isl.stages[1], 5);
-    let w = &mut isl.stages[1];
-    let b = bosses_in(w)[0];
-    w.enemies[b].hp = 0.0;
-    remove_dead_enemies(w, None);
+    wave_until(&mut isl, 1, 5);
+    let b = bosses_in(&isl.stages[1]);
+    assert!(!b.is_empty(), "kein Boss in Stufe 1");
+    isl.stages[1].enemies[b[0]].hp = 0.0;
+    on_stage_mut(&mut isl, 1, |w, r| remove_dead_enemies(w, Some(r)));
     start_wave(&mut isl, 1);
     let w = &isl.stages[1];
     let (s, d, k) = (
@@ -234,11 +254,10 @@ fn boss_ereignisse_genau_einmal() {
 
 // (h) Gleicher Seed, gleicher Verlauf (zwei Spieler, Boss kämpft, beschwört und fällt).
 #[test]
-#[ignore = "wartet auf RU10 (boss_island (CreateIsland, AddIslandPlayer))"]
 fn boss_deterministisch() {
     let trace = || {
         let mut isl = boss_island(2);
-        wave_until(&mut isl.stages[0], 5);
+        wave_until(&mut isl, 0, 5);
         step_for(&mut isl.stages[0], 15.0);
         let w = &isl.stages[0];
         let mut out = w.enemies.len().to_string();

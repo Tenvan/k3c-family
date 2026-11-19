@@ -90,7 +90,11 @@ impl Island {
     /// Wellenstarts. Gleicher Rechenweg wie bei der Stufe: `IslandRef::wave_factors`.
     pub fn wave_factors(&self, difficulty: &DifficultyFile) -> (f64, f64, f64) {
         IslandRef {
-            grade: difficulty.grades.get(&self.options.grade).cloned().unwrap_or_default(),
+            grade: difficulty
+                .grades
+                .get(&self.options.grade)
+                .map(Into::into)
+                .unwrap_or_default(),
             players: self.player_count(),
             per_extra_player: self.per_extra_player(),
             ..IslandRef::default()

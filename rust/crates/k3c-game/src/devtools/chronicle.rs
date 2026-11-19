@@ -59,7 +59,7 @@ pub struct NativeValues {
     pub slow_log_every_seconds: f64,
 }
 
-/// load_native liest `data/native.json`; fehlt ein Wert: 4 ms bzw. 5 s. Eine nicht lesbare Datei bleibt still (wie Go),
+/// load_native liest `data/native.json`; fehlt ein Wert: 4 ms bzw. 5 s (ein ausdrückliches `0` bei `slowLogEverySeconds` bleibt 0, wie Go; `stepBudgetMs` ≤ 0 wird 4). Eine nicht lesbare Datei bleibt still (wie Go),
 /// eine ungültige loggt `💥` und gibt die Standardwerte.
 pub fn load_native(log: &dyn LogSink) -> NativeValues {
     let mut v = NativeValues {
@@ -69,8 +69,8 @@ pub fn load_native(log: &dyn LogSink) -> NativeValues {
     if let Ok(raw) = k3c_data::Source::from_env().read(k3c_data::native::FILE) {
         match k3c_data::native::load(&raw) {
             Ok(n) => {
-                v.step_budget_ms = to_f64(n.step_budget_ms);
-                v.slow_log_every_seconds = to_f64(n.slow_log_every_seconds);
+                v.step_budget_ms = n.step_budget_ms.unwrap_or(v.step_budget_ms);
+                v.slow_log_every_seconds = n.slow_log_every_seconds.unwrap_or(v.slow_log_every_seconds);
             }
             Err(e) => log.warn("💥 data/native.json unlesbar, Standardwerte", &[("err", e.to_string())]),
         }
@@ -78,15 +78,7 @@ pub fn load_native(log: &dyn LogSink) -> NativeValues {
     if v.step_budget_ms <= 0.0 {
         v.step_budget_ms = DEFAULT_STEP_BUDGET_MS;
     }
-    if v.slow_log_every_seconds <= 0.0 {
-        v.slow_log_every_seconds = DEFAULT_SLOW_LOG_EVERY_SECONDS;
-    }
     v
-}
-
-#[allow(clippy::cast_precision_loss)] // Werte aus der Datei sind klein
-fn to_f64(n: i64) -> f64 {
-    n as f64
 }
 
 /// Run ist der Zustand einer Sitzung; `Chronicle::begin` setzt ihn mit dem ersten Frame eines Spiels zurück.

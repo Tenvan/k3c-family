@@ -141,7 +141,6 @@ fn own_restore_pool_spiegelt_pool_und_zaehlt_truhen() {
 /// Go: `TestIslandSaveV3Rundlauf`: Pool, Verteilung und Slots zweier Spieler bleiben erhalten; Speichern, Laden, Speichern
 /// ist gleich.
 #[test]
-#[ignore = "wartet auf RU18 (Ursache ungeprueft: assertion `left == right` failed: Speichern, Laden, Speichern)"]
 fn island_save_v3_rundlauf() {
     let data = test_data();
     let mut isl = must_island(&data, "stand-v3", &[0, 1]);

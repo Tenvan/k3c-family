@@ -3,6 +3,7 @@
 
 use super::escort::{escort_post, escort_post_at};
 use crate::enemies::testutil::*;
+use crate::island::testutil::DT;
 use crate::state::Troop;
 
 #[test]
@@ -36,27 +37,42 @@ fn escort_post_at_liegt_auf_der_seite_des_hubs_in_reichweite() {
 }
 
 #[test]
-#[ignore = "wartet auf RU10"] // der Bezug zur Insel (`IslandRef`) kommt mit dem Insel-Schritt (`None` hier ist Platzhalter)
 fn truppen_begleiten_den_monarchen_zum_endboss() {
+    use crate::island::step_island;
+    use crate::island::testutil::test_data;
+    let data = test_data();
     let (mut isl, lair) = end_island(1);
-    let w = &mut isl.stages[0];
-    let v0 = w.vals.clone().expect("Wertesatz");
-    let (archers, warriors) = unverwundbare_truppen(w);
+    let v0 = isl.stages[0].vals.clone().expect("Wertesatz");
+    let (archers, warriors) = unverwundbare_truppen(&mut isl.stages[0]);
+    // Go: `endSteps(w, seconds, true)`: Stufe 0 samt Insel ticken, die Spieler am Leben halten.
+    let steps = |isl: &mut crate::island::Island, seconds: f64| {
+        for _ in 0..(seconds / DT).round() as usize {
+            for p in &mut isl.stages[0].players {
+                (p.crown, p.gold, p.last_stand_for) = (None, 1000, 1.0);
+            }
+            step_island(isl, &[], &data.difficulty, DT);
+        }
+    };
+    // Begleitschutz-Posten des ersten Schützen (Go: `escortPost(w, t)`, liest die Insel über `w.island`).
+    let post = |isl: &mut crate::island::Island, t: usize| {
+        let r = isl.stage_ref(0, &data.difficulty);
+        let out = escort_post(&isl.stages[0], &v0, Some(&r), &isl.stages[0].troops[t]);
+        isl.put_stage_ref(r);
+        out
+    };
     // Ohne Monarch am Boss: kein Begleitschutz (der Boss ist gar nicht erschienen).
-    assert!(
-        escort_post(w, &v0, None, &w.troops[archers[0]]).is_none(),
-        "Begleitschutz ohne Endboss"
-    );
-    w.players[0].x = lair - 10.0; // näher als triggerUnits: der Boss erscheint und der Begleitschutz rastet ein
-    for _ in 0..2 {
-        step(w, None, DT);
-    }
-    let boss = w.enemies.iter().position(|e| e.boss).expect("Endboss nicht erschienen");
-    w.enemies[boss].hp = 1e9;
-    w.enemies[boss].max_hp = 1e9; // der Test prüft den Marsch, nicht den Sieg
-    for _ in 0..120 {
-        step(w, None, DT);
-    }
+    assert!(post(&mut isl, archers[0]).is_none(), "Begleitschutz ohne Endboss");
+    isl.stages[0].players[0].x = lair - 10.0; // näher als triggerUnits: der Boss erscheint und der Begleitschutz rastet ein
+    steps(&mut isl, 2.0);
+    let boss = isl.stages[0]
+        .enemies
+        .iter()
+        .position(|e| e.boss)
+        .expect("Endboss nicht erschienen");
+    isl.stages[0].enemies[boss].hp = 1e9;
+    isl.stages[0].enemies[boss].max_hp = 1e9; // der Test prüft den Marsch, nicht den Sieg
+    steps(&mut isl, 120.0);
+    let w = &isl.stages[0];
     let v = w.vals.clone().expect("Wertesatz");
     for &a in &archers {
         let d = (w.troops[a].x - w.enemies[boss].x).abs();
@@ -68,17 +84,16 @@ fn truppen_begleiten_den_monarchen_zum_endboss() {
     }
     assert!(w.enemies[boss].hp < 1e9, "kein Truppenschaden am Boss");
     // Der Begleitschutz bleibt, auch wenn der Monarch weggeht, und endet mit dem Tod des Bosses.
-    w.players[0].x = w.hub_x;
-    step(w, None, DT);
+    let hub = w.hub_x;
+    isl.stages[0].players[0].x = hub;
+    steps(&mut isl, 1.0);
     assert!(
-        escort_post(w, &v0, None, &w.troops[archers[0]]).is_some(),
+        post(&mut isl, archers[0]).is_some(),
         "Begleitschutz hörte mit dem Monarchen auf"
     );
-    w.enemies[boss].hp = 0.0;
-    assert!(
-        escort_post(w, &v0, None, &w.troops[archers[0]]).is_none(),
-        "Begleitschutz trotz totem Boss"
-    );
+    let boss = isl.stages[0].enemies.iter().position(|e| e.boss).expect("Endboss");
+    isl.stages[0].enemies[boss].hp = 0.0;
+    assert!(post(&mut isl, archers[0]).is_none(), "Begleitschutz trotz totem Boss");
 }
 
 /// Go: `troopsAt`: drei Schützen rechts und drei Krieger links vom Hub, unverwundbar: Der Test prüft den Marsch; ein
