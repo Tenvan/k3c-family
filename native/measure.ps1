@@ -105,6 +105,16 @@ if ($Exe) {
     }
     $exes[$Engine] = $Exe
 }
+# Go-Spiel ohne EXE (nach RU37): gespeicherte Referenz ausgeben statt zu scheitern (RU58.3, docs/messung/go-referenz.json)
+if ($Engine -eq 'game' -and -not (Test-Path $exes.game)) {
+    $ref = Join-Path $here '..\docs\messung\go-referenz.json'
+    if (-not (Test-Path $ref)) { $ref = Join-Path $here 'go-referenz.json' }
+    if (Test-Path $ref) {
+        Write-Host "⏳ Referenz, nicht live: keine Go-EXE gefunden, gespeicherte Werte aus $ref (Tag go-referenz-final)"
+        Get-Content $ref -Raw -Encoding UTF8
+        return
+    }
+}
 $engines = @(switch ($Engine) {
         'ebiten' { 'ebiten' }
         'rig' { 'rig' }
@@ -204,7 +214,7 @@ function Get-Jobs($eng) {
     $jobs
 }
 
-$runs = @()
+$laeufe = @()
 foreach ($eng in $engines) {
     $jobList = @(Get-Jobs $eng)
     if ($eng -notin @('game', 'rustgame')) { $jobList = $jobList | ForEach-Object { @{ name = $_.name; args = $_.args; lauf = 1 } } }
@@ -255,14 +265,14 @@ foreach ($eng in $engines) {
             $r | Add-Member bilder (Get-FrameStats $framesFile) -Force
             Write-Host ("📄 {0} {1}: Median {2} ms, p99 {3} ms, längstes {4} ms, lang {5} (Programm {6})" -f $eng, $mode, $r.bilder.median_ms, $r.bilder.p99_ms, $r.bilder.max_ms, $r.bilder.lang, $r.bilder.lang_programm)
         }
-        $runs += $r
+        $laeufe += $r
         Write-Host ("✅ {0} {1}: {2:N0} FPS Mittel, {3:N0} FPS 1-%-Low, p99 {4:N1} ms, GPU {5} MiB, RAM {6} MiB" -f $eng, $mode, $r.fps_mittel, $r.fps_1pct_low, $r.frametime_ms.p99, $r.gpu_dediziert_mib_max, $r.ram_mib_max)
     }
 }
 
 $kind = if ($engines.Count -eq 1 -and $engines[0] -in @('rig', 'game', 'rustgame', 'replay')) { $engines[0] } else { 'proto' }
 $out = Join-Path $reports "native-$kind-$($env:COMPUTERNAME)-$stamp.json"
-$json = [ordered]@{ zeit = (Get-Date -Format 'o'); rechner = (Get-Machine); laeufe = $runs } | ConvertTo-Json -Depth 6
+$json = [ordered]@{ zeit = (Get-Date -Format 'o'); rechner = (Get-Machine); laeufe = $laeufe } | ConvertTo-Json -Depth 6
 # UTF-8 ohne BOM (Set-Content -Encoding UTF8 schreibt in PowerShell 5.1 eine BOM, an der JSON-Leser scheitern)
 [IO.File]::WriteAllText($out, $json, (New-Object Text.UTF8Encoding $false))
 Write-Host "💾 Bericht: $out"

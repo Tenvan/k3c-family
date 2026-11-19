@@ -1,0 +1,105 @@
+{
+ "commit_tag": "dbb87c33",
+ "tag": "go-referenz-final",
+ "datum": "2026-11-19",
+ "rechner": {
+  "name": "STIRA-PC",
+  "modell": "Micro-Star International Co., Ltd. MS-7C56",
+  "cpu": "AMD Ryzen 7 5800X 8-Core Processor",
+  "ram_gb": 32,
+  "gpus": [
+   "AMD Radeon RX 6700 XT (Treiber 32.0.21030.2001)"
+  ]
+ },
+ "hinweis": "Referenz, nicht live. Fenster 1028x749 statt 1920x1080 (vom System begrenzt). Messwerte der Läufe je 20 s nach 5 s Aufwärmen, 3 Läufe je Szene.",
+ "messungen": [
+  {
+   "szene": "tag",
+   "vsync": false,
+   "laeufe": 3,
+   "fenster": [
+    1028,
+    749
+   ],
+   "fps_mittel_median": 3169.223,
+   "fps_1pct_low_median": 1169.737,
+   "frametime_p50_ms": 0.298,
+   "frametime_p99_ms": 0.578,
+   "frametime_max_ms_schlechtester": 5.011,
+   "bilder_median_ms": 0.297,
+   "bilder_p99_ms": 0.492,
+   "bilder_max_ms_schlechtester": 1.721,
+   "start_ms_median": 1298,
+   "ram_mib_max": 371,
+   "gpu_dediziert_mib_max": 162,
+   "exe_mib": 25.1,
+   "takt_ms_median": 0.136
+  },
+  {
+   "szene": "nacht",
+   "vsync": false,
+   "laeufe": 3,
+   "fenster": [
+    1028,
+    749
+   ],
+   "fps_mittel_median": 2196.872,
+   "fps_1pct_low_median": 876.85,
+   "frametime_p50_ms": 0.432,
+   "frametime_p99_ms": 0.828,
+   "frametime_max_ms_schlechtester": 7.4,
+   "bilder_median_ms": 0.429,
+   "bilder_p99_ms": 0.599,
+   "bilder_max_ms_schlechtester": 1.361,
+   "start_ms_median": 2102,
+   "ram_mib_max": 331,
+   "gpu_dediziert_mib_max": 162,
+   "exe_mib": 25.1,
+   "takt_ms_median": 0.149
+  },
+  {
+   "szene": "tag",
+   "vsync": true,
+   "laeufe": 3,
+   "fenster": [
+    1028,
+    749
+   ],
+   "fps_mittel_median": 12.819,
+   "fps_1pct_low_median": 12.475,
+   "frametime_p50_ms": 78.004,
+   "frametime_p99_ms": 79.999,
+   "frametime_max_ms_schlechtester": 80.877,
+   "bilder_median_ms": 78.004,
+   "bilder_p99_ms": 79.999,
+   "bilder_max_ms_schlechtester": 80.877,
+   "start_ms_median": 1303,
+   "ram_mib_max": 290,
+   "gpu_dediziert_mib_max": 166,
+   "exe_mib": 25.1,
+   "takt_ms_median": 0.115
+  },
+  {
+   "szene": "nacht",
+   "vsync": true,
+   "laeufe": 3,
+   "fenster": [
+    1028,
+    749
+   ],
+   "fps_mittel_median": 12.83,
+   "fps_1pct_low_median": 12.412,
+   "frametime_p50_ms": 77.925,
+   "frametime_p99_ms": 79.952,
+   "frametime_max_ms_schlechtester": 80.981,
+   "bilder_median_ms": 77.925,
+   "bilder_p99_ms": 79.952,
+   "bilder_max_ms_schlechtester": 80.981,
+   "start_ms_median": 2125,
+   "ram_mib_max": 303,
+   "gpu_dediziert_mib_max": 162,
+   "exe_mib": 25.1,
+   "takt_ms_median": 0.127
+  }
+ ]
+}

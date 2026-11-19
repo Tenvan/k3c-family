@@ -38,7 +38,9 @@ Es gibt keinen Schalter `--version`; die Version steht in `native/k3c-game/bin/v
 - **Vergleich:** `rust/crates/k3c-game/tests/e2e_compare.rs` liest die Go-Seite fest aus dieser Referenz, die Rust-Seite aus
   `K3C_E2E_OUT/rust/a` (Standard `.work/e2e`; Aufnahme mit `K3C_RUST_EXE=<exe> cargo test -p k3c-game --test e2e_images`).
   Ohne Rust-Bilder überspringt der Test; eine Go-EXE ist nicht mehr nötig.
-- **Messwerte, Farbwerte, Pause-Fenster:** RU58.3.
+- **Messwerte, Farbwerte, Pause-Fenster (RU58.3):** `docs/messung/go-referenz.json` und `.md` (Frame-Zeit, Start, Speicher je Szene,
+  mit und ohne VSync), `testdata/rust/go-referenz/farben.json` und `pause.png`. `native/measure.ps1 -Engine game` gibt sie aus,
+  wenn keine Go-EXE da ist (Hinweis „Referenz, nicht live“, Exit 0).
 
 ## Aufräumen
 

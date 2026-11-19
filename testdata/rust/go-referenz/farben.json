@@ -1,0 +1,91 @@
+{
+ "quelle": "Go-Spiel aus Tag go-referenz-final, Fensteraufnahme (PrintWindow, Clientbereich 1028x720), Szene tag, Seed k3c, 2 Spieler, Takt 300",
+ "schwelle_je_kanal": 2,
+ "stellen": [
+  {
+   "name": "himmel_oben",
+   "x": 0.25,
+   "y": 0.02,
+   "rgb": [
+    142,
+    202,
+    230
+   ]
+  },
+  {
+   "name": "hud_flaeche_beutel",
+   "x": 0.06,
+   "y": 0.03,
+   "rgb": [
+    64,
+    91,
+    104
+   ]
+  },
+  {
+   "name": "boden_streifen",
+   "x": 0.5,
+   "y": 0.335,
+   "rgb": [
+    88,
+    129,
+    87
+   ]
+  },
+  {
+   "name": "wasser",
+   "x": 0.5,
+   "y": 0.45,
+   "rgb": [
+    72,
+    131,
+    179
+   ]
+  },
+  {
+   "name": "hauptmenue_himmel",
+   "x": 0.5,
+   "y": 0.05,
+   "rgb": [
+    11,
+    16,
+    38
+   ],
+   "bild": "main"
+  },
+  {
+   "name": "hauptmenue_papier",
+   "x": 0.5,
+   "y": 0.55,
+   "rgb": [
+    224,
+    210,
+    176
+   ],
+   "bild": "main"
+  },
+  {
+   "name": "pause_himmel",
+   "x": 0.2,
+   "y": 0.05,
+   "rgb": [
+    11,
+    16,
+    38
+   ],
+   "bild": "pause"
+  },
+  {
+   "name": "pause_boden",
+   "x": 0.5,
+   "y": 0.85,
+   "rgb": [
+    59,
+    58,
+    107
+   ],
+   "bild": "pause"
+  }
+ ],
+ "hinweis": "x und y sind Anteile der Clientbreite und -höhe; Aufnahme der Fenster mit der Go-EXE (VSync an, das Fenster lief mit 13 FPS, siehe go-referenz.md). Papierkarte der Seekarte nicht erreichbar, ersatzweise das Papier des Hauptmenüs. Pause: Das Go-Pausenmenü (`--menu pause`) ist ein eigener Bildschirm mit Nachthimmel, kein Overlay über der Welt."
+}
