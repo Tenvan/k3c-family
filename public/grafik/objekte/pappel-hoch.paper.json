@@ -1,0 +1,112 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "pappel-hoch",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Hohe schlanke Pappel (3,4 M).",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-10.5 0L-5.7 -11L-4.1 -62.4L4.1 -62.4L5.7 -11L10.5 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-10.5 0L-5.7 -11L-4.1 -62.4L-1.7 -62.4L-1.7 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.4,
+          "form": "M1.7 -7.4L1.1 -37.4",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M27.4 -154.2C27.4 -213.1 15.2 -260.7 0 -260.7C-15.2 -260.7 -27.4 -213.1 -27.4 -154.2C-27.4 -95.4 -15.2 -47.7 0 -47.7C15.2 -47.7 27.4 -95.4 27.4 -154.2Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -185.4C-15.1 -185.4 -27.4 -171.4 -27.4 -154.2C-27.4 -137 -15.1 -123 0 -123C-5.5 -138.6 -5.5 -169.9 0 -185.4Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M11.3 -154.2C11.3 -206.9 3.4 -249.7 -6.5 -249.7C-16.3 -249.7 -24.2 -206.9 -24.2 -154.2C-24.2 -101.5 -16.3 -58.7 -6.5 -58.7C3.4 -58.7 11.3 -101.5 11.3 -154.2Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M19.3 -161.6C19.3 -206.2 12.9 -242.3 4.9 -242.3C-3.2 -242.3 -9.7 -206.2 -9.7 -161.6C-9.7 -117 -3.2 -80.8 4.9 -80.8C12.9 -80.8 19.3 -117 19.3 -161.6Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 1.6,
+          "form": "M3.2 -73.4C0 -128.5 0 -183.6 4.9 -242.3",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-9.7 -110.2L1.6 -143.3",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M13 -176.2L3.2 -205.6",
+          "material": "smaragd",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -55.1]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 310,
+    "rahmen": [-39, -269, 78, 275]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 1.5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -1.5
+          }
+        }
+      ]
+    }
+  }
+}

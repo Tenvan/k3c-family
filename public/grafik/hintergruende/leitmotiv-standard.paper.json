@@ -1,0 +1,92 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "leitmotiv-standard",
+  "rig": "hintergrund",
+  "version": 1,
+  "beschreibung": "Leitmotiv Standard-Welt: Burgberg mit Burg auf dem Gipfel, blasse Fern-Ebene (BB1.4)",
+  "teile": [
+    {
+      "id": "berg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M40 0L170 -125L255 -200L320 -262L384 -292L455 -262L525 -200L610 -125L740 0Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M384 -292L455 -262L525 -200L610 -125L740 0L470 0L440 -120Z",
+          "material": "stein",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [384, -240]
+    },
+    {
+      "id": "burg",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M326 -270L326 -355L444 -355L444 -270Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M316 -270L316 -415L342 -415L342 -270Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M426 -270L426 -395L452 -395L452 -270Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M364 -355L364 -425L404 -425L404 -355Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M310 -415L329 -455L348 -415Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M420 -395L439 -435L458 -395Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M358 -425L384 -468L410 -425Z",
+          "material": "leder",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M444 -270L444 -355L404 -355L404 -270Z",
+          "material": "stein",
+          "ton": "basis"
+        }
+      ],
+      "pivot": [384, -380]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 480,
+    "rahmen": [0, -480, 768, 480]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

@@ -83,16 +83,17 @@ Entschieden am 2026-11-19 mit Default (autonom, Claude; Ralf ändert, was ihm ni
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| BB1.1 | `BB1.1-masstab-figuren-schiff.md` | Umsetzung | autonom | offen |
-| BB1.2 | `BB1.2-masstab-hub-gebaeude.md` | Umsetzung | autonom | offen |
-| BB1.3 | `BB1.3-waldwand-baumvarianten.md` | Umsetzung | autonom | offen |
-| BB1.4 | `BB1.4-leitmotive-je-welt.md` | Umsetzung | autonom | offen |
-| BB1.5 | `BB1.5-review.md` | Review | autonom | offen |
+| BB1.1 | `BB1.1-masstab-figuren-schiff.md` | Umsetzung | autonom | fertig |
+| BB1.2 | `BB1.2-masstab-hub-gebaeude.md` | Umsetzung | autonom | fertig |
+| BB1.3 | `BB1.3-waldwand-baumvarianten.md` | Umsetzung | autonom | fertig |
+| BB1.4 | `BB1.4-leitmotive-je-welt.md` | Umsetzung | autonom | fertig |
+| BB1.5 | `BB1.5-review.md` | Review | autonom | fertig |
 
 Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket der Review (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 (BB1.5, Claude): AC-01 bis AC-05 geprüft (Vitest `bildaufbauMasstab` 21/21, Reviewer ohne schweren Befund, Ergebnisse BB1.1 bis BB1.4); AC-06 (TV) bei Ralf, Liste im Ergebnis von BB1.5.
+Behoben: Kriterien von BB1.5 (AC-06 hatte keine Session).
+Folge-Tickets im Sprint LA1: B-1146 bis B-1151 (Anbindung, Schiff-Gerüst und Bauplatz, Schiffsrumpf, Plantage, Luftperspektive, Texturbudget).
+Abnahme-Ticket für Gen und Race: B-1145 (Lane zweit, Sperre golden); Sim und Balance nicht relevant.

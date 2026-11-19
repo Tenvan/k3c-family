@@ -1,0 +1,122 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "tanne-mittel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Mittelhohe Tanne (5 M), etwas schmaler als die Tanne; für den Wald in der Spielebene.",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-22.5 0L-12.5 -16.6L-10 -83.2L10 -83.2L12.5 -16.6L22.5 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-22.5 0L-12.5 -16.6L-10 -83.2L-3.7 -83.2L-3.7 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 2.1,
+          "form": "M3.7 -11.1L2.5 -49.9",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-94.9 -66.6L0 -227.5L94.9 -66.6L53.1 -74.9L0 -69.3L-53.1 -74.9Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-94.9 -66.6L0 -227.5L-19 -69.3L-53.1 -74.9Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -227.5L22.8 -155.1L56.9 -106.8L15.2 -130.9Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-74.9 -160.9L0 -305.1L74.9 -160.9L41.9 -169.2L0 -163.7L-41.9 -169.2Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-74.9 -160.9L0 -305.1L-15 -163.7L-41.9 -169.2Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -305.1L18 -240.2L44.9 -197L12 -218.6Z",
+          "material": "smaragd",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-54.9 -249.7L0 -382.8L54.9 -249.7L30.8 -258L0 -252.4L-30.8 -258Z",
+          "material": "smaragd"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-54.9 -249.7L0 -382.8L-11 -252.4L-30.8 -258Z",
+          "material": "smaragd",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M0 -382.8L13.2 -322.9L33 -282.9L8.8 -302.9Z",
+          "material": "smaragd",
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -66.6]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 456,
+    "rahmen": [-110, -394, 220, 405]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}

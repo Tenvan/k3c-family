@@ -57,10 +57,28 @@
       "idle.png": "f734e1742a8aad6d6f35d225a2379133f2f793af581cfbd2e00ad1316594bea2"
     }
   },
-  "birke": {
-    "renderKey": "172c623fd40e439cd9351fcf2f16dfa94f6587a26848ae948cfe8b9a8bec232e",
+  "birke-dunkel": {
+    "renderKey": "28330985923c348408ee75a854241538ba26179f5472161d8168bda849609d50",
     "dateien": {
-      "idle.png": "50d289d19331e4fa718ca667aae5d72c10f0df308fa8fda9ce8d0b73ea00858f"
+      "idle.png": "d87281e96774caf974d5295d4334d5b91c2bee4476b53cb95e1982b926d52c26"
+    }
+  },
+  "birke-hoch": {
+    "renderKey": "bc05c789ad933641cc134bdc30f91257f0571b3a290091b8e971cc3582114575",
+    "dateien": {
+      "idle.png": "c5164fb3852d0ce39f09cd98685af1c130714409885e494a20c1e6935b412979"
+    }
+  },
+  "birke-mittel": {
+    "renderKey": "4371353a6af04f35fd56b62b4d885dc0c6261e83e41e6ef9072a79ab1c5956a7",
+    "dateien": {
+      "idle.png": "6ff91c025ac97d26edcfb1fdb72b34ff42ae5be1ed83407f60ed8c86174d6b69"
+    }
+  },
+  "birke": {
+    "renderKey": "3d9aeb2688fbf25762a46bd2e6a768e82e51b6ac8245ce13134f42af9da81585",
+    "dateien": {
+      "idle.png": "08628c8fb3240fd6d1e09d1a3f93caf471be0f93884616ed5a9784899b2d0900"
     }
   },
   "busch": {
@@ -211,16 +229,28 @@
       "idle.png": "4f62d0c923eb2e801216f8a63cf2fab1e7e1aa77e6fa8cd7e4c8094eaa73336c"
     }
   },
-  "pappel-niedrig": {
-    "renderKey": "94acdc0bba7d9999e8f385250efe43d856cdb359f45c3b4a29eb1fc0bb309190",
+  "pappel-dunkel": {
+    "renderKey": "d41c1479e66bb3bb364e51c4874e5efbea56aac3ee4c6ccdbd31bd6427395724",
     "dateien": {
-      "idle.png": "05fe1b35da9e5e4cd0b881598bfa1db23c613cf81d939865311f755967a37108"
+      "idle.png": "cd2ffdd15852ccf8bb2dddcf305d46f843238f40aa37b8a4336c129d501179b8"
+    }
+  },
+  "pappel-hoch": {
+    "renderKey": "b22a5dd4218371eb08ae4c42e663964b048be5b9eea6d9b16300ed105ae9d2f0",
+    "dateien": {
+      "idle.png": "d045c1948c3506ae824f07841f51cae3ae11992ddb47a6826f7f3a6291186c56"
+    }
+  },
+  "pappel-niedrig": {
+    "renderKey": "798d7fbba0eaa5cdb39fce4f0740df88fea1e38ca017d0a404fdf69171e80a83",
+    "dateien": {
+      "idle.png": "692bcc90cf19ef8b1ac64c2945d07d9c990f52a9afe9402ddbf8fc482763e172"
     }
   },
   "pappel": {
-    "renderKey": "be21e78032d7ee973c9bce1be1bac19af6f49a7bc618c99027b4d0c7bb9c4c10",
+    "renderKey": "806786de7eb6767690c80c6fae37033c0ed6d64a5799513f0771d01433bb4a7c",
     "dateien": {
-      "idle.png": "75813d3fe1657361db32cec862d98c18f8ced2b70a32aff30a61bfca527445a2"
+      "idle.png": "19d67c6d771111887e0420b7f8ce25c60bd99733748bd1c0acbaea2ca1734703"
     }
   },
   "portal": {
@@ -365,10 +395,28 @@
       "idle.png": "6831cbccfe06f49f729e130f579631212fcdf85d7cf15ad60567819041dc6378"
     }
   },
-  "tanne": {
-    "renderKey": "6d8cdeaddd0588f38a32e5df0c58076b57ed0dcbeeb0fcb24e55cf21b0f9e376",
+  "tanne-dunkel": {
+    "renderKey": "b7680405f3f09c06ad5a39568a0158db9dd497d6c938e28fcee259bcac137c2a",
     "dateien": {
-      "idle.png": "5e9bfbe31ac24317ae4ddd1950571718f981ceb306a4e0dadf1846919e325a4e"
+      "idle.png": "d94c2c734eacc5501edc821af6902c039aa8cacafc7429a29f891b788828a44d"
+    }
+  },
+  "tanne-hoch": {
+    "renderKey": "4dd2935e90cf89292f1bdf2ddd675b165e158907e731d20839cae41d7f893df4",
+    "dateien": {
+      "idle.png": "9108e1dfece22cabbb4982c4b89c8088dbf90caaf6195897145dbffc59ae270e"
+    }
+  },
+  "tanne-mittel": {
+    "renderKey": "28650475a1af5fc1ac36591098d7cd5015779e0bb86b3a50fd7b556482de78de",
+    "dateien": {
+      "idle.png": "033df8b4f0037f4d8e7a51fa3422ddb3cee5859fe055ce3c6e62bb556e2f136c"
+    }
+  },
+  "tanne": {
+    "renderKey": "78b768737c50db728573948f943cbd8d9d7b068c41cab4fc2e4a0b6ce4668d98",
+    "dateien": {
+      "idle.png": "2b79542f7cee9345984baf1485c83a6b9117d69b689f4902d1e2ae9537bc56f7"
     }
   },
   "torii": {

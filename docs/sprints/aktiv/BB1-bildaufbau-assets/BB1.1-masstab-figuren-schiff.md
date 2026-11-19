@@ -1,6 +1,6 @@
 # BB1.1 · Maßstab Figuren und Schiff: Bürger und Truppen 0,6 M, Schiff 3 M (B-1038, B-1039)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -65,5 +65,25 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 und AC-02 erfüllt (Test `tests/bildaufbauMasstab.test.ts`, vorher rot, jetzt grün; `task check:diff` grün). Nur Daten geändert, kein Asset umgezeichnet, kein Gen, kein Golden, kein Sim.
+
+### Änderungen
+- `data/paper.json` › `figuren.truppen`: vagrant 72,9, peasant 72,9, archer 70,4, warrior 72,9, eliteArcher 70,4, eliteWarrior 72,0 (vorher 99–102,5) = 0,58–0,60 M.
+- `figuren.gegner.greed.hoehe` 81 auf 48,6 = 0,40 M. Übrige Gegner, Schwärme und Bosse unverändert.
+- `skalierung`: `gebaeude-paper/schiff` 2,2 (alle Stufen gleich, Fußpunkt bleibt, Leser `art/scales.rs`).
+- Neu: `tests/bildaufbauMasstab.test.ts` (Truppen 0,55–0,65 M, Gier 0,35–0,45 M, Schiff 2,8–3,2 M).
+
+### Schiff-Maße (M = 121,5 px)
+- Höhe mit Segel: 164 px × 2,2 = 361 px = 2,97 M.
+- Länge/Breite: 200 px × 2,2 = 440 px = 3,6 M (Richtwert 4–5 M: Ticket-Vorschlag Rumpf verlängern, nicht hier).
+
+### Befunde (nicht behoben, Folge BB1.2 oder Ticket)
+- Bauplatz Schiff ist 190 px breit (`props/plan_sites.rs`), das gebaute Schiff 440 px: Überlappung ja, je Seite rund 125 px über den Platz hinaus (vermutet: überdeckt Nachbarplätze, ungeprüft im Spiel).
+- Die Baustelle des Schiffs nutzt `geruest-6` (200 x 132 px, unskaliert, 1,09 M): Beim Fertigstellen springt das Bild von 1,09 M auf 2,97 M, Gerüst und Schiff passen nicht zusammen. `skalierung` für `geruest-6` würde alle Gebäude mit diesem Gerüst treffen (Werkstatt, Bogenbauer, Lager, Kaserne, Taverne, Heiler, Schmiede, Rüstkammer): gehört in BB1.2.
+- Ladeplätze (B-997, Stufe 4) sind Teil der Schiff-Spec und skalieren mit demselben Faktor; abzählbar bleiben sie (Faktor 2,2, kein Umzeichnen), Sichtprüfung nicht gemacht.
+- Marken über Figuren (Krone, Balken): Höhe entsteht im Spiel (`props/`, `hud/`); ein fester Pixelwert wurde nicht gesucht oder geändert (Ticket-Vorschlag, ungeprüft).
+- Reviewer-Agent (`k3c-grafik`) nicht gelaufen: reiner Daten-Diff unter 150 Zeilen, kein Risiko-Bereich.
+
+### Ralf prüft im Spiel (Sichtprüfung am TV)
+- Bürger und Truppen wirken gegenüber dem Monarchen klein genug (0,6 M), Gier kleiner als Truppen, Lesbarkeit im Split-Screen.
+- Schiff im Hafen: Größe 3 M, Überlappung mit Nachbarplätzen, Sprung Baustelle zu Schiff, Ladeplätze erkennbar.

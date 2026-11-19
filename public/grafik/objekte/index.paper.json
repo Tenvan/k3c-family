@@ -50,6 +50,21 @@
     "manifest": "birke/manifest.json"
   },
   {
+    "id": "birke-dunkel",
+    "rig": "requisite",
+    "manifest": "birke-dunkel/manifest.json"
+  },
+  {
+    "id": "birke-hoch",
+    "rig": "requisite",
+    "manifest": "birke-hoch/manifest.json"
+  },
+  {
+    "id": "birke-mittel",
+    "rig": "requisite",
+    "manifest": "birke-mittel/manifest.json"
+  },
+  {
     "id": "busch",
     "rig": "requisite",
     "manifest": "busch/manifest.json"
@@ -163,6 +178,16 @@
     "id": "pappel",
     "rig": "requisite",
     "manifest": "pappel/manifest.json"
+  },
+  {
+    "id": "pappel-dunkel",
+    "rig": "requisite",
+    "manifest": "pappel-dunkel/manifest.json"
+  },
+  {
+    "id": "pappel-hoch",
+    "rig": "requisite",
+    "manifest": "pappel-hoch/manifest.json"
   },
   {
     "id": "portal",
@@ -283,6 +308,21 @@
     "id": "tanne",
     "rig": "requisite",
     "manifest": "tanne/manifest.json"
+  },
+  {
+    "id": "tanne-dunkel",
+    "rig": "requisite",
+    "manifest": "tanne-dunkel/manifest.json"
+  },
+  {
+    "id": "tanne-hoch",
+    "rig": "requisite",
+    "manifest": "tanne-hoch/manifest.json"
+  },
+  {
+    "id": "tanne-mittel",
+    "rig": "requisite",
+    "manifest": "tanne-mittel/manifest.json"
   },
   {
     "id": "torii",

@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "tanne-dunkel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Dunkle Tanne für die hintere Reihe des Waldes",
+  "teile": [
+    {
+      "id": "stamm",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-23.7 0L-13.2 -16.6L-10.5 -83.2L10.5 -83.2L13.2 -16.6L23.7 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "eltern": "stamm",
+      "id": "krone",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-100.1 -66.6L0 -227.5L100.1 -66.6L56.1 -74.9L0 -69.3L-56.1 -74.9Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-79.1 -160.9L0 -305.1L79.1 -160.9L44.3 -169.2L0 -163.7L-44.3 -169.2Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-58 -249.7L0 -382.8L58 -249.7L32.5 -258L0 -252.4L-32.5 -258Z",
+          "material": "biom-wald",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, -66.6]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 456,
+    "rahmen": [-116, -394, 232, 405]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 6,
+      "frames": 8,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "krone": 2
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "krone": -2
+          }
+        }
+      ]
+    }
+  }
+}

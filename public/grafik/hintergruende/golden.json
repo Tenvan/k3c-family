@@ -449,6 +449,36 @@
       "stand.png": "fe0944c1f27b6f8ecb7958d0bca70cd903acf564e4434b81e93bec8077dc002d"
     }
   },
+  "hg-wald-wand": {
+    "renderKey": "e8ba3b8145f3db145398d94841c2cda37f96eaba984b12dc7c222a6053c188e7",
+    "dateien": {
+      "stand.png": "d4878051fc6a28058a4c8ab2d8f0a066e8c551e4a93f7cb8ef95b33ce7afd240"
+    }
+  },
+  "leitmotiv-britannien": {
+    "renderKey": "81f65f8c0364c5b5bca21db170052504d2879f5b8e9f79928e8469259ef6f525",
+    "dateien": {
+      "stand.png": "8221b9832c96bd0e1730d60a58aabb06930283502c6a37d7c354ecc460735106"
+    }
+  },
+  "leitmotiv-nil": {
+    "renderKey": "8aa3935da62279e25de1a522d04692d1ed25aba2a59e67f631263867876591b4",
+    "dateien": {
+      "stand.png": "de5764ab2e98ea0119aee905a14b5c04337675093ad103ce857285fcac8abb49"
+    }
+  },
+  "leitmotiv-sengoku": {
+    "renderKey": "bd9858a2b21c5b948d4203e08de51c53882b577b937af569a4aae6374c869d58",
+    "dateien": {
+      "stand.png": "d025e390dc1d637cecf5324a678a173d496901b89f215bfd5fd2d19e3d229e3e"
+    }
+  },
+  "leitmotiv-standard": {
+    "renderKey": "e25937e561569756f44fc5e0a050f01619637e1ef9db8a11c94d0f853024544a",
+    "dateien": {
+      "stand.png": "4ca48da9db79bdf30877599e1acc88085a4f1d738e5f32253834b05285bacce7"
+    }
+  },
   "weltbild-britannien-klein": {
     "renderKey": "dbc5995d1e08a8f7d7242c5edf7b019f9ba70d837669ed8110cb921feff520bb",
     "dateien": {

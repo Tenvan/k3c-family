@@ -1,6 +1,6 @@
 # BB1.4 · Leitmotiv je Welt in der Ferne des Hubs (B-1042)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -61,5 +61,16 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05 erfüllt: Test `tests/bildaufbauMasstab.test.ts` (Block Leitmotive: genau vier Welten, Spec in hintergruende, Höhe 3-5 M, Eintrag im Index) vorher rot, jetzt grün; `task check:diff` grün; `k3c-grafik` ohne schweren Befund. Kein Gen, kein Sim.
+### Änderungen
+- 4 Assets (Gruppe hintergruende, Rig hintergrund, 768 x 480 px = 3,95 M): leitmotiv-standard (Burgberg mit Burg), leitmotiv-sengoku (Vulkanberg, Rauchsäule, Torii auf dem Grat), leitmotiv-nil (zwei Pyramiden, Sphinx), leitmotiv-britannien (Steinkreis mit Trilith auf Hügel).
+- `data/paper.json` › `leitmotive` (standard, sengoku, nil, britannien).
+- Nach Review: Turmdächer der Burg von koenigsblau auf leder, Burg bündig auf den Gipfel gesetzt, Test um Index-Prüfung ergänzt.
+### Befunde (nicht behoben)
+- Luftperspektive § 3: Schattenflächen (Auflagen basis/schatten) in allen vier Motiven geben harten Hell-Dunkel-Kontrast; Hügel Britannien (biom-wald) kräftig grün, Torii koenigsrot ist der stärkste Fleck. Abhilfe: Auflagen entfernen oder Tönung im Spiel (Dunst, RU55).
+- Test prüft Leinwandhöhe, nicht Motivhöhe: Motive 3,3-3,8 M (Pyramide 3,45 M), Steinkreis nur 1,4 M über dem Hügel, Sphinx 1,1 M (schlicht, Klotz mit Kopf).
+- Rauch Sengoku (leinen licht) hell gegen den Himmel, sitzt rechts vom Gipfel.
+- Kein Verbraucher: Rust liest `leitmotive` nicht; Ticket für Anbindung legt BB1.5 an.
+- Texturbudget +5,6 MiB RGBA (vermutet unkritisch).
+### Ralf prüft in der Workbench (Bereich Assets)
+Vier Leitmotive: Lesbarkeit der Motive, Sphinx, Rauchsäule, Sättigung Britannien-Hügel.

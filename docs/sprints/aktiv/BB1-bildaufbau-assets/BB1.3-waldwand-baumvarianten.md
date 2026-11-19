@@ -1,6 +1,6 @@
 # BB1.3 · Waldwand und Baumvarianten in mehreren Höhen und Tönen (B-1041)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -65,5 +65,22 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 erfüllt: Test `tests/bildaufbauMasstab.test.ts` (je Art drei Höhen, Richtwerte Nadel 4–6 M, Laub 2,5–3,5 M, dunkle Variante, `waldwand`) vorher rot (7 Fälle), jetzt grün; `task check:diff` grün; `k3c-grafik` ohne schweren Befund. Kein Gen, kein Golden-Lauf (nur die vom Tool geschriebenen Golden-Einträge der neuen Assets), kein Sim.
+
+### Änderungen
+- 8 neue Bäume über `assets_create`/`assets_set` (Gruppe objekte, Rig requisite): tanne-mittel, tanne-hoch, tanne-dunkel, pappel-hoch, pappel-dunkel, birke-mittel, birke-hoch, birke-dunkel. Dunkle Varianten: Material `biom-wald`, Ton `schatten`, ohne Auflagen.
+- 4 bestehende Bäume (tanne, pappel, pappel-niedrig, birke) mit größerem Rahmen neu gezeichnet (Geometrie skaliert), `skalierung` 1,5 für alle 12 Bäume.
+- Höhen in M (Rahmen-Höhe x 1,5 / 121,5): tanne 4,1 · mittel 5,0 · hoch 5,9 · dunkel 5,0; pappel-niedrig 2,6 · pappel 3,0 · hoch 3,4 · dunkel 3,0; birke 2,6 · mittel 3,0 · hoch 3,4 · dunkel 3,0.
+- Waldwand `hintergruende/hg-wald-wand` (768 x 480, kachelt, Kronendach mit drei Himmelslücken, Stämme in drei Gruppen, Unterholz); `data/paper.json` › `waldwand`. Nach Review: Wand-Ton `basis`, Stämme `schatten`, damit die dunklen Bäume davor nicht mit der Wand verschmelzen.
+- Katalog `objekte`: frame/rahmen aus den Manifesten.
+
+### Befunde (nicht behoben)
+- Texturbudget: 12 Bäume 21,3 MiB statt 4 Bäume 6,1 MiB (+15,3 MiB, rund 3 % des Richtwerts); Wald-Level lädt derzeit nur tanne, pappel, birke (4,2 MiB). Texeldichte sinkt (`hoehe_px` = 0,75 x Spiel-px): leichte Weichzeichnung vermutet; Abhilfe `hoehe_px` anheben per `assets_set`. Tanne-Manifest zeigt Ping-Pong-Frames (5 von 8 Hashes), Sparpotenzial.
+- Neue Assets ohne Verbraucher: Rust kennt nur `TREE_KINDS` (tanne, pappel, birke) und liest `waldwand` nicht (`k3c-data/src/paper.rs` ignoriert den Schlüssel). Ticket für die Anbindung legt BB1.5 an (zusammen mit RU55.6).
+- Die bestehenden Bäume wachsen im Spiel sofort von rund 1,8 M auf 2,6–4,1 M; `pappel-niedrig` (Plantage, `nature.rs` plant_tree_look) wird 2,6 M hoch, Wachstumsstufen Setzling zu Jungbaum zu Altbaum kaum noch unterscheidbar (vermutet).
+- Die Specs `tanne-2`, `pappel-2`, `birke-2` nicht angefasst (Nutzung ungeprüft).
+- Sichtbare Höhe liegt rund 0,1 M unter der Rahmen-Höhe (Rand): birke, pappel-niedrig etwa 2,45 M, tanne etwa 3,85 M.
+
+### Ralf prüft in der Workbench (Bereich Assets) und am TV
+- Workbench: Vorschau der 8 neuen Bäume und der 4 umgezeichneten (Schärfe, Kronen-Lesbarkeit, Tannen-Stamm von tanne-hoch kurz und dünn), Waldwand (Naht links/rechts, Wand nach Tonwechsel jetzt hell, Himmellücken oben).
+- TV: Wald (Bäume jetzt deutlich größer, Platz für Figuren und Hub), Plantage mit Pappeln, Schärfe der skalierten Tannen.
