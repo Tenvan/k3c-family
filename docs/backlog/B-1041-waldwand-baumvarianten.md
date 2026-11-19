@@ -8,9 +8,9 @@
 - **Sprint:** BB1
 - **Projekt:** PAP
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -38,11 +38,12 @@ Platzierung im Level-Generator, Wechsel nach Rodung (B-1047).
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `public/grafik/objekte/**`, `public/grafik/hintergruende/**`, `data/paper.json`
+- **Bereich:** `public/grafik/objekte/**`, `public/grafik/hintergruende/**`, `data/paper.json`, `tests/bildaufbauMasstab.test.ts`
 - **Abhängig von:** –
-- **Braucht 🧑:** Freigabe
+- **Braucht 🧑:** Abnahme
 - **Größe:** M
 - **Sperre:** –
+- Neuer Schlüssel `waldwand` in `data/paper.json`; die Anbindung im Spiel ist ein Folge-Ticket der Review (BB1.5).
 
 ## Beispiele
 
