@@ -12,9 +12,9 @@ Kommando `sync`: kopiert Dateien und Ordner ins Spiel-Paket `dist/k3c-game/`, nu
 
 ## Flow
 
-1. Task `native:game:dist` schreibt mit `k3c-game --assets` die Liste `assets.txt` und baut daraus die Paare (EXE, `tools/measure/measure.ps1`, `tools/measure/messen.cmd`, `public/audio`, `public/schrift`, `native/k3c-rig/assets`, je Asset `public/grafik/<gruppe>/<id>`).
+1. Task `rust:game:build` schreibt mit `k3c-game --assets` die Liste `assets.txt` und baut daraus die Paare (EXE, `tools/measure/measure.ps1`, `tools/measure/messen.cmd`, `public/audio`, `public/schrift`, `native/k3c-rig/assets`, je Asset `public/grafik/<gruppe>/<id>`).
 2. `go run ./cmd/sync <paare>` → `main` → `syncPath` je Paar → `syncFile`/`copyFile`; Ausgabe der Anzahl kopierter Dateien.
 
 ## Integration
 
-- Konsument: `native/Taskfile.yml` (`game:dist`, über `game:build` und `game:paket`).
+- Konsument: `rust/Taskfile.yml` (`game:dist`, über `game:build` und `game:paket`).

@@ -98,7 +98,7 @@ if (-not (Test-Path $exes.game)) {
     $goPaket = Join-Path $here "$up\dist\k3c-game-go\k3c-game.exe"
     if (Test-Path $goPaket) { $exes.game = $goPaket }
 }
-$buildTask = @{ ebiten = 'native:ebiten:build'; rig = 'native:rig:build'; game = 'native:game:build'; rustgame = 'rust:game:build'; replay = 'rust:game:build' }
+$buildTask = @{ ebiten = 'entfernt'; rig = 'entfernt'; game = 'Tag go-referenz-final (docs/standards/go-referenz.md)'; rustgame = 'rust:game:build'; replay = 'rust:game:build' }
 if ($Exe) {
     # Eigene EXE: gilt für die genannte Engine, sonst entscheidet der Dateiname
     if (-not $Engine) {
@@ -125,7 +125,7 @@ $engines = @(switch ($Engine) {
         'replay' { 'replay' }
         default { $exes.Keys | Where-Object { $_ -notin @('replay', 'rustgame') -and (Test-Path $exes[$_]) } }
     })
-if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task native:ebiten:build, native:rig:build oder native:game:build)" }
+if ($engines.Count -eq 0) { throw "Keine EXE gefunden (erst task rust:game:build; Go-Spiel nur aus dem Tag go-referenz-final)" }
 foreach ($e in $engines) {
     if (-not (Test-Path $exes[$e])) { throw "EXE fehlt: $($exes[$e]) (erst task $($buildTask[$e]))" }
 }

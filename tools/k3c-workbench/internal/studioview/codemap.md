@@ -8,7 +8,7 @@ Was vom Asset-Studio lesend blieb (Entscheidung 005 › 5, Sprint WB1): Sound-Sl
 
 - `studioview.go`: `Sounds(root)` (Sound-Slots aus `data/sounds.json` mit `assets.Status`) → `[]SoundEintrag`; `SoundData(root, pfad)` (Audiodatei unter `public/` als Data-URL, über `os.Root`, nur `.ogg/.mp3/.wav/.m4a`, ohne `..`/Backslash/absolute Pfade, höchstens 10 MB); `Sources(root)` → `Quellen` (Katalog `assets.Catalog` und Recherche-Treffer `assets.LoadResearch`). Fehler für die Oberfläche als `hint` in ganzen Sätzen.
 - `game.go`: `Game` (`NewGame(ctx, root, savesDir, log)`); `Open(seed)` prüft `fullSeed`, legt über `fullSave` den Spielstand `voll-<seed>` an (`room.NewManager` im Dev-Modus mit `store.Saves`, Welten aus `data/worlds`, `FullSave`) und startet das native Spiel losgelöst (`startDetached`) mit `--saves`, `--load`, `--players 1`.
-- EXE-Suche `nativeExe`: zuerst `native/k3c-game/bin/k3c-game.exe` (Arbeitsordner Checkout), dann `dist/k3c-game/k3c-game.exe`; fehlt beides, Hinweis auf `task native:game:build`.
+- EXE-Suche `nativeExe`: zuerst `rust/target/release/k3c-game.exe` (Arbeitsordner Checkout), dann `dist/k3c-game/k3c-game.exe`; fehlt beides, Hinweis auf `task build`.
 - Spielstände unter `DefaultSavesDir` (`<UserCacheDir>/k3c/studioview/<Hash des Checkouts>/saves`), nie im Repo. `Close`: danach startet `Open` nichts mehr, ein laufendes Spiel bleibt offen.
 
 ## Flow

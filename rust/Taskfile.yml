@@ -3,7 +3,7 @@
 version: '3'
 
 vars:
-  # Paketordner des Rust-Spiels (RU35.2); das Go-Paket liegt in dist/k3c-game-go
+  # Paketordner des Rust-Spiels (RU35.2)
   PAKET: '{{.ROOT_DIR}}/dist/k3c-game'
   # Version des Spiels (B-1138): git describe, ohne Git leer (das Menü zeigt dann „unbekannt“)
   VERSION:
@@ -108,6 +108,12 @@ tasks:
     cmds:
       - task: game:build
       - 'cd "{{.PAKET}}" && ./k3c-game.exe {{.CLI_ARGS}}'
+
+  game:measure:
+    desc: "Rust-Spiel messen (Frame-Zeit, Start, Speicher; tools/measure/measure.ps1 -Engine rustgame, Messlauf mit Fenster auf ruhigem Rechner); Schalter: task rust:game:measure -- -Seconds 60"
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - powershell -NoProfile -ExecutionPolicy Bypass -File "{{.ROOT_DIR}}/tools/measure/measure.ps1" -Engine rustgame {{.CLI_ARGS}}
 
   game:dev:
     desc: "Rust-Spiel im Debug-Bau starten (Arbeitsordner Repo-Wurzel, findet data/ und Grafik direkt); kein Neustart bei Änderungen (cargo-watch wäre ein neues Werkzeug, engine/devrun kennt nur Go)"
