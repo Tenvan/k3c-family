@@ -22,6 +22,17 @@ fn test_help_rows_cover_table() {
     }
 }
 
+/// B-889 und RU56: Die F1-Übersicht nennt das Cheat-Fenster (F4) und das Debug-Overlay mit seinen Seiten (F10); die
+/// Werte zeigt nur das Overlay, das Fenster schaltet dieselbe Seite (`devwin/view.rs`), es hat keine zweite Anzeige.
+#[test]
+fn test_help_names_f10_and_window() {
+    let rows = help_rows();
+    let f10 = rows.iter().find(|r| r.key == "F10").expect("F10 in der Übersicht");
+    assert!(f10.text.contains("Werte"), "F10: {f10:?}");
+    let f4 = rows.iter().find(|r| r.key == "F4").expect("F4 in der Übersicht");
+    assert!(f4.text.contains("Cheat-Fenster"), "F4: {f4:?}");
+}
+
 /// Ohne Schrift und ohne F1 zeichnet die Übersicht ohne Absturz bzw. gar nicht.
 #[test]
 fn test_help_draw_without_font() {
