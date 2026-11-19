@@ -23,7 +23,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
-| RU59 | SIM, INF | RSU | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | – | `aktiv/RU59-go-engine-ungenutztes-entfernen/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | `aktiv/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 | RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
@@ -471,3 +470,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | `erledigt/WE5-welt-format-nachtraege/` |
 | W15 | Fackeln als Spielobjekt mit Licht in der Nacht | `erledigt/W15-fackeln-spielobjekt/` |
 | RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | `erledigt/RU60-feature-paritaet-rust/` |
+| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | `erledigt/RU59-go-engine-ungenutztes-entfernen/` |

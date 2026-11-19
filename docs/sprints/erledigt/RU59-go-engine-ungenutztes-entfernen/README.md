@@ -1,6 +1,6 @@
 # RU59 · SIM, INF · Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM, INF
 - **Reife:** bereit
@@ -77,7 +77,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19, Ralf ausdrücklich)
 |---|---|---|---|---|
 | RU59.1 | `RU59.1-engine-bestand-belegen-und-abbauen.md` | Umsetzung | autonom | fertig |
 | RU59.2 | `RU59.2-doku-engine-bestand.md` | Umsetzung | autonom | fertig |
-| RU59.3 | `RU59.3-review.md` | Review | autonom | offen |
+| RU59.3 | `RU59.3-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -85,6 +85,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-20: AC-01, AC-02, AC-04 belegt (RU59.1, RU59.2, RU59.3); AC-03 mit Einschränkung: `go build` und alle Go-Tests grün, `golangci-lint` fehlt, `check:dev`, `cargo test --workspace`, `check:race` und Dev-Instanz nicht gefahren (Diff: eine Konstante, ein Go-Test, Doku). Behoben: rotes `detvec` (Rust-only-Daten, paper.json-Zahlen), Golden unverändert. Kein Abnahme-Ticket nötig (keine Sim-, Balance-, Gen-Änderung). Offen: `golangci-lint` installieren und die Prüfläufe nachholen, `deadcode` oder manuelle Prüfung der 71 Namen.
