@@ -78,6 +78,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU31 | Balancing Teil 3: Einsichten, Berichte, Tuning | geplant |
 | RU40 | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | geplant |
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | geplant |
+| RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | aktiv |
+| RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | aktiv |
 
 ## Nicht-Ziele
 
