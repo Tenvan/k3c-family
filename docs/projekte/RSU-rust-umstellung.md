@@ -80,6 +80,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | geplant |
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | aktiv |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | aktiv |
+| RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | aktiv |
 
 ## Nicht-Ziele
 

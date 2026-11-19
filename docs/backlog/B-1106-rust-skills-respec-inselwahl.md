@@ -3,69 +3,70 @@
 - **Domäne:** CLI
 - **Typ:** Problem
 - **Prio:** hoch
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU50
+- **Sprint:** RU53
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
 ## Ausgangslage
 
-Im Rust-Spiel (RU48.3) melden `actions_learn`, `actions_respec` und `actions_choose_island` in `rust/crates/k3c-game/src/local/pending.rs` „noch nicht verfügbar“, weil `k3c-room` die Raum-Aktionen `Learn`, `Respec`, `ChooseIsland` nicht kennt. Die HUD-Shims `available_points`, `can_learn`, `can_respec` (`hud/pending.rs`) liefern 0/false: im Spiel ist nichts lernbar, der Inselwechsel am Hafen ist nicht wählbar. Vermuteter Soft-Lock (Review RU48.4, ungeprüft): Verlangt der Fortgang nach einem Inselsieg die Zielinsel-Wahl, kommt der Spieler nicht weiter.
+Im Rust-Spiel lässt sich kein Skill lernen. Stand 2026-11-19 (Planer-Prüfung): `k3c-room` hat `learn`, `respec`, `choose_island` (`room/skills.rs`) und `local/actions.rs` ruft sie bereits (RU21/RU24/RU50). Es fehlen die HUD-Shims in `rust/crates/k3c-game/src/hud/pending.rs`: `available_points`, `can_learn`, `can_respec` liefern 0/false (Skill-Menü zeigt nichts Lernbares), dazu `purse_max_of`, `train_at`, `trade_at` als neutrale Werte (Go: `sim.*`). Folge: `e2e_flow` weicht in 6 Stationen vom Go-Welt-Hash ab (`KNOWN_DIVERGENT`) und verfehlt `KNOWN_DEVIATIONS` (Spieler 2 lernt keinen Skill). Vermuteter Soft-Lock bei der Zielinsel-Wahl nach einem Inselsieg (Review RU48.4, ungeprüft). Die Story-Shims (`story_*`, `WorldDef`, RU19) sind nicht Teil dieses Tickets.
 
 ## Ziel
 
-Room-Aktionen aus Go (`engine/room`) nach `k3c-room` portieren, `local` nutzt sie wie `native/k3c-game/local/actions.go`, die HUD-Shims rufen `k3c_sim::monarch::{available_points, can_learn, can_respec}`.
+Die HUD-Shims rufen `k3c_sim::monarch::{available_points, can_learn, can_respec}` und `k3c_sim::state::{purse_max_of, train_at, trade_at}`; Lernen, Respec und Zielinsel-Wahl funktionieren im lokalen Rust-Spiel wie in Go (`engine/room/skills.go`, `native/k3c-game/local/actions.go`); `e2e_flow` läuft ohne `KNOWN_DIVERGENT` und `KNOWN_DEVIATIONS`.
 
 ## Beteiligte und Zielgruppen
 
-Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen erfinden.
+Spieler am PC mit Pad (zwei Spieler am Sofa); Claude (Hauptrechner) setzt um. 🧑 liest das Ergebnis.
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- Verhalten wie Go; Go ist das Orakel, bei Abweichung gilt Go. Keine Änderung an Spielregeln, Protokoll, Spielstand-Format.
+- Jede Mechanik mit 2 Spielern gleichzeitig (Skill-Menü je Spieler).
+- Deterministisch; Goldens und die Go-Referenz (`testdata/rust/e2e/flow.json`) werden nie geändert.
+- Dateien <= 400 Zeilen, Funktionen <= 60 Zeilen, keine neuen Abhängigkeiten.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört, mit Ticket-Nummer, falls es später kommt.
+Story-Shims (RU19), Dev-Rolle (B-1111, RU52), Änderungen in `k3c-sim` (läuft in RU52; ist dort etwas nötig, als Ticket melden), Go-Code.
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+CLAUDE.md, Entscheidung 008. Sim und Balancing gesperrt. Planungsangaben:
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
-
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-room/src/room/skills.rs`, `rust/crates/k3c-room/src/room/skills_tests.rs`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/local/actions.rs`, `rust/crates/k3c-game/src/local/actions_tests.rs`, `rust/crates/k3c-game/tests/e2e_flow.rs`, `docs/messung/rust-bildvergleich.md`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis. Passt nichts: `nicht relevant` mit Grund.
+Spieler 2 hat einen Skill-Punkt und öffnet das Skill-Menü: der Skill ist wählbar und wird gelernt (`monarch.skills.len() == 1`). Respec an der Burg am Tag: Punkte zurück. Inselsieg mit offenem Wechselpunkt: Seekarte lässt eine Zielinsel wählen, der Raum wechselt.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht relevant` mit Grund.
+Nachts oder fern der Burg: Respec abgelehnt wie in Go. Zu wenig Punkte oder Voraussetzung fehlt: Lernen abgelehnt mit Meldung. Zielinsel ohne Krone oder ungültig: abgelehnt.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert: Test, Befehl, Datei oder Beobachtung am TV mit erwartetem Ergebnis.
-
-Abnahme-Ticket eines Sprints oder Projekts (B-742): Kriterien AC-01 Sim (`sim_test`), AC-02 Balance, AC-03 Gen
-(`check_run task:test` samt `gen:paper` und Golden), AC-04 Race (`check_run task:check:race`), Einzelheiten in
-`docs/arbeitsweise.md` › Sim, Balance und Gen.
+- **AC-01** `hud/pending.rs` enthält keine Shims für `available_points`, `can_learn`, `can_respec`, `purse_max_of`, `train_at`, `trade_at` mehr; `state_labels.rs`, `state.rs`, `hints.rs` rufen die Sim.
+- **AC-02** Ein Test lernt je Spieler (2 Spieler) einen Skill über das HUD/`local` und prüft Respec; er stimmt mit den Go-Tests (`engine/room/skills_test.go`) überein.
+- **AC-03** Zielinsel-Wahl über Seekarte und `actions_choose_island` ist in einem Test belegt; Soft-Lock nach Inselsieg ist geprüft (behoben oder als nicht vorhanden belegt).
+- **AC-04** `KNOWN_DIVERGENT` und `KNOWN_DEVIATIONS` in `e2e_flow.rs` sind leer bzw. entfernt, `cargo test -p k3c-game --test e2e_flow` grün, Referenz unverändert.
+- **AC-05** `task rust:lint` grün; Review-Session ohne offene schwere Befunde.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+keine (Default autonom entschieden: Room-Aktionen existieren schon, Umfang ist die HUD-Anbindung plus Test; 2026-11-19)
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Go: `engine/room/skills.go`, `sim.LearnSkill`, `sim.CanLearn`, `sim.CanRespec`. Messung: `docs/messung/rust-bildvergleich.md`.
