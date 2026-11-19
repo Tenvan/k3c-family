@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU37
+- **Sprint:** RU58
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-19
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-19 (Ralf: ausdrücklich)
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -29,7 +29,7 @@ Entwickler; 🧑 Ralf prüft die Seite im Spiel.
 ## Anforderungen
 
 - Liste aus `cargo metadata` ableiten (nur direkte Abhängigkeiten der Spiel-Crates), Texte DE/EN unverändert in der Struktur.
-- Erst nach RU37 (Go-Spiel entfernt), weil der Bildvergleich der Seite gegen Go läuft.
+- Ralf 2026-11-19: nicht mehr nach RU37, sondern in RU58.6 (vor dem Löschen des Go-Spiels); der Bildvergleich der Lizenz-Seite gegen Go als Golden wird aufgegeben, die Baseline neu festgelegt (`licenses.png`).
 
 ## Nicht-Ziele
 
@@ -37,10 +37,10 @@ Volltexte (stehen in `LIZENZEN.txt`, B-1121).
 
 ## Regeln und Einschränkungen
 
-Änderung an Menü-Texten und Golden.
+Änderung an Menü-Texten und Golden (einzige erlaubte Golden-Ausnahme, Ralf 2026-11-19).
 
-- **Bereich:** `rust/crates/k3c-game/src/menu/licenses.rs`, `rust/crates/k3c-game/src/menu/image_tests.rs`, `testdata/rust/bild/menu/**`
-- **Abhängig von:** RU37
+- **Bereich:** `rust/crates/k3c-game/src/menu/licenses.rs`, `rust/crates/k3c-game/src/menu/image_tests.rs`, `testdata/rust/bild/menu/**`, `tools/rustpaket/**`
+- **Abhängig von:** RU58.4
 - **Braucht 🧑:** Abnahme
 - **Größe:** S
 - **Sperre:** –

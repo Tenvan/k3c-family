@@ -66,4 +66,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+**Go-Seite entfällt als Live-Lauf (Ralf 2026-11-19, RU58/RU37):** Das Go-Spiel wird entfernt. Die 14 Go-Stationsbilder (Läufe a und b) nimmt RU58.2 einmal auf und legt sie nach `testdata/rust/e2e/go/a/` (oder begründet nur im Tag); `e2e_compare` liest sie von dort ohne Go-EXE. Schritt 1 (Go-EXE bauen) und Schritt 2 (Go-Bilder aufnehmen) dieses Tickets sind damit durch RU58.2 ersetzt; die Schritte 3 bis 5 (Rust-Bilder aufnehmen, Vergleich, Bericht) laufen weiter hier, gegen die gesicherte Referenz. Bauquelle für Nachaufnahmen: Tag `go-referenz-final`, `docs/standards/go-referenz.md`.
