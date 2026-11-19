@@ -65,7 +65,7 @@ keine
 | RU51.1 | `RU51.1-abnahme-ru14-welt-schritt.md` | Umsetzung | autonom | fertig |
 | RU51.2 | `RU51.2-abnahme-ru21-store-room.md` | Umsetzung | autonom | fertig |
 | RU51.3 | `RU51.3-abnahme-ru18-sim-wirtschaft.md` | Umsetzung | autonom | fertig |
-| RU51.4 | `RU51.4-abnahme-ru19-events-geschichte.md` | Umsetzung | autonom | offen |
+| RU51.4 | `RU51.4-abnahme-ru19-events-geschichte.md` | Umsetzung | autonom | fertig |
 | RU51.5 | `RU51.5-messung-ru22-durchsatz.md` | Umsetzung | autonom | offen |
 | RU51.6 | `RU51.6-abnahme-ru26-spielschleife.md` | Umsetzung | autonom | offen |
 | RU51.7 | `RU51.7-abnahme-ru29-ru30-messen.md` | Umsetzung | autonom | offen |
