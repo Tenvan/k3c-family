@@ -16,15 +16,19 @@ use super::events::{
 };
 use super::music::{Fader, MusicState, MusicView, MusicVoice, TPS, next_music_state};
 use super::register::Register;
-use crate::view::cell::{Cell, WORLD_SHARE};
+use crate::view::cell::{Cell, world_share};
 use crate::view::frame::{Event, Frame};
 
 // Sichtbare Breite einer Zelle in Units, wenn der Frame keine Zelle des Spielers nennt (Frame.cells leer, z. B. in
-// Tests): Ein Fenster 16:9 zeigt VIEW_UNITS (game/layout.go, 420/32) über WORLD_SHARE der Höhe, also etwa 35 Units je
+// Tests): Ein Fenster 16:9 zeigt VIEW_UNITS (game/layout.go, 420/32) über `world_share` der Höhe, also etwa 35 Units je
 // Spieler; im Split-Screen liegen die Zellen übereinander, jede ist halb so hoch und zeigt doppelt so viel Breite.
 pub const VIEW_UNITS: f64 = 420.0 / 32.0;
 pub const ASPECT: f64 = 16.0 / 9.0;
-pub const SPAN_PER_SEAT: f64 = ASPECT * VIEW_UNITS / WORLD_SHARE;
+
+/// Sichtbare Breite einer Zelle in Units (Look-Profil: `world_share`).
+pub fn span_per_seat() -> f64 {
+    ASPECT * VIEW_UNITS / world_share()
+}
 
 /// Ein Effekt-Auftrag des Takts: Slot und Pegel 0 … 1 vor der Bus-Lautstärke.
 #[derive(Clone, Debug, PartialEq)]
@@ -178,7 +182,7 @@ impl Planner {
     #[allow(clippy::cast_precision_loss)]
     pub fn ears_of(&mut self, f: &Frame, stage: i64) -> &[Ear] {
         self.ears.clear();
-        let span = SPAN_PER_SEAT * f.seats.len().max(1) as f64;
+        let span = span_per_seat() * f.seats.len().max(1) as f64;
         for s in &f.seats {
             if s.stage != stage {
                 continue;

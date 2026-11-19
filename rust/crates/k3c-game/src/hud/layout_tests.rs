@@ -4,7 +4,7 @@ use super::draw::rect_of;
 use super::fonts::{REF_HEIGHT, scale_of};
 use super::layout::*;
 use super::radar::radar_size;
-use crate::view::cell::{Cell, Rectangle, WORLD_SHARE, rect, stats_rect, stats_rect_lines};
+use crate::view::cell::{Cell, Rectangle, rect, stats_rect, stats_rect_lines, world_share};
 
 /// sizes_at: Größen wie im Spiel (Browser-Test hudLayout.test.ts, 28 px fett, Innenabstand 8/4 px) beim Maßstab k.
 pub(super) fn sizes_at(k: f64, cell_w: f64) -> Items {
@@ -211,7 +211,7 @@ fn check_radar_cell(win: Rectangle, n: i64, i: i64) {
     );
     let r = out.at[ITEM_RADAR];
     assert!(
-        !(r.y < area.y + area.h * WORLD_SHARE || !r.inside(area) || !out.at[ITEM_SHARED].inside(area)),
+        !(r.y < area.y + area.h * world_share() || !r.inside(area) || !out.at[ITEM_SHARED].inside(area)),
         "{name}: Radar {r:?} nicht im Fluss der Zelle {area:?} bzw. Vorrat {:?} draußen",
         out.at[ITEM_SHARED]
     );

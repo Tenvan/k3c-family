@@ -70,7 +70,7 @@ Weite 4, 4,5 oder 5 M (B-1045): Default 5 M, 🧑 entscheidet am TV nach B-1130 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU55.1 | `RU55.1-baender-look-profil.md` | Umsetzung | autonom | offen |
+| RU55.1 | `RU55.1-baender-look-profil.md` | Umsetzung | autonom | fertig |
 | RU55.2 | `RU55.2-masstab-weite-monarchenhoehen.md` | Umsetzung | autonom | offen |
 | RU55.3 | `RU55.3-spiegel-fluss.md` | Umsetzung | autonom | offen |
 | RU55.4 | `RU55.4-toenung-dunst.md` | Umsetzung | autonom | offen |

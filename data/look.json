@@ -1,0 +1,14 @@
+{
+  "notes": "Look des Rust-Spiels (RU55, Standard docs/standards/bildaufbau.md). Nur das Rust-Spiel liest diese Datei; Go ignoriert sie. Profil k2c (Standard) = Aufbau, Maßstab und Licht nach K2C-Vorbild, Profil go = Stand des Go-Spiels (Bildvergleiche gegen Go laufen darin). Das Profil wählt die Umgebungsvariable K3C_LOOK (k2c oder go). worldShare = Anteil der Welt bis zur Gehlinie an der Zellenhöhe; bankShare = Ufer als Anteil der Zellenhöhe (0 = bankPx); bankPx = Ufer in Spiel-px bei 32 px je Unit (Go: 20). Fehlende Felder gelten als Wert des Profils go.",
+  "profiles": {
+    "k2c": {
+      "worldShare": 0.58,
+      "bankShare": 0.07
+    },
+    "go": {
+      "worldShare": 0.6666666666666666,
+      "bankShare": 0,
+      "bankPx": 20
+    }
+  }
+}

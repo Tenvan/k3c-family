@@ -16,6 +16,7 @@ use crate::view::layer::{Drawer, Layer};
 use crate::view::roles::{AssetSource, CameraRule};
 
 pub mod backdrop;
+pub mod bank;
 pub mod camera;
 pub mod cull;
 pub mod ground;
@@ -66,6 +67,7 @@ pub struct Parts {
 /// sein, dann bleiben die Kulissen leer. Der ferne Drawer führt zugleich die Kamera (`CameraRule`) und meldet die
 /// Kulissen-Grafik je Level (`AssetSource`).
 pub fn new(lib: Option<Rc<Library>>) -> Parts {
+    register_look();
     let mut w = World::new(lib);
     w.start = river_mode_of(&std::env::var(RIVER_ENV).unwrap_or_default());
     w.water.init(w.start);
@@ -89,6 +91,12 @@ pub fn new(lib: Option<Rc<Library>>) -> Parts {
         camera_rule: Some(Box::new(Far { w: Rc::clone(&w) })),
         asset_source: Some(Box::new(Far { w })),
     }
+}
+
+/// Meldet `view` den Welt-Anteil des Look-Profils (RU55.1; Quelle `data/look.json`, Profil `K3C_LOOK`). Die Welt ist in
+/// jedem Aufbau (Spiel, Wiedergabe, Standbild) das erste Modul, das den Look braucht; mehrfach aufrufen ist harmlos.
+pub fn register_look() {
+    crate::view::cell::set_world_share_source(|| k3c_data::look::current().world_share);
 }
 
 /// Part wählt die Zeichen-Methode eines Drawers (Go: Methodenwert `w.drawMid` …).

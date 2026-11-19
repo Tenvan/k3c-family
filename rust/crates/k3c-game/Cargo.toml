@@ -24,4 +24,6 @@ serde.workspace = true
 serde_json.workspace = true
 
 [dev-dependencies]
+# Tests laufen im Look-Profil `go` (RU55.1), der Bildvergleich gegen Go bleibt gültig.
+k3c-data = { path = "../k3c-data", features = ["go-default"] }
 k3c-alloc-probe = { path = "../k3c-alloc-probe" }

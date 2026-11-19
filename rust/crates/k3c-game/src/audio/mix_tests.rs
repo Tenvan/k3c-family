@@ -105,7 +105,7 @@ fn plan_coin_give() {
 #[test]
 fn plan_throttles_same_slot_per_tick() {
     let mut p = planner();
-    let far = 10.0 + SPAN_PER_SEAT; // außerhalb des Bilds: gedämpft
+    let far = 10.0 + span_per_seat(); // außerhalb des Bilds: gedämpft
     let w = stage_world("day", &[10.0]);
     let m = p.plan(&game_frame(
         &w,

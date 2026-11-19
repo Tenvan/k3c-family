@@ -12,3 +12,7 @@ k3c-det = { path = "../k3c-det" }
 serde.workspace = true
 # float_roundtrip: Zahlen korrekt gerundet lesen wie Gos strconv.ParseFloat (bitgleich).
 serde_json = { workspace = true, features = ["float_roundtrip"] }
+
+[features]
+# Tests: Standard-Profil des Looks ist `go` (look.rs); k3c-game schaltet es als Dev-Abhängigkeit ein.
+go-default = []
