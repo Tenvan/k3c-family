@@ -101,7 +101,7 @@ Entschieden am 2026-11-19 mit Default (autonom, Claude; Ralf ändert, was ihm ni
 | RU61.1 | `RU61.1-look-beleg-mauern-baeume-lader.md` | Umsetzung | autonom | fertig |
 | RU61.2 | `RU61.2-hud-eingabe-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.3 | `RU61.3-menue-debug-beleg.md` | Umsetzung | autonom | fertig |
-| RU61.4 | `RU61.4-biom-eigenschaften-beleg.md` | Umsetzung | autonom | offen |
+| RU61.4 | `RU61.4-biom-eigenschaften-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.5 | `RU61.5-abnahme-laeufe-bi2-bild.md` | Umsetzung | autonom | offen |
 | RU61.6 | `RU61.6-rig-export-bosse.md` | Umsetzung | autonom | offen |
 | RU61.7 | `RU61.7-review.md` | Review | autonom | offen |
