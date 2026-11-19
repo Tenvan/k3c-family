@@ -90,7 +90,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19, Ralf ausdrücklich:
 |---|---|---|---|---|
 | RU37.1 | `RU37.1-umzuege-vor-dem-loeschen.md` | Umsetzung | autonom | fertig |
 | RU37.2 | `RU37.2-tag-go-final-und-entfernen.md` | Umsetzung | autonom | fertig |
-| RU37.3 | `RU37.3-doku-und-agenten-auf-rust.md` | Umsetzung | autonom | offen |
+| RU37.3 | `RU37.3-doku-und-agenten-auf-rust.md` | Umsetzung | autonom | fertig |
 | RU37.4 | `RU37.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

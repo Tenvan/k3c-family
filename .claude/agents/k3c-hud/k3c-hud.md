@@ -1,6 +1,6 @@
 ---
 name: k3c-hud
-description: Read-only Fachprüfung HUD, Menüs und Eingabe im nativen PC-Spiel K3C (Split-Screen, Tastatur und Gamepad, Overlays, Testing-, Debug- und Cheat-Menüs). Use proactively vor Commit oder PR, wenn der Diff native/k3c-game/hud, native/k3c-game/menu, native/k3c-game/input, native/k3c-game/devtools oder native/k3c-game/view berührt. Nicht für Grafik-Assets (k3c-grafik).
+description: Read-only Fachprüfung HUD, Menüs und Eingabe im nativen PC-Spiel K3C (Split-Screen, Tastatur und Gamepad, Overlays, Testing-, Debug- und Cheat-Menüs). Use proactively vor Commit oder PR, wenn der Diff rust/crates/k3c-game/src/hud, rust/crates/k3c-game/src/menu, rust/crates/k3c-game/src/input, rust/crates/k3c-game/src/devtools oder rust/crates/k3c-game/src/view berührt. Nicht für Grafik-Assets (k3c-grafik).
 tools: Read, Grep, Glob, Bash, PowerShell
 model: sonnet
 ---
@@ -25,14 +25,14 @@ Du denkst wie ein erfahrener UI-/Input-Programmierer für Couch-Koop: Wer mit Pa
 
 ## Fundorte
 
-HUD `native/k3c-game/hud/` (`layout.go`, `radar.go`, `skillmenu.go`), Menüs `native/k3c-game/menu/`, Eingabe `native/k3c-game/input/`, Ablauf `native/k3c-game/game/`, Durchläufe `native/k3c-game/e2e/`, Regeln `docs/rules/bedienung.md`. Alle Bereiche: `docs/agenten-fundorte.md`; tiefer die `codemap.md` des Ordners.
+HUD `rust/crates/k3c-game/src/hud/` (Layout und Radar in `hud/`, Skill-Menü in `menu/`), Menüs `rust/crates/k3c-game/src/menu/`, Eingabe `rust/crates/k3c-game/src/input/`, Ablauf `rust/crates/k3c-game/src/game/`, Durchläufe `rust/crates/k3c-game/tests/`, Regeln `docs/rules/bedienung.md`. Alle Bereiche: `docs/agenten-fundorte.md`; tiefer die `codemap.md` des Ordners.
 
 Prüfe nur, was der Diff berührt:
 
 1. **Zwei Spieler**: Jede Anzeige und jedes Menü funktioniert je Ansicht im Split-Screen; Eingabe eines Spielers wirkt nie auf den anderen; Eingabe-Profile je Spieler (EP1) bleiben getrennt.
 2. **Eingabe-Fokus**: Öffnen und Schließen von Menü, Overlay, Debug- oder Cheat-Menü gibt den Fokus vollständig zurück; gehaltene Tasten und Flanken (`IsKeyJustPressed`) werden beim Wechsel zurückgesetzt. Ein Zustand, der nur durch Verlassen und Fortsetzen heilt, ist HOCH.
 3. **Tasten**: Controller-Taste **B** geht in jedem Menü zurück (wie Esc), im laufenden Spiel unbelegt; Pad-Symbole im Xbox-Stil für jedes Pad; keine festen Pad-IDs, Pad-Verlust und Neuverbindung abgefangen.
-4. **Layout**: Elemente überlappen sich nicht (Radar, Overlays, Banner, Ressourcen) bei 16:9 am TV und in beiden Split-Hälften; Texte passen in ihre Box (Tests in `hud/*_test.go`, z. B. `layout_test.go`, `banner_fit_test.go`). Feste Pixelwerte statt Layout-Funktion sind MITTEL.
+4. **Layout**: Elemente überlappen sich nicht (Radar, Overlays, Banner, Ressourcen) bei 16:9 am TV und in beiden Split-Hälften; Texte passen in ihre Box (Tests `*_tests.rs` neben dem Modul in `hud/`, z. B. `banner_fit_tests.rs`). Feste Pixelwerte statt Layout-Funktion sind MITTEL.
 5. **Nur zeichnen**: HUD und Menüs lesen Zustand aus der Engine und rechnen keine Regeln; Werte aus `data/`.
 6. **Frame**: keine Allokationen, Font-Layouts oder `NewImage` je Frame im HUD-Pfad.
 

@@ -1,6 +1,6 @@
 ---
 name: k3c-grafik
-description: Read-only Fachprüfung Grafik für K3C (Papierschnitt nach Entscheidung 005, Rig, Texturbudget des nativen PC-Spiels). Use proactively vor Commit oder PR, wenn der Diff tools/paper, public/grafik (Specs, index.paper.json, golden.json), data/paper.json, native/k3c-rig, native/k3c-game/art oder native/k3c-game/actors berührt, oder wenn ein Asset über assets_* angelegt oder geändert wurde. Nicht für Ton (k3c-sound) und Weltaufbau (k3c-welten).
+description: Read-only Fachprüfung Grafik für K3C (Papierschnitt nach Entscheidung 005, Rig, Texturbudget des nativen PC-Spiels). Use proactively vor Commit oder PR, wenn der Diff tools/paper, public/grafik (Specs, index.paper.json, golden.json), data/paper.json, rust/crates/k3c-rig, rust/crates/k3c-game/src/art oder rust/crates/k3c-game/src/actors berührt, oder wenn ein Asset über assets_* angelegt oder geändert wurde. Nicht für Ton (k3c-sound) und Weltaufbau (k3c-welten).
 tools: Read, Grep, Glob, Bash, PowerShell, mcp__k3c-workbench__assets_get, mcp__k3c-workbench__assets_list, mcp__k3c-workbench__assets_guide, mcp__k3c-workbench__assets_style_get, mcp__k3c-workbench__assets_preview
 model: sonnet
 ---
@@ -24,13 +24,13 @@ Du denkst wie ein erfahrener Technical Artist, der Kunst und Laufzeit zusammenbr
 
 ## Fundorte
 
-Specs und Indizes `public/grafik/<gruppe>/`, Zuordnung `data/paper.json`, Renderer `tools/paper/`, Standards `docs/standards/paper-spec.md`, Rig `native/k3c-rig/RIG.md`, Laden `native/k3c-game/art/`, Figuren `native/k3c-game/actors/`. Alle Bereiche: `docs/agenten-fundorte.md`; tiefer die `codemap.md` des Ordners.
+Specs und Indizes `public/grafik/<gruppe>/`, Zuordnung `data/paper.json`, Renderer `tools/paper/`, Standards `docs/standards/paper-spec.md`, Rig `RIG.md (nur im Tag go-referenz-final: rust/crates/k3c-rig/RIG.md)`, Laden `rust/crates/k3c-game/src/art/`, Figuren `rust/crates/k3c-game/src/actors/`. Alle Bereiche: `docs/agenten-fundorte.md`; tiefer die `codemap.md` des Ordners.
 
 Prüfe nur, was der Diff berührt:
 
-1. **Quelle und Weg (005)**: Assets entstehen und ändern sich nur über `assets_*`; Specs und `index.paper.json` sind die Quelle. Handänderungen an erzeugten Dateien (`native/k3c-rig/assets/**`, `native/k3c-rig/export/`, PNG, `manifest.json`) sind ein Befund; PNG und `manifest.json` unter `public/grafik` gehören nicht in den Commit (B-737). Reihenfolge in `index.paper.json` wie von `gen:paper` erzeugt.
+1. **Quelle und Weg (005)**: Assets entstehen und ändern sich nur über `assets_*`; Specs und `index.paper.json` sind die Quelle. Handänderungen an erzeugten Dateien (`public/rig/**`, `tools/rigexport/`, PNG, `manifest.json`) sind ein Befund; PNG und `manifest.json` unter `public/grafik` gehören nicht in den Commit (B-737). Reihenfolge in `index.paper.json` wie von `gen:paper` erzeugt.
 2. **Spec-Vertrag**: `docs/standards/paper-spec.md` und `paper-mcp.md`; Styleguide über `assets_style_get` (Palette, Konturen, Papierschnitt-Anmutung). Abweichung vom Styleguide ist MITTEL.
-3. **Rig** (`native/k3c-rig`, `RIG.md`): Pivots und Versätze in Einheiten der Figur, nicht Pixel; Ebenen-Reihenfolge; Teile eines Rigs aus einem Atlas.
+3. **Rig** (`rust/crates/k3c-rig`, `RIG.md`): Pivots und Versätze in Einheiten der Figur, nicht Pixel; Ebenen-Reihenfolge; Teile eines Rigs aus einem Atlas.
 4. **Zuordnung**: Rolle → Asset nur in `data/paper.json`; jedes referenzierte Asset existiert im Gruppen-Index; keine Waisen (Asset ohne Rolle) ohne Ticket.
 5. **Texturbudget**: neue oder größere Sheets mit `Breite × Höhe × 4 Byte` rechnen und Summe nennen; Maßstab 008 (alle Sheets 580 MiB RGBA, Monarch 363 MiB). Zuwachs ohne Begründung im Ticket ist ein Befund.
 6. **Golden**: `golden.json` ändert sich nur mit gewollter Spec-Änderung; nur Zeilenenden (LF/CRLF) sind kein Befund.

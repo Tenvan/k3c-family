@@ -1,7 +1,7 @@
 # K3C – Family Three Crowns
 
-Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **Natives Spiel in Go + Ebitengine** (`native/k3c-game`, Entscheidung 008)
-am PC, Simulation in `engine/` (Go). Browser-Client, Spielserver und Online-Spiel sind entfernt (B-850, WR1). Die Kommunikation mit dem Nutzer ist deutsch.
+Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns. **Natives Spiel in Rust** (`rust/crates/k3c-game`, Port aus Go, Projekt RSU)
+am PC; die Go-Engine (`engine/`, `cmd/`) bleibt, weil die Workbench sie im Prozess rechnet (Balancing, Simulation, Level, Welten); ungenutzte Teile entfernt RU59, den Rest RU40 und RU41. Browser-Client, Spielserver und Online-Spiel sind entfernt (B-850, WR1). Die Kommunikation mit dem Nutzer ist deutsch.
 
 - Design & Regeln: `docs/game-design.md` (nur bei Bedarf lesen)
 - Aktueller Stand & nächste Schritte: `docs/roadmap.md`
@@ -31,7 +31,8 @@ am PC, Simulation in `engine/` (Go). Browser-Client, Spielserver und Online-Spie
   **004: Asset-Studio getrennt vom Spiel**, Schnittstelle sind die Dateien (TS1, B-507).
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
   Asset-Studio ist entfallen (WB1).
-  **008: Natives Spiel in Go + Ebitengine, Rust entfällt** (Projekt NAT, B-775; 006 und 007 sind überholt, Projekt RST ruht; Rust-Code, Rust-Prototyp und Rust-Brücke `engine/core` sind entfernt, B-779); der Monarch wird ein Rig aus Teilen, wenn der Prototyp B-778 das bestätigt.
+  **008: Natives Spiel in Go + Ebitengine** (Projekt NAT, B-775), überholt durch den Rust-Port (Entscheidung 011 dazu steht aus, RU41). Das Go-Spiel `native/` ist seit RU37 entfernt; der letzte Stand steht im Tag `go-referenz-final`, Bau und Messung beschreibt `docs/standards/go-referenz.md`.
+  **012: Port-Orakel ist das Verhalten, nicht Bit-Gleichheit.** **013: Neue Mechaniken nur in Rust, Go-Engine eingefroren** (Entwurf, B-1143; Annahme durch Ralf offen).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -51,7 +52,6 @@ task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Rust-Spiel bauen (wie rust:game:build, Paket nach dist/k3c-game/; Einzelschritte rust:game:exe, :run, :dev)
 task buildall      # alle EXE bauen: Workbench, Engine-CLI k3c-sim nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
-task native:game:build  # Go-Spiel (Rückfall bis RU37) bauen, Paket nach dist/k3c-game-go/
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
@@ -59,7 +59,7 @@ task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-sim`
-(cmd/), `k3c-workbench` (tools/), `native` (native/), `balance`, `gen` (Generatoren:
+(cmd/), `k3c-workbench` (tools/), `rust` (rust/), `balance`, `gen` (Generatoren:
 `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
@@ -85,13 +85,13 @@ nie über `task balance` oder Binaries in der Shell (B-348). Die Shell-Befehle u
 **Tasks und Ausführungen laufen ausschließlich über `task`** (Neues in `Taskfile.yml`, nicht in `package.json`).
 Vor jedem Commit: `task check:diff` (bzw. `check_run task:check:diff`) einmal grün; es prüft nur die geänderten Dateien dieses Commits, minutenlange Läufe gehören nicht dazu; währenddessen nur gezielte Tests
 (`docs/arbeitsweise.md` › Tempo im Lauf).
-Die CI (`.github/workflows/ci.yml`) baut und testet zusätzlich das native Spiel unter Windows. `tests/projectRules.test.ts`
+Die CI (`.github/workflows/ci.yml`) baut und testet zusätzlich das Rust-Spiel unter Windows. `tests/projectRules.test.ts`
 prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Client und kein Spielserver mehr).
 
 ## Struktur
 
 - `data/` – Balancing als JSON (Biome, Gegner, Truppen, Gebäude, Monarch), einzige Quelle für Engine und
-  natives Spiel (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
+  Rust-Spiel (`data/embed.go`: von der Platte aus `K3C_DATA_DIR`, ohne Ordner per `go:embed`). Werte gehören hierher, nicht in den Code.
 - `engine/` – Go: `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/` (Raum mit Stufen und Spielstand,
   Zustand und Ereignisse wie in `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `engine/`
   importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
@@ -107,8 +107,7 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten
   (`docs/arbeitsweise.md` › Oberflächen der Wails-Programme, geprüft von `tests/atomicDesign.test.ts`).
   CLIs: `tools/ruletable` (`task gen:rules`), `tools/cleanup` (`task ops:aufraeumen`), `tools/checkdiff` (`task check:diff`). `engine/devrun` – Supervisor der Tasks `<app>:dev` (Neubau und Neustart bei Go-Änderungen).
-- `native/` – natives Spiel `k3c-game` (Go + Ebitengine, eigenes Modul, `task native:game`, Paket `task native:game:build` nach
-  `dist/k3c-game/`) und Rig-Prototyp `k3c-rig`.
+- `rust/` – Cargo-Workspace: Spiel `rust/crates/k3c-game` (Leitfaden `docs/standards/rust-port.md`), Rig `k3c-rig`, Simulation `k3c-sim`, dazu `k3c-data`, `k3c-room`, `k3c-platform`; Paket `task build` nach `dist/k3c-game/`. Rig-Teile liegen in `public/rig/`, der Export in `tools/rigexport/` (`task gen:rig`), das Kopierwerkzeug in `tools/sync/`, das Messskript in `tools/measure/`.
 - Papierschnitt-Grafik (Entscheidung 005): Das Spiel lädt Figuren, Monarch mit Reittier, Gebäude und Hintergründe über die
   Gruppen-Indizes `public/grafik/<gruppe>/index.paper.json` (je Asset `manifest.json` + PNG-Sheets); die Zuordnung steht in
   `data/paper.json`. Atlas und alte Packs lädt das Spiel nicht mehr (Entfernung in CU1). **PNG und `manifest.json` sind nicht eingecheckt** (B-737): `task gen:paper` rendert nach `.work/grafik/` und kopiert nur Geändertes nach `public/grafik/<gruppe>/<asset>/` (ignoriert); `task build` und `test` rufen es vorher auf, `check:diff` nicht (B-742). Eingecheckt bleiben Specs, `index.paper.json` und `golden.json`. Natur, Objekte, Icons und Gerüste sind seit MG8/CU1 ebenfalls Papierschnitt.
@@ -117,7 +116,7 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
 
 ## Regeln
 
-- Neue Mechanik: Logik + Test in `engine/sim/`, das native Spiel zeichnet nur.
+- Neue Mechanik: Logik + Test in `rust/crates/k3c-sim`, das Spiel (`rust/crates/k3c-game`) zeichnet nur; die Go-Engine bekommt keine neuen Mechaniken (Entscheidung 013, Entwurf).
 - Keine Sprünge, nur horizontale Bewegung. Welt-Koordinaten in **Units** (1 Unit = `UNIT_PX` = 32 px).
 - Level-Generierung und Simulation sind deterministisch und laufen in Go: nur `engine/rng` (`rng.New(seed)`) verwenden, niemals `math/rand`.
 - Jede Mechanik muss mit **2 Spielern gleichzeitig** funktionieren (Split-Screen, eigene Eingabe pro Spieler).
