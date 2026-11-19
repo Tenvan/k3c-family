@@ -29,16 +29,17 @@ Stand: Werkzeug, Probelauf (RU39.1) und vorläufige Messung mit eigenem Messcode
 
 Auf dem Entwicklungs-PC (Repo, ruhiger Rechner: keine Builds, keine anderen Sessions):
 
-1. `task native:game:build` (Go-Paket `dist/k3c-game/` mit `measure.ps1`, `messen.cmd`) und `task rust:game:dist`
-   (`dist/k3c-rust/`).
+1. `task native:game:build` (Go-Paket `dist/k3c-game-go/` mit `measure.ps1`, `messen.cmd`) und `task rust:game:build`
+   (Rust-Paket `dist/k3c-game/`).
 2. Aufzeichnung schreiben: `go test ./engine/internal/trace/ -run TestMessungNacht -write` und nach
-   `dist/k3c-rust/trace/messung-nacht.jsonl.gz` kopieren.
+   `dist/k3c-game/trace/messung-nacht.jsonl.gz` kopieren (der Ordner `trace\` ist kein Teil des Pakets, die Prüfung
+   `rust:game:dist:check` stört er nicht).
 3. Je Programm zwei Läufe abwechselnd (Go, Rust, Go, Rust):
-   - `powershell -File dist\k3c-game\measure.ps1 -Engine game -Szenen nacht -Seconds 300 -Vsync -Frames -Size 1280x720`
-   - `powershell -File dist\k3c-game\measure.ps1 -Engine replay -Seconds 300 -Vsync -Frames -Size 1280x720`
+   - `powershell -File dist\k3c-game-go\measure.ps1 -Engine game -Szenen nacht -Seconds 300 -Vsync -Frames -Size 1280x720`
+   - `powershell -File dist\k3c-game-go\measure.ps1 -Engine replay -Seconds 300 -Vsync -Frames -Size 1280x720`
 
-Auf dem Mini-PC: Beide Ordner `k3c-game` und `k3c-rust` nebeneinander kopieren (samt `k3c-rust\trace\`), dann im
-übergeordneten Ordner dieselben zwei Befehle mit `k3c-game\measure.ps1`. Fehlt das Gerät, steht in der Tabelle
+Auf dem Mini-PC: Beide Ordner `k3c-game-go` und `k3c-game` nebeneinander kopieren (samt `k3c-game\trace\`), dann im
+übergeordneten Ordner dieselben zwei Befehle mit `k3c-game-go\measure.ps1`. Fehlt das Gerät, steht in der Tabelle
 „angenommen, Validierung offen“.
 
 Ergebnis je Lauf: `reports\native-<engine>-<rechner>-<zeit>.json` (Feld `bilder` mit den Kennzahlen, GPU- und

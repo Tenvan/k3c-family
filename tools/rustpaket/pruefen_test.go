@@ -26,7 +26,7 @@ func fullPackage() fstest.MapFS {
 func joined(m []string) string { return strings.Join(m, "\n") }
 
 func TestPruefeVollstaendig(t *testing.T) {
-	m, n := pruefe(fullPackage(), 40<<20)
+	m, n := pruefe(fullPackage(), 40<<20, false)
 	if len(m) != 0 || n != 10 {
 		t.Fatalf("Mängel = %v, Dateien = %d", m, n)
 	}
@@ -36,7 +36,7 @@ func TestPruefePflichtFehlt(t *testing.T) {
 	p := fullPackage()
 	delete(p, "LIZENZEN.txt")
 	delete(p, "public/audio/README.md")
-	m, _ := pruefe(p, 40<<20)
+	m, _ := pruefe(p, 40<<20, false)
 	got := joined(m)
 	for _, want := range []string{"Pflichtdatei fehlt: LIZENZEN.txt", "Pflichtordner leer oder fehlt: public/audio"} {
 		if !strings.Contains(got, want) {
@@ -50,7 +50,7 @@ func TestPruefeVerboteneDateien(t *testing.T) {
 	for _, name := range []string{"data/x.go", "assets.txt", "saves/s1.json", "data/README.md", "LIZENZEN.txt.tmp", "native/k3c-rig/assets/go.mod"} {
 		p[name] = &fstest.MapFile{Data: []byte("x")}
 	}
-	got := joined(func() []string { m, _ := pruefe(p, 40<<20); return m }())
+	got := joined(func() []string { m, _ := pruefe(p, 40<<20, false); return m }())
 	for _, want := range []string{"verbotene Datei: data/x.go", "verbotene Datei: assets.txt", "verbotener Ordner: saves",
 		"verbotene Datei: data/README.md", "verbotene Datei: LIZENZEN.txt.tmp", "verbotene Datei: native/k3c-rig/assets/go.mod"} {
 		if !strings.Contains(got, want) {
@@ -63,7 +63,7 @@ func TestPruefeZuGrosseExeUndLeereLizenzen(t *testing.T) {
 	p := fullPackage()
 	p["k3c-game.exe"] = &fstest.MapFile{Data: make([]byte, 3<<20)}
 	p["LIZENZEN.txt"] = &fstest.MapFile{Data: []byte("Kopf ohne Crate-Abschnitt")}
-	got := joined(func() []string { m, _ := pruefe(p, 2<<20); return m }())
+	got := joined(func() []string { m, _ := pruefe(p, 2<<20, false); return m }())
 	for _, want := range []string{"k3c-game.exe zu groß: 3.0 MiB, erlaubt 2.0 MiB", "LIZENZEN.txt enthält keinen Crate-Abschnitt"} {
 		if !strings.Contains(got, want) {
 			t.Errorf("Mängel enthalten %q nicht:\n%s", want, got)
@@ -75,5 +75,19 @@ func TestCmdPruefenOrdnerFehlt(t *testing.T) {
 	err := cmdPruefen([]string{"gibt-es-nicht"}, &strings.Builder{})
 	if err == nil || !strings.Contains(err.Error(), "fehlt") {
 		t.Fatalf("Fehler = %v", err)
+	}
+}
+
+// Im Entwicklungsordner (-lokal) sind Spielstände, Berichte und die Aufzeichnung nach dem Spielen kein Mangel.
+func TestPruefeLokalDultetLaufzeitOrdner(t *testing.T) {
+	p := fullPackage()
+	for _, name := range []string{"saves/s1.json", "reports/r.json", "trace/messung-nacht.jsonl.gz"} {
+		p[name] = &fstest.MapFile{Data: []byte("x")}
+	}
+	if m, _ := pruefe(p, 40<<20, true); len(m) != 0 {
+		t.Fatalf("Mängel mit -lokal = %v", m)
+	}
+	if m, _ := pruefe(p, 40<<20, false); !strings.Contains(joined(m), "verbotener Ordner: saves") {
+		t.Fatalf("ohne -lokal muss saves/ auffallen: %v", m)
 	}
 }

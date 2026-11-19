@@ -901,3 +901,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1121](B-1121-rust-paket-lizenzen.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket enthält keine LIZENZEN.txt und gilt nicht als weitergebbar |
 | [B-1137](B-1137-rust-paket-pruefung-readme.md) | INF | Schuld | mittel | erledigt | RU57 | Das Rust-Paket wird beim Bau nicht auf Vollständigkeit geprüft und hat keinen Start-Hinweis |
 | [B-1138](B-1138-rust-spiel-version-im-bau.md) | INF | Problem | niedrig | erledigt | RU57 | Das Rust-Spiel zeigt im Menü immer Version unbekannt, weil der Bau K3C_VERSION nicht setzt |
+| [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | erledigt | RU57 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
+| [B-1140](B-1140-rust-spiel-start-aus-fremdem-ordner.md) | INF | Problem | mittel | erledigt | RU57 | Das Rust-Spiel findet Grafik und Schrift nicht, wenn es aus einem fremden Arbeitsordner startet |

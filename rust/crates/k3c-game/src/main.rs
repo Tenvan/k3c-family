@@ -32,8 +32,15 @@ fn main() -> ExitCode {
             print!("{}", menu::licenses::license_text());
             Ok(())
         }
-        Some((cmd, rest)) if cmd == "play" => return game::run::play(rest),
-        None => return game::run::play(&[]),
+        // Start aus fremdem Ordner (Paket, B-1140): bei Bedarf in den Ordner der EXE wechseln, dann spielen
+        Some((cmd, rest)) if cmd == "play" => {
+            game::workdir::anchor_to_package(&args);
+            return game::run::play(rest);
+        }
+        None => {
+            game::workdir::anchor_to_package(&args);
+            return game::run::play(&[]);
+        }
         Some((cmd, _)) if !cmd.starts_with('-') => Err(USAGE.to_string()),
         Some(_) => return game::run::play(&args),
     };

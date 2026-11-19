@@ -89,8 +89,9 @@ tasks:
       # Lizenzdatei (B-1121): Liste der Lizenz-Seite (`k3c-game licenses`) plus Lizenztexte aller gelinkten Rust-Crates
       # (tools/rustpaket, `cargo metadata`); erst in eine .tmp-Datei, damit ein Abbruch keine halbe Datei hinterlässt
       - 'go run ./tools/rustpaket lizenzen -exe "{{.PAKET}}/k3c-game.exe" -rust rust > "{{.PAKET}}/LIZENZEN.txt.tmp" && mv "{{.PAKET}}/LIZENZEN.txt.tmp" "{{.PAKET}}/LIZENZEN.txt"'
-      # Paketliste prüfen (B-1137): Pflichtdateien, keine Go- oder Entwickler-Reste, EXE-Größe
-      - task: game:dist:check
+      # Paketliste prüfen (B-1137): Pflichtdateien, keine Go- oder Entwickler-Reste, EXE-Größe; -lokal duldet saves/, reports/
+      # und trace/, die beim Spielen aus dem Paketordner entstehen (der strenge Lauf `game:dist:check` und die CI melden sie)
+      - go run ./tools/rustpaket pruefen -lokal "{{.PAKET}}"
       - 'echo "✅ Rust-Spiel in {{.PAKET}} (Start: k3c-game.exe)"'
 
   game:dist:check:

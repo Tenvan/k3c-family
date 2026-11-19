@@ -8,6 +8,7 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"slices"
 	"strings"
 )
 
@@ -25,10 +26,13 @@ var (
 	forbiddenExt   = []string{".go", ".rs", ".pdb", ".tmp"}
 	forbiddenNames = []string{"go.mod", "go.sum", "assets.txt", "Cargo.toml", "Cargo.lock"}
 	forbiddenDirs  = []string{"saves", "reports", ".git", ".work", "target"}
+	// runtimeDirs entstehen beim Spielen aus dem Paket (Spielstände, Berichte, Aufzeichnung): im Entwicklungsordner
+	// erlaubt (-lokal), im Paket zum Weitergeben nicht.
+	runtimeDirs = []string{"saves", "reports", "trace"}
 )
 
 // pruefe prüft den Paketordner fsys und liefert je Mangel eine Zeile (leer = vollständig); n ist die Zahl der Dateien.
-func pruefe(fsys fs.FS, maxExeBytes int64) (mangel []string, n int) {
+func pruefe(fsys fs.FS, maxExeBytes int64, lokal bool) (mangel []string, n int) {
 	files := map[string]int64{}
 	err := fs.WalkDir(fsys, ".", func(p string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -36,6 +40,9 @@ func pruefe(fsys fs.FS, maxExeBytes int64) (mangel []string, n int) {
 		}
 		base := path.Base(p)
 		if d.IsDir() {
+			if lokal && p != "." && slices.Contains(runtimeDirs, p) {
+				return fs.SkipDir
+			}
 			for _, f := range forbiddenDirs {
 				if base == f {
 					mangel = append(mangel, "verbotener Ordner: "+p)
@@ -114,10 +121,11 @@ func lizenzenOK(fsys fs.FS) bool {
 	return err == nil && strings.Contains(string(b), "\n==== ")
 }
 
-// cmdPruefen: `pruefen [-max-exe-mib 40] <paketordner>`; Exit 1 mit der Mängelliste.
+// cmdPruefen: `pruefen [-max-exe-mib 40] [-lokal] <paketordner>`; Exit 1 mit der Mängelliste.
 func cmdPruefen(args []string, out io.Writer) error {
 	fl := flag.NewFlagSet("pruefen", flag.ContinueOnError)
 	maxMiB := fl.Int("max-exe-mib", 40, "größte erlaubte EXE in MiB (Schwelle G1; 0 = keine Grenze)")
+	lokal := fl.Bool("lokal", false, "saves/, reports/ und trace/ im Paketordner dulden (Entwicklungsordner nach dem Spielen)")
 	if err := fl.Parse(args); err != nil {
 		return err
 	}
@@ -129,7 +137,7 @@ func cmdPruefen(args []string, out io.Writer) error {
 		return fmt.Errorf("paketordner %s fehlt (erst task rust:game:build)", dir)
 	}
 	fsys := os.DirFS(dir)
-	mangel, n := pruefe(fsys, int64(*maxMiB)<<20)
+	mangel, n := pruefe(fsys, int64(*maxMiB)<<20, *lokal)
 	if len(mangel) > 0 {
 		for _, m := range mangel {
 			_, _ = fmt.Fprintln(out, "❌", m)
