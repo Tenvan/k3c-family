@@ -81,9 +81,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | aktiv |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | aktiv |
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
+| RU57 | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | aktiv |
+| RU54 | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | aktiv |
 | RU55 | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | aktiv |
 | RU56 | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | aktiv |
-| RU54 | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | aktiv |
 
 ## Nicht-Ziele
 

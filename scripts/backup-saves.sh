@@ -1,7 +1,7 @@
 #!/bin/sh
 # Sichert die Spielstände des nativen Spiels nach <ziel>/k3c-saves-<Datum-Uhrzeit>/ (B-142, B-898, Ziel z. B. USB-Stick).
 # Quelle: der Ordner K3C_SAVES_DIR (nur dieses Skript; das Spiel selbst nimmt --saves), sonst dist/k3c-game/saves (saves/ neben der EXE des Pakets aus `task build`,
-# native/k3c-game/local › DefaultSavesDir). Aufruf im Repo-Stamm. Fehler stehen mit Zeit auf stderr, Exit != 0.
+# rust/crates/k3c-game/src/local/config.rs › default_saves_dir). Aufruf im Repo-Stamm. Fehler stehen mit Zeit auf stderr, Exit != 0.
 set -eu
 
 now() { date '+%Y-%m-%dT%H:%M:%S'; }

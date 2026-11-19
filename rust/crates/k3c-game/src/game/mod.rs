@@ -55,6 +55,7 @@ pub mod voyage;
 #[cfg(test)]
 pub mod voyage_testutil;
 pub mod window;
+pub mod workdir;
 
 #[cfg(test)]
 #[path = "draw_tests.rs"]
@@ -87,6 +88,10 @@ mod story_tests;
 #[cfg(test)]
 #[path = "window_tests.rs"]
 mod window_tests;
+
+#[cfg(test)]
+#[path = "workdir_tests.rs"]
+mod workdir_tests;
 
 use k3c_platform::{App, Canvas, InputState, log};
 
