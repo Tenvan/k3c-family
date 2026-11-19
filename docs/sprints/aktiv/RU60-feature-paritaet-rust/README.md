@@ -70,7 +70,7 @@ keine (alle mit Default entschieden, autonom, Claude, 2026-11-19: Parität wird 
 |---|---|---|---|---|
 | RU60.1 | `RU60.1-test-abgleich-go-rust.md` | Umsetzung | autonom | fertig |
 | RU60.2 | `RU60.2-luecken-kampf-anzeige-welt.md` | Umsetzung | autonom | offen |
-| RU60.3 | `RU60.3-luecken-geschichte-seekarte-fahrt.md` | Umsetzung | autonom | offen |
+| RU60.3 | `RU60.3-luecken-geschichte-seekarte-fahrt.md` | Umsetzung | autonom | fertig |
 | RU60.4 | `RU60.4-luecken-sim-level-room.md` | Umsetzung | autonom | offen |
 | RU60.5 | `RU60.5-abschluss-ks-we4-wi1.md` | Umsetzung | autonom | offen |
 | RU60.6 | `RU60.6-abschluss-gs-we5-w15.md` | Umsetzung | autonom | offen |

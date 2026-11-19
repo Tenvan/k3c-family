@@ -136,3 +136,57 @@ fn sea_states_diorama() {
         "Schiff ohne aktuelle Insel"
     );
 }
+
+fn repo_file(rel: &str) -> String {
+    let p = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../..")
+        .join(rel);
+    std::fs::read_to_string(&p).unwrap_or_else(|e| panic!("{}: {e}", p.display()))
+}
+
+/// B-1012 Punkt 4: Die Chunk-Grenzen des Maßstabs (`SEA_CHUNKS_MIN`/`MAX`) sind die kleinste ("sehr klein") und die
+/// zweitgrößte ("sehr groß") Inselgröße aus `data/island-sizes.json`; ändert die Datei, schlägt der Test an.
+#[test]
+fn sea_chunks_bounds_match_data() {
+    let f = k3c_data::island_sizes::load(&repo_file("data/island-sizes.json")).expect("island-sizes.json");
+    let of = |name: &str| {
+        f.sizes
+            .iter()
+            .find(|s| s.name == name)
+            .unwrap_or_else(|| panic!("Größe {name}"))
+            .chunk_count
+    };
+    assert_eq!(SEA_CHUNKS_MIN as i64, of("sehr klein"));
+    assert_eq!(SEA_CHUNKS_MAX as i64, of("sehr groß"));
+}
+
+/// B-1012 Punkt 4: Jeder Name unter `seekarte` in `data/paper.json` steht im Index der Gruppe `objekte`.
+#[test]
+fn sea_paper_names_exist_in_objekte_index() {
+    let paper: serde_json::Value = serde_json::from_str(&repo_file("data/paper.json")).expect("paper.json");
+    let index: serde_json::Value =
+        serde_json::from_str(&repo_file("public/grafik/objekte/index.paper.json")).expect("index.paper.json");
+    let ids: Vec<&str> = index
+        .as_array()
+        .expect("Index ist eine Liste")
+        .iter()
+        .filter_map(|e| e["id"].as_str())
+        .collect();
+    let mut names = Vec::new();
+    fn walk<'a>(v: &'a serde_json::Value, out: &mut Vec<&'a str>) {
+        match v {
+            serde_json::Value::String(s) => out.push(s),
+            serde_json::Value::Array(a) => a.iter().for_each(|x| walk(x, out)),
+            serde_json::Value::Object(o) => o.values().for_each(|x| walk(x, out)),
+            _ => {}
+        }
+    }
+    walk(&paper["seekarte"], &mut names);
+    assert!(names.len() >= 10, "zu wenige Namen unter seekarte: {names:?}");
+    for n in names {
+        let id = n
+            .strip_prefix("objekte/")
+            .unwrap_or_else(|| panic!("{n}: Gruppe objekte erwartet"));
+        assert!(ids.contains(&id), "{n} fehlt im Index der Gruppe objekte");
+    }
+}
