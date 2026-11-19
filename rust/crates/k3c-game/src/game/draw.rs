@@ -96,6 +96,7 @@ impl Game {
             self.stats.drw.add(dt);
         }
         self.measure_fps();
+        c.layer(Z_WINDOW);
         self.stats.draw(c, &self.frame, self.fps, None);
         c.layer(0);
         if let Some(sh) = self.shots.as_mut() {

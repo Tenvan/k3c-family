@@ -188,6 +188,8 @@ impl App for Launch {
         }
         if let Some(f) = &self.fault {
             let (w, h) = c.size();
+            c.layer(0); // ein Panic im Spiel kann Ebene und Ausschnitt verstellt haben
+            c.clip(None);
             c.rect(Rect::new(0.0, 0.0, w, h), [0.0, 0.0, 0.0, 1.0]);
             c.layer(30);
             f.draw(c);

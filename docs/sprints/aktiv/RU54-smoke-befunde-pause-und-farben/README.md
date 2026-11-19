@@ -65,7 +65,7 @@ keine
 |---|---|---|---|---|
 | RU54.1 | `RU54.1-pausenmenue-ueber-welt-und-hud.md` | Umsetzung | autonom | fertig |
 | RU54.2 | `RU54.2-flaeche-ohne-srgb.md` | Umsetzung | autonom | fertig |
-| RU54.3 | `RU54.3-review.md` | Umsetzung | autonom | offen |
+| RU54.3 | `RU54.3-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -73,4 +73,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+2026-11-19: AC-01 (RU54.1) und AC-02 (RU54.2) per Test erfüllt, Review ohne schwere Befunde (RU54.3). AC-03 offen: Ralf prüft Pausenmenü und Farben im Fenster. Abnahme-Ticket B-1129 (Lane zweit, mit B-1120) für den Bildvergleich Go/Rust.
