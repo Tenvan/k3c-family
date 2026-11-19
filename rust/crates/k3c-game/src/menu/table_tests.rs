@@ -75,7 +75,8 @@ fn keys_page() {
     assert_eq!(st.kind, StepKind::Stay, "Hoch/Runter bleibt");
 }
 
-/// Lizenz-Seite (B-808 AC-01): nennt Ebitengine, die Schrift (Go Regular) und Audio; die Lizenzdatei kommt aus derselben Liste.
+/// Lizenz-Seite (B-808 AC-01, B-1139): nennt die Rust-Bibliotheken, die Schrift (Go Regular) und Audio; die Lizenzdatei kommt
+/// aus derselben Liste.
 #[test]
 fn licenses_page() {
     let _g = version_guard();
@@ -86,17 +87,20 @@ fn licenses_page() {
         let tb = sc.tb.borrow();
         let text: String = tb.rows.iter().map(|r| r.join(" ") + "\n").collect();
         for want in [
-            "Ebitengine",
+            "wgpu",
             "Go Regular",
             &tr(lang, TextKey::LicFont),
             &tr(lang, TextKey::LicAudio),
-            "go-mp3",
+            "rodio",
             "CC0",
         ] {
             assert!(text.contains(want), "{lang}: Lizenz-Seite ohne {want:?}:\n{text}");
         }
     }
     let file = license_text();
+    for go in ["Ebitengine", "Oto", "go-text", "go-mp3", "oggvorbis", "rasterx"] {
+        assert!(!file.contains(go), "Go-Bibliothek {go:?} steht noch in der Lizenzdatei");
+    }
     for l in licenses() {
         let line = format!("{} – {} – {}", l.work, l.holder, l.license);
         assert!(file.contains(&line), "Lizenzdatei ohne {}", l.work);
@@ -142,4 +146,32 @@ fn table_geometry() {
             prev_bottom = y + h;
         }
     }
+}
+
+/// B-1139: Jede genannte Rust-Bibliothek steht in der `Cargo.toml` eines Spiel-Crates (workspace oder direkt), damit die Liste
+/// nicht wieder von dem abweicht, was das Spiel linkt. Werke ohne Crate (Schrift, Klänge) sind ausgenommen.
+#[test]
+fn licenses_match_cargo_toml() {
+    let crates = ["k3c-game", "k3c-platform", "k3c-data", "k3c-rig", "k3c-room", "k3c-sim"];
+    let manifest = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("..");
+    let tomls: String = crates
+        .iter()
+        .map(|c| std::fs::read_to_string(manifest.join(c).join("Cargo.toml")).unwrap_or_default())
+        .collect();
+    let mut checked = 0;
+    for l in licenses()
+        .iter()
+        .filter(|l| l.place.contains("github.com") || l.place.contains("gitlab.com"))
+    {
+        let name = l.work.split(',').next().unwrap_or(l.work).trim();
+        assert!(
+            tomls
+                .lines()
+                .any(|t| t.trim_start().starts_with(&format!("{name} ="))
+                    || t.trim_start().starts_with(&format!("{name}."))),
+            "{name} steht in keiner Cargo.toml der Spiel-Crates"
+        );
+        checked += 1;
+    }
+    assert_eq!(checked, 8, "acht Crates in der Liste");
 }

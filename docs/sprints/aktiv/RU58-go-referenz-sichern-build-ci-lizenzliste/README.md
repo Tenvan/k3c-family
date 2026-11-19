@@ -85,7 +85,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19; Ralf kann widerspre
 | RU58.3 | `RU58.3-go-referenz-messwerte-farben-pause.md` | Umsetzung | autonom | fertig |
 | RU58.4 | `RU58.4-go-spiel-aus-build-ci-release.md` | Umsetzung | autonom | fertig |
 | RU58.5 | `RU58.5-workbench-vitest-ci-rot.md` | Umsetzung | autonom | fertig |
-| RU58.6 | `RU58.6-lizenzliste-rust-crates.md` | Umsetzung | autonom | offen |
+| RU58.6 | `RU58.6-lizenzliste-rust-crates.md` | Umsetzung | autonom | fertig |
 | RU58.7 | `RU58.7-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
