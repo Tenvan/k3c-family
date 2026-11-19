@@ -30,6 +30,7 @@ use stage::StageFx;
 use status::status_marks;
 
 pub mod effects;
+pub mod festival;
 pub mod looks;
 pub mod paint;
 pub mod paintmarks;
@@ -211,6 +212,10 @@ impl Drawer for Fx {
             st.marks(dst, &s.marks, c, f.clock, true);
         }
         paint.warn(dst, w, c);
+        {
+            let lib = self.lib.as_ref().map(|l| l.borrow());
+            festival::draw(&paint.stencils(dst), dst, w, c, f.clock, lib.as_deref());
+        }
         paint.projectiles(dst, w, c);
         if let Some(s) = s {
             let mut lib = self.lib.as_ref().map(|l| l.borrow_mut());

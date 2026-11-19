@@ -107,6 +107,42 @@
       ]
     },
     {
+      "id": "music:fest",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Fest (Rückfall)",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/8-bit-victory-loop.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:fest:sengoku",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Fest in Sengoku",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:fest:nil",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Fest am Nil",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/happy-adventure-loop.ogg"
+        }
+      ]
+    },
+    {
       "id": "music:niederlage",
       "art": "sound",
       "kategorie": "musik",

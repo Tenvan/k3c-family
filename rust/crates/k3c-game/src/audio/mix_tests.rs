@@ -346,3 +346,28 @@ fn ears_follow_cell_camera() {
     let g = effect(p.plan(&f), "sfx:hit").0;
     assert!(g < EDGE_GAIN, "außerhalb der Kamera, am Monarchen: {g}");
 }
+
+// RU62.13 (B-1002): Solange die Welt ein Fest trägt, spielt die Festmusik der Welt (Sengoku, Nil), sonst der Rückfall;
+// nach der Abfahrt kehrt die Tagesmusik zurück. Die Slots stehen in data/sounds.json.
+#[test]
+fn plan_music_plays_festival_slot_per_world() {
+    use k3c_sim::state::festival_view::FestivalState;
+    for (effect, slot) in [
+        ("lanterns", "music:fest:sengoku"),
+        ("torches", "music:fest:nil"),
+        ("unbekannt", "music:fest"),
+    ] {
+        let mut p = planner();
+        let mut w = stage_world("day", &[0.0]);
+        p.plan(&game_frame(&w, 1, &[]));
+        w.festival = Some(FestivalState {
+            effect: effect.to_string(),
+        });
+        let m = p.plan(&game_frame(&w, 1, &[])).music[0].slot;
+        assert_eq!(p.state, MusicState::Festival, "{effect}");
+        assert_eq!(m, slot, "{effect}");
+        w.festival = None;
+        p.plan(&game_frame(&w, 1, &[]));
+        assert_eq!(p.state, MusicState::Day, "Abfahrt beendet das Fest ({effect})");
+    }
+}

@@ -188,6 +188,21 @@ impl Actors {
             attack_cooldown: false,
         };
         let (want, dir) = troop_want(&t.kind, m, working(t), nearest_enemy_dir(w, t.x));
+        let (want, dir) = if w.festival.is_some() && w.biome.depth == 0 {
+            {
+                let g = super::festival::Guest {
+                    kind: &t.kind,
+                    id: t.id,
+                    x: t.x,
+                    hub_x: w.hub_x,
+                    working: working(t),
+                    now: self.now,
+                };
+                super::festival::festival_want(g, want, dir)
+            }
+        } else {
+            (want, dir)
+        };
         self.apply(&mut fg, &want);
         if dir != 0 {
             fg.left = dir < 0;

@@ -15,7 +15,7 @@ use super::events::{
     Ear, RIDE_GAIN, SKILL_CAST_EVENT, SLOT_HUB, SLOT_RIDE, attenuation, cue_slot, event_cue, event_x, night_gain,
     riding, weather_ambient,
 };
-use super::music::{Fader, MusicState, MusicView, MusicVoice, TPS, next_music_state};
+use super::music::{Fader, MusicState, MusicView, MusicVoice, TPS, festival_slot, next_music_state};
 use super::register::Register;
 use crate::view::cell::{Cell, world_share};
 use crate::view::frame::{Event, Frame};
@@ -221,6 +221,12 @@ impl Planner {
     fn music(&mut self, f: &Frame, fallen: bool, t: f64) {
         self.state = next_music_state(self.state, &view_of(f), fallen);
         let mut slot = self.state.slot();
+        if self.state == MusicState::Festival {
+            slot = festival_slot(view_of(f).festival);
+            if !self.reg.music.contains_key(slot) {
+                slot = "music:fest"; // Welt ohne eigenes Stück
+            }
+        }
         if !self.reg.music.contains_key(slot) {
             slot = ""; // Lücke: Stille, das laufende Stück blendet aus
         }
@@ -292,6 +298,11 @@ pub fn view_of(f: &Frame) -> MusicView<'_> {
         let Some(w) = st.world.as_deref() else { continue };
         if v.phase.is_empty() {
             v.phase = w.cycle.phase.as_str();
+        }
+        if v.festival.is_empty()
+            && let Some(fs) = w.festival.as_ref()
+        {
+            v.festival = fs.effect.as_str();
         }
         v.enemies += i64::try_from(w.enemies.len()).unwrap_or(i64::MAX);
         if v.depth < 0 || st.depth < v.depth {

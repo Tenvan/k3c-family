@@ -26,6 +26,7 @@ pub mod anim;
 pub mod catalog;
 pub mod combatmarks;
 pub mod draw;
+pub mod festival;
 pub mod figures;
 pub mod figures_pose;
 pub mod levels;

@@ -96,7 +96,7 @@ Keine. Freigegebene Defaults (autonom, Claude, 2026-11-19): (1) keine REG-Sessio
 | RU62.10 | `RU62.10-sim-einsiedler.md` | Umsetzung | autonom | fertig |
 | RU62.11 | `RU62.11-anzeige-einsiedler.md` | Umsetzung | autonom | fertig |
 | RU62.12 | `RU62.12-sim-friede-fest.md` | Umsetzung | autonom | fertig |
-| RU62.13 | `RU62.13-anzeige-fest-musik.md` | Umsetzung | autonom | offen |
+| RU62.13 | `RU62.13-anzeige-fest-musik.md` | Umsetzung | autonom | fertig |
 | RU62.14 | `RU62.14-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
