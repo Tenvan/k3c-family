@@ -168,11 +168,12 @@ pub fn step_enemies(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
 
 /// Der Rest von `stepEnemies` für einen Gegner: Flucht, Ziel wählen, zuschlagen, vorrücken.
 fn step_one(w: &mut World, v: &WorldValues, ei: usize, isl: Option<&IslandRef>, dt: f64) {
+    let weather_speed = w.weather_speed; // RU62.5: Taifun bremst (sonst 1.0)
     let e = &mut w.enemies[ei];
     if e.has("fleesAtHalfHp") && e.hp < e.max_hp / 2.0 && !w.portals.is_empty() {
         e.fleeing = true;
     }
-    let speed = e.speed();
+    let speed = e.speed() * weather_speed;
     if e.fleeing {
         let d = e.home_x - e.x;
         e.x += sign(d) * d.abs().min(speed * 1.2 * dt);

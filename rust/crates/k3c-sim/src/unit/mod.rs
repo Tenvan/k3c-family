@@ -106,8 +106,9 @@ pub fn step_troops(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, dt: 
 
 /// Go: `wander`: um `center` herumlaufen; die zwei Würfe (Ziel, dann Wartezeit) stehen in dieser Reihenfolge.
 pub fn wander(w: &mut World, v: &WorldValues, ti: usize, center: f64, radius: f64, dt: f64) {
+    let weather = w.weather_speed; // RU62.5: Taifun bremst (sonst 1.0)
     let t = &mut w.troops[ti];
-    let speed = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.speed) * 0.5;
+    let speed = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.speed) * 0.5 * weather;
     if (t.target_x - center).abs() > radius {
         t.target_x = center;
     }
@@ -124,8 +125,14 @@ pub fn wander(w: &mut World, v: &WorldValues, ti: usize, center: f64, radius: f6
 
 /// Go: `walkTo`: `true`, sobald die Truppe `x` erreicht hat.
 pub fn walk_to(w: &mut World, v: &WorldValues, ti: usize, x: f64, dt: f64) -> bool {
+    let weather = w.weather_speed; // RU62.5: Taifun bremst (sonst 1.0)
     let t = &mut w.troops[ti];
-    t.x = approach(t.x, x, v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.speed), dt);
+    t.x = approach(
+        t.x,
+        x,
+        v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.speed) * weather,
+        dt,
+    );
     (t.x - x).abs() < ARRIVE
 }
 

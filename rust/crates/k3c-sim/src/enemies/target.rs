@@ -219,7 +219,11 @@ pub fn choose_target(w: &World, v: &WorldValues, ei: usize, dir: f64, wall: Opti
     let e = &w.enemies[ei];
     let r = Reach {
         ex: e.x,
-        range: e.range,
+        range: if e.has("ranged") {
+            e.range * w.weather_range
+        } else {
+            e.range
+        }, // RU62.5: Taifun verkürzt Pfeile
         ranged: e.has("ranged"),
         dir,
         wall,

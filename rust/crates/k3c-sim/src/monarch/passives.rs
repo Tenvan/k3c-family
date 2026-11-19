@@ -52,7 +52,7 @@ fn stat_sum(w: &World, v: &WorldValues, pi: usize, field: impl Fn(&SkillEffect) 
 /// Go: `speedOf`: Grundtempo des Monarchen (Basis × Reittier-Faktor × (1 + Blessings)).
 pub fn speed_of(w: &World, v: &WorldValues, pi: usize) -> f64 {
     let ridden = v.monarch.base.speed * mount_of(v, pi).speed_factor;
-    ridden * (1.0 + stat_sum(w, v, pi, |e| e.speed_bonus))
+    ridden * (1.0 + stat_sum(w, v, pi, |e| e.speed_bonus)) * w.weather_speed // RU62.5: Taifun bremst (sonst 1.0)
 }
 
 /// Go: `damageMultOf`: Faktor auf Schlag- und Zauberschaden (Blessings); `spell` = Zauber, dann zusätzlich Arcane Power.

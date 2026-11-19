@@ -23,6 +23,7 @@ pub mod types;
 pub mod types_enemy;
 pub mod types_things;
 pub mod types_world;
+pub mod weather_view;
 
 pub use fehler::Fehler;
 pub use island_ref::{IslandRef, IslandView};

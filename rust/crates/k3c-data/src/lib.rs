@@ -39,6 +39,7 @@ pub mod story;
 pub mod stresstests;
 pub mod troops;
 pub mod waves;
+pub mod weather;
 pub mod world;
 
 pub use data::{Data, load_all};

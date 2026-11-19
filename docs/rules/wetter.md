@@ -17,8 +17,8 @@ Umsetzung: Regeltext SI3.1, Engine SI3.2 (`engine/sim`), Darstellung B-999, Ausw
 
 | Welt | Wetterart | Stand |
 |---|---|---|
-| `sengoku` | `taifun` | Engine SI3.2 |
-| `nil` | `flut` | Engine SI3.2 |
+| `sengoku` | `taifun` | Rust RU62.5 (Kern, Zeitplan, Taifun) |
+| `nil` | `flut` | Rust: Zeitplan RU62.5, Wirkung RU62.6 |
 | `standard` | keins | – |
 | `britannien` | keins | – |
 | Polar (Welt gibt es noch nicht) | `schneesturm` | **geplant**, kommt mit der Polar-Welt (§ 4) |

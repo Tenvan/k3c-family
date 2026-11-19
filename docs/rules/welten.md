@@ -250,6 +250,10 @@ Eine **Gegner-Variante** hat keine eigene ID: Basisart (alle Werte), optional We
 (`name` ist übersteuerbar, aber nie leer), Aussehen über `skins`. Beispiel Sengoku: `"skins": {"gegner/wolf": "gegner/ninja"}` und
 `"overrides": {"enemies": {"wolf": {"name": "Ninja"}}}` – der Wolf heißt Ninja, hat Wolf-Werte und das Ninja-Asset.
 
+### 2.4 Wetter (B-969, RU62.5)
+
+Das Feld `weather` der Welt-Datei ist **geplant nach RU41**: Die Welt-Dateien lehnen unbekannte Felder ab (Rust `deny_unknown_fields`, Go bis RU41). Bis dahin steht die Zuordnung in `data/weather.json` › `worlds` (Welt-ID → Art, genau eine): `sengoku` auf `taifun`, `nil` auf `flut`; `standard` und `britannien` fehlen und haben damit kein Wetter. Eine unbekannte Art in `worlds` lässt das Laden mit klarer Meldung scheitern (Prüfung in § 3 sinngemäß, `k3c-data/src/weather.rs`). Regeln: [`wetter.md`](wetter.md).
+
 ## 3. Prüfung beim Laden
 
 Die Prüfung gilt für **jede** Welt-Datei, gleich ob eingebettet, im Dev-Mode von der Platte gelesen oder im Welten Editor als

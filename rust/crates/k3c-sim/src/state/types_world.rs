@@ -162,6 +162,18 @@ pub struct World {
     /// Mindestens zwei gesteuerte Monarchen auf der Insel (RU62.3, die Insel setzt es je Takt); ohne JSON.
     #[serde(skip)]
     pub coop_active: bool,
+    /// Art und Phase des Wetters (RU62.5, B-969); fehlt, solange keine Wetternacht ansteht oder die Welt kein Wetter hat.
+    #[serde(rename = "weather", skip_serializing_if = "Option::is_none")]
+    pub weather: Option<super::weather_view::WeatherState>,
+    /// Der Wetter-Plan der Insel (RU62.5); `None` = Welt ohne Wetter; ohne JSON.
+    #[serde(skip)]
+    pub weather_cfg: Option<std::sync::Arc<crate::weather::WeatherPlan>>,
+    /// Tempo-Faktor des Wetters dieser Stufe (1.0 = keine Wirkung, Taifun an der Oberfläche < 1); je Takt gesetzt, ohne JSON.
+    #[serde(skip)]
+    pub weather_speed: f64,
+    /// Reichweiten-Faktor der Fernkämpfer (1.0 = keine Wirkung); je Takt gesetzt, ohne JSON.
+    #[serde(skip)]
+    pub weather_range: f64,
     /// Verworfene Ereignisse dieses Steps (Obergrenze je Tick).
     #[serde(rename = "eventsDropped", skip_serializing_if = "is_zero_i64")]
     pub events_dropped: i64,
@@ -257,6 +269,10 @@ impl Default for World {
             coop: Default::default(),
             coop_cfg: None,
             coop_active: false,
+            weather: None,
+            weather_cfg: None,
+            weather_speed: 1.0,
+            weather_range: 1.0,
             events_dropped: Default::default(),
             no_travel: Default::default(),
             lava_in: Default::default(),

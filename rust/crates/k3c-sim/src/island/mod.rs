@@ -328,6 +328,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         return;
     }
     isl.prepare_coop(); // RU62.3: zwei gesteuerte Monarchen auf der Insel? (Doppel-Truhe)
+    isl.prepare_weather(); // RU62.5: Wetter-Zustand und Taifun-Faktoren je Stufe
     for i in 0..isl.stages.len() {
         let mut r = isl.stage_ref(i, difficulty);
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock); // Entscheidung 5: der Vorrat gehört der Stufe, solange sie rechnet

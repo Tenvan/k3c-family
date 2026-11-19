@@ -6,7 +6,7 @@ use crate::source::{EMBEDDED, Source};
 use crate::{
     Fehler, balance_hints, balance_targets, biome, bosses, buildings, cargo, coop, difficulty, economy, enemies,
     events, goals, guards, hub, island_sizes, light, monarch, native, paper, render, ruins, ship, sounds, story,
-    stresstests, troops, waves, world,
+    stresstests, troops, waves, weather, world,
 };
 
 /// `Data` hält jede Spiel-Daten-Datei in ihrer Struktur.
@@ -40,6 +40,8 @@ pub struct Data {
     pub stresstests: stresstests::Stresstests,
     pub troops: BTreeMap<String, troops::TroopData>,
     pub waves: waves::WavesData,
+    /// Wetter je Welt (RU62.5).
+    pub weather: weather::WeatherFile,
     /// Die Standard-Welt (Kopf, Inseln roh).
     pub standard_world: world::WorldFile,
 }
@@ -106,6 +108,7 @@ pub fn load_all(src: &Source) -> Result<Data, Fehler> {
         stresstests: stresstests::load(&read(stresstests::FILE)?)?,
         troops: troops::load(&read(troops::FILE)?)?,
         waves: waves::load(&read(waves::FILE)?)?,
+        weather: weather::load(&read(weather::FILE)?)?,
         standard_world: world::parse(&read("worlds/standard.json")?, "standard")?,
         biomes,
         buildings,
