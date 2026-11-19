@@ -67,7 +67,7 @@ keine
 | RU63.2 | `RU63.2-insel-spiegel-und-hud.md` | Umsetzung | autonom | fertig |
 | RU63.3 | `RU63.3-simview-mit-insel.md` | Umsetzung | autonom | fertig |
 | RU63.4 | `RU63.4-replay-bericht-auf-game-measure.md` | Umsetzung | autonom | fertig |
-| RU63.5 | `RU63.5-review.md` | Umsetzung | autonom | offen |
+| RU63.5 | `RU63.5-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
