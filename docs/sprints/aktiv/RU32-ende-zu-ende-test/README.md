@@ -85,8 +85,8 @@ Keine offenen.
 |---|---|---|---|---|
 | RU32.1 | `RU32.1-go-referenz-und-welt-hash.md` | Umsetzung | autonom | fertig |
 | RU32.2 | `RU32.2-ablauf-ohne-fenster.md` | Umsetzung | autonom | fertig |
-| RU32.3 | `RU32.3-aufnahme-je-station.md` | Umsetzung | autonom | offen |
-| RU32.4 | `RU32.4-bildvergleich-und-bericht.md` | Umsetzung | autonom | offen |
+| RU32.3 | `RU32.3-aufnahme-je-station.md` | Umsetzung | autonom | fertig |
+| RU32.4 | `RU32.4-bildvergleich-und-bericht.md` | Umsetzung | autonom | fertig |
 | RU32.5 | `RU32.5-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

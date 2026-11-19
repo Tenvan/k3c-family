@@ -179,6 +179,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1117](B-1117-menu-stress-starter-verdrahten.md) | CLI | Schuld | hoch | offen | RU30 | Menü bekommt den Stress-Starter des Spiels (MenuSet und Verdrahtung) |
 | [B-1118](B-1118-rust-spiel-icon-manifest-ressource.md) | CLI | Schuld | mittel | offen | RU30 | Rust-EXE trägt Spiel-Icon und Manifest (Ressourcen-Crate braucht Freigabe) |
 | [B-1119](B-1119-ru30-abnahme-messen-stresstest-aufnahme.md) | CLI | Schuld | mittel | offen | RU30 | RU30 Abnahme: Messläufe, Stresstest und Aufnahmevergleich des Rust-Spiels |
+| [B-1120](B-1120-ru32-abnahme-aufnahme-bildvergleich-bericht.md) | CLI | Schuld | mittel | offen | RU32 | RU32 Abnahme (Lane zweit): Aufnahme beider EXE, Bildvergleich Go gegen Rust, Bericht, Gen |
 
 ## Archiv
 
