@@ -86,7 +86,7 @@ keine. Mit Default entschieden (autonom, Claude, 2026-11-19; Ralf kann widerspre
 | RU58.4 | `RU58.4-go-spiel-aus-build-ci-release.md` | Umsetzung | autonom | fertig |
 | RU58.5 | `RU58.5-workbench-vitest-ci-rot.md` | Umsetzung | autonom | fertig |
 | RU58.6 | `RU58.6-lizenzliste-rust-crates.md` | Umsetzung | autonom | fertig |
-| RU58.7 | `RU58.7-review.md` | Review | autonom | offen |
+| RU58.7 | `RU58.7-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -94,6 +94,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19 Review RU58.7: AC-01 (RU58.1, Tag auf origin), AC-02 (RU58.2/.3, Referenz 3,0 MiB Bilder + 56 KiB Farben/Pause, `e2e_compare` ohne Go-EXE), AC-03 (RU58.4, Job entfernt; `go-version-file` bleibt für `cmd/sync` im Modul `native/k3c-game` bis RU37.1), AC-04 (RU58.5, Vitest 575 grün; CI-Lauf Rust und Workbench grün), AC-05 (RU58.6, Liste mit Cargo-Test, neue Baseline). Keine neuen Tickets; Sim/Balance/Gen: kein Lauf nötig, kein Abnahme-Ticket für diesen Sprint nötig. Nicht gemergt: Sprint-Branch `sprint/ru58` liegt auf origin, Merge macht der Hauptrechner.
