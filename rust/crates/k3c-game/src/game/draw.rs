@@ -6,7 +6,13 @@ use std::panic::{AssertUnwindSafe, catch_unwind, resume_unwind};
 use k3c_platform::{Canvas, Rect};
 
 use super::{CLEAR_COLOR, Game, layout};
+use crate::hud::paint::Z_CONTENT;
 use crate::view::cell::{rect, window_cell};
+
+/// Ebene der Fenster-Aufrufe (Overlay-Drawer, oberster Screen, Leistungsanzeige): über dem HUD (`Z_CONTENT`). Die
+/// Plattform ordnet nach (Ebene, Ausschnitt, Aufruf); Aufrufe ohne Ausschnitt sortierten sonst vor die Zellen
+/// (B-1127: das Pausenmenü lag unter der Welt). In Go zählt nur die Aufrufreihenfolge.
+pub(super) const Z_WINDOW: u32 = Z_CONTENT + 1;
 
 impl Game {
     /// Zeichnet den Fehler, die Schiffsfahrt bzw. die Ladeanzeige, sonst das Spiel (`draw_game`).
@@ -74,6 +80,7 @@ impl Game {
             }
         }
         c.clip(None);
+        c.layer(Z_WINDOW);
         let wc = window_cell(self.win);
         for d in &self.parts.drawers {
             if d.layer() == crate::view::layer::Layer::OVERLAY {
@@ -81,6 +88,7 @@ impl Game {
             }
         }
         if let Some(top) = self.stack.top() {
+            c.layer(Z_WINDOW); // ein Drawer darf die Ebene verstellt haben
             top.draw(c, &self.frame, &wc);
         }
         if let Some(s0) = s0 {
@@ -88,7 +96,9 @@ impl Game {
             self.stats.drw.add(dt);
         }
         self.measure_fps();
+        c.layer(Z_WINDOW);
         self.stats.draw(c, &self.frame, self.fps, None);
+        c.layer(0);
         if let Some(sh) = self.shots.as_mut() {
             sh.capture(c);
         }

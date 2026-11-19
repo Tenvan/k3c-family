@@ -1,0 +1,71 @@
+# B-1130 · RU55 Abnahme: Aufnahmen gegen K2C-Referenz, Bildvergleich und Frame-Zeit (Lane zweit)
+
+- **Domäne:** CLI
+- **Typ:** Schuld
+- **Prio:** mittel
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** RU55
+- **Projekt:** RSU
+- **Erstellt:** 2026-11-19
+- **Spec:** freigegeben
+- **Revision:** 1
+- **Freigabe:** autonom, Claude, 2026-11-19
+- **Duplikat von:** –
+- **Ersetzt:** –
+
+## Ausgangslage
+
+**Lane: zweit** (Second Worker). Sprint RU55 bringt Gehlinie 58 %, Ufer 7 %, Weite ≈ 5 M, Spiegel-Fluss, Tönung, Lichthöfe und Wald nach Rodung ins Rust-Spiel und schließt auf dem Hauptrechner ohne Aufnahme-, Mess- und Race-Läufe ab (B-742). Der Standard `docs/standards/bildaufbau.md` ist das Vorbild (16 K2C-Screenshots von Ralf, nicht im Repo).
+
+## Ziel
+
+Die gesperrten Läufe zu RU55 sind gelaufen: Aufnahmen der Referenz-Szenen in einer und zwei Ansichten, Pixelmessung der Verhältnisse, Bildvergleich gegen das Go-Spiel im Profil `go`, Frame-Zeit und Allokationen.
+
+## Beteiligte und Zielgruppen
+
+Second Worker (Läufe), 🧑 (Blick am TV und gegen die K2C-Screenshots).
+
+## Anforderungen
+
+- **Referenz-Szenen** (je eine Ansicht 1920 × 1080 und zwei Ansichten, mit den vorhandenen Aufnahme-Werkzeugen `tests/still*.rs`, Wiedergabe `replay`, `K3C_LOOK=k2c`): Hub am Tag; Hub in der Nacht mit Lagerfeuer und Mond (Spiegelung); Blutmond; dichter Wald mit Fackel; gerodeter Hub mit Leitmotiv; Lava-Stufe; Abend und Morgengrauen. Aufnahmen liegen in `.work/` (nicht eingecheckt); der Bericht `docs/messung/look-k2c.md` nennt Szene, Seed, Befehl und Messwerte.
+- **Pixelmessung:** Gehlinie bei 58 % ± 1 %, Ufer 7 %, Fluss Rest; M ≈ 12 % der Ansicht (eine Ansicht) und ≈ 16 % je Hälfte (zwei Ansichten); Spiegel-Helligkeit 60 bis 70 % der Welt.
+- **Bildvergleich Go:** `cargo test -p k3c-game --test e2e_compare` und `e2e_images` im Profil `go` bleiben grün (`K3C_LOOK=go`), `testdata/` unverändert.
+- **Frame-Zeit:** schlechtester Frame mit zwei Ansichten auf dem Mini-PC unter 16,7 ms (`tests/messung_cpu.rs`, `native/measure.ps1`), Wert im Bericht; `alloc_je_bild` mit unveränderter Obergrenze grün.
+- `task check:race` und `cargo test --workspace` grün.
+
+## Nicht-Ziele
+
+Neue Funktionen, Werte ändern (Befunde als Tickets; die Weite 4 / 4,5 / 5 M entscheidet 🧑 am TV).
+
+## Regeln und Einschränkungen
+
+- **Bereich:** `docs/messung/look-k2c.md`
+- **Abhängig von:** RU55.1, RU55.2, RU55.3, RU55.4, RU55.5, RU55.6
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
+- **Sperre:** –
+Nur auf dem Second Worker (Sim, Race, Gen und Messläufe erlaubt, Beschluss 2026-11-18). Golden werden nie zugunsten von Rust geändert.
+
+## Beispiele
+
+Hub in der Nacht, zwei Ansichten: Gehlinie je Hälfte bei 58 %, Lagerfeuer und Mond hell im Spiegel, Waldrand dunkel.
+
+## Ausnahme- und Fehlerfälle
+
+Weicht die Messung ab, gilt der Standard: Abweichung als Ticket melden, Werte nicht im Bericht beschönigen.
+
+## Akzeptanzkriterien
+
+- **AC-01** Bericht `docs/messung/look-k2c.md` mit allen Referenz-Szenen (eine und zwei Ansichten) und den Pixel-Verhältnissen im Zielbereich.
+- **AC-02** Bildvergleich gegen Go im Profil `go` grün, `testdata/` unverändert.
+- **AC-03** Schlechtester Frame (zwei Ansichten) < 16,7 ms, `alloc_je_bild` und `task check:race` grün, Werte im Bericht.
+- **AC-04** Manuell (🧑): Am TV wirken Nacht, Blutmond, Wald und Hub wie das K2C-Vorbild; 🧑 wählt die endgültige Weite (4, 4,5 oder 5 M).
+
+## Offene Fragen
+
+Weite 4, 4,5 oder 5 M: 🧑 entscheidet am TV; Default 5 M (B-1045).
+
+## Notizen
+
+Aufgeteilt aus den Abnahme-Punkten von B-1043 bis B-1047 (AC-02 und AC-03 dort sind 🧑-Abnahmen am TV).

@@ -33,7 +33,7 @@ Spieler am TV. Umsetzung: Claude (PAP), Fachprüfung `k3c-grafik`, `k3c-welten`.
 
 ## Nicht-Ziele
 
-Zeichnen im Spiel und Parallaxe (BB2), Polar-Welt.
+Zeichnen im Spiel und Parallaxe (RU55, B-1047), Polar-Welt.
 
 ## Regeln und Einschränkungen
 

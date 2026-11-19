@@ -3,14 +3,14 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** live
-- **Status:** offen
-- **Sprint:** BB2
-- **Projekt:** PAP
+- **Umgebung:** offline
+- **Status:** eingeplant
+- **Sprint:** RU55
+- **Projekt:** RSU
 - **Erstellt:** 2026-11-17
-- **Spec:** Entwurf
-- **Revision:** 1
-- **Freigabe:** –
+- **Spec:** freigegeben
+- **Revision:** 2
+- **Freigabe:** autonom, Claude, 2026-11-19
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,9 +28,11 @@ Spieler am TV auf dem Sofa (Lesbarkeit!). Umsetzung: Claude (CLI, Rust-Client). 
 
 ## Anforderungen
 
-- Sichtbare Welt über der Gehlinie auf ≈ 5 M (≈ 19 Units), Wert in `data/` statt im Code.
-- Split-Screen: M in jeder Hälfte ≈ 0,7-fach der vollen Ansicht, nicht halb.
-- Lesbarkeit von Preis-Anzeigen, Münzen und Marken bleibt erhalten (Größe in Bildschirm-px statt Welt-Maßstab, wo nötig).
+- Sichtbare Welt über der Gehlinie auf ≈ 5 M (≈ 19 Units bei M = 121,5 px und `UNIT_PX` 32), Wert `viewUnits` im Profil `k2c` von `data/look.json` statt als Konstante `VIEW_UNITS = 420/32` in `game/layout.rs`, `replay/layout.rs`, `still/state.rs`, `audio/mix.rs` und `props/decor.rs` (`VIEW_TOP`).
+- Der Maßstab wird in Monarchenhöhen (M) angegeben: `worldHeightM` 5,0; Bildpunkte je Unit folgen aus Zellenhöhe × `worldShare` ÷ `viewUnits`.
+- Split-Screen: M in jeder Hälfte ≈ 0,7-fach der vollen Ansicht, nicht halb (Faktor `splitScale` 0,7 im Profil); Trenner schmal (≈ 2 % der Höhe).
+- Lesbarkeit von Preis-Anzeigen, Münzen und Marken bleibt erhalten (Größe in Bildschirm-px statt Welt-Maßstab, wo nötig); Mindestgröße der Figuren in px.
+- Kamera (`world/camera.rs`, `cull.rs`): Totzone, Mitführung und Culling rechnen mit der neuen Breite; Parallax-Ebenen füllen die breitere Welt ohne Kanten.
 
 ## Nicht-Ziele
 
@@ -38,12 +40,12 @@ Größen der Assets selbst (BB1).
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `rust/crates/k3c-game/**`, `data/paper.json`
+- **Bereich:** `rust/crates/k3c-game/src/world/camera.rs`, `rust/crates/k3c-game/src/world/cull.rs`, `rust/crates/k3c-game/src/game/layout.rs`, `rust/crates/k3c-game/src/replay/layout.rs`, `rust/crates/k3c-game/src/still/state.rs`, `rust/crates/k3c-game/src/audio/mix.rs`, `rust/crates/k3c-game/src/props/decor.rs`, `rust/crates/k3c-game/src/hud/layout.rs`, `data/look.json`
 - **Abhängig von:** B-1043
 - **Braucht 🧑:** Entscheidung, Abnahme
-- **Größe:** S
+- **Größe:** M
 - **Sperre:** –
-- Die sichtbare Breite beeinflusst die Spiel-Wahrnehmung (Wellen früher sichtbar), nicht die Regeln.
+- Entschieden mit Default (autonom, Claude, 2026-11-19; 🧑 kann am TV widersprechen): 5 M, ein Wert in `data/look.json`. Die sichtbare Breite beeinflusst die Wahrnehmung (Wellen früher sichtbar), nicht die Regeln; Sim und Golden unberührt (Profil `go` hält den alten Maßstab für die Bildvergleiche).
 
 ## Beispiele
 

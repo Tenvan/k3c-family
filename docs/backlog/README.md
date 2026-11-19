@@ -123,11 +123,11 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1040](B-1040-hub-gebaeude-masstab.md) | PAP | Idee | mittel | offen | BB1 | Hub-Gebäude folgen den Monarchenhöhen, die Burg ist das größte Gebäude |
 | [B-1041](B-1041-waldwand-baumvarianten.md) | PAP | Idee | mittel | offen | BB1 | Waldbäume in mehreren Höhen und Tönen ergeben eine geschlossene Waldwand |
 | [B-1042](B-1042-leitmotiv-je-welt.md) | PAP | Idee | mittel | offen | BB1 | Jede Welt hat ein großes Leitmotiv in der Ferne des Hubs |
-| [B-1043](B-1043-gehlinie-ufer.md) | CLI | Idee | mittel | offen | BB2 | Gehlinie liegt bei 58 % der Ansicht, das Ufer ist 7 % hoch |
-| [B-1044](B-1044-fluss-spiegelt-welt.md) | CLI | Idee | mittel | offen | BB2 | Der Fluss spiegelt die Welt über der Gehlinie |
-| [B-1045](B-1045-mehr-welt-sichtbar.md) | CLI | Idee | mittel | offen | BB2 | Die Ansicht zeigt etwa 5 Monarchenhöhen Welt über der Gehlinie |
-| [B-1046](B-1046-toenung-licht-dunst.md) | CLI | Idee | mittel | offen | BB2 | Tageszeit und Ereignis tönen das ganze Bild, Lichtquellen haben einen Lichthof |
-| [B-1047](B-1047-wald-nach-rodung.md) | CLI | Idee | mittel | offen | BB2 | Der Wald wird mit dem Roden offener und heller |
+| [B-1043](B-1043-gehlinie-ufer.md) | CLI | Idee | mittel | eingeplant | RU55 | Gehlinie liegt bei 58 % der Ansicht, das Ufer ist 7 % hoch |
+| [B-1044](B-1044-fluss-spiegelt-welt.md) | CLI | Idee | mittel | eingeplant | RU55 | Der Fluss spiegelt die Welt über der Gehlinie |
+| [B-1045](B-1045-mehr-welt-sichtbar.md) | CLI | Idee | mittel | eingeplant | RU55 | Die Ansicht zeigt etwa 5 Monarchenhöhen Welt über der Gehlinie |
+| [B-1046](B-1046-toenung-licht-dunst.md) | CLI | Idee | mittel | eingeplant | RU55 | Tageszeit und Ereignis tönen das ganze Bild, Lichtquellen haben einen Lichthof |
+| [B-1047](B-1047-wald-nach-rodung.md) | CLI | Idee | mittel | eingeplant | RU55 | Der Wald wird mit dem Roden offener und heller |
 | [B-1049](B-1049-typen-worlddef-island-fuer-ru7-5-vorziehen.md) | SIM | Schuld | mittel | offen | RU10 | Typen WorldDef und Island für RU7.5 vorziehen |
 | [B-1050](B-1050-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | RU8 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
 | [B-1052](B-1052-abnahme-laeufe-ru5.md) | CLI | Schuld | mittel | offen | RU5 | Abnahme-Läufe RU5 |

@@ -28,7 +28,7 @@ Siehe `B-1038` bis `B-1042 › Anforderungen`.
 
 ## Nicht-Ziele
 
-Zeichnen im Spiel (Gehlinie, Spiegel, Tönung, Weite, Wald nach Rodung): Sprint BB2.
+Zeichnen im Spiel (Gehlinie, Spiegel, Tönung, Weite, Wald nach Rodung): Sprint RU55 (Projekt RSU, Rust-Spiel; BB2 ist darin aufgegangen).
 
 ## Regeln und Einschränkungen
 
