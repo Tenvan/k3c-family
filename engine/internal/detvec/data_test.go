@@ -143,7 +143,8 @@ func TestDataFilesComplete(t *testing.T) {
 		for _, p := range files {
 			rel, _ := filepath.Rel(dataDir, p)
 			rel = filepath.ToSlash(rel)
-			if strings.HasPrefix(rel, "asset-") || strings.HasPrefix(rel, "assets-") {
+			// look.json (RU55) liest nur das Rust-Spiel (Look-Profile); der Go-Stand hängt nicht daran.
+			if strings.HasPrefix(rel, "asset-") || strings.HasPrefix(rel, "assets-") || rel == "look.json" {
 				continue
 			}
 			if !known[rel] {

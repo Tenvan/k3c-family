@@ -72,7 +72,7 @@ impl World {
         };
         let (lk, back) = (self.looks.of(&st.level), self.light.backdrop(&wd.cycle));
         let (look, d) = (current(), self.density(c, wd, f.clock, &st.level));
-        let alpha = if look.world(&st.level).forest {
+        let alpha = if look.forest.enabled && look.world(&st.level).forest {
             wall_alpha(i, d, look.forest.open_alpha)
         } else {
             1.0

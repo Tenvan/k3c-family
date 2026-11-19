@@ -69,3 +69,18 @@ Weite 4, 4,5 oder 5 M: 🧑 entscheidet am TV; Default 5 M (B-1045).
 ## Notizen
 
 Aufgeteilt aus den Abnahme-Punkten von B-1043 bis B-1047 (AC-02 und AC-03 dort sind 🧑-Abnahmen am TV).
+
+**Szenenliste (RU55.7, Messungen offen, Lane zweit).** Je Szene eine Ansicht (1920 × 1080) und zwei Ansichten; Profil `K3C_LOOK=k2c`, Vergleich je Szene zusätzlich mit `K3C_LOOK=go`; Aufnahme per Standbild (`k3c-game --shots`, `tests/still*.rs`) oder Wiedergabe, Seed 1, Ablage `.work/`; Bericht `docs/messung/look-k2c.md` mit Szene, Seed, Befehl, Messwert. Voraussetzung: `task gen:paper` (Grafik ist nicht eingecheckt).
+
+| Szene | Zustand | Messziel |
+|---|---|---|
+| Hub Tag | Phase day, Hub-Stufe 1, Wald im Umkreis | Gehlinie 58 % ± 1 %, Ufer 7 %, Fluss 35 %; M 12 % (eine Ansicht), 16 % je Hälfte |
+| Hub Nacht | Phase night, Lagerfeuer, Mond | Hof an Feuer und Mond, Spiegelung 60 bis 70 % der Welt, Lichter hell im Fluss; Tönung bläulich |
+| Blutmond | Event bloodMoon | Mond rot und größer, rote Tönung, Figuren lesbar (Split) |
+| Dichter Wald | Level forest, 10 und mehr Bäume im Umkreis, Nacht | Dichte 1: Waldwand deckend, Oliv-Tönung, Hof der Fackeln heller |
+| Gerodeter Hub | gleiche Welt, Bäume gefällt | Dichte fällt weich (kein Sprung über 0,01 je Bild), Waldwand 35 %, Blick bis zum Horizont |
+| Lava | Lava-Stufe (Vulkan) | keine Himmels-Tönung in Höhle und Mine, Lava hell, Spiegel nur mit Himmel |
+| Abend | Phase dusk, progress 0,5 | warme Tönung, Dunst fern 0,3 sichtbar |
+| Morgengrauen | Phase dawn, progress 0,5 | Übergang Nacht nach Tag stetig |
+
+Messungen je Szene: Frame-Zeit schlechtester Frame (zwei Ansichten, Mini-PC), `alloc_je_bild` unverändert (786), Fenster-Resize mit Spiegel, `task check:race`. Offene Befunde aus dem Review RU55.7 zur Beachtung: Bind-Group des Spiegels je Bild und Größe der Zwischentextur (messen, ggf. cachen); Randsaum des Spiegels (Sampling am Rand des kopierten Streifens); Mond wird über Bäumen gezeichnet; Fackel des Monarchen hat noch keinen eigenen Hof; Leitmotiv (`motif_place`) und `scroll`-Sätze noch ohne Zeichnung (BB1-Assets); Audio-Ersatzbreite im Split (`audio/mix.rs`); Dusk-Ton liegt Richtung Magenta (Standard: lila).

@@ -79,7 +79,11 @@ impl Gfx {
         let Some((tex, _)) = &self.mirror_tex else {
             return;
         };
-        let (sw, sh) = (self.config.width, self.config.height);
+        // Größe der geholten Fläche (kann nach einem Fensterwechsel von `config` abweichen): nie darüber hinaus kopieren
+        let (sw, sh) = (
+            self.config.width.min(surface.width()).min(tex.width()),
+            self.config.height.min(surface.height()).min(tex.height()),
+        );
         let (kx, ky) = (sw as f32 / LOGICAL.0, sh as f32 / LOGICAL.1);
         let (d, u) = (call.dst, &call.u);
         let x0 = (d.x * kx).floor().clamp(0.0, sw as f32) as u32;
