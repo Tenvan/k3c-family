@@ -83,6 +83,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
 | RU55 | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | aktiv |
 | RU56 | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | aktiv |
+| RU54 | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | aktiv |
 
 ## Nicht-Ziele
 

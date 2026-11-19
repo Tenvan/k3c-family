@@ -43,11 +43,11 @@ Entscheidung 008 gilt, bis 🧑 Entscheidung 011 annimmt (B-1014). Keine Änderu
 Planungsangaben für die Arbeitswellen:
 
 - **Bereich:** `rust/crates/k3c-devproto/**`, `rust/crates/k3c-devwin/**`, `rust/crates/k3c-game/src/devwin/**`, `rust/crates/k3c-game/src/view/devkeys.rs`, `rust/crates/k3c-game/src/game/devkeys.rs`, `rust/crates/k3c-game/src/game/flags.rs`, `rust/crates/k3c-game/src/lib.rs`, `rust/crates/k3c-game/Cargo.toml`, `rust/crates/k3c-game/tests/devwin_pipe.rs`, `rust/Cargo.toml`, `rust/Cargo.lock`, `rust/Taskfile.yml`, `Taskfile.yml`, `.github/workflows/ci.yml`, `CLAUDE.md`, `docs/standards/rust-port.md`
-- **Abhängig von:** RU52.7
+- **Abhängig von:** RU52.7, RU54
 - **Braucht 🧑:** Abnahme
 - **Sperre:** deps, taskfile
 
-Hinweis Kollision: RU52.7 (`dev-session-rolle-im-view`, `devtools/**`, `view/session.rs`) liefert die Dev-Rolle, auf die RU56.5 aufsetzt; RU55 (Look, `world/**`, `view/cell.rs`) berührt keine dieser Dateien.
+Hinweis Kollision: RU52.7 (`dev-session-rolle-im-view`, `devtools/**`, `view/session.rs`) liefert die Dev-Rolle, auf die RU56.5 aufsetzt. RU54 (Smoke-Befunde, `k3c-game/src/game/**`) berührt `game/devkeys.rs` und `game/flags.rs` aus RU56.11, daher läuft RU56 nach RU54. RU55 (Look, `world/**`, `view/cell.rs`) berührt keine dieser Dateien.
 
 ## Beispiele
 
