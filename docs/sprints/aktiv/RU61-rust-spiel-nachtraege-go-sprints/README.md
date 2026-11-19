@@ -103,7 +103,7 @@ Entschieden am 2026-11-19 mit Default (autonom, Claude; Ralf ändert, was ihm ni
 | RU61.3 | `RU61.3-menue-debug-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.4 | `RU61.4-biom-eigenschaften-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.5 | `RU61.5-abnahme-laeufe-bi2-bild.md` | Umsetzung | autonom | offen |
-| RU61.6 | `RU61.6-rig-export-bosse.md` | Umsetzung | autonom | offen |
+| RU61.6 | `RU61.6-rig-export-bosse.md` | Umsetzung | autonom | blockiert |
 | RU61.7 | `RU61.7-review.md` | Review | autonom | offen |
 
 Sim und Balance laufen nicht in diesem Sprint. Gen, Grafik-Golden und `check:race` laufen als Session RU61.5 (Lane `zweit`), sie ist zugleich die Abnahme B-910 (B-742).
