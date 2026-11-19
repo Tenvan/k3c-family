@@ -172,7 +172,7 @@ tasks:
       - task: k3c-workbench:lint
 
   check:all:
-    desc: Alles prüfen (Wurzel, Go, k3c-workbench, Build des nativen Spiels)
+    desc: Alles prüfen (Wurzel, Go, k3c-workbench, Build des Rust-Spiels; das Go-Spiel baut nicht mehr mit)
     cmds:
       - task: check
       - task: build
