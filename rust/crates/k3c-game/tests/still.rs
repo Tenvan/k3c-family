@@ -1,8 +1,8 @@
 //! Bildvergleich Rust gegen Go an fünf Ständen (RU13.6, B-1014) und Test der Positionen aus dem Zustand.
 //!
 //! Die Referenz schreibt `native/k3c-game/world/rustref_test.go` (`-write`): Zustand `<name>.state.json.gz` und das
-//! Go-Bild `<name>.go.png`, dazu `<name>.go-nolight.png` (ohne Lichtkarte), wo das Licht wirkt. Rust zeichnet keine
-//! Lichtkarte (B-1056, kein Multiply-Blend im Canvas), darum vergleicht der Test dort mit dem Bild ohne Lichtkarte.
+//! Go-Bild `<name>.go.png`, dazu `<name>.go-nolight.png` (ohne Lichtkarte, nur noch Referenz). Seit RU55 zeichnet Rust die
+//! Lichtkarte (B-1056); der Test vergleicht mit dem vollständigen Go-Bild.
 //! Der Fluss steht in beiden auf Kacheln; der Shader-Fluss hat kein Go-Golden (Go-Lauf gesperrt, B-1059) und wird
 //! gegen die Software-Referenz `river_fragment` geprüft (`fluss_shader_im_standbild`, B-1073).
 //!
@@ -55,13 +55,9 @@ fn draw(s: &StillState) -> Image {
     still::render(s, &still::config(&root(), None)).unwrap()
 }
 
-/// Go-Bild, mit dem verglichen wird: ohne Lichtkarte, wenn es das gibt.
+/// Go-Bild, mit dem verglichen wird: das vollständige mit Lichtkarte (seit RU55 zeichnet Rust sie, B-1056).
 fn go_bild(name: &str) -> Image {
-    let mut path = bild(name, "go-nolight.png");
-    if !path.is_file() {
-        path = bild(name, "go.png");
-    }
-    pngio::read_png(&path).unwrap()
+    pngio::read_png(&bild(name, "go.png")).unwrap()
 }
 
 /// (mittlere Abweichung je Kanal, Anteil abweichender Pixel)
@@ -210,24 +206,6 @@ fn enemy_visible(s: &StillState, e: &Enemy) -> bool {
     let x = cells[0].camera.screen_x(e.x);
     (60.0..f64::from(s.size.0) - 60.0).contains(&x)
         && s.world.enemies.iter().all(|o| o.id == e.id || (o.x - e.x).abs() >= 3.0)
-}
-
-/// Bekannte Abweichung (B-1056): Rust zeichnet die Lichtkarte nicht. Wo sie wirkt, liegt das Rust-Bild deutlich neben
-/// dem vollständigen Go-Bild; zeichnet Rust sie einmal, schlägt dieser Test an und der Vergleich nimmt dann `go.png`.
-#[test]
-fn lichtkarte_fehlt_in_rust() {
-    if !grafik_da() {
-        return;
-    }
-    for name in ["abend", "nacht"] {
-        let rust = draw(&state(name));
-        let (mean, _) = diff(&rust, &pngio::read_png(&bild(name, "go.png")).unwrap());
-        eprintln!("{name}: gegen go.png (mit Lichtkarte) mittel {mean:.2}");
-        assert!(
-            mean > 4.0,
-            "{name}: Abweichung {mean:.2} gering, hat Rust jetzt eine Lichtkarte? (B-1056)"
-        );
-    }
 }
 
 /// B-1073 AC-03: Mit Shader-Fluss ändert sich das Bild nur in der Fluss-Fläche der Zellen; dort trägt die Mehrheit der
