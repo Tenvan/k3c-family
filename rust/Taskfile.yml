@@ -54,12 +54,7 @@ tasks:
   game:exe:
     desc: "Nur die Release-EXE des Rust-Spiels bauen (cargo build --release -p k3c-game) nach rust/target/release/"
     dir: '{{.ROOT_DIR}}/rust'
-    sources:
-      - crates/**/*.rs
-      - crates/**/Cargo.toml
-      - Cargo.lock
-    generates:
-      - target/release/k3c-game.exe
+    # ohne sources/generates: Cargo baut selbst inkrementell (Shader, include_str!-Daten, Toolchain wären sonst blinde Flecken)
     cmds:
       - cargo build --release -p k3c-game
 

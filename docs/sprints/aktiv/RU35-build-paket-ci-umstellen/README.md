@@ -85,7 +85,7 @@ Keine offenen.
 |---|---|---|---|---|
 | RU35.1 | `RU35.1-rust-game-build-run-dev.md` | Umsetzung | autonom | fertig |
 | RU35.2 | `RU35.2-build-und-buildall-auf-rust.md` | Umsetzung | autonom | fertig |
-| RU35.3 | `RU35.3-ci-rust-spiel.md` | Umsetzung | autonom | offen |
+| RU35.3 | `RU35.3-ci-rust-spiel.md` | Umsetzung | autonom | fertig |
 | RU35.4 | `RU35.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
