@@ -81,6 +81,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | aktiv |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | aktiv |
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
+| RU54 | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | aktiv |
 
 ## Nicht-Ziele
 

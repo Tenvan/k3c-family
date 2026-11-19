@@ -185,6 +185,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1122](B-1122-pfade-nach-rust-paket-nachziehen.md) | INF | Schuld | mittel | eingeplant | RU37 | measure.ps1, ops:backup und Release-Workflow kennen das Rust-Paket dist/k3c-game noch nicht |
 | [B-1123](B-1123-abnahme-ru35-paket-und-ci.md) | INF | Schuld | mittel | eingeplant | RU35 | Abnahme RU35: Rust-Paket, CI-Lauf und schwere Läufe auf dem Second Worker |
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU37 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
+| [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
+| [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
+| [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | offen | RU54 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
 
 ## Archiv
 
