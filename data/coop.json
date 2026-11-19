@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "notes": "Koop-Aktionen (RU62.3, B-968, docs/rules/koop.md): Doppel-Truhe. Neue Datei, weil data/economy.json unverändert bleibt (die Go-Ladepfade lehnen unbekannte Felder ab). Alles vorläufig (Balancing später). Nur Welten aus `worlds` kennen Koop-Aktionen; `standard` nicht.",
+  "worlds": ["sengoku", "nil"],
+  "doubleChest": {
+    "everyNth": 4,
+    "goldFactor": 3.0
+  }
+}

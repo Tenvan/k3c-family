@@ -178,6 +178,9 @@ pub fn create_island_at(
     if crate::cargo::world_has_cargo(b.data, &b.world.id) {
         isl.enable_cargo(b.data); // RU62.1: Fracht nur in Welten aus data/cargo.json
     }
+    if crate::coop::world_has_coop(b.data, &b.world.id) {
+        isl.enable_coop(b.data); // RU62.3: Doppel-Truhe nur in Welten aus data/coop.json
+    }
     Ok(isl)
 }
 

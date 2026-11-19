@@ -5,6 +5,7 @@ pub mod building;
 pub mod campaign;
 pub mod cargo;
 pub mod combat;
+pub mod coop;
 pub mod crown;
 pub mod dev;
 pub mod economy;

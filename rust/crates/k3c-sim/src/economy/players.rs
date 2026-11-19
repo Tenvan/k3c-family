@@ -127,7 +127,13 @@ pub fn collect_coins(w: &mut World, v: &WorldValues, isl: Option<&mut IslandRef>
 pub fn collect_pickups(w: &mut World, v: &WorldValues, mut isl: Option<&mut IslandRef>) {
     let r = v.economy.pickup_range_units * 1.5;
     let mut pickups = std::mem::take(&mut w.pickups);
+    crate::coop::chest::begin(w);
+    let coop_on = crate::coop::chest::is_on(w);
     pickups.retain(|pk| {
+        // RU62.3: Eine wirksame Doppel-Truhe öffnet nur mit zwei gesteuerten Monarchen (Solo: normale Truhe).
+        if coop_on && pk.kind == "chest" && crate::coop::chest::is_marked(w, pk) {
+            return crate::coop::chest::try_open(w, v, isl.as_deref_mut(), pk, r);
+        }
         let taker = (0..w.players.len()).find(|&i| crowned(&w.players[i]) && (w.players[i].x - pk.x).abs() <= r);
         let Some(pi) = taker else {
             return true;

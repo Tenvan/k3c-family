@@ -153,6 +153,15 @@ pub struct World {
     /// Der Wertesatz der Stufe trägt den Abschnitt Laderaum als 4. Schiffsstufe (RU62.1); ohne JSON.
     #[serde(skip)]
     pub cargo_hold: bool,
+    /// Wirksame Doppel-Truhen der Stufe (RU62.3, B-968); fehlt ohne Koop-Aktion.
+    #[serde(rename = "coop", skip_serializing_if = "super::coop_view::CoopState::is_empty")]
+    pub coop: super::coop_view::CoopState,
+    /// Die Koop-Regeln der Welt (RU62.3); `None` = Welt ohne Koop-Aktionen; ohne JSON.
+    #[serde(skip)]
+    pub coop_cfg: Option<std::sync::Arc<k3c_data::coop::CoopFile>>,
+    /// Mindestens zwei gesteuerte Monarchen auf der Insel (RU62.3, die Insel setzt es je Takt); ohne JSON.
+    #[serde(skip)]
+    pub coop_active: bool,
     /// Verworfene Ereignisse dieses Steps (Obergrenze je Tick).
     #[serde(rename = "eventsDropped", skip_serializing_if = "is_zero_i64")]
     pub events_dropped: i64,
@@ -245,6 +254,9 @@ impl Default for World {
             cargo: None,
             cargo_bays: Vec::new(),
             cargo_hold: false,
+            coop: Default::default(),
+            coop_cfg: None,
+            coop_active: false,
             events_dropped: Default::default(),
             no_travel: Default::default(),
             lava_in: Default::default(),

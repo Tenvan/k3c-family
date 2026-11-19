@@ -5,6 +5,7 @@
 pub mod action_view;
 pub mod cargo_view;
 pub mod common;
+pub mod coop_view;
 pub mod data;
 pub mod fehler;
 pub mod island_ref;
