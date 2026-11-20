@@ -1,7 +1,7 @@
 # Ende-zu-Ende-Bildvergleich Go gegen Rust (RU32)
 
-Stand: Aufbau und Werkzeug fertig, **Messwerte stehen noch aus** (Abnahme-Ticket B-1120, Lane zweit; der Hauptrechner nimmt
-keine Bilder auf, B-742). Dieser Bericht ersetzt nicht die Sichtprüfung durch 🧑 (RU36).
+Stand 2026-11-19 (STIRA-PC, `origin/main` 0d4096d6, RU64.1): **Messwerte gemessen, alle 14 Stationen über der Schwelle** (Abnahme-Ticket B-1120; der Hauptrechner nimmt
+keine Bilder auf, B-742). Go-Seite: gesicherte Referenz `testdata/rust/e2e/go/a/` (Go-EXE entfällt seit RU58). Details und Befehle: `docs/messung/abnahme-b-1120.md`. Dieser Bericht ersetzt nicht die Sichtprüfung durch 🧑 (RU36).
 
 ## Aufbau
 
@@ -35,20 +35,20 @@ Takte und Namen stammen aus der Go-Referenz. Spalten Mittel, Anteil, Ergebnis un
 
 | Nr. | Station | Takt | Mittel | Anteil | Ergebnis | Ticket |
 |---|---|---|---|---|---|---|
-| 01 | hauptmenue | 1 | – | – | offen | – |
-| 02 | lobby | 20 | – | – | offen | – |
-| 03 | spielstart | 21 | – | – | offen | – |
-| 04 | muenzen | 299 | – | – | offen | – |
-| 05 | skillpunkt | 535 | – | – | offen | – |
-| 06 | skillmenue | 559 | – | – | offen | – |
-| 07 | gebaut | 823 | – | – | offen | – |
-| 08 | nacht | 15539 | – | – | offen | – |
-| 09 | pause | 15901 | – | – | offen | – |
-| 10 | verlassen | 15913 | – | – | offen | – |
-| 11 | weiter | 15917 | – | – | offen | – |
-| 12 | zu-zweit | 15921 | – | – | offen | – |
-| 13 | niederlage | 41309 | – | – | offen | – |
-| 14 | ende | 41401 | – | – | offen | – |
+| 01 | hauptmenue | 1 | 11,143 | 0,1390 | über Schwelle | – |
+| 02 | lobby | 20 | 3,358 | 0,0564 | über Schwelle | – |
+| 03 | spielstart | 21 | 1,911 | 0,0128 | über Schwelle | – |
+| 04 | muenzen | 299 | 9,080 | 0,1052 | über Schwelle | – |
+| 05 | skillpunkt | 535 | 7,417 | 0,0835 | über Schwelle | – |
+| 06 | skillmenue | 559 | 7,792 | 0,0879 | über Schwelle | – |
+| 07 | gebaut | 823 | 7,393 | 0,0903 | über Schwelle | – |
+| 08 | nacht | 15539 | 3,644 | 0,0259 | über Schwelle | – |
+| 09 | pause | 15901 | 3,297 | 0,0488 | über Schwelle | – |
+| 10 | verlassen | 15913 | 11,277 | 0,1396 | über Schwelle | – |
+| 11 | weiter | 15917 | 1,987 | 0,0150 | über Schwelle | – |
+| 12 | zu-zweit | 15921 | 2,677 | 0,0194 | über Schwelle | – |
+| 13 | niederlage | 41309 | 5,129 | 0,0365 | über Schwelle | – |
+| 14 | ende | 41401 | 11,671 | 0,1462 | über Schwelle | – |
 
 ## Vorab bekannt (ungeprüft für die Bilder)
 

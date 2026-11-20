@@ -1,6 +1,6 @@
 # RU64 · CLI, INF · Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, INF
 - **Reife:** bereit
@@ -68,13 +68,13 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU64.1 | `RU64.1-abnahme-b1120-bildvergleich-rust.md` | Umsetzung | autonom | offen |
-| RU64.2 | `RU64.2-abnahme-b1123-paket-ci-schwere-laeufe.md` | Umsetzung | autonom | offen |
-| RU64.3 | `RU64.3-abnahme-b1126-skills-inselwahl.md` | Umsetzung | autonom | offen |
-| RU64.4 | `RU64.4-abnahme-b1129-farbe-pause-fenster.md` | Umsetzung | autonom | offen |
-| RU64.5 | `RU64.5-abnahme-b1130-szenen-pixelmessung.md` | Umsetzung | autonom | offen |
-| RU64.6 | `RU64.6-abnahme-b1130-frame-zeit-alloc.md` | Umsetzung | autonom | offen |
-| RU64.7 | `RU64.7-abnahme-b1141-paket-zweiter-rechner.md` | Umsetzung | autonom | offen |
+| RU64.1 | `RU64.1-abnahme-b1120-bildvergleich-rust.md` | Umsetzung | autonom | fertig |
+| RU64.2 | `RU64.2-abnahme-b1123-paket-ci-schwere-laeufe.md` | Umsetzung | autonom | fertig |
+| RU64.3 | `RU64.3-abnahme-b1126-skills-inselwahl.md` | Umsetzung | autonom | fertig |
+| RU64.4 | `RU64.4-abnahme-b1129-farbe-pause-fenster.md` | Umsetzung | autonom | fertig |
+| RU64.5 | `RU64.5-abnahme-b1130-szenen-pixelmessung.md` | Umsetzung | autonom | fertig |
+| RU64.6 | `RU64.6-abnahme-b1130-frame-zeit-alloc.md` | Umsetzung | autonom | fertig |
+| RU64.7 | `RU64.7-abnahme-b1141-paket-zweiter-rechner.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -82,6 +82,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-20: AC-01 bis AC-06 durch die Messberichte `docs/messung/abnahme-b-*.md`, `rust-bildvergleich.md` und `look-k2c.md` belegt (Rotes steht je Bericht unter „Für den Hauptrechner“, die Tickets bleiben offen). Keine Code-Änderung, `testdata/` unverändert. Keine Sim-/Balance-Änderung, daher kein Abnahme-Ticket. Manuelle Abnahmen (Pad, TV, Mini-PC, Ton) bei Ralf.
