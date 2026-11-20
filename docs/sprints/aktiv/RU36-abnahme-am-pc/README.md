@@ -1,8 +1,8 @@
-# RU36 · CLI · Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4)
+# RU36 · CLI, SIM · Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4)
 
 - **Status:** aktiv
 - **Projekt:** RSU
-- **Domäne:** CLI
+- **Domäne:** CLI, SIM
 - **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
@@ -86,10 +86,12 @@ Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU36.1 | `RU36.1-abnahme-liste-und-messwerkzeug.md` | Umsetzung | autonom | fertig |
-| RU36.2 | `RU36.2-abnahme-am-pc-zwei-pads.md` | Workshop | Mensch | offen |
+| RU36.2 | `RU36.2-abnahme-am-pc-zwei-pads.md` | Workshop | Mensch | fertig |
 | RU36.3 | `RU36.3-befunde-runde-1.md` | Umsetzung | autonom | offen |
 | RU36.4 | `RU36.4-befunde-runde-2.md` | Umsetzung | autonom | offen |
 | RU36.5 | `RU36.5-bericht-g4-und-review.md` | Review | autonom | offen |
+| RU36.6 | `RU36.6-weltwahl-alle-welten.md` | Umsetzung | autonom | offen |
+| RU36.7 | `RU36.7-wald-dicht-standard-seed.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

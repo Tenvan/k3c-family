@@ -178,9 +178,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1124](B-1124-ci-main-rot-drei-jobs.md) | INF | Problem | mittel | eingeplant | RU58 | Drei CI-Jobs sind auf main rot: Natives Spiel, Go arm64 und k3c-workbench |
 | [B-1139](B-1139-menue-lizenzliste-nennt-go-bibliotheken.md) | CLI | Problem | mittel | offen | RU58 | Die Lizenz-Seite des Rust-Spiels nennt Go-Bibliotheken statt der Rust-Crates |
 | [B-1141](B-1141-rust-paket-auf-anderem-pc-abnehmen.md) | INF | Schuld | mittel | offen | RU64 | Abnahme: Das Rust-Paket dist/k3c-game startet auf einem anderen PC und die Lizenzdatei genügt |
-| [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
-| [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | offen | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
-| [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | offen | RU64 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
 | [B-1130](B-1130-ru55-abnahme-look-aufnahmen-referenz.md) | CLI | Schuld | mittel | eingeplant | RU64 | RU55 Abnahme: Aufnahmen gegen K2C-Referenz, Bildvergleich und Frame-Zeit (Lane zweit) |
 | [B-1131](B-1131-cheatfenster-protokoll-client-fenster.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Protokoll zwischen Spiel und Fenster als eigenes Crate k3c-devproto |
 | [B-1132](B-1132-cheatfenster-win32-fenster-dark-layout.md) | CLI | Idee | mittel | eingeplant | RU56 | Cheat-Fenster: Win32-Fenster mit Dark-Look, Layout und Pipe-Server als Crate k3c-devwin |
@@ -202,6 +199,23 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1156](B-1156-kritische-fragen-ru59-ru62.md) | INF | Frage | mittel | offen | KR6 | Kritische Entscheidungen aus RU59 bis RU62 (selbst entschieden, zur Durchsicht) |
 | [B-1154](B-1154-abnahme-ru62-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU62 | Abnahme-Läufe RU62: Sim, Balance, Gen samt Golden und Race |
 | [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
+| [B-1157](B-1157-cheat-abfahrbereit.md) | CLI | Idee | hoch | offen | RU36 | Das Cheat-Fenster hat die Option Abfahrbereit (Schiff fertig, Endboss besiegt), damit Seekarte und Schiffsfahrt prüfbar sind |
+| [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | offen | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
+| [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | offen | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
+| [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | RU36 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
+| [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | RU36 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
+| [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU36 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
+| [B-1163](B-1163-groessenstufen-monarch-mount.md) | CLI | Problem | hoch | offen | LA1 | Alle Figuren und Gebäude folgen definierten Größenstufen, Bezugswert ist der Monarch auf dem Mount, abgeglichen an den K2C-Screenshots |
+| [B-1164](B-1164-stimmung-naeher-an-k2c.md) | CLI | Problem | hoch | offen | LA1 | Die Stimmung des Rust-Spiels (Farbe, Licht, Dunst, Tiefe) kommt dem K2C-Vorbild deutlich näher |
+| [B-1165](B-1165-weltwahl-ohne-entwicklermodus.md) | CLI | Problem | mittel | offen | RU36 | Die Weltwahl zeigt alle Welten aus data/worlds, nicht nur die Standard-Welt |
+| [B-1166](B-1166-wald-biom-dicht-standard-seed.md) | SIM | Problem | mittel | offen | RU36 | Wald-Biome sind im Standard-Seed immer dicht, Lichtungen sind selten, man rodet sich anfangs durch |
+| [B-1167](B-1167-hub-kompass-zeigt-biome.md) | CLI | Idee | mittel | offen | LA1 | Der Kompass im Hub zeigt die Biome der Insel an |
+| [B-1168](B-1168-studio-feste-welten.md) | DEV | Problem | mittel | offen | WZ62 | Das Studio listet die vier festen Welten (standard, sengoku, nil, britannien), nicht nur die Custom World Nordmeer |
+| [B-1169](B-1169-studio-welt-filter-vererbung.md) | DEV | Idee | mittel | offen | WZ62 | Katalog und Sound filtern nach Welt: alle Assets einer Welt (mit geerbten der Basis) oder nur die exklusiven |
+| [B-1170](B-1170-studio-groessenvergleich-lineal.md) | DEV | Idee | mittel | offen | WZ62 | Der Größenvergleich im Studio ist eine fensterfüllende Ansicht mit dem Größenstufen-Lineal statt vier Zoomstufen |
+| [B-1171](B-1171-welten-editor-link-katalog.md) | DEV | Idee | niedrig | offen | WZ62 | Der Welten-Editor hat einen Schnell-Link in den Katalog mit den Assets dieser Welt (exklusiv oder gesamt) |
+| [B-1172](B-1172-welten-editor-welt-loeschen.md) | DEV | Idee | mittel | offen | WZ62 | Im Welten-Editor lässt sich eine Welt löschen (mit Bestätigung, feste Welten geschützt) |
+| [B-1173](B-1173-welten-editor-werte-tabelle.md) | DEV | Problem | mittel | offen | WZ62 | Die Werte-Tabelle im Welten-Editor ist übersichtlich und bequem zu bedienen |
 
 ## Archiv
 

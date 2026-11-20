@@ -911,3 +911,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1004](B-1004-audio-tests-ohne-browser-quelle.md) | CLI | Schuld | hoch | verworfen | NA1 | Die drei MatchBrowser-Tests in native/k3c-game/audio prüfen ohne die entfernten Browser-Quellen |
 | [B-1005](B-1005-lint-qf1001-licensefile.md) | CLI | Schuld | niedrig | verworfen | NA1 | golangci-lint meldet in native/k3c-game/menu/licensefile kein QF1001 mehr |
 | [B-1143](B-1143-feature-sprints-mit-go-spiel-bereich-umplanen.md) | INF | Problem | hoch | erledigt | RU37 | Offene Sprints und Tickets mit Bereich native/k3c-game müssen nach dem Löschen des Go-Spiels auf Rust umgeplant oder verworfen werden |
+| [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | erledigt | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
+| [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | erledigt | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
+| [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | erledigt | RU64 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
