@@ -4,11 +4,12 @@
 
 use k3c_sim::state::{ResourceNode, World};
 
+use super::buildings::Look;
 use super::coin_fountain::coin_pose;
 use super::data::values;
 use super::listen::{StageInfo, open_alpha};
 use super::nature::{
-    COIN_LOOK, PLOT_TOLERANCE, anim_phase, chest_open_look, pickup_look, plant_tree_look, plot_x, seedling_look,
+    COIN_LOOK, PLOT_TOLERANCE, anim_phase, chest_open_look, object, pickup_look, plant_tree_look, plot_x, seedling_look,
 };
 use super::plan::{GOLD, Item, Planner, Shape, px, visible};
 use super::plan_entities::pennant_max;
@@ -68,12 +69,24 @@ impl Planner {
         }
     }
 
-    /// `pickups`: Truhen geschlossen, Sterne darüber; aufgehobene Truhen kurz offen.
+    /// `pickups`: Truhen geschlossen, Sterne darüber; aufgehobene Truhen kurz offen. Eine Truhe mit wirkendem Kennzeichen
+    /// (`World::coop`) ist die Doppel-Truhe mit zwei Schlössern: das des wartenden Monarchen leuchtet (RU62.4, B-998).
     pub fn pickups(&mut self, w: &World, info: Option<&StageInfo>, k: &Camera, clock: f64) {
         for pk in &w.pickups {
-            let (l, lift) = pickup_look(&pk.kind);
+            let double = if pk.kind == "chest" {
+                w.coop.chests.iter().find(|c| c.id == pk.id)
+            } else {
+                None
+            };
+            let (l, lift) = match double {
+                Some(c) => (double_chest_look(c.waiting), 0.0),
+                None => pickup_look(&pk.kind),
+            };
             if !l.ok() || !visible(k, pk.x, 1.0) {
                 continue;
+            }
+            if double.is_some() {
+                self.remember_double(pk.x);
             }
             if !self.sprite(l, pk.x, lift, anim_phase(pk.x, 8)) {
                 Planner::rect(&mut self.body, pk.x, lift, px(44.0), px(36.0), [156, 102, 68, 255]);
@@ -84,13 +97,29 @@ impl Planner {
         };
         for o in &info.openings {
             let a = open_alpha(o, clock);
+            let open = if self.double_seen.iter().any(|x| (x - o.x).abs() < 0.01) {
+                double_chest_open_look()
+            } else {
+                chest_open_look()
+            };
             if a > 0.0
-                && self.sprite(chest_open_look(), o.x, 0.0, 0)
+                && self.sprite(open, o.x, 0.0, 0)
                 && let Some(last) = self.body.last_mut()
             {
                 last.alpha = a;
             }
         }
+    }
+
+    /// `remember_double`: merkt den Ort einer Doppel-Truhe (höchstens 16, die älteste fällt weg).
+    fn remember_double(&mut self, x: f64) {
+        if self.double_seen.iter().any(|d| (d - x).abs() < 0.01) {
+            return;
+        }
+        if self.double_seen.len() >= 16 {
+            self.double_seen.remove(0);
+        }
+        self.double_seen.push(x);
     }
 
     /// `coins`: Münzen am Boden (Papier-Münze, ohne Grafik ein goldener Kreis).
@@ -109,4 +138,19 @@ impl Planner {
             }
         }
     }
+}
+
+/// `double_chest_look`: Doppel-Truhe, Schloss des wartenden Monarchen leuchtet (0 links, 1 rechts), sonst beide dunkel.
+pub fn double_chest_look(waiting: Option<i64>) -> Look {
+    let anim = match waiting {
+        Some(0) => "links",
+        Some(1) => "rechts",
+        _ => "zu",
+    };
+    Look::new(object("doppel-truhe").asset, anim)
+}
+
+/// `double_chest_open_look`: die aufgehobene Doppel-Truhe.
+pub fn double_chest_open_look() -> Look {
+    object("doppel-truhe-offen")
 }

@@ -26,6 +26,7 @@ pub mod anim;
 pub mod catalog;
 pub mod combatmarks;
 pub mod draw;
+pub mod festival;
 pub mod figures;
 pub mod figures_pose;
 pub mod levels;
@@ -112,14 +113,14 @@ impl Actors {
         for m in [&cat.troops, &cat.enemies, &cat.bosses] {
             for l in m.values() {
                 if !l.sheet {
-                    let (_, broken) = self.new_actor(canvas, l, false);
+                    let (_, broken) = self.new_actor(canvas, l, None);
                     if !broken {
                         n += 1;
                     }
                 }
             }
         }
-        let (_, broken) = self.new_actor(canvas, &cat.player(0), true);
+        let (_, broken) = self.new_actor(canvas, &cat.player(0), Some(""));
         if !broken {
             n += 1;
         }

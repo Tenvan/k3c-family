@@ -71,7 +71,11 @@ fn device_driver_failure_mutes_and_game_goes_on() {
         effect_bus: 0.5,
         music_bus: 1.0,
         effects: vec![req("sfx:coin", 0.8)],
-        loops: vec![Loop { key: 0, gain: 1.0 }],
+        loops: vec![Loop {
+            key: 0,
+            slot: SLOT_RIDE,
+            gain: 1.0,
+        }],
         ..Mix::default()
     };
     d.apply(&m);
@@ -167,7 +171,11 @@ fn silent_loop_restarts_and_voices_capped() {
     let mut d = fake_device("grenze", Register::default(), &st, &opens);
     let m = Mix {
         effect_bus: 1.0,
-        loops: vec![Loop { key: 1, gain: 0.5 }],
+        loops: vec![Loop {
+            key: 1,
+            slot: SLOT_RIDE,
+            gain: 0.5,
+        }],
         ..Mix::default()
     };
     d.apply(&m);

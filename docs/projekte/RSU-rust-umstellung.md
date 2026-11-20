@@ -70,7 +70,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
 | RU58 | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | aktiv |
 | RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | aktiv |
-| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | aktiv |
+| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | erledigt |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | aktiv |
 | RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | aktiv |

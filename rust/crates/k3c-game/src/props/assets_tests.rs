@@ -152,3 +152,69 @@ fn jede_gewaehlte_grafik_liegt_vor_und_ist_gemeldet() {
         }
     }
 }
+
+/// RU62.2 (B-997): Die Fracht-Objekte sind in data/paper.json zugeordnet; fehlt eine Zuordnung, scheitert der Test
+/// (anders als die Tests mit gerenderter Grafik läuft er ohne `task gen:paper`).
+#[test]
+fn fracht_objekte_sind_in_paper_json_zugeordnet() {
+    use super::plan_sites_cargo::{bay_asset, load_asset};
+    let src = Source::from_env();
+    let paper: Value = serde_json::from_str(&src.read("paper.json").expect("paper.json")).expect("paper.json JSON");
+    let objekte = paper
+        .get("objekte")
+        .and_then(Value::as_object)
+        .expect("Abschnitt objekte");
+    for id in ["coins", "troops", "crates"].iter().filter_map(|k| bay_asset(k)) {
+        assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
+    }
+    for id in ["coins", "crate"].iter().filter_map(|k| load_asset(k)) {
+        assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
+    }
+    for id in [
+        "doppel-truhe",
+        "doppel-truhe-offen",
+        "gatter",
+        "fest-laterne",
+        "fest-bluete",
+        "fest-fackel",
+    ] {
+        assert!(objekte.contains_key(id), "{id} fehlt in data/paper.json › objekte");
+    }
+    // RU62.7: die Wolkenbank der Taifun-Vorboten ist zugeordnet und wird mit jedem Level geladen
+    let wolke = paper.pointer("/wetter/wolkenbank").and_then(Value::as_str);
+    assert_eq!(
+        wolke,
+        Some(super::assets::WEATHER_CLOUD_ASSET),
+        "wetter.wolkenbank in data/paper.json"
+    );
+    assert!(
+        level_assets("forest")
+            .iter()
+            .any(|a| a == super::assets::WEATHER_CLOUD_ASSET)
+    );
+}
+
+/// RU62.2/RU62.4: Die Fracht- und Truhen-Objekte stehen in der Ladeliste jedes Bioms, sonst fehlt ihr Sheet und das Spiel
+/// zeichnet nur den Platzhalter.
+#[test]
+fn fracht_und_doppel_truhe_werden_geladen() {
+    let wald = level_assets("forest");
+    for id in [
+        "ladeplatz-muenzen",
+        "ladeplatz-truppen",
+        "ladeplatz-material",
+        "fracht-beutel",
+        "fracht-kiste",
+        "doppel-truhe",
+        "doppel-truhe-offen",
+        "gatter",
+        "fest-laterne",
+        "fest-bluete",
+        "fest-fackel",
+    ] {
+        assert!(
+            wald.iter().any(|a| a == &format!("objekte/{id}")),
+            "{id} fehlt in der Ladeliste"
+        );
+    }
+}

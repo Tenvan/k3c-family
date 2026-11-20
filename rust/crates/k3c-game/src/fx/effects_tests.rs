@@ -297,3 +297,36 @@ fn line_colors_cover_every_skill_line() {
         );
     }
 }
+
+#[test]
+fn cargo_full_zeigt_voll_am_ladeplatz() {
+    use super::effects::cargo_full_for;
+    use k3c_sim::state::World;
+    use k3c_sim::state::cargo_view::{CargoBayState, CargoState};
+    let w = World {
+        cargo: Some(CargoState {
+            bays: vec![CargoBayState {
+                kind: "crates".to_string(),
+                x: 12.0,
+                price: 2,
+                state: "full".to_string(),
+            }],
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    let d = ev(json!({"type": "cargoFull", "player": 0, "bay": "crates", "reason": "full"}));
+    let (e, ok) = cargo_full_for("de", &d, &w);
+    assert!(
+        ok && e.x == 12.0 && e.text == "voll",
+        "Rückmeldung am Ladeplatz: {:?}",
+        e.text
+    );
+    assert_eq!(cargo_full_for("en", &d, &w).0.text, "full");
+    let other = ev(json!({"type": "cargoFull", "player": 0, "bay": "troops"}));
+    assert!(!cargo_full_for("de", &other, &w).1, "ohne diesen Ladeplatz kein Effekt");
+    assert!(
+        !cargo_full_for("de", &d, &World::default()).1,
+        "ohne Fracht kein Effekt"
+    );
+}

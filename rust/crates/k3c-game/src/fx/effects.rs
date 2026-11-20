@@ -6,9 +6,9 @@
 
 use std::collections::BTreeMap;
 
-use k3c_sim::state::Event;
+use k3c_sim::state::{Event, World};
 
-use super::texts::no_target_text;
+use super::texts::{cargo_full_text, no_target_text};
 
 /// `Kind` ist die Art eines Effekts.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -199,6 +199,18 @@ pub fn effect_for(lang: &str, d: &Event, typ: &str, px: &PlayerX, spots: &mut BT
         }
         _ => (Effect::none(), false),
     }
+}
+
+/// `cargo_full_for`: Rückmeldung am Ladeplatz, dessen Einwurf das volle Schiff ablehnte (Ereignis `cargoFull`, Feld
+/// `bay`); der Ort kommt aus dem Fracht-Zustand der Welt, ohne Ladeplatz kein Effekt.
+pub fn cargo_full_for(lang: &str, d: &Event, w: &World) -> (Effect, bool) {
+    let bay = str_of(d, "bay");
+    let Some(b) = w.cargo.as_ref().and_then(|c| c.bays.iter().find(|b| b.kind == bay)) else {
+        return (Effect::none(), false);
+    };
+    let mut e = Effect::new(Kind::NoTarget, b.x, NO_TARGET_PX);
+    e.text = cargo_full_text(lang).to_string();
+    (e, true)
 }
 
 /// `swing`: Nur der Monarch holt aus (Schlag mit „hit“); der Schlag eines Gegners trägt kein „hit“.

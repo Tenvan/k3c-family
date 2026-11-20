@@ -23,7 +23,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
-| RU59 | SIM, INF | RSU | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | – | `aktiv/RU59-go-engine-ungenutztes-entfernen/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | `aktiv/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 | RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
