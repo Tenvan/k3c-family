@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** RU36
+- **Sprint:** LA1
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-20
 - **Spec:** Entwurf
@@ -16,7 +16,7 @@
 
 ## Ausgangslage
 
-RU36.2 (🧑 2026-11-20, Screenshot): Im Hub (Stufe 2) steht links neben dem Bogner-Haus ein einfarbiges braunes Rechteck ohne Grafik. Ralf weiß nicht, was es ist (Verdacht: Schild-Gestell B-942 oder ein Gebäude ohne Papierschnitt-Asset). Zuerst klären, welcher Platz es ist, dann Asset belegen oder Platzhalter entfernen.
+Ralf (2026-11-20, Screenshots): Im Hub (Stufe 2 und 3) stehen links neben dem Bogner-Haus bzw. in der Mauerlücke vor der Burg einfarbige Platzhalter-Rechtecke ohne Grafik: ein braunes (Stufe 2, neben dem Bogner-Haus) und ein weißes (neben dem Turm, vor dem Mauerstück). Ralf weiß nicht, was sie sind (Verdacht: Schild-Gestell B-942, ein Gebäude ohne Papierschnitt-Asset oder ein Bauplatz). Zuerst klären, welcher Platz es ist (`data/hub.json`, `hub-geruest`), dann Asset belegen oder Platzhalter entfernen. Hängt mit B-1175 (Mauerlücke im Burgbereich) zusammen; Umsetzung in LA1.7.
 
 ## Ziel
 

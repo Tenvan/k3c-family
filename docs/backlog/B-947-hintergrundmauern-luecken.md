@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** RU61
+- **Sprint:** LA1
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
@@ -65,4 +65,4 @@ keine
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Ralf (2026-11-20, Screenshots im Rust-Spiel): Die Lücken in den Mauern sind weiterhin sichtbar. Der Mauerzug ist nicht durchgängig, auch zwischen den Mauerstücken vor dem Hub. Umgehängt von RU61 nach LA1 (Session LA1.7, zusammen mit B-1175 und B-1176).
