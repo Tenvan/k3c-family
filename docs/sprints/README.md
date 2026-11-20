@@ -470,3 +470,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | W15 | Fackeln als Spielobjekt mit Licht in der Nacht | `erledigt/W15-fackeln-spielobjekt/` |
 | RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | `erledigt/RU60-feature-paritaet-rust/` |
 | RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | `erledigt/RU59-go-engine-ungenutztes-entfernen/` |
+| RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | `erledigt/RU62-welt-features-si-rust/` |
