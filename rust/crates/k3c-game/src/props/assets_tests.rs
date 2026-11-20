@@ -124,6 +124,7 @@ fn chosen(biome: &str) -> Vec<Look> {
 #[test]
 fn jede_gewaehlte_grafik_liegt_vor_und_ist_gemeldet() {
     if fake_sheets().is_none() {
+        eprintln!("übersprungen: gerenderte Grafik fehlt (task gen:paper)");
         return; // needGrafik: `task gen:paper` hat die Grafik nicht gerendert
     }
     let dir = grafik_dir();

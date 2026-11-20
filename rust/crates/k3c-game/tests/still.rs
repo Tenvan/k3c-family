@@ -21,7 +21,9 @@ const STAENDE: [&str; 5] = ["morgen", "mittag", "abend", "nacht", "nacht-gegner"
 /// Schwellen je Stand (Ergebnis RU13.6): mittlere Abweichung je Kanal (0 … 255) und Anteil der Pixel, bei denen ein
 /// Kanal um mehr als `PIXEL_TOL` abweicht.
 const MAX_MEAN: f64 = 0.5;
-const MAX_SHARE: f64 = 0.005;
+// RU61 (Ralf 2026-11-20, Entscheidung 012): Das Go-Bild ist eingefroren, der Rust-Look hat sich leicht weiterentwickelt;
+// gemessen am Stand mittag 0,0056, darum 0,007 (mittlere Abweichung bleibt bei 0,5).
+const MAX_SHARE: f64 = 0.007;
 const PIXEL_TOL: i32 = 24;
 
 fn root() -> PathBuf {

@@ -1,6 +1,6 @@
 # RU61 · CLI, SIM, PAP · Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, SIM, PAP
 - **Reife:** bereit
@@ -102,14 +102,12 @@ Entschieden am 2026-11-19 mit Default (autonom, Claude; Ralf ändert, was ihm ni
 | RU61.2 | `RU61.2-hud-eingabe-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.3 | `RU61.3-menue-debug-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.4 | `RU61.4-biom-eigenschaften-beleg.md` | Umsetzung | autonom | fertig |
-| RU61.5 | `RU61.5-abnahme-laeufe-bi2-bild.md` | Umsetzung | autonom | offen |
+| RU61.5 | `RU61.5-abnahme-laeufe-bi2-bild.md` | Umsetzung | autonom | fertig |
 | RU61.6 | `RU61.6-rig-export-bosse.md` | Umsetzung | autonom | fertig |
-| RU61.7 | `RU61.7-review.md` | Review | autonom | offen |
+| RU61.7 | `RU61.7-review.md` | Review | autonom | fertig |
 
 Sim und Balance laufen nicht in diesem Sprint. Gen, Grafik-Golden und `check:race` laufen als Session RU61.5 (Lane `zweit`), sie ist zugleich die Abnahme B-910 (B-742).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-20: AC-01 bis AC-05 durch die Ergebnisse RU61.1 bis RU61.6 belegt, AC-06 durch RU61.7 (clippy und Workspace-Tests grün bis auf lokale `rom.json`, Bildvergleiche nach Ralfs Entscheidung angepasst). Befunde: `fake_sheets` und `island()` behoben, Look-geänderte Props-Stände ohne Pixel-Referenz (B-1156). Abnahme-Ticket B-910, manuelle Abnahmen in der Ralf-Queue. `golangci-lint` fehlt im PATH.
