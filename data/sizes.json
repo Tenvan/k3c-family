@@ -71,12 +71,12 @@
       "was": "Turm-Gerüst"
     },
     "burg": {
-      "m": 4.0,
-      "was": "Burg, Haupthaus (Standard 3,5–4,5 M)"
+      "m": 3.5,
+      "was": "Burg, Haupthaus (Standard 3,5–4,5 M; 3,5 M, damit sie die Treppe nebenan nicht überdeckt, B-1147)"
     },
     "burg-baustelle": {
-      "m": 3.8,
-      "was": "Burg-Gerüst im Hub"
+      "m": 2.5,
+      "was": "Burg-Gerüst im Hub (schmaler als die fertige Burg, überdeckt keinen Nachbarplatz, B-1147)"
     },
     "baum-niedrig": {
       "m": 2.5,
@@ -101,6 +101,10 @@
     "nadel-hoch": {
       "m": 5.6,
       "was": "Nadelbaum hoch, darf oben anschneiden"
+    },
+    "geruest-schiff": {
+      "m": 2.7,
+      "was": "Gerüst des Schiffs (Standard 2,5–3,2 M, B-1147)"
     }
   },
   "assets": {
@@ -174,6 +178,10 @@
     },
     "gebaeude-paper/geruest-6": {
       "stufe": "geruest-mittel",
+      "sicht": 0.909
+    },
+    "gebaeude-paper/geruest-schiff": {
+      "stufe": "geruest-schiff",
       "sicht": 0.909
     },
     "gebaeude-paper/hafen": {

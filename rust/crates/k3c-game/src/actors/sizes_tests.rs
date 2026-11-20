@@ -122,7 +122,8 @@ fn sheets_bekommen_die_stufenhoehe() {
     apply_sizes(&mut sheets, &t);
     let burg = &sheets[&("gebaeude-paper/burg".to_string(), "stand".to_string())];
     let vis = t.assets["gebaeude-paper/burg"].visible * burg.fh as f64 * burg.units_per_px;
-    assert!((vis / t.reference_px - 4.0).abs() < 1e-9, "Burg 4 M");
+    let want = t.target_px("gebaeude-paper/burg").unwrap() / t.reference_px;
+    assert!((vis / t.reference_px - want).abs() < 1e-9, "Burg {want} M");
     assert_eq!(
         sheets[&("truppen/bauer".to_string(), "stand".to_string())].units_per_px,
         1.0

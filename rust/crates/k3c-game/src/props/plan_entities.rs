@@ -105,7 +105,7 @@ impl Planner {
                     self.sprite(object("wurzel"), n.x + self.roots[i], 0.0, 0);
                 }
             }
-            let l = variant_look(&n.kind, &n.variant, biome).unwrap_or_else(|| node_look(&n.kind, n.x, biome));
+            let l = variant_look(&n.kind, &n.variant, biome, n.x).unwrap_or_else(|| node_look(&n.kind, n.x, biome));
             let h = if let Some((_, h)) = self.size(l) {
                 self.body.push(Item {
                     shape: Shape::Sprite,

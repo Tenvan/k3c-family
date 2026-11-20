@@ -56,7 +56,7 @@ Die Richtwerte oben stehen als Tabelle in [`data/sizes.json`](../../data/sizes.j
 er und seine Reittiere bleiben unverändert und sind der Bezugswert.
 
 - `stufen`: Name → sichtbare Höhe in M (z. B. `buerger` 0,6, `gegner-riese` 1,2, `boss` 1,3, `gebaeude-mittel` 1,1, `turm`
-  2,2, `burg` 4,0, `baum-hoch` 3,25, `nadel-hoch` 5,6).
+  2,2, `burg` 3,5, `baum-hoch` 3,25, `nadel-hoch` 5,6).
 - `assets`: `gruppe/id` → Stufe und `sicht` (sichtbare Höhe ÷ Rahmenhöhe des Bildes, erstes Bild der Ruhe-Animation).
   Das Spiel zeichnet ein Asset so, dass seine **sichtbare** Höhe Stufe × M ist: Figuren über die Rahmenhöhe im Katalog
   (`actors/sizes.rs`), Gebäude und Objekte über `units_per_px` (`art/scales.rs`; der Faktor aus `paper.json › skalierung`

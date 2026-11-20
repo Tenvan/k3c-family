@@ -43,6 +43,22 @@ pub struct Paper {
     pub seekarte: PaperSeekarte,
     #[serde(rename = "objekte")]
     pub objekte: BTreeMap<String, PaperObjekte>,
+    /// Waldwand-Hintergrund `gruppe/id` (BB1.3, B-1146); fehlt der Schlüssel, gibt es keine Waldwand.
+    #[serde(rename = "waldwand")]
+    pub waldwand: String,
+    /// Leitmotive je Welt-ID `gruppe/id` (BB1.4, B-1146); fehlt der Schlüssel, gibt es keine.
+    #[serde(rename = "leitmotive")]
+    pub leitmotive: BTreeMap<String, String>,
+}
+
+impl Paper {
+    /// Leitmotiv-Asset der Welt `world`, ersatzweise das der Standard-Welt (`None`: es gibt keine Leitmotive).
+    pub fn motif_asset(&self, world: &str) -> Option<&str> {
+        self.leitmotive
+            .get(world)
+            .or_else(|| self.leitmotive.get("standard"))
+            .map(String::as_str)
+    }
 }
 
 /// Datei-Aufbau `.einsiedler` (SI5, B-1001).
@@ -182,3 +198,7 @@ pub const FILE: &str = "paper.json";
 pub fn load(raw: &str) -> Result<Paper, Fehler> {
     decode("data/paper.json", raw)
 }
+
+#[cfg(test)]
+#[path = "paper_tests.rs"]
+mod tests;

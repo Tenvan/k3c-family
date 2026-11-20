@@ -60,6 +60,11 @@
     "manifest": "geruest-6/manifest.json"
   },
   {
+    "id": "geruest-schiff",
+    "rig": "gebaeude",
+    "manifest": "geruest-schiff/manifest.json"
+  },
+  {
     "id": "hafen",
     "rig": "gebaeude",
     "manifest": "hafen/manifest.json"

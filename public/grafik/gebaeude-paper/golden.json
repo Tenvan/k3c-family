@@ -99,6 +99,12 @@
       "stand.png": "fb1f9465fab5c8662b8ba7f942577f637899ad7bfd5a2fe47ff70969b3a1bede"
     }
   },
+  "geruest-schiff": {
+    "renderKey": "7d21873de489db60d35516196d1dde9acaf39aaef5c56a13dd13d0de638237d6",
+    "dateien": {
+      "stand.png": "5cc6d46aa28a17d47deff84b93fe805cb344e7180f583836fd10408a56cfa33a"
+    }
+  },
   "hafen": {
     "renderKey": "2cc475b75d00cb63169fbd632a94c68e83db30825e7932c2549c691d486eccbf",
     "dateien": {

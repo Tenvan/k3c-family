@@ -132,6 +132,8 @@ fn scaffold_class(kind: &str) -> Option<&'static str> {
         "wall" => "gebaeude-paper/geruest-1",
         "tower" => "gebaeude-paper/geruest-3",
         "nursery" | "stairsUp" | "stairsDown" => "gebaeude-paper/geruest-4",
+        // B-1147: Das Schiff hat im Profil k2c ein eigenes Gerüst in Schiffsgröße (kein Größensprung beim Fertigstellen).
+        "ship" if k3c_data::look::current().sizes => "gebaeude-paper/geruest-schiff",
         "workshop" | "bowyer" | "storage" | "barracks" | "tavern" | "healer" | "smithy" | "armory" | "ship" => {
             "gebaeude-paper/geruest-6"
         }
