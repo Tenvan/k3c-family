@@ -110,6 +110,12 @@ pub fn config(root: &Path, grafik: Option<&Path>) -> Config {
             .map_err(|e| e.to_string())
             .and_then(|raw| parse_scales(&raw))
             .unwrap_or_default(),
+        tiling: std::fs::read(root.join("data/paper.json"))
+            .map_err(|e| e.to_string())
+            .and_then(|raw| crate::art::parse_tiling(&raw))
+            .ok()
+            .filter(|_| k3c_data::look::current().sizes)
+            .unwrap_or_default(),
         // Größenstufen aus data/sizes.json des Repos, nur im Look-Profil k2c
         sizes: k3c_data::look::current()
             .sizes

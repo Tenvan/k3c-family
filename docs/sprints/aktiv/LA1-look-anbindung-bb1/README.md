@@ -76,7 +76,7 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 | LA1.4 | `LA1.4-stimmung-abgleich.md` | Workshop | Mensch | offen |
 | LA1.5 | `LA1.5-stimmung-umsetzung.md` | Umsetzung | autonom | offen |
 | LA1.6 | `LA1.6-review.md` | Review | autonom | offen |
-| LA1.7 | `LA1.7-mauern.md` | Umsetzung | autonom | offen |
+| LA1.7 | `LA1.7-mauern.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

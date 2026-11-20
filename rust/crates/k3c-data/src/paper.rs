@@ -43,12 +43,26 @@ pub struct Paper {
     pub seekarte: PaperSeekarte,
     #[serde(rename = "objekte")]
     pub objekte: BTreeMap<String, PaperObjekte>,
+    /// Sichtbarer Streifen gekachelter Assets in Bild-px (B-947): `von` bis `bis` Spalten; die Kachelung setzt die
+    /// Streifen aneinander statt der Rahmen, damit der transparente Rand keine Fugen lässt.
+    #[serde(rename = "kachelung")]
+    pub kachelung: BTreeMap<String, PaperKachel>,
     /// Waldwand-Hintergrund `gruppe/id` (BB1.3, B-1146); fehlt der Schlüssel, gibt es keine Waldwand.
     #[serde(rename = "waldwand")]
     pub waldwand: String,
     /// Leitmotive je Welt-ID `gruppe/id` (BB1.4, B-1146); fehlt der Schlüssel, gibt es keine.
     #[serde(rename = "leitmotive")]
     pub leitmotive: BTreeMap<String, String>,
+}
+
+/// Datei-Aufbau `.kachelung.*`.
+#[derive(Debug, Clone, Copy, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct PaperKachel {
+    #[serde(rename = "von")]
+    pub from: f64,
+    #[serde(rename = "bis")]
+    pub to: f64,
 }
 
 impl Paper {

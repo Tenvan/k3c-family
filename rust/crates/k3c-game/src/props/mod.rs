@@ -92,6 +92,8 @@ mod sites_tests;
 mod sizes_sites_tests;
 #[cfg(test)]
 mod testutil;
+#[cfg(test)]
+mod walls_tests;
 
 /// `State` ist der Zustand des Drawers über die Bilder: Planer (Puffer bleiben erhalten), Zeichner und Stufen-Zustand.
 struct State {

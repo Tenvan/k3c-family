@@ -166,13 +166,13 @@
     }
   },
   "mauer": {
-    "renderKey": "9869e86025c8a9159f3b88fa7a561ce0a2a627ac9cdca4365ea6596fdbaa7d47",
+    "renderKey": "da4db1589ade60a8b799368d35ed37f860848e068ddb9267642449a91905f6b1",
     "dateien": {
-      "stand.png": "13896a99a8351c7c6eb7306e93a82879cfe278758afa5bbaf67090f0e45b3a7a",
-      "stand.s2.png": "d2a2d1a09daefd5eb41b2dcbdfedb9364c2dcb449e3759fbd5f87fb4a51cf291",
-      "stand.s3.png": "571084396e6ac233a7be81524926c31d9f20ab1f93fbe43b0ea64cf0e2f793dd",
-      "stand.s4.png": "4f5c01b0742a50ef891710481e2027fc91c666ddb74799feb9f822746259a423",
-      "stand.s5.png": "527929908d67ab7c58e3609e6123a77ad23041f5ff0d893b6b684fc39b180cac"
+      "stand.png": "7c8565b716fcdab58b41e4dbac4af7e86867debdc384547f1d194c3c30b1418e",
+      "stand.s2.png": "1e150bdd169ec6d368a247c7e4fa180b88cc974a93b27ac253b631a1484b77f0",
+      "stand.s3.png": "83b2933de30d384b08ea6e2b8455fdb040c2f698efcdd61a0c80b9e68f6e62b3",
+      "stand.s4.png": "e9c6f5a7922642974704be643b7052f349de231302099d39348afc1e2f6d99c1",
+      "stand.s5.png": "29086371fc20611d24ff83f0b2977dc2cbecf9e95c19fec829c1e4c9b54dcab3"
     }
   },
   "pagode": {

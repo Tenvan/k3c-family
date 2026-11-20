@@ -52,7 +52,7 @@ pub use outline::{OUTLINE4, OUTLINE8, OutlineCache, outline_pad, outline_stroke,
 pub use plan::{Plan, SheetSpec, plan_level, plan_sheet};
 pub use png::read_png;
 pub use rigs::{Actor, M, Painter, Point, State, actor_frame, rig_view};
-pub use scales::{apply_sizes, data_scales, parse_scales};
+pub use scales::{apply_sizes, apply_tiling, data_scales, data_tiling, parse_scales, parse_tiling};
 pub use seamap::{SeaLayers, SeaMap, SeaMarks};
 pub use sheet::{Sheet, SheetFrame, upload};
 pub use voyage::{VoyageLook, parse_voyage, voyage};

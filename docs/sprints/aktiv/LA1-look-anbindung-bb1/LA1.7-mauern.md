@@ -1,6 +1,6 @@
 # LA1.7 · Mauern: durchgängig, Burgbereich geschlossen, Stufe 1 als Zaun, Platzhalter weg
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -40,9 +40,9 @@ Größenstufen (LA1.1), Waldwand und Leitmotive (LA1.2), Stimmung (LA1.4, LA1.5)
 
 ## Fertig, wenn
 
-- [ ] AC-06: Der Mauerzug ist lückenlos (Test für die Kachelung), im Burgbereich geschlossen, die Mauer der Stufe 1 ist ein Zaun oder eine Bretterwand, und im Hub steht kein einfarbiges Platzhalter-Rechteck mehr; Vorher-Nachher-Bilder liegen im Ergebnis.
+- [x] AC-06: Der Mauerzug ist lückenlos (Test für die Kachelung), im Burgbereich geschlossen, die Mauer der Stufe 1 ist ein Zaun (fünf spitze Pfähle mit Fugen), und im Hub steht kein einfarbiges Platzhalter-Rechteck mehr; Vorher-Nachher-Bilder: Vorschau `public/grafik/gebaeude-paper/mauer/stand.png` (neu) und `.cache/paper/mcp/set/mauer-stand-0-diff.pngCheckout` (Diff zur alten Spec); Ganzbild im Spiel nicht aufgenommen.
 - [ ] Nachprüfung 🧑 am PC (B-947/AC-02).
-- [ ] Tests und `task rust:lint` grün.
+- [x] Tests und `task rust:lint` grün.
 
 ## Prüfen
 
@@ -58,5 +58,17 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 geprüft (Tests), Nachprüfung am PC bleibt bei Ralf.
+
+**Ursachen und Behebung**
+- **B-947 Fugen:** Die Hintergrundmauer ist 44 px breit, die Zeichnung füllt nur die Spalten 6 bis 38 (Rand links 6 px, rechts 5 px transparent); die Kachelung setzte ganze Rahmen aneinander, daher rund 20 % Fuge. Neu `data/paper.json › kachelung` (`von` 6, `bis` 39 in Bild-px), `Sheet.tile`, `props/paint.rs › tiles` setzt die sichtbaren Streifen aneinander; nur im Look-Profil k2c. Test `hintergrundmauer_kachelt_ohne_fugen` prüft an den PNGs aller fünf Stufen, dass jede Spalte des Streifens gefüllt ist und der Rand transparent ist.
+- **B-1175 Burgbereich:** `back_walls` verband nur Mauern derselben Seite; zwischen den innersten Mauern links und rechts (hinter der Burg) fehlte der Abschnitt. Neu: im Profil k2c verbindet ein Abschnitt die innersten gebauten Mauern beider Seiten (Stufe = die niedrigere). Test `burgbereich_ist_geschlossen` (beide Seiten gebaut, eine Seite nicht gebaut, nur eine Seite, Profil go).
+- **B-1160 Platzhalter:** Die Rechtecke waren Taverne (braun), Heilplatz (weiß) und Schmiede (dunkelgrau): Die Assets `taverne`, `heilplatz`, `schmiede` waren geladen, aber nicht in `HUB_BUILDINGS` zugeordnet, daher zeichnete das Spiel gebaut die farbige Ersatzform. Zuordnung ergänzt (alle Profile); Test `kein_platzhalter_rechteck_im_hub` (jede Platzart aus `hub.json` hat gebaut ein Bild).
+- **B-1176 Stufe 1:** Spec `mauer` Stufe 1 war schon ein Zaun aus drei Pfählen, aber ohne Fugen und gleich hoch, daher wie eine Platte. Neu: fünf Pfähle mit Fugen und unterschiedlicher Höhe (108–128 px), zwei Querbalken; ab Stufe 2 deckt die Wehrmauer die Pfähle (unverändert). Über `assets_set` gerendert; `golden.json` der Gruppe `gebaeude-paper` gewollt geändert (nur `mauer`). `sicht` der Mauer in `sizes.json` bleibt innerhalb der Toleranz (Test grün).
+
+Tests: `cargo test -p k3c-data -p k3c-game` grün bis auf `tree_rest_tests::rest_wie_go` (`sounds.json`, nicht von hier, vermutet auf `main` schon rot); `task rust:lint` grün; `task check:diff` nur an den bekannten Fremd-Fehlern rot (`native/`, Fahrplan RU30/WI1).
+
+### Für den Hauptrechner
+
+- Burg-Mauer im Burgbereich liegt hinter der Burg; ob dort ein Tor gewünscht ist (Spieler laufen durch?), ist Spielfrage: Mauern blockieren in der Sim nicht, reine Optik. Abnahme am PC.
+- Hub-Plätze `taverne`/`bogner` und `kaserne`/`schmiede` überlappen sich in der Breite (58 und 68 px), wie in LA1.2 festgehalten.

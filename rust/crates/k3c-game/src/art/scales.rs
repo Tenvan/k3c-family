@@ -42,6 +42,33 @@ pub fn apply_scales(sheets: &mut BTreeMap<SheetKey, Sheet>, scales: &BTreeMap<St
     }
 }
 
+/// Liest `kachelung` aus dem Inhalt von paper.json: `gruppe/id` → (von, bis) in Bild-px; ungültige Streifen fallen weg.
+pub fn parse_tiling(raw: &[u8]) -> Result<BTreeMap<String, (f64, f64)>, String> {
+    let p = k3c_data::paper::load(&String::from_utf8_lossy(raw)).map_err(|e| e.to_string())?;
+    Ok(p.kachelung
+        .into_iter()
+        .filter(|(_, k)| k.from >= 0.0 && k.to > k.from)
+        .map(|(a, k)| (a, (k.from, k.to)))
+        .collect())
+}
+
+/// Wie `data_scales`, für `kachelung`.
+pub fn data_tiling() -> BTreeMap<String, (f64, f64)> {
+    super::datafile::read("paper.json")
+        .and_then(|raw| parse_tiling(&raw))
+        .unwrap_or_else(|e| {
+            k3c_platform::log::error("❌ Kachelung nicht lesbar", &[("err", &e)]);
+            BTreeMap::new()
+        })
+}
+
+/// Setzt den sichtbaren Streifen der gekachelten Sheets.
+pub fn apply_tiling(sheets: &mut BTreeMap<SheetKey, Sheet>, tiling: &BTreeMap<String, (f64, f64)>) {
+    for ((asset, _), s) in sheets.iter_mut() {
+        s.tile = tiling.get(asset).copied();
+    }
+}
+
 /// Gruppen, deren Größe die Stufentabelle über `units_per_px` setzt; Figuren (Truppen, Gegner, Bosse) laufen über die
 /// Höhe im Katalog (`actors/sizes.rs`).
 fn is_sheet_group(asset: &str) -> bool {
