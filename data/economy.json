@@ -1,5 +1,5 @@
 {
-  "notes": "Gold auf der Münzskala (BS3.2, wirtschaft.md § 8): Startgold 14, Beutel 30, Tageseinkommen 2, Truhen 30–60 (B-953, ×10, fliegen als Fontäne), gefällter Baum 1–3 Gold (treeGold, B-952, vorläufig), Gegner-Gold × enemyGoldFactor 0.5 (B-952, vorläufig).",
+  "notes": "Gold auf der Münzskala (BS3.2, wirtschaft.md § 8): Startgold 14, Beutel 30, Tageseinkommen 2, Truhen 15–30 (B-953 ×10, B-1159 halbiert, fliegen als Fontäne), gefällter Baum 1–3 Gold (treeGold, B-952, vorläufig), Gegner-Gold × enemyGoldFactor 0.5 (B-952, vorläufig).",
   "purse": { "startGold": 14, "maxGold": 30 },
   "payRangeUnits": 2,
   "payIntervalSeconds": 0.25,
@@ -7,7 +7,7 @@
   "dropPickupDelaySeconds": 1.5,
   "dawnGoldPerPlayer": 2,
   "dawnGoldPerDepth": 6,
-  "chestGold": [30, 60],
+  "chestGold": [15, 30],
   "chestFountain": { "flightSeconds": 0.9, "spreadUnits": 6, "staggerSeconds": 0.03 },
   "treeGold": [1, 3],
   "enemyGoldFactor": 0.5,

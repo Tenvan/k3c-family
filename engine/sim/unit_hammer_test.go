@@ -158,8 +158,8 @@ func TestBaumWirftGold(t *testing.T) {
 // B-953: Die Truhe wirft ihr Gold (×10) als Fontäne: Münzen im Flug sind noch nicht aufsammelbar, danach liegen sie
 // aufsammelbar am Boden; zwei gleiche Welten werfen gleich.
 func TestTruheWirftFontaene(t *testing.T) {
-	if economy.ChestGold[0] < 30 {
-		t.Fatalf("Truhen-Gold %v, erwartet mindestens 30", economy.ChestGold)
+	if economy.ChestGold[0] < 15 {
+		t.Fatalf("Truhen-Gold %v, erwartet mindestens 15 (B-1159)", economy.ChestGold)
 	}
 	var xs [2][]float64
 	var w *World
