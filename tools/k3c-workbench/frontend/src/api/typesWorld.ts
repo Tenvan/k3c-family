@@ -4,6 +4,8 @@
 export interface WorldInfo {
   id: string;
   name: string;
+  /** feste Welt ohne Datei: „noch nicht umgesetzt“ (B-1168) */
+  missing?: boolean;
 }
 
 /** Festes Objekt eines geplanten Chunks; at zählt in Units ab Chunk-Anfang (Go: level.PlannedObject) */

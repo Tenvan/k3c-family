@@ -93,6 +93,9 @@ func (e Editor) SetStory(ctx context.Context, id string, p StoryPatch) (StoryRes
 func (e Editor) ids() []string {
 	var out []string
 	for _, w := range e.List() {
+		if w.Missing {
+			continue
+		}
 		out = append(out, w.ID)
 	}
 	return out

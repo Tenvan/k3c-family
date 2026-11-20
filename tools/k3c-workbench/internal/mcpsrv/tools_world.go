@@ -91,6 +91,10 @@ func registerWorldRead(s *Server) {
 		e := worldEditor(s.ws(ctx).root)
 		var b strings.Builder
 		for _, w := range e.List() {
+			if w.Missing {
+				fmt.Fprintf(&b, "%s · %s\n", w.ID, world.MissingNote)
+				continue
+			}
 			d := e.Load(w.ID)
 			fmt.Fprintf(&b, "%s · %s · extends %s · %d Inseln\n", w.ID, w.Name, orDash(d.Extends), len(d.Islands))
 		}

@@ -19,11 +19,17 @@ function WorldList({ worlds, id, onChoose, onCreate }: { worlds: WorldInfo[]; id
     <Flex direction="column" gap="1" role="list" aria-label="Welten">
       <Heading size="2" color="gray">Welten</Heading>
       {worlds.map((w) => (
-        <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
-          className={`wd-entry${w.id === id ? ' wd-entry-active' : ''}`}
-          onClick={() => onChoose(w.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onChoose(w.id)}>
-          <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>
-        </Box>
+        w.missing ? (
+          <Box key={w.id} role="listitem" data-world={w.id} className="wd-entry" aria-disabled="true">
+            <Text size="2" weight="bold" color="gray">{w.name}</Text> <Text size="1" color="gray">{w.id} · noch nicht umgesetzt</Text>
+          </Box>
+        ) : (
+          <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
+            className={`wd-entry${w.id === id ? ' wd-entry-active' : ''}`}
+            onClick={() => onChoose(w.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onChoose(w.id)}>
+            <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>
+          </Box>
+        )
       ))}
       {worlds.length === 0 && <Text size="1" color="gray">Keine Welten unter data/worlds/.</Text>}
       <NewWorld worlds={worlds} onCreate={onCreate} />

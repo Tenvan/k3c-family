@@ -1,4 +1,4 @@
-import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
+import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
 
 // Mock des Welten-Editors (B-879, `?mock=1` und Vitest): zwei Welten, ein festes Level je Stufe und ein paar Werte.
 // Overrides leben nur im Speicher; ein Text in einem Zahlenfeld wird abgelehnt wie die Prüfung in Go.
@@ -118,7 +118,11 @@ export function mockWorld(): WorldBackend {
   const overrides: Overrides = new Map([['wueste', new Map([[key('economy', ['purse', 'startGold']), 20]])]]);
   const values = (id: string) => mockValues(overrides, id);
   return {
-    worldList: async () => Object.values(DETAILS).map((d) => ({ id: d.id, name: d.name })),
+    worldList: async () => {
+      const files = Object.values(DETAILS).map((d): WorldInfo => ({ id: d.id, name: d.name }));
+      const fixed = ['sengoku', 'nil', 'britannien'].map((id): WorldInfo => ({ id, name: id, missing: true }));
+      return [...files.filter((w) => w.id === 'standard'), ...fixed, ...files.filter((w) => w.id !== 'standard')]; // wie List() im Backend
+    },
     worldDetail: async (id) => withInfo(DETAILS[id]) ?? { id, name: id, notes: '', extends: '', islands: [], error: `data/worlds/${id}.json: Datei fehlt` },
     worldLevel: async (id, island, stage, seed) => {
       const detail = DETAILS[id];

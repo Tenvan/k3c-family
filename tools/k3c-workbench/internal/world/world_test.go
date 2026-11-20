@@ -59,9 +59,40 @@ func fixture(t *testing.T) Editor {
 
 func TestListStandardFirstAndOnlyWorlds(t *testing.T) {
 	got := fixture(t).List()
-	want := []Info{{ID: "standard", Name: "Standard"}, {ID: "kind", Name: "Kind-Welt"}}
+	want := []Info{
+		{ID: "standard", Name: "Standard"},
+		{ID: "sengoku", Name: "sengoku", Missing: true},
+		{ID: "nil", Name: "nil", Missing: true},
+		{ID: "britannien", Name: "britannien", Missing: true},
+		{ID: "kind", Name: "Kind-Welt"},
+	}
 	if !slices.Equal(got, want) {
 		t.Fatalf("List = %v, want %v", got, want)
+	}
+}
+
+// AC-01 (B-1168): feste Welten ohne Datei fehlen nicht; eine Datei einer festen Welt zählt als umgesetzt, weitere
+// Dateien (z. B. Nordmeer) stehen dahinter; ohne paper.json bleibt es bei den Dateien.
+func TestListFixedWorldsAndFiles(t *testing.T) {
+	e := fixture(t)
+	if err := os.WriteFile(filepath.Join(e.Root, worldsDir, "rom.json"), []byte(`{"id":"rom","name":"Nordmeer","islands":[]}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(e.Root, worldsDir, "nil.json"), []byte(`{"id":"nil","name":"Nil","islands":[]}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	var ids []string
+	for _, w := range e.List() {
+		ids = append(ids, w.ID+map[bool]string{true: "!", false: ""}[w.Missing])
+	}
+	if want := []string{"standard", "sengoku!", "nil", "britannien!", "kind", "rom"}; !slices.Equal(ids, want) {
+		t.Fatalf("List = %v, want %v", ids, want)
+	}
+	if err := os.Remove(filepath.Join(e.Root, "data", "paper.json")); err != nil {
+		t.Fatal(err)
+	}
+	if got := e.List(); len(got) != 4 || got[0].ID != "standard" || got[0].Missing {
+		t.Fatalf("ohne paper.json: %v", got)
 	}
 }
 

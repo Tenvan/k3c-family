@@ -66,7 +66,7 @@ Spec ist ein Entwurf und braucht die Freigabe von 🧑. Sessions sind noch nicht
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ62.1 | `WZ62.1-feste-welten.md` | Umsetzung | autonom | offen |
+| WZ62.1 | `WZ62.1-feste-welten.md` | Umsetzung | autonom | fertig |
 | WZ62.2 | `WZ62.2-welt-filter-vererbung.md` | Umsetzung | autonom | offen |
 | WZ62.3 | `WZ62.3-groessenvergleich-lineal.md` | Umsetzung | autonom | offen |
 | WZ62.4 | `WZ62.4-link-welten-editor-katalog.md` | Umsetzung | autonom | offen |

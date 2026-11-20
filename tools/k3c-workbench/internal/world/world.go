@@ -29,7 +29,13 @@ var idPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,31}$`)
 type Info struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+	// Missing: feste Welt (data/paper.json › weltbilder) ohne Datei; sie erscheint mit dem Hinweis „noch nicht
+	// umgesetzt“ (B-1168, WZ62.1) und lässt sich nicht öffnen.
+	Missing bool `json:"missing,omitempty"`
 }
+
+// MissingNote ist der Hinweis an einer festen Welt ohne Datei.
+const MissingNote = "noch nicht umgesetzt"
 
 // Island ist eine Insel der Welt mit dem Biom je Tiefe (gleiche Reihenfolge wie Depths), ihrer Planung und Chunk-Anzahl
 // wie in der Datei.
@@ -88,25 +94,79 @@ func (e Editor) read(id string) ([]byte, error) {
 	return raw, nil
 }
 
-// List liefert alle Welten unter data/worlds/: die Standard-Welt zuerst, dann nach ID.
+// List liefert die festen Welten (Schlüssel von data/paper.json › weltbilder in Datei-Reihenfolge; ohne Datei mit
+// Missing) und danach jede weitere Datei unter data/worlds/ nach ID. Die Standard-Welt steht zuerst, auch ohne
+// Eintrag in paper.json. Ursache von B-1168: Die Liste las früher nur die Dateien und ließ feste Welten ohne Datei weg.
 func (e Editor) List() []Info {
 	entries, _ := os.ReadDir(filepath.Join(e.Root, worldsDir))
-	out := []Info{}
+	files := map[string]Info{}
 	for _, d := range entries {
 		id, ok := strings.CutSuffix(d.Name(), ".json")
 		if d.IsDir() || !ok || !idPattern.MatchString(id) {
 			continue
 		}
 		raw, _ := os.ReadFile(e.file(id))
-		out = append(out, Info{ID: id, Name: nameOf(raw, id)})
+		files[id] = Info{ID: id, Name: nameOf(raw, id)}
 	}
-	sort.SliceStable(out, func(i, j int) bool {
-		if (out[i].ID == standardID) != (out[j].ID == standardID) {
-			return out[i].ID == standardID
+	out := []Info{}
+	add := func(id string) {
+		if info, ok := files[id]; ok {
+			out = append(out, info)
+			delete(files, id)
+		} else {
+			out = append(out, Info{ID: id, Name: id, Missing: true})
 		}
-		return out[i].ID < out[j].ID
-	})
+	}
+	add(standardID)
+	for _, id := range e.fixedIDs() {
+		if id != standardID {
+			add(id)
+		}
+	}
+	rest := make([]string, 0, len(files))
+	for id := range files {
+		rest = append(rest, id)
+	}
+	sort.Strings(rest)
+	for _, id := range rest {
+		add(id)
+	}
 	return out
+}
+
+// fixedIDs liefert die IDs der festen Welten aus data/paper.json › weltbilder in Datei-Reihenfolge (fehlt die Datei
+// oder der Schlüssel: keine).
+func (e Editor) fixedIDs() []string {
+	raw, err := os.ReadFile(filepath.Join(e.Root, "data", "paper.json"))
+	if err != nil {
+		return nil
+	}
+	var doc struct {
+		Weltbilder json.RawMessage `json:"weltbilder"`
+	}
+	if json.Unmarshal(raw, &doc) != nil || len(doc.Weltbilder) == 0 {
+		return nil
+	}
+	dec := json.NewDecoder(strings.NewReader(string(doc.Weltbilder)))
+	if tok, err := dec.Token(); err != nil || tok != json.Delim('{') {
+		return nil
+	}
+	var ids []string
+	for dec.More() {
+		key, err := dec.Token()
+		name, ok := key.(string)
+		if err != nil || !ok {
+			break
+		}
+		if idPattern.MatchString(name) {
+			ids = append(ids, name)
+		}
+		var skip json.RawMessage
+		if dec.Decode(&skip) != nil {
+			break
+		}
+	}
+	return ids
 }
 
 func nameOf(raw []byte, id string) string {
