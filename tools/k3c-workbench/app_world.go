@@ -79,6 +79,21 @@ func (a *App) WorldCreate(id, name, extends string) world.CreateView {
 	return view
 }
 
+// WorldDelete löscht die Welt id (Binding, B-1172): feste Welten und Welten mit Erben werden abgelehnt (error), Spielstände
+// der Welt bleiben und stehen als Warnung in der Antwort. Die Oberfläche fragt vorher nach dem Namen der Welt.
+func (a *App) WorldDelete(id string) world.CreateView {
+	a.wait()
+	view := a.worlds().DeleteView(id)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Welt nicht gelöscht", "ns", "dev", "world", id, "error", view.Error)
+		} else {
+			a.log.Info("🧹 Welt gelöscht", "ns", "dev", "world", id)
+		}
+	}
+	return view
+}
+
 // WorldNatureSet setzt einen Natur-Wert der Insel-Stufe fest; value null setzt ihn auf „aus Seed“ zurück (Binding,
 // B-891). Geschrieben wird nur eine gültige Welt; die Antwort ist das neue Level zum Seed.
 func (a *App) WorldNatureSet(id, island string, stage int, key string, value *int, seed string) world.LevelView {

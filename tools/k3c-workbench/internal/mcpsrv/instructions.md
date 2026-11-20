@@ -179,6 +179,7 @@ Werte aller Nachfolger); bei Fehler bleibt die Datei. Keine Simulation. Das Biom
   „fehlt“) und Text der Datei.
 - `world_create {id, name, extends?, story?}`: neue Welt mit einer Insel `island1` (Tiefen 0-4); überschreibt nie. `story`
   wie die Felder von `world_story_set`; ohne sie endet die Antwort mit „Geschichte fehlt: world_story_set“.
+- `world_delete {id, confirm}`: löscht die Datei einer Welt endgültig; abgelehnt werden feste Welten und Welten mit Erben (`extends`), Spielstände bleiben (Warnung).
 - `world_set {id, patch}`: `name`, `notes`, `extends`, `combat {mode, groupSize}` (null entfernt) und `islands` (Liste; bekannte `id` ändert
   nur genannte Felder, neue `id` wird angehängt; `depths` oder `biomes`, `depthScaling` wird gemischt). Jede Insel außer der letzten braucht
   in Tiefe 0 einen Hafen-Chunk (im selben Aufruf als `plannedChunks` mitgeben oder vorher `world_chunks_set`).

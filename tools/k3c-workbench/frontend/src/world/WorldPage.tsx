@@ -3,6 +3,7 @@ import { Badge, Box, Flex, Heading, SelectField, Text } from '@webkit/atoms';
 import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
 import { CatalogLinks } from './CatalogLinks';
+import { DeleteWorld } from './DeleteWorld';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
 import { NatureValues } from './NatureValues';
@@ -63,6 +64,7 @@ function WorldHead({ w }: { w: WorldState }) {
         )}
       </Flex>
       {!detail.error && <CatalogLinks welt={detail.id} />}
+      <DeleteWorld key={detail.id} id={detail.id} name={detail.name} onDelete={w.remove} />
       {detail.error && <Text size="1" color="red" role="alert">{detail.error}</Text>}
       {detail.notes && <Text size="1" color="gray" className="wd-notes">{detail.notes}</Text>}
       {!detail.error && <StoryState detail={detail} />}

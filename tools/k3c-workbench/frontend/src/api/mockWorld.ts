@@ -106,6 +106,18 @@ const mockCreate: WorldBackend['worldCreate'] = async (id, name, extendsId) => {
   return { id, warnings: [], error: '' };
 };
 
+const FESTE_WELTEN = ['standard', 'sengoku', 'nil', 'britannien'];
+
+const mockDelete: WorldBackend['worldDelete'] = async (id) => {
+  const fail = (error: string) => ({ id, warnings: [], error });
+  if (FESTE_WELTEN.includes(id)) return fail(`die Welt "${id}" ist eine feste Welt und lässt sich nicht löschen`);
+  if (!DETAILS[id]) return fail(`data/worlds/${id}.json gibt es nicht`);
+  const heirs = Object.values(DETAILS).filter((d) => d.extends === id).map((d) => d.id);
+  if (heirs.length) return fail(`die Welt "${id}" hat Erben (${heirs.join(', ')}); erst deren extends ändern oder sie löschen`);
+  delete DETAILS[id];
+  return { id, warnings: [], error: '' };
+};
+
 const mockEtappe: WorldBackend['worldIslandEtappe'] = async (id, island, etappe) => {
   const isl = DETAILS[id]?.islands.find((i) => i.id === island);
   if (!isl) return { id, warnings: [], error: `die Insel "${island}" gibt es nicht` };
@@ -130,6 +142,7 @@ export function mockWorld(): WorldBackend {
     },
     worldValues: async (id) => values(id),
     worldCreate: mockCreate,
+    worldDelete: mockDelete,
     worldIslandEtappe: mockEtappe,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;
