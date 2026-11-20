@@ -510,6 +510,20 @@ Die Oberfläche ist React mit **Radix Themes**, aufgebaut nach Atomic Design; di
 - **App-eigene Teile** in `src/ui/{molecules,organisms,templates}` (Atome nur in webkit), sonst im Feature-Ordner. Was zwei Programme brauchen, wandert nach webkit.
 - Geprüft von `tests/atomicDesign.test.ts` (Ebenen, Importrichtung, Radix-Importe, rohe Controls); webkit-Tests laufen im Vitest von k3c-workbench.
 
+## Go-Engine-Bestand
+
+Die Go-Engine bleibt, weil die Workbench sie im Prozess rechnet; ungenutzte Teile sind seit RU59 entfernt (Beleg per Importeuren und Namenssuche im ganzen Repo, Stand 2026-11-20).
+
+| Paket | Grund | Ende |
+|---|---|---|
+| `engine/sim`, `level`, `rng` | Simulation, Level, Zufall: Workbench (Level, Simulation), Go-Tests, Rust-Goldens | RU41 |
+| `engine/room`, `store` | Raum und Spielstand: Workbench-Ansicht und Welten, Trace | RU41 |
+| `engine/conlog`, `devrun` | Konsolenlog und Dev-Supervisor der Workbench (`<app>:dev`) | bleibt mit der Workbench |
+| `engine/balance`, `simcli`, `enginetools`, `cmd/k3c-sim` | Go-Balancing, Simulation und Level für die Workbench | RU40 (zuletzt) |
+| `engine/internal/{golden,detvec,trace,rules}` | Test-Infrastruktur von `sim`, `level`, `balance` und der Rust-Goldens | mit den Paketen |
+
+Entfernt ist bisher nur, was keinen Nutzer mehr hat (RU59.1: Konstante `conlog.dim`); 71 Namen ohne Produktions-Nutzer außerhalb ihres Pakets blieben stehen, weil ohne Erreichbarkeitsanalyse nicht eindeutig. Die Entscheidung über das Ende (011) nimmt nur 🧑 an.
+
 ## Golden aktualisieren
 
 Die Golden-Daten (`testdata/golden/`) halten fest, was Simulation und Level-Generator rechnen; die Go-Tests vergleichen Feld für Feld.
