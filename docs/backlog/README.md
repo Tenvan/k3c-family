@@ -38,7 +38,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-941](B-941-ausloeser-pfahl-vor-tor.md) | SIM | Problem | mittel | offen | RU60 | Der Angriffs-Auslöser steht als Horn auf einem Pfahl vor dem Tor statt schwebend dahinter |
 | [B-942](B-942-schild-gestell-burgstufe.md) | SIM | Idee | mittel | offen | RU60 | Schilde gibt es erst ab höherer Burgstufe, gestapelt auf einem Gestell neben der Burg |
 | [B-944](B-944-xbox-tasten-testseite.md) | CLI | Problem | hoch | offen | RU61 | Xbox-Controller-Tasten stimmen wieder, mit Testseite in den Entwickleroptionen |
-| [B-947](B-947-hintergrundmauern-luecken.md) | CLI | Problem | mittel | offen | RU61 | Die durchgezogenen Hintergrundmauern haben keine Lücken mehr |
+| [B-947](B-947-hintergrundmauern-luecken.md) | CLI | Problem | mittel | offen | LA1 | Die durchgezogenen Hintergrundmauern haben keine Lücken mehr |
 | [B-948](B-948-baeume-groesser.md) | CLI | Problem | mittel | offen | RU61 | Bäume erscheinen in passender Größe statt zu klein |
 | [B-949](B-949-ladescreen-huebsch.md) | CLI | Idee | niedrig | offen | RU61 | Der Ladescreen ist im Stil des Spiels gestaltet |
 | [B-953](B-953-truhen-fontaene.md) | SIM | Problem | mittel | offen | RU60 | Truhen geben zehnmal mehr Gold und werfen es als Fontäne auf den Boden |
@@ -201,7 +201,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
 | [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | offen | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
 | [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | offen | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
-| [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | RU36 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
+| [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | LA1 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
 | [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | RU36 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
 | [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU36 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
 | [B-1163](B-1163-groessenstufen-monarch-mount.md) | CLI | Problem | hoch | offen | LA1 | Alle Figuren und Gebäude folgen definierten Größenstufen, Bezugswert ist der Monarch auf dem Mount, abgeglichen an den K2C-Screenshots |
@@ -215,6 +215,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1171](B-1171-welten-editor-link-katalog.md) | DEV | Idee | niedrig | offen | WZ62 | Der Welten-Editor hat einen Schnell-Link in den Katalog mit den Assets dieser Welt (exklusiv oder gesamt) |
 | [B-1172](B-1172-welten-editor-welt-loeschen.md) | DEV | Idee | mittel | offen | WZ62 | Im Welten-Editor lässt sich eine Welt löschen (mit Bestätigung, feste Welten geschützt) |
 | [B-1173](B-1173-welten-editor-werte-tabelle.md) | DEV | Problem | mittel | offen | WZ62 | Die Werte-Tabelle im Welten-Editor ist übersichtlich und bequem zu bedienen |
+| [B-1174](B-1174-balancing-rechenmodell-startwerte.md) | SIM | Idee | mittel | offen | RU31 | Das Balancing berechnet Startwerte vorab, kalibriert sie in der Simulation und tunt über die Empfindlichkeit je Hebel |
+| [B-1175](B-1175-mauer-burgbereich-luecke.md) | CLI | Problem | mittel | offen | LA1 | Im Burgbereich schließen Mauern die Lücke zwischen den inneren Mauerstücken |
+| [B-1176](B-1176-mauer-stufe-1-zaun.md) | PAP | Idee | mittel | offen | LA1 | Die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand |
 
 ## Archiv
 
