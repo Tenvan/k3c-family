@@ -1,0 +1,396 @@
+{
+  "notes": "Größenstufen (LA1.1, Standard docs/standards/bildaufbau.md § 2). Nur das Rust-Spiel liest diese Datei, und nur im Look-Profil k2c (look.json › sizes); Go ignoriert sie. bezugPx = Höhe des berittenen Monarchen in Spiel-px (1 M, figuren/monarch bleibt unverändert, Reittiere gehören zum Monarchen). stufen = sichtbare Höhe eines Dings als Vielfaches von M. assets = Zuordnung gruppe/id → Stufe; sicht = sichtbare Höhe geteilt durch Rahmenhöhe des Bildes (erstes Bild der Ruhe-Animation, Alpha > 16; neu messen, wenn das Asset neu gezeichnet wird; der Test sizes_stimmen_mit_der_grafik prüft es). Das Spiel zeichnet ein Asset so, dass seine sichtbare Höhe = Stufe × bezugPx ist; Assets ohne Eintrag (Kleinkram wie Truhen, Felsen, Münzen, Schiff, Mounts) behalten ihre Größe. Eine Stufe ändern heißt alle ihre Assets ändern; ein Asset einer anderen Stufe zuordnen heißt es umsortieren.",
+  "bezugPx": 121.5,
+  "stufen": {
+    "gegner-winzig": {
+      "m": 0.3,
+      "was": "Schwarm am Boden (Rattenschwarm)"
+    },
+    "gegner-klein": {
+      "m": 0.4,
+      "was": "Kleine Gegner, K2C-Gier 0,4 M"
+    },
+    "buerger": {
+      "m": 0.6,
+      "was": "Bürger, Bauer, Soldat, Einsiedler (Standard 0,55–0,65 M)"
+    },
+    "truppe-elite": {
+      "m": 0.65,
+      "was": "Elite-Truppen"
+    },
+    "gegner-mittel": {
+      "m": 0.65,
+      "was": "Gegner in Truppengröße (Wölfe, Goblins, Untote)"
+    },
+    "gegner-gross": {
+      "m": 1.0,
+      "was": "Große Gegner (Geister, Wächter)"
+    },
+    "gegner-riese": {
+      "m": 1.2,
+      "was": "Brecher-Klasse (K2C 1,1–1,4 M)"
+    },
+    "boss": {
+      "m": 1.3,
+      "was": "Bosse"
+    },
+    "busch-klein": {
+      "m": 0.4,
+      "was": "Höhlenbusch (K2C 0,4–0,8 M)"
+    },
+    "busch": {
+      "m": 0.5,
+      "was": "Busch"
+    },
+    "gebaeude-klein": {
+      "m": 0.85,
+      "was": "Kleine Bauten (Farm, Rundhaus)"
+    },
+    "gebaeude-mittel": {
+      "m": 1.1,
+      "was": "Zelt, Stand, Werkstatt und Verwandte (Standard 1–1,4 M)"
+    },
+    "geruest-klein": {
+      "m": 0.75,
+      "was": "Gerüst Gärtnerei und Treppen"
+    },
+    "geruest-mittel": {
+      "m": 1.0,
+      "was": "Gerüst mittlerer Bauten"
+    },
+    "mauer": {
+      "m": 0.9,
+      "was": "Mauer, Palisade, Mauer-Gerüst (Standard 0,8–1,2 M)"
+    },
+    "turm": {
+      "m": 2.2,
+      "was": "Turm, Pagode (Standard 2–2,5 M)"
+    },
+    "turm-geruest": {
+      "m": 2.0,
+      "was": "Turm-Gerüst"
+    },
+    "burg": {
+      "m": 4.0,
+      "was": "Burg, Haupthaus (Standard 3,5–4,5 M)"
+    },
+    "burg-baustelle": {
+      "m": 3.8,
+      "was": "Burg-Gerüst im Hub"
+    },
+    "baum-niedrig": {
+      "m": 2.5,
+      "was": "Laubbaum niedrig (Standard 2,5–3,5 M)"
+    },
+    "baum-mittel": {
+      "m": 2.9,
+      "was": "Laubbaum mittel"
+    },
+    "baum-hoch": {
+      "m": 3.25,
+      "was": "Laubbaum hoch"
+    },
+    "nadel-niedrig": {
+      "m": 4.0,
+      "was": "Nadelbaum niedrig (Standard 4–6 M)"
+    },
+    "nadel-mittel": {
+      "m": 4.8,
+      "was": "Nadelbaum mittel"
+    },
+    "nadel-hoch": {
+      "m": 5.6,
+      "was": "Nadelbaum hoch, darf oben anschneiden"
+    }
+  },
+  "assets": {
+    "bosse/goblin-anfuehrer": {
+      "stufe": "boss",
+      "sicht": 0.85
+    },
+    "bosse/kristallherz-waechter": {
+      "stufe": "boss",
+      "sicht": 0.924
+    },
+    "bosse/lava-golem": {
+      "stufe": "boss",
+      "sicht": 0.738
+    },
+    "bosse/ratten-koenigin": {
+      "stufe": "boss",
+      "sicht": 0.803
+    },
+    "bosse/splitter-titan": {
+      "stufe": "boss",
+      "sicht": 0.942
+    },
+    "bosse/troll-koenig": {
+      "stufe": "boss",
+      "sicht": 0.765
+    },
+    "figuren/priesterin": {
+      "stufe": "buerger",
+      "sicht": 0.714
+    },
+    "figuren/schwertschmied": {
+      "stufe": "buerger",
+      "sicht": 0.714
+    },
+    "gebaeude-paper/bogner": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.914
+    },
+    "gebaeude-paper/burg": {
+      "stufe": "burg",
+      "sicht": 0.784
+    },
+    "gebaeude-paper/dojo": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.979
+    },
+    "gebaeude-paper/einsiedler-huette": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.97
+    },
+    "gebaeude-paper/farm": {
+      "stufe": "gebaeude-klein",
+      "sicht": 0.75
+    },
+    "gebaeude-paper/geruest-1": {
+      "stufe": "mauer",
+      "sicht": 0.927
+    },
+    "gebaeude-paper/geruest-2": {
+      "stufe": "geruest-mittel",
+      "sicht": 0.909
+    },
+    "gebaeude-paper/geruest-3": {
+      "stufe": "turm-geruest",
+      "sicht": 0.954
+    },
+    "gebaeude-paper/geruest-4": {
+      "stufe": "geruest-klein",
+      "sicht": 0.88
+    },
+    "gebaeude-paper/geruest-6": {
+      "stufe": "geruest-mittel",
+      "sicht": 0.909
+    },
+    "gebaeude-paper/hafen": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.924
+    },
+    "gebaeude-paper/heilplatz": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.831
+    },
+    "gebaeude-paper/hub-geruest": {
+      "stufe": "burg-baustelle",
+      "sicht": 0.74
+    },
+    "gebaeude-paper/kaserne": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.795
+    },
+    "gebaeude-paper/lager": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.75
+    },
+    "gebaeude-paper/mauer": {
+      "stufe": "mauer",
+      "sicht": 0.67
+    },
+    "gebaeude-paper/pagode": {
+      "stufe": "turm",
+      "sicht": 0.94
+    },
+    "gebaeude-paper/rekrutierungslager": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.912
+    },
+    "gebaeude-paper/ruestkammer": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.755
+    },
+    "gebaeude-paper/rundhaus": {
+      "stufe": "gebaeude-klein",
+      "sicht": 0.848
+    },
+    "gebaeude-paper/schmiede": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.871
+    },
+    "gebaeude-paper/schrein": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.984
+    },
+    "gebaeude-paper/taverne": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.762
+    },
+    "gebaeude-paper/tor": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.826
+    },
+    "gebaeude-paper/turm": {
+      "stufe": "turm",
+      "sicht": 0.805
+    },
+    "gebaeude-paper/werkstatt": {
+      "stufe": "gebaeude-mittel",
+      "sicht": 0.778
+    },
+    "gegner/alphawolf": {
+      "stufe": "gegner-mittel",
+      "sicht": 0.925
+    },
+    "gegner/eisenkaefer": {
+      "stufe": "gegner-klein",
+      "sicht": 0.775
+    },
+    "gegner/feuergeist": {
+      "stufe": "gegner-gross",
+      "sicht": 0.935
+    },
+    "gegner/fledermaus": {
+      "stufe": "gegner-klein",
+      "sicht": 0.571
+    },
+    "gegner/gier": {
+      "stufe": "gegner-klein",
+      "sicht": 0.708
+    },
+    "gegner/goblin": {
+      "stufe": "gegner-mittel",
+      "sicht": 0.708
+    },
+    "gegner/goblin-bogenschuetze": {
+      "stufe": "gegner-mittel",
+      "sicht": 0.76
+    },
+    "gegner/grubengeist": {
+      "stufe": "gegner-gross",
+      "sicht": 0.893
+    },
+    "gegner/hoehlentroll": {
+      "stufe": "gegner-riese",
+      "sicht": 0.683
+    },
+    "gegner/kristallspinne": {
+      "stufe": "gegner-klein",
+      "sicht": 0.845
+    },
+    "gegner/kristallwaechter": {
+      "stufe": "gegner-gross",
+      "sicht": 0.733
+    },
+    "gegner/lavaschleim": {
+      "stufe": "gegner-klein",
+      "sicht": 0.878
+    },
+    "gegner/rattenschwarm": {
+      "stufe": "gegner-winzig",
+      "sicht": 0.5
+    },
+    "gegner/skelett": {
+      "stufe": "gegner-mittel",
+      "sicht": 0.703
+    },
+    "gegner/splitterling": {
+      "stufe": "gegner-klein",
+      "sicht": 0.818
+    },
+    "gegner/wolf": {
+      "stufe": "gegner-mittel",
+      "sicht": 0.938
+    },
+    "gegner/zombie": {
+      "stufe": "gegner-mittel",
+      "sicht": 0.714
+    },
+    "objekte/birke": {
+      "stufe": "baum-niedrig",
+      "sicht": 0.958
+    },
+    "objekte/birke-dunkel": {
+      "stufe": "baum-mittel",
+      "sicht": 0.952
+    },
+    "objekte/birke-hoch": {
+      "stufe": "baum-hoch",
+      "sicht": 0.952
+    },
+    "objekte/birke-mittel": {
+      "stufe": "baum-mittel",
+      "sicht": 0.952
+    },
+    "objekte/busch": {
+      "stufe": "busch",
+      "sicht": 0.929
+    },
+    "objekte/hoehlenbusch": {
+      "stufe": "busch-klein",
+      "sicht": 0.857
+    },
+    "objekte/palme": {
+      "stufe": "baum-niedrig",
+      "sicht": 0.956
+    },
+    "objekte/pappel": {
+      "stufe": "baum-mittel",
+      "sicht": 0.96
+    },
+    "objekte/pappel-dunkel": {
+      "stufe": "baum-mittel",
+      "sicht": 0.96
+    },
+    "objekte/pappel-hoch": {
+      "stufe": "baum-hoch",
+      "sicht": 0.961
+    },
+    "objekte/pappel-niedrig": {
+      "stufe": "baum-niedrig",
+      "sicht": 0.962
+    },
+    "objekte/tanne": {
+      "stufe": "nadel-niedrig",
+      "sicht": 0.955
+    },
+    "objekte/tanne-dunkel": {
+      "stufe": "nadel-mittel",
+      "sicht": 0.952
+    },
+    "objekte/tanne-hoch": {
+      "stufe": "nadel-hoch",
+      "sicht": 0.952
+    },
+    "objekte/tanne-mittel": {
+      "stufe": "nadel-mittel",
+      "sicht": 0.952
+    },
+    "truppen/bauer": {
+      "stufe": "buerger",
+      "sicht": 0.745
+    },
+    "truppen/bogenschuetze": {
+      "stufe": "buerger",
+      "sicht": 0.745
+    },
+    "truppen/elite-bogenschuetze": {
+      "stufe": "truppe-elite",
+      "sicht": 0.914
+    },
+    "truppen/elite-krieger": {
+      "stufe": "truppe-elite",
+      "sicht": 0.776
+    },
+    "truppen/krieger": {
+      "stufe": "buerger",
+      "sicht": 0.724
+    },
+    "truppen/landstreicher": {
+      "stufe": "buerger",
+      "sicht": 0.714
+    }
+  }
+}

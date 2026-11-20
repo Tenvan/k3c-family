@@ -12,7 +12,7 @@ use k3c_platform::Canvas;
 use k3c_rig::paint::Assets;
 
 use super::png::read_png;
-use super::scales::apply_scales;
+use super::scales::{apply_scales, apply_sizes, without_sized};
 use super::{ArtError, Budget, Font, Plan, Sheet, SheetSpec, load_font, plan_level, upload};
 
 /// Pfade relativ zur Repo-Wurzel (Aufruf über `task rust:game:run`).
@@ -30,6 +30,8 @@ pub struct Config {
     pub strict_font: bool,
     /// Anzeige-Maßstab je Asset `gruppe/id` (`data_scales`); leer = überall 1.
     pub scales: BTreeMap<String, f64>,
+    /// Größenstufen (`data/sizes.json`, nur im Look-Profil k2c); setzen die Größe der Gebäude und Objekte mit Eintrag.
+    pub sizes: Option<k3c_data::sizes::Sizes>,
 }
 
 /// Liefert die Pfade im Repo.
@@ -40,6 +42,10 @@ pub fn default_config() -> Config {
         font_path: DEFAULT_FONT_PATH.into(),
         strict_font: true,
         scales: super::scales::data_scales(),
+        sizes: k3c_data::look::current()
+            .sizes
+            .then(|| k3c_data::sizes::from_source(&k3c_data::Source::from_env()))
+            .flatten(),
     }
 }
 
@@ -195,7 +201,13 @@ impl LevelLoad {
             }
         }
         l.sheets.retain(|_, m| !m.is_empty());
-        apply_scales(&mut self.got, &l.cfg.scales);
+        match &l.cfg.sizes {
+            Some(z) => {
+                apply_scales(&mut self.got, &without_sized(&l.cfg.scales, z));
+                apply_sizes(&mut self.got, z);
+            }
+            None => apply_scales(&mut self.got, &l.cfg.scales),
+        }
         for ((asset, anim), s) in std::mem::take(&mut self.got) {
             l.sheets.entry(asset).or_default().insert(anim, s);
         }

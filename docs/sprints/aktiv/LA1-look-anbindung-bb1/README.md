@@ -69,7 +69,7 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LA1.1 | `LA1.1-groessenstufen.md` | Umsetzung | autonom | offen |
+| LA1.1 | `LA1.1-groessenstufen.md` | Umsetzung | autonom | fertig |
 | LA1.2 | `LA1.2-bb1-nachtraege.md` | Umsetzung | autonom | offen |
 | LA1.3 | `LA1.3-kompass-biome.md` | Umsetzung | autonom | offen |
 | LA1.4 | `LA1.4-stimmung-abgleich.md` | Workshop | Mensch | offen |

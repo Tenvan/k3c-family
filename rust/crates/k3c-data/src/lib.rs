@@ -36,6 +36,7 @@ pub mod paper;
 pub mod render;
 pub mod ruins;
 pub mod ship;
+pub mod sizes;
 pub mod sounds;
 pub mod source;
 pub mod story;

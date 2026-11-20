@@ -4,6 +4,8 @@
 
 use std::collections::BTreeMap;
 
+use k3c_data::sizes::Sizes;
+
 use super::Sheet;
 use super::library::SheetKey;
 
@@ -35,6 +37,31 @@ pub fn apply_scales(sheets: &mut BTreeMap<SheetKey, Sheet>, scales: &BTreeMap<St
         if let Some(&f) = scales.get(asset)
             && f > 0.0
         {
+            s.units_per_px *= f;
+        }
+    }
+}
+
+/// Gruppen, deren Größe die Stufentabelle über `units_per_px` setzt; Figuren (Truppen, Gegner, Bosse) laufen über die
+/// Höhe im Katalog (`actors/sizes.rs`).
+fn is_sheet_group(asset: &str) -> bool {
+    matches!(asset.split_once('/'), Some(("gebaeude-paper" | "objekte", _)))
+}
+
+/// Entfernt die Faktoren der Assets, deren Größe die Stufentabelle bestimmt (sonst würde zweimal skaliert).
+pub fn without_sized(scales: &BTreeMap<String, f64>, sizes: &Sizes) -> BTreeMap<String, f64> {
+    let mut out = scales.clone();
+    out.retain(|k, _| !(is_sheet_group(k) && sizes.assets.contains_key(k)));
+    out
+}
+
+/// Setzt `units_per_px` der Gebäude- und Objekt-Sheets so, dass ihre sichtbare Höhe Stufe × Monarchenhöhe ist (LA1.1).
+pub fn apply_sizes(sheets: &mut BTreeMap<SheetKey, Sheet>, sizes: &Sizes) {
+    for ((asset, _), s) in sheets.iter_mut() {
+        if !is_sheet_group(asset) {
+            continue;
+        }
+        if let Some(f) = sizes.sheet_factor(asset, s.fh, s.units_per_px) {
             s.units_per_px *= f;
         }
     }

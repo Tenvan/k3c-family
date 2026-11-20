@@ -110,6 +110,15 @@ pub fn config(root: &Path, grafik: Option<&Path>) -> Config {
             .map_err(|e| e.to_string())
             .and_then(|raw| parse_scales(&raw))
             .unwrap_or_default(),
+        // Größenstufen aus data/sizes.json des Repos, nur im Look-Profil k2c
+        sizes: k3c_data::look::current()
+            .sizes
+            .then(|| {
+                std::fs::read_to_string(root.join("data/sizes.json"))
+                    .ok()
+                    .and_then(|r| k3c_data::sizes::load(&r).ok())
+            })
+            .flatten(),
     }
 }
 
