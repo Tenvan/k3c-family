@@ -199,6 +199,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1151](B-1151-texturbudget-baeume.md) | PAP | Schuld | niedrig | offen | LA1 | Texturbudget der Bäume um 15 MiB senken |
 | [B-1152](B-1152-rig-export-drift-ausserhalb-bosse.md) | PAP | Schuld | niedrig | eingeplant | LA1 | Rig-Export unter public/rig weicht außerhalb der Bosse von den Specs ab, gen:rig:check ist rot |
 | [B-1153](B-1153-kristallherz-waechter-ohne-rig-export.md) | PAP | Problem | niedrig | eingeplant | LA1 | kristallherz-waechter hat keinen Rig-Export, gen:rig schreibt ihn nicht |
+| [B-1156](B-1156-kritische-fragen-ru59-ru62.md) | INF | Frage | mittel | offen | KR6 | Kritische Entscheidungen aus RU59 bis RU62 (selbst entschieden, zur Durchsicht) |
 
 ## Archiv
 
