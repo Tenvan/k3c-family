@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Badge, Box, Flex, Heading, SelectField, Text } from '@webkit/atoms';
 import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
+import { CatalogLinks } from './CatalogLinks';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
 import { NatureValues } from './NatureValues';
@@ -61,6 +62,7 @@ function WorldHead({ w }: { w: WorldState }) {
           <SelectField size="1" aria-label="Insel und Stufe" value={stageKey(w.stage)} onChange={pick} options={stageOptions(detail)} />
         )}
       </Flex>
+      {!detail.error && <CatalogLinks welt={detail.id} />}
       {detail.error && <Text size="1" color="red" role="alert">{detail.error}</Text>}
       {detail.notes && <Text size="1" color="gray" className="wd-notes">{detail.notes}</Text>}
       {!detail.error && <StoryState detail={detail} />}

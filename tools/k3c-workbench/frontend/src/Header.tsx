@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useNavigateRequests } from '@webkit/lib/navigate';
 import type { McpState } from './api';
 import { loadPref, savePref } from './lib/prefs';
 import { StatusBadge, Tip } from '@webkit/atoms';
@@ -46,6 +47,13 @@ export function useNavigation() {
     setPage(next as Page);
     savePref('app.page', next);
   };
+  // Seitenwechsel auf Wunsch einer Seite (z. B. Welten-Editor → Katalog, WZ62.4): nur Seiten des Bereichs Studio
+  useNavigateRequests(useCallback((next: string) => {
+    if (!(ASSET_PAGES as readonly string[]).includes(next)) return;
+    setArea('assets');
+    savePref('app.area', 'assets');
+    onChange(next as AssetPage);
+  }, [])); // eslint-disable-line react-hooks/exhaustive-deps
   const tabs = area === 'assets'
     ? { pages: ASSET_PAGES as readonly AnyPage[], labels: ASSET_LABELS as Record<AnyPage, string>, value: assetPage as AnyPage, onChange }
     : { pages: PAGES as readonly AnyPage[], labels: LABELS as Record<AnyPage, string>, value: page as AnyPage, onChange };
