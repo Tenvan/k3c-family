@@ -69,7 +69,7 @@ Viele Änderungen auf einmal (Merge) → die Seite lädt einmal alles. Alte EXE 
 | WZ61.2 | `WZ61.2-planungsseite-laedt-nur-geaendertes.md` | Umsetzung | autonom | fertig |
 | WZ61.3 | `WZ61.3-bin-alte-exe-aufraeumen.md` | Umsetzung | autonom | fertig |
 | WZ61.4 | `WZ61.4-review.md` | Review | autonom | fertig |
-| WZ61.5 | `WZ61.5-bin-aufraeumen-am-pc.md` | Workshop | Mensch | offen |
+| WZ61.5 | `WZ61.5-bin-aufraeumen-am-pc.md` | Workshop | Mensch | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
