@@ -27,6 +27,7 @@ impl Actors {
                 actor: None,
                 broken: false,
                 mounted,
+                mount: String::new(),
                 pose: Pose::default(),
                 left: false,
                 shift: shift(k.id),
@@ -56,7 +57,7 @@ impl Actors {
                 continue;
             };
             fg.pending = false;
-            let (actor, broken) = self.new_actor(canvas, &fg.look, fg.mounted);
+            let (actor, broken) = self.new_actor(canvas, &fg.look, fg.mounted.then_some(fg.mount.as_str()));
             fg.actor = actor;
             fg.broken = broken;
             if fg.actor.is_some() && !fg.pose.anim.is_empty() {
@@ -85,14 +86,15 @@ impl Actors {
     /// newActor legt den Rig-Actor an: Monarch beritten, Vierbeiner als Reittier ohne Reiter, sonst figur zu Fuß.
     /// Fehlt das Rig, steht es einmal je Asset im Log und die Figur bleibt unsichtbar (keine stille Ersatz-Grafik).
     /// Ohne Bibliothek (lib `None`) gibt es keinen Actor und keine Meldung. Liefert den Actor und ob das Rig fehlt.
-    pub fn new_actor(&mut self, canvas: &mut dyn Canvas, l: &Look, mounted: bool) -> (Option<Actor>, bool) {
+    pub fn new_actor(&mut self, canvas: &mut dyn Canvas, l: &Look, mounted: Option<&str>) -> (Option<Actor>, bool) {
         let (Some(lib), Some(mount)) = (self.lib.clone(), self.cat.as_ref().map(|c| c.mount.clone())) else {
             return (None, false); // ohne Grafik (Tests): nur Posen
         };
         let res = {
             let mut lb = lib.borrow_mut();
-            if mounted {
-                lb.new_actor(canvas, &l.asset, &mount, &l.variant)
+            if let Some(own) = mounted {
+                let m = if own.is_empty() { mount.as_str() } else { own };
+                lb.new_actor(canvas, &l.asset, m, &l.variant)
             } else {
                 let mut r = lb.new_actor(canvas, &l.asset, "", &l.variant);
                 let four = match &r {

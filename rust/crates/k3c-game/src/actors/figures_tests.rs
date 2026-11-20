@@ -5,7 +5,7 @@ use std::rc::Rc;
 use k3c_sim::state::{Enemy, Player, Site, Troop, World as SimWorld};
 
 use super::*;
-use crate::actors::anim::{ANIM_RUN, GAIT_GALLOP, GAIT_STAND, GAIT_WALK};
+use crate::actors::anim::{ANIM_ATTACK, ANIM_IDLE, ANIM_RUN, GAIT_GALLOP, GAIT_STAND, GAIT_WALK};
 use crate::actors::catalog::UNIT_PX;
 use crate::actors::new;
 use crate::view::frame::Stage;
@@ -206,4 +206,86 @@ fn unknown_kind_and_pause() {
     f.paused = true;
     d.listen(&f);
     assert!(d.now == 1.0, "Zeit läuft in der Pause: {}", d.now);
+}
+
+// RU62.9 (B-1000): Jeder Monarch reitet das Reittier aus seinem Zustand, auch zwei verschiedene Tiere nebeneinander;
+// ohne gekauftes Tier das Standard-Pferd.
+#[test]
+fn each_monarch_rides_the_mount_of_its_state() {
+    let mut d = new_test_drawer();
+    let w = SimWorld {
+        players: vec![
+            Player {
+                mount: "camel".to_string(),
+                ..player(1, 0, 10.0)
+            },
+            Player {
+                mount: "sengokuHorse".to_string(),
+                ..player(2, 1, 12.0)
+            },
+            player(3, 2, 14.0),
+        ],
+        ..SimWorld::default()
+    };
+    d.listen(&frame_of(0.0, &w));
+    let cat = d.cat.as_ref().unwrap().clone();
+    let m = |id| d.figs[&key(Class::Player, id)].mount.clone();
+    assert_eq!(m(1), "reittiere/kamel");
+    assert_eq!(m(2), "reittiere/rappe");
+    assert_eq!(m(3), cat.mount, "ohne Kauf das Standard-Pferd");
+    // der Kauf im nächsten Bild wechselt das Tier
+    let mut w2 = w.clone();
+    w2.players[2].mount = "camel".to_string();
+    d.listen(&frame_of(0.1, &w2));
+    assert_eq!(d.figs[&key(Class::Player, 3)].mount, "reittiere/kamel");
+}
+
+// RU62.13 (B-1002): Im Fest tanzen freie Bürger im Hub (Schlag-Pose in Schleife), arbeitende Bauern arbeiten weiter; ohne
+// Fest stehen sie in der Ruhe-Pose.
+#[test]
+fn festival_makes_free_citizens_dance_in_the_hub() {
+    use k3c_sim::state::festival_view::FestivalState;
+    let mk = |festival: bool| {
+        let mut w = SimWorld {
+            hub_x: 10.0,
+            troops: vec![
+                Troop {
+                    id: 1,
+                    kind: "peasant".to_string(),
+                    x: 11.0,
+                    ..Troop::default()
+                },
+                Troop {
+                    id: 2,
+                    kind: "peasant".to_string(),
+                    x: 12.0,
+                    target_x: 12.0,
+                    job: Some(k3c_sim::state::Job {
+                        r#type: "build".to_string(),
+                        ..Default::default()
+                    }),
+                    ..Troop::default()
+                },
+            ],
+            ..SimWorld::default()
+        };
+        if festival {
+            w.festival = Some(FestivalState {
+                effect: "lanterns".to_string(),
+            });
+        }
+        w
+    };
+    let anim = |d: &Actors, id: i64| d.figs[&key(Class::Troop, id)].pose.anim.clone();
+    let mut d = new_test_drawer();
+    d.listen(&frame_of(0.0, &mk(true)));
+    assert_eq!(anim(&d, 1), ANIM_ATTACK, "freier Bürger tanzt");
+    assert_eq!(
+        anim(&d, 2),
+        ANIM_ATTACK,
+        "arbeitender Bauer arbeitet weiter (Schlag-Schleife)"
+    );
+    let mut d = new_test_drawer();
+    d.listen(&frame_of(0.0, &mk(false)));
+    assert_eq!(anim(&d, 1), ANIM_IDLE, "ohne Fest steht er");
 }

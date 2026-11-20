@@ -19,7 +19,7 @@ const EXCLUDED_SOUNDS: [&str; 5] = [
 
 /// Musik-Slots, deren Stück noch gegen das Klangbild verstößt und erst mit B-936 ersetzt wird (kein ruhiger Kandidat
 /// vorhanden). Nur Musik darf hier stehen; ein Effekt-Slot hat keine Ausnahme.
-const PENDING_MUSIC: [&str; 8] = [
+const PENDING_MUSIC: [&str; 11] = [
     "music:tag",
     "music:abend",
     "music:nacht",
@@ -28,6 +28,9 @@ const PENDING_MUSIC: [&str; 8] = [
     "music:boss",
     "music:lobby",
     "music:ende",
+    "music:fest",
+    "music:fest:sengoku",
+    "music:fest:nil",
 ];
 
 #[derive(Default, Deserialize)]

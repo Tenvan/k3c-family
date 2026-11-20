@@ -18,10 +18,12 @@ pub enum MusicState {
     Lobby,
     Defeat,
     Ending,
+    /// Das Fest nach dem Sieg über den Endboss (RU62.13): ersetzt Tages- und Nachtmusik bis zur Abfahrt.
+    Festival,
 }
 
 /// Bildet jeden Zustand (Index = `MusicState as usize`) auf genau einen Musik-Slot ab (music.ts › MUSIC_SLOTS).
-pub const MUSIC_SLOTS: [&str; 10] = [
+pub const MUSIC_SLOTS: [&str; 11] = [
     "",
     "music:tag",
     "music:abend",
@@ -32,7 +34,18 @@ pub const MUSIC_SLOTS: [&str; 10] = [
     "music:lobby",
     "music:niederlage",
     "music:ende",
+    "music:fest",
 ];
+
+/// `festival_slot`: das Festmusik-Stück der Welt, über den Himmels-Effekt gewählt (`music:fest:<welt>`); unbekannter Effekt
+/// und Welt ohne eigenes Stück: der Rückfall `music:fest` (RU62.13, data/sounds.json).
+pub fn festival_slot(effect: &str) -> &'static str {
+    match effect {
+        "lanterns" => "music:fest:sengoku",
+        "torches" => "music:fest:nil",
+        _ => "music:fest",
+    }
+}
 
 impl MusicState {
     /// Der Musik-Slot des Zustands ("" für `None`).
@@ -51,6 +64,8 @@ pub struct MusicView<'a> {
     pub depth: i64,
     pub boss: bool,
     pub victory: bool,
+    /// Himmels-Effekt des laufenden Fests (`lanterns`, `torches`), "" ohne Fest (RU62.13)
+    pub festival: &'a str,
 }
 
 /// Zustands-Automat wie music.ts › nextMusicState. Priorität: Lobby > Niederlage > Sieg > Boss > Kampf > Tiefe >
@@ -65,6 +80,9 @@ pub fn next_music_state(prev: MusicState, v: &MusicView<'_>, castle_fallen: bool
     }
     if prev == MusicState::Ending || v.victory {
         return MusicState::Ending;
+    }
+    if !v.festival.is_empty() {
+        return MusicState::Festival;
     }
     if v.boss {
         return MusicState::Boss;

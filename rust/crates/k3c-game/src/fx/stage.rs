@@ -5,8 +5,8 @@ use std::collections::BTreeMap;
 use k3c_sim::state::{Event as SimEvent, World};
 
 use super::effects::{
-    Effect, Kind, MAX_LIVE_PIECES, RING_PX, UNIT_PX, coin_loss_for, config, damage_for, effect_for, flash_allowed,
-    num_of, str_of,
+    Effect, Kind, MAX_LIVE_PIECES, RING_PX, UNIT_PX, cargo_full_for, coin_loss_for, config, damage_for, effect_for,
+    flash_allowed, num_of, str_of,
 };
 use super::looks::skill_look;
 use super::status::{AuraCache, Mark};
@@ -67,6 +67,12 @@ impl StageFx {
             let (fx, ok) = coin_loss_for(&e.data);
             // Schadenszahl hat Vorrang
             if ok && self.pieces + fx.pieces() < MAX_LIVE_PIECES {
+                self.spawn(fx, now);
+            }
+        }
+        if typ == "cargoFull" {
+            let (fx, ok) = cargo_full_for(lang, &e.data, w);
+            if ok {
                 self.spawn(fx, now);
             }
         }

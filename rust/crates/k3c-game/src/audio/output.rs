@@ -14,7 +14,6 @@ use std::sync::Arc;
 use k3c_platform::{AudioOut, SoundId, VoiceId, log, open_audio};
 
 use super::bank::{Bank, clip, load_bank, load_file, warn};
-use super::events::SLOT_RIDE;
 use super::mix::{Mix, Request};
 use super::register::Register;
 
@@ -318,13 +317,13 @@ impl Device {
             ctx.stop(l.p);
             false
         });
-        let Some(sound) = clip(self.bank.as_ref(), SLOT_RIDE) else {
-            return;
-        };
         for w in &m.loops {
             if self.has_loop(w.key) {
                 continue;
             }
+            let Some(sound) = clip(self.bank.as_ref(), w.slot) else {
+                continue;
+            };
             let Some(ctx) = self.ctx.as_deref_mut() else {
                 return;
             };
