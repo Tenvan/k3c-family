@@ -28,6 +28,9 @@ func (a *App) AssetsGroesseBasis(id, basis string) (assetsui.GroesseBasis, error
 	return a.assets().AssetsGroesseBasis(id, basis)
 }
 
+// AssetsStufen liefert die Größenstufen aus data/sizes.json für das Lineal des Größenvergleichs (Binding, B-1170).
+func (a *App) AssetsStufen() (assetsui.Stufen, error) { return a.assets().Stufen() }
+
 // StudioWeltSicht liefert, welche Assets die Welt sieht: eigene und geerbte mit Herkunft, ausgeblendete (Binding, B-1169).
 func (a *App) StudioWeltSicht(welt string) (assetsui.WeltSicht, error) { return a.assets().WeltSicht(welt) }
 

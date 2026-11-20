@@ -5,7 +5,7 @@ import type {
 } from './types';
 import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage, WeltSicht } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Stufen, Vorlage, WeltSicht } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -80,6 +80,7 @@ interface GoApp {
   AssetsGroesse(id: string): Promise<Groesse>;
   AssetsGroesseBasis(id: string, basis: string): Promise<GroesseBasis>;
   AssetsFrameOhne(id: string, animation: string, frame: number, ohne: string[]): Promise<Frame>;
+  AssetsStufen(): Promise<Stufen>;
   AssetsHintergruende(): Promise<string[]>;
   AssetsHintergrund(teil: string): Promise<Hintergrund>;
   AssetsGet(id: string): Promise<Spec>;
@@ -156,6 +157,7 @@ function assetsWails(app: GoApp): AssetsBackend {
     assetsIndex: () => app.AssetsIndex(),
     assetsCheck: (pfade) => app.AssetsCheck(pfade),
     assetsGroesse: (id) => app.AssetsGroesse(id),
+    assetsStufen: () => app.AssetsStufen(),
     assetsGroesseBasis: (id, basis) => app.AssetsGroesseBasis(id, basis),
     assetsFrameOhne: (id, animation, frame, ohne) => app.AssetsFrameOhne(id, animation, frame, ohne),
     assetsHintergruende: () => app.AssetsHintergruende(),

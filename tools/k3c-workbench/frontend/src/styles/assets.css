@@ -19,10 +19,17 @@
 .as-audio { width: 100%; max-width: 420px; height: 32px; }
 /* Review (B-732): Feldliste links höchstens so hoch wie die Ansicht rechts, Zeilenzahl setzt ReviewList, Rest „…“. */
 .rv-felder { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
-/* Größenvergleich (B-733): Szene in Spiel-Pixeln, skaliert auf die Spaltenbreite. */
-.sz-scene { display: block; max-width: none; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
+/* Größenvergleich (B-733, B-1170): Szene in Spiel-Pixeln, skaliert mit dem Fenster (Breite und Höhe, keine Zoomstufen). */
+.sz-stand { flex: 1 1 24rem; min-width: 0; }
+.sz-fill { width: min(100%, calc((100vh - 15rem) * var(--sz-ratio, 2))); min-width: 16rem; }
+.sz-scene { display: block; width: 100%; height: 100%; border: 1px solid var(--card-line); border-radius: 8px; background: var(--card); }
 .sz-himmel { fill: var(--gray-a2); }
 .sz-boden { fill: var(--gray-a5); }
 .sz-massstab line, .sz-hoehe line { stroke: var(--gray-11); stroke-width: 2; }
 .sz-hoehe line { stroke: var(--accent-9); stroke-dasharray: 8 6; }
+.sz-eins line { stroke: var(--green-9); stroke-width: 2; stroke-dasharray: 4 6; }
+.sz-stufe line { stroke: var(--orange-9); stroke-width: 2; stroke-dasharray: 10 5; }
+.sz-gewaehlt line { stroke: var(--blue-9); stroke-width: 2; }
+.sz-marke { stroke: var(--orange-9); stroke-width: 3; }
+.sz-eins text, .sz-stufe text, .sz-gewaehlt text { fill: var(--gray-12); paint-order: stroke; stroke: var(--color-background); stroke-width: 4px; }
 .sz-massstab text, .sz-hoehe text { fill: var(--gray-12); paint-order: stroke; stroke: var(--color-background); stroke-width: 4px; }

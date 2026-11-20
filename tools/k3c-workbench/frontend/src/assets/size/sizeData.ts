@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { errorText } from '@webkit/lib/errors';
 import { cached } from './sizeCache';
-import { assetsFrame, assetsGet, assetsGroesse, assetsGroesseBasis, assetsHintergruende, assetsHintergrund, type Groesse, type Hintergrund, type Spec } from '../api';
+import { assetsFrame, assetsGet, assetsGroesse, assetsGroesseBasis, assetsHintergruende, assetsHintergrund, assetsStufen, type Groesse, type Hintergrund, type Spec, type Stufen } from '../api';
 
 /** Daten des Größenvergleichs (B-733): Spec, ein Frame, Spiel-Maßstab und Biom-Hintergründe, gecacht auf Modul-Ebene wie
  *  der Katalog (catalogStore.ts, Cache in sizeCache.ts); „Neu laden“ in Katalog und Review leert ihn. */
@@ -43,6 +43,13 @@ async function ladeFigur(id: string, basis: string): Promise<Figur> {
 
 /** Figur im Arbeitsstand oder, mit Basis, im Stand der Basis (Vorher-Bild, B-853). */
 export const figur = (id: string, basis = '') => cached(basis ? `figur|${id}|${basis}` : `figur|${id}`, () => ladeFigur(id, basis));
+/** Größenstufen aus data/sizes.json (B-1170); ein Fehler (Datei fehlt) lässt den Vergleich ohne Lineal in M. */
+export const stufen = () => cached<Stufen>('stufen', assetsStufen);
+
+/** Stufe eines Assets: Schlüssel `<gruppe>/<id>` in sizes.json (die Gruppe kennt der Vergleich nicht, die ID ist eindeutig). */
+export const stufeVon = (s: Stufen | undefined, id: string): string | undefined =>
+  s && Object.entries(s.assets).find(([k]) => k === id || k.endsWith(`/${id}`))?.[1].stufe;
+
 export const hintergruende = () => cached('hintergruende', assetsHintergruende);
 export const hintergrund = (teil: string) => cached(`hg|${teil}`, () => assetsHintergrund(teil));
 
@@ -71,4 +78,4 @@ export function useGeladen<T>(key: string, load: () => Promise<T>): Geladen<T> {
   return state;
 }
 
-export type { Groesse, Hintergrund };
+export type { Groesse, Hintergrund, Stufen };

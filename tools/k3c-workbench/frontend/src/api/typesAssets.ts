@@ -32,6 +32,21 @@ export interface WeltSicht {
   fehlt?: boolean;
 }
 
+/** Größenstufe (data/sizes.json, B-1170): sichtbare Höhe als Vielfaches von M (Monarch auf dem Mount = 1 M). */
+export interface Groessenstufe {
+  id: string;
+  m: number;
+  was: string;
+}
+
+/** Größenstufen für das Lineal des Größenvergleichs: Stufen nach Höhe sortiert, Assets `<gruppe>/<id>` → Stufe. */
+export interface Stufen {
+  /** Höhe des berittenen Monarchen (1 M) in Spiel-Pixeln. */
+  bezugPx: number;
+  stufen: Groessenstufe[];
+  assets: Record<string, { stufe: string; sicht: number }>;
+}
+
 /** Spiel-Maßstab eines Assets (B-733): Spiel-Pixel je Einheit der Spec und woher der Wert kommt. */
 export interface Groesse {
   pxProEinheit: number;
@@ -191,6 +206,8 @@ export interface AssetsBackend {
   assetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
   /** Spiel-Maßstab eines Assets für den Größenvergleich (B-733). */
   assetsGroesse(id: string): Promise<Groesse>;
+  /** Größenstufen aus data/sizes.json für das Lineal (B-1170). */
+  assetsStufen(): Promise<Stufen>;
   /** Spec und Maßstab im Stand der Basis (B-853); fehlt das Asset dort, ein Fehler */
   assetsGroesseBasis(id: string, basis: string): Promise<GroesseBasis>;
   /** Frame des Arbeitsstands ohne die Teile in `ohne` (B-734: Teil ausblenden). */

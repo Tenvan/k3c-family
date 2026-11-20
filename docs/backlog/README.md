@@ -219,6 +219,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1174](B-1174-balancing-rechenmodell-startwerte.md) | SIM | Idee | mittel | offen | RU31 | Das Balancing berechnet Startwerte vorab, kalibriert sie in der Simulation und tunt über die Empfindlichkeit je Hebel |
 | [B-1175](B-1175-mauer-burgbereich-luecke.md) | CLI | Problem | mittel | offen | LA1 | Im Burgbereich schließen Mauern die Lücke zwischen den inneren Mauerstücken |
 | [B-1176](B-1176-mauer-stufe-1-zaun.md) | PAP | Idee | mittel | offen | LA1 | Die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand |
+| [B-1177](B-1177-werte-tabelle-einheit-min-max.md) | DEV | Idee | niedrig | offen | WZ62 | Das Backend liefert je Welt-Wert Einheit und Min/Max, damit die Werte-Tabelle Regler und Bereichsprüfung beim Tippen bietet |
 
 ## Archiv
 

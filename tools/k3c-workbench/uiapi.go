@@ -46,7 +46,7 @@ var uiMethods = map[string]bool{
 	// Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Stubs bis RV1)
 	"AssetsList": true, "AssetsIndex": true, "AssetsCheck": true, "AssetsGroesse": true, "AssetsFrameOhne": true, "AssetsHintergruende": true,
 	"AssetsHintergrund": true, "AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true,
-	"AssetsFrame": true, "AssetsPixelDiff": true, "AssetsGroesseBasis": true,
+	"AssetsFrame": true, "AssetsPixelDiff": true, "AssetsGroesseBasis": true, "AssetsStufen": true,
 	// Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
 	"StudioSounds": true, "StudioWeltSicht": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
 	"WorldList": true, "WorldDetail": true, "WorldLevel": true, "WorldValues": true, "WorldOverrideSet": true, "WorldNatureSet": true, "WorldIslandEtappe": true, "WorldCreate": true, "WorldDelete": true,

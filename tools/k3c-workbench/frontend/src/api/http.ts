@@ -93,6 +93,7 @@ function httpAssets(): AssetsBackend {
     assetsIndex: () => rpc('AssetsIndex'),
     assetsCheck: (pfade) => rpc('AssetsCheck', pfade),
     assetsGroesse: (id) => rpc('AssetsGroesse', id),
+    assetsStufen: () => rpc('AssetsStufen'),
     assetsGroesseBasis: (id, basis) => rpc('AssetsGroesseBasis', id, basis),
     assetsFrameOhne: (id, animation, frame, ohne) => rpc('AssetsFrameOhne', id, animation, frame, ohne),
     assetsHintergruende: () => rpc('AssetsHintergruende'),
