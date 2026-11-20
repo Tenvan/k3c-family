@@ -37,13 +37,17 @@ pub fn stage_anim(n: i64) -> &'static str {
 
 /// `HUB_BUILDINGS`: Hub-Gebäude → Papier-Asset; ohne eigene `levels` in den Daten folgen sie der Hub-Stufe (GEB9).
 /// Asset-Pfade stehen fertig darin, damit je Bild kein String entsteht.
-pub const HUB_BUILDINGS: [(&str, &str); 6] = [
+pub const HUB_BUILDINGS: [(&str, &str); 9] = [
     ("workshop", "gebaeude-paper/werkstatt"),
     ("bowyer", "gebaeude-paper/bogner"),
     ("armory", "gebaeude-paper/ruestkammer"),
     ("storage", "gebaeude-paper/lager"),
     ("nursery", "gebaeude-paper/farm"),
     ("barracks", "gebaeude-paper/kaserne"),
+    // B-1160: Taverne, Heiler und Schmiede hatten Assets, aber keine Zuordnung und standen als farbige Rechtecke da.
+    ("tavern", "gebaeude-paper/taverne"),
+    ("healer", "gebaeude-paper/heilplatz"),
+    ("smithy", "gebaeude-paper/schmiede"),
 ];
 
 fn hub_building(kind: &str) -> Option<&'static str> {
@@ -132,6 +136,8 @@ fn scaffold_class(kind: &str) -> Option<&'static str> {
         "wall" => "gebaeude-paper/geruest-1",
         "tower" => "gebaeude-paper/geruest-3",
         "nursery" | "stairsUp" | "stairsDown" => "gebaeude-paper/geruest-4",
+        // B-1147: Das Schiff hat im Profil k2c ein eigenes Gerüst in Schiffsgröße (kein Größensprung beim Fertigstellen).
+        "ship" if k3c_data::look::current().sizes => "gebaeude-paper/geruest-schiff",
         "workshop" | "bowyer" | "storage" | "barracks" | "tavern" | "healer" | "smithy" | "armory" | "ship" => {
             "gebaeude-paper/geruest-6"
         }
@@ -217,7 +223,9 @@ pub struct BackWall {
 /// links, dann rechts, je von innen nach außen. `walls` ist ein Puffer für die Mauern einer Seite (Indizes in
 /// `sites`, damit der Puffer über die Bilder erhalten bleibt und je Bild nichts angelegt wird).
 pub fn back_walls(mut out: Vec<BackWall>, walls: &mut Vec<usize>, sites: &[Site], hub_x: f64) -> Vec<BackWall> {
-    for side in [-1.0, 1.0] {
+    // Innerste Mauer je Seite (links, rechts) für den Burgbereich (B-1175)
+    let mut innermost: [Option<usize>; 2] = [None; 2];
+    for (side_i, side) in [-1.0, 1.0].into_iter().enumerate() {
         walls.clear();
         for (i, s) in sites.iter().enumerate() {
             if s.kind == "wall" && sign(s.x - hub_x) == side {
@@ -225,6 +233,7 @@ pub fn back_walls(mut out: Vec<BackWall>, walls: &mut Vec<usize>, sites: &[Site]
             }
         }
         by_distance(walls, sites, hub_x);
+        innermost[side_i] = walls.first().copied();
         for i in 1..walls.len() {
             let (inner, ex) = (&sites[walls[i - 1]], &sites[walls[i]]);
             if inner.state == "built" && ex.state == "built" {
@@ -236,6 +245,19 @@ pub fn back_walls(mut out: Vec<BackWall>, walls: &mut Vec<usize>, sites: &[Site]
                 });
             }
         }
+    }
+    // B-1175: Im Burgbereich schließt eine Mauer die Stelle zwischen den innersten Mauern beider Seiten (Profil k2c).
+    if let [Some(l), Some(r)] = innermost
+        && k3c_data::look::current().sizes
+        && sites[l].state == "built"
+        && sites[r].state == "built"
+    {
+        out.push(BackWall {
+            id: sites[r].id,
+            from: sites[l].x.min(sites[r].x),
+            to: sites[l].x.max(sites[r].x),
+            stage: sites[l].level.min(sites[r].level).max(1),
+        });
     }
     out
 }

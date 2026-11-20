@@ -33,6 +33,7 @@ pub mod levels;
 pub mod markdraw;
 pub mod marks;
 pub mod pose;
+pub mod sizes;
 
 use catalog::{Catalog, load_catalog};
 use combatmarks::MARK_ASSETS;

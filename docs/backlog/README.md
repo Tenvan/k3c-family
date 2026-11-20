@@ -203,7 +203,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | offen | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
 | [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | offen | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
 | [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | LA1 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
-| [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | RU36 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
+| [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | LA1 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
 | [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU36 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
 | [B-1163](B-1163-groessenstufen-monarch-mount.md) | CLI | Problem | hoch | offen | LA1 | Alle Figuren und Gebäude folgen definierten Größenstufen, Bezugswert ist der Monarch auf dem Mount, abgeglichen an den K2C-Screenshots |
 | [B-1164](B-1164-stimmung-naeher-an-k2c.md) | CLI | Problem | hoch | offen | LA1 | Die Stimmung des Rust-Spiels (Farbe, Licht, Dunst, Tiefe) kommt dem K2C-Vorbild deutlich näher |

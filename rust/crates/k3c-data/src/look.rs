@@ -49,6 +49,8 @@ pub struct Look {
     pub split_scale: f64,
     /// Mindestgröße des Monarchen in px (0 = aus); der Maßstab fällt nie darunter.
     pub min_figure_px: f64,
+    /// Größenstufen aus `data/sizes.json` gelten (LA1.1); im Profil `go` aus, damit die Bildvergleiche gegen Go gelten.
+    pub sizes: bool,
     /// Fluss als Spiegel der Welt (RU55.3); im Profil `go` aus (Wellen).
     pub mirror: Mirror,
     /// Tönung je Tageszeit und Ereignis (RU55.4); im Profil `go` ohne Wirkung.
@@ -222,6 +224,7 @@ const GO_LOOK: Look = Look {
     view_units: 420.0 / 32.0,
     split_scale: 0.5,
     min_figure_px: 0.0,
+    sizes: false,
     mirror: MIRROR_OFF,
     tint: Tint {
         day: NO_TINT,
@@ -276,6 +279,7 @@ fn builtin() -> BTreeMap<String, &'static Look> {
         view_units: 5.0 * MONARCH_UNITS,
         split_scale: 0.7,
         min_figure_px: 40.0,
+        sizes: true,
         mirror: Mirror {
             enabled: true,
             ..MIRROR_OFF

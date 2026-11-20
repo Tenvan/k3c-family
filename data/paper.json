@@ -84,6 +84,9 @@
     "objekte/tanne-hoch": 1.5,
     "objekte/tanne-mittel": 1.5
   },
+  "kachelung": {
+    "gebaeude-paper/hintergrundmauer": { "von": 6, "bis": 39 }
+  },
   "hintergruende": { "gruppe": "hintergruende", "varianten": 2 },
   "weltbilder": {
     "standard": { "gross": "hintergruende/weltbild-standard", "klein": "hintergruende/weltbild-standard-klein" },

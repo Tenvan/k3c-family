@@ -25,6 +25,8 @@ pub struct Sheet {
     pub origin_x: f64,
     pub origin_y: f64,
     pub units_per_px: f64,
+    /// Sichtbarer Streifen in Bild-px (von, bis) für die Kachelung (`data/paper.json › kachelung`); `None` = ganzes Bild.
+    pub tile: Option<(f64, f64)>,
 
     pub(super) img: Option<TexId>,
 }
@@ -84,6 +86,7 @@ pub fn upload(spec: &SheetSpec, pix: &[u8], canvas: &mut dyn Canvas) -> Sheet {
         origin_x: spec.origin_x,
         origin_y: spec.origin_y,
         units_per_px: spec.units_per_px,
+        tile: None,
         img: Some(img),
     }
 }

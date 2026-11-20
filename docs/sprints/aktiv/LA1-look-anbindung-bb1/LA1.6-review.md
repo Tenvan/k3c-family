@@ -8,9 +8,9 @@
 - **Modell:** sonnet
 - **Umgebung:** offline
 - **Branch:** sprint/la1
-- **Abhängig von:** LA1.5, LA1.7
-- **Tickets:** B-1163, B-1164, B-1167, B-947, B-1160, B-1175, B-1176
-- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06
+- **Abhängig von:** LA1.5, LA1.7, LA1.8
+- **Tickets:** B-1163, B-1164, B-1167, B-947, B-1160, B-1175, B-1176, B-1161
+- **Kriterien:** AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07
 
 ## Ziel
 

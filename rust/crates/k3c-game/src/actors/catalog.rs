@@ -224,6 +224,11 @@ pub fn load_catalog_from(read: &dyn Fn(&str) -> Result<String, Fehler>) -> Resul
     if !errs.is_empty() {
         return Err(Fehler::Pruefung(errs.join("\n")));
     }
+    if k3c_data::look::current().sizes
+        && let Some(z) = read("sizes.json").ok().and_then(|raw| k3c_data::sizes::load(&raw).ok())
+    {
+        super::sizes::apply(&mut c, &z);
+    }
     Ok(c)
 }
 

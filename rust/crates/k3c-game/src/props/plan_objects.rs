@@ -9,7 +9,8 @@ use super::coin_fountain::coin_pose;
 use super::data::values;
 use super::listen::{StageInfo, open_alpha};
 use super::nature::{
-    COIN_LOOK, PLOT_TOLERANCE, anim_phase, chest_open_look, object, pickup_look, plant_tree_look, plot_x, seedling_look,
+    COIN_LOOK, PLOT_TOLERANCE, anim_phase, chest_open_look, object, pickup_look, plant_tree_look, plot_x,
+    seedling_look, young_tree_look,
 };
 use super::plan::{GOLD, Item, Planner, Shape, px, visible};
 use super::plan_entities::pennant_max;
@@ -19,6 +20,12 @@ use crate::view::cell::Camera;
 /// updateNode: `setScale(1, 1 - progress * 0.3)`).
 pub fn fell_shrink(progress: f64) -> f64 {
     1.0 - progress * 0.3
+}
+
+/// `young_stage`: Der Platz zeigt den Jungbaum, sobald die Hälfte der Wachszeit vorbei ist (B-1149); `grow_in` ist die
+/// Restzeit, 0 heißt: wächst nicht.
+pub fn young_stage(grow_in: f64, grow_seconds: f64) -> bool {
+    grow_seconds > 0.0 && grow_in > 0.0 && grow_in <= grow_seconds * 0.5
 }
 
 /// `tree_at` liefert den Baum-Knoten, der auf dem Platz x steht (`None`: keiner).
@@ -31,10 +38,9 @@ pub fn tree_at(nodes: &[ResourceNode], x: f64) -> Option<&ResourceNode> {
 impl Planner {
     /// `plantation`: Setzling auf leeren Plätzen, niedrige Pappel auf gewachsenen (GEB5, vor der Baumschule).
     pub fn plantation(&mut self, w: &World, k: &Camera) {
-        let (slots, strip) = values()
-            .buildings
-            .get("nursery")
-            .map_or((0, 0.0), |b| (b.plantation.slots, b.plantation.strip_units));
+        let (slots, strip, grow_seconds) = values().buildings.get("nursery").map_or((0, 0.0, 0.0), |b| {
+            (b.plantation.slots, b.plantation.strip_units, b.plantation.grow_seconds)
+        });
         for s in &w.sites {
             if s.kind != "nursery" || s.state != "built" || !visible(k, s.x, strip + 1.0) {
                 continue;
@@ -45,7 +51,11 @@ impl Planner {
                     self.felled_tree(n, x);
                     continue;
                 }
-                self.sprite(seedling_look(), x, 0.0, anim_phase(x, 8));
+                let grow_in = s.plots.get(i as usize).map_or(0.0, |p| p.grow_in);
+                let look = young_tree_look()
+                    .filter(|_| young_stage(grow_in, grow_seconds))
+                    .unwrap_or_else(seedling_look);
+                self.sprite(look, x, 0.0, anim_phase(x, 8));
             }
         }
     }

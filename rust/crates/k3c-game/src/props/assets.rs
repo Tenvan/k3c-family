@@ -78,7 +78,22 @@ pub const WEATHER_CLOUD_ASSET: &str = "hintergruende/wetter-wolkenbank";
 
 /// `nature_assets`: Natur je Look (true = 1 Wald, sonst Höhle und Mine).
 pub fn nature_assets(forest: bool) -> &'static [&'static str] {
-    if forest {
+    if forest && k3c_data::look::current().sizes {
+        &[
+            "tanne",
+            "tanne-mittel",
+            "tanne-hoch",
+            "tanne-dunkel",
+            "pappel",
+            "pappel-hoch",
+            "pappel-dunkel",
+            "birke",
+            "birke-mittel",
+            "birke-hoch",
+            "birke-dunkel",
+            "busch",
+        ]
+    } else if forest {
         &["tanne", "pappel", "birke", "busch"]
     } else {
         &["wurzel", "hoehlenbusch"]
@@ -97,6 +112,12 @@ pub fn level_assets(level: &str) -> Vec<String> {
     }
     for id in nature_assets(nature_look(level) == 1) {
         out.push(format!("{OBJECT_GROUP}{id}"));
+    }
+    if k3c_data::look::current().sizes {
+        // B-1149: Plantage in drei Stufen (Setzling, Jungbaum, Altbaum = mittlere Pappel)
+        out.push(format!("{OBJECT_GROUP}pappel-2"));
+        out.push(format!("{OBJECT_GROUP}pappel"));
+        out.push(format!("{BUILDING_GROUP}geruest-schiff")); // B-1147
     }
     out.push(COIN_LOOK.asset.to_string());
     out.extend(super::plan_hermit::HERMIT_ASSETS.iter().map(|a| a.to_string())); // RU62.11: Hütte, Figuren, Bauwerke

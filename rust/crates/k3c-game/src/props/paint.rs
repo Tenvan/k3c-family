@@ -173,8 +173,14 @@ fn tiles(dst: &mut dyn Canvas, it: &Item, lib: Option<&Library>, c: &Cell) {
     if s.frame(0).is_none() || s.fw == 0 {
         return;
     }
-    let tw = s.fw as f64 * s.units_per_px / UNIT_PX;
-    let k = s.units_per_px / UNIT_PX * c.camera.scale;
+    let u = s.units_per_px / UNIT_PX;
+    // Mit `kachelung` setzt die Kachelung die sichtbaren Streifen aneinander (ohne den transparenten Rand des Rahmens),
+    // `lead` ist der Rand links davor (B-947); sonst ganze Rahmen.
+    let (lead, tw) = match s.tile {
+        Some((a, b)) => (a * u, (b - a) * u),
+        None => (0.0, s.fw as f64 * u),
+    };
+    let k = u * c.camera.scale;
     let y0 = c.screen_y(it.y) - s.origin_y * s.fh as f64 * k;
     let n = ((it.x2 - it.x) / tw).ceil() as i64;
     for i in 0..n {
@@ -184,7 +190,7 @@ fn tiles(dst: &mut dyn Canvas, it: &Item, lib: Option<&Library>, c: &Cell) {
         }
         let mut g = Affine::IDENTITY;
         g.scale(k as f32, k as f32)
-            .translate(c.camera.screen_x(tx) as f32, y0 as f32);
+            .translate(c.camera.screen_x(tx - lead) as f32, y0 as f32);
         s.draw(dst, 0, g);
     }
 }
