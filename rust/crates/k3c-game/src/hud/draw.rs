@@ -175,10 +175,10 @@ impl Hud {
             self.draw_boss(dst, st, f.as_deref_mut(), p, pl.at[ITEM_BOSS], k);
         }
         if pl.ok[ITEM_STORY] {
-            self.draw_story(dst, st, f, p, pl.at[ITEM_STORY], k, c.rect.dx() as f64);
+            self.draw_story(dst, st, f.as_deref_mut(), p, pl.at[ITEM_STORY], k, c.rect.dx() as f64);
         }
         if pl.ok[ITEM_RADAR] {
-            self.draw_radar(dst, st, c, pl.at[ITEM_RADAR], k);
+            self.draw_radar(dst, st, c, pl.at[ITEM_RADAR], k, f);
         }
     }
 
