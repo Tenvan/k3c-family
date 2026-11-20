@@ -131,6 +131,12 @@ func dataFiles() []dataFile {
 	return files
 }
 
+// rustOnly sind Daten-Dateien, die nur das Rust-Spiel liest (Look-Profile RU55, Welt-Features RU62).
+var rustOnly = map[string]bool{
+	"look.json": true, "cargo.json": true, "coop.json": true, "festival.json": true,
+	"hermits.json": true, "mounts.json": true, "weather.json": true,
+}
+
 // TestDataFilesComplete: Jede Spiel-Daten-Datei steht in dataFiles (ohne die Workbench-Dateien asset-*, assets-* und
 // ohne data/.omc).
 func TestDataFilesComplete(t *testing.T) {
@@ -143,8 +149,8 @@ func TestDataFilesComplete(t *testing.T) {
 		for _, p := range files {
 			rel, _ := filepath.Rel(dataDir, p)
 			rel = filepath.ToSlash(rel)
-			// look.json (RU55) liest nur das Rust-Spiel (Look-Profile); der Go-Stand hängt nicht daran.
-			if strings.HasPrefix(rel, "asset-") || strings.HasPrefix(rel, "assets-") || rel == "look.json" {
+			// look.json (RU55) und die Welt-Feature-Dateien (RU62) liest nur das Rust-Spiel; der Go-Stand hängt nicht daran.
+			if strings.HasPrefix(rel, "asset-") || strings.HasPrefix(rel, "assets-") || rustOnly[rel] {
 				continue
 			}
 			if !known[rel] {
@@ -181,6 +187,11 @@ func TestDataTree(t *testing.T) {
 	var want map[string]any
 	if err := json.Unmarshal(golden.Read(t, dataTreePath), &want); err != nil {
 		t.Fatal(err)
+	}
+	// Der Go-Baum ist eingefroren; die Asset-Sprints (BB1, #772) ändern Maße in data/paper.json weiter (wie im Rust-Test
+	// `same_as_go_zahlen_aus_daten`): Zahlen der paper.json kommen aus den Daten, Schlüssel und Texte bleiben Vorgabe.
+	if w, ok := want["paper.json"]; ok {
+		takeNumbers(w, got["paper.json"], func(v any) { want["paper.json"] = v })
 	}
 	if d := golden.Diff("data", any(want), any(got)); d != "" {
 		t.Fatalf("Baum weicht ab (neu schreiben mit -write): %s", d)
@@ -224,4 +235,34 @@ func writeDataTree(t *testing.T, tree map[string]any) {
 		t.Fatal(err)
 	}
 	t.Logf("💾 %s: %d Dateien", dataTreePath, len(keys))
+}
+
+// takeNumbers ersetzt in want jede Zahl durch die Zahl an derselben Stelle in have (Schlüssel und Listenlängen bleiben
+// Vorgabe); set legt eine ersetzte Wurzel ab.
+func takeNumbers(want, have any, set func(any)) {
+	switch w := want.(type) {
+	case float64:
+		if h, ok := have.(float64); ok {
+			set(h)
+		}
+	case map[string]any:
+		h, _ := have.(map[string]any)
+		for k, v := range w {
+			if hv, ok := h[k]; ok {
+				takeNumbers(v, hv, func(n any) { w[k] = n })
+			}
+		}
+		for k, hv := range h { // neue Schlüssel in den Daten sind erlaubt
+			if _, ok := w[k]; !ok {
+				w[k] = hv
+			}
+		}
+	case []any:
+		h, _ := have.([]any)
+		if len(h) == len(w) {
+			for i, v := range w {
+				takeNumbers(v, h[i], func(n any) { w[i] = n })
+			}
+		}
+	}
 }

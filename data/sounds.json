@@ -107,6 +107,42 @@
       ]
     },
     {
+      "id": "music:fest",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Fest (Rückfall)",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/8-bit-victory-loop.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:fest:sengoku",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Fest in Sengoku",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/chiptune-medieval-the-old-tower-inn.ogg"
+        }
+      ]
+    },
+    {
+      "id": "music:fest:nil",
+      "art": "sound",
+      "kategorie": "musik",
+      "beschreibung": "Fest am Nil",
+      "bus": "music",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/happy-adventure-loop.ogg"
+        }
+      ]
+    },
+    {
       "id": "music:niederlage",
       "art": "sound",
       "kategorie": "musik",
@@ -499,6 +535,30 @@
         },
         {
           "datei": "audio/kandidaten/horse-gallop-on-different-surfaces.mp3"
+        }
+      ]
+    },
+    {
+      "id": "sfx:wetter-wind",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Wetter: Wind des Taifuns (Schleife, Platzhalter aus vorhandener Quelle, RU62.7)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-rpg-audio-drawknife1.ogg"
+        }
+      ]
+    },
+    {
+      "id": "sfx:wetter-wasser",
+      "art": "sound",
+      "kategorie": "sfx",
+      "beschreibung": "Wetter: Wasser der Flut (Schleife, Platzhalter aus vorhandener Quelle, RU62.7)",
+      "bus": "sfx",
+      "wahl": [
+        {
+          "datei": "audio/kandidaten/kenney-impact-sounds-impactsoft-medium-0.ogg"
         }
       ]
     },

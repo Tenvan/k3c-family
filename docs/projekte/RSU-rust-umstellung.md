@@ -70,7 +70,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU53 | Rust-Spiel: Skills lernen, Respec und Zielinsel-Wahl (Sim-Werte im HUD) | erledigt |
 | RU58 | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | aktiv |
 | RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | aktiv |
-| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | aktiv |
+| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | erledigt |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | aktiv |
 | RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | aktiv |
@@ -89,8 +89,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU56 | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | aktiv |
 | RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | erledigt |
 | RU64 | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | aktiv |
-| RU61 | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | aktiv |
-| RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | aktiv |
+| RU61 | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | erledigt |
+| RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | erledigt |
 | RU63 | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | aktiv |
 | LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | geplant |
 

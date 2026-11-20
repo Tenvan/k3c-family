@@ -37,8 +37,8 @@ pub const BUILDING_ASSETS: [&str; 25] = [
 ];
 
 /// `OBJECT_ASSETS`: Objekte in jedem Biom (Felsen, Erz, Adern mit den Kristallfarben, Abbau-Schilder, Plantage,
-/// Portal, Ausgang, Truhen, Stern).
-pub const OBJECT_ASSETS: [&str; 19] = [
+/// Portal, Ausgang, Truhen, Stern, Ladeplätze, Fracht, Doppel-Truhe, Reittier-Gatter).
+pub const OBJECT_ASSETS: [&str; 30] = [
     "felsen",
     "felsen-b",
     "felsen-c",
@@ -58,7 +58,23 @@ pub const OBJECT_ASSETS: [&str; 19] = [
     "truhe",
     "truhe-offen",
     "stern",
+    // RU62.2 Fracht am Steg und an Deck, RU62.4 Doppel-Truhe
+    "ladeplatz-muenzen",
+    "ladeplatz-truppen",
+    "ladeplatz-material",
+    "fracht-beutel",
+    "fracht-kiste",
+    "doppel-truhe",
+    "doppel-truhe-offen",
+    "gatter",
+    // RU62.13 Himmels-Effekte des Fests
+    "fest-laterne",
+    "fest-bluete",
+    "fest-fackel",
 ];
+
+/// Die Wolkenbank der Vorboten (Gruppe `hintergruende`, `data/paper.json › wetter`).
+pub const WEATHER_CLOUD_ASSET: &str = "hintergruende/wetter-wolkenbank";
 
 /// `nature_assets`: Natur je Look (true = 1 Wald, sonst Höhle und Mine).
 pub fn nature_assets(forest: bool) -> &'static [&'static str] {
@@ -72,7 +88,7 @@ pub fn nature_assets(forest: bool) -> &'static [&'static str] {
 /// `level_assets` nennt die Assets `gruppe/id` des Levels (Biom-ID), sortiert und jedes einmal.
 pub fn level_assets(level: &str) -> Vec<String> {
     let mut out: Vec<String> =
-        Vec::with_capacity(BUILDING_ASSETS.len() + OBJECT_ASSETS.len() + COMBAT_ASSETS.len() + 5);
+        Vec::with_capacity(BUILDING_ASSETS.len() + OBJECT_ASSETS.len() + COMBAT_ASSETS.len() + 10);
     for id in BUILDING_ASSETS {
         out.push(format!("{BUILDING_GROUP}{id}"));
     }
@@ -83,6 +99,8 @@ pub fn level_assets(level: &str) -> Vec<String> {
         out.push(format!("{OBJECT_GROUP}{id}"));
     }
     out.push(COIN_LOOK.asset.to_string());
+    out.extend(super::plan_hermit::HERMIT_ASSETS.iter().map(|a| a.to_string())); // RU62.11: Hütte, Figuren, Bauwerke
+    out.push(WEATHER_CLOUD_ASSET.to_string()); // RU62.7: Wolkenbank der Taifun-Vorboten (nur sichtbar bei Wetter)
     out.extend(COMBAT_ASSETS.iter().map(|a| a.to_string()));
     // Sortieren wie `slices.Sort` (Texte, Gleichstand ohne Folgen), danach Doppelte entfernen (`slices.Compact`).
     out.sort_unstable();

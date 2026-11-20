@@ -55,6 +55,8 @@ pub struct Figure {
     pub pending: bool,
     /// Monarch auf dem Reittier des Katalogs (für das Anlegen des Actors)
     pub mounted: bool,
+    /// Rig-Pfad des Reittiers des Monarchen (leer = Katalog-Standard, RU62.9)
+    pub mount: String,
     pub pose: Pose,
     pub left: bool,
     pub shift: f64,
@@ -134,6 +136,13 @@ impl Actors {
                 id: p.id,
             };
             let mut fg = self.figure(k, look, true);
+            let mount = self.cat.as_ref().map_or("", |c| c.mount_of(&p.mount));
+            if fg.mount != mount {
+                fg.mount = mount.to_string();
+                fg.actor = None;
+                fg.broken = false;
+                fg.pending = !fg.look.sheet && self.lib.is_some();
+            }
             let prev = MonarchFrame {
                 known: fg.known,
                 ..MonarchFrame::default()
@@ -179,6 +188,21 @@ impl Actors {
             attack_cooldown: false,
         };
         let (want, dir) = troop_want(&t.kind, m, working(t), nearest_enemy_dir(w, t.x));
+        let (want, dir) = if w.festival.is_some() && w.biome.depth == 0 {
+            {
+                let g = super::festival::Guest {
+                    kind: &t.kind,
+                    id: t.id,
+                    x: t.x,
+                    hub_x: w.hub_x,
+                    working: working(t),
+                    now: self.now,
+                };
+                super::festival::festival_want(g, want, dir)
+            }
+        } else {
+            (want, dir)
+        };
         self.apply(&mut fg, &want);
         if dir != 0 {
             fg.left = dir < 0;

@@ -23,7 +23,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
 | RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
 | RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
-| RU59 | SIM, INF | RSU | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | – | `aktiv/RU59-go-engine-ungenutztes-entfernen/` |
 | RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | `aktiv/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 | RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
@@ -32,8 +31,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU54 | CLI | RSU | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | – | `aktiv/RU54-smoke-befunde-pause-und-farben/` |
 | RU55 | CLI | RSU | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | – | `aktiv/RU55-look-k2c-im-rust-spiel/` |
 | RU56 | CLI | RSU | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | – | `aktiv/RU56-cheat-fenster-win32/` |
-| RU61 | CLI, SIM, PAP | RSU | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | – | `aktiv/RU61-rust-spiel-nachtraege-go-sprints/` |
-| RU62 | SIM, CLI | RSU | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | – | `aktiv/RU62-welt-features-si-rust/` |
 | RU63 | CLI | RSU | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | – | `aktiv/RU63-smoke-nachtraege-hud-und-menues/` |
 | RU64 | CLI, INF | RSU | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | – | `aktiv/RU64-abnahme-laeufe-zweiter-rechner-rust-spiel/` |
 
@@ -471,3 +468,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | `erledigt/WE5-welt-format-nachtraege/` |
 | W15 | Fackeln als Spielobjekt mit Licht in der Nacht | `erledigt/W15-fackeln-spielobjekt/` |
 | RU60 | Feature-Parität im Rust-Spiel: fertige Go-Feature-Sprints prüfen, Lücken schließen, Sprints abschließen | `erledigt/RU60-feature-paritaet-rust/` |
+| RU61 | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | `erledigt/RU61-rust-spiel-nachtraege-go-sprints/` |
+| RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | `erledigt/RU59-go-engine-ungenutztes-entfernen/` |
+| RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | `erledigt/RU62-welt-features-si-rust/` |
