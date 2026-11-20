@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
-- **Lane:** –
+- **Lane:** zweit
 - **Modell:** sonnet
 - **Umgebung:** offline
 - **Branch:** sprint/la1
