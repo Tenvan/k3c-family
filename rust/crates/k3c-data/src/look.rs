@@ -81,6 +81,32 @@ pub struct Glow {
     /// Höchstzahl Höfe je Zelle (ohne Mond).
     pub max: usize,
     pub moon: Moon,
+    /// Folgendes Licht am Monarchen, nur nachts (LA1.8, B-1161).
+    pub monarch: MonarchLight,
+}
+
+/// Folgendes Licht des Monarchen (`glow.monarch`): kleiner warmer Hof über dem Kopf, je Spieler.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct MonarchLight {
+    /// Halbmesser in Units (nicht mit `glow.radius` skaliert).
+    pub radius: f64,
+    /// Deckkraft in der Mitte, mal Nacht-Stärke (`1 − daylight`).
+    pub strength: f64,
+    /// Höhe der Mitte über der Gehlinie in Units.
+    pub height: f64,
+}
+
+const MONARCH_DEFAULT: MonarchLight = MonarchLight {
+    radius: 2.5,
+    strength: 0.5,
+    height: 3.2,
+};
+
+impl Default for MonarchLight {
+    fn default() -> Self {
+        MONARCH_DEFAULT
+    }
 }
 
 /// Mond mit Hof (`glow.moon`): Lage als Anteil der Welt-Zelle, Radius in Units.
@@ -111,6 +137,7 @@ const GLOW_OFF: Glow = Glow {
     falloff: 0.4,
     max: 8,
     moon: MOON_DEFAULT,
+    monarch: MONARCH_DEFAULT,
 };
 
 impl Default for Glow {

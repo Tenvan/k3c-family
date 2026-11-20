@@ -78,7 +78,7 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 | LA1.5 | `LA1.5-stimmung-umsetzung.md` | Umsetzung | autonom | offen |
 | LA1.6 | `LA1.6-review.md` | Review | autonom | offen |
 | LA1.7 | `LA1.7-mauern.md` | Umsetzung | autonom | fertig |
-| LA1.8 | `LA1.8-fackeln-monarch-licht.md` | Umsetzung | autonom | offen |
+| LA1.8 | `LA1.8-fackeln-monarch-licht.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
