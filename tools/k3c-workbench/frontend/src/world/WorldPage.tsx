@@ -99,7 +99,7 @@ export function WorldPage() {
           selected={chunk} onChunk={setChunk} />
         <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
         <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
-        <WorldValues values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} />
+        <WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} />
       </Flex>
     </ListDetail>
   );

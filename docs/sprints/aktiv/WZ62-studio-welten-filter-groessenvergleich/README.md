@@ -72,7 +72,7 @@ Spec ist ein Entwurf und braucht die Freigabe von 🧑. Sessions sind noch nicht
 | WZ62.4 | `WZ62.4-link-welten-editor-katalog.md` | Umsetzung | autonom | fertig |
 | WZ62.5 | `WZ62.5-review.md` | Review | autonom | offen |
 | WZ62.6 | `WZ62.6-welt-loeschen.md` | Umsetzung | autonom | fertig |
-| WZ62.7 | `WZ62.7-werte-tabelle.md` | Umsetzung | autonom | offen |
+| WZ62.7 | `WZ62.7-werte-tabelle.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

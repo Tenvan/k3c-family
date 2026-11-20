@@ -64,10 +64,30 @@ function mockNatureSet(id: string, island: string, stage: number, key: string, v
 const BASE: WorldValueEntry[] = [
   { file: 'buildings', path: ['wall', 'cost'], base: 3 },
   { file: 'buildings', path: ['wall', 'hp'], base: 40 },
+  { file: 'buildings', path: ['wall', 'upgradeFactor'], base: 1.5 },
+  { file: 'buildings', path: ['tower', 'cost'], base: 5 },
+  { file: 'buildings', path: ['tower', 'hp'], base: 60 },
+  { file: 'buildings', path: ['tower', 'range'], base: 9.5 },
+  { file: 'buildings', path: ['tower', 'needsArcher'], base: true },
+  { file: 'buildings', path: ['farm', 'cost'], base: 4 },
+  { file: 'buildings', path: ['farm', 'income'], base: [1, 2] },
   { file: 'economy', path: ['purse', 'startGold'], base: 14 },
   { file: 'economy', path: ['purse', 'maxGold'], base: 30 },
+  { file: 'economy', path: ['purse', 'dropOnHit'], base: true },
   { file: 'economy', path: ['chestGold'], base: [3, 6] },
+  { file: 'economy', path: ['payRangeUnits'], base: 2.5 },
+  { file: 'enemies', path: ['wolf', 'hp'], base: 8 },
+  { file: 'enemies', path: ['wolf', 'damage'], base: 1 },
+  { file: 'enemies', path: ['wolf', 'speed'], base: 3.2 },
+  { file: 'enemies', path: ['goblin', 'hp'], base: 12 },
+  { file: 'enemies', path: ['goblin', 'damage'], base: 2 },
+  { file: 'enemies', path: ['goblin', 'name'], base: 'Goblin' },
   { file: 'monarch', path: ['name'], base: 'Monarch' },
+  { file: 'monarch', path: ['speed'], base: 4.5 },
+  { file: 'troops', path: ['archer', 'cost'], base: 2 },
+  { file: 'troops', path: ['archer', 'damage'], base: 1 },
+  { file: 'troops', path: ['warrior', 'cost'], base: 3 },
+  { file: 'troops', path: ['warrior', 'hp'], base: 10 },
 ];
 
 const key = (file: string, path: readonly string[]) => `${file}:${path.join('.')}`;
@@ -127,7 +147,7 @@ const mockEtappe: WorldBackend['worldIslandEtappe'] = async (id, island, etappe)
 };
 
 export function mockWorld(): WorldBackend {
-  const overrides: Overrides = new Map([['wueste', new Map([[key('economy', ['purse', 'startGold']), 20]])]]);
+  const overrides: Overrides = new Map([['wueste', new Map<string, unknown>([[key('economy', ['purse', 'startGold']), 20], [key('enemies', ['wolf', 'hp']), 14], [key('buildings', ['tower', 'range']), 11], [key('economy', ['purse', 'dropOnHit']), false]])]]);
   const values = (id: string) => mockValues(overrides, id);
   return {
     worldList: async () => {

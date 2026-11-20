@@ -1,7 +1,11 @@
 import type { WorldValueEntry } from '../api';
+import { valueText } from '@webkit/lib/valueEdit';
 
-// Reine Logik der Ansicht „Werte“ im Welten-Editor (B-879, Port aus dem Asset-Studio, world/worldOverrides.ts; B-680,
-// docs/rules/welten.md § 1.1): Zeilen, Filter und Eingabe. Gesetzt und geprüft wird im Backend (worldOverrideSet).
+export { valueText };
+
+// Reine Logik der Ansicht „Werte“ im Welten-Editor (B-879, B-1173, docs/rules/welten.md § 1.1): Zeilen, Gruppen und
+// Filter. Eingabe und Prüfung des einzelnen Werts stehen in @webkit/lib/valueEdit; gesetzt und endgültig geprüft wird im
+// Backend (worldOverrideSet).
 
 export type ValueStatus = 'geerbt' | 'überschrieben';
 
@@ -13,35 +17,68 @@ export interface ValueRow {
   key: string;
   /** Pfad zum Lesen, z. B. „wall.cost.wood“ */
   label: string;
+  /** Thema: erster Pfadteil („wall“), Felder ohne Verschachtelung stehen unter „allgemein“ */
+  group: string;
   base: unknown;
   override: unknown;
   status: ValueStatus;
 }
 
+export const GENERAL = 'allgemein';
+
 /** Zeilen der Ansicht: jedes Feld mit dem Override der Welt und seinem Status. */
 export const valueRows = (entries: readonly WorldValueEntry[]): ValueRow[] =>
   entries.map((e) => ({
-    file: e.file, path: e.path, key: `${e.file}:${e.path.join('\u0000')}`, label: e.path.join('.'), base: e.base,
+    file: e.file, path: e.path, key: `${e.file}:${e.path.join('\u0000')}`, label: e.path.join('.'),
+    group: e.path.length > 1 ? e.path[0]! : GENERAL, base: e.base,
     override: e.override, status: e.override === undefined ? 'geerbt' : 'überschrieben',
   }));
 
-/** Wert als Text im Feld: Text bleibt Text, sonst JSON; ohne Wert „–“. */
-export const valueText = (v: unknown): string => (v === undefined || v === null ? '–' : typeof v === 'string' ? v : JSON.stringify(v));
+/** Welche Zeilen die Tabelle zeigt: alle, nur gegen die Basis überschriebene oder die in dieser Sitzung geänderten. */
+export type RowMode = 'alle' | 'ueberschrieben' | 'sitzung';
 
-/** Eingabe als Wert: zu einem Text-Basiswert bleibt sie Text, sonst JSON (Zahl, true/false, Liste), nicht lesbar = Text
- *  (die Prüfung meldet dann den falschen Typ mit Pfad). */
-export function parseValue(text: string, base: unknown): unknown {
-  if (typeof base === 'string') return text;
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return text;
-  }
+export interface RowFilter {
+  /** Basis-Datei; '' = alle Dateien */
+  file: string;
+  query: string;
+  mode: RowMode;
+  /** Schlüssel der Zeilen, die in dieser Sitzung geschrieben wurden */
+  touched: ReadonlySet<string>;
 }
 
-/** Filter der Ansicht: Basis-Datei, Suchtext im Pfad, nur überschriebene. */
-export const filterRows = (rows: readonly ValueRow[], file: string, query: string, onlyOwn: boolean): ValueRow[] =>
-  rows.filter((r) => r.file === file && r.label.toLowerCase().includes(query.trim().toLowerCase()) && (!onlyOwn || r.status === 'überschrieben'));
+/** Zeilen nach Datei, Suchtext (alle Wörter, in Pfad oder Basiswert) und Modus. */
+export function filterRows(rows: readonly ValueRow[], f: RowFilter): ValueRow[] {
+  const words = f.query.toLowerCase().split(/\s+/).filter(Boolean);
+  return rows.filter((r) => {
+    if (f.file && r.file !== f.file) return false;
+    if (f.mode === 'ueberschrieben' && r.status !== 'überschrieben') return false;
+    if (f.mode === 'sitzung' && !f.touched.has(r.key)) return false;
+    const hay = `${r.file} ${r.label} ${valueText(r.base)}`.toLowerCase();
+    return words.every((w) => hay.includes(w));
+  });
+}
+
+export interface RowGroup {
+  /** Schlüssel für Ein- und Ausklappen: Datei und Thema */
+  key: string;
+  file: string;
+  group: string;
+  rows: ValueRow[];
+  /** Zahl der überschriebenen Zeilen in der Gruppe */
+  own: number;
+}
+
+/** Gruppen nach Datei und Thema in der Reihenfolge der Felder. */
+export function groupRows(rows: readonly ValueRow[]): RowGroup[] {
+  const map = new Map<string, RowGroup>();
+  for (const r of rows) {
+    const key = `${r.file}\u0000${r.group}`;
+    const g = map.get(key) ?? map.set(key, { key, file: r.file, group: r.group, rows: [], own: 0 }).get(key)!;
+    g.rows.push(r);
+    if (r.status === 'überschrieben') g.own++;
+  }
+  return [...map.values()];
+}
 
 /** Basis-Dateien in der Reihenfolge der Felder, mit der Zahl der überschriebenen je Datei. */
 export function filesOf(rows: readonly ValueRow[]): { file: string; own: number }[] {
