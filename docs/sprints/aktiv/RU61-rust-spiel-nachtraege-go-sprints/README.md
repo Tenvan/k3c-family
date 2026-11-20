@@ -102,7 +102,7 @@ Entschieden am 2026-11-19 mit Default (autonom, Claude; Ralf ändert, was ihm ni
 | RU61.2 | `RU61.2-hud-eingabe-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.3 | `RU61.3-menue-debug-beleg.md` | Umsetzung | autonom | fertig |
 | RU61.4 | `RU61.4-biom-eigenschaften-beleg.md` | Umsetzung | autonom | fertig |
-| RU61.5 | `RU61.5-abnahme-laeufe-bi2-bild.md` | Umsetzung | autonom | blockiert |
+| RU61.5 | `RU61.5-abnahme-laeufe-bi2-bild.md` | Umsetzung | autonom | fertig |
 | RU61.6 | `RU61.6-rig-export-bosse.md` | Umsetzung | autonom | fertig |
 | RU61.7 | `RU61.7-review.md` | Review | autonom | offen |
 

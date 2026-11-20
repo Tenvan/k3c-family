@@ -34,6 +34,11 @@ const MAX_SHARE: f64 = 0.005;
 const PIXEL_TOL: i32 = 24;
 /// Obergrenze über das ganze Bild samt Textfeldern (kontrolliert die Maske; Text steht 2 px tiefer, B-1063).
 const MAX_MEAN_WITH_TEXT: f64 = 1.5;
+/// Stände, deren Look sich bewusst geändert hat (BB1 Maßstab, Waldwand, Bäume; RU61, Ralf 2026-11-20, Entscheidung 012): das
+/// eingefrorene Go-Bild ist dort keine Pixel-Referenz mehr; geprüft bleiben Größe und eine grobe Obergrenze. Glut und Kristall
+/// bleiben streng.
+const LOOK_CHANGED: [&str; 5] = ["basis-tag", "baustelle", "mauer-ruine", "wald-plantage", "kampf"];
+const LOOK_CHANGED_MAX_MEAN: f64 = 40.0;
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../../..")
@@ -151,7 +156,13 @@ fn bilder_stimmen_mit_go_ueberein() {
             "{name}: mittel {mean:.3}, Anteil > {PIXEL_TOL}: {:.3} % (ohne Textfelder; mit: mittel {all:.3})",
             share * 100.0
         );
-        if mean > MAX_MEAN || share > MAX_SHARE || all > MAX_MEAN_WITH_TEXT {
+        if LOOK_CHANGED.contains(&name) {
+            if all > LOOK_CHANGED_MAX_MEAN {
+                failed.push(format!(
+                    "{name}: mittel {all:.3} über {LOOK_CHANGED_MAX_MEAN} (Look geändert)"
+                ));
+            }
+        } else if mean > MAX_MEAN || share > MAX_SHARE || all > MAX_MEAN_WITH_TEXT {
             failed.push(format!("{name}: mittel {mean:.3}, Anteil {:.3} %", share * 100.0));
         }
     }

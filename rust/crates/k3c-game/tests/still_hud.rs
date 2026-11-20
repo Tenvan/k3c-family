@@ -25,15 +25,17 @@ const STAENDE: [&str; 4] = ["tag-allein", "nacht-banner", "pad-tastatur", "engli
 
 /// Schwellen wie RU13.6: mittlere Abweichung je Kanal (0 … 255) und Anteil der Pixel, bei denen ein Kanal um mehr als
 /// `PIXEL_TOL` abweicht.
-const MAX_MEAN: f64 = 0.5;
-const MAX_SHARE: f64 = 0.005;
+// RU61 (Ralf 2026-11-20, Entscheidung 012): Das HUD hat Icons mit Zahl, neue Elemente und neue Boxfarben; das Go-Bild
+// bleibt Referenz für Lage und Grundton, die Schwellen folgen den gemessenen Werten (mittel bis 2,0, Anteil bis 3,2 %).
+const MAX_MEAN: f64 = 2.5;
+const MAX_SHARE: f64 = 0.04;
 const PIXEL_TOL: i32 = 24;
 /// Obergrenze über das ganze Bild samt Textfeldern (kontrolliert die Maske). RU13.6 und RU16.6 nehmen 1,5; das HUD ist
 /// fast nur Text und misst Textzeilen in Rust niedriger (Höhe der Zeile = Schrift statt Zeilenhöhe, Boxen 2,5 px
 /// kürzer, Text 2 px höher oder tiefer, B-1063 und Ticket im Ergebnis von RU20.7): gemessen bis 2,6, daher 3,0. Der
 /// Nenner ist das ganze Bild (der Grund ist 89 bis 96 %); darum prüfen `box_fill_errors` und `text_bbox` die Flächen und
 /// den Text je Element zusätzlich.
-const MAX_MEAN_WITH_TEXT: f64 = 3.0;
+const MAX_MEAN_WITH_TEXT: f64 = 4.0;
 /// Abweichung der Umrisse von Text (Hellpunkte) zwischen Rust und Go: waagrecht 2 Bildpunkte oder `TEXT_TOL_W` der
 /// Breite (der Beitritts-Hinweis in kleiner Schrift ist in Rust 6 % schmaler, Ticket im Ergebnis von RU20.7), die Lage
 /// in der Senkrechten wegen B-1063 und der Zeilenhöhe großzügiger.
@@ -46,6 +48,11 @@ const TEXT_TOL_Y: i32 = 5;
 /// Elemente, die nur aus einem Text bestehen: Rust setzt Text rund 2 px tiefer als Go (B-1063), das verfälscht den
 /// Pixelvergleich in diesen Feldern. Ihre Lage prüft `plaetze_stimmen_mit_go_ueberein`; Spielerkarte und Vorrat (mit
 /// Icons) bleiben im Vergleich, ihr Text ist nur ein kleiner Teil.
+/// Element, dessen Box und Breite sich mit dem neuen HUD bewusst geändert haben (RU61).
+fn changed(name: &str, id: &str) -> bool {
+    name == "englisch-hub" && id == "3"
+}
+
 const TEXT_ITEMS: [usize; 9] = [
     ITEM_BANNER,
     ITEM_SKILLS,
@@ -191,7 +198,7 @@ fn text_fields(name: &str) -> Vec<(i64, usize, [f64; 4])> {
 fn box_fill_errors(name: &str, rust: &Image, go: &Image) -> Vec<String> {
     let mut out = Vec::new();
     for c in layout_go(name).cells {
-        for (id, r) in &c.items {
+        for (id, r) in c.items.iter().filter(|(id, _)| !changed(name, id)) {
             let (x, y) = ((r[0] + 2.0) as u32, (r[1] + r[3] / 2.0) as u32);
             let at = |img: &Image| {
                 let i = ((y * img.width + x) * 4) as usize;
@@ -259,7 +266,10 @@ fn bilder_stimmen_mit_go_ueberein() {
             failed.push(format!("{name}: mittel {mean:.3}, Anteil {:.3} %", share * 100.0));
         }
         failed.extend(box_fill_errors(name, &rust, &go));
-        for (cell, id, r) in text_fields(name) {
+        for (cell, id, r) in text_fields(name)
+            .into_iter()
+            .filter(|f| !changed(name, &f.1.to_string()))
+        {
             let (a, b) = (text_bbox(&rust, &r), text_bbox(&go, &r));
             let ok = match (a, b) {
                 (None, None) => false, // Go hat in jedem Feld weißen Text: fehlt er in beiden, prüft der Test nichts
@@ -303,8 +313,12 @@ fn plaetze_stimmen_mit_go_ueberein() {
             let (mut a, mut b): (Vec<_>, Vec<_>) = (mine.keys().collect(), g.items.keys().collect());
             a.sort();
             b.sort();
-            assert_eq!(a, b, "{name} Zelle {index}: gezeigte Elemente");
-            for (id, r) in &g.items {
+            // Rust zeigt mindestens die Elemente von Go (neue HUD-Elemente seit RU61 erlaubt)
+            assert!(
+                b.iter().all(|k| a.contains(k)),
+                "{name} Zelle {index}: Elemente {a:?} ohne {b:?}"
+            );
+            for (id, r) in g.items.iter().filter(|(id, _)| !changed(name, id)) {
                 let text = TEXT_ITEMS.iter().any(|t| t.to_string() == *id);
                 for (k, (x, y)) in mine[id].iter().zip(r).enumerate() {
                     // Zeilenhöhe der Textelemente (Rust misst die Schrift, Go die Zeile): y und Höhe um bis 3,5 px
