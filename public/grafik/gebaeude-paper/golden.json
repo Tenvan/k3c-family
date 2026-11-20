@@ -100,9 +100,9 @@
     }
   },
   "hafen": {
-    "renderKey": "2cc475b75d00cb63169fbd632a94c68e83db30825e7932c2549c691d486eccbf",
+    "renderKey": "00a2964acfe66176882ce8c7a75c4328cb8ff81afd63078187b25718e4e852ba",
     "dateien": {
-      "stand.png": "0f7dc7f9e778798d3b8b381649049ca8b758a8f1e12482d5b00afdab4edb8004"
+      "stand.png": "2255ad38489d104e8cf7282c8f7c14b52bffc4abc60285e258e0b79a6f0d59cb"
     }
   },
   "heilplatz": {
@@ -208,12 +208,12 @@
     }
   },
   "schiff": {
-    "renderKey": "46d9d92791eebe3538e60d0fdd0bef0f9f1f9e8759e0cf91a95b5a17dd3dd4bb",
+    "renderKey": "718e8a0bc2480cc104d652cba121d9d9a5d748e10a1024e108717590de774cb3",
     "dateien": {
       "stand.png": "1bbfd80a18bbaca190dfafd2d245186fe844bc1a9fa0b428e6889394614553f5",
       "stand.s2.png": "3a55b79291b89b058e29e689de268de73d1d77faa5627ae5e6fd3dc42f80f04a",
-      "stand.s3.png": "e7dd66c8afe0c0f96ba37e80c7ef6a0c1e3b12b52d81b49dc43046aaa8d74642",
-      "stand.s4.png": "456bf9823a7e0df575da5a158649b2e2d640ed2e9653d168c1e3536529250213"
+      "stand.s3.png": "93325f820d45a7eb81e78b14f24c0b11ed9d0081028f16314154184b4d3dc414",
+      "stand.s4.png": "e888ea933b4f547fd020bfdf6e0c19c2b7e9e25663b2ef9bc1dbc6ff187909db"
     }
   },
   "schmiede": {

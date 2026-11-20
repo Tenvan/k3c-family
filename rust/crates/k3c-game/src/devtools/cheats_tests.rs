@@ -126,6 +126,7 @@ fn cheat_groups_known_actions_and_bosses() {
         "cheapBuild",
         "buildAll",
         "castleFall",
+        "readyToSail",
         "nextPhase",
         "phase",
         "timescale",
@@ -170,11 +171,18 @@ fn cheat_actions_exist_in_room() {
         .map(str::trim)
         .filter(|l| l.starts_with("case \""))
         .collect();
+    // Die Go-Engine ist eingefroren (Entscheidung 013): neue Aktionen stehen nur im Rust-Raum.
+    let rust_room = [
+        include_str!("../../../k3c-room/src/room/dev_extra.rs"),
+        include_str!("../../../k3c-room/src/room/dev.rs"),
+    ]
+    .concat();
     for g in cheat_groups() {
         for e in &g.entries {
             let quoted = format!("\"{}\"", e.act.action);
             assert!(
-                cases.iter().any(|l| l.contains(&quoted)),
+                cases.iter().any(|l| l.contains(&quoted))
+                    || (e.act.action == "readyToSail" && rust_room.contains(&quoted)),
                 "Aktion {} fehlt in engine/room/dev*.go",
                 e.act.action
             );

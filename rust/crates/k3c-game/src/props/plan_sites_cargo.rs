@@ -5,7 +5,7 @@
 use k3c_sim::state::World;
 use k3c_sim::state::cargo_view::CargoEntry;
 
-use super::nature::{anim_phase, object};
+use super::nature::{SHIP_DROP, anim_phase, object};
 use super::plan::{GOLD, Item, Planner, Shape, WHITE, px, visible};
 use crate::view::cell::Camera;
 
@@ -82,7 +82,7 @@ impl Planner {
     /// `deck_item`: eine Ladung auf ihrem Platz (Index in Lade-Reihenfolge).
     fn deck_item(&mut self, ship_x: f64, slots: i64, e: &CargoEntry) {
         let x = deck_x(ship_x, slots, e.index);
-        let y = px(DECK_Y_PX);
+        let y = px(DECK_Y_PX) - SHIP_DROP; // das fertige Schiff liegt tiefer (nature::ship_drop)
         if let Some(id) = load_asset(&e.kind)
             && self.sprite(object(id), x, y, 0)
         {

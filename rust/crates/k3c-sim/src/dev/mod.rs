@@ -15,6 +15,8 @@ mod combat_tests;
 #[cfg(test)]
 mod mod_tests;
 #[cfg(test)]
+mod sail_tests;
+#[cfg(test)]
 mod spawn_tests;
 #[cfg(test)]
 mod stress_tests;
@@ -25,7 +27,7 @@ use std::collections::BTreeMap;
 
 use k3c_data::difficulty::DifficultyFile;
 
-pub use build::{dev_build_all, dev_build_site};
+pub use build::{dev_build_all, dev_build_site, dev_ready_to_sail};
 
 use crate::enemies::waves::start_wave;
 use crate::island::Island;

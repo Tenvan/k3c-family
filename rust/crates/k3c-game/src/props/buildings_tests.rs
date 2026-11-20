@@ -302,3 +302,18 @@ fn data_werte_kommen_an() {
     assert!(build_cost("bowyer", 0).wood > 0 && materials(&build_cost("bowyer", 0)) == vec!["wood"]);
     assert!(!values().depths.is_empty() && values().roots_by_biom.values().all(|r| *r >= 1));
 }
+
+/// RU36.3: Nur das fertige Schiff (Segel, ab Stufe 3) liegt im Fluss; Kiel, Rumpf und andere Plätze stehen auf der Gehlinie.
+#[test]
+fn schiff_liegt_erst_fertig_im_wasser() {
+    use super::nature::{SHIP_DROP, ship_drop};
+    for (kind, level, want) in [
+        ("ship", 1, 0.0),
+        ("ship", 2, 0.0),
+        ("ship", 3, SHIP_DROP),
+        ("ship", 4, SHIP_DROP),
+        ("wall", 3, 0.0),
+    ] {
+        assert_eq!(ship_drop(kind, level), want, "{kind} Stufe {level}");
+    }
+}

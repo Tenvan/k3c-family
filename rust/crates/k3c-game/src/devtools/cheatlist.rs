@@ -133,6 +133,7 @@ fn build_entries() -> Vec<CheatEntry> {
         };
         v.push(entry(format!("Alles ausbauen: Stufe {n}"), a));
     }
+    v.push(entry("Abfahrbereit (Schiff, Endboss)", act("readyToSail")));
     v.push(entry("Burgfall", act("castleFall")));
     v
 }
