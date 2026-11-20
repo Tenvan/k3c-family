@@ -4,7 +4,7 @@
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
-- **Tickets:** B-1146, B-1147, B-1148, B-1149, B-1150, B-1151, B-1163, B-1164, B-1167, B-947, B-1160, B-1175, B-1176
+- **Tickets:** B-1146, B-1147, B-1148, B-1149, B-1150, B-1151, B-1163, B-1164, B-1167
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
 - **Revision:** 1
@@ -59,7 +59,6 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 - **AC-03** (B-1167) Der Kompass im Hub zeigt die Biome der Insel.
 - **AC-04** (B-1164) `docs/messung/stimmung-abgleich.md` nennt je Szene die fehlenden Merkmale der Stimmung in Rangfolge, abgenommen von 🧑.
 - **AC-05** (B-1164) Die Punkte mit Rang 1 bis 3 aus AC-04 sind behoben, Vorher-Nachher-Bilder liegen im Ergebnis.
-- **AC-06** (B-947, B-1160, B-1175, B-1176) Der Mauerzug im Hub ist lückenlos (Test für die Kachelung), im Burgbereich geschlossen, die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand, und im Hub steht kein einfarbiges Platzhalter-Rechteck mehr.
 
 ## Offene Fragen
 
@@ -76,7 +75,6 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 | LA1.4 | `LA1.4-stimmung-abgleich.md` | Workshop | Mensch | offen |
 | LA1.5 | `LA1.5-stimmung-umsetzung.md` | Umsetzung | autonom | offen |
 | LA1.6 | `LA1.6-review.md` | Review | autonom | offen |
-| LA1.7 | `LA1.7-mauern.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
