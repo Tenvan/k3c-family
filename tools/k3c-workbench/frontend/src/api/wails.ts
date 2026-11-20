@@ -5,7 +5,7 @@ import type {
 } from './types';
 import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage, WeltSicht } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -90,6 +90,7 @@ interface GoApp {
   AssetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
   // Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
   StudioSounds(): Promise<SoundEintrag[]>;
+  StudioWeltSicht(welt: string): Promise<WeltSicht>;
   StudioSoundData(pfad: string): Promise<string>;
   StudioSources(): Promise<Quellen>;
   StudioGameOpen(seed: string): Promise<string>;
@@ -165,6 +166,7 @@ function assetsWails(app: GoApp): AssetsBackend {
     assetsFrame: (id, animation, frame, variante, basis) => app.AssetsFrame(id, animation, frame, variante, basis),
     assetsPixelDiff: (id, animation, frame, basis) => app.AssetsPixelDiff(id, animation, frame, basis),
     studioSounds: () => app.StudioSounds(),
+    studioWeltSicht: (welt) => app.StudioWeltSicht(welt),
     studioSoundData: (pfad) => app.StudioSoundData(pfad),
     studioSources: () => app.StudioSources(),
     studioGameOpen: (seed) => app.StudioGameOpen(seed),

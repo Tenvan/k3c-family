@@ -25,5 +25,6 @@ export type { ChartBand, ChartTone } from './chartTheme';
 export { FocusBar, type FocusBarProps, type FocusOption } from './FocusBar';
 export { FramePlayer, counterWidth, type FramePlayerProps } from './FramePlayer';
 export { LoadingNote } from './LoadingNote';
+export { WeltFilter, type WeltFilterProps, type WeltOption } from './WeltFilter';
 export { SplitStack, type SplitStackProps } from './SplitStack';
 

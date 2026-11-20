@@ -21,6 +21,17 @@ export interface AssetEintrag {
   offen?: boolean;
 }
 
+/** Welche Assets eine Welt sieht (B-1169): Schlüssel `<gruppe>/<asset>`. `eigene` nennt die Herkunftswelt der Assets, die eine
+ *  Welt der Kette exklusiv hat (Herkunft = die Welt selbst: exklusiv); `aus` sind Assets, die sie nicht sieht (fremd oder
+ *  per Skin ersetzt); alles übrige ist Basis mit Herkunft `basis`. */
+export interface WeltSicht {
+  welt: string;
+  basis: string;
+  eigene: Record<string, string>;
+  aus: string[];
+  fehlt?: boolean;
+}
+
 /** Spiel-Maßstab eines Assets (B-733): Spiel-Pixel je Einheit der Spec und woher der Wert kommt. */
 export interface Groesse {
   pxProEinheit: number;
@@ -198,6 +209,7 @@ export interface AssetsBackend {
   assetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
   /** Lesende Teile des früheren Asset-Studios (WB1.4): Sound-Slots, Hörprobe als Data-URL, Quellen. */
   studioSounds(): Promise<SoundEintrag[]>;
+  studioWeltSicht(welt: string): Promise<WeltSicht>;
   studioSoundData(pfad: string): Promise<string>;
   studioSources(): Promise<Quellen>;
   /** Legt den Testspielstand voll-<seed> an; Antwort ist die Adresse zum Öffnen im Browser. */

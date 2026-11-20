@@ -1,4 +1,4 @@
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage, WeltSicht } from './typesAssets';
 
 // Mock der Asset-Methoden (WB1.1): die Beispielantworten aus tools/paper/fixtures/ui (PV1.4), geladen beim ersten
 // Aufruf. Wie die Go-Stubs (internal/assetsui) kennt er nur das Asset monarch.
@@ -77,6 +77,12 @@ export function mockAssets(): AssetsBackend {
       return fixture<PixelDiff>('AssetsPixelDiff');
     },
     studioSounds: async () => SOUNDS,
+    // Mock (Fixture-Assets): Sengoku hat das Pferd exklusiv und ersetzt die Mauer per Skin; für Nil ist das Pferd fremd (B-1169)
+    studioWeltSicht: async (welt): Promise<WeltSicht> => ({
+      welt, basis: 'standard',
+      eigene: welt === 'sengoku' ? { 'reittiere/pferd': 'sengoku' } : welt === 'nil' ? { 'requisiten/banner': 'nil' } : {},
+      aus: welt === 'sengoku' ? ['gebaeude/mauer'] : welt === 'nil' ? [] : ['reittiere/pferd'],
+    }),
     studioSoundData: async (pfad) => {
       if (!SOUNDS.some((s) => s.status === 'zugeordnet' && s.dateien.includes(pfad))) throw new Error(`${pfad} fehlt unter public/`);
       return 'data:audio/ogg;base64,T2dnUw==';

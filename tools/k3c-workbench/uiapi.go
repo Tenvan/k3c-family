@@ -48,7 +48,7 @@ var uiMethods = map[string]bool{
 	"AssetsHintergrund": true, "AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true,
 	"AssetsFrame": true, "AssetsPixelDiff": true, "AssetsGroesseBasis": true,
 	// Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
-	"StudioSounds": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
+	"StudioSounds": true, "StudioWeltSicht": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
 	"WorldList": true, "WorldDetail": true, "WorldLevel": true, "WorldValues": true, "WorldOverrideSet": true, "WorldNatureSet": true, "WorldIslandEtappe": true, "WorldCreate": true,
 	// Gebäude-Planer (B-923, internal/hubplan)
 	"HubPlan": true, "HubCheck": true, "HubRules": true, "HubSave": true,

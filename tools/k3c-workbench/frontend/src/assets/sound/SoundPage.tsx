@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react';
 import { ActionButton, Button, Flex, StatusBadge, Text, type Tone } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
 import type { ListFilterConfig } from '@webkit/lib/listFilter';
-import { ListFilter } from '@webkit/molecules';
+import { useWeltFilter } from '@webkit/lib/useWeltFilter';
+import { ListFilter, WeltFilter } from '@webkit/molecules';
 import { backend } from '../../api';
 import type { SoundEintrag } from '../api';
 import { PromptButtons } from '../prompts/PromptButtons';
 import { useVorlagen, type VorlagenJeOrt } from '../prompts/useVorlagen';
+import { useWeltSicht } from '../useWeltSicht';
+
+/** Die Sound-Daten kennen keine Welt (data/sounds.json): alle Slots sind Basis, exklusiv gibt es keine (WZ62.2, B-1169). */
+export const SOUND_OHNE_WELT = 'keine Welt-Zuordnung in den Sound-Daten';
 
 const TONE: Record<SoundEintrag['status'], Tone> = { zugeordnet: 'ok', luecke: 'warn', fehlt: 'error' };
 const LABEL: Record<SoundEintrag['status'], string> = { zugeordnet: 'zugeordnet', luecke: 'Lücke', fehlt: 'fehlt' };
@@ -28,6 +33,9 @@ export function SoundPage() {
   const [error, setError] = useState('');
   const [wahl, setWahl] = useState('');
   const vorlagen = useVorlagen();
+  const [f, setF] = useWeltFilter();
+  const { welten } = useWeltSicht('');
+  const exklusiv = Boolean(f.welt) && f.modus === 'exklusiv';
   useEffect(() => {
     let live = true;
     backend.studioSounds().then((l) => live && setList(l), (e) => live && setError(errorText(e)));
@@ -39,7 +47,9 @@ export function SoundPage() {
     <Flex direction="column" gap="4" p="4">
       {error && <Text color="red">{error}</Text>}
       {vorlagen.error && <Text color="red">{vorlagen.error}</Text>}
-      <ListFilter {...FILTER} items={list} defaultGroup="kategorie" emptyHint="Keine Sounds" itemKey={(s) => s.id}
+      <WeltFilter welten={welten} welt={f.welt} modus={f.modus} onWelt={(welt) => setF({ welt })} onModus={(modus) => setF({ modus })}
+        counts={f.welt ? { gesamt: list.length, exklusiv: 0 } : undefined} hint={exklusiv ? SOUND_OHNE_WELT : undefined} />
+      <ListFilter {...FILTER} items={exklusiv ? [] : list} defaultGroup="kategorie" emptyHint="Keine Sounds" itemKey={(s) => s.id}
         renderItem={(s) => <SoundRow sound={s} an={wahl === s.id} waehle={() => setWahl(wahl === s.id ? '' : s.id)} jeOrt={vorlagen.jeOrt} />} />
     </Flex>
   );

@@ -28,6 +28,9 @@ func (a *App) AssetsGroesseBasis(id, basis string) (assetsui.GroesseBasis, error
 	return a.assets().AssetsGroesseBasis(id, basis)
 }
 
+// StudioWeltSicht liefert, welche Assets die Welt sieht: eigene und geerbte mit Herkunft, ausgeblendete (Binding, B-1169).
+func (a *App) StudioWeltSicht(welt string) (assetsui.WeltSicht, error) { return a.assets().WeltSicht(welt) }
+
 // AssetsHintergruende listet die Biome mit Hintergrund (Binding, B-733).
 func (a *App) AssetsHintergruende() ([]string, error) { return a.assets().AssetsHintergruende() }
 
