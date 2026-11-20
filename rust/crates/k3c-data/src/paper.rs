@@ -43,6 +43,36 @@ pub struct Paper {
     pub seekarte: PaperSeekarte,
     #[serde(rename = "objekte")]
     pub objekte: BTreeMap<String, PaperObjekte>,
+    /// Sichtbarer Streifen gekachelter Assets in Bild-px (B-947): `von` bis `bis` Spalten; die Kachelung setzt die
+    /// Streifen aneinander statt der Rahmen, damit der transparente Rand keine Fugen lässt.
+    #[serde(rename = "kachelung")]
+    pub kachelung: BTreeMap<String, PaperKachel>,
+    /// Waldwand-Hintergrund `gruppe/id` (BB1.3, B-1146); fehlt der Schlüssel, gibt es keine Waldwand.
+    #[serde(rename = "waldwand")]
+    pub waldwand: String,
+    /// Leitmotive je Welt-ID `gruppe/id` (BB1.4, B-1146); fehlt der Schlüssel, gibt es keine.
+    #[serde(rename = "leitmotive")]
+    pub leitmotive: BTreeMap<String, String>,
+}
+
+/// Datei-Aufbau `.kachelung.*`.
+#[derive(Debug, Clone, Copy, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct PaperKachel {
+    #[serde(rename = "von")]
+    pub from: f64,
+    #[serde(rename = "bis")]
+    pub to: f64,
+}
+
+impl Paper {
+    /// Leitmotiv-Asset der Welt `world`, ersatzweise das der Standard-Welt (`None`: es gibt keine Leitmotive).
+    pub fn motif_asset(&self, world: &str) -> Option<&str> {
+        self.leitmotive
+            .get(world)
+            .or_else(|| self.leitmotive.get("standard"))
+            .map(String::as_str)
+    }
 }
 
 /// Datei-Aufbau `.einsiedler` (SI5, B-1001).
@@ -182,3 +212,7 @@ pub const FILE: &str = "paper.json";
 pub fn load(raw: &str) -> Result<Paper, Fehler> {
     decode("data/paper.json", raw)
 }
+
+#[cfg(test)]
+#[path = "paper_tests.rs"]
+mod tests;

@@ -49,6 +49,22 @@ die Welt über der Gehlinie ist also **≈ 5 M hoch** und das Bild **≈ 15 M br
   halb so groß, damit Figuren lesbar bleiben (K2C: ≈ 16 % der Hälften-Höhe). Trenner schmal (≈ 2 % der Höhe) und
   verziert.
 
+### Größenstufen (LA1.1, B-1163)
+
+Die Richtwerte oben stehen als Tabelle in [`data/sizes.json`](../../data/sizes.json) und gelten im Look-Profil `k2c`
+(`look.json › sizes`; Profil `go` behält die alten Höhen). **1 M = `bezugPx` = 121,5 Spiel-px**, der berittene Monarch;
+er und seine Reittiere bleiben unverändert und sind der Bezugswert.
+
+- `stufen`: Name → sichtbare Höhe in M (z. B. `buerger` 0,6, `gegner-riese` 1,2, `boss` 1,3, `gebaeude-mittel` 1,1, `turm`
+  2,2, `burg` 3,5, `baum-hoch` 3,25, `nadel-hoch` 5,6).
+- `assets`: `gruppe/id` → Stufe und `sicht` (sichtbare Höhe ÷ Rahmenhöhe des Bildes, erstes Bild der Ruhe-Animation).
+  Das Spiel zeichnet ein Asset so, dass seine **sichtbare** Höhe Stufe × M ist: Figuren über die Rahmenhöhe im Katalog
+  (`actors/sizes.rs`), Gebäude und Objekte über `units_per_px` (`art/scales.rs`; der Faktor aus `paper.json › skalierung`
+  entfällt für Assets mit Stufe).
+- Ohne Eintrag bleibt ein Asset, wie es ist: Kleinkram (Truhen, Felsen, Münzen), Schiff, Mounts, Hintergründe.
+- Ändern: eine Stufe ändern verschiebt alle ihre Assets; ein neu gezeichnetes Asset braucht ein neues `sicht`
+  (der Test `sicht_stimmt_mit_der_grafik` meldet es, nach `task gen:paper`).
+
 ## 3. Tiefe: Ebenen und Luftperspektive
 
 - 3–4 Parallax-Ebenen über der Gehlinie: **Vordergrund** (Büsche, Gras an der Gehlinie), **Spielebene** (Figuren,

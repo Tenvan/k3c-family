@@ -75,6 +75,8 @@ mod plan_combat_tests;
 #[cfg(test)]
 mod plan_hermit_tests;
 #[cfg(test)]
+mod plan_objects_stage_tests;
+#[cfg(test)]
 mod plan_sites_cargo_tests;
 #[cfg(test)]
 mod plan_sites_gate_tests;
@@ -87,7 +89,11 @@ mod simview_tests;
 #[cfg(test)]
 mod sites_tests;
 #[cfg(test)]
+mod sizes_sites_tests;
+#[cfg(test)]
 mod testutil;
+#[cfg(test)]
+mod walls_tests;
 
 /// `State` ist der Zustand des Drawers über die Bilder: Planer (Puffer bleiben erhalten), Zeichner und Stufen-Zustand.
 struct State {

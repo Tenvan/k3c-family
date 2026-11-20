@@ -3,89 +3,129 @@
   "id": "mauer",
   "rig": "gebaeude",
   "version": 1,
-  "beschreibung": "Mauer der Mauerlinie (1 × 5 Kacheln): Stufe 1 Holzzaun aus drei spitzen Pfählen mit zwei Querbalken; ab Stufe 2 Wehrmauer aus Quadern mit drei Zinnen und Schießscharte; Stufe 3 Kupfer mit Patina, 4 Eisen mit Nietenbändern, 5 Kristall mit leuchtender Scharte.",
+  "beschreibung": "Mauer der Mauerlinie (1 × 5 Kacheln): Stufe 1 Holzzaun aus fünf spitzen Pfählen unterschiedlicher Höhe mit Fugen und zwei Querbalken (B-1176); ab Stufe 2 Wehrmauer aus Quadern mit drei Zinnen und Schießscharte; Stufe 3 Kupfer mit Patina, 4 Eisen mit Nietenbändern, 5 Kristall mit leuchtender Scharte.",
   "teile": [
     {
       "id": "korpus",
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-14.5 -118L-10 -128L-5.5 -118L-5.5 0L-14.5 0Z",
+          "form": "M-14.5 -114L-12.3 -122L-10.1 -114L-10.1 0L-14.5 0Z",
           "material": "holz"
         },
         {
           "art": "flaeche",
           "auflage": true,
-          "form": "M-14.5 -118L-12.5 -118L-12.5 0L-14.5 0Z",
+          "form": "M-14.5 -114L-13.0 -114L-13.0 0L-14.5 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-11.0 -115L-11.0 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8.35 -120L-6.15 -128L-3.95 -120L-3.95 0L-8.35 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-8.35 -120L-6.85 -120L-6.85 0L-8.35 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M-4.85 -121L-4.85 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2.2 -108L0.0 -116L2.2 -108L2.2 0L-2.2 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-2.2 -108L-0.7 -108L-0.7 0L-2.2 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M1.3 -109L1.3 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M3.95 -118L6.15 -126L8.35 -118L8.35 0L3.95 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M3.95 -118L5.45 -118L5.45 0L3.95 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M7.45 -119L7.45 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M10.1 -111L12.3 -119L14.5 -111L14.5 0L10.1 0Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M10.1 -111L11.6 -111L11.6 0L10.1 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 1,
+          "form": "M13.6 -112L13.6 -2",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14.5 -100L14.5 -100L14.5 -93L-14.5 -93Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.2,
-          "form": "M-6.9 -119L-6.9 -2",
+          "form": "M-13.5 -98.8L13.5 -98.8",
           "material": "holz",
           "ton": "licht"
         },
         {
           "art": "flaeche",
-          "form": "M-4.5 -118L0 -128L4.5 -118L4.5 0L-4.5 0Z",
-          "material": "holz"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M-4.5 -118L-2.5 -118L-2.5 0L-4.5 0Z",
+          "form": "M-14.5 -36L14.5 -36L14.5 -29L-14.5 -29Z",
           "material": "holz",
           "ton": "schatten"
         },
         {
           "art": "falz",
           "breite": 1.2,
-          "form": "M3.1 -119L3.1 -2",
-          "material": "holz",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M5.5 -118L10 -128L14.5 -118L14.5 0L5.5 0Z",
-          "material": "holz"
-        },
-        {
-          "art": "flaeche",
-          "auflage": true,
-          "form": "M5.5 -118L7.5 -118L7.5 0L5.5 0Z",
-          "material": "holz",
-          "ton": "schatten"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M13.1 -119L13.1 -2",
-          "material": "holz",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-14 -100L14 -100L14 -93L-14 -93Z",
-          "material": "holz"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M-13 -98.8L13 -98.8",
-          "material": "holz",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-14 -36L14 -36L14 -29L-14 -29Z",
-          "material": "holz"
-        },
-        {
-          "art": "falz",
-          "breite": 1.2,
-          "form": "M-13 -34.8L13 -34.8",
+          "form": "M-13.5 -34.8L13.5 -34.8",
           "material": "holz",
           "ton": "licht"
         }

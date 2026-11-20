@@ -72,6 +72,34 @@ pub fn object(id: &str) -> Look {
     l
 }
 
+/// Höhen-Varianten je Baumart (BB1.3, B-1146): drei Höhen in aufsteigender Reihenfolge und die dunkle Variante für
+/// die Nähe der Waldwand. Gilt im Look-Profil k2c (`look.sizes`); im Profil `go` bleibt es bei der Art selbst.
+pub const TREE_VARIANTS: [(&str, [&str; 3], &str); 3] = [
+    ("tanne", ["tanne", "tanne-mittel", "tanne-hoch"], "tanne-dunkel"),
+    ("pappel", ["pappel-niedrig", "pappel", "pappel-hoch"], "pappel-dunkel"),
+    ("birke", ["birke", "birke-mittel", "birke-hoch"], "birke-dunkel"),
+];
+
+/// Jeder fünfte Baum steht als dunkle Variante (vermutet: ersetzt die Nähe zur Waldwand, die das Spiel
+/// nicht kennt; die Waldwand liegt hinter allen Bäumen).
+const DARK_EVERY: u32 = 5;
+
+/// `tree_asset`: Asset-ID eines Baums der Art `family` an der Position `x`: deterministisch aus der Position, in drei
+/// Höhen, gelegentlich dunkel. Außerhalb des Profils k2c und für unbekannte Arten die Art selbst.
+pub fn tree_asset(family: &'static str, x: f64) -> &'static str {
+    let Some((_, heights, dark)) = TREE_VARIANTS.iter().find(|(f, _, _)| *f == family) else {
+        return family;
+    };
+    if !k3c_data::look::current().sizes {
+        return family;
+    }
+    let r = mix(x * 5.0);
+    if r.is_multiple_of(DARK_EVERY) {
+        return dark;
+    }
+    heights[(r / DARK_EVERY % 3) as usize]
+}
+
 /// `tree_look`: im Wald Art aus der Position (Tanne, Pappel, Birke), außerhalb des Walds Wurzeln statt Bäumen (GEB10;
 /// die fünf Wurzel-Formen zeigen als Papier dasselbe Asset, B-701 D-US2-01).
 pub fn tree_look(x: f64, biome: &str) -> Look {
@@ -79,7 +107,7 @@ pub fn tree_look(x: f64, biome: &str) -> Look {
         return object("wurzel");
     }
     let n = TREE_KINDS.len() as u32;
-    object(TREE_KINDS[(mix(x) % (n * 3) % n) as usize])
+    object(tree_asset(TREE_KINDS[(mix(x) % (n * 3) % n) as usize], x))
 }
 
 /// `crystal_kind`: Bild der Kristall-Ader je Farbe der Gewichts-Gruppe (B-900, B-901); blau ist das ursprüngliche
@@ -95,12 +123,15 @@ fn crystal_kind(variant: &str) -> Option<&'static str> {
 
 /// `variant_look`: Bild der Variante aus dem Level (B-891): im Wald die Baumart (tanne, pappel, birke = Asset-ID), an
 /// der Kristall-Ader die Farbe. `None` heißt: unbekannte Variante, Bild wie ohne Variante.
-pub fn variant_look(kind: &str, variant: &str, biome: &str) -> Option<Look> {
+pub fn variant_look(kind: &str, variant: &str, biome: &str, x: f64) -> Option<Look> {
     if kind == "crystalVein" {
         return crystal_kind(variant).map(object);
     }
     if kind == "tree" && nature_look(biome) == 1 {
-        return TREE_KINDS.iter().find(|id| **id == variant).map(|id| object(id));
+        return TREE_KINDS
+            .iter()
+            .find(|id| **id == variant)
+            .map(|id| object(tree_asset(id, x)));
     }
     None
 }
@@ -212,7 +243,18 @@ pub fn seedling_look() -> Look {
     object("setzling")
 }
 
-/// `plant_tree_look`: junger Baum der Plantage.
+/// `plant_tree_look`: gewachsener Baum der Plantage (Altbaum); im Profil k2c die mittlere Pappel (2,9 M), sonst die
+/// niedrige (B-1149).
 pub fn plant_tree_look() -> Look {
-    object("pappel-niedrig")
+    object(if k3c_data::look::current().sizes {
+        "pappel"
+    } else {
+        "pappel-niedrig"
+    })
+}
+
+/// `young_tree_look`: Jungbaum der Plantage in der zweiten Hälfte der Wachszeit (nur Profil k2c, sonst `None`): die
+/// kleine Pappel (etwa 1 M) zwischen Setzling (0,25 M) und Altbaum (2,9 M).
+pub fn young_tree_look() -> Option<Look> {
+    k3c_data::look::current().sizes.then(|| object("pappel-2"))
 }
