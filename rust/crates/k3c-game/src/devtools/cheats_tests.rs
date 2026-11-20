@@ -127,6 +127,8 @@ fn cheat_groups_known_actions_and_bosses() {
         "buildAll",
         "castleFall",
         "readyToSail",
+        "shieldPlus",
+        "spawn",
         "nextPhase",
         "phase",
         "timescale",
@@ -175,6 +177,7 @@ fn cheat_actions_exist_in_room() {
     let rust_room = [
         include_str!("../../../k3c-room/src/room/dev_extra.rs"),
         include_str!("../../../k3c-room/src/room/dev.rs"),
+        include_str!("../../../k3c-room/src/room/dev_combat.rs"),
     ]
     .concat();
     for g in cheat_groups() {
@@ -182,7 +185,7 @@ fn cheat_actions_exist_in_room() {
             let quoted = format!("\"{}\"", e.act.action);
             assert!(
                 cases.iter().any(|l| l.contains(&quoted))
-                    || (e.act.action == "readyToSail" && rust_room.contains(&quoted)),
+                    || (["readyToSail", "shieldPlus"].contains(&e.act.action.as_str()) && rust_room.contains(&quoted)),
                 "Aktion {} fehlt in engine/room/dev*.go",
                 e.act.action
             );

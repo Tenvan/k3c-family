@@ -185,6 +185,18 @@ fn fight_entries(bosses: &[(String, String)]) -> Vec<CheatEntry> {
         v.push(entry(format!("Boss {name}"), a));
     }
     v.push(entry("Boss: nächste Phase", act("bossPhase")));
+    // RU36.3 (B-1158): Soldaten und Schilde für Horn-Auslöser und Schild-Gestell
+    v.push(entry(
+        "Soldaten +10",
+        DevAction {
+            action: "spawn".to_string(),
+            kind: "troop".to_string(),
+            unit: "warrior".to_string(),
+            amount: 10,
+            ..Default::default()
+        },
+    ));
+    v.push(entry("Schild +1", act("shieldPlus")));
     for (id, name) in EVENTS {
         let a = DevAction {
             action: "event".to_string(),

@@ -68,4 +68,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+RU36.3 (Versuch): Wert `chestGold` in `data/economy.json` von [30, 60] auf [15, 30] gesetzt, danach rot: `campaign::golden_kampagne`, `golden_kampagne_ausbau`, `golden_durchsatz`-Vergleich (Golden aus Go), `coop::chest_tests` (feste 30..=60 und Faktorwerte) und `unit::hammer_tests::truhe_wirft_fontaene`. Die Änderung ist zurückgenommen. Sie braucht neue Golden (`task go:golden` bzw. Rust-Golden nach RU41, Sperre golden) und angepasste Tests: eigene Session mit Freigabe 🧑 für die Golden-Änderung.
