@@ -154,7 +154,11 @@ fn plantage_plaetze() {
 #[test]
 fn variant_look_baumart() {
     for id in TREE_KINDS {
-        assert_eq!(variant_look("tree", id, "forest"), Some(object(id)), "Baumart {id}");
+        assert_eq!(
+            variant_look("tree", id, "forest", 0.0),
+            Some(object(id)),
+            "Baumart {id}"
+        );
     }
     let cases = [
         ("tree", "eiche", "forest"),
@@ -165,7 +169,7 @@ fn variant_look_baumart() {
         ("rock", "blau", "crystal"),
     ];
     for c in cases {
-        assert!(variant_look(c.0, c.1, c.2).is_none(), "{c:?}: Variante gewählt");
+        assert!(variant_look(c.0, c.1, c.2, 0.0).is_none(), "{c:?}: Variante gewählt");
     }
 }
 
@@ -178,7 +182,7 @@ fn variant_look_kristallfarbe() {
         ("gruen", "ader-kristall-gruen"),
     ] {
         assert_eq!(
-            variant_look("crystalVein", variant, "crystal"),
+            variant_look("crystalVein", variant, "crystal", 0.0),
             Some(object(id)),
             "Farbe {variant}"
         );
@@ -203,4 +207,27 @@ fn node_und_entity_looks() {
     let (stern, lift) = pickup_look("skillPoint");
     assert!(stern == object("stern") && (lift - 44.0 / 32.0).abs() < 1e-12);
     assert!(!pickup_look("coin").0.ok());
+}
+
+/// B-1146 AC-02: Im Profil k2c wählt die Position je Art deterministisch eine von drei Höhen oder die dunkle Variante;
+/// alle Varianten kommen vor, im Profil go bleibt es bei der Art.
+#[test]
+fn baumvarianten_je_platz_deterministisch() {
+    use std::collections::BTreeSet;
+    k3c_data::look::with_profile(k3c_data::look::K2C, || {
+        let mut seen = BTreeSet::new();
+        for (family, heights, dark) in TREE_VARIANTS {
+            for i in 0..400 {
+                let x = f64::from(i) * 1.37 - 90.0;
+                let a = tree_asset(family, x);
+                assert_eq!(a, tree_asset(family, x), "deterministisch");
+                assert!(heights.contains(&a) || a == dark, "{a} gehört nicht zu {family}");
+                seen.insert(a);
+            }
+        }
+        // 3 Arten × (3 Höhen + dunkel) = 12 Varianten (pappel-niedrig gehört dazu, die Plantage nutzt es ebenfalls)
+        assert_eq!(seen.len(), 12, "{seen:?}");
+        assert_eq!(tree_asset("busch", 1.0), "busch", "unbekannte Art bleibt");
+    });
+    k3c_data::look::with_profile(k3c_data::look::GO, || assert_eq!(tree_asset("tanne", 5.0), "tanne"));
 }

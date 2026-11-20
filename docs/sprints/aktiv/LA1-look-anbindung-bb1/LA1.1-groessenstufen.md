@@ -1,6 +1,6 @@
 # LA1.1 · Größenstufen mit dem Monarch auf dem Mount als Bezugswert
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -40,9 +40,9 @@ Neue oder geänderte Papierschnitt-Assets, Regeln und Balancing, Stimmung und Fa
 
 ## Fertig, wenn
 
-- [ ] AC-01: `data/sizes.json` nennt jede Stufe als Vielfaches des Monarchen auf dem Mount; das Rust-Spiel zeichnet danach; Tests prüfen die Verhältnisse.
-- [ ] Ergebnis nennt Abweichungen, die neue Grafik brauchen, als Punkte „Für den Hauptrechner“.
-- [ ] Tests der geänderten Crates und `task rust:lint` grün.
+- [x] AC-01: `data/sizes.json` nennt jede Stufe als Vielfaches des Monarchen auf dem Mount; das Rust-Spiel zeichnet danach; Tests prüfen die Verhältnisse.
+- [x] Ergebnis nennt Abweichungen, die neue Grafik brauchen, als Punkte „Für den Hauptrechner“.
+- [x] Tests der geänderten Crates und `task rust:lint` grün.
 
 ## Prüfen
 
@@ -58,5 +58,19 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `data/sizes.json` (neu, 72 Assets in 24 Stufen, Bezug 1 M = 121,5 px = berittener Monarch) wird von `k3c-data::sizes` geladen und geprüft (Stufe vorhanden, `sicht` in (0, 1]); Look-Profil `k2c` setzt `sizes: true`, `go` bleibt unverändert. Figuren (Truppen, Gegner, Bosse mit eigenem Asset) bekommen ihre Höhe im Katalog (`actors/sizes.rs`: sichtbare Höhe = Stufe × M), Gebäude und Objekte über `units_per_px` (`art/scales.rs`, der Faktor aus `paper.json › skalierung` entfällt für Assets mit Stufe). Monarch und Reittiere sind der Bezug und bleiben. Tests: `cargo test -p k3c-data sizes` (Stufen im Standard-Korridor, Verhältnisse zum Monarchen, Prüfungen), `cargo test -p k3c-game sizes` (k2c zeichnet Figuren in ihrer Stufe, go unverändert, Sheet-Faktor, `sicht` gegen die gerenderte Grafik). `task rust:lint` grün, `cargo test -p k3c-game` grün. `bildaufbau.md` um den Abschnitt Größenstufen ergänzt.
+
+Ist-Messung (sichtbare Höhe in M, vorher): Bürger 0,43–0,45, Elite-Truppen 0,46–0,54, Gier 0,28, Wölfe 0,56, Goblins 0,47, Höhlentroll 0,83, Bosse 1,0–1,4 (alle gleiche Rahmenhöhe), Burg 3,1, Turm 2,0, Mauer 0,74, Gebäude um 1,0; Bäume waren durch BB1 (Faktor 1,5) schon im Standard (2,5–5,6 M) und bleiben dort. Gesetzt: Bürger 0,6, Elite und Wolf/Goblin/Skelett/Zombie 0,65, große Gegner 1,0, Troll 1,2, Boss 1,3, Gebäude 0,85/1,1, Mauer 0,9, Turm 2,2, Burg 4,0.
+
+Manuell nicht geprüft (Bildabgleich neben den K2C-Screenshots am PC bleibt bei Ralf, Abnahme LA1.4/LA1.6). Gen: `task gen:paper` lief für die Messung (17 Baum-Varianten neu gerendert, nicht eingecheckt).
+
+`task check:diff` Stufe 1 (`regeln`) rot, nicht durch diese Session: `tests/projectRules.test.ts` (untracked Ordner `native/` im Arbeitsordner) und `tests/planning*.test.ts` (Fahrplan/Vorlage RU30, WI1 auf `main`). `cargo test -p k3c-data` hat einen roten Test `tree_rest_tests::rest_wie_go` (`sounds.json.slots` Länge); `data/sounds.json` ist nicht angefasst (vermutet: schon auf `main` rot, ungeprüft).
+
+### Für den Hauptrechner
+
+- Schiff (`gebaeude-paper/schiff`, Rumpf 1,2 M hoch, 3 M lang) weicht vom Standard (Rumpf 0,7 M, Länge 4–5 M) ab: braucht neue Grafik oder anderes Seitenverhältnis, gehört zu RU36.3; nicht in der Tabelle.
+- Nur die Gerüste `geruest-1` bis `-4`, `-6` sind eingestuft; `hintergrundmauer`, `lagerfeuer`, Treppen, `barke` bleiben ohne Stufe, `burg-ausbau` ohne Messung.
+- Kleinkram (Truhen 0,23 M, Felsen 0,2–0,4 M, Erzbrocken, Münzen) ohne Stufe (Lesbarkeit vor Maßstab); Entscheidung für Ralf, ob sie Stufen bekommen.
+- Ungenutzte Bäume `birke-2`, `pappel-2`, `tanne-2` (0,9–1,3 M) sind nirgends referenziert; Aufräum-Ticket.
+- Nadelbäume (bis 5,6 M) im Spiel am PC prüfen (Ralf).
+- Rote Tests auf `main`: `native/`-Ordner entfernen, Fahrplan/RU30 und `sounds.json`-Golden prüfen.

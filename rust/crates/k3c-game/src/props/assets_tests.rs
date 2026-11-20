@@ -112,7 +112,7 @@ fn chosen(biome: &str) -> Vec<Look> {
         }
     }
     for variant in ["blau", "violett", "gruen"] {
-        out.push(variant_look("crystalVein", variant, biome).unwrap_or_default());
+        out.push(variant_look("crystalVein", variant, biome, 0.0).unwrap_or_default());
     }
     for k in ["portal", "exit", "harbor", "recruitCamp", "chest", "skillPoint"] {
         out.push(entity_look(k, biome).map(|(l, _)| l).unwrap_or_default());
