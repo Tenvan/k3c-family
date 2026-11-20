@@ -1,6 +1,6 @@
 # RU51 · SIM, SRV, CLI · Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM, SRV, CLI
 - **Reife:** bereit

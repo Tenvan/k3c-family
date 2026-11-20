@@ -1,6 +1,6 @@
 # RU37 · INF · Go-Spiel entfernen, Doku und Regeln nachziehen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF
 - **Reife:** bereit

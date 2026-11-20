@@ -1,6 +1,6 @@
 # RU55 · CLI · Look und Maßstab nach K2C-Vorbild im Rust-Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

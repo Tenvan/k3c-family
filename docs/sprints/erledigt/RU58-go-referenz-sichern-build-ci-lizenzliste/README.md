@@ -1,6 +1,6 @@
 # RU58 · INF, CLI, DEV · Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF, CLI, DEV
 - **Reife:** bereit

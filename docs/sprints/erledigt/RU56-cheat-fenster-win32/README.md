@@ -1,6 +1,6 @@
 # RU56 · CLI · Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

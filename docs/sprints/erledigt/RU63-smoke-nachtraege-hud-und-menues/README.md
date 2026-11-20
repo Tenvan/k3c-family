@@ -1,6 +1,6 @@
 # RU63 · CLI · Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
