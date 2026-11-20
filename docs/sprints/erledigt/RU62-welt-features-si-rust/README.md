@@ -1,6 +1,6 @@
 # RU62 · SIM, CLI · Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
@@ -85,19 +85,19 @@ Keine. Freigegebene Defaults (autonom, Claude, 2026-11-19): (1) keine REG-Sessio
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU62.1 | `RU62.1-sim-fracht.md` | Umsetzung | autonom | fertig |
-| RU62.2 | `RU62.2-anzeige-fracht.md` | Umsetzung | autonom | offen |
+| RU62.2 | `RU62.2-anzeige-fracht.md` | Umsetzung | autonom | fertig |
 | RU62.3 | `RU62.3-sim-doppel-truhe.md` | Umsetzung | autonom | fertig |
-| RU62.4 | `RU62.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | offen |
+| RU62.4 | `RU62.4-anzeige-doppel-truhe.md` | Umsetzung | autonom | fertig |
 | RU62.5 | `RU62.5-sim-wetter-kern-taifun.md` | Umsetzung | autonom | fertig |
 | RU62.6 | `RU62.6-sim-flut.md` | Umsetzung | autonom | fertig |
-| RU62.7 | `RU62.7-anzeige-wetter.md` | Umsetzung | autonom | offen |
+| RU62.7 | `RU62.7-anzeige-wetter.md` | Umsetzung | autonom | fertig |
 | RU62.8 | `RU62.8-sim-reittiere.md` | Umsetzung | autonom | fertig |
-| RU62.9 | `RU62.9-anzeige-reittiere.md` | Umsetzung | autonom | offen |
+| RU62.9 | `RU62.9-anzeige-reittiere.md` | Umsetzung | autonom | fertig |
 | RU62.10 | `RU62.10-sim-einsiedler.md` | Umsetzung | autonom | fertig |
-| RU62.11 | `RU62.11-anzeige-einsiedler.md` | Umsetzung | autonom | offen |
+| RU62.11 | `RU62.11-anzeige-einsiedler.md` | Umsetzung | autonom | fertig |
 | RU62.12 | `RU62.12-sim-friede-fest.md` | Umsetzung | autonom | fertig |
-| RU62.13 | `RU62.13-anzeige-fest-musik.md` | Umsetzung | autonom | offen |
-| RU62.14 | `RU62.14-review.md` | Review | autonom | offen |
+| RU62.13 | `RU62.13-anzeige-fest-musik.md` | Umsetzung | autonom | fertig |
+| RU62.14 | `RU62.14-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -105,6 +105,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-19: AC-01 bis AC-06 durch die Ergebnisse von RU62.1 bis RU62.13 belegt (Sim in k3c-sim, Anzeige in k3c-game; lib-Tests 975 grün, clippy sauber). Prüfpunkte am Diff gegen main: ship.json, monarch.json, Golden, Engine und Save-Version unverändert, keine Rust-Datei über 400 Zeilen. `task check`: 6 vorbestehende rote Vitest-Fälle (Paper-Golden Hintergründe und Bäume, Windows-EPERM), `check:go` ohne `golangci-lint` im PATH nicht lauffähig. Abnahme-Ticket B-1154 (Sim, Balance, Gen, Race), Folge-Ticket B-1155 (Welt-Schalter nach RU41). Manuelle Abnahme am PC bleibt bei Ralf.

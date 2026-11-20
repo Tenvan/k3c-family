@@ -199,6 +199,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1151](B-1151-texturbudget-baeume.md) | PAP | Schuld | niedrig | offen | LA1 | Texturbudget der Bäume um 15 MiB senken |
 | [B-1152](B-1152-rig-export-drift-ausserhalb-bosse.md) | PAP | Schuld | niedrig | eingeplant | LA1 | Rig-Export unter public/rig weicht außerhalb der Bosse von den Specs ab, gen:rig:check ist rot |
 | [B-1153](B-1153-kristallherz-waechter-ohne-rig-export.md) | PAP | Problem | niedrig | eingeplant | LA1 | kristallherz-waechter hat keinen Rig-Export, gen:rig schreibt ihn nicht |
+| [B-1154](B-1154-abnahme-ru62-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU62 | Abnahme-Läufe RU62: Sim, Balance, Gen samt Golden und Race |
+| [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
 
 ## Archiv
 

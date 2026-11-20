@@ -11,3 +11,11 @@ pub fn no_target_text(lang: &str) -> &'static str {
     }
     "kein Ziel"
 }
+
+/// Text über dem Ladeplatz, wenn das Schiff voll ist (`cargoFull`, RU62.2).
+pub fn cargo_full_text(lang: &str) -> &'static str {
+    if lang == LANGUAGE_ENGLISH {
+        return "full";
+    }
+    "voll"
+}

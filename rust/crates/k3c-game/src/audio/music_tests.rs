@@ -22,7 +22,9 @@ const STATES: [MusicState; 9] = [
 // AC-01: Jeder Zustand außer None hat einen Musik-Slot mit Datei im Register, kein Stück doppelt.
 #[test]
 fn music_slots_have_files() {
-    assert!(MUSIC_SLOTS.len() == MusicState::Ending as usize + 1 && MUSIC_SLOTS[MusicState::None as usize].is_empty());
+    assert!(
+        MUSIC_SLOTS.len() == MusicState::Festival as usize + 1 && MUSIC_SLOTS[MusicState::None as usize].is_empty()
+    );
     let reg = real_register();
     let mut files = std::collections::BTreeSet::new();
     for st in STATES {
@@ -56,6 +58,7 @@ fn view(phase: &str, enemies: i64, depth: i64, boss: bool, victory: bool) -> Mus
         depth,
         boss,
         victory,
+        festival: "",
     }
 }
 
@@ -213,4 +216,41 @@ fn duck() {
         near(duck_gain(at, &w2), duck_gain(at, &w)) && near(duck_gain(at + d.attack, &w2), d.level),
         "Sprung in der Rampe hinauf: {w2:?}"
     );
+}
+
+// RU62.13 (B-1002): Das Fest ersetzt Tages-, Nacht- und Kampfmusik, nicht Lobby, Niederlage und Sieg; die Welt wählt das
+// Stück über den Himmels-Effekt, sonst gilt der Rückfall.
+#[test]
+fn festival_replaces_day_night_and_battle_music() {
+    let fest = |phase: &'static str, enemies: i64| MusicView {
+        phase,
+        enemies,
+        festival: "lanterns",
+        ..MusicView::default()
+    };
+    for (phase, enemies) in [("day", 0), ("night", 0), ("dusk", 0), ("day", 3)] {
+        assert_eq!(
+            next_music_state(MusicState::None, &fest(phase, enemies), false),
+            MusicState::Festival,
+            "{phase} mit {enemies} Gegnern"
+        );
+    }
+    let lobby = MusicView {
+        lobby: true,
+        ..fest("day", 0)
+    };
+    assert_eq!(next_music_state(MusicState::Festival, &lobby, false), MusicState::Lobby);
+    assert_eq!(
+        next_music_state(MusicState::Festival, &fest("day", 0), true),
+        MusicState::Defeat
+    );
+    // Abfahrt: das Fest endet, die Tagesmusik kehrt zurück
+    assert_eq!(
+        next_music_state(MusicState::Festival, &view("day", 0, 0, false, false), false),
+        MusicState::Day
+    );
+    assert_eq!(festival_slot("lanterns"), "music:fest:sengoku");
+    assert_eq!(festival_slot("torches"), "music:fest:nil");
+    assert_eq!(festival_slot("x"), "music:fest");
+    assert_eq!(MusicState::Festival.slot(), "music:fest");
 }

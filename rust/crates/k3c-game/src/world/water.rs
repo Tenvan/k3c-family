@@ -202,6 +202,10 @@ pub fn rgb(c: Rgba) -> [f32; 3] {
     ]
 }
 
+/// Wetter im Bild (RU62.7): Zeichnen der Vorboten, des Taifuns und der Flut.
+#[path = "water_weather.rs"]
+pub mod weather;
+
 #[cfg(test)]
 #[path = "water_tests.rs"]
 mod water_tests;

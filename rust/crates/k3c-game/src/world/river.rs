@@ -140,6 +140,7 @@ impl World {
         let Some(st) = stage_of(f, c) else {
             return;
         };
+        self.draw_weather_front(dst, f, c); // RU62.7: Regen, Wind, steigendes Wasser, Flutzonen
         // k2c: Der Spiegel (mirror.rs, nach dem Licht) füllt den Fluss, die Wellen entfallen.
         if st.world.is_some() && self.mirror_wanted(f, dst) {
             return;
