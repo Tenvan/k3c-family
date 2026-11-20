@@ -1,6 +1,6 @@
 # RU64 · CLI, INF · Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, INF
 - **Reife:** bereit
@@ -82,6 +82,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-20: AC-01 bis AC-06 durch die Messberichte `docs/messung/abnahme-b-*.md`, `rust-bildvergleich.md` und `look-k2c.md` belegt (Rotes steht je Bericht unter „Für den Hauptrechner“, die Tickets bleiben offen). Keine Code-Änderung, `testdata/` unverändert. Keine Sim-/Balance-Änderung, daher kein Abnahme-Ticket. Manuelle Abnahmen (Pad, TV, Mini-PC, Ton) bei Ralf.

@@ -32,7 +32,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | RU55 | CLI | RSU | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | – | `aktiv/RU55-look-k2c-im-rust-spiel/` |
 | RU56 | CLI | RSU | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | – | `aktiv/RU56-cheat-fenster-win32/` |
 | RU63 | CLI | RSU | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | – | `aktiv/RU63-smoke-nachtraege-hud-und-menues/` |
-| RU64 | CLI, INF | RSU | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | – | `aktiv/RU64-abnahme-laeufe-zweiter-rechner-rust-spiel/` |
 
 ## Offen am Gerät
 
@@ -471,3 +470,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU61 | Rust-Spiel: Nachträge und Wünsche aus den Go-Sprints (CH1, BI1, BI2, NA1, WG2, FB4, SR1) | `erledigt/RU61-rust-spiel-nachtraege-go-sprints/` |
 | RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | `erledigt/RU59-go-engine-ungenutztes-entfernen/` |
 | RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | `erledigt/RU62-welt-features-si-rust/` |
+| RU64 | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | `erledigt/RU64-abnahme-laeufe-zweiter-rechner-rust-spiel/` |
