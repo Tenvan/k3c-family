@@ -1,6 +1,6 @@
 # RU35 · INF · Build, Paket und CI auf das Rust-Spiel umstellen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF
 - **Reife:** bereit

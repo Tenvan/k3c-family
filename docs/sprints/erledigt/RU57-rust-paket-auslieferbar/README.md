@@ -1,6 +1,6 @@
 # RU57 · INF · Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF
 - **Reife:** bereit

@@ -1,6 +1,6 @@
 # RU52 · SIM, CLI · Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM, CLI
 - **Reife:** bereit

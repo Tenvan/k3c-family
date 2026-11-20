@@ -1,6 +1,6 @@
 # RU54 · CLI · Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit

@@ -21,17 +21,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RG2 | REG | BAL | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | – | `aktiv/RG2-regelwerk-klaerungen/` |
-| RU58 | INF, CLI, DEV | RSU | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | – | `aktiv/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
-| RU37 | INF | RSU | Go-Spiel entfernen, Doku und Regeln nachziehen | – | `aktiv/RU37-go-spiel-entfernen/` |
-| RU35 | INF | RSU | Build, Paket und CI auf das Rust-Spiel umstellen | – | `aktiv/RU35-build-paket-ci-umstellen/` |
 | RU36 | CLI | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
-| RU51 | SIM, SRV, CLI | RSU | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | – | `aktiv/RU51-abnahme-laeufe-rust-second-worker/` |
-| RU52 | SIM, CLI | RSU | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | – | `aktiv/RU52-rust-sim-schuld-und-spiel-nacharbeit/` |
-| RU57 | INF | RSU | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | – | `aktiv/RU57-rust-paket-auslieferbar/` |
-| RU54 | CLI | RSU | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | – | `aktiv/RU54-smoke-befunde-pause-und-farben/` |
-| RU55 | CLI | RSU | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | – | `aktiv/RU55-look-k2c-im-rust-spiel/` |
-| RU56 | CLI | RSU | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | – | `aktiv/RU56-cheat-fenster-win32/` |
-| RU63 | CLI | RSU | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | – | `aktiv/RU63-smoke-nachtraege-hud-und-menues/` |
 
 ## Offen am Gerät
 
@@ -471,3 +461,13 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | `erledigt/RU59-go-engine-ungenutztes-entfernen/` |
 | RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | `erledigt/RU62-welt-features-si-rust/` |
 | RU64 | Abnahme-Läufe auf dem zweiten Rechner: Rust-Spiel (Bild, Paket, Look, Frame-Zeit) | `erledigt/RU64-abnahme-laeufe-zweiter-rechner-rust-spiel/` |
+| RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | `erledigt/RU35-build-paket-ci-umstellen/` |
+| RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | `erledigt/RU37-go-spiel-entfernen/` |
+| RU58 | Go-Referenz sichern, Go-Spiel aus Build und CI nehmen, Lizenzliste des Rust-Spiels | `erledigt/RU58-go-referenz-sichern-build-ci-lizenzliste/` |
+| RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | `erledigt/RU51-abnahme-laeufe-rust-second-worker/` |
+| RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | `erledigt/RU52-rust-sim-schuld-und-spiel-nacharbeit/` |
+| RU54 | Smoke-Befunde: Pausenmenü sichtbar und satte Farben im Rust-Spiel | `erledigt/RU54-smoke-befunde-pause-und-farben/` |
+| RU55 | Look und Maßstab nach K2C-Vorbild im Rust-Spiel | `erledigt/RU55-look-k2c-im-rust-spiel/` |
+| RU56 | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | `erledigt/RU56-cheat-fenster-win32/` |
+| RU57 | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | `erledigt/RU57-rust-paket-auslieferbar/` |
+| RU63 | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | `erledigt/RU63-smoke-nachtraege-hud-und-menues/` |
