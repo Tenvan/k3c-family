@@ -7,6 +7,7 @@
 //! Truppe). Die Aufträge (`find_job` …) stehen in `jobs.rs`.
 
 pub mod archer;
+pub mod armor;
 pub mod camp_guard;
 pub mod escort;
 pub mod flee;
@@ -95,6 +96,9 @@ pub fn step_camps(w: &mut World, v: &WorldValues, dt: f64) {
 /// Go: `stepTroops`.
 pub fn step_troops(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, dt: f64) {
     for ti in 0..w.troops.len() {
+        if matches!(w.troops[ti].kind.as_str(), "warrior" | "archer") && armor::step_errand(w, v, ti, dt) {
+            continue; // EQ1.1: auf dem Weg zum Rüstungsschmied
+        }
         match w.troops[ti].kind.as_str() {
             crate::state::CITIZEN if w.troops[ti].wild => {
                 let anchor = w.troops[ti].anchor_x;

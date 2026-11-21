@@ -134,7 +134,7 @@ pub fn step_crafts(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
         }
         match w.sites[si].kind.as_str() {
             "smithy" if v.native_rules => {} // FG1.2: der Waffenschmied macht Schwerter (`step_sword_craft`)
-            "armory" if v.native_rules => armor_convert(w, v, si),
+            "armory" if v.native_rules => crate::unit::armor::assign(w, si), // EQ1.1: Kämpfer holen die Rüstung ab
             "smithy" => {
                 step_elite(w, v, isl, si, Slot::Main, "eliteArcher");
                 let offers = v.buildings.get("smithy").map_or(&[][..], |b| b.offers.as_slice());
@@ -147,29 +147,6 @@ pub fn step_crafts(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
             "armory" => step_armor(w, v, isl, si),
             _ => {}
         }
-    }
-}
-
-/// FG1.2 (B-1200): Rüstung aus dem Regal des Rüstungsschmieds macht den nächsten Krieger zum Elite-Krieger, sonst den
-/// nächsten Bogenschützen zum Elite-Bogenschützen (nächste Figur zum Gebäude). Ohne Kandidat bleibt sie im Regal.
-fn armor_convert(w: &mut World, v: &WorldValues, si: usize) {
-    if w.sites[si].armors <= 0 {
-        return;
-    }
-    let sx = w.sites[si].x;
-    for (from, to) in [("warrior", "eliteWarrior"), ("archer", "eliteArcher")] {
-        let Some(ti) = nearest(&w.troops, |t| t.x, sx, f64::INFINITY, |t| t.kind == from) else {
-            continue;
-        };
-        let hp = v.troops.get(to).map_or(0.0, |t| t.hp);
-        let t = &mut w.troops[ti];
-        t.kind = to.to_string();
-        t.hp = hp;
-        t.max_hp = hp;
-        w.sites[si].armors -= 1;
-        w.events
-            .push(crate::state::common::event(serde_json::json!({"type": "armed"})));
-        return;
     }
 }
 

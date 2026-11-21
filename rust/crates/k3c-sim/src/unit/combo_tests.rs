@@ -145,3 +145,66 @@ fn meister_stellen_schwert_und_ruestung_her() {
         w.sites[armory]
     );
 }
+
+/// Ein Rüstungsschmied mit einer Rüstung im Regal; liefert Welt und Platz-Index.
+fn armory_world() -> (World, usize) {
+    let mut w = day_world();
+    add_player(&mut w);
+    let s = build_site(&mut w, "armory");
+    w.sites[s].armors = 1;
+    (w, s)
+}
+
+/// EQ1.1 AC-01: Die Rüstung wird abgeholt. Ein Soldat weit vom Gebäude bleibt zunächst Soldat und ist unterwegs; erst am
+/// Gebäude wird er Elite, die Rüstung verlässt das Regal.
+#[test]
+fn ruestung_wird_am_gebaeude_abgeholt() {
+    let (mut w, s) = armory_world();
+    let sx = w.sites[s].x;
+    let ti = fighter(&mut w, "warrior", sx + 30.0);
+    run(&mut w, 0.2);
+    assert_eq!(w.troops[ti].kind, "warrior", "weit weg: noch kein Elite");
+    assert!(
+        w.troops[ti].job.as_ref().is_some_and(|j| j.r#type == "fetchArmor"),
+        "Auftrag fetchArmor: {:?}",
+        w.troops[ti].job
+    );
+    assert!(
+        run_for(&mut w, 60.0, |w| w.troops[ti].kind == "eliteWarrior"),
+        "kommt am Gebäude an"
+    );
+    assert_eq!(w.sites[s].armors, 0, "Rüstung aus dem Regal");
+    assert!(w.troops[ti].job.is_none());
+}
+
+/// EQ1.1 AC-02: Bei Gefahr (Gegner der Welle auf der Karte) holt niemand die Rüstung; sie bleibt im Regal.
+#[test]
+fn bei_gefahr_holt_niemand_die_ruestung() {
+    let (mut w, s) = armory_world();
+    let sx = w.sites[s].x;
+    let far = w.hub_x + 40.0;
+    spawn(&mut w, "goblin", far);
+    let ti = fighter(&mut w, "warrior", sx + 1.0);
+    run(&mut w, 5.0);
+    assert_eq!(w.troops[ti].kind, "warrior", "Gefahr: kein Elite");
+    assert_eq!(w.sites[s].armors, 1, "Rüstung bleibt im Regal");
+    assert!(w.troops[ti].job.is_none());
+}
+
+/// EQ1.1 AC-03: Je Rüstung nur ein Kämpfer unterwegs; ohne Kandidat bleibt sie im Regal.
+#[test]
+fn eine_ruestung_schickt_einen_kaempfer() {
+    let (mut w, s) = armory_world();
+    let sx = w.sites[s].x;
+    let a = fighter(&mut w, "warrior", sx + 20.0);
+    let b = fighter(&mut w, "warrior", sx + 25.0);
+    run(&mut w, 0.2);
+    let walking = [a, b]
+        .iter()
+        .filter(|&&i| w.troops[i].job.as_ref().is_some_and(|j| j.r#type == "fetchArmor"))
+        .count();
+    assert_eq!(walking, 1, "nur einer unterwegs");
+    assert!(run_for(&mut w, 60.0, |w| w.sites[s].armors == 0));
+    let elites = w.troops.iter().filter(|t| t.kind == "eliteWarrior").count();
+    assert_eq!(elites, 1, "nur eine Elite");
+}
