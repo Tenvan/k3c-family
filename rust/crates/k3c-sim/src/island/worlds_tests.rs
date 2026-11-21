@@ -81,7 +81,7 @@ fn standard_welt_gleich_bisherigen_inseln() {
     let islands = islands_bytes(raw.as_bytes()).replace(b"\r\n", b"\n");
     assert_eq!(
         sha256_hex(&islands),
-        "ea0213804059ff85c0bea5f3c073c9cead03ca25395d2610e7fe5ba5ef31de57",
+        "118d1ac5588c067c5485f68c52a99509ca6954ac8c771a28dce56dcceb95e826",
         "islands geändert"
     );
 }

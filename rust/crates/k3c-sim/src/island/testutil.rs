@@ -27,7 +27,19 @@ pub const DT: f64 = 1.0 / 30.0;
 
 /// Die eingebetteten Spiel-Daten (Go: die Paket-Variablen).
 pub fn test_data() -> Data {
-    load_all(&Source::Embedded).expect("eingebettete Daten")
+    let mut d = load_all(&Source::Embedded).expect("eingebettete Daten");
+    one_island_standard(&mut d);
+    d
+}
+
+/// Die Standard-Welt hat seit der Fünf-Inseln-Änderung (data/worlds/standard.json) mehrere Inseln mit eigener Größe. Die
+/// Tests der Insel- und Sieglogik gehen von der früheren Welt aus: genau eine Insel, Hafen auf Platz -7, Größe nach Biom.
+pub fn one_island_standard(d: &mut Data) {
+    let one: serde_json::Value = serde_json::from_str(
+        r#"{"id":"island1","name":"Insel 1","depths":[0,1,2,3,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]},"story":{"arrival":["Pip olu WALD, lumi HÖHLE miri."],"boss":["Zaro fenn WÄCHTER, KRISTALL hei."],"done":["WÄCHTER fenn, lumi KRONE olu."]}}"#,
+    )
+    .expect("Insel");
+    d.standard_world.islands = Some(vec![one]);
 }
 
 /// Go: `neutralNature`, die neutralen Natur-Werte je Tiefe (`level.NeutralNature`).

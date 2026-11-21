@@ -1,7 +1,7 @@
 //! Test aus `dev_castlefall_test.go` (WZ14.5, B-468/AC-05): Die Dev-Aktion `castleFall` löst den Stufenverlust in der Stufe
 //! des Monarchen aus, über Gerät und `/dm`.
 use super::dev_tests::{act, act_slot, dev, dev_room};
-use super::testutil::rm;
+use super::testutil::{create_room_in, einzel_manager, rm};
 use crate::fehler::Fehler;
 
 #[test]
@@ -43,7 +43,8 @@ fn dev_burgfall() {
 /// Insel bleibt unverändert). Schiff und Wechselpunkt prüft `k3c-sim` (`dev/sail_tests.rs`).
 #[test]
 fn dev_abfahrbereit_nur_mit_naechster_insel() {
-    let (mut m, code, _i) = dev_room();
+    let (mut m, _dir) = einzel_manager("abfahrt"); // Welt mit einer Insel
+    let (code, _i) = create_room_in(&mut m, "einzel", "a", 1, "dev", 0, &[0, 1]);
     assert_eq!(dev(&mut m, &code, &act("readyToSail")), Err(Fehler::BadRequest));
     assert!(!rm(&mut m, &code).isl.endboss_defeated);
 }
