@@ -88,6 +88,9 @@ describe('Werte-Tabelle (B-1173)', () => {
     expect(rows(host)).toEqual(['farm.cost']);
   });
 
+});
+
+describe('Werte-Tabelle: Eingabe (B-1173)', () => {
   it('Pfeil hoch ändert Zahlen (Umschalt ×10), Enter schreibt, Esc verwirft', async () => {
     const host = await mount();
     const set = vi.spyOn(backend, 'worldOverrideSet');

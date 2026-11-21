@@ -33,6 +33,17 @@ const QUELLEN: Quellen = {
 /** Transparentes 1×1-PNG für die Hintergrund-Ebenen des Mocks. */
 const PIXEL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 
+/** Größenstufen des Mocks. Der Mock kennt nur das Asset monarch (known); ihm ist eine Stufe zugeordnet, damit die Linie der Stufe sichtbar wird. */
+const STUFEN: Stufen = {
+  bezugPx: 121.5,
+  stufen: [
+    { id: 'gegner-klein', m: 0.4, was: 'Kleine Gegner' }, { id: 'buerger', m: 0.6, was: 'Bürger, Bauer, Soldat' },
+    { id: 'gegner-gross', m: 1, was: 'Große Gegner' }, { id: 'gebaeude-mittel', m: 1.1, was: 'Zelt, Stand, Werkstatt' },
+    { id: 'boss', m: 1.3, was: 'Bosse' }, { id: 'baum-mittel', m: 2.9, was: 'Mittlere Bäume' },
+  ],
+  assets: { 'figuren/monarch': { stufe: 'gebaeude-mittel', sicht: 1 } },
+};
+
 export function mockAssets(): AssetsBackend {
   return {
     assetsList: () => fixture<AssetEintrag[]>('AssetsList'),
@@ -56,16 +67,7 @@ export function mockAssets(): AssetsBackend {
       return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/paper.json)', spec: await fixture<Spec>('AssetsGet') };
     },
     assetsHintergruende: async () => ['wald'],
-    assetsStufen: async (): Promise<Stufen> => ({
-      bezugPx: 121.5,
-      stufen: [
-        { id: 'gegner-klein', m: 0.4, was: 'Kleine Gegner' }, { id: 'buerger', m: 0.6, was: 'Bürger, Bauer, Soldat' },
-        { id: 'gegner-gross', m: 1, was: 'Große Gegner' }, { id: 'gebaeude-mittel', m: 1.1, was: 'Zelt, Stand, Werkstatt' },
-        { id: 'boss', m: 1.3, was: 'Bosse' }, { id: 'baum-mittel', m: 2.9, was: 'Mittlere Bäume' },
-      ],
-      // Mock kennt nur das Asset monarch (known); ihm ist hier eine Stufe zugeordnet, damit die Linie der Stufe sichtbar wird
-      assets: { 'figuren/monarch': { stufe: 'gebaeude-mittel', sicht: 1 } },
-    }),
+    assetsStufen: async (): Promise<Stufen> => STUFEN,
     assetsHintergrund: async (teil): Promise<Hintergrund> => {
       if (teil !== 'wald') throw new Error(`Hintergrund „${teil}“ fehlt`);
       return { fern: PIXEL, mitte: PIXEL, nah: PIXEL };

@@ -129,21 +129,16 @@ function useNature(stage: StageChoice | null, level: WorldLevel | null, seed: st
   return { setNature, crossRefresh };
 }
 
-export function useWorld(): WorldState {
-  const [worlds, setWorlds] = useState<WorldInfo[]>([]);
-  const [id, setId] = useState(() => loadText('world.id', 'standard'));
-  const [detail, setDetail] = useState<WorldDetail | null>(null);
-  const [stage, setStage] = useState<StageChoice | null>(null);
-  const [seed, setSeed] = useState(DEFAULT_SEED);
-  const [values, setValues] = useState<WorldValuesView | null>(null);
-  const [notice, setNotice] = useState<WorldState['notice']>(null);
-  const { model, level, note, load, show, request } = useLevel(stage, seed);
-  const current = useRef(id);
-  /** Hinweis, der nach dem Laden der nächsten Welt erscheint (das Laden leert sonst jeden Hinweis). */
-  const afterLoad = useRef<WorldState['notice']>(null);
-  current.current = id;
+interface LoadSetters {
+  setDetail: (d: WorldDetail | null) => void;
+  setStage: (s: StageChoice | null) => void;
+  setValues: (v: WorldValuesView | null) => void;
+  setNotice: (n: WorldState['notice']) => void;
+}
 
-  useEffect(() => { void backend.worldList().then(setWorlds, () => setWorlds([])); }, []);
+/** Lädt Detail und Werte der Welt `id` (mit Verwerfen veralteter Antworten) und zeigt danach den vorgemerkten Hinweis. */
+function useWorldLoad(id: string, set: LoadSetters, afterLoad: { current: WorldState['notice'] }) {
+  const { setDetail, setStage, setValues, setNotice } = set;
   useEffect(() => {
     let live = true;
     setNotice(null);
@@ -159,6 +154,24 @@ export function useWorld(): WorldState {
     });
     return () => { live = false; };
   }, [id]);
+}
+
+export function useWorld(): WorldState {
+  const [worlds, setWorlds] = useState<WorldInfo[]>([]);
+  const [id, setId] = useState(() => loadText('world.id', 'standard'));
+  const [detail, setDetail] = useState<WorldDetail | null>(null);
+  const [stage, setStage] = useState<StageChoice | null>(null);
+  const [seed, setSeed] = useState(DEFAULT_SEED);
+  const [values, setValues] = useState<WorldValuesView | null>(null);
+  const [notice, setNotice] = useState<WorldState['notice']>(null);
+  const { model, level, note, load, show, request } = useLevel(stage, seed);
+  const current = useRef(id);
+  /** Hinweis, der nach dem Laden der nächsten Welt erscheint (das Laden leert sonst jeden Hinweis). */
+  const afterLoad = useRef<WorldState['notice']>(null);
+  current.current = id;
+
+  useEffect(() => { void backend.worldList().then(setWorlds, () => setWorlds([])); }, []);
+  useWorldLoad(id, { setDetail, setStage, setValues, setNotice }, afterLoad);
 
   const choose = (next: string) => {
     if (next === id) return;

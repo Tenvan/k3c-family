@@ -77,6 +77,20 @@ fn load_biomes(src: &Source, enemies: &BTreeMap<String, enemies::EnemyData>) -> 
     Ok(out)
 }
 
+/// `load_game` wie `load_all`, dazu mit dem Abstand der Hub-Plätze nach Gebäudebreite (LA3.1, `hub_layout`). Für das
+/// Spiel; die Go-Vergleiche laden mit `load_all` die rohe `hub.json`.
+pub fn load_game(src: &Source) -> Result<Data, Fehler> {
+    let mut d = load_all(src)?;
+    let sizes = crate::sizes::load(&src.read(crate::sizes::FILE)?)?;
+    let half = d
+        .biomes
+        .iter()
+        .fold(f64::INFINITY, |m, b| m.min(b.hub_width_units / 2.0));
+    crate::hub_layout::spread(&mut d.hub, &sizes.sites, half)
+        .map_err(|e| Fehler::Pruefung(format!("data/sizes.json: {e}")))?;
+    Ok(d)
+}
+
 /// `load_all` lädt alle Spiel-Daten aus src und macht die Prüfungen, die Go beim Laden macht, auch die über
 /// mehrere Dateien (Bosse, Events, Ruinen, Gegner-Pools der Biome).
 pub fn load_all(src: &Source) -> Result<Data, Fehler> {
