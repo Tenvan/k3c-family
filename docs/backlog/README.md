@@ -247,6 +247,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1207](B-1207-gegenstands-icons-im-hud.md) | CLI | Idee | mittel | eingeplant | EQ1 | Gegenstands-Icons erscheinen am Regal und im Holen-Hinweis |
 | [B-1208](B-1208-bogner-oben-gemeinsames-limit.md) | SIM | Problem | mittel | eingeplant | EQ1 | Bogner steht nur ganz oben, das Truppen-Limit gilt für die ganze Insel |
 | [B-1209](B-1209-besorger-sichtbarer-weg.md) | SIM | Idee | mittel | eingeplant | EQ1 | Besorger laufen sichtbar über die Treppe in die obere Stufe und zurück |
+| [B-1210](B-1210-welten-im-dist-und-repo-welten-vorrang.md) | CLI | Problem | mittel | offen | WL1 | Welten liegen im dist-Paket; beim Start aus dem Repo-dist gelten die Repo-Welten (Dev-Symbol) |
+| [B-1211](B-1211-welten-editor-weitere-welten-waehlbar.md) | DEV | Problem | mittel | offen | WL1 | Im Welten-Editor lassen sich alle Welten anwählen, nicht nur die erste |
+| [B-1212](B-1212-gamepad-hotplug-und-hud-beitreten-meldung.md) | CLI | Problem | mittel | offen | WL1 | Gamepad funktioniert auch, wenn es nach dem Spielstart eingeschaltet wird; die Beitreten-Meldung im HUD entfällt |
+| [B-1213](B-1213-zaun-und-mauern-lueckenlos-hoehe-nach-stufe.md) | PAP | Idee | mittel | offen | WL1 | Mauern: Jägerzaun auf Holz-Level, lückenloser Anschluss und Höhe nach Ausbaustufe |
 
 ## Archiv
 

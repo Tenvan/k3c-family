@@ -38,6 +38,7 @@ pub mod links;
 pub mod preview;
 pub mod ship;
 pub mod skins;
+pub mod stands;
 pub mod state_mirror;
 pub mod step;
 pub mod travel;

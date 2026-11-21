@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
-- **Lane:** erst
+- **Lane:** zweit
 - **Modell:** opus
 - **Umgebung:** ?
 - **Branch:** eq1/4-bogner-oben-limit
