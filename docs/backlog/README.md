@@ -242,6 +242,11 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1202](B-1202-abnahme-eco1-siegel-eco-plan.md) | DEV | Schuld | mittel | eingeplant | ECO1 | ECO1 ist am PC abgenommen: Siegel, Werkzeuggürtel, tiefe Ebenen, Minen |
 | [B-1203](B-1203-abnahme-fg1-grundfiguren.md) | DEV | Schuld | mittel | eingeplant | FG1 | FG1 ist am PC abgenommen: Bürger, Meister-Gebäude, Kombinationen, Grafik |
 | [B-1204](B-1204-wald-baumwuchs-rodungsregeln.md) | SIM | Idee | mittel | offen | WD1 | Oberfläche hat vollen Baumwuchs mit Lichtungen; gerodet wird von den Rändern der Waldstücke |
+| [B-1205](B-1205-ruestung-abholen.md) | SIM | Problem | mittel | eingeplant | EQ1 | Kämpfer holen die Rüstung am Gebäude ab, statt sie aus der Ferne zu bekommen |
+| [B-1206](B-1206-ausruestungswerte-nach-data.md) | SIM | Schuld | mittel | eingeplant | EQ1 | Preise, Regalgrößen und Herstellzeiten der Ausrüstung stehen in data/buildings.json |
+| [B-1207](B-1207-gegenstands-icons-im-hud.md) | CLI | Idee | mittel | eingeplant | EQ1 | Gegenstands-Icons erscheinen am Regal und im Holen-Hinweis |
+| [B-1208](B-1208-bogner-oben-gemeinsames-limit.md) | SIM | Problem | mittel | eingeplant | EQ1 | Bogner steht nur ganz oben, das Truppen-Limit gilt für die ganze Insel |
+| [B-1209](B-1209-besorger-sichtbarer-weg.md) | SIM | Idee | mittel | eingeplant | EQ1 | Besorger laufen sichtbar über die Treppe in die obere Stufe und zurück |
 
 ## Archiv
 
