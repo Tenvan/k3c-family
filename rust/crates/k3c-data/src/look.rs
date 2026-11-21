@@ -182,7 +182,13 @@ const GO_LOOK: Look = Look {
         no_sky: Vec::new(),
     },
     haze: [0.0; 3],
-    glow: GLOW_OFF,
+    // Profil go: Fackeln und Licht wie im Go-Spiel (Bildvergleiche)
+    glow: Glow {
+        torch_spread: 1.0,
+        castle_torches: 0.0,
+        warmth: 1.0,
+        ..GLOW_OFF
+    },
     sky: SKY_OFF,
     forest: crate::look_world::FOREST_OFF,
     worlds: BTreeMap::new(),

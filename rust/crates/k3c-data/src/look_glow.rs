@@ -18,6 +18,13 @@ pub struct Glow {
     pub core: f64,
     /// Stärke des Hofs auf halbem Weg nach außen (Anteil der Mitte; kleiner = steilerer Abfall).
     pub falloff: f64,
+    /// Abstand der Fackeln zur Mitte des Platzes als Faktor auf `light.json › torches` (nur Darstellung; die Sim bleibt),
+    /// damit sie neben der Tür statt auf ihr hängen.
+    pub torch_spread: f64,
+    /// Abstand der zwei Fackeln der Burg zur Burgmitte in Units (0 = keine).
+    pub castle_torches: f64,
+    /// Exponent auf die Kanäle von `glowColor` im Lichtschein: über 1 wird er gelber und oranger (Fackel-Stimmung).
+    pub warmth: f64,
     /// Höchstzahl Höfe je Zelle (ohne Mond).
     pub max: usize,
     pub moon: Moon,
@@ -76,6 +83,9 @@ pub(crate) const GLOW_OFF: Glow = Glow {
     strength: 0.32,
     core: 0.0,
     falloff: 0.5,
+    torch_spread: 2.0,
+    castle_torches: 2.6,
+    warmth: 1.6,
     max: 8,
     moon: MOON_DEFAULT,
     monarch: MONARCH_DEFAULT,

@@ -64,24 +64,26 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Stand: umgesetzt, **zweite Nachprüfung 🧑 am PC steht aus** (Status bleibt `offen`). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
+Stand: umgesetzt, **weitere Nachprüfung 🧑 am PC steht aus** (Status bleibt `offen`). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
 
-### Umgesetzt (Runde 1)
-- **Rang 1, Lichthöfe** (`data/look.json` › glow): weicher, größer, ohne Kern. **Rang 2:** Sterne nach der Lichtkarte (`world/sky.rs`), Mond-Hof größer, Nacht-Aufhellung (`sky.nightLift`, `backLift`, nur Profil k2c; `light.json` bleibt wegen der Go-Golden), Abendrot (`sky.horizon`), Spiegelung weicher (`mirror.brightness` 0,62, `glint` 0,25). **Rang 3:** Himmelsverlauf (`sky.top`, `gradient`), Dunst dichter.
-- Neuer Code: `k3c-data/src/look_sky.rs`, `look_glow.rs` (aus `look.rs` ausgelagert, Dateigrenze), `world/sky.rs` mit Tests.
+### Runde 1 (Stimmung)
+Lichthöfe weicher, Sterne, Mond-Hof, Nacht-Aufhellung (`sky.nightLift`/`backLift`), Abendrot, Himmelsverlauf, Spiegelung weicher (`data/look.json`, `world/sky.rs`, `look_sky.rs`, `look_glow.rs`).
 
-### Nachprüfung 🧑 2026-11-21 (Runde 2)
-- **„überstrahlt noch, das Licht selbst darf gar nicht sichtbar sein“:** neues Feld `glow.sources` (`look_glow.rs`), in den Daten `false`: Lagerfeuer, Fackeln und Monarch zeichnen keinen sichtbaren Hof mehr; sie erhellen nur über die Lichtkarte (`light.json`). Der Mond behält seinen Hof. Test `ohne_sichtbare_quellen_hat_nur_der_mond_einen_hof`; die übrigen Hof-Tests testen mit `sources: true`.
-- **„Dunst nur bei Wetter-Events“:** `tint::weather_haze` (Taifun und Flut, Vorboten und Wirkung, über `sight_of`); sonst kein Dunst (`layers.rs`).
-- **„blass beim Abdunkeln – Filter oder nur der Dunst?“:** Beides trägt bei. Der Dunst legt in Himmelsfarbe einen Schleier über Kulisse und Mitte, die Lichthöfe einen gelben Schleier über Gebäude. Die Tönung (Multiplikator der Tageszeit) und meine Nacht-Aufhellung bleiben als mögliche Ursache; zum Eingrenzen gibt es `world/fx.rs`: jeder Effekt (Dunst, Höfe, Sterne, Himmel, Aufhellung, Tönung, Spiegelung) lässt sich per `K3C_FX_OFF=haze,tint,…` ausschalten. Aufnahme Morgengrauen vom Spielstand `spiel-1` ohne Dunst und ohne Höfe zeigt klare Farben (`.work/stimmung-nach/spiel-an/`).
-- **Cheat-Fenster-Panel:** B-1179 (Schalter `fx::set` stehen bereit). **FPS-Anzeige** (zeigt 0 FPS, zu groß, abgeschnitten): B-1180.
+### Runde 2
+`glow.sources` aus (Licht erhellt nur über die Lichtkarte), Dunst nur bei Taifun und Flut (`tint::weather_haze`), Schalter je Umgebungseffekt (`world/fx.rs`, `K3C_FX_OFF`), FPS-Anzeige (B-1180).
+
+### Runde 3 (Fackeln, 🧑 2026-11-21)
+- **Fackeln vor den Figuren:** Halter jetzt im Drawer `Part::Torches` auf der Ebene der Figuren (`Layer::ACTORS`, über den Gebäuden, unter den Figuren); die Flammen kommen nach der Lichtkarte (`draw_flames`) und bleiben hell.
+- **Fackeln auf den Türen:** `glow.torchSpread` 2 weitet die Versätze aus `light.json` nur in der Darstellung (die Sim-Daten bleiben wegen der Go-Golden); Licht (`for_each_torch`) und Flammen nutzen dieselben Orte.
+- **Burg ohne Fackel:** zwei Fackeln neben dem Tor (`glow.castleTorches` 2,6 Units), mit Licht.
+- **Fackel-Atmosphäre:** wärmerer Schein (`glow.warmth` 1,6, Exponent auf `glowColor`), Flamme größer (12/32 Units), dreischichtig und flackernd mit der Spielzeit. Profil go unverändert (Spread 1, keine Burg-Fackeln, Warmth 1).
+- **Eigene Flammen-Assets je Welt, verschiedene Fackeln, Lampen und Feuerschalen, Ankerpunkte an Häusern:** B-1181 (Größe L, braucht Entscheidungen von 🧑).
 
 ### Prüfung
-- `cargo test -p k3c-game -p k3c-data --release`: grün außer `tree_tests::economy_wie_go` (`ChestGold[0] = 15, erwartet 30`, nicht von dieser Session: Halbierung in RU36.3, B-1159). `cargo clippy --all-targets -D warnings` und `cargo fmt` sauber. `task check:diff` scheitert schon vorher an Lint-Fehlern einer Workbench-Oberfläche in `tools/`, nicht an dieser Änderung.
-- Bilder: Vorher `.work/stimmung/`, Nachher `.work/stimmung-nach/` (nicht eingecheckt).
+`cargo test -p k3c-game -p k3c-data --release` grün außer `economy_wie_go` (`ChestGold`, aus RU36.3, nicht von dieser Session); `clippy --all-targets -D warnings` und `fmt` sauber. Aufnahme Nacht mit Spielstand `spiel-8` (Hub 4): Fackeln neben den Türen, Burg mit zwei Fackeln und warmem Schein (`.work/torch-neu/shot-01.png`). `task check:diff` scheitert weiter am Lint einer Workbench-Oberfläche in `tools/`.
 
 ### Für den Hauptrechner
-- B-1178: Wolken, monumentaler Hintergrund, Wellenstriche. B-1179: Cheat-Panel. B-1180: FPS-Anzeige. `economy_wie_go` rot.
+B-1178 (Wolken, Monumentalbild, Wellenstriche), B-1179 (Cheat-Panel), B-1181 (Licht-Assets), `economy_wie_go` rot.
 
 ### Abweichung vom Plan
-AC-05 nur teilweise erfüllt: Wolken, Monumentalbild und Wellenstriche fehlen (B-1178). Die Fackeln an gebauten Häusern habe ich nachts nicht selbst gesehen (kein Stand mit Gebäuden in der Nacht aufgenommen).
+AC-05 nur teilweise erfüllt (B-1178).

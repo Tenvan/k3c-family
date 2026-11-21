@@ -29,6 +29,7 @@ fn new_roles() {
             Layer::NEAR,
             Layer::GROUND,
             Layer::RIVER,
+            Layer::ACTORS,
             Layer::RIVER
         ]
     );
@@ -83,7 +84,12 @@ fn draw_order_and_counts() {
     assert_eq!(counts[2], (Layer::NEAR, 0, 0), "nah ohne Grafik");
     assert_eq!(counts[3], (Layer::GROUND, 1, 0), "Boden: Ufer-Streifen");
     assert!(counts[4].2 > 0 && counts[4].1 == 0, "Fluss: Kacheln {:?}", counts[4]);
-    assert_eq!(counts[5], (Layer::RIVER, 0, 0), "Licht am Tag, ohne Übergang");
+    assert_eq!(
+        counts[5],
+        (Layer::ACTORS, 0, 0),
+        "Fackeln am Tag: keine Flamme, ohne Gebäude keine"
+    );
+    assert_eq!(counts[6], (Layer::RIVER, 0, 0), "Licht am Tag, ohne Übergang");
 }
 
 /// Ohne Stufe mit Welt zeichnet kein Drawer etwas.

@@ -176,16 +176,24 @@ impl LightData {
         if a <= 0.0 {
             return add;
         }
-        for s in &w.sites {
-            if s.state != "built" {
-                continue;
-            }
+        self.for_each_torch(w, |tx| add += a * falloff(x, tx, self.torch.radius));
+        add
+    }
+
+    /// ForEachTorch ruft `f` mit dem x jeder Fackel der Welt: gebaute Plätze mit den Versätzen aus `torches`, geweitet
+    /// um `glow.torchSpread` (nur Darstellung), dazu die zwei Fackeln der Burg (`glow.castleTorches`). Ohne Allokation.
+    pub fn for_each_torch(&self, w: &SimWorld, mut f: impl FnMut(f64)) {
+        let g = k3c_data::look::current().glow;
+        for s in w.sites.iter().filter(|s| s.state == "built") {
             let side = torch_side(s.x, w.hub_x);
             for o in self.torches.get(&s.kind).into_iter().flatten() {
-                add += a * falloff(x, s.x + side * o, self.torch.radius);
+                f(s.x + side * o * g.torch_spread);
             }
         }
-        add
+        if g.castle_torches > 0.0 && w.hub_level >= 1 {
+            f(w.castle.x - g.castle_torches);
+            f(w.castle.x + g.castle_torches);
+        }
     }
 
     /// LevelAt ist die Helligkeit des Vordergrunds am Ort x (grau, 0 … 1) wie lightLevelAt im Browser.
@@ -198,11 +206,9 @@ impl LightData {
     pub fn color_at(&self, x: f64, w: &SimWorld) -> (f64, f64, f64) {
         let base = self.front(&w.cycle);
         let l = (1.0 - base) * self.lift(x, w);
-        (
-            fmin(1.0, base + l * self.glow[0]),
-            fmin(1.0, base + l * self.glow[1]),
-            fmin(1.0, base + l * self.glow[2]),
-        )
+        let warm = k3c_data::look::current().glow.warmth;
+        let ch = |i: usize| fmin(1.0, base + l * self.glow[i].powf(warm));
+        (ch(0), ch(1), ch(2))
     }
 }
 
