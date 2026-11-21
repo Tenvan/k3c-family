@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** WI3
+- **Sprint:** ECO1
 - **Projekt:** WIR
 - **Erstellt:** 2026-11-21
 - **Spec:** Entwurf

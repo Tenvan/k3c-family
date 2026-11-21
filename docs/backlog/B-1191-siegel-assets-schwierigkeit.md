@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** DS1
-- **Projekt:** PAP
+- **Sprint:** ECO1
+- **Projekt:** WIR
 - **Erstellt:** 2026-11-21
 - **Spec:** Entwurf
 - **Revision:** 1
