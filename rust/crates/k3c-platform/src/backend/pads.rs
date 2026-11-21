@@ -67,6 +67,11 @@ impl Pads {
                 connect(&mut self.ids, &mut self.next, input, ev.id);
                 continue;
             }
+            // B-1212: Ein Pad, das nach dem Start erst eingeschaltet wird, meldet Tasten manchmal vor (oder ganz ohne) das
+            // Connected-Ereignis: Jedes Ereignis eines unbekannten, verbundenen Pads meldet es an.
+            if !matches!(ev.event, EventType::Disconnected) {
+                connect(&mut self.ids, &mut self.next, input, ev.id);
+            }
             let Some(pos) = self.ids.iter().position(|(gid, _)| *gid == ev.id) else {
                 continue;
             };

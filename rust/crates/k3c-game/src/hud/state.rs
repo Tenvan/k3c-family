@@ -4,7 +4,6 @@
 
 use super::Hud;
 use super::banner::{BannerQueue, event_text};
-use super::glyphs::{JoinKey, join_from_key, new_join_key};
 use super::hints::{GuideHint, GuideId, GuideSeen, action_hint, guide_keys, hint_text, step_guide};
 use super::icons::{StockPart, stock_parts};
 use super::kampf::{BossView, EventsKey, boss_bar, boss_title, event_banner, new_events_key};
@@ -136,8 +135,8 @@ impl Hud {
         self.lang = lang_only.normalized().language;
         // Pause zeigt das Pause-Menü (menu), kein eigenes Band
         self.cells = f.seats.len().min(MAX_PLAYERS);
-        let jk: JoinKey = new_join_key(&self.lang, &f.unseated);
-        put(&mut self.join_s, self.m_join.get(jk, join_from_key));
+        // B-1212: Die Beitreten-Meldung im HUD entfällt (die Lobby und das Beitreten selbst bleiben)
+        self.join_s.clear();
         self.guide = !f.settings.guide_off;
         self.seen = GuideSeen(guide_bits(f.settings.guide_seen).0 | self.pending.0);
         self.cues(f);
