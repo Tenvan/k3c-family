@@ -36,7 +36,7 @@ pub use shared::{
     ActiveEvent, CombatRuntime, CombatSettings, Crown, CycleInfo, ItemDrop, Merchant, SkillTable, SwitchState,
     SwitchTarget, WarnZone, WorldValues,
 };
-pub use types::{Coin, Job, Player, PlayerCommand, Troop};
+pub use types::{CITIZEN, Coin, Job, Player, PlayerCommand, Troop, data_kind};
 pub use types_enemy::{Camp, Enemy, Event, Hazard, Pickup, Projectile, QueuedSpawn, Storm, Travel};
 pub use types_things::{Castle, Plot, ResourceNode, Site};
 pub use types_world::World;

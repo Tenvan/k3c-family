@@ -257,7 +257,7 @@ pub fn nearest_vagrant(w: &World, x: f64) -> GuideHint {
         ..Default::default()
     };
     for t in &w.troops {
-        if t.kind == "vagrant"
+        if t.is_wild()
             && (t.x - x).abs() < PRICE_TAG_RANGE_UNITS
             && (best.id == GuideId::None || (t.x - x).abs() < (best.x - x).abs())
         {
@@ -276,7 +276,7 @@ pub fn guide_done(h: &GuideHint, w: &World) -> bool {
     match h.id {
         GuideId::Coin => !w.coins.iter().any(|c| c.id == h.target),
         GuideId::Dusk => w.cycle.phase == "night",
-        GuideId::Recruit => w.troops.iter().any(|t| t.id == h.target && t.kind != "vagrant"),
+        GuideId::Recruit => w.troops.iter().any(|t| t.id == h.target && !t.is_wild()),
         GuideId::None => false,
     }
 }

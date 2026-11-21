@@ -102,7 +102,7 @@ fn guard_foe(w: &World, e: &Enemy) -> Option<Target> {
     }
     let ranged = e.has("ranged");
     for t in &w.troops {
-        if t.kind != "vagrant" && (ranged || !is_on_tower(w, t)) {
+        if !t.is_wild() && (ranged || !is_on_tower(w, t)) {
             consider(Target {
                 id: t.id,
                 x: t.x,

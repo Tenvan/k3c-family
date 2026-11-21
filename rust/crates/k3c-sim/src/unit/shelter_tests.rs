@@ -15,7 +15,7 @@ fn schutzplatz_stabil_bei_truppenwechsel() {
     let hub = w.hub_x;
     for _ in 0..5 {
         let ti = spawn_vagrant_with(&mut w, &v, hub, hub);
-        w.troops[ti].kind = "peasant".into();
+        w.troops[ti].serve();
     }
     let step_all = |w: &mut crate::state::World| {
         for ti in 0..w.troops.len() {
@@ -33,11 +33,11 @@ fn schutzplatz_stabil_bei_truppenwechsel() {
     // Tod von Bauer 2, ein neuer Bauer vorn und einer hinten: alle Indizes der übrigen verschieben sich.
     w.troops.remove(1);
     let front = spawn_vagrant_with(&mut w, &v, hub, hub);
-    w.troops[front].kind = "peasant".into();
+    w.troops[front].serve();
     let t = w.troops.pop().expect("neuer Bauer");
     w.troops.insert(0, t);
     let back = spawn_vagrant_with(&mut w, &v, hub, hub);
-    w.troops[back].kind = "peasant".into();
+    w.troops[back].serve();
     step_all(&mut w);
     for (i, &id) in ids.iter().enumerate() {
         let got = shelter_of(&mut w, id);

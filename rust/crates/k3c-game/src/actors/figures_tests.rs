@@ -164,7 +164,7 @@ fn troops_and_enemies() {
         bat.lift
     );
     let old_look = d.figs[&key(Class::Troop, 2)].look.clone();
-    w.troops[1].kind = "peasant".to_string();
+    w.troops[1].serve();
     w.enemies.truncate(1);
     d.listen(&frame_of(1.2, &w));
     assert!(

@@ -17,7 +17,7 @@ fn carrier(w: &mut World, x: f64, amount: i64, hammer: bool) -> usize {
     w.enemies.clear();
     w.troops.push(Troop {
         id: 900,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x,
         hp: 1.0,
         max_hp: 1.0,
@@ -277,7 +277,7 @@ fn island_find_job_skips_full_resource() {
     let hub = w.hub_x;
     w.troops.push(Troop {
         id: 901,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x: hub,
         hp: 1.0,
         max_hp: 1.0,
@@ -327,7 +327,7 @@ fn island_full_carrier_does_not_fetch_bow() {
     }
     let t = &isl.stages[0].troops[0];
     assert!(
-        t.job.as_ref().is_some_and(|j| j.r#type == "carry") && t.kind == "peasant" && t.carried.is_none(),
+        t.job.as_ref().is_some_and(|j| j.r#type == "carry") && t.serving() && t.carried.is_none(),
         "wartender Träger bleibt Träger: Kind {}, Job {:?}, carried {:?}",
         t.kind,
         t.job,

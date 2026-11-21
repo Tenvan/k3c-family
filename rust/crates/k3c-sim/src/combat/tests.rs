@@ -128,7 +128,7 @@ fn fuehrer_faellt_nur_als_letzter_der_gruppe() {
     let (mut w, l) = group_ready();
     let hub = w.hub_x;
     for t in w.troops.iter_mut().filter(|t| t.group == 0 && t.kind == "warrior") {
-        t.kind = "peasant".into(); // kein Nachrücken in die Gruppe
+        t.serve(); // kein Nachrücken in die Gruppe
         t.anchor_x = hub;
     }
     w.troops[l].hp = 0.0;
@@ -144,10 +144,7 @@ fn fuehrer_faellt_nur_als_letzter_der_gruppe() {
     w.troops[l].hp = 0.0;
     run(&mut w, 0.2);
     let t = &w.troops[l];
-    assert!(
-        !t.leader && t.kind == "peasant" && t.group == 0,
-        "letzter Führer blieb Führer"
-    );
+    assert!(!t.leader && t.serving() && t.group == 0, "letzter Führer blieb Führer");
 }
 
 #[test]

@@ -32,7 +32,13 @@ fn troop(id: i64, x: f64, kind: &str) -> Troop {
     Troop {
         id,
         x,
-        kind: kind.to_string(),
+        kind: if kind == "vagrant" || kind == "peasant" {
+            "citizen"
+        } else {
+            kind
+        }
+        .to_string(),
+        wild: kind == "vagrant",
         ..Default::default()
     }
 }
@@ -200,7 +206,7 @@ fn guide_erledigt_und_zwei_spieler() {
         GuideId::Coin,
         "gesehener Hinweis kommt nicht wieder"
     );
-    w.troops[0].kind = "peasant".to_string();
+    w.troops[0].serve();
     step_guide(p2, &w, 51.0, false, &mut seen);
     assert!(seen.has(GuideId::Recruit), "Landstreicher ist Bauer: erledigt");
     let dusk = step_guide(GuideHint::default(), &guide_world("dusk"), 0.0, false, &mut seen);

@@ -46,7 +46,7 @@ fn limit_voll_bogen_bleibt_im_regal() {
     let (mut w, workshop) = limit_world();
     run(&mut w, 20.0);
     assert!(
-        w.troops[0].kind == "peasant" && w.sites[workshop].bows == 1 && fighters(&w) == troop_limit(&w),
+        w.troops[0].serving() && w.sites[workshop].bows == 1 && fighters(&w) == troop_limit(&w),
         "Limit voll: Bauer ist {}, Bögen im Regal {}, Kämpfer {}/{}",
         w.troops[0].kind,
         w.sites[workshop].bows,
@@ -82,7 +82,7 @@ fn kaserne_zerstoert_kaempfer_bleiben() {
     );
     let hub = w.hub_x;
     let other = spawn_vagrant(&mut w, hub, hub);
-    w.troops[other].kind = "peasant".into();
+    w.troops[other].serve();
     let v = vals(&w);
     if let Some(j) = weapon_to_fetch(&w, &v, other) {
         assert!(
@@ -112,7 +112,7 @@ fn limit_zaehlt_bogenschuetzen_und_krieger() {
     w.troops[0].hammer = false;
     run(&mut w, 20.0);
     assert!(
-        w.troops[0].kind == "peasant" && w.sites[workshop].swords == 1 && fighters(&w) == l.base,
+        w.troops[0].serving() && w.sites[workshop].swords == 1 && fighters(&w) == l.base,
         "Limit voll: Bauer ist {}, Schwerter im Regal {}, Kämpfer {}/{}",
         w.troops[0].kind,
         w.sites[workshop].swords,
@@ -135,7 +135,7 @@ fn limit_zaehlt_bogenschuetzen_und_krieger() {
     let extra = add_peasant(&mut w, hub, "");
     run(&mut w, 20.0);
     assert!(
-        w.troops[extra].kind == "peasant" && w.sites[workshop].swords == 1 && fighters(&w) == l.base + l.per_building,
+        w.troops[extra].serving() && w.sites[workshop].swords == 1 && fighters(&w) == l.base + l.per_building,
         "Limit mit Kaserne: Bauer ist {}, Schwerter im Regal {}, Kämpfer {}/{}",
         w.troops[extra].kind,
         w.sites[workshop].swords,
@@ -149,7 +149,7 @@ fn limit_zaehlt_bogenschuetzen_und_krieger() {
 fn fighters_zaehlt_nur_kaempfer() {
     let mut w = bare_world();
     let hub = w.hub_x;
-    for kind in ["archer", "warrior", "eliteArcher", "vagrant", "peasant"] {
+    for kind in ["archer", "warrior", "eliteArcher", "citizen", "citizen"] {
         let ti = spawn_vagrant(&mut w, hub, hub);
         w.troops[ti].kind = kind.into();
     }

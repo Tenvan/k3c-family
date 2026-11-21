@@ -43,7 +43,8 @@ fn set_economy(isl: &mut crate::island::Island) {
         let ti = spawn_vagrant(w, hub, hub + 1.0);
         let hp = crate::world::vals(w).troops.get("peasant").map_or(1.0, |d| d.hp);
         let tr = &mut w.troops[ti];
-        (tr.kind, tr.hp, tr.max_hp, tr.profession) = ("peasant".into(), hp, hp, prof.into());
+        (tr.kind, tr.hp, tr.max_hp, tr.profession) = ("citizen".into(), hp, hp, prof.into());
+        tr.wild = false;
         if let Some(id) = site {
             tr.work_site = id;
         }
@@ -64,7 +65,7 @@ fn set_economy(isl: &mut crate::island::Island) {
 
 /// Go: `added`: die Truppen, die `set_economy` zur Startbesetzung dazugibt (ab dem ersten Bauern mit Beruf).
 fn added(w: &World) -> Vec<&Troop> {
-    let out: Vec<&Troop> = w.troops.iter().filter(|t| t.kind != "vagrant").collect();
+    let out: Vec<&Troop> = w.troops.iter().filter(|t| !t.is_wild()).collect();
     let from = out.iter().position(|t| !t.profession.is_empty()).unwrap_or(0);
     out[from..].to_vec()
 }
@@ -132,15 +133,15 @@ fn check_plots(n: &Site) {
 
 fn check_troops(w: &World, w1: &World, shop_id: i64) {
     let want = [
-        "peasant:miner",
-        "peasant:craftsman",
+        "citizen:miner",
+        "citizen:craftsman",
         "archer:",
         "warrior:",
         "eliteArcher:",
         "eliteWarrior:",
     ];
     assert!(
-        troop_kinds(w) == want && troop_kinds(w1) == ["peasant:builder", "warrior:"],
+        troop_kinds(w) == want && troop_kinds(w1) == ["citizen:builder", "warrior:"],
         "Truppen {:?} / {:?}",
         troop_kinds(w),
         troop_kinds(w1)

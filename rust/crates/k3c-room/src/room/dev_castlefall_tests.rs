@@ -19,7 +19,7 @@ fn dev_burgfall() {
         assert_eq!(p.gold, 5, "Gold von Monarch {} nach Burgfall, erwartet 5", p.index);
     }
     for t in &r.isl.stages[stage].troops {
-        assert_eq!(t.kind, "vagrant", "Truppe {} überlebt den Burgfall", t.kind);
+        assert!(t.is_wild(), "Truppe {} überlebt den Burgfall", t.kind);
     }
     assert_eq!(
         dev(&mut m, &code, &act("castleFall")),

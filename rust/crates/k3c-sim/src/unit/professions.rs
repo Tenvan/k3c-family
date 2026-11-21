@@ -170,7 +170,7 @@ pub fn free_peasant(w: &World, x: f64, kind: &str) -> Option<usize> {
         |t| t.x,
         x,
         f64::INFINITY,
-        |t| t.kind == "peasant" && !t.hammer && t.job.is_none() && t.profession != kind,
+        |t| t.serving() && !t.hammer && t.job.is_none() && t.profession != kind,
     )
 }
 
@@ -178,7 +178,7 @@ pub fn free_peasant(w: &World, x: f64, kind: &str) -> Option<usize> {
 pub fn workers_at(w: &World, site_id: i64, kind: &str) -> i64 {
     w.troops
         .iter()
-        .filter(|t| t.kind == "peasant" && t.profession == kind && t.work_site == site_id)
+        .filter(|t| t.serving() && t.profession == kind && t.work_site == site_id)
         .count() as i64
 }
 
@@ -187,7 +187,7 @@ pub fn workers_at(w: &World, site_id: i64, kind: &str) -> i64 {
 pub fn work_factor(w: &World, v: &WorldValues, ti: usize, kind: &str) -> f64 {
     let t = &w.troops[ti];
     match profession_of(&v.troops, kind) {
-        Some(prof) if t.kind == "peasant" && t.profession == kind => prof.work_factor,
+        Some(prof) if t.serving() && t.profession == kind => prof.work_factor,
         _ => 1.0,
     }
 }

@@ -38,7 +38,8 @@ fn add_vagrant(w: &mut World, x: f64) -> i64 {
     let id = w.new_id();
     w.troops.push(Troop {
         id,
-        kind: "vagrant".into(),
+        kind: "citizen".into(),
+        wild: true,
         x,
         ..Troop::default()
     });
@@ -168,7 +169,7 @@ fn zwei_spieler_rekrutieren_gemeinsam_einen_landstreicher() {
         pay_to_target(&mut w, &v, None, pi, &target);
     }
     let t = &w.troops[0];
-    assert_eq!(t.kind, "peasant", "bezahlt: Bauer");
+    assert!(t.serving(), "bezahlt: Bürger im Dienst");
     assert_eq!(t.paid_gold, 0);
     assert_eq!(t.hp, v.troops["peasant"].hp);
     assert_eq!(t.anchor_x, w.hub_x);

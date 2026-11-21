@@ -34,10 +34,7 @@ pub fn tavern_dawn(w: &mut World) {
 
 /// Go: `vagrantsAt` zählt die Landstreicher, die an `x` gebunden sind (Camp oder Taverne).
 pub fn vagrants_at(w: &World, x: f64) -> i64 {
-    w.troops
-        .iter()
-        .filter(|t| t.kind == "vagrant" && t.anchor_x == x)
-        .count() as i64
+    w.troops.iter().filter(|t| t.is_wild() && t.anchor_x == x).count() as i64
 }
 
 /// Go: `wanderRadius`: Landstreicher einer Taverne wandern im Radius der Taverne, alle anderen um ihr Camp.

@@ -74,7 +74,7 @@ fn vagrants_at_und_wander_radius() {
     let at_tavern = spawn_vagrant(&mut w, hub + 50.0, hub + 51.0);
     let at_camp = spawn_vagrant(&mut w, hub + 90.0, hub + 90.0);
     let peasant = spawn_vagrant(&mut w, hub + 50.0, hub + 50.0);
-    w.troops[peasant].kind = "peasant".into();
+    w.troops[peasant].serve();
     assert_eq!(vagrants_at(&w, hub + 50.0), 1, "Bauern zählen nicht");
     assert_eq!(vagrants_at(&w, hub + 90.0), 1);
     assert_eq!(vagrants_at(&w, hub + 10.0), 0);

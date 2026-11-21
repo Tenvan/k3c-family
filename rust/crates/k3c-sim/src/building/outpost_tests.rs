@@ -35,7 +35,7 @@ fn edge_walls(w: &mut World) {
 
 /// Go: `outpostPeasant` ist der Bauer der Stufe, tagsüber ohne Gegner.
 fn outpost_peasant(w: &World) -> usize {
-    match w.troops.iter().position(|t| t.kind == "peasant" && !is_dangerous(w)) {
+    match w.troops.iter().position(|t| t.serving() && !is_dangerous(w)) {
         Some(ti) => ti,
         None => panic!("Ausgangslage: Bauer fehlt oder Gefahr"),
     }
@@ -228,10 +228,7 @@ fn dev_castle_fall_stellt_ruine_wieder_her() {
         "Ruine nach Dev-Burgfall: {s:?}"
     );
     assert_eq!((w.players[0].gold, w.players[1].gold), (5, 3), "Gold nach Dev-Burgfall");
-    assert!(
-        w.troops.iter().all(|t| t.kind == "vagrant"),
-        "Truppe überlebt den Burgfall"
-    );
+    assert!(w.troops.iter().all(|t| t.is_wild()), "Truppe überlebt den Burgfall");
     assert!(
         !crate::dev::dev_castle_fall(&mut isl, &data.difficulty, 9),
         "unbekannter Spieler akzeptiert"

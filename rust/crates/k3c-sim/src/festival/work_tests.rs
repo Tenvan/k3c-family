@@ -44,7 +44,7 @@ fn schiffsbau_schliesst_im_frieden_ab() {
     let ticks = (levels[levels.len() - 1].build_seconds * 4.0 / DT) as usize + 2000;
     for _ in 0..ticks {
         isl.stages[wi].players[0].x = x;
-        if let Some(t) = isl.stages[wi].troops.iter_mut().find(|t| t.kind == "peasant") {
+        if let Some(t) = isl.stages[wi].troops.iter_mut().find(|t| t.serving()) {
             t.x = x; // ein Bauer steht am Platz und baut
         }
         let cmds = vec![
@@ -79,7 +79,7 @@ fn lager_der_vagabunden_laufen_weiter() {
     tick(&mut isl, &data);
     let w = &mut isl.stages[0];
     assert!(!w.camps.is_empty(), "Stufe 0 hat Lager");
-    w.troops.retain(|t| t.kind != "vagrant");
+    w.troops.retain(|t| !t.is_wild());
     for c in &mut w.camps {
         c.respawn_in = 0.1;
     }
@@ -87,6 +87,6 @@ fn lager_der_vagabunden_laufen_weiter() {
         tick(&mut isl, &data);
     }
     let w = &isl.stages[0];
-    assert!(w.troops.iter().any(|t| t.kind == "vagrant"), "Vagabunden kommen nach");
+    assert!(w.troops.iter().any(|t| t.is_wild()), "Vagabunden kommen nach");
     assert!(w.enemies.is_empty() && w.spawn_queue.is_empty());
 }

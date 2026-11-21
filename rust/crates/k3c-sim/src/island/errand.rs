@@ -58,7 +58,7 @@ pub fn gear_above(isl: &Island, i: usize) -> bool {
 
 /// Hat der Bürger oben etwas geholt (Beruf, Kämpfer) oder gibt es für ihn nichts zu tun?
 fn done_upstairs(t: &Troop) -> bool {
-    let equipped = t.kind != "peasant" || t.hammer;
+    let equipped = !t.serving() || t.hammer;
     equipped || t.job.is_none()
 }
 
@@ -107,7 +107,7 @@ pub fn step_errands(isl: &mut Island, dt: f64) {
     }
     for (i, t) in down {
         let x = built_stairs(&isl.stages[i], "stairsUp").unwrap_or(isl.stages[i].hub_x);
-        let futile = t.kind == "peasant" && !t.hammer;
+        let futile = t.serving() && !t.hammer;
         place(&mut isl.stages[i], t, x, 0);
         if futile && let Some(back) = isl.stages[i].troops.last_mut() {
             back.errand_wait = FUTILE_WAIT;
@@ -133,18 +133,18 @@ fn take(w: &mut World, ti: usize) -> (usize, Troop) {
 fn place(w: &mut World, old: Troop, x: f64, errand_from: i64) {
     let id = w.new_id();
     // Kämpfer: Seite (`anchor_x` links oder rechts der Burg) der schwächer besetzten Seite der Stufe, nicht der Treppe
-    let anchor_x = if old.kind == "peasant" {
+    let anchor_x = if old.serving() {
         x
     } else {
         let left = w
             .troops
             .iter()
-            .filter(|t| t.kind != "peasant" && t.kind != "vagrant" && t.anchor_x < w.hub_x)
+            .filter(|t| !t.serving() && !t.is_wild() && t.anchor_x < w.hub_x)
             .count();
         let right = w
             .troops
             .iter()
-            .filter(|t| t.kind != "peasant" && t.kind != "vagrant" && t.anchor_x >= w.hub_x)
+            .filter(|t| !t.serving() && !t.is_wild() && t.anchor_x >= w.hub_x)
             .count();
         if left <= right { w.hub_x - 1.0 } else { w.hub_x + 1.0 }
     };

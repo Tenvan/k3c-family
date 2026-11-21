@@ -63,7 +63,8 @@ fn treppe_hoch_in_der_hoehle_kostet_holz() {
     let ti = crate::unit::spawn_vagrant(&mut w, hub, hub);
     let hp = crate::world::vals(&w).troops.get("peasant").map_or(0.0, |t| t.hp);
     let t = &mut w.troops[ti];
-    (t.kind, t.hp, t.max_hp, t.hammer) = ("peasant".into(), hp, hp, true);
+    (t.kind, t.hp, t.max_hp, t.hammer) = ("citizen".into(), hp, hp, true);
+    t.wild = false;
     let p0 = crate::world::add_player(&mut w);
     let p1 = crate::world::add_player(&mut w);
     w.hub_level = 2;
@@ -82,7 +83,7 @@ fn treppe_hoch_in_der_hoehle_kostet_holz() {
         pay_at(&mut w, &[p0, p1], x, seconds, waiting),
         "stairsUp: nicht bezahlt"
     );
-    for t in w.troops.iter_mut().filter(|t| t.kind == "peasant") {
+    for t in w.troops.iter_mut().filter(|t| t.serving()) {
         t.x = x;
     }
     run_until(&mut w, 60.0, |w| w.site(id).is_some_and(|s| s.state == "built"));

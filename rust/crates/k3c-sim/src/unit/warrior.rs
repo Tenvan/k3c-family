@@ -28,7 +28,7 @@ use k3c_data::troops::TroopData;
 
 /// Go: `isFighter`: Ist `kind` eine Kämpfer-Figur aus `troops` (nicht Landstreicher, Bauer oder Beruf)?
 pub fn is_fighter(troops: &BTreeMap<String, TroopData>, kind: &str) -> bool {
-    kind != "vagrant" && kind != "peasant" && troops.contains_key(kind)
+    kind != crate::state::CITIZEN && kind != "vagrant" && kind != "peasant" && troops.contains_key(kind)
 }
 
 /// Go: `swordSpot` ist der Ort des Schwert-Zahlziels am Platz `si`; `None`, wenn sein Gebäude keins hat.
@@ -332,7 +332,7 @@ pub fn step_warrior(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti:
         return;
     }
     let fallback = TroopData::default();
-    let d = v.troops.get(&t.kind).unwrap_or(&fallback);
+    let d = v.troops.get(t.data_kind()).unwrap_or(&fallback);
     let (range, damage, rate) = (d.range, d.damage, d.attacks_per_second);
     let damage = damage * crate::hermit::bonus::damage_factor(w); // RU62.10: Dojo
     let Some(ei) = nearest(&w.enemies, |e| e.x, from, range + BODY + 0.1, |_| true) else {
@@ -373,14 +373,14 @@ pub fn lose_layer(w: &mut World, v: &WorldValues, ti: usize) {
         );
         let hub = w.hub_x;
         let t = &mut w.troops[ti];
-        t.kind = "peasant".into();
+        t.serve();
         t.profession.clear();
         t.work_site = 0;
         t.anchor_x = hub;
     }
     leave_squad(w, ti);
     let t = &mut w.troops[ti];
-    t.fleeing = t.kind == "peasant";
-    t.hp = v.troops.get(&t.kind).map_or(0.0, |d| d.hp);
+    t.fleeing = t.serving();
+    t.hp = v.troops.get(t.data_kind()).map_or(0.0, |d| d.hp);
     t.max_hp = t.hp;
 }

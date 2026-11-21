@@ -184,7 +184,7 @@ fn step_armor(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, si: usize
     let after = armor_bonus(w, v);
     for t in &mut w.troops {
         if is_fighter(&v.troops, &t.kind) {
-            let gain = v.troops.get(&t.kind).map_or(0.0, |d| d.hp) * (after - before);
+            let gain = v.troops.get(t.data_kind()).map_or(0.0, |d| d.hp) * (after - before);
             t.max_hp += gain;
             t.hp += gain;
         }

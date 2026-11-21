@@ -57,7 +57,7 @@ fn abbau_erst_nach_dem_freiraeumen() {
         ..Default::default()
     });
     let ti = crate::unit::spawn_vagrant(&mut w, hub, hub);
-    w.troops[ti].kind = "peasant".into();
+    w.troops[ti].serve();
     w.troops[ti].hammer = true;
     let mut vals = (*v).clone();
     vals.native_rules = true;

@@ -212,7 +212,7 @@ pub fn dev_set_pure(isl: &mut Island, on: bool) {
         if !on {
             continue;
         }
-        w.troops.retain(|t| t.kind != "vagrant");
+        w.troops.retain(|t| !t.is_wild());
         w.enemies.retain(|e| !e.guard);
         w.spawn_queue.clear();
     }

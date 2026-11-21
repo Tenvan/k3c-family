@@ -23,7 +23,7 @@ pub fn apply_hub(w: &mut World, h: &HubSave) {
     }
     apply_hub_level(w, h);
     // Start-Truppen durch die gespeicherten ersetzen
-    w.troops.retain(|t| t.kind == "vagrant");
+    w.troops.retain(|t| t.is_wild());
     apply_troops(w, h);
     let gone = set(&h.nodes_gone);
     let marked = set(&h.nodes_marked);

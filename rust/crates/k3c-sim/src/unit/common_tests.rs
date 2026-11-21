@@ -13,7 +13,7 @@ use crate::state::{Job, ResourceNode, Troop};
 fn peasant(w: &mut crate::state::World, v: &crate::state::WorldValues, x: f64) -> usize {
     let hub = w.hub_x;
     let ti = spawn_vagrant_with(w, v, hub, x);
-    w.troops[ti].kind = "peasant".into();
+    w.troops[ti].serve();
     ti
 }
 
@@ -26,8 +26,9 @@ fn landstreicher_startet_mit_hp_der_daten_und_am_camp() {
     let hp = v.troops["vagrant"].hp;
     assert_eq!(
         (t.kind.as_str(), t.hp, t.max_hp, t.anchor_x, t.target_x, t.x),
-        ("vagrant", hp, hp, 50.0, 53.0, 53.0)
+        ("citizen", hp, hp, 50.0, 53.0, 53.0)
     );
+    assert!(t.is_wild());
 }
 
 #[test]

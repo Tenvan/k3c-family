@@ -374,5 +374,5 @@ pub fn castle_losses(w: &mut World) {
     for n in &mut w.nodes {
         n.worker_id = None;
     }
-    w.troops.retain(|t| t.kind == "vagrant");
+    w.troops.retain(|t| t.is_wild());
 }

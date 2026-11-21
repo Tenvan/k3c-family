@@ -51,7 +51,7 @@ fn lava_schadet_figuren() {
     let peasant = spawn_vagrant(&mut w, x, x);
     {
         let t = &mut w.troops[peasant];
-        t.kind = "peasant".into();
+        t.serve();
         t.hp = 1000.0;
         t.max_hp = 1000.0;
         t.target_x = x;
@@ -190,7 +190,7 @@ fn own_step_lava_trifft_nur_gekrönte_gesteuerte_spieler_und_lebende_truppen() {
     let id = w.new_id();
     w.troops.push(Troop {
         id,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x: 105.0,
         hp: 0.0, // tot
         ..Troop::default()

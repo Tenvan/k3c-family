@@ -42,7 +42,7 @@ pub static TEXTS_DE: &[(&str, &str)] = &[
     ("event.timed", "{name}  ·  {left}"),
     ("guide.coin", "Hinlaufen: Münze aufheben"),
     ("guide.dusk", "Die Nacht naht! Zurück zur Burg"),
-    ("guide.recruit", "Münze geben, er wird Bauer"),
+    ("guide.recruit", "Münze geben, der Bürger arbeitet für dich"),
     ("hint.buy", "{name} kaufen"),
     ("hint.down", "Pfeil unten"),
     ("hint.lair", "Bau des Endbosses: Ankunft löst ihn aus"),

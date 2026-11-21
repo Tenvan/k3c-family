@@ -148,11 +148,11 @@ pub fn apply_plots(w: &mut World, h: &HubSave) {
 pub fn troops_save(w: &World) -> Vec<TroopSave> {
     let mut out = Vec::new();
     for t in &w.troops {
-        if t.kind == "vagrant" {
+        if t.is_wild() {
             continue;
         }
         let mut ts = TroopSave {
-            kind: t.kind.clone(),
+            kind: t.data_kind().to_string(), // Bürger im Dienst als `peasant`: Go-Format bleibt (FG1.1)
             x: t.x,
             anchor_x: t.anchor_x,
             profession: t.profession.clone(),
@@ -174,11 +174,11 @@ pub fn apply_troops(w: &mut World, h: &HubSave) {
     for t in &h.troops {
         let hub_x = w.hub_x;
         let ti = spawn_vagrant(w, hub_x, t.x);
-        if t.kind == "peasant" {
+        if t.serving() {
             let hp = values(w).troops.get("peasant").map_or(0.0, |d| d.hp);
             let work_site = site_by_key(w, &t.work_site).map(|si| w.sites[si].id);
             let troop = &mut w.troops[ti];
-            troop.kind = "peasant".into();
+            troop.serve();
             troop.hp = hp;
             troop.max_hp = hp;
             troop.anchor_x = hub_x;
@@ -205,11 +205,11 @@ pub fn apply_troops(w: &mut World, h: &HubSave) {
 pub fn validate_economy(v: &WorldValues, h: &HubSave) -> Result<(), Fehler> {
     let err = |s: String| Err(Fehler::Spielstand(s));
     for t in &h.troops {
-        if t.kind != "peasant" && !is_fighter(&v.troops, &t.kind) {
+        if !t.serving() && !is_fighter(&v.troops, &t.kind) {
             return err(format!("spielstand: Truppenart {:?} unbekannt", t.kind));
         }
         let known = profession_of(&v.troops, &t.profession).is_some();
-        if !t.profession.is_empty() && (!known || t.kind != "peasant") {
+        if !t.profession.is_empty() && (!known || !t.serving()) {
             return err(format!(
                 "spielstand: Beruf {:?} unbekannt oder nicht für {}",
                 t.profession, t.kind

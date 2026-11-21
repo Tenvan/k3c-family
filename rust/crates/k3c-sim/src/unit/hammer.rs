@@ -94,7 +94,8 @@ pub fn spawn_vagrant_with(w: &mut World, v: &WorldValues, camp_x: f64, x: f64) -
     let id = w.new_id();
     w.troops.push(crate::state::Troop {
         id,
-        kind: "vagrant".into(),
+        kind: crate::state::CITIZEN.into(),
+        wild: true,
         x,
         hp,
         max_hp: hp,
@@ -129,7 +130,7 @@ pub fn spawn_start_peasants(w: &mut World, v: &WorldValues, hub_x: f64) {
     for i in 0..craftsmen + st.peasant {
         let ti = spawn_vagrant_with(w, v, hub_x, hub_x + 2.0 + i as f64);
         let t = &mut w.troops[ti];
-        t.kind = "peasant".into();
+        t.serve();
         t.hp = hp;
         t.max_hp = hp;
         t.hammer = i < craftsmen;

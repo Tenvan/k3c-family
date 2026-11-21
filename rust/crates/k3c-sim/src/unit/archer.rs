@@ -79,7 +79,7 @@ pub fn step_archer(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, ti: 
     walk_to(w, v, ti, post, dt);
 
     let fallback = TroopData::default(); // unbekannte Art: Nullwerte wie Gos Map-Zugriff
-    let a = v.troops.get(w.troops[ti].kind.as_str()).unwrap_or(&fallback);
+    let a = v.troops.get(w.troops[ti].data_kind()).unwrap_or(&fallback);
     let weather_range = w.weather_range; // RU62.5: Taifun verkürzt Pfeile (sonst 1.0)
     let t = &mut w.troops[ti];
     t.cooldown = (t.cooldown - dt).max(0.0);

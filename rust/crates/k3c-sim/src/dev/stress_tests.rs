@@ -61,10 +61,7 @@ fn pure_run() -> (Vec<f64>, usize) {
         w.wave,
         w.spawn_queue.len()
     );
-    assert!(
-        w.troops.iter().all(|t| t.kind != "vagrant"),
-        "Landstreicher im reinen Modus"
-    );
+    assert!(w.troops.iter().all(|t| !t.is_wild()), "Landstreicher im reinen Modus");
     (xs, w.troops.len())
 }
 

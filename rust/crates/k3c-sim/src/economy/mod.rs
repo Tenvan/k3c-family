@@ -121,7 +121,7 @@ fn find_other_target(
     if let Some(side) = merchant_at(w, v, p.x) {
         return Some(PayTarget::Merchant(side.to_string()));
     }
-    if let Some(i) = nearest(&w.troops, |t| t.x, p.x, r, |t| t.kind == "vagrant") {
+    if let Some(i) = nearest(&w.troops, |t| t.x, p.x, r, |t| t.is_wild()) {
         return Some(PayTarget::Troop(w.troops[i].id));
     }
     nearest(&w.nodes, |n| n.x, p.x, r, |n| node_markable(w, n)).map(|i| PayTarget::Node(w.nodes[i].id))

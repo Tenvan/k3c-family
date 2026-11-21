@@ -34,7 +34,7 @@ fn disarm_krieger_wird_bauer_und_hebt_schwert_auf() {
     let events = hit_until(&mut w, 0, &|w| w.troops[0].kind != "warrior");
     let peasant_hp = w.vals.as_ref().map_or(0.0, |v| v.troops["peasant"].hp);
     let tr = &w.troops[0];
-    assert!(tr.kind == "peasant" && tr.hp == peasant_hp && w.drops.len() == 1 && w.drops[0].kind == "warrior");
+    assert!(tr.serving() && tr.hp == peasant_hp && w.drops.len() == 1 && w.drops[0].kind == "warrior");
     assert!(
         events.len() == 1 && events[0]["kind"] == "warrior" && events[0]["cause"] == "skeleton",
         "{events:?}"
@@ -58,7 +58,7 @@ fn disarm_beruf_faellt_zu_boden() {
     let tr = add_peasant(&mut w, hub - 5.0, "miner");
     let events = hit_until(&mut w, tr, &|w| w.troops[tr].profession.is_empty());
     let t = &w.troops[tr];
-    assert!(events.len() == 1 && events[0]["kind"] == "miner" && w.drops.len() == 1 && t.kind == "peasant");
+    assert!(events.len() == 1 && events[0]["kind"] == "miner" && w.drops.len() == 1 && t.serving());
     let again = |w: &World| w.troops[tr].profession == "miner";
     assert!(
         run_until(&mut w, 30.0, &again) >= 0.0,
@@ -74,15 +74,12 @@ fn treffer_macht_keinen_landstreicher() {
     let tr = add_peasant(&mut w, hub - 5.0, "");
     let coins = w.coins.len();
     let events = hit_until(&mut w, tr, &|w| w.troops[tr].fleeing);
-    assert!(
-        events.is_empty() && w.troops[tr].kind == "peasant",
-        "Treffer: {events:?}"
-    );
+    assert!(events.is_empty() && w.troops[tr].serving(), "Treffer: {events:?}");
     w.troops[tr].hp = 0.0;
     lose_layer(&mut w, tr); // Kampf-HP aufgebraucht: keine Kaskade
     let hp = w.vals.as_ref().map_or(0.0, |v| v.troops["peasant"].hp);
     let t = &w.troops[tr];
-    assert!(t.kind == "peasant" && w.coins.len() == coins && t.hp == hp && t.fleeing && w.drops.is_empty());
+    assert!(t.serving() && w.coins.len() == coins && t.hp == hp && t.fleeing && w.drops.is_empty());
     w.troops[tr].x = hub - 40.0;
     run(&mut w, 30.0);
     let home = w.vals.as_ref().map_or(0.0, |v| v.hub.home_radius_units);

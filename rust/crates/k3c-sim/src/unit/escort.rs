@@ -15,7 +15,7 @@ use crate::state::{Troop, World, WorldValues};
 /// „Kampf läuft, Boss lebt, Begleitschutz eingerastet“): die Truppen kommen von der Seite des Hubs.
 pub fn escort_post_at(w: &World, v: &WorldValues, t: &Troop, boss_x: f64) -> f64 {
     let side = if w.hub_x < boss_x { -1.0 } else { 1.0 };
-    let range = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.range);
+    let range = v.troops.get(t.data_kind()).map_or(0.0, |d| d.range);
     boss_x + side * (range * 0.8).max(1.0)
 }
 

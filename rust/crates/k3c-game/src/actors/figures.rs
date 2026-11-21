@@ -163,11 +163,11 @@ impl Actors {
     }
 
     fn listen_troop(&mut self, w: &SimWorld, stage: i64, t: &Troop) {
-        let Some(look) = self.cat.as_ref().and_then(|c| c.troops.get(&t.kind)).cloned() else {
+        let Some(look) = self.cat.as_ref().and_then(|c| c.troops.get(t.data_kind())).cloned() else {
             self.warn(
                 WarnKey {
                     what: "truppe".to_string(),
-                    name: t.kind.clone(),
+                    name: t.data_kind().to_string(),
                 },
                 &"unbekannte Truppen-Art",
             );
@@ -187,11 +187,11 @@ impl Actors {
             cd: t.cooldown,
             attack_cooldown: false,
         };
-        let (want, dir) = troop_want(&t.kind, m, working(t), nearest_enemy_dir(w, t.x));
+        let (want, dir) = troop_want(t.data_kind(), m, working(t), nearest_enemy_dir(w, t.x));
         let (want, dir) = if w.festival.is_some() && w.biome.depth == 0 {
             {
                 let g = super::festival::Guest {
-                    kind: &t.kind,
+                    kind: t.data_kind(),
                     id: t.id,
                     x: t.x,
                     hub_x: w.hub_x,
