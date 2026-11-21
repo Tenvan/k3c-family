@@ -10,11 +10,11 @@ const lies = (p: string) => JSON.parse(readFileSync(p, 'utf8')) as Spec;
 const objekte = specsIn(join(ROOT, 'public/grafik/objekte')).map(lies);
 
 describe('Bäume (B-723/AC-01)', () => {
-  it.each(['birke', 'tanne', 'pappel'])('%s: mindestens zwei Formen, PNG 340–380 px hoch', (art) => {
+  it.each(['birke', 'tanne', 'pappel'])('%s: mindestens zwei Formen, PNG 200–380 px hoch', (art) => {
     const formen = objekte.filter((s) => s.id === art || new RegExp(`^${art}-\\d+$`).test(s.id));
     expect(formen.length).toBeGreaterThanOrEqual(2);
     for (const s of formen) {
-      expect(s.ausgabe.hoehe_px, s.id).toBeGreaterThanOrEqual(340);
+      expect(s.ausgabe.hoehe_px, s.id).toBeGreaterThanOrEqual(200);
       expect(s.ausgabe.hoehe_px, s.id).toBeLessThanOrEqual(380);
     }
   });

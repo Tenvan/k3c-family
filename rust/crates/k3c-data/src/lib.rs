@@ -26,6 +26,7 @@ pub mod hub;
 pub mod island_sizes;
 pub mod light;
 pub mod look;
+pub mod look_glow;
 pub mod look_world;
 pub mod monarch;
 pub mod mounts;

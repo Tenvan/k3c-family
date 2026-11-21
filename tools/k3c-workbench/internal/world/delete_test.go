@@ -87,3 +87,19 @@ func TestDeleteOhnePaperJSONLoeschtNichts(t *testing.T) {
 		t.Fatal("Datei trotz Ablehnung gelöscht")
 	}
 }
+
+// Review WZ62.5: Kaputtes oder leeres paper.json verhält sich wie ein fehlendes (die festen Welten sind unbekannt).
+func TestDeleteMitKaputtemPaperJSONLoeschtNichts(t *testing.T) {
+	for name, raw := range map[string]string{"kaputt": `{"weltbilder":`, "ohne weltbilder": `{}`, "leer": `{"weltbilder":{}}`} {
+		e := deleteRoot(t)
+		if err := os.WriteFile(filepath.Join(e.Root, "data", "paper.json"), []byte(raw), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := e.Delete("frei"); err == nil || !strings.Contains(err.Error(), "paper.json") {
+			t.Fatalf("%s: Delete: %v", name, err)
+		}
+		if _, err := os.Stat(e.file("frei")); err != nil {
+			t.Fatalf("%s: Datei trotz Ablehnung gelöscht", name)
+		}
+	}
+}

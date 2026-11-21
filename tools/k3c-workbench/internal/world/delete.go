@@ -17,12 +17,13 @@ func (e Editor) Delete(id string) ([]string, error) {
 	if err := checkID(id); err != nil {
 		return nil, err
 	}
-	if id == standardID || slices.Contains(e.fixedIDs(), id) {
+	fixed := e.fixedIDs()
+	if id == standardID || slices.Contains(fixed, id) {
 		return nil, fmt.Errorf("die Welt %q ist eine feste Welt und lässt sich nicht löschen", id)
 	}
-	// ohne lesbare paper.json ist nicht klar, welche Welten fest sind: lieber nichts löschen
-	if _, err := os.Stat(filepath.Join(e.Root, "data", "paper.json")); err != nil {
-		return nil, fmt.Errorf("data/paper.json fehlt: die festen Welten sind unbekannt, nichts gelöscht")
+	// ohne lesbare paper.json (fehlt, kaputt oder ohne weltbilder) ist nicht klar, welche Welten fest sind: lieber nichts löschen
+	if len(fixed) == 0 {
+		return nil, fmt.Errorf("data/paper.json fehlt oder enthält keine weltbilder: die festen Welten sind unbekannt, nichts gelöscht")
 	}
 	writeMu.Lock()
 	defer writeMu.Unlock()

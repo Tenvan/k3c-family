@@ -199,8 +199,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1156](B-1156-kritische-fragen-ru59-ru62.md) | INF | Frage | mittel | offen | KR6 | Kritische Entscheidungen aus RU59 bis RU62 (selbst entschieden, zur Durchsicht) |
 | [B-1154](B-1154-abnahme-ru62-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU62 | Abnahme-Läufe RU62: Sim, Balance, Gen samt Golden und Race |
 | [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
-| [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | offen | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
-| [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | offen | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
 | [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | LA1 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
 | [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | LA1 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
 | [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU36 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
