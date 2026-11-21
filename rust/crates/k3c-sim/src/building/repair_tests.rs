@@ -58,7 +58,7 @@ fn damaged_tower() -> (World, usize) {
     (w, tower)
 }
 
-/// Reparatur zwischen den Wellen: HP voll nach dem fehlenden Anteil der Bauzeit, Vorrat und Gold unverändert.
+/// Reparatur zwischen den Wellen: HP voll nach dem fehlenden Anteil der Bauzeit; kostet 1 Material und 2 Gold (ECO1.5).
 #[test]
 fn reparatur_ohne_gold_und_material() {
     let (mut w, tower) = damaged_tower();
@@ -67,6 +67,7 @@ fn reparatur_ohne_gold_und_material() {
         stone: 4,
         ..Stock::default()
     };
+    w.players[0].gold = 10;
     let (stock, gold) = (w.stock.clone(), [w.players[0].gold, w.players[1].gold]);
     let bs = vals(&w).buildings["tower"].build_seconds;
     let done = |w: &World| w.sites[tower].hp >= w.sites[tower].max_hp;
@@ -76,10 +77,12 @@ fn reparatur_ohne_gold_und_material() {
         took >= half - DT && took <= half + 0.5,
         "Reparatur dauerte {took:.2} s, erwartet die halbe Bauzeit {half} s"
     );
-    assert!(
-        w.stock == stock && w.players[0].gold == gold[0] && w.players[1].gold == gold[1],
-        "Reparatur kostet: Vorrat {stock:?} → {:?}",
-        w.stock
+    let total = |s: &Stock| s.wood + s.stone + s.copper + s.iron + s.crystal;
+    assert_eq!(total(&stock) - total(&w.stock), 1, "ein Grundmaterial");
+    assert_eq!(
+        gold[0] + gold[1] - w.players[0].gold - w.players[1].gold,
+        2,
+        "zwei Gold"
     );
 }
 

@@ -298,3 +298,14 @@ pub fn end_island(players: i64) -> (Island, f64) {
     };
     (isl, x)
 }
+
+/// ECO1.5: Vorrat und Gold für Reparaturaufträge (1 Material und 2 Gold je Auftrag mit nativen Regeln).
+pub fn fund_repairs(w: &mut crate::state::World) {
+    w.stock.wood = w.stock.wood.max(50);
+    w.stock.stone = w.stock.stone.max(50);
+    w.stock.copper = w.stock.copper.max(50);
+    w.stock.iron = w.stock.iron.max(50);
+    for p in &mut w.players {
+        p.gold = p.gold.max(20);
+    }
+}
