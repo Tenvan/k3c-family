@@ -168,6 +168,7 @@ impl Session for FakeSession {
             None => vec![WorldInfo {
                 id: "standard".to_string(),
                 name: "Standard".to_string(),
+                ..Default::default()
             }],
         }
     }

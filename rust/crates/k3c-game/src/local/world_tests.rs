@@ -54,3 +54,30 @@ fn world_list_shows_local_worlds_in_dev_mode() {
     let l = s.world_list();
     assert!(l.len() == 2 && l[1].id == "lokal", "im Dev-Mode: {l:?}");
 }
+
+/// RU36.6 (B-1165): Der Welten-Ordner kommt von der Umgebung, sonst neben der EXE, egal von wo das Spiel startet.
+#[test]
+fn welten_ordner_neben_der_exe_und_env() {
+    use super::worlds::pick_worlds_dir;
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/ru36-6-ordner");
+    let _ = std::fs::remove_dir_all(&root);
+    let exe = root.join("exe");
+    std::fs::create_dir_all(exe.join("data/worlds")).unwrap();
+    std::fs::create_dir_all(root.join("env")).unwrap();
+    assert_eq!(
+        pick_worlds_dir("", Some(&exe)),
+        Some(exe.join("data").join("worlds")),
+        "neben der EXE"
+    );
+    assert_eq!(
+        pick_worlds_dir(root.join("env").to_str().unwrap(), Some(&exe)),
+        Some(root.join("env")),
+        "Umgebung gewinnt"
+    );
+    assert_eq!(
+        pick_worlds_dir(root.join("fehlt").to_str().unwrap(), Some(&exe)),
+        None,
+        "gesetzt, aber fehlt: keiner"
+    );
+    let _ = std::fs::remove_dir_all(&root);
+}

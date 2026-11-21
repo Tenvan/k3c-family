@@ -227,16 +227,24 @@ fn welt_laden_abgelehnt_stand_unveraendert() {
     }
 }
 
-// Die Weltliste: standard zuerst, im Dev-Mode dazu jede gültige Datei (ungültige fehlen), sonst nur standard.
+// Die Weltliste: standard zuerst, im Dev-Mode dazu jede Datei (ungültige mit Grund in `error`), sonst nur standard.
 #[test]
 fn weltliste_standard_zuerst_dann_gueltige_dateien() {
     let (mut m, dir) = world_fixture("liste");
     let ids = |m: &TestManager| m.world_list().into_iter().map(|w| w.id).collect::<Vec<_>>();
     assert_eq!(ids(&m), ["standard"], "ohne Ordner");
     m.worlds = Some(dir.src.clone());
-    // wertkaputt (ohne depthScaling) und kaputt (unbekanntes Feld) sind ungültig und fehlen
-    assert_eq!(ids(&m), ["standard", "nordmeer", "nordteuer"]);
-    assert_eq!(m.world_list()[1].name, "Nordmeer");
+    // wertkaputt (ohne depthScaling) und kaputt (unbekanntes Feld) sind ungültig und stehen mit Grund in der Liste (RU36.6)
+    assert_eq!(ids(&m), ["standard", "kaputt", "nordmeer", "nordteuer", "wertkaputt"]);
+    let list = m.world_list();
+    let by = |id: &str| list.iter().find(|w| w.id == id).cloned().unwrap();
+    assert_eq!(by("nordmeer").name, "Nordmeer");
+    for ok in ["standard", "nordmeer", "nordteuer"] {
+        assert!(by(ok).error.is_empty(), "{ok} ist ladbar");
+    }
+    for bad in ["kaputt", "wertkaputt"] {
+        assert!(!by(bad).error.is_empty(), "{bad} braucht einen Grund");
+    }
     m.dev = false;
     assert_eq!(ids(&m), ["standard"], "ohne Dev-Mode");
 }
@@ -270,4 +278,33 @@ fn create_standard_welt_zwei_peers_rechnet_10_takte() {
         xi.log(),
         hi.log()
     );
+}
+
+/// RU36.6 (B-1165): Jede Datei aus `data/worlds` lädt im Dev-Mode (Befund: kein Grund für fehlende Welten in den Daten).
+#[test]
+fn alle_welt_dateien_aus_data_sind_ladbar() {
+    let repo = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../data");
+    let src = k3c_data::Source::Dir(repo.clone());
+    let (mut m, _) = manager();
+    m.dev = true;
+    m.worlds = Some(src.clone());
+    let mut files: Vec<String> = std::fs::read_dir(repo.join("worlds"))
+        .unwrap()
+        .flatten()
+        .filter_map(|e| {
+            e.file_name()
+                .to_string_lossy()
+                .strip_suffix(".json")
+                .map(str::to_string)
+        })
+        .collect();
+    files.sort();
+    let list = m.world_list();
+    for f in &files {
+        let w = list
+            .iter()
+            .find(|w| &w.id == f)
+            .unwrap_or_else(|| panic!("{f} fehlt in der Weltliste"));
+        assert!(w.error.is_empty(), "{f}: {}", w.error);
+    }
 }

@@ -69,6 +69,8 @@ pub struct SaveInfo {
 pub struct WorldInfo {
     pub id: String,
     pub name: String,
+    /// Grund, warum die Welt nicht ladbar ist (nur Dev-Mode); leer = ladbar
+    pub error: String,
 }
 
 /// Session ist das Spiel aus Sicht der Menüs; local erfüllt sie. Alle Methoden laufen in der Schleife und blockieren
