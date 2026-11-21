@@ -62,7 +62,7 @@ function WorldHead({ w }: { w: WorldState }) {
     w.setStage({ world: w.id, island, stage: Number(stage) });
   };
   return (
-    <Flex direction="column" gap="1">
+    <Flex direction="column" gap="1" className="wd-head">
       <Flex gap="2" align="center" wrap="wrap">
         <Heading size="4">{detail.name}</Heading>
         <Badge color="gray">data/worlds/{detail.id}.json</Badge>
@@ -115,6 +115,7 @@ export function WorldPage() {
               {w.detail && <WorldPrompts detail={w.detail} />}
               {w.detail && w.detail.islands.length > 0 && (
                 <Overview detail={w.detail} seed={w.seed} choice={w.stage} onEtappe={w.setEtappe} refresh={w.crossRefresh}
+                  selected={w.stage?.island ?? w.detail.islands[0]!.id} onSelect={(island) => w.setStage({ world: w.id, island, stage: 0 })}
                   onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }} />
               )}
               <div ref={editor} className="wd-editor" />

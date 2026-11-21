@@ -19,9 +19,12 @@ interface Props {
   onEtappe?: (island: string, etappe: number | null) => Promise<boolean> | void;
   /** Token `<insel>:<stufe>#<n>`: diese Stufe neu laden */
   refresh?: string;
+  /** Gewählte Insel: nur sie im Querschnitt; die Seekarte wählt dann statt zu springen */
+  selected?: string;
+  onSelect?: (island: string) => void;
 }
 
-export function Overview({ detail, seed, choice, onPick, onEtappe, refresh }: Props) {
+export function Overview({ detail, seed, choice, onPick, onEtappe, refresh, selected, onSelect }: Props) {
   const models = useCross(detail, seed, refresh);
   const root = useRef<HTMLDivElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -35,8 +38,8 @@ export function Overview({ detail, seed, choice, onPick, onEtappe, refresh }: Pr
   };
   return (
     <div className="wd-overview" ref={root}>
-      <SeaMap detail={detail} models={models} onJump={jump} />
-      <CrossSection detail={detail} models={models} choice={choice} hit={hit} onPick={onPick} onEtappe={onEtappe} />
+      <SeaMap detail={detail} models={models} onJump={onSelect ?? jump} active={selected} />
+      <CrossSection detail={detail} models={models} choice={choice} hit={hit} onPick={onPick} onEtappe={onEtappe} only={selected} />
     </div>
   );
 }

@@ -73,6 +73,7 @@ interface IslandProps {
   island: WorldIsland;
   index: number;
   models: ReadonlyMap<string, LevelModel>;
+  scale: ReadonlyMap<string, LevelModel>;
   biomeInfo: WorldDetail['biomeInfo'];
   onEtappe?: (island: string, etappe: number | null) => Promise<boolean> | void;
   choice: StageChoice | null;
@@ -80,7 +81,7 @@ interface IslandProps {
   onPick: (island: string, stage: number) => void;
 }
 
-function IslandCard({ island, index, models, biomeInfo, onEtappe, choice, hit, onPick }: IslandProps) {
+function IslandCard({ island, index, models, scale, biomeInfo, onEtappe, choice, hit, onPick }: IslandProps) {
   return (
     <section className={`wd-card wd-x-island${hit ? ' wd-x-hit' : ''}`} id={islandAnchor(island.id)} data-island={island.id} aria-label={`Insel ${index + 1}: ${island.name}`}>
       <header className="wd-x-head">
@@ -91,7 +92,7 @@ function IslandCard({ island, index, models, biomeInfo, onEtappe, choice, hit, o
       {island.depths.map((_, stage) => {
         const model = models.get(stageId(island.id, stage));
         return model
-          ? <StageStrip key={stage} island={island} stage={stage} model={model} models={models} biomeInfo={biomeInfo}
+          ? <StageStrip key={stage} island={island} stage={stage} model={model} models={scale} biomeInfo={biomeInfo}
             selected={choice?.island === island.id && choice.stage === stage} onPick={onPick} />
           : <Text key={stage} as="div" size="1" color="gray" className="wd-x-stage">Stufe {stage} lädt …</Text>;
       })}
@@ -108,22 +109,27 @@ interface Props {
   onPick: (island: string, stage: number) => void;
   /** Etappe einer Insel setzen (null = Listenplatz + 1); fehlt sie, bleibt das Feld aus */
   onEtappe?: (island: string, etappe: number | null) => void;
+  /** Nur diese Insel zeigen (Welten-Editor); ihre Streifen füllen dann die Breite des Panels */
+  only?: string;
 }
 
-/** Etappen-Bänder und Insel-Karten der ganzen Welt. */
-export function CrossSection({ detail, models, choice, hit, onPick, onEtappe }: Props) {
-  const groups = groupEtappen(detail);
+/** Etappen-Bänder und Insel-Karten der ganzen Welt, mit `only` nur die gewählte Insel. */
+export function CrossSection({ detail, models, choice, hit, onPick, onEtappe, only }: Props) {
+  const groups = groupEtappen(detail).map((g) => ({ ...g, islands: only ? g.islands.filter((i) => i.island.id === only) : g.islands })).filter((g) => g.islands.length > 0);
+  const all = groupEtappen(detail);
+  // Maßstab: bei einer einzelnen Insel ihre längste Stufe = volle Breite, sonst die längste Stufe aller Inseln
+  const scale = only ? new Map([...models].filter(([k]) => k.startsWith(`${only}:`))) : models;
   return (
     <div className="wd-x" aria-label="Querschnitt">
-      {groups.map((g, gi) => (
+      {groups.map((g) => (
         <Fragment key={g.etappe}>
-          <div className="wd-x-band" data-etappe={g.etappe}>{bandText(g, groups[gi - 1])}</div>
+          <div className="wd-x-band" data-etappe={g.etappe}>{bandText(all.find((a) => a.etappe === g.etappe) ?? g, all[all.findIndex((a) => a.etappe === g.etappe) - 1])}</div>
           {g.islands.map(({ island, index }) => (
-            <IslandCard key={island.id} island={island} index={index} models={models} biomeInfo={detail.biomeInfo} onEtappe={onEtappe} choice={choice} hit={hit === island.id} onPick={onPick} />
+            <IslandCard key={island.id} island={island} index={index} models={models} scale={scale} biomeInfo={detail.biomeInfo} onEtappe={onEtappe} choice={choice} hit={hit === island.id} onPick={onPick} />
           ))}
         </Fragment>
       ))}
-      {groups.length === 0 && <Text size="1" color="gray">Die Welt hat keine Inseln.</Text>}
+      {all.length === 0 && <Text size="1" color="gray">Die Welt hat keine Inseln.</Text>}
     </div>
   );
 }
