@@ -50,7 +50,7 @@ const TEXT_TOL_Y: i32 = 5;
 /// Icons) bleiben im Vergleich, ihr Text ist nur ein kleiner Teil.
 /// Element, dessen Box und Breite sich mit dem neuen HUD bewusst geändert haben (RU61).
 fn changed(name: &str, id: &str) -> bool {
-    name == "englisch-hub" && id == "3"
+    (name == "englisch-hub" && id == "3") || id == "12" // 12 = Beitreten-Meldung, B-1212 entfernt
 }
 
 const TEXT_ITEMS: [usize; 9] = [
@@ -198,7 +198,7 @@ fn text_fields(name: &str) -> Vec<(i64, usize, [f64; 4])> {
 fn box_fill_errors(name: &str, rust: &Image, go: &Image) -> Vec<String> {
     let mut out = Vec::new();
     for c in layout_go(name).cells {
-        for (id, r) in c.items.iter().filter(|(id, _)| !changed(name, id) && id.as_str() != "12") {
+        for (id, r) in c.items.iter().filter(|(id, _)| !changed(name, id)) {
             let (x, y) = ((r[0] + 2.0) as u32, (r[1] + r[3] / 2.0) as u32);
             let at = |img: &Image| {
                 let i = ((y * img.width + x) * 4) as usize;
@@ -318,7 +318,7 @@ fn plaetze_stimmen_mit_go_ueberein() {
                 b.iter().filter(|k| k.as_str() != "12").all(|k| a.contains(k)), // 12 = Beitreten-Meldung, B-1212 entfernt
                 "{name} Zelle {index}: Elemente {a:?} ohne {b:?}"
             );
-            for (id, r) in g.items.iter().filter(|(id, _)| !changed(name, id) && id.as_str() != "12") {
+            for (id, r) in g.items.iter().filter(|(id, _)| !changed(name, id)) {
                 let text = TEXT_ITEMS.iter().any(|t| t.to_string() == *id);
                 for (k, (x, y)) in mine[id].iter().zip(r).enumerate() {
                     // Zeilenhöhe der Textelemente (Rust misst die Schrift, Go die Zeile): y und Höhe um bis 3,5 px
