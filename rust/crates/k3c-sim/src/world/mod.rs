@@ -30,6 +30,7 @@ use values_room::values;
 
 pub mod base;
 pub mod cycle;
+pub mod forest;
 pub mod hub_sites;
 pub mod lava;
 pub mod lines;
@@ -285,6 +286,7 @@ pub fn place_entities(w: &mut World, v: &WorldValues, rules: &Rules) {
         }
     }
     w.level.entities = entities;
+    forest::grow_forest(w, v);
     crate::unit::camp_guard::plant_camp_trees(w, v);
     vein::place_vein_rocks(w, v);
     crate::portal::sync_portals(w);
