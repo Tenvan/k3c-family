@@ -52,7 +52,7 @@ fn uniforms_folgen_dem_profil_und_dem_ufer() {
     let c = cell();
     let u = with_profile("k2c", || mirror_uniforms(&c, 0.0, 2.0));
     assert_eq!(u.emissive, 1.0, "auf 0 … 1 begrenzt");
-    assert!((u.brightness - 0.65).abs() < 1e-6 && (u.squash - 0.85).abs() < 1e-6);
+    assert!((u.brightness - 0.62).abs() < 1e-6 && (u.squash - 0.85).abs() < 1e-6);
     assert_eq!(u.src_top, 0.0);
     assert!((u.ground - 626.4).abs() < 1.0, "Gehlinie bei 58 %: {}", u.ground);
     assert!(

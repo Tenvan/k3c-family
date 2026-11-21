@@ -130,6 +130,16 @@ pub fn torch_side(x: f64, hub_x: f64) -> f64 {
     if x < hub_x { -1.0 } else { 1.0 }
 }
 
+/// SkyLift ist die Aufhellung der tiefsten Nacht aus dem Look-Profil (LA1.5); ohne Himmel-Profil 0.
+fn sky_lift(back: bool) -> f64 {
+    let s = k3c_data::look::current().sky;
+    match (s.enabled, back) {
+        (false, _) => 0.0,
+        (true, false) => s.night_lift,
+        (true, true) => s.back_lift,
+    }
+}
+
 impl LightData {
     /// Prepare legt die abgeleiteten Werte an (Farbe, Quellen-Arten).
     pub fn prepare(&mut self) {
@@ -145,12 +155,12 @@ impl LightData {
 
     /// Front ist die Helligkeit des Vordergrunds außerhalb des Lichts.
     pub fn front(&self, c: &CycleInfo) -> f64 {
-        brightness_of(c, self.night)
+        brightness_of(c, (self.night + sky_lift(false)).min(1.0))
     }
 
     /// Backdrop ist die Helligkeit von Himmel und Kulisse (nachts dunkler als der Vordergrund).
     pub fn backdrop(&self, c: &CycleInfo) -> f64 {
-        brightness_of(c, self.back)
+        brightness_of(c, (self.back + sky_lift(true)).min(1.0))
     }
 
     /// Lift ist die Summe der Lichtscheine am Ort x (vor der Begrenzung auf 1): je Quelle glowAlpha × falloff.

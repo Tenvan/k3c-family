@@ -27,6 +27,7 @@ pub mod light;
 pub mod lightdraw;
 pub mod mirror;
 pub mod river;
+pub mod sky;
 pub mod tint;
 pub mod water;
 

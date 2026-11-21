@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
-- **Lane:** zweit
+- **Lane:** hauptrechner
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/la1
@@ -64,5 +64,22 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Stand: umgesetzt, **Nachprüfung 🧑 am PC steht aus** (Status bleibt `offen` bis dahin). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
+
+### Umgesetzt
+- **Rang 1, Lichthöfe** (`data/look.json` › glow): Radius 1 → 1,5, Stärke 0,55 → 0,32, Kern 0,1 → 0, Abfall 0,4 → 0,5; Monarch-Licht Radius 2,5 → 3,6, Stärke 0,5 → 0,3, Höhe 3,2 → 3,4. Der Hof erhellt die Umgebung, überdeckt den Monarchen nicht mehr (Vorher/Nachher Nacht). **Nicht gesehen:** Fackeln an gebauten Häusern, die Aufnahmen zeigen den Hub ohne Gebäude; die gleichen Werte gelten für sie, die Sichtprüfung bleibt bei 🧑.
+- **Rang 2, Nachthimmel:** Sterne nach der Lichtkarte (`world/sky.rs`, `draw_stars`, 90 Stärne, feste Lage ohne Zufall), Mond-Hof Radius 9 → 14, Stärke 0,55 → 0,6, Scheibe 0,12 → 0,08; Nacht nicht ganz schwarz (`sky.nightLift` 0,06 und `sky.backLift` 0,09, nur im Profil k2c; `light.json` unverändert, weil die Go-Golden daran hängen); Abendrot am Horizont (`sky.horizon`, `glowHorizon` 0,7, nur in Dämmerung und Morgengrauen); Spiegelung weicher (`mirror.brightness` 0,62, `tint` 0,22, `glint` 0,25).
+- **Rang 3, Himmel mit Verlauf:** Verlauf von der Himmelsfarbe zu `sky.top` (24 Bänder), Dunst dichter (`haze` 0,3/0,15/0 → 0,4/0,25/0; Welt forest 0,35/0,2/0,05 → 0,45/0,3/0,05).
+- Neuer Code: `k3c-data/src/look_sky.rs` (Struct `Sky`), `k3c-game/src/world/sky.rs` und `sky_tests.rs` (Tests für Dämmerlicht und feste Sternlage), Einbindung in `layers.rs`, `lightdraw.rs`, `light.rs`. Eingebaute Profilwerte (`look.rs`, `look_world.rs`) und Tests (`mirror_tests.rs`, `tests/mirror_bild.rs`) angepasst.
+
+### Prüfung
+- `cargo test -p k3c-game -p k3c-data --release`: alles grün außer `tree_tests::economy_wie_go` (`economy.json.ChestGold[0] = 15, erwartet 30`): nicht von dieser Session (Truhen-Gold halbiert in RU36.3, B-1159; Go-Baum nicht nachgezogen), Befund für den Hauptrechner.
+- `cargo clippy --all-targets -D warnings` und `cargo fmt` sauber; `task check:diff` siehe Commit.
+- Bilder: Vorher `.work/stimmung/<szene>-1/shot-01.png`, Nachher `.work/stimmung-nach/<szene>-1/shot-01.png` (tag, daemm, abend, nacht; nicht eingecheckt).
+
+### Für den Hauptrechner
+- B-1178: Wolken, monumentaler Hintergrund (neues Asset), Wellenstriche des Wassers (Shader der Plattform, `RIVER_WAVE`; ändern ohne Go-Golden).
+- `economy_wie_go` rot (siehe oben).
+
+### Abweichung vom Plan
+AC-05 nur teilweise erfüllt: von Rang 3 fehlen Wolken und das Monumentalbild, von Rang 2 die Wellenstriche (B-1178).
