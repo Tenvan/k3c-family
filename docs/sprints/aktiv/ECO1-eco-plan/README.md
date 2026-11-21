@@ -75,7 +75,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 | ECO1.4 | `ECO1.4-handwerker-bauarbeiten.md` | Umsetzung | autonom | offen |
 | ECO1.5 | `ECO1.5-reparaturkosten.md` | Umsetzung | autonom | offen |
 | ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | fertig |
-| ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | offen |
+| ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | fertig |
 | ECO1.8 | `ECO1.8-erzadern-freiraeumen.md` | Umsetzung | autonom | offen |
 | ECO1.9 | `ECO1.9-review.md` | Review | autonom | offen |
 

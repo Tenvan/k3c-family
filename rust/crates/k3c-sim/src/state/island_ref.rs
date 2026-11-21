@@ -81,6 +81,9 @@ pub struct IslandRef {
     /// Eine andere Stufe der Insel hat eine gebaute Taverne (Go: `tavernOnIsland` über `isl.Stages`); die eigene Stufe
     /// liest `tavern_on_island` live aus `w.sites`.
     pub tavern_elsewhere: bool,
+    /// Oben (Stufe 0) liegt Ausrüstung im Regal, die ein Bürger dieser Stufe holen kann, und diese Stufe hat weder eine
+    /// eigene Werkstatt noch ist es Stufe 0 (ECO1.7, nur native Regeln): Ein freier Bürger geht dann nach oben.
+    pub gear_above: bool,
 }
 
 /// Was die Ereignisse einer Stufe von ihrer Insel lesen (Go: `w.island` in `eventInNight` und `eventStage`).

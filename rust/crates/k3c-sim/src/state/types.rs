@@ -218,4 +218,8 @@ pub struct Troop {
     /// Holt gerade sein Schild an der Burg; ohne JSON.
     #[serde(skip)]
     pub shield_fetch: bool,
+    /// Bürger auf Besorgung von Ausrüstung in Stufe 0 (ECO1.7): Index der Herkunftsstufe + 1, 0 = keine. Ohne JSON: Ein
+    /// Spielstand mitten in der Besorgung lässt den Bürger oben.
+    #[serde(skip)]
+    pub errand_from: i64,
 }
