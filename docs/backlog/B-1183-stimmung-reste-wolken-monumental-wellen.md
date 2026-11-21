@@ -1,4 +1,4 @@
-# B-1178 · Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch
+# B-1183 · Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch
 
 - **Domäne:** CLI
 - **Typ:** Idee

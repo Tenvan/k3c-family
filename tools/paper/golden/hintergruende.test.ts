@@ -7,8 +7,9 @@ import { ROOT } from '../render/stil';
 import type { Spec } from '../schema/types';
 
 const ordner = join(ROOT, 'public/grafik/hintergruende');
-// Weltbilder (weltbild-*, B-937) und Wetter-Vorboten (wetter-*, SI3.3) liegen in derselben Gruppe, sind aber keine Level-Kulissen.
-const kulissen = specsIn(ordner).filter((p) => !/^(weltbild|wetter)-/.test(basename(p)));
+// Weltbilder (weltbild-*, B-937), Wetter-Vorboten (wetter-*, SI3.3), Waldwand (hg-wald-wand) und Leitmotive (leitmotiv-*, BB1)
+// liegen in derselben Gruppe, sind aber keine Level-Kulissen mit fünf Varianten.
+const kulissen = specsIn(ordner).filter((p) => !/^(weltbild|wetter|leitmotiv)-|^hg-wald-wand\./.test(basename(p)));
 const specs = kulissen.map((p) => JSON.parse(readFileSync(p, 'utf8')) as Spec);
 const BAUM = /baum|bäum|baeume|tanne|birke|pappel|eiche|stamm|laub/i;
 

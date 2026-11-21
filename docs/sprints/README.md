@@ -17,7 +17,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
-| WZ62 | DEV | WZG | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | – | `aktiv/WZ62-studio-welten-filter-groessenvergleich/` |
 | WG1 | PAP | PAP | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | – | `aktiv/WG1-weltbilder/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
@@ -466,3 +465,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU56 | Cheat-Fenster: zweites Win32-Fenster neben dem Rust-Spiel | `erledigt/RU56-cheat-fenster-win32/` |
 | RU57 | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | `erledigt/RU57-rust-paket-auslieferbar/` |
 | RU63 | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | `erledigt/RU63-smoke-nachtraege-hud-und-menues/` |
+| WZ62 | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | `erledigt/WZ62-studio-welten-filter-groessenvergleich/` |

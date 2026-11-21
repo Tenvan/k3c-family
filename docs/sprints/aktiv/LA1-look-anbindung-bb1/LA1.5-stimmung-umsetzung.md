@@ -87,7 +87,7 @@ Halter im Drawer `Part::Torches` (`Layer::ACTORS`), `glow.torchSpread` weitet di
 `cargo test -p k3c-game -p k3c-data --release` grün außer `economy_wie_go` (`ChestGold`, aus RU36.3, nicht von dieser Session); `clippy --all-targets -D warnings` sauber. `task check:diff` scheitert weiter am Lint einer Workbench-Oberfläche in `tools/`. Aufnahmen: `.work/torch-neu/shot-01.png`.
 
 ### Für den Hauptrechner
-B-1178 (Wolken, Monumentalbild, Wellenstriche), B-1179 (Cheat-Panel), B-1181 (Licht-Assets, Second Worker), B-1182 (Bauplatz-Abstände), `economy_wie_go` rot.
+B-1183 (Wolken, Monumentalbild, Wellenstriche), B-1179 (Cheat-Panel), B-1181 (Licht-Assets, Second Worker), B-1182 (Bauplatz-Abstände), `economy_wie_go` rot.
 
 ### Abweichung vom Plan
-AC-05 nur teilweise erfüllt (B-1178).
+AC-05 nur teilweise erfüllt (B-1183).

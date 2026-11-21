@@ -9,20 +9,31 @@ use k3c_data::{Data, Source, load_all};
 
 use super::error::{UserError, user_err};
 
-/// Nennt den Ordner der Welt-Dateien (wie `Manager::worlds`, `K3C_WORLDS_DIR`); ohne ihn gilt `data/worlds`, falls es neben
-/// dem Arbeitsordner liegt. Gelesen wird er nur im Dev-Mode (`Settings::dev_mode`), sonst gilt nur die Standard-Welt.
+/// Nennt den Ordner der Welt-Dateien (wie `Manager::worlds`, `K3C_WORLDS_DIR`); ohne ihn gilt `data/worlds` neben der EXE
+/// (RU36.6: unabhängig vom Arbeitsordner), zuletzt `data/worlds` im Arbeitsordner. Gelesen wird er nur im Dev-Mode
+/// (`Settings::dev_mode`), sonst gilt nur die Standard-Welt.
 pub const WORLDS_DIR_ENV: &str = "K3C_WORLDS_DIR";
 
 /// Liefert den Ordner der lokalen Welten oder `None`, wenn es keinen gibt. Go liefert einen `fs.FS`; Rust braucht nur den
 /// Pfad. Die eingebetteten Daten enthalten nur die Standard-Welt, die `load_world_def` ohnehin aus den Spieldaten liest.
 pub fn worlds_fs() -> Option<PathBuf> {
     let env = std::env::var(WORLDS_DIR_ENV).unwrap_or_default();
-    let dir = if env.is_empty() {
-        PathBuf::from("data/worlds")
-    } else {
-        PathBuf::from(env)
-    };
-    dir.is_dir().then_some(dir)
+    let exe = std::env::current_exe().ok();
+    pick_worlds_dir(&env, exe.as_deref().and_then(Path::parent))
+}
+
+/// Die Wahl des Ordners: `env` (gesetzt: nur dieser, fail closed), sonst `data/worlds` neben der EXE `exe_dir`, sonst
+/// `data/worlds` im Arbeitsordner.
+pub fn pick_worlds_dir(env: &str, exe_dir: Option<&Path>) -> Option<PathBuf> {
+    if !env.is_empty() {
+        let dir = PathBuf::from(env);
+        return dir.is_dir().then_some(dir);
+    }
+    exe_dir
+        .map(|d| d.join("data").join("worlds"))
+        .into_iter()
+        .chain([PathBuf::from("data/worlds")])
+        .find(|d| d.is_dir())
 }
 
 /// Die Spieldaten, einmal je Prozess gelesen (Go: `data.Files` beim Start). Quelle wie Go: `K3C_DATA_DIR`, sonst `data`

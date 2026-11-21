@@ -155,6 +155,7 @@ impl Session for PlaceholderSession {
             .map(|(id, name)| WorldInfo {
                 id: id.to_string(),
                 name: name.to_string(),
+                ..Default::default()
             })
             .collect()
     }
