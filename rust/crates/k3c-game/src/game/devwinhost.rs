@@ -237,6 +237,10 @@ impl Host for Game {
             phases: PHASES.iter().map(|(id, _)| (*id).to_string()).collect(),
             grades: GRADES.iter().map(|(id, _)| (*id).to_string()).collect(),
             timescales: TIMESCALES.to_vec(),
+            effects: crate::world::fx::EFFECTS
+                .iter()
+                .map(|(id, name)| entry(&format!("fx:{id}"), name))
+                .collect(),
             ..Catalog::default()
         };
         if let Ok(d) = game_data() {

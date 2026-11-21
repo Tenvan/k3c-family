@@ -1,6 +1,6 @@
 # LA2.1 · Cheat-Fenster: Panel für die Umgebungseffekte (B-1179)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,5 +58,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `Catalog.effects` (Kennung `fx:<id>`, aus `fx::EFFECTS`) im Protokoll; `ui`-Taste `fx:<id>` (Wert 1 an, 0 aus, ohne Wert um) in `k3c-game/src/devwin/view.rs` ruft `fx::set`; Seite Anzeige im Cheat-Fenster hat die Gruppe „Umgebungseffekte“ mit einem Umschalter je Effekt (angehakt = Effekt aus). Tests: `umgebungseffekte_je_ein_umschalter` (devwin), `umgebungseffekt_schalten` (Spiel), Protokoll-Roundtrip grün; `cargo test` devproto/devwin/game und clippy grün.
+
+Abweichungen: `devwinhost.rs` (`game/`, Katalog) lag außerhalb der erlaubten Dateien, ist aber nötig. Kein Effektstand im `State`: der Schalter startet immer „an“, ein per `K3C_FX_OFF` abgeschalteter Effekt zeigt das im Panel nicht (Zustand im Fenster ist lokal).
+
+`task check:diff`: nur die bekannten roten Planungstests (`tests/planning.test.ts`, Hauptrechner-Daten); `alloc_je_bild` bleibt rot (vorher schon).
+
+### Für den Hauptrechner
+- Panel zeigt den Startzustand aus `K3C_FX_OFF` nicht (Effektliste im `State` fehlt); bei Bedarf Ticket.

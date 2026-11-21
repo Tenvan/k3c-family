@@ -16,6 +16,9 @@ pub fn dev(_host: &mut dyn Host, _player: i64, _c: &DevCommand) -> Outcome {
 
 /// ui führt die Tasten der Anzeige aus.
 pub fn ui(host: &mut dyn Host, key: &str, value: Option<i64>) -> Outcome {
+    if let Some(id) = key.strip_prefix("fx:") {
+        return Some(effect(id, value));
+    }
     Some(match key {
         "debug" => debug(host, value),
         "stats" => stats(host, value),
@@ -25,6 +28,16 @@ pub fn ui(host: &mut dyn Host, key: &str, value: Option<i64>) -> Outcome {
         "shot" => host.dev_cmd(DevCmd::Shot),
         _ => return None,
     })
+}
+
+/// effect schaltet einen Umgebungseffekt (LA2.1): mit Wert 1 an, 0 aus, ohne Wert um.
+fn effect(id: &str, value: Option<i64>) -> Result<(), String> {
+    use crate::world::fx;
+    if !fx::EFFECTS.iter().any(|(i, _)| *i == id) {
+        return Err(format!("Effekt „{id}“ gibt es nicht"));
+    }
+    fx::set(id, value.map_or_else(|| !fx::on(id), |v| v != 0));
+    Ok(())
 }
 
 fn debug(host: &mut dyn Host, value: Option<i64>) -> Result<(), String> {
