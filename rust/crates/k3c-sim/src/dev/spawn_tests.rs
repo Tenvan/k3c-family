@@ -77,3 +77,15 @@ fn einzelne_figur_steht_am_spieler() {
     let e = isl.stages[0].enemies.last().expect("Gegner");
     assert_eq!(e.x, px);
 }
+
+/// FG1.1: Gespawnte Bauern und Landstreicher sind Bürger (im Dienst bzw. wild), nicht die Roh-Art der Daten.
+#[test]
+fn spawn_macht_buerger_aus_bauer_und_landstreicher() {
+    let (data, mut isl, index) = island_with_player("dev-spawn-b");
+    let before = isl.stages[0].troops.len();
+    dev_spawn_units(&mut isl, &data.difficulty, index, "troop", "peasant", 2).expect("spawn");
+    dev_spawn_units(&mut isl, &data.difficulty, index, "troop", "vagrant", 2).expect("spawn");
+    let new = &isl.stages[0].troops[before..];
+    assert!(new[..2].iter().all(|t| t.serving()), "Bauern im Dienst: {new:?}");
+    assert!(new[2..].iter().all(|t| t.is_wild()), "Landstreicher wild: {new:?}");
+}

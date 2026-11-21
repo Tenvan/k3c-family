@@ -9,7 +9,7 @@
     "camel": "kamel", "sengokuHorse": "rappe"
   },
   "truppen": {
-    "vagrant": "truppen/landstreicher", "peasant": "truppen/bauer", "archer": "truppen/bogenschuetze",
+    "vagrant": "truppen/landstreicher", "peasant": "truppen/bauer", "craftsman": "truppen/handwerker", "archer": "truppen/bogenschuetze",
     "warrior": "truppen/krieger", "eliteArcher": "truppen/elite-bogenschuetze", "eliteWarrior": "truppen/elite-krieger"
   },
   "gegner": {
@@ -31,6 +31,7 @@
     "truppen": {
       "vagrant": { "hoehe": 72.9 },
       "peasant": { "hoehe": 72.9 },
+      "craftsman": { "hoehe": 72.9 },
       "archer": { "hoehe": 70.4 },
       "warrior": { "hoehe": 72.9 },
       "eliteArcher": { "hoehe": 70.4 },
@@ -189,6 +190,10 @@
     "icon-schwerter": { "gruppe": "icons", "frame": [34, 34], "frames": 1, "rahmen": [-17,  -33,  34,  34] },
     "icon-stein": { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
     "icon-truhe": { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
+    "icon-guertel":  { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
+    "icon-bogen":    { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
+    "icon-schwert":  { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
+    "icon-ruestung": { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
     "siegel-dev": { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
     "siegel-easy": { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
     "siegel-hard": { "gruppe": "icons", "frame": [32, 32], "frames": 1, "rahmen": [-16,  -32,  32,  32] },

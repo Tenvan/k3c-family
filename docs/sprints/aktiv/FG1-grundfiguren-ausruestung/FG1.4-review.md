@@ -1,6 +1,6 @@
 # FG1.4 · Review und Abnahme-Ticket FG1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: Review FG1.1 bis FG1.3 durch k3c-reviewer; `task check` und `task check:go` grün. Befund 1 (mittel, behoben): `dev/spawn.rs` legte Bauern und Landstreicher mit der Roh-Art an, `step_troops` ließ sie als Bogenschützen laufen (Dev-Cheats, Lastmessung `LOAD_TROOPS`); jetzt `serve()` bzw. `go_wild()`, Test `spawn_macht_buerger_aus_bauer_und_landstreicher`. Befund 2 (mittel, offen): `armor_convert` ohne Reichweite, Rüstung im Regal macht sofort jeden Kämpfer der Stufe zur Elite mit voller Heilung. Befund 3 (mittel, offen): Rüstungspreis, Regalgröße und Herstellzeiten als Code-Konstanten (`unit/hammer.rs`, `unit/warrior.rs`). Beide offenen Befunde stehen als Entscheidung bzw. AC-02 im Abnahme-Ticket B-1203.
+
+Abweichung: Der Fix lag außerhalb der erlaubten Dateien (`k3c-sim/src/dev`). Bekannt rot: `alloc_je_bild` (B-1190 AC-04).
+
+### Für den Hauptrechner
+
+- Befund 2 und 3 entscheidet Ralf (B-1203); danach Ticket für den Umbau anlegen.

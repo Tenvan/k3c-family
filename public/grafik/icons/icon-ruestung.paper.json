@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-ruestung",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Rüstung: eiserner Brustharnisch mit Mittelfalz und goldenen Nieten",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-12 -27L-5 -30L5 -30L12 -27L13 -16L9 -6L-9 -6L-13 -16Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-5 -30L5 -30L3 -25L-3 -25Z",
+          "material": "eisen",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M0 -25L0 -7",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-11 -14L11 -14",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [-6, -21],
+          "radius": 1.4
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [6, -21],
+          "radius": 1.4
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

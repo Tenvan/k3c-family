@@ -1,0 +1,76 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-guertel",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Werkzeuggürtel: Lederband mit goldener Schnalle, daran Hammer und Axt",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-15 -21L15 -21L15 -14L-15 -14Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-15 -17.5L15 -17.5",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-4.5 -23L4.5 -23L4.5 -12L-4.5 -12Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-2.5 -21L2.5 -21L2.5 -14L-2.5 -14Z",
+          "material": "leder",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-11 -13.5L-9 -13.5L-9 -3L-11 -3Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-14 -9L-6 -9L-6 -3.5L-14 -3.5Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M9 -13.5L11 -13.5L11 -2L9 -2Z",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M5 -10L9 -10L9 -3L5 -2Z",
+          "material": "eisen"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

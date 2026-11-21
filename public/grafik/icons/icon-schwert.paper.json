@@ -1,0 +1,61 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-schwert",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Schwert: Eisenklinge, goldene Parierstange, Ledergriff",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2.5 -28L0 -31L2.5 -28L2.5 -12L-2.5 -12Z",
+          "material": "eisen"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M0 -28L0 -13",
+          "material": "eisen",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 -12L8 -12L8 -9L-8 -9Z",
+          "material": "gold"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-1.8 -9L1.8 -9L1.8 -4L-1.8 -4Z",
+          "material": "leder"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0, -2.5],
+          "radius": 2.6
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}

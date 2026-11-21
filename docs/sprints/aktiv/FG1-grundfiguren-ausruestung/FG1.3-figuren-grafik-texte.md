@@ -1,6 +1,6 @@
 # FG1.3 · Grafik und Texte der Figuren, Meister-Gebäude und Gegenstände
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 geprüft: Neue Assets über MCP `assets_*`: Figur `truppen/handwerker` (Bürger mit Werkzeuggürtel aus Leder mit goldener Schnalle und Beutel, Hammer statt Heugabel; Rig und Animationen wie der Bauer, `angriff` schlägt mit dem Hammer) und Icons `icons/icon-guertel`, `icon-bogen`, `icon-schwert`, `icon-ruestung` (32 px, Papierschnitt). Zuordnung in `data/paper.json` (`truppen.craftsman`, `figuren.truppen.craftsman`, vier Icon-Zeilen). Die Gebäude brauchten kein neues Asset: Werkstatt (Handwerksmeister), Bogner, Schmiede (Waffenschmied) und Rüstkammer (Rüstungsschmied) haben ihre Papierschnitt-Grafik und werden nur umbenannt. Im Spiel zeichnet `actors/figures.rs` (`look_kind`) einen Bürger mit Hammer als Handwerker, sonst wie bisher; Test `handwerker_hat_eine_eigene_figur`. Texte de/en: `site.workshop` Handwerksmeister/Master Craftsman, `site.smithy` Waffenschmied/Weaponsmith, `site.armory` Rüstungsschmied/Armorsmith, neu `site.bowyer` Bogner/Bowyer und `item.belt|bow|sword|armor` (Werkzeuggürtel, Bogen, Schwert, Rüstung). `cargo test -p k3c-game --lib` (1014) grün, clippy -D warnings sauber. `task check:diff` bricht nur am bekannten `alloc_je_bild` ab (B-1190 AC-04, 942 > 786).
+
+Abweichungen: Die Gegenstands-Icons sind nur zugeordnet, aber noch an keiner Stelle im HUD gezeichnet (kein Regal-Symbol im Spiel; das Regal zeigt weiter die Hammer- und Bogenzeichnung der Plätze). Anzeigenamen in `data/troops.json` und `data/buildings.json` blieben (von Go geteilt, nicht in den erlaubten Dateien); die Spiel-Texte kommen aus `hud/texts_*`. Kein Reviewer-Agent, kein `gen:paper`-Lauf (Abnahme-Ticket).
+
+### Für den Hauptrechner
+
+- Gegenstands-Icons im HUD zeigen (Regal am Gebäude, Hinweis beim Holen) und Elite-Figuren für Bürger mit Rüstung prüfen; Ticket anlegen.

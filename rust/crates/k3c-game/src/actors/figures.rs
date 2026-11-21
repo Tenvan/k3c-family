@@ -163,7 +163,13 @@ impl Actors {
     }
 
     fn listen_troop(&mut self, w: &SimWorld, stage: i64, t: &Troop) {
-        let Some(look) = self.cat.as_ref().and_then(|c| c.troops.get(t.data_kind())).cloned() else {
+        let craft = self.cat.as_ref().is_some_and(|c| c.troops.contains_key(CRAFTSMAN));
+        let Some(look) = self
+            .cat
+            .as_ref()
+            .and_then(|c| c.troops.get(look_kind(t, craft)))
+            .cloned()
+        else {
             self.warn(
                 WarnKey {
                     what: "truppe".to_string(),
@@ -284,6 +290,19 @@ pub fn troop_want(kind: &str, mut m: Motion, working: bool, enemy_dir: i64) -> (
         };
     }
     (want, dir)
+}
+
+/// Schlüssel des Handwerkers in `data/paper.json` (FG1.3): ein Bürger im Dienst mit Werkzeuggürtel.
+const CRAFTSMAN: &str = "craftsman";
+
+/// look_kind: Schlüssel der Grafik einer Truppe; der Handwerker (Bürger mit Hammer) hat eine eigene Figur, sonst gilt die
+/// Art aus den Daten. `craft`: Der Katalog kennt `craftsman`, sonst bleibt es beim Bauern.
+fn look_kind(t: &Troop, craft: bool) -> &str {
+    if craft && t.hammer && t.kind == "citizen" && !t.wild {
+        CRAFTSMAN
+    } else {
+        t.data_kind()
+    }
 }
 
 /// working: Bauer bei der Arbeit (Holz hacken, bauen) am Ziel.

@@ -20,6 +20,11 @@
     "manifest": "elite-krieger/manifest.json"
   },
   {
+    "id": "handwerker",
+    "rig": "figur",
+    "manifest": "handwerker/manifest.json"
+  },
+  {
     "id": "krieger",
     "rig": "figur",
     "manifest": "krieger/manifest.json"

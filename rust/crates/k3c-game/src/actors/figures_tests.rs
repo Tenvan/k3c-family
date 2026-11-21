@@ -289,3 +289,33 @@ fn festival_makes_free_citizens_dance_in_the_hub() {
     d.listen(&frame_of(0.0, &mk(false)));
     assert_eq!(anim(&d, 1), ANIM_IDLE, "ohne Fest steht er");
 }
+
+/// FG1.3: Der Handwerker (Bürger mit Hammer) hat im Katalog eine eigene Figur, alle anderen Bürger nicht.
+#[test]
+fn handwerker_hat_eine_eigene_figur() {
+    let d = new_test_drawer();
+    let cat = d.cat.as_ref().unwrap();
+    assert!(
+        cat.troops.contains_key("craftsman"),
+        "craftsman fehlt in data/paper.json"
+    );
+    let mut t = Troop {
+        kind: "citizen".to_string(),
+        wild: true,
+        ..Troop::default()
+    };
+    assert_eq!(
+        look_kind(&t, true),
+        "vagrant",
+        "wilder Bürger bleibt Landstreicher-Figur"
+    );
+    t.wild = false;
+    assert_eq!(look_kind(&t, true), "peasant", "Bürger ohne Hammer");
+    t.hammer = true;
+    assert_eq!(look_kind(&t, true), "craftsman", "Bürger mit Hammer");
+    assert_eq!(
+        look_kind(&t, false),
+        "peasant",
+        "ohne Figur im Katalog bleibt es beim Bauern"
+    );
+}
