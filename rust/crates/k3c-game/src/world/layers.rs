@@ -8,14 +8,29 @@ use k3c_sim::state::World as SimWorld;
 use super::World;
 use super::backdrop::{FRAME_PER_UNIT, Look, Rgba, TILE_UNITS, variant};
 use super::cull::tile_range;
+use super::forest::motif_place;
 use super::forest::wall_alpha;
-use super::tint::{haze_of, weather_haze};
+use super::tint::{has_sky, haze_of, weather_haze};
 use crate::view::cell::Cell;
 use crate::view::frame::{Frame, Stage};
 use k3c_data::look::current;
 
 /// ANIM_STAND ist die Animation der Kulissen-Kacheln.
 pub const ANIM_STAND: &str = "stand";
+
+/// MOTIFS sind die monumentalen Leitmotive je Welt (LA2.4, `data/paper.json › leitmotive`): Burgberg (Standard),
+/// Vulkan (Sengoku), Pyramiden (Nil), Steinkreis (Britannien); unbekannte Welten zeigen das Standard-Motiv.
+pub const MOTIFS: [(&str, &str); 4] = [
+    ("standard", "hintergruende/leitmotiv-standard"),
+    ("sengoku", "hintergruende/leitmotiv-sengoku"),
+    ("nil", "hintergruende/leitmotiv-nil"),
+    ("britannien", "hintergruende/leitmotiv-britannien"),
+];
+
+/// motif_of wählt das Leitmotiv der Welt `world` (leer oder unbekannt: Standard).
+pub fn motif_of(world: &str) -> &'static str {
+    MOTIFS.iter().find(|(w, _)| *w == world).map_or(MOTIFS[0].1, |(_, a)| a)
+}
 
 impl World {
     /// DrawFar füllt den Welt-Teil der Zelle mit dem Himmel des Bioms und zeichnet die feste Schicht `fern`; beide
@@ -31,12 +46,44 @@ impl World {
         let back = self.light.backdrop(&wd.cycle);
         self.fill_rect(dst, c.world_rect(), lk.sky, back);
         self.draw_sky(dst, c, wd, &st.level, back, f.clock);
+        self.draw_motif(dst, f, c, &st.level, back);
         let factor = current().scroll_for(&st.level, 0, lk.scroll[0]);
         self.draw_layer_with(dst, c, wd, lk, 0, (back, factor, 1.0));
         if weather_haze(wd) {
             self.draw_haze(dst, c, &st.level, lk.sky, back, 0);
         }
         self.draw_weather_sky(dst, f, c);
+    }
+
+    /// DrawMotif zeichnet das monumentale Leitmotiv der Welt (LA2.4) als letzte feste Ebene hinter der Kulisse: ohne
+    /// Scroll, Fuß auf der Boden-Linie, Lage und Größe aus `look.json › worlds › motif`, so hell wie der Hintergrund
+    /// (`back`); der Dunst der Ebenen darüber dämpft es weiter. Nur im Profil mit Himmel (k2c), in Stufen mit Himmel und
+    /// solange der fx-Schalter `sky` an ist; fehlt das Sheet, bleibt es leer.
+    #[allow(clippy::cast_possible_truncation, clippy::cast_precision_loss)]
+    pub fn draw_motif(&self, dst: &mut dyn Canvas, f: &Frame, c: &Cell, level: &str, back: f64) {
+        if !current().sky.enabled || !has_sky(level) || !super::fx::on("sky") {
+            return;
+        }
+        let Some(sh) = self
+            .lib
+            .as_ref()
+            .and_then(|l| l.sheet(motif_of(super::lightdraw::world_of(f)), ANIM_STAND))
+        else {
+            return;
+        };
+        let Some(fr) = sh.frame(0) else {
+            return;
+        };
+        if sh.fw <= 0 || sh.fh <= 0 {
+            return;
+        }
+        let (x, foot, h) = motif_place(c, level);
+        let w = h * sh.fw as f64 / sh.fh as f64;
+        let mut g = Affine::IDENTITY;
+        g.scale((w / sh.fw as f64) as f32, (h / sh.fh as f64) as f32)
+            .translate((x - w / 2.0) as f32, (foot - h) as f32);
+        let b = back as f32;
+        dst.sprite_tf(fr.tex, fr.src, g, [b, b, b, 1.0]);
     }
 
     /// DrawHaze legt Dunst in Himmelsfarbe über die Welt der Zelle nach der Schicht `i` (Luftperspektive, RU55.4).

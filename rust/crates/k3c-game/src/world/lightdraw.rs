@@ -257,7 +257,7 @@ fn light_asset(wid: &str, kind: &str) -> (&'static str, f64, f64) {
 }
 
 /// world_of ist die Welt-ID der Insel im Bild (leer = Standard).
-fn world_of(f: &Frame) -> &str {
+pub(super) fn world_of(f: &Frame) -> &str {
     f.route
         .iter()
         .find(|r| r.id == f.campaign.island)
