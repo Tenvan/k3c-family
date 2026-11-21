@@ -69,7 +69,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| ECO1.1 | `ECO1.1-siegel-assets.md` | Umsetzung | autonom | offen |
+| ECO1.1 | `ECO1.1-siegel-assets.md` | Umsetzung | autonom | fertig |
 | ECO1.2 | `ECO1.2-siegel-anzeige.md` | Umsetzung | autonom | offen |
 | ECO1.3 | `ECO1.3-werkzeuggurtel.md` | Umsetzung | autonom | offen |
 | ECO1.4 | `ECO1.4-handwerker-bauarbeiten.md` | Umsetzung | autonom | offen |

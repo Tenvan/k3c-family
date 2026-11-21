@@ -75,6 +75,31 @@
     "manifest": "muenze/manifest.json"
   },
   {
+    "id": "siegel-dev",
+    "rig": "requisite",
+    "manifest": "siegel-dev/manifest.json"
+  },
+  {
+    "id": "siegel-easy",
+    "rig": "requisite",
+    "manifest": "siegel-easy/manifest.json"
+  },
+  {
+    "id": "siegel-hard",
+    "rig": "requisite",
+    "manifest": "siegel-hard/manifest.json"
+  },
+  {
+    "id": "siegel-normal",
+    "rig": "requisite",
+    "manifest": "siegel-normal/manifest.json"
+  },
+  {
+    "id": "siegel-ultra",
+    "rig": "requisite",
+    "manifest": "siegel-ultra/manifest.json"
+  },
+  {
     "id": "taste-kappe-breit",
     "rig": "requisite",
     "manifest": "taste-kappe-breit/manifest.json"
