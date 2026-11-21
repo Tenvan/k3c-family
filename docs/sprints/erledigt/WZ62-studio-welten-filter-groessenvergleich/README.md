@@ -1,6 +1,6 @@
 # WZ62 · DEV · Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -80,6 +80,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-21: Review WZ62.5 durch (Ergebnis dort): AC-01 bis AC-06 durch WZ62.1 bis WZ62.4, WZ62.6, WZ62.7 belegt; behoben: Schutz der festen Welten bei kaputtem paper.json, look.rs-Dateigrenze, Papier-Tests, gocyclo (PRs #792, #793). Abnahme-Ticket für PC-Abnahme, Race, Gen und offene Review-Befunde: B-1178.

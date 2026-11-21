@@ -93,7 +93,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WE6 | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | geplant |
 | WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | geplant |
 | WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | aktiv |
-| WZ62 | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | aktiv |
+| WZ62 | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | erledigt |
 
 ## Nicht-Ziele
 
