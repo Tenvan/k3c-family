@@ -74,6 +74,8 @@ type worldFile struct {
 	Name      *string                    `json:"name"`
 	Notes     string                     `json:"notes"`
 	Extends   *string                    `json:"extends"`
+	Kind      *string                    `json:"kind"`
+	Gewaesser string                     `json:"gewaesser"`
 	Overrides map[string]json.RawMessage `json:"overrides"`
 	Combat    *rawCombat                 `json:"combat"`
 	Islands   *[]json.RawMessage         `json:"islands"`

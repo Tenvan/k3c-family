@@ -123,6 +123,8 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), nach B-488 › Anforderung
 | `name` | ja | Text | Anzeigename, nicht leer (z. B. „Standard“, „Nordmeer“); muss nicht eindeutig sein. |
 | `notes` | nein | Text | Freie Notiz für Entwurf und REG-Begründung; das Spiel liest sie nicht. Fehlt sie, gilt `""`. |
 | `extends` | nein | Text | Eltern-Welt (Welt-ID nach § 4, nicht die eigene); fehlt es, erbt die Welt von der Basis `data/` (§ 1). |
+| `gewaesser` | nein | Text | Gewässer, an dem sich die Welt orientiert: Fluss, See, Küste oder Meer (z. B. „Nil“, „Küste“); Untertitel der Welt in der Weltenliste und Bezug der Geschichten (§ 2.2). |
+| `kind` | nein | Text | Art der Welt (B-1217): `spinoff` (Ableger oder Episode: erwartet die Assets und Werte der Eltern-Welt) oder `new` (komplett neu: erwartet eigenen Look, Einheiten und Werte). Fehlt es, gilt `spinoff` mit `extends`, sonst `new`; `spinoff` braucht `extends`. Die Statistik des Welten-Editors prüft danach die eigenen Assets. |
 | `overrides` | nein | Objekt | Übersteuerte Basis-Werte je Basis-Datei (§ 1.1); fehlt es oder `{}`, gilt die Basis (bzw. die Eltern-Welt). |
 | `combat` | nein | Objekt | Kampfvariante der Welt (`kampf.md` § 3): `mode` (`groups` Standard oder `general`) und `groupSize` (ganze Zahl ≥ 1, Standard 5, nur bei `groups`); fehlt es, gilt `groups`/5. |
 | `story` | nein | Objekt | Geschichte der Welt (§ 2.2): `lexicon`, `start`, `etappen`, `end`, `bottles`; fehlt es, gibt es keine Zeilen der Welt. `extends` vererbt es nicht. |

@@ -10,9 +10,11 @@ interface Props {
   detail: WorldDetail;
   models: ReadonlyMap<string, LevelModel>;
   onJump: (islandId: string) => void;
+  /** gewählte Insel (hervorgehoben) */
+  active?: string;
 }
 
-export function SeaMap({ detail, models, onJump }: Props) {
+export function SeaMap({ detail, models, onJump, active }: Props) {
   const groups = groupEtappen(detail);
   return (
     <aside className="wd-map" aria-label="Seekarte">
@@ -24,7 +26,7 @@ export function SeaMap({ detail, models, onJump }: Props) {
             <Text as="div" size="1" weight="bold">{bandText(g, groups[gi - 1])}</Text>
             <div className="wd-map-row">
               {g.islands.map(({ island, index }) => (
-                <a key={island.id} href={`#${islandAnchor(island.id)}`} className="wd-map-node" data-jump={island.id}
+                <a key={island.id} href={`#${islandAnchor(island.id)}`} className={`wd-map-node${active === island.id ? ' wd-map-active' : ''}`} aria-current={active === island.id ? 'true' : undefined} data-jump={island.id}
                   onClick={(e) => { e.preventDefault(); onJump(island.id); }}>
                   <span className="wd-map-sil">
                     {island.depths.map((_, s) => {

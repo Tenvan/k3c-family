@@ -1,16 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Badge, Flex, LinkButton, SelectField, Text } from '@webkit/atoms';
-import { zuordnung, type WeltModus } from '@webkit/lib/weltFilter';
-import { backend, type WorldDetail } from '../api';
+import { useMemo, useState, type CSSProperties } from 'react';
+import { Badge, Flex, LinkButton, SelectField, Splitter, Text } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
+import { zuordnung } from '@webkit/lib/weltFilter';
+import type { WorldDetail } from '../api';
 import type { AssetEintrag } from '../api/typesAssets';
+import { AssetDetail } from '../assets/catalog/AssetDetail';
+import { AssetTree } from '../assets/catalog/AssetTree';
+import { useCatalog } from '../assets/catalog/useCatalog';
 import { useWeltSicht } from '../assets/useWeltSicht';
+import { prefsStore } from '../lib/prefs';
 import { openCatalog } from './CatalogLinks';
-import { belongsTo, biomesOf, groupIcon } from './catalogView';
+import { belongsTo, biomesOf } from './catalogView';
 import { PromptRow } from './PromptRow';
 
-// Reiter „Katalog“ des Welten-Editors (B-1216): die Katalog-Einträge (Assets), die die Welt sieht, nach Insel gefiltert, nach
-// Gruppe geordnet, mit Herkunft (exklusiv oder geerbt) und einem Prompt für neue oder geänderte Assets der Insel. Assets
-// ändern nur die MCP-Tools assets_* (Entscheidung 005); der Reiter zeigt und beauftragt nur.
+// Reiter „Katalog“ des Welten-Editors (B-1216): die eigenen, exklusiven Assets der Welt (nicht die geerbten; die Basis-Welt
+// Standard zeigt alle Assets) als Baum aus
+// Gruppen und Assets mit Symbolen, nach Insel filterbar; ein Klick zeigt rechts denselben Asset-Editor wie die Seite
+// Katalog (`AssetDetail`: Vorschau, Teile, Größenvergleich, Prompts). Assets ändern nur die MCP-Tools assets_*
+// (Entscheidung 005); dieser Reiter zeigt und beauftragt nur.
 
 const ALL = '';
 const keyOf = (a: AssetEintrag) => `${a.gruppe}/${a.id}`;
@@ -22,65 +29,51 @@ export function catalogPrompt(detail: WorldDetail, island: string, shown: readon
   const groups = [...new Set(shown.map((a) => a.gruppe))].sort().map((g) => `${g} ${shown.filter((a) => a.gruppe === g).length}`).join(', ');
   return [
     `Welten-Editor, Katalog der Welt „${detail.name}“ (Welt-ID ${detail.id}), ${where}.`,
-    `Ist: ${shown.length} Katalog-Einträge (${groups || 'keine'}).`,
+    `Ist: ${shown.length} Katalog-Einträge der Welt (${groups || 'keine'}).`,
     'Lies zuerst assets_guide und assets_list; lege neue Assets nur mit assets_create an und ändere sie nur mit assets_set (Entscheidung 005, Papierschnitt-Specs). Weise Assets der Welt zu, wenn sie nur dort gelten sollen.',
     'Was soll sich ändern: ',
   ].join('\n');
 }
 
 export function CatalogTab({ detail }: { detail: WorldDetail }) {
-  const [assets, setAssets] = useState<AssetEintrag[] | null>(null);
-  const [error, setError] = useState('');
-  const [island, setIsland] = useState(ALL);
-  const [modus, setModus] = useState<WeltModus>('gesamt');
+  const { list, prompts, error, loading, stand } = useCatalog();
   const { sicht, laedt } = useWeltSicht(detail.id);
-  useEffect(() => {
-    let live = true;
-    backend.assetsList().then((l) => live && setAssets(l), (e: unknown) => live && setError(e instanceof Error ? e.message : String(e)));
-    return () => { live = false; };
-  }, []);
+  const [island, setIsland] = useState(ALL);
+  const [selected, setSelected] = useState('');
+  const [split, setSplit, resetSplit] = useSplit(prefsStore, 'world.split.catalog', 32);
   const chosen = detail.islands.some((i) => i.id === island) ? island : ALL;
+  // Die Basis-Welt (Standard) besitzt alle Assets; jede andere Welt zeigt nur ihre eigenen (exklusiven), nach Insel gefiltert
+  const base = !!sicht && sicht.welt === sicht.basis;
+  const modus = base ? 'gesamt' : 'exklusiv';
   const shown = useMemo(
-    () => (assets ?? []).filter((a) => zuordnung(sicht, modus, keyOf(a)).sichtbar && belongsTo(a, detail, chosen)),
-    [assets, sicht, modus, detail, chosen],
+    () => list.filter((a) => zuordnung(sicht, modus, keyOf(a)).sichtbar && belongsTo(a, detail, chosen)),
+    [list, sicht, modus, detail, chosen],
   );
-  const groups = [...new Set(shown.map((a) => a.gruppe))].sort();
+  const current = shown.some((a) => a.id === selected) ? selected : '';
   return (
     <section className="wd-card wd-fillcard" aria-label="Katalog der Welt">
       <Flex gap="2" align="center" wrap="wrap">
         <Text size="2" weight="bold">Katalog</Text>
         <SelectField size="1" aria-label="Insel des Katalogs" value={chosen} onChange={setIsland}
           options={[{ value: ALL, label: 'Alle Inseln' }, ...detail.islands.map((i) => ({ value: i.id, label: `${i.name} (${i.biomes.join(' → ')})` }))]} />
-        <SelectField size="1" aria-label="Sicht auf den Katalog" value={modus} onChange={(v) => setModus(v as WeltModus)}
-          options={[{ value: 'gesamt', label: 'mit geerbten (gesamt)' }, { value: 'exklusiv', label: 'nur diese Welt (exklusiv)' }]} />
-        <Text size="1" color="gray" role="status">{assets === null ? 'Lade …' : `${shown.length} Einträge`}</Text>
+        <Text size="1" color="gray" role="status">{loading || laedt ? 'Lade …' : `${shown.length} ${base ? 'Assets' : 'eigene Assets'}`}</Text>
         <LinkButton size="1" data-katalog="oeffnen" onClick={() => openCatalog(detail.id, modus)}>im Katalog öffnen</LinkButton>
         <PromptRow prompt={catalogPrompt(detail, chosen, shown)} label="Asset-Prompt kopieren" title="Assets der Insel in Claude ändern" />
       </Flex>
       {error && <Text as="p" size="1" color="red" role="alert">{error}</Text>}
-      <div className="ct-list" role="list" aria-label="Katalog-Einträge">
-        {(laedt || assets === null) && !error && <Text size="1" color="gray">Lade Katalog …</Text>}
-        {groups.map((g) => (
-          <div key={g} className="ct-group" role="group" aria-label={g} data-group={g}>
-            <Text size="2" weight="bold">{groupIcon(g)} {g} <Text size="1" color="gray" weight="regular">{shown.filter((a) => a.gruppe === g).length}</Text></Text>
-            <div className="ct-entries">
-              {shown.filter((a) => a.gruppe === g).map((a) => {
-                const z = zuordnung(sicht, modus, keyOf(a));
-                const biomes = biomesOf(a);
-                return (
-                  <div key={keyOf(a)} role="listitem" className="ct-entry" data-asset={keyOf(a)}>
-                    <Text size="2">{a.id}</Text>
-                    <Text size="1" color="gray">{a.rig}</Text>
-                    {biomes.length > 0 && <Badge size="1" color="blue">{biomes.join(' · ')}</Badge>}
-                    {sicht && <Badge size="1" color={z.exklusiv ? 'orange' : 'gray'}>{z.exklusiv ? 'exklusiv' : `geerbt: ${z.herkunft}`}</Badge>}
-                    {!a.gueltig && <Badge size="1" color="red">ungültig</Badge>}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-        {assets !== null && !laedt && shown.length === 0 && <Text size="1" color="gray">Keine Einträge für diese Auswahl.</Text>}
+      <div className="st-layout" style={{ '--st-split': `${split}%` } as CSSProperties}>
+        <div className="st-tree" aria-label="Eigene Assets der Welt">
+          <AssetTree assets={shown} selected={current} onSelect={setSelected}
+            badges={(a) => {
+              const biomes = biomesOf(a);
+              return biomes.length > 0 ? <Badge size="1" color="blue">{biomes.join(' · ')}</Badge> : null;
+            }} />
+          {!loading && !laedt && shown.length === 0 && <Text size="1" color="gray">Keine Assets für diese Auswahl.</Text>}
+        </div>
+        <Splitter className="st-split" label="Breite des Baums" value={split} onChange={setSplit} onReset={resetSplit} />
+        <div className="st-detail" aria-label="Asset-Editor">
+          <AssetDetail key={current} selected={current} list={list} prompts={prompts} stand={stand} empty="Asset links wählen" />
+        </div>
       </div>
     </section>
   );

@@ -9,11 +9,14 @@ import { CatalogTab } from './CatalogTab';
 import { DeleteWorld } from './DeleteWorld';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
+import { KindBadge, KindSelect, ParentSelect } from './WorldKind';
 import { NatureValues } from './NatureValues';
 import { NewWorld } from './NewWorld';
 import { Overview } from './Overview';
 import { StoryState } from './StoryState';
 import { StoryTab } from './StoryTab';
+import { kindOf } from './statsCount';
+import { WorldStats } from './WorldStats';
 import { WorldValues } from './WorldValues';
 import { WorldPrompts } from './WorldPromptBar';
 import { useWorld, type StageChoice, type WorldState } from './useWorld';
@@ -36,7 +39,7 @@ function WorldList({ worlds, id, onChoose, onCreate }: { worlds: WorldInfo[]; id
           <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
             className={`wd-entry${w.id === id ? ' wd-entry-active' : ''}`}
             onClick={() => onChoose(w.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onChoose(w.id)}>
-            <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>
+            <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray" title={`data/worlds/${w.id}.json`}>{w.gewaesser || w.id}</Text>{w.id !== 'standard' && <> <KindBadge kind={w.kind} /></>}
           </Box>
         )
       ))}
@@ -62,9 +65,11 @@ function WorldHead({ w }: { w: WorldState }) {
     w.setStage({ world: w.id, island, stage: Number(stage) });
   };
   return (
-    <Flex direction="column" gap="1">
+    <div className="wd-head">
+    <Flex direction="column" gap="1" className="wd-head-main">
       <Flex gap="2" align="center" wrap="wrap">
         <Heading size="4">{detail.name}</Heading>
+        {detail.id !== 'standard' && !detail.error && <><KindBadge kind={kindOf(detail)} /><KindSelect kind={kindOf(detail)} onChange={(k) => void w.setKind(k)} />{kindOf(detail) === 'spinoff' && <ParentSelect id={detail.id} parent={detail.extends} worlds={w.worlds} onChange={(p) => void w.setParent(p)} />}</>}
         <Badge color="gray">data/worlds/{detail.id}.json</Badge>
         {detail.islands.length > 0 && (
           <SelectField size="1" aria-label="Insel und Stufe" value={stageKey(w.stage)} onChange={pick} options={stageOptions(detail)} />
@@ -77,6 +82,8 @@ function WorldHead({ w }: { w: WorldState }) {
       {!detail.error && <StoryState detail={detail} />}
       {w.notice && <Text size="1" role="status" color={w.notice.tone === 'error' ? 'red' : w.notice.tone === 'warn' ? 'orange' : 'green'}>{w.notice.text}</Text>}
     </Flex>
+    {!detail.error && <WorldStats detail={detail} />}
+    </div>
   );
 }
 
@@ -113,15 +120,24 @@ export function WorldPage() {
           <Tabs.Content value="inseln">
             <Flex direction="column" gap="3" pt="3">
               {w.detail && <WorldPrompts detail={w.detail} />}
-              {w.detail && w.detail.islands.length > 0 && (
-                <Overview detail={w.detail} seed={w.seed} choice={w.stage} onEtappe={w.setEtappe} refresh={w.crossRefresh}
-                  onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }} />
-              )}
-              <div ref={editor} className="wd-editor" />
-              <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}
-                selected={chunk} onChunk={setChunk} />
-              <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
-              <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
+              {(() => {
+                const editorParts = (
+                  <>
+                    <div ref={editor} className="wd-editor" />
+                    <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}
+                      selected={chunk} onChunk={setChunk} />
+                    <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
+                    <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
+                  </>
+                );
+                return w.detail && w.detail.islands.length > 0 ? (
+                  <Overview detail={w.detail} seed={w.seed} choice={w.stage} onEtappe={w.setEtappe} refresh={w.crossRefresh}
+                    selected={w.stage?.island ?? w.detail.islands[0]!.id} onSelect={(island) => w.setStage({ world: w.id, island, stage: 0 })}
+                    onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }}>
+                    {editorParts}
+                  </Overview>
+                ) : editorParts;
+              })()}
             </Flex>
           </Tabs.Content>
           <Tabs.Content value="geschichte">

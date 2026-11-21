@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Box, Button, Flex, Heading, SelectField, Text, TextField } from '@webkit/atoms';
+import { Box, Button, Flex, SelectField, Text, TextField } from '@webkit/atoms';
 import { StatusBadge } from '@webkit/atoms';
 import { useWeltFilter } from '@webkit/lib/useWeltFilter';
-import { zuordnung, type WeltZuordnung } from '@webkit/lib/weltFilter';
+import { zuordnung } from '@webkit/lib/weltFilter';
 import { CheckField, LoadingNote, WeltFilter } from '@webkit/molecules';
 import type { AssetEintrag } from '../api';
 import { useWeltSicht } from '../useWeltSicht';
+import { AssetTree } from './AssetTree';
 
 interface Props {
   list: AssetEintrag[];
@@ -49,7 +50,6 @@ export function AssetList({ list, loading = false, inDiff, open = 0, onReload, s
   const counts = sicht ? { gesamt: zaehle('gesamt'), exklusiv: zaehle('exklusiv') } : undefined;
   const gruppenListe = [...new Set(list.map((a) => a.gruppe))].sort();
   const arten = [...new Set(list.map((a) => a.rig))].sort();
-  const groups = [...new Set(shown.map((a) => a.gruppe))].sort();
   return (
     <Flex direction="column" gap="3">
       <Box className="as-list-filter">
@@ -73,14 +73,14 @@ export function AssetList({ list, loading = false, inDiff, open = 0, onReload, s
         {weltFehler && <Text as="div" size="1" color="red">{weltFehler}</Text>}
         {open > 0 && <Text as="div" size="1" color="gray" data-checking>Prüft {list.length - open}/{list.length} …</Text>}
       </Box>
-      {groups.map((g) => (
-        <Flex key={g} direction="column" gap="1">
-          <Heading size="2" color="gray">{g}</Heading>
-          {shown.filter((a) => a.gruppe === g).map((a) => (
-            <Entry key={a.id} asset={a} diff={inDiff.has(a.id)} active={a.id === selected} onSelect={onSelect} welt={sicht ? zu(a) : undefined} />
-          ))}
-        </Flex>
-      ))}
+      <AssetTree assets={shown} selected={selected} onSelect={onSelect}
+        badges={(a) => (
+          <>
+            {sicht && zu(a).exklusiv && <StatusBadge tone="ok">exklusiv</StatusBadge>}
+            {sicht && zu(a).geerbt && <StatusBadge tone="neutral">geerbt von {zu(a).herkunft}</StatusBadge>}
+            {inDiff.has(a.id) && <StatusBadge tone="info">im Diff</StatusBadge>}
+          </>
+        )} />
       <ListStatus loading={loading} laedt={laedt} leer={!shown.length} />
     </Flex>
   );
@@ -91,28 +91,4 @@ function ListStatus({ loading, laedt, leer }: { loading: boolean; laedt: boolean
   if (loading) return <LoadingNote id="list" text="Lädt Assets …" />;
   if (laedt) return <LoadingNote id="welt" text="Lädt Welt …" />;
   return leer ? <Text size="1" color="gray">Keine Assets</Text> : null;
-}
-
-function Entry({ asset, diff, active, onSelect, welt }: { asset: AssetEintrag; diff: boolean; active: boolean; onSelect: (id: string) => void; welt?: WeltZuordnung }) {
-  const invalid = !asset.gueltig;
-  return (
-    <Box role="button" tabIndex={0} data-asset={asset.id} data-invalid={String(invalid)} aria-pressed={active}
-      className={`as-entry${active ? ' as-entry-active' : ''}${invalid ? ' as-entry-invalid' : ''}`}
-      onClick={() => onSelect(asset.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelect(asset.id)}>
-      <Flex gap="2" align="center" wrap="wrap">
-        <Text size="2" weight="bold" color={invalid ? 'red' : undefined}>{asset.id}</Text>
-        <Text size="1" color="gray">{asset.rig}</Text>
-        {welt?.exklusiv && <StatusBadge tone="ok">exklusiv</StatusBadge>}
-        {welt?.geerbt && <StatusBadge tone="neutral">geerbt von {welt.herkunft}</StatusBadge>}
-        {diff && <StatusBadge tone="info">im Diff</StatusBadge>}
-        {asset.offen && <StatusBadge tone="neutral">prüft …</StatusBadge>}
-        {invalid && <StatusBadge tone="error">ungültig</StatusBadge>}
-      </Flex>
-      {asset.fehler?.map((f) => (
-        <Text key={`${f.feld}|${f.regel}`} as="div" size="1" color="red">
-          {f.feld} · {f.regel}: {f.text}
-        </Text>
-      ))}
-    </Box>
-  );
 }

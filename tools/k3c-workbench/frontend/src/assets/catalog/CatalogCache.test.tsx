@@ -3,7 +3,7 @@ import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
 import type { AssetEintrag } from '../api';
-import { buttons, click, mount, unmount } from '../testing';
+import { buttons, click, expandTrees, mount, unmount } from '../testing';
 import { mountCatalog, select, until } from './catalogTesting';
 import { Theme } from '@webkit/templates';
 import { CatalogPage } from './CatalogPage';
@@ -30,6 +30,7 @@ describe('Katalog: schrittweise Prüfung (B-732/AC-01)', () => {
     const real = backend.assetsCheck.bind(backend);
     const check = vi.spyOn(backend, 'assetsCheck').mockReturnValue(new Promise((r) => (finish = r)));
     const host = await mount(<CatalogPage />);
+    await expandTrees(host);
     await until('Liste', () => entry(host, 'banner'));
     expect(entry(host, 'banner').textContent).toContain('prüft …');
     expect(entry(host, 'banner').getAttribute('data-invalid')).toBe('false');
@@ -63,6 +64,7 @@ describe('Katalog: Cache (B-732/AC-03)', () => {
     document.body.appendChild(other);
     const root = createRoot(other);
     act(() => root.render(<Theme><CatalogPage /></Theme>));
+    await expandTrees(other);
     await until('Liste aus dem Cache', () => entry(other, 'monarch'));
     await click(entry(other, 'monarch'));
     await until('Vorschau aus dem Cache', () => other.querySelector('img[alt="monarch idle Frame 1"]'));

@@ -268,6 +268,27 @@ func checkWorldLinks(id string, extends *string, overrides map[string]json.RawMe
 	return nil
 }
 
+// Arten der Welt (B-1217): Ableger/Episode einer Eltern-Welt oder komplett neu.
+const (
+	WorldKindSpinoff = "spinoff"
+	WorldKindNew     = "new"
+)
+
+// worldKind löst die Art der Welt auf: ohne Angabe spinoff mit `extends`, sonst new; spinoff braucht `extends`.
+func worldKind(kind, extends *string) (string, error) {
+	switch {
+	case kind == nil && extends != nil:
+		return WorldKindSpinoff, nil
+	case kind == nil:
+		return WorldKindNew, nil
+	case *kind != WorldKindSpinoff && *kind != WorldKindNew:
+		return "", fmt.Errorf("kind: %q unbekannt (erlaubt: %s, %s)", *kind, WorldKindSpinoff, WorldKindNew)
+	case *kind == WorldKindSpinoff && extends == nil:
+		return "", errors.New("kind: spinoff braucht extends")
+	}
+	return *kind, nil
+}
+
 func unknownOverrideFile(name string) error {
 	return fmt.Errorf("overrides: unbekannte Datei %q (erlaubt: %s)", name, strings.Join(slices.Sorted(maps.Keys(overrideFiles)), ", "))
 }

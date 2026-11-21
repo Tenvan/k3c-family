@@ -252,6 +252,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1212](B-1212-gamepad-hotplug-und-hud-beitreten-meldung.md) | CLI | Problem | mittel | offen | WL1 | Gamepad funktioniert auch, wenn es nach dem Spielstart eingeschaltet wird; die Beitreten-Meldung im HUD entfällt |
 | [B-1213](B-1213-zaun-und-mauern-lueckenlos-hoehe-nach-stufe.md) | PAP | Idee | mittel | offen | WL1 | Mauern: Jägerzaun auf Holz-Level, lückenloser Anschluss und Höhe nach Ausbaustufe |
 | [B-1214](B-1214-workbench-spielstart-dev-release-dienste.md) | DEV | Idee | mittel | offen | WL1 | Workbench: Spielstart (Dev und Release) als Dienste eintragen und loggen |
+| [B-1217](B-1217-welt-art-ableger-oder-neu.md) | DEV | Idee | mittel | eingeplant | WL2 | Eine Welt hat eine Art (Ableger oder komplett neu); die Statistik erwartet danach eigene Assets, Einheiten und Werte |
 
 ## Archiv
 

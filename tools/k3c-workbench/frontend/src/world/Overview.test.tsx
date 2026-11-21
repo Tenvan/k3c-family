@@ -29,12 +29,12 @@ const level = (width: number): WorldLevel => ({
 let root: Root | null = null;
 afterEach(() => { act(() => root?.unmount()); root = null; document.body.innerHTML = ''; vi.restoreAllMocks(); });
 
-async function mount(onPick = vi.fn()): Promise<HTMLElement> {
+async function mount(onPick = vi.fn(), extra: { selected?: string; onSelect?: (i: string) => void } = {}): Promise<HTMLElement> {
   vi.spyOn(backend, 'worldLevel').mockImplementation(async (_w, _i, stage) => level(1000 - stage * 200));
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
-  act(() => root!.render(<Theme><Overview detail={DETAIL} seed="k3c" choice={null} onPick={onPick} /></Theme>));
+  act(() => root!.render(<Theme><Overview detail={DETAIL} seed="k3c" choice={null} onPick={onPick} {...extra} /></Theme>));
   for (let i = 0; i < 5; i++) await act(async () => new Promise((r) => setTimeout(r, 0)));
   return host;
 }
@@ -97,5 +97,19 @@ describe('Querschnitt (B-963/AC-01)', () => {
     const host = await mount(onPick);
     await act(async () => (host.querySelectorAll('[data-island="b"] .wd-x-bar')[1] as HTMLElement).click());
     expect(onPick).toHaveBeenCalledWith('b', 1);
+  });
+});
+
+describe('Querschnitt: gewählte Insel (B-1217)', () => {
+
+  it('mit gewählter Insel zeigt der Querschnitt nur sie in voller Breite; die Seekarte wählt', async () => {
+    const onSelect = vi.fn();
+    const host = await mount(vi.fn(), { selected: 'b', onSelect });
+    const cross = host.querySelector('[aria-label="Querschnitt"]')!;
+    expect([...cross.querySelectorAll('[data-island]')].map((e) => e.getAttribute('data-island'))).toEqual(['b']);
+    expect([...cross.querySelectorAll('.wd-x-bar')].map((b) => (b as HTMLElement).style.width)).toEqual(['100%', '80%', '60%']);
+    expect(host.querySelector('[data-jump="b"]')?.getAttribute('aria-current')).toBe('true');
+    await act(async () => (host.querySelector('[data-jump="c"]') as HTMLElement).click());
+    expect(onSelect).toHaveBeenCalledWith('c');
   });
 });

@@ -6,7 +6,17 @@
 .wd-entry-active { background: var(--accent-a3); border-color: var(--accent-a6); }
 
 .wd-card { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--gray-a5); border-radius: 8px; background: var(--color-panel-solid); }
-.wd-notes { max-width: 90ch; }
+.wd-notes { max-width: 90ch; max-height: 5rem; overflow-y: auto; }
+.wd-head { max-height: 40vh; overflow-y: auto; display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; }
+.wd-head-main { flex: 1 1 auto; min-width: 0; }
+.wd-stats { flex: none; margin-left: auto; width: 17rem; max-width: 40%; padding: 8px 10px; border: 1px solid var(--gray-a5); border-radius: 8px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.wd-stats-bar { height: 6px; border-radius: 3px; background: var(--gray-a4); overflow: hidden; }
+.wd-stats-bar i { display: block; height: 100%; background: var(--green-9); }
+.wd-stats-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.wd-stats-list li { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) auto; align-items: baseline; gap: 0 6px; }
+.wd-stats-list li > :nth-child(4) { grid-column: 2 / -1; overflow-wrap: anywhere; }
+@media (max-width: 900px) { .wd-head { flex-direction: column; } .wd-stats { width: auto; max-width: none; margin-left: 0; } }
+.wd-map-active { outline: 2px solid var(--accent-9); border-radius: 6px; }
 .wd-seed { width: 12rem; }
 
 /* Streifen: eigene horizontale Scrollbar, Abschnitte als Kacheln, Objekte als Punkte darunter */
@@ -54,6 +64,8 @@
 
 /* Querschnitt und Seekarte (B-963, world/Overview): Streifen mittig auf einer Achse, Seekarte bleibt beim Scrollen stehen */
 .wd-overview { display: flex; gap: 16px; align-items: flex-start; }
+.wd-right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.wd-right > .wd-x { flex: none; }
 .wd-x { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
 .wd-x-band { background: var(--amber-a4); border-radius: 8px; padding: 6px 12px; text-align: center; font-weight: 600; font-size: 13px; }
 .wd-x-island { scroll-margin-top: 16px; outline: 3px solid transparent; transition: outline-color .2s; }
@@ -83,6 +95,8 @@
 .st-branch { margin-left: 0.55rem; padding-left: 0.5rem; border-left: 1px solid var(--gray-a6); display: flex; flex-direction: column; gap: 1px; }
 .st-node, .vt-node { justify-content: flex-start; gap: 6px; width: 100%; height: 1.75rem; margin: 0; padding: 0 6px; font-size: var(--font-size-2); }
 .st-node.is-on, .vt-node.is-on { background: var(--accent-a4); }
+.st-islandrow { display: flex; align-items: center; gap: 2px; }
+.st-islandrow .st-node { flex: 1; width: auto; min-width: 0; }
 .st-icon { display: inline-block; width: 1.4rem; text-align: center; }
 .st-detail { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--gray-a5); border-radius: 8px; min-height: 0; overflow-x: hidden; overflow-y: auto; align-self: stretch; }
 .st-line { margin: 0; font-size: 1.05rem; }
@@ -121,6 +135,9 @@
 .wd-page .wk-listdetail-detail { display: flex; flex-direction: column; overflow: hidden; }
 .wd-main { flex: 1 1 auto; min-height: 0; }
 .wd-tabs { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+/* die Reiterleiste schrumpft nie: Radix setzt overflow, damit wäre ihre Mindesthöhe 0 und sie verschwände bei hohem Inhalt */
+.wd-tabs > [role='tablist'] { flex: 0 0 auto; }
+.wd-main > .wd-head { flex: 0 0 auto; }
 .wd-tabs > [role='tabpanel'][data-state='inactive'] { display: none; }
 .wd-tabs > [role='tabpanel'][data-state='active'] { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow-y: auto; }
 .wd-fill { flex: 1 1 auto; min-height: 0; }
@@ -132,3 +149,20 @@
 .ct-group { display: flex; flex-direction: column; gap: 4px; }
 .ct-entries { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 4px 8px; }
 .ct-entry { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 4px 8px; border: 1px solid var(--gray-a4); border-radius: 6px; min-width: 0; overflow-wrap: anywhere; }
+
+/* Asset-Baum (B-1216), Katalog-Seite und Reiter */
+.at-tree { display: flex; flex-direction: column; gap: 2px; }
+.at-branch { display: flex; flex-direction: column; gap: 1px; }
+.at-wrap { display: flex; flex-direction: column; gap: 6px; }
+.tb-bar { padding: 0 0 2px; }
+.at-group { display: flex; align-items: center; gap: 4px; padding: 3px 4px; border-radius: 4px; cursor: pointer; user-select: none; }
+.at-group:hover { background: var(--gray-a3); }
+.at-group:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }
+.at-group[aria-expanded='true'] .vt-chev { transform: rotate(45deg); }
+.at-node { display: flex; flex-direction: column; border-radius: 4px; padding: 3px 6px; cursor: pointer; }
+.at-node:hover { background: var(--gray-a3); }
+.at-node:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }
+.at-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.at-node.is-on { background: var(--accent-a4); }
+.at-invalid { background: var(--red-a2); }
+.at-error { padding: 0 6px 4px 2rem; }
