@@ -24,9 +24,12 @@ _site/
 /k3c-tui.exe
 /k3c-tui
 
-# Eigene Welten bleiben lokal, eingecheckt ist nur die Standard-Welt (docs/rules/welten.md § 7, B-488/AC-10)
+# Eigene Welten bleiben lokal; eingecheckt sind Standard und die ausdrücklich freigegebenen Welten (docs/rules/welten.md § 7, B-488/AC-10)
 data/worlds/*
 !data/worlds/standard.json
+!data/worlds/nil.json
+!data/worlds/britannien.json
+!data/worlds/sengoku.json
 
 # Chat-Verlauf des Asset-Studios bleibt lokal und wird nach einer Woche gelöscht (B-488/AC-07)
 /.chats/

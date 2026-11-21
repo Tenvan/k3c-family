@@ -1,20 +1,21 @@
 {
   "id": "standard",
   "name": "Standard",
-  "gewaesser": "Meer",
+  "gewaesser": "Rhein",
   "notes": "Standard-Welt (docs/rules/welten.md, B-488; Start-Handwerker (Standard 1, B-950) stehen in data/hub.json startTroops.craftsman und sind je Welt mit overrides.hub.startTroops.craftsman änderbar; bis WZ18.2 data/islands.json): Inseln in fester Reihenfolge (docs/rules/stufen.md § 1, B-103). depths: Tiefen der Stufen (Insel 1: Wald bis Kristallhöhle); je Tiefe ein Miniboss und in der tiefsten der Endboss aus bosses.json. depthScaling: Tabelle der Insel als Basen der Potenz je Tiefe (HP, Schaden, Tempo × Basis^Tiefe); Insel 1 wie waves.json › depthScaling, das für Welten ohne Insel gilt. plannedChunks: geplante Chunks je Tiefe (docs/rules/geplante-chunks.md), leer = reiner Zufall. Name vorläufig; Anzahl und Inhalt weiterer Inseln offen (stufen.md § 7).",
   "combat": { "mode": "groups", "groupSize": 5 },
   "story": {
-    "lexicon": ["lumi", "tolu", "wuna", "fenn", "pip", "olu", "miri", "zaro", "hei"],
-    "start": ["Lumi tolu KRONE, wuna HELD fenn."],
-    "end": ["Lumi fenn FRIEDE, tolu KRONE wuna."],
-    "bottles": [ ["Pip zaro STERN, olu MOND miri."], ["Fenn hei WIND, KRONE tolu BOOT."], ["Wuna lumi HEIMAT, pip ZAUBER hei."] ]
+    "lexicon": ["thar", "gund", "ulf", "hrim", "eik", "skol", "gar", "vard", "hald", "rak", "mund", "frey", "ald", "bor", "dag", "sig", "ran", "tyr", "ing", "gald", "brun", "hel", "vin", "eir"],
+    "start": ["Thar gund KRONE, ulf eik HELD.", "Hrim skol, FEUER gar NEBEL."],
+    "etappen": { "1": ["Eik vard QUELLE, KRONE thar.", "Hald rak, SCHIFF ulf, STROM bor."], "2": ["Skol eik WALD, KRONE gund.", "Frey ald, TANNEN hrim, NEBEL gar."], "3": ["Hel mund FELS, KRONE vard.", "Rak sig, SCHIFF dag, LIED ing."], "4": ["Ran tyr STADT, SCHIFF gald.", "Brun hald, HAFEN vin, KRONE eir."], "5": ["Thar ulf MEER, FRIEDE sig.", "Dag gund, KRONE brun, WATT hel."] },
+    "end": ["Thar gund FRIEDE, KRONE eik ulf.", "Sig hald, MEER vin, SCHIFF dag."],
+    "bottles": [ ["Ulf rak STERN, eik MOND gar.", "Hrim vard, WIND tyr SINGT."], ["Frey sig GOLD, KRONE hel.", "Bor eik, SCHATZ gund HÜTET."], ["Ran mund HEIMAT, ing ZAUBER.", "Dag brun, RUNE vin LEUCHTET."] ]
   },
   "islands": [
-    { "id": "island1", "name": "Insel 1", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -6 } ] }, "story": { "arrival": ["Pip olu WALD, lumi HÖHLE miri."], "boss": ["Zaro fenn WÄCHTER, KRISTALL hei."], "done": ["WÄCHTER fenn, lumi KRONE olu."] }, "chunkCounts": { "0": 16, "1": 16, "2": 16, "3": 16, "4": 16 } },
-    { "id": "island2", "name": "island2", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 24, "1": 24, "2": 24, "3": 24, "4": 24 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -7 } ] } },
-    { "id": "island3", "name": "island3", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 40, "1": 40, "2": 40, "3": 40, "4": 40 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -7 } ] } },
-    { "id": "island4", "name": "island4", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 64, "1": 64, "2": 64, "3": 64, "4": 64 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -7 } ] } },
-    { "id": "island5", "name": "island5", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 160, "1": 160, "2": 160, "3": 160, "4": 160 } }
+    { "id": "island1", "name": "Alpenquelle", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -6 } ] }, "story": { "arrival": ["Eik thar QUELLE, KRONE vard.", "Hrim ulf, GLETSCHER skol SCHMILZT."], "boss": ["Gar hrim WÄCHTER, KRONE tyr.", "Skol ulf, EIS gund KNACKT."], "done": ["WÄCHTER hald, KRONE eik.", "Thar sig, FRIEDE dag, QUELLE vin."] }, "chunkCounts": { "0": 16, "1": 16, "2": 16, "3": 16, "4": 16 } },
+    { "id": "island2", "name": "Schwarzwald", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 24, "1": 24, "2": 24, "3": 24, "4": 24 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -7 } ] }, "story": { "arrival": ["Eik skol WALD, SCHIFF gund.", "Dag ald, TANNEN rak, DUNKEL hel."], "boss": ["Gar skol EBER, KRONE tyr.", "Ulf rak, HAUER eik BLITZT."], "done": ["EBER hald, WALD sig.", "Frey ran, LICHT dag, KRONE ing."] } },
+    { "id": "island3", "name": "Loreley-Felsen", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 40, "1": 40, "2": 40, "3": 40, "4": 40 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -7 } ] }, "story": { "arrival": ["Hel mund FELS, SCHIFF vard.", "Sig ran, LIED hrim, STROM bor."], "boss": ["Gar hel SIRENE, KRONE tyr.", "Ing sig, GESANG ulf LOCKT."], "done": ["SIRENE hald, STROM sig.", "Frey ald, SCHIFF dag, KRONE ing."] } },
+    { "id": "island4", "name": "Hansestadt", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 64, "1": 64, "2": 64, "3": 64, "4": 64 }, "plannedChunks": { "0": [ { "kind": "harbor", "slot": -7 } ] }, "story": { "arrival": ["Ran tyr STADT, SCHIFF vard.", "Brun vin, HAFEN hald, KOGGE eir."], "boss": ["Gar ran WIKINGER, KRONE tyr.", "Brun gar, AXT ulf BLITZT."], "done": ["WIKINGER hald, STADT sig.", "Frey vin, HAFEN dag, KRONE ing."] } },
+    { "id": "island5", "name": "Wattenmeer", "depths": [0, 1, 2, 3, 4], "depthScaling": { "hp": 1.5, "damage": 1.3, "speed": 1.1 }, "chunkCounts": { "0": 160, "1": 160, "2": 160, "3": 160, "4": 160 }, "story": { "arrival": ["Thar ulf MEER, SCHIFF dag.", "Hrim bor, FLUT gund, WATT hel."], "boss": ["Gar hrim SEESCHLANGE, KRONE tyr.", "Ulf sig, STURM eik BRAUST."], "done": ["SEESCHLANGE hald, MEER sig.", "Frey thar, FRIEDE dag, KRONE ing."] } }
   ]
 }
