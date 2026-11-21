@@ -12,7 +12,12 @@ func (e Editor) SetKindView(ctx context.Context, id, kind string) CreateView {
 	if kind != "" {
 		v = kind
 	}
-	patch, _ := json.Marshal(map[string]any{"kind": v})
+	fields := map[string]any{"kind": v}
+	// Ein Ableger braucht eine Eltern-Welt: ohne extends wird die Standard-Welt eingetragen (B-1217).
+	if kind == "spinoff" && e.Load(id).Extends == "" {
+		fields["extends"] = standardID
+	}
+	patch, _ := json.Marshal(fields)
 	warnings, err := e.Set(ctx, id, patch)
 	view := CreateView{ID: id, Warnings: warnings}
 	if view.Warnings == nil {
