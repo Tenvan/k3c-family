@@ -1,16 +1,16 @@
-# FG1.3 · Grafik und Texte der Figuren, Meister-Gebäude und Gegenstände
+# ECO1.6 · Gebäude nach Tiefe: unten Verteidigung, Produktion oben
 
 - **Status:** offen
 - **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** CLI
+- **Domäne:** SIM
 - **Lane:** zweit
 - **Modell:** opus
 - **Umgebung:** ?
-- **Branch:** fg1/3-figuren-grafik-texte
-- **Abhängig von:** FG1.1
-- **Tickets:** B-1201
-- **Kriterien:** AC-03
+- **Branch:** eco1/6-gebaeude-nach-tiefe
+- **Abhängig von:** –
+- **Tickets:** B-1196
+- **Kriterien:** AC-06
 
 ## Ziel
 

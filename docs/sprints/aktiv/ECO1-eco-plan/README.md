@@ -1,14 +1,14 @@
-# ECO1 · SIM · Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen
+# ECO1 · PAP, CLI, SIM · Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WIR
-- **Domäne:** SIM
-- **Reife:** Entwurf
+- **Domäne:** PAP, CLI, SIM
+- **Reife:** bereit
 - **Tickets:** B-1191, B-1192, B-1193, B-1194, B-1195, B-1196, B-1197, B-1198
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-21
 
 ## Ausgangslage
 
@@ -69,6 +69,15 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| ECO1.1 | `ECO1.1-siegel-assets.md` | Umsetzung | autonom | offen |
+| ECO1.2 | `ECO1.2-siegel-anzeige.md` | Umsetzung | autonom | offen |
+| ECO1.3 | `ECO1.3-werkzeuggurtel.md` | Umsetzung | autonom | offen |
+| ECO1.4 | `ECO1.4-handwerker-bauarbeiten.md` | Umsetzung | autonom | offen |
+| ECO1.5 | `ECO1.5-reparaturkosten.md` | Umsetzung | autonom | offen |
+| ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | offen |
+| ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | offen |
+| ECO1.8 | `ECO1.8-erzadern-freiraeumen.md` | Umsetzung | autonom | offen |
+| ECO1.9 | `ECO1.9-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
