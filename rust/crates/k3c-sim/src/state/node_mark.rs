@@ -8,8 +8,9 @@ use super::{Player, ResourceNode, World};
 
 /// Go: `nodeMarkable`: Nimmt der Knoten gerade eine Markier-Münze? Sammelbar (Baum, Fels, Erz, Ader) und noch nicht markiert.
 pub fn node_markable(w: &World, n: &ResourceNode) -> bool {
-    let ok = gather_of(&values(w), &n.kind).is_some();
-    !n.marked && ok
+    let v = values(w);
+    let ok = gather_of(&v, &n.kind).is_some();
+    !n.marked && ok && crate::world::stands::tree_markable(w, &v, n) // WD1.2: Rodungsregel der Waldstücke
 }
 
 /// Go: `markNode`: markiert einen Knoten und merkt den Spieler der letzten Markier-Münze.
