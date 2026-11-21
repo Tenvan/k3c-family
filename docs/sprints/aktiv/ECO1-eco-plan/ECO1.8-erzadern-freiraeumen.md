@@ -1,6 +1,6 @@
 # ECO1.8 · Erzadern erst nach dem Freiräumen abbaubar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-08 geprüft: Mit nativen Regeln legt `place_vein_rocks` (world/vein.rs, aus `place_entities`) jeder Ader 1 bis 3 Felsen in 6 Units Umkreis an (deterministisch aus `w.rng`, vorhandene Felsen zählen); `vein_blocked` sperrt den Abbau in `find_job`, bis alle weg sind. Umsetzung in der Sim statt im Level-Generator, damit Level-Seeds und Go-Golden unverändert bleiben. Tests `vein_block_tests` (40 Seeds, 2 Spieler-Welt, Go-Parität ohne native Regeln); `cargo test -p k3c-sim` grün bis auf zwei schon rote Tests (Welten-Liste rom.json, Insel-Takt). Regeltext materialien-gebaeude.md § 3. Offen: Anzeige der Sperre im Spiel (Grafik/HUD), Balance.

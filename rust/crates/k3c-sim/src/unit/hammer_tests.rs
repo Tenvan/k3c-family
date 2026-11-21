@@ -51,6 +51,7 @@ fn nur_handwerker_bauen() {
     w.troops[peasant].hammer = false;
     assert!(crate::building::repair::repair_job(&mut w, other).is_none());
     w.troops[other].hammer = true;
+    fund_repairs(&mut w);
     let j = crate::building::repair::repair_job(&mut w, other).expect("Reparatur");
     assert_eq!(j.site_id, w.sites[site].id);
 }
@@ -101,7 +102,7 @@ fn werkstatt_hammer_herstellen_und_holen() {
     let cost = w
         .vals
         .as_ref()
-        .map(|v| v.buildings["workshop"].hammer_cost.clone())
+        .map(|v| place_product(v, &w.sites[shop]).cost)
         .unwrap_or_default();
     w.stock = material_of(&cost);
     let sx = w.sites[shop].x;
@@ -361,4 +362,21 @@ fn place_product_je_hersteller() {
         ("bow", Product::Bow, v.troops["archer"].cost.clone())
     );
     assert_eq!(b.product.have(&bowyer), 4);
+}
+
+/// ECO1.3 (B-1193): Mit nativen Regeln kostet das Werkstatt-Produkt den Werkzeuggürtel (30 Holz, 10 Stein, 3 Gold), ohne
+/// sie (Go-Parität) den Hammer aus `buildings.json`; das Regal bleibt bei `hammerRack`.
+#[test]
+fn werkstatt_stellt_den_werkzeuggurtel_her() {
+    let mut w = quiet_world();
+    let shop = build_site(&mut w, "workshop");
+    let site = w.sites[shop].clone();
+    let v = w.vals.as_ref().expect("Werte");
+    assert!(v.native_rules);
+    let p = place_product(v, &site);
+    assert_eq!((p.cost.wood, p.cost.stone, p.cost.gold), (30, 10, 3));
+    assert_eq!(p.rack, v.buildings["workshop"].hammer_rack);
+    let mut go = (**v).clone();
+    go.native_rules = false;
+    assert_eq!(place_product(&go, &site).cost, v.buildings["workshop"].hammer_cost);
 }

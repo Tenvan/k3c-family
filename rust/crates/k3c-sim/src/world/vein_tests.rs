@@ -36,6 +36,7 @@ fn vein_world(peasants: usize) -> (World, usize) {
         let ti = spawn_vagrant(&mut w, hub, hub);
         let t = &mut w.troops[ti];
         (t.kind, t.hp, t.max_hp) = ("peasant".into(), hp, hp);
+        t.hammer = true; // ECO1.4: nur Handwerker (Werkzeuggürtel) hauen an Adern
     }
     (w, vi)
 }

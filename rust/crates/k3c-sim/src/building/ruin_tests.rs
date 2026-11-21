@@ -146,6 +146,7 @@ fn ruine_wird_repariert() {
         .expect("Ausgangslage: Bauer fehlt");
     assert!(!is_dangerous(w), "Ausgangslage: Gefahr");
     w.troops[ti].x = w.sites[s].x;
+    crate::enemies::testutil::fund_repairs(w);
     w.troops[ti].job = repair_job(w, ti);
     let sid = w.sites[s].id;
     assert!(

@@ -1,6 +1,6 @@
 # ECO1.5 · Reparatur kostet 1 Grundmaterial und 2 Gold
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Reparaturauftrag kostet mit nativen Regeln 1 Grundmaterial der Stufe (erstes mit Preis: Holz, Stein, Kupfer, Eisen, Kristall) aus dem Insel-Vorrat und 2 Gold vom reichsten Spieler (`building/repair.rs`, `pay_repair`). Gebucht wird beim Übernehmen des Auftrags; fehlt etwas, bleibt das Gebäude liegen, nichts wird gebucht. Ohne native Regeln kostenlos (Go-Parität). Tests: `belt_tests::reparatur_kostet_material_und_zwei_gold` (2 Spieler), `repair_tests`. Regeltext § 4 angepasst. Entscheidung: Buchung beim Auftrag statt Zahlstelle am Gebäude (kein neues Spielstand-Feld). Offen: Anzeige des Wartegrunds im HUD fehlt.

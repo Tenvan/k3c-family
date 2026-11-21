@@ -85,6 +85,7 @@ fn vorposten_reparatur_nur_ohne_gefahr() {
     let w = &mut isl.stages[0];
     edge_walls(w);
     let p = outpost_peasant(w);
+    crate::enemies::testutil::fund_repairs(w);
     w.troops[p].job = super::repair::repair_job(w, p);
     let job = w.troops[p].job.clone().expect("kein Reparatur-Auftrag");
     let si = w.sites.iter().position(|s| s.id == job.site_id).expect("Platz");

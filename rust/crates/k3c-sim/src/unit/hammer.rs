@@ -1,5 +1,5 @@
 //! Handwerker und Hammer (Port von `engine/sim/unit_hammer.go`, docs/rules/buerger.md § 1, B-950, B-951): Nur ein Bauer
-//! mit Hammer baut, baut aus und repariert.
+//! mit Hammer baut, baut aus und repariert. Seit ECO1.3 (native Regeln) ist der „Hammer“ der Werkzeuggürtel (`belt_cost`).
 //!   - Hammer (`Troop::hammer`): Die Werkstatt (Handwerkerbedarf) stellt sie her (Preis buildings.json › workshop.hammerCost,
 //!     Regal hammerRack); ein Bauer ohne Hammer holt sie dort (`fetchHammer`) oder vom Boden (Drop `hammer`), mit demselben
 //!     Gegner-Abstand wie Waffen (`weapon_to_fetch`, B-929).
@@ -50,6 +50,19 @@ pub struct PlaceProduct {
     pub product: Product,
 }
 
+/// ECO1.3 (B-1193): Der Preis des Werkzeuggürtels, den die Werkstatt statt des Einzelhammers herstellt: 30 Holz, 10 Stein,
+/// 3 Gold. Native Regel (`WorldValues::native_rules`), die Zahlen stehen als Werte der Regel hier, weil `buildings.json`
+/// mit Go geteilt ist (Go-Golden). Der Gürtel enthält Hammer, Spitzhacke und Axt; er ist das, was `Troop::hammer` und das
+/// Regal `Site::hammers` (Art `hammer`) zählen, die Namen bleiben wegen der Go-Parität.
+pub fn belt_cost() -> Cost {
+    Cost {
+        wood: 30,
+        stone: 10,
+        gold: 3,
+        ..Cost::default()
+    }
+}
+
 /// Go: `placeProduct`.
 pub fn place_product(v: &WorldValues, s: &Site) -> PlaceProduct {
     let fallback = Default::default();
@@ -57,7 +70,11 @@ pub fn place_product(v: &WorldValues, s: &Site) -> PlaceProduct {
     if s.kind == "workshop" {
         return PlaceProduct {
             name: HAMMER_KIND,
-            cost: b.hammer_cost.clone(),
+            cost: if v.native_rules {
+                belt_cost()
+            } else {
+                b.hammer_cost.clone()
+            },
             rack: b.hammer_rack,
             product: Product::Hammer,
         };
