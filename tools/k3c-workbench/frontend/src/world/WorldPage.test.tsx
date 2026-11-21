@@ -48,11 +48,14 @@ describe('Welten-Editor (B-879/AC-01)', () => {
     expect(ASSET_LABELS.welten).toBe('Welten-Editor');
   });
 
-  it('B-1168/AC-01: feste Welten ohne Datei stehen mit Hinweis in der Liste und lassen sich nicht öffnen', async () => {
+  it('B-1168/AC-01: feste Welten ohne Datei stehen mit Hinweis in der Liste und legen sich per Klick aus Standard an und öffnen sich (WL1.2)', async () => {
     const host = await mount();
     const nil = host.querySelector('[data-world="nil"]')!;
     expect(nil.textContent).toContain('noch nicht umgesetzt');
-    expect(nil.getAttribute('role')).toBe('listitem');
+    expect(nil.getAttribute('role')).toBe('button');
+    const create = vi.spyOn(backend, 'worldCreate').mockResolvedValue({ id: 'nil', warnings: [], error: 'Test' });
+    await click(nil);
+    expect(create).toHaveBeenCalledWith('nil', expect.any(String), 'standard');
     expect(host.querySelector('[data-world="standard"]')?.textContent).not.toContain('noch nicht umgesetzt');
   });
 
