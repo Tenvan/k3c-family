@@ -22,6 +22,12 @@ pub struct Sky {
     /// Silhouetten der Kulisse bleiben sichtbar, die Nacht ist nicht ganz schwarz. `light.json` selbst bleibt (Go-Golden).
     pub night_lift: f64,
     pub back_lift: f64,
+    /// Wolken (LA2.2, B-1183): Anzahl je Zelle (0 = keine), Deckkraft am Tag, Tempo (Zellenbreiten je Sekunde) und der
+    /// Anteil der Deckkraft, der in tiefer Nacht bleibt.
+    pub clouds: usize,
+    pub cloud_alpha: f64,
+    pub cloud_speed: f64,
+    pub cloud_night: f64,
 }
 
 pub(crate) const SKY_OFF: Sky = Sky {
@@ -34,6 +40,10 @@ pub(crate) const SKY_OFF: Sky = Sky {
     star_alpha: 0.9,
     night_lift: 0.06,
     back_lift: 0.09,
+    clouds: 7,
+    cloud_alpha: 0.5,
+    cloud_speed: 0.004,
+    cloud_night: 0.3,
 };
 
 impl Default for Sky {

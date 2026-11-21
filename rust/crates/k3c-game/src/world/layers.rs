@@ -30,7 +30,7 @@ impl World {
         let lk = self.looks.of(&st.level);
         let back = self.light.backdrop(&wd.cycle);
         self.fill_rect(dst, c.world_rect(), lk.sky, back);
-        self.draw_sky(dst, c, wd, &st.level, back);
+        self.draw_sky(dst, c, wd, &st.level, back, f.clock);
         let factor = current().scroll_for(&st.level, 0, lk.scroll[0]);
         self.draw_layer_with(dst, c, wd, lk, 0, (back, factor, 1.0));
         if weather_haze(wd) {

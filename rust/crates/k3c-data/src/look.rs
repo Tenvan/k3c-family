@@ -143,6 +143,8 @@ pub struct Mirror {
     pub depth_fade: f64,
     /// Deckkraft der Glanzstriche.
     pub glint: f64,
+    /// Anteil des Glanzes, der in tiefer Nacht bleibt (1 = wie am Tag; LA2.2: Wellenstriche nachts nicht zu hell).
+    pub glint_night: f64,
 }
 
 const MIRROR_OFF: Mirror = Mirror {
@@ -152,7 +154,8 @@ const MIRROR_OFF: Mirror = Mirror {
     wobble: 0.07,
     tint: 0.22,
     depth_fade: 0.3,
-    glint: 0.25,
+    glint: 0.15,
+    glint_night: 0.4,
 };
 
 impl Default for Mirror {

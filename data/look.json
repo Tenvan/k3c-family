@@ -8,7 +8,7 @@
       "splitScale": 0.7,
       "minFigurePx": 40,
       "sizes": true,
-      "mirror": { "enabled": true, "brightness": 0.62, "squash": 0.85, "wobble": 0.07, "tint": 0.22, "depthFade": 0.3, "glint": 0.25 },
+      "mirror": { "enabled": true, "brightness": 0.62, "squash": 0.85, "wobble": 0.07, "tint": 0.22, "depthFade": 0.3, "glint": 0.15, "glintNight": 0.4 },
       "tint": {
         "day": { "color": [1, 1, 1], "strength": 0 },
         "dusk": { "color": [1, 0.7, 0.85], "strength": 0.6 },
@@ -20,7 +20,7 @@
         "noSky": ["cave", "mine", "ironhold", "crystal"]
       },
       "haze": [0.4, 0.25, 0],
-      "sky": { "enabled": true, "top": [38, 74, 150], "gradient": 0.55, "horizon": [255, 150, 92], "glowHorizon": 0.7, "stars": 90, "starAlpha": 0.9, "nightLift": 0.06, "backLift": 0.09 },
+      "sky": { "enabled": true, "top": [38, 74, 150], "gradient": 0.55, "horizon": [255, 150, 92], "glowHorizon": 0.7, "stars": 90, "starAlpha": 0.9, "nightLift": 0.06, "backLift": 0.09, "clouds": 7, "cloudAlpha": 0.5, "cloudSpeed": 0.004, "cloudNight": 0.3 },
       "glow": {
         "enabled": true,
         "sources": false,
