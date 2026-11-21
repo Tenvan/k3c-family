@@ -68,7 +68,16 @@ Liegt keine Rüstung im Regal oder ist kein Kämpfer da, bleibt die Rüstung im 
 
 ## Offene Fragen
 
-🧑 Ralf entscheidet (50:50, im Nachgang): Rüstung im Regal macht sofort jeden Kämpfer der Stufe zur Elite (volle Heilung, auch im Kampf, `building/upgrades.rs` `armor_convert`) oder soll der Kämpfer die Rüstung am Gebäude abholen wie Bogen und Schwert? Gegenstands-Icons im HUD (Regal, Hinweis) zeigen: ja oder nein?
+Entschieden von Ralf (2026-11-21, Dialog), als Umbau-Arbeit noch zu planen:
+
+- Rüstung wird am Gebäude abgeholt (wie Bogen und Schwert), nur außerhalb der Gefahr; keine Fernwirkung mehr (`building/upgrades.rs` `armor_convert`).
+- Werte (Rüstungspreis, Regal, Herstellzeiten) als optionale Felder nach `data/buildings.json`, Zahlen unverändert.
+- Gegenstands-Icons im HUD: am Regal und im Holen-Hinweis.
+- Bogner nur ganz oben (`topOnly`), Taverne bleibt Produktion.
+- Besorger bekommen einen sichtbaren Weg über die Treppe.
+- Truppen-Limit gemeinsam für die ganze Insel statt je Stufe.
+
+Die Umbauten sind noch nicht geplant: Der Hauptrechner legt dafür Tickets und einen Sprint an.
 
 ## Notizen
 
