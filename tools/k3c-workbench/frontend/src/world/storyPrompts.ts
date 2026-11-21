@@ -10,6 +10,7 @@ export type StoryPart =
   | { kind: 'bottles' }
   | { kind: 'lexicon' }
   | { kind: 'etappe'; n: string }
+  | { kind: 'islandAll'; island: string }
   | { kind: 'island'; island: string; entry: 'arrival' | 'boss' | 'done' };
 
 export const ENTRY_NAMES = { arrival: 'Ankunft', boss: 'Endboss', done: 'Sieg' } as const;
@@ -24,6 +25,7 @@ export function linesOf(detail: WorldDetail, part: StoryPart): string[] {
     case 'lexicon': return s?.lexicon ?? [];
     case 'etappe': return s?.etappen?.[part.n] ?? [];
     case 'island': return detail.islands.find((i) => i.id === part.island)?.story?.[part.entry] ?? [];
+    case 'islandAll': return (['arrival', 'boss', 'done'] as const).flatMap((entry) => linesOf(detail, { kind: 'island', island: part.island, entry }));
   }
 }
 
@@ -34,6 +36,10 @@ function label(detail: WorldDetail, part: StoryPart): string {
     case 'bottles': return 'Flaschenpost (story.bottles)';
     case 'lexicon': return 'Wortschatz der Kunstsprache (story.lexicon)';
     case 'etappe': return `Abschluss der Etappe ${part.n} (story.etappen["${part.n}"])`;
+    case 'islandAll': {
+      const name = detail.islands.find((i) => i.id === part.island)?.name ?? part.island;
+      return `die ganze Geschichte der Insel ${part.island} („${name}“: Ankunft, Endboss und Sieg, islands.${part.island}.story)`;
+    }
     case 'island': {
       const name = detail.islands.find((i) => i.id === part.island)?.name ?? part.island;
       return `${ENTRY_NAMES[part.entry]} der Insel ${part.island} („${name}“, islands.${part.island}.story.${part.entry})`;

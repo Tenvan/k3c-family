@@ -3,7 +3,7 @@ import { Badge, Button, Flex, IconButton, Text } from '@webkit/atoms';
 import { fileIcon, fileName, groupIcon, groupName } from './valueIcons';
 import { groupRows, type ValueRow } from './worldOverrides';
 
-// Baum der Ansicht „Werte“ (B-1216): „Alle“, darunter die Basis-Dateien mit Symbol, Name, Zahl der Felder und der
+// Baum der Ansicht „Werte“ (B-1216): die Basis-Dateien mit Symbol, Name, Zahl der Felder und der
 // überschriebenen; jede Datei klappt ihre Themen auf und zu (Pfeil), Linien führen zu den Kindern. Die Wahl steuert den
 // Filter der Tabelle (WorldValues).
 
@@ -54,14 +54,14 @@ export function ValueTree({ rows, pick, onPick }: { rows: readonly ValueRow[]; p
   }
   const isOpen = (file: string) => toggled.get(file) ?? pick.file === file;
   const flip = (file: string) => setToggled((m) => new Map(m).set(file, !isOpen(file)));
+  // Ein zweiter Klick auf den gewählten Knoten hebt die Wahl auf (alle Dateien); ein Klick öffnet die Datei
   const select = (p: TreePick) => {
+    if (pick.file === p.file && pick.group === p.group) return onPick({ file: '', group: null });
     setToggled((m) => new Map(m).set(p.file, true));
     onPick(p);
   };
   return (
     <div role="tree" aria-label="Basis-Dateien und Themen" className="vt-tree">
-      <Row on={pick.file === ''} icon="🗂" name="Alle Dateien" count={rows.length} own={rows.filter((r) => r.status === 'überschrieben').length} level={1} id="*"
-        onPick={() => onPick({ file: '', group: null })} />
       {[...files].map(([file, f]) => (
         <div key={file} role="group" className="vt-branch">
           <Row on={pick.file === file && pick.group === null} icon={fileIcon(file)} name={fileName(file)} count={f.count} own={f.own} level={1} id={file}

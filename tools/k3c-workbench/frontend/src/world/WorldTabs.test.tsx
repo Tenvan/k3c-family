@@ -62,7 +62,7 @@ describe('Geschichte als Baum (B-1216/AC-02)', () => {
   it('zeigt Start, Etappen mit Inseln, Ende, Flaschenpost und Wortschatz; Fehlendes ist markiert', async () => {
     const host = mountStory(detail);
     const nodes = [...host.querySelectorAll('[data-story-node]')].map((n) => n.getAttribute('data-story-node'));
-    expect(nodes).toEqual(['start', 'island1.arrival', 'island1.boss', 'island1.done', 'etappe.1', 'island2.arrival', 'island2.boss', 'island2.done', 'etappe.2', 'end', 'bottles', 'lexicon']);
+    expect(nodes).toEqual(['start', 'island1', 'island1.arrival', 'island1.boss', 'island1.done', 'etappe.1', 'island2', 'island2.arrival', 'island2.boss', 'island2.done', 'etappe.2', 'end', 'bottles', 'lexicon']);
     const shown = () => host.querySelector('[aria-label="Text des Knotens"]')?.textContent ?? '';
     expect(shown()).toContain('„Oru KRONE no MEER.“'); // Start ist vorgewählt
     expect(host.querySelector('[data-story-node="island2.boss"]')?.textContent).toContain('fehlt');
@@ -85,6 +85,19 @@ describe('Geschichte als Baum (B-1216/AC-02)', () => {
     expect(writes[0]).toContain('world_story_set');
     expect(writes[0]).toContain('world_check {id: "saga"}');
     expect(partPrompt(detail, { kind: 'island', island: 'island2', entry: 'boss' })).toContain('Jetzt: fehlt.');
+  });
+
+  it('die Insel ist wählbar: Detail zeigt alle drei Einträge, der Prompt nennt die ganze Insel', async () => {
+    const host = mountStory(detail);
+    const writes: string[] = [];
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (t: string) => void writes.push(t) } });
+    await click(host.querySelector('[data-story-node="island2"]'));
+    const shown = host.querySelector('[aria-label="Text des Knotens"]')!;
+    expect(shown.querySelectorAll('[data-entry]')).toHaveLength(3);
+    expect(shown.textContent).toContain('fehlt');
+    await click(shown.querySelector('button'));
+    expect(writes[0]).toContain('die ganze Geschichte der Insel island2');
+    expect(writes[0]).toContain('world_story_set');
   });
 
   it('der Reiter erscheint in der Seite und zeigt die Geschichte der gewählten Welt', async () => {
