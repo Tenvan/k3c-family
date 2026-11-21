@@ -1,16 +1,16 @@
-# FG1.1 · Landstreicher und Bauer zu Bürger (citizen) zusammenlegen
+# ECO1.9 · Review und Abnahme-Ticket ECO1
 
 - **Status:** offen
-- **Typ:** Umsetzung
+- **Typ:** Review
 - **Agent:** autonom
-- **Domäne:** SIM
-- **Lane:** erst
-- **Modell:** opus
-- **Umgebung:** ?
-- **Branch:** fg1/1-buerger-citizen
-- **Abhängig von:** ECO1
-- **Tickets:** B-1199
-- **Kriterien:** AC-01
+- **Domäne:** CLI
+- **Lane:** zweit
+- **Modell:** sonnet
+- **Umgebung:** offline
+- **Branch:** eco1/9-review
+- **Abhängig von:** ECO1.2, ECO1.5, ECO1.7, ECO1.8
+- **Tickets:** B-1191, B-1192, B-1193, B-1194, B-1195, B-1196, B-1197, B-1198
+- **Kriterien:** AC-09
 
 ## Ziel
 

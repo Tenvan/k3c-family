@@ -1,4 +1,4 @@
-# FG1.2 · Waffenschmied, Rüstungsschmied, Bogner, Kombinationen und Elite in der Sim
+# ECO1.8 · Erzadern erst nach dem Freiräumen abbaubar
 
 - **Status:** offen
 - **Typ:** Umsetzung
@@ -6,11 +6,11 @@
 - **Domäne:** SIM
 - **Lane:** erst
 - **Modell:** opus
-- **Umgebung:** ?
-- **Branch:** fg1/2-meister-kombinationen
-- **Abhängig von:** FG1.1
-- **Tickets:** B-1200
-- **Kriterien:** AC-02
+- **Umgebung:** offline
+- **Branch:** eco1/8-erzadern-freiraeumen
+- **Abhängig von:** ECO1.4
+- **Tickets:** B-1198
+- **Kriterien:** AC-08
 
 ## Ziel
 

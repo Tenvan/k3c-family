@@ -8,9 +8,9 @@
 - **Sprint:** ECO1
 - **Projekt:** WIR
 - **Erstellt:** 2026-11-21
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-21
 - **Duplikat von:** –
 - **Ersetzt:** –
 

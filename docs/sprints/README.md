@@ -18,6 +18,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
+| ECO1 | PAP, CLI, SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | `aktiv/ECO1-eco-plan/` |
+| FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | RU36 | CLI, SIM | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 
 ## Offen am Gerät
@@ -35,8 +37,6 @@ keine
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
-| ECO1 | SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | Entwurf | `geplant/ECO1-eco-plan/` |
-| FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | Entwurf | `geplant/FG1-grundfiguren-ausruestung/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
 | RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |

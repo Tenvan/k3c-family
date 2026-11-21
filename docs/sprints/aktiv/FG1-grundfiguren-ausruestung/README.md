@@ -1,14 +1,14 @@
 # FG1 · SIM, CLI · Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WIR
 - **Domäne:** SIM, CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1199, B-1200, B-1201
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-21
 
 ## Ausgangslage
 

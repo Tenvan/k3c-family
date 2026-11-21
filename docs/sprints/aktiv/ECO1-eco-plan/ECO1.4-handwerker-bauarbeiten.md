@@ -1,16 +1,16 @@
-# FG1.4 · Review und Abnahme-Ticket FG1
+# ECO1.4 · Handwerker mit Gürtel macht alle Bauarbeiten
 
 - **Status:** offen
-- **Typ:** Review
+- **Typ:** Umsetzung
 - **Agent:** autonom
-- **Domäne:** CLI
-- **Lane:** zweit
-- **Modell:** sonnet
+- **Domäne:** SIM
+- **Lane:** erst
+- **Modell:** opus
 - **Umgebung:** ?
-- **Branch:** fg1/4-review
-- **Abhängig von:** FG1.2, FG1.3
-- **Tickets:** B-1199, B-1200, B-1201
-- **Kriterien:** AC-01
+- **Branch:** eco1/4-handwerker-bauarbeiten
+- **Abhängig von:** ECO1.3
+- **Tickets:** B-1194
+- **Kriterien:** AC-04
 
 ## Ziel
 
