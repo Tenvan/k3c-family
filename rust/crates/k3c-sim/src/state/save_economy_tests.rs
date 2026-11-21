@@ -155,7 +155,7 @@ fn check_troops(w: &World, w1: &World, shop_id: i64) {
     );
     let base = crate::world::vals(w).troops.get("eliteWarrior").map_or(0.0, |d| d.hp);
     assert!(
-        a[5].max_hp == crate::state::links::armored_hp(w, "eliteWarrior") && a[5].max_hp > base,
+        a[5].max_hp == crate::state::links::armored_hp(w, "eliteWarrior") && a[5].max_hp >= base, // FG1.2: kein Rüstungszuschlag mehr
         "Elite-Krieger ohne Rüstung: {}",
         a[5].max_hp
     );

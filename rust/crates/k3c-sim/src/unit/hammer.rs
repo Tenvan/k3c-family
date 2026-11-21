@@ -20,6 +20,8 @@ pub const HAMMER_KIND: &str = "hammer";
 pub enum Product {
     Hammer,
     Bow,
+    /// Rüstung des Rüstungsschmieds (FG1.2, native Regel).
+    Armor,
 }
 
 impl Product {
@@ -28,6 +30,7 @@ impl Product {
         match self {
             Self::Hammer => s.hammers,
             Self::Bow => s.bows,
+            Self::Armor => s.armors,
         }
     }
 
@@ -36,6 +39,7 @@ impl Product {
         match self {
             Self::Hammer => s.hammers += n,
             Self::Bow => s.bows += n,
+            Self::Armor => s.armors += n,
         }
     }
 }
@@ -63,6 +67,20 @@ pub fn belt_cost() -> Cost {
     }
 }
 
+/// FG1.2 (B-1200): Preis einer Rüstung (Eisen und Gold), Regalgröße und Herstellungszeiten der nativen Regel. Die Zahlen
+/// stehen hier, weil `buildings.json` mit Go geteilt ist; die Balance folgt im Abnahme-Ticket.
+pub fn armor_cost() -> Cost {
+    Cost {
+        iron: 30,
+        gold: 8,
+        ..Cost::default()
+    }
+}
+pub const ARMOR_RACK: i64 = 3;
+pub const SWORD_RACK: i64 = 3;
+pub const NATIVE_SWORD_SECONDS: f64 = 10.0;
+pub const NATIVE_ARMOR_SECONDS: f64 = 30.0;
+
 /// Go: `placeProduct`.
 pub fn place_product(v: &WorldValues, s: &Site) -> PlaceProduct {
     let fallback = Default::default();
@@ -77,6 +95,14 @@ pub fn place_product(v: &WorldValues, s: &Site) -> PlaceProduct {
             },
             rack: b.hammer_rack,
             product: Product::Hammer,
+        };
+    }
+    if s.kind == "armory" && v.native_rules {
+        return PlaceProduct {
+            name: "armor",
+            cost: armor_cost(),
+            rack: ARMOR_RACK,
+            product: Product::Armor,
         };
     }
     let cost = v.troops.get("archer").map(|t| t.cost.clone()).unwrap_or_default();

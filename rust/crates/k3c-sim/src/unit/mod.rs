@@ -22,6 +22,8 @@ mod belt_tests;
 #[cfg(test)]
 mod camp_guard_tests;
 #[cfg(test)]
+mod combo_tests;
+#[cfg(test)]
 mod common_tests;
 #[cfg(test)]
 mod disarm_tests;

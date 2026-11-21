@@ -28,6 +28,11 @@ pub fn place_payable(w: &World, v: &WorldValues, isl: Option<&IslandRef>, s: &Si
             let p = place_product(v, s);
             p.product.have(s) + bows_crafting(s) < p.rack && s.bow_paid_gold < cheap(isl, &p.cost).gold
         }
+        "smithy" if v.native_rules => false, // FG1.2: das Schwert hat ein eigenes Zahlziel
+        "armory" if v.native_rules => {
+            let p = place_product(v, s);
+            p.product.have(s) + bows_crafting(s) < p.rack && s.bow_paid_gold < cheap(isl, &p.cost).gold
+        }
         "smithy" => s.bow_paid_gold < cheap(isl, &troop_cost(v, "eliteArcher")).gold,
         "armory" => armor_stage(w, v, isl)
             .is_some_and(|st| s.craft_done == 0.0 && w.hub_level >= st.hub_level && s.bow_paid_gold < st.cost.gold),
@@ -45,6 +50,11 @@ pub fn offer_at<'a>(w: &World, v: &'a WorldValues, isl: Option<&IslandRef>, x: f
     find_offer(w, v, isl, x).or_else(|| elite_offer_at(w, v, isl, x, true))
 }
 
+/// FG1.2: Elite entsteht mit nativen Regeln nur durch Rüstung (`armor_convert`), nicht mehr durch ein Elite-Angebot.
+fn no_elite_offers(v: &WorldValues) -> bool {
+    v.native_rules
+}
+
 /// Go: `eliteOfferAt` ist das Elite-Angebot eines gebauten Gebäudes in Zahl-Reichweite von `x`; mit `payable` nur, solange
 /// sein Preis nicht voll bezahlt ist.
 pub fn elite_offer_at<'a>(
@@ -54,6 +64,9 @@ pub fn elite_offer_at<'a>(
     x: f64,
     payable: bool,
 ) -> Option<OfferTarget<'a>> {
+    if no_elite_offers(v) {
+        return None;
+    }
     for (si, s) in w.sites.iter().enumerate() {
         let offers = v.buildings.get(&s.kind).map_or(&[][..], |b| b.offers.as_slice());
         for (idx, of) in offers.iter().enumerate() {
@@ -120,6 +133,8 @@ pub fn step_crafts(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
             continue;
         }
         match w.sites[si].kind.as_str() {
+            "smithy" if v.native_rules => {} // FG1.2: der Waffenschmied macht Schwerter (`step_sword_craft`)
+            "armory" if v.native_rules => armor_convert(w, v, si),
             "smithy" => {
                 step_elite(w, v, isl, si, Slot::Main, "eliteArcher");
                 let offers = v.buildings.get("smithy").map_or(&[][..], |b| b.offers.as_slice());
@@ -132,6 +147,29 @@ pub fn step_crafts(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
             "armory" => step_armor(w, v, isl, si),
             _ => {}
         }
+    }
+}
+
+/// FG1.2 (B-1200): Rüstung aus dem Regal des Rüstungsschmieds macht den nächsten Krieger zum Elite-Krieger, sonst den
+/// nächsten Bogenschützen zum Elite-Bogenschützen (nächste Figur zum Gebäude). Ohne Kandidat bleibt sie im Regal.
+fn armor_convert(w: &mut World, v: &WorldValues, si: usize) {
+    if w.sites[si].armors <= 0 {
+        return;
+    }
+    let sx = w.sites[si].x;
+    for (from, to) in [("warrior", "eliteWarrior"), ("archer", "eliteArcher")] {
+        let Some(ti) = nearest(&w.troops, |t| t.x, sx, f64::INFINITY, |t| t.kind == from) else {
+            continue;
+        };
+        let hp = v.troops.get(to).map_or(0.0, |t| t.hp);
+        let t = &mut w.troops[ti];
+        t.kind = to.to_string();
+        t.hp = hp;
+        t.max_hp = hp;
+        w.sites[si].armors -= 1;
+        w.events
+            .push(crate::state::common::event(serde_json::json!({"type": "armed"})));
+        return;
     }
 }
 
@@ -193,6 +231,9 @@ fn step_armor(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, si: usize
 
 /// Go: `armorStage` ist die nächste Rüstungsstufe; `None`, wenn alle erreicht sind.
 pub fn armor_stage(w: &World, v: &WorldValues, isl: Option<&IslandRef>) -> Option<ArmorStage> {
+    if v.native_rules {
+        return None; // FG1.2: keine Rüstungsstufen und kein Hub-HP-Bonus mehr
+    }
     let stages = &v.buildings.get("armory")?.armor;
     let mut stage = stages.get(usize::try_from(w.armor_level).ok()?)?.clone();
     stage.cost = cheap(isl, &stage.cost);
@@ -201,7 +242,7 @@ pub fn armor_stage(w: &World, v: &WorldValues, isl: Option<&IslandRef>) -> Optio
 
 /// Go: `armorBonus` ist der Zuschlag der erreichten Rüstungsstufe als Anteil der Basis-HP (0 ohne Rüstung).
 pub fn armor_bonus(w: &World, v: &WorldValues) -> f64 {
-    if w.armor_level == 0 {
+    if w.armor_level == 0 || v.native_rules {
         return 0.0;
     }
     let idx = usize::try_from(w.armor_level - 1).unwrap_or(0);

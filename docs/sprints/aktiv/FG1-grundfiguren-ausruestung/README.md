@@ -64,7 +64,7 @@ keine (Name „Handwerksmeister“ entschieden von Ralf 2026-11-21, vermerkt in 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | FG1.1 | `FG1.1-buerger-citizen.md` | Umsetzung | autonom | fertig |
-| FG1.2 | `FG1.2-meister-kombinationen.md` | Umsetzung | autonom | offen |
+| FG1.2 | `FG1.2-meister-kombinationen.md` | Umsetzung | autonom | fertig |
 | FG1.3 | `FG1.3-figuren-grafik-texte.md` | Umsetzung | autonom | offen |
 | FG1.4 | `FG1.4-review.md` | Review | autonom | offen |
 
