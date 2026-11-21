@@ -98,8 +98,46 @@ fn nur_der_gurtel_baut_und_repariert() {
         "ohne Gürtel keine Reparatur"
     );
     w.troops[plain].hammer = true;
+    fund_repairs(&mut w);
     assert!(
         crate::building::repair::repair_job(&mut w, plain).is_some(),
         "mit Gürtel Reparatur"
     );
+}
+
+/// ECO1.5: Mit nativen Regeln kostet ein Reparaturauftrag 1 Grundmaterial und 2 Gold; fehlt eines, wartet das Gebäude
+/// und nichts wird gebucht. Das Gold zahlt, wer genug hat (2 Spieler).
+#[test]
+fn reparatur_kostet_material_und_zwei_gold() {
+    let mut w = quiet_world();
+    let ps = [add_player(&mut w), add_player(&mut w)];
+    let site = build_site(&mut w, "wall");
+    w.sites[site].hp = w.sites[site].max_hp / 2.0;
+    let sx = w.sites[site].x;
+    let ti = add_peasant(&mut w, sx, "");
+    w.troops[ti].hammer = true;
+    w.players[ps[0]].gold = 1;
+    w.players[ps[1]].gold = 5;
+    w.stock.wood = 0;
+    w.stock.stone = 0;
+    let rep = crate::building::repair::repair_job;
+    assert!(rep(&mut w, ti).is_none(), "ohne Material wartet das Gebäude");
+    assert_eq!(w.players[ps[1]].gold, 5, "nichts gebucht");
+    w.stock.wood = 3;
+    w.stock.stone = 3;
+    let before = (w.stock.wood, w.stock.stone);
+    assert!(rep(&mut w, ti).is_some(), "mit Material und Gold");
+    assert_eq!(
+        (w.players[ps[0]].gold, w.players[ps[1]].gold),
+        (1, 3),
+        "2 Gold vom reicheren Spieler"
+    );
+    assert_eq!(
+        before.0 + before.1 - w.stock.wood - w.stock.stone,
+        1,
+        "genau 1 Material"
+    );
+    w.players[ps[1]].gold = 1;
+    w.sites[site].worker_id = None;
+    assert!(rep(&mut w, ti).is_none(), "ohne 2 Gold keine Reparatur");
 }

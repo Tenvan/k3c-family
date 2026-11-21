@@ -43,6 +43,9 @@ pub fn repair_job(w: &mut World, ti: usize) -> Option<Job> {
         }
     }
     let (sid, _) = best?;
+    if !pay_repair(w, sid) {
+        return None; // ohne Material oder Gold wartet das Gebäude (ECO1.5)
+    }
     if let Some(s) = w.site_mut(sid) {
         s.worker_id = Some(tid);
     }
@@ -53,7 +56,58 @@ pub fn repair_job(w: &mut World, ti: usize) -> Option<Job> {
     })
 }
 
-/// Go: `repair` stellt HP her, ohne Gold und Material, bis `max_hp`.
+/// ECO1.5 (B-1195): Preis einer Reparatur, ein Grundmaterial der Ausbaustufe und zwei Gold.
+pub const REPAIR_GOLD: i64 = 2;
+
+/// ECO1.5: das Grundmaterial der Stufe, das erste mit Preis in Holz, Stein, Kupfer, Eisen, Kristall (sonst Holz).
+fn repair_material(w: &World, v: &WorldValues, s: &Site) -> &'static str {
+    let c = v.buildings.get(&s.kind).map(|b| {
+        let idx = usize::try_from(level_of(w, s) - 1).unwrap_or(0);
+        b.levels.get(idx).map_or(b.cost.clone(), |l| l.cost.clone())
+    });
+    let Some(c) = c else { return "wood" };
+    [
+        ("wood", c.wood),
+        ("stone", c.stone),
+        ("copper", c.copper),
+        ("iron", c.iron),
+        ("crystal", c.crystal),
+    ]
+    .into_iter()
+    .find(|(_, n)| *n > 0)
+    .map_or("wood", |(k, _)| k)
+}
+
+/// ECO1.5: bucht 1 Material aus dem Vorrat und 2 Gold vom reichsten Spieler; `false`, wenn eines fehlt (dann nichts gebucht).
+/// Ohne `native_rules` bleibt die Reparatur kostenlos (Go-Verhalten).
+fn pay_repair(w: &mut World, sid: i64) -> bool {
+    let v = crate::world::vals(w);
+    if !v.native_rules {
+        return true;
+    }
+    let Some(s) = w.site(sid) else { return false };
+    let mat = repair_material(w, &v, s);
+    let one = k3c_data::buildings::Cost {
+        wood: i64::from(mat == "wood"),
+        stone: i64::from(mat == "stone"),
+        copper: i64::from(mat == "copper"),
+        iron: i64::from(mat == "iron"),
+        crystal: i64::from(mat == "crystal"),
+        ..Default::default()
+    };
+    let payer = (0..w.players.len())
+        .filter(|&i| w.players[i].gold >= REPAIR_GOLD)
+        .max_by_key(|&i| w.players[i].gold);
+    let Some(pi) = payer else { return false };
+    if !crate::economy::util::can_afford(&w.stock, &one) {
+        return false;
+    }
+    crate::economy::util::spend(&mut w.stock, &one);
+    w.players[pi].gold -= REPAIR_GOLD;
+    true
+}
+
+/// Go: `repair` stellt HP her, ohne Gold und Material, bis `max_hp` (mit native Regeln kostet der Auftrag 1 Material und 2 Gold, ECO1.5).
 pub fn repair(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
     let Some(sid) = w.troops[ti].job.as_ref().map(|j| j.site_id) else {
         return;

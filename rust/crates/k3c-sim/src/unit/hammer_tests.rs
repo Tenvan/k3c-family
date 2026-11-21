@@ -51,6 +51,7 @@ fn nur_handwerker_bauen() {
     w.troops[peasant].hammer = false;
     assert!(crate::building::repair::repair_job(&mut w, other).is_none());
     w.troops[other].hammer = true;
+    fund_repairs(&mut w);
     let j = crate::building::repair::repair_job(&mut w, other).expect("Reparatur");
     assert_eq!(j.site_id, w.sites[site].id);
 }
