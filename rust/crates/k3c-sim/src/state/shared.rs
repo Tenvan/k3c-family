@@ -190,4 +190,7 @@ pub struct WorldValues {
     pub skills: SkillTable,
     /// Go: die Paket-Variablen `bosses` und `endBosses` (boss_data.go); RU14 füllt sie beim Aufbau des Wertesatzes.
     pub bosses: BossesFile,
+    /// HB1.4: Lager im Wald stehen zwischen Bäumen und fallen mit ihnen (`unit/camp_guard.rs`). Nur die native Regel,
+    /// ohne Daten-Datei; die Go-Golden-Läufe schalten es ab, weil Go sie nicht kennt.
+    pub camp_guards: bool,
 }

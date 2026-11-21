@@ -71,6 +71,7 @@ fn golden_purse() -> Arc<WorldValues> {
     let mut v = (*default_values()).clone();
     v.economy.purse.start_gold = 100;
     v.economy.purse.max_gold = 100;
+    v.camp_guards = false; // Go kennt die Wächter-Bäume der Lager (HB1.4) nicht
     Arc::new(v)
 }
 

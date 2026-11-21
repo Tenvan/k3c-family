@@ -45,7 +45,10 @@ fn load_one<T: Default>(
 /// Abweichung von Go: `bosses` (Gos Paket-Variablen `bosses`/`endBosses`) ist für jede Welt die der eingebetteten Daten.
 pub fn values_from(read: ReadFn) -> Result<WorldValues, String> {
     let mut errs = Vec::new();
-    let mut v = WorldValues::default();
+    let mut v = WorldValues {
+        camp_guards: true, // HB1.4: native Regel, in jeder Welt
+        ..WorldValues::default()
+    };
     let mut buildings = load_one(&mut errs, buildings::FILE, buildings::load, read);
     let ship = load_one(&mut errs, ship::FILE, ship::load, read);
     v.troops = load_one(&mut errs, troops::FILE, troops::load, read);

@@ -1,6 +1,6 @@
 # HB1.4 · Landstreicher-Lager zwischen Bäumen, Zerstörung bei Rodung, Taverne lockt Landstreicher
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 geprüft: `k3c-sim/src/unit/camp_guard.rs`: Lager im Wald (Hauptrohstoff Holz) bekommen beim Aufbau mindestens 2 Bäume (2 oder 3, aus dem Ort, ohne Zufallsstrom), im ersten Takt wählt das Lager seine ≤ 3 nächsten Bäume als Wächter; fällt der letzte, ist das Lager zerstört (Event `campDestroyed`) und an der Stelle liegt ein freier Taverne-Platz. AC-04 geprüft: `data/buildings.json` tavern.vagrants.max 2 auf 5 (perDawn bleibt 1, also einer je Tag); Go-Datenbaum `testdata/rust/data-tree.json.gz` per `go test ./internal/detvec/ -write` neu geschrieben (Begründung: gewollte Wertentscheidung 5 Landstreicher). Tests: `unit/camp_guard_tests.rs` (4 grün), k3c-sim 1115 grün außer 2 bekannten roten Tests (`eingebettete_welten_gueltig`, `insel_nach_1000_schritten_wie_go`, schon vor HB1.4 rot). Schalter `WorldValues.camp_guards` (nativ, in Go-Golden-Läufen aus), damit die Go-Parität der Kampagnen-Goldens bleibt. Abweichung: Höhlen/Minen unberührt (keine Bäume). Für Ralf im Spiel prüfen: Lage der Wächter-Bäume, Taverne-Platz sichtbar; Grafik des Platzes folgt der Taverne.

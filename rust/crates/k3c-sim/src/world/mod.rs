@@ -273,6 +273,7 @@ pub fn place_entities(w: &mut World, v: &WorldValues, rules: &Rules) {
             w.camps.push(Camp {
                 x: e.x,
                 respawn_in: camp.respawn_seconds,
+                ..Camp::default()
             });
             for i in 0..camp.max_vagrants {
                 spawn_vagrant_with(w, v, e.x, e.x + (i as f64 - 0.5) * 3.0);
@@ -282,6 +283,7 @@ pub fn place_entities(w: &mut World, v: &WorldValues, rules: &Rules) {
         }
     }
     w.level.entities = entities;
+    crate::unit::camp_guard::plant_camp_trees(w, v);
     crate::portal::sync_portals(w);
 }
 
