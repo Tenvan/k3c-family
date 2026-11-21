@@ -82,3 +82,16 @@ describe('Sound-Filter und -Prompts (B-728)', () => {
     for (const t of ['Zuordnen', 'Übernehmen', 'Speichern', 'Löschen']) expect(buttons(host, t), t).toHaveLength(0);
   });
 });
+
+describe('Sound nach Welt (B-1169)', () => {
+  it('gesamt zeigt alle Slots, exklusiv keinen und nennt den Grund', async () => {
+    window.history.replaceState(null, '', '#welt=sengoku');
+    const host = await mount(<SoundPage />);
+    await until('Sound-Slots', () => host.querySelectorAll('[data-sound]').length === 3);
+    window.history.replaceState(null, '', '#welt=sengoku&modus=exklusiv');
+    window.dispatchEvent(new Event('hashchange'));
+    await until('keine Slots', () => host.querySelectorAll('[data-sound]').length === 0);
+    expect(host.textContent).toContain('keine Welt-Zuordnung in den Sound-Daten');
+    window.history.replaceState(null, '', '#');
+  });
+});

@@ -39,6 +39,11 @@ type worldCreateIn struct {
 	Story   *worldStoryArgs `json:"story,omitempty" jsonschema:"Geschichte der neuen Welt wie bei world_story_set (lexicon, start, etappen, end, bottles, islands: {island1: {arrival, boss, done}}); fehlt sie, entsteht die Welt ohne story"`
 }
 
+type worldDeleteIn struct {
+	ID      string `json:"id" jsonschema:"Welt-ID der zu löschenden Welt"`
+	Confirm bool   `json:"confirm,omitempty" jsonschema:"muss true sein: die Datei wird endgültig gelöscht"`
+}
+
 type worldSetIn struct {
 	ID    string         `json:"id" jsonschema:"Welt-ID"`
 	Patch map[string]any `json:"patch" jsonschema:"Felder: name, notes, extends, combat {mode, groupSize} (null entfernt); islands: Liste von Inseln {id, name?, etappe? (Ganzzahl ≥ 1, lückenlos ab 1, nicht fallend; null entfernt), depths? | biomes?, depthScaling? {hp, damage, speed}, plannedChunks?, chunkCounts?, nature?, natureByDepth?}. Bekannte Insel-id: nur genannte Felder ändern; neue id: anhängen (Standard: Tiefen 0-4, Skalierung der Standard-Welt). biomes = Biom-IDs statt Tiefen (forest, cave, mine, ironhold, crystal)."`
@@ -91,6 +96,10 @@ func registerWorldRead(s *Server) {
 		e := worldEditor(s.ws(ctx).root)
 		var b strings.Builder
 		for _, w := range e.List() {
+			if w.Missing {
+				fmt.Fprintf(&b, "%s · %s\n", w.ID, world.MissingNote)
+				continue
+			}
 			d := e.Load(w.ID)
 			fmt.Fprintf(&b, "%s · %s · extends %s · %d Inseln\n", w.ID, w.Name, orDash(d.Extends), len(d.Islands))
 		}
@@ -127,6 +136,20 @@ func registerWorldWrite(s *Server) {
 		Annotations: worldCreateHints(),
 	}, func(ctx context.Context, in worldCreateIn) (string, error) {
 		return worldCreate(ctx, worldEditor(s.ws(ctx).root), in)
+	})
+	destructive, closed := true, false
+	add(s, &mcp.Tool{
+		Name: "world_delete",
+		Description: "Löscht die Datei einer Welt (data/worlds/<id>.json) endgültig (sie liegt in Git); braucht confirm=true. Abgelehnt werden die festen Welten (standard und jede Welt aus data/paper.json › weltbilder) " +
+			"und Welten mit Erben (andere Welten, deren extends auf sie zeigt; die Antwort nennt sie). Spielstände der Welt bleiben, die Antwort warnt vor ihnen. " +
+			"Nutze es bei: eine Test- oder Entwurfs-Welt entfernen. Statt: die Datei von Hand löschen.",
+		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
+	}, func(ctx context.Context, in worldDeleteIn) (string, error) {
+		if !in.Confirm {
+			return "", fmt.Errorf("world_delete braucht confirm=true (die Datei der Welt %s wird endgültig gelöscht)", in.ID)
+		}
+		warnings, err := worldEditor(s.ws(ctx).root).Delete(in.ID)
+		return worldDone(fmt.Sprintf("Welt %s gelöscht (data/worlds/%s.json)", in.ID, in.ID), warnings, err)
 	})
 	add(s, &mcp.Tool{
 		Name: "world_set",

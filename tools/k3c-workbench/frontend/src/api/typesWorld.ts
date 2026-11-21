@@ -4,6 +4,8 @@
 export interface WorldInfo {
   id: string;
   name: string;
+  /** feste Welt ohne Datei: „noch nicht umgesetzt“ (B-1168) */
+  missing?: boolean;
 }
 
 /** Festes Objekt eines geplanten Chunks; at zählt in Units ab Chunk-Anfang (Go: level.PlannedObject) */
@@ -153,6 +155,8 @@ export interface WorldBackend {
   worldValues(id: string): Promise<WorldValuesView>;
   /** Neue Welt anlegen (data/worlds/<id>.json, eine Insel, Tiefen 0–4); extends leer = Basis. Eine vorhandene Welt wird nie überschrieben. */
   worldCreate(id: string, name: string, extendsId: string): Promise<WorldCreateView>;
+  /** Welt löschen (B-1172): feste Welten und Welten mit Erben werden abgelehnt (error); Spielstände bleiben, warnings nennt sie. */
+  worldDelete(id: string): Promise<WorldCreateView>;
   /** Etappe der Insel setzen (B-963); null entfernt sie. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldIslandEtappe(id: string, island: string, etappe: number | null): Promise<WorldCreateView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */

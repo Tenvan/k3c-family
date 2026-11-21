@@ -5,7 +5,7 @@ import type {
 } from './types';
 import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Stufen, Vorlage, WeltSicht } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -80,6 +80,7 @@ interface GoApp {
   AssetsGroesse(id: string): Promise<Groesse>;
   AssetsGroesseBasis(id: string, basis: string): Promise<GroesseBasis>;
   AssetsFrameOhne(id: string, animation: string, frame: number, ohne: string[]): Promise<Frame>;
+  AssetsStufen(): Promise<Stufen>;
   AssetsHintergruende(): Promise<string[]>;
   AssetsHintergrund(teil: string): Promise<Hintergrund>;
   AssetsGet(id: string): Promise<Spec>;
@@ -90,6 +91,7 @@ interface GoApp {
   AssetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
   // Lesende Teile des früheren Asset-Studios (WB1.4, internal/studioview)
   StudioSounds(): Promise<SoundEintrag[]>;
+  StudioWeltSicht(welt: string): Promise<WeltSicht>;
   StudioSoundData(pfad: string): Promise<string>;
   StudioSources(): Promise<Quellen>;
   StudioGameOpen(seed: string): Promise<string>;
@@ -99,6 +101,7 @@ interface GoApp {
   WorldLevel(id: string, island: string, stage: number, seed: string): Promise<WorldLevel>;
   WorldValues(id: string): Promise<WorldValuesView>;
   WorldCreate(id: string, name: string, extendsId: string): Promise<WorldCreateView>;
+  WorldDelete(id: string): Promise<WorldCreateView>;
   WorldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   WorldIslandEtappe(id: string, island: string, etappe: number | null): Promise<WorldCreateView>;
   WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
@@ -154,6 +157,7 @@ function assetsWails(app: GoApp): AssetsBackend {
     assetsIndex: () => app.AssetsIndex(),
     assetsCheck: (pfade) => app.AssetsCheck(pfade),
     assetsGroesse: (id) => app.AssetsGroesse(id),
+    assetsStufen: () => app.AssetsStufen(),
     assetsGroesseBasis: (id, basis) => app.AssetsGroesseBasis(id, basis),
     assetsFrameOhne: (id, animation, frame, ohne) => app.AssetsFrameOhne(id, animation, frame, ohne),
     assetsHintergruende: () => app.AssetsHintergruende(),
@@ -165,6 +169,7 @@ function assetsWails(app: GoApp): AssetsBackend {
     assetsFrame: (id, animation, frame, variante, basis) => app.AssetsFrame(id, animation, frame, variante, basis),
     assetsPixelDiff: (id, animation, frame, basis) => app.AssetsPixelDiff(id, animation, frame, basis),
     studioSounds: () => app.StudioSounds(),
+    studioWeltSicht: (welt) => app.StudioWeltSicht(welt),
     studioSoundData: (pfad) => app.StudioSoundData(pfad),
     studioSources: () => app.StudioSources(),
     studioGameOpen: (seed) => app.StudioGameOpen(seed),
@@ -178,6 +183,7 @@ function worldWails(app: GoApp): WorldBackend {
     worldLevel: (id, island, stage, seed) => app.WorldLevel(id, island, stage, seed),
     worldValues: (id) => app.WorldValues(id),
     worldCreate: (id, name, extendsId) => app.WorldCreate(id, name, extendsId),
+    worldDelete: (id) => app.WorldDelete(id),
     worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
     worldIslandEtappe: (id, island, etappe) => app.WorldIslandEtappe(id, island, etappe),
     worldNatureSet: (id, island, stage, key, value, seed) => app.WorldNatureSet(id, island, stage, key, value, seed),

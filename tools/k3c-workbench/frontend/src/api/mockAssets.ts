@@ -1,4 +1,4 @@
-import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Vorlage } from './typesAssets';
+import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Stufen, Vorlage, WeltSicht } from './typesAssets';
 
 // Mock der Asset-Methoden (WB1.1): die Beispielantworten aus tools/paper/fixtures/ui (PV1.4), geladen beim ersten
 // Aufruf. Wie die Go-Stubs (internal/assetsui) kennt er nur das Asset monarch.
@@ -56,6 +56,16 @@ export function mockAssets(): AssetsBackend {
       return { pxProEinheit: (81 * 1.5) / 145, quelle: 'Spielrolle Spieler (data/paper.json)', spec: await fixture<Spec>('AssetsGet') };
     },
     assetsHintergruende: async () => ['wald'],
+    assetsStufen: async (): Promise<Stufen> => ({
+      bezugPx: 121.5,
+      stufen: [
+        { id: 'gegner-klein', m: 0.4, was: 'Kleine Gegner' }, { id: 'buerger', m: 0.6, was: 'Bürger, Bauer, Soldat' },
+        { id: 'gegner-gross', m: 1, was: 'Große Gegner' }, { id: 'gebaeude-mittel', m: 1.1, was: 'Zelt, Stand, Werkstatt' },
+        { id: 'boss', m: 1.3, was: 'Bosse' }, { id: 'baum-mittel', m: 2.9, was: 'Mittlere Bäume' },
+      ],
+      // Mock kennt nur das Asset monarch (known); ihm ist hier eine Stufe zugeordnet, damit die Linie der Stufe sichtbar wird
+      assets: { 'figuren/monarch': { stufe: 'gebaeude-mittel', sicht: 1 } },
+    }),
     assetsHintergrund: async (teil): Promise<Hintergrund> => {
       if (teil !== 'wald') throw new Error(`Hintergrund „${teil}“ fehlt`);
       return { fern: PIXEL, mitte: PIXEL, nah: PIXEL };
@@ -77,6 +87,12 @@ export function mockAssets(): AssetsBackend {
       return fixture<PixelDiff>('AssetsPixelDiff');
     },
     studioSounds: async () => SOUNDS,
+    // Mock (Fixture-Assets): Sengoku hat das Pferd exklusiv und ersetzt die Mauer per Skin; für Nil ist das Pferd fremd (B-1169)
+    studioWeltSicht: async (welt): Promise<WeltSicht> => ({
+      welt, basis: 'standard',
+      eigene: welt === 'sengoku' ? { 'reittiere/pferd': 'sengoku' } : welt === 'nil' ? { 'requisiten/banner': 'nil' } : {},
+      aus: welt === 'sengoku' ? ['gebaeude/mauer'] : welt === 'nil' ? [] : ['reittiere/pferd'],
+    }),
     studioSoundData: async (pfad) => {
       if (!SOUNDS.some((s) => s.status === 'zugeordnet' && s.dateien.includes(pfad))) throw new Error(`${pfad} fehlt unter public/`);
       return 'data:audio/ogg;base64,T2dnUw==';

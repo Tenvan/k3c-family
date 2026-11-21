@@ -1,4 +1,4 @@
-import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
+import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
 
 // Mock des Welten-Editors (B-879, `?mock=1` und Vitest): zwei Welten, ein festes Level je Stufe und ein paar Werte.
 // Overrides leben nur im Speicher; ein Text in einem Zahlenfeld wird abgelehnt wie die Prüfung in Go.
@@ -64,10 +64,30 @@ function mockNatureSet(id: string, island: string, stage: number, key: string, v
 const BASE: WorldValueEntry[] = [
   { file: 'buildings', path: ['wall', 'cost'], base: 3 },
   { file: 'buildings', path: ['wall', 'hp'], base: 40 },
+  { file: 'buildings', path: ['wall', 'upgradeFactor'], base: 1.5 },
+  { file: 'buildings', path: ['tower', 'cost'], base: 5 },
+  { file: 'buildings', path: ['tower', 'hp'], base: 60 },
+  { file: 'buildings', path: ['tower', 'range'], base: 9.5 },
+  { file: 'buildings', path: ['tower', 'needsArcher'], base: true },
+  { file: 'buildings', path: ['farm', 'cost'], base: 4 },
+  { file: 'buildings', path: ['farm', 'income'], base: [1, 2] },
   { file: 'economy', path: ['purse', 'startGold'], base: 14 },
   { file: 'economy', path: ['purse', 'maxGold'], base: 30 },
+  { file: 'economy', path: ['purse', 'dropOnHit'], base: true },
   { file: 'economy', path: ['chestGold'], base: [3, 6] },
+  { file: 'economy', path: ['payRangeUnits'], base: 2.5 },
+  { file: 'enemies', path: ['wolf', 'hp'], base: 8 },
+  { file: 'enemies', path: ['wolf', 'damage'], base: 1 },
+  { file: 'enemies', path: ['wolf', 'speed'], base: 3.2 },
+  { file: 'enemies', path: ['goblin', 'hp'], base: 12 },
+  { file: 'enemies', path: ['goblin', 'damage'], base: 2 },
+  { file: 'enemies', path: ['goblin', 'name'], base: 'Goblin' },
   { file: 'monarch', path: ['name'], base: 'Monarch' },
+  { file: 'monarch', path: ['speed'], base: 4.5 },
+  { file: 'troops', path: ['archer', 'cost'], base: 2 },
+  { file: 'troops', path: ['archer', 'damage'], base: 1 },
+  { file: 'troops', path: ['warrior', 'cost'], base: 3 },
+  { file: 'troops', path: ['warrior', 'hp'], base: 10 },
 ];
 
 const key = (file: string, path: readonly string[]) => `${file}:${path.join('.')}`;
@@ -106,6 +126,18 @@ const mockCreate: WorldBackend['worldCreate'] = async (id, name, extendsId) => {
   return { id, warnings: [], error: '' };
 };
 
+const FESTE_WELTEN = ['standard', 'sengoku', 'nil', 'britannien'];
+
+const mockDelete: WorldBackend['worldDelete'] = async (id) => {
+  const fail = (error: string) => ({ id, warnings: [], error });
+  if (FESTE_WELTEN.includes(id)) return fail(`die Welt "${id}" ist eine feste Welt und lässt sich nicht löschen`);
+  if (!DETAILS[id]) return fail(`data/worlds/${id}.json gibt es nicht`);
+  const heirs = Object.values(DETAILS).filter((d) => d.extends === id).map((d) => d.id);
+  if (heirs.length) return fail(`die Welt "${id}" hat Erben (${heirs.join(', ')}); erst deren extends ändern oder sie löschen`);
+  delete DETAILS[id];
+  return { id, warnings: [], error: '' };
+};
+
 const mockEtappe: WorldBackend['worldIslandEtappe'] = async (id, island, etappe) => {
   const isl = DETAILS[id]?.islands.find((i) => i.id === island);
   if (!isl) return { id, warnings: [], error: `die Insel "${island}" gibt es nicht` };
@@ -115,10 +147,14 @@ const mockEtappe: WorldBackend['worldIslandEtappe'] = async (id, island, etappe)
 };
 
 export function mockWorld(): WorldBackend {
-  const overrides: Overrides = new Map([['wueste', new Map([[key('economy', ['purse', 'startGold']), 20]])]]);
+  const overrides: Overrides = new Map([['wueste', new Map<string, unknown>([[key('economy', ['purse', 'startGold']), 20], [key('enemies', ['wolf', 'hp']), 14], [key('buildings', ['tower', 'range']), 11], [key('economy', ['purse', 'dropOnHit']), false]])]]);
   const values = (id: string) => mockValues(overrides, id);
   return {
-    worldList: async () => Object.values(DETAILS).map((d) => ({ id: d.id, name: d.name })),
+    worldList: async () => {
+      const files = Object.values(DETAILS).map((d): WorldInfo => ({ id: d.id, name: d.name }));
+      const fixed = ['sengoku', 'nil', 'britannien'].map((id): WorldInfo => ({ id, name: id, missing: true }));
+      return [...files.filter((w) => w.id === 'standard'), ...fixed, ...files.filter((w) => w.id !== 'standard')]; // wie List() im Backend
+    },
     worldDetail: async (id) => withInfo(DETAILS[id]) ?? { id, name: id, notes: '', extends: '', islands: [], error: `data/worlds/${id}.json: Datei fehlt` },
     worldLevel: async (id, island, stage, seed) => {
       const detail = DETAILS[id];
@@ -126,6 +162,7 @@ export function mockWorld(): WorldBackend {
     },
     worldValues: async (id) => values(id),
     worldCreate: mockCreate,
+    worldDelete: mockDelete,
     worldIslandEtappe: mockEtappe,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;

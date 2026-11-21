@@ -5,6 +5,7 @@ import { backend } from '../../api';
 import type { AssetEintrag } from '../api';
 import { buttons, click, mount, unmount } from '../testing';
 import { mountCatalog, select, until } from './catalogTesting';
+import { Theme } from '@webkit/templates';
 import { CatalogPage } from './CatalogPage';
 
 // B-732: Liste vor der Prüfung (AC-01), Cache über den Abbau der Seite hinweg und „Neu laden“ (AC-03).
@@ -61,7 +62,7 @@ describe('Katalog: Cache (B-732/AC-03)', () => {
     const other = remount(host);
     document.body.appendChild(other);
     const root = createRoot(other);
-    act(() => root.render(<CatalogPage />));
+    act(() => root.render(<Theme><CatalogPage /></Theme>));
     await until('Liste aus dem Cache', () => entry(other, 'monarch'));
     await click(entry(other, 'monarch'));
     await until('Vorschau aus dem Cache', () => other.querySelector('img[alt="monarch idle Frame 1"]'));

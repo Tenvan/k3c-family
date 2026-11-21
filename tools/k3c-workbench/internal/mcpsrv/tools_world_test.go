@@ -37,6 +37,12 @@ func TestWorldToolsRoundtrip(t *testing.T) {
 	if text, isErr := call("world_create", map[string]any{"id": "hanse", "name": "Nochmal"}); !isErr || !strings.Contains(text, "gibt es schon") {
 		t.Fatalf("zweites world_create: %s", text)
 	}
+	if text, isErr := call("world_delete", map[string]any{"id": "hanse"}); !isErr || !strings.Contains(text, "confirm=true") {
+		t.Fatalf("world_delete ohne confirm: %s", text)
+	}
+	if text, isErr := call("world_delete", map[string]any{"id": "standard", "confirm": true}); !isErr || !strings.Contains(text, "feste Welt") {
+		t.Fatalf("world_delete standard: %s", text)
+	}
 	patch := map[string]any{"notes": "Handelsstädte", "combat": map[string]any{"mode": "groups", "groupSize": 5},
 		"islands": []any{map[string]any{"id": "island1", "name": "Lübeck", "biomes": []any{"forest", "cave", "mine", "ironhold", "crystal"}}}}
 	if text, isErr := call("world_set", map[string]any{"id": "hanse", "patch": patch}); isErr {

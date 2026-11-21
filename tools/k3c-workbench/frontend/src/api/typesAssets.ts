@@ -21,6 +21,32 @@ export interface AssetEintrag {
   offen?: boolean;
 }
 
+/** Welche Assets eine Welt sieht (B-1169): Schlüssel `<gruppe>/<asset>`. `eigene` nennt die Herkunftswelt der Assets, die eine
+ *  Welt der Kette exklusiv hat (Herkunft = die Welt selbst: exklusiv); `aus` sind Assets, die sie nicht sieht (fremd oder
+ *  per Skin ersetzt); alles übrige ist Basis mit Herkunft `basis`. */
+export interface WeltSicht {
+  welt: string;
+  basis: string;
+  eigene: Record<string, string>;
+  aus: string[];
+  fehlt?: boolean;
+}
+
+/** Größenstufe (data/sizes.json, B-1170): sichtbare Höhe als Vielfaches von M (Monarch auf dem Mount = 1 M). */
+export interface Groessenstufe {
+  id: string;
+  m: number;
+  was: string;
+}
+
+/** Größenstufen für das Lineal des Größenvergleichs: Stufen nach Höhe sortiert, Assets `<gruppe>/<id>` → Stufe. */
+export interface Stufen {
+  /** Höhe des berittenen Monarchen (1 M) in Spiel-Pixeln. */
+  bezugPx: number;
+  stufen: Groessenstufe[];
+  assets: Record<string, { stufe: string; sicht: number }>;
+}
+
 /** Spiel-Maßstab eines Assets (B-733): Spiel-Pixel je Einheit der Spec und woher der Wert kommt. */
 export interface Groesse {
   pxProEinheit: number;
@@ -180,6 +206,8 @@ export interface AssetsBackend {
   assetsCheck(pfade: string[]): Promise<AssetEintrag[]>;
   /** Spiel-Maßstab eines Assets für den Größenvergleich (B-733). */
   assetsGroesse(id: string): Promise<Groesse>;
+  /** Größenstufen aus data/sizes.json für das Lineal (B-1170). */
+  assetsStufen(): Promise<Stufen>;
   /** Spec und Maßstab im Stand der Basis (B-853); fehlt das Asset dort, ein Fehler */
   assetsGroesseBasis(id: string, basis: string): Promise<GroesseBasis>;
   /** Frame des Arbeitsstands ohne die Teile in `ohne` (B-734: Teil ausblenden). */
@@ -198,6 +226,7 @@ export interface AssetsBackend {
   assetsPixelDiff(id: string, animation: string, frame: number, basis: string): Promise<PixelDiff>;
   /** Lesende Teile des früheren Asset-Studios (WB1.4): Sound-Slots, Hörprobe als Data-URL, Quellen. */
   studioSounds(): Promise<SoundEintrag[]>;
+  studioWeltSicht(welt: string): Promise<WeltSicht>;
   studioSoundData(pfad: string): Promise<string>;
   studioSources(): Promise<Quellen>;
   /** Legt den Testspielstand voll-<seed> an; Antwort ist die Adresse zum Öffnen im Browser. */

@@ -37,7 +37,7 @@ export function NewWorld({ worlds, onCreate }: Props) {
       <TextField.Root size="1" aria-label="Welt-Name" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && valid && void submit()} />
       <SelectField size="1" aria-label="Eltern-Welt der neuen Welt" value={parent} onChange={setParent}
-        options={[{ value: '', label: 'erbt von: Basis' }, ...worlds.map((w) => ({ value: w.id, label: `erbt von: ${w.name}` }))]} />
+        options={[{ value: '', label: 'erbt von: Basis' }, ...worlds.filter((w) => !w.missing).map((w) => ({ value: w.id, label: `erbt von: ${w.name}` }))]} />
       {id !== '' && !ID_PATTERN.test(id) && <Text size="1" color="orange">ID: a–z, 0–9, -, höchstens 32 Zeichen</Text>}
       {error && <Text size="1" color="red" role="alert">{error}</Text>}
       <Flex gap="1">

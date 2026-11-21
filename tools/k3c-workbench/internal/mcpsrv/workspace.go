@@ -100,7 +100,7 @@ var writeTools = map[string]bool{"plan_create": true, "plan_set": true, "plan_se
 	"svc_start": true, "svc_stop": true, "svc_restart": true, "svc_start_all": true, "svc_stop_all": true, "task_start": true, "task_stop": true,
 	"assets_set": true, "assets_create": true, "assets_style_set": true, "assets_render": true, "assets_delete": true,
 	"assets_research": true, "assets_hit_add": true, "assets_hit_drop": true, "assets_import": true, "hub_save": true,
-	"world_create": true, "world_set": true, "world_override_set": true, "world_chunks_set": true, "world_story_set": true}
+	"world_create": true, "world_set": true, "world_override_set": true, "world_chunks_set": true, "world_story_set": true, "world_delete": true}
 
 // addCheckout hängt an die Antwort eines schreibenden Tools die Zeile "Checkout: …".
 func addCheckout(tool string, res mcp.Result, ws workspace) {

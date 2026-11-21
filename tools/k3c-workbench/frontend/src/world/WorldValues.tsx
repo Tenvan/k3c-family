@@ -1,11 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Button, Flex, SelectField, Text, TextField } from '@webkit/atoms';
+import { useMemo, useState } from 'react';
+import { Badge, Button, Flex, IconButton, LinkButton, SelectField, Text, TextField } from '@webkit/atoms';
+import { deviation, valueText } from '@webkit/lib/valueEdit';
+import { ChipSwitch, ValueField } from '@webkit/molecules';
 import type { WorldValuesView } from '../api';
-import { filesOf, filterRows, parseValue, valueRows, valueText, type ValueRow } from './worldOverrides';
+import { filesOf, filterRows, GENERAL, groupRows, valueRows, type RowGroup, type RowMode, type ValueRow } from './worldOverrides';
 
-// Ansicht „Werte“ des Welten-Editors (B-879, Port aus dem Asset-Studio, world/WorldValues.tsx; B-680, B-682): je Feld
-// einer Basis-Datei Basiswert, Wert der Welt und Status (geerbt/überschrieben). Eine Eingabe (Enter oder Verlassen)
-// schreibt den Override sofort in die Welt-Datei, geprüft wie im Server; ↺ setzt ihn zurück.
+// Ansicht „Werte“ des Welten-Editors (B-879, B-680, B-682; neu gestaltet in B-1173): je Feld einer Basis-Datei der
+// Standardwert, der Wert der Welt, Status und Abweichung. Gruppen nach Thema sind einklappbar, die Kopfzeile bleibt beim
+// Scrollen stehen, die Suche trifft Pfad und Basiswert. Eine gültige Eingabe (Enter oder Verlassen) schreibt den Override
+// sofort in die Welt-Datei, geprüft wie im Server; ↺ setzt die Zeile zurück.
 
 /** Eltern-Welt und Kind-Welten: eine Änderung wirkt auf alle Welten, die von dieser erben (welten.md § 1). */
 function WorldKin({ values }: { values: WorldValuesView }) {
@@ -20,28 +23,59 @@ function WorldKin({ values }: { values: WorldValuesView }) {
   );
 }
 
-/** Ein Feld: Basiswert, Wert der Welt (Eingabe), Status und Zurücksetzen. */
-function ValueLine({ row, onSet }: { row: ValueRow; onSet: (value: unknown) => void }) {
-  const shown = valueText(row.override ?? row.base);
-  const [text, setText] = useState(shown);
-  // zuletzt gesendet: Enter und das folgende Verlassen schicken denselben Wert nur einmal
-  const sent = useRef<string | null>(null);
-  useEffect(() => { setText(shown); sent.current = null; }, [shown]);
-  const commit = () => {
-    if (text === shown || text === sent.current) return;
-    sent.current = text;
-    onSet(parseValue(text, row.base));
-  };
-  const own = row.status === 'überschrieben';
+function ResetIcon() {
   return (
-    <li className="wv-row" data-key={row.key} data-status={row.status}>
-      <Text size="2" className="wv-path">{row.label}</Text>
-      <Text size="1" color="gray" aria-label={`Basiswert ${row.label}`}>{valueText(row.base)}</Text>
-      <TextField.Root size="1" aria-label={`Wert ${row.label}`} value={text} onChange={(e) => setText(e.target.value)}
-        onBlur={commit} onKeyDown={(e) => { if (e.key === 'Enter') commit(); }} />
-      <Text size="1" weight={own ? 'bold' : 'regular'} color={own ? 'orange' : 'gray'} aria-label={`Status ${row.label}`}>{row.status}</Text>
-      <Button size="1" variant="soft" disabled={!own} aria-label={`Zurücksetzen ${row.label}`} title="Override entfernen, der Basiswert gilt" onClick={() => onSet(null)}>↺</Button>
-    </li>
+    <svg width="14" height="14" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+      <path d="M2.5 7.5a5 5 0 1 0 1.6-3.7M2.5 2.5v2.8h2.8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Ein Feld: Pfad, Standardwert, Eingabe, Status mit Abweichung und Zurücksetzen. */
+function ValueLine({ row, strip, onSet }: { row: ValueRow; strip: number; onSet: (value: unknown) => void }) {
+  const own = row.status === 'überschrieben';
+  const shown = valueText(own ? row.override : row.base);
+  const diff = own ? deviation(row.base, row.override) : '';
+  return (
+    <div role="row" className="wv-row" data-key={row.key} data-status={row.status}>
+      <Text role="cell" size="2" className="wv-path" title={row.label}>{row.path.slice(strip).join('.')}</Text>
+      <Text role="cell" size="1" color="gray" className="wv-base" aria-label={`Basiswert ${row.label}`}>{valueText(row.base)}</Text>
+      <div role="cell"><ValueField label={`Wert ${row.label}`} shown={shown} base={row.base} onCommit={onSet} /></div>
+      <Flex role="cell" direction="column" gap="0">
+        <Text size="1" weight={own ? 'bold' : 'regular'} color={own ? 'orange' : 'gray'} aria-label={`Status ${row.label}`}>{row.status}</Text>
+        {diff && <Text size="1" color="orange" aria-label={`Abweichung ${row.label}`}>{diff}</Text>}
+      </Flex>
+      <div role="cell">
+        <IconButton size="1" variant="soft" color={own ? 'orange' : 'gray'} disabled={!own} aria-label={`Zurücksetzen ${row.label}`}
+          title="Override entfernen, der Basiswert gilt" onClick={() => onSet(null)}><ResetIcon /></IconButton>
+      </div>
+    </div>
+  );
+}
+
+interface GroupProps {
+  group: RowGroup;
+  withFile: boolean;
+  open: boolean;
+  onToggle: () => void;
+  onSet: (row: ValueRow, value: unknown) => void;
+}
+
+/** Gruppe mit einklappbarer Überschrift: Thema, Zahl der Felder und der überschriebenen. */
+function Group({ group, withFile, open, onToggle, onSet }: GroupProps) {
+  const strip = group.group === GENERAL ? 0 : 1;
+  return (
+    <div role="rowgroup" data-group={group.key.replace('\u0000', ':')}>
+      <div role="row"><div role="cell" aria-colspan={5}>
+      <Button type="button" variant="ghost" color="gray" className="wv-group" aria-expanded={open} onClick={onToggle}>
+        <span className="wv-chev" aria-hidden="true" />
+        <Text size="2" weight="bold">{withFile && <Text color="gray" weight="regular">{group.file} › </Text>}{group.group}</Text>
+        <Text size="1" color="gray">{group.rows.length} {group.rows.length === 1 ? 'Feld' : 'Felder'}</Text>
+        {group.own > 0 && <Badge color="orange" size="1">{group.own} überschrieben</Badge>}
+      </Button>
+      </div></div>
+      {open && group.rows.map((r) => <ValueLine key={r.key} row={r} strip={strip} onSet={(v) => onSet(r, v)} />)}
+    </div>
   );
 }
 
@@ -50,32 +84,72 @@ interface Props {
   onSet: (file: string, path: string[], value: unknown) => void;
 }
 
+/** Ab so vielen Feldern starten die Gruppen eingeklappt (außer solche mit Überschreibungen). */
+const COLLAPSE_FROM = 60;
+const ALL_FILES = '';
+
 export function WorldValues({ values, onSet }: Props) {
   const rows = useMemo(() => valueRows(values?.entries ?? []), [values]);
   const files = useMemo(() => filesOf(rows), [rows]);
-  const [picked, setFile] = useState('buildings');
+  const [picked, setFile] = useState<string | null>(null);
   const [query, setQuery] = useState('');
-  const [onlyOwn, setOnlyOwn] = useState(false);
+  const [mode, setMode] = useState<RowMode>('alle');
+  const [touched, setTouched] = useState<ReadonlySet<string>>(new Set());
+  // von Hand ein- oder ausgeklappt: überschreibt die Vorgabe der Gruppe
+  const [toggled, setToggled] = useState<ReadonlyMap<string, boolean>>(new Map());
   if (!values) return null;
-  const file = files.some((f) => f.file === picked) ? picked : (files[0]?.file ?? '');
-  const shown = filterRows(rows, file, query, onlyOwn);
+  const file = picked === ALL_FILES || files.some((f) => f.file === picked) ? picked ?? ALL_FILES : ALL_FILES;
+  const base = { file, query, mode: 'alle' as RowMode, touched };
+  const inFile = filterRows(rows, { ...base, query: '' });
+  const counts = { alle: inFile.length, ueberschrieben: inFile.filter((r) => r.status === 'überschrieben').length, sitzung: inFile.filter((r) => touched.has(r.key)).length };
+  const shown = filterRows(rows, { ...base, mode });
+  const groups = groupRows(shown);
+  const isOpen = (g: RowGroup) => toggled.get(g.key) ?? (shown.length <= COLLAPSE_FROM || g.own > 0 || query.trim() !== '');
+  const setAll = (open: boolean) => setToggled(new Map(groups.map((g) => [g.key, open])));
+  const set = (r: ValueRow, v: unknown) => {
+    setTouched((t) => new Set(t).add(r.key));
+    onSet(r.file, r.path, v);
+  };
+  const filtered = query.trim() !== '' || mode !== 'alle';
   return (
-    <section className="wd-card" aria-label="Werte der Welt">
-      <Flex gap="3" align="center" wrap="wrap">
+    <section className="wd-card" aria-label="Werte der Welt" data-value-table>
+      <Flex gap="3" align="baseline" wrap="wrap">
         <Text size="2" weight="bold">Werte</Text>
         <WorldKin values={values} />
       </Flex>
       {values.error && <Text as="p" size="1" color="red" role="alert">{values.error}</Text>}
       <Flex gap="2" align="center" wrap="wrap">
         <SelectField size="1" aria-label="Basis-Datei" value={file} onChange={setFile}
-          options={files.map((f) => ({ value: f.file, label: f.own > 0 ? `${f.file} (${f.own} überschrieben)` : f.file }))} />
-        <TextField.Root size="1" aria-label="Feld suchen" placeholder="Feld suchen, z. B. wall.cost" value={query} onChange={(e) => setQuery(e.target.value)} />
-        <Button size="1" variant={onlyOwn ? 'solid' : 'soft'} aria-pressed={onlyOwn} onClick={() => setOnlyOwn((v) => !v)}>Nur überschriebene</Button>
+          options={[{ value: ALL_FILES, label: `Alle Dateien (${rows.length})` }, ...files.map((f) => ({ value: f.file, label: f.own > 0 ? `${f.file} (${f.own} überschrieben)` : f.file }))]} />
+        <TextField.Root size="1" className="wv-search" aria-label="Feld suchen" placeholder="Feld oder Wert suchen, z. B. wall cost" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <ChipSwitch label="Zeilen" value={mode} onChange={setMode}
+          options={[
+            { value: 'alle', label: 'Alle', count: counts.alle },
+            { value: 'ueberschrieben', label: 'Überschrieben', count: counts.ueberschrieben },
+            { value: 'sitzung', label: 'Diese Sitzung', count: counts.sitzung },
+          ]} />
       </Flex>
-      <ul className="wv-list" aria-label="Felder">
-        {shown.map((r) => <ValueLine key={r.key} row={r} onSet={(v) => onSet(r.file, r.path, v)} />)}
-      </ul>
-      {shown.length === 0 && <Text size="1" color="gray">Keine Felder.</Text>}
+      <Flex gap="3" align="center" wrap="wrap">
+        <Text size="1" color="gray" role="status">{shown.length} von {rows.length} Feldern in {groups.length} {groups.length === 1 ? 'Gruppe' : 'Gruppen'}</Text>
+        {groups.length > 1 && <LinkButton size="1" onClick={() => setAll(true)}>alle aufklappen</LinkButton>}
+        {groups.length > 1 && <LinkButton size="1" onClick={() => setAll(false)}>alle einklappen</LinkButton>}
+        {filtered && <Button size="1" variant="soft" color="gray" onClick={() => { setQuery(''); setMode('alle'); }}>Filter zurücksetzen</Button>}
+        <Text size="1" color="gray" className="wv-keys">Eingabe: Enter übernimmt, Esc verwirft, ↑↓ ändern Zahlen (Umschalt ×10), Alt+↑↓ wechselt die Zeile</Text>
+      </Flex>
+      <div role="table" aria-label="Felder" className="wv-table">
+        <div role="rowgroup"><div role="row" className="wv-row wv-head">
+          <Text role="columnheader" size="1" weight="medium">Feld</Text>
+          <Text role="columnheader" size="1" weight="medium">Standard</Text>
+          <Text role="columnheader" size="1" weight="medium">Wert dieser Welt</Text>
+          <Text role="columnheader" size="1" weight="medium">Abweichung</Text>
+          <Text role="columnheader" size="1" weight="medium"><span className="wv-sr">Zurücksetzen</span></Text>
+        </div></div>
+        {groups.map((g) => (
+          <Group key={g.key} group={g} withFile={file === ALL_FILES} open={isOpen(g)} onSet={set}
+            onToggle={() => setToggled((m) => new Map(m).set(g.key, !isOpen(g)))} />
+        ))}
+      </div>
+      {shown.length === 0 && <Text size="1" color="gray">{filtered ? 'Kein Feld passt zum Filter.' : 'Keine Felder.'}</Text>}
     </section>
   );
 }

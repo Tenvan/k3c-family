@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { INCOMPLETE, levelModel, objectsIn, plannedAt, seedFromBytes, slotLabel, slotsOf } from './levelView';
-import { filesOf, filterRows, parseValue, valueRows, valueText } from './worldOverrides';
+import { filesOf, filterRows, groupRows, valueRows, valueText } from './worldOverrides';
 
 describe('Zeichenmodell der Chunk-Vorschau (B-879)', () => {
   it('Plätze relativ zum Hub wie slotIndex in Go', () => {
@@ -36,18 +36,22 @@ describe('Werte-Zeilen (B-879/AC-02)', () => {
     { file: 'monarch', path: ['name'], base: 'M' },
   ]);
 
-  it('Status, Dateien und Filter', () => {
+  const f = (over: Partial<Parameters<typeof filterRows>[1]> = {}) => ({ file: '', query: '', mode: 'alle' as const, touched: new Set<string>(), ...over });
+
+  it('Status, Dateien, Gruppen und Filter', () => {
     expect(rows.map((r) => r.status)).toEqual(['überschrieben', 'geerbt', 'geerbt']);
+    expect(rows.map((r) => r.group)).toEqual(['wall', 'wall', 'allgemein']);
     expect(filesOf(rows)).toEqual([{ file: 'buildings', own: 1 }, { file: 'monarch', own: 0 }]);
-    expect(filterRows(rows, 'buildings', 'HP', false).map((r) => r.label)).toEqual(['wall.hp']);
-    expect(filterRows(rows, 'buildings', '', true).map((r) => r.label)).toEqual(['wall.cost']);
+    expect(filterRows(rows, f({ file: 'buildings', query: 'HP' })).map((r) => r.label)).toEqual(['wall.hp']);
+    expect(filterRows(rows, f({ mode: 'ueberschrieben' })).map((r) => r.label)).toEqual(['wall.cost']);
+    // Suche trifft auch den Basiswert und mehrere Wörter
+    expect(filterRows(rows, f({ query: '40' })).map((r) => r.label)).toEqual(['wall.hp']);
+    expect(filterRows(rows, f({ query: 'wall cost' })).map((r) => r.label)).toEqual(['wall.cost']);
+    expect(filterRows(rows, f({ mode: 'sitzung', touched: new Set([rows[1]!.key]) })).map((r) => r.label)).toEqual(['wall.hp']);
+    expect(groupRows(rows).map((g) => [g.file, g.group, g.rows.length, g.own])).toEqual([['buildings', 'wall', 2, 1], ['monarch', 'allgemein', 1, 0]]);
   });
 
-  it('Eingabe und Anzeige', () => {
-    expect(parseValue('7', 3)).toBe(7);
-    expect(parseValue('[1,2]', [3, 6])).toEqual([1, 2]);
-    expect(parseValue('12', 'Text')).toBe('12');
-    expect(parseValue('viel', 3)).toBe('viel');
+  it('Anzeige', () => {
     expect([valueText(undefined), valueText('a'), valueText([1])]).toEqual(['–', 'a', '[1]']);
   });
 });

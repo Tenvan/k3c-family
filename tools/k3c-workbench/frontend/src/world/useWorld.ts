@@ -39,6 +39,8 @@ export interface WorldState {
   setValue: (file: string, path: string[], value: unknown) => Promise<void>;
   /** Neue Welt anlegen und wählen (B-954); die Antwort ist der Grund der Ablehnung, leer bei Erfolg */
   create: (id: string, name: string, extendsId: string) => Promise<string>;
+  /** Welt löschen (B-1172); Antwort ist der Grund der Ablehnung, leer bei Erfolg */
+  remove: (id: string) => Promise<string>;
   /** Etappe einer Insel setzen, null = Listenplatz + 1 (B-963); lädt danach die Welt neu */
   setEtappe: (island: string, etappe: number | null) => Promise<boolean>;
   /** Token `<insel>:<stufe>#<n>`: diese Stufe im Querschnitt neu laden (nach Natur-Änderung) */
@@ -137,6 +139,8 @@ export function useWorld(): WorldState {
   const [notice, setNotice] = useState<WorldState['notice']>(null);
   const { model, level, note, load, show, request } = useLevel(stage, seed);
   const current = useRef(id);
+  /** Hinweis, der nach dem Laden der nächsten Welt erscheint (das Laden leert sonst jeden Hinweis). */
+  const afterLoad = useRef<WorldState['notice']>(null);
   current.current = id;
 
   useEffect(() => { void backend.worldList().then(setWorlds, () => setWorlds([])); }, []);
@@ -148,6 +152,8 @@ export function useWorld(): WorldState {
       setDetail(d);
       setStage(firstStage(d));
       setValues(v);
+      if (afterLoad.current) setNotice(afterLoad.current);
+      afterLoad.current = null;
     }, (e: unknown) => {
       if (live) setNotice({ tone: 'error', text: e instanceof Error ? e.message : String(e) });
     });
@@ -181,7 +187,15 @@ export function useWorld(): WorldState {
     setNotice(v.warnings.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `Welt ${newId} angelegt` });
     return '';
   };
+  const remove = async (oldId: string) => {
+    const v = await backend.worldDelete(oldId).catch((e: unknown) => ({ id: oldId, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    if (v.error) return v.error;
+    setWorlds(await backend.worldList().catch(() => worlds));
+    afterLoad.current = v.warnings.length ? { tone: 'warn', text: `Welt ${oldId} gelöscht. ${v.warnings.join(' · ')}` } : { tone: 'ok', text: `Welt ${oldId} gelöscht` };
+    choose('standard');
+    return '';
+  };
   const { setEtappe } = useEtappe(id, current, setDetail, setNotice);
   const { setNature, crossRefresh } = useNature(stage, level, seed, request, show, setNotice);
-  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, setEtappe, crossRefresh, notice };
+  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, crossRefresh, notice };
 }

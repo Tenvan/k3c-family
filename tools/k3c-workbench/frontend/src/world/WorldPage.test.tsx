@@ -48,9 +48,17 @@ describe('Welten-Editor (B-879/AC-01)', () => {
     expect(ASSET_LABELS.welten).toBe('Welten-Editor');
   });
 
+  it('B-1168/AC-01: feste Welten ohne Datei stehen mit Hinweis in der Liste und lassen sich nicht öffnen', async () => {
+    const host = await mount();
+    const nil = host.querySelector('[data-world="nil"]')!;
+    expect(nil.textContent).toContain('noch nicht umgesetzt');
+    expect(nil.getAttribute('role')).toBe('listitem');
+    expect(host.querySelector('[data-world="standard"]')?.textContent).not.toContain('noch nicht umgesetzt');
+  });
+
   it('zeigt Welten-Liste, Chunk-Vorschau und Inspektor des gewählten Abschnitts', async () => {
     const host = await mount();
-    expect([...host.querySelectorAll('[data-world]')].map((e) => e.getAttribute('data-world'))).toEqual(['standard', 'wueste']);
+    expect([...host.querySelectorAll('[data-world]')].map((e) => e.getAttribute('data-world'))).toEqual(['standard', 'sengoku', 'nil', 'britannien', 'wueste']);
     expect(host.querySelector('[aria-label="Chunk-Vorschau"] [role="status"]')?.textContent).toContain('12 Abschnitte');
     expect(host.querySelectorAll('.wd-chunk')).toHaveLength(12);
     expect(host.querySelector('[aria-label="Inspektor"]')?.textContent).toContain('Wähle einen Abschnitt');

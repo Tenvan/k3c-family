@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Badge, Box, Flex, Heading, SelectField, Text } from '@webkit/atoms';
 import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
+import { CatalogLinks } from './CatalogLinks';
+import { DeleteWorld } from './DeleteWorld';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
 import { NatureValues } from './NatureValues';
@@ -19,11 +21,17 @@ function WorldList({ worlds, id, onChoose, onCreate }: { worlds: WorldInfo[]; id
     <Flex direction="column" gap="1" role="list" aria-label="Welten">
       <Heading size="2" color="gray">Welten</Heading>
       {worlds.map((w) => (
-        <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
-          className={`wd-entry${w.id === id ? ' wd-entry-active' : ''}`}
-          onClick={() => onChoose(w.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onChoose(w.id)}>
-          <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>
-        </Box>
+        w.missing ? (
+          <Box key={w.id} role="listitem" data-world={w.id} className="wd-entry" aria-disabled="true">
+            <Text size="2" weight="bold" color="gray">{w.name}</Text> <Text size="1" color="gray">{w.id} · noch nicht umgesetzt</Text>
+          </Box>
+        ) : (
+          <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
+            className={`wd-entry${w.id === id ? ' wd-entry-active' : ''}`}
+            onClick={() => onChoose(w.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onChoose(w.id)}>
+            <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>
+          </Box>
+        )
       ))}
       {worlds.length === 0 && <Text size="1" color="gray">Keine Welten unter data/worlds/.</Text>}
       <NewWorld worlds={worlds} onCreate={onCreate} />
@@ -55,6 +63,8 @@ function WorldHead({ w }: { w: WorldState }) {
           <SelectField size="1" aria-label="Insel und Stufe" value={stageKey(w.stage)} onChange={pick} options={stageOptions(detail)} />
         )}
       </Flex>
+      {!detail.error && <CatalogLinks welt={detail.id} />}
+      <DeleteWorld key={detail.id} id={detail.id} name={detail.name} onDelete={w.remove} />
       {detail.error && <Text size="1" color="red" role="alert">{detail.error}</Text>}
       {detail.notes && <Text size="1" color="gray" className="wd-notes">{detail.notes}</Text>}
       {!detail.error && <StoryState detail={detail} />}
@@ -89,7 +99,7 @@ export function WorldPage() {
           selected={chunk} onChunk={setChunk} />
         <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
         <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
-        <WorldValues values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} />
+        <WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} />
       </Flex>
     </ListDetail>
   );
