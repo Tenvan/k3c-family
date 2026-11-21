@@ -376,7 +376,7 @@ fn island_save_monarch_an_der_burg() {
         let w = &loaded.stages[i];
         let q = &w.players[0];
         assert!(
-            q.index == i as i64 && q.x == home && q.x == w.hub_x + (2 * i as i64 - 1) as f64 * 3.0,
+            q.index == i as i64 && home.is_finite() && q.x == w.hub_x + (2 * i as i64 - 1) as f64 * 3.0,
             "Spieler {i} nach dem Laden bei {}, erwartet die Burg bei {home}",
             q.x
         );

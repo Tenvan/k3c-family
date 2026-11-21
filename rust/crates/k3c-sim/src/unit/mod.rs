@@ -68,7 +68,7 @@ pub fn spawn_vagrant(w: &mut World, camp_x: f64, x: f64) -> usize {
 
 /// Go: `stepCamps`.
 pub fn step_camps(w: &mut World, v: &WorldValues, dt: f64) {
-    camp_guard::step_camp_guards(w, v);
+    camp_guard::step_native_rules(w, v);
     let c = &v.economy.recruit_camp;
     if pure(w) {
         return;

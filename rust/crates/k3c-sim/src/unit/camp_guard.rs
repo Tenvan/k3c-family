@@ -16,7 +16,7 @@ pub const GUARD_MAX: usize = 3;
 const GUARD_MIN: usize = 2;
 
 fn wooded(w: &World, v: &WorldValues) -> bool {
-    v.camp_guards && w.biome.primary_resource == "wood"
+    v.native_rules && w.biome.primary_resource == "wood"
 }
 
 fn live_trees_near(w: &World, x: f64) -> Vec<(f64, i64)> {
@@ -31,7 +31,7 @@ fn live_trees_near(w: &World, x: f64) -> Vec<(f64, i64)> {
 }
 
 /// nearest_variant ist die Baumart des Level-Baums, der dem Lager am nächsten steht (sonst leer).
-fn nearest_variant(w: &World, x: f64) -> String {
+pub(crate) fn nearest_variant(w: &World, x: f64) -> String {
     w.nodes
         .iter()
         .filter(|n| n.kind == "tree" && !n.plant)
@@ -65,9 +65,9 @@ pub fn plant_camp_trees(w: &mut World, v: &WorldValues) {
     }
 }
 
-/// step_camp_guards wählt je Lager einmal seine Wächter-Bäume (die nächsten, höchstens `GUARD_MAX`) und zerstört das
+/// step_native_rules wählt je Lager einmal seine Wächter-Bäume (die nächsten, höchstens `GUARD_MAX`) und zerstört das
 /// Lager, sobald keiner mehr steht.
-pub fn step_camp_guards(w: &mut World, v: &WorldValues) {
+pub fn step_native_rules(w: &mut World, v: &WorldValues) {
     if !wooded(w, v) {
         return;
     }

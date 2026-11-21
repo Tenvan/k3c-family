@@ -1,6 +1,6 @@
 # HB1.5 · Hafen als Start, 1 bis 2 Biome vom Lager, Hafen vom Wald umgeben
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -60,5 +60,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `add_island_player` stellt neue Monarchen an den Steg (`island/harbor_start.rs` `start_x`, ±3 Units); Test `neue_spiele_starten_am_hafen`. Beim Laden stehen sie wie bisher an der Burg. AC-02 geprüft: `near_harbor` setzt den Hafen-Slot aus dem Seed auf −1 oder −2 (Seite wie in den Weltdaten, vorher −7); Test über 40 Seeds (beide Abstände kommen vor). AC-03 geprüft: `plant_harbor_trees` bewachsen den Hafen-Chunk mit Dichte `TREES_PER_UNIT` 0,8 je Unit bis auf einen Startstreifen ±5 Units; Test `hafen_ist_bewachsen_bis_auf_den_startstreifen`. Alles hinter dem nativen Schalter `WorldValues.native_rules` (vorher `camp_guards`, jetzt auch für Hafen). Angepasste Tests (Hafen nicht mehr bei −7, Start am Hafen statt an der Burg): `ship_tests`, `save_tests`, `views_tests`, `local/actions_tests` (Respec nur an der Burg). k3c-sim, k3c-room, k3c-game grün außer den schon roten `eingebettete_welten_gueltig` und `insel_nach_1000_schritten_wie_go`; clippy sauber. Abweichungen: Dichte ist eine Konstante im Code, kein Datenwert (Go-Datenbaum-Vergleich würde ein neues Feld ablehnen); „muss freigeräumt werden“ heißt hier nur: Winkelbäume stehen, Bäume lassen sich fällen, kein Bau-Sperre am Schiff. Weltdaten (`slot: -7`) unverändert. Für Ralf im Spiel prüfen: Abstand Hafen-Burg, Startgefühl am Steg, ob der Steg frei genug ist.

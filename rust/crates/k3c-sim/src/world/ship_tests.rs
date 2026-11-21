@@ -216,12 +216,14 @@ fn hafen_chunk_auf_insel_eins() {
         }
         assert_eq!(harbors.len(), 1, "Tiefe 0: {} Häfen, erwartet 1", harbors.len());
         let cw = w.level.width_units / w.level.chunks.len() as f64;
-        let start = w.level.hub_center_units - 25.0 - 7.0 * cw; // Anfang von −7 (geplante-chunks.md § 1)
+        // HB1.5: Der Hafen liegt 1 bis 2 Chunks links vom Lager (Platz −1 oder −2, nach Seed)
+        let near = w.level.hub_center_units - 25.0 - cw;
         let x = harbors[0].x;
         assert!(
-            x >= start && x <= start + cw,
-            "Hafen bei {x}, Platz −7 liegt in {start}…{}",
-            start + cw
+            x >= near - cw && x <= near + cw,
+            "Hafen bei {x}, Platz −1 oder −2 liegt in {}…{}",
+            near - cw,
+            near + cw
         );
     }
 }

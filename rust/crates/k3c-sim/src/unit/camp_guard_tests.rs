@@ -1,6 +1,6 @@
 //! HB1.4 (B-1187): Lager zwischen 2 bis 3 Bäumen, Zerstörung bei Rodung, Taverne am Platz, höchstens 5 Landstreicher.
 
-use super::camp_guard::{GUARD_MAX, plant_camp_trees, step_camp_guards};
+use super::camp_guard::{GUARD_MAX, plant_camp_trees, step_native_rules};
 use crate::state::{Camp, ResourceNode, World};
 use crate::world::testutil::quiet_world;
 use crate::world::vals;
@@ -48,17 +48,17 @@ fn lager_faellt_mit_den_letzten_baeumen_und_taverne_ist_baubar() {
     let mut w = forest_world();
     let ids: Vec<i64> = (0..5).map(|i| tree(&mut w, CAMP_X + f64::from(i) - 2.0)).collect();
     let v = vals(&w);
-    step_camp_guards(&mut w, &v);
+    step_native_rules(&mut w, &v);
     assert_eq!(w.camps[0].guards.len(), GUARD_MAX, "nur die nächsten drei bewachen");
     let mine = w.camps[0].guards.clone();
     w.nodes.retain(|n| !mine.contains(&n.id) || n.id == mine[0]);
     let v = vals(&w);
-    step_camp_guards(&mut w, &v);
+    step_native_rules(&mut w, &v);
     assert_eq!(w.camps.len(), 1, "ein Wächter steht noch");
     w.nodes.retain(|n| n.id != mine[0]);
     assert!(w.nodes.iter().any(|n| ids.contains(&n.id)), "fremde Bäume stehen weiter");
     let v = vals(&w);
-    step_camp_guards(&mut w, &v);
+    step_native_rules(&mut w, &v);
     assert!(w.camps.is_empty(), "Lager zerstört");
     let site = w.sites.iter().find(|s| s.kind == "tavern" && (s.x - CAMP_X).abs() < 0.5);
     assert_eq!(site.map(|s| s.state.as_str()), Some("unpaid"), "Taverne baubar");
@@ -69,7 +69,7 @@ fn unter_tage_bleibt_das_lager() {
     let mut w = forest_world();
     w.biome.primary_resource = "stone".into();
     let v = vals(&w);
-    step_camp_guards(&mut w, &v);
+    step_native_rules(&mut w, &v);
     assert_eq!(w.camps.len(), 1);
 }
 
@@ -77,8 +77,8 @@ fn unter_tage_bleibt_das_lager() {
 fn ohne_schalter_bleibt_alles_wie_bei_go() {
     let mut w = forest_world();
     let mut v = (*vals(&w)).clone();
-    v.camp_guards = false;
+    v.native_rules = false;
     plant_camp_trees(&mut w, &v);
-    step_camp_guards(&mut w, &v);
+    step_native_rules(&mut w, &v);
     assert!(w.nodes.is_empty() && w.camps.len() == 1);
 }

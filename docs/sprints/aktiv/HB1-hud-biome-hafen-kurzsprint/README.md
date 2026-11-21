@@ -68,7 +68,7 @@ keine
 | HB1.2 | `HB1.2-gebaeudename-haendler.md` | Umsetzung | autonom | fertig |
 | HB1.3 | `HB1.3-biome-dicht-radar.md` | Umsetzung | autonom | fertig |
 | HB1.4 | `HB1.4-landstreicher-lager-taverne.md` | Umsetzung | autonom | fertig |
-| HB1.5 | `HB1.5-hafen-start-bewuchs.md` | Umsetzung | autonom | offen |
+| HB1.5 | `HB1.5-hafen-start-bewuchs.md` | Umsetzung | autonom | fertig |
 | HB1.6 | `HB1.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

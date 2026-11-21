@@ -32,6 +32,7 @@ fn give_point(s: &mut Session, slot: i64) -> String {
         let w = &mut r.isl.stages[0];
         let pi = w.players.iter().position(|p| p.index == monarch).expect("Monarch");
         w.players[pi].skill_base = 1;
+        w.players[pi].x = w.hub_x; // Respec nur an der Burg; neue Spiele starten am Hafen (HB1.5)
         learnable_skills(w, &vals(w), pi)
     });
     skills

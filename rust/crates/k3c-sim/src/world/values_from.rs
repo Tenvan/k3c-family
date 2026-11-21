@@ -46,7 +46,7 @@ fn load_one<T: Default>(
 pub fn values_from(read: ReadFn) -> Result<WorldValues, String> {
     let mut errs = Vec::new();
     let mut v = WorldValues {
-        camp_guards: true, // HB1.4: native Regel, in jeder Welt
+        native_rules: true, // HB1.4: native Regel, in jeder Welt
         ..WorldValues::default()
     };
     let mut buildings = load_one(&mut errs, buildings::FILE, buildings::load, read);

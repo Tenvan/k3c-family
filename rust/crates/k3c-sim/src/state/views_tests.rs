@@ -248,6 +248,8 @@ fn purse_respec_drops_new_gold() {
     let data = test_data();
     let mut isl = must_island(&data, "geldsack", &[0]);
     let p = add_island_player(&mut isl, 0);
+    let hx = isl.stages[0].hub_x;
+    isl.stages[0].players[p].x = hx; // Respec nur an der Burg; neue Spiele starten am Hafen (HB1.5)
     add_island_pool(&mut isl, 0, 5);
     on_stage(&mut isl, &data, 0, |w, r| {
         let v = crate::world::vals(w);
