@@ -17,6 +17,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | erledigt |
 | ECO1 | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | aktiv |
 | FG1 | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | aktiv |
+| WD1 | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | aktiv |
 
 ## Nicht-Ziele
 
