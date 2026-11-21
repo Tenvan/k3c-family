@@ -18,13 +18,15 @@ Feste Bauplätze richten ihren Abstand nach der Größe der Gebäude, sodass Geb
 
 ## Kontext
 
-Bauplätze liegen in `rust/crates/k3c-game/src/props/plan_sites.rs` und `props/plan.rs` (Reihenfolge: decor, back_walls, sites_pass(true), castle, entities, nodes, sites_pass(false)); Plätze kommen aus der Simulation/Daten (`k3c-sim`, `data/`). Gebäudebreiten aus den Papierschnitt-Maßen. Ticket B-1182. Berührt Spielstand-Layout und Golden: Sperre `golden|spielstand`.
+Bauplatz-Positionen stehen fest in `data/hub.json` und werden in `k3c-sim` berechnet; gezeichnet werden sie in `rust/crates/k3c-game/src/props/plan_sites.rs` und `props/plan.rs` (Reihenfolge: decor, back_walls, sites_pass(true), castle, entities, nodes, sites_pass(false)). Gebäudebreiten je Welt aus `data/sizes.json` (Größenstufen, LA1.1) und den Papierschnitt-Maßen. Ticket B-1182. Neue Mechanik nur in Rust (Entscheidung 013), die Go-Engine bleibt eingefroren: Golden und Go-Tests (`engine/`, `testdata/golden/`) werden nie zugunsten von Rust geändert. Verändert eine Änderung an `data/hub.json` das Go-Verhalten (Go-Golden rot), dann die Abstände stattdessen in Rust berechnen und `data/hub.json` unverändert lassen. Sperre: `golden|spielstand`.
 
 ## Erlaubte Dateien
 
 - `rust/crates/k3c-sim/src/**`
+- `rust/crates/k3c-data/src/**`
 - `rust/crates/k3c-game/src/props/**`
-- `data/buildings.json`
+- `data/hub.json`, `data/buildings.json`, `data/sizes.json` (nur wenn das Go-Golden grün bleibt)
+- `testdata/rust/**` (nur Rust-Golden, mit Begründung im Commit)
 
 ## Nicht-Ziele
 
@@ -32,15 +34,18 @@ Keine Balance-Änderung, keine Simulationsläufe.
 
 ## Schritte
 
-1. Gebäudebreiten je Typ bestimmen.
-2. Abstandsregel für Bauplätze: Mitte zu Mitte mindestens halbe Breite beider Nachbarn plus Rand.
-3. Alte Spielstände: keine Migration (🧑 2026-11-21: egal).
-4. Tests, Golden bewusst neu schreiben mit Begründung.
+1. Gebäudebreiten je Typ und Welt aus `data/sizes.json` und den Assets bestimmen.
+2. Abstandsregel für Bauplätze in `k3c-sim`: Mitte zu Mitte mindestens halbe Breite beider Nachbarn plus Mindestlücke; deterministisch, 2 Spieler.
+3. Alte Spielstände: keine Migration (🧑 2026-11-21: egal). Spielstand-Version nur erhöhen, wenn das Format sich ändert.
+4. Test: kein Paar benachbarter Bauplätze überlappt, für alle festen Welten und Hub-Stufen.
+5. Nur Rust-Golden bewusst neu schreiben (Begründung im Commit); Go-Golden unverändert.
+6. `cargo test -p k3c-sim -p k3c-game --release`, `task rust:lint`, einmal `task check:diff`; im Ergebnis nennen, was 🧑 im Spiel prüfen soll (Hub in allen festen Welten, Gebäude nebeneinander).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Kein Paar benachbarter Bauplätze überlappt in Breite; Test über alle Welten grün.
-- [ ] `task check:diff` grün.
+- [ ] AC-01: Kein Paar benachbarter Bauplätze überlappt in der Breite; Test über alle festen Welten grün.
+- [ ] Go-Golden und Go-Tests unverändert grün (`task check:go` ohne Lint).
+- [ ] Tests der geänderten Crates, `task rust:lint` und `task check:diff` grün.
 
 ## Prüfen
 
