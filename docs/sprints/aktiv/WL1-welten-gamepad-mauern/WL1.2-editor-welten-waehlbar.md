@@ -1,6 +1,6 @@
 # WL1.2 · Welten-Editor: alle Welten anwählbar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -56,5 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Ursache: In data/worlds/ liegt nur standard.json; Sengoku, Nil und Britannien sind feste Welten ohne Datei und standen gesperrt in der Liste (B-1168). Fix: Ein Klick auf eine solche Welt legt sie aus der Standard-Welt an (worldCreate) und öffnet sie; alle Welten sind damit anwählbar. Test in WorldPage.test.tsx angepasst, vitest (41) und tsc grün. Die Welten bleiben inhaltlich Kopien von Standard, bis sie gestaltet werden.

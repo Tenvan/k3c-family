@@ -22,8 +22,10 @@ function WorldList({ worlds, id, onChoose, onCreate }: { worlds: WorldInfo[]; id
       <Heading size="2" color="gray">Welten</Heading>
       {worlds.map((w) => (
         w.missing ? (
-          <Box key={w.id} role="listitem" data-world={w.id} className="wd-entry" aria-disabled="true">
-            <Text size="2" weight="bold" color="gray">{w.name}</Text> <Text size="1" color="gray">{w.id} · noch nicht umgesetzt</Text>
+          <Box key={w.id} role="button" tabIndex={0} data-world={w.id} data-missing="true" className="wd-entry"
+            title="Datei fehlt: ein Klick legt die Welt aus der Standard-Welt an und öffnet sie"
+            onClick={() => void onCreate(w.id, w.name, 'standard')} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && void onCreate(w.id, w.name, 'standard')}>
+            <Text size="2" weight="bold" color="gray">{w.name}</Text> <Text size="1" color="gray">{w.id} · noch nicht umgesetzt (Klick legt an)</Text>
           </Box>
         ) : (
           <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
