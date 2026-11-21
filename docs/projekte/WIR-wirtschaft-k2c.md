@@ -18,7 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | ECO1 | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | aktiv |
 | FG1 | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | aktiv |
 | WD1 | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | aktiv |
-| EQ1 | Ausrüstung nachziehen: Rüstung abholen, Werte in Daten, Icons, Bogner oben, gemeinsames Limit, sichtbare Besorgung | aktiv |
+| EQ1 | Ausrüstung nachziehen: Rüstung abholen, Werte in Daten, Icons, Bogner oben, gemeinsames Limit, sichtbare Besorgung | erledigt |
 | WL1 | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | aktiv |
 
 ## Nicht-Ziele

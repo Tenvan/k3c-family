@@ -127,3 +127,67 @@ fn ohne_fund_oben_kein_pendeln() {
     }
     assert_eq!(trips, 1, "ein Weg, danach Wartezeit statt Pendeln");
 }
+
+/// EQ1.5 (B-1209) AC-01: Der Besorger bleibt über den Wechsel als Figur erhalten (Art, Leben) und meldet Verlassen und
+/// Erscheinen an der Treppe, damit die Anzeige ein- und ausblendet.
+#[test]
+fn besorger_bleibt_ueber_den_wechsel_erhalten() {
+    let data = test_data();
+    let mut isl = island();
+    let (hp, max_hp) = {
+        let t = isl.stages[1].troops.iter().find(|t| !t.is_wild()).expect("Bürger");
+        (t.hp, t.max_hp)
+    };
+    let stairs_down = super::errand::built_stairs(&isl.stages[0], "stairsDown").unwrap_or(isl.stages[0].hub_x);
+    let (mut arrived, mut left, mut shown) = (false, false, false);
+    let has = |ev: &[crate::state::Event], t: &str| ev.iter().any(|e| e.get("type") == Some(&t.into()));
+    for _ in 0..240 {
+        let ev = run_island(&mut isl, &data, &[], 1.0);
+        left |= has(&ev[1], "stairsLeave");
+        shown |= has(&ev[0], "stairsArrive");
+        if let Some(t) = isl.stages[0].troops.iter().find(|t| t.errand_from == 2) {
+            arrived = true;
+            assert_eq!((t.kind.as_str(), t.hp, t.max_hp), ("citizen", hp, max_hp));
+            assert!((t.x - stairs_down).abs() < 40.0, "oben beginnt der Weg an der Treppe");
+            break;
+        }
+    }
+    assert!(arrived, "der Besorger erscheint oben");
+    assert!(left && shown, "Verlassen und Erscheinen werden gemeldet");
+}
+
+/// AC-03: gleiche Eingabe, gleicher Ablauf.
+#[test]
+fn besorgung_ist_deterministisch() {
+    let data = test_data();
+    let snap = |isl: &super::Island| -> Vec<(usize, i64, String, f64)> {
+        isl.stages
+            .iter()
+            .enumerate()
+            .flat_map(|(i, w)| w.troops.iter().map(move |t| (i, t.errand_from, t.kind.clone(), t.x)))
+            .collect()
+    };
+    let (mut a, mut b) = (island(), island());
+    for _ in 0..120 {
+        run_island(&mut a, &data, &[], 1.0);
+        run_island(&mut b, &data, &[], 1.0);
+        assert_eq!(snap(&a), snap(&b));
+    }
+}
+
+/// Ausnahmefall: Die Treppe ist weg, der Besorger bricht ab und bleibt in seiner Stufe.
+#[test]
+fn ohne_treppe_bleibt_der_besorger_unten() {
+    let data = test_data();
+    let mut isl = island();
+    isl.stages[1].sites.iter_mut().for_each(|s| {
+        if s.kind == "stairsUp" {
+            s.state = "unpaid".into();
+        }
+    });
+    run_island(&mut isl, &data, &[], 30.0);
+    assert!(
+        isl.stages[0].troops.iter().all(|t| t.errand_from == 0),
+        "keiner ging hinauf"
+    );
+}

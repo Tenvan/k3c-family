@@ -1,6 +1,6 @@
 # EQ1 · SIM, CLI · Ausrüstung nachziehen: Rüstung abholen, Werte in Daten, Icons, Bogner oben, gemeinsames Limit, sichtbare Besorgung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WIR
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
@@ -66,12 +66,12 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| EQ1.1 | `EQ1.1-ruestung-abholen.md` | Umsetzung | autonom | offen |
-| EQ1.2 | `EQ1.2-gegenstands-icons.md` | Umsetzung | autonom | offen |
-| EQ1.3 | `EQ1.3-werte-nach-data.md` | Umsetzung | autonom | offen |
-| EQ1.4 | `EQ1.4-bogner-oben-limit.md` | Umsetzung | autonom | offen |
-| EQ1.5 | `EQ1.5-besorger-weg.md` | Umsetzung | autonom | offen |
-| EQ1.6 | `EQ1.6-review.md` | Umsetzung | autonom | offen |
+| EQ1.1 | `EQ1.1-ruestung-abholen.md` | Umsetzung | autonom | fertig |
+| EQ1.2 | `EQ1.2-gegenstands-icons.md` | Umsetzung | autonom | fertig |
+| EQ1.3 | `EQ1.3-werte-nach-data.md` | Umsetzung | autonom | fertig |
+| EQ1.4 | `EQ1.4-bogner-oben-limit.md` | Umsetzung | autonom | fertig |
+| EQ1.5 | `EQ1.5-besorger-weg.md` | Umsetzung | autonom | fertig |
+| EQ1.6 | `EQ1.6-review.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

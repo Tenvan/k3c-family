@@ -30,14 +30,26 @@ pub fn resource_icon(res: &str) -> &'static str {
     RESOURCE_ICONS.iter().find(|(r, _)| *r == res).map_or("", |(_, a)| a)
 }
 
+/// ITEM_ICONS ordnet jedem Gegenstand im Regal (Gürtel, Bogen, Schwert, Rüstung; EQ1.2) sein Icon zu.
+pub const ITEM_ICONS: [(&str, &str); 4] = [
+    ("belt", "icons/icon-guertel"),
+    ("bow", "icons/icon-bogen"),
+    ("sword", "icons/icon-schwert"),
+    ("armor", "icons/icon-ruestung"),
+];
+
 /// HUD_ASSETS sind alle Icons des HUD, sortiert.
-pub const HUD_ASSETS: [&str; 7] = [
+pub const HUD_ASSETS: [&str; 11] = [
     PURSE_ASSET,
+    "icons/icon-bogen",
     "icons/icon-eisen",
+    "icons/icon-guertel",
     "icons/icon-holz",
     "icons/icon-kristall",
     "icons/icon-kupfer",
     GOLD_ICON,
+    "icons/icon-ruestung",
+    "icons/icon-schwert",
     "icons/icon-stein",
 ];
 

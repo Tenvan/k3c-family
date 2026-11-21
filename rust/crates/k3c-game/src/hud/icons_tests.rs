@@ -69,6 +69,7 @@ fn every_resource_has_icon() {
     let groups = paper_groups();
     let mut icons: Vec<String> = vec![GOLD_ICON.to_string(), PURSE_ASSET.to_string()];
     icons.extend(RESOURCE_ICONS.iter().map(|(_, a)| (*a).to_string()));
+    icons.extend(ITEM_ICONS.iter().map(|(_, a)| (*a).to_string())); // EQ1.2: Gegenstände im Regal
     let assets = hud().hud_assets();
     for a in &icons {
         let (group, id) = a.split_once('/').unwrap_or((a, ""));

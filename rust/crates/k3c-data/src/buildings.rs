@@ -32,6 +32,12 @@ pub struct BuildingData {
     pub hammer_rack: i64,
     #[serde(rename = "HammerCost", alias = "hammerCost")]
     pub hammer_cost: Cost,
+    /// EQ1.3: Rüstungen im Regal der Rüstkammer; 0 = bisheriger Wert (`ARMOR_RACK`).
+    #[serde(rename = "ArmorRack", alias = "armorRack")]
+    pub armor_rack: i64,
+    /// EQ1.3: Preis einer Rüstung; leer = bisheriger Wert (`armor_cost`).
+    #[serde(rename = "ArmorCost", alias = "armorCost")]
+    pub armor_cost: Cost,
     #[serde(rename = "Offers", alias = "offers")]
     pub offers: Vec<Offer>,
     #[serde(rename = "CraftSeconds", alias = "craftSeconds")]

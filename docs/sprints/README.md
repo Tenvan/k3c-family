@@ -21,7 +21,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | ECO1 | PAP, CLI, SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | `aktiv/ECO1-eco-plan/` |
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
-| EQ1 | SIM, CLI | WIR | Ausrüstung nachziehen: Rüstung abholen, Werte in Daten, Icons, Bogner oben, gemeinsames Limit, sichtbare Besorgung | – | `aktiv/EQ1-ausruestung-nachzug/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
 | RU36 | CLI, SIM | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
 
@@ -474,3 +473,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | `erledigt/LA2-look-nachtraege-panel-himmel-licht/` |
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | `erledigt/HB1-hud-biome-hafen-kurzsprint/` |
 | LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | `erledigt/LA3-bauplaetze-nach-gebaeudegroesse/` |
+| EQ1 | Ausrüstung nachziehen: Rüstung abholen, Werte in Daten, Icons, Bogner oben, gemeinsames Limit, sichtbare Besorgung | `erledigt/EQ1-ausruestung-nachzug/` |
