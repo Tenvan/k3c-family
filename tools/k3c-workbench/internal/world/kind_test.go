@@ -1,6 +1,7 @@
 package world
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 )
@@ -56,5 +57,41 @@ func TestSetKindSpinoffAddsExtends(t *testing.T) {
 	}
 	if d := e.Load("frei"); d.Kind != "spinoff" || d.Extends != "standard" {
 		t.Fatalf("Load = %+v", d)
+	}
+}
+
+// Eltern-Welt wählen: eine andere Welt wird eingetragen, die eigene lehnt die Engine ab.
+func TestSetExtendsView(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "kind2", "Kind 2", "standard"); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := e.Create(ctx, "eltern", "Eltern", ""); err != nil {
+		t.Fatal(err)
+	}
+	if v := e.SetExtendsView(ctx, "kind2", "eltern"); v.Error != "" || e.Load("kind2").Extends != "eltern" {
+		t.Fatalf("%+v", v)
+	}
+	if v := e.SetExtendsView(ctx, "kind2", "kind2"); !strings.Contains(v.Error, "extends") {
+		t.Fatalf("selbst erwartet Fehler: %+v", v)
+	}
+}
+
+// Gewässer der Welt: Load und List nennen es, world_set schreibt es.
+func TestGewaesser(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "fluss", "Fluss", ""); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := e.Set(ctx, "fluss", json.RawMessage(`{"gewaesser": "Nil"}`)); err != nil {
+		t.Fatal(err)
+	}
+	if d := e.Load("fluss"); d.Gewaesser != "Nil" {
+		t.Fatalf("Load = %+v", d)
+	}
+	for _, i := range e.List() {
+		if i.ID == "fluss" && i.Gewaesser != "Nil" {
+			t.Fatalf("List: %+v", i)
+		}
 	}
 }

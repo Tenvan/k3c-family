@@ -24,6 +24,7 @@ export interface OwnAssets {
 /** Mindestausstattung einer komplett neuen Welt (B-1217): je Gruppe mindestens ein eigenes Asset (Vorschlag, offen). */
 export const MIN_GROUPS = ['figuren', 'gegner', 'gebaeude', 'hintergruende', 'reittiere'] as const;
 const GROUP_ALIAS: Readonly<Record<string, string>> = { 'gebaeude-paper': 'gebaeude', reittiere2: 'reittiere' };
+const GROUP_NAME: Readonly<Record<string, string>> = { figuren: 'Figuren', gegner: 'Gegner', gebaeude: 'Gebäude', hintergruende: 'Hintergründe', reittiere: 'Reittiere' };
 const groupOf = (g: string) => GROUP_ALIAS[g] ?? g;
 
 /** Art der Welt: das Feld der Datei, sonst spinoff mit `extends`, sonst new (wie die Engine). */
@@ -47,13 +48,13 @@ export function worldStats(d: WorldDetail, own: OwnAssets | null = null): StatLi
     { key: 'stufen', label: 'Stufen mit Biom', have: withBiome, need: Math.max(stages, 1), missing: stages === 0 ? 'keine Stufen' : stages - withBiome > 0 ? `${stages - withBiome} ohne Biom` : '' },
     { key: 'etappen', label: 'Etappen', have: etappen, need: Math.max(etappen, 1), missing: '' },
     { key: 'geschichte', label: 'Geschichte', have: storyHave, need: storyNeed, missing: storyNeed - storyHave > 0 ? `${storyNeed - storyHave} Einträge` : '' },
-    { key: 'chunks', label: 'Inseln mit geplanten Chunks (optional, sonst Zufall)', have: planned, need: n, missing: '', optional: true },
+    { key: 'chunks', label: 'Geplante Chunks (optional)', have: planned, need: n, missing: '', optional: true },
   ];
   if (own) {
     const have = new Set(own.groups.map(groupOf));
     const lacking = MIN_GROUPS.filter((g) => !have.has(g));
     lines.push(kindOf(d) === 'new'
-      ? { key: 'assets', label: 'Eigene Assets (neue Welt)', have: MIN_GROUPS.length - lacking.length, need: MIN_GROUPS.length, missing: lacking.join(', ') }
+      ? { key: 'assets', label: 'Eigene Assets (neue Welt)', have: MIN_GROUPS.length - lacking.length, need: MIN_GROUPS.length, missing: lacking.map((g) => GROUP_NAME[g] ?? g).join(', ') }
       : { key: 'assets', label: 'Eigene Assets (Ableger, optional)', have: own.count, need: own.count, missing: '', optional: true });
   }
   if (d.error) lines.unshift({ key: 'datei', label: 'Welt-Datei', have: 0, need: 1, missing: 'Fehler in der Datei' });

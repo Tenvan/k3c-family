@@ -17,6 +17,7 @@ type rawWorld struct {
 	Notes     string                     `json:"notes"`
 	Extends   *string                    `json:"extends"`
 	Kind      *string                    `json:"kind"`
+	Gewaesser string                     `json:"gewaesser"`
 	Overrides map[string]json.RawMessage `json:"overrides"`
 	Combat    *rawCombat                 `json:"combat"`
 	Islands   *[]json.RawMessage         `json:"islands"`
@@ -47,7 +48,7 @@ type rawScaling struct {
 // decodeWorld liest den Kopf der Welt streng und prüft Pflichtfelder und die ID; die Inseln bleiben roh.
 func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	var v rawWorld
-	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "kind", "overrides", "combat", "islands", "story", "skins"); err != nil {
+	if err := strictDecode(raw, &v, "id", "name", "notes", "extends", "kind", "gewaesser", "overrides", "combat", "islands", "story", "skins"); err != nil {
 		return WorldDef{}, nil, err
 	}
 	switch {
@@ -75,7 +76,7 @@ func decodeWorld(raw []byte, id string) (WorldDef, []json.RawMessage, error) {
 	if err != nil {
 		return WorldDef{}, nil, err
 	}
-	w := WorldDef{ID: *v.ID, Name: *v.Name, Notes: v.Notes, Overrides: v.Overrides, Combat: combat, Kind: kind}
+	w := WorldDef{ID: *v.ID, Name: *v.Name, Notes: v.Notes, Overrides: v.Overrides, Combat: combat, Kind: kind, Gewaesser: v.Gewaesser}
 	if v.Extends != nil {
 		w.Extends = *v.Extends
 	}

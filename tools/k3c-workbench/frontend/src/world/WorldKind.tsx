@@ -1,5 +1,5 @@
 import { Badge, SelectField } from '@webkit/atoms';
-import type { WorldKind } from '../api';
+import type { WorldInfo, WorldKind } from '../api';
 
 // Art der Welt (B-1217): Ableger oder Episode einer Eltern-Welt, oder komplett neu. Die Marke steht neben dem Namen in
 // der Liste und im Kopf; der Kopf bietet die Auswahl. Dieselbe Änderung geht per MCP (world_set, Feld kind).
@@ -13,6 +13,12 @@ const HINT: Record<WorldKind, string> = {
 export function KindBadge({ kind }: { kind?: WorldKind }) {
   if (!kind) return null;
   return <Badge size="1" color={kind === 'new' ? 'green' : 'blue'} title={HINT[kind]} data-kind={kind}>{LABEL[kind]}</Badge>;
+}
+
+/** Eltern-Welt eines Ableger: die anderen Welten mit Datei (die Engine lehnt Zyklen ab). */
+export function ParentSelect({ id, parent, worlds, onChange }: { id: string; parent: string; worlds: readonly WorldInfo[]; onChange: (p: string) => void }) {
+  const options = worlds.filter((x) => x.id !== id && !x.missing).map((x) => ({ value: x.id, label: x.name }));
+  return <SelectField size="1" aria-label="Eltern-Welt wählen" value={parent} onChange={onChange} options={options} />;
 }
 
 export function KindSelect({ kind, onChange }: { kind: WorldKind; onChange: (k: WorldKind) => void }) {

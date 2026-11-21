@@ -13,7 +13,8 @@
 .wd-stats-bar { height: 6px; border-radius: 3px; background: var(--gray-a4); overflow: hidden; }
 .wd-stats-bar i { display: block; height: 100%; background: var(--green-9); }
 .wd-stats-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-.wd-stats-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; }
+.wd-stats-list li { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) auto; align-items: baseline; gap: 0 6px; }
+.wd-stats-list li > :nth-child(4) { grid-column: 2 / -1; overflow-wrap: anywhere; }
 @media (max-width: 900px) { .wd-head { flex-direction: column; } .wd-stats { width: auto; max-width: none; margin-left: 0; } }
 .wd-map-active { outline: 2px solid var(--accent-9); border-radius: 6px; }
 .wd-seed { width: 12rem; }

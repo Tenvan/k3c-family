@@ -8,6 +8,8 @@ export interface WorldInfo {
   missing?: boolean;
   /** Art der Welt (B-1217); fehlt bei fehlender Datei */
   kind?: WorldKind;
+  /** Gewässer der Welt: Untertitel in der Liste */
+  gewaesser?: string;
 }
 
 /** Festes Objekt eines geplanten Chunks; at zählt in Units ab Chunk-Anfang (Go: level.PlannedObject) */
@@ -72,6 +74,8 @@ export interface WorldDetail {
   extends: string;
   /** Art der Welt (B-1217): Ableger/Episode oder komplett neu; fehlt sie in der Datei, gilt spinoff mit extends, sonst new */
   kind?: WorldKind;
+  /** Gewässer, an dem sich die Welt orientiert (Fluss, See, Küste, Meer) */
+  gewaesser?: string;
   islands: WorldIsland[];
   /** Geschichte der Welt (B-975); fehlt sie, zeigt die Seite „Geschichte fehlt“ */
   story?: WorldStory;
@@ -167,6 +171,8 @@ export interface WorldBackend {
   worldIslandEtappe(id: string, island: string, etappe: number | null): Promise<WorldCreateView>;
   /** Art der Welt setzen (B-1217): leer entfernt das Feld */
   worldSetKind(id: string, kind: WorldKind | ''): Promise<WorldCreateView>;
+  /** Eltern-Welt setzen (B-1217): leer entfernt sie */
+  worldSetExtends(id: string, parent: string): Promise<WorldCreateView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   /** Natur-Wert der Insel-Stufe festsetzen (key: Eigenschaft oder „gruppe.variante“); null setzt auf „aus Seed“ zurück. */

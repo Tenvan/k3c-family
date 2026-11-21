@@ -5,7 +5,7 @@ import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail,
 
 const DETAILS: Record<string, WorldDetail> = {
   standard: {
-    id: 'standard', name: 'Standard', notes: 'Standard-Welt (Mock)', extends: '', error: '',
+    id: 'standard', name: 'Standard', gewaesser: 'Meer', notes: 'Standard-Welt (Mock)', extends: '', error: '',
     islands: [{
       id: 'island1', name: 'Insel 1', depths: [0, 1, 2], biomes: ['forest', 'cave', 'mine'],
       plannedChunks: { 0: [{ slot: -2, kind: 'harbor' }, { slot: 1, kind: 'clearing', objects: [{ kind: 'chest', at: 8 }] }] },
@@ -13,7 +13,7 @@ const DETAILS: Record<string, WorldDetail> = {
     }],
   },
   wueste: {
-    id: 'wueste', name: 'Wüste', notes: '', extends: 'standard', error: '',
+    id: 'wueste', name: 'Wüste', gewaesser: 'Fluss', notes: '', extends: 'standard', error: '',
     islands: [{ id: 'island1', name: 'Sandinsel', depths: [0], biomes: ['forest'], plannedChunks: {}, chunkCounts: {} }],
   },
 };
@@ -155,12 +155,20 @@ const mockKind: WorldBackend['worldSetKind'] = async (id, kind) => {
   return { id, warnings: [], error: '' };
 };
 
+const mockExtends: WorldBackend['worldSetExtends'] = async (id, parent) => {
+  const d = DETAILS[id];
+  if (!d) return { id, warnings: [], error: `die Welt "${id}" gibt es nicht` };
+  if (parent === id) return { id, warnings: [], error: 'extends: Welt erbt von sich selbst' };
+  d.extends = parent;
+  return { id, warnings: [], error: '' };
+};
+
 export function mockWorld(): WorldBackend {
   const overrides: Overrides = new Map([['wueste', new Map<string, unknown>([[key('economy', ['purse', 'startGold']), 20], [key('enemies', ['wolf', 'hp']), 14], [key('buildings', ['tower', 'range']), 11], [key('economy', ['purse', 'dropOnHit']), false]])]]);
   const values = (id: string) => mockValues(overrides, id);
   return {
     worldList: async () => {
-      const files = Object.values(DETAILS).map((d): WorldInfo => ({ id: d.id, name: d.name }));
+      const files = Object.values(DETAILS).map((d): WorldInfo => ({ id: d.id, name: d.name, gewaesser: d.gewaesser, kind: d.kind ?? (d.extends ? 'spinoff' : 'new') }));
       const fixed = ['sengoku', 'nil', 'britannien'].map((id): WorldInfo => ({ id, name: id, missing: true }));
       return [...files.filter((w) => w.id === 'standard'), ...fixed, ...files.filter((w) => w.id !== 'standard')]; // wie List() im Backend
     },
@@ -174,6 +182,7 @@ export function mockWorld(): WorldBackend {
     worldDelete: mockDelete,
     worldIslandEtappe: mockEtappe,
     worldSetKind: mockKind,
+    worldSetExtends: mockExtends,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;
       const rejected = mockNatureSet(id, island, stage, key, value);

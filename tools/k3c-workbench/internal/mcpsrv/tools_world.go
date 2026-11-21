@@ -153,7 +153,7 @@ func registerWorldWrite(s *Server) {
 	})
 	add(s, &mcp.Tool{
 		Name: "world_set",
-		Description: "Ändert Kopf (name, notes, extends, kind = spinoff für Ableger oder Episode einer Eltern-Welt | new für komplett neue Welt, combat) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung, plannedChunks, chunkCounts) einer Welt; " +
+		Description: "Ändert Kopf (name, gewaesser = Gewässer der Welt: Fluss, See, Küste oder Meer, notes, extends, kind = spinoff für Ableger oder Episode einer Eltern-Welt | new für komplett neue Welt, combat) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung, plannedChunks, chunkCounts) einer Welt; " +
 			"der ganze Patch wird angewendet und dann einmal geprüft wie beim Laden im Spiel, bei Fehler bleibt die Datei. " +
 			"Insel anhängen in einem Aufruf: den Hafen der Insel davor mitgeben, z. B. islands: [{id: island1, plannedChunks: {\"0\": [{slot: -7, kind: harbor}]}}, {id: island2}]. Nutze es bei: Inseln, Tiefen, Biome, Kampfvariante einer Welt festlegen. " +
 			"Statt: Welt-Datei von Hand ändern.",

@@ -38,6 +38,9 @@ type WorldDef struct {
 	// WorldKindNew (komplett neu, erwartet eigenen Look, Einheiten und Werte); fehlt das Feld, gilt spinoff mit `extends`,
 	// sonst new (B-1217).
 	Kind string
+	// Gewaesser ist das Gewässer, an dem sich die Welt orientiert (Fluss, See, Küste oder Meer, z. B. „Nil“); Untertitel der
+	// Welt in der Weltenliste und in den Geschichten-Prompts; leer = keine Angabe.
+	Gewaesser string
 	// Story ist die Geschichte der Welt (story.go, B-965); leer = keine Zeilen. `extends` vererbt sie nicht.
 	Story WorldStory
 	// Skins: Basis-Asset → Ersatz-Asset (world_skins.go, B-984); nach ResolveWorld mit denen der Eltern gemischt.
