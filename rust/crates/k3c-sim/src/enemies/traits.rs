@@ -68,7 +68,7 @@ pub(crate) fn aoe_targets(w: &World, v: &WorldValues, x: f64, radius: f64) -> Ve
         }
     }
     for t in &w.troops {
-        if t.kind != "vagrant" && !is_on_tower(w, t) && within(t.x, 0.0) {
+        if !t.is_wild() && !is_on_tower(w, t) && within(t.x, 0.0) {
             out.push(Target {
                 id: t.id,
                 x: t.x,
@@ -159,7 +159,7 @@ fn nearest_threat(w: &World, e: &Enemy) -> Option<f64> {
     for p in w.players.iter().filter(|p| crowned(p)) {
         closer(p.x);
     }
-    for t in w.troops.iter().filter(|t| t.kind != "vagrant") {
+    for t in w.troops.iter().filter(|t| !t.is_wild()) {
         closer(t.x);
     }
     best

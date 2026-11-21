@@ -35,7 +35,8 @@ fn vein_world(peasants: usize) -> (World, usize) {
         let hub = w.hub_x;
         let ti = spawn_vagrant(&mut w, hub, hub);
         let t = &mut w.troops[ti];
-        (t.kind, t.hp, t.max_hp) = ("peasant".into(), hp, hp);
+        (t.kind, t.hp, t.max_hp) = ("citizen".into(), hp, hp);
+        t.wild = false;
         t.hammer = true; // ECO1.4: nur Handwerker (Werkzeuggürtel) hauen an Adern
     }
     (w, vi)
@@ -120,7 +121,7 @@ fn ader_lager_voll() {
     w.nodes[vi].marked = true;
     let hub = w.hub_x;
     let ti = spawn_vagrant(w, hub, hub);
-    w.troops[ti].kind = "peasant".into();
+    w.troops[ti].serve();
     run_island(&mut isl, &data, &[], 5.0);
     assert_eq!(
         vein_workers(&isl.stages[1], &isl.stages[1].nodes[vi]),
@@ -162,7 +163,7 @@ fn gatherer(w: &mut World, node_id: i64) {
     let id = w.new_id();
     w.troops.push(Troop {
         id,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         hp: 1.0,
         job: Some(Job {
             r#type: "gather".into(),

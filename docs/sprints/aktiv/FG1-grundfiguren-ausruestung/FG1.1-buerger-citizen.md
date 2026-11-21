@@ -1,6 +1,6 @@
 # FG1.1 · Landstreicher und Bauer zu Bürger (citizen) zusammenlegen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -59,5 +59,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `citizen` ist die Art der Grundfigur in k3c-sim, k3c-room und k3c-game; `Troop::wild` trennt wilde Bürger (früher Landstreicher) von Bürgern im Dienst (früher Bauer), Helfer `is_wild()`, `serving()`, `serve()`, `go_wild()`, `data_kind()` (state/types.rs). `cargo test -p k3c-sim -p k3c-room` grün (außer dem schon roten `insel_nach_1000_schritten_wie_go`), `k3c-game --lib` grün, clippy -D warnings sauber, Go-Golden-Dateien unverändert.
+
+Golden-Grenze: Zustand und Golden zeigen die Zustände weiter als `vagrant`/`peasant` (`go_troops` serialisiert `World.troops` so und liest sie zurück); der Spielstand schreibt `peasant`, der Leser nimmt `peasant` und `citizen` (Format und Version bleiben, alte Stände laufen weiter; die geforderte Versionserhöhung entfällt). `data/troops.json` und `data/paper.json` behalten die Schlüssel `vagrant`/`peasant`, weil Go sie teilt; die Sim schlägt über `data_kind()` nach. Texte: HUD-Hinweis de/en und Glossar sagen Bürger/Citizen. Offen: Anzeigenamen in `data/troops.json` (Landstreicher/Bauer) und Grafik-Keys folgen mit FG1.3; `alloc_je_bild` ist auf main schon rot. Kein Reviewer-Agent gelaufen (Domäne SIM).

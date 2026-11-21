@@ -18,7 +18,7 @@ fn island() -> super::Island {
         .expect("Werkstatt oben");
     w0.sites[si].state = "built".into();
     w0.sites[si].swords = 1;
-    w0.troops.retain(|t| t.kind != "peasant"); // oben soll niemand das Schwert vor dem Besorger holen
+    w0.troops.retain(|t| !t.serving()); // oben soll niemand das Schwert vor dem Besorger holen
     let w1 = &mut isl.stages[1];
     assert!(
         !w1.sites.iter().any(|s| s.kind == "workshop"),
@@ -30,7 +30,7 @@ fn island() -> super::Island {
         .position(|s| s.kind == "stairsUp")
         .expect("Treppe nach oben");
     w1.sites[up].state = "built".into();
-    w1.troops.retain(|t| t.kind == "vagrant");
+    w1.troops.retain(|t| t.is_wild());
     peasant(w1);
     isl.sync_stock();
     isl
@@ -40,7 +40,7 @@ fn peasant(w: &mut World) {
     let id = w.new_id();
     w.troops.push(Troop {
         id,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x: w.hub_x,
         hp: 10.0,
         max_hp: 10.0,

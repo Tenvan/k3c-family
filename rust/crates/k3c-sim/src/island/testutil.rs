@@ -128,7 +128,7 @@ pub fn built_sites(w: &World) -> usize {
 
 /// Go: `vagrants`, die Zahl der Landstreicher der Stufe.
 pub fn vagrants(w: &World) -> usize {
-    w.troops.iter().filter(|t| t.kind == "vagrant").count()
+    w.troops.iter().filter(|t| t.is_wild()).count()
 }
 
 /// Go: `defeatIsland` (island_defeat_test.go): Insel mit Wald und Höhle, je ein Spieler (Gold 40 bzw. 30), Vorrat 20 Holz

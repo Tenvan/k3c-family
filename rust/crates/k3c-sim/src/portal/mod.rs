@@ -43,7 +43,7 @@ pub fn sync_portals(w: &mut World) {
 /// Go: `portalInReach`: Index des Portals in Schlagreichweite der Truppe `ti` (wie ein Krieger an einer Mauer).
 pub fn portal_in_reach(w: &World, v: &WorldValues, ti: usize) -> Option<usize> {
     let t = &w.troops[ti];
-    let reach = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.range) + BODY + 0.1;
+    let reach = v.troops.get(t.data_kind()).map_or(0.0, |d| d.range) + BODY + 0.1;
     let mut best: Option<usize> = None;
     for (i, &x) in w.portals.iter().enumerate() {
         if (x - t.x).abs() <= reach && best.is_none_or(|b| (x - t.x).abs() < (w.portals[b] - t.x).abs()) {
@@ -72,7 +72,7 @@ pub fn step_portals(w: &mut World, v: &WorldValues, mut isl: Option<&mut IslandR
         };
         attacked |= 1u64.checked_shl(i as u32).unwrap_or(0);
         if w.troops[ti].siege_cd <= 0.0 {
-            let Some(d) = v.troops.get(w.troops[ti].kind.as_str()) else {
+            let Some(d) = v.troops.get(w.troops[ti].data_kind()) else {
                 continue;
             };
             w.portal_hp[i] -= d.damage;

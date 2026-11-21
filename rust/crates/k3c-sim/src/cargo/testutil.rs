@@ -31,9 +31,7 @@ pub fn cargo_island(data: &Data, n: usize) -> (WorldDef, Island, f64) {
         p.gold = 30; // der Beutel fasst höchstens 30 (economy.json)
     }
     // keine Start-Kämpfer: die Tests stellen ihre Truppen selbst auf
-    isl.stages[wi]
-        .troops
-        .retain(|t| t.kind == "peasant" || t.kind == "vagrant");
+    isl.stages[wi].troops.retain(|t| t.serving() || t.is_wild());
     isl.stock = Stock::default();
     isl.sync_stock();
     (world, isl, x)
@@ -82,7 +80,13 @@ pub fn add_troop(isl: &mut Island, kind: &str, x: f64) -> i64 {
     let id = w.new_id();
     w.troops.push(Troop {
         id,
-        kind: kind.to_string(),
+        kind: if kind == "peasant" || kind == "vagrant" {
+            "citizen"
+        } else {
+            kind
+        }
+        .to_string(),
+        wild: kind == "vagrant",
         x,
         hp: 10.0,
         max_hp: 10.0,

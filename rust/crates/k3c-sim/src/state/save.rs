@@ -18,6 +18,7 @@ use super::links::{count_fetching, guards_cleared_keys};
 use super::node_mark::marked_by_of;
 use super::omit::{is_false, is_zero_i64};
 use super::save_economy::{CraftSave, craft_save, troops_save, validate_economy};
+use super::types::CITIZEN;
 use super::{Pickup, ResourceNode, Site, World, WorldValues};
 
 /// Go: `SaveVersion`, die einzige Version, die Go liest und schreibt.
@@ -287,4 +288,11 @@ pub fn parse_save(raw: &str, biomes: &[Biome], defaults: &WorldValues) -> Result
         validate_economy(defaults, h)?; // Kampagne: nur die Standard-Welt
     }
     Ok(s)
+}
+
+impl TroopSave {
+    /// Bürger im Dienst: im Stand `peasant` (Go-Format) oder `citizen`.
+    pub fn serving(&self) -> bool {
+        self.kind == "peasant" || self.kind == CITIZEN
+    }
 }

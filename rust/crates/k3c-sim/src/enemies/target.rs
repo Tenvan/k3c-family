@@ -117,7 +117,7 @@ fn for_each_candidate(w: &World, r: &Reach, castle_radius: f64, mut f: impl FnMu
         }
     }
     for t in &w.troops {
-        if t.kind != "vagrant" && (r.ranged || !is_on_tower(w, t)) && r.in_range(t.x) {
+        if !t.is_wild() && (r.ranged || !is_on_tower(w, t)) && r.in_range(t.x) {
             f(Target {
                 id: t.id,
                 x: t.x,

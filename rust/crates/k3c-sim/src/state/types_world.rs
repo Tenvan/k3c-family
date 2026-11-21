@@ -82,7 +82,7 @@ pub struct World {
     pub players: Vec<Player>,
     #[serde(rename = "coins")]
     pub coins: Vec<Coin>,
-    #[serde(rename = "troops")]
+    #[serde(rename = "troops", with = "super::types::go_troops")]
     pub troops: Vec<Troop>,
     #[serde(rename = "nodes")]
     pub nodes: Vec<ResourceNode>,

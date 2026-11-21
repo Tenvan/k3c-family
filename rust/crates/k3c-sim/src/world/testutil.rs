@@ -38,7 +38,7 @@ pub fn day_world() -> World {
     let ti = spawn_vagrant(&mut w, hub, hub);
     let hp = vals(&w).troops.get("peasant").map_or(0.0, |t| t.hp);
     let t = &mut w.troops[ti];
-    t.kind = "peasant".into();
+    t.serve();
     t.hp = hp;
     t.max_hp = hp;
     t.hammer = true;

@@ -19,7 +19,7 @@ fn is_soldier_nur_krieger_und_elite() {
         ("warrior", true),
         ("eliteWarrior", true),
         ("archer", false),
-        ("peasant", false),
+        ("citizen", false),
     ] {
         let t = troop(&mut w, kind, 0.0, 0.0);
         assert_eq!(is_soldier(&w.troops[t]), want, "{kind}");

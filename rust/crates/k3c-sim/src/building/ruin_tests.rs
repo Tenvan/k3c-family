@@ -142,7 +142,7 @@ fn ruine_wird_repariert() {
     let ti = w
         .troops
         .iter()
-        .position(|t| t.kind == "peasant" && t.hammer) // repariert nur ein Handwerker (B-950)
+        .position(|t| t.serving() && t.hammer) // repariert nur ein Handwerker (B-950)
         .expect("Ausgangslage: Bauer fehlt");
     assert!(!is_dangerous(w), "Ausgangslage: Gefahr");
     w.troops[ti].x = w.sites[s].x;

@@ -158,3 +158,33 @@ fn listen_behalten_die_reihenfolge() {
     let ids: Vec<i64> = w.players.iter().map(|p| p.id).collect();
     assert_eq!(ids, [9, 3, 5]);
 }
+
+/// FG1.1: Im Zustand heißen Bürger `vagrant` (wild) und `peasant` (im Dienst); beim Lesen wird wieder `citizen`.
+#[test]
+fn buerger_im_zustand_wie_go_und_zurueck() {
+    use super::{CITIZEN, World};
+    let mut w = World::default();
+    let mut wild = Troop::default();
+    wild.go_wild();
+    let mut serving = Troop::default();
+    serving.serve();
+    w.troops = vec![
+        wild,
+        serving,
+        Troop {
+            kind: "archer".into(),
+            ..Troop::default()
+        },
+    ];
+    let v = serde_json::to_value(&w).expect("Zustand");
+    let kinds: Vec<&str> = v["troops"]
+        .as_array()
+        .expect("Truppen")
+        .iter()
+        .map(|t| t["kind"].as_str().unwrap_or(""))
+        .collect();
+    assert_eq!(kinds, ["vagrant", "peasant", "archer"]);
+    assert!(v["troops"][0].get("wild").is_none(), "wild steckt im Namen");
+    let back: World = serde_json::from_value(v).expect("lesen");
+    assert!(back.troops[0].is_wild() && back.troops[1].serving() && back.troops[2].kind != CITIZEN);
+}

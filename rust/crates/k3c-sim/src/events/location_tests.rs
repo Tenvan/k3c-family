@@ -14,7 +14,7 @@ fn schutzplatz_ohne_entity_id() {
     let hub = w.hub_x;
     for _ in 0..6 {
         let ti = spawn_vagrant(&mut w, hub, hub);
-        w.troops[ti].kind = "peasant".into();
+        w.troops[ti].serve();
     }
     let before: Vec<f64> = (0..w.troops.len()).map(|ti| shelter_x(&mut w, ti)).collect();
     for t in &mut w.troops {

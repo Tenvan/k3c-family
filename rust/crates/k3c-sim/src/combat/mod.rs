@@ -113,7 +113,7 @@ pub fn squad_post(w: &World, v: &WorldValues, t: &Troop) -> Option<f64> {
         (l.x, l.sortie, true)
     };
     let c = &v.economy.combat;
-    let range = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.range);
+    let range = v.troops.get(t.data_kind()).map_or(0.0, |d| d.range);
     let reach = (range * c.stand_range_factor).max(1.0);
     if let Some(x) = squad_target(w, v, anchor, dir, all) {
         return Some(x - dir * reach);

@@ -94,12 +94,12 @@ pub fn step_camps(w: &mut World, v: &WorldValues, dt: f64) {
 pub fn step_troops(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, dt: f64) {
     for ti in 0..w.troops.len() {
         match w.troops[ti].kind.as_str() {
-            "vagrant" => {
+            crate::state::CITIZEN if w.troops[ti].wild => {
                 let anchor = w.troops[ti].anchor_x;
                 let radius = wander_radius(w, ti);
                 wander(w, v, ti, anchor, radius, dt);
             }
-            "peasant" => {
+            crate::state::CITIZEN => {
                 if !w.troops[ti].fleeing || !flee(w, v, ti, dt) {
                     step_peasant(w, v, ti, isl, dt);
                 }
@@ -114,7 +114,7 @@ pub fn step_troops(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, dt: 
 pub fn wander(w: &mut World, v: &WorldValues, ti: usize, center: f64, radius: f64, dt: f64) {
     let weather = w.weather_speed; // RU62.5: Taifun bremst (sonst 1.0)
     let t = &mut w.troops[ti];
-    let speed = v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.speed) * 0.5 * weather;
+    let speed = v.troops.get(t.data_kind()).map_or(0.0, |d| d.speed) * 0.5 * weather;
     if (t.target_x - center).abs() > radius {
         t.target_x = center;
     }
@@ -136,7 +136,7 @@ pub fn walk_to(w: &mut World, v: &WorldValues, ti: usize, x: f64, dt: f64) -> bo
     t.x = approach(
         t.x,
         x,
-        v.troops.get(t.kind.as_str()).map_or(0.0, |d| d.speed) * weather,
+        v.troops.get(t.data_kind()).map_or(0.0, |d| d.speed) * weather,
         dt,
     );
     (t.x - x).abs() < ARRIVE

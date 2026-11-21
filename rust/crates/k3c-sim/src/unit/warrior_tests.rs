@@ -21,7 +21,7 @@ fn is_fighter_nur_kaempfer_figuren() {
     for kind in ["archer", "warrior"] {
         assert!(is_fighter(&v.troops, kind), "{kind}");
     }
-    for kind in ["vagrant", "peasant", "miner", "unbekannt"] {
+    for kind in ["citizen", "vagrant", "peasant", "miner", "unbekannt"] {
         assert!(!is_fighter(&v.troops, kind), "{kind}");
     }
 }
@@ -154,7 +154,7 @@ fn equip_hammer_beruf_und_kaempfer() {
     assert!(w.troops[ti].hammer);
     equip(&mut w, &v, ti, "miner", 7);
     assert_eq!((w.troops[ti].profession.as_str(), w.troops[ti].work_site), ("miner", 7));
-    assert_eq!(w.troops[ti].kind, "peasant");
+    assert!(w.troops[ti].serving());
 }
 
 #[test]

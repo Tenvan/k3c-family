@@ -52,7 +52,7 @@ fn assign(isl: &mut Island, wi: usize, i: usize, x: f64, speed: f64) {
     let mut best: Option<(i64, f64)> = None;
     for t in &w.troops {
         let taken = isl.cargo.orders.iter().any(|o| o.carrier == t.id);
-        if t.kind != "peasant" || t.hammer || t.job.is_some() || t.carried.is_some() || taken {
+        if !t.serving() || t.hammer || t.job.is_some() || t.carried.is_some() || taken {
             continue;
         }
         let d = (t.x - x).abs();

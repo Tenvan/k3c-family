@@ -132,7 +132,7 @@ pub fn hit_troop(w: &mut World, ti: usize, damage: f64, cause: &str) {
     let t = &mut w.troops[ti];
     t.hp -= damage;
     t.hit_by = cause.to_string();
-    if t.kind == "peasant" {
+    if t.serving() {
         t.fleeing = true;
     }
     let (id, x) = (t.id, t.x);

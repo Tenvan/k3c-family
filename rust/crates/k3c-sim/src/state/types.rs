@@ -151,7 +151,7 @@ pub struct Job {
     pub progress: f64,
 }
 
-/// Eine eigene Einheit: vagrant, peasant, archer ….
+/// Eine eigene Einheit: citizen (Bürger, wild oder im Dienst), archer ….
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Troop {
@@ -185,6 +185,10 @@ pub struct Troop {
     /// Gebäude eines Handwerkers.
     #[serde(rename = "workSite", skip_serializing_if = "is_zero_i64")]
     pub work_site: i64,
+    /// Bürger, der noch keine Münze bekommen hat (früher Landstreicher); `false` = im Dienst (früher Bauer). FG1.1/B-1199:
+    /// beide sind jetzt die Art `citizen`. Nur für Bürger; Kämpfer haben es nie.
+    #[serde(rename = "wild", skip_serializing_if = "is_false")]
+    pub wild: bool,
     /// Handwerker: ein Bauer mit Hammer.
     #[serde(rename = "hammer", skip_serializing_if = "is_false")]
     pub hammer: bool,
@@ -225,4 +229,78 @@ pub struct Troop {
     /// Sekunden, bis dieser Bürger wieder nach oben geht, nachdem er dort umsonst war (ECO1.7); ohne JSON.
     #[serde(skip)]
     pub errand_wait: f64,
+}
+
+/// Die Grundfigur (FG1.1/B-1199): Landstreicher und Bauer sind beide `citizen`; `Troop::wild` trennt sie.
+pub const CITIZEN: &str = "citizen";
+
+impl Troop {
+    /// Bürger ohne Münze (früher Landstreicher): wandert um sein Camp, arbeitet nicht, wird nicht angegriffen.
+    pub fn is_wild(&self) -> bool {
+        self.kind == CITIZEN && self.wild
+    }
+
+    /// Bürger im Dienst (früher Bauer): sammelt, baut, kann Beruf und Ausrüstung bekommen.
+    pub fn serving(&self) -> bool {
+        self.kind == CITIZEN && !self.wild
+    }
+
+    /// Macht aus dem Bürger einen im Dienst (nach der Münze).
+    pub fn serve(&mut self) {
+        self.kind = CITIZEN.into();
+        self.wild = false;
+    }
+
+    /// Macht aus der Figur einen wilden Bürger.
+    pub fn go_wild(&mut self) {
+        self.kind = CITIZEN.into();
+        self.wild = true;
+    }
+
+    /// Name der Art in den Daten und im Go-Spielstand: `vagrant` oder `peasant` für Bürger, sonst die Art selbst.
+    pub fn data_kind(&self) -> &str {
+        data_kind(&self.kind, self.wild)
+    }
+}
+
+/// Schlüssel in `data/troops.json` (von Go geteilt: `vagrant`, `peasant`) für eine Art; Bürger nach `wild`.
+pub fn data_kind(kind: &str, wild: bool) -> &str {
+    match (kind, wild) {
+        (CITIZEN, true) => "vagrant",
+        (CITIZEN, false) => "peasant",
+        _ => kind,
+    }
+}
+
+/// Go-Grenze (FG1.1): Im Zustand und im Golden heißen die Bürger weiter `vagrant` und `peasant` (die Go-Engine kennt
+/// `citizen` nicht, `wild` steckt im Namen). Beim Lesen wird daraus wieder `citizen` mit `wild`.
+pub mod go_troops {
+    use super::{CITIZEN, Troop};
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    pub fn serialize<S: Serializer>(troops: &[Troop], s: S) -> Result<S::Ok, S::Error> {
+        let mut out = Vec::with_capacity(troops.len());
+        for t in troops {
+            let mut v = serde_json::to_value(t).map_err(serde::ser::Error::custom)?;
+            if let Some(o) = v.as_object_mut() {
+                o.insert("kind".into(), t.data_kind().into());
+                o.remove("wild");
+            }
+            out.push(v);
+        }
+        out.serialize(s)
+    }
+
+    pub fn deserialize<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<Troop>, D::Error> {
+        let mut troops = Vec::<Troop>::deserialize(d)?;
+        for t in &mut troops {
+            match t.kind.as_str() {
+                "vagrant" => t.go_wild(),
+                "peasant" => t.serve(),
+                CITIZEN => {}
+                _ => {}
+            }
+        }
+        Ok(troops)
+    }
 }

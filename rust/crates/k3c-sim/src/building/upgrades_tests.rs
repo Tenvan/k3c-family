@@ -210,7 +210,7 @@ fn armor_zwei_stufen_nur_kaempfer() {
     w.troops[warrior].hp = 50.0;
     let peasant = crate::unit::spawn_vagrant(&mut w, hub, hub);
     let php = v.troops["peasant"].hp;
-    w.troops[peasant].kind = "peasant".into();
+    w.troops[peasant].serve();
     w.troops[peasant].hp = php;
     w.troops[peasant].max_hp = php;
     assert!(payable(&w, s), "Rüstung bei Hub-Stufe {} nicht bezahlbar", w.hub_level);
@@ -271,7 +271,7 @@ fn rustkammer_stufe_wirkt_auf_kaempfer() {
     let warrior = fighter_at(&mut w, "warrior", hub);
     w.troops[warrior].hp = 50.0;
     let peasant = crate::unit::spawn_vagrant(&mut w, hub, hub);
-    w.troops[peasant].kind = "peasant".into();
+    w.troops[peasant].serve();
     let php = v.troops["peasant"].hp;
     w.troops[peasant].max_hp = php;
     w.sites[si].bow_paid_gold = stages[0].cost.gold;

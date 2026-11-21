@@ -45,7 +45,7 @@ fn finish_build(m: &mut TestManager, code: &str) {
     let (x, site_id) = (s.x, s.id);
     w.troops.push(Troop {
         id,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x,
         anchor_x: x,
         hp: 1.0,

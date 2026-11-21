@@ -32,7 +32,7 @@ pub fn refund_pending(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>, p
         "merchant" => refund_merchant(w, amount),
         "sword" => refund_sword(w, id, amount),
         "combat" => refund_combat(w, id_text, amount),
-        "vagrant" => match w.troop_mut(id).filter(|t| t.kind == "vagrant") {
+        "vagrant" => match w.troop_mut(id).filter(|t| t.is_wild()) {
             Some(t) => {
                 let back = amount.min(t.paid_gold);
                 t.paid_gold -= back;
@@ -189,7 +189,7 @@ fn pay_vagrant(w: &mut World, v: &WorldValues, pi: usize, id: i64) {
         return;
     }
     let hp = v.troops.get("peasant").map_or(0.0, |t| t.hp);
-    t.kind = "peasant".into();
+    t.serve();
     t.hp = hp;
     t.max_hp = hp;
     t.anchor_x = hub_x;

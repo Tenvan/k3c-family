@@ -60,7 +60,7 @@ fn nur_handwerker_bauen() {
 #[test]
 fn start_handwerker() {
     let w = crate::world::testutil::new_world(0, "test", crate::world::Options::default());
-    let n = w.troops.iter().filter(|t| t.kind == "peasant" && t.hammer).count() as i64;
+    let n = w.troops.iter().filter(|t| t.serving() && t.hammer).count() as i64;
     let want = w.vals.as_ref().map_or(0, |v| v.hub.start_troops.craftsman);
     assert!(want >= 1 && n == want, "Start-Handwerker {n}, laut Daten {want}");
 }
@@ -74,7 +74,7 @@ fn start_handwerker_aus_den_welt_werten() {
     let hammers = w.troops.iter().filter(|t| t.hammer).count() as i64;
     assert_eq!(w.troops.len() as i64, 3 + v.hub.start_troops.peasant);
     assert_eq!(hammers, 3);
-    assert!(w.troops.iter().all(|t| t.kind == "peasant"));
+    assert!(w.troops.iter().all(|t| t.serving()));
     assert_eq!(w.troops[0].x, 202.0, "Start-Bauern stehen ab Hub + 2");
 }
 
@@ -271,7 +271,7 @@ fn burg_legt_ersatzhammer_ab() {
     w.drops.clear();
     w.troops.push(Troop {
         id: 99,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         hammer: true,
         ..Troop::default()
     });
@@ -321,7 +321,7 @@ fn drop_hammer_laesst_den_hammer_am_boden() {
     let mut w = bare_world();
     w.troops.push(Troop {
         id: 5,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x: 77.0,
         hammer: true,
         ..Troop::default()

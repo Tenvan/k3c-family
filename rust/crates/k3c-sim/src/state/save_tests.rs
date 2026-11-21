@@ -210,11 +210,12 @@ fn troops_save_ohne_landstreicher_mit_arbeitsplatz() {
         sites: vec![site(7, "workshop", 12.5, "built")],
         troops: vec![
             Troop {
-                kind: "vagrant".into(),
+                kind: "citizen".into(),
+                wild: true,
                 ..Default::default()
             },
             Troop {
-                kind: "peasant".into(),
+                kind: "citizen".into(),
                 x: 1.0,
                 anchor_x: 2.0,
                 profession: "craftsman".into(),

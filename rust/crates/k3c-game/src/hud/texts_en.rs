@@ -42,7 +42,7 @@ pub static TEXTS_EN: &[(&str, &str)] = &[
     ("event.timed", "{name}  ·  {left}"),
     ("guide.coin", "Walk over it: pick up the coin"),
     ("guide.dusk", "Night is coming! Back to the castle"),
-    ("guide.recruit", "Give a coin, he becomes a peasant"),
+    ("guide.recruit", "Give a coin, the citizen starts working"),
     ("hint.buy", "buy {name}"),
     ("hint.down", "Down arrow"),
     ("hint.lair", "boss lair: arriving wakes the final boss"),

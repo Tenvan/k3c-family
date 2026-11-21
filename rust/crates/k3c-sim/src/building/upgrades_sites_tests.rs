@@ -240,7 +240,7 @@ fn build_new(w: &mut World, players: &[usize], s: usize) -> f64 {
         "{}: Vorrat, erwartet genau {cost:?} abgebucht",
         w.sites[s].kind
     );
-    for t in w.troops.iter_mut().filter(|t| t.kind == "peasant") {
+    for t in w.troops.iter_mut().filter(|t| t.serving()) {
         t.x = sx;
     }
     let bs = v.buildings[&w.sites[s].kind].build_seconds;

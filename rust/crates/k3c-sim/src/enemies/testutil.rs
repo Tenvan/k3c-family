@@ -247,7 +247,7 @@ pub fn add_peasant(w: &mut World, x: f64, profession: &str) -> usize {
     let anchor_x = w.hub_x;
     w.troops.push(crate::state::Troop {
         id,
-        kind: "peasant".into(),
+        kind: "citizen".into(),
         x,
         hp,
         max_hp: hp,
