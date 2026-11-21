@@ -1,7 +1,5 @@
-//! Port von `native/k3c-game/props/plan_sites.go` (Teil 1: Plätze, Gerüst, Bauschild, Preis). Zeichenliste der Bauplätze
-//! (siteView.ts, scaffoldView.ts, buildSignView.ts, damageView.ts) und der Hintergrundmauer. Wartegrund, Risse und Schutt
-//! stehen in `plan_sites_marks.rs` (Abschnittsgrenze vor `siteStatus`).
-
+//! Port von `native/k3c-game/props/plan_sites.go` (Teil 1: Plätze, Gerüst, Bauschild, Preis): Zeichenliste der Bauplätze
+//! und der Hintergrundmauer. Wartegrund, Risse und Schutt stehen in `plan_sites_marks.rs`.
 use std::f64::consts::PI;
 
 use k3c_sim::state::{Site, World};

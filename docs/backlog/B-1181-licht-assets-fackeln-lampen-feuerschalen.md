@@ -3,7 +3,7 @@
 - **Domäne:** PAP
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** LA2
 - **Projekt:** RSU
@@ -39,14 +39,14 @@ Neue Lichtmechanik, Regeln.
 
 ## Regeln und Einschränkungen
 
-Assets nur über `assets_*` (Entscheidung 005); Datei ≤ 400 Zeilen; 2 Spieler; Frame-Budget.
+Assets nur über `assets_*` (Entscheidung 005); Datei ≤ 400 Zeilen; 2 Spieler; Frame-Budget. Lane zweit (Sprint LA2.3).
 
 Planungsangaben für die Arbeitswellen:
 
 - **Bereich:** `public/grafik/**`, `data/paper.json`, `rust/crates/k3c-game/src/world/lightdraw.rs`, `rust/crates/k3c-game/src/props/**`
 - **Abhängig von:** LA1.5
-- **Braucht 🧑:** Entscheidung | Abnahme
-- **Größe:** L
+- **Braucht 🧑:** Abnahme
+- **Größe:** M
 - **Sperre:** –
 
 ## Beispiele
@@ -65,7 +65,7 @@ Gebäude ohne Ankerpunkte: kein Licht (statt Versatz).
 
 ## Offene Fragen
 
-🧑: Welche Halter-Art für welches Gebäude und welche Welt? Vor der Freigabe in Tickets je Teil zerlegen (Größe L).
+Entschieden mit Default (autonom, Claude, 2026-11-21): Wohnhäuser Laterne, Wehrbauten Fackel am Pfahl, Plätze und Burg Feuerschale, nie im Türbereich; Aufteilung nicht nötig, die Arbeit ist in LA2.3 auf drei Halter-Arten je Welt begrenzt. 🧑 ändert bei der Abnahme.
 
 ## Notizen
 

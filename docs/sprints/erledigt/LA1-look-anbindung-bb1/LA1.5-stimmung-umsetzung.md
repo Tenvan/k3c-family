@@ -1,6 +1,6 @@
 # LA1.5 · Stimmung nach dem Abgleich umsetzen (Farbe, Licht, Dunst, Tiefe)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -64,7 +64,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Stand: umgesetzt, **weitere Nachprüfung 🧑 am PC steht aus** (Status bleibt `offen`). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
+Stand: umgesetzt und von 🧑 am PC abgenommen (2026-11-21, „LA1 abnehmen“). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
 
 ### Runde 1 (Stimmung)
 Lichthöfe weicher, Sterne, Mond-Hof, Nacht-Aufhellung (`sky.nightLift`/`backLift`), Abendrot, Himmelsverlauf, Spiegelung weicher (`data/look.json`, `world/sky.rs`, `look_sky.rs`, `look_glow.rs`).
@@ -76,18 +76,19 @@ Lichthöfe weicher, Sterne, Mond-Hof, Nacht-Aufhellung (`sky.nightLift`/`backLif
 Halter im Drawer `Part::Torches` (`Layer::ACTORS`), `glow.torchSpread` weitet die Versätze nur in der Darstellung, Burg mit zwei Fackeln (`glow.castleTorches`), wärmerer Schein (`glow.warmth`), Flamme größer und dreischichtig; Profil go unverändert.
 
 ### Runde 4 (🧑 2026-11-21, Nachprüfung am PC: „sieht schon sehr gut aus“)
-- **Fackeln noch vor den Figuren:** Die Flammen kamen nach der Lichtkarte und lagen damit über allem. Jetzt zeichnet `draw_torch_part` Halter und Flammen zusammen auf der Figuren-Ebene vor den Figuren (`world/lightdraw.rs`).
-- **Mauer hinter Burg und Gebäuden:** `Planner::plan` baut jetzt zuerst Hintergrundmauer und Mauer-Bauplätze (`sites_pass(true)`), dann Burg, Entities und die übrigen Plätze (`props/plan.rs`, `plan_sites.rs`); Aufnahme: die Mauer steht hinter der Burg.
-- **Asynchrones Flackern, mindestens vier Muster:** `torch_flicker` (`world/light.rs`) mit fünf Mustern (je zwei Wellen) und eigener Verschiebung je Fackel; Flamme (Deckkraft und Größe) nutzt es.
-- **Erhellung flackert mit:** `LightData::lift` moduliert den Schein je Fackel mit demselben Muster (`glow.torchFlicker` 0,35; Profil go 0). Kosten: eine Sinus-Auswertung je Fackel und Lichtspalte (etwa 65 Spalten, einstellig bis zweistellig viele Fackeln), keine Allokation; gemessen habe ich die FPS nicht, 🧑 prüft am PC (F-Taste Leistungsanzeige).
-- **Bauplatz-Abstände nach Gebäudegröße:** B-1182 (Sim und Golden betroffen, braucht Entscheidung von 🧑).
-- **Asset-Änderungen immer für den Second Worker:** an B-1181 vermerkt (Lane zweit).
+- Fackeln vor den Figuren: `draw_torch_part` zeichnet Halter und Flammen zusammen auf der Figuren-Ebene (`world/lightdraw.rs`).
+- Mauer hinter Burg und Gebäuden: `Planner::plan` baut zuerst Hintergrundmauer und Mauer-Bauplätze (`props/plan.rs`, `plan_sites.rs`).
+- Asynchrones Flackern mit fünf Mustern (`torch_flicker`, `world/light.rs`), Erhellung flackert mit (`glow.torchFlicker` 0,35; Profil go 0).
+- Bauplatz-Abstände nach Gebäudegröße: B-1182 (LA3). Asset-Änderungen immer Second Worker: B-1181 (LA2).
 
 ### Prüfung
-`cargo test -p k3c-game -p k3c-data --release` grün außer `economy_wie_go` (`ChestGold`, aus RU36.3, nicht von dieser Session); `clippy --all-targets -D warnings` sauber. `task check:diff` scheitert weiter am Lint einer Workbench-Oberfläche in `tools/`. Aufnahmen: `.work/torch-neu/shot-01.png`.
+`cargo test -p k3c-game -p k3c-data --release` grün außer `economy_wie_go` (`ChestGold`, aus RU36.3, nicht von dieser Session); `clippy --all-targets -D warnings` sauber. `task check:diff` scheitert weiter am Lint einer Workbench-Oberfläche in `tools/`.
 
-### Für den Hauptrechner
-B-1183 (Wolken, Monumentalbild, Wellenstriche), B-1179 (Cheat-Panel), B-1181 (Licht-Assets, Second Worker), B-1182 (Bauplatz-Abstände), `economy_wie_go` rot.
+### Abnahme
+🧑 hat LA1.5 am PC abgenommen (2026-11-21). FPS-Messung nicht erfolgt, über die Leistungsanzeige (F-Taste) zu prüfen.
+
+### Für den Hauptrechner / Folge
+B-1183, B-1179, B-1181 (Sprint LA2, Second Worker), B-1182 (LA3), `economy_wie_go` rot.
 
 ### Abweichung vom Plan
-AC-05 nur teilweise erfüllt (B-1183).
+AC-05 nur teilweise erfüllt: Wolken, Monumentalbild und Wellenstriche liegen in B-1183 (LA2).

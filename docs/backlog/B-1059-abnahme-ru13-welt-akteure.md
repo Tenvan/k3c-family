@@ -68,4 +68,6 @@ keine
 
 ## Notizen
 
+Lane `zweit`: Der Second Worker fährt dieses Ticket (Gen und Race; die Sichtprüfung der Standbilder bleibt bei Ralf).
+
 Aus RU13: `Actors.lib` (`Rc<RefCell<Library>>`) und `world::Parts` (`Rc<Library>`) bleiben getrennt, Hinweis für RU16/RU26. Nicht portierte Go-Tests mit Grund: Shader-Tests, Alloc-Tests, `LevelSheets(nil)`. Review-Befunde niedrig: `still/raster.rs:146` clamp bei 0-Textur, f32 statt f64 in der Kachel-Affine (`world/layers.rs`).

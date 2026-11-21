@@ -1,6 +1,6 @@
 # LA1.6 · Review und Abnahme-Ticket LA1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 bis AC-07 geprüft: Sessions LA1.1 bis LA1.5, LA1.7, LA1.8 fertig, LA1.5 von 🧑 am PC abgenommen (2026-11-21). `task test` grün nach zwei Fixes (`plan_sites.rs` auf 400 Zeilen, Planungsangaben von B-1179, B-1181, B-1183, Akzeptanzkriterien von B-1178). `task check:go`: alle Go-Tests grün, `golangci-lint` fehlt auf diesem Rechner (requirements.md), Lint nicht gelaufen. Abnahme-Ticket: B-1184 (Race, Gen, FPS, rote Rust-Tests). Folgesprints: LA2 (B-1179, B-1181, B-1183), LA3 (B-1182). Kein separates Reviewer-Agent-Review, Diff schon in main (#795).

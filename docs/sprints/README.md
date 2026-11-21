@@ -19,7 +19,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | RU36 | CLI, SIM | RSU | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | – | `aktiv/RU36-abnahme-am-pc/` |
-| LA1 | CLI | RSU | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | – | `aktiv/LA1-look-anbindung-bb1/` |
+| LA2 | CLI, PAP | RSU | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | – | `aktiv/LA2-look-nachtraege-panel-himmel-licht/` |
 
 ## Offen am Gerät
 
@@ -44,7 +44,6 @@ keine
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
-| LA2 | CLI, PAP | RSU | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | – | bereit | `geplant/LA2-look-nachtraege-panel-himmel-licht/` |
 | LA3 | SIM | RSU | Bauplätze im Hub richten sich nach der Gebäudegröße | – | Entwurf | `geplant/LA3-bauplaetze-nach-gebaeudegroesse/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -468,3 +467,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | KS1 | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | `erledigt/KS1-kampfregeln/` |
 | WG1 | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | `erledigt/WG1-weltbilder/` |
 | RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | `erledigt/RG2-regelwerk-klaerungen/` |
+| LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | `erledigt/LA1-look-anbindung-bb1/` |

@@ -1,6 +1,6 @@
 # LA2 · CLI, PAP · Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI, PAP
 - **Reife:** bereit

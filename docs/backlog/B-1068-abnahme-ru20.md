@@ -69,4 +69,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Lane `zweit`: Der Second Worker fährt dieses Ticket (Gen-Läufe; die Sichtprüfung des HUD bleibt bei Ralf).

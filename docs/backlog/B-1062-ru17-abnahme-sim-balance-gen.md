@@ -61,4 +61,4 @@ keine
 
 ## Notizen
 
-–
+Lane `zweit`: Der Second Worker fährt dieses Ticket (Sim, Balance und Gen; die Sichtprüfung von Effekten und Ton bleibt bei Ralf).

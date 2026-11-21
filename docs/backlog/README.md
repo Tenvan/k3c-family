@@ -221,6 +221,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1181](B-1181-licht-assets-fackeln-lampen-feuerschalen.md) | PAP | Idee | mittel | offen | LA2 | Lichtquellen als Assets: animierte Flammen, Fackeln, Lampen und Feuerschalen mit Ankerpunkten an Gebäuden |
 | [B-1182](B-1182-bauplaetze-abstand-nach-gebaeudegroesse.md) | SIM | Problem | mittel | offen | LA3 | Die festen Bauplätze im Hub überlappen sich, ihr Abstand soll der Gebäudegröße folgen |
 | [B-1178](B-1178-abnahme-wz62-studio-welten.md) | DEV | Schuld | mittel | offen | WZ62 | Abnahme WZ62: Studio feste Welten, Welt-Filter, Größenvergleich, Welten-Editor (PC-Abnahme, Sim, Balance, Gen, Race) |
+| [B-1184](B-1184-abnahme-la1-stimmung.md) | CLI | Schuld | mittel | offen | LA1 | Abnahme LA1: Stimmung und Look-Anbindung (FPS-Messung, Gen, Race) |
 
 ## Archiv
 
