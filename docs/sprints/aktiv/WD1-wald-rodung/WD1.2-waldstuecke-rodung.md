@@ -1,6 +1,6 @@
 # WD1.2 · Sim: Waldstücke erkennen und Rodungsregel (äußere fünf)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -57,5 +57,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: `world/stands.rs` erkennt Waldstücke (Lücke ≤ 3 Units, Lichtungen überbrücken, Hub-Streifen trennt; Plantage-Bäume ausgenommen) und liefert `Stand` (Ausdehnung, groß, Bäume, markierbare äußere 5) für die Anzeige. `node_markable` fragt `tree_markable`: große Stücke nur äußere 5 je Seite (nachrückend), Einzelbäume und kleine Gruppen höchstens 5 zugleich je Stufe über alle Spieler; nur mit nativen Regeln auf der Oberfläche, sonst unverändert. Tests `stands_tests` (Trennung, Nachrücken, Limit, 2 Spieler über `find_pay_target`); `cargo test -p k3c-sim` grün bis auf den schon roten Insel-Takt-Test, clippy sauber. Regeltext in materialien-gebaeude.md § 3.3.
+
+Abweichungen: Mindestlänge 0,25 statt 0,5 der Stufenbreite (der Hub-Streifen teilt den Wald in Hälften zu ca. 0,45, mit 0,5 wäre nie ein Waldstück groß; Konstante `MIN_STAND_FRACTION`, Annahme 2 im Ticket). Kein Hinweistext bei abgelehnter Markierung (Annahme 5): das Zahlziel erscheint einfach nicht; HUD-Hinweis bleibt offen.
