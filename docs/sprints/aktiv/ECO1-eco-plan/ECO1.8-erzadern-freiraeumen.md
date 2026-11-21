@@ -14,20 +14,18 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Erzadern in den Minen sind erst nach dem Freiräumen von Felsen und Steinen auf dem Weg zum Hub abbaubar.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1198, Handwerker mit Spitzhacke aus ECO1.4. Default: ein bis drei Hindernisse je Ader. Level-Generator `k3c-level`, Sim `k3c-sim`; deterministisch.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-level/src/**`
+- `rust/crates/k3c-sim/src/world/**`
+- `rust/crates/k3c-sim/src/unit/**`
+- `data/biomes/mine.json`
 
 ## Nicht-Ziele
 
@@ -35,12 +33,14 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Adern und Felsen im Level (`k3c-level`) lesen.
+2. 1 bis 3 Hindernisse je Ader auf dem Weg; Abbau erst, wenn sie weg sind.
+3. Tests über viele Seeds.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-08: Jede Ader hat freiräumbare Hindernisse; Abbau erst nach dem Freiräumen.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

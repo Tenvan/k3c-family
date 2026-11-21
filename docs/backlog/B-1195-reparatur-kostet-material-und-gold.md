@@ -39,15 +39,15 @@ Zerstörte Gebäude (Wiederaufbau bleibt wie heute), Balancing-Läufe (gesperrt)
 
 ## Regeln und Einschränkungen
 
-Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitäts-Budget, Verträge (Protokoll, Spielstand).
+Regeln aus `CLAUDE.md`, nur Rust.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
+Planungsangaben für die Arbeitswellen:
 
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-sim/src/building/**`, `rust/crates/k3c-sim/src/economy/**`, `data/buildings.json`, `data/economy.json`
+- **Abhängig von:** B-1194
+- **Braucht 🧑:** Abnahme
+- **Größe:** S
+- **Sperre:** golden | spielstand
 
 ## Beispiele
 

@@ -14,20 +14,17 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Unten ohne Regal holt ein Bürger liegende Ausrüstung oder wandert nach oben, um sie zu holen.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1197, Gebäude nach Tiefe aus ECO1.6. Fallen gelassene Stücke gibt es seit B-929. Weg über die Treppen, deterministisch, 2+ Spieler. Spielstand-Version erhöhen.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-sim/src/unit/**`
+- `rust/crates/k3c-sim/src/building/**`
+- `rust/crates/k3c-sim/src/island/**`
 
 ## Nicht-Ziele
 
@@ -35,12 +32,14 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Wie Bürger heute Waffe und Hammer aus dem Regal holen (`unit/jobs.rs`, `fetch_weapon`).
+2. Ohne Regal in der Stufe: liegende Ausrüstung suchen, sonst zur Oberfläche laufen.
+3. Tests.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-07: Unten ohne Regal holt ein Bürger liegende Ausrüstung oder wandert nach oben.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

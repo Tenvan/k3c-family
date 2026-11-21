@@ -14,20 +14,18 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Alle Figuren, Meister-Gebäude und Gegenstände aus FG1.2 haben Grafik und Texte (de, en) im Standard.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1201. Assets nur über MCP `assets_*` (Entscheidung 005); Zuordnung in `data/paper.json`. Figuren: Bürger, Handwerker, Bogenschütze, Soldat, Elite-Soldat, Elite-Bogenschütze; Gebäude: Handwerksmeister, Bogner, Waffenschmied, Rüstungsschmied; Gegenstände: Werkzeuggürtel, Bogen, Schwert, Rüstung. Vorhandene Assets zuerst wiederverwenden.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `public/grafik/**`
+- `data/paper.json`
+- `rust/crates/k3c-game/src/actors/**`
+- `rust/crates/k3c-game/src/hud/**`
 
 ## Nicht-Ziele
 
@@ -35,12 +33,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Vorhandene Figuren/Gebäude-Assets und Texte inventarisieren (`assets_list`).
+2. Fehlende Assets mit `assets_create`, Vorschau prüfen.
+3. Zuordnung in `data/paper.json`, Texte de/en im HUD.
+4. Tests (Grafik-Vollständigkeit).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-03: Grafik und Texte de/en für Figuren, Gebäude, Gegenstände.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

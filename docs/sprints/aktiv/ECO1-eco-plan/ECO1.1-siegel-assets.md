@@ -14,20 +14,16 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Je Schwierigkeitsgrad aus `data/difficulty.json` ein Papierschnitt-Siegel (Wachsklecks mit Prägung) in der Gruppe `icons`, in `data/paper.json` zugeordnet.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1191. Assets nur über MCP `assets_*` (Entscheidung 005, erst `assets_guide`); Stil wie die übrigen Icons in `public/grafik/icons/`. Lesbar bei 24 px und 64 px, Grade auch ohne Farbe unterscheidbar (andere Prägung je Grad). PNG und manifest sind nicht eingecheckt, Specs schon.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `public/grafik/icons/**`
+- `data/paper.json`
 
 ## Nicht-Ziele
 
@@ -35,12 +31,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. `assets_guide` lesen, Grade aus `data/difficulty.json` auflisten.
+2. Je Grad ein Siegel-Asset mit `assets_create` anlegen, `assets_preview` prüfen (24 und 64 px).
+3. Zuordnung Grad → Asset in `data/paper.json` (nur über die Asset-Tools, soweit vorgesehen).
+4. Test oder Prüfung: Datenbaum und Paper-Test laufen (`check_run`).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-01: Je Grad ein Siegel-Asset, in `data/paper.json` zugeordnet.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

@@ -14,20 +14,19 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Je Gebäudeart ist in den Daten festgelegt, auf welchen Ebenen sie stehen darf: Kampfgebäude (Mauer, Turm, Tor, Kaserne, Bogner, Heilplatz) überall, Produktion nur ganz oben.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1196. Heute baut jede Ebene, was die Hub-Stufe freigibt (`data/hub.json`, `data/buildings.json`). Zuordnung als Datenwert, Rust-Sim (`k3c-sim/src/hub`, `building`). Spielstand-Version erhöhen, alte Stände egal; Go-Golden nur mit `native_rules` aus.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-sim/src/hub/**`
+- `rust/crates/k3c-sim/src/building/**`
+- `rust/crates/k3c-data/src/**`
+- `data/hub.json`
+- `data/buildings.json`
 
 ## Nicht-Ziele
 
@@ -35,12 +34,14 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Wo Plätze je Ebene entstehen (hub sites) finden.
+2. Datenfeld je Art (z. B. `levels`/`topOnly`), Sim filtert Plätze nach Tiefe.
+3. Tests: unten nur erlaubte Arten, oben alle.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-06: Unten nur erlaubte Arten, oben alle; Zuordnung in den Daten.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

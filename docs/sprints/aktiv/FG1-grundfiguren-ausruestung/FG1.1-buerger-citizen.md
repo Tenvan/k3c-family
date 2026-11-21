@@ -14,20 +14,20 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+`vagrant` (Landstreicher) und `peasant` (Bauer) sind in Sim, Daten, Spiel, Texten und Tests ein Typ: `citizen` (Bürger).
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1199, Entscheidung Ralf 2026-11-21. Erst nach ECO1 (Handwerker). Go-Parität: Go-Golden-Läufe laufen mit `native_rules` aus und kennen nur `vagrant`/`peasant`; die Golden-Dateien dürfen sich nicht ändern, daher Abbildung `citizen` ↔ Go-Namen an der Golden-Grenze oder Golden begründet neu schreiben (`go test ./internal/detvec/ -write`, Begründung im Commit). Spielstand-Version erhöhen, alte Stände egal.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-sim/**`
+- `rust/crates/k3c-data/**`
+- `rust/crates/k3c-game/**`
+- `data/troops.json`
+- `data/economy.json`
+- `testdata/**`
 
 ## Nicht-Ziele
 
@@ -35,12 +35,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Alle Vorkommen von `vagrant` und `peasant` per grep erfassen.
+2. Zu `citizen` zusammenlegen, Texte „Bürger“/„Citizen“.
+3. Golden-Grenze lösen, Tests anpassen.
+4. `cargo test` der betroffenen Crates.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-01: `citizen` ersetzt `vagrant` und `peasant`; Texte de/en.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

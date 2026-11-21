@@ -14,20 +14,21 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Der Handwerksmeister (umbenannte Werkstatt) stellt einen Werkzeuggürtel (Hammer, Spitzhacke, Axt) her, der im Regal liegt.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1193. Neue Mechanik nur in Rust (`k3c-sim`), deterministisch, 2+ Spieler. Gürtel ersetzt den Einzelhammer (Preis 30 Holz, 10 Stein, 3 Gold in `data/buildings.json › workshop`), Regal bis 3. Spielstand-Version erhöhen, alte Stände egal. Regeltexte `docs/rules/buerger.md`, `materialien-gebaeude.md`, Glossar ziehen mit. Go-Golden nur mit `native_rules` aus (siehe HB1).
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-sim/src/building/**`
+- `rust/crates/k3c-sim/src/state/**`
+- `rust/crates/k3c-data/src/**`
+- `data/buildings.json`
+- `docs/rules/buerger.md`
+- `docs/rules/materialien-gebaeude.md`
+- `docs/glossar.md`
 
 ## Nicht-Ziele
 
@@ -35,12 +36,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Werkstatt-Logik (Hammer im Regal) in `k3c-sim/src/building` finden.
+2. Gürtel statt Hammer im Regal, Preis aus den Daten, Spielstand-Roundtrip.
+3. Regeltexte und Glossar.
+4. Tests (Herstellen, Regal, Spielstand).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-03: Werkstatt stellt Gürtel her; Spielstand-Roundtrip grün.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

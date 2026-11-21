@@ -14,20 +14,15 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+ECO1 ist geprüft; ein Abnahme-Ticket sammelt PC-Abnahme, Gen-, Sim- und Race-Läufe.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Review der Sessions ECO1.1 bis ECO1.8 gegen die Tickets B-1191 bis B-1198. Sim, Balance, Gen und `check:race` nur im Abnahme-Ticket (B-742).
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `docs/sprints/aktiv/ECO1-*/**`
 
 ## Nicht-Ziele
 
@@ -35,12 +30,14 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Diff lesen, Fachagenten (k3c-welten, k3c-hud, k3c-balancing) laufen lassen.
+2. `task check` und `task check:go` nacheinander.
+3. Abnahme-Ticket anlegen (PC-Abnahme von Ralf).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-09: Review ohne offene schwere Befunde, Abnahme-Ticket angelegt.
+- [ ] `task check` und `task check:go` grün.
 
 ## Prüfen
 
