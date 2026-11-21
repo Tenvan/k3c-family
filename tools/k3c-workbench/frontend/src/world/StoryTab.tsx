@@ -1,31 +1,21 @@
-import { Badge, Flex, Text } from '@webkit/atoms';
+import { useState } from 'react';
+import { Badge, Button, Flex, Text } from '@webkit/atoms';
 import type { WorldDetail } from '../api';
 import { PromptRow } from './PromptRow';
 import { storyGaps, storyPrompt } from './StoryState';
 import { ENTRY_NAMES, linesOf, partPrompt, type StoryPart } from './storyPrompts';
 
-// Reiter „Geschichte“ des Welten-Editors (B-1216): die Geschichte als Baum (Start → Etappen → Inseln mit Ankunft,
-// Endboss und Sieg → Ende → Flaschenpost → Wortschatz) mit Symbol und Name je Eintrag, den Zeilen und einem Prompt je
-// Knoten. Anzeigen ist hier, Ändern geht per Prompt an Claude (world_story_set).
+// Reiter „Geschichte“ des Welten-Editors (B-1216): links ein kompakter Baum (Start → Inseln mit Ankunft, Endboss und
+// Sieg, je Etappe → Ende → Flaschenpost → Wortschatz) mit Symbol und Name, rechts der Text des gewählten Knotens mit
+// seinem Prompt. Anzeigen ist hier, Ändern geht per Prompt an Claude (world_story_set).
 
 const nodeKey = (part: StoryPart) =>
   part.kind === 'island' ? `${part.island}.${part.entry}` : part.kind === 'etappe' ? `etappe.${part.n}` : part.kind;
 
-function Node({ detail, part, icon, name }: { detail: WorldDetail; part: StoryPart; icon: string; name: string }) {
-  const lines = linesOf(detail, part);
-  return (
-    <li className="st-node" data-story-node={nodeKey(part)}>
-      <Flex gap="2" align="baseline" wrap="wrap">
-        <span aria-hidden="true" className="st-icon">{icon}</span>
-        <Text size="2" weight="bold">{name}</Text>
-        {lines.length === 0 && <Badge color="orange" size="1">fehlt</Badge>}
-        <PromptRow prompt={partPrompt(detail, part)} title={`${name} in Claude ändern`} />
-      </Flex>
-      {part.kind === 'lexicon'
-        ? lines.length > 0 && <Text as="p" size="1" color="gray" className="st-lines">{lines.join(' · ')}</Text>
-        : lines.map((l, i) => <Text key={i} as="p" size="2" className="st-lines">„{l}“</Text>)}
-    </li>
-  );
+interface Item {
+  part: StoryPart;
+  icon: string;
+  name: string;
 }
 
 /** Etappen-Nummern der Welt: die der Inseln (Etappe oder Listenplatz + 1), aufsteigend und ohne Doppelte. */
@@ -36,40 +26,82 @@ export function etappenOf(detail: WorldDetail): string[] {
 
 const ENTRY_ICONS = { arrival: '⚓', boss: '👹', done: '🏆' } as const;
 
+function Leaf({ detail, item, sel, onPick }: { detail: WorldDetail; item: Item; sel: string; onPick: (key: string) => void }) {
+  const key = nodeKey(item.part);
+  const missing = linesOf(detail, item.part).length === 0;
+  return (
+    <Button type="button" variant={sel === key ? 'soft' : 'ghost'} color="gray" className="st-node" data-story-node={key} aria-pressed={sel === key} onClick={() => onPick(key)}>
+      <span aria-hidden="true" className="st-icon">{item.icon}</span>
+      <Text size="2">{item.name}</Text>
+      {missing && <Badge color="orange" size="1" aria-label="fehlt">fehlt</Badge>}
+    </Button>
+  );
+}
+
+/** Alle Knoten in Baumreihenfolge, für die Suche nach dem gewählten. */
+function itemsOf(detail: WorldDetail): Item[] {
+  const items: Item[] = [{ part: { kind: 'start' }, icon: '🚩', name: 'Start' }];
+  for (const n of etappenOf(detail)) {
+    detail.islands.forEach((isl, i) => {
+      if (String(isl.etappe ?? i + 1) !== n) return;
+      for (const entry of ['arrival', 'boss', 'done'] as const) {
+        items.push({ part: { kind: 'island', island: isl.id, entry }, icon: ENTRY_ICONS[entry], name: `${isl.name}: ${ENTRY_NAMES[entry]}` });
+      }
+    });
+    items.push({ part: { kind: 'etappe', n }, icon: '🏁', name: `Etappe ${n} abgeschlossen` });
+  }
+  items.push({ part: { kind: 'end' }, icon: '🎉', name: 'Ende' }, { part: { kind: 'bottles' }, icon: '🍾', name: 'Flaschenpost' }, { part: { kind: 'lexicon' }, icon: '📖', name: 'Wortschatz' });
+  return items;
+}
+
+function Detail({ detail, item }: { detail: WorldDetail; item: Item }) {
+  const lines = linesOf(detail, item.part);
+  return (
+    <div className="st-detail" aria-label="Text des Knotens" aria-live="polite">
+      <Flex gap="2" align="center" wrap="wrap">
+        <span aria-hidden="true" className="st-icon">{item.icon}</span>
+        <Text size="3" weight="bold">{item.name}</Text>
+        {lines.length === 0 && <Badge color="orange" size="1">fehlt</Badge>}
+      </Flex>
+      {item.part.kind === 'lexicon'
+        ? lines.length > 0 && <Text as="p" size="2" color="gray">{lines.join(' · ')}</Text>
+        : lines.map((l, i) => <Text key={i} as="p" className="st-line">„{l}“</Text>)}
+      <PromptRow prompt={partPrompt(detail, item.part)} title={`${item.name} in Claude ändern`} />
+    </div>
+  );
+}
+
 export function StoryTab({ detail }: { detail: WorldDetail }) {
+  const [sel, setSel] = useState('start');
+  const items = itemsOf(detail);
+  const current = items.find((i) => nodeKey(i.part) === sel) ?? items[0]!;
+  const gaps = storyGaps(detail).length;
+  const leaf = (item: Item) => <Leaf key={nodeKey(item.part)} detail={detail} item={item} sel={nodeKey(current.part)} onPick={setSel} />;
   return (
     <section className="wd-card" aria-label="Geschichte der Welt">
       <Flex gap="3" align="center" wrap="wrap">
         <Text size="2" weight="bold">Geschichte</Text>
-        <Text size="1" color="gray">{storyGaps(detail).length === 0 ? 'vollständig' : `${storyGaps(detail).length} Einträge fehlen`}</Text>
+        <Text size="1" color="gray">{gaps === 0 ? 'vollständig' : `${gaps} Einträge fehlen`}</Text>
+        <PromptRow prompt={storyPrompt(detail)} label="Ganze Geschichte schreiben" title="Geschichte in Claude schreiben" />
       </Flex>
-      <ol className="st-tree">
-        <Node detail={detail} part={{ kind: 'start' }} icon="🚩" name="Start" />
-        {etappenOf(detail).map((n) => (
-          <li key={n} className="st-group">
-            <ol className="st-tree">
+      <div className="st-layout">
+        <div className="st-tree" role="group" aria-label="Knoten der Geschichte">
+          {leaf(items[0]!)}
+          {etappenOf(detail).map((n) => (
+            <div key={n} className="st-branch" data-etappe={n}>
               {detail.islands.map((isl, i) => String(isl.etappe ?? i + 1) === n && (
-                <li key={isl.id} className="st-group" data-island={isl.id}>
-                  <Text size="2" weight="bold" className="st-island">🏝 {isl.name} <Text size="1" color="gray" weight="regular">{isl.id}</Text></Text>
-                  <ol className="st-tree">
-                    {(['arrival', 'boss', 'done'] as const).map((entry) => (
-                      <Node key={entry} detail={detail} part={{ kind: 'island', island: isl.id, entry }} icon={ENTRY_ICONS[entry]} name={ENTRY_NAMES[entry]} />
-                    ))}
-                  </ol>
-                </li>
+                <div key={isl.id} data-island={isl.id}>
+                  <Text size="1" color="gray" className="st-island">🏝 {isl.name}</Text>
+                  <div className="st-branch">{items.filter((it) => it.part.kind === 'island' && it.part.island === isl.id).map(leaf)}</div>
+                </div>
               ))}
-            </ol>
-            <Node detail={detail} part={{ kind: 'etappe', n }} icon="🏁" name={`Etappe ${n} abgeschlossen`} />
-          </li>
-        ))}
-        <Node detail={detail} part={{ kind: 'end' }} icon="🎉" name="Ende" />
-        <Node detail={detail} part={{ kind: 'bottles' }} icon="🍾" name="Flaschenpost" />
-        <Node detail={detail} part={{ kind: 'lexicon' }} icon="📖" name="Wortschatz" />
-      </ol>
-      <Flex gap="2" align="center" wrap="wrap">
-        <Text size="1" color="gray">Ganze Geschichte neu schreiben lassen:</Text>
-        <PromptRow prompt={storyPrompt(detail)} label="Geschichte schreiben" title="Geschichte in Claude schreiben" />
-      </Flex>
+              {leaf(items.find((it) => it.part.kind === 'etappe' && it.part.n === n)!)}
+            </div>
+          ))}
+          {items.filter((it) => ['end', 'bottles', 'lexicon'].includes(it.part.kind)).map(leaf)}
+        </div>
+        <Detail detail={detail} item={current} />
+      </div>
     </section>
   );
 }
