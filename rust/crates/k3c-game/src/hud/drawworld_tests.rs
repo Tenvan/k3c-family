@@ -59,7 +59,7 @@ fn radar_je_zelle() {
         let area = Rect::new(100.0, f64::from(i as i32) * 540.0 + 500.0, 640.0, 20.0);
         let mut cv = NullCanvas::default();
         h.paint.stencils(&mut cv);
-        h.draw_radar(&mut cv, &st, &c, area, 1.0);
+        h.draw_radar(&mut cv, &st, &c, area, 1.0, None);
         got.push((cv.rects, cv.sprites));
         st.radar = [
             RadarKind::Castle,

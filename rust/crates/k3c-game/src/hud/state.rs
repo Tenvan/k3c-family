@@ -8,7 +8,7 @@ use super::glyphs::{JoinKey, join_from_key, new_join_key};
 use super::hints::{GuideHint, GuideId, GuideSeen, action_hint, guide_keys, hint_text, step_guide};
 use super::icons::{StockPart, stock_parts};
 use super::kampf::{BossView, EventsKey, boss_bar, boss_title, event_banner, new_events_key};
-use super::radar::{RadarMarker, radar_markers};
+use super::radar::{RadarMarker, biomes_key, island_biomes, radar_markers};
 use super::seekarte::SeaView;
 use super::skillmenu::{MenuEntry, MenuState, SlotView, slot_views};
 use super::skilltext::{BarKey, MenuKey, MenuView, new_bar_key, slot_bar};
@@ -77,6 +77,9 @@ pub struct SeatState {
     pub saved_until: f64,
     pub gold: GoldFlash,
     pub radar: Vec<RadarMarker>,
+    /// Biome der Insel als Zeile am Kompass; nur im Hub (Tiefe 0) gefüllt (LA1.3, B-1167)
+    pub biomes_s: String,
+    pub biomes_k: u64,
     pub labels: Vec<Label>,
 
     pub m_gold: Memo<GoldKey>,
@@ -204,11 +207,26 @@ impl SeatState {
         self.events(lang, f, stage);
         self.hints(lang, w, m, guide, seen, sv);
         radar_markers(&mut self.radar, w, m.index);
+        self.island_line(lang, f, stage);
         self.width_units = w.width_units;
         self.citizen_labels(lang, w);
         self.skills(lang, w, m);
         self.sea
             .refresh(lang, &self.profile, w.island_switch.as_ref(), &f.route);
+    }
+
+    /// island_line: Biome der Insel für den Kompass, nur auf der Oberfläche (Hub); sonst leer.
+    fn island_line(&mut self, lang: &str, f: &Frame, stage: &Stage) {
+        if stage.depth != 0 {
+            self.biomes_s.clear();
+            self.biomes_k = 0;
+            return;
+        }
+        let key = biomes_key(lang, &f.stages);
+        if key != self.biomes_k || self.biomes_s.is_empty() {
+            self.biomes_k = key;
+            self.biomes_s = island_biomes(lang, &f.stages);
+        }
     }
 
     /// card: Werte der Spielerkarte (Geldsack-Größe, Gold) und der Skill-Leiste. Die Münz-Obergrenze kommt vom Spieler

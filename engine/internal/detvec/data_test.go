@@ -108,6 +108,7 @@ func dataFiles() []dataFile {
 		{"render.json", raw},
 		{"ruins.json", into[level.RuinRules]},
 		{"ship.json", into[shipFile]},
+		{"sizes.json", raw},
 		{"sounds.json", raw},
 		{"story.json", into[sim.StoryLimits]},
 		{"stresstests.json", raw},

@@ -1,6 +1,6 @@
 # LA1.3 · Der Kompass im Hub zeigt die Biome der Insel
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,20 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+### Umgesetzt
+- Der „Kompass“ ist das Radar der Zelle (`hud/radar.rs`, `drawworld.rs`). Im **Hub** (Stufe Tiefe 0) steht jetzt über der Leiste eine Zeile mit den Biomen der Insel in Reihenfolge der Stufen, z. B. „Oberwelt (Wald) · Tiefe 1 (Höhle)“ (Namen aus `texts_de/en`, Rückfall `biome.name`).
+- `island_biomes` und `biomes_key` (`radar.rs`), `SeatState.biomes_s` (`state.rs`, nur bei Änderung neu gebaut, ohne Allokation je Bild), neuer `TextSlot::BIOMES` (`paint.rs`, `MENU_ROW` rückt auf 18), `draw_radar` nimmt die Schrift (`draw.rs`, `drawworld.rs`).
+- Eine einzelne Stufe zeigt keine Zeile; unter der Oberfläche bleibt sie leer.
+
+### Kriterien
+- **AC-03** erfüllt: Test `kompass_zeigt_die_biome_der_insel` (`hud/radar_tests.rs`, deutsch und englisch, Hub gegen Tiefe).
+- `cargo test -p k3c-game` grün, `task rust:lint` grün, `cargo fmt --check` grün. `task check:diff` bleibt in Stufe `regeln` rot an den bekannten Planungstests (RU30, Fahrplan, `planningProjects`), nicht durch diese Session.
+
+### Entscheidungen (Default, für Ralf)
+- Textzeile statt Biom-Symbole auf der Leiste; nur im Hub; Reihenfolge der Stufen, nicht nach Tiefe sortiert.
+
+### Nachprüfung (Ralf, PC)
+- Hub im Spiel ansehen: Zeile über dem Kompass lesbar, kollidiert nicht mit Geldsack und Vorrat, auch im Split-Screen.
+
+### Für den Hauptrechner
+- Nichts.
