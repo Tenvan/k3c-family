@@ -18,7 +18,7 @@ const RESOURCE_ICONS: [(&str, &str); 5] = [
     ("crystal", "icons/icon-kristall"),
 ];
 
-fn resource_icon(res: &str) -> &'static str {
+pub(super) fn resource_icon(res: &str) -> &'static str {
     RESOURCE_ICONS.iter().find(|(r, _)| *r == res).map_or("", |(_, a)| a)
 }
 

@@ -60,6 +60,11 @@ pub const SIGN_BOARD: [[[u8; 4]; 2]; 3] = [
 ];
 
 /// `site_size` liefert die Platzhalter-Größe (Spiel-Pixel) der Platzart (Go: `siteSize[kind]`).
+/// `monarch_before`: steht ein Monarch vor dem Gebäude bei `x` mit Breite `full` (HB1.2: dann steht sein Name darüber).
+pub fn monarch_before(info: Option<&StageInfo>, x: f64, full: f64) -> bool {
+    info.is_some_and(|i| i.players.iter().any(|p| (p - x).abs() <= full / 2.0 + 0.5))
+}
+
 pub fn site_size(kind: &str) -> Option<[f64; 2]> {
     SITE_SIZE.iter().find(|(k, _)| *k == kind).map(|(_, s)| *s)
 }
@@ -171,6 +176,9 @@ impl Planner {
         if r != WaitReason::None && !labeled {
             self.site_status(s, r, st, s.level, s.x, h + px(20.0));
         }
+        if monarch_before(info, s.x, full) {
+            self.label_sized(s.x, h + px(36.0), &site_name(&s.kind), GOLD, SMALL);
+        }
     }
 
     /// `built_shape`: Platzhalter eines gebauten Gebäudes ohne Grafik (Turm mit Dach, Treppe mit Stufen).
@@ -213,10 +221,6 @@ impl Planner {
     /// `built_signs`: Treppen-Schild, Lebensbalken, Bögen im Regal und Bogen-Preis; `true`, wenn ein Text am Platz steht.
     pub fn built_signs(&mut self, s: &Site, info: Option<&StageInfo>, fl: SiteFlags, h: f64) -> bool {
         let mut labeled = false;
-        if s.kind == "stairsUp" || s.kind == "stairsDown" {
-            self.label(s.x, h + px(12.0), &site_name(&s.kind), GOLD);
-            labeled = true;
-        }
         if s.max_hp > 0.0 && s.hp < s.max_hp {
             self.bar(s.x, h + px(22.0), px(80.0), s.hp / s.max_hp, HP_GREEN);
         }
