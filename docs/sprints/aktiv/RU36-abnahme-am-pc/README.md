@@ -91,7 +91,7 @@ Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
 | RU36.4 | `RU36.4-befunde-runde-2.md` | Umsetzung | autonom | offen |
 | RU36.5 | `RU36.5-bericht-g4-und-review.md` | Review | autonom | offen |
 | RU36.6 | `RU36.6-weltwahl-alle-welten.md` | Umsetzung | autonom | fertig |
-| RU36.7 | `RU36.7-wald-dicht-standard-seed.md` | Umsetzung | autonom | offen |
+| RU36.7 | `RU36.7-wald-dicht-standard-seed.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

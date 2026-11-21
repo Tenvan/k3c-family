@@ -30,6 +30,8 @@ mod chunkcount_tests;
 #[cfg(test)]
 mod deco_tests;
 #[cfg(test)]
+mod forest_density_tests;
+#[cfg(test)]
 mod golden_tests;
 #[cfg(test)]
 mod hub_sites_tests;
