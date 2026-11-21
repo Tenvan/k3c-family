@@ -1,6 +1,6 @@
 # ECO1.3 · Werkzeuggürtel vom Handwerksmeister
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -14,20 +14,21 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Der Handwerksmeister (umbenannte Werkstatt) stellt einen Werkzeuggürtel (Hammer, Spitzhacke, Axt) her, der im Regal liegt.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1193. Neue Mechanik nur in Rust (`k3c-sim`), deterministisch, 2+ Spieler. Gürtel ersetzt den Einzelhammer (Preis 30 Holz, 10 Stein, 3 Gold in `data/buildings.json › workshop`), Regal bis 3. Spielstand-Version erhöhen, alte Stände egal. Regeltexte `docs/rules/buerger.md`, `materialien-gebaeude.md`, Glossar ziehen mit. Go-Golden nur mit `native_rules` aus (siehe HB1).
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-sim/src/building/**`
+- `rust/crates/k3c-sim/src/state/**`
+- `rust/crates/k3c-data/src/**`
+- `data/buildings.json`
+- `docs/rules/buerger.md`
+- `docs/rules/materialien-gebaeude.md`
+- `docs/glossar.md`
 
 ## Nicht-Ziele
 
@@ -35,12 +36,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Werkstatt-Logik (Hammer im Regal) in `k3c-sim/src/building` finden.
+2. Gürtel statt Hammer im Regal, Preis aus den Daten, Spielstand-Roundtrip.
+3. Regeltexte und Glossar.
+4. Tests (Herstellen, Regal, Spielstand).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-03: Werkstatt stellt Gürtel her; Spielstand-Roundtrip grün.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 
@@ -56,5 +60,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt und geprüft: Mit nativen Regeln (`WorldValues::native_rules`) kostet das Werkstatt-Produkt den Werkzeuggürtel, 30 Holz + 10 Stein + 3 Gold (`unit/hammer.rs › belt_cost`, `place_product`); ohne native Regeln bleibt der Hammer aus `buildings.json` (Go-Parität, `buildings.json` ist mit Go geteilt). Regal weiter `hammerRack` (3), Herstellung, Holen und Spielstand wie beim Hammer: `Troop::hammer` und `Site::hammers` zählen jetzt den Gürtel (Namen bleiben wegen Go-Parität), das Spielstand-Format ist unverändert, die Version musste nicht steigen. Tests: `werkstatt_stellt_den_werkzeuggurtel_her` (mit und ohne native Regeln), `werkstatt_hammer_herstellen_und_holen` (zwei Spieler, Preis über `place_product`). Regeltexte `buerger.md`, `materialien-gebaeude.md` und Glossar (neuer Begriff Werkzeuggürtel) angepasst. Abweichung: Umbenennung der Werkstatt in Handwerksmeister (Text und Grafik) liegt bei FG1.3. Rot, nicht von dieser Session (auch auf main): `eingebettete_welten_gueltig`, `insel_nach_1000_schritten_wie_go`, `campaign_ausbau`, `campaign_abstieg` (nextId 383, erwartet 380, durch HB1-Regeln). `task check:diff` nur mit fehlendem `golangci-lint`.

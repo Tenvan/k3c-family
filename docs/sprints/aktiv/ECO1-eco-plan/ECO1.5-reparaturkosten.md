@@ -14,20 +14,19 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Reparatur kostet immer genau 1 Grundmaterial der Ausbaustufe und 2 Gold.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1195, Handwerker aus ECO1.4. Heute reparieren Bürger kostenlos zwischen den Wellen. Default: je Vorgang bis volle HP. Zahlstelle am Gebäude. Spielstand-Version erhöhen.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-sim/src/building/**`
+- `rust/crates/k3c-sim/src/economy/**`
+- `data/buildings.json`
+- `data/economy.json`
+- `docs/rules/materialien-gebaeude.md`
 
 ## Nicht-Ziele
 
@@ -35,12 +34,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Reparatur-Logik finden (grep repair).
+2. Kosten buchen: 1 Material der Stufe, 2 Gold; ohne Mittel keine Reparatur.
+3. Regeltext.
+4. Tests.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-05: Reparatur bucht 1 Grundmaterial der Stufe und 2 Gold.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 

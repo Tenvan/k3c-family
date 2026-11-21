@@ -14,20 +14,17 @@
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Das Siegel des gewählten Grades steht in der Auswahl, in der Spielstand-Liste und im HUD bei der Welt-Anzeige.
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+Ticket B-1192, Siegel-Assets aus ECO1.1. Der Grad liegt schon im Spielstand; fehlt er (alter Stand), gilt der Standardgrad ohne Fehler. Frame-Budget: Textur einmal laden, kein Allokieren je Bild; 1 und 2 Ansichten.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-game/src/menu/**`
+- `rust/crates/k3c-game/src/hud/**`
+- `rust/crates/k3c-game/src/local/**`
 
 ## Nicht-Ziele
 
@@ -35,12 +32,15 @@ Was in dieser Session ausdrücklich **nicht** passiert.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Wo Schwierigkeit heute gezeigt wird, per grep finden (menu, Spielstand-Liste, hud Welt-Zeile).
+2. Siegel-Asset je Grad laden und neben Text zeichnen.
+3. Alter Stand ohne Grad: Standardgrad.
+4. Tests (Anzeige, fehlender Grad).
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-02: Auswahl, Spielstand-Liste und HUD zeigen das Siegel; alter Stand ohne Fehler.
+- [ ] `task check:diff` grün.
 
 ## Prüfen
 
