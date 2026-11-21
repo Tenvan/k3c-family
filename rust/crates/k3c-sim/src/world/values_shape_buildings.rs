@@ -16,6 +16,8 @@ const BUILDING: &[Field] = &[
     ("SwordRack", int),
     ("HammerRack", int),
     ("HammerCost", cost),
+    ("ArmorRack", int),
+    ("ArmorCost", cost),
     ("Offers", || Shape::List(offer)),
     ("CraftSeconds", || Shape::Map(float)),
     ("Levels", || Shape::List(level_data)),

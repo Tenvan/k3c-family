@@ -68,7 +68,7 @@ keine
 |---|---|---|---|---|
 | EQ1.1 | `EQ1.1-ruestung-abholen.md` | Umsetzung | autonom | fertig |
 | EQ1.2 | `EQ1.2-gegenstands-icons.md` | Umsetzung | autonom | fertig |
-| EQ1.3 | `EQ1.3-werte-nach-data.md` | Umsetzung | autonom | offen |
+| EQ1.3 | `EQ1.3-werte-nach-data.md` | Umsetzung | autonom | fertig |
 | EQ1.4 | `EQ1.4-bogner-oben-limit.md` | Umsetzung | autonom | offen |
 | EQ1.5 | `EQ1.5-besorger-weg.md` | Umsetzung | autonom | offen |
 | EQ1.6 | `EQ1.6-review.md` | Umsetzung | autonom | offen |

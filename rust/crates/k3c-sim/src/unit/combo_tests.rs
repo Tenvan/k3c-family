@@ -137,7 +137,7 @@ fn meister_stellen_schwert_und_ruestung_her() {
     w.stock.iron = 500;
     w.stock.copper = 500;
     w.sites[smithy].sword_paid_gold = v.troops["warrior"].cost.gold;
-    w.sites[armory].bow_paid_gold = crate::unit::hammer::armor_cost().gold;
+    w.sites[armory].bow_paid_gold = crate::unit::hammer::armor_cost(&v).gold;
     assert!(
         run_for(&mut w, 60.0, |w| w.sites[smithy].swords == 1
             && w.sites[armory].armors == 1),

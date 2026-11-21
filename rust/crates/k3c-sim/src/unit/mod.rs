@@ -29,6 +29,8 @@ mod common_tests;
 #[cfg(test)]
 mod disarm_tests;
 #[cfg(test)]
+mod equip_tests;
+#[cfg(test)]
 mod escort_tests;
 #[cfg(test)]
 mod fetch_tests;

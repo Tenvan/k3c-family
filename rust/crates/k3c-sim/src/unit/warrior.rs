@@ -59,7 +59,7 @@ pub fn sword_payable(w: &World, v: &WorldValues, isl: Option<&IslandRef>, si: us
     let s = &w.sites[si];
     let in_work = i64::from(s.sword_done > 0.0);
     let rack = if v.native_rules {
-        super::hammer::SWORD_RACK
+        super::hammer::sword_rack(v, &s.kind)
     } else {
         v.buildings.get(&s.kind).map_or(0, |b| b.sword_rack)
     };

@@ -67,13 +67,33 @@ pub fn belt_cost() -> Cost {
     }
 }
 
-/// FG1.2 (B-1200): Preis einer Rüstung (Eisen und Gold), Regalgröße und Herstellungszeiten der nativen Regel. Die Zahlen
-/// stehen hier, weil `buildings.json` mit Go geteilt ist; die Balance folgt im Abnahme-Ticket.
-pub fn armor_cost() -> Cost {
-    Cost {
-        iron: 30,
-        gold: 8,
-        ..Cost::default()
+/// FG1.2 (B-1200), EQ1.3 (B-1206): Preis einer Rüstung (Eisen und Gold), Regalgröße und Herstellungszeiten der nativen
+/// Regel. Die Werte stehen in `buildings.json` (`armorCost`, `armorRack`, `craftSeconds`); die Zahlen hier gelten nur,
+/// wenn das Feld fehlt (Go ignoriert die Felder). Die Balance folgt im Abnahme-Ticket.
+pub fn armor_cost(v: &WorldValues) -> Cost {
+    match v.buildings.get("armory").map(|b| &b.armor_cost) {
+        Some(c) if *c != Cost::default() => c.clone(),
+        _ => Cost {
+            iron: 30,
+            gold: 8,
+            ..Cost::default()
+        },
+    }
+}
+
+/// Regalgröße der Rüstkammer: `armorRack` aus den Daten, sonst `ARMOR_RACK`.
+pub fn armor_rack(v: &WorldValues) -> i64 {
+    match v.buildings.get("armory").map_or(0, |b| b.armor_rack) {
+        n if n > 0 => n,
+        _ => ARMOR_RACK,
+    }
+}
+
+/// Schwert-Regal der Werkstatt: `swordRack` aus den Daten, sonst `SWORD_RACK`.
+pub fn sword_rack(v: &WorldValues, kind: &str) -> i64 {
+    match v.buildings.get(kind).map_or(0, |b| b.sword_rack) {
+        n if n > 0 => n,
+        _ => SWORD_RACK,
     }
 }
 pub const ARMOR_RACK: i64 = 3;
@@ -100,8 +120,8 @@ pub fn place_product(v: &WorldValues, s: &Site) -> PlaceProduct {
     if s.kind == "armory" && v.native_rules {
         return PlaceProduct {
             name: "armor",
-            cost: armor_cost(),
-            rack: ARMOR_RACK,
+            cost: armor_cost(v),
+            rack: armor_rack(v),
             product: Product::Armor,
         };
     }
