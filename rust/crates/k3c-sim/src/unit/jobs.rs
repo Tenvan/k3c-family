@@ -17,11 +17,14 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRe
     if let Some(j) = site_job(w, v, ti) {
         return Some(j);
     }
-    if is_dangerous(w) || !may_gather(w, v, ti) {
+    if is_dangerous(w) {
         return None;
     }
     if let Some(j) = ascend_job(w, ti, isl) {
-        return Some(j);
+        return Some(j); // ECO1.7: auch ein Bürger ohne Gürtel, der nicht roden darf, holt Ausrüstung von oben
+    }
+    if !may_gather(w, v, ti) {
+        return None;
     }
     let mut best: Option<(i64, f64)> = None;
     for n in &w.nodes {
@@ -47,6 +50,14 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRe
         node_id: nid,
         ..Job::default()
     })
+}
+
+/// ECO1.4 (B-1194): Mit nativen Regeln roden und hauen nur Handwerker (Werkzeuggürtel mit Axt und Spitzhacke,
+/// `Troop::hammer`); einzige Ausnahme ist der Bergmann (Beruf `miner`), der weiter ohne Gürtel an Fels und Adern arbeitet.
+/// Ohne native Regeln (Go-Parität) sammelt jeder Bauer.
+fn may_gather(w: &World, v: &WorldValues, ti: usize) -> bool {
+    let t = &w.troops[ti];
+    !v.native_rules || t.hammer || t.profession == "miner"
 }
 
 /// ECO1.7: Ein freier Bürger ohne Hammer geht zur Treppe nach oben, wenn dort Ausrüstung im Regal liegt und seine Stufe
