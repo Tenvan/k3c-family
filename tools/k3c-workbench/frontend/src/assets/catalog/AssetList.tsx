@@ -26,6 +26,14 @@ const schluessel = (a: AssetEintrag) => `${a.gruppe}/${a.id}`;
 const ALLE_GRUPPEN = 'Alle Gruppen';
 const ALLE_ARTEN = 'Alle Arten';
 
+/** Passt der Eintrag zu den Filtern Text `q` (klein), Gruppe, Art und „nur geänderte“ (ohne Welt)? */
+function passt(a: AssetEintrag, f: { geaendert: boolean; gruppe: string; art: string }, q: string, inDiff: ReadonlySet<string>): boolean {
+  if (f.geaendert && !inDiff.has(a.id)) return false;
+  if (f.gruppe && a.gruppe !== f.gruppe) return false;
+  if (f.art && a.rig !== f.art) return false;
+  return !q || a.id.includes(q) || a.rig.includes(q) || a.gruppe.includes(q);
+}
+
 /** Liste der Specs nach Gruppe; ungültige rot mit `feld · regel` und Text (005 › 7), Abzeichen „im Diff“. Filter: Text,
  *  Welt (gesamt oder exklusiv, Herkunft geerbter Assets am Eintrag), Gruppe, Art und „nur geänderte“; der Zustand steht in
  *  der Adresse (B-1169, WZ62.2). */
@@ -35,11 +43,10 @@ export function AssetList({ list, loading = false, inDiff, open = 0, onReload, s
   const { welten, sicht, laedt, error: weltFehler } = useWeltSicht(f.welt);
   const q = query.trim().toLowerCase();
   const zu = (a: AssetEintrag, modus = f.modus) => zuordnung(sicht, modus, schluessel(a));
-  const andere = (a: AssetEintrag) =>
-    (!f.geaendert || inDiff.has(a.id)) && (!f.gruppe || a.gruppe === f.gruppe) && (!f.art || a.rig === f.art) &&
-    (!q || a.id.includes(q) || a.rig.includes(q) || a.gruppe.includes(q));
+  const andere = (a: AssetEintrag) => passt(a, f, q, inDiff);
   const shown = laedt ? [] : list.filter((a) => andere(a) && zu(a).sichtbar);
-  const counts = sicht ? { gesamt: list.filter((a) => andere(a) && zu(a, 'gesamt').sichtbar).length, exklusiv: list.filter((a) => andere(a) && zu(a, 'exklusiv').sichtbar).length } : undefined;
+  const zaehle = (modus: 'gesamt' | 'exklusiv') => list.filter((a) => andere(a) && zu(a, modus).sichtbar).length;
+  const counts = sicht ? { gesamt: zaehle('gesamt'), exklusiv: zaehle('exklusiv') } : undefined;
   const gruppenListe = [...new Set(list.map((a) => a.gruppe))].sort();
   const arten = [...new Set(list.map((a) => a.rig))].sort();
   const groups = [...new Set(shown.map((a) => a.gruppe))].sort();
@@ -74,11 +81,16 @@ export function AssetList({ list, loading = false, inDiff, open = 0, onReload, s
           ))}
         </Flex>
       ))}
-      {loading && <LoadingNote id="list" text="Lädt Assets …" />}
-      {!loading && laedt && <LoadingNote id="welt" text="Lädt Welt …" />}
-      {!loading && !laedt && !shown.length && <Text size="1" color="gray">Keine Assets</Text>}
+      <ListStatus loading={loading} laedt={laedt} leer={!shown.length} />
     </Flex>
   );
+}
+
+/** Lade- und Leer-Hinweis unter der Liste: Assets laden, Welt laden oder keine Treffer. */
+function ListStatus({ loading, laedt, leer }: { loading: boolean; laedt: boolean; leer: boolean }) {
+  if (loading) return <LoadingNote id="list" text="Lädt Assets …" />;
+  if (laedt) return <LoadingNote id="welt" text="Lädt Welt …" />;
+  return leer ? <Text size="1" color="gray">Keine Assets</Text> : null;
 }
 
 function Entry({ asset, diff, active, onSelect, welt }: { asset: AssetEintrag; diff: boolean; active: boolean; onSelect: (id: string) => void; welt?: WeltZuordnung }) {
