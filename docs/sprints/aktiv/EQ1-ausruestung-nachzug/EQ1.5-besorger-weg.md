@@ -1,6 +1,6 @@
 # EQ1.5 · Besorger mit sichtbarem Weg über die Treppe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -55,5 +55,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 geprüft (B-1209 AC-01 bis AC-03): Der Besorger lief schon sichtbar zur Treppe (Auftrag `ascend`) und kehrt auf demselben Weg zurück; neu meldet `island/errand.rs` das Verlassen und Erscheinen an der Treppe als Ereignisse `stairsLeave` (Stufe unten) und `stairsArrive` (Stufe oben, mit Ort, Art, ID), damit die Anzeige ein- und ausblendet (Default laut Ticket, Ralf entscheidet bei der Abnahme). Art, Leben und Beruf bleiben erhalten, nichts im Spielstand.
+- Tests `island/errand_tests.rs`: Figur bleibt erhalten und Ereignisse kommen (AC-01), gleiche Eingabe gleicher Ablauf (AC-03), ohne Treppe geht keiner hinauf (Ausnahmefall).
+- AC-02: Im Spiel geändert wurde nichts (`k3c-game` unberührt), nur zwei kleine Ereignisse je Wechsel in der Sim; `alloc_je_bild` unverändert (bekannt rot, B-1190 AC-04).
+- Nur die bekannten Roten (`eingebettete_welten_gueltig`, `insel_nach_1000_schritten_wie_go`); clippy, fmt, Regeltests grün. Kein eigenes Review (Aenderung unter 30 Zeilen, EQ1.4 reviewt).
+- Offen für Ralf (Abnahme EQ1): Darstellung – Ein-/Ausblenden an der Treppe (jetzt, Ereignisse stehen bereit, die Grafik der Blende fehlt noch) oder Laufen durch die Treppe.

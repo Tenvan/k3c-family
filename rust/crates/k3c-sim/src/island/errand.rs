@@ -8,6 +8,7 @@
 //! deterministisch: Stufen und Truppen in Index-Reihenfolge, je Stufe höchstens ein Bürger zugleich unterwegs nach oben.
 
 use super::Island;
+use crate::state::common::event;
 use crate::state::links::{barracks_bonus, fighters, troop_limit, weapons_in_flight};
 use crate::state::{Troop, World};
 
@@ -151,6 +152,10 @@ fn take(w: &mut World, ti: usize) -> (usize, Troop) {
     crate::unit::jobs::release_job(w, ti);
     crate::combat::leave_squad(w, ti);
     let t = w.troops.remove(ti);
+    // EQ1.5: Die Figur verschwindet an der Treppe; der Hinweis lässt die Anzeige sie dort ausblenden
+    w.events.push(event(
+        serde_json::json!({"type": "stairsLeave", "x": t.x, "kind": t.kind}),
+    ));
     (usize::try_from(t.errand_from - 1).unwrap_or(0), t)
 }
 
@@ -173,6 +178,10 @@ fn place(w: &mut World, old: Troop, x: f64, errand_from: i64) {
             .count();
         if left <= right { w.hub_x - 1.0 } else { w.hub_x + 1.0 }
     };
+    // EQ1.5: ... und an der Treppe der anderen Stufe wieder erscheinen (Einblenden)
+    w.events.push(event(
+        serde_json::json!({"type": "stairsArrive", "x": x, "kind": old.kind, "id": id}),
+    ));
     w.troops.push(Troop {
         id,
         kind: old.kind,
