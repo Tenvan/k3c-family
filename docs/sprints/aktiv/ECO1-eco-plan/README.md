@@ -76,7 +76,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 | ECO1.5 | `ECO1.5-reparaturkosten.md` | Umsetzung | autonom | fertig |
 | ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | offen |
 | ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | offen |
-| ECO1.8 | `ECO1.8-erzadern-freiraeumen.md` | Umsetzung | autonom | offen |
+| ECO1.8 | `ECO1.8-erzadern-freiraeumen.md` | Umsetzung | autonom | fertig |
 | ECO1.9 | `ECO1.9-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
