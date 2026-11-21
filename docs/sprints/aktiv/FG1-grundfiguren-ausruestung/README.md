@@ -66,7 +66,7 @@ keine (Name „Handwerksmeister“ entschieden von Ralf 2026-11-21, vermerkt in 
 | FG1.1 | `FG1.1-buerger-citizen.md` | Umsetzung | autonom | fertig |
 | FG1.2 | `FG1.2-meister-kombinationen.md` | Umsetzung | autonom | fertig |
 | FG1.3 | `FG1.3-figuren-grafik-texte.md` | Umsetzung | autonom | fertig |
-| FG1.4 | `FG1.4-review.md` | Review | autonom | offen |
+| FG1.4 | `FG1.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-21: AC-01 (FG1.1), AC-02 (FG1.2), AC-03 (FG1.3) erfüllt, siehe Session-Ergebnisse. Review (FG1.4): ein Befund behoben (Dev-Spawn), zwei offen (Rüstung ohne Reichweite, Werte im Code). Abnahme-Ticket für Sim, Balance und Gen: B-1203.
