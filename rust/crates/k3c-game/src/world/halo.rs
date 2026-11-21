@@ -30,6 +30,8 @@ const BLOOD_COLOR: [f32; 3] = [1.0, 0.5, 0.42];
 pub enum Kind {
     Campfire,
     Torch,
+    /// Folgendes Licht am Monarchen (LA1.8)
+    Monarch,
     Moon,
     MoonDisc,
 }
@@ -148,8 +150,33 @@ pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, (level, boo
             }
         }
     }
+    collect_monarchs(g, c, wd, boost, out);
     if has_sky(level) {
         collect_moon(g, c, wd, out);
+    }
+}
+
+/// Folgendes Licht (LA1.8, B-1161): jeder Monarch trägt nachts einen kleinen warmen Hof über dem Kopf; er zählt nicht
+/// zur Obergrenze `glow.max`, weil höchstens vier Spieler Licht tragen.
+fn collect_monarchs(g: &Glow, c: &Cell, wd: &SimWorld, boost: f64, out: &mut Vec<Halo>) {
+    let (m, k) = (&g.monarch, &c.camera);
+    let a = (glow_alpha(m.strength, &wd.cycle) * boost).min(1.0);
+    if a <= 0.0 || m.radius <= 0.0 {
+        return;
+    }
+    let color = [1.0, 0.8, 0.5];
+    for p in wd.players.iter().filter(|p| visible(k, p.x, m.radius)) {
+        let r = m.radius * k.scale;
+        out.push(Halo {
+            kind: Kind::Monarch,
+            x: k.screen_x(p.x),
+            y: c.screen_y(m.height),
+            rx: r,
+            ry: r,
+            alpha: a,
+            core: g.core,
+            color,
+        });
     }
 }
 

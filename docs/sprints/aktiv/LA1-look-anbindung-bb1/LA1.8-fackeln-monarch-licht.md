@@ -1,6 +1,6 @@
 # LA1.8 · Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -57,5 +57,29 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+### Ist-Stand (Schritt 1)
+- `data/light.json › torches` kannte nur `wall` und `tower`. Fackeln (Halter immer, Schein nur nachts) und Lichthöfe lesen genau diese Tabelle (`world/light.rs`, `lightdraw.rs`, `halo.rs`, Sim `k3c-sim/state/torches.rs`).
+
+### Umgesetzt
+- **Fackeln an allen Hub-Gebäuden:** `torches` bekommt Einträge für Werkstatt, Bogner, Rüstkammer, Lager, Kinderstube, Kaserne, Taverne, Heiler, Schmiede (je links und rechts, ±0,8 Units). Burg bleibt beim Lagerfeuer. Regeln unverändert: nur gebaute Plätze, zerstört = keine, am Tag nur Halter ohne Schein. Kein neuer Code für die Fackeln nötig, daher gilt es im Spiel und in der Sim gleich.
+- **Monarch-Licht:** neues `glow.monarch` (`radius` 2,5, `strength` 0,5, `height` 3,2 Units; `look.rs`, `look.json`) und `Kind::Monarch` in `world/halo.rs`: jeder Monarch trägt nachts einen kleinen warmen Hof über dem Kopf, der mit ihm wandert (je Ansicht und Spieler, gleiche Farbe `glowColor`-Ton). Nur im Profil `k2c` (wie alle Höfe), am Tag aus, außerhalb der Sicht kein Hof, zählt nicht zu `glow.max`.
+
+### Kriterien
+- **AC-07 erfüllt (Tests):** `alle_hub_gebaeude_tragen_fackeln` (je Hub-Gebäude nachts n Fackeln, zerstört 0, Tag kein Schein) und `monarch_traegt_nachts_ein_licht` (ein Licht je Monarch, folgt, Tag und Sichtfeld) in `world/halo_tests.rs`. **Vorher-Nachher-Bild: nicht erzeugt** (kein Bildlauf in dieser Session; Ralf prüft am PC).
+- `cargo test -p k3c-game -p k3c-sim -p k3c-data` grün, `task rust:lint` grün, `go test ./...` grün. `task check:diff` bleibt in Stufe `regeln` rot an den bekannten Planungstests (RU30, Fahrplan, `planningProjects`).
+
+### Nebenbei repariert (Go-/Rust-Datenvergleich)
+- `engine/internal/detvec/data_test.go`: `sizes.json` fehlte in `dataFiles` (seit LA1.1 rot, `TestDataFilesComplete`); ergänzt.
+- `testdata/rust/data-tree.json.gz` mit `-write` neu geschrieben (neue Fackel-Schlüssel, `sizes.json`; behebt auch den alten Fehler `sounds.json.slots`).
+- `k3c-data/tree_rest_tests.rs`: `light.json` mit `same_as_go_zahlen_aus_daten` (neue Schlüssel erlaubt), `sizes.json` mit Vergleich und in der Prüfliste.
+
+### Entscheidungen (Default, für Ralf)
+- Monarch-Licht ist ein gezeichneter Hof (Glow-Quelle), keine Aufhellung der Lichtkarte; so bleibt das Go-Profil bildgleich.
+- Alle Hub-Gebäude gleich: zwei Fackeln, kein Gebäude-spezifischer Versatz; kein neues Halter-Asset.
+
+### Nachprüfung (Ralf, PC)
+- Nachts im Hub: Fackeln an allen Gebäuden sichtbar, nicht zu viele Höfe (Frame-Budget); Monarch-Licht (Größe, Helligkeit, Split-Screen) abnehmen, Werte in `look.json` justierbar.
+
+### Für den Hauptrechner
+- Vorher-Nachher-Bild Nacht fehlt (braucht `gen:paper`/Bildlauf, Abnahme-Ticket LA1).
+- Mit dem Neuschreiben von `data-tree.json.gz` ist der Go-Datenbaum wieder aktuell; weitere Datenstände bitte über `go test ./internal/detvec/ -write` statt über Rust-Sonderfälle.

@@ -9,7 +9,7 @@ use k3c_platform::Canvas;
 
 use super::Hud;
 use super::draw::{BOX_ALPHA, BOX_PAD_X, BOX_PAD_Y};
-use super::fonts::{ROLE_CITIZEN, ROLE_HINT, ROLE_PLAYER, Rgba, rgb};
+use super::fonts::{ROLE_CITIZEN, ROLE_HINT, ROLE_PLAYER, Rgba, font_px, rgb};
 use super::hints::{GuideIcon, HINT_ABOVE_UNITS, HINT_TOP_FREE_REF_PIXEL, guide_height, guide_image};
 use super::layout::Rect;
 use super::paint::{MAX_LABELS, TextSlot};
@@ -217,7 +217,29 @@ impl Hud {
     }
 
     /// draw_radar zeichnet Leiste, Marker und Kamera-Ausschnitt.
-    pub fn draw_radar(&self, dst: &mut dyn Canvas, st: &SeatState, c: &Cell, r: Rect, k: f64) {
+    pub fn draw_radar(
+        &mut self,
+        dst: &mut dyn Canvas,
+        st: &SeatState,
+        c: &Cell,
+        r: Rect,
+        k: f64,
+        f: Option<&mut Font>,
+    ) {
+        if !st.biomes_s.is_empty() {
+            // Biome der Insel über der Leiste, mittig (LA1.3)
+            let size = font_px(ROLE_HINT, self.cells as i64) * k;
+            let (w, h) = self
+                .paint
+                .measure_text(f.as_deref(), c.player, TextSlot::BIOMES, &st.biomes_s, size);
+            let box_r = Rect::new(
+                r.x + (r.w - w) / 2.0 - BOX_PAD_X * k,
+                r.y - h - 2.0 * BOX_PAD_Y * k - 3.0 * k,
+                w + 2.0 * BOX_PAD_X * k,
+                h + 2.0 * BOX_PAD_Y * k,
+            );
+            self.text_box(dst, f, box_r, &st.biomes_s, size, ROLE_HINT.clr, k);
+        }
         let pt = &self.paint;
         pt.fill(dst, r, rgb(0, 0.5));
         pt.frame(dst, r, 1.0, rgb(0xffffff, 0.35));

@@ -150,3 +150,72 @@ fn hof_netz_verlaeuft_von_der_mitte_nach_aussen() {
         assert!(v[1].color[3] >= v[1 + SEGMENTS].color[3], "Kern deckt am stärksten");
     });
 }
+
+/// LA1.8 (B-1161): Jedes gebaute Hub-Gebäude trägt nachts Fackeln, ein zerstörtes nicht.
+#[test]
+fn alle_hub_gebaeude_tragen_fackeln() {
+    with_profile("k2c", || {
+        crate::world::register_look();
+        let light = load_light();
+        // Hub-Gebäude mit Grafik (props::HUB_BUILDINGS; world importiert props nicht)
+        let kinds = [
+            "workshop", "bowyer", "armory", "storage", "nursery", "barracks", "tavern", "healer", "smithy",
+        ];
+        for kind in kinds {
+            let mut w = night_world(0);
+            w.sites.push(Site {
+                x: 36.0,
+                kind: kind.into(),
+                state: "built".into(),
+                ..Site::default()
+            });
+            let n = light.torches.get(kind).map_or(0, Vec::len);
+            assert!(n > 0, "{kind}: keine Fackelplätze in data/light.json");
+            let out = run("meadow", &w, 40.0);
+            assert_eq!(count(&out, Kind::Torch), n, "{kind}: Fackeln nachts");
+            w.sites[0].state = "ruin".into();
+            assert_eq!(count(&run("meadow", &w, 40.0), Kind::Torch), 0, "{kind}: zerstört");
+            w.sites[0].state = "built".into();
+            w.cycle = cycle("day", 0.0);
+            assert!(run("meadow", &w, 40.0).is_empty(), "{kind}: am Tag kein Schein");
+        }
+    });
+}
+
+/// LA1.8: Jeder Monarch trägt nachts ein folgendes Licht; es wandert mit ihm und fehlt am Tag und außer Sicht.
+#[test]
+fn monarch_traegt_nachts_ein_licht() {
+    use k3c_sim::state::Player;
+    with_profile("k2c", || {
+        let mut w = night_world(0);
+        w.players = vec![
+            Player {
+                index: 0,
+                x: 40.0,
+                ..Player::default()
+            },
+            Player {
+                index: 1,
+                x: 41.0,
+                ..Player::default()
+            },
+        ];
+        let at = |w: &SimWorld| {
+            run("meadow", w, 40.0)
+                .into_iter()
+                .filter(|h| h.kind == Kind::Monarch)
+                .map(|h| (h.x, h.alpha))
+                .collect::<Vec<_>>()
+        };
+        let a = at(&w);
+        assert_eq!(a.len(), 2, "ein Licht je Monarch");
+        assert!(a.iter().all(|(_, al)| *al > 0.0 && *al <= 1.0));
+        w.players[0].x = 44.0;
+        let b = at(&w);
+        assert!(b[0].0 > a[0].0, "Licht folgt dem Monarchen");
+        w.players[1].x = 900.0;
+        assert_eq!(at(&w).len(), 1, "außer Sicht kein Hof");
+        w.cycle = cycle("day", 0.0);
+        assert!(at(&w).is_empty(), "am Tag kein Licht");
+    });
+}

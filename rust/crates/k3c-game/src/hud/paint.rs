@@ -56,7 +56,9 @@ impl TextSlot {
     pub const STORY_B: TextSlot = TextSlot(14);
     pub const MENU_TITLE: TextSlot = TextSlot(15);
     pub const MENU_FOOTER: TextSlot = TextSlot(16);
-    const MENU_ROW: usize = 17;
+    /// Biome der Insel am Kompass (LA1.3)
+    pub const BIOMES: TextSlot = TextSlot(17);
+    const MENU_ROW: usize = 18;
     const MENU_GLYPH: usize = Self::MENU_ROW + MENU_WINDOW;
     const MENU_CAP: usize = Self::MENU_GLYPH + MENU_WINDOW;
     const LABEL: usize = Self::MENU_CAP + MENU_WINDOW;
