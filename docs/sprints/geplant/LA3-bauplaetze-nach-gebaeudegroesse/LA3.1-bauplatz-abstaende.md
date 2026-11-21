@@ -34,7 +34,7 @@ Keine Balance-Änderung, keine Simulationsläufe.
 
 1. Gebäudebreiten je Typ bestimmen.
 2. Abstandsregel für Bauplätze: Mitte zu Mitte mindestens halbe Breite beider Nachbarn plus Rand.
-3. Alte Spielstände: Verhalten festlegen (offene Frage der Sprint-README).
+3. Alte Spielstände: keine Migration (🧑 2026-11-21: egal).
 4. Tests, Golden bewusst neu schreiben mit Begründung.
 
 ## Fertig, wenn

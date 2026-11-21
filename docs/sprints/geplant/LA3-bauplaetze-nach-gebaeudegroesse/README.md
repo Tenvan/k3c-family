@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1182
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 Ralf, 2026-11-21
 
 ## Ausgangslage
 
@@ -56,7 +56,7 @@ Zu wenig Platz im Hub: Reihenfolge und Mauern behalten Vorrang, Meldung im Log.
 
 ## Offene Fragen
 
-🧑: Alte Spielstände neu anordnen oder nur neue Spiele? Blockiert die Freigabe von LA3.1.
+Keine offen. 🧑 2026-11-21: Alte Spielstände sind egal, keine Migration, keine Kompatibilität; die Plätze folgen der neuen Abstandsregel, alte Spielstände dürfen bei der neuen Regel brechen oder neu geladen werden.
 
 ## Sessions
 
