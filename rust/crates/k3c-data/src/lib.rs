@@ -23,6 +23,7 @@ pub mod goals;
 pub mod guards;
 pub mod hermits;
 pub mod hub;
+pub mod hub_layout;
 pub mod island_sizes;
 pub mod light;
 pub mod look;
@@ -48,7 +49,7 @@ pub mod waves;
 pub mod weather;
 pub mod world;
 
-pub use data::{Data, load_all};
+pub use data::{Data, load_all, load_game};
 pub use source::Source;
 
 /// Fehler beim Laden der Daten; der Text folgt Go (Datei, Feld, Grund).

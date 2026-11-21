@@ -1,6 +1,6 @@
 # LA3.1 · Bauplatz-Abstände nach Gebäudebreite (B-1182)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -61,5 +61,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt und geprüft: `k3c_data::load_game` (`hub_layout.rs`) spreizt die Hub-Plätze nach den Breiten aus `data/sizes.json › bauplaetze` (Lücke 1,5 Units, Treppen bleiben stehen) und schiebt Turm und Mauer der Zone 1 hinter das äußerste Gebäude (Turm ≈ 53, Mauer ≈ 57, Zahlabstand 4). Das Spiel lädt damit (`local/worlds.rs`), `load_all` und `data/hub.json` bleiben roh wie für Go. Tests: `hub_layout_tests.rs` (kein Paar überlappt, Turm und Mauer hinter den Gebäuden, Änderung nur nach außen, stabil), `k3c-sim hub/layout_tests.rs` (`validate_hub_data` ohne Befund auf den gespreizten Daten). Go-Golden unverändert; `testdata/rust/data-tree.json.gz` mit `go test ./engine/internal/detvec -write` neu geschrieben, weil es `sizes.json` roh enthält. Review (k3c-reviewer): zwei Befunde (Treppenregel, Zone 1), behoben. Entscheidung 🧑: Option Hub-Layout in Rust, alte Spielstände egal.
+
+Rote Tests, nicht aus dieser Session: `alloc_je_bild`, `e2e_flow`, `insel_nach_1000_schritten_wie_go` (auf sauberem main ebenfalls rot), `eingebettete_welten_gueltig` und `alle_welt_dateien_aus_data_sind_ladbar` (lokale, nicht eingecheckte `data/worlds/rom.json`). `task check:diff`: nur `golangci-lint` fehlt lokal.
+
+Für 🧑 am PC: Hub in Standard-Welt auf Stufe 4 (alle Gebäude) ansehen, ob nichts überlappt und Turm und Mauer am Rand stehen; Level-Layout der Zone 1 hat sich in Rust verschoben.

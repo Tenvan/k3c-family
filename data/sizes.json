@@ -1,6 +1,26 @@
 {
   "notes": "Größenstufen (LA1.1, Standard docs/standards/bildaufbau.md § 2). Nur das Rust-Spiel liest diese Datei, und nur im Look-Profil k2c (look.json › sizes); Go ignoriert sie. bezugPx = Höhe des berittenen Monarchen in Spiel-px (1 M, figuren/monarch bleibt unverändert, Reittiere gehören zum Monarchen). stufen = sichtbare Höhe eines Dings als Vielfaches von M. assets = Zuordnung gruppe/id → Stufe; sicht = sichtbare Höhe geteilt durch Rahmenhöhe des Bildes (erstes Bild der Ruhe-Animation, Alpha > 16; neu messen, wenn das Asset neu gezeichnet wird; der Test sizes_stimmen_mit_der_grafik prüft es). Das Spiel zeichnet ein Asset so, dass seine sichtbare Höhe = Stufe × bezugPx ist; Assets ohne Eintrag (Kleinkram wie Truhen, Felsen, Münzen, Schiff, Mounts) behalten ihre Größe. Eine Stufe ändern heißt alle ihre Assets ändern; ein Asset einer anderen Stufe zuordnen heißt es umsortieren.",
   "bezugPx": 121.5,
+  "bauplaetze": {
+    "notes": "Breite der Hub-Gebäude in Units (sichtbare Breite aus dem breitesten Ruhe-Bild, Größenstufe und Skalierung; 1 Unit = 32 px), gemessen mit Alpha > 16; neu messen, wenn ein Asset neu gezeichnet wird. Nur Rust: Beim Laden für das Spiel (load_game) rückt jeder Hub-Platz so nach außen, dass zwischen den Gebäuden mindestens luecke Units frei bleiben. data/hub.json bleibt unverändert (Go-Golden). Breite 0 (Treppen) = kein Gebäude: bleibt an seinem Platz und schiebt nichts. Turm und Mauer (zone1TowerUnits, zone1WallUnits) rücken hinter das äußerste Gebäude, mit derselben Lücke.",
+    "luecke": 1.5,
+    "zahlAbstand": 4.0,
+    "burg": 15.0,
+    "breiten": {
+      "workshop": 6.3,
+      "bowyer": 5.5,
+      "armory": 7.1,
+      "storage": 6.5,
+      "barracks": 6.1,
+      "tavern": 6.3,
+      "healer": 6.1,
+      "smithy": 6.4,
+      "stairsUp": 0.0,
+      "stairsDown": 0.0,
+      "tower": 3.8,
+      "wall": 1.0
+    }
+  },
   "stufen": {
     "gegner-winzig": {
       "m": 0.3,

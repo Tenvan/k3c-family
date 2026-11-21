@@ -28,6 +28,28 @@ pub struct Sizes {
     pub stages: BTreeMap<String, Stage>,
     /// Zuordnung Asset `gruppe/id` → Stufe.
     pub assets: BTreeMap<String, AssetSize>,
+    /// Breiten der Hub-Gebäude für den Abstand der Bauplätze (LA3.1, B-1182).
+    #[serde(rename = "bauplaetze")]
+    pub sites: SiteWidths,
+}
+
+/// Breiten der Hub-Gebäude (`.bauplaetze`).
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct SiteWidths {
+    pub notes: String,
+    /// Mindestlücke zwischen zwei Gebäuden in Units.
+    #[serde(rename = "luecke")]
+    pub gap: f64,
+    /// Mindestabstand zweier Zahlziele in Units (2 × payRangeUnits).
+    #[serde(rename = "zahlAbstand")]
+    pub pay_gap: f64,
+    /// Breite der Burg in Units (Hub-Mitte).
+    #[serde(rename = "burg")]
+    pub castle: f64,
+    /// Breite je Platzart in Units.
+    #[serde(rename = "breiten")]
+    pub widths: BTreeMap<String, f64>,
 }
 
 /// Eine Stufe (`.stufen.*`).
