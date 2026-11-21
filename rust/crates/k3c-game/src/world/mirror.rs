@@ -44,7 +44,8 @@ pub fn mirror_uniforms(c: &Cell, clock: f64, emissive: f64) -> MirrorUniforms {
 impl World {
     /// Spiegel statt Wellen: Profil sieht es vor, Fluss-Fassung `shader` und der Canvas kann es.
     pub fn mirror_wanted(&self, f: &Frame, dst: &dyn Canvas) -> bool {
-        k3c_data::look::current().mirror.enabled
+        super::fx::on("mirror")
+            && k3c_data::look::current().mirror.enabled
             && river_mode_for(&f.settings.river, self.start) == RiverMode::Shader
             && dst.can_mirror()
     }

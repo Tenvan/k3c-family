@@ -64,22 +64,24 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Stand: umgesetzt, **Nachprüfung 🧑 am PC steht aus** (Status bleibt `offen` bis dahin). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
+Stand: umgesetzt, **zweite Nachprüfung 🧑 am PC steht aus** (Status bleibt `offen`). Hauptrechner statt Lane zweit (🧑 2026-11-21), Modell sonnet.
 
-### Umgesetzt
-- **Rang 1, Lichthöfe** (`data/look.json` › glow): Radius 1 → 1,5, Stärke 0,55 → 0,32, Kern 0,1 → 0, Abfall 0,4 → 0,5; Monarch-Licht Radius 2,5 → 3,6, Stärke 0,5 → 0,3, Höhe 3,2 → 3,4. Der Hof erhellt die Umgebung, überdeckt den Monarchen nicht mehr (Vorher/Nachher Nacht). **Nicht gesehen:** Fackeln an gebauten Häusern, die Aufnahmen zeigen den Hub ohne Gebäude; die gleichen Werte gelten für sie, die Sichtprüfung bleibt bei 🧑.
-- **Rang 2, Nachthimmel:** Sterne nach der Lichtkarte (`world/sky.rs`, `draw_stars`, 90 Stärne, feste Lage ohne Zufall), Mond-Hof Radius 9 → 14, Stärke 0,55 → 0,6, Scheibe 0,12 → 0,08; Nacht nicht ganz schwarz (`sky.nightLift` 0,06 und `sky.backLift` 0,09, nur im Profil k2c; `light.json` unverändert, weil die Go-Golden daran hängen); Abendrot am Horizont (`sky.horizon`, `glowHorizon` 0,7, nur in Dämmerung und Morgengrauen); Spiegelung weicher (`mirror.brightness` 0,62, `tint` 0,22, `glint` 0,25).
-- **Rang 3, Himmel mit Verlauf:** Verlauf von der Himmelsfarbe zu `sky.top` (24 Bänder), Dunst dichter (`haze` 0,3/0,15/0 → 0,4/0,25/0; Welt forest 0,35/0,2/0,05 → 0,45/0,3/0,05).
-- Neuer Code: `k3c-data/src/look_sky.rs` (Struct `Sky`), `k3c-game/src/world/sky.rs` und `sky_tests.rs` (Tests für Dämmerlicht und feste Sternlage), Einbindung in `layers.rs`, `lightdraw.rs`, `light.rs`. Eingebaute Profilwerte (`look.rs`, `look_world.rs`) und Tests (`mirror_tests.rs`, `tests/mirror_bild.rs`) angepasst.
+### Umgesetzt (Runde 1)
+- **Rang 1, Lichthöfe** (`data/look.json` › glow): weicher, größer, ohne Kern. **Rang 2:** Sterne nach der Lichtkarte (`world/sky.rs`), Mond-Hof größer, Nacht-Aufhellung (`sky.nightLift`, `backLift`, nur Profil k2c; `light.json` bleibt wegen der Go-Golden), Abendrot (`sky.horizon`), Spiegelung weicher (`mirror.brightness` 0,62, `glint` 0,25). **Rang 3:** Himmelsverlauf (`sky.top`, `gradient`), Dunst dichter.
+- Neuer Code: `k3c-data/src/look_sky.rs`, `look_glow.rs` (aus `look.rs` ausgelagert, Dateigrenze), `world/sky.rs` mit Tests.
+
+### Nachprüfung 🧑 2026-11-21 (Runde 2)
+- **„überstrahlt noch, das Licht selbst darf gar nicht sichtbar sein“:** neues Feld `glow.sources` (`look_glow.rs`), in den Daten `false`: Lagerfeuer, Fackeln und Monarch zeichnen keinen sichtbaren Hof mehr; sie erhellen nur über die Lichtkarte (`light.json`). Der Mond behält seinen Hof. Test `ohne_sichtbare_quellen_hat_nur_der_mond_einen_hof`; die übrigen Hof-Tests testen mit `sources: true`.
+- **„Dunst nur bei Wetter-Events“:** `tint::weather_haze` (Taifun und Flut, Vorboten und Wirkung, über `sight_of`); sonst kein Dunst (`layers.rs`).
+- **„blass beim Abdunkeln – Filter oder nur der Dunst?“:** Beides trägt bei. Der Dunst legt in Himmelsfarbe einen Schleier über Kulisse und Mitte, die Lichthöfe einen gelben Schleier über Gebäude. Die Tönung (Multiplikator der Tageszeit) und meine Nacht-Aufhellung bleiben als mögliche Ursache; zum Eingrenzen gibt es `world/fx.rs`: jeder Effekt (Dunst, Höfe, Sterne, Himmel, Aufhellung, Tönung, Spiegelung) lässt sich per `K3C_FX_OFF=haze,tint,…` ausschalten. Aufnahme Morgengrauen vom Spielstand `spiel-1` ohne Dunst und ohne Höfe zeigt klare Farben (`.work/stimmung-nach/spiel-an/`).
+- **Cheat-Fenster-Panel:** B-1179 (Schalter `fx::set` stehen bereit). **FPS-Anzeige** (zeigt 0 FPS, zu groß, abgeschnitten): B-1180.
 
 ### Prüfung
-- `cargo test -p k3c-game -p k3c-data --release`: alles grün außer `tree_tests::economy_wie_go` (`economy.json.ChestGold[0] = 15, erwartet 30`): nicht von dieser Session (Truhen-Gold halbiert in RU36.3, B-1159; Go-Baum nicht nachgezogen), Befund für den Hauptrechner.
-- `cargo clippy --all-targets -D warnings` und `cargo fmt` sauber; `task check:diff` siehe Commit.
-- Bilder: Vorher `.work/stimmung/<szene>-1/shot-01.png`, Nachher `.work/stimmung-nach/<szene>-1/shot-01.png` (tag, daemm, abend, nacht; nicht eingecheckt).
+- `cargo test -p k3c-game -p k3c-data --release`: grün außer `tree_tests::economy_wie_go` (`ChestGold[0] = 15, erwartet 30`, nicht von dieser Session: Halbierung in RU36.3, B-1159). `cargo clippy --all-targets -D warnings` und `cargo fmt` sauber. `task check:diff` scheitert schon vorher an Lint-Fehlern einer Workbench-Oberfläche in `tools/`, nicht an dieser Änderung.
+- Bilder: Vorher `.work/stimmung/`, Nachher `.work/stimmung-nach/` (nicht eingecheckt).
 
 ### Für den Hauptrechner
-- B-1178: Wolken, monumentaler Hintergrund (neues Asset), Wellenstriche des Wassers (Shader der Plattform, `RIVER_WAVE`; ändern ohne Go-Golden).
-- `economy_wie_go` rot (siehe oben).
+- B-1178: Wolken, monumentaler Hintergrund, Wellenstriche. B-1179: Cheat-Panel. B-1180: FPS-Anzeige. `economy_wie_go` rot.
 
 ### Abweichung vom Plan
-AC-05 nur teilweise erfüllt: von Rang 3 fehlen Wolken und das Monumentalbild, von Rang 2 die Wellenstriche (B-1178).
+AC-05 nur teilweise erfüllt: Wolken, Monumentalbild und Wellenstriche fehlen (B-1178). Die Fackeln an gebauten Häusern habe ich nachts nicht selbst gesehen (kein Stand mit Gebäuden in der Nacht aufgenommen).

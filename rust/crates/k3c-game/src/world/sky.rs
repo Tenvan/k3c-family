@@ -55,7 +55,7 @@ impl World {
     #[allow(clippy::cast_precision_loss)]
     pub fn draw_sky(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, level: &str, back: f64) {
         let s: Sky = current().sky;
-        if !s.enabled || !has_sky(level) {
+        if !s.enabled || !has_sky(level) || !super::fx::on("sky") {
             return;
         }
         let r = c.world_rect();
@@ -80,7 +80,7 @@ impl World {
     #[allow(clippy::cast_precision_loss)]
     pub fn draw_stars(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, level: &str) {
         let s: Sky = current().sky;
-        if !s.enabled || !has_sky(level) {
+        if !s.enabled || !has_sky(level) || !super::fx::on("stars") {
             return;
         }
         let r = c.world_rect();

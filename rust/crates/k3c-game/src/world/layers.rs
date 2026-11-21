@@ -9,7 +9,7 @@ use super::World;
 use super::backdrop::{FRAME_PER_UNIT, Look, Rgba, TILE_UNITS, variant};
 use super::cull::tile_range;
 use super::forest::wall_alpha;
-use super::tint::haze_of;
+use super::tint::{haze_of, weather_haze};
 use crate::view::cell::Cell;
 use crate::view::frame::{Frame, Stage};
 use k3c_data::look::current;
@@ -33,7 +33,9 @@ impl World {
         self.draw_sky(dst, c, wd, &st.level, back);
         let factor = current().scroll_for(&st.level, 0, lk.scroll[0]);
         self.draw_layer_with(dst, c, wd, lk, 0, (back, factor, 1.0));
-        self.draw_haze(dst, c, &st.level, lk.sky, back, 0);
+        if weather_haze(wd) {
+            self.draw_haze(dst, c, &st.level, lk.sky, back, 0);
+        }
         self.draw_weather_sky(dst, f, c);
     }
 
@@ -81,7 +83,9 @@ impl World {
         };
         let factor = look.scroll_for(&st.level, i, lk.scroll[i]);
         self.draw_layer_with(dst, c, wd, lk, i, (back, factor, alpha));
-        self.draw_haze(dst, c, &st.level, lk.sky, back, i);
+        if weather_haze(wd) {
+            self.draw_haze(dst, c, &st.level, lk.sky, back, i);
+        }
     }
 
     /// DrawLayer zeichnet die sichtbaren Kacheln der Schicht i, Fußlinie auf der Boden-Linie, getönt mit Helligkeit

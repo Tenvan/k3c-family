@@ -218,6 +218,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1176](B-1176-mauer-stufe-1-zaun.md) | PAP | Idee | mittel | offen | LA1 | Die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand |
 | [B-1177](B-1177-werte-tabelle-einheit-min-max.md) | DEV | Idee | niedrig | offen | WZ62 | Das Backend liefert je Welt-Wert Einheit und Min/Max, damit die Werte-Tabelle Regler und Bereichsprüfung beim Tippen bietet |
 | [B-1178](B-1178-stimmung-reste-wolken-monumental-wellen.md) | CLI | Idee | mittel | offen | LA1 | Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch |
+| [B-1179](B-1179-cheat-fenster-panel-umgebungseffekte.md) | CLI | Idee | mittel | offen | LA1 | Cheat-Fenster braucht ein Panel, das die Umgebungseffekte einzeln ein- und ausschaltet |
+| [B-1180](B-1180-fps-anzeige-zu-gross-null-fps.md) | CLI | Problem | mittel | offen | LA1 | Die FPS-Anzeige oben rechts zeigt 0 FPS, ist zu gross und am Rand abgeschnitten |
 
 ## Archiv
 

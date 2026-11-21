@@ -20,6 +20,7 @@ pub mod bank;
 pub mod camera;
 pub mod cull;
 pub mod forest;
+pub mod fx;
 pub mod ground;
 pub mod halo;
 pub mod layers;

@@ -7,6 +7,9 @@ use serde::{Deserialize, Serialize};
 #[serde(default, rename_all = "camelCase")]
 pub struct Glow {
     pub enabled: bool,
+    /// Lagerfeuer, Fackeln und Monarch zeichnen einen sichtbaren Hof. Aus (🧑 2026-11-21): das Licht darf nicht selbst
+    /// sichtbar sein, es erhellt nur die Gegend (Lichtkarte, `light.json`); der Mond behält seinen Hof.
+    pub sources: bool,
     /// Faktor auf den Radius der Lichtquelle aus `data/light.json` (dort schon Darstellungs-Reichweite).
     pub radius: f64,
     /// Faktor auf die Stärke der Quelle (Deckkraft des Hofs in der Mitte).
@@ -68,6 +71,7 @@ const MOON_DEFAULT: Moon = Moon {
 
 pub(crate) const GLOW_OFF: Glow = Glow {
     enabled: false,
+    sources: false,
     radius: 1.5,
     strength: 0.32,
     core: 0.0,

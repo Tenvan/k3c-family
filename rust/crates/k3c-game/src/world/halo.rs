@@ -131,7 +131,8 @@ pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, (level, boo
         color,
     };
     let a = (glow_alpha(light.campfire.strength, &wd.cycle) * g.strength * boost).min(1.0);
-    if light.campfire.valid()
+    if g.sources
+        && light.campfire.valid()
         && has_campfire(wd)
         && a > 0.0
         && visible(k, wd.castle.x, light.campfire.radius * g.radius)
@@ -139,7 +140,7 @@ pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, (level, boo
         out.push(make(Kind::Campfire, wd.castle.x, 1.0, light.campfire.radius, a));
     }
     let a = (glow_alpha(light.torch.strength, &wd.cycle) * g.strength * boost).min(1.0);
-    if light.torch.valid() && a > 0.0 {
+    if g.sources && light.torch.valid() && a > 0.0 {
         for s in wd.sites.iter().filter(|s| s.state == "built") {
             let side = torch_side(s.x, wd.hub_x);
             for o in light.torches.get(&s.kind).into_iter().flatten() {
@@ -150,7 +151,9 @@ pub fn collect(light: &LightData, g: &Glow, c: &Cell, wd: &SimWorld, (level, boo
             }
         }
     }
-    collect_monarchs(g, c, wd, boost, out);
+    if g.sources {
+        collect_monarchs(g, c, wd, boost, out);
+    }
     if has_sky(level) {
         collect_moon(g, c, wd, out);
     }
@@ -215,6 +218,9 @@ impl World {
     /// DrawHalos zeichnet die Höfe der Zelle (Profil `k2c`; sonst nichts).
     pub fn draw_halos(&mut self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, level: &str, boost: f64) {
         let g = current().glow;
+        if !super::fx::on("halos") {
+            return;
+        }
         collect(&self.light, &g, c, wd, (level, boost), &mut self.halos);
         if self.halos.is_empty() {
             return;

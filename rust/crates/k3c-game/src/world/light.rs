@@ -133,7 +133,7 @@ pub fn torch_side(x: f64, hub_x: f64) -> f64 {
 /// SkyLift ist die Aufhellung der tiefsten Nacht aus dem Look-Profil (LA1.5); ohne Himmel-Profil 0.
 fn sky_lift(back: bool) -> f64 {
     let s = k3c_data::look::current().sky;
-    match (s.enabled, back) {
+    match (s.enabled && super::fx::on("lift"), back) {
         (false, _) => 0.0,
         (true, false) => s.night_lift,
         (true, true) => s.back_lift,
