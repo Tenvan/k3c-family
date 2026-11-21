@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CatalogPage } from '../catalog/CatalogPage';
-import { buttons, click, mount, unmount, until } from '../testing';
+import { buttons, click, expandTrees, mount, unmount, until } from '../testing';
 import { groesseresMass, stufenPx } from './SizeScene';
 import { clearSizeCache } from './sizeCache';
 
@@ -16,6 +16,7 @@ afterEach(() => {
 
 async function zeigeGroesse(id = 'monarch') {
   const host = await mount(<CatalogPage />);
+  await expandTrees(host);
   await until(`Kachel ${id}`, () => host.querySelector(`[data-asset="${id}"]`));
   await click(host.querySelector(`[data-asset="${id}"]`)!);
   await until('Knopf Größenvergleich', () => buttons(host, 'Größenvergleich')[0]);
@@ -108,6 +109,7 @@ describe('Vorher und Nachher teilen den Maßstab (Review-Befund)', () => {
 describe('Zoom-Stufen der Vorschau (B-733)', () => {
   it('Vorschau im Katalog startet bei 2× und folgt der Stufe', async () => {
     const host = await mount(<CatalogPage />);
+    await expandTrees(host);
     await until('Kachel monarch', () => host.querySelector('[data-asset="monarch"]'));
     await click(host.querySelector('[data-asset="monarch"]')!);
     await until('Vorschau bei 2×', () => host.querySelector('img.as-frame')?.getAttribute('data-zoom') === '2');

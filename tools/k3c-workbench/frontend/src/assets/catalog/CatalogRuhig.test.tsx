@@ -5,7 +5,7 @@ import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../../api';
 import type { AssetEintrag, Frame, Spec } from '../api';
-import { buttons, click, mount, unmount, wait } from '../testing';
+import { buttons, click, expandTrees, mount, unmount, wait } from '../testing';
 import { mountCatalog, playFrames, select, until } from './catalogTesting';
 import { CatalogPage } from './CatalogPage';
 
@@ -41,6 +41,7 @@ describe('Katalog: Lade-Anzeige (WB2/AC-03)', () => {
     const host = await mount(<CatalogPage />);
     expect(loading(host, 'list')?.textContent).toContain('Lädt Assets');
     list.resolve(await real());
+    await expandTrees(host);
     await until('Liste geladen', () => entry(host, 'monarch'));
     expect(loading(host, 'list')).toBeNull();
   });

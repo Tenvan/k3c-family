@@ -49,6 +49,14 @@ export async function click(el: Element) {
   await settle();
 }
 
+/** Klappt alle Bäume des Katalogs auf (sie starten zugeklappt) und wartet auf das erste Asset. */
+export async function expandTrees(host: HTMLElement): Promise<void> {
+  await until('Gruppe im Baum', () => host.querySelector('[data-group]'));
+  const bar = await until('Leiste Alle aufklappen', () => host.querySelector<HTMLElement>('[aria-label="Alle aufklappen"]'));
+  await click(bar);
+  await until('erstes Asset im Baum', () => host.querySelector('[data-asset]'));
+}
+
 export const buttons = (host: ParentNode, text: string) =>
   [...host.querySelectorAll('button')].filter((b) => b.textContent?.trim() === text);
 

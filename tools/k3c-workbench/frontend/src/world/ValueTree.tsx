@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import { Badge, Button, Flex, IconButton, Text } from '@webkit/atoms';
+import { TreeBar } from '../lib/TreeBar';
+import { useTreeOpen } from '../lib/useTreeOpen';
 import { fileIcon, fileName, groupIcon, groupName } from './valueIcons';
 import { groupRows, type ValueRow } from './worldOverrides';
 
@@ -42,8 +43,6 @@ function Row({ on, icon, name, count, own, level, id, open, onToggle, onPick }:
 
 /** `rows`: die Zeilen nach Suche und Modus, aber ohne Wahl im Baum. */
 export function ValueTree({ rows, pick, onPick }: { rows: readonly ValueRow[]; pick: TreePick; onPick: (p: TreePick) => void }) {
-  // Dateien, die der Nutzer von Hand zu- oder aufgeklappt hat; sonst ist die gewählte Datei offen
-  const [toggled, setToggled] = useState<ReadonlyMap<string, boolean>>(new Map());
   const groups = groupRows(rows);
   const files = new Map<string, Counts & { groups: typeof groups }>();
   for (const g of groups) {
@@ -52,21 +51,23 @@ export function ValueTree({ rows, pick, onPick }: { rows: readonly ValueRow[]; p
     f.own += g.own;
     f.groups.push(g);
   }
-  const isOpen = (file: string) => toggled.get(file) ?? pick.file === file;
-  const flip = (file: string) => setToggled((m) => new Map(m).set(file, !isOpen(file)));
+  // alles zugeklappt; nur die schon gewählte Datei ist am Anfang offen
+  const tree = useTreeOpen([...files.keys()], pick.file ? [pick.file] : []);
   // Ein zweiter Klick auf den gewählten Knoten hebt die Wahl auf (alle Dateien); ein Klick öffnet die Datei
   const select = (p: TreePick) => {
     if (pick.file === p.file && pick.group === p.group) return onPick({ file: '', group: null });
-    setToggled((m) => new Map(m).set(p.file, true));
+    tree.open(p.file);
     onPick(p);
   };
   return (
-    <div role="tree" aria-label="Basis-Dateien und Themen" className="vt-tree">
+    <div className="vt-tree">
+      <TreeBar tree={tree} />
+      <div role="tree" aria-label="Basis-Dateien und Themen" className="at-tree">
       {[...files].map(([file, f]) => (
         <div key={file} role="group" className="vt-branch">
           <Row on={pick.file === file && pick.group === null} icon={fileIcon(file)} name={fileName(file)} count={f.count} own={f.own} level={1} id={file}
-            open={isOpen(file)} onToggle={() => flip(file)} onPick={() => select({ file, group: null })} />
-          {isOpen(file) && (
+            open={tree.isOpen(file)} onToggle={() => tree.flip(file)} onPick={() => select({ file, group: null })} />
+          {tree.isOpen(file) && (
             <div role="group" className="vt-children">
               {f.groups.map((g) => (
                 <Row key={g.key} on={pick.file === file && pick.group === g.group} icon={groupIcon(g.group)} name={groupName(g.group)} count={g.rows.length} own={g.own}
@@ -76,6 +77,7 @@ export function ValueTree({ rows, pick, onPick }: { rows: readonly ValueRow[]; p
           )}
         </div>
       ))}
+      </div>
     </div>
   );
 }

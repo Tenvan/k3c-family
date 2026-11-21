@@ -30,8 +30,10 @@ function mount(assets: AssetEintrag[], selected: string, onSelect: (id: string) 
 describe('Asset-Baum (B-1216)', () => {
   const assets = [asset('monarch', 'figuren'), asset('wache', 'figuren'), asset('mauer', 'gebaeude-paper', 'gebaeude'), asset('banner', 'requisiten', 'requisit', false)];
 
-  it('zeigt Gruppen mit Symbol, Namen und Zahl und darunter die Assets mit Abzeichen', () => {
+  it('zeigt Gruppen mit Symbol, Namen und Zahl und darunter die Assets mit Abzeichen', async () => {
     const host = mount(assets, '', () => undefined);
+    expect(host.querySelector('[data-asset]')).toBeNull(); // alles zugeklappt
+    await act(async () => (host.querySelector('[aria-label="Alle aufklappen"]') as HTMLElement).click());
     const groups = [...host.querySelectorAll('[role="group"]')].map((g) => g.getAttribute('data-group'));
     expect(groups).toEqual(['figuren', 'gebaeude-paper', 'requisiten']);
     const figuren = host.querySelector('[data-group="figuren"]')!;
@@ -42,7 +44,16 @@ describe('Asset-Baum (B-1216)', () => {
     expect(host.querySelector('[data-asset="banner"]')?.getAttribute('data-invalid')).toBe('true');
   });
 
-  it('der Pfeil klappt eine Gruppe zu und auf, ein Klick wählt das Asset', async () => {
+  it('die Leiste klappt alle Gruppen zu und auf; die Gruppe der Auswahl ist am Anfang offen', async () => {
+    const host = mount(assets, 'wache', () => undefined);
+    expect(host.querySelectorAll('[data-asset]')).toHaveLength(2); // nur Figuren offen
+    await act(async () => (host.querySelector('[aria-label="Alle aufklappen"]') as HTMLElement).click());
+    expect(host.querySelectorAll('[data-asset]')).toHaveLength(4);
+    await act(async () => (host.querySelector('[aria-label="Alle einklappen"]') as HTMLElement).click());
+    expect(host.querySelector('[data-asset]')).toBeNull();
+  });
+
+  it('die ganze Gruppenzeile klappt zu und auf, ein Klick wählt das Asset', async () => {
     const picked = vi.fn();
     const host = mount(assets, 'wache', picked);
     expect(host.querySelector('[data-asset="wache"]')?.getAttribute('aria-selected')).toBe('true');
