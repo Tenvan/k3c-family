@@ -1,7 +1,7 @@
 # RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust
 
 - **Status:** aktiv
-- **Rang:** 11
+- **Rang:** 9
 - **Ziel-Tickets:** B-1014
 
 ## Ziel
@@ -93,6 +93,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | erledigt |
 | RU63 | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | erledigt |
 | LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | aktiv |
+| LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | geplant |
+| LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | geplant |
 
 ## Nicht-Ziele
 

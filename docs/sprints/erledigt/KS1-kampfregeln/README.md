@@ -1,6 +1,6 @@
 # KS1 · REG · Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KSY
 - **Domäne:** REG
 - **Reife:** bereit
@@ -69,6 +69,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-21 (Claude, Klasse A, nachträgliche Prüfung): AC-01 geprüft: `docs/rules/kampf.md` vollständig (§ 1 bis § 9, 126 Zeilen), 33 Verweise aus den übrigen Regeln; B-926 bis B-933 archiviert.
+Keine Sim, Balance, Gen (Doku-Sprint), daher kein Abnahme-Ticket. Die Session-Datei KS1.1 enthält keinen Ergebnis-Text, der Nachweis stammt aus dem Repo.

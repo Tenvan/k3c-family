@@ -5,12 +5,12 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** LA1
+- **Sprint:** LA2
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-21
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-11-21, Auftrag von 🧑)
 - **Duplikat von:** –
 - **Ersetzt:** –
 

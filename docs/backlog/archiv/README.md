@@ -917,3 +917,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | erledigt | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
 | [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | erledigt | RU64 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
 | [B-1157](B-1157-cheat-abfahrbereit.md) | CLI | Idee | hoch | erledigt | RU36 | Das Cheat-Fenster hat die Option Abfahrbereit (Schiff fertig, Endboss besiegt), damit Seekarte und Schiffsfahrt prüfbar sind |
+| [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | verworfen | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
+| [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | erledigt | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |

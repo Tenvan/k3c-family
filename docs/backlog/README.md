@@ -9,7 +9,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
-| [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | eingeplant | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
@@ -32,7 +31,6 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-914](B-914-abnahme-st2.md) | CLI | Idee | mittel | offen | ST2 | Ralf nimmt ST2 ab: Testing-Menü und Stresstest-Bericht am PC geprüft |
 | [B-935](B-935-klangbild-couch.md) | CLI | Problem | hoch | offen | SR1 | Klangbild für Couch-Abende festlegen und konsolige Piep-Sounds ersetzen |
 | [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SR1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
-| [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | offen | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |
 | [B-938](B-938-weltauswahl-menue.md) | CLI | Idee | mittel | offen | RU61 | Neues Spiel beginnt mit der Weltauswahl im großen Bild, Spielstände und Pausenmenü zeigen das kleine |
 | [B-940](B-940-kampf-assets.md) | PAP | Idee | mittel | offen | RU60 | Papierschnitt-Assets für Krone, Banner, Schild, Zahlstellen, Portal-HP und Münzschauer ersetzen die gezeichneten Formen |
 | [B-941](B-941-ausloeser-pfahl-vor-tor.md) | SIM | Problem | mittel | offen | RU60 | Der Angriffs-Auslöser steht als Horn auf einem Pfahl vor dem Tor statt schwebend dahinter |
@@ -217,11 +215,11 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1175](B-1175-mauer-burgbereich-luecke.md) | CLI | Problem | mittel | offen | LA1 | Im Burgbereich schließen Mauern die Lücke zwischen den inneren Mauerstücken |
 | [B-1176](B-1176-mauer-stufe-1-zaun.md) | PAP | Idee | mittel | offen | LA1 | Die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand |
 | [B-1177](B-1177-werte-tabelle-einheit-min-max.md) | DEV | Idee | niedrig | offen | WZ62 | Das Backend liefert je Welt-Wert Einheit und Min/Max, damit die Werte-Tabelle Regler und Bereichsprüfung beim Tippen bietet |
-| [B-1183](B-1183-stimmung-reste-wolken-monumental-wellen.md) | CLI | Idee | mittel | offen | LA1 | Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch |
-| [B-1179](B-1179-cheat-fenster-panel-umgebungseffekte.md) | CLI | Idee | mittel | offen | LA1 | Cheat-Fenster braucht ein Panel, das die Umgebungseffekte einzeln ein- und ausschaltet |
+| [B-1183](B-1183-stimmung-reste-wolken-monumental-wellen.md) | CLI | Idee | mittel | offen | LA2 | Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch |
+| [B-1179](B-1179-cheat-fenster-panel-umgebungseffekte.md) | CLI | Idee | mittel | offen | LA2 | Cheat-Fenster braucht ein Panel, das die Umgebungseffekte einzeln ein- und ausschaltet |
 | [B-1180](B-1180-fps-anzeige-zu-gross-null-fps.md) | CLI | Problem | mittel | offen | LA1 | Die FPS-Anzeige oben rechts zeigt 0 FPS, ist zu gross und am Rand abgeschnitten |
-| [B-1181](B-1181-licht-assets-fackeln-lampen-feuerschalen.md) | PAP | Idee | mittel | offen | LA1 | Lichtquellen als Assets: animierte Flammen, Fackeln, Lampen und Feuerschalen mit Ankerpunkten an Gebäuden |
-| [B-1182](B-1182-bauplaetze-abstand-nach-gebaeudegroesse.md) | SIM | Problem | mittel | offen | LA1 | Die festen Bauplätze im Hub überlappen sich, ihr Abstand soll der Gebäudegröße folgen |
+| [B-1181](B-1181-licht-assets-fackeln-lampen-feuerschalen.md) | PAP | Idee | mittel | offen | LA2 | Lichtquellen als Assets: animierte Flammen, Fackeln, Lampen und Feuerschalen mit Ankerpunkten an Gebäuden |
+| [B-1182](B-1182-bauplaetze-abstand-nach-gebaeudegroesse.md) | SIM | Problem | mittel | offen | LA3 | Die festen Bauplätze im Hub überlappen sich, ihr Abstand soll der Gebäudegröße folgen |
 | [B-1178](B-1178-abnahme-wz62-studio-welten.md) | DEV | Schuld | mittel | offen | WZ62 | Abnahme WZ62: Studio feste Welten, Welt-Filter, Größenvergleich, Welten-Editor (PC-Abnahme, Sim, Balance, Gen, Race) |
 
 ## Archiv
