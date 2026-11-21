@@ -217,11 +217,11 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1175](B-1175-mauer-burgbereich-luecke.md) | CLI | Problem | mittel | offen | LA1 | Im Burgbereich schließen Mauern die Lücke zwischen den inneren Mauerstücken |
 | [B-1176](B-1176-mauer-stufe-1-zaun.md) | PAP | Idee | mittel | offen | LA1 | Die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand |
 | [B-1177](B-1177-werte-tabelle-einheit-min-max.md) | DEV | Idee | niedrig | offen | WZ62 | Das Backend liefert je Welt-Wert Einheit und Min/Max, damit die Werte-Tabelle Regler und Bereichsprüfung beim Tippen bietet |
-| [B-1183](B-1183-stimmung-reste-wolken-monumental-wellen.md) | CLI | Idee | mittel | offen | LA1 | Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch |
-| [B-1179](B-1179-cheat-fenster-panel-umgebungseffekte.md) | CLI | Idee | mittel | offen | LA1 | Cheat-Fenster braucht ein Panel, das die Umgebungseffekte einzeln ein- und ausschaltet |
+| [B-1183](B-1183-stimmung-reste-wolken-monumental-wellen.md) | CLI | Idee | mittel | offen | LA2 | Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch |
+| [B-1179](B-1179-cheat-fenster-panel-umgebungseffekte.md) | CLI | Idee | mittel | offen | LA2 | Cheat-Fenster braucht ein Panel, das die Umgebungseffekte einzeln ein- und ausschaltet |
 | [B-1180](B-1180-fps-anzeige-zu-gross-null-fps.md) | CLI | Problem | mittel | offen | LA1 | Die FPS-Anzeige oben rechts zeigt 0 FPS, ist zu gross und am Rand abgeschnitten |
-| [B-1181](B-1181-licht-assets-fackeln-lampen-feuerschalen.md) | PAP | Idee | mittel | offen | LA1 | Lichtquellen als Assets: animierte Flammen, Fackeln, Lampen und Feuerschalen mit Ankerpunkten an Gebäuden |
-| [B-1182](B-1182-bauplaetze-abstand-nach-gebaeudegroesse.md) | SIM | Problem | mittel | offen | LA1 | Die festen Bauplätze im Hub überlappen sich, ihr Abstand soll der Gebäudegröße folgen |
+| [B-1181](B-1181-licht-assets-fackeln-lampen-feuerschalen.md) | PAP | Idee | mittel | offen | LA2 | Lichtquellen als Assets: animierte Flammen, Fackeln, Lampen und Feuerschalen mit Ankerpunkten an Gebäuden |
+| [B-1182](B-1182-bauplaetze-abstand-nach-gebaeudegroesse.md) | SIM | Problem | mittel | offen | LA3 | Die festen Bauplätze im Hub überlappen sich, ihr Abstand soll der Gebäudegröße folgen |
 | [B-1178](B-1178-abnahme-wz62-studio-welten.md) | DEV | Schuld | mittel | offen | WZ62 | Abnahme WZ62: Studio feste Welten, Welt-Filter, Größenvergleich, Welten-Editor (PC-Abnahme, Sim, Balance, Gen, Race) |
 
 ## Archiv

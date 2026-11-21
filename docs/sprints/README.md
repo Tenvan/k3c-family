@@ -47,6 +47,8 @@ keine
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
+| LA2 | CLI, PAP | RSU | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | – | Entwurf | `geplant/LA2-look-nachtraege-panel-himmel-licht/` |
+| LA3 | SIM | RSU | Bauplätze im Hub richten sich nach der Gebäudegröße | – | Entwurf | `geplant/LA3-bauplaetze-nach-gebaeudegroesse/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
