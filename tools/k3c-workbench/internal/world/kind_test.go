@@ -44,3 +44,17 @@ func TestSetKindView(t *testing.T) {
 		t.Fatalf("Feld entfernen: %+v", v)
 	}
 }
+
+// Ableger ohne extends: die Standard-Welt wird als Eltern-Welt eingetragen.
+func TestSetKindSpinoffAddsExtends(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "frei", "Frei", ""); err != nil {
+		t.Fatal(err)
+	}
+	if v := e.SetKindView(ctx, "frei", "spinoff"); v.Error != "" {
+		t.Fatalf("%+v", v)
+	}
+	if d := e.Load("frei"); d.Kind != "spinoff" || d.Extends != "standard" {
+		t.Fatalf("Load = %+v", d)
+	}
+}
