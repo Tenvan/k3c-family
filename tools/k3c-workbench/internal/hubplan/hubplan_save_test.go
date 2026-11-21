@@ -139,7 +139,7 @@ func TestHubSavePlatzEntfernenUndHinzufuegen(t *testing.T) {
 	}
 	afterRemove, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
 	plan := editor(root).planFrom(context.Background(), hubFile)
-	const nursery = `    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }` // letzter Eintrag in sites
+	const nursery = `    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4, "topOnly": true }` // letzter Eintrag in sites
 	nl := "\n"
 	if strings.Contains(plan.Raw, "\r\n") {
 		nl = "\r\n"

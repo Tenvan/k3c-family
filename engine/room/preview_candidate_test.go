@@ -27,7 +27,7 @@ func embeddedHub(t *testing.T) []byte {
 // armoryFrom3: die eingebettete hub.json, Rüstkammer ab Hub-Stufe 3 statt 4.
 func armoryFrom3(t *testing.T) []byte {
 	t.Helper()
-	const from, to = `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }`, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 3 }`
+	const from, to = `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 4, "topOnly": true }`, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 3, "topOnly": true }`
 	raw := embeddedHub(t)
 	if bytes.Count(raw, []byte(from)) != 1 {
 		t.Fatalf("data/hub.json enthält %s nicht genau einmal; Test an die Datei anpassen", from)

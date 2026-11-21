@@ -23,8 +23,8 @@ pub(super) fn embedded_hub() -> String {
 /// Die eingebettete hub.json, Rüstkammer ab Hub-Stufe 3 statt 4.
 fn armory_from3() -> String {
     let (from, to) = (
-        r#"{ "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }"#,
-        r#"{ "kind": "armory", "offsetUnits": 40, "hubLevel": 3 }"#,
+        r#"{ "kind": "armory", "offsetUnits": 40, "hubLevel": 4, "topOnly": true }"#,
+        r#"{ "kind": "armory", "offsetUnits": 40, "hubLevel": 3, "topOnly": true }"#,
     );
     let raw = embedded_hub();
     assert_eq!(

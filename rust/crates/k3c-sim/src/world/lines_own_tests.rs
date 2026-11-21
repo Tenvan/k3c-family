@@ -182,3 +182,47 @@ fn own_world_site_specs_laesst_plaetze_ohne_tiefere_stufe_weg() {
     w.hub_data = Some(Arc::new(hub));
     assert!(world_site_specs(&w).expect("Daten").is_empty());
 }
+
+/// ECO1.6 (AC-06): Produktion (`topOnly`) steht nur in Tiefe 0, Kampfgebäude auf jeder Ebene; ohne native Regeln (Go-Läufe)
+/// gilt das Feld nicht.
+#[test]
+fn own_world_site_specs_zeigt_produktion_nur_ganz_oben() {
+    use crate::state::shared::WorldValues;
+    let site = |kind: &str, offset: f64, top_only: bool| HubSite {
+        kind: kind.into(),
+        offset_units: offset,
+        top_only,
+        ..HubSite::default()
+    };
+    let hub = Arc::new(HubData {
+        sites: vec![
+            site("barracks", 10.0, false),
+            site("smithy", 20.0, true),
+            site("healer", 30.0, false),
+        ],
+        ..HubData::default()
+    });
+    let kinds = |depth: i64, native: bool| -> Vec<String> {
+        let mut w = bare_world();
+        w.hub_x = 200.0;
+        w.biome.depth = depth;
+        w.hub_data = Some(Arc::clone(&hub));
+        w.vals = Some(Arc::new(WorldValues {
+            native_rules: native,
+            ..WorldValues::default()
+        }));
+        world_site_specs(&w)
+            .expect("Daten")
+            .into_iter()
+            .map(|s| s.kind)
+            .collect()
+    };
+    assert_eq!(kinds(0, true), ["barracks", "smithy", "healer"], "oben: alle");
+    assert_eq!(kinds(1, true), ["barracks", "healer"], "unten: nur Kampfgebäude");
+    assert_eq!(kinds(2, true), ["barracks", "healer"], "noch tiefer ebenso");
+    assert_eq!(
+        kinds(1, false),
+        ["barracks", "smithy", "healer"],
+        "Go-Lauf: Feld gilt nicht"
+    );
+}

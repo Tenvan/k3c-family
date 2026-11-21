@@ -169,8 +169,11 @@ fn golden_kampagne_ausbau() {
 fn spielstand_rundreise() {
     let f = load_campaign_at(CAMPAIGN_PATH);
     let biomes = &base().expect("Daten").data.biomes;
-    let s = parse_save(&f.save.to_string(), biomes, &default_values()).expect("Spielstand lesen");
-    let back = Campaign::from_save(&s, 1.0)
+    let mut v = (*default_values()).clone();
+    v.native_rules = false; // der Spielstand kommt aus Go: alle Hub-Plätze jeder Tiefe (ECO1.6 filtert nur nativ)
+    let v = Arc::new(v);
+    let s = parse_save(&f.save.to_string(), biomes, &v).expect("Spielstand lesen");
+    let back = Campaign::from_save_with(&s, 1.0, Some(v))
         .expect("Kampagne")
         .to_save(&s.saved_at)
         .expect("Spielstand");
