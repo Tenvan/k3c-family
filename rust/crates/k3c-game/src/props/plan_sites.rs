@@ -177,7 +177,7 @@ impl Planner {
             self.site_status(s, r, st, s.level, s.x, h + px(20.0));
         }
         if monarch_before(info, s.x, full) {
-            self.label_sized(s.x, h + px(36.0), &site_name(&s.kind), GOLD, SMALL);
+            self.label_sized(s.x, h + 2.4, &site_name(&s.kind), GOLD, SMALL);
         }
     }
 

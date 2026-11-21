@@ -13,6 +13,8 @@ pub const HARBOR_NEAR: (i64, i64) = (1, 2);
 pub const TREES_PER_UNIT: f64 = 0.8;
 /// START_GAP ist der freie Streifen um den Steg in Units, in dem die Monarchen starten.
 pub const START_GAP: f64 = 5.0;
+/// SITE_GAP ist der freie Streifen um jeden Bauplatz im Hafen-Chunk.
+const SITE_GAP: f64 = 1.0;
 
 /// seed_pick liefert aus dem Seed eine Zahl in `min..=max` (FNV-1a, ohne Zufallsstrom).
 fn seed_pick(seed: &str, min: i64, max: i64) -> i64 {
@@ -55,7 +57,9 @@ pub fn plant_harbor_trees(w: &mut World, v: &WorldValues) {
     let step = 1.0 / TREES_PER_UNIT;
     let mut dx = -half + step / 2.0;
     while dx < half {
-        if dx.abs() > START_GAP {
+        let x = hx + dx;
+        let on_site = w.sites.iter().any(|s| (s.x - x).abs() < SITE_GAP);
+        if dx.abs() > START_GAP && !on_site {
             let variant = crate::unit::camp_guard::nearest_variant(w, hx + dx);
             let id = w.new_id();
             w.nodes.push(ResourceNode {

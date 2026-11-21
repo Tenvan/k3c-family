@@ -1,6 +1,6 @@
 # HB1.6 · Review und Abnahme-Ticket HB1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: Review durch k3c-hud und k3c-welten (Diff gegen main). Keine Blocker. Behoben in der Review: Name über Preis verschoben (h+2,4), `golden_run.rs` setzt `native_rules=false` (Go-Parität), Hafen-Bäume lassen Bauplatz-Streifen frei. `task check` grün (2084 Tests), `task check:go` grün; Rust k3c-sim 2 bekannte rote Tests (nicht aus HB1). Offene Befunde im Abnahme-Ticket B-1190 (AC-03). Neues Ticket: B-1190.

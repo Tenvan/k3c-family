@@ -1,6 +1,6 @@
 # HB1 · CLI, SIM · Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, SIM
 - **Reife:** bereit
@@ -69,7 +69,7 @@ keine
 | HB1.3 | `HB1.3-biome-dicht-radar.md` | Umsetzung | autonom | fertig |
 | HB1.4 | `HB1.4-landstreicher-lager-taverne.md` | Umsetzung | autonom | fertig |
 | HB1.5 | `HB1.5-hafen-start-bewuchs.md` | Umsetzung | autonom | fertig |
-| HB1.6 | `HB1.6-review.md` | Review | autonom | offen |
+| HB1.6 | `HB1.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

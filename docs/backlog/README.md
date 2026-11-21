@@ -226,6 +226,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1186](B-1186-hud-baustellen-gebaeudenamen-haendler.md) | CLI | Idee | mittel | offen | HB1 | HUD: Baustellen-Texte kleiner mit Icons und x/n, Gebäudename über dem Monarchen, Händler und Stände sichtbar |
 | [B-1187](B-1187-biome-dicht-radar-landstreicher-taverne.md) | SIM | Idee | mittel | offen | HB1 | Biome: dichter Bewuchs, Biome am Radar, Landstreicher-Lager zwischen Bäumen und Taverne an der Lagerstelle |
 | [B-1188](B-1188-hafen-start-biome-bewuchs.md) | SIM | Idee | mittel | offen | HB1 | Hafen als Startpunkt neuer Spiele, ein bis zwei Biome vom Lager, vom Wald umgeben und freizuräumen |
+| [B-1190](B-1190-abnahme-hb1-hud-biome-hafen.md) | DEV | Schuld | mittel | offen | HB1 | Abnahme HB1: HUD-Baustellen, Biome, Landstreicher-Lager, Hafen (PC-Abnahme, Sim, Gen, Race) |
 
 ## Archiv
 

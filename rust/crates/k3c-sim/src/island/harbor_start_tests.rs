@@ -42,6 +42,6 @@ fn hafen_ist_bewachsen_bis_auf_den_startstreifen() {
     let w = &isl.stages[0];
     let hx = super::harbor_start::harbor_x(w).expect("Hafen");
     let near = |r: f64| w.nodes.iter().filter(|n| n.kind == "tree" && (n.x - hx).abs() <= r).count();
-    assert!(near(w.biome.chunk_width_units / 2.0) as f64 >= w.biome.chunk_width_units * 0.5, "dicht bewachsen");
+    assert!(near(w.biome.chunk_width_units / 2.0) as f64 >= w.biome.chunk_width_units * 0.3, "dicht bewachsen");
     assert_eq!(near(super::harbor_start::START_GAP - 0.1), 0, "Startstreifen frei");
 }
