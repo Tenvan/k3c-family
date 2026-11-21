@@ -32,6 +32,8 @@ type Info struct {
 	// Missing: feste Welt (data/paper.json › weltbilder) ohne Datei; sie erscheint mit dem Hinweis „noch nicht
 	// umgesetzt“ (B-1168, WZ62.1) und lässt sich nicht öffnen.
 	Missing bool `json:"missing,omitempty"`
+	// Kind: Art der Welt ("spinoff" | "new", B-1217); leer bei fehlender Datei.
+	Kind string `json:"kind,omitempty"`
 }
 
 // MissingNote ist der Hinweis an einer festen Welt ohne Datei.
@@ -57,6 +59,9 @@ type Detail struct {
 	Name    string   `json:"name"`
 	Notes   string   `json:"notes"`
 	Extends string   `json:"extends"`
+	// Kind ist die Art der Welt: "spinoff" (Ableger oder Episode) oder "new" (komplett neu); fehlt das Feld in der Datei,
+	// gilt spinoff mit extends, sonst new (B-1217, wie sim.worldKind).
+	Kind    string   `json:"kind"`
 	Islands []Island `json:"islands"`
 	// Story ist die Geschichte der Welt (story.go, B-975); nil = fehlt.
 	Story *Story `json:"story,omitempty"`
@@ -106,7 +111,7 @@ func (e Editor) List() []Info {
 			continue
 		}
 		raw, _ := os.ReadFile(e.file(id))
-		files[id] = Info{ID: id, Name: nameOf(raw, id)}
+		files[id] = Info{ID: id, Name: nameOf(raw, id), Kind: kindOfFile(raw)}
 	}
 	out := []Info{}
 	add := func(id string) {
@@ -188,7 +193,7 @@ func (e Editor) Load(id string) Detail {
 		return view
 	}
 	var f struct {
-		Name, Notes, Extends string
+		Name, Notes, Extends, Kind string
 		Islands              []Island `json:"islands"`
 		Story                *Story   `json:"story"`
 	}
@@ -197,6 +202,7 @@ func (e Editor) Load(id string) Detail {
 		return view
 	}
 	view.Name, view.Notes, view.Extends, view.Story = nameOf(raw, id), f.Notes, f.Extends, f.Story
+	view.Kind = kindOf(f.Kind, f.Extends)
 	biomes := e.biomesByDepth()
 	for _, isl := range f.Islands {
 		isl.Biomes = []string{}
@@ -259,4 +265,22 @@ func (e Editor) biomeInfo(id string) BiomeInfo {
 		info.PortalHP = b.Portals.HP
 	}
 	return info
+}
+
+// kindOf löst die Art der Welt auf wie sim.worldKind: ohne Angabe spinoff mit extends, sonst new.
+func kindOf(kind, extends string) string {
+	if kind != "" {
+		return kind
+	}
+	if extends != "" {
+		return "spinoff"
+	}
+	return "new"
+}
+
+// kindOfFile liest die Art der Welt aus den Rohdaten der Datei (Feld kind, sonst aus extends).
+func kindOfFile(raw []byte) string {
+	var h struct{ Kind, Extends string }
+	_ = json.Unmarshal(raw, &h)
+	return kindOf(h.Kind, h.Extends)
 }

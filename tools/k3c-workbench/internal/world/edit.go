@@ -18,7 +18,7 @@ import (
 // (sim.ParseWorld, Werte aller Nachfolger); ungültig bleibt die Datei, wie sie ist, und der Fehler nennt den Grund.
 
 // headerKeys sind die Felder des Kopfs, die world_set ändert (Reihenfolge wie in der Datei); `islands` kommt dazu.
-var headerKeys = []string{"name", "notes", "extends", "combat"}
+var headerKeys = []string{"name", "notes", "extends", "kind", "combat"}
 
 // defaultScaling ist die Tiefen-Skalierung einer neuen Insel (wie die Standard-Welt, Insel 1).
 const defaultScaling = `{"hp": 1.5, "damage": 1.3, "speed": 1.1}`
@@ -117,7 +117,7 @@ func (e Editor) CreateWithStory(ctx context.Context, id, name, extends string, s
 	return e.commit(ctx, id, nil, out)
 }
 
-// Set ändert Kopf und Inseln der Welt id nach patch (JSON-Objekt): name, notes, extends, combat (null entfernt das Feld)
+// Set ändert Kopf und Inseln der Welt id nach patch (JSON-Objekt): name, notes, extends, kind, combat (null entfernt das Feld)
 // und islands (Liste; je Eintrag Insel per id ändern oder anhängen, siehe patchIslands).
 func (e Editor) Set(ctx context.Context, id string, patch json.RawMessage) ([]string, error) {
 	var p map[string]json.RawMessage
