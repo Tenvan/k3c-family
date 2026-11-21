@@ -4,6 +4,8 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { WorldDetail } from '../api';
+import { catalogPrompt } from './CatalogTab';
+import { belongsTo, biomesOf } from './catalogView';
 import { StoryTab } from './StoryTab';
 import { partPrompt } from './storyPrompts';
 import { worldPrompt } from './worldPrompts';
@@ -150,5 +152,41 @@ describe('Werte als Baum (B-1216/AC-04)', () => {
     expect(tree.querySelector('[data-node="buildings"]')?.getAttribute('aria-selected')).toBe('true');
     await click(tree.querySelector('[aria-label="Gebäude aufklappen"]'));
     expect(tree.querySelector('[data-node="buildings:tower"]')).toBeTruthy();
+  });
+});
+
+describe('Katalog der Insel (B-1216)', () => {
+  const asset = (id: string, gruppe = 'objekte') => ({ id, rig: 'objekt', gruppe, pfad: `public/grafik/${gruppe}/${id}`, gueltig: true, geaendert: false });
+
+  it('ein Asset gehört zur Insel, wenn es neutral ist oder ein Biom der Insel nennt', () => {
+    const wald = asset('hg-wald-wand', 'hintergruende');
+    const stollen = asset('hg-eisenstollen-nah-v1', 'hintergruende');
+    const figur = asset('monarch', 'figuren');
+    expect(biomesOf(wald)).toEqual(['forest']);
+    expect(biomesOf(stollen)).toEqual(['ironhold']);
+    expect(biomesOf(figur)).toEqual([]);
+    expect(belongsTo(wald, detail, 'island1')).toBe(true); // island1: forest
+    expect(belongsTo(stollen, detail, 'island1')).toBe(false);
+    expect(belongsTo(stollen, detail, 'island2')).toBe(false); // island2: cave
+    expect(belongsTo(figur, detail, 'island2')).toBe(true);
+    expect(belongsTo(wald, detail, '')).toBe(true); // alle Inseln
+    expect(belongsTo(stollen, detail, '')).toBe(false); // kein Biom der Welt ist ironhold
+  });
+
+  it('der Prompt nennt Welt, Insel, Anzahl und die MCP-Tools assets_*', () => {
+    const p = catalogPrompt(detail, 'island2', [asset('a'), asset('b', 'gegner')]);
+    expect(p).toContain('Welt-ID saga');
+    expect(p).toContain('Insel island2');
+    expect(p).toContain('2 Katalog-Einträge');
+    expect(p).toContain('assets_create');
+    expect(p).toContain('Was soll sich ändern: ');
+  });
+
+  it('der Reiter zeigt Einträge der Welt, die Insel-Auswahl begrenzt sie', async () => {
+    const host = await mountPage('katalog');
+    expect(host.querySelector('[aria-label="Katalog der Welt"]')).toBeTruthy();
+    expect(host.querySelector('[aria-label="Insel des Katalogs"]')).toBeTruthy();
+    expect(host.querySelectorAll('[role="listitem"][data-asset]').length).toBeGreaterThan(0);
+    expect(host.querySelector('[data-katalog="oeffnen"]')).toBeTruthy();
   });
 });

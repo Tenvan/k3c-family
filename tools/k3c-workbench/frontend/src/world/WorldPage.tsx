@@ -5,6 +5,7 @@ import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
 import { loadText, savePref } from '../lib/prefs';
 import { CatalogLinks } from './CatalogLinks';
+import { CatalogTab } from './CatalogTab';
 import { DeleteWorld } from './DeleteWorld';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
@@ -86,7 +87,7 @@ function placeOf(w: WorldState): ChunkPlace | null {
   return { world: w.id, island: isl.id, stage: w.stage.stage, depth: isl.depths[w.stage.stage] ?? 0, seed: w.model?.seed ?? w.seed };
 }
 
-const TABS = ['inseln', 'geschichte', 'werte'] as const;
+const TABS = ['inseln', 'geschichte', 'katalog', 'werte'] as const;
 type TabId = (typeof TABS)[number];
 const loadTab = (): TabId => { const t = loadText('world.tab', 'inseln'); return (TABS as readonly string[]).includes(t) ? t as TabId : 'inseln'; };
 
@@ -106,6 +107,7 @@ export function WorldPage() {
           <Tabs.List aria-label="Ansicht der Welt">
             <Tabs.Trigger value="inseln">🏝 Inseln</Tabs.Trigger>
             <Tabs.Trigger value="geschichte">📖 Geschichte</Tabs.Trigger>
+            <Tabs.Trigger value="katalog">🗂 Katalog</Tabs.Trigger>
             <Tabs.Trigger value="werte">🔧 Werte</Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="inseln">
@@ -124,6 +126,9 @@ export function WorldPage() {
           </Tabs.Content>
           <Tabs.Content value="geschichte">
             <Flex direction="column" gap="3" pt="3" className="wd-fill">{w.detail && !w.detail.error && <StoryTab detail={w.detail} />}</Flex>
+          </Tabs.Content>
+          <Tabs.Content value="katalog">
+            <Flex direction="column" gap="3" pt="3" className="wd-fill">{w.detail && !w.detail.error && <CatalogTab key={w.id} detail={w.detail} />}</Flex>
           </Tabs.Content>
           <Tabs.Content value="werte">
             <Flex direction="column" gap="3" pt="3" className="wd-fill"><WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} /></Flex>
