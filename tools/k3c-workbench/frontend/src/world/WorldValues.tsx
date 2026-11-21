@@ -79,6 +79,18 @@ function Group({ group, withFile, open, onToggle, onSet }: GroupProps) {
   );
 }
 
+function TableHead() {
+  return (
+    <div role="rowgroup"><div role="row" className="wv-row wv-head">
+      <Text role="columnheader" size="1" weight="medium">Feld</Text>
+      <Text role="columnheader" size="1" weight="medium">Standard</Text>
+      <Text role="columnheader" size="1" weight="medium">Wert dieser Welt</Text>
+      <Text role="columnheader" size="1" weight="medium">Abweichung</Text>
+      <Text role="columnheader" size="1" weight="medium"><span className="wv-sr">Zurücksetzen</span></Text>
+    </div></div>
+  );
+}
+
 interface Props {
   values: WorldValuesView | null;
   onSet: (file: string, path: string[], value: unknown) => void;
@@ -137,13 +149,7 @@ export function WorldValues({ values, onSet }: Props) {
         <Text size="1" color="gray" className="wv-keys">Eingabe: Enter übernimmt, Esc verwirft, ↑↓ ändern Zahlen (Umschalt ×10), Alt+↑↓ wechselt die Zeile</Text>
       </Flex>
       <div role="table" aria-label="Felder" className="wv-table">
-        <div role="rowgroup"><div role="row" className="wv-row wv-head">
-          <Text role="columnheader" size="1" weight="medium">Feld</Text>
-          <Text role="columnheader" size="1" weight="medium">Standard</Text>
-          <Text role="columnheader" size="1" weight="medium">Wert dieser Welt</Text>
-          <Text role="columnheader" size="1" weight="medium">Abweichung</Text>
-          <Text role="columnheader" size="1" weight="medium"><span className="wv-sr">Zurücksetzen</span></Text>
-        </div></div>
+        <TableHead />
         {groups.map((g) => (
           <Group key={g.key} group={g} withFile={file === ALL_FILES} open={isOpen(g)} onSet={set}
             onToggle={() => setToggled((m) => new Map(m).set(g.key, !isOpen(g)))} />

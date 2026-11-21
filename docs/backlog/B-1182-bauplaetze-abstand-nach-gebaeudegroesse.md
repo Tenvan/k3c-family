@@ -3,14 +3,14 @@
 - **Domäne:** SIM
 - **Typ:** Problem
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** LA3
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-21
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 Ralf, 2026-11-21
 - **Duplikat von:** –
 - **Ersetzt:** –
 

@@ -43,7 +43,6 @@ keine
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
-| LA3 | SIM | RSU | Bauplätze im Hub richten sich nach der Gebäudegröße | – | Entwurf | `geplant/LA3-bauplaetze-nach-gebaeudegroesse/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 
@@ -468,3 +467,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | `erledigt/RG2-regelwerk-klaerungen/` |
 | LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | `erledigt/LA1-look-anbindung-bb1/` |
 | LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | `erledigt/LA2-look-nachtraege-panel-himmel-licht/` |
+| LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | `erledigt/LA3-bauplaetze-nach-gebaeudegroesse/` |

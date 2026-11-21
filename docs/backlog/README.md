@@ -223,6 +223,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1178](B-1178-abnahme-wz62-studio-welten.md) | DEV | Schuld | mittel | offen | WZ62 | Abnahme WZ62: Studio feste Welten, Welt-Filter, Größenvergleich, Welten-Editor (PC-Abnahme, Sim, Balance, Gen, Race) |
 | [B-1184](B-1184-abnahme-la1-stimmung.md) | CLI | Schuld | mittel | offen | LA1 | Abnahme LA1: Stimmung und Look-Anbindung (FPS-Messung, Gen, Race) |
 | [B-1185](B-1185-abnahme-la2-look-nachtraege.md) | CLI | Schuld | mittel | offen | LA2 | Abnahme LA2: Cheat-Panel, Wolken, Wellenstriche, Licht-Assets, Leitmotive (PC-Abnahme, Gen, Race) |
+| [B-1189](B-1189-abnahme-la3-bauplaetze.md) | SIM | Schuld | mittel | offen | LA3 | Abnahme LA3: Bauplätze nach Gebäudegröße (PC-Sichtprüfung, Race, Rust-Aufzeichnung) |
 
 ## Archiv
 

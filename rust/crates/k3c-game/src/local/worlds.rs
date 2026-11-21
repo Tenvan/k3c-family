@@ -5,7 +5,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, OnceLock};
 
-use k3c_data::{Data, Source, load_all};
+use k3c_data::{Data, Source, load_game};
 
 use super::error::{UserError, user_err};
 
@@ -40,7 +40,7 @@ pub fn pick_worlds_dir(env: &str, exe_dir: Option<&Path>) -> Option<PathBuf> {
 /// neben der EXE, sonst eingebettet.
 pub fn game_data() -> Result<Arc<Data>, UserError> {
     static DATA: OnceLock<Result<Arc<Data>, String>> = OnceLock::new();
-    DATA.get_or_init(|| load_all(&Source::from_env()).map(Arc::new).map_err(|e| e.to_string()))
+    DATA.get_or_init(|| load_game(&Source::from_env()).map(Arc::new).map_err(|e| e.to_string()))
         .clone()
         .map_err(|e| user_err(format!("Spieldaten nicht lesbar: {e}"), None))
 }

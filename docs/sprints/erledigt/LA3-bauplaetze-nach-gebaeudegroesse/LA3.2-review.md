@@ -1,6 +1,6 @@
 # LA3.2 · Review und Abnahme-Ticket LA3
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -53,5 +53,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01, AC-02 geprüft. `task check` grün (nach dem Merge von origin/main). `task check:go`: alle Go-Tests grün, `golangci-lint` fehlt lokal, Lint nicht gelaufen (B-1189). Rust: `k3c-data`, `k3c-sim` Hub-Tests, Platz-Regeln grün; rot bleiben nur `alloc_je_bild`, `e2e_flow`, `insel_nach_1000_schritten_wie_go` (auf main rot) und zwei Tests wegen lokaler, nicht eingecheckter `data/worlds/rom.json`. Review: Reviewer-Agent in LA3.1 (zwei Befunde, behoben); Diff `origin/main...sprint/la3` und Merge gelesen: Go-Golden und `hub.json` unverändert, `data-tree.json.gz` nur wegen `sizes.json` neu geschrieben, Lint-Fixes im Workbench-Frontend ohne Verhaltensänderung. Abnahme-Ticket: B-1189 (B-1185 ist das Abnahme-Ticket von LA2).

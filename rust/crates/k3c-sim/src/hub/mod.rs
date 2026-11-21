@@ -9,6 +9,8 @@ pub mod validate_layout;
 #[cfg(test)]
 mod candidate_tests;
 #[cfg(test)]
+mod layout_tests;
+#[cfg(test)]
 mod level_tests;
 #[cfg(test)]
 mod sites_tests;

@@ -1,14 +1,14 @@
 # LA3 · SIM · Bauplätze im Hub richten sich nach der Gebäudegröße
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1182
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 Ralf, 2026-11-21
 
 ## Ausgangslage
 
@@ -56,14 +56,14 @@ Zu wenig Platz im Hub: Reihenfolge und Mauern behalten Vorrang, Meldung im Log.
 
 ## Offene Fragen
 
-🧑: Alte Spielstände neu anordnen oder nur neue Spiele? Blockiert die Freigabe von LA3.1.
+Keine offen. 🧑 2026-11-21: Alte Spielstände sind egal, keine Migration, keine Kompatibilität; die Plätze folgen der neuen Abstandsregel, alte Spielstände dürfen bei der neuen Regel brechen oder neu geladen werden.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LA3.1 | `LA3.1-bauplatz-abstaende.md` | Umsetzung | autonom | offen |
-| LA3.2 | `LA3.2-review.md` | Review | autonom | offen |
+| LA3.1 | `LA3.1-bauplatz-abstaende.md` | Umsetzung | autonom | fertig |
+| LA3.2 | `LA3.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -71,6 +71,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-21, Hauptrechner: AC-01, AC-02 umgesetzt und geprüft (siehe LA3.1 und LA3.2 › Ergebnis); `task check` grün, Go-Tests grün, `golangci-lint` fehlte lokal. Behobene Befunde: Treppen- und Zone-1-Regel (Review LA3.1), Lint-Fehler im Workbench-Frontend. Neues Abnahme-Ticket: B-1189 (PC-Sicht, Race, Lint, rote Rust-Tests).
