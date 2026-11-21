@@ -69,15 +69,15 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| ECO1.1 | `ECO1.1-siegel-assets.md` | Umsetzung | autonom | offen |
-| ECO1.2 | `ECO1.2-siegel-anzeige.md` | Umsetzung | autonom | offen |
+| ECO1.1 | `ECO1.1-siegel-assets.md` | Umsetzung | autonom | fertig |
+| ECO1.2 | `ECO1.2-siegel-anzeige.md` | Umsetzung | autonom | fertig |
 | ECO1.3 | `ECO1.3-werkzeuggurtel.md` | Umsetzung | autonom | fertig |
 | ECO1.4 | `ECO1.4-handwerker-bauarbeiten.md` | Umsetzung | autonom | fertig |
 | ECO1.5 | `ECO1.5-reparaturkosten.md` | Umsetzung | autonom | fertig |
-| ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | offen |
-| ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | offen |
+| ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | fertig |
+| ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | fertig |
 | ECO1.8 | `ECO1.8-erzadern-freiraeumen.md` | Umsetzung | autonom | fertig |
-| ECO1.9 | `ECO1.9-review.md` | Review | autonom | offen |
+| ECO1.9 | `ECO1.9-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

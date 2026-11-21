@@ -20,6 +20,7 @@ use crate::props::simview::SimView;
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::{CueKind, Frame, Seat, Stage};
 use crate::view::input::DeviceID;
+use crate::view::seal::grade_seal;
 use crate::view::settings::Settings;
 use k3c_sim::state::purse::{purse_max_of, purse_size};
 use k3c_sim::state::{Player, World};
@@ -80,6 +81,8 @@ pub struct SeatState {
     /// Biome der Insel als Zeile am Kompass; nur im Hub (Tiefe 0) gefüllt (LA1.3, B-1167)
     pub biomes_s: String,
     pub biomes_k: u64,
+    /// Siegel des Schwierigkeitsgrads neben der Biome-Zeile (ECO1.2); leer = noch nicht gesetzt
+    pub seal: &'static str,
     pub labels: Vec<Label>,
 
     pub m_gold: Memo<GoldKey>,
@@ -217,6 +220,7 @@ impl SeatState {
 
     /// island_line: Biome der Insel für den Kompass, in jeder Stufe (HB1.3).
     fn island_line(&mut self, lang: &str, f: &Frame, _stage: &Stage) {
+        self.seal = grade_seal(&f.campaign.grade);
         let key = biomes_key(lang, &f.stages);
         if key != self.biomes_k || self.biomes_s.is_empty() {
             self.biomes_k = key;

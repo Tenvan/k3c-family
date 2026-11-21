@@ -25,6 +25,7 @@ pub mod create;
 pub mod data;
 pub mod defeat;
 pub mod endboss;
+pub mod errand;
 pub mod harbor_start;
 pub mod keys;
 pub mod nature;
@@ -47,13 +48,15 @@ pub mod worlds_decode;
 #[cfg(test)]
 mod carry_tests;
 #[cfg(test)]
-mod harbor_start_tests;
-#[cfg(test)]
 mod defeat_tests;
 #[cfg(test)]
 mod depths_tests;
 #[cfg(test)]
 mod endboss_tests;
+#[cfg(test)]
+mod errand_tests;
+#[cfg(test)]
+mod harbor_start_tests;
 #[cfg(test)]
 mod nature_tests;
 #[cfg(test)]
@@ -253,6 +256,7 @@ impl Island {
             chests_opened: self.chests_opened,
             merchant_visits: self.merchant_visits,
             tavern_elsewhere: self.tavern_except(i),
+            gear_above: errand::gear_above(self, i),
         }
     }
 
@@ -352,6 +356,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
         isl.put_stage_ref(r);
     }
+    errand::step_errands(isl, dt); // ECO1.7: Bürger gehen für Ausrüstung nach oben und zurück
     isl.sync_stock();
     crate::hermit::step::step_hermit(isl, dt); // RU62.10: Einwurf an der Hütte startet den Bau im Hub
     crate::festival::step_festival(isl); // RU62.12: Sieg über den Endboss: Fest-Zustand und festivalStart

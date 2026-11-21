@@ -250,6 +250,7 @@ fn hub_site() -> Shape {
         ("FromDepth", int),
         ("NeedsDeeper", boolean),
         ("HubLevel", int),
+        ("TopOnly", boolean),
     ])
 }
 

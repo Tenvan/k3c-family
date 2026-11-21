@@ -89,6 +89,36 @@
       "idle.png": "398c1bc0a0a35583872239c387c9dd4abfe17b6a742a01506496cd48af11bbf0"
     }
   },
+  "siegel-dev": {
+    "renderKey": "5bc7430af53e24b0ec6f0b8d709377fa9fce76451bdf85486e9f2a5befca9873",
+    "dateien": {
+      "idle.png": "2278e9984a4c5ed0d3d2a932fd5109a25c85c162bbac50e2274ce6c20cd2493d"
+    }
+  },
+  "siegel-easy": {
+    "renderKey": "2d5d87995bc53442c5fa0896fd6254c550e53b5f2c6cf22e8cd8b5e392a02aad",
+    "dateien": {
+      "idle.png": "f907dce4505c6ec5b6b018d4834553d1ef3004637e1a24f9525375f552983502"
+    }
+  },
+  "siegel-hard": {
+    "renderKey": "c0ecb0166f29b261d7b951d70e50d6c5324b93c582bed0d2c8504e9e19e784ac",
+    "dateien": {
+      "idle.png": "f5eba8710793e78350b9e1f392f7b86035d3f61d701789364843c7a00965c6f2"
+    }
+  },
+  "siegel-normal": {
+    "renderKey": "c1a866a5ff2cdb308658af37873f8d816c407677c6301270c5d8eb6407db5047",
+    "dateien": {
+      "idle.png": "7e34bbb9a0bfcf76f1ccac919fc0ecb8342e6c173f8e0345ea25e129bb76e8ea"
+    }
+  },
+  "siegel-ultra": {
+    "renderKey": "255d7d370e8a5ed250875bbb463232fec72f2cb25f56d0d464f60f7ac01cf0a5",
+    "dateien": {
+      "idle.png": "b7c31486c0a1262fbb52d9b3a292577417249671ac54143dcb7e1692b9b9de40"
+    }
+  },
   "taste-kappe-breit": {
     "renderKey": "49777f72b64a59c459df45501ac204094e471890263d160cdfaf1c04ed8fabbd",
     "dateien": {

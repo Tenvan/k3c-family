@@ -49,6 +49,10 @@ pub struct HubSite {
     pub needs_deeper: bool,
     #[serde(rename = "HubLevel", alias = "hubLevel")]
     pub hub_level: i64,
+    /// Produktion: steht nur ganz oben (Tiefe 0), unten bauen nur Kampfgebäude (ECO1.6, B-1196). Nur die nativen Regeln
+    /// (`WorldValues::native_rules`) werten es aus; die Go-Läufe kennen das Feld nicht.
+    #[serde(rename = "TopOnly", alias = "topOnly")]
+    pub top_only: bool,
 }
 
 /// Go: `sim.Stock`.

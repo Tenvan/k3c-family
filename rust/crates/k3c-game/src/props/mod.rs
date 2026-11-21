@@ -43,9 +43,9 @@ pub mod plan;
 pub mod plan_castle;
 pub mod plan_combat;
 pub mod plan_cost;
-pub mod plan_merchant;
 pub mod plan_entities;
 pub mod plan_hermit;
+pub mod plan_merchant;
 pub mod plan_objects;
 pub mod plan_sites;
 pub mod plan_sites_cargo;
@@ -77,10 +77,10 @@ mod plan_combat_tests;
 #[cfg(test)]
 mod plan_cost_tests;
 #[cfg(test)]
+mod plan_hermit_tests;
+#[cfg(test)]
 #[path = "plan_merchant_tests.rs"]
 mod plan_merchant_tests;
-#[cfg(test)]
-mod plan_hermit_tests;
 #[cfg(test)]
 mod plan_objects_stage_tests;
 #[cfg(test)]

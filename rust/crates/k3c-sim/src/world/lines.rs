@@ -26,9 +26,13 @@ pub struct SiteSpec {
 pub fn world_site_specs(w: &World) -> Result<Vec<SiteSpec>, String> {
     let biomes = &base()?.data.biomes;
     let mut out: Vec<SiteSpec> = Vec::new();
+    let native = w.vals.as_ref().is_some_and(|v| v.native_rules);
     for s in &hub_of(w).sites {
         if w.biome.depth < s.from_depth || (s.needs_deeper && !has_depth(biomes, w.biome.depth + 1)) {
             continue;
+        }
+        if native && s.top_only && w.biome.depth > 0 {
+            continue; // ECO1.6: Produktion nur ganz oben, unten bauen nur Kampfgebäude
         }
         out.push(SiteSpec {
             kind: s.kind.clone(),

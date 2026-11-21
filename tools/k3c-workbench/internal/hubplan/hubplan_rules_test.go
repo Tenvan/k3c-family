@@ -9,7 +9,7 @@ import (
 
 // WZ9.2 (B-462/AC-03, AC-04, AC-08): Abweichung der Regeltabelle (auf einer Kopie) und Live-Vorschau des Planer-Stands.
 
-const armory4, armory3 = `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 4 }`, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 3 }`
+const armory4, armory3 = `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 4, "topOnly": true }`, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 3, "topOnly": true }`
 
 func readRepo(t *testing.T, rel string) string {
 	t.Helper()

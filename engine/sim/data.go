@@ -112,7 +112,8 @@ type HubSite struct {
 	OffsetUnits float64
 	FromDepth   int
 	NeedsDeeper bool
-	HubLevel    int // ab dieser Hub-Stufe bezahlbar (§ 3 der Regeln)
+	HubLevel    int  // ab dieser Hub-Stufe bezahlbar (§ 3 der Regeln)
+	TopOnly     bool // Produktion nur ganz oben (ECO1.6): nur das Rust-Spiel wertet es aus, Go liest es nur mit
 }
 
 // SitePlacementData sind die Felder von data/hub.json › sitePlacement, die die Hub-Prüfung braucht (B-652): der feste

@@ -1,0 +1,52 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "siegel-easy",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Wachssiegel Schwierigkeit Leicht: grünes Wachs, ein geprägter Punkt",
+  "teile": [
+    {
+      "id": "icon",
+      "lagen": [
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [0, -16],
+          "radius": 13
+        },
+        {
+          "art": "punkt",
+          "material": "smaragd",
+          "mitte": [0, -16],
+          "radius": 9.5,
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "weiss",
+          "mitte": [0, -16],
+          "radius": 2.4
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "icon": 0
+          }
+        }
+      ]
+    }
+  }
+}

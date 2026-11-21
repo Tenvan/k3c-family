@@ -150,6 +150,7 @@ enum JobKind {
     Repair,
     Gather,
     Carry,
+    Ascend,
     Other,
 }
 
@@ -160,6 +161,7 @@ fn job_kind(j: &Job) -> JobKind {
         "repair" => JobKind::Repair,
         "gather" => JobKind::Gather,
         "carry" => JobKind::Carry,
+        "ascend" => JobKind::Ascend,
         _ => JobKind::Other,
     }
 }
@@ -197,6 +199,7 @@ pub fn step_peasant(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&Isla
         JobKind::Repair => repair(w, v, ti, dt),
         JobKind::Gather => gather(w, v, ti, dt),
         JobKind::Carry => carry(w, v, ti, isl, dt),
+        JobKind::Ascend => jobs::ascend(w, v, ti, dt),
         JobKind::Other => {}
     }
 }
@@ -216,7 +219,9 @@ pub fn shelter_x(w: &mut World, ti: usize) -> f64 {
 /// Go: `leaveOnDanger`: Sammeln, Reparatur, Ausbau und jeder Auftrag an einem Vorposten (building_outpost.go) bleiben bei
 /// Gefahr liegen.
 pub fn leave_on_danger(w: &World, j: Option<&Job>) -> bool {
-    j.is_some_and(|j| j.r#type == "gather" || j.r#type == "repair" || upgrade_job(w, j) || outpost_job(w, j))
+    j.is_some_and(|j| {
+        j.r#type == "gather" || j.r#type == "repair" || j.r#type == "ascend" || upgrade_job(w, j) || outpost_job(w, j)
+    })
 }
 
 /// Go: `build`.

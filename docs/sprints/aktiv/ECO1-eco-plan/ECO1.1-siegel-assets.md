@@ -1,6 +1,6 @@
 # ECO1.1 · Siegel-Assets je Schwierigkeitsgrad
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: fünf Siegel `siegel-dev|easy|normal|hard|ultra` in `public/grafik/icons/` (Material stein/smaragd/gold/koenigsrot/purpur, Prägung Viereck/1/2/3/5 Punkte, ohne Farbe unterscheidbar), in `data/paper.json` zugeordnet; `task check:diff` grün.
+
+Abweichung: Der Edit auf `data/paper.json` ging nicht über ein Asset-Tool, sondern per Edit (kein Tool dafür vorhanden), mit Freigabe von Ralf.
+
+Nicht geprüft: Vorschau bei 24 px nur für siegel-ultra gesichtet; Sichtprüfung der übrigen vier und Review im Asset-Bereich der Workbench offen (Ralf).
+
+### Für den Hauptrechner
+- Siegel-Radius 13 px füllt den Rahmen fast ganz; bei Bedarf in FG1/ECO1.2 kleiner skalieren.

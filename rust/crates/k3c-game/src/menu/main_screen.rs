@@ -170,6 +170,7 @@ impl MainScreen {
                 mat: MAIN_MATS[u],
                 off: self.off(i),
                 art: MAIN_ART[u].to_string(),
+                ..Row::default()
             };
             if i == MAIN_CONTINUE {
                 r.value = self.continue_value(lang);

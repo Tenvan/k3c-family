@@ -47,6 +47,7 @@ impl Session {
             day: e.day,
             depths: e.depths.clone(),
             world: e.world.clone(),
+            grade: e.grade.clone(),
             name: e.name.clone(),
             ..SaveInfo::default()
         };

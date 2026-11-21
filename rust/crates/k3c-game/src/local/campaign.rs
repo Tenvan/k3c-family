@@ -29,6 +29,8 @@ pub struct Campaign {
     pub completed: Vec<String>,
     /// neue Kampagne, noch nicht im Frame gemeldet
     pub fresh: bool,
+    /// Schwierigkeitsgrad des Spiels (neues Spiel: gewählt, Spielstand: gespeichert; leer = unbekannt)
+    pub grade: String,
 }
 
 /// Die Teile des Spielstands, die die Kampagne braucht.
@@ -69,6 +71,7 @@ impl Campaign {
             island: self.island.clone(),
             completed: self.completed.clone(),
             fresh: false,
+            grade: self.grade.clone(),
         };
         if self.fresh && ready {
             out.fresh = true;
@@ -115,6 +118,16 @@ impl Session {
                 self.camp.ok = false;
             }
         }
+    }
+
+    /// Der Grad im Spielstand `name` (leer: kein Eintrag, alter Stand; die Anzeige nimmt dann den Standardgrad).
+    pub(super) fn saved_grade(&self, name: &str) -> String {
+        self.saves
+            .list()
+            .into_iter()
+            .find(|e| e.name == name)
+            .map(|e| e.grade)
+            .unwrap_or_default()
     }
 
     /// Liest Insel und abgeschlossene Inseln aus dem Spielstand `name`.

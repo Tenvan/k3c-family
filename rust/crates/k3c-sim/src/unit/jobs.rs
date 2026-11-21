@@ -1,7 +1,9 @@
 //! Aufträge der Bauern (Port von `engine/sim/unit_common.go`, ab `findJob`): Auftrag suchen, Bauplatz wählen, Auftrag
 //! abgeben, zum Kämpfer befördern.
 
+use super::walk_to;
 use super::warrior::weapon_to_fetch;
+use crate::island::errand::{ASCEND, built_stairs};
 use crate::island::storage::resource_full;
 use crate::state::common::{is_dangerous, is_worker};
 use crate::state::island_ref::IslandRef;
@@ -15,7 +17,13 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRe
     if let Some(j) = site_job(w, v, ti) {
         return Some(j);
     }
-    if is_dangerous(w) || !may_gather(w, v, ti) {
+    if is_dangerous(w) {
+        return None;
+    }
+    if let Some(j) = ascend_job(w, ti, isl) {
+        return Some(j); // ECO1.7: auch ein Bürger ohne Gürtel, der nicht roden darf, holt Ausrüstung von oben
+    }
+    if !may_gather(w, v, ti) {
         return None;
     }
     let mut best: Option<(i64, f64)> = None;
@@ -50,6 +58,41 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRe
 fn may_gather(w: &World, v: &WorldValues, ti: usize) -> bool {
     let t = &w.troops[ti];
     !v.native_rules || t.hammer || t.profession == "miner"
+}
+
+/// ECO1.7: Ein freier Bürger ohne Hammer geht zur Treppe nach oben, wenn dort Ausrüstung im Regal liegt und seine Stufe
+/// keine Werkstatt hat (`IslandRef::gear_above`); je Stufe höchstens einer zugleich, ein Bürger auf Besorgung nie.
+pub fn ascend_job(w: &World, ti: usize, isl: Option<&IslandRef>) -> Option<Job> {
+    let t = &w.troops[ti];
+    if !isl.is_some_and(|i| i.gear_above)
+        || t.kind != "peasant"
+        || t.hammer
+        || t.errand_from != 0
+        || t.errand_wait > 0.0
+    {
+        return None;
+    }
+    let busy = w
+        .troops
+        .iter()
+        .any(|o| o.job.as_ref().is_some_and(|j| j.r#type == ASCEND));
+    (!busy).then(|| Job {
+        r#type: ASCEND.into(),
+        ..Job::default()
+    })
+}
+
+/// ECO1.7: zur gebauten Treppe nach oben laufen; angekommen steht `amount` auf 1, den Rest tut `island::errand`.
+pub fn ascend(w: &mut World, v: &WorldValues, ti: usize, dt: f64) {
+    let Some(x) = built_stairs(w, "stairsUp") else {
+        w.troops[ti].job = None; // die Treppe gibt es nicht mehr
+        return;
+    };
+    if walk_to(w, v, ti, x, dt)
+        && let Some(j) = w.troops[ti].job.as_mut()
+    {
+        j.amount = 1;
+    }
 }
 
 /// Go: `siteJob`: Bogen holen, den nächsten wartenden Bauplatz bauen oder (ohne Gefahr) reparieren; `None`, wenn es

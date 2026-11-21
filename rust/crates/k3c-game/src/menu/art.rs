@@ -12,6 +12,7 @@ use super::draw::Painter;
 use super::main_screen::MAIN_COUNT;
 use super::pause::PAUSE_ROWS;
 use crate::art::{STANDARD_WORLD, WorldImage, WorldImages};
+use crate::view::seal::SEAL_ART;
 
 /// Die Animation, deren erstes Bild die Karte zeigt; die Weltbilder (Rig hintergrund) heißen "stand".
 pub const ART_ANIM: &str = "idle";
@@ -51,7 +52,11 @@ pub fn art_list(worlds: &WorldImages, big: bool, usable: Option<&dyn Fn(&str) ->
         .filter(|a| usable.is_some_and(|u| u(a)))
         .collect();
     let mut out: Vec<String> = Vec::new();
-    let fixed = MAIN_ART.iter().chain(PAUSE_ART.iter()).map(|a| (*a).to_string());
+    let fixed = MAIN_ART
+        .iter()
+        .chain(PAUSE_ART.iter())
+        .chain(SEAL_ART.iter().map(|(_, a)| a))
+        .map(|a| (*a).to_string());
     for a in fixed.chain(soft) {
         if !out.contains(&a) {
             out.push(a);

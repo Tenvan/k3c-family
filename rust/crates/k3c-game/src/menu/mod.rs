@@ -65,6 +65,8 @@ mod pause_tests;
 #[cfg(test)]
 mod saves_tests;
 #[cfg(test)]
+mod seal_tests;
+#[cfg(test)]
 mod table_tests;
 #[cfg(test)]
 mod testing_tests;

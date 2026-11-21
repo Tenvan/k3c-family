@@ -87,6 +87,7 @@ fn purse_values() -> Arc<WorldValues> {
     let mut v = (*default_values()).clone();
     v.economy.purse.start_gold = 100;
     v.economy.purse.max_gold = 100;
+    v.native_rules = false; // Go kennt die nativen Regeln (HB1, ECO1.6) nicht
     Arc::new(v)
 }
 

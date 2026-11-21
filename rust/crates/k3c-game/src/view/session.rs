@@ -58,6 +58,8 @@ pub struct SaveInfo {
     pub depths: Vec<i64>,
     /// Welt-ID des Spielstands; leer = Standard-Welt (B-938)
     pub world: String,
+    /// Schwierigkeitsgrad des Spielstands; leer = alter Stand ohne Angabe (Anzeige: Standardgrad, ECO1.2)
+    pub grade: String,
     /// false: kaputt oder alte Version; dann steht der Grund in `problem`
     pub loadable: bool,
     /// deutsch, für die Anzeige
