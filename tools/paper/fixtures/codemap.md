@@ -9,7 +9,7 @@ Feste Testdaten und Attrappen des Papierschnitt-Renderers: Fixture-Specs (`monar
 - `aus-prototyp.ts`: erzeugt `specs/monarch.paper.json` und `specs/pferd.paper.json` aus dem Prototyp `docs/decisions/005/prototyp-monarch-rig.html` (Zeichen-Helfer liefern Lagen statt SVG, Farben auf Materialien gemappt; `monarchSpec`, `pferdSpec`, `jsonText`).
 - `mauer.ts`: Fixture-Spec `mauer` (Gebäude, zwei Stufen, Material `stein`, `mauerSpec`).
 - `negativ.ts`: `negativSpecs`, je Datei genau ein Fehler, den `check.ts` mit genau einer Regel meldet; `aus-prototyp.ts` schreibt sie nach `specs/ungueltig/`.
-- `beispiele.ts`: erzeugt die RPC-Beispielantworten `ui/*.json` aus Fixtures und Attrappe, Zustand wie im Review-Test-Repo (`review-repo/erzeuge.ts`, Basis `HEAD~1`).
+- `beispiele.ts`: erzeugt die RPC-Beispielantworten `ui/*.json` aus Fixtures und Attrappe, Zustand wie im Review-Test-Repo (`review-repo/erzeuge.ts`, Basis `HEAD~1`); das Test-Repo entsteht in einem Wegwerf-Ordner unter `.work/tmp` der Repo-Wurzel und wird danach gelöscht.
 - Unterordner ohne Code: `specs/` (Fixture-Specs, `specs/ungueltig/`), `svg/` (Quell-SVGs der resvg-Probe), `render/` (Referenz-PNGs, `hashes.json`, `platzhalter.png`), `ui/` (Beispielantworten `Assets*.json`), `mcp/` (erwartete Textantworten der `assets_*`-Tools); [`review-repo/`](review-repo/codemap.md) erzeugt das Review-Test-Repo.
 
 ## Flow

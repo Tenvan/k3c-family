@@ -122,3 +122,30 @@ fn kein_platzhalter_rechteck_im_hub() {
         );
     }
 }
+
+/// WL1.4 (B-1213) AC-03: Höhe der Mauer je Ausbaustufe von halb (Zaun) bis voll (Kristall), gleichmäßig aufgeteilt.
+#[test]
+fn mauerhoehe_waechst_mit_der_stufe() {
+    use super::buildings::wall_height;
+    let got: Vec<f64> = (1..=5).map(wall_height).collect();
+    assert_eq!(got, [0.5, 0.625, 0.75, 0.875, 1.0]);
+    assert_eq!(wall_height(0), 1.0, "ohne Stufe volle Höhe");
+    assert_eq!(wall_height(9), 1.0, "über Stufe 5 volle Höhe");
+}
+
+/// WL1.4 AC-02: Die Mauer-Grafik hat keinen leeren Rand mehr; der Rahmen ist so breit wie der Zaun samt Zinnen und
+/// Stufen-Zusätzen (Stufe 5 bis 16,6), damit Nachbarn ohne Spalt anschließen.
+#[test]
+fn mauerrahmen_ohne_leeren_rand() {
+    let spec: serde_json::Value = serde_json::from_str(
+        &std::fs::read_to_string(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../public/grafik/gebaeude-paper/mauer.paper.json"),
+        )
+        .expect("Spec"),
+    )
+    .expect("JSON");
+    let r = &spec["ausgabe"]["rahmen"];
+    let (x, w) = (r[0].as_f64().expect("x"), r[2].as_f64().expect("b"));
+    assert!(w <= 36.0, "Rahmen {w} px breit: höchstens Kunst plus 1 px Rand");
+    assert!(-x >= 16.6 && x + w >= 16.6, "Stufe 5 (16,6 px) passt in den Rahmen");
+}

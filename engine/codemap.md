@@ -16,6 +16,7 @@ Schichten von innen nach außen:
 | [`store/`](store/codemap.md) | File-Repository für Spielstände (`saves/`) und Berichte (`reports/`) |
 | [`enginetools/`](enginetools/codemap.md) | Level und kurze Simulation als deterministischer Text |
 | [`balance/`](balance/codemap.md) | Balancing-Tester: Bots, Kennzahlen, Zielkorridore, Berichte, Tuning |
+| [`simcli/`](simcli/codemap.md) | Unterbefehle des Engine-CLI (`run`, `level`, `balance`, `world`, `hub`) als Paket, auch im Prozess der Workbench |
 | [`conlog/`](conlog/codemap.md) | farbiger `slog.Handler` mit Emoji-Topics |
 | [`devrun/`](devrun/codemap.md) | Dev-Supervisor der Tasks `<app>:dev` (Neubau und Neustart des Kindes) |
 
@@ -27,11 +28,11 @@ Schichten von innen nach außen:
    (`Room.SafeTick`).
 2. Der Raum rechnet `sim.StepIsland` (Level aus `level`, Zufall aus `rng`); das Spiel liest den Zustand im selben Prozess.
 3. Spielstände laufen über die Store-Ports von `room` nach `store`.
-4. Werkzeug-Pfad: `cmd/k3c-sim` → `enginetools` bzw. `balance` → `sim`/`level`.
+4. Werkzeug-Pfad: `cmd/k3c-sim` bzw. die Workbench → `simcli` → `enginetools` bzw. `balance` → `sim`/`level`.
 
 ## Integration
-- Konsumenten: `native/k3c-game`, `cmd/k3c-sim`; in k3c-workbench `internal/studioview` (`room`, `store`),
+- Konsumenten: `native/k3c-game`, `cmd/k3c-sim`, `simcli`; in k3c-workbench `internal/studioview` (`room`, `store`),
   `internal/world` (`store`), `internal/applog` und `headless.go` (`conlog`, `devrun`).
 - Daten: `data/` per `go:embed` bzw. `K3C_DATA_DIR`.
-- `internal/` (nur Tests und Test-Hilfen): `golden` (Golden-Dateien unter `testdata/golden/`), `rules` (Repo-Regeln
-  für Go, z. B. Importe und Verschachtelungstiefe).
+- `internal/` ([codemap](internal/codemap.md); nur Tests und Test-Hilfen): `golden` (Golden-Dateien unter `testdata/golden/`), `rules` (Repo-Regeln
+  für Go, z. B. Importe und Verschachtelungstiefe), `detvec` (Prüf-Vektoren für den Rust-Port), `trace` (Sim-Aufzeichnungen für den Rust-Port).

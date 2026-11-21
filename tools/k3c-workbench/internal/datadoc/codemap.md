@@ -6,7 +6,7 @@ Kennt die Dateien in `data/`, die Simulation, Level-Generator oder Balancing-Tes
 
 ## Design
 
-- Feste Liste `files` (`entry`: Name in `data/`, Doc-Name, Leser `BySim`/`ByLevel`/`ByTester`, `Vary`); `Vary` markiert Dateien, die `sim.UseData` neu lädt und die daher als Variante taugen. Ein Test hält die Liste gleich mit den Dateien, die `engine/` lädt.
+- Feste Liste `files` (`entry`: Name in `data/`, Doc-Name, Leser `BySim`/`ByLevel`/`ByTester`, `Vary`); `Vary` markiert Dateien, die `sim.UseData` neu lädt und die daher als Variante taugen. Ein Test hält die Liste gleich mit den Dateien, die `engine/` lädt (dazu gehört `story.json`, Leser `BySim`, nicht variierbar).
 - `File` (Zeile der Liste): Zweck und wichtigste Werte per Regex (`purposeLine`, `keyLine`) aus der Beschreibung; `Missing`, wenn `docs/data/<doc>.md` fehlt.
 - `Value`/`FileValue`: Zahlenwert mit Pfad `a.b.0.c`, Form wie `internal/balance/vary.go` (`datei.json:a.b.c`).
 - Pfadschutz: `Doc` nimmt nur Namen der Liste (`docName`), nie einen freien Pfad.

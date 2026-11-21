@@ -10,7 +10,7 @@ CLI `soundatlas` (SO6.2, B-494): packt die erste Präferenz jedes Effekt-Slots a
   - `loopSlots`: Slots, die je Spieler als Schleife laufen, gehören nicht in den Atlas.
   - `pickEntries` (rein): erste Präferenz jedes Effekt-Slots ohne eigenes Atlas-Sprite, sortiert nach Slot-ID.
   - `layout` (rein): rechnet aus den Samples je Effekt Start und Dauer, zwischen zwei Effekten `gapSeconds` Stille; `ms` rundet.
-  - `decode`: ffmpeg liefert PCM s16le mono 44,1 kHz; `write` kodiert erst in temporäre Dateien und benennt danach um (kein halber Atlas bei Fehler).
+  - `decode`: ffmpeg liefert PCM s16le mono 44,1 kHz; `write` kodiert erst in temporäre Dateien in einem Ordner unter `.work/tmp` der Projektwurzel und benennt danach um (kein halber Atlas bei Fehler).
 
 ## Flow
 `main` → `run(root, ffmpeg)` → `data/sounds.json` lesen → `pickEntries` → je Eintrag `decode` → `layout` → `write` (OGG, MP3, `atlas.json` unter `public/audio/`).

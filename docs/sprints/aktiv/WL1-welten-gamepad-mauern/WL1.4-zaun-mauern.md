@@ -1,6 +1,6 @@
 # WL1.4 · Jägerzaun, lückenlose Mauern und Höhe nach Stufe
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -56,5 +56,13 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 geprüft (B-1213 AC-01 bis AC-03), mit Abweichungen: Die Session-Datei war eine leere Vorlage; umgesetzt nach dem Ticket B-1213.
+- AC-02 Lücke: Die Mauer-Grafik hatte je Seite ca. 6,5 px leeren Rand im Rahmen (Kunst 29 von 42 px). `mauer.paper.json` Rahmen jetzt `[-17,-191,34,191]` (per `assets_set`, Golden `gebaeude-paper/golden.json` neu), die Hintergrundmauer kachelte schon ohne Fugen (`kachelung` 6..39). Tests `walls_tests.rs`: Rahmen ohne leeren Rand.
+- AC-03 Höhe: `props/buildings.rs::wall_height` (Stufe 1 bis 5: 0,5 · 0,625 · 0,75 · 0,875 · 1,0), gesetzt als `Item.sy` an der gebauten Mauer (`plan_sites.rs`) und an der Hintergrundmauer (`paint.rs::tiles` liest `sy`); Kollision unverändert. Tests `walls_tests.rs`, `plan_sites_tests.rs::mauer_zeigt_die_hoehe_der_stufe`.
+- AC-01 Jaegerzaun: Stufe 1 war schon ein Holzzaun aus spitzen Pfählen mit zwei Querriegeln (B-1176); er wird jetzt halb so hoch gezeichnet (Faktor 0,5). Kein neues Asset nötig; Ralf entscheidet bei der Abnahme, ob die Optik (gestauchter Zaun) reicht oder ein eigenes Zaun-Asset nötig ist. Ziegel-Übergang: kein Bildvergleich gefahren, bei der Abnahme am PC prüfen.
+- Zusatz: `tests/still_hud.rs` auf 400 Zeilen gebracht und fmt-sauber (stand unformatiert auf main, WL1.3; `changed` deckt die Beitreten-Meldung 12 ab).
+- `cargo test -p k3c-game`: nur `alloc_je_bild` rot (941 > 786, bekannt, B-1190 AC-04). fmt, clippy, Regeltests grün.
+
+### Für den Hauptrechner
+
+- Optik am PC abnehmen (Zaun halbhoch, Mauern ohne Spalt, Ziegel-Übergang, Hintergrundmauer folgt der Höhe); bei Bedarf Ticket für ein eigenes Zaun-Asset mit kleinerer Kunst statt Stauchung.

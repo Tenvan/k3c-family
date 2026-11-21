@@ -10,7 +10,7 @@ Paket `windowstate`: merkt Größe und Position eines Wails-Fensters zwischen zw
   - `Load(path)`: fehlende oder kaputte Datei → Vorgabe und `ok=false` (Position bleibt Wails überlassen); zu kleine Maße werden aufs Minimum gehoben, negative Positionen bleiben (Bildschirm links/oberhalb).
   - `Place(get, set, x, y)`: setzt die absolute Position; der Zug auf (0, 0) misst den Versatz des Arbeitsbereichs, weil Wails relativ zum aktuellen Bildschirm setzt.
   - `Save(path, state)`: legt den Ordner an und schreibt JSON.
-  - `ConfigPath(name)`: `<UserConfigDir>/k3c/<name>`, ohne Konfigurationsordner unter `os.TempDir()`.
+  - `ConfigPath(name)`: `<UserConfigDir>/k3c/<name>`, ohne Konfigurationsordner relativ `.work/config/<name>` (kein Temp-Ordner außerhalb des Repos).
 - `screen_windows.go` (`//go:build windows`): `OnScreen(state)` fragt `user32.MonitorFromRect` für einen Punkt der Titelleiste (100 px vom linken Rand) ab; fehlt der Bildschirm, ist das Fenster nicht greifbar.
 - `screen_other.go` (`//go:build !windows`): `OnScreen` liefert immer true.
 

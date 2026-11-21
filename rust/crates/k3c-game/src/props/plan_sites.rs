@@ -6,7 +6,7 @@ use k3c_sim::state::{Site, World};
 
 use super::buildings::{
     DAMAGE_SHADE, Look, Marker, back_wall_look, back_walls, damage_stage, scaffold_look, show_rubble, sign_variant,
-    site_look, site_marker, site_stage,
+    site_look, site_marker, site_stage, wall_height,
 };
 use super::data::{build_cost, cost_of, site_name, values};
 use super::listen::{SiteFlags, StageInfo, info_flag, info_tagged};
@@ -105,6 +105,7 @@ impl Planner {
                     look: l,
                     x: b.from,
                     x2: b.to,
+                    sy: wall_height(b.stage),
                     ..Default::default()
                 });
             }
@@ -157,6 +158,11 @@ impl Planner {
                 look: l,
                 x: s.x,
                 y: -ship_drop(&s.kind, s.level),
+                sy: if s.kind == "wall" {
+                    wall_height(site_stage(&s.kind, s.level, hub_level))
+                } else {
+                    0.0
+                },
                 shade,
                 ..Default::default()
             });

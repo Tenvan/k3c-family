@@ -47,7 +47,7 @@ const TEXT_TOL_Y: i32 = 5;
 /// Icons) bleiben im Vergleich, ihr Text ist nur ein kleiner Teil.
 /// Element, dessen Box und Breite sich mit dem neuen HUD bewusst geändert haben (RU61).
 fn changed(name: &str, id: &str) -> bool {
-    name == "englisch-hub" && id == "3"
+    (name == "englisch-hub" && id == "3") || id == "12" // 12 = Beitreten-Meldung, B-1212 entfernt
 }
 
 const TEXT_ITEMS: [usize; 9] = [

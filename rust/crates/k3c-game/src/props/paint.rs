@@ -182,7 +182,8 @@ fn tiles(dst: &mut dyn Canvas, it: &Item, lib: Option<&Library>, c: &Cell) {
         None => (0.0, s.fw as f64 * u),
     };
     let k = u * c.camera.scale;
-    let y0 = c.screen_y(it.y) - s.origin_y * s.fh as f64 * k;
+    let ky = if it.sy > 0.0 { k * it.sy } else { k }; // WL1.4: Höhe nach Stufe wie bei der Mauer
+    let y0 = c.screen_y(it.y) - s.origin_y * s.fh as f64 * ky;
     let n = ((it.x2 - it.x) / tw).ceil() as i64;
     for i in 0..n {
         let tx = (it.x + i as f64 * tw).min(it.x2 - tw);
@@ -190,7 +191,7 @@ fn tiles(dst: &mut dyn Canvas, it: &Item, lib: Option<&Library>, c: &Cell) {
             continue;
         }
         let mut g = Affine::IDENTITY;
-        g.scale(k as f32, k as f32)
+        g.scale(k as f32, ky as f32)
             .translate(c.camera.screen_x(tx - lead) as f32, y0 as f32);
         s.draw(dst, 0, g);
     }

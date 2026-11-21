@@ -14,7 +14,7 @@ und gleiche Daten ergeben byte-gleiche Ausgabe (keine Wanduhr, keine Map-Iterati
   `Restrict`: `--depth`, `--players`, `--bot`, `--grade`, `--days`); `seedmode.go` (`WithSeeds`).
 - **Bots** (Strategy): `bots.go` (`Bot` liefert aus dem Zustand nur einen `sim.PlayerCommand`; `BotNames`,
   `BotByName`), Profil `bot_wirtschaft.go` und Verhaltensteile `bot_abstieg.go` (Abstieg), `bot_boss.go` (Bosskampf),
-  `bot_clear.go` (Freiraum für Plätze), `bot_learn.go` (Skills lernen); `helps.go` (`HelpsNames`, Hilfen wie im
+  `bot_clear.go` (Freiraum für Plätze), `bot_learn.go` (Skills lernen), `crown_bot.go` (`retrieveCrown`, B-931: ein Bot ohne Krone hebt die nächste liegende Krone auf, trägt er eine fremde, bringt er sie zum Besitzer; `run.go` ruft es vor dem Profil auf); `helps.go` (`HelpsNames`, Hilfen wie im
   Stufen-Test).
 - **Messung**: `metrics.go` (`Metrics`, `DawnMetrics`, `DayMetrics`, `WaveMetrics`), `metrics_island.go`
   (`StageMetrics`, `BossMetrics`, `IslandMetrics`), `economy_measures.go` (Wirtschafts-Korridore), `progress.go`
@@ -51,5 +51,5 @@ und gleiche Daten ergeben byte-gleiche Ausgabe (keine Wanduhr, keine Map-Iterati
 
 - Abhängigkeiten: `k3c/engine/sim`, `k3c/engine/enginetools`, `k3c/data` (`balance-targets.json`,
   `balance-hints.json`, `difficulty.json`, `bosses.json`, `ship.json` u. a.).
-- Konsument: `cmd/k3c-sim` (Unterbefehl `balance`: `Run`, `Play`, `ReadReplay`, `WithVariants`, `Reevaluate`,
-  `WriteReports`, `FiguresOf`); die Workbench nutzt es nur über die EXE (`sim_test`, Balancing-Seite).
+- Konsument: `engine/simcli` (Unterbefehl `balance`, von `cmd/k3c-sim` und der Workbench im Prozess gerufen: `Run`, `Play`, `ReadReplay`, `WithVariants`, `Reevaluate`,
+  `WriteReports`, `FiguresOf`); die Workbench erreicht es über `simcli` (`sim_test`, Balancing-Seite).

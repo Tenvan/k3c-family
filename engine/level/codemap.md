@@ -12,22 +12,24 @@ deterministisches `Layout` (Chunks, Entities, Bauplätze, Ruinen, Wachen, Hinter
   Portal-Gegnern, `safeCampSlots`) → `entities` (Burg, Portale, Ressourcen, Skill-Punkte, Bau `lair` über `lairX`) →
   `veins`. Typen `Chunk`, `Entity`, `Layout` (JSON wie früher `LevelLayout`; Laufzeitfelder `Sites`, `FreeGround`,
   `Ruins`, `Guards`, `Nature` ohne JSON, `Backdrops` mit). `HarborKind` ist die Chunk-Art des Hafens.
-- `planned_gen.go`: `Options` (`Planned`, `ChunkCount` = Inselgröße, `Nature` = fest gesetzte Natur-Werte; Nullwert
-  wie `Generate`); `slotIndex`, `reserve`, `plannedEntities`, `chunkStream` (Chunk-Seed `<biom>:chunk:<chunk-seed>`),
+- `planned_gen.go`: `Options` (`Planned`, `ChunkCount` = Inselgröße, `Nature` = fest gesetzte Natur-Werte, `Lair` = Bau des
+  Endbosses in dieser Stufe, `HubSites` = Plätze der Welt; Nullwert wie `Generate`); `hasLair`; `slotIndex`, `reserve`, `plannedEntities`, `chunkStream` (Chunk-Seed `<biom>:chunk:<chunk-seed>`),
   `clearOfRuin`.
 - `biome.go`: `Biome` (Felder aus `data/biomes/*.json`), `Cycle` (`dayNight` / `aggressionPool`, `Check` ohne stillen
   Standardwert), `Range`, `LoadBiome(id)`; `Ordered[V]`/`Entry[V]` bewahren die JSON-Schlüsselreihenfolge.
 - Geplante Chunks (`docs/rules/geplante-chunks.md`): `planned.go` (`PlannedChunk` streng gelesen, `PlannedObject`,
-  `ValidatePlan`/`ValidatePlanFor` gegen kürzeste Länge bzw. `ChunkCount`), `planned_totals.go` (Biom-Summen und freie
+  `ValidatePlan`/`ValidatePlanFor`/`ValidatePlanWith` gegen kürzeste Länge bzw. `ChunkCount` und Welt-Plätze), `planned_totals.go` (Biom-Summen und freie
   Plätze), `ruins.go` (`PlannedBuilding`, `Ruin`, `RuinRules` aus `data/ruins.json`, `RuinHP`, `ruinsOf`),
   `guards.go` (Gegnerlager: `PlannedEnemy`, `Guard`, `GuardRules` aus `data/guards.json`, `guardsOf`).
 - `sites.go` (B-652): `WallSite`, `SitePlacement` (`data/hub.json › sitePlacement`), `placeSites` verteilt Mauer- und
   Turm-Plätze je Zone aus eigenem Strom, `placeNurseries` (Strom `<biom>:<seed>:nursery`), `FreeGround` und
-  `Layout.OnFreeGround`. `lines.go` liest Hub-/Insel-Plätze (`hubSite`) und den Zahlziel-Abstand aus `hub.json` und
+  `Layout.OnFreeGround`. `lines.go` liest Hub-/Insel-Plätze (`hubSite`, `HubSite`, `sitesOf`; Welt-Plätze aus `Options.HubSites`) und den Zahlziel-Abstand aus `hub.json` und
   `economy.json`.
 - `nature.go`/`nature_check.go` (B-891): `Trait`, `WeightGroup`, `NatureValues` (`SetTrait`, `SetWeight`, `Empty`),
   `MergeNature`, `NeutralNature`, `ResolveNature` (Würfe aus `<biom>:<seed>:nature`), `assignVariants`,
   `Biome.CheckNatureValues`.
+- `lair.go` (B-981): `CheckLairFit(b, chunkCount)` prüft, ob eine tiefste Stufe den Bau samt Camp-Abstand trägt
+  (seedunabhängig, repariert nichts).
 - `backdrop.go`: `BackdropTileUnits`, `backdrops` wählt je Hintergrund-Kachel eine Variante aus Strom
   `<biom>:<seed>:backdrop`.
 - `validate.go`: `Validate`/`ValidateWith` (leere Liste = gültig): Länge, Chunks, Portale außerhalb der Linien, Bau,
@@ -38,7 +40,7 @@ deterministisches `Layout` (Chunks, Entities, Bauplätze, Ruinen, Wachen, Hinter
 ## Flow
 
 1. `LoadBiome(id)` → `Biome`.
-2. `GenerateWith`: `ValidatePlanFor` → `ResolveNature` → `rng.New(seed)` → `frame` → `reserve` → Portale, Ereignisse,
+2. `GenerateWith`: `ValidatePlanWith` → `ResolveNature` → `rng.New(seed)` → `frame` → `reserve` → Portale, Ereignisse,
    Entities, Adern → `placeSites` → `Layout` mit `ruinsOf`, `guardsOf`, `backdrops`.
 3. Optional `ValidateWith(layout, biome, opts)` prüft Spielbarkeit.
 

@@ -9,7 +9,7 @@ Ein Unterordner je Binary, jeweils `package main` als dünner Composition Root �
 
 | Ordner | Binary |
 |--------|--------|
-| [`k3c-sim/`](k3c-sim/codemap.md) | Engine-CLI (B-726): Unterbefehle `run`, `level`, `balance`, `world`; JSON-Zeilen auf stdout, Kindprozess der Workbench |
+| [`k3c-sim/`](k3c-sim/codemap.md) | Engine-CLI (B-726): Unterbefehle `run`, `level`, `balance`, `world`, `hub` (Logik in `engine/simcli`); JSON-Zeilen auf stdout, Kindprozess der Workbench |
 
 ## Flow
 Die Workbench ruft dieselbe Logik über `engine/simcli` im Prozess auf (B-924) und liest dessen

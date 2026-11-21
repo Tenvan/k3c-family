@@ -6,7 +6,7 @@ Steuert die Testläufe der Workbench (B-348, WZ28.4): ein Register je Workbench 
 
 ## Design
 
-- Register (`registry.go`): `Registry` (`New(log)`), `Run`, `Runner func(ctx, *Run)`; `Start(root, where, label, spec, runner, queue)`, `Stop`, `CancelAll`, `Get`, `List`; Fortschritt über `SetPhase`, `SetLines`, `SetProgress`, `Finish`; `ReportDir(run)` = `reports/simtest-<id>`. `Info` (`info.go`) ist der Stand eines Laufs für `sim_test` und die RPC `BalanceRuns`.
+- Register (`registry.go`): `Registry` (`New(log)`), `Run`, `Runner func(ctx, *Run)`; `Exec` (Test-Naht) ist standardmäßig `runEngine`, der Lauf rechnet im Prozess; `Start(root, where, label, spec, runner, queue)`, `Stop`, `CancelAll`, `Get`, `List`; Fortschritt über `SetPhase`, `SetLines`, `SetProgress`, `Finish`; `ReportDir(run)` = `reports/simtest-<id>`. `Info` (`info.go`) ist der Stand eines Laufs für `sim_test` und die RPC `BalanceRuns`.
 - Auftrag (`spec.go`): `Spec` mit `Tune`; jedes Feld wird ein Flag von `k3c-sim balance`; leer heißt Flag weglassen (Ziele aus `data/balance-targets.json`); `Check` prüft Grenzen und Positivlisten, `Title` bildet die Bezeichnung.
 - Offline-Runner (`offline.go`, RS2.2): `StartOffline(root, where, spec)` prüft und reiht ein; `Offline(spec)` rechnet `balance --targets …` im Prozess (`runEngine` über `simcli.Stream` in einer Goroutine, Abbruch über Context, Panik wird Fehler; B-924) und liest die Events (`Proc`, `Result`) und den Bericht. `pervariant.go` (B-662): „je Variante“ wird n + 1 Läufe mit gleichen Seeds.
 - Bericht (`stamp.go`): `Stamp` trägt Label, Auftrag und Lauf-ID nach dem Rechnen in den Bericht (mit kurzen Wiederholungen, falls die Datei gesperrt ist).

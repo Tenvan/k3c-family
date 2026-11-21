@@ -269,3 +269,19 @@ fn regal_zeigt_je_stueck_ein_icon() {
         );
     }
 }
+
+/// WL1.4 (B-1213) AC-03: Die gebaute Mauer wird je Stufe in der Höhe des Stufen-Faktors gezeichnet (Zaun halb, Kristall voll).
+#[test]
+fn mauer_zeigt_die_hoehe_der_stufe() {
+    for (level, sy) in [(1, 0.5), (3, 0.75), (5, 1.0)] {
+        let w = World {
+            sites: vec![wall_at(1, 10.0, level, "built")],
+            hub_level: 5,
+            ..Default::default()
+        };
+        let mut p = Planner::new(Some(StubSheets::rc()));
+        p.sites(&w, None, &camera(10.0));
+        let it = p.body.iter().find(|it| it.shape == Shape::Sprite).expect("Mauer-Bild");
+        assert!((it.sy - sy).abs() < 1e-9, "Stufe {level}: sy {}", it.sy);
+    }
+}

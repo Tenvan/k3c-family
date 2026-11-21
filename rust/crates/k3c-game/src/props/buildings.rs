@@ -285,6 +285,16 @@ pub fn sign(v: f64) -> f64 {
     }
 }
 
+/// `wall_height`: Anzeigehöhe der Mauer je Ausbaustufe als Anteil der vollen Höhe (WL1.4, B-1213): Zaun (Stufe 1) halb
+/// so hoch, Kristall (Stufe 5) voll, dazwischen gleichmäßig 0,5 · 0,625 · 0,75 · 0,875 · 1,0. Nur die Darstellung, die
+/// Kollision bleibt. Stufen außerhalb 1 bis 5 zeigen die volle Höhe.
+pub fn wall_height(stage: i64) -> f64 {
+    match stage {
+        1..=5 => 0.5 + 0.125 * (stage - 1) as f64,
+        _ => 1.0,
+    }
+}
+
 /// `back_wall_look` ist die Hintergrundmauer der Stufe 1–5; andere Stufen haben keine Grafik.
 pub fn back_wall_look(stage: i64) -> Look {
     if !(1..=5).contains(&stage) {
