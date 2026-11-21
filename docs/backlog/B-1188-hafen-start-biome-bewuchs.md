@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** HB1
 - **Projekt:** RSU

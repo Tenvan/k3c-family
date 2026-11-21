@@ -153,7 +153,8 @@ fn sprite(dst: &mut dyn Canvas, it: &Item, lib: Option<&Library>, c: &Cell, cloc
     let Some(f) = s.frame(it.phase + (clock * s.fps) as i64) else {
         return;
     };
-    let k = s.units_per_px / UNIT_PX * c.camera.scale;
+    // `w` > 0 verkleinert das Bild gleichmäßig (Icons in der Preis-Anzeige, HB1.1)
+    let k = s.units_per_px / UNIT_PX * c.camera.scale * if it.w > 0.0 { it.w } else { 1.0 };
     let ky = if it.sy > 0.0 { k * it.sy } else { k };
     let x0 = c.camera.screen_x(it.x) - s.origin_x * s.fw as f64 * k;
     let y0 = c.screen_y(it.y) - s.origin_y * s.fh as f64 * ky;

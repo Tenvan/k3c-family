@@ -3,7 +3,7 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** HB1
 - **Projekt:** RSU
@@ -46,7 +46,7 @@ Planungsangaben für die Arbeitswellen:
 - **Bereich:** `rust/crates/k3c-level/**`, `rust/crates/k3c-sim/**`, `data/biomes/**`, `data/**`, `rust/crates/k3c-game/src/hud/**`
 - **Abhängig von:** –
 - **Braucht 🧑:** Abnahme
-- **Größe:** L
+- **Größe:** M
 - **Sperre:** golden
 
 ## Beispiele

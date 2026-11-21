@@ -11,7 +11,8 @@ use super::buildings::{
 use super::data::{build_cost, cost_of, site_name, values};
 use super::listen::{SiteFlags, StageInfo, info_flag, info_tagged};
 use super::nature::ship_drop;
-use super::plan::{DARK, GOLD, HP_GREEN, Item, Planner, Shape, WHITE, px, visible};
+use super::plan::{DARK, GOLD, HP_GREEN, Item, Planner, Shape, px, visible};
+use super::plan_cost::SMALL;
 use super::sites::{TextKey, TextWhat, WaitReason, can_afford, shelf_of, shelf_rack, site_text, site_wait};
 use crate::view::cell::Camera;
 
@@ -250,7 +251,7 @@ impl Planner {
             };
             let enough = can_afford(info.stock, &price);
             self.with_text(key, |p, text| {
-                p.price(s.x, h + px(20.0), total, s.bow_paid_gold, text, enough);
+                p.price_cost(s.x, h + px(20.0), (total, s.bow_paid_gold), text, &price, enough);
             });
             labeled = true;
         }
@@ -345,7 +346,7 @@ impl Planner {
                 kind: s.kind.clone(),
                 ..TextKey::new(TextWhat::Clearing)
             };
-            self.with_text(key, |p, text| p.label(s.x, h + px(20.0), text, GOLD));
+            self.with_text(key, |p, text| p.label_sized(s.x, h + px(20.0), text, GOLD, SMALL));
             return;
         }
         let c = build_cost(&s.kind, w.biome.depth);
@@ -360,41 +361,7 @@ impl Planner {
         };
         let enough = can_afford(info.stock, &c);
         self.with_text(key, |p, text| {
-            p.price(s.x, h + px(20.0), total, s.paid_gold, text, enough)
+            p.price_cost(s.x, h + px(20.0), (total, s.paid_gold), text, &c, enough);
         });
-    }
-
-    /// `price`: Münz-Plätze in Reihen zu zehn (gefüllt = bezahlt), darüber Name und Material; rot, wenn Material fehlt.
-    pub fn price(&mut self, x: f64, y: f64, total: i64, paid: i64, text: &str, enough: bool) {
-        const PER_ROW: i64 = 10;
-        let (step, r) = (px(22.0), px(8.0));
-        for i in 0..total {
-            let row = i / PER_ROW;
-            let in_row = PER_ROW.min(total - row * PER_ROW);
-            let cx = x + (i % PER_ROW) as f64 * step - (in_row - 1) as f64 * step / 2.0;
-            let cy = y + row as f64 * step;
-            if i < paid {
-                self.top.push(Item {
-                    shape: Shape::Circle,
-                    x: cx,
-                    y: cy,
-                    w: r,
-                    clr: GOLD,
-                    ..Default::default()
-                });
-            }
-            self.top.push(Item {
-                shape: Shape::Ring,
-                x: cx,
-                y: cy,
-                w: r,
-                size: px(2.0),
-                clr: GOLD,
-                ..Default::default()
-            });
-        }
-        let clr = if enough { WHITE } else { super::plan::POOR_RED };
-        let rows = (total + PER_ROW - 1) / PER_ROW;
-        self.label(x, y + rows as f64 * step, text, clr);
     }
 }

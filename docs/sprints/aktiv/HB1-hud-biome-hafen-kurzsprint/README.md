@@ -64,7 +64,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| HB1.1 | `HB1.1-baustellen-texte-icons.md` | Umsetzung | autonom | offen |
+| HB1.1 | `HB1.1-baustellen-texte-icons.md` | Umsetzung | autonom | fertig |
 | HB1.2 | `HB1.2-gebaeudename-haendler.md` | Umsetzung | autonom | offen |
 | HB1.3 | `HB1.3-biome-dicht-radar.md` | Umsetzung | autonom | offen |
 | HB1.4 | `HB1.4-landstreicher-lager-taverne.md` | Umsetzung | autonom | offen |

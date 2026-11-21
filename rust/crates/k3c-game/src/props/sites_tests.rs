@@ -122,9 +122,9 @@ fn texte() {
     use TextWhat::*;
     use WaitReason as W;
     let cases = [
-        (key(Price, "wall", "", 0, W::None), "Mauer · 20 Holz"),
-        (key(Price, "stairsUp", "", 1, W::None), "Treppe hoch · 100 Holz"),
-        (key(Price, "stairsUp", "", 0, W::None), "Treppe hoch · 100 Stein"),
+        (key(Price, "wall", "", 0, W::None), "Mauer"),
+        (key(Price, "stairsUp", "", 1, W::None), "Treppe hoch"),
+        (key(Price, "stairsUp", "", 0, W::None), "Treppe hoch"),
         (key(Clearing, "tower", "", 0, W::None), "Turm: erst roden"),
         (
             key(Status, "storage", "waitingWorker", 0, W::Worker),
@@ -142,14 +142,14 @@ fn texte() {
             key(Status, "wall", "waitingWorker", 0, W::Danger),
             "Mauer: wartet: Gefahr",
         ),
-        (key(Bow, "", "", 0, W::None), "Bogen · 50 Holz"),
+        (key(Bow, "", "", 0, W::None), "Bogen"),
         (key(Name, "ship", "", 0, W::None), "Schiff"),
     ];
     for (k, want) in cases {
         assert_eq!(site_text(&k), want, "{k:?}");
     }
     assert!(
-        hub_title(2, 3) == "Ausbau 2/3" && hub_title(0, 0) == "Ausbauen",
+        hub_title(2, 3) == "2/3" && hub_title(0, 0) == "Ausbauen",
         "Titel des Ausbau-Schilds (B-592)"
     );
     assert_eq!(

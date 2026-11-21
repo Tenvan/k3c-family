@@ -1,6 +1,6 @@
 # HB1.1 · HUD: Baustellen-Texte kleiner, Kosten als Icons, Ausbau x/n
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: Baustellen-Anzeige neu in `props/plan_cost.rs` (`price_cost`, `coin_rows`, `cost_row`): Kosten als Rohstoff-Icons (`icons/icon-holz` usw., 0,55 Unit) mit Zahl, Name klein (`SMALL` 0,55 statt 1,0 Unit) darüber, ohne Icon-Sheets Kurztext („20 Holz, 5 Stein“). Bauplatz-, Bogen- und Burg-Preis nutzen es; Wartegrund- und „erst roden“-Texte ebenfalls klein (`label_sized`). Ausbau-Titel der Burg ist nur noch „x/n“ (`hub_title`). `paint.rs`: `Item.w` skaliert Sprites gleichmäßig. `site_text` liefert für Preis und Bogen nur noch den Namen. Tests `plan_cost_tests.rs` (Icons, Fallback), `sites_tests.rs` angepasst; `cargo test -p k3c-game --lib` und clippy grün. `task check:diff`: nur die bekannten Planungstests rot (zuletzt kamen Umgebung/Größe der drei neuen HB1-Tickets dazu, behoben).
+
+Nicht geprüft: Aussehen am PC (Icon- und Textgröße vermutet). Abweichung: `props/` darf `hud` nicht importieren, darum steht die Icon-Tabelle als Kopie in `plan_cost.rs`.
