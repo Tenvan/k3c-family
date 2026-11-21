@@ -471,3 +471,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | `erledigt/LA1-look-anbindung-bb1/` |
 | LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | `erledigt/LA2-look-nachtraege-panel-himmel-licht/` |
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | `erledigt/HB1-hud-biome-hafen-kurzsprint/` |
+| LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | `erledigt/LA3-bauplaetze-nach-gebaeudegroesse/` |
