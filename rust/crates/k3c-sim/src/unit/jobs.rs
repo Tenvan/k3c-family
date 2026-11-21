@@ -7,6 +7,7 @@ use crate::state::common::{is_dangerous, is_worker};
 use crate::state::island_ref::IslandRef;
 use crate::state::links::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job};
 use crate::state::{Job, World, WorldValues};
+use crate::world::vein::vein_blocked;
 
 /// Go: `findJob`: Bogen holen, sonst nächsten wartenden Bauplatz, sonst (ohne Gefahr) die markierte Ressource nächst am
 /// Hub. Bei gleichem Abstand gewinnt das frühere Element, wie das stabile `sort(...)[0]` in TS.
@@ -19,7 +20,7 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRe
     }
     let mut best: Option<(i64, f64)> = None;
     for n in &w.nodes {
-        if !n.marked || !node_free(w, n) {
+        if !n.marked || !node_free(w, n) || vein_blocked(w, v, n) {
             continue;
         }
         let resource = gather_of(v, &n.kind).map_or("", |g| g.resource.as_str());

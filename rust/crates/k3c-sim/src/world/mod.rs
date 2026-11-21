@@ -100,6 +100,8 @@ mod values_shape_tests;
 #[cfg(test)]
 mod values_tests;
 #[cfg(test)]
+mod vein_block_tests;
+#[cfg(test)]
 mod vein_tests;
 
 /// Go: `Options` für `CreateWorld`; die kleingeschriebenen Felder (`lair`, `hub`, `vals`) sind hier öffentlich.
@@ -284,6 +286,7 @@ pub fn place_entities(w: &mut World, v: &WorldValues, rules: &Rules) {
     }
     w.level.entities = entities;
     crate::unit::camp_guard::plant_camp_trees(w, v);
+    vein::place_vein_rocks(w, v);
     crate::portal::sync_portals(w);
 }
 
