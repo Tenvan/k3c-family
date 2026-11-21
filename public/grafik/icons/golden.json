@@ -5,6 +5,12 @@
       "idle.png": "bc547661b0c9fc7892c7087f9cbf9b508d38d7404ee6beb706faee4478f71f5a"
     }
   },
+  "icon-bogen": {
+    "renderKey": "c49062750e0268855bd140deafc459733d3741b172aa75b97c7b66699dce21a6",
+    "dateien": {
+      "idle.png": "7bf4f8e8c772db605c22f18c65b30f81544a7ea1073395a4b9a3f6ec996c9315"
+    }
+  },
   "icon-eisen": {
     "renderKey": "aceb907309da4b155932eb9518a745e5a9af9ecaaf346b8900f07bdc459361fe",
     "dateien": {
@@ -15,6 +21,12 @@
     "renderKey": "15b59447ccca78fb14b9b112a44f3141761b1c0f330bdf978beca70e95e636c8",
     "dateien": {
       "idle.png": "e1a83b0892d6b41b3905f87ed5054a631f8eee8ef45a3c5cd92bf736aed84a48"
+    }
+  },
+  "icon-guertel": {
+    "renderKey": "2df4920f46c1dae1c12f0a9e56bc0a08078edd6caf2e1f8ed8e7f2932081e48b",
+    "dateien": {
+      "idle.png": "fc6c647c40fac9e59ac9d652b80317e4087d985f68f90a367c8bfb77465124e4"
     }
   },
   "icon-holz": {
@@ -63,6 +75,18 @@
     "renderKey": "28a2274734aa2f9dacce65263b2ce92c481b5c3b7b0921ddc54aa97b3d9a0785",
     "dateien": {
       "idle.png": "9348521c79394632bab7fc8f804e679bc1fd6990847827e79301ca76b66c467c"
+    }
+  },
+  "icon-ruestung": {
+    "renderKey": "067a6b2a72583197d73ccb445fb5c05a30141165743b9b087d6970709c3dc9d1",
+    "dateien": {
+      "idle.png": "0a3ecdd60a912125b5fe1b03344bca513d3753bbd37a9c8a5907d618ee1dda94"
+    }
+  },
+  "icon-schwert": {
+    "renderKey": "34c1af41e24e8853c6ac4316a5c026e59f0249550057fee5257ab79d9d779a43",
+    "dateien": {
+      "idle.png": "4d2be8afb868c934552cf4d01e05452a5decf06db69518f2337a05774dafa1c6"
     }
   },
   "icon-schwerter": {

@@ -1,0 +1,67 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "icon-bogen",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Bogen aus Holz mit Sehne und aufgelegtem Pfeil",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-6 -29L2 -26L7 -21L9 -16L7 -11L2 -6L-6 -3L-4 -8L0 -12L1 -16L0 -20L-4 -24Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 0.9,
+          "form": "M-4 -26L3 -23L7 -18",
+          "material": "holz",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-6 -29L-6 -3",
+          "material": "linie"
+        },
+        {
+          "art": "falz",
+          "breite": 1.2,
+          "form": "M-6 -16L12 -16",
+          "material": "holz"
+        },
+        {
+          "art": "flaeche",
+          "form": "M12 -18.5L16 -16L12 -13.5Z",
+          "material": "eisen"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -18L-3 -16L-6 -14Z",
+          "material": "leinen"
+        }
+      ],
+      "pivot": [0, -16]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 1,
+      "frames": 1,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "korpus": 0
+          }
+        }
+      ]
+    }
+  }
+}
