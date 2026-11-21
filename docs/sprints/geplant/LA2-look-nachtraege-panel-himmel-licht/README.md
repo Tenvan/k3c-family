@@ -3,12 +3,12 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** CLI, PAP
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1179, B-1181, B-1183
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude (2026-11-21, Auftrag von 🧑)
 
 ## Ausgangslage
 
@@ -60,7 +60,13 @@ Biome ohne Himmel (`tint.noSky`): keine Wolken, kein Monumentalbild. Ohne Cheat-
 
 ## Offene Fragen
 
-🧑: Welche Halter-Art für welches Gebäude und welche Welt, welches Monument je Welt? Die Sessions entscheiden mit Default (Sengoku Vulkan, Nil Pyramide, Britannien Berg, Standard Berg) und melden im Ergebnis; Abnahme bleibt bei 🧑.
+Keine offen. Defaults (autonom, Claude, 2026-11-21; 🧑 bestätigt sie bei der Abnahme oder ändert sie):
+
+- **Monument je Welt:** Oberwelt Berg, Sengoku Vulkan, Nil/Ägypten Pyramide, Britannien Berg, Standard Berg.
+- **Halter-Arten:** Fackel am Pfahl, Laterne (Papier bzw. Metall je Welt), Feuerschale; Zuordnung: Wohnhäuser Laterne, Wehrbauten Fackel, Plätze und Burg Feuerschale. Nie im Türbereich.
+- **Wolken:** prozedural, ohne Asset; im Go-Profil aus.
+- **Panel:** Schalter gelten nur für die Sitzung, kein Speichern über Programmstarts.
+- Weicht eine Session davon ab, meldet sie das im Ergebnis.
 
 ## Sessions
 

@@ -1,7 +1,7 @@
 # KSY · Kampfsystem: Portale, aktiver Angriff, Ausrüstung statt Tod, Krone statt HP
 
-- **Status:** aktiv
-- **Rang:** 1
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -14,7 +14,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 
 | Sprint | Thema | Status |
 |---|---|---|
-| KS1 | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | aktiv |
+| KS1 | Kampfregeln K3C festschreiben (Portale, Angriff, Ausrüstung, Krone) | erledigt |
 | KS2 | Portale zerstörbar, Stufe sicher, Kämpfer werden Bürger | erledigt |
 | KS3 | Monarch: Gold statt HP, Krone fällt, Raub statt Burgfall | erledigt |
 | KS4 | Aktiver Angriff: Gruppen mit Schild und Auslöser, General mit Banner, Variante je Welt | erledigt |

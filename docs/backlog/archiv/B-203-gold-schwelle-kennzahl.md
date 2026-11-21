@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** niedrig
 - **Umgebung:** offline
-- **Status:** eingeplant
+- **Status:** verworfen
 - **Sprint:** RG2
 - **Projekt:** BAL
 - **Erstellt:** 2026-10-04

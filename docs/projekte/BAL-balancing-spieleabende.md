@@ -1,7 +1,7 @@
 # BAL · Balancing & Spieleabende
 
-- **Status:** aktiv
-- **Rang:** 9
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** B-099
 
 ## Ziel
@@ -16,7 +16,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 |---|---|---|
 | RG1 | Werte-Runde: Burg hält Nacht, Hub-Stufe 4–5, Adern-Takt | erledigt |
 | BAL6 | Balancing-Tester misst die Wirtschaft | erledigt |
-| RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | aktiv |
+| RG2 | Regelwerk-Klärungen: Korridore, Kennzahl, Tier-Gating, Handwerker, Tiefe 3–4 | erledigt |
 | BAL4 | Abgleich Spielmetrik und Simulator | erledigt |
 | BR1 | Balancing-Runde Wirtschaft und Spieleabend 2 | erledigt |
 | BR2 | Balancing-Runde Kampf und Bosse und Spieleabend 3 | erledigt |

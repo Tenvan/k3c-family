@@ -1,6 +1,6 @@
 # WG1 · PAP · Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -63,6 +63,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-21 (Claude, Klasse A, nachträgliche Prüfung): AC-01 geprüft: je Welt (standard, sengoku, nil, britannien) ein großes und ein kleines Weltbild unter `public/grafik/hintergruende/weltbild-*`, Zuordnung in `data/paper.json` › `weltbilder`.
+Gen und Golden laufen im Abnahme-Ticket B-1145 (Lane zweit); Sichtprüfung der Bilder bei 🧑. Die Session-Datei WG1.1 enthält keinen Ergebnis-Text.
