@@ -53,6 +53,7 @@ export function partPrompt(detail: WorldDetail, part: StoryPart): string {
   return [
     `Welten-Editor, Geschichte der Welt „${detail.name}“ (Welt-ID ${detail.id}): ändere ${label(detail, part)}.`,
     now.length > 0 ? `Jetzt: ${now.map((l) => `„${l}“`).join(' / ')}` : 'Jetzt: fehlt.',
+    'Gewässer: Der Untertitel (zweiter Text) einer Welt ist immer das Gewässer, an dem sie sich orientiert: Fluss, See, Küste oder Meer; Geschichte, Kunstwörter und Bilder der Welt beziehen sich darauf.',
     'Regeln nach docs/rules/welten.md § 2.2: Kunstsprache der Welt, je Zeile 2 bis 3 echte Wörter in GROSSBUCHSTABEN, jedes Kunstwort steht im Wortschatz (lexicon), 1 bis 2 Zeilen je Eintrag.',
     `Lies zuerst world_get {id: "${detail.id}"}, schreibe mit world_story_set (nur dieses Feld, neue Kunstwörter in lexicon ergänzen) und prüfe mit world_check {id: "${detail.id}"}. Ändere die Welt-Datei nicht von Hand.`,
     'Was soll sich ändern: ',
