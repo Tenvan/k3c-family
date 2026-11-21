@@ -1,8 +1,8 @@
-# FG1 · SIM · Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite
+# FG1 · SIM, CLI · Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite
 
 - **Status:** geplant
 - **Projekt:** WIR
-- **Domäne:** SIM
+- **Domäne:** SIM, CLI
 - **Reife:** Entwurf
 - **Tickets:** B-1199, B-1200, B-1201
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
@@ -63,6 +63,10 @@ Name im ECO1-Plan „Werkzeugmacher/Werkstatt“ gegen „Handwerksmeister“ ab
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| FG1.1 | `FG1.1-buerger-citizen.md` | Umsetzung | autonom | offen |
+| FG1.2 | `FG1.2-meister-kombinationen.md` | Umsetzung | autonom | offen |
+| FG1.3 | `FG1.3-figuren-grafik-texte.md` | Umsetzung | autonom | offen |
+| FG1.4 | `FG1.4-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
