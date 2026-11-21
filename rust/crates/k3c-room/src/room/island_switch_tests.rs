@@ -8,7 +8,8 @@ use k3c_sim::island::Island;
 
 use super::stages_tests::begins_with_level;
 use super::testutil::{
-    Fixture, Inbox, TestManager, WorldDir, create_room, dev_manager, join_room, manager, peer, rm, room, ticks,
+    Fixture, Inbox, TestManager, WorldDir, create_room_in, dev_manager, einzel_manager, join_room, peer, rm, room,
+    ticks,
 };
 use super::worlds_tests::NORDMEER_RAW;
 use super::{MonarchState, Options, Room};
@@ -215,8 +216,8 @@ fn switched_together(g: &mut Gate) {
 // Die letzte Insel der Welt: `switch_ready` tauscht nichts (zwei Stufen der Standard-Welt, kein Nachfolger).
 #[test]
 fn kampf_inselwechsel_letzte_insel_ohne_tausch() {
-    let (mut m, _) = manager();
-    let (code, _x) = create_room(&mut m, "xbox", 1, "letzte", 0, &[0]);
+    let (mut m, _dir) = einzel_manager("letzte"); // Welt mit einer Insel
+    let (code, _x) = create_room_in(&mut m, "einzel", "xbox", 1, "letzte", 0, &[0]); // Welt mit einer Insel
     let old = island_id(&mut m, &code);
     rm(&mut m, &code).isl.switch_ready = true;
     ticks(&mut m, &code, 5);

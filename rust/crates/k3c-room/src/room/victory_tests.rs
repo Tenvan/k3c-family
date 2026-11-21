@@ -1,7 +1,7 @@
 //! Test aus `victory_test.go`: `victory` meldet den Tick, in dem die Insel gewonnen wird, genau einmal (B-813).
 use super::Options;
 use super::save_testutil::create_with;
-use super::testutil::{manager, rm, room, ticks};
+use super::testutil::{einzel_manager, rm, room, ticks};
 
 #[test]
 fn victory_gibt_den_merker_des_letzten_ticks_wieder() {
@@ -14,9 +14,10 @@ fn victory_gibt_den_merker_des_letzten_ticks_wieder() {
 // Room::tick: Sieg im Tick des Ziels, nicht im Folgetick (Ziel `gold`).
 #[test]
 fn victory_einmal() {
-    let (mut m, _) = manager();
+    let (mut m, _dir) = einzel_manager("sieg"); // Welt mit einer Insel
     let opts = Options {
         goal: "gold".into(),
+        world: "einzel".into(), // Welt mit einer Insel: Sieg gilt nur auf der letzten
         ..Options::default()
     };
     let (code, _xi) = create_with(&mut m, "x", 1, "stand", true, opts);
