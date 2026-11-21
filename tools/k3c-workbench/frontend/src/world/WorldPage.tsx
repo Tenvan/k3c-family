@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Badge, Box, Flex, Heading, SelectField, Text } from '@webkit/atoms';
+import { Tabs } from '@webkit/organisms';
 import { ListDetail } from '@webkit/templates';
 import type { WorldDetail, WorldInfo } from '../api';
+import { loadText, savePref } from '../lib/prefs';
 import { CatalogLinks } from './CatalogLinks';
 import { DeleteWorld } from './DeleteWorld';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
@@ -10,7 +12,9 @@ import { NatureValues } from './NatureValues';
 import { NewWorld } from './NewWorld';
 import { Overview } from './Overview';
 import { StoryState } from './StoryState';
+import { StoryTab } from './StoryTab';
 import { WorldValues } from './WorldValues';
+import { WorldPrompts } from './WorldPromptBar';
 import { useWorld, type StageChoice, type WorldState } from './useWorld';
 
 // Seite Welten-Editor (B-879, Bereich Development): links die Welten unter data/worlds/, rechts Kopf mit Insel und
@@ -82,26 +86,49 @@ function placeOf(w: WorldState): ChunkPlace | null {
   return { world: w.id, island: isl.id, stage: w.stage.stage, depth: isl.depths[w.stage.stage] ?? 0, seed: w.model?.seed ?? w.seed };
 }
 
+const TABS = ['inseln', 'geschichte', 'werte'] as const;
+type TabId = (typeof TABS)[number];
+const loadTab = (): TabId => { const t = loadText('world.tab', 'inseln'); return (TABS as readonly string[]).includes(t) ? t as TabId : 'inseln'; };
+
 export function WorldPage() {
   const w = useWorld();
   const [chunk, setChunk] = useState<number | null>(null);
   const [scale, setScale] = useState<Scale>('2');
+  const [tab, setTab] = useState<TabId>(loadTab);
   const editor = useRef<HTMLDivElement>(null);
   useEffect(() => setChunk(null), [w.id, w.stage]);
+  const pick = (t: string) => { setTab(t as TabId); savePref('world.tab', t); };
   return (
     <ListDetail listWidth={240} className="wd-page" list={<WorldList worlds={w.worlds} id={w.id} onChoose={w.choose} onCreate={w.create} />}>
       <Flex direction="column" gap="3">
         <WorldHead w={w} />
-        {w.detail && w.detail.islands.length > 0 && (
-          <Overview detail={w.detail} seed={w.seed} choice={w.stage} onEtappe={w.setEtappe} refresh={w.crossRefresh}
-            onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }} />
-        )}
-        <div ref={editor} className="wd-editor" />
-        <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}
-          selected={chunk} onChunk={setChunk} />
-        <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
-        <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
-        <WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} />
+        <Tabs.Root value={tab} onValueChange={pick}>
+          <Tabs.List aria-label="Ansicht der Welt">
+            <Tabs.Trigger value="inseln">🏝 Inseln</Tabs.Trigger>
+            <Tabs.Trigger value="geschichte">📖 Geschichte</Tabs.Trigger>
+            <Tabs.Trigger value="werte">🔧 Werte</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="inseln">
+            <Flex direction="column" gap="3" pt="3">
+              {w.detail && <WorldPrompts detail={w.detail} />}
+              {w.detail && w.detail.islands.length > 0 && (
+                <Overview detail={w.detail} seed={w.seed} choice={w.stage} onEtappe={w.setEtappe} refresh={w.crossRefresh}
+                  onPick={(island, stage) => { w.setStage({ world: w.id, island, stage }); editor.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' }); }} />
+              )}
+              <div ref={editor} className="wd-editor" />
+              <ChunkPreview model={w.model} note={w.note} seed={w.seed} onSeed={w.setSeed} onLoad={w.reload} scale={scale} onScale={setScale}
+                selected={chunk} onChunk={setChunk} />
+              <ChunkInspector model={w.model} index={chunk} place={placeOf(w)} />
+              <NatureValues level={w.level} onSet={(key, value) => void w.setNature(key, value)} />
+            </Flex>
+          </Tabs.Content>
+          <Tabs.Content value="geschichte">
+            <Flex direction="column" gap="3" pt="3">{w.detail && !w.detail.error && <StoryTab detail={w.detail} />}</Flex>
+          </Tabs.Content>
+          <Tabs.Content value="werte">
+            <Flex direction="column" gap="3" pt="3"><WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} /></Flex>
+          </Tabs.Content>
+        </Tabs.Root>
       </Flex>
     </ListDetail>
   );

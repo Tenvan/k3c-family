@@ -19,8 +19,9 @@ async function flush() {
   for (let i = 0; i < 5; i++) await act(async () => new Promise((r) => setTimeout(r, 0)));
 }
 
-async function mount(): Promise<HTMLElement> {
+async function mount(tab = 'inseln'): Promise<HTMLElement> {
   localStorage.clear();
+  localStorage.setItem('k3c-workbench.world.tab', tab);
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
@@ -59,6 +60,28 @@ describe('Welten-Editor (B-879/AC-01)', () => {
     expect(host.querySelector('[data-world="standard"]')?.textContent).not.toContain('noch nicht umgesetzt');
   });
 
+  it('B-1216/AC-01: world:changed lädt die gewählte Welt still nach, eine fremde Welt nicht', async () => {
+    let handler: ((c: { ids?: string[] } | null) => void) | null = null;
+    const realOn = backend.on.bind(backend);
+    vi.spyOn(backend, 'on').mockImplementation(((event: string, fn: (d: never) => void) => {
+      if (event === 'world:changed') { handler = fn as typeof handler; return () => undefined; }
+      return realOn(event as never, fn as never);
+    }) as typeof backend.on);
+    const host = await mount();
+    const detail = vi.spyOn(backend, 'worldDetail');
+    expect(handler).toBeTruthy();
+    await act(async () => handler!({ ids: ['nil'] }));
+    await flush();
+    expect(detail).not.toHaveBeenCalled();
+    await act(async () => handler!({ ids: ['standard'] }));
+    await flush();
+    expect(detail).toHaveBeenCalledWith('standard');
+    expect(host.querySelector('[aria-label="Chunk-Vorschau"] [role="status"]')).toBeTruthy(); // Stufe bleibt, Vorschau steht
+    await act(async () => handler!(null)); // Basis-Datei: alle laden neu
+    await flush();
+    expect(detail.mock.calls.length).toBeGreaterThanOrEqual(2);
+  });
+
   it('zeigt Welten-Liste, Chunk-Vorschau und Inspektor des gewählten Abschnitts', async () => {
     const host = await mount();
     expect([...host.querySelectorAll('[data-world]')].map((e) => e.getAttribute('data-world'))).toEqual(['standard', 'sengoku', 'nil', 'britannien', 'wueste']);
@@ -75,7 +98,7 @@ describe('Welten-Editor (B-879/AC-01)', () => {
   });
 
   it('wechselt die Welt und merkt sie', async () => {
-    const host = await mount();
+    const host = await mount('werte');
     await click(host.querySelector('[data-world="wueste"]'));
     expect(host.querySelector('[data-scroll="detail"] h1')?.textContent).toContain('Wüste');
     expect(localStorage.getItem('k3c-workbench.world.id')).toBe('wueste');
@@ -96,7 +119,7 @@ describe('Welten-Editor (B-879/AC-01)', () => {
 
 describe('Werte übersteuern (B-879/AC-02)', () => {
   it('eine Eingabe setzt den Override, ↺ setzt ihn zurück', async () => {
-    const host = await mount();
+    const host = await mount('werte');
     const set = vi.spyOn(backend, 'worldOverrideSet');
     const input = host.querySelector<HTMLInputElement>('[aria-label="Wert wall.cost"]')!;
     expect(input.value).toBe('3');
@@ -115,7 +138,7 @@ describe('Werte übersteuern (B-879/AC-02)', () => {
   });
 
   it('ein abgelehnter Wert zeigt den Grund und lässt das Feld geerbt', async () => {
-    const host = await mount();
+    const host = await mount('werte');
     const input = host.querySelector<HTMLInputElement>('[aria-label="Wert wall.hp"]')!;
     await act(async () => {
       Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, 'viel');

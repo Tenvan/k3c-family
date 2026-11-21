@@ -131,21 +131,31 @@ function useNature(stage: StageChoice | null, level: WorldLevel | null, seed: st
 
 interface LoadSetters {
   setDetail: (d: WorldDetail | null) => void;
-  setStage: (s: StageChoice | null) => void;
+  setStage: (s: StageChoice | null | ((prev: StageChoice | null) => StageChoice | null)) => void;
   setValues: (v: WorldValuesView | null) => void;
   setNotice: (n: WorldState['notice']) => void;
 }
 
-/** Lädt Detail und Werte der Welt `id` (mit Verwerfen veralteter Antworten) und zeigt danach den vorgemerkten Hinweis. */
-function useWorldLoad(id: string, set: LoadSetters, afterLoad: { current: WorldState['notice'] }) {
+/** Bleibt bei einem Neuladen derselben Welt die gewählte Insel-Stufe bestehen, wenn es sie noch gibt, sonst die erste. */
+function keepStage(prev: StageChoice | null, d: WorldDetail): StageChoice | null {
+  const isl = d.islands.find((i) => i.id === prev?.island);
+  return prev && prev.world === d.id && isl && prev.stage < isl.depths.length ? prev : firstStage(d);
+}
+
+/** Lädt Detail und Werte der Welt `id` (mit Verwerfen veralteter Antworten) und zeigt danach den vorgemerkten Hinweis.
+ *  `tick` zählt Neuladungen nach einer Dateiänderung (B-1216): dieselbe Welt lädt dann still nach (Stufe und Hinweis bleiben). */
+function useWorldLoad(id: string, tick: number, set: LoadSetters, afterLoad: { current: WorldState['notice'] }) {
   const { setDetail, setStage, setValues, setNotice } = set;
+  const loaded = useRef('');
   useEffect(() => {
     let live = true;
-    setNotice(null);
+    const again = loaded.current === id;
+    if (!again) setNotice(null);
     void Promise.all([backend.worldDetail(id), backend.worldValues(id)]).then(([d, v]) => {
       if (!live) return;
+      loaded.current = id;
       setDetail(d);
-      setStage(firstStage(d));
+      setStage(again ? ((prev) => keepStage(prev, d)) : firstStage(d));
       setValues(v);
       if (afterLoad.current) setNotice(afterLoad.current);
       afterLoad.current = null;
@@ -153,7 +163,7 @@ function useWorldLoad(id: string, set: LoadSetters, afterLoad: { current: WorldS
       if (live) setNotice({ tone: 'error', text: e instanceof Error ? e.message : String(e) });
     });
     return () => { live = false; };
-  }, [id]);
+  }, [id, tick]);
 }
 
 export function useWorld(): WorldState {
@@ -170,8 +180,15 @@ export function useWorld(): WorldState {
   const afterLoad = useRef<WorldState['notice']>(null);
   current.current = id;
 
+  const [tick, setTick] = useState(0);
   useEffect(() => { void backend.worldList().then(setWorlds, () => setWorlds([])); }, []);
-  useWorldLoad(id, { setDetail, setStage, setValues, setNotice }, afterLoad);
+  useWorldLoad(id, tick, { setDetail, setStage, setValues, setNotice }, afterLoad);
+  // B-1216: Dateiänderung (Editor, MCP, von Hand): Liste neu, gewählte Welt still nachladen, Level neu rechnen.
+  useEffect(() => backend.on('world:changed', (c) => {
+    void backend.worldList().then(setWorlds, () => undefined);
+    if (!c?.ids || c.ids.includes(current.current)) setTick((t) => t + 1);
+  }), []);
+  useEffect(() => { if (tick > 0) void load(seed); }, [tick]);
 
   const choose = (next: string) => {
     if (next === id) return;
