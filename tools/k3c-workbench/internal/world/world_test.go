@@ -60,11 +60,11 @@ func fixture(t *testing.T) Editor {
 func TestListStandardFirstAndOnlyWorlds(t *testing.T) {
 	got := fixture(t).List()
 	want := []Info{
-		{ID: "standard", Name: "Standard"},
+		{ID: "standard", Name: "Standard", Kind: "new"},
 		{ID: "sengoku", Name: "sengoku", Missing: true},
 		{ID: "nil", Name: "nil", Missing: true},
 		{ID: "britannien", Name: "britannien", Missing: true},
-		{ID: "kind", Name: "Kind-Welt"},
+		{ID: "kind", Name: "Kind-Welt", Kind: "spinoff"},
 	}
 	if !slices.Equal(got, want) {
 		t.Fatalf("List = %v, want %v", got, want)

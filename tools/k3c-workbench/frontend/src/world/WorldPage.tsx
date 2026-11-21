@@ -9,11 +9,13 @@ import { CatalogTab } from './CatalogTab';
 import { DeleteWorld } from './DeleteWorld';
 import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
+import { KindBadge, KindSelect } from './WorldKind';
 import { NatureValues } from './NatureValues';
 import { NewWorld } from './NewWorld';
 import { Overview } from './Overview';
 import { StoryState } from './StoryState';
 import { StoryTab } from './StoryTab';
+import { kindOf } from './statsCount';
 import { WorldStats } from './WorldStats';
 import { WorldValues } from './WorldValues';
 import { WorldPrompts } from './WorldPromptBar';
@@ -37,7 +39,7 @@ function WorldList({ worlds, id, onChoose, onCreate }: { worlds: WorldInfo[]; id
           <Box key={w.id} role="button" tabIndex={0} data-world={w.id} aria-pressed={w.id === id}
             className={`wd-entry${w.id === id ? ' wd-entry-active' : ''}`}
             onClick={() => onChoose(w.id)} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onChoose(w.id)}>
-            <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>
+            <Text size="2" weight="bold">{w.name}</Text> <Text size="1" color="gray">{w.id}</Text>{w.id !== 'standard' && <> <KindBadge kind={w.kind} /></>}
           </Box>
         )
       ))}
@@ -67,6 +69,7 @@ function WorldHead({ w }: { w: WorldState }) {
     <Flex direction="column" gap="1" className="wd-head-main">
       <Flex gap="2" align="center" wrap="wrap">
         <Heading size="4">{detail.name}</Heading>
+        {detail.id !== 'standard' && !detail.error && <><KindBadge kind={kindOf(detail)} /><KindSelect kind={kindOf(detail)} onChange={(k) => void w.setKind(k)} /></>}
         <Badge color="gray">data/worlds/{detail.id}.json</Badge>
         {detail.islands.length > 0 && (
           <SelectField size="1" aria-label="Insel und Stufe" value={stageKey(w.stage)} onChange={pick} options={stageOptions(detail)} />

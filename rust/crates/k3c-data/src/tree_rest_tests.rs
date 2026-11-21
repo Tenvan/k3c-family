@@ -131,3 +131,22 @@ fn pruefungen_rest_wie_go() {
     let e = world::parse(r#"{"name": "W", "islands": [{}]}"#, "w").expect_err("Pflicht");
     assert_eq!(e.to_string(), "data/worlds/w.json: id fehlt (Pflichtfeld)");
 }
+
+/// B-1217: Art der Welt (`kind`) wie Go `worldKind`.
+#[test]
+fn art_der_welt() {
+    let w = |extra: &str| {
+        let raw = format!(r#"{{"id": "w", "name": "W", {extra}"islands": [{{}}]}}"#);
+        world::parse(&raw, "w").map(drop)
+    };
+    assert!(w("").is_ok());
+    assert!(w(r#""extends": "standard", "#).is_ok());
+    assert!(w(r#""kind": "new", "#).is_ok());
+    assert!(w(r#""extends": "standard", "kind": "spinoff", "#).is_ok());
+    let e = w(r#""kind": "spinoff", "#)
+        .expect_err("spinoff ohne extends")
+        .to_string();
+    assert!(e.contains("kind: spinoff braucht extends"), "{e}");
+    let e = w(r#""kind": "episode", "#).expect_err("unbekannt").to_string();
+    assert!(e.contains(r#"kind: "episode" unbekannt"#), "{e}");
+}

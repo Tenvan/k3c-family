@@ -146,6 +146,15 @@ const mockEtappe: WorldBackend['worldIslandEtappe'] = async (id, island, etappe)
   return { id, warnings: [], error: '' };
 };
 
+const mockKind: WorldBackend['worldSetKind'] = async (id, kind) => {
+  const d = DETAILS[id];
+  if (!d) return { id, warnings: [], error: `die Welt "${id}" gibt es nicht` };
+  if (kind === 'spinoff' && !d.extends) return { id, warnings: [], error: 'kind: spinoff braucht extends' };
+  if (kind) d.kind = kind;
+  else delete d.kind;
+  return { id, warnings: [], error: '' };
+};
+
 export function mockWorld(): WorldBackend {
   const overrides: Overrides = new Map([['wueste', new Map<string, unknown>([[key('economy', ['purse', 'startGold']), 20], [key('enemies', ['wolf', 'hp']), 14], [key('buildings', ['tower', 'range']), 11], [key('economy', ['purse', 'dropOnHit']), false]])]]);
   const values = (id: string) => mockValues(overrides, id);
@@ -164,6 +173,7 @@ export function mockWorld(): WorldBackend {
     worldCreate: mockCreate,
     worldDelete: mockDelete,
     worldIslandEtappe: mockEtappe,
+    worldSetKind: mockKind,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;
       const rejected = mockNatureSet(id, island, stage, key, value);

@@ -23,6 +23,9 @@ pub struct WorldFile {
     pub notes: String,
     #[serde(rename = "extends")]
     pub extends: Option<String>,
+    /// Art der Welt: `spinoff` oder `new` (B-1217); fehlt sie, gilt `spinoff` mit `extends`, sonst `new`.
+    #[serde(rename = "kind")]
+    pub kind: Option<String>,
     #[serde(rename = "overrides")]
     pub overrides: Option<BTreeMap<String, serde_json::Value>>,
     #[serde(rename = "combat")]
@@ -52,11 +55,12 @@ pub struct RawCombat {
 }
 
 /// Erlaubte Felder des Kopfes (`strictDecode` in decodeWorld).
-const FIELDS: [&str; 9] = [
+const FIELDS: [&str; 10] = [
     "id",
     "name",
     "notes",
     "extends",
+    "kind",
     "overrides",
     "combat",
     "islands",
@@ -124,6 +128,7 @@ fn decode_world(raw: &str, id: &str) -> Result<WorldFile, String> {
         return Err("keine Insel".into());
     }
     check_world_links(id, v.extends.as_deref(), v.overrides.as_ref())?;
+    check_kind(v.kind.as_deref(), v.extends.is_some())?;
     if let Some(c) = &v.combat {
         c.check()?;
     }
@@ -171,6 +176,16 @@ fn check_world_links(
         }
     }
     Ok(())
+}
+
+/// `check_kind` prüft die Art der Welt wie Gos `worldKind`.
+fn check_kind(kind: Option<&str>, has_extends: bool) -> Result<(), String> {
+    match kind {
+        None | Some("new") => Ok(()),
+        Some("spinoff") if has_extends => Ok(()),
+        Some("spinoff") => Err("kind: spinoff braucht extends".into()),
+        Some(k) => Err(format!("kind: {k:?} unbekannt (erlaubt: spinoff, new)")),
+    }
 }
 
 impl RawCombat {

@@ -110,6 +110,21 @@ func (a *App) WorldNatureSet(id, island string, stage int, key string, value *in
 	return view
 }
 
+// WorldSetKind setzt die Art der Welt: "spinoff" (Ableger oder Episode) oder "new" (komplett neu); leer entfernt sie
+// (Binding, B-1217). Geschrieben wird nur eine gültige Welt.
+func (a *App) WorldSetKind(id, kind string) world.CreateView {
+	a.wait()
+	view := a.worlds().SetKindView(a.worldCtx(), id, kind)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Art der Welt abgelehnt", "ns", "dev", "world", id, "kind", kind, "error", view.Error)
+		} else {
+			a.log.Info("💾 Art der Welt gespeichert", "ns", "dev", "world", id, "kind", kind)
+		}
+	}
+	return view
+}
+
 // WorldIslandEtappe setzt die Etappe einer Insel; null entfernt sie (Binding, B-963). Geschrieben wird nur eine gültige Welt.
 func (a *App) WorldIslandEtappe(id, island string, etappe *int) world.CreateView {
 	a.wait()
