@@ -1,6 +1,6 @@
 # LA3 · SIM · Bauplätze im Hub richten sich nach der Gebäudegröße
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
