@@ -177,16 +177,19 @@ describe('Katalog der Insel (B-1216)', () => {
     const p = catalogPrompt(detail, 'island2', [asset('a'), asset('b', 'gegner')]);
     expect(p).toContain('Welt-ID saga');
     expect(p).toContain('Insel island2');
-    expect(p).toContain('2 Katalog-Einträge');
+    expect(p).toContain('2 eigene Katalog-Einträge');
     expect(p).toContain('assets_create');
     expect(p).toContain('Was soll sich ändern: ');
   });
 
-  it('der Reiter zeigt Einträge der Welt, die Insel-Auswahl begrenzt sie', async () => {
+  it('der Reiter zeigt nur eigene (exklusive) Assets der Welt als Baum mit dem Asset-Editor rechts', async () => {
     const host = await mountPage('katalog');
     expect(host.querySelector('[aria-label="Katalog der Welt"]')).toBeTruthy();
     expect(host.querySelector('[aria-label="Insel des Katalogs"]')).toBeTruthy();
-    expect(host.querySelectorAll('[role="listitem"][data-asset]').length).toBeGreaterThan(0);
+    expect(host.querySelector('[aria-label="Asset-Editor"]')).toBeTruthy();
     expect(host.querySelector('[data-katalog="oeffnen"]')).toBeTruthy();
+    // Standard besitzt keine exklusiven Assets (alle Basis): nichts Geerbtes im Baum
+    expect(host.querySelectorAll('[role="tree"] [data-asset]')).toHaveLength(0);
+    expect(host.textContent).toContain('keine eigenen Assets');
   });
 });

@@ -17,7 +17,7 @@ describe('Katalog (WB1.2)', () => {
   it('listet alle Specs nach Gruppe mit Abzeichen „im Diff“', async () => {
     const host = await mountCatalog();
     for (const id of ['monarch', 'pferd', 'mauer', 'banner']) expect(entry(host, id), id).toBeTruthy();
-    for (const g of ['figuren', 'reittiere', 'gebaeude', 'requisiten']) expect(host.textContent).toContain(g);
+    for (const g of ['Figuren', 'Reittiere', 'Gebäude', 'Requisiten']) expect(host.textContent).toContain(g); // Anzeigenamen der Gruppen im Baum (B-1216)
     // Review gegen HEAD (Fixture): monarch geändert → im Diff
     await until('Abzeichen „im Diff“', () => entry(host, 'monarch').textContent?.includes('im Diff'));
   });

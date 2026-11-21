@@ -14,13 +14,6 @@ export const BIOME_WORDS: Readonly<Record<string, readonly string[]>> = {
   crystal: ['kristall', 'crystal'],
 };
 
-/** Emoji je Asset-Gruppe (Ordner unter public/grafik); unbekannte Gruppen zeigen das neutrale Symbol. */
-const GROUP_ICONS: Readonly<Record<string, string>> = {
-  bosse: '👑', figuren: '🧑', 'gebaeude-paper': '🏠', gegner: '👹', hintergruende: '🖼', icons: '🔹', objekte: '🌳', reittiere: '🐴', truppen: '⚔',
-};
-
-export const groupIcon = (gruppe: string): string => (Object.hasOwn(GROUP_ICONS, gruppe) ? GROUP_ICONS[gruppe]! : '📦');
-
 /** Biome, die der Name des Assets nennt (leer = neutral). */
 export function biomesOf(a: AssetEintrag): string[] {
   const text = `${a.id} ${a.pfad}`.toLowerCase();
