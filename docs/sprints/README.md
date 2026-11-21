@@ -34,7 +34,10 @@ keine
 | GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | bereit | `geplant/GS4-flaschenpost/` |
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
+| DS1 | CLI | PAP | Schwierigkeits-Siegel: Wachssiegel je Schwierigkeitsgrad in Auswahl, Spielständen und HUD | – | Entwurf | `geplant/DS1-schwierigkeits-siegel/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
+| WI2 | SIM | WIR | Werkzeuggürtel und Handwerker: ein Beruf für alle Bauarbeiten, Reparatur mit Kosten | – | Entwurf | `geplant/WI2-werkzeugguertel-handwerker/` |
+| WI3 | SIM | WIR | Tiefe Ebenen und Minen: Verteidigung unten, Produktion oben, Erzadern freiräumen | – | Entwurf | `geplant/WI3-tiefe-ebenen-minen/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
 | RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |

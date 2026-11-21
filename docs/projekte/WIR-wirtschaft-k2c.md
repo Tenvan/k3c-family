@@ -15,6 +15,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | Sprint | Thema | Status |
 |---|---|---|
 | WI1 | Handwerker mit Hammer bauen, Bogner-Shop, Gold beim Holzfällen, Truhen ×10 mit Fontäne | erledigt |
+| WI2 | Werkzeuggürtel und Handwerker: ein Beruf für alle Bauarbeiten, Reparatur mit Kosten | geplant |
+| WI3 | Tiefe Ebenen und Minen: Verteidigung unten, Produktion oben, Erzadern freiräumen | geplant |
 
 ## Nicht-Ziele
 

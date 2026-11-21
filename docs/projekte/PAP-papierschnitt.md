@@ -45,6 +45,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | erledigt |
 | WG1 | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | erledigt |
 | BB1 | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | aktiv |
+| DS1 | Schwierigkeits-Siegel: Wachssiegel je Schwierigkeitsgrad in Auswahl, Spielständen und HUD | geplant |
 
 ## Nicht-Ziele
 
