@@ -74,7 +74,7 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 | LA1.1 | `LA1.1-groessenstufen.md` | Umsetzung | autonom | fertig |
 | LA1.2 | `LA1.2-bb1-nachtraege.md` | Umsetzung | autonom | fertig |
 | LA1.3 | `LA1.3-kompass-biome.md` | Umsetzung | autonom | fertig |
-| LA1.4 | `LA1.4-stimmung-abgleich.md` | Workshop | Mensch | offen |
+| LA1.4 | `LA1.4-stimmung-abgleich.md` | Workshop | Mensch | fertig |
 | LA1.5 | `LA1.5-stimmung-umsetzung.md` | Umsetzung | autonom | offen |
 | LA1.6 | `LA1.6-review.md` | Review | autonom | offen |
 | LA1.7 | `LA1.7-mauern.md` | Umsetzung | autonom | fertig |

@@ -18,7 +18,15 @@ Die ranghöchsten Abweichungen der Stimmung aus LA1.4 sind im Rust-Spiel behoben
 
 ## Kontext
 
-Lane zweit, Modell opus. Eingabe: `docs/messung/stimmung-abgleich.md` (LA1.4). Look-Werte in `data/look.json` (Profil k2c), Standard `docs/standards/bildaufbau.md`. Gen und Bildvergleiche darf die Lane zweit laufen lassen. Reicht die Session nicht für alle Punkte, bleiben Punkte als Liste im Ergebnis („Für den Hauptrechner“).
+Lane zweit, Modell opus. Eingabe: `docs/messung/stimmung-abgleich.md` (LA1.4, von 🧑 abgenommen 2026-11-21). Look-Werte in `data/look.json` (Profil k2c), Standard `docs/standards/bildaufbau.md`. Gen und Bildvergleiche darf die Lane zweit laufen lassen. Reicht die Session nicht für alle Punkte, bleiben Punkte als Liste im Ergebnis („Für den Hauptrechner“).
+
+### Punkte aus LA1.4 (Rang 1 bis 3)
+
+1. **Rang 1, Lichthöfe (Nacht, Hub):** Fackeln an allen Häusern überblenden Gebäude und Figuren; das Licht soll nur die Gegend erhellen, ohne selbst sichtbar zu sein (kein heller Fleck auf Haus oder Figur). Lichthof des Lagerfeuers; Fackel-Hof größer und weicher. Bezug: LA1.8 (Fackeln, Monarch-Licht), `data/light.json`.
+2. **Rang 2, Nachthimmel:** Sterne; Mond mit weitem Hof. Dazu: Wellenstriche im Wasser abdunkeln (nachts zu hell, sehen nicht schön aus; bei Bedarf in den K2C-Screenshots nachsehen), Spiegelung weicher (Spiegel/Welt 74 % auf 60 bis 70 %), Nacht nicht ganz schwarz (Silhouetten der Kulisse leicht angehoben), Abendrot am Horizont.
+3. **Rang 3, Himmel mit Verlauf (Tag, Abend):** Himmelsverlauf und Wolken statt flacher Fläche; Dunst zwischen den Kulissen-Ebenen (hinten heller und blasser); letzte feste Hintergrund-Ebene als monumentales Bild (großer Berg, Pyramide, Vulkan o. ä.). Das Monumentalbild braucht neue Grafik: dann Ticket statt eigener Zeichnung (Nicht-Ziel „Neue Assets“), nur anbinden, was `public/grafik` schon liefert.
+
+Vorher-Bilder: `.work/stimmung/<szene>-<1|2>/shot-01.png` (Tag 300, Abend 14000, Nacht 18000, Morgengrauen 23500; Befehle in `docs/messung/stimmung-abgleich.md`).
 
 ## Erlaubte Dateien
 

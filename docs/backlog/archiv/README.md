@@ -7,6 +7,8 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | erledigt | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
+| [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | erledigt | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
 | [B-1095](B-1095-abnahme-stand-rust-sim-teillauf.md) | SIM | Schuld | mittel | erledigt | RU47 | Abnahme-Teillauf Rust-Sim: Stand der ignorierten Tests und Go-Seite für RU10, RU11, RU14, RU15 |
 | [B-1089](B-1089-measure-ps1-novsync-replay.md) | CLI | Problem | mittel | erledigt | RU45 | measure.ps1 gibt -Vsync an die Rust-Wiedergabe nicht weiter |
 | [B-1066](B-1066-rust-seekarte-datenpfad-relativ.md) | CLI | Problem | niedrig | erledigt | RU20 | Rust lädt die Seekarte aus data/paper.json relativ zum Arbeitsordner |
@@ -915,5 +917,3 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | erledigt | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
 | [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | erledigt | RU64 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
 | [B-1157](B-1157-cheat-abfahrbereit.md) | CLI | Idee | hoch | erledigt | RU36 | Das Cheat-Fenster hat die Option Abfahrbereit (Schiff fertig, Endboss besiegt), damit Seekarte und Schiffsfahrt prüfbar sind |
-| [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | erledigt | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
-| [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | erledigt | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
