@@ -4,7 +4,7 @@
 - **Projekt:** WIR
 - **Domäne:** SIM
 - **Reife:** Entwurf
-- **Tickets:** –
+- **Tickets:** B-1199, B-1200, B-1201
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** Entwurf
 - **Revision:** 1
@@ -12,35 +12,34 @@
 
 ## Ausgangslage
 
-Stand vor dem Sprint, kurz. Details stehen in den Tickets.
+Grundfiguren heißen heute Landstreicher (`vagrant`) und Bauer (`peasant`); Schmiede und Rüstkammer geben Elite und einen Hub-HP-Bonus. Grill-Runde 2026-11-21 (Ralf) legt das neu fest, Details in B-1199 bis B-1201. Der Sprint ECO1 (B-1193/B-1194) liefert Werkzeuggürtel und Handwerker.
 
 ## Ziel
 
-Ein Satz: Was kann man nach diesem Sprint, was vorher nicht ging? Dazu „Am Ende sichtbar“: was man am TV,
-in der CI oder im Terminal sieht.
+Nach dem Sprint gibt es die Kette Bürger → Handwerker, Bogenschütze, Soldat → Elite durch Ausrüstung (Gürtel, Bogen, Schwert, Rüstung) aus vier Meister-Gebäuden (Handwerksmeister, Bogner, Waffenschmied, Rüstungsschmied), mit Grafik und Texten im Standard. Am Ende sichtbar: Bürger holen Ausrüstung am Regal und ändern Aussehen und Namen.
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Ralf entscheidet und nimmt am PC mit Pad ab; Hauptrechner: Sim, Second Worker: Grafik und Texte.
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Siehe B-1199 (Rename citizen), B-1200 (Meister-Gebäude, Kombinationen), B-1201 (Grafik, Texte).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Neue Berufe außerhalb der fünf Kombinationen; Balancing der Kosten (Abnahme-Ticket).
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Neue Mechanik nur in Rust (Entscheidung 013); genau ein Beruf je Figur; der Bürger holt Ausrüstung selbst aus dem Regal; Hub-HP-Bonus der Rüstkammer entfällt; Waffenschmied ersetzt die Schmiede, Rüstungsschmied die Rüstkammer; alte Spielstände egal; Go-Golden nur mit `native_rules` aus.
 
-Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+Planungsangaben für die Arbeitswellen:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-sim/**`, `rust/crates/k3c-data/**`, `rust/crates/k3c-game/src/actors/**`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/props/**`, `data/buildings.json`, `data/troops.json`, `data/paper.json`, `public/grafik/**`
+- **Abhängig von:** ECO1
+- **Braucht 🧑:** Abnahme
+- **Sperre:** golden | spielstand
 
 ## Beispiele
 
@@ -52,11 +51,13 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** (B-1199) `citizen` ersetzt `vagrant` und `peasant`.
+- **AC-02** (B-1200) Fünf Kombinationen mit Test je Kombination, Hub-HP-Bonus entfällt.
+- **AC-03** (B-1201) Grafik und Texte de/en für Figuren, Gebäude, Gegenstände.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+Name im ECO1-Plan „Werkzeugmacher/Werkstatt“ gegen „Handwerksmeister“ abgleichen (Ralf).
 
 ## Sessions
 
