@@ -4,7 +4,9 @@
 //! sowie dem Kamera-Ausschnitt der Zelle. Sie sitzt an der Unterkante der Zelle im Fluss (layout.go, B-915). Reine
 //! Rechnung in einen wiederverwendeten Puffer; gezeichnet wird in drawworld.go (drawRadar).
 
+use super::texts::name_of;
 use crate::view::cell::Camera;
+use crate::view::frame::Stage;
 use k3c_sim::state::World;
 
 /// RadarKind ist die Art eines Markers (Zeichenreihenfolge: Burg, Portale, Ausgang, Treppen, Gegner, Monarchen).
@@ -83,6 +85,38 @@ pub fn radar_markers(out: &mut Vec<RadarMarker>, w: &World, self_index: i64) {
 pub fn radar_view(k: &Camera, width: f64) -> (f64, f64) {
     let (l, r) = k.span();
     (unit_pos(l, width), unit_pos(r, width))
+}
+
+/// Trenner zwischen den Biomen der Inselzeile.
+const BIOME_SEP: &str = " · ";
+
+/// biomes_key ist ein Schlüssel der Stufenliste (Sprache, Tiefe und Biom je Stufe) ohne Allokation; die Zeile wird nur
+/// bei Änderung neu gebaut.
+pub fn biomes_key(lang: &str, stages: &[Stage]) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut h = std::collections::hash_map::DefaultHasher::new();
+    lang.hash(&mut h);
+    for s in stages {
+        (s.depth, &s.level).hash(&mut h);
+    }
+    h.finish()
+}
+
+/// island_biomes ist die Kompass-Zeile im Hub (LA1.3, B-1167): die Biome aller Stufen der Insel in Reihenfolge der
+/// Stufen, z. B. „Oberwelt (Wald) · Tiefe 1 (Höhle)“. Leer bei nur einer Stufe (nichts zu zeigen).
+pub fn island_biomes(lang: &str, stages: &[Stage]) -> String {
+    if stages.len() < 2 {
+        return String::new();
+    }
+    let mut out = String::new();
+    for s in stages {
+        let fallback = s.world.as_deref().map_or("", |w| w.biome.name.as_str());
+        if !out.is_empty() {
+            out.push_str(BIOME_SEP);
+        }
+        out.push_str(&name_of(lang, "biome", &s.level, fallback));
+    }
+    out
 }
 
 /// radar_size ist die Größe der Leiste in einer Zelle der Breite cell_w beim Maßstab k: halb so breit wie die Zelle,

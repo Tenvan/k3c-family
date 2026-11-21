@@ -204,7 +204,7 @@ fn w_values() -> Arc<crate::state::WorldValues> {
 #[test]
 fn truhe_wirft_fontaene() {
     let v = w_values();
-    assert!(v.economy.chest_gold[0] >= 30, "Truhen-Gold {:?}", v.economy.chest_gold);
+    assert!(v.economy.chest_gold[0] >= 15, "Truhen-Gold {:?}", v.economy.chest_gold);
     let mut xs: [Vec<f64>; 2] = [Vec::new(), Vec::new()];
     for run in &mut xs {
         let mut w = quiet_world();

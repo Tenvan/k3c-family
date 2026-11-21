@@ -224,6 +224,16 @@ pub fn entity_look(kind: &str, biome: &str) -> Option<(Look, f64)> {
 /// `HARBOR_SHIFT`: Der Hafen-Steg steht so viele Kacheln links vom Schiffs-Platz (BS10).
 pub const HARBOR_SHIFT: f64 = 5.5;
 
+/// RU36.3: Um so viele Units liegt das fertige Schiff (Segel gesetzt, ab Stufe 3) unter der Gehlinie: Der Fluss (Ebene
+/// RIVER, vor den Bauten) deckt den unteren Rumpf, das Schiff schwimmt im Wasser statt auf dem Boden zu stehen. Ufer
+/// 1,6 bis 2,3 Units je nach Ansicht (`bankShare` 0,07); Ralf prüft den Wert am Bild.
+pub const SHIP_DROP: f64 = 2.4;
+
+/// `ship_drop`: Absenkung des Schiffs-Bilds (Units, nach unten) für den Platz der Stufe `level`.
+pub fn ship_drop(kind: &str, level: i64) -> f64 {
+    if kind == "ship" && level >= 3 { SHIP_DROP } else { 0.0 }
+}
+
 /// `pickup_look`: Truhe geschlossen am Boden, Stern 44 px darüber; Höhe in Units.
 pub fn pickup_look(kind: &str) -> (Look, f64) {
     match kind {

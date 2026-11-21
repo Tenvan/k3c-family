@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU36
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-20
@@ -68,4 +68,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+RU36.3 (🧑 „mit neuen Golden machen“): `chestGold` in `data/economy.json` von [30, 60] auf [15, 30]. Golden neu geschrieben mit `task go:golden` (testdata/golden: campaign-abstieg, campaign-ausbau, sim-* ; Begründung: Truhen-Gold halbiert, B-1159). Tests angepasst: `coop/chest_tests.rs` (15..=30, doppelt 45..=90), `unit/hammer_tests.rs`, Go `unit_hammer_test.go`. Geprüft: `go test ./engine/sim ./engine/level ./engine/room` grün, Rust k3c-sim/room/game/devwin grün bis auf die lokale Altdatei `data/worlds/rom.json` (nicht dieser Diff). Kein Balancing- oder Sim-Lauf. Nachprüfung 🧑: Truhen im Spiel (Station G-5) geben 15 bis 30 Gold, Fontäne unverändert.

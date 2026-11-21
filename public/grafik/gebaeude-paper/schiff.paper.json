@@ -202,23 +202,6 @@
           "lagen": [
             {
               "art": "flaeche",
-              "form": "M-96 -27L96 -27L96 0L-96 0Z",
-              "material": "koenigsblau"
-            },
-            {
-              "art": "flaeche",
-              "form": "M-92 -20.25L92 -20.25L92 -19.05L-92 -19.05Z",
-              "material": "koenigsblau",
-              "ton": "licht"
-            },
-            {
-              "art": "flaeche",
-              "form": "M-92 -10.8L92 -10.8L92 -9.6L-92 -9.6Z",
-              "material": "koenigsblau",
-              "ton": "licht"
-            },
-            {
-              "art": "flaeche",
               "form": "M4 -156L8 -156L8 -62L4 -62Z",
               "material": "holz"
             },

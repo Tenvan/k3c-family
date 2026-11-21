@@ -171,3 +171,34 @@ fn radar_ausschnitt_und_groesse() {
     assert_eq!(radar_size(1920.0, 1.0), (640.0, 20.0), "1920");
     assert_eq!(radar_size(1000.0, 1.0).0, 500.0, "schmal: halbe Breite");
 }
+
+/// LA1.3 (AC-03): Der Kompass nennt die Biome der Insel in Reihenfolge der Stufen, nur im Hub.
+#[test]
+fn kompass_zeigt_die_biome_der_insel() {
+    use super::testutil::two_players;
+    use crate::view::frame::Stage;
+    let (w, mut f) = two_players(0);
+    assert_eq!(island_biomes("de", &f.stages), "", "eine Stufe: nichts zu zeigen");
+    f.stages.push(Stage {
+        index: 1,
+        depth: 1,
+        level: "cave".to_string(),
+        world: None,
+    });
+    assert_eq!(island_biomes("de", &f.stages), "Oberwelt (Wald) · Tiefe 1 (Höhle)");
+    assert_eq!(island_biomes("en", &f.stages), "Overworld (forest) · Depth 1 (cave)");
+    assert_ne!(biomes_key("de", &f.stages), biomes_key("en", &f.stages));
+    let mut h = super::testutil::hud();
+    h.listen(&f);
+    assert_eq!(
+        h.seats[0].biomes_s, "Oberwelt (Wald) · Tiefe 1 (Höhle)",
+        "Hub zeigt die Zeile"
+    );
+    let mut w2 = w.clone();
+    w2.biome.id = "cave".to_string();
+    f.stages[1].world = Some(std::rc::Rc::new(w2));
+    f.seats[0].stage = 1;
+    f.seats[0].monarch = 0;
+    h.listen(&f);
+    assert_eq!(h.seats[0].biomes_s, "", "unter der Oberfläche keine Zeile");
+}

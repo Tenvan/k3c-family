@@ -20,7 +20,9 @@ pub fn dev(host: &mut dyn Host, player: i64, c: &DevCommand) -> Outcome {
             Some(format!("Unbekannte Ressource „{}“", c.resource))
         }
         "buildAll" if !(1..=5).contains(&c.level) => Some(format!("Ausbaustufe {} gibt es nicht (1 bis 5)", c.level)),
-        "gold" | "material" | "buildAll" | "maxStock" | "fillStock" | "cheapBuild" | "castleFall" => None,
+        "gold" | "material" | "buildAll" | "maxStock" | "fillStock" | "cheapBuild" | "castleFall" | "readyToSail" => {
+            None
+        }
         _ => return None,
     };
     Some(match bad {

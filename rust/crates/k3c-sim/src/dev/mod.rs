@@ -15,6 +15,10 @@ mod combat_tests;
 #[cfg(test)]
 mod mod_tests;
 #[cfg(test)]
+mod sail_tests;
+#[cfg(test)]
+mod shield_tests;
+#[cfg(test)]
 mod spawn_tests;
 #[cfg(test)]
 mod stress_tests;
@@ -25,8 +29,9 @@ use std::collections::BTreeMap;
 
 use k3c_data::difficulty::DifficultyFile;
 
-pub use build::{dev_build_all, dev_build_site};
+pub use build::{dev_build_all, dev_build_site, dev_ready_to_sail};
 
+use crate::combat::spots::shields_unlocked;
 use crate::enemies::waves::start_wave;
 use crate::island::Island;
 use crate::island::storage::{add_stock_capped, capacity, stock_field};
@@ -230,4 +235,19 @@ pub fn dev_next_phase(isl: &mut Island) -> &'static str {
     };
     dev_set_phase(isl, next);
     next
+}
+
+/// RU36.3 (B-1158): legt einen gebauten Schild auf das Gestell der Stufe des Spielers `index` (höchstens
+/// `shieldStackMax`). `false`: kein Spieler, Schilde noch nicht freigeschaltet (Hub-Stufe, Gruppen-Modus) oder Gestell voll.
+pub fn dev_add_shield(isl: &mut Island, index: i64) -> bool {
+    let Some(stage) = isl.stage_of(index) else {
+        return false;
+    };
+    let w = &mut isl.stages[stage];
+    let v = values(w);
+    if !shields_unlocked(w, &v) || w.combat.shields >= v.economy.combat.shield_stack_max {
+        return false;
+    }
+    w.combat.shields += 1;
+    true
 }

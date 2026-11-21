@@ -85,8 +85,8 @@ zeichnet Rust nicht (B-1056), Nachtstationen weichen darum voraussichtlich ab (m
 | Nr. | Gruppe | Station | So kommt man hin | Erwartung (wie Go) | E2E | Rust ok | Befund | Schwere |
 |---|---|---|---|---|---|---|---|---|
 | 40 | Boss | Boss-Leiste | Boss-Welle (Cheat-Menü F9 verkürzt den Weg) | Leiste mit Anteil, Name, Phase („Phase 2 von 3“), Warnkreis vor Flächenschlag | – | ja | – | – |
-| 41 | Seekarte | Seekarte am Hafen | Endboss-Sieg, Wechselpunkt der Insel offen | je Zelle Etappen untereinander, Inseln als Knoten (abgeschlossen, Ziel, gesperrt); Links/Rechts wählt, A bestätigt; Wahl gilt für alle (B-1126) | – | nein | Schiff steht auf dem Boden, das Wasser ist ein blaues Rechteck davor; Seekarte nicht aufrufbar (Cheat Abfahrbereit fehlt, B-1157) | schwer |
-| 42 | Reise | Schiffsfahrt | nach der Wahl der Zielinsel | Fahrt über die Karte, Schiff schaukelt, dann beide Spieler auf der neuen Insel (B-1126) | – | nein | nicht erreichbar, weil Station 41 nicht erreichbar ist (B-1157) | schwer |
+| 41 | Seekarte | Seekarte am Hafen | Endboss-Sieg, Wechselpunkt der Insel offen | je Zelle Etappen untereinander, Inseln als Knoten (abgeschlossen, Ziel, gesperrt); Links/Rechts wählt, A bestätigt; Wahl gilt für alle (B-1126) | – | nein | Schiff steht auf dem Boden, das Wasser ist ein blaues Rechteck davor; Seekarte nicht aufrufbar (Cheat Abfahrbereit fehlt, B-1157) | schwer; RU36.3: Cheat „Abfahrbereit“ (F9 › Ausbau) und Schiff im Fluss, Wasserstreifen aus Schiff und Steg entfernt; Nachprüfung 🧑 (Absenkung `SHIP_DROP` 2,4 Units am Bild prüfen) |
+| 42 | Reise | Schiffsfahrt | nach der Wahl der Zielinsel | Fahrt über die Karte, Schiff schaukelt, dann beide Spieler auf der neuen Insel (B-1126) | – | nein | nicht erreichbar, weil Station 41 nicht erreichbar ist (B-1157) | schwer; RU36.3: über Cheat „Abfahrbereit“ erreichbar, Nachprüfung 🧑 |
 
 ### Gruppe Pause, Speichern, Laden, Niederlage
 
