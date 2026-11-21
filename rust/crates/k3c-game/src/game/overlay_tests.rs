@@ -177,3 +177,26 @@ fn draw_font_zeichnet_flaeche_vor_text() {
     assert_eq!(c.rects, 1, "eine Fläche");
     assert_eq!(c.texts, 2, "zwei Zeilen");
 }
+
+/// B-1180: Die Fläche der Pixel-Schrift passt zur längsten Zeile und bleibt kleiner als vorher (Maßstab 2, nicht 5).
+#[test]
+fn pixel_flaeche_passt_zur_laengsten_zeile() {
+    let k = PIXEL_SCALE;
+    assert_eq!(k, 2, "kleine Anzeige");
+    assert!((pixel_width(8) - 92.0).abs() < 1e-3, "{{fps:4.0}} FPS");
+    assert!(pixel_width(12) > pixel_width(8));
+    assert!(pixel_width(12) * k as f32 <= 300.0, "bleibt klein");
+}
+
+/// B-1180: Die FPS werden gemessen, sobald die Anzeige sie zeigt, auch ohne die zweite Zeile.
+#[test]
+fn fps_werden_ohne_zweite_zeile_gemessen() {
+    let mut s = StatsOverlay::new(true, None);
+    assert!(s.shows_fps());
+    s.measuring = true;
+    assert!(!s.shows_fps(), "beim Messen keine eigene Zeitnahme");
+    assert!(
+        !StatsOverlay::new(false, None).shows_fps(),
+        "Aufnahme-Modus zeigt den Takt"
+    );
+}

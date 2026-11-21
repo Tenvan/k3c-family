@@ -67,4 +67,4 @@ keine
 
 ## Notizen
 
-Gemeldet im Gespräch zu LA1.5.
+Ursache: (1) `Game::measure_fps` lief nur bei eingeschalteter zweiter Zeile (F2, `Settings::stats`), sonst blieb der Wert 0; jetzt läuft sie, sobald die Anzeige FPS zeigt (`StatsOverlay::shows_fps`). (2) `Game::draw` ruft die Anzeige ohne Schrift auf, die Pixel-Schrift wurde im Maßstab 5 gezeichnet und ragte über den Fensterrand: jetzt Maßstab 2 (`PIXEL_SCALE`), die Fläche passt zur längsten Zeile (`pixel_width`) und sitzt rechtsbündig. `stats_rect` bleibt unverändert, weil das HUD (und die Go-Golden `still_hud`) daran hängen. Tests: `pixel_flaeche_passt_zur_laengsten_zeile`, `fps_werden_ohne_zweite_zeile_gemessen`. Die Anzeige mit der Schrift des Spiels (statt Pixel-Schrift) bleibt offen. Abnahme 🧑 am PC steht aus.

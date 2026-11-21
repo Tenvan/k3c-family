@@ -146,7 +146,10 @@ fn hof_netz_verlaeuft_von_der_mitte_nach_aussen() {
         w.draw_halos(&mut b, &layer_cell(40.0), &night_world(1), "meadow", 1.0);
         b.finish();
         let meshes = w.halos.len();
-        assert!(meshes >= 2, "Mond mit Scheibe (Quellen sind in den Daten aus): {meshes}");
+        assert!(
+            meshes >= 2,
+            "Mond mit Scheibe (Quellen sind in den Daten aus): {meshes}"
+        );
         let v = &w.halo_mesh.verts;
         assert_eq!(v.len(), 1 + 3 * SEGMENTS);
         let last = w.halos[meshes - 1];
