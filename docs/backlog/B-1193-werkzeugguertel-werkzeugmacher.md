@@ -65,7 +65,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Defaults (autonom entscheidbar): „Werkzeugmacher“ = die Werkstatt (kein neues Gebäude); der Gürtel ersetzt den Einzelhammer vollständig; Preis 30 Holz, 10 Stein, 3 Gold. 🧑 bestätigt bei der Freigabe.
+Entschieden (Ralf 2026-11-21): Der Hersteller heißt **Handwerksmeister** (statt „Werkzeugmacher“) und ist die umbenannte Werkstatt (kein neues Gebäude). Weitere Defaults (autonom entscheidbar): der Gürtel ersetzt den Einzelhammer vollständig; Preis 30 Holz, 10 Stein, 3 Gold. 🧑 bestätigt bei der Freigabe. Das Schwert macht künftig der Waffenschmied (FG1, B-1200).
 
 ## Notizen
 
