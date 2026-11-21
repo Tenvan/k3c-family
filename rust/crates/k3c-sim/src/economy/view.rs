@@ -8,7 +8,7 @@ use serde::Serialize;
 
 use super::links::hub_gate;
 use super::site_payable;
-use crate::building::barracks::{fighters, troop_limit};
+use crate::building::barracks::{island_fighters, island_limit};
 use crate::building::upgrades::armor_stage;
 use crate::island::storage::{capacity, purse_max};
 use crate::state::common::is_dangerous;
@@ -79,8 +79,8 @@ pub fn economy_of(w: &World, v: &WorldValues, isl: Option<&IslandRef>) -> Econom
     let mut e = Economy {
         hub_level: w.hub_level,
         danger: is_dangerous(w),
-        fighters: fighters(w),
-        troop_limit: troop_limit(w),
+        fighters: island_fighters(w),
+        troop_limit: island_limit(w),
         ..Economy::default()
     };
     if let Some(limit) = capacity(w, v, isl) {

@@ -22,7 +22,7 @@ use crate::economy::{can_afford, clear_pending, nearest, spend};
 use crate::enemies::BODY;
 use crate::state::common::{apply_damage, cause_or_other, event, is_dangerous, outer_wall};
 use crate::state::island_ref::{IslandRef, cheap};
-use crate::state::links::{emit, fighters, outpost, troop_limit, unit_x, weapons_in_flight};
+use crate::state::links::{emit, island_fighters, island_limit, outpost, unit_x, weapons_in_flight};
 use crate::state::{ItemDrop, Job, World, WorldValues};
 use k3c_data::troops::TroopData;
 
@@ -128,7 +128,7 @@ pub fn weapon_to_fetch(w: &World, v: &WorldValues, ti: usize) -> Option<Job> {
     if t.hammer || (v.native_rules && !t.profession.is_empty()) || enemy_within(w, t.x, near) {
         return None; // ein Handwerker bleibt Handwerker: Werkzeug und Waffe schließen sich aus (B-950)
     }
-    let full = fighters(w) + weapons_in_flight(w, ti) >= troop_limit(w);
+    let full = island_fighters(w) + weapons_in_flight(w, ti) >= island_limit(w);
     let mut best: Option<Pick> = None;
     // strikt kleiner: bei Gleichstand bleibt der frühere (Boden) Kandidat
     let mut consider = |typ: &'static str, site_id: i64, drop_id: i64, x: f64| {

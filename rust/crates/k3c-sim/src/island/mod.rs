@@ -58,6 +58,8 @@ mod errand_tests;
 #[cfg(test)]
 mod harbor_start_tests;
 #[cfg(test)]
+mod limit_tests;
+#[cfg(test)]
 mod nature_tests;
 #[cfg(test)]
 mod options_tests;
@@ -231,6 +233,7 @@ impl Island {
     /// aus `difficulty` (Go: Paket-Variable `difficulty`); ein unbekannter Grad ergibt wie bei Gos Map-Zugriff Nullwerte.
     pub fn stage_ref(&mut self, i: usize, difficulty: &DifficultyFile) -> IslandRef {
         let per_extra_player = self.per_extra_player();
+        errand::share_limit(self, i);
         IslandRef {
             scaling: self.scaling.clone(),
             grade: difficulty
