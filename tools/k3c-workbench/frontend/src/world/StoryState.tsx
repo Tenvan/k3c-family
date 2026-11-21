@@ -34,6 +34,7 @@ export function storyPrompt(detail: WorldDetail): string {
   const gaps = storyGaps(detail);
   return [
     `Schreibe die Geschichte der Welt „${detail.name}“ (Welt-ID ${detail.id}, data/worlds/${detail.id}.json) in Kunstsprache nach docs/rules/welten.md § 2.2.`,
+    'Gewässer: Der Untertitel (zweiter Text) einer Welt ist immer das Gewässer, an dem sie sich orientiert: Fluss, See, Küste oder Meer; Geschichte, Kunstwörter und Bilder der Welt beziehen sich darauf.',
     `Klang: eine eigene Kunstsprache, deren Klang zur Welt „${detail.name}“ passt${detail.notes ? ` (${detail.notes})` : ''}; kurze echte Wörter in GROSSBUCHSTABEN deuten die Handlung an.`,
     `Inseln: ${islands || 'keine'}.`,
     gaps.length > 0 ? `Es fehlt: ${gaps.join(', ')}.` : 'Alle Einträge sind vorhanden; überarbeite nur, was ich nenne.',
