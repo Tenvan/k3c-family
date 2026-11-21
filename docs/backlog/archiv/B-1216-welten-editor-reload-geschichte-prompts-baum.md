@@ -4,7 +4,7 @@
 - **Typ:** Idee
 - **Prio:** mittel
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** WL2
 - **Projekt:** WIR
 - **Erstellt:** 2026-11-21
@@ -67,4 +67,4 @@ keine (Standard: Tab im Welten-Editor, Prompts wie die bestehenden Prompt-Button
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Umgesetzt 2026-11-21 (autonom, Claude): Dateiwächter `internal/world/watch.go` (Polling 1 s auf data/worlds und data/*.json, data/biomes) meldet `world:changed`; `useWorld` lädt still nach (Stufe und Hinweis bleiben). Reiter Inseln, Geschichte, Werte im Welten-Editor; Geschichte als Baum mit Prompt je Knoten, allgemeine Prompts (Insel hinzufügen, Größe, Biome, Skalierung, geplante Chunks, Natur, Etappe, Override, neue Welt, Notizen); Werte mit Baum (Datei und Thema, Symbol und Name) als Filter der bisherigen Tabelle. Annahmen: Polling statt fsnotify; eigene Schreibvorgänge lösen ebenfalls ein stilles Neuladen aus; Symbole und deutsche Namen der Werte-Dateien und Themen stehen in `valueIcons.ts` und sind Vorschläge. Offen: Abnahme durch Ralf im echten Fenster; `golangci-lint` fehlt auf diesem Rechner (Lint der Go-Dateien lief nicht).

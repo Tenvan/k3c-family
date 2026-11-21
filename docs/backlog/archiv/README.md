@@ -920,3 +920,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-203](B-203-gold-schwelle-kennzahl.md) | REG | Frage | niedrig | verworfen | RG2 | Die Kennzahl „erste Gold-Schwelle“ hat eine feste Schwelle und Bedeutung |
 | [B-937](B-937-weltbilder-assets.md) | PAP | Idee | mittel | erledigt | WG1 | Jede Welt hat ein großes Titelbild mit Text und ein kleines Bild als Papierschnitt-Asset |
 | [B-1215](B-1215-standard-welt-fuenf-inseln.md) | REG | Idee | mittel | erledigt | WL2 | Die Standard-Welt besteht aus fünf Inseln mit wachsender Größe |
+| [B-1216](B-1216-welten-editor-reload-geschichte-prompts-baum.md) | DEV | Idee | mittel | erledigt | WL2 | Der Welten-Editor lädt Dateiänderungen nach, zeigt Geschichten, bietet mehr Prompts und zeigt Werte als Baum |
