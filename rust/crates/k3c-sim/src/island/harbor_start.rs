@@ -59,7 +59,7 @@ pub fn plant_harbor_trees(w: &mut World, v: &WorldValues) {
     while dx < half {
         let x = hx + dx;
         let on_site = w.sites.iter().any(|s| (s.x - x).abs() < SITE_GAP);
-        if dx.abs() > START_GAP && !on_site {
+        if dx.abs() > START_GAP.max(crate::world::forest::CLEARING_RADIUS) && !on_site {
             let variant = crate::unit::camp_guard::nearest_variant(w, hx + dx);
             let id = w.new_id();
             w.nodes.push(ResourceNode {

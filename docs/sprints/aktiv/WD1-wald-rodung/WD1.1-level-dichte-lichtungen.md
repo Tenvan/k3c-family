@@ -1,6 +1,6 @@
 # WD1.1 · Level: volle Baumdichte, Hub-Streifen und Lichtungen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `world/forest.rs` (`grow_forest`, aus `place_entities`, nur mit nativen Regeln auf Tiefe 0) füllt jeden Nicht-Hub-Chunk auf die Dichte des Chunk-Typs `forest` (anteilig, wenn Hub-Streifen oder Lichtung ihn teilweise freihält), überspringt den Hafen-Chunk (`plant_harbor_trees`, Gap jetzt gleich der Lichtung) und hält Hub-Streifen (bis 4 Units vor dem ersten Mauer-Bauplatz) und Lichtungen (Radius 6) um Truhe, Lager, Portal, Ausgang, Hafen frei. Würfel aus eigenem Strom `<seed>:wald`. Umsetzung in der Sim statt im Level-Generator (wie ECO1.8), damit Level-Seeds und Go-Golden unverändert bleiben. Tests `forest_tests` (40 Seeds: Dichte, Hub-Streifen, Lichtungen, Go-Parität), `cargo test -p k3c-sim` grün bis auf den schon roten Insel-Takt-Test, clippy sauber. Regeltext in materialien-gebaeude.md § 3.3.
+
+Annahme/Abweichung: Lager-Wächter-Bäume (HB1.4) stehen in der Lager-Lichtung. Die Workbench-Level-Vorschau rechnet mit der Go-Engine und zeigt den nativen Wald nicht (WD1.3 klärt die Anzeige). Schon rot: `echte_grafik_plant_alle_assets` (fehlende gen:paper-Grafik aus FG1), `alloc_je_bild`, `e2e_flow`, `still_hud`.

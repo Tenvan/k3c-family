@@ -63,7 +63,7 @@ keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WD1.1 | `WD1.1-level-dichte-lichtungen.md` | Umsetzung | autonom | offen |
+| WD1.1 | `WD1.1-level-dichte-lichtungen.md` | Umsetzung | autonom | fertig |
 | WD1.2 | `WD1.2-waldstuecke-rodung.md` | Umsetzung | autonom | offen |
 | WD1.3 | `WD1.3-anzeige-waldstuecke.md` | Umsetzung | autonom | offen |
 | WD1.4 | `WD1.4-review.md` | Review | autonom | offen |
