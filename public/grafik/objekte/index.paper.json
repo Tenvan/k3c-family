@@ -45,11 +45,6 @@
     "manifest": "birke-2/manifest.json"
   },
   {
-    "id": "birke",
-    "rig": "requisite",
-    "manifest": "birke/manifest.json"
-  },
-  {
     "id": "birke-dunkel",
     "rig": "requisite",
     "manifest": "birke-dunkel/manifest.json"
@@ -63,6 +58,11 @@
     "id": "birke-mittel",
     "rig": "requisite",
     "manifest": "birke-mittel/manifest.json"
+  },
+  {
+    "id": "birke",
+    "rig": "requisite",
+    "manifest": "birke/manifest.json"
   },
   {
     "id": "busch",
@@ -155,6 +155,66 @@
     "manifest": "ladeplatz-truppen/manifest.json"
   },
   {
+    "id": "licht-fackel-britannien",
+    "rig": "requisite",
+    "manifest": "licht-fackel-britannien/manifest.json"
+  },
+  {
+    "id": "licht-fackel-nil",
+    "rig": "requisite",
+    "manifest": "licht-fackel-nil/manifest.json"
+  },
+  {
+    "id": "licht-fackel-sengoku",
+    "rig": "requisite",
+    "manifest": "licht-fackel-sengoku/manifest.json"
+  },
+  {
+    "id": "licht-fackel-standard",
+    "rig": "requisite",
+    "manifest": "licht-fackel-standard/manifest.json"
+  },
+  {
+    "id": "licht-laterne-britannien",
+    "rig": "requisite",
+    "manifest": "licht-laterne-britannien/manifest.json"
+  },
+  {
+    "id": "licht-laterne-nil",
+    "rig": "requisite",
+    "manifest": "licht-laterne-nil/manifest.json"
+  },
+  {
+    "id": "licht-laterne-sengoku",
+    "rig": "requisite",
+    "manifest": "licht-laterne-sengoku/manifest.json"
+  },
+  {
+    "id": "licht-laterne-standard",
+    "rig": "requisite",
+    "manifest": "licht-laterne-standard/manifest.json"
+  },
+  {
+    "id": "licht-schale-britannien",
+    "rig": "requisite",
+    "manifest": "licht-schale-britannien/manifest.json"
+  },
+  {
+    "id": "licht-schale-nil",
+    "rig": "requisite",
+    "manifest": "licht-schale-nil/manifest.json"
+  },
+  {
+    "id": "licht-schale-sengoku",
+    "rig": "requisite",
+    "manifest": "licht-schale-sengoku/manifest.json"
+  },
+  {
+    "id": "licht-schale-standard",
+    "rig": "requisite",
+    "manifest": "licht-schale-standard/manifest.json"
+  },
+  {
     "id": "obelisk",
     "rig": "requisite",
     "manifest": "obelisk/manifest.json"
@@ -170,16 +230,6 @@
     "manifest": "pappel-2/manifest.json"
   },
   {
-    "id": "pappel-niedrig",
-    "rig": "requisite",
-    "manifest": "pappel-niedrig/manifest.json"
-  },
-  {
-    "id": "pappel",
-    "rig": "requisite",
-    "manifest": "pappel/manifest.json"
-  },
-  {
     "id": "pappel-dunkel",
     "rig": "requisite",
     "manifest": "pappel-dunkel/manifest.json"
@@ -188,6 +238,16 @@
     "id": "pappel-hoch",
     "rig": "requisite",
     "manifest": "pappel-hoch/manifest.json"
+  },
+  {
+    "id": "pappel-niedrig",
+    "rig": "requisite",
+    "manifest": "pappel-niedrig/manifest.json"
+  },
+  {
+    "id": "pappel",
+    "rig": "requisite",
+    "manifest": "pappel/manifest.json"
   },
   {
     "id": "portal",
@@ -305,11 +365,6 @@
     "manifest": "tanne-2/manifest.json"
   },
   {
-    "id": "tanne",
-    "rig": "requisite",
-    "manifest": "tanne/manifest.json"
-  },
-  {
     "id": "tanne-dunkel",
     "rig": "requisite",
     "manifest": "tanne-dunkel/manifest.json"
@@ -323,6 +378,11 @@
     "id": "tanne-mittel",
     "rig": "requisite",
     "manifest": "tanne-mittel/manifest.json"
+  },
+  {
+    "id": "tanne",
+    "rig": "requisite",
+    "manifest": "tanne/manifest.json"
   },
   {
     "id": "torii",

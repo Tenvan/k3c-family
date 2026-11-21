@@ -4,10 +4,28 @@
 use k3c_devproto::{Catalog, Msg};
 
 use super::build::{button, group, ui};
-use crate::layout::Group;
+use crate::layout::{Control, Group, Kind, Values};
+
+/// effects_group hat je Umgebungseffekt einen Umschalter „<Name> aus“ (angehakt = Effekt aus, Standard ist an); die
+/// Kennung `fx:<id>` steht im Katalog.
+fn effects_group(cat: &Catalog) -> Group {
+    let toggles = cat
+        .effects
+        .iter()
+        .map(|e| {
+            let key = e.id.clone();
+            let name = if e.label.is_empty() { &e.id } else { &e.label };
+            Control::new(&key, Kind::Toggle, &format!("{name} aus")).builds_with(move |v: &Values| {
+                let off = v.get(&key).is_some_and(|s| s == "1");
+                Some(ui(&key, Some(i64::from(!off))))
+            })
+        })
+        .collect();
+    group("Umgebungseffekte", toggles)
+}
 
 /// build liefert die Gruppen der Seite.
-pub fn build(_cat: &Catalog) -> Vec<Group> {
+pub fn build(cat: &Catalog) -> Vec<Group> {
     vec![
         group(
             "Debug-Overlay",
@@ -31,6 +49,7 @@ pub fn build(_cat: &Catalog) -> Vec<Group> {
             "Fenster",
             vec![button("focus", "Spielfenster nach vorn", Msg::Focus { id: 0 })],
         ),
+        effects_group(cat),
     ]
 }
 
@@ -66,5 +85,35 @@ mod tests {
             );
         }
         assert_eq!(find(&g, "focus").unwrap().fire(&none), Some(Msg::Focus { id: 0 }));
+    }
+
+    #[test]
+    fn umgebungseffekte_je_ein_umschalter() {
+        let entry = |id: &str, label: &str| k3c_devproto::Entry {
+            id: id.into(),
+            label: label.into(),
+        };
+        let cat = Catalog {
+            effects: vec![entry("fx:haze", "Dunst"), entry("fx:stars", "Sterne")],
+            ..Catalog::default()
+        };
+        let g = build(&cat);
+        let c = find(&g, "fx:stars").unwrap();
+        assert_eq!(c.kind, Kind::Toggle);
+        assert_eq!(c.text, "Sterne aus");
+        let on = |s: &str| Values::from([("fx:stars".to_owned(), s.to_owned())]);
+        let want = |v| {
+            Some(Msg::Ui {
+                id: 0,
+                key: "fx:stars".into(),
+                value: Some(v),
+            })
+        };
+        assert_eq!(c.fire(&on("1")), want(0), "angehakt = aus");
+        assert_eq!(c.fire(&on("0")), want(1));
+        assert!(
+            find(&build(&Catalog::default()), "fx:stars").is_none(),
+            "ohne Katalog keine Umschalter"
+        );
     }
 }

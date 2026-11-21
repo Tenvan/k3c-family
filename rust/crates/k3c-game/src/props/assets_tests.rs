@@ -218,3 +218,22 @@ fn fracht_und_doppel_truhe_werden_geladen() {
         );
     }
 }
+
+/// LA2.3: Die zwölf Licht-Assets (Fackel, Laterne, Feuerschale je Welt) sind in `data/paper.json` zugeordnet und
+/// stehen in der Ladeliste jedes Bioms.
+#[test]
+fn licht_assets_sind_zugeordnet_und_geladen() {
+    let paper: Value = serde_json::from_str(include_str!("../../../../../data/paper.json")).expect("paper.json");
+    let objekte = paper
+        .get("objekte")
+        .and_then(Value::as_object)
+        .expect("Abschnitt objekte");
+    let wald = level_assets("forest");
+    for art in ["fackel", "laterne", "schale"] {
+        for welt in ["standard", "sengoku", "nil", "britannien"] {
+            let id = format!("licht-{art}-{welt}");
+            assert!(objekte.contains_key(&id), "{id} fehlt in data/paper.json › objekte");
+            assert!(wald.contains(&format!("objekte/{id}")), "{id} fehlt in der Ladeliste");
+        }
+    }
+}

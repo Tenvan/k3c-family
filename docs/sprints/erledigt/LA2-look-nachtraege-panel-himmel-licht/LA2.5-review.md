@@ -1,6 +1,6 @@
 # LA2.5 · Review und Abnahme-Ticket LA2
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 geprüft: Review LA2.1 bis LA2.4 durch k3c-hud (LA2.1) und k3c-grafik (LA2.2 bis LA2.4): keine schweren Befunde, 6 mittlere und 5 geringe (siehe B-1185 AC-03). `task check` rot nur durch die drei bekannten `planning.test.ts`-Tests (3 von 2047), `task check:go` grün. Abnahme-Ticket B-1185 angelegt (auf Ralfs ausdrückliche Antwort, 2026-11-21).
+
+Abweichung: Gen-Läufe (`gen:paper` Golden) lief nur indirekt in LA2.3 (`task test paper` grün), `check:race` nicht (B-1185).
+
+### Für den Hauptrechner
+- Befunde a bis h in B-1185 AC-03 entscheiden; e2e_flow und alloc_je_bild rot (B-1185 AC-04).

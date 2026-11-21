@@ -29,3 +29,27 @@ fn stars_are_deterministic_and_stay_in_the_upper_sky() {
     }
     assert_ne!(star_at(0), star_at(1));
 }
+
+#[test]
+fn clouds_are_deterministic_clamped_and_drift() {
+    for i in 0..12 {
+        for step in 0..40 {
+            let t = step as f64 * 17.3;
+            let boxes = cloud_boxes(i, t, 800.0, 400.0, 0.004);
+            assert_eq!(boxes, cloud_boxes(i, t, 800.0, 400.0, 0.004));
+            for [x, y, w, h] in boxes {
+                assert!(
+                    x >= 0.0 && x + w <= 800.0 + 1e-9,
+                    "Wolke {i} ragt aus der Zelle: {x} {w}"
+                );
+                assert!(
+                    y >= 0.0 && y + h <= 400.0 * CLOUD_AREA + 800.0 * 0.16 * 1.4 * 0.28,
+                    "Höhe {y}"
+                );
+                assert!(w > 0.0 && h > 0.0);
+            }
+        }
+    }
+    let at = |t: f64| cloud_boxes(3, t, 800.0, 400.0, 0.004).first().map(|b| b[0]);
+    assert_ne!(at(0.0), at(60.0), "die Wolke zieht");
+}

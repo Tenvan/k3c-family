@@ -1,6 +1,6 @@
 # LA2.2 · Wolken am Himmel und ruhigere Wellenstriche (B-1183)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -59,5 +59,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: Wolken im k2c-Profil (`data/look.json › sky`: `clouds` 7, `cloudAlpha` 0,5, `cloudSpeed` 0,004 Zellenbreiten/s, `cloudNight` 0,3; `look_sky.rs`). `world/sky.rs`: `cloud_boxes` (feste Lage aus Zahlenstrom, drei gestufte Ballen, waagerecht auf die Zelle begrenzt), `draw_clouds` (Weiß, am Abend ins Abendrot getönt, nachts auf `cloudNight` der Deckkraft und mit `back` abgedunkelt); gesteuert vom fx-Schalter `sky`, Uhr `Frame::clock` (`draw_sky` bekam den Parameter `clock`). Go-Profil unverändert (`sky.enabled` false). Test `clouds_are_deterministic_clamped_and_drift`.
+
+AC-03 geprüft: Die Wellenstriche sind die Glanzstriche der Spiegel-Fläche (`mirror.glint`): 0,25 → 0,15, neu `mirror.glintNight` 0,4 (Anteil in tiefer Nacht, über `emissive` in `mirror_uniforms`); Go-Profil hat den Spiegel aus, Go-Golden unberührt. `testdata/rust/data-tree.json.gz` neu geschrieben (`go test ./internal/detvec/ -write`), `eingebaute_werte_sind_die_der_datei` und alle k3c-data-Tests grün, clippy grün, `task check:diff` nur bekannte Planungstests rot.
+
+Nicht geprüft: Aussehen im Spiel (Dichte, Tempo, Dunkelheit sind vermutete Startwerte); manuelle Abnahme durch Ralf. Abweichung: `mirror.rs`, `layers.rs` und `testdata/rust/data-tree.json.gz` lagen außerhalb der erlaubten Dateien, waren nötig.
+
+### Für den Hauptrechner
+- Die Wellenstriche im Shader-Fluss ohne Spiegel (Profil go, `RIVER_WAVE`) bleiben unverändert (Go-Parität).

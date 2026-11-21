@@ -59,3 +59,18 @@ fn unbekannte_taste_ack_false() {
     let mut h = MockHost::new(1);
     assert!(!ui(&mut h, "flieg", None));
 }
+
+#[test]
+fn umgebungseffekt_schalten() {
+    use crate::world::fx;
+    let mut h = MockHost::new(1);
+    assert!(ui(&mut h, "fx:haze", Some(0)));
+    assert!(!fx::on("haze"));
+    assert!(ui(&mut h, "fx:haze", Some(1)));
+    assert!(fx::on("haze"));
+    assert!(ui(&mut h, "fx:haze", None), "ohne Wert: um");
+    assert!(!fx::on("haze"));
+    assert!(ui(&mut h, "fx:haze", Some(1)), "wieder an für die anderen Tests");
+    assert!(!ui(&mut h, "fx:gibtsnicht", Some(0)));
+    assert!(h.cmds.is_empty(), "kein F-Tasten-Befehl");
+}

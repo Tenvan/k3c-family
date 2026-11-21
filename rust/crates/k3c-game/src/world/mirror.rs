@@ -35,7 +35,8 @@ pub fn mirror_uniforms(c: &Cell, clock: f64, emissive: f64) -> MirrorUniforms {
         emissive: emissive.clamp(0.0, 1.0) as f32,
         tint: m.tint as f32,
         depth_fade: m.depth_fade as f32,
-        glint_mix: m.glint as f32,
+        // Nacht (emissive = 1 − Tageslicht): die Glanzstriche gehen auf `glint_night` des Tageswerts zurück
+        glint_mix: (m.glint * (1.0 - (1.0 - m.glint_night) * emissive.clamp(0.0, 1.0))) as f32,
         water,
         glint: rgb(RIVER_GLINT),
     }

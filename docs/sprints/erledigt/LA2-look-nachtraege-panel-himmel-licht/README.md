@@ -1,6 +1,6 @@
 # LA2 · CLI, PAP · Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, PAP
 - **Reife:** bereit
@@ -72,11 +72,11 @@ Keine offen. Defaults (autonom, Claude, 2026-11-21; 🧑 bestätigt sie bei der 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LA2.1 | `LA2.1-cheat-panel-umgebungseffekte.md` | Umsetzung | autonom | offen |
-| LA2.2 | `LA2.2-wolken-wellenstriche.md` | Umsetzung | autonom | offen |
-| LA2.3 | `LA2.3-licht-assets-flammen.md` | Umsetzung | autonom | offen |
-| LA2.4 | `LA2.4-monumentalbild-je-welt.md` | Umsetzung | autonom | offen |
-| LA2.5 | `LA2.5-review.md` | Review | autonom | offen |
+| LA2.1 | `LA2.1-cheat-panel-umgebungseffekte.md` | Umsetzung | autonom | fertig |
+| LA2.2 | `LA2.2-wolken-wellenstriche.md` | Umsetzung | autonom | fertig |
+| LA2.3 | `LA2.3-licht-assets-flammen.md` | Umsetzung | autonom | fertig |
+| LA2.4 | `LA2.4-monumentalbild-je-welt.md` | Umsetzung | autonom | fertig |
+| LA2.5 | `LA2.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

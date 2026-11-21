@@ -1,0 +1,91 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "licht-schale-britannien",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Feuerschale (Britannien): Steinschale auf Fuß mit Flamme",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-5 0L-2 -8L2 -8L5 0Z",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-10 -14L10 -14L7 -7L-7 -7Z",
+          "material": "stein",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-10 -14L-3 -14L-4 -7L-7 -7Z",
+          "material": "stein",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M-9 -12L9 -12",
+          "material": "stein",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "flamme",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-7 -14L-5 -22L0 -32L4 -22L7 -14Z",
+          "material": "lava",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-3.5 -14L-2 -21L1 -27L3.5 -14Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0.5, -16],
+          "radius": 1.5,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -14]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 36,
+    "rahmen": [-16, -34, 32, 36]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 8,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "flamme": -6
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "flamme": 6
+          }
+        }
+      ]
+    }
+  }
+}

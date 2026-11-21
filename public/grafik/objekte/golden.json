@@ -206,6 +206,78 @@
       "idle.png": "ab3cae5588a2a39aa9c45ab383391ee322df7c82e36a5b3498f4aa5c15e72022"
     }
   },
+  "licht-fackel-britannien": {
+    "renderKey": "94cfade221ae93652a52960e186db64af3d411470bcdc639e28ec189315716ec",
+    "dateien": {
+      "idle.png": "e5b74e8212e1cb09601204f05e61b89cd5826889447312ed04d4a1eedbafe508"
+    }
+  },
+  "licht-fackel-nil": {
+    "renderKey": "14e8170b825181f1fa1e496e150b037e3a08f46f08c94317aa8c88f1b641c73a",
+    "dateien": {
+      "idle.png": "f88e2230ee837c905e8c95f5e7fd6179a54e8e088cf4fa2e97912453ec61c2c4"
+    }
+  },
+  "licht-fackel-sengoku": {
+    "renderKey": "d6040512ab5a6caba9262d78572128d786f57b66a6448495a8113fb355288240",
+    "dateien": {
+      "idle.png": "f3d2da559801fa11c6ee022ff2a7778fe17cd1c1f472cfe6bfe039b86f13f4ef"
+    }
+  },
+  "licht-fackel-standard": {
+    "renderKey": "98981f16d7633e42d3c04da686a73e0d12b4029d2edcea4286c5935183947cce",
+    "dateien": {
+      "idle.png": "e06c645aa18779bcc16ade022749a3bada25f853b175384c3a3d9a05badb87ed"
+    }
+  },
+  "licht-laterne-britannien": {
+    "renderKey": "e71ad78ee4b3f1728a62596abb9f7fee54f79c948bb7688fbb6657563496a249",
+    "dateien": {
+      "idle.png": "f8aea2d06cd28477313cc2412029787b5ecbcdfe60a5686fbfbfbe41caa94482"
+    }
+  },
+  "licht-laterne-nil": {
+    "renderKey": "d6a8a9210ac6504fc7cf0f620322d5b65cf49ca926ad56c914ce956a1f4a1495",
+    "dateien": {
+      "idle.png": "97e9147484941b19a03bbf4f7d1d1950ac07cd3db1b934bcfd22a35b3063aa16"
+    }
+  },
+  "licht-laterne-sengoku": {
+    "renderKey": "c8622c10321b2723c4f368a1a65f94b6ac2e25eb40fec54ddce39833775d595f",
+    "dateien": {
+      "idle.png": "5e37e2d34bd46e1b239f711005389bfc039190a72ed309bab5df804f9b4b5bbf"
+    }
+  },
+  "licht-laterne-standard": {
+    "renderKey": "54acad62f8fa9e509d66b5a12cbd9f245c7a8cae4131527bf746c069dec3dfe8",
+    "dateien": {
+      "idle.png": "14e054738269be08ee835d6b6e2190700d285fc41b9110f8a7b48b6db108e4dc"
+    }
+  },
+  "licht-schale-britannien": {
+    "renderKey": "fc5f70c5afc5ee22760b9f9cb322d58d0fe1df68e1a461b643becf909b59f67c",
+    "dateien": {
+      "idle.png": "d8e9041de8c2792bd23c23552196d5ce8d962be38a0e691b81fd8eaafe90a2d3"
+    }
+  },
+  "licht-schale-nil": {
+    "renderKey": "4ea034f840748d61609b6aba1ef3bb3bca1f5de3dbebe56c71bd3a14873b5ba7",
+    "dateien": {
+      "idle.png": "cdfd7682ff37cb564fc26ec8c63a4df7da6cc6743f500aeda19c732bab65c654"
+    }
+  },
+  "licht-schale-sengoku": {
+    "renderKey": "19e4cc09bfa6c070df7d24d3ace890fe98df517fe9434a9af59c73c3f413d91f",
+    "dateien": {
+      "idle.png": "caf5d2593d71d3cfa0f51512cf803be677d9199a28a65b4eadb68b9522602695"
+    }
+  },
+  "licht-schale-standard": {
+    "renderKey": "d42202c5acc4919a46a3d0f2071bbd7250b8fa38eca91906da489df2a3b45880",
+    "dateien": {
+      "idle.png": "1fc45fde22bbdde53006418910598a60cace223f732da5ef69233bbbdc105bf7"
+    }
+  },
   "obelisk": {
     "renderKey": "c1d134d3cbb52dcaea8c086766a447fd8ff26b45053fd82fce7775bbf5fb92e9",
     "dateien": {

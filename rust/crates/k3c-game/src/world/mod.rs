@@ -167,7 +167,12 @@ impl CameraRule for Far {
 impl AssetSource for Far {
     /// Assets nennt die Kulissen-Grafik des Levels (alle Varianten der drei Schichten).
     fn assets(&self, level: &str, _w: &SimWorld) -> Vec<String> {
-        self.w.borrow().looks.assets(level).unwrap_or_default()
+        let mut out = self.w.borrow().looks.assets(level).unwrap_or_default();
+        // LA2.4: die Leitmotive aller festen Welten (nur Stufen mit Himmel, nur im Profil mit Himmel)
+        if k3c_data::look::current().sky.enabled && tint::has_sky(level) {
+            out.extend(layers::MOTIFS.iter().map(|(_, a)| (*a).to_string()));
+        }
+        out
     }
 }
 
