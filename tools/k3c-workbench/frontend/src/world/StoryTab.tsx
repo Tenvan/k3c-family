@@ -13,7 +13,7 @@ import { ENTRY_NAMES, linesOf, partPrompt, type StoryPart } from './storyPrompts
 // seinem Prompt. Anzeigen ist hier, Ändern geht per Prompt an Claude (world_story_set).
 
 const nodeKey = (part: StoryPart) =>
-  part.kind === 'island' ? `${part.island}.${part.entry}` : part.kind === 'etappe' ? `etappe.${part.n}` : part.kind;
+  part.kind === 'island' ? `${part.island}.${part.entry}` : part.kind === 'islandAll' ? part.island : part.kind === 'etappe' ? `etappe.${part.n}` : part.kind;
 
 interface Item {
   part: StoryPart;
@@ -47,6 +47,7 @@ function itemsOf(detail: WorldDetail): Item[] {
   for (const n of etappenOf(detail)) {
     detail.islands.forEach((isl, i) => {
       if (String(isl.etappe ?? i + 1) !== n) return;
+      items.push({ part: { kind: 'islandAll', island: isl.id }, icon: '🏝', name: isl.name });
       for (const entry of ['arrival', 'boss', 'done'] as const) {
         items.push({ part: { kind: 'island', island: isl.id, entry }, icon: ENTRY_ICONS[entry], name: `${isl.name}: ${ENTRY_NAMES[entry]}` });
       }
@@ -55,6 +56,23 @@ function itemsOf(detail: WorldDetail): Item[] {
   }
   items.push({ part: { kind: 'end' }, icon: '🎉', name: 'Ende' }, { part: { kind: 'bottles' }, icon: '🍾', name: 'Flaschenpost' }, { part: { kind: 'lexicon' }, icon: '📖', name: 'Wortschatz' });
   return items;
+}
+
+/** Alle drei Einträge einer Insel mit Überschrift (Ankunft, Endboss, Sieg). */
+function IslandLines({ detail, island }: { detail: WorldDetail; island: string }) {
+  return (
+    <>
+      {(['arrival', 'boss', 'done'] as const).map((entry) => {
+        const lines = linesOf(detail, { kind: 'island', island, entry });
+        return (
+          <div key={entry} data-entry={entry}>
+            <Text size="1" color="gray">{ENTRY_ICONS[entry]} {ENTRY_NAMES[entry]}</Text>
+            {lines.length === 0 ? <Text as="p" size="2" color="orange">fehlt</Text> : lines.map((l, i) => <Text key={i} as="p" className="st-line">„{l}“</Text>)}
+          </div>
+        );
+      })}
+    </>
+  );
 }
 
 function Detail({ detail, item }: { detail: WorldDetail; item: Item }) {
@@ -66,9 +84,10 @@ function Detail({ detail, item }: { detail: WorldDetail; item: Item }) {
         <Text size="3" weight="bold">{item.name}</Text>
         {lines.length === 0 && <Badge color="orange" size="1">fehlt</Badge>}
       </Flex>
+      {item.part.kind === 'islandAll' && <IslandLines detail={detail} island={item.part.island} />}
       {item.part.kind === 'lexicon'
         ? lines.length > 0 && <Text as="p" size="2" color="gray">{lines.join(' · ')}</Text>
-        : lines.map((l, i) => <Text key={i} as="p" className="st-line">„{l}“</Text>)}
+        : item.part.kind !== 'islandAll' && lines.map((l, i) => <Text key={i} as="p" className="st-line">„{l}“</Text>)}
       <PromptRow prompt={partPrompt(detail, item.part)} title={`${item.name} in Claude ändern`} />
     </div>
   );
@@ -95,7 +114,7 @@ export function StoryTab({ detail }: { detail: WorldDetail }) {
             <div key={n} className="st-branch" data-etappe={n}>
               {detail.islands.map((isl, i) => String(isl.etappe ?? i + 1) === n && (
                 <div key={isl.id} data-island={isl.id}>
-                  <Text size="1" color="gray" className="st-island">🏝 {isl.name}</Text>
+                  {leaf(items.find((it) => it.part.kind === 'islandAll' && it.part.island === isl.id)!)}
                   <div className="st-branch">{items.filter((it) => it.part.kind === 'island' && it.part.island === isl.id).map(leaf)}</div>
                 </div>
               ))}
