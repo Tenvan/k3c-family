@@ -28,6 +28,7 @@ pub(super) fn elite_spot(w: &World, s: usize) -> (f64, usize) {
 /// und HP laut Daten.
 fn want_elite(kind: &str, at: impl Fn(&World, usize) -> f64) -> (World, usize) {
     let mut w = quiet_world();
+    crate::enemies::testutil::legacy_rules(&mut w);
     let p = add_player(&mut w);
     let smithy = build_site(&mut w, "smithy");
     let v = vals(&w);
@@ -111,6 +112,7 @@ fn upgrade_elite_krieger() {
 #[test]
 fn upgrade_zwei_spieler_an_beiden_schmiede_zielen() {
     let mut w = quiet_world();
+    crate::enemies::testutil::legacy_rules(&mut w);
     let (p1, p2) = (add_player(&mut w), add_player(&mut w));
     let s = build_site(&mut w, "smithy");
     let (spot, idx) = elite_spot(&w, s);
@@ -168,6 +170,7 @@ fn upgrade_zwei_spieler_an_beiden_schmiede_zielen() {
 /// armorWorld: gebaute Rüstkammer bei Hub-Stufe `level`, ein Spieler mit Gold, Eisen im Vorrat.
 fn armor_world(level: i64) -> (World, usize, usize) {
     let mut w = quiet_world();
+    crate::enemies::testutil::legacy_rules(&mut w);
     w.hub_level = level;
     w.stock = Stock {
         iron: 1000,
@@ -193,7 +196,9 @@ fn buy_armor(w: &mut World, p: usize, s: usize) -> bool {
 /// (b) Stufe 1 ab Hub-Stufe 4, Stufe 2 ab 5; Zuschlag auf MaxHP und HP ohne Vollheilung, nur Kämpfer, auch neue.
 #[test]
 fn armor_zwei_stufen_nur_kaempfer() {
-    let v = vals(&bare_world());
+    let mut base_world = bare_world();
+    crate::enemies::testutil::legacy_rules(&mut base_world);
+    let v = vals(&base_world);
     let stages = v.buildings["armory"].armor.clone();
     assert_eq!(
         stages.len(),

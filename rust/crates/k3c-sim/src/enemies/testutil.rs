@@ -309,3 +309,11 @@ pub fn fund_repairs(w: &mut crate::state::World) {
         p.gold = p.gold.max(20);
     }
 }
+
+/// FG1.2: Die alten Regeln (Go-Parität: Elite-Angebot an der Schmiede, Rüstungsstufen, Schwert an der Werkstatt) laufen
+/// nur ohne die nativen Regeln; Tests dazu schalten sie hier ab.
+pub fn legacy_rules(w: &mut crate::state::World) {
+    let mut v = (*crate::world::vals(w)).clone();
+    v.native_rules = false;
+    w.vals = Some(std::sync::Arc::new(v));
+}

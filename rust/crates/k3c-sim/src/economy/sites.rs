@@ -55,10 +55,17 @@ pub fn step_sites(w: &mut World, isl: Option<&mut IslandRef>) {
                 w.sites[si].state = "waitingWorker".into();
             }
         }
-        let s = &w.sites[si];
-        if (s.kind == "workshop" || s.kind == "bowyer") && s.state == "built" {
+        let (kind, built) = (w.sites[si].kind.clone(), w.sites[si].state == "built");
+        if (kind == "workshop" || kind == "bowyer") && built {
             step_bow_craft(w, &v, isl, si);
             step_sword_craft(w, &v, isl, si);
+        }
+        if v.native_rules && built {
+            match kind.as_str() {
+                "smithy" => step_sword_craft(w, &v, isl, si), // FG1.2: Waffenschmied
+                "armory" => step_bow_craft(w, &v, isl, si),   // FG1.2: Rüstungsschmied (Produkt Rüstung)
+                _ => {}
+            }
         }
     }
     // Go: `eachSite`: alle Plätze der Stufe, danach der Zahlplatz des Hubs

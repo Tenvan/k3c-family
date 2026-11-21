@@ -158,6 +158,8 @@ fn gold_left(w: &World, v: &WorldValues, isl: Option<&IslandRef>, s: &Site) -> i
     }
     let price = match s.kind.as_str() {
         "workshop" | "bowyer" => cheap(isl, &place_product(v, s).cost).gold,
+        "smithy" if v.native_rules => 0, // Schwert: eigenes Zahlziel (`sword_payable`)
+        "armory" if v.native_rules => cheap(isl, &place_product(v, s).cost).gold,
         "smithy" => v.troops.get("eliteArcher").map_or(0, |t| cheap(isl, &t.cost).gold),
         "armory" => armor_stage(w, v, isl).map_or(0, |st| st.cost.gold),
         _ => 0,

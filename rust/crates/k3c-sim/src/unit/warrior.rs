@@ -34,6 +34,10 @@ pub fn is_fighter(troops: &BTreeMap<String, TroopData>, kind: &str) -> bool {
 /// Go: `swordSpot` ist der Ort des Schwert-Zahlziels am Platz `si`; `None`, wenn sein Gebäude keins hat.
 pub fn sword_spot(w: &World, v: &WorldValues, si: usize) -> Option<f64> {
     let s = &w.sites[si];
+    if v.native_rules {
+        // FG1.2: Schwerter stellt der Waffenschmied her (Anhang dx +4), nicht mehr die Werkstatt
+        return (s.kind == "smithy").then_some(s.x + 4.0);
+    }
     let b = v.buildings.get(&s.kind)?;
     b.offers.iter().find(|o| o.kind == "sword").map(|o| s.x + o.dx)
 }
@@ -54,7 +58,11 @@ pub fn sword_at(w: &World, v: &WorldValues, isl: Option<&IslandRef>, x: f64, pay
 pub fn sword_payable(w: &World, v: &WorldValues, isl: Option<&IslandRef>, si: usize) -> bool {
     let s = &w.sites[si];
     let in_work = i64::from(s.sword_done > 0.0);
-    let rack = v.buildings.get(&s.kind).map_or(0, |b| b.sword_rack);
+    let rack = if v.native_rules {
+        super::hammer::SWORD_RACK
+    } else {
+        v.buildings.get(&s.kind).map_or(0, |b| b.sword_rack)
+    };
     let gold = v.troops.get("warrior").map_or(0, |t| cheap(isl, &t.cost).gold);
     s.swords + in_work < rack && s.sword_paid_gold < gold
 }
@@ -117,7 +125,7 @@ struct Pick {
 pub fn weapon_to_fetch(w: &World, v: &WorldValues, ti: usize) -> Option<Job> {
     let t = &w.troops[ti];
     let near = v.troops.get("peasant").map_or(0.0, |p| p.fetch_enemy_distance);
-    if t.hammer || enemy_within(w, t.x, near) {
+    if t.hammer || (v.native_rules && !t.profession.is_empty()) || enemy_within(w, t.x, near) {
         return None; // ein Handwerker bleibt Handwerker: Werkzeug und Waffe schließen sich aus (B-950)
     }
     let full = fighters(w) + weapons_in_flight(w, ti) >= troop_limit(w);
@@ -155,7 +163,10 @@ pub fn weapon_to_fetch(w: &World, v: &WorldValues, ti: usize) -> Option<Job> {
 fn shelf_jobs(w: &World, ti: usize, consider: &mut dyn FnMut(&'static str, i64, i64, f64), full: bool) {
     let danger = is_dangerous(w);
     for s in &w.sites {
-        if (s.kind != "workshop" && s.kind != "bowyer") || s.state != "built" || (danger && outpost(w, s.x)) {
+        if (s.kind != "workshop" && s.kind != "bowyer" && s.kind != "smithy")
+            || s.state != "built"
+            || (danger && outpost(w, s.x))
+        {
             continue;
         }
         if !full && fetching(w, ti, "fetchBow", s.id) < s.bows {
@@ -174,7 +185,7 @@ fn shelf_jobs(w: &World, ti: usize, consider: &mut dyn FnMut(&'static str, i64, 
 /// etwas.
 pub fn shelf_stocked(w: &World) -> bool {
     w.sites.iter().any(|s| {
-        (s.kind == "workshop" || s.kind == "bowyer")
+        (s.kind == "workshop" || s.kind == "bowyer" || s.kind == "smithy")
             && s.state == "built"
             && (s.bows > 0 || s.swords > 0 || s.hammers > 0)
     })

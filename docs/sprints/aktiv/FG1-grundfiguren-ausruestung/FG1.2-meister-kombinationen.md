@@ -1,6 +1,6 @@
 # FG1.2 · Waffenschmied, Rüstungsschmied, Bogner, Kombinationen und Elite in der Sim
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -59,5 +59,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: Mit nativen Regeln stellt die Schmiede (Waffenschmied) Schwärter her, die Rüstkammer (Rüstungsschmied) Rüstungen (Regal `Site::armors`, 3 Stück, 30 Eisen + 8 Gold, 30 s; Zahlen als Code-Konstanten in `unit/hammer.rs`, Balance im Abnahme-Ticket). Bürger holen Bogen, Schwert oder Werkzeuggürtel selbst (Bogenschütze, Soldat, Handwerker); Soldat oder Bogenschütze plus Rüstung ergibt Elite-Soldat bzw. Elite-Bogenschütze (`armor_convert`: nächste Figur zum Gebäude, ohne Kandidat bleibt die Rüstung im Regal); Handwerker und Bürger mit Beruf nehmen nichts; Elite-Angebot und Rüstungsstufen samt Hub-HP-Bonus entfallen. Ohne native Regeln bleibt alles wie in Go. Tests: `unit/combo_tests.rs` (je Kombination ein Test, Herstellung, 2 Spieler, Regal ohne Kandidat, kein Hub-HP-Bonus), alte Pfade mit `legacy_rules`. `cargo test -p k3c-sim -p k3c-room` grün bis auf den schon roten Insel-Takt-Test, clippy sauber.
+
+Abweichungen: Spielstand-Version nicht erhöht (neues Feld `armors` ist optional und wird weggelassen, wenn 0). Gebäude behalten die Codes `smithy`/`armory`; neue Namen und Grafik folgen mit FG1.3. Die Rüstung wird beim Fertigwerden angewandt, ohne dass die Figur zum Regal läuft. Rot schon vor dieser Session: `alloc_je_bild`, `e2e_flow` (seit mindestens ECO1.3), `still_hud` (Bildabweichung).

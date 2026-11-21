@@ -350,6 +350,7 @@ fn warrior_nimmt_schwert_und_kaempft_hinter_der_mauer() {
 #[test]
 fn zwei_spieler_zahlen_bogen_und_schwert() {
     let mut w = quiet_world();
+    crate::enemies::testutil::legacy_rules(&mut w);
     let ps = [add_player(&mut w), add_player(&mut w)];
     let (s, shop) = (build_site(&mut w, "bowyer"), build_site(&mut w, "workshop"));
     let v = crate::world::vals(&w);

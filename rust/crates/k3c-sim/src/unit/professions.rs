@@ -214,8 +214,17 @@ pub fn craft_seconds(w: &World, v: &WorldValues, site: usize, product: &str) -> 
         .and_then(|b| b.craft_seconds.as_ref())
         .and_then(|m| m.get(product))
         .copied()
-        .unwrap_or(0.0);
+        .unwrap_or_else(|| native_seconds(v, &s.kind, product));
     base / (1.0 + (factor - 1.0) * n as f64)
+}
+
+/// FG1.2: Herstellungszeit des Schwerts am Waffenschmied und der Rüstung am Rüstungsschmied (native Regel); sonst 0.
+fn native_seconds(v: &WorldValues, kind: &str, product: &str) -> f64 {
+    match (v.native_rules, kind, product) {
+        (true, "smithy", "sword") => super::hammer::NATIVE_SWORD_SECONDS,
+        (true, "armory", "armor") => super::hammer::NATIVE_ARMOR_SECONDS,
+        _ => 0.0,
+    }
 }
 
 /// Go: `bowsCrafting` ist 1, solange in der Werkstatt ein Bogen entsteht.

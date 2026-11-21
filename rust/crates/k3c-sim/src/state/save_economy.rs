@@ -28,6 +28,9 @@ pub struct CraftSave {
     /// Hämmer im Regal der Werkstatt.
     #[serde(rename = "hammers", skip_serializing_if = "is_zero_i64")]
     pub hammers: i64,
+    /// Rüstungen im Regal (FG1.2).
+    #[serde(rename = "armors", skip_serializing_if = "is_zero_i64")]
+    pub armors: i64,
     /// Schwerter im Regal.
     #[serde(rename = "swords", skip_serializing_if = "is_zero_i64")]
     pub swords: i64,
@@ -62,6 +65,7 @@ pub fn craft_save(w: &World, s: &Site) -> Option<CraftSave> {
         sword_paid_gold: s.sword_paid_gold,
         sword_done: s.sword_done,
         hammers: s.hammers,
+        armors: s.armors,
         ..Default::default()
     };
     if s.state == "built" {
@@ -80,6 +84,7 @@ pub fn craft_save(w: &World, s: &Site) -> Option<CraftSave> {
         && c.sword_paid_gold == 0
         && c.sword_done == 0.0
         && c.hammers == 0
+        && c.armors == 0
         && c.plots.is_empty();
     if empty { None } else { Some(c) }
 }
@@ -96,6 +101,7 @@ pub fn apply_craft(v: &WorldValues, s: &mut Site, c: Option<&CraftSave>) {
     s.sword_paid_gold = c.sword_paid_gold;
     s.sword_done = c.sword_done;
     s.hammers = c.hammers;
+    s.armors = c.armors;
     let offers = v.buildings.get(&s.kind).map_or(0, |b| b.offers.len());
     if c.offer_paid.len() <= offers {
         s.offer_paid = c.offer_paid.clone();

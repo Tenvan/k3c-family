@@ -94,6 +94,9 @@ pub struct Site {
     pub sword_paid_gold: i64,
     #[serde(rename = "swordDone", skip_serializing_if = "is_zero_f64")]
     pub sword_done: f64,
+    /// Rüstungen im Regal des Rüstungsschmieds (FG1.2, native Regel; Gold und Arbeit in `bow_paid_gold`/`craft_done`).
+    #[serde(rename = "armors", skip_serializing_if = "is_zero_i64")]
+    pub armors: i64,
     /// Stufe des gebauten Platzes (0 = 1).
     #[serde(rename = "level", skip_serializing_if = "is_zero_i64")]
     pub level: i64,
