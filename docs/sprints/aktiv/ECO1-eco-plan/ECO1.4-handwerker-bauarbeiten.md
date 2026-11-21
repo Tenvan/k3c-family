@@ -1,6 +1,6 @@
 # ECO1.4 · Handwerker mit Gürtel macht alle Bauarbeiten
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 umgesetzt und geprüft: Mit nativen Regeln (`WorldValues::native_rules`) arbeitet ein Bauer nur mit Werkzeuggürtel (`Troop::hammer`) am Gelände: `unit/jobs.rs › may_gather` (Rodung und Fels/Adern); Bau und Reparatur verlangten den Gürtel schon (`build_job`, `repair_job`). Ausnahme: Bergmann (Beruf `miner`) an Fels und Adern. Ohne native Regeln sammelt jeder Bauer (Go-Parität, Golden-Läufe laufen mit `native_rules=false`). Fällt der Handwerker, bleibt der Gürtel liegen, ein Bürger ohne Gürtel holt ihn (bestehende `hammer_tests.rs`, B-929). Tests: `unit/belt_tests.rs` (4: nur Gürtel rodet und haut, Bergmann, ohne native Regeln, Bau und Reparatur nur mit Gürtel); `world/vein_tests.rs`: Test-Bäuern wurde ein Gürtel gegeben. Abweichung vom Default: Die Berufe Bergmann und Baumeister bleiben vorerst bestehen (Entfernen bräuchte Daten in `buildings.json`, mit Go geteilt) → Hinweis für FG1 (ein Beruf je Figur). Holzfällen und Roden sind im Code derselbe Sammelauftrag am Baum; daher braucht jede Baumarbeit den Gürtel. Hinweis für 🧑: Das heißt, Bürger ohne Gürtel bringen kein Holz mehr (Balance im Abnahme-Ticket prüfen). Spielstand-Format unverändert. Rot, nicht von dieser Session (auch auf main): `eingebettete_welten_gueltig`, `insel_nach_1000_schritten_wie_go`, `campaign_ausbau`, `campaign_abstieg`, `alloc_je_bild`, `e2e_flow`, `bilder_stimmen_mit_go_ueberein`, `alle_welt_dateien_aus_data_sind_ladbar` (lokale rom.json).

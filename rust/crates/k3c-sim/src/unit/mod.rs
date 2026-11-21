@@ -18,6 +18,8 @@ pub mod warrior;
 #[cfg(test)]
 mod archer_tests;
 #[cfg(test)]
+mod belt_tests;
+#[cfg(test)]
 mod camp_guard_tests;
 #[cfg(test)]
 mod common_tests;
