@@ -83,6 +83,8 @@
 .st-branch { margin-left: 0.55rem; padding-left: 0.5rem; border-left: 1px solid var(--gray-a6); display: flex; flex-direction: column; gap: 1px; }
 .st-node, .vt-node { justify-content: flex-start; gap: 6px; width: 100%; height: 1.75rem; margin: 0; padding: 0 6px; font-size: var(--font-size-2); }
 .st-node.is-on, .vt-node.is-on { background: var(--accent-a4); }
+.st-islandrow { display: flex; align-items: center; gap: 2px; }
+.st-islandrow .st-node { flex: 1; width: auto; min-width: 0; }
 .st-icon { display: inline-block; width: 1.4rem; text-align: center; }
 .st-detail { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--gray-a5); border-radius: 8px; min-height: 0; overflow-x: hidden; overflow-y: auto; align-self: stretch; }
 .st-line { margin: 0; font-size: 1.05rem; }
@@ -136,7 +138,12 @@
 /* Asset-Baum (B-1216), Katalog-Seite und Reiter */
 .at-tree { display: flex; flex-direction: column; gap: 2px; }
 .at-branch { display: flex; flex-direction: column; gap: 1px; }
-.at-group { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+.at-wrap { display: flex; flex-direction: column; gap: 6px; }
+.tb-bar { padding: 0 0 2px; }
+.at-group { display: flex; align-items: center; gap: 4px; padding: 3px 4px; border-radius: 4px; cursor: pointer; user-select: none; }
+.at-group:hover { background: var(--gray-a3); }
+.at-group:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }
+.at-group[aria-expanded='true'] .vt-chev { transform: rotate(45deg); }
 .at-node { display: flex; flex-direction: column; border-radius: 4px; padding: 3px 6px; cursor: pointer; }
 .at-node:hover { background: var(--gray-a3); }
 .at-node:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }

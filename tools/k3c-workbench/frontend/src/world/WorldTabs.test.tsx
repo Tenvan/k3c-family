@@ -63,6 +63,8 @@ function mountStory(d: WorldDetail): HTMLElement {
 describe('Geschichte als Baum (B-1216/AC-02)', () => {
   it('zeigt Start, Etappen mit Inseln, Ende, Flaschenpost und Wortschatz; Fehlendes ist markiert', async () => {
     const host = mountStory(detail);
+    expect(host.querySelector('[data-story-node="island1.arrival"]')).toBeNull(); // Inseln sind zugeklappt
+    await click(host.querySelector('[aria-label="Alle aufklappen"]'));
     const nodes = [...host.querySelectorAll('[data-story-node]')].map((n) => n.getAttribute('data-story-node'));
     expect(nodes).toEqual(['start', 'island1', 'island1.arrival', 'island1.boss', 'island1.done', 'etappe.1', 'island2', 'island2.arrival', 'island2.boss', 'island2.done', 'etappe.2', 'end', 'bottles', 'lexicon']);
     const shown = () => host.querySelector('[aria-label="Text des Knotens"]')?.textContent ?? '';
@@ -79,6 +81,7 @@ describe('Geschichte als Baum (B-1216/AC-02)', () => {
     const host = mountStory(detail);
     const writes: string[] = [];
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (t: string) => void writes.push(t) } });
+    await click(host.querySelector('[aria-label="Alle aufklappen"]'));
     await click(host.querySelector('[data-story-node="island1.boss"]'));
     await click(host.querySelector('[aria-label="Text des Knotens"] button'));
     expect(writes).toHaveLength(1);
@@ -155,6 +158,18 @@ describe('Werte als Baum (B-1216/AC-04)', () => {
   });
 });
 
+describe('Werte: Baum zugeklappt mit Leiste (B-1216)', () => {
+  it('startet zugeklappt; die Leiste klappt alle Dateien auf und zu', async () => {
+    const host = await mountPage('werte');
+    const tree = host.querySelector('[role="tree"]')!;
+    expect(tree.querySelector('[data-node*=":"]')).toBeNull();
+    await click(host.querySelector('[aria-label="Alle aufklappen"]'));
+    expect(tree.querySelector('[data-node*=":"]')).toBeTruthy();
+    await click(host.querySelector('[aria-label="Alle einklappen"]'));
+    expect(tree.querySelector('[data-node*=":"]')).toBeNull();
+  });
+});
+
 describe('Katalog der Insel (B-1216)', () => {
   const asset = (id: string, gruppe = 'objekte') => ({ id, rig: 'objekt', gruppe, pfad: `public/grafik/${gruppe}/${id}`, gueltig: true, geaendert: false });
 
@@ -177,7 +192,7 @@ describe('Katalog der Insel (B-1216)', () => {
     const p = catalogPrompt(detail, 'island2', [asset('a'), asset('b', 'gegner')]);
     expect(p).toContain('Welt-ID saga');
     expect(p).toContain('Insel island2');
-    expect(p).toContain('2 eigene Katalog-Einträge');
+    expect(p).toContain('2 Katalog-Einträge');
     expect(p).toContain('assets_create');
     expect(p).toContain('Was soll sich ändern: ');
   });
@@ -188,8 +203,11 @@ describe('Katalog der Insel (B-1216)', () => {
     expect(host.querySelector('[aria-label="Insel des Katalogs"]')).toBeTruthy();
     expect(host.querySelector('[aria-label="Asset-Editor"]')).toBeTruthy();
     expect(host.querySelector('[data-katalog="oeffnen"]')).toBeTruthy();
-    // Standard besitzt keine exklusiven Assets (alle Basis): nichts Geerbtes im Baum
+    // Standard ist die Basis-Welt und besitzt alle Assets; der Baum ist zunächst zugeklappt
+    await flush();
+    expect(host.querySelector('[role="tree"] [data-group]')).toBeTruthy();
     expect(host.querySelectorAll('[role="tree"] [data-asset]')).toHaveLength(0);
-    expect(host.textContent).toContain('keine eigenen Assets');
+    await click(host.querySelector('[aria-label="Alle aufklappen"]'));
+    expect(host.querySelectorAll('[role="tree"] [data-asset]').length).toBeGreaterThan(0);
   });
 });

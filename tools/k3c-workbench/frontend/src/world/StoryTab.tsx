@@ -2,7 +2,9 @@ import { useState, type CSSProperties } from 'react';
 import { Splitter } from '@webkit/atoms';
 import { useSplit } from '@webkit/lib/split';
 import { prefsStore } from '../lib/prefs';
-import { Badge, Button, Flex, Text } from '@webkit/atoms';
+import { Badge, Button, Flex, IconButton, Text } from '@webkit/atoms';
+import { TreeBar } from '../lib/TreeBar';
+import { useTreeOpen } from '../lib/useTreeOpen';
 import type { WorldDetail } from '../api';
 import { PromptRow } from './PromptRow';
 import { storyGaps, storyPrompt } from './StoryState';
@@ -99,6 +101,9 @@ export function StoryTab({ detail }: { detail: WorldDetail }) {
   const items = itemsOf(detail);
   const current = items.find((i) => nodeKey(i.part) === sel) ?? items[0]!;
   const gaps = storyGaps(detail).length;
+  // Inseln sind zunächst zugeklappt; die Insel des gewählten Knotens ist offen
+  const islandIds = detail.islands.map((i) => i.id);
+  const tree = useTreeOpen(islandIds, [current.part.kind === 'island' || current.part.kind === 'islandAll' ? current.part.island : '']);
   const leaf = (item: Item) => <Leaf key={nodeKey(item.part)} detail={detail} item={item} sel={nodeKey(current.part)} onPick={setSel} />;
   return (
     <section className="wd-card wd-fillcard" aria-label="Geschichte der Welt">
@@ -109,13 +114,20 @@ export function StoryTab({ detail }: { detail: WorldDetail }) {
       </Flex>
       <div className="st-layout" style={{ '--st-split': `${split}%` } as CSSProperties}>
         <div className="st-tree" role="group" aria-label="Knoten der Geschichte">
+          <TreeBar tree={tree} />
           {leaf(items[0]!)}
           {etappenOf(detail).map((n) => (
             <div key={n} className="st-branch" data-etappe={n}>
               {detail.islands.map((isl, i) => String(isl.etappe ?? i + 1) === n && (
                 <div key={isl.id} data-island={isl.id}>
-                  {leaf(items.find((it) => it.part.kind === 'islandAll' && it.part.island === isl.id)!)}
-                  <div className="st-branch">{items.filter((it) => it.part.kind === 'island' && it.part.island === isl.id).map(leaf)}</div>
+                  <div className="st-islandrow">
+                    <IconButton size="1" variant="ghost" color="gray" className="vt-toggle" aria-expanded={tree.isOpen(isl.id)}
+                      aria-label={`${isl.name} ${tree.isOpen(isl.id) ? 'einklappen' : 'aufklappen'}`} onClick={() => tree.flip(isl.id)}>
+                      <span className="vt-chev" aria-hidden="true" />
+                    </IconButton>
+                    {leaf(items.find((it) => it.part.kind === 'islandAll' && it.part.island === isl.id)!)}
+                  </div>
+                  {tree.isOpen(isl.id) && <div className="st-branch">{items.filter((it) => it.part.kind === 'island' && it.part.island === isl.id).map(leaf)}</div>}
                 </div>
               ))}
               {leaf(items.find((it) => it.part.kind === 'etappe' && it.part.n === n)!)}
