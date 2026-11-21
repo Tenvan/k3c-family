@@ -103,9 +103,9 @@ pub fn biomes_key(lang: &str, stages: &[Stage]) -> u64 {
 }
 
 /// island_biomes ist die Kompass-Zeile im Hub (LA1.3, B-1167): die Biome aller Stufen der Insel in Reihenfolge der
-/// Stufen, z. B. „Oberwelt (Wald) · Tiefe 1 (Höhle)“. Leer bei nur einer Stufe (nichts zu zeigen).
+/// Stufen, z. B. „Oberwelt (Wald) · Tiefe 1 (Höhle)“; bei einer Stufe nur ihr Biom (HB1.3: immer am Radar).
 pub fn island_biomes(lang: &str, stages: &[Stage]) -> String {
-    if stages.len() < 2 {
+    if stages.is_empty() {
         return String::new();
     }
     let mut out = String::new();

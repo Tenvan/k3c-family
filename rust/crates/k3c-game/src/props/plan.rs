@@ -182,12 +182,17 @@ impl Planner {
 
     /// `label` legt einen Text an (Mitte x, Unterkante y; Größe 32 Spiel-Pixel wie fontRules › priceTag).
     pub fn label(&mut self, x: f64, y: f64, s: &str, clr: [u8; 4]) {
+        self.label_sized(x, y, s, clr, 1.0);
+    }
+
+    /// `label_sized` wie `label` mit Höhe `size` in Units (HB1.1: Baustellen-Texte kleiner).
+    pub fn label_sized(&mut self, x: f64, y: f64, s: &str, clr: [u8; 4], size: f64) {
         if !s.is_empty() {
             self.top.push(Item {
                 shape: Shape::Text,
                 x,
                 y,
-                size: 1.0,
+                size,
                 text: s.to_string(),
                 clr,
                 ..Default::default()
@@ -213,6 +218,7 @@ impl Planner {
         self.sites_pass(w, info, k, false);
         self.cargo(w, k);
         self.mount_gate(w, k);
+        self.merchant(w, k);
         self.hermit_hut(w, k);
         self.plantation(w, k);
         self.pickups(w, info, k, clock);

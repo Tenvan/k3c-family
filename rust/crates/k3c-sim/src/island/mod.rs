@@ -25,6 +25,7 @@ pub mod create;
 pub mod data;
 pub mod defeat;
 pub mod endboss;
+pub mod harbor_start;
 pub mod keys;
 pub mod nature;
 pub mod options;
@@ -45,6 +46,8 @@ pub mod worlds_decode;
 
 #[cfg(test)]
 mod carry_tests;
+#[cfg(test)]
+mod harbor_start_tests;
 #[cfg(test)]
 mod defeat_tests;
 #[cfg(test)]
@@ -319,6 +322,11 @@ impl Island {
 /// werden über ihn zugeordnet).
 pub fn add_island_player(isl: &mut Island, stage: usize) -> usize {
     let pi = add_player_at(&mut isl.stages[stage], isl.next_player);
+    let index = isl.next_player;
+    let v = crate::world::vals(&isl.stages[stage]);
+    if let Some(x) = harbor_start::start_x(&isl.stages[stage], &v, index) {
+        isl.stages[stage].players[pi].x = x; // HB1.5: neue Spiele starten am Hafen
+    }
     isl.next_player += 1;
     pi
 }

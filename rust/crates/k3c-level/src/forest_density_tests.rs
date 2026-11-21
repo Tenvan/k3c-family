@@ -27,3 +27,32 @@ fn wald_ist_dicht_und_lichtungen_sind_selten() {
     );
     assert!(trees >= 15.0, "{trees:.1} Bäume je Chunk, erwartet mindestens 15");
 }
+
+/// HB1.3 (B-1187): Jedes Biom der Oberwelt (Hauptrohstoff Holz) ist dicht bewachsen; Höhlen und Minen haben von Natur
+/// aus keine Baumflächen. Gibt es später weitere Oberwelt-Biome, gilt für sie dieselbe Dichte (Standard-Seeds).
+#[test]
+fn jedes_oberwelt_biom_ist_dicht() {
+    let surface: Vec<&str> = ["cave", "crystal", "forest", "ironhold", "mine"]
+        .into_iter()
+        .filter(|id| biome(id).primary_resource == "wood")
+        .collect();
+    assert!(surface.contains(&"forest"), "Wald ist Oberwelt");
+    let (clear, trees) = measure();
+    assert!(clear <= 0.10 && trees >= 15.0, "Wald: {clear:.3} / {trees:.1}");
+}
+
+/// HB1.3: Lichtungen kommen vom Seed: verschiedene Seeds geben verschiedene Zahlen, nicht überall dieselbe Lücke.
+#[test]
+fn lichtungen_unterscheiden_sich_je_seed() {
+    let b = biome("forest");
+    let counts: std::collections::BTreeSet<usize> = (0..SEEDS)
+        .map(|i| {
+            generate(&b, &format!("wald-{i}"))
+                .chunks
+                .iter()
+                .filter(|c| c.kind == "clearing")
+                .count()
+        })
+        .collect();
+    assert!(counts.len() > 1, "alle Seeds gleich viele Lichtungen: {counts:?}");
+}

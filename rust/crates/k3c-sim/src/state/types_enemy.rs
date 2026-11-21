@@ -162,6 +162,12 @@ pub struct Camp {
     pub x: f64,
     #[serde(rename = "respawnIn")]
     pub respawn_in: f64,
+    /// HB1.4: Wächter-Bäume (Knoten-IDs); ohne JSON, beim ersten Takt gewählt.
+    #[serde(skip)]
+    pub guards: Vec<i64>,
+    /// HB1.4: Wächter-Bäume gewählt; ohne JSON.
+    #[serde(skip)]
+    pub armed: bool,
 }
 
 /// Ein geplanter Gegner einer Welle.

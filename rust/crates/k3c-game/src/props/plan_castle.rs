@@ -6,8 +6,8 @@ use super::buildings::{HUB_SCAFFOLD, Look, hub_look_of, stage_anim};
 use super::listen::StageInfo;
 use super::plan::{DARK, HP_GREEN, Item, Planner, STONE_GRAY, Shape, px, visible};
 use super::sites::{
-    TextKey, TextWhat, WaitReason, covers_arr, hub_material, hub_title, missing_arr, offers_hub_upgrade, price_label,
-    res_list, wait_of, wait_text,
+    TextKey, TextWhat, WaitReason, covers_arr, hub_material, hub_title, missing_arr, offers_hub_upgrade, res_list,
+    wait_of, wait_text,
 };
 use crate::view::cell::Camera;
 
@@ -101,10 +101,16 @@ impl Planner {
         key.n = info.hub_step * 100 + hub.steps;
         key.m = info.hub_level;
         let mut texts = std::mem::take(&mut self.texts);
-        let text = texts.get_or_insert_with(key, || {
-            price_label(&hub_title(info.hub_step, hub.steps), &hub_material(hub.material))
-        });
-        self.price(x, y, hub.gold, hub.paid, text, covers_arr(info.stock, hub.material));
+        let text = texts.get_or_insert_with(key, || hub_title(info.hub_step, hub.steps));
+        let cost = hub_material(hub.material);
+        self.price_cost(
+            x,
+            y,
+            (hub.gold, hub.paid),
+            text,
+            &cost,
+            covers_arr(info.stock, hub.material),
+        );
         self.texts = texts;
     }
 }

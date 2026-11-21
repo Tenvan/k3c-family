@@ -211,7 +211,7 @@ fn create_stage(
     let wo = WorldOptions {
         cycle_speed,
         time: start_time,
-        planned: opts.planned_for(d, b.first),
+        planned: super::harbor_start::near_harbor(opts.planned_for(d, b.first), seed, vals),
         chunk_count: count,
         nature: opts.nature_for(d, b.first, &data.biomes),
         lair,
@@ -227,6 +227,7 @@ fn create_stage(
         let site = empty_site(&mut w, &s.kind, x);
         w.sites.push(site);
     }
+    super::harbor_start::plant_harbor_trees(&mut w, vals);
     w.no_travel = true;
     // Go: `w.Stock = isl.Stock`: Der Vorrat liegt in `Island::stock`, die Stufe bekommt ihn nur im Schritt (Entscheidung 5).
     Ok(w)

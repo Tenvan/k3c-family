@@ -7,6 +7,7 @@
 //! Truppe). Die Aufträge (`find_job` …) stehen in `jobs.rs`.
 
 pub mod archer;
+pub mod camp_guard;
 pub mod escort;
 pub mod flee;
 pub mod hammer;
@@ -16,6 +17,8 @@ pub mod warrior;
 
 #[cfg(test)]
 mod archer_tests;
+#[cfg(test)]
+mod camp_guard_tests;
 #[cfg(test)]
 mod common_tests;
 #[cfg(test)]
@@ -65,6 +68,7 @@ pub fn spawn_vagrant(w: &mut World, camp_x: f64, x: f64) -> usize {
 
 /// Go: `stepCamps`.
 pub fn step_camps(w: &mut World, v: &WorldValues, dt: f64) {
+    camp_guard::step_native_rules(w, v);
     let c = &v.economy.recruit_camp;
     if pure(w) {
         return;

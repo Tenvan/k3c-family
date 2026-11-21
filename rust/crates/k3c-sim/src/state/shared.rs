@@ -190,4 +190,7 @@ pub struct WorldValues {
     pub skills: SkillTable,
     /// Go: die Paket-Variablen `bosses` und `endBosses` (boss_data.go); RU14 füllt sie beim Aufbau des Wertesatzes.
     pub bosses: BossesFile,
+    /// HB1.4/HB1.5: native Regeln (Wächter-Bäume der Lager `unit/camp_guard.rs`, Hafen nah am Lager mit Start dort und Bäumen `island/harbor_start.rs`). Nur die native Regel,
+    /// ohne Daten-Datei; die Go-Golden-Läufe schalten es ab, weil Go sie nicht kennt.
+    pub native_rules: bool,
 }

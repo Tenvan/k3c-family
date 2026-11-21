@@ -215,13 +215,8 @@ impl SeatState {
             .refresh(lang, &self.profile, w.island_switch.as_ref(), &f.route);
     }
 
-    /// island_line: Biome der Insel für den Kompass, nur auf der Oberfläche (Hub); sonst leer.
-    fn island_line(&mut self, lang: &str, f: &Frame, stage: &Stage) {
-        if stage.depth != 0 {
-            self.biomes_s.clear();
-            self.biomes_k = 0;
-            return;
-        }
+    /// island_line: Biome der Insel für den Kompass, in jeder Stufe (HB1.3).
+    fn island_line(&mut self, lang: &str, f: &Frame, _stage: &Stage) {
         let key = biomes_key(lang, &f.stages);
         if key != self.biomes_k || self.biomes_s.is_empty() {
             self.biomes_k = key;

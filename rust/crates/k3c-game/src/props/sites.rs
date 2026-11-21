@@ -219,18 +219,9 @@ impl Texts {
 pub fn site_text(k: &TextKey) -> String {
     let name = site_name(&k.kind);
     match k.what {
-        TextWhat::Price => price_label(&name, &build_cost(&k.kind, k.n)),
-        TextWhat::Bow => {
-            if k.kind == "workshop" {
-                let c = values()
-                    .buildings
-                    .get("workshop")
-                    .map(|b| b.hammer_cost.clone())
-                    .unwrap_or_default();
-                return price_label("Hammer", &c);
-            }
-            price_label("Bogen", &values().archer_cost)
-        }
+        // HB1.1: die Kosten zeichnet `price_cost` als Icons, der Text ist nur noch der Name
+        TextWhat::Price => name,
+        TextWhat::Bow => if k.kind == "workshop" { "Hammer" } else { "Bogen" }.to_string(),
         TextWhat::Clearing => format!("{name}: erst roden"),
         TextWhat::Status => {
             let c = if k.state != "waitingMaterial" && k.state != "waitingWorker" {
@@ -247,10 +238,10 @@ pub fn site_text(k: &TextKey) -> String {
     }
 }
 
-/// `hub_title`: „Ausbau 2/3“ mit Schritt (B-592), ohne Schritte „Ausbauen“.
+/// `hub_title`: „2/3“ mit Schritt (B-592, HB1.1: gekürzt), ohne Schritte „Ausbauen“.
 pub fn hub_title(step: i64, steps: i64) -> String {
     if steps > 0 && step > 0 {
-        format!("Ausbau {step}/{steps}")
+        format!("{step}/{steps}")
     } else {
         "Ausbauen".to_string()
     }

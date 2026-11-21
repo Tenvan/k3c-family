@@ -112,6 +112,7 @@ pub fn build_world_with(run: &GoldenRun, hub: Option<Arc<HubData>>) -> World {
     let mut vals = (*k3c_sim::world::values_room::default_values()).clone();
     vals.economy.purse.start_gold = 100;
     vals.economy.purse.max_gold = 100;
+    vals.native_rules = false; // Go kennt die nativen Regeln (HB1.4/HB1.5) nicht
     let opts = Options {
         cycle_speed: run.cycle_speed,
         nature: neutral_nature(b),

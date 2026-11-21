@@ -42,6 +42,7 @@ pub fn default_values_from(data: &Data) -> Result<WorldValues, String> {
         events: data.events.events.clone(),
         skills: new_skill_table(&data.monarch.skills),
         bosses: data.bosses.clone(),
+        native_rules: true,
         ..WorldValues::default()
     })
 }

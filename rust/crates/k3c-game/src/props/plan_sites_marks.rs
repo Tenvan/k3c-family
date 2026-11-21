@@ -56,7 +56,7 @@ impl Planner {
     /// `status`: Text mit Unterkante y, darüber das Symbol (Kreis Bauer, Quadrat Material, Dreieck Gefahr).
     pub fn status(&mut self, x: f64, y: f64, r: WaitReason, text: &str) {
         let c = WAIT_COLOR[r as usize];
-        self.label(x, y, text, c[1]);
+        self.label_sized(x, y, text, c[1], super::plan_cost::SMALL);
         let sy = y + 1.25 + px(18.0);
         match r {
             WaitReason::Worker => {
