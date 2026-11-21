@@ -5,6 +5,11 @@
     "manifest": "geldsack/manifest.json"
   },
   {
+    "id": "icon-bogen",
+    "rig": "requisite",
+    "manifest": "icon-bogen/manifest.json"
+  },
+  {
     "id": "icon-eisen",
     "rig": "requisite",
     "manifest": "icon-eisen/manifest.json"
@@ -13,6 +18,11 @@
     "id": "icon-goldbarren",
     "rig": "requisite",
     "manifest": "icon-goldbarren/manifest.json"
+  },
+  {
+    "id": "icon-guertel",
+    "rig": "requisite",
+    "manifest": "icon-guertel/manifest.json"
   },
   {
     "id": "icon-holz",
@@ -53,6 +63,16 @@
     "id": "icon-pokal",
     "rig": "requisite",
     "manifest": "icon-pokal/manifest.json"
+  },
+  {
+    "id": "icon-ruestung",
+    "rig": "requisite",
+    "manifest": "icon-ruestung/manifest.json"
+  },
+  {
+    "id": "icon-schwert",
+    "rig": "requisite",
+    "manifest": "icon-schwert/manifest.json"
   },
   {
     "id": "icon-schwerter",

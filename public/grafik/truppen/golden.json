@@ -47,6 +47,18 @@
       "respawn.png": "47ef999844ad90a937e8b9f464ee4f3278be7427184a29f3de4537ab9be0fd63"
     }
   },
+  "handwerker": {
+    "renderKey": "7f9ad4355ee90d8e83163c326b2d92c2f00443402f7030c207bfe4c0144b0d6e",
+    "dateien": {
+      "angriff.png": "3d876012315f75dc78b48968207936eba9c3ea3f3d76999dda62ae497dbb75bb",
+      "death.png": "004f41f35a6cb823c0bc6cf5d1a7d8f92f7d0c3c393a29cb284991a1843f5de9",
+      "give.png": "3fe7ffe3c22469889a384bb186112c3b5a2c9ba2ed9c53d984e5178d8e40000b",
+      "hit.png": "f36213b41a15aa57389eccc754e3ee3e35b55e7a38150d7e0dba24357e38d0bd",
+      "idle.png": "737d3c2ba83ba12b8148d68fc5e23e4cecee3270a213b86e3a0cbf755dcd9b28",
+      "lauf.png": "5facf3aa543fc2442aba08a8ced9f5c7d7b5a0587ac14f8d531d0888665e8c95",
+      "respawn.png": "85970fa345ccf431d3cc28762a302b143c3f00148d39979cf5cb7536fde03c50"
+    }
+  },
   "krieger": {
     "renderKey": "124134a1708c3e8b17a07d65d86f4d97cd5ffd7b4dfe22767dc50dac7f201bc6",
     "dateien": {

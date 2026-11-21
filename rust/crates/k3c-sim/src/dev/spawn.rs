@@ -83,7 +83,7 @@ fn dev_spawn(
             let hp = v.troops.get(unit).map_or(0.0, |t| t.hp);
             let id = w.new_id();
             let anchor_x = w.hub_x;
-            w.troops.push(Troop {
+            let mut t = Troop {
                 id,
                 kind: unit.to_string(),
                 x,
@@ -92,7 +92,13 @@ fn dev_spawn(
                 anchor_x,
                 target_x: x,
                 ..Default::default()
-            });
+            };
+            match unit {
+                "peasant" => t.serve(), // FG1.1: Bürger im Dienst, sonst läuft step_troops sie als Bogenschützen
+                "vagrant" => t.go_wild(),
+                _ => {}
+            }
+            w.troops.push(t);
         }
     });
     Ok(count)
