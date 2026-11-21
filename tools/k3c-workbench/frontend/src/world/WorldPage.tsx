@@ -100,9 +100,9 @@ export function WorldPage() {
   const pick = (t: string) => { setTab(t as TabId); savePref('world.tab', t); };
   return (
     <ListDetail listWidth={240} className="wd-page" list={<WorldList worlds={w.worlds} id={w.id} onChoose={w.choose} onCreate={w.create} />}>
-      <Flex direction="column" gap="3">
+      <Flex direction="column" gap="3" className="wd-main">
         <WorldHead w={w} />
-        <Tabs.Root value={tab} onValueChange={pick}>
+        <Tabs.Root value={tab} onValueChange={pick} className="wd-tabs">
           <Tabs.List aria-label="Ansicht der Welt">
             <Tabs.Trigger value="inseln">🏝 Inseln</Tabs.Trigger>
             <Tabs.Trigger value="geschichte">📖 Geschichte</Tabs.Trigger>
@@ -123,10 +123,10 @@ export function WorldPage() {
             </Flex>
           </Tabs.Content>
           <Tabs.Content value="geschichte">
-            <Flex direction="column" gap="3" pt="3">{w.detail && !w.detail.error && <StoryTab detail={w.detail} />}</Flex>
+            <Flex direction="column" gap="3" pt="3" className="wd-fill">{w.detail && !w.detail.error && <StoryTab detail={w.detail} />}</Flex>
           </Tabs.Content>
           <Tabs.Content value="werte">
-            <Flex direction="column" gap="3" pt="3"><WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} /></Flex>
+            <Flex direction="column" gap="3" pt="3" className="wd-fill"><WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} /></Flex>
           </Tabs.Content>
         </Tabs.Root>
       </Flex>
