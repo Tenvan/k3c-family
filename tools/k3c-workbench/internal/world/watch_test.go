@@ -40,7 +40,7 @@ func TestChangedIDs(t *testing.T) {
 		t.Fatalf("ohne Änderung: ids=%v all=%v", ids, all)
 	}
 	now := Snapshot(root)
-	os.Remove(filepath.Join(root, "data", "worlds", "neu.json"))
+	_ = os.Remove(filepath.Join(root, "data", "worlds", "neu.json"))
 	if ids, _ := ChangedIDs(now, Snapshot(root)); len(ids) != 1 || ids[0] != "neu" {
 		t.Fatalf("gelöscht: %v", ids)
 	}
