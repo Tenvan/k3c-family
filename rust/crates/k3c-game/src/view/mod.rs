@@ -81,6 +81,7 @@ pub mod layer;
 pub mod profile;
 pub mod roles;
 pub mod screen;
+pub mod seal;
 pub mod session;
 pub mod settings;
 pub mod story;

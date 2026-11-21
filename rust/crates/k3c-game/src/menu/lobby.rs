@@ -22,6 +22,7 @@ use crate::view::cell::Cell;
 use crate::view::frame::{CueKind, Frame};
 use crate::view::input::{DeviceID, Input};
 use crate::view::screen::{Screen, Step, StepKind};
+use crate::view::seal::grade_seal;
 use crate::view::session::{NewGame, Session};
 use k3c_data::difficulty::DifficultyFile;
 
@@ -262,6 +263,9 @@ impl LobbyScreen {
                 LOBBY_START => rw.mat = MAT_GREEN,
                 LOBBY_CANCEL => rw.mat = MAT_CORAL,
                 _ => rw.value = format!("< {} >", self.value_text(lang, r)),
+            }
+            if r == LOBBY_GRADE {
+                rw.badge = grade_seal(GRADES[self.pick[r] as usize]); // Siegel des gewählten Grads (ECO1.2)
             }
             p.add(rw);
         }

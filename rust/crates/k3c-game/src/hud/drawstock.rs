@@ -20,6 +20,7 @@ use super::purse::PURSE_ASSET;
 use super::state::SeatState;
 use super::values::{RESOURCE_ORDER, res_name};
 use crate::art::{Font, SheetFrame};
+use crate::view::seal::SEAL_ART;
 
 /// ICON_SCALE ist die Kantenlänge eines Icons als Vielfaches der Schriftgröße (lesbar aus TV-Abstand).
 pub const ICON_SCALE: f64 = 1.5;
@@ -77,6 +78,7 @@ impl Hud {
         cache.extend(
             super::icons::KEY_ASSETS
                 .iter()
+                .chain(SEAL_ART.iter().map(|(_, a)| a)) // Siegel des Grads (ECO1.2) ebenso
                 .filter_map(|a| self.icon(a).map(|ic| (*a, ic))),
         );
         self.icon_cache = cache;

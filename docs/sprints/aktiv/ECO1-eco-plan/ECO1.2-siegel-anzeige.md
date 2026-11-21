@@ -1,6 +1,6 @@
 # ECO1.2 · Siegel in Auswahl, Spielstand-Liste und HUD
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: Siegel des Grads erscheint (1) in der Lobby-Zeile „Grad“ (folgt der Auswahl), (2) in der Spielstand-Liste je ladbarem Stand, (3) im HUD links neben der Biome-Zeile am Kompass. Fehlt der Grad (alter Stand, `null`, unbekannter Name), gilt das Siegel von `normal`, kein Fehler. Tests: `menu/seal_tests.rs` (Zuordnung, Asset-Liste, Lobby, Spielstand-Karte), `hud_zeigt_das_siegel_des_grads`, `saves_list_nennt_den_grad` (k3c-room); `cargo test -p k3c-game --lib` 1014 grün. `task check:diff`: Stufe rust-test rot nur durch `alloc_je_bild` (vorbestehend, B-1190 AC-04; Maximum 942 im step, Obergrenze 786), sonst grün; `cargo fmt` hat zusätzlich HB1-Dateien (camp_guard_tests, harbor_start_tests, island/mod.rs, props/mod.rs) nur formatiert.
+
+Abweichung von den erlaubten Dateien: Der Grad musste vom Spielstand bis zur Anzeige durchgereicht werden, darum zusätzlich `k3c-room/src/store/saves_list.rs` (+Test), `view/session.rs` (`SaveInfo.grade`), `view/story.rs` (`Campaign.grade`) und neu `view/seal.rs` (Zuordnung Grad → Asset, gemeinsam für Menü und HUD, weil `hud` `menu` nicht importieren darf, Importregel).
+
+Manuell offen (Ralf): Sicht im Spiel prüfen, ob das Siegel in Lobby, Liste und HUD lesbar sitzt (Split-Screen, SMALL); Hauptmenü „Weiter“ zeigt kein Siegel.
+
+### Für den Hauptrechner
+- Hauptmenü-Karte „Weiter“ könnte das Siegel des letzten Stands zeigen (Row.badge ist da, `latest.grade` fehlt noch).
+- `Campaign::frame` klont den Grad je Frame (wie island/completed); bei PERF-Ticket mit `alloc_je_bild` mitnehmen.

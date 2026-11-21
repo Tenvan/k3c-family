@@ -178,7 +178,11 @@ fn kompass_zeigt_die_biome_der_insel() {
     use super::testutil::two_players;
     use crate::view::frame::Stage;
     let (w, mut f) = two_players(0);
-    assert_eq!(island_biomes("de", &f.stages), "Oberwelt (Wald)", "eine Stufe: ihr Biom");
+    assert_eq!(
+        island_biomes("de", &f.stages),
+        "Oberwelt (Wald)",
+        "eine Stufe: ihr Biom"
+    );
     f.stages.push(Stage {
         index: 1,
         depth: 1,
@@ -200,5 +204,20 @@ fn kompass_zeigt_die_biome_der_insel() {
     f.seats[0].stage = 1;
     f.seats[0].monarch = 0;
     h.listen(&f);
-    assert_eq!(h.seats[0].biomes_s, "Oberwelt (Wald) · Tiefe 1 (Höhle)", "HB1.3: auch unter der Oberfläche");
+    assert_eq!(
+        h.seats[0].biomes_s, "Oberwelt (Wald) · Tiefe 1 (Höhle)",
+        "HB1.3: auch unter der Oberfläche"
+    );
+}
+
+/// ECO1.2 (AC-02): Das HUD hält das Siegel des Grads der Partie; ohne Angabe (alter Stand) das des Standardgrads.
+#[test]
+fn hud_zeigt_das_siegel_des_grads() {
+    let (_, mut f) = super::testutil::two_players(0);
+    let mut h = super::testutil::hud();
+    h.listen(&f);
+    assert_eq!(h.seats[0].seal, "icons/siegel-normal", "ohne Grad: Standardgrad");
+    f.campaign.grade = "hard".to_string();
+    h.listen(&f);
+    assert_eq!(h.seats[0].seal, "icons/siegel-hard");
 }

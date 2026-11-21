@@ -31,7 +31,10 @@ fn forest_world() -> World {
 }
 
 fn trees_near(w: &World) -> usize {
-    w.nodes.iter().filter(|n| n.kind == "tree" && (n.x - CAMP_X).abs() <= 4.0).count()
+    w.nodes
+        .iter()
+        .filter(|n| n.kind == "tree" && (n.x - CAMP_X).abs() <= 4.0)
+        .count()
 }
 
 #[test]
@@ -56,11 +59,17 @@ fn lager_faellt_mit_den_letzten_baeumen_und_taverne_ist_baubar() {
     step_native_rules(&mut w, &v);
     assert_eq!(w.camps.len(), 1, "ein Wächter steht noch");
     w.nodes.retain(|n| n.id != mine[0]);
-    assert!(w.nodes.iter().any(|n| ids.contains(&n.id)), "fremde Bäume stehen weiter");
+    assert!(
+        w.nodes.iter().any(|n| ids.contains(&n.id)),
+        "fremde Bäume stehen weiter"
+    );
     let v = vals(&w);
     step_native_rules(&mut w, &v);
     assert!(w.camps.is_empty(), "Lager zerstört");
-    let site = w.sites.iter().find(|s| s.kind == "tavern" && (s.x - CAMP_X).abs() < 0.5);
+    let site = w
+        .sites
+        .iter()
+        .find(|s| s.kind == "tavern" && (s.x - CAMP_X).abs() < 0.5);
     assert_eq!(site.map(|s| s.state.as_str()), Some("unpaid"), "Taverne baubar");
 }
 

@@ -214,10 +214,16 @@ impl Session {
         let peer = LocalPeer::new(CONN, Arc::clone(&shared));
         let slots: Vec<i64> = (0..devices.len() as i64).collect();
         let world = opts.world.clone();
+        let grade = opts.grade.clone();
         let code = m
             .create(DEVICE_ID, Box::new(peer), name, fresh, depth, &slots, opts)
             .map_err(|e| describe(&e, name))?;
         self.adopt(Started { m, code, peer: shared }, name, fresh, world, devices);
+        self.camp.grade = if grade.is_empty() {
+            self.saved_grade(name)
+        } else {
+            grade
+        };
         Ok(())
     }
 

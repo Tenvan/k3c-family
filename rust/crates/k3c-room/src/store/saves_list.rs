@@ -26,6 +26,9 @@ pub struct SaveInfo {
     /// Tiefen der Spieler, sortiert, jede einmal.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub depths: Vec<i64>,
+    /// Schwierigkeitsgrad (`options.grade`); fehlt = leer (Anzeige nimmt den Standardgrad, ECO1.2).
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub grade: String,
     #[serde(skip_serializing_if = "String::is_empty")]
     pub error: String,
 }
@@ -37,6 +40,12 @@ struct Extra {
     phase: Option<String>,
     world: Option<String>,
     players: Option<Vec<Option<PlayerDepth>>>,
+    options: Option<OptionsGrade>,
+}
+
+#[derive(Deserialize, Default)]
+struct OptionsGrade {
+    grade: Option<String>,
 }
 
 #[derive(Deserialize, Default)]
@@ -95,6 +104,7 @@ fn save_info(name: &str, path: &std::path::Path) -> SaveInfo {
         phase: extra.phase.unwrap_or_default(),
         world: extra.world.unwrap_or_default(),
         depths,
+        grade: extra.options.and_then(|o| o.grade).unwrap_or_default(),
         error: String::new(),
     }
 }

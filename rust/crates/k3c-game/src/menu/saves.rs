@@ -20,6 +20,7 @@ use crate::view::cell::Cell;
 use crate::view::frame::{CueKind, Frame};
 use crate::view::input::{DeviceID, Input};
 use crate::view::screen::{Screen, Step, StepKind};
+use crate::view::seal::grade_seal;
 use crate::view::session::{SaveInfo, Session};
 
 /// SavesScreen ist die Spielstand-Liste.
@@ -237,6 +238,7 @@ pub fn save_row(lang: &str, e: &SaveInfo, utc_offset_min: i64) -> Row {
         r.off = true;
         return r;
     }
+    r.badge = grade_seal(&e.grade); // alter Stand ohne Grad: Siegel des Standardgrads
     r.value = tr1(lang, TextKey::SavesLine, &e.day.to_string());
     for (i, d) in e.depths.iter().enumerate() {
         if i > 0 {

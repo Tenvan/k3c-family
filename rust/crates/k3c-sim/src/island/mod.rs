@@ -47,13 +47,13 @@ pub mod worlds_decode;
 #[cfg(test)]
 mod carry_tests;
 #[cfg(test)]
-mod harbor_start_tests;
-#[cfg(test)]
 mod defeat_tests;
 #[cfg(test)]
 mod depths_tests;
 #[cfg(test)]
 mod endboss_tests;
+#[cfg(test)]
+mod harbor_start_tests;
 #[cfg(test)]
 mod nature_tests;
 #[cfg(test)]

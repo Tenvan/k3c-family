@@ -39,3 +39,20 @@ fn saves_list_nennt_felder_ohne_sicherungen() {
         "ohne Ordner"
     );
 }
+
+// ECO1.2: `list` nennt den Grad aus `options.grade`; fehlt er (alter Stand, `null`), bleibt er leer.
+#[test]
+fn saves_list_nennt_den_grad() {
+    let dir = TempDir::new();
+    let mut s = Saves::new(dir.path(), clock());
+    s.fs.pause = Duration::ZERO;
+    let head = r#""version":4,"campaignId":"x","savedAt":"2026-10-04T22:00:00Z""#;
+    s.store("hart", format!(r#"{{{head},"options":{{"grade":"hard"}}}}"#).as_bytes())
+        .expect("hart");
+    s.store("alt", format!(r#"{{{head}}}"#).as_bytes()).expect("alt");
+    s.store("leer", format!(r#"{{{head},"options":null}}"#).as_bytes())
+        .expect("leer");
+    let grades: Vec<(String, String)> = s.list().into_iter().map(|e| (e.name, e.grade)).collect();
+    let want = [("alt", ""), ("hart", "hard"), ("leer", "")].map(|(n, g)| (n.to_string(), g.to_string()));
+    assert_eq!(grades, want);
+}

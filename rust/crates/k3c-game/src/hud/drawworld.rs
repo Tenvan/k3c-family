@@ -238,6 +238,11 @@ impl Hud {
                 w + 2.0 * BOX_PAD_X * k,
                 h + 2.0 * BOX_PAD_Y * k,
             );
+            if let Some(ic) = self.icon(st.seal) {
+                // Siegel des Schwierigkeitsgrads links neben der Zeile (ECO1.2), so hoch wie die Zeile
+                let s = box_r.h;
+                super::drawstock::draw_icon(dst, &ic, box_r.x - s - 2.0 * k, box_r.y, s);
+            }
             self.text_box(dst, f, box_r, &st.biomes_s, size, ROLE_HINT.clr, k);
         }
         let pt = &self.paint;

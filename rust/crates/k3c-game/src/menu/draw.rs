@@ -65,6 +65,8 @@ pub struct Row {
     pub off: bool,
     /// Illustration `gruppe/id` (B-818), leer = nur Text
     pub art: String,
+    /// Siegel `gruppe/id` rechts neben dem Wert (ECO1.2), leer = keins
+    pub badge: &'static str,
 }
 
 impl Page {
@@ -241,7 +243,11 @@ impl Painter {
         let ty = y + (h - th) / 2.0;
         self.text(dst, &rw.label, lx, ty, g.row_px, clr);
         let (vw, _) = self.measure(&rw.value, g.row_px);
-        self.text(dst, &rw.value, x + w - 3.0 * inset - vw, ty, g.row_px, clr);
+        let mut vx = x + w - 3.0 * inset - vw;
+        if self.art_box(dst, rw.badge, x + w - 3.0 * inset - ah, y + inset, ah, ah) {
+            vx -= ah + inset; // Wert links neben dem Siegel
+        }
+        self.text(dst, &rw.value, vx, ty, g.row_px, clr);
     }
 
     /// Zeichnet ein Papier-Rechteck `r = (x, y, w, h)` mit Schlagschatten; `look = (Material, ausgegraut)`, gewählt
