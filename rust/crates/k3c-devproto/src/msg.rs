@@ -118,6 +118,8 @@ pub struct Catalog {
     pub phases: Vec<String>,
     pub grades: Vec<String>,
     pub timescales: Vec<i64>,
+    /// Schaltbare Umgebungseffekte (LA2.1, B-1179): Kennung `fx:<id>` in `ui`, Anzeigename.
+    pub effects: Vec<Entry>,
 }
 
 /// PlayerState ist der Stand eines Spielers.

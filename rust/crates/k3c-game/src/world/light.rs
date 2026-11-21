@@ -209,18 +209,24 @@ impl LightData {
     /// ForEachTorch ruft `f` mit dem x jeder Fackel der Welt: gebaute Plätze mit den Versätzen aus `torches`, geweitet
     /// um `glow.torchSpread` (nur Darstellung), dazu die zwei Fackeln der Burg (`glow.castleTorches`). Ohne Allokation.
     pub fn for_each_torch(&self, w: &SimWorld, mut f: impl FnMut(usize, f64)) {
+        self.for_each_torch_at(w, |n, x, _| f(n, x));
+    }
+
+    /// ForEachTorchAt wie `for_each_torch`, mit der Art des Platzes (Site-Art, bei den Fackeln der Burg `"castle"`);
+    /// LA2.3 wählt danach Fackel, Laterne oder Feuerschale.
+    pub fn for_each_torch_at(&self, w: &SimWorld, mut f: impl FnMut(usize, f64, &str)) {
         let mut n = 0usize;
         let g = k3c_data::look::current().glow;
         for s in w.sites.iter().filter(|s| s.state == "built") {
             let side = torch_side(s.x, w.hub_x);
             for o in self.torches.get(&s.kind).into_iter().flatten() {
-                f(n, s.x + side * o * g.torch_spread);
+                f(n, s.x + side * o * g.torch_spread, &s.kind);
                 n += 1;
             }
         }
         if g.castle_torches > 0.0 && w.hub_level >= 1 {
-            f(n, w.castle.x - g.castle_torches);
-            f(n + 1, w.castle.x + g.castle_torches);
+            f(n, w.castle.x - g.castle_torches, "castle");
+            f(n + 1, w.castle.x + g.castle_torches, "castle");
         }
     }
 

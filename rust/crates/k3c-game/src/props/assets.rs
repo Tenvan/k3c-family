@@ -38,7 +38,7 @@ pub const BUILDING_ASSETS: [&str; 25] = [
 
 /// `OBJECT_ASSETS`: Objekte in jedem Biom (Felsen, Erz, Adern mit den Kristallfarben, Abbau-Schilder, Plantage,
 /// Portal, Ausgang, Truhen, Stern, Ladeplätze, Fracht, Doppel-Truhe, Reittier-Gatter).
-pub const OBJECT_ASSETS: [&str; 30] = [
+pub const OBJECT_ASSETS: [&str; 42] = [
     "felsen",
     "felsen-b",
     "felsen-c",
@@ -71,6 +71,19 @@ pub const OBJECT_ASSETS: [&str; 30] = [
     "fest-laterne",
     "fest-bluete",
     "fest-fackel",
+    // LA2.3 Licht-Assets je Welt: Fackel, Laterne, Feuerschale
+    "licht-fackel-standard",
+    "licht-fackel-sengoku",
+    "licht-fackel-nil",
+    "licht-fackel-britannien",
+    "licht-laterne-standard",
+    "licht-laterne-sengoku",
+    "licht-laterne-nil",
+    "licht-laterne-britannien",
+    "licht-schale-standard",
+    "licht-schale-sengoku",
+    "licht-schale-nil",
+    "licht-schale-britannien",
 ];
 
 /// Die Wolkenbank der Vorboten (Gruppe `hintergruende`, `data/paper.json › wetter`).

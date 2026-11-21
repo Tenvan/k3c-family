@@ -1,6 +1,6 @@
 # LA2.4 · Monumentales Hintergrundbild je feste Welt (B-1183)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 geprüft: Die Leitmotive je Welt existierten als Assets (`hintergruende/leitmotiv-<welt>`: Burgberg, Vulkan mit Rauch und Torii, Pyramiden mit Sphinx, Steinkreis; `data/paper.json › leitmotive`, Lage und Größe 3 bis 5 M in `look.json › worlds › motif`), wurden aber vom Rust-Spiel nirgends geladen oder gezeichnet. Neu: `world/layers.rs` `draw_motif` zeichnet das Motiv der Insel-Welt als letzte feste Ebene direkt nach dem Himmel (ohne Scroll, Fuß auf der Boden-Linie, Helligkeit `back`, der Dunst der Ebenen darüber dämpft weiter), nur im Profil mit Himmel, in Stufen mit Himmel und bei fx-Schalter `sky`; `MOTIFS`/`motif_of` (unbekannte Welt: Standard-Motiv), `Far::assets` lädt die vier Motive (je 768×480) für Stufen mit Himmel. Test `leitmotiv_je_welt_stimmt_mit_paper_json` (Zuordnung gleich `data/paper.json`). Motive als Default entschieden: Standard Berg, Sengoku Vulkan, Nil Pyramide, Britannien Steinkreis (kein neues Asset nötig). `cargo test -p k3c-game --lib` und clippy grün, `task check:diff` nur bekannte Planungstests rot.
+
+Nicht geprüft: Aussehen im Spiel (Größe, Lage, Dunst; Textur-Budget +5,9 MiB RGBA für vier Motive, nicht gemessen); manuelle Abnahme durch Ralf. Abweichung: `world/mod.rs` (Asset-Liste) und `world/lightdraw.rs` (`world_of` sichtbar) lagen außerhalb der erlaubten Dateien, waren nötig.
+
+### Für den Hauptrechner
+- `tests/e2e_flow.rs` (`ablauf_wie_go_zwei_laeufe_gleich`) ist rot: Station `skillpunkt` bei Takt 411 statt 535 (Referenz `testdata/rust/e2e/flow.json`, Go-Stand RU32); vermutlich das bekannte B-912/NA1.2, unabhängig von LA2 (ungeprüft, ob schon auf main rot).
+- Textur-Budget der Leitmotive in der Abnahme messen (alle vier Motive je Stufe mit Himmel geladen, weil die Welt-ID beim Laden fehlt).

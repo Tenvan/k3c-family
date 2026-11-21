@@ -175,3 +175,18 @@ fn tiles_have_no_gap_look_profiles() {
         }
     }
 }
+
+/// LA2.4: Jede feste Welt hat ein Leitmotiv in `data/paper.json › leitmotive`, das mit `MOTIFS` übereinstimmt;
+/// unbekannte Welten zeigen das Standard-Motiv.
+#[test]
+fn leitmotiv_je_welt_stimmt_mit_paper_json() {
+    let paper: serde_json::Value =
+        serde_json::from_str(include_str!("../../../../../data/paper.json")).expect("paper.json");
+    for (welt, asset) in MOTIFS {
+        let soll = paper.pointer(&format!("/leitmotive/{welt}")).and_then(|v| v.as_str());
+        assert_eq!(soll, Some(asset), "{welt}");
+        assert_eq!(motif_of(welt), asset);
+    }
+    assert_eq!(motif_of(""), MOTIFS[0].1);
+    assert_eq!(motif_of("erfunden"), MOTIFS[0].1);
+}
