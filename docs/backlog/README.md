@@ -241,6 +241,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1201](B-1201-figuren-grafik-texte-standard.md) | CLI | Idee | mittel | offen | FG1 | Grafik und Texte der Grundfiguren und Meister-Gebäude im Standard |
 | [B-1202](B-1202-abnahme-eco1-siegel-eco-plan.md) | DEV | Schuld | mittel | eingeplant | ECO1 | ECO1 ist am PC abgenommen: Siegel, Werkzeuggürtel, tiefe Ebenen, Minen |
 | [B-1203](B-1203-abnahme-fg1-grundfiguren.md) | DEV | Schuld | mittel | eingeplant | FG1 | FG1 ist am PC abgenommen: Bürger, Meister-Gebäude, Kombinationen, Grafik |
+| [B-1204](B-1204-wald-baumwuchs-rodungsregeln.md) | SIM | Idee | mittel | offen | WD1 | Oberfläche hat vollen Baumwuchs mit Lichtungen; gerodet wird von den Rändern der Waldstücke |
 
 ## Archiv
 
