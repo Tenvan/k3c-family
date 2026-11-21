@@ -1,6 +1,6 @@
 # LA2.3 · Licht-Assets: animierte Flammen je Welt, Halter-Varianten, Ankerpunkte (B-1181)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -57,5 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05 geprüft: 12 Licht-Assets als Papierschnitt über `assets_create`/`assets_set` angelegt und gerendert (`licht-fackel|laterne|schale-<standard|sengoku|nil|britannien>`, je 4 Frames, Flamme als Animation `idle`), in `data/paper.json › objekte` zugeordnet und in `OBJECT_ASSETS` (30 → 42) geladen. Im Spiel: `lightdraw.rs` zeichnet am Fackel-Anker das Asset der Insel-Welt (Burg: Feuerschale am Boden, Taverne und Heilplatz: Laterne am Boden, sonst Fackel an der Wand), unbekannte Welten nehmen Standard; ohne geladenes Sheet bleibt die prozedurale Zeichnung (Stab plus drei Flammenebenen) als Rückfall; mit Asset entfallen die prozeduralen Flammen, der Schein kommt aus den Höfen. `light.rs`: neues `for_each_torch_at` mit Platz-Art. Test `licht_assets_sind_zugeordnet_und_geladen`. `cargo test -p k3c-game` und clippy grün (außer bekanntem `alloc_je_bild`), `task test paper` (Golden) grün, `task check:diff` nur bekannte Planungstests rot.
+
+Nicht geprüft: Bildvergleich im laufenden Spiel (Look, Größe und Höhe der Sprites vermutet nach Fackel-Maßen); manuelle Abnahme durch Ralf.
+
+### Für den Hauptrechner
+- `fx/festival.rs` fragt die Animation `stand`, die Assets `fest-fackel`/`fest-laterne` haben nur `idle`: das Sheet wird vermutlich nie gefunden (Rückfall prozedural). Ticket nötig.
+- `world/light.rs` und `lightdraw.rs` wurden erweitert, `world/mod.rs` blieb unverändert (nur Aufrufer).

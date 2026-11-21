@@ -145,18 +145,48 @@ impl World {
         };
         let (k, top) = (&c.camera, c.screen_y(TORCH_LIFT));
         let (sw, sh) = (TORCH_STICK_W * k.scale, TORCH_STICK_H * k.scale);
-        self.light.for_each_torch(wd, |_, x| {
-            if visible(k, x, TORCH_FLAME_R) {
-                self.fill(dst, k.screen_x(x) - sw / 2.0, top, sw, sh, TORCH_STICK, 1.0, 1.0);
+        let wid = world_of(f);
+        self.light.for_each_torch_at(wd, |n, x, kind| {
+            if !visible(k, x, TORCH_FLAME_R) {
+                return;
             }
+            if self.torch_sprite(dst, c, wid, kind, x, f.clock + n as f64 * 0.3) {
+                return;
+            }
+            self.fill(dst, k.screen_x(x) - sw / 2.0, top, sw, sh, TORCH_STICK, 1.0, 1.0);
         });
-        self.draw_flames(dst, c, wd, f.clock);
+        self.draw_flames(dst, c, wd, f.clock, wid);
+    }
+
+    /// TorchSprite zeichnet das Licht-Asset (LA2.3) der Welt `wid` für die Art `kind` mit animierter Flamme an den
+    /// Anker x; `false` ohne geladenes Sheet (dann zeichnet der Aufrufer Stab und Flamme prozedural).
+    #[allow(clippy::cast_possible_truncation)]
+    fn torch_sprite(&self, dst: &mut dyn Canvas, c: &Cell, wid: &str, kind: &str, x: f64, t: f64) -> bool {
+        let (asset, w, lift) = light_asset(wid, kind);
+        let Some(sh) = self.lib.as_ref().and_then(|l| l.sheet(asset, "idle")) else {
+            return false;
+        };
+        let Some(fr) = sh.frame_at(t) else {
+            return false;
+        };
+        if sh.fw <= 0 {
+            return false;
+        }
+        let (k, wpx) = (&c.camera, w * c.camera.scale);
+        let s = wpx / sh.fw as f64;
+        let mut g = k3c_platform::Affine::IDENTITY;
+        g.scale(s as f32, s as f32).translate(
+            (k.screen_x(x) - wpx / 2.0) as f32,
+            (c.screen_y(lift) - sh.fh as f64 * s) as f32,
+        );
+        dst.sprite_tf(fr.tex, fr.src, g, [1.0, 1.0, 1.0, 1.0]);
+        true
     }
 
     /// DrawFlames zeichnet die Flammen mit den Haltern (unter den Figuren, von der Lichtkarte nur wenig gedämpft): drei Schichten (außen orange, Mitte
     /// glowColor, Kern hell), nachts mit der Deckkraft ihres Scheins, flackernd mit der Spielzeit (am Tag aus).
     #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-    pub fn draw_flames(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, clock: f64) {
+    pub fn draw_flames(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, clock: f64, wid: &str) {
         let a = glow_alpha(self.light.torch.strength, &wd.cycle);
         if a <= 0.0 {
             return;
@@ -164,9 +194,10 @@ impl World {
         let (k, top) = (&c.camera, c.screen_y(TORCH_LIFT));
         let g = self.light.glow;
         let mid: Rgba = [(g[0] * 255.0) as u8, (g[1] * 255.0) as u8, (g[2] * 255.0) as u8, 255];
-        self.light.for_each_torch(wd, |n, x| {
+        self.light.for_each_torch_at(wd, |n, x, kind| {
             let size = TORCH_FLAME_R * flicker_scale(clock, n);
-            if !visible(k, x, size) {
+            // mit Licht-Asset trägt dessen Flamme das Bild; der Schein kommt aus den Höfen
+            if !visible(k, x, size) || self.has_light_asset(wid, kind) {
                 return;
             }
             let (sx, al, r) = (k.screen_x(x), a * flicker(clock, n), size * k.scale);
@@ -180,6 +211,65 @@ impl World {
                 self.fill(dst, sx - r * w, top - r * h, 2.0 * r * w, r * h, col, 1.0, al * ca);
             }
         });
+    }
+}
+
+/// LIGHT_ASSETS sind die Licht-Assets (LA2.3) je Welt (Standard, Sengoku, Nil, Britannien) und Art (Fackel, Laterne,
+/// Feuerschale).
+const LIGHT_ASSETS: [[&str; 3]; 4] = [
+    [
+        "objekte/licht-fackel-standard",
+        "objekte/licht-laterne-standard",
+        "objekte/licht-schale-standard",
+    ],
+    [
+        "objekte/licht-fackel-sengoku",
+        "objekte/licht-laterne-sengoku",
+        "objekte/licht-schale-sengoku",
+    ],
+    [
+        "objekte/licht-fackel-nil",
+        "objekte/licht-laterne-nil",
+        "objekte/licht-schale-nil",
+    ],
+    [
+        "objekte/licht-fackel-britannien",
+        "objekte/licht-laterne-britannien",
+        "objekte/licht-schale-britannien",
+    ],
+];
+
+/// light_asset wählt Asset, Breite (Units) und Höhe der Unterkante über dem Boden (Units): die Burg trägt
+/// Feuerschalen am Boden, Taverne und Heilplatz Laternen am Boden, alles andere Fackeln an der Wand; unbekannte
+/// Welten zeigen die der Standard-Welt.
+fn light_asset(wid: &str, kind: &str) -> (&'static str, f64, f64) {
+    let w = match wid {
+        "sengoku" => 1,
+        "nil" => 2,
+        "britannien" => 3,
+        _ => 0,
+    };
+    match kind {
+        "castle" => (LIGHT_ASSETS[w][2], 0.95, 0.0),
+        "tavern" | "healer" => (LIGHT_ASSETS[w][1], 0.7, 0.0),
+        _ => (LIGHT_ASSETS[w][0], 0.6, TORCH_LIFT - TORCH_STICK_H),
+    }
+}
+
+/// world_of ist die Welt-ID der Insel im Bild (leer = Standard).
+fn world_of(f: &Frame) -> &str {
+    f.route
+        .iter()
+        .find(|r| r.id == f.campaign.island)
+        .map_or("", |r| r.world.as_str())
+}
+
+impl World {
+    /// has_light_asset meldet, ob das Sheet des Licht-Assets geladen ist.
+    fn has_light_asset(&self, wid: &str, kind: &str) -> bool {
+        self.lib
+            .as_ref()
+            .is_some_and(|l| l.sheet(light_asset(wid, kind).0, "idle").is_some())
     }
 }
 

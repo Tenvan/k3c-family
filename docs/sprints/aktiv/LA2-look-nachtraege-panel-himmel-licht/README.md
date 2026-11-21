@@ -74,7 +74,7 @@ Keine offen. Defaults (autonom, Claude, 2026-11-21; 🧑 bestätigt sie bei der 
 |---|---|---|---|---|
 | LA2.1 | `LA2.1-cheat-panel-umgebungseffekte.md` | Umsetzung | autonom | fertig |
 | LA2.2 | `LA2.2-wolken-wellenstriche.md` | Umsetzung | autonom | offen |
-| LA2.3 | `LA2.3-licht-assets-flammen.md` | Umsetzung | autonom | offen |
+| LA2.3 | `LA2.3-licht-assets-flammen.md` | Umsetzung | autonom | fertig |
 | LA2.4 | `LA2.4-monumentalbild-je-welt.md` | Umsetzung | autonom | offen |
 | LA2.5 | `LA2.5-review.md` | Review | autonom | offen |
 

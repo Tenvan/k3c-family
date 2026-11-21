@@ -1,0 +1,90 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "licht-laterne-britannien",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Laterne (Britannien): Holzlaterne auf Pfosten mit Flamme",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-1 0L-1 -10L1 -10L1 0Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-6 -10L6 -10L7 -26L-7 -26Z",
+          "material": "holz",
+          "ton": "basis"
+        },
+        {
+          "art": "flaeche",
+          "auflage": true,
+          "form": "M-4 -12L4 -12L5 -24L-5 -24Z",
+          "material": "gold",
+          "ton": "licht"
+        },
+        {
+          "art": "falz",
+          "breite": 0.5,
+          "form": "M0 -11L0 -25",
+          "material": "holz",
+          "ton": "schatten"
+        },
+        {
+          "art": "flaeche",
+          "form": "M-8 -26L0 -31L8 -26Z",
+          "material": "eisen",
+          "ton": "schatten"
+        }
+      ],
+      "pivot": [0, 0]
+    },
+    {
+      "id": "flamme",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-2.5 -12L-1.5 -16L0 -20L1.5 -16L2.5 -12Z",
+          "material": "lava",
+          "ton": "basis"
+        },
+        {
+          "art": "punkt",
+          "material": "gold",
+          "mitte": [0.3, -14],
+          "radius": 1,
+          "ton": "licht"
+        }
+      ],
+      "pivot": [0, -12]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 32,
+    "rahmen": [-12, -30, 24, 32]
+  },
+  "animationen": {
+    "idle": {
+      "fps": 8,
+      "frames": 4,
+      "keyframes": [
+        {
+          "t": 0,
+          "winkel": {
+            "flamme": -5
+          }
+        },
+        {
+          "t": 0.5,
+          "winkel": {
+            "flamme": 5
+          }
+        }
+      ]
+    }
+  }
+}
