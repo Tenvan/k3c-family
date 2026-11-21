@@ -914,3 +914,6 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1127](B-1127-rust-pausenmenue-unsichtbar.md) | CLI | Problem | hoch | erledigt | RU54 | Rust-Spiel: Pausenmenü bleibt unsichtbar, obwohl das Spiel pausiert |
 | [B-1128](B-1128-rust-farben-blasser-als-go.md) | CLI | Problem | hoch | erledigt | RU54 | Rust-Spiel: Farben im Fenster deutlich blasser als im Go-Spiel |
 | [B-1129](B-1129-ru54-abnahme-bildvergleich-go-rust.md) | CLI | Schuld | mittel | erledigt | RU64 | RU54 Abnahme (Lane zweit): Bildvergleich Go gegen Rust, Farbe und Pause im Fenster |
+| [B-1157](B-1157-cheat-abfahrbereit.md) | CLI | Idee | hoch | erledigt | RU36 | Das Cheat-Fenster hat die Option Abfahrbereit (Schiff fertig, Endboss besiegt), damit Seekarte und Schiffsfahrt prüfbar sind |
+| [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | erledigt | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
+| [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | erledigt | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |

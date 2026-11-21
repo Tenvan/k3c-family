@@ -2,7 +2,7 @@
 //! `gold`/`material` (Port von `devExtra` und `devStock` aus `dev.go`).
 use k3c_sim::dev::{
     dev_add_stock, dev_build_all, dev_drop_gold, dev_fill_stock, dev_next_phase, dev_raise_max_stock,
-    dev_set_cheap_build, dev_set_pure,
+    dev_ready_to_sail, dev_set_cheap_build, dev_set_pure,
 };
 
 use super::dev::{Attrs, DEV_MAX_AMOUNT, DevAction, SlotMap, attr};
@@ -25,6 +25,7 @@ impl Room {
                 Some(vec![attr("an", on)])
             }
             "buildAll" => dev_build_all(&mut self.isl, a.level).then(|| vec![attr("stufe", a.level)]),
+            "readyToSail" => dev_ready_to_sail(&mut self.isl).then(Vec::new), // RU36.3, B-1157
             "nextPhase" => Some(vec![attr("phase", dev_next_phase(&mut self.isl))]),
             "pure" => {
                 // reiner Stressmodus (B-921)

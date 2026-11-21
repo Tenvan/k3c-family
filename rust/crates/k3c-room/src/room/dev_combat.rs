@@ -1,7 +1,7 @@
 //! Kampf-Aktionen des Dev-Modus (B-603, B-766, B-921). Port von `engine/room/dev_combat.go`.
 use k3c_sim::dev::combat::{dev_boss_phase, dev_spawn_boss, dev_start_event};
-use k3c_sim::dev::dev_set_phase;
 use k3c_sim::dev::spawn::{dev_spawn_at_castle, dev_spawn_units};
+use k3c_sim::dev::{dev_add_shield, dev_set_phase};
 use k3c_sim::state::Fehler as SimFehler;
 
 use super::dev::{Attrs, DevAction, SlotMap, attr};
@@ -45,6 +45,7 @@ impl Room {
                     attr("anzahl", n),
                 ])
             }
+            "shieldPlus" => dev_add_shield(&mut self.isl, map.index(a)?).then(Vec::new), // RU36.3, B-1158
             "bossPhase" => dev_boss_phase(&mut self.isl).map(|phase| vec![attr("phase", phase)]),
             "event" => {
                 dev_start_event(&mut self.isl, &env.data.difficulty, &a.event).then(|| vec![attr("event", &a.event)])

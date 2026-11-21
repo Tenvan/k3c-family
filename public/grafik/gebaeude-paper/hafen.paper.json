@@ -10,23 +10,6 @@
       "lagen": [
         {
           "art": "flaeche",
-          "form": "M-48 -16L96 -16L96 0L-48 0Z",
-          "material": "koenigsblau"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-44 -12L92 -12L92 -10.8L-44 -10.8Z",
-          "material": "koenigsblau",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
-          "form": "M-44 -6.4L92 -6.4L92 -5.2L-44 -5.2Z",
-          "material": "koenigsblau",
-          "ton": "licht"
-        },
-        {
-          "art": "flaeche",
           "form": "M-96 -48L-48 -48L-48 0L-96 0Z",
           "material": "stein"
         },

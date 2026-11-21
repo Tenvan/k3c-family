@@ -2,8 +2,8 @@
 use super::testutil::{add_chest, chest_event, coop_data, coop_island, gold_of, tick};
 use crate::state::shared::Crown;
 
-const NORMAL: std::ops::RangeInclusive<i64> = 30..=60; // data/economy.json › chestGold
-const DOUBLE: std::ops::RangeInclusive<i64> = 90..=180; // x goldFactor 3
+const NORMAL: std::ops::RangeInclusive<i64> = 15..=30; // data/economy.json › chestGold
+const DOUBLE: std::ops::RangeInclusive<i64> = 45..=90; // x goldFactor 3
 
 #[test]
 fn solo_oeffnet_allein_mit_normalem_gold() {

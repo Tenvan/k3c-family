@@ -12,6 +12,7 @@ use super::buildings::{
 };
 use super::data::{build_cost, cost_of, site_name, values};
 use super::listen::{SiteFlags, StageInfo, info_flag, info_tagged};
+use super::nature::ship_drop;
 use super::plan::{DARK, GOLD, HP_GREEN, Item, Planner, Shape, WHITE, px, visible};
 use super::sites::{TextKey, TextWhat, WaitReason, can_afford, shelf_of, shelf_rack, site_text, site_wait};
 use crate::view::cell::Camera;
@@ -142,6 +143,7 @@ impl Planner {
                 shape: Shape::Sprite,
                 look: l,
                 x: s.x,
+                y: -ship_drop(&s.kind, s.level),
                 shade,
                 ..Default::default()
             });

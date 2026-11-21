@@ -7,6 +7,7 @@ use crate::state::links::values;
 use crate::state::site_view::site_hub_level_of;
 use crate::world::hub_of;
 use crate::world::lines::level_site;
+use crate::world::ship::{harbor, ship_base_stages};
 
 /// Go: `DevBuildAll`: baut jede Stufe der Insel auf `level` aus: Hub-Stufe, gebaute Plätze mit Ausbau-Stufen (Mauer, Turm)
 /// und alle noch freien Plätze, deren Hub-Stufe und Linie bis `level` reicht (Tore bleiben, sie hängen an der äußersten
@@ -65,4 +66,22 @@ pub fn dev_build_site(w: &mut World, si: usize, level: i64) {
     s.worker_id = None;
     s.upgrade.clear();
     s.upgrade_paid = 0;
+}
+
+/// RU36.3 (B-1157): macht die Insel abfahrbereit: Schiff am Hafen fertig (Kiel, Rumpf, Segel) und Endboss als besiegt
+/// vermerkt, damit der Wechselpunkt am Steg öffnet (`step_island_switch`) und die Seekarte aufgeht. `false`: kein Hafen
+/// oder keine nächste Insel (letzte Insel der Welt: dort gibt es keine Abfahrt, sondern den Sieg).
+pub fn dev_ready_to_sail(isl: &mut Island) -> bool {
+    let Some((wi, si)) = harbor(isl) else {
+        return false;
+    };
+    if isl.is_last() {
+        return false;
+    }
+    let w = &mut isl.stages[wi];
+    let stages = ship_base_stages(w);
+    dev_build_site(w, si, stages);
+    isl.endboss_defeated = true;
+    isl.endboss = None;
+    true
 }

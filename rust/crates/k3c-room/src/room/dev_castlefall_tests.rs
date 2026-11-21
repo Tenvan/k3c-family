@@ -38,3 +38,12 @@ fn dev_burgfall() {
         m.log.lines
     );
 }
+
+/// RU36.3 (B-1157): `readyToSail` kommt im Raum an; auf der letzten Insel der Welt gibt es keine Abfahrt (abgelehnt, die
+/// Insel bleibt unverändert). Schiff und Wechselpunkt prüft `k3c-sim` (`dev/sail_tests.rs`).
+#[test]
+fn dev_abfahrbereit_nur_mit_naechster_insel() {
+    let (mut m, code, _i) = dev_room();
+    assert_eq!(dev(&mut m, &code, &act("readyToSail")), Err(Fehler::BadRequest));
+    assert!(!rm(&mut m, &code).isl.endboss_defeated);
+}

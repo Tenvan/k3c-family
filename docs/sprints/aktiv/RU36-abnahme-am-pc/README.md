@@ -87,7 +87,7 @@ Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
 |---|---|---|---|---|
 | RU36.1 | `RU36.1-abnahme-liste-und-messwerkzeug.md` | Umsetzung | autonom | fertig |
 | RU36.2 | `RU36.2-abnahme-am-pc-zwei-pads.md` | Workshop | Mensch | fertig |
-| RU36.3 | `RU36.3-befunde-runde-1.md` | Umsetzung | autonom | offen |
+| RU36.3 | `RU36.3-befunde-runde-1.md` | Umsetzung | autonom | fertig |
 | RU36.4 | `RU36.4-befunde-runde-2.md` | Umsetzung | autonom | offen |
 | RU36.5 | `RU36.5-bericht-g4-und-review.md` | Review | autonom | offen |
 | RU36.6 | `RU36.6-weltwahl-alle-welten.md` | Umsetzung | autonom | offen |
