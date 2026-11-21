@@ -59,7 +59,10 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-Siehe Anforderungen AC-01 bis AC-04; Nachweis im Ergebnis dieses Tickets.
+- **AC-01** Studio-Abnahme am PC durch 🧑 (siehe Anforderungen AC-01).
+- **AC-02** `task check:race` und `task gen:paper` samt Golden laufen grün (oder Befund als Ticket).
+- **AC-03** Offene Review-Befunde aus WZ62.5 entschieden.
+- **AC-04** Planungsdaten wieder grün: `planning.test.ts`.
 
 ## Offene Fragen
 

@@ -65,8 +65,9 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-**Stand 2026-11-18 (RU47)** (Second Worker; Details im Ergebnis RU47.1 und RU47.2, Sprint RU47)
+Lane `zweit`: Der Second Worker fährt dieses Ticket (Sim, Balance und Gen).
 
+**Stand 2026-11-18 (RU47)** (Second Worker; Details im Ergebnis RU47.1 und RU47.2, Sprint RU47)
 - Rust: `cargo test --release -p k3c-sim` 384 grün, 0 rot, 296 ignoriert; ganzer Workspace 1381 grün, 326 ignoriert, 4 rot (nur `still.rs`/`still_hud.rs`, nicht Sim).
 - Marken in `unit/` und `enemies/`: `unit` 30 ignoriert (RU18 25, RU19 2, RU10 1, RU15 1), `enemies` 31 ignoriert (RU18 18, RU10 12, RU19 1). Die RU10-Zahl 12 aus der Anforderung stimmt für `enemies`; RU14 (40) ist als Marke weg, RU15/RU18/RU19/RU21 sind anders verteilt als hier genannt (siehe B-1095).
 - `cargo test -- --ignored`: `unit` 1 grün (`unit::hammer_tests::gegner_traegt_den_ersatzhammer_nicht_weg`, Marke RU19, Kandidat zum Freischalten), 29 rot; `enemies` 0 grün, 31 rot. Ursachen: Platzhalter RU18 (`new_hub_site`, `step_players`, `check_presets`), RU19 (`unit_x`, `emit`) und Insel-Helfer in `enemies/testutil.rs` (`ruin_island`, `island_with`, `end_island`; Marke RU10, vermutlich echte Abhängigkeit RU18 wegen `create_island`).

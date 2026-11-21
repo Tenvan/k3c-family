@@ -3,7 +3,7 @@
 - **Domäne:** CLI
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** LA2
 - **Projekt:** RSU

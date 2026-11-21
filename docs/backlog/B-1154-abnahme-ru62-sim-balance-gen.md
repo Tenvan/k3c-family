@@ -65,4 +65,5 @@ keine
 
 ## Notizen
 
+Lane `zweit`: Der Second Worker fährt dieses Ticket (Sim, Balance, Gen und Race).
 Siehe Ergebnis der Session RU62.14 (Befunde für den Hauptrechner).

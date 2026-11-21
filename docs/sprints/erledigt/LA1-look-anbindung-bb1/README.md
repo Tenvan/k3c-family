@@ -1,6 +1,6 @@
 # LA1 · CLI · Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -75,8 +75,8 @@ Ein Wert der Stufentabelle verlangt neue Grafik: Ticket statt eigener Zeichnung.
 | LA1.2 | `LA1.2-bb1-nachtraege.md` | Umsetzung | autonom | fertig |
 | LA1.3 | `LA1.3-kompass-biome.md` | Umsetzung | autonom | fertig |
 | LA1.4 | `LA1.4-stimmung-abgleich.md` | Workshop | Mensch | fertig |
-| LA1.5 | `LA1.5-stimmung-umsetzung.md` | Umsetzung | autonom | offen |
-| LA1.6 | `LA1.6-review.md` | Review | autonom | offen |
+| LA1.5 | `LA1.5-stimmung-umsetzung.md` | Umsetzung | autonom | fertig |
+| LA1.6 | `LA1.6-review.md` | Review | autonom | fertig |
 | LA1.7 | `LA1.7-mauern.md` | Umsetzung | autonom | fertig |
 | LA1.8 | `LA1.8-fackeln-monarch-licht.md` | Umsetzung | autonom | fertig |
 
@@ -86,6 +86,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-21, 🧑 hat LA1 am PC abgenommen. Kriterien: siehe Ergebnis LA1.6 (task test grün, Go-Tests grün, golangci-lint fehlte lokal). AC-05 teilweise: Wolken, Monumentalbild, Wellenstriche nach LA2 (B-1183). Neue Tickets: B-1179, B-1181, B-1183 (LA2), B-1182 (LA3). Abnahme-Ticket für Race, Gen, FPS: B-1184.
