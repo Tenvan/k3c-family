@@ -6,7 +6,9 @@
 .wd-entry-active { background: var(--accent-a3); border-color: var(--accent-a6); }
 
 .wd-card { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--gray-a5); border-radius: 8px; background: var(--color-panel-solid); }
-.wd-notes { max-width: 90ch; }
+.wd-notes { max-width: 90ch; max-height: 5rem; overflow-y: auto; }
+.wd-head { max-height: 40vh; overflow-y: auto; }
+.wd-map-active { outline: 2px solid var(--accent-9); border-radius: 6px; }
 .wd-seed { width: 12rem; }
 
 /* Streifen: eigene horizontale Scrollbar, Abschnitte als Kacheln, Objekte als Punkte darunter */
