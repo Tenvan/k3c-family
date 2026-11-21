@@ -7,7 +7,14 @@
 
 .wd-card { display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--gray-a5); border-radius: 8px; background: var(--color-panel-solid); }
 .wd-notes { max-width: 90ch; max-height: 5rem; overflow-y: auto; }
-.wd-head { max-height: 40vh; overflow-y: auto; }
+.wd-head { max-height: 40vh; overflow-y: auto; display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; }
+.wd-head-main { flex: 1 1 auto; min-width: 0; }
+.wd-stats { flex: none; margin-left: auto; width: 17rem; max-width: 40%; padding: 8px 10px; border: 1px solid var(--gray-a5); border-radius: 8px; display: flex; flex-direction: column; gap: 4px; text-align: left; }
+.wd-stats-bar { height: 6px; border-radius: 3px; background: var(--gray-a4); overflow: hidden; }
+.wd-stats-bar i { display: block; height: 100%; background: var(--green-9); }
+.wd-stats-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.wd-stats-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; }
+@media (max-width: 900px) { .wd-head { flex-direction: column; } .wd-stats { width: auto; max-width: none; margin-left: 0; } }
 .wd-map-active { outline: 2px solid var(--accent-9); border-radius: 6px; }
 .wd-seed { width: 12rem; }
 
@@ -56,6 +63,8 @@
 
 /* Querschnitt und Seekarte (B-963, world/Overview): Streifen mittig auf einer Achse, Seekarte bleibt beim Scrollen stehen */
 .wd-overview { display: flex; gap: 16px; align-items: flex-start; }
+.wd-right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.wd-right > .wd-x { flex: none; }
 .wd-x { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
 .wd-x-band { background: var(--amber-a4); border-radius: 8px; padding: 6px 12px; text-align: center; font-weight: 600; font-size: 13px; }
 .wd-x-island { scroll-margin-top: 16px; outline: 3px solid transparent; transition: outline-color .2s; }
