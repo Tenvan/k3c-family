@@ -132,3 +132,15 @@
 .ct-group { display: flex; flex-direction: column; gap: 4px; }
 .ct-entries { display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: 4px 8px; }
 .ct-entry { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 4px 8px; border: 1px solid var(--gray-a4); border-radius: 6px; min-width: 0; overflow-wrap: anywhere; }
+
+/* Asset-Baum (B-1216), Katalog-Seite und Reiter */
+.at-tree { display: flex; flex-direction: column; gap: 2px; }
+.at-branch { display: flex; flex-direction: column; gap: 1px; }
+.at-group { display: flex; align-items: center; gap: 4px; padding: 2px 0; }
+.at-node { display: flex; flex-direction: column; border-radius: 4px; padding: 3px 6px; cursor: pointer; }
+.at-node:hover { background: var(--gray-a3); }
+.at-node:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }
+.at-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.at-node.is-on { background: var(--accent-a4); }
+.at-invalid { background: var(--red-a2); }
+.at-error { padding: 0 6px 4px 2rem; }
