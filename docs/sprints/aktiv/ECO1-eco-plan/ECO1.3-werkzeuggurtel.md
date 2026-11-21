@@ -1,6 +1,6 @@
 # ECO1.3 · Werkzeuggürtel vom Handwerksmeister
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -60,5 +60,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 umgesetzt und geprüft: Mit nativen Regeln (`WorldValues::native_rules`) kostet das Werkstatt-Produkt den Werkzeuggürtel, 30 Holz + 10 Stein + 3 Gold (`unit/hammer.rs › belt_cost`, `place_product`); ohne native Regeln bleibt der Hammer aus `buildings.json` (Go-Parität, `buildings.json` ist mit Go geteilt). Regal weiter `hammerRack` (3), Herstellung, Holen und Spielstand wie beim Hammer: `Troop::hammer` und `Site::hammers` zählen jetzt den Gürtel (Namen bleiben wegen Go-Parität), das Spielstand-Format ist unverändert, die Version musste nicht steigen. Tests: `werkstatt_stellt_den_werkzeuggurtel_her` (mit und ohne native Regeln), `werkstatt_hammer_herstellen_und_holen` (zwei Spieler, Preis über `place_product`). Regeltexte `buerger.md`, `materialien-gebaeude.md` und Glossar (neuer Begriff Werkzeuggürtel) angepasst. Abweichung: Umbenennung der Werkstatt in Handwerksmeister (Text und Grafik) liegt bei FG1.3. Rot, nicht von dieser Session (auch auf main): `eingebettete_welten_gueltig`, `insel_nach_1000_schritten_wie_go`, `campaign_ausbau`, `campaign_abstieg` (nextId 383, erwartet 380, durch HB1-Regeln). `task check:diff` nur mit fehlendem `golangci-lint`.

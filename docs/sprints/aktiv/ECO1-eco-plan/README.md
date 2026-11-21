@@ -71,7 +71,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 |---|---|---|---|---|
 | ECO1.1 | `ECO1.1-siegel-assets.md` | Umsetzung | autonom | offen |
 | ECO1.2 | `ECO1.2-siegel-anzeige.md` | Umsetzung | autonom | offen |
-| ECO1.3 | `ECO1.3-werkzeuggurtel.md` | Umsetzung | autonom | offen |
+| ECO1.3 | `ECO1.3-werkzeuggurtel.md` | Umsetzung | autonom | fertig |
 | ECO1.4 | `ECO1.4-handwerker-bauarbeiten.md` | Umsetzung | autonom | offen |
 | ECO1.5 | `ECO1.5-reparaturkosten.md` | Umsetzung | autonom | offen |
 | ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | offen |

@@ -31,7 +31,7 @@ Begründung: Bürger sind Arbeiter und Verteidiger; Spezialisierungen der Bauern
 | Landstreicher → Bauer | 1 Gold | Camp, Taverne |
 | Bogen | 50 Holz + 20 Gold | Bogner (bis 3 im Waffenregal; B-951) |
 | Schwert | 50 Holz + 20 Gold | Werkstatt (bis 3 im Waffenregal) |
-| Hammer | 20 Holz + 3 Gold (vorläufig, `buildings.json` › `workshop.hammerCost`) | Werkstatt (Handwerkerbedarf; bis 3 im Regal; B-951) |
+| Werkzeuggürtel (ECO1.3, B-1193; Hammer, Spitzhacke und Axt; im Code weiter `hammer`) | 30 Holz + 10 Stein + 3 Gold (native Regel, `unit/hammer.rs › belt_cost`; ohne native Regeln wie Go der Hammer aus `buildings.json › workshop.hammerCost`) | Werkstatt (Handwerkerbedarf; bis 3 im Regal; B-951) |
 | Elite-Bogenschütze | 100 Stein + 50 Gold | Schmiede (Hub-Stufe 3) |
 | Elite-Krieger | 100 Kupfer + 50 Gold | Schmiede |
 | Rüstungs-Upgrade | 100 Eisen + 100 Gold je Stufe; **2 Stufen** (ab Hub-Stufe 4 und 5), +20 % / +40 % auf die Basis-HP; wirkt sofort auf alle Kämpfer (`MaxHP` und `HP` steigen gleich, keine Vollheilung); Bauern und Landstreicher ohne Rüstung (Q37, 2026-10-04) | Rüstkammer (Hub-Stufe 4) |
