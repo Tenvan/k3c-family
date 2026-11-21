@@ -78,5 +78,5 @@ fn profil_go_und_canvas_ohne_spiegel_haben_keinen_spiegel() {
     assert!(!with_profile("go", || k3c_data::look::current().mirror.enabled));
     assert!(with_profile("k2c", || k3c_data::look::current().mirror.enabled));
     let u = with_profile("k2c", || mirror_uniforms(&c, 0.0, 0.0));
-    assert!((u.brightness - 0.65).abs() < 1e-6 && u.axis > u.ground);
+    assert!((u.brightness - 0.62).abs() < 1e-6 && u.axis > u.ground);
 }

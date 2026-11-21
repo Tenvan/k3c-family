@@ -1,6 +1,14 @@
 //! RU55.5 (AC-05): Höfe an jeder Lichtquellen-Art im Sichtbereich, Obergrenze, nichts außerhalb, Profil go ohne Hof.
 
-use k3c_data::look::{current, with_profile};
+use k3c_data::look::{Glow, current, with_profile};
+
+/// Glow ist der Hof des Profils mit sichtbaren Quellen (die Daten schalten sie aus, 🧑 2026-11-21).
+fn glow() -> Glow {
+    Glow {
+        sources: true,
+        ..current().glow
+    }
+}
 use k3c_platform::{Frame as Batch, NullCanvas};
 use k3c_sim::state::{ActiveEvent, Castle, Site, World as SimWorld};
 
@@ -36,7 +44,7 @@ fn count(out: &[Halo], kind: Kind) -> usize {
 
 fn run(level: &str, wd: &SimWorld, x: f64) -> Vec<Halo> {
     crate::world::register_look();
-    let (light, g) = (load_light(), current().glow);
+    let (light, g) = (load_light(), glow());
     let mut out = Vec::new();
     collect(&light, &g, &layer_cell(x), wd, (level, 1.0), &mut out);
     out
@@ -50,7 +58,7 @@ fn jede_lichtquellen_art_im_sichtbereich_hat_einen_hof() {
         assert_eq!(count(&out, Kind::Torch), 4, "zwei Türme mit je zwei Fackeln");
         assert_eq!(count(&out, Kind::Moon), 1);
         assert_eq!(count(&out, Kind::MoonDisc), 1);
-        let (light, g) = (load_light(), current().glow);
+        let (light, g) = (load_light(), glow());
         let fire = out
             .iter()
             .find(|h| h.kind == Kind::Campfire)
@@ -81,8 +89,8 @@ fn obergrenze_je_zelle_wird_eingehalten() {
     with_profile("k2c", || {
         let out = run("meadow", &night_world(40), 40.0);
         let ground = count(&out, Kind::Campfire) + count(&out, Kind::Torch);
-        assert!(ground <= current().glow.max, "{ground} Höfe am Boden");
-        assert_eq!(ground, current().glow.max, "voll ausgeschöpft");
+        assert!(ground <= glow().max, "{ground} Höfe am Boden");
+        assert_eq!(ground, glow().max, "voll ausgeschöpft");
     });
 }
 
@@ -138,7 +146,10 @@ fn hof_netz_verlaeuft_von_der_mitte_nach_aussen() {
         w.draw_halos(&mut b, &layer_cell(40.0), &night_world(1), "meadow", 1.0);
         b.finish();
         let meshes = w.halos.len();
-        assert!(meshes >= 4, "Feuer, Fackeln und Mond: {meshes}");
+        assert!(
+            meshes >= 2,
+            "Mond mit Scheibe (Quellen sind in den Daten aus): {meshes}"
+        );
         let v = &w.halo_mesh.verts;
         assert_eq!(v.len(), 1 + 3 * SEGMENTS);
         let last = w.halos[meshes - 1];
@@ -217,5 +228,30 @@ fn monarch_traegt_nachts_ein_licht() {
         assert_eq!(at(&w).len(), 1, "außer Sicht kein Hof");
         w.cycle = cycle("day", 0.0);
         assert!(at(&w).is_empty(), "am Tag kein Licht");
+    });
+}
+
+#[test]
+fn ohne_sichtbare_quellen_hat_nur_der_mond_einen_hof() {
+    with_profile("k2c", || {
+        crate::world::register_look();
+        let g = Glow {
+            sources: false,
+            ..current().glow
+        };
+        let (light, mut out) = (load_light(), Vec::new());
+        collect(
+            &light,
+            &g,
+            &layer_cell(40.0),
+            &night_world(2),
+            ("meadow", 1.0),
+            &mut out,
+        );
+        assert_eq!(
+            count(&out, Kind::Campfire) + count(&out, Kind::Torch) + count(&out, Kind::Monarch),
+            0
+        );
+        assert_eq!(count(&out, Kind::Moon), 1);
     });
 }

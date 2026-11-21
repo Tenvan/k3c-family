@@ -110,7 +110,7 @@ use std::collections::BTreeMap;
 pub fn builtin_worlds() -> BTreeMap<String, crate::look_world::WorldLook> {
     let forest = WorldLook {
         forest: true,
-        haze: Some([0.35, 0.2, 0.05]),
+        haze: Some([0.45, 0.3, 0.05]),
         motif: Motif { x: 0.72, size: 4.5 },
         ..WorldLook::default()
     };

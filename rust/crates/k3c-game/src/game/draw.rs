@@ -104,9 +104,9 @@ impl Game {
         }
     }
 
-    /// Bildrate für die Leistungsanzeige aus der Wanduhr (Go: `ebiten.ActualFPS`); nur mit Leistungsanzeige.
+    /// Bildrate für die Anzeige aus der Wanduhr (Go: `ebiten.ActualFPS`); nur wenn die Anzeige FPS zeigt.
     fn measure_fps(&mut self) {
-        if !self.stats.timing(&self.frame) {
+        if !self.stats.shows_fps() {
             return;
         }
         let now = (self.stats.now)();

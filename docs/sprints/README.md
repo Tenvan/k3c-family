@@ -28,9 +28,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 Offene Mensch-Sessions aktiver Sprints nach Gerät (Zeile `Gerät:` im Kontext der Session). Die Workbench schreibt den Abschnitt bei jedem schreibenden `plan_*`-Aufruf neu; mit Freigaben und Entscheidungen: `plan_queue`.
 
-### PC
-
-- LA1.4 · Stimmung an den K2C-Screenshots abgleichen und die Abweichungen festhalten (Mensch) (Sprint LA1, offen, Agent Mensch)
+keine
 
 ## Geplant (nach Projekt-Rang)
 

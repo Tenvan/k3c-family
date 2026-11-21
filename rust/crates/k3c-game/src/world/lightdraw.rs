@@ -17,7 +17,7 @@ use super::backdrop::Rgba;
 use super::cull::visible;
 use super::forest::forest_tint;
 use super::layers::stage_of;
-use super::light::{LightData, daylight, glow_alpha, torch_side};
+use super::light::{LightData, daylight, glow_alpha, torch_flicker};
 use super::tint::{NEUTRAL, is_neutral, tint_of};
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
@@ -28,7 +28,7 @@ pub const LIGHT_COLUMNS: usize = 64;
 pub const TORCH_LIFT: f64 = 40.0 / 32.0;
 pub const TORCH_STICK_W: f64 = 4.0 / 32.0;
 pub const TORCH_STICK_H: f64 = 16.0 / 32.0;
-pub const TORCH_FLAME_R: f64 = 5.0 / 32.0;
+pub const TORCH_FLAME_R: f64 = 12.0 / 32.0;
 
 pub const TORCH_STICK: Rgba = [0x5a, 0x3a, 0x22, 255];
 pub const BLACK: Rgba = [0, 0, 0, 255];
@@ -104,10 +104,11 @@ impl World {
         } else {
             tint
         };
+        self.light.flicker_t = f.clock;
         if daylight(&wd.cycle) < 1.0 || !is_neutral(tint) {
             self.draw_light_map(dst, c, wd, tint);
         }
-        self.draw_torches(dst, c, wd);
+        self.draw_stars(dst, c, wd, &st.level);
         self.draw_halos(dst, c, wd, &st.level, 1.0 + current().forest.fire * d);
         if self.mirror_wanted(f, dst) {
             self.draw_mirror(dst, c, f.clock, wd);
@@ -136,45 +137,60 @@ impl World {
         dst.blend(Blend::Over);
     }
 
-    /// DrawTorches zeichnet die sichtbaren Fackeln: Halter aus Holz, darüber die Flamme in glowColor mit der Deckkraft
-    /// ihres Scheins (am Tag aus).
+    /// DrawTorchPart zeichnet die Halter der Fackeln (Ebene der Figuren: Gebäude sind darunter, Figuren davor, die
+    /// Lichtkarte dunkelt sie nachts mit ab).
+    pub fn draw_torch_part(&self, dst: &mut dyn Canvas, f: &Frame, c: &Cell) {
+        let Some(wd) = stage_of(f, c).and_then(|st| st.world.as_deref()) else {
+            return;
+        };
+        let (k, top) = (&c.camera, c.screen_y(TORCH_LIFT));
+        let (sw, sh) = (TORCH_STICK_W * k.scale, TORCH_STICK_H * k.scale);
+        self.light.for_each_torch(wd, |_, x| {
+            if visible(k, x, TORCH_FLAME_R) {
+                self.fill(dst, k.screen_x(x) - sw / 2.0, top, sw, sh, TORCH_STICK, 1.0, 1.0);
+            }
+        });
+        self.draw_flames(dst, c, wd, f.clock);
+    }
+
+    /// DrawFlames zeichnet die Flammen mit den Haltern (unter den Figuren, von der Lichtkarte nur wenig gedämpft): drei Schichten (außen orange, Mitte
+    /// glowColor, Kern hell), nachts mit der Deckkraft ihres Scheins, flackernd mit der Spielzeit (am Tag aus).
     #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-    pub fn draw_torches(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld) {
-        let offs = &self.light.torches;
-        if offs.is_empty() {
+    pub fn draw_flames(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, clock: f64) {
+        let a = glow_alpha(self.light.torch.strength, &wd.cycle);
+        if a <= 0.0 {
             return;
         }
-        let k = &c.camera;
-        let a = glow_alpha(self.light.torch.strength, &wd.cycle);
+        let (k, top) = (&c.camera, c.screen_y(TORCH_LIFT));
         let g = self.light.glow;
-        let flame: Rgba = [(g[0] * 255.0) as u8, (g[1] * 255.0) as u8, (g[2] * 255.0) as u8, 255];
-        let top = c.screen_y(TORCH_LIFT);
-        for s in &wd.sites {
-            if s.state != "built" {
-                continue;
+        let mid: Rgba = [(g[0] * 255.0) as u8, (g[1] * 255.0) as u8, (g[2] * 255.0) as u8, 255];
+        self.light.for_each_torch(wd, |n, x| {
+            let size = TORCH_FLAME_R * flicker_scale(clock, n);
+            if !visible(k, x, size) {
+                return;
             }
-            let side = torch_side(s.x, wd.hub_x);
-            for o in offs.get(&s.kind).into_iter().flatten() {
-                let x = s.x + side * o;
-                if !visible(k, x, TORCH_FLAME_R) {
-                    continue;
-                }
-                let sx = k.screen_x(x);
-                self.fill(
-                    dst,
-                    sx - TORCH_STICK_W * k.scale / 2.0,
-                    top,
-                    TORCH_STICK_W * k.scale,
-                    TORCH_STICK_H * k.scale,
-                    TORCH_STICK,
-                    1.0,
-                    1.0,
-                );
-                let r = TORCH_FLAME_R * k.scale;
-                self.fill(dst, sx - r, top - r / 2.0 - r, 2.0 * r, 2.0 * r, flame, 1.0, a);
+            let (sx, al, r) = (k.screen_x(x), a * flicker(clock, n), size * k.scale);
+            // Schichten: (Breite, Höhe, Farbe, Deckkraft) – breit unten, schmal oben, wie eine Flamme
+            let layers: [(f64, f64, Rgba, f64); 3] = [
+                (1.0, 2.6, [255, 120, 30, 255], 0.55),
+                (0.7, 2.0, mid, 0.85),
+                (0.35, 1.2, [255, 240, 200, 255], 1.0),
+            ];
+            for (w, h, col, ca) in layers {
+                self.fill(dst, sx - r * w, top - r * h, 2.0 * r * w, r * h, col, 1.0, al * ca);
             }
-        }
+        });
     }
+}
+
+/// Flicker ist die Deckkraft-Schwankung (0,7 … 1) der Flamme `n` zur Spielzeit `t`.
+fn flicker(t: f64, n: usize) -> f64 {
+    0.7 + 0.3 * torch_flicker(t, n)
+}
+
+/// Flicker_scale ist die Größen-Schwankung (0,88 … 1,12) der Flamme, aus demselben Muster.
+fn flicker_scale(t: f64, n: usize) -> f64 {
+    0.88 + 0.24 * torch_flicker(t, n)
 }
 
 #[cfg(test)]

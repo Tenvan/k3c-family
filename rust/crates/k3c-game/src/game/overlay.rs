@@ -192,6 +192,12 @@ impl StatsOverlay {
         f.settings.stats && !f.recording && !self.measuring
     }
 
+    /// shows_fps meldet, ob die Anzeige die FPS zeigt (nicht im Aufnahme-Modus, nicht beim Messen): nur dann braucht
+    /// `Game::measure_fps` die Wanduhr, auch ohne die zweite Zeile (B-1180: sonst blieb der Wert 0).
+    pub fn shows_fps(&self) -> bool {
+        self.fps && !self.measuring
+    }
+
     /// time_update führt `run` aus und rechnet die Zeit in `upd` ein, aber nur bei `timing`; sonst fragt es die Wanduhr
     /// nie ab (Go: `Game.advanceTimed`, Zweig `stats.timing`).
     pub fn time_update<R>(&mut self, f: &Frame, run: impl FnOnce() -> R) -> R {
@@ -252,18 +258,34 @@ impl StatsOverlay {
         }
     }
 
-    /// Ohne Schrift: Pixel-Schrift auf dunkler Fläche, im Maßstab `k` der Anzeige (Go: Textbild, vergrößert).
+    /// Ohne Schrift: Pixel-Schrift auf dunkler Fläche im Maßstab `k` der Anzeige. Die Fläche ist so breit wie die längste
+    /// Zeile (`pixel_width`) und sitzt rechtsbündig in `stats_rect`; sie ragt nie über den Fensterrand (B-1180).
     fn draw_pixel(&self, dst: &mut dyn Canvas, win: Rectangle, lines: i64) {
-        let (iw, ih, k) = stats_text_size_lines(lines);
+        let (_, ih, _) = stats_text_size_lines(lines);
+        let k = PIXEL_SCALE;
         let r = stats_rect(win);
-        let (x, y, k) = (r.min.x as f32, r.min.y as f32, k as f32);
-        dst.rect(Rect::new(x, y, iw as f32 * k, ih as f32 * k), OVERLAY_BACK);
+        let longest = self.text1.iter().map(|t| t.chars().count()).max().unwrap_or(0);
+        let (k, bw) = (k as f32, pixel_width(longest));
+        let (bw, x, y) = (bw * k, r.max.x as f32 - bw * k, r.min.y as f32);
+        dst.rect(Rect::new(x, y, bw, ih as f32 * k), OVERLAY_BACK);
         dst.text(&self.text1[0], x + 4.0 * k, y + k, DEBUG_PX * k, [1.0; 4]);
         if lines == 2 {
             dst.text(&self.text1[1], x + 4.0 * k, y + 17.0 * k, DEBUG_PX * k, [1.0; 4]);
         }
     }
 }
+
+/// Breite einer Pixel-Schrift-Zeile mit `chars` Zeichen im Textbild (vor dem Maßstab): Zeichenbreite 10,5 bei Höhe 12
+/// plus Rand links und rechts.
+pub fn pixel_width(chars: usize) -> f32 {
+    chars as f32 * PIXEL_CHAR_W + 8.0
+}
+
+/// Maßstab der Pixel-Schrift: klein (B-1180); die Fläche `stats_rect` bleibt für das HUD gleich groß (Go-Lage der Elemente).
+pub const PIXEL_SCALE: i64 = 2;
+
+/// Breite eines Zeichens der Pixel-Schrift bei `DEBUG_PX` (gemessen: 21 px bei Maßstab 2).
+const PIXEL_CHAR_W: f32 = 10.5;
 
 #[cfg(test)]
 #[path = "overlay_tests.rs"]

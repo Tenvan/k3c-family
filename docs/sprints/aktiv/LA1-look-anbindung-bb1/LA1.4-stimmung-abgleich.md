@@ -1,6 +1,6 @@
 # LA1.4 · Stimmung an den K2C-Screenshots abgleichen und die Abweichungen festhalten (Mensch)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Workshop
 - **Agent:** Mensch
 - **Domäne:** CLI
@@ -36,7 +36,7 @@ Codeänderungen, Umsetzung (LA1.5).
 
 ## Fertig, wenn
 
-- [ ] AC-04: `docs/messung/stimmung-abgleich.md` nennt je Szene die fehlenden Merkmale in Rangfolge, abgenommen von 🧑.
+- [x] AC-04: `docs/messung/stimmung-abgleich.md` nennt je Szene die fehlenden Merkmale in Rangfolge, abgenommen von 🧑.
 
 ## Prüfen
 
@@ -52,5 +52,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-04 erfüllt: `docs/messung/stimmung-abgleich.md` nennt je Szene die fehlenden Merkmale in Rangfolge, abgenommen von 🧑 am 2026-11-21 (Rangliste: 1 Lichthöfe, 2 Nachthimmel, 3 Himmel mit Verlauf).
+- Aufnahmen: 16 Rust-Bilder (Tag, Abend, Nacht, Morgengrauen; eine und zwei Ansichten) unter `.work/stimmung/` (nicht eingecheckt). Die K2C-Screenshots lagen nur bei 🧑, der Agent hat sie nicht gesehen.
+- Nicht aufgenommen (kein Schalter in der EXE): Blutmond, dichter Wald mit Fackel, gerodeter Hub, Lava-Stufe.
+- Abweichung vom Plan: Die Abgleich-Liste kam im Dialog aus Vorschlägen des Agenten statt aus einem Workshop am Gerät; Rang 1 und der Tausch von Rang 2 und 3 stammen von 🧑. Der Hinweis zu den Wellenstrichen (bei Bedarf in den K2C-Screenshots nachsehen) geht an LA1.5.
+- Gerät: PC. Neue Tickets: keine.

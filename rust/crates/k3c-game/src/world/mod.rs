@@ -20,6 +20,7 @@ pub mod bank;
 pub mod camera;
 pub mod cull;
 pub mod forest;
+pub mod fx;
 pub mod ground;
 pub mod halo;
 pub mod layers;
@@ -27,6 +28,7 @@ pub mod light;
 pub mod lightdraw;
 pub mod mirror;
 pub mod river;
+pub mod sky;
 pub mod tint;
 pub mod water;
 
@@ -96,6 +98,7 @@ pub fn new(lib: Option<Rc<Library>>) -> Parts {
             part(Layer::NEAR, Part::Near),
             part(Layer::GROUND, Part::Ground),
             part(Layer::RIVER, Part::River),
+            part(Layer::ACTORS, Part::Torches),
             part(Layer::RIVER, Part::Light),
         ],
         camera_rule: Some(Box::new(Far { w: Rc::clone(&w) })),
@@ -118,6 +121,8 @@ pub enum Part {
     Ground,
     River,
     Light,
+    /// Fackeln der Gebäude: über den Gebäuden, unter den Figuren (LA1.5)
+    Torches,
 }
 
 /// LayerDrawer zeichnet eine Ebene über eine Methode der Welt.
@@ -141,6 +146,7 @@ impl Drawer for LayerDrawer {
             Part::Ground => w.draw_ground(dst, f, c),
             Part::River => w.draw_river(dst, f, c),
             Part::Light => w.draw_light(dst, f, c),
+            Part::Torches => w.draw_torch_part(dst, f, c),
         }
     }
 }

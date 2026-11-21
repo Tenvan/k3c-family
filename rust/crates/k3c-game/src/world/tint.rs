@@ -50,7 +50,7 @@ pub fn event_tint(t: &Tint, w: &SimWorld) -> [f64; 3] {
 /// TintOf ist der Multiplikator der Lichtkarte für die Welt im Level `level`: Phase mal Event; ohne Himmel neutral.
 pub fn tint_of(level: &str, w: &SimWorld) -> [f64; 3] {
     let t = &current().tint;
-    if t.no_sky.iter().any(|b| b == level) {
+    if t.no_sky.iter().any(|b| b == level) || !super::fx::on("tint") {
         return NEUTRAL;
     }
     let (p, e) = (phase_tint(t, &w.cycle), event_tint(t, w));
@@ -64,6 +64,12 @@ pub fn haze_of(level: &str, i: usize) -> f64 {
         return 0.0;
     }
     l.haze_for(level, i).clamp(0.0, 1.0)
+}
+
+/// WeatherHaze meldet, ob Dunst liegt: nur bei Wetter-Events (Taifun und Flut, Vorboten und Wirkung) und mit dem
+/// Effekt `haze` (LA1.5, 🧑 2026-11-21: sonst wirkt das Bild blass).
+pub fn weather_haze(w: &SimWorld) -> bool {
+    super::fx::on("haze") && super::water::weather::sight_of(w) != super::water::weather::Sight::None
 }
 
 /// HasSky meldet, ob das Level einen Himmel hat (Mond, Dunst, Tönung); Höhle und Mine nicht.

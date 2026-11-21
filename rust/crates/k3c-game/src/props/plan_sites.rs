@@ -106,11 +106,18 @@ impl Planner {
         self.backs = backs;
     }
 
-    /// `sites`: alle sichtbaren Bauplätze in der Reihenfolge der Welt.
+    /// `sites`: alle sichtbaren Bauplätze in der Reihenfolge der Welt, Mauern zuerst.
     pub fn sites(&mut self, w: &World, info: Option<&StageInfo>, k: &Camera) {
+        self.sites_pass(w, info, k, true);
+        self.sites_pass(w, info, k, false);
+    }
+
+    /// `sites_pass`: nur die Mauern (`walls`) oder nur die übrigen Bauplätze. `plan` zeichnet die Mauern vor der Burg,
+    /// damit sie hinter der Burg und allen Gebäuden stehen (LA1.5, 🧑 2026-11-21).
+    pub fn sites_pass(&mut self, w: &World, info: Option<&StageInfo>, k: &Camera, walls: bool) {
         for (i, s) in w.sites.iter().enumerate() {
             let fl = info_flag(info, i);
-            if !fl.visible || !visible(k, s.x, 5.0) {
+            if (s.kind == "wall") != walls || !fl.visible || !visible(k, s.x, 5.0) {
                 continue;
             }
             if Planner::is_hall(w, s) {

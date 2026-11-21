@@ -13,6 +13,9 @@ use std::sync::OnceLock;
 
 use serde::{Deserialize, Serialize};
 
+use crate::look_glow::GLOW_OFF;
+pub use crate::look_glow::{Glow, MonarchLight, Moon};
+use crate::look_sky::{SKY_OFF, Sky};
 use crate::source::Source;
 use crate::{Fehler, decode};
 
@@ -59,14 +62,13 @@ pub struct Look {
     pub haze: [f64; 3],
     /// Lichthöfe an Lichtquellen und Mond (RU55.5); im Profil `go` aus.
     pub glow: Glow,
+    /// Himmel: Verlauf, Abendrot am Horizont und Sterne (LA1.5, B-1164); im Profil `go` aus.
+    pub sky: Sky,
     /// Wald nach Rodung (RU55.6); im Profil `go` aus.
     pub forest: crate::look_world::Forest,
     /// Parallax-Satz je Welt (Level-ID); ohne Eintrag der Standard.
     pub worlds: BTreeMap<String, crate::look_world::WorldLook>,
 }
-
-use crate::look_glow::GLOW_OFF;
-pub use crate::look_glow::{Glow, MonarchLight, Moon};
 
 /// Eine Multiply-Farbe und ihre Stärke (0 = keine Wirkung, 1 = die Farbe voll).
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
@@ -145,12 +147,12 @@ pub struct Mirror {
 
 const MIRROR_OFF: Mirror = Mirror {
     enabled: false,
-    brightness: 0.65,
+    brightness: 0.62,
     squash: 0.85,
     wobble: 0.07,
-    tint: 0.18,
+    tint: 0.22,
     depth_fade: 0.3,
-    glint: 0.55,
+    glint: 0.25,
 };
 
 impl Default for Mirror {
@@ -180,7 +182,15 @@ const GO_LOOK: Look = Look {
         no_sky: Vec::new(),
     },
     haze: [0.0; 3],
-    glow: GLOW_OFF,
+    // Profil go: Fackeln und Licht wie im Go-Spiel (Bildvergleiche)
+    glow: Glow {
+        torch_spread: 1.0,
+        castle_torches: 0.0,
+        warmth: 1.0,
+        torch_flicker: 0.0,
+        ..GLOW_OFF
+    },
+    sky: SKY_OFF,
     forest: crate::look_world::FOREST_OFF,
     worlds: BTreeMap::new(),
 };
@@ -228,10 +238,14 @@ fn builtin() -> BTreeMap<String, &'static Look> {
             ..MIRROR_OFF
         },
         tint: builtin_tint(),
-        haze: [0.3, 0.15, 0.0],
+        haze: [0.4, 0.25, 0.0],
         glow: Glow {
             enabled: true,
             ..GLOW_OFF
+        },
+        sky: Sky {
+            enabled: true,
+            ..SKY_OFF
         },
         forest: crate::look_world::Forest {
             enabled: true,

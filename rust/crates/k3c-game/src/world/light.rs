@@ -49,6 +49,9 @@ pub struct LightData {
     pub campfire: LightSource,
     #[serde(skip)]
     pub torch: LightSource,
+    /// Spielzeit für das Flackern des Scheins (gesetzt von `draw_light`; 0 = Ruhelage)
+    #[serde(skip)]
+    pub flicker_t: f64,
 }
 
 impl Default for LightData {
@@ -63,6 +66,7 @@ impl Default for LightData {
             glow: [0.0; 3],
             campfire: LightSource::default(),
             torch: LightSource::default(),
+            flicker_t: 0.0,
         }
     }
 }
@@ -120,6 +124,24 @@ impl LightSource {
     }
 }
 
+/// FlickerPatterns sind die Muster des Flackerns: Frequenzen (1/s) zweier Wellen und Phase; jede Fackel nimmt eines
+/// (fünf verschiedene) und eine eigene Verschiebung, damit keine zwei im Gleichtakt flackern.
+const FLICKER_PATTERNS: [(f64, f64, f64); 5] = [
+    (7.0, 13.0, 0.0),
+    (9.5, 17.0, 1.3),
+    (5.5, 11.0, 2.1),
+    (11.0, 19.0, 0.7),
+    (8.0, 15.5, 2.9),
+];
+
+/// TorchFlicker ist die Helligkeit 0 … 1 der Fackel `n` zur Spielzeit `t` (Mittel etwa 0,6): zwei Wellen aus dem
+/// Muster `n mod 5`, je Fackel verschoben. Reine Funktion.
+pub fn torch_flicker(t: f64, n: usize) -> f64 {
+    let (a, b, p) = FLICKER_PATTERNS[n % FLICKER_PATTERNS.len()];
+    let shift = n as f64 * 0.83 + p;
+    0.6 + 0.25 * (t * a + shift).sin() + 0.15 * (t * b + shift * 1.7).sin()
+}
+
 /// HasCampfire meldet, ob die Burg der Welt das Lagerfeuer ist (Hub-Stufe 1, src/scenes/render/hubGrowth.ts).
 pub fn has_campfire(w: &SimWorld) -> bool {
     w.hub_level <= 1
@@ -128,6 +150,16 @@ pub fn has_campfire(w: &SimWorld) -> bool {
 /// TorchSide ist die Richtung der Fackel-Versätze: von der Hub-Mitte weg, in der Mitte nach rechts (engine/sim/torches.go).
 pub fn torch_side(x: f64, hub_x: f64) -> f64 {
     if x < hub_x { -1.0 } else { 1.0 }
+}
+
+/// SkyLift ist die Aufhellung der tiefsten Nacht aus dem Look-Profil (LA1.5); ohne Himmel-Profil 0.
+fn sky_lift(back: bool) -> f64 {
+    let s = k3c_data::look::current().sky;
+    match (s.enabled && super::fx::on("lift"), back) {
+        (false, _) => 0.0,
+        (true, false) => s.night_lift,
+        (true, true) => s.back_lift,
+    }
 }
 
 impl LightData {
@@ -145,12 +177,12 @@ impl LightData {
 
     /// Front ist die Helligkeit des Vordergrunds außerhalb des Lichts.
     pub fn front(&self, c: &CycleInfo) -> f64 {
-        brightness_of(c, self.night)
+        brightness_of(c, (self.night + sky_lift(false)).min(1.0))
     }
 
     /// Backdrop ist die Helligkeit von Himmel und Kulisse (nachts dunkler als der Vordergrund).
     pub fn backdrop(&self, c: &CycleInfo) -> f64 {
-        brightness_of(c, self.back)
+        brightness_of(c, (self.back + sky_lift(true)).min(1.0))
     }
 
     /// Lift ist die Summe der Lichtscheine am Ort x (vor der Begrenzung auf 1): je Quelle glowAlpha × falloff.
@@ -166,16 +198,30 @@ impl LightData {
         if a <= 0.0 {
             return add;
         }
-        for s in &w.sites {
-            if s.state != "built" {
-                continue;
-            }
+        let amp = k3c_data::look::current().glow.torch_flicker;
+        self.for_each_torch(w, |n, tx| {
+            let f = 1.0 - amp * (1.0 - torch_flicker(self.flicker_t, n));
+            add += a * f * falloff(x, tx, self.torch.radius);
+        });
+        add
+    }
+
+    /// ForEachTorch ruft `f` mit dem x jeder Fackel der Welt: gebaute Plätze mit den Versätzen aus `torches`, geweitet
+    /// um `glow.torchSpread` (nur Darstellung), dazu die zwei Fackeln der Burg (`glow.castleTorches`). Ohne Allokation.
+    pub fn for_each_torch(&self, w: &SimWorld, mut f: impl FnMut(usize, f64)) {
+        let mut n = 0usize;
+        let g = k3c_data::look::current().glow;
+        for s in w.sites.iter().filter(|s| s.state == "built") {
             let side = torch_side(s.x, w.hub_x);
             for o in self.torches.get(&s.kind).into_iter().flatten() {
-                add += a * falloff(x, s.x + side * o, self.torch.radius);
+                f(n, s.x + side * o * g.torch_spread);
+                n += 1;
             }
         }
-        add
+        if g.castle_torches > 0.0 && w.hub_level >= 1 {
+            f(n, w.castle.x - g.castle_torches);
+            f(n + 1, w.castle.x + g.castle_torches);
+        }
     }
 
     /// LevelAt ist die Helligkeit des Vordergrunds am Ort x (grau, 0 … 1) wie lightLevelAt im Browser.
@@ -188,11 +234,9 @@ impl LightData {
     pub fn color_at(&self, x: f64, w: &SimWorld) -> (f64, f64, f64) {
         let base = self.front(&w.cycle);
         let l = (1.0 - base) * self.lift(x, w);
-        (
-            fmin(1.0, base + l * self.glow[0]),
-            fmin(1.0, base + l * self.glow[1]),
-            fmin(1.0, base + l * self.glow[2]),
-        )
+        let warm = k3c_data::look::current().glow.warmth;
+        let ch = |i: usize| fmin(1.0, base + l * self.glow[i].powf(warm));
+        (ch(0), ch(1), ch(2))
     }
 }
 
