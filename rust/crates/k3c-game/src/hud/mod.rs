@@ -14,12 +14,10 @@ use k3c_platform::Canvas;
 
 use self::draw::LayoutCache;
 use self::drawworld::LabelSpot;
-use self::glyphs::JoinKey;
 use self::hints::GuideSeen;
 use self::paint::Painter;
 use self::state::SeatState;
 use self::story::TaleState;
-use self::values::Memo;
 use self::voyage::VoyageView;
 use crate::art::{Font, Library, SeaMap};
 use crate::props::pending::LiveSimView;
@@ -146,7 +144,6 @@ pub struct Hud {
     lang: String,
     cells: usize,
     join_s: String,
-    m_join: Memo<JoinKey>,
     cue_buf: Vec<Cue>,
     paint: Painter,
     lay: [LayoutCache; MAX_PLAYERS],
@@ -181,7 +178,6 @@ impl Hud {
             lang: DEFAULT_LANGUAGE.to_string(),
             cells: 0,
             join_s: String::new(),
-            m_join: Memo::new(),
             cue_buf: Vec::new(),
             paint: Painter::default(),
             lay: Default::default(),

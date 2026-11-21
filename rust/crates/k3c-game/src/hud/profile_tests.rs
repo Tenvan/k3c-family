@@ -24,7 +24,7 @@ fn profile_switch_changes_hints() {
     assert_eq!(h.seats[0].profile, PROFILE_ARROWS, "nach Wechsel auf Pfeile");
     assert_eq!(h.seats[1].profile, PROFILE_GAMEPAD, "Pad bleibt");
     assert!(
-        !h.join_s.contains("Leertaste") && h.join_s.contains("Enter"),
+        h.join_s.is_empty(), // B-1212: keine Beitreten-Meldung mehr
         "Beitritt im Profil pfeile: {:?}",
         h.join_s
     );

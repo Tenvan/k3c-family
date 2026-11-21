@@ -1,6 +1,6 @@
 # WL1.3 · Gamepad-Hotplug und Beitreten-Meldung im HUD entfernen
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: Die Beitreten-Meldung ist entfernt (`hud/state.rs` setzt `join_s` leer, `m_join` entfernt); Tests `listen_englisch_und_beitritt`, Profil- und Overlay-Test prüfen jetzt die leere Meldung; `still_hud` ignoriert das Go-Element 12 (Beitreten) in Plätzen, Boxfarbe und Textumriss. Beitreten selbst und Lobby unverändert. `cargo test -p k3c-game --lib` grün.
+
+AC-01 teilweise: In `k3c-platform/src/backend/pads.rs` meldet jetzt jedes Ereignis eines unbekannten, nicht getrennten Pads das Gerät an (vorher nur das Connected-Ereignis; ein später eingeschaltetes Pad, das Tasten vor oder ohne Connected sendet, blieb unbekannt). Plattform-Tests grün. Nicht am Gerät geprüft: Ralf prüft das Pad-Einschalten nach dem Start (Abnahme, Gerät); bleibt es ein Problem, ist die Ursache in `game/devices.rs` (Lobby/Sitze) zu suchen. Rot schon vorher: `still_hud/bilder_stimmen_mit_go_ueberein` (pad-tastatur 3,9 %).
