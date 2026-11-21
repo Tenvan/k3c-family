@@ -98,6 +98,9 @@ describe('Querschnitt (B-963/AC-01)', () => {
     await act(async () => (host.querySelectorAll('[data-island="b"] .wd-x-bar')[1] as HTMLElement).click());
     expect(onPick).toHaveBeenCalledWith('b', 1);
   });
+});
+
+describe('Querschnitt: gewählte Insel (B-1217)', () => {
 
   it('mit gewählter Insel zeigt der Querschnitt nur sie in voller Breite; die Seekarte wählt', async () => {
     const onSelect = vi.fn();

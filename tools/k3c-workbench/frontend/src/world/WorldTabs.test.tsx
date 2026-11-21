@@ -170,6 +170,17 @@ describe('Werte: Baum zugeklappt mit Leiste (B-1216)', () => {
   });
 });
 
+describe('Weltenliste zeigt das Gewässer (B-1217)', () => {
+  it('statt der ID steht das Gewässer; Ableger haben eine Marke und eine Eltern-Welt', async () => {
+    const host = await mountPage('inseln');
+    const entry = (id: string) => host.querySelector(`[data-world="${id}"]`)!;
+    expect(entry('standard').textContent).toContain('Meer');
+    expect(entry('standard').textContent).not.toContain('standard');
+    expect(entry('wueste').textContent).toContain('Fluss');
+    expect(entry('wueste').querySelector('[data-kind="spinoff"]')).toBeTruthy();
+  });
+});
+
 describe('Katalog der Insel (B-1216)', () => {
   const asset = (id: string, gruppe = 'objekte') => ({ id, rig: 'objekt', gruppe, pfad: `public/grafik/${gruppe}/${id}`, gueltig: true, geaendert: false });
 

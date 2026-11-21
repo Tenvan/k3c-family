@@ -45,6 +45,8 @@ export interface WorldState {
   setEtappe: (island: string, etappe: number | null) => Promise<boolean>;
   /** Art der Welt setzen (B-1217) */
   setKind: (kind: WorldKind) => Promise<void>;
+  /** Eltern-Welt setzen (B-1217) */
+  setParent: (parent: string) => Promise<void>;
   /** Token `<insel>:<stufe>#<n>`: diese Stufe im Querschnitt neu laden (nach Natur-Änderung) */
   crossRefresh: string;
   /** Grund der letzten Ablehnung oder Warnungen nach dem Speichern */
@@ -122,7 +124,16 @@ function useKind(id: string, current: { current: string }, setDetail: (d: WorldD
     setWorlds(await backend.worldList().catch(() => []));
     setNotice(warnOr(v.warnings, kind === 'new' ? 'Welt ist komplett neu' : 'Welt ist ein Ableger'));
   };
-  return { setKind };
+  const setParent = async (parent: string): Promise<void> => {
+    const world = id;
+    const v = await backend.worldSetExtends(world, parent).catch((e: unknown) => ({ id: world, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    if (current.current !== world) return;
+    if (v.error) return setNotice({ tone: 'error', text: v.error });
+    const d = await backend.worldDetail(world).catch(() => null);
+    if (d && current.current === world) setDetail(d);
+    setNotice(warnOr(v.warnings, `Eltern-Welt ist ${parent || 'die Basis'}`));
+  };
+  return { setKind, setParent };
 }
 
 function useNature(stage: StageChoice | null, level: WorldLevel | null, seed: string, request: { current: number }, show: (v: Partial<WorldLevel> & { error?: string }) => void, setNotice: SetNotice) {
@@ -242,7 +253,7 @@ export function useWorld(): WorldState {
     return '';
   };
   const { setEtappe } = useEtappe(id, current, setDetail, setNotice);
-  const { setKind } = useKind(id, current, setDetail, setWorlds, setNotice);
+  const { setKind, setParent } = useKind(id, current, setDetail, setWorlds, setNotice);
   const { setNature, crossRefresh } = useNature(stage, level, seed, request, show, setNotice);
-  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, setKind, crossRefresh, notice };
+  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, setKind, setParent, crossRefresh, notice };
 }

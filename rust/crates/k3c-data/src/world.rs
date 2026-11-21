@@ -26,6 +26,9 @@ pub struct WorldFile {
     /// Art der Welt: `spinoff` oder `new` (B-1217); fehlt sie, gilt `spinoff` mit `extends`, sonst `new`.
     #[serde(rename = "kind")]
     pub kind: Option<String>,
+    /// Gewässer, an dem sich die Welt orientiert (Untertitel der Welt); leer = keine Angabe.
+    #[serde(rename = "gewaesser")]
+    pub gewaesser: String,
     #[serde(rename = "overrides")]
     pub overrides: Option<BTreeMap<String, serde_json::Value>>,
     #[serde(rename = "combat")]
@@ -55,12 +58,13 @@ pub struct RawCombat {
 }
 
 /// Erlaubte Felder des Kopfes (`strictDecode` in decodeWorld).
-const FIELDS: [&str; 10] = [
+const FIELDS: [&str; 11] = [
     "id",
     "name",
     "notes",
     "extends",
     "kind",
+    "gewaesser",
     "overrides",
     "combat",
     "islands",

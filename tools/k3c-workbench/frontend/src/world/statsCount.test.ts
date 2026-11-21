@@ -27,7 +27,7 @@ describe('Statistik der Welt', () => {
   it('eigene Assets: neue Welt braucht je Gruppe eines, ein Ableger nicht', () => {
     const own = { groups: ['figuren', 'gebaeude-paper'], count: 3 };
     const neu = worldStats(d(), own).find((x) => x.key === 'assets')!;
-    expect(neu).toMatchObject({ have: 2, need: 5, missing: 'gegner, hintergruende, reittiere' });
+    expect(neu).toMatchObject({ have: 2, need: 5, missing: 'Gegner, Hintergründe, Reittiere' });
     const ableger = worldStats(d({ extends: 'standard' }), { groups: [], count: 0 }).find((x) => x.key === 'assets')!;
     expect(ableger).toMatchObject({ optional: true, missing: '' });
     expect(worldStats(d({ extends: 'standard', kind: 'new' }), { groups: [], count: 0 }).find((x) => x.key === 'assets')!.missing).not.toBe('');

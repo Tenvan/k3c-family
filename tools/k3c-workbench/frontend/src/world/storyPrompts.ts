@@ -15,18 +15,27 @@ export type StoryPart =
 
 export const ENTRY_NAMES = { arrival: 'Ankunft', boss: 'Endboss', done: 'Sieg' } as const;
 
+const ENTRIES = ['arrival', 'boss', 'done'] as const;
+
+/** Zeilen einer Insel-Geschichte (ein Eintrag oder alle drei). */
+function islandLines(detail: WorldDetail, island: string, entry?: (typeof ENTRIES)[number]): string[] {
+  const story = detail.islands.find((i) => i.id === island)?.story;
+  return (entry ? [entry] : [...ENTRIES]).flatMap((e) => story?.[e] ?? []);
+}
+
+/** Zeilen der Welt-Teile (ohne Insel): Schlüssel der Geschichte → Zeilen. */
+function worldLines(s: WorldDetail['story'], part: StoryPart): string[] {
+  if (part.kind === 'etappe') return s?.etappen?.[part.n] ?? [];
+  if (part.kind === 'bottles') return (s?.bottles ?? []).flat();
+  const key = part.kind === 'start' || part.kind === 'end' || part.kind === 'lexicon' ? part.kind : null;
+  return (key && s?.[key]) || [];
+}
+
 /** Zeilen eines Teils (leer, wenn es fehlt). */
 export function linesOf(detail: WorldDetail, part: StoryPart): string[] {
-  const s = detail.story;
-  switch (part.kind) {
-    case 'start': return s?.start ?? [];
-    case 'end': return s?.end ?? [];
-    case 'bottles': return (s?.bottles ?? []).flat();
-    case 'lexicon': return s?.lexicon ?? [];
-    case 'etappe': return s?.etappen?.[part.n] ?? [];
-    case 'island': return detail.islands.find((i) => i.id === part.island)?.story?.[part.entry] ?? [];
-    case 'islandAll': return (['arrival', 'boss', 'done'] as const).flatMap((entry) => linesOf(detail, { kind: 'island', island: part.island, entry }));
-  }
+  if (part.kind === 'island') return islandLines(detail, part.island, part.entry);
+  if (part.kind === 'islandAll') return islandLines(detail, part.island);
+  return worldLines(detail.story, part);
 }
 
 function label(detail: WorldDetail, part: StoryPart): string {

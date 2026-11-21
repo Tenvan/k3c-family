@@ -96,6 +96,9 @@ describe('Welten-Editor (B-879/AC-01)', () => {
     expect(inspector.textContent).toContain('geplant');
     expect(inspector.querySelector('[data-planned="1"]')?.textContent).toContain('Truhe');
   });
+});
+
+describe('Welten-Editor: Auswahl (B-879/AC-01)', () => {
 
   it('wechselt die Welt und merkt sie', async () => {
     const host = await mount('werte');

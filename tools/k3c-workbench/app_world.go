@@ -125,6 +125,20 @@ func (a *App) WorldSetKind(id, kind string) world.CreateView {
 	return view
 }
 
+// WorldSetExtends setzt die Eltern-Welt einer Welt; leer entfernt sie (Binding, B-1217).
+func (a *App) WorldSetExtends(id, parent string) world.CreateView {
+	a.wait()
+	view := a.worlds().SetExtendsView(a.worldCtx(), id, parent)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Eltern-Welt abgelehnt", "ns", "dev", "world", id, "parent", parent, "error", view.Error)
+		} else {
+			a.log.Info("💾 Eltern-Welt gespeichert", "ns", "dev", "world", id, "parent", parent)
+		}
+	}
+	return view
+}
+
 // WorldIslandEtappe setzt die Etappe einer Insel; null entfernt sie (Binding, B-963). Geschrieben wird nur eine gültige Welt.
 func (a *App) WorldIslandEtappe(id, island string, etappe *int) world.CreateView {
 	a.wait()
