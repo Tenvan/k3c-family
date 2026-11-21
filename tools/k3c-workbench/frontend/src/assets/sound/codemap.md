@@ -10,7 +10,9 @@ Hörprobe, Filter und Prompt-Buttons je Slot (B-728). Nur Ansehen; Zuordnen, Rec
 
 - `SoundPage.tsx`: lädt die Slots einmal, filtert nach Text, Kategorie und Status und gruppiert nach Kategorie. Ein
   gewählter Slot zeigt `PromptButtons` mit den Vorlagen des Orts `sound` (`useVorlagen`). „Anhören“ holt die Datei als
-  Data-URL und spielt sie im Player ab. Fehler stehen rot über der Liste (`errorText` aus `@webkit/lib/errors`).
+  Data-URL und spielt sie im Player ab. Über der Liste steht der `WeltFilter` (`useWeltFilter`, Weltliste aus
+  `useWeltSicht('')`, WZ62.2): Die Sound-Daten kennen keine Welt, alle Slots gelten als Basis; im Modus „exklusiv“ ist
+  die Liste leer und `SOUND_OHNE_WELT` erklärt warum. Fehler stehen rot über der Liste (`errorText` aus `@webkit/lib/errors`).
 
 ## Flow
 
@@ -22,4 +24,4 @@ Hörprobe, Filter und Prompt-Buttons je Slot (B-728). Nur Ansehen; Zuordnen, Rec
 
 - Eingehängt von `../SoundSourcesPage.tsx` (Umschalter „Sound“/„Quellen“, gemerkt unter `studio.soundTeil`).
 - Backend: Bindings `StudioSounds`, `StudioSoundData` (`tools/k3c-workbench/app_studio.go`, Logik in `internal/studioview`).
-- Abhängigkeiten: `backend` aus `src/api`, `../prompts/`, `@webkit/atoms|molecules`.
+- Abhängigkeiten: `backend` aus `src/api`, `../prompts/`, `../useWeltSicht.ts`, `@webkit/atoms|molecules`.

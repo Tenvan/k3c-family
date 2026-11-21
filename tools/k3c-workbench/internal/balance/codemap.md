@@ -8,7 +8,7 @@ Replays, Sensitivität, Abstimmen) über das Engine-CLI `cmd/k3c-sim`. Kein Impo
 
 ## Design
 - Lese-Typen (`report_types.go`): `Report`, `Result`, `Scenario`, `Matrix`, `Metrics` samt Tages-, Wellen-, Morgen- und
-  Insel-Kennzahlen, `ShipNeed`; Felder und Reihenfolge wie `engine/balance`, `Stock`/`Cost` als Kopien der JSON-Form.
+  Insel-Kennzahlen, `ShipNeed`; `Downs` zählt das Ereignis `crownFallen`, `Lost` (`"crown"`) markiert einen durch Kronenraub verlorenen Lauf; Felder und Reihenfolge wie `engine/balance`, `Stock`/`Cost` als Kopien der JSON-Form.
 - Namen (`names.go`): `BotNames`, `KnownBot` (Mischung mit `MixSep`), `HelpsNames`, `Worlds`; `names_test.go` hält sie per
   Quelltext-Vergleich gleich mit `engine/balance/bots.go` und `helps.go`.
 - Zielkorridore (`targets.go`, `evaluate.go`, `economy_measures.go` für die Wirtschafts-Korridore, `scope.go`, `seedmode.go`): `Targets` aus `data/balance-targets.json`,

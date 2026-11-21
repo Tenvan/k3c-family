@@ -20,6 +20,12 @@ JSON für Engine, natives Spiel und Workbench. Werte gehören hierher, nicht in 
     (Siegvarianten), `island-sizes.json` (erlaubte Chunk-Anzahlen), `guards.json` (Gegnerlager), `ruins.json`
     (`hpShare`, `kinds`), `ship.json` (Ausbau-Abschnitte des Schiffs), `light.json` (Nachtlicht, Fackeln).
   - `biomes/` (eigene codemap) und `worlds/standard.json` (Standard-Welt mit Inseln, Tiefen, Planung).
+- Welt-Schalter (nur das Rust-Spiel liest sie, Go lehnt unbekannte Felder in den älteren Dateien ab; `worlds` ordnet einer Welt ihre Ausprägung zu, Welten ohne Eintrag wie `standard` haben die Regel nicht, alle Zahlen vorläufig):
+  - `cargo.json` (Fracht auf dem Schiff: Börse, Kiste, Plätze, drei Ladeplätze `bays`, Abschnitt `hold`), `coop.json` (Koop-Aktion Doppel-Truhe: `everyNth`, `goldFactor`),
+    `festival.json` (friedliche Insel und Fest nach dem Endboss, `fleeSpeedFactor`, `exitMarginUnits`), `hermits.json` (Einsiedler mit Hütte und Hub-Platz `hubSite`),
+    `mounts.json` (Welt-Reittiere mit `sprite`-Schlüssel aus `paper.json`, `mountGate`), `weather.json` (Wetter je Welt, z. B. `taifun`, `flut`).
+- Darstellung und Grenzen: `look.json` (Look-Profile `k2c`/`go` des Rust-Spiels, Wahl über `K3C_LOOK`), `sizes.json` (Größenstufen als Vielfaches der Monarchen-Höhe, nur Profil k2c),
+  `story.json` (Obergrenzen der Geschichte in Welt-Dateien: `maxLineChars`, `maxLexicon`).
 - Balancing-Tester: `balance-targets.json` (`margin`, `frozen`, `seedMode`, `seeds`, `targets`), `balance-hints.json`
   (Richtwerte von Kennzahlen und Hebeln).
 - Natives Spiel und Darstellung: `paper.json` (Zuordnung Spielobjekt → Papierschnitt-Asset je Gruppe), `sounds.json`

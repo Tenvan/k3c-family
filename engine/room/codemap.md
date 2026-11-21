@@ -22,7 +22,8 @@ Speichern, Skills, Dev-Aktionen, Spielmetrik und Abstürze. Kennt kein Netz.
 - `observer.go` (B-352): Gerät ohne Platz bekommt Level und Zustand der belegten Stufen, belegt keinen Monarchen.
 - `pause.go` (B-214): `Pause(id, peer, on)` hält ein Gerät an; Couch-Pause (`couchPaused`) stoppt den Raum, sonst
   stehen nur die Monarchen des Geräts, danach kurz geschützt (`pauseTick`).
-- Skills (`skills.go`): `Learn`/`Respec` über `withPlayer`, Regeln in `sim.LearnSkill`/`sim.Respec`.
+- Skills (`skills.go`): `Learn`/`Respec` über `withPlayer`, Regeln in `sim.LearnSkill`/`sim.Respec`; `ChooseIsland` reicht die
+  Zielwahl am Hafen an `sim.ChooseIsland` durch.
 - Dev (`dev.go`, `dev_combat.go`): `Dev`, `DevLocal`, `DevPage`, Zeitraffer `Timescale` bis `MaxTimescale`;
   `devCombat` setzt Boss ans Portal, Endboss-Phase, Mond-Events, Sprung zur Nacht (B-603).
 - Welten (`worlds.go`, WZ18.4): `world`/`loadWorld` (Standard eingebettet, weitere nur im Dev-Mode), `createIn`,
@@ -35,7 +36,7 @@ Speichern, Skills, Dev-Aktionen, Spielmetrik und Abstürze. Kennt kein Netz.
   `FullSavePrefix` + Seed.
 - Speichern (`saver.go`): unter der Raum-Sperre nur `encode`, Datei schreibt eine Goroutine je Raum, neuester Stand
   gewinnt; nach `Island.Over` wird nichts mehr gespeichert (`ErrGameOver`). `TestPrefix`-Räume löschen ihren Stand.
-- Spielmetrik (`metrics.go`): Nächte, Tode, Gold, Trennungen je Raumlauf → `sessionReport` über `SessionStore`.
+- Spielmetrik (`metrics.go`): Nächte, Tode (Ereignis `crownFallen` mit Ursache), Gold, Trennungen je Raumlauf → `sessionReport` über `SessionStore`.
 - Takt (`run.go`): `Manager.Run` (Goroutine je Raum mit `TickHz`, `Sweep` je Sekunde) oder selbst getaktet über
   `SafeTick` (natives Spiel, B-803); `guard`/`crash` fangen Panics und erzeugen `Failure`; `Victory` meldet den Sieg.
 - Read Model (`status.go`): `Status`, `StageStatus`, `Summary`, `DeviceInfo`; Logging in `logging.go`.

@@ -24,5 +24,5 @@ als deterministischen Text zurück (gleiche Eingabe, gleicher Text). Spricht mit
 ## Integration
 
 - Abhängigkeiten: `k3c/engine/level`, `k3c/engine/sim`.
-- Konsumenten: `cmd/k3c-sim/input.go` (Unterbefehle `run` und `level`, MCP `sim_run`/`level_generate` der Workbench),
+- Konsumenten: `engine/simcli/input.go` (Unterbefehle `run` und `level`, MCP `sim_run`/`level_generate` der Workbench),
   `engine/balance` (nutzt `TickHz` in `run.go` und `replay.go`).

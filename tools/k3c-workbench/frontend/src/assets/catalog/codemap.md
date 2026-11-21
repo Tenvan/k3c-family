@@ -12,6 +12,10 @@ die MCP-Tools `assets_*`.
   `SizeCompare` (Größenvergleich mit dem Monarchen vor einem Biom, B-733), darunter `PromptButtons`, `TeilSicht` und
   `GameOpen`. `{zustand}` für die Prompts kommt aus `zustandVon` (`../prompts/fill.ts`).
 - `AssetList.tsx`: Specs nach Gruppe; ungültige rot mit `feld · regel` und Text, Abzeichen „im Diff“; Knopf „Neu laden“.
+  Filter (B-1169, WZ62.2): Text, Welt mit Modus gesamt/exklusiv (`WeltFilter`, Sicht aus `useWeltSicht`, Zuordnung über
+  `zuordnung` aus `@webkit/lib/weltFilter`), Gruppe, Art (`rig`) und „nur geänderte“; der Zustand steht über
+  `useWeltFilter` in der Adresse. Einträge zeigen „exklusiv“ bzw. „geerbt von <Welt>“, Zähler je Modus; `ListStatus`
+  meldet Assets-Laden, Welt-Laden oder keine Treffer; eine noch nicht umgesetzte Welt trägt einen Hinweis.
 - `Preview.tsx`: Animation per `ChipSwitch`, Frame-Schieber, Abspielen mit `fps`; lädt beim Abspielen die Frames
   nacheinander vor (höchstens ein Render offen, Abbruch bei Anhalten oder Wechsel). Zoom über `useZoom` (`../zoom.tsx`,
   Start 2×); das Bild bleibt verborgen, bis seine Größe bekannt ist.
