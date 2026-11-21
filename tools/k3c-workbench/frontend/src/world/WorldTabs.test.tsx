@@ -59,21 +59,26 @@ function mountStory(d: WorldDetail): HTMLElement {
 }
 
 describe('Geschichte als Baum (B-1216/AC-02)', () => {
-  it('zeigt Start, Etappen mit Inseln, Ende, Flaschenpost und Wortschatz; Fehlendes ist markiert', () => {
+  it('zeigt Start, Etappen mit Inseln, Ende, Flaschenpost und Wortschatz; Fehlendes ist markiert', async () => {
     const host = mountStory(detail);
     const nodes = [...host.querySelectorAll('[data-story-node]')].map((n) => n.getAttribute('data-story-node'));
     expect(nodes).toEqual(['start', 'island1.arrival', 'island1.boss', 'island1.done', 'etappe.1', 'island2.arrival', 'island2.boss', 'island2.done', 'etappe.2', 'end', 'bottles', 'lexicon']);
-    expect(host.querySelector('[data-story-node="start"]')?.textContent).toContain('„Oru KRONE no MEER.“');
+    const shown = () => host.querySelector('[aria-label="Text des Knotens"]')?.textContent ?? '';
+    expect(shown()).toContain('„Oru KRONE no MEER.“'); // Start ist vorgewählt
     expect(host.querySelector('[data-story-node="island2.boss"]')?.textContent).toContain('fehlt');
     expect(host.querySelector('[data-story-node="island1.boss"]')?.textContent).not.toContain('fehlt');
-    expect(host.querySelector('[data-story-node="lexicon"]')?.textContent).toContain('oru · no');
+    await click(host.querySelector('[data-story-node="lexicon"]'));
+    expect(shown()).toContain('oru · no');
+    await click(host.querySelector('[data-story-node="island2.boss"]'));
+    expect(shown()).toContain('fehlt');
   });
 
   it('der Prompt je Knoten nennt Teil, Ist-Zustand, world_story_set und world_check', async () => {
     const host = mountStory(detail);
     const writes: string[] = [];
     Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (t: string) => void writes.push(t) } });
-    await click(host.querySelector('[data-story-node="island1.boss"] button'));
+    await click(host.querySelector('[data-story-node="island1.boss"]'));
+    await click(host.querySelector('[aria-label="Text des Knotens"] button'));
     expect(writes).toHaveLength(1);
     expect(writes[0]).toContain('Endboss der Insel island1');
     expect(writes[0]).toContain('„Oru KRONE no MEER.“');
@@ -120,5 +125,17 @@ describe('Werte als Baum (B-1216/AC-04)', () => {
     await click(tree.querySelector('[data-node="buildings:tower"]'));
     const inGroup = [...host.querySelectorAll('[role="row"][data-status]')].map((r) => r.getAttribute('data-key')!.split(':')[1]!.split('\u0000')[0]);
     expect(new Set(inGroup)).toEqual(new Set(['tower']));
+  });
+
+  it('der Pfeil klappt die Themen einer Datei auf und zu, ohne die Wahl zu ändern', async () => {
+    const host = await mountPage('werte');
+    const tree = host.querySelector('[role="tree"]')!;
+    await click(tree.querySelector('[data-node="buildings"]'));
+    expect(tree.querySelector('[data-node="buildings:tower"]')).toBeTruthy();
+    await click(tree.querySelector('[aria-label="Gebäude einklappen"]'));
+    expect(tree.querySelector('[data-node="buildings:tower"]')).toBeNull();
+    expect(tree.querySelector('[data-node="buildings"]')?.getAttribute('aria-selected')).toBe('true');
+    await click(tree.querySelector('[aria-label="Gebäude aufklappen"]'));
+    expect(tree.querySelector('[data-node="buildings:tower"]')).toBeTruthy();
   });
 });
