@@ -228,6 +228,17 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1188](B-1188-hafen-start-biome-bewuchs.md) | SIM | Idee | mittel | offen | HB1 | Hafen als Startpunkt neuer Spiele, ein bis zwei Biome vom Lager, vom Wald umgeben und freizuräumen |
 | [B-1190](B-1190-abnahme-hb1-hud-biome-hafen.md) | DEV | Schuld | mittel | offen | HB1 | Abnahme HB1: HUD-Baustellen, Biome, Landstreicher-Lager, Hafen (PC-Abnahme, Sim, Gen, Race) |
 | [B-1189](B-1189-abnahme-la3-bauplaetze.md) | SIM | Schuld | mittel | offen | LA3 | Abnahme LA3: Bauplätze nach Gebäudegröße (PC-Sichtprüfung, Race, Rust-Aufzeichnung) |
+| [B-1191](B-1191-siegel-assets-schwierigkeit.md) | PAP | Idee | mittel | offen | ECO1 | Je Schwierigkeitsgrad ein Wachssiegel als Papierschnitt-Symbol |
+| [B-1192](B-1192-siegel-anzeige-schwierigkeit.md) | CLI | Idee | mittel | offen | ECO1 | Das Schwierigkeits-Siegel steht in der Auswahl, bei den Spielständen und im HUD bei der Welt |
+| [B-1193](B-1193-werkzeugguertel-werkzeugmacher.md) | SIM | Idee | mittel | offen | ECO1 | Der Werkzeugmacher stellt einen Werkzeuggürtel mit Hammer, Spitzhacke und Axt her |
+| [B-1194](B-1194-handwerker-alle-bauarbeiten.md) | SIM | Idee | mittel | offen | ECO1 | Ein Bürger mit Werkzeuggürtel ist Handwerker und macht alle Bauarbeiten: roden, Felsen hauen, bauen, reparieren |
+| [B-1195](B-1195-reparatur-kostet-material-und-gold.md) | SIM | Idee | mittel | offen | ECO1 | Gebäude reparieren kostet ein Grundmaterial der Ausbaustufe und zwei Gold |
+| [B-1196](B-1196-gebaeude-nach-tiefe-einschraenken.md) | SIM | Idee | mittel | offen | ECO1 | In den unteren Ebenen stehen nur Verteidigungsanlagen, produzierende Gebäude nur ganz oben |
+| [B-1197](B-1197-ausruestung-von-oben-holen.md) | SIM | Idee | mittel | offen | ECO1 | Bürger und Soldaten in den unteren Ebenen holen Ausrüstung von ganz oben oder von fallen gelassenen Stücken |
+| [B-1198](B-1198-erzadern-freiraeumen.md) | SIM | Idee | mittel | offen | ECO1 | Erzadern in den Minen müssen erst freigeräumt werden: keine Steine oder Felsen bis zum Hub |
+| [B-1199](B-1199-buerger-umbenennung-citizen.md) | SIM | Idee | mittel | offen | FG1 | Landstreicher und Bauer werden zum Bürger (citizen) |
+| [B-1200](B-1200-meister-gebaeude-ausruestung-kombinationen.md) | SIM | Idee | mittel | offen | FG1 | Waffenschmied, Rüstungsschmied und Bogner fertigen Ausrüstung; Soldat und Elite aus Bürger |
+| [B-1201](B-1201-figuren-grafik-texte-standard.md) | CLI | Idee | mittel | offen | FG1 | Grafik und Texte der Grundfiguren und Meister-Gebäude im Standard |
 
 ## Archiv
 

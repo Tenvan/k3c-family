@@ -35,6 +35,8 @@ keine
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
+| ECO1 | SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | Entwurf | `geplant/ECO1-eco-plan/` |
+| FG1 | SIM | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | Entwurf | `geplant/FG1-grundfiguren-ausruestung/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
 | RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
@@ -468,3 +470,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | `erledigt/LA1-look-anbindung-bb1/` |
 | LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | `erledigt/LA2-look-nachtraege-panel-himmel-licht/` |
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | `erledigt/HB1-hud-biome-hafen-kurzsprint/` |
+| LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | `erledigt/LA3-bauplaetze-nach-gebaeudegroesse/` |
