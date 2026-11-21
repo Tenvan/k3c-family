@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
-import { Badge, Button, Flex, IconButton, LinkButton, Text, TextField } from '@webkit/atoms';
+import { useMemo, useState, type CSSProperties } from 'react';
+import { Badge, Button, Flex, IconButton, LinkButton, Splitter, Text, TextField } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
+import { prefsStore } from '../lib/prefs';
 import { deviation, valueText } from '@webkit/lib/valueEdit';
 import { ChipSwitch, ValueField } from '@webkit/molecules';
 import type { WorldValuesView } from '../api';
@@ -104,6 +106,7 @@ const ALL_FILES = '';
 export function WorldValues({ values, onSet }: Props) {
   const rows = useMemo(() => valueRows(values?.entries ?? []), [values]);
   const [pick, setPick] = useState<TreePick>({ file: '', group: null });
+  const [split, setSplit, resetSplit] = useSplit(prefsStore, 'world.split.values', 22);
   const [query, setQuery] = useState('');
   const [mode, setMode] = useState<RowMode>('alle');
   const [touched, setTouched] = useState<ReadonlySet<string>>(new Set());
@@ -126,7 +129,7 @@ export function WorldValues({ values, onSet }: Props) {
   };
   const filtered = query.trim() !== '' || mode !== 'alle';
   return (
-    <section className="wd-card" aria-label="Werte der Welt" data-value-table>
+    <section className="wd-card wd-fillcard" aria-label="Werte der Welt" data-value-table>
       <Flex gap="3" align="baseline" wrap="wrap">
         <Text size="2" weight="bold">Werte</Text>
         <WorldKin values={values} />
@@ -148,8 +151,9 @@ export function WorldValues({ values, onSet }: Props) {
         {filtered && <Button size="1" variant="soft" color="gray" onClick={() => { setQuery(''); setMode('alle'); }}>Filter zurücksetzen</Button>}
         <Text size="1" color="gray" className="wv-keys">Eingabe: Enter übernimmt, Esc verwirft, ↑↓ ändern Zahlen (Umschalt ×10), Alt+↑↓ wechselt die Zeile</Text>
       </Flex>
-      <div className="vt-layout">
+      <div className="vt-layout" style={{ '--vt-split': `${split}%` } as CSSProperties}>
       <ValueTree rows={forTree} pick={{ file, group: only }} onPick={setPick} />
+      <Splitter className="vt-split" label="Breite des Baums" value={split} onChange={setSplit} onReset={resetSplit} />
       <div role="table" aria-label="Felder" className="wv-table vt-fields">
         <TableHead />
         {groups.map((g) => (

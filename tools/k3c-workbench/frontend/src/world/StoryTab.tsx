@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import { Splitter } from '@webkit/atoms';
+import { useSplit } from '@webkit/lib/split';
+import { prefsStore } from '../lib/prefs';
 import { Badge, Button, Flex, Text } from '@webkit/atoms';
 import type { WorldDetail } from '../api';
 import { PromptRow } from './PromptRow';
@@ -30,7 +33,7 @@ function Leaf({ detail, item, sel, onPick }: { detail: WorldDetail; item: Item; 
   const key = nodeKey(item.part);
   const missing = linesOf(detail, item.part).length === 0;
   return (
-    <Button type="button" variant={sel === key ? 'soft' : 'ghost'} color="gray" className="st-node" data-story-node={key} aria-pressed={sel === key} onClick={() => onPick(key)}>
+    <Button type="button" variant="ghost" color="gray" className={`st-node${sel === key ? ' is-on' : ''}`} data-story-node={key} aria-pressed={sel === key} onClick={() => onPick(key)}>
       <span aria-hidden="true" className="st-icon">{item.icon}</span>
       <Text size="2">{item.name}</Text>
       {missing && <Badge color="orange" size="1" aria-label="fehlt">fehlt</Badge>}
@@ -73,18 +76,19 @@ function Detail({ detail, item }: { detail: WorldDetail; item: Item }) {
 
 export function StoryTab({ detail }: { detail: WorldDetail }) {
   const [sel, setSel] = useState('start');
+  const [split, setSplit, resetSplit] = useSplit(prefsStore, 'world.split.story', 30);
   const items = itemsOf(detail);
   const current = items.find((i) => nodeKey(i.part) === sel) ?? items[0]!;
   const gaps = storyGaps(detail).length;
   const leaf = (item: Item) => <Leaf key={nodeKey(item.part)} detail={detail} item={item} sel={nodeKey(current.part)} onPick={setSel} />;
   return (
-    <section className="wd-card" aria-label="Geschichte der Welt">
+    <section className="wd-card wd-fillcard" aria-label="Geschichte der Welt">
       <Flex gap="3" align="center" wrap="wrap">
         <Text size="2" weight="bold">Geschichte</Text>
         <Text size="1" color="gray">{gaps === 0 ? 'vollständig' : `${gaps} Einträge fehlen`}</Text>
         <PromptRow prompt={storyPrompt(detail)} label="Ganze Geschichte schreiben" title="Geschichte in Claude schreiben" />
       </Flex>
-      <div className="st-layout">
+      <div className="st-layout" style={{ '--st-split': `${split}%` } as CSSProperties}>
         <div className="st-tree" role="group" aria-label="Knoten der Geschichte">
           {leaf(items[0]!)}
           {etappenOf(detail).map((n) => (
@@ -100,6 +104,7 @@ export function StoryTab({ detail }: { detail: WorldDetail }) {
           ))}
           {items.filter((it) => ['end', 'bottles', 'lexicon'].includes(it.part.kind)).map(leaf)}
         </div>
+        <Splitter className="st-split" label="Breite des Baums" value={split} onChange={setSplit} onReset={resetSplit} />
         <Detail detail={detail} item={current} />
       </div>
     </section>

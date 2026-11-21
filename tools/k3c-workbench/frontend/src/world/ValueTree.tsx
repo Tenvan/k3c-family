@@ -29,8 +29,8 @@ function Row({ on, icon, name, count, own, level, id, open, onToggle, onPick }:
           </IconButton>
         )
         : <span className="vt-toggle" aria-hidden="true" />}
-      <Button type="button" variant={on ? 'soft' : 'ghost'} color="gray" role="treeitem" aria-selected={on} aria-level={level} aria-expanded={onToggle ? open : undefined}
-        className="vt-node" data-node={id} onClick={onPick}>
+      <Button type="button" variant="ghost" color="gray" role="treeitem" aria-selected={on} aria-level={level} aria-expanded={onToggle ? open : undefined}
+        className={`vt-node${on ? ' is-on' : ''}`} data-node={id} onClick={onPick}>
         <span aria-hidden="true" className="vt-icon">{icon}</span>
         <Text size="2" weight={level === 1 ? 'bold' : 'regular'}>{name}</Text>
         <Text size="1" color="gray">{count}</Text>
