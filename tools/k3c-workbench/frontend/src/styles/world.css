@@ -135,6 +135,9 @@
 .wd-page .wk-listdetail-detail { display: flex; flex-direction: column; overflow: hidden; }
 .wd-main { flex: 1 1 auto; min-height: 0; }
 .wd-tabs { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+/* die Reiterleiste schrumpft nie: Radix setzt overflow, damit wäre ihre Mindesthöhe 0 und sie verschwände bei hohem Inhalt */
+.wd-tabs > [role='tablist'] { flex: 0 0 auto; }
+.wd-main > .wd-head { flex: 0 0 auto; }
 .wd-tabs > [role='tabpanel'][data-state='inactive'] { display: none; }
 .wd-tabs > [role='tabpanel'][data-state='active'] { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow-y: auto; }
 .wd-fill { flex: 1 1 auto; min-height: 0; }
