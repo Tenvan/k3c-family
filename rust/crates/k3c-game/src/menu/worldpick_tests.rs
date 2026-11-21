@@ -38,6 +38,7 @@ fn three_worlds() -> Vec<WorldInfo> {
         .map(|(id, name)| WorldInfo {
             id: id.to_string(),
             name: name.to_string(),
+            ..Default::default()
         })
         .collect()
 }
@@ -278,4 +279,38 @@ fn rendered_world_images_usable() {
             );
         }
     }
+}
+
+/// RU36.6 (B-1165): Eine nicht ladbare Welt (Dev-Mode) zeigt ihren Grund; die Lobby öffnet sich nicht.
+#[test]
+fn nicht_ladbare_welt_zeigt_grund() {
+    let mut s = FakeSession {
+        worlds: Some(vec![
+            WorldInfo {
+                id: "standard".into(),
+                name: "Standard".into(),
+                ..Default::default()
+            },
+            WorldInfo {
+                id: "rom".into(),
+                name: "rom".into(),
+                error: "Datei ungültig".into(),
+            },
+        ]),
+        ..Default::default()
+    };
+    let m = new_menus();
+    let mut pick = new_world_pick(&m, PAD1);
+    pick.update(&Input::default(), &mut s);
+    pick.sel = 1;
+    let st = pick.update(&press(PAD1, &[Action::Confirm]), &mut s);
+    assert_eq!(st.kind, StepKind::Stay);
+    assert!(
+        pick.base.note.bad && pick.base.note.raw.contains("Datei ungültig"),
+        "{:?}",
+        pick.base.note.raw
+    );
+    pick.sel = 0;
+    let st = pick.update(&press(PAD1, &[Action::Confirm]), &mut s);
+    assert_eq!(st.kind, StepKind::Push, "ladbare Welt öffnet die Lobby");
 }

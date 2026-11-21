@@ -103,7 +103,13 @@ impl Session {
                 Err(_) => Vec::new(),
             },
         };
-        list.into_iter().map(|w| WorldInfo { id: w.id, name: w.name }).collect()
+        list.into_iter()
+            .map(|w| WorldInfo {
+                id: w.id,
+                name: w.name,
+                error: w.error,
+            })
+            .collect()
     }
 
     /// Go: `World`: die Welt-ID des laufenden Spiels (leer ohne Spiel).
