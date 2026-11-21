@@ -75,6 +75,18 @@ pub fn shelf_of(s: &Site) -> i64 {
     if s.kind == "workshop" { s.hammers } else { s.bows }
 }
 
+/// `shelf_count` ist die Stückzahl, die das Regal des Platzes zeigt (EQ1.2): Werkstatt Gürtel (`hammers`), Bogner Bögen,
+/// Waffenschmied Schwerter, Rüstungsschmied Rüstungen; 0 für jeden anderen Platz.
+pub fn shelf_count(s: &Site) -> i64 {
+    match s.kind.as_str() {
+        "workshop" => s.hammers,
+        "bowyer" => s.bows,
+        "smithy" => s.swords,
+        "armory" => s.armors,
+        _ => 0,
+    }
+}
+
 /// `offers_hub_upgrade`: Die Burg nimmt Münzen für den Ausbau, solange Gold offen ist und noch kein Ausbau läuft
 /// (B-591).
 pub fn offers_hub_upgrade(has: bool, state: &str, gold: i64, paid: i64) -> bool {

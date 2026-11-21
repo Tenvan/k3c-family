@@ -13,7 +13,9 @@ use super::listen::{SiteFlags, StageInfo, info_flag, info_tagged};
 use super::nature::ship_drop;
 use super::plan::{DARK, GOLD, HP_GREEN, Item, Planner, Shape, px, visible};
 use super::plan_cost::SMALL;
-use super::sites::{TextKey, TextWhat, WaitReason, can_afford, shelf_of, shelf_rack, site_text, site_wait};
+use super::sites::{
+    TextKey, TextWhat, WaitReason, can_afford, shelf_count, shelf_of, shelf_rack, site_text, site_wait,
+};
 use crate::view::cell::Camera;
 
 /// `SITE_SIZE`: Platzhalter-Größe je Platzart in Spiel-Pixeln (siteView.ts › SITE_SIZE).
@@ -224,6 +226,8 @@ impl Planner {
         if s.max_hp > 0.0 && s.hp < s.max_hp {
             self.bar(s.x, h + px(22.0), px(80.0), s.hp / s.max_hp, HP_GREEN);
         }
+        // EQ1.2: Gegenstände im Regal als Icons (Gürtel, Bogen, Schwert, Rüstung); ohne Icon-Sheet bleibt der Bogen aus Linien
+        let drawn = self.shelf_icons(s.x, &s.kind, shelf_count(s));
         if shelf_rack(&s.kind) == 0 {
             return labeled;
         }
@@ -237,9 +241,11 @@ impl Planner {
         } else {
             values().archer_cost.clone()
         };
-        for i in 0..s.bows {
-            // Bögen liegen sichtbar im Regal des Bogners
-            self.bow(s.x - px(40.0) + i as f64 * px(30.0));
+        if !drawn {
+            for i in 0..s.bows {
+                // Bögen liegen sichtbar im Regal des Bogners
+                self.bow(s.x - px(40.0) + i as f64 * px(30.0));
+            }
         }
         if info_tagged(info, s.id)
             && shelf_of(s) < shelf_rack(&s.kind)
@@ -257,6 +263,7 @@ impl Planner {
             self.with_text(key, |p, text| {
                 p.price_cost(s.x, h + px(20.0), (total, s.bow_paid_gold), text, &price, enough);
             });
+            self.item_tag(s.x, h + px(20.0), &s.kind); // EQ1.2: Icon des Gegenstands neben dem Preis
             labeled = true;
         }
         labeled
