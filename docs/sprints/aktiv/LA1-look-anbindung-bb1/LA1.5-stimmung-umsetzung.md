@@ -72,18 +72,22 @@ Lichthöfe weicher, Sterne, Mond-Hof, Nacht-Aufhellung (`sky.nightLift`/`backLif
 ### Runde 2
 `glow.sources` aus (Licht erhellt nur über die Lichtkarte), Dunst nur bei Taifun und Flut (`tint::weather_haze`), Schalter je Umgebungseffekt (`world/fx.rs`, `K3C_FX_OFF`), FPS-Anzeige (B-1180).
 
-### Runde 3 (Fackeln, 🧑 2026-11-21)
-- **Fackeln vor den Figuren:** Halter jetzt im Drawer `Part::Torches` auf der Ebene der Figuren (`Layer::ACTORS`, über den Gebäuden, unter den Figuren); die Flammen kommen nach der Lichtkarte (`draw_flames`) und bleiben hell.
-- **Fackeln auf den Türen:** `glow.torchSpread` 2 weitet die Versätze aus `light.json` nur in der Darstellung (die Sim-Daten bleiben wegen der Go-Golden); Licht (`for_each_torch`) und Flammen nutzen dieselben Orte.
-- **Burg ohne Fackel:** zwei Fackeln neben dem Tor (`glow.castleTorches` 2,6 Units), mit Licht.
-- **Fackel-Atmosphäre:** wärmerer Schein (`glow.warmth` 1,6, Exponent auf `glowColor`), Flamme größer (12/32 Units), dreischichtig und flackernd mit der Spielzeit. Profil go unverändert (Spread 1, keine Burg-Fackeln, Warmth 1).
-- **Eigene Flammen-Assets je Welt, verschiedene Fackeln, Lampen und Feuerschalen, Ankerpunkte an Häusern:** B-1181 (Größe L, braucht Entscheidungen von 🧑).
+### Runde 3 (Fackeln)
+Halter im Drawer `Part::Torches` (`Layer::ACTORS`), `glow.torchSpread` weitet die Versätze nur in der Darstellung, Burg mit zwei Fackeln (`glow.castleTorches`), wärmerer Schein (`glow.warmth`), Flamme größer und dreischichtig; Profil go unverändert.
+
+### Runde 4 (🧑 2026-11-21, Nachprüfung am PC: „sieht schon sehr gut aus“)
+- **Fackeln noch vor den Figuren:** Die Flammen kamen nach der Lichtkarte und lagen damit über allem. Jetzt zeichnet `draw_torch_part` Halter und Flammen zusammen auf der Figuren-Ebene vor den Figuren (`world/lightdraw.rs`).
+- **Mauer hinter Burg und Gebäuden:** `Planner::plan` baut jetzt zuerst Hintergrundmauer und Mauer-Bauplätze (`sites_pass(true)`), dann Burg, Entities und die übrigen Plätze (`props/plan.rs`, `plan_sites.rs`); Aufnahme: die Mauer steht hinter der Burg.
+- **Asynchrones Flackern, mindestens vier Muster:** `torch_flicker` (`world/light.rs`) mit fünf Mustern (je zwei Wellen) und eigener Verschiebung je Fackel; Flamme (Deckkraft und Größe) nutzt es.
+- **Erhellung flackert mit:** `LightData::lift` moduliert den Schein je Fackel mit demselben Muster (`glow.torchFlicker` 0,35; Profil go 0). Kosten: eine Sinus-Auswertung je Fackel und Lichtspalte (etwa 65 Spalten, einstellig bis zweistellig viele Fackeln), keine Allokation; gemessen habe ich die FPS nicht, 🧑 prüft am PC (F-Taste Leistungsanzeige).
+- **Bauplatz-Abstände nach Gebäudegröße:** B-1182 (Sim und Golden betroffen, braucht Entscheidung von 🧑).
+- **Asset-Änderungen immer für den Second Worker:** an B-1181 vermerkt (Lane zweit).
 
 ### Prüfung
-`cargo test -p k3c-game -p k3c-data --release` grün außer `economy_wie_go` (`ChestGold`, aus RU36.3, nicht von dieser Session); `clippy --all-targets -D warnings` und `fmt` sauber. Aufnahme Nacht mit Spielstand `spiel-8` (Hub 4): Fackeln neben den Türen, Burg mit zwei Fackeln und warmem Schein (`.work/torch-neu/shot-01.png`). `task check:diff` scheitert weiter am Lint einer Workbench-Oberfläche in `tools/`.
+`cargo test -p k3c-game -p k3c-data --release` grün außer `economy_wie_go` (`ChestGold`, aus RU36.3, nicht von dieser Session); `clippy --all-targets -D warnings` sauber. `task check:diff` scheitert weiter am Lint einer Workbench-Oberfläche in `tools/`. Aufnahmen: `.work/torch-neu/shot-01.png`.
 
 ### Für den Hauptrechner
-B-1178 (Wolken, Monumentalbild, Wellenstriche), B-1179 (Cheat-Panel), B-1181 (Licht-Assets), `economy_wie_go` rot.
+B-1178 (Wolken, Monumentalbild, Wellenstriche), B-1179 (Cheat-Panel), B-1181 (Licht-Assets, Second Worker), B-1182 (Bauplatz-Abstände), `economy_wie_go` rot.
 
 ### Abweichung vom Plan
 AC-05 nur teilweise erfüllt (B-1178).

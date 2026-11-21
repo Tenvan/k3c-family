@@ -25,6 +25,8 @@ pub struct Glow {
     pub castle_torches: f64,
     /// Exponent auf die Kanäle von `glowColor` im Lichtschein: über 1 wird er gelber und oranger (Fackel-Stimmung).
     pub warmth: f64,
+    /// Wie stark der Schein der Fackeln mit der Flamme flackert (0 = gar nicht, 1 = bis ganz aus).
+    pub torch_flicker: f64,
     /// Höchstzahl Höfe je Zelle (ohne Mond).
     pub max: usize,
     pub moon: Moon,
@@ -86,6 +88,7 @@ pub(crate) const GLOW_OFF: Glow = Glow {
     torch_spread: 2.0,
     castle_torches: 2.6,
     warmth: 1.6,
+    torch_flicker: 0.35,
     max: 8,
     moon: MOON_DEFAULT,
     monarch: MONARCH_DEFAULT,

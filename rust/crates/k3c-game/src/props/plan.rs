@@ -204,11 +204,13 @@ impl Planner {
         };
         let biome = w.biome.id.as_str();
         self.decor(w, k, clock);
+        // Mauern ganz hinten: Hintergrundmauer und Mauer-Bauplätze vor der Burg und allen Gebäuden
+        self.back_walls(w, k);
+        self.sites_pass(w, info, k, true);
         self.castle(w, info, k);
         self.entities(w, k, biome);
         self.nodes(w, k, biome);
-        self.back_walls(w, k);
-        self.sites(w, info, k);
+        self.sites_pass(w, info, k, false);
         self.cargo(w, k);
         self.mount_gate(w, k);
         self.hermit_hut(w, k);

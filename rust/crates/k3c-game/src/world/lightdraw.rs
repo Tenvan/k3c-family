@@ -17,7 +17,7 @@ use super::backdrop::Rgba;
 use super::cull::visible;
 use super::forest::forest_tint;
 use super::layers::stage_of;
-use super::light::{LightData, daylight, glow_alpha};
+use super::light::{LightData, daylight, glow_alpha, torch_flicker};
 use super::tint::{NEUTRAL, is_neutral, tint_of};
 use crate::view::cell::Cell;
 use crate::view::frame::Frame;
@@ -104,10 +104,10 @@ impl World {
         } else {
             tint
         };
+        self.light.flicker_t = f.clock;
         if daylight(&wd.cycle) < 1.0 || !is_neutral(tint) {
             self.draw_light_map(dst, c, wd, tint);
         }
-        self.draw_flames(dst, c, wd, f.clock);
         self.draw_stars(dst, c, wd, &st.level);
         self.draw_halos(dst, c, wd, &st.level, 1.0 + current().forest.fire * d);
         if self.mirror_wanted(f, dst) {
@@ -145,14 +145,15 @@ impl World {
         };
         let (k, top) = (&c.camera, c.screen_y(TORCH_LIFT));
         let (sw, sh) = (TORCH_STICK_W * k.scale, TORCH_STICK_H * k.scale);
-        self.light.for_each_torch(wd, |x| {
+        self.light.for_each_torch(wd, |_, x| {
             if visible(k, x, TORCH_FLAME_R) {
                 self.fill(dst, k.screen_x(x) - sw / 2.0, top, sw, sh, TORCH_STICK, 1.0, 1.0);
             }
         });
+        self.draw_flames(dst, c, wd, f.clock);
     }
 
-    /// DrawFlames zeichnet die Flammen nach der Lichtkarte, damit sie hell bleiben: drei Schichten (außen orange, Mitte
+    /// DrawFlames zeichnet die Flammen mit den Haltern (unter den Figuren, von der Lichtkarte nur wenig gedämpft): drei Schichten (außen orange, Mitte
     /// glowColor, Kern hell), nachts mit der Deckkraft ihres Scheins, flackernd mit der Spielzeit (am Tag aus).
     #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
     pub fn draw_flames(&self, dst: &mut dyn Canvas, c: &Cell, wd: &SimWorld, clock: f64) {
@@ -163,10 +164,7 @@ impl World {
         let (k, top) = (&c.camera, c.screen_y(TORCH_LIFT));
         let g = self.light.glow;
         let mid: Rgba = [(g[0] * 255.0) as u8, (g[1] * 255.0) as u8, (g[2] * 255.0) as u8, 255];
-        let mut i = 0usize;
-        self.light.for_each_torch(wd, |x| {
-            let n = i;
-            i += 1;
+        self.light.for_each_torch(wd, |n, x| {
             let size = TORCH_FLAME_R * flicker_scale(clock, n);
             if !visible(k, x, size) {
                 return;
@@ -185,14 +183,14 @@ impl World {
     }
 }
 
-/// Flicker ist die Deckkraft-Schwankung (0,75 … 1) der Flamme `i` zur Spielzeit `t`, je Fackel verschoben.
-fn flicker(t: f64, i: usize) -> f64 {
-    0.875 + 0.125 * (t * 9.0 + i as f64 * 1.7).sin()
+/// Flicker ist die Deckkraft-Schwankung (0,7 … 1) der Flamme `n` zur Spielzeit `t`.
+fn flicker(t: f64, n: usize) -> f64 {
+    0.7 + 0.3 * torch_flicker(t, n)
 }
 
-/// Flicker_scale ist die Größen-Schwankung (0,88 … 1,12) der Flamme.
-fn flicker_scale(t: f64, i: usize) -> f64 {
-    1.0 + 0.12 * (t * 7.3 + i as f64 * 2.3).sin()
+/// Flicker_scale ist die Größen-Schwankung (0,88 … 1,12) der Flamme, aus demselben Muster.
+fn flicker_scale(t: f64, n: usize) -> f64 {
+    0.88 + 0.24 * torch_flicker(t, n)
 }
 
 #[cfg(test)]

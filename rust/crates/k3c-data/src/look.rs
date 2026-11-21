@@ -187,6 +187,7 @@ const GO_LOOK: Look = Look {
         torch_spread: 1.0,
         castle_torches: 0.0,
         warmth: 1.0,
+        torch_flicker: 0.0,
         ..GLOW_OFF
     },
     sky: SKY_OFF,
