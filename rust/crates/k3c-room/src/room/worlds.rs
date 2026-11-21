@@ -127,6 +127,9 @@ impl<S: Store, L: Log> Manager<S, L> {
 pub struct WorldInfo {
     pub id: String,
     pub name: String,
+    /// Grund, warum die Welt nicht ladbar ist (RU36.6, B-1165); leer = ladbar. Nur im Dev-Mode stehen auch
+    /// nicht ladbare Dateien in der Liste.
+    pub error: String,
 }
 
 /// Die Dateinamen `<id>` der Welt-Dateien in `src`, nach Dateiname sortiert (Go `fs.ReadDir`); eingebettet gibt es nur die
@@ -151,14 +154,15 @@ fn world_ids(src: &Source) -> Vec<String> {
 
 impl<S: Store, L: Log> Manager<S, L> {
     /// Gos `WorldList`: die Welten, die ein neuer Spielstand wählen darf: die Standard-Welt immer zuerst, im Dev-Mode dazu
-    /// jede gültige Welt-Datei aus `worlds` (nach Dateiname sortiert). Ungültige Dateien fehlen in der Liste (Fehler beim
-    /// Anlegen).
+    /// jede Welt-Datei aus `worlds` (nach Dateiname sortiert). Ungültige Dateien stehen mit `error` in der Liste
+    /// (RU36.6), das Anlegen lehnt sie mit demselben Grund ab.
     pub fn world_list(&self) -> Vec<WorldInfo> {
         let mut out = Vec::new();
         if let Ok(std) = self.load_world_from(None, STANDARD_WORLD_ID) {
             out.push(WorldInfo {
                 id: std.id,
                 name: std.name,
+                error: String::new(),
             });
         }
         let Some(src) = self.worlds.as_ref().filter(|_| self.dev) else {
@@ -168,9 +172,18 @@ impl<S: Store, L: Log> Manager<S, L> {
             if id == STANDARD_WORLD_ID {
                 continue;
             }
-            if let Ok(w) = self.load_world_from(Some(src), &id) {
-                out.push(WorldInfo { id: w.id, name: w.name });
-            }
+            out.push(match self.load_world_from(Some(src), &id) {
+                Ok(w) => WorldInfo {
+                    id: w.id,
+                    name: w.name,
+                    error: String::new(),
+                },
+                Err(e) => WorldInfo {
+                    name: id.clone(),
+                    id,
+                    error: e.to_string(),
+                },
+            });
         }
         out
     }

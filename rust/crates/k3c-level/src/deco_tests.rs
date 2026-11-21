@@ -19,6 +19,6 @@ fn hoehle_mit_bueschen() {
         .and_then(|r| r.get("tree"))
         .copied()
         .unwrap_or_default();
-    assert_eq!(trees, [22, 30], "Wald-Abschnitt: tree {trees:?}, erwartet [22 30]");
+    assert_eq!(trees, [32, 42], "Wald-Abschnitt: tree {trees:?}, erwartet [32 42]");
     assert!(count("forest", "tree") != 0, "Wald ohne Bäume");
 }

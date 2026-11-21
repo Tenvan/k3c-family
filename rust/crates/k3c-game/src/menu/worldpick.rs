@@ -9,7 +9,7 @@ use k3c_platform::Canvas;
 
 use super::Shared;
 use super::draw::{Hero, Page};
-use super::keys::{Base, Handler, Key, cycle, run};
+use super::keys::{Base, Handler, Key, Note, cycle, run};
 use super::lobby::{LobbyScreen, new_lobby};
 use super::main_screen::by_hint;
 use super::texts::{TextKey, tr};
@@ -87,6 +87,20 @@ impl Handler for WorldPickScreen {
                 }
             }
             Key::OK => {
+                if let Some(w) = self.list.get(self.sel as usize).filter(|w| !w.error.is_empty()) {
+                    // RU36.6: nicht ladbare Welt (Dev-Mode) zeigt ihren Grund statt der Lobby
+                    let text = format!("{}: {}", w.id, w.error);
+                    k3c_platform::log::info("🚫 Welt nicht ladbar", &[("welt", &w.id), ("grund", &w.error)]);
+                    self.base.note = Note {
+                        raw: text.clone(),
+                        bad: true,
+                        set: true,
+                        ..Note::default()
+                    };
+                    self.base.cue(CueKind::Denied, -1, &text);
+                    self.base.ver += 1;
+                    return (StepKind::Stay, None);
+                }
                 let lb = self.lobby_of(d);
                 k3c_platform::log::info("🚦 Welt gewählt", &[("welt", &lb.world), ("device", &d)]);
                 self.base.cue(CueKind::Confirm, -1, "");
@@ -112,6 +126,7 @@ impl Screen for WorldPickScreen {
                 self.list = vec![WorldInfo {
                     id: "standard".to_string(),
                     name: "Standard".to_string(),
+                    error: String::new(),
                 }];
             }
             self.base.ver += 1;
