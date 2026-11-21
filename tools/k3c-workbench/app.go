@@ -21,6 +21,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/planning"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
+	"k3c/tools/k3c-workbench/internal/world"
 	"k3c/tools/k3c-workbench/internal/studioview"
 	"k3c/tools/k3c-workbench/internal/taskrun"
 	"k3c/tools/k3c-workbench/internal/usage"
@@ -37,6 +38,7 @@ const (
 	evTaskState    = "task:state"
 	evNotify       = "ui:notify" // Hinweis eines Agenten (notify_ui)
 	evPlanning     = "planning:changed"
+	evWorld        = "world:changed"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -120,6 +122,9 @@ func (a *App) startup(ctx context.Context) {
 	a.startResources()
 	planning.WatchIDs(a.svcCtx, a.root, planningPoll, func(ids []string) {
 		a.emit(a.ctx, evPlanning, planning.Changed{IDs: ids})
+	})
+	world.Watch(a.svcCtx, a.root, worldPoll, func(ids []string) {
+		a.emit(a.ctx, evWorld, world.Changed{IDs: ids})
 	})
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {

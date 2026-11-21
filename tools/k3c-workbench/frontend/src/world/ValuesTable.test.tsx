@@ -25,6 +25,7 @@ const flush = async () => {
 async function mount(world = 'wueste'): Promise<HTMLElement> {
   localStorage.clear();
   localStorage.setItem('k3c-workbench.world.id', world);
+  localStorage.setItem('k3c-workbench.world.tab', 'werte');
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
@@ -51,16 +52,13 @@ const rows = (host: ParentNode) => [...host.querySelectorAll('[role="row"][data-
 const chip = (host: ParentNode, text: string) => [...host.querySelectorAll('[role="group"][aria-label="Zeilen"] button')].find((b) => b.textContent?.startsWith(text))!;
 
 describe('Werte-Tabelle (B-1173)', () => {
-  it('zeigt Gruppen nach Thema mit Zahl der Felder und Überschreibungen, Gruppen lassen sich einklappen', async () => {
+  it('zeigt Gruppen nach Thema mit Zahl der Felder und Überschreibungen, Gruppen stehen mit Überschrift untereinander', async () => {
     const host = await mount();
     const group = host.querySelector('[data-group="buildings:tower"]')!;
     expect(group.textContent).toContain('4 Felder');
     expect(group.textContent).toContain('1 überschrieben');
     expect(rows(group)).toEqual(['tower.cost', 'tower.hp', 'tower.range', 'tower.needsArcher']);
-    await click(group.querySelector('[aria-expanded]')!);
-    expect(rows(host.querySelector('[data-group="buildings:tower"]')!)).toEqual([]);
-    await click(host.querySelector('[data-group="buildings:tower"] [aria-expanded]')!);
-    expect(rows(host.querySelector('[data-group="buildings:tower"]')!)).toHaveLength(4);
+    expect(host.querySelectorAll('[role="table"] [aria-expanded]')).toHaveLength(0); // keine Expander im Detail
   });
 
   it('Standardwert, Wert und Abweichung je Zeile', async () => {

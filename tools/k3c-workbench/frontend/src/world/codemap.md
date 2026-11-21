@@ -37,6 +37,8 @@ Welten anlegen und löschen, Etappen der Inseln setzen (Querschnitt, B-963) und 
   `filterRows` mit `RowMode`, `groupRows`/`RowGroup`, `filesOf`, `GENERAL`; `valueText` aus `@webkit/lib/valueEdit`),
   `crossModel.ts` (Etappen-Gruppen `groupEtappen`, `etappeOf`, Palette `paletteOf`/`gradientOf`, `bandText`, `islandAnchor`,
   `stageId`), `kindIcons.ts` (`iconOf`, `nameOf`, `FALLBACK_ICON`).
+- Reiter der Seite (B-1216, gemerkt `world.tab`): **Inseln** (`WorldPromptBar` = „Welt ändern lassen“ mit `worldPrompts.ts`, Übersicht, Chunk-Vorschau, Inspektor, Natur), **Geschichte** (`StoryTab`: links kompakter Baum Start → Etappen mit Inseln (Ankunft, Endboss, Sieg) → Ende → Flaschenpost → Wortschatz, rechts Text und Prompt des gewählten Knotens über `storyPrompts.ts`, `PromptRow`), **Werte** (`WorldValues` mit Baum `ValueTree`: aufklappbarer Baum aus Dateien und Themen mit Symbol und Namen aus `valueIcons.ts`, Wahl filtert die Tabelle).
+- Auto-Reload (B-1216): Das Backend (`internal/world/watch.go`) meldet geänderte Dateien unter data/worlds und data/*.json als Ereignis `world:changed`; `useWorld` lädt Liste, gewählte Welt (still, Stufe bleibt) und Level neu.
 - `useWorld.ts`: Welten-Liste, gewählte Welt (gemerkt `world.id`), `StageChoice` (Welt, Insel, Index), Seed
   (`DEFAULT_SEED = 'k3c'`), Level und Werte; eine neuere Anfrage macht eine ältere ungültig. Dazu `create`, `remove`,
   `setEtappe` (lädt die Welt danach neu) und `crossRefresh` (verwirft eine Stufe im Querschnitt nach einer Natur-Änderung);

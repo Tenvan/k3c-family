@@ -4,12 +4,9 @@
 //! (Sitze, Geräte, Sprache, Profile, Meldungen) `hud-<name>.frame.json`, Sim-Antworten `hud-<name>.simview.json`, Plätze
 //! `hud-<name>.layout.json`, Glyph-Schlüssel `hud-<name>.keys.json` und das Go-Bild `hud-<name>.go.png` (nur
 //! `drawItems`, ohne Welt-Texte, Seekarte, Menü und Boss-Leiste; Radar und Geschichtszeile zeichnet Rust bis RU23 nicht).
-//! Rust zeichnet mit `still::HUD_LAYERS`; Schwellen wie in RU13.6 und RU16.6, unverändert.
-//!
-//! Die gerenderte Grafik (`public/grafik`, `task gen:paper`) ist nicht eingecheckt: Ohne sie überspringen die
+//! Rust zeichnet mit `still::HUD_LAYERS`; Schwellen wie in RU13.6 und RU16.6, unverändert. Die gerenderte Grafik (`public/grafik`, `task gen:paper`) ist nicht eingecheckt: Ohne sie überspringen die
 //! Bild- und Platz-Test mit Hinweis (`K3C_STILL_REQUIRE=1`: Fehler); `K3C_GRAFIK_DIR` zeigt auf einen anderen Ordner (die
-//! Plätze hängen an den Maßen der Icons des Vorrats). Der Test der Glyph-Schlüssel braucht die Grafik nicht. `K3C_STILL_OUT=<ordner>` schreibt die
-//! Rust-Bilder zum Ansehen.
+//! Plätze hängen an den Maßen der Icons des Vorrats). Der Test der Glyph-Schlüssel braucht die Grafik nicht. `K3C_STILL_OUT=<ordner>` schreibt Rust-Bilder.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)] // Testcode: Fehlschlag ist der Befund
 
 use std::collections::HashMap;
@@ -116,7 +113,9 @@ struct LayoutCell {
 }
 
 fn layout_go(name: &str) -> LayoutFile {
-    serde_json::from_slice(&std::fs::read(bild(name, "layout.json")).unwrap()).unwrap()
+    let mut go: LayoutFile = serde_json::from_slice(&std::fs::read(bild(name, "layout.json")).unwrap()).unwrap();
+    go.cells.iter_mut().for_each(|c| _ = c.items.remove("12")); // 12 = Beitreten-Meldung, B-1212 entfernt
+    go
 }
 
 /// (mittlere Abweichung je Kanal, Anteil abweichender Pixel) über die Bildpunkte außerhalb von `mask`.
@@ -315,7 +314,7 @@ fn plaetze_stimmen_mit_go_ueberein() {
             b.sort();
             // Rust zeigt mindestens die Elemente von Go (neue HUD-Elemente seit RU61 erlaubt)
             assert!(
-                b.iter().filter(|k| k.as_str() != "12").all(|k| a.contains(k)), // 12 = Beitreten-Meldung, B-1212 entfernt
+                b.iter().all(|k| a.contains(k)),
                 "{name} Zelle {index}: Elemente {a:?} ohne {b:?}"
             );
             for (id, r) in g.items.iter().filter(|(id, _)| !changed(name, id)) {
