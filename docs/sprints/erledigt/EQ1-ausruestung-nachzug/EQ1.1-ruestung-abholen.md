@@ -1,6 +1,6 @@
 # EQ1.1 · Kämpfer holen die Rüstung am Gebäude ab
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -56,5 +56,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft (B-1205 AC-01 bis AC-03): Elite entsteht erst, wenn ein Kämpfer die Rüstung am Rüstungsschmied abholt (`unit/armor.rs`, `fetchArmor`-Auftrag). `armor_convert` entfernt. Bei Gefahr (Nacht oder Welle) holt niemand, je Rüstung genau ein Kämpfer, ohne Kandidat bleibt die Rüstung im Regal; nur mit `native_rules`. Tests in `unit/combo_tests.rs` (3 neue).
+- Review (k3c-reviewer): zwei mittlere Befunde behoben: Holer mit Auftrag wird nicht in Gruppe/Trupp gezogen (`combat/squad.rs`), Schild-Holer wird nicht als Rüstungsholer gewählt.
+- Abweichung: `combat/squad.rs` liegt außerhalb der erlaubten Dateien (nur zwei Bedingungen).
+- `cargo test -p k3c-sim --lib`: nur die bekannten Roten (`insel_nach_1000_schritten_wie_go`, `eingebettete_welten_gueltig`); clippy sauber, fmt ok. `check:diff` bricht an diesen bekannten Roten ab (B-1190 AC-04).
+- PC-Abnahme Spielgefühl (Holer läuft sichtbar zum Gebäude): Ralf, im Abnahme-Ticket EQ1.

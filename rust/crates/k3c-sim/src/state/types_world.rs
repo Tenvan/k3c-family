@@ -238,6 +238,13 @@ pub struct World {
     /// ohne JSON.
     #[serde(skip)]
     pub island_view: Option<super::island_ref::IslandView>,
+    /// EQ1.4 (B-1208, nur native Regeln): Kämpfer aller anderen Stufen der Insel; das Truppen-Limit gilt für die ganze
+    /// Insel. `Island::stage_ref` setzt sie je Takt, 0 ohne Insel oder mit Go-Regeln; ohne JSON.
+    #[serde(skip)]
+    pub fighters_elsewhere: i64,
+    /// EQ1.4: Limit-Zuschlag der Kasernen aller anderen Stufen (ohne Basis, die zählt einmal je Insel); ohne JSON.
+    #[serde(skip)]
+    pub limit_elsewhere: i64,
 }
 
 impl Default for World {
@@ -321,6 +328,8 @@ impl Default for World {
             pure: false,
             island_events: None,
             island_view: None,
+            fighters_elsewhere: 0,
+            limit_elsewhere: 0,
         }
     }
 }

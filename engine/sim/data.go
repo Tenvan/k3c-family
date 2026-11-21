@@ -31,6 +31,8 @@ type BuildingData struct {
 	SwordRack                        int                // Werkstatt: Schwerter im Regal (unit_warrior.go)
 	HammerRack                       int                // Werkstatt: Hämmer im Regal (unit_hammer.go, B-951)
 	HammerCost                       Cost               // Werkstatt: Preis eines Hammers
+	ArmorRack                        int                // Rüstkammer: Rüstungen im Regal (nur Rust, EQ1.3)
+	ArmorCost                        Cost               // Rüstkammer: Preis einer Rüstung (nur Rust, EQ1.3)
 	Offers                           []Offer            // Angebots-Zahlziele am Gebäude (Q52), Berufe: unit_professions.go
 	CraftSeconds                     map[string]float64 // Herstellungszeit je Stück (Q35, unit_professions.go)
 	Levels                           []LevelData        // Ausbau-Stufen am Platz (Mauer, Turm, Tor; hub_level.go)

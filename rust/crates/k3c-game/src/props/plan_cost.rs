@@ -18,6 +18,19 @@ const RESOURCE_ICONS: [(&str, &str); 5] = [
     ("crystal", "icons/icon-kristall"),
 ];
 
+/// `item_icon` ist das Icon des Gegenstands, den der Hersteller `kind` ins Regal legt (EQ1.2; wie `ITEM_ICONS` im HUD,
+/// `props` darf `hud` nicht importieren): Werkstatt Gürtel, Bogner Bogen, Waffenschmied Schwert, Rüstungsschmied
+/// Rüstung; "" für jeden anderen Platz.
+pub(super) fn item_icon(kind: &str) -> &'static str {
+    match kind {
+        "workshop" => "icons/icon-guertel",
+        "bowyer" => "icons/icon-bogen",
+        "smithy" => "icons/icon-schwert",
+        "armory" => "icons/icon-ruestung",
+        _ => "",
+    }
+}
+
 pub(super) fn resource_icon(res: &str) -> &'static str {
     RESOURCE_ICONS.iter().find(|(r, _)| *r == res).map_or("", |(_, a)| a)
 }
@@ -87,6 +100,41 @@ impl Planner {
             self.label_sized(x, ty, &short.join(", "), clr, SMALL);
         }
         self.label_sized(x, ty + ICON + GAP, name, clr, SMALL);
+    }
+
+    /// `shelf_icons`: je Stück im Regal ein Icon des Gegenstands (EQ1.2), links beginnend bei `x - 40`, Abstand 30 Spiel-
+    /// Pixel; `false`, wenn das Icon-Sheet fehlt (dann bleibt der Rückfall des Aufrufers).
+    pub fn shelf_icons(&mut self, x: f64, kind: &str, count: i64) -> bool {
+        let look = Look::new(item_icon(kind), ICON_ANIM);
+        if self.size(look).is_none() {
+            return false;
+        }
+        for i in 0..count {
+            self.top.push(Item {
+                shape: Shape::Sprite,
+                look,
+                x: x - px(40.0) + i as f64 * px(30.0),
+                y: px(46.0),
+                w: px(30.0),
+                ..Default::default()
+            });
+        }
+        true
+    }
+
+    /// `item_tag`: das Icon des Gegenstands links neben dem Preisschild am Regal (EQ1.2).
+    pub fn item_tag(&mut self, x: f64, y: f64, kind: &str) {
+        let look = Look::new(item_icon(kind), ICON_ANIM);
+        if self.size(look).is_some() {
+            self.top.push(Item {
+                shape: Shape::Sprite,
+                look,
+                x: x - px(56.0),
+                y,
+                w: px(26.0),
+                ..Default::default()
+            });
+        }
     }
 
     /// `cost_row`: Icon und Zahl je Rohstoff, die Reihe mittig um x, Unterkante y.

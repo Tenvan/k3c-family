@@ -22,7 +22,9 @@ pub use crate::economy::{scaled_gold, scatter_coins}; // Von RU18.2 portiert (ec
 
 // Von RU18.1 portiert (building_*.go): die Import-Stelle bleibt `links`, damit die Gruppen `unit` und `enemies`
 // unverändert bleiben.
-pub use crate::building::barracks::{fighters, troop_limit, weapons_in_flight};
+pub use crate::building::barracks::{
+    barracks_bonus, fighters, island_fighters, island_limit, troop_limit, weapons_in_flight,
+};
 pub use crate::building::outpost::{outpost, outpost_job};
 pub use crate::building::repair::{repair, repair_job};
 pub use crate::building::spell_tower::is_spell_tower;

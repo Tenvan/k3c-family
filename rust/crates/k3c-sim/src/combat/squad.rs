@@ -18,7 +18,7 @@ pub fn free_warriors(w: &World) -> Vec<usize> {
 
 fn is_free_warrior(w: &World, ti: usize) -> bool {
     let t = &w.troops[ti];
-    is_soldier(t) && t.group == 0 && !t.shield_fetch
+    is_soldier(t) && t.group == 0 && !t.shield_fetch && t.job.is_none() // EQ1.1: Rüstungsholer bleibt frei von Gruppen
 }
 
 /// Go: `countFetching`: Zahl der Truppen, die gerade ihr Schild holen.
@@ -209,7 +209,7 @@ fn fill_squad(w: &mut World, v: &WorldValues, pi: usize, gate_x: f64) {
             } else {
                 archers += 1;
             }
-        } else if t.group != 0 || troop_side(w, t) != banner {
+        } else if t.group != 0 || t.job.is_some() || troop_side(w, t) != banner {
             continue;
         } else if is_soldier(t) {
             if nearer(best_s, ti) {

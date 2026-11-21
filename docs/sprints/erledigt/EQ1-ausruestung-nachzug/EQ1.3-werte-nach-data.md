@@ -1,6 +1,6 @@
 # EQ1.3 · Ausrüstungswerte nach data/buildings.json
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -58,5 +58,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-03 geprüft (B-1206 AC-01 bis AC-03): neue optionale Felder `armorRack` und `armorCost` an der Rüstkammer sowie `craftSeconds.sword` (10) an der Schmiede in `data/buildings.json`; `k3c-data` (`BuildingData`), Formtabelle und Go-Struct (`engine/sim/data.go`, nur mitgelesen) kennen sie. Die Sim liest sie (`unit/hammer.rs`: `armor_cost(v)`, `armor_rack(v)`, `sword_rack(v, kind)`; Herstellzeiten liefen schon über `craftSeconds`); ohne Feld gelten die alten Zahlen als Standardwert. Zahlen unverändert.
+- Test `unit/equip_tests.rs::ausruestungswerte_kommen_aus_den_daten` (Wert aus den Daten wirkt, ohne Feld alter Wert).
+- Golden `testdata/rust/data-tree.json.gz` neu geschrieben (`go test ./internal/detvec/ -write`), Grund: neue Datenfelder. `go test ./sim/` und `./internal/detvec/` grün.
+- `cargo test -p k3c-sim`: nur die bekannten Roten (`insel_nach_1000_schritten_wie_go`, `eingebettete_welten_gueltig`, B-1190 AC-04); fmt, clippy sauber. `task check:diff`: Regeln, Go, fmt, lint grün, rust-test nur an den bekannten Roten.
+- Abweichung: `k3c-sim/src/world/values_shape_buildings.rs` (Formtabelle) und `unit/mod.rs` außerhalb der erlaubten Dateien, nötig für die neuen Felder.

@@ -8,7 +8,8 @@
 //! deterministisch: Stufen und Truppen in Index-Reihenfolge, je Stufe höchstens ein Bürger zugleich unterwegs nach oben.
 
 use super::Island;
-use crate::state::links::{fighters, troop_limit};
+use crate::state::common::event;
+use crate::state::links::{barracks_bonus, fighters, troop_limit, weapons_in_flight};
 use crate::state::{Troop, World};
 
 /// Der Auftrag, der den Bürger zur Treppe nach oben führt; `amount` 1 heißt: an der Treppe angekommen.
@@ -26,9 +27,11 @@ fn fetching(w: &World, typ: &str) -> i64 {
 
 /// Liegt im Regal einer gebauten Werkstatt etwas, das noch kein Bürger oben holt und ein Bürger von unten holen darf
 /// (Hammer immer, Schwert nur unter dem Truppen-Limit wie in `weapon_to_fetch`)?
-fn surface_gear(w: &World, below: &World) -> bool {
-    // das Schwert wird oben geholt und unten gebraucht: beide Stufen müssen unter ihrem Truppen-Limit liegen
-    let room = fighters(w) < troop_limit(w) && fighters(below) < troop_limit(below);
+fn surface_gear(isl: &Island) -> bool {
+    let w = &isl.stages[0];
+    // EQ1.4: das Truppen-Limit gilt für die ganze Insel
+    let (all, limit) = island_totals(isl);
+    let room = all < limit;
     let (swords, hammers) = w
         .sites
         .iter()
@@ -45,6 +48,29 @@ pub fn built_stairs(w: &World, kind: &str) -> Option<f64> {
         .map(|s| s.x)
 }
 
+/// Kämpfer der Stufe plus die Bürger, die gerade eine Kämpfer-Waffe holen (sie zählen für das Limit mit).
+fn committed(w: &World) -> i64 {
+    fighters(w) + weapons_in_flight(w, usize::MAX)
+}
+
+/// Kämpfer und Truppen-Limit der ganzen Insel: Basis einmal, Zuschlag je gebauter Kaserne in jeder Stufe.
+pub fn island_totals(isl: &Island) -> (i64, i64) {
+    let all = isl.stages.iter().map(committed).sum();
+    let bonus: i64 = isl.stages.iter().skip(1).map(barracks_bonus).sum();
+    (all, troop_limit(&isl.stages[0]) + bonus)
+}
+
+/// Setzt `fighters_elsewhere` und `limit_elsewhere` der Stufe `i` (nur native Regeln, sonst 0).
+pub fn share_limit(isl: &mut Island, i: usize) {
+    let native = isl.values().native_rules;
+    let (all, _) = island_totals(isl);
+    let bonus: i64 = isl.stages.iter().map(barracks_bonus).sum();
+    let w = &mut isl.stages[i];
+    let (own_f, own_b) = (committed(w), barracks_bonus(w));
+    w.fighters_elsewhere = if native { all - own_f } else { 0 };
+    w.limit_elsewhere = if native { bonus - own_b } else { 0 };
+}
+
 /// `IslandRef::gear_above` der Stufe `i`: oben gibt es etwas zu holen, die Stufe hat keine eigene Werkstatt und eine
 /// gebaute Treppe nach oben; nur mit nativen Regeln.
 pub fn gear_above(isl: &Island, i: usize) -> bool {
@@ -53,7 +79,7 @@ pub fn gear_above(isl: &Island, i: usize) -> bool {
     }
     let w = &isl.stages[i];
     let own = w.sites.iter().any(|s| s.kind == "workshop" && s.state == "built");
-    !own && built_stairs(w, "stairsUp").is_some() && surface_gear(&isl.stages[0], w)
+    !own && built_stairs(w, "stairsUp").is_some() && surface_gear(isl)
 }
 
 /// Hat der Bürger oben etwas geholt (Beruf, Kämpfer) oder gibt es für ihn nichts zu tun?
@@ -126,6 +152,10 @@ fn take(w: &mut World, ti: usize) -> (usize, Troop) {
     crate::unit::jobs::release_job(w, ti);
     crate::combat::leave_squad(w, ti);
     let t = w.troops.remove(ti);
+    // EQ1.5: Die Figur verschwindet an der Treppe; der Hinweis lässt die Anzeige sie dort ausblenden
+    w.events.push(event(
+        serde_json::json!({"type": "stairsLeave", "x": t.x, "kind": t.kind}),
+    ));
     (usize::try_from(t.errand_from - 1).unwrap_or(0), t)
 }
 
@@ -148,6 +178,10 @@ fn place(w: &mut World, old: Troop, x: f64, errand_from: i64) {
             .count();
         if left <= right { w.hub_x - 1.0 } else { w.hub_x + 1.0 }
     };
+    // EQ1.5: ... und an der Treppe der anderen Stufe wieder erscheinen (Einblenden)
+    w.events.push(event(
+        serde_json::json!({"type": "stairsArrive", "x": x, "kind": old.kind, "id": id}),
+    ));
     w.troops.push(Troop {
         id,
         kind: old.kind,

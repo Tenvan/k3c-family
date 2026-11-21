@@ -217,3 +217,55 @@ fn pickups_und_muenzen_an_den_positionen() {
         vec![Shape::Rect, Shape::Circle]
     );
 }
+
+/// EQ1.2: Das Regal der vier Hersteller zeigt je Stück ein Icon des Gegenstands; ein leeres Regal zeigt keins.
+#[test]
+fn regal_zeigt_je_stueck_ein_icon() {
+    let cases = [
+        ("workshop", "icons/icon-guertel", 3),
+        ("bowyer", "icons/icon-bogen", 2),
+        ("smithy", "icons/icon-schwert", 1),
+        ("armory", "icons/icon-ruestung", 3),
+    ];
+    for (kind, icon, n) in cases {
+        let mut site = Site {
+            id: 7,
+            kind: kind.to_string(),
+            x: 10.0,
+            state: "built".to_string(),
+            ..Default::default()
+        };
+        match kind {
+            "workshop" => site.hammers = n,
+            "bowyer" => site.bows = n,
+            "smithy" => site.swords = n,
+            _ => site.armors = n,
+        }
+        let w = World {
+            sites: vec![site.clone()],
+            ..Default::default()
+        };
+        let mut p = Planner::new(Some(StubSheets::rc()));
+        p.sites(&w, None, &camera(10.0));
+        let got = p
+            .top
+            .iter()
+            .filter(|it| it.shape == Shape::Sprite && it.look.asset == icon)
+            .count();
+        assert_eq!(got as i64, n, "{kind}: Icons im Regal");
+        site.hammers = 0;
+        site.bows = 0;
+        site.swords = 0;
+        site.armors = 0;
+        let w = World {
+            sites: vec![site],
+            ..Default::default()
+        };
+        let mut p = Planner::new(Some(StubSheets::rc()));
+        p.sites(&w, None, &camera(10.0));
+        assert!(
+            !p.top.iter().any(|it| it.look.asset == icon),
+            "{kind}: leeres Regal ohne Icon"
+        );
+    }
+}

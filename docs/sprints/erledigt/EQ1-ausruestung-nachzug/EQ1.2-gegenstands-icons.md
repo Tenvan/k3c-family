@@ -1,6 +1,6 @@
 # EQ1.2 · Gegenstands-Icons am Regal und im Holen-Hinweis
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -55,5 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 geprüft: Das Regal der vier Hersteller zeigt je Stück ein Icon (Werkstatt Gürtel, Bogner Bogen, Waffenschmied Schwert, Rüstungsschmied Rüstung; `props/plan_cost.rs` `shelf_icons`, `item_icon`, Zählung `props/sites.rs` `shelf_count`); ohne Icon-Sheet bleibt der Bogen aus Linien. Am Preisschild des Regals steht das Icon des Gegenstands links neben dem Preis (`item_tag`). Die vier Icons sind im HUD gemeldet (`hud/icons.rs` `ITEM_ICONS`, `HUD_ASSETS` 11 Einträge). Test `regal_zeigt_je_stueck_ein_icon` (alle vier Hersteller, leeres Regal ohne Icon), Icon-Test erweitert. `cargo test -p k3c-game --lib` (1016) grün, clippy -D warnings sauber. `alloc_je_bild` unverändert (Maximum 942, Mittel 620,9, Summe 111148 wie vor der Session; bekannt rot, B-1190 AC-04), `task check:diff` bricht nur daran ab (B-1207 AC-03 erfüllt: keine neuen Allokationen je Bild).
+
+Abweichung: Der Holen-Hinweis ist das Preisschild am Regal (Preis mit Gegenstands-Icon), einen eigenen Text-Hinweis gibt es im Spiel nicht. Das Regal des Waffenschmieds und des Rüstungsschmieds hat kein Preisschild (nur Werkstatt und Bogner), dort zeigt nur das Regal die Icons. Kein Reviewer-Agent.

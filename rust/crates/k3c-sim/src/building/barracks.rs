@@ -25,15 +25,28 @@ pub fn weapons_in_flight(w: &World, ti: usize) -> i64 {
 
 /// Go: `troopLimit` ist das Kämpfer-Limit der Welt: Basis plus Zuschlag je gebauter Kaserne; eine zerstörte zählt nicht.
 pub fn troop_limit(w: &World) -> i64 {
+    let base = values(w).buildings.get("barracks").map_or(0, |b| b.troop_limit.base);
+    base + barracks_bonus(w)
+}
+
+/// Limit-Zuschlag der gebauten Kasernen der Stufe (ohne Basis).
+pub fn barracks_bonus(w: &World) -> i64 {
     let v = values(w);
-    let (base, per_building) = v
-        .buildings
-        .get("barracks")
-        .map_or((0, 0), |b| (b.troop_limit.base, b.troop_limit.per_building));
+    let per_building = v.buildings.get("barracks").map_or(0, |b| b.troop_limit.per_building);
     let built = w
         .sites
         .iter()
         .filter(|s| s.kind == "barracks" && s.state == "built")
         .count() as i64;
-    base + per_building * built
+    per_building * built
+}
+
+/// EQ1.4: Kämpfer der ganzen Insel (diese Stufe plus alle anderen); ohne Insel oder mit Go-Regeln nur die Stufe.
+pub fn island_fighters(w: &World) -> i64 {
+    fighters(w) + w.fighters_elsewhere
+}
+
+/// EQ1.4: Truppen-Limit der ganzen Insel (Basis einmal, Zuschlag aller Kasernen); ohne Insel nur die Stufe.
+pub fn island_limit(w: &World) -> i64 {
+    troop_limit(w) + w.limit_elsewhere
 }
