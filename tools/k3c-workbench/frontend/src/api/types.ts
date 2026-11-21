@@ -406,6 +406,12 @@ export interface PlanningChanged {
   ids?: string[];
 }
 
+/** Nutzlast von `world:changed` (Go: world.Changed, B-1216): IDs der Welten, deren Datei sich geändert hat; fehlt ids,
+ *  hat sich eine Basis-Datei geändert (Werte aller Welten) und jede Welt lädt neu. */
+export interface WorldChanged {
+  ids?: string[];
+}
+
 /** Unterschied eines Worktrees zur Wurzel (Go: planning.Change); nur zur Anzeige. */
 export interface WorktreeChange {
   kind: 'neu' | 'geändert' | 'entfernt';
@@ -462,6 +468,8 @@ export interface Events {
   'ui:notify': Notice;
   /** Eine Datei der Planung (docs/sprints, docs/backlog, Plan, Fragenkatalog, Glossar) hat sich geändert; Nutzlast sind die geänderten IDs, null heißt alles neu laden (B-909). */
   'planning:changed': PlanningChanged | null;
+  /** Eine Datei der Welten (data/worlds, Basis-Werte, Biome) hat sich geändert, durch Editor, MCP oder von Hand (B-1216). */
+  'world:changed': WorldChanged | null;
   /** Ein Lauf der Balancing-Seite hat Zustand, Phase oder Fortschritt geändert (höchstens etwa 2 je Sekunde je Lauf, B-662). */
   'balance:runs': BalanceRun;
   /** Berichte oder Baselines haben sich geändert (neu, gelöscht, bewertet, Baseline gesichert); ohne Nutzlast. */

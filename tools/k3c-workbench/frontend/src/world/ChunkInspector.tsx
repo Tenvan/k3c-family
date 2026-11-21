@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { ActionButton, Badge, Flex, IconButton, Text } from '@webkit/atoms';
-import { errorText } from '@webkit/lib/errors';
-import { backend, type PlannedChunk } from '../api';
+import { Badge, Flex, Text } from '@webkit/atoms';
+import type { PlannedChunk } from '../api';
+import { PromptRow } from './PromptRow';
 import { iconOf, nameOf } from './kindIcons';
 import { objectsIn, plannedAt, slotLabel, type LevelModel, type ModelChunk } from './levelView';
 
@@ -40,25 +39,6 @@ function PlannedFields({ p }: { p: PlannedChunk }) {
   );
 }
 
-function PromptRow({ prompt }: { prompt: string }) {
-  const [note, setNote] = useState<{ ok: boolean; text: string } | null>(null);
-  const run = async (open: boolean) => {
-    try {
-      await (open ? backend.openInClaude(prompt) : navigator.clipboard.writeText(prompt));
-      setNote({ ok: true, text: open ? 'In Claude geöffnet' : 'Prompt kopiert' });
-    } catch (e) {
-      setNote({ ok: false, text: errorText(e) });
-    }
-  };
-  return (
-    <Flex gap="2" align="center" wrap="wrap">
-      <ActionButton size="1" variant="soft" onClick={() => run(false)}>Prompt kopieren</ActionButton>
-      <IconButton size="1" variant="ghost" aria-label="Abschnitt in Claude ändern" title="In Claude öffnen" onClick={() => run(true)}>✦</IconButton>
-      {note && <Text size="1" color={note.ok ? 'green' : 'red'}>{note.text}</Text>}
-    </Flex>
-  );
-}
-
 /** Inspektor: ohne Wahl ein Hinweis, sonst Kopf, Objekte im Abschnitt, Planung und Prompt an Claude. */
 export function ChunkInspector({ model, index, place }: { model: LevelModel | null; index: number | null; place: ChunkPlace | null }) {
   const chunk = index === null ? undefined : model?.chunks.find((c) => c.index === index);
@@ -87,7 +67,7 @@ export function ChunkInspector({ model, index, place }: { model: LevelModel | nu
         </ul>
       )}
       {planned && <PlannedFields p={planned} />}
-      <PromptRow prompt={chunkPrompt(place, chunk, planned)} />
+      <PromptRow prompt={chunkPrompt(place, chunk, planned)} title="Abschnitt in Claude ändern" />
     </section>
   );
 }

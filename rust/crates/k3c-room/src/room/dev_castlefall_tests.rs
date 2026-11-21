@@ -1,7 +1,8 @@
 //! Test aus `dev_castlefall_test.go` (WZ14.5, B-468/AC-05): Die Dev-Aktion `castleFall` löst den Stufenverlust in der Stufe
 //! des Monarchen aus, über Gerät und `/dm`.
 use super::dev_tests::{act, act_slot, dev, dev_room};
-use super::testutil::{create_room_in, einzel_manager, rm};
+use super::einzel_testutil::{create_room_in, einzel_manager};
+use super::testutil::rm;
 use crate::fehler::Fehler;
 
 #[test]

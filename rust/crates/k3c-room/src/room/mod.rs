@@ -38,6 +38,8 @@ mod dev_grade_tests;
 mod dev_tests;
 #[cfg(test)]
 mod dev_timescale_tests;
+#[cfg(test)]
+mod einzel_testutil;
 mod env;
 #[cfg(test)]
 mod events_tests;

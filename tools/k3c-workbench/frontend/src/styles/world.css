@@ -76,3 +76,22 @@
 .wd-map-sil { display: flex; flex-direction: column; align-items: center; gap: 1px; width: 96px; }
 .wd-map-sil i { display: block; height: 7px; border-radius: 2px; }
 .wd-map-sea { margin: 2px 0; }
+
+/* Geschichte (B-1216): Baum mit Symbol und Name je Knoten */
+.st-tree { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.st-group > .st-tree { margin-left: 0.5rem; border-left: 1px solid var(--gray-a5); padding-left: 0.75rem; margin-top: 4px; }
+.st-icon { display: inline-block; width: 1.4rem; text-align: center; }
+.st-lines { margin: 0 0 0 1.9rem; }
+.st-island { display: block; margin: 4px 0; }
+.wd-wish { width: 28rem; max-width: 100%; }
+
+/* Werte als Baum (B-1216): links Dateien und Themen, rechts die Felder */
+.vt-layout { display: grid; grid-template-columns: minmax(14rem, 18rem) 1fr; gap: 12px; align-items: start; }
+.vt-tree { display: flex; flex-direction: column; gap: 2px; max-height: 70vh; overflow-y: auto; }
+.vt-tree [role="group"] { display: flex; flex-direction: column; gap: 2px; }
+.vt-node { justify-content: flex-start; gap: 6px; width: 100%; }
+.vt-node[aria-level="2"] { padding-left: 1.6rem; }
+.vt-icon { display: inline-block; width: 1.4rem; text-align: center; }
+.vt-sub { padding: 6px 4px 2px; }
+.vt-fields { min-width: 0; overflow-x: auto; }
+@media (max-width: 900px) { .vt-layout { grid-template-columns: 1fr; } }

@@ -21,6 +21,8 @@ Prompt an Claude ändern lassen, Natur-Werte der Stufe festsetzen und Overrides 
 - Reine Logik: `levelView.ts` (`levelModel` als Zeichenmodell, unvollständige Antwort -> leeres Modell mit Warnung
   `INCOMPLETE`; `slotsOf` wie `gen.slotIndex` in Go umgekehrt; `objectsIn`), `worldOverrides.ts` (`valueRows`,
   `valueText`, `parseValue`, Filter), `kindIcons.ts` (`iconOf`, `nameOf`, `FALLBACK_ICON`).
+- Reiter der Seite (B-1216, gemerkt `world.tab`): **Inseln** (`WorldPromptBar` = „Welt ändern lassen“ mit `worldPrompts.ts`, Übersicht, Chunk-Vorschau, Inspektor, Natur), **Geschichte** (`StoryTab`: Baum Start → Etappen mit Inseln (Ankunft, Endboss, Sieg) → Ende → Flaschenpost → Wortschatz, ein Prompt je Knoten über `storyPrompts.ts`, `PromptRow`), **Werte** (`WorldValues` mit Baum `ValueTree`: Dateien und Themen mit Symbol und Namen aus `valueIcons.ts`, Wahl filtert die Tabelle).
+- Auto-Reload (B-1216): Das Backend (`internal/world/watch.go`) meldet geänderte Dateien unter data/worlds und data/*.json als Ereignis `world:changed`; `useWorld` lädt Liste, gewählte Welt (still, Stufe bleibt) und Level neu.
 - `useWorld.ts`: Welten-Liste, gewählte Welt (gemerkt `world.id`), `StageChoice` (Welt, Insel, Index), Seed
   (`DEFAULT_SEED = 'k3c'`), Level und Werte; eine neuere Anfrage macht eine ältere ungültig.
 

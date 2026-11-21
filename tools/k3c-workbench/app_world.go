@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"strings"
+	"time"
 
 	"k3c/tools/k3c-workbench/internal/world"
 )
@@ -122,3 +123,7 @@ func (a *App) WorldIslandEtappe(id, island string, etappe *int) world.CreateView
 	}
 	return view
 }
+
+// worldPoll ist der Takt des Welten-Wächters (B-1216): Änderungen an data/worlds/ und den Basis-Dateien erreichen die
+// Oberfläche als Ereignis `world:changed`, egal ob Editor, MCP oder Hand sie schrieben.
+const worldPoll = time.Second

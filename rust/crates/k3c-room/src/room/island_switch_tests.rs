@@ -6,11 +6,9 @@ use std::collections::BTreeMap;
 use k3c_sim::dev::dev_build_all;
 use k3c_sim::island::Island;
 
+use super::einzel_testutil::{create_room_in, einzel_manager};
 use super::stages_tests::begins_with_level;
-use super::testutil::{
-    Fixture, Inbox, TestManager, WorldDir, create_room_in, dev_manager, einzel_manager, join_room, peer, rm, room,
-    ticks,
-};
+use super::testutil::{Fixture, Inbox, TestManager, WorldDir, dev_manager, join_room, peer, rm, room, ticks};
 use super::worlds_tests::NORDMEER_RAW;
 use super::{MonarchState, Options, Room};
 

@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import { Badge, Button, Flex, IconButton, LinkButton, SelectField, Text, TextField } from '@webkit/atoms';
+import { Badge, Button, Flex, IconButton, LinkButton, Text, TextField } from '@webkit/atoms';
 import { deviation, valueText } from '@webkit/lib/valueEdit';
 import { ChipSwitch, ValueField } from '@webkit/molecules';
 import type { WorldValuesView } from '../api';
-import { filesOf, filterRows, GENERAL, groupRows, valueRows, type RowGroup, type RowMode, type ValueRow } from './worldOverrides';
+import { ValueTree, type TreePick } from './ValueTree';
+import { filterRows, GENERAL, groupRows, valueRows, type RowGroup, type RowMode, type ValueRow } from './worldOverrides';
 
 // Ansicht „Werte“ des Welten-Editors (B-879, B-680, B-682; neu gestaltet in B-1173): je Feld einer Basis-Datei der
 // Standardwert, der Wert der Welt, Status und Abweichung. Gruppen nach Thema sind einklappbar, die Kopfzeile bleibt beim
@@ -11,7 +12,7 @@ import { filesOf, filterRows, GENERAL, groupRows, valueRows, type RowGroup, type
 // sofort in die Welt-Datei, geprüft wie im Server; ↺ setzt die Zeile zurück.
 
 /** Eltern-Welt und Kind-Welten: eine Änderung wirkt auf alle Welten, die von dieser erben (welten.md § 1). */
-function WorldKin({ values }: { values: WorldValuesView }) {
+export function WorldKin({ values }: { values: WorldValuesView }) {
   const kids = values.children;
   return (
     <Flex gap="3" wrap="wrap">
@@ -32,7 +33,7 @@ function ResetIcon() {
 }
 
 /** Ein Feld: Pfad, Standardwert, Eingabe, Status mit Abweichung und Zurücksetzen. */
-function ValueLine({ row, strip, onSet }: { row: ValueRow; strip: number; onSet: (value: unknown) => void }) {
+export function ValueLine({ row, strip, onSet }: { row: ValueRow; strip: number; onSet: (value: unknown) => void }) {
   const own = row.status === 'überschrieben';
   const shown = valueText(own ? row.override : row.base);
   const diff = own ? deviation(row.base, row.override) : '';
@@ -79,7 +80,7 @@ function Group({ group, withFile, open, onToggle, onSet }: GroupProps) {
   );
 }
 
-function TableHead() {
+export function TableHead() {
   return (
     <div role="rowgroup"><div role="row" className="wv-row wv-head">
       <Text role="columnheader" size="1" weight="medium">Feld</Text>
@@ -102,19 +103,20 @@ const ALL_FILES = '';
 
 export function WorldValues({ values, onSet }: Props) {
   const rows = useMemo(() => valueRows(values?.entries ?? []), [values]);
-  const files = useMemo(() => filesOf(rows), [rows]);
-  const [picked, setFile] = useState<string | null>(null);
+  const [pick, setPick] = useState<TreePick>({ file: '', group: null });
   const [query, setQuery] = useState('');
   const [mode, setMode] = useState<RowMode>('alle');
   const [touched, setTouched] = useState<ReadonlySet<string>>(new Set());
   // von Hand ein- oder ausgeklappt: überschreibt die Vorgabe der Gruppe
   const [toggled, setToggled] = useState<ReadonlyMap<string, boolean>>(new Map());
   if (!values) return null;
-  const file = picked === ALL_FILES || files.some((f) => f.file === picked) ? picked ?? ALL_FILES : ALL_FILES;
-  const base = { file, query, mode: 'alle' as RowMode, touched };
-  const inFile = filterRows(rows, { ...base, query: '' });
-  const counts = { alle: inFile.length, ueberschrieben: inFile.filter((r) => r.status === 'überschrieben').length, sitzung: inFile.filter((r) => touched.has(r.key)).length };
-  const shown = filterRows(rows, { ...base, mode });
+  const file = rows.some((r) => r.file === pick.file) ? pick.file : ALL_FILES;
+  const only = file === ALL_FILES ? null : pick.group;
+  const base = { file: ALL_FILES, query, mode: 'alle' as RowMode, touched };
+  const inScope = filterRows(rows, { ...base, query: '' });
+  const counts = { alle: inScope.length, ueberschrieben: inScope.filter((r) => r.status === 'überschrieben').length, sitzung: inScope.filter((r) => touched.has(r.key)).length };
+  const forTree = filterRows(rows, { ...base, mode });
+  const shown = forTree.filter((r) => (file === ALL_FILES || r.file === file) && (only === null || r.group === only));
   const groups = groupRows(shown);
   const isOpen = (g: RowGroup) => toggled.get(g.key) ?? (shown.length <= COLLAPSE_FROM || g.own > 0 || query.trim() !== '');
   const setAll = (open: boolean) => setToggled(new Map(groups.map((g) => [g.key, open])));
@@ -131,8 +133,6 @@ export function WorldValues({ values, onSet }: Props) {
       </Flex>
       {values.error && <Text as="p" size="1" color="red" role="alert">{values.error}</Text>}
       <Flex gap="2" align="center" wrap="wrap">
-        <SelectField size="1" aria-label="Basis-Datei" value={file} onChange={setFile}
-          options={[{ value: ALL_FILES, label: `Alle Dateien (${rows.length})` }, ...files.map((f) => ({ value: f.file, label: f.own > 0 ? `${f.file} (${f.own} überschrieben)` : f.file }))]} />
         <TextField.Root size="1" className="wv-search" aria-label="Feld suchen" placeholder="Feld oder Wert suchen, z. B. wall cost" value={query} onChange={(e) => setQuery(e.target.value)} />
         <ChipSwitch label="Zeilen" value={mode} onChange={setMode}
           options={[
@@ -148,12 +148,15 @@ export function WorldValues({ values, onSet }: Props) {
         {filtered && <Button size="1" variant="soft" color="gray" onClick={() => { setQuery(''); setMode('alle'); }}>Filter zurücksetzen</Button>}
         <Text size="1" color="gray" className="wv-keys">Eingabe: Enter übernimmt, Esc verwirft, ↑↓ ändern Zahlen (Umschalt ×10), Alt+↑↓ wechselt die Zeile</Text>
       </Flex>
-      <div role="table" aria-label="Felder" className="wv-table">
+      <div className="vt-layout">
+      <ValueTree rows={forTree} pick={{ file, group: only }} onPick={setPick} />
+      <div role="table" aria-label="Felder" className="wv-table vt-fields">
         <TableHead />
         {groups.map((g) => (
           <Group key={g.key} group={g} withFile={file === ALL_FILES} open={isOpen(g)} onSet={set}
             onToggle={() => setToggled((m) => new Map(m).set(g.key, !isOpen(g)))} />
         ))}
+      </div>
       </div>
       {shown.length === 0 && <Text size="1" color="gray">{filtered ? 'Kein Feld passt zum Filter.' : 'Keine Felder.'}</Text>}
     </section>

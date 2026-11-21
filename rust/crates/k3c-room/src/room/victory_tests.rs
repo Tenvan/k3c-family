@@ -1,7 +1,8 @@
 //! Test aus `victory_test.go`: `victory` meldet den Tick, in dem die Insel gewonnen wird, genau einmal (B-813).
 use super::Options;
+use super::einzel_testutil::einzel_manager;
 use super::save_testutil::create_with;
-use super::testutil::{einzel_manager, rm, room, ticks};
+use super::testutil::{rm, room, ticks};
 
 #[test]
 fn victory_gibt_den_merker_des_letzten_ticks_wieder() {
