@@ -99,7 +99,7 @@ fn listen_englisch_und_beitritt() {
     let mut h = hud();
     h.listen(&f);
     assert!(
-        h.join_s == "Press A to join" && h.seats[0].clock_s.starts_with("Day 1"),
+        h.join_s.is_empty() && h.seats[0].clock_s.starts_with("Day 1"),
         "englisch: {:?} {:?}",
         h.join_s,
         h.seats[0].clock_s

@@ -198,7 +198,7 @@ fn text_fields(name: &str) -> Vec<(i64, usize, [f64; 4])> {
 fn box_fill_errors(name: &str, rust: &Image, go: &Image) -> Vec<String> {
     let mut out = Vec::new();
     for c in layout_go(name).cells {
-        for (id, r) in c.items.iter().filter(|(id, _)| !changed(name, id)) {
+        for (id, r) in c.items.iter().filter(|(id, _)| !changed(name, id) && id.as_str() != "12") {
             let (x, y) = ((r[0] + 2.0) as u32, (r[1] + r[3] / 2.0) as u32);
             let at = |img: &Image| {
                 let i = ((y * img.width + x) * 4) as usize;
@@ -268,7 +268,7 @@ fn bilder_stimmen_mit_go_ueberein() {
         failed.extend(box_fill_errors(name, &rust, &go));
         for (cell, id, r) in text_fields(name)
             .into_iter()
-            .filter(|f| !changed(name, &f.1.to_string()))
+            .filter(|f| !changed(name, &f.1.to_string()) && f.1 != ITEM_JOIN)
         {
             let (a, b) = (text_bbox(&rust, &r), text_bbox(&go, &r));
             let ok = match (a, b) {
@@ -315,10 +315,10 @@ fn plaetze_stimmen_mit_go_ueberein() {
             b.sort();
             // Rust zeigt mindestens die Elemente von Go (neue HUD-Elemente seit RU61 erlaubt)
             assert!(
-                b.iter().all(|k| a.contains(k)),
+                b.iter().filter(|k| k.as_str() != "12").all(|k| a.contains(k)), // 12 = Beitreten-Meldung, B-1212 entfernt
                 "{name} Zelle {index}: Elemente {a:?} ohne {b:?}"
             );
-            for (id, r) in g.items.iter().filter(|(id, _)| !changed(name, id)) {
+            for (id, r) in g.items.iter().filter(|(id, _)| !changed(name, id) && id.as_str() != "12") {
                 let text = TEXT_ITEMS.iter().any(|t| t.to_string() == *id);
                 for (k, (x, y)) in mine[id].iter().zip(r).enumerate() {
                     // Zeilenhöhe der Textelemente (Rust misst die Schrift, Go die Zeile): y und Höhe um bis 3,5 px

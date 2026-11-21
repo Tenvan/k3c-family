@@ -55,6 +55,7 @@ Siehe Tickets.
 - **AC-02** (B-1211) Editor wählt alle Welten.
 - **AC-03** (B-1212) Gamepad-Hotplug, keine Beitreten-Meldung.
 - **AC-04** (B-1213) Zaun, lückenlose Mauern, Höhe nach Stufe.
+- **AC-05** (B-1214) Spielstart Dev/Release als Workbench-Dienste mit Log.
 
 ## Offene Fragen
 
@@ -66,9 +67,10 @@ keine.
 |---|---|---|---|---|
 | WL1.1 | `WL1.1-welten-paket-und-dev.md` | Umsetzung | autonom | offen |
 | WL1.2 | `WL1.2-editor-welten-waehlbar.md` | Umsetzung | autonom | offen |
-| WL1.3 | `WL1.3-gamepad-hotplug-hud.md` | Umsetzung | autonom | offen |
+| WL1.3 | `WL1.3-gamepad-hotplug-hud.md` | Umsetzung | autonom | fertig |
 | WL1.4 | `WL1.4-zaun-mauern.md` | Umsetzung | autonom | offen |
 | WL1.5 | `WL1.5-review.md` | Review | autonom | offen |
+| WL1.6 | `WL1.6-workbench-spielstart-dienste.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
