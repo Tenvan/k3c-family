@@ -62,7 +62,7 @@ Keine offen. 🧑 2026-11-21: Alte Spielstände sind egal, keine Migration, kein
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| LA3.1 | `LA3.1-bauplatz-abstaende.md` | Umsetzung | autonom | offen |
+| LA3.1 | `LA3.1-bauplatz-abstaende.md` | Umsetzung | autonom | in Arbeit |
 | LA3.2 | `LA3.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -1,6 +1,6 @@
 # LA3.1 · Bauplatz-Abstände nach Gebäudebreite (B-1182)
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
