@@ -57,7 +57,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Offene Fragen
 
-Name im ECO1-Plan „Werkzeugmacher/Werkstatt“ gegen „Handwerksmeister“ abgleichen (Ralf).
+keine (Name „Handwerksmeister“ entschieden von Ralf 2026-11-21, vermerkt in ECO1 B-1193). Die Freigabe wartet auf die Freigabe von ECO1.
 
 ## Sessions
 
