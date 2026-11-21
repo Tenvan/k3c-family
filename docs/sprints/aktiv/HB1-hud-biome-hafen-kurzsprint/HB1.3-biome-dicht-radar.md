@@ -1,6 +1,6 @@
 # HB1.3 · Alle Biome dicht bewachsen, Biome am Radar
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -59,5 +59,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: Der Wald (einziges Oberwelt-Biom, Hauptrohstoff Holz) ist seit RU36.7 dicht (forest 12 von 15 Chunks, 32 bis 42 Bäume, Lichtungen ≤ 10 %); neue Tests `jedes_oberwelt_biom_ist_dicht` und `lichtungen_unterscheiden_sich_je_seed` (k3c-level) belegen Dichte und Seed-Lichtungen. Höhle, Mine, Eisenstollen, Kristall sind unterirdisch ohne Baumflächen (Abweichung vom Wortlaut „alle Biome“, bewusst). Keine Datenwerte geändert, daher keine Go-Goldens neu geschrieben. AC-02 geprüft: Die Biom-Zeile steht jetzt in jeder Stufe und auch bei nur einer Stufe am Radar (`island_biomes`, `island_line`); Test `kompass_zeigt_die_biome_der_insel` angepasst; hud-Tests 143 grün, clippy sauber. Für Ralf im Spiel prüfen: Lage der Biom-Zeile über der Leiste.

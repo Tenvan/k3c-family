@@ -172,13 +172,13 @@ fn radar_ausschnitt_und_groesse() {
     assert_eq!(radar_size(1000.0, 1.0).0, 500.0, "schmal: halbe Breite");
 }
 
-/// LA1.3 (AC-03): Der Kompass nennt die Biome der Insel in Reihenfolge der Stufen, nur im Hub.
+/// LA1.3 (AC-03): Der Kompass nennt die Biome der Insel in Reihenfolge der Stufen, in jeder Stufe (HB1.3).
 #[test]
 fn kompass_zeigt_die_biome_der_insel() {
     use super::testutil::two_players;
     use crate::view::frame::Stage;
     let (w, mut f) = two_players(0);
-    assert_eq!(island_biomes("de", &f.stages), "", "eine Stufe: nichts zu zeigen");
+    assert_eq!(island_biomes("de", &f.stages), "Oberwelt (Wald)", "eine Stufe: ihr Biom");
     f.stages.push(Stage {
         index: 1,
         depth: 1,
@@ -200,5 +200,5 @@ fn kompass_zeigt_die_biome_der_insel() {
     f.seats[0].stage = 1;
     f.seats[0].monarch = 0;
     h.listen(&f);
-    assert_eq!(h.seats[0].biomes_s, "", "unter der Oberfläche keine Zeile");
+    assert_eq!(h.seats[0].biomes_s, "Oberwelt (Wald) · Tiefe 1 (Höhle)", "HB1.3: auch unter der Oberfläche");
 }
