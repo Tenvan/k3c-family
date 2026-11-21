@@ -103,3 +103,27 @@ fn ohne_native_regeln_gibt_es_keine_besorgung() {
         .for_each(|w| w.vals = Some(std::sync::Arc::clone(&v)));
     assert!(!gear_above(&isl, 1), "Go-Lauf");
 }
+
+/// Findet der Besorger oben nichts (hier: Gegner am Regal), pendelt er nicht, sondern wartet unten `FUTILE_WAIT` ab.
+#[test]
+fn ohne_fund_oben_kein_pendeln() {
+    let data = test_data();
+    let mut isl = island();
+    isl.stages[0].sites.iter_mut().for_each(|s| s.hammers = 0);
+    let ups = |isl: &super::Island| isl.stages[0].troops.iter().filter(|t| t.errand_from == 2).count();
+    // oben nimmt ein anderer Bürger das Schwert (Auftrag fetchSword), sobald der Besorger oben ankommt
+    let mut trips = 0;
+    let mut was_up = false;
+    for _ in 0..300 {
+        if ups(&isl) == 1 && !was_up {
+            was_up = true;
+            trips += 1;
+            let w0 = &mut isl.stages[0];
+            w0.sites.iter_mut().for_each(|s| s.swords = 0); // das Regal ist leer, der Besuch war umsonst
+        } else if ups(&isl) == 0 {
+            was_up = false;
+        }
+        run_island(&mut isl, &data, &[], 1.0 / 30.0);
+    }
+    assert_eq!(trips, 1, "ein Weg, danach Wartezeit statt Pendeln");
+}

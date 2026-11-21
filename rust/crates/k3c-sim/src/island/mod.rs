@@ -356,7 +356,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
         isl.put_stage_ref(r);
     }
-    errand::step_errands(isl); // ECO1.7: Bürger gehen für Ausrüstung nach oben und zurück
+    errand::step_errands(isl, dt); // ECO1.7: Bürger gehen für Ausrüstung nach oben und zurück
     isl.sync_stock();
     crate::hermit::step::step_hermit(isl, dt); // RU62.10: Einwurf an der Hütte startet den Bau im Hub
     crate::festival::step_festival(isl); // RU62.12: Sieg über den Endboss: Fest-Zustand und festivalStart

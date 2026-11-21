@@ -77,7 +77,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 | ECO1.6 | `ECO1.6-gebaeude-nach-tiefe.md` | Umsetzung | autonom | fertig |
 | ECO1.7 | `ECO1.7-ausruestung-von-oben.md` | Umsetzung | autonom | fertig |
 | ECO1.8 | `ECO1.8-erzadern-freiraeumen.md` | Umsetzung | autonom | fertig |
-| ECO1.9 | `ECO1.9-review.md` | Review | autonom | offen |
+| ECO1.9 | `ECO1.9-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

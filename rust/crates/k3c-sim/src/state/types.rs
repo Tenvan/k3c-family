@@ -222,4 +222,7 @@ pub struct Troop {
     /// Spielstand mitten in der Besorgung lässt den Bürger oben.
     #[serde(skip)]
     pub errand_from: i64,
+    /// Sekunden, bis dieser Bürger wieder nach oben geht, nachdem er dort umsonst war (ECO1.7); ohne JSON.
+    #[serde(skip)]
+    pub errand_wait: f64,
 }

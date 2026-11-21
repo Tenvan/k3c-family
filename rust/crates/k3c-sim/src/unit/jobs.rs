@@ -64,7 +64,12 @@ fn may_gather(w: &World, v: &WorldValues, ti: usize) -> bool {
 /// keine Werkstatt hat (`IslandRef::gear_above`); je Stufe höchstens einer zugleich, ein Bürger auf Besorgung nie.
 pub fn ascend_job(w: &World, ti: usize, isl: Option<&IslandRef>) -> Option<Job> {
     let t = &w.troops[ti];
-    if !isl.is_some_and(|i| i.gear_above) || t.kind != "peasant" || t.hammer || t.errand_from != 0 {
+    if !isl.is_some_and(|i| i.gear_above)
+        || t.kind != "peasant"
+        || t.hammer
+        || t.errand_from != 0
+        || t.errand_wait > 0.0
+    {
         return None;
     }
     let busy = w

@@ -1,6 +1,6 @@
 # ECO1.9 · Review und Abnahme-Ticket ECO1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -53,5 +53,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-09 geprüft: Review der Sessions ECO1.1 bis ECO1.8 durch Reviewer-Agent; schwere Befunde keine, drei mittlere zu ECO1.7 (Pendel-Schleife, Limit nur Stufe 0, Kämpfer-Seite) behoben (Wartezeit `FUTILE_WAIT`, `surface_gear` mit Zielstufe, Anker-Seite der schwächeren Seite); `cargo test -p k3c-sim --lib errand` 5/5 grün. `task check` und `task check:go` grün.
+
+Abnahme-Ticket: B-1202 (Sprint ECO1, Spec freigegeben autonom, Claude).
+
+Abweichungen: ECO1.2, ECO1.6 und ECO1.7 änderten Dateien außerhalb der erlaubten Liste (Importregel: `view/seal.rs`; Go-Struct und Golden für `topOnly`; Armory-Tests in Go, Rust und hubplan).
+
+Bekannt rot (B-1190 AC-04): `alloc_je_bild`, `eingebettete_welten_gueltig`, `insel_nach_1000_schritten_wie_go`, `e2e_flow`; zusätzlich `still_hud pad-tastatur` (4,020 > 4,0) und `ablauf_wie_go_zwei_laeufe_gleich`, beide in B-1202 AC-07.
+
+### Für den Hauptrechner
+
+- 50:50-Entscheidungen für Ralf (B-1202 Offene Fragen): Taverne als Produktion (`topOnly`) und Bogner unten erlaubt; Rückkehr der Besorger ohne sichtbaren Weg; Truppen-Limit unten.

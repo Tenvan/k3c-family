@@ -26,8 +26,9 @@ fn fetching(w: &World, typ: &str) -> i64 {
 
 /// Liegt im Regal einer gebauten Werkstatt etwas, das noch kein Bürger oben holt und ein Bürger von unten holen darf
 /// (Hammer immer, Schwert nur unter dem Truppen-Limit wie in `weapon_to_fetch`)?
-fn surface_gear(w: &World) -> bool {
-    let room = fighters(w) < troop_limit(w);
+fn surface_gear(w: &World, below: &World) -> bool {
+    // das Schwert wird oben geholt und unten gebraucht: beide Stufen müssen unter ihrem Truppen-Limit liegen
+    let room = fighters(w) < troop_limit(w) && fighters(below) < troop_limit(below);
     let (swords, hammers) = w
         .sites
         .iter()
@@ -52,7 +53,7 @@ pub fn gear_above(isl: &Island, i: usize) -> bool {
     }
     let w = &isl.stages[i];
     let own = w.sites.iter().any(|s| s.kind == "workshop" && s.state == "built");
-    !own && built_stairs(w, "stairsUp").is_some() && surface_gear(&isl.stages[0])
+    !own && built_stairs(w, "stairsUp").is_some() && surface_gear(&isl.stages[0], w)
 }
 
 /// Hat der Bürger oben etwas geholt (Beruf, Kämpfer) oder gibt es für ihn nichts zu tun?
@@ -61,12 +62,21 @@ fn done_upstairs(t: &Troop) -> bool {
     equipped || t.job.is_none()
 }
 
+/// Wartezeit in Sekunden, bevor ein Bürger nach einem Weg ohne Fund wieder nach oben geht (Gegner oder volles Limit oben
+/// lassen `weapon_to_fetch` leer, sonst pendelte er alle zwei Takte).
+const FUTILE_WAIT: f64 = 60.0;
+
 /// Ein Schritt der Besorgungen nach den Stufenschritten: erst die Rückkehr aus Stufe 0, dann der Aufstieg derer, die an
 /// der Treppe stehen. Neu Angekommene warten einen Takt, damit sie oben einen Auftrag finden, bevor sie zurückgeschickt
-/// werden.
-pub fn step_errands(isl: &mut Island) {
+/// werden. `dt` lässt die Wartezeiten nach einem Weg ohne Fund ablaufen.
+pub fn step_errands(isl: &mut Island, dt: f64) {
     if isl.stages.len() < 2 || !isl.values().native_rules {
         return;
+    }
+    for t in isl.stages.iter_mut().flat_map(|w| w.troops.iter_mut()) {
+        if t.errand_wait > 0.0 {
+            t.errand_wait = (t.errand_wait - dt).max(0.0);
+        }
     }
     let mut down: Vec<(usize, Troop)> = Vec::new();
     let mut ti = 0;
@@ -97,7 +107,11 @@ pub fn step_errands(isl: &mut Island) {
     }
     for (i, t) in down {
         let x = built_stairs(&isl.stages[i], "stairsUp").unwrap_or(isl.stages[i].hub_x);
+        let futile = t.kind == "peasant" && !t.hammer;
         place(&mut isl.stages[i], t, x, 0);
+        if futile && let Some(back) = isl.stages[i].troops.last_mut() {
+            back.errand_wait = FUTILE_WAIT;
+        }
     }
     for t in up {
         let x = built_stairs(&isl.stages[0], "stairsDown").unwrap_or(isl.stages[0].hub_x);
@@ -118,13 +132,29 @@ fn take(w: &mut World, ti: usize) -> (usize, Troop) {
 /// Stellt die Truppe als neue Truppe der Stufe an die Treppe `x`: neue ID, ohne Auftrag; Art, Leben und Beruf bleiben.
 fn place(w: &mut World, old: Troop, x: f64, errand_from: i64) {
     let id = w.new_id();
+    // Kämpfer: Seite (`anchor_x` links oder rechts der Burg) der schwächer besetzten Seite der Stufe, nicht der Treppe
+    let anchor_x = if old.kind == "peasant" {
+        x
+    } else {
+        let left = w
+            .troops
+            .iter()
+            .filter(|t| t.kind != "peasant" && t.kind != "vagrant" && t.anchor_x < w.hub_x)
+            .count();
+        let right = w
+            .troops
+            .iter()
+            .filter(|t| t.kind != "peasant" && t.kind != "vagrant" && t.anchor_x >= w.hub_x)
+            .count();
+        if left <= right { w.hub_x - 1.0 } else { w.hub_x + 1.0 }
+    };
     w.troops.push(Troop {
         id,
         kind: old.kind,
         x,
         hp: old.hp,
         max_hp: old.max_hp,
-        anchor_x: x,
+        anchor_x,
         target_x: x,
         profession: old.profession,
         hammer: old.hammer,
