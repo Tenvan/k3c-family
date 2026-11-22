@@ -46,6 +46,8 @@ export interface PlaytestDevices {
   monitors: PlaytestMonitor[];
   ffmpeg: boolean;
   ffmpegPath: string;
+  /** Der Encoder, den die Aufnahme nutzen würde (echte Probe), z. B. „h264_amf 1080p30“. */
+  encoder: string;
   message: string;
 }
 
@@ -56,11 +58,22 @@ export interface PlaytestOptions {
   gameArgs: string[];
 }
 
+/** Messwerte der laufenden Aufnahme: Bytes je Sekunde, die in voice.wav und video.mkv ankommen (älteste zuerst). */
+export interface PlaytestStats {
+  voiceBytes: number;
+  videoBytes: number;
+  voiceRate: number[];
+  videoRate: number[];
+  /** Leer, solange alles ankommt; sonst der Grund (Ton oder Bild steht, ffmpeg beendet). */
+  warn: string;
+}
+
 export interface PlaytestStatus {
   running: boolean;
   id: string;
   startMs: number;
   encoder: string;
+  stats?: PlaytestStats;
 }
 
 /** Ist die Auswertung möglich (ffmpeg ab 8 mit whisper-Filter, Modelldatei)? `message` nennt sonst, was zu tun ist. */

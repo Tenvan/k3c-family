@@ -154,7 +154,7 @@ describe('Geräte (B-1230)', () => {
 
   it('ohne Aufnahmegerät steht ein Hinweis da und der Start bleibt gesperrt', async () => {
     const real = playtestApi.devices;
-    playtestApi.devices = async () => ({ mics: [], monitors: [], ffmpeg: true, ffmpegPath: 'ffmpeg', message: '' });
+    playtestApi.devices = async () => ({ mics: [], monitors: [], ffmpeg: true, ffmpegPath: 'ffmpeg', encoder: '', message: '' });
     try {
       const host = await mount();
       expect(host.textContent).toContain('Kein Mikrofon gefunden');
@@ -174,6 +174,21 @@ describe('Geräte (B-1230)', () => {
     } finally {
       localStorage.removeItem('k3c-workbench.playtest.mic');
     }
+  });
+});
+
+describe('Aufnahme-Monitor', () => {
+  it('zeigt zwei Diagramme (Ton, Bild) während der Aufnahme und warnt, wenn etwas steht', async () => {
+    const host = await mount();
+    await playtestApi.start({ mic: 'Raummikro (USB)', monitor: 0, gameArgs: [] });
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
+    const mon = host.querySelector('[data-monitor]')!;
+    expect(mon.getAttribute('data-monitor')).toBe('ok');
+    expect(mon.querySelector('[data-chart="Ton"]')!.textContent).toContain('31 KB/s');
+    expect(mon.querySelector('[data-chart="Bild"]')).toBeTruthy();
+    expect(mon.textContent).not.toContain('Aufnahme prüfen');
+    act(() => button('Stopp', host).click());
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
   });
 });
 

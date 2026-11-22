@@ -263,6 +263,9 @@ func (t *Transcriber) transcribe(ffmpeg, dir, model, lang string) error {
 	if err := os.Rename(tmp, filepath.Join(dir, fileTranscript)); err != nil {
 		return err
 	}
+	if err := writeTranscriptText(dir, tr); err != nil {
+		t.log("warn", "❌ transcript.txt nicht geschrieben: "+err.Error())
+	}
 	meta.Stand = StageTranscribed
 	writeMeta(dir, meta)
 	return nil

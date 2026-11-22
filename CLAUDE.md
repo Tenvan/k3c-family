@@ -149,7 +149,7 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   `data/worlds/` (Ausgaben unter `reports/`, technisch erzwungen, WZ63.7); braucht es Änderungen an Code oder anderen
   Daten (`data/*.json`, `engine/`, `rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf Ralfs
   Freigabe, auch bei automatischem Balancing.
-- **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien und Worktrees liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht.
+- **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien und Worktrees liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. **Technisch erzwungen:** `task` und `check_run` setzen `GOTMPDIR`/`TMP`/`TEMP`; der Hook `tools/hooks/tempGuard.ts` lehnt direkte `go run|test|build|vet` in Bash und PowerShell ab, die diese Variablen nicht selbst setzen (sonst landet `checkdiff.exe` in `%TEMP%\go-build…`).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;
