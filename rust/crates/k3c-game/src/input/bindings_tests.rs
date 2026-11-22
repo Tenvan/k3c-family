@@ -267,3 +267,10 @@ fn used_keys_and_layouts() {
         }
     }
 }
+
+/// Die Marker-Tasten des Spieltests (WZ66): Einfg und LT + RT sind belegt (Skill 1 im Profil pfeile, Skill 3 und Galopp),
+/// die Nebenwirkung ist gewollt; das Backend muss Einfg melden.
+#[test]
+fn marker_taste_einfg_wird_abgefragt() {
+    assert!(USED_KEYS.contains(&Key::Insert));
+}

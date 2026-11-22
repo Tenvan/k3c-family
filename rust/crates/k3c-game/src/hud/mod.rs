@@ -53,6 +53,7 @@ pub mod paint;
 pub mod pending;
 pub mod purse;
 pub mod radar;
+pub mod rec;
 pub mod seekarte;
 pub mod seekarte_input;
 pub mod seekarte_look;

@@ -183,7 +183,7 @@ pub static MENU_KEYS: LazyLock<[Vec<Key>; ACTION_COUNT]> = LazyLock::new(|| {
     ])
 });
 
-/// USED_KEYS sind alle Tasten beider Profile (das Backend wird nur nach ihnen gefragt).
+/// USED_KEYS sind alle Tasten beider Profile; darunter Einfg, die Marker-Taste des Spieltests (das Backend wird nur nach ihnen gefragt).
 pub static USED_KEYS: LazyLock<Vec<Key>> = LazyLock::new(collect_keys);
 
 fn collect_keys() -> Vec<Key> {

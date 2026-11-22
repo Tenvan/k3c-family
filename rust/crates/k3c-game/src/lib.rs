@@ -12,6 +12,7 @@ pub mod hud;
 pub mod input;
 pub mod local;
 pub mod menu;
+pub mod playtest;
 pub mod props;
 pub mod replay;
 pub mod still;
