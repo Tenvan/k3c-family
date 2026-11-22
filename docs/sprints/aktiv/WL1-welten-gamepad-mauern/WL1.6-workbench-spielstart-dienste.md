@@ -1,6 +1,6 @@
 # WL1.6 · Workbench: Spielstart Dev/Release als Dienste mit Log
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -58,5 +58,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-05 / B-1214 AC-01 umgesetzt: Dienste `game-dev` (`task rust:game:dev`) und `game-release` (`dist/k3c-game/k3c-game.exe`, Arbeitsordner `dist/k3c-game`) mit Health `process` (ohne Port, nur von Hand, nicht über StartAll/Adopt). Geprüft: `TestServicesJSONKenntDieSpielDienste`, `TestProzessDienstStartStopUndEnde`, `TestLoadProzessDienste`.
+- B-1214 AC-02 umgesetzt: Ausgabe über den bestehenden Ausgabe-Log nach `logs/game-dev.jsonl` bzw. `logs/game-release.jsonl` (Quelle für `logs_query`). Geprüft: `TestProzessDienstAusgabeImLog`.
+- B-1214 AC-03 umgesetzt: Stopp über `workkit/proc` (Job-Objekt); `stopBefore` beendet `game-release` vor `build`, `buildall`, `rust:game:build`, `rust:game:run` aus der Workbench (Hinweis im Log); fehlende EXE meldet „erst task build“. Geprüft: `TestStopForTask`, `TestProzessDienstOhneExe`; Abnahme am PC durch 🧑 offen.
+- Prüfung: go vet, go test (`.`, `internal/services`, `internal/mcpsrv`), Frontend tsc und vitest (330), `tests/projectRules`, `atomicDesign`, `mcpToolsDisjoint` grün; check:diff ohne golangci-lint (fehlt auf dem Rechner). Kein Reviewer-Agent gelaufen.
+- Grenze: `task build` aus der Shell stoppt das Spiel nicht (nur Tasks aus der Workbench); `engine/devrun` blieb unberührt.
