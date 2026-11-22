@@ -216,3 +216,27 @@ func TestMediaPfad(t *testing.T) {
 		t.Errorf("fehlende Datei erlaubt: %v", err)
 	}
 }
+
+func TestUeberbleibselEinesAbsturzsIstLoeschbar(t *testing.T) {
+	s := fixture(t)
+	s.Active = func() string { return "" } // keine Aufnahme in diesem Prozess
+	got, _ := s.Get("2026-11-22-2")
+	if got.Running || got.Stage != StageIncomplete {
+		t.Fatalf("laeuft ohne aktive Aufnahme muss unvollständig sein: %+v", got)
+	}
+	if _, err := s.Delete(ActionSession, "2026-11-22-2", true); err != nil {
+		t.Fatalf("Löschen sollte möglich sein: %v", err)
+	}
+	s = fixture(t)
+	s.Active = func() string { return "2026-11-22-2" }
+	if got, _ := s.Get("2026-11-22-2"); !got.Running {
+		t.Fatalf("die aktive Aufnahme bleibt gesperrt: %+v", got)
+	}
+}
+
+func TestUngueltigerMonitor(t *testing.T) {
+	g := newRig(t)
+	if _, err := g.rec.Start(Options{Mic: "Mikro", Monitor: -1}); !errors.Is(err, ErrBadMonitor) {
+		t.Fatalf("Monitor -1 muss abgelehnt werden: %v", err)
+	}
+}

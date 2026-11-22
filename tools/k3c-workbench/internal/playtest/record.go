@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -29,6 +30,7 @@ var (
 	ErrNoFFmpeg    = errors.New("ffmpeg nicht im PATH gefunden (ffmpeg installieren)")
 	ErrNoGame      = errors.New("k3c-game.exe nicht gefunden (task build)")
 	ErrNoMic       = errors.New("kein Mikrofon gewählt")
+	ErrBadMonitor  = errors.New("ungültiger Monitor (0 bis 15)")
 	errNoRecording = errors.New("ffmpeg startet nicht")
 )
 
@@ -69,6 +71,7 @@ type Recorder struct {
 	Settle   time.Duration // so lange darf ffmpeg nach dem Start nicht enden, sonst gilt der Start als gescheitert
 	QuitWait time.Duration // Frist für ffmpeg nach `q`, danach Kill
 
+	active   atomic.Pointer[string] // Kennung der laufenden Aufnahme, lock-frei lesbar (Store.Active)
 	mu       sync.Mutex
 	st       Status
 	game     Proc
@@ -104,6 +107,14 @@ func GameArgs(exe, dir string, extra []string) []string {
 	return append([]string{exe, "--playtest", dir}, extra...)
 }
 
+// ActiveID ist die Session, die dieser Recorder gerade aufnimmt (leer: keine).
+func (r *Recorder) ActiveID() string {
+	if p := r.active.Load(); p != nil {
+		return *p
+	}
+	return ""
+}
+
 // Status liefert den Stand der Aufnahme.
 func (r *Recorder) Status() Status {
 	r.mu.Lock()
@@ -130,13 +141,18 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	if strings.TrimSpace(o.Mic) == "" {
 		return r.st, ErrNoMic
 	}
+	if o.Monitor < 0 || o.Monitor > 15 {
+		return r.st, ErrBadMonitor
+	}
 	id, dir, err := r.newDir()
 	if err != nil {
 		return r.st, err
 	}
+	r.active.Store(&id)
 	rec, enc, err := r.startFFmpeg(ffmpeg, dir, o)
 	if err != nil {
 		_ = os.RemoveAll(dir)
+		r.active.Store(nil)
 		r.log("warn", "❌ Aufnahme nicht gestartet: "+err.Error(), "id", id)
 		return r.st, err
 	}
@@ -148,6 +164,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 		r.quit(rec)
 		meta.EndMs, meta.Stand, meta.Error = r.Now().UnixMilli(), StageRecorded, "Spiel nicht gestartet: "+err.Error()
 		writeMeta(dir, meta)
+		r.active.Store(nil)
 		r.log("warn", "❌ Spiel nicht gestartet: "+err.Error(), "id", id)
 		return r.st, fmt.Errorf("Spiel nicht gestartet: %w", err)
 	}
@@ -213,6 +230,7 @@ func (r *Recorder) finish(dir string, meta Meta, rec, game Proc, done chan struc
 	r.st, r.game = Status{}, nil
 	r.mu.Unlock()
 	writeMeta(dir, meta)
+	r.active.Store(nil)
 	if meta.Crash {
 		r.log("warn", "💥 Spiel abgestürzt, Aufnahme beendet: "+meta.GameExit, "id", id)
 	} else {

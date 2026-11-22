@@ -19,7 +19,7 @@ import (
 const playtestMediaPrefix = uikit.Prefix + "playtest/media/"
 
 func (a *App) playtestStore() *playtest.Store {
-	return &playtest.Store{Root: filepath.Join(a.root, "playtests")}
+	return &playtest.Store{Root: filepath.Join(a.root, "playtests"), Active: func() string { return a.recorder().ActiveID() }}
 }
 
 // PlaytestList listet die Sessions, neueste zuerst.

@@ -99,7 +99,12 @@ type Plan struct {
 }
 
 // Store ist die Ablage `playtests/` im Repo.
-type Store struct{ Root string }
+// Active nennt die Session der laufenden Aufnahme dieses Prozesses (leer: keine). Ist es gesetzt, gilt ein
+// `laeuft` in session.json ohne diese Kennung als Überbleibsel eines Absturzes: unvollständig und löschbar.
+type Store struct {
+	Root   string
+	Active func() string
+}
 
 // List liest alle Sessions, neueste zuerst; fehlt der Ordner, ist die Liste leer. Namen außerhalb des Schemas
 // werden übergangen.
@@ -150,13 +155,19 @@ func (s *Store) read(id string) Session {
 	raw, err := os.ReadFile(filepath.Join(dir, fileMeta))
 	if err != nil || json.Unmarshal(raw, &m) != nil {
 		ses.Stage = StageIncomplete
+		if s.Active != nil && s.Active() == id { // Ordner angelegt, session.json folgt gleich
+			ses.Stage, ses.Running = StageRunning, true
+		}
 		return ses
 	}
 	ses.StartMs = m.StartMs
+	stale := s.Active != nil && s.Active() != id
 	if m.EndMs > m.StartMs {
 		ses.DurationMs = m.EndMs - m.StartMs
 	}
 	switch {
+	case m.Stand == standRunning && m.EndMs == 0 && stale:
+		ses.Stage = StageIncomplete
 	case m.Stand == standRunning && m.EndMs == 0:
 		ses.Stage, ses.Running = StageRunning, true
 	case has[fileFindings]:
