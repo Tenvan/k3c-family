@@ -1,6 +1,6 @@
 # WL1.1 · Welten im dist-Paket, Repo-Vorrang mit Dev-Symbol
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -64,5 +64,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 umgesetzt: `task build` kopierte `data/` samt `worlds/` schon; `tools/rustpaket pruefen` verlangt jetzt `data/worlds/*.json`. Geprüft: `go test ./tools/rustpaket` grün.
+- AC-02 umgesetzt: `pick_worlds` (local/worlds.rs) erkennt `<repo>/dist/k3c-game` (Taskfile.yml und .git), liest `<repo>/data/worlds`, unlesbar: Log-Hinweis und Paket-Welten; `K3C_WORLDS_DIR` gewinnt weiter. Geprüft: `repo_welten_vor_paket_welten`.
+- AC-03 umgesetzt: `WorldInfo::repo` und Schild „DEV“ oben links im Weltbild. Geprüft: `world_list_marks_repo_worlds`, `repo_welt_zeigt_dev_symbol`; Sicht am PC durch 🧑 offen.
+- Abweichung: `view/session.rs` (Feld `WorldInfo::repo`) liegt außerhalb des Ticket-Bereichs. Weitere Welten zeigt die Auswahl wie bisher nur im Dev-Mode.
+- Prüfung: cargo fmt, clippy -D warnings grün; `cargo test -p k3c-game` grün bis auf zwei schon auf main rote Tests (`drei_stufen_mindestens_halbe_monarchenhoehe_auseinander`, `e2e_flow::ablauf_wie_go_zwei_laeufe_gleich`); check:diff ohne golangci-lint (fehlt auf dem Rechner).

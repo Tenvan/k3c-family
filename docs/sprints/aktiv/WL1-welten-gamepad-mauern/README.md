@@ -65,7 +65,7 @@ keine.
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WL1.1 | `WL1.1-welten-paket-und-dev.md` | Umsetzung | autonom | in Arbeit |
+| WL1.1 | `WL1.1-welten-paket-und-dev.md` | Umsetzung | autonom | fertig |
 | WL1.2 | `WL1.2-editor-welten-waehlbar.md` | Umsetzung | autonom | fertig |
 | WL1.3 | `WL1.3-gamepad-hotplug-hud.md` | Umsetzung | autonom | fertig |
 | WL1.4 | `WL1.4-zaun-mauern.md` | Umsetzung | autonom | fertig |
