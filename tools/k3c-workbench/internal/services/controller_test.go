@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 )
 
 // fakeProc ist ein gestellter Prozess: exit beendet ihn von selbst, Kill von außen.

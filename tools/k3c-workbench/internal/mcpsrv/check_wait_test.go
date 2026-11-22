@@ -2,6 +2,7 @@ package mcpsrv
 
 import (
 	"context"
+	"k3c/tools/workkit/mcpkit"
 	"strings"
 	"testing"
 	"time"
@@ -9,12 +10,12 @@ import (
 
 // progressCtx ist ein Aufruf mit progressToken: Jede Meldung landet in got.
 func progressCtx(got chan<- string) context.Context {
-	return context.WithValue(context.Background(), progressKey{}, progressFunc(func(msg string, _ time.Duration) {
+	return mcpkit.WithProgressFunc(context.Background(), func(msg string, _ time.Duration) {
 		select {
 		case got <- msg:
 		default:
 		}
-	}))
+	})
 }
 
 // B-520/AC-01: Mit progressToken wartet check_run bis zum Ende und meldet unterwegs Fortschritt, auch über checkWait hinaus.
@@ -77,7 +78,7 @@ func TestCheckRunOhneFortschrittNachWartezeitLaufID(t *testing.T) {
 
 func TestWithProgressOhneTokenOhneMelder(t *testing.T) {
 	t.Parallel()
-	if progressOf(withProgress(context.Background(), nil)) != nil {
+	if mcpkit.ProgressOf(mcpkit.WithProgress(context.Background(), nil)) != nil {
 		t.Fatal("ohne Aufruf kein Fortschritts-Melder")
 	}
 }

@@ -1,6 +1,6 @@
 # Namespace `k3c-workbench`: die Workbench (Wails-Fenster, MCP-Server, React-Oberfläche in frontend/).
 # `dev` ist der Client-Server-Betrieb: `k3c-workbench -dev` baut `-headless` als Kind (MCP-Server und Oberflächen-API ohne
-# Fenster) und startet es bei jeder Go-Änderung in tools/k3c-workbench, tools/assetkit und engine/ neu (engine/devrun); Vite
+# Fenster) und startet es bei jeder Go-Änderung in tools/k3c-workbench, tools/assetkit, tools/workkit und engine/ neu (engine/devrun); Vite
 # zeigt die Oberfläche mit Hot Reload im Browser (http://localhost:5191) und leitet /api an das Kind weiter.
 # Der MCP-Port im dev ist DEV_MCP_PORT (5190), damit die laufende Workbench (5180) unberührt bleibt.
 # `window` ist der alte Weg im Fenster (`wails dev`).
@@ -137,7 +137,7 @@ tasks:
       - bunx vitest run --config vitest.config.ts {{.VITEST_ARGS}}
 
   gotest:
-    desc: go test für k3c-workbench (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit) und die Asset-Logik tools/assetkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
+    desc: go test für k3c-workbench (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit), die Asset-Logik tools/assetkit und den gemeinsamen Code tools/workkit (GO_TEST_FLAGS=-short lässt lange Tests aus, B-619)
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     # Paketliste ohne Sim-Pakete (balance, simrun; Sperre, CHECK_SIM=1 nimmt sie mit, B-857) aus
@@ -150,15 +150,19 @@ tasks:
       - go test {{.GO_TEST_FLAGS}} {{.WB_PKGS | default .WB_GO_PKGS | default "./paketliste-fehlt"}}
       - cmd: cd ../assetkit && go test {{.GO_TEST_FLAGS}} ./...
         if: '[ "{{.ASSETKIT}}" != "0" ]'
+      - cmd: cd ../workkit && go test {{.GO_TEST_FLAGS}} ./...
+        if: '[ "{{.WORKKIT}}" != "0" ]'
 
   lint:
-    desc: golangci-lint für k3c-workbench und tools/assetkit
+    desc: golangci-lint für k3c-workbench, tools/assetkit und tools/workkit
     deps: [':tmp', frontend]
     dir: '{{.DEV}}'
     cmds:
       - golangci-lint run --allow-serial-runners {{.WB_LINT_PKGS}}
       - cmd: cd ../assetkit && golangci-lint run --allow-serial-runners
         if: '[ "{{.ASSETKIT}}" != "0" ]'
+      - cmd: cd ../workkit && golangci-lint run --allow-serial-runners
+        if: '[ "{{.WORKKIT}}" != "0" ]'
 
   build:
     desc: "EXE von k3c-workbench bauen, feste EXE bin/k3c-workbench (wails build; nur bei geänderten Quellen, `--force` erzwingt; laufende Workbench vorher schließen, sonst scheitert die Kopie)"
@@ -181,6 +185,7 @@ tasks:
       - frontend/paths.ts
       - ../webkit/**/*
       - ../assetkit/**/*.go
+      - ../workkit/**/*.go
       - ../../engine/**/*.go
       - ../../data/**/*
       - ../../go.mod

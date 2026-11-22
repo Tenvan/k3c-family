@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/services"
 )

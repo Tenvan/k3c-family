@@ -2,7 +2,7 @@ package main
 
 import (
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
-	"k3c/tools/k3c-workbench/internal/usage"
+	"k3c/tools/workkit/usage"
 )
 
 // McpOverview ist Band 1 und 2 der MCP-Seite (B-065): Zustand des Servers und seine Zähler.

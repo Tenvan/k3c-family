@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // Base ist der Ziel-Branch aller PRs, Main der Release-Branch; beide lassen sich nicht löschen und nicht pushen.

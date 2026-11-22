@@ -27,6 +27,6 @@ func registerPlanIndex(s *Server) {
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in planIndexIn) (string, error) {
 		dry := in.Dry == nil || *in.Dry
-		return planning.RebuildIndex(s.ws(ctx).root, dry)
+		return planning.RebuildIndex(s.ws(ctx).Root, dry)
 	})
 }

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/applog"
+	"k3c/tools/workkit/applog"
 )
 
 // ansi sind Escape-Sequenzen (Farben, Cursor), die nicht ins Log gehören.

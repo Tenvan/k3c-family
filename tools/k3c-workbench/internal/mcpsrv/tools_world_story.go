@@ -61,7 +61,7 @@ func registerWorldStory(s *Server) {
 			"Nutze es bei: Wortschatz und Zeilen der Geschichte einer Welt schreiben oder ändern. Statt: story in der Welt-Datei von Hand bearbeiten.",
 		Annotations: worldWrite(),
 	}, func(ctx context.Context, in worldStoryIn) (string, error) {
-		res, err := worldEditor(s.ws(ctx).root).SetStory(ctx, in.ID, in.patch())
+		res, err := worldEditor(s.ws(ctx).Root).SetStory(ctx, in.ID, in.patch())
 		if err != nil {
 			return "", err
 		}

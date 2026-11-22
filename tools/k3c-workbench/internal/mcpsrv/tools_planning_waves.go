@@ -21,7 +21,7 @@ func registerPlanWaves(s *Server) {
 			"die Anzeige ein. Nutze es bei: Welle planen oder starten. Statt: Wellen von Hand aus Tickets und Sprints rechnen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.WavesFilter) (string, error) {
-		return planning.Waves(s.ws(ctx).root, in)
+		return planning.Waves(s.ws(ctx).Root, in)
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_queue",
@@ -32,7 +32,7 @@ func registerPlanWaves(s *Server) {
 			"Nutze es bei: 🧑 gesammelt vorlegen, was Freigabe, Entscheidung oder Abnahme braucht. Statt: Mensch-Sessions und Specs einzeln suchen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.QueueFilter) (string, error) {
-		return planning.Queue(s.ws(ctx).root, in)
+		return planning.Queue(s.ws(ctx).Root, in)
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_check",
@@ -43,6 +43,6 @@ func registerPlanWaves(s *Server) {
 			"Nutze es bei: vor der Freigabe einer Spec und vor plan_waves. Statt: Regeln und Einschränkungen von Hand prüfen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.CheckIn) (string, error) {
-		return planning.Check(s.ws(ctx).root, in)
+		return planning.Check(s.ws(ctx).Root, in)
 	})
 }

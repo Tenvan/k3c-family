@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // Change ist ein Unterschied eines Worktrees zur Wurzel: Kind (neu | geändert), Objekt (Projekt, Sprint, Session,

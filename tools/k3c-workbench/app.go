@@ -13,8 +13,8 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/tools/assetkit/windowstate"
-	"k3c/tools/k3c-workbench/internal/applog"
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/github"
 	"k3c/tools/k3c-workbench/internal/gitops"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
@@ -24,7 +24,7 @@ import (
 	"k3c/tools/k3c-workbench/internal/world"
 	"k3c/tools/k3c-workbench/internal/studioview"
 	"k3c/tools/k3c-workbench/internal/taskrun"
-	"k3c/tools/k3c-workbench/internal/usage"
+	"k3c/tools/workkit/usage"
 )
 
 // Ereignisse an die Oberfläche (B-064 › Ereignisse). Weitere kommen mit den Seiten dazu, die sie senden.

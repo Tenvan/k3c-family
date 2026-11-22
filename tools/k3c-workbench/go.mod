@@ -10,6 +10,7 @@ require (
 	golang.org/x/sys v0.47.0
 	k3c v0.0.0
 	k3c/tools/assetkit v0.0.0
+	k3c/tools/workkit v0.0.0
 )
 
 require (
@@ -59,3 +60,6 @@ replace k3c => ../..
 
 // Asset-Logik, gemeinsam mit dem Asset-Studio tools/k3c-studio (B-459).
 replace k3c/tools/assetkit => ../assetkit
+
+// Gemeinsamer Code mit k3c-studio: MCP-Gerüst, Log, Konsole, Prozesse, Nutzung (WZ63).
+replace k3c/tools/workkit => ../workkit

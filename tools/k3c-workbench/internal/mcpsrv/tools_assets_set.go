@@ -38,21 +38,21 @@ func registerAssetsSet(s *Server) {
 			"Antwort je Fehler feld · regel · text. Nutze es bei: jede Änderung an einem Asset. Statt: .paper.json von Hand ändern.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in assetsSetIn) (string, error) {
-		return assetsSetText(ctx, s.ws(ctx).root, in)
+		return assetsSetText(ctx, s.ws(ctx).Root, in)
 	})
 	add(s, &mcp.Tool{
 		Name: "assets_style_get",
 		Description: "Stil-Datei verdichtet: Pfad, stilHash, Materialien, Einzeltöne, Papier-Werte. " +
 			"Nutze es bei: welche Materialien gibt es. Statt: public/grafik/stil.paper.json lesen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, _ leerIn) (string, error) { return assetsStyleGetText(s.ws(ctx).root) })
+	}, func(ctx context.Context, _ leerIn) (string, error) { return assetsStyleGetText(s.ws(ctx).Root) })
 	add(s, &mcp.Tool{
 		Name: "assets_style_set",
 		Description: "Merge-Patch auf die Stil-Datei (nur Sessions mit Lane: stil); prüft Schema und ob Specs entfernte Materialien nutzen, " +
 			"startet den Render der betroffenen Assets als Job. Nutze es bei: Farbton oder Papier-Wert ändern. Statt: Stil-Datei von Hand ändern.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in assetsStyleSetIn) (string, error) {
-		return assetsStyleSetText(ctx, s.ws(ctx).root, in)
+		return assetsStyleSetText(ctx, s.ws(ctx).Root, in)
 	})
 	add(s, &mcp.Tool{
 		Name: "assets_delete",
@@ -60,7 +60,7 @@ func registerAssetsSet(s *Server) {
 			"Nutze es bei: Asset entfernen. Statt: Dateien von Hand löschen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in assetsDeleteIn) (string, error) {
-		return assetsDeleteText(s.ws(ctx).root, in)
+		return assetsDeleteText(s.ws(ctx).Root, in)
 	})
 }
 

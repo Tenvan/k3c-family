@@ -253,6 +253,14 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1213](B-1213-zaun-und-mauern-lueckenlos-hoehe-nach-stufe.md) | PAP | Idee | mittel | offen | WL1 | Mauern: Jägerzaun auf Holz-Level, lückenloser Anschluss und Höhe nach Ausbaustufe |
 | [B-1214](B-1214-workbench-spielstart-dev-release-dienste.md) | DEV | Idee | mittel | offen | WL1 | Workbench: Spielstart (Dev und Release) als Dienste eintragen und loggen |
 | [B-1217](B-1217-welt-art-ableger-oder-neu.md) | DEV | Idee | mittel | eingeplant | WL2 | Eine Welt hat eine Art (Ableger oder komplett neu); die Statistik erwartet danach eigene Assets, Einheiten und Werte |
+| [B-1218](B-1218-spieltest-seite-ablage-aufraeumen.md) | DEV | Idee | mittel | offen | WZ64 | Workbench-Seite Spieltest listet Aufnahmen in playtests/ und räumt sie per Knopf auf |
+| [B-1219](B-1219-spieltest-aufnahme-ffmpeg.md) | DEV | Idee | mittel | offen | WZ64 | Spieltest-Start nimmt Raummikro und Spielbild mit ffmpeg auf und startet das Spiel im Spieltest-Modus |
+| [B-1220](B-1220-spieltest-flag-rec-pad-marker.md) | CLI | Idee | mittel | offen | WZ66 | Spiel mit --playtest zeigt REC und schreibt Pad-Marker mit Spielkontext |
+| [B-1221](B-1221-spieltest-ruckler-marker-spielstand.md) | CLI | Idee | mittel | offen | WZ66 | Spieltest-Modus setzt bei Rucklern selbst Marker und legt je Marker einen Spielstand ab |
+| [B-1222](B-1222-spieltest-fragebogen-spielende.md) | CLI | Idee | niedrig | offen | WZ66 | Spieltest-Modus fragt am Spielende drei Fragen je Spieler per Pad ab |
+| [B-1223](B-1223-spieltest-transkript-ffmpeg-whisper.md) | DEV | Idee | mittel | offen | WZ65 | Knopf Transkribieren erzeugt per ffmpeg-whisper ein Transkript mit Zeitstempeln und ein Bild je Marker |
+| [B-1224](B-1224-spieltest-befunde-mcp-tickets.md) | DEV | Idee | mittel | offen | WZ65 | MCP-Tools playtest_* und Prompt-Knöpfe machen aus angehakten Befunden Tickets |
+| [B-1225](B-1225-abnahme-spieltest-aufnahme.md) | DEV | Frage | mittel | offen | WZ65 | Abnahme Spieltest-Aufnahme (WZ64–WZ66): Sofa-Test mit zwei Pads und Frame-Messung bei laufender Aufnahme |
 
 ## Archiv
 

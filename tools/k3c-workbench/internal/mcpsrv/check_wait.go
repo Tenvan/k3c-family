@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/modelcontextprotocol/go-sdk/mcp"
+	"k3c/tools/workkit/mcpkit"
 )
 
 // B-520: check_run wartet bis zum Ende des Laufs. Trägt der Aufruf ein progressToken, meldet es dabei alle
@@ -17,36 +17,9 @@ const (
 	defaultProgressEvery = 20 * time.Second
 )
 
-type progressKey struct{}
-
-// progressFunc meldet dem Client, dass der Aufruf noch arbeitet; elapsed steigt monoton.
-type progressFunc func(msg string, elapsed time.Duration)
-
-// withProgress hängt einen Melder an ctx, wenn der Aufruf ein progressToken trägt.
-func withProgress(ctx context.Context, req *mcp.CallToolRequest) context.Context {
-	if req == nil || req.Session == nil || req.Params == nil {
-		return ctx
-	}
-	token := req.Params.GetProgressToken()
-	if token == nil {
-		return ctx
-	}
-	session := req.Session
-	return context.WithValue(ctx, progressKey{}, progressFunc(func(msg string, elapsed time.Duration) {
-		// Fortschritt ist nur ein Lebenszeichen: Ein Fehler beim Senden ändert nichts am Lauf.
-		_ = session.NotifyProgress(ctx, &mcp.ProgressNotificationParams{
-			ProgressToken: token, Message: msg, Progress: elapsed.Seconds()})
-	}))
-}
-
-func progressOf(ctx context.Context) progressFunc {
-	p, _ := ctx.Value(progressKey{}).(progressFunc)
-	return p
-}
-
 // awaitJob wartet auf das Ende des Laufs: mit Fortschritts-Meldungen bis zum Ende, ohne höchstens checkWait.
 func (s *Server) awaitJob(ctx context.Context, j *checkJob) (string, error) {
-	progress := progressOf(ctx)
+	progress := mcpkit.ProgressOf(ctx)
 	wait := s.checkWait
 	var tick <-chan time.Time
 	if progress != nil {

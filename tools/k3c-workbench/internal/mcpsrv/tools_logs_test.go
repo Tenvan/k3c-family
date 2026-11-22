@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"k3c/tools/workkit/mcpkit"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -155,7 +156,7 @@ func TestToolAufrufeImLog(t *testing.T) {
 	if len(starts) != 2 || len(ends) != 2 {
 		t.Fatalf("Einträge: %d Start, %d Ende\n%s", len(starts), len(ends), buf.String())
 	}
-	if a, _ := starts[1]["args"].(string); len([]rune(a)) != argsRunes || !strings.HasSuffix(a, "…") {
+	if a, _ := starts[1]["args"].(string); len([]rune(a)) != mcpkit.ArgsRunes || !strings.HasSuffix(a, "…") {
 		t.Errorf("Argumente nicht gekürzt: %d Zeichen", len(a))
 	}
 	for i, want := range []struct {

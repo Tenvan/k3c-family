@@ -82,8 +82,8 @@ func (s *Server) taskHost(ctx context.Context) (TaskHost, error) {
 	if s.cfg.Tasks == nil {
 		return nil, errors.New("keine Tasks: k3c-workbench läuft ohne Tasks-Seite")
 	}
-	if ws := s.ws(ctx); ws.name != "" {
-		return nil, fmt.Errorf("task_* bedient nur die Repo-Wurzel, nicht den Worktree %s; im Worktree check_run nutzen", ws.name)
+	if ws := s.ws(ctx); ws.Name != "" {
+		return nil, fmt.Errorf("task_* bedient nur die Repo-Wurzel, nicht den Worktree %s; im Worktree check_run nutzen", ws.Name)
 	}
 	return s.cfg.Tasks, nil
 }

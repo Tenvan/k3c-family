@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/applog"
 	"k3c/tools/k3c-workbench/internal/logs"
+	"k3c/tools/workkit/applog"
 )
 
 const (
@@ -34,7 +34,7 @@ type queryIn struct {
 }
 
 type errorsIn struct {
-	Source  string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
+	Source   string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
 	MinLevel string `json:"level,omitempty" jsonschema:"Mindest-Level, Standard WARN"`
 	Since    string `json:"since,omitempty" jsonschema:"Standard 24h"`
 }
@@ -94,11 +94,11 @@ func (s *Server) logPath(root, source string) (string, error) {
 func (s *Server) logsSources(ctx context.Context, in sourcesIn) (string, error) {
 	ws := s.ws(ctx)
 	var out []string
-	for _, name := range logSources(ws.root) {
-		out = append(out, s.logFileLine(ws.root, name))
+	for _, name := range logSources(ws.Root) {
+		out = append(out, s.logFileLine(ws.Root, name))
 	}
 	for _, name := range s.console.Sources() {
-		own, ok := ws.ownSource(name)
+		own, ok := ws.OwnSource(name)
 		if !ok {
 			continue
 		}
@@ -124,7 +124,7 @@ func (s *Server) logFileLine(root, name string) string {
 
 // logsQuery ist das Tool logs_query: gefilterte Einträge, neueste zuerst.
 func (s *Server) logsQuery(ctx context.Context, in queryIn) (string, error) {
-	root := s.ws(ctx).root
+	root := s.ws(ctx).Root
 	path, err := s.logPath(root, in.Source)
 	if err != nil {
 		return "", err
@@ -151,7 +151,7 @@ func (s *Server) logsQuery(ctx context.Context, in queryIn) (string, error) {
 
 // logsErrors ist das Tool logs_errors: Warnungen und Fehler, gleichartige zu je einer Zeile verdichtet.
 func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
-	root := s.ws(ctx).root
+	root := s.ws(ctx).Root
 	paths, err := s.logPaths(root, in.Source)
 	if err != nil {
 		return "", err
@@ -181,7 +181,7 @@ func (s *Server) logsErrors(ctx context.Context, in errorsIn) (string, error) {
 
 // logsSince ist das Tool logs_since: neue Einträge ab einem Byte-Cursor, älteste zuerst, und der nächste Cursor.
 func (s *Server) logsSince(ctx context.Context, in sinceIn) (string, error) {
-	path, err := s.logPath(s.ws(ctx).root, in.Source)
+	path, err := s.logPath(s.ws(ctx).Root, in.Source)
 	if err != nil {
 		return "", err
 	}

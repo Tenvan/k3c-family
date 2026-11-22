@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 )
 
 func writeFile(t *testing.T, root, rel, text string) {

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/workkit/mcpkit"
 )
 
 // B-644: sim_test wartet wie check_run (check_wait.go) auf das Ende des Laufs: `start` mit wait und `wait {id}`.
@@ -20,7 +21,7 @@ func simEnded(state string) bool { return state != simrun.Running && state != si
 
 // awaitSim wartet auf das Ende des Laufs id und liefert den Status; der Kontext des Aufrufs beendet nur das Warten.
 func (s *Server) awaitSim(ctx context.Context, root, id string) (string, error) {
-	progress := progressOf(ctx)
+	progress := mcpkit.ProgressOf(ctx)
 	deadline := time.NewTimer(s.checkWait)
 	defer deadline.Stop()
 	if progress != nil {

@@ -26,7 +26,9 @@ const (
 // hubEngine ist die Engine-Seite des Planers (simcli hub); Tests setzen einen Ersatz.
 var hubEngine = hubplan.Direct
 
-func hubEditor(root string) hubplan.Editor { return hubplan.Editor{Root: root, Engine: hubEngine(root)} }
+func hubEditor(root string) hubplan.Editor {
+	return hubplan.Editor{Root: root, Engine: hubEngine(root)}
+}
 
 type hubGetIn struct{}
 
@@ -50,7 +52,7 @@ func registerHub(s *Server) {
 			"Statt: data/hub.json und docs/rules/materialien-gebaeude.md lesen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, _ hubGetIn) (string, error) {
-		return hubText(ctx, s.ws(ctx).root, "")
+		return hubText(ctx, s.ws(ctx).Root, "")
 	})
 	add(s, &mcp.Tool{
 		Name: "hub_check",
@@ -58,7 +60,7 @@ func registerHub(s *Server) {
 			"Abweichung der Regeltabelle. Nutze es bei: Änderung an Plätzen oder Hub-Stufen vorab prüfen. Statt: hub.json von Hand ändern und go test fahren.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in hubCheckIn) (string, error) {
-		root := s.ws(ctx).root
+		root := s.ws(ctx).Root
 		cand, err := hubCandidate(ctx, root, in.Patch, in.Candidate, false)
 		if err != nil {
 			return "", err
@@ -72,7 +74,7 @@ func registerHub(s *Server) {
 			"Eine REG-Änderung: Commit mit Begründung. Nutze es bei: Plätze, Hub-Stufen, Händler oder Baugrund ändern. Statt: data/hub.json von Hand ändern.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in hubSaveIn) (string, error) {
-		return hubSaveText(ctx, s.ws(ctx).root, in)
+		return hubSaveText(ctx, s.ws(ctx).Root, in)
 	})
 }
 

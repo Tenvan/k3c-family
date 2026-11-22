@@ -51,7 +51,7 @@ func registerAssetsResearch(s *Server) {
 			"mit Link, Quelle, Urheber und Lizenz-Status nach Q70. Nutze es bei: Alternativen für einen Slot finden. Statt: Fundseiten von Hand anlegen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &open},
 	}, func(ctx context.Context, in assetsResearchIn) (string, error) {
-		root := s.ws(ctx).root
+		root := s.ws(ctx).Root
 		res, err := assets.RunResearch(ctx, root, in.ID, in.Query, newSearcher(root), time.Now())
 		if err != nil {
 			return "", err
@@ -64,7 +64,7 @@ func registerAssetsResearch(s *Server) {
 			"Nutze es bei: welche Vorschläge liegen schon vor. Statt: data/assets-recherche.json lesen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in assetsIDIn) (string, error) {
-		hits, err := assets.HitsOf(s.ws(ctx).root, in.ID)
+		hits, err := assets.HitsOf(s.ws(ctx).Root, in.ID)
 		if err != nil {
 			return "", err
 		}
@@ -78,14 +78,14 @@ func registerAssetsResearch(s *Server) {
 		Description: "Legt einen selbst gefundenen Treffer zu einem Asset-Slot ab (Agent hat im Netz gesucht); Lizenz wird nach Q70 eingeordnet, " +
 			"unklar bleibt „pruefen“. Nutze es bei: Fund von itch.io, Kenney oder anderen Seiten ohne API. Statt: Link nur im Chat nennen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in assetsHitAddIn) (string, error) { return hitAdd(s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsHitAddIn) (string, error) { return hitAdd(s.ws(ctx).Root, in) })
 	add(s, &mcp.Tool{
 		Name: "assets_hit_drop",
 		Description: "Verwirft einen Recherche-Treffer eines Asset-Slots. Nutze es bei: 🧑 hat einen Vorschlag abgelehnt. " +
 			"Statt: data/assets-recherche.json von Hand ändern.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in assetsHitDropIn) (string, error) {
-		if err := assets.DropHit(s.ws(ctx).root, in.ID, in.Hit); err != nil {
+		if err := assets.DropHit(s.ws(ctx).Root, in.ID, in.Hit); err != nil {
 			return "", err
 		}
 		return fmt.Sprintf("%s: Treffer %s verworfen", in.ID, in.Hit), nil
@@ -144,7 +144,7 @@ func registerAssetsImport(s *Server) {
 			"Statt: Datei von Hand kopieren und CREDITS bearbeiten.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &open},
 	}, func(ctx context.Context, in assetsImportIn) (string, error) {
-		root := s.ws(ctx).root
+		root := s.ws(ctx).Root
 		var rel string
 		var err error
 		if in.Path == "" {

@@ -13,8 +13,8 @@ func (s *Server) workbenchStatus(ctx context.Context, _ struct{}) (string, error
 	ws := s.ws(ctx)
 	st := s.Stats()
 	lines := []string{
-		fmt.Sprintf("k3c-workbench · %s · läuft seit %s", s.URL(), formatUptime(s.stats.uptime())),
-		"Checkout: " + ws.label(),
+		fmt.Sprintf("k3c-workbench · %s · läuft seit %s", s.URL(), formatUptime(s.kit.Uptime())),
+		"Checkout: " + ws.Label(),
 		fmt.Sprintf("Aufrufe %d · Fehler %d · Clients %d (max %d) · parallel %d (max %d)",
 			st.TotalCalls, st.Errors, st.Clients, st.PeakClients, st.InFlight, st.PeakInFlight),
 	}
@@ -22,7 +22,7 @@ func (s *Server) workbenchStatus(ctx context.Context, _ struct{}) (string, error
 		u := s.cfg.Usage.Snapshot().Session
 		lines = append(lines, fmt.Sprintf("Sitzung: p95 %s · Ausreißer %d", formatMs(u.P95Ms), u.Outliers))
 	}
-	lines = append(lines, s.serviceSummary(ctx), "Log-Quellen: "+strings.Join(logSources(ws.root), ", "))
+	lines = append(lines, s.serviceSummary(ctx), "Log-Quellen: "+strings.Join(logSources(ws.Root), ", "))
 	return strings.Join(append(lines, s.runLines(ws)...), "\n"), nil
 }
 
@@ -30,7 +30,7 @@ func (s *Server) workbenchStatus(ctx context.Context, _ struct{}) (string, error
 func (s *Server) runLines(ws workspace) []string {
 	var out []string
 	for _, t := range checkTargets {
-		r, ok := s.checks.lastRun(ws.source(t.name))
+		r, ok := s.checks.lastRun(ws.Source(t.name))
 		if !ok {
 			continue
 		}

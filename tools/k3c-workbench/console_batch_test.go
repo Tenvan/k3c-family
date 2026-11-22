@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 )
 
 // B-895/AC-01: 10 000 Zeilen in kurzer Zeit werden zu wenigen Sendungen, jede höchstens max Zeilen, die jüngste Zeile

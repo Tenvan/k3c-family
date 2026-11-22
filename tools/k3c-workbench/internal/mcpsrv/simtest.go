@@ -39,7 +39,7 @@ func registerSimTest(s *Server) {
 // simTest ist das Tool sim_test.
 func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 	ws := s.ws(ctx)
-	root := ws.root
+	root := ws.Root
 	switch in.Action {
 	case "start":
 		return s.simStart(ctx, ws, in)
@@ -64,7 +64,7 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 	if err := s.ownCheckoutErr(ctx, "sim_test start"); err != nil {
 		return "", err
 	}
-	root := ws.root
+	root := ws.Root
 	spec, err := in.spec()
 	if err != nil {
 		return "", err
@@ -76,7 +76,7 @@ func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (stri
 	if err != nil {
 		return "", err
 	}
-	run, err := s.sims.Start(root, ws.short(), spec.label(), spec.offline(), runner, false)
+	run, err := s.sims.Start(root, ws.Short(), spec.label(), spec.offline(), runner, false)
 	if err != nil {
 		return "", fmt.Errorf("schon %d Läufe in diesem Checkout; mit sim_test stop einen beenden", simrun.MaxPerRoot)
 	}

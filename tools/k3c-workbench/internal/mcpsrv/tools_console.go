@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 )
 
 const (
@@ -32,15 +32,15 @@ func (s *Server) consoleTail(ctx context.Context, in tailIn) (string, error) {
 	if in.Since > 0 {
 		want = 0 // ab dem Cursor: alle holen, danach die ersten n nach dem Cursor
 	}
-	lines, ok := s.console.Tail(ws.consoleSource(in.Source), want)
+	lines, ok := s.console.Tail(ws.ConsoleSource(in.Source), want)
 	target, isCheck := strings.CutPrefix(in.Source, "check:")
 	if !ok && isCheck {
-		return "", fmt.Errorf("kein Lauf von %s im Checkout %s (check_run startet ihn dort)", in.Source, ws.label())
+		return "", fmt.Errorf("kein Lauf von %s im Checkout %s (check_run startet ihn dort)", in.Source, ws.Label())
 	}
 	if !ok {
 		var own []string
 		for _, name := range s.console.Sources() {
-			if o, mine := ws.ownSource(name); mine {
+			if o, mine := ws.OwnSource(name); mine {
 				own = append(own, o)
 			}
 		}
@@ -52,8 +52,8 @@ func (s *Server) consoleTail(ctx context.Context, in tailIn) (string, error) {
 	}
 	head := in.Source
 	if isCheck { // Läufe nennen Checkout und Startzeit, damit kein fremder Lauf als eigener durchgeht (B-855)
-		head += " · Checkout " + ws.label()
-		if at, ok := s.checks.startOf(ws.source(target)); ok {
+		head += " · Checkout " + ws.Label()
+		if at, ok := s.checks.startOf(ws.Source(target)); ok {
 			head += " · Lauf ab " + at.Format("15:04:05")
 		}
 	}

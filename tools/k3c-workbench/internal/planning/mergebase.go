@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // runGit führt `git -C dir args…` aus und liefert die Ausgabe; Fehler enthalten die Meldung von git.

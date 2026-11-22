@@ -30,7 +30,7 @@ func (s *Server) registerGauges() {
 	r.Gauge("Testläufe", "", func() int64 { return int64(s.sims.Count()) })
 	r.Gauge("MCP-Sessions", "", func() int64 {
 		n := 0
-		for range s.mcp.Sessions() {
+		for range s.kit.MCP().Sessions() {
 			n++
 		}
 		return int64(n)

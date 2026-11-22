@@ -10,14 +10,13 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
-	"reflect"
 	"slices"
-	"sort"
 	"strings"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	pa "k3c/tools/k3c-workbench/internal/paperassets"
+	"k3c/tools/workkit/mcpkit"
 )
 
 type assetsPreviewIn struct {
@@ -41,29 +40,13 @@ func registerAssetsPreview(s *Server) {
 			"Nutze es bei: Ergebnis eines assets_set ansehen, Teile finden. Statt: PNG-Dateien öffnen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in assetsPreviewIn) ([]byte, string, error) {
-		return assetsPreview(ctx, s.ws(ctx).root, in)
+		return assetsPreview(ctx, s.ws(ctx).Root, in)
 	})
 }
 
-// addImage registriert ein Tool, das ein PNG und Text liefert (wie add, aber mit ImageContent).
+// addImage registriert ein Tool, das ein PNG und Text liefert (mcpkit.AddImage).
 func addImage[In any](s *Server, t *mcp.Tool, h func(context.Context, In) ([]byte, string, error)) {
-	s.params[t.Name] = jsonNames(reflect.TypeFor[In]())
-	if takesCheckout(t.Name) {
-		schema, names, err := withCheckout[In](s.params[t.Name])
-		if err != nil {
-			panic(fmt.Sprintf("Schema von %s: %v", t.Name, err))
-		}
-		t.InputSchema, s.params[t.Name] = schema, names
-		sort.Strings(s.params[t.Name])
-	}
-	s.stats.register(t.Name, t.Description)
-	mcp.AddTool(s.mcp, t, func(ctx context.Context, req *mcp.CallToolRequest, in In) (*mcp.CallToolResult, any, error) {
-		bild, text, err := h(withProgress(ctx, req), in)
-		if err != nil {
-			return nil, nil, err
-		}
-		return &mcp.CallToolResult{Content: []mcp.Content{&mcp.ImageContent{Data: bild, MIMEType: "image/png"}, &mcp.TextContent{Text: text}}}, nil, nil
-	})
+	mcpkit.AddImage(s.kit, t, h)
 }
 
 func assetsPreview(ctx context.Context, root string, in assetsPreviewIn) ([]byte, string, error) {

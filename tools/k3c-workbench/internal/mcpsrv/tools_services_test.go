@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/services"
+	"k3c/tools/workkit/console"
 )
 
 // serviceServer baut Server und Controller mit gestelltem Start; healthy steuert die Prüfung, busy den Port.

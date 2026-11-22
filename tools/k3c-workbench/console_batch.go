@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 )
 
 // Bündelung von console:line (B-895): Jede Zeile einzeln an die Oberfläche zu schicken, brachte den WebView2-Renderer

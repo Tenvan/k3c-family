@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/services"
+	"k3c/tools/workkit/console"
 )
 
 // stubProc ist ein Dienst-Prozess, der läuft, bis er beendet wird.
