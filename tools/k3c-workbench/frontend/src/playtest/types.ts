@@ -53,6 +53,45 @@ export interface PlaytestStatus {
   encoder: string;
 }
 
+/** Ist die Auswertung möglich (ffmpeg ab 8 mit whisper-Filter, Modelldatei)? `message` nennt sonst, was zu tun ist. */
+export interface PlaytestCapability {
+  ready: boolean;
+  ffmpeg: string;
+  whisper: boolean;
+  model: string;
+  modelOk: boolean;
+  message: string;
+}
+
+/** Stand der Auswertung (Transkript, dann Bilder je Marker). */
+export interface PlaytestJob {
+  running: boolean;
+  id: string;
+  step: string;
+  done: number;
+  total: number;
+  message: string;
+  error: string;
+}
+
+/** Eintrag der Zeitleiste: ein Satz oder ein Marker; `videoMs` ist die Videozeit für den Sprung im Player. */
+export interface PlaytestEntry {
+  kind: 'sprache' | 'marker';
+  ms: number;
+  videoMs: number;
+  endMs?: number;
+  text?: string;
+  nr?: number;
+  frame?: string;
+}
+
+export interface PlaytestTimeline {
+  id: string;
+  captureMs: number;
+  hasTranscript: boolean;
+  entries: PlaytestEntry[];
+}
+
 export interface PlaytestApi {
   list(): Promise<PlaytestSession[]>;
   plan(action: PlaytestAction, id: string): Promise<PlaytestPlan>;
@@ -61,6 +100,11 @@ export interface PlaytestApi {
   start(options: PlaytestOptions): Promise<PlaytestStatus>;
   stop(): Promise<void>;
   status(): Promise<PlaytestStatus>;
+  check(): Promise<PlaytestCapability>;
+  transcribe(id: string): Promise<PlaytestJob>;
+  transcribeStatus(): Promise<PlaytestJob>;
+  transcribeCancel(): Promise<void>;
+  timeline(id: string): Promise<PlaytestTimeline>;
   /** Nur der Mock: Ausgangsdaten wiederherstellen (Tests). */
   reset?(): void;
 }

@@ -18,6 +18,11 @@ function pick(): PlaytestApi {
       start: (o) => app.PlaytestStart(o),
       stop: () => app.PlaytestStop(),
       status: () => app.PlaytestStatus(),
+      check: () => app.PlaytestCheck(),
+      transcribe: (id) => app.PlaytestTranscribe(id),
+      transcribeStatus: () => app.PlaytestTranscribeStatus(),
+      transcribeCancel: () => app.PlaytestTranscribeCancel(),
+      timeline: (id) => app.PlaytestTimeline(id),
     };
   }
   if (backend.mock) return mockPlaytest();
@@ -30,6 +35,11 @@ function pick(): PlaytestApi {
     start: (o) => rpc('PlaytestStart', o),
     stop: () => rpc('PlaytestStop'),
     status: () => rpc('PlaytestStatus'),
+    check: () => rpc('PlaytestCheck'),
+    transcribe: (id) => rpc('PlaytestTranscribe', id),
+    transcribeStatus: () => rpc('PlaytestTranscribeStatus'),
+    transcribeCancel: () => rpc('PlaytestTranscribeCancel'),
+    timeline: (id) => rpc('PlaytestTimeline', id),
   };
 }
 
@@ -38,4 +48,9 @@ export const playtestApi: PlaytestApi = pick();
 /** Adresse einer Datei für die Player; im Wails-Fenster gibt es keinen HTTP-Weg (nur Client-Server-Betrieb). */
 export function mediaUrl(id: string, file: 'voice.wav' | 'video.mkv'): string | null {
   return hasWails() ? null : `/api/dev/playtest/media/${encodeURIComponent(id)}/${file}`;
+}
+
+/** Adresse eines Marker-Bilds (frames/marker-<nr>.jpg); im Wails-Fenster ohne HTTP-Weg. */
+export function frameUrl(id: string, nr: number): string | null {
+  return hasWails() ? null : `/api/dev/playtest/frame/${encodeURIComponent(id)}/${nr}`;
 }

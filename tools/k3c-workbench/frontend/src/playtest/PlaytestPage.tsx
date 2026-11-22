@@ -85,7 +85,7 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
   return (
     <>
       <ListDetail header={header} list={list} listWidth={340}>
-        {current ? <SessionDetail session={current} onClean={clean} /> : <Text size="2" color="gray" as="p" m="3">Keine Session gewählt.</Text>}
+        {current ? <SessionDetail session={current} onClean={clean} onChanged={reload} /> : <Text size="2" color="gray" as="p" m="3">Keine Session gewählt.</Text>}
       </ListDetail>
       <Confirm request={confirm} onClose={() => setConfirm(null)} />
     </>

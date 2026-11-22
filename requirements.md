@@ -15,6 +15,8 @@ holt `bun install --frozen-lockfile` aus `bun.lock`. Versionen gelten, solange d
 | Wails-CLI | 2.16.0 | Fenster von `tools/k3c-workbench` bauen (`task k3c-workbench`, `task k3c-workbench:build`) | `tools/k3c-workbench/go.mod` | `wails version` |
 | WebView2-Laufzeit | aktuell (in Windows 11 enthalten) | Fenster von `k3c-workbench` | – | `wails doctor` |
 | Go Task | ab 3.54.0 (geprüft von `check_run`: Testmuster an Task-Ziele brauchen das Quoten von `CLI_ARGS` und `GO_TEST_FLAGS`, B-868; Zahl in `tools/k3c-workbench/internal/mcpsrv/check_taskversion.go`) | Alle Befehle (`Taskfile.yml`, `task --list`) | `Taskfile.yml` | `task --version` |
+| ffmpeg (nur Spieltest) | 8 oder neuer mit Filter `whisper` (gyan.dev „full build“, geprüft mit 9.0.2) | Spieltest-Aufnahme und Auswertung (Transkript, Bilder je Marker) auf der Seite Spieltest | – | `ffmpeg -version`, `ffmpeg -filters` (Zeile `whisper`) |
+| Whisper-Modell (nur Spieltest) | `ggml-large-v3-turbo-q5_0.bin` (ca. 550 MB, nicht eingecheckt) | Transkript; Ablage `models/whisper/` (ignoriert) oder Pfad in `K3C_WHISPER_MODEL`; Quelle `https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin` (Hand-Download, die Workbench lädt nichts selbst) | – | Datei vorhanden; die Seite Spieltest meldet fehlendes Modell |
 | C-Compiler (optional) | `gcc` oder `clang` | Race-Detector `go test -race` in `task go:race`; ohne Compiler nur ein Hinweis, die CI prüft es (B-077) | – | `gcc --version` |
 
 Zum Testen am Gerät, keine Installation im Repo: ein Windows-PC mit Controllern für das Rust-Spiel (`task rust:game:run`).

@@ -56,17 +56,18 @@ var idRe = regexp.MustCompile(`^\d{4}-\d{2}-\d{2}-\d+$`)
 
 // Meta ist session.json (Schreiber: Aufnahme, WZ64.2).
 type Meta struct {
-	StartMs  int64    `json:"startMs"`
-	EndMs    int64    `json:"endMs"`
-	Mic      string   `json:"mic"`
-	Monitor  string   `json:"monitor"`
-	FFmpeg   string   `json:"ffmpeg"`
-	GameArgs []string `json:"gameArgs"`
-	Stand    string   `json:"stand"`
-	Encoder  string   `json:"encoder,omitempty"`  // Bildaufnahme (QSV oder libx264-Fallback)
-	Crash    bool     `json:"crash,omitempty"`    // Spiel endete mit Fehler, ohne dass Stopp gedrückt wurde
-	GameExit string   `json:"gameExit,omitempty"` // Fehlertext des Spielendes bei Absturz
-	Error    string   `json:"error,omitempty"`    // Grund, wenn das Spiel nicht startete
+	StartMs   int64    `json:"startMs"`
+	CaptureMs int64    `json:"captureMs,omitempty"` // Start von ffmpeg: Unix-ms bei 0 s von voice.wav und video.mkv
+	EndMs     int64    `json:"endMs"`
+	Mic       string   `json:"mic"`
+	Monitor   string   `json:"monitor"`
+	FFmpeg    string   `json:"ffmpeg"`
+	GameArgs  []string `json:"gameArgs"`
+	Stand     string   `json:"stand"`
+	Encoder   string   `json:"encoder,omitempty"`  // Bildaufnahme (QSV oder libx264-Fallback)
+	Crash     bool     `json:"crash,omitempty"`    // Spiel endete mit Fehler, ohne dass Stopp gedrückt wurde
+	GameExit  string   `json:"gameExit,omitempty"` // Fehlertext des Spielendes bei Absturz
+	Error     string   `json:"error,omitempty"`    // Grund, wenn das Spiel nicht startete
 }
 
 // File ist eine Datei oder ein Ordner einer Session mit Größe in Bytes (Ordner: Summe).
