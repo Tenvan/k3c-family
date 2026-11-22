@@ -172,6 +172,38 @@ func (a *App) PlaytestFindingUpdate(id, fid string, p playtest.FindingPatch) (pl
 	return a.playtestStore().UpdateFinding(id, fid, p)
 }
 
+// describers hält je App eine Bildbeschreibung (wie transcribers).
+var describers sync.Map
+
+func (a *App) describer() *playtest.Describer {
+	if r, ok := describers.Load(a); ok {
+		return r.(*playtest.Describer)
+	}
+	r := playtest.NewDescriber(a.root, a.playtestStore(), func(level, msg string, kv ...any) {
+		if level == "warn" {
+			a.log.Warn(msg, append([]any{"ns", "playtest"}, kv...)...)
+			return
+		}
+		a.log.Info(msg, append([]any{"ns", "playtest"}, kv...)...)
+	})
+	act, _ := describers.LoadOrStore(a, r)
+	return act.(*playtest.Describer)
+}
+
+// PlaytestVisionInfo nennt die Bildmodelle (models/vision/) und ob die Laufzeit llama.cpp bereitsteht.
+func (a *App) PlaytestVisionInfo() playtest.VisionInfo { return a.describer().Info() }
+
+// PlaytestDescribe beschreibt die Marker-Bilder nrs (leer: alle ausgewählten) mit dem Bildmodell model im Hintergrund.
+func (a *App) PlaytestDescribe(id, model string, nrs []int) (playtest.VisionStatus, error) {
+	return a.describer().Start(id, model, nrs)
+}
+
+// PlaytestDescribeStatus ist der Stand der Bildbeschreibung.
+func (a *App) PlaytestDescribeStatus() playtest.VisionStatus { return a.describer().Status() }
+
+// PlaytestDescribeCancel bricht die Bildbeschreibung ab; fertige Beschreibungen bleiben.
+func (a *App) PlaytestDescribeCancel() error { return a.describer().Cancel() }
+
 // PlaytestFrameSkip blendet das Bild eines Marker aus oder ein (die Datei bleibt).
 func (a *App) PlaytestFrameSkip(id string, nr int, skip bool) error {
 	return a.playtestStore().SetFrameSkip(id, nr, skip)

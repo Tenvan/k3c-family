@@ -1,4 +1,4 @@
-import type { PlaytestFinding, PlaytestAction, PlaytestApi, PlaytestEntry, PlaytestJob, PlaytestFile, PlaytestPlan, PlaytestSession, PlaytestStatus } from './types';
+import type { PlaytestFinding, PlaytestAction, PlaytestApi, PlaytestEntry, PlaytestJob, PlaytestFile, PlaytestPlan, PlaytestSession, PlaytestStatus, VisionStatus } from './types';
 
 // Mock ohne Wails-Laufzeit (`?mock=1`, Tests): drei Sessions mit allen Ständen; Plan und Löschen verhalten sich wie
 // internal/playtest (Bestätigung nötig, laufende Aufnahme gesperrt, Sammelaktion nur für „ausgewertet“).
@@ -53,10 +53,12 @@ export function mockPlaytest(): PlaytestApi {
   let job = noJob;
   let findings: PlaytestFinding[] = seedFindings();
   let gone = new Set<number>(); // ausgeblendete Marker-Bilder
+  let desc = new Map<number, string>(); // Bildbeschreibungen
+  const noVision: VisionStatus = { running: false, id: '', done: 0, total: 0, error: '' };
   const entries = (s: PlaytestSession): PlaytestEntry[] => {
     const done = s.stage === 'transkribiert' || s.stage === 'ausgewertet';
     const t0 = s.startMs;
-    const out: PlaytestEntry[] = [{ kind: 'marker', ms: t0 + 5000, videoMs: 5000, text: 'Marker · Spieler 1 · Insel 2 Stufe 3', nr: 1, frame: 'frames/marker-1.jpg', skip: gone.has(1) }];
+    const out: PlaytestEntry[] = [{ kind: 'marker', ms: t0 + 5000, videoMs: 5000, text: 'Marker · Spieler 1 · Insel 2 Stufe 3', nr: 1, frame: 'frames/marker-1.jpg', skip: gone.has(1), desc: desc.get(1) }];
     if (done) out.unshift({ kind: 'sprache', ms: t0 + 1000, videoMs: 1000, endMs: t0 + 3000, text: 'Hier fehlt der Turm.' });
     return out;
   };
@@ -67,6 +69,17 @@ export function mockPlaytest(): PlaytestApi {
       job = noJob;
       findings = seedFindings();
       gone = new Set();
+      desc = new Map();
+    },
+    visionInfo: async () => ({ ready: true, models: [{ id: 'models/vision/Qwen2.5-VL-3B-Instruct-Q4_K_M.gguf', name: 'Qwen2.5-VL-3B-Instruct-Q4_K_M.gguf', sizeMb: 1840 }], message: '' }),
+    describe: async (id, _model, nrs) => {
+      if (gone.has(1) && nrs.includes(1)) throw new Error('kein ausgewähltes Marker-Bild zum Beschreiben');
+      for (const nr of nrs.length ? nrs : [1]) if (!gone.has(nr)) desc.set(nr, 'Optionen-Menü, Zeile Sprache markiert.');
+      return { ...noVision, id };
+    },
+    describeStatus: async () => noVision,
+    describeCancel: async () => {
+      throw new Error('keine Bildbeschreibung aktiv');
     },
     skipFrame: async (_id, nr, skip) => {
       if (skip) gone.add(nr);

@@ -227,6 +227,9 @@ func timelineLine(dir string, e playtest.Entry) string {
 	if e.Skip {
 		line += " · Bild nicht ausgewählt (nicht ansehen)"
 	} else if e.Frame != "" {
+		if e.Desc != "" {
+			line += " · Bildbeschreibung: " + strings.Join(strings.Fields(e.Desc), " ")
+		}
 		line += " · Bild " + filepath.Join(dir, filepath.FromSlash(e.Frame))
 	}
 	return line

@@ -8,9 +8,9 @@
 - **Sprint:** WZ65
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-22
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, Auftrag im Chat
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -28,10 +28,10 @@ Ralf (🧑), Claude als Leser der Session.
 
 ## Anforderungen
 
-- Lokales Modell, kein Cloud-Dienst: Kandidaten sind ein Vision-Sprachmodell kleiner Größe (z. B. Moondream oder Qwen-VL über llama.cpp) und Texterkennung (OCR) für UI-Text; die Entscheidung fällt in der Spec.
-- Beschreibung steht in markers/transcript-Daten und in playtest_get.
-- Modell wie bei whisper aus models/ wählbar, nie automatisch geladen.
-- Dauer fließt in die Statistik von B-1239.
+- Lokales Modell, kein Cloud-Dienst: Qwen2.5-VL-3B (GGUF samt mmproj) über llama.cpp (llama-mtmd-cli, Vulkan-Build), beides in models/vision/ (ignoriert, nie automatisch geladen).
+- Bildmodelle sind wählbar (alle Hauptdateien in models/vision/ mit passender mmproj-Datei); Laufzeit aus models/vision/llama oder K3C_LLAMA_DIR.
+- Beschreiben: alle ausgewählten Marker-Bilder (B-1240) oder ein einzelnes Bild; abgewählte nie. Fortschritt, Abbrechen, fertige Beschreibungen bleiben.
+- Ergebnis in descriptions.json der Session, in der Zeitleiste unter dem Marker und in playtest_get als „Bildbeschreibung“.
 
 ## Nicht-Ziele
 
@@ -51,12 +51,13 @@ Modell fehlt: Bilder bleiben ohne Beschreibung, Hinweis wie bei whisper.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Spec: Modell- und Laufzeitwahl entschieden und von Ralf freigegeben.
-- **AC-02** Umsetzung nach freigegebener Spec.
+- **AC-01** Spec: Modell- und Laufzeitwahl entschieden (Qwen2.5-VL-3B, llama.cpp Vulkan) und von Ralf im Chat freigegeben.
+- **AC-02** Go-Tests: Modellliste mit mmproj, nur ausgewählte Bilder, gezielte Nummern, Ablehnungen; Vitest für Modellwahl, Beschreiben und Einzel-Knopf; Paritaet der Bindings grün.
+- **AC-03** Abnahme durch Ralf: Beschreibung einer echten Session ist brauchbar (Messung: etwa 26 s je Bild mit Grafikkarte).
 
 ## Offene Fragen
 
-Welches Modell und welche Laufzeit (llama.cpp, ONNX, OCR), und reicht OCR allein?
+keine (Qwen2.5-VL-3B gewählt; OCR allein reicht nicht für Szenen)
 
 ## Notizen
 

@@ -119,6 +119,29 @@ export interface PlaytestEntry {
   frame?: string;
   /** Bild ausgeblendet: der Chat sieht und beschreibt es nicht. */
   skip?: boolean;
+  /** Beschreibung des Bilds durch das Bildmodell (B-1241). */
+  desc?: string;
+}
+
+/** Bildmodell aus models/vision/ (Hauptdatei samt mmproj). */
+export interface VisionModel {
+  id: string;
+  name: string;
+  sizeMb: number;
+}
+
+export interface VisionInfo {
+  ready: boolean;
+  models: VisionModel[];
+  message: string;
+}
+
+export interface VisionStatus {
+  running: boolean;
+  id: string;
+  done: number;
+  total: number;
+  error: string;
 }
 
 /** Dauer der letzten Auswertung (transcript.json › stats). */
@@ -203,6 +226,11 @@ export interface PlaytestApi {
   updateFinding(id: string, findingId: string, patch: PlaytestFindingPatch): Promise<PlaytestFinding>;
   /** Blendet das Bild eines Markers aus oder ein (die Datei bleibt). */
   skipFrame(id: string, nr: number, skip: boolean): Promise<void>;
+  visionInfo(): Promise<VisionInfo>;
+  /** Beschreibt die Marker-Bilder nrs (leer: alle ausgewählten) mit dem Bildmodell. */
+  describe(id: string, model: string, nrs: number[]): Promise<VisionStatus>;
+  describeStatus(): Promise<VisionStatus>;
+  describeCancel(): Promise<void>;
   /** Nur der Mock: Ausgangsdaten wiederherstellen (Tests). */
   reset?(): void;
 }

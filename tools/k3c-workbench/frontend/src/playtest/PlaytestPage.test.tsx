@@ -275,6 +275,21 @@ describe('Auswertung (B-1223)', () => {
     expect(panel().querySelector('[data-preview]')).not.toBeNull();
   });
 
+  it('Bildbeschreibung: Modell wählbar, markierte Bilder beschreiben, abgewählte nicht (B-1241)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-timeline]')!;
+    expect(panel().querySelector('[aria-label="Bildmodell"]')!.textContent).toContain('Qwen2.5-VL-3B');
+    expect(panel().querySelector('[data-desc]')).toBeNull();
+    act(() => button('Markierte Bilder beschreiben', host).click());
+    await flush();
+    expect(panel().querySelector('[data-desc]')!.textContent).toContain('Optionen-Menü');
+    act(() => (panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement).click());
+    await flush();
+    expect(panel().querySelector('[data-describe-one]')).toBeNull(); // abgewähltes Bild: kein Einzel-Knopf
+  });
+
   it('Marker-Bilder sind vorab markiert, ein Haken weg blendet das Bild aus, der Marker bleibt (B-1240)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());

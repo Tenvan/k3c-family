@@ -40,6 +40,7 @@ type Entry struct {
 	Marker  *Marker `json:"marker,omitempty"`
 	Nr      int     `json:"nr,omitempty"`    // Marker: Zeilennummer ab 1
 	Frame   string  `json:"frame,omitempty"` // Marker: Bild relativ zur Session, wenn es existiert
+	Desc    string  `json:"desc,omitempty"`  // Marker: Beschreibung des Bilds durch das Bildmodell (B-1241)
 	Skip    bool    `json:"skip,omitempty"`  // Marker: Bild abgewählt (nicht für den Chat)
 }
 
@@ -112,6 +113,7 @@ func (s *Store) Timeline(id string) (Timeline, error) {
 	if err != nil {
 		return tl, err
 	}
+	descs := ReadDescriptions(dir)
 	skip := map[int]bool{}
 	for _, n := range readMeta(dir).SkipFrames {
 		skip[n] = true
@@ -122,6 +124,7 @@ func (s *Store) Timeline(id string) (Timeline, error) {
 		if st, err := os.Stat(filepath.Join(dir, filepath.FromSlash(FrameName(i+1)))); err == nil && !st.IsDir() {
 			e.Frame = FrameName(i + 1)
 			e.Skip = skip[i+1]
+			e.Desc = descs[i+1].Text
 		}
 		tl.Entries = append(tl.Entries, e)
 	}

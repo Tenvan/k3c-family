@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActionButton, CardButton, Checkbox, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
+import { DescribeBar, useDescribe } from './DescribeBar';
 import { FindingsPanel } from './FindingsPanel';
 import { frameUrl, playtestApi } from './api';
 import { statsLines } from './format';
@@ -77,6 +78,7 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       setError(message(e));
     }
   };
+  const describe = useDescribe(s.id, refresh, loadTimeline);
   const toggleSkip = (nr: number, skip: boolean) =>
     void playtestApi.skipFrame(s.id, nr, skip).then(() => loadTimeline(), (e) => setError(message(e)));
   const cancel = () => void playtestApi.transcribeCancel().catch((e) => setError(message(e)));
@@ -110,7 +112,8 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       {timeline?.stats && (
         <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
       )}
-      <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} />
+      {timeline?.entries.some((e) => e.frame) && <DescribeBar d={describe} sessionId={s.id} />}
+      <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} onDescribe={(nr) => describe.start([nr])} describeBusy={describe.busy} describeReady={describe.info?.ready ?? false} />
       {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
   );
@@ -130,7 +133,17 @@ function Thumb({ src, alt, dim }: { src: string; alt: string; dim: boolean }) {
   );
 }
 
-function Entries({ id, timeline, onSeek, onSkipFrame }: { id: string; timeline: PlaytestTimeline | null; onSeek: (ms: number) => void; onSkipFrame: (nr: number, skip: boolean) => void }) {
+interface EntriesProps {
+  id: string;
+  timeline: PlaytestTimeline | null;
+  onSeek: (ms: number) => void;
+  onSkipFrame: (nr: number, skip: boolean) => void;
+  onDescribe: (nr: number) => void;
+  describeBusy: boolean;
+  describeReady: boolean;
+}
+
+function Entries({ id, timeline, onSeek, onSkipFrame, onDescribe, describeBusy, describeReady }: EntriesProps) {
   if (!timeline) return null;
   if (timeline.entries.length === 0) return <Text size="2" color="gray">Noch kein Transkript und keine Marker.</Text>;
   return (
@@ -151,11 +164,14 @@ function Entries({ id, timeline, onSeek, onSkipFrame }: { id: string; timeline: 
               ) : (
                 <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
               )}
+              <Flex direction="column" gap="1" align="start">
               <Flex gap="2" align="center" wrap="wrap">
                 {e.kind === 'marker'
                   ? <StatusBadge tone="warn">{e.text}</StatusBadge>
                   : <Text size="2">{e.text}</Text>}
                 {img && <Thumb src={img} alt={`Bild zu Marker ${e.nr}`} dim={!!e.skip} />}
+              </Flex>
+              {e.desc && <Text size="1" color="gray" data-desc style={{ whiteSpace: 'normal', textAlign: 'left' }}>{e.desc}</Text>}
               </Flex>
             </Flex>
           </CardButton>
@@ -163,6 +179,10 @@ function Entries({ id, timeline, onSeek, onSkipFrame }: { id: string; timeline: 
             <Checkbox size="1" checked={!e.skip} aria-label={`Bild von Marker ${e.nr} verwenden`}
               title="Markierte Bilder kommen in den Prompt und werden beschrieben; Haken weg: Bild ausblenden (spart Tokens)"
               onCheckedChange={(v) => onSkipFrame(e.nr!, v !== true)} />
+          )}
+          {img && e.nr && !e.skip && (
+            <ActionButton size="1" variant="ghost" disabled={describeBusy || !describeReady} data-describe-one
+              title="Dieses Bild mit dem Bildmodell beschreiben" onClick={() => onDescribe(e.nr!)}>Beschreiben</ActionButton>
           )}
           </Flex>
         );
