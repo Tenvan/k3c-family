@@ -70,7 +70,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ65.1 | `WZ65.1-transkript-bilder.md` | Umsetzung | autonom | offen |
+| WZ65.1 | `WZ65.1-transkript-bilder.md` | Umsetzung | autonom | fertig |
 | WZ65.2 | `WZ65.2-mcp-befunde-tickets.md` | Umsetzung | autonom | offen |
 | WZ65.3 | `WZ65.3-review.md` | Review | autonom | offen |
 
