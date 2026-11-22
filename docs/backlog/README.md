@@ -264,6 +264,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1226](B-1226-abnahme-wz63.md) | DEV | Schuld | mittel | offen | WZ63 | Abnahme WZ63: Studio startet allein und bearbeitet eine Welt |
 | [B-1227](B-1227-studio-dev-worktree-b925.md) | DEV | Schuld | mittel | offen | WZ63 | Studio rechnet die Engine: Dev-Worktree-Instanz und Regel B-925 für das Studio |
 | [B-1228](B-1228-mount-ausdauer.md) | SIM | Idee | mittel | offen | AU1 | Reittiere haben Ausdauer: Sprint verbraucht sie, Pausen laden sie auf |
+| [B-1229](B-1229-abnahme-spieltest-modus.md) | CLI | Frage | mittel | offen | WZ66 | Abnahme-Läufe WZ66: Sim, Balance, Gen samt Golden und Race laufen grün |
 
 ## Archiv
 

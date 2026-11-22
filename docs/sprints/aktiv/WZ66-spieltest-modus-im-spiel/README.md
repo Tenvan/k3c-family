@@ -74,7 +74,7 @@ keine
 | WZ66.1 | `WZ66.1-flag-rec-pad-marker.md` | Umsetzung | autonom | fertig |
 | WZ66.2 | `WZ66.2-ruckler-marker-spielstand.md` | Umsetzung | autonom | fertig |
 | WZ66.3 | `WZ66.3-fragebogen-spielende.md` | Umsetzung | autonom | fertig |
-| WZ66.4 | `WZ66.4-review.md` | Review | autonom | offen |
+| WZ66.4 | `WZ66.4-review.md` | Review | autonom | fertig |
 
 - WZ66.1 Flag, REC, Pad-Marker (B-1220, AC-01)
 - WZ66.2 Ruckler-Automarker und Spielstand am Marker (B-1221, AC-02)
@@ -85,6 +85,6 @@ Ralf prüft im Spiel: Back+Y bequem, REC stört nicht, Fragebogen lesbar am TV.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-22, Review WZ66.4: AC-01 bis AC-03 geprüft (Ergebnisse WZ66.1 bis WZ66.3), AC-04: Diff gelesen, `cargo fmt --check`, `clippy --all-targets` grün, `cargo test -p k3c-game` 1046 grün, 1 Test braucht `gen:paper` (gesperrt).
+Keine schweren Befunde, keine Fixes. `task check` und `task check:go` rot, aber nicht vom Sprint (kein Diff in engine, data, testdata): Go-Tests trace, room, sim, Planungstest WZ65/B-1225, Papier-Test EPERM; golangci-lint fehlt.
+Abnahme-Ticket für Sim, Balance, Gen, Race: B-1229. Ralf prüft am Gerät: LT+RT und Einfg setzen Marker, REC stört nicht, Fragebogen lesbar am TV.
