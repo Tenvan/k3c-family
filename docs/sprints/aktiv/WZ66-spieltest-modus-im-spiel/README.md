@@ -71,7 +71,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ66.1 | `WZ66.1-flag-rec-pad-marker.md` | Umsetzung | autonom | offen |
+| WZ66.1 | `WZ66.1-flag-rec-pad-marker.md` | Umsetzung | autonom | fertig |
 | WZ66.2 | `WZ66.2-ruckler-marker-spielstand.md` | Umsetzung | autonom | offen |
 | WZ66.3 | `WZ66.3-fragebogen-spielende.md` | Umsetzung | autonom | offen |
 | WZ66.4 | `WZ66.4-review.md` | Review | autonom | offen |
