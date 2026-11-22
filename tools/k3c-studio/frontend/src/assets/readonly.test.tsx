@@ -13,7 +13,7 @@ const PAGES: Record<string, boolean> = { katalog: true, styleguide: true, sound:
 
 /** Lesen, Ansehen, Kopieren und „In Claude öffnen“ (B-701 D-12); alles andere gilt als schreibend. */
 const READ = new Set([
-  'mock', 'on', 'info', 'openUrl', 'openInClaude',
+  'mock', 'on', 'info', 'openUrl',
   'assetsList', 'assetsIndex', 'assetsCheck', 'assetsGroesse', 'assetsGroesseBasis', 'assetsFrameOhne', 'assetsHintergruende', 'assetsHintergrund', 'assetsGet', 'assetsStyle', 'assetsPrompts', 'assetsReview', 'assetsFrame', 'assetsPixelDiff', 'assetsStufen',
   'studioSounds', 'studioSoundData', 'studioSources', 'studioGameOpen', 'studioWeltSicht', 'worldList', // Welt-Filter (B-1169)
 ]);

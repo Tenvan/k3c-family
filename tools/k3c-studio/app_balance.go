@@ -133,7 +133,7 @@ func (a *App) BalanceReportHTML(path string) (string, error) {
 	return filepath.ToSlash(rel), nil
 }
 
-// openFile öffnet eine Datei mit ihrem Standardprogramm (wie OpenInClaude ohne Job-Objekt); Tests ersetzen es.
+// openFile öffnet eine Datei mit ihrem Standardprogramm (ohne Job-Objekt); Tests ersetzen es.
 var openFile = func(path string) error {
 	cmd := exec.Command("rundll32", "url.dll,FileProtocolHandler", path)
 	if err := cmd.Start(); err != nil {

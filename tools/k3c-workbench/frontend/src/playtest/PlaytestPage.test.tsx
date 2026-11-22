@@ -261,15 +261,16 @@ describe('Auswertung (B-1223)', () => {
     act(() => (host.querySelector('[data-session="2026-11-21-1"]') as HTMLElement).click());
     await flush();
     const panel = () => host.querySelector('[data-findings]')!;
+    const has = (t: string) => [...panel().querySelectorAll('button')].some((b) => b.textContent === t);
     expect(panel().querySelectorAll('[data-finding]').length).toBe(2);
     expect(panel().textContent).toContain('Duplikat von B-1100');
-    expect(panel().querySelector('[aria-label="Prompt kopieren: Auswerten"]')).not.toBeNull();
-    expect(panel().querySelector('[aria-label="Prompt kopieren: Tickets anlegen"]')).toBeNull();
+    expect(has('Prompt: Auswerten')).toBe(true);
+    expect(has('Prompt: Tickets anlegen')).toBe(false);
     const box = panel().querySelector('[data-finding="f1"] [role="checkbox"]') as HTMLElement;
     act(() => box.click());
     await flush();
     expect((await playtestApi.findings('2026-11-21-1')).find((f) => f.id === 'f1')?.selected).toBe(true);
-    expect(panel().querySelector('[aria-label="Prompt kopieren: Tickets anlegen"]')).not.toBeNull();
+    expect(has('Prompt: Tickets anlegen')).toBe(true);
   });
 
   it('Modell und Sprache sind wählbar, Standard ist das deutsche Modell', async () => {

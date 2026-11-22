@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Flex, Heading, SelectField, StatusBadge, Text, TextField } from '@webkit/atoms';
 import { CheckField, NoticeCard } from '@webkit/molecules';
-import { CopyPrompt } from '../planning/PromptParts';
+import { CopyPromptButton } from '../planning/PromptParts';
 import { frameUrl, playtestApi } from './api';
 import { clock } from './RecordBar';
 import { createTicketsPrompt, evaluatePrompt } from './prompts';
@@ -46,11 +46,10 @@ export function FindingsPanel({ sessionId, hasTranscript, captureMs, onSeek }: P
       <Flex align="center" justify="between" gap="3" wrap="wrap">
         <Heading size="3">Befunde ({list.length})</Heading>
         <Flex gap="3" align="center">
-          <Text size="1" color="gray">Prompt:</Text>
           {hasTranscript
-            ? <CopyPrompt prompt={evaluatePrompt(sessionId)} what="Auswerten" />
+            ? <CopyPromptButton prompt={evaluatePrompt(sessionId)} label="Prompt: Auswerten" />
             : <Text size="1" color="gray">Auswerten erst nach dem Transkript</Text>}
-          {ready && <CopyPrompt prompt={createTicketsPrompt(sessionId)} what="Tickets anlegen" />}
+          {ready && <CopyPromptButton prompt={createTicketsPrompt(sessionId)} label="Prompt: Tickets anlegen" />}
         </Flex>
       </Flex>
       {error && <NoticeCard title="Befunde" tone="error">{error}</NoticeCard>}
@@ -84,9 +83,14 @@ function Row({ sessionId, f, captureMs, onSeek, onChange }: RowProps) {
         {f.ticket && <StatusBadge tone="ok">{f.ticket}</StatusBadge>}
         {f.duplicate_of && <StatusBadge tone="warn">Duplikat von {f.duplicate_of}</StatusBadge>}
       </Flex>
-      {f.context && <Text size="1" color="gray">{f.context}</Text>}
+      {f.duplicate_of && !f.ticket && (
+        <Text size="3" weight="bold" color="amber" data-duplicate={f.duplicate_of}>
+          Vergleichsticket {f.duplicate_of}: kein neues Ticket nötig, der Befund gehört dorthin (Ticket ergänzen).
+        </Text>
+      )}
+      {f.context && <Text size="3" as="p" style={{ maxWidth: '80ch', lineHeight: 1.5 }}>{f.context}</Text>}
       {f.error && <Text size="1" color="red">{f.error}</Text>}
-      {img && <img src={img} alt={`Bild zu Befund ${f.id}`} loading="lazy" style={{ maxWidth: 240, borderRadius: 4 }} />}
+      {img && <img src={img} alt={`Bild zu Befund ${f.id}`} loading="lazy" style={{ maxWidth: 560, width: '100%', borderRadius: 4 }} />}
       <Flex gap="2" wrap="wrap" align="center">
         <SelectField aria-label="Typ" placeholder="Typ" value={f.type ?? ''} disabled={locked}
           options={TYPES.map((v) => ({ value: v, label: v }))} onChange={(v) => onChange({ type: v })} />

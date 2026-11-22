@@ -110,10 +110,11 @@ describe('Welten-Editor: Auswahl (B-879/AC-01)', () => {
 
   it('der Prompt an Claude nennt Welt-Datei, Insel, Tiefe und Platz', async () => {
     const host = await mount();
-    const open = vi.spyOn(backend, 'openInClaude').mockResolvedValue();
+    const write = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: write }, configurable: true });
     await click(host.querySelector('[data-chunk="3"]'));
-    await click(host.querySelector('[aria-label="Abschnitt in Claude ändern"]'));
-    const prompt = open.mock.calls[0]![0];
+    await click(host.querySelector('[title="Abschnitt in Claude ändern"]'));
+    const prompt = write.mock.calls[0]![0];
     expect(prompt).toContain('data/worlds/standard.json');
     expect(prompt).toContain('Platz −2');
     expect(prompt).toContain('plannedChunks › "0"');

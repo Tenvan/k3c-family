@@ -6,7 +6,7 @@ import { leverLine, leverText } from './variant';
 
 const WHERE: Record<InsightCommand['where'], string> = { chat: 'Chat an Claude', shell: 'Terminal', workbench: 'Balancing-Seite' };
 
-/** Ein Befehl mit „Kopieren“ und bei Chat-Befehlen „In Claude öffnen“ (neue Session mit dem Text im Eingabefeld). */
+/** Ein Befehl mit „Kopieren“. */
 function CommandRow({ cmd, onNote }: { cmd: InsightCommand; onNote: (s: string) => void }) {
   const run = (p: Promise<unknown>, ok: string) => p.then(() => onNote(ok), (e) => onNote(`Fehlgeschlagen: ${errorText(e)}`));
   return (
@@ -15,7 +15,6 @@ function CommandRow({ cmd, onNote }: { cmd: InsightCommand; onNote: (s: string) 
       <Code size="1" className="bal-insight-code">{cmd.text}</Code>
       <div className="bal-run-actions">
         <Button size="1" variant="soft" onClick={() => run(navigator.clipboard.writeText(cmd.text), 'Kopiert.')}>Kopieren</Button>
-        {cmd.where === 'chat' && <Button size="1" variant="soft" onClick={() => run(backend.openInClaude(cmd.text), 'In Claude geöffnet.')}>In Claude öffnen</Button>}
       </div>
     </div>
   );
