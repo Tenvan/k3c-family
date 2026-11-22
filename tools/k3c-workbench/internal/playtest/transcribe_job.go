@@ -148,7 +148,7 @@ func (t *Transcriber) Start(id string, opt TranscribeOptions) (JobStatus, error)
 	t.st = JobStatus{Running: true, ID: id, Step: "Transkript"}
 	t.cancel, t.done = false, make(chan struct{})
 	t.log("info", "🚀 Auswertung gestartet", "id", id)
-	go t.run(ff, id, ses.HasVideo, model, lang, t.done)
+	go t.run(ff, id, ses.HasVideo, ses.DurationMs, model, lang, t.done)
 	return t.st, nil
 }
 
@@ -213,13 +213,20 @@ func (t *Transcriber) exec(args []string, dir string) error {
 var errCanceled = errors.New("abgebrochen")
 
 // run ist der Hintergrundauftrag.
-func (t *Transcriber) run(ffmpeg, id string, hasVideo bool, model, lang string, done chan struct{}) {
+func (t *Transcriber) run(ffmpeg, id string, hasVideo bool, durationMs int64, model, lang string, done chan struct{}) {
 	defer close(done)
 	dir := filepath.Join(t.Store.Root, id)
+	t0 := t.Now()
 	err := t.transcribe(ffmpeg, dir, model, lang)
+	t1 := t.Now()
 	note := ""
 	if err == nil {
 		note, err = t.frames(ffmpeg, dir, hasVideo)
+	}
+	if err == nil {
+		if serr := saveStats(dir, t0, t1, t.Now(), durationMs); serr != nil {
+			t.log("warn", "❌ Statistik nicht gespeichert: "+serr.Error(), "id", id)
+		}
 	}
 	t.set(func(s *JobStatus) {
 		s.Running, s.Message = false, note

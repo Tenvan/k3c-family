@@ -272,6 +272,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1236](B-1236-spieltest-liste-modell-ton-mitlauf.md) | DEV | Idee | mittel | eingeplant | WZ65 | Spieltest: large-v3 als Standard, Liste nach Uhrzeit, Modelle bei Neu laden, Ton läuft mit dem Bild |
 | [B-1237](B-1237-spieltest-befunde-lesbar.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Spieltest: Spielkontext, Bild und Vergleichsticket eines Befunds sind groß und gut lesbar |
 | [B-1238](B-1238-claude-knoepfe-entfernen.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Knöpfe „In Claude öffnen“ entfallen, Prompt-Knöpfe kopieren nur |
+| [B-1239](B-1239-spieltest-auswertung-statistik-kompakt.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Spieltest zeigt Auswertungsdauer je Minute Aufnahme und die Zeitleiste ist kompakter |
+| [B-1240](B-1240-spieltest-marker-bilder-loeschen.md) | DEV | Idee | mittel | eingeplant | WZ65 | Einzelne Marker-Bilder einer Session lassen sich löschen |
+| [B-1241](B-1241-spieltest-bilder-beschreiben.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Marker-Bilder werden vorab lokal beschrieben, damit der Chat sie nicht ansehen muss |
 
 ## Archiv
 

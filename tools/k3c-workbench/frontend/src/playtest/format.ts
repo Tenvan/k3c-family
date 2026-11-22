@@ -1,6 +1,6 @@
 import type { Tone } from '@webkit/atoms';
 import { formatBytes } from '../lib/format';
-import type { PlaytestAction, PlaytestPlan, PlaytestSession, PlaytestStage } from './types';
+import type { EvalStats, PlaytestAction, PlaytestPlan, PlaytestSession, PlaytestStage } from './types';
 
 export const STAGE_TONE: Record<PlaytestStage, Tone> = {
   läuft: 'info', unvollständig: 'warn', aufgenommen: 'neutral', transkribiert: 'info', ausgewertet: 'ok',
@@ -38,4 +38,20 @@ export function confirmTexts(action: PlaytestAction, s: PlaytestSession | null, 
       text: `Gelöscht werden ${plan.files.length} Videos: ${list}; zusammen ${formatBytes(plan.total)}. Transkripte und Befunde bleiben.` };
   }
   return dflt;
+}
+
+/** Kurze Dauer „42 s“, „3 min 5 s“ aus Millisekunden. */
+export function shortSpan(ms: number): string {
+  const s = Math.max(0, Math.round(ms / 1000));
+  return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${s % 60} s`;
+}
+
+/** Zeilen der Auswertungs-Statistik für die Seite. */
+export function statsLines(st: EvalStats): string[] {
+  const num = (n: number) => n.toLocaleString('de-DE', { maximumFractionDigits: 1 });
+  const lines = [`Auswertung dauerte ${shortSpan(st.totalMs)} für ${shortSpan(st.audioMs)} Aufnahme`];
+  if (st.audioMs > 0) lines.push(`${num(st.secPerMin)} s je Minute Aufnahme (Faktor ${num(st.factor)}× Echtzeit)`);
+  lines.push(`Transkript ${shortSpan(st.transcribeMs)}, Bilder ${shortSpan(st.framesMs)} (${st.frames})`);
+  lines.push(`${st.segments} Sätze, ${st.words} Wörter`);
+  return lines;
 }

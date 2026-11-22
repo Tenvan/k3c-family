@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActionButton, CardButton, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
+import { ActionButton, CardButton, Checkbox, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
+import { DescribeBar, useDescribe } from './DescribeBar';
 import { FindingsPanel } from './FindingsPanel';
 import { frameUrl, playtestApi } from './api';
+import { statsLines } from './format';
 import { clock } from './RecordBar';
 import { loadText, savePref } from '../lib/prefs';
 import type { PlaytestCapability, PlaytestJob, PlaytestModel, PlaytestSession, PlaytestTimeline } from './types';
@@ -76,6 +78,9 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       setError(message(e));
     }
   };
+  const describe = useDescribe(s.id, refresh, loadTimeline);
+  const toggleSkip = (nr: number, skip: boolean) =>
+    void playtestApi.skipFrame(s.id, nr, skip).then(() => loadTimeline(), (e) => setError(message(e)));
   const cancel = () => void playtestApi.transcribeCancel().catch((e) => setError(message(e)));
 
   const blocked = !s.hasVoice || s.running || (busy && !mine) || cap?.ready === false;
@@ -104,33 +109,82 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       {mine && !busy && job.error && <NoticeCard title="Auswertung" tone="error">{job.error}</NoticeCard>}
       {mine && !busy && !job.error && job.message && <Text size="2" color="gray">{job.message}</Text>}
       {error && <NoticeCard title="Auswertung" tone="error">{error}</NoticeCard>}
-      <Entries id={s.id} timeline={timeline} onSeek={onSeek} />
+      {timeline?.stats && (
+        <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
+      )}
+      {timeline?.entries.some((e) => e.frame) && <DescribeBar d={describe} sessionId={s.id} />}
+      <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} onDescribe={(nr) => describe.start([nr])} describeBusy={describe.busy} describeReady={describe.info?.ready ?? false} />
       {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
   );
 }
 
-function Entries({ id, timeline, onSeek }: { id: string; timeline: PlaytestTimeline | null; onSeek: (ms: number) => void }) {
+/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß darunter. */
+function Thumb({ src, alt, dim }: { src: string; alt: string; dim: boolean }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <span style={{ position: 'relative', display: 'inline-block', lineHeight: 0 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+      <img src={src} alt={alt} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: dim ? 0.3 : 1 }} />
+      {hover && (
+        <img src={src} alt="" data-preview style={{ position: 'absolute', left: 0, top: '100%', marginTop: 4, width: 560, maxWidth: '80vw', zIndex: 50,
+          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />
+      )}
+    </span>
+  );
+}
+
+interface EntriesProps {
+  id: string;
+  timeline: PlaytestTimeline | null;
+  onSeek: (ms: number) => void;
+  onSkipFrame: (nr: number, skip: boolean) => void;
+  onDescribe: (nr: number) => void;
+  describeBusy: boolean;
+  describeReady: boolean;
+}
+
+function Entries({ id, timeline, onSeek, onSkipFrame, onDescribe, describeBusy, describeReady }: EntriesProps) {
   if (!timeline) return null;
   if (timeline.entries.length === 0) return <Text size="2" color="gray">Noch kein Transkript und keine Marker.</Text>;
   return (
-    <Flex direction="column" gap="1" role="list" aria-label="Zeitleiste">
+    <Flex direction="column" role="list" aria-label="Zeitleiste">
       {!timeline.hasTranscript && <Text size="2" color="gray">Noch kein Transkript, nur Marker.</Text>}
       {timeline.entries.map((e) => {
         const img = e.frame && e.nr ? frameUrl(id, e.nr) : null;
+        const pick = !!img && !!e.nr; // Zeile mit Bild: Klick schaltet den Haken, die Zeit springt im Player
         return (
-          <CardButton key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" data-entry={e.kind} variant="ghost"
-            onClick={() => onSeek(e.videoMs)} title="Im Player hierhin springen">
-            <Flex gap="3" align="start">
-              <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
+          <Flex key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" align="center" gap="1">
+          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1 }}
+            onClick={() => (pick ? onSkipFrame(e.nr!, !e.skip) : onSeek(e.videoMs))}
+            title={pick ? 'Klick wählt das Bild ab oder an' : 'Im Player hierhin springen'}>
+            <Flex gap="3" align="center">
+              {pick ? (
+                <Text size="2" color="blue" data-seek style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums', textDecoration: 'underline' }}
+                  title="Im Player hierhin springen" onClick={(ev) => { ev.stopPropagation(); onSeek(e.videoMs); }}>{clock(e.videoMs)}</Text>
+              ) : (
+                <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
+              )}
               <Flex direction="column" gap="1" align="start">
+              <Flex gap="2" align="center" wrap="wrap">
                 {e.kind === 'marker'
                   ? <StatusBadge tone="warn">{e.text}</StatusBadge>
                   : <Text size="2">{e.text}</Text>}
-                {img && <img src={img} alt={`Bild zu Marker ${e.nr}`} loading="lazy" style={{ maxWidth: 240, borderRadius: 4 }} />}
+                {img && <Thumb src={img} alt={`Bild zu Marker ${e.nr}`} dim={!!e.skip} />}
+              </Flex>
+              {e.desc && <Text size="1" color="gray" data-desc style={{ whiteSpace: 'normal', textAlign: 'left' }}>{e.desc}</Text>}
               </Flex>
             </Flex>
           </CardButton>
+          {img && e.nr && (
+            <Checkbox size="1" checked={!e.skip} aria-label={`Bild von Marker ${e.nr} verwenden`}
+              title="Markierte Bilder kommen in den Prompt und werden beschrieben; Haken weg: Bild ausblenden (spart Tokens)"
+              onCheckedChange={(v) => onSkipFrame(e.nr!, v !== true)} />
+          )}
+          {img && e.nr && !e.skip && (
+            <ActionButton size="1" variant="ghost" disabled={describeBusy || !describeReady} data-describe-one
+              title="Dieses Bild mit dem Bildmodell beschreiben" onClick={() => onDescribe(e.nr!)}>Beschreiben</ActionButton>
+          )}
+          </Flex>
         );
       })}
     </Flex>

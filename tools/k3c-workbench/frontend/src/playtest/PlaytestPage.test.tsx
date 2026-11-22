@@ -256,6 +256,59 @@ describe('Auswertung (B-1223)', () => {
     expect(video.currentTime).toBe(1);
   });
 
+  it('Klick auf die Marker-Zeile schaltet den Haken, die Zeit springt im Player, Hover zeigt das Bild groß (B-1240)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-timeline]')!;
+    const box = () => panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    act(() => (panel().querySelector('[data-entry="marker"]') as HTMLElement).click());
+    await flush();
+    expect(box().getAttribute('aria-checked')).toBe('false');
+    const video = host.querySelector('video') as HTMLVideoElement;
+    act(() => (panel().querySelector('[data-seek]') as HTMLElement).click());
+    expect(video.currentTime).toBe(5);
+    expect(box().getAttribute('aria-checked')).toBe('false'); // Zeit-Klick schaltet nicht um
+    expect(panel().querySelector('[data-preview]')).toBeNull();
+    act(() => { panel().querySelector('img[alt="Bild zu Marker 1"]')!.parentElement!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); });
+    expect(panel().querySelector('[data-preview]')).not.toBeNull();
+  });
+
+  it('Bildbeschreibung: Modell wählbar, markierte Bilder beschreiben, abgewählte nicht (B-1241)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-timeline]')!;
+    expect(panel().querySelector('[aria-label="Bildmodell"]')!.textContent).toContain('Qwen2.5-VL-3B');
+    expect(panel().querySelector('[data-desc]')).toBeNull();
+    act(() => button('Markierte Bilder beschreiben', host).click());
+    await flush();
+    expect(panel().querySelector('[data-desc]')!.textContent).toContain('Optionen-Menü');
+    act(() => (panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement).click());
+    await flush();
+    expect(panel().querySelector('[data-describe-one]')).toBeNull(); // abgewähltes Bild: kein Einzel-Knopf
+  });
+
+  it('Marker-Bilder sind vorab markiert, ein Haken weg blendet das Bild aus, der Marker bleibt (B-1240)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-timeline]')!;
+    const img = () => panel().querySelector('img[alt="Bild zu Marker 1"]') as HTMLElement;
+    expect(img().style.opacity).toBe('1');
+    const box = () => panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    act(() => box().click());
+    await flush();
+    expect(img().style.opacity).toBe('0.3');
+    expect(panel().querySelectorAll('[data-entry="marker"]').length).toBe(1);
+    expect(box().getAttribute('aria-checked')).toBe('false');
+    act(() => box().click());
+    await flush();
+    expect(img().style.opacity).toBe('1');
+  });
+
   it('Befunde: Haken speichern, Duplikat und Prompt-Knöpfe (B-1224)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-21-1"]') as HTMLElement).click());
