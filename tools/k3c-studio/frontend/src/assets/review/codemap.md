@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/review/
+# tools/k3c-studio/frontend/src/assets/review/
 
 ## Responsibility
 
@@ -37,5 +37,5 @@ eine wählbare Git-Basis mit Vorher/Nachher, Überblendung, Pixel-Diff-Overlay u
 - Eingehängt von `../AssetsArea.tsx` (Reiter `review`); `../catalog/catalogStore.ts` nutzt `assetsReview('HEAD')` für
   das Abzeichen „im Diff“.
 - Abhängigkeiten: `../api.ts`, `../prompts/fill.ts`, `../size/`, `../zoom.tsx`, `@webkit/atoms|molecules`.
-- Backend: Bindings `AssetsReview`, `AssetsFrame`, `AssetsPixelDiff` in `tools/k3c-workbench/app_assets.go`
+- Backend: Bindings `AssetsReview`, `AssetsFrame`, `AssetsPixelDiff` in `tools/k3c-studio/app_assets.go`
   (Paket `internal/assetsui`).

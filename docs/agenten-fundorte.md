@@ -38,8 +38,8 @@ Zentrale Karte, wo was liegt. Die Agenten unter `.claude/agents/` verweisen hier
 ## Welten
 
 - Welt-Dateien `data/worlds/`, Biome `data/biomes/`, `data/island-sizes.json`, `data/hub.json`, `data/ruins.json`
-- Generator `engine/level/`, Insel-Code `engine/sim/island*.go`, Welt-Editor `tools/k3c-workbench/frontend/src/world/`
-- Gebäudeplaner `tools/k3c-workbench/internal/hubplan/`, Seite `tools/k3c-workbench/frontend/src/planner/`
+- Generator `engine/level/`, Insel-Code `engine/sim/island*.go`, Welt-Editor `tools/k3c-studio/frontend/src/world/`
+- Gebäudeplaner `tools/k3c-studio/internal/hubplan/`, Seite `tools/k3c-studio/frontend/src/planner/`
 
 ## Grafik
 

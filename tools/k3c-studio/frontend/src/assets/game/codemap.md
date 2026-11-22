@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/game/
+# tools/k3c-studio/frontend/src/assets/game/
 
 ## Responsibility
 
@@ -14,7 +14,7 @@ startet das native Spiel mit ihm.
 
 ## Flow
 
-1. Klick -> `backend.studioGameOpen(GAME_SEED)` -> Go `App.StudioGameOpen` (`tools/k3c-workbench/app_studio.go`,
+1. Klick -> `backend.studioGameOpen(GAME_SEED)` -> Go `App.StudioGameOpen` (`tools/k3c-studio/app_studio.go`,
    Logik in `internal/studioview/game.go`) legt den Testspielstand `voll-ansicht` an und startet das native Spiel.
 2. Die Antwort (Infotext) erscheint neben dem Knopf; ein Fehler rot statt Abbruch.
 

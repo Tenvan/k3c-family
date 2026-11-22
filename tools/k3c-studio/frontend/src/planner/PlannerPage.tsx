@@ -37,7 +37,7 @@ function PlanerBody({ planer, plan, shown, hubLevel, onHubLevel }: { planer: Pla
   );
 }
 
-/** Seite Gebäude-Planer der Workbench (B-923, Port aus dem Asset-Studio, B-462): Werkzeugleiste mit Quelle, Hub-Stufe, Prüfung,
+/** Seite Gebäude-Planer des Studios (B-923, Port aus dem Asset-Studio, B-462): Werkzeugleiste mit Quelle, Hub-Stufe, Prüfung,
  *  Regeltabelle und Speichern; darunter die Matrix Hub-Stufe × Bauplatz aus `data/hub.json` und der Inspektor der gewählten
  *  Zeile. Die Seite scrollt nicht, Matrix und Inspektor je für sich. Die Live-Vorschau des Studios gibt es hier nicht. */
 export function PlannerPage() {

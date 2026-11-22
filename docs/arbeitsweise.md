@@ -41,6 +41,7 @@ der Rückfall, wenn k3c-workbench nicht läuft; dann gelten die Regeln dieses Ab
 **Fehlen die MCP-Tools, erst die Workbench prüfen.** Sind `mcp__k3c-workbench__*` in einer Session nicht verbunden, wird nicht sofort von Hand gearbeitet:
 (1) Läuft sie? Prozess `k3c-workbench*`, Port 5180 hört, letzte Zeilen von `logs/k3c-workbench.jsonl` (`💥 start fehlgeschlagen` nennt den Grund, meist ein belegter Port).
 (2) Läuft sie nicht: `bin/k3c-workbench.exe` starten; ist die EXE älter als `main`, vorher `task k3c-workbench:build`. (3) MCP der Session neu verbinden. Erst wenn das scheitert, gilt der Rückfall von Hand, und die Meldung an 🧑 nennt den Grund.
+**Zwei MCP-Server (WZ63).** `k3c-workbench` (Port 5180, dev 5190, `.mcp.json`) deckt Entwicklung, Planung, Prüfläufe, Dienste, Logs und Sim ab; `k3c-studio` (Port 5181, dev 5182, EXE `bin/k3c-studio.exe`, `task k3c-studio:build`) deckt Welten, Inseln, Chunks, Hub, Assets und `level_generate` ab (`mcp__k3c-studio__world_*`, `hub_*`, `assets_*`). Die Tool-Namen sind disjunkt (`tests/mcpToolsDisjoint.test.ts`); fehlen die Studio-Tools, die Studio-EXE starten und den MCP neu verbinden.
 **Glossar ist verbindlich.** [`glossar.md`](glossar.md) legt die Begriffe fest und wird beim Schreiben von Specs und Texten gelesen. Ein neuer
 Begriff kommt beim Planen zuerst ins Glossar, dann in Ticket, Sprint oder Regel. Reviews achten auf Begriffs-Treue: Abweichungen gleicht der Review-Commit an (kein schwerer Befund).
 
@@ -235,7 +236,7 @@ Arbeit ist. Parallelität entsteht zwischen Sprints. Siehe Autonomer Ablauf, Sch
 | **PLAT** | Plattform: Eingabe, Fenster, Pages-Präsentation | `rust/crates/k3c-game/src/input/`, Pages-Präsentation `site/` |
 | **INF** | Frameworks, Tooling, CI, Repo-Aufbau, Arbeitsweise | `package.json`, `go.mod`, `vitest.config.ts`, `tsconfig.json`, Lint-Konfiguration, `.github/`, `tests/projectRules.test.ts`, `tests/planning.test.ts`, `docs/arbeitsweise.md`, `docs/vorlagen/` |
 | **PAP** | Papierschnitt-Grafik (Entscheidung 005) | `tools/paper/`, `public/grafik/stil.paper.json`, `public/grafik/**/*.paper.json` samt den daneben gerenderten Ausgaben (PNG, `manifest.json`, Gruppen-Index), `data/asset-prompts.json`, `docs/standards/paper-*.md` |
-| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche – Bereiche Development und Assets, Entscheidung 005 › 5 – und MCP-Server), `tools/assetkit/` (Asset-Logik der Workbench, eigenes Modul), `cmd/k3c-sim/` (Engine-CLI der Workbench) |
+| **DEV** | Entwickler-Werkzeug | `tools/k3c-workbench/` (eigenes Go-Modul mit Oberfläche und MCP-Server), `tools/k3c-studio/` (Studio für Welten, Hub und Assets, eigene EXE und MCP-Server, WZ63, Entscheidung 005 › 5), `tools/workkit/` (gemeinsamer Go-Code beider Apps, eigenes Modul), `tools/assetkit/` (Asset-Logik, eigenes Modul), `cmd/k3c-sim/` (Engine-CLI der Workbench) |
 
 **Modell-Wahl** (Feld `Modell` der Session, Empfehlung für den ausführenden Agenten): `haiku` für reine Nachschlage-
 und Doku-Sessions, `sonnet` Standard für Umsetzung und Migration, `opus` für Verträge, Rig-Mathematik, Bild-Diff und
@@ -332,7 +333,7 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
   Im Worktree startet `task k3c-workbench:dev:worktree` Backend und Vite auf eigenen Ports (Versatz aus dem Worktree-Pfad, MCP 6001–6399, API 8601–8999,
   Vite 7001–7399, nie 5180, 5190, 5191; der Task nennt `K3C_DEV_PORT`). Geprüft wird gegen diese Instanz (`checkout`-Argument der MCP-Tools), am Ende
   wird sie gestoppt. Das gilt als ausdrückliche Anweisung für den Worktree (`CLAUDE.md`); die Wurzel-Workbench bleibt unberührt. Den Ablauf führt der
-  Agent `k3c-sim-dev`. `sim_test start`, `sim_run`, `replay_run` und `level_generate` lehnen einen fremden `checkout` ab (Hinweis auf den Task); der Task setzt `K3C_DATA_DIR=<Worktree>/data`. Sim und Balancing bleiben gesperrt.
+  Agent `k3c-sim-dev`. `sim_test start`, `sim_run`, `replay_run` und `level_generate` (Server `k3c-studio`) lehnen einen fremden `checkout` ab (Hinweis auf den Task); der Task setzt `K3C_DATA_DIR=<Worktree>/data`. Sim und Balancing bleiben gesperrt.
 - Ticketnummern: `plan_create` kennt nur den eigenen Checkout. Vor dem Anlegen `git fetch` und die höchste Nummer aller offenen Branches prüfen
   (`git ls-tree -r --name-only <branch> docs/backlog`), sonst vergeben zwei Branches dieselbe Nummer.
 

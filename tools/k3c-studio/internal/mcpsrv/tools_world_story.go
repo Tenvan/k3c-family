@@ -14,7 +14,7 @@ import (
 
 // Geschichte einer Welt als MCP-Tool (B-975, docs/rules/welten.md § 2.2): world_story_set schreibt `story` der Welt und
 // je Insel; world_get zeigt sie, world_check nennt fehlende Einträge als Hinweis, world_create nimmt sie mit auf. Die
-// Regeln prüft die Engine (sim.ParseWorld), nicht die Workbench.
+// Regeln prüft die Engine (sim.ParseWorld), nicht das Studio.
 
 // worldStoryMissing ist der Schluss der Antwort von world_create ohne Geschichte (B-975/R4).
 const worldStoryMissing = "Geschichte fehlt: world_story_set"

@@ -40,7 +40,7 @@ type Game struct {
 	root  string
 	saves string
 	log   *slog.Logger
-	// launch startet das Spiel und kehrt sofort zurück (Tests ersetzen es); das Spiel überlebt die Workbench.
+	// launch startet das Spiel und kehrt sofort zurück (Tests ersetzen es); das Spiel überlebt das Studio.
 	launch func(cmd *exec.Cmd) error
 
 	mu     sync.Mutex

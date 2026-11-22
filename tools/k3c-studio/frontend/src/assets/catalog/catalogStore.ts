@@ -105,7 +105,7 @@ export function useCatalogStore() {
   return { ...s, open, reload: () => loadCatalog(true) };
 }
 
-/** Nur für Tests: Cache leeren, als wäre die Workbench neu gestartet. */
+/** Nur für Tests: Cache leeren, als wäre das Studio neu gestartet. */
 export function resetCatalogCache() {
   generation++;
   started = false;

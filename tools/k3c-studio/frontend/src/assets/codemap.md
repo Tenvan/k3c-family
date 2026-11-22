@@ -1,8 +1,8 @@
-# tools/k3c-workbench/frontend/src/assets/
+# tools/k3c-studio/frontend/src/assets/
 
 ## Responsibility
 
-Asset-Seiten im Bereich **Studio** der Workbench (Entscheidung 005 › 5, Sprint WB1): Review (RV1), Katalog, Styleguide
+Asset-Seiten im Studio (k3c-studio) (Entscheidung 005 › 5, Sprint WB1): Review (RV1), Katalog, Styleguide
 und „Sound & Quellen“. Nur Ansehen – kein schreibendes Control; Assets ändern nur die MCP-Tools `assets_*`. Daten über
 die RPC-Methoden laut `docs/standards/paper-mcp.md` › 4.
 
@@ -38,7 +38,7 @@ die RPC-Methoden laut `docs/standards/paper-mcp.md` › 4.
 ## Integration
 
 - Konsument: `src/App.tsx`.
-- Backend: Bindings in `tools/k3c-workbench/app_assets.go` (Paket `internal/assetsui`) und `app_studio.go`
+- Backend: Bindings in `tools/k3c-studio/app_assets.go` (Paket `internal/assetsui`) und `app_studio.go`
   (`internal/studioview`); im Browser über `src/api/http.ts`, im Mock über `src/api/mockAssets.ts`.
 - Abhängigkeiten: `src/api`, `src/lib/prefs`, `@webkit/atoms|molecules|lib` (Welt-Filter: `@webkit/lib/useWeltFilter`, `weltFilter`, Baustein `WeltFilter`).
 - Tests: `readonly.test.tsx` klickt jede Seite durch und erlaubt nur Lesemethoden (AC-02).

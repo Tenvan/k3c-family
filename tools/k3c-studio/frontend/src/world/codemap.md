@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/world/
+# tools/k3c-studio/frontend/src/world/
 
 ## Responsibility
 
@@ -36,6 +36,6 @@ Prompt an Claude ändern lassen, Natur-Werte der Stufe festsetzen und Overrides 
 ## Integration
 
 - Konsument: `src/App.tsx` (`Tabs.Content value="welten"`).
-- Backend: Bindings `World*` in `tools/k3c-workbench/app_world.go` (Paket `internal/world`).
+- Backend: Bindings `World*` in `tools/k3c-studio/app_world.go` (Paket `internal/world`).
 - Abhängigkeiten: `src/api` (Typen aus `api/typesWorld.ts`), `lib/prefs`, `@webkit/atoms|molecules|templates`.
   Stile: `../styles/world.css`. Mock: `api/mockWorld.ts`.

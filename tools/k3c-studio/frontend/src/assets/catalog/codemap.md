@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/catalog/
+# tools/k3c-studio/frontend/src/assets/catalog/
 
 ## Responsibility
 

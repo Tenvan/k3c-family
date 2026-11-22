@@ -1,7 +1,7 @@
 ---
 name: k3c-grafik
 description: Read-only Fachprüfung Grafik für K3C (Papierschnitt nach Entscheidung 005, Rig, Texturbudget des nativen PC-Spiels). Use proactively vor Commit oder PR, wenn der Diff tools/paper, public/grafik (Specs, index.paper.json, golden.json), data/paper.json, rust/crates/k3c-rig, rust/crates/k3c-game/src/art oder rust/crates/k3c-game/src/actors berührt, oder wenn ein Asset über assets_* angelegt oder geändert wurde. Nicht für Ton (k3c-sound) und Weltaufbau (k3c-welten).
-tools: Read, Grep, Glob, Bash, PowerShell, mcp__k3c-workbench__assets_get, mcp__k3c-workbench__assets_list, mcp__k3c-workbench__assets_guide, mcp__k3c-workbench__assets_style_get, mcp__k3c-workbench__assets_preview
+tools: Read, Grep, Glob, Bash, PowerShell, mcp__k3c-studio__assets_get, mcp__k3c-studio__assets_list, mcp__k3c-studio__assets_guide, mcp__k3c-studio__assets_style_get, mcp__k3c-studio__assets_preview
 model: sonnet
 ---
 

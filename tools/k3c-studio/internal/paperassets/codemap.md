@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/paperassets/
+# tools/k3c-studio/internal/paperassets/
 
 ## Responsibility
 

@@ -1,8 +1,8 @@
-# tools/k3c-workbench/internal/world/
+# tools/k3c-studio/internal/world/
 
 ## Responsibility
 
-Backend des Welten-Editors der Workbench (B-879): Welten unter `data/worlds/` auflisten, lesen, anlegen, ändern und löschen, das Level einer Insel-Stufe für die Chunk-Vorschau holen, Werte-Overrides, Natur-Werte, Etappen und die Geschichte (`story`) setzen; Level, Basiswerte und Prüfung rechnet `simcli world` im Prozess, geschrieben wird nur die Welt-Datei.
+Backend des Welten-Editors des Studios (B-879): Welten unter `data/worlds/` auflisten, lesen, anlegen, ändern und löschen, das Level einer Insel-Stufe für die Chunk-Vorschau holen, Werte-Overrides, Natur-Werte, Etappen und die Geschichte (`story`) setzen; Level, Basiswerte und Prüfung rechnet `simcli world` im Prozess, geschrieben wird nur die Welt-Datei.
 
 ## Design
 
@@ -25,5 +25,5 @@ Backend des Welten-Editors der Workbench (B-879): Welten unter `data/worlds/` au
 
 ## Integration
 
-- Konsumenten: `tools/k3c-workbench/app_world.go` (Bindings `WorldList` … `WorldCreate`, `WorldDelete`, `WorldIslandEtappe`; `worldEngine = world.Direct`), `internal/mcpsrv/tools_world.go` und `tools_world_story.go` (`world_*`).
+- Konsumenten: `tools/k3c-studio/app_world.go` (Bindings `WorldList` … `WorldCreate`, `WorldDelete`, `WorldIslandEtappe`; `worldEngine = world.Direct`), `internal/mcpsrv/tools_world.go` und `tools_world_story.go` (`world_*`).
 - Abhängigkeiten: `engine/simcli`, `engine/store` (`Rename`); Daten `data/worlds/*.json`, `data/paper.json`, `data/biomes/`; Regeln `docs/rules/welten.md`.

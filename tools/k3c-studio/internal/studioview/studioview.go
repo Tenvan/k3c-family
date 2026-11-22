@@ -1,5 +1,5 @@
 // Package studioview hält, was vom Asset-Studio lesend blieb (Entscheidung 005 › 5, Sprint WB1): Sound-Slots und Quellen
-// für den Bereich Assets der Workbench und „Im Spiel ansehen“ mit der eingebundenen Engine (game.go). Geändert wird
+// für den Bereich Assets des Studios und „Im Spiel ansehen“ mit der eingebundenen Engine (game.go). Geändert wird
 // nichts an data/ oder public/: Zuordnen, Recherche und Import bleiben die MCP-Tools assets_*.
 package studioview
 

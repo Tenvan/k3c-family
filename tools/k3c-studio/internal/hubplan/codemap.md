@@ -1,8 +1,8 @@
-# tools/k3c-workbench/internal/hubplan/
+# tools/k3c-studio/internal/hubplan/
 
 ## Responsibility
 
-Gebäude-Planer der Workbench (B-923, Port aus dem früheren Asset-Studio, B-462): zeigt `data/hub.json` als Matrix Hub-Stufe × Bauplatz, prüft einen Kandidaten über die Engine, vergleicht die Regeltabelle mit dem Planer-Stand und speichert einen geprüften Kandidaten format-stabil.
+Gebäude-Planer des Studios (B-923, Port aus dem früheren Asset-Studio, B-462): zeigt `data/hub.json` als Matrix Hub-Stufe × Bauplatz, prüft einen Kandidaten über die Engine, vergleicht die Regeltabelle mit dem Planer-Stand und speichert einen geprüften Kandidaten format-stabil.
 
 ## Design
 
@@ -20,5 +20,5 @@ Gebäude-Planer der Workbench (B-923, Port aus dem früheren Asset-Studio, B-462
 
 ## Integration
 
-- Konsumenten: `tools/k3c-workbench/app_hub.go` (Bindings, `hubEngine = hubplan.Direct`, in `uiMethods` von `uiapi.go`), `internal/mcpsrv/tools_hub.go`.
+- Konsumenten: `tools/k3c-studio/app_hub.go` (Bindings, `hubEngine = hubplan.Direct`, in `uiMethods` von `uiapi.go`), `internal/mcpsrv/tools_hub.go`.
 - Abhängigkeiten: `engine/simcli`, `tools/assetkit` (`WriteAtomic`), `tools/ruletable/table`; Daten `data/hub.json`, `docs/rules/materialien-gebaeude.md`.

@@ -1,6 +1,6 @@
-// Package world ist das Backend des Welten-Editors der Workbench (B-879, Port aus dem früheren Asset-Studio, Commit
+// Package world ist das Backend des Welten-Editors des Studios (B-879, Port aus dem früheren Asset-Studio, Commit
 // 616b5afcb): Welten unter data/worlds/ auflisten und lesen, das Level einer Insel-Stufe für die Chunk-Vorschau holen
-// und Werte einer Welt übersteuern (`overrides`, B-680, docs/rules/welten.md § 1). Die Workbench importiert den
+// und Werte einer Welt übersteuern (`overrides`, B-680, docs/rules/welten.md § 1). Das Studio importiert den
 // Engine-Kern nicht selbst (B-924: über engine/simcli): Level, Basis-Werte und die Prüfung rechnet `simcli world` im Prozess (Engine, level.go).
 // Geschrieben wird nur die Welt-Datei, format-stabil und atomar; es läuft keine Simulation.
 package world

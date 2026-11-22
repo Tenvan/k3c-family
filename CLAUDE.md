@@ -29,8 +29,8 @@ am PC; die Go-Engine (`engine/`, `cmd/`) bleibt, weil die Workbench sie im Proze
 - Architektur-Entscheidungen: `docs/decisions/` – **001: Die Spiel-Engine ist Go** (`engine/`), neue Mechaniken entstehen
   dort; Spielserver und Browser-Client von 001 sind seit WR1 entfernt (B-850).
   **004: Asset-Studio getrennt vom Spiel**, Schnittstelle sind die Dateien (TS1, B-507).
-  **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*`, Review im Bereich Assets der Workbench; das
-  Asset-Studio ist entfallen (WB1).
+  **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*` (Server `k3c-studio`), Review im Bereich Assets des
+  Studios; das Asset-Studio kehrt seit WZ63 als eigenständiges Studio zurück (Nachtrag in 005), die Workbench hat keine Assets mehr.
   **008: Natives Spiel in Go + Ebitengine** (Projekt NAT, B-775), überholt durch den Rust-Port (Entscheidung 011 dazu steht aus, RU41). Das Go-Spiel `native/` ist seit RU37 entfernt; der letzte Stand steht im Tag `go-referenz-final`, Bau und Messung beschreibt `docs/standards/go-referenz.md`.
   **012: Port-Orakel ist das Verhalten, nicht Bit-Gleichheit.** **013: Neue Mechaniken nur in Rust, Go-Engine eingefroren** (Entwurf, B-1143; Annahme durch Ralf offen).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
@@ -47,27 +47,28 @@ task check:diff    # nur was die geänderten Dateien dieses Commits brauchen (ei
 task check         # Lint + Typecheck + Tests der Wurzel (tests/, tools/paper), parallel
 task check:go      # go test + golangci-lint (Rechner mit Go)
 task check:race    # Go-Race-Detector (langsam; Abnahme-Ticket, check:all, CI)
-task check:dev     # k3c-workbench: Frontend, go test, golangci-lint
+task check:dev     # k3c-workbench und k3c-studio (samt tools/workkit): Frontend, go test, golangci-lint
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Rust-Spiel bauen (wie rust:game:build, Paket nach dist/k3c-game/; Einzelschritte rust:game:exe, :run, :dev)
-task buildall      # alle EXE bauen: Workbench, Engine-CLI k3c-sim nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
+task buildall      # alle EXE bauen: Workbench, Studio, Engine-CLI k3c-sim nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
 task rust:devwin:exe  # Cheat-Fenster k3c-devwin.exe bauen (F4 im Rust-Spiel, `--devwin`, `K3C_DEVWIN=1`; `task build` legt sie neben k3c-game.exe ins Paket, höchstens 5 MB)
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
 task k3c-workbench       # Workbench als Client/Server-Dev (Backend -dev + Vite 5191 im Browser); Fenster: k3c-workbench:window, EXE: k3c-workbench:build
+task k3c-studio          # Studio (Welten, Assets, Hub) als Client/Server-Dev (Backend -dev MCP 5182, UI-API 8193, Vite 5193); Fenster: k3c-studio:window, EXE: k3c-studio:build
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
 Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-sim`
-(cmd/), `k3c-workbench` (tools/), `rust` (rust/), `balance`, `gen` (Generatoren:
+(cmd/), `k3c-workbench` und `k3c-studio` (tools/), `workkit` (tools/workkit, gemeinsamer Go-Code), `rust` (rust/), `balance`, `gen` (Generatoren:
 `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
 **Dev ohne Neubau-Fenster:** Jedes EXE-Projekt kennt `build` (EXE bauen), `run` (bauen und starten) und `dev`.
 Der Projektname allein (`task k3c-workbench`) startet `dev`. `dev` ist Client/Server: Das Backend läuft mit `-dev` als kleiner Supervisor
 (`engine/devrun`), baut sich als Kind (`-headless`, ohne Fenster) und startet es bei jeder Go-Änderung neu; bei Build-Fehler läuft
-die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberfläche der Wails-App (`k3c-workbench` 5191)
+die alte Version weiter, ein Job-Objekt beendet verwaiste Kinder. Die Oberfläche der Wails-App (`k3c-workbench` 5191, `k3c-studio` 5193)
 läuft dabei unter Vite mit Hot Reload im Browser und leitet `/api` an das Kind weiter. `<app>:window` startet
 das echte Fenster mit `wails dev`. Supervisor und Kinder werden mit `go build` (Konsole) gebaut, nie per
 `wails build`, damit sie sauber per CTRL_BREAK beenden. Wails-Builds (`k3c-workbench:build`) und das
@@ -76,10 +77,12 @@ Frontend laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` e
 Spielserver, Lasttest, TUI und Windows-Starter sind entfernt (B-887, Entscheidung B-850): kein Online-Spiel, das Spiel ist nativ.
 Berichte unter `reports/` liest `reports_list`/`report_read`.
 
+**Zwei MCP-Server:** `k3c-workbench` (5180) für Entwicklung, Planung, Prüfläufe, Dienste, Logs und Balancing/Sim; `k3c-studio` (5181) für Welten, Inseln, Chunks, Hub, Assets und `level_generate` (`mcp__k3c-studio__world_*|hub_*|assets_*`, EXE `bin/k3c-studio.exe`); kein Tool steht in beiden.
+
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop`, Logs über
 `logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
-`sim_run`/`level_generate`. **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest; **Ausnahme: Second Worker, 🧑 2026-11-18**). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Stabilität;
+`sim_run` (Level: `level_generate` im Studio). **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest; **Ausnahme: Second Worker, 🧑 2026-11-18**). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Stabilität;
 offline) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
 nie über `task balance` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
@@ -97,12 +100,15 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   Zustand und Ereignisse wie in `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `engine/`
   importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
 - `cmd/` – Go-Binary `k3c-sim` (Engine-CLI: Simulation, Balancing, Level). Spielserver, Lasttest und TUI sind entfernt (B-887).
-- `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Bereichen **Development**
-  (Dienste, Tasks, Planung, Git, MCP, Monitoring, Balancing) und **Assets** (Review, Katalog, Styleguide, Sound, Quellen; nur
-  Ansehen, Prompt-Buttons, „Im Spiel ansehen“ über die eingebundene Engine in `internal/studioview`). Assets ändern nur die
-  MCP-Tools `assets_*`; das frühere Asset-Studio `tools/k3c-studio` ist entfallen (Entscheidung 005, WB1).
+- `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Seiten Dienste, Tasks, Planung,
+  Git, MCP, Monitoring und Balancing.
+  `tools/k3c-studio` – Studio für Game- und Level-Designer (WZ63): eigene Wails-App mit Welten-Editor, Gebäude-Planer und Assets
+  (Review, Katalog, Styleguide, Sound, Quellen; „Im Spiel ansehen“) und eigenem MCP-Server `k3c-studio`; Assets ändern nur die
+  MCP-Tools `assets_*`. Das Asset-Studio aus Entscheidung 005 kehrt damit als Studio zurück, die Workbench hat keine Assets mehr.
+  `tools/workkit` – gemeinsamer Go-Code beider Apps (eigenes Go-Modul: `mcpkit`, `applog`, `console`, `proc`, `usage`, `uikit`,
+  `claude`, `winicon`); importiert weder Workbench noch Studio (depguard), die Apps importieren einander nie.
   `tools/paper/` – Papierschnitt-Renderer und Verträge (Entscheidung 005), Aufruf `bun tools/paper/bin/paper.ts`.
-  `tools/assetkit` – Asset-Logik der Workbench (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`).
+  `tools/assetkit` – Asset-Logik (eigenes Go-Modul, per `replace` eingebunden; geprüft mit `k3c-workbench:gotest`/`lint`).
   `tools/webkit` – gemeinsame Oberflächen-Bausteine der Wails-Frontends (k3c-workbench) als **Atomic Design** auf
   Radix Themes: `lib/`, `atoms/`, `molecules/`, `organisms/`, `templates/` (`@webkit/<ebene>`); Seiten sind die Feature-Ordner der App.
   Verbindlich für jedes Wails-Programm: Radix nur über `@webkit`, rohe Controls nur in `atoms/`, Importe nur nach unten

@@ -20,7 +20,7 @@ Importrichtung: `bin` → `cli` → `render` ↔ `rig` → `schema`; `rig/regist
 
 ## Flow
 1. `task gen:paper` (`tools/Taskfile.yml`) → `bun tools/paper/bin/gen.ts` → `cli/work.ts` spiegelt Specs nach `.work/grafik/` → `cli/genParallel.ts` rendert je Gruppe (Cache, Worker-Pool) → geänderte Dateien nach `public/grafik/<gruppe>/`.
-2. MCP `assets_*` → `tools/k3c-workbench/internal/paperassets/cli.go` → `bun tools/paper/bin/paper.ts <validate|render|frame|diff|pixeldiff|batch>` → ein JSON-Objekt auf stdout, Exit 0/1/2.
+2. MCP `assets_*` (Server `k3c-studio`) → `tools/k3c-studio/internal/paperassets/cli.go` → `bun tools/paper/bin/paper.ts <validate|render|frame|diff|pixeldiff|batch>` → ein JSON-Objekt auf stdout, Exit 0/1/2.
 
 ## Integration
 - Verträge: `docs/standards/paper-spec.md` (Spec, Stil, Hash, Golden, CLI) und `docs/standards/paper-mcp.md` (MCP, Attrappen, Review-Test-Repo).

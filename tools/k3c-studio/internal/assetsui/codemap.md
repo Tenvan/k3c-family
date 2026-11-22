@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/assetsui/
+# tools/k3c-studio/internal/assetsui/
 
 ## Responsibility
 
@@ -23,5 +23,5 @@ RPC-Schicht der Asset-Oberfläche (Vertrag `docs/standards/paper-mcp.md` › Obe
 
 ## Integration
 
-- Konsumenten: `tools/k3c-workbench/app_assets.go` (Bindings, auch `AssetsStufen`, `StudioWeltSicht`), `internal/mcpsrv/tools_assets_prompts.go`, `tools_assets_review.go`, `tools_assets_set.go`, `internal/paperassets` (`cli.go`, `set.go`, `stil.go`: `Fehler`, `FeldAenderung`).
+- Konsumenten: `tools/k3c-studio/app_assets.go` (Bindings, auch `AssetsStufen`, `StudioWeltSicht`), `internal/mcpsrv/tools_assets_prompts.go`, `tools_assets_review.go`, `tools_assets_set.go`, `internal/paperassets` (`cli.go`, `set.go`, `stil.go`: `Fehler`, `FeldAenderung`).
 - Abhängigkeiten: `internal/review`; Specs unter `public/grafik/` samt `public/grafik/stil.paper.json`, `data/paper.json`, `data/asset-prompts.json`, `data/sizes.json`, `data/worlds/*.json`.

@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/sound/
+# tools/k3c-studio/frontend/src/assets/sound/
 
 ## Responsibility
 
@@ -23,5 +23,5 @@ Hörprobe, Filter und Prompt-Buttons je Slot (B-728). Nur Ansehen; Zuordnen, Rec
 ## Integration
 
 - Eingehängt von `../SoundSourcesPage.tsx` (Umschalter „Sound“/„Quellen“, gemerkt unter `studio.soundTeil`).
-- Backend: Bindings `StudioSounds`, `StudioSoundData` (`tools/k3c-workbench/app_studio.go`, Logik in `internal/studioview`).
+- Backend: Bindings `StudioSounds`, `StudioSoundData` (`tools/k3c-studio/app_studio.go`, Logik in `internal/studioview`).
 - Abhängigkeiten: `backend` aus `src/api`, `../prompts/`, `../useWeltSicht.ts`, `@webkit/atoms|molecules`.

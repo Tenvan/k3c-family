@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/sources/
+# tools/k3c-studio/frontend/src/assets/sources/
 
 ## Responsibility
 
@@ -24,6 +24,6 @@ Download, Import und Lizenz-Bestätigung bleiben MCP (`assets_research`, `assets
 ## Integration
 
 - Eingehängt von `../SoundSourcesPage.tsx`.
-- Backend: Binding `StudioSources` (`tools/k3c-workbench/app_studio.go`, `internal/studioview`).
+- Backend: Binding `StudioSources` (`tools/k3c-studio/app_studio.go`, `internal/studioview`).
 - Abhängigkeiten: `backend` aus `src/api`, Typen aus `../api.ts`, `../prompts/`, `@webkit/lib/listFilter`.
 - Tests: `Sources.test.tsx`, `sourcesFilter.test.ts`.

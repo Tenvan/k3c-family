@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/review/
+# tools/k3c-studio/internal/review/
 
 ## Responsibility
 

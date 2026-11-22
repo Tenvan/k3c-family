@@ -2,6 +2,8 @@
 
 Entwickler-Werkzeug des Spiels K3C. Diese Tools ersetzen Shell-Befehle und Dateilesen, weil sie nur das Wichtige
 zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`docs/standards/workbench-seiten.md`).
+Zuständig für Entwicklung, Planung, Prüfläufe, Dienste, Logs und Balancing/Simulation. Welten, Inseln, Chunks, Hub,
+Assets und `level_generate` liegen im MCP-Server `k3c-studio`; dieser Server kennt nur die Tools unten.
 
 ## Regeln für alle Tools
 

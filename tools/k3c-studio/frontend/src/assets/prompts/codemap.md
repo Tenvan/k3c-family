@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/prompts/
+# tools/k3c-studio/frontend/src/assets/prompts/
 
 ## Responsibility
 

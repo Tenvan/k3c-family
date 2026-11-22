@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/studioview/
+# tools/k3c-studio/internal/studioview/
 
 ## Responsibility
 
@@ -19,5 +19,5 @@ Was vom Asset-Studio lesend blieb (Entscheidung 005 › 5, Sprint WB1): Sound-Sl
 
 ## Integration
 
-- Konsumenten: `tools/k3c-workbench/app_studio.go` (Bindings), `app.go` (Feld `game`), `uiMethods` in `uiapi.go`; Oberfläche `frontend/src/assets/sound/`, `sources/`, `game/`.
+- Konsumenten: `tools/k3c-studio/app_studio.go` (Bindings), `app.go` (Feld `game`), `uiMethods` in `uiapi.go`; Oberfläche `frontend/src/assets/sound/`, `sources/`, `game/`.
 - Abhängigkeiten: `engine/room`, `engine/store`, `tools/assetkit` (Richtung tools → engine, nie umgekehrt); Rust-EXE des Spiels (`rust/target/release/` oder `dist/k3c-game/`).

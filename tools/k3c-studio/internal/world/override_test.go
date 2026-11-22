@@ -112,7 +112,7 @@ func TestSetOverrideUnknownFileListsAllowedFiles(t *testing.T) {
 	if !strings.Contains(v.Error, `unbekannte Datei "paper"`) {
 		t.Fatalf("Error = %q", v.Error)
 	}
-	// Die Engine nennt dieselbe Liste: Wächst sie dort, folgt die Meldung ohne Änderung der Workbench.
+	// Die Engine nennt dieselbe Liste: Wächst sie dort, folgt die Meldung ohne Änderung des Studios.
 	var raw struct {
 		Warnings []string `json:"warnings"`
 	}

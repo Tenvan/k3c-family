@@ -1,4 +1,4 @@
-# tools/k3c-workbench/frontend/src/assets/style/
+# tools/k3c-studio/frontend/src/assets/style/
 
 ## Responsibility
 

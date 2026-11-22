@@ -1,7 +1,7 @@
 # tools/
 
 ## Responsibility
-Entwickler-Werkzeuge außerhalb des Spiels: das Dev-Werkzeug k3c-workbench (Wails + MCP-Server), Build-Time-CLIs und Generatoren (auch fürs Rust-Spielpaket und den Go-Rust-Testabgleich), der Papierschnitt-Renderer und gemeinsame Oberflächen-Bausteine. Direkt im Ordner liegt nur `Taskfile.yml`, der Namensraum `gen` der Generatoren.
+Entwickler-Werkzeuge außerhalb des Spiels: die Dev-Werkzeuge k3c-workbench und k3c-studio (Wails + je ein MCP-Server; gemeinsamer Go-Code in `workkit`), Build-Time-CLIs und Generatoren (auch fürs Rust-Spielpaket und den Go-Rust-Testabgleich), der Papierschnitt-Renderer und gemeinsame Oberflächen-Bausteine. Direkt im Ordner liegt nur `Taskfile.yml`, der Namensraum `gen` der Generatoren.
 
 ## Design
 | Ordner | Rolle |
@@ -23,7 +23,7 @@ Entwickler-Werkzeuge außerhalb des Spiels: das Dev-Werkzeug k3c-workbench (Wail
 - `Taskfile.yml` (eingebunden als `gen` in der Wurzel): `paper` (= `paper-render` + `paper-sync`, rendert per `bun tools/paper/bin/gen.ts` nach `.work/grafik` und kopiert nach `public/grafik`), `rules` (`bin/regeltabelle`), `soundatlas` (`bin/soundatlas`, braucht ffmpeg), `rig` und `rig:check` (Rig-Teile nach `public/rig/` schreiben bzw. byte-genau vergleichen), `portcheck` (`go run ./tools/portcheck`). Feste EXEs unter `bin/`, `sources`/`generates`/`status` verhindern unnötige Läufe.
 
 ## Flow
-1. `task k3c-workbench` startet das Dev-Tool als Client/Server (Backend `-dev` über `engine/devrun`, Oberfläche unter Vite; Fenster: `k3c-workbench:window`), `task k3c-workbench:build` baut die EXE.
+1. `task k3c-workbench` startet das Dev-Tool als Client/Server (Backend `-dev` über `engine/devrun`, Oberfläche unter Vite; Fenster: `k3c-workbench:window`), `task k3c-workbench:build` baut die EXE. `task k3c-studio` (dann `k3c-studio:window`, `k3c-studio:build`) startet analog das Studio (Welten, Hub, Assets).
 2. `task gen:paper` (auch Abhängigkeit von `task test`, `task build`, `rust:game:build`) → `tools/paper/bin/gen.ts` → `public/grafik/<gruppe>/`.
 3. `task rust:game:build` → `tools/sync` (Dateien ins Paket) → `rustpaket lizenzen` und `rustpaket pruefen`.
 4. `task check:diff` → `go run ./tools/checkdiff`; `task check:go` und `k3c-workbench:test` holen ihre Paketlisten über `checkdiff -gopkgs` / `-wbpkgs`.
