@@ -78,9 +78,9 @@ Entschieden per Default (Claude, im Nachgang melden): hub_* (Hub-Planer) gehört
 | WZ63.2 | `WZ63.2-studio-modul-backend.md` | Umsetzung | autonom | fertig |
 | WZ63.3 | `WZ63.3-studio-frontend.md` | Umsetzung | autonom | fertig |
 | WZ63.4 | `WZ63.4-workbench-bereinigen-doku.md` | Umsetzung | autonom | fertig |
-| WZ63.5 | `WZ63.5-balancing-backend-ins-studio.md` | Umsetzung | autonom | offen |
-| WZ63.6 | `WZ63.6-balancing-seite-tabs-links.md` | Umsetzung | autonom | offen |
-| WZ63.7 | `WZ63.7-balancing-schreibschutz-regeln.md` | Umsetzung | autonom | offen |
+| WZ63.5 | `WZ63.5-balancing-backend-ins-studio.md` | Umsetzung | autonom | fertig |
+| WZ63.6 | `WZ63.6-balancing-seite-tabs-links.md` | Umsetzung | autonom | fertig |
+| WZ63.7 | `WZ63.7-balancing-schreibschutz-regeln.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

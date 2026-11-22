@@ -262,6 +262,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1224](B-1224-spieltest-befunde-mcp-tickets.md) | DEV | Idee | mittel | offen | WZ65 | MCP-Tools playtest_* und Prompt-Knöpfe machen aus angehakten Befunden Tickets |
 | [B-1225](B-1225-abnahme-spieltest-aufnahme.md) | DEV | Frage | mittel | offen | WZ65 | Abnahme Spieltest-Aufnahme (WZ64–WZ66): Sofa-Test mit zwei Pads und Frame-Messung bei laufender Aufnahme |
 | [B-1226](B-1226-abnahme-wz63.md) | DEV | Schuld | mittel | offen | WZ63 | Abnahme WZ63: Studio startet allein und bearbeitet eine Welt |
+| [B-1227](B-1227-studio-dev-worktree-b925.md) | DEV | Schuld | mittel | offen | WZ63 | Studio rechnet die Engine: Dev-Worktree-Instanz und Regel B-925 für das Studio |
 
 ## Archiv
 
