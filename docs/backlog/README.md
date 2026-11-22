@@ -261,6 +261,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1223](B-1223-spieltest-transkript-ffmpeg-whisper.md) | DEV | Idee | mittel | offen | WZ65 | Knopf Transkribieren erzeugt per ffmpeg-whisper ein Transkript mit Zeitstempeln und ein Bild je Marker |
 | [B-1224](B-1224-spieltest-befunde-mcp-tickets.md) | DEV | Idee | mittel | offen | WZ65 | MCP-Tools playtest_* und Prompt-Knöpfe machen aus angehakten Befunden Tickets |
 | [B-1225](B-1225-abnahme-spieltest-aufnahme.md) | DEV | Frage | mittel | offen | WZ65 | Abnahme Spieltest-Aufnahme (WZ64–WZ66): Sofa-Test mit zwei Pads und Frame-Messung bei laufender Aufnahme |
+| [B-1226](B-1226-abnahme-wz63.md) | DEV | Schuld | mittel | offen | WZ63 | Abnahme WZ63: Studio startet allein und bearbeitet eine Welt |
 
 ## Archiv
 

@@ -69,10 +69,10 @@ Entschieden per Default (Claude, im Nachgang melden): hub_* (Hub-Planer) gehört
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ63.1 | `WZ63.1-workkit-gemeinsamer-code.md` | Umsetzung | autonom | offen |
-| WZ63.2 | `WZ63.2-studio-modul-backend.md` | Umsetzung | autonom | offen |
-| WZ63.3 | `WZ63.3-studio-frontend.md` | Umsetzung | autonom | offen |
-| WZ63.4 | `WZ63.4-workbench-bereinigen-doku.md` | Umsetzung | autonom | offen |
+| WZ63.1 | `WZ63.1-workkit-gemeinsamer-code.md` | Umsetzung | autonom | fertig |
+| WZ63.2 | `WZ63.2-studio-modul-backend.md` | Umsetzung | autonom | fertig |
+| WZ63.3 | `WZ63.3-studio-frontend.md` | Umsetzung | autonom | fertig |
+| WZ63.4 | `WZ63.4-workbench-bereinigen-doku.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
