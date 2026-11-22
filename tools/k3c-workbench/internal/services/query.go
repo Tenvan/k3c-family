@@ -21,6 +21,9 @@ func (c *Controller) Health(ctx context.Context, name string) (Service, error) {
 	if err != nil {
 		return Service{}, err
 	}
+	if u.svc.Health == healthProcess {
+		return u.svc, processHealth(u)
+	}
 	return u.svc, c.opts.Check(ctx, u.svc)
 }
 

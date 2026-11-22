@@ -14,6 +14,10 @@ func (c *Controller) start(ctx context.Context, u *unit) (Status, error) {
 	if st := u.status(); st.State == Running || st.State == Starting || st.State == Adopted {
 		return st, fmt.Errorf("%s läuft bereits (%s)", u.svc.Name, st.State)
 	}
+	if reason := c.missingNeeds(u); reason != "" {
+		st := c.fail(u, reason)
+		return st, fmt.Errorf("%s: %s", u.svc.Name, reason)
+	}
 	if reason := c.portBusy(ctx, u); reason != "" {
 		st := c.fail(u, reason)
 		return st, fmt.Errorf("%s: %s", u.svc.Name, reason)
@@ -95,7 +99,7 @@ func (c *Controller) awaitHealthy(ctx context.Context, u *unit, r *run) error {
 		case <-ctx.Done():
 			return fmt.Errorf("start abgebrochen: %w", ctx.Err())
 		case <-tick.C:
-			if c.opts.Check(ctx, u.svc) == nil {
+			if c.check(ctx, u.svc) == nil {
 				return nil
 			}
 		}
@@ -154,10 +158,14 @@ func (c *Controller) watch(ctx context.Context, u *unit, r *run) {
 		case <-ctx.Done():
 			return
 		case <-r.done:
+			if r.err == nil && u.svc.Health == healthProcess {
+				c.ended(u, r) // Spiel geschlossen: gestoppt, kein Ausfall
+				return
+			}
 			c.crashed(u, r, fmt.Sprintf("prozess beendet (%v)", r.err))
 			return
 		case <-tick.C:
-			err := c.opts.Check(ctx, u.svc)
+			err := c.check(ctx, u.svc)
 			if err == nil {
 				if unhealthy {
 					c.opts.Log.Info("✅ dienst "+u.svc.Name+": wieder gesund", "ns", "svc", "health", u.svc.HealthURL())

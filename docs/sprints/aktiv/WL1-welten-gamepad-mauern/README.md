@@ -70,7 +70,7 @@ keine.
 | WL1.3 | `WL1.3-gamepad-hotplug-hud.md` | Umsetzung | autonom | fertig |
 | WL1.4 | `WL1.4-zaun-mauern.md` | Umsetzung | autonom | fertig |
 | WL1.5 | `WL1.5-review.md` | Review | autonom | offen |
-| WL1.6 | `WL1.6-workbench-spielstart-dienste.md` | Umsetzung | autonom | offen |
+| WL1.6 | `WL1.6-workbench-spielstart-dienste.md` | Umsetzung | autonom | in Arbeit |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

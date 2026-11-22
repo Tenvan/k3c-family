@@ -1,5 +1,11 @@
 [
   { "name": "k3c-studio", "tags": ["Tool", "Backend"], "description": "Studio ohne Fenster (WZ63): MCP-Server k3c-studio mit den Tools world_*, assets_*, hub_* und level_generate für Welten, Assets und Hub.",
     "command": ["task", "k3c-studio:headless"], "cwd": ".", "port": 5181, "health": "tcp", "log": "k3c-studio",
-    "portEnv": "K3C_STUDIO_PORT" }
+    "portEnv": "K3C_STUDIO_PORT" },
+  { "name": "game-dev", "tags": ["Spiel"], "description": "Rust-Spiel im Debug-Bau (task rust:game:dev, Arbeitsordner Repo-Wurzel); Ausgabe im Log game-dev (B-1214).",
+    "command": ["task", "rust:game:dev"], "cwd": ".", "health": "process", "manual": true },
+  { "name": "game-release", "tags": ["Spiel"], "description": "Rust-Spiel aus dem Paket dist/k3c-game (Release-EXE, erst task build); Ausgabe im Log game-release, vor einem Neubau beendet (B-1214).",
+    "command": ["dist/k3c-game/k3c-game.exe"], "cwd": "dist/k3c-game", "health": "process", "manual": true,
+    "needs": "dist/k3c-game/k3c-game.exe", "needsHint": "erst task build",
+    "stopBefore": ["build", "buildall", "rust:game:build", "rust:game:run"] }
 ]

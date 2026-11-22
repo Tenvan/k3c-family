@@ -57,7 +57,7 @@ export function ServiceCard({ s, selected, onSelect }: Props) {
       <div className="svc-head">
         <div>
           <LinkButton size="4" color="gray" underline="none" onClick={onSelect} aria-current={selected}><Strong>{s.name}</Strong></LinkButton>
-          <div className="svc-port">Port {s.port}</div>
+          <div className="svc-port">{s.port > 0 ? `Port ${s.port}` : 'ohne Port'}</div>
         </div>
         <StatusBadge tone={badge.tone}>{badge.label}</StatusBadge>
       </div>

@@ -20,8 +20,8 @@ type Service struct {
 	Tags        []string          `json:"tags,omitempty"`        // Einordnung für die Oberfläche: Spiel/Tool, Backend/Client
 	Command     []string          `json:"command"` // Programm und Argumente, ohne Shell gestartet
 	Cwd         string            `json:"cwd"`     // relativ zur Repo-Wurzel
-	Port        int               `json:"port"`
-	Health      string            `json:"health"` // http oder tcp
+	Port        int               `json:"port"`   // 0 nur bei health process
+	Health      string            `json:"health"` // http, tcp oder process (gesund, solange der Prozess läuft)
 	Log         string            `json:"log,omitempty"`
 	AutoRestart bool              `json:"autoRestart,omitempty"`
 	Env         map[string]string `json:"env,omitempty"`
@@ -29,7 +29,18 @@ type Service struct {
 	PortEnv string `json:"portEnv,omitempty"`
 	// Watch: bei Änderungen dieser Dateien startet k3c-workbench den Dienst neu (Watch-Modus, B-097); nil = nie.
 	Watch *Watch `json:"watch,omitempty"`
+	// Manual: nur einzeln starten, nie über StartAll (das Spiel, B-1214).
+	Manual bool `json:"manual,omitempty"`
+	// Needs ist eine Datei relativ zur Repo-Wurzel, ohne die der Start mit NeedsHint abbricht (etwa die Paket-EXE).
+	Needs     string `json:"needs,omitempty"`
+	NeedsHint string `json:"needsHint,omitempty"`
+	// StopBefore nennt Tasks, vor deren Start die Workbench den laufenden Dienst beendet (laufende EXE blockiert sonst
+	// den Neubau, B-1214).
+	StopBefore []string `json:"stopBefore,omitempty"`
 }
+
+// healthProcess: gesund, solange der Prozess läuft (ohne Port, etwa das Spiel).
+const healthProcess = "process"
 
 // name ist ein Dienst- bzw. Log-Name: er wird Konsolen-Quelle, MCP-Argument und Dateiname unter logs/.
 var name = regexp.MustCompile(`^[A-Za-z0-9_.-]{1,40}$`)
@@ -59,9 +70,38 @@ func validate(path string, list []Service) error {
 		if err := check(s, names, ports); err != nil {
 			return fmt.Errorf("%s: %s", where, err)
 		}
-		names[s.Name], ports[s.Port] = true, true
+		names[s.Name] = true
+		if s.Port != 0 {
+			ports[s.Port] = true
+		}
 	}
 	return nil
+}
+
+// taskName ist ein Task-Name wie in `task --list` (Namensraum mit Doppelpunkt).
+var taskName = regexp.MustCompile(`^[A-Za-z0-9_.:-]{1,80}$`)
+
+// checkProcess prüft die Felder der Prozess-Dienste: kein Port, needs relativ zur Wurzel, gültige Task-Namen.
+func checkProcess(s Service) error {
+	if s.Health == healthProcess && s.Port != 0 {
+		return fmt.Errorf("health process läuft ohne port (port %d)", s.Port)
+	}
+	if s.Needs != "" && !relPath(s.Needs) {
+		return fmt.Errorf("needs %q muss ein Pfad relativ zur Repo-Wurzel sein (mit /, ohne ..)", s.Needs)
+	}
+	for _, t := range s.StopBefore {
+		if !taskName.MatchString(t) {
+			return fmt.Errorf("stopBefore %q ist kein Task-Name", t)
+		}
+	}
+	return nil
+}
+
+// relPath: Pfad unterhalb der Repo-Wurzel, mit / und ohne ..
+func relPath(p string) bool {
+	clean := path.Clean(p)
+	return p != "" && !path.IsAbs(p) && !strings.Contains(p, "\\") && !strings.Contains(p, ":") && clean != ".." &&
+		!strings.HasPrefix(clean, "../")
 }
 
 func check(s Service, names map[string]bool, ports map[int]bool) error {
@@ -70,10 +110,12 @@ func check(s Service, names map[string]bool, ports map[int]bool) error {
 		return fmt.Errorf("name fehlt oder enthält andere Zeichen als A–Z, a–z, 0–9, _ . - (höchstens 40)")
 	case len(s.Command) == 0 || s.Command[0] == "":
 		return fmt.Errorf("command fehlt")
-	case s.Port < 1 || s.Port > 65535:
+	case s.Health != "http" && s.Health != "tcp" && s.Health != healthProcess:
+		return fmt.Errorf("health %q: erlaubt sind http, tcp und process", s.Health)
+	case checkProcess(s) != nil:
+		return checkProcess(s)
+	case s.Health != healthProcess && (s.Port < 1 || s.Port > 65535):
 		return fmt.Errorf("port %d ungültig", s.Port)
-	case s.Health != "http" && s.Health != "tcp":
-		return fmt.Errorf("health %q: erlaubt sind http und tcp", s.Health)
 	case s.Log != "" && !name.MatchString(s.Log):
 		return fmt.Errorf("log %q ist kein gültiger Name", s.Log)
 	case s.PortEnv != "" && !envName.MatchString(s.PortEnv):
@@ -100,7 +142,9 @@ func Shift(list []Service, off int) []Service {
 	}
 	out := make([]Service, len(list))
 	for i, s := range list {
-		s.Port += off
+		if s.Port != 0 { // Prozess-Dienste haben keinen Port
+			s.Port += off
+		}
 		env := make(map[string]string, len(s.Env)+len(ports))
 		maps.Copy(env, s.Env)
 		maps.Copy(env, ports)
@@ -110,9 +154,13 @@ func Shift(list []Service, off int) []Service {
 	return out
 }
 
-// HealthURL ist die Adresse der Prüfung, wie sie Karten und svc_status zeigen.
+// HealthURL ist die Adresse der Prüfung, wie sie Karten und svc_status zeigen; leer bei health process (die Karte
+// zeigt dann „process“).
 func (s Service) HealthURL() string {
-	if s.Health == "tcp" {
+	switch s.Health {
+	case healthProcess:
+		return ""
+	case "tcp":
 		return fmt.Sprintf("tcp://127.0.0.1:%d", s.Port)
 	}
 	return fmt.Sprintf("http://127.0.0.1:%d/", s.Port)
