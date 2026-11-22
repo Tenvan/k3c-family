@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"syscall"
 	"time"
 
@@ -14,21 +15,35 @@ import (
 	"k3c/engine/devrun"
 	"k3c/tools/assetkit/windowstate"
 	"k3c/tools/k3c-studio/internal/mcpsrv"
+	"k3c/tools/workkit/uikit"
 )
 
-// Betrieb ohne Fenster: -headless startet App mit dem MCP-Server k3c-studio, -dev baut und startet -headless als
-// Kindprozess und startet ihn bei Go-Änderungen neu (engine/devrun, wie k3c-workbench). Die Oberflächen-API für Vite
-// folgt mit dem Frontend (WZ63.3). Ohne Wails gibt es keine Einzelinstanz-Sperre.
+// Betrieb ohne Fenster: -headless startet App mit dem MCP-Server k3c-studio und der Oberflächen-API (uiapi.go,
+// tools/workkit/uikit; die Oberfläche läuft im Browser unter Vite, frontend/src/api/http.ts), -dev baut und startet
+// -headless als Kindprozess und startet ihn bei Go-Änderungen neu (engine/devrun, wie k3c-workbench). Ohne Wails gibt
+// es keine Einzelinstanz-Sperre.
 const (
-	devChild = "build/bin/k3c-studio-devchild" // (+ .exe unter Windows, runDev): feste EXE, keine neue Firewall-Abfrage
+	envUIPort = "K3C_STUDIO_UI_API_PORT"
+	// defaultUIPort: nächster freie nach der Workbench (8191); 8182 und 8091 gehörten dem alten Asset-Studio.
+	defaultUIPort = 8193
+	devChild      = "build/bin/k3c-studio-devchild" // (+ .exe unter Windows, runDev): feste EXE, keine neue Firewall-Abfrage
 	// devMCPPort gilt im -dev ohne K3C_STUDIO_PORT: nie der Port des laufenden Studios (mcpsrv.DefaultPort).
 	devMCPPort = "5182"
 	// devGrace lässt dem Kind Zeit für shutdown, bevor devrun hart beendet.
 	devGrace = 15 * time.Second
 )
 
-// runHeadless läuft bis Strg+C oder SIGTERM: App wie im Fenster (MCP-Server, Log), ohne Oberfläche.
+// runHeadless läuft bis Strg+C oder SIGTERM: App wie im Fenster (MCP-Server, Log), dazu die Oberflächen-API auf
+// 127.0.0.1:<K3C_STUDIO_UI_API_PORT> (die Oberfläche liefert Vite).
 func runHeadless(root string, port int) error {
+	uiPort, err := uikit.ResolvePort(envUIPort, os.Getenv(envUIPort), defaultUIPort)
+	if err != nil {
+		return err
+	}
+	ln, err := uikit.Listen(envUIPort, uiPort)
+	if err != nil {
+		return err
+	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	app := newApp(root, port)
@@ -36,9 +51,13 @@ func runHeadless(root string, port int) error {
 		app.usage = windowstate.ConfigPath("mcp-usage-studio-dev.json") // die Statistik des Studios bleibt unberührt
 	}
 	app.startup(context.Background())
-	<-ctx.Done()
+	pageURL := uikit.PageURL(ln)
+	app.log.Info("🚀 Oberflächen-API bereit", "ns", "main", "url", pageURL+strings.TrimPrefix(uikit.Prefix, "/"), "seite", pageURL)
+	if err = uikit.Serve(ctx, ln, app.uiHandler()); err != nil {
+		app.log.Error("💥 Oberflächen-API beendet", "ns", "main", "error", err.Error())
+	}
 	app.shutdown(context.Background())
-	return nil
+	return err
 }
 
 // runDev baut -headless als Kindprozess und startet ihn neu, wenn sich Go-Code in k3c-studio, assetkit, workkit, engine
@@ -50,6 +69,9 @@ func runDev(root string) error {
 	env := []string{mcpsrv.EnvPort + "=" + devMCPPort}
 	if v := os.Getenv(mcpsrv.EnvPort); v != "" {
 		env[0] = mcpsrv.EnvPort + "=" + v
+	}
+	if v, ok := os.LookupEnv(envUIPort); ok {
+		env = append(env, envUIPort+"="+v)
 	}
 	child := devChild
 	if runtime.GOOS == "windows" {

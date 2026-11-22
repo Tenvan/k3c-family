@@ -19,7 +19,7 @@ func testRepo() repo {
 	}
 }
 
-// want: erwartete Auswahl. flags = gesetzte Schalter (D Docs, R Rules, C Client, W WbVitest, A go.mod der
+// want: erwartete Auswahl. flags = gesetzte Schalter (D Docs, R Rules, C Client, W WbVitest, S StudioVitest, A go.mod der
 // Wurzel), pkgs = geänderte Paket-Ordner als "modul:ordner".
 type want struct {
 	flags string
@@ -31,7 +31,7 @@ func summary(p plan) want {
 	for _, f := range []struct {
 		on   bool
 		name string
-	}{{p.Docs, "D"}, {p.Rules, "R"}, {p.Client, "C"}, {p.WbVitest, "W"}, {p.Mods["."] != nil && p.Mods["."].All, "A"}} {
+	}{{p.Docs, "D"}, {p.Rules, "R"}, {p.Client, "C"}, {p.WbVitest, "W"}, {p.StudioVitest, "S"}, {p.Mods["."] != nil && p.Mods["."].All, "A"}} {
 		if f.on {
 			w.flags += f.name
 		}
@@ -60,7 +60,8 @@ func TestClassify(t *testing.T) {
 		{"Workbench: eigenes Modul, Frontend nur Vitest",
 			[]string{"tools/k3c-workbench/internal/planning/next.go", "tools/k3c-workbench/frontend/src/App.tsx"},
 			want{"RW", []string{"tools/k3c-workbench:internal/planning"}}},
-		{"webkit: Vitest der Workbench", []string{"tools/webkit/atoms/Button.tsx"}, want{"RW", nil}},
+		{"webkit: Vitest beider Apps", []string{"tools/webkit/atoms/Button.tsx"}, want{"RWS", nil}},
+		{"Studio: Frontend nur Vitest des Studios", []string{"tools/k3c-studio/frontend/src/App.tsx"}, want{"RS", nil}},
 		{"eigenes Modul: Paket und Modul-Wurzel",
 			[]string{"tools/assetkit/rig/matrix.go", "tools/assetkit/main.go", "tools/assetkit/export/export.ts"},
 			want{"R", []string{"tools/assetkit:.", "tools/assetkit:rig"}}},

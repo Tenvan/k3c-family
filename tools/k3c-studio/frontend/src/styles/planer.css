@@ -57,3 +57,9 @@
 .pl-field .rt-TextFieldRoot, .pl-field .rt-SelectTrigger { width: 100%; min-width: 0; }
 .pl-check { font-size: 12px; }
 .pl-remove { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
+
+/* Bis WZ63.3 galten für den Planer auch gleichnamige Regeln aus planning.css der Workbench (Präfix pl- doppelt belegt);
+   damit der Planer im Studio unverändert aussieht, stehen die mitgeltenden Regeln hier. */
+.pl-chip { font-family: var(--code-font-family); }
+.pl-row:hover { background: var(--gray-a3); }
+.pl-row:focus-visible { outline: 2px solid var(--accent-8); outline-offset: -2px; }

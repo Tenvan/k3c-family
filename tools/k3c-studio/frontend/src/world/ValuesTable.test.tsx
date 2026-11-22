@@ -24,8 +24,8 @@ const flush = async () => {
 };
 async function mount(world = 'wueste'): Promise<HTMLElement> {
   localStorage.clear();
-  localStorage.setItem('k3c-workbench.world.id', world);
-  localStorage.setItem('k3c-workbench.world.tab', 'werte');
+  localStorage.setItem('k3c-studio.world.id', world);
+  localStorage.setItem('k3c-studio.world.tab', 'werte');
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);

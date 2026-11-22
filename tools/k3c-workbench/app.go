@@ -13,8 +13,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/tools/assetkit/windowstate"
-	"k3c/tools/workkit/applog"
-	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/github"
 	"k3c/tools/k3c-workbench/internal/gitops"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
@@ -22,6 +20,9 @@ import (
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
 	"k3c/tools/k3c-workbench/internal/taskrun"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/uikit"
 	"k3c/tools/workkit/usage"
 )
 
@@ -58,7 +59,7 @@ type App struct {
 	port   int
 	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: emitAll (Wails und bus)
 	window bool                                                // läuft im Wails-Fenster (nicht -headless/-dev)
-	bus    *eventBus                                           // Ereignisse für die HTTP-Oberfläche (uiapi_events.go)
+	bus    *uikit.Bus                                          // Ereignisse für die HTTP-Oberfläche (uiapi.go)
 	usage  string                                              // Datei der Nutzungsstatistik (Test-Naht)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
@@ -75,15 +76,15 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
-	gh         *github.Client   // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
-	git        *gitops.Repo     // Seite Git (B-580)
+	gh         *github.Client // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
+	git        *gitops.Repo   // Seite Git (B-580)
 
 	mu  sync.Mutex
 	mcp MCPState
 }
 
 func newApp(root string, port int) *App {
-	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage.json"), bus: newEventBus(),
+	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage.json"), bus: uikit.NewBus(),
 		ready: make(chan struct{}), gh: github.New(root), git: gitops.New(root)}
 	a.emit = a.emitAll
 	return a

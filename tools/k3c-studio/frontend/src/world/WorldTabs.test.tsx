@@ -33,7 +33,7 @@ const click = async (el: Element | null | undefined) => {
 };
 async function mountPage(tab: string): Promise<HTMLElement> {
   localStorage.clear();
-  localStorage.setItem('k3c-workbench.world.tab', tab);
+  localStorage.setItem('k3c-studio.world.tab', tab);
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);

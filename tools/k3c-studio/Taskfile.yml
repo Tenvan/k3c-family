@@ -1,13 +1,99 @@
-# Namespace `k3c-studio`: Werkzeug für Game- und Level-Designer (WZ63): Welten, Assets, Hub und der MCP-Server
-# k3c-studio (Vorgabe-Port 5181, K3C_STUDIO_PORT). Eigenes Modul k3c/tools/k3c-studio, per replace auf k3c, assetkit und
-# workkit. Frontend, `build` (wails build), `dev` mit Vite und `window` folgen mit WZ63.3; bis dahin läuft das Backend
-# ohne Fenster (`headless`, `dev:server`).
+# Namespace `k3c-studio`: Werkzeug für Game- und Level-Designer (WZ63): Welten, Assets, Hub (Wails-Fenster, React-Oberfläche
+# in frontend/) und der MCP-Server k3c-studio (Vorgabe-Port 5181, K3C_STUDIO_PORT). Eigenes Modul k3c/tools/k3c-studio,
+# per replace auf k3c, assetkit und workkit.
+# `dev` ist der Client-Server-Betrieb wie in der Workbench: `k3c-studio -dev` baut `-headless` als Kind (MCP-Server und
+# Oberflächen-API ohne Fenster) und startet es bei jeder Go-Änderung neu (engine/devrun); Vite zeigt die Oberfläche mit
+# Hot Reload im Browser (http://localhost:5193) und leitet /api an das Kind weiter (DEV_UI_API_PORT 8193). Der MCP-Port im
+# dev ist DEV_MCP_PORT (5182), damit das laufende Studio (5181) unberührt bleibt. Ports 5192, 8091 und 8182 gehörten dem
+# alten Asset-Studio und bleiben frei. `window` ist der Weg im Fenster (`wails dev`).
 version: '3'
 
 vars:
   STUDIO_DIR: '{{.ROOT_DIR}}/tools/k3c-studio'
+  DEV_MCP_PORT: '5182'
+  DEV_UI_API_PORT: '8193'
+  DEV_UI_PORT: '5193'
 
 tasks:
+  default:
+    desc: Kurzform von k3c-studio:dev
+    cmds:
+      - task: dev
+
+  dev:
+    desc: "Studio im Client-Server-Betrieb: Backend neu bei Go-Änderungen, Oberfläche mit Hot Reload unter http://localhost:5193"
+    deps: [dev:server, dev:ui]
+
+  dev:server:
+    desc: "Backend ohne Fenster (k3c-studio -dev): MCP auf DEV_MCP_PORT (5182), Oberflächen-API auf DEV_UI_API_PORT (8193), Neustart bei Go-Änderungen"
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    env:
+      K3C_STUDIO_PORT: '{{.DEV_MCP_PORT}}'
+      K3C_STUDIO_UI_API_PORT: '{{.DEV_UI_API_PORT}}'
+    # Bewusst `go build` (Konsolen-Subsystem), nie `wails build`: devrun beendet das Kind per CTRL_BREAK über die Konsole.
+    # frontend/dist enthält mindestens den eingecheckten Platzhalter .gitkeep (go:embed); im dev liefert Vite die Oberfläche.
+    cmds:
+      - go build -o build/bin/k3c-studio-dev{{exeExt}} .
+      - build/bin/k3c-studio-dev{{exeExt}} -dev
+
+  dev:ui:
+    desc: Oberfläche mit Vite gegen das Backend von dev:server (Proxy /api); öffnet sie im Standard-Browser
+    dir: '{{.STUDIO_DIR}}/frontend'
+    env:
+      K3C_STUDIO_API: 'http://127.0.0.1:{{.DEV_UI_API_PORT}}'
+      K3C_STUDIO_UI_PORT: '{{.DEV_UI_PORT}}'
+    cmds:
+      # --open nur hier, nicht in vite.config.ts: die Vorschau im Browser-Pane (launch.json) öffnet nichts
+      - bunx vite --open
+
+  window:
+    desc: "Studio als Fenster im Entwicklungsmodus (wails dev): Hot Reload der Oberfläche, Neubau bei Go-Änderungen in tools/k3c-studio"
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    env:
+      K3C_STUDIO_UI_PORT: '{{.DEV_UI_PORT}}'
+    cmds:
+      - wails dev
+
+  frontend:
+    desc: Frontend von k3c-studio bauen (Typecheck und vite build nach frontend/dist; nur bei geänderten Quellen)
+    dir: '{{.STUDIO_DIR}}/frontend'
+    cmds:
+      - bunx tsc --noEmit
+      - bunx vite build
+    sources:
+      - src/**/*
+      - index.html
+      - package.json
+      - vite.config.ts
+      - paths.ts
+      - ../../webkit/**/*
+    generates:
+      - dist/index.html
+
+  typecheck:
+    desc: Typecheck des Studio-Frontends (tsc --noEmit)
+    dir: '{{.STUDIO_DIR}}/frontend'
+    cmds:
+      - bunx tsc --noEmit
+
+  vitest:
+    desc: Frontend von k3c-studio testen (Vitest; VITEST_ARGS filtert)
+    deps: [frontend]
+    dir: '{{.STUDIO_DIR}}/frontend'
+    cmds:
+      - bunx vitest run --config vitest.config.ts {{.VITEST_ARGS}}
+
+  test:
+    desc: k3c-studio testen (Frontend mit Typecheck und Vitest, go test)
+    cmds:
+      - task: vitest
+      - task: gotest
+
   gotest:
     desc: go test für tools/k3c-studio (GO_TEST_FLAGS=-short lässt lange Tests aus)
     deps: [':tmp']
@@ -21,6 +107,51 @@ tasks:
     dir: '{{.STUDIO_DIR}}'
     cmds:
       - golangci-lint run --allow-serial-runners
+
+  build:
+    desc: "EXE von k3c-studio bauen, feste EXE bin/k3c-studio (wails build; nur bei geänderten Quellen, `--force` erzwingt; laufendes Studio vorher schließen, sonst scheitert die Kopie)"
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    preconditions:
+      - sh: command -v wails
+        msg: 'Wails-CLI fehlt – go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0 (requirements.md)'
+    sources:
+      - '*.go'
+      - go.mod
+      - go.sum
+      - wails.json
+      - internal/**/*
+      - icon/*
+      - frontend/src/**/*
+      - frontend/index.html
+      - frontend/package.json
+      - frontend/vite.config.ts
+      - frontend/paths.ts
+      - ../webkit/**/*
+      - ../assetkit/**/*.go
+      - ../workkit/**/*.go
+      - ../../engine/**/*.go
+      - ../../data/**/*
+      - ../../go.mod
+      - ../../go.sum
+      - exclude: '**/*_test.go'
+    generates:
+      - build/bin/k3c-studio{{exeExt}}
+      - ../../bin/k3c-studio{{exeExt}}
+    cmds:
+      - mkdir -p build/windows
+      - cp icon/appicon.png build/appicon.png
+      - cp icon/icon.ico build/windows/icon.ico
+      - wails build
+      - mkdir -p ../../bin
+      - cp build/bin/k3c-studio{{exeExt}} ../../bin/k3c-studio{{exeExt}}
+
+  run:
+    desc: EXE von k3c-studio bauen (nur bei geänderten Quellen) und starten
+    deps: [build]
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - bin/k3c-studio{{exeExt}}
 
   headless:build:
     desc: "Studio-Backend ohne Fenster bauen, feste EXE build/bin/k3c-studio-headless (go build, Konsolen-Subsystem)"
@@ -42,17 +173,8 @@ tasks:
       - go build -o build/bin/k3c-studio-headless{{exeExt}} .
 
   headless:
-    desc: "Studio-Backend ohne Fenster starten: MCP-Server k3c-studio auf K3C_STUDIO_PORT (Vorgabe 5181)"
+    desc: "Studio-Backend ohne Fenster starten: MCP-Server k3c-studio auf K3C_STUDIO_PORT (Vorgabe 5181), Oberflächen-API auf K3C_STUDIO_UI_API_PORT (Vorgabe 8193)"
     deps: [headless:build]
     dir: '{{.STUDIO_DIR}}'
     cmds:
       - build/bin/k3c-studio-headless{{exeExt}} -headless
-
-  dev:server:
-    desc: "Backend ohne Fenster (k3c-studio -dev): MCP auf K3C_STUDIO_PORT (Vorgabe im dev 5182), Neustart bei Go-Änderungen"
-    deps: [':tmp']
-    dir: '{{.STUDIO_DIR}}'
-    # Bewusst `go build` (Konsolen-Subsystem), nie `wails build`: devrun beendet das Kind per CTRL_BREAK über die Konsole.
-    cmds:
-      - go build -o build/bin/k3c-studio-dev{{exeExt}} .
-      - build/bin/k3c-studio-dev{{exeExt}} -dev

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { HeaderRight, useNavigation, type Page } from './Header';
-import { AssetsArea } from './assets/AssetsArea';
 import { loadPref, savePref } from './lib/prefs';
 import { BalancingPage } from './balancing/BalancingPage';
 import { GitPage } from './git/GitPage';
@@ -10,8 +9,6 @@ import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
-import { PlannerPage } from './planner/PlannerPage';
-import { WorldPage } from './world/WorldPage';
 import { Notices } from './ui/organisms/Notices';
 import { TicketProvider } from '@webkit/lib/ticketContext';
 import { Tabs } from '@webkit/organisms';
@@ -45,17 +42,15 @@ export function App() {
     savePref('app.mode', mode);
   }, [mode]);
 
-  // Dienste, Tasks, Git und Monitoring bleiben eingehängt (Zustand, laufende Ansichten), auch im Bereich Studio; Balancing ebenso (Bereich Studio); Planung
-  // und MCP bauen sich bei jedem Wechsel neu auf und laden dabei frisch. forceMount hält den Inhalt, hidden und display
-  // verbergen ihn.
-  const shown = (v: Page) => nav.area === 'development' && nav.page === v;
-  const balancing = nav.area === 'assets' && nav.assetPage === 'balancing';
+  // Dienste, Tasks, Git, Monitoring und Balancing bleiben eingehängt (Zustand, laufende Ansichten); Planung und MCP bauen
+  // sich bei jedem Wechsel neu auf und laden dabei frisch. forceMount hält den Inhalt, hidden und display verbergen ihn.
+  const shown = (v: Page) => nav.page === v;
   const keep = (v: Page) => ({ forceMount: true as const, hidden: !shown(v), style: shown(v) ? undefined : { display: 'none' } });
 
   return (
     <TicketProvider app="k3c-workbench" version={version} defaultDomain="DEV" defaultProject="WZG" create={createTicket} recent={recentTickets}>
     <AppFrame title="K3C Workbench" appearance={mode} tabs={nav.tabs}
-      right={<HeaderRight area={nav.area} onArea={nav.chooseArea} mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}
+      right={<HeaderRight mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}
       overlay={<Notices />}>
       <Tabs.Content value="dienste" {...keep('dienste')}>
         <ServicesPage active={shown('dienste')} />
@@ -75,16 +70,9 @@ export function App() {
       <Tabs.Content value="monitoring" {...keep('monitoring')}>
         <MonitoringPage active={shown('monitoring')} />
       </Tabs.Content>
-      <Tabs.Content value="balancing" forceMount hidden={!balancing} style={balancing ? undefined : { display: 'none' }}>
-        <BalancingPage active={balancing} />
+      <Tabs.Content value="balancing" {...keep('balancing')}>
+        <BalancingPage active={shown('balancing')} />
       </Tabs.Content>
-      <Tabs.Content value="welten">
-        <WorldPage />
-      </Tabs.Content>
-      <Tabs.Content value="planer">
-        <PlannerPage />
-      </Tabs.Content>
-      <AssetsArea />
     </AppFrame>
     </TicketProvider>
   );

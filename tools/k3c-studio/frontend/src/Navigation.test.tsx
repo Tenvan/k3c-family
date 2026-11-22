@@ -10,23 +10,25 @@ import { savePref } from './lib/prefs';
 
 function Probe() {
   const nav = useNavigation();
-  return <p data-nav>{`${nav.area}:${nav.assetPage}`}</p>;
+  return <p data-nav>{`${nav.area}:${nav.page}`}</p>;
 }
 
-// WZ62.4: Eine Seite bittet per navigateTo um eine Studio-Seite; Bereich und Reiter wechseln, Fremdes wird ignoriert.
+// WZ62.4: Eine Seite bittet per navigateTo um eine andere Seite; Bereich und Reiter wechseln, Fremdes wird ignoriert.
 describe('Seitenwechsel auf Wunsch (B-1171)', () => {
-  it('wechselt in den Bereich Studio auf den Katalog, ignoriert unbekannte Ziele', async () => {
-    savePref('app.area', 'development');
-    savePref('app.assetsPage', 'welten');
+  it('wechselt vom Welten-Editor in den Bereich Assets auf den Katalog, ignoriert unbekannte Ziele', async () => {
+    savePref('app.area', 'welten');
+    savePref('app.assetsPage', 'styleguide');
     const host = document.createElement('div');
     document.body.appendChild(host);
     const root = createRoot(host);
     act(() => root.render(<Probe />));
-    expect(host.textContent).toBe('development:welten');
+    expect(host.textContent).toBe('welten:welten');
     await act(async () => navigateTo('gibt-es-nicht'));
-    expect(host.textContent).toBe('development:welten');
+    expect(host.textContent).toBe('welten:welten');
     await act(async () => navigateTo('katalog'));
     expect(host.textContent).toBe('assets:katalog');
+    await act(async () => navigateTo('planer'));
+    expect(host.textContent).toBe('hub:planer');
     act(() => root.unmount());
   });
 });

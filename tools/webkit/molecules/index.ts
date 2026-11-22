@@ -29,3 +29,4 @@ export { ValueField, type ValueFieldProps } from './ValueField';
 export { WeltFilter, type WeltFilterProps, type WeltOption } from './WeltFilter';
 export { SplitStack, type SplitStackProps } from './SplitStack';
 
+export { McpBadge, type McpBadgeState } from './McpBadge';

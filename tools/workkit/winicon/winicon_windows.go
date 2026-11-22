@@ -1,20 +1,16 @@
 //go:build windows
 
-package main
+// Package winicon setzt das Fenster-Icon einer Wails-App zur Laufzeit (Windows): `wails build` bettet icon/icon.ico als
+// Ressource in die EXE ein, ein Dev-Lauf (`go build`, `wails dev`) hat sie nicht, das Fenster bliebe beim
+// Standard-Icon. Deshalb setzt der Start das Icon des eigenen Hauptfensters selbst (WM_SETICON) aus dem eingebetteten
+// PNG; mit Ressource ändert das nichts. Gemeinsam für k3c-workbench und k3c-studio (WZ63.3).
+package winicon
 
 import (
-	_ "embed"
 	"syscall"
 	"time"
 	"unsafe"
 )
-
-// Fenster-Icon zur Laufzeit (Windows): `wails build` bettet icon/icon.ico als Ressource in die EXE ein, ein Dev-Lauf
-// (`go build`, `wails dev`) hat sie nicht, das Fenster bliebe beim Standard-Icon. Deshalb setzt der Start das Icon des
-// eigenen Hauptfensters selbst (WM_SETICON) aus dem eingebetteten PNG; mit Ressource ändert das nichts.
-
-//go:embed icon/appicon.png
-var windowIconPNG []byte
 
 var (
 	user32                    = syscall.NewLazyDLL("user32.dll")
@@ -32,10 +28,10 @@ const (
 	resVersion = 0x00030000
 )
 
-// setWindowIcon setzt das Icon aller sichtbaren Fenster dieses Prozesses; ein Fenster entsteht kurz nach dem Start, deshalb
-// mit wenigen Wiederholungen. Läuft in eigener Goroutine, ein Fehler lässt das Standard-Icon stehen.
-func setWindowIcon() {
-	big, small := iconOf(32), iconOf(16)
+// Set setzt das Icon aller sichtbaren Fenster dieses Prozesses aus png; ein Fenster entsteht kurz nach dem Start,
+// deshalb mit wenigen Wiederholungen. Läuft in eigener Goroutine, ein Fehler lässt das Standard-Icon stehen.
+func Set(png []byte) {
+	big, small := Handle(png, 32), Handle(png, 16)
 	if big == 0 {
 		return
 	}
@@ -60,8 +56,11 @@ func setWindowIcon() {
 	}
 }
 
-// iconOf macht aus dem PNG ein Icon-Handle der Kantenlänge px (0 bei Fehler).
-func iconOf(px int) uintptr {
-	h, _, _ := procCreateIconFromResEx.Call(uintptr(unsafe.Pointer(&windowIconPNG[0])), uintptr(len(windowIconPNG)), 1, resVersion, uintptr(px), uintptr(px), 0)
+// Handle macht aus dem PNG ein Icon-Handle der Kantenlänge px (0 bei Fehler oder leerem PNG).
+func Handle(png []byte, px int) uintptr {
+	if len(png) == 0 {
+		return 0
+	}
+	h, _, _ := procCreateIconFromResEx.Call(uintptr(unsafe.Pointer(&png[0])), uintptr(len(png)), 1, resVersion, uintptr(px), uintptr(px), 0)
 	return h
 }

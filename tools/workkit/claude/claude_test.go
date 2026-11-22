@@ -1,4 +1,4 @@
-package main
+package claude
 
 import (
 	"net/url"
@@ -8,7 +8,7 @@ import (
 
 func TestClaudeLink(t *testing.T) {
 	prompt := "Fix #12 & prüfe a+b=c\nzweite Zeile"
-	link, err := claudeLink(prompt, `C:\WORKSPACE\k3c`)
+	link, err := Link(prompt, `C:\WORKSPACE\k3c`)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -20,13 +20,13 @@ func TestClaudeLink(t *testing.T) {
 	if err != nil || q.Get("q") != prompt || q.Get("folder") != `C:\WORKSPACE\k3c` {
 		t.Fatalf("Rundreise: %v %+v", err, q)
 	}
-	if _, err := claudeLink("  ", ""); err == nil {
+	if _, err := Link("  ", ""); err == nil {
 		t.Fatal("leerer Prompt angenommen")
 	}
-	if _, err := claudeLink(strings.Repeat("x", claudeMaxPrompt+1), ""); err == nil {
+	if _, err := Link(strings.Repeat("x", MaxPrompt+1), ""); err == nil {
 		t.Fatal("überlanger Prompt angenommen")
 	}
-	if _, err := claudeLink(strings.Repeat("ü", 6000), ""); err == nil {
+	if _, err := Link(strings.Repeat("ü", 6000), ""); err == nil {
 		t.Fatal("kodiert überlanger Link angenommen")
 	}
 }

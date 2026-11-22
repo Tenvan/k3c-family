@@ -4,7 +4,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backend } from '../api';
-import { ASSET_LABELS, ASSET_PAGES } from '../Header';
+import { LABELS, PAGES } from '../Header';
 import { storyGaps, storyPrompt } from './StoryState';
 import { WorldPage } from './WorldPage';
 
@@ -21,7 +21,7 @@ async function flush() {
 
 async function mount(tab = 'inseln'): Promise<HTMLElement> {
   localStorage.clear();
-  localStorage.setItem('k3c-workbench.world.tab', tab);
+  localStorage.setItem('k3c-studio.world.tab', tab);
   const host = document.createElement('div');
   document.body.appendChild(host);
   root = createRoot(host);
@@ -44,9 +44,9 @@ const click = async (el: Element | null | undefined) => {
 };
 
 describe('Welten-Editor (B-879/AC-01)', () => {
-  it('ist eine Seite im Bereich Studio', () => {
-    expect(ASSET_PAGES).toContain('welten');
-    expect(ASSET_LABELS.welten).toBe('Welten-Editor');
+  it('ist eine Seite im Studio (WZ63.3)', () => {
+    expect(PAGES).toContain('welten');
+    expect(LABELS.welten).toBe('Welten-Editor');
   });
 
   it('B-1168/AC-01: feste Welten ohne Datei stehen mit Hinweis in der Liste und legen sich per Klick aus Standard an und öffnen sich (WL1.2)', async () => {
@@ -104,7 +104,7 @@ describe('Welten-Editor: Auswahl (B-879/AC-01)', () => {
     const host = await mount('werte');
     await click(host.querySelector('[data-world="wueste"]'));
     expect(host.querySelector('[data-scroll="detail"] h1')?.textContent).toContain('Wüste');
-    expect(localStorage.getItem('k3c-workbench.world.id')).toBe('wueste');
+    expect(localStorage.getItem('k3c-studio.world.id')).toBe('wueste');
     expect(host.querySelector('[aria-label="Eltern-Welt"]')?.textContent).toContain('standard');
   });
 

@@ -1,80 +1,39 @@
-import { useCallback, useState } from 'react';
-import { useNavigateRequests } from '@webkit/lib/navigate';
+import { useState } from 'react';
 import type { McpState } from './api';
 import { loadPref, savePref } from './lib/prefs';
 import { StatusBadge, Tip } from '@webkit/atoms';
-import { ChipSwitch, SwitchField } from '@webkit/molecules';
+import { McpBadge, SwitchField } from '@webkit/molecules';
 
-export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring'] as const;
+/** Seiten der Workbench. Welten-Editor, Assets und Gebäude-Planer sind seit WZ63.3 im Studio (k3c-studio); Balancing,
+ *  vorher im Bereich Studio, steht seitdem als letzte Seite in der einen Reiterleiste. */
+export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring', 'balancing'] as const;
 export type Page = (typeof PAGES)[number];
 
-export const LABELS: Record<Page, string> = { dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring' };
+export const LABELS: Record<Page, string> = {
+  dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring', balancing: 'Balancing',
+};
 
-/** Bereiche der Kopfleiste (Entscheidung 005 › 5): Development = Werkzeuge der Entwicklung; Studio (Schlüssel `assets`) = alles,
- *  was das fertige Spiel bearbeitet oder ansieht: Assets, Balancing, Welten-Editor und Gebäude-Planer (früher im Studio). */
-export const AREAS = ['development', 'assets'] as const;
-export type Area = (typeof AREAS)[number];
-export const AREA_LABELS: Record<Area, string> = { development: 'Development', assets: 'Studio' };
-
-/** Seiten des Bereichs Studio in der Reihenfolge von B-892; Review bleibt die Startseite (RV1 füllt sie). */
-export const ASSET_PAGES = ['styleguide', 'katalog', 'review', 'sound', 'welten', 'planer', 'balancing'] as const;
-export type AssetPage = (typeof ASSET_PAGES)[number];
-export const ASSET_LABELS: Record<AssetPage, string> = { styleguide: 'Styleguide', katalog: 'Katalog', review: 'Review', sound: 'Sound & Quellen', welten: 'Welten-Editor', planer: 'Gebäude-Planer', balancing: 'Balancing' };
-
-type AnyPage = Page | AssetPage;
-
-/** Startseite des Bereichs; eine gemerkte frühere Seite `quellen` führt auf „Sound & Quellen“ (B-892). */
-function legacyAssetPage(): AssetPage {
-  return loadPref('app.assetsPage', ['quellen'] as const, 'review' as never) === 'quellen' ? 'sound' : 'review';
-}
-
-/** Gewählter Bereich und Seite je Bereich, gemerkt unter `app.area`, `app.page`, `app.assetsPage` (WB1.1); `tabs` sind
- *  die Reiter des aktiven Bereichs für AppFrame. */
+/** Gewählte Seite, gemerkt unter `app.page`; `tabs` sind die Reiter für AppFrame. */
 export function useNavigation() {
-  const [area, setArea] = useState<Area>(() => loadPref('app.area', AREAS, 'development'));
   const [page, setPage] = useState<Page>(() => loadPref('app.page', PAGES, 'dienste'));
-  const [assetPage, setAssetPage] = useState<AssetPage>(() => loadPref('app.assetsPage', ASSET_PAGES, legacyAssetPage()));
-  const chooseArea = (next: Area) => {
-    setArea(next);
-    savePref('app.area', next);
-  };
-  const onChange = (next: AnyPage) => {
-    if ((ASSET_PAGES as readonly string[]).includes(next)) {
-      setAssetPage(next as AssetPage);
-      savePref('app.assetsPage', next);
-      return;
-    }
-    setPage(next as Page);
+  const onChange = (next: Page) => {
+    setPage(next);
     savePref('app.page', next);
   };
-  // Seitenwechsel auf Wunsch einer Seite (z. B. Welten-Editor → Katalog, WZ62.4): nur Seiten des Bereichs Studio
-  useNavigateRequests(useCallback((next: string) => {
-    if (!(ASSET_PAGES as readonly string[]).includes(next)) return;
-    setArea('assets');
-    savePref('app.area', 'assets');
-    onChange(next as AssetPage);
-  }, [])); // eslint-disable-line react-hooks/exhaustive-deps
-  const tabs = area === 'assets'
-    ? { pages: ASSET_PAGES as readonly AnyPage[], labels: ASSET_LABELS as Record<AnyPage, string>, value: assetPage as AnyPage, onChange }
-    : { pages: PAGES as readonly AnyPage[], labels: LABELS as Record<AnyPage, string>, value: page as AnyPage, onChange };
-  return { area, page, assetPage, chooseArea, tabs };
+  return { page, tabs: { pages: PAGES, labels: LABELS, value: page, onChange } };
 }
 
 interface Props {
-  area: Area;
-  onArea: (area: Area) => void;
   mcp: McpState | null;
   mock: boolean;
   dark: boolean;
   onDark: (dark: boolean) => void;
 }
 
-/** Rechte Seite der Kopfzeile (B-064 › Kopfzeile): Bereichsumschalter (WB1), MCP-Badge, Mock-Badge, Dark-Schalter. Titel und
- *  Reiter setzt AppFrame in App. */
-export function HeaderRight({ area, onArea, mcp, mock, dark, onDark }: Props) {
+/** Rechte Seite der Kopfzeile (B-064 › Kopfzeile): MCP-Badge, Mock-Badge, Dark-Schalter. Titel und Reiter setzt AppFrame in App. */
+export function HeaderRight({ mcp, mock, dark, onDark }: Props) {
   return (
     <>
-      <ChipSwitch label="Bereich" options={AREAS.map((a) => ({ value: a, label: AREA_LABELS[a] }))} value={area} onChange={onArea} />
       <McpBadge mcp={mcp} />
       {mock && (
         <Tip content="Keine Wails-Laufzeit: erfundene Daten">
@@ -83,23 +42,5 @@ export function HeaderRight({ area, onArea, mcp, mock, dark, onDark }: Props) {
       )}
       <SwitchField label="Dark" checked={dark} onCheckedChange={onDark} />
     </>
-  );
-}
-
-function McpBadge({ mcp }: { mcp: McpState | null }) {
-  // Noch nicht gestartet (Go: leerer Zustand vor Start(), Mock: die ersten Millisekunden).
-  if (!mcp || (!mcp.listening && !mcp.error)) return <StatusBadge tone="neutral">MCP …</StatusBadge>;
-  const label = `MCP ${mcp.addr}`;
-  if (mcp.listening) {
-    return (
-      <Tip content={`lauscht an http://${mcp.addr}/mcp`}>
-        <StatusBadge tone="ok">{label}</StatusBadge>
-      </Tip>
-    );
-  }
-  return (
-    <Tip content={mcp.error || 'lauscht nicht'}>
-      <StatusBadge tone="error">{label}</StatusBadge>
-    </Tip>
   );
 }

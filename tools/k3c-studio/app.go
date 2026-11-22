@@ -18,6 +18,7 @@ import (
 	"k3c/tools/k3c-studio/internal/world"
 	"k3c/tools/workkit/applog"
 	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/uikit"
 	"k3c/tools/workkit/usage"
 )
 
@@ -48,8 +49,9 @@ type Info struct {
 type App struct {
 	root   string
 	port   int
-	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: emitWindow
+	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: emitAll (Wails und bus)
 	window bool                                                // läuft im Wails-Fenster (nicht -headless/-dev)
+	bus    *uikit.Bus                                          // Ereignisse für die HTTP-Oberfläche (uiapi.go)
 	usage  string                                              // Datei der Nutzungsstatistik (Test-Naht)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
@@ -68,16 +70,10 @@ type App struct {
 }
 
 func newApp(root string, port int) *App {
-	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage-studio.json"), ready: make(chan struct{})}
-	a.emit = a.emitWindow
+	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage-studio.json"), bus: uikit.NewBus(),
+		ready: make(chan struct{})}
+	a.emit = a.emitAll
 	return a
-}
-
-// emitWindow schickt ein Ereignis an das Wails-Fenster; ohne Fenster (-headless) geht es verloren.
-func (a *App) emitWindow(ctx context.Context, name string, data ...any) {
-	if a.window && ctx != nil {
-		runtime.EventsEmit(ctx, name, data...)
-	}
 }
 
 // wait blockiert, bis startup fertig ist. Ohne ready (Tests, die App direkt bauen) wartet es nicht.

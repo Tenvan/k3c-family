@@ -64,6 +64,10 @@ func jsSteps(p plan, base string) []step {
 		args := "VITEST_ARGS=--changed " + base + " --passWithNoTests"
 		out = append(out, step{"wb-vitest", "js", 2, ".", []string{"task", "k3c-workbench:vitest", args}})
 	}
+	if p.StudioVitest {
+		args := "VITEST_ARGS=--changed " + base + " --passWithNoTests"
+		out = append(out, step{"studio-vitest", "js", 2, ".", []string{"task", "k3c-studio:vitest", args}})
+	}
 	return out
 }
 
