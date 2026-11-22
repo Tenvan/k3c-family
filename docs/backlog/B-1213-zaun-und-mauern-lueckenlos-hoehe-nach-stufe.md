@@ -69,3 +69,4 @@ keine.
 ## Notizen
 
 Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+- Spieltest 2026-11-22-11, Befund f3: „der Zaun sollte bei Holz eigentlich ein Jägerzaun werden … Nicht so ein fester Bretterzaun.“ (Insel 1 Stufe 0, Welt standard, Tag, Tag 1)

@@ -11,6 +11,7 @@ import { RecordBar } from './RecordBar';
 import { SessionDetail } from './SessionDetail';
 import type { PlaytestAction, PlaytestSession } from './types';
 
+const LIST_POLL_MS = 5000;
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
 
 /** Seite `Spieltest` (B-1218): Sessions aus `playtests/` neueste zuerst, Player und Aufräumen. Jeder Löschknopf liest
@@ -35,6 +36,13 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
   useEffect(() => {
     if (active) void reload();
   }, [active, reload]);
+  // Befunde, Transkript und Bilder ändern sich auch von außen (Claude über MCP): die Liste liest sich still nach,
+  // damit der Stand (ausgewertet) stimmt; nur bei einer Änderung rendert die Seite neu.
+  useEffect(() => {
+    if (!active) return undefined;
+    const t = setInterval(() => void playtestApi.list().then((l) => setSessions((old) => (JSON.stringify(old) === JSON.stringify(l) ? old : l)), () => undefined), LIST_POLL_MS);
+    return () => clearInterval(t);
+  }, [active]);
 
   const clean = async (action: PlaytestAction, id: string) => {
     try {

@@ -99,3 +99,10 @@ func TestDescribeGezielteNummernUndAblehnungen(t *testing.T) {
 		t.Errorf("Info ohne Laufzeit: %+v", in)
 	}
 }
+
+func TestCleanVisionOhneDenkblock(t *testing.T) {
+	in := "<think>\n\n</think>\n\nEin Menü.\r\nZweite Zeile.\n"
+	if got := cleanVision(in); got != "Ein Menü.\nZweite Zeile." {
+		t.Fatalf("cleanVision = %q", got)
+	}
+}

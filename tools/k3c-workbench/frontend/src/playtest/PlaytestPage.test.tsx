@@ -270,9 +270,9 @@ describe('Auswertung (B-1223)', () => {
     act(() => (panel().querySelector('[data-seek]') as HTMLElement).click());
     expect(video.currentTime).toBe(5);
     expect(box().getAttribute('aria-checked')).toBe('false'); // Zeit-Klick schaltet nicht um
-    expect(panel().querySelector('[data-preview]')).toBeNull();
+    expect(document.querySelector('[data-preview]')).toBeNull();
     act(() => { panel().querySelector('img[alt="Bild zu Marker 1"]')!.parentElement!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); });
-    expect(panel().querySelector('[data-preview]')).not.toBeNull();
+    expect(document.querySelector('[data-preview]')).not.toBeNull();
   });
 
   it('Bildbeschreibung: Modell wählbar, markierte Bilder beschreiben, abgewählte nicht (B-1241)', async () => {
@@ -288,6 +288,36 @@ describe('Auswertung (B-1223)', () => {
     act(() => (panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement).click());
     await flush();
     expect(panel().querySelector('[data-describe-one]')).toBeNull(); // abgewähltes Bild: kein Einzel-Knopf
+  });
+
+  it('Alle Bilder auf einmal ab- und anwählen (B-1240)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const box = () => host.querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    act(() => button('Alle abwählen', host).click());
+    await flush();
+    expect(box().getAttribute('aria-checked')).toBe('false');
+    act(() => button('Alle anwählen', host).click());
+    await flush();
+    expect(box().getAttribute('aria-checked')).toBe('true');
+  });
+
+  it('Die Sessionliste liest sich nach, wenn Claude Befunde von außen speichert (Stand ausgewertet)', async () => {
+    vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] }); // nur die Abfrage-Uhr, Promises laufen echt
+    try {
+      const host = await mount();
+      const before = await playtestApi.list();
+      const row = () => host.querySelector('[data-session="2026-11-20-1"]')!.textContent ?? '';
+      expect(row()).toContain('aufgenommen');
+      vi.spyOn(playtestApi, 'list').mockResolvedValue(before.map((x) => (x.id === '2026-11-20-1' ? { ...x, stage: 'ausgewertet' as const } : x)));
+      act(() => { vi.advanceTimersByTime(5100); });
+      await flush();
+      expect(row()).toContain('ausgewertet');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('Marker-Bilder sind vorab markiert, ein Haken weg blendet das Bild aus, der Marker bleibt (B-1240)', async () => {

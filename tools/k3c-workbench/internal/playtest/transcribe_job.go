@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -292,12 +294,21 @@ func (t *Transcriber) frames(ffmpeg, dir string, hasVideo bool) (string, error) 
 	}
 	t.set(func(s *JobStatus) { s.Step, s.Done, s.Total = "Bilder", 0, len(marks) })
 	start := CaptureStart(readMeta(dir))
+	var missing []string
 	for i, m := range marks {
 		sek := float64(max(m.Ts-start, 0)) / 1000
 		if err := t.exec(FrameArgs(ffmpeg, sek, filepath.FromSlash(FrameName(i+1))), dir); err != nil {
-			return "", err
+			if errors.Is(err, errCanceled) {
+				return "", err
+			}
+			// Ein Marker nach dem Ende von video.mkv (ffmpeg: „Nothing was written“) kippt nicht die ganze Auswertung.
+			missing = append(missing, strconv.Itoa(i+1))
+			t.log("warn", "❌ Marker-Bild nicht erzeugt: "+err.Error(), "marker", i+1)
 		}
 		t.set(func(s *JobStatus) { s.Done = i + 1 })
+	}
+	if len(missing) > 0 {
+		return "Bild fehlt bei Marker " + strings.Join(missing, ", ") + " (liegt er nach dem Ende von video.mkv?)", nil
 	}
 	return "", nil
 }

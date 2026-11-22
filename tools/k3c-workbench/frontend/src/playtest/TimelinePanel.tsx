@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ActionButton, CardButton, Checkbox, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import { DescribeBar, useDescribe } from './DescribeBar';
@@ -79,6 +80,15 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
     }
   };
   const describe = useDescribe(s.id, refresh, loadTimeline);
+  // Alle Marker-Bilder auf einmal an- oder abwählen (nacheinander, damit session.json nie gleichzeitig geschrieben wird).
+  const setAll = async (skip: boolean) => {
+    try {
+      for (const e of timeline?.entries ?? []) if (e.frame && e.nr && !!e.skip !== skip) await playtestApi.skipFrame(s.id, e.nr, skip);
+    } catch (err) {
+      setError(message(err));
+    }
+    loadTimeline();
+  };
   const toggleSkip = (nr: number, skip: boolean) =>
     void playtestApi.skipFrame(s.id, nr, skip).then(() => loadTimeline(), (e) => setError(message(e)));
   const cancel = () => void playtestApi.transcribeCancel().catch((e) => setError(message(e)));
@@ -113,21 +123,36 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
         <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
       )}
       {timeline?.entries.some((e) => e.frame) && <DescribeBar d={describe} sessionId={s.id} />}
+      {timeline?.entries.some((e) => e.frame) && (
+        <Flex gap="2" align="center" data-pick-all>
+          <Text size="1" color="gray">Bilder:</Text>
+          <ActionButton size="1" variant="ghost" onClick={() => void setAll(false)}>Alle anwählen</ActionButton>
+          <ActionButton size="1" variant="ghost" onClick={() => void setAll(true)}>Alle abwählen</ActionButton>
+        </Flex>
+      )}
       <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} onDescribe={(nr) => describe.start([nr])} describeBusy={describe.busy} describeReady={describe.info?.ready ?? false} />
       {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
   );
 }
 
-/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß darunter. */
+/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß. Die große Ansicht hängt am Seitenende (Portal,
+ *  fixed), damit sie vor allen Zeilen und Karten liegt; sie sitzt unter dem Bild, am unteren Rand darüber. */
 function Thumb({ src, alt, dim }: { src: string; alt: string; dim: boolean }) {
-  const [hover, setHover] = useState(false);
+  const [at, setAt] = useState<{ left: number; top: number } | null>(null);
+  const show = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    const h = Math.min(560, window.innerWidth * 0.8) * 0.5625 + 8; // etwa 16:9
+    const below = r.bottom + h < window.innerHeight;
+    setAt({ left: Math.max(8, Math.min(r.left, window.innerWidth - 568)), top: below ? r.bottom + 4 : Math.max(8, r.top - h) });
+  };
   return (
-    <span style={{ position: 'relative', display: 'inline-block', lineHeight: 0 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <span style={{ display: 'inline-block', lineHeight: 0 }} onMouseEnter={(ev) => show(ev.currentTarget)} onMouseLeave={() => setAt(null)}>
       <img src={src} alt={alt} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: dim ? 0.3 : 1 }} />
-      {hover && (
-        <img src={src} alt="" data-preview style={{ position: 'absolute', left: 0, top: '100%', marginTop: 4, width: 560, maxWidth: '80vw', zIndex: 50,
-          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />
+      {at && createPortal(
+        <img src={src} alt="" data-preview style={{ position: 'fixed', left: at.left, top: at.top, width: 560, maxWidth: '80vw', zIndex: 10000,
+          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />,
+        document.body,
       )}
     </span>
   );
@@ -154,7 +179,7 @@ function Entries({ id, timeline, onSeek, onSkipFrame, onDescribe, describeBusy, 
         const pick = !!img && !!e.nr; // Zeile mit Bild: Klick schaltet den Haken, die Zeit springt im Player
         return (
           <Flex key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" align="center" gap="1">
-          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1 }}
+          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1, margin: 0 }}
             onClick={() => (pick ? onSkipFrame(e.nr!, !e.skip) : onSeek(e.videoMs))}
             title={pick ? 'Klick wählt das Bild ab oder an' : 'Im Player hierhin springen'}>
             <Flex gap="3" align="center">
