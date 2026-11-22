@@ -36,7 +36,12 @@ const (
 // runHeadless läuft bis Strg+C oder SIGTERM: App wie im Fenster (MCP-Server, Log), dazu die Oberflächen-API auf
 // 127.0.0.1:<K3C_STUDIO_UI_API_PORT> (die Oberfläche liefert Vite).
 func runHeadless(root string, port int) error {
-	uiPort, err := uikit.ResolvePort(envUIPort, os.Getenv(envUIPort), defaultUIPort)
+	// Ohne eigenen Wert folgt der UI-Port dem MCP-Port (Versatz 10, 20 … der Worktree-Dienste): 5191 → 8203.
+	uiDefault := defaultUIPort
+	if port > 0 {
+		uiDefault += port - mcpsrv.DefaultPort
+	}
+	uiPort, err := uikit.ResolvePort(envUIPort, os.Getenv(envUIPort), uiDefault)
 	if err != nil {
 		return err
 	}
