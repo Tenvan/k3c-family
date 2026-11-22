@@ -32,6 +32,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | erledigt |
 | SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | geplant |
 | SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | erledigt |
+| AU1 | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | geplant |
 
 ## Nicht-Ziele
 
