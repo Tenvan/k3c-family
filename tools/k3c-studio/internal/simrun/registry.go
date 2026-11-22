@@ -16,6 +16,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // MaxPerRoot ist die Zahl gleichzeitiger Läufe je Checkout, gleich für alle Modi.
@@ -282,9 +284,9 @@ func (g *Registry) Finish(run *Run, state, verdict string, lines []string, dir s
 	text := "# Testlauf " + run.id + "\n\n" + run.info().Head(time.Now()) + "\n\n- " + strings.Join(run.lines, "\n- ") + "\n"
 	g.mu.Unlock()
 	full := filepath.Join(run.root, dir)
-	err := os.MkdirAll(full, 0o755)
+	err := balance.MkdirAll(run.root, full)
 	if err == nil {
-		err = os.WriteFile(filepath.Join(full, "simtest.md"), []byte(text), 0o644)
+		err = balance.WriteFile(run.root, filepath.Join(full, "simtest.md"), []byte(text))
 	}
 	if err != nil {
 		g.log.Error("❌ testlauf-bericht nicht geschrieben", "ns", "simtest", "id", run.id, "error", err.Error())

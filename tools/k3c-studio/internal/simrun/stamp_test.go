@@ -103,7 +103,11 @@ func TestAlterBerichtOhneAuftrag(t *testing.T) {
 
 // Stempeln: ein schon gestempelter Bericht bleibt, ein leeres Objekt bekommt die Felder, Kaputtes wird abgelehnt.
 func TestStempel(t *testing.T) {
-	dir := t.TempDir()
+	root := t.TempDir()
+	dir := filepath.Join(root, "reports") // der Wächter erlaubt Laufausgaben nur unter reports/ (WZ63.7)
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	write := func(name, body string) string {
 		p := filepath.Join(dir, name)
 		if err := os.WriteFile(p, []byte(body), 0o644); err != nil {
@@ -113,7 +117,7 @@ func TestStempel(t *testing.T) {
 	}
 	st := Stamp{Label: "x", RunID: "run-1", Spec: &Spec{Seeds: 1}}
 	empty := write("leer.json", "{}")
-	if err := stamp(empty, st); err != nil {
+	if err := stamp(root, empty, st); err != nil {
 		t.Fatal(err)
 	}
 	raw, _ := os.ReadFile(empty)
@@ -121,14 +125,14 @@ func TestStempel(t *testing.T) {
 	if err := json.Unmarshal(raw, &back); err != nil || back.RunID != "run-1" || back.Spec.Seeds != 1 {
 		t.Errorf("leeres Objekt: %s %v", raw, err)
 	}
-	if err := stamp(empty, Stamp{Label: "y", RunID: "run-2"}); err != nil {
+	if err := stamp(root, empty, Stamp{Label: "y", RunID: "run-2"}); err != nil {
 		t.Fatal(err)
 	}
 	if again, _ := os.ReadFile(empty); !bytes.Equal(again, raw) {
 		t.Errorf("zweiter Stempel änderte den Bericht:\n%s", again)
 	}
 	for _, bad := range []string{"[1]", "kaputt", ""} {
-		if err := stamp(write("bad.json", bad), st); err == nil {
+		if err := stamp(root, write("bad.json", bad), st); err == nil {
 			t.Errorf("%q gestempelt", bad)
 		}
 	}

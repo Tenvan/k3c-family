@@ -180,6 +180,13 @@ Kriterien AC-01 Sim und AC-02 Balance eines Abnahme-Tickets heißen so lange `ve
 lässt die Tests der Sim-, Balance- und Lasttest-Pakete aus (`tools/checkdiff/steps.go` › `simDirs`; `go vet` und Lint bleiben).
 Gen und Race bleiben wie unten beschrieben.
 
+**Schreibschutz des Balancings (Beschluss 🧑 2026-11-22, WZ63.7):** Die Balancing-Tools liegen im MCP-Server
+`k3c-studio` (`mcp__k3c-studio__sim_test` usw., seit WZ63.5). Sie ändern Quelldateien nur unter `data/worlds/` und
+schreiben Laufausgaben nur unter `reports/`; der Wächter im Studio (`balance.Guard`, `mcpkit.WriteGuard`) lehnt jeden
+anderen Pfad ab. Braucht das Balancing Änderungen an Code oder anderen Daten (`data/*.json` außer Welten, `engine/`,
+`rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf die Freigabe von 🧑; nie selbst ändern, auch
+nicht bei automatischem Balancing.
+
 Lange Läufe gehören nicht in den Abschluss. **Sessions, Sprints und Projekte schließen ohne** Sim-, Balance- und
 Gen-Läufe ab; auch `task check:diff` fährt sie nicht (kein `gen:paper`, kein Grafik-Golden, kein `sim_test`, kein
 Balancing, kein `check:race`; Vitest lässt dort die Tests aus, die gerenderte Papierschnitt-PNGs brauchen).

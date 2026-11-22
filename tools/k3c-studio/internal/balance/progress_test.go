@@ -192,7 +192,11 @@ func TestKeinBlockerBeiSieg(t *testing.T) {
 
 // B-648/AC-05: Pfeile gegen den letzten Lauf gleicher Konfiguration; result.json hat die Felder für Agenten.
 func TestVergleichMitLetztemLaufUndResultJSON(t *testing.T) {
-	dir := t.TempDir()
+	root := t.TempDir()
+	dir := filepath.Join(root, "reports", "r") // der Wächter erlaubt Laufausgaben nur unter reports/ (WZ63.7)
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	mk := func(stem string, day int) Summary {
 		sc := Scenario{Players: 1, Bot: "wirtschaft", Days: 40, World: "standard", Helps: "voll"}
 		res := islandResult("k3c-dev", []int{1, 6}, map[string]int{"goblinLeader": day}, nil)
@@ -224,7 +228,7 @@ func TestVergleichMitLetztemLaufUndResultJSON(t *testing.T) {
 	}
 	in := BuildInsights(cur, nil, h, Meta{Run: "r"})
 	in.Previous = name
-	if err := writeResult(filepath.Join(dir, "balance-20261002-100000"), in); err != nil {
+	if err := writeResult(root, filepath.Join(dir, "balance-20261002-100000"), in); err != nil {
 		t.Fatal(err)
 	}
 	raw, err := os.ReadFile(filepath.Join(dir, "result.json"))

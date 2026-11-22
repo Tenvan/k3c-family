@@ -27,17 +27,17 @@ func WriteReports(stem string, s Summary, base *Summary, baseName, root string) 
 		markArrows(in.Progress, prev.Progress)
 		in.Previous = name
 	}
-	if err := writeResult(stem, in); err != nil {
+	if err := writeResult(root, stem, in); err != nil {
 		return err
 	}
-	if err := os.WriteFile(stem+".md", []byte(s.MarkdownWith(base, &in)), 0o644); err != nil {
+	if err := WriteFile(root, stem+".md", []byte(s.MarkdownWith(base, &in))); err != nil {
 		return err
 	}
 	page, err := in.HTML(root)
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(stem+".html", page, 0o644)
+	return WriteFile(root, stem+".html", page)
 }
 
 // Reevaluate liest einen balance-*.json und schreibt .md und .html daneben neu; Ergebnis ist der Pfad der HTML-Datei.

@@ -412,6 +412,7 @@ Entschieden von Claude (Delegation 🧑, 2026-10-19), Empfehlung 5 der Session W
 | Das Spielpaket (`task build`/`buildall` → `dist/k3c-game/`) enthält alle Spieldaten samt der lokalen Welten als `data/` neben der EXE; das Spiel liest diesen Ordner ohne `K3C_DATA_DIR` (`data/embed.go`). Quelle: 🧑 2026-11-15. | Das Paket ist vollständig lauffähig und lässt sich weitergeben. | `native/Taskfile.yml` › `game:dist` |
 | Eine weitere Welt einchecken entscheidet 🧑; dann bekommt `.gitignore` eine eigene Ausnahme `!data/worlds/<id>.json`, und die Welt ist eine REG-Änderung mit Begründung im Commit. | Bewusste Entscheidung statt Nebeneffekt. | `.gitignore` |
 | Eine geänderte Standard-Welt ist eine REG-Änderung durch 🧑 (`task go:golden` nur bei gewollter Änderung), wie die Planung (`geplante-chunks.md` § 6). Quelle: B-488 › Regeln. | Golden ändert sich nur gewollt. | `data/worlds/standard.json` |
+| Das Balancing des Studios ändert als Quelldateien nur Welt-Dateien (`data/worlds/*.json`), Ausgaben nur unter `reports/`; der Wächter im Studio lehnt alles andere ab. Braucht es Änderungen an Code oder anderen Daten, zeigt Claude zuerst den Plan im Chat und wartet auf die Freigabe von 🧑, auch bei automatischem Balancing. Quelle: 🧑 2026-11-22, WZ63.7. | Balancing justiert Welten; Regeln und Code ändern sich nur bewusst. | `tools/k3c-studio/internal/balance/writeguard.go` |
 
 ## 8. Begriffe im Code
 

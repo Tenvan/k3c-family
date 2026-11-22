@@ -108,6 +108,16 @@ Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist 
 - **Sim-Sperre (B-788):** `sim_test start` und `sim_run` lehnen ab, solange Simulationen und Balancing gesperrt sind
   (Beschluss 🧑 2026-11-11). Nur 🧑 hebt die Sperre auf: Studio mit `K3C_SIM_ENTSPERRT=1` starten.
 
+### Schreibschutz
+
+- **Balancing schreibt nur Welten-Dateien** (Beschluss 🧑 2026-11-22, WZ63.7): Quelldateien ändert das Balancing nur unter
+  `data/worlds/`, Laufausgaben (Berichte, Baselines, Bewertungen, Auswertung) entstehen nur unter `reports/`. Jeder andere
+  Schreibversuch (übrige `data/*.json`, `engine/`, `rust/`, `tools/`, `docs/`, `cmd/`, `public/`, `saves/`) lehnt der
+  Wächter im Studio ab.
+- **Plan im Chat vor Code-Änderung:** Braucht das Balancing Änderungen an Code oder anderen Daten (`data/*.json` außer
+  Welten, `engine/`, `rust/`, `tools/`), zuerst den Plan im Chat zeigen und die Freigabe von 🧑 abwarten, nie selbst
+  ändern. Das gilt auch für automatisches Balancing.
+
 ### Spieldaten
 
 - `reports_list` und `report_read` statt `reports/*.json` zu öffnen (Berichte und `sim_test`-Läufe).

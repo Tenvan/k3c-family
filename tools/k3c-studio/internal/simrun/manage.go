@@ -9,6 +9,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
+
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // Berichte verwalten (WZ28.13, B-612): Bewertung je Bericht in reports/ratings.json, Löschen einzelner Berichte.
@@ -53,14 +55,14 @@ func saveRatings(root string, r map[string]string) error {
 	if err != nil {
 		return err
 	}
-	if err := os.MkdirAll(filepath.Dir(ratingsPath(root)), 0o755); err != nil {
+	if err := balance.MkdirAll(root, filepath.Dir(ratingsPath(root))); err != nil {
 		return err
 	}
 	tmp := ratingsPath(root) + ".tmp"
-	if err := os.WriteFile(tmp, append(raw, '\n'), 0o644); err != nil {
+	if err := balance.WriteFile(root, tmp, append(raw, '\n')); err != nil {
 		return err
 	}
-	return os.Rename(tmp, ratingsPath(root))
+	return balance.Rename(root, tmp, ratingsPath(root))
 }
 
 // RateReport setzt die Bewertung eines vorhandenen Berichts; leer löscht sie.
@@ -130,14 +132,14 @@ func DeleteReports(root string, rels []string) error {
 // removeReport löscht .json und .md eines geprüften Berichts und den Lauf-Ordner, wenn er danach leer ist.
 func removeReport(root, key string) error {
 	path, _ := ReportPath(root, key)
-	if err := os.Remove(path); err != nil {
+	if err := balance.Remove(root, path); err != nil {
 		return err
 	}
-	if err := os.Remove(strings.TrimSuffix(path, ".json") + ".md"); err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err := balance.Remove(root, strings.TrimSuffix(path, ".json")+".md"); err != nil && !errors.Is(err, os.ErrNotExist) {
 		return err
 	}
 	if dir := filepath.Dir(path); filepath.Base(dir) != "reports" {
-		_ = os.Remove(dir) // nur ein leerer Ordner lässt sich entfernen
+		_ = balance.Remove(root, dir) // nur ein leerer Ordner lässt sich entfernen
 	}
 	return nil
 }

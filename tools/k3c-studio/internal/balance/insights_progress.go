@@ -201,10 +201,10 @@ func resultFile(in Insights, report string) ResultFile {
 }
 
 // writeResult schreibt result.json in den Ordner des Berichts.
-func writeResult(stem string, in Insights) error {
+func writeResult(root, stem string, in Insights) error {
 	b, err := json.MarshalIndent(resultFile(in, filepath.Base(stem)+".html"), "", "  ")
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(filepath.Join(filepath.Dir(stem), "result.json"), append(b, '\n'), 0o644)
+	return WriteFile(root, filepath.Join(filepath.Dir(stem), "result.json"), append(b, '\n'))
 }

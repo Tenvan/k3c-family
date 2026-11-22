@@ -77,12 +77,12 @@ Frontend laufen nur bei geänderten Quellen (`sources`/`generates`); `--force` e
 Spielserver, Lasttest, TUI und Windows-Starter sind entfernt (B-887, Entscheidung B-850): kein Online-Spiel, das Spiel ist nativ.
 Berichte unter `reports/` liest `reports_list`/`report_read`.
 
-**Zwei MCP-Server:** `k3c-workbench` (5180) für Entwicklung, Planung, Prüfläufe, Dienste, Logs und Balancing/Sim; `k3c-studio` (5181) für Welten, Inseln, Chunks, Hub, Assets und `level_generate` (`mcp__k3c-studio__world_*|hub_*|assets_*`, EXE `bin/k3c-studio.exe`); kein Tool steht in beiden.
+**Zwei MCP-Server:** `k3c-workbench` (5180) für Entwicklung, Planung, Prüfläufe, Dienste und Logs; `k3c-studio` (5181) für Welten, Inseln, Chunks, Hub, Assets, `level_generate` und seit WZ63.5 Balancing/Sim mit Berichten und Spielständen (`mcp__k3c-studio__world_*|hub_*|assets_*|sim_*|replay_run|reports_list|report_read|saves_list`, EXE `bin/k3c-studio.exe`); kein Tool steht in beiden.
 
 **k3c-workbench zuerst:** Sind die MCP-Tools `mcp__k3c-workbench__*` verbunden, gehen Prüfungen über `check_run` (statt `task check`,
 `task test`, `go test` …), Dienste über `svc_start`/`svc_stop`, Logs über
-`logs_errors`/`logs_query`, Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
-`sim_run` (Level: `level_generate` im Studio). **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest; **Ausnahme: Second Worker, 🧑 2026-11-18**). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Stabilität;
+`logs_errors`/`logs_query`; Berichte und Spielstände über `reports_list`/`report_read`/`saves_list`, Balancing über
+`sim_run` und Level über `level_generate` gehen an das Studio (`mcp__k3c-studio__*`). **Simulationen und Balancing sind bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11: kein `sim_test`, `sim_run`, Balancing, Lasttest; **Ausnahme: Second Worker, 🧑 2026-11-18**). Danach gilt wieder: **Jeder autonome Testlauf** (Balancing, Stabilität;
 offline) startet und läuft **nur über `sim_test`** (`start`, `status`, `stop`, `list`),
 nie über `task balance` oder Binaries in der Shell (B-348). Die Shell-Befehle unten nur, wenn k3c-workbench nicht läuft. Fehlen die MCP-Tools, erst prüfen, ob die Workbench läuft, und sie sonst starten (`bin/k3c-workbench.exe`), dann den MCP neu verbinden (`docs/arbeitsweise.md` › Ablage).
 
@@ -145,6 +145,10 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   Lasttest, auch nicht am Feature oder im Abnahme-Ticket. **Gen nur am Feature (B-742):** Sessions, Sprints und Projekte
   schließen ohne Gen-Läufe ab (`gen:paper` samt Grafik-Golden, `check:race`); zum Abschluss eines Sprints oder Projekts gibt
   es dafür **genau ein Abnahme-Ticket** (`docs/arbeitsweise.md` › Sim, Balance und Gen).
+  **Balancing schreibt nur Welten-Dateien (🧑 2026-11-22):** Das Balancing des Studios ändert Quelldateien nur unter
+  `data/worlds/` (Ausgaben unter `reports/`, technisch erzwungen, WZ63.7); braucht es Änderungen an Code oder anderen
+  Daten (`data/*.json`, `engine/`, `rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf Ralfs
+  Freigabe, auch bei automatischem Balancing.
 - **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien und Worktrees liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht.
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.

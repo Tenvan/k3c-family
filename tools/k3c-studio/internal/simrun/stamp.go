@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"slices"
 	"time"
+
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // Auftrag im Bericht (B-662): Nach dem Rechnen trägt die Workbench Label, Auftrag und Lauf-ID in den Bericht
@@ -50,7 +52,7 @@ func (g *Registry) readStamped(run *Run, dir string, spec Spec) (string, []strin
 		pattern = "tuning-*.json"
 	}
 	if file, err := newestFile(full, pattern, run.Started()); err == nil {
-		if err := stamp(file, Stamp{Label: run.label, RunID: run.id, Spec: &spec}); err != nil {
+		if err := stamp(run.root, file, Stamp{Label: run.label, RunID: run.id, Spec: &spec}); err != nil {
 			g.log.Error("❌ auftrag nicht im bericht", "ns", "simtest", "id", run.id, "error", err.Error())
 		}
 	}
@@ -58,7 +60,7 @@ func (g *Registry) readStamped(run *Run, dir string, spec Spec) (string, []strin
 }
 
 // stamp schreibt st an den Anfang des JSON-Objekts in file; ein schon gestempelter Bericht bleibt, wie er ist.
-func stamp(file string, st Stamp) error {
+func stamp(root, file string, st Stamp) error {
 	raw, err := os.ReadFile(file)
 	if err != nil {
 		return err
@@ -86,23 +88,23 @@ func stamp(file string, st Stamp) error {
 	}
 	out.WriteByte('\n')
 	tmp := file + ".tmp"
-	if err := os.WriteFile(tmp, out.Bytes(), 0o644); err != nil {
+	if err := balance.WriteFile(root, tmp, out.Bytes()); err != nil {
 		return err
 	}
-	return replaceFile(tmp, file)
+	return replaceFile(root, tmp, file)
 }
 
 // replaceFile ersetzt file durch tmp. Unter Windows scheitert das Umbenennen, solange ein anderer Leser (z. B. die
 // Berichtsliste nach balance:reports) die Datei offen hat; deshalb einige kurze Wiederholungen. Bleibt es dabei,
 // fällt tmp weg und der Bericht bleibt unverändert (nur ohne Stempel).
-func replaceFile(tmp, file string) error {
+func replaceFile(root, tmp, file string) error {
 	var err error
 	for range 5 {
-		if err = os.Rename(tmp, file); err == nil {
+		if err = balance.Rename(root, tmp, file); err == nil {
 			return nil
 		}
 		time.Sleep(20 * time.Millisecond)
 	}
-	_ = os.Remove(tmp)
+	_ = balance.Remove(root, tmp)
 	return err
 }

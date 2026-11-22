@@ -81,18 +81,18 @@ func SaveBaseline(root, name, reportPath string, spec json.RawMessage, open bool
 	if err != nil {
 		return BaselineInfo{}, err
 	}
-	if err := os.MkdirAll(base, 0o755); err != nil {
+	if err := MkdirAll(root, base); err != nil {
 		return BaselineInfo{}, err
 	}
-	if err := os.Mkdir(dir, 0o755); err != nil { // atomar: genau ein Aufruf legt den Namen an
+	if err := Mkdir(root, dir); err != nil { // atomar: genau ein Aufruf legt den Namen an
 		if errors.Is(err, os.ErrExist) {
 			return BaselineInfo{}, fmt.Errorf("baseline %s gibt es schon (%s/%s); anderer Name oder Ordner von Hand löschen", name, BaselineDir, name)
 		}
 		return BaselineInfo{}, err
 	}
 	// run.json zuletzt: ein Ordner ohne run.json ist ein Fehlschlag und wird entfernt
-	if err := cmp.Or(os.WriteFile(filepath.Join(dir, "balance.json"), raw, 0o644), os.WriteFile(filepath.Join(dir, "run.json"), meta, 0o644)); err != nil {
-		_ = os.RemoveAll(dir)
+	if err := cmp.Or(WriteFile(root, filepath.Join(dir, "balance.json"), raw), WriteFile(root, filepath.Join(dir, "run.json"), meta)); err != nil {
+		_ = RemoveAll(root, dir)
 		return BaselineInfo{}, err
 	}
 	return info, nil
