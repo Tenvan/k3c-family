@@ -158,7 +158,7 @@ func TestCheckFehlerfaelle(t *testing.T) {
 		t.Fatalf("bereit erwartet: %+v", c)
 	}
 	tr.LookPath = func(string) (string, error) { return "", errors.New("nein") }
-	if c := tr.Check(); c.Ready || !strings.Contains(c.Message, "ffmpeg nicht im PATH") {
+	if c := tr.Check(); c.Ready || !strings.Contains(c.Message, "ffmpeg nicht gefunden") {
 		t.Errorf("ohne ffmpeg: %+v", c)
 	}
 	tr.LookPath = func(string) (string, error) { return "ffmpeg", nil }

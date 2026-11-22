@@ -4,7 +4,6 @@ import (
 	"errors"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strconv"
 	"sync"
@@ -95,8 +94,8 @@ func (a *App) recorder() *playtest.Recorder {
 	return act.(*playtest.Recorder)
 }
 
-// PlaytestDevices nennt die Mikrofone (ffmpeg -list_devices) und ob ffmpeg im PATH liegt.
-func (a *App) PlaytestDevices() playtest.Devices { return playtest.ListDevices(exec.LookPath) }
+// PlaytestDevices nennt die Mikrofone (ffmpeg -list_devices), die aufnehmbaren Monitore (Probebild) und ob ffmpeg gefunden wird.
+func (a *App) PlaytestDevices() playtest.Devices { return playtest.ListDevices(playtest.FindFFmpeg) }
 
 // PlaytestStart nimmt Mikro und Bild auf und startet das Spiel mit --playtest.
 func (a *App) PlaytestStart(o playtest.Options) (playtest.Status, error) {

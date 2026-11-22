@@ -32,10 +32,20 @@ export interface PlaytestPlan {
   total: number;
 }
 
-/** Mikrofone aus ffmpeg (DirectShow); `message` nennt den Grund, wenn ffmpeg fehlt. */
+/** Aufnehmbarer Bildschirm (ddagrab `output_idx`), mit einem Probebild geprüft. */
+export interface PlaytestMonitor {
+  index: number;
+  width: number;
+  height: number;
+  label: string;
+}
+
+/** Geräte aus ffmpeg: Mikrofone (DirectShow) und geprüfte Monitore; `message` nennt den Grund, wenn ffmpeg fehlt. */
 export interface PlaytestDevices {
   mics: string[];
+  monitors: PlaytestMonitor[];
   ffmpeg: boolean;
+  ffmpegPath: string;
   message: string;
 }
 
