@@ -92,7 +92,8 @@ export function mockPlaytest(): PlaytestApi {
     },
     timeline: async (id) => {
       const s = find(id);
-      return { id, captureMs: s.startMs, hasTranscript: s.stage === 'transkribiert' || s.stage === 'ausgewertet', entries: entries(s) };
+      return { id, captureMs: s.startMs, hasTranscript: s.stage === 'transkribiert' || s.stage === 'ausgewertet', entries: entries(s),
+        stats: s.stage === 'ausgewertet' ? { totalMs: 66000, transcribeMs: 60000, framesMs: 6000, audioMs: 150000, segments: 35, words: 210, frames: 8, secPerMin: 26.4, factor: 0.44 } : undefined };
     },
     devices: async () => ({
       mics: ['Raummikro (USB)', 'Mikrofon (Realtek)'],

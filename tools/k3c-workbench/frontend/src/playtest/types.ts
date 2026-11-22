@@ -119,10 +119,24 @@ export interface PlaytestEntry {
   frame?: string;
 }
 
+/** Dauer der letzten Auswertung (transcript.json › stats). */
+export interface EvalStats {
+  totalMs: number;
+  transcribeMs: number;
+  framesMs: number;
+  audioMs: number;
+  segments: number;
+  words: number;
+  frames: number;
+  secPerMin: number;
+  factor: number;
+}
+
 export interface PlaytestTimeline {
   id: string;
   captureMs: number;
   hasTranscript: boolean;
+  stats?: EvalStats;
   entries: PlaytestEntry[];
 }
 

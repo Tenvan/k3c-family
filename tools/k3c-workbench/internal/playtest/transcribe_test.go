@@ -216,6 +216,9 @@ func TestAuswertungTranskriptUndBilder(t *testing.T) {
 	if err != nil || !tl.HasTranscript || len(tl.Entries) != 4 {
 		t.Fatalf("Zeitleiste: %+v %v", tl, err)
 	}
+	if tl.Stats == nil || tl.Stats.Segments != 2 || tl.Stats.Frames != 2 || tl.Stats.TotalMs < 0 {
+		t.Errorf("Statistik der Auswertung: %+v", tl.Stats)
+	}
 	want := []struct {
 		kind string
 		vms  int64

@@ -3,6 +3,7 @@ import { ActionButton, CardButton, Flex, Heading, SelectField, StatusBadge, Text
 import { NoticeCard } from '@webkit/molecules';
 import { FindingsPanel } from './FindingsPanel';
 import { frameUrl, playtestApi } from './api';
+import { statsLines } from './format';
 import { clock } from './RecordBar';
 import { loadText, savePref } from '../lib/prefs';
 import type { PlaytestCapability, PlaytestJob, PlaytestModel, PlaytestSession, PlaytestTimeline } from './types';
@@ -104,6 +105,9 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       {mine && !busy && job.error && <NoticeCard title="Auswertung" tone="error">{job.error}</NoticeCard>}
       {mine && !busy && !job.error && job.message && <Text size="2" color="gray">{job.message}</Text>}
       {error && <NoticeCard title="Auswertung" tone="error">{error}</NoticeCard>}
+      {timeline?.stats && (
+        <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
+      )}
       <Entries id={s.id} timeline={timeline} onSeek={onSeek} />
       {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
@@ -114,20 +118,20 @@ function Entries({ id, timeline, onSeek }: { id: string; timeline: PlaytestTimel
   if (!timeline) return null;
   if (timeline.entries.length === 0) return <Text size="2" color="gray">Noch kein Transkript und keine Marker.</Text>;
   return (
-    <Flex direction="column" gap="1" role="list" aria-label="Zeitleiste">
+    <Flex direction="column" role="list" aria-label="Zeitleiste">
       {!timeline.hasTranscript && <Text size="2" color="gray">Noch kein Transkript, nur Marker.</Text>}
       {timeline.entries.map((e) => {
         const img = e.frame && e.nr ? frameUrl(id, e.nr) : null;
         return (
           <CardButton key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" data-entry={e.kind} variant="ghost"
             onClick={() => onSeek(e.videoMs)} title="Im Player hierhin springen">
-            <Flex gap="3" align="start">
+            <Flex gap="3" align="center">
               <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
-              <Flex direction="column" gap="1" align="start">
+              <Flex gap="2" align="center" wrap="wrap">
                 {e.kind === 'marker'
                   ? <StatusBadge tone="warn">{e.text}</StatusBadge>
                   : <Text size="2">{e.text}</Text>}
-                {img && <img src={img} alt={`Bild zu Marker ${e.nr}`} loading="lazy" style={{ maxWidth: 240, borderRadius: 4 }} />}
+                {img && <img src={img} alt={`Bild zu Marker ${e.nr}`} loading="lazy" style={{ height: 44, borderRadius: 3 }} />}
               </Flex>
             </Flex>
           </CardButton>

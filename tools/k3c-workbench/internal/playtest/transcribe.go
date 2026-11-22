@@ -102,6 +102,7 @@ type Transcript struct {
 	Language     string    `json:"language"`
 	Model        string    `json:"model"`
 	Segments     []Segment `json:"segments"`
+	Stats        *EvalStats    `json:"stats,omitempty"` // Dauer der letzten Auswertung (nach dem Lauf eingetragen)
 }
 
 // whisperQueue ist die Stückgröße in Sekunden, die der Filter am Stück erkennt. Der Standard (3 s) zerhackt Sätze und lässt

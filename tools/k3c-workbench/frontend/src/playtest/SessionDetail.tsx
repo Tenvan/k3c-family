@@ -1,6 +1,5 @@
 import { useRef } from 'react';
 import { ActionButton, Flex, Heading, Text } from '@webkit/atoms';
-import { DataList } from '@webkit/molecules';
 import { Table } from '@webkit/organisms';
 import { formatBytes } from '../lib/format';
 import { mediaUrl } from './api';
@@ -63,13 +62,9 @@ export function SessionDetail({ session: s, onClean, onChanged, refresh = 0 }: P
           <audio ref={audioEl} controls preload="metadata" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
         </Flex>
       )}
-      <DataList.Root size="2">
-        <Item label="Datum">{germanDate(s.date)}</Item>
-        <Item label="Dauer">{sessionLength(s.durationMs)}</Item>
-        <Item label="Marker">{s.markers}</Item>
-        <Item label="Größe">{formatBytes(s.size)}</Item>
-        <Item label="Stand">{s.stage}</Item>
-      </DataList.Root>
+      <Text size="2" color="gray" data-facts>
+        {[germanDate(s.date), sessionLength(s.durationMs), `${s.markers} Marker`, formatBytes(s.size), s.stage].join(' · ')}
+      </Text>
       <TimelinePanel session={s} onSeek={seek} onDone={onChanged} refresh={refresh} />
       <Table.Root size="1" variant="surface">
         <Table.Header>
@@ -91,11 +86,3 @@ export function SessionDetail({ session: s, onClean, onChanged, refresh = 0 }: P
   );
 }
 
-function Item({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <DataList.Item>
-      <DataList.Label minWidth="88px">{label}</DataList.Label>
-      <DataList.Value>{children}</DataList.Value>
-    </DataList.Item>
-  );
-}

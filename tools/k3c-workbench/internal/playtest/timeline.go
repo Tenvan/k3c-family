@@ -47,6 +47,7 @@ type Timeline struct {
 	ID            string  `json:"id"`
 	CaptureMs     int64   `json:"captureMs"` // Unix-ms bei 0 s Videozeit
 	HasTranscript bool    `json:"hasTranscript"`
+	Stats         *EvalStats  `json:"stats,omitempty"` // Dauer der letzten Auswertung
 	Entries       []Entry `json:"entries"`
 }
 
@@ -101,6 +102,7 @@ func (s *Store) Timeline(id string) (Timeline, error) {
 	var tr Transcript
 	if raw, err := os.ReadFile(filepath.Join(dir, fileTranscript)); err == nil && json.Unmarshal(raw, &tr) == nil {
 		tl.HasTranscript = true
+		tl.Stats = tr.Stats
 		for _, seg := range tr.Segments {
 			tl.Entries = append(tl.Entries, Entry{Kind: "sprache", Ms: seg.StartMs, EndMs: seg.EndMs, VideoMs: seg.StartMs - capture, Text: seg.Text})
 		}
