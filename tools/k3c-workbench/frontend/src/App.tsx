@@ -6,6 +6,7 @@ import { GitPage } from './git/GitPage';
 import { McpPage } from './mcp/McpPage';
 import { MonitoringPage } from './monitoring/MonitoringPage';
 import { PlanningPage } from './planning/PlanningPage';
+import { PlaytestPage } from './playtest/PlaytestPage';
 import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
 import { Notices } from './ui/organisms/Notices';
@@ -68,6 +69,9 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="monitoring" {...keep('monitoring')}>
         <MonitoringPage active={shown('monitoring')} />
+      </Tabs.Content>
+      <Tabs.Content value="spieltest">
+        <PlaytestPage />
       </Tabs.Content>
     </AppFrame>
     </TicketProvider>

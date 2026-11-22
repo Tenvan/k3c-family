@@ -68,9 +68,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WZ64.1 | `WZ64.1-seite-ablage-aufraeumen.md` | Umsetzung | autonom | offen |
-| WZ64.2 | `WZ64.2-aufnahme-ffmpeg-spielstart.md` | Umsetzung | autonom | offen |
-| WZ64.3 | `WZ64.3-review.md` | Review | autonom | offen |
+| WZ64.1 | `WZ64.1-seite-ablage-aufraeumen.md` | Umsetzung | autonom | fertig |
+| WZ64.2 | `WZ64.2-aufnahme-ffmpeg-spielstart.md` | Umsetzung | autonom | fertig |
+| WZ64.3 | `WZ64.3-review.md` | Review | autonom | fertig |
 
 - WZ64.1 Seite, Ablage, Aufräumen (B-1218, AC-01)
 - WZ64.2 Aufnahme mit ffmpeg und Spielstart (B-1219, AC-02; braucht B-1220 aus WZ66)
@@ -78,6 +78,6 @@ keine
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-22: AC-01 (WZ64.1) und AC-02 (WZ64.2) laut Session-Ergebnissen, AC-03 (WZ64.3) geprüft: go vet, go test, tsc, Vitest 324, projectRules und atomicDesign grün; golangci-lint fehlt, check:diff nicht vollständig.
+Behoben: Überbleibsel-Sperre nach Workbench-Absturz (session.json laeuft), Monitor-Index-Prüfung.
+Offen: Aufnahme nicht im Header, Kill beim Stopp. Keine neuen Tickets; Abnahme-Ticket der Kette ist B-1225 (WZ65), dort auch die Probe am Gerät.

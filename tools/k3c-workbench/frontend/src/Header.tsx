@@ -6,11 +6,11 @@ import { McpBadge, SwitchField } from '@webkit/molecules';
 
 /** Seiten der Workbench (nur Development). Welten-Editor, Assets und Gebäude-Planer sind seit WZ63.3 im Studio
  *  (k3c-studio), die Balancing-Seite seit WZ63.6. */
-export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring'] as const;
+export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring', 'spieltest'] as const;
 export type Page = (typeof PAGES)[number];
 
 export const LABELS: Record<Page, string> = {
-  dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring',
+  dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring', spieltest: 'Spieltest',
 };
 
 /** Gewählte Seite, gemerkt unter `app.page`; `tabs` sind die Reiter für AppFrame. */
