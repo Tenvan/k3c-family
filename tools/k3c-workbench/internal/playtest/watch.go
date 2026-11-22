@@ -79,8 +79,9 @@ func idleCount(n int, delta int64) int {
 }
 
 func (s Stats) clone() Stats {
-	s.VoiceRate = append([]int64(nil), s.VoiceRate...)
-	s.VideoRate = append([]int64(nil), s.VideoRate...)
+	// nie nil: sonst steht im JSON `null`, und die Oberfläche bricht beim Start der Aufnahme ab (schwarzes Fenster)
+	s.VoiceRate = append([]int64{}, s.VoiceRate...)
+	s.VideoRate = append([]int64{}, s.VideoRate...)
 	return s
 }
 

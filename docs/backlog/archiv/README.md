@@ -922,3 +922,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1215](B-1215-standard-welt-fuenf-inseln.md) | REG | Idee | mittel | erledigt | WL2 | Die Standard-Welt besteht aus fünf Inseln mit wachsender Größe |
 | [B-1216](B-1216-welten-editor-reload-geschichte-prompts-baum.md) | DEV | Idee | mittel | erledigt | WL2 | Der Welten-Editor lädt Dateiänderungen nach, zeigt Geschichten, bietet mehr Prompts und zeigt Werte als Baum |
 | [B-1230](B-1230-spieltest-ffmpeg-suche.md) | DEV | Problem | hoch | erledigt | WZ65 | Workbench findet ffmpeg nicht, wenn der PATH des Prozesses veraltet ist |
+| [B-1232](B-1232-spieltest-encoder-waechter.md) | DEV | Problem | hoch | erledigt | WZ65 | Spieltest nimmt mit nutzbarem Encoder auf, überwacht die Aufnahme und zeigt Ton- und Bild-Rate |

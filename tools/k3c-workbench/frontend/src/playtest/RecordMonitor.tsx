@@ -9,7 +9,8 @@ export function size(bytes: number): string {
 
 const kbps = (rates: number[]) => rates.map((v, i) => ({ x: i - rates.length + 1, y: Math.round(v / 1024) }));
 
-function Chart({ name, rates, total }: { name: string; rates: number[]; total: number }) {
+function Chart({ name, rates: raw, total }: { name: string; rates: number[] | null; total: number }) {
+  const rates = raw ?? []; // vor dem ersten Messtakt kann die Liste fehlen
   const last = rates.length ? rates[rates.length - 1] : 0;
   return (
     <Flex direction="column" gap="1" flexGrow="1" style={{ minWidth: 220 }} data-chart={name}>

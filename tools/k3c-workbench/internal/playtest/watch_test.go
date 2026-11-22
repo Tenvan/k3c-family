@@ -1,10 +1,21 @@
 package playtest
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestCloneLiefertNieNilListen(t *testing.T) {
+	b, err := json.Marshal(Stats{}.clone())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(b), "null") {
+		t.Errorf("leere Stats enthalten null: %s", b)
+	}
+}
 
 func TestAdvanceWarntErstNachDemAnlauf(t *testing.T) {
 	var s Stats
