@@ -256,6 +256,25 @@ describe('Auswertung (B-1223)', () => {
     expect(video.currentTime).toBe(1);
   });
 
+  it('Klick auf die Marker-Zeile schaltet den Haken, die Zeit springt im Player, Hover zeigt das Bild groß (B-1240)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-timeline]')!;
+    const box = () => panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    act(() => (panel().querySelector('[data-entry="marker"]') as HTMLElement).click());
+    await flush();
+    expect(box().getAttribute('aria-checked')).toBe('false');
+    const video = host.querySelector('video') as HTMLVideoElement;
+    act(() => (panel().querySelector('[data-seek]') as HTMLElement).click());
+    expect(video.currentTime).toBe(5);
+    expect(box().getAttribute('aria-checked')).toBe('false'); // Zeit-Klick schaltet nicht um
+    expect(panel().querySelector('[data-preview]')).toBeNull();
+    act(() => { panel().querySelector('img[alt="Bild zu Marker 1"]')!.parentElement!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); });
+    expect(panel().querySelector('[data-preview]')).not.toBeNull();
+  });
+
   it('Marker-Bilder sind vorab markiert, ein Haken weg blendet das Bild aus, der Marker bleibt (B-1240)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());

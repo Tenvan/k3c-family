@@ -116,6 +116,20 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
   );
 }
 
+/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß darunter. */
+function Thumb({ src, alt, dim }: { src: string; alt: string; dim: boolean }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <span style={{ position: 'relative', display: 'inline-block', lineHeight: 0 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+      <img src={src} alt={alt} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: dim ? 0.3 : 1 }} />
+      {hover && (
+        <img src={src} alt="" data-preview style={{ position: 'absolute', left: 0, top: '100%', marginTop: 4, width: 560, maxWidth: '80vw', zIndex: 50,
+          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />
+      )}
+    </span>
+  );
+}
+
 function Entries({ id, timeline, onSeek, onSkipFrame }: { id: string; timeline: PlaytestTimeline | null; onSeek: (ms: number) => void; onSkipFrame: (nr: number, skip: boolean) => void }) {
   if (!timeline) return null;
   if (timeline.entries.length === 0) return <Text size="2" color="gray">Noch kein Transkript und keine Marker.</Text>;
@@ -124,17 +138,24 @@ function Entries({ id, timeline, onSeek, onSkipFrame }: { id: string; timeline: 
       {!timeline.hasTranscript && <Text size="2" color="gray">Noch kein Transkript, nur Marker.</Text>}
       {timeline.entries.map((e) => {
         const img = e.frame && e.nr ? frameUrl(id, e.nr) : null;
+        const pick = !!img && !!e.nr; // Zeile mit Bild: Klick schaltet den Haken, die Zeit springt im Player
         return (
           <Flex key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" align="center" gap="1">
           <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1 }}
-            onClick={() => onSeek(e.videoMs)} title="Im Player hierhin springen">
+            onClick={() => (pick ? onSkipFrame(e.nr!, !e.skip) : onSeek(e.videoMs))}
+            title={pick ? 'Klick wählt das Bild ab oder an' : 'Im Player hierhin springen'}>
             <Flex gap="3" align="center">
-              <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
+              {pick ? (
+                <Text size="2" color="blue" data-seek style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums', textDecoration: 'underline' }}
+                  title="Im Player hierhin springen" onClick={(ev) => { ev.stopPropagation(); onSeek(e.videoMs); }}>{clock(e.videoMs)}</Text>
+              ) : (
+                <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
+              )}
               <Flex gap="2" align="center" wrap="wrap">
                 {e.kind === 'marker'
                   ? <StatusBadge tone="warn">{e.text}</StatusBadge>
                   : <Text size="2">{e.text}</Text>}
-                {img && <img src={img} alt={`Bild zu Marker ${e.nr}`} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: e.skip ? 0.3 : 1 }} />}
+                {img && <Thumb src={img} alt={`Bild zu Marker ${e.nr}`} dim={!!e.skip} />}
               </Flex>
             </Flex>
           </CardButton>
