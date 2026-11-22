@@ -40,12 +40,11 @@
       "mcp__k3c-workbench__task_output",
       "mcp__k3c-workbench__sim_test",
       "mcp__k3c-workbench__sim_run",
-      "mcp__k3c-workbench__level_generate",
+      "mcp__k3c-studio__level_generate",
       "mcp__k3c-workbench__replay_run",
-      "mcp__k3c-workbench__assets_list",
-      "mcp__k3c-workbench__assets_get",
-      "mcp__k3c-workbench__assets_catalog",
-      "mcp__k3c-workbench__assets_hits"
+      "mcp__k3c-studio__assets_list",
+      "mcp__k3c-studio__assets_get",
+      "mcp__k3c-studio__assets_hits"
     ]
   },
   "enabledPlugins": {
