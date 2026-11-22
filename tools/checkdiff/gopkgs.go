@@ -6,15 +6,19 @@ import (
 	"strings"
 )
 
-// rootModule ist der Modulpfad des Wurzel-Moduls (go.mod: module k3c); wbModule der der Workbench (tools/k3c-workbench).
+// rootModule ist der Modulpfad des Wurzel-Moduls (go.mod: module k3c); wbModule der der Workbench (tools/k3c-workbench),
+// studioModule der des Studios (tools/k3c-studio, mit den Balancing-Paketen seit WZ63.5).
 const (
-	rootModule = "k3c"
-	wbModule   = "k3c/tools/k3c-workbench"
-	wbDir      = "tools/k3c-workbench"
+	rootModule   = "k3c"
+	wbModule     = "k3c/tools/k3c-workbench"
+	wbDir        = "tools/k3c-workbench"
+	studioModule = "k3c/tools/k3c-studio"
+	studioDir    = "tools/k3c-studio"
 )
 
-// goPkgs liefert die Pakete des Wurzel-Moduls für task check:go (dir "."), bzw. des Workbench-Moduls für
-// task k3c-workbench:test (dir wbDir): ohne die Sim-, Balance- und Lasttest-Pakete (simDirs), außer sim (CHECK_SIM=1).
+// goPkgs liefert die Pakete des Wurzel-Moduls für task check:go (dir "."), bzw. des Workbench- oder Studio-Moduls für
+// task k3c-workbench:test (dir wbDir) und k3c-studio:gotest (dir studioDir): ohne die Sim-, Balance- und
+// Lasttest-Pakete (simDirs), außer sim (CHECK_SIM=1).
 // Ohne grep und tr, damit es auch im Runner der Workbench läuft (B-832, B-857).
 func goPkgs(dir string, sim bool) (string, error) {
 	cmd := exec.Command("go", "list", "-e", "./...") // -e: auch ohne gebautes Frontend (go:embed), Variablen laufen vor den deps
@@ -31,7 +35,7 @@ func goPkgs(dir string, sim bool) (string, error) {
 }
 
 // filterPkgs lässt die Pakete aus simDirs weg, außer sim. Importpfade `k3c/<ordner>` (Wurzel-Modul) und
-// `k3c/tools/k3c-workbench/<ordner>` entsprechen den simDirs-Schlüsseln `<ordner>` bzw. `tools/k3c-workbench/<ordner>`.
+// `k3c/tools/<modul>/<ordner>` entsprechen den simDirs-Schlüsseln `<ordner>` bzw. `tools/<modul>/<ordner>`.
 func filterPkgs(all []string, sim bool) []string {
 	var res []string
 	for _, p := range all {

@@ -19,7 +19,7 @@ func TestWorkbenchResourcesZeigtPufferUndVorgaenge(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"heap live", "Konsole-Zeilen 1", "Prüfläufe 0", "Testläufe 0", "MCP-Sessions 0"} {
+	for _, want := range []string{"heap live", "Konsole-Zeilen 1", "Prüfläufe 0", "MCP-Sessions 0"} {
 		if !strings.Contains(text, want) {
 			t.Errorf("Bericht ohne %q:\n%s", want, text)
 		}

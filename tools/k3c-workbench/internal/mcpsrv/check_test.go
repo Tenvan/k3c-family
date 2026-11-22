@@ -10,8 +10,6 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
-
-	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
 // fakeServer ersetzt den Prozessstart; started zählt, wie oft wirklich gestartet worden wäre.
@@ -20,7 +18,6 @@ func fakeServer(t *testing.T, run func(runSpec) runResult) (*Server, *atomic.Int
 	s := New(Config{Version: "test", Root: t.TempDir()})
 	var started atomic.Int32
 	s.taskVersion = func(context.Context) (string, error) { return "3.54.0", nil } // unabhängig vom installierten Task
-	s.simsViaRun()
 	s.run = func(_ context.Context, spec runSpec) runResult {
 		started.Add(1)
 		return run(spec)
@@ -236,14 +233,5 @@ func TestZeitlimitBeendetDenProzessbaum(t *testing.T) {
 	// Ohne Baum-Ende hielte der Enkel stdout offen und Run wartete bis WaitDelay (5 s) oder länger.
 	if !res.timedOut || res.exit != -1 || time.Since(start) > 4*time.Second {
 		t.Errorf("Zeitlimit: %+v nach %v", res, time.Since(start))
-	}
-}
-
-// simsViaRun lässt die Offline-Läufe von sim_test über die Test-Naht s.run laufen statt im Prozess (B-924): Die Tests
-// prüfen so den Weg Tool → Register ohne Rechnung der Engine. Vor dem ersten Start aufrufen.
-func (s *Server) simsViaRun() {
-	s.sims.Exec = func(ctx context.Context, p simrun.Proc) simrun.Result {
-		res := s.run(ctx, runSpec{dir: p.Dir, args: p.Args, timeout: p.Timeout, out: p.Out})
-		return simrun.Result{Exit: res.exit, TimedOut: res.timedOut, Err: res.err}
 	}
 }

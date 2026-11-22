@@ -1,7 +1,7 @@
 # tools/assetkit/
 
 ## Responsibility
-Eigenes Go-Modul `k3c/tools/assetkit` (Paket `assets`), von k3c-workbench per `replace` eingebunden (B-459). Ressourcen-Manager (B-298): Slot-Register `data/sounds.json` (Sound-Slots mit Zuordnungen nach Präferenz, seit CU1.2; der Block `mischung` mit den Mischpegeln des Spiels bleibt beim Speichern unverändert), Asset-Katalog aller Bilder und Sounds unter `public/` mit Credit und Lizenz-Kennzeichen (Q70), Recherche-Treffer, Download-Vorschlagsliste und Vorrat. Unterpakete: `browser/`, `ticket/`, `windowstate/`.
+Eigenes Go-Modul `k3c/tools/assetkit` (Paket `assets`), von k3c-workbench und k3c-studio per `replace` eingebunden (B-459). Ressourcen-Manager (B-298): Slot-Register `data/sounds.json` (Sound-Slots mit Zuordnungen nach Präferenz, seit CU1.2; der Block `mischung` mit den Mischpegeln des Spiels bleibt beim Speichern unverändert), Asset-Katalog aller Bilder und Sounds unter `public/` mit Credit und Lizenz-Kennzeichen (Q70), Recherche-Treffer, Download-Vorschlagsliste und Vorrat. Unterpakete: `browser/`, `ticket/`, `windowstate/`.
 
 ## Design
 - `register.go`: Typen `Register` (mit `Mix` als rohem JSON für `mischung`), `Slot`, `Choice`, `Rect`, `Size`; `Load` (ungültiges JSON = Fehler mit Pfad, nie überschreiben), `Save` (atomar, 2 Leerzeichen, Umlaute im Klartext), `SetChoices` (prüft Datei unter `public/`, Art per Endung, Ausschnitt in den Bildmaßen; Mutex reiht Schreiber), `Status` (`zugeordnet`, `luecke`, `fehlt`), `WriteAtomic`.
@@ -22,6 +22,6 @@ Eigenes Go-Modul `k3c/tools/assetkit` (Paket `assets`), von k3c-workbench per `r
 3. Vorschlag: `AddSuggestions` → `VorratDownload` → `VorratAdoptIf` → `appendChoice` im Register.
 
 ## Integration
-- Konsumenten in k3c-workbench: `internal/mcpsrv/tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`, `assets_import`), `internal/studioview/studioview.go` (`Load`, `Status`, `Catalog`, `LoadResearch`). Unterpakete: siehe [`ticket/`](ticket/codemap.md), [`windowstate/`](windowstate/codemap.md), [`browser/`](browser/codemap.md).
+- Konsumenten in k3c-studio: `internal/mcpsrv/tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`, `assets_import`), `internal/studioview/studioview.go` (`Load`, `Status`, `Catalog`, `LoadResearch`). Unterpakete: siehe [`ticket/`](ticket/codemap.md), [`windowstate/`](windowstate/codemap.md), [`browser/`](browser/codemap.md).
 - Daten: `data/sounds.json`, `data/assets-recherche.json`, `data/assets-vorschlaege.json`, `.work/vorrat/`, Credit-Dateien unter `public/`.
 - Tests: u. a. `repo_test.go` (echtes Register, byte-gleiche Rundreise), `vorrat_adopt_parallel_test.go`, `writepaths_test.go`.

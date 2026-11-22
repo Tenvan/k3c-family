@@ -13,17 +13,16 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/tools/assetkit/windowstate"
-	"k3c/tools/workkit/applog"
-	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/github"
 	"k3c/tools/k3c-workbench/internal/gitops"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/planning"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
-	"k3c/tools/k3c-workbench/internal/world"
-	"k3c/tools/k3c-workbench/internal/studioview"
 	"k3c/tools/k3c-workbench/internal/taskrun"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/uikit"
 	"k3c/tools/workkit/usage"
 )
 
@@ -38,7 +37,6 @@ const (
 	evTaskState    = "task:state"
 	evNotify       = "ui:notify" // Hinweis eines Agenten (notify_ui)
 	evPlanning     = "planning:changed"
-	evWorld        = "world:changed"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -61,7 +59,7 @@ type App struct {
 	port   int
 	emit   func(ctx context.Context, name string, data ...any) // Test-Naht; Produktion: emitAll (Wails und bus)
 	window bool                                                // läuft im Wails-Fenster (nicht -headless/-dev)
-	bus    *eventBus                                           // Ereignisse für die HTTP-Oberfläche (uiapi_events.go)
+	bus    *uikit.Bus                                          // Ereignisse für die HTTP-Oberfläche (uiapi.go)
 	usage  string                                              // Datei der Nutzungsstatistik (Test-Naht)
 	// ready schließt startup: Wails ruft OnStartup in einer eigenen Goroutine, Bindings können davor kommen.
 	ready chan struct{}
@@ -78,16 +76,15 @@ type App struct {
 	srv        *mcpsrv.Server
 	tasks      taskState
 	taskRunner *taskrun.Runner
-	gh         *github.Client   // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
-	git        *gitops.Repo     // Seite Git (B-580)
-	game       *studioview.Game // „Im Spiel ansehen“ im Bereich Assets (WB1.4), angelegt beim ersten Aufruf
+	gh         *github.Client // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
+	git        *gitops.Repo   // Seite Git (B-580)
 
 	mu  sync.Mutex
 	mcp MCPState
 }
 
 func newApp(root string, port int) *App {
-	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage.json"), bus: newEventBus(),
+	a := &App{root: root, port: port, usage: windowstate.ConfigPath("mcp-usage.json"), bus: uikit.NewBus(),
 		ready: make(chan struct{}), gh: github.New(root), git: gitops.New(root)}
 	a.emit = a.emitAll
 	return a
@@ -122,9 +119,6 @@ func (a *App) startup(ctx context.Context) {
 	a.startResources()
 	planning.WatchIDs(a.svcCtx, a.root, planningPoll, func(ids []string) {
 		a.emit(a.ctx, evPlanning, planning.Changed{IDs: ids})
-	})
-	world.Watch(a.svcCtx, a.root, worldPoll, func(ids []string) {
-		a.emit(a.ctx, evWorld, world.Changed{IDs: ids})
 	})
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {
@@ -161,7 +155,6 @@ func (a *App) shutdown(context.Context) {
 	a.wait()
 	a.log.Info("🛑 k3c-workbench beendet", "ns", "main")
 	a.cancel()
-	a.closeStudio() // Räume von „Im Spiel ansehen“ speichern
 	// Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
 	stopCtx, stop := context.WithTimeout(context.Background(), taskStopTimeout)
 	if err := a.taskRunner.StopAll(stopCtx); err != nil {

@@ -2,19 +2,19 @@
 
 ## Responsibility
 
-React-Single-Page-App von k3c-workbench: Shell mit zwei Bereichen – **Development** (Dienste & Logs, Tasks, Planung, Git, MCP, Monitoring) und **Studio** (Styleguide, Katalog, Review, Sound & Quellen, Welten-Editor, Gebäude-Planer, Balancing) –, Theme-Umschaltung, Ticket-Knopf, Agenten-Hinweisen und Anbindung an das Backend über die `api`-Schicht.
+React-Single-Page-App von k3c-workbench: Shell mit einer Reiterleiste (Dienste & Logs, Tasks, Planung, Git, MCP, Monitoring; Welten, Assets und Gebäude-Planer sind seit WZ63.3, Balancing seit WZ63.6 im Studio `tools/k3c-studio`) –, Theme-Umschaltung, Ticket-Knopf, Agenten-Hinweisen und Anbindung an das Backend über die `api`-Schicht.
 
 ## Design
 
-- `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css`, `@webkit/theme.css` und die Stile aus `styles/` (`app`, `services`, `logs`, `mcp`, `mcpCharts`, `monitoring`, `tasks`, `planning`, `planning-reader`, `git`, `balancing`, `balancing-editor`, `assets`, `world`, `planer`), rendert `App` in `StrictMode`.
+- `main.tsx`: Einstieg; lädt `@radix-ui/themes/styles.css`, `@webkit/theme.css` und die Stile aus `styles/` (`app`, `services`, `logs`, `mcp`, `mcpCharts`, `monitoring`, `tasks`, `planning`, `planning-reader`, `git`, `balancing`, `balancing-editor`), rendert `App` in `StrictMode`.
 - `App.tsx`: Wurzel über `AppFrame` (`@webkit/templates`) in einem `TicketProvider` (`@webkit/lib/ticketContext`, `backend.ticketCreate`/`ticketRecent`, Vorgabe Domäne DEV, Projekt WZG); Titel „K3C Workbench“, Reiter aus `useNavigation`, Farbmodus dark/light (gemerkt `app.mode`, Vorgabe aus `prefers-color-scheme`); hält den MCP-Zustand (`mcp:state`, `backend.info()` samt Version); `ui/organisms/Notices` als `overlay`. Dienste, Tasks, Git, Monitoring und Balancing bleiben eingehängt (`forceMount`, `active`-Prop), Planung, MCP, Welten und Planer bauen sich bei jedem Wechsel neu auf.
-- `Header.tsx`: `AREAS` (`development`, `assets` = „Studio“) mit `AREA_LABELS`, `PAGES`/`LABELS` (Development) und `ASSET_PAGES`/`ASSET_LABELS` (Studio, mit `planer` = „Gebäude-Planer“); `useNavigation` merkt `app.area`, `app.page`, `app.assetsPage` (alte Seite `quellen` führt auf `sound`, B-892) und liefert die Reiter des aktiven Bereichs; `useNavigateRequests` (`@webkit/lib/navigate`) nimmt Seitenwechsel auf Wunsch einer Seite an (z. B. Welten-Editor -> Katalog, nur Studio-Seiten) und schaltet dazu den Bereich um; `HeaderRight` (Bereichsumschalter `ChipSwitch`, MCP-Badge, `Mock`-Badge, Dark-Schalter).
+- `Header.tsx`: `PAGES`/`LABELS` (sieben Seiten); `useNavigation` merkt `app.page` und liefert die Reiter; `useNavigateRequests` (`@webkit/lib/navigate`) nimmt Seitenwechsel auf Wunsch einer Seite an (z. B. Welten-Editor -> Katalog, nur Studio-Seiten) und schaltet dazu den Bereich um; `HeaderRight` (Bereichsumschalter `ChipSwitch`, MCP-Badge, `Mock`-Badge, Dark-Schalter).
 - Unterordner (je mit eigener codemap):
   - `api/` – Backend-Vertrag (`types*.ts`), Wails-, HTTP-Adapter und Mock.
   - `lib/` – Formatierung, Prefs (Präfix `k3c-workbench.`), Markdown-Parser, `liveReload`/`useLiveReload`, `useNow`; Gemeinsames in `tools/webkit` (`@webkit/…`).
-  - `ui/molecules/` (`MarkdownView`), `ui/organisms/` (`Notices`); Radix und die Atome nur über `@webkit/atoms|molecules|organisms|templates`.
+  - `ui/organisms/` (`Notices`; `MarkdownView` und `Confirm` liegen seit WZ63.6 in `@webkit`); Radix und die Atome nur über `@webkit/atoms|molecules|organisms|templates`.
   - Seiten Development: `services/`, `logs/` (Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` und `mcp/` genutzt), `tasks/`, `planning/`, `git/`, `mcp/`, `monitoring/`.
-  - Seiten Studio: `assets/` (Review, Katalog, Styleguide, Sound & Quellen), `world/` (Welten-Editor, B-879), `planner/` (Gebäude-Planer, B-923), `balancing/`.
+  - Die früheren Studio-Seiten (`assets/`, `world/`, `planner/`, seit WZ63.6 auch `balancing/`) liegen in `tools/k3c-studio/frontend/src`.
   - `styles/` – CSS je Seite (keine Logik).
 - Muster: Feature-Ordner mit reiner Logik in eigenen Dateien (Vitest) getrennt von Komponenten und Data-Hooks; Live-Daten über Ereignisse statt Abfrage-Takt, gedrosselt über `lib/liveReload.ts`.
 

@@ -17,7 +17,7 @@ und Beheben.
 - `BranchesCard.tsx`: lokale und entfernte Branches; `stateBadge` (ungemergt ohne Prüfung = „ungeprüft“), `markable`
   (nicht Basis, aktueller oder Worktree-Branch), `sortBranches`, `filterBranches`; gemergte markierte löscht die Seite
   selbst, für alle markierten gibt es einen Prompt.
-- `Confirm.tsx`: Rückfrage vor jeder nicht einfach rücknehmbaren Aktion (B-580/AC-04); auch von `balancing/` genutzt.
+- `Confirm` (Rückfrage vor jeder nicht einfach rücknehmbaren Aktion, B-580/AC-04) liegt seit WZ63.6 in `@webkit/organisms`.
 - `prompts.ts`: Kurz-Prompts `cleanupMarkedPrompt`, `cleanupStalePrompt` (über `staleBranches`), `fixPrPrompt`,
   `reviewAllPrsPrompt`; ausgegeben über `CopyPrompt` (`../planning/PromptParts.tsx`).
 - Laden: `gitData.ts` (`useGitData`: beim ersten Öffnen, „Neu laden“, nach eigenen Aktionen und bei Repo-Änderung; läuft
@@ -34,7 +34,7 @@ und Beheben.
 
 ## Integration
 
-- Konsument: `src/App.tsx` (Reiter `git`); `Confirm` aus `../balancing/DetailHead.tsx` und `../balancing/SelectionBar.tsx`.
+- Konsument: `src/App.tsx` (Reiter `git`).
 - Backend: Bindings in `tools/k3c-workbench/app_git.go` (Paket `internal/gitops`, GitHub über `internal/github`).
 - Abhängigkeiten: `src/api` (Typen `GitView`, `GitBranch`, `GitPR` … aus `api/typesGit.ts`), `../planning/PromptParts.tsx`,
   `@webkit/*`. Stile: `../styles/git.css`.

@@ -1,7 +1,7 @@
 ---
 name: k3c-umsetzer
 description: Schreibender Umsetzer für K3C, der eine freigegebene Session oder ein Ticket (B-123, KS2.1) nach Spec umsetzt und weiß, wohin welcher Code, Wert, Test und Text gehört. Use when eine Session/ein Ticket mit `Spec: freigegeben` umgesetzt werden soll und Ziel, Kriterien und Bereich feststehen. Nicht für Sim-Code im Worktree mit eigener Workbench (k3c-sim-dev), nicht für Grafik-Assets (nur über assets_*), nicht für Planung (plan_*), nicht für offene Architekturfragen. Committet nie.
-tools: Read, Grep, Glob, Edit, Write, Bash, PowerShell, mcp__k3c-workbench__plan_get, mcp__k3c-workbench__plan_list, mcp__k3c-workbench__check_run, mcp__k3c-workbench__logs_errors, mcp__k3c-workbench__assets_list, mcp__k3c-workbench__assets_get
+tools: Read, Grep, Glob, Edit, Write, Bash, PowerShell, mcp__k3c-workbench__plan_get, mcp__k3c-workbench__plan_list, mcp__k3c-workbench__check_run, mcp__k3c-workbench__logs_errors, mcp__k3c-studio__assets_list, mcp__k3c-studio__assets_get
 model: sonnet
 ---
 

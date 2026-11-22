@@ -75,10 +75,10 @@ describe('Regeltabelle Hub-Stufe → Gebäude (WZ15.2, B-462)', () => {
   });
 });
 
-// Das Asset-Studio ist entfallen (Entscheidung 005 › 5, WB1/AC-04): der Bereich Assets der Workbench zeigt Assets nur an,
-// geändert wird über die MCP-Tools assets_*. Keine Tasks, EXEs, Ports und Dienste des Studios mehr.
-describe('Asset-Studio entfernt (005/AC-10, WB1)', () => {
-  const STUDIO = /k3c-studio|check:studio|\b(8091|8182|5192)\b/;
+// Das alte Asset-Studio ist entfallen (Entscheidung 005 › 5, WB1/AC-04): seine Tasks und Ports kommen nicht zurück.
+// Das neue k3c-studio (WZ63) hat eigene Ports (MCP 5181, dev 5182) und darf in Taskfile und services.json stehen.
+describe('Altes Asset-Studio entfernt (005/AC-10, WB1)', () => {
+  const STUDIO = /check:studio|\b(8091|8182|5192)\b/;
   const FILES = ['Taskfile.yml', '.github/workflows/ci.yml', '.claude/launch.json', '.oxlintrc.json',
     'tools/k3c-workbench/services.json'];
 

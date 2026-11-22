@@ -28,17 +28,11 @@ func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {
 	callText(t, cs, "check_run", map[string]any{"target": "task:alles"})
 	// Erfundener Name: das SDK antwortet mit einem Protokollfehler, die Middleware sieht ihn trotzdem.
 	_, _ = cs.CallTool(context.Background(), &mcp.CallToolParams{Name: "gibt_es_nicht"})
-	if text, _ := callText(t, cs, "reports_list", nil); text != "keine Berichte" {
-		t.Errorf("reports_list ohne Ordner: %q", text)
-	}
-	if text, _ := callText(t, cs, "report_read", map[string]any{"name": "../x.json"}); !strings.Contains(text, "abgelehnt") {
-		t.Errorf("report_read mit ..: %q", text)
-	}
 	if status, _ := s.workbenchStatus(context.Background(), struct{}{}); !strings.Contains(status, "Sitzung: p95 ") {
 		t.Errorf("Status ohne Statistik: %q", status)
 	}
 	snap := tr.Snapshot().Session
-	if snap.Calls != 4 || snap.Errors != 2 {
+	if snap.Calls != 2 || snap.Errors != 1 { // reports_list und report_read: k3c-studio (WZ63.5)
 		t.Fatalf("Zähler: %+v", snap)
 	}
 	for _, tool := range snap.Tools {

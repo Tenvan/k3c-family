@@ -8,7 +8,7 @@ Kleine, seitenunabhängige Hilfsfunktionen und React-Hooks von k3c-workbench: de
 
 - Pure Utilities: `format.ts` (`formatNumber`, `formatPercent`, `formatBytes`, `formatUptime`, `formatDuration`, `formatTime`, de-DE, deckungsgleich mit den Go-Formatern in `internal/mcpsrv`).
 - Persistenz: `prefs.ts` bindet `createPrefs('k3c-workbench.')` aus `@webkit/lib/prefs` (`loadPref`, `loadText`, `savePref`, `loadJSON`, `saveJSON`, `isStringList`; Favoriten, Eingeklapptes) und `prefsStore` (`{ loadText, savePref }` für `useSplit`). Freitext-Filter werden nicht gemerkt.
-- `markdown.ts` (+ Test): Markdown-Teilmenge -> Block-/Inline-Baum (`parseMarkdown`, `parseInline`), gezeichnet von `ui/molecules/MarkdownView`; nie ein HTML-String.
+- `markdown.ts` liegt seit WZ63.6 in `@webkit/lib/markdown` (gezeichnet von `MarkdownView` in `@webkit/molecules`); nie ein HTML-String.
 - `liveReload.ts` (rein, B-895): `liveReload(run, everyMs, doc)` bündelt Nachlade-Wünsche – der erste nach einer Pause sofort, weitere höchstens einmal je Takt, nicht bei verborgenem Fenster; beim Sichtbarwerden wird ein verpasstes Nachladen einmal nachgeholt. Hintergrund: im Wails-Fenster kommt jede Antwort als eigenes Skript, ungedrosseltes Nachladen ließ den WebView2-Renderer wachsen.
 - Hooks: `useLiveReload.ts` (`useLiveReload(events, run, everyMs, onEvent?)`: lädt beim Einhängen und gedrosselt bei jedem Ereignis über `backend.on`; der optionale `onEvent` sieht jede Nutzlast (`Events[E]`) sofort und ungedrosselt, z. B. um geänderte IDs zu sammeln, bis `run` sie abholt; `PLAN_RELOAD_MS = 15 s` für die Planung), `useNow.ts` (Intervall-Timestamp).
 

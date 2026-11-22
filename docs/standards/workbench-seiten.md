@@ -49,7 +49,7 @@ Projektspezifisch und nicht Teil dieser Spec: `check_run` (Build-/Test-Ziele), `
 Ebenso die Welten-Tools von K3C (`world_list`, `world_get`, `world_create`, `world_set`,
 `world_override_set`, `world_chunks_set`, `world_story_set`, `world_check`): `world_story_set`
 schreibt die Geschichte einer Welt und ihrer Inseln (B-975), `world_get` zeigt sie, `world_check`
-nennt fehlende Einträge als Hinweis; Parameter stehen in den MCP-`instructions` der Workbench.
+nennt fehlende Einträge als Hinweis; Parameter stehen in den MCP-`instructions` des Studios (Server `k3c-studio`, seit WZ63).
 
 ## Begriffe (verbindlich in allen Projekten)
 

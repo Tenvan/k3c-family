@@ -1,6 +1,6 @@
 import { ActionButton, Code, Flex, StatusBadge, Text } from '@webkit/atoms';
 import type { GitAction, GitStatus, GitView } from '../api';
-import type { ConfirmRequest } from './Confirm';
+import type { ConfirmRequest } from '@webkit/organisms';
 import { DiffList, fileCount } from './FilesCard';
 import { ago } from './format';
 

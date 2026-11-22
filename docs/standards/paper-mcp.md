@@ -8,7 +8,7 @@ Assets werden **nur** über diese Tools geändert; die Oberfläche editiert nich
 
 ## 1. Gemeinsame Regeln
 
-- Namen `assets_<verb>`; jede Beschreibung endet mit „Nutze es bei: … Statt: …“ (wie alle Tools der Workbench).
+- Namen `assets_<verb>`; jede Beschreibung endet mit „Nutze es bei: … Statt: …“ (wie alle Tools der Workbench). Seit WZ63 liegen die `assets_*`-Tools im MCP-Server `k3c-studio` (`mcp__k3c-studio__assets_*`), nicht mehr in `k3c-workbench`.
 - **Jedes** Tool nimmt `checkout` (Ordnername oder absoluter Pfad des Worktrees, `git rev-parse --show-toplevel`); ohne
   Angabe gilt der Checkout aus dem Header, sonst die Repo-Wurzel. Schreibende Tools nennen in der letzten Zeile
   `Checkout: …`. Eigener Job-Mechanismus für Render-Jobs, **nicht** `task_*` (das bedient nur die Repo-Wurzel).

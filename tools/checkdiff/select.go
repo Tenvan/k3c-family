@@ -19,12 +19,13 @@ type modPlan struct {
 
 // plan ist die Auswahl für einen Lauf.
 type plan struct {
-	Docs          bool // Planungs-Tests (docs/, *.md)
-	Rules         bool // Regel-Test des Repos (alles außer Doku)
-	Client        bool // Oxlint, tsc, Vitest --changed
-	WbVitest      bool
-	Mods          map[string]*modPlan
-	Rust          *rustPlan // Workspace rust/ (rust.go); nil ohne Rust-Dateien
+	Docs         bool // Planungs-Tests (docs/, *.md)
+	Rules        bool // Regel-Test des Repos (alles außer Doku)
+	Client       bool // Oxlint, tsc, Vitest --changed
+	WbVitest     bool // Vitest der Workbench (ihr Frontend und tools/webkit)
+	StudioVitest bool // Typecheck und Vitest des Studios (sein Frontend und tools/webkit, WZ63.3)
+	Mods         map[string]*modPlan
+	Rust         *rustPlan // Workspace rust/ (rust.go); nil ohne Rust-Dateien
 }
 
 // repo beantwortet, was die Auswahl über den Checkout wissen muss.
@@ -85,9 +86,11 @@ func (p *plan) mod(m string) *modPlan {
 func (p *plan) frontend(f string) bool {
 	switch {
 	case hasPrefix(f, "tools/webkit/"):
-		p.WbVitest = true
+		p.WbVitest, p.StudioVitest = true, true
 	case hasPrefix(f, "tools/k3c-workbench/frontend/"):
 		p.WbVitest = true
+	case hasPrefix(f, "tools/k3c-studio/frontend/"):
+		p.StudioVitest = true
 	default:
 		return false
 	}

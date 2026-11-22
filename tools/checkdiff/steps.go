@@ -19,15 +19,16 @@ type step struct {
 
 // simDirs: Pakete mit Simulations-, Balancing- und Lasttest-Läufen. Ihre Tests sind bis auf Weiteres gesperrt (Beschluss
 // Ralf 2026-11-11); go vet und Lint laufen weiter. CHECK_SIM=1 hebt die Sperre für einen Lauf auf.
-// task check:go liest sie über -gopkgs; ci.yml › GO_SIM_PKGS, WB_SIM_PKGS muss gleich sein (simlist_test.go, B-832).
+// task check:go liest sie über -gopkgs, k3c-studio:gotest über -studiopkgs; ci.yml › GO_SIM_PKGS, STUDIO_SIM_PKGS muss
+// gleich sein (simlist_test.go, B-832).
 var simDirs = map[string]bool{
 	"engine/balance": true, "engine/simcli": true, "cmd/k3c-sim": true,
-	"tools/k3c-workbench/internal/balance": true, "tools/k3c-workbench/internal/simrun": true,
+	"tools/k3c-studio/internal/balance": true, "tools/k3c-studio/internal/simrun": true, // seit WZ63.5 im Studio
 }
 
 // lintMods: Module mit golangci-lint (wie task check:go und check:dev).
 var lintMods = map[string]bool{
-	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/workkit": true,
+	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/workkit": true, "tools/k3c-studio": true,
 }
 
 // prepTasks: Module, deren Go-Code ein gebautes Frontend einbettet (go:embed frontend/dist).
@@ -63,6 +64,10 @@ func jsSteps(p plan, base string) []step {
 	if p.WbVitest {
 		args := "VITEST_ARGS=--changed " + base + " --passWithNoTests"
 		out = append(out, step{"wb-vitest", "js", 2, ".", []string{"task", "k3c-workbench:vitest", args}})
+	}
+	if p.StudioVitest {
+		args := "VITEST_ARGS=--changed " + base + " --passWithNoTests"
+		out = append(out, step{"studio-vitest", "js", 2, ".", []string{"task", "k3c-studio:vitest", args}})
 	}
 	return out
 }

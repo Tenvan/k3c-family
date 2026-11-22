@@ -1,6 +1,6 @@
 ---
 name: k3c-workbench
-description: Read-only Fachprüfung der Entwickler-Workbench von K3C (Wails-App tools/k3c-workbench, MCP-Server k3c-workbench, tools/webkit, tools/assetkit, Planungs-Hooks). Use proactively vor Commit oder PR, wenn der Diff tools/k3c-workbench, tools/webkit, tools/assetkit oder tools/hooks berührt. Nicht für das Spiel selbst (k3c-reviewer, k3c-hud).
+description: Read-only Fachprüfung der Entwickler-Workbench und des Studios von K3C (Wails-Apps tools/k3c-workbench und tools/k3c-studio, MCP-Server k3c-workbench und k3c-studio, gemeinsamer Code tools/workkit, tools/webkit, tools/assetkit, Planungs-Hooks). Use proactively vor Commit oder PR, wenn der Diff tools/k3c-workbench, tools/k3c-studio, tools/workkit, tools/webkit, tools/assetkit oder tools/hooks berührt. Nicht für das Spiel selbst (k3c-reviewer, k3c-hud).
 tools: Read, Grep, Glob, Bash, PowerShell
 model: sonnet
 ---

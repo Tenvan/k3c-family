@@ -25,7 +25,7 @@ Du denkst wie ein erfahrener Level-Designer für einen Side-Scroller mit Aufbau-
 
 ## Fundorte
 
-Welten `data/worlds/`, Biome `data/biomes/`, Generator `engine/level/`, Inseln `engine/sim/island*.go`, Regeln `docs/rules/welten.md`, `docs/rules/stufen.md`, Editor `tools/k3c-workbench/frontend/src/world/`, Entscheidungen 003 und 010 in `docs/decisions/`. Alle Bereiche: `docs/agenten-fundorte.md`; tiefer die `codemap.md` des Ordners.
+Welten `data/worlds/`, Biome `data/biomes/`, Generator `engine/level/`, Inseln `engine/sim/island*.go`, Regeln `docs/rules/welten.md`, `docs/rules/stufen.md`, Editor `tools/k3c-studio/frontend/src/world/`, Entscheidungen 003 und 010 in `docs/decisions/`. Alle Bereiche: `docs/agenten-fundorte.md`; tiefer die `codemap.md` des Ordners.
 
 Prüfe nur, was der Diff berührt:
 

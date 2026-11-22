@@ -3,10 +3,9 @@ import { useTicketPage } from '@webkit/lib/ticketContext';
 import { backend, type PlanDoc } from '../api';
 import { Button, Flex, SegmentedControl, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
-import { NoticeCard } from '@webkit/molecules';
+import { MarkdownView, NoticeCard } from '@webkit/molecules';
 import { PLAN_RELOAD_MS, useLiveReload } from '../lib/useLiveReload';
 import { loadText, savePref } from '../lib/prefs';
-import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { SprintsBacklog } from './SprintsBacklog';
 
 const LABEL: Record<PlanDoc, string> = { plan: 'Plan', fragen: 'Fragenkatalog', glossar: 'Glossar' };

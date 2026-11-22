@@ -25,21 +25,21 @@ Zentrale Karte, wo was liegt. Die Agenten unter `.claude/agents/` verweisen hier
 
 - Kern: `engine/sim/` (Welt `world*.go`, Insel und Stufen `island*.go`, Gebäude `building*.go`, Wirtschaft `economy*.go`, Monarch und Skills `monarch*.go`, `skills*.go`, Ereignisse `events*.go`, Spielstand `*save*.go`)
 - Zufall nur `engine/rng`; Level-Generator `engine/level/`; Raum mit Stufen und Spielstand `engine/room/`; Ablage `engine/store/`
-- Engine-CLI: Logik `engine/simcli/` (die Workbench ruft sie im Prozess), Hülle `cmd/k3c-sim/`; gemeinsame Aufrufe `engine/enginetools/`; Sim-Code nur im eigenen Worktree (Agent `k3c-sim-dev`, B-925)
+- Engine-CLI: Logik `engine/simcli/` (das Studio ruft sie im Prozess, seit WZ63.5), Hülle `cmd/k3c-sim/`; gemeinsame Aufrufe `engine/enginetools/`; Sim-Code nur im eigenen Worktree (Agent `k3c-sim-dev`, B-925)
 - Regeln: `docs/rules/stufen.md`, `docs/rules/welten.md`, Protokoll `docs/protocol.md`
 
 ## Balancing
 
 - Werte: `data/economy.json`, `data/troops.json`, `data/enemies.json`, `data/waves.json`, `data/buildings.json`, `data/monarch.json`, `data/difficulty.json`, `data/bosses.json`
 - Ziele: `data/balance-targets.json`, `data/balance-hints.json`, `docs/rules/zielkorridore.md`, `docs/rules/wirtschaft.md`
-- Auswertung (Bots, Kennzahlen): `engine/balance/`; Messungen `docs/balancing/`, `docs/messung/`; Workbench-Seite `tools/k3c-workbench/frontend/src/balancing/`
-- **Sim- und Balancing-Läufe sind gesperrt** (🧑 2026-11-11): nur lesen.
+- Auswertung (Bots, Kennzahlen): `engine/balance/`; Messungen `docs/balancing/`, `docs/messung/`; Studio-Seite `tools/k3c-studio/frontend/src/balancing/`, Backend `tools/k3c-studio/internal/balance/` und `simrun/` (MCP `mcp__k3c-studio__sim_test` usw.)
+- **Sim- und Balancing-Läufe sind gesperrt** (🧑 2026-11-11): nur lesen. Das Balancing schreibt Quelldateien nur unter `data/worlds/` (Wächter `balance.Guard`, WZ63.7); Code- oder andere Datenänderungen erst nach Plan im Chat und Freigabe von 🧑.
 
 ## Welten
 
 - Welt-Dateien `data/worlds/`, Biome `data/biomes/`, `data/island-sizes.json`, `data/hub.json`, `data/ruins.json`
-- Generator `engine/level/`, Insel-Code `engine/sim/island*.go`, Welt-Editor `tools/k3c-workbench/frontend/src/world/`
-- Gebäudeplaner `tools/k3c-workbench/internal/hubplan/`, Seite `tools/k3c-workbench/frontend/src/planner/`
+- Generator `engine/level/`, Insel-Code `engine/sim/island*.go`, Welt-Editor `tools/k3c-studio/frontend/src/world/`
+- Gebäudeplaner `tools/k3c-studio/internal/hubplan/`, Seite `tools/k3c-studio/frontend/src/planner/`
 
 ## Grafik
 

@@ -1,0 +1,32 @@
+import { useEffect } from 'react';
+import { Tabs } from '@webkit/organisms';
+import { CatalogPage } from './catalog/CatalogPage';
+import { ReviewPage } from './review';
+import { loadReview } from './review/reviewStore';
+import { SoundSourcesPage } from './SoundSourcesPage';
+import { StylePage } from './style/StylePage';
+
+/** Asset-Seiten (Entscheidung 005 › 5): Styleguide, Katalog, Review (RV1), Sound & Quellen – nur Ansehen; Änderungen
+ *  laufen über die MCP-Tools assets_*. Die Seiten stehen als Tabs.Content im Tabs.Root von AppFrame (App.tsx). */
+export function AssetsArea() {
+  // Review gegen HEAD schon im Hintergrund rechnen lassen (B-732): die Seite Review steht dann sofort
+  useEffect(() => {
+    loadReview('HEAD').catch(() => undefined);
+  }, []);
+  return (
+    <>
+      <Tabs.Content value="review">
+        <ReviewPage />
+      </Tabs.Content>
+      <Tabs.Content value="katalog">
+        <CatalogPage />
+      </Tabs.Content>
+      <Tabs.Content value="styleguide">
+        <StylePage />
+      </Tabs.Content>
+      <Tabs.Content value="sound">
+        <SoundSourcesPage />
+      </Tabs.Content>
+    </>
+  );
+}

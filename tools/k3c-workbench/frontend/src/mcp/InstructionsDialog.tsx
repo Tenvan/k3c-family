@@ -3,7 +3,7 @@ import { backend } from '../api';
 import { Button, Flex } from '@webkit/atoms';
 import { Dialog } from '@webkit/organisms';
 import { errorText } from '@webkit/lib/errors';
-import { MarkdownView } from '../ui/molecules/MarkdownView';
+import { MarkdownView } from '@webkit/molecules';
 
 /** Knopf `Systemprompt` mit Dialog (MCP-instructions): der Text, den jeder Client beim Verbinden bekommt, als React-Elemente. */
 export function InstructionsDialog() {

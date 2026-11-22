@@ -17,10 +17,11 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/tools/assetkit/windowstate"
-	"k3c/tools/workkit/applog"
-	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/services"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/winicon"
 )
 
 const version = "0.1.0"
@@ -30,6 +31,11 @@ const instanceID = "k3c-workbench-5d0e8b7c-6f1a-4a51-9d0e-6b3c2a1f9e47"
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+// windowIconPNG setzt das Fenster-Icon in Dev-Läufen ohne Icon-Ressource der EXE (tools/workkit/winicon).
+//
+//go:embed icon/appicon.png
+var windowIconPNG []byte
 
 func main() {
 	if err := run(); err != nil {
@@ -77,7 +83,7 @@ func windowOptions(app *App) *options.App {
 		AssetServer:      &assetserver.Options{Assets: assets},
 		OnStartup:        app.startup,
 		OnDomReady: func(ctx context.Context) {
-			go setWindowIcon() // Dev-Läufe haben die Icon-Ressource der EXE nicht
+			go winicon.Set(windowIconPNG) // Dev-Läufe haben die Icon-Ressource der EXE nicht
 			if placed && windowstate.OnScreen(win) {
 				windowstate.Place(func() (int, int) { return runtime.WindowGetPosition(ctx) },
 					func(x, y int) { runtime.WindowSetPosition(ctx, x, y) }, win.X, win.Y)

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "k3c-studio",
+  "outputfilename": "k3c-studio",
+  "frontend:install": "bun install --frozen-lockfile",
+  "frontend:build": "bun run build",
+  "frontend:dev:watcher": "bunx vite",
+  "frontend:dev:serverUrl": "auto",
+  "author": { "name": "Ralf Stich" },
+  "info": { "productName": "K3C Studio" }
+}

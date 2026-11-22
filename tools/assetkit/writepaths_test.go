@@ -43,10 +43,10 @@ func goFiles(t *testing.T, dirs ...string) map[string]string {
 	return out
 }
 
-// Das Asset-Studio (tools/k3c-studio) ist entfallen (WB1); seine lesenden Teile in k3c-workbench/internal/studioview
+// Die lesenden Teile des früheren Asset-Studios in k3c-studio/internal/studioview (seit WZ63 wieder eine eigene App)
 // schreiben nur Testspielstände außerhalb des Repos.
 func TestSchreibwegeSindAtomar(t *testing.T) {
-	files := goFiles(t, ".", "../k3c-workbench/internal/studioview")
+	files := goFiles(t, ".", "../k3c-studio/internal/studioview")
 	if len(files) < 10 {
 		t.Fatalf("nur %d Dateien gelesen: Pfade stimmen nicht", len(files))
 	}

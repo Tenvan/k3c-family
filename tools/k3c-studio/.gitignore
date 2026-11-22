@@ -1,0 +1,9 @@
+# Wails: EXE, Standard-Icon und Manifest (erzeugt wails build neu) und generierte Bindings
+build/
+frontend/wailsjs/
+frontend/package.json.md5
+# Gebaute Oberfläche (WZ63.3) bleibt ungetrackt; nur der Platzhalter .gitkeep ist eingecheckt, damit go:embed
+# (main.go) und damit go build/go test ohne Frontend laufen.
+!frontend/dist/
+frontend/dist/*
+!frontend/dist/.gitkeep

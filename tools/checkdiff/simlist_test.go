@@ -10,7 +10,10 @@ import (
 	"testing"
 )
 
-const wbPrefix = "tools/k3c-workbench/"
+const (
+	wbPrefix     = "tools/k3c-workbench/"
+	studioPrefix = "tools/k3c-studio/" // Balancing-Pakete seit WZ63.5
+)
 
 // simListe liest die Paketliste aus einer Zeile `<name>: '<präfix>(a|b|c)$'` (ci.yml).
 func simListe(t *testing.T, datei, name, praefix string) []string {
@@ -29,31 +32,31 @@ func simListe(t *testing.T, datei, name, praefix string) []string {
 	return l
 }
 
-// erwartet teilt simDirs in Wurzel-Modul und Workbench-Modul (Workbench relativ zu internal/).
-func erwartet() (root, wb []string) {
+// erwartet teilt simDirs in Wurzel-Modul und Studio-Modul (Studio relativ zu internal/).
+func erwartet() (root, studio []string) {
 	for d := range simDirs {
-		if rest, ok := strings.CutPrefix(d, wbPrefix+"internal/"); ok {
-			wb = append(wb, rest)
+		if rest, ok := strings.CutPrefix(d, studioPrefix+"internal/"); ok {
+			studio = append(studio, rest)
 		} else {
 			root = append(root, d)
 		}
 	}
 	sort.Strings(root)
-	sort.Strings(wb)
-	return root, wb
+	sort.Strings(studio)
+	return root, studio
 }
 
 // TestSimListeGleich: ci.yml nennt dieselben Sim-Pakete wie simDirs; task check:go nimmt sie aus simDirs selbst
 // (checkdiff -gopkgs), B-832/AC-02.
 func TestSimListeGleich(t *testing.T) {
-	root, wb := erwartet()
+	root, studio := erwartet()
 	gleich := func(was string, ist, soll []string) {
 		if strings.Join(ist, "|") != strings.Join(soll, "|") {
 			t.Errorf("%s: %v, simDirs: %v", was, ist, soll)
 		}
 	}
 	gleich("ci.yml GO_SIM_PKGS", simListe(t, ".github/workflows/ci.yml", "GO_SIM_PKGS", "/"), root)
-	gleich("ci.yml WB_SIM_PKGS", simListe(t, ".github/workflows/ci.yml", "WB_SIM_PKGS", "/internal/"), wb)
+	gleich("ci.yml STUDIO_SIM_PKGS", simListe(t, ".github/workflows/ci.yml", "STUDIO_SIM_PKGS", "/internal/"), studio)
 	b, err := os.ReadFile(filepath.Join("..", "..", "Taskfile.yml"))
 	if err != nil || !strings.Contains(string(b), "go run ./tools/checkdiff -gopkgs") {
 		t.Errorf("Taskfile.yml: check:go holt die Pakete nicht über checkdiff -gopkgs (%v)", err)
@@ -61,6 +64,10 @@ func TestSimListeGleich(t *testing.T) {
 	b, err = os.ReadFile(filepath.Join("..", "..", wbPrefix, "Taskfile.yml"))
 	if err != nil || !strings.Contains(string(b), "go run ./tools/checkdiff -wbpkgs") {
 		t.Errorf("k3c-workbench Taskfile.yml: gotest holt die Pakete nicht über checkdiff -wbpkgs (%v)", err)
+	}
+	b, err = os.ReadFile(filepath.Join("..", "..", studioPrefix, "Taskfile.yml"))
+	if err != nil || !strings.Contains(string(b), "go run ./tools/checkdiff -studiopkgs") {
+		t.Errorf("k3c-studio Taskfile.yml: gotest holt die Pakete nicht über checkdiff -studiopkgs (%v)", err)
 	}
 }
 
@@ -75,10 +82,10 @@ func TestFilterPkgs(t *testing.T) {
 	}
 }
 
-// TestFilterPkgsWorkbench: k3c-workbench:test lässt balance und simrun weg, CHECK_SIM=1 nimmt sie mit
-// (B-857/AC-01).
-func TestFilterPkgsWorkbench(t *testing.T) {
-	const m = wbModule + "/"
+// TestFilterPkgsStudio: k3c-studio:gotest lässt balance und simrun weg, CHECK_SIM=1 nimmt sie mit
+// (B-857/AC-01; seit WZ63.5 im Studio statt in der Workbench).
+func TestFilterPkgsStudio(t *testing.T) {
+	const m = studioModule + "/"
 	all := []string{m + "internal/balance", m + "internal/mcp", m + "internal/simrun", m + "internal/studioview"}
 	if got := filterPkgs(all, false); !slices.Equal(got, []string{m + "internal/mcp", m + "internal/studioview"}) {
 		t.Errorf("ohne Sim: %v", got)

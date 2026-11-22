@@ -7,12 +7,11 @@ import (
 	"testing"
 
 	"k3c/tools/assetkit/ticket"
-	"k3c/tools/k3c-workbench/internal/simrun"
 )
 
-// WZ28.7/AC-07 (B-595/AC-04, B-596/AC-05): Ticket-Button und Balancing laufen ohne Netz. Der Standard-Transport lehnt
-// jede Verbindung ab und zählt sie; Ticket anlegen, Bericht lesen, bewerten, löschen und ein Offline-Lauf bleiben
-// ohne einen einzigen Versuch.
+// WZ28.7/AC-07 (B-595/AC-04): Der Ticket-Button läuft ohne Netz. Der Standard-Transport lehnt jede Verbindung ab und
+// zählt sie; Ticket anlegen und lesen bleiben ohne einen einzigen Versuch. Den Balancing-Teil (B-596/AC-05) prüft seit
+// WZ63.5 offline_test.go von k3c-studio.
 
 type deniedTransport struct{ calls atomic.Int32 }
 
@@ -35,28 +34,6 @@ func TestOfflineOhneNetz(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	hold := make(chan struct{})
-	b := balanceApp(t, hold)
-	run, err := b.BalanceStart(simrun.Spec{Seeds: 1, Bot: "saver+passive", Players: 2})
-	if err != nil {
-		t.Fatal(err)
-	}
-	close(hold)
-	waitRun(t, b, run.ID, func(r simrun.Info) bool { return r.State == simrun.Done })
-	reports, err := b.BalanceReports()
-	if err != nil || len(reports) == 0 {
-		t.Fatalf("Berichte: %v %v", reports, err)
-	}
-	p := reports[0].Path
-	if _, err := b.BalanceReport(p); err != nil {
-		t.Fatal(err)
-	}
-	if err := b.BalanceReportRate(p, "gut"); err != nil {
-		t.Fatal(err)
-	}
-	if err := b.BalanceReportDelete(p); err != nil {
-		t.Fatal(err)
-	}
 	if n := denied.calls.Load(); n != 0 {
 		t.Errorf("%d Netzwerkanfragen ohne Netz", n)
 	}

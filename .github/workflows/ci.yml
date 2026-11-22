@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; k3c-workbench: Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; k3c-workbench und k3c-studio (samt tools/workkit): Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -19,7 +19,7 @@ permissions:
 # task check:go liest (checkdiff -gopkgs); tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
 env:
   GO_SIM_PKGS: '/(engine/balance|engine/simcli|cmd/k3c-sim)$'
-  WB_SIM_PKGS: '/internal/(balance|simrun)$'
+  STUDIO_SIM_PKGS: '/internal/(balance|simrun)$'
 
 jobs:
   # Pull Request: nur prüfen, ob der Branch sauber in die Zielbranch passt. Die übrigen Jobs laufen nur bei Push/Dispatch.
@@ -169,7 +169,7 @@ jobs:
       - name: Go-Tests (-short, ohne Sim/Balance)
         shell: bash
         working-directory: .
-        run: task k3c-workbench:gotest GO_TEST_FLAGS=-short WB_PKGS="$(cd tools/k3c-workbench && go list ./... | grep -Ev "$WB_SIM_PKGS" | tr '\n' ' ')"
+        run: task k3c-workbench:gotest GO_TEST_FLAGS=-short
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
@@ -179,5 +179,57 @@ jobs:
         with:
           version: v2.14
           working-directory: tools/assetkit
+      # Gemeinsamer Code von Workbench und Studio (WZ63, eigenes Modul; go test läuft in k3c-workbench:gotest mit).
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/workkit
+      - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+      - run: wails build -s
+
+  k3c-studio:
+    if: github.event_name != 'pull_request'
+    name: k3c-studio · Frontend · Tests · Lint · Wails (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: tools/k3c-studio
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: tools/k3c-studio/go.mod
+          cache-dependency-path: tools/k3c-studio/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.2
+      - uses: go-task/setup-task@v2
+      - run: bun install --frozen-lockfile
+        working-directory: .
+      # Go-Tests von assetsui lesen die gerenderte Grafik (B-756)
+      - run: task gen:paper
+        working-directory: .
+      # go:embed braucht frontend/dist, deshalb zuerst das Frontend (Typecheck und vite build).
+      - run: bun install --frozen-lockfile
+        working-directory: tools/k3c-studio/frontend
+      - run: task k3c-studio:frontend
+        working-directory: .
+      - run: task k3c-studio:vitest
+        working-directory: .
+      # Paketliste ohne Sim/Balance-Pakete (balance, simrun seit WZ63.5 im Studio, B-825).
+      - name: Go-Tests Studio (-short, ohne Sim/Balance)
+        shell: bash
+        working-directory: .
+        run: task k3c-studio:gotest GO_TEST_FLAGS=-short STUDIO_PKGS="$(cd tools/k3c-studio && go list ./... | grep -Ev "$STUDIO_SIM_PKGS" | tr '\n' ' ')"
+      - run: task workkit:gotest GO_TEST_FLAGS=-short
+        working-directory: .
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.14
+          working-directory: tools/k3c-studio
       - run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
       - run: wails build -s

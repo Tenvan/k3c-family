@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 // Loopback-Adressen und reine Texte (Links in Mock-Daten, SVG-Namensraum).
 
 const ROOT = resolve(__dirname, '..');
-const DIRS = ['tools/k3c-workbench/frontend', 'tools/webkit'];
+const DIRS = ['tools/k3c-workbench/frontend', 'tools/k3c-studio/frontend', 'tools/webkit'];
 const SKIP = new Set(['node_modules', 'dist', 'wailsjs']);
 
 function files(dir: string): string[] {

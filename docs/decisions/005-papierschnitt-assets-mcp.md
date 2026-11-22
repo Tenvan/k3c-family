@@ -86,7 +86,7 @@ Beispiel gekürzt (`…` steht für ausgelassene Pfaddaten):
 - `paper validate` lehnt unbekannte Felder, fremde Materialien, fehlende Pflicht-Teile und Proportionsverstöße ab.
 - Nicht enthalten (YAGNI): Vererbung zwischen Specs, Filter je Asset, Rastertexturen.
 
-### 4. MCP-Tools (k3c-workbench, jedes mit `checkout`; Vertrag `docs/standards/paper-mcp.md`)
+### 4. MCP-Tools (seit WZ63 Server k3c-studio, ursprünglich k3c-workbench; jedes mit `checkout`; Vertrag `docs/standards/paper-mcp.md`)
 
 | Tool | Zweck |
 |---|---|
@@ -181,3 +181,10 @@ zur Selbstkontrolle.
 - Gekaufte Pixel-Assets und `CREDITS.md`-Einträge entfallen mit der Migration; Sound bleibt.
 - Offen für spätere Specs: Skalierung für Xbox und Mobile, Engine-Schatten-Technik in Phaser 4, Laufzeit-Kosten
   großer Spritesheets.
+
+## Nachtrag 2026-11-22 (Sprint WZ63): Studio als eigene EXE
+
+- Das **Studio** kehrt als eigene Wails-App `tools/k3c-studio` zurück (Bereiche Welten, Assets, Hub; ohne Chat und ohne Edit-Controls für Assets) mit eigenem MCP-Server `k3c-studio` (Port 5181, dev 5182). Die Bereiche Assets, Welten-Editor und Gebäude-Planer entfallen in der Workbench, die Entscheidung „Bereich Assets in der Workbench“ (Abschnitt 5, WB1) gilt nicht mehr.
+- Die MCP-Tools `assets_*` (Abschnitt 4), `world_*`, `hub_*` und `level_generate` liegen im Server `k3c-studio` (`mcp__k3c-studio__*`); die Workbench behält Entwicklung, Planung, Prüfläufe, Dienste, Logs und Balancing. Die Tool-Namen der Server sind disjunkt (`tests/mcpToolsDisjoint.test.ts`).
+- Gemeinsamer Code beider Apps liegt im Go-Modul `tools/workkit` (MCP-Gerüst, Log, Konsole, Prozesse, Nutzung, Oberflächen-HTTP, Icon); es importiert weder Workbench noch Studio.
+- Der Vertrag der Tools (`docs/standards/paper-mcp.md`) und die Pipeline (Abschnitte 1–3, 6–7) bleiben unverändert.

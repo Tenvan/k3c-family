@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { PlanningData, PlanProject, PlanSession, PlanSprint, PlanTicket } from '../api';
 import { IconButton, LinkButton, Text } from '@webkit/atoms';
-import { MarkdownView } from '../ui/molecules/MarkdownView';
+import { MarkdownView } from '@webkit/molecules';
 import { ENVS, envTone, setField } from './Backlog';
 import { ModePill, Pill, prioTone, sessionTone, specTone, stateTone, type PillTone } from './Pill';
 import { findSession } from './planning';

@@ -8,7 +8,8 @@
 #   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
 #   k3c-sim      cmd/k3c-sim/Taskfile.yml       Engine-CLI: Simulation, Balancing, Level (B-726)
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
-#   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
+#   k3c-studio   tools/k3c-studio/Taskfile.yml  Studio (Welten, Assets, Hub): dev (Client/Server), window, build, run, frontend, test, lint (WZ63)
+#   balance      tools/k3c-studio/internal/balance/Taskfile.yml  Balancing-Tester (seit WZ63.5 im Studio)
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
@@ -34,8 +35,9 @@ includes:
   go: engine/Taskfile.yml
   k3c-sim: cmd/k3c-sim/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
+  k3c-studio: tools/k3c-studio/Taskfile.yml
   workkit: tools/workkit/Taskfile.yml
-  balance: tools/k3c-workbench/internal/balance/Taskfile.yml
+  balance: tools/k3c-studio/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
   rust: rust/Taskfile.yml
@@ -58,11 +60,12 @@ tasks:
   # --- Einrichten ---------------------------------------------------------------------------------------------------
 
   install:
-    desc: Abhängigkeiten holen (Werkzeuge und Tests der Wurzel, Frontend von k3c-workbench)
+    desc: Abhängigkeiten holen (Werkzeuge und Tests der Wurzel, Frontends von k3c-workbench und k3c-studio)
     cmds:
       - mkdir -p '{{.K3C_TMP}}'
       - bun install --frozen-lockfile
       - bun install --frozen-lockfile --cwd tools/k3c-workbench/frontend
+      - bun install --frozen-lockfile --cwd tools/k3c-studio/frontend
 
   # --- Werkzeuge und Tests der Wurzel (tests/, tools/paper; der Browser-Client ist entfernt, B-848) ------------------
 
@@ -96,9 +99,10 @@ tasks:
       - task: rust:game:build
 
   buildall:
-    desc: Alle EXE bauen (Workbench und Engine-CLI k3c-sim nach bin/, Rust-Spiel nach dist/k3c-game/); laufende EXE vorher schließen, sonst scheitert die Kopie
+    desc: Alle EXE bauen (Workbench, Studio und Engine-CLI k3c-sim nach bin/, Rust-Spiel nach dist/k3c-game/); laufende EXE vorher schließen, sonst scheitert die Kopie
     cmds:
       - task: k3c-workbench:build
+      - task: k3c-studio:build
       - task: k3c-sim:build
       - task: rust:game:build
 
@@ -164,14 +168,16 @@ tasks:
       - go run ./tools/checkdiff -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:dev:
-    desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
+    desc: k3c-workbench und k3c-studio prüfen (Frontends mit Typecheck und Vitest, go test, golangci-lint)
     cmds:
       - task: k3c-workbench:frontend
       - task: k3c-workbench:test
       - task: k3c-workbench:lint
+      - task: k3c-studio:test
+      - task: k3c-studio:lint
 
   check:all:
-    desc: Alles prüfen (Wurzel, Go, k3c-workbench, Build des Rust-Spiels; das Go-Spiel baut nicht mehr mit)
+    desc: Alles prüfen (Wurzel, Go, k3c-workbench, k3c-studio, Build des Rust-Spiels; das Go-Spiel baut nicht mehr mit)
     cmds:
       - task: check
       - task: build

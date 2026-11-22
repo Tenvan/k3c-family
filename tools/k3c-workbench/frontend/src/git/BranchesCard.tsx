@@ -1,10 +1,9 @@
 import { useMemo, useState } from 'react';
 import { ActionButton, Button, Checkbox, Code, Flex, SegmentedControl, StatusBadge, Text, type Tone } from '@webkit/atoms';
 import { CheckField } from '@webkit/molecules';
-import { Table } from '@webkit/organisms';
+import { Table, type ConfirmRequest } from '@webkit/organisms';
 import type { GitBranch, GitBranchState } from '../api';
 import { CopyPrompt } from '../planning/PromptParts';
-import type { ConfirmRequest } from './Confirm';
 import { ago } from './format';
 import { cleanupMarkedPrompt, cleanupStalePrompt, staleBranches } from './prompts';
 

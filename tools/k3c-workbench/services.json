@@ -1,1 +1,5 @@
-[]
+[
+  { "name": "k3c-studio", "tags": ["Tool", "Backend"], "description": "Studio ohne Fenster (WZ63): MCP-Server k3c-studio mit den Tools world_*, assets_*, hub_* und level_generate für Welten, Assets und Hub.",
+    "command": ["task", "k3c-studio:headless"], "cwd": ".", "port": 5181, "health": "tcp", "log": "k3c-studio",
+    "portEnv": "K3C_STUDIO_PORT" }
+]

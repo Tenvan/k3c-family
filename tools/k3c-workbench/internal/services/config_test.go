@@ -16,10 +16,10 @@ func writeConfig(t *testing.T, content string) string {
 	return path
 }
 
-// B-887: Spielserver und Vite sind entfernt, services.json des Moduls ist eine gültige, leere Liste.
+// B-887: Spielserver und Vite sind entfernt; services.json des Moduls führt nur das Studio ohne Fenster (WZ63).
 func TestLoadServicesJSONImModul(t *testing.T) {
 	list, err := Load("../../services.json")
-	if err != nil || len(list) != 0 {
+	if err != nil || len(list) != 1 || list[0].Name != "k3c-studio" || list[0].Port != 5181 {
 		t.Fatalf("services.json: %+v, %v", list, err)
 	}
 }
