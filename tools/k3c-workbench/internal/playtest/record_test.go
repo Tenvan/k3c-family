@@ -297,3 +297,26 @@ func TestStartPruefGeraeteVorDemStart(t *testing.T) {
 		t.Errorf("kein Session-Ordner erwartet: %v", entries)
 	}
 }
+
+func TestStatusAntwortetWaehrendDerGeraetepruefung(t *testing.T) {
+	g := newRig(t)
+	release := make(chan struct{})
+	entered := make(chan struct{})
+	g.rec.Check = func(string, Options) error {
+		close(entered)
+		<-release
+		return nil
+	}
+	done := make(chan struct{})
+	go func() { _, _ = g.rec.Start(Options{Mic: "M"}); close(done) }()
+	<-entered
+	got := make(chan struct{})
+	go func() { _ = g.rec.Status(); close(got) }()
+	select {
+	case <-got:
+	case <-time.After(2 * time.Second):
+		t.Fatal("Status() blockiert während der Geräteprüfung")
+	}
+	close(release)
+	<-done
+}

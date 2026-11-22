@@ -123,33 +123,44 @@ func (r *Recorder) Status() Status {
 	return r.st
 }
 
+// busy meldet, ob schon eine Aufnahme läuft (kurz unter r.mu).
+func (r *Recorder) busy() (Status, bool) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+	return r.st, r.st.Running
+}
+
 // Start prüft ffmpeg, Spiel und Mikro, nimmt auf (QSV, sonst libx264) und startet das Spiel. Scheitert etwas davor,
 // startet kein Spiel und der Ordner verschwindet wieder.
 func (r *Recorder) Start(o Options) (Status, error) {
+	if st, busy := r.busy(); busy {
+		return st, ErrBusy
+	}
+	ffmpeg, err := r.LookPath("ffmpeg")
+	if err != nil {
+		return r.Status(), noFFmpeg(err)
+	}
+	exe, gdir, err := r.Game()
+	if err != nil {
+		return r.Status(), err
+	}
+	if strings.TrimSpace(o.Mic) == "" {
+		return r.Status(), ErrNoMic
+	}
+	if o.Monitor < 0 || o.Monitor > 15 {
+		return r.Status(), ErrBadMonitor
+	}
+	// Die Geräteprobe dauert bis zu einigen Sekunden und läuft ohne r.mu, damit Status() in dieser Zeit antwortet.
+	if r.Check != nil {
+		if err := r.Check(ffmpeg, o); err != nil {
+			r.log("warn", "❌ Gerät nicht nutzbar: "+err.Error())
+			return r.Status(), err
+		}
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.st.Running {
 		return r.st, ErrBusy
-	}
-	ffmpeg, err := r.LookPath("ffmpeg")
-	if err != nil {
-		return r.st, noFFmpeg(err)
-	}
-	exe, gdir, err := r.Game()
-	if err != nil {
-		return r.st, err
-	}
-	if strings.TrimSpace(o.Mic) == "" {
-		return r.st, ErrNoMic
-	}
-	if o.Monitor < 0 || o.Monitor > 15 {
-		return r.st, ErrBadMonitor
-	}
-	if r.Check != nil {
-		if err := r.Check(ffmpeg, o); err != nil {
-			r.log("warn", "❌ Gerät nicht nutzbar: "+err.Error())
-			return r.st, err
-		}
 	}
 	id, dir, err := r.newDir()
 	if err != nil {

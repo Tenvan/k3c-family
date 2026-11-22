@@ -51,7 +51,11 @@ func (f finder) find(name string) (string, error) {
 	}
 	tried = append(tried, "PATH des Prozesses")
 	if runtime.GOOS == "windows" || f.regPaths != nil {
-		for _, d := range f.regPaths() {
+		var dirs []string
+		if f.regPaths != nil {
+			dirs = f.regPaths()
+		}
+		for _, d := range dirs {
 			if p := filepath.Join(d, exeName()); f.isFile(p) {
 				return p, nil
 			}

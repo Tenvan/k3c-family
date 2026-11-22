@@ -30,8 +30,8 @@ func registryPathDirs() []string {
 		if err != nil {
 			continue
 		}
-		for _, d := range strings.Split(os.ExpandEnv(expandPercent(v)), ";") {
-			if d = strings.TrimSpace(d); d != "" {
+		for _, d := range strings.Split(v, ";") { // erst trennen, dann auflösen: ein einzelnes % wandert nicht über ein ; hinweg
+			if d = strings.TrimSpace(os.Expand(expandPercent(d), expandVar)); d != "" {
 				out = append(out, d)
 			}
 		}
@@ -39,8 +39,20 @@ func registryPathDirs() []string {
 	return out
 }
 
-// expandPercent macht aus %NAME% ein ${NAME}, das os.ExpandEnv kennt.
+// expandVar löst ${NAME} auf; `$$` (aus einem literalen $ im Pfad, siehe expandPercent) wird wieder zu einem $.
+func expandVar(name string) string {
+	if name == "$" {
+		return "$"
+	}
+	if v, ok := os.LookupEnv(name); ok {
+		return v
+	}
+	return ""
+}
+
+// expandPercent macht aus %NAME% ein ${NAME} und maskiert ein literales $ als $$.
 func expandPercent(s string) string {
+	s = strings.ReplaceAll(s, "$", "$$")
 	var b strings.Builder
 	for {
 		i := strings.IndexByte(s, '%')
