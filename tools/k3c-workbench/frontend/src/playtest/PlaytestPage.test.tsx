@@ -256,6 +256,25 @@ describe('Auswertung (B-1223)', () => {
     expect(video.currentTime).toBe(1);
   });
 
+  it('Marker-Bilder sind vorab markiert, ein Haken weg blendet das Bild aus, der Marker bleibt (B-1240)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-timeline]')!;
+    const img = () => panel().querySelector('img[alt="Bild zu Marker 1"]') as HTMLElement;
+    expect(img().style.opacity).toBe('1');
+    const box = () => panel().querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    act(() => box().click());
+    await flush();
+    expect(img().style.opacity).toBe('0.3');
+    expect(panel().querySelectorAll('[data-entry="marker"]').length).toBe(1);
+    expect(box().getAttribute('aria-checked')).toBe('false');
+    act(() => box().click());
+    await flush();
+    expect(img().style.opacity).toBe('1');
+  });
+
   it('Befunde: Haken speichern, Duplikat und Prompt-Knöpfe (B-1224)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-21-1"]') as HTMLElement).click());

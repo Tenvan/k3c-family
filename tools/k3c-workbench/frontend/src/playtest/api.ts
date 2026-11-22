@@ -26,6 +26,7 @@ function pick(): PlaytestApi {
       timeline: (id) => app.PlaytestTimeline(id),
       findings: (id) => app.PlaytestFindings(id),
       updateFinding: (id, fid, patch) => app.PlaytestFindingUpdate(id, fid, patch),
+      skipFrame: (id, nr, skip) => app.PlaytestFrameSkip(id, nr, skip),
     };
   }
   if (backend.mock) return mockPlaytest();
@@ -46,6 +47,7 @@ function pick(): PlaytestApi {
     timeline: (id) => rpc('PlaytestTimeline', id),
     findings: (id) => rpc('PlaytestFindings', id),
     updateFinding: (id, fid, patch) => rpc('PlaytestFindingUpdate', id, fid, patch),
+    skipFrame: (id, nr, skip) => rpc('PlaytestFrameSkip', id, nr, skip),
   };
 }
 

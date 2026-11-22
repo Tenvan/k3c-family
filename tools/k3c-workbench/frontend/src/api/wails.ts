@@ -66,6 +66,7 @@ interface GoApp {
   PlaytestTimeline(id: string): Promise<PlaytestTimeline>;
   PlaytestFindings(id: string): Promise<PlaytestFinding[]>;
   PlaytestFindingUpdate(id: string, findingId: string, patch: PlaytestFindingPatch): Promise<PlaytestFinding>;
+  PlaytestFrameSkip(id: string, nr: number, skip: boolean): Promise<void>;
 }
 
 interface WailsRuntime {

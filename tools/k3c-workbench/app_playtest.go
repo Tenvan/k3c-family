@@ -172,6 +172,11 @@ func (a *App) PlaytestFindingUpdate(id, fid string, p playtest.FindingPatch) (pl
 	return a.playtestStore().UpdateFinding(id, fid, p)
 }
 
+// PlaytestFrameSkip blendet das Bild eines Marker aus oder ein (die Datei bleibt).
+func (a *App) PlaytestFrameSkip(id string, nr int, skip bool) error {
+	return a.playtestStore().SetFrameSkip(id, nr, skip)
+}
+
 // playtestFrame liefert ein Marker-Bild (frames/marker-<nr>.jpg).
 func (a *App) playtestFrame() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

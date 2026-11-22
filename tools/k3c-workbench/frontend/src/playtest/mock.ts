@@ -52,10 +52,11 @@ export function mockPlaytest(): PlaytestApi {
   const noJob: PlaytestJob = { running: false, id: '', step: '', done: 0, total: 0, message: '', error: '' };
   let job = noJob;
   let findings: PlaytestFinding[] = seedFindings();
+  let gone = new Set<number>(); // ausgeblendete Marker-Bilder
   const entries = (s: PlaytestSession): PlaytestEntry[] => {
     const done = s.stage === 'transkribiert' || s.stage === 'ausgewertet';
     const t0 = s.startMs;
-    const out: PlaytestEntry[] = [{ kind: 'marker', ms: t0 + 5000, videoMs: 5000, text: 'Marker · Spieler 1 · Insel 2 Stufe 3', nr: 1 }];
+    const out: PlaytestEntry[] = [{ kind: 'marker', ms: t0 + 5000, videoMs: 5000, text: 'Marker · Spieler 1 · Insel 2 Stufe 3', nr: 1, frame: 'frames/marker-1.jpg', skip: gone.has(1) }];
     if (done) out.unshift({ kind: 'sprache', ms: t0 + 1000, videoMs: 1000, endMs: t0 + 3000, text: 'Hier fehlt der Turm.' });
     return out;
   };
@@ -65,6 +66,11 @@ export function mockPlaytest(): PlaytestApi {
       status = idle;
       job = noJob;
       findings = seedFindings();
+      gone = new Set();
+    },
+    skipFrame: async (_id, nr, skip) => {
+      if (skip) gone.add(nr);
+      else gone.delete(nr);
     },
     findings: async () => structuredClone(findings),
     updateFinding: async (_id, fid, patch) => {

@@ -117,6 +117,8 @@ export interface PlaytestEntry {
   text?: string;
   nr?: number;
   frame?: string;
+  /** Bild ausgeblendet: der Chat sieht und beschreibt es nicht. */
+  skip?: boolean;
 }
 
 /** Dauer der letzten Auswertung (transcript.json › stats). */
@@ -199,6 +201,8 @@ export interface PlaytestApi {
   timeline(id: string): Promise<PlaytestTimeline>;
   findings(id: string): Promise<PlaytestFinding[]>;
   updateFinding(id: string, findingId: string, patch: PlaytestFindingPatch): Promise<PlaytestFinding>;
+  /** Blendet das Bild eines Markers aus oder ein (die Datei bleibt). */
+  skipFrame(id: string, nr: number, skip: boolean): Promise<void>;
   /** Nur der Mock: Ausgangsdaten wiederherstellen (Tests). */
   reset?(): void;
 }

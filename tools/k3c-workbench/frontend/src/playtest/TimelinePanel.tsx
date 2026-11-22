@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActionButton, CardButton, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
+import { ActionButton, CardButton, Checkbox, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import { FindingsPanel } from './FindingsPanel';
 import { frameUrl, playtestApi } from './api';
@@ -77,6 +77,8 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       setError(message(e));
     }
   };
+  const toggleSkip = (nr: number, skip: boolean) =>
+    void playtestApi.skipFrame(s.id, nr, skip).then(() => loadTimeline(), (e) => setError(message(e)));
   const cancel = () => void playtestApi.transcribeCancel().catch((e) => setError(message(e)));
 
   const blocked = !s.hasVoice || s.running || (busy && !mine) || cap?.ready === false;
@@ -108,13 +110,13 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
       {timeline?.stats && (
         <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
       )}
-      <Entries id={s.id} timeline={timeline} onSeek={onSeek} />
+      <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} />
       {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
   );
 }
 
-function Entries({ id, timeline, onSeek }: { id: string; timeline: PlaytestTimeline | null; onSeek: (ms: number) => void }) {
+function Entries({ id, timeline, onSeek, onSkipFrame }: { id: string; timeline: PlaytestTimeline | null; onSeek: (ms: number) => void; onSkipFrame: (nr: number, skip: boolean) => void }) {
   if (!timeline) return null;
   if (timeline.entries.length === 0) return <Text size="2" color="gray">Noch kein Transkript und keine Marker.</Text>;
   return (
@@ -123,7 +125,8 @@ function Entries({ id, timeline, onSeek }: { id: string; timeline: PlaytestTimel
       {timeline.entries.map((e) => {
         const img = e.frame && e.nr ? frameUrl(id, e.nr) : null;
         return (
-          <CardButton key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" data-entry={e.kind} variant="ghost"
+          <Flex key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" align="center" gap="1">
+          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1 }}
             onClick={() => onSeek(e.videoMs)} title="Im Player hierhin springen">
             <Flex gap="3" align="center">
               <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
@@ -131,10 +134,16 @@ function Entries({ id, timeline, onSeek }: { id: string; timeline: PlaytestTimel
                 {e.kind === 'marker'
                   ? <StatusBadge tone="warn">{e.text}</StatusBadge>
                   : <Text size="2">{e.text}</Text>}
-                {img && <img src={img} alt={`Bild zu Marker ${e.nr}`} loading="lazy" style={{ height: 44, borderRadius: 3 }} />}
+                {img && <img src={img} alt={`Bild zu Marker ${e.nr}`} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: e.skip ? 0.3 : 1 }} />}
               </Flex>
             </Flex>
           </CardButton>
+          {img && e.nr && (
+            <Checkbox size="1" checked={!e.skip} aria-label={`Bild von Marker ${e.nr} verwenden`}
+              title="Markierte Bilder kommen in den Prompt und werden beschrieben; Haken weg: Bild ausblenden (spart Tokens)"
+              onCheckedChange={(v) => onSkipFrame(e.nr!, v !== true)} />
+          )}
+          </Flex>
         );
       })}
     </Flex>

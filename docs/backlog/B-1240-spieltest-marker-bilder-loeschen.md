@@ -16,11 +16,11 @@
 
 ## Ausgangslage
 
-Jeder Marker bekommt ein Bild (frames/marker-<nr>.jpg). Viele sind doppelt oder unnötig; der Chat liest sie mit playtest_frame und verbraucht Tokens.
+Jeder Marker bekommt ein Bild (frames/marker-<nr>.jpg). Viele sind doppelt oder unnötig; der Chat liest sie mit playtest_frame oder über den Bildpfad und verbraucht dabei Tokens.
 
 ## Ziel
 
-Ralf löscht einzelne Marker-Bilder auf der Seite Spieltest; Auswertung und Chat berücksichtigen nur vorhandene Bilder.
+Alle Marker-Bilder sind vorab ausgewählt; Ralf nimmt unerwünschte oder doppelte heraus. Nur ausgewählte Bilder kommen in den Prompt (playtest_get) und werden später vorab beschrieben (B-1241). Nichts wird gelöscht.
 
 ## Beteiligte und Zielgruppen
 
@@ -28,31 +28,31 @@ Ralf (🧑), Claude als Leser der Session.
 
 ## Anforderungen
 
-- Kleiner Löschen-Knopf am Bild eines Markers mit Bestätigung.
-- Go-Methode löscht nur frames/marker-<nr>.jpg der gewählten Session, nie andere Pfade.
-- Zeitleiste und playtest_get zeigen den Marker weiter, ohne Bild.
-- Erneutes Auswerten erzeugt gelöschte Bilder wieder.
+- Haken am Marker-Bild der Zeitleiste, vorab gesetzt; Haken weg blendet das Bild ab (abgedunkelt).
+- Die Markierung steht in session.json › skipFrames (Nummern der abgewählten Marker); Datei und Marker bleiben.
+- playtest_get nennt bei abgewählten Bildern keinen Pfad, sondern „Bild nicht ausgewählt“.
+- Gesperrt während der Aufnahme.
 
 ## Nicht-Ziele
 
-Mehrfachauswahl; Bilder nachträglich neu ziehen ohne Auswertung.
+Dateien löschen (ersetzt: Ralf wollte markieren statt löschen); Mehrfachauswahl auf einmal.
 
 ## Regeln und Einschränkungen
 
-Atomic Design; Pfad nur aus Session-ID und Nummer, nie vom Client.
+Atomic Design; Pfad nur aus Session-Kennung und Nummer, nie vom Client.
 
 ## Beispiele
 
-Marker #3 ist ein Doppel von #2: Bild von #3 löschen.
+Marker #3 ist ein Doppel von #2: Haken bei #3 entfernen.
 
 ## Ausnahme- und Fehlerfälle
 
-Bild fehlt schon: kein Fehler. Aufnahme läuft: gesperrt.
+Nummer 0 oder Kennung mit Pfadteilen: abgelehnt. Doppeltes Abwählen ändert nichts.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Go-Test: löscht nur das genannte Bild, lehnt ungültige Nummer ab.
-- **AC-02** Vitest: Knopf entfernt das Bild aus der Zeitleiste.
+- **AC-01** Go-Test SetFrameSkip: Markierung, Datei bleibt, ungültige Eingaben abgelehnt.
+- **AC-02** Vitest: Haken abwählen und wieder anwählen, Marker bleibt.
 - **AC-03** Abnahme durch Ralf.
 
 ## Offene Fragen

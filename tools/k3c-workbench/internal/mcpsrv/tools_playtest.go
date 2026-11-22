@@ -224,7 +224,9 @@ func timelineLine(dir string, e playtest.Entry) string {
 			line += fmt.Sprintf(" · Ruckler %.1f ms", *m.FrameMs)
 		}
 	}
-	if e.Frame != "" {
+	if e.Skip {
+		line += " · Bild nicht ausgewählt (nicht ansehen)"
+	} else if e.Frame != "" {
 		line += " · Bild " + filepath.Join(dir, filepath.FromSlash(e.Frame))
 	}
 	return line
