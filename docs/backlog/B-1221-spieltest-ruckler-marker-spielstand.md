@@ -8,9 +8,9 @@
 - **Sprint:** WZ66
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-22
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, Chat 2026-11-22
 - **Duplikat von:** –
 - **Ersetzt:** –
 

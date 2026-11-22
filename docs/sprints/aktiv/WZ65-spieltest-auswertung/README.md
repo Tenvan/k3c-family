@@ -1,14 +1,14 @@
 # WZ65 · DEV · Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1223, B-1224, B-1225
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, Chat 2026-11-22
 
 ## Ausgangslage
 
@@ -70,6 +70,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ65.1 | `WZ65.1-transkript-bilder.md` | Umsetzung | autonom | offen |
+| WZ65.2 | `WZ65.2-mcp-befunde-tickets.md` | Umsetzung | autonom | offen |
+| WZ65.3 | `WZ65.3-review.md` | Review | autonom | offen |
 
 - WZ65.1 Modell laden, Transkribieren, Bilder je Marker (B-1223, AC-01)
 - WZ65.2 MCP `playtest_*`, Prompt-Knöpfe, Befunde (B-1224, AC-02)

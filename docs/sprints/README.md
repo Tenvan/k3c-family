@@ -17,6 +17,9 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | WZ63 | DEV | WZG | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | – | `aktiv/WZ63-studio-eigene-exe/` |
+| WZ64 | DEV | WZG | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | – | `aktiv/WZ64-spieltest-aufnahme/` |
+| WZ66 | CLI | WZG | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | – | `aktiv/WZ66-spieltest-modus-im-spiel/` |
+| WZ65 | DEV | WZG | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | – | `aktiv/WZ65-spieltest-auswertung/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | ECO1 | PAP, CLI, SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | `aktiv/ECO1-eco-plan/` |
@@ -39,9 +42,6 @@ keine
 | GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | bereit | `geplant/GS4-flaschenpost/` |
 | WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
-| WZ64 | DEV | WZG | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | – | Entwurf | `geplant/WZ64-spieltest-aufnahme/` |
-| WZ66 | CLI | WZG | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | – | Entwurf | `geplant/WZ66-spieltest-modus-im-spiel/` |
-| WZ65 | DEV | WZG | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | – | Entwurf | `geplant/WZ65-spieltest-auswertung/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
 | WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
