@@ -70,3 +70,5 @@ Entschieden mit Default (autonom, Claude, 2026-11-21): Wohnhäuser Laterne, Wehr
 ## Notizen
 
 Herkunft: LA1.5, Nachprüfung 2026-11-21. Sofortmaßnahme in LA1.5: Fackeln über den Gebäuden und unter den Figuren, weiter von der Tür (`glow.torchSpread`), Burg mit zwei Fackeln (`glow.castleTorches`), wärmerer Schein (`glow.warmth`), Flamme größer und flackernd. **Lane:** Asset-Änderungen plant Claude immer für den Second Worker (`Lane: zweit`, 🧑 2026-11-21): die Asset-Sessions dieses Tickets bekommen Lane zweit, committen und pushen dort; die Anbindung im Spiel (`world/lightdraw.rs`) bleibt beim Hauptrechner.
+- Spieltest 2026-11-22-11, Befund f12: „Okay, vielleicht noch, man erkennt nicht, dass das Fackeln sind, die Stiele.“ (Insel 1 Stufe 0, Welt standard, Dämmerung, Tag 1)
+- Spieltest 2026-11-22-11, Befund f17: „Da ist eine Fackel mitten in der Werkstatt. Das darf natürlich auch nicht sein. … die Fackeln neben den Werkstätten oder auf dem Boden Feuerschalen da zu platzieren.“ (Insel 1 Stufe 0, Welt standard, Morgendämmerung, Tag 2)

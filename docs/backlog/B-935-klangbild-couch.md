@@ -65,3 +65,4 @@ keine
 ## Notizen
 
 Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+- Spieltest 2026-11-22-11, Befund f5: „Okay, der Sound für die Truhe. Die Fontäne, die ist ja auch ganz komisch. Da gehört auch was Besseres hin.“ (Insel 1 Stufe 0, Welt standard, Tag, Tag 1)

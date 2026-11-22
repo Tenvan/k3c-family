@@ -72,3 +72,4 @@ Welcher Weg (1–4)? Entscheidung nach dem Variantenvergleich (🧑).
 ## Notizen
 
 SoundCraft (ArtCraft, https://craft.wiki/apps/soundcraft/overview/, gelesen 2026-11-15): freie Open-Source-DAW (MIT/Apache-2.0), Windows/macOS/Linux/Web, Pre-Alpha. Eingebaut: Subtraktiv-Synth, Drum-Synth, Sampler, MIDI-Editor, Effekte (EQ, Hall, Delay), Bounce nach WAV/AIFF/FLAC mit LUFS-Angabe; jeder Befehl per Kommandozeile oder KI-Agent steuerbar. Passt zu Weg 4 (Noten per Skript, Rendern in SoundCraft) und Weg 3 (Ambient aus Synth): Claude kann Sessions bauen, mischen und bouncen; für das Spiel danach nach Ogg wandeln (SoundCraft exportiert kein Ogg). Risiko: Pre-Alpha, CLI-Umfang ungeprüft.
+- Spieltest 2026-11-22-11, Befund f2: „Die Musik im Menü ist ein bisschen nervig. Die sollte noch ruhiger gemacht werden. Eine ruhigere, transzendiale Musik.“ (Hauptmenü)

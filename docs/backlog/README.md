@@ -275,6 +275,20 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1239](B-1239-spieltest-auswertung-statistik-kompakt.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Spieltest zeigt Auswertungsdauer je Minute Aufnahme und die Zeitleiste ist kompakter |
 | [B-1240](B-1240-spieltest-marker-bilder-loeschen.md) | DEV | Idee | mittel | eingeplant | WZ65 | Einzelne Marker-Bilder einer Session lassen sich löschen |
 | [B-1241](B-1241-spieltest-bilder-beschreiben.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Marker-Bilder werden vorab lokal beschrieben, damit der Chat sie nicht ansehen muss |
+| [B-1242](B-1242-marker-im-menue-zeigen-keine-rueckmeldun.md) | CLI | Problem | niedrig | offen | WZ66 | Marker im Menü zeigen keine Rückmeldung und tragen keinen Spielkontext |
+| [B-1243](B-1243-das-rufhorn-laesst-sich-nicht-ausloesen.md) | CLI | Problem | mittel | offen | RU36 | Das Rufhorn lässt sich nicht auslösen und seine Voraussetzung ist nicht erkennbar |
+| [B-1244](B-1244-das-schiff-kostet-deutlich-mehr-und-wird.md) | SIM | Idee | mittel | offen | ECO1 | Das Schiff kostet deutlich mehr und wird in mehreren Stufen bezahlt |
+| [B-1245](B-1245-buerger-tragen-keine-forke-bis-sie-sich.md) | CLI | Problem | mittel | offen | FG1 | Bürger tragen keine Forke, bis sie sich Werkzeug geholt haben |
+| [B-1246](B-1246-im-standard-spawnen-pro-tag-nur-zwei-bue.md) | SIM | Problem | mittel | offen | ECO1 | Im Standard spawnen pro Tag nur zwei Bürger statt vieler |
+| [B-1247](B-1247-die-meldung-die-nacht-naht-steht-fest-ob.md) | CLI | Problem | mittel | offen | RU36 | Die Meldung „Die Nacht naht“ steht fest oben unter der Dämmerungsanzeige statt über dem Monarchen |
+| [B-1248](B-1248-bogenschuetzen-stehen-auf-der-standplatt.md) | CLI | Problem | mittel | offen | RU36 | Bogenschützen stehen auf der Standplattform des Turms, nicht auf den Zinnenspitzen |
+| [B-1249](B-1249-hinweistexte-voraussetzung-des-horns-tur.md) | CLI | Idee | mittel | offen | RU36 | Hinweistexte (Voraussetzung des Horns, Turm und Mauer) erscheinen im grünen Bereich zwischen Pferd und Fluss |
+| [B-1250](B-1250-der-pfeil-des-bogenschuetzen-fliegt-im-b.md) | CLI | Problem | mittel | offen | RU36 | Der Pfeil des Bogenschützen fliegt im Bogen vom Schützen zum Ziel |
+| [B-1251](B-1251-mauer-und-turmausbau-haengen-vom-ausbau.md) | SIM | Frage | mittel | offen | ECO1 | Mauer- und Turmausbau hängen vom Ausbau des Hubs ab und sind je Turm erkennbar |
+| [B-1252](B-1252-es-lassen-sich-hoechstens-fuenf-steine-a.md) | SIM | Idee | mittel | offen | ECO1 | Es lassen sich höchstens fünf Steine auf einmal markieren, Erzadern zählen als Markierung |
+| [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | ECO1 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
+| [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | ECO1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
+| [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | ECO1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
 
 ## Archiv
 

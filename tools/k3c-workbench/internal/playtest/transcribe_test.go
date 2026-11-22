@@ -428,3 +428,23 @@ func TestSetFrameSkip(t *testing.T) {
 		t.Errorf("Pfad in der Kennung: %v", err)
 	}
 }
+
+// Scheitert nur ein Marker-Bild (Marker nach dem Ende des Videos), bleibt das Transkript und die Auswertung endet mit Hinweis.
+func TestAuswertungBildFehltKippsNichtDieAuswertung(t *testing.T) {
+	tr, j, dir := trRig(t, true)
+	j.fail = "marker-2"
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	tr.Wait()
+	st := tr.Status()
+	if st.Error != "" || !strings.Contains(st.Message, "Marker 2") {
+		t.Fatalf("Stand: %+v", st)
+	}
+	if _, err := os.Stat(filepath.Join(dir, fileTranscript)); err != nil {
+		t.Error("Transkript fehlt")
+	}
+	if _, err := os.Stat(filepath.Join(dir, "frames", "marker-1.jpg")); err != nil {
+		t.Error("Bild 1 fehlt")
+	}
+}
