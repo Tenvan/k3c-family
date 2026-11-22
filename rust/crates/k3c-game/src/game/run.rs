@@ -12,9 +12,10 @@ use super::Args;
 use super::launch::{self, Launch};
 use super::shots_run::{remove_temp, shot_saves};
 use crate::hud::rec;
+use crate::playtest::flag::Options;
 use crate::playtest::{self, Playtest};
 use k3c_platform::{App, Canvas, Config as WindowConfig, InputState, run_window};
-use std::path::Path;
+use std::path::PathBuf;
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 /// Meldung nach dem normalen Ende.
@@ -40,14 +41,14 @@ pub fn run(args: &Args) -> Result<(), String> {
 /// `--playtest <ordner>` (WZ66, B-1220) wird vorab herausgelöst; nur im normalen Fenster startet es REC und Marker,
 /// sonst (`--assets`, `--shots`, `--measure`) bleibt es ohne Wirkung. Ohne den Schalter läuft alles wie bisher.
 pub fn start(rest: &[String]) -> (Result<(), String>, bool) {
-    let (dir, rest) = match playtest::flag::extract(rest) {
+    let (opts, rest) = match playtest::flag::extract(rest) {
         Ok(v) => v,
         Err(e) => return (Err(e), false),
     };
     match launch::parse(&rest) {
         Ok(a) => {
-            let res = match dir.filter(|_| !a.assets && a.shots.is_empty() && a.measure.seconds <= 0.0) {
-                Some(d) => run_playtest(&a, &d),
+            let res = match opts.filter(|_| !a.assets && a.shots.is_empty() && a.measure.seconds <= 0.0) {
+                Some(o) => run_playtest(&a, &o),
                 None => run(&a),
             };
             (res, a.assets)
@@ -106,7 +107,8 @@ impl App for PlaytestApp {
     fn step(&mut self, input: &InputState, dt: f64) {
         let frame = self.inner.game().map(|g| g.frame());
         self.pt.step(input, frame, now_ms());
-        self.inner.step(input, dt);
+        let gi = self.pt.game_input(input);
+        self.inner.step(&gi, dt);
     }
 
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
@@ -135,9 +137,10 @@ impl App for PlaytestApp {
     }
 }
 
-/// Startet das Spiel im Fenster mit Spieltest in `dir`; Fehler wie `game::launch::run`.
-pub fn run_playtest(args: &Args, dir: &Path) -> Result<(), String> {
-    let mut app = PlaytestApp::new(Launch::new(args), Playtest::open(dir));
+/// Startet das Spiel im Fenster mit Spieltest (Ordner und Schwelle in `o`); Fehler wie `game::launch::run`.
+pub fn run_playtest(args: &Args, o: &Options) -> Result<(), String> {
+    let pt = Playtest::open(&o.dir).configure(o.jank_ms, Some(PathBuf::from(&args.saves)));
+    let mut app = PlaytestApp::new(Launch::new(args), pt);
     let size = (args.w > 0 && args.h > 0).then_some((args.w as u32, args.h as u32));
     let cfg = WindowConfig {
         title: "K3C".to_string(),

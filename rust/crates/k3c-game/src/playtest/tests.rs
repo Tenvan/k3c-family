@@ -13,12 +13,12 @@ use super::{FLASH_TICKS, Playtest};
 use crate::view::frame::{Frame, RouteIsland, Seat, Stage};
 use crate::view::input::{DeviceID, DeviceKind};
 
-fn strs(v: &[&str]) -> Vec<String> {
+pub(super) fn strs(v: &[&str]) -> Vec<String> {
     v.iter().map(|s| (*s).to_string()).collect()
 }
 
 /// Eigener Ordner je Test unter `.work/` im Repo (kein Temp), vorher leer.
-fn dir(name: &str) -> PathBuf {
+pub(super) fn dir(name: &str) -> PathBuf {
     let d = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../../.work/playtest-tests")
         .join(name);
@@ -26,7 +26,7 @@ fn dir(name: &str) -> PathBuf {
     d
 }
 
-fn lines(d: &Path) -> Vec<serde_json::Value> {
+pub(super) fn lines(d: &Path) -> Vec<serde_json::Value> {
     std::fs::read_to_string(d.join(FILE))
         .unwrap_or_default()
         .lines()
@@ -36,7 +36,7 @@ fn lines(d: &Path) -> Vec<serde_json::Value> {
 
 /// Spiel mit zwei Spielern: Spieler 1 auf der Tastatur, Spieler 2 auf Pad 7; Spieler 2 steht in Stufe 2 in der Nacht.
 #[allow(clippy::field_reassign_with_default)]
-fn frame() -> Frame {
+pub(super) fn frame() -> Frame {
     let mut w = World::default();
     w.cycle.phase = "night".to_string();
     w.cycle.day = 4;
@@ -70,7 +70,7 @@ fn frame() -> Frame {
     f
 }
 
-fn lt_rt(input: &mut InputState, pad: u32, down: bool) {
+pub(super) fn lt_rt(input: &mut InputState, pad: u32, down: bool) {
     let p = input.pad_mut(pad);
     p.set_button(PadButton::LT, down);
     p.set_button(PadButton::RT, down);
@@ -79,10 +79,10 @@ fn lt_rt(input: &mut InputState, pad: u32, down: bool) {
 #[test]
 fn flag_wird_herausgeloest() {
     let (d, rest) = extract(&strs(&["--saves", "x", "--playtest", "ordner", "--w", "10"])).unwrap();
-    assert_eq!(d, Some(PathBuf::from("ordner")));
+    assert_eq!(d.map(|o| o.dir), Some(PathBuf::from("ordner")));
     assert_eq!(rest, strs(&["--saves", "x", "--w", "10"]));
     let (d, _) = extract(&strs(&["--playtest=a b"])).unwrap();
-    assert_eq!(d, Some(PathBuf::from("a b")));
+    assert_eq!(d.map(|o| o.dir), Some(PathBuf::from("a b")));
     assert!(extract(&strs(&["--playtest"])).is_err());
 }
 
@@ -245,6 +245,7 @@ fn zeile_ist_eine_zeile() {
         player: 1,
         ctx: Default::default(),
         worst_frame_ms: 16.666,
+        ..Marker::default()
     };
     let l = m.to_line();
     assert!(!l.contains('\n'));
