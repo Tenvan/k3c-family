@@ -179,7 +179,7 @@ function Entries({ id, timeline, onSeek, onSkipFrame, onDescribe, describeBusy, 
         const pick = !!img && !!e.nr; // Zeile mit Bild: Klick schaltet den Haken, die Zeit springt im Player
         return (
           <Flex key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" align="center" gap="1">
-          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1 }}
+          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1, margin: 0 }}
             onClick={() => (pick ? onSkipFrame(e.nr!, !e.skip) : onSeek(e.videoMs))}
             title={pick ? 'Klick wählt das Bild ab oder an' : 'Im Player hierhin springen'}>
             <Flex gap="3" align="center">
