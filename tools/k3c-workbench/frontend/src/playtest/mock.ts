@@ -94,7 +94,11 @@ export function mockPlaytest(): PlaytestApi {
       const s = find(id);
       return { id, captureMs: s.startMs, hasTranscript: s.stage === 'transkribiert' || s.stage === 'ausgewertet', entries: entries(s) };
     },
-    devices: async () => ({ mics: ['Raummikro (USB)', 'Mikrofon (Realtek)'], ffmpeg: true, message: '' }),
+    devices: async () => ({
+      mics: ['Raummikro (USB)', 'Mikrofon (Realtek)'],
+      monitors: [{ index: 0, width: 2560, height: 1440, label: 'Monitor 1 (2560×1440)' }, { index: 1, width: 1920, height: 1080, label: 'Monitor 2 (1920×1080)' }],
+      ffmpeg: true, ffmpegPath: 'C:/ffmpeg/bin/ffmpeg.exe', message: '',
+    }),
     start: async (o) => {
       if (status.running) throw new Error('Aufnahme läuft schon');
       if (!o.mic) throw new Error('kein Mikrofon gewählt');

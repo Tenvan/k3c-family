@@ -27,7 +27,7 @@ const (
 var (
 	ErrBusy        = errors.New("Aufnahme läuft schon")
 	ErrNotRunning  = errors.New("keine Aufnahme aktiv")
-	ErrNoFFmpeg    = errors.New("ffmpeg nicht im PATH gefunden (ffmpeg installieren)")
+	ErrNoFFmpeg    = errors.New("ffmpeg nicht gefunden (ffmpeg installieren)")
 	ErrNoGame      = errors.New("k3c-game.exe nicht gefunden (task build)")
 	ErrNoMic       = errors.New("kein Mikrofon gewählt")
 	ErrBadMonitor  = errors.New("ungültiger Monitor (0 bis 15)")
@@ -65,6 +65,7 @@ type Recorder struct {
 	Store    *Store
 	Spawn    Spawn
 	LookPath func(string) (string, error)
+	Check    func(ffmpeg string, o Options) error // prüft Mikro und Monitor gegen die echten Geräte; nil: keine Prüfung
 	Game     func() (exe, dir string, err error)
 	Now      func() time.Time
 	Log      func(level, msg string, kv ...any)
@@ -132,7 +133,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	ffmpeg, err := r.LookPath("ffmpeg")
 	if err != nil {
-		return r.st, ErrNoFFmpeg
+		return r.st, noFFmpeg(err)
 	}
 	exe, gdir, err := r.Game()
 	if err != nil {
@@ -143,6 +144,12 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	if o.Monitor < 0 || o.Monitor > 15 {
 		return r.st, ErrBadMonitor
+	}
+	if r.Check != nil {
+		if err := r.Check(ffmpeg, o); err != nil {
+			r.log("warn", "❌ Gerät nicht nutzbar: "+err.Error())
+			return r.st, err
+		}
 	}
 	id, dir, err := r.newDir()
 	if err != nil {

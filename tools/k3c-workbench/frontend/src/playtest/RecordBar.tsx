@@ -6,7 +6,8 @@ import { useNow } from '../lib/useNow';
 import { playtestApi } from './api';
 import type { PlaytestDevices, PlaytestStatus } from './types';
 
-const MONITORS = ['0', '1', '2', '3'] as const;
+/** Ohne Geräteprobe (kein Desktop, ffmpeg fehlt) bleibt eine feste Auswahl, damit die Seite nutzbar bleibt. */
+const FALLBACK_MONITORS = [0, 1, 2, 3].map((index) => ({ index, width: 0, height: 0, label: `Monitor ${index + 1}` }));
 const IDLE: PlaytestStatus = { running: false, id: '', startMs: 0, encoder: '' };
 
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
@@ -45,10 +46,11 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
 
   const choose = (m: string) => { setMic(m); savePref('playtest.mic', m); };
   const screen = (m: string) => { setMonitor(m); savePref('playtest.monitor', m); };
-  const start = async () => {
+  const refresh = () => { setError(''); playtestApi.devices().then(setDevices, (e) => setError(message(e))); };
+  const start = async (shown: string) => {
     setError('');
     try {
-      setStatus(await playtestApi.start({ mic, monitor: Number(monitor), gameArgs: [] }));
+      setStatus(await playtestApi.start({ mic, monitor: Number(shown), gameArgs: [] }));
       onChange();
     } catch (e) {
       setError(message(e));
@@ -63,14 +65,20 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
   };
 
   const mics = devices?.mics ?? [];
+  const monitors = devices?.monitors?.length ? devices.monitors : FALLBACK_MONITORS;
+  // Ein gemerktes Gerät, das es nicht mehr gibt (Mikro abgezogen, Monitor weg), wird nie stillschweigend benutzt.
+  const micKnown = mics.includes(mic);
+  const shownMonitor = monitors.some((m) => String(m.index) === monitor) ? monitor : String(monitors[0].index);
   return (
     <Flex direction="column" gap="2" px="3" pb="3" data-record={status.running ? 'running' : 'idle'}>
       <Flex gap="2" align="center" wrap="wrap">
         <SelectField aria-label="Mikrofon" placeholder="Mikrofon wählen" value={mic} disabled={status.running}
           options={mics.map((m) => ({ value: m, label: m }))} onChange={choose} />
-        <SelectField aria-label="Monitor" value={MONITORS.includes(monitor as (typeof MONITORS)[number]) ? monitor : '0'}
-          disabled={status.running} options={MONITORS.map((m) => ({ value: m, label: `Monitor ${Number(m) + 1}` }))} onChange={screen} />
-        <ActionButton disabled={status.running || !mic || devices?.ffmpeg === false} onClick={start}>Spieltest starten</ActionButton>
+        <SelectField aria-label="Monitor" value={shownMonitor}
+          disabled={status.running} options={monitors.map((m) => ({ value: String(m.index), label: m.label }))} onChange={screen} />
+        <ActionButton variant="soft" disabled={status.running} onClick={refresh}>Geräte neu suchen</ActionButton>
+        <ActionButton disabled={status.running || !micKnown || devices?.ffmpeg === false}
+          onClick={() => start(shownMonitor)}>Spieltest starten</ActionButton>
         <ActionButton color="red" variant="soft" disabled={!status.running} onClick={stop}>Stopp</ActionButton>
         {status.running && (
           <Text size="2" weight="bold" color="red" role="status">
@@ -79,6 +87,14 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
         )}
       </Flex>
       {devices?.ffmpeg === false && <NoticeCard title="ffmpeg fehlt" tone="warn">{devices.message}</NoticeCard>}
+      {devices?.ffmpeg && mics.length === 0 && (
+        <NoticeCard title="Kein Mikrofon gefunden" tone="warn">
+          ffmpeg sieht kein Aufnahmegerät (DirectShow). Raummikro anschließen und „Geräte neu suchen“ drücken.
+        </NoticeCard>
+      )}
+      {devices?.ffmpeg && mic && mics.length > 0 && !micKnown && (
+        <NoticeCard title="Mikrofon nicht gefunden" tone="warn">„{mic}“ ist nicht angeschlossen. Anderes Mikrofon wählen oder „Geräte neu suchen“.</NoticeCard>
+      )}
       {error && <NoticeCard title="Spieltest" tone="error">{error}</NoticeCard>}
     </Flex>
   );

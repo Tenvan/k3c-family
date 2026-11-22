@@ -23,7 +23,7 @@ func (t *Transcriber) FrameAt(id string, tsMs int64) (string, error) {
 	}
 	ff, err := t.LookPath("ffmpeg")
 	if err != nil {
-		return "", ErrNoFFmpeg
+		return "", noFFmpeg(err)
 	}
 	dir := filepath.Join(t.Store.Root, ses.ID)
 	rel := dirFrames + "/t-" + strconv.FormatInt(tsMs, 10) + ".jpg"

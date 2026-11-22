@@ -282,3 +282,18 @@ func TestListDevicesOhneFFmpeg(t *testing.T) {
 		t.Errorf("d = %+v", d)
 	}
 }
+
+func TestStartPruefGeraeteVorDemStart(t *testing.T) {
+	g := newRig(t)
+	boom := errors.New("Mikrofon „M“ lässt sich nicht öffnen")
+	g.rec.Check = func(string, Options) error { return boom }
+	if _, err := g.rec.Start(Options{Mic: "M"}); !errors.Is(err, boom) {
+		t.Fatalf("Gerätefehler erwartet, bekam %v", err)
+	}
+	if g.rec.Status().Running {
+		t.Error("ohne nutzbares Gerät darf nichts laufen")
+	}
+	if entries, _ := os.ReadDir(g.rec.Store.Root); len(entries) != 0 {
+		t.Errorf("kein Session-Ordner erwartet: %v", entries)
+	}
+}

@@ -145,6 +145,38 @@ describe('Spieltest starten (B-1219)', () => {
   });
 });
 
+describe('Geräte (B-1230)', () => {
+  it('Monitore kommen aus der Geräteprobe mit Auflösung', async () => {
+    const host = await mount();
+    expect(host.querySelector('[aria-label="Monitor"]')!.textContent).toContain('Monitor 1 (2560×1440)');
+    expect(button('Geräte neu suchen', host)).toBeTruthy();
+  });
+
+  it('ohne Aufnahmegerät steht ein Hinweis da und der Start bleibt gesperrt', async () => {
+    const real = playtestApi.devices;
+    playtestApi.devices = async () => ({ mics: [], monitors: [], ffmpeg: true, ffmpegPath: 'ffmpeg', message: '' });
+    try {
+      const host = await mount();
+      expect(host.textContent).toContain('Kein Mikrofon gefunden');
+      expect(button('Spieltest starten', host).disabled).toBe(true);
+      expect(host.querySelector('[aria-label="Monitor"]')!.textContent).toContain('Monitor 1');
+    } finally {
+      playtestApi.devices = real;
+    }
+  });
+
+  it('ein gemerktes Mikro, das es nicht mehr gibt, sperrt den Start und warnt', async () => {
+    localStorage.setItem('k3c-workbench.playtest.mic', 'Abgezogenes Mikro');
+    try {
+      const host = await mount();
+      expect(button('Spieltest starten', host).disabled).toBe(true);
+      expect(host.textContent).toContain('Mikrofon nicht gefunden');
+    } finally {
+      localStorage.removeItem('k3c-workbench.playtest.mic');
+    }
+  });
+});
+
 describe('Auswertung (B-1223)', () => {
   it('Auswerten ergibt Stand transkribiert und eine Zeitleiste mit Satz und Marker; Klick springt im Player', async () => {
     const host = await mount();

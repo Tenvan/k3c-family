@@ -57,7 +57,7 @@ func (t *Transcriber) check(model string) Capability {
 	}
 	ff, err := t.LookPath("ffmpeg")
 	if err != nil {
-		c.Message = ErrNoFFmpeg.Error()
+		c.Message = noFFmpeg(err).Error()
 		return c
 	}
 	out, _ := t.Out([]string{ff, "-hide_banner", "-version"})

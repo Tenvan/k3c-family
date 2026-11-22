@@ -5,7 +5,6 @@ import (
 	"context"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -106,15 +105,17 @@ func Game(root string) func() (string, string, error) {
 
 // NewRecorder baut den Recorder für die Ablage store unter root mit echten Prozessen.
 func NewRecorder(root string, store *Store, log func(level, msg string, kv ...any)) *Recorder {
-	return &Recorder{Store: store, Spawn: ExecSpawn, LookPath: exec.LookPath, Game: Game(root), Now: time.Now, Log: log,
-		Settle: 2 * time.Second, QuitWait: 10 * time.Second}
+	return &Recorder{Store: store, Spawn: ExecSpawn, LookPath: FindFFmpeg, Game: Game(root), Now: time.Now, Log: log,
+		Settle: 2 * time.Second, QuitWait: 10 * time.Second, Check: func(ff string, o Options) error { return CheckDevices(runProbe, ff, o.Mic, o.Monitor) }}
 }
 
 // Devices sind die wählbaren Geräte der Seite.
 type Devices struct {
-	Mics    []string `json:"mics"`
-	FFmpeg  bool     `json:"ffmpeg"` // ffmpeg im PATH
-	Message string   `json:"message"`
+	Mics       []string  `json:"mics"`
+	Monitors   []Monitor `json:"monitors"` // geprüft mit einem Probebild; leer, wenn keiner aufnehmbar ist
+	FFmpeg     bool      `json:"ffmpeg"`   // ffmpeg gefunden (FindFFmpeg)
+	FFmpegPath string    `json:"ffmpegPath"`
+	Message    string    `json:"message"`
 }
 
 var quoted = regexp.MustCompile(`"([^"]+)"`)
@@ -145,11 +146,12 @@ func ParseMics(out string) []string {
 	return mics
 }
 
-// ListDevices fragt ffmpeg nach den Mikrofonen (ffmpeg beendet den Aufruf mit Fehlercode, die Liste steht in stderr).
+// ListDevices fragt ffmpeg nach den Mikrofonen (ffmpeg beendet den Aufruf mit Fehlercode, die Liste steht in stderr)
+// und probiert die Monitore mit je einem Probebild durch.
 func ListDevices(lookPath func(string) (string, error)) Devices {
 	ff, err := lookPath("ffmpeg")
 	if err != nil {
-		return Devices{Mics: []string{}, Message: ErrNoFFmpeg.Error()}
+		return Devices{Mics: []string{}, Monitors: []Monitor{}, Message: noFFmpeg(err).Error()}
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
@@ -161,7 +163,11 @@ func ListDevices(lookPath func(string) (string, error)) Devices {
 	if mics == nil {
 		mics = []string{}
 	}
-	return Devices{Mics: mics, FFmpeg: true}
+	mons := listMonitors(runProbe, ff)
+	if mons == nil {
+		mons = []Monitor{}
+	}
+	return Devices{Mics: mics, Monitors: mons, FFmpeg: true, FFmpegPath: ff}
 }
 
 // RunOut führt einen kurzen Aufruf aus und liefert stdout und stderr (höchstens 30 s); für die Prüfung von ffmpeg.
@@ -177,6 +183,6 @@ func RunOut(args []string) (string, error) {
 
 // NewTranscriber baut die Auswertung für die Ablage store unter root mit echten Prozessen.
 func NewTranscriber(root string, store *Store, log func(level, msg string, kv ...any)) *Transcriber {
-	return &Transcriber{Store: store, Spawn: ExecSpawn, Out: RunOut, LookPath: exec.LookPath, Now: time.Now, Log: log,
+	return &Transcriber{Store: store, Spawn: ExecSpawn, Out: RunOut, LookPath: FindFFmpeg, Now: time.Now, Log: log,
 		Model: func() string { return ModelPath(root) }, Models: func() []ModelInfo { return ListModels(root) }}
 }
