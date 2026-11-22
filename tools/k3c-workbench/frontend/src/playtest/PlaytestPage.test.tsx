@@ -290,6 +290,20 @@ describe('Auswertung (B-1223)', () => {
     expect(panel().querySelector('[data-describe-one]')).toBeNull(); // abgewähltes Bild: kein Einzel-Knopf
   });
 
+  it('Alle Bilder auf einmal ab- und anwählen (B-1240)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const box = () => host.querySelector('[aria-label="Bild von Marker 1 verwenden"]') as HTMLElement;
+    expect(box().getAttribute('aria-checked')).toBe('true');
+    act(() => button('Alle abwählen', host).click());
+    await flush();
+    expect(box().getAttribute('aria-checked')).toBe('false');
+    act(() => button('Alle anwählen', host).click());
+    await flush();
+    expect(box().getAttribute('aria-checked')).toBe('true');
+  });
+
   it('Marker-Bilder sind vorab markiert, ein Haken weg blendet das Bild aus, der Marker bleibt (B-1240)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());

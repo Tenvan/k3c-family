@@ -80,6 +80,15 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
     }
   };
   const describe = useDescribe(s.id, refresh, loadTimeline);
+  // Alle Marker-Bilder auf einmal an- oder abwählen (nacheinander, damit session.json nie gleichzeitig geschrieben wird).
+  const setAll = async (skip: boolean) => {
+    try {
+      for (const e of timeline?.entries ?? []) if (e.frame && e.nr && !!e.skip !== skip) await playtestApi.skipFrame(s.id, e.nr, skip);
+    } catch (err) {
+      setError(message(err));
+    }
+    loadTimeline();
+  };
   const toggleSkip = (nr: number, skip: boolean) =>
     void playtestApi.skipFrame(s.id, nr, skip).then(() => loadTimeline(), (e) => setError(message(e)));
   const cancel = () => void playtestApi.transcribeCancel().catch((e) => setError(message(e)));
@@ -114,6 +123,13 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
         <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
       )}
       {timeline?.entries.some((e) => e.frame) && <DescribeBar d={describe} sessionId={s.id} />}
+      {timeline?.entries.some((e) => e.frame) && (
+        <Flex gap="2" align="center" data-pick-all>
+          <Text size="1" color="gray">Bilder:</Text>
+          <ActionButton size="1" variant="ghost" onClick={() => void setAll(false)}>Alle anwählen</ActionButton>
+          <ActionButton size="1" variant="ghost" onClick={() => void setAll(true)}>Alle abwählen</ActionButton>
+        </Flex>
+      )}
       <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} onDescribe={(nr) => describe.start([nr])} describeBusy={describe.busy} describeReady={describe.info?.ready ?? false} />
       {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
