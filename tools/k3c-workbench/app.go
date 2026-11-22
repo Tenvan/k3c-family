@@ -21,8 +21,6 @@ import (
 	"k3c/tools/k3c-workbench/internal/planning"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
-	"k3c/tools/k3c-workbench/internal/world"
-	"k3c/tools/k3c-workbench/internal/studioview"
 	"k3c/tools/k3c-workbench/internal/taskrun"
 	"k3c/tools/workkit/usage"
 )
@@ -38,7 +36,6 @@ const (
 	evTaskState    = "task:state"
 	evNotify       = "ui:notify" // Hinweis eines Agenten (notify_ui)
 	evPlanning     = "planning:changed"
-	evWorld        = "world:changed"
 )
 
 // MCPState ist der Zustand des MCP-Servers für das Badge der Kopfzeile.
@@ -80,7 +77,6 @@ type App struct {
 	taskRunner *taskrun.Runner
 	gh         *github.Client   // GitHub-Stand der Planungsseite (B-212), PRs der Seite Git
 	git        *gitops.Repo     // Seite Git (B-580)
-	game       *studioview.Game // „Im Spiel ansehen“ im Bereich Assets (WB1.4), angelegt beim ersten Aufruf
 
 	mu  sync.Mutex
 	mcp MCPState
@@ -123,9 +119,6 @@ func (a *App) startup(ctx context.Context) {
 	planning.WatchIDs(a.svcCtx, a.root, planningPoll, func(ids []string) {
 		a.emit(a.ctx, evPlanning, planning.Changed{IDs: ids})
 	})
-	world.Watch(a.svcCtx, a.root, worldPoll, func(ids []string) {
-		a.emit(a.ctx, evWorld, world.Changed{IDs: ids})
-	})
 	a.ctl, a.svcErr = openServices(a.svcCtx, a.root, store, a.log,
 		func(st services.Status) {
 			a.emit(a.ctx, evServiceState, st)
@@ -161,7 +154,6 @@ func (a *App) shutdown(context.Context) {
 	a.wait()
 	a.log.Info("🛑 k3c-workbench beendet", "ns", "main")
 	a.cancel()
-	a.closeStudio() // Räume von „Im Spiel ansehen“ speichern
 	// Ein halb gelaufener Testlauf darf die Anwendung nicht überleben, unabhängig von den Diensten.
 	stopCtx, stop := context.WithTimeout(context.Background(), taskStopTimeout)
 	if err := a.taskRunner.StopAll(stopCtx); err != nil {

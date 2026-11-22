@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"k3c/engine/simcli"
+	"k3c/tools/workkit/mcpkit"
 )
 
 type replayIn struct {
@@ -48,7 +48,7 @@ func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
 		return "", err
 	}
 	root := s.ws(ctx).Root
-	path, err := insideRoot(root, in.Path)
+	path, err := mcpkit.InsideRoot(root, in.Path)
 	if err != nil {
 		return "", err
 	}
@@ -92,30 +92,6 @@ func replayText(path string, r replayHead, pb playback) string {
 		lines = append(lines, "Warnung: "+w)
 	}
 	return strings.Join(lines, "\n")
-}
-
-// insideRoot liefert den Pfad nur, wenn er (auch nach Symlinks) unterhalb der Repo-Wurzel liegt.
-func insideRoot(root, name string) (string, error) {
-	if name == "" {
-		return "", fmt.Errorf("path fehlt: Replay-Datei relativ zur Repo-Wurzel")
-	}
-	path := name
-	if !filepath.IsAbs(path) {
-		path = filepath.Join(root, path)
-	}
-	realRoot, err := filepath.EvalSymlinks(root)
-	if err != nil {
-		return "", fmt.Errorf("Repo-Wurzel %q: %w", root, err)
-	}
-	real, err := filepath.EvalSymlinks(path)
-	if err != nil {
-		return "", fmt.Errorf("%s nicht gefunden: %w", name, err)
-	}
-	rel, err := filepath.Rel(realRoot, real)
-	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) || filepath.IsAbs(rel) {
-		return "", fmt.Errorf("path %q abgelehnt: nur Dateien unterhalb der Repo-Wurzel", name)
-	}
-	return real, nil
 }
 
 // tickText schreibt einen Tick oder „keiner“.

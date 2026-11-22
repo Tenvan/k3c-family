@@ -8,6 +8,7 @@
 #   go           engine/Taskfile.yml            go test, Lint, Race, Abdeckung, Golden-Dateien
 #   k3c-sim      cmd/k3c-sim/Taskfile.yml       Engine-CLI: Simulation, Balancing, Level (B-726)
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
+#   k3c-studio   tools/k3c-studio/Taskfile.yml  Studio (Welten, Assets, Hub): headless, dev:server, gotest, lint (WZ63)
 #   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
@@ -34,6 +35,7 @@ includes:
   go: engine/Taskfile.yml
   k3c-sim: cmd/k3c-sim/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
+  k3c-studio: tools/k3c-studio/Taskfile.yml
   workkit: tools/workkit/Taskfile.yml
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
@@ -164,11 +166,13 @@ tasks:
       - go run ./tools/checkdiff -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:dev:
-    desc: k3c-workbench prüfen (Frontend mit Vitest, go test, golangci-lint)
+    desc: k3c-workbench und k3c-studio prüfen (Frontend mit Vitest, go test, golangci-lint)
     cmds:
       - task: k3c-workbench:frontend
       - task: k3c-workbench:test
       - task: k3c-workbench:lint
+      - task: k3c-studio:gotest
+      - task: k3c-studio:lint
 
   check:all:
     desc: Alles prüfen (Wurzel, Go, k3c-workbench, Build des Rust-Spiels; das Go-Spiel baut nicht mehr mit)

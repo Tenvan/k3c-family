@@ -1,0 +1,58 @@
+# Namespace `k3c-studio`: Werkzeug für Game- und Level-Designer (WZ63): Welten, Assets, Hub und der MCP-Server
+# k3c-studio (Vorgabe-Port 5181, K3C_STUDIO_PORT). Eigenes Modul k3c/tools/k3c-studio, per replace auf k3c, assetkit und
+# workkit. Frontend, `build` (wails build), `dev` mit Vite und `window` folgen mit WZ63.3; bis dahin läuft das Backend
+# ohne Fenster (`headless`, `dev:server`).
+version: '3'
+
+vars:
+  STUDIO_DIR: '{{.ROOT_DIR}}/tools/k3c-studio'
+
+tasks:
+  gotest:
+    desc: go test für tools/k3c-studio (GO_TEST_FLAGS=-short lässt lange Tests aus)
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    cmds:
+      - go test {{.GO_TEST_FLAGS}} ./...
+
+  lint:
+    desc: golangci-lint für tools/k3c-studio (depguard sperrt Importe aus k3c-workbench)
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    cmds:
+      - golangci-lint run --allow-serial-runners
+
+  headless:build:
+    desc: "Studio-Backend ohne Fenster bauen, feste EXE build/bin/k3c-studio-headless (go build, Konsolen-Subsystem)"
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    sources:
+      - '*.go'
+      - go.mod
+      - go.sum
+      - internal/**/*
+      - ../assetkit/**/*.go
+      - ../workkit/**/*.go
+      - ../../engine/**/*.go
+      - ../../data/**/*
+      - exclude: '**/*_test.go'
+    generates:
+      - build/bin/k3c-studio-headless{{exeExt}}
+    cmds:
+      - go build -o build/bin/k3c-studio-headless{{exeExt}} .
+
+  headless:
+    desc: "Studio-Backend ohne Fenster starten: MCP-Server k3c-studio auf K3C_STUDIO_PORT (Vorgabe 5181)"
+    deps: [headless:build]
+    dir: '{{.STUDIO_DIR}}'
+    cmds:
+      - build/bin/k3c-studio-headless{{exeExt}} -headless
+
+  dev:server:
+    desc: "Backend ohne Fenster (k3c-studio -dev): MCP auf K3C_STUDIO_PORT (Vorgabe im dev 5182), Neustart bei Go-Änderungen"
+    deps: [':tmp']
+    dir: '{{.STUDIO_DIR}}'
+    # Bewusst `go build` (Konsolen-Subsystem), nie `wails build`: devrun beendet das Kind per CTRL_BREAK über die Konsole.
+    cmds:
+      - go build -o build/bin/k3c-studio-dev{{exeExt}} .
+      - build/bin/k3c-studio-dev{{exeExt}} -dev

@@ -66,3 +66,11 @@ func Clip(s string) string {
 func Ref(id int64) string {
 	return fmt.Sprintf("%07x", (uint64(id)*2654435761)&0xfffffff)
 }
+
+// OrDash schreibt einen leeren Wert als „–“.
+func OrDash(s string) string {
+	if s == "" {
+		return "–"
+	}
+	return s
+}

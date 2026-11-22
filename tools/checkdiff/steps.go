@@ -27,7 +27,7 @@ var simDirs = map[string]bool{
 
 // lintMods: Module mit golangci-lint (wie task check:go und check:dev).
 var lintMods = map[string]bool{
-	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/workkit": true,
+	".": true, "tools/k3c-workbench": true, "tools/assetkit": true, "tools/workkit": true, "tools/k3c-studio": true,
 }
 
 // prepTasks: Module, deren Go-Code ein gebautes Frontend einbettet (go:embed frontend/dist).

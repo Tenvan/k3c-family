@@ -56,11 +56,7 @@ func register(s *Server) {
 	registerServices(s)
 	registerTasks(s)
 	registerPlanning(s)
-	registerAssets(s)
-	registerAssetsResearch(s)
-	registerAssetsImport(s)
-	registerHub(s)
-	registerWorld(s)
+	// Weltdesign (world_*, assets_*, hub_*, level_generate) liegt im MCP-Server k3c-studio (WZ63).
 }
 
 // registerLogs sind die Tools der Seite Dienste & Logs (Workbench-Spec § 2): Konsole, Logdateien, Fehler.
@@ -109,15 +105,8 @@ func registerLogs(s *Server) {
 	}, s.logsSince)
 }
 
-// registerEngine sind die Engine-Tools (B-047): rechnen im Prozess der Workbench über engine/simcli (B-924), ohne laufenden Server.
+// registerEngine sind die Engine-Tools (B-047; level_generate seit WZ63 in k3c-studio): rechnen im Prozess der Workbench über engine/simcli (B-924), ohne laufenden Server.
 func registerEngine(s *Server) {
-	add(s, &mcp.Tool{
-		Name: "level_generate",
-		Description: "Erzeugt ein Level mit der Engine der Workbench (kein Server nötig): Kopfzeile, eine Zeile je Abschnitt, " +
-			"Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. " +
-			"Nutze es bei: Level eines Seeds prüfen. Statt: Server starten und Level-Betrachter öffnen.",
-		Annotations: readOnlyEngine(),
-	}, s.levelGenerate)
 	add(s, &mcp.Tool{
 		Name: "sim_run",
 		Description: "Deterministischer Simulationslauf mit der Engine der Workbench (kein Server nötig), höchstens 100000 Ticks (30/s): " +

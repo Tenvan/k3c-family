@@ -22,7 +22,7 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
   Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
   und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
 - **Im Worktree immer `checkout` setzen** (B-388): Schreibende Tools (`plan_create`, `plan_set`, `plan_section`,
-  `plan_sections`, `plan_delete`, `svc_*`, `task_start`, `task_stop`), alle `assets_*` (auch die lesenden), `check_run` und `sim_test` nehmen das Argument `checkout` mit dem Ordnernamen
+  `plan_sections`, `plan_delete`, `svc_*`, `task_start`, `task_stop`), `check_run` und `sim_test` nehmen das Argument `checkout` mit dem Ordnernamen
   oder dem absoluten Pfad des eigenen Checkouts (`git rev-parse --show-toplevel`). Es gilt vor dem Header; der Header
   allein genügt nicht, die Desktop-App meldet aus Worktrees die Repo-Wurzel (B-341). Ein unbekannter oder mehrdeutiger
   Wert wird abgelehnt, die Meldung nennt die Worktrees. `task_*` mit einem Worktree lehnt ab (dort `check_run`).
@@ -143,78 +143,13 @@ zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`d
 - `reports_list` und `report_read` statt `reports/*.json` zu öffnen (Berichte und `sim_test`-Läufe).
 - `saves_list` statt `saves/` zu durchsuchen: Stufe, Tag, Spieler und Datum je Spielstand.
 
-### Assets (Papierschnitt)
-
-Assets sind Paper-Specs `public/grafik/<gruppe>/<id>.paper.json` (Vertrag `docs/standards/paper-mcp.md`); geändert wird
-**nur** über diese Tools, jedes nimmt `checkout`. Neue Tools gelten erst nach Merge und Neustart der Workbench aus der
-Repo-Wurzel (B-701 D-10).
-
-- Einstieg `assets_guide {rig?}`: Stil-Regeln, Materialien, Pflicht-Teile, Pivots, Vorlage, Ablauf.
-- Lesen: `assets_list {rig?, gruppe?, geaendert?}`, `assets_get {id, felder?}`, `assets_style_get`.
-- Ändern: `assets_set {id, patch}` (JSON-Merge-Patch, atomar; abgelehnt = nichts geändert, je Fehler `feld · regel · text`),
-  `assets_create {id, rig, beschreibung, gruppe}`, `assets_delete {id, confirm}`, `assets_style_set {patch}` (nur Lane `stil`).
-- Ablauf: `assets_get` → `assets_set` → `assets_preview {id, animation?, frame?, variante?, basis?}` (Bild `image/png` plus
-  Teil-Boxen) → `assets_review {basis?}` (Basis `HEAD`, `HEAD~1`, Commit-SHA oder `origin/develop`).
-- Rendern: `assets_render {id}` synchron, `{alle: true}` startet einen Job (`j-<n>`), `{job}` Stand, `{job, wait: true}`
-  wartet bis zum Ende (eigener Mechanismus, nicht `task_*`).
-- Prompts: jede Vorlage aus `data/asset-prompts.json` ist der MCP-Prompt `asset-<id>`, Argumente = Platzhalter.
-
-### Gebäude-Planer (B-923)
-
-`data/hub.json` (Hub-Stufen, Bauplätze, Händler, Baugrund) samt Block der Regeltabelle `docs/rules/materialien-gebaeude.md` § 3;
-jedes Tool nimmt `checkout`. Keine Grafik: Assets ändern nur die `assets_*`-Tools.
-
-- `hub_get`: Matrix Hub-Stufe × Bauplatz, Befunde der Prüfung (`sim.ValidateHubData`), Abweichung der Regeltabelle, Zeile `Stand`.
-- `hub_check {patch | candidate}`: prüft eine Änderung ohne zu schreiben; `patch` ist ein JSON-Merge-Patch, Listen ganz angeben.
-- `hub_save {patch | candidate, stand}`: schreibt `data/hub.json` format-stabil (ein Wert, eine Zeile) und die Regeltabelle,
-  nur ohne Befund und solange die Datei dem `stand` aus `hub_get` entspricht. REG-Änderung: Commit mit Begründung.
-
-### Welten (B-954)
-
-`data/worlds/<id>.json` des Checkouts (docs/rules/welten.md); jedes Tool nimmt `checkout`. Geschrieben wird atomar und
-format-stabil (nur geänderte Werte, ein Wert eine Zeile), vorher prüft die Engine wie das Laden im Spiel (`sim.ParseWorld`,
-Werte aller Nachfolger); bei Fehler bleibt die Datei. Keine Simulation. Das Biom folgt der Tiefe (`biomes` im Patch = Kurzform von `depths`).
-
-- `world_list`, `world_get {id}`: Welten mit Inseln, Tiefen → Biome, geplante Chunks, Geschichte (fehlende Einträge als
-  „fehlt“) und Text der Datei.
-- `world_create {id, name, extends?, story?}`: neue Welt mit einer Insel `island1` (Tiefen 0-4); überschreibt nie. `story`
-  wie die Felder von `world_story_set`; ohne sie endet die Antwort mit „Geschichte fehlt: world_story_set“.
-- `world_delete {id, confirm}`: löscht die Datei einer Welt endgültig; abgelehnt werden feste Welten und Welten mit Erben (`extends`), Spielstände bleiben (Warnung).
-- `world_set {id, patch}`: `name`, `notes`, `extends`, `combat {mode, groupSize}` (null entfernt) und `islands` (Liste; bekannte `id` ändert
-  nur genannte Felder, neue `id` wird angehängt; `depths` oder `biomes`, `depthScaling` wird gemischt). Jede Insel außer der letzten braucht
-  in Tiefe 0 einen Hafen-Chunk (im selben Aufruf als `plannedChunks` mitgeben oder vorher `world_chunks_set`).
-- `world_override_set {id, file, path, value}`: Override eines Basis-Felds (z. B. `economy` › `purse.startGold`); null setzt zurück.
-- `world_chunks_set {id, island, depth, chunks?, count?}`: `plannedChunks` und `chunkCounts` einer Tiefe; `[]` bzw. 0 entfernt.
-- `world_story_set {id, lexicon?, start?, etappen?, end?, bottles?, islands?}`: Geschichte der Welt (docs/rules/welten.md
-  § 2.2) in einem Aufruf oder je Teil: `lexicon` Liste Kunstwörter, `start`/`end` je 1 bis 2 Zeilen, `etappen {"1": [Zeilen]}`,
-  `bottles` Liste von Einträgen, `islands {<insel-id>: {arrival?, boss?, done?}}`. Fehlt ein Feld, bleibt es; `[]` entfernt
-  den Eintrag; `lexicon` und `bottles` ersetzen die ganze Liste. Geschrieben wird nur, wenn die Prüfung der Engine besteht
-  (sonst nennt der Fehler Feld und Zeile); die Antwort nennt gesetzte, entfernte und noch fehlende Einträge. `world_set`
-  nimmt `story` nicht an.
-- `world_check {id}`: prüft die Datei wie das Laden im Spiel, ändert nichts; fehlende Einträge der Geschichte kommen als
-  `Hinweis: Geschichte fehlt (…)`, Verstöße als Fehler.
-
-### Recherche für Grafik- und Sound-Slots
-
-Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist hier ein Slot daraus.
-
-- Recherche (Treffer in `data/assets-recherche.json`): `assets_research {id, query?}` fragt freesound (Token in
-  `K3C_FREESOUND_TOKEN` oder `.work/freesound-token`), Wikimedia Commons und OpenGameArt; `assets_hits {id}` liest,
-  `assets_hit_add {id, titel, link, …}` legt einen eigenen Fund ab (z. B. itch.io, Kenney), `assets_hit_drop {id, hit}`
-  verwirft. Lizenz-Status nach Q70: `erkannt`, `pruefen` (bis 🧑 bestätigt), `ausgeschlossen` (ND, Pixabay, Mixkit …).
-- `assets_import {id, hit, path?}` übernimmt einen Treffer: `path` = Datei im eigenen Checkout, z. B. `.work/` (Endung
-  und Inhalt geprüft, höchstens 20 MB), ohne `path` der direkte Download (nur `https`, erkannte Lizenz, nur von
-  `upload.wikimedia.org`). Ablage `public/grafik/kandidaten/` bzw.
-  `public/audio/kandidaten/`, Credit-Zeile im Abschnitt „Importe (k3c-workbench)“, Zuordnung als letzte Präferenz. Die Lizenz
-  bestätigt nur 🧑 in der Oberfläche; ein Agent nie.
-
 ### Rechnen ohne Server
-- `level_generate {seed, biome?}` und `sim_run {seed, ticks, biome?, inputs?}` rechnen im Prozess der Workbench
+- `sim_run {seed, ticks, biome?, inputs?}` rechnet im Prozess der Workbench
   (`engine/simcli`, B-924), ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
   (30 pro Sekunde). Für Balancing-Vergleiche statt eigener Skripte.
 - `replay_run {path}` spielt eine Replay-Datei (`task balance:run -- --replay-dir DIR`) ohne Bot ab: Endzustand-Hash,
   Burgfall-Tick, Vergleich mit der Aufnahme; `path` relativ zur Repo-Wurzel, Dateien außerhalb werden abgelehnt.
-- Diese drei und `sim_test start` rechnen **Code und Daten dieses Prozesses** (Stand beim Start der Workbench), nicht die
+- Diese beiden und `sim_test start` rechnen **Code und Daten dieses Prozesses** (Stand beim Start der Workbench), nicht die
   eines Worktrees. Aus einem anderen Checkout lehnen sie ab; der Hinweis nennt `task k3c-workbench:dev:worktree`: eigene
   Dev-Workbench im Worktree (eigene Ports, `K3C_DATA_DIR=<Worktree>/data`), dort mit deren `K3C_DEV_PORT` verbinden. Das gilt
   für Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und für Daten in `data/`. Nur die Welten- und

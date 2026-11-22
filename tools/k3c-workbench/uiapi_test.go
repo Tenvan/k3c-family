@@ -119,8 +119,13 @@ func TestUIMethodsWieWailsTS(t *testing.T) {
 		t.Fatal("interface GoApp nicht gefunden")
 	}
 	var ts []string
+	// Assets, Welten, Hub und Studio-Ansichten sind seit WZ63.2 Bindings von k3c-studio; ihre Seiten verlassen das
+	// Workbench-Frontend erst mit WZ63.3, bis dahin stehen sie noch in GoApp.
+	studio := regexp.MustCompile(`^(Assets|Studio|World|Hub)[A-Z]`)
 	for _, m := range regexp.MustCompile(`(?m)^\s+(\w+)\(`).FindAllSubmatch(body[1], -1) {
-		ts = append(ts, string(m[1]))
+		if !studio.Match(m[1]) {
+			ts = append(ts, string(m[1]))
+		}
 	}
 	var goNames []string
 	typ := reflect.TypeFor[*App]()

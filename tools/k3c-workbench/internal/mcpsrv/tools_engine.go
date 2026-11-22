@@ -8,16 +8,11 @@ import (
 	"k3c/engine/simcli"
 )
 
-// level_generate und sim_run rechnen im Prozess über engine/simcli (B-924, wie `k3c-sim level` und `k3c-sim run`); eine
-// Panik der Engine wird zum Fehler des Tools (simcli.Exec).
+// sim_run und replay_run rechnen im Prozess über engine/simcli (B-924, wie `k3c-sim run`); eine Panik der Engine wird
+// zum Fehler des Tools (simcli.Exec). level_generate ist mit dem Weltdesign nach k3c-studio gewandert (WZ63).
 
 // engineTimeout begrenzt einen Aufruf (sim_run mit 100000 Ticks dauert Sekunden).
 const engineTimeout = 2 * time.Minute
-
-type levelIn struct {
-	Seed  string `json:"seed" jsonschema:"Seed als Text, z. B. 0 oder familie-2026"`
-	Biome string `json:"biome,omitempty" jsonschema:"forest (Standard), cave oder mine"`
-}
 
 // segment sind gedrückte Tasten eines Monarchen über einen Tick-Bereich (engine/enginetools › Segment).
 type segment struct {
@@ -34,14 +29,6 @@ type simIn struct {
 	Ticks  int       `json:"ticks" jsonschema:"Anzahl Ticks, 1 bis 100000 (30 pro Sekunde)"`
 	Biome  string    `json:"biome,omitempty" jsonschema:"forest (Standard), cave oder mine"`
 	Inputs []segment `json:"inputs,omitempty" jsonschema:"gedrückte Tasten je Monarch und Tick-Bereich; ohne Angabe ein Monarch ohne Eingaben"`
-}
-
-// levelGenerate ist das Tool level_generate (`k3c-sim level`, kein Server nötig).
-func (s *Server) levelGenerate(ctx context.Context, in levelIn) (string, error) {
-	if err := s.ownCheckoutErr(ctx, "level_generate"); err != nil {
-		return "", err
-	}
-	return s.engineCall(ctx, "level", in)
 }
 
 // simRun ist das Tool sim_run (`k3c-sim run`, kein Server nötig); während der Sim-Sperre lehnt es ab (B-788).

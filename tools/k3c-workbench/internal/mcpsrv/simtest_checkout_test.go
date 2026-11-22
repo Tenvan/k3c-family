@@ -8,8 +8,9 @@ import (
 	"testing"
 )
 
-// B-924/B-925: Die Engine rechnet im Prozess der Workbench. sim_test start, sim_run, replay_run und level_generate lehnen
-// ein checkout ab, das nicht der Checkout dieser Workbench ist, und nennen die eigene Dev-Workbench im Worktree.
+// B-924/B-925: Die Engine rechnet im Prozess der Workbench. sim_test start, sim_run und replay_run lehnen
+// ein checkout ab, das nicht der Checkout dieser Workbench ist, und nennen die eigene Dev-Workbench im Worktree
+// (level_generate: k3c-studio, WZ63).
 func TestSimToolsLehnenFremdenCheckoutAb(t *testing.T) {
 	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	main, _ := gitRepo(t, ".claude/worktrees/wt-a")
@@ -29,9 +30,6 @@ func TestSimToolsLehnenFremdenCheckoutAb(t *testing.T) {
 	}
 	if _, err := s.replayRun(ctx, replayIn{Path: "x.json"}); err == nil || !strings.Contains(err.Error(), "dev:worktree") {
 		t.Errorf("replay_run: %v", err)
-	}
-	if _, err := s.levelGenerate(ctx, levelIn{Seed: "1"}); err == nil || !strings.Contains(err.Error(), "dev:worktree") {
-		t.Errorf("level_generate: %v", err)
 	}
 	if started != 0 {
 		t.Errorf("%d Läufe trotz Ablehnung", started)

@@ -61,6 +61,30 @@ func TestAlleToolsMitBeschreibungUndAnnotations(t *testing.T) {
 	}
 }
 
+// WZ63 (AC-05): Weltdesign-Tools (world_*, assets_*, hub_*, level_generate) führt nur noch k3c-studio; weder Katalog
+// noch instructions.md der Workbench nennen sie.
+func TestKeineStudioToolsInDerWorkbench(t *testing.T) {
+	t.Parallel()
+	res, err := connect(t, New(Config{Version: "test"})).ListTools(context.Background(), nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	studio := func(name string) bool {
+		return name == "level_generate" || strings.HasPrefix(name, "world_") || strings.HasPrefix(name, "assets_") ||
+			strings.HasPrefix(name, "hub_")
+	}
+	for _, tool := range res.Tools {
+		if studio(tool.Name) {
+			t.Errorf("Studio-Tool %s im Katalog der Workbench", tool.Name)
+		}
+	}
+	for _, name := range []string{"level_generate", "world_", "assets_", "hub_"} {
+		if strings.Contains(instructions, "`"+name) {
+			t.Errorf("instructions.md nennt noch %s", name)
+		}
+	}
+}
+
 type echoIn struct {
 	Text  string `json:"text"`
 	Times int    `json:"times,omitempty"`

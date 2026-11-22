@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"k3c/tools/k3c-workbench/internal/logs"
+	"k3c/tools/workkit/mcpkit"
 )
 
 const (
@@ -119,9 +120,4 @@ func orDefault(v, def int) int {
 	return v
 }
 
-func orDash(s string) string {
-	if s == "" {
-		return "–"
-	}
-	return s
-}
+func orDash(s string) string { return mcpkit.OrDash(s) }
