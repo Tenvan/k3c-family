@@ -69,7 +69,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WZ64.1 | `WZ64.1-seite-ablage-aufraeumen.md` | Umsetzung | autonom | fertig |
-| WZ64.2 | `WZ64.2-aufnahme-ffmpeg-spielstart.md` | Umsetzung | autonom | offen |
+| WZ64.2 | `WZ64.2-aufnahme-ffmpeg-spielstart.md` | Umsetzung | autonom | fertig |
 | WZ64.3 | `WZ64.3-review.md` | Review | autonom | offen |
 
 - WZ64.1 Seite, Ablage, Aufräumen (B-1218, AC-01)
