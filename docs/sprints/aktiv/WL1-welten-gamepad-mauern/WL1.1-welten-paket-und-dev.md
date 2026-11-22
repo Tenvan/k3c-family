@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
-- **Lane:** erst
+- **Lane:** zweit
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** wl1/1-welten-paket-und-dev
