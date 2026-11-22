@@ -133,7 +133,12 @@ func writeDescriptions(dir string, d map[int]FrameDesc) error {
 }
 
 // cleanVision schneidet die Antwort der Laufzeit auf den Text (stdout enthält nur ihn; Leerraum außen weg).
-func cleanVision(out string) string { return strings.TrimSpace(strings.ReplaceAll(out, "\r\n", "\n")) }
+func cleanVision(out string) string {
+	return strings.TrimSpace(thinkRe.ReplaceAllString(strings.ReplaceAll(out, "\r\n", "\n"), ""))
+}
+
+// thinkRe findet Denkblöcke (<think>…</think>), die Qwen3.5 leer voranstellt.
+var thinkRe = regexp.MustCompile(`(?s)<think>.*?</think>`)
 
 // VisionStatus ist der Stand der Bildbeschreibung für die Seite.
 type VisionStatus struct {
