@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
-import { Button, Flex } from '@webkit/atoms';
-import { AlertDialog } from '@webkit/organisms';
+import { AlertDialog } from '@radix-ui/themes';
+import { Button, Flex } from '../atoms';
 
 export interface ConfirmRequest {
   title: string;

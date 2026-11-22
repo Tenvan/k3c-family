@@ -2,9 +2,8 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNod
 import { backend } from '../api';
 import { Button, Flex, IconButton, Progress, Text, TextField } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
-import { Callout } from '@webkit/molecules';
+import { Callout, MarkdownView } from '@webkit/molecules';
 import { Dialog } from '@webkit/organisms';
-import { MarkdownView } from '../ui/molecules/MarkdownView';
 import { CopyPrompt } from './PromptParts';
 import { parseDoc, type ReaderSection } from './readerDoc';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, SelectField, Text } from '@webkit/atoms';
 import type { ReportRating } from '../api';
-import { Confirm, type ConfirmRequest } from '../git/Confirm';
+import { Confirm, type ConfirmRequest } from '@webkit/organisms';
 import type { ListEntry } from './entries';
 
 export const MIN_COMPARE = 2;

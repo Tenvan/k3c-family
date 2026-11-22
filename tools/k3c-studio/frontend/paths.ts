@@ -10,5 +10,5 @@ export const DEDUPE = ['react', 'react-dom', '@radix-ui/themes'];
 /** tools/webkit liegt außerhalb des Frontends; der Dev-Server darf es ausliefern. */
 export const WEBKIT = ALIAS['@webkit'];
 
-/** Die Mocks lesen echte Dateien: Welten data/, Assets die Fixtures tools/paper/fixtures/ui (WB1). */
-export const MOCK_DATA = ['../../../data', '../../paper/fixtures/ui'].map((p) => fileURLToPath(new URL(p, import.meta.url)));
+/** Die Mocks lesen echte Dateien: Welten und Balancing data/, Balancing docs/data/, Assets die Fixtures tools/paper/fixtures/ui (WB1). */
+export const MOCK_DATA = ['../../../docs/data', '../../../data', '../../paper/fixtures/ui'].map((p) => fileURLToPath(new URL(p, import.meta.url)));

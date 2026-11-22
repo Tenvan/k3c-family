@@ -127,12 +127,9 @@ func TestBalanceTuningPfad(t *testing.T) {
 }
 
 // WZ28.10: Die Auswahlboxen Bot und Grad der Balancing-Seite (help.ts) nennen genau die Bots und Grade der Engine.
-// Bis die Seite in WZ63.6 ins Studio wandert, liegt help.ts noch im Frontend der Workbench (nur gelesen, kein Import).
+// Seit WZ63.6 liegt die Seite im Frontend des Studios (nur gelesen, kein Import).
 func TestAuswahlWieGo(t *testing.T) {
 	src, err := os.ReadFile("frontend/src/balancing/help.ts")
-	if os.IsNotExist(err) {
-		src, err = os.ReadFile("../k3c-workbench/frontend/src/balancing/help.ts")
-	}
 	if err != nil {
 		t.Fatal(err)
 	}

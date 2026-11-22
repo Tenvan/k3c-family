@@ -10,5 +10,5 @@ export const DEDUPE = ['react', 'react-dom', '@radix-ui/themes'];
 /** tools/webkit liegt außerhalb des Frontends; der Dev-Server darf es ausliefern. */
 export const WEBKIT = ALIAS['@webkit'];
 
-/** Die Mocks lesen echte Dateien: Balancing docs/data/ und data/, Assets die Fixtures tools/paper/fixtures/ui (WB1). */
-export const MOCK_DATA = ['../../../docs/data', '../../../data', '../../paper/fixtures/ui'].map((p) => fileURLToPath(new URL(p, import.meta.url)));
+/** Dateien außerhalb des Frontends, die die Mocks lesen: keine mehr, seit Assets (WZ63.3) und Balancing (WZ63.6) im Studio liegen. */
+export const MOCK_DATA: string[] = [];

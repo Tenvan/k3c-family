@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { HeaderRight, useNavigation } from './Header';
 import { AssetsArea } from './assets/AssetsArea';
+import { BalancingPage } from './balancing/BalancingPage';
 import { loadPref, savePref } from './lib/prefs';
 import { PlannerPage } from './planner/PlannerPage';
 import { WorldPage } from './world/WorldPage';
@@ -14,7 +15,8 @@ const MODES = ['dark', 'light'] as const;
 const systemMode = (): (typeof MODES)[number] =>
   window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 
-/** Rahmen von k3c-studio (WZ63.3): Bereiche Welten, Assets und Hub; die Seiten kommen unverändert aus der Workbench. */
+/** Rahmen von k3c-studio (WZ63.3): die sieben Studio-Seiten als Reiter in der Kopfzeile wie früher in der Workbench; die
+ *  Seiten kommen unverändert von dort. */
 export function App() {
   const nav = useNavigation();
   const [mode, setMode] = useState(() => loadPref('app.mode', MODES, systemMode()));
@@ -30,9 +32,16 @@ export function App() {
     savePref('app.mode', mode);
   }, [mode]);
 
+  // Balancing bleibt eingehängt (laufende Läufe, Auswahl) wie früher in der Workbench; forceMount hält den Inhalt,
+  // hidden und display verbergen ihn.
+  const balancing = nav.page === 'balancing';
+
   return (
     <AppFrame title="K3C Studio" appearance={mode} tabs={nav.tabs}
-      right={<HeaderRight area={nav.area} onArea={nav.chooseArea} mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}>
+      right={<HeaderRight mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}>
+      <Tabs.Content value="balancing" forceMount hidden={!balancing} style={balancing ? undefined : { display: 'none' }}>
+        <BalancingPage active={balancing} />
+      </Tabs.Content>
       <Tabs.Content value="welten">
         <WorldPage />
       </Tabs.Content>

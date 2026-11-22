@@ -83,14 +83,14 @@ describe('Ereignisse', () => {
     const again = vi.fn();
     const runs = vi.fn();
     api.on('ui:reconnect', again);
-    api.on('balance:runs', runs);
+    api.on('task:state', runs);
     expect(FakeSource.last?.listeners.has('ui:reconnect')).toBe(false);
     FakeSource.last?.emit('open', null);
     expect(again).not.toHaveBeenCalled();
     FakeSource.last?.emit('open', null);
     expect(again).toHaveBeenCalledExactlyOnceWith(null);
-    FakeSource.last?.emit('balance:runs', { id: 'run-1' });
-    expect(runs).toHaveBeenCalledWith({ id: 'run-1' });
+    FakeSource.last?.emit('task:state', { name: 'check' });
+    expect(runs).toHaveBeenCalledWith({ name: 'check' });
   });
 });
 

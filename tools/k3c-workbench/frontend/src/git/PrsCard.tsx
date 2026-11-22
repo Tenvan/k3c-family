@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { ActionButton, Button, Flex, LinkButton, StatusBadge, Text, TextArea, TextField, type Tone } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
-import { Table } from '@webkit/organisms';
+import { Table, type ConfirmRequest } from '@webkit/organisms';
 import { backend, type GitPR, type GitPRAction, type GitPRList } from '../api';
 import { CopyPrompt } from '../planning/PromptParts';
-import type { ConfirmRequest } from './Confirm';
 import { ago } from './format';
 import { fixPrPrompt, reviewAllPrsPrompt } from './prompts';
 

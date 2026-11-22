@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { Button, Flex, IconButton, Text } from '@webkit/atoms';
 import { Dialog } from '@webkit/organisms';
 import { errorText } from '@webkit/lib/errors';
-import { MarkdownView } from '../ui/molecules/MarkdownView';
+import { MarkdownView } from '@webkit/molecules';
 import { FIELD_HELP, type HelpKey } from './help';
 
 interface Props {

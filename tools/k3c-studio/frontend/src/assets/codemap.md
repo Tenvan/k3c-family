@@ -8,7 +8,7 @@ die RPC-Methoden laut `docs/standards/paper-mcp.md` › 4.
 
 ## Design
 
-- `AssetsArea.tsx`: die vier Seiten als `Tabs.Content` im `Tabs.Root` von AppFrame (`App.tsx`, Reiter aus `Header.tsx`:
+- `AssetsArea.tsx`: die vier Seiten als reine `Tabs.Content`-Gruppe im `Tabs.Root` von AppFrame (`App.tsx`, Reiter aus `Header.tsx`:
   `review`, `katalog`, `styleguide`, `sound`); rechnet beim Start das Review gegen `HEAD` im Hintergrund vor
   (`loadReview('HEAD')`, B-732).
 - `SoundSourcesPage.tsx`: Seite „Sound & Quellen“ (B-892) mit Umschalter (`ChipSwitch`, gemerkt `studio.soundTeil`)

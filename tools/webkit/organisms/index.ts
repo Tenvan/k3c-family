@@ -6,4 +6,5 @@ export { AppHeader, type HeaderTabs } from './AppHeader';
 export { TicketButton } from './TicketButton';
 export { TicketDialog } from './TicketDialog';
 export { FacetRail, type Facet, type FacetRailProps } from './FacetRail';
+export { Confirm, type ConfirmRequest } from './Confirm';
 export { TransportBar, type TransportBarProps } from './TransportBar';

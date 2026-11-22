@@ -1,10 +1,13 @@
 import { mockAssets } from './mockAssets';
+import { mockBalance } from './mockBalance';
+import { mockBalanceData } from './mockBalanceData';
 import { mockHub } from './mockHub';
 import { mockWorld } from './mockWorld';
 import type { Backend, EventName, Events, Info, McpState } from './types';
 
 // Mock ohne Wails-Laufzeit (`?mock=1`, Vitest): erfundene Daten, damit die Oberfläche im Browser testbar ist. Die
-// Bereiche lassen ihre Daten in eigenen Dateien laufen (mockWorld.ts, mockAssets.ts, mockHub.ts).
+// Bereiche lassen ihre Daten in eigenen Dateien laufen (mockWorld.ts, mockAssets.ts, mockHub.ts,
+// mockBalance*.ts).
 
 type Listener = (data: never) => void;
 
@@ -28,6 +31,8 @@ export function mockBackend(): Backend {
     ...mockAssets(),
     ...mockWorld(),
     ...mockHub(),
+    ...mockBalance({ run: (run) => emit('balance:runs', run), reports: () => emit('balance:reports', null) }),
+    ...mockBalanceData(),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },

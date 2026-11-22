@@ -4,13 +4,13 @@ import { loadPref, savePref } from './lib/prefs';
 import { StatusBadge, Tip } from '@webkit/atoms';
 import { McpBadge, SwitchField } from '@webkit/molecules';
 
-/** Seiten der Workbench. Welten-Editor, Assets und Gebäude-Planer sind seit WZ63.3 im Studio (k3c-studio); Balancing,
- *  vorher im Bereich Studio, steht seitdem als letzte Seite in der einen Reiterleiste. */
-export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring', 'balancing'] as const;
+/** Seiten der Workbench (nur Development). Welten-Editor, Assets und Gebäude-Planer sind seit WZ63.3 im Studio
+ *  (k3c-studio), die Balancing-Seite seit WZ63.6. */
+export const PAGES = ['dienste', 'tasks', 'planung', 'git', 'mcp', 'monitoring'] as const;
 export type Page = (typeof PAGES)[number];
 
 export const LABELS: Record<Page, string> = {
-  dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring', balancing: 'Balancing',
+  dienste: 'Dienste & Logs', tasks: 'Tasks', planung: 'Planung', git: 'Git', mcp: 'MCP', monitoring: 'Monitoring',
 };
 
 /** Gewählte Seite, gemerkt unter `app.page`; `tabs` sind die Reiter für AppFrame. */

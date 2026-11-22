@@ -1,32 +1,9 @@
 import { devEvents, devRpc } from '@webkit/lib/devRpc';
-import type { Backend, BalanceBackend, Events } from './types';
+import type { Backend, Events } from './types';
 
 // Client-Server-Betrieb (k3c-workbench -headless/-dev, Go: uiapi.go über tools/workkit/uikit): Transport in
 // tools/webkit/lib/devRpc.ts.
 const rpc = devRpc('k3c-workbench');
-
-function httpBalance(): BalanceBackend {
-  return {
-    balanceStart: (spec) => rpc('BalanceStart', spec),
-    balanceRuns: () => rpc('BalanceRuns'),
-    balanceStop: (id) => rpc('BalanceStop', id),
-    balanceReports: () => rpc('BalanceReports'),
-    balanceBaselines: () => rpc('BalanceBaselines'),
-    balanceReport: (path) => rpc('BalanceReport', path),
-    balanceTuning: (path) => rpc('BalanceTuning', path),
-    balanceDataFiles: () => rpc('BalanceDataFiles'),
-    balanceDataDoc: (name) => rpc('BalanceDataDoc', name),
-    balanceDataValues: (name) => rpc('BalanceDataValues', name),
-    balanceDataValuesAll: () => rpc('BalanceDataValuesAll'),
-    balanceReportRate: (path, rating) => rpc('BalanceReportRate', path, rating),
-    balanceReportDelete: (path) => rpc('BalanceReportDelete', path),
-    balanceReportsRate: (paths, rating) => rpc('BalanceReportsRate', paths, rating),
-    balanceReportsDelete: (paths) => rpc('BalanceReportsDelete', paths),
-    balanceSaveBaseline: (path, name) => rpc('BalanceSaveBaseline', path, name),
-    balanceInsights: (path) => rpc('BalanceInsights', path),
-    balanceReportHTML: (path) => rpc('BalanceReportHTML', path),
-  };
-}
 
 export function httpBackend(): Backend {
   return {
@@ -75,7 +52,6 @@ export function httpBackend(): Backend {
     gitStamp: () => rpc('GitStamp'),
     ticketCreate: (input) => rpc('TicketCreate', input),
     ticketRecent: (n) => rpc('TicketRecent', n),
-    ...httpBalance(),
     openUrl: (url) => {
       window.open(url, '_blank', 'noopener');
     },

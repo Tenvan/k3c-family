@@ -6,7 +6,7 @@ React-Single-Page-App von k3c-studio (WZ63.3): Shell mit den drei Bereichen **We
 
 ## Design
 
-- `main.tsx` (Einstieg, Stile aus `styles/`: `assets`, `world`, `planer`), `App.tsx` (Rahmen über `AppFrame` aus `@webkit/templates`), `Header.tsx` (Bereichsumschalter, MCP-Badge, Mock-Badge, Dark-Schalter).
+- `main.tsx` (Einstieg, Stile aus `styles/`: `assets`, `world`, `planer`), `App.tsx` (Rahmen über `AppFrame` aus `@webkit/templates`), `Header.tsx` (die sieben Seiten als Reiter der Kopfzeile in der Reihenfolge von B-892, gemerkt unter `app.page`, navigateTo-Ziele samt Aliasen `hub`/`assets`; MCP-Badge, Mock-Badge, Dark-Schalter).
 - `api/`: Backend-Schicht (`wails.ts`, `http.ts`, `mock.ts`, `mockWorld.ts`, `mockAssets.ts`, `mockHub.ts`, Verträge `types*.ts`, `hubFixture.json`); Methodenliste gleich `uiMethods` in `uiapi.go`.
 - Seiten: `world/` (Welten-Editor, B-879), `assets/` (Review, Katalog, Styleguide, Sound & Quellen; eigene Codemaps in den Unterordnern), `planner/` (Gebäude-Planer, B-923); `lib/` (`TreeBar`, `useTreeOpen`, Prefs).
 - Gemeinsames in `tools/webkit` (`@webkit/…`); Radix nur darüber.

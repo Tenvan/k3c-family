@@ -31,19 +31,19 @@ describe('Kopfzeile in schmalen Fenstern (B-668/AC-02)', () => {
   });
 });
 
-describe('Seiten der Workbench (WB1, WZ63.3)', () => {
+describe('Seiten der Workbench (WB1, WZ63.3, WZ63.6)', () => {
   const header = (html: string) => html.slice(html.indexOf('<header'), html.indexOf('</header>'));
   /** Beschriftung des gewählten Reiters. */
   const active = (head: string) => /aria-selected="true".*?TabsTriggerInner">([^<]+)</.exec(head)?.[1];
 
-  it('alle Seiten samt Balancing in einer Reiterleiste, ohne Bereichsumschalter und Studio-Seiten', () => {
+  it('alle Development-Seiten in einer Reiterleiste, ohne Bereichsumschalter, Studio-Seiten und Balancing (WZ63.6)', () => {
     for (const page of PAGES) {
       savePref('app.page', page);
       const head = header(renderToStaticMarkup(<App />));
       for (const p of PAGES) expect(head, `${page}: ${p}`).toContain(`>${LABELS[p].replace('&', '&amp;')}<`);
       expect(active(head)).toBe(LABELS[page].replace('&', '&amp;'));
       expect(head).not.toMatch(/aria-label="Bereich"/);
-      for (const studio of ['Welten-Editor', 'Gebäude-Planer', 'Katalog', 'Styleguide']) expect(head).not.toContain(`>${studio}<`);
+      for (const studio of ['Welten-Editor', 'Gebäude-Planer', 'Katalog', 'Styleguide', 'Balancing']) expect(head).not.toContain(`>${studio}<`);
     }
   });
 });

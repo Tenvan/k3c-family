@@ -1,7 +1,7 @@
 import type {
   Backend, ConsoleLine, ErrorsView, EventName, Events, Info, LevelCounts, LogQuery, LogView, McpCall, McpOverview,
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskRun, PlanDoc, PlanItem, PlanningData, GitHubData, WorktreeDiff,
-  BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceInsights, BalanceDataValue, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning, GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
+  GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -53,29 +53,6 @@ interface GoApp {
   TicketRecent(n: number): Promise<TicketCreated[]>;
 }
 
-// Bindings der Balancing-Seite: seit WZ63.5 im Backend von k3c-studio, nicht mehr an der App der Workbench
-// (TestUIMethodsWieWailsTS). Übergang bis WZ63.6, das die Seite ins Studio verschiebt und diese Schnittstelle entfernt.
-interface GoAppBalance {
-  BalanceStart(spec: BalanceSpec): Promise<BalanceRun>;
-  BalanceRuns(): Promise<BalanceRun[]>;
-  BalanceStop(id: string): Promise<void>;
-  BalanceReports(): Promise<BalanceReportInfo[]>;
-  BalanceBaselines(): Promise<BalanceBaseline[]>;
-  BalanceReport(path: string): Promise<BalanceSummary>;
-  BalanceTuning(path: string): Promise<Tuning>;
-  BalanceDataFiles(): Promise<BalanceDataFile[]>;
-  BalanceDataDoc(name: string): Promise<string>;
-  BalanceDataValues(name: string): Promise<BalanceDataValue[]>;
-  BalanceDataValuesAll(): Promise<BalanceDataFileValue[]>;
-  BalanceReportRate(path: string, rating: string): Promise<void>;
-  BalanceReportDelete(path: string): Promise<void>;
-  BalanceReportsRate(paths: string[], rating: string): Promise<void>;
-  BalanceReportsDelete(paths: string[]): Promise<void>;
-  BalanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
-  BalanceInsights(path: string): Promise<BalanceInsights>;
-  BalanceReportHTML(path: string): Promise<string>;
-}
-
 interface WailsRuntime {
   EventsOn(name: string, fn: (...data: unknown[]) => void): () => void;
   BrowserOpenURL(url: string): void;
@@ -83,36 +60,13 @@ interface WailsRuntime {
 
 declare global {
   interface Window {
-    go?: { main?: { App?: GoApp & GoAppBalance } };
+    go?: { main?: { App?: GoApp } };
     runtime?: WailsRuntime;
   }
 }
 
 export function hasWails(): boolean {
   return window.go?.main?.App !== undefined && window.runtime !== undefined;
-}
-
-function balanceWails(app: GoAppBalance): BalanceBackend {
-  return {
-    balanceStart: (spec) => app.BalanceStart(spec),
-    balanceRuns: () => app.BalanceRuns(),
-    balanceStop: (id) => app.BalanceStop(id),
-    balanceReports: () => app.BalanceReports(),
-    balanceBaselines: () => app.BalanceBaselines(),
-    balanceReport: (path) => app.BalanceReport(path),
-    balanceTuning: (path) => app.BalanceTuning(path),
-    balanceDataFiles: () => app.BalanceDataFiles(),
-    balanceDataDoc: (name) => app.BalanceDataDoc(name),
-    balanceDataValues: (name) => app.BalanceDataValues(name),
-    balanceDataValuesAll: () => app.BalanceDataValuesAll(),
-    balanceReportRate: (path, rating) => app.BalanceReportRate(path, rating),
-    balanceReportDelete: (path) => app.BalanceReportDelete(path),
-    balanceReportsRate: (paths, rating) => app.BalanceReportsRate(paths, rating),
-    balanceReportsDelete: (paths) => app.BalanceReportsDelete(paths),
-    balanceSaveBaseline: (path, name) => app.BalanceSaveBaseline(path, name),
-    balanceInsights: (path) => app.BalanceInsights(path),
-    balanceReportHTML: (path) => app.BalanceReportHTML(path),
-  };
 }
 
 export function wailsBackend(): Backend {
@@ -163,7 +117,6 @@ export function wailsBackend(): Backend {
     gitStamp: () => app.GitStamp(),
     ticketCreate: (input) => app.TicketCreate(input),
     ticketRecent: (n) => app.TicketRecent(n),
-    ...balanceWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

@@ -3,6 +3,8 @@ import '@webkit/theme.css';
 import './styles/assets.css';
 import './styles/world.css';
 import './styles/planer.css';
+import './styles/balancing.css';
+import './styles/balancing-editor.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';

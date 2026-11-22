@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Button, Code, Flex, Heading, StatusBadge, Text, TextField } from '@webkit/atoms';
 import { ActionMenu, ChipSwitch } from '@webkit/molecules';
-import { Dialog } from '@webkit/organisms';
+import { Confirm, Dialog, type ConfirmRequest } from '@webkit/organisms';
 import { errorText } from '@webkit/lib/errors';
 import { backend, type BalanceReportInfo, type BalanceSpec, type BalanceSummary, type ReportRating } from '../api';
-import { Confirm, type ConfirmRequest } from '../git/Confirm';
 import { entryKind, entryLabel, entryLine2, entryMeta, type ListEntry } from './entries';
 import { downloadText, summaryJSON, summaryMarkdown } from './export';
 

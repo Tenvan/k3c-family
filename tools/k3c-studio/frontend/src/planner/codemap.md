@@ -23,7 +23,7 @@ Seite **Gebäude-Planer** (B-923, B-462, B-670; Reiter `planer` im Bereich Studi
 
 ## Integration
 
-- Konsument: `src/App.tsx` (`Tabs.Content value="planer"`), Reiter in `Header.tsx` (`ASSET_PAGES`, Label „Gebäude-Planer“).
+- Konsument: `src/App.tsx` (`Tabs.Content value="planer"`), Reiter in `Header.tsx` (`PAGES`, Label „Gebäude-Planer“).
 - Backend: `Hub*` in `tools/k3c-studio/app_hub.go` (Paket `internal/hubplan`); Verträge `api/typesHub.ts`, Mock `api/mockHub.ts` mit der Fixture `api/hubFixture.json`.
 - Abhängigkeiten: `src/api`, `lib/prefs`, `@webkit/atoms|molecules`, `@webkit/lib/split`, `@webkit/lib/ticketContext`, `@webkit/lib/errors`.
 - Tests: `PlannerPage.test.tsx`, `PlannerEdit.test.tsx`, `PlannerSelect.test.tsx`, `plannerEdit.test.ts`, `plannerLogic.test.ts`.

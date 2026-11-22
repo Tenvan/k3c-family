@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-React-Single-Page-App von k3c-workbench: Shell mit einer Reiterleiste (Dienste & Logs, Tasks, Planung, Git, MCP, Monitoring, Balancing; Welten, Assets und Gebäude-Planer sind seit WZ63.3 im Studio `tools/k3c-studio`) –, Theme-Umschaltung, Ticket-Knopf, Agenten-Hinweisen und Anbindung an das Backend über die `api`-Schicht.
+React-Single-Page-App von k3c-workbench: Shell mit einer Reiterleiste (Dienste & Logs, Tasks, Planung, Git, MCP, Monitoring; Welten, Assets und Gebäude-Planer sind seit WZ63.3, Balancing seit WZ63.6 im Studio `tools/k3c-studio`) –, Theme-Umschaltung, Ticket-Knopf, Agenten-Hinweisen und Anbindung an das Backend über die `api`-Schicht.
 
 ## Design
 
@@ -12,9 +12,9 @@ React-Single-Page-App von k3c-workbench: Shell mit einer Reiterleiste (Dienste &
 - Unterordner (je mit eigener codemap):
   - `api/` – Backend-Vertrag (`types*.ts`), Wails-, HTTP-Adapter und Mock.
   - `lib/` – Formatierung, Prefs (Präfix `k3c-workbench.`), Markdown-Parser, `liveReload`/`useLiveReload`, `useNow`; Gemeinsames in `tools/webkit` (`@webkit/…`).
-  - `ui/molecules/` (`MarkdownView`), `ui/organisms/` (`Notices`); Radix und die Atome nur über `@webkit/atoms|molecules|organisms|templates`.
+  - `ui/organisms/` (`Notices`; `MarkdownView` und `Confirm` liegen seit WZ63.6 in `@webkit`); Radix und die Atome nur über `@webkit/atoms|molecules|organisms|templates`.
   - Seiten Development: `services/`, `logs/` (Logs-Bereich der Dienste-Seite, Konsole auch von `tasks/` und `mcp/` genutzt), `tasks/`, `planning/`, `git/`, `mcp/`, `monitoring/`.
-  - Seite Balancing: `balancing/`; die früheren Studio-Seiten (`assets/`, `world/`, `planner/`) liegen in `tools/k3c-studio/frontend/src`.
+  - Die früheren Studio-Seiten (`assets/`, `world/`, `planner/`, seit WZ63.6 auch `balancing/`) liegen in `tools/k3c-studio/frontend/src`.
   - `styles/` – CSS je Seite (keine Logik).
 - Muster: Feature-Ordner mit reiner Logik in eigenen Dateien (Vitest) getrennt von Komponenten und Data-Hooks; Live-Daten über Ereignisse statt Abfrage-Takt, gedrosselt über `lib/liveReload.ts`.
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { backend, type McpState } from './api';
 import { HeaderRight, useNavigation, type Page } from './Header';
 import { loadPref, savePref } from './lib/prefs';
-import { BalancingPage } from './balancing/BalancingPage';
 import { GitPage } from './git/GitPage';
 import { McpPage } from './mcp/McpPage';
 import { MonitoringPage } from './monitoring/MonitoringPage';
@@ -42,7 +41,7 @@ export function App() {
     savePref('app.mode', mode);
   }, [mode]);
 
-  // Dienste, Tasks, Git, Monitoring und Balancing bleiben eingehängt (Zustand, laufende Ansichten); Planung und MCP bauen
+  // Dienste, Tasks, Git und Monitoring bleiben eingehängt (Zustand, laufende Ansichten); Planung und MCP bauen
   // sich bei jedem Wechsel neu auf und laden dabei frisch. forceMount hält den Inhalt, hidden und display verbergen ihn.
   const shown = (v: Page) => nav.page === v;
   const keep = (v: Page) => ({ forceMount: true as const, hidden: !shown(v), style: shown(v) ? undefined : { display: 'none' } });
@@ -69,9 +68,6 @@ export function App() {
       </Tabs.Content>
       <Tabs.Content value="monitoring" {...keep('monitoring')}>
         <MonitoringPage active={shown('monitoring')} />
-      </Tabs.Content>
-      <Tabs.Content value="balancing" {...keep('balancing')}>
-        <BalancingPage active={shown('balancing')} />
       </Tabs.Content>
     </AppFrame>
     </TicketProvider>

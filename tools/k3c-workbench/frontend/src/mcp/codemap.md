@@ -17,10 +17,10 @@ Reiter MCP: Beobachtbarkeit des eingebauten MCP-Servers (Zustand, Tool-Kacheln, 
 2. Übersicht: `ServerCards` (Neustart via `backend.mcpRestart`), `ToolTiles` | `LiveMonitors` (Minuten-Zeitreihe aus `usage.minutes`, Fenster wandert per `useNow`), `CheckRunPanel`, `CallLog`.
 3. Neuer Tool-Aufruf: Go emittiert `mcp:start`/`mcp:call` -> `applyCall` aktualisiert das Log sofort -> `liveReload.soon()` holt Übersicht und Statistik gedrosselt nach.
 4. Statistik: `StatsView` wählt Scope (`session`/`allTime`) oder Zeitraum (`rangeScope` aus `usage.minutes`) und berechnet KPIs und Tabelle daraus.
-5. `InstructionsDialog` lädt `backend.mcpInstructions()` und rendert es mit `ui/molecules/MarkdownView`.
+5. `InstructionsDialog` lädt `backend.mcpInstructions()` und rendert es mit `MarkdownView` (`@webkit/molecules`).
 
 ## Integration
 
 - Konsument: `App.tsx` (Tab `mcp`).
-- Abhängigkeiten: `api` (`backend`, `McpCall`, `McpOverview`, `McpUsage`, `ToolStats` …), `lib/` (`format`, `prefs`, `useNow`, `liveReload`), `logs/ConsoleView`, `ui/molecules/MarkdownView`, `@webkit/lib/errors`, `@webkit/lib/split` (`useSplit`), `@webkit/atoms` (`Splitter`, `SegmentedControl` …), `@webkit/molecules`, `@webkit/organisms` (`Dialog`).
+- Abhängigkeiten: `api` (`backend`, `McpCall`, `McpOverview`, `McpUsage`, `ToolStats` …), `lib/` (`format`, `prefs`, `useNow`, `liveReload`), `logs/ConsoleView`, `MarkdownView` (`@webkit/molecules`), `@webkit/lib/errors`, `@webkit/lib/split` (`useSplit`), `@webkit/atoms` (`Splitter`, `SegmentedControl` …), `@webkit/molecules`, `@webkit/organisms` (`Dialog`).
 - Go-Seite: `McpOverview`, `McpRestart`, `McpInstructions`, `McpCalls`, `McpUsage`; Events `mcp:state`, `mcp:start`, `mcp:call`. Stile: `../styles/mcp.css`, `../styles/mcpCharts.css`.

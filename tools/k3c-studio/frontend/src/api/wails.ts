@@ -1,6 +1,7 @@
 import type { Backend, EventName, Events, Info } from './types';
 import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
+import type { BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceDataValue, BalanceInsights, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning } from './typesBalance';
 import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Stufen, Vorlage, WeltSicht } from './typesAssets';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
@@ -48,24 +49,24 @@ interface GoApp {
   HubCheck(candidate: string): Promise<HubPlanView>;
   HubRules(hubJSON: string): Promise<HubRulesView>;
   HubSave(candidate: string, stand: HubStand): Promise<HubSaveResult>;
-  // Balancing-Seite (WZ28.4, seit WZ63.5 im Studio, app_balance.go); die Typen kommen mit der Seite in WZ63.6.
-  BalanceStart(spec: unknown): Promise<unknown>;
-  BalanceRuns(): Promise<unknown[]>;
+  // Balancing-Seite (WZ28.4, seit WZ63.5/WZ63.6 im Studio, app_balance.go; Typen in typesBalance.ts)
+  BalanceStart(spec: BalanceSpec): Promise<BalanceRun>;
+  BalanceRuns(): Promise<BalanceRun[]>;
   BalanceStop(id: string): Promise<void>;
-  BalanceReports(): Promise<unknown[]>;
-  BalanceBaselines(): Promise<unknown[]>;
-  BalanceReport(path: string): Promise<unknown>;
-  BalanceTuning(path: string): Promise<unknown>;
-  BalanceDataFiles(): Promise<unknown[]>;
+  BalanceReports(): Promise<BalanceReportInfo[]>;
+  BalanceBaselines(): Promise<BalanceBaseline[]>;
+  BalanceReport(path: string): Promise<BalanceSummary>;
+  BalanceTuning(path: string): Promise<Tuning>;
+  BalanceDataFiles(): Promise<BalanceDataFile[]>;
   BalanceDataDoc(name: string): Promise<string>;
-  BalanceDataValues(name: string): Promise<unknown[]>;
-  BalanceDataValuesAll(): Promise<unknown[]>;
+  BalanceDataValues(name: string): Promise<BalanceDataValue[]>;
+  BalanceDataValuesAll(): Promise<BalanceDataFileValue[]>;
   BalanceReportRate(path: string, rating: string): Promise<void>;
   BalanceReportDelete(path: string): Promise<void>;
   BalanceReportsRate(paths: string[], rating: string): Promise<void>;
   BalanceReportsDelete(paths: string[]): Promise<void>;
-  BalanceSaveBaseline(path: string, name: string): Promise<unknown>;
-  BalanceInsights(path: string): Promise<unknown>;
+  BalanceSaveBaseline(path: string, name: string): Promise<BalanceBaseline>;
+  BalanceInsights(path: string): Promise<BalanceInsights>;
   BalanceReportHTML(path: string): Promise<string>;
 }
 
@@ -135,6 +136,29 @@ function hubWails(app: GoApp): HubBackend {
   };
 }
 
+function balanceWails(app: GoApp): BalanceBackend {
+  return {
+    balanceStart: (spec) => app.BalanceStart(spec),
+    balanceRuns: () => app.BalanceRuns(),
+    balanceStop: (id) => app.BalanceStop(id),
+    balanceReports: () => app.BalanceReports(),
+    balanceBaselines: () => app.BalanceBaselines(),
+    balanceReport: (path) => app.BalanceReport(path),
+    balanceTuning: (path) => app.BalanceTuning(path),
+    balanceDataFiles: () => app.BalanceDataFiles(),
+    balanceDataDoc: (name) => app.BalanceDataDoc(name),
+    balanceDataValues: (name) => app.BalanceDataValues(name),
+    balanceDataValuesAll: () => app.BalanceDataValuesAll(),
+    balanceReportRate: (path, rating) => app.BalanceReportRate(path, rating),
+    balanceReportDelete: (path) => app.BalanceReportDelete(path),
+    balanceReportsRate: (paths, rating) => app.BalanceReportsRate(paths, rating),
+    balanceReportsDelete: (paths) => app.BalanceReportsDelete(paths),
+    balanceSaveBaseline: (path, name) => app.BalanceSaveBaseline(path, name),
+    balanceInsights: (path) => app.BalanceInsights(path),
+    balanceReportHTML: (path) => app.BalanceReportHTML(path),
+  };
+}
+
 export function wailsBackend(): Backend {
   const app = window.go!.main!.App!;
   const runtime = window.runtime!;
@@ -145,6 +169,7 @@ export function wailsBackend(): Backend {
     ...assetsWails(app),
     ...worldWails(app),
     ...hubWails(app),
+    ...balanceWails(app),
     openUrl: (url) => runtime.BrowserOpenURL(url),
     on: <E extends EventName>(event: E, fn: (data: Events[E]) => void) =>
       runtime.EventsOn(event, (data) => fn(data as Events[E])),

@@ -5,7 +5,7 @@ import { NoticeCard } from '@webkit/molecules';
 import { errorText } from '@webkit/lib/errors';
 import { backend, type GitAction, type GitView } from '../api';
 import { BranchesCard } from './BranchesCard';
-import { Confirm, type ConfirmRequest } from './Confirm';
+import { Confirm, type ConfirmRequest } from '@webkit/organisms';
 import { FilesCard } from './FilesCard';
 import { ago } from './format';
 import { useGitData } from './gitData';

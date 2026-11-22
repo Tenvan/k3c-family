@@ -44,7 +44,7 @@ const click = async (el: Element | null | undefined) => {
 };
 
 describe('Welten-Editor (B-879/AC-01)', () => {
-  it('ist eine Seite im Studio (WZ63.3)', () => {
+  it('ist eine Seite im Studio (WZ63.3, Reiter in der Kopfzeile)', () => {
     expect(PAGES).toContain('welten');
     expect(LABELS.welten).toBe('Welten-Editor');
   });

@@ -3,7 +3,7 @@ import { Dialog } from '@webkit/organisms';
 import { Badge, Button, Code, Flex, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
 import { backend, type BalanceDataFile } from '../api';
-import { MarkdownView } from '../ui/molecules/MarkdownView';
+import { MarkdownView } from '@webkit/molecules';
 import { HelpButton } from './HelpButton';
 
 /** Knopf „Konfigurationsdateien“ mit modalem Popup (WZ28.10, B-610): alle Dateien in data/, die das Balancing
