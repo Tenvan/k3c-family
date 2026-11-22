@@ -17,9 +17,9 @@ import (
 
 // Modell und Ablage.
 const (
-	ModelFile  = "ggml-large-v3-turbo-german-q5_0.bin"
-	ModelURL   = "https://huggingface.co/MolyProduction/whisper-large-v3-turbo-german-ggml-q5_0"
-	ModelSHA   = "15e92e3db0993c52fffa781513eec9253475331c1be808f8fb409285c9d9d030" // SHA-256 von ModelFile (574041195 Byte)
+	ModelFile  = "ggml-large-v3.bin"
+	ModelURL   = "https://huggingface.co/ggerganov/whisper.cpp"
+	ModelSHA   = "64d182b440b98d5203c4f9bd541544d84c605196c4f7b845dfa11fb23594d1e2" // SHA-256 von ModelFile (3095033483 Byte)
 	ModelEnv   = "K3C_WHISPER_MODEL"                                                // Pfad der Modelldatei; sonst models/<ModelFile>, sonst models/whisper/*.bin
 	dirFrames  = "frames"
 	fileRawTmp = "transcript.part"
@@ -46,8 +46,10 @@ func ModelPath(root string) string {
 	if st, err := os.Stat(def); err == nil && !st.IsDir() {
 		return def
 	}
-	if m, _ := filepath.Glob(filepath.Join(root, "models", "whisper", "*.bin")); len(m) > 0 {
-		return m[0]
+	for _, dir := range []string{"models", "models/whisper"} { // sonst irgendein Modell, damit eine andere Datei die Auswertung nicht sperrt
+		if m, _ := filepath.Glob(filepath.Join(root, filepath.FromSlash(dir), "*.bin")); len(m) > 0 {
+			return m[0]
+		}
 	}
 	return def
 }
@@ -102,11 +104,15 @@ type Transcript struct {
 	Segments     []Segment `json:"segments"`
 }
 
+// whisperQueue ist die Stückgröße in Sekunden, die der Filter am Stück erkennt. Der Standard (3 s) zerhackt Sätze und lässt
+// das Modell bei Pausen „Vielen Dank.“ erfinden; an einer echten Aufnahme (44 s, Bluetooth-Mikro) erkannte 20 bis 30 s die Sätze am besten; mehr bringt nichts, whisper.cpp arbeitet intern in Fenstern von 30 s.
+const whisperQueue = "30"
+
 // WhisperArgs ist der Aufruf im Session-Ordner dir (relative Pfade, damit `C:` im Filter nicht gequotet werden muss);
 // das Ergebnis des Filters steht roh in `dest` (Zeilen JSON, Zeiten in ms ab Dateianfang).
 func WhisperArgs(ffmpeg, dir, model, lang, dest string) []string {
 	return []string{ffmpeg, "-hide_banner", "-loglevel", "warning", "-nostats", "-y", "-i", fileVoice, "-vn",
-		"-af", "whisper=model=" + filterPath(dir, model) + ":language=" + lang + ":format=json:destination=" + dest, "-f", "null", "-"}
+		"-af", "whisper=model=" + filterPath(dir, model) + ":language=" + lang + ":queue=" + whisperQueue + ":format=json:destination=" + dest, "-f", "null", "-"}
 }
 
 // Sprachen, die die Auswahl der Seite anbietet (Standard de).

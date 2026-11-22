@@ -52,11 +52,11 @@ function pick(): PlaytestApi {
 export const playtestApi: PlaytestApi = pick();
 
 /** Adresse einer Datei für die Player; im Wails-Fenster gibt es keinen HTTP-Weg (nur Client-Server-Betrieb). */
-export function mediaUrl(id: string, file: 'voice.wav' | 'video.mkv'): string | null {
-  return hasWails() ? null : `/api/dev/playtest/media/${encodeURIComponent(id)}/${file}`;
+export function mediaUrl(id: string, file: 'voice.wav' | 'video.mkv'): string {
+  return `/api/dev/playtest/media/${encodeURIComponent(id)}/${file}`; // im Fenster liefert sie windowMediaHandler (app_playtest.go)
 }
 
 /** Adresse eines Marker-Bilds (frames/marker-<nr>.jpg); im Wails-Fenster ohne HTTP-Weg. */
-export function frameUrl(id: string, nr: number): string | null {
-  return hasWails() ? null : `/api/dev/playtest/frame/${encodeURIComponent(id)}/${nr}`;
+export function frameUrl(id: string, nr: number): string {
+  return `/api/dev/playtest/frame/${encodeURIComponent(id)}/${nr}`;
 }

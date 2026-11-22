@@ -14,7 +14,9 @@ type Stats struct {
 	VideoBytes int64   `json:"videoBytes"`
 	VoiceRate  []int64 `json:"voiceRate"` // Bytes/s, älteste zuerst, höchstens statSamples
 	VideoRate  []int64 `json:"videoRate"`
-	Warn       string  `json:"warn"` // leer, solange alles ankommt
+	VoiceLevel []int   `json:"voiceLevel"` // Pegel der letzten Sekunde in Prozent (0 bis 100), siehe wavLevel
+	Warn       string  `json:"warn"`       // leer, solange alles ankommt
+	NoVideo    bool    `json:"noVideo"`    // Mikro-Session: kein Bild, der Wächter überwacht nur den Ton
 }
 
 const (
@@ -39,7 +41,11 @@ func appendRate(rates []int64, v int64) []int64 {
 }
 
 // advance verarbeitet einen Takt: Größen von voice.wav und video.mkv, lebt ffmpeg noch, und was es zuletzt sagte.
-func (s *Stats) advance(w *watchState, voice, video int64, alive bool, tail string) {
+func (s *Stats) advance(w *watchState, voice, video int64, alive bool, tail string, level int) {
+	s.VoiceLevel = append(s.VoiceLevel, level)
+	if len(s.VoiceLevel) > statSamples {
+		s.VoiceLevel = s.VoiceLevel[len(s.VoiceLevel)-statSamples:]
+	}
 	w.n++
 	dv, dw := voice-s.VoiceBytes, video-s.VideoBytes
 	if dv < 0 {
@@ -52,6 +58,9 @@ func (s *Stats) advance(w *watchState, voice, video int64, alive bool, tail stri
 	s.VoiceRate, s.VideoRate = appendRate(s.VoiceRate, dv), appendRate(s.VideoRate, dw)
 	w.idleVoice = idleCount(w.idleVoice, dv)
 	w.idleVd = idleCount(w.idleVd, dw)
+	if s.NoVideo {
+		w.idleVd = 0
+	}
 	switch {
 	case !alive:
 		s.Warn = "ffmpeg ist beendet – es wird nichts mehr aufgezeichnet"
@@ -79,8 +88,10 @@ func idleCount(n int, delta int64) int {
 }
 
 func (s Stats) clone() Stats {
-	s.VoiceRate = append([]int64(nil), s.VoiceRate...)
-	s.VideoRate = append([]int64(nil), s.VideoRate...)
+	// nie nil: sonst steht im JSON `null`, und die Oberfläche bricht beim Start der Aufnahme ab (schwarzes Fenster)
+	s.VoiceRate = append([]int64{}, s.VoiceRate...)
+	s.VideoRate = append([]int64{}, s.VideoRate...)
+	s.VoiceLevel = append([]int{}, s.VoiceLevel...)
 	return s
 }
 
@@ -110,8 +121,9 @@ func (r *Recorder) watch(dir string, rec *waited, done <-chan struct{}) {
 		case <-tick.C:
 		}
 		voice, video := fileSize(filepath.Join(dir, fileVoice)), fileSize(filepath.Join(dir, fileVideo))
+		level := wavLevel(filepath.Join(dir, fileVoice))
 		r.mu.Lock()
-		r.stats.advance(&w, voice, video, !rec.exited(), rec.Tail())
+		r.stats.advance(&w, voice, video, !rec.exited(), rec.Tail(), level)
 		warn := r.stats.Warn
 		r.mu.Unlock()
 		if warn != "" && warn != warned {

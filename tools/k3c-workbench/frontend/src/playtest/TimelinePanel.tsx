@@ -17,11 +17,13 @@ interface Props {
   onSeek: (videoMs: number) => void;
   /** Die Auswertung ist zu Ende (Liste neu laden). */
   onDone: () => void;
+  /** Zähler: bei Änderung werden Modelle und Voraussetzungen neu gelesen (neue Modelldatei in models/). */
+  refresh?: number;
 }
 
 /** Auswertung (B-1223): Knopf Auswerten (Transkript aus voice.wav, Bild je Marker) mit Fortschritt und Abbrechen, dazu
  *  die Zeitleiste aus Sätzen, Markern und deren Bildern; ein Klick springt im Player an die Stelle. */
-export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
+export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props) {
   const [cap, setCap] = useState<PlaytestCapability | null>(null);
   const [job, setJob] = useState(NO_JOB);
   const [timeline, setTimeline] = useState<PlaytestTimeline | null>(null);
@@ -40,7 +42,7 @@ export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
   useEffect(() => {
     playtestApi.check().then(setCap, (e) => setError(message(e)));
     playtestApi.transcribeStatus().then(setJob, () => undefined);
-  }, []);
+  }, [refresh]);
   useEffect(() => {
     setTimeline(null);
     loadTimeline();
@@ -59,7 +61,7 @@ export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
 
   useEffect(() => {
     playtestApi.models().then(setModels, () => undefined);
-  }, []);
+  }, [refresh]);
   const chosen = models.find((m) => m.id === model) ?? models.find((m) => m.default) ?? models[0];
   const pickModel = (v: string) => { setModel(v); savePref('playtest.model', v); };
   const pickLang = (v: string) => { setLang(v); savePref('playtest.language', v); };

@@ -84,6 +84,7 @@ pub struct PlaytestApp {
     inner: Launch,
     pt: Playtest,
     last_draw: Option<Instant>,
+    ready: bool,
 }
 
 impl PlaytestApp {
@@ -92,6 +93,7 @@ impl PlaytestApp {
             inner,
             pt,
             last_draw: None,
+            ready: false,
         }
     }
 }
@@ -120,6 +122,11 @@ impl App for PlaytestApp {
 
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
         self.inner.draw(c, alpha);
+        // Erstes echtes Bild (Einstellungen geladen, Menü steht): ab jetzt darf die Aufnahme beginnen.
+        if !self.ready && self.inner.fullscreen().is_some() {
+            self.ready = true;
+            self.pt.announce_ready(now_ms());
+        }
         let now = Instant::now();
         if let Some(t) = self.last_draw.replace(now) {
             self.pt
@@ -142,8 +149,9 @@ impl App for PlaytestApp {
         self.inner.done() && self.pt.survey().is_none()
     }
 
+    /// Der Spieltest läuft immer im Vollbild: Die Aufnahme zeigt den Monitor, ein Fenster würde nur einen Teil füllen.
     fn fullscreen(&self) -> Option<bool> {
-        self.inner.fullscreen()
+        self.inner.fullscreen().map(|_| true)
     }
 }
 
@@ -156,6 +164,7 @@ pub fn run_playtest(args: &Args, o: &Options) -> Result<(), String> {
         title: "K3C".to_string(),
         size,
         novsync: args.measure.no_vsync,
+        fullscreen: true, // Vollbild von Anfang an, kein Fenster-Blitzer in der Aufnahme
         ..WindowConfig::default()
     };
     run_window(&mut app, cfg)?;

@@ -106,7 +106,12 @@ func Game(root string) func() (string, string, error) {
 // NewRecorder baut den Recorder für die Ablage store unter root mit echten Prozessen.
 func NewRecorder(root string, store *Store, log func(level, msg string, kv ...any)) *Recorder {
 	return &Recorder{Store: store, Spawn: ExecSpawn, LookPath: FindFFmpeg, Game: Game(root), Now: time.Now, Log: log,
-		Settle: 2 * time.Second, QuitWait: 10 * time.Second, Check: func(ff string, o Options) error { return CheckDevices(runProbe, ff, o.Mic, o.Monitor) },
+		Settle: 2 * time.Second, QuitWait: 10 * time.Second, Check: func(ff string, o Options) error {
+			if o.VoiceOnly {
+				return CheckDevices(runProbe, ff, o.Mic, -1)
+			}
+			return CheckDevices(runProbe, ff, o.Mic, o.Monitor)
+		},
 		Pick: func(ff string) string { return pickCached(ff, log) }}
 }
 

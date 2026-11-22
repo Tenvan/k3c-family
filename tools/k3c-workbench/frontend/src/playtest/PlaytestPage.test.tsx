@@ -2,10 +2,12 @@
 import { Theme } from '@radix-ui/themes';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PAGES } from '../Header';
 import { playtestApi } from './api';
 import { PlaytestPage } from './PlaytestPage';
+import { RecordMonitor } from './RecordMonitor';
+import type { PlaytestStats } from './types';
 
 // B-1218/AC-01 und AC-03 (Oberfläche): Die Seite listet die Sessions neueste zuerst mit Stand, jeder Löschknopf nennt vor
 // dem Löschen die Dateien und löscht erst nach der Bestätigung; eine laufende Aufnahme ist gesperrt.
@@ -125,6 +127,24 @@ describe('Seite Spieltest', () => {
     expect(host.querySelector('audio')!.getAttribute('src')).toBe('/api/dev/playtest/media/2026-11-20-1/voice.wav');
     expect(host.querySelector('video')!.getAttribute('src')).toBe('/api/dev/playtest/media/2026-11-20-1/video.mkv');
   });
+
+  it('Bild-Player steht über dem Ton-Player, die Liste nennt die Uhrzeit statt eines Zählers', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const order = [...host.querySelectorAll('[data-player]')].map((e) => e.getAttribute('data-player'));
+    expect(order).toEqual(['video', 'voice']);
+    expect(host.querySelector('[data-session="2026-11-20-1"]')!.textContent).toContain('20.11.2026 · 18:00');
+  });
+
+  it('Neu laden liest die Modelle neu (neue Modelldatei in models/)', async () => {
+    const host = await mount();
+    const calls = vi.spyOn(playtestApi, 'models');
+    act(() => button('Neu laden', host).click());
+    await flush();
+    expect(calls).toHaveBeenCalled();
+    calls.mockRestore();
+  });
 });
 
 describe('Spieltest starten (B-1219)', () => {
@@ -142,6 +162,21 @@ describe('Spieltest starten (B-1219)', () => {
     act(() => button('Stopp', host).click());
     await act(async () => new Promise((r) => setTimeout(r, 1100)));
     expect(bar().getAttribute('data-record')).toBe('idle');
+  });
+});
+
+describe('Mikro-Session', () => {
+  it('startet nur mit Mikro, zeigt nur das Ton-Diagramm und ist als Mikro-Session beschriftet', async () => {
+    const host = await mount();
+    const bar = () => host.querySelector('[data-record]')!;
+    expect(button('Nur Mikro starten', host).disabled).toBe(true);
+    await playtestApi.start({ mic: 'Raummikro (USB)', monitor: 0, gameArgs: [], voiceOnly: true });
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
+    expect(bar().textContent).toContain('Mikro-Session 2026-11-23-1');
+    expect(host.querySelector('[data-chart="Ton"]')).toBeTruthy();
+    expect(host.querySelector('[data-chart="Bild"]')).toBeNull();
+    act(() => button('Stopp', host).click());
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
   });
 });
 
@@ -178,13 +213,22 @@ describe('Geräte (B-1230)', () => {
 });
 
 describe('Aufnahme-Monitor', () => {
+  it('bricht nicht ab, wenn die Raten beim Start noch null sind (Go liefert nil-Listen als null)', () => {
+    const host = document.createElement('div');
+    const root = createRoot(host);
+    const stats = { voiceBytes: 0, videoBytes: 0, voiceRate: null, videoRate: null, voiceLevel: null, warn: '' } as unknown as PlaytestStats;
+    act(() => root.render(<RecordMonitor stats={stats} />));
+    expect(host.querySelector('[data-chart="Ton"]')!.textContent).toContain('Pegel 0 %');
+    act(() => root.unmount());
+  });
+
   it('zeigt zwei Diagramme (Ton, Bild) während der Aufnahme und warnt, wenn etwas steht', async () => {
     const host = await mount();
     await playtestApi.start({ mic: 'Raummikro (USB)', monitor: 0, gameArgs: [] });
     await act(async () => new Promise((r) => setTimeout(r, 1100)));
     const mon = host.querySelector('[data-monitor]')!;
     expect(mon.getAttribute('data-monitor')).toBe('ok');
-    expect(mon.querySelector('[data-chart="Ton"]')!.textContent).toContain('31 KB/s');
+    expect(mon.querySelector('[data-chart="Ton"]')!.textContent).toContain('Pegel 30 %');
     expect(mon.querySelector('[data-chart="Bild"]')).toBeTruthy();
     expect(mon.textContent).not.toContain('Aufnahme prüfen');
     act(() => button('Stopp', host).click());

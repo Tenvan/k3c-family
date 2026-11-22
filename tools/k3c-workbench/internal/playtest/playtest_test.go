@@ -42,7 +42,7 @@ func fixture(t *testing.T) *Store {
 	put(t, root, "2026-11-21-1/findings.json", "[]")
 	put(t, root, "2026-11-21-1/frames/f1.jpg", "xxx")
 	put(t, root, "2026-11-22-1/session.json", "{kaputt")
-	put(t, root, "2026-11-22-2/session.json", `{"startMs":5,"endMs":0,"stand":"laeuft"}`)
+	put(t, root, "2026-11-22-2/session.json", `{"startMs":3000,"endMs":0,"stand":"laeuft"}`)
 	put(t, root, "2026-11-22-2/video.mkv", "v")
 	put(t, root, "kein-session-name/x", "x")
 	return &Store{Root: root}
@@ -59,7 +59,7 @@ func TestListLiestSessionsNeuesteZuerst(t *testing.T) {
 		ids = append(ids, s.ID)
 		by[s.ID] = s
 	}
-	if strings.Join(ids, ",") != "2026-11-22-2,2026-11-22-1,2026-11-21-1,2026-11-20-1" {
+	if strings.Join(ids, ",") != "2026-11-22-2,2026-11-21-1,2026-11-20-1,2026-11-22-1" {
 		t.Fatalf("Reihenfolge/Auswahl: %v", ids)
 	}
 	a := by["2026-11-20-1"]
@@ -75,6 +75,25 @@ func TestListLiestSessionsNeuesteZuerst(t *testing.T) {
 	}
 	if c := by["2026-11-22-2"]; !c.Running || c.Stage != StageRunning {
 		t.Errorf("laufend: %+v", c)
+	}
+}
+
+// Die Reihenfolge folgt der Startzeit: Kennung „-10“ ist neuer als „-9“, obwohl sie als Text kleiner ist.
+func TestListSortiertNachStartzeitAbwaerts(t *testing.T) {
+	root := t.TempDir()
+	put(t, root, "2026-11-22-9/session.json", `{"startMs":2000,"endMs":3000,"stand":"aufgenommen"}`)
+	put(t, root, "2026-11-22-10/session.json", `{"startMs":9000,"endMs":9500,"stand":"aufgenommen"}`)
+	put(t, root, "2026-11-22-3/session.json", `{"startMs":1000,"endMs":1500,"stand":"aufgenommen"}`)
+	got, err := (&Store{Root: root}).List()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var ids []string
+	for _, s := range got {
+		ids = append(ids, s.ID)
+	}
+	if strings.Join(ids, ",") != "2026-11-22-10,2026-11-22-9,2026-11-22-3" {
+		t.Errorf("Reihenfolge: %v", ids)
 	}
 }
 

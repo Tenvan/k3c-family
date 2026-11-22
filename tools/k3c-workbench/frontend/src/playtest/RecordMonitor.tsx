@@ -8,13 +8,21 @@ export function size(bytes: number): string {
 }
 
 const kbps = (rates: number[]) => rates.map((v, i) => ({ x: i - rates.length + 1, y: Math.round(v / 1024) }));
+const percent = (levels: number[]) => levels.map((v, i) => ({ x: i - levels.length + 1, y: v }));
 
-function Chart({ name, rates, total }: { name: string; rates: number[]; total: number }) {
+function Chart({ name, rates: raw, total, level: rawLevel }: { name: string; rates: number[] | null; total: number; level?: number[] | null }) {
+  const rates = raw ?? []; // vor dem ersten Messtakt kann die Liste fehlen
+  const levels = rawLevel ?? [];
   const last = rates.length ? rates[rates.length - 1] : 0;
+  const pegel = levels.length ? levels[levels.length - 1] : 0;
   return (
     <Flex direction="column" gap="1" flexGrow="1" style={{ minWidth: 220 }} data-chart={name}>
-      <Text size="2" weight="bold">{name}: {Math.round(last / 1024)} KB/s · gesamt {size(total)}</Text>
-      <LineChart series={[{ name, points: kbps(rates) }]} xLabel="Sekunden" yLabel="KB/s" height={130} />
+      <Text size="2" weight="bold">
+        {rawLevel ? `${name}: Pegel ${pegel} % · ${size(total)}` : `${name}: ${Math.round(last / 1024)} KB/s · gesamt ${size(total)}`}
+      </Text>
+      {rawLevel
+        ? <LineChart series={[{ name, points: percent(levels) }]} xLabel="Sekunden" yLabel="Pegel %" height={130} />
+        : <LineChart series={[{ name, points: kbps(rates) }]} xLabel="Sekunden" yLabel="KB/s" height={130} />}
     </Flex>
   );
 }
@@ -25,8 +33,8 @@ export function RecordMonitor({ stats }: { stats: PlaytestStats }) {
     <Flex direction="column" gap="2" data-monitor={stats.warn ? 'warn' : 'ok'}>
       {stats.warn && <NoticeCard title="Aufnahme prüfen" tone="error">{stats.warn}</NoticeCard>}
       <Flex gap="4" wrap="wrap">
-        <Chart name="Ton" rates={stats.voiceRate} total={stats.voiceBytes} />
-        <Chart name="Bild" rates={stats.videoRate} total={stats.videoBytes} />
+        <Chart name="Ton" rates={stats.voiceRate} total={stats.voiceBytes} level={stats.voiceLevel ?? []} />
+        {!stats.noVideo && <Chart name="Bild" rates={stats.videoRate} total={stats.videoBytes} />}
       </Flex>
     </Flex>
   );

@@ -11,7 +11,7 @@ import { ServicesPage } from './services/ServicesPage';
 import { TasksPage } from './tasks/TasksPage';
 import { Notices } from './ui/organisms/Notices';
 import { TicketProvider } from '@webkit/lib/ticketContext';
-import { Tabs } from '@webkit/organisms';
+import { PageBoundary, Tabs } from '@webkit/organisms';
 import { AppFrame } from '@webkit/templates';
 
 const createTicket = (input: Parameters<typeof backend.ticketCreate>[0]) => backend.ticketCreate(input);
@@ -53,25 +53,25 @@ export function App() {
       right={<HeaderRight mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}
       overlay={<Notices />}>
       <Tabs.Content value="dienste" {...keep('dienste')}>
-        <ServicesPage active={shown('dienste')} />
+        <PageBoundary name="Dienste"><ServicesPage active={shown('dienste')} /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="tasks" {...keep('tasks')}>
-        <TasksPage active={shown('tasks')} />
+        <PageBoundary name="Tasks"><TasksPage active={shown('tasks')} /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="planung">
-        <PlanningPage />
+        <PageBoundary name="Planung"><PlanningPage /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="git" {...keep('git')}>
-        <GitPage active={shown('git')} />
+        <PageBoundary name="Git"><GitPage active={shown('git')} /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="mcp">
-        <McpPage />
+        <PageBoundary name="MCP"><McpPage /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="monitoring" {...keep('monitoring')}>
-        <MonitoringPage active={shown('monitoring')} />
+        <PageBoundary name="Monitoring"><MonitoringPage active={shown('monitoring')} /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="spieltest">
-        <PlaytestPage />
+        <PageBoundary name="Spieltest"><PlaytestPage /></PageBoundary>
       </Tabs.Content>
     </AppFrame>
     </TicketProvider>

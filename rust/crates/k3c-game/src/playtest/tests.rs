@@ -251,3 +251,13 @@ fn zeile_ist_eine_zeile() {
     assert!(!l.contains('\n'));
     assert!(l.contains("16.67"));
 }
+
+/// Die Workbench startet die Aufnahme erst, wenn die Datei `ready` steht (Unix-ms des ersten richtigen Bilds).
+#[test]
+fn ready_datei_nennt_den_zeitpunkt() {
+    let d = dir("ready");
+    let pt = Playtest::open(&d);
+    assert!(!d.join("ready").exists());
+    pt.announce_ready(1_795_359_345_287);
+    assert_eq!(std::fs::read_to_string(d.join("ready")).unwrap(), "1795359345287");
+}

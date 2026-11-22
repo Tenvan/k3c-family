@@ -6,7 +6,7 @@ import { BalancingPage } from './balancing/BalancingPage';
 import { loadPref, savePref } from './lib/prefs';
 import { PlannerPage } from './planner/PlannerPage';
 import { WorldPage } from './world/WorldPage';
-import { Tabs } from '@webkit/organisms';
+import { PageBoundary, Tabs } from '@webkit/organisms';
 import { AppFrame } from '@webkit/templates';
 
 const MODES = ['dark', 'light'] as const;
@@ -40,15 +40,15 @@ export function App() {
     <AppFrame title="K3C Studio" appearance={mode} tabs={nav.tabs}
       right={<HeaderRight mcp={mcp} mock={backend.mock} dark={mode === 'dark'} onDark={(d) => setMode(d ? 'dark' : 'light')} />}>
       <Tabs.Content value="balancing" forceMount hidden={!balancing} style={balancing ? undefined : { display: 'none' }}>
-        <BalancingPage active={balancing} />
+        <PageBoundary name="Balancing"><BalancingPage active={balancing} /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="welten">
-        <WorldPage />
+        <PageBoundary name="Welten"><WorldPage /></PageBoundary>
       </Tabs.Content>
       <Tabs.Content value="planer">
-        <PlannerPage />
+        <PageBoundary name="Planer"><PlannerPage /></PageBoundary>
       </Tabs.Content>
-      <AssetsArea />
+      <PageBoundary name="Assets"><AssetsArea /></PageBoundary>
     </AppFrame>
   );
 }
