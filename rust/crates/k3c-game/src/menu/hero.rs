@@ -7,6 +7,9 @@ use k3c_platform::Canvas;
 use super::draw::{Hero, Painter};
 use super::layout::{COL_DIM, COL_TITLE, Geom, MAT_LINEN};
 
+/// Das Dev-Symbol einer Repo-Welt (B-1210); Schrift statt Grafik, damit es ohne neues Asset auskommt.
+pub const DEV_MARK: &str = "DEV";
+
 impl Geom {
     /// Der Rahmen des Weltbilds `(x, y, w, h)`: Breite der Karten, von deren Oberkante bis kurz über die Meldungszeile.
     pub fn hero_rect(&self) -> (f64, f64, f64, f64) {
@@ -30,6 +33,15 @@ impl Painter {
         self.rect(dst, x + inset, y + ht - inset - band, w - 2.0 * inset, band, COL_DIM);
         let name_y = y + ht - inset - band + (band - 1.3 * g.row_px) / 2.0;
         self.centered(dst, &h.name, x + w / 2.0, name_y, 1.3 * g.row_px, COL_TITLE);
+        if h.dev {
+            // B-1210: Welt aus dem Repo, kleines Schild oben links im Bild
+            let px = 0.8 * g.row_px;
+            let (tw, th) = self.measure(DEV_MARK, px);
+            let pad = 0.3 * px;
+            let (bx, by) = (x + 2.0 * inset, y + 2.0 * inset);
+            self.rect(dst, bx, by, tw + 2.0 * pad, th + 2.0 * pad, COL_DIM);
+            self.text(dst, DEV_MARK, bx + pad, by + pad, px, COL_TITLE);
+        }
         let (_, ah) = self.measure(">", g.title_px);
         let ay = y + (ht - ah) / 2.0;
         if h.left {

@@ -1,6 +1,6 @@
 # WL1.1 · Welten im dist-Paket, Repo-Vorrang mit Dev-Symbol
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -10,37 +10,45 @@
 - **Branch:** wl1/1-welten-paket-und-dev
 - **Abhängig von:** –
 - **Tickets:** B-1210
-- **Kriterien:** AC-01
+- **Kriterien:** AC-01, AC-02, AC-03
 
 ## Ziel
 
-Ein bis zwei Sätze: welches Ergebnis nach dieser Session auf `develop` liegt.
+Das Paket `dist/k3c-game` enthält alle Welten und die Paketprüfung verlangt sie; startet `k3c-game.exe` aus `<repo>/dist/k3c-game`, gelten die Welten aus `<repo>/data/worlds`, in der Welt-Auswahl kenntlich an einem kleinen Dev-Symbol (B-1210 AC-01 bis AC-03).
 
 ## Kontext
 
-Alles, was ein Agent **ohne Vorwissen** braucht: Stand des Codes, relevante Dateien mit Pfad, Entscheidungen
-(`docs/decisions/…`), Fallstricke. Keine Verweise auf Chat-Verläufe.
+- `rust/Taskfile.yml` › `game:dist` kopiert schon den ganzen Ordner `data/` (samt `worlds/`) nach `dist/k3c-game/data`; es fehlt nur die Prüfung in `tools/rustpaket/pruefen.go` (Pflichtordner `data/worlds` mit `*.json`).
+- `rust/crates/k3c-game/src/local/worlds.rs`: `worlds_fs`/`pick_worlds_dir` wählen den Welten-Ordner (`K3C_WORLDS_DIR`, sonst `data/worlds` neben der EXE, sonst im Arbeitsordner); `worlds_source` macht daraus die Quelle des Managers. Weitere Welten zeigt der Manager nur im Dev-Mode.
+- Repo-Erkennung über den Exe-Pfad: zwei Ebenen über dem EXE-Ordner liegt `Taskfile.yml` (und `.git`), EXE-Ordner heißt `k3c-game` unter `dist`. Keine Umgebungsvariable. Repo-Welten unlesbar: Log-Hinweis, Rückfall auf die Paket-Welten.
+- Welt-Auswahl: `rust/crates/k3c-game/src/menu/worldpick.rs` (Seite), `menu/hero.rs` (Weltbild), `menu/draw.rs` (`Hero`). Der Eintrag `WorldInfo` steht in `view/session.rs` und bekommt das Kennzeichen `repo`.
 
 ## Erlaubte Dateien
 
-Nur diese Dateien/Ordner dürfen geändert oder angelegt werden. Alles andere → Ticket anlegen, nicht ändern.
-Ein Pfad oder Glob je Zeile in Backticks: daraus entsteht die Kollisionsprüfung paralleler Sessions. Sammeldateien (`docs/backlog/README.md`,
-`docs/sprints/README.md`, `docs/projekte/README.md`, `docs/glossar.md`) stehen hier nicht; sie ändert `plan_*` oder der letzte Commit des Sprints.
-
-- `pfad/…`
+- `rust/crates/k3c-game/src/local/**`
+- `rust/crates/k3c-game/src/menu/**`
+- `rust/crates/k3c-game/src/view/session.rs`
+- `rust/crates/k3c-game/src/game/testutil.rs`
+- `rust/crates/k3c-game/src/hud/testutil.rs`
+- `rust/Taskfile.yml`
+- `tools/rustpaket/**`
 
 ## Nicht-Ziele
 
-Was in dieser Session ausdrücklich **nicht** passiert.
+Andere Daten als Welten aus dem Repo lesen; Workbench; neue Grafik-Assets oder `gen:paper`; Dev-Mode-Regel der Weltliste ändern.
 
 ## Schritte
 
-1. Konkrete, nummerierte Schritte in sinnvoller Reihenfolge.
+1. Test der Paketprüfung mit Welten (`tools/rustpaket/pruefen_test.go`), dann Pflichtordner `data/worlds` in `pruefen.go`.
+2. Test der Pfadwahl Repo vs. Paket in `local/worlds_tests.rs`, dann `pick_worlds` mit Repo-Erkennung und Rückfall in `local/worlds.rs`.
+3. `WorldInfo.repo` setzen (`local/saves.rs`), Test in `menu/worldpick_tests.rs`, Dev-Symbol im Weltbild (`menu/hero.rs`).
+4. cargo test, fmt, clippy, go test `tools/rustpaket`, `task check:diff`.
 
 ## Fertig, wenn
 
-- [ ] AC-01: Jeder Punkt ist prüfbar: ein Befehl mit erwartetem Ergebnis, ein Test, eine Datei, eine Beobachtung.
-- [ ] Punkte ohne Kriterium sind technische Voraussetzungen (z. B. CI grün).
+- [ ] AC-01: `go test ./tools/rustpaket` grün, ein Paket ohne `data/worlds/*.json` meldet einen Mangel.
+- [ ] AC-02: `cargo test -p k3c-game worlds` grün: EXE in `<repo>/dist/k3c-game` liest `<repo>/data/worlds`, sonst das Paket; unlesbare Repo-Welten fallen auf das Paket zurück.
+- [ ] AC-03: Test, dass die Welt-Auswahl bei Repo-Welten das Dev-Kennzeichen setzt; Sicht am PC durch 🧑.
 
 ## Prüfen
 

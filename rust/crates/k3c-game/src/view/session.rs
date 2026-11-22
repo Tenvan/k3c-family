@@ -73,6 +73,8 @@ pub struct WorldInfo {
     pub name: String,
     /// Grund, warum die Welt nicht ladbar ist (nur Dev-Mode); leer = ladbar
     pub error: String,
+    /// Welt aus `<repo>/data/worlds` statt aus dem Paket (Start aus dem Repo-dist, B-1210): Dev-Symbol in der Auswahl
+    pub repo: bool,
 }
 
 /// Session ist das Spiel aus Sicht der Menüs; local erfüllt sie. Alle Methoden laufen in der Schleife und blockieren

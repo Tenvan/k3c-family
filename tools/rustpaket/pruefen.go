@@ -21,8 +21,9 @@ var requiredFiles = []string{
 const maxDevwinBytes = 5 << 20
 
 // requiredDirs müssen mindestens eine Datei enthalten; das Suffix (falls nicht leer) muss auf mindestens eine zutreffen.
+// data/worlds hält die Welten des Pakets (B-1210).
 var requiredDirs = []struct{ dir, suffix string }{
-	{"data", ".json"}, {"public/grafik", "index.paper.json"}, {"public/audio", ""}, {"public/rig", ""},
+	{"data", ".json"}, {"data/worlds", ".json"}, {"public/grafik", "index.paper.json"}, {"public/audio", ""}, {"public/rig", ""},
 }
 
 var (

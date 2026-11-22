@@ -54,6 +54,8 @@ pub struct Hero {
     /// links gibt es weitere Welten
     pub left: bool,
     pub right: bool,
+    /// Welt aus dem Repo (`WorldInfo::repo`, B-1210): kleines Dev-Symbol oben links im Bild
+    pub dev: bool,
 }
 
 /// Row ist eine Karte: Beschriftung links, Wert rechts, Papier-Farbe; `off` = ausgegraut bzw. als Problem markiert.

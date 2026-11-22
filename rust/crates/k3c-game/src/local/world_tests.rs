@@ -81,3 +81,70 @@ fn welten_ordner_neben_der_exe_und_env() {
     );
     let _ = std::fs::remove_dir_all(&root);
 }
+
+/// B-1210 AC-02: Liegt die EXE in `<repo>/dist/k3c-game` (Repo an `Taskfile.yml` und `.git`), gelten die Repo-Welten;
+/// eine kopierte Paketfassung liest ihre eigenen; fehlen die Repo-Welten, gilt das Paket (Rückfall).
+#[test]
+fn repo_welten_vor_paket_welten() {
+    use super::worlds::{WorldsDir, pick_worlds};
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../.work/wl1-1-repo");
+    let _ = std::fs::remove_dir_all(&root);
+    let repo = root.join("repo");
+    let exe = repo.join("dist").join("k3c-game");
+    std::fs::create_dir_all(exe.join("data/worlds")).unwrap();
+    std::fs::create_dir_all(repo.join(".git")).unwrap();
+    std::fs::write(repo.join("Taskfile.yml"), "version: '3'").unwrap();
+    let paket = WorldsDir {
+        dir: Some(exe.join("data").join("worlds")),
+        repo: false,
+    };
+    assert_eq!(
+        pick_worlds("", Some(&exe)),
+        paket,
+        "Repo ohne data/worlds: Rückfall auf das Paket"
+    );
+    std::fs::create_dir_all(repo.join("data/worlds")).unwrap();
+    let want = WorldsDir {
+        dir: Some(repo.join("data").join("worlds")),
+        repo: true,
+    };
+    assert_eq!(pick_worlds("", Some(&exe)), want, "Start aus dem Repo-dist");
+    let kopie = root.join("kopie").join("k3c-game");
+    std::fs::create_dir_all(kopie.join("data/worlds")).unwrap();
+    let want = WorldsDir {
+        dir: Some(kopie.join("data").join("worlds")),
+        repo: false,
+    };
+    assert_eq!(pick_worlds("", Some(&kopie)), want, "kopiertes Paket");
+    let env = root.join("env").join("worlds");
+    std::fs::create_dir_all(&env).unwrap();
+    let got = pick_worlds(env.to_str().unwrap(), Some(&exe));
+    assert!(got.dir == Some(env) && !got.repo, "Umgebung gewinnt: {got:?}");
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+/// B-1210 AC-03: Kommen die Welten aus dem Repo, tragen die Einträge aus dem Ordner das Dev-Kennzeichen.
+#[test]
+fn world_list_marks_repo_worlds() {
+    let dir = TempDir::new();
+    let std_file = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../data/worlds/standard.json");
+    let raw = std::fs::read_to_string(std_file).expect("Standard-Welt");
+    let raw = raw.replacen(r#""id": "standard""#, r#""id": "lokal""#, 1);
+    std::fs::create_dir_all(dir.path().join("worlds")).expect("Ordner");
+    std::fs::write(dir.path().join("worlds/lokal.json"), raw).expect("schreiben");
+    let saves = TempDir::new();
+    let mut s = test_session(&saves);
+    s.worlds_dir = Some(dir.path().join("worlds"));
+    s.settings.dev_mode = true;
+    let l = s.world_list();
+    assert!(
+        l.len() == 2 && !l[0].repo && !l[1].repo,
+        "Paket-Welten ohne Kennzeichen: {l:?}"
+    );
+    s.worlds_repo = true;
+    let l = s.world_list();
+    assert!(
+        l.len() == 2 && !l[0].repo && l[1].repo,
+        "Repo-Welten mit Kennzeichen: {l:?}"
+    );
+}
