@@ -97,12 +97,15 @@ export function mockPlaytest(): PlaytestApi {
     devices: async () => ({
       mics: ['Raummikro (USB)', 'Mikrofon (Realtek)'],
       monitors: [{ index: 0, width: 2560, height: 1440, label: 'Monitor 1 (2560×1440)' }, { index: 1, width: 1920, height: 1080, label: 'Monitor 2 (1920×1080)' }],
-      ffmpeg: true, ffmpegPath: 'C:/ffmpeg/bin/ffmpeg.exe', message: '',
+      ffmpeg: true, ffmpegPath: 'C:/ffmpeg/bin/ffmpeg.exe', encoder: 'h264_amf 1080p30', message: '',
     }),
     start: async (o) => {
       if (status.running) throw new Error('Aufnahme läuft schon');
       if (!o.mic) throw new Error('kein Mikrofon gewählt');
-      status = { running: true, id: '2026-11-23-1', startMs: Date.now(), encoder: 'h264_qsv 1080p30' };
+      status = {
+        running: true, id: '2026-11-23-1', startMs: Date.now(), encoder: 'h264_amf 1080p30',
+        stats: { voiceBytes: 320000, videoBytes: 1_600_000, voiceRate: [32000, 32000, 32000, 32000], videoRate: [90000, 120000, 70000, 100000], warn: '' },
+      };
       return status;
     },
     stop: async () => {

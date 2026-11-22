@@ -58,6 +58,7 @@ type Status struct {
 	ID      string `json:"id"`
 	StartMs int64  `json:"startMs"`
 	Encoder string `json:"encoder"`
+	Stats   *Stats `json:"stats,omitempty"` // Messwerte der laufenden Aufnahme (Diagramme, Warnung)
 }
 
 // Recorder steuert höchstens eine Aufnahme.
@@ -66,6 +67,8 @@ type Recorder struct {
 	Spawn    Spawn
 	LookPath func(string) (string, error)
 	Check    func(ffmpeg string, o Options) error // prüft Mikro und Monitor gegen die echten Geräte; nil: keine Prüfung
+	Pick     func(ffmpeg string) string           // wählt den Encoder, der sich wirklich öffnen lässt; nil: QSV, dann libx264
+	Interval time.Duration                        // Takt des Wächters (Standard 1 s)
 	Game     func() (exe, dir string, err error)
 	Now      func() time.Time
 	Log      func(level, msg string, kv ...any)
@@ -74,6 +77,7 @@ type Recorder struct {
 
 	active   atomic.Pointer[string] // Kennung der laufenden Aufnahme, lock-frei lesbar (Store.Active)
 	mu       sync.Mutex
+	stats    Stats
 	st       Status
 	game     Proc
 	stopping bool
@@ -88,19 +92,15 @@ func (r *Recorder) log(level, msg string, kv ...any) {
 
 // FFmpegArgs ist der Aufruf: Mikro mono 16 kHz PCM, Bild per ddagrab (Desktop Duplication, GPU) vom Monitor.
 func FFmpegArgs(ffmpeg, dir, mic string, monitor int, enc string) []string {
-	chain, codec := "hwdownload,format=bgra,scale=1920:1080:flags=fast_bilinear,format=nv12",
-		[]string{"-c:v", "h264_qsv", "-global_quality", "26", "-look_ahead", "0"}
-	if enc == EncoderX264 {
-		chain = "hwdownload,format=bgra,scale=1280:720:flags=fast_bilinear,format=yuv420p"
-		codec = []string{"-c:v", "libx264", "-preset", "ultrafast", "-crf", "28"}
-	}
+	scale, codec := encoderSpec(enc)
+	// flush_packets und die kurzen Matroska-Blöcke lassen die Dateien jede Sekunde wachsen: Daran misst der Wächter.
 	a := []string{ffmpeg, "-hide_banner", "-loglevel", "warning", "-nostats", "-y",
 		"-f", "dshow", "-i", "audio=" + mic,
 		"-f", "lavfi", "-i", "ddagrab=output_idx=" + strconv.Itoa(monitor) + ":framerate=30",
-		"-map", "0:a", "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", filepath.Join(dir, fileVoice),
-		"-map", "1:v", "-vf", chain, "-r", "30"}
+		"-map", "0:a", "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", "-flush_packets", "1", filepath.Join(dir, fileVoice),
+		"-map", "1:v", "-vf", "hwdownload,format=bgra," + scale, "-r", "30"}
 	a = append(a, codec...)
-	return append(a, filepath.Join(dir, fileVideo))
+	return append(a, "-flush_packets", "1", "-cluster_time_limit", "1000", filepath.Join(dir, fileVideo))
 }
 
 // GameArgs ist der Spielstart: das Spiel schreibt markers.jsonl und survey.json in den Session-Ordner.
@@ -120,7 +120,12 @@ func (r *Recorder) ActiveID() string {
 func (r *Recorder) Status() Status {
 	r.mu.Lock()
 	defer r.mu.Unlock()
-	return r.st
+	st := r.st
+	if st.Running {
+		c := r.stats.clone()
+		st.Stats = &c
+	}
+	return st
 }
 
 // busy meldet, ob schon eine Aufnahme läuft (kurz unter r.mu).
@@ -157,6 +162,10 @@ func (r *Recorder) Start(o Options) (Status, error) {
 			return r.Status(), err
 		}
 	}
+	first := ""
+	if r.Pick != nil {
+		first = r.Pick(ffmpeg)
+	}
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if r.st.Running {
@@ -168,7 +177,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	r.active.Store(&id)
 	capture := r.Now().UnixMilli()
-	rec, enc, err := r.startFFmpeg(ffmpeg, dir, o)
+	rec, enc, err := r.startFFmpeg(ffmpeg, dir, o, first)
 	if err != nil {
 		_ = os.RemoveAll(dir)
 		r.active.Store(nil)
@@ -189,39 +198,62 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	r.st = Status{Running: true, ID: id, StartMs: meta.StartMs, Encoder: enc}
 	r.game, r.stopping, r.done = game, false, make(chan struct{})
+	r.stats = Stats{}
 	r.log("info", "🚀 Spieltest gestartet", "id", id, "encoder", enc)
-	go r.finish(dir, meta, rec, game, r.done)
+	stopWatch := make(chan struct{}) // endet mit dem Spiel, vor ffmpeg: sonst warnt der Wächter beim normalen Stopp
+	go r.watch(dir, rec, stopWatch)
+	go r.finish(dir, meta, rec, game, r.done, stopWatch)
 	return r.st, nil
 }
 
-// startFFmpeg probiert QSV, dann libx264; ein Prozess, der innerhalb von Settle endet, gilt als gescheitert.
-func (r *Recorder) startFFmpeg(ffmpeg, dir string, o Options) (Proc, string, error) {
+// startFFmpeg probiert zuerst `first` (der Encoder, den die Probe bestätigt hat; leer: QSV), dann libx264; ein
+// Prozess, der innerhalb von Settle endet, gilt als gescheitert.
+func (r *Recorder) startFFmpeg(ffmpeg, dir string, o Options, first string) (*waited, string, error) {
 	var last string
-	for _, enc := range []string{EncoderQSV, EncoderX264} {
+	encs := []string{EncoderQSV, EncoderX264}
+	switch first {
+	case "":
+	case EncoderX264:
+		encs = []string{EncoderX264}
+	default:
+		encs = []string{first, EncoderX264}
+	}
+	for _, enc := range encs {
 		p, err := r.Spawn(FFmpegArgs(ffmpeg, dir, o.Mic, o.Monitor, enc), dir)
 		if err != nil {
 			return nil, "", fmt.Errorf("%w: %v", errNoRecording, err)
 		}
-		ended := make(chan error, 1)
-		go func() { ended <- p.Wait() }()
+		w := &waited{Proc: p, dead: make(chan struct{})}
+		go func() { w.err = p.Wait(); close(w.dead) }()
 		select {
-		case <-ended:
+		case <-w.dead:
 			last = p.Tail()
 			r.log("warn", "❌ ffmpeg endet beim Start ("+enc+"): "+last, "encoder", enc)
 		case <-time.After(r.Settle):
-			return &waited{Proc: p, ended: ended}, enc, nil
+			return w, enc, nil
 		}
 	}
 	return nil, "", fmt.Errorf("%w (Mikro belegt oder Gerät falsch?): %s", errNoRecording, last)
 }
 
-// waited ist ein Proc, dessen Wait schon in einer Goroutine läuft.
+// waited ist ein Proc, dessen Wait schon in einer Goroutine läuft; Wait darf hier mehrfach aufgerufen werden.
 type waited struct {
 	Proc
-	ended chan error
+	dead chan struct{}
+	err  error
 }
 
-func (w *waited) Wait() error { return <-w.ended }
+func (w *waited) Wait() error { <-w.dead; return w.err }
+
+// exited sagt, ob der Prozess schon beendet ist (ohne zu warten).
+func (w *waited) exited() bool {
+	select {
+	case <-w.dead:
+		return true
+	default:
+		return false
+	}
+}
 
 // quit beendet ffmpeg sauber (`q`), nach QuitWait hart.
 func (r *Recorder) quit(p Proc) {
@@ -237,16 +269,22 @@ func (r *Recorder) quit(p Proc) {
 }
 
 // finish wartet aufs Spielende, beendet ffmpeg und schreibt session.json (Stand „aufgenommen“, Absturz vermerkt).
-func (r *Recorder) finish(dir string, meta Meta, rec, game Proc, done chan struct{}) {
+func (r *Recorder) finish(dir string, meta Meta, rec *waited, game Proc, done, stopWatch chan struct{}) {
 	werr := game.Wait()
+	early := rec.exited() // ffmpeg war vor dem Spielende schon weg: die Aufnahme ist unvollständig
+	close(stopWatch)
+	tail := rec.Tail()
 	r.quit(rec)
 	r.mu.Lock()
 	meta.EndMs, meta.Stand = r.Now().UnixMilli(), StageRecorded
+	if early {
+		meta.Error = "ffmpeg vorzeitig beendet, Aufnahme unvollständig: " + tail
+	}
 	if werr != nil && !r.stopping {
 		meta.Crash, meta.GameExit = true, werr.Error()
 	}
 	id := r.st.ID
-	r.st, r.game = Status{}, nil
+	r.st, r.game, r.stats = Status{}, nil, Stats{}
 	r.mu.Unlock()
 	writeMeta(dir, meta)
 	r.active.Store(nil)

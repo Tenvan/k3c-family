@@ -91,7 +91,7 @@ func (g *rig) readMeta(t *testing.T, id string) Meta {
 
 func TestFFmpegArgsQSV(t *testing.T) {
 	a := strings.Join(FFmpegArgs("ffmpeg", "D", "Mikro (USB)", 1, EncoderQSV), " ")
-	for _, want := range []string{"-f dshow -i audio=Mikro (USB)", "ddagrab=output_idx=1:framerate=30", "-ac 1 -ar 16000 -c:a pcm_s16le " + filepath.Join("D", "voice.wav"),
+	for _, want := range []string{"-f dshow -i audio=Mikro (USB)", "ddagrab=output_idx=1:framerate=30", "-ac 1 -ar 16000 -c:a pcm_s16le -flush_packets 1 " + filepath.Join("D", "voice.wav"),
 		"scale=1920:1080", "-c:v h264_qsv", "-r 30", filepath.Join("D", "video.mkv")} {
 		if !strings.Contains(a, want) {
 			t.Errorf("fehlt %q in %s", want, a)

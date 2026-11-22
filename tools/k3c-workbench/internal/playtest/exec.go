@@ -106,7 +106,8 @@ func Game(root string) func() (string, string, error) {
 // NewRecorder baut den Recorder für die Ablage store unter root mit echten Prozessen.
 func NewRecorder(root string, store *Store, log func(level, msg string, kv ...any)) *Recorder {
 	return &Recorder{Store: store, Spawn: ExecSpawn, LookPath: FindFFmpeg, Game: Game(root), Now: time.Now, Log: log,
-		Settle: 2 * time.Second, QuitWait: 10 * time.Second, Check: func(ff string, o Options) error { return CheckDevices(runProbe, ff, o.Mic, o.Monitor) }}
+		Settle: 2 * time.Second, QuitWait: 10 * time.Second, Check: func(ff string, o Options) error { return CheckDevices(runProbe, ff, o.Mic, o.Monitor) },
+		Pick: func(ff string) string { return pickCached(ff, log) }}
 }
 
 // Devices sind die wählbaren Geräte der Seite.
@@ -115,6 +116,7 @@ type Devices struct {
 	Monitors   []Monitor `json:"monitors"` // geprüft mit einem Probebild; leer, wenn keiner aufnehmbar ist
 	FFmpeg     bool      `json:"ffmpeg"`   // ffmpeg gefunden (FindFFmpeg)
 	FFmpegPath string    `json:"ffmpegPath"`
+	Encoder    string    `json:"encoder"` // der Encoder, den die Aufnahme nutzen würde (echte Probe)
 	Message    string    `json:"message"`
 }
 
@@ -167,7 +169,8 @@ func ListDevices(lookPath func(string) (string, error)) Devices {
 	if mons == nil {
 		mons = []Monitor{}
 	}
-	return Devices{Mics: mics, Monitors: mons, FFmpeg: true, FFmpegPath: ff}
+	enc := pickCached(ff, nil)
+	return Devices{Mics: mics, Monitors: mons, FFmpeg: true, FFmpegPath: ff, Encoder: enc}
 }
 
 // RunOut führt einen kurzen Aufruf aus und liefert stdout und stderr (höchstens 30 s); für die Prüfung von ffmpeg.

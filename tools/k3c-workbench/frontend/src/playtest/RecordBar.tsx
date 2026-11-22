@@ -4,6 +4,7 @@ import { NoticeCard } from '@webkit/molecules';
 import { loadText, savePref } from '../lib/prefs';
 import { useNow } from '../lib/useNow';
 import { playtestApi } from './api';
+import { RecordMonitor } from './RecordMonitor';
 import type { PlaytestDevices, PlaytestStatus } from './types';
 
 /** Ohne Geräteprobe (kein Desktop, ffmpeg fehlt) bleibt eine feste Auswahl, damit die Seite nutzbar bleibt. */
@@ -77,6 +78,7 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
         <SelectField aria-label="Monitor" value={shownMonitor}
           disabled={status.running} options={monitors.map((m) => ({ value: String(m.index), label: m.label }))} onChange={screen} />
         <ActionButton variant="soft" disabled={status.running} onClick={refresh}>Geräte neu suchen</ActionButton>
+        {devices?.encoder && !status.running && <Text size="1" color="gray">Encoder: {devices.encoder}</Text>}
         <ActionButton disabled={status.running || !micKnown || devices?.ffmpeg === false}
           onClick={() => start(shownMonitor)}>Spieltest starten</ActionButton>
         <ActionButton color="red" variant="soft" disabled={!status.running} onClick={stop}>Stopp</ActionButton>
@@ -86,6 +88,7 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
           </Text>
         )}
       </Flex>
+      {status.running && status.stats && <RecordMonitor stats={status.stats} />}
       {devices?.ffmpeg === false && <NoticeCard title="ffmpeg fehlt" tone="warn">{devices.message}</NoticeCard>}
       {devices?.ffmpeg && mics.length === 0 && (
         <NoticeCard title="Kein Mikrofon gefunden" tone="warn">
