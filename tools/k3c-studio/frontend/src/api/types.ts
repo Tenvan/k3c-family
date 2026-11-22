@@ -46,8 +46,6 @@ export interface Backend extends AssetsBackend, WorldBackend, HubBackend, Balanc
   /** true ohne Wails-Laufzeit und ohne Backend: erfundene Daten (src/api/mock.ts). */
   mock: boolean;
   info(): Promise<Info>;
-  /** Neue Claude-Code-Session mit dem Prompt im Eingabefeld (Prompt-Knöpfe in Welten und Assets). */
-  openInClaude(prompt: string): Promise<void>;
   openUrl(url: string): void;
   on<E extends EventName>(event: E, fn: (data: Events[E]) => void): () => void;
 }

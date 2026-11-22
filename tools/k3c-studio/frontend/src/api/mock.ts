@@ -25,9 +25,6 @@ export function mockBackend(): Backend {
   return {
     mock: true,
     info: async (): Promise<Info> => ({ version: 'mock', mcp }),
-    openInClaude: async (prompt: string): Promise<void> => {
-      console.info('[mock] openInClaude', prompt.length, 'Zeichen');
-    },
     ...mockAssets(),
     ...mockWorld(),
     ...mockHub(),

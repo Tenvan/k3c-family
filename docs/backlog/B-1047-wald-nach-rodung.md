@@ -65,3 +65,4 @@ keine
 ## Notizen
 
 Gedächtnis `reference_k2c-bildauswertung` (Bilder 1, 2, 8).
+- Spieltest 2026-11-22-10, Befund f3: „Ach so, hier fehlt noch der Dunkeleffekt, wenn man in der Wald ist. Das ist aber, glaube ich, in der Planung schon mit drin.“ (Welt standard, Insel 1 Stufe 0, Tag 1 Tag, Oberwelt (Wald), Spieler 1. Der Wald ist hell und gleichmäßig ausgeleuchtet. Ralf nimmt an, es sei geplant; passt zu B-1047 (der Wald wird mit dem Roden offener und heller, also im dichten Zustand dunkler) und B-1046 (Tageszeit und Licht tönen das Bild).)

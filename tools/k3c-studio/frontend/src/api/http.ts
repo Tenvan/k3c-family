@@ -86,7 +86,6 @@ export function httpBackend(): Backend {
   return {
     mock: false,
     info: () => rpc('Info'),
-    openInClaude: (prompt) => rpc('OpenInClaude', prompt),
     ...httpAssets(),
     ...httpWorld(),
     ...httpHub(),

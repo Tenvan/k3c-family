@@ -1,22 +1,8 @@
 import { Fragment, useState, type ReactNode } from 'react';
-import { backend } from '../api';
-import { Code, IconButton, LinkButton } from '@webkit/atoms';
+import { ActionButton, Code, IconButton, LinkButton } from '@webkit/atoms';
 import { DropdownMenu } from '@webkit/organisms';
 
 const stop = { onClick: (e: { stopPropagation(): void }) => e.stopPropagation(), onKeyDown: (e: { stopPropagation(): void }) => e.stopPropagation() };
-
-/** Claude-Funke in Claude-Orange: zwölf spitze Strahlen, abwechselnd lang und kurz. */
-function ClaudeIcon() {
-  return (
-    <svg aria-hidden="true" height="15" viewBox="0 0 24 24" width="15">
-      <g fill="#D97757">
-        {Array.from({ length: 12 }, (_, i) => (
-          <path key={i} d={i % 2 ? 'M12 4.5 L13 11 L12 12.5 L11 11 Z' : 'M12 1.5 L13.2 10.8 L12 12.5 L10.8 10.8 Z'} transform={`rotate(${i * 30} 12 12)`} />
-        ))}
-      </g>
-    </svg>
-  );
-}
 
 type Feedback = 'idle' | 'ok' | 'fail';
 
@@ -33,22 +19,27 @@ function useFeedback() {
 const toneOf = (f: Feedback) => (f === 'ok' ? 'green' : f === 'fail' ? 'red' : 'gray');
 const iconOf = (f: Feedback, idle: ReactNode) => (f === 'ok' ? '✓' : f === 'fail' ? '✕' : idle);
 
-/** Prompt zum Weiterarbeiten, zwei Wege: ⧉ kopiert ihn, der Claude-Funke öffnet ihn als neue Code-Session in
- *  Claude Desktop (Deep Link, schickt nicht ab). */
+/** Prompt zum Weiterarbeiten: ⧉ kopiert ihn in die Zwischenablage (Claude wird von hier aus nicht gestartet). */
 export function CopyPrompt({ prompt, what }: { prompt: string; what: string }) {
   const [copied, settleCopy] = useFeedback();
-  const [opened, settleOpen] = useFeedback();
   return (
     <span className="pl-copy" {...stop}>
       <IconButton size="1" variant="ghost" color={toneOf(copied)} aria-label={`Prompt kopieren: ${what}`}
         title={`Prompt kopieren: ${what}`} onClick={() => settleCopy(navigator.clipboard.writeText(prompt))}>
         {iconOf(copied, '⧉')}
       </IconButton>
-      <IconButton size="1" variant="ghost" color={toneOf(opened)} aria-label={`In Claude öffnen: ${what}`}
-        title={`In Claude öffnen (neue Code-Session): ${what}`} onClick={() => settleOpen(backend.openInClaude(prompt))}>
-        {iconOf(opened, <ClaudeIcon />)}
-      </IconButton>
     </span>
+  );
+}
+
+/** Wie CopyPrompt, aber als Knopf mit Text („Prompt: Auswerten“); zeigt nach dem Kopieren kurz ✓. */
+export function CopyPromptButton({ prompt, label }: { prompt: string; label: string }) {
+  const [copied, settleCopy] = useFeedback();
+  return (
+    <ActionButton size="1" variant="soft" color={toneOf(copied)} title="Kopiert den Prompt in die Zwischenablage"
+      onClick={() => settleCopy(navigator.clipboard.writeText(prompt))}>
+      {copied === 'ok' ? '✓ Kopiert' : copied === 'fail' ? '✕ Fehlgeschlagen' : label}
+    </ActionButton>
   );
 }
 

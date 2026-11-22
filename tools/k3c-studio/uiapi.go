@@ -3,11 +3,9 @@ package main
 import (
 	"context"
 	"net/http"
-	"unicode/utf8"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
-	"k3c/tools/workkit/claude"
 	"k3c/tools/workkit/uikit"
 )
 
@@ -17,7 +15,7 @@ import (
 // uiMethods sind die Methoden von App, die die Oberfläche aufrufen darf: genau die von GoApp in
 // frontend/src/api/wails.ts (TestUIMethodsWieWailsTS hält beide gleich). Balance* seit WZ63.5 (Balancing-Seite).
 var uiMethods = map[string]bool{
-	"Info": true, "OpenInClaude": true,
+	"Info": true,
 	"AssetsList": true, "AssetsIndex": true, "AssetsCheck": true, "AssetsGroesse": true, "AssetsGroesseBasis": true,
 	"AssetsFrameOhne": true, "AssetsStufen": true, "AssetsHintergruende": true, "AssetsHintergrund": true,
 	"AssetsGet": true, "AssetsStyle": true, "AssetsPrompts": true, "AssetsReview": true, "AssetsFrame": true,
@@ -49,15 +47,4 @@ func (a *App) emitAll(ctx context.Context, name string, data ...any) {
 	if a.bus != nil {
 		a.bus.Publish(name, data)
 	}
-}
-
-// OpenInClaude öffnet eine neue Claude-Code-Session mit dem Prompt im Eingabefeld und der Repo-Wurzel als Ordner
-// (Binding der Prompt-Knöpfe in Welten und Assets; Deep Link in tools/workkit/claude).
-func (a *App) OpenInClaude(prompt string) error {
-	a.wait()
-	if err := claude.Open(prompt, a.root); err != nil {
-		return err
-	}
-	a.log.Info("🚀 Prompt in Claude geöffnet", "ns", "main", "zeichen", utf8.RuneCountInString(prompt))
-	return nil
 }

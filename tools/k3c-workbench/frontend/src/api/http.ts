@@ -41,7 +41,6 @@ export function httpBackend(): Backend {
     planningGet: (id) => rpc('PlanningGet', id),
     githubStatus: (force) => rpc('GitHubStatus', force),
     worktreeCheck: () => rpc('WorktreeCheck'),
-    openInClaude: (prompt) => rpc('OpenInClaude', prompt),
     gitOverview: () => rpc('GitOverview'),
     gitAction: (action) => rpc('GitAction', action),
     gitDeleteBranches: (names, remote) => rpc('GitDeleteBranches', names, remote),

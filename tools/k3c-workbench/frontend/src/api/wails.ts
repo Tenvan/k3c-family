@@ -41,7 +41,6 @@ interface GoApp {
   PlanningGet(id: string): Promise<string>;
   GitHubStatus(force: boolean): Promise<GitHubData>;
   WorktreeCheck(): Promise<WorktreeDiff[]>;
-  OpenInClaude(prompt: string): Promise<void>;
   GitOverview(): Promise<GitView>;
   GitAction(action: string): Promise<string>;
   GitDeleteBranches(names: string[], remote: boolean): Promise<string>;
@@ -122,7 +121,6 @@ export function wailsBackend(): Backend {
     planningGet: (id) => app.PlanningGet(id),
     githubStatus: (force) => app.GitHubStatus(force),
     worktreeCheck: () => app.WorktreeCheck(),
-    openInClaude: (prompt) => app.OpenInClaude(prompt),
     gitOverview: () => app.GitOverview(),
     gitAction: (action) => app.GitAction(action),
     gitDeleteBranches: (names, remote) => app.GitDeleteBranches(names, remote),

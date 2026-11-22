@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Flex, Heading, SelectField, StatusBadge, Text, TextField } from '@webkit/atoms';
 import { CheckField, NoticeCard } from '@webkit/molecules';
-import { CopyPrompt } from '../planning/PromptParts';
+import { CopyPromptButton } from '../planning/PromptParts';
 import { frameUrl, playtestApi } from './api';
 import { clock } from './RecordBar';
 import { createTicketsPrompt, evaluatePrompt } from './prompts';
@@ -46,11 +46,10 @@ export function FindingsPanel({ sessionId, hasTranscript, captureMs, onSeek }: P
       <Flex align="center" justify="between" gap="3" wrap="wrap">
         <Heading size="3">Befunde ({list.length})</Heading>
         <Flex gap="3" align="center">
-          <Text size="1" color="gray">Prompt:</Text>
           {hasTranscript
-            ? <CopyPrompt prompt={evaluatePrompt(sessionId)} what="Auswerten" />
+            ? <CopyPromptButton prompt={evaluatePrompt(sessionId)} label="Prompt: Auswerten" />
             : <Text size="1" color="gray">Auswerten erst nach dem Transkript</Text>}
-          {ready && <CopyPrompt prompt={createTicketsPrompt(sessionId)} what="Tickets anlegen" />}
+          {ready && <CopyPromptButton prompt={createTicketsPrompt(sessionId)} label="Prompt: Tickets anlegen" />}
         </Flex>
       </Flex>
       {error && <NoticeCard title="Befunde" tone="error">{error}</NoticeCard>}

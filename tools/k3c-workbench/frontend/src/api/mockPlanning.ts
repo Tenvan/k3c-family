@@ -233,7 +233,6 @@ export function mockPlanning(changed: () => void) {
     },
     planningDoc: async (name: PlanDoc): Promise<string> => DOCS[name],
     planningGet: async (id: string): Promise<string> => mockDoc(DATA, id),
-    openInClaude: async (prompt: string): Promise<void> => { console.info('[mock] openInClaude', prompt.length, 'Zeichen'); },
     githubStatus: async (): Promise<GitHubData> => structuredClone(GITHUB),
     worktreeCheck: async (): Promise<WorktreeDiff[]> => [{
       branch: 'claude/planer-wt-test', path: 'C:/k3c/.claude/worktrees/planer-wt-test',

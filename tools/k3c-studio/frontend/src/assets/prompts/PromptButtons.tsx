@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { backend } from '../../api';
-import { ActionButton, Flex, IconButton, Text } from '@webkit/atoms';
+import { ActionButton, Flex, Text } from '@webkit/atoms';
 import { errorText } from '@webkit/lib/errors';
 import type { Vorlage } from '../api';
 import { fillPrompt, type Werte } from './fill';
@@ -13,16 +12,15 @@ interface Props {
   leer?: string;
 }
 
-/** Prompt-Buttons (Entscheidung 005 › 5): der Titel kopiert den gefüllten Prompt in die Zwischenablage, ✦ öffnet ihn als
- *  neue Code-Session in Claude Desktop (B-701 D-12). Kein schreibendes Control: geändert wird erst über MCP. */
+/** Prompt-Buttons (Entscheidung 005 › 5): der Titel kopiert den gefüllten Prompt in die Zwischenablage. Kein schreibendes Control: geändert wird erst über MCP. */
 export function PromptButtons({ vorlagen, werte, caption, leer }: Props) {
   const [note, setNote] = useState<{ ok: boolean; text: string } | null>(null);
   if (!vorlagen.length) return leer ? <Text size="1" color="gray">{leer}</Text> : null;
-  const run = async (v: Vorlage, open: boolean) => {
+  const run = async (v: Vorlage) => {
     try {
       const prompt = fillPrompt(v, werte);
-      await (open ? backend.openInClaude(prompt) : navigator.clipboard.writeText(prompt));
-      setNote({ ok: true, text: open ? `„${v.titel}“ in Claude geöffnet` : `„${v.titel}“ kopiert` });
+      await navigator.clipboard.writeText(prompt);
+      setNote({ ok: true, text: `„${v.titel}“ kopiert` });
     } catch (e) {
       setNote({ ok: false, text: errorText(e) });
     }
@@ -32,10 +30,7 @@ export function PromptButtons({ vorlagen, werte, caption, leer }: Props) {
       <Text size="1" color="gray">{caption}</Text>
       <Flex gap="2" wrap="wrap">
         {vorlagen.map((v) => (
-          <Flex key={v.id} gap="0" align="center">
-            <ActionButton size="1" variant="soft" onClick={() => run(v, false)}>{v.titel}</ActionButton>
-            <IconButton size="1" variant="ghost" aria-label={`In Claude öffnen: ${v.titel}`} title="In Claude öffnen" onClick={() => run(v, true)}>✦</IconButton>
-          </Flex>
+          <ActionButton key={v.id} size="1" variant="soft" onClick={() => run(v)}>{v.titel}</ActionButton>
         ))}
       </Flex>
       {note && <Text size="1" color={note.ok ? 'green' : 'red'}>{note.text}</Text>}

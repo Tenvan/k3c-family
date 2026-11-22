@@ -9,7 +9,6 @@ import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hinterg
 // GoApp ist genau die Freigabeliste uiMethods in uiapi.go (TestUIMethodsWieWailsTS).
 interface GoApp {
   Info(): Promise<Info>;
-  OpenInClaude(prompt: string): Promise<void>;
   // Asset-Oberfläche (docs/standards/paper-mcp.md › Oberfläche; Typen in typesAssets.ts)
   AssetsList(): Promise<AssetEintrag[]>;
   AssetsIndex(): Promise<AssetEintrag[]>;
@@ -165,7 +164,6 @@ export function wailsBackend(): Backend {
   return {
     mock: false,
     info: () => app.Info(),
-    openInClaude: (prompt) => app.OpenInClaude(prompt),
     ...assetsWails(app),
     ...worldWails(app),
     ...hubWails(app),
