@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
-- **Lane:** erst
+- **Lane:** zweit
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** wl1/6-workbench-spielstart-dienste
