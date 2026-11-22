@@ -1,4 +1,4 @@
-import type { PlaytestAction, PlaytestApi, PlaytestFile, PlaytestPlan, PlaytestSession } from './types';
+import type { PlaytestAction, PlaytestApi, PlaytestFile, PlaytestPlan, PlaytestSession, PlaytestStatus } from './types';
 
 // Mock ohne Wails-Laufzeit (`?mock=1`, Tests): drei Sessions mit allen Ständen; Plan und Löschen verhalten sich wie
 // internal/playtest (Bestätigung nötig, laufende Aufnahme gesperrt, Sammelaktion nur für „ausgewertet“).
@@ -39,10 +39,25 @@ export function mockPlaytest(): PlaytestApi {
     const files = action === 'session' ? [file(`${s.id}/`, s.size)] : s.files.filter((f) => f.name === 'video.mkv');
     return { action, id, files, total: files.reduce((n, f) => n + f.size, 0) };
   };
+  const idle: PlaytestStatus = { running: false, id: '', startMs: 0, encoder: '' };
+  let status = idle;
   return {
     reset: () => {
       sessions = seed();
+      status = idle;
     },
+    devices: async () => ({ mics: ['Raummikro (USB)', 'Mikrofon (Realtek)'], ffmpeg: true, message: '' }),
+    start: async (o) => {
+      if (status.running) throw new Error('Aufnahme läuft schon');
+      if (!o.mic) throw new Error('kein Mikrofon gewählt');
+      status = { running: true, id: '2026-11-23-1', startMs: Date.now(), encoder: 'h264_qsv 1080p30' };
+      return status;
+    },
+    stop: async () => {
+      if (!status.running) throw new Error('keine Aufnahme aktiv');
+      status = idle;
+    },
+    status: async () => status,
     list: async () => structuredClone(sessions),
     plan,
     remove: async (action, id, confirm) => {

@@ -126,3 +126,21 @@ describe('Seite Spieltest', () => {
     expect(host.querySelector('video')!.getAttribute('src')).toBe('/api/dev/playtest/media/2026-11-20-1/video.mkv');
   });
 });
+
+describe('Spieltest starten (B-1219)', () => {
+  it('Start gesperrt ohne Mikro; mit Aufnahme: Start gesperrt, Stopp frei; Stopp beendet sie', async () => {
+    const host = await mount();
+    const bar = () => host.querySelector('[data-record]')!;
+    expect(button('Spieltest starten', host).disabled).toBe(true);
+    await playtestApi.start({ mic: 'Raummikro (USB)', monitor: 1, gameArgs: [] });
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
+    expect(bar().getAttribute('data-record')).toBe('running');
+    expect(bar().textContent).toContain('Aufnahme 2026-11-23-1');
+    expect(button('Spieltest starten', host).disabled).toBe(true);
+    expect(button('Stopp', host).disabled).toBe(false);
+    await expect(playtestApi.start({ mic: 'x', monitor: 0, gameArgs: [] })).rejects.toThrow('läuft schon');
+    act(() => button('Stopp', host).click());
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
+    expect(bar().getAttribute('data-record')).toBe('idle');
+  });
+});

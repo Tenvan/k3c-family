@@ -63,6 +63,10 @@ type Meta struct {
 	FFmpeg   string   `json:"ffmpeg"`
 	GameArgs []string `json:"gameArgs"`
 	Stand    string   `json:"stand"`
+	Encoder  string   `json:"encoder,omitempty"`  // Bildaufnahme (QSV oder libx264-Fallback)
+	Crash    bool     `json:"crash,omitempty"`    // Spiel endete mit Fehler, ohne dass Stopp gedrückt wurde
+	GameExit string   `json:"gameExit,omitempty"` // Fehlertext des Spielendes bei Absturz
+	Error    string   `json:"error,omitempty"`    // Grund, wenn das Spiel nicht startete
 }
 
 // File ist eine Datei oder ein Ordner einer Session mit Größe in Bytes (Ordner: Summe).

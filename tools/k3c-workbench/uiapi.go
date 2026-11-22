@@ -26,6 +26,7 @@ var uiMethods = map[string]bool{
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
 	"PlaytestList": true, "PlaytestPlan": true, "PlaytestDelete": true,
+	"PlaytestDevices": true, "PlaytestStart": true, "PlaytestStop": true, "PlaytestStatus": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uikit.Prefix, die Oberfläche liefert Vite.

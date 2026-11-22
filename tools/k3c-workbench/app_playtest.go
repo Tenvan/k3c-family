@@ -4,7 +4,9 @@ import (
 	"errors"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"sync"
 
 	"k3c/tools/k3c-workbench/internal/playtest"
 	"k3c/tools/workkit/uikit"
@@ -72,3 +74,36 @@ func (a *App) playtestMedia() http.Handler {
 		http.ServeContent(w, r, filepath.Base(p), st.ModTime(), f)
 	})
 }
+
+// recorders hält je App einen Recorder (App-Struktur bleibt unberührt, WZ64.2).
+var recorders sync.Map
+
+func (a *App) recorder() *playtest.Recorder {
+	if r, ok := recorders.Load(a); ok {
+		return r.(*playtest.Recorder)
+	}
+	r := playtest.NewRecorder(a.root, a.playtestStore(), func(level, msg string, kv ...any) {
+		attrs := append([]any{"ns", "main"}, kv...)
+		if level == "warn" {
+			a.log.Warn(msg, attrs...)
+			return
+		}
+		a.log.Info(msg, attrs...)
+	})
+	act, _ := recorders.LoadOrStore(a, r)
+	return act.(*playtest.Recorder)
+}
+
+// PlaytestDevices nennt die Mikrofone (ffmpeg -list_devices) und ob ffmpeg im PATH liegt.
+func (a *App) PlaytestDevices() playtest.Devices { return playtest.ListDevices(exec.LookPath) }
+
+// PlaytestStart nimmt Mikro und Bild auf und startet das Spiel mit --playtest.
+func (a *App) PlaytestStart(o playtest.Options) (playtest.Status, error) {
+	return a.recorder().Start(o)
+}
+
+// PlaytestStop beendet das Spiel; die Aufnahme endet danach wie bei Spielende.
+func (a *App) PlaytestStop() error { return a.recorder().Stop() }
+
+// PlaytestStatus ist der Stand der Aufnahme.
+func (a *App) PlaytestStatus() playtest.Status { return a.recorder().Status() }

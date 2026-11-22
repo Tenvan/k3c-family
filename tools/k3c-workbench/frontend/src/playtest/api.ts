@@ -14,6 +14,10 @@ function pick(): PlaytestApi {
       list: () => app.PlaytestList(),
       plan: (action, id) => app.PlaytestPlan(action, id),
       remove: (action, id, confirm) => app.PlaytestDelete(action, id, confirm),
+      devices: () => app.PlaytestDevices(),
+      start: (o) => app.PlaytestStart(o),
+      stop: () => app.PlaytestStop(),
+      status: () => app.PlaytestStatus(),
     };
   }
   if (backend.mock) return mockPlaytest();
@@ -22,6 +26,10 @@ function pick(): PlaytestApi {
     list: () => rpc('PlaytestList'),
     plan: (action, id) => rpc('PlaytestPlan', action, id),
     remove: (action, id, confirm) => rpc('PlaytestDelete', action, id, confirm),
+    devices: () => rpc('PlaytestDevices'),
+    start: (o) => rpc('PlaytestStart', o),
+    stop: () => rpc('PlaytestStop'),
+    status: () => rpc('PlaytestStatus'),
   };
 }
 

@@ -7,6 +7,7 @@ import { ListDetail } from '@webkit/templates';
 import { formatBytes } from '../lib/format';
 import { playtestApi } from './api';
 import { confirmTexts, germanDate, sessionLength, STAGE_TONE } from './format';
+import { RecordBar } from './RecordBar';
 import { SessionDetail } from './SessionDetail';
 import type { PlaytestAction, PlaytestSession } from './types';
 
@@ -50,6 +51,7 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
 
   const evaluated = sessions?.filter((s) => s.stage === 'ausgewertet' && s.hasVideo).length ?? 0;
   const header = (
+    <>
     <Flex align="center" justify="between" gap="3" p="3" wrap="wrap">
       <Heading size="4">Spieltest</Heading>
       <Flex gap="2" align="center">
@@ -59,6 +61,8 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
         <ActionButton variant="soft" color="gray" onClick={reload}>Neu laden</ActionButton>
       </Flex>
     </Flex>
+    <RecordBar active={active} onChange={reload} />
+    </>
   );
   const list = (
     <Flex direction="column" gap="2" p="2">

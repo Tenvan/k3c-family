@@ -32,10 +32,35 @@ export interface PlaytestPlan {
   total: number;
 }
 
+/** Mikrofone aus ffmpeg (DirectShow); `message` nennt den Grund, wenn ffmpeg fehlt. */
+export interface PlaytestDevices {
+  mics: string[];
+  ffmpeg: boolean;
+  message: string;
+}
+
+export interface PlaytestOptions {
+  mic: string;
+  /** ddagrab output_idx, 0-basiert. */
+  monitor: number;
+  gameArgs: string[];
+}
+
+export interface PlaytestStatus {
+  running: boolean;
+  id: string;
+  startMs: number;
+  encoder: string;
+}
+
 export interface PlaytestApi {
   list(): Promise<PlaytestSession[]>;
   plan(action: PlaytestAction, id: string): Promise<PlaytestPlan>;
   remove(action: PlaytestAction, id: string, confirm: boolean): Promise<PlaytestPlan>;
+  devices(): Promise<PlaytestDevices>;
+  start(options: PlaytestOptions): Promise<PlaytestStatus>;
+  stop(): Promise<void>;
+  status(): Promise<PlaytestStatus>;
   /** Nur der Mock: Ausgangsdaten wiederherstellen (Tests). */
   reset?(): void;
 }
