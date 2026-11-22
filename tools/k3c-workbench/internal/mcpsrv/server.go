@@ -1,6 +1,6 @@
 // Package mcpsrv ist der MCP-Server von k3c-workbench (B-046): ein Tool-Katalog (tools.go) auf dem gemeinsamen Gerüst
-// workkit/mcpkit (HTTP an 127.0.0.1, Zähler und Aufruf-Log, Checkout je Aufruf); Dienste, Tasks, Prüf- und Testläufe
-// und Ressourcen hängt die Workbench über mcpkit.Options ein.
+// workkit/mcpkit (HTTP an 127.0.0.1, Zähler und Aufruf-Log, Checkout je Aufruf); Dienste, Tasks, Prüfläufe und
+// Ressourcen hängt die Workbench über mcpkit.Options ein.
 package mcpsrv
 
 import (
@@ -12,7 +12,6 @@ import (
 
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
-	"k3c/tools/k3c-workbench/internal/simrun"
 	"k3c/tools/workkit/applog"
 	"k3c/tools/workkit/console"
 	"k3c/tools/workkit/mcpkit"
@@ -54,14 +53,13 @@ type Config struct {
 }
 
 // Server ist der MCP-Server der Workbench: das Gerüst mcpkit.Server (kit) mit Katalog, Zählern und HTTP-Teil, dazu
-// die Workbench-eigenen Teile (Prüfläufe, Testläufe, Dienste der Worktrees).
+// die Workbench-eigenen Teile (Prüfläufe, Dienste der Worktrees). Testläufe (sim_test) führt seit WZ63.5 k3c-studio.
 type Server struct {
 	cfg             Config
 	kit             *mcpkit.Server
 	console         *console.Store
 	log             *slog.Logger
 	checks          *checkRuns
-	sims            *simrun.Registry                         // Testläufe von sim_test und der Balancing-Seite (internal/simrun)
 	run             func(context.Context, runSpec) runResult // Test-Naht für check_run
 	taskVersion     func(context.Context) (string, error)    // Test-Naht: `task --version` (B-868, check_taskversion.go)
 	taskVersionMemo taskVersionMemo                          // gemerktes Ergebnis von taskVersion, einmal je Workbench-Lauf (B-871)
@@ -85,19 +83,17 @@ func New(cfg Config) *Server {
 	if s.log == nil {
 		s.log = applog.Discard()
 	}
-	s.sims = simrun.New(s.log)
 	s.kit = mcpkit.New(s.kitOptions())
 	register(s)
 	s.registerGauges()
 	return s
 }
 
-// kitOptions hängt die Workbench in das Gerüst: Checkout-Regeln, Ziel im Aufruf-Log, Messung, pprof, Testläufe.
+// kitOptions hängt die Workbench in das Gerüst: Checkout-Regeln, Ziel im Aufruf-Log, Messung, pprof.
 func (s *Server) kitOptions() mcpkit.Options {
 	o := mcpkit.Options{Name: "k3c-workbench", Version: s.cfg.Version, Instructions: instructions, Root: s.cfg.Root,
 		Port: s.cfg.Port, EnvPort: EnvPort, Log: s.log, OnStart: s.cfg.OnStart, OnCall: s.cfg.OnCall, Usage: s.cfg.Usage,
-		TakesCheckout: takesCheckout, WriteTool: func(tool string) bool { return writeTools[tool] }, Target: targetOf,
-		BeforeStop: s.sims.CancelAll}
+		TakesCheckout: takesCheckout, WriteTool: func(tool string) bool { return writeTools[tool] }, Target: targetOf}
 	if r := s.cfg.Resources; r != nil {
 		o.Track = r.Track
 		o.Mount = func(mux *http.ServeMux) { mountPprof(mux) }
@@ -108,7 +104,7 @@ func (s *Server) kitOptions() mcpkit.Options {
 // Start öffnet den HTTP-Server an 127.0.0.1 unter /mcp.
 func (s *Server) Start() error { return s.kit.Start() }
 
-// Stop bricht laufende Testläufe ab und schließt HTTP-Server und Sessions.
+// Stop schließt HTTP-Server und Sessions.
 func (s *Server) Stop() error { return s.kit.Stop() }
 
 // Restart startet den HTTP-Teil neu; Clients verbinden sich danach neu.
@@ -122,6 +118,3 @@ func (s *Server) Stats() Snapshot { return s.kit.Stats() }
 
 // Calls liefert das Aufruf-Log, laufende Aufrufe eingeschlossen, neueste zuerst.
 func (s *Server) Calls() []Call { return s.kit.Calls() }
-
-// Sims ist das Register der Testläufe, das sim_test und die Balancing-Seite teilen.
-func (s *Server) Sims() *simrun.Registry { return s.sims }

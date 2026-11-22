@@ -61,8 +61,11 @@ func TestAlleToolsMitBeschreibungUndAnnotations(t *testing.T) {
 	}
 }
 
-// WZ63 (AC-05): Weltdesign-Tools (world_*, assets_*, hub_*, level_generate) führt nur noch k3c-studio; weder Katalog
-// noch instructions.md der Workbench nennen sie.
+// balanceTools führt seit WZ63.5 k3c-studio (AC-07): Testläufe, Engine-Läufe und Spieldaten.
+var balanceTools = []string{"sim_test", "sim_run", "replay_run", "reports_list", "report_read", "saves_list"}
+
+// WZ63 (AC-05, AC-07): Weltdesign-Tools (world_*, assets_*, hub_*, level_generate) und Balancing-Tools führt nur noch
+// k3c-studio; weder Katalog noch instructions.md der Workbench nennen sie.
 func TestKeineStudioToolsInDerWorkbench(t *testing.T) {
 	t.Parallel()
 	res, err := connect(t, New(Config{Version: "test"})).ListTools(context.Background(), nil)
@@ -71,14 +74,14 @@ func TestKeineStudioToolsInDerWorkbench(t *testing.T) {
 	}
 	studio := func(name string) bool {
 		return name == "level_generate" || strings.HasPrefix(name, "world_") || strings.HasPrefix(name, "assets_") ||
-			strings.HasPrefix(name, "hub_")
+			strings.HasPrefix(name, "hub_") || slices.Contains(balanceTools, name)
 	}
 	for _, tool := range res.Tools {
 		if studio(tool.Name) {
 			t.Errorf("Studio-Tool %s im Katalog der Workbench", tool.Name)
 		}
 	}
-	for _, name := range []string{"level_generate", "world_", "assets_", "hub_"} {
+	for _, name := range append([]string{"level_generate", "world_", "assets_", "hub_"}, balanceTools...) {
 		if strings.Contains(instructions, "`"+name) {
 			t.Errorf("instructions.md nennt noch %s", name)
 		}

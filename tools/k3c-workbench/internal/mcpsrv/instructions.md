@@ -2,8 +2,9 @@
 
 Entwickler-Werkzeug des Spiels K3C. Diese Tools ersetzen Shell-Befehle und Dateilesen, weil sie nur das Wichtige
 zurückgeben. Die Gliederung folgt der gemeinsamen Spec der Workbench-Seiten (`docs/standards/workbench-seiten.md`).
-Zuständig für Entwicklung, Planung, Prüfläufe, Dienste, Logs und Balancing/Simulation. Welten, Inseln, Chunks, Hub,
-Assets und `level_generate` liegen im MCP-Server `k3c-studio`; dieser Server kennt nur die Tools unten.
+Zuständig für Entwicklung, Planung, Prüfläufe, Dienste und Logs. Welten, Inseln, Chunks, Hub, Assets, der
+Level-Generator sowie Balancing und Simulation (Testläufe, Engine-Läufe, Berichte, Spielstände) liegen im MCP-Server
+`k3c-studio`; dieser Server kennt nur die Tools unten.
 
 ## Regeln für alle Tools
 
@@ -21,10 +22,9 @@ Assets und `level_generate` liegen im MCP-Server `k3c-studio`; dieser Server ken
 ### Worktrees
 
 - Eine k3c-workbench-Instanz (aus der Repo-Wurzel) bedient alle Worktrees. Jeder Aufruf gilt dem Checkout, aus dem die
-  Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs, Berichte, Spielstände
-  und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
+  Session kommt (Header `X-K3C-Root` aus `.mcp.json`): Prüfläufe, Planung, Logs und Dienste nur dort. `workbench_status` nennt den Checkout in der Zeile `Checkout:`.
 - **Im Worktree immer `checkout` setzen** (B-388): Schreibende Tools (`plan_create`, `plan_set`, `plan_section`,
-  `plan_sections`, `plan_delete`, `svc_*`, `task_start`, `task_stop`), `check_run` und `sim_test` nehmen das Argument `checkout` mit dem Ordnernamen
+  `plan_sections`, `plan_delete`, `svc_*`, `task_start`, `task_stop`) und `check_run` nehmen das Argument `checkout` mit dem Ordnernamen
   oder dem absoluten Pfad des eigenen Checkouts (`git rev-parse --show-toplevel`). Es gilt vor dem Header; der Header
   allein genügt nicht, die Desktop-App meldet aus Worktrees die Repo-Wurzel (B-341). Ein unbekannter oder mehrdeutiger
   Wert wird abgelehnt, die Meldung nennt die Worktrees. `task_*` mit einem Worktree lehnt ab (dort `check_run`).
@@ -113,7 +113,7 @@ Assets und `level_generate` liegen im MCP-Server `k3c-studio`; dieser Server ken
 
 - `task_list {namespace?, query?}`: Taskfile-Baum; jeder Task ist mit `task_start` startbar, es gibt kein Freigabe-Schloss.
 - `task_start {task, args?}` kehrt sofort zurück; `task_status`, `task_output {task, limit?, since?}`, `task_stop {task}`.
-- Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`, sondern `sim_test`.
+- Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`, sondern über den MCP-Server `k3c-studio`.
 
 ## Projektspezifisch
 
@@ -132,56 +132,13 @@ Assets und `level_generate` liegen im MCP-Server `k3c-studio`; dieser Server ken
   Stufen: Stufe 1 Regel-Tests, Lint, Typecheck, `go vet`; Stufe 2 nur nach grüner Stufe 1 die Tests der geänderten Pakete.
   Nach einem roten Lauf wiederholt `task:check:diff:js` bzw. `task:check:diff:go` nur diese Bahn; `task:check:diff:plan`
   zeigt nur Basis und Schritte. `task:check:race` ist der langsame Race-Detector für `engine/` (Review-Session, CI).
-- **Sim-Sperre (B-788):** `sim_test start` und `sim_run` lehnen ab, solange Simulationen und Balancing gesperrt sind
-  (Beschluss 🧑 2026-11-11). Nur 🧑 hebt die Sperre auf: Workbench mit `K3C_SIM_ENTSPERRT=1` starten.
 - Die Antwort ist bei grünem Lauf eine Zeile, sonst Kopfzeile und nur die Fehlerzeilen.
 - `check_run` wartet bis zum Ende des Laufs und sendet alle 20 s Fortschritt (B-520); ein Aufruf liefert das Ergebnis.
   Nie in Schleifen nachfragen. Nur ohne progressToken antwortet es nach 4 min mit „läuft noch“ und einer Lauf-ID;
   `check_run {run: "<ID>"}` wartet dann weiter. Der Lauf läuft auch weiter, wenn der Client abbricht.
 - Mehr Kontext zu einem Lauf: `console_tail` mit `check:<ziel>`. Läufe verschiedener Worktrees sperren sich nicht.
 
-### Spieldaten
+### Balancing und Simulation
 
-- `reports_list` und `report_read` statt `reports/*.json` zu öffnen (Berichte und `sim_test`-Läufe).
-- `saves_list` statt `saves/` zu durchsuchen: Stufe, Tag, Spieler und Datum je Spielstand.
-
-### Rechnen ohne Server
-- `sim_run {seed, ticks, biome?, inputs?}` rechnet im Prozess der Workbench
-  (`engine/simcli`, B-924), ohne laufenden Server und ohne den Browser. Gleiche Eingabe ergibt denselben Text; `ticks` höchstens 100000
-  (30 pro Sekunde). Für Balancing-Vergleiche statt eigener Skripte.
-- `replay_run {path}` spielt eine Replay-Datei (`task balance:run -- --replay-dir DIR`) ohne Bot ab: Endzustand-Hash,
-  Burgfall-Tick, Vergleich mit der Aufnahme; `path` relativ zur Repo-Wurzel, Dateien außerhalb werden abgelehnt.
-- Diese beiden und `sim_test start` rechnen **Code und Daten dieses Prozesses** (Stand beim Start der Workbench), nicht die
-  eines Worktrees. Aus einem anderen Checkout lehnen sie ab; der Hinweis nennt `task k3c-workbench:dev:worktree`: eigene
-  Dev-Workbench im Worktree (eigene Ports, `K3C_DATA_DIR=<Worktree>/data`), dort mit deren `K3C_DEV_PORT` verbinden. Das gilt
-  für Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und für Daten in `data/`. Nur die Welten- und
-  Planer-Seiten (`world`, `hub`) lesen `data/` des Checkouts frisch von der Platte. Ein Absturz der Engine ist ein Tool-Fehler
-  (`💥 Absturz in der Engine`, Stack im Log), nie ein Absturz der Workbench.
-
-### Testläufe
-
-- **Jeder Testlauf** (Balancing, Performance, Stabilität) läuft über `sim_test`, nie über `task balance` in
-  der Shell. `sim_test {action: start, …}` kehrt sofort mit einer ID zurück; `sim_test {action:
-  status, id}` zeigt den Lauf in höchstens 10 Zeilen, `stop` bricht ab, `list` zeigt die Läufe des Checkouts.
-- `mode: offline` (einziger Modus seit B-887, Mocks im Prozess) baut den Balancing-Tester im Checkout und bewertet die Ziele aus
-  `data/balance-targets.json`. Ohne `seeds` gilt dort `seedMode`: `dev` rechnet nur den ersten Seed `k3c-dev`, `all`
-  alle (B-634). `seeds: N` nimmt die ersten N, `seedList: "k3c-dev,7"` genau diese; `bots` (z. B. `coop2`) ersetzt
-  offline den Bot aller Ziele. Der Bericht nennt Seed-Anzahl und Seed-Modus.
-- **BAS-Standardlauf** (Projekt BAS, Meilenstein-Läufe `docs/rules/zielkorridore.md` § 6): `sim_test {action: start,
-  bots: coop2}`. Bis zur Abnahme der neuen Werte rechnet er nur `k3c-dev` und ist in Minuten fertig.
-- **Insel-Lauf / Meilenstein** (BS11, B-642): `sim_test {action: start, bots: coop2, world: standard, days: 40}` spielt die
-  ganze erste Insel der Welt (alle Tiefen; die Bots steigen ab und kämpfen). `world` (Welt-Datei aus `data/worlds/`) und
-  `days` (1 bis 60) gelten nur offline und für alle Ziele des Laufs; der Bericht zeigt je Tiefe Ankunftstag und Burgfall, je
-  Boss den Tag und den Endboss (`kennzahlen.island`). Ein 40-Tage-Lauf dauert mehrere Minuten je Seed.
-- **Spieler und Varianten offline** (BS3.4): `players` (1–4) setzt die Spieleranzahl aller Ziele (Single-Player-Meilenstein: `bots: wirtschaft, players: 1, world: standard, days: 40`); `vary: "datei.json:pfad=wert;…"` ändert Werte nur für diesen Lauf (z. B. `economy.json:purse.startGold=500`), `data/` bleibt unverändert.
-- **Delta-Runde nach einem Meilenstein** (B-640, BS7): Jedes Ziel und jeder Hebel gehört zu einer Werte-Gruppe (`basis`, `holz`,
-  `schiff`; `group` in `data/balance-targets.json` und `balance-hints.json`), abgenommene Gruppen stehen in `frozen`. Ein durchgelaufener
-  Offline-Lauf wird mit `sim_test {action: baseline, id: run-N, saveBaseline: M1}` unter einem Namen gesichert (`reports/baseline/M1/`
-  mit Bericht und `run.json`; nie überschrieben, nur bei `Pass`); `sim_test {action: baseline}` listet sie. Die Delta-Runde nach einer
-  neuen Mechanik ist `sim_test {action: start, bots: coop2, baseline: M1}`: Der Bericht vergleicht je Gruppe (Ampel, Trend); nur die
-  freie Gruppe der neuen Mechanik wird justiert, eingefrorene melden sich nur, wenn sie kippen („eingefrorene Gruppe kippt“ ist ein
-  Befund: Ticket, 🧑 fragen), und Tuning-Hinweise nennen keine Hebel eingefrorener Gruppen.
-- **Warten wie `check_run`** (B-644): `sim_test {action: start, …, wait: true}` bzw. `sim_test {action: wait, id}` wartet auf das Ende
-  des Laufs und liefert den Endstatus. Mit `progressToken` meldet der Aufruf alle 20 s ein Lebenszeichen und wartet bis zum Ende;
-  ohne antwortet er nach 4 min mit „läuft noch“ und der ID. Der Lauf überlebt den Aufruf; `stop` bricht ihn ab.
-- Der volle Bericht liegt unter `reports/simtest-<id>/` (`simtest.md` und der Bericht des Testers), lesbar mit `report_read`.
+- Testläufe, Engine-Läufe, Replays, Berichte und Spielstände (Balancing, Simulation, Spieldaten) liegen seit WZ63.5 im
+  MCP-Server `k3c-studio`; dort stehen auch die Regeln dazu, die Sim-Sperre (Beschluss 🧑 2026-11-11) eingeschlossen.

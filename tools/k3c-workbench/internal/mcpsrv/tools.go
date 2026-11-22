@@ -33,30 +33,11 @@ func register(s *Server) {
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, s.checkRun)
 	registerLogs(s)
-	add(s, &mcp.Tool{
-		Name: "reports_list",
-		Description: "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS. " +
-			"Nutze es bei: neue Berichte von der Xbox finden. Statt: ls reports/.",
-		Annotations: readOnly(),
-	}, s.reportsList)
-	add(s, &mcp.Tool{
-		Name: "report_read",
-		Description: "Ein Xbox-Bericht verdichtet: Controller mit gesehenen Tasten, FPS je Sprite-Stufe, Vollbild, Zurück-Navigationen. " +
-			"Nutze es bei: Controller- oder FPS-Befund eines Berichts. Statt: JSON-Datei lesen.",
-		Annotations: readOnly(),
-	}, s.reportRead)
-	add(s, &mcp.Tool{
-		Name: "saves_list",
-		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen. " +
-			"Nutze es bei: welcher Spielstand existiert und wie weit er ist. Statt: saves/ durchsuchen.",
-		Annotations: readOnly(),
-	}, s.savesList)
-	registerEngine(s)
-	registerSimTest(s)
 	registerServices(s)
 	registerTasks(s)
 	registerPlanning(s)
-	// Weltdesign (world_*, assets_*, hub_*, level_generate) liegt im MCP-Server k3c-studio (WZ63).
+	// Weltdesign (world_*, assets_*, hub_*, level_generate, WZ63) und Balancing (sim_test, sim_run, replay_run,
+	// reports_list, report_read, saves_list, WZ63.5) liegen im MCP-Server k3c-studio.
 }
 
 // registerLogs sind die Tools der Seite Dienste & Logs (Workbench-Spec § 2): Konsole, Logdateien, Fehler.
@@ -104,28 +85,6 @@ func registerLogs(s *Server) {
 		Annotations: readOnly(),
 	}, s.logsSince)
 }
-
-// registerEngine sind die Engine-Tools (B-047; level_generate seit WZ63 in k3c-studio): rechnen im Prozess der Workbench über engine/simcli (B-924), ohne laufenden Server.
-func registerEngine(s *Server) {
-	add(s, &mcp.Tool{
-		Name: "sim_run",
-		Description: "Deterministischer Simulationslauf mit der Engine der Workbench (kein Server nötig), höchstens 100000 Ticks (30/s): " +
-			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
-			"Bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Workbench mit K3C_SIM_ENTSPERRT=1). " +
-			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
-		Annotations: readOnlyEngine(),
-	}, s.simRun)
-	add(s, &mcp.Tool{
-		Name: "replay_run",
-		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit der Engine der Workbench ohne Bot ab: " +
-			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. " +
-			"Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
-		Annotations: readOnlyEngine(),
-	}, s.replayRun)
-}
-
-// readOnlyEngine: rechnet nur (Kindprozess), ändert nichts.
-func readOnlyEngine() *mcp.ToolAnnotations { return readOnly() }
 
 // registerServices sind die Dienste-Tools (B-067, Workbench-Spec § 2); Start ist nicht zerstörerisch, Stopp und Neustart schon.
 func registerServices(s *Server) {

@@ -8,12 +8,12 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"k3c/tools/k3c-workbench/internal/balance"
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/balance"
+	"k3c/tools/k3c-studio/internal/simrun"
 )
 
 // sim_test (B-348, TR1): ein Tool für jeden Testlauf. `start` kehrt sofort mit einer Lauf-ID zurück, der Lauf arbeitet
-// im Hintergrund der Workbench im Checkout der Session; `status` zeigt ihn in höchstens 10 Zeilen, `stop` bricht ab,
+// im Hintergrund des Studios im Checkout der Session; `status` zeigt ihn in höchstens 10 Zeilen, `stop` bricht ab,
 // `list` zeigt die Läufe des Checkouts. Die Modi stehen in simtest_spec.go, die Runner in simtest_<modus>.go.
 
 // maxStatusLines: status und list höchstens 10 Zeilen (B-348). Register, Warteschlange und Offline-Runner stehen in
@@ -30,7 +30,7 @@ func registerSimTest(s *Server) {
 			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
 			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
 			"Delta-Runde (B-640): action baseline {id, saveBaseline: M1} sichert einen durchgelaufenen Lauf als Baseline, start mit baseline: M1 vergleicht je Werte-Gruppe. " +
-			"start ist bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Workbench mit K3C_SIM_ENTSPERRT=1). " +
+			"start ist bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Studio mit K3C_SIM_ENTSPERRT=1). " +
 			"Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance oder Binaries in der Shell.",
 		Annotations: &mcp.ToolAnnotations{OpenWorldHint: new(bool)},
 	}, s.simTest)

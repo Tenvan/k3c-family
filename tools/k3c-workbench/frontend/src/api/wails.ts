@@ -51,7 +51,11 @@ interface GoApp {
   GitStamp(): Promise<string>;
   TicketCreate(input: TicketInput): Promise<TicketCreated>;
   TicketRecent(n: number): Promise<TicketCreated[]>;
-  // Balancing-Seite (WZ28.4, WZ28.5)
+}
+
+// Bindings der Balancing-Seite: seit WZ63.5 im Backend von k3c-studio, nicht mehr an der App der Workbench
+// (TestUIMethodsWieWailsTS). Übergang bis WZ63.6, das die Seite ins Studio verschiebt und diese Schnittstelle entfernt.
+interface GoAppBalance {
   BalanceStart(spec: BalanceSpec): Promise<BalanceRun>;
   BalanceRuns(): Promise<BalanceRun[]>;
   BalanceStop(id: string): Promise<void>;
@@ -79,7 +83,7 @@ interface WailsRuntime {
 
 declare global {
   interface Window {
-    go?: { main?: { App?: GoApp } };
+    go?: { main?: { App?: GoApp & GoAppBalance } };
     runtime?: WailsRuntime;
   }
 }
@@ -88,7 +92,7 @@ export function hasWails(): boolean {
   return window.go?.main?.App !== undefined && window.runtime !== undefined;
 }
 
-function balanceWails(app: GoApp): BalanceBackend {
+function balanceWails(app: GoAppBalance): BalanceBackend {
   return {
     balanceStart: (spec) => app.BalanceStart(spec),
     balanceRuns: () => app.BalanceRuns(),

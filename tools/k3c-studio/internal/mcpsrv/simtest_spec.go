@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/balance"
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/balance"
+	"k3c/tools/k3c-studio/internal/simrun"
 )
 
 // simTestIn sind die Parameter von sim_test (B-348 › Anforderungen). Geprüft wird über Positivlisten und Grenzen.

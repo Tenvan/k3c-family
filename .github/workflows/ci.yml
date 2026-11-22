@@ -19,7 +19,7 @@ permissions:
 # task check:go liest (checkdiff -gopkgs); tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
 env:
   GO_SIM_PKGS: '/(engine/balance|engine/simcli|cmd/k3c-sim)$'
-  WB_SIM_PKGS: '/internal/(balance|simrun)$'
+  STUDIO_SIM_PKGS: '/internal/(balance|simrun)$'
 
 jobs:
   # Pull Request: nur prüfen, ob der Branch sauber in die Zielbranch passt. Die übrigen Jobs laufen nur bei Push/Dispatch.
@@ -169,7 +169,7 @@ jobs:
       - name: Go-Tests (-short, ohne Sim/Balance)
         shell: bash
         working-directory: .
-        run: task k3c-workbench:gotest GO_TEST_FLAGS=-short WB_PKGS="$(cd tools/k3c-workbench && go list ./... | grep -Ev "$WB_SIM_PKGS" | tr '\n' ' ')"
+        run: task k3c-workbench:gotest GO_TEST_FLAGS=-short
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14
@@ -220,8 +220,11 @@ jobs:
         working-directory: .
       - run: task k3c-studio:vitest
         working-directory: .
-      - run: task k3c-studio:gotest GO_TEST_FLAGS=-short
+      # Paketliste ohne Sim/Balance-Pakete (balance, simrun seit WZ63.5 im Studio, B-825).
+      - name: Go-Tests Studio (-short, ohne Sim/Balance)
+        shell: bash
         working-directory: .
+        run: task k3c-studio:gotest GO_TEST_FLAGS=-short STUDIO_PKGS="$(cd tools/k3c-studio && go list ./... | grep -Ev "$STUDIO_SIM_PKGS" | tr '\n' ' ')"
       - run: task workkit:gotest GO_TEST_FLAGS=-short
         working-directory: .
       - uses: golangci/golangci-lint-action@v9

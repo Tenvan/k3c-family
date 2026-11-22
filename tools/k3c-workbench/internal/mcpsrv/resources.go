@@ -16,7 +16,7 @@ func (s *Server) workbenchResources(context.Context, struct{}) (string, error) {
 	return s.cfg.Resources.Report(), nil
 }
 
-// registerGauges meldet die Puffer des Servers an: gehaltene Prüflaufzeilen, Konsolenpuffer, Testläufe, Sessions.
+// registerGauges meldet die Puffer des Servers an: gehaltene Prüflaufzeilen, Konsolenpuffer, Sessions (Testläufe: k3c-studio, WZ63.5).
 func (s *Server) registerGauges() {
 	r := s.cfg.Resources
 	if r == nil {
@@ -27,7 +27,6 @@ func (s *Server) registerGauges() {
 	r.Gauge("Konsole-Text", "B", func() int64 { _, _, b := s.console.Stats(); return b })
 	r.Gauge("Prüfläufe", "", func() int64 { n, _ := s.checks.stats(); return int64(n) })
 	r.Gauge("Prüflauf-Text", "B", func() int64 { _, b := s.checks.stats(); return b })
-	r.Gauge("Testläufe", "", func() int64 { return int64(s.sims.Count()) })
 	r.Gauge("MCP-Sessions", "", func() int64 {
 		n := 0
 		for range s.kit.MCP().Sessions() {

@@ -9,7 +9,7 @@
 #   k3c-sim      cmd/k3c-sim/Taskfile.yml       Engine-CLI: Simulation, Balancing, Level (B-726)
 #   k3c-workbench      tools/k3c-workbench/Taskfile.yml     Workbench: dev (Client/Server), window (wails dev), build, frontend, test, lint
 #   k3c-studio   tools/k3c-studio/Taskfile.yml  Studio (Welten, Assets, Hub): dev (Client/Server), window, build, run, frontend, test, lint (WZ63)
-#   balance      tools/k3c-workbench/internal/balance/Taskfile.yml  Balancing-Tester
+#   balance      tools/k3c-studio/internal/balance/Taskfile.yml  Balancing-Tester (seit WZ63.5 im Studio)
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
 #
@@ -37,7 +37,7 @@ includes:
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
   k3c-studio: tools/k3c-studio/Taskfile.yml
   workkit: tools/workkit/Taskfile.yml
-  balance: tools/k3c-workbench/internal/balance/Taskfile.yml
+  balance: tools/k3c-studio/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
   rust: rust/Taskfile.yml

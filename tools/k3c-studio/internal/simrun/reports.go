@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // balanceSummary ist der Teil von reports/…/balance-*.json, den Status und Liste lesen (Format: internal/balance/summary.go).

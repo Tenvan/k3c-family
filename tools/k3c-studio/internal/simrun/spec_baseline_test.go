@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // B-640: eine benannte Baseline ersetzt die Baseline des Repos im Aufruf der Balance-CLI.

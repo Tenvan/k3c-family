@@ -1,4 +1,4 @@
-// WZ63.4: Die MCP-Server k3c-workbench und k3c-studio teilen sich kein Tool.
+// WZ63.4, WZ63.5: Die MCP-Server k3c-workbench und k3c-studio teilen sich kein Tool.
 // Die Tool-Namen stehen in den instructions.md beider Server (ab der ersten `## `-Überschrift; der Kopf nennt nur die Zuständigkeit).
 import { readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -7,6 +7,10 @@ import { describe, expect, it } from 'vitest';
 const ROOT = resolve(__dirname, '..');
 const WORKBENCH = 'tools/k3c-workbench/internal/mcpsrv/instructions.md';
 const STUDIO = 'tools/k3c-studio/internal/mcpsrv/instructions.md';
+
+// Studio: Weltdesign (WZ63) und Balancing mit Spieldaten (WZ63.5).
+const BALANCE = ['sim_test', 'sim_run', 'replay_run', 'reports_list', 'report_read', 'saves_list'];
+const STUDIO_TOOL = /^(world|assets|hub)_|^level_generate$|^(sim_test|sim_run|replay_run|reports_list|report_read|saves_list)$/;
 
 const read = (file: string) => readFileSync(join(ROOT, file), 'utf8');
 
@@ -33,8 +37,15 @@ describe('MCP-Server Workbench und Studio', () => {
   });
 
   it('Studio-Bereiche stehen nicht in den Workbench-Instructions und umgekehrt', () => {
-    for (const n of wb) expect(n).not.toMatch(/^(world|assets|hub)_|^level_generate$/);
-    for (const n of st) expect(n).toMatch(/^(world|assets|hub)_|^level_generate$/);
+    for (const n of wb) expect(n).not.toMatch(STUDIO_TOOL);
+    for (const n of st) expect(n).toMatch(STUDIO_TOOL);
+  });
+
+  it('Balancing-Tools führt das Studio (WZ63.5)', () => {
+    for (const n of BALANCE) {
+      expect(st.has(n)).toBe(true);
+      expect(wb.has(n)).toBe(false);
+    }
   });
 
   it('jeder Kopf verweist auf den anderen Server', () => {

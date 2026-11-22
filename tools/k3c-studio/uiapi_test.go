@@ -33,8 +33,8 @@ func TestUIRPC(t *testing.T) {
 	if res, _ := out["result"].(map[string]any); code != http.StatusOK || res["version"] != version {
 		t.Errorf("Info: %d %v", code, out)
 	}
-	// Bindings der Workbench (WZ63) gibt es hier nicht.
-	for _, m := range []string{"Services", "PlanningData", "BalanceRuns", "TicketCreate"} {
+	// Bindings der Workbench (WZ63) gibt es hier nicht; Balance* gehören seit WZ63.5 dem Studio.
+	for _, m := range []string{"Services", "PlanningData", "TicketCreate"} {
 		if code, _ := uiCall(t, a, uikit.Prefix+"rpc/"+m, "[]"); code != http.StatusNotFound {
 			t.Errorf("%s: Status %d, erwartet 404", m, code)
 		}

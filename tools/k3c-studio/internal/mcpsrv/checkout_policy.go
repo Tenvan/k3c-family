@@ -8,10 +8,11 @@ import (
 
 // takesCheckout: Tools mit dem Argument checkout im Schema (B-388; Gerüst: mcpkit.Options.TakesCheckout).
 // Asset-Tools (paper-mcp.md › 1), Gebäude-Planer-Tools (hub_*, B-923) und Welten-Tools (world_*, B-954) nehmen checkout
-// immer, auch die lesenden. level_generate nimmt keins: es rechnet nur im eigenen Checkout (ownCheckoutErr).
+// immer, auch die lesenden; sim_test wie in der Workbench (B-388, seit WZ63.5 im Studio). level_generate, sim_run und
+// replay_run nehmen keins: sie rechnen nur im eigenen Checkout (ownCheckoutErr), sim_test start ebenso.
 func takesCheckout(tool string) bool {
 	return writeTools[tool] || strings.HasPrefix(tool, "assets_") || strings.HasPrefix(tool, "hub_") ||
-		strings.HasPrefix(tool, "world_")
+		strings.HasPrefix(tool, "world_") || tool == "sim_test"
 }
 
 // writeTools ändern Dateien. Ihre Antwort nennt immer den Checkout, auch wenn der Header fehlt und die Repo-Wurzel
@@ -22,7 +23,7 @@ var writeTools = map[string]bool{
 	"world_create": true, "world_set": true, "world_override_set": true, "world_chunks_set": true, "world_story_set": true, "world_delete": true}
 
 // ownCheckoutErr lehnt einen Aufruf ab, dessen Checkout nicht der des laufenden Studios ist (B-924, B-925):
-// level_generate rechnet Code und Daten dieses Prozesses, nicht die eines Worktrees.
+// level_generate, sim_run, sim_test start und replay_run rechnen Code und Daten dieses Prozesses, nicht die eines Worktrees.
 func (s *Server) ownCheckoutErr(ctx context.Context, tool string) error {
 	if s.kit.OwnCheckout(ctx) {
 		return nil

@@ -1,6 +1,6 @@
 package main
 
-import "k3c/tools/k3c-workbench/internal/simrun"
+import "k3c/tools/k3c-studio/internal/simrun"
 
 // Ereignisse der Balancing-Seite (B-662): Statt alle 1,5 s abzufragen, lädt die Seite Läufe und Berichte nur bei
 // diesen Ereignissen neu. Das Register (internal/simrun, notify.go) meldet Läufe gedrosselt (höchstens etwa 2 je

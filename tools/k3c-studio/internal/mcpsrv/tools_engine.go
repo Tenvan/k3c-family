@@ -9,9 +9,9 @@ import (
 )
 
 // level_generate rechnet im Prozess über engine/simcli (B-924, wie `k3c-sim level`); eine Panik der Engine wird zum
-// Fehler des Tools (simcli.Exec). sim_run und replay_run bleiben in k3c-workbench.
+// Fehler des Tools (simcli.Exec). sim_run und replay_run stehen in tools_sim.go (WZ63.5).
 
-// engineTimeout begrenzt einen Aufruf.
+// engineTimeout begrenzt einen Aufruf (auch sim_run, 100000 Ticks dauern Sekunden).
 const engineTimeout = 2 * time.Minute
 
 type levelIn struct {

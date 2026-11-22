@@ -48,6 +48,25 @@ interface GoApp {
   HubCheck(candidate: string): Promise<HubPlanView>;
   HubRules(hubJSON: string): Promise<HubRulesView>;
   HubSave(candidate: string, stand: HubStand): Promise<HubSaveResult>;
+  // Balancing-Seite (WZ28.4, seit WZ63.5 im Studio, app_balance.go); die Typen kommen mit der Seite in WZ63.6.
+  BalanceStart(spec: unknown): Promise<unknown>;
+  BalanceRuns(): Promise<unknown[]>;
+  BalanceStop(id: string): Promise<void>;
+  BalanceReports(): Promise<unknown[]>;
+  BalanceBaselines(): Promise<unknown[]>;
+  BalanceReport(path: string): Promise<unknown>;
+  BalanceTuning(path: string): Promise<unknown>;
+  BalanceDataFiles(): Promise<unknown[]>;
+  BalanceDataDoc(name: string): Promise<string>;
+  BalanceDataValues(name: string): Promise<unknown[]>;
+  BalanceDataValuesAll(): Promise<unknown[]>;
+  BalanceReportRate(path: string, rating: string): Promise<void>;
+  BalanceReportDelete(path: string): Promise<void>;
+  BalanceReportsRate(paths: string[], rating: string): Promise<void>;
+  BalanceReportsDelete(paths: string[]): Promise<void>;
+  BalanceSaveBaseline(path: string, name: string): Promise<unknown>;
+  BalanceInsights(path: string): Promise<unknown>;
+  BalanceReportHTML(path: string): Promise<string>;
 }
 
 interface WailsRuntime {

@@ -11,12 +11,12 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/balance"
-	"k3c/tools/k3c-workbench/internal/mcpsrv"
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/balance"
+	"k3c/tools/k3c-studio/internal/mcpsrv"
+	"k3c/tools/k3c-studio/internal/simrun"
 )
 
-// balanceApp: Workbench mit Register, dessen Prozesse sofort enden (Bau) bzw. einen Bericht schreiben (Rechnen).
+// balanceApp: Studio mit Register, dessen Prozesse sofort enden (Bau) bzw. einen Bericht schreiben (Rechnen).
 func balanceApp(t *testing.T, hold chan struct{}) *App {
 	t.Helper()
 	root := t.TempDir()
@@ -127,8 +127,12 @@ func TestBalanceTuningPfad(t *testing.T) {
 }
 
 // WZ28.10: Die Auswahlboxen Bot und Grad der Balancing-Seite (help.ts) nennen genau die Bots und Grade der Engine.
+// Bis die Seite in WZ63.6 ins Studio wandert, liegt help.ts noch im Frontend der Workbench (nur gelesen, kein Import).
 func TestAuswahlWieGo(t *testing.T) {
 	src, err := os.ReadFile("frontend/src/balancing/help.ts")
+	if os.IsNotExist(err) {
+		src, err = os.ReadFile("../k3c-workbench/frontend/src/balancing/help.ts")
+	}
 	if err != nil {
 		t.Fatal(err)
 	}

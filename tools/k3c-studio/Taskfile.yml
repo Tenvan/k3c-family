@@ -95,11 +95,17 @@ tasks:
       - task: gotest
 
   gotest:
-    desc: go test für tools/k3c-studio (GO_TEST_FLAGS=-short lässt lange Tests aus)
+    desc: go test für tools/k3c-studio (ohne Sim-Pakete, CHECK_SIM=1 nimmt sie mit; GO_TEST_FLAGS=-short lässt lange Tests aus)
     deps: [':tmp']
     dir: '{{.STUDIO_DIR}}'
+    # Paketliste ohne Sim-Pakete (balance, simrun seit WZ63.5; Sperre, CHECK_SIM=1 nimmt sie mit, B-857) aus
+    # tools/checkdiff › simDirs wie bei check:go; STUDIO_PKGS (CI) hat Vorrang. Scheitert die Liste, bricht der Lauf ab,
+    # statt auf ./... zurückzufallen.
+    vars:
+      STUDIO_GO_PKGS:
+        sh: cd "{{.ROOT_DIR}}" && go run ./tools/checkdiff -studiopkgs
     cmds:
-      - go test {{.GO_TEST_FLAGS}} ./...
+      - go test {{.GO_TEST_FLAGS}} {{.STUDIO_PKGS | default .STUDIO_GO_PKGS | default "./paketliste-fehlt"}}
 
   lint:
     desc: golangci-lint für tools/k3c-studio (depguard sperrt Importe aus k3c-workbench)

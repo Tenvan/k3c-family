@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // Baseline sichern (B-640, B-662): sim_test {action: baseline} und „Als Baseline sichern“ der Balancing-Seite rufen

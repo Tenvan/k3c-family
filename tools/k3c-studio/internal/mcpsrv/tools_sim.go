@@ -3,16 +3,12 @@ package mcpsrv
 import (
 	"context"
 	"encoding/json"
-	"time"
 
 	"k3c/engine/simcli"
 )
 
 // sim_run und replay_run rechnen im Prozess über engine/simcli (B-924, wie `k3c-sim run`); eine Panik der Engine wird
-// zum Fehler des Tools (simcli.Exec). level_generate ist mit dem Weltdesign nach k3c-studio gewandert (WZ63).
-
-// engineTimeout begrenzt einen Aufruf (sim_run mit 100000 Ticks dauert Sekunden).
-const engineTimeout = 2 * time.Minute
+// zum Fehler des Tools (simcli.Exec). Seit WZ63.5 im Studio, neben level_generate (tools_engine.go, engineTimeout).
 
 // segment sind gedrückte Tasten eines Monarchen über einen Tick-Bereich (engine/enginetools › Segment).
 type segment struct {

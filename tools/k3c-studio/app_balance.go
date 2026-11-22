@@ -5,9 +5,9 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"k3c/tools/k3c-workbench/internal/balance"
-	"k3c/tools/k3c-workbench/internal/datadoc"
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/balance"
+	"k3c/tools/k3c-studio/internal/datadoc"
+	"k3c/tools/k3c-studio/internal/simrun"
 )
 
 // Balancing-Seite (WZ28.4, B-596): Offline-Läufe im Register von sim_test (internal/simrun), gleiche Grenze von

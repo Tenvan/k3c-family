@@ -10,7 +10,7 @@ Wails-Desktop-Werkzeug für Game- und Level-Designer von K3C (WZ63, eigene EXE n
 - Bindings nach Bereich: `app_world.go` (Welten-Editor über `internal/world`: `WorldList`, `WorldDetail`, `WorldLevel`, `WorldValues`, `WorldOverrideSet`, `WorldCreate`, `WorldDelete`, `WorldNatureSet`, `WorldIslandEtappe`), `app_hub.go` (`HubPlan`, `HubCheck`, `HubRules`, `HubSave` über `internal/hubplan`), `app_assets.go` (Asset-Oberfläche über `internal/assetsui`, `AssetsStufen`, `StudioWeltSicht`), `app_studio.go` (`StudioSounds`, `StudioSoundData`, `StudioSources`, `StudioGameOpen` über `internal/studioview`).
 - Client-Server-Betrieb (`headless.go`): `-headless` ohne Fenster (MCP-Port 5181, Oberflächen-API 8193), `-dev` baut sich per `engine/devrun` als Kind und startet bei Go-Änderungen neu (MCP-Port 5182); Oberfläche unter Vite 5193. `uiapi.go`: Methodenliste `uiMethods` über `tools/workkit/uikit`, `OpenInClaude`.
 - `Taskfile.yml` (Namensraum `k3c-studio`): `dev`, `dev:server`, `dev:ui`, `window`, `frontend`, `typecheck`, `vitest`, `test`, `gotest`, `lint`, `build` (EXE `bin/k3c-studio`), `run`, `headless`, `headless:build`. `.golangci.yml`: depguard sperrt Importe aus `k3c-workbench` und Balancing-Pakete.
-- Unterordner: `frontend/` (React-Oberfläche, siehe `frontend/src/codemap.md`), `internal/` (`mcpsrv`, `world`, `hubplan`, `assetsui`, `review`, `paperassets`, `studioview`), `build/`, `icon/`; Modul `k3c/tools/k3c-studio`.
+- Unterordner: `frontend/` (React-Oberfläche, siehe `frontend/src/codemap.md`), `internal/` (`mcpsrv`, `world`, `hubplan`, `assetsui`, `review`, `paperassets`, `studioview`; Balancing seit WZ63.5: `balance`, `simrun`, `datadoc`, `gamedata`, Bindings `app_balance*.go`), `build/`, `icon/`; Modul `k3c/tools/k3c-studio`.
 
 ## Flow
 

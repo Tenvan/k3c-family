@@ -46,8 +46,8 @@ func TestUIRPC(t *testing.T) {
 	if code, out := uiCall(t, a, uikit.Prefix+"rpc/PlanningDoc", `["gibtsnicht"]`); code != http.StatusUnprocessableEntity || out["error"] == nil {
 		t.Errorf("PlanningDoc: %d %v", code, out)
 	}
-	// MCP-intern (TaskList) und Studio-Bindings (WZ63) gibt es hier nicht.
-	for _, m := range []string{"TaskList", "WorldList", "AssetsList", "HubPlan"} {
+	// MCP-intern (TaskList) und Studio-Bindings (WZ63, Balancing seit WZ63.5) gibt es hier nicht.
+	for _, m := range []string{"TaskList", "WorldList", "AssetsList", "HubPlan", "BalanceRuns"} {
 		if code, _ := uiCall(t, a, uikit.Prefix+"rpc/"+m, "[]"); code != http.StatusNotFound {
 			t.Errorf("%s: Status %d, erwartet 404", m, code)
 		}

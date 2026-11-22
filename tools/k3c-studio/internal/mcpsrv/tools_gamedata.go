@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	"k3c/tools/k3c-workbench/internal/gamedata"
+	"k3c/tools/k3c-studio/internal/gamedata"
 )
 
 type reportIn struct {

@@ -27,7 +27,7 @@ linters:
             - pkg: k3c/engine/enginetools
               desc: "Engine-Aufrufe über engine/simcli (B-924)"
             - pkg: k3c/engine/balance
-              desc: "kein Balancing im Studio (Workbench, B-924)"
+              desc: "Balancing über engine/simcli balance (B-924)"
         studio-devrun-nur-wurzel:
           files: ["$all", "!**/tools/k3c-studio/*.go"]
           deny:

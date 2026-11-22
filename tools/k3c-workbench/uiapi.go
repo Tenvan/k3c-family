@@ -14,7 +14,7 @@ import (
 
 // uiMethods sind die Methoden von App, die die Oberfläche aufrufen darf: genau die von GoApp in
 // frontend/src/api/wails.ts (TestUIMethodsWieWailsTS hält beide gleich). TaskList u. a. bleiben MCP-intern.
-// Assets, Welten, Hub und Studio-Ansichten sind Bindings von k3c-studio (WZ63).
+// Assets, Welten, Hub, Studio-Ansichten und Balancing (WZ63.5) sind Bindings von k3c-studio (WZ63).
 var uiMethods = map[string]bool{
 	"Info": true, "Services": true, "ServicesReload": true, "ServiceStart": true, "ServiceStop": true,
 	"ServiceRestart": true, "ServicesStartAll": true, "ServicesStopAll": true, "ServiceLogLevels": true,
@@ -25,11 +25,6 @@ var uiMethods = map[string]bool{
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
-	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
-	"BalanceTuning": true, "BalanceDataFiles": true, "BalanceDataDoc": true, "BalanceDataValues": true,
-	"BalanceReportRate": true, "BalanceReportDelete": true, "BalanceInsights": true, "BalanceReportHTML": true,
-	"BalanceBaselines": true, "BalanceReportsRate": true, "BalanceReportsDelete": true, "BalanceSaveBaseline": true,
-	"BalanceDataValuesAll": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uikit.Prefix, die Oberfläche liefert Vite.

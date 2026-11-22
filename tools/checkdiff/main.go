@@ -6,6 +6,7 @@
 //	checkdiff [-base <ref>] [-plan] [-only js|go|rust]
 //	checkdiff -gopkgs   (Paketliste für task check:go ohne Sim-Pakete, B-832)
 //	checkdiff -wbpkgs   (dasselbe für task k3c-workbench:test, Modul tools/k3c-workbench, B-857)
+//	checkdiff -studiopkgs (dasselbe für task k3c-studio:gotest, Modul tools/k3c-studio, WZ63.5)
 //
 // -base: Vergleichsbasis statt HEAD (z. B. origin/develop für den ganzen Sprint; auch Umgebung CHECK_BASE).
 // -plan: nur zeigen, was laufen würde. -only: nur eine Bahn (nach einem roten Lauf den betroffenen Teil wiederholen).
@@ -20,8 +21,8 @@ import (
 )
 
 type options struct {
-	base, only        string
-	plan, sim, gopkgs, wbpkgs bool
+	base, only                            string
+	plan, sim, gopkgs, wbpkgs, studiopkgs bool
 }
 
 func parse() options {
@@ -31,6 +32,7 @@ func parse() options {
 	flag.BoolVar(&o.plan, "plan", false, "nur zeigen, was laufen würde")
 	flag.BoolVar(&o.gopkgs, "gopkgs", false, "nur die Pakete für task check:go ausgeben (ohne Sim-Pakete, außer CHECK_SIM=1)")
 	flag.BoolVar(&o.wbpkgs, "wbpkgs", false, "nur die Pakete für task k3c-workbench:test ausgeben (ohne Sim-Pakete, außer CHECK_SIM=1)")
+	flag.BoolVar(&o.studiopkgs, "studiopkgs", false, "nur die Pakete für task k3c-studio:gotest ausgeben (ohne Sim-Pakete, außer CHECK_SIM=1)")
 	flag.Parse()
 	return o
 }
@@ -82,10 +84,13 @@ func skippedSim(p plan, sim bool) []string {
 
 func main() {
 	o := parse()
-	if o.gopkgs || o.wbpkgs {
+	if o.gopkgs || o.wbpkgs || o.studiopkgs {
 		dir, name := ".", "check:go"
-		if o.wbpkgs {
+		switch {
+		case o.wbpkgs:
 			dir, name = wbDir, "k3c-workbench:test"
+		case o.studiopkgs:
+			dir, name = studioDir, "k3c-studio:gotest"
 		}
 		pkgs, err := goPkgs(dir, o.sim)
 		if err != nil {

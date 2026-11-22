@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"k3c/tools/k3c-workbench/internal/balance"
+	"k3c/tools/k3c-studio/internal/balance"
 )
 
 // Spec ist ein Offline-Lauf der Balancing-Seite; jedes Feld wird ein Flag von `k3c-sim balance` (cmd/k3c-sim).

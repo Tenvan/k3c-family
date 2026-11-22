@@ -8,6 +8,9 @@ import (
 // Ein neues Tool kommt nur hier hinzu; Zähler, Parameter-Hinweis und Oberfläche lesen es von hier.
 func register(s *Server) {
 	registerEngine(s)
+	registerSim(s)
+	registerSimTest(s)
+	registerGameData(s)
 	registerAssets(s)
 	registerAssetsResearch(s)
 	registerAssetsImport(s)
@@ -25,4 +28,46 @@ func registerEngine(s *Server) {
 			"Nutze es bei: Level eines Seeds prüfen. Statt: Spiel starten und Level von Hand ansehen.",
 		Annotations: readOnly(),
 	}, s.levelGenerate)
+}
+
+// registerSim sind die Engine-Tools des Balancings (B-047, seit WZ63.5 aus k3c-workbench): rechnen im Prozess des
+// Studios über engine/simcli (B-924), ohne laufenden Server.
+func registerSim(s *Server) {
+	add(s, &mcp.Tool{
+		Name: "sim_run",
+		Description: "Deterministischer Simulationslauf mit der Engine des Studios (kein Server nötig), höchstens 100000 Ticks (30/s): " +
+			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
+			"Bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Studio mit K3C_SIM_ENTSPERRT=1). " +
+			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
+		Annotations: readOnly(),
+	}, s.simRun)
+	add(s, &mcp.Tool{
+		Name: "replay_run",
+		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit der Engine des Studios ohne Bot ab: " +
+			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. " +
+			"Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
+		Annotations: readOnly(),
+	}, s.replayRun)
+}
+
+// registerGameData sind die lesenden Tools für Berichte und Spielstände (B-063, seit WZ63.5 aus k3c-workbench).
+func registerGameData(s *Server) {
+	add(s, &mcp.Tool{
+		Name: "reports_list",
+		Description: "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS. " +
+			"Nutze es bei: neue Berichte von der Xbox finden. Statt: ls reports/.",
+		Annotations: readOnly(),
+	}, s.reportsList)
+	add(s, &mcp.Tool{
+		Name: "report_read",
+		Description: "Ein Xbox-Bericht verdichtet: Controller mit gesehenen Tasten, FPS je Sprite-Stufe, Vollbild, Zurück-Navigationen. " +
+			"Nutze es bei: Controller- oder FPS-Befund eines Berichts. Statt: JSON-Datei lesen.",
+		Annotations: readOnly(),
+	}, s.reportRead)
+	add(s, &mcp.Tool{
+		Name: "saves_list",
+		Description: "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen. " +
+			"Nutze es bei: welcher Spielstand existiert und wie weit er ist. Statt: saves/ durchsuchen.",
+		Annotations: readOnly(),
+	}, s.savesList)
 }

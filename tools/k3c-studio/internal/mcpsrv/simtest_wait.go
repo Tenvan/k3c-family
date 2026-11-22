@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/simrun"
 	"k3c/tools/workkit/mcpkit"
 )
 

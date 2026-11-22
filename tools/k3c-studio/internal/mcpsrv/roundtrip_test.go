@@ -38,10 +38,13 @@ func callText(t *testing.T, cs *mcp.ClientSession, name string, args any) (strin
 	return resultText(res), res.IsError
 }
 
-// studioTool: die Tools, die k3c-studio führt (AC-04, WZ63).
+// balanceTools führt k3c-studio seit WZ63.5 (AC-07): Testläufe, Engine-Läufe und Spieldaten.
+var balanceTools = []string{"sim_test", "sim_run", "replay_run", "reports_list", "report_read", "saves_list"}
+
+// studioTool: die Tools, die k3c-studio führt (AC-04, WZ63; Balancing AC-07, WZ63.5).
 func studioTool(name string) bool {
 	return name == "level_generate" || strings.HasPrefix(name, "world_") || strings.HasPrefix(name, "assets_") ||
-		strings.HasPrefix(name, "hub_")
+		strings.HasPrefix(name, "hub_") || slices.Contains(balanceTools, name)
 }
 
 // AC-04: Headless über HTTP (Port 0) gestartet listet der Server genau die Studio-Tools, jedes mit Beschreibung
@@ -77,12 +80,12 @@ func TestHeadlessListetNurStudioTools(t *testing.T) {
 			t.Errorf("%s: Beschreibung ohne „Nutze es bei / Statt“ oder ohne Annotations", tool.Name)
 		}
 	}
-	for _, want := range []string{"level_generate", "world_list", "world_set", "assets_list", "assets_set", "hub_get", "hub_save"} {
+	for _, want := range append([]string{"level_generate", "world_list", "world_set", "assets_list", "assets_set", "hub_get", "hub_save"}, balanceTools...) {
 		if !slices.Contains(names, want) {
 			t.Errorf("%s fehlt: %v", want, names)
 		}
 	}
-	for _, wb := range []string{"plan_list", "plan_create", "svc_status", "check_run", "task_start", "sim_run", "sim_test", "workbench_status", "logs_errors"} {
+	for _, wb := range []string{"plan_list", "plan_create", "svc_status", "check_run", "task_start", "workbench_status", "logs_errors"} {
 		if slices.Contains(names, wb) {
 			t.Errorf("Workbench-Tool %s im Studio", wb)
 		}

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/balance"
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/balance"
+	"k3c/tools/k3c-studio/internal/simrun"
 )
 
 // sim_test action baseline (B-640, BS7.2): ohne saveBaseline die gesicherten Baselines auflisten, mit id und

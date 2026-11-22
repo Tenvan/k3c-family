@@ -11,8 +11,8 @@ import (
 	"sync"
 	"testing"
 
-	"k3c/tools/k3c-workbench/internal/balance"
-	"k3c/tools/k3c-workbench/internal/simrun"
+	"k3c/tools/k3c-studio/internal/balance"
+	"k3c/tools/k3c-studio/internal/simrun"
 )
 
 // B-640/AC-02: sim_test sichert durchgelaufene Läufe als Baseline und vergleicht gegen eine benannte Baseline.

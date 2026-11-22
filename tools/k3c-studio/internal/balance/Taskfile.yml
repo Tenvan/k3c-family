@@ -1,6 +1,6 @@
 # Namespace `balance`: der Balancing-Tester als Handweg. Gerechnet wird seit RS2.2 (B-726) im Engine-CLI bin/k3c-sim
-# (`k3c-sim balance`, cmd/k3c-sim, Rechnung in engine/balance); tools/k3c-workbench/internal/balance ist nur noch der
-# Leseteil der Workbench (Berichte, Insights, Baselines). Autonome Läufe starten Agenten nur über `sim_test` (CLAUDE.md).
+# (`k3c-sim balance`, cmd/k3c-sim, Rechnung in engine/balance); tools/k3c-studio/internal/balance ist nur noch der
+# Leseteil des Studios (Berichte, Insights, Baselines; seit WZ63.5, vorher in der Workbench). Autonome Läufe starten Agenten nur über `sim_test` (CLAUDE.md).
 version: '3'
 
 tasks:

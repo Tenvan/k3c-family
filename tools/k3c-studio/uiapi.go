@@ -15,7 +15,7 @@ import (
 // Wails-Bindings über tools/workkit/uikit, wie in k3c-workbench (WZ63.3).
 
 // uiMethods sind die Methoden von App, die die Oberfläche aufrufen darf: genau die von GoApp in
-// frontend/src/api/wails.ts (TestUIMethodsWieWailsTS hält beide gleich).
+// frontend/src/api/wails.ts (TestUIMethodsWieWailsTS hält beide gleich). Balance* seit WZ63.5 (Balancing-Seite).
 var uiMethods = map[string]bool{
 	"Info": true, "OpenInClaude": true,
 	"AssetsList": true, "AssetsIndex": true, "AssetsCheck": true, "AssetsGroesse": true, "AssetsGroesseBasis": true,
@@ -27,6 +27,11 @@ var uiMethods = map[string]bool{
 	"WorldDelete": true, "WorldOverrideSet": true, "WorldIslandEtappe": true, "WorldSetKind": true,
 	"WorldSetExtends": true, "WorldNatureSet": true,
 	"HubPlan": true, "HubCheck": true, "HubRules": true, "HubSave": true,
+	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
+	"BalanceTuning": true, "BalanceDataFiles": true, "BalanceDataDoc": true, "BalanceDataValues": true,
+	"BalanceReportRate": true, "BalanceReportDelete": true, "BalanceInsights": true, "BalanceReportHTML": true,
+	"BalanceBaselines": true, "BalanceReportsRate": true, "BalanceReportsDelete": true, "BalanceSaveBaseline": true,
+	"BalanceDataValuesAll": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uikit.Prefix, die Oberfläche liefert Vite.
