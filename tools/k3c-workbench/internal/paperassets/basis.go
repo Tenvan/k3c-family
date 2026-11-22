@@ -11,7 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 	"k3c/tools/k3c-workbench/internal/review"
 )
 

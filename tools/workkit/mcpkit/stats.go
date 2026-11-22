@@ -1,7 +1,6 @@
-package mcpsrv
+package mcpkit
 
 import (
-	"encoding/json"
 	"sort"
 	"sync"
 	"time"
@@ -10,10 +9,10 @@ import (
 const (
 	// callRingSize ist die Länge des Aufruf-Logs.
 	callRingSize = 200
-	// textRunes kürzt Argumente, Fehler und Zusammenfassungen.
-	textRunes = 120
-	// timeLayout ist das Zeitformat aller Zeitstempel für die Oberfläche.
-	timeLayout = "2006-01-02T15:04:05.000Z07:00"
+	// TextRunes kürzt Argumente, Fehler und Zusammenfassungen.
+	TextRunes = 120
+	// TimeLayout ist das Zeitformat aller Zeitstempel für die Oberfläche.
+	TimeLayout = "2006-01-02T15:04:05.000Z07:00"
 )
 
 // ToolStats sind die Zähler eines Tools seit dem Programmstart.
@@ -45,7 +44,7 @@ type Call struct {
 	OK         bool    `json:"ok"`
 	Error      string  `json:"error,omitempty"`
 	Summary    string  `json:"summary"`
-	// Target ist das Ziel eines check_run-Aufrufs (B-876), aus den ungekürzten Argumenten; sonst leer.
+	// Target ist das Ziel eines Aufrufs aus den ungekürzten Argumenten (Workbench: check_run, B-876); sonst leer.
 	Target string `json:"target,omitempty"`
 }
 
@@ -61,11 +60,11 @@ type Snapshot struct {
 	Tools        []ToolStats `json:"tools"`
 }
 
-// outcome ist das Ergebnis eines beendeten Aufrufs.
-type outcome struct {
-	ok      bool
-	err     string
-	summary string
+// Outcome ist das Ergebnis eines beendeten Aufrufs.
+type Outcome struct {
+	OK      bool
+	Err     string
+	Summary string
 }
 
 type toolCounter struct {
@@ -82,8 +81,8 @@ type runningCall struct {
 	start time.Time
 }
 
-// stats zählt Aufrufe und hält das Aufruf-Log; alle Methoden sind nebenläufig sicher.
-type stats struct {
+// Stats zählt Aufrufe und hält das Aufruf-Log; alle Methoden sind nebenläufig sicher.
+type Stats struct {
 	mu        sync.Mutex
 	now       func() time.Time
 	startedAt time.Time
@@ -100,28 +99,35 @@ type stats struct {
 	clients, peakClients   int
 
 	onStart, onCall func(Call)
+	target          func(tool, args string) string
 }
 
-func newStats(now func() time.Time) *stats {
-	return &stats{now: now, startedAt: now(), tools: map[string]*toolCounter{}, running: map[int64]runningCall{}}
+// NewStats legt die Zähler an. onStart und onCall melden Beginn und Ende eines Aufrufs, target liest das Ziel eines
+// Aufrufs aus den rohen Argumenten (Call.Target); alle drei dürfen nil sein.
+func NewStats(now func() time.Time, onStart, onCall func(Call), target func(tool, args string) string) *Stats {
+	return &Stats{now: now, startedAt: now(), tools: map[string]*toolCounter{}, running: map[int64]runningCall{},
+		onStart: onStart, onCall: onCall, target: target}
 }
 
-// register nimmt ein Tool aus dem Katalog auf, damit es auch ohne Aufruf in den Zählern steht.
-func (st *stats) register(name, desc string) {
+// Register nimmt ein Tool aus dem Katalog auf, damit es auch ohne Aufruf in den Zählern steht.
+func (st *Stats) Register(name, desc string) {
 	st.mu.Lock()
 	defer st.mu.Unlock()
 	st.order = append(st.order, name)
 	st.tools[name] = &toolCounter{desc: desc}
 }
 
-// begin trägt einen laufenden Aufruf ein und liefert seine ID.
-func (st *stats) begin(tool, args string) int64 {
+// Begin trägt einen laufenden Aufruf ein und liefert seine ID.
+func (st *Stats) Begin(tool, args string) int64 {
 	st.mu.Lock()
 	now := st.now()
 	st.nextID++
 	st.seq++
-	c := Call{ID: st.nextID, Ref: ref(st.nextID), StartedAt: now.Format(timeLayout), StartSeq: st.seq,
-		Running: true, Tool: tool, Args: clip(args), Target: targetOf(tool, args)}
+	c := Call{ID: st.nextID, Ref: Ref(st.nextID), StartedAt: now.Format(TimeLayout), StartSeq: st.seq,
+		Running: true, Tool: tool, Args: Clip(args)}
+	if st.target != nil {
+		c.Target = st.target(tool, args)
+	}
 	st.running[c.ID] = runningCall{call: c, start: now}
 	st.inFlight++
 	st.peakInFlight = max(st.peakInFlight, st.inFlight)
@@ -133,22 +139,8 @@ func (st *stats) begin(tool, args string) int64 {
 	return c.ID
 }
 
-// targetOf liest das Ziel eines check_run-Aufrufs aus den rohen Argumenten (vor dem Kürzen); andere Tools: leer.
-func targetOf(tool, args string) string {
-	if tool != "check_run" {
-		return ""
-	}
-	var in struct {
-		Target string `json:"target"`
-	}
-	if json.Unmarshal([]byte(args), &in) != nil {
-		return ""
-	}
-	return clip(in.Target)
-}
-
-// end schließt einen Aufruf ab, zählt ihn, schiebt ihn ins Aufruf-Log und liefert ihn zurück.
-func (st *stats) end(id int64, o outcome) (Call, bool) {
+// End schließt einen Aufruf ab, zählt ihn, schiebt ihn ins Aufruf-Log und liefert ihn zurück.
+func (st *Stats) End(id int64, o Outcome) (Call, bool) {
 	st.mu.Lock()
 	r, found := st.running[id]
 	if !found {
@@ -159,9 +151,9 @@ func (st *stats) end(id int64, o outcome) (Call, bool) {
 	now := st.now()
 	st.seq++
 	c := r.call
-	c.TS, c.EndSeq, c.Running = now.Format(timeLayout), st.seq, false
+	c.TS, c.EndSeq, c.Running = now.Format(TimeLayout), st.seq, false
 	c.DurationMs = float64(now.Sub(r.start).Microseconds()) / 1000
-	c.OK, c.Error, c.Summary = o.ok, clip(o.err), clip(o.summary)
+	c.OK, c.Error, c.Summary = o.OK, Clip(o.Err), Clip(o.Summary)
 	st.count(c)
 	st.push(c)
 	fn := st.onCall
@@ -173,7 +165,7 @@ func (st *stats) end(id int64, o outcome) (Call, bool) {
 }
 
 // count zählt einen beendeten Aufruf; ein Tool außerhalb des Katalogs zählt nur in den Summen.
-func (st *stats) count(c Call) {
+func (st *Stats) count(c Call) {
 	st.inFlight--
 	st.total++
 	if !c.OK {
@@ -192,7 +184,7 @@ func (st *stats) count(c Call) {
 	}
 }
 
-func (st *stats) push(c Call) {
+func (st *Stats) push(c Call) {
 	if len(st.ring) < callRingSize {
 		st.ring = append(st.ring, c)
 		return
@@ -201,15 +193,16 @@ func (st *stats) push(c Call) {
 	st.next = (st.next + 1) % callRingSize
 }
 
-func (st *stats) observeClients(n int) {
+// ObserveClients merkt die aktuelle Zahl der Clients und ihren Höchststand.
+func (st *Stats) ObserveClients(n int) {
 	st.mu.Lock()
 	defer st.mu.Unlock()
 	st.clients = n
 	st.peakClients = max(st.peakClients, n)
 }
 
-// calls liefert beendete und laufende Aufrufe, neueste zuerst (nach StartSeq).
-func (st *stats) calls() []Call {
+// Calls liefert beendete und laufende Aufrufe, neueste zuerst (nach StartSeq).
+func (st *Stats) Calls() []Call {
 	st.mu.Lock()
 	out := make([]Call, 0, len(st.ring)+len(st.running))
 	out = append(out, st.ring...)
@@ -221,10 +214,11 @@ func (st *stats) calls() []Call {
 	return out
 }
 
-func (st *stats) snapshot() Snapshot {
+// Snapshot liefert alle Zähler, Tools in Katalog-Reihenfolge.
+func (st *Stats) Snapshot() Snapshot {
 	st.mu.Lock()
 	defer st.mu.Unlock()
-	out := Snapshot{StartedAt: st.startedAt.Format(timeLayout), Clients: st.clients, PeakClients: st.peakClients,
+	out := Snapshot{StartedAt: st.startedAt.Format(TimeLayout), Clients: st.clients, PeakClients: st.peakClients,
 		InFlight: st.inFlight, PeakInFlight: st.peakInFlight, TotalCalls: st.total, Errors: st.errors,
 		Tools: make([]ToolStats, 0, len(st.order))}
 	for _, name := range st.order {
@@ -238,4 +232,5 @@ func (st *stats) snapshot() Snapshot {
 	return out
 }
 
-func (st *stats) uptime() time.Duration { return st.now().Sub(st.startedAt) }
+// Uptime ist die Zeit seit dem Anlegen der Zähler.
+func (st *Stats) Uptime() time.Duration { return st.now().Sub(st.startedAt) }

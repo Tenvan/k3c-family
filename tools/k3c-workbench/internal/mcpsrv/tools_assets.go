@@ -58,7 +58,7 @@ func registerAssets(s *Server) {
 			"Statt: paper-spec.md und Stil-Datei lesen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in assetsGuideIn) (string, error) {
-		return assetsGuide(s.ws(ctx).root, in.Rig)
+		return assetsGuide(s.ws(ctx).Root, in.Rig)
 	})
 	add(s, &mcp.Tool{
 		Name: "assets_list",
@@ -66,14 +66,14 @@ func registerAssets(s *Server) {
 			"Nutze es bei: Überblick, ungültige oder geänderte Assets finden. Statt: public/grafik durchsuchen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in assetsListIn) (string, error) {
-		return assetsListText(ctx, s.ws(ctx).root, in)
+		return assetsListText(ctx, s.ws(ctx).Root, in)
 	})
 	add(s, &mcp.Tool{
 		Name: "assets_get",
 		Description: "Pfad und Paper-Spec eines Assets als JSON; felder kürzt auf oberste Schlüssel. " +
 			"Nutze es bei: vor einem assets_set. Statt: die .paper.json-Datei lesen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in assetsGetIn) (string, error) { return assetsGetText(s.ws(ctx).root, in) })
+	}, func(ctx context.Context, in assetsGetIn) (string, error) { return assetsGetText(s.ws(ctx).Root, in) })
 	notDestructive, closed := false, false
 	add(s, &mcp.Tool{
 		Name: "assets_create",
@@ -81,7 +81,7 @@ func registerAssets(s *Server) {
 			"Nutze es bei: neues Asset. Statt: Spec-Datei von Hand anlegen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in assetsCreateIn) (string, error) {
-		return assetsCreateText(ctx, s.ws(ctx).root, in)
+		return assetsCreateText(ctx, s.ws(ctx).Root, in)
 	})
 	registerAssetsSet(s)
 	registerAssetsRender(s)

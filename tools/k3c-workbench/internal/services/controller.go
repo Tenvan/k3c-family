@@ -10,9 +10,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/applog"
-	"k3c/tools/k3c-workbench/internal/console"
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/proc"
 )
 
 // State ist der Zustand eines Dienstes, mit den Namen aus B-067.

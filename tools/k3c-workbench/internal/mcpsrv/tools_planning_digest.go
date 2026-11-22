@@ -29,6 +29,6 @@ func registerPlanDigest(s *Server) {
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &destructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in planDigestIn) (string, error) {
 		dry := in.Dry == nil || *in.Dry
-		return planning.Digest(s.ws(ctx).root, planning.DigestIn{OlderThan: in.OlderThan, Dry: dry, Renew: in.Renew})
+		return planning.Digest(s.ws(ctx).Root, planning.DigestIn{OlderThan: in.OlderThan, Dry: dry, Renew: in.Renew})
 	})
 }

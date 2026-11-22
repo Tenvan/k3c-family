@@ -1,28 +1,22 @@
-// Package mcpsrv ist der MCP-Server von k3c-workbench (B-046): Streamable HTTP nur an 127.0.0.1, ein Tool-Katalog
-// (tools.go), Zähler und Aufruf-Log für die Oberfläche (stats.go).
+// Package mcpsrv ist der MCP-Server von k3c-workbench (B-046): ein Tool-Katalog (tools.go) auf dem gemeinsamen Gerüst
+// workkit/mcpkit (HTTP an 127.0.0.1, Zähler und Aufruf-Log, Checkout je Aufruf); Dienste, Tasks, Prüf- und Testläufe
+// und Ressourcen hängt die Workbench über mcpkit.Options ein.
 package mcpsrv
 
 import (
 	"context"
 	_ "embed"
-	"errors"
-	"fmt"
 	"log/slog"
-	"net"
 	"net/http"
-	"strconv"
-	"strings"
-	"sync"
 	"time"
 
-	"github.com/modelcontextprotocol/go-sdk/mcp"
-
-	"k3c/tools/k3c-workbench/internal/applog"
-	"k3c/tools/k3c-workbench/internal/console"
 	"k3c/tools/k3c-workbench/internal/resmon"
 	"k3c/tools/k3c-workbench/internal/services"
 	"k3c/tools/k3c-workbench/internal/simrun"
-	"k3c/tools/k3c-workbench/internal/usage"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/mcpkit"
+	"k3c/tools/workkit/usage"
 )
 
 // instructions bekommt jeder Client beim Verbinden: welches Tool wofür, statt Shell.
@@ -37,11 +31,6 @@ const (
 	// DefaultPort ist der Vorgabe-Port, EnvPort überschreibt ihn.
 	DefaultPort = 5180
 	EnvPort     = "K3C_DEV_PORT"
-	// stopTimeout begrenzt das Warten auf offene Verbindungen (Streams der Clients) beim Stoppen.
-	stopTimeout = 2 * time.Second
-	// sessionTimeout schließt Sessions ohne Anfrage (Agent ohne Abmelden beendet); sonst zählten sie für immer als
-	// Clients. Ein laufender Aufruf hält die Session offen, der Client meldet sich danach einfach neu an.
-	sessionTimeout = 30 * time.Minute
 )
 
 // Config beschreibt einen Server. Port 0 wählt einen freien Port (Tests).
@@ -64,17 +53,15 @@ type Config struct {
 	OnNotify    func(Notice) // optional: Hinweis an den Nutzer in der Oberfläche (notify_ui)
 }
 
-// Server hält den MCP-Server und den HTTP-Server, der ihn ausliefert. Der HTTP-Teil lässt sich neu starten,
-// ohne dass Katalog und Zähler verloren gehen.
+// Server ist der MCP-Server der Workbench: das Gerüst mcpkit.Server (kit) mit Katalog, Zählern und HTTP-Teil, dazu
+// die Workbench-eigenen Teile (Prüfläufe, Testläufe, Dienste der Worktrees).
 type Server struct {
-	cfg     Config
-	mcp     *mcp.Server
-	stats   *stats
-	params  map[string][]string // gültige Parameter je Tool, gefüllt bei der Registrierung
-	console *console.Store
-	log     *slog.Logger
-	checks  *checkRuns
-	sims    *simrun.Registry // Testläufe von sim_test und der Balancing-Seite (internal/simrun)
+	cfg             Config
+	kit             *mcpkit.Server
+	console         *console.Store
+	log             *slog.Logger
+	checks          *checkRuns
+	sims            *simrun.Registry                         // Testläufe von sim_test und der Balancing-Seite (internal/simrun)
 	run             func(context.Context, runSpec) runResult // Test-Naht für check_run
 	taskVersion     func(context.Context) (string, error)    // Test-Naht: `task --version` (B-868, check_taskversion.go)
 	taskVersionMemo taskVersionMemo                          // gemerktes Ergebnis von taskVersion, einmal je Workbench-Lauf (B-871)
@@ -82,31 +69,16 @@ type Server struct {
 	progressEvery   time.Duration                            // Abstand der Fortschritts-Meldungen von check_run
 	wt              worktrees                                // Dienste der Worktrees (worktree_services.go)
 	portBusy        func(int) bool                           // Test-Naht für die Vergabe der Worktree-Ports
-
-	mu   sync.Mutex
-	http *http.Server
-	addr string
 }
 
 // ResolvePort liest den Port aus dem Wert von EnvPort; leer heißt DefaultPort.
-func ResolvePort(raw string) (int, error) {
-	raw = strings.TrimSpace(raw)
-	if raw == "" {
-		return DefaultPort, nil
-	}
-	port, err := strconv.Atoi(raw)
-	if err != nil || port < 1 || port > 65535 {
-		return 0, fmt.Errorf("%s=%q ist keine gültige Portzahl (1–65535)", EnvPort, raw)
-	}
-	return port, nil
-}
+func ResolvePort(raw string) (int, error) { return mcpkit.ResolvePort(EnvPort, raw, DefaultPort) }
 
 // New baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit Start.
 func New(cfg Config) *Server {
-	s := &Server{cfg: cfg, stats: newStats(time.Now), params: map[string][]string{},
-		console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, taskVersion: readTaskVersion, checkWait: defaultCheckWait,
-		progressEvery: defaultProgressEvery,
-		wt:            worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy}
+	s := &Server{cfg: cfg, console: cfg.Console, log: cfg.Log, checks: newCheckRuns(), run: runProcess, taskVersion: readTaskVersion,
+		checkWait: defaultCheckWait, progressEvery: defaultProgressEvery,
+		wt: worktrees{all: map[string]*worktreeServices{}}, portBusy: portBusy}
 	if s.console == nil {
 		s.console = console.New(console.DefaultCapacity, nil)
 	}
@@ -114,102 +86,42 @@ func New(cfg Config) *Server {
 		s.log = applog.Discard()
 	}
 	s.sims = simrun.New(s.log)
-	s.stats.onStart, s.stats.onCall = cfg.OnStart, cfg.OnCall
-	s.mcp = mcp.NewServer(&mcp.Implementation{Name: "k3c-workbench", Version: cfg.Version}, &mcp.ServerOptions{
-		Instructions:       instructions,
-		InitializedHandler: func(context.Context, *mcp.InitializedRequest) { s.observeClients() },
-	})
+	s.kit = mcpkit.New(s.kitOptions())
 	register(s)
 	s.registerGauges()
-	s.mcp.AddReceivingMiddleware(s.observe)
 	return s
 }
 
-// Start öffnet den HTTP-Server an 127.0.0.1 unter /mcp.
-func (s *Server) Start() error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	if s.http != nil {
-		return errors.New("server läuft bereits")
+// kitOptions hängt die Workbench in das Gerüst: Checkout-Regeln, Ziel im Aufruf-Log, Messung, pprof, Testläufe.
+func (s *Server) kitOptions() mcpkit.Options {
+	o := mcpkit.Options{Name: "k3c-workbench", Version: s.cfg.Version, Instructions: instructions, Root: s.cfg.Root,
+		Port: s.cfg.Port, EnvPort: EnvPort, Log: s.log, OnStart: s.cfg.OnStart, OnCall: s.cfg.OnCall, Usage: s.cfg.Usage,
+		TakesCheckout: takesCheckout, WriteTool: func(tool string) bool { return writeTools[tool] }, Target: targetOf,
+		BeforeStop: s.sims.CancelAll}
+	if r := s.cfg.Resources; r != nil {
+		o.Track = r.Track
+		o.Mount = func(mux *http.ServeMux) { mountPprof(mux) }
 	}
-	ln, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", strconv.Itoa(s.cfg.Port)))
-	if err != nil {
-		return fmt.Errorf("port %d nicht verfügbar (%w); einen anderen Port über %s setzen", s.cfg.Port, err, EnvPort)
-	}
-	mux := http.NewServeMux()
-	mux.Handle("/mcp", forceChunked(mcp.NewStreamableHTTPHandler(func(*http.Request) *mcp.Server { return s.mcp },
-		&mcp.StreamableHTTPOptions{SessionTimeout: sessionTimeout})))
-	if s.cfg.Resources != nil {
-		mountPprof(mux)
-	}
-	srv := &http.Server{Handler: mux, ReadHeaderTimeout: 10 * time.Second}
-	s.http, s.addr = srv, ln.Addr().String()
-	go func() { _ = srv.Serve(ln) }()
-	return nil
+	return o
 }
 
-// Stop schließt den HTTP-Server (offene Streams bekommen stopTimeout) und alle Sessions, damit sie nach einem
-// Neustart nicht weiter als Clients zählen.
-func (s *Server) Stop() error {
-	s.sims.CancelAll()
-	s.mu.Lock()
-	srv := s.http
-	s.http = nil
-	s.mu.Unlock()
-	if srv == nil {
-		return nil
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), stopTimeout)
-	defer cancel()
-	err := srv.Shutdown(ctx)
-	if err != nil {
-		err = srv.Close()
-	}
-	for ss := range s.mcp.Sessions() {
-		_ = ss.Close()
-	}
-	return err
-}
+// Start öffnet den HTTP-Server an 127.0.0.1 unter /mcp.
+func (s *Server) Start() error { return s.kit.Start() }
+
+// Stop bricht laufende Testläufe ab und schließt HTTP-Server und Sessions.
+func (s *Server) Stop() error { return s.kit.Stop() }
 
 // Restart startet den HTTP-Teil neu; Clients verbinden sich danach neu.
-func (s *Server) Restart() error {
-	if err := s.Stop(); err != nil {
-		return err
-	}
-	if err := s.Start(); err != nil {
-		s.log.Error("💥 neustart fehlgeschlagen", "ns", "mcp", "error", err.Error())
-		return err
-	}
-	s.log.Info("🔁 server neu gestartet", "ns", "mcp", "url", s.URL())
-	return nil
-}
+func (s *Server) Restart() error { return s.kit.Restart() }
 
 // URL ist die Adresse für .mcp.json, leer solange der Server nicht läuft.
-func (s *Server) URL() string {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	if s.http == nil {
-		return ""
-	}
-	return "http://" + s.addr + "/mcp"
-}
+func (s *Server) URL() string { return s.kit.URL() }
 
 // Stats liefert die Zähler; die Zahl der Clients wird dabei frisch gezählt.
-func (s *Server) Stats() Snapshot {
-	s.observeClients()
-	return s.stats.snapshot()
-}
+func (s *Server) Stats() Snapshot { return s.kit.Stats() }
 
 // Calls liefert das Aufruf-Log, laufende Aufrufe eingeschlossen, neueste zuerst.
-func (s *Server) Calls() []Call { return s.stats.calls() }
+func (s *Server) Calls() []Call { return s.kit.Calls() }
 
 // Sims ist das Register der Testläufe, das sim_test und die Balancing-Seite teilen.
 func (s *Server) Sims() *simrun.Registry { return s.sims }
-
-func (s *Server) observeClients() {
-	n := 0
-	for range s.mcp.Sessions() {
-		n++
-	}
-	s.stats.observeClients(n)
-}

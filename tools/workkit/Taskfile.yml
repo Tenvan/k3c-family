@@ -1,0 +1,22 @@
+# Namespace `workkit`: gemeinsamer Go-Code von k3c-workbench und k3c-studio (MCP-Gerüst mcpkit, applog, console, proc,
+# usage; WZ63). Eigenes Modul k3c/tools/workkit, per replace eingebunden wie tools/assetkit. k3c-workbench:gotest und
+# :lint rufen dieselben Prüfungen mit auf (WORKKIT=0 lässt sie dort aus).
+version: '3'
+
+vars:
+  WORKKIT_DIR: '{{.ROOT_DIR}}/tools/workkit'
+
+tasks:
+  gotest:
+    desc: go test für tools/workkit (GO_TEST_FLAGS=-short lässt lange Tests aus)
+    deps: [':tmp']
+    dir: '{{.WORKKIT_DIR}}'
+    cmds:
+      - go test {{.GO_TEST_FLAGS}} ./...
+
+  lint:
+    desc: golangci-lint für tools/workkit (depguard sperrt Importe aus k3c-workbench und k3c-studio)
+    deps: [':tmp']
+    dir: '{{.WORKKIT_DIR}}'
+    cmds:
+      - golangci-lint run --allow-serial-runners

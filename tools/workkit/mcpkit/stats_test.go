@@ -1,4 +1,4 @@
-package mcpsrv
+package mcpkit
 
 import (
 	"strings"
@@ -17,21 +17,21 @@ func (c *clock) now() time.Time {
 	return c.t
 }
 
-func testStats() *stats {
+func testStats() *Stats {
 	c := &clock{t: time.Date(2026, 9, 30, 12, 0, 0, 0, time.UTC), step: 100 * time.Millisecond}
-	st := newStats(c.now)
-	st.register("a", "Tool A")
-	st.register("b", "Tool B")
+	st := NewStats(c.now, nil, nil, nil)
+	st.Register("a", "Tool A")
+	st.Register("b", "Tool B")
 	return st
 }
 
 func TestZaehlerJeTool(t *testing.T) {
 	t.Parallel()
 	st := testStats()
-	st.end(st.begin("a", `{}`), outcome{ok: true})
-	st.end(st.begin("a", `{}`), outcome{err: "kaputt"})
-	st.end(st.begin("fremd", `{}`), outcome{ok: true})
-	snap := st.snapshot()
+	st.End(st.Begin("a", `{}`), Outcome{OK: true})
+	st.End(st.Begin("a", `{}`), Outcome{Err: "kaputt"})
+	st.End(st.Begin("fremd", `{}`), Outcome{OK: true})
+	snap := st.Snapshot()
 	if snap.TotalCalls != 3 || snap.Errors != 1 {
 		t.Errorf("Summen: %+v", snap)
 	}
@@ -45,12 +45,12 @@ func TestZaehlerJeTool(t *testing.T) {
 func TestLetzterFehlerJeTool(t *testing.T) {
 	t.Parallel()
 	st := testStats()
-	st.end(st.begin("a", `{}`), outcome{err: "erster"})
-	st.end(st.begin("a", `{}`), outcome{ok: true})
-	st.end(st.begin("b", `{}`), outcome{ok: true})
-	first := st.snapshot().Tools[0].LastError
-	st.end(st.begin("a", `{}`), outcome{err: "zweiter"})
-	snap := st.snapshot()
+	st.End(st.Begin("a", `{}`), Outcome{Err: "erster"})
+	st.End(st.Begin("a", `{}`), Outcome{OK: true})
+	st.End(st.Begin("b", `{}`), Outcome{OK: true})
+	first := st.Snapshot().Tools[0].LastError
+	st.End(st.Begin("a", `{}`), Outcome{Err: "zweiter"})
+	snap := st.Snapshot()
 	if first == "" || snap.Tools[0].LastError <= first {
 		t.Errorf("letzter Fehler von a: %q nach %q", snap.Tools[0].LastError, first)
 	}
@@ -62,21 +62,21 @@ func TestLetzterFehlerJeTool(t *testing.T) {
 func TestParallelUndFolge(t *testing.T) {
 	t.Parallel()
 	st := testStats()
-	first := st.begin("a", "")
-	second := st.begin("b", "")
-	if st.snapshot().PeakInFlight != 2 {
-		t.Errorf("parallel max: %+v", st.snapshot())
+	first := st.Begin("a", "")
+	second := st.Begin("b", "")
+	if st.Snapshot().PeakInFlight != 2 {
+		t.Errorf("parallel max: %+v", st.Snapshot())
 	}
-	running := st.calls()
+	running := st.Calls()
 	if len(running) != 2 || !running[0].Running || running[0].Tool != "b" {
 		t.Errorf("laufende Aufrufe: %+v", running)
 	}
-	st.end(first, outcome{ok: true})
-	st.end(second, outcome{ok: true})
-	calls := st.calls()
+	st.End(first, Outcome{OK: true})
+	st.End(second, Outcome{OK: true})
+	calls := st.Calls()
 	b, a := calls[0], calls[1]
 	// Folge: a startet (1), b startet (2), a endet (3), b endet (4).
-	if a.StartSeq != 1 || b.StartSeq != 2 || a.EndSeq != 3 || b.EndSeq != 4 || st.snapshot().InFlight != 0 {
+	if a.StartSeq != 1 || b.StartSeq != 2 || a.EndSeq != 3 || b.EndSeq != 4 || st.Snapshot().InFlight != 0 {
 		t.Errorf("Folge: a=%+v b=%+v", a, b)
 	}
 }
@@ -85,9 +85,9 @@ func TestRingHaelt200NeuesteZuerst(t *testing.T) {
 	t.Parallel()
 	st := testStats()
 	for range callRingSize + 5 {
-		st.end(st.begin("a", ""), outcome{ok: true})
+		st.End(st.Begin("a", ""), Outcome{OK: true})
 	}
-	calls := st.calls()
+	calls := st.Calls()
 	if len(calls) != callRingSize || calls[0].ID != callRingSize+5 || calls[len(calls)-1].ID != 6 {
 		t.Errorf("Ring: %d Einträge, erster %d, letzter %d", len(calls), calls[0].ID, calls[len(calls)-1].ID)
 	}
@@ -106,45 +106,15 @@ func TestRueckrufeUndKuerzen(t *testing.T) {
 	var started, ended []Call
 	st.onStart = func(c Call) { started = append(started, c) }
 	st.onCall = func(c Call) { ended = append(ended, c) }
-	st.end(st.begin("a", strings.Repeat("x", 500)), outcome{ok: true, summary: "fertig"})
+	st.End(st.Begin("a", strings.Repeat("x", 500)), Outcome{OK: true, Summary: "fertig"})
 	if len(started) != 1 || len(ended) != 1 || ended[0].Summary != "fertig" || !started[0].Running {
 		t.Errorf("Rückrufe: %+v %+v", started, ended)
 	}
-	if n := len([]rune(ended[0].Args)); n != textRunes {
+	if n := len([]rune(ended[0].Args)); n != TextRunes {
 		t.Errorf("Argumente nicht gekürzt: %d Zeichen", n)
 	}
-	st.end(99, outcome{ok: true}) // unbekannte ID: nichts passiert
-	if st.snapshot().TotalCalls != 1 {
+	st.End(99, Outcome{OK: true}) // unbekannte ID: nichts passiert
+	if st.Snapshot().TotalCalls != 1 {
 		t.Error("unbekannte ID gezählt")
-	}
-}
-
-func TestFormatUptime(t *testing.T) {
-	t.Parallel()
-	cases := map[time.Duration]string{
-		30 * time.Second: "< 1 min", 13 * time.Minute: "13 min",
-		133 * time.Minute: "2 h 13 min", 76 * time.Hour: "3 T 4 h",
-	}
-	for d, want := range cases {
-		if got := formatUptime(d); got != want {
-			t.Errorf("formatUptime(%v) = %q, erwartet %q", d, got, want)
-		}
-	}
-}
-
-// check_run trägt sein Ziel aus den ungekürzten Argumenten ins Aufruf-Log, auch wenn args gekürzt wird (B-876).
-func TestCheckRunZielImLog(t *testing.T) {
-	t.Parallel()
-	st := testStats()
-	long := `{"wait":true,"pattern":"` + strings.Repeat("x", 300) + `","target":"task:check:diff"}`
-	st.end(st.begin("check_run", long), outcome{ok: true})
-	st.end(st.begin("a", `{"target":"task:test"}`), outcome{ok: true})
-	st.end(st.begin("check_run", `kaputt`), outcome{err: "x"})
-	calls := st.calls()
-	if calls[2].Target != "task:check:diff" || strings.Contains(calls[2].Args, "task:check:diff") {
-		t.Errorf("Ziel: %q, Args: %q", calls[2].Target, calls[2].Args)
-	}
-	if calls[1].Target != "" || calls[0].Target != "" {
-		t.Errorf("Ziel nur bei gültigem check_run: %q, %q", calls[1].Target, calls[0].Target)
 	}
 }

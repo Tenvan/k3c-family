@@ -16,7 +16,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // Workspace ist der Namensraum der Tasks ohne Doppelpunkt im Namen - die

@@ -93,7 +93,7 @@ func runHeadless(root string, port int) error {
 	return err
 }
 
-// runDev baut -headless als Kindprozess und startet ihn neu, wenn sich Go-Code in k3c-workbench, assetkit, engine oder
+// runDev baut -headless als Kindprozess und startet ihn neu, wenn sich Go-Code in k3c-workbench, assetkit, workkit, engine oder
 // data/ (embed.go) oder go.mod/go.sum des Hauptmoduls ändert; geänderte JSON-Dateien in data/ lösen keinen Neubau aus
 // (devrun beobachtet nur *.go). Der MCP-Port kommt aus K3C_DEV_PORT (Taskfile: 5190), damit die laufende Workbench
 // (5180) unberührt bleibt.
@@ -117,7 +117,7 @@ func runDev(root string) error {
 	}
 	return devrun.Run(ctx, devrun.Config{
 		Name: "k3c-workbench", Dir: filepath.Join(root, "tools", "k3c-workbench"), Package: ".", Child: child, Args: []string{"-headless"},
-		Env: env, Watch: []string{".", "../assetkit", "../../engine", "../../data", "../../go.mod", "../../go.sum"},
+		Env: env, Watch: []string{".", "../assetkit", "../workkit", "../../engine", "../../data", "../../go.mod", "../../go.sum"},
 		Grace: devGrace, Log: slog.New(conlog.New(os.Stderr, slog.LevelInfo, conlog.Color())),
 	})
 }

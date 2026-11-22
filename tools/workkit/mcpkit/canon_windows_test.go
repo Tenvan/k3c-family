@@ -1,4 +1,4 @@
-package mcpsrv
+package mcpkit
 
 import (
 	"os"
@@ -25,10 +25,10 @@ func TestSamePathKurznameOhneVorhandenesEnde(t *testing.T) {
 	if !strings.Contains(short, "~") {
 		t.Skipf("Kurzname ohne ~: %s", short)
 	}
-	if !samePath(filepath.Join(short, "fehlt", "noch"), filepath.Join(long, "fehlt", "noch")) {
+	if !SamePath(filepath.Join(short, "fehlt", "noch"), filepath.Join(long, "fehlt", "noch")) {
 		t.Errorf("%s ≠ %s", short, long)
 	}
-	if samePath(filepath.Join(short, "a"), filepath.Join(long, "b")) {
+	if SamePath(filepath.Join(short, "a"), filepath.Join(long, "b")) {
 		t.Error("verschiedene Enden gelten als gleich")
 	}
 }

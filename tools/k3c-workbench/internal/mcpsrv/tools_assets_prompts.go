@@ -57,7 +57,7 @@ func registerAssetPrompts(s *Server) {
 			p.Arguments = append(p.Arguments, &mcp.PromptArgument{Name: name, Required: !optional[name]})
 		}
 		id := v.ID
-		s.mcp.AddPrompt(p, func(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
+		s.kit.MCP().AddPrompt(p, func(_ context.Context, req *mcp.GetPromptRequest) (*mcp.GetPromptResult, error) {
 			return promptText(s.cfg.Root, id, req.Params.Arguments)
 		})
 	}

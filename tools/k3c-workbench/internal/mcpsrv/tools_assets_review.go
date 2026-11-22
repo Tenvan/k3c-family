@@ -36,7 +36,7 @@ func registerAssetsReview(s *Server) {
 			"Stiländerungen mit stil: true. Nutze es bei: zum Schluss jeder Asset-Änderung. Statt: git diff auf Specs und PNGs.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in assetsReviewIn) (string, error) {
-		return assetsReviewText(s.ws(ctx).root, in.Basis)
+		return assetsReviewText(s.ws(ctx).Root, in.Basis)
 	})
 }
 

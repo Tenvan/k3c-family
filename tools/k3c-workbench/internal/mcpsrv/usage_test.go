@@ -9,7 +9,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"k3c/tools/k3c-workbench/internal/usage"
+	"k3c/tools/workkit/usage"
 )
 
 func TestNutzungsstatistikBekommtRoheArgumente(t *testing.T) {

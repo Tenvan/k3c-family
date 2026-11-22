@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/console/
+# tools/workkit/console/
 
 ## Responsibility
 

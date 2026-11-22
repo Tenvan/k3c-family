@@ -1,4 +1,4 @@
-package mcpsrv
+package mcpkit
 
 import (
 	"bufio"
@@ -12,10 +12,10 @@ import (
 )
 
 // Regression: Das 202 auf notifications/initialized muss von Anfang an chunked und abgeschlossen sein, sonst hängt
-// Claude Code (siehe forceChunked).
+// Claude Code (siehe ForceChunked).
 func TestBenachrichtigungAntwortIstChunkedAbgeschlossen(t *testing.T) {
 	t.Parallel()
-	s := New(Config{Version: "test"})
+	s := New(Options{Name: "test", Version: "test"})
 	if err := s.Start(); err != nil {
 		t.Fatal(err)
 	}

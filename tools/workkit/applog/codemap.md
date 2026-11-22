@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/applog/
+# tools/workkit/applog/
 
 ## Responsibility
 

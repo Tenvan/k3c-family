@@ -2,6 +2,7 @@ package mcpsrv
 
 import (
 	"context"
+	"k3c/tools/workkit/mcpkit"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -22,7 +23,7 @@ func TestSimToolsLehnenFremdenCheckoutAb(t *testing.T) {
 		t.Errorf("sim_test: %q", text)
 	}
 	// die übrigen Tools bekommen den Checkout über den Header X-K3C-Root, hier über den Context
-	ctx := context.WithValue(context.Background(), wsKey{}, workspace{root: filepath.Join(main, ".claude", "worktrees", "wt-a")})
+	ctx := mcpkit.WithWorkspace(context.Background(), workspace{Root: filepath.Join(main, ".claude", "worktrees", "wt-a")})
 	if _, err := s.simRun(ctx, simIn{Seed: "1", Ticks: 10}); err == nil || !strings.Contains(err.Error(), "dev:worktree") {
 		t.Errorf("sim_run: %v", err)
 	}

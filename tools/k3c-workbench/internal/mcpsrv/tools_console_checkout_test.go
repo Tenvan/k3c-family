@@ -6,7 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/mcpkit"
 )
 
 // B-855/AC-01: Zwei Checkouts fahren task:check:go; console_tail liefert je Checkout nur den eigenen Lauf, die
@@ -16,9 +17,9 @@ func TestConsoleTailJeCheckout(t *testing.T) {
 	store := console.New(0, nil)
 	root := t.TempDir()
 	s := New(Config{Version: "test", Root: root, Console: store})
-	wt := workspace{root: t.TempDir(), name: "wt-a"}
+	wt := workspace{Root: t.TempDir(), Name: "wt-a"}
 	ctxRoot := context.Background()
-	ctxWt := context.WithValue(ctxRoot, wsKey{}, wt)
+	ctxWt := mcpkit.WithWorkspace(ctxRoot, wt)
 
 	store.Add("check:task:check:go", "stdout", "lauf der Wurzel")
 	store.Add("check:wt-a/task:check:go", "stdout", "lauf des Worktrees")

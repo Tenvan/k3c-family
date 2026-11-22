@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // fake ersetzt `task <name>` durch einen Go-Aufruf: "go version" endet mit 0, "go nonsense" mit Exit 2.

@@ -47,7 +47,7 @@ func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
 	if err := s.ownCheckoutErr(ctx, "replay_run"); err != nil {
 		return "", err
 	}
-	root := s.ws(ctx).root
+	root := s.ws(ctx).Root
 	path, err := insideRoot(root, in.Path)
 	if err != nil {
 		return "", err

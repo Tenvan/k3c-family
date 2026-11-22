@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // Zeitlimit begrenzt jeden Aufruf: eine hängende CLI hielte sonst eine Asset-Sperre oder einen Review-Lauf für immer.

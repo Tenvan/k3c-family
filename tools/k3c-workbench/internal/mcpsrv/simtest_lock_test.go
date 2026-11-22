@@ -15,7 +15,7 @@ func init() { _ = os.Setenv(simUnlockEnv, "1") }
 func TestSimSperreLehntAb(t *testing.T) {
 	t.Setenv(simUnlockEnv, "")
 	s, started := fakeServer(t, fakeBalance(t, 1))
-	root := s.ws(context.Background()).root
+	root := s.ws(context.Background()).Root
 	_, err := s.simTest(context.Background(), simTestIn{Action: "start", Seeds: 3})
 	if err == nil || !strings.Contains(err.Error(), "Beschluss 🧑 2026-11-11") || !strings.Contains(err.Error(), simUnlockEnv+"=1") {
 		t.Errorf("sim_test start: %v", err)

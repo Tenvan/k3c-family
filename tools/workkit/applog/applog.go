@@ -1,5 +1,6 @@
-// Package applog ist das eigene Log von k3c-workbench (B-046): JSON nach logs/k3c-workbench.jsonl im Format, das
-// internal/logs liest, und dieselben Einträge lesbar als Strom "log" im Konsolenpuffer k3c-workbench.
+// Package applog ist das eigene Log eines Werkzeugs (B-046, gemeinsam seit WZ63): JSON nach logs/<quelle>.jsonl im
+// Format, das internal/logs der Workbench liest, und dieselben Einträge lesbar als Strom "log" im Konsolenpuffer.
+// Open nimmt die Quelle k3c-workbench, OpenNamed eine eigene (z. B. k3c-studio).
 package applog
 
 import (
@@ -12,10 +13,10 @@ import (
 	"strings"
 
 	"k3c/engine/conlog"
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/console"
 )
 
-// Source ist der Name der Log-Datei (ohne .jsonl) und der Konsolen-Quelle.
+// Source ist der Name der Log-Datei (ohne .jsonl) und der Konsolen-Quelle der Workbench (Open).
 const Source = "k3c-workbench"
 
 // LevelEnv ist die Umgebungsvariable für die Log-Stufe (debug|info|warn|error); gesetzt gilt sie für Datei und Konsole.
@@ -65,17 +66,21 @@ type Log struct {
 	mirror *console.LineWriter
 }
 
-// Open öffnet logs/k3c-workbench.jsonl unter logsDir zum Anhängen. Lässt sich die Datei nicht öffnen, schreibt der Logger
-// nur in den Konsolenpuffer, und der Fehler kommt zurück, damit der Aufrufer ihn melden kann.
-func Open(logsDir string, store *console.Store) (*Log, error) {
-	mirror := console.NewLineWriter(func(text string) { store.Add(Source, "log", text) })
+// Open öffnet logs/k3c-workbench.jsonl unter logsDir zum Anhängen (OpenNamed mit Source).
+func Open(logsDir string, store *console.Store) (*Log, error) { return OpenNamed(logsDir, Source, store) }
+
+// OpenNamed öffnet logs/<source>.jsonl unter logsDir zum Anhängen und spiegelt in die Konsolen-Quelle source. Lässt sich
+// die Datei nicht öffnen, schreibt der Logger nur in den Konsolenpuffer, und der Fehler kommt zurück, damit der Aufrufer
+// ihn melden kann.
+func OpenNamed(logsDir, source string, store *console.Store) (*Log, error) {
+	mirror := console.NewLineWriter(func(text string) { store.Add(source, "log", text) })
 	fileLevel, mirrorLevel := Levels()
 	// Farben immer: die Oberfläche zeichnet sie, console_tail entfernt sie.
 	handlers := []slog.Handler{conlog.New(mirror, mirrorLevel, true)}
 	l := &Log{mirror: mirror}
 	err := os.MkdirAll(logsDir, 0o755)
 	if err == nil {
-		path := filepath.Join(logsDir, Source+".jsonl")
+		path := filepath.Join(logsDir, source+".jsonl")
 		err = Rotate(path, MaxFileSize)
 		if err == nil {
 			l.file, err = os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o644)

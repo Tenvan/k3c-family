@@ -1,4 +1,4 @@
-package mcpsrv
+package mcpkit
 
 import (
 	"reflect"
@@ -34,7 +34,7 @@ func jsonNames(t reflect.Type) []string {
 // addParamHint hängt an eine Ablehnung wegen unbekannter Felder die gültigen Parameter des Tools an.
 func (s *Server) addParamHint(tool string, res mcp.Result) {
 	r, ok := res.(*mcp.CallToolResult)
-	if !ok || r == nil || !r.IsError || !strings.Contains(resultText(r), additionalProps) {
+	if !ok || r == nil || !r.IsError || !strings.Contains(ResultText(r), additionalProps) {
 		return
 	}
 	names, known := s.params[tool]

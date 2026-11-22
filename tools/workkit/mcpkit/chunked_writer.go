@@ -1,14 +1,14 @@
-package mcpsrv
+package mcpkit
 
 import "net/http"
 
-// forceChunked schickt jede Antwort ohne Event-Stream von Anfang an als chunked (Header sofort geflusht).
+// ForceChunked schickt jede Antwort ohne Event-Stream von Anfang an als chunked (Header sofort geflusht).
 //
 // Hintergrund: Auf manchen Rechnern schreibt ein Netzwerkfilter (vermutlich eine Schutzsoftware) HTTP-Antworten auf
 // MCP-Verkehr um. Antworten mit Content-Length (das 202 auf notifications/initialized, Fehlerantworten) macht er zu
 // "chunked" ohne Chunk-Rahmen und ohne Abschluss; Claude Code liest den Body zu Ende und läuft in sein 30-s-Timeout.
 // Von Haus aus chunked gesendete Antworten (SSE) lässt der Filter unverändert durch.
-func forceChunked(next http.Handler) http.Handler {
+func ForceChunked(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		next.ServeHTTP(&chunkedWriter{ResponseWriter: w}, r)
 	})

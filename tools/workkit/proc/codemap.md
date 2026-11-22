@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/proc/
+# tools/workkit/proc/
 
 ## Responsibility
 

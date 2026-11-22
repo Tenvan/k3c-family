@@ -12,7 +12,7 @@ import (
 	"time"
 
 	ticketkit "k3c/tools/assetkit/ticket"
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // B-387: Die nächste Ticket-Nummer berücksichtigt alle Checkouts des Repos (Wurzel, Git-Worktrees samt Archiv) und die

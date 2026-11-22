@@ -1,15 +1,35 @@
 package applog
 
 import (
+	"bufio"
+	"encoding/json"
+	"log/slog"
 	"os"
 	"path/filepath"
-	"log/slog"
 	"strings"
 	"testing"
 
-	"k3c/tools/k3c-workbench/internal/console"
-	"k3c/tools/k3c-workbench/internal/logs"
+	"k3c/tools/workkit/console"
 )
+
+// entries liest die JSON-Zeilen einer Log-Datei; das Lesen mit internal/logs der Workbench prüft deren Test (B-046).
+func entries(t *testing.T, path string) []map[string]any {
+	t.Helper()
+	f, err := os.Open(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() { _ = f.Close() }()
+	var out []map[string]any
+	for sc := bufio.NewScanner(f); sc.Scan(); {
+		var e map[string]any
+		if err := json.Unmarshal(sc.Bytes(), &e); err != nil {
+			t.Fatalf("keine JSON-Zeile: %q", sc.Text())
+		}
+		out = append(out, e)
+	}
+	return out
+}
 
 func TestSchreibtJSONUndSpiegelt(t *testing.T) {
 	dir := filepath.Join(t.TempDir(), "logs")
@@ -22,12 +42,12 @@ func TestSchreibtJSONUndSpiegelt(t *testing.T) {
 	if err := l.Close(); err != nil {
 		t.Fatal(err)
 	}
-	res, err := logs.Scan(filepath.Join(dir, "k3c-workbench.jsonl"), logs.Query{})
-	if err != nil || len(res.Entries) != 1 {
-		t.Fatalf("Scan: %+v, %v", res, err)
+	es := entries(t, filepath.Join(dir, "k3c-workbench.jsonl"))
+	if len(es) != 1 {
+		t.Fatalf("Einträge: %+v", es)
 	}
-	e := res.Entries[0]
-	if e.Level != "WARN" || e.NS != "check" || e.Msg != "lauf beendet" || e.Data["target"] != "task:test" || e.Data["exit"] != 1.0 {
+	e := es[0]
+	if e["level"] != "WARN" || e["ns"] != "check" || e["msg"] != "lauf beendet" || e["target"] != "task:test" || e["exit"] != 1.0 {
 		t.Errorf("Eintrag: %+v", e)
 	}
 	lines, _ := store.Tail(Source, 0)
@@ -89,9 +109,8 @@ func TestLevelFiltertDatei(t *testing.T) {
 	l.Info("leise")
 	l.Warn("laut")
 	_ = l.Close()
-	res, _ := logs.Scan(filepath.Join(dir, "k3c-workbench.jsonl"), logs.Query{})
-	if len(res.Entries) != 1 || res.Entries[0].Msg != "laut" {
-		t.Errorf("Einträge: %+v", res.Entries)
+	if es := entries(t, filepath.Join(dir, "k3c-workbench.jsonl")); len(es) != 1 || es[0]["msg"] != "laut" {
+		t.Errorf("Einträge: %+v", es)
 	}
 }
 

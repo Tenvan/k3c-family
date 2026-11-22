@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // Worktrees liefert die Branches aller Worktrees des Repos (`git worktree list`); ohne git oder Repo keine.

@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/proc"
 )
 
 // State ist der Zustand eines Laufs. Ein Task, der nie lief, hat keinen Eintrag; die Oberfläche zeigt ihn als bereit.

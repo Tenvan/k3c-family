@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/console"
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/console"
+	"k3c/tools/workkit/proc"
 )
 
 // checkTimeout begrenzt eine einzelne Health-Prüfung.

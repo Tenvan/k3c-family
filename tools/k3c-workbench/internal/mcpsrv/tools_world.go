@@ -20,7 +20,9 @@ import (
 // worldEngine ist die Engine-Seite des Editors (simcli world); Tests setzen einen Ersatz.
 var worldEngine = world.Direct
 
-func worldEditor(root string) world.Editor { return world.Editor{Root: root, Engine: worldEngine(root)} }
+func worldEditor(root string) world.Editor {
+	return world.Editor{Root: root, Engine: worldEngine(root)}
+}
 
 // overrideFilesText sind die Basis-Dateien, die eine Welt übersteuern darf (Engine: overrideFiles in engine/sim/world_values.go);
 // TestOverrideFilesTextMatchesEngine hält die Liste gleich.
@@ -76,7 +78,7 @@ func registerWorld(s *Server) {
 			"Nutze es bei: nach Änderungen, bevor die Welt gespielt wird. Statt: Spiel starten und auf den Ladefehler warten.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in worldGetIn) (string, error) {
-		e := worldEditor(s.ws(ctx).root)
+		e := worldEditor(s.ws(ctx).Root)
 		warnings, err := e.Check(ctx, in.ID)
 		if err != nil {
 			return "", err
@@ -93,7 +95,7 @@ func registerWorldRead(s *Server) {
 			"Nutze es bei: welche Welten es gibt, vor world_create. Statt: data/worlds/ auflisten und Dateien öffnen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, _ worldListIn) (string, error) {
-		e := worldEditor(s.ws(ctx).root)
+		e := worldEditor(s.ws(ctx).Root)
 		var b strings.Builder
 		for _, w := range e.List() {
 			if w.Missing {
@@ -110,7 +112,9 @@ func registerWorldRead(s *Server) {
 		Description: "Eine Welt: Kopf, Inseln mit Tiefen und Biomen, geplante Chunks, die Geschichte (Wortschatz und Zeilen je Wendepunkt, fehlende als „fehlt“), dazu der Text der Datei. " +
 			"Nutze es bei: vor jeder Änderung an einer Welt. Statt: data/worlds/<id>.json lesen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in worldGetIn) (string, error) { return worldText(worldEditor(s.ws(ctx).root), in.ID) })
+	}, func(ctx context.Context, in worldGetIn) (string, error) {
+		return worldText(worldEditor(s.ws(ctx).Root), in.ID)
+	})
 }
 
 // worldWrite: schreibt nur die Welt-Datei, überschreibt keine andere Welt.
@@ -135,7 +139,7 @@ func registerWorldWrite(s *Server) {
 			"Nutze es bei: neue Welt entwerfen. Statt: Welt-Datei von Hand schreiben.",
 		Annotations: worldCreateHints(),
 	}, func(ctx context.Context, in worldCreateIn) (string, error) {
-		return worldCreate(ctx, worldEditor(s.ws(ctx).root), in)
+		return worldCreate(ctx, worldEditor(s.ws(ctx).Root), in)
 	})
 	destructive, closed := true, false
 	add(s, &mcp.Tool{
@@ -148,7 +152,7 @@ func registerWorldWrite(s *Server) {
 		if !in.Confirm {
 			return "", fmt.Errorf("world_delete braucht confirm=true (die Datei der Welt %s wird endgültig gelöscht)", in.ID)
 		}
-		warnings, err := worldEditor(s.ws(ctx).root).Delete(in.ID)
+		warnings, err := worldEditor(s.ws(ctx).Root).Delete(in.ID)
 		return worldDone(fmt.Sprintf("Welt %s gelöscht (data/worlds/%s.json)", in.ID, in.ID), warnings, err)
 	})
 	add(s, &mcp.Tool{
@@ -163,7 +167,7 @@ func registerWorldWrite(s *Server) {
 		if err != nil {
 			return "", err
 		}
-		warnings, err := worldEditor(s.ws(ctx).root).Set(ctx, in.ID, patch)
+		warnings, err := worldEditor(s.ws(ctx).Root).Set(ctx, in.ID, patch)
 		return worldDone(fmt.Sprintf("Welt %s gespeichert", in.ID), warnings, err)
 	})
 	add(s, &mcp.Tool{
@@ -177,7 +181,7 @@ func registerWorldWrite(s *Server) {
 		if err != nil {
 			return "", err
 		}
-		view := worldEditor(s.ws(ctx).root).SetOverride(ctx, in.ID, in.File, in.Path, raw)
+		view := worldEditor(s.ws(ctx).Root).SetOverride(ctx, in.ID, in.File, in.Path, raw)
 		if view.Error != "" {
 			return "", fmt.Errorf("%s", view.Error)
 		}
@@ -201,7 +205,7 @@ func registerWorldChunks(s *Server) {
 			}
 			chunks = raw
 		}
-		warnings, err := worldEditor(s.ws(ctx).root).SetChunks(ctx, in.ID, in.Island, in.Depth, chunks, in.Count)
+		warnings, err := worldEditor(s.ws(ctx).Root).SetChunks(ctx, in.ID, in.Island, in.Depth, chunks, in.Count)
 		return worldDone(fmt.Sprintf("Chunks der Welt %s, Insel %s, Tiefe %d gespeichert", in.ID, in.Island, in.Depth), warnings, err)
 	})
 }

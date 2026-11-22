@@ -17,8 +17,8 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"k3c/tools/assetkit/windowstate"
-	"k3c/tools/k3c-workbench/internal/applog"
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/mcpsrv"
 	"k3c/tools/k3c-workbench/internal/services"
 )

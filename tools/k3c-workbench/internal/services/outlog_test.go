@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/applog"
-	"k3c/tools/k3c-workbench/internal/console"
+	"k3c/tools/workkit/applog"
+	"k3c/tools/workkit/console"
 	"k3c/tools/k3c-workbench/internal/logs"
 )
 

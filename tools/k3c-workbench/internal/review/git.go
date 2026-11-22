@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // Ablage der Specs (paper-spec.md › Dateien): public/grafik/<gruppe>/<id>.paper.json; Index und Stil sind keine Specs.

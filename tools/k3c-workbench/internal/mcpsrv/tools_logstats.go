@@ -18,7 +18,7 @@ const (
 )
 
 type statsIn struct {
-	Source string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
+	Source  string `json:"service,omitempty" jsonschema:"Dienst mit Logdatei aus logs_services; leer: alle"`
 	Since   string `json:"since,omitempty" jsonschema:"Dauer wie 30m, 24h oder Zeitpunkt RFC 3339; Standard 1h"`
 	GroupBy string `json:"groupBy,omitempty" jsonschema:"level (Standard) oder ns"`
 }
@@ -46,7 +46,7 @@ func (s *Server) logsStats(ctx context.Context, in statsIn) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	root := s.ws(ctx).root
+	root := s.ws(ctx).Root
 	paths, err := s.logPaths(root, in.Source)
 	if err != nil {
 		return "", err
@@ -75,7 +75,7 @@ func (s *Server) logsStats(ctx context.Context, in statsIn) (string, error) {
 		parts[i] = fmt.Sprintf("%s %d", orDash(k), counts[k])
 	}
 	head := fmt.Sprintf("%d Einträge seit %s je %s", len(res.Entries), in.Since, in.GroupBy)
-	return scanFooter(head, res)+"\n"+orNone(parts), nil
+	return scanFooter(head, res) + "\n" + orNone(parts), nil
 }
 
 // logsContext ist das Tool logs_context: Zeilen um einen Zeitpunkt, älteste zuerst; ">" markiert die erste Zeile ab ts.
@@ -84,7 +84,7 @@ func (s *Server) logsContext(ctx context.Context, in contextIn) (string, error) 
 	if err != nil {
 		return "", fmt.Errorf("ts %q ist kein Zeitpunkt nach RFC 3339", in.TS)
 	}
-	root := s.ws(ctx).root
+	root := s.ws(ctx).Root
 	path, err := s.logPath(root, in.Source)
 	if err != nil {
 		return "", err

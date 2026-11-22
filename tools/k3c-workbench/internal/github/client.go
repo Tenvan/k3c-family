@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"k3c/tools/k3c-workbench/internal/proc"
+	"k3c/tools/workkit/proc"
 )
 
 // TTL ist die Frist des Zwischenspeichers; GitHub soll nicht bei jedem Neuladen der Planung gefragt werden.

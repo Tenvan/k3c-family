@@ -1,4 +1,4 @@
-# tools/k3c-workbench/internal/usage/
+# tools/workkit/usage/
 
 ## Responsibility
 Auswertung der MCP-Aufrufe von k3c-workbench (B-062): Laufzeiten je Tool, Perzentile, Ausreißer, häufigste Argumente und Fehler, getrennt für Sitzung und Gesamtzeit, plus Minuten-Zeitreihe der letzten sieben Tage. Persistiert in eine JSON-Datei. Kennt den Server nicht; die Middleware in `mcpsrv` meldet Events.

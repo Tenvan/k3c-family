@@ -2,6 +2,7 @@ package mcpsrv
 
 import (
 	"context"
+	"k3c/tools/workkit/mcpkit"
 	"os"
 	"path/filepath"
 	"slices"
@@ -16,7 +17,7 @@ func connect(t *testing.T, s *Server) *mcp.ClientSession {
 	t.Helper()
 	ctx := context.Background()
 	ct, st := mcp.NewInMemoryTransports()
-	if _, err := s.mcp.Connect(ctx, st, nil); err != nil {
+	if _, err := s.kit.MCP().Connect(ctx, st, nil); err != nil {
 		t.Fatal(err)
 	}
 	cs, err := mcp.NewClient(&mcp.Implementation{Name: "test", Version: "0"}, nil).Connect(ctx, ct, nil)
@@ -90,7 +91,7 @@ func TestPanikWirdZumFehler(t *testing.T) {
 	})
 	cs := connect(t, s)
 	text, isErr := callText(t, cs, "boom", nil)
-	if !isErr || !strings.Contains(text, panicText) {
+	if !isErr || !strings.Contains(text, mcpkit.PanicText) {
 		t.Errorf("Panik nicht als Fehler: %q", text)
 	}
 	if text, isErr := callText(t, cs, "workbench_status", nil); isErr {

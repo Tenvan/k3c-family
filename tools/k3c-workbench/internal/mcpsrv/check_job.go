@@ -108,21 +108,21 @@ func (s *Server) checkRun(ctx context.Context, in checkIn) (string, error) {
 	}
 	// Sperre, Ergebnis und Konsole je Checkout: Läufe verschiedener Worktrees stören sich nicht.
 	ws := s.ws(ctx)
-	if err := t.preflight(ws.root); err != nil {
+	if err := t.preflight(ws.Root); err != nil {
 		return "", err
 	}
 	warn, err := checkTaskVersion(ctx, t, in.Pattern, s.taskVersionMemo.lesen(s.taskVersion))
 	if err != nil {
 		return "", err
 	}
-	key := ws.source(t.name)
+	key := ws.Source(t.name)
 	if !s.checks.begin(key) {
 		return "", fmt.Errorf("%s läuft bereits (Lauf-ID %s); auf das Ende warten, Ergebnis mit check_run {run}, Ausgabe über console_tail check:%s",
 			t.name, s.checks.runningID(key), t.name)
 	}
 	s.notifyCheck(CheckState{Name: key, Running: true, At: time.Now()})
 	job := s.checks.newJob(t, key)
-	go s.runCheck(context.WithoutCancel(ctx), job, filepath.Join(ws.root, t.dir), args)
+	go s.runCheck(context.WithoutCancel(ctx), job, filepath.Join(ws.Root, t.dir), args)
 	out, err := s.awaitJob(ctx, job)
 	if warn != "" && err == nil {
 		out = warn + "\n" + out

@@ -34,7 +34,7 @@ type worktrees struct {
 // controller liefert den Controller des Checkouts oder den Grund, warum es keinen gibt.
 func (s *Server) controller(ctx context.Context) (*services.Controller, error) {
 	ws := s.ws(ctx)
-	if ws.name != "" {
+	if ws.Name != "" {
 		w, err := s.worktreeServices(ws)
 		if err != nil {
 			return nil, err
@@ -55,12 +55,12 @@ func (s *Server) controller(ctx context.Context) (*services.Controller, error) {
 func (s *Server) worktreeServices(ws workspace) (*worktreeServices, error) {
 	s.wt.mu.Lock()
 	defer s.wt.mu.Unlock()
-	if w, ok := s.wt.all[ws.root]; ok {
+	if w, ok := s.wt.all[ws.Root]; ok {
 		return w, nil
 	}
-	list, err := services.Load(filepath.Join(ws.root, "tools", "k3c-workbench", "services.json"))
+	list, err := services.Load(filepath.Join(ws.Root, "tools", "k3c-workbench", "services.json"))
 	if err != nil {
-		return nil, fmt.Errorf("keine Dienste im Worktree %s: %w", ws.name, err)
+		return nil, fmt.Errorf("keine Dienste im Worktree %s: %w", ws.Name, err)
 	}
 	off, err := s.freeOffset(list)
 	if err != nil {
@@ -68,8 +68,8 @@ func (s *Server) worktreeServices(ws workspace) (*worktreeServices, error) {
 	}
 	shifted := services.Shift(list, off)
 	ctx, cancel := context.WithCancel(context.Background())
-	ctl := services.New(shifted, services.Options{Root: ws.root, Console: s.console, Prefix: ws.name + "/",
-		Log: s.log.With("worktree", ws.name)})
+	ctl := services.New(shifted, services.Options{Root: ws.Root, Console: s.console, Prefix: ws.Name + "/",
+		Log: s.log.With("worktree", ws.Name)})
 	go ctl.Monitor(ctx, 2*time.Second)
 	w := &worktreeServices{ctl: ctl, off: off, stop: cancel, ports: map[string]string{}}
 	for _, svc := range shifted {
@@ -77,8 +77,8 @@ func (s *Server) worktreeServices(ws workspace) (*worktreeServices, error) {
 			w.ports[svc.PortEnv] = svc.Env[svc.PortEnv]
 		}
 	}
-	s.wt.all[ws.root] = w
-	s.log.Info("🏰 dienste für worktree "+ws.name+" angelegt", "ns", "svc", "worktree", ws.name, "versatz", off)
+	s.wt.all[ws.Root] = w
+	s.log.Info("🏰 dienste für worktree "+ws.Name+" angelegt", "ns", "svc", "worktree", ws.Name, "versatz", off)
 	return w, nil
 }
 

@@ -1,9 +1,9 @@
 package mcpsrv
 
 import (
+	"context"
 	"fmt"
 	"strings"
-	"context"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
@@ -58,7 +58,7 @@ func registerPlanning(s *Server) {
 		if err := ticketPlanned(in); err != nil {
 			return "", err
 		}
-		return planning.Create(s.ws(ctx).root, planning.NewDoc{Kind: in.Kind, ID: in.ID, Slug: in.Slug, Title: in.Title, Fields: in.Fields})
+		return planning.Create(s.ws(ctx).Root, planning.NewDoc{Kind: in.Kind, ID: in.ID, Slug: in.Slug, Title: in.Title, Fields: in.Fields})
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_set",
@@ -71,7 +71,7 @@ func registerPlanning(s *Server) {
 			"Nutze es bei: Status, Prio oder andere Kopf-Felder ändern. Statt: Datei, Index und Fahrplan von Hand bearbeiten.",
 		Annotations: write,
 	}, func(ctx context.Context, in planSetIn) (string, error) {
-		return planning.Set(s.ws(ctx).root, in.ID, in.Fields)
+		return planning.Set(s.ws(ctx).Root, in.ID, in.Fields)
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_section",
@@ -79,7 +79,7 @@ func registerPlanning(s *Server) {
 			"Nutze es bei: Abschnitt wie Ergebnis oder Ziel füllen. Statt: Datei von Hand bearbeiten.",
 		Annotations: write,
 	}, func(ctx context.Context, in planSectionIn) (string, error) {
-		return planning.Section(s.ws(ctx).root, in.ID, in.Section, in.Text)
+		return planning.Section(s.ws(ctx).Root, in.ID, in.Section, in.Text)
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_sections",
@@ -88,7 +88,7 @@ func registerPlanning(s *Server) {
 			"Nutze es bei: Spec oder Session mit mehreren Abschnitten füllen. Statt: plan_section je Abschnitt.",
 		Annotations: write,
 	}, func(ctx context.Context, in planSectionsIn) (string, error) {
-		return planning.Sections(s.ws(ctx).root, in.ID, in.Sections)
+		return planning.Sections(s.ws(ctx).Root, in.ID, in.Sections)
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_delete",
@@ -96,7 +96,7 @@ func registerPlanning(s *Server) {
 			"Tickets nie: plan_set Status verworfen. " +
 			"Nutze es bei: Entwurf verwerfen. Statt: Dateien und Verweise von Hand löschen.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &yes, OpenWorldHint: &closed},
-	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Delete(s.ws(ctx).root, in.ID) })
+	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Delete(s.ws(ctx).Root, in.ID) })
 	registerGitHub(s)
 	registerPlanWaves(s)
 	registerPlanDigest(s)
@@ -115,14 +115,14 @@ func registerPlanRead(s *Server) {
 			"Nutze es bei: Überblick über Sprints, Sessions und Tickets. Statt: docs/sprints und docs/backlog durchsuchen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.Filter) (string, error) {
-		return planning.List(s.ws(ctx).root, in)
+		return planning.List(s.ws(ctx).Root, in)
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_get",
 		Description: "Ein Ticket, eine Sprint-README, eine Session oder ein Projekt als Markdown, mit Pfad in der ersten Zeile. " +
 			"Nutze es bei: eine Planungsdatei lesen. Statt: Datei suchen und lesen.",
 		Annotations: readOnly(),
-	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Get(s.ws(ctx).root, in.ID) })
+	}, func(ctx context.Context, in planIDIn) (string, error) { return planning.Get(s.ws(ctx).Root, in.ID) })
 	add(s, &mcp.Tool{
 		Name: "plan_next",
 		Description: "Nächste Session nach docs/arbeitsweise.md › Autonomer Ablauf, Schritt 1, aus den lokalen Dateien: aktive Projekte " +
@@ -136,7 +136,7 @@ func registerPlanRead(s *Server) {
 			"Nutze es bei: Start einer autonomen Session. Statt: Projekte, Sprint-READMEs und Session-Dateien einzeln lesen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.NextFilter) (string, error) {
-		return planning.Next(s.ws(ctx).root, in)
+		return planning.Next(s.ws(ctx).Root, in)
 	})
 }
 

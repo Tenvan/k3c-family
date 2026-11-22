@@ -13,6 +13,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
 	pa "k3c/tools/k3c-workbench/internal/paperassets"
+	"k3c/tools/workkit/mcpkit"
 )
 
 // assetJobs sind die Render-Jobs aller Checkouts (eigener Mechanismus, nicht task_*; IDs j-<n> je Prozess).
@@ -36,7 +37,7 @@ func registerAssetsRender(s *Server) {
 			"{job, wait: true} bis zum Ende. Nutze es bei: Ausgabe neu erzeugen, nach assets_style_set warten. Statt: CLI in der Shell.",
 		Annotations: &mcp.ToolAnnotations{DestructiveHint: &notDestructive, OpenWorldHint: &closed},
 	}, func(ctx context.Context, in assetsRenderIn) (string, error) {
-		return assetsRenderText(ctx, s.ws(ctx).root, in)
+		return assetsRenderText(ctx, s.ws(ctx).Root, in)
 	})
 }
 
@@ -79,7 +80,7 @@ func assetsRenderText(ctx context.Context, root string, in assetsRenderIn) (stri
 
 // renderWait wartet auf den Job: mit progressToken bis zum Ende und Lebenszeichen, sonst höchstens renderWarten.
 func renderWait(ctx context.Context, id string) (string, error) {
-	progress := progressOf(ctx)
+	progress := mcpkit.ProgressOf(ctx)
 	limit := renderWarten
 	if progress != nil {
 		limit = 24 * time.Hour

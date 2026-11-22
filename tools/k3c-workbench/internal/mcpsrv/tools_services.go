@@ -79,7 +79,7 @@ func (s *Server) serviceAction(ctx context.Context, name string, act func(*servi
 	began := time.Now()
 	st, err := act(ctl)
 	if err != nil {
-		return "", errors.New(err.Error() + s.consoleExcerpt(s.ws(ctx).source(name)))
+		return "", errors.New(err.Error() + s.consoleExcerpt(s.ws(ctx).Source(name)))
 	}
 	return s.serviceLine(ctl, st) + " · " + formatMs(float64(time.Since(began).Milliseconds())), nil
 }

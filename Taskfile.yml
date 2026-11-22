@@ -34,6 +34,7 @@ includes:
   go: engine/Taskfile.yml
   k3c-sim: cmd/k3c-sim/Taskfile.yml
   k3c-workbench: tools/k3c-workbench/Taskfile.yml
+  workkit: tools/workkit/Taskfile.yml
   balance: tools/k3c-workbench/internal/balance/Taskfile.yml
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
