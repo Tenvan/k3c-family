@@ -1,5 +1,5 @@
 # Icon der Workbench
-
-Kronen-Emoji 👑 (Segoe UI Emoji, im Browser auf ein Canvas gezeichnet): `appicon.png` (256 px) und `icon.ico` (16, 32, 48, 256 px).
-`task k3c-workbench:build` kopiert beide nach `build/` (dort liegt, was `wails build` für die EXE verwendet; `build/` ist von git
-ignoriert und wird von Wails neu angelegt).
+Zahnrad mit goldener Krone (`appicon.png` 256 px, `icon.ico` 16, 32, 48, 256 px), erzeugt von
+`tools/icons/gen_icons.py` (Pillow; `python tools/icons/gen_icons.py` von der Repo-Wurzel, erzeugt auch die Icons von
+Studio und Spiel). `task k3c-workbench:build` kopiert beide Dateien nach `build/`; `main.go` bettet `appicon.png` für das
+Fenster-Icon in Dev-Läufen ein.
