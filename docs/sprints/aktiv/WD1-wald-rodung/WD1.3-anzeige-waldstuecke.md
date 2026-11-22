@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
-- **Lane:** erst
+- **Lane:** zweit
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** wd1/3-anzeige-waldstuecke
