@@ -270,9 +270,9 @@ describe('Auswertung (B-1223)', () => {
     act(() => (panel().querySelector('[data-seek]') as HTMLElement).click());
     expect(video.currentTime).toBe(5);
     expect(box().getAttribute('aria-checked')).toBe('false'); // Zeit-Klick schaltet nicht um
-    expect(panel().querySelector('[data-preview]')).toBeNull();
+    expect(document.querySelector('[data-preview]')).toBeNull();
     act(() => { panel().querySelector('img[alt="Bild zu Marker 1"]')!.parentElement!.dispatchEvent(new MouseEvent('mouseover', { bubbles: true })); });
-    expect(panel().querySelector('[data-preview]')).not.toBeNull();
+    expect(document.querySelector('[data-preview]')).not.toBeNull();
   });
 
   it('Bildbeschreibung: Modell wählbar, markierte Bilder beschreiben, abgewählte nicht (B-1241)', async () => {

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ActionButton, CardButton, Checkbox, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
 import { DescribeBar, useDescribe } from './DescribeBar';
@@ -119,15 +120,23 @@ export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props
   );
 }
 
-/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß darunter. */
+/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß. Die große Ansicht hängt am Seitenende (Portal,
+ *  fixed), damit sie vor allen Zeilen und Karten liegt; sie sitzt unter dem Bild, am unteren Rand darüber. */
 function Thumb({ src, alt, dim }: { src: string; alt: string; dim: boolean }) {
-  const [hover, setHover] = useState(false);
+  const [at, setAt] = useState<{ left: number; top: number } | null>(null);
+  const show = (el: HTMLElement) => {
+    const r = el.getBoundingClientRect();
+    const h = Math.min(560, window.innerWidth * 0.8) * 0.5625 + 8; // etwa 16:9
+    const below = r.bottom + h < window.innerHeight;
+    setAt({ left: Math.max(8, Math.min(r.left, window.innerWidth - 568)), top: below ? r.bottom + 4 : Math.max(8, r.top - h) });
+  };
   return (
-    <span style={{ position: 'relative', display: 'inline-block', lineHeight: 0 }} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
+    <span style={{ display: 'inline-block', lineHeight: 0 }} onMouseEnter={(ev) => show(ev.currentTarget)} onMouseLeave={() => setAt(null)}>
       <img src={src} alt={alt} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: dim ? 0.3 : 1 }} />
-      {hover && (
-        <img src={src} alt="" data-preview style={{ position: 'absolute', left: 0, top: '100%', marginTop: 4, width: 560, maxWidth: '80vw', zIndex: 50,
-          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />
+      {at && createPortal(
+        <img src={src} alt="" data-preview style={{ position: 'fixed', left: at.left, top: at.top, width: 560, maxWidth: '80vw', zIndex: 10000,
+          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />,
+        document.body,
       )}
     </span>
   );
