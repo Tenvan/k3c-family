@@ -18,11 +18,15 @@ pub mod flag;
 pub mod marker;
 pub mod savejob;
 pub mod sink;
+pub mod survey;
+pub mod survey_draw;
 
 #[cfg(test)]
 mod tests;
 #[cfg(test)]
 mod tests_save;
+#[cfg(test)]
+mod tests_survey;
 
 use std::borrow::Cow;
 use std::path::{Path, PathBuf};
@@ -36,7 +40,7 @@ use self::marker::{Context, FrameTimes, JANK_MS, Jank, Kind, Marker, RateLimit};
 use self::sink::Sink;
 use crate::view::MAX_PLAYERS;
 use crate::view::frame::{Frame, Seat};
-use crate::view::input::DeviceKind;
+use crate::view::input::{DeviceID, DeviceKind};
 
 /// Takte (30 Hz), die „Markiert“ in der Ansicht des Spielers steht.
 pub const FLASH_TICKS: u64 = 60;
@@ -69,6 +73,10 @@ pub struct Playtest {
     live: bool,
     prev_live: bool,
     jank_ctx: Context,
+    /// Spieler `(Slot + 1, Gerät)` des letzten laufenden Spiels, für den Fragebogen
+    players: Vec<(i64, DeviceID)>,
+    survey: Option<survey::Survey>,
+    survey_begun: bool,
 }
 
 impl Playtest {
@@ -91,6 +99,9 @@ impl Playtest {
             live: false,
             prev_live: false,
             jank_ctx: Context::default(),
+            players: Vec::new(),
+            survey: None,
+            survey_begun: false,
         }
     }
 
@@ -160,6 +171,9 @@ impl Playtest {
             .zip(seats.first())
             .map(|(f, s)| context::of(f, s))
             .unwrap_or_default();
+        if !seats.is_empty() {
+            self.players = seats.iter().map(|s| (s.player + 1, s.device)).collect();
+        }
         let can_save = self.live && frame.is_some_and(|f| !f.paused);
         let mut out = Vec::new();
         for t in self.detector.poll(input) {
@@ -185,6 +199,38 @@ impl Playtest {
             }
         }
         out
+    }
+
+    /// Der Fragebogen, solange er offen ist (zu zeichnen mit `survey_draw::draw`).
+    pub fn survey(&self) -> Option<&survey::Survey> {
+        self.survey.as_ref()
+    }
+
+    /// Das Spiel ist beendet: öffnet einmal den Fragebogen für die Spieler des letzten Spiels (ohne Spieler: keiner,
+    /// keine Datei). Solange er offen ist, darf das Fenster nicht schließen.
+    pub fn survey_begin(&mut self, now_ms: u64) {
+        if self.survey_begun {
+            return;
+        }
+        self.survey_begun = true;
+        if !self.players.is_empty() {
+            self.survey = Some(survey::Survey::new(&self.players, now_ms));
+        }
+    }
+
+    /// Ein Takt des offenen Fragebogens; sind alle fertig, steht `survey.json` im Ordner (atomar) und er schließt.
+    pub fn survey_step(&mut self, input: &InputState) {
+        let Some(sv) = self.survey.as_mut() else {
+            return;
+        };
+        if !sv.step(input) {
+            return;
+        }
+        match sv.write(&self.dir) {
+            Ok(()) => log::info("✅ Fragebogen geschrieben", &[("datei", &survey::FILE)]),
+            Err(e) => log::error("❌ Fragebogen nicht geschrieben", &[("fehler", &e)]),
+        }
+        self.survey = None;
     }
 
     /// Schreibt den Pad-Marker, mit Spielstand-Auftrag erst nach dem Kopieren.

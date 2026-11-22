@@ -105,10 +105,17 @@ fn now_ms() -> u64 {
 
 impl App for PlaytestApp {
     fn step(&mut self, input: &InputState, dt: f64) {
+        if self.inner.done() {
+            self.pt.survey_step(input); // Fragebogen nach dem Beenden (WZ66.3); das Spiel steht
+            return;
+        }
         let frame = self.inner.game().map(|g| g.frame());
         self.pt.step(input, frame, now_ms());
         let gi = self.pt.game_input(input);
         self.inner.step(&gi, dt);
+        if self.inner.done() {
+            self.pt.survey_begin(now_ms());
+        }
     }
 
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
@@ -121,6 +128,9 @@ impl App for PlaytestApp {
         c.layer(31);
         c.clip(None);
         rec::draw_rec(c, self.pt.failed());
+        if let Some(sv) = self.pt.survey() {
+            playtest::survey_draw::draw(c, sv);
+        }
         if let Some(g) = self.inner.game() {
             for cell in g.frame().cells.iter().filter(|cell| self.pt.marked(cell.player)) {
                 rec::draw_marked(c, &cell.rect);
@@ -129,7 +139,7 @@ impl App for PlaytestApp {
     }
 
     fn done(&self) -> bool {
-        self.inner.done()
+        self.inner.done() && self.pt.survey().is_none()
     }
 
     fn fullscreen(&self) -> Option<bool> {
