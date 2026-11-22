@@ -1,14 +1,14 @@
 # WZ64 · DEV · Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1218, B-1219
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, Chat 2026-11-22
 
 ## Ausgangslage
 
@@ -68,6 +68,9 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ64.1 | `WZ64.1-seite-ablage-aufraeumen.md` | Umsetzung | autonom | offen |
+| WZ64.2 | `WZ64.2-aufnahme-ffmpeg-spielstart.md` | Umsetzung | autonom | offen |
+| WZ64.3 | `WZ64.3-review.md` | Review | autonom | offen |
 
 - WZ64.1 Seite, Ablage, Aufräumen (B-1218, AC-01)
 - WZ64.2 Aufnahme mit ffmpeg und Spielstart (B-1219, AC-02; braucht B-1220 aus WZ66)

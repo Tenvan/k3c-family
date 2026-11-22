@@ -1,14 +1,14 @@
 # WZ66 · CLI · Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** CLI
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** B-1220, B-1221, B-1222
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** Ralf, Chat 2026-11-22
 
 ## Ausgangslage
 
@@ -71,6 +71,10 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| WZ66.1 | `WZ66.1-flag-rec-pad-marker.md` | Umsetzung | autonom | offen |
+| WZ66.2 | `WZ66.2-ruckler-marker-spielstand.md` | Umsetzung | autonom | offen |
+| WZ66.3 | `WZ66.3-fragebogen-spielende.md` | Umsetzung | autonom | offen |
+| WZ66.4 | `WZ66.4-review.md` | Review | autonom | offen |
 
 - WZ66.1 Flag, REC, Pad-Marker (B-1220, AC-01)
 - WZ66.2 Ruckler-Automarker und Spielstand am Marker (B-1221, AC-02)
