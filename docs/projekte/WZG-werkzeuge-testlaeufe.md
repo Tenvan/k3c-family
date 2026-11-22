@@ -95,6 +95,9 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | aktiv |
 | WZ62 | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | erledigt |
 | WZ63 | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | aktiv |
+| WZ64 | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | geplant |
+| WZ66 | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | geplant |
+| WZ65 | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | geplant |
 
 ## Nicht-Ziele
 
