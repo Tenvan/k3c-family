@@ -69,7 +69,7 @@ keine.
 | WL1.2 | `WL1.2-editor-welten-waehlbar.md` | Umsetzung | autonom | fertig |
 | WL1.3 | `WL1.3-gamepad-hotplug-hud.md` | Umsetzung | autonom | fertig |
 | WL1.4 | `WL1.4-zaun-mauern.md` | Umsetzung | autonom | fertig |
-| WL1.5 | `WL1.5-review.md` | Review | autonom | offen |
+| WL1.5 | `WL1.5-review.md` | Review | autonom | fertig |
 | WL1.6 | `WL1.6-workbench-spielstart-dienste.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -78,6 +78,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-22, Review WL1.5: AC-01 bis AC-05 durch die Session-Ergebnisse WL1.1 bis WL1.6 belegt, Diff gelesen, keine schweren Befunde, nichts behoben.
+Prüfstand: fmt, clippy, Go, Frontend und Wurzeltests grün; bekannt rot (nicht WL1): zwei Rust-Tests; `internal/gitops` rot durch Prüfumgebung (git NUL).
+Neu: B-1231 (Sim, Balance, Gen samt Golden, Race). Offen für 🧑: Abnahme am PC (DEV-Schild, Spielstart-Dienste).
