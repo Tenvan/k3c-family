@@ -268,20 +268,9 @@ fn used_keys_and_layouts() {
     }
 }
 
-/// Marker-Taste des Spieltests (WZ66): in keinem Profil und keinem Menü belegt, steht in `USED_KEYS`; das Pad nutzt LS mit View.
+/// Die Marker-Tasten des Spieltests (WZ66): Einfg und LT + RT sind belegt (Skill 1 im Profil pfeile, Skill 3 und Galopp),
+/// die Nebenwirkung ist gewollt; das Backend muss Einfg melden.
 #[test]
-fn marker_tasten_sind_frei() {
-    assert!(USED_KEYS.contains(&MARKER_KEY));
-    for l in 0..2 {
-        for n in [
-            "left", "right", "sprint", "pay", "attack", "skill1", "skill2", "skill3", "skill4",
-        ] {
-            assert!(!command_keys(l, n).contains(&MARKER_KEY), "{n}");
-        }
-        for a in ALL_ACTIONS {
-            assert!(!action_keys(l, a).contains(&MARKER_KEY), "{a:?}");
-        }
-    }
-    assert!(MENU_KEYS.iter().all(|k| !k.contains(&MARKER_KEY)));
-    assert!(PAD_ACTIONS.iter().flatten().all(|b| *b != MARKER_PAD));
+fn marker_taste_einfg_wird_abgefragt() {
+    assert!(USED_KEYS.contains(&Key::Insert));
 }

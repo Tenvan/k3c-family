@@ -1,14 +1,15 @@
-//! Marker-Taste erkennen: Pad Back (View) + Klick des linken Sticks (LS), Tastatur F (B-1220). Beide sind sonst nirgends
-//! belegt; das Cheat-Menü (View + Y, F9) bleibt unberührt, das Spiel bekommt die Eingabe unverändert.
+//! Marker-Taste erkennen: Pad LT + RT gleichzeitig (Flanke, Halten gibt einen Marker), Tastatur Einfg (B-1220).
+//!
+//! Nebenwirkungen, von Ralf bestätigt: LT ist im Spiel Skill 3 und RT Galopp, Einfg ist im Tastatur-Profil `pfeile`
+//! Skill 1. Der Marker löst sie mit aus; das Spiel bekommt die Eingabe unverändert. Das Cheat-Menü (View + Y, F9)
+//! bleibt unberührt. Die Trigger kommen als Tasten (`PadButton::LT`/`RT`), nicht als Achse.
 
 use std::collections::HashMap;
 
 use k3c_platform::{InputState, Key, PadButton};
 
-/// Marker-Taste der Tastatur; gleich `input::bindings::MARKER_KEY` (die Fachmodule kennen einander nicht, Importregel).
-pub const MARKER_KEY: Key = Key::F;
-/// Marker-Taste des Pads mit View: Klick des linken Sticks; gleich `input::bindings::MARKER_PAD`.
-pub const MARKER_PAD: PadButton = PadButton::LS;
+/// Marker-Taste der Tastatur.
+pub const MARKER_KEY: Key = Key::Insert;
 
 use crate::view::input::{DeviceID, DeviceKind};
 
@@ -39,7 +40,7 @@ impl Detector {
         }
         self.key = key;
         for (i, p) in input.pads().iter().enumerate() {
-            let now = p.held(PadButton::View) && p.held(MARKER_PAD);
+            let now = p.held(PadButton::LT) && p.held(PadButton::RT);
             if now && !self.pads.get(&p.id).copied().unwrap_or(false) {
                 out.push(Trigger {
                     device: DeviceID::new(DeviceKind::Gamepad, i64::from(p.id)),

@@ -1,10 +1,10 @@
 //! Spieltest-Modus (WZ66, B-1220): `k3c-game --playtest <ordner>` zeigt ein REC-Zeichen und schreibt Marker, die jeder
-//! Spieler per Pad (Back + Klick des linken Sticks) oder Tastatur (F) setzt, samt Spielkontext nach `<ordner>/markers.jsonl`.
+//! Spieler per Pad (LT + RT gleichzeitig) oder Tastatur (Einfg) setzt, samt Spielkontext nach `<ordner>/markers.jsonl`.
 //!
 //! Logik und Datei liegen hier, das Spiel zeichnet nur (`hud::rec`). Ohne den Schalter bleibt der Spielablauf
 //! unverändert: `game::run::PlaytestApp` umhüllt das Spiel nur mit dem Schalter. Das Cheat-Menü (View + Y, F9) bleibt
-//! unberührt. Taste B bleibt unbelegt. Austausch mit
-//! der Workbench nur über Dateien (Ordner-Vertrag B-1218).
+//! unberührt. Taste B bleibt unbelegt. LT + RT und Einfg lösen ihre
+//! Spielbefehle (Skill 3, Galopp, Skill 1 im Profil `pfeile`) mit aus, siehe `detect`. Austausch mit der Workbench nur über Dateien (Ordner-Vertrag B-1218).
 
 pub mod context;
 pub mod detect;
@@ -103,7 +103,7 @@ impl Playtest {
     }
 }
 
-/// Der Platz des Auslösers: der seines Geräts, bei F9 ohne Tastatur-Platz der erste (wie beim Cheat-Menü).
+/// Der Platz des Auslösers: der seines Geräts, bei Einfg ohne Tastatur-Platz der erste.
 fn seat_of<'a>(seats: &'a [Seat], t: &Trigger) -> Option<&'a Seat> {
     seats
         .iter()

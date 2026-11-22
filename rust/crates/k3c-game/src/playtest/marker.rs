@@ -39,7 +39,7 @@ pub struct Marker {
 }
 
 impl Marker {
-    /// Eine Zeile JSON ohne Zeilenende; `kind` ist immer `pad` (der Tastatur-Ersatz F9 zählt als Pad-Marker).
+    /// Eine Zeile JSON ohne Zeilenende; `kind` ist immer `pad` (der Tastatur-Ersatz Einfg zählt als Pad-Marker).
     pub fn to_line(&self) -> String {
         let c = &self.ctx;
         json!({

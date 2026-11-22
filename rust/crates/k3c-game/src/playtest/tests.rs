@@ -70,10 +70,10 @@ fn frame() -> Frame {
     f
 }
 
-fn view_ls(input: &mut InputState, pad: u32, down: bool) {
+fn lt_rt(input: &mut InputState, pad: u32, down: bool) {
     let p = input.pad_mut(pad);
-    p.set_button(PadButton::View, down);
-    p.set_button(PadButton::LS, down);
+    p.set_button(PadButton::LT, down);
+    p.set_button(PadButton::RT, down);
 }
 
 #[test]
@@ -100,7 +100,7 @@ fn zeile_hat_alle_felder_und_ist_json() {
     let mut pt = Playtest::open(&d);
     pt.frame_done(1_000, 41.5);
     let mut input = InputState::new();
-    view_ls(&mut input, 7, true);
+    lt_rt(&mut input, 7, true);
     let ms = pt.step(&input, Some(&frame()), 2_000);
     assert_eq!(ms.len(), 1);
     let l = lines(&d);
@@ -122,7 +122,7 @@ fn f9_setzt_marker_fuer_den_tastatur_spieler() {
     let d = dir("f9");
     let mut pt = Playtest::open(&d);
     let mut input = InputState::new();
-    input.keys.press(Key::F);
+    input.keys.press(Key::Insert);
     pt.step(&input, Some(&frame()), 5_000);
     let l = lines(&d);
     assert_eq!(l[0]["player"], 1);
@@ -135,8 +135,8 @@ fn zwei_spieler_getrennt_und_drosselung_je_spieler() {
     let mut pt = Playtest::open(&d);
     let f = frame();
     let mut input = InputState::new();
-    input.keys.press(Key::F);
-    view_ls(&mut input, 7, true);
+    input.keys.press(Key::Insert);
+    lt_rt(&mut input, 7, true);
     assert_eq!(
         pt.step(&input, Some(&f), 10_000).len(),
         2,
@@ -145,13 +145,13 @@ fn zwei_spieler_getrennt_und_drosselung_je_spieler() {
     // loslassen, nach 300 ms erneut: beide gedrosselt
     input = InputState::new();
     pt.step(&input, Some(&f), 10_100);
-    input.keys.press(Key::F);
-    view_ls(&mut input, 7, true);
+    input.keys.press(Key::Insert);
+    lt_rt(&mut input, 7, true);
     assert!(pt.step(&input, Some(&f), 10_300).is_empty());
     // nur Spieler 2 nach über einer Sekunde
     input = InputState::new();
     pt.step(&input, Some(&f), 10_900);
-    view_ls(&mut input, 7, true);
+    lt_rt(&mut input, 7, true);
     assert_eq!(pt.step(&input, Some(&f), 11_100).len(), 1);
     let players: Vec<i64> = lines(&d).iter().map(|v| v["player"].as_i64().unwrap_or(0)).collect();
     assert_eq!(players, vec![1, 2, 2]);
@@ -162,7 +162,7 @@ fn gehaltene_taste_gibt_einen_marker() {
     let d = dir("halten");
     let mut pt = Playtest::open(&d);
     let mut input = InputState::new();
-    view_ls(&mut input, 7, true);
+    lt_rt(&mut input, 7, true);
     for i in 0..5 {
         pt.step(&input, Some(&frame()), 1_000 + i * 2_000);
     }
@@ -173,7 +173,7 @@ fn gehaltene_taste_gibt_einen_marker() {
 fn rueckmeldung_nur_in_der_ansicht_des_spielers() {
     let mut pt = Playtest::open(&dir("flash"));
     let mut input = InputState::new();
-    view_ls(&mut input, 7, true);
+    lt_rt(&mut input, 7, true);
     pt.step(&input, Some(&frame()), 1_000);
     assert!(pt.marked(1) && !pt.marked(0));
     for _ in 0..FLASH_TICKS {
@@ -190,7 +190,7 @@ fn nicht_beschreibbarer_ordner_ist_fehlerzustand_und_spiel_laeuft() {
     let mut pt = Playtest::open(&d);
     assert!(pt.failed());
     let mut input = InputState::new();
-    view_ls(&mut input, 7, true);
+    lt_rt(&mut input, 7, true);
     assert_eq!(
         pt.step(&input, Some(&frame()), 1_000).len(),
         1,
@@ -204,7 +204,7 @@ fn marker_ohne_spiel_im_menue() {
     let d = dir("menue");
     let mut pt = Playtest::open(&d);
     let mut input = InputState::new();
-    view_ls(&mut input, 3, true);
+    lt_rt(&mut input, 3, true);
     pt.step(&input, None, 1_000);
     let l = lines(&d);
     assert_eq!(l[0]["player"], 1);
