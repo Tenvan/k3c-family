@@ -1,9 +1,9 @@
 //! Spieltest-Modus (WZ66, B-1220): `k3c-game --playtest <ordner>` zeigt ein REC-Zeichen und schreibt Marker, die jeder
-//! Spieler per Pad (Back + Y) oder Tastatur (F9) setzt, samt Spielkontext nach `<ordner>/markers.jsonl`.
+//! Spieler per Pad (Back + Klick des linken Sticks) oder Tastatur (F) setzt, samt Spielkontext nach `<ordner>/markers.jsonl`.
 //!
 //! Logik und Datei liegen hier, das Spiel zeichnet nur (`hud::rec`). Ohne den Schalter bleibt der Spielablauf
-//! unverändert: `game::run::PlaytestApp` umhüllt das Spiel nur mit dem Schalter. Back + Y und F9 sind im Spiel sonst das
-//! Cheat-Menü; im Spieltest sind beide dem Marker vorbehalten (`detect::mask`). Taste B bleibt unbelegt. Austausch mit
+//! unverändert: `game::run::PlaytestApp` umhüllt das Spiel nur mit dem Schalter. Das Cheat-Menü (View + Y, F9) bleibt
+//! unberührt. Taste B bleibt unbelegt. Austausch mit
 //! der Workbench nur über Dateien (Ordner-Vertrag B-1218).
 
 pub mod context;

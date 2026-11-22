@@ -183,7 +183,14 @@ pub static MENU_KEYS: LazyLock<[Vec<Key>; ACTION_COUNT]> = LazyLock::new(|| {
     ])
 });
 
-/// USED_KEYS sind alle Tasten beider Profile (das Backend wird nur nach ihnen gefragt).
+/// Marker-Taste des Spieltests (WZ66, B-1220): in keinem Profil und keinem Dev-Key belegt (Pause und Rückquote kennt
+/// die Plattform nicht); wirkt nur mit `--playtest`, steht aber immer in `USED_KEYS`.
+pub const MARKER_KEY: Key = Key::F;
+
+/// Marker-Taste des Pads, zusammen mit View: Klick des linken Sticks (LS), sonst nirgends belegt (RS ist Vollbild).
+pub const MARKER_PAD: PadButton = PadButton::LS;
+
+/// USED_KEYS sind alle Tasten beider Profile und die Marker-Taste (das Backend wird nur nach ihnen gefragt).
 pub static USED_KEYS: LazyLock<Vec<Key>> = LazyLock::new(collect_keys);
 
 fn collect_keys() -> Vec<Key> {
@@ -195,6 +202,7 @@ fn collect_keys() -> Vec<Key> {
             }
         }
     };
+    add(&[MARKER_KEY]);
     for l in LAYOUT_TABLE.iter() {
         for ks in [&l.left, &l.right, &l.sprint, &l.pay, &l.attack] {
             add(ks);

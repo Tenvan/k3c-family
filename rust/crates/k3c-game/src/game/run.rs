@@ -106,7 +106,7 @@ impl App for PlaytestApp {
     fn step(&mut self, input: &InputState, dt: f64) {
         let frame = self.inner.game().map(|g| g.frame());
         self.pt.step(input, frame, now_ms());
-        self.inner.step(&playtest::detect::mask(input), dt);
+        self.inner.step(input, dt);
     }
 
     fn draw(&mut self, c: &mut dyn Canvas, alpha: f64) {
