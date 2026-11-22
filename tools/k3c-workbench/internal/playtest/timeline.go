@@ -21,6 +21,8 @@ type Marker struct {
 	World        string   `json:"world"`
 	Island       int      `json:"island"`
 	Stage        int      `json:"stage"`
+	IslandID     string   `json:"island_id,omitempty"`
+	Day          int      `json:"day,omitempty"`
 	Night        bool     `json:"night"`
 	Phase        string   `json:"phase"`
 	WorstFrameMs float64  `json:"worst_frame_ms"`

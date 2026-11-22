@@ -135,7 +135,12 @@ func (a *App) transcriber() *playtest.Transcriber {
 func (a *App) PlaytestCheck() playtest.Capability { return a.transcriber().Check() }
 
 // PlaytestTranscribe wertet eine Session im Hintergrund aus: Transkript aus voice.wav, ein Bild je Marker.
-func (a *App) PlaytestTranscribe(id string) (playtest.JobStatus, error) { return a.transcriber().Start(id) }
+func (a *App) PlaytestTranscribe(id string, opt playtest.TranscribeOptions) (playtest.JobStatus, error) {
+	return a.transcriber().Start(id, opt)
+}
+
+// PlaytestModels sind die wählbaren Modelldateien (K3C_WHISPER_MODEL, models/, models/whisper/) mit Größe.
+func (a *App) PlaytestModels() []playtest.ModelInfo { return playtest.ListModels(a.root) }
 
 // PlaytestTranscribeStatus ist der Stand der Auswertung.
 func (a *App) PlaytestTranscribeStatus() playtest.JobStatus { return a.transcriber().Status() }
@@ -146,6 +151,16 @@ func (a *App) PlaytestTranscribeCancel() error { return a.transcriber().Cancel()
 // PlaytestTimeline ist die Zeitleiste einer Session: Sätze, Marker und deren Bilder.
 func (a *App) PlaytestTimeline(id string) (playtest.Timeline, error) {
 	return a.playtestStore().Timeline(id)
+}
+
+// PlaytestFindings sind die Befunde einer Session (findings.json).
+func (a *App) PlaytestFindings(id string) ([]playtest.Finding, error) {
+	return a.playtestStore().Findings(id)
+}
+
+// PlaytestFindingUpdate setzt Haken und Vorschlag (Domäne, Typ, Prio, Projekt, Sprint) eines Befunds.
+func (a *App) PlaytestFindingUpdate(id, fid string, p playtest.FindingPatch) (playtest.Finding, error) {
+	return a.playtestStore().UpdateFinding(id, fid, p)
 }
 
 // playtestFrame liefert ein Marker-Bild (frames/marker-<nr>.jpg).

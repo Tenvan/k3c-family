@@ -29,7 +29,8 @@ type Transcriber struct {
 	Spawn    Spawn
 	Out      func(args []string) (string, error) // kurzer Aufruf mit Ausgabe (Prüfung von ffmpeg)
 	LookPath func(string) (string, error)
-	Model    func() string
+	Model    func() string      // Standardmodell
+	Models   func() []ModelInfo // wählbare Modelle (nur daraus darf der Aufruf wählen)
 	Now      func() time.Time
 	Log      func(level, msg string, kv ...any)
 
@@ -47,10 +48,12 @@ func (t *Transcriber) log(level, msg string, kv ...any) {
 }
 
 // Check prüft ffmpeg (Version ≥ 8, Filter whisper) und die Modelldatei; Message nennt, was zu tun ist.
-func (t *Transcriber) Check() Capability {
-	c := Capability{Model: t.Model()}
+func (t *Transcriber) Check() Capability { return t.check(t.Model()) }
+
+func (t *Transcriber) check(model string) Capability {
+	c := Capability{Model: model}
 	if st, err := os.Stat(c.Model); err == nil && !st.IsDir() {
-		c.ModelOK = true
+		c.ModelOK, c.ModelMB = true, int(st.Size()/(1<<20))
 	}
 	ff, err := t.LookPath("ffmpeg")
 	if err != nil {
@@ -70,7 +73,8 @@ func (t *Transcriber) Check() Capability {
 		return c
 	}
 	if !c.ModelOK {
-		c.Message = "Modell fehlt: " + c.Model + ". Datei " + ModelURL + " (ca. 550 MB) dorthin laden, z. B. mit curl -L -o <Pfad> <URL>; oder Pfad in " + ModelEnv + " setzen"
+		c.Message = "Modell fehlt: " + c.Model + ". Datei " + ModelFile + " (574041195 Byte, SHA-256 " + ModelSHA + ") von " + ModelURL +
+			" von Hand laden und nach models/ legen (oder models/whisper/*.bin bzw. Pfad in " + ModelEnv + "); die Workbench lädt nichts selbst"
 		return c
 	}
 	c.Ready = true
@@ -91,8 +95,29 @@ func (t *Transcriber) Status() JobStatus {
 	return t.st
 }
 
+// TranscribeOptions wählt Modell (ID aus ListModels, leer: Standard) und Sprache (de, en, auto; leer: de).
+type TranscribeOptions struct {
+	Model    string `json:"model"`
+	Language string `json:"language"`
+}
+
+// resolveModel nimmt nur Modelle aus der Liste (models/ oder K3C_WHISPER_MODEL), nie einen Pfad vom Client.
+func (t *Transcriber) resolveModel(id string) (string, error) {
+	if id == "" {
+		return t.Model(), nil
+	}
+	if t.Models != nil {
+		for _, m := range t.Models() {
+			if m.ID == id {
+				return m.Path, nil
+			}
+		}
+	}
+	return "", fmt.Errorf("unbekanntes Modell %q: nur Dateien aus models/ oder K3C_WHISPER_MODEL (Liste der Seite)", id)
+}
+
 // Start prüft alles Nötige und wertet die Session im Hintergrund aus (Transkript, dann Bilder).
-func (t *Transcriber) Start(id string) (JobStatus, error) {
+func (t *Transcriber) Start(id string, opt TranscribeOptions) (JobStatus, error) {
 	ses, err := t.Store.Get(id)
 	if err != nil {
 		return JobStatus{}, err
@@ -103,7 +128,15 @@ func (t *Transcriber) Start(id string) (JobStatus, error) {
 	if !ses.HasVoice {
 		return JobStatus{}, ErrNoVoice
 	}
-	if c := t.Check(); !c.Ready {
+	model, err := t.resolveModel(opt.Model)
+	if err != nil {
+		return JobStatus{}, err
+	}
+	lang, err := ParseLanguage(opt.Language)
+	if err != nil {
+		return JobStatus{}, err
+	}
+	if c := t.check(model); !c.Ready {
 		return JobStatus{}, errors.New(c.Message)
 	}
 	ff, _ := t.LookPath("ffmpeg")
@@ -115,7 +148,7 @@ func (t *Transcriber) Start(id string) (JobStatus, error) {
 	t.st = JobStatus{Running: true, ID: id, Step: "Transkript"}
 	t.cancel, t.done = false, make(chan struct{})
 	t.log("info", "🚀 Auswertung gestartet", "id", id)
-	go t.run(ff, id, ses.HasVideo, t.done)
+	go t.run(ff, id, ses.HasVideo, model, lang, t.done)
 	return t.st, nil
 }
 
@@ -180,10 +213,10 @@ func (t *Transcriber) exec(args []string, dir string) error {
 var errCanceled = errors.New("abgebrochen")
 
 // run ist der Hintergrundauftrag.
-func (t *Transcriber) run(ffmpeg, id string, hasVideo bool, done chan struct{}) {
+func (t *Transcriber) run(ffmpeg, id string, hasVideo bool, model, lang string, done chan struct{}) {
 	defer close(done)
 	dir := filepath.Join(t.Store.Root, id)
-	err := t.transcribe(ffmpeg, dir)
+	err := t.transcribe(ffmpeg, dir, model, lang)
 	note := ""
 	if err == nil {
 		note, err = t.frames(ffmpeg, dir, hasVideo)
@@ -205,11 +238,11 @@ func (t *Transcriber) run(ffmpeg, id string, hasVideo bool, done chan struct{}) 
 }
 
 // transcribe lässt whisper laufen und schreibt transcript.json erst, wenn alles gelesen ist.
-func (t *Transcriber) transcribe(ffmpeg, dir string) error {
+func (t *Transcriber) transcribe(ffmpeg, dir, model, lang string) error {
 	part := filepath.Join(dir, fileRawTmp)
 	defer func() { _ = os.Remove(part) }()
 	_ = os.Remove(part)
-	if err := t.exec(WhisperArgs(ffmpeg, dir, t.Model(), fileRawTmp), dir); err != nil {
+	if err := t.exec(WhisperArgs(ffmpeg, dir, model, lang, fileRawTmp), dir); err != nil {
 		return err
 	}
 	raw, err := os.ReadFile(part)
@@ -221,7 +254,7 @@ func (t *Transcriber) transcribe(ffmpeg, dir string) error {
 	if err != nil {
 		return err
 	}
-	tr := Transcript{AudioStartMs: CaptureStart(meta), Language: "de", Model: ModelFile, Segments: segs}
+	tr := Transcript{AudioStartMs: CaptureStart(meta), Language: lang, Model: filepath.Base(model), Segments: segs}
 	out, _ := json.MarshalIndent(tr, "", "  ")
 	tmp := filepath.Join(dir, fileTranscript+".tmp")
 	if err := os.WriteFile(tmp, out, 0o644); err != nil {

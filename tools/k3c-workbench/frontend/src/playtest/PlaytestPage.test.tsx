@@ -165,6 +165,31 @@ describe('Auswertung (B-1223)', () => {
     expect(video.currentTime).toBe(1);
   });
 
+  it('Befunde: Haken speichern, Duplikat und Prompt-Knöpfe (B-1224)', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-21-1"]') as HTMLElement).click());
+    await flush();
+    const panel = () => host.querySelector('[data-findings]')!;
+    expect(panel().querySelectorAll('[data-finding]').length).toBe(2);
+    expect(panel().textContent).toContain('Duplikat von B-1100');
+    expect(panel().querySelector('[aria-label="Prompt kopieren: Auswerten"]')).not.toBeNull();
+    expect(panel().querySelector('[aria-label="Prompt kopieren: Tickets anlegen"]')).toBeNull();
+    const box = panel().querySelector('[data-finding="f1"] [role="checkbox"]') as HTMLElement;
+    act(() => box.click());
+    await flush();
+    expect((await playtestApi.findings('2026-11-21-1')).find((f) => f.id === 'f1')?.selected).toBe(true);
+    expect(panel().querySelector('[aria-label="Prompt kopieren: Tickets anlegen"]')).not.toBeNull();
+  });
+
+  it('Modell und Sprache sind wählbar, Standard ist das deutsche Modell', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    expect(host.querySelector('[aria-label="Whisper-Modell"]')!.textContent).toContain('german-q5_0');
+    expect(host.querySelector('[aria-label="Sprache"]')!.textContent).toContain('de');
+    expect((await playtestApi.models()).filter((m) => m.default).length).toBe(1);
+  });
+
   it('Auswerten ist bei laufender Aufnahme und ohne Sprachspur gesperrt', async () => {
     const host = await mount();
     expect(button('Auswerten', host).disabled).toBe(true);

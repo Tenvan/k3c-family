@@ -17,9 +17,10 @@ import (
 
 // Modell und Ablage.
 const (
-	ModelFile  = "ggml-large-v3-turbo-q5_0.bin"
-	ModelURL   = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/" + ModelFile
-	ModelEnv   = "K3C_WHISPER_MODEL" // Pfad der Modelldatei, sonst models/whisper/<ModelFile> im Repo
+	ModelFile  = "ggml-large-v3-turbo-german-q5_0.bin"
+	ModelURL   = "https://huggingface.co/MolyProduction/whisper-large-v3-turbo-german-ggml-q5_0"
+	ModelSHA   = "15e92e3db0993c52fffa781513eec9253475331c1be808f8fb409285c9d9d030" // SHA-256 von ModelFile (574041195 Byte)
+	ModelEnv   = "K3C_WHISPER_MODEL"                                                // Pfad der Modelldatei; sonst models/<ModelFile>, sonst models/whisper/*.bin
 	dirFrames  = "frames"
 	fileRawTmp = "transcript.part"
 	minFFmpeg  = 8
@@ -34,12 +35,21 @@ var (
 	ErrNoJob     = errors.New("keine Auswertung aktiv")
 )
 
-// ModelPath ist die Modelldatei: K3C_WHISPER_MODEL, sonst models/whisper/ im Repo (gitignored).
+// ModelPath ist die Modelldatei: K3C_WHISPER_MODEL, dann models/<ModelFile>, dann die erste Datei models/whisper/*.bin
+// (alphabetisch). Gibt es keine, ist es der erste Kandidat models/<ModelFile> (für die Meldung). Beide Ordner sind
+// ignoriert, nichts wird automatisch geladen.
 func ModelPath(root string) string {
 	if p := strings.TrimSpace(os.Getenv(ModelEnv)); p != "" {
 		return p
 	}
-	return filepath.Join(root, "models", "whisper", ModelFile)
+	def := filepath.Join(root, "models", ModelFile)
+	if st, err := os.Stat(def); err == nil && !st.IsDir() {
+		return def
+	}
+	if m, _ := filepath.Glob(filepath.Join(root, "models", "whisper", "*.bin")); len(m) > 0 {
+		return m[0]
+	}
+	return def
 }
 
 // Capability sagt, ob die Auswertung möglich ist, und sonst warum nicht (mit Hinweis, was zu tun ist).
@@ -49,6 +59,7 @@ type Capability struct {
 	Whisper bool   `json:"whisper"`
 	Model   string `json:"model"` // Pfad der Modelldatei
 	ModelOK bool   `json:"modelOk"`
+	ModelMB int    `json:"modelMb"` // Größe der Modelldatei in MB (0: fehlt); ein Hash wird nicht berechnet
 	Message string `json:"message"`
 }
 
@@ -93,9 +104,57 @@ type Transcript struct {
 
 // WhisperArgs ist der Aufruf im Session-Ordner dir (relative Pfade, damit `C:` im Filter nicht gequotet werden muss);
 // das Ergebnis des Filters steht roh in `dest` (Zeilen JSON, Zeiten in ms ab Dateianfang).
-func WhisperArgs(ffmpeg, dir, model, dest string) []string {
+func WhisperArgs(ffmpeg, dir, model, lang, dest string) []string {
 	return []string{ffmpeg, "-hide_banner", "-loglevel", "warning", "-nostats", "-y", "-i", fileVoice, "-vn",
-		"-af", "whisper=model=" + filterPath(dir, model) + ":language=de:format=json:destination=" + dest, "-f", "null", "-"}
+		"-af", "whisper=model=" + filterPath(dir, model) + ":language=" + lang + ":format=json:destination=" + dest, "-f", "null", "-"}
+}
+
+// Sprachen, die die Auswahl der Seite anbietet (Standard de).
+var languages = []string{"de", "en", "auto"}
+
+// ParseLanguage prüft die Sprache; leer ist de.
+func ParseLanguage(l string) (string, error) {
+	if l = strings.TrimSpace(l); l == "" {
+		return "de", nil
+	}
+	for _, v := range languages {
+		if l == v {
+			return l, nil
+		}
+	}
+	return "", fmt.Errorf("Sprache %q ungültig: erlaubt %s", l, strings.Join(languages, ", "))
+}
+
+// ModelInfo ist eine gefundene Modelldatei für die Auswahl der Seite. ID ist, was die Seite zurückgibt: der Pfad
+// relativ zur Repo-Wurzel mit `/` (models/…) oder `env` für K3C_WHISPER_MODEL; nie ein Pfad vom Client.
+type ModelInfo struct {
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	SizeMB  int    `json:"sizeMb"`
+	Default bool   `json:"default"`
+	Path    string `json:"-"`
+}
+
+// ListModels sind die Dateien aus K3C_WHISPER_MODEL, models/*.bin und models/whisper/*.bin; der Standard
+// (ModelPath) ist markiert.
+func ListModels(root string) []ModelInfo {
+	def := ModelPath(root)
+	out := []ModelInfo{}
+	add := func(id, path string) {
+		if st, err := os.Stat(path); err == nil && !st.IsDir() {
+			out = append(out, ModelInfo{ID: id, Name: filepath.Base(path), SizeMB: int(st.Size() / (1 << 20)), Default: path == def, Path: path})
+		}
+	}
+	if p := strings.TrimSpace(os.Getenv(ModelEnv)); p != "" {
+		add("env", p)
+	}
+	for _, sub := range []string{"models", "models/whisper"} {
+		m, _ := filepath.Glob(filepath.Join(root, filepath.FromSlash(sub), "*.bin"))
+		for _, f := range m {
+			add(sub+"/"+filepath.Base(f), f)
+		}
+	}
+	return out
 }
 
 // filterPath macht die Modelldatei relativ zum Arbeitsordner; auf anderem Laufwerk bleibt der Pfad absolut, dann

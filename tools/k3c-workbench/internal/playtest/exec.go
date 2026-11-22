@@ -178,5 +178,5 @@ func RunOut(args []string) (string, error) {
 // NewTranscriber baut die Auswertung für die Ablage store unter root mit echten Prozessen.
 func NewTranscriber(root string, store *Store, log func(level, msg string, kv ...any)) *Transcriber {
 	return &Transcriber{Store: store, Spawn: ExecSpawn, Out: RunOut, LookPath: exec.LookPath, Now: time.Now, Log: log,
-		Model: func() string { return ModelPath(root) }}
+		Model: func() string { return ModelPath(root) }, Models: func() []ModelInfo { return ListModels(root) }}
 }

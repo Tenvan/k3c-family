@@ -3,7 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskRun, PlanDoc, PlanItem, PlanningData, GitHubData, WorktreeDiff,
   GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
-import type { PlaytestCapability, PlaytestJob, PlaytestTimeline, PlaytestDevices, PlaytestOptions, PlaytestPlan, PlaytestSession, PlaytestStatus } from '../playtest/types';
+import type { PlaytestModel, PlaytestTranscribeOptions, PlaytestCapability, PlaytestFinding, PlaytestFindingPatch, PlaytestJob, PlaytestTimeline, PlaytestDevices, PlaytestOptions, PlaytestPlan, PlaytestSession, PlaytestStatus } from '../playtest/types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -60,10 +60,13 @@ interface GoApp {
   PlaytestStop(): Promise<void>;
   PlaytestStatus(): Promise<PlaytestStatus>;
   PlaytestCheck(): Promise<PlaytestCapability>;
-  PlaytestTranscribe(id: string): Promise<PlaytestJob>;
+  PlaytestTranscribe(id: string, options: PlaytestTranscribeOptions): Promise<PlaytestJob>;
+  PlaytestModels(): Promise<PlaytestModel[]>;
   PlaytestTranscribeStatus(): Promise<PlaytestJob>;
   PlaytestTranscribeCancel(): Promise<void>;
   PlaytestTimeline(id: string): Promise<PlaytestTimeline>;
+  PlaytestFindings(id: string): Promise<PlaytestFinding[]>;
+  PlaytestFindingUpdate(id: string, findingId: string, patch: PlaytestFindingPatch): Promise<PlaytestFinding>;
 }
 
 interface WailsRuntime {

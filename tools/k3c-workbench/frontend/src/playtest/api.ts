@@ -19,10 +19,13 @@ function pick(): PlaytestApi {
       stop: () => app.PlaytestStop(),
       status: () => app.PlaytestStatus(),
       check: () => app.PlaytestCheck(),
-      transcribe: (id) => app.PlaytestTranscribe(id),
+      transcribe: (id, o) => app.PlaytestTranscribe(id, o),
+      models: () => app.PlaytestModels(),
       transcribeStatus: () => app.PlaytestTranscribeStatus(),
       transcribeCancel: () => app.PlaytestTranscribeCancel(),
       timeline: (id) => app.PlaytestTimeline(id),
+      findings: (id) => app.PlaytestFindings(id),
+      updateFinding: (id, fid, patch) => app.PlaytestFindingUpdate(id, fid, patch),
     };
   }
   if (backend.mock) return mockPlaytest();
@@ -36,10 +39,13 @@ function pick(): PlaytestApi {
     stop: () => rpc('PlaytestStop'),
     status: () => rpc('PlaytestStatus'),
     check: () => rpc('PlaytestCheck'),
-    transcribe: (id) => rpc('PlaytestTranscribe', id),
+    transcribe: (id, o) => rpc('PlaytestTranscribe', id, o),
+    models: () => rpc('PlaytestModels'),
     transcribeStatus: () => rpc('PlaytestTranscribeStatus'),
     transcribeCancel: () => rpc('PlaytestTranscribeCancel'),
     timeline: (id) => rpc('PlaytestTimeline', id),
+    findings: (id) => rpc('PlaytestFindings', id),
+    updateFinding: (id, fid, patch) => rpc('PlaytestFindingUpdate', id, fid, patch),
   };
 }
 

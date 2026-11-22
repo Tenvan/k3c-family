@@ -115,6 +115,21 @@ Level-Generator sowie Balancing und Simulation (Testläufe, Engine-Läufe, Beric
 - `task_start {task, args?}` kehrt sofort zurück; `task_status`, `task_output {task, limit?, since?}`, `task_stop {task}`.
 - Wer auf das Ende warten will, nimmt `check_run`. Testläufe nie über `task balance`, sondern über den MCP-Server `k3c-studio`.
 
+## 5. Spieltest
+
+Auswertung eines Spieltests (B-1224): Die Workbench ruft keine KI; Claude liest, schlägt Befunde vor, Ralf hakt an.
+
+- `playtest_list`: Sessions mit Stand, Dauer, Markern, Befunden. `playtest_get {id, limit?, cursor?}`: Kopf, Fragebogen,
+  Befunde und die Zeitleiste (Sätze und Marker mit Spielkontext, Bildpfad, `ts` in Unix-ms), seitenweise.
+  Ohne Transkript drückt Ralf zuerst Auswerten auf der Seite Spieltest.
+- `playtest_frame {id, t}`: Bild an Zeitpunkt `t` (Unix-ms) aus dem Video; den Pfad danach mit Read ansehen.
+- `playtest_findings_set {id, findings}`: Befunde (`id`, `quote`, `ts`, Vorschlag für `type`, `prio`, `project`, `sprint`,
+  `duplicate_of`) schreiben oder aktualisieren; vorher jeden Befund gegen offene Tickets prüfen (`plan_list`), Treffer als
+  `duplicate_of`. Haken und Ticket setzt Claude nie.
+- `playtest_tickets_create {id, domain?, type?, prio?, project?, sprint?}`: nur angehakte Befunde ohne Ticket werden Tickets
+  (Zitat, Bild, Kontext) über die Planungslogik; `duplicate_of` ergibt einen Hinweis im vorhandenen Ticket. Projekt und
+  Sprint nie erfinden: vom Befund, aus den Argumenten oder bei Ralf erfragen; fehlt der Sprint, zuerst `plan_create` kind sprint.
+
 ## Projektspezifisch
 
 ### Prüfen

@@ -27,7 +27,8 @@ var uiMethods = map[string]bool{
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
 	"PlaytestList": true, "PlaytestPlan": true, "PlaytestDelete": true,
 	"PlaytestDevices": true, "PlaytestStart": true, "PlaytestStop": true, "PlaytestStatus": true,
-	"PlaytestCheck": true, "PlaytestTranscribe": true, "PlaytestTranscribeStatus": true, "PlaytestTranscribeCancel": true, "PlaytestTimeline": true,
+	"PlaytestCheck": true, "PlaytestModels": true, "PlaytestTranscribe": true, "PlaytestTranscribeStatus": true, "PlaytestTranscribeCancel": true, "PlaytestTimeline": true,
+	"PlaytestFindings": true, "PlaytestFindingUpdate": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uikit.Prefix, die Oberfläche liefert Vite.

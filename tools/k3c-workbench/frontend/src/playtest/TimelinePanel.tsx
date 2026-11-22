@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActionButton, CardButton, Flex, Heading, StatusBadge, Text } from '@webkit/atoms';
+import { ActionButton, CardButton, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
+import { FindingsPanel } from './FindingsPanel';
 import { frameUrl, playtestApi } from './api';
 import { clock } from './RecordBar';
-import type { PlaytestCapability, PlaytestJob, PlaytestSession, PlaytestTimeline } from './types';
+import { loadText, savePref } from '../lib/prefs';
+import type { PlaytestCapability, PlaytestJob, PlaytestModel, PlaytestSession, PlaytestTimeline } from './types';
 
 const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
+const LANGS = ['de', 'en', 'auto'];
 const NO_JOB: PlaytestJob = { running: false, id: '', step: '', done: 0, total: 0, message: '', error: '' };
 
 interface Props {
@@ -23,6 +26,9 @@ export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
   const [job, setJob] = useState(NO_JOB);
   const [timeline, setTimeline] = useState<PlaytestTimeline | null>(null);
   const [error, setError] = useState('');
+  const [models, setModels] = useState<PlaytestModel[]>([]);
+  const [model, setModel] = useState(() => loadText('playtest.model', ''));
+  const [lang, setLang] = useState(() => loadText('playtest.language', 'de'));
   const mine = job.id === s.id;
   const busy = job.running;
 
@@ -51,10 +57,17 @@ export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
     return () => clearInterval(t);
   }, [busy, loadTimeline, onDone]);
 
+  useEffect(() => {
+    playtestApi.models().then(setModels, () => undefined);
+  }, []);
+  const chosen = models.find((m) => m.id === model) ?? models.find((m) => m.default) ?? models[0];
+  const pickModel = (v: string) => { setModel(v); savePref('playtest.model', v); };
+  const pickLang = (v: string) => { setLang(v); savePref('playtest.language', v); };
+
   const start = async () => {
     setError('');
     try {
-      setJob(await playtestApi.transcribe(s.id));
+      setJob(await playtestApi.transcribe(s.id, { model: chosen?.id ?? '', language: lang }));
       onDone();
       loadTimeline();
     } catch (e) {
@@ -74,8 +87,14 @@ export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
               {job.step}{job.total > 0 ? ` ${job.done}/${job.total}` : ' …'}
             </Text>
           )}
+          {models.length > 0 && (
+            <SelectField aria-label="Whisper-Modell" value={chosen?.id ?? ''} disabled={busy}
+              options={models.map((m) => ({ value: m.id, label: `${m.name} (${m.sizeMb} MB)` }))} onChange={pickModel} />
+          )}
+          <SelectField aria-label="Sprache" value={LANGS.includes(lang) ? lang : 'de'} disabled={busy}
+            options={LANGS.map((v) => ({ value: v, label: v }))} onChange={pickLang} />
           {busy && mine
-            ? <ActionButton variant="soft" color="red" onClick={cancel}>Abbrechen</ActionButton>
+            ?<ActionButton variant="soft" color="red" onClick={cancel}>Abbrechen</ActionButton>
             : <ActionButton disabled={blocked} onClick={start}>Auswerten</ActionButton>}
         </Flex>
       </Flex>
@@ -84,6 +103,7 @@ export function TimelinePanel({ session: s, onSeek, onDone }: Props) {
       {mine && !busy && !job.error && job.message && <Text size="2" color="gray">{job.message}</Text>}
       {error && <NoticeCard title="Auswertung" tone="error">{error}</NoticeCard>}
       <Entries id={s.id} timeline={timeline} onSeek={onSeek} />
+      {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
   );
 }

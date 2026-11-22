@@ -105,7 +105,7 @@ func trRig(t *testing.T, video bool) (*Transcriber, *trJob, string) {
 func TestWhisperArgsRelativ(t *testing.T) {
 	dir := filepath.FromSlash("C:/repo/playtests/x")
 	model := filepath.FromSlash("C:/repo/models/whisper/") + ModelFile
-	a := strings.Join(WhisperArgs("ffmpeg", dir, model, "transcript.part"), " ")
+	a := strings.Join(WhisperArgs("ffmpeg", dir, model, "de", "transcript.part"), " ")
 	for _, want := range []string{"-i voice.wav", "-af whisper=model=../../models/whisper/" + ModelFile, "language=de", "format=json", "destination=transcript.part", "-f null -"} {
 		if !strings.Contains(a, want) {
 			t.Errorf("Aufruf ohne %q: %s", want, a)
@@ -178,17 +178,17 @@ func TestCheckFehlerfaelle(t *testing.T) {
 	tr2, _, _ := trRig(t, true)
 	tr2.Model = func() string { return filepath.Join(t.TempDir(), "fehlt.bin") }
 	c := tr2.Check()
-	if c.Ready || c.ModelOK || !strings.Contains(c.Message, ModelURL) || !strings.Contains(c.Message, ModelEnv) {
+	if c.Ready || c.ModelOK || !strings.Contains(c.Message, ModelURL) || !strings.Contains(c.Message, ModelSHA) || !strings.Contains(c.Message, ModelEnv) {
 		t.Errorf("ohne Modell: %+v", c)
 	}
-	if _, err := tr2.Start("2026-11-22-1"); err == nil || !strings.Contains(err.Error(), "Modell fehlt") {
+	if _, err := tr2.Start("2026-11-22-1", TranscribeOptions{}); err == nil || !strings.Contains(err.Error(), "Modell fehlt") {
 		t.Errorf("Start ohne Modell muss ablehnen: %v", err)
 	}
 }
 
 func TestAuswertungTranskriptUndBilder(t *testing.T) {
 	tr, j, dir := trRig(t, true)
-	if _, err := tr.Start("2026-11-22-1"); err != nil {
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); err != nil {
 		t.Fatal(err)
 	}
 	tr.Wait()
@@ -241,7 +241,7 @@ func TestAuswertungTranskriptUndBilder(t *testing.T) {
 
 func TestAuswertungOhneVideo(t *testing.T) {
 	tr, j, dir := trRig(t, false)
-	if _, err := tr.Start("2026-11-22-1"); err != nil {
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); err != nil {
 		t.Fatal(err)
 	}
 	tr.Wait()
@@ -257,7 +257,7 @@ func TestAuswertungOhneVideo(t *testing.T) {
 func TestAuswertungWhisperFehlerLaesstKeinTranskript(t *testing.T) {
 	tr, j, dir := trRig(t, true)
 	j.fail = "whisper="
-	if _, err := tr.Start("2026-11-22-1"); err != nil {
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); err != nil {
 		t.Fatal(err)
 	}
 	tr.Wait()
@@ -272,10 +272,10 @@ func TestAuswertungWhisperFehlerLaesstKeinTranskript(t *testing.T) {
 func TestAuswertungAbbrechen(t *testing.T) {
 	tr, j, dir := trRig(t, true)
 	j.block = make(chan struct{})
-	if _, err := tr.Start("2026-11-22-1"); err != nil {
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := tr.Start("2026-11-22-1"); !errors.Is(err, ErrBusyTrans) {
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); !errors.Is(err, ErrBusyTrans) {
 		t.Errorf("zweiter Start: %v", err)
 	}
 	time.Sleep(20 * time.Millisecond)
@@ -296,15 +296,95 @@ func TestAuswertungAbbrechen(t *testing.T) {
 	}
 }
 
+func TestModellUndSpracheWaehlbarNurAusDerListe(t *testing.T) {
+	tr, j, dir := trRig(t, true)
+	root := filepath.Dir(filepath.Dir(dir)) // Wurzel der Attrappe
+	other := filepath.Join(root, "models", "whisper", "anderes.bin")
+	if err := os.WriteFile(other, []byte("zz"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv(ModelEnv, "")
+	tr.Models = func() []ModelInfo { return ListModels(root) }
+	for _, bad := range []string{"../etc/passwd", other, "C:/Windows/x.bin", "models/../x.bin", "env"} {
+		if _, err := tr.Start("2026-11-22-1", TranscribeOptions{Model: bad}); err == nil || !strings.Contains(err.Error(), "unbekanntes Modell") {
+			t.Errorf("Pfad %q muss abgelehnt werden: %v", bad, err)
+		}
+	}
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{Language: "fr"}); err == nil || !strings.Contains(err.Error(), "Sprache") {
+		t.Errorf("Sprache: %v", err)
+	}
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{Model: "models/whisper/anderes.bin", Language: "en"}); err != nil {
+		t.Fatal(err)
+	}
+	tr.Wait()
+	a := strings.Join(j.calls[0], " ")
+	if !strings.Contains(a, "anderes.bin") || !strings.Contains(a, "language=en") {
+		t.Errorf("Aufruf: %s", a)
+	}
+	raw, _ := os.ReadFile(filepath.Join(dir, fileTranscript))
+	if !strings.Contains(string(raw), `"language": "en"`) || !strings.Contains(string(raw), "anderes.bin") {
+		t.Errorf("transcript.json: %s", raw)
+	}
+}
+
+func TestEnvModellInListe(t *testing.T) {
+	root := t.TempDir()
+	f := filepath.Join(t.TempDir(), "x.bin")
+	if err := os.WriteFile(f, []byte("x"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv(ModelEnv, f)
+	l := ListModels(root)
+	if len(l) != 1 || l[0].ID != "env" || !l[0].Default || l[0].Path != f {
+		t.Errorf("%+v", l)
+	}
+}
+
 func TestStartAblehnungen(t *testing.T) {
 	tr, _, dir := trRig(t, true)
-	if _, err := tr.Start("../x"); !errors.Is(err, ErrBadID) {
+	if _, err := tr.Start("../x", TranscribeOptions{}); !errors.Is(err, ErrBadID) {
 		t.Errorf("falsche Kennung: %v", err)
 	}
 	if err := os.Remove(filepath.Join(dir, fileVoice)); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := tr.Start("2026-11-22-1"); !errors.Is(err, ErrNoVoice) {
+	if _, err := tr.Start("2026-11-22-1", TranscribeOptions{}); !errors.Is(err, ErrNoVoice) {
 		t.Errorf("ohne voice.wav: %v", err)
+	}
+}
+
+func TestModelPathSuchreihenfolge(t *testing.T) {
+	root := t.TempDir()
+	t.Setenv(ModelEnv, "")
+	def := filepath.Join(root, "models", ModelFile)
+	if ModelPath(root) != def {
+		t.Errorf("ohne Datei der erste Kandidat: %s", ModelPath(root))
+	}
+	sub := filepath.Join(root, "models", "whisper")
+	_ = os.MkdirAll(sub, 0o755)
+	_ = os.WriteFile(filepath.Join(sub, "b.bin"), []byte("x"), 0o644)
+	_ = os.WriteFile(filepath.Join(sub, "a.bin"), []byte("x"), 0o644)
+	if ModelPath(root) != filepath.Join(sub, "a.bin") {
+		t.Errorf("models/whisper/*.bin: %s", ModelPath(root))
+	}
+	_ = os.WriteFile(def, []byte("xx"), 0o644)
+	if ModelPath(root) != def {
+		t.Errorf("models/<Datei> vor whisper/: %s", ModelPath(root))
+	}
+	t.Setenv(ModelEnv, "D:/m/x.bin")
+	if ModelPath(root) != "D:/m/x.bin" {
+		t.Errorf("Umgebung zuerst: %s", ModelPath(root))
+	}
+}
+
+func TestCheckMeldetModellgroesse(t *testing.T) {
+	tr, _, _ := trRig(t, true)
+	big := filepath.Join(t.TempDir(), "m.bin")
+	f, _ := os.Create(big)
+	_ = f.Truncate(3 << 20)
+	_ = f.Close()
+	tr.Model = func() string { return big }
+	if c := tr.Check(); !c.Ready || c.ModelMB != 3 {
+		t.Errorf("%+v", c)
 	}
 }

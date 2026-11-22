@@ -60,6 +60,8 @@ export interface PlaytestCapability {
   whisper: boolean;
   model: string;
   modelOk: boolean;
+  /** Größe der Modelldatei in MB (0: fehlt). */
+  modelMb: number;
   message: string;
 }
 
@@ -92,6 +94,49 @@ export interface PlaytestTimeline {
   entries: PlaytestEntry[];
 }
 
+/** Gefundene Modelldatei (K3C_WHISPER_MODEL, models/, models/whisper/); `id` gibt die Seite beim Auswerten zurück. */
+export interface PlaytestModel {
+  id: string;
+  name: string;
+  sizeMb: number;
+  default: boolean;
+}
+
+/** Modell (leer: Standard) und Sprache (de, en, auto) der Auswertung. */
+export interface PlaytestTranscribeOptions {
+  model: string;
+  language: string;
+}
+
+/** Befund aus findings.json (Vorschlag von Claude, Haken von Ralf). */
+export interface PlaytestFinding {
+  id: string;
+  title?: string;
+  quote: string;
+  ts: number;
+  frame?: string;
+  context?: string;
+  domain?: string;
+  type?: string;
+  prio?: string;
+  project?: string;
+  sprint?: string;
+  duplicate_of?: string;
+  selected: boolean;
+  ticket?: string;
+  error?: string;
+}
+
+/** Änderung von der Seite: Haken und Vorschlag. */
+export interface PlaytestFindingPatch {
+  selected?: boolean;
+  domain?: string;
+  type?: string;
+  prio?: string;
+  project?: string;
+  sprint?: string;
+}
+
 export interface PlaytestApi {
   list(): Promise<PlaytestSession[]>;
   plan(action: PlaytestAction, id: string): Promise<PlaytestPlan>;
@@ -101,10 +146,13 @@ export interface PlaytestApi {
   stop(): Promise<void>;
   status(): Promise<PlaytestStatus>;
   check(): Promise<PlaytestCapability>;
-  transcribe(id: string): Promise<PlaytestJob>;
+  transcribe(id: string, options: PlaytestTranscribeOptions): Promise<PlaytestJob>;
+  models(): Promise<PlaytestModel[]>;
   transcribeStatus(): Promise<PlaytestJob>;
   transcribeCancel(): Promise<void>;
   timeline(id: string): Promise<PlaytestTimeline>;
+  findings(id: string): Promise<PlaytestFinding[]>;
+  updateFinding(id: string, findingId: string, patch: PlaytestFindingPatch): Promise<PlaytestFinding>;
   /** Nur der Mock: Ausgangsdaten wiederherstellen (Tests). */
   reset?(): void;
 }
