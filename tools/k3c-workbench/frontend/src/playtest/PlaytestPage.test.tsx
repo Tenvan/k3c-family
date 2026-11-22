@@ -2,7 +2,7 @@
 import { Theme } from '@radix-ui/themes';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PAGES } from '../Header';
 import { playtestApi } from './api';
 import { PlaytestPage } from './PlaytestPage';
@@ -126,6 +126,24 @@ describe('Seite Spieltest', () => {
     await flush();
     expect(host.querySelector('audio')!.getAttribute('src')).toBe('/api/dev/playtest/media/2026-11-20-1/voice.wav');
     expect(host.querySelector('video')!.getAttribute('src')).toBe('/api/dev/playtest/media/2026-11-20-1/video.mkv');
+  });
+
+  it('Bild-Player steht über dem Ton-Player, die Liste nennt die Uhrzeit statt eines Zählers', async () => {
+    const host = await mount();
+    act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
+    await flush();
+    const order = [...host.querySelectorAll('[data-player]')].map((e) => e.getAttribute('data-player'));
+    expect(order).toEqual(['video', 'voice']);
+    expect(host.querySelector('[data-session="2026-11-20-1"]')!.textContent).toContain('20.11.2026 · 18:00');
+  });
+
+  it('Neu laden liest die Modelle neu (neue Modelldatei in models/)', async () => {
+    const host = await mount();
+    const calls = vi.spyOn(playtestApi, 'models');
+    act(() => button('Neu laden', host).click());
+    await flush();
+    expect(calls).toHaveBeenCalled();
+    calls.mockRestore();
   });
 });
 

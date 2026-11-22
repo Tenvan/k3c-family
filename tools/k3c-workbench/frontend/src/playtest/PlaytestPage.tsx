@@ -6,7 +6,7 @@ import { Confirm, type ConfirmRequest } from '@webkit/organisms';
 import { ListDetail } from '@webkit/templates';
 import { formatBytes } from '../lib/format';
 import { playtestApi } from './api';
-import { confirmTexts, germanDate, sessionLength, STAGE_TONE } from './format';
+import { clockTime, confirmTexts, germanDate, sessionLength, STAGE_TONE } from './format';
 import { RecordBar } from './RecordBar';
 import { SessionDetail } from './SessionDetail';
 import type { PlaytestAction, PlaytestSession } from './types';
@@ -20,6 +20,7 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
   const [error, setError] = useState('');
   const [selected, setSelected] = useState('');
   const [confirm, setConfirm] = useState<ConfirmRequest | null>(null);
+  const [refresh, setRefresh] = useState(0); // „Neu laden“ liest auch die Modelle und die Auswertung neu
   const current = sessions?.find((s) => s.id === selected) ?? sessions?.[0] ?? null;
   useTicketPage('spieltest', current?.id ?? '', active);
 
@@ -58,7 +59,7 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
         <ActionButton variant="soft" color="red" disabled={evaluated === 0} onClick={() => clean('ausgewertet', '')}>
           Videos ausgewerteter Sessions löschen
         </ActionButton>
-        <ActionButton variant="soft" color="gray" onClick={reload}>Neu laden</ActionButton>
+        <ActionButton variant="soft" color="gray" onClick={() => { setRefresh((n) => n + 1); void reload(); }}>Neu laden</ActionButton>
       </Flex>
     </Flex>
     <RecordBar active={active} onChange={reload} />
@@ -73,7 +74,7 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
         <CardButton key={s.id} data-session={s.id} aria-pressed={s.id === current?.id} onClick={() => setSelected(s.id)}>
           <Flex direction="column" gap="1" align="start">
             <Flex justify="between" align="center" gap="2" width="100%">
-              <Text weight="bold">{germanDate(s.date)} · {s.id.slice(11)}</Text>
+              <Text weight="bold">{germanDate(s.date)} · {s.startMs ? clockTime(s.startMs) : s.id.slice(11)}</Text>
               <StatusBadge tone={STAGE_TONE[s.stage]}>{s.stage}</StatusBadge>
             </Flex>
             <Text size="1" color="gray">{sessionLength(s.durationMs)} · {s.markers} Marker · {formatBytes(s.size)}</Text>
@@ -85,7 +86,7 @@ export function PlaytestPage({ active = true }: { active?: boolean }) {
   return (
     <>
       <ListDetail header={header} list={list} listWidth={340}>
-        {current ? <SessionDetail session={current} onClean={clean} onChanged={reload} /> : <Text size="2" color="gray" as="p" m="3">Keine Session gewählt.</Text>}
+        {current ? <SessionDetail session={current} onClean={clean} onChanged={reload} refresh={refresh} /> : <Text size="2" color="gray" as="p" m="3">Keine Session gewählt.</Text>}
       </ListDetail>
       <Confirm request={confirm} onClose={() => setConfirm(null)} />
     </>

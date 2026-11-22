@@ -269,6 +269,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1233](B-1233-spieltest-monitor-null-absturz.md) | DEV | Problem | hoch | eingeplant | WZ65 | Workbench-Fenster wird beim Start der Spieltest-Aufnahme schwarz (Monitor bekommt null-Listen) |
 | [B-1234](B-1234-spieltest-player-mikro-session.md) | DEV | Idee | hoch | eingeplant | WZ65 | Spieltest: Player im Fenster, Mikro-Session ohne Spiel, bessere Transkription |
 | [B-1235](B-1235-spieltest-aufnahme-mit-dem-spiel.md) | DEV | Idee | hoch | eingeplant | WZ65 | Spieltest: Aufnahme beginnt mit dem Spiel im Vollbild, Pegel statt Datenrate beim Ton, Whisper 30 s |
+| [B-1236](B-1236-spieltest-liste-modell-ton-mitlauf.md) | DEV | Idee | mittel | eingeplant | WZ65 | Spieltest: large-v3 als Standard, Liste nach Uhrzeit, Modelle bei Neu laden, Ton läuft mit dem Bild |
 
 ## Archiv
 

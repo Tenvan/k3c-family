@@ -14,15 +14,25 @@ interface Props {
   onClean: (action: PlaytestAction, id: string) => Promise<void>;
   /** Die Auswertung hat den Stand der Session geändert (Liste neu laden). */
   onChanged: () => void;
+  /** Zähler: steigt bei „Neu laden“, die Auswertung liest dann Modelle und Voraussetzungen neu. */
+  refresh?: number;
 }
 
 /** Detail einer Session: Kennzahlen, Audio- und Video-Player, Dateien, die zwei Aufräum-Knöpfe. */
-export function SessionDetail({ session: s, onClean, onChanged }: Props) {
+export function SessionDetail({ session: s, onClean, onChanged, refresh = 0 }: Props) {
   const videoEl = useRef<HTMLVideoElement>(null);
   const audioEl = useRef<HTMLAudioElement>(null);
   const seek = (ms: number) => {
-    const el = videoEl.current ?? audioEl.current;
-    if (el) el.currentTime = Math.max(0, ms) / 1000;
+    for (const el of [videoEl.current, audioEl.current]) if (el) el.currentTime = Math.max(0, ms) / 1000;
+  };
+  // video.mkv hat keinen Ton (der steckt in voice.wav): Der Ton läuft mit dem Bild, Start, Pause und Springen gelten für beide.
+  const follow = (play: boolean) => {
+    const v = videoEl.current;
+    const a = audioEl.current;
+    if (!v || !a) return;
+    if (Math.abs(a.currentTime - v.currentTime) > 0.3) a.currentTime = v.currentTime;
+    if (play) void a.play().catch(() => undefined);
+    else a.pause();
   };
   const voice = mediaUrl(s.id, 'voice.wav');
   const video = mediaUrl(s.id, 'video.mkv');
@@ -40,16 +50,17 @@ export function SessionDetail({ session: s, onClean, onChanged }: Props) {
         </Flex>
       </Flex>
       {s.running && <Text size="2" color="gray">Die Aufnahme läuft, Löschen ist gesperrt.</Text>}
-      {s.hasVoice && (
-        <Flex direction="column" gap="1" data-player="voice">
-          <Text size="2" weight="bold">Ton (voice.wav)</Text>
-          <audio ref={audioEl} controls preload="metadata" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
-        </Flex>
-      )}
       {s.hasVideo && (
         <Flex direction="column" gap="1" data-player="video">
-          <Text size="2" weight="bold">Bild (video.mkv)</Text>
-          <video ref={videoEl} controls preload="metadata" src={video} aria-label="Bildschirmaufnahme" style={{ width: '100%', maxHeight: '50vh' }} />
+          <Text size="2" weight="bold">Bild (video.mkv, ohne Ton)</Text>
+          <video ref={videoEl} controls preload="metadata" src={video} aria-label="Bildschirmaufnahme" style={{ width: '100%', maxHeight: '50vh' }}
+            onPlay={() => follow(true)} onPause={() => follow(false)} onSeeked={() => follow(!videoEl.current?.paused)} />
+        </Flex>
+      )}
+      {s.hasVoice && (
+        <Flex direction="column" gap="1" data-player="voice">
+          <Text size="2" weight="bold">Ton (voice.wav){s.hasVideo ? ', läuft mit dem Bild' : ''}</Text>
+          <audio ref={audioEl} controls preload="metadata" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
         </Flex>
       )}
       <DataList.Root size="2">
@@ -59,7 +70,7 @@ export function SessionDetail({ session: s, onClean, onChanged }: Props) {
         <Item label="Größe">{formatBytes(s.size)}</Item>
         <Item label="Stand">{s.stage}</Item>
       </DataList.Root>
-      <TimelinePanel session={s} onSeek={seek} onDone={onChanged} />
+      <TimelinePanel session={s} onSeek={seek} onDone={onChanged} refresh={refresh} />
       <Table.Root size="1" variant="surface">
         <Table.Header>
           <Table.Row>

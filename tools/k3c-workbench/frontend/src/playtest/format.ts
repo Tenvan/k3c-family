@@ -12,6 +12,12 @@ export function germanDate(iso: string): string {
   return `${d}.${m}.${y}`;
 }
 
+/** Uhrzeit „16:45“ (Ortszeit) eines Unix-Zeitpunkts in ms. */
+export function clockTime(ms: number): string {
+  const d = new Date(ms);
+  return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
 /** Dauer „42 min“, „1 h 5 min“; ohne Dauer „–“. */
 export function sessionLength(ms: number): string {
   if (ms <= 0) return '–';

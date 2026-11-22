@@ -123,7 +123,12 @@ func (s *Store) List() ([]Session, error) {
 			out = append(out, s.read(e.Name()))
 		}
 	}
-	sort.Slice(out, func(i, j int) bool { return out[i].ID > out[j].ID })
+	sort.Slice(out, func(i, j int) bool { // neueste zuerst nach Startzeit, ohne session.json nach Kennung
+		if out[i].StartMs != out[j].StartMs {
+			return out[i].StartMs > out[j].StartMs
+		}
+		return out[i].ID > out[j].ID
+	})
 	return out, nil
 }
 

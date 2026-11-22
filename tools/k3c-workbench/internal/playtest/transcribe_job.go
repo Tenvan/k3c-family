@@ -73,7 +73,7 @@ func (t *Transcriber) check(model string) Capability {
 		return c
 	}
 	if !c.ModelOK {
-		c.Message = "Modell fehlt: " + c.Model + ". Datei " + ModelFile + " (574041195 Byte, SHA-256 " + ModelSHA + ") von " + ModelURL +
+		c.Message = "Modell fehlt: " + c.Model + ". Datei " + ModelFile + " (3095033483 Byte, SHA-256 " + ModelSHA + ") von " + ModelURL +
 			" von Hand laden und nach models/ legen (oder models/whisper/*.bin bzw. Pfad in " + ModelEnv + "); die Workbench lädt nichts selbst"
 		return c
 	}
