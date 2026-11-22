@@ -5,6 +5,7 @@ _site/
 .DS_Store
 /reports/
 /playtests/
+/models/
 /saves/
 /certs/
 .omc/

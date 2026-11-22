@@ -18,6 +18,14 @@ function pick(): PlaytestApi {
       start: (o) => app.PlaytestStart(o),
       stop: () => app.PlaytestStop(),
       status: () => app.PlaytestStatus(),
+      check: () => app.PlaytestCheck(),
+      transcribe: (id, o) => app.PlaytestTranscribe(id, o),
+      models: () => app.PlaytestModels(),
+      transcribeStatus: () => app.PlaytestTranscribeStatus(),
+      transcribeCancel: () => app.PlaytestTranscribeCancel(),
+      timeline: (id) => app.PlaytestTimeline(id),
+      findings: (id) => app.PlaytestFindings(id),
+      updateFinding: (id, fid, patch) => app.PlaytestFindingUpdate(id, fid, patch),
     };
   }
   if (backend.mock) return mockPlaytest();
@@ -30,6 +38,14 @@ function pick(): PlaytestApi {
     start: (o) => rpc('PlaytestStart', o),
     stop: () => rpc('PlaytestStop'),
     status: () => rpc('PlaytestStatus'),
+    check: () => rpc('PlaytestCheck'),
+    transcribe: (id, o) => rpc('PlaytestTranscribe', id, o),
+    models: () => rpc('PlaytestModels'),
+    transcribeStatus: () => rpc('PlaytestTranscribeStatus'),
+    transcribeCancel: () => rpc('PlaytestTranscribeCancel'),
+    timeline: (id) => rpc('PlaytestTimeline', id),
+    findings: (id) => rpc('PlaytestFindings', id),
+    updateFinding: (id, fid, patch) => rpc('PlaytestFindingUpdate', id, fid, patch),
   };
 }
 
@@ -38,4 +54,9 @@ export const playtestApi: PlaytestApi = pick();
 /** Adresse einer Datei für die Player; im Wails-Fenster gibt es keinen HTTP-Weg (nur Client-Server-Betrieb). */
 export function mediaUrl(id: string, file: 'voice.wav' | 'video.mkv'): string | null {
   return hasWails() ? null : `/api/dev/playtest/media/${encodeURIComponent(id)}/${file}`;
+}
+
+/** Adresse eines Marker-Bilds (frames/marker-<nr>.jpg); im Wails-Fenster ohne HTTP-Weg. */
+export function frameUrl(id: string, nr: number): string | null {
+  return hasWails() ? null : `/api/dev/playtest/frame/${encodeURIComponent(id)}/${nr}`;
 }

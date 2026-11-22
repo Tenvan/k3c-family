@@ -36,6 +36,7 @@ func register(s *Server) {
 	registerServices(s)
 	registerTasks(s)
 	registerPlanning(s)
+	registerPlaytest(s)
 	// Weltdesign (world_*, assets_*, hub_*, level_generate, WZ63) und Balancing (sim_test, sim_run, replay_run,
 	// reports_list, report_read, saves_list, WZ63.5) liegen im MCP-Server k3c-studio.
 }

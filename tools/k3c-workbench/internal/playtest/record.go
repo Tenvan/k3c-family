@@ -149,6 +149,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 		return r.st, err
 	}
 	r.active.Store(&id)
+	capture := r.Now().UnixMilli()
 	rec, enc, err := r.startFFmpeg(ffmpeg, dir, o)
 	if err != nil {
 		_ = os.RemoveAll(dir)
@@ -156,7 +157,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 		r.log("warn", "❌ Aufnahme nicht gestartet: "+err.Error(), "id", id)
 		return r.st, err
 	}
-	meta := Meta{StartMs: r.Now().UnixMilli(), Mic: o.Mic, Monitor: strconv.Itoa(o.Monitor), Encoder: enc, Stand: standRunning,
+	meta := Meta{CaptureMs: capture, StartMs: r.Now().UnixMilli(), Mic: o.Mic, Monitor: strconv.Itoa(o.Monitor), Encoder: enc, Stand: standRunning,
 		FFmpeg: strings.Join(FFmpegArgs("ffmpeg", dir, o.Mic, o.Monitor, enc), " "), GameArgs: GameArgs("k3c-game", dir, o.GameArgs)[1:]}
 	writeMeta(dir, meta)
 	game, err := r.Spawn(GameArgs(exe, dir, o.GameArgs), gdir)

@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"sync"
 
 	"k3c/tools/k3c-workbench/internal/playtest"
@@ -107,3 +108,71 @@ func (a *App) PlaytestStop() error { return a.recorder().Stop() }
 
 // PlaytestStatus ist der Stand der Aufnahme.
 func (a *App) PlaytestStatus() playtest.Status { return a.recorder().Status() }
+
+// playtestFramePrefix ist die Adresse der Marker-Bilder.
+const playtestFramePrefix = uikit.Prefix + "playtest/frame/"
+
+// transcribers hält je App eine Auswertung (wie recorders).
+var transcribers sync.Map
+
+func (a *App) transcriber() *playtest.Transcriber {
+	if r, ok := transcribers.Load(a); ok {
+		return r.(*playtest.Transcriber)
+	}
+	r := playtest.NewTranscriber(a.root, a.playtestStore(), func(level, msg string, kv ...any) {
+		attrs := append([]any{"ns", "main"}, kv...)
+		if level == "warn" {
+			a.log.Warn(msg, attrs...)
+			return
+		}
+		a.log.Info(msg, attrs...)
+	})
+	act, _ := transcribers.LoadOrStore(a, r)
+	return act.(*playtest.Transcriber)
+}
+
+// PlaytestCheck sagt, ob die Auswertung möglich ist (ffmpeg ab 8 mit whisper-Filter, Modelldatei), sonst warum nicht.
+func (a *App) PlaytestCheck() playtest.Capability { return a.transcriber().Check() }
+
+// PlaytestTranscribe wertet eine Session im Hintergrund aus: Transkript aus voice.wav, ein Bild je Marker.
+func (a *App) PlaytestTranscribe(id string, opt playtest.TranscribeOptions) (playtest.JobStatus, error) {
+	return a.transcriber().Start(id, opt)
+}
+
+// PlaytestModels sind die wählbaren Modelldateien (K3C_WHISPER_MODEL, models/, models/whisper/) mit Größe.
+func (a *App) PlaytestModels() []playtest.ModelInfo { return playtest.ListModels(a.root) }
+
+// PlaytestTranscribeStatus ist der Stand der Auswertung.
+func (a *App) PlaytestTranscribeStatus() playtest.JobStatus { return a.transcriber().Status() }
+
+// PlaytestTranscribeCancel bricht die Auswertung ab.
+func (a *App) PlaytestTranscribeCancel() error { return a.transcriber().Cancel() }
+
+// PlaytestTimeline ist die Zeitleiste einer Session: Sätze, Marker und deren Bilder.
+func (a *App) PlaytestTimeline(id string) (playtest.Timeline, error) {
+	return a.playtestStore().Timeline(id)
+}
+
+// PlaytestFindings sind die Befunde einer Session (findings.json).
+func (a *App) PlaytestFindings(id string) ([]playtest.Finding, error) {
+	return a.playtestStore().Findings(id)
+}
+
+// PlaytestFindingUpdate setzt Haken und Vorschlag (Domäne, Typ, Prio, Projekt, Sprint) eines Befunds.
+func (a *App) PlaytestFindingUpdate(id, fid string, p playtest.FindingPatch) (playtest.Finding, error) {
+	return a.playtestStore().UpdateFinding(id, fid, p)
+}
+
+// playtestFrame liefert ein Marker-Bild (frames/marker-<nr>.jpg).
+func (a *App) playtestFrame() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		nr, _ := strconv.Atoi(r.PathValue("nr"))
+		p, err := a.playtestStore().FramePath(r.PathValue("id"), nr)
+		if err != nil {
+			uikit.Fail(w, http.StatusNotFound, err.Error())
+			return
+		}
+		w.Header().Set("Cache-Control", "no-store")
+		http.ServeFile(w, r, p)
+	})
+}

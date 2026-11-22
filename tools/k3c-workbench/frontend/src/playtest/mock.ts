@@ -1,4 +1,4 @@
-import type { PlaytestAction, PlaytestApi, PlaytestFile, PlaytestPlan, PlaytestSession, PlaytestStatus } from './types';
+import type { PlaytestFinding, PlaytestAction, PlaytestApi, PlaytestEntry, PlaytestJob, PlaytestFile, PlaytestPlan, PlaytestSession, PlaytestStatus } from './types';
 
 // Mock ohne Wails-Laufzeit (`?mock=1`, Tests): drei Sessions mit allen Ständen; Plan und Löschen verhalten sich wie
 // internal/playtest (Bestätigung nötig, laufende Aufnahme gesperrt, Sammelaktion nur für „ausgewertet“).
@@ -18,6 +18,14 @@ function seed(): PlaytestSession[] {
       hasVideo: true, files: [file('session.json', 300), file('voice.wav', 70 * MB), file('video.mkv', 750 * MB), file('markers.jsonl', 900)] },
     { ...base, id: '2026-11-19-1', date: '2026-11-19', durationMs: 0, markers: 0, size: 100, stage: 'unvollständig', hasVideo: false,
       hasVoice: false, files: [file('video.mkv', 100)] },
+  ];
+}
+
+function seedFindings(): PlaytestFinding[] {
+  return [
+    { id: 'f1', quote: 'Ich finde den Bauarbeiter nicht', ts: Date.parse('2026-11-20T18:00:05'), context: 'Insel 2 Stufe 3', type: 'Problem', prio: 'mittel',
+      project: 'WZG', sprint: 'WZ65', selected: false },
+    { id: 'f2', quote: 'Zu dunkel', ts: Date.parse('2026-11-20T18:00:30'), type: 'Idee', duplicate_of: 'B-1100', selected: false },
   ];
 }
 
@@ -41,10 +49,50 @@ export function mockPlaytest(): PlaytestApi {
   };
   const idle: PlaytestStatus = { running: false, id: '', startMs: 0, encoder: '' };
   let status = idle;
+  const noJob: PlaytestJob = { running: false, id: '', step: '', done: 0, total: 0, message: '', error: '' };
+  let job = noJob;
+  let findings: PlaytestFinding[] = seedFindings();
+  const entries = (s: PlaytestSession): PlaytestEntry[] => {
+    const done = s.stage === 'transkribiert' || s.stage === 'ausgewertet';
+    const t0 = s.startMs;
+    const out: PlaytestEntry[] = [{ kind: 'marker', ms: t0 + 5000, videoMs: 5000, text: 'Marker · Spieler 1 · Insel 2 Stufe 3', nr: 1 }];
+    if (done) out.unshift({ kind: 'sprache', ms: t0 + 1000, videoMs: 1000, endMs: t0 + 3000, text: 'Hier fehlt der Turm.' });
+    return out;
+  };
   return {
     reset: () => {
       sessions = seed();
       status = idle;
+      job = noJob;
+      findings = seedFindings();
+    },
+    findings: async () => structuredClone(findings),
+    updateFinding: async (_id, fid, patch) => {
+      const f = findings.find((x) => x.id === fid);
+      if (!f) throw new Error('Befund gibt es nicht');
+      if (f.ticket) throw new Error(`Ticket ${f.ticket} ist schon angelegt`);
+      Object.assign(f, patch);
+      return structuredClone(f);
+    },
+    check: async () => ({ ready: true, ffmpeg: '9.0.2', whisper: true, model: 'models/whisper/ggml-large-v3-turbo-q5_0.bin', modelOk: true, modelMb: 547, message: '' }),
+    models: async () => [
+      { id: 'models/ggml-large-v3-turbo-german-q5_0.bin', name: 'ggml-large-v3-turbo-german-q5_0.bin', sizeMb: 547, default: true },
+      { id: 'models/whisper/ggml-small.bin', name: 'ggml-small.bin', sizeMb: 466, default: false },
+    ],
+    transcribe: async (id) => {
+      const s = find(id);
+      if (!s.hasVoice) throw new Error('voice.wav fehlt, nichts zu transkribieren');
+      sessions = sessions.map((x) => (x.id === id ? { ...x, stage: 'transkribiert', files: [...x.files, file('transcript.json', 4000)] } : x));
+      job = { ...noJob, id };
+      return job;
+    },
+    transcribeStatus: async () => job,
+    transcribeCancel: async () => {
+      throw new Error('keine Auswertung aktiv');
+    },
+    timeline: async (id) => {
+      const s = find(id);
+      return { id, captureMs: s.startMs, hasTranscript: s.stage === 'transkribiert' || s.stage === 'ausgewertet', entries: entries(s) };
     },
     devices: async () => ({ mics: ['Raummikro (USB)', 'Mikrofon (Realtek)'], ffmpeg: true, message: '' }),
     start: async (o) => {

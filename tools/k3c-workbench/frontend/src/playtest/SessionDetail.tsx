@@ -1,19 +1,29 @@
+import { useRef } from 'react';
 import { ActionButton, Flex, Heading, Text } from '@webkit/atoms';
 import { DataList } from '@webkit/molecules';
 import { Table } from '@webkit/organisms';
 import { formatBytes } from '../lib/format';
 import { mediaUrl } from './api';
 import { germanDate, sessionLength } from './format';
+import { TimelinePanel } from './TimelinePanel';
 import type { PlaytestAction, PlaytestSession } from './types';
 
 interface Props {
   session: PlaytestSession;
   /** Startet die Aufräum-Aktion (Plan lesen, Dialog, Bestätigung) – die Seite hält den Dialog. */
   onClean: (action: PlaytestAction, id: string) => Promise<void>;
+  /** Die Auswertung hat den Stand der Session geändert (Liste neu laden). */
+  onChanged: () => void;
 }
 
 /** Detail einer Session: Kennzahlen, Audio- und Video-Player, Dateien, die zwei Aufräum-Knöpfe. */
-export function SessionDetail({ session: s, onClean }: Props) {
+export function SessionDetail({ session: s, onClean, onChanged }: Props) {
+  const videoEl = useRef<HTMLVideoElement>(null);
+  const audioEl = useRef<HTMLAudioElement>(null);
+  const seek = (ms: number) => {
+    const el = videoEl.current ?? audioEl.current;
+    if (el) el.currentTime = Math.max(0, ms) / 1000;
+  };
   const voice = s.hasVoice ? mediaUrl(s.id, 'voice.wav') : null;
   const video = s.hasVideo ? mediaUrl(s.id, 'video.mkv') : null;
   return (
@@ -37,9 +47,10 @@ export function SessionDetail({ session: s, onClean }: Props) {
         <Item label="Größe">{formatBytes(s.size)}</Item>
         <Item label="Stand">{s.stage}</Item>
       </DataList.Root>
-      {s.hasVoice && (voice ? <audio controls preload="none" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
+      {s.hasVoice && (voice ? <audio ref={audioEl} controls preload="none" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
         : <Text size="2" color="gray">Audio-Player nur im Browser-Betrieb (Client/Server), nicht im Fenster.</Text>)}
-      {s.hasVideo && video && <video controls preload="none" src={video} aria-label="Bildschirmaufnahme" style={{ width: '100%', maxHeight: '50vh' }} />}
+      {s.hasVideo && video && <video ref={videoEl} controls preload="metadata" src={video} aria-label="Bildschirmaufnahme" style={{ width: '100%', maxHeight: '50vh' }} />}
+      <TimelinePanel session={s} onSeek={seek} onDone={onChanged} />
       <Table.Root size="1" variant="surface">
         <Table.Header>
           <Table.Row>

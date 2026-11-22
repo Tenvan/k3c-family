@@ -27,6 +27,8 @@ var uiMethods = map[string]bool{
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
 	"PlaytestList": true, "PlaytestPlan": true, "PlaytestDelete": true,
 	"PlaytestDevices": true, "PlaytestStart": true, "PlaytestStop": true, "PlaytestStatus": true,
+	"PlaytestCheck": true, "PlaytestModels": true, "PlaytestTranscribe": true, "PlaytestTranscribeStatus": true, "PlaytestTranscribeCancel": true, "PlaytestTimeline": true,
+	"PlaytestFindings": true, "PlaytestFindingUpdate": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uikit.Prefix, die Oberfläche liefert Vite.
@@ -35,6 +37,7 @@ func (a *App) uiHandler() http.Handler {
 		Track: func(name string) func() { return a.res.Track(name) }}
 	mux := http.NewServeMux()
 	mux.Handle("GET "+playtestMediaPrefix+"{id}/{file}", uikit.Guard(api.App, a.playtestMedia())) // Player der Seite Spieltest
+	mux.Handle("GET "+playtestFramePrefix+"{id}/{nr}", uikit.Guard(api.App, a.playtestFrame())) // Marker-Bilder der Zeitleiste
 	mux.Handle("/", api.Handler())
 	return mux
 }
