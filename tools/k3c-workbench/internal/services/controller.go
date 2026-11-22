@@ -299,7 +299,7 @@ func (c *Controller) StartAll(ctx context.Context) error {
 	errs := make([]error, len(units))
 	var wg sync.WaitGroup
 	for i, u := range units {
-		if st := u.status().State; st == Running || st == Starting || st == Adopted {
+		if st := u.status().State; st == Running || st == Starting || st == Adopted || u.svc.Manual {
 			continue
 		}
 		wg.Go(func() { _, errs[i] = c.Start(ctx, u.svc.Name) })

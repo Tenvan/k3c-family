@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"time"
 
@@ -19,7 +20,9 @@ const checkTimeout = 2 * time.Second
 
 // ProcStarter startet einen Dienst über internal/proc: ohne Konsolenfenster, im Job Object, Ausgabe zeilenweise an out.
 func ProcStarter(svc Service, root string, out func(stream, text string)) (Process, error) {
-	cmd := proc.Command(context.Background(), svc.Command)
+	args := slices.Clone(svc.Command)
+	args[0] = program(args[0], root)
+	cmd := proc.Command(context.Background(), args)
 	cmd.Dir = filepath.Join(root, svc.Cwd)
 	cmd.Env = os.Environ()
 	for k, v := range svc.Env {

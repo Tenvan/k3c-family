@@ -17,6 +17,7 @@ func fullPackage() fstest.MapFS {
 		"LICENSE-ASSETS":                         f("la"),
 		"LIZENZEN.txt":                           f("Kopf\n\n==== a 1.0.0 (MIT) ====\ntext"),
 		"data/biomes.json":                       f("{}"),
+		"data/worlds/standard.json":              f("{}"),
 		"public/grafik/figuren/index.paper.json": f("{}"),
 		"public/audio/README.md":                 f("CC0"),
 		"public/schrift/LICENSE":                 f("BSD"),
@@ -28,7 +29,7 @@ func joined(m []string) string { return strings.Join(m, "\n") }
 
 func TestPruefeVollstaendig(t *testing.T) {
 	m, n := pruefe(fullPackage(), 40<<20, false)
-	if len(m) != 0 || n != 11 {
+	if len(m) != 0 || n != 12 {
 		t.Fatalf("Mängel = %v, Dateien = %d", m, n)
 	}
 }
@@ -37,9 +38,11 @@ func TestPruefePflichtFehlt(t *testing.T) {
 	p := fullPackage()
 	delete(p, "LIZENZEN.txt")
 	delete(p, "public/audio/README.md")
+	delete(p, "data/worlds/standard.json")
 	m, _ := pruefe(p, 40<<20, false)
 	got := joined(m)
-	for _, want := range []string{"Pflichtdatei fehlt: LIZENZEN.txt", "Pflichtordner leer oder fehlt: public/audio"} {
+	for _, want := range []string{"Pflichtdatei fehlt: LIZENZEN.txt", "Pflichtordner leer oder fehlt: public/audio",
+		"Pflichtordner leer oder fehlt: data/worlds"} {
 		if !strings.Contains(got, want) {
 			t.Errorf("Mängel enthalten %q nicht:\n%s", want, got)
 		}

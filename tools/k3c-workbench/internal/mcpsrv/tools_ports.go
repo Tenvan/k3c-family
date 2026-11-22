@@ -88,6 +88,9 @@ func (s *Server) portsStatus(ctx context.Context, _ struct{}) (string, error) {
 	}
 	lines := []string{}
 	for _, svc := range ctl.Configs() {
+		if svc.Port == 0 { // Prozess-Dienst ohne Port (B-1214)
+			continue
+		}
 		lines = append(lines, fmt.Sprintf("%d · %s · %s", svc.Port, svc.Name, ctl.PortOwner(ctx, svc.Port)))
 	}
 	if url := s.URL(); url != "" {
@@ -118,5 +121,8 @@ func (s *Server) getURLs(ctx context.Context, in urlsIn) (string, error) {
 }
 
 func serviceURLs(svc services.Service) string {
+	if svc.Port == 0 {
+		return svc.Name + " · ohne Port · Health process"
+	}
 	return fmt.Sprintf("%s · http://localhost:%d/ · Health %s", svc.Name, svc.Port, svc.HealthURL())
 }

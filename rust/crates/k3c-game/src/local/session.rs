@@ -64,6 +64,8 @@ pub struct Session {
     pub(super) world: String,
     /// Ordner der lokalen Welten (`worlds_fs()` beim Öffnen)
     pub(super) worlds_dir: Option<PathBuf>,
+    /// `worlds_dir` sind die Repo-Welten (Start aus `<repo>/dist/k3c-game`, B-1210)
+    pub(super) worlds_repo: bool,
     /// Inseln der Welt (`Frame::route`, route.rs)
     pub(super) route: RouteCache,
     /// Slot (= lokaler Spieler) → Gerät
@@ -122,6 +124,7 @@ impl Session {
                 &[("datei", &datei), ("err", &err)],
             );
         }
+        let worlds = worlds_fs();
         Session {
             saves: Saves::new(dir.clone(), clock(&now)),
             dir,
@@ -133,7 +136,8 @@ impl Session {
             peer: None,
             name: String::new(),
             world: String::new(),
-            worlds_dir: worlds_fs(),
+            worlds_dir: worlds.dir,
+            worlds_repo: worlds.repo,
             route: RouteCache::default(),
             devs: BTreeMap::new(),
             last: Vec::new(),

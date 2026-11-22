@@ -295,6 +295,7 @@ fn nicht_ladbare_welt_zeigt_grund() {
                 id: "rom".into(),
                 name: "rom".into(),
                 error: "Datei ungültig".into(),
+                ..Default::default()
             },
         ]),
         ..Default::default()
@@ -313,4 +314,32 @@ fn nicht_ladbare_welt_zeigt_grund() {
     pick.sel = 0;
     let st = pick.update(&press(PAD1, &[Action::Confirm]), &mut s);
     assert_eq!(st.kind, StepKind::Push, "ladbare Welt öffnet die Lobby");
+}
+
+/// B-1210 AC-03: Eine Welt aus dem Repo (`WorldInfo::repo`) trägt im Weltbild das Dev-Symbol, eine Paket-Welt nicht.
+#[test]
+fn repo_welt_zeigt_dev_symbol() {
+    let mut s = FakeSession {
+        worlds: Some(vec![
+            WorldInfo {
+                id: "standard".into(),
+                name: "Standard".into(),
+                ..Default::default()
+            },
+            WorldInfo {
+                id: "neu".into(),
+                name: "Neu".into(),
+                repo: true,
+                ..Default::default()
+            },
+        ]),
+        ..Default::default()
+    };
+    let mut pick = new_world_pick(&world_menus(None), PAD1);
+    pick.update(&Input::default(), &mut s);
+    pick.fill("de");
+    assert!(!pick.pg.borrow().hero.dev, "Paket-Welt ohne Symbol");
+    pick.sel = 1;
+    pick.fill("de");
+    assert!(pick.pg.borrow().hero.dev, "Repo-Welt mit Symbol");
 }

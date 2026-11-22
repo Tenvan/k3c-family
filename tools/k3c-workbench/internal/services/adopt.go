@@ -18,7 +18,8 @@ const lostAdopted = "übernommener Prozess nicht mehr erreichbar"
 func (c *Controller) Adopt(ctx context.Context) {
 	for _, u := range c.list() {
 		u.cmd.Lock()
-		if u.status().State == Stopped && c.opts.Check(ctx, u.svc) == nil {
+		// Prozess-Dienste haben keinen Port, an dem ein fremder Prozess zu erkennen wäre (B-1214)
+		if u.svc.Health != healthProcess && u.status().State == Stopped && c.opts.Check(ctx, u.svc) == nil {
 			pid, _ := c.opts.Listen(ctx, u.svc.Port)
 			c.adopt(ctx, u, pid)
 		}
@@ -139,6 +140,9 @@ func (c *Controller) waitPortFree(u *unit) bool {
 
 // portBusy liefert den Grund, wenn ein fremder Prozess den Port schon belegt, sonst "". Aufruf unter u.cmd.
 func (c *Controller) portBusy(ctx context.Context, u *unit) string {
+	if u.svc.Port == 0 { // Prozess-Dienst ohne Port
+		return ""
+	}
 	pid, busy := c.opts.Listen(ctx, u.svc.Port)
 	if !busy {
 		return ""

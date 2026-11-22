@@ -62,6 +62,7 @@ impl WorldPickScreen {
                 art: self.m.borrow().world_asset(&w.id, true),
                 left: self.list.len() > 1,
                 right: self.list.len() > 1,
+                dev: w.repo,
             };
         }
         p.note = self.base.note.text(lang);
@@ -126,7 +127,7 @@ impl Screen for WorldPickScreen {
                 self.list = vec![WorldInfo {
                     id: "standard".to_string(),
                     name: "Standard".to_string(),
-                    error: String::new(),
+                    ..WorldInfo::default()
                 }];
             }
             self.base.ver += 1;

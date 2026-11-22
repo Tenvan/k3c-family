@@ -1,6 +1,6 @@
 # WL1.5 · Review und Abnahme-Ticket WL1
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -56,5 +56,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 bis AC-05 geprüft: Diff `origin/main...sprint/wl1` (WL1.1, WL1.6) gelesen; keine schweren Befunde (Repo-Erkennung nur über `<repo>/dist/k3c-game` mit Taskfile.yml und .git, `K3C_WORLDS_DIR` hat Vorrang, Rückfall bei unlesbaren Repo-Welten, Dev-Schild nur bei `repo`; `needs`/`stopBefore` validiert, Pfade ohne `..`/Laufwerk, kein Lock-Deadlock zwischen Stop und `ended`/`crashed`, Job-Objekt unverändert). Kein Fix nötig.
+- Geprüft: cargo fmt und clippy sauber; `cargo test -p k3c-game` 1049 grün, 1 rot (bekannt: `drei_stufen_mindestens_halbe_monarchenhoehe_auseinander`), dazu bekannt rot `tests/e2e_flow::ablauf_wie_go_zwei_laeufe_gleich`; go vet und go test tools/k3c-workbench (außer `internal/gitops`: 5 Tests rot durch `git` „unable to access NUL“ in der Prüfumgebung, Paket nicht im Sprint geändert) und tools/rustpaket grün; Frontend tsc und vitest (330) grün; projectRules, atomicDesign, mcpToolsDisjoint, planning (1662) grün. golangci-lint fehlt auf dem Rechner. Kein Sim, Balance, Gen, check:race.
+- Neues Ticket: B-1231 (Abnahme-Läufe Sim, Balance, Gen, Race). Offen für 🧑: Abnahme am PC (Welten-Auswahl mit DEV-Schild, Spielstart als Dienste).

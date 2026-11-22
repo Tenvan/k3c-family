@@ -104,8 +104,10 @@ impl Session {
                 Err(_) => Vec::new(),
             },
         };
+        // B-1210: Nur die Welten aus dem Ordner kommen aus dem Repo; die Standard-Welt liefern die Spieldaten.
         list.into_iter()
             .map(|w| WorldInfo {
+                repo: self.worlds_repo && w.id != k3c_sim::island::STANDARD_WORLD_ID,
                 id: w.id,
                 name: w.name,
                 error: w.error,

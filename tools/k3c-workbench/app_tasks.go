@@ -113,6 +113,9 @@ func (a *App) TaskStart(name string, args []string) (taskrun.Run, error) {
 	if !a.taskKnown(name) {
 		return taskrun.Run{}, fmt.Errorf("unbekannter Task %q (steht nicht im Katalog, task --list-all)", name)
 	}
+	if a.ctl != nil { // B-1214: laufendes Spiel aus dem Paket vor dem Neubau beenden (Hinweis im Log)
+		a.ctl.StopForTask(a.svcCtx, name)
+	}
 	return a.taskRunner.Start(name, args)
 }
 

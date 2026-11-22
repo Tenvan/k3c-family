@@ -99,7 +99,7 @@ func (s *Server) consoleExcerpt(name string) string {
 // serviceLine ist ein Dienst in einer Zeile, z. B. "Docs · läuft · Port 7000 · PID 41232 · CPU 3,1 % · 480,0 MB ·
 // 2 h 13 min · Neustarts 0".
 func (s *Server) serviceLine(ctl *services.Controller, st services.Status) string {
-	parts := []string{st.Name, string(st.State), fmt.Sprintf("Port %d", st.Port)}
+	parts := []string{st.Name, string(st.State), portText(st.Port)}
 	if st.State == services.Running || st.State == services.Adopted {
 		parts = append(parts, fmt.Sprintf("PID %d", st.PID))
 		if st.Memory > 0 { // die erste Messung kommt bis zu 2 s nach dem Start
@@ -141,7 +141,15 @@ func (s *Server) serviceSummary(ctx context.Context) string {
 	}
 	parts := make([]string, 0, len(ctl.Names()))
 	for _, st := range ctl.Statuses() {
-		parts = append(parts, fmt.Sprintf("%s %s (%d)", st.Name, st.State, st.Port))
+		parts = append(parts, fmt.Sprintf("%s %s (%s)", st.Name, st.State, strings.TrimPrefix(portText(st.Port), "Port ")))
 	}
 	return "Dienste: " + strings.Join(parts, " · ")
+}
+
+// portText ist der Port eines Dienstes für Antworten; Prozess-Dienste wie das Spiel haben keinen (B-1214).
+func portText(port int) string {
+	if port == 0 {
+		return "ohne Port"
+	}
+	return fmt.Sprintf("Port %d", port)
 }
