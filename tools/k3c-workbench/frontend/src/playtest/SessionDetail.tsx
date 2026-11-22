@@ -24,8 +24,8 @@ export function SessionDetail({ session: s, onClean, onChanged }: Props) {
     const el = videoEl.current ?? audioEl.current;
     if (el) el.currentTime = Math.max(0, ms) / 1000;
   };
-  const voice = s.hasVoice ? mediaUrl(s.id, 'voice.wav') : null;
-  const video = s.hasVideo ? mediaUrl(s.id, 'video.mkv') : null;
+  const voice = mediaUrl(s.id, 'voice.wav');
+  const video = mediaUrl(s.id, 'video.mkv');
   return (
     <Flex direction="column" gap="4" p="3" data-detail={s.id}>
       <Flex align="center" justify="between" gap="3" wrap="wrap">
@@ -40,6 +40,18 @@ export function SessionDetail({ session: s, onClean, onChanged }: Props) {
         </Flex>
       </Flex>
       {s.running && <Text size="2" color="gray">Die Aufnahme läuft, Löschen ist gesperrt.</Text>}
+      {s.hasVoice && (
+        <Flex direction="column" gap="1" data-player="voice">
+          <Text size="2" weight="bold">Ton (voice.wav)</Text>
+          <audio ref={audioEl} controls preload="metadata" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
+        </Flex>
+      )}
+      {s.hasVideo && (
+        <Flex direction="column" gap="1" data-player="video">
+          <Text size="2" weight="bold">Bild (video.mkv)</Text>
+          <video ref={videoEl} controls preload="metadata" src={video} aria-label="Bildschirmaufnahme" style={{ width: '100%', maxHeight: '50vh' }} />
+        </Flex>
+      )}
       <DataList.Root size="2">
         <Item label="Datum">{germanDate(s.date)}</Item>
         <Item label="Dauer">{sessionLength(s.durationMs)}</Item>
@@ -47,9 +59,6 @@ export function SessionDetail({ session: s, onClean, onChanged }: Props) {
         <Item label="Größe">{formatBytes(s.size)}</Item>
         <Item label="Stand">{s.stage}</Item>
       </DataList.Root>
-      {s.hasVoice && (voice ? <audio ref={audioEl} controls preload="none" src={voice} aria-label="Sprachaufnahme" style={{ width: '100%' }} />
-        : <Text size="2" color="gray">Audio-Player nur im Browser-Betrieb (Client/Server), nicht im Fenster.</Text>)}
-      {s.hasVideo && video && <video ref={videoEl} controls preload="metadata" src={video} aria-label="Bildschirmaufnahme" style={{ width: '100%', maxHeight: '50vh' }} />}
       <TimelinePanel session={s} onSeek={seek} onDone={onChanged} />
       <Table.Root size="1" variant="surface">
         <Table.Header>

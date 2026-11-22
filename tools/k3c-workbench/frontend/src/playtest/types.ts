@@ -56,6 +56,8 @@ export interface PlaytestOptions {
   /** ddagrab output_idx, 0-basiert. */
   monitor: number;
   gameArgs: string[];
+  /** Nur Mikro aufnehmen (diktieren, Mikro testen): kein Bild, kein Spiel; Stopp beendet die Session. */
+  voiceOnly?: boolean;
 }
 
 /** Messwerte der laufenden Aufnahme: Bytes je Sekunde, die in voice.wav und video.mkv ankommen (älteste zuerst). */
@@ -66,6 +68,8 @@ export interface PlaytestStats {
   videoRate: number[];
   /** Leer, solange alles ankommt; sonst der Grund (Ton oder Bild steht, ffmpeg beendet). */
   warn: string;
+  /** Mikro-Session: kein Bild, nur das Ton-Diagramm. */
+  noVideo?: boolean;
 }
 
 export interface PlaytestStatus {
@@ -73,6 +77,7 @@ export interface PlaytestStatus {
   id: string;
   startMs: number;
   encoder: string;
+  voiceOnly?: boolean;
   stats?: PlaytestStats;
 }
 

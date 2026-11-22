@@ -27,7 +27,7 @@ export function RecordMonitor({ stats }: { stats: PlaytestStats }) {
       {stats.warn && <NoticeCard title="Aufnahme prüfen" tone="error">{stats.warn}</NoticeCard>}
       <Flex gap="4" wrap="wrap">
         <Chart name="Ton" rates={stats.voiceRate} total={stats.voiceBytes} />
-        <Chart name="Bild" rates={stats.videoRate} total={stats.videoBytes} />
+        {!stats.noVideo && <Chart name="Bild" rates={stats.videoRate} total={stats.videoBytes} />}
       </Flex>
     </Flex>
   );

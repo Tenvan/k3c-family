@@ -106,3 +106,22 @@ func TestWaechterMeldetToteAufnahmeImStatus(t *testing.T) {
 	_ = g.rec.Stop()
 	g.rec.Wait()
 }
+
+func TestAdvanceMikroSessionWarntNieWegenBild(t *testing.T) {
+	s := Stats{NoVideo: true}
+	var w watchState
+	voice := int64(0)
+	for i := 0; i < 12; i++ {
+		voice += 32000
+		s.advance(&w, voice, 0, true, "")
+	}
+	if s.Warn != "" {
+		t.Errorf("Warnung ohne Bild: %q", s.Warn)
+	}
+	for i := 0; i < idleVoice; i++ {
+		s.advance(&w, voice, 0, true, "")
+	}
+	if !strings.Contains(s.Warn, "Ton kommt nicht mehr an") {
+		t.Errorf("Ton steht: %q", s.Warn)
+	}
+}

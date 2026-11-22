@@ -75,6 +75,16 @@ func (a *App) playtestMedia() http.Handler {
 	})
 }
 
+// windowMediaHandler liefert dem Fenster (Wails-Asset-Server, kein HTTP-Port) die Player- und Marker-Dateien unter denselben
+// Adressen wie im Client/Server-Betrieb. Nur diese beiden Lesewege, alles andere ist 404; die Dateien kommen über
+// Store.MediaPath und FramePath (feste Namen, geprüfte Session-ID), nie über einen freien Pfad.
+func (a *App) windowMediaHandler() http.Handler {
+	mux := http.NewServeMux()
+	mux.Handle("GET "+playtestMediaPrefix+"{id}/{file}", a.playtestMedia())
+	mux.Handle("GET "+playtestFramePrefix+"{id}/{nr}", a.playtestFrame())
+	return mux
+}
+
 // recorders hält je App einen Recorder (App-Struktur bleibt unberührt, WZ64.2).
 var recorders sync.Map
 

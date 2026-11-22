@@ -106,7 +106,7 @@ func TestWhisperArgsRelativ(t *testing.T) {
 	dir := filepath.FromSlash("C:/repo/playtests/x")
 	model := filepath.FromSlash("C:/repo/models/whisper/") + ModelFile
 	a := strings.Join(WhisperArgs("ffmpeg", dir, model, "de", "transcript.part"), " ")
-	for _, want := range []string{"-i voice.wav", "-af whisper=model=../../models/whisper/" + ModelFile, "language=de", "format=json", "destination=transcript.part", "-f null -"} {
+	for _, want := range []string{"-i voice.wav", "-af whisper=model=../../models/whisper/" + ModelFile, "language=de", "queue=20", "format=json", "destination=transcript.part", "-f null -"} {
 		if !strings.Contains(a, want) {
 			t.Errorf("Aufruf ohne %q: %s", want, a)
 		}

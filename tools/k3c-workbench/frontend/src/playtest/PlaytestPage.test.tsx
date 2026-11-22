@@ -147,6 +147,21 @@ describe('Spieltest starten (B-1219)', () => {
   });
 });
 
+describe('Mikro-Session', () => {
+  it('startet nur mit Mikro, zeigt nur das Ton-Diagramm und ist als Mikro-Session beschriftet', async () => {
+    const host = await mount();
+    const bar = () => host.querySelector('[data-record]')!;
+    expect(button('Nur Mikro starten', host).disabled).toBe(true);
+    await playtestApi.start({ mic: 'Raummikro (USB)', monitor: 0, gameArgs: [], voiceOnly: true });
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
+    expect(bar().textContent).toContain('Mikro-Session 2026-11-23-1');
+    expect(host.querySelector('[data-chart="Ton"]')).toBeTruthy();
+    expect(host.querySelector('[data-chart="Bild"]')).toBeNull();
+    act(() => button('Stopp', host).click());
+    await act(async () => new Promise((r) => setTimeout(r, 1100)));
+  });
+});
+
 describe('Geräte (B-1230)', () => {
   it('Monitore kommen aus der Geräteprobe mit Auflösung', async () => {
     const host = await mount();

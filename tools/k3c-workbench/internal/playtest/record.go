@@ -50,15 +50,18 @@ type Options struct {
 	Mic      string   `json:"mic"`      // Name des DirectShow-Geräts
 	Monitor  int      `json:"monitor"`  // ddagrab output_idx, 0-basiert
 	GameArgs []string `json:"gameArgs"` // zusätzlich zu --playtest <ordner>
+	// VoiceOnly nimmt nur das Mikro auf (diktieren, Mikro testen): kein Bild, kein Spiel; das Ende bestimmt Stop.
+	VoiceOnly bool `json:"voiceOnly"`
 }
 
 // Status der Aufnahme für Seite und Anzeige.
 type Status struct {
-	Running bool   `json:"running"`
-	ID      string `json:"id"`
-	StartMs int64  `json:"startMs"`
-	Encoder string `json:"encoder"`
-	Stats   *Stats `json:"stats,omitempty"` // Messwerte der laufenden Aufnahme (Diagramme, Warnung)
+	Running   bool   `json:"running"`
+	ID        string `json:"id"`
+	StartMs   int64  `json:"startMs"`
+	Encoder   string `json:"encoder"`
+	VoiceOnly bool   `json:"voiceOnly"`       // Mikro-Session ohne Bild und Spiel
+	Stats     *Stats `json:"stats,omitempty"` // Messwerte der laufenden Aufnahme (Diagramme, Warnung)
 }
 
 // Recorder steuert höchstens eine Aufnahme.
@@ -103,6 +106,31 @@ func FFmpegArgs(ffmpeg, dir, mic string, monitor int, enc string) []string {
 	return append(a, "-flush_packets", "1", "-cluster_time_limit", "1000", filepath.Join(dir, fileVideo))
 }
 
+// VoiceArgs ist der Aufruf der Mikro-Session: nur voice.wav, ohne Bild.
+func VoiceArgs(ffmpeg, dir, mic string) []string {
+	return []string{ffmpeg, "-hide_banner", "-loglevel", "warning", "-nostats", "-y",
+		"-f", "dshow", "-i", "audio=" + mic,
+		"-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", "-flush_packets", "1", filepath.Join(dir, fileVoice)}
+}
+
+// stopper ist das „Spiel“ einer Mikro-Session: Es endet mit Kill (Stop) oder wenn ffmpeg endet.
+type stopper struct {
+	ch   chan struct{}
+	dead <-chan struct{}
+	once sync.Once
+}
+
+func (s *stopper) Wait() error {
+	select {
+	case <-s.ch:
+	case <-s.dead:
+	}
+	return nil
+}
+func (s *stopper) Quit() error  { return s.Kill() }
+func (s *stopper) Kill() error  { s.once.Do(func() { close(s.ch) }); return nil }
+func (s *stopper) Tail() string { return "" }
+
 // GameArgs ist der Spielstart: das Spiel schreibt markers.jsonl und survey.json in den Session-Ordner.
 func GameArgs(exe, dir string, extra []string) []string {
 	return append([]string{exe, "--playtest", dir}, extra...)
@@ -145,14 +173,16 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	if err != nil {
 		return r.Status(), noFFmpeg(err)
 	}
-	exe, gdir, err := r.Game()
-	if err != nil {
-		return r.Status(), err
+	var exe, gdir string
+	if !o.VoiceOnly {
+		if exe, gdir, err = r.Game(); err != nil {
+			return r.Status(), err
+		}
 	}
 	if strings.TrimSpace(o.Mic) == "" {
 		return r.Status(), ErrNoMic
 	}
-	if o.Monitor < 0 || o.Monitor > 15 {
+	if !o.VoiceOnly && (o.Monitor < 0 || o.Monitor > 15) {
 		return r.Status(), ErrBadMonitor
 	}
 	// Die Geräteprobe dauert bis zu einigen Sekunden und läuft ohne r.mu, damit Status() in dieser Zeit antwortet.
@@ -163,7 +193,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 		}
 	}
 	first := ""
-	if r.Pick != nil {
+	if r.Pick != nil && !o.VoiceOnly {
 		first = r.Pick(ffmpeg)
 	}
 	r.mu.Lock()
@@ -186,8 +216,15 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	meta := Meta{CaptureMs: capture, StartMs: r.Now().UnixMilli(), Mic: o.Mic, Monitor: strconv.Itoa(o.Monitor), Encoder: enc, Stand: standRunning,
 		FFmpeg: strings.Join(FFmpegArgs("ffmpeg", dir, o.Mic, o.Monitor, enc), " "), GameArgs: GameArgs("k3c-game", dir, o.GameArgs)[1:]}
+	var game Proc
+	if o.VoiceOnly {
+		meta.Monitor, meta.FFmpeg, meta.GameArgs = "", strings.Join(VoiceArgs("ffmpeg", dir, o.Mic), " "), nil
+		game = &stopper{ch: make(chan struct{}), dead: rec.dead}
+	}
 	writeMeta(dir, meta)
-	game, err := r.Spawn(GameArgs(exe, dir, o.GameArgs), gdir)
+	if !o.VoiceOnly {
+		game, err = r.Spawn(GameArgs(exe, dir, o.GameArgs), gdir)
+	}
 	if err != nil {
 		r.quit(rec)
 		meta.EndMs, meta.Stand, meta.Error = r.Now().UnixMilli(), StageRecorded, "Spiel nicht gestartet: "+err.Error()
@@ -198,8 +235,9 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	r.st = Status{Running: true, ID: id, StartMs: meta.StartMs, Encoder: enc}
 	r.game, r.stopping, r.done = game, false, make(chan struct{})
-	r.stats = Stats{}
-	r.log("info", "🚀 Spieltest gestartet", "id", id, "encoder", enc)
+	r.stats = Stats{NoVideo: o.VoiceOnly}
+	r.st.VoiceOnly = o.VoiceOnly
+	r.log("info", "🚀 Spieltest gestartet", "id", id, "encoder", enc, "nurMikro", o.VoiceOnly)
 	stopWatch := make(chan struct{}) // endet mit dem Spiel, vor ffmpeg: sonst warnt der Wächter beim normalen Stopp
 	go r.watch(dir, rec, stopWatch)
 	go r.finish(dir, meta, rec, game, r.done, stopWatch)
@@ -209,6 +247,20 @@ func (r *Recorder) Start(o Options) (Status, error) {
 // startFFmpeg probiert zuerst `first` (der Encoder, den die Probe bestätigt hat; leer: QSV), dann libx264; ein
 // Prozess, der innerhalb von Settle endet, gilt als gescheitert.
 func (r *Recorder) startFFmpeg(ffmpeg, dir string, o Options, first string) (*waited, string, error) {
+	if o.VoiceOnly {
+		p, err := r.Spawn(VoiceArgs(ffmpeg, dir, o.Mic), dir)
+		if err != nil {
+			return nil, "", fmt.Errorf("%w: %v", errNoRecording, err)
+		}
+		w := &waited{Proc: p, dead: make(chan struct{})}
+		go func() { w.err = p.Wait(); close(w.dead) }()
+		select {
+		case <-w.dead:
+			return nil, "", fmt.Errorf("%w (Mikro belegt oder Gerät falsch?): %s", errNoRecording, p.Tail())
+		case <-time.After(r.Settle):
+			return w, "", nil
+		}
+	}
 	var last string
 	encs := []string{EncoderQSV, EncoderX264}
 	switch first {

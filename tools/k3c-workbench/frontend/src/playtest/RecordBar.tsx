@@ -48,10 +48,10 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
   const choose = (m: string) => { setMic(m); savePref('playtest.mic', m); };
   const screen = (m: string) => { setMonitor(m); savePref('playtest.monitor', m); };
   const refresh = () => { setError(''); playtestApi.devices().then(setDevices, (e) => setError(message(e))); };
-  const start = async (shown: string) => {
+  const start = async (shown: string, voiceOnly = false) => {
     setError('');
     try {
-      setStatus(await playtestApi.start({ mic, monitor: Number(shown), gameArgs: [] }));
+      setStatus(await playtestApi.start({ mic, monitor: Number(shown), gameArgs: [], voiceOnly }));
       onChange();
     } catch (e) {
       setError(message(e));
@@ -81,10 +81,12 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
         {devices?.encoder && !status.running && <Text size="1" color="gray">Encoder: {devices.encoder}</Text>}
         <ActionButton disabled={status.running || !micKnown || devices?.ffmpeg === false}
           onClick={() => start(shownMonitor)}>Spieltest starten</ActionButton>
+        <ActionButton variant="soft" disabled={status.running || !micKnown || devices?.ffmpeg === false}
+          onClick={() => start(shownMonitor, true)}>Nur Mikro starten</ActionButton>
         <ActionButton color="red" variant="soft" disabled={!status.running} onClick={stop}>Stopp</ActionButton>
         {status.running && (
           <Text size="2" weight="bold" color="red" role="status">
-            ● Aufnahme {status.id} · {clock(now - status.startMs)} · {status.encoder}
+            ● {status.voiceOnly ? 'Mikro-Session' : 'Aufnahme'} {status.id} · {clock(now - status.startMs)}{status.encoder ? ` · ${status.encoder}` : ''}
           </Text>
         )}
       </Flex>

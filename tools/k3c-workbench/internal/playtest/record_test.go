@@ -320,3 +320,33 @@ func TestStatusAntwortetWaehrendDerGeraetepruefung(t *testing.T) {
 	close(release)
 	<-done
 }
+
+func TestMikroSessionOhneBildUndSpiel(t *testing.T) {
+	g := newRig(t)
+	g.rec.Game = func() (string, string, error) { return "", "", ErrNoGame } // ohne Spiel-EXE muss sie trotzdem starten
+	st, err := g.rec.Start(Options{Mic: "Mikro", Monitor: 99, VoiceOnly: true})
+	if err != nil || !st.Running || !st.VoiceOnly || st.Encoder != "" {
+		t.Fatalf("st=%+v err=%v", st, err)
+	}
+	if len(g.procs) != 1 {
+		t.Fatalf("nur ffmpeg erwartet, gestartet: %d", len(g.procs))
+	}
+	a := strings.Join(g.procs[0].args, " ")
+	if strings.Contains(a, "ddagrab") || strings.Contains(a, "video.mkv") || !strings.Contains(a, "audio=Mikro") || !strings.HasSuffix(a, "voice.wav") {
+		t.Errorf("Aufruf: %s", a)
+	}
+	if s := g.rec.Status(); s.Stats == nil || !s.Stats.NoVideo {
+		t.Errorf("Stats: %+v", s.Stats)
+	}
+	if err := g.rec.Stop(); err != nil {
+		t.Fatal(err)
+	}
+	g.rec.Wait()
+	m := g.readMeta(t, st.ID)
+	if m.Stand != StageRecorded || m.EndMs == 0 || m.Error != "" || m.Monitor != "" || m.Crash {
+		t.Errorf("Meta nach Stop: %+v", m)
+	}
+	if g.procs[0].quits != 1 {
+		t.Errorf("ffmpeg nicht sauber beendet: quits=%d", g.procs[0].quits)
+	}
+}

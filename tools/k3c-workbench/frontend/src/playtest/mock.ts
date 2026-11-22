@@ -103,8 +103,8 @@ export function mockPlaytest(): PlaytestApi {
       if (status.running) throw new Error('Aufnahme läuft schon');
       if (!o.mic) throw new Error('kein Mikrofon gewählt');
       status = {
-        running: true, id: '2026-11-23-1', startMs: Date.now(), encoder: 'h264_amf 1080p30',
-        stats: { voiceBytes: 320000, videoBytes: 1_600_000, voiceRate: [32000, 32000, 32000, 32000], videoRate: [90000, 120000, 70000, 100000], warn: '' },
+        running: true, id: '2026-11-23-1', startMs: Date.now(), encoder: o.voiceOnly ? '' : 'h264_amf 1080p30', voiceOnly: !!o.voiceOnly,
+        stats: { voiceBytes: 320000, videoBytes: o.voiceOnly ? 0 : 1_600_000, voiceRate: [32000, 32000, 32000, 32000], videoRate: o.voiceOnly ? [] : [90000, 120000, 70000, 100000], warn: '', noVideo: !!o.voiceOnly },
       };
       return status;
     },

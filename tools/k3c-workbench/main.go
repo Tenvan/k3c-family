@@ -80,7 +80,7 @@ func windowOptions(app *App) *options.App {
 		Title: "K3C Workbench", Width: win.Width, Height: win.Height, MinWidth: windowstate.MinWidth, MinHeight: windowstate.MinHeight,
 		StartHidden:      true,
 		BackgroundColour: &options.RGBA{R: 0x0b, G: 0x10, B: 0x26, A: 0xff}, // --night-1
-		AssetServer:      &assetserver.Options{Assets: assets},
+		AssetServer:      &assetserver.Options{Assets: assets, Handler: app.windowMediaHandler()}, // Player und Marker-Bilder der Seite Spieltest
 		OnStartup:        app.startup,
 		OnDomReady: func(ctx context.Context) {
 			go winicon.Set(windowIconPNG) // Dev-Läufe haben die Icon-Ressource der EXE nicht

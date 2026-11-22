@@ -16,7 +16,7 @@ const FFmpegEnv = "K3C_FFMPEG"
 type finder struct {
 	env      func(string) string
 	lookPath func(string) (string, error)
-	regPaths func() []string          // aktueller User- und Machine-PATH aus der Registry (nur Windows)
+	regPaths func() []string // aktueller User- und Machine-PATH aus der Registry (nur Windows)
 	glob     func(string) ([]string, error)
 	isFile   func(string) bool
 }

@@ -267,6 +267,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1229](B-1229-abnahme-spieltest-modus.md) | CLI | Frage | mittel | offen | WZ66 | Abnahme-Läufe WZ66: Sim, Balance, Gen samt Golden und Race laufen grün |
 | [B-1231](B-1231-abnahme-wl1-sim-balance-gen-race.md) | CLI | Frage | mittel | offen | WL1 | Abnahme-Läufe WL1: Sim, Balance, Gen samt Golden, Race |
 | [B-1233](B-1233-spieltest-monitor-null-absturz.md) | DEV | Problem | hoch | eingeplant | WZ65 | Workbench-Fenster wird beim Start der Spieltest-Aufnahme schwarz (Monitor bekommt null-Listen) |
+| [B-1234](B-1234-spieltest-player-mikro-session.md) | DEV | Idee | hoch | eingeplant | WZ65 | Spieltest: Player im Fenster, Mikro-Session ohne Spiel, bessere Transkription |
 
 ## Archiv
 

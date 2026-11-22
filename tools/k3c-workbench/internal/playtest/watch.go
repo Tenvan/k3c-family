@@ -14,7 +14,8 @@ type Stats struct {
 	VideoBytes int64   `json:"videoBytes"`
 	VoiceRate  []int64 `json:"voiceRate"` // Bytes/s, älteste zuerst, höchstens statSamples
 	VideoRate  []int64 `json:"videoRate"`
-	Warn       string  `json:"warn"` // leer, solange alles ankommt
+	Warn       string  `json:"warn"`    // leer, solange alles ankommt
+	NoVideo    bool    `json:"noVideo"` // Mikro-Session: kein Bild, der Wächter überwacht nur den Ton
 }
 
 const (
@@ -52,6 +53,9 @@ func (s *Stats) advance(w *watchState, voice, video int64, alive bool, tail stri
 	s.VoiceRate, s.VideoRate = appendRate(s.VoiceRate, dv), appendRate(s.VideoRate, dw)
 	w.idleVoice = idleCount(w.idleVoice, dv)
 	w.idleVd = idleCount(w.idleVd, dw)
+	if s.NoVideo {
+		w.idleVd = 0
+	}
 	switch {
 	case !alive:
 		s.Warn = "ffmpeg ist beendet – es wird nichts mehr aufgezeichnet"

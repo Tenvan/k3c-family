@@ -102,11 +102,15 @@ type Transcript struct {
 	Segments     []Segment `json:"segments"`
 }
 
+// whisperQueue ist die Stückgröße in Sekunden, die der Filter am Stück erkennt. Der Standard (3 s) zerhackt Sätze und lässt
+// das Modell bei Pausen „Vielen Dank.“ erfinden; an einer echten Aufnahme (44 s, Bluetooth-Mikro) erkannte 20 s die Sätze am besten.
+const whisperQueue = "20"
+
 // WhisperArgs ist der Aufruf im Session-Ordner dir (relative Pfade, damit `C:` im Filter nicht gequotet werden muss);
 // das Ergebnis des Filters steht roh in `dest` (Zeilen JSON, Zeiten in ms ab Dateianfang).
 func WhisperArgs(ffmpeg, dir, model, lang, dest string) []string {
 	return []string{ffmpeg, "-hide_banner", "-loglevel", "warning", "-nostats", "-y", "-i", fileVoice, "-vn",
-		"-af", "whisper=model=" + filterPath(dir, model) + ":language=" + lang + ":format=json:destination=" + dest, "-f", "null", "-"}
+		"-af", "whisper=model=" + filterPath(dir, model) + ":language=" + lang + ":queue=" + whisperQueue + ":format=json:destination=" + dest, "-f", "null", "-"}
 }
 
 // Sprachen, die die Auswahl der Seite anbietet (Standard de).

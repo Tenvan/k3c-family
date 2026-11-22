@@ -101,6 +101,9 @@ func CheckDevices(run probe, ff, mic string, monitor int) error {
 	if out, err := run(MicProbeArgs(ff, mic)); err != nil {
 		return fmt.Errorf("Mikrofon „%s“ lässt sich nicht öffnen (abgezogen, belegt oder umbenannt?): %s", mic, lastError(out))
 	}
+	if monitor < 0 { // Mikro-Session: kein Bild
+		return nil
+	}
 	if out, err := run(MonitorProbeArgs(ff, monitor)); err != nil {
 		return fmt.Errorf("Monitor %d lässt sich nicht aufnehmen (nicht angeschlossen?): %s", monitor+1, lastError(out))
 	}
