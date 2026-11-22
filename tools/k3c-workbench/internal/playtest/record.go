@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -61,6 +60,7 @@ type Status struct {
 	StartMs   int64  `json:"startMs"`
 	Encoder   string `json:"encoder"`
 	VoiceOnly bool   `json:"voiceOnly"`       // Mikro-Session ohne Bild und Spiel
+	Starting  bool   `json:"starting"`        // das Spiel startet, die Aufnahme beginnt mit seinem ersten Bild
 	Stats     *Stats `json:"stats,omitempty"` // Messwerte der laufenden Aufnahme (Diagramme, Warnung)
 }
 
@@ -71,6 +71,7 @@ type Recorder struct {
 	LookPath func(string) (string, error)
 	Check    func(ffmpeg string, o Options) error // prüft Mikro und Monitor gegen die echten Geräte; nil: keine Prüfung
 	Pick     func(ffmpeg string) string           // wählt den Encoder, der sich wirklich öffnen lässt; nil: QSV, dann libx264
+	Ready    time.Duration                        // Frist für das erste Bild des Spiels, danach beginnt die Aufnahme trotzdem (Standard 30 s)
 	Interval time.Duration                        // Takt des Wächters (Standard 1 s)
 	Game     func() (exe, dir string, err error)
 	Now      func() time.Time
@@ -161,87 +162,6 @@ func (r *Recorder) busy() (Status, bool) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	return r.st, r.st.Running
-}
-
-// Start prüft ffmpeg, Spiel und Mikro, nimmt auf (QSV, sonst libx264) und startet das Spiel. Scheitert etwas davor,
-// startet kein Spiel und der Ordner verschwindet wieder.
-func (r *Recorder) Start(o Options) (Status, error) {
-	if st, busy := r.busy(); busy {
-		return st, ErrBusy
-	}
-	ffmpeg, err := r.LookPath("ffmpeg")
-	if err != nil {
-		return r.Status(), noFFmpeg(err)
-	}
-	var exe, gdir string
-	if !o.VoiceOnly {
-		if exe, gdir, err = r.Game(); err != nil {
-			return r.Status(), err
-		}
-	}
-	if strings.TrimSpace(o.Mic) == "" {
-		return r.Status(), ErrNoMic
-	}
-	if !o.VoiceOnly && (o.Monitor < 0 || o.Monitor > 15) {
-		return r.Status(), ErrBadMonitor
-	}
-	// Die Geräteprobe dauert bis zu einigen Sekunden und läuft ohne r.mu, damit Status() in dieser Zeit antwortet.
-	if r.Check != nil {
-		if err := r.Check(ffmpeg, o); err != nil {
-			r.log("warn", "❌ Gerät nicht nutzbar: "+err.Error())
-			return r.Status(), err
-		}
-	}
-	first := ""
-	if r.Pick != nil && !o.VoiceOnly {
-		first = r.Pick(ffmpeg)
-	}
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	if r.st.Running {
-		return r.st, ErrBusy
-	}
-	id, dir, err := r.newDir()
-	if err != nil {
-		return r.st, err
-	}
-	r.active.Store(&id)
-	capture := r.Now().UnixMilli()
-	rec, enc, err := r.startFFmpeg(ffmpeg, dir, o, first)
-	if err != nil {
-		_ = os.RemoveAll(dir)
-		r.active.Store(nil)
-		r.log("warn", "❌ Aufnahme nicht gestartet: "+err.Error(), "id", id)
-		return r.st, err
-	}
-	meta := Meta{CaptureMs: capture, StartMs: r.Now().UnixMilli(), Mic: o.Mic, Monitor: strconv.Itoa(o.Monitor), Encoder: enc, Stand: standRunning,
-		FFmpeg: strings.Join(FFmpegArgs("ffmpeg", dir, o.Mic, o.Monitor, enc), " "), GameArgs: GameArgs("k3c-game", dir, o.GameArgs)[1:]}
-	var game Proc
-	if o.VoiceOnly {
-		meta.Monitor, meta.FFmpeg, meta.GameArgs = "", strings.Join(VoiceArgs("ffmpeg", dir, o.Mic), " "), nil
-		game = &stopper{ch: make(chan struct{}), dead: rec.dead}
-	}
-	writeMeta(dir, meta)
-	if !o.VoiceOnly {
-		game, err = r.Spawn(GameArgs(exe, dir, o.GameArgs), gdir)
-	}
-	if err != nil {
-		r.quit(rec)
-		meta.EndMs, meta.Stand, meta.Error = r.Now().UnixMilli(), StageRecorded, "Spiel nicht gestartet: "+err.Error()
-		writeMeta(dir, meta)
-		r.active.Store(nil)
-		r.log("warn", "❌ Spiel nicht gestartet: "+err.Error(), "id", id)
-		return r.st, fmt.Errorf("Spiel nicht gestartet: %w", err)
-	}
-	r.st = Status{Running: true, ID: id, StartMs: meta.StartMs, Encoder: enc}
-	r.game, r.stopping, r.done = game, false, make(chan struct{})
-	r.stats = Stats{NoVideo: o.VoiceOnly}
-	r.st.VoiceOnly = o.VoiceOnly
-	r.log("info", "🚀 Spieltest gestartet", "id", id, "encoder", enc, "nurMikro", o.VoiceOnly)
-	stopWatch := make(chan struct{}) // endet mit dem Spiel, vor ffmpeg: sonst warnt der Wächter beim normalen Stopp
-	go r.watch(dir, rec, stopWatch)
-	go r.finish(dir, meta, rec, game, r.done, stopWatch)
-	return r.st, nil
 }
 
 // startFFmpeg probiert zuerst `first` (der Encoder, den die Probe bestätigt hat; leer: QSV), dann libx264; ein

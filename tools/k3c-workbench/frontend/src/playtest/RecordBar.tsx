@@ -86,11 +86,12 @@ export function RecordBar({ active, onChange }: { active: boolean; onChange: () 
         <ActionButton color="red" variant="soft" disabled={!status.running} onClick={stop}>Stopp</ActionButton>
         {status.running && (
           <Text size="2" weight="bold" color="red" role="status">
-            ● {status.voiceOnly ? 'Mikro-Session' : 'Aufnahme'} {status.id} · {clock(now - status.startMs)}{status.encoder ? ` · ${status.encoder}` : ''}
+            ● {status.starting ? 'Start' : status.voiceOnly ? 'Mikro-Session' : 'Aufnahme'} {status.id} · {clock(now - status.startMs)}{status.encoder ? ` · ${status.encoder}` : ''}
           </Text>
         )}
       </Flex>
-      {status.running && status.stats && <RecordMonitor stats={status.stats} />}
+      {status.starting && <Text size="2" color="gray" role="status">Das Spiel startet, die Aufnahme beginnt mit seinem ersten Bild …</Text>}
+      {status.running && !status.starting && status.stats && <RecordMonitor stats={status.stats} />}
       {devices?.ffmpeg === false && <NoticeCard title="ffmpeg fehlt" tone="warn">{devices.message}</NoticeCard>}
       {devices?.ffmpeg && mics.length === 0 && (
         <NoticeCard title="Kein Mikrofon gefunden" tone="warn">

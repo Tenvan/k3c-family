@@ -66,6 +66,8 @@ export interface PlaytestStats {
   videoBytes: number;
   voiceRate: number[];
   videoRate: number[];
+  /** Pegel des Mikros je Sekunde in Prozent (0 bis 100), der „Ausschlag“. */
+  voiceLevel: number[];
   /** Leer, solange alles ankommt; sonst der Grund (Ton oder Bild steht, ffmpeg beendet). */
   warn: string;
   /** Mikro-Session: kein Bild, nur das Ton-Diagramm. */
@@ -78,6 +80,8 @@ export interface PlaytestStatus {
   startMs: number;
   encoder: string;
   voiceOnly?: boolean;
+  /** Das Spiel startet; die Aufnahme beginnt mit seinem ersten Bild. */
+  starting?: boolean;
   stats?: PlaytestStats;
 }
 

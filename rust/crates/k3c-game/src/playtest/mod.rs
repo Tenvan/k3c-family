@@ -112,6 +112,13 @@ impl Playtest {
         self
     }
 
+    /// Meldet der Workbench, dass das Spiel sein erstes richtiges Bild zeigt: Datei `<ordner>/ready` mit Unix-ms. Erst dann
+    /// startet die Aufnahme (Bild und Ton beginnen mit dem Spiel, nicht beim Laden). Ein Fehler wird ignoriert: Die
+    /// Workbench startet nach einer Frist auch ohne die Datei.
+    pub fn announce_ready(&self, now_ms: u64) {
+        let _ = std::fs::write(self.dir.join("ready"), now_ms.to_string());
+    }
+
     /// Fehlerzustand (REC durchgestrichen).
     pub fn failed(&self) -> bool {
         self.sink.failed()

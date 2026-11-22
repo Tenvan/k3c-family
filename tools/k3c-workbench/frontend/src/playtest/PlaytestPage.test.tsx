@@ -198,9 +198,9 @@ describe('Aufnahme-Monitor', () => {
   it('bricht nicht ab, wenn die Raten beim Start noch null sind (Go liefert nil-Listen als null)', () => {
     const host = document.createElement('div');
     const root = createRoot(host);
-    const stats = { voiceBytes: 0, videoBytes: 0, voiceRate: null, videoRate: null, warn: '' } as unknown as PlaytestStats;
+    const stats = { voiceBytes: 0, videoBytes: 0, voiceRate: null, videoRate: null, voiceLevel: null, warn: '' } as unknown as PlaytestStats;
     act(() => root.render(<RecordMonitor stats={stats} />));
-    expect(host.querySelector('[data-chart="Ton"]')!.textContent).toContain('0 KB/s');
+    expect(host.querySelector('[data-chart="Ton"]')!.textContent).toContain('Pegel 0 %');
     act(() => root.unmount());
   });
 
@@ -210,7 +210,7 @@ describe('Aufnahme-Monitor', () => {
     await act(async () => new Promise((r) => setTimeout(r, 1100)));
     const mon = host.querySelector('[data-monitor]')!;
     expect(mon.getAttribute('data-monitor')).toBe('ok');
-    expect(mon.querySelector('[data-chart="Ton"]')!.textContent).toContain('31 KB/s');
+    expect(mon.querySelector('[data-chart="Ton"]')!.textContent).toContain('Pegel 30 %');
     expect(mon.querySelector('[data-chart="Bild"]')).toBeTruthy();
     expect(mon.textContent).not.toContain('Aufnahme prüfen');
     act(() => button('Stopp', host).click());

@@ -103,8 +103,8 @@ type Transcript struct {
 }
 
 // whisperQueue ist die Stückgröße in Sekunden, die der Filter am Stück erkennt. Der Standard (3 s) zerhackt Sätze und lässt
-// das Modell bei Pausen „Vielen Dank.“ erfinden; an einer echten Aufnahme (44 s, Bluetooth-Mikro) erkannte 20 s die Sätze am besten.
-const whisperQueue = "20"
+// das Modell bei Pausen „Vielen Dank.“ erfinden; an einer echten Aufnahme (44 s, Bluetooth-Mikro) erkannte 20 bis 30 s die Sätze am besten; mehr bringt nichts, whisper.cpp arbeitet intern in Fenstern von 30 s.
+const whisperQueue = "30"
 
 // WhisperArgs ist der Aufruf im Session-Ordner dir (relative Pfade, damit `C:` im Filter nicht gequotet werden muss);
 // das Ergebnis des Filters steht roh in `dest` (Zeilen JSON, Zeiten in ms ab Dateianfang).
