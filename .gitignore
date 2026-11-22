@@ -4,6 +4,7 @@ _site/
 *.log
 .DS_Store
 /reports/
+/playtests/
 /saves/
 /certs/
 .omc/

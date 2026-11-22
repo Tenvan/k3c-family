@@ -25,13 +25,17 @@ var uiMethods = map[string]bool{
 	"GitHubStatus": true, "WorktreeCheck": true, "OpenInClaude": true, "Resources": true,
 	"GitOverview": true, "GitAction": true, "GitDeleteBranches": true, "GitPRs": true, "GitPRCreate": true, "GitPRAction": true,
 	"GitCheckMerged": true, "GitStamp": true, "TicketCreate": true, "TicketRecent": true,
+	"PlaytestList": true, "PlaytestPlan": true, "PlaytestDelete": true,
 }
 
 // uiHandler beantwortet alle Adressen unter uikit.Prefix, die Oberfläche liefert Vite.
 func (a *App) uiHandler() http.Handler {
 	api := &uikit.API{App: "k3c-workbench", Target: a, Methods: uiMethods, Bus: a.bus,
 		Track: func(name string) func() { return a.res.Track(name) }}
-	return api.Handler()
+	mux := http.NewServeMux()
+	mux.Handle("GET "+playtestMediaPrefix+"{id}/{file}", uikit.Guard(api.App, a.playtestMedia())) // Player der Seite Spieltest
+	mux.Handle("/", api.Handler())
+	return mux
 }
 
 // emitAll ist emit der Produktion: an die Wails-Laufzeit nur im Fenster (sie beendet das Programm bei einem ctx ohne

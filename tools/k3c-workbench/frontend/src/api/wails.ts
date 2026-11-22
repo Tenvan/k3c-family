@@ -3,6 +3,7 @@ import type {
   McpState, McpUsage, ResourceView, ServicesView, ServiceStatus, Source, TaskCatalog, TaskRun, PlanDoc, PlanItem, PlanningData, GitHubData, WorktreeDiff,
   GitBranch, GitPRList, GitView, TicketCreated, TicketInput,
 } from './types';
+import type { PlaytestPlan, PlaytestSession } from '../playtest/types';
 
 // Die Wails-Laufzeit legt window.go (Bindings der App) und window.runtime an. Die generierten Dateien unter
 // frontend/wailsjs/ bindet die Oberfläche bewusst nicht ein: so braucht der Typecheck keine Wails-CLI.
@@ -51,6 +52,9 @@ interface GoApp {
   GitStamp(): Promise<string>;
   TicketCreate(input: TicketInput): Promise<TicketCreated>;
   TicketRecent(n: number): Promise<TicketCreated[]>;
+  PlaytestList(): Promise<PlaytestSession[]>;
+  PlaytestPlan(action: string, id: string): Promise<PlaytestPlan>;
+  PlaytestDelete(action: string, id: string, confirm: boolean): Promise<PlaytestPlan>;
 }
 
 interface WailsRuntime {

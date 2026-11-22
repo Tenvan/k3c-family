@@ -1,0 +1,61 @@
+import type { PlaytestAction, PlaytestApi, PlaytestFile, PlaytestPlan, PlaytestSession } from './types';
+
+// Mock ohne Wails-Laufzeit (`?mock=1`, Tests): drei Sessions mit allen Ständen; Plan und Löschen verhalten sich wie
+// internal/playtest (Bestätigung nötig, laufende Aufnahme gesperrt, Sammelaktion nur für „ausgewertet“).
+
+const file = (name: string, size: number): PlaytestFile => ({ name, size });
+
+const MB = 1024 * 1024;
+
+function seed(): PlaytestSession[] {
+  const base = { startMs: Date.parse('2026-11-20T18:00:00'), running: false, hasVoice: true };
+  return [
+    { ...base, id: '2026-11-22-1', date: '2026-11-22', durationMs: 0, markers: 3, size: 12 * MB, stage: 'läuft', running: true,
+      hasVideo: true, hasVoice: false, files: [file('session.json', 300), file('video.mkv', 12 * MB)] },
+    { ...base, id: '2026-11-21-1', date: '2026-11-21', durationMs: 25 * 60_000, markers: 14, size: 480 * MB, stage: 'ausgewertet',
+      hasVideo: true, files: [file('session.json', 300), file('voice.wav', 40 * MB), file('video.mkv', 440 * MB), file('transcript.json', 9000), file('findings.json', 2000)] },
+    { ...base, id: '2026-11-20-1', date: '2026-11-20', durationMs: 42 * 60_000, markers: 6, size: 820 * MB, stage: 'aufgenommen',
+      hasVideo: true, files: [file('session.json', 300), file('voice.wav', 70 * MB), file('video.mkv', 750 * MB), file('markers.jsonl', 900)] },
+    { ...base, id: '2026-11-19-1', date: '2026-11-19', durationMs: 0, markers: 0, size: 100, stage: 'unvollständig', hasVideo: false,
+      hasVoice: false, files: [file('video.mkv', 100)] },
+  ];
+}
+
+export function mockPlaytest(): PlaytestApi {
+  let sessions = seed();
+  const find = (id: string) => {
+    const s = sessions.find((x) => x.id === id);
+    if (!s) throw new Error('Session oder Datei nicht gefunden');
+    if (s.running) throw new Error('Aufnahme läuft, Löschen gesperrt');
+    return s;
+  };
+  const plan = async (action: PlaytestAction, id: string): Promise<PlaytestPlan> => {
+    if (action === 'ausgewertet') {
+      const files = sessions.filter((s) => s.stage === 'ausgewertet' && s.hasVideo)
+        .map((s) => file(`${s.id}/video.mkv`, s.files.find((f) => f.name === 'video.mkv')?.size ?? 0));
+      return { action, id: '', files, total: files.reduce((n, f) => n + f.size, 0) };
+    }
+    const s = find(id);
+    const files = action === 'session' ? [file(`${s.id}/`, s.size)] : s.files.filter((f) => f.name === 'video.mkv');
+    return { action, id, files, total: files.reduce((n, f) => n + f.size, 0) };
+  };
+  return {
+    reset: () => {
+      sessions = seed();
+    },
+    list: async () => structuredClone(sessions),
+    plan,
+    remove: async (action, id, confirm) => {
+      const p = await plan(action, id);
+      if (!confirm) throw new Error('Löschen nicht bestätigt');
+      if (action === 'session') sessions = sessions.filter((s) => s.id !== id);
+      else {
+        const ids = action === 'video' ? [id] : sessions.filter((s) => s.stage === 'ausgewertet').map((s) => s.id);
+        sessions = sessions.map((s) => (ids.includes(s.id)
+          ? { ...s, hasVideo: false, size: s.size - (s.files.find((f) => f.name === 'video.mkv')?.size ?? 0), files: s.files.filter((f) => f.name !== 'video.mkv') }
+          : s));
+      }
+      return p;
+    },
+  };
+}
