@@ -40,7 +40,7 @@ Ralf (🧑) mit einem Mitspieler am TV; Claude misst und wertet aus.
 
 Genau ein Abnahme-Ticket für WZ64–WZ66 (B-742).
 
-- **Bereich:** –
+- **Bereich:** `playtests/**`
 - **Abhängig von:** WZ64, WZ66, B-1224
 - **Braucht 🧑:** Abnahme, Gerät
 - **Größe:** S
