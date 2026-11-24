@@ -63,6 +63,8 @@ pub struct StageInfo {
     /// `Frame::clock` der letzten Lesung
     pub spots_at: f64,
     pub spots_set: bool,
+    /// Ort des markierten Flaschenpost-Ziels in dieser Stufe (GS4.7); `None` = keins hier
+    pub bottle_goal: Option<f64>,
 }
 
 /// `Opening` ist eine aufgehobene Truhe: kurz offen, dann ausgeblendet (worldRenderer.ts › openChest).
@@ -91,10 +93,12 @@ impl Infos {
             let Some(w) = st.world.as_deref() else {
                 continue;
             };
+            let goal = crate::view::bottle::goal_in(f, st.index);
             let i = self.info_for(st.index);
             let info = &mut self.spare[i];
             info.index = st.index;
             info.update(w, f.clock, view);
+            info.bottle_goal = goal;
             self.next.push(i);
         }
         std::mem::swap(&mut self.infos, &mut self.next);

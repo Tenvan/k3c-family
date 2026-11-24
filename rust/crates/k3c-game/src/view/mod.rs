@@ -71,6 +71,7 @@
 //! Sim-Typen (frame, layer, roles, screen, session, story, voyage) und `Command::sim`. Offen bis RU10: `Campaign::world`
 //! (`WorldDef`).
 
+pub mod bottle;
 pub mod cell;
 pub mod crown;
 pub mod devkeys;

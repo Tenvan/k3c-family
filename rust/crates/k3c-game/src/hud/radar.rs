@@ -19,6 +19,10 @@ pub enum RadarKind {
     Stairs,
     Enemy,
     Player,
+    /// liegende Flaschenpost (GS4.7)
+    Bottle,
+    /// markiertes Ziel der Flaschenpost (GS4.7)
+    Goal,
 }
 
 /// RadarMarker ist ein Marker: Lage 0..1 entlang der Levelbreite; nur bei Monarchen Index, eigen und gefallen.

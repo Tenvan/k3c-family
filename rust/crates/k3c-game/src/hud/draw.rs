@@ -177,6 +177,7 @@ impl Hud {
         if pl.ok[ITEM_STORY] {
             self.draw_story(dst, st, f.as_deref_mut(), p, pl.at[ITEM_STORY], k, c.rect.dx() as f64);
         }
+        self.draw_bottle_arrow(dst, st, c, k);
         if pl.ok[ITEM_RADAR] {
             self.draw_radar(dst, st, c, pl.at[ITEM_RADAR], k, f);
         }

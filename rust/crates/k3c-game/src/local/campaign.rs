@@ -23,6 +23,8 @@ pub struct Campaign {
     pub run: u64,
     /// Die Welt der Kampagne (`None`, solange sie nicht gelesen ist)
     pub def: Option<WorldDef>,
+    /// Geschichtszeilen der Flaschenpost aus `def` (geteilt, damit der Frame nichts kopiert, GS4.7)
+    pub bottles: std::rc::Rc<Vec<Vec<String>>>,
     /// `def` ist gelesen
     pub ok: bool,
     pub island: String,
@@ -72,6 +74,7 @@ impl Campaign {
             completed: self.completed.clone(),
             fresh: false,
             grade: self.grade.clone(),
+            bottles: std::rc::Rc::clone(&self.bottles),
         };
         if self.fresh && ready {
             out.fresh = true;
@@ -103,6 +106,7 @@ impl Session {
             }
         };
         let first = def.islands.first().map(|i| i.id.clone());
+        self.camp.bottles = std::rc::Rc::new(def.story.bottles.clone());
         (self.camp.def, self.camp.ok) = (Some(def), true);
         if fresh {
             self.camp.island = first.unwrap_or_default();

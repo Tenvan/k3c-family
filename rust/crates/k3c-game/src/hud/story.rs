@@ -108,6 +108,7 @@ impl Hud {
         if dt < 0.0 || f.paused || f.loading {
             dt = 0.0;
         }
+        self.bottle_story(f);
         if let Some(w) = campaign_world(f) {
             self.story_points(f, w);
         }

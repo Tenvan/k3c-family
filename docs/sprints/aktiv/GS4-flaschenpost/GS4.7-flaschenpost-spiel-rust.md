@@ -1,6 +1,6 @@
 # GS4.7 · Flaschenpost im Rust-Spiel zeichnen (ersetzt GS4.4)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -61,5 +61,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-06 geprüft: Flasche samt Glitzer aus GS4.4 vorhanden; neu: Leuchten am Ziel (props/plan_bottle.rs, pulsiert, drei Scheiben), Radar-Marker Flasche/Ziel, Richtungspfeil je Spielerhälfte (hud/bottle.rs, ohne Text, ohne Allokation), Geschichtszeile bei bottleFound in allen Hälften (Campaign::bottles, Rc), Löschen am Ziel folgt dem Sim-Zustand (Markierung weg = Pfeil und Leuchten weg im selben Frame; Laden ohne Ereignis = keine Zeile). Tests: hud/bottle_tests.rs (8) und plan_bottle_tests.rs, cargo test -p k3c-game --lib 1093 grün, k3c-hud-Review ohne schwere Befunde.
+check:diff nicht grün abgeschlossen: Clippy-Fehler in fremder WIP (k3c-sim island/save_load.rs, hud/kampf_tests.rs, props/plan_tests.rs); eigene Dateien clippy- und fmt-sauber.
+Abweichungen: kleine Änderung in local/campaign.rs und view/story.rs (Zeilen der Flaschenpost an den Frame), da die Geschichte dort sonst nicht ankommt. Grenze: Die Markierung kennt die Anzeige nur, wenn die Stufe der Tiefe 0 im Frame liegt. Kein k3c-grafik-Review (kein Asset geändert).
