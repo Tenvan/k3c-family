@@ -8,32 +8,32 @@ import (
 	"path/filepath"
 	"time"
 
-	"k3c/engine/simcli"
+	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
 // Gebäude-Planer (B-923, Port aus dem früheren Asset-Studio, B-462, WZ9.2): liest data/hub.json und zeigt die Freischaltung als Matrix Hub-Stufe × Bauplatz. Nur
-// lesen; Matrix und Prüfung rechnet `simcli hub` (engine/sim, B-924: im Prozess). Bearbeiten und Schreiben:
+// lesen; Matrix und Prüfung rechnet `sim hub` (engine/sim, B-924: im Prozess). Bearbeiten und Schreiben:
 // app_planer_edit.go, app_planer_save.go (WZ9.3).
 
-// engineTimeout begrenzt einen Aufruf von simcli hub (Prüfung braucht Millisekunden).
+// engineTimeout begrenzt einen Aufruf von sim hub (Prüfung braucht Millisekunden).
 const engineTimeout = 30 * time.Second
 
-// Engine ist die Engine-Seite des Planers: input ist das JSON von `k3c-sim hub` ({"op":"plan","raw":…}), die Antwort
+// Engine ist die Engine-Seite des Planers: input ist das JSON von `k3c-game sim hub` ({"op":"plan","raw":…}), die Antwort
 // sein report. Ein Fehler ist die Meldung von k3c-sim oder ein Startfehler.
 type Engine func(ctx context.Context, input []byte) (json.RawMessage, error)
 
-// Direct ist die Engine im Prozess (engine/simcli, B-924) mit den Daten des Checkouts root; eine Panik der Engine
-// wird zum Fehler (recover in simcli.Exec).
-func Direct(root string) Engine {
+// Exe ist die Engine über die Spiel-EXE des Checkouts root (`k3c-game sim hub`, RU34.3, internal/gameexe); ist sie nicht
+// gebaut oder veraltet, nennt der Fehler den Bau-Befehl. Kein Rückfall auf die Go-Engine.
+func Exe(root string) Engine {
 	return func(ctx context.Context, input []byte) (json.RawMessage, error) {
 		ctx, cancel := context.WithTimeout(ctx, engineTimeout)
 		defer cancel()
-		ev, err := simcli.Call(ctx, []string{"hub"}, input, simcli.DirFiles(filepath.Join(root, "data")))
+		ev, err := gameexe.Call(ctx, gameexe.Options{Root: root, Sub: "hub", Input: input})
 		return ev.Report, err
 	}
 }
 
-// Editor ist der Gebäude-Planer eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (simcli hub).
+// Editor ist der Gebäude-Planer eines Checkouts: Root ist die Repo-Wurzel, Engine die Engine-Seite (sim hub).
 // Methoden: Plan, Check, Rules, Save.
 type Editor struct {
 	Root   string
@@ -114,7 +114,7 @@ func emptyPlan(rel string) HubPlanView {
 	return HubPlanView{Path: rel, Matrix: HubMatrix{Rows: []HubRow{}}, Findings: []HubFindingView{}, Notes: []string{}, Kinds: []string{}}
 }
 
-// engineReport ist die Antwort von `k3c-sim hub`.
+// engineReport ist die Antwort von `k3c-game sim hub`.
 type engineReport struct {
 	Matrix     HubMatrix        `json:"matrix"`
 	Findings   []HubFindingView `json:"findings"`

@@ -15,10 +15,10 @@ import (
 
 // Welten-Editor als MCP-Tools (B-954): data/worlds/<id>.json des Checkouts lesen, anlegen, ändern und prüfen. Dieselbe
 // Logik wie die Seite Welten (internal/world); geschrieben wird atomar und format-stabil, nach Prüfung wie beim Laden
-// im Spiel (sim.ParseWorld, engine/simcli world). Es läuft keine Simulation. Jedes Tool nimmt `checkout`.
+// im Spiel (sim.ParseWorld, engine/sim world). Es läuft keine Simulation. Jedes Tool nimmt `checkout`.
 
-// worldEngine ist die Engine-Seite des Editors (simcli world); Tests setzen einen Ersatz.
-var worldEngine = world.Direct
+// worldEngine ist die Engine-Seite des Editors (sim world); Tests setzen einen Ersatz.
+var worldEngine = world.Exe
 
 func worldEditor(root string) world.Editor {
 	return world.Editor{Root: root, Engine: worldEngine(root)}
