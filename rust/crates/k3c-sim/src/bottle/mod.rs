@@ -198,8 +198,10 @@ pub fn step_bottle(isl: &mut Island) {
         return;
     };
     let pool = pool(isl);
-    if let Some(x) = isl.stages[h].bottle.ashore {
-        if let Some(player) = living_near(&isl.stages[h], x, cfg.pickup_range_units) {
+    if let Some(x) = isl.stages[h].bottle.ashore
+        && let Some(player) = living_near(&isl.stages[h], x, cfg.pickup_range_units)
+    {
+        {
             let w = &mut isl.stages[h];
             w.bottle.ashore = None;
             w.bottle.found += 1;

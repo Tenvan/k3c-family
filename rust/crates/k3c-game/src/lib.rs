@@ -15,6 +15,7 @@ pub mod menu;
 pub mod playtest;
 pub mod props;
 pub mod replay;
+pub mod runs;
 pub mod still;
 pub mod view;
 pub mod world;

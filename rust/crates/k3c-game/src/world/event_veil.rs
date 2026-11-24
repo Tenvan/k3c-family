@@ -41,7 +41,10 @@ impl World {
             return;
         };
         let r = c.world_rect();
-        dst.rect(Rect::new(r.min.x as f32, r.min.y as f32, r.dx() as f32, r.dy() as f32), col);
+        dst.rect(
+            Rect::new(r.min.x as f32, r.min.y as f32, r.dx() as f32, r.dy() as f32),
+            col,
+        );
     }
 }
 

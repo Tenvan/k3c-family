@@ -1,0 +1,8 @@
+{
+  "args": [],
+  "stdin": "",
+  "code": 2,
+  "out": [
+    "{\"event\":\"error\",\"message\":\"Unterbefehl fehlt: run, balance, level, world oder hub\"}"
+  ]
+}

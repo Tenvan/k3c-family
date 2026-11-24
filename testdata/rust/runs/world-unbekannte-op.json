@@ -1,0 +1,10 @@
+{
+  "args": [
+    "world"
+  ],
+  "stdin": "{\"op\":\"fly\"}",
+  "code": 2,
+  "out": [
+    "{\"event\":\"error\",\"message\":\"unbekannte op \\\"fly\\\" (bekannt: level, values, check)\"}"
+  ]
+}

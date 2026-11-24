@@ -41,7 +41,11 @@ fn frame(w: SimWorld) -> Frame {
 fn schleier_nur_in_der_event_nacht_an_der_oberflaeche() {
     assert_eq!(veil_of(&night_with(&["sandstorm"], 0)), Some(SANDSTORM_VEIL));
     assert_eq!(veil_of(&night_with(&["fog"], 0)), Some(FOG_VEIL));
-    assert_eq!(veil_of(&night_with(&["sandstorm"], 1)), None, "unter Tage kein Schleier");
+    assert_eq!(
+        veil_of(&night_with(&["sandstorm"], 1)),
+        None,
+        "unter Tage kein Schleier"
+    );
     assert_eq!(veil_of(&night_with(&["raid"], 0)), None, "Überfall hat keinen Schleier");
     let mut tag = night_with(&["sandstorm"], 0);
     tag.cycle.phase = "day".into();

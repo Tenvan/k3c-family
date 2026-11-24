@@ -1,6 +1,7 @@
 //! Simulation: Port von engine/sim (deterministisch, bitgleich zu Go).
 
 pub mod boss;
+pub mod bottle;
 pub mod building;
 pub mod campaign;
 pub mod cargo;
@@ -12,7 +13,6 @@ pub mod economy;
 pub mod enemies;
 pub mod events;
 pub mod festival;
-pub mod bottle;
 pub mod hermit;
 pub mod hub;
 pub mod island;

@@ -2,9 +2,9 @@
 
 use std::process::ExitCode;
 
-use k3c_game::{demo, game, menu, replay, still};
+use k3c_game::{demo, game, menu, replay, runs, still};
 
-const USAGE: &str = "Aufruf: k3c-game [play] [Schalter des Spiels, --saves ordner --grafik ordner] | k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad] | k3c-game still <zustand> --out <png> [--grafik ordner] [--props --simview <json>] | k3c-game demo --driver <datei> [--sprites N] [--measure S] [--out datei] [--headless --steps N] [--fullscreen] [--grafik ordner] [--data ordner]";
+const USAGE: &str = "Aufruf: k3c-game [play] [Schalter des Spiels, --saves ordner --grafik ordner] | k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad] | k3c-game still <zustand> --out <png> [--grafik ordner] [--props --simview <json>] | k3c-game sim <run|level> [--input datei|-] [--headless] [--data ordner] [--stop-stdin] | k3c-game demo --driver <datei> [--sprites N] [--measure S] [--out datei] [--headless --steps N] [--fullscreen] [--grafik ordner] [--data ordner]";
 const REPLAY_USAGE: &str =
     "Aufruf: k3c-game replay <datei.jsonl.gz> [--headless | --window] [--measure N] [--out pfad]";
 
@@ -27,6 +27,8 @@ fn main() -> ExitCode {
                 return ExitCode::from(2);
             }
         },
+        // Läufe im Client (RU33): Sim und Level, JSON-Zeilen auf stdout, Exit-Codes 0, 1, 2, 130
+        Some((cmd, rest)) if cmd == "sim" => return runs::main(rest),
         // Lizenzdatei des Pakets (LIZENZEN.txt, Kopf): dieselbe Liste wie die Lizenz-Seite im Menü (RU57.1, B-1121)
         Some((cmd, _)) if cmd == "licenses" => {
             print!("{}", menu::licenses::license_text());

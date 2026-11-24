@@ -390,7 +390,6 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
     }
 }
 
-
 /// Gebaute Lager einer Stufe (Go: `Kind == "storage" && State == "built"`).
 fn built_storages(w: &World) -> i64 {
     w.sites

@@ -1,0 +1,10 @@
+{
+  "args": [
+    "bogus"
+  ],
+  "stdin": "",
+  "code": 2,
+  "out": [
+    "{\"event\":\"error\",\"message\":\"unbekannter Unterbefehl \\\"bogus\\\" (bekannt: run, balance, level, world, hub)\"}"
+  ]
+}

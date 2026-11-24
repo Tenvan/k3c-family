@@ -298,6 +298,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | GS3 | Abnahme Sprint GS3: Andenken und Chronik |
 | [B-1264](B-1264-wald-frame-zeit-messen.md) | CLI | Schuld | mittel | offen | RU43 | Die Frame-Zeit des dichteren Waldes ist gemessen (Replay headless, Vorher/Nachher) |
 | [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | RU43 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
+| [B-1270](B-1270-hubfixture-pfad-go-test.md) | CLI | Problem | niedrig | offen | RU33 | Go-Test TestHubFixtureDesMocksIstDieAntwortDerEngine liest den alten Workbench-Pfad |
+| [B-1271](B-1271-rust-sim-tests-rot-seit-wl2.md) | SIM | Problem | mittel | offen | RU33 | Vier Rust-Tests in k3c-sim sind seit WL2 rot (Standard-Welt, eingebettete Welten) |
+| [B-1272](B-1272-ru33-abnahme.md) | CLI | Idee | mittel | offen | RU33 | Abnahme RU33: Fensterlauf sim run, Sim-, Balance- und Gen-Läufe |
 
 ## Archiv
 

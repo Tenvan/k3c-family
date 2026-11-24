@@ -3,8 +3,8 @@
 
 use k3c_sim::state::{ResourceNode, World};
 
-use super::data::values;
 use super::buildings::Look;
+use super::data::values;
 use super::nature::{anim_phase, deco_roots, entity_look, mine_sign_look, node_look, object, on_plot, variant_look};
 use super::plan::{GOLD, Item, Planner, Shape, WHITE, px, visible};
 use super::plan_combat::portal_down;
@@ -40,7 +40,9 @@ fn intern(s: &str) -> &'static str {
 /// Die Skin-Tabelle der Welt (`WorldValues::skins`); ohne Werte eine leere Tabelle.
 fn world_skins(w: &World) -> &std::collections::BTreeMap<String, String> {
     static EMPTY: std::sync::OnceLock<std::collections::BTreeMap<String, String>> = std::sync::OnceLock::new();
-    w.vals.as_ref().map_or_else(|| EMPTY.get_or_init(Default::default), |v| &v.skins)
+    w.vals
+        .as_ref()
+        .map_or_else(|| EMPTY.get_or_init(Default::default), |v| &v.skins)
 }
 
 pub fn pennant_max() -> f64 {

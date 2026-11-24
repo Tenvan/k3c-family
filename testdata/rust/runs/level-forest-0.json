@@ -1,0 +1,10 @@
+{
+  "args": [
+    "level"
+  ],
+  "stdin": "{\"biome\":\"forest\",\"seed\":\"0\"}",
+  "code": 0,
+  "out": [
+    "{\"event\":\"result\",\"text\":\"Level forest · Seed \\\"0\\\" · Breite 900 Units · Hub-Mitte 450 · 18 Abschnitte à 50 Units\\n  0 edge @0\\n  1 forest @50\\n  2 chest @100\\n  3 forest @150\\n  4 chest @200\\n  5 portal @250\\n  6 forest @300\\n  7 forest @350\\n  8 hub @400\\n  9 hub @450\\n 10 forest @500\\n 11 stream @550\\n 12 recruitCamp @600\\n 13 recruitCamp @650\\n 14 clearing @700\\n 15 forest @750\\n 16 portal @800\\n 17 exit @850\\nObjekte: 169\\n  bush ×2 · erste x: 726.0901795872487, 744.0155001799576\\n  castle ×1 · erste x: 450\\n  chest ×2 · erste x: 125, 225\\n  exit ×1 · erste x: 875\\n  portal ×2 · erste x: 275, 825\\n  recruitCamp ×2 · erste x: 625, 675\\n  skillPoint ×4 · erste x: 287.1809515603818, 364.6329631260596, 372.89804819226265\\n  tree ×155 · erste x: 53.96577560529113, 56.8559969230555, 59.00094540277496\"}"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "args": [
+    "level"
+  ],
+  "stdin": "{\"biome\":\"cave\",\"seed\":\"familie-2026\"}",
+  "code": 0,
+  "out": [
+    "{\"event\":\"result\",\"text\":\"Level cave · Seed \\\"familie-2026\\\" · Breite 900 Units · Hub-Mitte 450 · 18 Abschnitte à 50 Units\\n  0 exit @0\\n  1 chest @50\\n  2 chest @100\\n  3 tunnel @150\\n  4 portal @200\\n  5 recruitCamp @250\\n  6 cavern @300\\n  7 tunnel @350\\n  8 hub @400\\n  9 hub @450\\n 10 cavern @500\\n 11 chasm @550\\n 12 cavern @600\\n 13 tunnel @650\\n 14 portal @700\\n 15 tunnel @750\\n 16 cavern @800\\n 17 edge @850\\nObjekte: 58\\n  bush ×7 · erste x: 338.44310655770823, 345.60337391123176, 535.6908639385365\\n  castle ×1 · erste x: 450\\n  chest ×2 · erste x: 75, 125\\n  exit ×1 · erste x: 25\\n  portal ×2 · erste x: 225, 725\\n  recruitCamp ×1 · erste x: 275\\n  rock ×33 · erste x: 154.40072774561122, 178.6604703431949, 195.50344797689468\\n  skillPoint ×4 · erste x: 35.79384354641661, 310.20901088556275, 320.397796777077\\n  stoneVein ×3 · erste x: 189.9508821228519, 357.7524242773652, 560.7336810487323\\n  tree ×4 · erste x: 339.5033369823359, 541.222963899374, 609.2410766347311\"}"
+  ]
+}
