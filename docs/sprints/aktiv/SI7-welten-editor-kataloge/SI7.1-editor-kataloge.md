@@ -61,4 +61,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Noch nicht umgesetzt. Die frühere Blockade-Notiz war falsch: SI3, SI4 und SI5 sind erledigt. Die Zuordnung je Welt liegt in `data/weather.json`, `data/mounts.json` und `data/hermits.json` (Feld `worlds`), nicht in der Welt-Datei, und das Rust-Spiel liest sie. Der Welten-Editor liegt im Studio (`tools/k3c-studio`). Umgesetzt wird die Auswahl im Studio mit ID-Prüfung gegen diese Katalog-Dateien.
+Teilweise (Backend): world_set nimmt `weather`, `mount` und `hermit` an und schreibt den Block `worlds` der Katalog-Dateien (`tools/k3c-studio/internal/world/catalog.go`). IDs werden gegen die Kataloge geprüft, `null` entfernt den Eintrag. Tests grün: `TestPicksSetzenUndEntfernen`, `TestPickUnbekannteIDLehntAb` (`catalog_test.go`). Offen: world_get-Anzeige, Frontend (Vitest) und Review. Branch `sprint/si7`, Commit `e2d9f1d7e`.
