@@ -118,6 +118,7 @@ pub fn step_cycle(w: &mut World, mut isl: Option<&mut IslandRef>, dt: f64) {
     let day_night = w.biome.cycle.r#type == "dayNight";
     if changed && w.cycle.phase == "dusk" {
         w.events.push(event(json!({"type": "dusk"})));
+        crate::bottle::at_dusk(w); // GS4.6: liegt die Flasche noch, ist sie weg (R4)
     }
     if changed && w.cycle.phase == "night" {
         w.events.push(event(json!({"type": "night", "day": w.cycle.day})));
@@ -156,6 +157,7 @@ fn dawn_break(w: &mut World, isl: Option<&mut IslandRef>, day_night: bool) {
     if !w.peace {
         night_events_end(w); // im Frieden gab es keine Events der Nacht (RU62.12)
     }
+    crate::bottle::at_dawn(w); // GS4.6: Flasche am Morgen (R1 bis R3)
 }
 
 /// Go: `minWaveGapSeconds`: der Mindestabstand zweier Wellen unter Tage (4 min Spielzeit, zielkorridore.md § 1, B-646).

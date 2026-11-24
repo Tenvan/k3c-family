@@ -12,6 +12,7 @@ pub mod economy;
 pub mod enemies;
 pub mod events;
 pub mod festival;
+pub mod bottle;
 pub mod hermit;
 pub mod hub;
 pub mod island;

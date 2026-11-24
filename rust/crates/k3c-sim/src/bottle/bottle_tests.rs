@@ -1,0 +1,143 @@
+//! Tests zu `bottle/mod.rs` (GS4.6, R1 bis R6): Rhythmus, Ziel-Bedingung, Erscheinen, Aufheben, Abend und Ziel erreicht.
+
+use std::sync::Arc;
+
+use super::*;
+use crate::state::coop_view::CoopChest;
+use crate::state::Player;
+
+fn cfg() -> Arc<BottleData> {
+    Arc::new(BottleData {
+        first_day: 3,
+        every_days: 4,
+        edge_margin_min_units: 2.0,
+        edge_margin_max_units: 6.0,
+        pickup_range_units: 1.5,
+        target_range_units: 1.5,
+    })
+}
+
+/// Eine Stufe der Tiefe 0 mit Konfiguration, Tag 3, Nacht vorbei, und einer Doppel-Truhe bei x = 50 als Ziel.
+fn welt() -> World {
+    let mut w = World {
+        seed: "insel-1".into(),
+        width_units: 100.0,
+        bottle_cfg: Some(cfg()),
+        ..Default::default()
+    };
+    w.biome.depth = 0;
+    w.cycle.day = 3;
+    w.coop.chests.push(CoopChest {
+        id: 1,
+        x: 50.0,
+        double: true,
+        waiting: None,
+    });
+    w
+}
+
+fn monarch_at(x: f64) -> Player {
+    Player {
+        index: 0,
+        x,
+        free: false,
+        ..Default::default()
+    }
+}
+
+fn names(w: &World) -> Vec<String> {
+    w.events
+        .iter()
+        .filter_map(|e| e.get("type").and_then(|v| v.as_str()).map(str::to_string))
+        .collect()
+}
+
+#[test]
+fn erste_flasche_am_tag_drei_mit_ziel() {
+    let mut w = welt();
+    at_dawn(&mut w);
+    let x = w.bottle.ashore.expect("Flasche liegt");
+    assert!(x <= 6.0 || x >= 94.0, "liegt am Inselende: {x}");
+    assert_eq!(w.bottle.last_day, Some(3));
+    assert!(names(&w).contains(&"bottleAshore".to_string()));
+}
+
+#[test]
+fn ohne_ziel_keine_flasche() {
+    let mut w = welt();
+    w.coop.chests.clear();
+    at_dawn(&mut w);
+    assert!(w.bottle.ashore.is_none(), "R3: ohne Ziel kein Erscheinen");
+}
+
+#[test]
+fn rhythmus_wartet_everydays() {
+    let mut w = welt();
+    w.bottle.last_day = Some(3);
+    w.cycle.day = 5;
+    at_dawn(&mut w);
+    assert!(w.bottle.ashore.is_none(), "vier Tage Abstand, Tag 5 zu früh");
+    w.cycle.day = 7;
+    at_dawn(&mut w);
+    assert!(w.bottle.ashore.is_some(), "Tag 7 erlaubt");
+}
+
+#[test]
+fn ort_ist_deterministisch() {
+    let (mut a, mut b) = (welt(), welt());
+    at_dawn(&mut a);
+    at_dawn(&mut b);
+    assert_eq!(a.bottle.ashore, b.bottle.ashore);
+}
+
+#[test]
+fn frieden_und_unter_tage_kein_erscheinen() {
+    let mut w = welt();
+    w.peace = true;
+    at_dawn(&mut w);
+    assert!(w.bottle.ashore.is_none(), "im Frieden keine Flasche");
+    let mut t = welt();
+    t.biome.depth = 1;
+    t.bottle_cfg = None;
+    at_dawn(&mut t);
+    assert!(t.bottle.ashore.is_none(), "unter Tage keine Konfiguration");
+}
+
+#[test]
+fn aufheben_setzt_markierung_auf_ein_ziel() {
+    let mut w = welt();
+    w.bottle.ashore = Some(10.0);
+    w.players.push(monarch_at(10.5));
+    step_pickup(&mut w);
+    assert!(w.bottle.ashore.is_none());
+    assert_eq!(w.bottle.found, 1);
+    assert_eq!(w.bottle.target, Some(50.0), "einzige Truhe ist das Ziel");
+    assert!(names(&w).contains(&"bottleFound".to_string()));
+}
+
+#[test]
+fn abend_verliert_liegende_flasche() {
+    let mut w = welt();
+    w.bottle.ashore = Some(10.0);
+    at_dusk(&mut w);
+    assert!(w.bottle.ashore.is_none());
+    assert!(names(&w).contains(&"bottleLost".to_string()));
+}
+
+#[test]
+fn ziel_erreicht_loescht_markierung() {
+    let mut w = welt();
+    w.bottle.target = Some(50.0);
+    w.players.push(monarch_at(50.2));
+    step_pickup(&mut w);
+    assert!(w.bottle.target.is_none());
+    assert!(names(&w).contains(&"bottleTargetReached".to_string()));
+}
+
+#[test]
+fn verschwundenes_ziel_loescht_markierung() {
+    let mut w = welt();
+    w.bottle.target = Some(70.0);
+    step_pickup(&mut w);
+    assert!(w.bottle.target.is_none(), "R6: Ziel besteht nicht mehr");
+}

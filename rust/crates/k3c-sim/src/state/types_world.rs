@@ -174,6 +174,12 @@ pub struct World {
     /// Der Einsiedler-Katalog der Welt (RU62.10); `None` = Welt ohne Einsiedler; ohne JSON.
     #[serde(skip)]
     pub hermit_cfg: Option<std::sync::Arc<k3c_data::hermits::HermitsFile>>,
+    /// Flaschenpost der Stufe (GS4.6, B-971): liegende Flasche, Markierung, Rhythmus; nicht im Spielstand (Schritt 3).
+    #[serde(skip)]
+    pub bottle: crate::bottle::BottleState,
+    /// Werte der Flaschenpost (data/bottle.json), beim Bau der Insel gesetzt; `None` = keine Flaschenpost.
+    #[serde(skip)]
+    pub bottle_cfg: Option<std::sync::Arc<k3c_data::bottle::BottleData>>,
     /// Das Fest nach dem Sieg über den Endboss (RU62.12, B-973); fehlt ohne Sieg und in Welten ohne Fest.
     #[serde(rename = "festival", skip_serializing_if = "Option::is_none")]
     pub festival: Option<super::festival_view::FestivalState>,
@@ -311,6 +317,8 @@ impl Default for World {
             mounts_cfg: None,
             hermit: None,
             hermit_cfg: None,
+            bottle: Default::default(),
+            bottle_cfg: None,
             festival: None,
             festival_rule: None,
             festival_goal: false,
