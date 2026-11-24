@@ -76,7 +76,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
+13. **Welt-Events nicht über das Studio setzbar (WE8.5):** `world_override_set` kennt `welt-events` nicht (nur die Go-Dateiliste). Entscheidung: Studio-Liste um `welt-events` erweitern (eigenes Ticket, Klasse A) oder Events über `events` setzen? Default: eigenes Ticket anlegen, Event-Zuordnung bis dahin offen. Entscheidung: 🧑.
+14. **Skins-Zuordnung (WE8.5):** B-996 nennt Variante → Asset, `skins` ist Basis-Asset → Ersatz-Asset (docs/rules/welten.md § 2.3). Ersatz-Assets wie `gegner/ninja` fehlen. Default: Skins nur, wo ein Ersatz-Asset existiert; sonst Feindnamen allein. Entscheidung: 🧑.
 
 ## Notizen
 
