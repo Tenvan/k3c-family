@@ -85,7 +85,7 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 | GS4.3 | `GS4.3-asset-flaschenpost.md` | Umsetzung | autonom | fertig |
 | GS4.4 | `GS4.4-flaschenpost-spiel.md` | Umsetzung | autonom | verworfen |
 | GS4.5 | `GS4.5-review.md` | Review | autonom | fertig |
-| GS4.6 | `GS4.6-flaschenpost-sim-rust.md` | Umsetzung | autonom | offen |
+| GS4.6 | `GS4.6-flaschenpost-sim-rust.md` | Umsetzung | autonom | fertig |
 | GS4.7 | `GS4.7-flaschenpost-spiel-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
