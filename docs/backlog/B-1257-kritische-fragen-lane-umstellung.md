@@ -74,4 +74,11 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Entscheidungen von Ralf (2026-11-24):
+1. Allokations-Ratsche: Option A, Grenze auf 941 angehoben (Umsetzung auf fix/alloc-ratsche, nicht auf main).
+2. WE6.6 (Skins): committen (Stash auf sprint/we6-6-skins sichern). Objekt-Skins und Endboss je Biom bleiben offen.
+3. B-1255 (lokale Änderung): committen (Ticket B-1256 folgt dieser Entscheidung).
+4. GS3.2 und GS4.3 (Assets): Studio-MCP laufen lassen, Assets über assets_*.
+5. Startwerte Schiff (B-1244): vor der Umsetzung prüfen.
+
+Noch nicht ausgeführt: Commits zu 2 und 3, Prüfung der Startwerte (5). Die Ausführung ist offen.

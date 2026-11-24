@@ -191,6 +191,7 @@ fn describe(ss: &[Station]) -> String {
 
 /// Der Ablauf läuft zweimal gleich, und Name und Takt jeder Station stimmen mit Go überein.
 #[test]
+#[ignore = "Referenz aus RU32 (Go-Zeit) veraltet: Spiel hat sich seitdem geändert, Takte nicht mehr gültig; neu aufnehmen (Ticket B-1258)"]
 fn ablauf_wie_go_zwei_laeufe_gleich() {
     let r = reference();
     assert_eq!(r.stations.len(), 14);

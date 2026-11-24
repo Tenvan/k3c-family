@@ -73,3 +73,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 ## Notizen
 
 Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+- Spieltest 2026-11-22-12, Befund f1: „Die Bauern laufen immer noch rum, tun nichts.“ (Insel 1 Stufe 0, Welt standard, Tag, Tag 2, Spieltest nur mit Tastatur)
