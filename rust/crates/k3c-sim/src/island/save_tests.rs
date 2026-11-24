@@ -101,15 +101,15 @@ pub(super) fn world_of(ids: &[&str]) -> WorldDef {
 #[test]
 fn save_v9_rundlauf() {
     let env = Env::new();
-    let raw = fixture(13);
-    let s = env.parse(&raw).expect("Version 13 lesen");
+    let raw = fixture(14);
+    let s = env.parse(&raw).expect("Version 14 lesen");
     assert_eq!(s.version, ISLAND_SAVE_VERSION);
     assert_eq!(
         (s.world.as_str(), s.island_id.as_str(), s.stages.len()),
         ("standard", "island1", 2)
     );
     let want: Value = serde_json::from_str(&raw).expect("Fixture ist JSON");
-    let d = golden::diff("saves/v13/familie.json", &want, &golden::tree(&s));
+    let d = golden::diff("saves/v14/familie.json", &want, &golden::tree(&s));
     assert!(d.is_empty(), "{d}");
     // Zweiter Durchgang über den Text: Lesen des geschriebenen Stands ergibt denselben Wert.
     let again = env
@@ -177,7 +177,7 @@ fn own_fehlertexte_wie_in_go() {
     };
     assert_eq!(
         err(|m| m["version"] = json!(99)),
-        "spielstand: Version 99, erwartet 1, 2, 3, 4, 5, 6, 7, 8 oder 13"
+        "spielstand: Version 99, erwartet 1, 2, 3, 4, 5, 6, 7, 8 oder 14"
     );
     assert_eq!(
         err(|m| {
@@ -253,7 +253,7 @@ fn own_island_from_v1_ueberfuehrt_die_campaign() {
     let s = island_from_v1(&old, default_options(&env.data.difficulty));
     assert_eq!(
         (s.version, s.campaign_id.as_str(), s.seed.as_str()),
-        (13, old.campaign_id.as_str(), old.seed.as_str())
+        (14, old.campaign_id.as_str(), old.seed.as_str())
     );
     let depths: Vec<i64> = s.stages.iter().map(|h| h.depth).collect();
     assert!(

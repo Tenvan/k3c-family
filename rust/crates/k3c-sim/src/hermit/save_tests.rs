@@ -35,7 +35,7 @@ fn zahlung_im_bau_uebersteht_speichern_und_laden() {
     run(&mut isl, &data, 8.0);
     let s = isl.to_save("x").expect("Spielstand");
     assert_eq!(s.version, ISLAND_SAVE_VERSION);
-    assert_eq!(ISLAND_SAVE_VERSION, 13);
+    assert_eq!(ISLAND_SAVE_VERSION, 14);
     assert!(s.hermit_paid);
     let json = serde_json::to_value(&s).expect("json");
     assert_eq!(json["hermitPaid"], true);

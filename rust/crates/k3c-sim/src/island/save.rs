@@ -22,7 +22,7 @@ use crate::state::{Fehler, WorldValues};
 use crate::world::{Options as WorldOptions, create_world};
 
 /// Go: `IslandSaveVersion`, die Version des Insel-Spielstands.
-pub const ISLAND_SAVE_VERSION: i64 = 13;
+pub const ISLAND_SAVE_VERSION: i64 = 14;
 
 /// Die Tabellen, die Go als Paket-Variablen hält: die Daten (`biomes`, `bosses`, `difficulty`), der Basis-Wertesatz
 /// (`defaultValues()`, Skill-Katalog für Stände ohne Welt) und die Standard-Welt (`standardWorld`).
@@ -120,6 +120,9 @@ pub struct IslandSave {
     /// abgeschlossen ist. Ältere Stände laden ohne Einträge.
     #[serde(rename = "chronicle", skip_serializing_if = "Vec::is_empty")]
     pub chronicle: Vec<super::chronicle::ChronicleEntry>,
+    /// Version 14 (GS4.6, B-971, R8): Flaschenpost der Insel (liegende Flasche, Markierung, Tag, Zähler); fehlt im Leerstand.
+    #[serde(rename = "bottle", skip_serializing_if = "crate::bottle::BottleSave::is_empty")]
+    pub bottle: crate::bottle::BottleSave,
 }
 
 /// Go: `IslandPlayerSave`, ein Spieler der Insel: inselweiter Index, Gold, die Tiefe seiner Stufe und seine Verteilung
@@ -174,6 +177,7 @@ impl Island {
             cargo: crate::cargo::save::to_save(&self.cargo),
             hermit_paid: self.hermit.paid,
             chronicle: self.chronicle.clone(),
+            bottle: self.stages.iter().find(|w| w.biome.depth == 0).map(|w| w.bottle.to_save()).unwrap_or_default(),
             ..IslandSave::default()
         };
         for w in &self.stages {
