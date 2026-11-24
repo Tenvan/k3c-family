@@ -76,8 +76,12 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Offene Fragen
 
-13. **Welt-Events nicht über das Studio setzbar (WE8.5):** `world_override_set` kennt `welt-events` nicht (nur die Go-Dateiliste). Entscheidung: Studio-Liste um `welt-events` erweitern (eigenes Ticket, Klasse A) oder Events über `events` setzen? Default: eigenes Ticket anlegen, Event-Zuordnung bis dahin offen. Entscheidung: 🧑.
-14. **Skins-Zuordnung (WE8.5):** B-996 nennt Variante → Asset, `skins` ist Basis-Asset → Ersatz-Asset (docs/rules/welten.md § 2.3). Ersatz-Assets wie `gegner/ninja` fehlen. Default: Skins nur, wo ein Ersatz-Asset existiert; sonst Feindnamen allein. Entscheidung: 🧑.
+13. **Welt-Events nicht im Studio setzbar (WE8.5):** `world_override_set` kennt `welt-events` nicht (nur die Go-Dateiliste). Default: eigenes Ticket für die Studio-Liste (Klasse A), Event-Zuordnung bis dahin offen. Entscheidung: 🧑.
+14. **Skins-Zuordnung (WE8.5):** B-996 nennt Variante → Asset, `skins` ist Basis-Asset → Ersatz-Asset (docs/rules/welten.md § 2.3). Ersatz-Assets wie `gegner/ninja` fehlen. Default: Skins nur, wo ein Ersatz-Asset existiert; sonst nur Feindnamen. Entscheidung: 🧑.
+15. **Prüflauf blockiert (WE8.8, GS4.6):** `task:check:diff` läuft wegen des veralteten Ordners `.work/we6-check` (kein Worktree, Dokumente fehlen) nicht durch; der Lösch-Befehl wurde vom Automatik-Filter abgelehnt. Default: Ordner von 🧑 löschen lassen oder eine Regel für den Test-Befehl freigeben. Entscheidung: 🧑.
+16. **Objekt-Skins und Endboss je Biom (WE6.6, WE6.5 AC-01/AC-02):** Default: Objekt-Skins und Standbild-Test für Bau und Endboss als Folge-Session anlegen. Entscheidung: 🧑.
+17. **Welt-Events-Schleier (WE8.8):** Default: Tönung `sandstorm` und `fog` in `data/look.json` übernehmen (vorläufig), Schleier-Zeichnung und Standbild-Test als Folge-Session. Entscheidung: 🧑.
+18. **Sessions mit Abhängigkeit (GS4.3 an GS4.6, GS4.7 an GS4.6, GS4.5 und GS3.6 an Vorgängern):** Default: in dieser Reihenfolge abarbeiten, sobald der Prüflauf läuft. Entscheidung: keine.
 
 ## Notizen
 
