@@ -1,6 +1,6 @@
 # GS3.6 · Review: Sprint-Abnahme GS3
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
