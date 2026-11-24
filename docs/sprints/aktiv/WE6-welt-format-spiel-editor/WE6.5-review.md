@@ -59,4 +59,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Review WE6 für die Studio-Anteile (WE6.3, WE6.4) durch Agent k3c-workbench: keine schweren Befunde. Behoben: unbekannte Insel-ID legte eine neue Insel an (jetzt Ablehnung vor dem Schreiben), unbekannter Endboss wird gegen data/bosses.json geprüft (Commit d669ed275, PR #865). Events und Plätze stehen in der Werte-Ansicht über die WE6.3-Tests. Nicht umgesetzt: Warnung bei fehlendem Asset und Bild-Vorschau der Skins (Engine prüft die Existenz nicht); Format-Feinheiten der Skin-Tabelle (leichte Befunde, im PR benannt). Abnahme: Sichtprüfung der Welten-Oberfläche durch 🧑. WE6.6 (Rust-Spiel) ist noch offen, Lane zweit.
+Review WE6, Studio-Anteile (WE6.3, WE6.4) und PR #875 nur gelesen, ohne Prüfläufe (Tests ausstehend).
+
+- AC-03 erfüllt: Tests in `tools/k3c-studio/internal/world/edit_endboss_skins_test.go` und `edit_override_lists_test.go`. Einschränkung: kein MCP-Roundtrip-Test, MCP-Beschreibung nennt `endBoss`, `skins`, `events` nicht.
+- AC-04 erfüllt im Code (`frontend/src/world/WorldBoss.tsx`), `task check:dev` steht aus.
+- AC-02 teilweise: #875 wendet Skins auf Gegner an (`actors/catalog.rs` › `skinned`), Rückfall auf das Basis-Asset ist da. Objekt-Skins und Log bei fehlendem Ersatz-Asset fehlen, Ticket nötig.
+- AC-01 offen: Bau und Endboss je Biom, kein Standbild-Test. WE6.6 liefert ihn nach.
+- Befund: „Erlaubte Dateien“ nennen `tools/k3c-workbench/internal/{world,mcpsrv}/**` und `frontend/src/world/**`; der Code liegt in `tools/k3c-studio/`. Vor dem Abnahme-Ticket korrigieren.
+- Abnahme-Ticket erst nach AC-01. Sichtprüfung der Welten-Oberfläche und B-993/AC-03 durch 🧑.
