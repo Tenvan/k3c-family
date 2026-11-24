@@ -1,6 +1,6 @@
 # GS4.5 · Review: Sprint-Abnahme GS4
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
