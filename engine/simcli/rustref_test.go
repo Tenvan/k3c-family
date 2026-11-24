@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"k3c/data"
 )
 
 // Vergleichsdateien für das Rust-Spiel (RU33.1, Muster engine/internal/detvec): Je Fall steht Aufruf, Eingabe, Exit-Code und
@@ -28,8 +30,17 @@ type rustRefCase struct {
 }
 
 // rustRefCases sind die Aufrufe; kurze Testläufe mit festen Eingaben (Sim-Sperre), kein Balancing.
-func rustRefCases() map[string]rustRefCase {
+func rustRefCases(t *testing.T) map[string]rustRefCase {
+	t.Helper()
 	return map[string]rustRefCase{
+		"world-level-standard":  {Args: []string{"world"}, Stdin: `{"op":"level","world":"standard","island":"island1","stage":0,"seed":"k3c"}`},
+		"world-values-standard": {Args: []string{"world"}, Stdin: `{"op":"values","world":"standard"}`},
+		"world-check-standard":  {Args: []string{"world"}, Stdin: worldCheckInput(t)},
+		"world-values-nil":      {Args: []string{"world"}, Stdin: `{"op":"values","world":"nil"}`},
+		"world-check-nil":       {Args: []string{"world"}, Stdin: worldDraftInput(t, "nil")},
+		"world-unbekannte-op":   {Args: []string{"world"}, Stdin: `{"op":"fly"}`},
+		"hub-plan-hub7":         {Args: []string{"hub"}, Stdin: hubPlanInput(t)},
+		"hub-unbekannte-op":     {Args: []string{"hub"}, Stdin: `{"op":"fly"}`},
 		"run-wald-300": {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"0","ticks":300}`},
 		"run-zwei-spieler": {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"k3c-dev","ticks":900,` +
 			`"inputs":[{"fromTick":0,"toTick":600,"moveX":1,"pay":true},{"player":1,"fromTick":30,"toTick":900,"moveX":-1}]}`},
@@ -42,11 +53,45 @@ func rustRefCases() map[string]rustRefCase {
 	}
 }
 
+// worldCheckInput ist der Entwurf der Standard-Welt mit einem passenden Override (wie TestWorldCheck).
+func worldCheckInput(t *testing.T) string {
+	t.Helper()
+	raw, err := os.ReadFile("../../data/worlds/standard.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := strings.TrimRight(string(raw), "\r\n }") + `, "overrides": {"economy":{"purse":{"startGold":20}}}}`
+	in, _ := json.Marshal(map[string]any{"op": "check", "world": "standard", "draft": json.RawMessage(text)})
+	return string(in)
+}
+
+// worldDraftInput ist die Welt-Datei id als unveränderter Entwurf (prüft auch ihre Nachfolger).
+func worldDraftInput(t *testing.T, id string) string {
+	t.Helper()
+	raw, err := os.ReadFile("../../data/worlds/" + id + ".json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	in, _ := json.Marshal(map[string]any{"op": "check", "world": id, "draft": json.RawMessage(raw)})
+	return string(in)
+}
+
+// hubPlanInput ist die Eingabe `plan` mit testdata/hub/hub7.json.
+func hubPlanInput(t *testing.T) string {
+	t.Helper()
+	raw, err := os.ReadFile("../../testdata/hub/hub7.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	in, _ := json.Marshal(map[string]any{"op": "plan", "raw": string(raw)})
+	return string(in)
+}
+
 // runRustRef führt einen Fall mit k3c-sim aus.
 func runRustRef(t *testing.T, c rustRefCase) rustRefCase {
 	t.Helper()
 	var out, errOut bytes.Buffer
-	c.Code = run(c.Args, env{stdin: strings.NewReader(c.Stdin), stderr: &errOut, out: NewEmitter(&out)})
+	c.Code = run(c.Args, env{stdin: strings.NewReader(c.Stdin), stderr: &errOut, out: NewEmitter(&out), files: os.DirFS("../../data").(data.FS)})
 	c.Out = []string{}
 	for _, l := range strings.Split(strings.TrimSuffix(out.String(), "\n"), "\n") {
 		if l != "" {
@@ -58,7 +103,7 @@ func runRustRef(t *testing.T, c rustRefCase) rustRefCase {
 
 // TestRustRef schreibt mit -write die Vergleichsdateien; ohne -write prüft er, dass sie zum Lauf passen.
 func TestRustRef(t *testing.T) {
-	for name, c := range rustRefCases() {
+	for name, c := range rustRefCases(t) {
 		got := runRustRef(t, c)
 		path := filepath.Join(rustRefDir, name+".json")
 		if *writeRustRef {

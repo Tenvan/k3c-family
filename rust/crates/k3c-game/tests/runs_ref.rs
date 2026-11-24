@@ -5,7 +5,7 @@
 
 #![allow(clippy::expect_used)]
 
-use k3c_game::runs::{self, stop::Stop};
+use k3c_game::runs::{self, gojson, stop::Stop};
 use serde_json::Value;
 
 fn root() -> String {
@@ -19,6 +19,23 @@ fn lines(out: &[u8]) -> Vec<String> {
 fn event(line: &str) -> String {
     let v: Value = serde_json::from_str(line).expect("JSON-Zeile");
     v["event"].as_str().unwrap_or_default().to_string()
+}
+
+/// Rust kennt die Basis-Datei `welt-events` (RU62), Go nicht: Die Zeile `world values` verliert sie vor dem Vergleich.
+fn without_welt_events(line: &str) -> String {
+    let report = gojson::raw_field(line, "report").unwrap_or_default();
+    let base = gojson::raw_field(report, "base").unwrap_or_default();
+    match gojson::raw_entries(base).into_iter().find(|(k, _)| k == "welt-events") {
+        Some((_, raw)) => line.replacen(&format!(",\"welt-events\":{raw}"), "", 1),
+        None => line.to_string(),
+    }
+}
+
+/// Die erste Stelle, an der zwei Zeilen auseinandergehen, mit Umgebung.
+fn first_diff(got: &str, want: &str) -> String {
+    let at = got.chars().zip(want.chars()).take_while(|(a, b)| a == b).count();
+    let cut = |s: &str| s.chars().skip(at.saturating_sub(60)).take(160).collect::<String>();
+    format!("ab Zeichen {at}\n  Rust: {}\n  Go:   {}", cut(got), cut(want))
 }
 
 #[test]
@@ -52,7 +69,10 @@ fn laeufe_gleich_go() {
             want["code"].as_i64().expect("code"),
             "{name}: Exit-Code"
         );
-        let got = lines(&out);
+        let mut got = lines(&out);
+        if name.starts_with("world-values") {
+            got = got.iter().map(|l| without_welt_events(l)).collect();
+        }
         let want_lines: Vec<String> = want["out"]
             .as_array()
             .expect("out")
@@ -66,7 +86,7 @@ fn laeufe_gleich_go() {
             if json_error {
                 assert_eq!(event(g), event(w), "{name}");
             } else {
-                assert_eq!(g, w, "{name}");
+                assert!(g == w, "{name}: {}", first_diff(g, w));
             }
         }
     }

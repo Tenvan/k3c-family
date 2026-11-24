@@ -102,7 +102,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU33.1 | `RU33.1-schnittstelle-sim-run-level.md` | Umsetzung | autonom | fertig |
-| RU33.2 | `RU33.2-sim-world-hub.md` | Umsetzung | autonom | offen |
+| RU33.2 | `RU33.2-sim-world-hub.md` | Umsetzung | autonom | fertig |
 | RU33.3 | `RU33.3-sim-run-window.md` | Umsetzung | autonom | offen |
 | RU33.4 | `RU33.4-review.md` | Review | autonom | offen |
 

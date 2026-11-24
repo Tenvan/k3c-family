@@ -52,6 +52,11 @@ impl<'a> Emitter<'a> {
         self.text_line(&[("event", "result"), ("text", text)]);
     }
 
+    /// `{"event":"result","report":{…}}`; `report` ist fertiger JSON-Text.
+    pub fn result_report(&mut self, report: &str) {
+        self.raw(&format!("{{\"event\":\"result\",\"report\":{report}}}"));
+    }
+
     /// `{"event":"error","message":"…"}`.
     pub fn error(&mut self, message: &str) {
         self.text_line(&[("event", "error"), ("message", message)]);

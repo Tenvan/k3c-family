@@ -35,7 +35,7 @@ impl Default for Flags {
     }
 }
 
-fn usage(msg: impl Into<String>) -> RunError {
+pub(super) fn usage(msg: impl Into<String>) -> RunError {
     RunError::Usage(msg.into())
 }
 
@@ -127,7 +127,7 @@ pub fn read_source(path: &str, stdin: &mut dyn Read) -> Result<String, RunError>
 }
 
 /// Das JSON-Objekt der Eingabe; `owner` ist der Go-Typ für die Meldung („runInput“).
-fn read_object(raw: &str, owner: &str) -> Result<Map<String, Value>, RunError> {
+pub(super) fn read_object(raw: &str, owner: &str) -> Result<Map<String, Value>, RunError> {
     let mut it = serde_json::Deserializer::from_str(raw).into_iter::<Value>();
     let first = match it.next() {
         None => return Err(usage("Eingabe-JSON: EOF")),
@@ -160,7 +160,7 @@ fn kind_of(v: &Value) -> &'static str {
 }
 
 /// Prüft die Schlüssel (Go vergleicht ohne Groß- und Kleinschreibung) und gibt je Feld den Wert zurück.
-fn fields<'a>(
+pub(super) fn fields<'a>(
     obj: &'a Map<String, Value>,
     allowed: &[&'static str],
 ) -> Result<Vec<(&'static str, &'a Value)>, RunError> {
@@ -184,7 +184,7 @@ fn mismatch(v: &Value, path: &str, want: &str) -> RunError {
     ))
 }
 
-fn text(v: &Value, path: &str) -> Result<Option<String>, RunError> {
+pub(super) fn text(v: &Value, path: &str) -> Result<Option<String>, RunError> {
     match v {
         Value::Null => Ok(None),
         Value::String(s) => Ok(Some(s.clone())),
@@ -192,7 +192,7 @@ fn text(v: &Value, path: &str) -> Result<Option<String>, RunError> {
     }
 }
 
-fn int(v: &Value, path: &str) -> Result<Option<i64>, RunError> {
+pub(super) fn int(v: &Value, path: &str) -> Result<Option<i64>, RunError> {
     match v {
         Value::Null => Ok(None),
         Value::Number(n) => n.as_i64().map(Some).ok_or_else(|| mismatch(v, path, "int")),

@@ -12,16 +12,26 @@ use k3c_data::Source;
 pub mod emit;
 pub mod enginetools_level;
 pub mod enginetools_run;
+pub mod gojson;
 mod gotext;
+pub mod hub;
 pub mod input;
+pub mod input_world;
 pub mod stop;
+pub mod world;
 
 #[cfg(test)]
 mod enginetools_tests;
 #[cfg(test)]
+mod hub_tests;
+#[cfg(test)]
 mod input_tests;
 #[cfg(test)]
 mod mod_tests;
+#[cfg(test)]
+mod testutil;
+#[cfg(test)]
+mod world_tests;
 
 use emit::Emitter;
 use gotext::quote;
@@ -139,8 +149,17 @@ fn dispatch(args: &[String], stdin: &mut dyn Read, out: &mut Emitter, stop: &Sto
         }
         "balance" => Err(usage("sim balance folgt mit RU40")),
         "world" | "hub" => {
-            check_flags(cmd, &parse_flags(rest)?)?;
-            Err(usage(format!("sim {cmd} folgt mit RU33.2")))
+            let flags = parse_flags(rest)?;
+            check_flags(cmd, &flags)?;
+            let src = data_source(&flags)?;
+            let raw = read_source(&flags.input, stdin)?;
+            let report = if cmd == "world" {
+                world::run(&src, &input_world::read_world_input(&raw)?)?
+            } else {
+                hub::run(&src, &input_world::read_hub_input(&raw)?)?
+            };
+            out.result_report(&report);
+            Ok(())
         }
         other => Err(usage(format!(
             "unbekannter Unterbefehl {} (bekannt: run, balance, level, world, hub)",

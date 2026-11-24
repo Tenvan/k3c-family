@@ -34,8 +34,7 @@ Unbekannte JSON-Felder sind Exit 2 (`json: unknown field "x"`), die Namen gelten
 | `hub` | `{"op":"plan","raw":…}` für den Gebäude-Planer | `result` mit `report` | RU33.2 |
 | `balance` | JSON mit Flag-Namen als Schlüssel (`{"targets":true,"seed-list":"k3c-dev"}`), Flags der Befehlszeile stehen danach | `progress`, `result` mit `report` oder `report` mit Dateien | RU40 |
 
-Bis ihr Sprint liefert, antworten `world`, `hub` und `balance` mit `{"event":"error","message":"sim <name> folgt mit …"}`
-und Exit 2. Biome von `run` und `level`: `forest` (Standard), `cave`, `mine`; `ticks` 1 bis 100000 (30 Ticks je Sekunde),
+`world` braucht einen Daten-Ordner (`--data`, es listet `worlds/`; eingebettete Daten genügen nicht): ohne ihn Exit 1. `hub` liest nur `buildings.json` und läuft auch mit eingebetteten Daten. `world` und `hub` kennen `--window` nicht (Exit 2). Bis RU40 liefert, antwortet `balance` mit `{"event":"error","message":"sim balance folgt mit RU40"}` und Exit 2. Biome von `run` und `level`: `forest` (Standard), `cave`, `mine`; `ticks` 1 bis 100000 (30 Ticks je Sekunde),
 höchstens 100 Segmente, `player` 0 bis 3.
 
 ## Ausgabe
