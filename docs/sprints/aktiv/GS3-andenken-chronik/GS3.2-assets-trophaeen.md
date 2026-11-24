@@ -1,6 +1,6 @@
 # GS3.2 · Assets: Trophäen der vier Welten (B-966)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 erfüllt: Vier Trophäen (standard, sengoku, nil, britannien) sind über `assets_*` angelegt und in `data/paper.json` › `seekarte` › `trophaeen` zugeordnet. Grafik-Golden aktualisiert (PR #885/#886). Die Anbindung der Trophäen an die Spielansicht gehört nicht zu AC-02; sie ist als B-1262 geplant. Manuelle Prüfung am TV liegt bei Ralf.
