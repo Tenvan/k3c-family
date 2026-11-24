@@ -188,7 +188,7 @@ func (s *Store) noteDuplicate(session string, f Finding, p Planner) (string, err
 		body = strings.TrimRight(body, "\n ") + "\n" + line
 	}
 	if err := p.Sections(f.DuplicateOf, map[string]string{"Notizen": body}); err != nil {
-		return "", fmt.Errorf("Hinweis in %s: %w", f.DuplicateOf, err)
+		return "", fmt.Errorf("Hinweis in %s: %w", f.DuplicateOf, err) //nolint:staticcheck // Grund für die Oberfläche
 	}
 	return "Hinweis in " + f.DuplicateOf, nil
 }

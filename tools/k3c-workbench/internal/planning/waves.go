@@ -8,43 +8,49 @@ import (
 )
 
 // plan_waves (B-783): Ebene aus den Abhängigkeiten, dann je Ebene in Rang-Reihenfolge (Rang, Prio, Nummer) in die
-// erste Welle, in der kein Mitglied denselben Bereich (Präfix) oder dieselbe Sperre hat und ein Platz frei ist.
-// Sessions in Arbeit stehen in Welle 1 und belegen Plätze. Regeln: docs/arbeitsweise.md › Parallelität und Wellen.
+// erste Welle, in der kein Mitglied denselben Bereich (Präfix) oder dieselbe Sperre hat und eine Lane frei ist.
+// Zwei Lanes: `zweit` (Second Worker, autonom) und `haupt` (Hauptrechner). Sessions in Arbeit stehen in Welle 1 und
+// belegen ihre Lane. Regeln: docs/arbeitsweise.md › Parallelität und Wellen.
 
-// maxSlots sind höchstens vier Agenten gleichzeitig.
-const maxSlots = 4
+const (
+	laneSecond = "zweit" // Second Worker: autonomer Zuarbeiter, führt seine Sessions selbst aus
+	laneMain   = "haupt" // Hauptrechner: Planung, Ralf-Queue und alles, was der Second Worker nicht übernimmt
+	// defaultWaves zeigt nur die Welle, die jetzt startbar ist.
+	defaultWaves = 1
+)
 
 // WavesFilter ist die Eingabe von plan_waves.
 type WavesFilter struct {
-	Slots   int    `json:"slots,omitempty" jsonschema:"Plätze je Welle, 1 bis 4 (Standard 4)"`
-	Project string `json:"project,omitempty" jsonschema:"nur Knoten dieses Projekts zeigen, z. B. WZG (Plätze und Kollisionen gelten für alle)"`
-	Domain  string `json:"domain,omitempty" jsonschema:"nur Knoten dieser Domäne zeigen (Plätze und Kollisionen gelten für alle)"`
+	WaveCount int    `json:"wave_count,omitempty" jsonschema:"Zahl der gezeigten Wellen, ab Welle 1 (Standard 1)"`
+	Project   string `json:"project,omitempty" jsonschema:"nur Knoten dieses Projekts zeigen, z. B. WZG (Lanes und Kollisionen gelten für alle)"`
+	Domain    string `json:"domain,omitempty" jsonschema:"nur Knoten dieser Domäne zeigen (Lanes und Kollisionen gelten für alle)"`
 }
 
 // Waves berechnet die Arbeitswellen aus den lokalen Dateien.
 func Waves(root string, f WavesFilter) (string, error) {
-	slots := f.Slots
-	if slots == 0 {
-		slots = maxSlots
+	count := f.WaveCount
+	if count == 0 {
+		count = defaultWaves
 	}
-	if slots < 1 || slots > maxSlots {
-		return "", fmt.Errorf("slots %d ungültig: 1 bis %d", f.Slots, maxSlots)
+	if count < 1 {
+		return "", fmt.Errorf("wave_count %d ungültig: mindestens 1", f.WaveCount)
 	}
 	w, err := loadWaveData(root)
 	if err != nil {
 		return "", err
 	}
-	waves := w.assign(slots)
-	return w.wavesText(waves, slots, f), nil
+	waves := w.assign()
+	return w.wavesText(waves, count, f), nil
 }
 
-// assign verteilt die Knoten auf Wellen; Welle 1 beginnt mit den Sessions in Arbeit.
-func (w *waveData) assign(slots int) [][]*node {
+// assign verteilt die Knoten auf Wellen und Lanes; Welle 1 beginnt mit den Sessions in Arbeit.
+func (w *waveData) assign() [][]*node {
 	waves := [][]*node{nil}
 	var queue []*node
 	for _, n := range w.nodes {
 		if n.running {
 			n.level, n.wave = 1, 1
+			n.lane = freeLane(waves[0], n)
 			waves[0] = append(waves[0], n)
 		} else if n.why == "" && w.level(n, map[*node]bool{}) > 0 {
 			queue = append(queue, n)
@@ -52,7 +58,7 @@ func (w *waveData) assign(slots int) [][]*node {
 	}
 	sort.SliceStable(queue, func(i, j int) bool { return before(queue[i], queue[j]) })
 	for _, n := range queue {
-		waves = w.place(waves, n, slots)
+		waves = w.place(waves, n)
 	}
 	return waves
 }
@@ -124,8 +130,8 @@ func (w *waveData) depNodes(n *node) []*node {
 	return out
 }
 
-// place setzt n in die erste Welle ab der nach seinen Abhängigkeiten frühesten, mit freiem Platz und ohne Kollision.
-func (w *waveData) place(waves [][]*node, n *node, slots int) [][]*node {
+// place setzt n in die erste Welle ab der nach seinen Abhängigkeiten frühesten, mit freier Lane und ohne Kollision.
+func (w *waveData) place(waves [][]*node, n *node) [][]*node {
 	start := 1
 	for _, d := range w.depNodes(n) {
 		if d.wave+1 > start {
@@ -136,9 +142,9 @@ func (w *waveData) place(waves [][]*node, n *node, slots int) [][]*node {
 		for len(waves) < i {
 			waves = append(waves, nil)
 		}
-		why := fit(waves[i-1], n, slots)
+		lane, why := fit(waves[i-1], n)
 		if why == "" {
-			n.wave = i
+			n.wave, n.lane = i, lane
 			waves[i-1] = append(waves[i-1], n)
 			return waves
 		}
@@ -148,17 +154,51 @@ func (w *waveData) place(waves [][]*node, n *node, slots int) [][]*node {
 	}
 }
 
-// fit nennt, warum n nicht in die Welle passt; leer = passt.
-func fit(wave []*node, n *node, slots int) string {
-	for _, m := range wave {
-		if why := collision(m, n); why != "" {
-			return "kollidiert mit " + m.id + ": " + why
+// lanesFor nennt die Lanes, die n in einer Welle nehmen darf. Eine Session mit `Lane: zweit` gehört dem Second Worker,
+// jeder andere Lane-Wert dem Hauptrechner; Sim-Domäne nur `zweit` (Sim-Sperre für den Hauptrechner, Ausnahme Second Worker).
+func lanesFor(n *node) []string {
+	switch {
+	case n.wantLane == laneSecond, n.domain == "SIM":
+		return []string{laneSecond}
+	case n.wantLane != "":
+		return []string{laneMain}
+	}
+	return []string{laneSecond, laneMain}
+}
+
+// freeLane ist die erste Lane von n, die in der Welle frei ist; leer, wenn keine frei ist.
+func freeLane(wave []*node, n *node) string {
+	for _, l := range lanesFor(n) {
+		if !laneBusy(wave, l) {
+			return l
 		}
 	}
-	if len(wave) >= slots {
-		return "Plätze voll"
-	}
 	return ""
+}
+
+func laneBusy(wave []*node, lane string) bool {
+	for _, m := range wave {
+		if m.lane == lane {
+			return true
+		}
+	}
+	return false
+}
+
+// fit nennt die Lane für n in der Welle, oder den Grund, warum n nicht hineinpasst (dann leer).
+func fit(wave []*node, n *node) (lane, why string) {
+	for _, m := range wave {
+		if why := collision(m, n); why != "" {
+			return "", "kollidiert mit " + m.id + ": " + why
+		}
+	}
+	if lane = freeLane(wave, n); lane != "" {
+		return lane, ""
+	}
+	if lanes := lanesFor(n); len(lanes) == 1 {
+		return "", "Lane " + lanes[0] + " belegt"
+	}
+	return "", "Lanes belegt"
 }
 
 // collision: derselbe Sprint (B-838: Sessions eines Sprints laufen nacheinander, ein Sprint-Branch), gleiche Sperre
@@ -176,28 +216,33 @@ func collision(a, b *node) string {
 	return ""
 }
 
-// wavesText: Kopf, je Welle die Knoten mit Grund der Zurückstellung, dann die Knoten ohne Welle.
-func (w *waveData) wavesText(waves [][]*node, slots int, f WavesFilter) string {
+// wavesText: Kopf, die ersten count Wellen mit Lanes und Grund der Zurückstellung, dann die Knoten ohne Welle.
+func (w *waveData) wavesText(waves [][]*node, count int, f WavesFilter) string {
 	show := func(n *node) bool {
 		return match(f.Project, n.project) && (f.Domain == "" || strings.Contains(strings.ToUpper(n.domain), strings.ToUpper(f.Domain)))
 	}
 	var out, rest []string
 	placed, running := 0, 0
 	for i, wave := range waves {
-		var lines []string
 		for _, n := range wave {
 			if n.running {
 				running++
 			} else {
 				placed++
 			}
+		}
+		if i >= count {
+			continue
+		}
+		var lines []string
+		for _, n := range wave {
 			if show(n) {
 				lines = append(lines, nodeLine(n, i == 0))
 			}
 		}
-		head := fmt.Sprintf("── Welle %d (%d/%d Plätze) ──", i+1, len(wave), slots)
+		head := fmt.Sprintf("── Welle %d (%d Knoten) ──", i+1, len(wave))
 		if i == 0 {
-			head = fmt.Sprintf("── Welle 1, jetzt (%d/%d Plätze) ──", len(wave), slots)
+			head = fmt.Sprintf("── Welle 1, jetzt (%d Knoten) ──", len(wave))
 		}
 		out = append(out, head)
 		out = append(out, firstLines(lines, "keine")...)
@@ -207,10 +252,10 @@ func (w *waveData) wavesText(waves [][]*node, slots int, f WavesFilter) string {
 			rest = append(rest, blockedLine(n))
 		}
 	}
-	title := fmt.Sprintf("Arbeitswellen: %d in Arbeit, %d eingeplant in %d Wellen, %d in keiner Welle · %d Plätze",
-		running, placed, len(waves), len(w.nodes)-placed-running, slots)
+	title := fmt.Sprintf("Arbeitswellen: %d in Arbeit, %d eingeplant in %d Wellen (%d gezeigt), %d in keiner Welle · Lanes: %s (Second Worker), %s (Hauptrechner)",
+		running, placed, len(waves), min(count, len(waves)), len(w.nodes)-placed-running, laneSecond, laneMain)
 	if f.Project != "" || f.Domain != "" {
-		title += " · Anzeige gefiltert (Plätze und Kollisionen gelten für alle)"
+		title += " · Anzeige gefiltert (Lanes und Kollisionen gelten für alle)"
 	}
 	out = append([]string{title}, out...)
 	return strings.Join(append(append(out, "── In keiner Welle ──"), firstLines(rest, "keine")...), "\n")
@@ -223,7 +268,7 @@ func firstLines(lines []string, empty string) []string {
 	return lines
 }
 
-// nodeLine: `- ID · Art · Titel (Domäne, Projekt P) · Sperre x — Grund`.
+// nodeLine: `- ID · Art · Titel (Domäne, Projekt P) · Lane: x · Sperre y — Grund`.
 func nodeLine(n *node, first bool) string {
 	kind := n.kind
 	if n.running {
@@ -234,6 +279,9 @@ func nodeLine(n *node, first bool) string {
 		s += ", Sprint " + n.sprint
 	}
 	s += ")"
+	if n.lane != "" {
+		s += " · Lane: " + n.lane
+	}
 	if len(n.locks) > 0 {
 		s += " · Sperre " + strings.Join(n.locks, ", ")
 	}

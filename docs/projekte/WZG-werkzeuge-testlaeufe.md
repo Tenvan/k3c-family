@@ -87,11 +87,11 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | GS1 | Geschichten je Welt und Insel in Kunstsprache | erledigt |
 | GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | erledigt |
 | WE7 | Papierschnitt-Assets für Sengoku, Nil und Britannien | aktiv |
-| GS3 | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | geplant |
-| GS4 | Flaschenpost am Strand mit Geschichtszeile und Markierung | geplant |
+| GS3 | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | aktiv |
+| GS4 | Flaschenpost am Strand mit Geschichtszeile und Markierung | aktiv |
 | WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | erledigt |
-| WE6 | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | geplant |
-| WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | geplant |
+| WE6 | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | aktiv |
+| WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | aktiv |
 | WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | aktiv |
 | WZ62 | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | erledigt |
 | WZ63 | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | aktiv |

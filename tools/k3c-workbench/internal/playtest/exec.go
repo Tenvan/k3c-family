@@ -144,7 +144,7 @@ func ParseMics(out string) []string {
 			continue
 		}
 		m := quoted.FindStringSubmatch(l)
-		if m == nil || seen[m[1]] || !(strings.Contains(l, "(audio)") || (audio && !strings.Contains(l, "(video)"))) {
+		if m == nil || seen[m[1]] || (!strings.Contains(l, "(audio)") && (!audio || strings.Contains(l, "(video)"))) {
 			continue
 		}
 		seen[m[1]] = true

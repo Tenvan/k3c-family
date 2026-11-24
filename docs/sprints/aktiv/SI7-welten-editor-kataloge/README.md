@@ -1,6 +1,6 @@
 # SI7 · DEV · Welten-Editor wählt Wetter, Reittier und Figur je Welt
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** KMP
 - **Domäne:** DEV
 - **Reife:** bereit

@@ -141,6 +141,12 @@ func TestStartStoppMitSpielende(t *testing.T) {
 	if got, _ := g.rec.Store.Get(st.ID); !got.Running {
 		t.Error("Liste zeigt keine laufende Aufnahme")
 	}
+}
+
+// Spielende beendet die Aufnahme sauber; danach ist eine neue Aufnahme möglich.
+func TestSpielendeBeendetAufnahme(t *testing.T) {
+	g := newRig(t)
+	st, _ := g.rec.Start(Options{Mic: "Mikro", Monitor: 1})
 	g.gamep.exit <- nil // Spielende
 	g.rec.Wait()
 	if g.ffp.quits != 1 || g.ffp.kills != 0 {
@@ -203,7 +209,9 @@ func TestHaengendesFFmpegWirdNachFristBeendet(t *testing.T) {
 		}
 		return p, nil
 	}
-	g.rec.Start(Options{Mic: "M"})
+	if _, err := g.rec.Start(Options{Mic: "M"}); err != nil {
+		t.Fatal(err)
+	}
 	g.gamep.exit <- nil
 	g.rec.Wait()
 	if g.ffp.quits != 1 || g.ffp.kills != 1 {

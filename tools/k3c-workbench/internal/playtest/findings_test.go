@@ -107,7 +107,9 @@ func (f *fakePlan) planner() Planner {
 	}
 }
 
-func TestTicketsNurAngehakteOhneDuplikat(t *testing.T) {
+// ticketsErsterLauf legt die Befunde an, hakt vier davon an und erzeugt die Tickets einmal.
+func ticketsErsterLauf(t *testing.T) (*Store, *fakePlan, TicketResult) {
+	t.Helper()
 	st := fiStore(t)
 	_, _, err := st.SetFindings(fiSession, []FindingIn{
 		{ID: "f1", Quote: "Ich finde den Bauarbeiter nicht", Ts: 1_005_000, Type: "Problem", Frame: "frames/marker-1.jpg", Context: "Insel 2 Stufe 3"},
@@ -130,6 +132,11 @@ func TestTicketsNurAngehakteOhneDuplikat(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	return st, fp, res
+}
+
+func TestTicketsNurAngehakteOhneDuplikat(t *testing.T) {
+	_, fp, res := ticketsErsterLauf(t)
 	if len(res.Created) != 1 || len(res.Noted) != 1 || len(res.Failed) != 2 || res.Skipped != 1 {
 		t.Fatalf("Ergebnis: %+v", res)
 	}
@@ -145,6 +152,11 @@ func TestTicketsNurAngehakteOhneDuplikat(t *testing.T) {
 	if n := fp.notes["B-1100"]; !strings.Contains(n, "Befund f2") || !strings.Contains(n, "Zu dunkel") {
 		t.Errorf("Hinweis im Duplikat: %q", n)
 	}
+}
+
+// Befunde nach dem Lauf: Ticket nur bei angehakten Befunden mit Erfolg, Fehler stehen am Befund.
+func TestTicketsBefundStatus(t *testing.T) {
+	st, _, _ := ticketsErsterLauf(t)
 	list, _ := st.Findings(fiSession)
 	by := map[string]Finding{}
 	for _, f := range list {
@@ -153,8 +165,12 @@ func TestTicketsNurAngehakteOhneDuplikat(t *testing.T) {
 	if by["f1"].Ticket != "B-1301" || by["f3"].Ticket != "" || by["f4"].Error == "" || by["f5"].Error == "" || by["f2"].Ticket != "" {
 		t.Errorf("findings.json: %+v", by)
 	}
-	// zweiter Lauf: kein zweites Ticket, kein zweiter Hinweis
-	res, err = st.CreateTickets(fiSession, TicketDefaults{Project: "WZG", Sprint: "WZ65", Domain: "REG"}, fp.planner())
+}
+
+// Zweiter Lauf: kein zweites Ticket, kein zweiter Hinweis; ein Befund mit Ticket bleibt gesperrt.
+func TestTicketsZweiterLauf(t *testing.T) {
+	st, fp, _ := ticketsErsterLauf(t)
+	res, err := st.CreateTickets(fiSession, TicketDefaults{Project: "WZG", Sprint: "WZ65", Domain: "REG"}, fp.planner())
 	if err != nil || len(res.Created) != 0 || len(fp.created) != 1 || strings.Count(fp.notes["B-1100"], "Befund f2") != 1 {
 		t.Errorf("zweiter Lauf: %+v %v %d", res, err, len(fp.created))
 	}

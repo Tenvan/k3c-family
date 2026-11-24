@@ -99,7 +99,7 @@ func lastError(out string) string {
 // ein Monitor-Index ohne Bildschirm vor dem Start auffallen und nicht erst als leere Aufnahme.
 func CheckDevices(run probe, ff, mic string, monitor int) error {
 	if out, err := run(MicProbeArgs(ff, mic)); err != nil {
-		return fmt.Errorf("Mikrofon „%s“ lässt sich nicht öffnen (abgezogen, belegt oder umbenannt?): %s", mic, lastError(out))
+		return fmt.Errorf("Mikrofon „%s“ lässt sich nicht öffnen (abgezogen, belegt oder umbenannt?): %s", mic, lastError(out)) //nolint:staticcheck // Grund für die Oberfläche
 	}
 	if monitor < 0 { // Mikro-Session: kein Bild
 		return nil

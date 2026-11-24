@@ -101,6 +101,17 @@ func TestMikroSessionOhneBildUndSpiel(t *testing.T) {
 	if s := g.rec.Status(); s.Stats == nil || !s.Stats.NoVideo {
 		t.Errorf("Stats: %+v", s.Stats)
 	}
+	_ = st
+}
+
+// Stopp beendet die Mikro-Session sauber: Meta nach Stopp, ffmpeg beendet, kein Absturz.
+func TestMikroSessionStopptSauber(t *testing.T) {
+	g := newRig(t)
+	g.rec.Game = func() (string, string, error) { return "", "", ErrNoGame }
+	st, err := g.rec.Start(Options{Mic: "Mikro", VoiceOnly: true})
+	if err != nil {
+		t.Fatal(err)
+	}
 	if err := g.rec.Stop(); err != nil {
 		t.Fatal(err)
 	}

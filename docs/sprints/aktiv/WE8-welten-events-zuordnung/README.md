@@ -1,6 +1,6 @@
 # WE8 · REG, SIM, CLI · Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, CLI
 - **Reife:** bereit

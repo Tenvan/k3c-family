@@ -7,6 +7,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+
 	"k3c/tools/k3c-workbench/internal/playtest"
 )
 
@@ -70,23 +72,7 @@ func TestPlaytestFindingsUndTickets(t *testing.T) {
 	t.Parallel()
 	root := playtestRepo(t)
 	cs := connect(t, New(Config{Version: "test", Root: root}))
-	var altID string
-	for _, step := range []struct {
-		tool string
-		args map[string]any
-	}{
-		{"plan_create", map[string]any{"kind": "projekt", "id": "PXX", "slug": "px", "title": "Projekt X"}},
-		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X", "fields": map[string]string{"Domäne": "DEV", "Projekt": "PXX"}}},
-		{"plan_create", map[string]any{"kind": "ticket", "slug": "alt", "title": "Alt", "fields": map[string]string{"Domäne": "DEV", "Typ": "Problem", "Prio": "mittel", "Projekt": "PXX", "Sprint": "X1"}}},
-	} {
-		text, isErr := callText(t, cs, step.tool, step.args)
-		if isErr {
-			t.Fatalf("%s: %s", step.tool, text)
-		}
-		if m := regexp.MustCompile(`B-\d+ angelegt`).FindString(text); m != "" {
-			altID = strings.TrimSuffix(m, " angelegt")
-		}
-	}
+	altID := playtestPlanungAnlegen(t, cs)
 	text, isErr := callText(t, cs, "playtest_findings_set", map[string]any{"id": "2026-11-22-1", "findings": []map[string]any{
 		{"id": "f1", "quote": "Ich finde den Bauarbeiter nicht", "ts": 1005000, "type": "Problem", "frame": "frames/marker-1.jpg", "context": "Insel 2 Stufe 3"},
 		{"id": "f2", "quote": "Satz zwei", "ts": 1030000, "type": "Idee", "duplicate_of": altID},
@@ -118,6 +104,29 @@ func TestPlaytestFindingsUndTickets(t *testing.T) {
 	if !strings.Contains(text, "f1 [angehakt] → B-") || !strings.Contains(text, "Duplikat von") {
 		t.Errorf("Befunde in playtest_get: %q", text)
 	}
+}
+
+// playtestPlanungAnlegen legt Projekt, Sprint und ein Ticket an und gibt die Nummer des Tickets zurück.
+func playtestPlanungAnlegen(t *testing.T, cs *mcp.ClientSession) string {
+	t.Helper()
+	var altID string
+	for _, step := range []struct {
+		tool string
+		args map[string]any
+	}{
+		{"plan_create", map[string]any{"kind": "projekt", "id": "PXX", "slug": "px", "title": "Projekt X"}},
+		{"plan_create", map[string]any{"kind": "sprint", "id": "X1", "slug": "x", "title": "X", "fields": map[string]string{"Domäne": "DEV", "Projekt": "PXX"}}},
+		{"plan_create", map[string]any{"kind": "ticket", "slug": "alt", "title": "Alt", "fields": map[string]string{"Domäne": "DEV", "Typ": "Problem", "Prio": "mittel", "Projekt": "PXX", "Sprint": "X1"}}},
+	} {
+		text, isErr := callText(t, cs, step.tool, step.args)
+		if isErr {
+			t.Fatalf("%s: %s", step.tool, text)
+		}
+		if m := regexp.MustCompile(`B-\d+ angelegt`).FindString(text); m != "" {
+			altID = strings.TrimSuffix(m, " angelegt")
+		}
+	}
+	return altID
 }
 
 func TestPlaytestFrameOhneFfmpeg(t *testing.T) {

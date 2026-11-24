@@ -15,6 +15,10 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
+| GS3 | SIM, PAP, CLI, SRV | WZG | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | – | `aktiv/GS3-andenken-chronik/` |
+| GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | `aktiv/GS4-flaschenpost/` |
+| WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | `aktiv/WE6-welt-format-spiel-editor/` |
+| WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | `aktiv/WE8-welten-events-zuordnung/` |
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | WZ63 | DEV | WZG | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | – | `aktiv/WZ63-studio-eigene-exe/` |
 | WZ64 | DEV | WZG | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | – | `aktiv/WZ64-spieltest-aufnahme/` |
@@ -22,6 +26,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WZ65 | DEV | WZG | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | – | `aktiv/WZ65-spieltest-auswertung/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
+| SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | `aktiv/SI7-welten-editor-kataloge/` |
 | ECO1 | PAP, CLI, SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | `aktiv/ECO1-eco-plan/` |
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
@@ -38,11 +43,6 @@ keine
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| GS3 | SIM, PAP, CLI, SRV | WZG | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | – | bereit | `geplant/GS3-andenken-chronik/` |
-| GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | bereit | `geplant/GS4-flaschenpost/` |
-| WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | bereit | `geplant/WE6-welt-format-spiel-editor/` |
-| WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | bereit | `geplant/WE8-welten-events-zuordnung/` |
-| SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | bereit | `geplant/SI7-welten-editor-kataloge/` |
 | AU1 | SIM | KMP | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
 | WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |

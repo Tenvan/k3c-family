@@ -20,6 +20,7 @@ type node struct {
 	fault                             bool   // why ist ein Fehler der Planungsangaben (unbekannte ID)
 	level, wave                       int
 	note                              string // warum nicht in einer früheren Welle
+	wantLane, lane                    string // Lane-Feld der Session (Wunsch) und die zugewiesene Lane (plan_waves)
 }
 
 // waveData hält die geladene Planung und die Knoten.
@@ -142,7 +143,7 @@ func (w *waveData) addSessions(sp Sprint) {
 		deps := append(sessionRef.FindAllString(head, -1), reTicketRef.FindAllString(head, -1)...)
 		w.add(&node{id: x.Nr, kind: "Session", title: x.Titel, domain: x.Domain, project: sp.Project, sprint: sp.ID,
 			rank: w.rankOf(sp.Project), prio: 1, area: area, locks: spec.Locks, deps: append(deps, spec.Deps...),
-			running: running, why: whenNotRunning(running, why)})
+			running: running, why: whenNotRunning(running, why), wantLane: laneOf(x)})
 	}
 }
 
