@@ -311,6 +311,15 @@ fn read_json<T: Default + serde::de::DeserializeOwned>(
     }
 }
 
+/// skinned ersetzt das Papier-Asset des Looks durch das Ersatz-Asset der Welt, wenn die Welt eines zuordnet (WE6.6,
+/// B-994). Ohne Zuordnung bleibt der Look unverändert (Rückfall auf das Basis-Asset).
+pub fn skinned(mut look: Look, skins: &BTreeMap<String, String>) -> Look {
+    if let Some(to) = skins.get(&look.asset) {
+        look.asset = to.clone();
+    }
+    look
+}
+
 impl Catalog {
     /// Player liefert den Look des Monarchen mit Spieler-Index i.
     #[allow(clippy::cast_possible_wrap, clippy::cast_sign_loss)]

@@ -104,6 +104,9 @@ fn resolve_world_with(
     if vals.combat != combat {
         Arc::make_mut(&mut vals).combat = combat;
     }
+    if vals.skins != out.skins {
+        Arc::make_mut(&mut vals).skins = out.skins.clone(); // Skins der Welt im Wertesatz, für das Spiel (WE6.6)
+    }
     out.values = Some(vals);
     Ok(out)
 }
