@@ -2,6 +2,7 @@
 
 use std::rc::Rc;
 
+use k3c_sim::island::chronicle::ChronicleEntry;
 use k3c_sim::state::{Event as SimEvent, Player, World};
 
 use super::cell::Cell;
@@ -50,6 +51,9 @@ pub struct Frame {
     /// alle Inseln der Welt des laufenden Spiels in Listenreihenfolge (local, nur lesen; leer ohne Spiel): Grundlage der
     /// Seekarte am Hafen (B-962)
     pub route: Vec<RouteIsland>,
+    /// Chronik der abgeschlossenen Inseln des laufenden Spiels (local aus dem Raum, GS3.8; leer ohne Spiel oder
+    /// Abschluss): Tage und Monarchen je Insel für die Andenken der Seekarte
+    pub chronicle: Vec<ChronicleEntry>,
     /// Stand der Kampagne für die Geschichte (local, story.rs; leer ohne Spiel, B-974)
     pub campaign: Campaign,
     /// game zeigt in diesem Update die Ladeanzeige statt des Spiels (Einblendungen warten so lange, B-974)
@@ -67,6 +71,8 @@ pub struct RouteIsland {
     pub world: String,
     pub stages: i64,
     pub chunks: i64,
+    /// erste nicht leere Zeile `done` der Insel-Geschichte (GS3.8, Andenken auf der Seekarte); leer = keine
+    pub done: String,
 }
 
 /// Outcome ist der Ausgang eines Spiels.

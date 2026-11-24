@@ -14,6 +14,7 @@ use super::layout::{
     COL_BAD, COL_DIM, COL_LINE, COL_LINE_OFF, COL_PICKED, COL_TEXT, COL_TITLE, Geom, MAT_BLUE, MAT_CLOTH, MAT_GOLD,
     MAT_LINEN, MAT_RED, MAX_ROWS, Material, Rgba, SHADOW_LAYERS, fade, geom_of, text_scale,
 };
+use super::saves_preview::Preview;
 use crate::art::{Font, Library};
 use crate::view::cell::Cell;
 
@@ -37,6 +38,8 @@ pub struct Page {
     pub ask_sel: i64,
     /// großes Weltbild mit Name (Weltauswahl); leer = keins
     pub hero: Hero,
+    /// Vorschau des markierten Spielstands (Spielstand-Auswahl, GS3.8); `on` false = keine
+    pub preview: Preview,
 
     /// Version des Screens, für die die Texte gelten
     pub ver: i64,
@@ -215,6 +218,9 @@ impl Painter {
         }
         if pg.hero.on {
             self.hero(dst, &g, &pg.hero);
+        }
+        if pg.preview.on {
+            self.preview(dst, &g, &pg.preview);
         }
         let note_clr = if pg.bad { COL_BAD } else { COL_TEXT };
         self.centered(dst, &pg.note, cx, g.note_y, g.small_px, note_clr);

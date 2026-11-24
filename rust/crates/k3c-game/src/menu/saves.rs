@@ -15,6 +15,7 @@ use super::draw::{Page, Row};
 use super::keys::{Base, Handler, Key, Note, move_sel, run, window};
 use super::layout::{MAT_BLUE, MAX_ROWS};
 use super::main_screen::by_hint;
+use super::saves_preview::preview_of;
 use super::texts::{TextKey, tr, tr1};
 use crate::view::cell::Cell;
 use crate::view::frame::{CueKind, Frame};
@@ -155,6 +156,9 @@ impl SavesScreen {
             p.add(r);
         }
         p.sel = self.sel - from as i64;
+        if let Some(e) = self.list.get(self.sel as usize) {
+            p.preview = preview_of(lang, e); // folgt der Markierung; Auf/Ab ändert die Version, die Seite wird neu gebaut
+        }
         if n == 0 {
             p.sub = tr(lang, TextKey::SavesEmpty);
         }

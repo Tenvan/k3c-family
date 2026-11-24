@@ -16,6 +16,7 @@ use super::skilltext::move_arg;
 use super::texts::{tf, tr};
 use crate::view::frame::RouteIsland;
 use crate::view::input::Action;
+use k3c_sim::island::chronicle::ChronicleEntry;
 use k3c_sim::state::SwitchState;
 
 /// SeaKind ist der Zustand eines Knotens der Seekarte.
@@ -41,6 +42,12 @@ pub struct SeaNode {
     pub cursor: bool,
     pub current: bool,
     pub look: SeaLook,
+    /// der Zeiger dieses Spielers steht auf dieser abgeschlossenen Insel (GS3.8): zeigt das Andenken
+    pub pointed: bool,
+    /// erste `done`-Zeile der abgeschlossenen Insel (GS3.8); leer = keine
+    pub done_line: String,
+    /// „<Tage> Tage · <n> Monarchen“ aus der Chronik (GS3.8); leer ohne Eintrag
+    pub numbers: String,
 }
 
 /// SeaRow ist eine Etappe mit ihren Inseln in Listenreihenfolge.
@@ -62,6 +69,7 @@ pub struct SeaShown {
     pub route: (usize, usize),
     pub targets: Vec<String>,
     pub done_id: Vec<String>,
+    pub chronicle: Vec<ChronicleEntry>,
 }
 
 /// SeaView ist die Seekarte eines Spielers. `open`: der Wechselpunkt ist offen und es gibt Ziele. `ids` sind die Ziele
@@ -74,6 +82,9 @@ pub struct SeaView {
     pub open: bool,
     pub hold: bool,
     pub ids: Vec<String>,
+    /// Zeiger-Reihe (GS3.8): zuerst die Ziele (`ids`), dann die abgeschlossenen Inseln in Listenreihenfolge; `cursor`
+    /// zeigt in diese Reihe, bestätigt wird nur ein Ziel
+    pub ring: Vec<String>,
     pub cursor: usize,
     pub choice: String,
     pub rows: Vec<SeaRow>,
@@ -92,6 +103,8 @@ pub struct SeaView {
 pub struct SeaResult {
     pub moved: bool,
     pub pick: String,
+    /// Bestätigen auf einer abgeschlossenen Insel (GS3.8): gilt als abgelehnt, die Eingabe hat Feedback
+    pub denied: bool,
 }
 
 impl SeaView {
@@ -99,6 +112,19 @@ impl SeaView {
     /// schließt sie. Neu gebaut wird nur bei Änderung von Sprache, Profil, Route, Zielen, Wahl oder Abgeschlossenen;
     /// sonst setzt es nur den Cursor (keine Allokation je Frame).
     pub fn refresh(&mut self, lang: &str, profile: &str, sw: Option<&SwitchState>, route: &[RouteIsland]) {
+        self.refresh_with(lang, profile, sw, route, &[]);
+    }
+
+    /// refresh_with wie `refresh`, mit der Chronik der abgeschlossenen Inseln (`Frame::chronicle`, GS3.8): Tage und
+    /// Monarchen unter dem Andenken, auf dem der Zeiger steht.
+    pub fn refresh_with(
+        &mut self,
+        lang: &str,
+        profile: &str,
+        sw: Option<&SwitchState>,
+        route: &[RouteIsland],
+        chronicle: &[ChronicleEntry],
+    ) {
         let Some(sw) = sw.filter(|s| s.open && !s.targets.is_empty()) else {
             self.close();
             return;
@@ -117,22 +143,22 @@ impl SeaView {
             }));
             route = &fallback;
         }
-        if self.same(lang, profile, sw, route) {
+        if self.same(lang, profile, sw, route, chronicle) {
             if self.choice != sw.choice {
                 self.choice.clone_from(&sw.choice);
             }
         } else {
-            self.remember(lang, profile, sw, route);
+            self.remember(lang, profile, sw, route, chronicle);
             self.ids.clear();
             self.ids.extend(sw.targets.iter().map(|t| t.id.clone()));
-            if self.choice != sw.choice || self.cursor >= self.ids.len() {
+            self.build(lang, sw, route, chronicle);
+            if self.choice != sw.choice || self.cursor >= self.ring.len() {
                 self.choice.clone_from(&sw.choice);
                 self.cursor = self.ids.iter().position(|i| *i == sw.choice).unwrap_or(0);
             }
-            self.line = sea_line(lang, profile, self.ids.len() > 1);
+            self.line = sea_line(lang, profile, self.ring.len() > 1);
             self.title = tr(lang, "sea.title").to_string();
             self.hint.clone_from(&self.line.plain);
-            self.build(lang, sw, route);
             self.sizes_k = 0.0;
         }
         self.mark_cursor();
@@ -161,7 +187,7 @@ impl SeaView {
     }
 
     /// same: Der Stand, aus dem die Karte gebaut ist, ist unverändert.
-    fn same(&self, lang: &str, profile: &str, sw: &SwitchState, route: &[RouteIsland]) -> bool {
+    fn same(&self, lang: &str, profile: &str, sw: &SwitchState, route: &[RouteIsland], chr: &[ChronicleEntry]) -> bool {
         let sh = &self.shown;
         sh.set
             && sh.lang == lang
@@ -170,11 +196,12 @@ impl SeaView {
             && sh.route == (route.as_ptr() as usize, route.len())
             && sh.targets.len() == sw.targets.len()
             && sh.done_id == sw.completed
+            && sh.chronicle == chr
             && sw.targets.iter().zip(&sh.targets).all(|(t, id)| t.id == *id)
     }
 
     /// remember merkt den Stand der Karte (Vecs werden wiederverwendet).
-    fn remember(&mut self, lang: &str, profile: &str, sw: &SwitchState, route: &[RouteIsland]) {
+    fn remember(&mut self, lang: &str, profile: &str, sw: &SwitchState, route: &[RouteIsland], chr: &[ChronicleEntry]) {
         let sh = &mut self.shown;
         sh.set = true;
         sh.lang.clear();
@@ -186,13 +213,17 @@ impl SeaView {
         sh.targets.clear();
         sh.targets.extend(sw.targets.iter().map(|t| t.id.clone()));
         sh.done_id.clone_from(&sw.completed);
+        sh.chronicle.clear();
+        sh.chronicle.extend_from_slice(chr);
     }
 
     /// build legt die Zeilen nach Etappe (aufsteigend) und die Knoten nach Listenreihenfolge an. Abgeschlossen ist, was
     /// `SwitchState::completed` nennt (die Simulation zählt die aktuelle Insel dazu), Ziel, was in `targets` steht, alles
     /// andere ist gesperrt. Die aktuelle Insel nennt die Simulation als letzte der Abgeschlossenen.
-    fn build(&mut self, lang: &str, sw: &SwitchState, route: &[RouteIsland]) {
+    fn build(&mut self, lang: &str, sw: &SwitchState, route: &[RouteIsland], chr: &[ChronicleEntry]) {
         self.rows.clear();
+        self.ring.clear();
+        self.ring.extend(self.ids.iter().cloned());
         for isl in route {
             let i = match self.rows.iter().position(|r| r.etappe == isl.etappe) {
                 Some(i) => i,
@@ -212,8 +243,18 @@ impl SeaView {
             } else {
                 SeaKind::Locked
             };
+            let done = kind == SeaKind::Done;
+            if done {
+                self.ring.push(isl.id.clone());
+            }
             self.rows[i].nodes.push(SeaNode {
                 id: isl.id.clone(),
+                done_line: if done { isl.done.clone() } else { String::new() },
+                numbers: if done {
+                    numbers_of(lang, chr, &isl.id)
+                } else {
+                    String::new()
+                },
                 name: isl.name.clone(),
                 kind,
                 chosen: isl.id == sw.choice,
@@ -227,10 +268,12 @@ impl SeaView {
 
     /// mark_cursor setzt den Cursor-Marker auf das Ziel unter dem Cursor und die Wahl-Marker (ohne Allokation).
     fn mark_cursor(&mut self) {
-        let under = self.ids.get(self.cursor);
+        let under = self.ring.get(self.cursor);
         for r in &mut self.rows {
             for n in &mut r.nodes {
-                n.cursor = n.kind == SeaKind::Target && under.is_some_and(|u| *u == n.id);
+                let on = n.kind != SeaKind::Locked && under.is_some_and(|u| *u == n.id);
+                n.cursor = n.kind == SeaKind::Target && on;
+                n.pointed = n.kind == SeaKind::Done && on;
                 n.chosen = n.id == self.choice;
             }
         }
@@ -243,7 +286,7 @@ impl SeaView {
         if !self.open || self.ids.is_empty() {
             return r;
         }
-        let n = self.ids.len();
+        let n = self.ring.len().max(self.ids.len());
         for a in acts {
             match a {
                 Action::Left if n > 1 => {
@@ -254,7 +297,8 @@ impl SeaView {
                     self.cursor = (self.cursor + 1) % n;
                     r.moved = true;
                 }
-                Action::Confirm => r.pick.clone_from(&self.ids[self.cursor.min(n - 1)]),
+                Action::Confirm if self.cursor < self.ids.len() => r.pick.clone_from(&self.ids[self.cursor]),
+                Action::Confirm => r.denied = true,
                 _ => {}
             }
         }
@@ -269,4 +313,17 @@ pub fn sea_line(lang: &str, profile: &str, several: bool) -> KeyLine {
         return new_key_line(tr(lang, "sea.hint"), &[move_arg(lang, profile), ok]);
     }
     new_key_line(tr(lang, "sea.hintOne"), &[ok])
+}
+
+/// numbers_of liefert „<Tage> Tage · <n> Monarchen“ der Insel `id` aus der Chronik (Einzahl bei 1); leer ohne Eintrag.
+fn numbers_of(lang: &str, chr: &[ChronicleEntry], id: &str) -> String {
+    let Some(e) = chr.iter().find(|e| e.island == id) else {
+        return String::new();
+    };
+    let part = |one: &str, many: &str, n: i64| tf(lang, if n == 1 { one } else { many }, &[("n", n.into())]);
+    format!(
+        "{} · {}",
+        part("sea.day", "sea.days", e.days),
+        part("sea.monarch", "sea.monarchs", e.monarchs)
+    )
 }

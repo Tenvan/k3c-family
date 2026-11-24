@@ -99,6 +99,11 @@ impl Hud {
         if r.moved {
             cue(CueKind::Move, "");
         }
+        if r.denied {
+            sea.hold = true; // wie eine abgelehnte Wahl: A zahlt nicht mit, bis es losgelassen ist
+            cue(CueKind::Denied, tr(&self.lang, "sea.denied"));
+            return true;
+        }
         if r.pick.is_empty() {
             return sea.hold;
         }

@@ -4,7 +4,7 @@
 use super::seekarte::{SeaKind, SeaRow, sea_line};
 use super::testutil::{HudSession, has_cue, hud, input, open_switch, sea_world, set_world};
 use crate::view::frame::CueKind;
-use crate::view::input::Action::{Back, Confirm, Left, Menu, Right};
+use crate::view::input::Action::{Back, Confirm, Menu, Right};
 use crate::view::roles::Overlay;
 use crate::view::session::Fehler;
 use crate::view::settings::DEFAULT_LANGUAGE;
@@ -77,15 +77,12 @@ fn sea_completed_and_one_target() {
             assert_eq!(n.kind, SeaKind::Done, "{} abgeschlossen", n.name);
         }
     }
-    let one = sea_line(DEFAULT_LANGUAGE, &h.seats[0].profile, false).plain;
+    // GS3.8: Der Zeiger erreicht auch die abgeschlossenen Inseln, darum gilt der Hinweis mit Pfeilen; gewählt wird nur das Ziel
+    let many = sea_line(DEFAULT_LANGUAGE, &h.seats[0].profile, true).plain;
     let v = &mut h.seats[0].sea;
-    assert!(
-        v.hint == one && !v.hint.contains('◄'),
-        "ein Ziel: Hinweis ohne Pfeile, war {:?}",
-        v.hint
-    );
-    let r = v.step(&[Right, Left]);
-    assert!(!r.moved && r.pick.is_empty(), "ein Ziel: Links/Rechts bewegen nichts");
+    assert_eq!(v.hint, many, "Ziel plus abgeschlossene Inseln: Hinweis mit Pfeilen");
+    let r = v.step(&[Confirm]);
+    assert_eq!(r.pick, "d", "der Zeiger beginnt auf dem Ziel");
 }
 
 /// AC-02: Links/Rechts/A erzeugen die Wahl-Aktion, mit 2 Spielern; die Wahl eines Spielers ist für beide sichtbar.

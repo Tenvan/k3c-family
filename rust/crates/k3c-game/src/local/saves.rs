@@ -8,16 +8,18 @@
 //! über `Arc<Mutex<…>>` nur, weil der Manager den Store besitzt. (3) Der Ordner der weiteren Welten ist ein `Source`
 //! (Datenordner mit `worlds/<id>.json`, `worlds_source`).
 
+use std::collections::HashMap;
 use std::time::{Duration, UNIX_EPOCH};
 
 use k3c_room::room::Log as _;
 use k3c_room::store::{SaveInfo as StoreInfo, Stamp};
 use k3c_sim::island::save::SaveTables;
-use k3c_sim::island::{parse_island_save, standard_world};
+use k3c_sim::island::{STANDARD_WORLD_ID, WorldDef, parse_island_save, standard_world};
 use k3c_sim::world::base::base;
 use k3c_sim::world::values_room::default_values_from;
 
 use super::error::{UserError, describe, user_err};
+use super::route::{load_world_def, route_of_def};
 use super::session::Session;
 use super::worlds::game_data;
 use crate::view::session::{SaveInfo, WorldInfo};
@@ -35,13 +37,19 @@ impl Session {
     pub(super) fn saves_list(&mut self) -> Result<Vec<SaveInfo>, UserError> {
         let raw = self.saves.list();
         let checker = SaveChecker::new();
-        let mut out: Vec<SaveInfo> = raw.into_iter().map(|e| self.info(&checker, e)).collect();
+        let mut worlds = HashMap::new(); // Welt-ID → Welt, je Liste einmal gelesen (Vorschau, GS3.8)
+        let mut out: Vec<SaveInfo> = raw.into_iter().map(|e| self.info(&checker, e, &mut worlds)).collect();
         out.sort_by_key(|a| std::cmp::Reverse(a.saved_at));
         Ok(out)
     }
 
     /// Go: `info`: prüft einen Eintrag wie beim Laden (`parse_island_save`), ohne die Insel aufzubauen.
-    fn info(&self, checker: &Result<SaveChecker, String>, e: StoreInfo) -> SaveInfo {
+    fn info(
+        &self,
+        checker: &Result<SaveChecker, String>,
+        e: StoreInfo,
+        worlds: &mut HashMap<String, Option<WorldDef>>,
+    ) -> SaveInfo {
         let mut v = SaveInfo {
             saved_at: parse_time(&e.saved_at),
             day: e.day,
@@ -61,10 +69,29 @@ impl Session {
             .map_err(|err| err.to_string())
             .and_then(|data| checker.as_ref().map_err(Clone::clone).and_then(|c| c.check(&data)));
         match res {
-            Ok(()) => v.loadable = true,
+            Ok(()) => {
+                v.loadable = true;
+                self.preview(&mut v, e, worlds);
+            }
             Err(err) => v.problem = format!("Spielstand nicht ladbar: {err}"),
         }
         v
+    }
+
+    /// Füllt die Vorschau eines ladbaren Stands (GS3.8): Inseln der Welt, aktuelle und abgeschlossene Inseln, Chronik. Ist
+    /// die Welt nicht lesbar, bleibt die Route leer (keine Vorschau).
+    fn preview(&self, v: &mut SaveInfo, e: StoreInfo, worlds: &mut HashMap<String, Option<WorldDef>>) {
+        let id = if e.world.is_empty() {
+            STANDARD_WORLD_ID
+        } else {
+            e.world.as_str()
+        };
+        let def = worlds
+            .entry(id.to_string())
+            .or_insert_with(|| load_world_def(self.worlds_dir.as_deref(), id).ok());
+        let Some(def) = def else { return };
+        v.route = route_of_def(def, id);
+        (v.island, v.completed, v.chronicle) = (e.island_id, e.completed, e.chronicle);
     }
 
     /// Go: `Delete`: nimmt den Spielstand in die Sicherungen (`Saves::discard`, B-506); nicht den des laufenden Spiels. Läuft

@@ -176,4 +176,8 @@ pub static TEXTS: [[&str; 2]; TEXT_COUNT] = [
     ["Test starten", "Start test"],                               // TstStart
     ["Tasten-Test", "Button test"],                               // TstPads
     ["Tasten drücken · B zurück", "Press buttons · B back"],      // PadTestHint
+    ["{} Tag", "{} day"],                                         // SavesDay
+    ["{} Tage", "{} days"],                                       // SavesDays
+    ["{} Monarch", "{} monarch"],                                 // SavesMonarch
+    ["{} Monarchen", "{} monarchs"],                              // SavesMonarchs
 ];

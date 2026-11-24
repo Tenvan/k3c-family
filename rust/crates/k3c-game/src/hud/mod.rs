@@ -35,6 +35,7 @@ pub mod draw;
 pub mod drawglyph;
 pub mod drawmenu;
 pub mod drawsea;
+pub mod drawsea_memo;
 pub mod drawsea_paper;
 pub mod drawsea_scene;
 pub mod drawstock;
@@ -109,6 +110,8 @@ mod radar_tests;
 mod seekarte_hold_tests;
 #[cfg(test)]
 mod seekarte_look_tests;
+#[cfg(test)]
+mod seekarte_memo_tests;
 #[cfg(test)]
 mod seekarte_paper_tests;
 #[cfg(test)]

@@ -10,10 +10,10 @@ use k3c_platform::Canvas;
 
 use super::Hud;
 use super::draw::rect_of;
+use super::drawsea_memo::MEMO_H;
 use super::drawsea_paper::SeaArt;
 use super::fonts::{WHITE, YELLOW, rgb};
 use super::layout::Rect;
-use super::paint::{Z_CONTENT, straight};
 use super::seekarte::{SeaKind, SeaNode, SeaView};
 use crate::art::Font;
 use crate::view::cell::Cell;
@@ -48,6 +48,9 @@ pub struct SeaSizes {
     pub max_nodes: usize,
     /// `hint_w` gilt für den Hinweis mit Tasten-Icons
     pub hint_icons: bool,
+    /// breiteste Andenken-Zeile (GS3.8); `has_memo`: mindestens eine abgeschlossene Insel hat eine Zeile oder Zahlen
+    pub memo_w: f64,
+    pub has_memo: bool,
 }
 
 impl Hud {
@@ -67,6 +70,7 @@ impl Hud {
                 m.name_w = m.name_w.max(font.measure(&n.name, b).0);
             }
         }
+        self.measure_memo(&mut m, font, v, b);
         m
     }
 
@@ -115,8 +119,10 @@ impl Hud {
         let n = v.rows.len() as f64;
         let mut w = (2.0 * pad + m.lab_w + gap + m.max_nodes as f64 * (node_w + gap))
             .max(2.0 * pad + m.title_w)
-            .max(2.0 * pad + m.hint_w);
-        let mut ht = 2.0 * pad + 1.4 * b + n * (node_h + gap) + 1.1 * b;
+            .max(2.0 * pad + m.hint_w)
+            .max(2.0 * pad + m.memo_w);
+        let memo = if m.has_memo { MEMO_H * b } else { 0.0 };
+        let mut ht = 2.0 * pad + 1.4 * b + n * (node_h + gap) + 1.1 * b + memo;
         let cell = rect_of(c.rect);
         let s = (cell.w * 0.96 / w).min(cell.h * 0.9 / ht).min(1.0);
         let b = b * s;
@@ -138,7 +144,9 @@ impl Hud {
             }
             y += node_h + gap;
         }
-        self.draw_hint(dst, f, &mut v.line, &v.hint, x, y, b * 0.8);
+        let memo = if m.has_memo { MEMO_H * b } else { 0.0 };
+        self.draw_memo(dst, f.as_deref_mut(), v, x, y, b);
+        self.draw_hint(dst, f, &mut v.line, &v.hint, x, y + memo, b * 0.8);
     }
 
     /// draw_sea_node zeichnet den Knoten nd in r: Fläche, Rahmen, Marke und Name.
@@ -166,18 +174,8 @@ impl Hud {
         let pt = &self.paint;
         match kind {
             SeaKind::Done => {
-                pt.circle(dst, cx, cy, r, rgb(CLR_SEA_GREEN, 1.0));
-                let lw = (r * 0.22).max(2.0) as f32;
-                let white = straight(WHITE);
-                dst.layer(Z_CONTENT);
-                let p = |x: f64, y: f64| (x as f32, y as f32);
-                let ((x0, y0), (x1, y1), (x2, y2)) = (
-                    p(cx - r * 0.5, cy),
-                    p(cx - r * 0.1, cy + r * 0.4),
-                    p(cx + r * 0.55, cy - r * 0.4),
-                );
-                dst.stroke_line(x0, y0, x1, y1, lw, white);
-                dst.stroke_line(x1, y1, x2, y2, lw, white);
+                // Trophäe samt Fahne (GS3.8) statt des Hakens: links im Knoten, höchstens bis zum Namen
+                self.draw_trophy(dst, cx - 0.833 * r, cy + 1.167 * r, 2.33 * r, true);
             }
             SeaKind::Target => pt.ring_at(dst, cx, cy, r, WHITE),
             SeaKind::Locked => {

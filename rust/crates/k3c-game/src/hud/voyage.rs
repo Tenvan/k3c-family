@@ -107,6 +107,9 @@ impl VoyageView {
             let n = row.nodes.len();
             for (j, nd) in row.nodes.iter_mut().enumerate() {
                 nd.cursor = false;
+                nd.pointed = false;
+                nd.done_line.clear();
+                nd.numbers.clear();
                 nd.current = false;
                 if nd.id == v.from {
                     self.from = SeaSpot { col: i, lane: j, n };

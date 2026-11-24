@@ -141,10 +141,14 @@ pub enum TextKey {
     TstStart,
     TstPads,
     PadTestHint,
+    SavesDay,
+    SavesDays,
+    SavesMonarch,
+    SavesMonarchs,
 }
 
 /// Zahl der Texte.
-pub const TEXT_COUNT: usize = 131;
+pub const TEXT_COUNT: usize = 135;
 
 /// Der Index der Sprache in `TEXTS` (unbekannt = Deutsch, wie `Settings::normalized`).
 fn lang_index(lang: &str) -> usize {
