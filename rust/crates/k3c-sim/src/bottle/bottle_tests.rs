@@ -150,6 +150,7 @@ fn spielstand_rundlauf_erhaelt_flasche_und_markierung() {
         target: Some(50.0),
         last_day: Some(3),
         found: 2,
+        lines: 0,
     };
     let s = w.bottle.to_save();
     assert_eq!(BottleState::from_save(&s), w.bottle);
@@ -162,4 +163,23 @@ fn spielstand_rundlauf_erhaelt_flasche_und_markierung() {
 fn leerer_zustand_fehlt_im_spielstand() {
     assert!(BottleSave::default().is_empty());
     assert!(!BottleSave { found: 1, ..Default::default() }.is_empty());
+}
+
+#[test]
+fn geschichtszeile_wechselt_je_aufgehobene_flasche() {
+    let mut w = welt();
+    w.bottle.lines = 3;
+    for n in 1..=4 {
+        w.bottle.ashore = Some(10.0);
+        w.players = vec![monarch_at(10.0)];
+        step_pickup(&mut w);
+        let line = w
+            .events
+            .last()
+            .and_then(|e| e.get("line"))
+            .and_then(|v| v.as_i64())
+            .expect("line");
+        assert_eq!(line, (n - 1) % 3, "Flasche {n}");
+        w.bottle.target = None;
+    }
 }
