@@ -18,13 +18,13 @@ Der Welten-Editor hat Endboss-Auswahl je Insel, Events und Plätze in der Werte-
 
 ## Kontext
 
-Frontend `tools/k3c-workbench/frontend/src/world/`: `WorldPage.tsx`, `Overview.tsx`, `CrossSection.tsx`, `ChunkInspector.tsx`, `WorldValues.tsx`, `worldOverrides.ts`, `useWorld.ts`, Tests daneben (`*.test.tsx`, Vitest). Bausteine nur aus `tools/webkit` (`@webkit/atoms`, `molecules`, `organisms`, `templates`), Radix nur über `@webkit`, rohe Controls nur in `atoms/` (`tests/atomicDesign.test.ts`). Daten kommen über die API des Backends aus WE6.3 (`endBoss`, `skins`, `events`, `hub › sites`). Asset-Vorschau: Standbilder wie im Bereich Assets der Workbench.
+Der Welten-Editor liegt im Studio (`tools/k3c-studio`, nicht in der Workbench). Frontend `tools/k3c-studio/frontend/src/world/`: `WorldPage.tsx`, `Overview.tsx`, `CrossSection.tsx`, `ChunkInspector.tsx`, `WorldValues.tsx`, `worldOverrides.ts`, `useWorld.ts`, Tests daneben (`*.test.tsx`, Vitest). Backend `tools/k3c-studio/internal/world/` und MCP-Server `tools/k3c-studio/internal/mcpsrv/`. Bausteine nur aus `@webkit` (`atoms`, `molecules`, `organisms`, `templates`), Radix nur über `@webkit`, rohe Controls nur in `atoms/` (`tests/atomicDesign.test.ts`). Daten kommen über die Backend-API aus WE6.3 (`endBoss`, `skins`, Overrides `events` und `hub › sites`). Asset-Vorschau: Standbilder wie im Bereich Assets des Studios.
 
 ## Erlaubte Dateien
 
-- `tools/k3c-workbench/frontend/src/world/**`
-- `tools/k3c-workbench/internal/world/**`
-- `tools/k3c-workbench/internal/mcpsrv/**`
+- `tools/k3c-studio/frontend/src/world/**`
+- `tools/k3c-studio/internal/world/**`
+- `tools/k3c-studio/internal/mcpsrv/**`
 
 ## Nicht-Ziele
 
@@ -35,7 +35,7 @@ Neue Bausteine in `tools/webkit` (fehlt einer → Ticket), Drag & Drop, Assets a
 1. Tests zuerst (Vitest): Endboss-Auswahl schreibt `endBoss` bzw. entfernt es; Skin-Tabelle fügt hinzu und entfernt.
 2. Endboss-Auswahl in der Insel-Ansicht; Events und Plätze in `WorldValues`/`worldOverrides.ts`.
 3. Skin-Tabelle mit Vorschau, Warnung bei fehlendem Asset.
-4. `check_run task:check:dev`; Review `k3c-workbench` vor dem Commit.
+4. `task check:dev` (bzw. `task check:diff`); Review durch den Agenten `k3c-workbench` (zuständig auch für das Studio) vor dem Commit.
 
 ## Fertig, wenn
 
