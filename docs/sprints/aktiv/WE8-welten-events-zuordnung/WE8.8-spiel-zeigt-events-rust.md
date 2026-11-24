@@ -1,6 +1,6 @@
 # WE8.8 · Das Rust-Spiel kündigt Events an und zeigt Schleier (ersetzt WE8.4)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -54,5 +54,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-04 umgesetzt (Commit e5761087d, #881: Ankündigung über `hud/state.rs` `new_events_key`/`event_banner` aus `night_events`, Schleier in `world/event_veil.rs`). Geprüft: `cargo test -p k3c-game --lib event_veil` 3 grün, hud::kampf grün. Keine neue Codeänderung in dieser Session. `k3c-hud`-Review entfällt (kein Diff).
