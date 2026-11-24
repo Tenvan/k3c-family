@@ -357,6 +357,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
     isl.prepare_weather(); // RU62.5: Wetter-Zustand und Taifun-Faktoren je Stufe
     isl.prepare_hermit(); // RU62.10: Hütte offen? Bonus des Bauwerks je Stufe
     isl.prepare_festival(); // RU62.12: Ziel Endboss? (Frieden und Fest)
+    crate::bottle::prepare(isl); // B-1261: Zielpool über alle Stufen, bevor der Morgen prüft
     for i in 0..isl.stages.len() {
         let mut r = isl.stage_ref(i, difficulty);
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock); // Entscheidung 5: der Vorrat gehört der Stufe, solange sie rechnet
@@ -364,6 +365,7 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
         std::mem::swap(&mut isl.stock, &mut isl.stages[i].stock);
         isl.put_stage_ref(r);
     }
+    crate::bottle::step_bottle(isl); // B-1261: Flasche aufheben, Ziel setzen, erreichen oder verlieren
     errand::step_errands(isl, dt); // ECO1.7: Bürger gehen für Ausrüstung nach oben und zurück
     isl.sync_stock();
     crate::hermit::step::step_hermit(isl, dt); // RU62.10: Einwurf an der Hütte startet den Bau im Hub
