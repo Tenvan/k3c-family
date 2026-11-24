@@ -1,0 +1,8 @@
+{
+  "firstDay": 3,
+  "everyDays": 4,
+  "edgeMarginMinUnits": 2,
+  "edgeMarginMaxUnits": 6,
+  "pickupRangeUnits": 1.5,
+  "targetRangeUnits": 1.5
+}

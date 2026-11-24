@@ -9,6 +9,7 @@ use std::fmt;
 pub mod balance_hints;
 pub mod balance_targets;
 pub mod biome;
+pub mod bottle;
 pub mod bosses;
 pub mod buildings;
 pub mod cargo;
