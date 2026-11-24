@@ -70,4 +70,4 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Befund: Die Dateiliste steht in `tools/k3c-studio/internal/mcpsrv/tools_world.go` (`overrideFilesText`) und wird gegen die Go-Engine geprüft (`TestOverrideFilesTextMatchesEngine`). `welt-events` gibt es nur in der Rust-Liste (`override_files`). Die Go-Engine ist eingefroren (Entscheidung 013), darum darf die Liste nicht einseitig um `welt-events` wachsen. Default (Entscheidung ohne Rückfrage): Die Studio-Liste bleibt, bis Entscheidung 013 zur Liste eindeutig ist. Umsetzung erst danach.
