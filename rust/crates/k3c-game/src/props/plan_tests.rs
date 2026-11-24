@@ -345,10 +345,19 @@ fn objekt_skin_ersetzt_das_asset_des_baums() {
     let basis = alt.split(':').next().unwrap_or_default().to_string();
     let mut skins = BTreeMap::new();
     skins.insert(basis.clone(), "objekte/ausgang".to_string());
-    w.vals = Some(Arc::new(WorldValues { skins, ..Default::default() }));
+    w.vals = Some(Arc::new(WorldValues {
+        skins,
+        ..Default::default()
+    }));
     let mut q = Planner::new(Some(lib));
     q.nodes(&w, &camera(6.0), "forest");
     let mit = assets_of(&q.body);
-    assert!(mit.iter().any(|a| a.starts_with("objekte/ausgang")), "Skin greift: {mit:?}");
-    assert!(!mit.iter().any(|a| a.starts_with(&basis)), "das Basis-Asset fällt weg: {mit:?}");
+    assert!(
+        mit.iter().any(|a| a.starts_with("objekte/ausgang")),
+        "Skin greift: {mit:?}"
+    );
+    assert!(
+        !mit.iter().any(|a| a.starts_with(&basis)),
+        "das Basis-Asset fällt weg: {mit:?}"
+    );
 }

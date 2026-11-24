@@ -177,7 +177,12 @@ impl Island {
             cargo: crate::cargo::save::to_save(&self.cargo),
             hermit_paid: self.hermit.paid,
             chronicle: self.chronicle.clone(),
-            bottle: self.stages.iter().find(|w| w.biome.depth == 0).map(|w| w.bottle.to_save()).unwrap_or_default(),
+            bottle: self
+                .stages
+                .iter()
+                .find(|w| w.biome.depth == 0)
+                .map(|w| w.bottle.to_save())
+                .unwrap_or_default(),
             ..IslandSave::default()
         };
         for w in &self.stages {
