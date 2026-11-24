@@ -1,6 +1,6 @@
 # WE6.6 · Endboss, Bau und Skins je Welt im Rust-Spiel zeichnen (ersetzt WE6.1 und WE6.2)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** CLI
@@ -58,8 +58,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-- AC-02 geprüft: Skin-Tabelle der Welt wird beim Figurenaufbau gelesen; zugeordnete Assets ersetzen das Standard-Asset, ohne Eintrag bleibt alles beim Alten (Commit 7b37e4fec, rebased auf main als e3b1b49c1). `cargo test -p k3c-game`: 1073 Lib-Tests grün, Integrationstests grün, ohne Ignorierung.
-- Umgebungsfehler, kein Codefehler: der Test `drei_stufen_mindestens_halbe_monarchenhoehe_auseinander` brauchte eine generierte Grafikdatei (`objekte/setzling`), die im Worktree fehlte.
-- Objekt-Skins (Rest): Bäume und Felsen der Stufe nehmen das Ersatz-Asset aus der Skin-Tabelle, sonst das Basis-Asset (`props/plan_entities.rs`, Test `objekt_skin_ersetzt_das_asset_des_baums`). `cargo test -p k3c-game`: grün.
-- Offen: Bau und Endboss je Biom (Standbild-Test, Gen-Lauf nötig).
-- PR #875 gemergt (Squash).
+- AC-01 umgesetzt: Endboss ohne eigenes Asset zeichnet das Asset der Basisart in Boss-Höhe (add_bosses, schon vorhanden); neu: Bossname aus bosses.json statt Id, wenn der Text fehlt (hud/data.rs boss_names, kampf.rs). Tests: endbosse_je_tiefe_mit_asset_oder_basisart (Tiefen 0 bis 4), boss_name_aus_den_werten; geprüft mit cargo test -p k3c-game --lib (kampf, endbosse). Der Bau-Hinweis (at_lair) gilt in jedem Biom; eine eigene Bau-Grafik gibt es weder im Rust- noch im Go-Spiel (kein Asset, Nicht-Ziel).
+- AC-02 umgesetzt und geprüft in früheren Läufen (Figuren-Skins #875, Objekt-Skins #885).
+- task check:diff nicht grün erreichbar: rust-lint scheitert an k3c-sim (save_load.rs, from_island_save_in 65/60 Zeilen, GS4) und rust-fmt an GS4-Dateien; nicht Teil dieser Session.

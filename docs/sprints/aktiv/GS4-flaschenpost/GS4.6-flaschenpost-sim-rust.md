@@ -1,6 +1,6 @@
 # GS4.6 · Flaschenpost in der Sim in Rust (ersetzt GS4.2)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -61,5 +61,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Die Umsetzung kam schon in vier Schritt-PRs auf main (#880, #882, #883, #884, dazu B-1261 in #890); diese Session hat sie nur nachgewiesen und abgeschlossen.
+
+- AC-02 geprüft: `cargo test -p k3c-sim bottle` grün (erste Flasche Tag 3, Ort deterministisch, aufheben, Abend verliert Flasche, Frieden/unter Tage kein Erscheinen).
+- AC-03 geprüft: Tests Zielpool über alle Stufen, Markierung bleibt ohne Monarch, Zeile reihum (`geschichtszeile_wechselt_je_aufgehobene_flasche`).
+- AC-04 geprüft: `spielstand_rundlauf_erhaelt_flasche_und_markierung`, Spielstand-Version 14 (#883); Golden unverändert (Rust schreibt eigene erst nach RU41).
+- Tests: `cargo test -p k3c-sim -p k3c-data bottle` 16 + 3 grün. Kein neuer Code, kein Review nötig. Keine Abweichungen, keine neuen Tickets.

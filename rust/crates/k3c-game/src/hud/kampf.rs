@@ -4,7 +4,7 @@
 
 use k3c_sim::state::{ActiveEvent, Enemy, Merchant};
 
-use super::data::end_boss_phases;
+use super::data::{boss_names, end_boss_phases};
 use super::texts::{name_of, tf, tr};
 use super::values::{SEP, format_time};
 
@@ -42,7 +42,12 @@ pub fn boss_bar(lang: &str, enemies: &[Enemy]) -> BossView {
         ok: true,
         id: boss.id,
         share,
-        name: name_of(lang, "boss", &boss.kind, &boss.kind),
+        name: name_of(
+            lang,
+            "boss",
+            &boss.kind,
+            boss_names().get(&boss.kind).map_or(boss.kind.as_str(), String::as_str),
+        ),
         phase: phase_text(lang, &boss.kind, boss.phase),
     }
 }

@@ -79,6 +79,7 @@ struct PurseFile {
 struct BossesFile {
     #[serde(rename = "endBosses")]
     end_bosses: Vec<EndBoss>,
+    bosses: Vec<EndBoss>,
 }
 
 #[derive(Default, Deserialize)]
@@ -88,6 +89,7 @@ struct EndBoss {
     id: String,
     #[serde(rename = "Phases", alias = "phases")]
     phases: Vec<serde::de::IgnoredAny>,
+    name: String,
 }
 
 /// skill_lines sind die Linien aus monarch.json › lines in Dateireihenfolge.
@@ -116,6 +118,20 @@ pub fn building_info() -> &'static BTreeMap<String, BuildingInfo> {
 pub fn end_boss_phases() -> &'static BTreeMap<String, i64> {
     static P: OnceLock<BTreeMap<String, i64>> = OnceLock::new();
     P.get_or_init(read_boss_phases)
+}
+
+/// boss_names sind die Namen aller Bosse aus bosses.json (Mini- und Endbosse), Rückfall für Namen ohne Text (B-993).
+pub fn boss_names() -> &'static BTreeMap<String, String> {
+    static N: OnceLock<BTreeMap<String, String>> = OnceLock::new();
+    N.get_or_init(|| {
+        let b: BossesFile = read_json("bosses.json");
+        b.bosses
+            .into_iter()
+            .chain(b.end_bosses)
+            .filter(|e| !e.name.is_empty())
+            .map(|e| (e.id, e.name))
+            .collect()
+    })
 }
 
 /// read_json liest eine Datei aus data/; Fehler landen im Log, das Ergebnis bleibt dann leer.
