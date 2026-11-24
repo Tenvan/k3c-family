@@ -4,7 +4,7 @@
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** CLI
-- **Lane:** zweit
+- **Lane:** –
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/gs4

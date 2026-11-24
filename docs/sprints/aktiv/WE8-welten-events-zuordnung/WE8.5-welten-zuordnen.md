@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
-- **Lane:** zweit
+- **Lane:** –
 - **Modell:** sonnet
 - **Umgebung:** live
 - **Branch:** sprint/we8
