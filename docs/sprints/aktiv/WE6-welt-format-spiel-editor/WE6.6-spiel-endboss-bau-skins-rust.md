@@ -58,5 +58,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 geprüft: Skin-Tabelle der Welt wird beim Figurenaufbau gelesen; zugeordnete Assets ersetzen das Standard-Asset, ohne Eintrag bleibt alles beim Alten (Commit 7b37e4fec, rebased auf main als e3b1b49c1). `cargo test -p k3c-game`: 1073 Lib-Tests grün, Integrationstests grün, ohne Ignorierung.
+- Umgebungsfehler, kein Codefehler: der Test `drei_stufen_mindestens_halbe_monarchenhoehe_auseinander` brauchte eine generierte Grafikdatei (`objekte/setzling`), die im Worktree fehlte.
+- Objekt-Skins (Rest): Bäume und Felsen der Stufe nehmen das Ersatz-Asset aus der Skin-Tabelle, sonst das Basis-Asset (`props/plan_entities.rs`, Test `objekt_skin_ersetzt_das_asset_des_baums`). `cargo test -p k3c-game`: grün.
+- Offen: Bau und Endboss je Biom (Standbild-Test, Gen-Lauf nötig).
+- PR #875 gemergt (Squash).

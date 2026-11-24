@@ -324,3 +324,31 @@ fn burg_balken_und_platzhalter() {
     assert_eq!(p.top.len(), 2, "Lebensbalken der verletzten Burg");
     assert_eq!(bits_arr([0, 100, 0, 0, 1]), 0b10010);
 }
+
+#[test]
+fn objekt_skin_ersetzt_das_asset_des_baums() {
+    use k3c_sim::state::WorldValues;
+    use std::collections::BTreeMap;
+    use std::sync::Arc;
+    let Some(lib) = fake_sheets() else {
+        return;
+    };
+    let mut w = World::default();
+    w.nodes = vec![node("tree", 5.0)];
+    let mut p = Planner::new(Some(lib.clone()));
+    p.nodes(&w, &camera(6.0), "forest");
+    let ohne = assets_of(&p.body);
+    let Some(alt) = ohne.first().cloned() else {
+        panic!("ein Baum muss ein Asset haben");
+    };
+    // Der Schlüssel der Skin-Tabelle ist das Asset ohne Animation (`objekte/tanne`, nicht `objekte/tanne:idle`).
+    let basis = alt.split(':').next().unwrap_or_default().to_string();
+    let mut skins = BTreeMap::new();
+    skins.insert(basis.clone(), "objekte/ausgang".to_string());
+    w.vals = Some(Arc::new(WorldValues { skins, ..Default::default() }));
+    let mut q = Planner::new(Some(lib));
+    q.nodes(&w, &camera(6.0), "forest");
+    let mit = assets_of(&q.body);
+    assert!(mit.iter().any(|a| a.starts_with("objekte/ausgang")), "Skin greift: {mit:?}");
+    assert!(!mit.iter().any(|a| a.starts_with(&basis)), "das Basis-Asset fällt weg: {mit:?}");
+}
