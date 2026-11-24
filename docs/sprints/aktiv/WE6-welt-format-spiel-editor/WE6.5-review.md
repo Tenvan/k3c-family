@@ -4,7 +4,7 @@
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
-- **Lane:** zweit
+- **Lane:** –
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/we6

@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
-- **Lane:** zweit
+- **Lane:** –
 - **Modell:** sonnet
 - **Umgebung:** offline
 - **Branch:** sprint/we8

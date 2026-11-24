@@ -4,7 +4,7 @@
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
-- **Lane:** zweit
+- **Lane:** –
 - **Modell:** opus
 - **Umgebung:** offline
 - **Branch:** sprint/we8
