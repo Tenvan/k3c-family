@@ -88,6 +88,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 Zurückgestellt, Default aus Frage 15 bis 18 (Entscheidung durch den Autor, Stand dieses Laufs):
 
 1. Rust-Prüflauf: `task:check:diff` bricht im Vitest-Teil am Ordner `.work/we6-check` ab. Ohne Freigabe zum Löschen oder zu einer Befehlsregel bleiben alle Rust-Sessions zurück.
-2. Reihenfolge, sobald 1 gelöst ist: WE8.8 (Tönung prüfen, Schleier, Standbild), dann WE8.6 (Review), GS4.6 (Flaschenpost-Sim), dann GS4.3 und GS4.7, dann GS4.5 und GS3.6 (Reviews), WE6.6-Rest und WE6.5-Abnahme parallel dazu.
-3. WE8.5 Events und Skins: nicht im Studio setzbar, Studio-Ticket (Frage 13) zuerst, Skins gemäß Frage 14.
-4. AC-02 von B-1259 hängt an den Sessions in Punkt 2; die Sessions sind in ihren Sprints eingeplant, ihre Umsetzung ist offen.
+2. Reihenfolge, sobald 1 gelöst ist: WE8.8 (Tönung prüfen, Schleier, Standbild), dann WE8.6 (Review), GS4.6 (Flaschenpost-Sim), dann GS4.3 und GS4.7, dann GS4.5 und GS3.6 (Reviews). WE6.6-Rest und WE6.5-Abnahme parallel dazu.
+3. GS4.6, Default vorab: Flaschenpost-Werte in `data/bottle.json`, Spielstand-Version um eins erhöhen, Golden nur mit Begründung im Commit neu schreiben. Keine Balancing-Werte festlegen, weil Balancing gesperrt ist.
+4. WE8.5 Events: auf B-1260 verschoben, Studio-Liste bleibt bis Entscheidung 013 unverändert. Skins: keine, weil Ersatz-Assets fehlen.
+5. B-1259 AC-02 hängt an den Sessions in Punkt 2.
