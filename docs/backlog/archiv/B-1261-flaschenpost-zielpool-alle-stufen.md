@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** GS4
 - **Projekt:** WZG
 - **Erstellt:** 2026-11-24
@@ -68,4 +68,12 @@ Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`.
 
 ## Notizen
 
-Links, Messwerte, verworfene Ansätze. Darf leer bleiben (`–`).
+Umgesetzt in der Sim (Rust, `rust/crates/k3c-sim/src/bottle/`):
+- Zielpool über alle Stufen: `bottle::pool` liest jede noch vorhandene Truhe (`pickups` mit Art `chest`) aller Stufen. Eine Insel mit einem Spieler kann so Flaschen bekommen (vorher nur Doppel-Truhen mit zwei Monarchen).
+- Markierung trägt Stufe und Ort (`BottleTarget`); Spielstand Version 14 bekommt das Feld `targetStage` (fehlt bei 0).
+- Markierung bleibt bestehen, solange die Truhe da ist; sie endet mit `bottleTargetReached` entweder bei Erreichen (`player` = Index) oder bei verlorener Truhe (`player` -1, `gone` true).
+- Bei Gleichstand gewinnt der höchste Spieler-Index (R4).
+- Aufheben, Abend und Rhythmus unverändert; der Pool wird vor dem Stufentakt gesetzt (`bottle::prepare`), der Takt läuft auf Inselebene (`bottle::step_bottle`).
+- Tests: 16 Flaschenpost-Tests grün, darunter Zielpool auf anderer Stufe, Einzelspieler, Markierung ohne Monarch, Ziel auf anderer Stufe erreicht, verlorenes Ziel mit Ereignis.
+- Vollsuite k3c-sim: 1193 grün, 4 vorab bekannte Fehler (eingebettete Welten, Standardwelt, Takt 1000 Schritte, Geschichte), unverändert.
+- Nicht geprüft: task check:diff (Lint steht auf main rot), Golden, GS4.3/GS4.7 (Darstellung).
