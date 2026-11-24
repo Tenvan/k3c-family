@@ -18,7 +18,7 @@ import (
 // (sim.ParseWorld, Werte aller Nachfolger); ungültig bleibt die Datei, wie sie ist, und der Fehler nennt den Grund.
 
 // headerKeys sind die Felder des Kopfs, die world_set ändert (Reihenfolge wie in der Datei); `islands` kommt dazu.
-var headerKeys = []string{"name", "gewaesser", "notes", "extends", "kind", "combat"}
+var headerKeys = []string{"name", "gewaesser", "notes", "extends", "kind", "combat", "skins"}
 
 // defaultScaling ist die Tiefen-Skalierung einer neuen Insel (wie die Standard-Welt, Insel 1).
 const defaultScaling = `{"hp": 1.5, "damage": 1.3, "speed": 1.1}`
