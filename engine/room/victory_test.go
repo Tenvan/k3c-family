@@ -4,8 +4,8 @@ import "testing"
 
 // Victory meldet den Tick, in dem die Insel gewonnen wird, genau einmal (B-813: das Ereignis liegt in Stufe 0).
 func TestVictoryEinmal(t *testing.T) {
-	f := newFixture()
-	r := need(f.m.Create("x", &peer{}, "stand", true, 0, []int{0}, Options{Goal: "gold"}))(t)
+	f := einzelWeltFixture()
+	r := need(f.m.Create("x", &peer{}, "stand", true, 0, []int{0}, Options{Goal: "gold", World: "eins"}))(t)
 	r.Tick()
 	if r.Victory() {
 		t.Fatal("Sieg ohne erreichtes Ziel")
