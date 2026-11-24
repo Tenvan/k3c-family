@@ -73,9 +73,14 @@ Workbench wertet ein Ende nach eigenem Stop als Abbruch. Eine Zeile bei Strg+C b
 
 ## Mit Fenster
 
-`--window` gilt für `run` und `balance` und nutzt `platform::run_window` mit derselben App und demselben Stepper wie
-`--headless`. Zeitraffer 1 (Echtzeit) ist der Standard; nach dem Ende bleibt das Fenster 60 Bilder stehen. Ohne Bildschirm endet
-`--window` mit Zeile `error` und Exit 1. `balance` startet mehrere Läufe: headless parallel, mit Fenster nacheinander.
+`--window` gilt für `run` (RU33.3) und `balance` (RU40.2) und nutzt `platform::run_window` mit der `RunApp`
+(`runs/window.rs`); derselbe `Stepper` rechnet auch headless (`run_headless`), darum hängt das Ergebnis weder vom Modus noch von
+`--speed` ab. Die App zeichnet mit den Zeichnern des Spiels (Welt, Bauten, Figuren, Effekte, HUD; Kamera folgt dem Monarchen,
+ab zwei Monarchen zwei Zellen übereinander). `--speed N` (1 bis 64) rechnet N Sim-Takte je Schritt der Plattform (30 Hz):
+1 ist Echtzeit. Nach dem letzten Takt bleibt das Fenster 60 Bilder stehen; die Zeile `result` folgt, wenn es sich geschlossen
+hat. Schließt jemand das Fenster vor dem Ende, folgen `aborted` und Exit 130. Ohne Bildschirm oder Grafiktreiber endet
+`--window` mit Zeile `error` und Exit 1, ohne stillen Wechsel auf headless. `balance` startet mehrere Läufe: headless parallel,
+mit Fenster nacheinander.
 
 ## Berichtsdateien
 

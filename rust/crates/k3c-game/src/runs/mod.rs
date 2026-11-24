@@ -17,7 +17,9 @@ mod gotext;
 pub mod hub;
 pub mod input;
 pub mod input_world;
+pub mod stepper;
 pub mod stop;
+pub mod window;
 pub mod world;
 
 #[cfg(test)]
@@ -30,6 +32,8 @@ mod input_tests;
 mod mod_tests;
 #[cfg(test)]
 mod testutil;
+#[cfg(test)]
+mod window_tests;
 #[cfg(test)]
 mod world_tests;
 
@@ -137,14 +141,14 @@ fn dispatch(args: &[String], stdin: &mut dyn Read, out: &mut Emitter, stop: &Sto
             check_flags(cmd, &flags)?;
             let src = data_source(&flags)?;
             let raw = read_source(&flags.input, stdin)?;
-            let text = if cmd == "run" {
+            if cmd == "run" {
                 let r = read_run_input(&raw)?;
-                enginetools_run::run(&src, &r.biome, &r.seed, r.ticks, &r.inputs, stop)?
+                let text = run_cmd(&src, &flags, &r, stop)?;
+                out.result_text(&text);
             } else {
                 let r = read_level_input(&raw)?;
-                enginetools_level::level(&src, &r.biome, &r.seed)?
-            };
-            out.result_text(&text);
+                out.result_text(&enginetools_level::level(&src, &r.biome, &r.seed)?);
+            }
             Ok(())
         }
         "balance" => Err(usage("sim balance folgt mit RU40")),
@@ -168,6 +172,31 @@ fn dispatch(args: &[String], stdin: &mut dyn Read, out: &mut Emitter, stop: &Sto
     }
 }
 
+/// `sim run`: headless über `run_headless` (Standard), mit `--window` im Fenster; beides rechnet über denselben `Stepper`.
+fn run_cmd(src: &Source, flags: &Flags, r: &input::RunInput, stop: &Stop) -> Result<String, RunError> {
+    let stepper = stepper::Stepper::new(src, &r.biome, &r.seed, r.ticks, &r.inputs)?;
+    let mut app = if flags.window {
+        let cfg = crate::replay::run::art_config();
+        window::RunApp::windowed(stepper, stop.clone(), flags.speed.unwrap_or(1), Some(cfg))
+    } else {
+        window::RunApp::headless(stepper, stop.clone())
+    };
+    if flags.window {
+        let cfg = k3c_platform::Config {
+            title: "k3c sim run".to_string(),
+            size: Some((1280, 720)),
+            ..k3c_platform::Config::default()
+        };
+        k3c_platform::run_window(&mut app, cfg).map_err(RunError::Failed)?;
+    } else {
+        k3c_platform::run_headless(&mut app, u32::MAX, None);
+    }
+    match app.outcome() {
+        window::Outcome::Finished(text) => Ok(text),
+        window::Outcome::Aborted => Err(RunError::Aborted),
+    }
+}
+
 /// Prüft die Schalter gegeneinander (Exit 2 bei Widerspruch).
 fn check_flags(cmd: &str, f: &Flags) -> Result<(), RunError> {
     if f.headless && f.window {
@@ -176,11 +205,10 @@ fn check_flags(cmd: &str, f: &Flags) -> Result<(), RunError> {
     if f.window && cmd != "run" && cmd != "balance" {
         return Err(usage("--window gibt es nur bei run und balance"));
     }
-    if f.window {
-        return Err(usage("sim run --window folgt mit RU33.3"));
-    }
-    if f.speed.is_some() {
-        return Err(usage("--speed gibt es nur mit --window"));
+    match f.speed {
+        Some(_) if !f.window => return Err(usage("--speed gibt es nur mit --window")),
+        Some(n) if !window::SPEED_RANGE.contains(&n) => return Err(usage("--speed muss zwischen 1 und 64 liegen")),
+        _ => {}
     }
     if f.stop_stdin && f.input == "-" {
         return Err(usage(
