@@ -289,6 +289,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | ECO1 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
 | [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | ECO1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
 | [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | ECO1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
+| [B-1256](B-1256-b1255-lokale-aenderung-entscheiden.md) | PAP | Problem | niedrig | offen | WE6 | Entscheidung: lokale Änderung an B-1255 committen oder verwerfen |
 
 ## Archiv
 
