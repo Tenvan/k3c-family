@@ -243,6 +243,12 @@ func worldText(e world.Editor, id string) (string, error) {
 			fmt.Fprintf(&b, "    plannedChunks[%d]: %s\n", depth, strings.TrimSpace(string(isl.Planned[strconv.Itoa(depth)])))
 		}
 	}
+	picks, err := e.Picks(id)
+	if err != nil {
+		return "", err
+	}
+	fmt.Fprintf(&b, "Arten: weather %s · mount %s · hermit %s (Katalog-Dateien, „–“ = keins)\n",
+		orDash(picks["weather"]), orDash(picks["mount"]), orDash(picks["hermit"]))
 	b.WriteString(storyText(d))
 	b.WriteString("Datei:\n" + strings.TrimRight(raw, "\n"))
 	return b.String(), nil
