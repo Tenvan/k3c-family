@@ -31,6 +31,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
+| RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | `aktiv/RU34-workbench-ruft-spiel-exe/` |
 
 ## Offen am Gerät
 
@@ -47,7 +48,6 @@ keine
 | RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
 | RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
 | RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
-| RU34 | DEV | RSU | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | – | bereit | `geplant/RU34-workbench-ruft-spiel-exe/` |
 | RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |

@@ -15,6 +15,7 @@ import (
 
 	"k3c/engine/room"
 	"k3c/engine/store"
+	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
 // „Im Spiel ansehen“ (Entscheidung 005 › 5, B-847): legt den Testspielstand voll-<seed> (voll ausgebaut, Standard-Welt)
@@ -23,16 +24,6 @@ import (
 
 // fullSeed: `voll-<seed>` muss ins Namensformat eines Spielstands passen (wie fullSeed in engine/room).
 var fullSeed = regexp.MustCompile(`^[a-z0-9-]{1,27}$`)
-
-// nativeBuildTask baut die native EXE; die Meldung bei fehlender EXE nennt ihn (B-847/AC-02).
-const nativeBuildTask = "task build"
-
-// nativeExe sind die Orte der nativen EXE, zuerst der Build im Checkout, dann das Spiel-Paket; dir ist der
-// Arbeitsordner, unter dem das Spiel public/ findet. Pfade relativ zur Wurzel des Checkouts.
-var nativeExe = []struct{ exe, dir string }{
-	{"rust/target/release/k3c-game.exe", "."},
-	{"dist/k3c-game/k3c-game.exe", "dist/k3c-game"},
-}
 
 // Game ist „Im Spiel ansehen“ eines Checkouts.
 type Game struct {
@@ -97,15 +88,14 @@ func (g *Game) Open(seed string) (string, error) {
 	return "Natives Spiel gestartet mit Spielstand " + save, nil
 }
 
-// exe ist der feste Pfad der nativen EXE und ihr Arbeitsordner; ohne EXE ein Hinweis auf den Build-Task.
+// exe ist der feste Pfad der nativen EXE und ihr Arbeitsordner (Suchliste in gameexe); ohne EXE ein Hinweis auf den
+// Build-Task. Die Frische prüft „Im Spiel ansehen“ nicht: ein älterer Build zeigt den Spielstand trotzdem.
 func (g *Game) exe() (exe, dir string, err error) {
-	for _, n := range nativeExe {
-		exe = filepath.Join(g.root, filepath.FromSlash(n.exe))
-		if st, err := os.Stat(exe); err == nil && !st.IsDir() {
-			return exe, filepath.Join(g.root, filepath.FromSlash(n.dir)), nil
-		}
+	exe, dir, err = gameexe.Locate(g.root)
+	if err != nil {
+		return "", "", hint(err.Error())
 	}
-	return "", "", hint("Natives Spiel fehlt (" + nativeExe[0].exe + ") – erst bauen: " + nativeBuildTask)
+	return exe, dir, nil
 }
 
 // fullSave legt voll-<seed> über die Engine an (wie früher der Spielserver im Dev-Modus, B-887) und liefert den Namen.
