@@ -1,6 +1,6 @@
 # RU36 · CLI, SIM · Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4)
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, SIM
 - **Reife:** bereit
@@ -89,7 +89,7 @@ Entscheidung 🧑 am Gate G4 (RU36.5 hält an).
 | RU36.2 | `RU36.2-abnahme-am-pc-zwei-pads.md` | Workshop | Mensch | fertig |
 | RU36.3 | `RU36.3-befunde-runde-1.md` | Umsetzung | autonom | fertig |
 | RU36.4 | `RU36.4-befunde-runde-2.md` | Umsetzung | autonom | fertig |
-| RU36.5 | `RU36.5-bericht-g4-und-review.md` | Review | autonom | offen |
+| RU36.5 | `RU36.5-bericht-g4-und-review.md` | Review | autonom | fertig |
 | RU36.6 | `RU36.6-weltwahl-alle-welten.md` | Umsetzung | autonom | fertig |
 | RU36.7 | `RU36.7-wald-dicht-standard-seed.md` | Umsetzung | autonom | fertig |
 
@@ -99,6 +99,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-24: AC-01 und AC-04 erfüllt (RU36.1, RU36.3, RU36.4); AC-02 und AC-03 teilweise, Rest in B-1162 (300-s-Lauf mit VSync, Stationen G-6 bis G-10). G4 von 🧑 am 2026-11-24 entschieden: weiter. Behoben: 2 schwere Befunde, `check:go` grün durch Test-Nacharbeit (Ein-Insel-Welt, Trace-Golden). Neue Tickets: B-1264 (Wald-Frame-Zeit); Abnahme-Ticket für Sim, Balance und Gen: B-1265.
