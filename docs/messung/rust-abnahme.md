@@ -238,4 +238,6 @@ Sichtprüfungen am TV, die in den Go-Sprints offen waren; das Go-Spiel entfällt
 
 **Empfehlung:** Nacharbeit vor G4, begrenzt auf drei Punkte: (1) Go-Goldens zu den Daten-Änderungen nachziehen oder die Änderung zurücknehmen, bis `task:check:go` grün ist; (2) 300-s-Lauf mit VSync und G-6 bis G-10 am PC nachholen (B-1162); (3) Wald-Frame-Zeit messen (Reviewer-Befund). Ohne (1) ist die Bedingung „`check:go` grün“ im Sprint nicht erfüllt. Mit (1) bis (3) ist G4 vertretbar. Ohne die Punkte (2) und (3) wäre G4 mit den Resttickets B-1162 und einem Wald-Ticket möglich, wenn Ralf die Lücken akzeptiert.
 
-**G4-Entscheidung 🧑:** offen (weiter, Abbruch, Nacharbeit).
+**Nacharbeit zu (1), erledigt 2026-11-24:** Ursache war nicht die Daten-Änderung von RU36, sondern die Standard-Welt mit fünf Inseln seit WL2 (B-1215). Die eingefrorenen Go-Tests rechnen jetzt mit einer festen Ein-Insel-Welt (`engine/sim/testmain_test.go`, Test-Welt in `engine/room`), das Trace-Golden `nacht-300.jsonl.gz` ist neu aufgenommen; die Rust-Replay-Tests laufen grün. `task:check:go` und `task:check:diff` sind grün, kein Produktcode geändert. Punkt (2) bleibt B-1162, Punkt (3) ist B-1264.
+
+**G4-Entscheidung 🧑 (2026-11-24): weiter.** G4 gilt als bestanden mit den Resttickets B-1162 (Messlücken, G-6 bis G-10) und B-1264 (Wald-Frame-Zeit). Folgen: RU37 ist erledigt, Regeländerungen laufen nur noch in Rust, Balancing bleibt gesperrt (B-1015).

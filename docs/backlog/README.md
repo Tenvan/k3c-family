@@ -199,7 +199,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
 | [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | LA1 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
 | [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | LA1 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
-| [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU36 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
+| [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU43 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
 | [B-1163](B-1163-groessenstufen-monarch-mount.md) | CLI | Problem | hoch | offen | LA1 | Alle Figuren und Gebäude folgen definierten Größenstufen, Bezugswert ist der Monarch auf dem Mount, abgeglichen an den K2C-Screenshots |
 | [B-1164](B-1164-stimmung-naeher-an-k2c.md) | CLI | Problem | hoch | offen | LA1 | Die Stimmung des Rust-Spiels (Farbe, Licht, Dunst, Tiefe) kommt dem K2C-Vorbild deutlich näher |
 | [B-1165](B-1165-weltwahl-ohne-entwicklermodus.md) | CLI | Problem | mittel | offen | RU36 | Die Weltwahl zeigt alle Welten aus data/worlds, nicht nur die Standard-Welt |
@@ -296,6 +296,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WE8 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
 | [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | GS3 | Trophäen-Assets an die Spielansicht binden |
 | [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | GS3 | Abnahme Sprint GS3: Andenken und Chronik |
+| [B-1264](B-1264-wald-frame-zeit-messen.md) | CLI | Schuld | mittel | offen | RU43 | Die Frame-Zeit des dichteren Waldes ist gemessen (Replay headless, Vorher/Nachher) |
+| [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | RU43 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
 
 ## Archiv
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"slices"
 	"testing"
+	"testing/fstest"
 
 	"k3c/engine/level"
 )
@@ -30,9 +31,25 @@ func (p *stagePeer) since(from int) []string { return slices.Clone(p.msgs[from:]
 // zweiStufen: Xbox mit Slots 0 und 1 (Monarchen 0 und 1), Handy mit Slot 0 (Monarch 2); Monarch 0 wechselt in Stufe 1.
 func zweiStufen(t *testing.T) (*fixture, *Room, *stagePeer, *stagePeer) {
 	t.Helper()
+	return zweiStufenIn(t, newFixture(), Options{})
+}
+
+// einzelWeltRaw ist eine Test-Welt mit einer einzigen Insel (die Standard-Welt hat seit WL2 fünf, B-1215).
+const einzelWeltRaw = `{"id":"eins","name":"Eins","islands":[` +
+	`{"id":"island1","name":"Insel 1","depths":[0,1,2,3,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1}}]}`
+
+// einzelWeltFixture ist ein Manager im Dev-Mode, dessen Welt "eins" nur eine Insel hat (letzte Insel, Siegvarianten gelten).
+func einzelWeltFixture() *fixture {
 	f := newFixture()
+	f.m.Dev = true
+	f.m.Worlds = fstest.MapFS{"eins.json": {Data: []byte(einzelWeltRaw)}}
+	return f
+}
+
+func zweiStufenIn(t *testing.T, f *fixture, opts Options) (*fixture, *Room, *stagePeer, *stagePeer) {
+	t.Helper()
 	x, h := &stagePeer{}, &stagePeer{}
-	r := need(f.m.Create("xbox", x, "stufen", true, 0, []int{0, 1}, Options{}))(t)
+	r := need(f.m.Create("xbox", x, "stufen", true, 0, []int{0, 1}, opts))(t)
 	need(f.m.Join("handy", h, r.Code, []int{0}))(t)
 	moveToExit(t, r, 0)
 	ticks(r, 70)
