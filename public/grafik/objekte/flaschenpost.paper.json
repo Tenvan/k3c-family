@@ -3,7 +3,7 @@
   "id": "flaschenpost",
   "rig": "requisite",
   "version": 1,
-  "beschreibung": "Kleine Flaschenpost am Strand: schlanke Glasflasche mit Korken, liegt schräg, gut lesbar auf dem Sand.",
+  "beschreibung": "Kleine Flaschenpost am Strand: schlanke Glasflasche mit Korken, steht aufrecht, gut lesbar auf dem Sand.",
   "teile": [
     {
       "id": "korpus",
@@ -34,8 +34,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 64,
-    "rahmen": [-16, -32, 32, 32]
+    "hoehe_px": 96,
+    "rahmen": [-16, -32, 32, 48]
   },
   "animationen": {
     "stand": {
