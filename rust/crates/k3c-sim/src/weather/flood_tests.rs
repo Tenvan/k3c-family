@@ -133,6 +133,7 @@ fn portal_in_der_zone_haelt_bis_zum_morgen() {
         at: 0.0,
         hp_factor: 1.0,
         damage_factor: 1.0,
+        speed_factor: 0.0,
     };
     w.spawn_queue.push(queue(l.from + 5.0));
     w.spawn_queue.push(queue(l.to + 30.0));

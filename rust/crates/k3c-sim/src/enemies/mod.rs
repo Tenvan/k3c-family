@@ -130,7 +130,10 @@ pub fn step_spawns(w: &mut World, v: &WorldValues, isl: Option<&IslandRef>) {
         .partition(|s| s.at <= time && !crate::weather::flood::in_zone(&w.flood_zones, s.x));
     w.spawn_queue = rest;
     for s in due {
-        spawn_with(w, v, &s.kind, s.x, s.hp_factor, s.damage_factor, isl);
+        let i = spawn_with(w, v, &s.kind, s.x, s.hp_factor, s.damage_factor, isl);
+        if s.speed_factor > 0.0 {
+            w.enemies[i].speed *= s.speed_factor; // Überfall: schnellere Gruppe (B-991)
+        }
     }
 }
 

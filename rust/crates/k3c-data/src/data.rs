@@ -99,7 +99,9 @@ pub fn load_all(src: &Source) -> Result<Data, Fehler> {
     let biomes = load_biomes(src, &enemies)?;
     let depths: Vec<i64> = biomes.iter().map(|b| b.depth).collect();
     let buildings = buildings::load(&read(buildings::FILE)?)?;
-    let events = events::load(&read(events::FILE)?)?;
+    let mut events = events::load(&read(events::FILE)?)?;
+    // Welt-Events (B-991, B-992) stehen in eigener Datei, damit das Golden von events.json bytegleich bleibt
+    events.events.extend(events::load(&read(events::WELT_FILE)?)?.events);
     events::check_night_events(&events.events, &enemies)?;
     Ok(Data {
         balance_hints: balance_hints::load_hints(&read(balance_hints::FILE)?)?,

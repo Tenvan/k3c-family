@@ -74,7 +74,7 @@ Keine blockierende außer der Abhängigkeit von B-969 (Wetter-Rahmen). Defaults 
 | WE8.4 | `WE8.4-spiel-zeigt-events.md` | Umsetzung | autonom | verworfen |
 | WE8.5 | `WE8.5-welten-zuordnen.md` | Umsetzung | autonom | offen |
 | WE8.6 | `WE8.6-review.md` | Review | autonom | offen |
-| WE8.7 | `WE8.7-events-sim-rust.md` | Umsetzung | autonom | offen |
+| WE8.7 | `WE8.7-events-sim-rust.md` | Umsetzung | autonom | fertig |
 | WE8.8 | `WE8.8-spiel-zeigt-events-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

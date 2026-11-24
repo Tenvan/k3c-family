@@ -120,6 +120,7 @@ impl Island {
     pub fn prepare_weather(&mut self) {
         for w in &mut self.stages {
             taifun::update(w);
+            crate::events::storm::update(w); // Sandsturm und Nebel (B-992) multiplizieren nach dem Taifun
             flood::update(w);
         }
     }

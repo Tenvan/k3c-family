@@ -185,6 +185,9 @@ pub struct QueuedSpawn {
     pub hp_factor: f64,
     #[serde(skip)]
     pub damage_factor: f64,
+    /// Tempo-Faktor des Gegners (Überfall, B-991); 0 = ohne Faktor. Ohne JSON.
+    #[serde(skip)]
+    pub speed_factor: f64,
 }
 
 /// Alle Spieler stehen an einem Tiefen-Eingang oder einer Treppe, Fortschritt 0..1.

@@ -1,6 +1,6 @@
 # WE8.7 · Events Überfall, Sandsturm und Nebel in der Sim in Rust (ersetzt WE8.2 und WE8.3)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -61,5 +61,18 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-02 (Überfall): `events/storm.rs` `queue_raid` schickt in der Event-Nacht an der Oberfläche eine Gruppe der Art `raid.kind` mit Anteil `raid.share` der Wellengröße (aufgerundet, mindestens 1) über die Portale; Tempo × `raid.speedFactor` in `step_spawns`. Lohn bei Tagesanbruch nur an der Oberfläche in Tag/Nacht-Welten. Tests in `storm_tests.rs`.
+
+AC-03 (Sandsturm, Nebel): `storm::update` setzt Tempo und Reichweite (Sandsturm) und die Verteidiger-Reichweite `weather_range_def` (Nebel) nur in der Event-Nacht an der Oberfläche und nicht im Frieden; `archer.rs` nutzt sie. Tests.
+
+Überschreiben: Die Welt-Events stehen in `data/welt-events.json` (eigene Datei, damit das Go-Golden `events_wie_go` bytegleich bleibt). Sie sind als Override-Datei `welt-events` überschreibbar (`overrides › welt-events`), nicht über `overrides › events` wie in B-991 und B-992 beschrieben. Abweichung von der Spec, Entscheidung offen (Sammelticket B-1259).
+
+AC-06: `testdata/golden/` unverändert. `engine/internal/detvec` führt die Datei als Rust-only.
+
+Review (k3c-reviewer, SIM): Befunde 1 (Override), 2 (Frieden) und 3 (Lohn ohne Tiefe-0-Prüfung) behoben. Offen: Der Sandsturm bremst auch Monarch und fliehende Gegner im Fest (gleiche Mechanik wie der Taifun; Ralf im Spiel prüfen). Die Felder `QueuedSpawn.speed_factor` und die ihnen verwandten `hp_factor`/`damage_factor` sind `serde(skip)`: Nach dem Laden fehlt der Faktor wartender Gegner (vorbestehend). Nicht abgedeckt: Nebel-Reichweite in `step_archer` ohne Kampf-Test; Überlagerung mit Vollmond und Taifun ohne Test.
+
+Protokoll: `docs/protocol.md` nennt die Welt-Events bei `nightEvents`.
+
+Gate: `cargo fmt --check` und `cargo clippy -p k3c-data -p k3c-sim` grün. `cargo test -p k3c-data -p k3c-sim`: 1177 grün, vier rot, die auf `origin/main` auch rot sind (`island::worlds_tests::eingebettete_welten_gueltig`, `island::worlds_tests::standard_welt_gleich_bisherigen_inseln`, `island::takt_tests::insel_nach_1000_schritten_wie_go`, `story::mod_tests::standard_welt_erzaehlt_eine_geschichte`). `task lint` ist auf `origin/main` rot in Playtest- und Studio-Frontend-Dateien, die nicht zu WE8.7 gehören. `go test ./data ./engine/internal/detvec` grün.
+
+Nicht geprüft: Studio-Katalog (`tools/k3c-studio/internal/world/catalog.go`) kennt die Welt-Events noch nicht (WE8.5). HUD und Anzeige der neuen Ereignis-IDs. Keine Simulation und kein Balancing gelaufen. Manuelle Prüfung: niemand.

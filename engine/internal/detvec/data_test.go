@@ -137,7 +137,7 @@ func dataFiles() []dataFile {
 // rustOnly sind Daten-Dateien, die nur das Rust-Spiel liest (Look-Profile RU55, Welt-Features RU62).
 var rustOnly = map[string]bool{
 	"look.json": true, "cargo.json": true, "coop.json": true, "festival.json": true,
-	"hermits.json": true, "mounts.json": true, "weather.json": true,
+	"hermits.json": true, "mounts.json": true, "weather.json": true, "welt-events.json": true,
 }
 
 // TestDataFilesComplete: Jede Spiel-Daten-Datei steht in dataFiles (ohne die Workbench-Dateien asset-*, assets-* und

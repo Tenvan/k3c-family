@@ -37,6 +37,7 @@ pub fn override_files() -> &'static [&'static str] {
         "ship",
         "troops",
         "waves",
+        "welt-events", // Welt-Events (B-991, B-992) stehen in eigener Datei, s. k3c-data `WELT_FILE`
     ]
 }
 

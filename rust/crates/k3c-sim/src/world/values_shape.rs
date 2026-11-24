@@ -49,7 +49,7 @@ pub fn override_shape(name: &str) -> Option<Shape> {
         "enemies" => || Shape::Map(enemy),
         "waves" => waves,
         "goals" => goals,
-        "events" => events_file,
+        "events" | "welt-events" => events_file,
         _ => return None,
     };
     Some(f())
@@ -111,6 +111,9 @@ const NIGHT_EVENT: &[Field] = &[
     ("DropFactor", float),
     ("EveryVisits", int),
     ("RewardMaterial", int),
+    ("Share", float),
+    ("SpeedFactor", float),
+    ("RangeFactor", float),
 ];
 
 fn night_event() -> Shape {

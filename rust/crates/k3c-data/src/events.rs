@@ -39,10 +39,26 @@ pub struct NightEvent {
     pub every_visits: i64,
     #[serde(rename = "RewardMaterial", alias = "rewardMaterial")]
     pub reward_material: i64,
+    /// Überfall (B-991): Anteil der Gegner an der Wellengröße (aufgerundet, mindestens 1).
+    #[serde(rename = "Share", alias = "share", skip_serializing_if = "is_zero")]
+    pub share: f64,
+    /// Überfall und Sandsturm (B-991, B-992): Tempo-Faktor.
+    #[serde(rename = "SpeedFactor", alias = "speedFactor", skip_serializing_if = "is_zero")]
+    pub speed_factor: f64,
+    /// Sandsturm und Nebel (B-992): Reichweiten-Faktor der Fernkämpfer.
+    #[serde(rename = "RangeFactor", alias = "rangeFactor", skip_serializing_if = "is_zero")]
+    pub range_factor: f64,
+}
+
+/// Nur gesetzte Welt-Werte erscheinen im Schreibbild: Die Go-Golden kennen sie nicht (events_wie_go).
+fn is_zero(v: &f64) -> bool {
+    *v == 0.0
 }
 
 /// `FILE` ist der Name unter data/.
 pub const FILE: &str = "events.json";
+/// `WELT_FILE` ist der Name der Welt-Events (Überfall, Sandsturm, Nebel) unter data/; `load_all` hängt sie an `FILE` an.
+pub const WELT_FILE: &str = "welt-events.json";
 
 /// `load` liest events.json wie `loadEvents` (ohne Prüfung; die macht `check_night_events`).
 pub fn load(raw: &str) -> Result<EventsFile, Fehler> {
@@ -81,6 +97,25 @@ pub fn check_night_events(events: &[NightEvent], enemies: &BTreeMap<String, Enem
     }
     if blood.damage_factor <= 0.0 || blood.drop_factor <= 0.0 {
         return fail("bloodMoon braucht Faktoren > 0".into());
+    }
+    // Welt-Events (B-991, B-992): fehlen sie, gilt nichts; stehen sie da, müssen die Werte stimmen
+    if let Some(r) = find_event(events, "raid")
+        && (r.share <= 0.0 || r.speed_factor <= 0.0 || !enemies.contains_key(&r.kind))
+    {
+        return fail(format!(
+            "raid braucht Anteil und Tempo > 0 und eine bekannte Gegnerart ({:?})",
+            r.kind
+        ));
+    }
+    if let Some(s) = find_event(events, "sandstorm")
+        && (s.speed_factor <= 0.0 || s.range_factor <= 0.0)
+    {
+        return fail("sandstorm braucht Tempo- und Reichweiten-Faktor > 0".into());
+    }
+    if let Some(f) = find_event(events, "fog")
+        && f.range_factor <= 0.0
+    {
+        return fail("fog braucht einen Reichweiten-Faktor > 0".into());
     }
     Ok(())
 }

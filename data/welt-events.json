@@ -1,0 +1,8 @@
+{
+  "notes": "Welt-Events (B-991 Überfall, B-992 Sandsturm und Nebel, docs/rules/bosse.md § 2): in der Basis aus (everyNights 0), je Welt über overrides › events einschaltbar (B-982). Eigene Datei, damit data/events.json (Go-Golden events_wie_go) bytegleich bleibt. Werte vorläufig, Balancing gesperrt.",
+  "events": [
+    { "id": "raid", "everyNights": 0, "kind": "wolf", "share": 0.5, "speedFactor": 1.3, "rewardGold": 0 },
+    { "id": "sandstorm", "everyNights": 0, "speedFactor": 0.7, "rangeFactor": 0.7 },
+    { "id": "fog", "everyNights": 0, "rangeFactor": 0.6 }
+  ]
+}
