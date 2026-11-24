@@ -124,13 +124,11 @@ func (e Editor) Set(ctx context.Context, id string, patch json.RawMessage) ([]st
 	if err := json.Unmarshal(patch, &p); err != nil || p == nil {
 		return nil, errors.New("patch muss ein JSON-Objekt sein")
 	}
-	for k := range p {
-		if k == "story" {
-			return nil, errStoryTool
-		}
-		if !slices.Contains(headerKeys, k) && k != "islands" {
-			return nil, fmt.Errorf("unbekanntes Feld %q im patch (erlaubt: %s, islands)", k, strings.Join(headerKeys, ", "))
-		}
+	if err := checkPatchKeys(p); err != nil {
+		return nil, err
+	}
+	if err := e.applyPicks(id, p); err != nil {
+		return nil, err
 	}
 	writeMu.Lock()
 	defer writeMu.Unlock()
