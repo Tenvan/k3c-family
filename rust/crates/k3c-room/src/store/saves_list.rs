@@ -2,6 +2,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::saves::{Saves, is_slot, parse_save};
+use super::saves_route::{ChronicleInfo, RouteIsland};
 
 fn is_zero(n: &i64) -> bool {
     *n == 0
@@ -29,6 +30,18 @@ pub struct SaveInfo {
     /// Schwierigkeitsgrad (`options.grade`); fehlt = leer (Anzeige nimmt den Standardgrad, ECO1.2).
     #[serde(skip_serializing_if = "String::is_empty")]
     pub grade: String,
+    /// Aktuelle Insel (`islandId`, ab Version 8; GS3.7, B-978).
+    #[serde(rename = "islandId", skip_serializing_if = "String::is_empty")]
+    pub island_id: String,
+    /// Abgeschlossene Inseln in der Reihenfolge des Abschlusses (`completed`).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub completed: Vec<String>,
+    /// Chronik der abgeschlossenen Inseln (`chronicle`, ab Version 13).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub chronicle: Vec<ChronicleInfo>,
+    /// Route der Welt (Inseln mit ID, Name, Etappe); nur von `list_with_routes`, sonst leer.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub route: Vec<RouteIsland>,
     #[serde(skip_serializing_if = "String::is_empty")]
     pub error: String,
 }
@@ -41,6 +54,10 @@ struct Extra {
     world: Option<String>,
     players: Option<Vec<Option<PlayerDepth>>>,
     options: Option<OptionsGrade>,
+    #[serde(rename = "islandId")]
+    island_id: Option<String>,
+    completed: Option<Vec<String>>,
+    chronicle: Option<Vec<ChronicleInfo>>,
 }
 
 #[derive(Deserialize, Default)]
@@ -105,6 +122,10 @@ fn save_info(name: &str, path: &std::path::Path) -> SaveInfo {
         world: extra.world.unwrap_or_default(),
         depths,
         grade: extra.options.and_then(|o| o.grade).unwrap_or_default(),
+        island_id: extra.island_id.unwrap_or_default(),
+        completed: extra.completed.unwrap_or_default(),
+        chronicle: extra.chronicle.unwrap_or_default(),
+        route: Vec::new(),
         error: String::new(),
     }
 }

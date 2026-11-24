@@ -155,6 +155,7 @@ fn broken_saves() {
     assert_eq!(list.len(), 2, "Liste {list:?}");
     for e in &list {
         assert!(!e.loadable && !e.problem.is_empty(), "{} ladbar: {e:?}", e.name);
+        assert!(e.route.is_empty() && e.island.is_empty(), "{}: keine Vorschau", e.name);
         assert!(s.load(&e.name, &[]).is_err() && !s.active(), "{} geladen", e.name);
     }
     assert!(s.continue_game(&[]).is_err(), "Weiter mit nur kaputten Ständen");
@@ -219,4 +220,28 @@ fn list_newest_first() {
     let mut s = test_session(&dir);
     let names: Vec<String> = s.list().expect("Liste").into_iter().map(|e| e.name).collect();
     assert_eq!(names, ["z-neu", "a-alt"]);
+}
+
+// GS3.8: Ein ladbarer Stand trägt die Vorschau: Inseln der Welt, Insel des Schiffs, Abgeschlossene und Chronik (frisch
+// leer). Die Chronik des laufenden Spiels kommt aus dem Raum und ist ohne Abschluss leer.
+#[test]
+fn list_carries_preview() {
+    let dir = TempDir::new();
+    let mut s = test_session(&dir);
+    assert!(s.chronicle_list().is_empty(), "ohne Spiel keine Chronik");
+    saved_game(&mut s);
+    let list = s.list().expect("Liste");
+    let e = &list[0];
+    assert!(e.loadable && !e.route.is_empty(), "Route der Standard-Welt: {e:?}");
+    assert!(
+        e.route.iter().any(|i| i.id == e.island),
+        "das Schiff liegt an einer Insel der Route: {e:?}"
+    );
+    assert!(
+        e.completed.is_empty() && e.chronicle.is_empty(),
+        "frischer Stand ohne Abschluss: {e:?}"
+    );
+    s.load("spiel-1", &[]).expect("laden");
+    assert!(s.chronicle_list().is_empty(), "ohne Abschluss keine Chronik");
+    assert!(s.step().chronicle.is_empty());
 }

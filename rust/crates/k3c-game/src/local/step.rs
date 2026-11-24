@@ -123,6 +123,7 @@ impl Session {
             f.events.append(&mut self.stages.events);
         }
         f.route = self.route_list().to_vec();
+        f.chronicle = self.chronicle_list();
         f.campaign = self.camp.frame(!f.stages.is_empty() && !f.seats.is_empty());
         f
     }

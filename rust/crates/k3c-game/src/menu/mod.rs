@@ -31,6 +31,7 @@ pub mod padtest_read;
 pub mod pause;
 pub mod placeholder;
 pub mod saves;
+pub mod saves_preview;
 pub mod stress_presets;
 pub mod table;
 pub mod testing;
@@ -62,6 +63,8 @@ mod padtest_tests;
 mod paper_tests;
 #[cfg(test)]
 mod pause_tests;
+#[cfg(test)]
+mod saves_preview_tests;
 #[cfg(test)]
 mod saves_tests;
 #[cfg(test)]

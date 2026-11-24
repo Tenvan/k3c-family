@@ -96,20 +96,20 @@ pub(super) fn world_of(ids: &[&str]) -> WorldDef {
     }
 }
 
-/// AC-03: Der Stand der Version 12 (RU62.10; Fixture v12, aus v11 mit Versionsnummer) wird gelesen und ergibt geschrieben denselben JSON-Baum (jede Zahl mit denselben Bits;
+/// AC-03: Der Stand der Version 13 (GS3.7; Fixture v13, aus v12 mit Versionsnummer) wird gelesen und ergibt geschrieben denselben JSON-Baum (jede Zahl mit denselben Bits;
 /// `null` und leere Liste gelten als gleich). Lese- und Schreibweg des `IslandSave`-Werts, ohne `create_world_with`.
 #[test]
 fn save_v9_rundlauf() {
     let env = Env::new();
-    let raw = fixture(12);
-    let s = env.parse(&raw).expect("Version 12 lesen");
+    let raw = fixture(13);
+    let s = env.parse(&raw).expect("Version 13 lesen");
     assert_eq!(s.version, ISLAND_SAVE_VERSION);
     assert_eq!(
         (s.world.as_str(), s.island_id.as_str(), s.stages.len()),
         ("standard", "island1", 2)
     );
     let want: Value = serde_json::from_str(&raw).expect("Fixture ist JSON");
-    let d = golden::diff("saves/v12/familie.json", &want, &golden::tree(&s));
+    let d = golden::diff("saves/v13/familie.json", &want, &golden::tree(&s));
     assert!(d.is_empty(), "{d}");
     // Zweiter Durchgang über den Text: Lesen des geschriebenen Stands ergibt denselben Wert.
     let again = env
@@ -177,7 +177,7 @@ fn own_fehlertexte_wie_in_go() {
     };
     assert_eq!(
         err(|m| m["version"] = json!(99)),
-        "spielstand: Version 99, erwartet 1, 2, 3, 4, 5, 6, 7, 8 oder 12"
+        "spielstand: Version 99, erwartet 1, 2, 3, 4, 5, 6, 7, 8 oder 13"
     );
     assert_eq!(
         err(|m| {
@@ -253,7 +253,7 @@ fn own_island_from_v1_ueberfuehrt_die_campaign() {
     let s = island_from_v1(&old, default_options(&env.data.difficulty));
     assert_eq!(
         (s.version, s.campaign_id.as_str(), s.seed.as_str()),
-        (12, old.campaign_id.as_str(), old.seed.as_str())
+        (13, old.campaign_id.as_str(), old.seed.as_str())
     );
     let depths: Vec<i64> = s.stages.iter().map(|h| h.depth).collect();
     assert!(

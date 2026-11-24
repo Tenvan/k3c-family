@@ -13,6 +13,7 @@ use k3c_platform::Canvas;
 
 use super::Hud;
 use super::drawsea::CLR_SEA_BACK;
+use super::drawsea_memo::MEMO_H;
 use super::drawsea_paper::*;
 use super::fonts::{WHITE, YELLOW, rgb};
 use super::layout::Rect;
@@ -69,11 +70,21 @@ impl Hud {
         self.draw_sea_front(dst, &front, p, x);
         let focus = self.draw_sea_frames(dst, v, a, p);
         let y = p.front + SEA_WAVE_UP * p.u;
+        let memo = if v.sizes.has_memo { MEMO_H * p.b } else { 0.0 };
+        self.draw_memo(dst, f.as_deref_mut(), v, p.box_.x + p.pad, y + 1.2 * p.b, p.b);
         if let Some(n) = focus.and_then(|(i, j)| v.rows.get(i).and_then(|r| r.nodes.get(j))) {
             self.paint
                 .text(dst, f.as_deref_mut(), &n.name, p.box_.x + p.pad, y, p.b, YELLOW);
         }
-        self.draw_hint(dst, f, &mut v.line, &v.hint, p.box_.x + p.pad, y + 1.2 * p.b, 0.8 * p.b);
+        self.draw_hint(
+            dst,
+            f,
+            &mut v.line,
+            &v.hint,
+            p.box_.x + p.pad,
+            y + 1.2 * p.b + memo,
+            0.8 * p.b,
+        );
     }
 
     /// draw_sea_heads zeichnet Titel und die Beschriftung der Etappen über den Spalten.
@@ -166,6 +177,8 @@ impl Hud {
                 if let Some(flag) = &a.flag {
                     self.draw_sea_sprite(dst, flag, cx + 0.05 * r.w, wy - 2.0 * sc, sc, WHITE);
                 }
+                // Trophäe (gezeichnet, bis die Assets aus GS3.2 da sind) links neben der Fahne
+                self.draw_trophy(dst, cx - 0.22 * r.w, wy - 2.0 * sc, (0.34 * r.h).max(24.0 * u), false);
             }
             SeaKind::Locked => {
                 if let Some(fog) = &a.fog {
@@ -188,7 +201,7 @@ impl Hud {
         let mut focus = None;
         for (i, row) in v.rows.iter().enumerate() {
             for (j, nd) in row.nodes.iter().enumerate() {
-                if !nd.chosen && !nd.cursor {
+                if !nd.chosen && !nd.cursor && !nd.pointed {
                     continue;
                 }
                 let Some([mini, _]) = a.island(v, i, j) else {
@@ -200,11 +213,11 @@ impl Hud {
                     let o = Rect::new(r.x - 2.0 * lw, r.y - 2.0 * lw, r.w + 4.0 * lw, r.h + 4.0 * lw);
                     self.paint.frame(dst, o, lw, WHITE);
                 }
-                if nd.cursor {
+                if nd.cursor || nd.pointed {
                     let o = Rect::new(r.x - lw, r.y - lw, r.w + 2.0 * lw, r.h + 2.0 * lw);
                     self.paint.frame(dst, o, (p.b * 0.12).max(3.0), YELLOW);
                 }
-                if nd.cursor || focus.is_none() {
+                if nd.cursor || nd.pointed || focus.is_none() {
                     focus = Some((i, j));
                 }
             }

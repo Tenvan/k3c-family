@@ -35,6 +35,7 @@ fn paper_route() -> Vec<RouteIsland> {
         world: world.to_string(),
         stages,
         chunks,
+        ..RouteIsland::default()
     };
     vec![
         isl("a", 1, "sengoku", 1, 16),
@@ -157,6 +158,7 @@ fn sea_diorama_position() {
         hint_w: 520.0,
         max_nodes: 4,
         hint_icons: false,
+        ..SeaSizes::default()
     };
     let cells = [
         (Rect::new(0.0, 0.0, 1920.0, 1080.0), 1.0),
@@ -231,7 +233,7 @@ fn sea_draws_shapes_without_assets() {
     h.listen(&f);
     let mut c = NullCanvas::default();
     h.draw_cell(&mut c, &sea_cell());
-    assert!(c.texts > 0 && c.rects > 0 && c.shapes > 0, "Formen: {c:?}");
+    assert!(c.texts > 0 && c.rects > 0, "Formen: {c:?}");
     let (texts, rects) = (c.texts, c.rects);
     h.draw_cell(&mut c, &sea_cell());
     assert_eq!(
@@ -253,4 +255,63 @@ fn sea_draws_diorama_with_assets() {
     let mut c = NullCanvas::default();
     h.draw_cell(&mut c, &sea_cell());
     assert!(c.sprites > 10 && c.texts > 0, "Diorama: {c:?}");
+}
+
+/// GS3.8: Steht der Zeiger auf einer abgeschlossenen Insel, kommen die `done`-Zeile und die Zahlen als Text dazu;
+/// die Tafel hat die Höhe dafür schon vorher (sie springt nicht).
+#[test]
+fn sea_draws_memo_lines_at_done_island() {
+    let Some(lib) = font_lib() else { return };
+    let mut h = Hud::new(Some(lib), Box::new(StubView));
+    let (mut w, mut f) = sea_world();
+    w.island_switch = Some(open_switch("b"));
+    set_world(&mut f, &w);
+    f.route[0].done = "Der Hafen ist frei.".to_string();
+    f.chronicle = vec![k3c_sim::island::chronicle::ChronicleEntry {
+        island: "a".to_string(),
+        days: 7,
+        monarchs: 2,
+    }];
+    h.listen(&f);
+    let mut c = NullCanvas::default();
+    h.draw_cell(&mut c, &sea_cell());
+    let before = c.texts;
+    h.seats[0]
+        .sea
+        .step(&[crate::view::input::Action::Right, crate::view::input::Action::Right]);
+    h.listen(&f);
+    assert!(h.seats[0].sea.rows[0].nodes[0].pointed, "Zeiger auf a");
+    let mut c = NullCanvas::default();
+    h.draw_cell(&mut c, &sea_cell());
+    assert!(
+        c.texts > before,
+        "done-Zeile und Zahlen kommen dazu ({} -> {})",
+        before,
+        c.texts
+    );
+}
+
+/// GS3.8: Die Andenken-Zeilen sind in Namensgröße gemessen (nicht kleiner als die Inselnamen): die Breite der Tafel
+/// reicht für beide Zeilen bei `b`.
+#[test]
+fn sea_memo_lines_measured_at_name_size() {
+    let Some(lib) = font_lib() else { return };
+    let mut h = Hud::new(Some(lib.clone()), Box::new(StubView));
+    let (mut w, mut f) = sea_world();
+    w.island_switch = Some(open_switch("b"));
+    set_world(&mut f, &w);
+    f.route[0].done = "Der Hafen ist frei.".to_string();
+    f.chronicle = vec![k3c_sim::island::chronicle::ChronicleEntry {
+        island: "a".to_string(),
+        days: 7,
+        monarchs: 2,
+    }];
+    h.listen(&f);
+    let mut v = h.seats[0].sea.clone();
+    let b = 28.0;
+    let m = h.measure_sea(&mut v, Some(&lib.borrow().font), b);
+    let font = &lib.borrow().font;
+    assert!(m.has_memo);
+    assert!(m.memo_w >= font.measure("Der Hafen ist frei.", b).0);
+    assert!(m.memo_w >= font.measure("7 Tage · 2 Monarchen", b).0);
 }

@@ -21,7 +21,7 @@ fn reload(data: &Data, world: &WorldDef, isl: &Island) -> Island {
 
 #[test]
 fn spielstand_version_ist_10() {
-    assert_eq!(ISLAND_SAVE_VERSION, 12);
+    assert_eq!(ISLAND_SAVE_VERSION, 13);
 }
 
 #[test]
@@ -49,7 +49,7 @@ fn speichern_und_laden_mitten_im_beladen_erhaelt_fracht_und_auftraege() {
     });
     add_troop(&mut isl, "peasant", steg + 12.0);
     let s = isl.to_save("x").expect("Spielstand");
-    assert_eq!(s.version, 12);
+    assert_eq!(s.version, 13);
     assert!(s.cargo.is_some());
     let mut loaded = reload(&data, &world, &isl);
     assert_eq!(loaded.cargo.load, isl.cargo.load);

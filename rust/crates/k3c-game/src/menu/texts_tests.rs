@@ -27,7 +27,7 @@ fn texts_complete() {
 /// Die letzte Variante steht am Ende der Tabelle (Reihenfolge von Enum und Texten stimmt überein).
 #[test]
 fn text_order_matches_enum() {
-    assert_eq!(TextKey::PadTestHint as usize, TEXT_COUNT - 1);
+    assert_eq!(TextKey::SavesMonarchs as usize, TEXT_COUNT - 1);
     assert_eq!(tr("de", TextKey::PadTestHint), "Tasten drücken · B zurück");
     assert_eq!(tr(LANGUAGE_ENGLISH, TextKey::Continue), "Continue");
 }

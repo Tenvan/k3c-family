@@ -87,6 +87,7 @@ pub mod settings;
 pub mod story;
 pub mod stress;
 pub mod stress_limits;
+pub mod trophy;
 pub mod voyage;
 
 /// MaxPlayers ist die Höchstzahl lokaler Spieler (Zellen) im Split-Screen.

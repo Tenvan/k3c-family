@@ -214,7 +214,7 @@ impl SeatState {
         self.citizen_labels(lang, w);
         self.skills(lang, w, m);
         self.sea
-            .refresh(lang, &self.profile, w.island_switch.as_ref(), &f.route);
+            .refresh_with(lang, &self.profile, w.island_switch.as_ref(), &f.route, &f.chronicle);
     }
 
     /// island_line: Biome der Insel für den Kompass, in jeder Stufe (HB1.3).

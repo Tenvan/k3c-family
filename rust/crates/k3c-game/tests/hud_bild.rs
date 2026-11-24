@@ -63,6 +63,7 @@ fn shot_route() -> Vec<RouteIsland> {
         world: world.to_string(),
         stages,
         chunks,
+        ..RouteIsland::default()
     };
     vec![
         isl("gruenhain", "Grünhain", 1, "standard", 2, 24),

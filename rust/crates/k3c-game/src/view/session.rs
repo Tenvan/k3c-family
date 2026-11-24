@@ -3,7 +3,9 @@
 use std::fmt;
 use std::time::SystemTime;
 
-use super::frame::Seat;
+use k3c_sim::island::chronicle::ChronicleEntry;
+
+use super::frame::{RouteIsland, Seat};
 use super::input::DeviceID;
 use super::settings::Settings;
 
@@ -64,6 +66,14 @@ pub struct SaveInfo {
     pub loadable: bool,
     /// deutsch, für die Anzeige
     pub problem: String,
+    /// Vorschau (GS3.8): die Inseln der Welt (leer bei nicht ladbarem Stand oder unbekannter Welt: keine Vorschau)
+    pub route: Vec<RouteIsland>,
+    /// Vorschau: Insel, an der das Schiff liegt (`islandId` des Stands; leer = unbekannt)
+    pub island: String,
+    /// Vorschau: abgeschlossene Inseln in der Reihenfolge des Abschlusses
+    pub completed: Vec<String>,
+    /// Vorschau: Chronik der abgeschlossenen Inseln (Tage, Monarchen)
+    pub chronicle: Vec<ChronicleEntry>,
 }
 
 /// WorldInfo ist ein Eintrag der Weltauswahl (wie room.WorldInfo).

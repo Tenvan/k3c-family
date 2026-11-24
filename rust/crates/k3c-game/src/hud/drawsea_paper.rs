@@ -12,6 +12,7 @@ use k3c_platform::{Canvas, Rect as PRect};
 
 use super::Hud;
 use super::drawsea::SeaSizes;
+use super::drawsea_memo::MEMO_H;
 use super::fonts::{WHITE, rgb};
 use super::icons::ICON_ANIM;
 use super::layout::Rect;
@@ -156,9 +157,11 @@ pub fn sea_paper_plan(m: &SeaSizes, cols: usize, cell: Rect, k: f64) -> SeaPlan 
     let mut w = cols_w
         .max(2.0 * p.pad + m.title_w)
         .max(2.0 * p.pad + m.hint_w)
-        .max(2.0 * p.pad + m.name_w);
+        .max(2.0 * p.pad + m.name_w)
+        .max(2.0 * p.pad + m.memo_w);
     let sea = SEA_TOP_H + (p.lanes - 1) as f64 * SEA_LANE_H + SEA_FRONT_DROP + SEA_LAYER_H;
-    let mut ht = head + sea * p.u;
+    let foot = if m.has_memo { MEMO_H * p.b } else { 0.0 }; // Platz der Andenken-Zeilen (GS3.8)
+    let mut ht = head + sea * p.u + foot;
     let s = (cell.w * 0.96 / w).min(cell.h * 0.9 / ht).min(1.0);
     (p.u, p.b, p.pad, head, w, ht) = (p.u * s, p.b * s, p.pad * s, head * s, w * s, ht * s);
     p.box_ = Rect::new(

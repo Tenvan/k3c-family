@@ -17,6 +17,7 @@ fn paper_route() -> Vec<RouteIsland> {
         world: world.to_string(),
         stages,
         chunks,
+        ..RouteIsland::default()
     };
     vec![
         isl("a", 1, "sengoku", 1, 16),
