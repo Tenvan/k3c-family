@@ -32,6 +32,7 @@ pub mod cheats;
 pub mod chronicle;
 pub mod chronicle_stage;
 pub mod debuggeo;
+pub mod debugstands;
 pub mod drawcheats;
 mod drawdebug;
 pub mod help;

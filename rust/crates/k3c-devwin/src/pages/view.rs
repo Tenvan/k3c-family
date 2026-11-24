@@ -24,6 +24,14 @@ fn effects_group(cat: &Catalog) -> Group {
     group("Umgebungseffekte", toggles)
 }
 
+/// stands_toggle schaltet die Waldstücke (grün schraffiert) im Debug-Overlay; angehakt = aus, Standard ist an (WD1.3).
+fn stands_toggle() -> Control {
+    Control::new("stands", Kind::Toggle, "Waldstücke aus").builds_with(|v: &Values| {
+        let off = v.get("stands").is_some_and(|s| s == "1");
+        Some(ui("stands", Some(i64::from(!off))))
+    })
+}
+
 /// build liefert die Gruppen der Seite.
 pub fn build(cat: &Catalog) -> Vec<Group> {
     vec![
@@ -33,6 +41,7 @@ pub fn build(cat: &Catalog) -> Vec<Group> {
                 button("debug_off", "Aus", ui("debug", Some(0))),
                 button("debug_geometry", "Geometrie", ui("debug", Some(1))),
                 button("debug_values", "Werte", ui("debug", Some(2))),
+                stands_toggle(),
             ],
         ),
         group(
@@ -85,6 +94,21 @@ mod tests {
             );
         }
         assert_eq!(find(&g, "focus").unwrap().fire(&none), Some(Msg::Focus { id: 0 }));
+        let st = find(&g, "stands").unwrap();
+        assert_eq!(st.kind, Kind::Toggle);
+        let ui = |v| {
+            Some(Msg::Ui {
+                id: 0,
+                key: "stands".into(),
+                value: Some(v),
+            })
+        };
+        assert_eq!(
+            st.fire(&Values::from([("stands".to_owned(), "1".to_owned())])),
+            ui(0),
+            "angehakt = aus"
+        );
+        assert_eq!(st.fire(&none), ui(1));
     }
 
     #[test]
