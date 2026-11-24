@@ -101,6 +101,7 @@ func registerPlanning(s *Server) {
 	registerPlanWaves(s)
 	registerPlanDigest(s)
 	registerPlanIndex(s)
+	registerGitCommit(s)
 }
 
 // registerPlanRead sind die lesenden Planungs-Tools: Überblick, ein Dokument, nächste Session (B-518).

@@ -1,5 +1,5 @@
 import type { Backend, EventName, Events, Info } from './types';
-import type { WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
+import type { PicksView, WorldBackend, WorldCreateView, WorldDetail, WorldInfo, WorldLevel, WorldValuesView } from './typesWorld';
 import type { HubBackend, HubPlanView, HubRulesView, HubSaveResult, HubStand } from './typesHub';
 import type { BalanceBackend, BalanceBaseline, BalanceDataFile, BalanceDataFileValue, BalanceDataValue, BalanceInsights, BalanceReportInfo, BalanceRun, BalanceSpec, BalanceSummary, Tuning } from './typesBalance';
 import type { AssetEintrag, AssetsBackend, Frame, Groesse, GroesseBasis, Hintergrund, PixelDiff, Quellen, Review, SoundEintrag, Spec, Stil, Stufen, Vorlage, WeltSicht } from './typesAssets';
@@ -42,6 +42,8 @@ interface GoApp {
   WorldIslandEtappe(id: string, island: string, etappe: number | null): Promise<WorldCreateView>;
   WorldSetKind(id: string, kind: string): Promise<WorldCreateView>;
   WorldSetExtends(id: string, parent: string): Promise<WorldCreateView>;
+  WorldPicks(id: string): Promise<PicksView>;
+  WorldSetPick(id: string, key: string, value: string): Promise<WorldCreateView>;
   WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
   // Gebäude-Planer (B-923, app_hub.go)
   HubPlan(): Promise<HubPlanView>;
@@ -120,6 +122,8 @@ function worldWails(app: GoApp): WorldBackend {
     worldDelete: (id) => app.WorldDelete(id),
     worldOverrideSet: (id, file, path, value) => app.WorldOverrideSet(id, file, path, value),
     worldSetExtends: (id, parent) => app.WorldSetExtends(id, parent) as Promise<WorldCreateView>,
+    worldPicks: (id) => app.WorldPicks(id),
+    worldSetPick: (id, key, value) => app.WorldSetPick(id, key, value) as Promise<WorldCreateView>,
     worldSetKind: (id, kind) => app.WorldSetKind(id, kind) as Promise<WorldCreateView>,
     worldIslandEtappe: (id, island, etappe) => app.WorldIslandEtappe(id, island, etappe),
     worldNatureSet: (id, island, stage, key, value, seed) => app.WorldNatureSet(id, island, stage, key, value, seed),
