@@ -58,5 +58,15 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review GS3 (Welten-Pfad Trophäen, Andenken, Chronik), Session GS3.6, von k3c-reviewer.
+
+Prüfung: Sprint-README, GS3.2 bis GS3.8, Glossar, Commits und angrenzender Code. task check nicht gelaufen (nur Glossar- und Planungs-Änderungen, Sortiertest der Glossar-Prüfung grün nach Einordnung).
+
+Befunde:
+- Glossar fehlte Andenken, Chronik und Trophäe. Ergänzt in dieser Session (alphabetisch eingeordnet).
+- GS3.2 steht als offen, obwohl gemergt. Status nachziehen.
+- Trophäen-Assets sind nicht an die Spielansicht gebunden (trophy.rs zeichnet weiter die Form). Folgeticket.
+- Kein Test für die beiden Hälften und die Allokation des Andenkens. Folgeticket.
+- Testfixtures ohne Chronik-Feld.
+
+Ergebnis: Glossar ist vollständig. Die Folgearbeiten (Asset-Bindung, Tests, Fixtures) sind als Tickets geplant. Sprint GS3 ist damit fachlich abgenommen, außer den Sichtprüfungen am TV, die bei Ralf liegen.
