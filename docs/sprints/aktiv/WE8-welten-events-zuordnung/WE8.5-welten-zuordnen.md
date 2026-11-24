@@ -61,6 +61,10 @@ Teilweise erledigt, Status bleibt offen.
 
 - AC-05 geprüft: Feindnamen über `world_override_set` gesetzt: sengoku `wolf`=Ninja, `caveTroll`=Samurai; nil `wolf`=Skorpion, `zombie`=Mumie; britannien `goblinArcher`=Römischer Späher, `mineGhost`=Moorgeist.
 - AC-02 geprüft: `world_check` für sengoku, nil und britannien: „gültig“.
-- Nicht erledigt, Grund: Event `raid`/`sandstorm`/`fog` lässt sich über das Tool nicht setzen. Die Override-Dateiliste des Studios kennt `welt-events` nicht (nur die Go-Liste). Ein Ticket dafür ist offen, siehe B-1259.
-- Nicht erledigt, Grund: `skins` (Basis-Asset → Ersatz-Asset). Die Zuordnung aus B-996 (Variante → Asset) ist nicht eindeutig, siehe B-1259.
-- Sichtprüfung 🧑 (AC-03) noch nicht angelegt.
+- Offen: Events `raid`/`sandstorm`/`fog` (Studio kennt `welt-events` nicht, B-1259 Frage 13) und `skins` (Zuordnung unklar, B-1259 Frage 14).
+- AC-03 Sichtprüfung 🧑, Prüfliste (je Welt, am PC):
+  1. Sengoku: Torii (objekte/ausgang), Pagode (Turm), Samurai-Lager (objekte/portal) sichtbar; Ninja und Samurai als Namen im Gegnerfenster.
+  2. Nil: Palme (Bäume), Obelisk (objekte/felsen), Barke (Schiff) sichtbar; Skorpion und Mumie als Namen.
+  3. Britannien: Steinkreis (objekte/portal), Rundhaus (Bauernhaus), Römischer Späher und Moorgeist als Namen.
+  4. Event-Nacht je Welt: nach Freigabe der Events prüfen (Überfall, Sandsturm, Nebel).
+- PR: sprint/we8 als PR #873 offen, B-1259 als PR #874 offen (nicht gemergt).
