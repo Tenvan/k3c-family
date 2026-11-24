@@ -10,4 +10,4 @@ func takesCheckout(tool string) bool {
 // Repo-Wurzel gilt (Beschluss 🧑 2026-10-06, B-275): nicht ablehnen, aber nie still in die Wurzel schreiben.
 var writeTools = map[string]bool{"plan_create": true, "plan_set": true, "plan_section": true, "plan_sections": true, "plan_delete": true,
 	"playtest_frame": true, "playtest_findings_set": true, "playtest_tickets_create": true,
-	"svc_start": true, "svc_stop": true, "svc_restart": true, "svc_start_all": true, "svc_stop_all": true, "task_start": true, "task_stop": true}
+	"svc_start": true, "svc_stop": true, "svc_restart": true, "svc_start_all": true, "svc_stop_all": true, "task_start": true, "task_stop": true, "git_commit": true}
