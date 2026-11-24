@@ -19,7 +19,7 @@ pub enum Msg {
     },
     /// Fenster → Spiel: Dev-Aktion für einen Spieler.
     Dev { id: u64, player: i64, action: DevCommand },
-    /// Fenster → Spiel: Bedienung einer Spieltaste (`debug`, `stats`, `river`, `help`, `pause`, `step`, `speed`,
+    /// Fenster → Spiel: Bedienung einer Spieltaste (`debug`, `stats`, `stands`, `river`, `help`, `pause`, `step`, `speed`,
     /// `save`, `load`, `shot`, `fullscreen`).
     Ui {
         id: u64,

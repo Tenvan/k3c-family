@@ -22,6 +22,7 @@ pub fn ui(host: &mut dyn Host, key: &str, value: Option<i64>) -> Outcome {
     Some(match key {
         "debug" => debug(host, value),
         "stats" => stats(host, value),
+        "stands" => stands(value),
         "river" => host.dev_cmd(DevCmd::River),
         "help" => host.dev_cmd(DevCmd::Help),
         "fullscreen" => host.dev_cmd(DevCmd::Fullscreen),
@@ -37,6 +38,13 @@ fn effect(id: &str, value: Option<i64>) -> Result<(), String> {
         return Err(format!("Effekt „{id}“ gibt es nicht"));
     }
     fx::set(id, value.map_or_else(|| !fx::on(id), |v| v != 0));
+    Ok(())
+}
+
+/// stands schaltet die Waldstücke im Debug-Overlay (WD1.3): mit Wert 1 an, 0 aus, ohne Wert um.
+fn stands(value: Option<i64>) -> Result<(), String> {
+    use crate::devtools::debugstands::{set_stands_on, stands_on};
+    set_stands_on(value.map_or_else(|| !stands_on(), |v| v != 0));
     Ok(())
 }
 

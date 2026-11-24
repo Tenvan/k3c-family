@@ -9,6 +9,7 @@ use std::sync::OnceLock;
 use k3c_sim::state::World;
 use serde::Deserialize;
 
+use super::debugstands::{stand_shapes, stands_on};
 use crate::view::cell::Cell;
 
 // Arten der Debug-Formen (Farbe).
@@ -20,13 +21,16 @@ pub const GEO_SITE: usize = 4;
 pub const GEO_CHUNK: usize = 5;
 pub const GEO_EDGE: usize = 6;
 pub const GEO_CAMERA: usize = 7;
-pub const GEO_KINDS: usize = 8;
+/// Waldstück-Fläche (WD1.3, B-1204; grün schraffiert) und markierbarer äußerer Baum.
+pub const GEO_STAND: usize = 8;
+pub const GEO_STAND_TREE: usize = 9;
+pub const GEO_KINDS: usize = 10;
 
 /// GEO_HEIGHT ist die Höhe der Rahmen je Art in Units (Linien: ganze Zelle).
-pub const GEO_HEIGHT: [f64; GEO_KINDS] = [2.2, 1.6, 1.6, 0.4, 0.3, 0.0, 0.0, 0.0];
+pub const GEO_HEIGHT: [f64; GEO_KINDS] = [2.2, 1.6, 1.6, 0.4, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0];
 
 /// GEO_HALF ist die halbe Breite der Figuren-Rahmen in Units (Bauplätze: Zahl-Reichweite).
-pub const GEO_HALF: [f64; GEO_KINDS] = [0.5, 0.4, 0.45, 0.2, 0.0, 0.0, 0.0, 0.0];
+pub const GEO_HALF: [f64; GEO_KINDS] = [0.5, 0.4, 0.45, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
 /// Shape ist eine Form in Fenster-Pixeln: Rahmen (`x0 != x1`) oder senkrechte Linie (`x0 == x1`).
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -92,6 +96,9 @@ pub fn geometry(dst: &mut Vec<Shape>, w: &World, c: &Cell) {
     let range = pay_range();
     for s in &w.sites {
         add(dst, c, GEO_SITE, s.x, range);
+    }
+    if stands_on() {
+        stand_shapes(dst, w, c);
     }
     lines(dst, w, c);
 }
