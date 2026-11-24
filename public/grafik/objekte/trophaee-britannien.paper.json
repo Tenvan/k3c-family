@@ -1,0 +1,31 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "trophaee-britannien",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Trophäe Britannien: kleines Horn mit Fahne",
+  "teile": [
+    {
+      "id": "korpus",
+      "pivot": [0, 0],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M-8 6L-8 -22L2 -22L8 -4L2 6Z",
+          "material": "leder"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M-8 -10L2 -10",
+          "material": "leder",
+          "ton": "schatten"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-16, -32, 32, 32]
+  }
+}

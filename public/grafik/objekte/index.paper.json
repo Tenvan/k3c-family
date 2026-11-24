@@ -390,6 +390,26 @@
     "manifest": "torii/manifest.json"
   },
   {
+    "id": "trophaee-britannien",
+    "rig": "requisite",
+    "manifest": "trophaee-britannien/manifest.json"
+  },
+  {
+    "id": "trophaee-nil",
+    "rig": "requisite",
+    "manifest": "trophaee-nil/manifest.json"
+  },
+  {
+    "id": "trophaee-sengoku",
+    "rig": "requisite",
+    "manifest": "trophaee-sengoku/manifest.json"
+  },
+  {
+    "id": "trophaee-standard",
+    "rig": "requisite",
+    "manifest": "trophaee-standard/manifest.json"
+  },
+  {
     "id": "truhe-offen",
     "rig": "requisite",
     "manifest": "truhe-offen/manifest.json"
