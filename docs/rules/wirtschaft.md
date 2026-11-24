@@ -19,6 +19,7 @@ Jede Regel gilt für 2+ Spieler (Couch und Online gemischt).
 | Gegner lassen mit 10 % Wahrscheinlichkeit 5 der Stufen-Ressource fallen. | Material kommt auch aus dem Kampf. | `economy.json` › `enemyResourceDrop` | – |
 | Landstreicher werden mit einer Münze zu Bauern; ein Camp hat höchstens 2 Landstreicher und füllt nach 25 s auf. Bauern sammeln und bauen. | Rekrutierung bleibt eine Münze. | `economy.json` › `recruitCamp`; `data/troops.json` | – |
 | Sammeln: Baum 10 Holz in 4 s, Fels 10 Stein in 6 s, Kupfererz 10 Kupfer in 8 s; das Markieren kostet 1–2 Münzen. | Bauern arbeiten nur auf Befehl und kosten damit Gold. | `economy.json` › `gatherables` | – |
+| Wegweiser Flaschenpost: Eine Flasche am Strand zeigt den Weg zu einer noch nicht gefundenen Truhe der Insel (§ 9). | Erkunden lohnt sich, ohne dass Truhen sichtbar sein müssen. | `data/bottle.json` | – |
 
 ## 2. Koop und Besitz
 
@@ -95,3 +96,30 @@ Man zählt Münzen, statt Beträge zu lesen.
 | **Prüfung:** Ein Daten-Test lehnt reguläre Goldpreise außerhalb der Skala ab und kennt die Ausnahmen als ausdrückliche Liste (BS3.1). | Die Skala bleibt beim späteren Feinschliff erhalten. | `engine/sim/*_data_test.go` | – |
 
 Die konkreten Werte setzt BS3 in `data/`; bis dahin stehen dort noch die alten Beträge.
+
+
+## 9. Flaschenpost (B-971, GS4; Werte vorläufig, Balancing später gesperrt)
+
+Beschlossen von 🧑 in der Ideenrunde k3c-07 am 2026-11-15: Alle paar Tage liegt morgens am Strand eine Flasche; wer sie aufhebt, sieht eine Zeile Kunstsprache und bekommt eine Markierung in der Welt, die zu einem lohnenden Ort der Insel führt. Mit 1–2 Spielern gleichzeitig. Werte stehen in `data/bottle.json` (legt GS4.2 an, nicht je Welt übersteuerbar, vorerst); Defaults, die 🧑 nicht gesondert bestätigt hat, sind mit „vorläufig“ gekennzeichnet. Zufall nur über `k3c-rng`. Darstellung (Pfeil, Leuchten, Einblendung): B-980.
+
+| Regel | Begründung | Daten | Zielkorridor |
+|---|---|---|---|
+| **Rhythmus:** Die erste Flasche kann am Tag `firstDay` erscheinen, danach frühestens alle `everyDays` Tage, jeweils bei `dawn` (§ 3). Gezählt wird je Insel ab Ankunft. Startwerte 3 und 4 (vorläufig). | Selten genug, dass sie etwas Besonderes bleibt; Tagesanbruch ist der ruhige Moment. | `data/bottle.json` › `firstDay`, `everyDays` | Flaschen je Insel und Kampagnentag: Messgröße mit B-099 |
+| **Ort:** Stufe 1 (Tiefe 0) der Insel, am linken oder rechten Inselende im Abstand `edgeUnits` vom Rand. Die Seite wählt ein eigener Zufallsstrom aus Insel-Seed und Tag. Eine Insel ohne Tiefe 0 hat nie Flaschenpost. | Der Strand ist der Ort, an dem Dinge anspülen; der eigene Strom lässt alle anderen Zufallsfolgen der Stufe unverändert. | `bottle.json` › `edgeUnits`; Strom `k3c-rng` aus Seed und Tag | – |
+| **Bedingung:** Eine Flasche erscheint nur, wenn ein Ziel vorhanden ist (Ziel-Regel), keine Markierung läuft und keine Flasche liegt. Sonst verschiebt sich der Rhythmus auf den nächsten Tagesanbruch, an dem die Bedingung gilt. | Nie eine Flasche ohne Ziel und nie zwei Hinweise gleichzeitig. | – | – |
+| **Aufheben:** Jeder lebende Spieler mit Krone, der die Flasche berührt (Aufhebe-Reichweite wie bei Münzen), hebt sie im Vorbeireiten auf, ohne Taste (vorläufig). Berühren zwei im selben Takt, gilt der höchste Spieler-Index. Ein Spieler ohne Krone oder ein gestorbener hebt sie nicht auf. Ereignis `bottleFound` mit Spieler und Zeilen der Geschichte. | Eine Taste für alles bleibt: Reiten genügt. Eindeutig bei Gleichstand. | `economy.json` › `pickupRangeUnits` | – |
+| **Flut:** Liegt die Flasche beim nächsten `dusk` (§ 3) noch, verschwindet sie (Ereignis `bottleLost`); der Rhythmus zählt ab ihrem Erscheinen weiter. | Wer sie verpasst, verliert sie; die nächste kommt später. | – | – |
+| **Ziel:** Beim Aufheben wählt die Sim ein Ziel aus den lohnenden Orten der Insel über alle Stufen: heute jede noch nicht gefundene Truhe (keine eigene Flaschenpost-Truhe, 🧑 bestätigt); die Zielart ist ein Feld, die Liste erweiterbar um Einsiedler (B-972) und Reittier-Gatter (B-970), sobald es sie gibt (vorläufig, keine Abhängigkeit). Auswahl deterministisch aus dem Flaschen-Zufallsstrom. | Erkunden wird belohnt; die Zielarten wachsen mit dem Spiel. | `bottle.json`; Orte aus dem Level der Insel | – |
+| **Markierung:** Genau eine je Insel (Zielart, Stufe, Ort), für alle Spieler der Insel gleich, bis ein lebender Monarch das Ziel erreicht (Reichweite `targetRangeUnits`) oder das Ziel nicht mehr besteht (Truhe von jemandem gefunden): Ereignis `bottleTargetReached`. Währenddessen erscheint keine neue Flasche. Fällt der Hub der Zielstufe, bleibt die Markierung. Der Zustand jeder Stufe nennt Flasche und Markierung für die Darstellung. | Ein klarer Hinweis, ohne Text verständlich; beide Spielerhälften sehen dasselbe. | `bottle.json` › `targetRangeUnits` | – |
+| **Geschichtszeile:** Die n-te aufgehobene Flasche der Kampagne nennt den Eintrag `n mod Anzahl` aus `story.bottles` der Welt (`welten.md`, Texte B-976); ohne `bottles` gibt es nur die Markierung. | Die Geschichte wächst mit dem Erkunden. | `data/worlds/<id>.json` › `story.bottles` | – |
+| **Spielstand:** Liegende Flasche, laufende Markierung, Tag der letzten Flasche und Zähler der aufgehobenen Flaschen stehen im Spielstand der Insel. Beim Inselwechsel verfallen Flasche und Markierung, der Zähler zieht mit. | Nach dem Laden ist alles unverändert; ein Inselwechsel lässt den Hinweis zurück. | Spielstand-Format (`IslandSaveVersion` steigt nach B-966) | – |
+
+**Beispiel (`firstDay` 3, `everyDays` 4):** Tag 3, Tagesanbruch: Am linken Inselende glitzert eine Flasche. Bleibt sie liegen, holt sie die Flut am Abend von Tag 3; die nächste kann am Tag 7 erscheinen. Wird sie am Tag 3 aufgehoben und das Ziel erst am Tag 9 erreicht, erscheint die nächste am Tag 10. Sengoku, Tag 5: Monarch 1 reitet über die Flasche, eine Zeile Kunstsprache blendet ein, in beiden Hälften zeigt ein Pfeil nach rechts unten; Monarch 2 findet in Stufe 2 die leuchtende Truhe, die Markierung erlischt.
+
+**Ausnahmefälle:**
+
+- Kein lohnender Ort mehr auf der Insel: keine Flasche.
+- Tagesanbruch, während eine Markierung läuft: keine neue Flasche.
+- Ziel-Truhe wird von einem Spieler gefunden, der die Flasche nicht aufgehoben hat: Markierung endet.
+- Speichern mit liegender Flasche oder laufender Markierung: nach dem Laden unverändert.
+- Inselwechsel mit laufender Markierung: verfällt.

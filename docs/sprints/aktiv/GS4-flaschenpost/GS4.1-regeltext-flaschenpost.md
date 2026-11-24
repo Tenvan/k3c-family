@@ -1,6 +1,6 @@
 # GS4.1 · Regeltext: Flaschenpost (B-971)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -54,5 +54,17 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `docs/rules/wirtschaft.md` hat § 9 „Flaschenpost“ im Tabellenformat (Rhythmus, Ort, Bedingung, Aufheben, Flut, Ziel, Markierung, Geschichtszeile, Spielstand je mit Begründung und Daten), dazu Beispiel mit Tagen und Ausnahmefälle aus B-971, und in § 1 eine Wegweiser-Zeile zur Flaschenpost. `check_run task:check:diff` grün. Das Glossar gehört nicht zu den erlaubten Dateien dieser Session (nur Vorbereitung, siehe unten).
+
+Annahme: Die Feldnamen in `data/bottle.json` sind in der Spec nur umschrieben („Abstand zum Rand“, „Reichweite am Ziel“); der Regeltext nennt sie `edgeUnits` und `targetRangeUnits` (neben `firstDay`, `everyDays`). GS4.2 legt die Datei an und darf die Namen ändern, dann § 9 angleichen. Die Aufhebe-Reichweite verweist auf `economy.json` › `pickupRangeUnits`, nicht auf einen eigenen Wert.
+
+Hinweis: Die Truhen-Gold-Spanne steht in § 1 mit 30–60 (B-953), im Ticket B-971 mit 10–25; § 9 nennt keine Zahl.
+
+### Glossar-Texte für den letzten Commit des Sprints
+
+- **Flaschenpost:** Seltene Flasche am Strand von Stufe 1 (Tiefe 0), die morgens alle paar Tage erscheint; wer sie aufhebt, sieht eine Geschichtszeile und bekommt eine Markierung zu einem lohnenden Ort der Insel (heute: eine noch nicht gefundene Truhe). Die Flut holt eine nicht aufgehobene Flasche am Abend. Regel: `rules/wirtschaft.md` § 9.
+- **Markierung:** Der Hinweis nach dem Aufheben einer Flaschenpost: genau eine je Insel mit Zielart, Stufe und Ort, für alle Spieler der Insel gleich; sie endet, wenn ein Monarch das Ziel erreicht oder das Ziel nicht mehr besteht.
+
+### Für den Hauptrechner
+
+- Glossar `docs/glossar.md`: die zwei Einträge oben im letzten Commit des Sprints GS4 ergänzen (liegt außerhalb der erlaubten Dateien von GS4.1).
