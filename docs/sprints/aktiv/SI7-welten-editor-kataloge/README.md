@@ -61,8 +61,8 @@ Keine blockierenden. Default in `B-1003 › Offene Fragen` (vorläufig, 🧑 bes
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SI7.1 | `SI7.1-editor-kataloge.md` | Umsetzung | autonom | offen |
-| SI7.2 | `SI7.2-review.md` | Review | autonom | offen |
+| SI7.1 | `SI7.1-editor-kataloge.md` | Umsetzung | autonom | fertig |
+| SI7.2 | `SI7.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -1,6 +1,6 @@
 # SI7.2 · Review Sprint SI7 Welten-Editor Kataloge
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -55,4 +55,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Fach-Review durch Agent k3c-workbench auf Diff b05a1ea32: 0 schwer, 3 mittel, 3 leicht. Behoben: Patch mit mehreren Arten war nicht atomar (c0bf7332f), jetzt Prüfung vor Schreiben, Test ergänzt. Nicht geändert: Lock-Fenster zwischen Prüfung und Schreiben (kleines Fenster, gleicher writeMu-Pfad); fester Blockformat-Schreibweg (passt zu den drei Dateien). Offen als leicht: Vitest für Änderung per Auswahl. AC-01 bis AC-03 nachgewiesen (Tests oben in SI7.1).
+Abnahme: entfällt. Der Sprint hat keinen Sim-, Balance- oder Gen-Bezug, daher kein Abnahme-Ticket. Hinweis an 🧑: Workbench-EXE und Studio-EXE neu bauen nach dem Merge.
+Checks: `task check:diff` grün. `task check` rot durch tools/paper (Render-Tests, nicht Teil dieser Änderung, Ursache nicht untersucht). `task check:dev` rot durch tools/assetkit (TLS, Norton).
