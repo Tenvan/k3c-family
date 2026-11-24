@@ -22,32 +22,9 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	if st, busy := r.busy(); busy {
 		return st, ErrBusy
 	}
-	ffmpeg, err := r.LookPath("ffmpeg")
+	ffmpeg, exe, gdir, first, err := r.prepare(o)
 	if err != nil {
-		return r.Status(), noFFmpeg(err)
-	}
-	var exe, gdir string
-	if !o.VoiceOnly {
-		if exe, gdir, err = r.Game(); err != nil {
-			return r.Status(), err
-		}
-	}
-	if strings.TrimSpace(o.Mic) == "" {
-		return r.Status(), ErrNoMic
-	}
-	if !o.VoiceOnly && (o.Monitor < 0 || o.Monitor > 15) {
-		return r.Status(), ErrBadMonitor
-	}
-	// Die Geräteprobe dauert bis zu einigen Sekunden und läuft ohne r.mu, damit Status() in dieser Zeit antwortet.
-	if r.Check != nil {
-		if err := r.Check(ffmpeg, o); err != nil {
-			r.log("warn", "❌ Gerät nicht nutzbar: "+err.Error())
-			return r.Status(), err
-		}
-	}
-	first := ""
-	if r.Pick != nil && !o.VoiceOnly {
-		first = r.Pick(ffmpeg)
+		return r.Status(), err
 	}
 	id, dir, err := r.reserve(o)
 	if err != nil {
@@ -58,7 +35,7 @@ func (r *Recorder) Start(o Options) (Status, error) {
 	}
 	game, err := r.Spawn(GameArgs(exe, dir, o.GameArgs), gdir)
 	if err != nil {
-		return r.fail(dir, id, fmt.Errorf("Spiel nicht gestartet: %w", err))
+		return r.fail(dir, id, fmt.Errorf("Spiel nicht gestartet: %w", err)) //nolint:staticcheck // Grund für die Oberfläche
 	}
 	gw := &waited{Proc: game, dead: make(chan struct{})}
 	go func() { gw.err = game.Wait(); close(gw.dead) }()
@@ -69,6 +46,35 @@ func (r *Recorder) Start(o Options) (Status, error) {
 		return r.fail(dir, id, err)
 	}
 	return r.begin(ffmpeg, dir, id, o, first, gw)
+}
+
+// prepare prüft ffmpeg, Spiel, Mikro und Monitor und wählt das erste Gerät; Fehler kommen unverändert zurück.
+func (r *Recorder) prepare(o Options) (ffmpeg, exe, gdir, first string, err error) {
+	if ffmpeg, err = r.LookPath("ffmpeg"); err != nil {
+		return "", "", "", "", noFFmpeg(err)
+	}
+	if !o.VoiceOnly {
+		if exe, gdir, err = r.Game(); err != nil {
+			return "", "", "", "", err
+		}
+	}
+	if strings.TrimSpace(o.Mic) == "" {
+		return "", "", "", "", ErrNoMic
+	}
+	if !o.VoiceOnly && (o.Monitor < 0 || o.Monitor > 15) {
+		return "", "", "", "", ErrBadMonitor
+	}
+	// Die Geräteprobe dauert bis zu einigen Sekunden und läuft ohne r.mu, damit Status() in dieser Zeit antwortet.
+	if r.Check != nil {
+		if err := r.Check(ffmpeg, o); err != nil {
+			r.log("warn", "❌ Gerät nicht nutzbar: "+err.Error())
+			return "", "", "", "", err
+		}
+	}
+	if r.Pick != nil && !o.VoiceOnly {
+		first = r.Pick(ffmpeg)
+	}
+	return ffmpeg, exe, gdir, first, nil
 }
 
 // reserve legt Ordner und Kennung an und setzt den Stand „startet“; danach lehnt jeder weitere Start mit ErrBusy ab.
@@ -118,7 +124,7 @@ func (r *Recorder) waitReady(dir string, game *waited) error {
 		}
 		select {
 		case <-game.dead:
-			return fmt.Errorf("Spiel vor dem ersten Bild beendet: %s", game.Tail())
+			return fmt.Errorf("Spiel vor dem ersten Bild beendet: %s", game.Tail()) //nolint:staticcheck // Grund für die Oberfläche
 		case <-deadline:
 			r.log("warn", "⏳ Spiel meldet kein erstes Bild, Aufnahme beginnt trotzdem")
 			return nil

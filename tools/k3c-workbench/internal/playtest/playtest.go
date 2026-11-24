@@ -47,8 +47,11 @@ const standRunning = "laeuft"
 var (
 	ErrBadID        = errors.New("ungültige Session-Kennung")
 	ErrBadAction    = errors.New("unbekannte Aktion (video, session oder ausgewertet)")
-	ErrNotFound     = errors.New("Session oder Datei nicht gefunden")
-	ErrRunning      = errors.New("Aufnahme läuft, Löschen gesperrt")
+	//nolint:staticcheck // ST1005: die Meldung ist ein deutsches Substantiv und steht so in der Oberfläche
+	ErrNotFound = errors.New("Session oder Datei nicht gefunden")
+	//nolint:staticcheck // ST1005: deutsche Meldung für die Oberfläche
+	ErrRunning = errors.New("Aufnahme läuft, Löschen gesperrt")
+	//nolint:staticcheck // ST1005: deutsche Meldung für die Oberfläche
 	ErrNotConfirmed = errors.New("Löschen nicht bestätigt")
 )
 

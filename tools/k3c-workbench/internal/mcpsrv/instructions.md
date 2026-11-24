@@ -54,11 +54,13 @@ Level-Generator sowie Balancing und Simulation (Testläufe, Engine-Läufe, Beric
   mit Grund je Projekt. Kollision wie bei `plan_waves`: gleiche Sperre der Sprint-README oder überlappende Erlaubte
   Dateien; fehlt einer Session die Dateimenge, gilt noch die Sperre nach Domäne und Lane. Liest nur die lokalen Dateien:
   die Sperre über `origin` (`git ls-remote --heads origin 'sprint/*'`) prüft der Agent selbst.
-- `plan_waves {slots?, project?, domain?}` beim Planen oder Starten einer Welle (`docs/arbeitsweise.md` › Parallelität
+- `plan_waves {wave_count?, project?, domain?}` (Standard 1 Welle) beim Planen oder Starten einer Welle (`docs/arbeitsweise.md` › Parallelität
   und Wellen): Kandidaten sind offene autonome Sessions aktiver Sprints, freigegebene Tickets ohne Sprint und
   freigegebene geplante Sprints mit `Braucht 🧑: –`. Ebene aus `Abhängig von`, Kollision bei überlappendem `Bereich`
   (Präfix der Globs, Sammeldateien ausgenommen; Sessions: Erlaubte Dateien) oder gleicher `Sperre`; Rang, Prio, Nummer
-  entscheiden. Sessions in Arbeit stehen in Welle 1 und belegen Plätze (höchstens 4). Je zurückgestelltem Knoten steht
+  entscheiden. Zwei Lanes je Welle: `zweit` (Second Worker, autonom) und `haupt` (Hauptrechner); jeder Knoten bekommt
+  seine Lane (Session `Lane: zweit` → zweit, Sim-Domäne → zweit, sonst die freie). Sessions in Arbeit stehen in Welle 1
+  und belegen ihre Lane. Je zurückgestelltem Knoten steht
   der Grund da; „In keiner Welle“ nennt `Bereich fehlt`, `wartet auf …` und als `Fehler:` unbekannte IDs.
   `project`/`domain` grenzen nur die Anzeige ein.
 - `plan_check {id}` vor der Freigabe einer Spec und vor `plan_waves`: nennt je Ticket oder Sprint die Mängel der
