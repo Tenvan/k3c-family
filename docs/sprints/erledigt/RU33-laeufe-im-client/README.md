@@ -1,6 +1,6 @@
 # RU33 · CLI · Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -104,7 +104,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU33.1 | `RU33.1-schnittstelle-sim-run-level.md` | Umsetzung | autonom | fertig |
 | RU33.2 | `RU33.2-sim-world-hub.md` | Umsetzung | autonom | fertig |
 | RU33.3 | `RU33.3-sim-run-window.md` | Umsetzung | autonom | fertig |
-| RU33.4 | `RU33.4-review.md` | Review | autonom | offen |
+| RU33.4 | `RU33.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -112,6 +112,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-24 (Claude, autonom): AC-01 `docs/standards/k3c-game-laeufe.md` (RU33.1); AC-02 `runs_ref` grün mit 16 Fällen byte-gleich zu `k3c-sim` für run, level, world, hub (RU33.1, RU33.2); AC-03 `RunApp` gleiches Ergebnis bei `--speed` 1, 7, 64 und headless (RU33.3), Fensterlauf nicht gelaufen.
+Befunde der Reviewer behoben (null-Eingaben, Ereignisse je Takt, Stop nach dem Ende, Nachfolger-Fälle); `task check:go` grün, `task check` bis auf einen Last-Ausreißer in `paper.test.ts` (einzeln grün) grün.
+Neue Tickets: B-1270 (Go-Test liest alten Fixture-Pfad), B-1271 (vier Rust-Tests in k3c-sim rot seit WL2); Abnahme-Ticket B-1272 (Fensterlauf, Sim, Balance, Gen).
