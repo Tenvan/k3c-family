@@ -97,7 +97,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU34.1 | `RU34.1-starter-spiel-exe.md` | Umsetzung | autonom | fertig |
-| RU34.2 | `RU34.2-sim-run-level-ueber-exe.md` | Umsetzung | autonom | offen |
+| RU34.2 | `RU34.2-sim-run-level-ueber-exe.md` | Umsetzung | autonom | fertig |
 | RU34.3 | `RU34.3-welten-hub-ueber-exe.md` | Umsetzung | autonom | offen |
 | RU34.4 | `RU34.4-review.md` | Review | autonom | offen |
 
