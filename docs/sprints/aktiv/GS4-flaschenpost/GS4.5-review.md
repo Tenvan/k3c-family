@@ -58,5 +58,14 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review GS4 (Flaschenpost), Session GS4.5. Tests: bottle 12 grün, k3c-data bottle 3 grün, save 77 grün (1 ignoriert). task check und check:go nicht gelaufen.
+
+AC-01 erfüllt mit Abweichung: Regel § 9 in wirtschaft.md und Glossar vorhanden; Regeltext passt an einigen Stellen nicht mehr zu den Daten (edgeUnits, Reichweite, GS4.2-Verweis).
+AC-02 teilweise: Morgengrauen, Abend und Aufheben deterministisch, aber Zielpool nur Doppel-Truhen mit mindestens zwei Monarchen, also mit einem Spieler nie eine Flasche (HOCH).
+AC-03 nicht erfüllt: Ziel nur auf Stufe 1, Markierung ohne Zielart und Stufe, Ziel-Verlust ohne bottleTargetReached, Liste wird je Takt neu gefüllt (HOCH). Geschichtszeile reihum erfüllt.
+AC-04 teilweise: Version 14, Laden, Fixture v14 ohne Feld bottle; Zähler zieht beim Inselwechsel nicht mit (island/switch.rs). Golden verschoben auf RU41 (Go-Engine eingefroren).
+AC-05 verschoben (GS4.3 offen), AC-06 verschoben (GS4.7 offen; k3c-game liest bottle nicht), AC-07 offen bei Ralf (Sichtprüfung am TV).
+
+Befunde: HOCH Zielpool nur Doppel-Truhen; HOCH Markierung verschwindet ohne Ereignis; MITTEL Markierung nur Stufe 0; MITTEL Zähler beim Inselwechsel; MITTEL Gleichstand bei Berührung nicht höchster Index; NIEDRIG Regeltext-Abgleich, Fixture ohne bottle, Allokation je Takt, GS4.6 noch als offen markiert.
+
+Gesamturteil: GS4 nicht abnahmereif. Sprint bleibt aktiv. Vor GS4.7 die beiden HOCH-Befunde beheben.
