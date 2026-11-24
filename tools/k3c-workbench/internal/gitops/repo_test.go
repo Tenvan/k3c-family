@@ -18,7 +18,7 @@ func sh(t *testing.T, dir string, args ...string) string {
 	cmd := exec.Command("git", args...)
 	cmd.Dir = dir
 	cmd.Env = append(os.Environ(), "GIT_AUTHOR_NAME=t", "GIT_AUTHOR_EMAIL=t@t", "GIT_COMMITTER_NAME=t",
-		"GIT_COMMITTER_EMAIL=t@t", "GIT_CONFIG_GLOBAL="+os.DevNull, "GIT_CONFIG_NOSYSTEM=1")
+		"GIT_COMMITTER_EMAIL=t@t", "GIT_CONFIG_GLOBAL="+emptyGitConfig(t), "GIT_CONFIG_NOSYSTEM=1")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("git %v: %v\n%s", args, err, out)
@@ -44,7 +44,7 @@ func setup(t *testing.T) (*Repo, string) {
 	}
 	// Auch der Runner des Repos (Stash braucht eine Identität) läuft ohne die Einstellungen des Rechners.
 	for k, v := range map[string]string{"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t",
-		"GIT_COMMITTER_EMAIL": "t@t", "GIT_CONFIG_GLOBAL": os.DevNull, "GIT_CONFIG_NOSYSTEM": "1"} {
+		"GIT_COMMITTER_EMAIL": "t@t", "GIT_CONFIG_GLOBAL": emptyGitConfig(t), "GIT_CONFIG_NOSYSTEM": "1"} {
 		t.Setenv(k, v)
 	}
 	base := t.TempDir()
@@ -324,4 +324,15 @@ func pushAndFiles(t *testing.T, r *Repo) {
 	if _, err := r.Do(ctx, "rebase"); err == nil {
 		t.Fatal("unbekannte Aktion muss scheitern")
 	}
+}
+
+// emptyGitConfig ist eine leere globale Git-Konfiguration im Testordner. os.DevNull geht unter Windows nicht
+// (git meldet „NUL: Invalid argument“).
+func emptyGitConfig(t *testing.T) string {
+	t.Helper()
+	p := filepath.Join(t.TempDir(), "gitconfig")
+	if err := os.WriteFile(p, nil, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	return p
 }

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 )
@@ -48,5 +49,23 @@ func TestPickUnbekannteIDLehntAb(t *testing.T) {
 	after, _ := os.ReadFile(filepath.Join(e.Root, "data", "hermits.json"))
 	if string(before) != string(after) {
 		t.Error("hermits.json darf sich bei Ablehnung nicht ändern")
+	}
+}
+
+// SI7.1: Die Sicht für die Oberfläche liefert Werte und die gültigen IDs je Art; eine ungültige Auswahl kommt als Fehler.
+func TestPicksViewLiefertOptionenUndLehntAb(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "hanse", "Hanse", "standard"); err != nil {
+		t.Fatal(err)
+	}
+	view := e.PicksView("sengoku")
+	if view.Error != "" || view.Values["weather"] != "taifun" || !slices.Contains(view.Options["mount"], "camel") {
+		t.Fatalf("Sicht: %+v", view)
+	}
+	if got := e.SetPickView("hanse", "mount", "gibtEsNicht"); got.Error == "" {
+		t.Error("unbekannte ID muss in der Antwort als error stehen")
+	}
+	if got := e.SetPickView("hanse", "mount", "camel"); got.Error != "" {
+		t.Errorf("gültige ID: %s", got.Error)
 	}
 }

@@ -156,3 +156,24 @@ func (a *App) WorldIslandEtappe(id, island string, etappe *int) world.CreateView
 // worldPoll ist der Takt des Welten-Wächters (B-1216): Änderungen an data/worlds/ und den Basis-Dateien erreichen die
 // Oberfläche als Ereignis `world:changed`, egal ob Editor, MCP oder Hand sie schrieben.
 const worldPoll = time.Second
+
+// WorldPicks liefert Wetter, Reittier und Einsiedler der Welt id samt gültigen IDs (Binding, SI7.1).
+func (a *App) WorldPicks(id string) world.PicksView {
+	a.wait()
+	return a.worlds().PicksView(id)
+}
+
+// WorldSetPick setzt Wetter (weather), Reittier (mount) oder Einsiedler (hermit) der Welt id; "" entfernt den Eintrag
+// (Binding, SI7.1). Geschrieben wird nur der Block worlds der Katalog-Datei.
+func (a *App) WorldSetPick(id, key, value string) world.CreateView {
+	a.wait()
+	view := a.worlds().SetPickView(id, key, value)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Auswahl abgelehnt", "ns", "dev", "world", id, "art", key, "error", view.Error)
+		} else {
+			a.log.Info("💾 Auswahl gespeichert", "ns", "dev", "world", id, "art", key, "wert", value)
+		}
+	}
+	return view
+}

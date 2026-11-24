@@ -173,8 +173,23 @@ export interface WorldBackend {
   worldSetKind(id: string, kind: WorldKind | ''): Promise<WorldCreateView>;
   /** Eltern-Welt setzen (B-1217): leer entfernt sie */
   worldSetExtends(id: string, parent: string): Promise<WorldCreateView>;
+  /** Wetter, Reittier und Einsiedler der Welt mit gültigen IDs (SI7.1) */
+  worldPicks(id: string): Promise<PicksView>;
+  /** Eine Art der Welt setzen (SI7.1): leer entfernt den Eintrag */
+  worldSetPick(id: string, key: PickKey, value: string): Promise<WorldCreateView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   /** Natur-Wert der Insel-Stufe festsetzen (key: Eigenschaft oder „gruppe.variante“); null setzt auf „aus Seed“ zurück. */
   worldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
+}
+
+/** Arten je Welt (SI7.1): Wetter, Reittier und Einsiedler, gespeichert in den Katalog-Dateien */
+export type PickKey = 'weather' | 'mount' | 'hermit';
+
+export interface PicksView {
+  /** Gewählte ID je Art; leer = keins */
+  values: Record<PickKey, string>;
+  /** Gültige IDs je Art */
+  options: Record<PickKey, string[]>;
+  error: string;
 }

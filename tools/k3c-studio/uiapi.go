@@ -23,7 +23,7 @@ var uiMethods = map[string]bool{
 	"StudioSounds":    true, "StudioWeltSicht": true, "StudioSoundData": true, "StudioSources": true, "StudioGameOpen": true,
 	"WorldList": true, "WorldDetail": true, "WorldLevel": true, "WorldValues": true, "WorldCreate": true,
 	"WorldDelete": true, "WorldOverrideSet": true, "WorldIslandEtappe": true, "WorldSetKind": true,
-	"WorldSetExtends": true, "WorldNatureSet": true,
+	"WorldSetExtends": true, "WorldNatureSet": true, "WorldPicks": true, "WorldSetPick": true,
 	"HubPlan": true, "HubCheck": true, "HubRules": true, "HubSave": true,
 	"BalanceStart": true, "BalanceRuns": true, "BalanceStop": true, "BalanceReports": true, "BalanceReport": true,
 	"BalanceTuning": true, "BalanceDataFiles": true, "BalanceDataDoc": true, "BalanceDataValues": true,

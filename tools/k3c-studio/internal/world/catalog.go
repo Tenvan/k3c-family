@@ -221,3 +221,38 @@ func checkPatchKeys(p map[string]json.RawMessage) error {
 	}
 	return nil
 }
+
+// PicksView ist die Antwort für die Auswahl je Welt: Werte je Art (leer = keins) und die gültigen IDs je Art.
+type PicksView struct {
+	Values  map[string]string   `json:"values"`
+	Options map[string][]string `json:"options"`
+	Error   string              `json:"error"`
+}
+
+// PicksView liefert Werte und Optionen der Arten für die Oberfläche (Binding WorldPicks).
+func (e Editor) PicksView(id string) PicksView {
+	out := PicksView{Values: map[string]string{}, Options: map[string][]string{}}
+	values, err := e.Picks(id)
+	if err != nil {
+		out.Error = err.Error()
+		return out
+	}
+	out.Values = values
+	for key, p := range catalogPicks {
+		ids, err := e.catalogIDs(p)
+		if err != nil {
+			out.Error = err.Error()
+			return out
+		}
+		out.Options[key] = ids
+	}
+	return out
+}
+
+// SetPickView setzt eine Art der Welt und liefert die Antwort wie die anderen Änderungen (Binding WorldSetPick).
+func (e Editor) SetPickView(id, key, value string) CreateView {
+	if err := e.SetPick(id, key, value); err != nil {
+		return CreateView{ID: id, Error: err.Error()}
+	}
+	return CreateView{ID: id}
+}
