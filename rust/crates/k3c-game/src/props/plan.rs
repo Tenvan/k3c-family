@@ -215,6 +215,7 @@ impl Planner {
         self.castle(w, info, k);
         self.entities(w, k, biome);
         self.nodes(w, k, biome);
+        self.bottle(w, k, clock); // GS4.4: Flasche am Strand, nur wenn die Sim sie liegen hat
         self.sites_pass(w, info, k, false);
         self.cargo(w, k);
         self.mount_gate(w, k);
