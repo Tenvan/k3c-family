@@ -69,3 +69,21 @@ func TestPicksViewLiefertOptionenUndLehntAb(t *testing.T) {
 		t.Errorf("gültige ID: %s", got.Error)
 	}
 }
+
+// Ein Patch mit einer gültigen und einer ungültigen Art schreibt nichts: weder weather.json noch mounts.json ändern sich.
+func TestPickPatchMitUngueltigerArtSchreibtNichts(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "hanse", "Hanse", "standard"); err != nil {
+		t.Fatal(err)
+	}
+	weatherBefore, _ := os.ReadFile(filepath.Join(e.Root, "data", "weather.json"))
+	mountsBefore, _ := os.ReadFile(filepath.Join(e.Root, "data", "mounts.json"))
+	if _, err := e.Set(ctx, "hanse", json.RawMessage(`{"weather":"taifun","hermit":"gibtEsNicht"}`)); err == nil {
+		t.Fatal("ungültige ID im Patch muss ablehnen")
+	}
+	weatherAfter, _ := os.ReadFile(filepath.Join(e.Root, "data", "weather.json"))
+	mountsAfter, _ := os.ReadFile(filepath.Join(e.Root, "data", "mounts.json"))
+	if string(weatherBefore) != string(weatherAfter) || string(mountsBefore) != string(mountsAfter) {
+		t.Error("ein abgelehnter Patch darf keine Katalog-Datei ändern")
+	}
+}
