@@ -43,6 +43,7 @@ pub mod plan;
 pub mod plan_castle;
 pub mod plan_combat;
 pub mod plan_cost;
+pub mod plan_bottle;
 pub mod plan_entities;
 pub mod plan_hermit;
 pub mod plan_merchant;
