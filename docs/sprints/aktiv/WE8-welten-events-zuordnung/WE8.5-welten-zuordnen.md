@@ -57,5 +57,10 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Teilweise erledigt, Status bleibt offen.
+
+- AC-05 geprüft: Feindnamen über `world_override_set` gesetzt: sengoku `wolf`=Ninja, `caveTroll`=Samurai; nil `wolf`=Skorpion, `zombie`=Mumie; britannien `goblinArcher`=Römischer Späher, `mineGhost`=Moorgeist.
+- AC-02 geprüft: `world_check` für sengoku, nil und britannien: „gültig“.
+- Nicht erledigt, Grund: Event `raid`/`sandstorm`/`fog` lässt sich über das Tool nicht setzen. Die Override-Dateiliste des Studios kennt `welt-events` nicht (nur die Go-Liste). Ein Ticket dafür ist offen, siehe B-1259.
+- Nicht erledigt, Grund: `skins` (Basis-Asset → Ersatz-Asset). Die Zuordnung aus B-996 (Variante → Asset) ist nicht eindeutig, siehe B-1259.
+- Sichtprüfung 🧑 (AC-03) noch nicht angelegt.
