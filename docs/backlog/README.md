@@ -296,6 +296,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WE8 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
 | [B-1261](B-1261-flaschenpost-zielpool-alle-stufen.md) | SIM | Problem | hoch | offen | GS4 | Flaschenpost: Zielpool und Markierung über alle Stufen |
 | [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | GS3 | Trophäen-Assets an die Spielansicht binden |
+| [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | GS3 | Abnahme Sprint GS3: Andenken und Chronik |
 
 ## Archiv
 
