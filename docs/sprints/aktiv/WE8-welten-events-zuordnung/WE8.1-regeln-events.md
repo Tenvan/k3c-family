@@ -1,6 +1,6 @@
 # WE8.1 · Regeltext: Überfall, Sandsturm und Nebel in bosse.md (B-991, B-992)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** REG
@@ -53,5 +53,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 geprüft: `docs/rules/bosse.md` § 2 nennt Überfall (B-991), Sandsturm und Nebel (B-992) mit Auslöser, Wirkung, Belohnung und den Daten-Feldern (`raid.*`, `sandstorm.*`, `fog.*`); § 2 Begründung und § 3 Annahmen ergänzt. Keine Platzhalter.
+
+B-969 gelesen: Wetter-Rahmen (Vorboten, Dauer eine Nacht, eigenes System `data/weather.json`) passt zu Sandsturm und Nebel. Abweichung: keine, B-992 bleibt gültig; Wetter selbst ist nicht Teil der Events.
+
+Begriffe im Glossar eingetragen: Überfall, Sandsturm, Nebel (alphabetisch, `tests/planning.test.ts` grün).
+
+Zielkorridore und Zahlen bleiben offen (Balancing gesperrt), siehe Sammelticket B-1259, Frage 8.
+
+Manuell geprüft: niemand. Keine Code-Änderung.
