@@ -47,19 +47,7 @@ pub fn from_island_save_in(
             s.island_id, s.world
         ))
     })?;
-    for id in &s.completed {
-        if !world.islands.iter().any(|d| &d.id == id) {
-            return Err(fail(format!(
-                "spielstand: abgeschlossene Insel {id:?} gibt es in Welt {:?} nicht",
-                s.world
-            )));
-        }
-        if *id == current.id {
-            return Err(fail(format!(
-                "spielstand: aktuelle Insel {id:?} steht unter den abgeschlossenen"
-            )));
-        }
-    }
+    check_completed(&world, s, &current.id)?;
     let cycle_speed = if cycle_speed == 0.0 { 1.0 } else { cycle_speed };
     let depths: Vec<i64> = s.stages.iter().map(|h| h.depth).collect();
     let build = IslandBuild {
@@ -84,11 +72,7 @@ pub fn from_island_save_in(
     restore_pool(&mut isl, s);
     restore_progress(&mut isl, s, t.data);
     (isl.completed, isl.chronicle) = (s.completed.clone(), s.chronicle.clone());
-    if let Some(w) = isl.stages.iter_mut().find(|w| w.biome.depth == 0) {
-        let lines = w.bottle.lines; // die Zeilenzahl kommt aus der Welt, nicht aus dem Spielstand
-        w.bottle = crate::bottle::BottleState::from_save(&s.bottle); // GS4.6 R8: Flasche und Markierung
-        w.bottle.lines = lines;
-    }
+    restore_bottle(&mut isl, s);
     isl.chosen = s.chosen.clone();
     if !s.chosen.is_empty() && !isl.targets().iter().any(|x| x.id == s.chosen) {
         return Err(fail(format!(
@@ -146,5 +130,33 @@ pub fn saved_create_options(s: &IslandSave) -> CreateOptions {
         chunk_counts: Some(counts),
         nature: Some(nature),
         candidate: None,
+    }
+}
+
+/// Prüft, dass die abgeschlossenen Inseln zur Welt gehören und die aktuelle nicht darunter steht.
+fn check_completed(world: &WorldDef, s: &IslandSave, current: &str) -> Result<(), Fehler> {
+    let fail = |m: String| Fehler::Spielstand(m);
+    for id in &s.completed {
+        if !world.islands.iter().any(|d| &d.id == id) {
+            return Err(fail(format!(
+                "spielstand: abgeschlossene Insel {id:?} gibt es in Welt {:?} nicht",
+                s.world
+            )));
+        }
+        if id == current {
+            return Err(fail(format!(
+                "spielstand: aktuelle Insel {id:?} steht unter den abgeschlossenen"
+            )));
+        }
+    }
+    Ok(())
+}
+
+/// GS4.6 R8: Flasche und Markierung der Stufe 0; die Zeilenzahl kommt aus der Welt, nicht aus dem Spielstand.
+fn restore_bottle(isl: &mut Island, s: &IslandSave) {
+    if let Some(w) = isl.stages.iter_mut().find(|w| w.biome.depth == 0) {
+        let lines = w.bottle.lines;
+        w.bottle = crate::bottle::BottleState::from_save(&s.bottle);
+        w.bottle.lines = lines;
     }
 }
