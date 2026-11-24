@@ -68,7 +68,7 @@ Keine blockierende außer der Abhängigkeit von B-969 (Wetter-Rahmen). Defaults 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE8.1 | `WE8.1-regeln-events.md` | Umsetzung | autonom | offen |
+| WE8.1 | `WE8.1-regeln-events.md` | Umsetzung | autonom | fertig |
 | WE8.2 | `WE8.2-event-ueberfall.md` | Umsetzung | autonom | verworfen |
 | WE8.3 | `WE8.3-events-sandsturm-nebel.md` | Umsetzung | autonom | verworfen |
 | WE8.4 | `WE8.4-spiel-zeigt-events.md` | Umsetzung | autonom | verworfen |
