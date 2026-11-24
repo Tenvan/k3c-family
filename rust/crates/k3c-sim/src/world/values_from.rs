@@ -58,7 +58,10 @@ pub fn values_from(read: ReadFn) -> Result<WorldValues, String> {
     v.enemies = load_one(&mut errs, enemies::FILE, enemies::load, read);
     v.waves = load_one(&mut errs, waves::FILE, waves::load, read);
     v.goals = load_one(&mut errs, goals::FILE, goals::load, read);
+    // Welt-Events (B-991, B-992) hängen an events.json an, wie in `load_all`
     v.events = load_one(&mut errs, events::FILE, events::load, read).events;
+    v.events
+        .extend(load_one(&mut errs, events::WELT_FILE, events::load, read).events);
     if errs.is_empty() {
         let checks = [
             check_presets(&v.monarch),

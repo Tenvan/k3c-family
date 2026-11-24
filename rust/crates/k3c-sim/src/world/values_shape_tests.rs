@@ -18,7 +18,14 @@ const EMBEDDED: &[&str] = &["Gatherable"];
 
 /// Felder, die der Lese-Typ bei 0 weglässt (`skip_serializing_if`, Go `omitempty`) und die weder die Datei noch der
 /// Standardwert zeigt: `Stock` lässt Eisen und Kristall ohne Wert weg.
-const OMITTED: &[&str] = &["hub.IslandStartStock.iron", "hub.IslandStartStock.crystal"];
+/// `events.*`-Zeilen der Welt-Felder (B-991, B-992) stehen nur in `welt-events.json` und fehlen in `events.json` (Go-Golden).
+const OMITTED: &[&str] = &[
+    "hub.IslandStartStock.iron",
+    "hub.IslandStartStock.crystal",
+    "events.Events[].Share",
+    "events.Events[].SpeedFactor",
+    "events.Events[].RangeFactor",
+];
 
 fn fold_eq(a: &str, b: &str) -> bool {
     a.eq_ignore_ascii_case(b)
@@ -45,6 +52,7 @@ fn instances(name: &str) -> Vec<Value> {
         "waves" => pair(&raw, k3c_data::waves::load),
         "goals" => pair(&raw, k3c_data::goals::load),
         "events" => pair(&raw, k3c_data::events::load),
+        "welt-events" => pair(&raw, k3c_data::events::load),
         _ => panic!("unbekannte Datei {name}"),
     }
 }
@@ -159,7 +167,11 @@ fn formtabelle_passt_zu_basis_dateien_und_lese_typen() {
 fn formtabelle_nur_fuer_uebersteuerbare_dateien() {
     assert!(override_shape("biomes").is_none());
     assert!(override_shape("").is_none());
-    assert_eq!(override_files().len(), 10);
+    assert_eq!(
+        override_files().len(),
+        11,
+        "zehn Basis-Dateien und welt-events (B-991, B-992)"
+    );
 }
 
 /// Eine vergessene Zeile fällt auf: die Prüfung meldet ein Feld des Lese-Typs, das in der Form fehlt.

@@ -4,6 +4,7 @@
 
 pub mod merchant;
 pub mod moon;
+pub mod storm;
 pub mod values;
 
 #[cfg(test)]
@@ -20,6 +21,8 @@ mod mod_tests;
 mod moon_stages_tests;
 #[cfg(test)]
 mod moon_tests;
+#[cfg(test)]
+mod storm_tests;
 #[cfg(test)]
 pub(crate) mod testutil;
 

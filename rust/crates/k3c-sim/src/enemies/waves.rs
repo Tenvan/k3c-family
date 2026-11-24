@@ -118,9 +118,11 @@ pub fn start_wave(w: &mut World, isl: Option<&mut IslandRef>) {
     let v = values(w);
     let night = w.cycle.phase == "night";
     let mut plan = plan_wave(&v, &w.biome, w.wave, &mut w.rng, &w.portals, night, size);
+    let wave_size = plan.len(); // Überfall-Anteil bezieht sich auf die Welle, nicht auf Vollmond-Zusatz (B-991)
     let extra = full_moon_extra(w, &plan); // Vollmond (events_moon.go)
     plan.extend(extra);
     queue_wave(w, &plan, hp, damage);
+    crate::events::storm::queue_raid(w, wave_size, hp, damage); // Überfall (B-991), nur an der Oberfläche
     w.events
         .push(event(json!({"type": "wave", "wave": w.wave, "count": plan.len()})));
     trigger_boss(w, isl);
@@ -136,6 +138,7 @@ pub fn queue_wave(w: &mut World, plan: &[SpawnOrder], hp: f64, damage: f64) {
             at: w.time + s.delay,
             hp_factor: hp,
             damage_factor: damage,
+            speed_factor: 0.0,
         });
     }
 }

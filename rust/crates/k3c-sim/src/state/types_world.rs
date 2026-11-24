@@ -199,6 +199,9 @@ pub struct World {
     /// Reichweiten-Faktor der Fernkämpfer (1.0 = keine Wirkung); je Takt gesetzt, ohne JSON.
     #[serde(skip)]
     pub weather_range: f64,
+    /// Reichweiten-Faktor nur der Verteidiger (Nebel, B-992; 1.0 = keine Wirkung); je Takt gesetzt, ohne JSON.
+    #[serde(skip)]
+    pub weather_range_def: f64,
     /// Gesperrte Bereiche der aktiven Flut (RU62.6), berechnet je Takt aus dem Wetter-Plan, nie im Spielstand; leer sonst.
     #[serde(rename = "floodZones", default, skip_serializing_if = "Vec::is_empty")]
     pub flood_zones: Vec<super::weather_view::FloodZone>,
@@ -316,6 +319,7 @@ impl Default for World {
             weather_cfg: None,
             weather_speed: 1.0,
             weather_range: 1.0,
+            weather_range_def: 1.0,
             flood_zones: Vec::new(),
             events_dropped: Default::default(),
             no_travel: Default::default(),

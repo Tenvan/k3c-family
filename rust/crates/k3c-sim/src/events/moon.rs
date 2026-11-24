@@ -62,6 +62,7 @@ pub fn night_events_end(w: &mut World) {
             }
         }
     }
+    super::storm::raid_reward(w, night_no); // Überfall (B-991), wie der Vollmond
     let Some(full) = night(w, "fullMoon") else {
         return;
     };
