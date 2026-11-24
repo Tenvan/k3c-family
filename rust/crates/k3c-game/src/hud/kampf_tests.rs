@@ -122,3 +122,11 @@ fn event_banner_texte() {
         assert_eq!(got, want, "{name}");
     }
 }
+
+/// B-993: Ein Endboss ohne Text in den Übersetzungen zeigt den Namen aus bosses.json.
+#[test]
+fn boss_name_aus_den_werten() {
+    let e = enemy(9, "forestChieftain", true, 10.0, 10.0);
+    assert_eq!(boss_bar("de", &[e.clone()]).name, "Wald-Häuptling");
+    assert_eq!(boss_bar("en", &[e]).name, "Wald-Häuptling");
+}

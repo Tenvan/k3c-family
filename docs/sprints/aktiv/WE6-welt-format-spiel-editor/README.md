@@ -71,7 +71,7 @@ Keine blockierende. Defaults in den Tickets (Größe des Ersatz-Bosses B-993, Um
 | WE6.3 | `WE6.3-welten-mcp-neue-felder.md` | Umsetzung | autonom | fertig |
 | WE6.4 | `WE6.4-welten-editor-neue-felder.md` | Umsetzung | autonom | fertig |
 | WE6.5 | `WE6.5-review.md` | Review | autonom | offen |
-| WE6.6 | `WE6.6-spiel-endboss-bau-skins-rust.md` | Umsetzung | autonom | offen |
+| WE6.6 | `WE6.6-spiel-endboss-bau-skins-rust.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -168,3 +168,29 @@ fn skinned_ersetzt_nur_zugeordnete_assets() {
     let anderes = std::collections::BTreeMap::from([("gegner/bär".to_string(), "x/y".to_string())]);
     assert_eq!(skinned(look, &anderes).asset, "gegner/wolf");
 }
+
+/// WE6.6 (B-993/AC-01): Jeder Endboss der Tiefen 0 bis 4 hat einen Look; ohne eigenes Asset zeigt er das Asset seiner
+/// Basisart in Boss-Höhe, mit Asset sein eigenes.
+#[test]
+fn endbosse_je_tiefe_mit_asset_oder_basisart() {
+    let c = load();
+    let raw = Source::Embedded.read("bosses.json").unwrap();
+    let v: serde_json::Value = serde_json::from_str(&raw).unwrap();
+    let ends = v["endBosses"].as_array().unwrap();
+    let mut depths: Vec<i64> = ends.iter().map(|b| b["depth"].as_i64().unwrap()).collect();
+    depths.sort_unstable();
+    assert_eq!(depths, vec![0, 1, 2, 3, 4], "Endboss je Tiefe");
+    for b in ends {
+        let id = b["id"].as_str().unwrap();
+        let look = c.enemy(id, true).unwrap_or_else(|| panic!("Endboss {id} ohne Look"));
+        assert!(look.height > 0.0, "{id}: ohne Höhe");
+        match BOSS_ASSETS.iter().find(|(k, _)| *k == id) {
+            Some((_, own)) => assert_eq!(look.asset, *own, "{id}: eigenes Asset"),
+            None => {
+                let base = c.enemy(b["base"].as_str().unwrap(), false).unwrap();
+                assert_eq!(look.asset, base.asset, "{id}: Asset der Basisart");
+                assert!(look.height > base.height, "{id}: größer als die Basisart");
+            }
+        }
+    }
+}
