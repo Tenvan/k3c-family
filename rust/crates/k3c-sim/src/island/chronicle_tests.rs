@@ -64,7 +64,7 @@ fn chronik_uebersteht_speichern_und_laden() {
     let data = test_data();
     let (world, isl, next) = wechsel(&data);
     let s = next.to_save("2026-11-24T00:00:00Z").expect("Spielstand");
-    assert_eq!((s.version, ISLAND_SAVE_VERSION), (13, 13));
+    assert_eq!((s.version, ISLAND_SAVE_VERSION), (14, 14));
     let json = serde_json::to_value(&s).expect("json");
     assert_eq!(
         json["chronicle"],

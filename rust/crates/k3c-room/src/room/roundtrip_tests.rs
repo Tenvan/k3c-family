@@ -49,7 +49,7 @@ fn spielstand_rundlauf() {
         let what = format!("v{version}");
         let saved = run_and_save(&raw, 0, &what);
         let out: Value = serde_json::from_slice(&saved).expect("JSON");
-        assert_eq!(out["version"], 13, "{what}: Version der neuen Datei");
+        assert_eq!(out["version"], 14, "{what}: Version der neuen Datei");
         let (before, after) = (stages_of(&raw, &what), stages_of(&saved, &what));
         assert_eq!(
             diff("stages", &before, &after),

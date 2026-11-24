@@ -141,3 +141,25 @@ fn verschwundenes_ziel_loescht_markierung() {
     step_pickup(&mut w);
     assert!(w.bottle.target.is_none(), "R6: Ziel besteht nicht mehr");
 }
+
+#[test]
+fn spielstand_rundlauf_erhaelt_flasche_und_markierung() {
+    let mut w = welt();
+    w.bottle = BottleState {
+        ashore: Some(8.0),
+        target: Some(50.0),
+        last_day: Some(3),
+        found: 2,
+    };
+    let s = w.bottle.to_save();
+    assert_eq!(BottleState::from_save(&s), w.bottle);
+    let json = serde_json::to_string(&s).expect("json");
+    let back: BottleSave = serde_json::from_str(&json).expect("parse");
+    assert_eq!(back, s);
+}
+
+#[test]
+fn leerer_zustand_fehlt_im_spielstand() {
+    assert!(BottleSave::default().is_empty());
+    assert!(!BottleSave { found: 1, ..Default::default() }.is_empty());
+}

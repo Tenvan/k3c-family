@@ -6,6 +6,8 @@
 
 use std::sync::Arc;
 
+use serde::{Deserialize, Serialize};
+
 use k3c_data::Data;
 use k3c_data::bottle::BottleData;
 use k3c_rng::{Rng, pick};
@@ -27,6 +29,57 @@ pub struct BottleState {
     pub last_day: Option<i64>,
     /// Zahl der aufgehobenen Flaschen (R7, für die Geschichtszeile).
     pub found: i64,
+}
+
+/// Der Spielstand-Teil der Flaschenpost (Version 14, R8). Ohne Zustand fehlt das Feld.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct BottleSave {
+    /// Ort der liegenden Flasche in Units.
+    #[serde(rename = "ashore", skip_serializing_if = "Option::is_none")]
+    pub ashore: Option<f64>,
+    /// Ort des markierten Ziels in Units.
+    #[serde(rename = "target", skip_serializing_if = "Option::is_none")]
+    pub target: Option<f64>,
+    /// Tag der letzten Flasche.
+    #[serde(rename = "lastDay", skip_serializing_if = "Option::is_none")]
+    pub last_day: Option<i64>,
+    /// Zahl der aufgehobenen Flaschen.
+    #[serde(rename = "found", skip_serializing_if = "is_zero")]
+    pub found: i64,
+}
+
+fn is_zero(x: &i64) -> bool {
+    *x == 0
+}
+
+impl BottleSave {
+    /// Leer, wenn keine Flasche und keine Markierung läuft und nichts gefunden wurde.
+    pub fn is_empty(&self) -> bool {
+        *self == Self::default()
+    }
+}
+
+impl BottleState {
+    /// Der Spielstand-Teil dieses Zustands.
+    pub fn to_save(&self) -> BottleSave {
+        BottleSave {
+            ashore: self.ashore,
+            target: self.target,
+            last_day: self.last_day,
+            found: self.found,
+        }
+    }
+
+    /// Der Zustand aus dem Spielstand-Teil.
+    pub fn from_save(s: &BottleSave) -> BottleState {
+        BottleState {
+            ashore: s.ashore,
+            target: s.target,
+            last_day: s.last_day,
+            found: s.found,
+        }
+    }
 }
 
 impl Island {
