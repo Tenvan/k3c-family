@@ -18,11 +18,16 @@ Der Welten-Editor und die MCP-Tools `world_get`, `world_set`, `world_check` wäh
 
 ## Kontext
 
-Voraussetzung (gemergt): SI3, SI4, SI5 – die Welt-Datei hat die optionalen Felder `weather`, `mount`, `hermit`; Kataloge: `data/weather.json`, `data/monarch.json` › `mounts`, `data/hermits.json`; die Engine prüft die IDs beim Laden (`engine/sim/island_worlds.go`, `docs/rules/welten.md` § 2 und § 3). Workbench: Wails-App `tools/k3c-workbench` (eigenes Go-Modul), Backend der Welten in `tools/k3c-workbench/internal/world/`, MCP-Server in `internal/mcpsrv/`, Frontend in `tools/k3c-workbench/frontend/src/world/` (`Overview.tsx`, `NewWorld.tsx`, `WorldValues.tsx`, `useWorld.ts`, `worldOverrides.ts`, Tests `*.test.tsx`). Die Workbench rechnet die Engine im eigenen Prozess (B-924); Kataloge und Prüfung kommen von dort, nichts im Frontend fest verdrahten. Oberfläche nach Atomic Design: Radix nur über `@webkit`, rohe Controls nur in `atoms/` (`tests/atomicDesign.test.ts`). Entwickeln mit `task k3c-workbench` (Dev mit Vite 5191) nur, wenn nötig; die laufende Workbench-EXE nicht neu bauen (das macht 🧑 nach dem Merge).
+Voraussetzung: SI3, SI4, SI5 erledigt. Die Zuordnung je Welt steht in `data/weather.json` › `worlds`, `data/mounts.json` › `worlds` und `data/hermits.json` › `worlds`, nicht in der Welt-Datei (`docs/rules/welten.md` Zeilen 112–114, 265). Das Rust-Spiel liest die Dateien (`rust/crates/k3c-data`); die Go-Engine liest sie nicht.
+
+Der Welten-Editor und das Welten-MCP liegen im Studio: Backend `tools/k3c-studio/internal/world/`, MCP-Server `tools/k3c-studio/internal/mcpsrv/`, Frontend `tools/k3c-studio/frontend/src/world/` (Tests `*.test.tsx`). Die ID-Prüfung liest die drei Katalog-Dateien; im Frontend nichts fest verdrahten. Oberfläche nach Atomic Design: Radix nur über `@webkit`, rohe Controls nur in `atoms/` (`tests/atomicDesign.test.ts`). Entwickeln mit `task k3c-studio` nur, wenn nötig; die laufende Studio-EXE nicht neu bauen (das macht 🧑 nach dem Merge).
 
 ## Erlaubte Dateien
 
-- `tools/k3c-workbench/**`
+- `tools/k3c-studio/**`
+- `data/weather.json`
+- `data/mounts.json`
+- `data/hermits.json`
 
 ## Nicht-Ziele
 
@@ -30,12 +35,12 @@ Kataloge bearbeiten, Vorschau im Editor, Änderungen an `engine/` oder `data/` (
 
 ## Schritte
 
-1. Vorhandenen Weg eines Welt-Feldes vom Backend bis zur Übersicht nachvollziehen (z. B. `combat`).
-2. Backend: drei Felder lesen und schreiben („keins“ entfernt das Feld), Katalog-Listen aus der Engine anbieten, unbekannte ID mit gültigen IDs ablehnen.
+1. Vorhandenen Weg eines Welt-Feldes im Studio nachvollziehen (z. B. `combat`); die Zuordnung in den drei Katalogen lesen.
+2. Backend: drei Auswahlwerte je Welt lesen und schreiben („keins“ entfernt den Eintrag), Katalog-Listen aus den Dateien anbieten, unbekannte ID mit gültigen IDs ablehnen.
 3. MCP: `world_get` nennt die Felder, `world_set` nimmt sie an, `world_check` meldet unbekannte IDs; Tool-Beschreibungen nachziehen.
-4. Frontend: drei Auswahlfelder in der Übersicht mit „keins“, ungültiger Bestandswert markiert, Speichern je Feld.
+4. Frontend (Studio): drei Auswahlfelder in der Übersicht mit „keins“, ungültiger Bestandswert markiert, Speichern je Feld.
 5. Tests: Go (Backend, MCP), Vitest (Übersicht).
-6. Fachprüfung durch Agent `k3c-workbench`; `check_run task:check:dev`, `check_run task:check:diff`.
+6. Fachprüfung durch Agent `k3c-workbench` (zuständig auch für das Studio); `task check:dev` und `task check:diff` grün.
 
 ## Fertig, wenn
 
@@ -56,4 +61,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Blockiert, nicht umgesetzt. Die Voraussetzung „SI3, SI4, SI5 gemergt“ trifft für die Engine nicht zu: `weather`, `mount` und `hermit` stehen nicht in der Welt-Datei-Dekodierung (`engine/sim/world_decode.go`, `island_worlds.go`), und es gibt keinen Go-Code, der `data/weather.json` und `data/hermits.json` liest. Git zeigt für SI3 nur Regeltext und Review, für SI4 Assets (teilweise), für SI5 einen pausierten Teilstand. Ohne diese Engine-Felder würde world_set Felder schreiben, die die Engine ablehnt. Nächster Schritt: SI3 bis SI5 als Umsetzung nachziehen oder SI7 zurückstellen. Außerdem zeigen die Erlaubten Dateien auf `tools/k3c-workbench/**`; der Welten-Editor liegt im Studio (`tools/k3c-studio`).
+Noch nicht umgesetzt. Die frühere Blockade-Notiz war falsch: SI3, SI4 und SI5 sind erledigt. Die Zuordnung je Welt liegt in `data/weather.json`, `data/mounts.json` und `data/hermits.json` (Feld `worlds`), nicht in der Welt-Datei, und das Rust-Spiel liest sie. Der Welten-Editor liegt im Studio (`tools/k3c-studio`). Umgesetzt wird die Auswahl im Studio mit ID-Prüfung gegen diese Katalog-Dateien.
