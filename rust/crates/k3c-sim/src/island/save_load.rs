@@ -47,19 +47,7 @@ pub fn from_island_save_in(
             s.island_id, s.world
         ))
     })?;
-    for id in &s.completed {
-        if !world.islands.iter().any(|d| &d.id == id) {
-            return Err(fail(format!(
-                "spielstand: abgeschlossene Insel {id:?} gibt es in Welt {:?} nicht",
-                s.world
-            )));
-        }
-        if *id == current.id {
-            return Err(fail(format!(
-                "spielstand: aktuelle Insel {id:?} steht unter den abgeschlossenen"
-            )));
-        }
-    }
+    check_completed(&world, s, &current.id)?;
     let cycle_speed = if cycle_speed == 0.0 { 1.0 } else { cycle_speed };
     let depths: Vec<i64> = s.stages.iter().map(|h| h.depth).collect();
     let build = IslandBuild {
@@ -100,6 +88,24 @@ pub fn from_island_save_in(
     isl.restore_hermit(t.data, s.hermit_paid).map_err(fail)?; // RU62.10: Einsiedler bezahlt?
     place_players(&mut isl, s)?;
     Ok(isl)
+}
+
+/// Die abgeschlossenen Inseln des Stands gibt es in der Welt und enthalten nicht die aktuelle.
+fn check_completed(world: &WorldDef, s: &IslandSave, current: &str) -> Result<(), Fehler> {
+    for id in &s.completed {
+        if !world.islands.iter().any(|d| &d.id == id) {
+            return Err(Fehler::Spielstand(format!(
+                "spielstand: abgeschlossene Insel {id:?} gibt es in Welt {:?} nicht",
+                s.world
+            )));
+        }
+        if id == current {
+            return Err(Fehler::Spielstand(format!(
+                "spielstand: aktuelle Insel {id:?} steht unter den abgeschlossenen"
+            )));
+        }
+    }
+    Ok(())
 }
 
 /// Stellt die gespeicherten Spieler in ihre Stufe und ordnet jede Stufe nach Index.
