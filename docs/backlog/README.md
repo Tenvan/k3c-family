@@ -294,6 +294,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1258](B-1258-e2e-ablauf-referenz-neu-aufnehmen.md) | INF | Problem | mittel | offen | WE6 | e2e-Ablauf ablauf_wie_go_zwei_laeufe_gleich ist ausgesetzt, weil die Referenz aus RU32 veraltet ist |
 | [B-1259](B-1259-sammel-kritische-fragen-autonom.md) | INF | Problem | hoch | offen | WE6 | Sammelticket: kritische Fragen aus der autonomen Arbeit, von Ralf zu entscheiden |
 | [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WE8 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
+| [B-1261](B-1261-flaschenpost-zielpool-alle-stufen.md) | SIM | Problem | hoch | offen | GS4 | Flaschenpost: Zielpool und Markierung über alle Stufen |
+| [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | GS3 | Trophäen-Assets an die Spielansicht binden |
 
 ## Archiv
 
