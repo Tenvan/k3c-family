@@ -176,6 +176,8 @@ pub struct SkillTable {
 /// und nie geändert (Vorentscheidung 6).
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct WorldValues {
+    /// Skins der Welt: Basis-Asset → Ersatz-Asset (WE6.6, B-994); das Spiel zeichnet damit, die Sim rechnet nicht damit.
+    pub skins: BTreeMap<String, String>,
     /// Mit dem Platz `ship` aus ship.json (`withShip`).
     pub buildings: BTreeMap<String, BuildingData>,
     pub troops: BTreeMap<String, TroopData>,

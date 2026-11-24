@@ -147,3 +147,24 @@ fn catalog_reports_gaps() {
         assert!(err.contains(want), "Meldung ohne {want:?}: {err}");
     }
 }
+
+/// WE6.6 (B-994): Das Ersatz-Asset der Welt ersetzt nur das zugeordnete Asset; ohne Zuordnung bleibt der Look.
+#[test]
+fn skinned_ersetzt_nur_zugeordnete_assets() {
+    let look = Look {
+        asset: "gegner/wolf".to_string(),
+        variant: String::new(),
+        height: 1.0,
+        lift: 0.0,
+        alpha: 1.0,
+        sheet: false,
+    };
+    let skins = std::collections::BTreeMap::from([("gegner/wolf".to_string(), "gegner/ninja".to_string())]);
+    assert_eq!(skinned(look.clone(), &skins).asset, "gegner/ninja");
+    assert_eq!(
+        skinned(look.clone(), &std::collections::BTreeMap::new()).asset,
+        "gegner/wolf"
+    );
+    let anderes = std::collections::BTreeMap::from([("gegner/bär".to_string(), "x/y".to_string())]);
+    assert_eq!(skinned(look, &anderes).asset, "gegner/wolf");
+}

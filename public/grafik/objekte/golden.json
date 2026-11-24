@@ -497,6 +497,30 @@
       "idle.png": "5537985bd7bb0191dbcc22d2435128bb5170a5d10cb18af8d89ab23aa4266142"
     }
   },
+  "trophaee-britannien": {
+    "renderKey": "a415bafd4050a2b0d2f8505450ee3fe20ca965be972e1abba1e4c5c128d5afac",
+    "dateien": {
+      "stand.png": "648180923bc18d64d961c9abf8ba1cd9d4d62393cc467019c1a05201fab86cc4"
+    }
+  },
+  "trophaee-nil": {
+    "renderKey": "db490395bc3be912b34f991268ce204b9649d03664dcc0202399e52cae2748d3",
+    "dateien": {
+      "stand.png": "6ace1f2418ab47bbc4601f7ef15ab750ec185fe9c2f1d7b62350ccf2f8793e74"
+    }
+  },
+  "trophaee-sengoku": {
+    "renderKey": "720ccd28d7f411004ab95fa013e8466c4745962e758447d39be010cae1ad22c2",
+    "dateien": {
+      "stand.png": "57bf76e9249567b697dabeba9016fc0938efd0137c608263bcccaed8553299c6"
+    }
+  },
+  "trophaee-standard": {
+    "renderKey": "2dd22b7fdd21d759a8e3d3d7c1ef9955d1e2eb8774f08974bca0b62e67750a0e",
+    "dateien": {
+      "stand.png": "7d0ea99e8bacec9a22242ae46c5a1a5c0701949cbd8ee82217534ab98712b954"
+    }
+  },
   "truhe-offen": {
     "renderKey": "cff3720dc35831935cae3ff06e4ca0b11d32f7be28171c62148f6a89b8bee8e2",
     "dateien": {

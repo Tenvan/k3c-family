@@ -113,7 +113,13 @@
     "meer": { "hinten": "objekte/seekarte-meer-hinten", "mitte": "objekte/seekarte-meer-mitte", "vorn": "objekte/seekarte-meer-vorn" },
     "schiff": "objekte/seekarte-schiff",
     "aufsaetze": ["objekte/seekarte-aufsatz-turm", "objekte/seekarte-aufsatz-baum", "objekte/seekarte-aufsatz-fels"],
-    "zeichen": { "abgeschlossen": "objekte/seekarte-zeichen-fahne", "gesperrt": "objekte/seekarte-zeichen-nebel" }
+    "zeichen": { "abgeschlossen": "objekte/seekarte-zeichen-fahne", "gesperrt": "objekte/seekarte-zeichen-nebel" },
+    "trophaeen": {
+      "standard": "objekte/trophaee-standard",
+      "sengoku": "objekte/trophaee-sengoku",
+      "nil": "objekte/trophaee-nil",
+      "britannien": "objekte/trophaee-britannien"
+    }
   },
   "objekte": {
     "ader-eisen": { "gruppe": "objekte", "frame": [76, 70], "frames": 1, "rahmen": [-36,  -64,  72,  66] },
