@@ -29,6 +29,8 @@ pub struct BottleState {
     pub last_day: Option<i64>,
     /// Zahl der aufgehobenen Flaschen (R7, für die Geschichtszeile).
     pub found: i64,
+    /// Zahl der Geschichtszeilen der Welt (`story.bottles`), aus der Welt beim Bau gesetzt; nicht im Spielstand.
+    pub lines: usize,
 }
 
 /// Der Spielstand-Teil der Flaschenpost (Version 14, R8). Ohne Zustand fehlt das Feld.
@@ -78,6 +80,7 @@ impl BottleState {
             target: s.target,
             last_day: s.last_day,
             found: s.found,
+            lines: 0,
         }
     }
 }
@@ -86,8 +89,12 @@ impl Island {
     /// Schaltet die Flaschenpost der Insel ein (Aufruf beim Bau der Insel): Konfiguration nur auf der Stufe der Tiefe 0.
     pub fn enable_bottle(&mut self, data: &Data) {
         let cfg = Arc::new(data.bottle.clone());
+        let lines = self.world.story.bottles.len();
         for w in &mut self.stages {
             enable(w, Arc::clone(&cfg));
+            if w.biome.depth == 0 {
+                w.bottle.lines = lines;
+            }
         }
     }
 }
@@ -151,7 +158,9 @@ pub fn step_pickup(w: &mut World) {
                 let mut r = Rng::new(&format!("{}:bottle-target:{}", w.seed, w.bottle.found));
                 w.bottle.target = Some(pick(&mut r, &pool));
             }
-            emit(w, "bottleFound", event(json!({"player": player, "n": w.bottle.found})));
+            // R7: die n-te Flasche nennt die Zeile `(n - 1) mod Anzahl`; ohne Zeilen -1
+            let line = if w.bottle.lines == 0 { -1 } else { (w.bottle.found - 1) % w.bottle.lines as i64 };
+            emit(w, "bottleFound", event(json!({"player": player, "n": w.bottle.found, "line": line})));
         }
     }
     if let Some(t) = w.bottle.target {

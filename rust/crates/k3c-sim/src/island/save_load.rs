@@ -85,7 +85,9 @@ pub fn from_island_save_in(
     restore_progress(&mut isl, s, t.data);
     (isl.completed, isl.chronicle) = (s.completed.clone(), s.chronicle.clone());
     if let Some(w) = isl.stages.iter_mut().find(|w| w.biome.depth == 0) {
+        let lines = w.bottle.lines; // die Zeilenzahl kommt aus der Welt, nicht aus dem Spielstand
         w.bottle = crate::bottle::BottleState::from_save(&s.bottle); // GS4.6 R8: Flasche und Markierung
+        w.bottle.lines = lines;
     }
     isl.chosen = s.chosen.clone();
     if !s.chosen.is_empty() && !isl.targets().iter().any(|x| x.id == s.chosen) {
