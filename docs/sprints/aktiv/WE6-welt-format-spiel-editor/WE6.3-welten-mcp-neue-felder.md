@@ -55,4 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-AC-03 teilweise: `endBoss` (Insel) und `skins` (Welt) lassen sich über world_set setzen und bleiben erhalten, Go-Tests in `tools/k3c-studio/internal/world` grün (`edit_endboss_skins_test.go`). Offen: `overrides › events` und `hub › sites` über world_override_set; der Override-Pfad des Studios schreibt nur Blätter der Werte-Ansicht und kennt keinen Listen-Merge. Eigenes Ticket anlegen oder Session ergänzen. Erlaubte Dateien auf die Studio-Pfade umgestellt (Ursprung: Workbench-Pfade, dort gibt es kein Welten-Paket).
+AC-03 geprüft: `overrides › events` (Ereignis je id, z. B. `events › bloodMoon › everyNights`) und `hub › sites` (je Index, z. B. `sites › 0 › topOnly`) lassen sich über world_override_set übersteuern; neue Einträge werden abgelehnt. Die Werte-Ansicht flacht beide Listen bereits nach id bzw. Index ab, es war keine neue Logik nötig. Test: `TestOverrideEventsUndHubSitesWerden` in `tools/k3c-studio/internal/world/edit_override_lists_test.go` (grün). Hinweis: Hub-Plätze prüft die Engine auf Mindestabstand, daher im Test nur ein Feld ohne Platzwirkung.
