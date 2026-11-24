@@ -21,6 +21,15 @@ fn island() -> World {
     // früheres Layout der Insel 1 (der Fünf-Inseln-Standard gibt ihr 16 Chunks): eine Insel, Hafen auf Platz -7
     let one = r#"{"id":"island1","name":"Insel 1","depths":[0,1,2,3,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}}"#;
     data.standard_world.islands = Some(vec![serde_json::from_str(one).expect("Insel")]);
+    // Die Geschichte der Standard-Welt kennt mehr Etappen als diese eine Insel: nur Etappe 1 bleibt (sonst „Etappe 2 hat keine Insel“).
+    if let Some(etappen) = data
+        .standard_world
+        .story
+        .get_mut("etappen")
+        .and_then(|v| v.as_object_mut())
+    {
+        etappen.retain(|k, _| k == "1");
+    }
     let hub = k3c_data::Source::Embedded.read("hub.json").expect("hub.json");
     let rules = k3c_level::rules::Rules::from_data(&data, &hub).expect("Regeln");
     let world = k3c_sim::island::worlds::standard_world(&data, &rules).expect("Standard-Welt");

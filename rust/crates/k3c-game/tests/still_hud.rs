@@ -17,6 +17,7 @@ use k3c_game::hud::layout::{ITEM_BANNER, ITEM_CITIZENS, ITEM_CLOCK, ITEM_EVENTS,
 use k3c_game::hud::layout::{ITEM_PLACE, ITEM_PLAYER, ITEM_SHARED, ITEM_SKILLS, ITEM_TRAVEL};
 use k3c_game::still::{self, FixedSimView, FrameFile, Image, StillState, pngio};
 use serde::Deserialize;
+mod common;
 
 const STAENDE: [&str; 4] = ["tag-allein", "nacht-banner", "pad-tastatur", "englisch-hub"];
 
@@ -144,7 +145,7 @@ fn diff(a: &Image, b: &Image, mask: &[Mask]) -> (f64, f64) {
 
 /// Felder der reinen Textelemente aus den Plätzen der Go-Referenz, mit zwei Pixeln Rand.
 fn text_masks(name: &str) -> Vec<Mask> {
-    let mut out = Vec::new();
+    let mut out = common::hud_radar::radar_masks(name); // Radar HB1.3 hat keine Go-Vorlage
     for c in layout_go(name).cells {
         for id in TEXT_ITEMS {
             if let Some(r) = c.items.get(&id.to_string()) {
@@ -255,7 +256,7 @@ fn bilder_stimmen_mit_go_ueberein() {
         dump(name, &rust);
         let go = pngio::read_png(&bild(name, "go.png")).unwrap();
         let (mean, share) = diff(&rust, &go, &text_masks(name));
-        let (all, all_share) = diff(&rust, &go, &[]);
+        let (all, all_share) = diff(&rust, &go, &common::hud_radar::radar_masks(name));
         eprintln!(
             "{name}: mittel {mean:.3}, Anteil > {PIXEL_TOL}: {:.3} % (ohne Textfelder; gesamt: mittel {all:.3}, Anteil {:.3} %)",
             share * 100.0,

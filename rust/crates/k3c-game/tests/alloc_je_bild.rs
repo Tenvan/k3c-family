@@ -23,7 +23,10 @@ const WARMUP: usize = 120;
 /// allokieren (vorher 805, step 788, draw 29, Mittel 478). Rest: `World::clone` je Takt in `step` (B-1077, braucht
 /// Aenderungen in k3c-sim) und neue Figuren/Texte in `draw` (B-1078, `PERF`-Marken); Ziel 0, Grenze beim Abbau mitsenken.
 /// RU53 (B-1106): 786, weil `action_hint` jetzt `train_at`/`trade_at` der Sim ruft (vorher Shims ohne Allokation); Abbau mit B-1078.
-const MAX_ALLOCS_JE_BILD: u64 = 786;
+/// B-1257 (Entscheidung Ralf): auf den auf `main` gemessenen Stand 941 angehoben (Maximum je Bild nach dem Aufwärmen,
+/// ohne Änderung am Spielverhalten oder an den Standbildern). Die Grenze war seit RU53 überschritten, der Test rot.
+/// Abbau von `World::clone` je Takt (B-1077) und `draw`-Allokationen (B-1078) senkt sie wieder; dann mitsenken.
+const MAX_ALLOCS_JE_BILD: u64 = 941;
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../../..")

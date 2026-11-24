@@ -4,4 +4,5 @@
 
 pub mod canon;
 pub mod flow;
+pub mod hud_radar;
 pub mod images;
