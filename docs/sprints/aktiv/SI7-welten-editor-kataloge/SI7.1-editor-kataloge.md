@@ -56,4 +56,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-–
+Blockiert, nicht umgesetzt. Die Voraussetzung „SI3, SI4, SI5 gemergt“ trifft für die Engine nicht zu: `weather`, `mount` und `hermit` stehen nicht in der Welt-Datei-Dekodierung (`engine/sim/world_decode.go`, `island_worlds.go`), und es gibt keinen Go-Code, der `data/weather.json` und `data/hermits.json` liest. Git zeigt für SI3 nur Regeltext und Review, für SI4 Assets (teilweise), für SI5 einen pausierten Teilstand. Ohne diese Engine-Felder würde world_set Felder schreiben, die die Engine ablehnt. Nächster Schritt: SI3 bis SI5 als Umsetzung nachziehen oder SI7 zurückstellen. Außerdem zeigen die Erlaubten Dateien auf `tools/k3c-workbench/**`; der Welten-Editor liegt im Studio (`tools/k3c-studio`).

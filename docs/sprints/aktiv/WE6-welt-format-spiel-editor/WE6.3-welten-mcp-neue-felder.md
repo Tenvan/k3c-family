@@ -1,6 +1,6 @@
 # WE6.3 · Welten-MCP: endBoss, skins, events und hub › sites setzen und lesen (B-987)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
