@@ -141,6 +141,7 @@
     "fest-bluete": { "gruppe": "objekte", "frame": [36, 20], "frames": 4, "rahmen": [-18,  -18,  36,  20] },
     "fest-fackel": { "gruppe": "objekte", "frame": [20, 52], "frames": 4, "rahmen": [-10,  -50,  20,  52] },
     "fest-laterne": { "gruppe": "objekte", "frame": [24, 32], "frames": 4, "rahmen": [-12,  -30,  24,  32] },
+    "flaschenpost": { "gruppe": "objekte", "frame": [64, 64], "frames": 1, "rahmen": [-16,  -32,  32,  32] },
     "licht-fackel-standard": { "gruppe": "objekte", "frame": [20, 52], "frames": 4, "rahmen": [-10,  -50,  20,  52] },
     "licht-fackel-sengoku": { "gruppe": "objekte", "frame": [20, 52], "frames": 4, "rahmen": [-10,  -50,  20,  52] },
     "licht-fackel-nil": { "gruppe": "objekte", "frame": [20, 52], "frames": 4, "rahmen": [-10,  -50,  20,  52] },

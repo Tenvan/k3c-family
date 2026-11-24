@@ -1,6 +1,6 @@
 # GS4.3 · Asset: Flaschenpost (B-980)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
@@ -55,5 +55,7 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-05 erfüllt: Asset `flaschenpost` (Gruppe objekte, Rig requisite) über `assets_create` und `assets_set` angelegt, gerendert (Vorschau: kleine Glasflasche mit Korken), in `assets_review` als neu gültig geprüft, in `data/paper.json` › `objekte` zugeordnet (Frame 64×64, Rahmen aus der Spec). Grafik-Golden und Index durch das Studio nachgezogen.
+Nicht erledigt: Fachprüfung `k3c-grafik` (Lesbarkeit am Strand), Gen-Lauf `gen:paper` als Abnahme-Ticket (Gen nur am Feature), die Sichtprüfung am Monitor liegt bei Ralf.
+`task:check:diff`: Rust- und Regeltests grün. Lint-Stufe rot durch vorab bestehende ESLint-Fehler in tools/k3c-studio/frontend und tools/k3c-workbench/frontend (keine Datei dieses Commits).
+Nebenbei: island/mod.rs war durch B-1261 auf 402 Zeilen gewachsen (harte Grenze 400); tag_stage ist nach island/stage_tag.rs gezogen.

@@ -158,6 +158,12 @@
       "idle.png": "6c3059476ca63354aa6c5057598b73c5299c61a5f786f69eab3da55b889e46b0"
     }
   },
+  "flaschenpost": {
+    "renderKey": "a2731e99705849588028c83c9633727c0f570d6356572a3d71db235f5f2c4782",
+    "dateien": {
+      "stand.png": "51c562213f8afd72fec8d4249f234f6c8e9ee02b28bf83ac38f0dde1a90ad98e"
+    }
+  },
   "fracht-beutel": {
     "renderKey": "e54ea8776f0d1bb2b70784fedef8a8a673f5080eb1e2d2e2b34ff501e640d561",
     "dateien": {
