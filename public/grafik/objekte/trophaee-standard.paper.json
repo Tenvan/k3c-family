@@ -1,0 +1,30 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "trophaee-standard",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Trophäe Standard-Welt: kleiner Kristallsplitter mit Fahne",
+  "teile": [
+    {
+      "id": "korpus",
+      "pivot": [0, 0],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -26L10 -8L6 6L-6 6L-10 -8Z",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
+          "form": "M0 -26L10 -8L0 -8Z",
+          "material": "kristall",
+          "ton": "licht"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-16, -32, 32, 32]
+  }
+}

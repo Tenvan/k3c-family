@@ -13,9 +13,10 @@ use k3c_sim::state::{Enemy, Troop, World as SimWorld};
 
 use super::Actors;
 use super::anim::{ANIM_ATTACK, ANIM_IDLE, MonarchFrame, Motion, Pose, Want, figure_want, monarch_want};
-use super::catalog::{Look, UNIT_PX};
+use super::catalog::{Look, UNIT_PX, skinned};
 use crate::art::Actor;
 use crate::view::frame::Frame;
+use std::collections::BTreeMap;
 
 /// class unterscheidet die Listen der Welt; IDs sind nur je Liste und Stufe eindeutig.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, PartialOrd, Ord)]
@@ -115,8 +116,10 @@ impl Actors {
             for t in &w.troops {
                 self.listen_troop(w, st.index, t);
             }
+            let empty = BTreeMap::new();
+            let skins = w.vals.as_ref().map_or(&empty, |v| &v.skins);
             for e in &w.enemies {
-                self.listen_enemy(st.index, e);
+                self.listen_enemy(st.index, e, skins);
             }
         }
         let generation = self.generation;
@@ -224,8 +227,13 @@ impl Actors {
         self.figs.insert(k, fg);
     }
 
-    fn listen_enemy(&mut self, stage: i64, e: &Enemy) {
-        let Some(look) = self.cat.as_ref().and_then(|c| c.enemy(&e.kind, e.boss)) else {
+    fn listen_enemy(&mut self, stage: i64, e: &Enemy, skins: &BTreeMap<String, String>) {
+        let Some(look) = self
+            .cat
+            .as_ref()
+            .and_then(|c| c.enemy(&e.kind, e.boss))
+            .map(|l| skinned(l, skins))
+        else {
             self.warn(
                 WarnKey {
                     what: "gegner".to_string(),

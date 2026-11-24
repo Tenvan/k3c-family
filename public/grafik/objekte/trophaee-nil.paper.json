@@ -1,0 +1,31 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "trophaee-nil",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Trophäe Nil: kleiner Skarabäus mit Fahne",
+  "teile": [
+    {
+      "id": "korpus",
+      "pivot": [0, 0],
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M0 -14L10 -4L8 6L0 10L-8 6L-10 -4Z",
+          "material": "gold"
+        },
+        {
+          "art": "falz",
+          "breite": 0.8,
+          "form": "M0 -14L0 10",
+          "material": "gold",
+          "ton": "schatten"
+        }
+      ]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-16, -32, 32, 32]
+  }
+}
