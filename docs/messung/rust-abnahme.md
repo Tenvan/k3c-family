@@ -219,3 +219,23 @@ Sichtprüfungen am TV, die in den Go-Sprints offen waren; das Go-Spiel entfällt
 | G-9 | GS2 | B-964 AC-05, B-977 AC-05, B-1011 | Seekarte als Papierschnitt-Diorama und Schiffsfahrt im Vollbild (Station 41 und 42), Sicht am TV | – | nicht geprüft, hängt an Station 41/42 (B-1157) |
 | G-10 | WE5 | B-981 bis B-984 | Endboss je Insel, Event-Overrides und Skins im Rust-Spiel spielen (Sengoku: Etappen 1, 2, 2; Camp hinter Portal außerhalb der Kristallhöhle, Entscheidung offen) | – | nicht geprüft |
 | G-11 | W15 | B-622 AC-01 | Nachts Fackeln an Mauer (eine) und Turm (zwei), am Tag nur Halter ohne Schein, an zerstörter Mauer keine (F9 „Nacht sofort“, „Welle jetzt“) | ja | Fackeln nicht an allen Gebäuden, Monarch braucht folgendes Licht (B-1161) |
+
+## Bericht G4 (RU36.5, Stand 2026-11-24)
+
+**Kriterien:**
+- **AC-01 erfüllt:** Abnahme-Liste mit allen Gruppen und den 14 Stationen aus `flow_test.go` (RU36.1).
+- **AC-02 teilweise:** Messwerte beider Spiele vom selben PC liegen vor, aber nur als 20-s-Probeläufe (`reports/native-game-STIRA-PC-20261119-121025.json`, `reports/native-rustgame-STIRA-PC-20261119-224927.json`). GPU-Speicher, EXE-Größe und längstes Bild zu Median liegen unter den Schwellen, Startzeit ist besser als Go. Arbeitsspeicher ist schlechter (350 gegen 283 bis 289 MiB), das hat Ralf akzeptiert. FPS sind nicht vergleichbar, weil Rust auf 60 gedeckelt ist. Der 300-s-Lauf mit VSync fehlt (B-1162).
+- **AC-03 teilweise:** Ralf hat die Stationen 01 bis 13, 20 bis 32, 40, 50 bis 57, 60 bis 68 und 70 bis 75 mit zwei Pads abgenommen. Offen sind die Stationen G-6 bis G-10 (Boss, Seekarte, Reise), die RU36.2 als „nicht geprüft“ markiert.
+- **AC-04 erfüllt:** Die beiden schweren Befunde (Stationen 41 und 42, Schiff und Seekarte) sind behoben (RU36.3). Ralf hat die Nachprüfung am Bild bestätigt (RU36.4). Keine schweren Befunde sind offen.
+
+**Befunde nach Schwere:** Schwer: 0 offen (2 behoben). Mittel: B-1160 (Platzhalter-Rechteck im Hub), B-1161 (Fackeln und Monarch-Licht), B-1162 (Messlücken). Leicht: keine.
+
+**Reviewer (k3c-reviewer, RU36.3 und RU36.6/36.7, Commits `8c090cf7d`, `da2a7d5fb`):** kein hoher Befund. Mittel: der dichtere Wald ist nicht auf Frame-Zeit oder Sim-Schritt am Mini-PC gemessen; die Session RU36.7 wurde mit rotem `check:diff` (Allokationen 942 gegen Grenze 786, später 941 durch B-1257) committet. Niedrig: `SHIP_DROP` steht im Code statt in `data/`, und die Welt-Anzeige setzt die Fehlermeldung nach Links/Rechts nicht zurück; Details im Reviewer-Bericht.
+
+**Prüfungen:**
+- `task:check` (Stufe Vitest): 2178 Tests grün. Lint rot durch ESLint-Fehler in `tools/k3c-studio/frontend` und `tools/k3c-workbench/frontend`, nicht durch RU36.
+- `task:check:go`: rot. `engine/trace` (Golden `nacht-300.jsonl.gz` weicht ab), `engine/room` (Insel-Wechsel und Sieg), `engine/sim` (Vorposten, Nil-Zeiger). Ursache: Die Daten in `data/` (Truhen-Gold, Wald) gelten auch für die Go-Engine, deren Goldens nicht vollständig nachgezogen wurden. Behoben ist das nicht.
+
+**Empfehlung:** Nacharbeit vor G4, begrenzt auf drei Punkte: (1) Go-Goldens zu den Daten-Änderungen nachziehen oder die Änderung zurücknehmen, bis `task:check:go` grün ist; (2) 300-s-Lauf mit VSync und G-6 bis G-10 am PC nachholen (B-1162); (3) Wald-Frame-Zeit messen (Reviewer-Befund). Ohne (1) ist die Bedingung „`check:go` grün“ im Sprint nicht erfüllt. Mit (1) bis (3) ist G4 vertretbar. Ohne die Punkte (2) und (3) wäre G4 mit den Resttickets B-1162 und einem Wald-Ticket möglich, wenn Ralf die Lücken akzeptiert.
+
+**G4-Entscheidung 🧑:** offen (weiter, Abbruch, Nacharbeit).
