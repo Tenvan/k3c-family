@@ -34,8 +34,8 @@
     }
   ],
   "ausgabe": {
-    "hoehe_px": 64,
-    "rahmen": [-16, -32, 32, 32]
+    "hoehe_px": 96,
+    "rahmen": [-16, -32, 32, 48]
   },
   "animationen": {
     "stand": {
