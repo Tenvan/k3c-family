@@ -19,13 +19,17 @@
 Bei der autonomen Abarbeitung (Ziel: „Rest autonom ohne Rückfragen“) sind Fragen offen geblieben, die nur Ralf entscheiden kann. Sie stehen hier gesammelt; wo ein Default nach best practice möglich war, ist er angegeben und gilt bis zur Entscheidung.
 
 1. **Schiffbau-Startwerte (B-1244):** Holzmengen 8/12/16/20/24, fünf Zahlungsstufen, Stapellauf 5 Gold. Balancing ist gesperrt. Default: Werte wie in B-1244 festgehalten, Balancing später mit Freigabe.
-2. **Schiffs-Animation (B-1244):** Sichtprüfung durch Ralf am Gerät nötig, Anzeige nicht im Bereich der Session.
-3. **Standbild `hud-pad-tastatur` (still_hud):** Die Go-Referenz ist seit HB1 veraltet; der Radar-Streifen ist für dieses Bild ausgenommen (`tests/common/hud_radar.rs`). Default: Ausnahme bleibt, bis Referenz neu gesetzt wird. Entscheidung: Referenz neu setzen oder Ausnahme dauerhaft.
-4. **e2e-Referenz (B-1258):** `ablauf_wie_go_zwei_laeufe_gleich` ist ausgesetzt. Entscheidung: Neuaufnahme aus dem heutigen Rust-Stand freigeben (Default: ja, Neuaufnahme in einer eigenen Session).
-5. **Assets GS3.2 und GS4.3:** Studio-MCP muss laufen. Entscheidung: Studio für diese Sessions starten, oder die Assets zurückstellen.
-6. **WE6.6 Umfang:** Skins je Welt sind im Rust-Spiel committet (`7b37e4fec` auf `sprint/we6-6-skins`). Offen: Objekt-Skins und Endboss je Biom. Entscheidung: Umfang bestätigen.
-7. **Sichtprüfungen:** WE6.4 und SI7 (Oberfläche im Studio), Workbench- und Studio-EXE neu bauen. Ohne diese Prüfung gelten die Sessions als umgesetzt, aber nicht abgenommen.
-8. **WE8 Zielkorridore:** Events (Überfall, Sandsturm, Nebel) brauchen Zielkorridore. Balancing ist gesperrt, deshalb bleiben die Werte vorläufig. Entscheidung: Balancing-Freigabe, wann.
+2. **Schiffs-Animation (B-1244):** Sichtprüfung durch Ralf am Gerät nötig.
+3. **Standbild `hud-pad-tastatur` (still_hud):** Die Go-Referenz ist seit HB1 veraltet; der Radar-Streifen ist ausgenommen (`tests/common/hud_radar.rs`). Default: Ausnahme bleibt. Entscheidung: Referenz neu setzen oder Ausnahme dauerhaft.
+4. **e2e-Referenz (B-1258):** `ablauf_wie_go_zwei_laeufe_gleich` ist ausgesetzt. Default: Neuaufnahme aus dem heutigen Rust-Stand in einer eigenen Session.
+5. **Assets GS3.2 und GS4.3:** Studio-MCP muss laufen. Entscheidung: Studio für diese Sessions starten, oder Assets zurückstellen.
+6. **WE6.6 Umfang:** Skins je Welt sind auf `sprint/we6-6-skins` committet (`7b37e4fec`), nicht gemergt und nicht gebaut verifiziert (Linker-Fehler 1104 im frischen Build-Ordner). Offen: Objekt-Skins, Endboss und Bau je Biom. Entscheidung: Umfang bestätigen; Rendering ohne Grafik lässt sich nur per Standbild prüfen.
+7. **Sichtprüfungen:** WE6.4 und SI7 (Oberfläche im Studio), Workbench- und Studio-EXE neu bauen.
+8. **WE8 Zielkorridore:** Balancing ist gesperrt; die Werte bleiben vorläufig.
+9. **Override-Name Welt-Events (WE8.7):** Die drei Events stehen in `data/welt-events.json` und werden über `overrides › welt-events` eingeschaltet, nicht über `overrides › events` wie B-991 und B-992 es nennen. Grund: das Go-Golden `events_wie_go` muss bytegleich bleiben. Default: so belassen, Spec nachziehen. Entscheidung: Spec anpassen oder Golden neu schreiben.
+10. **Sandsturm und Monarch (WE8.7):** Der Sandsturm bremst den Monarchen und fliehende Gegner im Fest, wie der Taifun. Default: so belassen. Entscheidung: im Spiel prüfen, dann bestätigen oder die Regel auf Truppen und Gegner begrenzen.
+11. **Vorbestehende Rot-Stellen auf `main`:** vier Sim-Tests (`island::worlds_tests` ×2, `island::takt_tests::insel_nach_1000_schritten_wie_go`, `story::mod_tests::standard_welt_erzaehlt_eine_geschichte`) und `task lint` (Playtest- und Studio-Frontend). Default: eigenes Aufräum-Ticket, nicht in Feature-PRs mischen. Entscheidung: Priorität.
+12. **Offene Sessions ohne Ausführung in dieser Runde:** WE8.5, WE8.8, WE6.6 (Rest), GS3.2, GS4.3, GS4.6, GS4.7, Reviews GS3.6, GS4.5, WE6.5, WE8.6, RU36.5. Entscheidung: Reihenfolge und ob Studio-MCP-Sessions warten.
 
 ## Ziel
 
@@ -67,8 +71,8 @@ Ungültige oder seltene Situation → gewolltes Verhalten. Passt nichts: `nicht 
 
 ## Akzeptanzkriterien
 
-- **AC-01**: Jede der acht Fragen hat eine Entscheidung oder einen dokumentierten Default.
-- **AC-02**: Die betroffenen Sessions (B-1244, B-1258, WE6.6, GS3.2, GS4.3, WE8) sind nach der Entscheidung eingeplant oder abgeschlossen.
+- **AC-01**: Jede der zwölf Fragen hat eine Entscheidung oder einen dokumentierten Default.
+- **AC-02**: Die betroffenen Sessions (B-1244, B-1258, WE6.6, WE8.5, WE8.8, GS3.2, GS4.3, GS4.6, GS4.7, Reviews) sind nach der Entscheidung eingeplant oder abgeschlossen.
 
 ## Offene Fragen
 
