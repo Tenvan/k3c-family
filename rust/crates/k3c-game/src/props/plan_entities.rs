@@ -4,6 +4,7 @@
 use k3c_sim::state::{ResourceNode, World};
 
 use super::data::values;
+use super::buildings::Look;
 use super::nature::{anim_phase, deco_roots, entity_look, mine_sign_look, node_look, object, on_plot, variant_look};
 use super::plan::{GOLD, Item, Planner, Shape, WHITE, px, visible};
 use super::plan_combat::portal_down;
@@ -12,6 +13,36 @@ use super::sites::{TextKey, TextWhat};
 use crate::view::cell::Camera;
 
 /// `PENNANT_MAX`: höchste Lage von Balken über Knoten (Baumhöhe, pennant.ts › PENNANT_MAX_HEIGHT).
+/// Das Ersatz-Asset einer Skin-Tabelle (WE6.6, Objekte): ohne Eintrag bleibt das Basis-Asset.
+fn skin_look(base: Look, skins: &std::collections::BTreeMap<String, String>) -> Look {
+    if skins.is_empty() {
+        return base;
+    }
+    match skins.get(base.asset) {
+        Some(to) => Look::new(intern(to), base.anim),
+        None => base,
+    }
+}
+
+/// Ein Asset-Name als `'static` für `Look`: jeder Name wird einmal angelegt, danach nur nachgeschlagen.
+fn intern(s: &str) -> &'static str {
+    static POOL: std::sync::Mutex<std::collections::BTreeMap<String, &'static str>> =
+        std::sync::Mutex::new(std::collections::BTreeMap::new());
+    let mut pool = POOL.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    if let Some(v) = pool.get(s) {
+        return v;
+    }
+    let leaked: &'static str = Box::leak(s.to_string().into_boxed_str());
+    pool.insert(s.to_string(), leaked);
+    leaked
+}
+
+/// Die Skin-Tabelle der Welt (`WorldValues::skins`); ohne Werte eine leere Tabelle.
+fn world_skins(w: &World) -> &std::collections::BTreeMap<String, String> {
+    static EMPTY: std::sync::OnceLock<std::collections::BTreeMap<String, String>> = std::sync::OnceLock::new();
+    w.vals.as_ref().map_or_else(|| EMPTY.get_or_init(Default::default), |v| &v.skins)
+}
+
 pub fn pennant_max() -> f64 {
     px(360.0)
 }
@@ -105,7 +136,9 @@ impl Planner {
                     self.sprite(object("wurzel"), n.x + self.roots[i], 0.0, 0);
                 }
             }
-            let l = variant_look(&n.kind, &n.variant, biome, n.x).unwrap_or_else(|| node_look(&n.kind, n.x, biome));
+            let base = variant_look(&n.kind, &n.variant, biome, n.x).unwrap_or_else(|| node_look(&n.kind, n.x, biome));
+            // WE6.6 (Objekt-Skins): die Skin-Tabelle der Welt ersetzt das Asset des Objekts, sonst bleibt es
+            let l = skin_look(base, world_skins(w));
             let h = if let Some((_, h)) = self.size(l) {
                 self.body.push(Item {
                     shape: Shape::Sprite,
