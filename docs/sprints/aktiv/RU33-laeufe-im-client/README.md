@@ -1,11 +1,11 @@
 # RU33 · CLI · Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI
 - **Reife:** bereit
 - **Tickets:** B-1017
-- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Start-Commit:** 00382aa2d
 - **Spec:** freigegeben
 - **Revision:** 1
 - **Freigabe:** autonom, Claude, 2026-11-17
@@ -101,7 +101,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU33.1 | `RU33.1-schnittstelle-sim-run-level.md` | Umsetzung | autonom | offen |
+| RU33.1 | `RU33.1-schnittstelle-sim-run-level.md` | Umsetzung | autonom | fertig |
 | RU33.2 | `RU33.2-sim-world-hub.md` | Umsetzung | autonom | offen |
 | RU33.3 | `RU33.3-sim-run-window.md` | Umsetzung | autonom | offen |
 | RU33.4 | `RU33.4-review.md` | Review | autonom | offen |

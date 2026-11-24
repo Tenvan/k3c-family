@@ -1,0 +1,10 @@
+{
+  "args": [
+    "run"
+  ],
+  "stdin": "{\"biome\":\"forest\",\"seed\":\"0\",\"ticks\":300}",
+  "code": 0,
+  "out": [
+    "{\"event\":\"result\",\"text\":\"sim_run forest · Seed \\\"0\\\" · 300 Ticks (10.0 s Spielzeit)\\nTag 1 (day) · Welle 0 · Gegner 0 · Burg 1000 HP\\nGold je Monarch: 14\\nTruppen: archer 2, peasant 2, vagrant 4\\nVerluste: 0 Gebäude zerstört, 0 Monarchen am Boden · Gold gestohlen 0×\\nEnde: Ticks erreicht, Burg nie gefallen\"}"
+  ]
+}

@@ -127,6 +127,6 @@ fn event_banner_texte() {
 #[test]
 fn boss_name_aus_den_werten() {
     let e = enemy(9, "forestChieftain", true, 10.0, 10.0);
-    assert_eq!(boss_bar("de", &[e.clone()]).name, "Wald-Häuptling");
+    assert_eq!(boss_bar("de", std::slice::from_ref(&e)).name, "Wald-Häuptling");
     assert_eq!(boss_bar("en", &[e]).name, "Wald-Häuptling");
 }

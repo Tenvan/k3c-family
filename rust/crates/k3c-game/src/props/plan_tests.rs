@@ -333,8 +333,10 @@ fn objekt_skin_ersetzt_das_asset_des_baums() {
     let Some(lib) = fake_sheets() else {
         return;
     };
-    let mut w = World::default();
-    w.nodes = vec![node("tree", 5.0)];
+    let mut w = World {
+        nodes: vec![node("tree", 5.0)],
+        ..World::default()
+    };
     let mut p = Planner::new(Some(lib.clone()));
     p.nodes(&w, &camera(6.0), "forest");
     let ohne = assets_of(&p.body);

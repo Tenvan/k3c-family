@@ -16,8 +16,8 @@ pub const FACHMODULE: [&str; 9] = [
 ];
 
 /// Ordner von `src/` mit eigener Regel: Zusammenbau und Werkzeuge (dürfen alles), `art` (eigene Grafik-Schicht);
-/// `devwin` (Cheat-Fenster, RU56) ist ein Werkzeug und nutzt `k3c_devproto` und die Dev-Typen aus `view`.
-const NOT_FACH: [&str; 7] = ["game", "replay", "still", "demo", "art", "local", "devwin"];
+/// `runs` (Läufe im Client, RU33) ist ein Werkzeug wie `replay`; `devwin` (Cheat-Fenster, RU56) ist ein Werkzeug und nutzt `k3c_devproto` und die Dev-Typen aus `view`.
+const NOT_FACH: [&str; 8] = ["game", "replay", "still", "demo", "art", "local", "devwin", "runs"];
 
 /// `k3c_det` ist die Mathematik (Gegenstück zu Gos `math`), keine Fachschicht, und gilt wie die Standardbibliothek.
 const ALLOWED_CRATES: [&str; 4] = ["k3c_sim", "k3c_data", "k3c_platform", "k3c_det"];

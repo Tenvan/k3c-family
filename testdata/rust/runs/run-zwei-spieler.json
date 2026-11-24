@@ -1,0 +1,10 @@
+{
+  "args": [
+    "run"
+  ],
+  "stdin": "{\"biome\":\"forest\",\"seed\":\"k3c-dev\",\"ticks\":900,\"inputs\":[{\"fromTick\":0,\"toTick\":600,\"moveX\":1,\"pay\":true},{\"player\":1,\"fromTick\":30,\"toTick\":900,\"moveX\":-1}]}",
+  "code": 0,
+  "out": [
+    "{\"event\":\"result\",\"text\":\"sim_run forest · Seed \\\"k3c-dev\\\" · 900 Ticks (30.0 s Spielzeit)\\nTag 1 (day) · Welle 0 · Gegner 0 · Burg 1000 HP\\nGold je Monarch: 0, 14\\nTruppen: archer 2, peasant 2, vagrant 4\\nVerluste: 0 Gebäude zerstört, 0 Monarchen am Boden · Gold gestohlen 0×\\nEnde: Ticks erreicht, Burg nie gefallen\"}"
+  ]
+}
