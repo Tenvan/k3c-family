@@ -31,7 +31,7 @@ const (
 // Fehler der Auswertung; die Oberfläche zeigt den Text.
 var (
 	ErrNoVoice   = errors.New("voice.wav fehlt, nichts zu transkribieren")
-	ErrBusyTrans = errors.New("Auswertung läuft schon")
+	ErrBusyTrans = errors.New("Auswertung läuft schon") //nolint:staticcheck // Grund für die Oberfläche
 	ErrNoJob     = errors.New("keine Auswertung aktiv")
 )
 
@@ -129,7 +129,7 @@ func ParseLanguage(l string) (string, error) {
 			return l, nil
 		}
 	}
-	return "", fmt.Errorf("Sprache %q ungültig: erlaubt %s", l, strings.Join(languages, ", "))
+	return "", fmt.Errorf("Sprache %q ungültig: erlaubt %s", l, strings.Join(languages, ", ")) //nolint:staticcheck // Grund für die Oberfläche
 }
 
 // ModelInfo ist eine gefundene Modelldatei für die Auswahl der Seite. ID ist, was die Seite zurückgibt: der Pfad
@@ -210,11 +210,11 @@ func ParseSegments(raw []byte, audioStart int64) ([]Segment, error) {
 	switch {
 	case strings.HasPrefix(text, "["):
 		if err := json.Unmarshal([]byte(text), &list); err != nil {
-			return nil, fmt.Errorf("Transkript nicht lesbar: %w", err)
+			return nil, fmt.Errorf("Transkript nicht lesbar: %w", err) //nolint:staticcheck // Grund für die Oberfläche
 		}
 	case strings.HasPrefix(text, `{"segments"`):
 		if err := json.Unmarshal([]byte(text), &wrap); err != nil {
-			return nil, fmt.Errorf("Transkript nicht lesbar: %w", err)
+			return nil, fmt.Errorf("Transkript nicht lesbar: %w", err) //nolint:staticcheck // Grund für die Oberfläche
 		}
 		list = wrap.Segments
 	default:
@@ -224,7 +224,7 @@ func ParseSegments(raw []byte, audioStart int64) ([]Segment, error) {
 			}
 			var s rawSeg
 			if err := json.Unmarshal([]byte(l), &s); err != nil {
-				return nil, fmt.Errorf("Transkript nicht lesbar: %w", err)
+				return nil, fmt.Errorf("Transkript nicht lesbar: %w", err) //nolint:staticcheck // Grund für die Oberfläche
 			}
 			list = append(list, s)
 		}

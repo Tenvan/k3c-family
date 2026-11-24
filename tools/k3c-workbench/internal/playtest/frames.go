@@ -37,13 +37,13 @@ func (t *Transcriber) FrameAt(id string, tsMs int64) (string, error) {
 	sek := float64(max(tsMs-CaptureStart(readMeta(dir)), 0)) / 1000
 	proc, err := t.Spawn(FrameArgs(ff, sek, filepath.FromSlash(rel)), dir)
 	if err != nil {
-		return "", fmt.Errorf("Bild nicht erzeugt: %w", err)
+		return "", fmt.Errorf("Bild nicht erzeugt: %w", err) //nolint:staticcheck // Grund für die Oberfläche
 	}
 	if err := proc.Wait(); err != nil {
-		return "", fmt.Errorf("Bild nicht erzeugt: %v: %s", err, proc.Tail())
+		return "", fmt.Errorf("Bild nicht erzeugt: %v: %s", err, proc.Tail()) //nolint:staticcheck // Grund für die Oberfläche
 	}
 	if _, err := os.Stat(out); err != nil {
-		return "", fmt.Errorf("Bild nicht erzeugt: %w", err)
+		return "", fmt.Errorf("Bild nicht erzeugt: %w", err) //nolint:staticcheck // Grund für die Oberfläche
 	}
 	return out, nil
 }

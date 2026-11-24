@@ -33,7 +33,7 @@ const (
 
 // Fehler der Bildbeschreibung.
 var (
-	ErrBusyVision = errors.New("Bildbeschreibung läuft schon")
+	ErrBusyVision = errors.New("Bildbeschreibung läuft schon") //nolint:staticcheck // Grund für die Oberfläche
 	ErrNoVision   = errors.New("keine Bildbeschreibung aktiv")
 	ErrNoRuntime  = errors.New("llama-mtmd-cli.exe fehlt: llama.cpp (Vulkan-Build) nach models/vision/llama/ entpacken oder K3C_LLAMA_DIR setzen")
 )

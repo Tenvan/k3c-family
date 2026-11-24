@@ -93,16 +93,12 @@ func wavesRepo(t *testing.T) string {
 // tools/a/**), volle Plätze (B-002) und Knoten ohne Welle mit Grund.
 func TestWavesAbhaengigkeitBereichSperre(t *testing.T) {
 	t.Parallel()
-	out := must(t)(Waves(wavesRepo(t), WavesFilter{}))
+	out := must(t)(Waves(wavesRepo(t), WavesFilter{WaveCount: 4}))
 	want := []string{
-		"Arbeitswellen: 1 in Arbeit, 7 eingeplant in 3 Wellen, 3 in keiner Welle · 4 Plätze",
-		"── Welle 1, jetzt (4/4 Plätze) ──\n- R1.1 · in Arbeit · Titel R1.1 (DEV, Projekt AAA, Sprint R1)\n" +
-			"- B-001 · Ticket · Ticket B-001 (DEV, Projekt AAA)\n- A1.1 · Session · Titel A1.1 (DEV, Projekt AAA, Sprint A1) · Sperre exe\n" +
-			"- C1.2 · Session · Titel C1.2 (DEV, Projekt BBB, Sprint C1)\n",
-		"── Welle 2 (3/4 Plätze) ──\n- B1.1 · Session · Titel B1.1 (DEV, Projekt BBB, Sprint B1) · Sperre exe — kollidiert mit A1.1: Sperre exe\n" +
-			"- C1.1 · Session · Titel C1.1 (DEV, Projekt BBB, Sprint C1) — kollidiert mit A1.1: Bereich `tools/a/**` / `tools/a/sub/file.go`\n" +
-			"- B-002 · Ticket · Ticket B-002 (DEV, Projekt BBB) — Plätze voll\n",
-		"── Welle 3 (1/4 Plätze) ──\n- A1.2 · Session · Titel A1.2 (DEV, Projekt AAA, Sprint A1) · Sperre exe — nach A1.1; kollidiert mit B1.1: Sperre exe\n",
+		"Arbeitswellen: 1 in Arbeit, 7 eingeplant in 4 Wellen (4 gezeigt), 3 in keiner Welle · Lanes: zweit (Second Worker), haupt (Hauptrechner)",
+		"── Welle 1, jetzt (2 Knoten) ──\n- R1.1 · in Arbeit · Titel R1.1 (DEV, Projekt AAA, Sprint R1) · Lane: zweit\n" +
+			"- B-001 · Ticket · Ticket B-001 (DEV, Projekt AAA) · Lane: haupt\n",
+		"── Welle 2 (2 Knoten) ──\n- A1.1 · Session · Titel A1.1 (DEV, Projekt AAA, Sprint A1) · Lane: zweit · Sperre exe — Lanes belegt\n",
 		"- B-003 · Ticket · Ticket B-003 — Bereich fehlt",
 		"- Fehler: B-004 · Ticket · Ticket B-004 — unbekannte ID B-999 in „Abhängig von“",
 		"- B-005 · Ticket · Ticket B-005 — wartet auf B-003 (nicht in einer Welle)",
@@ -110,16 +106,54 @@ func TestWavesAbhaengigkeitBereichSperre(t *testing.T) {
 	checkText(t, out, want, []string{"B-006", "B-007", "B-008", "A1.3", "C1.3"})
 }
 
-// Filter grenzen nur die Anzeige ein; slots außerhalb 1–4 lehnt das Tool ab.
-func TestWavesFilterUndPlaetze(t *testing.T) {
+// Filter grenzen nur die Anzeige ein; wave_count zeigt nur die ersten N Wellen (Standard 1), 0 oder negativ lehnt das Tool ab.
+func TestWavesFilterUndWellenzahl(t *testing.T) {
 	t.Parallel()
 	root := wavesRepo(t)
-	out := must(t)(Waves(root, WavesFilter{Project: "aaa"}))
+	out := must(t)(Waves(root, WavesFilter{Project: "aaa", WaveCount: 4}))
 	checkText(t, out, []string{"A1.1", "Anzeige gefiltert"}, []string{"C1.2", "- B1.1"})
-	out = must(t)(Waves(root, WavesFilter{Slots: 2}))
-	checkText(t, out, []string{"── Welle 1, jetzt (2/2 Plätze) ──\n- R1.1 · in Arbeit", "- B-001 · Ticket"}, nil)
-	if _, err := Waves(root, WavesFilter{Slots: 5}); err == nil {
-		t.Error("slots 5 angenommen")
+	out = must(t)(Waves(root, WavesFilter{}))
+	checkText(t, out, []string{"Welle 1, jetzt", "(1 gezeigt)"}, []string{"── Welle 2"})
+	out = must(t)(Waves(root, WavesFilter{WaveCount: 2}))
+	checkText(t, out, []string{"── Welle 2 "}, []string{"── Welle 3"})
+	if _, err := Waves(root, WavesFilter{WaveCount: -1}); err == nil {
+		t.Error("wave_count -1 angenommen")
+	}
+}
+
+// Lanes: Session mit `Lane: zweit` gehört dem Second Worker, Lane-Wert `a` dem Hauptrechner, sonst die erste freie
+// Lane (zweit zuerst). Drei Sprints mit getrennten Bereichen: zwei Lanes, also passt der dritte Knoten nicht in Welle 1.
+func TestWavesLanesVerteilung(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	w := waveWriter(t, root)
+	w("backlog/README.md", "# Backlog\n")
+	w("sprints/geplant/.keep", "")
+	w("projekte/AAA-a.md", nextProject("AAA", "aktiv", "1", "A1", "B1", "C1"))
+	waveSprint(w, "A1", "AAA", "aktiv", "–", []waveSession{{"A1.1", "autonom", "offen", "–", "tools/a/**", ""}})
+	waveSprint(w, "B1", "AAA", "aktiv", "–", []waveSession{{"B1.1", "autonom", "offen", "–", "tools/b/**", ""}})
+	waveSprint(w, "C1", "AAA", "aktiv", "–", []waveSession{{"C1.1", "autonom", "offen", "–", "tools/c/**", ""}})
+	setLane(t, root, "sprints/aktiv/A1-s/A1.1-x.md", "zweit")
+	setLane(t, root, "sprints/aktiv/B1-s/B1.1-x.md", "a")
+	out := must(t)(Waves(root, WavesFilter{WaveCount: 2}))
+	checkText(t, out, []string{
+		"- A1.1 · Session · Titel A1.1 (DEV, Projekt AAA, Sprint A1) · Lane: zweit",
+		"- B1.1 · Session · Titel B1.1 (DEV, Projekt AAA, Sprint B1) · Lane: haupt",
+		"── Welle 2 (1 Knoten) ──\n- C1.1 · Session · Titel C1.1 (DEV, Projekt AAA, Sprint C1) · Lane: zweit",
+	}, nil)
+}
+
+// setLane trägt `- **Lane:** x` in eine Session-Datei ein (unter Domäne).
+func setLane(t *testing.T, root, rel, lane string) {
+	t.Helper()
+	p := filepath.Join(root, "docs", filepath.FromSlash(rel))
+	b, err := os.ReadFile(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := strings.Replace(string(b), "- **Domäne:** DEV\n", "- **Domäne:** DEV\n- **Lane:** "+lane+"\n", 1)
+	if err := os.WriteFile(p, []byte(text), 0o644); err != nil {
+		t.Fatal(err)
 	}
 }
 

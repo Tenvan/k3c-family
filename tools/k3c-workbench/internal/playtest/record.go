@@ -24,6 +24,7 @@ const (
 
 // Fehler der Aufnahme; die Oberfläche zeigt den Text.
 var (
+	//nolint:staticcheck // ST1005: deutsche Meldung für die Oberfläche
 	ErrBusy        = errors.New("Aufnahme läuft schon")
 	ErrNotRunning  = errors.New("keine Aufnahme aktiv")
 	ErrNoFFmpeg    = errors.New("ffmpeg nicht gefunden (ffmpeg installieren)")

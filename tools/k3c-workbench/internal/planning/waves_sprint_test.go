@@ -23,10 +23,10 @@ func sameSprintRepo(t *testing.T, firstStatus string) string {
 func TestSessionsEinesSprintsNacheinander(t *testing.T) {
 	t.Parallel()
 	root := sameSprintRepo(t, "offen")
-	out := must(t)(Waves(root, WavesFilter{}))
+	out := must(t)(Waves(root, WavesFilter{WaveCount: 2}))
 	checkText(t, out, []string{
-		"── Welle 1, jetzt (2/4 Plätze) ──\n- C1.1 · Session · Titel C1.1 (DEV, Projekt CCC, Sprint C1)\n- D1.1 · Session",
-		"── Welle 2 (1/4 Plätze) ──\n- C1.2 · Session · Titel C1.2 (DEV, Projekt CCC, Sprint C1) — kollidiert mit C1.1: Sprint C1",
+		"── Welle 1, jetzt (2 Knoten) ──\n- C1.1 · Session · Titel C1.1 (DEV, Projekt CCC, Sprint C1) · Lane: zweit\n- D1.1 · Session · Titel D1.1 (DEV, Projekt CCC, Sprint D1) · Lane: haupt",
+		"── Welle 2 (1 Knoten) ──\n- C1.2 · Session · Titel C1.2 (DEV, Projekt CCC, Sprint C1) · Lane: zweit — kollidiert mit C1.1: Sprint C1",
 	}, nil)
 	next := must(t)(Next(root, NextFilter{}))
 	checkText(t, next, []string{"Nächste Session: C1.1", "── Parallel möglich ──\n- DEV · D1.1"}, []string{"C1.2 ·"})

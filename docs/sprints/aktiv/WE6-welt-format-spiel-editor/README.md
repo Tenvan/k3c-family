@@ -1,6 +1,6 @@
 # WE6 · CLI, DEV · Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** CLI, DEV
 - **Reife:** bereit

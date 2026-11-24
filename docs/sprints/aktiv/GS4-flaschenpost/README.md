@@ -1,6 +1,6 @@
 # GS4 · REG, SIM, PAP, CLI · Flaschenpost am Strand mit Geschichtszeile und Markierung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, PAP, CLI
 - **Reife:** bereit

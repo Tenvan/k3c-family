@@ -1,6 +1,6 @@
 # GS3 · SIM, PAP, CLI, SRV · Andenken und Chronik abgeschlossener Inseln auf der Seekarte
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** WZG
 - **Domäne:** SIM, PAP, CLI, SRV
 - **Reife:** bereit

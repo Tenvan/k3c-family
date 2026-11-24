@@ -16,9 +16,12 @@ func registerPlanWaves(s *Server) {
 			"autonome Sessions aktiver Sprints (Dateimenge aus „Erlaubte Dateien“, Sperre aus der Sprint-README), freigegebene " +
 			"Tickets ohne Sprint und freigegebene geplante Sprints mit „Braucht 🧑: –“. Ebene aus „Abhängig von“, Kollision bei " +
 			"überlappendem Bereich (Präfix, ohne Sammeldateien) oder gleicher Sperre; Rang, dann Prio, dann Reihenfolge entscheidet. " +
-			"Sessions in Arbeit stehen in Welle 1 und belegen Plätze (slots, höchstens 4). Je zurückgestelltem Knoten der Grund, " +
-			"dazu die Knoten in keiner Welle (Bereich fehlt, wartet auf …, Fehler: unbekannte ID). project und domain grenzen nur " +
-			"die Anzeige ein. Nutze es bei: Welle planen oder starten. Statt: Wellen von Hand aus Tickets und Sprints rechnen.",
+			"Zwei Lanes: zweit (Second Worker, autonom) und haupt (Hauptrechner). Jeder Knoten bekommt eine Lane: Session mit " +
+			"Lane zweit gehört zweit, anderer Lane-Wert haupt, Sim-Domäne nur zweit, sonst die erste freie (zweit zuerst). " +
+			"Sessions in Arbeit stehen in Welle 1 und belegen ihre Lane. wave_count zeigt die ersten N Wellen (Standard 1). Je " +
+			"zurückgestelltem Knoten der Grund, dazu die Knoten in keiner Welle (Bereich fehlt, wartet auf …, Fehler: unbekannte ID). " +
+			"project und domain grenzen nur die Anzeige ein. Nutze es bei: Welle planen oder starten. Statt: Wellen von Hand aus " +
+			"Tickets und Sprints rechnen.",
 		Annotations: readOnly(),
 	}, func(ctx context.Context, in planning.WavesFilter) (string, error) {
 		return planning.Waves(s.ws(ctx).Root, in)

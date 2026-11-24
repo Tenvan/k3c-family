@@ -28,7 +28,12 @@ Regelquelle: `docs/arbeitsweise.md` › Second Worker. Für den Ablauf je Sessio
    `git push origin HEAD:sprint/<präfix>`.
 5. Review-Session des Sprints: Review nach `docs/arbeitsweise.md` › Review-Session, Sprint auf erledigt, PR gegen `main`
    öffnen, `gh pr merge --squash --auto`, warten bis gemergt.
-6. Zurück zu Schritt 1, bis keine Session mit `Lane: zweit` mehr frei ist.
+6. Nach dem Merge den eigenen Checkout auf `origin/main` ziehen (`git merge origin/main`) und aufräumen: Worktrees und
+   Temporärdateien in `.work/` löschen, gemergte Branches entfernen.
+7. Zurück zu Schritt 1, bis keine Session mit `Lane: zweit` mehr frei ist.
+8. **Idle:** Ist keine Session mit `Lane: zweit` frei, einen Cronjob anlegen (`CronCreate`, alle 5 Minuten), der
+   `git fetch --prune` ausführt und nach neuen freien `Lane: zweit`-Sessions sucht (`plan_next`). Findet er eine, arbeitet
+   er wie oben weiter. Der Cronjob läuft, bis Ralf ihn beendet.
 
 ## Verboten
 

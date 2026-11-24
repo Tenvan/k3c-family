@@ -299,7 +299,8 @@ der Stand der Basis; die eigene Änderung wird mit `plan_*` oder dem kleinen Edi
 
 ### Wellen berechnen
 
-`plan_waves {slots?, project?, domain?}` rechnet die Wellen so (B-783) und nennt je zurückgestelltem Kandidaten den Grund:
+`plan_waves {wave_count?, project?, domain?}` rechnet die Wellen so (B-783) und nennt je zurückgestelltem Kandidaten den Grund.
+`wave_count` (Standard 1) zeigt nur die ersten N Wellen; die Planung rechnet immer alle.
 
 1. **Kandidaten:** offene Sessions `Agent: autonom` aktiver Sprints, dazu Tickets und Sprints mit `Spec: freigegeben` und `Braucht 🧑: –`.
 2. **Ralf-Queue zuerst:** Alles mit `Braucht 🧑` ≠ `–` wird 🧑 vorab und gesammelt vorgelegt. Es hält nur auf, was es in `Abhängig von` nennt.
@@ -307,7 +308,9 @@ der Stand der Basis; die eigene Änderung wird mit `plan_*` oder dem kleinen Edi
    Neubau nutzbar; wer sie braucht, nennt sie in `Abhängig von`.
 4. **Kollision:** Zwei Kandidaten einer Ebene kollidieren, wenn sie Sessions desselben Sprints sind (B-838), ihre Bereiche überlappen (ein Pfad ist
    Präfix des anderen) oder sie dieselbe Sperre tragen. Der Kandidat aus dem Projekt mit dem kleineren Rang bleibt (danach Ticket-Prio, dann kleinere Nummer), der andere rückt in die nächste Welle.
-5. **Plätze:** höchstens vier Agenten gleichzeitig; Sessions `in Arbeit` zählen mit, gleich in welchem Checkout.
+5. **Lanes:** zwei Arbeitsplätze je Welle, `zweit` (Second Worker) und `haupt` (Hauptrechner). Eine Session mit `Lane: zweit` gehört
+   `zweit`, jeder andere Lane-Wert `haupt`; Sim-Domäne nur `zweit` (Sim-Sperre für den Hauptrechner); sonst die erste freie Lane,
+   `zweit` zuerst. Sessions `in Arbeit` belegen ihre Lane und zählen mit, gleich in welchem Checkout.
 6. **Folgewelle:** Sie startet, wenn die Sprint-PRs gemergt sind, von denen sie abhängt. Ihre Specs werden 🧑 schon während der laufenden Welle vorgelegt.
 
 ### Zuschnitt
@@ -351,11 +354,22 @@ Gilt für Agenten, Skills und Werkzeuge; der Code der Produkte (z. B. `t.TempDir
 
 ### Second Worker (zweiter Rechner, Lane `zweit`)
 
-Ein zweiter Rechner mit kleinerem Account arbeitet einfache autonome Sprints ab; Abstimmung nur über `origin` (🧑 2026-11-18).
+Ein zweiter Rechner mit kleinerem Account ist der **autonome Zuarbeiter**: Er führt seine Sprints selbst aus, committet, merged
+mit `main` und räumt auf. Abstimmung nur über `origin` (🧑 2026-11-18, Regeländerung 🧑 2026-11-24).
 
-- **Zuteilung:** Sessions mit `Lane: zweit` gehören dem Second Worker, alle anderen dem Hauptrechner. Der Hauptrechner
-  vergibt die Lane; der Second Worker nimmt nie Sessions ohne `Lane: zweit`. Geeignet sind Oberflächen-Ports mit eigenem
-  Ordner (`menu/`, `hud/`, `devtools/`), nicht Sim, Level, Plattform oder Planung über mehrere Sprints.
+- **Zuteilung:** Sessions mit `Lane: zweit` gehören dem Second Worker, alle anderen dem Hauptrechner. Die Lane vergibt der
+  Hauptrechner: `plan_waves` verteilt die Knoten auf die Lanes, der Hauptrechner setzt `Lane: zweit` per `plan_set`. Der
+  Second Worker nimmt nie Sessions ohne `Lane: zweit`.
+- **Idle:** Ist keine Session mit `Lane: zweit` frei, startet er einen Cronjob, der alle 5 Minuten `origin` nach neuen Sprints
+  prüft (`git fetch --prune`, dann `plan_next`/`plan_list`) und bei freier Session sofort weiterarbeitet.
+- **Start je Session:** `git fetch`, Branch `sprint/<präfix>` von `origin/sprint/<präfix>` oder `origin/main`, nächste offene Session
+  mit `Lane: zweit` und erledigten Abhängigkeiten (`plan_next`). Vor dem Start `git merge origin/main`.
+- **Ausführen und committen:** Ein Commit je Session, danach sofort `git push origin HEAD:sprint/<präfix>`.
+- **Abschluss und Merge:** Die Review-Session des Sprints öffnet den PR gegen `main`, mergt ihn nach grüner Prüfung
+  (`gh pr merge --squash --auto`) und zieht `main` danach in den eigenen Checkout (`git merge origin/main`).
+- **Aufräumen:** Nach jedem Merge Worktrees und Temporärdateien in `.work/` löschen; keine Branches stehen lassen, die gemergt sind.
+- **Geeignet:** Oberflächen-Ports mit eigenem Ordner (`menu/`, `hud/`, `devtools/`) und rechenlastige Läufe (Sim, Balancing,
+  Messung). Planung über mehrere Sprints, Tickets und Lanes bleiben beim Hauptrechner.
 - **Vorrang (Ralf 2026-11-19):** Die Sprints des Go-Abbaus **RU58, RU37 und RU59** (Projekt RSU, in dieser Reihenfolge)
   gehen vor jeder anderen `zweit`-Session, auch vor RU51 und RU52. Der Second Worker nimmt zuerst deren freie Sessions
   (Abhängigkeiten beachten: RU58 vor RU37 vor RU59, die Sessions in Tabellen-Reihenfolge); erst wenn dort keine frei ist
