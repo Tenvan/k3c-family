@@ -138,6 +138,7 @@ func dataFiles() []dataFile {
 var rustOnly = map[string]bool{
 	"look.json": true, "cargo.json": true, "coop.json": true, "festival.json": true,
 	"hermits.json": true, "mounts.json": true, "weather.json": true, "welt-events.json": true,
+	"bottle.json": true,
 }
 
 // TestDataFilesComplete: Jede Spiel-Daten-Datei steht in dataFiles (ohne die Workbench-Dateien asset-*, assets-* und
