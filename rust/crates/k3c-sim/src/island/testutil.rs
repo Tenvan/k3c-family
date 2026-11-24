@@ -36,10 +36,12 @@ pub fn test_data() -> Data {
 /// Tests der Insel- und Sieglogik gehen von der früheren Welt aus: genau eine Insel, Hafen auf Platz -7, Größe nach Biom.
 pub fn one_island_standard(d: &mut Data) {
     let one: serde_json::Value = serde_json::from_str(
-        r#"{"id":"island1","name":"Insel 1","depths":[0,1,2,3,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]},"story":{"arrival":["Pip olu WALD, lumi HÖHLE miri."],"boss":["Zaro fenn WÄCHTER, KRISTALL hei."],"done":["WÄCHTER fenn, lumi KRONE olu."]}}"#,
+        r#"{"id":"island1","name":"Insel 1","depths":[0,1,2,3,4],"depthScaling":{"hp":1.5,"damage":1.3,"speed":1.1},"plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}}"#,
     )
     .expect("Insel");
     d.standard_world.islands = Some(vec![one]);
+    // Die Geschichte der Welt (Wörterbuch, Etappen, Flaschenpost) gehört zur Fünf-Inseln-Welt: mit einer Insel lehnte `check_story` sie ab. Die Tests der Insel- und Sieglogik brauchen sie nicht.
+    d.standard_world.story = serde_json::Value::Null;
 }
 
 /// Go: `neutralNature`, die neutralen Natur-Werte je Tiefe (`level.NeutralNature`).

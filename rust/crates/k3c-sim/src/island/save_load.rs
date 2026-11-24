@@ -83,7 +83,7 @@ pub fn from_island_save_in(
     isl.sync_stock();
     restore_pool(&mut isl, s);
     restore_progress(&mut isl, s, t.data);
-    isl.completed = s.completed.clone();
+    (isl.completed, isl.chronicle) = (s.completed.clone(), s.chronicle.clone());
     isl.chosen = s.chosen.clone();
     if !s.chosen.is_empty() && !isl.targets().iter().any(|x| x.id == s.chosen) {
         return Err(fail(format!(

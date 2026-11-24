@@ -32,7 +32,7 @@ fn frieden_und_fest_ueberstehen_speichern_und_laden() {
     assert_eq!(count(&ev, "festivalStart"), 1);
     let s = isl.to_save("x").expect("Spielstand");
     assert_eq!(s.version, ISLAND_SAVE_VERSION);
-    assert_eq!(ISLAND_SAVE_VERSION, 12, "keine neue Spielstand-Version für das Fest");
+    assert_eq!(ISLAND_SAVE_VERSION, 13, "keine eigene Spielstand-Version für das Fest");
     let json = serde_json::to_string(&s).expect("json");
     assert!(
         !json.contains("festival") && !json.contains("peace"),

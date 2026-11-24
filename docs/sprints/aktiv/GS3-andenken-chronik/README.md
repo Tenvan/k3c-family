@@ -83,7 +83,7 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 | GS3.4 | `GS3.4-spielstand-liste-route.md` | Umsetzung | autonom | verworfen |
 | GS3.5 | `GS3.5-vorschau-spielstand-auswahl.md` | Umsetzung | autonom | verworfen |
 | GS3.6 | `GS3.6-review.md` | Review | autonom | offen |
-| GS3.7 | `GS3.7-chronik-und-spielstandliste-rust.md` | Umsetzung | autonom | offen |
+| GS3.7 | `GS3.7-chronik-und-spielstandliste-rust.md` | Umsetzung | autonom | fertig |
 | GS3.8 | `GS3.8-andenken-und-vorschau-rust.md` | Umsetzung | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

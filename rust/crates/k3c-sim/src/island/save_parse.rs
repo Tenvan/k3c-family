@@ -37,7 +37,7 @@ pub fn parse_island_save(raw: &str, t: &SaveTables) -> Result<IslandSave, Fehler
     };
     let (version, island) = (head_int(obj, "version")?, head_int(obj, "island")?); // `island`: bis Version 7 der Index
     let s = match version {
-        ISLAND_SAVE_VERSION | 11 | 10 | 9 | 8 => return parse_island_v3(raw, &["world", "islandId"], t),
+        ISLAND_SAVE_VERSION | 12 | 11 | 10 | 9 | 8 => return parse_island_v3(raw, &["world", "islandId"], t),
         SAVE_VERSION => {
             let old = parse_save(raw, &t.data.biomes, t.defaults)?;
             island_from_v1(&old, default_options(&t.data.difficulty))
@@ -170,6 +170,7 @@ pub fn validate_island_save(s: &IslandSave, v: Option<&WorldValues>, t: &SaveTab
         }
         seen.insert(p.index);
     }
+    super::chronicle::check_chronicle(s).map_err(fail)?;
     validate_progress(s, t)?;
     validate_skills(s, v, t)
 }

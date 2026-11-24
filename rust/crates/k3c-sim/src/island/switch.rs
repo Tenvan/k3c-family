@@ -114,11 +114,13 @@ pub fn next_island(data: &Data, cur: &Island, def: &IslandDef) -> Result<Island,
     let seed = format!("{}:{}", cur.id, number);
     let mut next = create_island_at(&build, &seed, &def.depths, cur.cycle_speed, 0.0, &opts)?;
     next.completed = cur.completed.clone();
+    next.chronicle = cur.chronicle.clone();
     if let Some(d) = cur.world.islands.get(cur.number as usize)
         && cur.endboss_defeated
         && !next.completed.contains(&d.id)
     {
         next.completed.push(d.id.clone());
+        next.chronicle.push(cur.chronicle_entry());
     }
     next.stock = next.values().hub.island_start_stock.clone();
     next.sync_stock();

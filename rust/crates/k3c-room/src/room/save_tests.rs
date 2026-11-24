@@ -173,7 +173,7 @@ fn spielstand_v9_laden_speichern_gleicher_zustand() {
     assert_eq!(diff("stages", &before, &after), "", "Zustand nach Speichern und Laden");
 
     let out: Value = serde_json::from_slice(&first).expect("JSON");
-    assert_eq!(out["version"], 12, "Version");
+    assert_eq!(out["version"], 13, "Version");
     assert_eq!(
         order_conflict(&raw, &first),
         "",

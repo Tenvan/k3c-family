@@ -21,6 +21,7 @@ use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
 use crate::world::state_mirror::{mirror_state, mirror_switch};
 use crate::world::{add_player_at, step};
 
+pub mod chronicle;
 pub mod create;
 pub mod data;
 pub mod defeat;
@@ -47,6 +48,8 @@ pub mod worlds_decode;
 
 #[cfg(test)]
 mod carry_tests;
+#[cfg(test)]
+mod chronicle_tests;
 #[cfg(test)]
 mod defeat_tests;
 #[cfg(test)]
@@ -172,6 +175,8 @@ pub struct Island {
     pub switch_progress: f64,
     /// IDs der abgeschlossenen Inseln der Welt (Endboss beim Ablegen besiegt, B-961).
     pub completed: Vec<String>,
+    /// Chronik der abgeschlossenen Inseln, in der Reihenfolge des Abschlusses (GS3.7).
+    pub chronicle: Vec<chronicle::ChronicleEntry>,
     /// Gewähltes Ziel am Hafen (leer = erstes Ziel).
     pub chosen: String,
     /// Wahlen des Takts je Spielerindex (island_targets.go); nur über den Schlüssel zugreifen.
