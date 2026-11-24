@@ -6,8 +6,10 @@
 use k3c_platform::{Canvas, Rect};
 
 use super::debuggeo::{
-    GEO_CAMERA, GEO_CHUNK, GEO_COIN, GEO_EDGE, GEO_ENEMY, GEO_KINDS, GEO_MONARCH, GEO_SITE, GEO_TROOP, geometry,
+    GEO_CAMERA, GEO_CHUNK, GEO_COIN, GEO_EDGE, GEO_ENEMY, GEO_KINDS, GEO_MONARCH, GEO_SITE, GEO_STAND, GEO_STAND_TREE,
+    GEO_TROOP, geometry,
 };
+use super::debugstands::{HATCH_GAP, hatch};
 use super::values::value_lines;
 use super::{DevOverlay, Rgba, TEXT_COLOR, boxed, straight};
 use crate::art::Font;
@@ -26,6 +28,8 @@ const GEO_COLORS: [Rgba; GEO_KINDS] = {
     c[GEO_CHUNK] = [200, 120, 250, 200];
     c[GEO_EDGE] = [250, 250, 250, 255];
     c[GEO_CAMERA] = [80, 160, 255, 160];
+    c[GEO_STAND] = [70, 190, 90, 150];
+    c[GEO_STAND_TREE] = [150, 250, 120, 255];
     c
 };
 
@@ -42,6 +46,11 @@ impl DevOverlay {
             if s.x0 == s.x1 {
                 dst.stroke_line(s.x0 as f32, s.y0 as f32, s.x1 as f32, s.y1 as f32, 1.0, clr);
                 continue;
+            }
+            if s.kind == GEO_STAND {
+                for l in hatch(s.x0, s.y0, s.x1, s.y1, HATCH_GAP) {
+                    dst.stroke_line(l[0] as f32, l[1] as f32, l[2] as f32, l[3] as f32, 1.0, clr);
+                }
             }
             let r = Rect::new(s.x0 as f32, s.y0 as f32, (s.x1 - s.x0) as f32, (s.y1 - s.y0) as f32);
             dst.stroke_rect(r, 1.5, clr);
