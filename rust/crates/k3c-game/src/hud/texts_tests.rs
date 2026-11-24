@@ -13,8 +13,8 @@ use crate::view::settings::{DEFAULT_LANGUAGE, LANGUAGE_ENGLISH};
 fn tabellen_sind_sortiert_und_gleich_gross() {
     use super::texts_de::TEXTS_DE;
     use super::texts_en::TEXTS_EN;
-    assert_eq!(TEXTS_DE.len(), 139);
-    assert_eq!(TEXTS_EN.len(), 139);
+    assert_eq!(TEXTS_DE.len(), 142);
+    assert_eq!(TEXTS_EN.len(), 142);
     for t in [TEXTS_DE, TEXTS_EN] {
         assert!(t.windows(2).all(|w| w[0].0 < w[1].0), "Schlüssel nicht aufsteigend");
     }

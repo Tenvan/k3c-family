@@ -59,12 +59,8 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 Teilweise erledigt, Status bleibt offen.
 
-- AC-05 geprüft: Feindnamen über `world_override_set` gesetzt: sengoku `wolf`=Ninja, `caveTroll`=Samurai; nil `wolf`=Skorpion, `zombie`=Mumie; britannien `goblinArcher`=Römischer Späher, `mineGhost`=Moorgeist.
-- AC-02 geprüft: `world_check` für sengoku, nil und britannien: „gültig“.
-- Offen: Events `raid`/`sandstorm`/`fog` (Studio kennt `welt-events` nicht, B-1259 Frage 13) und `skins` (Zuordnung unklar, B-1259 Frage 14).
-- AC-03 Sichtprüfung 🧑, Prüfliste (je Welt, am PC):
-  1. Sengoku: Torii (objekte/ausgang), Pagode (Turm), Samurai-Lager (objekte/portal) sichtbar; Ninja und Samurai als Namen im Gegnerfenster.
-  2. Nil: Palme (Bäume), Obelisk (objekte/felsen), Barke (Schiff) sichtbar; Skorpion und Mumie als Namen.
-  3. Britannien: Steinkreis (objekte/portal), Rundhaus (Bauernhaus), Römischer Späher und Moorgeist als Namen.
-  4. Event-Nacht je Welt: nach Freigabe der Events prüfen (Überfall, Sandsturm, Nebel).
-- PR: sprint/we8 als PR #873 offen, B-1259 als PR #874 offen (nicht gemergt).
+- AC-05 geprüft: Feindnamen über `world_override_set` gesetzt (sengoku, nil, britannien).
+- AC-02 geprüft: `world_check` für sengoku, nil und britannien gültig.
+- Skins: Default aus B-1259 Frage 14 angewandt. Ersatz-Assets fehlen (z. B. `gegner/ninja`), also keine Skins. Nur die Feindnamen gelten.
+- Events (`raid`, `sandstorm`, `fog`): blockiert, weil `world_override_set` `welt-events` nicht kennt. Ticket B-1260 angelegt (Sprint WE8), Ziel und Anforderungen stehen dort.
+- AC-03 Sichtprüfung 🧑: Prüfliste siehe Abschnitt oben in dieser Datei.

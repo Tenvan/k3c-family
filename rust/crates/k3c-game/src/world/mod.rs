@@ -19,6 +19,7 @@ pub mod backdrop;
 pub mod bank;
 pub mod camera;
 pub mod cull;
+pub mod event_veil;
 pub mod forest;
 pub mod fx;
 pub mod ground;

@@ -17,6 +17,8 @@
         "fullMoon": { "color": [0.78, 0.86, 1], "strength": 0.5 },
         "bloodMoon": { "color": [1, 0.35, 0.3], "strength": 0.8 },
         "merchantRaid": { "color": [1, 0.86, 0.55], "strength": 0.35 },
+        "sandstorm": { "color": [1, 0.8, 0.45], "strength": 0.4 },
+        "fog": { "color": [0.82, 0.84, 0.86], "strength": 0.45 },
         "noSky": ["cave", "mine", "ironhold", "crystal"]
       },
       "haze": [0.4, 0.25, 0],

@@ -53,6 +53,7 @@ impl World {
             self.draw_haze(dst, c, &st.level, lk.sky, back, 0);
         }
         self.draw_weather_sky(dst, f, c);
+        self.draw_event_veil(dst, f, c);
     }
 
     /// DrawMotif zeichnet das monumentale Leitmotiv der Welt (LA2.4) als letzte feste Ebene hinter der Kulisse: ohne
