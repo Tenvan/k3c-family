@@ -47,6 +47,8 @@ type Island struct {
 	ID          string                     `json:"id"`
 	Name        string                     `json:"name"`
 	Etappe      *int                       `json:"etappe,omitempty"`
+	// EndBoss ist die ID des Endbosses der Insel (WE6.4, B-981); leer = Endboss der tiefsten Stufe.
+	EndBoss string `json:"endBoss,omitempty"`
 	Depths      []int                      `json:"depths"`
 	Biomes      []string                   `json:"biomes"`
 	Planned     map[string]json.RawMessage `json:"plannedChunks"`
@@ -67,6 +69,10 @@ type Detail struct {
 	// Gewaesser: Gewässer der Welt (Fluss, See, Küste, Meer); Untertitel in der Weltenliste.
 	Gewaesser string `json:"gewaesser"`
 	Islands []Island `json:"islands"`
+	// Skins: Basis-Asset → Ersatz-Asset je <gruppe>/<asset> (WE6.4, B-984).
+	Skins map[string]string `json:"skins"`
+	// EndBosses sind die wählbaren Endbosse aus data/bosses.json (WE6.4).
+	EndBosses []EndBossOption `json:"endBosses"`
 	// Story ist die Geschichte der Welt (story.go, B-975); nil = fehlt.
 	Story *Story `json:"story,omitempty"`
 	// BiomeInfo: Palette und Portal-HP je Biom-ID aus data/biomes/*.json (nur die Biome der Inseln).
@@ -200,6 +206,7 @@ func (e Editor) Load(id string) Detail {
 		Name, Notes, Extends, Kind, Gewaesser string
 		Islands              []Island `json:"islands"`
 		Story                *Story   `json:"story"`
+		Skins                map[string]string `json:"skins"`
 	}
 	if err := json.Unmarshal(raw, &f); err != nil {
 		view.Error = fmt.Sprintf("Welt-Datei: %v", err)
@@ -207,6 +214,10 @@ func (e Editor) Load(id string) Detail {
 	}
 	view.Name, view.Notes, view.Extends, view.Story = nameOf(raw, id), f.Notes, f.Extends, f.Story
 	view.Kind, view.Gewaesser = kindOf(f.Kind, f.Extends), f.Gewaesser
+	view.Skins, view.EndBosses = f.Skins, e.endBossOptions()
+	if view.Skins == nil {
+		view.Skins = map[string]string{}
+	}
 	biomes := e.biomesByDepth()
 	for _, isl := range f.Islands {
 		isl.Biomes = []string{}

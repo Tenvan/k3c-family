@@ -1,4 +1,4 @@
-import type { NatureGroup, NatureTrait, NatureValues, PickKey, WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
+import type { EndBossOption, NatureGroup, NatureTrait, NatureValues, PickKey, WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
 
 // Mock des Welten-Editors (B-879, `?mock=1` und Vitest): zwei Welten, ein festes Level je Stufe und ein paar Werte.
 // Overrides leben nur im Speicher; ein Text in einem Zahlenfeld wird abgelehnt wie die Prüfung in Go.
@@ -174,6 +174,28 @@ const mockSetPick: WorldBackend['worldSetPick'] = async (id, key, value) => {
   return { id, warnings: [], error: '' };
 };
 
+const MOCK_BOSSES: EndBossOption[] = [{ id: 'forestChieftain', name: 'Wald-Häuptling' }];
+
+const mockIslandEndBoss: WorldBackend['worldIslandEndBoss'] = async (id, island, boss) => {
+  const isl = DETAILS[id]?.islands.find((i) => i.id === island);
+  if (!isl) return { id, warnings: [], error: `die Insel "${island}" gibt es nicht` };
+  if (boss && !MOCK_BOSSES.some((b) => b.id === boss)) return { id, warnings: [], error: `unbekannter Endboss "${boss}"` };
+  if (boss) isl.endBoss = boss;
+  else delete isl.endBoss;
+  return { id, warnings: [], error: '' };
+};
+
+const mockSkins: WorldBackend['worldSkins'] = async (id, skins) => {
+  const d = DETAILS[id];
+  if (!d) return { id, warnings: [], error: `die Welt "${id}" gibt es nicht` };
+  for (const [from, to] of Object.entries(skins)) {
+    const ok = /^[a-z0-9_-]+\/[a-z0-9_-]+$/.test(from) && /^[a-z0-9_-]+\/[a-z0-9_-]+$/.test(to);
+    if (!ok || from.split('/')[0] !== to.split('/')[0]) return { id, warnings: [], error: `skins: ${from} → ${to} ist kein <gruppe>/<asset>-Paar derselben Gruppe` };
+  }
+  d.skins = { ...skins };
+  return { id, warnings: [], error: '' };
+};
+
 const mockExtends: WorldBackend['worldSetExtends'] = async (id, parent) => {
   const d = DETAILS[id];
   if (!d) return { id, warnings: [], error: `die Welt "${id}" gibt es nicht` };
@@ -203,6 +225,8 @@ export function mockWorld(): WorldBackend {
     worldSetKind: mockKind,
     worldSetExtends: mockExtends,
     worldPicks: mockPicks,
+    worldIslandEndBoss: mockIslandEndBoss,
+    worldSkins: mockSkins,
     worldSetPick: mockSetPick,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;

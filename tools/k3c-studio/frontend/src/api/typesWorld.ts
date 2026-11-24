@@ -38,6 +38,8 @@ export interface WorldIsland {
   chunkCounts: Record<string, number>;
   /** Etappe der Insel (B-963); fehlt sie, gilt Listenplatz + 1 */
   etappe?: number;
+  /** Endboss der Insel (WE6.4, B-981); fehlt er, gilt der Endboss der tiefsten Stufe */
+  endBoss?: string;
   /** Geschichte der Insel (B-975); fehlt sie, gibt es keine Zeilen */
   story?: IslandStory;
 }
@@ -77,6 +79,10 @@ export interface WorldDetail {
   /** Gewässer, an dem sich die Welt orientiert (Fluss, See, Küste, Meer) */
   gewaesser?: string;
   islands: WorldIsland[];
+  /** Skins: Basis-Asset → Ersatz-Asset je <gruppe>/<asset> (WE6.4, B-984) */
+  skins?: Record<string, string>;
+  /** Wählbare Endbosse aus data/bosses.json (WE6.4) */
+  endBosses?: EndBossOption[];
   /** Geschichte der Welt (B-975); fehlt sie, zeigt die Seite „Geschichte fehlt“ */
   story?: WorldStory;
   /** Palette und Portal-HP je Biom-ID der Inseln (aus data/biomes) */
@@ -177,6 +183,10 @@ export interface WorldBackend {
   worldPicks(id: string): Promise<PicksView>;
   /** Eine Art der Welt setzen (SI7.1): leer entfernt den Eintrag */
   worldSetPick(id: string, key: PickKey, value: string): Promise<WorldCreateView>;
+  /** Endboss der Insel setzen (WE6.4): leer entfernt ihn */
+  worldIslandEndBoss(id: string, island: string, boss: string): Promise<WorldCreateView>;
+  /** Skins der Welt ersetzen (WE6.4): leerer Satz entfernt sie */
+  worldSkins(id: string, skins: Record<string, string>): Promise<WorldCreateView>;
   /** Feld übersteuern; null setzt es zurück. Geschrieben wird nur eine gültige Welt, sonst steht der Grund in error. */
   worldOverrideSet(id: string, file: string, path: string[], value: unknown): Promise<WorldValuesView>;
   /** Natur-Wert der Insel-Stufe festsetzen (key: Eigenschaft oder „gruppe.variante“); null setzt auf „aus Seed“ zurück. */
@@ -185,6 +195,12 @@ export interface WorldBackend {
 
 /** Arten je Welt (SI7.1): Wetter, Reittier und Einsiedler, gespeichert in den Katalog-Dateien */
 export type PickKey = 'weather' | 'mount' | 'hermit';
+
+/** Wählbarer Endboss (WE6.4): ID und Anzeigename aus data/bosses.json */
+export interface EndBossOption {
+  id: string;
+  name: string;
+}
 
 export interface PicksView {
   /** Gewählte ID je Art; leer = keins */

@@ -47,6 +47,8 @@ export interface WorldState {
   setKind: (kind: WorldKind) => Promise<void>;
   picks: PicksView | null;
   setPick: (key: PickKey, value: string) => Promise<void>;
+  setEndBoss: (island: string, boss: string) => Promise<void>;
+  setSkins: (skins: Record<string, string>) => Promise<void>;
   /** Eltern-Welt setzen (B-1217) */
   setParent: (parent: string) => Promise<void>;
   /** Token `<insel>:<stufe>#<n>`: diese Stufe im Querschnitt neu laden (nach Natur-Änderung) */
@@ -135,6 +137,28 @@ function usePicks(id: string, current: { current: string }, setNotice: SetNotice
     setNotice(warnOr(v.warnings, `${PICK_LABEL[key]} ${value ? `ist ${value}` : 'entfernt'}`));
   };
   return { picks, setPick };
+}
+
+// Endboss je Insel und Skins der Welt (WE6.4): Speichern, danach die Welt neu lesen.
+function useBossSkins(id: string, current: { current: string }, setDetail: (d: WorldDetail) => void, setNotice: SetNotice) {
+  const after = async (world: string, v: { error: string; warnings: string[] }, ok: string) => {
+    if (current.current !== world) return;
+    if (v.error) return setNotice({ tone: 'error', text: v.error });
+    const d = await backend.worldDetail(world).catch(() => null);
+    if (d && current.current === world) setDetail(d);
+    setNotice(warnOr(v.warnings, ok));
+  };
+  const setEndBoss = async (island: string, boss: string): Promise<void> => {
+    const world = id;
+    const v = await backend.worldIslandEndBoss(world, island, boss).catch((e: unknown) => ({ id: world, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    await after(world, v, boss ? `Endboss ist ${boss}` : 'Endboss entfernt (tiefste Stufe)');
+  };
+  const setSkins = async (skins: Record<string, string>): Promise<void> => {
+    const world = id;
+    const v = await backend.worldSkins(world, skins).catch((e: unknown) => ({ id: world, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    await after(world, v, `${Object.keys(skins).length} Skins gespeichert`);
+  };
+  return { setEndBoss, setSkins };
 }
 
 function useKind(id: string, current: { current: string }, setDetail: (d: WorldDetail) => void, setWorlds: (w: WorldInfo[]) => void, setNotice: SetNotice) {
@@ -279,6 +303,7 @@ export function useWorld(): WorldState {
   const { setEtappe } = useEtappe(id, current, setDetail, setNotice);
   const { setKind, setParent } = useKind(id, current, setDetail, setWorlds, setNotice);
   const { picks, setPick } = usePicks(id, current, setNotice);
+  const { setEndBoss, setSkins } = useBossSkins(id, current, setDetail, setNotice);
   const { setNature, crossRefresh } = useNature(stage, level, seed, request, show, setNotice);
-  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, setKind, setParent, picks, setPick, crossRefresh, notice };
+  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, setKind, setParent, picks, setPick, setEndBoss, setSkins, crossRefresh, notice };
 }

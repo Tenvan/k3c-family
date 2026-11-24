@@ -11,6 +11,7 @@ import { ChunkInspector, type ChunkPlace } from './ChunkInspector';
 import { ChunkPreview, type Scale } from './ChunkPreview';
 import { KindBadge, KindSelect, ParentSelect } from './WorldKind';
 import { PickSelects } from './WorldPick';
+import { BossPanel } from './WorldBoss';
 import { NatureValues } from './NatureValues';
 import { NewWorld } from './NewWorld';
 import { Overview } from './Overview';
@@ -148,7 +149,7 @@ export function WorldPage() {
             <Flex direction="column" gap="3" pt="3" className="wd-fill">{w.detail && !w.detail.error && <CatalogTab key={w.id} detail={w.detail} />}</Flex>
           </Tabs.Content>
           <Tabs.Content value="werte">
-            <Flex direction="column" gap="3" pt="3" className="wd-fill"><WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} /></Flex>
+            <Flex direction="column" gap="3" pt="3" className="wd-fill">{w.detail && !w.detail.error && <BossPanel key={w.id} islands={w.detail.islands} endBosses={w.detail.endBosses ?? []} skins={w.detail.skins ?? {}} onEndBoss={(i, b) => void w.setEndBoss(i, b)} onSkins={(s) => void w.setSkins(s)} />}<WorldValues key={w.id} values={w.values} onSet={(file, path, value) => void w.setValue(file, path, value)} /></Flex>
           </Tabs.Content>
         </Tabs.Root>
       </Flex>

@@ -1,6 +1,6 @@
 # WE6.4 · Welten-Editor: Endboss-Auswahl, Events, Plätze und Skin-Tabelle (B-987)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV

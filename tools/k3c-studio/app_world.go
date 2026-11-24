@@ -177,3 +177,31 @@ func (a *App) WorldSetPick(id, key, value string) world.CreateView {
 	}
 	return view
 }
+
+// WorldIslandEndBoss setzt den Endboss der Insel island; leer entfernt ihn (Binding, WE6.4, B-981).
+func (a *App) WorldIslandEndBoss(id, island, boss string) world.CreateView {
+	a.wait()
+	view := a.worlds().SetIslandEndBoss(a.worldCtx(), id, island, boss)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Endboss abgelehnt", "ns", "dev", "world", id, "island", island, "error", view.Error)
+		} else {
+			a.log.Info("💾 Endboss gespeichert", "ns", "dev", "world", id, "island", island, "boss", boss)
+		}
+	}
+	return view
+}
+
+// WorldSkins ersetzt die Skins der Welt; ein leerer Satz entfernt sie (Binding, WE6.4, B-984).
+func (a *App) WorldSkins(id string, skins map[string]string) world.CreateView {
+	a.wait()
+	view := a.worlds().SetSkins(a.worldCtx(), id, skins)
+	if a.log != nil {
+		if view.Error != "" {
+			a.log.Warn("🚫 Skins abgelehnt", "ns", "dev", "world", id, "error", view.Error)
+		} else {
+			a.log.Info("💾 Skins gespeichert", "ns", "dev", "world", id, "anzahl", len(skins))
+		}
+	}
+	return view
+}

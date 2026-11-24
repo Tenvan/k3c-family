@@ -47,6 +47,8 @@ function httpWorld(): WorldBackend {
     worldSetKind: (id, kind) => rpc('WorldSetKind', id, kind),
     worldPicks: (id) => rpc('WorldPicks', id),
     worldSetPick: (id, key, value) => rpc('WorldSetPick', id, key, value),
+    worldIslandEndBoss: (id, island, boss) => rpc('WorldIslandEndBoss', id, island, boss),
+    worldSkins: (id, skins) => rpc('WorldSkins', id, skins),
     worldIslandEtappe: (id, island, etappe) => rpc('WorldIslandEtappe', id, island, etappe),
     worldNatureSet: (id, island, stage, key, value, seed) => rpc('WorldNatureSet', id, island, stage, key, value, seed),
   };
