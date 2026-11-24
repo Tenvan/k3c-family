@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../tools/paper/schema/paper-spec.schema.json",
+  "id": "flaschenpost",
+  "rig": "requisite",
+  "version": 1,
+  "beschreibung": "Kleine Flaschenpost am Strand: schlanke Glasflasche mit Korken, liegt schräg, gut lesbar auf dem Sand.",
+  "teile": [
+    {
+      "id": "korpus",
+      "lagen": [
+        {
+          "art": "flaeche",
+          "form": "M -5 -14 L 5 -14 L 5 16 L -5 16 Z",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
+          "form": "M -2.5 -22 L 2.5 -22 L 2.5 -14 L -2.5 -14 Z",
+          "material": "kristall"
+        },
+        {
+          "art": "flaeche",
+          "form": "M -3 -27 L 3 -27 L 3 -22 L -3 -22 Z",
+          "material": "holz"
+        },
+        {
+          "art": "falz",
+          "breite": 0.6,
+          "form": "M -5 6 L 5 6",
+          "material": "kristall"
+        }
+      ],
+      "pivot": [0, 0]
+    }
+  ],
+  "ausgabe": {
+    "hoehe_px": 64,
+    "rahmen": [-16, -32, 32, 32]
+  },
+  "animationen": {
+    "stand": {
+      "frames": 1
+    }
+  }
+}

@@ -17,9 +17,10 @@ use std::sync::Arc;
 use crate::boss::endboss::EndbossFight;
 use crate::state::island_ref::{IslandEvents, IslandView};
 use crate::state::links::{DevFlags, values};
-use crate::state::{Event, IslandRef, PlayerCommand, World, WorldValues};
+use crate::state::{IslandRef, PlayerCommand, World, WorldValues};
 use crate::world::state_mirror::{mirror_state, mirror_switch};
 use crate::world::{add_player_at, step};
+use stage_tag::tag_stage;
 
 pub mod chronicle;
 pub mod create;
@@ -38,6 +39,7 @@ pub mod save_v3;
 pub mod save_v5;
 pub mod save_v8;
 pub mod sizes;
+mod stage_tag;
 pub mod storage;
 pub mod switch;
 pub mod targets;
@@ -388,10 +390,6 @@ pub fn step_island(isl: &mut Island, commands: &[PlayerCommand], difficulty: &Di
     }
 }
 
-/// Setzt `stage` im Ereignis.
-fn tag_stage(ev: &mut Event, stage: usize) {
-    ev.insert("stage".to_string(), serde_json::Value::from(stage as i64));
-}
 
 /// Gebaute Lager einer Stufe (Go: `Kind == "storage" && State == "built"`).
 fn built_storages(w: &World) -> i64 {

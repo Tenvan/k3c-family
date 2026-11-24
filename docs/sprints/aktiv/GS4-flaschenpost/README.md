@@ -82,7 +82,7 @@ Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
 |---|---|---|---|---|
 | GS4.1 | `GS4.1-regeltext-flaschenpost.md` | Umsetzung | autonom | fertig |
 | GS4.2 | `GS4.2-flaschenpost-sim.md` | Umsetzung | autonom | verworfen |
-| GS4.3 | `GS4.3-asset-flaschenpost.md` | Umsetzung | autonom | offen |
+| GS4.3 | `GS4.3-asset-flaschenpost.md` | Umsetzung | autonom | fertig |
 | GS4.4 | `GS4.4-flaschenpost-spiel.md` | Umsetzung | autonom | verworfen |
 | GS4.5 | `GS4.5-review.md` | Review | autonom | offen |
 | GS4.6 | `GS4.6-flaschenpost-sim-rust.md` | Umsetzung | autonom | offen |

@@ -115,6 +115,11 @@
     "manifest": "fest-laterne/manifest.json"
   },
   {
+    "id": "flaschenpost",
+    "rig": "requisite",
+    "manifest": "flaschenpost/manifest.json"
+  },
+  {
     "id": "fracht-beutel",
     "rig": "requisite",
     "manifest": "fracht-beutel/manifest.json"
