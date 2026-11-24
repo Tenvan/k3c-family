@@ -4,7 +4,7 @@
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** PAP
-- **Lane:** –
+- **Lane:** zweit
 - **Modell:** sonnet
 - **Umgebung:** live
 - **Branch:** sprint/gs3

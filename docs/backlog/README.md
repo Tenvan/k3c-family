@@ -290,6 +290,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | ECO1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
 | [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | ECO1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
 | [B-1256](B-1256-b1255-lokale-aenderung-entscheiden.md) | PAP | Problem | niedrig | offen | WE6 | Entscheidung: lokale Änderung an B-1255 committen oder verwerfen |
+| [B-1257](B-1257-kritische-fragen-lane-umstellung.md) | INF | Problem | hoch | offen | WE6 | Kritische Fragen aus der Umstellung auf Lane zweit |
 
 ## Archiv
 
