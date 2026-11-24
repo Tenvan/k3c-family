@@ -22,8 +22,8 @@ Welten-MCP `tools/k3c-workbench/internal/mcpsrv/tools_world.go`, Logik `tools/k3
 
 ## Erlaubte Dateien
 
-- `tools/k3c-workbench/internal/world/**`
-- `tools/k3c-workbench/internal/mcpsrv/**`
+- `tools/k3c-studio/internal/world/**`
+- `tools/k3c-studio/internal/mcpsrv/**`
 
 ## Nicht-Ziele
 
@@ -55,5 +55,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-03 teilweise: `endBoss` (Insel) und `skins` (Welt) lassen sich über world_set setzen und bleiben erhalten, Go-Tests in `tools/k3c-studio/internal/world` grün (`edit_endboss_skins_test.go`). Offen: `overrides › events` und `hub › sites` über world_override_set; der Override-Pfad des Studios schreibt nur Blätter der Werte-Ansicht und kennt keinen Listen-Merge. Eigenes Ticket anlegen oder Session ergänzen. Erlaubte Dateien auf die Studio-Pfade umgestellt (Ursprung: Workbench-Pfade, dort gibt es kein Welten-Paket).

@@ -15,7 +15,7 @@ import (
 // Inseln einer Welt bearbeiten (B-954): world_set › islands und world_chunks_set.
 
 // islandKeys sind die Felder einer Insel im patch (id wählt die Insel, biomes ist die Kurzform von depths).
-var islandKeys = []string{"name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "nature", "natureByDepth"}
+var islandKeys = []string{"name", "etappe", "depths", "depthScaling", "plannedChunks", "chunkCounts", "endBoss", "nature", "natureByDepth"}
 
 // newIsland ist die Zeile einer neuen Insel; extra sind fertige `"schlüssel": wert`-Paare.
 func newIsland(id, name, depths string, extra []string) string {
