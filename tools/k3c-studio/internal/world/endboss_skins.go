@@ -3,8 +3,10 @@ package world
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 )
 
 // Endboss je Insel und Skins der Welt (WE6.4, B-981, B-984): beides geht über den Patch von Set, damit gelten die
@@ -33,6 +35,15 @@ func (e Editor) endBossOptions() []EndBossOption {
 
 // SetIslandEndBoss setzt den Endboss der Insel island; leer entfernt das Feld (Endboss der tiefsten Stufe).
 func (e Editor) SetIslandEndBoss(ctx context.Context, id, island, boss string) CreateView {
+	// Eine unbekannte Insel würde als neue Insel angelegt (appendIsland): vorher prüfen, dann ablehnen.
+	if d := e.Load(id); d.Error != "" {
+		return CreateView{ID: id, Error: d.Error}
+	} else if !slices.ContainsFunc(d.Islands, func(i Island) bool { return i.ID == island }) {
+		return CreateView{ID: id, Error: fmt.Sprintf("die Insel %q gibt es in %s nicht", island, id)}
+	}
+	if boss != "" && !slices.ContainsFunc(e.endBossOptions(), func(b EndBossOption) bool { return b.ID == boss }) {
+		return CreateView{ID: id, Error: fmt.Sprintf("unbekannter Endboss %q", boss)}
+	}
 	entry := map[string]any{"id": island, "endBoss": nil}
 	if boss != "" {
 		entry["endBoss"] = boss

@@ -57,3 +57,21 @@ func TestSkinsSetzenLesenUndAblehnen(t *testing.T) {
 		t.Errorf("Skins bleiben nach dem Leeren: %+v", d.Skins)
 	}
 }
+
+// Eine unbekannte Insel oder ein unbekannter Endboss lehnt ab; die Datei bleibt unverändert, es entsteht keine neue Insel.
+func TestIslandEndBossLehntUnbekannteInselUndBossAb(t *testing.T) {
+	e := fixture(t)
+	if _, err := e.Create(ctx, "hanse", "Hanse", "standard"); err != nil {
+		t.Fatal(err)
+	}
+	before := readWorld(t, e, "hanse")
+	if got := e.SetIslandEndBoss(ctx, "hanse", "gibtEsNicht", "forestChieftain"); got.Error == "" {
+		t.Error("unbekannte Insel muss ablehnen")
+	}
+	if got := e.SetIslandEndBoss(ctx, "hanse", "island1", "gibtEsNicht"); got.Error == "" {
+		t.Error("unbekannter Endboss muss ablehnen")
+	}
+	if readWorld(t, e, "hanse") != before {
+		t.Error("abgelehnte Endboss-Änderung darf die Datei nicht ändern")
+	}
+}
