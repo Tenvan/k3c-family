@@ -3,14 +3,14 @@
 - **Domäne:** SIM
 - **Typ:** Idee
 - **Prio:** mittel
-- **Umgebung:** ?
+- **Umgebung:** offline
 - **Status:** offen
 - **Sprint:** ECO1
 - **Projekt:** WIR
 - **Erstellt:** 2026-11-22
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-24
 - **Duplikat von:** –
 - **Ersetzt:** –
 
@@ -32,7 +32,12 @@ Wer spielt, entwickelt, betreibt oder entscheidet (🧑)? Keine Verantwortlichen
 
 ## Anforderungen
 
-- Was das Ergebnis können muss, auch Qualität (deterministisch, 2+ Spieler, Leistung).
+- **Bezahlung in Stufen:** Jede Bezahlstufe kostet 2 Gold. Eine Stufe verlangt ein Stück Holz, das ein oder mehrere Handwerker zur Baustelle des Schiffs bringen. Erst danach verarbeiten Handwerker das Holz in das Schiff.
+- **Anzahl der Bezahlstufen (geklärt):** 5, eine je Insel der Standard-Welt.
+- **Holzmenge je Insel (geklärt):** 8, 12, 16, 20, 24 Hölzer, von der ersten zur letzten Insel steigend. Summe 80, wie der heutige Kiel.
+- **Einstellbarkeit (geklärt):** Stufen und Holz je Insel sind nicht einstellbar. Die Werte stehen fest in `data/ship.json`; kein Override je Welt.
+- **Stapellauf (geklärt):** Nach dem Bau kostet der Stapellauf 5 Gold. Der Betrag steht als Zahl in `data/ship.json`.
+- **Animation (geklärt):** Das Schiff gleitet nach dem Bezahlen vom Steg ins Wasser, rund 4 Sekunden.
 
 ## Nicht-Ziele
 
@@ -44,11 +49,11 @@ Regeln aus `CLAUDE.md`, Entscheidungen (`docs/decisions/`), Domäne, Komplexitä
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, Werte ohne Freitext; Pflicht ab `Spec: freigegeben`:
 
-- **Bereich:** `pfad/**`, `pfad/datei.go` (alle Dateien, die das Ticket anfasst; Sammeldateien wie `docs/backlog/README.md` nicht nennen)
-- **Abhängig von:** – (nur IDs: B-000, SP00, SP00.1; der andere Stand muss erledigt und gemergt sein)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; `–` heißt vollständig autonom)
-- **Größe:** S (S = eine Session, M = zwei bis drei, L = vor der Freigabe in Tickets je Teil zerlegen)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `data/ship.json`, `rust/crates/k3c-sim/src/world/ship.rs`
+- **Abhängig von:** –
+- **Braucht 🧑:** Sichtprüfung der Stapellauf-Animation (Anzeige nicht im Bereich dieses Tickets, eigener Punkt in der Ralf-Queue)
+- **Größe:** M
+- **Sperre:** –
 
 ## Beispiele
 
