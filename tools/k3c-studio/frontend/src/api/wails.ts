@@ -44,6 +44,8 @@ interface GoApp {
   WorldSetExtends(id: string, parent: string): Promise<WorldCreateView>;
   WorldPicks(id: string): Promise<PicksView>;
   WorldSetPick(id: string, key: string, value: string): Promise<WorldCreateView>;
+  WorldIslandEndBoss(id: string, island: string, boss: string): Promise<WorldCreateView>;
+  WorldSkins(id: string, skins: Record<string, string>): Promise<WorldCreateView>;
   WorldNatureSet(id: string, island: string, stage: number, key: string, value: number | null, seed: string): Promise<WorldLevel>;
   // Gebäude-Planer (B-923, app_hub.go)
   HubPlan(): Promise<HubPlanView>;
@@ -124,6 +126,8 @@ function worldWails(app: GoApp): WorldBackend {
     worldSetExtends: (id, parent) => app.WorldSetExtends(id, parent) as Promise<WorldCreateView>,
     worldPicks: (id) => app.WorldPicks(id),
     worldSetPick: (id, key, value) => app.WorldSetPick(id, key, value) as Promise<WorldCreateView>,
+    worldIslandEndBoss: (id, island, boss) => app.WorldIslandEndBoss(id, island, boss) as Promise<WorldCreateView>,
+    worldSkins: (id, skins) => app.WorldSkins(id, skins) as Promise<WorldCreateView>,
     worldSetKind: (id, kind) => app.WorldSetKind(id, kind) as Promise<WorldCreateView>,
     worldIslandEtappe: (id, island, etappe) => app.WorldIslandEtappe(id, island, etappe),
     worldNatureSet: (id, island, stage, key, value, seed) => app.WorldNatureSet(id, island, stage, key, value, seed),
