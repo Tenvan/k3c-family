@@ -36,7 +36,7 @@ func TestWorldBindings(t *testing.T) {
 			return json.RawMessage(`{"warnings":[]}`), nil
 		}
 	}
-	t.Cleanup(func() { worldEngine = world.Direct })
+	t.Cleanup(func() { worldEngine = world.Exe })
 
 	if list := a.WorldList(); len(list) != 1 {
 		t.Fatalf("WorldList: %v", list)

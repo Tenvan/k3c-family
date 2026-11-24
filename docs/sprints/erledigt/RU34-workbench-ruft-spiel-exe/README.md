@@ -1,6 +1,6 @@
 # RU34 · DEV · Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE
 
-- **Status:** geplant
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -96,10 +96,10 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU34.1 | `RU34.1-starter-spiel-exe.md` | Umsetzung | autonom | offen |
-| RU34.2 | `RU34.2-sim-run-level-ueber-exe.md` | Umsetzung | autonom | offen |
-| RU34.3 | `RU34.3-welten-hub-ueber-exe.md` | Umsetzung | autonom | offen |
-| RU34.4 | `RU34.4-review.md` | Review | autonom | offen |
+| RU34.1 | `RU34.1-starter-spiel-exe.md` | Umsetzung | autonom | fertig |
+| RU34.2 | `RU34.2-sim-run-level-ueber-exe.md` | Umsetzung | autonom | fertig |
+| RU34.3 | `RU34.3-welten-hub-ueber-exe.md` | Umsetzung | autonom | fertig |
+| RU34.4 | `RU34.4-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -107,6 +107,6 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-24 (autonom, Claude): AC-01 bis AC-03 laut RU34.1 bis RU34.3 erfüllt (Tests mit Hilfsprozess, Fake-Aufruf und Go-Engine als Referenz); Umsetzung im Studio `tools/k3c-studio` statt `tools/k3c-workbench` (Spec veraltet seit WZ63).
+Review RU34.4: Befunde (Eingabedatei-Kollision, Frische-Kandidat, Race Ende/Abbruch) behoben; `task check:go` grün, `task lint` rot auf main (B-1274).
+Neue Tickets: B-1273 (Regel B-925, 🧑 entscheidet), B-1274 (oxlint), Abnahme-Ticket B-1275 (Handvergleich mit echter EXE, Sim, Race).

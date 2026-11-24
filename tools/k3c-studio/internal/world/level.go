@@ -3,26 +3,25 @@ package world
 import (
 	"context"
 	"encoding/json"
-	"path/filepath"
 	"time"
 
-	"k3c/engine/simcli"
+	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
-// engineTimeout begrenzt einen Aufruf von simcli world (Level und Prüfung brauchen Millisekunden).
+// engineTimeout begrenzt einen Aufruf von sim world (Level und Prüfung brauchen Millisekunden).
 const engineTimeout = 30 * time.Second
 
-// Engine ist die Engine-Seite des Editors: input ist das JSON von `k3c-sim world` ({"op": …}), die Antwort sein
+// Engine ist die Engine-Seite des Editors: input ist das JSON von `k3c-game sim world` ({"op": …}), die Antwort sein
 // report. Ein Fehler ist die Meldung von k3c-sim (ungültiger Entwurf, unbekannte Insel) oder ein Startfehler.
 type Engine func(ctx context.Context, input []byte) (json.RawMessage, error)
 
-// Direct ist die Engine im Prozess (engine/simcli, B-924) mit den Daten des Checkouts root; eine Panik der Engine
-// wird zum Fehler (recover in simcli.Exec).
-func Direct(root string) Engine {
+// Exe ist die Engine über die Spiel-EXE des Checkouts root (`k3c-game sim world`, RU34.3, internal/gameexe); ist sie nicht
+// gebaut oder veraltet, nennt der Fehler den Bau-Befehl. Kein Rückfall auf die Go-Engine.
+func Exe(root string) Engine {
 	return func(ctx context.Context, input []byte) (json.RawMessage, error) {
 		ctx, cancel := context.WithTimeout(ctx, engineTimeout)
 		defer cancel()
-		ev, err := simcli.Call(ctx, []string{"world"}, input, simcli.DirFiles(filepath.Join(root, "data")))
+		ev, err := gameexe.Call(ctx, gameexe.Options{Root: root, Sub: "world", Input: input})
 		return ev.Report, err
 	}
 }

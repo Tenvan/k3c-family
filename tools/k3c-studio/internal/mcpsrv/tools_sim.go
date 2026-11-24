@@ -2,13 +2,11 @@ package mcpsrv
 
 import (
 	"context"
-	"encoding/json"
-
-	"k3c/engine/simcli"
+	"errors"
 )
 
-// sim_run und replay_run rechnen im Prozess über engine/simcli (B-924, wie `k3c-sim run`); eine Panik der Engine wird
-// zum Fehler des Tools (simcli.Exec). Seit WZ63.5 im Studio, neben level_generate (tools_engine.go, engineTimeout).
+// sim_run rechnet mit der Spiel-EXE des Checkouts (`k3c-game sim run`, RU34.2), neben level_generate (tools_engine.go);
+// replay_run rechnet bis RU40.3 im Prozess über engine/simcli (B-924).
 
 // segment sind gedrückte Tasten eines Monarchen über einen Tick-Bereich (engine/enginetools › Segment).
 type segment struct {
@@ -25,29 +23,32 @@ type simIn struct {
 	Ticks  int       `json:"ticks" jsonschema:"Anzahl Ticks, 1 bis 100000 (30 pro Sekunde)"`
 	Biome  string    `json:"biome,omitempty" jsonschema:"forest (Standard), cave oder mine"`
 	Inputs []segment `json:"inputs,omitempty" jsonschema:"gedrückte Tasten je Monarch und Tick-Bereich; ohne Angabe ein Monarch ohne Eingaben"`
+	Head   bool      `json:"head,omitempty" jsonschema:"Spiel mit Fenster öffnen und den Lauf zeigen; ohne Angabe headless"`
+	Speed  int       `json:"speed,omitempty" jsonschema:"Zeitraffer 1 bis 64 (Standard 1 = Echtzeit), nur mit head"`
 }
 
-// simRun ist das Tool sim_run (`k3c-sim run`, kein Server nötig); während der Sim-Sperre lehnt es ab (B-788).
+// runInput ist die Eingabe-JSON der EXE (`sim run`): ohne head und speed, die kennt sie als Schalter, nicht als Feld.
+type runInput struct {
+	Seed   string    `json:"seed"`
+	Ticks  int       `json:"ticks"`
+	Biome  string    `json:"biome,omitempty"`
+	Inputs []segment `json:"inputs,omitempty"`
+}
+
+// simRun ist das Tool sim_run (`k3c-game sim run [--window]`, kein Server nötig); während der Sim-Sperre lehnt es ab (B-788).
 func (s *Server) simRun(ctx context.Context, in simIn) (string, error) {
 	if err := simLockErr("sim_run"); err != nil {
 		return "", err
 	}
-	if err := s.ownCheckoutErr(ctx, "sim_run"); err != nil {
-		return "", err
+	if in.Speed != 0 && !in.Head {
+		return "", errors.New("sim_run: speed gilt nur mit head")
 	}
-	return s.engineCall(ctx, "run", in)
-}
-
-func (s *Server) engineCall(ctx context.Context, sub string, in any) (string, error) {
-	raw, err := json.Marshal(in)
-	if err != nil {
-		return "", err
+	if in.Speed < 0 || in.Speed > 64 {
+		return "", errors.New("sim_run: speed muss 1 bis 64 sein")
 	}
-	ctx, cancel := context.WithTimeout(ctx, engineTimeout)
-	defer cancel()
-	ev, err := simcli.Call(ctx, []string{sub}, raw, nil)
-	if err != nil {
-		return "", err
+	limit := engineTimeout
+	if in.Head {
+		limit = headTimeout
 	}
-	return ev.Text, nil
+	return s.engineCall(ctx, "run", runInput{Seed: in.Seed, Ticks: in.Ticks, Biome: in.Biome, Inputs: in.Inputs}, in.Head, in.Speed, limit)
 }

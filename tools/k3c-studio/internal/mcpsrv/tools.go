@@ -18,12 +18,12 @@ func register(s *Server) {
 	registerWorld(s)
 }
 
-// registerEngine ist das Engine-Tool (B-047, aus k3c-workbench): rechnet im Prozess des Studios über engine/simcli
-// (B-924), ohne laufenden Server.
+// registerEngine ist das Engine-Tool (B-047, aus k3c-workbench): rechnet mit der Spiel-EXE des Checkouts
+// (`k3c-game sim level`, RU34.2), ohne laufenden Server.
 func registerEngine(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "level_generate",
-		Description: "Erzeugt ein Level mit der Engine des Studios (kein Server nötig): Kopfzeile, eine Zeile je Abschnitt, " +
+		Description: "Erzeugt ein Level mit der Spiel-EXE des Checkouts (k3c-game sim level, kein Server nötig; fehlt sie oder ist sie veraltet, nennt der Fehler den Bau-Befehl): Kopfzeile, eine Zeile je Abschnitt, " +
 			"Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. " +
 			"Nutze es bei: Level eines Seeds prüfen. Statt: Spiel starten und Level von Hand ansehen.",
 		Annotations: readOnly(),
@@ -35,8 +35,9 @@ func registerEngine(s *Server) {
 func registerSim(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "sim_run",
-		Description: "Deterministischer Simulationslauf mit der Engine des Studios (kein Server nötig), höchstens 100000 Ticks (30/s): " +
+		Description: "Deterministischer Simulationslauf mit der Spiel-EXE des Checkouts (k3c-game sim run, kein Server nötig), höchstens 100000 Ticks (30/s): " +
 			"Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). " +
+			"Mit head: true öffnet sich das Spiel und zeigt den Lauf (speed 1 bis 64), sonst läuft er headless. " +
 			"Bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Studio mit K3C_SIM_ENTSPERRT=1). " +
 			"Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
 		Annotations: readOnly(),

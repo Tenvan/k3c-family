@@ -75,7 +75,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | erledigt |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | erledigt |
-| RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | geplant |
+| RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | erledigt |
 | RU25 | Balancing Teil 1: Bots | geplant |
 | RU28 | Balancing Teil 2: Messungen und Auswertung | geplant |
 | RU31 | Balancing Teil 3: Einsichten, Berichte, Tuning | geplant |
