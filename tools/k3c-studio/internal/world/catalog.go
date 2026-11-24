@@ -112,25 +112,10 @@ func (e Editor) Picks(id string) (map[string]string, error) {
 // SetPick setzt die Art key der Welt id auf die Katalog-ID value; "" entfernt den Eintrag. Die ID muss im Katalog
 // stehen, die Welt muss es geben. Geschrieben wird nur der Block `worlds` der Katalog-Datei, Reihenfolge der Datei bleibt.
 func (e Editor) SetPick(id, key, value string) error {
-	pick, ok := catalogPicks[key]
-	if !ok {
-		return fmt.Errorf("unbekannte Art %q (erlaubt: %s)", key, strings.Join(slices.Sorted(maps.Keys(catalogPicks)), ", "))
-	}
-	if err := checkID(id); err != nil {
+	if err := e.checkPick(id, key, value); err != nil {
 		return err
 	}
-	if _, err := os.Stat(e.file(id)); err != nil {
-		return fmt.Errorf("welt %q gibt es nicht", id)
-	}
-	if value != "" {
-		ids, err := e.catalogIDs(pick)
-		if err != nil {
-			return err
-		}
-		if !slices.Contains(ids, value) {
-			return fmt.Errorf("unbekannte ID %q für %s (gültig: %s)", value, key, strings.Join(ids, ", "))
-		}
-	}
+	pick := catalogPicks[key]
 	writeMu.Lock()
 	defer writeMu.Unlock()
 	path := filepath.Join(e.Root, pick.file)
@@ -165,6 +150,31 @@ func (e Editor) SetPick(id, key, value string) error {
 	return writeAtomic(path, out)
 }
 
+// checkPick prüft Art, Welt und ID, ohne etwas zu schreiben.
+func (e Editor) checkPick(id, key, value string) error {
+	pick, ok := catalogPicks[key]
+	if !ok {
+		return fmt.Errorf("unbekannte Art %q (erlaubt: %s)", key, strings.Join(slices.Sorted(maps.Keys(catalogPicks)), ", "))
+	}
+	if err := checkID(id); err != nil {
+		return err
+	}
+	if _, err := os.Stat(e.file(id)); err != nil {
+		return fmt.Errorf("welt %q gibt es nicht", id)
+	}
+	if value == "" {
+		return nil
+	}
+	ids, err := e.catalogIDs(pick)
+	if err != nil {
+		return err
+	}
+	if !slices.Contains(ids, value) {
+		return fmt.Errorf("unbekannte ID %q für %s (gültig: %s)", value, key, strings.Join(ids, ", "))
+	}
+	return nil
+}
+
 // renderWorlds schreibt den Block `worlds` im Stil der Katalog-Dateien: je Welt eine Zeile, Reihenfolge wie übergeben.
 func renderWorlds(keys, values []string) string {
 	if len(keys) == 0 {
@@ -190,7 +200,9 @@ func pickValue(v json.RawMessage) (string, error) {
 }
 
 // applyPicks schreibt die Arten (weather, mount, hermit) des Patches in die Katalog-Dateien, vor den Welt-Dateien.
+// Erst alle Werte prüfen, dann schreiben: ein Patch mit einer ungültigen ID lässt keine der anderen Arten stehen.
 func (e Editor) applyPicks(id string, p map[string]json.RawMessage) error {
+	picks := map[string]string{}
 	for k, v := range p {
 		if _, pick := catalogPicks[k]; !pick {
 			continue
@@ -199,7 +211,13 @@ func (e Editor) applyPicks(id string, p map[string]json.RawMessage) error {
 		if err != nil {
 			return fmt.Errorf("%s: %w", k, err)
 		}
-		if err := e.SetPick(id, k, value); err != nil {
+		if err := e.checkPick(id, k, value); err != nil {
+			return err
+		}
+		picks[k] = value
+	}
+	for _, k := range slices.Sorted(maps.Keys(picks)) {
+		if err := e.SetPick(id, k, picks[k]); err != nil {
 			return err
 		}
 	}
@@ -220,4 +238,39 @@ func checkPatchKeys(p map[string]json.RawMessage) error {
 		}
 	}
 	return nil
+}
+
+// PicksView ist die Antwort für die Auswahl je Welt: Werte je Art (leer = keins) und die gültigen IDs je Art.
+type PicksView struct {
+	Values  map[string]string   `json:"values"`
+	Options map[string][]string `json:"options"`
+	Error   string              `json:"error"`
+}
+
+// PicksView liefert Werte und Optionen der Arten für die Oberfläche (Binding WorldPicks).
+func (e Editor) PicksView(id string) PicksView {
+	out := PicksView{Values: map[string]string{}, Options: map[string][]string{}}
+	values, err := e.Picks(id)
+	if err != nil {
+		out.Error = err.Error()
+		return out
+	}
+	out.Values = values
+	for key, p := range catalogPicks {
+		ids, err := e.catalogIDs(p)
+		if err != nil {
+			out.Error = err.Error()
+			return out
+		}
+		out.Options[key] = ids
+	}
+	return out
+}
+
+// SetPickView setzt eine Art der Welt und liefert die Antwort wie die anderen Änderungen (Binding WorldSetPick).
+func (e Editor) SetPickView(id, key, value string) CreateView {
+	if err := e.SetPick(id, key, value); err != nil {
+		return CreateView{ID: id, Error: err.Error()}
+	}
+	return CreateView{ID: id}
 }

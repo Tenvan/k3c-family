@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { backend, type WorldDetail, type WorldKind, type WorldInfo, type WorldLevel, type WorldValuesView } from '../api';
+import { backend, type PickKey, type PicksView, type WorldDetail, type WorldKind, type WorldInfo, type WorldLevel, type WorldValuesView } from '../api';
 import { loadText, savePref } from '../lib/prefs';
 import { stageId } from './crossModel';
 import { levelModel, type LevelModel } from './levelView';
@@ -45,6 +45,8 @@ export interface WorldState {
   setEtappe: (island: string, etappe: number | null) => Promise<boolean>;
   /** Art der Welt setzen (B-1217) */
   setKind: (kind: WorldKind) => Promise<void>;
+  picks: PicksView | null;
+  setPick: (key: PickKey, value: string) => Promise<void>;
   /** Eltern-Welt setzen (B-1217) */
   setParent: (parent: string) => Promise<void>;
   /** Token `<insel>:<stufe>#<n>`: diese Stufe im Querschnitt neu laden (nach Natur-Änderung) */
@@ -111,6 +113,28 @@ function useEtappe(id: string, current: { current: string }, setDetail: (d: Worl
     return true;
   };
   return { setEtappe };
+}
+
+// Wetter, Reittier und Einsiedler je Welt (SI7.1): Werte und gültige IDs aus den Katalogen, Speichern je Feld.
+const PICK_LABEL: Record<PickKey, string> = { weather: 'Wetter', mount: 'Reittier', hermit: 'Einsiedler' };
+
+function usePicks(id: string, current: { current: string }, setNotice: SetNotice) {
+  const [picks, setPicks] = useState<PicksView | null>(null);
+  useEffect(() => {
+    let live = true;
+    void backend.worldPicks(id).then((v) => { if (live) setPicks(v); }, () => { if (live) setPicks(null); });
+    return () => { live = false; };
+  }, [id]);
+  const setPick = async (key: PickKey, value: string): Promise<void> => {
+    const world = id;
+    const v = await backend.worldSetPick(world, key, value).catch((e: unknown) => ({ id: world, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
+    if (current.current !== world) return;
+    if (v.error) return setNotice({ tone: 'error', text: v.error });
+    const next = await backend.worldPicks(world).catch(() => null);
+    if (next && current.current === world) setPicks(next);
+    setNotice(warnOr(v.warnings, `${PICK_LABEL[key]} ${value ? `ist ${value}` : 'entfernt'}`));
+  };
+  return { picks, setPick };
 }
 
 function useKind(id: string, current: { current: string }, setDetail: (d: WorldDetail) => void, setWorlds: (w: WorldInfo[]) => void, setNotice: SetNotice) {
@@ -254,6 +278,7 @@ export function useWorld(): WorldState {
   };
   const { setEtappe } = useEtappe(id, current, setDetail, setNotice);
   const { setKind, setParent } = useKind(id, current, setDetail, setWorlds, setNotice);
+  const { picks, setPick } = usePicks(id, current, setNotice);
   const { setNature, crossRefresh } = useNature(stage, level, seed, request, show, setNotice);
-  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, setKind, setParent, crossRefresh, notice };
+  return { worlds, id, choose, detail, stage, setStage, seed, setSeed, reload: (s = seed) => void load(s), model, level, setNature, note, values, setValue, create, remove, setEtappe, setKind, setParent, picks, setPick, crossRefresh, notice };
 }

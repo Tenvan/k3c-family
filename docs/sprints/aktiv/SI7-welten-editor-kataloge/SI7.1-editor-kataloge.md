@@ -1,6 +1,6 @@
 # SI7.1 · Welten-Editor und world-Tools wählen Wetter, Reittier und Figur (B-1003)
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -61,4 +61,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Teilweise (Backend): world_set nimmt `weather`, `mount` und `hermit` an und schreibt den Block `worlds` der Katalog-Dateien (`tools/k3c-studio/internal/world/catalog.go`). IDs werden gegen die Kataloge geprüft, `null` entfernt den Eintrag. Tests grün: `TestPicksSetzenUndEntfernen`, `TestPickUnbekannteIDLehntAb` (`catalog_test.go`). Offen: world_get-Anzeige, Frontend (Vitest) und Review. Branch `sprint/si7`, Commit `e2d9f1d7e`.
+AC-01 und AC-02 umgesetzt: Studio-Oberfläche mit drei Auswahlfeldern je Welt (keins, gültige IDs, Bestandswert ohne Katalogeintrag markiert). Speichern schreibt nur den Block `worlds` der drei Katalog-Dateien. Nachweise: Go `TestPicksSetzenUndEntfernen`, `TestPickUnbekannteIDLehntAb`, `TestPicksViewLiefertOptionenUndLehntAb`, `TestPickPatchMitUngueltigerArtSchreibtNichts`; Vitest `WorldPick.test.tsx` (Anzeige). PR #861, Commits b05a1ea32 und c0bf7332f. `task check:diff` grün. `task check:dev` rot durch `tools/assetkit` (TLS-Tests, lokales Norton-Zertifikat), nicht durch diese Änderung. Offen: Vitest für Änderung per Auswahl (`onChange`).

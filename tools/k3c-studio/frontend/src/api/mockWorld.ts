@@ -1,4 +1,4 @@
-import type { NatureGroup, NatureTrait, NatureValues, WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
+import type { NatureGroup, NatureTrait, NatureValues, PickKey, WorldBackend, WorldDetail, WorldInfo, WorldLevel, WorldValueEntry, WorldValuesView } from './typesWorld';
 
 // Mock des Welten-Editors (B-879, `?mock=1` und Vitest): zwei Welten, ein festes Level je Stufe und ein paar Werte.
 // Overrides leben nur im Speicher; ein Text in einem Zahlenfeld wird abgelehnt wie die Prüfung in Go.
@@ -155,6 +155,25 @@ const mockKind: WorldBackend['worldSetKind'] = async (id, kind) => {
   return { id, warnings: [], error: '' };
 };
 
+const PICK_OPTIONS: Record<PickKey, string[]> = { weather: ['taifun', 'flut'], mount: ['sengokuHorse', 'camel'], hermit: ['swordsmith', 'priestess'] };
+const PICKS: Record<string, Partial<Record<PickKey, string>>> = {
+  sengoku: { weather: 'taifun', mount: 'sengokuHorse', hermit: 'swordsmith' },
+  nil: { weather: 'flut', mount: 'camel', hermit: 'priestess' },
+};
+
+const mockPicks: WorldBackend['worldPicks'] = async (id) => ({
+  values: { weather: '', mount: '', hermit: '', ...PICKS[id] } as Record<PickKey, string>,
+  options: PICK_OPTIONS,
+  error: '',
+});
+
+const mockSetPick: WorldBackend['worldSetPick'] = async (id, key, value) => {
+  if (!DETAILS[id]) return { id, warnings: [], error: `die Welt "${id}" gibt es nicht` };
+  if (value && !PICK_OPTIONS[key].includes(value)) return { id, warnings: [], error: `unbekannte ID "${value}" für ${key}` };
+  PICKS[id] = { ...PICKS[id], [key]: value || undefined };
+  return { id, warnings: [], error: '' };
+};
+
 const mockExtends: WorldBackend['worldSetExtends'] = async (id, parent) => {
   const d = DETAILS[id];
   if (!d) return { id, warnings: [], error: `die Welt "${id}" gibt es nicht` };
@@ -183,6 +202,8 @@ export function mockWorld(): WorldBackend {
     worldIslandEtappe: mockEtappe,
     worldSetKind: mockKind,
     worldSetExtends: mockExtends,
+    worldPicks: mockPicks,
+    worldSetPick: mockSetPick,
     worldNatureSet: async (id, island, stage, key, value, seed) => {
       const detail = DETAILS[id] ?? DETAILS.standard!;
       const rejected = mockNatureSet(id, island, stage, key, value);
