@@ -59,5 +59,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+Review WE6 für die Studio-Anteile (WE6.3, WE6.4) durch Agent k3c-workbench: keine schweren Befunde. Behoben: unbekannte Insel-ID legte eine neue Insel an (jetzt Ablehnung vor dem Schreiben), unbekannter Endboss wird gegen data/bosses.json geprüft (Commit d669ed275, PR #865). Events und Plätze stehen in der Werte-Ansicht über die WE6.3-Tests. Nicht umgesetzt: Warnung bei fehlendem Asset und Bild-Vorschau der Skins (Engine prüft die Existenz nicht); Format-Feinheiten der Skin-Tabelle (leichte Befunde, im PR benannt). Abnahme: Sichtprüfung der Welten-Oberfläche durch 🧑. WE6.6 (Rust-Spiel) ist noch offen, Lane zweit.
