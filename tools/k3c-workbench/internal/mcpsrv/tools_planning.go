@@ -62,7 +62,7 @@ func registerPlanning(s *Server) {
 	})
 	add(s, &mcp.Tool{
 		Name: "plan_set",
-		Description: "Setzt Kopf-Felder (Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …; Sprints haben keine Prio) und zieht nach: Index, " +
+		Description: "Setzt Kopf-Felder (Titel (nur Sprint und Ticket: ändert die Überschrift samt Fahrplan, Projekt-Tabelle und Index), Status, Prio, Sprint, Projekt, Reife, Spec, Revision, Freigabe …; Sprints haben keine Prio) und zieht nach: Index, " +
 			"Session-Tabelle, Fahrplan, Archiv bei erledigt/verworfen, Sprint-Ordner beim Status, Sprint-Tabelle des Projekts. " +
 			"Session: Status (auch verworfen), Domäne (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP; Feld, Überschrift und Fahrplan des Sprints folgen; am Sprint nicht setzbar), " +
 			"Lane (– oder Kurzname a-z, 0-9, -) und Modell (–, haiku, sonnet, opus, fable), beide auch in älteren Dateien ohne das Feld. " +

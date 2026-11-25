@@ -189,6 +189,9 @@ func syncRoadmap(c *changeSet, sp Sprint, f map[string]string, oldDir, newDir st
 	}
 	known := map[string]string{"Sprint": sp.ID, "Domäne": sp.Domain, "Reife": sp.Reife, "Projekt": sp.Project,
 		"Ordner": "`" + strings.TrimPrefix(newDir, "sprints/") + "/`"}
+	if c.retitle {
+		known["Thema"] = sp.Title
+	}
 	row := make([]string, len(t.header))
 	for k, h := range t.header {
 		row[k] = firstOf(known[h], old[h], map[string]string{"Thema": sp.Title}[h], "–") // Thema der alten Zeile bleibt

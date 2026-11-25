@@ -94,12 +94,12 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1016](B-1016-rust-client-spike-g1.md) | CLI | Frage | mittel | eingeplant | RU2 | Ein schlanker Rust-Client hält die Messwerte der Ebitengine (Spike, Gate G1) |
 | [B-1017](B-1017-laeufe-im-game-client.md) | CLI | Idee | mittel | eingeplant | RU33 | Sim und Balancing laufen im Game-Client, headless oder mit Fenster per Parameter |
 | [B-1018](B-1018-rust-port-leitfaden.md) | INF | Idee | mittel | eingeplant | RU1 | Port-Leitfaden: Regeln, nach denen jede Port-Session von Go nach Rust arbeitet |
-| [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | RU1 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
+| [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | BAL11 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
 | [B-1022](B-1022-abnahme-wz61-race.md) | DEV | Schuld | niedrig | offen | WZ61 | Abnahme WZ61: check:race über die geänderten Workbench- und Cleanup-Pakete läuft grün |
-| [B-1028](B-1028-ru4-abnahme-gen-race.md) | CLI | Schuld | mittel | offen | RU4 | Abnahme RU4: Gen- und Race-Läufe sowie Hardware-Prüfung der Rust-Plattform stehen aus |
+| [B-1028](B-1028-ru4-abnahme-gen-race.md) | CLI | Schuld | mittel | offen | BAL11 | Abnahme RU4: Gen- und Race-Läufe sowie Hardware-Prüfung der Rust-Plattform stehen aus |
 | [B-1023](B-1023-go-exp-haengt-an-fma.md) | SIM | Problem | mittel | offen | RU22 | Go-math.Exp rechnet auf CPUs ohne AVX/FMA andere Bits als die Golden |
 | [B-1024](B-1024-rust-datenpruefungen-mit-fremden-tabellen.md) | SIM | Schuld | mittel | offen | RU25 | Rust-Datenprüfungen, die Tabellen aus Balance oder Sim brauchen, fehlen noch in k3c-data |
-| [B-1027](B-1027-abnahme-laeufe-ru3.md) | SIM | Schuld | mittel | offen | RU3 | Abnahme-Läufe RU3 |
+| [B-1027](B-1027-abnahme-laeufe-ru3.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU3 |
 | [B-1033](B-1033-abnahme-si4.md) | PAP | Schuld | mittel | offen | SI4 | Abnahme-Läufe Sprint SI4 Reittiere je Welt sind grün |
 | [B-1034](B-1034-si4-engine-anzeige-offen.md) | SIM | Frage | hoch | offen | SI4 | Engine und Anzeige der Reittiere je Welt sind nach Verwerfen von SI4.3 und SI4.4 ohne Ersatz |
 | [B-1029](B-1029-abnahme-laeufe-gs1.md) | REG | Schuld | mittel | offen | GS1 | Abnahme-Läufe GS1: Gen samt Golden und Race sind grün |
@@ -107,7 +107,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1032](B-1032-abnahme-laeufe-si2.md) | INF | Schuld | mittel | offen | SI2 | Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1036](B-1036-abnahme-laeufe-si5.md) | INF | Schuld | mittel | offen | SI5 | Abnahme-Läufe SI5: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1037](B-1037-abnahme-laeufe-si6.md) | INF | Schuld | mittel | offen | SI6 | Abnahme-Läufe SI6: Sim, Balance, Gen samt Golden und Race sind grün |
-| [B-1048](B-1048-abnahme-laeufe-ru7.md) | CLI | Schuld | mittel | offen | RU7 | Abnahme-Läufe RU7: Grafik laden samt gerenderter Grafik und Race sind grün |
+| [B-1048](B-1048-abnahme-laeufe-ru7.md) | CLI | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU7: Grafik laden samt gerenderter Grafik und Race sind grün |
 | [B-1035](B-1035-abnahme-laeufe-si1.md) | INF | Schuld | mittel | offen | SI1 | Abnahme-Läufe SI1: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1038](B-1038-buerger-truppen-masstab.md) | PAP | Idee | mittel | offen | BB1 | Bürger und Truppen sind 0,55–0,65 Monarchenhöhen groß |
 | [B-1039](B-1039-schiff-masstab.md) | PAP | Idee | mittel | offen | BB1 | Schiff ist mit Segel etwa 3 Monarchenhöhen hoch und 4–5 lang |
@@ -120,16 +120,16 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1046](B-1046-toenung-licht-dunst.md) | CLI | Idee | mittel | eingeplant | RU55 | Tageszeit und Ereignis tönen das ganze Bild, Lichtquellen haben einen Lichthof |
 | [B-1047](B-1047-wald-nach-rodung.md) | CLI | Idee | mittel | eingeplant | RU55 | Der Wald wird mit dem Roden offener und heller |
 | [B-1049](B-1049-typen-worlddef-island-fuer-ru7-5-vorziehen.md) | SIM | Schuld | mittel | offen | RU10 | Typen WorldDef und Island für RU7.5 vorziehen |
-| [B-1050](B-1050-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | RU8 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
-| [B-1052](B-1052-abnahme-laeufe-ru5.md) | CLI | Schuld | mittel | offen | RU5 | Abnahme-Läufe RU5 |
+| [B-1050](B-1050-abnahme-ru8-sim-zustand-race-und-golden.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme RU8: Race- und Golden-Läufe des Rust-Sim-Zustands stehen aus |
+| [B-1052](B-1052-abnahme-laeufe-ru5.md) | CLI | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU5 |
 | [B-1053](B-1053-client-sim-naehte-ersetzen.md) | CLI | Schuld | mittel | eingeplant | RU30 | Sim-Nähte im Rust-Client sind durch die portierte Sim ersetzt |
 | [B-1054](B-1054-verwaiste-sim-tests-zuordnen.md) | SIM | Schuld | mittel | eingeplant | RU22 | Jede Go-Testdatei aus engine/sim ist in Rust portiert oder begründet ausgelassen |
 | [B-1059](B-1059-abnahme-ru13-welt-akteure.md) | CLI | Schuld | mittel | offen | RU13 | Abnahme RU13: Gen, Bildtests, Race und Sichtprüfung der Standbilder |
-| [B-1057](B-1057-ru38-abnahme-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU38 | RU38 Abnahme: Fenster-Messung der Wiedergabe, Sim, Balance und Gen |
+| [B-1057](B-1057-ru38-abnahme-sim-balance-gen.md) | SIM | Schuld | mittel | offen | BAL11 | RU38 Abnahme: Fenster-Messung der Wiedergabe, Sim, Balance und Gen |
 | [B-1063](B-1063-text-2px-tiefer-als-go.md) | CLI | Problem | niedrig | offen | RU16 | Rust setzt Text im Software-Rasterer rund 2 px tiefer als Go |
 | [B-1060](B-1060-ton-atlas-ausschnitte-rust.md) | CLI | Schuld | mittel | eingeplant | RU30 | Der Rust-Client spielt Effekte aus Ausschnitten des Ton-Atlas |
-| [B-1062](B-1062-ru17-abnahme-sim-balance-gen.md) | CLI | Schuld | mittel | offen | RU17 | RU17 Abnahme: Sim, Balance, Gen und Sichtprüfung Effekte und Ton |
-| [B-1064](B-1064-ru16-abnahme-sim-balance-gen.md) | CLI | Schuld | mittel | offen | RU16 | RU16 Abnahme: Sim, Balance, Gen und Sichtprüfung Gebäude und Objekte |
+| [B-1062](B-1062-ru17-abnahme-sim-balance-gen.md) | CLI | Schuld | mittel | offen | BAL11 | RU17 Abnahme: Sim, Balance, Gen und Sichtprüfung Effekte und Ton |
+| [B-1064](B-1064-ru16-abnahme-sim-balance-gen.md) | CLI | Schuld | mittel | offen | BAL11 | RU16 Abnahme: Sim, Balance, Gen und Sichtprüfung Gebäude und Objekte |
 | [B-1067](B-1067-rust-purse-skill-values-pending-draw-glyph-ausleihe.md) | CLI | Problem | niedrig | offen | RU20 | Hud: Spieler mit Skills stürzen in sim::values ab, draw_glyph mit Bibliotheksschrift vermutlich Doppelausleihe |
 | [B-1068](B-1068-abnahme-ru20.md) | CLI | Schuld | mittel | offen | RU20 | Abnahme RU20: Sichtprüfung HUD und Gen-Läufe |
 | [B-1069](B-1069-rust-fenstergroesse-aus-config.md) | CLI | Schuld | niedrig | eingeplant | RU44 | k3c-platform öffnet das Fenster fest mit 1280x720, --size der Wiedergabe wirkt nicht |
@@ -139,29 +139,29 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1078](B-1078-perf-allokationen-im-draw-pfad.md) | CLI | Schuld | mittel | eingeplant | RU44 | PERF: draw allokiert bis zu 29 mal je Bild, Ziel 0 |
 | [B-1081](B-1081-abnahme-ru11-sim-einheiten-gegner.md) | SIM | Schuld | mittel | offen | RU11 | Abnahme RU11: Sim, Balance und Gen für Einheiten und Gegner in Rust |
 | [B-1082](B-1082-islandref-grade-klon-je-stufenschritt.md) | SIM | Schuld | niedrig | offen | RU52 | Island::stage_ref klont den Grad (Grade mit String) je Stufenschritt und Tick |
-| [B-1086](B-1086-abnahme-laeufe-sim-insel.md) | SIM | Schuld | mittel | offen | RU10 | Abnahme-Läufe Sim Insel |
+| [B-1086](B-1086-abnahme-laeufe-sim-insel.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe Sim Insel |
 | [B-1087](B-1087-protected-night-platzhalter-apply-damage.md) | SIM | Problem | mittel | offen | RU52 | protected_night in state/common.rs ruft den Platzhalter mit unimplemented |
-| [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | RU15 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
+| [B-1084](B-1084-abnahme-laeufe-ru15-sim-kampf-bosse.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU15: Sim, Balance, Gen und Race für Kampf, Bosse, Krone, Portale in Rust |
 | [B-1090](B-1090-replay-blend-auf-game-blend.md) | CLI | Schuld | niedrig | offen | RU26 | replay/blend.rs auf game/blend.rs umstellen |
 | [B-1091](B-1091-importregel-ausnahmen-fachmodule.md) | CLI | Schuld | niedrig | offen | RU26 | Importregel der Fachmodule hat fünf bekannte Ausnahmen |
 | [B-1092](B-1092-ru19-decode-world-story-vorziehen.md) | SIM | Schuld | mittel | offen | RU19 | decode_world_story (RU19) blockiert 91 Tests, Reihenfolge der Sprints prüfen; events_moon_stages_test zu RU19 |
-| [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
+| [B-1093](B-1093-ru14-abnahme-laeufe.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe Sim Welt-Schritt, Kampagne, Schiff und Vorschau |
 | [B-1094](B-1094-plattform-fenster-api.md) | PLAT | Schuld | niedrig | offen | RU26 | Die Plattform bekommt eine Fenster-API für Größe, Lage und Rahmen |
-| [B-1096](B-1096-abnahme-laeufe-ru26-spielschleife.md) | CLI | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU26: Sim, Balance, Gen und Race für die Rust-Spielschleife |
+| [B-1096](B-1096-abnahme-laeufe-ru26-spielschleife.md) | CLI | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU26: Sim, Balance, Gen und Race für die Rust-Spielschleife |
 | [B-1099](B-1099-port-rumpf-tests-ru18-ausfuellen.md) | SIM | Schuld | mittel | offen | RU52 | Rumpf-Tests der Rust-Sim (leer oder unimplemented) mit echten Rümpfen ausfüllen |
-| [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
+| [B-1098](B-1098-abnahme-ru21-store-room.md) | SRV | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU21: Sim, Balance, Gen und Race für Rust-Store und Raum (Lane zweit) |
 | [B-1100](B-1100-leere-ruempfe-ignorierte-tests.md) | SIM | Schuld | mittel | offen | RU52 | 21 ignorierte k3c-sim-Tests haben leere Rümpfe und zählen als portiert, ohne es zu sein |
-| [B-1101](B-1101-abnahme-ru18-sim-wirtschaft-bau-monarch.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme RU18: Sim, Balance, Gen, Race und Golden-Abgleich der neuen Rust-Sim-Teile |
+| [B-1101](B-1101-abnahme-ru18-sim-wirtschaft-bau-monarch.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme RU18: Sim, Balance, Gen, Race und Golden-Abgleich der neuen Rust-Sim-Teile |
 | [B-1102](B-1102-spiel-story-an-sim-anbinden.md) | SIM | Schuld | mittel | offen | RU19 | Das Spiel zeigt die Geschichte der Sim, Campaign trägt die WorldDef |
 | [B-1103](B-1103-ignorierte-sim-tests-nach-ru19.md) | SIM | Schuld | mittel | offen | RU52 | 76 ignorierte Rust-Sim-Tests nach RU19 abarbeiten (Testhelfer, Ursache prüfen) |
-| [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
+| [B-1104](B-1104-abnahme-laeufe-ru19.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU19 (Sim, Balance, Gen, Race) auf dem Second Worker |
 | [B-1107](B-1107-rust-client-sim-sicht-ohne-insel.md) | CLI | Problem | mittel | offen | RU63 | Rust-Client: Anzeige rechnet ohne IslandRef (Lager-Maximum, Bau des Endbosses) und ohne Geschichte |
 | [B-1108](B-1108-rust-abnahme-bildvergleich-ignore-marken.md) | CLI | Schuld | mittel | offen | RU51 | Abnahme Smoke-Version: Bildvergleich mit Grafik rot, Speicher-Rundlauf und veraltete Ignore-Marken (Lane zweit) |
 | [B-1109](B-1109-rust-start-grafik-aller-biome-im-speicher.md) | CLI | Schuld | mittel | offen | RU30 | Rust-Start lädt die Grafik aller Biome auf einmal (ohne Loader und Ladeanzeige je Stufe) |
 | [B-1105](B-1105-abnahme-laeufe-ru22-durchsatz.md) | SIM | Schuld | mittel | offen | RU51 | Abnahme-Läufe RU22: Durchsatz Rust gegen Go, Sim und Race (Lane: zweit) |
 | [B-1110](B-1110-native-json-bruchwerte.md) | CLI | Schuld | niedrig | offen | RU52 | Rust liest data/native.json mit i64-Feldern, Go mit float64 (Chronik, Wert 0) |
 | [B-1111](B-1111-dev-session-rolle-im-view.md) | CLI | Schuld | mittel | offen | RU52 | view::Session liefert keine Entwickler-Rolle (DevSession), Cheats im Rust-Spiel wirkungslos |
-| [B-1112](B-1112-abnahme-laeufe-ru29.md) | CLI | Schuld | niedrig | offen | RU51 | Abnahme-Läufe RU29 (Race, Gen) und Prüfliste für Ralf, Lane zweit |
+| [B-1112](B-1112-abnahme-laeufe-ru29.md) | CLI | Schuld | niedrig | offen | BAL11 | Abnahme-Läufe RU29 (Race, Gen) und Prüfliste für Ralf, Lane zweit |
 | [B-1113](B-1113-rust-welt-bibliothek-je-stufe.md) | CLI | Schuld | mittel | offen | RU30 | Rust: Welt-Grafik wird beim Start für alle Biome geladen, nicht je Stufe |
 | [B-1114](B-1114-aufnahme-sichtpruefung-grafik.md) | CLI | Schuld | mittel | offen | RU30 | Aufnahme-Modus im Rust-Spiel mit echter Grafik gegen Go prüfen und Speicher von ShotCanvas messen |
 | [B-1115](B-1115-rust-f12-pixel-und-maus.md) | CLI | Schuld | niedrig | offen | RU30 | Rust-Spiel: F12 zeigt keine Sprites und die Werte-Seite hat keine Maus-Auswahl |
@@ -195,7 +195,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1152](B-1152-rig-export-drift-ausserhalb-bosse.md) | PAP | Schuld | niedrig | eingeplant | LA1 | Rig-Export unter public/rig weicht außerhalb der Bosse von den Specs ab, gen:rig:check ist rot |
 | [B-1153](B-1153-kristallherz-waechter-ohne-rig-export.md) | PAP | Problem | niedrig | eingeplant | LA1 | kristallherz-waechter hat keinen Rig-Export, gen:rig schreibt ihn nicht |
 | [B-1156](B-1156-kritische-fragen-ru59-ru62.md) | INF | Frage | mittel | offen | KR6 | Kritische Entscheidungen aus RU59 bis RU62 (selbst entschieden, zur Durchsicht) |
-| [B-1154](B-1154-abnahme-ru62-sim-balance-gen.md) | SIM | Schuld | mittel | offen | RU62 | Abnahme-Läufe RU62: Sim, Balance, Gen samt Golden und Race |
+| [B-1154](B-1154-abnahme-ru62-sim-balance-gen.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU62: Sim, Balance, Gen samt Golden und Race |
 | [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
 | [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | LA1 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
 | [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | LA1 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
@@ -301,10 +301,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1268](B-1268-events-ankuendigung-ohne-wirkung.md) | SIM | Problem | mittel | offen | WE8 | Banner und Schleier der Welt-Events erscheinen auch im Frieden, unter Tage und ohne Portale |
 | [B-1269](B-1269-abnahme-we8.md) | SIM | Schuld | mittel | offen | WE8 | Abnahme-Läufe WE8: Sim, Balance, Gen, Race |
 | [B-1264](B-1264-wald-frame-zeit-messen.md) | CLI | Schuld | mittel | offen | RU43 | Die Frame-Zeit des dichteren Waldes ist gemessen (Replay headless, Vorher/Nachher) |
-| [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | RU43 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
+| [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | BAL11 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
 | [B-1270](B-1270-hubfixture-pfad-go-test.md) | CLI | Problem | niedrig | offen | RU33 | Go-Test TestHubFixtureDesMocksIstDieAntwortDerEngine liest den alten Workbench-Pfad |
 | [B-1271](B-1271-rust-sim-tests-rot-seit-wl2.md) | SIM | Problem | mittel | offen | RU33 | Vier Rust-Tests in k3c-sim sind seit WL2 rot (Standard-Welt, eingebettete Welten) |
-| [B-1272](B-1272-ru33-abnahme.md) | CLI | Idee | mittel | offen | RU33 | Abnahme RU33: Fensterlauf sim run, Sim-, Balance- und Gen-Läufe |
+| [B-1272](B-1272-ru33-abnahme.md) | CLI | Idee | mittel | offen | BAL11 | Abnahme RU33: Fensterlauf sim run, Sim-, Balance- und Gen-Läufe |
 | [B-1273](B-1273-regel-b925-sim-worktree-nach-ru34.md) | DEV | Schuld | niedrig | offen | RU40 | Regel B-925 (eigene Workbench je Sim-Worktree) gilt nach RU34 nur noch für Balancing und Replay |
 | [B-1274](B-1274-oxlint-rot-auf-main-frontends.md) | DEV | Problem | niedrig | offen | RU34 | task lint ist auf main rot (15 Fehler in Workbench- und Studio-Frontend, tools/hooks, tools/paper) |
 | [B-1275](B-1275-abnahme-ru34-workbench-ruft-spiel-exe.md) | DEV | Idee | mittel | offen | RU34 | Abnahme RU34: Studio-Tools gegen die frisch gebaute Spiel-EXE |

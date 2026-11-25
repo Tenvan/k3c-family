@@ -22,7 +22,7 @@ am PC; die Go-Engine (`engine/`, `cmd/`) bleibt, weil die Workbench sie im Proze
   `plan_sections` (mehrere Abschnitte in einem Aufruf), `plan_section`, `plan_delete` (lesen: `plan_list`, `plan_get`,
   `plan_next`) von k3c-workbench; von Hand nur, wenn k3c-workbench nicht läuft. Läuft sie, lehnt der Hook
   `tools/hooks/planGuard.ts` Edit, Write und schreibende Shell-Befehle auf `docs/backlog`, `docs/sprints`, `docs/projekte` ab.
-  Überblick und Zählung über `plan_list` (offen = Status offen, eingeplant = Status eingeplant, ungeplant = ohne Sprint).
+  Überblick und Zählung über `plan_list` (offen = Status offen, eingeplant = Status eingeplant, ungeplant = ohne Sprint). **Fehlt dem MCP eine Funktion (🧑 2026-11-25):** Direkter Zugriff auf Ticket-, Sprint-, Session- oder Projektdateien ist untersagt, auch nicht „nur dieses eine Mal“ (Shell, Skript, Edit); stattdessen schlägt Claude eine sinnvolle Erweiterung der Tools zur zeitnahen Umsetzung vor (Ticket oder direkt als Änderung an `tools/k3c-workbench`).
 - **SDD:** Ticket und Sprint-README sind die Spec (Kriterien `AC-01` …), Sessions erfüllen genannte Kriterien.
   Freigabe (`Spec: freigegeben`) und manuelle Abnahmen nur durch den Nutzer; Ausnahme: Sagt der Nutzer ausdrücklich „autonom abarbeiten“, darf Claude Specs freigeben (Feld `Freigabe`: „autonom, Claude“), offene Fragen mit Default entscheiden und im Nachgang melden; manuelle Abnahmen bleiben beim Nutzer. **Klasse A** (Typ Problem oder Schuld, Domäne DEV, INF oder PAP, ohne Spielregeln, Protokoll, Spielstand-Format, neue Abhängigkeit) gibt Claude dauerhaft selbst frei („Klasse A, Claude“) und meldet gesammelt. Details: `docs/arbeitsweise.md` › SDD.
 - **Spielstruktur (003):** Ein Raum hat einen Spielstand mit n Inseln, jede Insel n Stufen; Stufen sind pro Spieler frei begehbar und laufen alle weiter. Im Go-Code rechnet ein Raum eine Insel mit mehreren Stufen im selben Takt, Einzelwechsel je Spieler und einem Material-Vorrat je Insel (`engine/sim/island*.go`, SP12–SP14); noch offen: mehrere Inseln und Inselwechsel (B-103). Regeln: `docs/rules/stufen.md`.
@@ -149,7 +149,7 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   `data/worlds/` (Ausgaben unter `reports/`, technisch erzwungen, WZ63.7); braucht es Änderungen an Code oder anderen
   Daten (`data/*.json`, `engine/`, `rust/`, `tools/`), zeigt Claude zuerst den **Plan im Chat** und wartet auf Ralfs
   Freigabe, auch bei automatischem Balancing.
-- **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien und Worktrees liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. **Technisch erzwungen:** `task` und `check_run` setzen `GOTMPDIR`/`TMP`/`TEMP`; der Hook `tools/hooks/tempGuard.ts` lehnt direkte `go run|test|build|vet` in Bash und PowerShell ab, die diese Variablen nicht selbst setzen (sonst landet `checkdiff.exe` in `%TEMP%\go-build…`).
+- **Schreiben nur im Repo (🧑 2026-11-18):** Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. Worktrees legt Claude selbst an (in dem von Claude vorgesehenen Ordner), dafür gibt es keine Regel. **Technisch erzwungen:** `task` und `check_run` setzen `GOTMPDIR`/`TMP`/`TEMP`; der Hook `tools/hooks/tempGuard.ts` lehnt direkte `go run|test|build|vet` in Bash und PowerShell ab, die diese Variablen nicht selbst setzen (sonst landet `checkdiff.exe` in `%TEMP%\go-build…`).
 - **Kein automatischer Worktree-Wechsel:** Nicht von sich aus in einen Worktree wechseln (`change_directory`, `EnterWorktree`,
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;
@@ -160,8 +160,8 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
 
 Claude arbeitet wie ein erfahrener Spieleentwickler; Fachhaltung je Gebiet steht in den Agenten unter `.claude/agents/`.
 
-- **Spielgefühl vor Technik:** Eine Änderung zählt, wenn Spieler sie am PC mit Pad auf dem Sofa merken (Tempo, Feedback, Lesbarkeit); ohne Spielnutzen keine neue Komplexität.
-- **Frame-Budget ist Pflicht:** 60 Hz, zwei Ansichten, Mini-PC am TV; Ruckler kommen aus Ausreißern, darum zählt der schlechteste Frame.
+- **Spielgefühl vor Technik:** Eine Änderung zählt, wenn Spieler sie am PC merken (Tempo, Feedback, Lesbarkeit); ohne Spielnutzen keine neue Komplexität.
+- **Frame-Budget ist Pflicht:** 60 Hz, zwei Ansichten, PC; Ruckler kommen aus Ausreißern, darum zählt der schlechteste Frame.
 - **Messen statt raten:** Leistung, Ruckler und Balance erst messen, dann ändern; Unbelegtes heißt „vermutet“.
 - **Prototyp vor Ausbau:** kleinster spielbare Schritt zuerst, dann anspielen lassen und nachschärfen.
 - **Tests beweisen Regeln, nicht Spaß:** Bei Änderungen an Takt, Eingabe, Kamera, Bewegung oder Werten nennt der Bericht, was Ralf im Spiel prüfen sollte.

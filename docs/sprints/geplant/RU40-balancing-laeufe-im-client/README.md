@@ -1,4 +1,4 @@
-# RU40 · CLI, DEV · Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE
+# RU40 · CLI, DEV · Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing
 
 - **Status:** geplant
 - **Projekt:** RSU

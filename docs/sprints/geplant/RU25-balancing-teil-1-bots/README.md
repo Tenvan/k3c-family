@@ -1,4 +1,4 @@
-# RU25 · SIM · Balancing Teil 1: Bots
+# RU25 · SIM · Rust-Balance-Crate Teil 1: Bots
 
 - **Status:** geplant
 - **Projekt:** RSU

@@ -69,7 +69,7 @@ func wavesRepo(t *testing.T) string {
 	waveSprint(w, "A1", "AAA", "aktiv", "exe", []waveSession{
 		{"A1.1", "autonom", "offen", "–", "tools/a/**", ""},
 		{"A1.2", "autonom", "offen", "A1.1", "tools/a/x/**", ""},
-		{"A1.3", "Mensch", "offen", "A1.2", "", "Abnahme am Fernseher.\n\nGerät: Xbox"},
+		{"A1.3", "Mensch", "offen", "A1.2", "", "Abnahme am Fernseher.\n\nGerät: PC"},
 	})
 	waveSprint(w, "R1", "AAA", "aktiv", "–", []waveSession{{"R1.1", "autonom", "in Arbeit", "–", "tools/r/**", ""}})
 	waveSprint(w, "B1", "BBB", "aktiv", "exe", []waveSession{{"B1.1", "autonom", "offen", "–", "tools/b/**", ""}})

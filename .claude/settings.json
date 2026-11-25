@@ -1,4 +1,9 @@
 {
+  "env": {
+    "GOTMPDIR": "C:/WORKSPACE/K3C/.work/gotmp",
+    "TMP": "C:/WORKSPACE/K3C/.work/gotmp",
+    "TEMP": "C:/WORKSPACE/K3C/.work/gotmp"
+  },
   "permissions": {
     "allow": [
       "Bash(git worktree remove *)",

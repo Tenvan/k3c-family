@@ -1,4 +1,4 @@
-# RU28 · SIM · Balancing Teil 2: Messungen und Auswertung
+# RU28 · SIM · Rust-Balance-Crate Teil 2: Messungen und Auswertung
 
 - **Status:** geplant
 - **Projekt:** RSU

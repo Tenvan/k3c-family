@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** RU10
-- **Projekt:** RSU
+- **Sprint:** BAL11
+- **Projekt:** BAL
 - **Erstellt:** 2026-11-18
 - **Spec:** Entwurf
 - **Revision:** 1

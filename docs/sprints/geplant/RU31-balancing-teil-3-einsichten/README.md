@@ -1,4 +1,4 @@
-# RU31 · SIM · Balancing Teil 3: Einsichten, Berichte, Tuning
+# RU31 · SIM · Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning
 
 - **Status:** geplant
 - **Projekt:** RSU

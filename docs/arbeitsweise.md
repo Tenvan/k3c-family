@@ -69,7 +69,7 @@ Ticket und Sprint-README **sind** die Spec, eine eigene Spec-Datei gibt es nicht
   `Entwurf`, neue Freigabe), dann den Code. Nie ein Kriterium umschreiben, damit es zum Code passt.
 - **Nachweis:** Das **Ergebnis** der Session nennt je Kriterium `umgesetzt`, `geprüft` (womit), `verschoben` (Grund,
   Ticket) oder `blockiert`. Ein Kriterium wird nie still abgehakt.
-- **Abnahme gehört 🧑:** Eine Spec-Freigabe ist keine Erlaubnis für manuelle Prüfungen. Browser-, Xbox- und TV-Prüfungen
+- **Abnahme gehört 🧑:** Eine Spec-Freigabe ist keine Erlaubnis für manuelle Prüfungen. Browser- und Geräte-Prüfungen am PC
   macht ein Agent nur, wenn die Session sie nennt und 🧑 sie für diesen Lauf freigegeben hat. Bestätigte Nachweise
   gelten weiter, solange ihre Grundlage unverändert ist; wer geprüft hat, steht im Ergebnis.
 
@@ -130,8 +130,8 @@ bisherigen Stand auf den Sprint-Branch pushen und einen **Entwurfs-PR** des Spri
 **Testläufe** (Balancing, Performance, Stabilität) sind **bis auf Widerruf gesperrt** (Beschluss 🧑 2026-11-11, Abschnitt „Sim, Balance und Gen“): kein `sim_test`, kein `sim_run`, kein Balancing, kein Lasttest, auch nicht bei der Feature-Arbeit oder im Abnahme-Ticket. Nach dem Widerruf startet und überwacht sie ein Agent nur über das MCP-Tool `sim_test` der Workbench (B-348), nie in der Shell.
 
 Eine Session pro Lauf. Eine Review-Session nie im selben Lauf wie eine Umsetzung. Sessions mit `Agent: Mensch`
-(Xbox-Test, Workshop, Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
-Eine Mensch-Session ist nie Abhängigkeit einer Agenten-Session, außer ihr Ergebnis ist deren Eingabe (Workshop-Beschluss, Spieleabend-Protokoll); dann steht sie in `Abhängig von`.
+(Spieleabend) nimmt ein Agent nicht; er darf sie nur vorbereiten, wenn die Datei das verlangt.
+Eine Mensch-Session ist nie Abhängigkeit einer Agenten-Session, außer ihr Ergebnis ist deren Eingabe (Spieleabend-Protokoll); dann steht sie in `Abhängig von`.
 
 ### Tempo im Lauf (B-518)
 
@@ -329,7 +329,7 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
 
 1. **Freigaben** (Klasse B, Abschnitt SDD) mit Default, sodass ein „ja, alle“ genügt.
 2. **Entscheidungen:** Offene Fragen mit Vorschlag.
-3. **Abnahmen je Gerät:** PC · Xbox/TV · Pi · Mini-PC · Workshop · Veröffentlichung. Ein Termin je Gerät; die Mensch-Sessions bleiben in ihren
+3. **Abnahmen je Gerät:** nur PC (Beschluss 🧑 2026-11-25; andere Geräte entfallen). Ein Termin je Gerät; die Mensch-Sessions bleiben in ihren
    Sprints und stehen im Fahrplan unter „Offen am Gerät“ nach Gerät geordnet.
 
 ### Worktrees
@@ -349,7 +349,7 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
 
 ### Temporäre Dateien
 
-Regel (🧑 2026-11-18): Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien und Worktrees liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht.
+Regel (🧑 2026-11-18): Jeder Ordner außerhalb des Repos ist für Schreibarbeiten verboten; kein Temp, `%TEMP%`, `/tmp` oder Scratchpad. Temporäre Dateien liegen in `.work/` (ignoriert) und werden nach der Nutzung wieder gelöscht. Worktrees legt Claude selbst an, dafür gibt es keine Regel.
 Gilt für Agenten, Skills und Werkzeuge; der Code der Produkte (z. B. `t.TempDir()` in Tests) bleibt davon unberührt.
 
 ### Second Worker (zweiter Rechner, Lane `zweit`)
@@ -367,7 +367,7 @@ mit `main` und räumt auf. Abstimmung nur über `origin` (🧑 2026-11-18, Regel
 - **Ausführen und committen:** Ein Commit je Session, danach sofort `git push origin HEAD:sprint/<präfix>`.
 - **Abschluss und Merge:** Die Review-Session des Sprints öffnet den PR gegen `main`, mergt ihn nach grüner Prüfung
   (`gh pr merge --squash --auto`) und zieht `main` danach in den eigenen Checkout (`git merge origin/main`).
-- **Aufräumen:** Nach jedem Merge Worktrees und Temporärdateien in `.work/` löschen; keine Branches stehen lassen, die gemergt sind.
+- **Aufräumen:** Nach jedem Merge Temporärdateien in `.work/` löschen und nicht mehr gebrauchte Worktrees entfernen; keine Branches stehen lassen, die gemergt sind.
 - **Geeignet:** Oberflächen-Ports mit eigenem Ordner (`menu/`, `hud/`, `devtools/`) und rechenlastige Läufe (Sim, Balancing,
   Messung). Planung über mehrere Sprints, Tickets und Lanes bleiben beim Hauptrechner.
 - **Vorrang (Ralf 2026-11-19):** Die Sprints des Go-Abbaus **RU58, RU37 und RU59** (Projekt RSU, in dieser Reihenfolge)
@@ -435,7 +435,7 @@ Datei `projekte/XXX-name.md` nach Vorlage, `XXX` = Kürzel aus drei Großbuchsta
   dem nächsten Rang weiter (Autonomer Ablauf, Schritt 1).
 - **Verworfen:** Eine Session, die nicht mehr durchgeführt wird, bekommt `Status: verworfen` mit Grund im Ergebnis
   (z. B. in ein anderes Projekt verschoben); sie zählt beim Abschließen wie `fertig` (B-338).
-- **Hardware entkoppelt** (Beschluss 🧑 2026-10-03): Alles, was ein Gerät braucht (Xbox, TV, Pi, Handy, Controller),
+- **Hardware entkoppelt** (Beschluss 🧑 2026-10-03): Alles, was ein Gerät braucht (Handy, Controller),
   wartet nicht auf die App und die App wartet nicht darauf. Bis zur Validierung gelten die **angenommenen Werte**
   (`plan-weiterentwicklung.md` § 11.6); Code und Doku nennen sie „angenommen (Quelle)“. Eine Hardware-Session
   (`Agent: Mensch`, Test oder Abnahme am Gerät) ist **keine Abhängigkeit** einer App-Session und auch nicht des

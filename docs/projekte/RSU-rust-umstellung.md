@@ -76,10 +76,10 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | erledigt |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | erledigt |
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | erledigt |
-| RU25 | Balancing Teil 1: Bots | geplant |
-| RU28 | Balancing Teil 2: Messungen und Auswertung | geplant |
-| RU31 | Balancing Teil 3: Einsichten, Berichte, Tuning | geplant |
-| RU40 | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | geplant |
+| RU25 | Rust-Balance-Crate Teil 1: Bots | geplant |
+| RU28 | Rust-Balance-Crate Teil 2: Messungen und Auswertung | geplant |
+| RU31 | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | geplant |
+| RU40 | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | geplant |
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | geplant |
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | erledigt |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | erledigt |

@@ -14,17 +14,16 @@ import (
 
 // QueueFilter ist die Eingabe von plan_queue.
 type QueueFilter struct {
-	Device string `json:"device,omitempty" jsonschema:"nur Abnahmen an diesem Gerät: PC, Xbox/TV, Pi, Mini-PC, Workshop, Veröffentlichung oder unbekannt"`
+	Device string `json:"device,omitempty" jsonschema:"nur Abnahmen an diesem Gerät: PC oder unbekannt"`
 }
 
 // devices ist die Reihenfolge der Geräte; andere folgen nach Name, „unbekannt“ zuletzt.
-var devices = []string{"PC", "Xbox/TV", "Pi", "Mini-PC", "Workshop", "Veröffentlichung"}
+var devices = []string{"PC"}
 
 const unknownDevice = "unbekannt"
 
 var (
 	reDevice = regexp.MustCompile(`^\s*(?:- )?(?:\*\*)?Gerät:(?:\*\*)?\s*(.+?)\s*$`)
-	rePi     = regexp.MustCompile(`(?i)\bpi\b`)
 	rePC     = regexp.MustCompile(`(?i)\bpc\b`)
 )
 
@@ -103,7 +102,7 @@ func deviceOf(text string) string {
 	return unknownDevice
 }
 
-// deviceIn findet in einem Wert wie „Abnahme (Xbox)“ das Gerät; sonst „unbekannt“.
+// deviceIn findet in einem Wert wie „Abnahme (PC)“ das Gerät; sonst „unbekannt“.
 func deviceIn(v string) string {
 	if d := normDevice(v); slices.Contains(devices, d) {
 		return d
@@ -114,20 +113,9 @@ func deviceIn(v string) string {
 // normDevice ordnet Schreibweisen den Geräten zu; Unbekanntes bleibt wie geschrieben.
 func normDevice(v string) string {
 	v = strings.TrimSpace(strings.Trim(v, "`*"))
-	low := strings.ToLower(v)
 	switch {
 	case v == "":
 		return ""
-	case strings.Contains(low, "xbox") || strings.Contains(low, "tv"):
-		return "Xbox/TV"
-	case strings.Contains(low, "mini"):
-		return "Mini-PC"
-	case strings.Contains(low, "workshop"):
-		return "Workshop"
-	case strings.Contains(low, "veröffentl"):
-		return "Veröffentlichung"
-	case rePi.MatchString(v):
-		return "Pi"
 	case rePC.MatchString(v):
 		return "PC"
 	case strings.EqualFold(v, unknownDevice):

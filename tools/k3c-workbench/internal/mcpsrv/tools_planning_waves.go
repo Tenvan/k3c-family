@@ -29,7 +29,7 @@ func registerPlanWaves(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "plan_queue",
 		Description: "Ralf-Queue nach docs/arbeitsweise.md › Ralf-Queue: Freigaben (Specs im Entwurf mit „Braucht 🧑: Freigabe“), " +
-			"Entscheidungen und Abnahmen je Gerät (PC, Xbox/TV, Pi, Mini-PC, Workshop, Veröffentlichung, unbekannt): offene " +
+			"Entscheidungen und Abnahmen je Gerät (PC, unbekannt): offene " +
 			"Mensch-Sessions aktiver Sprints mit dem Gerät aus einer Zeile „Gerät:“ im Abschnitt Kontext, dazu Tickets und Sprints " +
 			"mit „Braucht 🧑: Abnahme“ oder „Gerät“. device zeigt nur die Abnahmen an einem Gerät. " +
 			"Nutze es bei: 🧑 gesammelt vorlegen, was Freigabe, Entscheidung oder Abnahme braucht. Statt: Mensch-Sessions und Specs einzeln suchen.",

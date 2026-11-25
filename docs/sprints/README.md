@@ -42,12 +42,13 @@ keine
 |---|---|---|---|---|---|---|
 | AU1 | SIM | KMP | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
 | WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
-| RU25 | SIM | RSU | Balancing Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
-| RU28 | SIM | RSU | Balancing Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
-| RU31 | SIM | RSU | Balancing Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
-| RU40 | CLI, DEV | RSU | Balancing-Läufe im Game-Client, sim_test und Balancing der Workbench über die Spiel-EXE | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
+| RU25 | SIM | RSU | Rust-Balance-Crate Teil 1: Bots | – | bereit | `geplant/RU25-balancing-teil-1-bots/` |
+| RU28 | SIM | RSU | Rust-Balance-Crate Teil 2: Messungen und Auswertung | – | bereit | `geplant/RU28-balancing-teil-2-messungen/` |
+| RU31 | SIM | RSU | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
+| RU40 | CLI, DEV | RSU | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
+| BAL11 | SIM | BAL | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | – | Entwurf | `geplant/BAL11-abnahme-laeufe-rust-umstellung/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
 

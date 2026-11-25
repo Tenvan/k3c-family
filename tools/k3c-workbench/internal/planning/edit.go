@@ -2,6 +2,7 @@ package planning
 
 import (
 	"fmt"
+	"maps"
 	"path"
 	"regexp"
 	"slices"
@@ -144,10 +145,12 @@ func Set(root, id string, values map[string]string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if r.kind == "sprint" && values["Domäne"] != "" {
-		return "", fmt.Errorf("die Domäne eines Sprints ist aus seinen Sessions abgeleitet; Domäne der Sessions setzen")
+	title, retitle := values[fieldTitle]
+	if values, err = checkSet(r.kind, values); err != nil {
+		return "", err
 	}
 	c := newChangeSet(root)
+	c.retitle = retitle
 	if r.kind == "projekt" {
 		if err := setProject(c, r, values); err != nil {
 			return "", err
@@ -163,6 +166,9 @@ func Set(root, id string, values map[string]string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if retitle {
+		text = setTitle(text, r.kind, title)
+	}
 	if r.kind == "ticket" {
 		if values, err = ticketRelations(c, r, text, values); err != nil {
 			return "", err
@@ -175,6 +181,48 @@ func Set(root, id string, values map[string]string) (string, error) {
 		return "", err
 	}
 	return strings.Join(c.notes, "\n"), c.apply()
+}
+
+// checkSet prüft Domäne (Sprint) und Titel (nur Sprint und Ticket) und liefert die Werte ohne das Pseudo-Feld Titel.
+func checkSet(kind string, values map[string]string) (map[string]string, error) {
+	if kind == "sprint" && values["Domäne"] != "" {
+		return nil, fmt.Errorf("die Domäne eines Sprints ist aus seinen Sessions abgeleitet; Domäne der Sessions setzen")
+	}
+	title, ok := values[fieldTitle]
+	if !ok {
+		return values, nil
+	}
+	if kind != "sprint" && kind != "ticket" {
+		return nil, fmt.Errorf("%s lässt sich nur bei Sprints und Tickets setzen", fieldTitle)
+	}
+	if err := plainValue(fieldTitle, title); err != nil {
+		return nil, err
+	}
+	values = maps.Clone(values)
+	delete(values, fieldTitle)
+	return values, nil
+}
+
+// fieldTitle ist das Pseudo-Feld für den Titel in der Überschrift `# ID · DOMÄNE · Titel` (Sprints und Tickets).
+const fieldTitle = "Titel"
+
+// setTitle ersetzt den Titel in der ersten Überschrift, ID und Domäne bleiben.
+func setTitle(text, kind, title string) string {
+	parts := 3 // Sprint: ID · DOMÄNE · Titel; Ticket: ID · Titel
+	if kind == "ticket" {
+		parts = 2
+	}
+	lines := splitLines(text)
+	for i, l := range lines {
+		if !strings.HasPrefix(l, "# ") {
+			continue
+		}
+		if p := strings.SplitN(l, " · ", parts); len(p) == parts {
+			lines[i] = strings.Join(p[:parts-1], " · ") + " · " + title
+		}
+		break
+	}
+	return joinLines(lines)
 }
 
 // follow schreibt das Dokument an seinen Platz (Ordner folgt dem Status) und zieht die Verweise nach.

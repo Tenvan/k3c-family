@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** RU43
-- **Projekt:** RSU
+- **Sprint:** BAL11
+- **Projekt:** BAL
 - **Erstellt:** 2026-11-24
 - **Spec:** Entwurf
 - **Revision:** 1

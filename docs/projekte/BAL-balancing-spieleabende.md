@@ -24,6 +24,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | BAL8 | Welt-Werte: Basis erben, Overrides je Welt, Simulation rechnet mit dem Wertesatz der Welt | erledigt |
 | BAL9 | Meilenstein 1: Titan über acht Seeds, castleHeld im Fenster, Bot-Performance | erledigt |
 | BAL10 | Welt-Wertesatz: Nachträge aus dem Review BAL8.2 | erledigt |
+| BAL11 | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | geplant |
 
 ## Nicht-Ziele
 

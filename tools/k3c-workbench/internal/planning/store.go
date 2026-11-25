@@ -102,13 +102,14 @@ func readText(root, rel string) (text string, crlf bool, err error) {
 
 // changeSet sammelt Schreib-, Verschiebe- und Löschschritte; apply führt sie erst aus, wenn alles berechnet ist.
 type changeSet struct {
-	root   string
-	moves  [][2]string // von, nach (relativ zu docs/)
-	writes map[string]string
-	crlf   map[string]bool
-	remove []string
-	notes  []string
-	first  []string // Dateien, die vor allen anderen geschrieben werden (Index, der eine Zeile bekommt; B-862)
+	root    string
+	moves   [][2]string // von, nach (relativ zu docs/)
+	writes  map[string]string
+	crlf    map[string]bool
+	remove  []string
+	notes   []string
+	retitle bool     // Sprint-Titel wurde geändert: Fahrplan-Thema überschreiben
+	first   []string // Dateien, die vor allen anderen geschrieben werden (Index, der eine Zeile bekommt; B-862)
 }
 
 // writeFile schreibt eine Datei des changeSets; Tests ersetzen es, um einen Schreibfehler zu erzwingen (B-862).
