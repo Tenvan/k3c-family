@@ -12,9 +12,9 @@ use crate::curves::median_or_nil;
 use crate::fehler::Fehler;
 use crate::figures::round1;
 use crate::insights::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW};
+use crate::insights_markdown::light_icon;
 use crate::island_world::shared;
 use crate::metrics::Metrics;
-use crate::pending::light_icon;
 use crate::run::Report;
 
 /// Ein Abschnitt aus data/ship.json (Go: `ShipStage`).

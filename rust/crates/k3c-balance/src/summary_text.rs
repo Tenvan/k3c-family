@@ -21,14 +21,14 @@ impl Entry {
         }
     }
 
-    fn value_text(&self) -> String {
+    pub(crate) fn value_text(&self) -> String {
         if self.verdict.status == STATUS_INVALID {
             return "–".into();
         }
         format!("{:.1}", self.verdict.value).replace('.', ",") + self.unit()
     }
 
-    fn bounds_text(&self) -> String {
+    pub(crate) fn bounds_text(&self) -> String {
         let t = &self.verdict.target;
         match (t.lower, t.upper) {
             (Some(lo), Some(hi)) => format!("{}–{}{}", num(lo), num(hi), self.unit()),

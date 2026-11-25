@@ -6,6 +6,7 @@ use k3c_det::golden;
 
 use crate::evaluate::STATUS_OK;
 use crate::insights::{Meta, build_insights};
+use crate::insights_markdown::insights_markdown;
 use crate::insights_tests::{fixture, test_hints};
 use crate::run::{Matrix, run};
 use crate::summary::{Summary, read_summary};
@@ -42,19 +43,25 @@ fn summary_run7() {
     assert_eq!(s.markdown_with(None, None), md.replace("\r\n", "\n"), "summary-run7.md");
 }
 
-/// Nimmt die Felder aus der Auswertung, die spätere Sessions liefern (Texte RU31.2 bis RU31.4); sie fehlen in beiden Bäumen.
+/// Nimmt die Felder aus der Auswertung, die spätere Sessions liefern (Texte RU31.3 und RU31.4); sie fehlen in beiden
+/// Bäumen. Von RU31.2 stehen `hints` (ohne `why` und `plans`) und `next` (ohne den Empfehlungsblock, der die Pläne braucht)
+/// im Vergleich.
 fn ohne_spaetere_felder(mut v: serde_json::Value) -> serde_json::Value {
     let Some(o) = v.as_object_mut() else { return v };
-    for k in [
-        "summary",
-        "strengths",
-        "weaknesses",
-        "hints",
-        "leverGroups",
-        "next",
-        "goalText",
-    ] {
+    for k in ["summary", "strengths", "weaknesses", "leverGroups"] {
         o.remove(k);
+    }
+    for h in o.get_mut("hints").and_then(|t| t.as_array_mut()).into_iter().flatten() {
+        for k in ["why", "plans"] {
+            h.as_object_mut().map(|h| h.remove(k));
+        }
+    }
+    if let Some(c) = o
+        .get_mut("next")
+        .and_then(|n| n.get_mut("commands"))
+        .and_then(|c| c.as_array_mut())
+    {
+        c.retain(|c| c["label"] != "Alle Empfehlungen als ein Block");
     }
     for t in o
         .get_mut("targets")
@@ -101,6 +108,68 @@ fn insights_run7() {
         assert!(at.is_empty(), "{file}: Abweichung von Go bei {at}");
     }
 }
+
+/// Der Abschnitt ab `heading` bis zum nächsten `## ` (oder zum Ende).
+fn abschnitt<'a>(md: &'a str, heading: &str) -> &'a str {
+    let Some(i) = md.find(heading) else { return "" };
+    let rest = &md[i + heading.len()..];
+    &md[i..i + heading.len() + rest.find("\n## ").unwrap_or(rest.len())]
+}
+
+/// Nimmt den Befehl „Alle Empfehlungen als ein Block“ aus dem Text (er braucht die Pläne aus RU31.3).
+fn ohne_empfehlungen(text: &str) -> String {
+    let Some(i) = text.find("\nAlle Empfehlungen als ein Block") else {
+        return text.to_string();
+    };
+    let end = text[i..].find("```\n\n").map_or(text.len(), |e| i + e + 4);
+    format!("{}{}", &text[..i], &text[end..])
+}
+
+/// RU31.2: Der Markdown-Text der Auswertung aus `insights_markdown` hat dieselben Abschnitte wie Go (`insights-run7.md`,
+/// `insights-run7-trend.md`), soweit sie nicht von RU31.3 bis RU31.4 abhängen: Zählung der Ampeln, Delta, nächster Lauf
+/// (ohne den Empfehlungsblock) und Kennzahlen.
+#[test]
+fn insights_markdown_run7() {
+    let dir = golden::testdata().join("rust/balance");
+    let (s, h) = (fixture(), test_hints());
+    let mut base = fixture();
+    for e in &mut base.targets {
+        if e.verdict.target.measure == "goldAtDawnPerPlayer" {
+            e.verdict.value = 22.0;
+            e.verdict.status = STATUS_OK.into();
+            e.pass = true;
+        }
+    }
+    for (file, b, baseline) in [
+        ("insights-run7.md", None, ""),
+        ("insights-run7-trend.md", Some(&base), "b.json"),
+    ] {
+        let m = Meta {
+            run: "simtest-run-7".into(),
+            baseline: baseline.into(),
+            ..Meta::default()
+        };
+        let got = insights_markdown(&build_insights(&s, b, &h, &m));
+        let want = std::fs::read_to_string(dir.join(file))
+            .expect("Markdown")
+            .replace("\r\n", "\n");
+        let zaehlung = |t: &str| abschnitt(t, "## Ampeln").lines().nth(2).unwrap_or_default().to_string();
+        assert_eq!(zaehlung(&want), zaehlung(&got), "{file}: Ampeln");
+        for head in ["## Delta je Werte-Gruppe", "## Kennzahlen"] {
+            assert_eq!(abschnitt(&want, head), abschnitt(&got, head), "{file}: {head}");
+        }
+        let (w, g) = (
+            abschnitt(&want, "## Nächster Lauf"),
+            abschnitt(&got, "## Nächster Lauf"),
+        );
+        assert_eq!(ohne_empfehlungen(w), ohne_empfehlungen(g), "{file}: Nächster Lauf");
+    }
+}
+
+/// RU31.4: Das ganze Markdown stimmt mit Go überein, wenn `plain`, `plans`, `summary` und die Stärken da sind.
+#[test]
+#[ignore = "wartet auf RU31.4"]
+fn insights_markdown_ganz() {}
 
 /// Ein Spieler, Bot `saver`, Tiefe 0, ein Tag: der ganze Bericht stimmt mit Go überein.
 #[test]

@@ -115,19 +115,23 @@ func TestRustRefInsights(t *testing.T) {
 			t.Fatal(err)
 		}
 		got = append(got, '\n')
-		path := filepath.Join(rustRefDir, name)
-		if *write {
-			if err := os.WriteFile(path, got, 0o644); err != nil {
-				t.Fatal(err)
+		// RU31.2: dazu der Markdown-Text der Auswertung (Insights.Markdown, ohne Erzeugungszeit).
+		mdName := map[string]string{"insights-run7-out.json": "insights-run7.md", "insights-run7-trend.json": "insights-run7-trend.md"}[name]
+		for file, body := range map[string][]byte{name: got, mdName: []byte(in.Markdown())} {
+			path := filepath.Join(rustRefDir, file)
+			if *write {
+				if err := os.WriteFile(path, body, 0o644); err != nil {
+					t.Fatal(err)
+				}
+				continue
 			}
-			continue
-		}
-		want, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatalf("%v (schreiben mit -write)", err)
-		}
-		if !bytes.Equal(bytes.ReplaceAll(want, []byte("\r\n"), []byte("\n")), got) { // Windows-Checkout mit CRLF
-			t.Fatalf("%s weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)", name)
+			want, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatalf("%v (schreiben mit -write)", err)
+			}
+			if !bytes.Equal(bytes.ReplaceAll(want, []byte("\r\n"), []byte("\n")), body) { // Windows-Checkout mit CRLF
+				t.Fatalf("%s weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)", file)
+			}
 		}
 	}
 }
