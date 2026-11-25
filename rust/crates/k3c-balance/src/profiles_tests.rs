@@ -1,5 +1,4 @@
-//! Tests zu den Profilen (Port von `engine/balance/profiles_test.go`, BAL3, BAL6, B-300). Tests, die Kennzahlen lesen,
-//! warten auf RU28.1; die langen (Go `-short` überspringt sie) sind `ignore = "lang"`.
+//! Tests zu den Profilen (Port von `engine/balance/profiles_test.go`, BAL3, BAL6, B-300). Die langen (Go `-short` überspringt sie) sind `ignore = "lang"`.
 
 use k3c_data::balance_targets::Target;
 use k3c_sim::dev::dev_add_stock;
@@ -44,9 +43,22 @@ fn neue_profile_gleiche_bytes() {
 
 /// Mauern zuerst baut an Tag 1 eine Mauer; Wirtschaft zuerst wirbt an Tag 1 an und baut keine Mauer.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn mauern_und_wirtschaft_zuerst() {
-    // Liest `Metrics.first_wall_tick`, `days[0].dusk_tick` und `days[0].expense` (RU28.1).
+    let mut m = matrix("walls", 2);
+    m.bots = vec!["walls".into(), "economy".into()];
+    let r = run(&m).expect("Lauf");
+    let (walls, eco) = (
+        r.results[0].metrics.as_ref().expect("walls"),
+        r.results[1].metrics.as_ref().expect("economy"),
+    );
+    assert!(walls.first_wall_tick.is_some(), "walls: keine Mauer an Tag 1");
+    if let (Some(wall), Some(dusk)) = (eco.first_wall_tick, eco.days[0].dusk_tick) {
+        assert!(wall > dusk, "economy: Mauer an Tag 1 (Tick {wall})");
+    }
+    assert!(
+        eco.days[0].expense != 0,
+        "economy: an Tag 1 nichts bezahlt (kein Anwerben)"
+    );
 }
 
 /// B-158 › Ausnahmefälle: Ein Profil mit mehr Spielern als das Szenario ist ein Fehler beim Start.
@@ -79,9 +91,20 @@ fn profil_zu_wenige_spieler() {
 
 /// BAL6/AC-02 (B-300/AC-01): „Mauern zuerst“ spielt messbar anders als „sparsam“: Es baut an Tag 1 einen Turm, „sparsam“ nie.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn mauern_zuerst_anders_als_sparsam() {
-    // Liest `Metrics.first_tower_tick` (RU28.1).
+    let mut m = matrix("walls", 2);
+    m.bots = vec!["walls".into(), "saver".into()];
+    let r = run(&m).expect("Lauf");
+    let (walls, saver) = (
+        r.results[0].metrics.as_ref().expect("walls"),
+        r.results[1].metrics.as_ref().expect("saver"),
+    );
+    assert!(walls.first_tower_tick.is_some(), "walls: kein Turm an Tag 1");
+    assert!(
+        saver.first_tower_tick.is_none(),
+        "saver: Turm bei Tick {:?}",
+        saver.first_tower_tick
+    );
 }
 
 /// B-300/AC-01 (Beschluss BAL6.3, autonom): „Mauern zuerst“ zahlt den Hub-Ausbau und baut danach eine Mauer auf Stufe 2 aus.

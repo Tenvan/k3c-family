@@ -1,6 +1,7 @@
 //! Tests zu `bot_abstieg.rs` (Port von `engine/balance/bot_abstieg_test.go`).
 
 use crate::bot_abstieg::{may_descend, mini_boss_id, mini_defeated};
+use crate::run::{Matrix, run};
 use crate::testutil::scenario_island;
 
 /// BS11.2/AC-03 (B-642/AC-03): Der Bot steigt erst ab, wenn der Miniboss seiner Stufe besiegt ist, und nur mit ungeradem
@@ -33,5 +34,21 @@ fn bots_steigen_erst_nach_dem_miniboss() {
 /// Go: `TestOhneWorldKeinAbstieg` läuft über `mustRun` (`run.rs`) und liest `ReachedDepth` und `Stages` der Kennzahlen:
 /// ohne `World` im Szenario erreicht `coop2` Tiefe 0.
 #[test]
-#[ignore = "wartet auf RU28"]
-fn ohne_world_kein_abstieg() {}
+fn ohne_world_kein_abstieg() {
+    let m = Matrix {
+        seeds: vec!["k3c-dev".into()],
+        players: vec![2],
+        bots: vec!["coop2".into()],
+        depths: vec![0],
+        days: 1,
+        ..Matrix::default()
+    };
+    let r = run(&m).expect("Lauf");
+    let m = r.results[0].metrics.as_ref().expect("Kennzahlen");
+    assert!(
+        m.reached_depth == 0 && m.stages.is_empty(),
+        "ohne Welt: Tiefe {}, Stufen {:?}",
+        m.reached_depth,
+        m.stages
+    );
+}

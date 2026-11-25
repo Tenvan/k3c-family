@@ -2,8 +2,10 @@
 
 use k3c_data::balance_targets::{FILE, load_targets};
 use k3c_sim::island::add_island_player;
+use serde_json::json;
 
 use crate::island_world::{create_in, load_world, shared, worlds};
+use crate::metrics::Collector;
 use crate::run::{Matrix, Scenario, new_island, run};
 use crate::scope::{Restrict, Scope};
 
@@ -47,16 +49,66 @@ fn welten_nennt_standard() {
 
 /// Ein Lauf ohne Welt schreibt keine Insel-Felder; mit Welt stehen die Stufen im Ergebnis.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn insel_lauf_metriken() {
-    // `Metrics.stages` mit Ankunft je Stufe und die Abwesenheit der Insel-Felder im JSON braucht den Sammler (RU28.1).
+    let m = |world: &str| Matrix {
+        seeds: vec!["1".into()],
+        players: vec![2],
+        bots: vec!["saver".into()],
+        depths: vec![0],
+        days: 1,
+        world: world.into(),
+        ..Matrix::default()
+    };
+    let r = run(&m("standard")).expect("Lauf");
+    let res = &r.results[0];
+    let met = res.metrics.as_ref().filter(|_| res.valid).expect("gültiger Lauf");
+    assert_eq!(met.stages.len(), 5, "Stufen");
+    let s = &met.stages[0];
+    assert!(
+        s.arrival_tick == Some(0) && s.arrival_day == Some(1),
+        "Stufe 0 beginnt mit Ankunft Tag 1: {s:?}"
+    );
+    assert!(
+        met.stages[1].arrival_tick.is_none(),
+        "Stufe 1 ohne Spieler: {:?}",
+        met.stages[1]
+    ); // saver steigt nicht ab
+    let plain = run(&m("")).expect("Lauf").json().expect("JSON");
+    for k in ["stages", "bosses", "endbossDay", "\"world\""] {
+        assert!(!plain.contains(k), "Lauf ohne Welt enthält {k}");
+    }
 }
 
-/// BS11.1/AC-02: Der Sammler führt Ankunft, Bosse, Endboss und Burgfall je Stufe nach festem Ereignisverlauf.
+/// BS11.1/AC-02: Der Sammler führt Ankunft, Bosse, Endboss und Burgfall je Stufe nach festem Ereignisverlauf. Die
+/// Prüfung der Kennzahlen und des Markdowns (`checkInselBericht`, `figures`) gehört zu RU28.2.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn sammler_insel_ereignisse() {
-    // `Collector::observe_island` und `island_event` (metrics_island.go) kommen mit RU28.1.
+    let mut isl = new_island(&scenario("standard", 1)).expect("Insel");
+    let mut c = Collector::new(&isl, 0);
+    add_island_player(&mut isl, 2); // ein zweiter Monarch steht auf Stufe 2
+    c.observe_island(&isl, 100);
+    let ev = |v: serde_json::Value| v.as_object().cloned().expect("Ereignis");
+    c.island_event(
+        &isl,
+        &isl.stages[2],
+        &ev(json!({"type": "bossDefeated", "boss": "mini2"})),
+        120,
+    );
+    c.island_event(&isl, &isl.stages[2], &ev(json!({"type": "castleFallen"})), 130);
+    isl.endboss_defeated = true;
+    c.observe_island(&isl, 200);
+    let m = c.result(&isl);
+    let s = &m.stages[2];
+    assert!(
+        s.arrival_tick == Some(100) && s.castle_fall_tick == Some(130),
+        "Stufe 2: {s:?}"
+    );
+    assert!(
+        m.bosses.len() == 1 && m.bosses[0].boss == "mini2" && m.bosses[0].tick == 120,
+        "Bosse {:?}",
+        m.bosses
+    );
+    assert_eq!(m.endboss_tick, Some(200), "Endboss");
 }
 
 /// BS11.4: `Scope.world` lässt alle Ziele die ganze Insel spielen; jede andere Einschränkung ohne Welt entfernt die Insel-Ziele.

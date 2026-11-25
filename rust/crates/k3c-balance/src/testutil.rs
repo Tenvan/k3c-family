@@ -81,7 +81,8 @@ pub fn site(kind: &str, x: f64, state: &str) -> Site {
 /// Ein Landstreicher.
 pub fn vagrant(x: f64) -> Troop {
     Troop {
-        kind: "vagrant".into(),
+        kind: "citizen".into(),
+        wild: true,
         x,
         ..Troop::default()
     }

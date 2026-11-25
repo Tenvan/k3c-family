@@ -4,7 +4,7 @@
 
 use std::sync::OnceLock;
 
-use k3c_sim::hub::level::site_hub_level;
+use k3c_sim::state::site_view::site_hub_level_of;
 use k3c_sim::state::site_view::site_zone;
 use k3c_sim::state::{Player, ResourceNode, Site, World};
 use k3c_sim::world::lines::site_blockers;
@@ -48,7 +48,7 @@ pub fn blocked_site(w: &World) -> Option<&Site> {
     for s in &w.sites {
         if !matches!(s.kind.as_str(), "wall" | "tower" | "nursery")
             || s.state != "unpaid"
-            || site_hub_level(w, s) > w.hub_level
+            || site_hub_level_of(w, s) > w.hub_level
         {
             continue;
         }

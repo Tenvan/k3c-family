@@ -2,10 +2,10 @@
 //! Platzhalter. Alle tragen dieselbe Signatur wie die spätere Funktion. Die Dinge hier haben einen Rumpf mit den echten
 //! Werten, damit `hints.rs` schon läuft (Ziel-Kennzahlen, Gruppen, Ampel); die liefernde Session ersetzt sie durch ihr Original.
 
-use k3c_sim::island::Island;
 use serde::{Deserialize, Serialize};
 
 use crate::hints::Hints;
+use crate::metrics::Metrics;
 
 /// RU31.1 (`insights.go`): die Ampel eines Ziels.
 pub const LIGHT_GREEN: &str = "green";
@@ -70,59 +70,21 @@ impl Hints {
     }
 }
 
-/// RU28.1 (`metrics.go`, Go: `StageMetrics`): eine Stufe des Laufs.
+/// RU28.4 (`ship_need.go`, Go: `ShipNeed`): je Schiff-Abschnitt der Tag, ab dem er bezahlbar gewesen wäre.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct StageMetrics {
-    pub arrival_day: Option<i64>,
+#[serde(default, rename_all = "camelCase")]
+pub struct ShipNeed {}
+
+/// RU28.4 (`ship_need.go`, Go: `ShipStage`): ein Abschnitt der Schiff-Tabelle.
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct ShipStage {}
+
+/// RU28.4 (`ship_need.go`, Go: `LoadShip`): lädt die Schiff-Tabelle; der Platzhalter liefert keine Abschnitte.
+pub fn load_ship() -> Result<Vec<ShipStage>, String> {
+    Ok(Vec::new())
 }
 
-/// RU28.1 (`metrics.go`, Go: `BossMetrics`): ein besiegter Boss.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct BossMetrics {
-    pub boss: String,
-    pub day: i64,
-}
-
-/// RU28.1 (`metrics.go`, Go: `DawnMetrics`): der Stand zum Tagesbeginn.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DawnMetrics {
-    pub day: i64,
-    pub gold: Vec<i64>,
-    pub hub_level: i64,
-    pub fighters: i64,
-}
-
-/// RU28.1 (`metrics.go`): die Kennzahlen eines Laufs; nur die Felder, die `run.rs`, `progress.rs` und ihre Tests lesen.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Metrics {
-    #[serde(skip_serializing_if = "String::is_empty")]
-    pub lost: String,
-    pub first_wall_tick: Option<i64>,
-    pub castle_fall_tick: Option<i64>,
-    pub endboss_day: Option<i64>,
-    pub stages: Vec<StageMetrics>,
-    pub bosses: Vec<BossMetrics>,
-    pub dawns: Vec<DawnMetrics>,
-}
-
-/// RU28.1 (`metrics.go`, Go: `collector`): sammelt die Kennzahlen eines Laufs; hier ohne Messung.
-pub struct Collector;
-
-impl Collector {
-    /// Go: `newCollector(isl, threshold)`.
-    pub fn new(_isl: &Island, _threshold: i64) -> Self {
-        Collector
-    }
-
-    /// Go: `observe(tick)` (der Sammler hält die Insel in Go; hier kommt sie als Parameter).
-    pub fn observe(&mut self, _isl: &Island, _tick: i64) {}
-
-    /// Go: `result()`.
-    pub fn result(&mut self, _isl: &Island) -> Metrics {
-        Metrics::default()
-    }
+/// RU28.4 (`ship_need.go`, Go: `shipNeeds`): rechnet den Bedarf gegen den Bestand; der Platzhalter liefert nichts.
+pub fn ship_needs(_stages: &[ShipStage], _m: &Metrics) -> Vec<ShipNeed> {
+    Vec::new()
 }

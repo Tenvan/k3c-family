@@ -4,7 +4,8 @@
 use std::collections::BTreeMap;
 
 use crate::island_world::{load_world, shared};
-use crate::pending::{BossMetrics, DawnMetrics, Metrics, StageMetrics};
+use crate::metrics::{DawnMetrics, Metrics};
+use crate::metrics_island::{BossMetrics, StageMetrics};
 use crate::progress::{blocker, median_day, milestone_defs, progress_of, test_match};
 use crate::run::{Report, RunResult, Scenario};
 
@@ -61,7 +62,10 @@ fn leiter_deckt_alle_bosse_ab() {
 fn island_result(seed: &str, stage_days: &[i64], boss_day: &BTreeMap<&str, i64>, end_day: Option<i64>) -> RunResult {
     let mut m = Metrics::default();
     for &d in stage_days {
-        m.stages.push(StageMetrics { arrival_day: Some(d) });
+        m.stages.push(StageMetrics {
+            arrival_day: Some(d),
+            ..StageMetrics::default()
+        });
     }
     while m.stages.len() < 5 {
         m.stages.push(StageMetrics::default());
@@ -70,6 +74,7 @@ fn island_result(seed: &str, stage_days: &[i64], boss_day: &BTreeMap<&str, i64>,
         m.bosses.push(BossMetrics {
             boss: (*id).to_string(),
             day: d,
+            ..BossMetrics::default()
         });
     }
     m.endboss_day = end_day;
@@ -78,6 +83,7 @@ fn island_result(seed: &str, stage_days: &[i64], boss_day: &BTreeMap<&str, i64>,
         gold: vec![2],
         hub_level: 1,
         fighters: 0,
+        ..DawnMetrics::default()
     }];
     RunResult {
         scenario: Scenario {

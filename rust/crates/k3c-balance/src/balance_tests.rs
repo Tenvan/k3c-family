@@ -1,4 +1,4 @@
-//! Tests zu `run.rs` (Port von `engine/balance/balance_test.go`). Tests, die Kennzahlen lesen, warten auf RU28.1.
+//! Tests zu `run.rs` (Port von `engine/balance/balance_test.go`).
 
 use k3c_sim::island::{Island, add_island_player, step_island};
 use k3c_sim::state::PlayerCommand;
@@ -36,7 +36,6 @@ fn gleiche_matrix_gleiche_bytes() {
 
 /// BAL1/AC-02: passiv zahlt nichts, sparsam zahlt Mauern; beide Monarchen spielen gleichzeitig.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn profile_zahlen_oder_nicht() {
     let r = must_run(&one_day());
     assert_eq!(r.results.len(), 4, "Läufe");
@@ -89,11 +88,45 @@ fn sparsam_zwei_spieler_zahlen_beide() {
 
 /// BAL1/AC-02: Die Kennzahlen aus B-099 sind gefüllt (Tag, Dämmerung, Welle, Fluss, Tiefe, Gold-Schwelle).
 #[test]
-#[ignore = "wartet auf RU28"]
 fn kennzahlen_gefuellt() {
-    // Go: Matrix{Seeds: {"1"}, Players: {2}, Bots: {"saver"}, Depths: {0}, Days: 1, GoldThreshold: 20}; prüft
-    // `Days[0].DuskTick/GoldAtDusk/StockAtDusk`, `Expense`, `Income`, `Waves[0]`, `GoldThresholdTick`, `ReachedDepth`:
-    // alles Felder von `Metrics` (RU28.1).
+    let m = Matrix {
+        seeds: vec!["1".into()],
+        players: vec![2],
+        bots: vec!["saver".into()],
+        depths: vec![0],
+        days: 1,
+        gold_threshold: 20,
+        ..Matrix::default()
+    };
+    let r = must_run(&m);
+    let m = r.results[0].metrics.as_ref().expect("Kennzahlen");
+    let d0 = m.days.first();
+    assert!(
+        m.days.len() == 2
+            && d0.is_some_and(|d| d.dusk_tick.is_some() && d.gold_at_dusk.is_some() && d.stock_at_dusk.is_some()),
+        "Tag 1 ohne Dämmerungsstand: {:?}",
+        m.days
+    );
+    assert!(
+        m.days[0].expense != 0 && m.days[1].income != 0,
+        "Gold-Fluss leer: Ausgaben Tag 1 {}, Einnahmen Tag 2 {}",
+        m.days[0].expense,
+        m.days[1].income
+    );
+    assert!(
+        m.waves.len() == 1
+            && m.waves[0].end_tick.is_some()
+            && m.waves[0].enemies != 0
+            && m.waves[0].troops_at_start != 0,
+        "Welle 1 unvollständig: {:?}",
+        m.waves
+    );
+    assert!(
+        m.gold_threshold_tick.is_some() && m.reached_depth == 0,
+        "Gold-Schwelle {:?}, Tiefe {}",
+        m.gold_threshold_tick,
+        m.reached_depth
+    );
 }
 
 /// Ein abgebrochener Lauf erscheint als ungültig mit Seed, der Rest läuft weiter.

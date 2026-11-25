@@ -327,7 +327,7 @@ pub fn nearest_vagrant<'a>(w: &'a World, p: &Player) -> Option<&'a Troop> {
     let recruit_gold = prices().recruit_gold;
     let mut best: Option<&Troop> = None;
     for t in &w.troops {
-        if t.kind == "vagrant" && p.gold >= recruit_gold - t.paid_gold && best.is_none_or(|b| closer(p.x, t.x, b.x)) {
+        if t.is_wild() && p.gold >= recruit_gold - t.paid_gold && best.is_none_or(|b| closer(p.x, t.x, b.x)) {
             best = Some(t);
         }
     }

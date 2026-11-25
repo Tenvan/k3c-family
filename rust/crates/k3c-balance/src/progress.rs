@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::fehler::Fehler;
 use crate::island_world::{load_world, shared};
-use crate::pending::Metrics;
+use crate::metrics::Metrics;
 use crate::run::{Report, RunResult, Scenario};
 
 /// Länge des Stufen-Tests (Go: `fullgameDays`, `fullgame_test.go`).

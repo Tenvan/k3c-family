@@ -16,8 +16,8 @@ use crate::crown_bot::retrieve_crown;
 use crate::fehler::Fehler;
 use crate::helps::{after_step, apply_helps, check_helps, grade_of};
 use crate::island_world::{create_island, shared};
+use crate::metrics::{Collector, Metrics};
 use crate::parallel::{panic_text, run_all, tick_progress};
-use crate::pending::{Collector, Metrics};
 use crate::replay::{Replay, end_hash};
 
 /// Takte je Sekunde (Go: `enginetools.TickHz`); der Crate hängt nicht von `k3c-game` ab.
@@ -60,6 +60,10 @@ pub struct Matrix {
     /// Steht nicht im Bericht (Go: `json:"-"`).
     #[serde(skip)]
     pub tick: Option<Tick>,
+    /// Rechnet ohne die nativen Regeln des Rust-Spiels, wie das Go-Orakel; nur für den Vergleich mit Go (`rustref_tests.rs`),
+    /// steht nicht im Bericht.
+    #[serde(skip)]
+    pub legacy: bool,
 }
 
 /// Ein einzelner Lauf.
@@ -80,6 +84,9 @@ pub struct Scenario {
     /// Dev-Hilfen (`helps.rs`), leer = keine.
     #[serde(skip_serializing_if = "String::is_empty")]
     pub helps: String,
+    /// Wie `Matrix::legacy`; steht nicht im Bericht.
+    #[serde(skip)]
+    pub legacy: bool,
 }
 
 /// Ein Lauf mit Kennzahlen (Go: `Result`); ein ungültiger Lauf hat `error` statt `metrics`.
@@ -134,6 +141,7 @@ impl Matrix {
                             grade: self.grade.clone(),
                             world: self.world.clone(),
                             helps: self.helps.clone(),
+                            legacy: self.legacy,
                         });
                     }
                 }

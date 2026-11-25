@@ -199,7 +199,7 @@ pub fn waiting_material(w: &World) -> bool {
 
 /// Die Zahl der Bauern der Stufe.
 pub fn peasants(w: &World) -> i64 {
-    w.troops.iter().filter(|t| t.kind == "peasant").count() as i64
+    w.troops.iter().filter(|t| t.serving()).count() as i64
 }
 
 /// So viele Kämpfer will der Bot in dieser Stufe; in der Stufe mit dem Bau des Endbosses sind es `ENDBOSS_WANT`, damit das

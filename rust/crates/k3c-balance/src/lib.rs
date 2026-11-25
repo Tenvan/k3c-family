@@ -8,10 +8,13 @@ pub mod bot_material;
 pub mod bot_wirtschaft;
 pub mod bots;
 pub mod crown_bot;
+pub mod economy_measures;
 pub mod fehler;
 pub mod helps;
 pub mod hints;
 pub mod island_world;
+pub mod metrics;
+pub mod metrics_island;
 pub mod parallel;
 pub mod pending;
 pub mod prices;
@@ -56,6 +59,8 @@ mod profiles_tests;
 mod progress_tests;
 #[cfg(test)]
 mod replay_tests;
+#[cfg(test)]
+mod rustref_tests;
 #[cfg(test)]
 mod seedmode_tests;
 #[cfg(test)]

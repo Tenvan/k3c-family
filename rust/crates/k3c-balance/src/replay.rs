@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 use crate::fehler::Fehler;
 use crate::helps::after_step;
 use crate::island_world::shared;
-use crate::pending::Collector;
+use crate::metrics::Collector;
 use crate::run::{Scenario, TICK_HZ, new_island};
 use crate::sha256::{Sha256, sha256_hex};
 
@@ -275,6 +275,7 @@ impl From<Wire> for Replay {
                 grade: w.grade,
                 world: w.world,
                 helps: w.helps,
+                legacy: false,
             },
             data_hash: w.data_hash,
             ticks: w.ticks,
