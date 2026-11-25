@@ -1,34 +1,102 @@
-//! Tests zu `progress.rs` (Port von `engine/balance/progress_test.go`, B-648). Die Tests zu Zielen und Summary
-//! (`Targets`, `Summary`, `findPrevious`) warten auf RU28.
+//! Tests zu `progress.rs` (Port von `engine/balance/progress_test.go`, B-648). Nur der Test zum Vergleich mit dem
+//! letzten Lauf (`findPrevious`, `BuildInsights`) wartet auf RU31.
 
 use std::collections::BTreeMap;
 
+use k3c_data::balance_targets::{FILE, Target, Targets};
+
+use crate::evaluate::{STATUS_NARROW, STATUS_OK};
+use crate::evaluate_tests::{metrics_with, report, seeds, share_target, targets};
 use crate::island_world::{load_world, shared};
 use crate::metrics::{DawnMetrics, Metrics};
 use crate::metrics_island::{BossMetrics, StageMetrics};
-use crate::progress::{blocker, median_day, milestone_defs, progress_of, test_match};
+use crate::progress::{QualityView, blocker, median_day, milestone_defs, progress_of, test_match};
 use crate::run::{Report, RunResult, Scenario};
+use crate::summary::Summarize;
+use crate::targets::{default_targets, load_targets};
 
 /// B-648/AC-01: Das Urteil hängt nur an den Zielen mit Rolle goal; verfehlte guard-Korridore ändern es nie.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn urteil_haengt_nur_an_goal() {
-    // Go: `Targets.Summarize` mit je einem Ziel der Rolle goal und guard; Markdown „**Ziel erreicht**“ und
-    // „Qualität: 0 von 1 Korridoren“ (`Summary`, `Targets`: RU28).
+    let goal = Target {
+        role: "goal".into(),
+        ..share_target()
+    };
+    let guard = Target {
+        name: "g".into(),
+        role: "guard".into(),
+        lower: Some(95.0),
+        upper: Some(100.0),
+        ..share_target()
+    };
+    let mut ts = Targets {
+        seeds: seeds(4),
+        targets: vec![goal, guard],
+        ..Targets::default()
+    };
+    ts.margin.share_pp = 5.0;
+    // Burg hält in 3 von 4 Seeds (75 %): das goal liegt im Korridor 70–90 %, der guard (95–100 %) nicht.
+    let ms = [false, false, false, true].map(|f| Some(metrics_with(f, 1, &[])));
+    let mut rep = report(ms.to_vec());
+    rep.matrix.seeds = ts.seeds.clone();
+    let s = ts.summarize(&rep);
+    let g = s.goal.as_ref().expect("Urteil über die Ziele");
+    assert!(
+        s.pass && g.reached && g.hit == 1 && g.total == 1,
+        "Ziel erreicht erwartet: {s:?}"
+    );
+    assert_eq!(s.quality, Some(QualityView { passed: 0, total: 1 }), "Qualität 0 von 1");
+    let md = s.markdown_with(None, None);
+    assert!(
+        md.contains("**Ziel erreicht**"),
+        "Markdown nennt das Urteil nicht:\n{md}"
+    );
+    // Die Zeile „Qualität: 0 von 1 Korridoren“ schreibt die Auswertung (`Insights`, RU31).
+    ts.targets[0].lower = Some(95.0);
+    ts.targets[0].upper = Some(100.0);
+    let s = ts.summarize(&rep);
+    assert!(
+        !s.pass && !s.goal.expect("Urteil").reached,
+        "verfehltes goal muss den Lauf scheitern lassen"
+    );
 }
 
 /// B-648 (Knapp-Regel): „knapp“ gibt es nur bei Zielen, ein guard zeigt ok oder verletzt.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn knapp_nur_bei_zielen() {
-    // Go: 14 von 20 Seeds an der Untergrenze, Rolle goal ergibt `StatusNarrow`, Rolle guard `StatusOK` (RU28).
+    for (role, want) in [("goal", STATUS_NARROW), ("guard", STATUS_OK)] {
+        let g = Target {
+            role: role.into(),
+            ..share_target()
+        };
+        // 14 von 20 Seeds = 70 %: genau an der Untergrenze, im Rand von 5 pp
+        let ms = (0..20).map(|i| Some(metrics_with(i >= 14, 1, &[]))).collect();
+        let mut ts = targets(20, g);
+        ts.margin.share_pp = 5.0;
+        let mut rep = report(ms);
+        rep.matrix.seeds = ts.seeds.clone();
+        let got = &ts.summarize(&rep).targets[0].verdict.status;
+        assert_eq!(got, want, "Rolle {role}");
+    }
 }
 
 /// B-648/AC-02: Die Datei der Ziele nennt je Ziel eine Rolle; ohne Rolle oder mit unbekannter ist sie ein Prüffehler.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn rollen_in_der_datei() {
-    // Go: `DefaultTargets`, `LoadTargets`, `Targets.checkRoles` (RU28).
+    default_targets().expect("data/balance-targets.json");
+    let raw = shared().expect("Daten").source.read(FILE).expect("Datei der Ziele");
+    let ts = load_targets(&raw).expect("Ziele");
+    let role = format!("\"role\": \"{}\"", ts.targets[0].role);
+    assert!(raw.contains(&role), "Rolle des ersten Ziels nicht in der Datei: {role}");
+    // Die Rolle des ersten Ziels fehlt bzw. ist unbekannt: ein Ladefehler (Go: `checkRoles`).
+    assert!(
+        load_targets(&raw.replacen(&role, "\"role\": \"\"", 1)).is_err(),
+        "fehlende Rolle muss ein Fehler sein"
+    );
+    assert!(
+        load_targets(&raw.replacen(&role, "\"role\": \"boss\"", 1)).is_err(),
+        "unbekannte Rolle muss ein Fehler sein"
+    );
 }
 
 /// B-648/AC-03: Die Leiter deckt Stufen, alle Minibosse und den Endboss der ersten Insel der Welt ab.
@@ -173,9 +241,9 @@ fn kein_blocker_bei_sieg() {
 
 /// B-648/AC-05: Pfeile gegen den letzten Lauf gleicher Konfiguration; result.json hat die Felder für Agenten.
 #[test]
-#[ignore = "wartet auf RU28"]
+#[ignore = "wartet auf RU31"]
 fn vergleich_mit_letztem_lauf_und_result_json() {
-    // Go: `Summary.JSON`, `findPrevious`, `markArrows`, `BuildInsights`, `writeResult` (RU28, RU31).
+    // Go: `findPrevious`, `markArrows`, `BuildInsights`, `writeResult` (insights.go, RU31); `Summary::json` liefert RU28.3.
 }
 
 /// Unterer Median: bei gerader Anzahl der kleinere der beiden mittleren Tage; ohne Tage keiner.

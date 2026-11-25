@@ -1,0 +1,1026 @@
+{
+  "version": 1,
+  "seeds": 20,
+  "pass": false,
+  "targets": [
+    {
+      "measure": "castleHeld",
+      "name": "Burg hält Nacht 1–5",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 75,
+      "upper": 90,
+      "rule": "docs/rules/zielkorridore.md § 1",
+      "value": 80,
+      "status": "knapp",
+      "pass": true
+    },
+    {
+      "measure": "castleHeld",
+      "name": "Burg hält Nacht 1–5",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "grade": "dev",
+      "lower": 99,
+      "upper": 100,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "value": 100,
+      "status": "knapp",
+      "pass": true
+    },
+    {
+      "measure": "castleHeld",
+      "name": "Burg hält Nacht 1–5",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "grade": "easy",
+      "lower": 90,
+      "upper": 100,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "value": 100,
+      "status": "ok",
+      "pass": true
+    },
+    {
+      "measure": "castleHeld",
+      "name": "Burg hält Nacht 1–5",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "grade": "hard",
+      "lower": 50,
+      "upper": 70,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "value": 60,
+      "status": "ok",
+      "pass": true
+    },
+    {
+      "measure": "castleHeld",
+      "name": "Burg hält Nacht 1–5",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "grade": "ultra",
+      "lower": 25,
+      "upper": 45,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "value": 35,
+      "status": "ok",
+      "pass": true
+    },
+    {
+      "measure": "goldAtDawnPerPlayer",
+      "name": "Gold am Morgen je Spieler, Median",
+      "kind": "median",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 20,
+      "upper": 70,
+      "rule": "docs/rules/zielkorridore.md § 1",
+      "value": 17,
+      "status": "verletzt",
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "pass": false
+    },
+    {
+      "measure": "firstWallBeforeDusk1",
+      "name": "Erste Mauer gebaut vor Ende der hellen Phase",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 90,
+      "upper": 100,
+      "rule": "docs/rules/zielkorridore.md § 1",
+      "value": 100,
+      "status": "ok",
+      "pass": true
+    },
+    {
+      "measure": "firstTowerBeforeDusk2",
+      "name": "Erster Turm gebaut vor Ende von Tag 2",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 70,
+      "upper": 100,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "value": 100,
+      "status": "ok",
+      "pass": true
+    },
+    {
+      "measure": "woodAtDawnFrom3",
+      "name": "Holz am Tagesbeginn ≥ 100, ab Tag 3",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 70,
+      "upper": 100,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "value": 85,
+      "status": "ok",
+      "pass": true
+    },
+    {
+      "measure": "hubLevel2BeforeDay5",
+      "name": "Hub-Stufe 2 erreicht vor Tag 5",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 60,
+      "upper": 85,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "value": 0,
+      "status": "verletzt",
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "pass": false
+    },
+    {
+      "measure": "hubLevel3BeforeDay10",
+      "name": "Hub-Stufe 3 erreicht vor Tag 10",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 9,
+      "lower": 40,
+      "upper": 70,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "value": 0,
+      "status": "verletzt",
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "pass": false
+    },
+    {
+      "measure": "destroyedPerWave",
+      "name": "Zerstörte Gebäude je Welle 1–5, Median",
+      "kind": "median",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": null,
+      "upper": 1,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "value": 2,
+      "status": "verletzt",
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "pass": false
+    },
+    {
+      "measure": "fightersAtDawn",
+      "name": "Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8",
+      "kind": "share",
+      "players": 2,
+      "bot": "wirtschaft",
+      "depth": 0,
+      "days": 5,
+      "lower": 70,
+      "upper": 100,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "value": 80,
+      "status": "ok",
+      "pass": true
+    }
+  ],
+  "kennzahlen": {
+    "runs": 120,
+    "firstWallTickMedian": 836.5,
+    "firstWorkshopTickMedian": 9943,
+    "nights": [
+      {
+        "grade": "",
+        "night": 1,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 4.8,
+        "resourceIn": {
+          "wood": 361.3,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 317.1,
+          "stone": 7.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 33.1
+      },
+      {
+        "grade": "",
+        "night": 2,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 84.8,
+        "dayExpense": 103.6,
+        "nightIncome": 0,
+        "nightExpense": 2.6,
+        "resourceIn": {
+          "wood": 367.2,
+          "stone": 4,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 245,
+          "stone": 4.2,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 12
+      },
+      {
+        "grade": "",
+        "night": 3,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 80.1,
+        "dayExpense": 40.1,
+        "nightIncome": 3.1,
+        "nightExpense": 0.3,
+        "resourceIn": {
+          "wood": 84,
+          "stone": 7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 67.2,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 34.3
+      },
+      {
+        "grade": "",
+        "night": 4,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 68.9,
+        "dayExpense": 19.8,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 18.3,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 24.4,
+          "stone": 1.6,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 31.3
+      },
+      {
+        "grade": "",
+        "night": 5,
+        "runs": 40,
+        "survival": 80,
+        "dayIncome": 63.1,
+        "dayExpense": 19.1,
+        "nightIncome": 0.5,
+        "nightExpense": 10,
+        "resourceIn": {
+          "wood": 9.5,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 30.1,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 38.5
+      },
+      {
+        "grade": "dev",
+        "night": 1,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 358.3,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 314.5,
+          "stone": 7.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 34.4
+      },
+      {
+        "grade": "dev",
+        "night": 2,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 45.3,
+        "dayExpense": 78.7,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 332,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 180.5,
+          "stone": 2.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 12.1
+      },
+      {
+        "grade": "dev",
+        "night": 3,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 44.1,
+        "dayExpense": 46.2,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 68.3,
+          "stone": 7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 63.5,
+          "stone": 3.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 22.8
+      },
+      {
+        "grade": "dev",
+        "night": 4,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 39.4,
+        "dayExpense": 31.8,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 37.3,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 37.3,
+          "stone": 3.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 32.2
+      },
+      {
+        "grade": "dev",
+        "night": 5,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 45,
+        "dayExpense": 19.7,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 11.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 11.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 37.4
+      },
+      {
+        "grade": "easy",
+        "night": 1,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 357.8,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 314.5,
+          "stone": 7.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 34.3
+      },
+      {
+        "grade": "easy",
+        "night": 2,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 16.7,
+        "dayExpense": 44,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 249.8,
+          "stone": 2.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 98,
+          "stone": 1.3,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 21.1
+      },
+      {
+        "grade": "easy",
+        "night": 3,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 54.9,
+        "dayExpense": 62.6,
+        "nightIncome": 0.8,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 103.3,
+          "stone": 7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 98.3,
+          "stone": 5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 21.8
+      },
+      {
+        "grade": "easy",
+        "night": 4,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 47.6,
+        "dayExpense": 38.6,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 56.5,
+          "stone": 3.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 56.5,
+          "stone": 3.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 28.5
+      },
+      {
+        "grade": "easy",
+        "night": 5,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 55.5,
+        "dayExpense": 25.1,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 21.8,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 21.8,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 38.2
+      },
+      {
+        "grade": "hard",
+        "night": 1,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 14.5,
+        "resourceIn": {
+          "wood": 360,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 319.7,
+          "stone": 8.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 30.9
+      },
+      {
+        "grade": "hard",
+        "night": 2,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 70,
+        "dayExpense": 86.5,
+        "nightIncome": 0,
+        "nightExpense": 3,
+        "resourceIn": {
+          "wood": 333.5,
+          "stone": 4,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 221,
+          "stone": 3.4,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 11
+      },
+      {
+        "grade": "hard",
+        "night": 3,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 74.5,
+        "dayExpense": 40.2,
+        "nightIncome": 0,
+        "nightExpense": 0.3,
+        "resourceIn": {
+          "wood": 102.3,
+          "stone": 7.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 95.7,
+          "stone": 6.3,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 36
+      },
+      {
+        "grade": "hard",
+        "night": 4,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 68.3,
+        "dayExpense": 20.3,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 26.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 46.8,
+          "stone": 0.6,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 24.7
+      },
+      {
+        "grade": "hard",
+        "night": 5,
+        "runs": 20,
+        "survival": 60,
+        "dayIncome": 44.5,
+        "dayExpense": 16.9,
+        "nightIncome": 0.8,
+        "nightExpense": 13.8,
+        "resourceIn": {
+          "wood": 4.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 38.3,
+          "stone": 0.7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 45.3
+      },
+      {
+        "grade": "ultra",
+        "night": 1,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 16.7,
+        "resourceIn": {
+          "wood": 360.3,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 338.3,
+          "stone": 9.2,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 26.5
+      },
+      {
+        "grade": "ultra",
+        "night": 2,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 67,
+        "dayExpense": 85.5,
+        "nightIncome": 0,
+        "nightExpense": 3,
+        "resourceIn": {
+          "wood": 335.3,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 246,
+          "stone": 3.9,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 11.9
+      },
+      {
+        "grade": "ultra",
+        "night": 3,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 46.7,
+        "dayExpense": 26.9,
+        "nightIncome": 0,
+        "nightExpense": 0.1,
+        "resourceIn": {
+          "wood": 85.5,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 89,
+          "stone": 3.7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 33.5
+      },
+      {
+        "grade": "ultra",
+        "night": 4,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 60.7,
+        "dayExpense": 17.4,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 14,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 43.6,
+          "stone": 2.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 25.5
+      },
+      {
+        "grade": "ultra",
+        "night": 5,
+        "runs": 20,
+        "survival": 35,
+        "dayIncome": 42.1,
+        "dayExpense": 12.5,
+        "nightIncome": 0,
+        "nightExpense": 20,
+        "resourceIn": {
+          "wood": 18.5,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 54.3,
+          "stone": 0.7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 32.1
+      },
+      {
+        "grade": "",
+        "night": 6,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 69.5,
+        "dayExpense": 46.1,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 110.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 118.6,
+          "stone": 0.1,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 16.1
+      },
+      {
+        "grade": "",
+        "night": 7,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 28.9,
+        "dayExpense": 22.2,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 73,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 46.9,
+          "stone": 0.1,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 20
+      },
+      {
+        "grade": "",
+        "night": 8,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 21.8,
+        "dayExpense": 21.8,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 45.8,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 47,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 20.6
+      },
+      {
+        "grade": "",
+        "night": 9,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 23.7,
+        "dayExpense": 23.7,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 42,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 45.1,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 20.8
+      }
+    ]
+  }
+}

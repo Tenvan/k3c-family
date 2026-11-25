@@ -3,8 +3,8 @@
 use k3c_data::balance_targets::{Target, Targets};
 use serde::{Deserialize, Serialize};
 
-use crate::pending::measure_values;
 use crate::run::{Report, RunResult};
+use crate::targets::measure_values;
 
 /// Wert im Korridor, mehr als die Randbreite von jeder gesetzten Grenze entfernt.
 pub const STATUS_OK: &str = "ok";

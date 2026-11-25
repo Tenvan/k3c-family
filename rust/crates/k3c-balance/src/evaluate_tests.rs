@@ -1,5 +1,6 @@
-//! Tests zu `evaluate.rs` (Port der Bewertungs-Tests aus `engine/balance/targets_test.go`; die übrigen Tests der Datei, Laden
-//! und Kennzahl-Tabelle, gehören zu RU28.3).
+//! Tests zu `evaluate.rs` (Port der Bewertungs-Tests aus `engine/balance/targets_test.go`; Laden und Kennzahl-Tabelle
+//! stehen in `targets_tests.rs`). Die Hilfen (`seeds`, `metrics_with`, `report`, `share_target`, `targets`) nutzen auch
+//! die Tests zu Zusammenfassung und Wirtschaft.
 
 use k3c_data::balance_targets::{Target, Targets};
 
@@ -7,12 +8,12 @@ use crate::evaluate::{Evaluate, STATUS_INVALID, STATUS_NARROW, STATUS_OK, STATUS
 use crate::metrics::{DawnMetrics, DayMetrics, Metrics, WaveMetrics};
 use crate::run::{Matrix, Report, RunResult, Scenario};
 
-fn seeds(n: usize) -> Vec<String> {
+pub(crate) fn seeds(n: usize) -> Vec<String> {
     (1..=n).map(|i| i.to_string()).collect()
 }
 
 /// Metrics für feste Werte: gehalten oder gefallen, Tick der ersten Mauer, zerstörte Gebäude je Welle.
-fn metrics_with(fallen: bool, wall_tick: i64, destroyed: &[i64]) -> Metrics {
+pub(crate) fn metrics_with(fallen: bool, wall_tick: i64, destroyed: &[i64]) -> Metrics {
     Metrics {
         days: vec![DayMetrics {
             day: 1,
@@ -45,7 +46,7 @@ fn metrics_with(fallen: bool, wall_tick: i64, destroyed: &[i64]) -> Metrics {
     }
 }
 
-fn report(ms: Vec<Option<Metrics>>) -> Report {
+pub(crate) fn report(ms: Vec<Option<Metrics>>) -> Report {
     let results = ms
         .into_iter()
         .enumerate()
@@ -71,7 +72,7 @@ fn report(ms: Vec<Option<Metrics>>) -> Report {
     }
 }
 
-fn share_target() -> Target {
+pub(crate) fn share_target() -> Target {
     Target {
         measure: "castleHeld".into(),
         name: "x".into(),
@@ -86,7 +87,7 @@ fn share_target() -> Target {
     }
 }
 
-fn targets(n: usize, t: Target) -> Targets {
+pub(crate) fn targets(n: usize, t: Target) -> Targets {
     Targets {
         seeds: seeds(n),
         targets: vec![t],

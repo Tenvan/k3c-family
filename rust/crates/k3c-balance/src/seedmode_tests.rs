@@ -5,6 +5,7 @@ use k3c_data::balance_targets::{FILE, Targets, load_targets};
 
 use crate::island_world::shared;
 use crate::seedmode::{DEV_SEED, SEED_MODE_ALL, SEED_MODE_DEV, SEED_MODE_PICK, SeedModes, seed_text};
+use crate::summary::Summary;
 
 fn names(list: &[&str]) -> Vec<String> {
     list.iter().map(|s| s.to_string()).collect()
@@ -83,7 +84,21 @@ fn bericht_nennt_seed_modus() {
 
 /// Go: `s.MarkdownWith(nil, nil)` nennt den Seed-Modus im Bericht.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn bericht_markdown_nennt_seed_modus() {
-    // `Summary::markdown_with` (summary.go) kommt mit RU28.3.
+    let s = Summary {
+        seeds: 1,
+        seed_mode: SEED_MODE_DEV.into(),
+        seed_names: names(&[DEV_SEED]),
+        ..Summary::default()
+    };
+    assert_eq!(s.seed_text(), "1 Seed, Seed-Modus dev (k3c-dev)");
+    assert!(
+        s.markdown_with(None, None).contains("Seed-Modus dev (k3c-dev)"),
+        "Markdown ohne Seed-Modus"
+    );
+    let old = Summary {
+        seeds: 100,
+        ..Summary::default()
+    };
+    assert_eq!(old.seed_text(), "100 Seeds", "alter Bericht");
 }

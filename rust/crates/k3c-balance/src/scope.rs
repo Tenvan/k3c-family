@@ -8,6 +8,7 @@ use crate::bots::{bot_by_name, check_players};
 use crate::fehler::Fehler;
 use crate::helps::check_helps;
 use crate::island_world::{load_world, shared};
+use crate::targets::{measure_kind, measure_names};
 
 /// Die Rolle „goal“ (Go: `RoleGoal`).
 pub const ROLE_GOAL: &str = "goal";
@@ -36,15 +37,29 @@ pub fn role(g: &Target) -> &str {
     if g.role.is_empty() { ROLE_GOAL } else { &g.role }
 }
 
-/// Die Prüfung eines Ziels (Go: `Target.validate`) ohne die Tabelle der Kennzahlen: Kennzahl und Art gegen `measures`
-/// prüft RU28 (`targets.go`, `economy_measures.go`); `k3c-data` prüft sie beim Laden der Datei ebenfalls noch nicht.
+/// Die Prüfung eines Ziels (Go: `Target.validate`), auch Kennzahl und Art gegen die Tabelle `measures` (`targets.rs`).
 pub fn validate_target(g: &Target) -> Result<(), Fehler> {
     if !matches!(g.role.as_str(), "" | ROLE_GOAL | ROLE_GUARD | ROLE_INFO) {
         return Err(Fehler::Daten(format!("role {:?}, erlaubt: goal, guard, info", g.role)));
     }
     check_helps(&g.helps, &g.world)?;
+    let Some(kind) = measure_kind(&g.measure) else {
+        return Err(Fehler::Daten(format!(
+            "kennzahl {:?} unbekannt (bekannt: {})",
+            g.measure,
+            measure_names().join(", ")
+        )));
+    };
     if g.name.is_empty() || g.rule.is_empty() {
         return Err(Fehler::Daten("name und rule sind Pflicht".into()));
+    }
+    if g.kind != kind.name() {
+        return Err(Fehler::Daten(format!(
+            "art {:?} passt nicht zur Kennzahl {} ({})",
+            g.kind,
+            g.measure,
+            kind.name()
+        )));
     }
     if bot_by_name(&g.bot).is_none() {
         return Err(Fehler::Profil(format!("unbekannter Bot {:?}", g.bot)));

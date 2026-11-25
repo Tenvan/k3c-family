@@ -1,8 +1,18 @@
-//! Tests zu `figures.rs` (Port von `engine/balance/figures_test.go`; `TestAlterBerichtLesbar` gehört mit `ReadSummary` zu
-//! RU28.3).
+//! Tests zu `figures.rs` (Port von `engine/balance/figures_test.go`).
 
 use crate::figures::figures_of;
 use crate::run::{Matrix, Report, run};
+use crate::summary::read_summary;
+
+/// Ältere Berichte ohne Varianten und Kennzahlen bleiben lesbar.
+#[test]
+fn alter_bericht_lesbar() {
+    let s = read_summary(r#"{"version":1,"seeds":3,"pass":true,"targets":[]}"#).expect("Bericht");
+    assert!(
+        s.seeds == 3 && s.varianten.is_empty() && s.kennzahlen.is_none(),
+        "{s:?}"
+    );
+}
 
 /// WZ28.4/AC-04 (B-596/AC-07): Die neuen Kennzahlen sind in einem kleinen Szenario plausibel gefüllt.
 #[test]

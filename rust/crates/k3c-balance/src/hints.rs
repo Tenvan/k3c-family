@@ -9,7 +9,9 @@ use k3c_data::Source;
 use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::fehler::Fehler;
-use crate::pending::{Entry, LIGHT_GREEN, LIGHT_RED, LIGHT_YELLOW, measure_known};
+use crate::pending::{LIGHT_GREEN, LIGHT_RED, LIGHT_YELLOW};
+use crate::summary::Entry;
+use crate::targets::measure_known;
 
 /// `[von, bis]` mit `None` = offen (Go: `Band`).
 pub type Band = [Option<f64>; 2];
@@ -157,21 +159,22 @@ impl Hints {
     /// Eintrag in balance-hints.json (z. B. ein neues) liefert die leere Liste, sonst trägt das JSON `null` und die
     /// Oberfläche stürzt bei `.length` ab (Go: `leversFor`).
     pub fn levers_for(&self, e: &Entry) -> &[Lever] {
-        let Some(l) = self.levers.get(&e.measure) else {
+        let (t, value) = (&e.verdict.target, e.verdict.value);
+        let Some(l) = self.levers.get(&t.measure) else {
             return &[];
         };
-        if let Some(lo) = e.lower
-            && e.value < lo
+        if let Some(lo) = t.lower
+            && value < lo
         {
             return &l.low;
         }
-        if let Some(hi) = e.upper
-            && e.value > hi
+        if let Some(hi) = t.upper
+            && value > hi
         {
             return &l.high;
         }
-        if let Some(lo) = e.lower
-            && e.upper.is_none_or(|hi| e.value - lo < hi - e.value)
+        if let Some(lo) = t.lower
+            && t.upper.is_none_or(|hi| value - lo < hi - value)
         {
             return &l.low; // knapp an der Untergrenze
         }

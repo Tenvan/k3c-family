@@ -44,3 +44,36 @@ func TestRustRef(t *testing.T) {
 		})
 	}
 }
+
+// TestRustRefSummary schreibt mit -write die Zusammenfassung aus dem echten Bericht simtest-run-7 (kein Sim-Lauf): JSON
+// nach ReadSummary und Markdown ohne Auswertung; ohne -write vergleicht er mit den Dateien (RU28.3).
+func TestRustRefSummary(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join(rustRefDir, "insights-run7.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, err := ReadSummary(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	js, err := s.JSON()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for name, got := range map[string]string{"summary-run7.json": string(js), "summary-run7.md": s.MarkdownWith(nil, nil)} {
+		path := filepath.Join(rustRefDir, name)
+		if *write {
+			if err := os.WriteFile(path, []byte(got), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			continue
+		}
+		want, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatalf("%v (schreiben mit -write)", err)
+		}
+		if string(want) != got {
+			t.Fatalf("%s weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)", name)
+		}
+	}
+}

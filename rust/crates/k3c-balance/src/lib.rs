@@ -28,6 +28,9 @@ pub mod run;
 pub mod scope;
 pub mod seedmode;
 pub mod sha256;
+pub mod summary;
+pub mod summary_text;
+pub mod targets;
 #[cfg(test)]
 mod testutil;
 
@@ -47,6 +50,8 @@ mod bot_perf_tests;
 mod bots_tests;
 #[cfg(test)]
 mod crown_bot_tests;
+#[cfg(test)]
+mod economy_tests;
 #[cfg(test)]
 mod evaluate_tests;
 #[cfg(test)]
@@ -75,6 +80,10 @@ mod rustref_tests;
 mod seedmode_tests;
 #[cfg(test)]
 mod sha256_tests;
+#[cfg(test)]
+mod summary_tests;
+#[cfg(test)]
+mod targets_tests;
 
 pub use fehler::Fehler;
 

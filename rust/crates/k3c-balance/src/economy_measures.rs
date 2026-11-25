@@ -26,6 +26,16 @@ pub enum MeasureKind {
     Median,
 }
 
+impl MeasureKind {
+    /// Der Name der Art in der Datei der Ziele (Go: `KindShare` = „share“, `KindMedian` = „median“).
+    pub fn name(self) -> &'static str {
+        match self {
+            MeasureKind::Share => "share",
+            MeasureKind::Median => "median",
+        }
+    }
+}
+
 /// Die Schlüssel der Wirtschafts-Kennzahlen (Go: `economyMeasures`; `targets.rs` nimmt sie in seine Tabelle auf).
 pub const ECONOMY_MEASURES: [&str; 6] = [
     "goldAtDawnPerPlayer",

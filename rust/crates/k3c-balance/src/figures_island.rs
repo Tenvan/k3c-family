@@ -8,8 +8,9 @@ use serde::{Deserialize, Serialize};
 use crate::figures::round1;
 use crate::island_world::shared;
 use crate::metrics::Metrics;
-use crate::pending::{median_or_nil, num};
+use crate::pending::median_or_nil;
 use crate::run::Report;
+use crate::summary_text::num;
 
 /// Eine Zeile je Tiefe, je Boss und der Endboss (Go: `IslandFigures`).
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]

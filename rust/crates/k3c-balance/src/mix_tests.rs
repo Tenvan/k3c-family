@@ -2,6 +2,8 @@
 
 use crate::bots::{Bot, bot_by_name, check_players};
 use crate::run::{Matrix, Scenario, new_island, run_one};
+use crate::scope::{Restrict, Scope};
+use crate::targets::default_targets;
 
 /// Eine Mischung „a+b“ gibt Spieler 1 das Profil a, Spieler 2 das Profil b.
 #[test]
@@ -66,7 +68,20 @@ fn mischung_im_lauf() {
 
 /// Go: `ts.Restrict(Scope{Players: 2, Bot: "saver+passive"})` nimmt die Mischung an, mit drei Spielern lehnt es sie ab.
 #[test]
-#[ignore = "wartet auf RU28"]
 fn mischung_im_lauf_ziele() {
-    // `DefaultTargets` und `Targets::restrict` kommen mit RU28.
+    let ts = default_targets().expect("Ziele");
+    let two = Scope {
+        players: Some(2),
+        bot: "saver+passive".into(),
+        ..Scope::default()
+    };
+    assert!(ts.restrict(&two).is_ok(), "Ziele mit Mischung");
+    let three = Scope {
+        players: Some(3),
+        ..two
+    };
+    assert!(
+        ts.restrict(&three).is_err(),
+        "Ziele: Mischung mit falscher Spielerzahl angenommen"
+    );
 }
