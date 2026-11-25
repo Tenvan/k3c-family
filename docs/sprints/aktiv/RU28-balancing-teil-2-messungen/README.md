@@ -1,6 +1,6 @@
 # RU28 · SIM · Rust-Balance-Crate Teil 2: Messungen und Auswertung
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit

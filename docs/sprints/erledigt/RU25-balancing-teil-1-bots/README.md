@@ -1,6 +1,6 @@
 # RU25 · SIM · Rust-Balance-Crate Teil 1: Bots
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -99,7 +99,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU25.3 | `RU25.3-balance-bot-boss-learn-crown-helps-hints.md` | Umsetzung | autonom | fertig |
 | RU25.4 | `RU25.4-balance-run-parallel-progress.md` | Umsetzung | autonom | fertig |
 | RU25.5 | `RU25.5-balance-replay-island-world-seedmode-scope.md` | Umsetzung | autonom | fertig |
-| RU25.6 | `RU25.6-review.md` | Review | autonom | offen |
+| RU25.6 | `RU25.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -107,6 +107,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-25: AC-01 und AC-02 erfüllt (Sessions RU25.1 bis RU25.5, Review RU25.6): Bots, Wirtschaft, Boss, Lauf, Replay und Scope in `rust/crates/k3c-balance` portiert, 64 Tests grün, `task rust:lint` grün. Offen: 23 ignorierte Tests (RU28 und lang). Neue Tickets: B-1277, B-1278 (RU28). Keine Sim-, Balance- oder Gen-Läufe; sie liegen in BAL11.
