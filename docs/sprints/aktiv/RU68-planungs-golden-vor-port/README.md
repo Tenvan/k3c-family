@@ -62,7 +62,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU68.1 | `RU68.1-golden-format-lader.md` | Umsetzung | autonom | offen |
+| RU68.1 | `RU68.1-golden-format-lader.md` | Umsetzung | autonom | fertig |
 | RU68.2 | `RU68.2-golden-faelle-tickets-sprints.md` | Umsetzung | autonom | offen |
 | RU68.3 | `RU68.3-golden-faelle-sessions-projekte-wellen.md` | Umsetzung | autonom | offen |
 | RU68.4 | `RU68.4-review.md` | Review | autonom | offen |
