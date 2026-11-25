@@ -59,12 +59,12 @@ pub fn add_res(c: &mut Cost, r: &str, amount: i64) {
 }
 
 /// Orte aller Plätze, die gerade Münzen nehmen.
-fn payable_sites_x(w: &World) -> Vec<f64> {
+pub(crate) fn payable_sites_x(w: &World) -> Vec<f64> {
     w.sites.iter().filter(|s| gold_left(w, s).1).map(|s| s.x).collect()
 }
 
 /// `x` liegt in Zahl-Reichweite eines der Orte.
-fn near_any(x: f64, xs: &[f64]) -> bool {
+pub(crate) fn near_any(x: f64, xs: &[f64]) -> bool {
     let range = prices().pay_range;
     xs.iter().any(|o| (o - x).abs() <= range)
 }
