@@ -10,7 +10,10 @@ use std::process::ExitCode;
 use k3c_data::Source;
 
 pub mod balance;
+mod balance_run;
 mod balance_specs;
+pub mod balance_window;
+mod balance_windowed;
 pub mod emit;
 pub mod enginetools_level;
 pub mod enginetools_run;
@@ -21,6 +24,7 @@ pub mod hub;
 pub mod input;
 pub mod input_balance;
 pub mod input_world;
+pub mod save;
 pub mod sensitivity;
 pub mod stepper;
 pub mod stop;
@@ -34,6 +38,8 @@ mod balance_targets_tests;
 #[cfg(test)]
 mod balance_tests;
 #[cfg(test)]
+mod balance_window_tests;
+#[cfg(test)]
 mod enginetools_tests;
 #[cfg(test)]
 mod hub_tests;
@@ -41,6 +47,8 @@ mod hub_tests;
 mod input_tests;
 #[cfg(test)]
 mod mod_tests;
+#[cfg(test)]
+mod save_tests;
 #[cfg(test)]
 mod testutil;
 #[cfg(test)]
@@ -178,6 +186,14 @@ fn dispatch(
                 stop: stop.clone(),
             };
             balance::run(rest, stdin, &mut env)
+        }
+        "save" => {
+            let flags = parse_flags(rest)?;
+            check_flags(cmd, &flags)?;
+            let src = data_source(&flags)?;
+            let input = input_world::read_save_input(&read_source(&flags.input, stdin)?)?;
+            out.result_text(&save::run(&src, &input)?);
+            Ok(())
         }
         "world" | "hub" => {
             let flags = parse_flags(rest)?;

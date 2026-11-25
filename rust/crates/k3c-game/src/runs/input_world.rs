@@ -26,6 +26,28 @@ pub struct HubInput {
     pub raw: String,
 }
 
+/// Die Eingabe von `sim save` (RU40.2): Seed und Ordner der Spielstände.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct SaveInput {
+    pub seed: String,
+    pub saves: String,
+}
+
+/// Liest die Eingabe von `save`.
+pub fn read_save_input(raw: &str) -> Result<SaveInput, RunError> {
+    let obj = read_object(raw, "saveInput")?;
+    let mut r = SaveInput::default();
+    for (name, v) in fields(&obj, &["seed", "saves"])? {
+        let value = text(v, &format!("saveInput.{name}"))?.unwrap_or_default();
+        if name == "seed" {
+            r.seed = value;
+        } else {
+            r.saves = value;
+        }
+    }
+    Ok(r)
+}
+
 /// Liest die Eingabe von `world`.
 pub fn read_world_input(raw: &str) -> Result<WorldInput, RunError> {
     let obj = read_object(raw, "worldInput")?;

@@ -110,6 +110,11 @@ pub fn run(o: &TargetOpts, v: &mut Env) -> Result<(), RunError> {
         .then(move || Box::new(move |done: usize, total: usize| out.progress(done as i64, total as i64)) as ProgressFn);
     let report = with_variants(&o.variants, || ts.run_targets_progress(o.seeds, Some(tick), progress))
         .map_err(|e| fail(e, &stop))?;
+    finish(o, &ts, report, start, v)
+}
+
+/// Bewertet den Bericht der Zielläufe, schreibt ihn und vergleicht mit der Baseline (headless wie im Fenster).
+pub fn finish(o: &TargetOpts, ts: &Targets, report: Report, start: Instant, v: &mut Env) -> Result<(), RunError> {
     let runs = report.results.len();
     let mut sum = ts.summarize(&report);
     sum.varianten.clone_from(&o.variants);

@@ -257,14 +257,12 @@ fn tune_standardwerte_aus_balance() {
     assert_eq!(p.int("budget"), k3c_balance::tune::DEFAULT_TUNE_BUDGET);
 }
 
-/// `--window` ist bis RU40.2 ein Aufruffehler, `--speed` ohne Fenster ebenso.
+/// `--speed` ohne Fenster ist ein Aufruffehler (`--window` selbst: `balance_window_tests.rs`).
 #[test]
-fn fenster_folgt_mit_ru40_2() {
-    for (list, text) in [
-        (&["balance", "--window"][..], "RU40.2"),
-        (&["balance", "--speed", "2"], "--speed gibt es nur"),
-    ] {
-        let (code, out, _) = call("", list);
-        assert!(code == EXIT_USAGE && out.contains(text), "{list:?}: Exit {code}, {out}");
-    }
+fn speed_ohne_fenster() {
+    let (code, out, _) = call("", &["balance", "--speed", "2"]);
+    assert!(
+        code == EXIT_USAGE && out.contains("--speed gibt es nur"),
+        "Exit {code}, {out}"
+    );
 }

@@ -7,7 +7,7 @@ Fenster. Die Schnittstelle ist die von `cmd/k3c-sim/main.go` (Kopfkommentar), mi
 ## Aufruf
 
 ```
-k3c-game sim <run|level|balance|world|hub> [--input DATEI|-] [--headless|--window] [--speed N] [--data ORDNER] [--stop-stdin]
+k3c-game sim <run|level|balance|world|hub|save> [--input DATEI|-] [--headless|--window] [--speed N] [--data ORDNER] [--stop-stdin]
 ```
 
 Der Unterbefehl steht direkt nach `sim`, die Schalter davor oder dahinter in beliebiger Folge (`-x`, `--x`, `--x=wert`,
@@ -33,8 +33,9 @@ Unbekannte JSON-Felder sind Exit 2 (`json: unknown field "x"`), die Namen gelten
 | `world` | `{"op":"level"\|"values"\|"check",…}` für den Welten-Editor | `result` mit `report` | RU33.2 |
 | `hub` | `{"op":"plan","raw":…}` für den Gebäude-Planer | `result` mit `report` | RU33.2 |
 | `balance` | JSON mit Flag-Namen als Schlüssel (`{"targets":true,"seed-list":"k3c-dev"}`), Flags der Befehlszeile stehen danach | `progress`, `result` mit `report` oder `report` mit Dateien | RU40 |
+| `save` | `{"seed","saves"}`: Seed `^[a-z0-9-]{1,27}$`, Ordner der Spielstände (Abschnitt `save`) | `result` mit `text` (`voll-<seed>`) | RU40.2 |
 
-`world` braucht einen Daten-Ordner (`--data`, es listet `worlds/`; eingebettete Daten genügen nicht): ohne ihn Exit 1. `hub` liest nur `buildings.json` und läuft auch mit eingebetteten Daten. `world` und `hub` kennen `--window` nicht (Exit 2). `balance` läuft headless seit RU40.1 (siehe Abschnitt `balance`); `balance --window` antwortet bis RU40.2 mit `{"event":"error","message":"sim balance --window folgt mit RU40.2"}` und Exit 2. Biome von `run` und `level`: `forest` (Standard), `cave`, `mine`; `ticks` 1 bis 100000 (30 Ticks je Sekunde),
+`world` braucht einen Daten-Ordner (`--data`, es listet `worlds/`; eingebettete Daten genügen nicht): ohne ihn Exit 1. `hub` liest nur `buildings.json` und läuft auch mit eingebetteten Daten. `world`, `hub` und `save` kennen `--window` nicht (Exit 2). `balance` läuft headless seit RU40.1 und mit Fenster seit RU40.2 (siehe Abschnitte `balance` und `balance --window`). Biome von `run` und `level`: `forest` (Standard), `cave`, `mine`; `ticks` 1 bis 100000 (30 Ticks je Sekunde),
 höchstens 100 Segmente, `player` 0 bis 3.
 
 ## Ausgabe
@@ -103,6 +104,25 @@ Unterschiede zu Go:
 - **Abbruch** (`--stop-stdin`): zwischen zwei Läufen (Matrix, `--targets`, Sensitivität). `--tune` prüft ihn erst nach jedem Punkt,
   nicht nach jedem Lauf (`TuneOptions` hat keinen Rückruf je Lauf). Danach `aborted`, Exit 130, kein Bericht.
 - **`--data`** gilt für alle Läufe (Daten im Speicher über `k3c_balance::vary::with_data`).
+
+## balance --window (RU40.2)
+
+`--window` zeigt die Läufe von Matrix, `--targets` und `--play DATEI` nacheinander (nicht parallel) in einem Fenster
+(`runs/balance_window.rs`, `BalanceApp`; die Läufe in Takte zerlegt: `runs/balance_run.rs`, die Wahl des Laufs
+`runs/balance_windowed.rs`). Jedes Szenario läuft mit dem Bot-Schritt von `k3c_balance::run` (dieselben öffentlichen Bausteine,
+daher derselbe Bericht wie headless, bei jedem `--speed`: Test `balance_window_tests.rs`, Vergleich mit der Fixture
+`balance-matrix-klein`). Gezeigt wird die erste Stufe mit einem Monarchen; ab zwei Monarchen zwei Zellen übereinander. Ergebnis,
+Berichtsdateien, `--out`, `--replay-dir`, `--baseline`, Exit-Codes wie headless; `--progress` meldet nach jedem Lauf.
+`--tune`, `--vary`, `--curves`, `--insights` und `--param` kennen kein Fenster (Exit 2, `--window gilt für …`): sie rechnen sehr viele
+Läufe oder gar keinen. Fenster zu vor dem Ende: `aborted`, Exit 130, kein Bericht; ohne Bildschirm Zeile `error`, Exit 1.
+
+## save (RU40.2)
+
+`k3c-game sim save` legt den Spielstand „voll ausgebaut“ an, den „Im Spiel ansehen“ der Workbench braucht (Port von
+`room.Manager.FullSave` im Dev-Modus, `k3c-room`, `full_save`). Eingabe `{"seed":"…","saves":"<Ordner>"}`; der Stand liegt als
+`<Ordner>/voll-<seed>.json` (ein gleichnamiger wird überschrieben), Ausgabe `{"event":"result","text":"voll-<seed>"}`. Der Seed
+muss `^[a-z0-9-]{1,27}$` entsprechen, sonst Exit 2 (wie `--window`, fehlender Ordner, unbekanntes Feld). `savedAt` ist die
+Wanduhr; gleicher Seed ergibt denselben Stand bis auf dieses Feld. Daten aus `--data` (sonst wie das Spiel).
 
 ## Berichtsdateien
 

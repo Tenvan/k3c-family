@@ -104,7 +104,7 @@ fn schalter_widersprueche() {
         (&["level", "--window"], "--window gibt es nur bei run und balance"),
         (&["world", "--window"], "--window gibt es nur bei run und balance"),
         (&["run", "--stop-stdin"], "--stop-stdin braucht --input"),
-        (&["balance", "--window"], "folgt mit RU40.2"),
+        (&["balance", "--window", "--curves"], "--window gilt für"),
     ];
     for (args, text) in cases {
         let (code, out, _) = call(r#"{"seed":"1","ticks":1}"#, args);

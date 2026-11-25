@@ -52,7 +52,7 @@ pub struct RunApp {
     pub frames: u64,
 }
 
-fn seats(n: i64, w: &k3c_sim::state::World) -> Vec<Seat> {
+pub(super) fn seats(n: i64, w: &k3c_sim::state::World) -> Vec<Seat> {
     (0..n.min(MAX_CELLS))
         .map(|i| Seat {
             player: i,

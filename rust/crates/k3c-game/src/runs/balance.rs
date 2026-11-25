@@ -12,7 +12,7 @@ use std::path::Path;
 use std::sync::Arc;
 
 use k3c_balance::fehler::Fehler;
-use k3c_balance::replay::{Replay, play, read_replay};
+use k3c_balance::replay::{Playback, Replay, play, read_replay};
 use k3c_balance::run::{Matrix, Report, Tick, run as run_matrix_in};
 use k3c_balance::vary::with_data;
 
@@ -24,7 +24,7 @@ use super::gotext::quote;
 use super::input::Flags;
 use super::input_balance::{balance_args, cut_input};
 use super::stop::Stop;
-use super::{sensitivity, targets, tune};
+use super::{balance_windowed, sensitivity, targets, tune};
 
 pub use super::balance_specs::SPECS;
 
@@ -129,20 +129,21 @@ fn run_inner(args: &[String], stdin: &mut dyn Read, v: &mut Env) -> Result<(), R
         stop_stdin: p.flag("stop-stdin"),
     };
     super::check_flags("balance", &f)?;
-    if f.window {
-        return Err(usage("sim balance --window folgt mit RU40.2"));
-    }
+    let window = f.window.then(|| f.speed.unwrap_or(1));
     if f.data.is_none() {
-        return dispatch(&p, v);
+        return dispatch(&p, v, window);
     }
     let src = super::data_source(&f)?;
-    with_data(src, || Ok(dispatch(&p, v))).map_err(|e| fail(e, &v.stop))?
+    with_data(src, || Ok(dispatch(&p, v, window))).map_err(|e| fail(e, &v.stop))?
 }
 
-/// Wählt den Lauf wie Gos `cmdBalance`.
-fn dispatch(p: &Parsed, v: &mut Env) -> Result<(), RunError> {
+/// Wählt den Lauf wie Gos `cmdBalance`; `window` ist die Geschwindigkeit von `--window` (RU40.2).
+fn dispatch(p: &Parsed, v: &mut Env, window: Option<i64>) -> Result<(), RunError> {
     let vary = sensitivity::VaryOpts::from(p);
     check_combo(p, &vary).map_err(usage)?;
+    if let Some(speed) = window {
+        return balance_windowed::run(p, &vary, v, speed);
+    }
     if !p.text("insights").is_empty() {
         return targets::run_insights(&p.text("insights"), v);
     }
@@ -196,18 +197,30 @@ fn seed_names(n: i64, list: &str) -> Vec<String> {
 /// Spielt die Szenario-Matrix (ohne `--targets`) und schreibt den Bericht nach `--out` oder als Zeile `result`.
 fn run_matrix(p: &Parsed, v: &mut Env) -> Result<(), RunError> {
     let m = Matrix {
+        tick: Some(v.tick()),
+        ..matrix_of(p)?
+    };
+    let report = run_matrix_in(&m).map_err(|e| fail(e, &v.stop))?;
+    write_matrix(&report, p, v)
+}
+
+/// Die Matrix aus den Schaltern (Go: `cmdBalance`).
+pub fn matrix_of(p: &Parsed) -> Result<Matrix, RunError> {
+    Ok(Matrix {
         seeds: seed_names(p.int("seeds"), &p.text("seed-list")),
         players: ints(&p.text("players"))?,
         bots: split(&p.text("bots")),
         depths: ints(&p.text("depths"))?,
         days: p.int("days"),
         gold_threshold: p.int("gold-threshold"),
-        tick: Some(v.tick()),
         legacy: p.flag("legacy"),
         ..Matrix::default()
-    };
-    let report = run_matrix_in(&m).map_err(|e| fail(e, &v.stop))?;
-    write_replays(&report, &p.text("replay-dir"))?;
+    })
+}
+
+/// Schreibt Replays und Bericht der Matrix (headless wie im Fenster).
+pub fn write_matrix(report: &Report, p: &Parsed, v: &mut Env) -> Result<(), RunError> {
+    write_replays(report, &p.text("replay-dir"))?;
     let text = report.json().map_err(|e| fail(e, &v.stop))?;
     write(&p.text("out"), &text, v)
 }
@@ -240,10 +253,21 @@ pub fn write_replays(r: &Report, dir: &str) -> Result<(), RunError> {
 
 /// Spielt eine Replay-Datei ab und schreibt Ticks, Endzustand-Hash, Burgfall-Tick und Warnungen als JSON (`--play`).
 fn play_file(path: &str, out: &str, legacy: bool, v: &mut Env) -> Result<(), RunError> {
+    let r = read_replay_file(path, legacy)?;
+    let pb = play(&r).map_err(|e| fail(e, &v.stop))?;
+    write_playback(&pb, out, v)
+}
+
+/// Liest eine Aufnahme (`--play`).
+pub fn read_replay_file(path: &str, legacy: bool) -> Result<Replay, RunError> {
     let raw = std::fs::read_to_string(path).map_err(|e| io(&e))?;
     let mut r: Replay = read_replay(&raw).map_err(|e| RunError::Failed(format!("{path}: {e}")))?;
     r.scenario.legacy = legacy;
-    let pb = play(&r).map_err(|e| fail(e, &v.stop))?;
+    Ok(r)
+}
+
+/// Schreibt das Ergebnis einer Wiedergabe (headless wie im Fenster).
+pub fn write_playback(pb: &Playback, out: &str, v: &mut Env) -> Result<(), RunError> {
     for w in &pb.warnings {
         v.logf(&format!("🚫 k3c-game sim: Warnung: {w}"));
     }
