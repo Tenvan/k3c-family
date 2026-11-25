@@ -11,11 +11,16 @@ pub mod crown_bot;
 pub mod fehler;
 pub mod helps;
 pub mod hints;
+pub mod parallel;
 pub mod pending;
 pub mod prices;
+pub mod progress;
+pub mod run;
 #[cfg(test)]
 mod testutil;
 
+#[cfg(test)]
+mod balance_tests;
 #[cfg(test)]
 mod bot_abstieg_tests;
 #[cfg(test)]
@@ -32,6 +37,12 @@ mod crown_bot_tests;
 mod helps_tests;
 #[cfg(test)]
 mod hints_tests;
+#[cfg(test)]
+mod mix_tests;
+#[cfg(test)]
+mod parallel_tests;
+#[cfg(test)]
+mod progress_tests;
 
 pub use fehler::Fehler;
 

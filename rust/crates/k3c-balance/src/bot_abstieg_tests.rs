@@ -30,7 +30,8 @@ fn bots_steigen_erst_nach_dem_miniboss() {
     );
 }
 
-/// Go: `TestOhneWorldKeinAbstieg` läuft über `mustRun` (RU25.4, `run.rs`): ohne `World` im Szenario erreicht `coop2` Tiefe 0.
+/// Go: `TestOhneWorldKeinAbstieg` läuft über `mustRun` (`run.rs`) und liest `ReachedDepth` und `Stages` der Kennzahlen:
+/// ohne `World` im Szenario erreicht `coop2` Tiefe 0.
 #[test]
-#[ignore = "wartet auf RU25.4"]
+#[ignore = "wartet auf RU28"]
 fn ohne_world_kein_abstieg() {}
