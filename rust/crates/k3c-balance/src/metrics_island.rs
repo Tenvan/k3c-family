@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::bots::economy_view;
 use crate::metrics::{Collector, first};
-use crate::pending::{load_ship, ship_needs};
+use crate::ship_need::{load_ship, ship_needs};
 
 /// Eine Stufe der Insel (Reihenfolge = Stufenindex). `arrival_*` ist der erste Tick, an dem ein Monarch auf der Stufe
 /// stand (Stufe 0: Tick 0); `null`: nie erreicht.

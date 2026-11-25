@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::bots::economy_view;
 use crate::metrics_island::{BossMetrics, StageMetrics};
-use crate::pending::ShipNeed;
+use crate::ship_need::ShipNeed;
 
 /// Die Kennzahlen eines Laufs; feste Feldreihenfolge, damit das JSON byte-gleich bleibt.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]

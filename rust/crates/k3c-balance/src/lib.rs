@@ -1,5 +1,6 @@
 //! Balancing und Testläufe: Port von engine/balance.
 
+pub mod baselines;
 pub mod bot_abstieg;
 pub mod bot_boss;
 pub mod bot_clear;
@@ -8,6 +9,7 @@ pub mod bot_material;
 pub mod bot_wirtschaft;
 pub mod bots;
 pub mod crown_bot;
+pub mod delta;
 pub mod economy_measures;
 pub mod evaluate;
 pub mod fehler;
@@ -28,6 +30,7 @@ pub mod run;
 pub mod scope;
 pub mod seedmode;
 pub mod sha256;
+pub mod ship_need;
 pub mod summary;
 pub mod summary_text;
 pub mod targets;
@@ -36,6 +39,8 @@ mod testutil;
 
 #[cfg(test)]
 mod balance_tests;
+#[cfg(test)]
+mod baselines_tests;
 #[cfg(test)]
 mod bot_abstieg_tests;
 #[cfg(test)]
@@ -50,6 +55,8 @@ mod bot_perf_tests;
 mod bots_tests;
 #[cfg(test)]
 mod crown_bot_tests;
+#[cfg(test)]
+mod delta_tests;
 #[cfg(test)]
 mod economy_tests;
 #[cfg(test)]
@@ -80,6 +87,8 @@ mod rustref_tests;
 mod seedmode_tests;
 #[cfg(test)]
 mod sha256_tests;
+#[cfg(test)]
+mod ship_need_tests;
 #[cfg(test)]
 mod summary_tests;
 #[cfg(test)]

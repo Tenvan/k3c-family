@@ -7,8 +7,9 @@ use serde::{Deserialize, Serialize};
 use crate::economy_measures::b2f;
 use crate::figures_island::{IslandFigures, island_figures_of};
 use crate::metrics::DayMetrics;
-use crate::pending::{ShipFigures, median_or_nil, ship_figures_of};
+use crate::pending::median_or_nil;
 use crate::run::Report;
+use crate::ship_need::{ShipFigures, ship_figures_of};
 
 /// Die Kennzahlen eines Berichts (Go: `Figures`). Mediane über die Läufe, in denen es den Zeitpunkt gab (null: in keinem).
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
