@@ -86,6 +86,24 @@ pub fn from_island_save_in(
     Ok(isl)
 }
 
+/// Die abgeschlossenen Inseln des Stands gibt es in der Welt und enthalten nicht die aktuelle.
+fn check_completed(world: &WorldDef, s: &IslandSave, current: &str) -> Result<(), Fehler> {
+    for id in &s.completed {
+        if !world.islands.iter().any(|d| &d.id == id) {
+            return Err(Fehler::Spielstand(format!(
+                "spielstand: abgeschlossene Insel {id:?} gibt es in Welt {:?} nicht",
+                s.world
+            )));
+        }
+        if id == current {
+            return Err(Fehler::Spielstand(format!(
+                "spielstand: aktuelle Insel {id:?} steht unter den abgeschlossenen"
+            )));
+        }
+    }
+    Ok(())
+}
+
 /// Stellt die gespeicherten Spieler in ihre Stufe und ordnet jede Stufe nach Index.
 fn place_players(isl: &mut Island, s: &IslandSave) -> Result<(), Fehler> {
     // Die Stelle des Monarchen ist flüchtig wie Gegner und Münzen am Boden (B-814, gewollt): `IslandPlayerSave` trägt keine

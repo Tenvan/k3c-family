@@ -2,15 +2,12 @@ package mcpsrv
 
 import (
 	"context"
-	"os"
-	"path/filepath"
 	"slices"
 	"strings"
 	"testing"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"k3c/tools/workkit/mcpkit"
 )
 
 // connect verbindet einen Client über den In-Memory-Transport des SDK mit s (wie in k3c-workbench).
@@ -103,16 +100,3 @@ func TestInstructionsNennenJedesTool(t *testing.T) {
 	}
 }
 
-// B-924/B-925: level_generate rechnet im Prozess des Studios und lehnt einen fremden Checkout ab.
-func TestLevelGenerateLehntFremdenCheckoutAb(t *testing.T) {
-	t.Parallel()
-	main := t.TempDir()
-	if err := os.WriteFile(filepath.Join(main, "go.mod"), []byte("module k3c\n"), 0o600); err != nil {
-		t.Fatal(err)
-	}
-	s := New(Config{Root: main, Version: "test"})
-	ctx := mcpkit.WithWorkspace(context.Background(), workspace{Root: filepath.Join(main, ".claude", "worktrees", "wt-a")})
-	if _, err := s.levelGenerate(ctx, levelIn{Seed: "1"}); err == nil || !strings.Contains(err.Error(), "nicht der Checkout dieses Studios") {
-		t.Errorf("level_generate: %v", err)
-	}
-}

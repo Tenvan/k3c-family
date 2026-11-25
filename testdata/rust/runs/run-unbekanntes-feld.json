@@ -1,0 +1,10 @@
+{
+  "args": [
+    "run"
+  ],
+  "stdin": "{\"biome\":\"forest\",\"seed\":\"0\",\"ticks\":10,\"tempo\":3}",
+  "code": 2,
+  "out": [
+    "{\"event\":\"error\",\"message\":\"Eingabe-JSON: json: unknown field \\\"tempo\\\"\"}"
+  ]
+}

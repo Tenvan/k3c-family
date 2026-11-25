@@ -199,7 +199,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1155](B-1155-welt-schalter-nach-ru41-entfernen.md) | SIM | Schuld | niedrig | offen | RU62 | Welt-Schalter der Features nach RU41 als Felder der Welt-Datei führen |
 | [B-1160](B-1160-hub-platzhalter-rechteck.md) | CLI | Problem | mittel | offen | LA1 | Im Hub steht neben dem Bogner-Haus kein einfarbiges Platzhalter-Rechteck mehr |
 | [B-1161](B-1161-fackeln-alle-gebaeude-monarch-licht.md) | CLI | Idee | mittel | offen | LA1 | Nachts tragen alle Gebäude Fackeln und der Monarch hat ein folgendes Licht (Glühwürmchen oder kleiner Stern) |
-| [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU36 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
+| [B-1162](B-1162-messluecken-gate-g4.md) | CLI | Schuld | mittel | offen | RU43 | Die Gate-Messung ist vollständig: Lauf mit 300 s und VSync, FPS ohne Deckel, RAM von Rust gegen Go |
 | [B-1163](B-1163-groessenstufen-monarch-mount.md) | CLI | Problem | hoch | offen | LA1 | Alle Figuren und Gebäude folgen definierten Größenstufen, Bezugswert ist der Monarch auf dem Mount, abgeglichen an den K2C-Screenshots |
 | [B-1164](B-1164-stimmung-naeher-an-k2c.md) | CLI | Problem | hoch | offen | LA1 | Die Stimmung des Rust-Spiels (Farbe, Licht, Dunst, Tiefe) kommt dem K2C-Vorbild deutlich näher |
 | [B-1165](B-1165-weltwahl-ohne-entwicklermodus.md) | CLI | Problem | mittel | offen | RU36 | Die Weltwahl zeigt alle Welten aus data/worlds, nicht nur die Standard-Welt |
@@ -300,6 +300,14 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1267](B-1267-abnahme-we6.md) | DEV | Problem | mittel | offen | WE6 | Abnahme-Läufe WE6: Race, Gen und Sichtprüfungen Endboss, Bau, Skins, Welten-Editor |
 | [B-1268](B-1268-events-ankuendigung-ohne-wirkung.md) | SIM | Problem | mittel | offen | WE8 | Banner und Schleier der Welt-Events erscheinen auch im Frieden, unter Tage und ohne Portale |
 | [B-1269](B-1269-abnahme-we8.md) | SIM | Schuld | mittel | offen | WE8 | Abnahme-Läufe WE8: Sim, Balance, Gen, Race |
+| [B-1264](B-1264-wald-frame-zeit-messen.md) | CLI | Schuld | mittel | offen | RU43 | Die Frame-Zeit des dichteren Waldes ist gemessen (Replay headless, Vorher/Nachher) |
+| [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | RU43 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
+| [B-1270](B-1270-hubfixture-pfad-go-test.md) | CLI | Problem | niedrig | offen | RU33 | Go-Test TestHubFixtureDesMocksIstDieAntwortDerEngine liest den alten Workbench-Pfad |
+| [B-1271](B-1271-rust-sim-tests-rot-seit-wl2.md) | SIM | Problem | mittel | offen | RU33 | Vier Rust-Tests in k3c-sim sind seit WL2 rot (Standard-Welt, eingebettete Welten) |
+| [B-1272](B-1272-ru33-abnahme.md) | CLI | Idee | mittel | offen | RU33 | Abnahme RU33: Fensterlauf sim run, Sim-, Balance- und Gen-Läufe |
+| [B-1273](B-1273-regel-b925-sim-worktree-nach-ru34.md) | DEV | Schuld | niedrig | offen | RU40 | Regel B-925 (eigene Workbench je Sim-Worktree) gilt nach RU34 nur noch für Balancing und Replay |
+| [B-1274](B-1274-oxlint-rot-auf-main-frontends.md) | DEV | Problem | niedrig | offen | RU34 | task lint ist auf main rot (15 Fehler in Workbench- und Studio-Frontend, tools/hooks, tools/paper) |
+| [B-1275](B-1275-abnahme-ru34-workbench-ruft-spiel-exe.md) | DEV | Idee | mittel | offen | RU34 | Abnahme RU34: Studio-Tools gegen die frisch gebaute Spiel-EXE |
 
 ## Archiv
 

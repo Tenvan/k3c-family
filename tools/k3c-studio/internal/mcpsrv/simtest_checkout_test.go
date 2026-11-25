@@ -8,8 +8,8 @@ import (
 	"testing"
 )
 
-// B-924/B-925: Die Engine rechnet im Prozess des Studios (seit WZ63.5). sim_test start, sim_run und replay_run lehnen
-// ein checkout ab, das nicht der Checkout dieses Studios ist, und nennen das eigene Studio im Worktree (wie level_generate).
+// B-924/B-925: Die Engine rechnet im Prozess des Studios (seit WZ63.5). sim_test start und replay_run lehnen
+// ein checkout ab, das nicht der Checkout dieses Studios ist, und nennen das eigene Studio im Worktree.
 func TestSimToolsLehnenFremdenCheckoutAb(t *testing.T) {
 	t.Parallel() // ohne t.Setenv und globale Zustände (B-830)
 	main, _ := gitRepo(t, ".claude/worktrees/wt-a")
@@ -24,9 +24,6 @@ func TestSimToolsLehnenFremdenCheckoutAb(t *testing.T) {
 	}
 	// die übrigen Tools bekommen den Checkout über den Header X-K3C-Root, hier über den Context
 	ctx := mcpkit.WithWorkspace(context.Background(), workspace{Root: filepath.Join(main, ".claude", "worktrees", "wt-a")})
-	if _, err := s.simRun(ctx, simIn{Seed: "1", Ticks: 10}); err == nil || !strings.Contains(err.Error(), EnvPort) {
-		t.Errorf("sim_run: %v", err)
-	}
 	if _, err := s.replayRun(ctx, replayIn{Path: "x.json"}); err == nil || !strings.Contains(err.Error(), EnvPort) {
 		t.Errorf("replay_run: %v", err)
 	}

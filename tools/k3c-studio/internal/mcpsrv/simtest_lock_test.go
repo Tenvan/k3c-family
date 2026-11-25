@@ -5,6 +5,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
 // Die übrigen Tests prüfen sim_test und sim_run selbst; für sie ist die Sim-Sperre aufgehoben. Die Sperre prüfen
@@ -40,6 +42,10 @@ func TestSimSperreMitSchalter(t *testing.T) {
 	if err != nil || !strings.Contains(out, "fertig") {
 		t.Errorf("sim_test start: %v\n%s", err, out)
 	}
+	gameCall = func(context.Context, gameexe.Options) (gameexe.Event, error) {
+		return gameexe.Event{Event: "result", Text: "600 Ticks"}, nil
+	}
+	t.Cleanup(func() { gameCall = gameexe.Call })
 	text, err := s.simRun(context.Background(), simIn{Seed: "abc", Ticks: 600})
 	if err != nil || !strings.Contains(text, "600 Ticks") {
 		t.Errorf("sim_run: %v %q", err, text)

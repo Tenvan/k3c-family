@@ -93,7 +93,7 @@ func switchedTogether(t *testing.T, r *Room) {
 }
 
 func TestKampfInselwechselLetzteInselOhneTausch(t *testing.T) {
-	_, r, _, _ := zweiStufen(t)
+	_, r, _, _ := zweiStufenIn(t, einzelWeltFixture(), Options{World: "eins"})
 	old := r.isl
 	old.SwitchReady = true
 	ticks(r, 5)

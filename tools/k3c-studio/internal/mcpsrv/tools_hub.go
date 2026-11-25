@@ -23,8 +23,8 @@ const (
 	hubStandLen  = 12 // Stellen des Stands (SHA-256) in der Antwort
 )
 
-// hubEngine ist die Engine-Seite des Planers (simcli hub); Tests setzen einen Ersatz.
-var hubEngine = hubplan.Direct
+// hubEngine ist die Engine-Seite des Planers (sim hub); Tests setzen einen Ersatz.
+var hubEngine = hubplan.Exe
 
 func hubEditor(root string) hubplan.Editor {
 	return hubplan.Editor{Root: root, Engine: hubEngine(root)}

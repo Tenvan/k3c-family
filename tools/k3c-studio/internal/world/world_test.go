@@ -9,10 +9,12 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"k3c/tools/k3c-studio/internal/goengine"
 )
 
 // Fixture: eine Standard-Welt mit einer Insel, eine Kind-Welt und zwei Biome. Die Engine-Seite ist die echte Engine
-// im Prozess (Direct, engine/simcli world; keine Simulation).
+// im Prozess (goengine: Go-Engine als Referenz statt der EXE; keine Simulation).
 const standardFixture = `{
   "id": "standard",
   "name": "Standard",
@@ -54,7 +56,7 @@ func fixture(t *testing.T) Editor {
 			t.Fatal(err)
 		}
 	}
-	return Editor{Root: root, Engine: Direct(root)}
+	return Editor{Root: root, Engine: goengine.Call("world", root)}
 }
 
 func TestListStandardFirstAndOnlyWorlds(t *testing.T) {
