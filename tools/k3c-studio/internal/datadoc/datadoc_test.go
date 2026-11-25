@@ -13,35 +13,28 @@ import (
 // root ist die Repo-Wurzel (Tests laufen im Paketordner).
 const root = "../../../.."
 
-// WZ28.10/AC-11: Die Liste nennt jede Datei, die engine/ lädt (Dateiname als Literal, Ordner biomes/ und worlds/).
+// WZ28.10/AC-11, seit RU41 gegen Rust: Jede Datei der Liste lädt der Daten-Loader k3c-data (Dateiname als Literal,
+// Ordner biomes/ und worlds/) oder der Tester. k3c-data lädt auch Daten nur für das Spiel (Grafik, Ton); die stehen
+// bewusst nicht in der Liste, darum gilt die Prüfung nur in diese Richtung.
 func TestListeWieLoader(t *testing.T) {
 	lit := regexp.MustCompile(`"([a-z-]+\.json)"`)
 	loaded := map[string]bool{"biomes/*.json": true, "worlds/*.json": true}
-	// Berichtsdateien von engine/balance (Baselines, Fortschritt), keine Daten aus data/ (B-757)
-	reports := map[string]bool{"run.json": true, "result.json": true, "balance.json": true}
-	err := filepath.WalkDir(filepath.Join(root, "engine"), func(p string, d fs.DirEntry, err error) error {
-		if err != nil || d.IsDir() || !strings.HasSuffix(p, ".go") || strings.HasSuffix(p, "_test.go") {
+	err := filepath.WalkDir(filepath.Join(root, "rust", "crates", "k3c-data", "src"), func(p string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() || !strings.HasSuffix(p, ".rs") || strings.HasSuffix(p, "_tests.rs") {
 			return err
 		}
 		src, err := os.ReadFile(p)
 		for _, m := range lit.FindAllSubmatch(src, -1) {
-			if !reports[string(m[1])] {
-				loaded[string(m[1])] = true
-			}
+			loaded[string(m[1])] = true
 		}
 		return err
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	for name := range loaded {
-		if !slices.ContainsFunc(files, func(e entry) bool { return e.Name == name }) {
-			t.Errorf("engine/ lädt %s, die Liste kennt die Datei nicht", name)
-		}
-	}
 	for _, e := range files {
 		if !loaded[e.Name] && !slices.Contains(e.ReadBy, ByTester) {
-			t.Errorf("%s steht in der Liste, engine/ lädt die Datei nicht", e.Name)
+			t.Errorf("%s steht in der Liste, k3c-data lädt die Datei nicht", e.Name)
 		}
 		if m, _ := filepath.Glob(filepath.Join(root, "data", e.Name)); len(m) == 0 {
 			t.Errorf("%s fehlt in data/", e.Name)
@@ -95,26 +88,24 @@ func TestValues(t *testing.T) {
 	}
 }
 
-// WZ28.10/AC-11: Als variierbar gelten genau die Dateien, die sim.UseData neu lädt (nur dort wirken Varianten).
+// WZ28.10/AC-11: Als variierbar gelten genau die Dateien, die ein Balancing-Lauf neu lädt (nur dort wirken Varianten);
+// seit RU41 steht die Liste in Rust (`RELOADED` in rust/crates/k3c-balance/src/vary.rs).
 func TestVaryWieUseData(t *testing.T) {
-	src, err := os.ReadFile(filepath.Join(root, "engine", "sim", "data.go"))
+	src, err := os.ReadFile(filepath.Join(root, "rust", "crates", "k3c-balance", "src", "vary.rs"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	body := regexp.MustCompile(`(?s)func UseData\(.*?\n}`).Find(src)
+	body := regexp.MustCompile(`(?s)pub const RELOADED: .*?\];`).Find(src)
 	if body == nil {
-		t.Fatal("engine/sim/data.go: func UseData fehlt")
+		t.Fatal("k3c-balance/src/vary.rs: RELOADED fehlt")
 	}
 	want := map[string]bool{}
-	for _, m := range regexp.MustCompile(`loadFrom\(fsys, "([a-z-]+\.json)"`).FindAllSubmatch(body, -1) {
+	for _, m := range regexp.MustCompile(`"([a-z-]+\.json)"`).FindAllSubmatch(body, -1) {
 		want[string(m[1])] = true
-	}
-	if strings.Contains(string(body), "loadEnemies(") {
-		want["enemies.json"] = true
 	}
 	for _, e := range files {
 		if e.Vary != want[e.Name] {
-			t.Errorf("%s: Vary = %v, sim.UseData lädt sie %v", e.Name, e.Vary, want[e.Name])
+			t.Errorf("%s: Vary = %v, RELOADED lädt sie %v", e.Name, e.Vary, want[e.Name])
 		}
 	}
 }

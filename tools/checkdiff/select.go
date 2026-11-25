@@ -34,15 +34,6 @@ type repo struct {
 	hasGo   func(dir string) bool // enthält der Ordner (repo-relativ) Go-Dateien?
 }
 
-// goldenOwners: Pakete des Wurzel-Moduls, deren Tests die Dateien unter testdata/<name> an der Repo-Wurzel lesen.
-var goldenOwners = map[string][]string{
-	"golden":       {"engine/sim", "engine/level"},
-	"hub":          {"engine/sim", "engine/level"},
-	"planned":      {"engine/level"},
-	"protocol":     {"engine/room"},
-	"saves":        {"engine/store", "engine/sim"},
-	"torches.json": {"engine/sim"},
-}
 
 // clientRoots: Ordner, deren Dateien Lint, Typecheck und Vitest der Wurzel brauchen (der Browser-Client src/ ist entfernt, B-848).
 var clientRoots = []string{"tests/", "public/", "data/", "tools/paper/"}
@@ -159,10 +150,7 @@ func classify(r repo, files []string) plan {
 		if path.Base(f) == "Taskfile.yml" || hasPrefix(f, ".github/") || p.frontend(f) || p.rustFile(f) {
 			continue
 		}
-		if name, ok := strings.CutPrefix(f, "testdata/"); ok {
-			for _, d := range goldenOwners[strings.SplitN(name, "/", 2)[0]] {
-				p.mod(".").Dirs[d] = true
-			}
+		if strings.HasPrefix(f, "testdata/") { // seit RU41 liest kein Go-Paket mehr testdata/ an der Wurzel (Rust: cargo test)
 			continue
 		}
 		p.Client = p.Client || isClient(f)

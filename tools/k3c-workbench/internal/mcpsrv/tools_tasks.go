@@ -27,7 +27,7 @@ type taskListIn struct {
 }
 
 type taskStartIn struct {
-	Task string `json:"task" jsonschema:"Name aus task_list, z. B. go:golden"`
+	Task string `json:"task" jsonschema:"Name aus task_list, z. B. rust:game:exe"`
 	Args string `json:"args,omitempty" jsonschema:"Zusatzargumente, angehängt als task <name> -- <args>; keine Shell-Metazeichen"`
 }
 
@@ -166,7 +166,7 @@ func (s *Server) taskOutput(ctx context.Context, in taskOutputIn) (string, error
 	return s.consoleTail(ctx, tailIn{Source: "task:" + in.Task, Lines: in.Limit, Since: in.Since})
 }
 
-// runLine ist ein Lauf in einer Zeile, z. B. "go:golden · succeeded · Exit 0 · 4,2 s · -- --dry".
+// runLine ist ein Lauf in einer Zeile, z. B. "rust:game:exe · succeeded · Exit 0 · 4,2 s · -- --dry".
 func runLine(r taskrun.Run) string {
 	parts := []string{r.Name, string(r.State)}
 	if r.State == taskrun.Running {

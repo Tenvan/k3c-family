@@ -14,11 +14,10 @@ concurrency:
 permissions:
   contents: read
 
-# Go-Tests ohne Sim-, Balance- und Lasttest-Pakete: Ihre Tests sind gesperrt (Beschluss Ralf 2026-11-11) und laufen nur im
-# Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825), aus der auch
-# task check:go liest (checkdiff -gopkgs); tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
+# Studio-Tests ohne Sim- und Balance-Pakete: Ihre Tests sind gesperrt (Beschluss Ralf 2026-11-11) und laufen nur im
+# Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825);
+# tools/checkdiff/simlist_test.go prüft das (B-832). Das Wurzel-Modul hat seit RU41 keine Sim-Pakete mehr. Go-Tests mit -short.
 env:
-  GO_SIM_PKGS: '/(engine/balance)$'
   STUDIO_SIM_PKGS: '/internal/(balance|simrun)$'
 
 jobs:
@@ -81,8 +80,8 @@ jobs:
       # Die Papierschnitt-Grafik ist nicht eingecheckt (B-737): Tests lesen sie aus public/grafik, hier rendern (B-756)
       - run: bun install --frozen-lockfile
       - run: task gen:paper
-      - name: Go-Tests (-short, ohne Sim/Balance/Last)
-        run: task go:test GO_TEST_FLAGS=-short GO_PKGS="$(go list ./... | grep -Ev "$GO_SIM_PKGS" | tr '\n' ' ')"
+      - name: Go-Tests (-short)
+        run: task go:test GO_TEST_FLAGS=-short
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.14

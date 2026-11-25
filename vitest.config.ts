@@ -6,5 +6,5 @@ import { configDefaults, defineConfig } from 'vitest/config';
 // Das Frontend unter tools/k3c-workbench/frontend prüft sein eigenes Vitest (Alias @webkit, task check:dev); die Tests von
 // tools/webkit laufen im Vitest von k3c-workbench.
 export default defineConfig({
-  test: { exclude: [...configDefaults.exclude, '.claude/**', 'tools/*/frontend/**', 'tools/webkit/**'] },
+  test: { exclude: [...configDefaults.exclude, '.claude/**', '.work/**', 'tools/*/frontend/**', 'tools/webkit/**'] },
 });

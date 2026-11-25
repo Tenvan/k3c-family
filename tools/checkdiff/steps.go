@@ -22,7 +22,6 @@ type step struct {
 // task check:go liest sie über -gopkgs, k3c-studio:gotest über -studiopkgs; ci.yml › GO_SIM_PKGS, STUDIO_SIM_PKGS muss
 // gleich sein (simlist_test.go, B-832).
 var simDirs = map[string]bool{
-	"engine/balance": true,
 	"tools/k3c-studio/internal/balance": true, "tools/k3c-studio/internal/simrun": true, // seit WZ63.5 im Studio
 }
 

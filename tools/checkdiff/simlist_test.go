@@ -55,7 +55,10 @@ func TestSimListeGleich(t *testing.T) {
 			t.Errorf("%s: %v, simDirs: %v", was, ist, soll)
 		}
 	}
-	gleich("ci.yml GO_SIM_PKGS", simListe(t, ".github/workflows/ci.yml", "GO_SIM_PKGS", "/"), root)
+	// Seit RU41 hat das Wurzel-Modul keine Sim-Pakete mehr; ci.yml braucht dann kein GO_SIM_PKGS.
+	if ci, err := os.ReadFile(filepath.Join("..", "..", ".github/workflows/ci.yml")); err != nil || (len(root) == 0) == strings.Contains(string(ci), "GO_SIM_PKGS") {
+		t.Errorf("ci.yml GO_SIM_PKGS passt nicht zu simDirs im Wurzel-Modul %v (%v)", root, err)
+	}
 	gleich("ci.yml STUDIO_SIM_PKGS", simListe(t, ".github/workflows/ci.yml", "STUDIO_SIM_PKGS", "/internal/"), studio)
 	b, err := os.ReadFile(filepath.Join("..", "..", "Taskfile.yml"))
 	if err != nil || !strings.Contains(string(b), "go run ./tools/checkdiff -gopkgs") {
@@ -73,8 +76,8 @@ func TestSimListeGleich(t *testing.T) {
 
 // TestFilterPkgs: check:go lässt die Sim-Pakete weg, CHECK_SIM=1 nimmt sie mit (B-832/AC-01).
 func TestFilterPkgs(t *testing.T) {
-	all := []string{"k3c/engine/level", "k3c/engine/balance", "k3c/engine/balance/x", "k3c/engine/sim"}
-	if got := filterPkgs(all, false); !slices.Equal(got, []string{"k3c/engine/level", "k3c/engine/balance/x", "k3c/engine/sim"}) {
+	all := []string{"k3c/engine/conlog", "k3c/engine/devrun", "k3c/tools/checkdiff"}
+	if got := filterPkgs(all, false); !slices.Equal(got, all) { // seit RU41 keine Sim-Pakete im Wurzel-Modul
 		t.Errorf("ohne Sim: %v", got)
 	}
 	if got := filterPkgs(all, true); !slices.Equal(got, all) {

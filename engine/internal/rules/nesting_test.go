@@ -18,7 +18,7 @@ import (
 const maxDepth = 4
 
 // goDirs sind die Ordner mit Go-Code, relativ zu diesem Paket (engine/internal/rules); fehlende werden übersprungen.
-var goDirs = []string{"../../../data", "../../../engine", "../../../cmd", "../../../tools"}
+var goDirs = []string{"../../../data", "../../../engine", "../../../tools"}
 
 func TestGoNestingDepth(t *testing.T) {
 	fset := token.NewFileSet()

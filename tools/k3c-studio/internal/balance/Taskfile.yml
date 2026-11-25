@@ -10,16 +10,18 @@ tasks:
       - task: :rust:game:exe
 
   fullgame:
-    desc: 'Vollständiges Spiel mit einem Bot (BS3.4): Go-Test in engine/balance mit Build-Tag fullgame, bewusst nicht in task check; nur die aktuelle Stufe, `task balance:fullgame STUFE=4` (Standard 4); K3C_FULLGAME=hilfen|voll (Standard)|boss|ohne'
+    desc: 'Vollständiges Spiel mit einem Bot (BS3.4): Rust-Test fullgame_<STUFE> in k3c-balance (#[ignore], seit RU41 statt Go), bewusst nicht in task check; `task balance:fullgame STUFE=4` (Standard 4); K3C_FULLGAME=hilfen|voll (Standard)|boss|ohne'
+    dir: '{{.ROOT_DIR}}/rust'
     vars:
       STUFE: '{{.STUFE | default "4"}}'
     cmds:
-      - go test -tags fullgame -run 'TestFullGame{{.STUFE}}' -v -count=1 -timeout 30m ./engine/balance
+      - cargo test --release -p k3c-balance --lib fullgame_{{.STUFE}} -- --ignored --nocapture
 
   milestone:
-    desc: 'Meilenstein-Lauf coop2, Welt standard, 40 Tage (BS3.6) als Go-Test in engine/balance; K3C_VARY="economy.json:dawnGoldPerDepth=10" (Semikolon), K3C_SEEDS=k3c-dev,7'
+    desc: 'Meilenstein-Lauf coop2, Welt standard, 40 Tage (BS3.6): Rust-Test meilenstein_coop2 in k3c-balance (#[ignore], seit RU41 statt Go); K3C_VARY="economy.json:dawnGoldPerDepth=10" (Semikolon), K3C_SEEDS=k3c-dev,7'
+    dir: '{{.ROOT_DIR}}/rust'
     cmds:
-      - go test -tags fullgame -run 'TestMeilensteinCoop2' -v -count=1 -timeout 30m ./engine/balance
+      - cargo test --release -p k3c-balance --lib meilenstein_coop2 -- --ignored --nocapture
 
   targets:
     desc: 'Zielkorridore prüfen: 100 feste Seeds (seit BAL6 sechs Szenarien, geschätzt 35–40 min; zum Entwickeln `task balance -- --seeds 10`), Bericht reports/balance-<Zeit>.json und .md, Vergleich mit testdata/balance/baseline.json (kein Teil von `task check`)'

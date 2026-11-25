@@ -105,7 +105,7 @@ describe('Gebäude-Planer: Speichern (B-462/AC-02, AC-05, AC-06)', () => {
     await changeArmory(h);
     await click(button(h, 'Speichern'));
     expect(save).toHaveBeenCalledWith(expect.stringContaining('"hubLevel": 5'), mockHubPlan().stand);
-    expect(h.textContent).toContain('REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle), task go:golden nur bei gewollter Änderung');
+    expect(h.textContent).toContain('REG-Änderung: Commit mit Begründung (data/hub.json und Regeltabelle)');
   });
 
   it('Befund der Prüfung sperrt das Speichern', async () => {

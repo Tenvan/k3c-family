@@ -317,6 +317,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1282](B-1282-balance-tune-abbruch-je-lauf.md) | SIM | Schuld | niedrig | offen | RU40 | k3c-balance: Rückruf je Lauf in TuneOptions und Targets, damit --tune wie Go nach jedem Lauf abbricht |
 | [B-1283](B-1283-balance-play-endhash.md) | SIM | Frage | niedrig | offen | RU40 | sim balance --play: endHash der Rust-Insel weicht von Go ab, Entscheidung nötig |
 | [B-1285](B-1285-abnahme-ru40-sim-balance-gen.md) | CLI | Frage | mittel | offen | RU40 | Abnahme RU40: Sim, Balance, Gen und Fensterläufe der Spiel-EXE am PC |
+| [B-1286](B-1286-k3c-sim-tests-rot-welten-takt-geschichte.md) | SIM | Problem | hoch | offen | RU41 | Vier k3c-sim-Tests sind auf main rot (eingebettete Welten, Takt wie Go, Geschichte) |
 
 ## Archiv
 

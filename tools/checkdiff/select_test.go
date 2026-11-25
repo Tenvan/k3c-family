@@ -12,9 +12,10 @@ func testRepo() repo {
 		"data": true, "engine/sim": true, "engine/balance": true, "engine/room": true, "tools/checkdiff": true,
 		"tools/k3c-workbench": true, "tools/k3c-workbench/internal/planning": true, "tools/k3c-workbench/internal/simrun": true,
 		"tools/assetkit": true, "tools/assetkit/rig": true, "tools/assetkit/view": true, "engine/balance/report": false,
+		"tools/k3c-studio": true, "tools/k3c-studio/internal/balance": true,
 	}
 	return repo{
-		modules: []string{".", "tools/assetkit", "tools/k3c-workbench"},
+		modules: []string{".", "tools/assetkit", "tools/k3c-studio", "tools/k3c-workbench"},
 		hasGo:   func(dir string) bool { return goDirs[dir] },
 	}
 }
@@ -53,7 +54,7 @@ func TestClassify(t *testing.T) {
 		{"nur Doku: nur Planungs-Tests", []string{"docs/backlog/B-001-x.md", "CLAUDE.md"}, want{"D", nil}},
 		{"Go-Datei: nur ihr Paket", []string{"engine/sim/world.go"}, want{"R", []string{".:engine/sim"}}},
 		{"testdata im Paket zählt zum Paket", []string{"engine/room/testdata/x.json"}, want{"R", []string{".:engine/room"}}},
-		{"Golden an der Wurzel: Besitzer-Pakete", []string{"testdata/golden/sim-1.json.gz"}, want{"R", []string{".:engine/level", ".:engine/sim"}}},
+		{"Golden an der Wurzel: kein Go-Paket mehr (RU41)", []string{"testdata/golden/sim-1.json.gz"}, want{"R", nil}},
 		{"data: Paket k3c/data und Client", []string{"data/enemies.json"}, want{"RC", []string{".:data"}}},
 		{"Taskfile und CI lösen keine Tests aus", []string{"Taskfile.yml", "engine/Taskfile.yml", ".github/workflows/ci.yml"}, want{"R", nil}},
 		{"go.mod: Modul übersetzen, keine Tests", []string{"go.mod"}, want{"RA", nil}},
@@ -98,8 +99,8 @@ func TestGoStepsNurGeaendertePaketeTesten(t *testing.T) {
 	if vet != "go vet ./engine/balance ./engine/sim k3c/engine/room" {
 		t.Errorf("vet prüft geänderte Pakete und Abnehmer: %q", vet)
 	}
-	if test != "go test -short ./engine/sim" {
-		t.Errorf("Tests nur im geänderten Paket, Sim-Pakete gesperrt: %q", test)
+	if test != "go test -short ./engine/balance ./engine/sim" {
+		t.Errorf("Tests nur in den geänderten Paketen: %q", test)
 	}
 	if got[0].Stage != 1 || got[2].Stage != 2 {
 		t.Errorf("vet in Stufe 1, Tests in Stufe 2: %+v", got)
@@ -107,14 +108,15 @@ func TestGoStepsNurGeaendertePaketeTesten(t *testing.T) {
 }
 
 func TestSimSperreAufgehoben(t *testing.T) {
-	p := classify(testRepo(), []string{"engine/balance/run.go"})
-	if tg := targetsOf(".", p.Mods["."], nil, false); len(tg.Tests) != 0 {
+	const m = "tools/k3c-studio"
+	p := classify(testRepo(), []string{m + "/internal/balance/run.go"})
+	if tg := targetsOf(m, p.Mods[m], nil, false); len(tg.Tests) != 0 {
 		t.Errorf("gesperrt, aber Tests %v", tg.Tests)
 	}
-	if tg := targetsOf(".", p.Mods["."], nil, true); !reflect.DeepEqual(tg.Tests, []string{"./engine/balance"}) {
+	if tg := targetsOf(m, p.Mods[m], nil, true); !reflect.DeepEqual(tg.Tests, []string{"./internal/balance"}) {
 		t.Errorf("CHECK_SIM=1: Tests %v", tg.Tests)
 	}
-	if got := skippedSim(p, false); !reflect.DeepEqual(got, []string{"engine/balance"}) {
+	if got := skippedSim(p, false); !reflect.DeepEqual(got, []string{m + "/internal/balance"}) {
 		t.Errorf("gemeldet %v", got)
 	}
 }
