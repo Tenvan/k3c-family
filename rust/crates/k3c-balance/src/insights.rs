@@ -1,7 +1,7 @@
 //! Auswertung eines Balancing-Berichts ohne KI (Port von `engine/balance/insights.go`, B-632): Ampel je Ziel und Kennzahl,
 //! Stärken, Schwächen, Tuning-Hinweise, Kurzauswertung und Vorschlag für den nächsten Lauf. Eingang ist ein Summary (auch ein
 //! altes ohne Kennzahlen) samt optionaler Baseline; Richtwerte und Hebel aus data/balance-hints.json (`hints.rs`). Die Texte
-//! und Vorschläge liefern `insights_levers`, `insights_next`, `insights_markdown` und bis RU31.5 `pending.rs`.
+//! und Vorschläge liefern `insights_levers`, `insights_next`, `insights_markdown`.
 
 use std::collections::{BTreeMap, HashMap};
 

@@ -49,6 +49,8 @@ pub mod summary_text;
 pub mod targets;
 #[cfg(test)]
 mod testutil;
+pub mod tune;
+pub mod tune_diff;
 pub mod tuneparam;
 pub mod variant;
 pub mod vary;
@@ -123,6 +125,8 @@ mod ship_need_tests;
 mod summary_tests;
 #[cfg(test)]
 mod targets_tests;
+#[cfg(test)]
+mod tune_tests;
 #[cfg(test)]
 mod variant_tests;
 

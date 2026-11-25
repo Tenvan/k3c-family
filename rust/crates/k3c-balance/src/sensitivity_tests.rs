@@ -20,7 +20,7 @@ use crate::vary::{RELOADED, STEPS, varied_source};
 /// Ein Testziel „Median Gold zur Dämmerung von Tag 1“ (1 Spieler, passive, 1 Tag, Seed 1) mit Obergrenze 15 ohne Randbreite.
 /// Der passive Bot gibt nichts aus (saver räumt seit B-652 erst Bäume): der Wert ist das Startgold 14; Startgold +25 % hebt ihn
 /// über 15 (→ verletzt).
-fn gold_targets() -> Targets {
+pub(crate) fn gold_targets() -> Targets {
     Targets {
         version: 1,
         seeds: vec!["1".into()],

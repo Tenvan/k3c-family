@@ -14,7 +14,7 @@ use crate::targets::default_targets;
 use crate::variant::with_variants;
 
 /// Alle Dateien unter `data/` auf der Platte.
-fn data_on_disk() -> std::collections::BTreeMap<String, String> {
+pub(crate) fn data_on_disk() -> std::collections::BTreeMap<String, String> {
     let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../data");
     Source::Dir(dir).files().expect("data/ lesen")
 }

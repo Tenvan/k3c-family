@@ -1,8 +1,9 @@
 //! Parameter des automatischen Balancings (Port von `engine/balance/tuneparam.go`, WZ28.6), soweit `insights_next` sie
 //! braucht (RU31.2): `datei.json:a.b.c=min..max` zeigt auf eine Zahl in data/; gelesen werden Ausgangswert und Ganzzahligkeit.
-//! RU31.5 ergänzt Wert-Varianten, Diff und das Tuning (`tune.rs`).
+//! Wert-Variante und Rundung stehen hier, Diff-Vorschlag in `tune_diff.rs`, das Tuning in `tune.rs` (RU31.5).
 
 use k3c_data::Source;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use crate::fehler::Fehler;
@@ -14,7 +15,7 @@ pub const MAX_TUNE_PARAMS: usize = 2;
 
 /// Ein abgestimmter Wert: Datei, Pfad, Bereich und Ausgangswert in data/. `int`: Der Wert ist in der Datei ganzzahlig,
 /// alle Punkte werden gerundet.
-#[derive(Debug, Clone, PartialEq, Default)]
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct TuneParam {
     pub file: String,
     pub path: String,
@@ -31,6 +32,16 @@ impl TuneParam {
             return format!("{}", v.round() as i64);
         }
         format!("{}", (v * 1e4).round() / 1e4)
+    }
+
+    /// Rundet einen Wert wie `format`, als Zahl (Go: `norm`).
+    pub fn norm(&self, v: f64) -> f64 {
+        self.format(v).parse().unwrap_or_default()
+    }
+
+    /// Die Wert-Variante `datei.json:a.b.c=wert` (`variant.rs`; Go: `variant`).
+    pub fn variant(&self, v: f64) -> String {
+        format!("{}:{}={}", self.file, self.path, self.format(v))
     }
 }
 
