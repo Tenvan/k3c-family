@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"k3c/tools/k3c-studio/internal/exeengine"
 )
 
 // B-923: Roundtrip der Tools hub_get, hub_check und hub_save (Engine: Ersatz, fakehub_test.go) auf einer Kopie von data/hub.json und der Regeltabelle
@@ -15,6 +17,7 @@ const hubRepoRoot = "../../../.."
 
 func hubRepo(t *testing.T) string {
 	t.Helper()
+	exeengine.Require(t) // Welten- und Hub-Tools rechnen über die Spiel-EXE
 	root := t.TempDir()
 	for _, rel := range []string{"data/hub.json", "docs/rules/materialien-gebaeude.md"} {
 		raw, err := os.ReadFile(filepath.Join(hubRepoRoot, filepath.FromSlash(rel)))

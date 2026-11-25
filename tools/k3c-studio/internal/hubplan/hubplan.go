@@ -19,7 +19,7 @@ import (
 const engineTimeout = 30 * time.Second
 
 // Engine ist die Engine-Seite des Planers: input ist das JSON von `k3c-game sim hub` ({"op":"plan","raw":…}), die Antwort
-// sein report. Ein Fehler ist die Meldung von k3c-sim oder ein Startfehler.
+// sein report. Ein Fehler ist die Meldung der Spiel-EXE oder ein Startfehler.
 type Engine func(ctx context.Context, input []byte) (json.RawMessage, error)
 
 // Exe ist die Engine über die Spiel-EXE des Checkouts root (`k3c-game sim hub`, RU34.3, internal/gameexe); ist sie nicht

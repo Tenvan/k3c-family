@@ -14,7 +14,7 @@ Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings, Ober
 | [`console/`](console/codemap.md) / [`applog/`](applog/codemap.md) | Konsolenpuffer je Quelle, eigenes Log `logs/k3c-workbench.jsonl` |
 | [`logs/`](logs/codemap.md) | Leser für `logs/*.jsonl` mit Cursor und Digest |
 | [`resmon/`](resmon/codemap.md) | Ressourcen-Monitoring: Proben, Verlauf, Trends, Profile, Messung je Vorgang |
-| (entfernt, B-924) | Die Workbench ruft die Engine über `engine/simcli` im Prozess auf |
+| (entfernt, B-924) | Die Workbench rechnet nicht mit der Engine (RU40.4: Läufe über `k3c-game sim`) |
 | [`gitops/`](gitops/codemap.md) | Seite Git: Status, Branches mit Squash-Erkennung, Fetch/Pull/Push/Stash, Löschen gemergter Branches |
 | [`github/`](github/codemap.md) | `gh`-CLI-Client für PR- und CI-Stand sowie PR-Aktionen |
 | [`usage/`](usage/codemap.md) | Statistik der MCP-Aufrufe |
@@ -27,4 +27,4 @@ Balancing (`simrun/`, `balance/`, `datadoc/`, `gamedata/`) liegt seit WZ63.5 in 
 
 ## Integration
 - Konsument: `tools/k3c-workbench` (Wails-Host, Headless-Betrieb).
-- Abhängigkeiten: `tools/workkit` (`applog`, `console`, `proc`, `usage`, `mcpkit`), `engine/simcli`; sonst kein Engine-Kern (depguard, B-726); `tools/assetkit`; externe CLIs `task`, `gh`, `git`, `go`, `bun`, `bin/k3c-sim`.
+- Abhängigkeiten: `tools/workkit` (`applog`, `console`, `proc`, `usage`, `mcpkit`), kein Engine-Kern (depguard, B-726); `tools/assetkit`; externe CLIs `task`, `gh`, `git`, `go`, `bun`, `bin/k3c-sim`.

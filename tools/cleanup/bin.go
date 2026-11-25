@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 )
 
-// removedPrograms sind die entfernten Programme (B-850, B-887); nur diese Namen räumt das Werkzeug in bin/ ab.
-// Bewusst fest: keine Muster, keine Eingaben. Vorhandene Programme (k3c-workbench, k3c-sim, soundatlas,
+// removedPrograms sind die entfernten Programme (B-850, B-887; k3c-sim seit RU40.4); nur diese Namen räumt das Werkzeug
+// in bin/ ab. Bewusst fest: keine Muster, keine Eingaben. Vorhandene Programme (k3c-workbench, k3c-studio, soundatlas,
 // aufraeumen) stehen nie hier.
-var removedPrograms = []string{"k3c-server", "k3c-load", "k3c-tui", "k3c-starter", "k3c-workbench-web"}
+var removedPrograms = []string{"k3c-server", "k3c-load", "k3c-tui", "k3c-starter", "k3c-workbench-web", "k3c-sim"}
 
 // binSuffixes sind die Formen je Programm: ohne Endung, EXE, Sicherung des Linkers.
 var binSuffixes = []string{"", ".exe", ".exe~"}

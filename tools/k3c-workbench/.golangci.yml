@@ -9,7 +9,7 @@ linters:
     - depguard
   settings:
     depguard:
-      # B-924: Die Workbench ruft die Engine im Prozess auf, aber nur über engine/simcli (Unterbefehle) und engine/store;
+      # RU40.4: Die Workbench rechnet nicht mit der Engine (Läufe über die Spiel-EXE `k3c-game sim`);
       # engine/sim und engine/level nur für Typen. Spielstand-Raum und Netz gehören nicht in die Workbench, engine/devrun
       # nur in den Supervisor in der Wurzel des Pakets. Ausnahme internal/studioview („Im Spiel ansehen“ mit eingebundener Engine).
       rules:
@@ -21,9 +21,9 @@ linters:
             - pkg: k3c/engine/net
               desc: "Protokoll nur über den laufenden Spielserver (B-726)"
             - pkg: k3c/engine/enginetools
-              desc: "Engine-Aufrufe über engine/simcli (B-924)"
+              desc: "Engine-Aufrufe über die Spiel-EXE (k3c-game sim, RU40.4)"
             - pkg: k3c/engine/balance
-              desc: "Balancing über engine/simcli balance (B-924)"
+              desc: "Balancing über k3c-game sim balance (RU40.4)"
         workbench-devrun-nur-wurzel:
           files: ["$all", "!**/tools/k3c-workbench/*.go"]
           deny:

@@ -17,6 +17,45 @@ interface Props {
   refresh?: number;
 }
 
+/** Titel und die zwei Aufräum-Knöpfe. */
+function SessionHead({ session: s, onClean }: Pick<Props, 'session' | 'onClean'>) {
+  return (
+    <Flex align="center" justify="between" gap="3" wrap="wrap">
+      <Heading size="4">Session {s.id}</Heading>
+      <Flex gap="2">
+        <ActionButton variant="soft" color="red" disabled={s.running || !s.hasVideo} onClick={() => onClean('video', s.id)}>
+          Video löschen
+        </ActionButton>
+        <ActionButton variant="soft" color="red" disabled={s.running} onClick={() => onClean('session', s.id)}>
+          Session löschen
+        </ActionButton>
+      </Flex>
+    </Flex>
+  );
+}
+
+/** Dateien der Session mit Größe. */
+function FilesTable({ files }: { files: PlaytestSession['files'] }) {
+  return (
+    <Table.Root size="1" variant="surface">
+      <Table.Header>
+        <Table.Row>
+          <Table.ColumnHeaderCell>Datei</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell justify="end">Größe</Table.ColumnHeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {files.map((f) => (
+          <Table.Row key={f.name}>
+            <Table.RowHeaderCell>{f.name}</Table.RowHeaderCell>
+            <Table.Cell justify="end">{formatBytes(f.size)}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table.Root>
+  );
+}
+
 /** Detail einer Session: Kennzahlen, Audio- und Video-Player, Dateien, die zwei Aufräum-Knöpfe. */
 export function SessionDetail({ session: s, onClean, onChanged, refresh = 0 }: Props) {
   const videoEl = useRef<HTMLVideoElement>(null);
@@ -37,17 +76,7 @@ export function SessionDetail({ session: s, onClean, onChanged, refresh = 0 }: P
   const video = mediaUrl(s.id, 'video.mkv');
   return (
     <Flex direction="column" gap="4" p="3" data-detail={s.id}>
-      <Flex align="center" justify="between" gap="3" wrap="wrap">
-        <Heading size="4">Session {s.id}</Heading>
-        <Flex gap="2">
-          <ActionButton variant="soft" color="red" disabled={s.running || !s.hasVideo} onClick={() => onClean('video', s.id)}>
-            Video löschen
-          </ActionButton>
-          <ActionButton variant="soft" color="red" disabled={s.running} onClick={() => onClean('session', s.id)}>
-            Session löschen
-          </ActionButton>
-        </Flex>
-      </Flex>
+      <SessionHead session={s} onClean={onClean} />
       {s.running && <Text size="2" color="gray">Die Aufnahme läuft, Löschen ist gesperrt.</Text>}
       {s.hasVideo && (
         <Flex direction="column" gap="1" data-player="video">
@@ -66,22 +95,7 @@ export function SessionDetail({ session: s, onClean, onChanged, refresh = 0 }: P
         {[germanDate(s.date), sessionLength(s.durationMs), `${s.markers} Marker`, formatBytes(s.size), s.stage].join(' · ')}
       </Text>
       <TimelinePanel session={s} onSeek={seek} onDone={onChanged} refresh={refresh} />
-      <Table.Root size="1" variant="surface">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Datei</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell justify="end">Größe</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {s.files.map((f) => (
-            <Table.Row key={f.name}>
-              <Table.RowHeaderCell>{f.name}</Table.RowHeaderCell>
-              <Table.Cell justify="end">{formatBytes(f.size)}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
+      <FilesTable files={s.files} />
     </Flex>
   );
 }

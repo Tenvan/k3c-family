@@ -21,5 +21,5 @@ Wails-Desktop-Werkzeug für Game- und Level-Designer von K3C (WZ63, eigene EXE n
 
 ## Integration
 
-- Abhängigkeiten: `tools/workkit` (`mcpkit`, `applog`, `console`, `proc`, `usage`, `uikit`, `claude`, `winicon`), `tools/assetkit`, `engine/simcli`, `engine/devrun`, Wails-Runtime; kein Import aus `tools/k3c-workbench`.
+- Abhängigkeiten: `tools/workkit` (`mcpkit`, `applog`, `console`, `proc`, `usage`, `uikit`, `claude`, `winicon`), `tools/assetkit`, `engine/conlog`, `engine/devrun` (gerechnet wird über die Spiel-EXE), Wails-Runtime; kein Import aus `tools/k3c-workbench`.
 - Konsumenten: Game- und Level-Designer (`task k3c-studio`, `task k3c-studio:build`), MCP-Clients (`world_*`, `hub_*`, `assets_*`, `level_generate`).

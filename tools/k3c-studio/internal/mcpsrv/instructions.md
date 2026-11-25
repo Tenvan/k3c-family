@@ -132,7 +132,7 @@ Das Slot-Register ist seit CU1.2 `data/sounds.json` (nur Sound-Slots); `id` ist 
 - `replay_run` und `sim_test start` rechnen (bis RU40) **Code und Daten dieses Prozesses** (Stand beim Start des Studios), nicht die
   eines Worktrees. Aus einem anderen Checkout lehnen sie ab; der Hinweis nennt ein eigenes Studio im Worktree
   (`k3c-studio -headless`, `K3C_DATA_DIR=<Worktree>/data`), dort mit dessen `K3C_STUDIO_PORT` verbinden. Das gilt
-  für Änderungen an `engine/sim`, `engine/level`, `engine/room`, `cmd/k3c-sim` und für Daten in `data/`. Nur die Welten- und
+  für Änderungen an `engine/sim`, `engine/level`, `engine/room` und für Daten in `data/`. Nur die Welten- und
   Planer-Seiten (`world`, `hub`) lesen `data/` des Checkouts frisch von der Platte. Ein Absturz der Engine ist ein Tool-Fehler
   (`💥 Absturz in der Engine`, Stack im Log), nie ein Absturz des Studios.
 

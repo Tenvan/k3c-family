@@ -31,6 +31,7 @@ const maxLine = 16 << 20
 // Options beschreibt einen Lauf `k3c-game sim <Sub> …`.
 type Options struct {
 	Root     string       // Checkout: EXE, data/ und .work/runs/
+	Data     string       // absoluter Daten-Ordner statt <Root>/data (Tests: Fixture-Daten, EXE der Repo-Wurzel); leer = <Root>/data
 	Sub      string       // run, level, world, hub (balance ab RU40)
 	Input    []byte       // Eingabe-JSON; der Starter schreibt sie nach <Root>/.work/runs/ und löscht sie nach dem Ende
 	Window   bool         // --window (nur run und balance)
@@ -75,9 +76,13 @@ func Stream(ctx context.Context, o Options) error {
 	return run(ctx, argvFor(exe, input, o), dir, o)
 }
 
-// argvFor baut die Befehlszeile `k3c-game sim <Sub> --input <Datei> --data <Root>/data --stop-stdin [--window [--speed N]] [Args…]`.
+// argvFor baut die Befehlszeile `k3c-game sim <Sub> --input <Datei> --data <Data|Root/data> --stop-stdin [--window [--speed N]] [Args…]`.
 func argvFor(exe, input string, o Options) []string {
-	argv := []string{exe, "sim", o.Sub, "--input", input, "--data", filepath.Join(o.Root, "data"), "--stop-stdin"}
+	data := o.Data
+	if data == "" {
+		data = filepath.Join(o.Root, "data")
+	}
+	argv := []string{exe, "sim", o.Sub, "--input", input, "--data", data, "--stop-stdin"}
 	if o.Window {
 		argv = append(argv, "--window")
 		if o.Speed > 0 {
@@ -119,7 +124,7 @@ func pumpEvents(r io.Reader, on func(Event), failure *atomic.Value) {
 
 // watch wartet auf das Ende des Prozesses (done) oder des Contexts: dann schließt es stdin (die EXE bricht ab) und
 // beendet nach grace den ganzen Baum. Ohne Abbruch gibt es keine Frist: Stream wartet, bis die EXE endet.
-func watch(ctx context.Context, stdin io.Closer, cmd *proc.Cmd, grace time.Duration, done <-chan struct{}, stopped *atomic.Bool) {
+func watch(ctx context.Context, stdin io.Closer, cmd *proc.Cmd, grace time.Duration, done <-chan struct{}, stopped *atomic.Bool, log *slog.Logger) {
 	select {
 	case <-done:
 	case <-ctx.Done():
@@ -128,7 +133,10 @@ func watch(ctx context.Context, stdin io.Closer, cmd *proc.Cmd, grace time.Durat
 		select {
 		case <-done:
 		case <-time.After(grace):
-			_ = cmd.Kill()
+			log.Warn("⏳ Spiel-EXE nach der Frist hart beendet", "ns", "sim", "grace", grace)
+			if err := cmd.Kill(); err != nil {
+				log.Error("💥 Spiel-EXE nicht beendet", "ns", "sim", "err", err)
+			}
 		}
 	}
 }
@@ -179,7 +187,7 @@ func run(ctx context.Context, argv []string, dir string, o Options) error {
 
 	var stopped atomic.Bool
 	done, watcher := make(chan struct{}), make(chan struct{})
-	go func() { defer close(watcher); watch(ctx, stdin, cmd, grace, done, &stopped) }()
+	go func() { defer close(watcher); watch(ctx, stdin, cmd, grace, done, &stopped, log) }()
 
 	wg.Wait() // beide Pipes zu: der Prozess ist beendet; os/exec verlangt Wait erst nach den Lesern
 	waitErr := cmd.Wait()

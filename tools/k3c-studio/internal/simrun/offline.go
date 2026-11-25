@@ -87,7 +87,7 @@ func (g *Registry) Offline(spec Spec) Runner {
 	}
 }
 
-// procOutput liest die Ausgabe von Bau und k3c-sim: Fortschritt aus den JSON-Zeilen, sonst die letzten Zeilen für
+// procOutput liest die Ausgabe von Bau und Spiel-EXE: Fortschritt aus den JSON-Zeilen, sonst die letzten Zeilen für
 // den Status. Die Zeile „panic: …“ eines Absturzes bleibt erhalten, auch wenn der Stack danach die Zeilen füllt.
 type procOutput struct {
 	progress func(done, total int)
@@ -101,7 +101,7 @@ func (o *procOutput) line(stream, text string) {
 		if ev.Event == "progress" {
 			o.progress(ev.Done, ev.Total)
 		}
-		return // error steht auch auf stderr („❌ k3c-sim: …“), report und aborted liest der Runner selbst
+		return // error steht auch auf stderr („❌ k3c-game: …“), report und aborted liest der Runner selbst
 	}
 	o.mu.Lock()
 	defer o.mu.Unlock()

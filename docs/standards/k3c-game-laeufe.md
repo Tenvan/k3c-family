@@ -129,11 +129,10 @@ Wanduhr; gleicher Seed ergibt denselben Stand bis auf dieses Feld. Daten aus `--
 `balance` schreibt nach `--report-dir` (Workbench: `reports/simtest-<id>/`), Dateien und Inhalt wie bei `k3c-sim`; sie entstehen
 erst nach der Rechenphase.
 
-## Unterschiede zu `k3c-sim`
+## Unterschiede zum entfernten Go-CLI `k3c-sim` (seit RU40.4 gelöscht, letzter Stand im Git-Verlauf)
 
 - Präfix `sim`, neue Schalter `--headless`, `--window`, `--speed`, `--data`, `--stop-stdin`.
-- Abbruch über stdin-Ende statt Signal; kein Aufruf im Prozess der Workbench (`engine/simcli/call.go` entfällt, ab RU34 startet
-  die Workbench die EXE).
-- Rechnet mit der Rust-Sim (`k3c-sim`, `k3c-level`); gleiche Eingabe gibt dieselben Zeilen wie Go, geprüft von
-  `rust/crates/k3c-game/tests/runs_ref.rs` gegen `testdata/rust/runs/*.json` (Go schreibt sie:
-  `go test ./engine/simcli/ -run RustRef -write`). Weicht Rust ab, gilt Go (Ticket statt neues Golden).
+- Abbruch über stdin-Ende statt Signal; kein Aufruf im Prozess von Workbench oder Studio (sie starten die EXE).
+- Rechnet mit der Rust-Sim (Crate `k3c-sim`, `k3c-level`); gleiche Eingabe gibt dieselben Zeilen wie früher Go, geprüft von
+  `rust/crates/k3c-game/tests/runs_ref.rs` gegen die eingefrorenen Fixtures `testdata/rust/runs/*.json` (Go schrieb sie bis
+  RU40.4; seitdem kein Neuschreiben). Weicht Rust ab, ist das ein Ticket, kein neues Golden.

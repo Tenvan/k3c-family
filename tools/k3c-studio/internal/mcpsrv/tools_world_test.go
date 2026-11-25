@@ -7,12 +7,15 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"k3c/tools/k3c-studio/internal/exeengine"
 )
 
 // B-954: Roundtrip der Tools world_* auf einer Kopie von data/ (t.TempDir, echte Engine im Prozess); die Welt-Dateien
 // des Checkouts werden nur gelesen.
 func worldRepo(t *testing.T) string {
 	t.Helper()
+	exeengine.Require(t) // Welten- und Hub-Tools rechnen über die Spiel-EXE
 	root := t.TempDir()
 	if err := os.CopyFS(filepath.Join(root, "data"), os.DirFS(filepath.Join(hubRepoRoot, "data"))); err != nil {
 		t.Fatal(err)

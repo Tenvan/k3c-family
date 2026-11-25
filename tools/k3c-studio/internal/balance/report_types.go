@@ -7,7 +7,7 @@ import (
 	"k3c/data"
 )
 
-// Lese-Typen der Berichte von bin/k3c-sim balance (RS2.2, B-726): Felder und Reihenfolge wie engine/balance, damit
+// Lese-Typen der Berichte von k3c-game sim balance (RS2.2, B-726): Felder und Reihenfolge wie engine/balance, damit
 // die Workbench Berichte liest und neu bewertet, ohne engine/sim zu importieren. Stock und Cost sind Kopien der
 // Typen aus engine/sim (nur die JSON-Form zählt).
 

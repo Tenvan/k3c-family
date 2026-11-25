@@ -19,7 +19,7 @@ func TestMischungUngueltig(t *testing.T) {
 	}
 }
 
-// Die Ziele nehmen die Mischung an (den Lauf prüft cmd/k3c-sim mit engine/balance).
+// Die Ziele nehmen die Mischung an (den Lauf prüft k3c-game sim balance).
 func TestMischungImLauf(t *testing.T) {
 	ts, err := DefaultTargets()
 	if err != nil {

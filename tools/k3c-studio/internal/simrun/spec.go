@@ -12,7 +12,7 @@ import (
 	"k3c/tools/k3c-studio/internal/balance"
 )
 
-// Spec ist ein Offline-Lauf der Balancing-Seite; jedes Feld wird ein Flag von `k3c-sim balance` (cmd/k3c-sim).
+// Spec ist ein Offline-Lauf der Balancing-Seite; jedes Feld wird ein Flag von `k3c-game sim balance`.
 // Null bzw. leer heißt: Flag weglassen, die CLI nimmt alle Ziele aus data/balance-targets.json.
 type Spec struct {
 	Seeds int `json:"seeds,omitempty"`

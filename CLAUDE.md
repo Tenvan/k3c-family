@@ -51,7 +51,7 @@ task check:dev     # k3c-workbench und k3c-studio (samt tools/workkit): Frontend
 task check:all     # alles inklusive Build
 task go:golden     # testdata/golden/ neu schreiben, nur bei gewollter Regel-/Wertänderung (Begründung in den Commit)
 task build         # Rust-Spiel bauen (wie rust:game:build, Paket nach dist/k3c-game/; Einzelschritte rust:game:exe, :run, :dev)
-task buildall      # alle EXE bauen: Workbench, Studio, Engine-CLI k3c-sim nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
+task buildall      # alle EXE bauen: Workbench und Studio nach bin/, Rust-Spiel samt Grafik und data/ (alle Welten) nach dist/k3c-game/; laufende EXE vorher schließen; weitergebbar erst mit LIZENZEN.txt im Rust-Paket (Ticket in RU35)
 task rust:devwin:exe  # Cheat-Fenster k3c-devwin.exe bauen (F4 im Rust-Spiel, `--devwin`, `K3C_DEVWIN=1`; `task build` legt sie neben k3c-game.exe ins Paket, höchstens 5 MB)
 task gen:paper    # Papierschnitt-Grafik rendern (nicht eingecheckt, B-737; build und test rufen es selbst auf)
 task pages         # GitHub-Pages-Seite nach _site/ (kopiert nur site/, kein Build)
@@ -60,8 +60,8 @@ task k3c-studio          # Studio (Welten, Assets, Hub) als Client/Server-Dev (B
 ```
 
 **Taskfile-Gruppen:** `Taskfile.yml` hält nur die Kernbefehle (Workspace) und die Prüf-Aggregate `check:*`; jedes Projekt hat sein
-Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/), `k3c-sim`
-(cmd/), `k3c-workbench` und `k3c-studio` (tools/), `workkit` (tools/workkit, gemeinsamer Go-Code), `rust` (rust/), `balance`, `gen` (Generatoren:
+Taskfile im eigenen Ordner und erscheint als Namensraum (`task --list`, Tasks-Seite der Workbench): `go` (engine/),
+`k3c-workbench` und `k3c-studio` (tools/), `workkit` (tools/workkit, gemeinsamer Go-Code), `rust` (rust/), `balance`, `gen` (Generatoren:
 `gen:rules`), `ops` (`ops:aufraeumen`, `ops:backup`). Neue Aufgaben kommen in das Taskfile ihres Projekts, nicht
 in die Wurzel.
 
@@ -99,7 +99,6 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
 - `engine/` – Go, bleibt, weil die Workbench die Engine im Prozess rechnet; ungenutzte Teile sind seit RU59 entfernt (Belegtabelle: `docs/arbeitsweise.md` › Go-Engine-Bestand): `sim/` (Simulation, deterministisch), `level/` (Level-Generator), `room/` (Raum mit Stufen und Spielstand,
   Zustand und Ereignisse wie in `docs/protocol.md`), `store/` (Spielstände → `saves/`, Berichte → `reports/`). `engine/`
   importiert nichts aus `tools/` (`engine/internal/rules/imports_test.go`).
-- `cmd/` – Go-Binary `k3c-sim` (Engine-CLI: Simulation, Balancing, Level). Spielserver, Lasttest und TUI sind entfernt (B-887).
 - `tools/k3c-workbench` – Entwickler-Werkzeug (Wails-Fenster + MCP-Server `k3c-workbench`) mit den Seiten Dienste, Tasks, Planung,
   Git, MCP, Monitoring und Balancing.
   `tools/k3c-studio` – Studio für Game- und Level-Designer (WZ63): eigene Wails-App mit Welten-Editor, Gebäude-Planer und Assets

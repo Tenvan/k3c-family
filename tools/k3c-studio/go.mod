@@ -48,7 +48,7 @@ require (
 	golang.org/x/time v0.15.0 // indirect
 )
 
-// Engine des Hauptmoduls in-process: level_generate, Welten- und Hub-Prüfung, sim_run, sim_test, replay_run über engine/simcli (WZ63).
+// Hauptmodul nur für engine/conlog und engine/devrun; gerechnet wird über die Spiel-EXE (`k3c-game sim`, RU40.4).
 replace k3c => ../..
 
 // Asset-Logik (B-459), gemeinsam mit k3c-workbench.

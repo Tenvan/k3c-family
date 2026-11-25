@@ -15,7 +15,7 @@ linters:
           deny:
             - pkg: k3c/tools/k3c-workbench
               desc: "k3c-studio importiert die Workbench nicht (WZ63); Gemeinsames gehört nach tools/workkit"
-        # B-924 (wie in der Workbench): Engine im Prozess nur über engine/simcli und engine/store; Räume nur in
+        # RU40.4 (wie in der Workbench): Engine nur über die Spiel-EXE (internal/gameexe, `k3c-game sim`); Räume nur in
         # internal/studioview („Im Spiel ansehen“ mit eingebundener Engine).
         studio-ohne-raum:
           files: ["$all", "!**/internal/studioview/**"]
@@ -25,9 +25,9 @@ linters:
             - pkg: k3c/engine/net
               desc: "Protokoll nur über den laufenden Spielserver (B-726)"
             - pkg: k3c/engine/enginetools
-              desc: "Engine-Aufrufe über engine/simcli (B-924)"
+              desc: "Engine-Aufrufe über die Spiel-EXE (k3c-game sim, RU40.4)"
             - pkg: k3c/engine/balance
-              desc: "Balancing über engine/simcli balance (B-924)"
+              desc: "Balancing über k3c-game sim balance (RU40.4)"
         studio-devrun-nur-wurzel:
           files: ["$all", "!**/tools/k3c-studio/*.go"]
           deny:

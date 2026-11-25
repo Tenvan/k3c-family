@@ -12,7 +12,7 @@ import (
 const engineTimeout = 30 * time.Second
 
 // Engine ist die Engine-Seite des Editors: input ist das JSON von `k3c-game sim world` ({"op": …}), die Antwort sein
-// report. Ein Fehler ist die Meldung von k3c-sim (ungültiger Entwurf, unbekannte Insel) oder ein Startfehler.
+// report. Ein Fehler ist die Meldung der Spiel-EXE (ungültiger Entwurf, unbekannte Insel) oder ein Startfehler.
 type Engine func(ctx context.Context, input []byte) (json.RawMessage, error)
 
 // Exe ist die Engine über die Spiel-EXE des Checkouts root (`k3c-game sim world`, RU34.3, internal/gameexe); ist sie nicht
@@ -52,7 +52,7 @@ type LevelView struct {
 	Planned         []json.RawMessage `json:"planned"`
 	Warnings        []string          `json:"warnings"`
 	Error           string            `json:"error"`
-	// Natur (B-891): geltende Werte, fest gesetzte Werte, Eigenschaften und Gewichts-Gruppen des Bioms (von k3c-sim).
+	// Natur (B-891): geltende Werte, fest gesetzte Werte, Eigenschaften und Gewichts-Gruppen des Bioms (von der Spiel-EXE).
 	Nature        json.RawMessage `json:"nature"`
 	NatureFixed   json.RawMessage `json:"natureFixed"`
 	NatureTraits  json.RawMessage `json:"natureTraits"`

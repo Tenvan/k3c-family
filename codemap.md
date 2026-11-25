@@ -5,7 +5,6 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns als natives Spiel für d
 
 ## System Entry Points
 - `rust/crates/k3c-game/`: Rust-Spiel (`task rust:game:run`, Paket `task build` nach `dist/k3c-game/`)
-- `cmd/k3c-sim/`: Engine-CLI (Simulation, Balancing, Level) für die Workbench
 - `Taskfile.yml`: einziger Einstieg für Befehle (`task rust:game:run`, `task check`, `task check:go` …)
 - `package.json`, `tsconfig.json`, `vitest.config.ts`: Werkzeuge und Tests der Wurzel (`tests/`, `tools/paper`)
 - `go.mod`: Go-Modul für Engine und Werkzeuge; `tools/k3c-workbench/go.mod`, `tools/k3c-studio/go.mod`, `tools/workkit/go.mod` und `tools/assetkit/go.mod` sind eigene Module
@@ -14,7 +13,6 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns als natives Spiel für d
 | Directory | Responsibility Summary | Detailed Map |
 |-----------|------------------------|--------------|
 | `cmd/` | Container für die ausführbaren Go-Programme (CLI entry points). | [View Map](cmd/codemap.md) |
-| `cmd/k3c-sim/` | CLI Entry Point (`package main`): das Engine-CLI der Workbench (B-726). | [View Map](cmd/k3c-sim/codemap.md) |
 | `data/biomes/` | Configuration Data: ein JSON je Biom/Stufe (`forest.json` Tiefe 0, `cave.json` 1, `mine.json` 2, `ironhold.json` 3, `crystal.json` 4) mit den festen Eckdaten für Level-Generator, Simulation und Darstellung. | [View Map](data/biomes/codemap.md) |
 | `data/` | Configuration Data: einzige Quelle der Spielwerte (Balancing, Welten, Grafik-/Sound-Zuordnung, Werkzeug-Daten) als JSON für Engine, natives Spiel und Workbench. | [View Map](data/codemap.md) |
 | `engine/balance/` | Balancing-Tester (Test Harness / Batch Runner): spielt eine Szenario-Matrix headless mit Bots über `engine/sim`, misst Kennzahlen je Lauf, bewertet sie gegen Zielkorridore und schreibt Berichte (JSON, Markdown, HTML). | [View Map](engine/balance/codemap.md) |
@@ -153,7 +151,7 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns als natives Spiel für d
 | `tools/k3c-studio/frontend/src/world/` | Seite **Welten-Editor** (B-879, Reiter `welten` im Bereich Studio; Port aus dem früheren Asset-Studio): Welten unter `data/worlds/` ansehen, Level einer Insel-Stufe zu einem Seed als Chunk-Streifen zeigen, Abschnitte … | [View Map](tools/k3c-studio/frontend/src/world/codemap.md) |
 | `tools/workkit/applog/` | Eigenes Log von k3c-workbench: strukturiertes JSON nach `logs/k3c-workbench.jsonl` im Format, das `internal/logs` liest, plus Spiegelung derselben Einträge in den Konsolenpuffer. | [View Map](tools/workkit/applog/codemap.md) |
 | `tools/k3c-studio/internal/assetsui/` | RPC-Schicht der Asset-Oberfläche (Vertrag `docs/standards/paper-mcp.md` › Oberfläche): Katalog, Spec, Stil-Datei, Prompt-Vorlagen, Review, Frames, Pixel-Diff und Größenvergleich aus dem Checkout; Vergleich, Cache und … | [View Map](tools/k3c-studio/internal/assetsui/codemap.md) |
-| `tools/k3c-studio/internal/balance/` | Leseteil des Balancing-Testers im Studio (seit WZ63.5) (seit RS2.2, B-726): liest Berichte von `bin/k3c-sim balance` (`balance-*.json`, `tuning-*.json`), bewertet sie gegen die Zielkorridore neu, baut die Auswertung (Insight… | [View Map](tools/k3c-studio/internal/balance/codemap.md) |
+| `tools/k3c-studio/internal/balance/` | Leseteil des Balancing-Testers im Studio (seit WZ63.5) (seit RS2.2, B-726): liest Berichte von `k3c-game sim balance` (`balance-*.json`, `tuning-*.json`), bewertet sie gegen die Zielkorridore neu, baut die Auswertung (Insight… | [View Map](tools/k3c-studio/internal/balance/codemap.md) |
 | `tools/k3c-workbench/internal/` | Interne Go-Packages von k3c-workbench (Service Layer hinter Wails-Bindings, Oberflächen-API und MCP-Server). | [View Map](tools/k3c-workbench/internal/codemap.md) |
 | `tools/workkit/console/` | In-Memory-Konsolenpuffer je Quelle (Prüfläufe `check:<ziel>`, eigenes Log, Dienste, Tasks, Sim-Läufe) mit Ring-Puffer und Live-Benachrichtigung für die Oberfläche. | [View Map](tools/workkit/console/codemap.md) |
 | `tools/k3c-studio/internal/datadoc/` | Kennt die Dateien in `data/`, die Simulation, Level-Generator oder Balancing-Tester lesen, samt ihrer Beschreibungen unter `docs/data/<name>.md`, und liefert daraus Liste, Beschreibung und Zahlenwerte für die Balancin… | [View Map](tools/k3c-studio/internal/datadoc/codemap.md) |
@@ -169,7 +167,6 @@ Couch-Koop-Side-Scroller im Stil von Kingdom Two Crowns als natives Spiel für d
 | `tools/k3c-workbench/internal/resmon/` | Misst den Ressourcenverbrauch von k3c-workbench über Stunden (Go-Heap, Prozess- und Kindprozess-Speicher, WebView2-Renderer, Goroutinen, Handles, Puffergrößen), hält einen begrenzten Verlauf, loggt in Abständen, legt … | [View Map](tools/k3c-workbench/internal/resmon/codemap.md) |
 | `tools/k3c-studio/internal/review/` | Vergleicht die Papierschnitt-Assets des Arbeitsstands mit einer Git-Basis (Vertrag `docs/standards/paper-mcp.md` › Oberfläche) und ist die gemeinsame Anbindung der Render-CLI für `assetsui` und `paperassets`. | [View Map](tools/k3c-studio/internal/review/codemap.md) |
 | `tools/k3c-workbench/internal/services/` | Supervisor für Entwicklungs-Dienste aus `services.json` (derzeit eine leere Liste; Spielserver und Browser-Client sind entfernt): Start/Stop/Restart, Health-Check, Crash-Restart, Neustart bei Dateiänderung, Übernahme … | [View Map](tools/k3c-workbench/internal/services/codemap.md) |
-| `engine/simcli/` | Unterbefehle des Engine-CLI (run, level, balance, world, hub) als Go-Paket (B-924): `cmd/k3c-sim` ist die dünne EXE, die Workbench ruft `Call`/`Stream` im Prozess auf (recover, Abbruch über Context). | [View Map](engine/simcli/codemap.md) |
 | `engine/internal/` | Test-Hilfen und Repo-Regeln für die Go-Engine; kein Laufzeitcode des Spiels. Jeder Unterordner hat eine eigene… | [View Map](engine/internal/codemap.md) |
 | `engine/internal/detvec/` | Test Fixture Generator (Projekt RSU, Sprint RU3, B-1014): hält die Prüf-Vektoren, mit denen der Rust-Port gegen Go verglichen wird, zunächst Gleitkomma-Funktionen, später die JSON-Bäume der… | [View Map](engine/internal/detvec/codemap.md) |
 | `engine/internal/trace/` | Serializer: schreibt die Aufzeichnung eines Sim-Laufs als gzip-komprimierte JSON-Zeilen (`.jsonl.gz`) für den Rust-Port (Projekt RSU, RU38). Reine Logik ohne Abhängigkeit vom Raum; die Szenen stehen in den… | [View Map](engine/internal/trace/codemap.md) |

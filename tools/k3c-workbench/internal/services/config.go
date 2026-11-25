@@ -105,6 +105,23 @@ func relPath(p string) bool {
 }
 
 func check(s Service, names map[string]bool, ports map[int]bool) error {
+	if err := checkCore(s); err != nil {
+		return err
+	}
+	if err := checkOptional(s); err != nil {
+		return err
+	}
+	switch {
+	case names[s.Name]:
+		return fmt.Errorf("name doppelt")
+	case ports[s.Port]:
+		return fmt.Errorf("port %d doppelt", s.Port)
+	}
+	return nil
+}
+
+// checkCore prüft Name, Befehl und Gesundheitsprüfung eines Dienstes.
+func checkCore(s Service) error {
 	switch {
 	case !name.MatchString(s.Name):
 		return fmt.Errorf("name fehlt oder enthält andere Zeichen als A–Z, a–z, 0–9, _ . - (höchstens 40)")
@@ -112,22 +129,21 @@ func check(s Service, names map[string]bool, ports map[int]bool) error {
 		return fmt.Errorf("command fehlt")
 	case s.Health != "http" && s.Health != "tcp" && s.Health != healthProcess:
 		return fmt.Errorf("health %q: erlaubt sind http, tcp und process", s.Health)
-	case checkProcess(s) != nil:
-		return checkProcess(s)
+	}
+	return checkProcess(s)
+}
+
+// checkOptional prüft Port, Log, PortEnv und Watch eines Dienstes.
+func checkOptional(s Service) error {
+	switch {
 	case s.Health != healthProcess && (s.Port < 1 || s.Port > 65535):
 		return fmt.Errorf("port %d ungültig", s.Port)
 	case s.Log != "" && !name.MatchString(s.Log):
 		return fmt.Errorf("log %q ist kein gültiger Name", s.Log)
 	case s.PortEnv != "" && !envName.MatchString(s.PortEnv):
 		return fmt.Errorf("portEnv %q ist kein Variablenname wie K3C_HTTP_PORT", s.PortEnv)
-	case checkWatch(s.Watch) != nil:
-		return checkWatch(s.Watch)
-	case names[s.Name]:
-		return fmt.Errorf("name doppelt")
-	case ports[s.Port]:
-		return fmt.Errorf("port %d doppelt", s.Port)
 	}
-	return nil
+	return checkWatch(s.Watch)
 }
 
 // Shift verschiebt alle Ports um off (Dienste eines Worktrees neben denen der Repo-Wurzel) und gibt jedem Dienst

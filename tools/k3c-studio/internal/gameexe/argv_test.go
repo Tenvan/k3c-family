@@ -19,3 +19,12 @@ func TestArgvForSchalter(t *testing.T) {
 		t.Errorf("mit Fenster: %v", got)
 	}
 }
+
+// RU40.4: Data ersetzt <Root>/data (Tests: Fixture-Daten mit der EXE der Repo-Wurzel).
+func TestArgvForData(t *testing.T) {
+	got := argvFor("x.exe", "in.json", Options{Root: "r", Data: "fix", Sub: "world"})
+	want := []string{"x.exe", "sim", "world", "--input", "in.json", "--data", "fix", "--stop-stdin"}
+	if !slices.Equal(got, want) {
+		t.Errorf("Data: %v", got)
+	}
+}

@@ -11,7 +11,7 @@ import (
 
 // Natur-Werte im Welten-Editor (B-891, docs/rules/welten.md § 2.1): Die Seite zeigt je Insel-Stufe die geltenden Werte
 // (fest oder aus dem Seed) und setzt einen Wert fest oder zurück. Geschrieben wird nur `natureByDepth` der Insel; alle
-// übrigen Bytes der Welt-Datei bleiben gleich. Vor dem Schreiben prüft k3c-sim den Entwurf wie der Server.
+// übrigen Bytes der Welt-Datei bleiben gleich. Vor dem Schreiben prüft die Spiel-EXE den Entwurf wie der Server.
 
 // natureValues sind fest gesetzte Natur-Werte einer Tiefe (Form wie level.NatureValues, ohne Import des Engine-Kerns).
 type natureValues struct {

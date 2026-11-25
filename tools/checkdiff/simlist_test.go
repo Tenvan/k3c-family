@@ -73,7 +73,7 @@ func TestSimListeGleich(t *testing.T) {
 
 // TestFilterPkgs: check:go lässt die Sim-Pakete weg, CHECK_SIM=1 nimmt sie mit (B-832/AC-01).
 func TestFilterPkgs(t *testing.T) {
-	all := []string{"k3c/cmd/k3c-sim", "k3c/engine/simcli", "k3c/engine/level", "k3c/engine/balance", "k3c/engine/balance/x", "k3c/engine/sim"}
+	all := []string{"k3c/engine/level", "k3c/engine/balance", "k3c/engine/balance/x", "k3c/engine/sim"}
 	if got := filterPkgs(all, false); !slices.Equal(got, []string{"k3c/engine/level", "k3c/engine/balance/x", "k3c/engine/sim"}) {
 		t.Errorf("ohne Sim: %v", got)
 	}

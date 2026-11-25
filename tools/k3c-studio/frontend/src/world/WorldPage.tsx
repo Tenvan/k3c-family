@@ -59,30 +59,39 @@ function stageOptions(detail: WorldDetail) {
     isl.depths.map((d, i) => ({ value: `${isl.id}:${i}`, label: `${isl.name} · Stufe ${i} (Tiefe ${d}, ${isl.biomes[i] ?? '?'})` })));
 }
 
-function WorldHead({ w }: { w: WorldState }) {
-  const { detail } = w;
-  if (!detail) return <Text size="2" color="gray">Lade Welt …</Text>;
+/** Titelzeile: Name, Art und Eltern, Auswahlen, Dateiname und Insel/Stufe. */
+function WorldTitle({ w, detail }: { w: WorldState; detail: WorldDetail }) {
   const pick = (v: string) => {
     const [island = '', stage = '0'] = v.split(':');
     w.setStage({ world: w.id, island, stage: Number(stage) });
   };
   return (
+    <Flex gap="2" align="center" wrap="wrap">
+      <Heading size="4">{detail.name}</Heading>
+      {detail.id !== 'standard' && !detail.error && <><KindBadge kind={kindOf(detail)} /><KindSelect kind={kindOf(detail)} onChange={(k) => void w.setKind(k)} />{kindOf(detail) === 'spinoff' && <ParentSelect id={detail.id} parent={detail.extends} worlds={w.worlds} onChange={(p) => void w.setParent(p)} />}</>}{w.picks && !w.picks.error && <PickSelects picks={w.picks} onChange={(k, v) => void w.setPick(k, v)} />}
+      <Badge color="gray">data/worlds/{detail.id}.json</Badge>
+      {detail.islands.length > 0 && (
+        <SelectField size="1" aria-label="Insel und Stufe" value={stageKey(w.stage)} onChange={pick} options={stageOptions(detail)} />
+      )}
+    </Flex>
+  );
+}
+
+const NOTICE_COLOR = { error: 'red', warn: 'orange', ok: 'green' } as const;
+
+function WorldHead({ w }: { w: WorldState }) {
+  const { detail } = w;
+  if (!detail) return <Text size="2" color="gray">Lade Welt …</Text>;
+  return (
     <div className="wd-head">
     <Flex direction="column" gap="1" className="wd-head-main">
-      <Flex gap="2" align="center" wrap="wrap">
-        <Heading size="4">{detail.name}</Heading>
-        {detail.id !== 'standard' && !detail.error && <><KindBadge kind={kindOf(detail)} /><KindSelect kind={kindOf(detail)} onChange={(k) => void w.setKind(k)} />{kindOf(detail) === 'spinoff' && <ParentSelect id={detail.id} parent={detail.extends} worlds={w.worlds} onChange={(p) => void w.setParent(p)} />}</>}{w.picks && !w.picks.error && <PickSelects picks={w.picks} onChange={(k, v) => void w.setPick(k, v)} />}
-        <Badge color="gray">data/worlds/{detail.id}.json</Badge>
-        {detail.islands.length > 0 && (
-          <SelectField size="1" aria-label="Insel und Stufe" value={stageKey(w.stage)} onChange={pick} options={stageOptions(detail)} />
-        )}
-      </Flex>
+      <WorldTitle w={w} detail={detail} />
       {!detail.error && <CatalogLinks welt={detail.id} />}
       <DeleteWorld key={detail.id} id={detail.id} name={detail.name} onDelete={w.remove} />
       {detail.error && <Text size="1" color="red" role="alert">{detail.error}</Text>}
       {detail.notes && <Text size="1" color="gray" className="wd-notes">{detail.notes}</Text>}
       {!detail.error && <StoryState detail={detail} />}
-      {w.notice && <Text size="1" role="status" color={w.notice.tone === 'error' ? 'red' : w.notice.tone === 'warn' ? 'orange' : 'green'}>{w.notice.text}</Text>}
+      {w.notice && <Text size="1" role="status" color={NOTICE_COLOR[w.notice.tone]}>{w.notice.text}</Text>}
     </Flex>
     {!detail.error && <WorldStats detail={detail} />}
     </div>

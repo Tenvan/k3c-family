@@ -11,7 +11,7 @@ import (
 )
 
 // Namen, die die Workbench vor dem Start eines Laufs prüft (RS2.2, B-726): Bot-Profile, Hilfen und Welten. Die Bots
-// selbst rechnet bin/k3c-sim (engine/balance); die Liste hier hält names_test.go gleich mit engine/balance/bots.go
+// selbst rechnet k3c-game sim balance; die Liste hier hält names_test.go gleich mit engine/balance/bots.go
 // und helps.go (Quelltext-Vergleich, ohne Import).
 
 // botNames sind die Profile aus engine/balance/bots.go › bots, sortiert.
@@ -92,7 +92,7 @@ func Worlds() ([]string, error) {
 	return ids, nil
 }
 
-// worldDef ist der Teil einer Welt-Datei, den Prüfung und Meilenstein-Leiter brauchen; streng prüft bin/k3c-sim.
+// worldDef ist der Teil einer Welt-Datei, den Prüfung und Meilenstein-Leiter brauchen; streng prüft k3c-game sim.
 type worldDef struct {
 	Islands []struct {
 		Depths []int `json:"depths"`

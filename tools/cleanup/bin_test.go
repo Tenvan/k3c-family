@@ -20,7 +20,7 @@ func binFixture(t *testing.T) (root, bin string) {
 	}
 	files := []string{
 		"k3c-server.exe", "k3c-load.exe", "k3c-tui.exe", "k3c-starter.exe", "k3c-workbench-web.exe",
-		"k3c-workbench-web.exe~", "k3c-workbench.exe", "k3c-sim.exe", "soundatlas.exe", "aufraeumen.exe",
+		"k3c-workbench-web.exe~", "k3c-workbench.exe", "k3c-studio.exe", "k3c-sim.exe", "soundatlas.exe", "aufraeumen.exe",
 	}
 	for _, f := range files {
 		if err := os.WriteFile(filepath.Join(bin, f), []byte("x"), 0o644); err != nil {
@@ -59,7 +59,7 @@ func TestCleanBinDeletesExactlyTheOldOnes(t *testing.T) {
 	var out bytes.Buffer
 	cleanBin(options{Root: root, Out: &out}, bin)
 	got := strings.Join(names(t, bin), ",")
-	want := "aufraeumen.exe,k3c-sim.exe,k3c-tui,k3c-workbench.exe,soundatlas.exe"
+	want := "aufraeumen.exe,k3c-studio.exe,k3c-tui,k3c-workbench.exe,soundatlas.exe"
 	if got != want {
 		t.Fatalf("bin/ = %s, erwartet %s", got, want)
 	}
@@ -82,8 +82,8 @@ func TestCleanBinDryDeletesNothing(t *testing.T) {
 	if after := names(t, bin); strings.Join(after, ",") != strings.Join(before, ",") {
 		t.Fatalf("--dry hat Dateien verändert: %v -> %v", before, after)
 	}
-	if n := strings.Count(out.String(), "würde gelöscht"); n != 6 {
-		t.Fatalf("erwartet 6 Anzeigen, %d:\n%s", n, out.String())
+	if n := strings.Count(out.String(), "würde gelöscht"); n != 7 {
+		t.Fatalf("erwartet 7 Anzeigen, %d:\n%s", n, out.String())
 	}
 }
 
@@ -133,7 +133,7 @@ func TestBinCandidatesAreFixed(t *testing.T) {
 		if strings.ContainsAny(n, `*?[/\`) || strings.Contains(n, "..") {
 			t.Fatalf("unzulässiger Name %q", n)
 		}
-		for _, keep := range []string{"k3c-workbench.exe", "k3c-sim.exe", "soundatlas.exe", "aufraeumen.exe"} {
+		for _, keep := range []string{"k3c-workbench.exe", "k3c-studio.exe", "soundatlas.exe", "aufraeumen.exe"} {
 			if n == keep {
 				t.Fatalf("lebendes Programm in der Liste: %s", n)
 			}

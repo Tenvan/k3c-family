@@ -26,7 +26,7 @@ func rowOf(t *testing.T, m HubMatrix, key string) HubRow {
 
 // AC-08: Die 7-Stufen-Fixture liefert 7 Spalten, ohne feste 5 im Code.
 func TestHubPlanSiebenStufen(t *testing.T) {
-	view := editor(repoRoot).planFrom(context.Background(), "testdata/hub/hub7.json")
+	view := editor(t, repoRoot).planFrom(context.Background(), "testdata/hub/hub7.json")
 	if view.Error != "" || len(view.Findings) != 0 {
 		t.Fatalf("Error %q, Befunde %v", view.Error, view.Findings)
 	}
@@ -37,15 +37,15 @@ func TestHubPlanSiebenStufen(t *testing.T) {
 
 func TestHubPlanBefundeUndFehler(t *testing.T) {
 	root := t.TempDir()
-	if v := editor(root).planFrom(context.Background(), hubFile); !strings.Contains(v.Error, hubFile) || len(v.Matrix.Rows) != 0 {
+	if v := editor(t, root).planFrom(context.Background(), hubFile); !strings.Contains(v.Error, hubFile) || len(v.Matrix.Rows) != 0 {
 		t.Errorf("fehlende Datei: %+v", v)
 	}
 	write(t, filepath.Join(root, "data", "hub.json"), "{kaputt")
-	if v := editor(root).planFrom(context.Background(), hubFile); !strings.Contains(v.Error, "nicht lesbar als hub.json") {
+	if v := editor(t, root).planFrom(context.Background(), hubFile); !strings.Contains(v.Error, "nicht lesbar als hub.json") {
 		t.Errorf("ungültiges JSON: %q", v.Error)
 	}
 	write(t, filepath.Join(root, "data", "hub.json"), `{"levels": "fünf"}`)
-	if v := editor(root).planFrom(context.Background(), hubFile); !strings.Contains(v.Error, "nicht lesbar als hub.json") || len(v.Matrix.Rows) != 0 {
+	if v := editor(t, root).planFrom(context.Background(), hubFile); !strings.Contains(v.Error, "nicht lesbar als hub.json") || len(v.Matrix.Rows) != 0 {
 		t.Errorf("Typfehler: %q", v.Error)
 	}
 	raw, err := os.ReadFile(filepath.Join(repoRoot, "data", "hub.json"))
@@ -53,7 +53,7 @@ func TestHubPlanBefundeUndFehler(t *testing.T) {
 		t.Fatal(err)
 	}
 	write(t, filepath.Join(root, "data", "hub.json"), strings.Replace(string(raw), `"kind": "workshop"`, `"kind": "smithy"`, 1))
-	v := editor(root).planFrom(context.Background(), hubFile)
+	v := editor(t, root).planFrom(context.Background(), hubFile)
 	if v.Error != "" || len(v.Findings) == 0 || len(v.Matrix.Rows) == 0 {
 		t.Fatalf("Kandidat ohne Werkstatt: Error %q, Befunde %v", v.Error, v.Findings)
 	}

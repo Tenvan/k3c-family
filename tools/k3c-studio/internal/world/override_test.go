@@ -78,7 +78,7 @@ func TestSetOverrideRejectsInvalid(t *testing.T) {
 		"ID":             e.SetOverride(ctx, "../standard", "economy", path, json.RawMessage("1")),
 	}
 	broken := e
-	broken.Engine = func(context.Context, []byte) (json.RawMessage, error) { return nil, errors.New("bin/k3c-sim fehlt") }
+	broken.Engine = func(context.Context, []byte) (json.RawMessage, error) { return nil, errors.New("k3c-game.exe fehlt") }
 	cases["ohne Engine"] = broken.SetOverride(ctx, "standard", "economy", path, json.RawMessage("1"))
 	for name, v := range cases {
 		if v.Error == "" {

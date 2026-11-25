@@ -18,7 +18,7 @@ permissions:
 # Abnahme-Ticket; vet und Lint prüfen sie weiter. Gleiche Liste wie tools/checkdiff › simDirs (B-825), aus der auch
 # task check:go liest (checkdiff -gopkgs); tools/checkdiff/simlist_test.go prüft das (B-832). Alle Go-Tests mit -short.
 env:
-  GO_SIM_PKGS: '/(engine/balance|engine/simcli|cmd/k3c-sim)$'
+  GO_SIM_PKGS: '/(engine/balance)$'
   STUDIO_SIM_PKGS: '/internal/(balance|simrun)$'
 
 jobs:

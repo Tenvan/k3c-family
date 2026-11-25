@@ -11,8 +11,8 @@ import (
 	"k3c/tools/k3c-studio/internal/world"
 )
 
-// B-879: Der Welten-Editor erreicht die Welt über die Bindings wie die Oberfläche. Die Engine-Seite (bin/k3c-sim world)
-// ersetzt hier eine feste Antwort; ihre Rechnung prüft cmd/k3c-sim. Die HTTP-Schicht der Oberfläche (RPC) kommt mit
+// B-879: Der Welten-Editor erreicht die Welt über die Bindings wie die Oberfläche. Die Engine-Seite (k3c-game sim world)
+// ersetzt hier eine feste Antwort; ihre Rechnung prüfen die Tests der Spiel-EXE. Die HTTP-Schicht der Oberfläche (RPC) kommt mit
 // dem Frontend (WZ63.3); bis dahin ruft der Test die Bindings direkt.
 func TestWorldBindings(t *testing.T) {
 	a := &App{root: t.TempDir()}

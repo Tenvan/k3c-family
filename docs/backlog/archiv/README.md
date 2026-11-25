@@ -924,3 +924,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1230](B-1230-spieltest-ffmpeg-suche.md) | DEV | Problem | hoch | erledigt | WZ65 | Workbench findet ffmpeg nicht, wenn der PATH des Prozesses veraltet ist |
 | [B-1232](B-1232-spieltest-encoder-waechter.md) | DEV | Problem | hoch | erledigt | WZ65 | Spieltest nimmt mit nutzbarem Encoder auf, überwacht die Aufnahme und zeigt Ton- und Bild-Rate |
 | [B-1261](B-1261-flaschenpost-zielpool-alle-stufen.md) | SIM | Problem | hoch | erledigt | GS4 | Flaschenpost: Zielpool und Markierung über alle Stufen |
+| [B-1284](B-1284-eslint-spieltest-welteneditor-task-check-rot.md) | DEV | Schuld | hoch | erledigt | WZ65 | ESLint-Befunde in Spieltest-Seite und Welten-Editor machen task check auf main rot |

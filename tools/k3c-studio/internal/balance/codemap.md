@@ -1,10 +1,10 @@
 # tools/k3c-workbench/internal/balance/
 
 ## Responsibility
-Leseteil des Balancing-Testers in der Workbench (seit RS2.2, B-726): liest Berichte von `bin/k3c-sim balance`
+Leseteil des Balancing-Testers in der Workbench (seit RS2.2, B-726): liest Berichte von `k3c-game sim balance`
 (`balance-*.json`, `tuning-*.json`), bewertet sie gegen die Zielkorridore neu, baut die Auswertung (Insights, Markdown,
 HTML) und verwaltet Baselines. Gerechnet wird nicht hier, sondern in `engine/balance` (Bots, Matrix, Kennzahlen,
-Replays, Sensitivität, Abstimmen) über das Engine-CLI `cmd/k3c-sim`. Kein Import aus `engine/*` (depguard).
+Replays, Sensitivität, Abstimmen) über die Spiel-EXE (`k3c-game sim balance`). Kein Import aus `engine/*` (depguard).
 
 ## Design
 - Lese-Typen (`report_types.go`): `Report`, `Result`, `Scenario`, `Matrix`, `Metrics` samt Tages-, Wellen-, Morgen- und
@@ -26,4 +26,4 @@ Replays, Sensitivität, Abstimmen) über das Engine-CLI `cmd/k3c-sim`. Kein Impo
 ## Integration
 - Abhängigkeiten: `k3c/data` (Zielkorridore, Hinweise, Welten).
 - Konsumenten: `internal/simrun` (`baseline.go`, `reports.go`, `spec.go`), `internal/mcpsrv` (`simtest.go`, `simtest_baseline.go`, `simtest_spec.go`), `tools/k3c-workbench/app_balance.go`.
-- Handweg: `Taskfile.yml` (Namensraum `balance`) ruft `bin/k3c-sim balance` bzw. `go test ./engine/balance`.
+- Handweg: `Taskfile.yml` (Namensraum `balance`) ruft `k3c-game sim balance` bzw. `go test ./engine/balance`.
