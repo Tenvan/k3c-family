@@ -7,11 +7,11 @@ use k3c_sim::state::{Player, PlayerCommand, Site, Troop, World};
 use k3c_sim::world::vals;
 
 use crate::bot_abstieg::descent_decide;
+use crate::bot_boss::boss_decide;
 use crate::bot_clear::{WantSet, clear_node};
 use crate::bot_material::covers;
 use crate::bot_wirtschaft::{PEASANT_LIMIT, hub_step, nearest_payable, peasants, wirtschaft};
 use crate::fehler::Fehler;
-use crate::pending::boss_fight_decide;
 use crate::prices::prices;
 
 /// Trennt die Profile einer Mischung je Spieler (B-611): "saver+passive" = Spieler 1 saver, Spieler 2 passive.
@@ -56,7 +56,7 @@ impl Bot {
                 n => list[p.index.rem_euclid(n as i64) as usize].decide(isl, w, p),
             },
             Bot::Descent { inner, deepest } => descent_decide(inner, *deepest, isl, w, p),
-            Bot::BossFight { inner, deepest } => boss_fight_decide(inner, *deepest, isl, w, p),
+            Bot::BossFight { inner, deepest } => boss_decide(inner, *deepest, isl, w, p),
         }
     }
 }

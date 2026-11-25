@@ -206,7 +206,7 @@ pub fn peasants(w: &World) -> i64 {
 /// Heer den Endboss tragen kann (B-652), sonst `FIGHTER_WANT`.
 pub fn fighter_target(w: &World) -> i64 {
     if w.level.entities.iter().any(|e| e.kind == "lair") {
-        return crate::pending::ENDBOSS_WANT;
+        return crate::bot_boss::ENDBOSS_WANT;
     }
     FIGHTER_WANT
 }

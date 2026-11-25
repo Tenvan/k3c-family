@@ -9,12 +9,14 @@ pub enum Fehler {
     Daten(String),
     /// Ein Profil passt nicht zum Szenario (Go: `checkPlayers`).
     Profil(String),
+    /// Die Hilfen eines Szenarios passen nicht (Go: `checkHelps`).
+    Hilfen(String),
 }
 
 impl fmt::Display for Fehler {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Fehler::Daten(s) | Fehler::Profil(s) => f.write_str(s),
+            Fehler::Daten(s) | Fehler::Profil(s) | Fehler::Hilfen(s) => f.write_str(s),
         }
     }
 }

@@ -9,8 +9,8 @@ use k3c_sim::state::site_view::site_zone;
 use k3c_sim::state::{Player, ResourceNode, Site, World};
 use k3c_sim::world::lines::site_blockers;
 
+use crate::bot_boss::ENDBOSS_WANT;
 use crate::bots::{closer, economy_view};
-use crate::pending::ENDBOSS_WANT;
 use crate::prices::prices;
 
 /// Der Abstand zum Bau des Endbosses, den der Bot beim Markieren und Sammeln hält: Wer dort hinläuft, weckt den Endboss
