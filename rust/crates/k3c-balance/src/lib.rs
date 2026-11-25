@@ -22,6 +22,9 @@ pub mod hints;
 pub mod insights;
 pub mod insights_figures;
 pub mod insights_files;
+pub mod insights_levers;
+pub mod insights_markdown;
+pub mod insights_next;
 pub mod island_world;
 pub mod metrics;
 pub mod metrics_island;
@@ -41,6 +44,7 @@ pub mod summary_text;
 pub mod targets;
 #[cfg(test)]
 mod testutil;
+pub mod tuneparam;
 pub mod variant;
 pub mod vary;
 
@@ -76,6 +80,8 @@ mod groups_tests;
 mod helps_tests;
 #[cfg(test)]
 mod hints_tests;
+#[cfg(test)]
+mod insights_levers_tests;
 #[cfg(test)]
 mod insights_tests;
 #[cfg(test)]

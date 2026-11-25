@@ -13,7 +13,8 @@ use crate::baselines::utc_parts;
 use crate::fehler::Fehler;
 use crate::hints::default_hints;
 use crate::insights::{Meta, build_insights};
-use crate::pending::{find_previous, insights_markdown, mark_arrows, report_html, write_result};
+use crate::insights_markdown::insights_markdown;
+use crate::pending::{find_previous, mark_arrows, report_html, write_result};
 use crate::summary::{Summary, read_summary};
 use crate::targets::default_targets;
 

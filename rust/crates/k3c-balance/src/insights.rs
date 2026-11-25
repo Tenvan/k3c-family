@@ -1,7 +1,7 @@
 //! Auswertung eines Balancing-Berichts ohne KI (Port von `engine/balance/insights.go`, B-632): Ampel je Ziel und Kennzahl,
 //! Stärken, Schwächen, Tuning-Hinweise, Kurzauswertung und Vorschlag für den nächsten Lauf. Eingang ist ein Summary (auch ein
 //! altes ohne Kennzahlen) samt optionaler Baseline; Richtwerte und Hebel aus data/balance-hints.json (`hints.rs`). Die Texte
-//! und Vorschläge liefern RU31.2 bis RU31.4 (bis dahin `pending.rs`).
+//! und Vorschläge liefern `insights_levers`, `insights_next`, `insights_markdown` und bis RU31.5 `pending.rs`.
 
 use std::collections::{BTreeMap, HashMap};
 
@@ -12,10 +12,9 @@ use crate::evaluate::{STATUS_INVALID, STATUS_NARROW, STATUS_OK, STATUS_VIOLATED,
 use crate::figures::round1;
 use crate::hints::{Hints, Lever};
 use crate::insights_figures::{FigureInsights, figure_insights};
-use crate::pending::{
-    Hint, LeverGroup, LeverPlan, NextRun, gap_text, goal_text, hints, lever_groups, next_run, plain, plans, strengths,
-    summary, trend_plain, weaknesses,
-};
+use crate::insights_levers::{LeverGroup, lever_groups};
+use crate::insights_next::{NextRun, hints, next_run};
+use crate::pending::{Hint, LeverPlan, gap_text, goal_text, plain, plans, strengths, summary, trend_plain, weaknesses};
 use crate::progress::{GoalView, Progress, QualityView};
 use crate::summary::{Change, Entry, Summary, compare};
 use crate::targets::KIND_SHARE;
