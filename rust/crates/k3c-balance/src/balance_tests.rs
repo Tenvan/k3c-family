@@ -4,7 +4,7 @@ use k3c_sim::island::{Island, add_island_player, step_island};
 use k3c_sim::state::PlayerCommand;
 
 use crate::bots::Bot;
-use crate::pending::shared;
+use crate::island_world::shared;
 use crate::run::{Matrix, Report, Scenario, run, run_one};
 use crate::testutil::create;
 
@@ -180,10 +180,11 @@ fn fester_lauf_ist_deterministisch() {
 }
 
 /// AC-01 (Vergleich mit Go): Die Entscheidungen je Takt eines festen Laufs sind dieselben wie in Go. Der Vergleichsdatensatz
-/// ist ein Go-Replay (`Replay.record`, RU25.5) desselben Szenarios.
+/// ist ein Go-Replay (`Replay.record`) desselben Szenarios; `testdata/` enthält keinen, und eine Aufnahme braucht einen
+/// Go-Lauf (RU25.5 schreibt sie nicht neu). Lesen und Schreiben des Formats liefert `replay.rs`.
 #[test]
-#[ignore = "wartet auf RU25.5"]
+#[ignore = "wartet auf RU28"]
 fn fester_lauf_wie_go() {
     // Go-Replay unter `testdata/rust/balance/replay-saver-1d.json` (Szenario aus `fester_lauf_ist_deterministisch`);
-    // verglichen werden die Lauflängen `inputs` je Spieler. Lesen und Schreiben des Replay-Formats liefert RU25.5.
+    // verglichen werden die Lauflängen `inputs` je Spieler mit `read_replay`.
 }

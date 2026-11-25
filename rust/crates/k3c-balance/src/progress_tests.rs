@@ -3,8 +3,8 @@
 
 use std::collections::BTreeMap;
 
-use crate::pending::load_world;
-use crate::pending::{BossMetrics, DawnMetrics, Metrics, StageMetrics, shared};
+use crate::island_world::{load_world, shared};
+use crate::pending::{BossMetrics, DawnMetrics, Metrics, StageMetrics};
 use crate::progress::{blocker, median_day, milestone_defs, progress_of, test_match};
 use crate::run::{Report, RunResult, Scenario};
 

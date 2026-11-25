@@ -882,6 +882,7 @@ name = "k3c-balance"
 version = "0.1.0"
 dependencies = [
  "k3c-data",
+ "k3c-det",
  "k3c-level",
  "k3c-sim",
  "serde",

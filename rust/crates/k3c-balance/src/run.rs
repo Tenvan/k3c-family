@@ -15,8 +15,10 @@ use crate::bots::{Bot, MIX_SEP, bot_by_name, bot_names, check_players};
 use crate::crown_bot::retrieve_crown;
 use crate::fehler::Fehler;
 use crate::helps::{after_step, apply_helps, check_helps, grade_of};
+use crate::island_world::{create_island, shared};
 use crate::parallel::{panic_text, run_all, tick_progress};
-use crate::pending::{Collector, Metrics, Replay, create_island, end_hash, shared};
+use crate::pending::{Collector, Metrics};
+use crate::replay::{Replay, end_hash};
 
 /// Takte je Sekunde (Go: `enginetools.TickHz`); der Crate hängt nicht von `k3c-game` ab.
 pub const TICK_HZ: i64 = 30;
