@@ -1,0 +1,11 @@
+{
+  "args": [
+    "balance",
+    "--gibtsnicht"
+  ],
+  "stdin": "",
+  "code": 2,
+  "out": [
+    "{\"event\":\"error\",\"message\":\"flag provided but not defined: -gibtsnicht\"}"
+  ]
+}

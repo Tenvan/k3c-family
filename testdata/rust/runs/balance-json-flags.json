@@ -1,0 +1,14 @@
+{
+  "args": [
+    "balance",
+    "--input",
+    "-",
+    "--days",
+    "1"
+  ],
+  "stdin": "{\"seeds\":1,\"players\":\"1\",\"bots\":[\"saver\"],\"depths\":\"0\",\"days\":3,\"gold-threshold\":30000}",
+  "code": 0,
+  "out": [
+    "{\"event\":\"result\",\"report\":{\"matrix\":{\"seeds\":[\"1\"],\"players\":[1],\"bots\":[\"saver\"],\"depths\":[0],\"days\":1,\"goldThreshold\":30000},\"results\":[{\"seed\":\"1\",\"players\":1,\"bot\":\"saver\",\"depth\":0,\"days\":1,\"valid\":true,\"ticks\":21600,\"metrics\":{\"goldThresholdTick\":null,\"firstWallTick\":833,\"firstBowTick\":null,\"castleFallTick\":null,\"firstWorkshopTick\":null,\"firstTowerTick\":null,\"hubLevel2Tick\":null,\"hubLevel3Tick\":null,\"reachedDepth\":0,\"days\":[{\"day\":1,\"duskTick\":10800,\"goldAtDusk\":7,\"stockAtDusk\":{\"wood\":120,\"stone\":0,\"copper\":0},\"income\":28,\"expense\":29,\"nightIncome\":10,\"nightExpense\":0,\"stockIn\":{\"wood\":125,\"stone\":0,\"copper\":0},\"stockOut\":{\"wood\":40,\"stone\":0,\"copper\":0},\"castleFallen\":false,\"peasantTicks\":227336,\"peasantIdleTicks\":183712},{\"day\":2,\"duskTick\":null,\"goldAtDusk\":null,\"stockAtDusk\":null,\"income\":2,\"expense\":0,\"nightIncome\":0,\"nightExpense\":0,\"stockIn\":{\"wood\":0,\"stone\":0,\"copper\":0},\"stockOut\":{\"wood\":0,\"stone\":0,\"copper\":0},\"castleFallen\":false,\"peasantTicks\":16,\"peasantIdleTicks\":15}],\"waves\":[{\"wave\":1,\"startTick\":14400,\"endTick\":21600,\"enemies\":7,\"troopsAtStart\":18,\"troopsLost\":0,\"buildingsDestroyed\":0,\"playersDown\":0,\"survived\":true}],\"dawns\":[{\"day\":1,\"tick\":0,\"gold\":[14],\"stock\":{\"wood\":100,\"stone\":0,\"copper\":0},\"hubLevel\":1,\"fighters\":2},{\"day\":2,\"tick\":21600,\"gold\":[15],\"stock\":{\"wood\":185,\"stone\":0,\"copper\":0},\"hubLevel\":1,\"fighters\":2}]}}]}}"
+  ]
+}

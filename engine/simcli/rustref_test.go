@@ -23,6 +23,7 @@ const rustRefDir = "../../testdata/rust/runs"
 
 // rustRefCase ist eine Vergleichsdatei.
 type rustRefCase struct {
+	Pre   []string `json:"pre,omitempty"` // Vorlauf (RU40.1): schreibt Dateien nach {tmp}; seine Ausgabe zählt nicht
 	Args  []string `json:"args"`
 	Stdin string   `json:"stdin"`
 	Code  int      `json:"code"`
@@ -41,7 +42,7 @@ func rustRefCases(t *testing.T) map[string]rustRefCase {
 		"world-unbekannte-op":   {Args: []string{"world"}, Stdin: `{"op":"fly"}`},
 		"hub-plan-hub7":         {Args: []string{"hub"}, Stdin: hubPlanInput(t)},
 		"hub-unbekannte-op":     {Args: []string{"hub"}, Stdin: `{"op":"fly"}`},
-		"run-wald-300": {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"0","ticks":300}`},
+		"run-wald-300":          {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"0","ticks":300}`},
 		"run-zwei-spieler": {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"k3c-dev","ticks":900,` +
 			`"inputs":[{"fromTick":0,"toTick":600,"moveX":1,"pay":true},{"player":1,"fromTick":30,"toTick":900,"moveX":-1}]}`},
 		"run-zu-viele-ticks":      {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"0","ticks":100001}`},
@@ -50,6 +51,16 @@ func rustRefCases(t *testing.T) map[string]rustRefCase {
 		"aufruf-ohne-unterbefehl": {Args: []string{}},
 		"aufruf-unbekannt":        {Args: []string{"bogus"}},
 		"run-unbekanntes-feld":    {Args: []string{"run"}, Stdin: `{"biome":"forest","seed":"0","ticks":10,"tempo":3}`},
+		// RU40.1: balance, kurze Läufe mit festen Eingaben (ein Seed, ein Tag, kein Balancing-Lauf)
+		"balance-matrix-klein": {Args: []string{"balance", "--input", "-"},
+			Stdin: `{"seed-list":"k3c-dev","bots":"saver","players":"1","depths":"0","days":1}`},
+		"balance-json-flags": {Args: []string{"balance", "--input", "-", "--days", "1"},
+			Stdin: `{"seeds":1,"players":"1","bots":["saver"],"depths":"0","days":3,"gold-threshold":30000}`},
+		"balance-play": {Pre: []string{"balance", "--seed-list", "k3c-dev", "--players", "1", "--bots", "saver", "--depths", "0",
+			"--days", "1", "--out", "{tmp}/matrix.json", "--replay-dir", "{tmp}"},
+			Args: []string{"balance", "--play", "{tmp}/k3c-dev-p1-saver-d0.replay.json"}},
+		"balance-flag-falsch":       {Args: []string{"balance", "--gibtsnicht"}},
+		"balance-vary-ohne-targets": {Args: []string{"balance", "--vary", "economy.json:purse.startGold=1"}},
 	}
 }
 
@@ -91,7 +102,21 @@ func hubPlanInput(t *testing.T) string {
 func runRustRef(t *testing.T, c rustRefCase) rustRefCase {
 	t.Helper()
 	var out, errOut bytes.Buffer
-	c.Code = run(c.Args, env{stdin: strings.NewReader(c.Stdin), stderr: &errOut, out: NewEmitter(&out), files: os.DirFS("../../data").(data.FS)})
+	tmp := t.TempDir()
+	sub := func(args []string) []string {
+		out := make([]string, len(args))
+		for i, a := range args {
+			out[i] = strings.ReplaceAll(a, "{tmp}", filepath.ToSlash(tmp))
+		}
+		return out
+	}
+	if len(c.Pre) > 0 {
+		var pre bytes.Buffer
+		if code := run(sub(c.Pre), env{stdin: strings.NewReader(""), stderr: &errOut, out: NewEmitter(&pre)}); code != ExitOK {
+			t.Fatalf("Vorlauf %v: Exit %d %s", c.Pre, code, errOut.String())
+		}
+	}
+	c.Code = run(sub(c.Args), env{stdin: strings.NewReader(c.Stdin), stderr: &errOut, out: NewEmitter(&out), files: os.DirFS("../../data").(data.FS)})
 	c.Out = []string{}
 	for _, l := range strings.Split(strings.TrimSuffix(out.String(), "\n"), "\n") {
 		if l != "" {

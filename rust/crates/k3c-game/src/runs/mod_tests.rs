@@ -1,6 +1,6 @@
 //! Tests von `runs::exec` (Port von `engine/simcli/simcli_test.go`: `TestRunGleichSimRun`, `TestLevelGleichLevelGenerate`,
 //! `TestAufrufFehler`, `TestPanikWirdFehler`; nicht portiert: `TestCallErgebnisFehlerUndAbbruch`, weil `call.go` bleibt in Go,
-//! und die Balance-Tests, die RU40 übernimmt) und des Abbruchs (Port von `cmd/k3c-sim/main_test.go`, sinngemäß ohne Prozess).
+//! und die Balance-Tests, die `balance_tests.rs` übernimmt) und des Abbruchs (Port von `cmd/k3c-sim/main_test.go`, sinngemäß ohne Prozess).
 
 use std::io::Read;
 
@@ -104,7 +104,7 @@ fn schalter_widersprueche() {
         (&["level", "--window"], "--window gibt es nur bei run und balance"),
         (&["world", "--window"], "--window gibt es nur bei run und balance"),
         (&["run", "--stop-stdin"], "--stop-stdin braucht --input"),
-        (&["balance"], "folgt mit RU40"),
+        (&["balance", "--window"], "folgt mit RU40.2"),
     ];
     for (args, text) in cases {
         let (code, out, _) = call(r#"{"seed":"1","ticks":1}"#, args);

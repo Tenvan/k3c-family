@@ -34,7 +34,7 @@ Unbekannte JSON-Felder sind Exit 2 (`json: unknown field "x"`), die Namen gelten
 | `hub` | `{"op":"plan","raw":…}` für den Gebäude-Planer | `result` mit `report` | RU33.2 |
 | `balance` | JSON mit Flag-Namen als Schlüssel (`{"targets":true,"seed-list":"k3c-dev"}`), Flags der Befehlszeile stehen danach | `progress`, `result` mit `report` oder `report` mit Dateien | RU40 |
 
-`world` braucht einen Daten-Ordner (`--data`, es listet `worlds/`; eingebettete Daten genügen nicht): ohne ihn Exit 1. `hub` liest nur `buildings.json` und läuft auch mit eingebetteten Daten. `world` und `hub` kennen `--window` nicht (Exit 2). Bis RU40 liefert, antwortet `balance` mit `{"event":"error","message":"sim balance folgt mit RU40"}` und Exit 2. Biome von `run` und `level`: `forest` (Standard), `cave`, `mine`; `ticks` 1 bis 100000 (30 Ticks je Sekunde),
+`world` braucht einen Daten-Ordner (`--data`, es listet `worlds/`; eingebettete Daten genügen nicht): ohne ihn Exit 1. `hub` liest nur `buildings.json` und läuft auch mit eingebetteten Daten. `world` und `hub` kennen `--window` nicht (Exit 2). `balance` läuft headless seit RU40.1 (siehe Abschnitt `balance`); `balance --window` antwortet bis RU40.2 mit `{"event":"error","message":"sim balance --window folgt mit RU40.2"}` und Exit 2. Biome von `run` und `level`: `forest` (Standard), `cave`, `mine`; `ticks` 1 bis 100000 (30 Ticks je Sekunde),
 höchstens 100 Segmente, `player` 0 bis 3.
 
 ## Ausgabe
@@ -81,6 +81,28 @@ ab zwei Monarchen zwei Zellen übereinander). `--speed N` (1 bis 64) rechnet N S
 hat. Schließt jemand das Fenster vor dem Ende, folgen `aborted` und Exit 130. Ohne Bildschirm oder Grafiktreiber endet
 `--window` mit Zeile `error` und Exit 1, ohne stillen Wechsel auf headless. `balance` startet mehrere Läufe: headless parallel,
 mit Fenster nacheinander.
+
+## balance (RU40.1)
+
+Headless wie `k3c-sim balance` (`engine/simcli/balance.go`): Matrix (`--seeds`, `--seed-list`, `--players`, `--bots`, `--depths`,
+`--days`, `--gold-threshold`, `--out`, `--replay-dir`), `--play DATEI`, Ziele (`--targets` mit `--baseline`, `--write-baseline`,
+`--depth`, `--bot`, `--grade`, `--world`, `--helps`, `--progress`), `--insights DATEI`, Sensitivität (`--sensitivity`,
+`--vary`, `--curves`) und Abstimmung (`--tune sweep|search`, `--param`, `--steps`, `--budget`). Schalter wie Gos `flag`-Paket
+(`runs/flags.rs`: `-x`, `--x`, `--x=wert`, `--x wert`, Schalter ohne Wert, `--vary` und `--param` wiederholbar); die Fehltexte
+des Pakets sind nicht wörtlich gleich (Exit 2 und Zeile `error` zählen). `--input DATEI|-` liest ein JSON-Objekt mit Flag-Namen
+als Schlüsseln (sortiert, vor den Schaltern der Befehlszeile).
+
+Unterschiede zu Go:
+
+- **Zeit in UTC:** `balance-<Zeit>.*`, `tuning-<Zeit>.json`, `sensitivity-<Zeit>.*` tragen die Zeit in UTC (Go: Ortszeit).
+- **`--legacy`** (nur Vergleich): rechnet Matrix und `--play` mit den Regeln des Go-Orakels, ohne die nativen Regeln des Rust-Spiels
+  (Hafenstart, Wächter-Bäume, Besorgung). `runs_ref.rs` hängt es an jeden `balance`-Fall; `--targets`, `--tune` und
+  `--sensitivity` kennen es nicht (sie rechnen mit den nativen Regeln, nicht gegen Go vergleichbar).
+- **Endzustand-Hash** von `--play` (`endHash`) gleicht nicht dem von Go (Rust hasht die `Debug`-Ausgabe der Insel, die Rust-Insel
+  hat kein JSON); der Vergleich in `runs_ref.rs` lässt dieses Feld aus.
+- **Abbruch** (`--stop-stdin`): zwischen zwei Läufen (Matrix, `--targets`, Sensitivität). `--tune` prüft ihn erst nach jedem Punkt,
+  nicht nach jedem Lauf (`TuneOptions` hat keinen Rückruf je Lauf). Danach `aborted`, Exit 130, kein Bericht.
+- **`--data`** gilt für alle Läufe (Daten im Speicher über `k3c_balance::vary::with_data`).
 
 ## Berichtsdateien
 

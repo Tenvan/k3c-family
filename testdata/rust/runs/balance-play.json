@@ -1,0 +1,29 @@
+{
+  "pre": [
+    "balance",
+    "--seed-list",
+    "k3c-dev",
+    "--players",
+    "1",
+    "--bots",
+    "saver",
+    "--depths",
+    "0",
+    "--days",
+    "1",
+    "--out",
+    "{tmp}/matrix.json",
+    "--replay-dir",
+    "{tmp}"
+  ],
+  "args": [
+    "balance",
+    "--play",
+    "{tmp}/k3c-dev-p1-saver-d0.replay.json"
+  ],
+  "stdin": "",
+  "code": 0,
+  "out": [
+    "{\"event\":\"result\",\"report\":{\"ticks\":21600,\"endHash\":\"3443916faab35cc1b2d8acb06bc2cef8641df4c8082a389dffdfd384d4819393\",\"castleFallTick\":null,\"warnings\":null}}"
+  ]
+}

@@ -72,6 +72,12 @@ impl<'a> Emitter<'a> {
         self.raw(&format!("{{\"event\":\"progress\",\"done\":{done},\"total\":{total}}}"));
     }
 
+    /// `{"event":"report","files":["…","…"]}`: die geschriebenen Berichtsdateien von `balance` (RU40.1).
+    pub fn report(&mut self, files: &[String]) {
+        let list: Vec<String> = files.iter().map(|f| json_string(f)).collect();
+        self.raw(&format!("{{\"event\":\"report\",\"files\":[{}]}}", list.join(",")));
+    }
+
     fn raw(&mut self, line: &str) {
         let _ = writeln!(self.out, "{line}");
         let _ = self.out.flush();

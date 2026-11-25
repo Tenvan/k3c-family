@@ -9,19 +9,30 @@ use std::process::ExitCode;
 
 use k3c_data::Source;
 
+pub mod balance;
+mod balance_specs;
 pub mod emit;
 pub mod enginetools_level;
 pub mod enginetools_run;
+pub mod flags;
 pub mod gojson;
 mod gotext;
 pub mod hub;
 pub mod input;
+pub mod input_balance;
 pub mod input_world;
+pub mod sensitivity;
 pub mod stepper;
 pub mod stop;
+pub mod targets;
+pub mod tune;
 pub mod window;
 pub mod world;
 
+#[cfg(test)]
+mod balance_targets_tests;
+#[cfg(test)]
+mod balance_tests;
 #[cfg(test)]
 mod enginetools_tests;
 #[cfg(test)]
@@ -69,10 +80,13 @@ fn usage(msg: impl Into<String>) -> RunError {
 /// Einstieg der EXE: `args` stehen hinter `sim`.
 pub fn main(args: &[String]) -> ExitCode {
     // `--stop-stdin` liest stdin bis zum Ende; die Eingabe kommt dann aus einer Datei (sonst Exit 2 in `exec`)
-    let wants_stop = args
-        .split_first()
-        .and_then(|(_, rest)| parse_flags(rest).ok())
-        .is_some_and(|f| f.stop_stdin && f.input != "-");
+    let wants_stop = args.split_first().is_some_and(|(cmd, rest)| {
+        if cmd == "balance" {
+            balance::wants_stop(rest)
+        } else {
+            parse_flags(rest).ok().is_some_and(|f| f.stop_stdin && f.input != "-")
+        }
+    });
     let code = if wants_stop {
         let stop = Stop::on_end_of(std::io::stdin());
         exec(
@@ -98,7 +112,7 @@ pub fn main(args: &[String]) -> ExitCode {
 /// (Exit 1), nie zum Absturz.
 pub fn exec(args: &[String], stdin: &mut dyn Read, out: &mut dyn Write, err: &mut dyn Write, stop: &Stop) -> u8 {
     let mut emitter = Emitter::new(out);
-    let result = catch_unwind(AssertUnwindSafe(|| dispatch(args, stdin, &mut emitter, stop)))
+    let result = catch_unwind(AssertUnwindSafe(|| dispatch(args, stdin, &mut emitter, err, stop)))
         .unwrap_or_else(|p| Err(crashed(&p, err)));
     match result {
         Ok(()) => EXIT_OK,
@@ -131,7 +145,13 @@ fn crashed(p: &Box<dyn std::any::Any + Send>, err: &mut dyn Write) -> RunError {
     RunError::Failed(format!("💥 Absturz in der Engine: {text}"))
 }
 
-fn dispatch(args: &[String], stdin: &mut dyn Read, out: &mut Emitter, stop: &Stop) -> Result<(), RunError> {
+fn dispatch(
+    args: &[String],
+    stdin: &mut dyn Read,
+    out: &mut Emitter,
+    err: &mut dyn Write,
+    stop: &Stop,
+) -> Result<(), RunError> {
     let Some((cmd, rest)) = args.split_first() else {
         return Err(usage("Unterbefehl fehlt: run, balance, level, world oder hub"));
     };
@@ -151,7 +171,14 @@ fn dispatch(args: &[String], stdin: &mut dyn Read, out: &mut Emitter, stop: &Sto
             }
             Ok(())
         }
-        "balance" => Err(usage("sim balance folgt mit RU40")),
+        "balance" => {
+            let mut env = balance::Env {
+                out,
+                err,
+                stop: stop.clone(),
+            };
+            balance::run(rest, stdin, &mut env)
+        }
         "world" | "hub" => {
             let flags = parse_flags(rest)?;
             check_flags(cmd, &flags)?;

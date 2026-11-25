@@ -1,0 +1,12 @@
+{
+  "args": [
+    "balance",
+    "--vary",
+    "economy.json:purse.startGold=1"
+  ],
+  "stdin": "",
+  "code": 2,
+  "out": [
+    "{\"event\":\"error\",\"message\":\"--vary datei.json:pfad=wert braucht --targets\"}"
+  ]
+}

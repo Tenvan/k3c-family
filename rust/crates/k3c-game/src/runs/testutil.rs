@@ -43,6 +43,38 @@ pub fn report(out: &str) -> Value {
     v["report"].clone()
 }
 
+/// Ein leerer Ordner unter `.work/` für Berichte und Dateien eines Tests (wird beim Ende gelöscht, nie im Temp).
+pub struct WorkDir(pub PathBuf);
+
+impl WorkDir {
+    pub fn new(name: &str) -> WorkDir {
+        let dir = root().join(".work").join(format!("runs-{name}-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("Ordner");
+        WorkDir(dir)
+    }
+
+    pub fn path(&self) -> String {
+        self.0.to_string_lossy().into_owned()
+    }
+
+    /// Die Dateien im Ordner, deren Name mit `prefix` beginnt und mit `suffix` endet, sortiert.
+    pub fn files(&self, prefix: &str, suffix: &str) -> Vec<String> {
+        let mut found: Vec<String> = std::fs::read_dir(&self.0)
+            .map(|d| d.flatten().filter_map(|e| e.file_name().into_string().ok()).collect())
+            .unwrap_or_default();
+        found.retain(|n| n.starts_with(prefix) && n.ends_with(suffix));
+        found.sort();
+        found
+    }
+}
+
+impl Drop for WorkDir {
+    fn drop(&mut self) {
+        let _ = std::fs::remove_dir_all(&self.0);
+    }
+}
+
 /// Eine Kopie von `data/` in einem eigenen Ordner unter `.work/` (wird beim Ende gelöscht).
 pub struct DataCopy(pub PathBuf);
 
