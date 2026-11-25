@@ -885,6 +885,7 @@ dependencies = [
  "k3c-det",
  "k3c-level",
  "k3c-sim",
+ "png",
  "serde",
  "serde_json",
 ]

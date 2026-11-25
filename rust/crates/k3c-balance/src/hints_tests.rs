@@ -3,7 +3,11 @@
 use k3c_det::golden;
 
 use crate::hints::{FIGURE_KEYS, default_hints, lever_path, load_hints};
+use crate::insights::{Meta, build_insights};
 use crate::insights_files::{meta_of, read_baseline, reevaluate};
+use crate::insights_tests::{fixture, test_hints};
+use crate::report_html::report_html;
+use crate::report_html_tests::external_ref;
 use crate::tuneparam::parse_tune_param;
 
 /// B-632/AC-02: Die eingebettete Richtwert-Datei lädt; jeder Hebel zeigt auf eine Zahl in data/ (ein umbenannter Pfad
@@ -68,17 +72,63 @@ fn richtwerte_fehler() {
 }
 
 /// B-632/AC-04: Der HTML-Bericht ist eine Datei ohne externe Ressourcen, mit eingebetteten Spielgrafiken und den Daten.
-/// Go: `TestHTMLEigenstaendig` prüft die Seite aus `BuildInsights(...).HTML` mit einer Regex auf externe Verweise (RU31.4,
-/// `report_html.rs`); RU31 baut die Prüfung als Funktion mit Zeichenvergleich nach. Die Fixture dazu liegt unter
-/// `testdata/rust/balance/insights-run7.json`.
+/// Go prüft mit einer Regex, hier prüft `external_ref` mit Zeichenvergleich. Die Spielgrafiken (`public/grafik/…`) sind nicht
+/// eingecheckt (B-737, `task gen:paper`): Sind sie da, müssen sie im Bericht stehen, sonst entfällt dieser Teil.
 #[test]
-#[ignore = "wartet auf RU31"]
-fn html_eigenstaendig() {}
+fn html_eigenstaendig() {
+    let inn = build_insights(
+        &fixture(),
+        None,
+        &test_hints(),
+        &Meta {
+            run: "simtest-run-7".into(),
+            ..Meta::default()
+        },
+    );
+    let root = golden::testdata().join("..");
+    let page = report_html(&inn, &root.to_string_lossy()).expect("Bericht");
+    let html = String::from_utf8(page).expect("UTF-8");
+    if let Some(m) = external_ref(&html) {
+        panic!("externe Ressource: {m:?}");
+    }
+    for (key, file) in [
+        ("castle", "gebaeude-paper/burg/stand.png"),
+        ("wall", "gebaeude-paper/mauer/stand.png"),
+        ("tower", "gebaeude-paper/turm/stand.png"),
+        ("coin", "icons/muenze/idle.png"),
+        ("enemy", "gegner/skelett/idle.png"),
+    ] {
+        if root.join("public/grafik").join(file).exists() {
+            assert!(
+                html.contains(&format!("\"{key}\":\"data:image/png;base64,")),
+                "Grafik {key} fehlt"
+            );
+        }
+    }
+    for ph in ["__CSS__", "__JS__", "__DATA__", "__ASSETS__", "__TITLE__"] {
+        assert!(!html.contains(ph), "Platzhalter {ph} nicht ersetzt");
+    }
+    assert!(
+        html.matches("</script>").count() == 3 && html.contains("Hub-Stufe 2"),
+        "Skript-Blöcke oder Daten fehlen"
+    );
+}
 
 /// AC-04 Fehlerfall: Ohne public/ fehlen die Grafiken (Platzhalter im Bericht), der Bericht entsteht trotzdem.
 #[test]
-#[ignore = "wartet auf RU31"]
-fn html_ohne_grafiken() {}
+fn html_ohne_grafiken() {
+    let leer = std::env::temp_dir().join(format!("k3c-html-leer-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&leer);
+    std::fs::create_dir_all(&leer).expect("Ordner");
+    let inn = build_insights(&fixture(), None, &test_hints(), &Meta::default());
+    let page = report_html(&inn, &leer.to_string_lossy()).expect("Bericht");
+    let _ = std::fs::remove_dir_all(&leer);
+    assert!(
+        String::from_utf8(page)
+            .expect("UTF-8")
+            .contains(r#"id="report-assets">{}</script>"#)
+    );
+}
 
 /// AC-06: Für einen vorhandenen Bericht entstehen .md und .html nachträglich (`Reevaluate`). Der Teil mit dem Inhalt der
 /// Auswertung (`## Kurzauswertung`, Lauf und Zeit im HTML) steht in `reevaluate_inhalt`.
@@ -110,8 +160,25 @@ fn reevaluate_schreibt_dateien() {
 
 /// AC-06: Lauf, Zeit und Kurzauswertung stehen in den neuen Dateien.
 #[test]
-#[ignore = "wartet auf RU31.4"]
-fn reevaluate_inhalt() {}
+fn reevaluate_inhalt() {
+    let dir = std::env::temp_dir()
+        .join(format!("k3c-reevaluate-inhalt-{}", std::process::id()))
+        .join("simtest-run-9");
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).expect("Ordner");
+    let src = dir.join("balance-20261025-062117.json");
+    std::fs::copy(golden::testdata().join("rust/balance/insights-run7.json"), &src).expect("Bericht");
+    let root = golden::testdata().join("..").to_string_lossy().into_owned();
+    let page = reevaluate(&src.to_string_lossy(), &root).expect("Auswertung");
+    let html = std::fs::read_to_string(&page).expect("HTML");
+    let md = std::fs::read_to_string(dir.join("balance-20261025-062117.md")).expect("Markdown");
+    let _ = std::fs::remove_dir_all(dir.parent().expect("Wurzel"));
+    assert!(
+        html.contains(r#""run":"simtest-run-9""#) && html.contains(r#""generated":"25.10.2026 06:21""#),
+        "Lauf und Zeit fehlen im HTML"
+    );
+    assert!(md.contains("## Kurzauswertung"), "Kurzauswertung fehlt im Markdown");
+}
 
 /// `meta_of`: Lauf = Ordner des Berichts, Zeit aus dem Dateinamen; ohne Zeit im Namen die aktuelle (Go: `MetaOf`).
 #[test]

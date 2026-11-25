@@ -3,7 +3,6 @@
 //! Lauf-Spec der Balancing-Seite und CLI für --tune. Dazu die Hilfen aus `insights_text.go` und `insights_plain.go`, die
 //! `worst` und die Hinweise brauchen (`label`, `worst`); `above`, `below`, `word` stehen in `insights_plain`, RU31.4 übernimmt den Rest.
 
-use std::cmp::Ordering;
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
@@ -12,7 +11,7 @@ use crate::hints::Lever;
 use crate::insights::{Insights, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW, TargetInsight};
 use crate::insights_levers::recommendations;
 use crate::insights_plain::LeverPlan;
-use crate::pending::Hint;
+use crate::insights_text::{Hint, worst};
 use crate::summary::Summary;
 use crate::summary_text::num;
 use crate::tuneparam::{MAX_TUNE_PARAMS, TUNE_SEARCH, parse_tune_param};
@@ -44,27 +43,6 @@ pub struct NextRun {
     pub steps: Vec<String>,
     pub seeds: Vec<String>,
     pub commands: Vec<Command>,
-}
-
-impl TargetInsight {
-    /// Name des Ziels mit Grad, wenn nicht normal (Go: `label`).
-    pub fn label(&self) -> String {
-        if self.grade == "normal" {
-            self.name.clone()
-        } else {
-            format!("{} ({})", self.name, self.grade)
-        }
-    }
-}
-
-/// Verletzte Ziele, am weitesten daneben zuerst (Go: `worst`).
-pub fn worst(inn: &Insights) -> Vec<&TargetInsight> {
-    let mut out: Vec<&TargetInsight> = inn.targets.iter().filter(|t| t.light == LIGHT_RED).collect();
-    out.sort_by(|a, b| {
-        let (x, y) = (a.distance.unwrap_or(0.0), b.distance.unwrap_or(0.0));
-        x.partial_cmp(&y).unwrap_or(Ordering::Equal)
-    });
-    out
 }
 
 /// Die Tuning-Hinweise: verletzte Ziele zuerst, dann knappe und ungültige (Go: `hints`).

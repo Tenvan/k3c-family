@@ -6,7 +6,6 @@ use std::fmt::Write;
 
 use crate::figures::round1;
 use crate::insights::{Insights, LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW, Trend, grade_name};
-use crate::insights_figures::FigureLight;
 use crate::insights_next::{WHERE_CHAT, WHERE_SHELL, WHERE_WORKBENCH, signed};
 use crate::summary_text::num;
 
@@ -36,25 +35,6 @@ const TABLE_LEGEND: &str = "So liest du die Tabelle: **Wert** ist das Messergebn
 „Läufe“ sind die Seeds). **Korridor** ist der Soll-Bereich dafür. **Abstand** ist der Unterschied zur verletzten Grenze in Prozentpunkten (Pkt.) \
 bzw. in der Einheit des Werts; im Korridor steht dort die Reserve bis zur nächsten Grenze. **Trend** vergleicht mit der Baseline \
 (▲ näher am Korridor, ▼ weiter weg).\n\n";
-
-impl FigureLight {
-    /// Name der Kennzahl mit Grad, wenn nicht normal (Go: `FigureLight.label`).
-    pub fn label(&self) -> String {
-        if self.grade.is_empty() || self.grade == "normal" {
-            self.name.clone()
-        } else {
-            format!("{} ({})", self.name, self.grade)
-        }
-    }
-
-    /// Messwert mit Einheit, „–“ ohne Messwert (Go: `FigureLight.valueText`).
-    pub fn value_text(&self) -> String {
-        match self.value {
-            None => "–".into(),
-            Some(v) => format!("{} {}", num(v), self.unit).trim().to_string(),
-        }
-    }
-}
 
 /// Schreibt die Auswertung: Kurzauswertung, Ampeln, Stärken und Schwächen, Hinweise, nächster Lauf, Kennzahlen
 /// (Go: `Insights.Markdown`).

@@ -1,6 +1,5 @@
 //! Tests zu `insights.rs`, `insights_figures.rs` und `insights_files.rs` (Port von `engine/balance/insights_test.go`, B-632).
-//! Die Fixture ist der echte Bericht simtest-run-7 (13 Ziele, 4 verletzt, 2 knapp, mit Kennzahlen). Tests, die Texte und
-//! Vorschläge der Auswertung brauchen, tragen `ignore` mit der Session, die sie liefert (RU31.2 bis RU31.5).
+//! Die Fixture ist der echte Bericht simtest-run-7 (13 Ziele, 4 verletzt, 2 knapp, mit Kennzahlen).
 
 use k3c_det::golden;
 
@@ -60,8 +59,26 @@ fn ampeln() {
 
 /// AC-01: Kurzauswertung (3 bis 6 Sätze), Stärken, Schwächen und Tuning-Hinweise, verletzte Ziele zuerst.
 #[test]
-#[ignore = "wartet auf RU31.4"]
-fn texte() {}
+fn texte() {
+    let inn = run7();
+    let n = inn.summary.len();
+    assert!(
+        (3..=6).contains(&n) && inn.summary[0].contains("4 von 13 Zielen verletzt"),
+        "Kurzauswertung: {:?}",
+        inn.summary
+    );
+    assert!(
+        !inn.strengths.is_empty() && inn.weaknesses.first().is_some_and(|w| w.starts_with("Hub-Stufe 2")),
+        "Stärken {:?}, Schwächen {:?}",
+        inn.strengths,
+        inn.weaknesses
+    );
+    assert!(
+        inn.hints.len() == 6 && inn.hints[0].light == LIGHT_RED && inn.hints[0].text.contains("Zu niedrig"),
+        "Hinweise: {:?}",
+        inn.hints
+    );
+}
 
 /// AC-01: Ampel je Kennzahl (der Teil ohne den Vorschlag für den nächsten Lauf).
 #[test]
@@ -184,7 +201,7 @@ fn alles_gruen() {
 }
 
 /// AC-03: Der Markdown-Bericht hat oben Kurzauswertung, Ampeln, Stärken/Schwächen, Hinweise, nächsten Lauf und Kennzahlen je
-/// Nacht. Die Kurzauswertung selbst liefert RU31.4; hier zählt, dass die Abschnitte in der Reihenfolge von Go stehen.
+/// Nacht. Die Abschnitte stehen in der Reihenfolge von Go.
 #[test]
 fn markdown_mit_auswertung() {
     let inn = run7();

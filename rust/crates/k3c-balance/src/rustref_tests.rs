@@ -8,6 +8,8 @@ use crate::evaluate::STATUS_OK;
 use crate::insights::{Meta, build_insights};
 use crate::insights_markdown::insights_markdown;
 use crate::insights_tests::{fixture, test_hints};
+use crate::report_html::report_html;
+use crate::report_html_tests::{pixels, zerlegt};
 use crate::run::{Matrix, run};
 use crate::summary::{Summary, read_summary};
 
@@ -43,18 +45,8 @@ fn summary_run7() {
     assert_eq!(s.markdown_with(None, None), md.replace("\r\n", "\n"), "summary-run7.md");
 }
 
-/// Nimmt die Felder aus der Auswertung, die RU31.4 liefert (Kurzauswertung, Stärken, Schwächen); sie fehlen in beiden
-/// Bäumen. Zeilen, Pläne, Hinweise, Hebel-Gruppen und der Empfehlungsblock stehen seit RU31.3 im Vergleich.
-fn ohne_spaetere_felder(mut v: serde_json::Value) -> serde_json::Value {
-    let Some(o) = v.as_object_mut() else { return v };
-    for k in ["summary", "strengths", "weaknesses"] {
-        o.remove(k);
-    }
-    v
-}
-
 /// RU31.1: Die Auswertung aus dem echten Bericht simtest-run-7 (kein Lauf), ohne und mit Baseline, hat dasselbe JSON wie Go
-/// (`TestRustRefInsights`), soweit RU31.1 bis RU31.3 sie liefern; `generated` ist in beiden leer.
+/// (`TestRustRefInsights`), alle Felder; `generated` ist in beiden leer.
 #[test]
 fn insights_run7() {
     let dir = golden::testdata().join("rust/balance");
@@ -74,30 +66,23 @@ fn insights_run7() {
             baseline: baseline.into(),
             ..Meta::default()
         };
-        ohne_spaetere_felder(golden::tree(&build_insights(&s, b, &h, &m)))
+        golden::tree(&build_insights(&s, b, &h, &m))
     };
     for (file, got) in [
         ("insights-run7-out.json", run(None, "")),
         ("insights-run7-trend.json", run(Some(&base), "b.json")),
     ] {
-        let want = ohne_spaetere_felder(golden::read(dir.join(file)));
+        let want = golden::read(dir.join(file));
         let at = golden::diff("", &want, &got);
         assert!(at.is_empty(), "{file}: Abweichung von Go bei {at}");
     }
 }
 
-/// Der Abschnitt ab `heading` bis zum nächsten `## ` (oder zum Ende).
-fn abschnitt<'a>(md: &'a str, heading: &str) -> &'a str {
-    let Some(i) = md.find(heading) else { return "" };
-    let rest = &md[i + heading.len()..];
-    &md[i..i + heading.len() + rest.find("\n## ").unwrap_or(rest.len())]
-}
-
-/// RU31.2: Der Markdown-Text der Auswertung aus `insights_markdown` hat dieselben Abschnitte wie Go (`insights-run7.md`,
-/// `insights-run7-trend.md`), soweit sie nicht von RU31.4 abhängen: Zählung der Ampeln, Delta, nächster Lauf
-/// (mit dem Empfehlungsblock) und Kennzahlen.
+/// RU31.2 und RU31.4: Der Markdown-Text der Auswertung aus `insights_markdown` ist Zeichen für Zeichen der von Go
+/// (`insights-run7.md`, `insights-run7-trend.md`): Kurzauswertung, Ampeln, Stärken, Schwächen, Hinweise, nächster Lauf,
+/// Kennzahlen und Delta.
 #[test]
-fn insights_markdown_run7() {
+fn insights_markdown_ganz() {
     let dir = golden::testdata().join("rust/balance");
     let (s, h) = (fixture(), test_hints());
     let mut base = fixture();
@@ -121,23 +106,47 @@ fn insights_markdown_run7() {
         let want = std::fs::read_to_string(dir.join(file))
             .expect("Markdown")
             .replace("\r\n", "\n");
-        let zaehlung = |t: &str| abschnitt(t, "## Ampeln").lines().nth(2).unwrap_or_default().to_string();
-        assert_eq!(zaehlung(&want), zaehlung(&got), "{file}: Ampeln");
-        for head in ["## Delta je Werte-Gruppe", "## Kennzahlen"] {
-            assert_eq!(abschnitt(&want, head), abschnitt(&got, head), "{file}: {head}");
-        }
-        let (w, g) = (
-            abschnitt(&want, "## Nächster Lauf"),
-            abschnitt(&got, "## Nächster Lauf"),
-        );
-        assert_eq!(w, g, "{file}: Nächster Lauf");
+        assert_eq!(want, got, "{file}");
     }
 }
 
-/// RU31.4: Das ganze Markdown stimmt mit Go überein, wenn `plain`, `plans`, `summary` und die Stärken da sind.
+/// RU31.4: Der HTML-Bericht aus dem echten Bericht simtest-run-7 (`TestRustRefHTML`): gleicher Text, gleiche Daten (über den
+/// JSON-Baum, weil Zahlen als `12.0` statt `12` erscheinen), und die Grafiken aus `root/public/` haben dieselben Pixel
+/// (Breite, Höhe, RGBA); die PNG-Bytes der beiden Kodierer sind verschieden.
 #[test]
-#[ignore = "wartet auf RU31.4"]
-fn insights_markdown_ganz() {}
+fn html_run7() {
+    let dir = golden::testdata().join("rust/balance");
+    let inn = build_insights(
+        &fixture(),
+        None,
+        &test_hints(),
+        &Meta {
+            run: "simtest-run-7".into(),
+            ..Meta::default()
+        },
+    );
+    let root = dir.join("root");
+    let got = String::from_utf8(report_html(&inn, &root.to_string_lossy()).expect("Bericht")).expect("UTF-8");
+    let want = std::fs::read_to_string(dir.join("insights-run7.html")).expect("HTML");
+    let (want, got) = (
+        zerlegt(&want.replace("\r\n", "\n")),
+        zerlegt(&got.replace("\r\n", "\n")),
+    );
+    assert_eq!(want.rest, got.rest, "Seite ohne Daten und Grafiken");
+    let at = golden::diff("", &want.data, &got.data);
+    assert!(at.is_empty(), "Daten: Abweichung von Go bei {at}");
+    assert_eq!(
+        want.assets.keys().collect::<Vec<_>>(),
+        got.assets.keys().collect::<Vec<_>>(),
+        "Grafiken"
+    );
+    assert_eq!(want.assets.len(), 3, "castle, axe, coin");
+    for (key, w) in &want.assets {
+        let (a, b) = (pixels(w), pixels(&got.assets[key]));
+        assert_eq!((a.w, a.h), (b.w, b.h), "{key}: Größe");
+        assert_eq!(a.px, b.px, "{key}: Pixel");
+    }
+}
 
 /// Ein Spieler, Bot `saver`, Tiefe 0, ein Tag: der ganze Bericht stimmt mit Go überein.
 #[test]

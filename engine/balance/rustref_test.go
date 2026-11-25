@@ -4,8 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"flag"
+	"image"
+	"image/color"
+	"image/png"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 )
 
@@ -133,5 +137,80 @@ func TestRustRefInsights(t *testing.T) {
 				t.Fatalf("%s weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)", file)
 			}
 		}
+	}
+}
+
+// refAssets sind kleine Grafiken unter testdata/rust/balance/root/public/, an denen der Rust-Port das Zuschneiden des
+// HTML-Berichts prüft (RU31.4): Rand abschneiden (castle), Frame zuschneiden (axe), ganz transparenter Frame (coin).
+func refAssets() map[string]*image.NRGBA {
+	castle := image.NewNRGBA(image.Rect(0, 0, 10, 8))
+	castle.SetNRGBA(2, 1, color.NRGBA{R: 200, G: 10, B: 10, A: 255})
+	castle.SetNRGBA(7, 5, color.NRGBA{R: 10, G: 200, B: 10, A: 128})
+	axe := image.NewNRGBA(image.Rect(0, 0, 80, 60))
+	axe.SetNRGBA(5, 4, color.NRGBA{R: 10, G: 10, B: 200, A: 255})
+	axe.SetNRGBA(30, 40, color.NRGBA{R: 250, G: 250, B: 0, A: 1})
+	axe.SetNRGBA(50, 10, color.NRGBA{R: 1, G: 2, B: 3, A: 255}) // außerhalb des Frames
+	coin := image.NewNRGBA(image.Rect(0, 0, 30, 30))
+	coin.SetNRGBA(28, 28, color.NRGBA{R: 9, G: 9, B: 9, A: 255}) // außerhalb des Frames, der Frame bleibt leer
+	return map[string]*image.NRGBA{
+		"grafik/gebaeude-paper/burg/stand.png": castle,
+		"grafik/objekte/schild-axt/idle.png":   axe,
+		"grafik/icons/muenze/idle.png":         coin,
+	}
+}
+
+var dataURI = regexp.MustCompile(`data:image/png;base64,[A-Za-z0-9+/=]*`)
+
+// TestRustRefHTML schreibt mit -write den HTML-Bericht (Insights.HTML) aus dem echten Bericht simtest-run-7 samt den
+// Grafiken aus refAssets; ohne -write vergleicht er mit der Datei, die Daten-URIs ausgeblendet (die PNG-Bytes hängen vom
+// Kodierer ab, gleich sein müssen die Pixel, das prüft der Rust-Test). RU31.4.
+func TestRustRefHTML(t *testing.T) {
+	root := filepath.Join(rustRefDir, "root")
+	if *write {
+		for p, img := range refAssets() {
+			path := filepath.Join(root, "public", filepath.FromSlash(p))
+			if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+				t.Fatal(err)
+			}
+			var buf bytes.Buffer
+			if err := png.Encode(&buf, img); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(path, buf.Bytes(), 0o644); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	h, err := DefaultHints()
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := os.ReadFile(filepath.Join(rustRefDir, "insights-run7.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cur, err := ReadSummary(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := BuildInsights(cur, nil, h, Meta{Run: "simtest-run-7"}).HTML(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(rustRefDir, "insights-run7.html")
+	if *write {
+		if err := os.WriteFile(path, got, 0o644); err != nil {
+			t.Fatal(err)
+		}
+		return
+	}
+	want, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("%v (schreiben mit -write)", err)
+	}
+	want = bytes.ReplaceAll(want, []byte("\r\n"), []byte("\n"))
+	got = bytes.ReplaceAll(got, []byte("\r\n"), []byte("\n"))
+	if !bytes.Equal(dataURI.ReplaceAll(want, nil), dataURI.ReplaceAll(got, nil)) {
+		t.Fatal("insights-run7.html weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)")
 	}
 }

@@ -9,6 +9,7 @@ use crate::figures::round1;
 use crate::hints::Lever;
 use crate::insights::TargetInsight;
 use crate::insights_next::{TUNE_RANGE, signed};
+use crate::insights_text::step_text;
 use crate::summary_text::num;
 use crate::targets::KIND_SHARE;
 use crate::tuneparam::parse_tune_param;
@@ -238,11 +239,6 @@ impl TargetInsight {
         p.text = format!("{} {}", p.short, self.effect());
         p
     }
-}
-
-/// Ein Schritt in Prozent, z. B. „10 %“ (Go: `stepText`, `insights_text.go`).
-pub fn step_text(step: f64) -> String {
-    format!("{} %", num(round1(step * 100.0)))
 }
 
 /// Die Spalte „Abstand“ der Tabelle: „10 Pkt. zu hoch“ außerhalb, „5 Pkt. Reserve“ im Korridor (Go: `gapText`).

@@ -1,7 +1,7 @@
 //! Tests zu `delta.rs` (Port von `engine/balance/delta_test.go`, B-640/AC-03). Die Go-Tests gehen über `BuildInsights`
 //! (RU31.1); hier rechnet `build_delta` zuerst mit eigenen Zielen über den Trait `DeltaTarget`, gleiche Fälle: Die Ziele sind je
 //! zur Hälfte Gruppe basis und holz, im Lauf kippt ein erfülltes Ziel der Gruppe basis auf verletzt. Danach die Tests über
-//! `build_insights` wie in Go (Hinweise der Hebel nur für freie Gruppen; die Hinweise selbst liefert RU31.4).
+//! `build_insights` wie in Go (Hebel und Hinweise nur für freie Gruppen).
 
 use k3c_data::balance_hints::GROUPS;
 
@@ -246,7 +246,8 @@ fn insights_delta_eingefroren_nur_beim_kippen() {
     );
 }
 
-/// B-640/AC-03 (Go: `TestDeltaHinweiseNurFuerFreieGruppen`): Die Hebel der Ziele; die Hinweise (`hints`) liefert RU31.4.
+/// B-640/AC-03 (Go: `TestDeltaHinweiseNurFuerFreieGruppen`): Weder die Hebel der Ziele noch die der Hinweise nennen eine
+/// eingefrorene Gruppe.
 #[test]
 fn delta_hebel_nur_fuer_freie_gruppen() {
     let count = |inn: &Insights| -> usize {
@@ -268,6 +269,15 @@ fn delta_hebel_nur_fuer_freie_gruppen() {
         "ohne Einfrieren nennt die Fixture Hebel der Gruppe basis"
     );
     assert_eq!(count(&frozen), 0, "eingefrorene Gruppe basis nennt noch Hebel");
+    for h in &frozen.hints {
+        for l in &h.levers {
+            assert_ne!(
+                l.group, GROUP_BASIS,
+                "Hinweis {:?} nennt den Hebel {} einer eingefrorenen Gruppe",
+                h.target, l.path
+            );
+        }
+    }
 }
 
 /// B-640/AC-03 (Go: `TestDeltaOhneBaselineLeer`): ohne Baseline kein Delta, aber nie `null`.

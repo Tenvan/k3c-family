@@ -15,7 +15,7 @@ use crate::hints::default_hints;
 use crate::insights::{Meta, build_insights};
 use crate::insights_markdown::insights_markdown;
 use crate::insights_progress::{find_previous, mark_arrows, write_result};
-use crate::pending::report_html;
+use crate::report_html::report_html;
 use crate::summary::{Summary, read_summary};
 use crate::targets::default_targets;
 

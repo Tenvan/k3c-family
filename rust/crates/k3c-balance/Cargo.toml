@@ -14,3 +14,4 @@ k3c-level = { path = "../k3c-level" }
 k3c-det = { path = "../k3c-det" }
 serde = { workspace = true }
 serde_json = { workspace = true }
+png = { workspace = true }

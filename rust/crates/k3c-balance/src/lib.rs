@@ -1,5 +1,6 @@
 //! Balancing und Testläufe: Port von engine/balance.
 
+pub mod base64;
 pub mod baselines;
 pub mod bot_abstieg;
 pub mod bot_boss;
@@ -27,14 +28,16 @@ pub mod insights_markdown;
 pub mod insights_next;
 pub mod insights_plain;
 pub mod insights_progress;
+pub mod insights_text;
 pub mod island_world;
 pub mod metrics;
 pub mod metrics_island;
 pub mod parallel;
-pub mod pending;
+
 pub mod prices;
 pub mod progress;
 pub mod replay;
+pub mod report_html;
 pub mod run;
 pub mod scope;
 pub mod seedmode;
@@ -77,6 +80,8 @@ mod evaluate_tests;
 #[cfg(test)]
 mod figures_tests;
 #[cfg(test)]
+mod fullgame_tests;
+#[cfg(test)]
 mod groups_tests;
 #[cfg(test)]
 mod helps_tests;
@@ -91,6 +96,8 @@ mod insights_tests;
 #[cfg(test)]
 mod island_world_tests;
 #[cfg(test)]
+mod milestone_tests;
+#[cfg(test)]
 mod mix_tests;
 #[cfg(test)]
 mod parallel_tests;
@@ -100,6 +107,8 @@ mod profiles_tests;
 mod progress_tests;
 #[cfg(test)]
 mod replay_tests;
+#[cfg(test)]
+mod report_html_tests;
 #[cfg(test)]
 mod rustref_tests;
 #[cfg(test)]

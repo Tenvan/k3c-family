@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="de" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K3C · Balancing-Bericht simtest-run-7</title>
+<style>
+/* Balancing-Bericht (B-632): Palette und Schrift der Landingpage (index.html), Nacht = dunkel, Tag = hell. */
+:root, [data-theme="night"] {
+  --bg-1: #0b1026; --bg-2: #1b2550; --bg-3: #3b3a6b;
+  --gold: #ffd166; --gold-deep: #e0a526; --text: #f1f3f9; --dim: #a9b3cf;
+  --card: rgba(20, 28, 58, 0.78); --line: rgba(255, 255, 255, 0.12); --row: rgba(255, 255, 255, 0.04);
+  --green: #3fb950; --yellow: #e3b341; --red: #ff6b6b; --grey: #6b7280; --blue: #4dabf7;
+  --stars: 1; --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+[data-theme="day"] {
+  --bg-1: #bfe3ff; --bg-2: #e8f4ff; --bg-3: #fff6d5;
+  --gold: #8a5a00; --gold-deep: #b07400; --text: #1b2550; --dim: #4b587c;
+  --card: rgba(255, 255, 255, 0.86); --line: rgba(27, 37, 80, 0.14); --row: rgba(27, 37, 80, 0.04);
+  --green: #1f883d; --yellow: #b07400; --red: #cf222e; --grey: #6b7280; --blue: #0969da;
+  --stars: 0; --shadow: 0 8px 22px rgba(27, 37, 80, 0.12);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  color: var(--text); font: 15px/1.5 "Segoe UI", system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%) fixed;
+}
+.sky { position: absolute; inset: 0 0 auto 0; height: 560px; pointer-events: none; z-index: 0; opacity: var(--stars); transition: opacity .4s; }
+.stars { position: absolute; inset: 0 0 40% 0;
+  background-image: radial-gradient(2px 2px at 8% 12%, #fff, transparent), radial-gradient(1.5px 1.5px at 22% 30%, #fff, transparent),
+    radial-gradient(2px 2px at 37% 8%, #fff, transparent), radial-gradient(1px 1px at 48% 26%, #fff, transparent),
+    radial-gradient(2px 2px at 63% 14%, #fff, transparent), radial-gradient(1.5px 1.5px at 76% 34%, #fff, transparent),
+    radial-gradient(1px 1px at 88% 10%, #fff, transparent), radial-gradient(2px 2px at 94% 28%, #fff, transparent);
+  animation: twinkle 6s ease-in-out infinite alternate; }
+.moon { position: absolute; top: 14px; right: 34%; width: 80px; height: 80px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fffbe6, #f3e3a1 60%, #d9c47c); box-shadow: 0 0 60px 14px rgba(255, 238, 170, .22); }
+@keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
+
+.wrap { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; padding: 24px 16px 60px; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.brand { display: flex; align-items: center; gap: 16px; }
+h1 { margin: 0; font: 700 34px/1.1 Georgia, "Times New Roman", serif; color: var(--gold);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .35); letter-spacing: .5px; }
+h2 { margin: 0 0 12px; font: 700 19px/1.2 Georgia, serif; color: var(--gold); display: flex; align-items: center; gap: 8px; }
+.sub { margin: 4px 0 0; color: var(--dim); }
+.top-actions { display: flex; gap: 10px; align-items: center; }
+img.sprite, img.ico, .lever-ico { image-rendering: pixelated; }
+img.castle { width: 72px; height: 81px; filter: drop-shadow(0 6px 14px rgba(255, 209, 102, .4)); }
+img.ico { width: 22px; height: 22px; object-fit: contain; }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px;
+  box-shadow: var(--shadow); backdrop-filter: blur(6px); }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.card-head h2 { margin: 0; }
+.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid.two > .card { margin-bottom: 16px; }
+@media (max-width: 800px) { .grid.two { grid-template-columns: 1fr; } .hero { grid-template-columns: 1fr !important; } }
+
+.result .goal { font-size: 18px; font-weight: 700; margin: 4px 0; }
+.result .quality, .result .cfg, .result .note { color: var(--dim); margin: 2px 0; }
+.result h3 { margin: 14px 0 6px; font: 700 15px/1.2 Georgia, serif; color: var(--gold); }
+.ladder td.arrow { width: 28px; text-align: center; color: var(--dim); }
+.ladder tr.done td { color: var(--green); } .ladder tr.part td { color: var(--yellow); } .ladder tr.open td { color: var(--dim); }
+.result .blocker { margin-top: 10px; padding: 8px 12px; border-left: 4px solid var(--red); background: var(--row); }
+.diag > summary { cursor: pointer; font: 700 19px/1.2 Georgia, serif; color: var(--gold); margin: 18px 0 10px; }
+.verdict { padding: 6px 14px; border-radius: 999px; font-weight: 700; border: 2px solid currentColor; }
+.verdict.pass { color: var(--green); } .verdict.fail { color: var(--red); }
+.btn { font: inherit; cursor: pointer; border-radius: 10px; padding: 6px 12px; border: 1px solid var(--line);
+  background: linear-gradient(180deg, var(--gold), var(--gold-deep)); color: #2a1a00; font-weight: 700; }
+.btn.ghost { background: transparent; color: var(--text); font-weight: 400; }
+.btn:hover { filter: brightness(1.08); } .btn:active { transform: translateY(1px); }
+.btn.small { padding: 2px 8px; font-size: 13px; }
+
+.hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: start; }
+.summary { margin: 0; padding-left: 20px; font-size: 16px; } .summary li { margin: 4px 0; }
+.lights { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.light-box { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--row); cursor: pointer; }
+.light-box b { font-size: 26px; display: block; font-family: Georgia, serif; }
+.light-box.active { outline: 2px solid var(--gold); }
+
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 6px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, .25), 0 0 8px currentColor; background: currentColor; }
+.l-green { color: var(--green); } .l-yellow { color: var(--yellow); } .l-red { color: var(--red); } .l-grey { color: var(--grey); }
+
+.bullets { margin: 0; padding: 0; list-style: none; }
+.bullets li { padding: 6px 0 6px 26px; position: relative; border-bottom: 1px dashed var(--line); }
+.bullets li:last-child { border-bottom: 0; }
+.bullets.good li::before { content: "✔"; position: absolute; left: 4px; color: var(--green); }
+.bullets.bad li::before { content: "✖"; position: absolute; left: 4px; color: var(--red); }
+.empty { color: var(--dim); font-style: italic; }
+
+.filters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.filters select, .filters input { font: inherit; background: var(--row); color: var(--text); border: 1px solid var(--line);
+  border-radius: 8px; padding: 4px 8px; }
+.filters select option { background: var(--bg-2); color: var(--text); }
+.chip { cursor: pointer; border-radius: 999px; padding: 3px 10px; border: 1px solid var(--line); background: var(--row);
+  color: var(--text); font: inherit; font-size: 13px; }
+.chip.on { background: var(--gold); color: #2a1a00; border-color: var(--gold); }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tbl th { text-align: left; color: var(--dim); font-weight: 600; padding: 8px; border-bottom: 2px solid var(--line);
+  cursor: pointer; user-select: none; white-space: nowrap; }
+.tbl th.num, .tbl td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.tbl th[data-dir="asc"]::after { content: " ▲"; } .tbl th[data-dir="desc"]::after { content: " ▼"; }
+.tbl td.num, .tbl td:first-child { white-space: nowrap; }
+.tbl td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl tr.row:hover td { background: var(--row); }
+.tbl tr.row { cursor: pointer; }
+.tbl tr.detail td { background: var(--row); padding: 12px 16px; }
+.tbl tr.detail[hidden] { display: none; }
+.tag { font-size: 12px; padding: 1px 7px; border-radius: 6px; background: var(--row); border: 1px solid var(--line); color: var(--dim); }
+.trend.up { color: var(--green); } .trend.down { color: var(--red); } .trend.same { color: var(--dim); }
+
+.bar { position: relative; height: 12px; min-width: 140px; border-radius: 6px; background: var(--row); border: 1px solid var(--line); }
+.bar .band { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--green) 35%, transparent); }
+.bar .mark { position: absolute; top: -3px; width: 4px; height: 16px; border-radius: 2px; background: var(--text);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .4); }
+.bar .base { position: absolute; top: -2px; width: 2px; height: 14px; background: var(--dim); opacity: .7; }
+
+.detail-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; }
+@media (max-width: 800px) { .detail-grid { grid-template-columns: 1fr; } }
+.seeds { display: flex; flex-wrap: wrap; gap: 4px; }
+.seed { font: 12px ui-monospace, Consolas, monospace; padding: 1px 6px; border-radius: 5px; background: var(--row); border: 1px solid var(--line); }
+.lever { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; }
+.lever code, code { font: 12.5px ui-monospace, Consolas, monospace; color: var(--blue); }
+
+.figure-lights { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
+.fl { border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; background: var(--row); font-size: 13px; }
+.fl b { font-size: 15px; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; margin-bottom: 14px; }
+.chart { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: var(--row); }
+.chart h3 { margin: 0 0 6px; font: 600 14px/1.2 "Segoe UI", sans-serif; display: flex; gap: 6px; align-items: center; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .axis { stroke: var(--line); } .chart .lbl { fill: var(--dim); font-size: 10px; }
+.chart .zone { opacity: .13; }
+.chart .pt { cursor: pointer; stroke: var(--bg-1); stroke-width: 1.5; }
+.chart .pt:hover { r: 6; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--dim); margin-top: 4px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+
+.hints { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.hint { border-left: 4px solid var(--red); padding: 8px 12px; background: var(--row); border-radius: 0 10px 10px 0; }
+.hint.h-yellow { border-left-color: var(--yellow); } .hint.h-grey { border-left-color: var(--grey); }
+.hint .why { color: var(--dim); font-size: 13px; }
+
+.next .cmd { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+.next pre { flex: 1; margin: 0; padding: 8px 12px; border-radius: 8px; background: #1b2550; color: #f1f3f9;
+  font: 13px ui-monospace, Consolas, monospace; white-space: pre-wrap; word-break: break-all; }
+.next .steps { margin: 0 0 10px; padding-left: 20px; }
+
+.foot { color: var(--dim); font-size: 13px; text-align: center; margin-top: 20px; }
+.tip { position: fixed; pointer-events: none; z-index: 10; background: rgba(11, 16, 38, .95); color: #f1f3f9;
+  border: 1px solid var(--gold-deep); border-radius: 8px; padding: 6px 10px; font-size: 13px; opacity: 0; transition: opacity .1s;
+  max-width: 280px; }
+.tip.on { opacity: 1; }
+.enemy-row { display: flex; gap: 2px; align-items: end; }
+.enemy-row img { width: 40px; height: 40px; image-rendering: pixelated; object-fit: cover; object-position: left; }
+.coin { display: inline-block; width: 16px; height: 16px; background-size: 128px 64px; image-rendering: pixelated; vertical-align: -3px; }
+.toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: #2a1a00;
+  padding: 6px 14px; border-radius: 999px; font-weight: 700; z-index: 11; }
+.more summary { cursor: pointer; color: var(--dim); margin: 4px 0 8px; }
+.scene { position: relative; height: 96px; margin: -6px 0 10px; display: flex; align-items: flex-end; gap: 6px;
+  border-bottom: 4px solid #3b2a18; background: linear-gradient(180deg, transparent 70%, rgba(63, 185, 80, .18)); overflow: hidden; }
+.scene img { image-rendering: pixelated; height: auto; flex: none; }
+.scene .grow { flex: 1; }
+.scene .walk { animation: walk 2.4s ease-in-out infinite alternate; }
+@keyframes walk { from { transform: translateX(0); } to { transform: translateX(-10px); } }
+@media (max-width: 700px) { .tbl .opt { display: none; } }
+.where { font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--gold-deep); color: var(--gold); margin-left: 6px; }
+.where-help { display: grid; gap: 2px; font-size: 13px; color: var(--dim); margin: 0 0 8px; }
+
+/* Ansicht (B-649): Was-jetzt-tun-Kasten, einklappbare Abschnitte, Balken je Stellschraube */
+.todo { border-left: 5px solid var(--gold); }
+.todo h2 { margin-bottom: 6px; }
+.todo-line { margin: 4px 0 8px; font-weight: 600; }
+.todo-list { margin: 0 0 12px; padding-left: 22px; display: grid; gap: 4px; }
+.todo .warn { color: var(--yellow); }
+details.fold > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: "▸"; color: var(--gold); transition: transform .15s; }
+details.fold[open] > summary::before { transform: rotate(90deg); }
+details.fold > summary h2 { margin: 0; }
+details.fold[open] > summary { margin-bottom: 12px; }
+.sum { color: var(--dim); font-size: 14px; }
+li.link { cursor: pointer; } li.link:hover { text-decoration: underline; }
+.foot-note { color: var(--dim); font-size: 13px; }
+.rbar { position: relative; height: 18px; margin: 6px 4px 14px; max-width: 360px; }
+.rtrack { position: absolute; left: 0; right: 0; top: 8px; height: 3px; border-radius: 2px; background: color-mix(in srgb, var(--green) 55%, transparent); }
+.rcur, .rstart { position: absolute; top: 0; width: 10px; font-size: 12px; line-height: 18px; text-align: center; }
+.rcur { color: var(--text); } .rstart { color: var(--gold); }
+.rl, .rr { position: absolute; top: 17px; font-size: 11px; color: var(--dim); }
+.rl { left: 0; } .rr { right: 0; }
+.grid.two { align-items: start; }
+
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><div class="stars"></div><div class="moon"></div></div>
+<main class="wrap">
+  <header class="top">
+    <div class="brand">
+      <img class="sprite castle" data-asset="castle" alt="">
+      <div>
+        <h1>Balancing-Bericht</h1>
+        <p class="sub" id="sub"></p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <span class="verdict" id="verdict"></span>
+      <button class="btn ghost" id="view" type="button" title="Zwischen vollständiger und kompakter Ansicht wechseln"></button>
+      <button class="btn ghost" id="theme" type="button" title="Hell/Dunkel">☀︎ / ☾</button>
+    </div>
+  </header>
+
+  <div class="scene" id="scene" aria-hidden="true"></div>
+
+  <section class="card todo" id="todo"></section>
+
+  <section class="card result" id="result" hidden>
+    <h2><img class="ico" data-asset="castle" alt="">Ergebnis</h2>
+    <p class="goal" id="goal"></p>
+    <p class="quality" id="quality"></p>
+    <p class="cfg" id="cfg"></p>
+    <h3>Meilensteine</h3>
+    <table class="tbl ladder" id="ladder"></table>
+    <p class="note" id="ladder-note"></p>
+    <p class="blocker" id="blocker"></p>
+  </section>
+
+  <details class="diag" open>
+  <summary>Diagnose</summary>
+
+  <section class="card hero">
+    <div class="hero-text">
+      <h2><img class="ico" data-asset="coin" alt="">Kurzauswertung</h2>
+      <ul id="summary" class="summary"></ul>
+    </div>
+    <div class="lights" id="lights"></div>
+  </section>
+
+  <section class="grid two">
+    <div class="card"><h2><img class="ico" data-asset="tower" alt="">Stärken</h2><ul id="strengths" class="bullets good"></ul></div>
+    <div class="card"><h2><img class="ico" data-asset="enemy" alt="">Schwächen</h2><ul id="weaknesses" class="bullets bad"></ul></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2><img class="ico" data-asset="wall" alt="">Ziele</h2>
+      <div class="filters" id="filters"></div>
+    </div>
+    <table class="tbl sortable" id="targets"></table>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2><img class="ico" data-asset="axe" alt="">Kennzahlen</h2>
+      <span class="note" id="figure-note"></span>
+    </div>
+    <div class="figure-lights" id="figure-lights"></div>
+    <div class="charts" id="charts"></div>
+    <details class="more"><summary>Tabelle je Grad und Nacht</summary><table class="tbl sortable" id="nights"></table></details>
+  </section>
+
+  <section class="card">
+    <h2><img class="ico" data-asset="pick" alt="">Tuning-Hinweise</h2>
+    <ul id="hints" class="hints"></ul>
+  </section>
+
+  <section class="card next">
+    <h2><img class="ico" data-asset="fire" alt="">Nächster Lauf</h2>
+    <div id="next"></div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2>Vergleich mit der Baseline</h2>
+    <div id="compare"></div>
+  </section>
+
+  </details>
+
+  <footer class="foot" id="foot"></footer>
+</main>
+<div class="tip" id="tip" role="tooltip"></div>
+<script type="application/json" id="report-data">{"title":"simtest-run-7","run":"simtest-run-7","generated":"","seeds":20,"pass":false,"counts":{"green":7,"grey":0,"red":4,"yellow":2},"summary":["4 von 13 Zielen verletzt, 2 knapp, 7 im Korridor: der Lauf besteht nicht.","Die Burg hält in allen 5 Graden im Korridor.","Am weitesten daneben: Hub-Stufe 2 erreicht vor Tag 5 mit 0,0 % statt 60–85 %; Hub-Stufe 3 erreicht vor Tag 10 mit 0,0 % statt 40–70 %.","Größter Hebel: Stein-Kosten Hub-Stufe 2 (Schritt 1) senken (hub.json:levels.1.steps.0.cost.stone, je Schritt um 10 % ändern).","Alle Kennzahlen liegen im oder nahe am Richtwert."],"strengths":["Burg hält Nacht 1–5 (easy): 100,0 % im Korridor 90–100 %.","Burg hält Nacht 1–5 (hard): 60,0 % im Korridor 50–70 %.","Burg hält Nacht 1–5 (ultra): 35,0 % im Korridor 25–45 %.","Erste Mauer gebaut vor Ende der hellen Phase: 100,0 % im Korridor 90–100 %.","Erster Turm gebaut vor Ende von Tag 2: 100,0 % im Korridor 70–100 %.","Holz am Tagesbeginn ≥ 100, ab Tag 3: 85,0 % im Korridor 70–100 %.","Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8: 80,0 % im Korridor 70–100 %.","Erste Mauer 836,5 Ticks im Richtwert."],"weaknesses":["Hub-Stufe 2 erreicht vor Tag 5: 0,0 % statt 60–85 %, 20 Seeds betroffen.","Hub-Stufe 3 erreicht vor Tag 10: 0,0 % statt 40–70 %, 20 Seeds betroffen.","Zerstörte Gebäude je Welle 1–5, Median: 2,0 statt ≤ 1, 20 Seeds betroffen.","Gold am Morgen je Spieler, Median: 17,0 statt 20–70, 20 Seeds betroffen."],"targets":[{"name":"Burg hält Nacht 1–5","group":"","measure":"castleHeld","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":80,"lower":75,"upper":90,"status":"knapp","light":"yellow","distance":33.3,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 1","levers":[{"path":"buildings.json:wall.levels.0.hp","direction":"+","step":0.2,"label":"Mauer-HP Stufe 1 erhöhen","group":"basis"},{"path":"waves.json:table.0.standard.1","direction":"-","step":0.1,"label":"Gegner je Welle 1–5 senken","group":"basis"},{"path":"troops.json:archer.damage","direction":"+","step":0.1,"label":"Schaden der Bogenschützen erhöhen","group":"basis"}],"runs":20,"plain":"In 16 von 20 Läufen hielt die Burg Nacht 1 bis 5 (80 %). Sollwert: 75–90 % der Läufe. Im Korridor, aber knapp: nur 5 Prozentpunkte bis zur unteren Grenze.","gap":"5 Pkt. Reserve","trendText":"","plans":[{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 erhöhen","known":true,"current":"300","min":"300","max":"480","start":"360","short":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.","text":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"troops.json:archer.damage","label":"Schaden der Bogenschützen erhöhen","known":true,"current":"15","min":"15","max":"20","start":"17","short":"Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17.","text":"Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"name":"Burg hält Nacht 1–5","group":"","measure":"castleHeld","kind":"share","unit":"%","grade":"dev","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":100,"lower":99,"upper":100,"status":"knapp","light":"yellow","distance":100,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 2","levers":[{"path":"waves.json:table.0.standard.1","direction":"+","step":0.1,"label":"Gegner je Welle 1–5 erhöhen","group":"basis"},{"path":"buildings.json:wall.levels.0.hp","direction":"-","step":0.1,"label":"Mauer-HP Stufe 1 senken","group":"basis"}],"runs":20,"plain":"In 20 von 20 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 99–100 % der Läufe. Im Korridor, aber knapp: nur 1 Prozentpunkt bis zur unteren Grenze.","gap":"1 Pkt. Reserve","trendText":"","plans":[{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 erhöhen","known":true,"current":"10","min":"10","max":"13","start":"11","short":"Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11.","text":"Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 senken","known":true,"current":"300","min":"210","max":"300","start":"270","short":"Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270.","text":"Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"name":"Burg hält Nacht 1–5","group":"","measure":"castleHeld","kind":"share","unit":"%","grade":"easy","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":100,"lower":90,"upper":100,"status":"ok","light":"green","distance":100,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 2","levers":[],"runs":20,"plain":"In 20 von 20 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 90–100 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.","gap":"10 Pkt. Reserve","trendText":"","plans":[]},{"name":"Burg hält Nacht 1–5","group":"","measure":"castleHeld","kind":"share","unit":"%","grade":"hard","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":60,"lower":50,"upper":70,"status":"ok","light":"green","distance":50,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 2","levers":[],"runs":20,"plain":"In 12 von 20 Läufen hielt die Burg Nacht 1 bis 5 (60 %). Sollwert: 50–70 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.","gap":"10 Pkt. Reserve","trendText":"","plans":[]},{"name":"Burg hält Nacht 1–5","group":"","measure":"castleHeld","kind":"share","unit":"%","grade":"ultra","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":35,"lower":25,"upper":45,"status":"ok","light":"green","distance":50,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 2","levers":[],"runs":20,"plain":"In 7 von 20 Läufen hielt die Burg Nacht 1 bis 5 (35 %). Sollwert: 25–45 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.","gap":"10 Pkt. Reserve","trendText":"","plans":[]},{"name":"Gold am Morgen je Spieler, Median","group":"","measure":"goldAtDawnPerPlayer","kind":"median","unit":"","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":17,"lower":20,"upper":70,"status":"verletzt","light":"red","distance":-6,"trend":null,"failSeeds":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 1","levers":[{"path":"economy.json:dawnGoldPerPlayer","direction":"+","step":0.2,"label":"Morgen-Gold je Spieler erhöhen","group":"basis"},{"path":"economy.json:purse.startGold","direction":"+","step":0.1,"label":"Startgold erhöhen","group":"basis"}],"runs":20,"plain":"Median von „Gold am Morgen je Spieler, Median“: 17. Sollwert: 20–70. Damit 3 unter dem Korridor, also zu niedrig.","gap":"3 zu niedrig","trendText":"","plans":[{"path":"economy.json:dawnGoldPerPlayer","label":"Morgen-Gold je Spieler erhöhen","known":true,"current":"2","min":"2","max":"4","start":"3","short":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.","text":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"economy.json:purse.startGold","label":"Startgold erhöhen","known":true,"current":"14","min":"14","max":"19","start":"16","short":"Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16.","text":"Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"name":"Erste Mauer gebaut vor Ende der hellen Phase","group":"","measure":"firstWallBeforeDusk1","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":100,"lower":90,"upper":100,"status":"ok","light":"green","distance":100,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 1","levers":[],"runs":20,"plain":"In 20 von 20 Läufen stand die erste Mauer vor der Dämmerung von Tag 1 (100 %). Sollwert: 90–100 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.","gap":"10 Pkt. Reserve","trendText":"","plans":[]},{"name":"Erster Turm gebaut vor Ende von Tag 2","group":"","measure":"firstTowerBeforeDusk2","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":100,"lower":70,"upper":100,"status":"ok","light":"green","distance":100,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 3","levers":[],"runs":20,"plain":"In 20 von 20 Läufen traf „Erster Turm gebaut vor Ende von Tag 2“ zu (100 %). Sollwert: 70–100 % der Läufe. Im Korridor, 30 Prozentpunkte von der unteren Grenze entfernt.","gap":"30 Pkt. Reserve","trendText":"","plans":[]},{"name":"Holz am Tagesbeginn ≥ 100, ab Tag 3","group":"","measure":"woodAtDawnFrom3","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":85,"lower":70,"upper":100,"status":"ok","light":"green","distance":50,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 3","levers":[],"runs":20,"plain":"In 17 von 20 Läufen traf „Holz am Tagesbeginn ≥ 100, ab Tag 3“ zu (85 %). Sollwert: 70–100 % der Läufe. Im Korridor, 15 Prozentpunkte von der unteren Grenze entfernt.","gap":"15 Pkt. Reserve","trendText":"","plans":[]},{"name":"Hub-Stufe 2 erreicht vor Tag 5","group":"","measure":"hubLevel2BeforeDay5","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":0,"lower":60,"upper":85,"status":"verletzt","light":"red","distance":-240,"trend":null,"failSeeds":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 3","levers":[{"path":"hub.json:levels.1.steps.0.cost.stone","direction":"-","step":0.1,"label":"Stein-Kosten Hub-Stufe 2 (Schritt 1) senken","group":"basis"},{"path":"hub.json:levels.1.steps.2.cost.stone","direction":"-","step":0.1,"label":"Stein-Kosten Hub-Stufe 2 (Schritt 3) senken","group":"basis"}],"runs":20,"plain":"In 0 von 20 Läufen traf „Hub-Stufe 2 erreicht vor Tag 5“ zu (0 %). Sollwert: 60–85 % der Läufe. Damit 60 Prozentpunkte unter dem Korridor, also zu niedrig.","gap":"60 Pkt. zu niedrig","trendText":"","plans":[{"path":"hub.json:levels.1.steps.0.cost.stone","label":"Stein-Kosten Hub-Stufe 2 (Schritt 1) senken","known":true,"current":"25","min":"17","max":"25","start":"22","short":"Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22.","text":"Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"hub.json:levels.1.steps.2.cost.stone","label":"Stein-Kosten Hub-Stufe 2 (Schritt 3) senken","known":true,"current":"50","min":"35","max":"50","start":"45","short":"Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45.","text":"Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"name":"Hub-Stufe 3 erreicht vor Tag 10","group":"","measure":"hubLevel3BeforeDay10","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 9 Tage","value":0,"lower":40,"upper":70,"status":"verletzt","light":"red","distance":-133.3,"trend":null,"failSeeds":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 3","levers":[{"path":"hub.json:levels.2.steps.2.cost.gold","direction":"-","step":0.1,"label":"Gold-Kosten Hub-Stufe 3 (Schritt 3) senken","group":"basis"},{"path":"economy.json:dawnGoldPerPlayer","direction":"+","step":0.2,"label":"Morgen-Gold je Spieler erhöhen","group":"basis"}],"runs":20,"plain":"In 0 von 20 Läufen traf „Hub-Stufe 3 erreicht vor Tag 10“ zu (0 %). Sollwert: 40–70 % der Läufe. Damit 40 Prozentpunkte unter dem Korridor, also zu niedrig.","gap":"40 Pkt. zu niedrig","trendText":"","plans":[{"path":"hub.json:levels.2.steps.2.cost.gold","label":"Gold-Kosten Hub-Stufe 3 (Schritt 3) senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"economy.json:dawnGoldPerPlayer","label":"Morgen-Gold je Spieler erhöhen","known":true,"current":"2","min":"2","max":"4","start":"3","short":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.","text":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"name":"Zerstörte Gebäude je Welle 1–5, Median","group":"","measure":"destroyedPerWave","kind":"median","unit":"","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":2,"lower":null,"upper":1,"status":"verletzt","light":"red","distance":-100,"trend":null,"failSeeds":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 3","levers":[{"path":"buildings.json:wall.levels.0.hp","direction":"+","step":0.2,"label":"Mauer-HP Stufe 1 erhöhen","group":"basis"},{"path":"waves.json:table.0.standard.1","direction":"-","step":0.1,"label":"Gegner je Welle 1–5 senken","group":"basis"}],"runs":20,"plain":"Median von „Zerstörte Gebäude je Welle 1–5, Median“: 2 Gebäude. Sollwert: höchstens 1. Damit 1 Gebäude über dem Korridor, also zu schwer.","gap":"1 Gebäude zu hoch","trendText":"","plans":[{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 erhöhen","known":true,"current":"300","min":"300","max":"480","start":"360","short":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.","text":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"name":"Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8","group":"","measure":"fightersAtDawn","kind":"share","unit":"%","grade":"normal","scenario":"2 Spieler · wirtschaft · Tiefe 0 · 5 Tage","value":80,"lower":70,"upper":100,"status":"ok","light":"green","distance":33.3,"trend":null,"failSeeds":null,"invalidSeeds":null,"rule":"docs/rules/zielkorridore.md § 3","levers":[],"runs":20,"plain":"In 16 von 20 Läufen traf „Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8“ zu (80 %). Sollwert: 70–100 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.","gap":"10 Pkt. Reserve","trendText":"","plans":[]}],"figures":{"note":"Kennzahlen aus 120 gültigen Läufen; Richtwerte sind Startwerte (data/balance-hints.json).","bands":{"goldBalance":[-20,60],"idleShare":[null,25]},"lights":[{"key":"firstWallTick","name":"Erste Mauer","unit":"Ticks","value":836.5,"light":"green","text":"Median; Richtwert grün ≤ 1500, gelb ≤ 3000"},{"key":"firstWorkshopTick","name":"Erste Werkstatt","unit":"Ticks","value":9943,"light":"yellow","text":"Median; Richtwert grün ≤ 6000, gelb ≤ 12000"},{"key":"idleShare","name":"Leerlauf der Bauern","unit":"%","grade":"normal","value":26.9,"light":"yellow","text":"Richtwert grün ≤ 25, gelb ≤ 35"},{"key":"survivalDrop","name":"Überlebensabfall je Nacht","unit":"Pkt.","grade":"normal","value":10,"light":"yellow","text":"Richtwert grün ≤ 5, gelb ≤ 15"},{"key":"goldBalance","name":"Gold-Bilanz je Tag ab Tag 2","unit":"Gold","grade":"normal","value":20,"light":"green","text":"Richtwert grün -20 bis 60, gelb -60 bis 120"},{"key":"woodBalance","name":"Holz-Bilanz je Tag","unit":"Holz","grade":"normal","value":23.3,"light":"green","text":"Richtwert grün 0 bis 150, gelb -30 bis 300"},{"key":"stoneBalance","name":"Stein-Bilanz je Tag","unit":"Stein","grade":"normal","value":0.9,"light":"green","text":"Richtwert grün 0 bis 80, gelb -20 bis 160"},{"key":"idleShare","name":"Leerlauf der Bauern","unit":"%","grade":"dev","value":27.8,"light":"yellow","text":"Richtwert grün ≤ 25, gelb ≤ 35"},{"key":"idleShare","name":"Leerlauf der Bauern","unit":"%","grade":"easy","value":28.8,"light":"yellow","text":"Richtwert grün ≤ 25, gelb ≤ 35"},{"key":"idleShare","name":"Leerlauf der Bauern","unit":"%","grade":"hard","value":29.6,"light":"yellow","text":"Richtwert grün ≤ 25, gelb ≤ 35"},{"key":"idleShare","name":"Leerlauf der Bauern","unit":"%","grade":"ultra","value":25.9,"light":"yellow","text":"Richtwert grün ≤ 25, gelb ≤ 35"}],"nights":[{"grade":"","night":1,"runs":40,"survival":90,"dayIncome":10.9,"dayExpense":161.6,"nightIncome":0.4,"nightExpense":4.8,"resourceIn":{"wood":361.3,"stone":13.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":317.1,"stone":7.8,"copper":0,"iron":0,"crystal":0},"idleShare":33.1},{"grade":"","night":2,"runs":40,"survival":90,"dayIncome":84.8,"dayExpense":103.6,"nightIncome":0,"nightExpense":2.6,"resourceIn":{"wood":367.2,"stone":4,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":245,"stone":4.2,"copper":0,"iron":0,"crystal":0},"idleShare":12},{"grade":"","night":3,"runs":40,"survival":90,"dayIncome":80.1,"dayExpense":40.1,"nightIncome":3.1,"nightExpense":0.3,"resourceIn":{"wood":84,"stone":7,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":67.2,"stone":4.5,"copper":0,"iron":0,"crystal":0},"idleShare":34.3},{"grade":"","night":4,"runs":40,"survival":90,"dayIncome":68.9,"dayExpense":19.8,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":18.3,"stone":1.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":24.4,"stone":1.6,"copper":0,"iron":0,"crystal":0},"idleShare":31.3},{"grade":"","night":5,"runs":40,"survival":80,"dayIncome":63.1,"dayExpense":19.1,"nightIncome":0.5,"nightExpense":10,"resourceIn":{"wood":9.5,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":30.1,"stone":1.5,"copper":0,"iron":0,"crystal":0},"idleShare":38.5},{"grade":"dev","night":1,"runs":20,"survival":100,"dayIncome":10.9,"dayExpense":161.6,"nightIncome":0.4,"nightExpense":0,"resourceIn":{"wood":358.3,"stone":13.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":314.5,"stone":7.5,"copper":0,"iron":0,"crystal":0},"idleShare":34.4},{"grade":"dev","night":2,"runs":20,"survival":100,"dayIncome":45.3,"dayExpense":78.7,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":332,"stone":4.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":180.5,"stone":2.5,"copper":0,"iron":0,"crystal":0},"idleShare":12.1},{"grade":"dev","night":3,"runs":20,"survival":100,"dayIncome":44.1,"dayExpense":46.2,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":68.3,"stone":7,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":63.5,"stone":3.8,"copper":0,"iron":0,"crystal":0},"idleShare":22.8},{"grade":"dev","night":4,"runs":20,"survival":100,"dayIncome":39.4,"dayExpense":31.8,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":37.3,"stone":1.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":37.3,"stone":3.8,"copper":0,"iron":0,"crystal":0},"idleShare":32.2},{"grade":"dev","night":5,"runs":20,"survival":100,"dayIncome":45,"dayExpense":19.7,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":11.3,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":11.3,"stone":0,"copper":0,"iron":0,"crystal":0},"idleShare":37.4},{"grade":"easy","night":1,"runs":20,"survival":100,"dayIncome":10.9,"dayExpense":161.6,"nightIncome":0.4,"nightExpense":0,"resourceIn":{"wood":357.8,"stone":13.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":314.5,"stone":7.5,"copper":0,"iron":0,"crystal":0},"idleShare":34.3},{"grade":"easy","night":2,"runs":20,"survival":100,"dayIncome":16.7,"dayExpense":44,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":249.8,"stone":2.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":98,"stone":1.3,"copper":0,"iron":0,"crystal":0},"idleShare":21.1},{"grade":"easy","night":3,"runs":20,"survival":100,"dayIncome":54.9,"dayExpense":62.6,"nightIncome":0.8,"nightExpense":0,"resourceIn":{"wood":103.3,"stone":7,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":98.3,"stone":5,"copper":0,"iron":0,"crystal":0},"idleShare":21.8},{"grade":"easy","night":4,"runs":20,"survival":100,"dayIncome":47.6,"dayExpense":38.6,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":56.5,"stone":3.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":56.5,"stone":3.8,"copper":0,"iron":0,"crystal":0},"idleShare":28.5},{"grade":"easy","night":5,"runs":20,"survival":100,"dayIncome":55.5,"dayExpense":25.1,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":21.8,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":21.8,"stone":0,"copper":0,"iron":0,"crystal":0},"idleShare":38.2},{"grade":"hard","night":1,"runs":20,"survival":75,"dayIncome":10.9,"dayExpense":161.6,"nightIncome":0.4,"nightExpense":14.5,"resourceIn":{"wood":360,"stone":13.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":319.7,"stone":8.8,"copper":0,"iron":0,"crystal":0},"idleShare":30.9},{"grade":"hard","night":2,"runs":20,"survival":75,"dayIncome":70,"dayExpense":86.5,"nightIncome":0,"nightExpense":3,"resourceIn":{"wood":333.5,"stone":4,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":221,"stone":3.4,"copper":0,"iron":0,"crystal":0},"idleShare":11},{"grade":"hard","night":3,"runs":20,"survival":75,"dayIncome":74.5,"dayExpense":40.2,"nightIncome":0,"nightExpense":0.3,"resourceIn":{"wood":102.3,"stone":7.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":95.7,"stone":6.3,"copper":0,"iron":0,"crystal":0},"idleShare":36},{"grade":"hard","night":4,"runs":20,"survival":75,"dayIncome":68.3,"dayExpense":20.3,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":26.3,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":46.8,"stone":0.6,"copper":0,"iron":0,"crystal":0},"idleShare":24.7},{"grade":"hard","night":5,"runs":20,"survival":60,"dayIncome":44.5,"dayExpense":16.9,"nightIncome":0.8,"nightExpense":13.8,"resourceIn":{"wood":4.3,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":38.3,"stone":0.7,"copper":0,"iron":0,"crystal":0},"idleShare":45.3},{"grade":"ultra","night":1,"runs":20,"survival":55,"dayIncome":10.9,"dayExpense":161.6,"nightIncome":0.4,"nightExpense":16.7,"resourceIn":{"wood":360.3,"stone":13.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":338.3,"stone":9.2,"copper":0,"iron":0,"crystal":0},"idleShare":26.5},{"grade":"ultra","night":2,"runs":20,"survival":55,"dayIncome":67,"dayExpense":85.5,"nightIncome":0,"nightExpense":3,"resourceIn":{"wood":335.3,"stone":4.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":246,"stone":3.9,"copper":0,"iron":0,"crystal":0},"idleShare":11.9},{"grade":"ultra","night":3,"runs":20,"survival":55,"dayIncome":46.7,"dayExpense":26.9,"nightIncome":0,"nightExpense":0.1,"resourceIn":{"wood":85.5,"stone":4.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":89,"stone":3.7,"copper":0,"iron":0,"crystal":0},"idleShare":33.5},{"grade":"ultra","night":4,"runs":20,"survival":55,"dayIncome":60.7,"dayExpense":17.4,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":14,"stone":1.5,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":43.6,"stone":2.5,"copper":0,"iron":0,"crystal":0},"idleShare":25.5},{"grade":"ultra","night":5,"runs":20,"survival":35,"dayIncome":42.1,"dayExpense":12.5,"nightIncome":0,"nightExpense":20,"resourceIn":{"wood":18.5,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":54.3,"stone":0.7,"copper":0,"iron":0,"crystal":0},"idleShare":32.1},{"grade":"","night":6,"runs":20,"survival":90,"dayIncome":69.5,"dayExpense":46.1,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":110.3,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":118.6,"stone":0.1,"copper":0,"iron":0,"crystal":0},"idleShare":16.1},{"grade":"","night":7,"runs":20,"survival":90,"dayIncome":28.9,"dayExpense":22.2,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":73,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":46.9,"stone":0.1,"copper":0,"iron":0,"crystal":0},"idleShare":20},{"grade":"","night":8,"runs":20,"survival":90,"dayIncome":21.8,"dayExpense":21.8,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":45.8,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":47,"stone":0,"copper":0,"iron":0,"crystal":0},"idleShare":20.6},{"grade":"","night":9,"runs":20,"survival":90,"dayIncome":23.7,"dayExpense":23.7,"nightIncome":0,"nightExpense":0,"resourceIn":{"wood":42,"stone":0,"copper":0,"iron":0,"crystal":0},"resourceOut":{"wood":45.1,"stone":0,"copper":0,"iron":0,"crystal":0},"idleShare":20.8}]},"hints":[{"target":"Hub-Stufe 2 erreicht vor Tag 5","light":"red","text":"Zu niedrig (Wert unter dem Korridor). Eine dieser Stellschrauben probieren: Stein-Kosten Hub-Stufe 2 (Schritt 1) senken oder Stein-Kosten Hub-Stufe 2 (Schritt 3) senken (Zahlen darunter).","why":"In 0 von 20 Läufen traf „Hub-Stufe 2 erreicht vor Tag 5“ zu (0 %). Sollwert: 60–85 % der Läufe. Damit 60 Prozentpunkte unter dem Korridor, also zu niedrig.","levers":[{"path":"hub.json:levels.1.steps.0.cost.stone","direction":"-","step":0.1,"label":"Stein-Kosten Hub-Stufe 2 (Schritt 1) senken","group":"basis"},{"path":"hub.json:levels.1.steps.2.cost.stone","direction":"-","step":0.1,"label":"Stein-Kosten Hub-Stufe 2 (Schritt 3) senken","group":"basis"}],"plans":[{"path":"hub.json:levels.1.steps.0.cost.stone","label":"Stein-Kosten Hub-Stufe 2 (Schritt 1) senken","known":true,"current":"25","min":"17","max":"25","start":"22","short":"Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22.","text":"Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"hub.json:levels.1.steps.2.cost.stone","label":"Stein-Kosten Hub-Stufe 2 (Schritt 3) senken","known":true,"current":"50","min":"35","max":"50","start":"45","short":"Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45.","text":"Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"target":"Hub-Stufe 3 erreicht vor Tag 10","light":"red","text":"Zu niedrig (Wert unter dem Korridor). Eine dieser Stellschrauben probieren: Gold-Kosten Hub-Stufe 3 (Schritt 3) senken oder Morgen-Gold je Spieler erhöhen (Zahlen darunter).","why":"In 0 von 20 Läufen traf „Hub-Stufe 3 erreicht vor Tag 10“ zu (0 %). Sollwert: 40–70 % der Läufe. Damit 40 Prozentpunkte unter dem Korridor, also zu niedrig.","levers":[{"path":"hub.json:levels.2.steps.2.cost.gold","direction":"-","step":0.1,"label":"Gold-Kosten Hub-Stufe 3 (Schritt 3) senken","group":"basis"},{"path":"economy.json:dawnGoldPerPlayer","direction":"+","step":0.2,"label":"Morgen-Gold je Spieler erhöhen","group":"basis"}],"plans":[{"path":"hub.json:levels.2.steps.2.cost.gold","label":"Gold-Kosten Hub-Stufe 3 (Schritt 3) senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"economy.json:dawnGoldPerPlayer","label":"Morgen-Gold je Spieler erhöhen","known":true,"current":"2","min":"2","max":"4","start":"3","short":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.","text":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"target":"Zerstörte Gebäude je Welle 1–5, Median","light":"red","text":"Zu schwer (Wert über dem Korridor). Eine dieser Stellschrauben probieren: Mauer-HP Stufe 1 erhöhen oder Gegner je Welle 1–5 senken (Zahlen darunter).","why":"Median von „Zerstörte Gebäude je Welle 1–5, Median“: 2 Gebäude. Sollwert: höchstens 1. Damit 1 Gebäude über dem Korridor, also zu schwer.","levers":[{"path":"buildings.json:wall.levels.0.hp","direction":"+","step":0.2,"label":"Mauer-HP Stufe 1 erhöhen","group":"basis"},{"path":"waves.json:table.0.standard.1","direction":"-","step":0.1,"label":"Gegner je Welle 1–5 senken","group":"basis"}],"plans":[{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 erhöhen","known":true,"current":"300","min":"300","max":"480","start":"360","short":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.","text":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"target":"Gold am Morgen je Spieler, Median","light":"red","text":"Zu niedrig (Wert unter dem Korridor). Eine dieser Stellschrauben probieren: Morgen-Gold je Spieler erhöhen oder Startgold erhöhen (Zahlen darunter).","why":"Median von „Gold am Morgen je Spieler, Median“: 17. Sollwert: 20–70. Damit 3 unter dem Korridor, also zu niedrig.","levers":[{"path":"economy.json:dawnGoldPerPlayer","direction":"+","step":0.2,"label":"Morgen-Gold je Spieler erhöhen","group":"basis"},{"path":"economy.json:purse.startGold","direction":"+","step":0.1,"label":"Startgold erhöhen","group":"basis"}],"plans":[{"path":"economy.json:dawnGoldPerPlayer","label":"Morgen-Gold je Spieler erhöhen","known":true,"current":"2","min":"2","max":"4","start":"3","short":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.","text":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"economy.json:purse.startGold","label":"Startgold erhöhen","known":true,"current":"14","min":"14","max":"19","start":"16","short":"Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16.","text":"Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"target":"Burg hält Nacht 1–5","light":"yellow","text":"Knapp an der Grenze: beim Tunen anderer Ziele im Blick behalten, erst bei Rot drehen.","why":"In 16 von 20 Läufen hielt die Burg Nacht 1 bis 5 (80 %). Sollwert: 75–90 % der Läufe. Im Korridor, aber knapp: nur 5 Prozentpunkte bis zur unteren Grenze.","levers":[{"path":"buildings.json:wall.levels.0.hp","direction":"+","step":0.2,"label":"Mauer-HP Stufe 1 erhöhen","group":"basis"},{"path":"waves.json:table.0.standard.1","direction":"-","step":0.1,"label":"Gegner je Welle 1–5 senken","group":"basis"},{"path":"troops.json:archer.damage","direction":"+","step":0.1,"label":"Schaden der Bogenschützen erhöhen","group":"basis"}],"plans":[{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 erhöhen","known":true,"current":"300","min":"300","max":"480","start":"360","short":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.","text":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"troops.json:archer.damage","label":"Schaden der Bogenschützen erhöhen","known":true,"current":"15","min":"15","max":"20","start":"17","short":"Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17.","text":"Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]},{"target":"Burg hält Nacht 1–5 (dev)","light":"yellow","text":"Knapp an der Grenze: beim Tunen anderer Ziele im Blick behalten, erst bei Rot drehen.","why":"In 20 von 20 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 99–100 % der Läufe. Im Korridor, aber knapp: nur 1 Prozentpunkt bis zur unteren Grenze.","levers":[{"path":"waves.json:table.0.standard.1","direction":"+","step":0.1,"label":"Gegner je Welle 1–5 erhöhen","group":"basis"},{"path":"buildings.json:wall.levels.0.hp","direction":"-","step":0.1,"label":"Mauer-HP Stufe 1 senken","group":"basis"}],"plans":[{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 erhöhen","known":true,"current":"10","min":"10","max":"13","start":"11","short":"Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11.","text":"Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 senken","known":true,"current":"300","min":"210","max":"300","start":"270","short":"Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270.","text":"Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."}]}],"leverGroups":[{"path":"economy.json:dawnGoldPerPlayer","direction":"+","plan":{"path":"economy.json:dawnGoldPerPlayer","label":"Morgen-Gold je Spieler erhöhen","known":true,"current":"2","min":"2","max":"4","start":"3","short":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.","text":"Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Hub-Stufe 3 erreicht vor Tag 10","Gold am Morgen je Spieler, Median"],"conflict":"","text":"Morgen-Gold je Spieler erhöhen `economy.json:dawnGoldPerPlayer` – soll 2 Verletzung(en) verbessern: Hub-Stufe 3 erreicht vor Tag 10; Gold am Morgen je Spieler, Median. Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3."},{"path":"hub.json:levels.1.steps.0.cost.stone","direction":"-","plan":{"path":"hub.json:levels.1.steps.0.cost.stone","label":"Stein-Kosten Hub-Stufe 2 (Schritt 1) senken","known":true,"current":"25","min":"17","max":"25","start":"22","short":"Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22.","text":"Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Hub-Stufe 2 erreicht vor Tag 5"],"conflict":"","text":"Stein-Kosten Hub-Stufe 2 (Schritt 1) senken `hub.json:levels.1.steps.0.cost.stone` – soll 1 Verletzung(en) verbessern: Hub-Stufe 2 erreicht vor Tag 5. Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22."},{"path":"hub.json:levels.1.steps.2.cost.stone","direction":"-","plan":{"path":"hub.json:levels.1.steps.2.cost.stone","label":"Stein-Kosten Hub-Stufe 2 (Schritt 3) senken","known":true,"current":"50","min":"35","max":"50","start":"45","short":"Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45.","text":"Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Hub-Stufe 2 erreicht vor Tag 5"],"conflict":"","text":"Stein-Kosten Hub-Stufe 2 (Schritt 3) senken `hub.json:levels.1.steps.2.cost.stone` – soll 1 Verletzung(en) verbessern: Hub-Stufe 2 erreicht vor Tag 5. Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45."},{"path":"hub.json:levels.2.steps.2.cost.gold","direction":"-","plan":{"path":"hub.json:levels.2.steps.2.cost.gold","label":"Gold-Kosten Hub-Stufe 3 (Schritt 3) senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Hub-Stufe 3 erreicht vor Tag 10"],"conflict":"","text":"Gold-Kosten Hub-Stufe 3 (Schritt 3) senken `hub.json:levels.2.steps.2.cost.gold` – soll 1 Verletzung(en) verbessern: Hub-Stufe 3 erreicht vor Tag 10. Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9."},{"path":"buildings.json:wall.levels.0.hp","direction":"+","plan":{"path":"buildings.json:wall.levels.0.hp","label":"Mauer-HP Stufe 1 erhöhen","known":true,"current":"300","min":"300","max":"480","start":"360","short":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.","text":"Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Zerstörte Gebäude je Welle 1–5, Median"],"conflict":"","text":"Mauer-HP Stufe 1 erhöhen `buildings.json:wall.levels.0.hp` – soll 1 Verletzung(en) verbessern: Zerstörte Gebäude je Welle 1–5, Median. Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360."},{"path":"waves.json:table.0.standard.1","direction":"-","plan":{"path":"waves.json:table.0.standard.1","label":"Gegner je Welle 1–5 senken","known":true,"current":"10","min":"7","max":"10","start":"9","short":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.","text":"Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Zerstörte Gebäude je Welle 1–5, Median"],"conflict":"","text":"Gegner je Welle 1–5 senken `waves.json:table.0.standard.1` – soll 1 Verletzung(en) verbessern: Zerstörte Gebäude je Welle 1–5, Median. Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9."},{"path":"economy.json:purse.startGold","direction":"+","plan":{"path":"economy.json:purse.startGold","label":"Startgold erhöhen","known":true,"current":"14","min":"14","max":"19","start":"16","short":"Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16.","text":"Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."},"targets":["Gold am Morgen je Spieler, Median"],"conflict":"","text":"Startgold erhöhen `economy.json:purse.startGold` – soll 1 Verletzung(en) verbessern: Gold am Morgen je Spieler, Median. Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16."}],"next":{"steps":["Seeds 1, 2, 3 im Replay nachspielen: Hub-Stufe 2 erreicht vor Tag 5 verletzt.","Hebel abstimmen: hub.json:levels.1.steps.0.cost.stone=17..25, hub.json:levels.2.steps.2.cost.gold=7..10 (Suche über höchstens drei Schritte).","Nach jeder Änderung in data/ den vollen Lauf wiederholen und mit diesem Bericht vergleichen."],"seeds":["1","2","3"],"commands":[{"label":"Alle Empfehlungen als ein Block","where":"chat","text":"# Empfehlungen aller Stellschrauben (Startvorschläge) als Wert-Varianten, ein Lauf mit allen zugleich:\neconomy.json:dawnGoldPerPlayer=3  # Morgen-Gold je Spieler erhöhen; aktuell 2, Bereich 2 … 4; verbessert: Hub-Stufe 3 erreicht vor Tag 10; Gold am Morgen je Spieler, Median\nhub.json:levels.1.steps.0.cost.stone=22  # Stein-Kosten Hub-Stufe 2 (Schritt 1) senken; aktuell 25, Bereich 17 … 25; verbessert: Hub-Stufe 2 erreicht vor Tag 5\nhub.json:levels.1.steps.2.cost.stone=45  # Stein-Kosten Hub-Stufe 2 (Schritt 3) senken; aktuell 50, Bereich 35 … 50; verbessert: Hub-Stufe 2 erreicht vor Tag 5\nhub.json:levels.2.steps.2.cost.gold=9  # Gold-Kosten Hub-Stufe 3 (Schritt 3) senken; aktuell 10, Bereich 7 … 10; verbessert: Hub-Stufe 3 erreicht vor Tag 10\nbuildings.json:wall.levels.0.hp=360  # Mauer-HP Stufe 1 erhöhen; aktuell 300, Bereich 300 … 480; verbessert: Zerstörte Gebäude je Welle 1–5, Median\nwaves.json:table.0.standard.1=9  # Gegner je Welle 1–5 senken; aktuell 10, Bereich 7 … 10; verbessert: Zerstörte Gebäude je Welle 1–5, Median\neconomy.json:purse.startGold=16  # Startgold erhöhen; aktuell 14, Bereich 14 … 19; verbessert: Gold am Morgen je Spieler, Median"},{"label":"1. Replays schreiben","where":"shell","text":"task balance:targets -- --seeds 20"},{"label":"2. Seed 1 nachspielen","where":"chat","text":"Spiele das Replay mit replay_run {\"path\":\"reports/balance-replays/1-p2-wirtschaft-d0.replay.json\"} ab und erkläre, warum Hub-Stufe 2 erreicht vor Tag 5 verletzt ist."},{"label":"Abstimmen auf der Balancing-Seite","where":"workbench","text":"Abstimmen: Modus search · Seeds 20 · Parameter hub.json:levels.1.steps.0.cost.stone=17..25 und hub.json:levels.2.steps.2.cost.gold=7..10"},{"label":"Abstimmen lassen","where":"chat","text":"Stimme mit dem Balancing-Tester (--tune search) hub.json:levels.1.steps.0.cost.stone=17..25 und hub.json:levels.2.steps.2.cost.gold=7..10 ab und schlage den besten Wert als Änderung in data/ vor."},{"label":"Abstimmen in der Shell","where":"shell","text":"task balance:run -- --targets --tune search --seeds 20 --param hub.json:levels.1.steps.0.cost.stone=17..25 --param hub.json:levels.2.steps.2.cost.gold=7..10"},{"label":"Voller Lauf zum Vergleich","where":"chat","text":"Starte sim_test {\"action\":\"start\",\"mode\":\"offline\",\"seeds\":20} und vergleiche den neuen Bericht mit simtest-run-7."}]},"baseline":{"present":false,"note":"Keine Baseline: kein Trend.","changes":[]},"delta":[],"varianten":[],"goal":null,"quality":null,"progress":null,"previous":"","goalText":""}</script>
+<script type="application/json" id="report-assets">{"axe":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAlCAYAAABcZvm2AAAANklEQVR4nOzNoRUAIAgAUSSy/1DORNHkAFbev3TtZ9U+Mal8AwKBQCAQCAQCgUAg0D/UHesOAFz5BBke4a/yAAAAAElFTkSuQmCC","castle":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAFCAYAAABmWJ3mAAAALElEQVR4nATAMREAMBACsBwjqisPV/1k7QcAAAAAAAEAAAgAAEAAAKDruwEA6LADQAk3nP8AAAAASUVORK5CYII=","coin":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAAJklEQVR4nGJioBMYtWjUolGLRi0atWjUolGLRi0atWjUIpIsAgwAKqcANQ9HyAsAAAAASUVORK5CYII="}</script>
+<script>
+// Balancing-Bericht (B-632), Teil 1: Hilfen, Kopf, Kurzauswertung, Ampeln, Ziele-Tabelle mit Filtern und Details.
+/* eslint-disable no-unused-vars -- die Teile werden zu einem Skript verkettet (report_html.go), genutzt in report-next.js */
+// Daten: #report-data (Insights als JSON, Go: internal/balance/insights.go), Grafiken: #report-assets (data-URIs).
+const R = JSON.parse(document.getElementById('report-data').textContent);
+const A = JSON.parse(document.getElementById('report-assets').textContent || '{}');
+const LIGHTS = { green: 'gut', yellow: 'knapp', red: 'verletzt', grey: 'ungültig' };
+const $ = (id) => document.getElementById(id);
+// Kompakt-Ansicht (B-649): ?kompakt=1 oder data-view="kompakt"; Standard ist die vollständige Ansicht.
+const COMPACT = /[?&]kompakt=1/.test(location.search) || document.documentElement.dataset.view === 'kompakt';
+
+function el(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v === undefined || v === null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat()) if (k !== null && k !== undefined && k !== false) e.append(k.nodeType ? k : String(k));
+  return e;
+}
+
+function fmt(v, unit) {
+  if (v === null || v === undefined || Number.isNaN(v)) return '–';
+  const n = Math.abs(v) >= 100 ? Math.round(v) : Math.round(v * 10) / 10;
+  return n.toLocaleString('de-DE') + (unit ? ' ' + unit : '');
+}
+
+function corridor(t) {
+  if (t.lower === null || t.lower === undefined) return '≤ ' + fmt(t.upper, t.unit);
+  if (t.upper === null || t.upper === undefined) return '≥ ' + fmt(t.lower, t.unit);
+  return fmt(t.lower, t.unit) + ' – ' + fmt(t.upper, t.unit);
+}
+
+function dot(light) { return el('span', { class: 'dot l-' + light, title: LIGHTS[light] || light }); }
+
+function icon(key, cls) {
+  return A[key] ? el('img', { class: cls || 'ico', src: A[key], alt: '' }) : el('span', { class: cls || 'ico' }, '◆');
+}
+
+function fillAssets() {
+  for (const img of document.querySelectorAll('img[data-asset]')) {
+    const src = A[img.dataset.asset];
+    if (src) img.src = src;
+    else img.replaceWith(el('span', { class: img.className, title: 'Grafik fehlt' }, '◆'));
+  }
+}
+
+// Szene im Spiel-Look: Burg zwischen Mauern und Türmen, rechts so viele Gegner wie rote Ziele (höchstens 6).
+function renderScene() {
+  const box = $('scene');
+  const img = (key, h, cls) => A[key] ? el('img', { src: A[key], style: `height:${h}px`, class: cls || '', alt: '' }) : null;
+  const enemies = Math.min((R.counts || {}).red || 0, 6);
+  box.append(img('fire', 34), img('tower', 80), img('wall', 56), img('castle', 92), img('wall', 56), img('tower', 80),
+    el('span', { class: 'grow' }), ...Array.from({ length: enemies }, (_, i) => img(i % 2 ? 'enemy2' : 'enemy', 44, 'walk')));
+  box.title = enemies ? enemies + ' Gegner = ' + enemies + ' verletzte Ziele' : 'Keine Gegner: kein Ziel verletzt';
+}
+
+function toast(text) {
+  const t = el('div', { class: 'toast' }, text);
+  document.body.append(t);
+  setTimeout(() => t.remove(), 1400);
+}
+
+function copy(text) {
+  const done = () => toast('Kopiert');
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, () => copyFallback(text, done));
+  else copyFallback(text, done);
+}
+
+function copyFallback(text, done) {
+  const ta = el('textarea', { style: 'position:fixed;left:-9999px' });
+  ta.value = text;
+  document.body.append(ta);
+  ta.select();
+  document.execCommand('copy');
+  ta.remove();
+  done();
+}
+
+function renderHead() {
+  document.title = 'K3C · Balancing ' + (R.title || '');
+  $('sub').textContent = [R.run, R.generated, R.seeds + ' Seeds', (R.varianten || []).length ? 'Varianten: ' + R.varianten.join(', ') : '']
+    .filter(Boolean).join(' · ');
+  const v = $('verdict');
+  const goal = R.goal && R.goal.total > 0 ? R.goal : null;
+  v.textContent = goal ? (goal.reached ? '✔ Ziel erreicht' : '✖ Ziel nicht erreicht') : (R.pass ? '✔ bestanden' : '✖ nicht bestanden');
+  v.className = 'verdict ' + (R.pass ? 'pass' : 'fail');
+  renderResult();
+  const ul = $('summary');
+  for (const s of R.summary || []) ul.append(el('li', {}, s));
+  $('foot').textContent = 'Erzeugt von k3c-workbench (B-632) · Richtwerte: data/balance-hints.json · Korridore: data/balance-targets.json';
+}
+
+// Ergebnis, Meilenstein-Leiter und Blocker (B-648): steht oben, die Diagnose darunter.
+function renderResult() {
+  if (!R.goal) return;
+  $('result').hidden = false;
+  $('goal').textContent = (R.goal.reached ? '✅ ' : '❌ ') + (R.goalText || '');
+  if (R.quality) $('quality').textContent = 'Qualität: ' + R.quality.passed + ' von ' + R.quality.total + ' Korridoren im Korridor.';
+  if (R.progress) renderProgress(R.progress);
+}
+
+function configText(c) {
+  const opt = (label, v) => (v ? ' · ' + label + ' ' + v : '');
+  return 'Welt ' + c.world + ' · Bot ' + c.bot + ' · ' + c.players + ' Spieler · ' + c.days + ' Tage' + opt('Grad', c.grade) + opt('Hilfen', c.helps);
+}
+
+function ladderRow(r) {
+  const done = r.runs > 0 && r.reached === r.runs;
+  const mark = done ? '✔ ' : r.reached ? '◐ ' : '○ ';
+  const day = r.medianDay == null ? '–' : 'Tag ' + r.medianDay;
+  return el('tr', { class: done ? 'done' : (r.reached ? 'part' : 'open') },
+    el('td', { class: 'arrow' }, r.arrow || '·'), el('td', {}, mark + r.label),
+    el('td', { class: 'num' }, r.reached + '/' + r.runs), el('td', { class: 'num' }, day));
+}
+
+function renderProgress(p) {
+  $('cfg').textContent = 'Konfiguration: ' + configText(p.config) + ' – ' + p.testMatch + '.';
+  const tbl = $('ladder');
+  tbl.append(el('thead', {}, el('tr', {}, ['', 'Meilenstein', 'Seeds', 'Median-Tag'].map((h) => el('th', {}, h)))));
+  tbl.append(el('tbody', {}, p.ladder.map(ladderRow)));
+  if (R.previous) $('ladder-note').textContent = 'Pfeile (▲ besser, ▼ schlechter, = gleich) gegen den letzten Lauf gleicher Konfiguration: ' + R.previous;
+  if (p.blocker) $('blocker').textContent = 'Blocker: ' + p.blocker;
+}
+
+function renderLights() {
+  const box = $('lights');
+  const c = R.counts || {};
+  for (const light of ['green', 'yellow', 'red', 'grey']) {
+    const b = el('div', { class: 'light-box', 'data-light': light, title: 'Ziele filtern' },
+      el('b', { class: 'l-' + light }, c[light] || 0), dot(light), LIGHTS[light]);
+    b.addEventListener('click', () => toggleLight(light));
+    box.append(b);
+  }
+}
+
+function renderBullets(id, items, emptyText) {
+  const ul = $(id);
+  if (!items || !items.length) ul.append(el('li', { class: 'empty' }, emptyText));
+  for (const s of items || []) ul.append(el('li', {}, s));
+}
+
+// ---------- Ziele: Filter, Tabelle, Details ----------
+const filter = { light: '', grade: '', scenario: '', q: '', green: !COMPACT };
+
+function toggleLight(light) {
+  filter.light = filter.light === light ? '' : light;
+  for (const b of document.querySelectorAll('.light-box')) b.classList.toggle('active', b.dataset.light === filter.light);
+  for (const c of document.querySelectorAll('.chip[data-light]')) c.classList.toggle('on', c.dataset.light === filter.light);
+  applyFilter();
+}
+
+function select(name, label, values) {
+  const s = el('select', { 'aria-label': label }, el('option', { value: '' }, label + ': alle'),
+    values.map((v) => el('option', { value: v }, v)));
+  s.addEventListener('change', () => { filter[name] = s.value; applyFilter(); });
+  return s;
+}
+
+function renderFilters() {
+  const f = $('filters');
+  for (const light of ['green', 'yellow', 'red', 'grey']) {
+    f.append(el('button', { class: 'chip', type: 'button', 'data-light': light, onclick: () => toggleLight(light) }, dot(light), LIGHTS[light]));
+  }
+  const uniq = (key) => [...new Set((R.targets || []).map((t) => t[key]))].sort();
+  if (COMPACT && (R.counts || {}).green) {
+    f.append(el('button', { class: 'chip', type: 'button', onclick: (e) => { filter.green = !filter.green; e.currentTarget.classList.toggle('on', filter.green); applyFilter(); } },
+      dot('green'), (R.counts.green) + ' im Korridor anzeigen'));
+  }
+  f.append(select('grade', 'Grad', uniq('grade')), select('scenario', 'Szenario', uniq('scenario')));
+  const q = el('input', { type: 'search', placeholder: 'Suche …', 'aria-label': 'Ziele durchsuchen' });
+  q.addEventListener('input', () => { filter.q = q.value.toLowerCase(); applyFilter(); });
+  f.append(q);
+}
+
+function applyFilter() {
+  for (const tr of document.querySelectorAll('#targets tr.row')) {
+    const t = R.targets[+tr.dataset.i];
+    const ok = (filter.green || t.light !== 'green' || filter.light === 'green') && (!filter.light || t.light === filter.light) && (!filter.grade || t.grade === filter.grade) &&
+      (!filter.scenario || t.scenario === filter.scenario) && (!filter.q || (t.name + ' ' + t.measure).toLowerCase().includes(filter.q));
+    tr.hidden = !ok;
+    if (!ok) tr.nextElementSibling.hidden = true;
+  }
+}
+
+function corridorBar(t) {
+  const lo = t.lower ?? Math.min(0, t.value), hi = t.upper ?? Math.max(t.value, (t.lower || 0) * 2, 1);
+  const span = Math.max(hi - lo, 1e-9);
+  const min = Math.min(lo - span * 0.5, t.value, t.trend ? t.trend.before : t.value);
+  const max = Math.max(hi + span * 0.5, t.value, t.trend ? t.trend.before : t.value);
+  const pos = (x) => (100 * (x - min) / (max - min || 1)).toFixed(1) + '%';
+  const bar = el('div', { class: 'bar', title: 'Korridor ' + corridor(t) },
+    el('div', { class: 'band', style: `left:${pos(t.lower ?? min)};right:calc(100% - ${pos(t.upper ?? max)})` }),
+    el('div', { class: 'mark', style: `left:calc(${pos(t.value)} - 2px)` }));
+  if (t.trend) bar.append(el('div', { class: 'base', style: `left:${pos(t.trend.before)}`, title: 'Baseline ' + fmt(t.trend.before, t.unit) }));
+  return bar;
+}
+
+function trendCell(t) {
+  if (!t.trend) return el('span', { class: 'trend same' }, '–');
+  const d = t.trend.delta, better = t.trend.better;
+  const cls = Math.abs(d) < 1e-9 ? 'same' : better ? 'up' : 'down';
+  return el('span', { class: 'trend ' + cls, title: 'Baseline: ' + fmt(t.trend.before, t.unit) + ' (' + t.trend.beforeStatus + ')' },
+    (d > 0 ? '▲ +' : d < 0 ? '▼ ' : '● ') + fmt(d, t.unit === '%' ? 'Pkt.' : t.unit));
+}
+
+function targetRow(t, i) {
+  const dist = t.gap || '–';
+  return el('tr', { class: 'row', 'data-i': i, title: 'Details auf-/zuklappen' },
+    el('td', { 'data-v': ['green', 'yellow', 'red', 'grey'].indexOf(t.light) }, dot(t.light), t.status),
+    el('td', { 'data-v': t.name }, t.name, ' ', el('span', { class: 'tag' }, t.grade)),
+    el('td', { 'data-v': t.scenario }, el('span', { class: 'tag' }, t.scenario)),
+    el('td', { class: 'num', 'data-v': t.value }, fmt(t.value, t.unit)),
+    el('td', { class: 'num', 'data-v': t.lower ?? -1e9 }, corridor(t)),
+    el('td', { 'data-v': t.value }, corridorBar(t)),
+    el('td', { class: 'num', 'data-v': t.distance ?? 0, title: 'Abstand zum Korridor: außerhalb in Prozentpunkten (Pkt.) bzw. in der Einheit des Werts bis zur verletzten Grenze, im Korridor die Reserve bis zur nächsten Grenze' }, dist),
+    el('td', { class: 'num', 'data-v': t.trend ? t.trend.delta : 0 }, trendCell(t)));
+}
+
+function leverList(levers, plans) {
+  if (!levers || !levers.length) return el('p', { class: 'empty' }, 'Keine Hebel hinterlegt.');
+  return el('div', {}, levers.map((l, i) => el('div', { class: 'lever' },
+    el('b', { class: l.direction === '+' ? 'l-green' : 'l-red' }, l.direction === '+' ? '▲' : '▼'),
+    el('span', {}, l.label, ' ', el('code', {}, l.path), plans && plans[i] ? el('div', { class: 'why' }, planText(plans[i])) : null, plans && plans[i] ? rangeBar(plans[i]) : null))));
+}
+
+function targetDetail(t) {
+  const seeds = (list, label) => list && list.length
+    ? el('div', {}, el('b', {}, label + ' (' + list.length + ')'), el('div', { class: 'seeds' }, list.map((s) => el('span', { class: 'seed' }, s))))
+    : null;
+  return el('tr', { class: 'detail', hidden: true }, el('td', { colspan: 8 }, el('div', { class: 'detail-grid' },
+    el('div', {}, el('p', { class: 'why' }, t.plain, t.trendText ? ' ' + t.trendText : ''),
+      el('div', {}, el('span', { class: 'tag' }, t.measure), ' ', el('span', { class: 'tag' }, t.kind === 'share' ? 'Anteil' : 'Median'),
+      ' ', el('code', {}, t.rule)),
+    hintLine(t), seeds(t.failSeeds, 'Seeds zum Nachspielen'), seeds(t.invalidSeeds, 'Ungültige Seeds'),
+    t.failSeeds && t.failSeeds.length ? el('button', { class: 'btn small', type: 'button', onclick: () => copy(t.failSeeds.join(',')) }, 'Seeds kopieren') : null),
+    el('div', {}, el('b', {}, 'Hebel'), leverList(t.levers, t.plans)))));
+}
+
+function renderTargets() {
+  const tbl = $('targets');
+  const heads = [['Ampel', ''], ['Ziel', ''], ['Szenario', ''], ['Wert', 'num'], ['Korridor', 'num'], ['Lage', ''], ['Abstand', 'num'], ['Trend', 'num']];
+  tbl.append(el('thead', {}, el('tr', {}, heads.map(([h, c]) => el('th', { class: c }, h)))));
+  const body = el('tbody');
+  (R.targets || []).forEach((t, i) => body.append(targetRow(t, i), targetDetail(t)));
+  body.addEventListener('click', (e) => {
+    const tr = e.target.closest('tr.row');
+    if (tr && !e.target.closest('button')) tr.nextElementSibling.hidden = !tr.nextElementSibling.hidden;
+  });
+  tbl.append(body);
+}
+
+// Balancing-Bericht (B-632), Teil 2: Kennzahl-Ampeln, SVG-Diagramme je Nacht mit Tooltips, Tabelle je Nacht.
+/* eslint-disable no-unused-vars -- die Teile werden zu einem Skript verkettet (report_html.go), genutzt in report-next.js */
+const SVGNS = 'http://www.w3.org/2000/svg';
+const SERIES = ['#ffd166', '#4dabf7', '#3fb950', '#ff6b6b', '#c084fc', '#f472b6'];
+const RES = ['wood', 'stone', 'copper', 'iron', 'crystal'];
+const RES_DE = { wood: 'Holz', stone: 'Stein', copper: 'Kupfer', iron: 'Eisen', crystal: 'Kristall' };
+
+function svg(tag, attrs, ...kids) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v);
+  for (const k of kids) if (k) e.append(k);
+  return e;
+}
+
+function showTip(evt, html) {
+  const tip = $('tip');
+  tip.innerHTML = html;
+  tip.classList.add('on');
+  const x = Math.min(evt.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
+  tip.style.left = x + 'px';
+  tip.style.top = (evt.clientY + 14) + 'px';
+}
+
+function hideTip() { $('tip').classList.remove('on'); }
+
+function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+
+// Kurven: series = [{name, color, points:[{x, y, tip}]}], zones = [{from, to, light}] (Richtwert-Bänder).
+function lineChart(title, iconKey, unit, series, zones) {
+  const W = 300, H = 160, L = 34, B = 22, T = 8;
+  const pts = series.flatMap((s) => s.points);
+  if (!pts.length) return null;
+  const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y).concat(zones.flatMap((z) => [z.from, z.to]).filter(Number.isFinite));
+  const x0 = Math.min(...xs), x1 = Math.max(...xs, x0 + 1);
+  let y0 = Math.min(0, ...ys), y1 = Math.max(...ys, y0 + 1);
+  y1 += (y1 - y0) * 0.08;
+  const sx = (x) => L + (W - L - 6) * (x - x0) / (x1 - x0), sy = (y) => T + (H - T - B) * (1 - (y - y0) / (y1 - y0));
+  const g = svg('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': title });
+  for (const z of zones) {
+    const a = sy(Math.min(Math.max(z.to, y0), y1)), b = sy(Math.max(Math.min(z.from, y1), y0));
+    g.append(svg('rect', { class: 'zone', x: L, y: a, width: W - L - 6, height: Math.max(b - a, 0), fill: `var(--${z.light})` }));
+  }
+  axes(g, { W, H, L, B, T, x0, x1, y0, y1, sx, sy, unit });
+  series.forEach((s) => drawSeries(g, s, sx, sy, unit));
+  const box = el('div', { class: 'chart' }, el('h3', {}, icon(iconKey), title), g);
+  box.append(el('div', { class: 'legend' }, series.map((s) => el('span', {}, el('i', { style: 'background:' + s.color }), s.name)),
+    zones.length ? el('span', {}, el('i', { style: 'background:var(--green);opacity:.4' }), 'Richtwert') : null));
+  return box;
+}
+
+function axes(g, c) {
+  g.append(svg('line', { class: 'axis', x1: c.L, y1: c.H - c.B, x2: c.W - 6, y2: c.H - c.B }));
+  g.append(svg('line', { class: 'axis', x1: c.L, y1: c.T, x2: c.L, y2: c.H - c.B }));
+  for (let i = 0; i <= 3; i++) {
+    const y = c.y0 + (c.y1 - c.y0) * i / 3;
+    const t = svg('text', { class: 'lbl', x: c.L - 4, y: c.sy(y) + 3, 'text-anchor': 'end' });
+    t.textContent = fmt(y);
+    g.append(t, svg('line', { class: 'axis', x1: c.L, y1: c.sy(y), x2: c.W - 6, y2: c.sy(y), 'stroke-dasharray': '2 4' }));
+  }
+  for (let x = c.x0; x <= c.x1; x++) {
+    const t = svg('text', { class: 'lbl', x: c.sx(x), y: c.H - 6, 'text-anchor': 'middle' });
+    t.textContent = 'N' + x;
+    g.append(t);
+  }
+}
+
+function drawSeries(g, s, sx, sy, unit) {
+  const d = s.points.map((p, i) => (i ? 'L' : 'M') + sx(p.x).toFixed(1) + ' ' + sy(p.y).toFixed(1)).join(' ');
+  g.append(svg('path', { d, fill: 'none', stroke: s.color, 'stroke-width': 2.2, 'stroke-linejoin': 'round', 'stroke-dasharray': s.dash || '' }));
+  for (const p of s.points) {
+    const c = svg('circle', { class: 'pt', cx: sx(p.x), cy: sy(p.y), r: 4, fill: s.color });
+    c.addEventListener('mousemove', (e) => showTip(e, `<b>${esc(s.name)}</b> · Nacht ${p.x}<br>${esc(fmt(p.y, unit))}${p.tip ? '<br>' + esc(p.tip) : ''}`));
+    c.addEventListener('mouseleave', hideTip);
+    g.append(c);
+  }
+}
+
+function byGrade(nights) {
+  const m = new Map();
+  for (const n of nights) {
+    const k = n.grade || 'normal';
+    if (!m.has(k)) m.set(k, []);
+    m.get(k).push(n);
+  }
+  return [...m.entries()];
+}
+
+function zonesFor(key) {
+  const b = ((R.figures || {}).bands || {})[key]; // Band [von, bis], null = offen
+  if (!b) return [];
+  return [{ from: b[0] ?? -1e9, to: b[1] ?? 1e9, light: 'green' }];
+}
+
+function chartSeries(groups, pick, tip) {
+  return groups.map(([grade, list], i) => ({ name: grade, color: SERIES[i % SERIES.length],
+    points: list.map((n) => ({ x: n.night, y: pick(n), tip: tip ? tip(n) : '' })) }));
+}
+
+function resourceSeries(groups) {
+  const nights = groups.length ? groups[0][1] : [];
+  return RES.map((r, i) => ({ name: RES_DE[r] + ' (' + groups[0][0] + ')', color: SERIES[i % SERIES.length],
+    points: nights.map((n) => ({ x: n.night, y: (n.resourceIn[r] || 0) - (n.resourceOut[r] || 0),
+      tip: `rein ${fmt(n.resourceIn[r])} · raus ${fmt(n.resourceOut[r])}` })) })).filter((s) => s.points.some((p) => p.y !== 0));
+}
+
+function renderCharts() {
+  const f = R.figures || {};
+  const nights = f.nights || [];
+  $('figure-note').textContent = f.note || '';
+  if (!nights.length) return;
+  const groups = byGrade(nights);
+  const gold = (n) => n.dayIncome - n.dayExpense + n.nightIncome - n.nightExpense;
+  const charts = [
+    lineChart('Überleben je Nacht', 'castle', '%', chartSeries(groups, (n) => n.survival, (n) => n.runs + ' Läufe'), zonesFor('survival')),
+    lineChart('Gold-Bilanz je Tag', 'coin', '', chartSeries(groups, gold,
+      (n) => `Tag +${fmt(n.dayIncome)} / −${fmt(n.dayExpense)}, Nacht +${fmt(n.nightIncome)} / −${fmt(n.nightExpense)}`), zonesFor('goldBalance')),
+    lineChart('Rohstoff-Bilanz je Tag', 'ore', '', resourceSeries(groups), []),
+    lineChart('Leerlauf der Bauern', 'axe', '%', chartSeries(groups, (n) => n.idleShare), zonesFor('idleShare')),
+  ];
+  $('charts').append(...charts.filter(Boolean));
+}
+
+function renderFigureLights() {
+  const box = $('figure-lights');
+  const lights = (R.figures || {}).lights || [];
+  if (!lights.length) box.append(el('span', { class: 'empty' }, 'Keine Kennzahlen im Bericht: Ampeln grau.'));
+  for (const l of lights) {
+    box.append(el('div', { class: 'fl', title: l.text || '' }, dot(l.light), el('b', {}, l.name), ' ', fmt(l.value, l.unit),
+      l.grade ? el('span', { class: 'tag' }, l.grade) : null));
+  }
+}
+
+function renderNights() {
+  const nights = (R.figures || {}).nights || [];
+  const tbl = $('nights');
+  if (!nights.length) return;
+  const cols = [['Grad', (n) => n.grade || 'normal', ''], ['Nacht', (n) => n.night, 'num'], ['Läufe', (n) => n.runs, 'num'],
+    ['Überleben %', (n) => n.survival, 'num'], ['Gold Tag', (n) => n.dayIncome - n.dayExpense, 'num'],
+    ['Gold Nacht', (n) => n.nightIncome - n.nightExpense, 'num'], ['Holz', (n) => n.resourceIn.wood - n.resourceOut.wood, 'num'],
+    ['Stein', (n) => n.resourceIn.stone - n.resourceOut.stone, 'num'], ['Leerlauf %', (n) => n.idleShare, 'num']];
+  tbl.append(el('thead', {}, el('tr', {}, cols.map(([h, , c]) => el('th', { class: c }, h)))));
+  tbl.append(el('tbody', {}, nights.map((n) => el('tr', {}, cols.map(([, f, c]) => {
+    const v = f(n);
+    return el('td', { class: c, 'data-v': v }, typeof v === 'number' ? fmt(v) : v);
+  })))));
+}
+
+/* eslint-disable no-unused-vars -- die Teile werden zu einem Skript verkettet (report_html.go), genutzt in report-next.js */
+// Balancing-Bericht (B-649), Teil 4: Ansicht. „Was jetzt tun?“-Kasten, einklappbare Abschnitte mit Ein-Zeilen-Zusammenfassung,
+// Verweise statt Doppelungen und die Hilfen der Kompakt-Ansicht (?kompakt=1: Balken je Stellschraube, Ausmaß-Fußnote).
+
+const UNKNOWN_NOTE = 'Wie weit ein Schritt das Ziel verschiebt, ist nicht berechenbar; erst der volle Lauf zeigt es. ' +
+  'Balken: Strich = Probierbereich, ● aktuell, ◆ Startvorschlag.';
+
+// Plan-Text je Stellschraube: vollständig mit Wirkungssatz, kompakt ohne (die Fußnote steht einmal im Abschnitt).
+function planText(p) { return COMPACT ? p.short + ' Ausmaß unbekannt.' : p.text; }
+
+// Balken: Probierbereich min … max, Marke für den aktuellen Wert und den Startvorschlag (nur kompakt, nur mit Bereich).
+function rangeBar(p) {
+  const lo = +p.min, hi = +p.max, cur = +p.current, start = +p.start;
+  if (!COMPACT || !p.known || !(hi > lo)) return null;
+  const pos = (x) => 'calc(' + (100 * (x - lo) / (hi - lo)).toFixed(1) + '% - 5px)';
+  return el('div', { class: 'rbar', title: 'Probierbereich ' + p.min + ' … ' + p.max + ', aktuell ' + p.current + ', Start ' + p.start },
+    el('div', { class: 'rtrack' }), el('span', { class: 'rcur', style: 'left:' + pos(cur) }, '●'),
+    el('span', { class: 'rstart', style: 'left:' + pos(start) }, '◆'), el('span', { class: 'rl' }, p.min), el('span', { class: 'rr' }, p.max));
+}
+
+function labelOf(t) { return t.grade === 'normal' ? t.name : t.name + ' (' + t.grade + ')'; }
+
+// Hinweis-Satz zum Ziel (früher in der Liste „Hinweise je Ziel“), jetzt in der aufgeklappten Zeile.
+function hintLine(t) {
+  const h = (R.hints || []).find((x) => x.target === labelOf(t));
+  return h && h.text ? el('p', { class: 'why' }, h.text) : null;
+}
+
+// Kasten oben: Urteil, die wirksamsten Stellschrauben mit Startwert, ein Knopf für alle Empfehlungen.
+function renderTodo() {
+  const box = $('todo');
+  const c = R.counts || {};
+  box.append(el('h2', {}, icon('fire'), 'Was jetzt tun?'));
+  const groups = (R.leverGroups || []).slice(0, 3);
+  if (!c.red) {
+    box.append(el('p', { class: 'todo-line' }, c.yellow ? 'Kein Ziel verletzt, ' + c.yellow + ' knapp: nichts drehen, beim nächsten Tuning im Blick behalten.'
+      : 'Alle Ziele im Korridor: nichts zu tun.'));
+    return;
+  }
+  box.append(el('p', { class: 'todo-line' }, c.red + ' von ' + (R.targets || []).length + ' Zielen verletzt.' +
+    (groups.length ? ' Diese ' + groups.length + ' Stellschrauben beheben die meisten:' : ' Keine Stellschraube hinterlegt, Ursache im Replay suchen.')));
+  box.append(el('ol', { class: 'todo-list' }, groups.map((g) => el('li', {}, el('b', {}, g.plan.label), ' ',
+    g.plan.known ? ['auf ', el('b', {}, g.plan.start), ' (aktuell ' + g.plan.current + ')'] : 'von Hand wählen', ' – verbessert ' + g.targets.length + ': ' + g.targets.join('; '),
+    g.conflict ? el('span', { class: 'warn' }, ' ⚠ ' + g.conflict) : null))));
+  const rec = ((R.next || {}).commands || []).find((x) => x.label.startsWith('Alle Empfehlungen'));
+  if (rec) box.append(el('button', { class: 'btn', type: 'button', onclick: () => copy(rec.text) }, 'Alle Empfehlungen kopieren'));
+}
+
+// Abschnitt einklappbar machen: Überschrift wird zur Kopfzeile, danach eine Zusammenfassung in einer Zeile.
+function fold(card, text, open) {
+  const head = card.querySelector('h2');
+  if (!head) return;
+  const sum = el('summary', {}, head, el('span', { class: 'sum' }, text));
+  const d = el('details', { class: 'fold', open });
+  d.append(sum, ...card.childNodes);
+  card.append(d);
+}
+
+// Schwäche anklicken: Zeile in der Tabelle öffnen und dorthin springen (statt dieselbe Aussage zu wiederholen).
+function linkWeaknesses() {
+  for (const li of document.querySelectorAll('#weaknesses li:not(.empty)')) {
+    const i = (R.targets || []).findIndex((t) => li.textContent.startsWith(labelOf(t) + ':'));
+    if (i < 0) continue;
+    li.classList.add('link');
+    li.title = 'Details in der Tabelle der Ziele';
+    li.addEventListener('click', () => {
+      const row = document.querySelector('#targets tr.row[data-i="' + i + '"]');
+      if (!row) return;
+      for (const d of [$('targets').closest('details.fold'), $('targets').closest('details.diag')]) if (d) d.open = true;
+      row.hidden = false;
+      row.nextElementSibling.hidden = false;
+      row.scrollIntoView({ block: 'center' });
+    });
+  }
+}
+
+// Abschnitte einklappen: Zusammenfassung je Abschnitt in einer Zeile, Startzustand offen oder zu.
+function foldSections() {
+  const c = R.counts || {};
+  const lights = (R.figures || {}).lights || [];
+  const b = R.baseline || {};
+  const changes = (b.changes || []).length;
+  const cards = (id) => $(id).closest('.card');
+  fold(cards('strengths'), (R.strengths || []).length + ' Stärken', false);
+  fold(cards('weaknesses'), (R.weaknesses || []).length + ' Schwächen, Klick springt zur Tabelle', true);
+  fold(cards('targets'), (c.red || 0) + ' verletzt · ' + (c.yellow || 0) + ' knapp · ' + (c.green || 0) + ' gut', true);
+  fold(cards('charts'), lights.length + ' Kennzahlen, ' + lights.filter((l) => l.light === 'red').length + ' außerhalb des Richtwerts', false);
+  fold(cards('hints'), (R.leverGroups || []).length + ' Stellschrauben', true);
+  fold(cards('next'), ((R.next || {}).commands || []).length + ' Befehle', true);
+  fold(cards('compare'), b.present ? changes + ' Ziele mit anderem Status' : 'keine Baseline', changes > 0);
+}
+
+// Knopf oben: wechselt zwischen vollständiger und kompakter Ansicht (lädt die Seite mit bzw. ohne ?kompakt=1 neu).
+function initViewToggle() {
+  const btn = $('view');
+  btn.textContent = COMPACT ? 'Ansicht: kompakt ⇄' : 'Ansicht: vollständig ⇄';
+  btn.addEventListener('click', () => {
+    const u = new URL(location.href);
+    if (COMPACT) u.searchParams.delete('kompakt'); else u.searchParams.set('kompakt', '1');
+    location.href = u.toString();
+  });
+}
+
+function initView() {
+  linkWeaknesses();
+  foldSections();
+  initViewToggle();
+}
+
+// Balancing-Bericht (B-632), Teil 3: Tuning-Hinweise, nächster Lauf, Baseline-Vergleich, Sortierung, Thema, Start.
+// Tuning: je Stellschraube einmal mit den Verletzungen, die sie verbessern soll. Die Hinweise je Ziel stehen in der
+// aufgeklappten Tabellenzeile (hintLine); nur ohne Stellschrauben (z. B. nur knappe Ziele) bleibt die Liste je Ziel.
+function renderHints() {
+  const ul = $('hints');
+  const hints = R.hints || [];
+  const groups = R.leverGroups || [];
+  if (!hints.length) ul.append(el('li', { class: 'empty' }, 'Keine Hinweise: alle Ziele im Korridor.'));
+  if (COMPACT && groups.length) ul.append(el('li', { class: 'foot-note' }, UNKNOWN_NOTE));
+  for (const g of groups) {
+    ul.append(el('li', { class: 'hint h-red' }, el('div', {}, el('b', {}, g.direction === '+' ? '▲ ' : '▼ '), g.plan.label, ' ', el('code', {}, g.path)),
+      el('div', {}, 'Soll ' + g.targets.length + ' Verletzung(en) verbessern: ' + g.targets.join('; ')),
+      el('div', { class: 'why' }, g.plan.short, g.conflict ? ' ' + g.conflict : ''), rangeBar(g.plan)));
+  }
+  if (groups.length) return;
+  for (const h of hints) {
+    ul.append(el('li', { class: 'hint h-' + h.light }, el('div', {}, dot(h.light), el('b', {}, h.target), ' – ', h.text),
+      h.why ? el('div', { class: 'why' }, h.why) : null, leverList(h.levers, h.plans)));
+  }
+}
+
+// Wohin ein kopierter Befehl gehört (Command.where, Go: insights_next.go).
+const WHERE = {
+  chat: ['💬 Chat', 'In den Chat an Claude einfügen: Claude ruft das Werkzeug (sim_test, replay_run) auf und wertet aus.'],
+  shell: ['⌨ Terminal', 'In ein Terminal im Checkout einfügen (Ordner mit Taskfile.yml).'],
+  workbench: ['🧰 Workbench', 'In der Workbench auf der Balancing-Seite unter „Abstimmen“ so eintragen.'],
+};
+
+function cmdRow(c) {
+  const [badge, help] = WHERE[c.where] || ['', ''];
+  return el('div', {}, el('div', { class: 'note' }, c.label, ' ', badge ? el('span', { class: 'where', title: help }, badge) : null),
+    el('div', { class: 'cmd' }, el('pre', {}, c.text), el('button', { class: 'btn small', type: 'button', title: help, onclick: () => copy(c.text) }, 'Kopieren')));
+}
+
+// Kompakt: nur „Alle Empfehlungen“ und „Voller Lauf“ offen, die Wege zum Nachspielen und Abstimmen hinter „Weitere Wege“.
+const PRIMARY = /^(Alle Empfehlungen|Voller Lauf)/;
+
+function renderNext() {
+  const n = R.next || {};
+  const box = $('next');
+  const cmds = n.commands || [];
+  const shown = COMPACT ? cmds.filter((c) => PRIMARY.test(c.label)) : cmds;
+  const more = COMPACT ? cmds.filter((c) => !PRIMARY.test(c.label)) : [];
+  const help = () => el('p', { class: 'where-help' }, Object.values(WHERE).map(([b, h]) => el('span', {}, el('b', {}, b), ' ', h)));
+  if (n.steps && n.steps.length) box.append(el('ol', { class: 'steps' }, n.steps.map((s) => el('li', {}, s))));
+  if (cmds.length && !COMPACT) box.append(help());
+  for (const c of shown) box.append(cmdRow(c));
+  if (more.length) box.append(el('details', { class: 'more' }, el('summary', {}, 'Weitere Wege (' + more.length + '): Replay, Abstimmen'), help(), more.map(cmdRow)));
+  if (!box.children.length) box.append(el('p', { class: 'empty' }, 'Kein Vorschlag: der Lauf ist im Korridor.'));
+}
+
+function renderCompare() {
+  const b = R.baseline || {};
+  const box = $('compare');
+  if (!b.present) {
+    box.append(el('p', { class: 'empty' }, b.note || 'Keine Baseline: kein Trend.'));
+    return;
+  }
+  if (b.note) box.append(el('p', { class: 'note' }, b.note));
+  if (!(b.changes || []).length) {
+    box.append(el('p', {}, 'Kein Ziel hat gegenüber der Baseline den Status gewechselt.'));
+    return;
+  }
+  const tbl = el('table', { class: 'tbl sortable' },
+    el('thead', {}, el('tr', {}, ['Ziel', 'Vorher', 'Nachher', 'Kippt'].map((h) => el('th', {}, h)))),
+    el('tbody', {}, b.changes.map((c) => el('tr', {}, el('td', { 'data-v': c.name }, c.name), el('td', { 'data-v': c.before }, c.before),
+      el('td', { 'data-v': c.after }, c.after), el('td', { 'data-v': c.tipped ? 1 : 0 }, c.tipped ? '⚠ ja' : 'nein')))));
+  box.append(tbl);
+}
+
+// Sortierung: Klick auf eine Spaltenüberschrift; Detailzeilen (tr.detail) wandern mit ihrer Zeile.
+function sortBy(th) {
+  const tbl = th.closest('table'), body = tbl.tBodies[0], col = th.cellIndex;
+  const dir = th.dataset.dir === 'asc' ? 'desc' : 'asc';
+  for (const h of tbl.tHead.rows[0].cells) delete h.dataset.dir;
+  th.dataset.dir = dir;
+  const rows = [...body.rows].filter((r) => !r.classList.contains('detail'));
+  const val = (r) => { const v = r.cells[col].dataset.v; return v !== undefined && v !== '' && !Number.isNaN(+v) ? +v : (v || '').toLowerCase(); };
+  rows.sort((a, b) => { const x = val(a), y = val(b); return (x < y ? -1 : x > y ? 1 : 0) * (dir === 'asc' ? 1 : -1); });
+  for (const r of rows) {
+    const d = r.nextElementSibling && r.nextElementSibling.classList.contains('detail') ? r.nextElementSibling : null;
+    body.append(r);
+    if (d) body.append(d);
+  }
+}
+
+function initSorting() {
+  document.addEventListener('click', (e) => {
+    const th = e.target.closest('table.sortable th');
+    if (th) sortBy(th);
+  });
+}
+
+function initTheme() {
+  const key = 'k3c-balance-theme';
+  let theme = 'night';
+  try { theme = localStorage.getItem(key) || (matchMedia('(prefers-color-scheme: light)').matches ? 'day' : 'night'); } catch { /* kein Speicher */ }
+  document.documentElement.dataset.theme = theme;
+  $('theme').addEventListener('click', () => {
+    theme = document.documentElement.dataset.theme === 'night' ? 'day' : 'night';
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem(key, theme); } catch { /* kein Speicher */ }
+  });
+}
+
+function main() {
+  initTheme();
+  fillAssets();
+  renderHead();
+  renderScene();
+  renderLights();
+  renderBullets('strengths', R.strengths, 'Keine Stärken erkannt.');
+  renderBullets('weaknesses', R.weaknesses, 'Keine Schwächen erkannt.');
+  renderFilters();
+  renderTargets();
+  renderFigureLights();
+  renderCharts();
+  renderNights();
+  renderHints();
+  renderNext();
+  renderCompare();
+  initSorting();
+  renderTodo();
+  initView();
+  applyFilter();
+}
+
+main();
+
+
+</script>
+</body>
+</html>

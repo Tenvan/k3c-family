@@ -16,7 +16,7 @@ use crate::insights_levers::{LeverGroup, lever_groups};
 use crate::insights_next::{NextRun, hints, next_run};
 use crate::insights_plain::{LeverPlan, gap_text, plain, plans, trend_plain};
 use crate::insights_progress::goal_text;
-use crate::pending::{Hint, strengths, summary, weaknesses};
+use crate::insights_text::{Hint, strengths, summary, weaknesses};
 use crate::progress::{GoalView, Progress, QualityView};
 use crate::summary::{Change, Entry, Summary, compare};
 use crate::targets::KIND_SHARE;
