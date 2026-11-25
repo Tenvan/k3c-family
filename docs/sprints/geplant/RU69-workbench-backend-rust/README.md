@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-25
 
 ## Ausgangslage
 
@@ -20,51 +20,51 @@ Das Backend der Workbench läuft in Rust hinter dem unveränderten Frontend, Tei
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Agenten setzen um; 🧑 nimmt die Workbench in Rust ab (Fenster, MCP, Planungsseite).
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Backend von `tools/k3c-workbench` in Rust (Tauri nach Entscheidung 014), Frontend und `tools/webkit` unverändert. Teile in dieser Reihenfolge, jeder Teil für sich lauffähig: 1. Gerüst: Fenster, Commands, MCP-Server `k3c-workbench` auf Port 5180 mit `workbench_status`. 2. Dienste und Tasks (`svc_*`, `task_*`, `check_run`, `console_tail`). 3. Logs (`logs_*`). 4. Git und GitHub-Status (`gh_status`, Git-Seite). 5. Planung (`plan_*`), gegen die Golden aus RU68. 6. übrige Tools und Seiten (Monitoring, Playtest, Ports). Die Go-Workbench bleibt bis zur Abnahme lauffähig.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Studio (RU70). Entfernen von Go (RU71). Neue Funktionen der Workbench.
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Verhalten wie Go; die Tool-Namen, Parameter und Antworten des MCP bleiben gleich. Planung nur gegen die Golden aus RU68 grün. Datei ≤ 400, Funktion ≤ 60 Zeilen. Abnahme (Fenster, MCP, Seiten) nur durch 🧑 am PC.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-workbench/**`, `rust/Cargo.toml`, `rust/Cargo.lock`, `tools/k3c-workbench/**`, `Taskfile.yml`
+- **Abhängig von:** RU66, RU68, RU40
+- **Braucht 🧑:** Abnahme
+- **Sperre:** deps, taskfile, exe
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`plan_next` in der Rust-Workbench liefert für denselben Dateibaum dieselbe Antwort wie die Go-Workbench; `claude` verbindet sich auf Port 5180 und sieht dieselben Tools.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Weicht Rust von Go ab, gilt Go. Fehlt eine Funktion im MCP, schlägt Claude eine Tool-Erweiterung vor statt Dateien direkt zu ändern.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Die Rust-Workbench startet als Fenster und im Dev-Betrieb und bedient den MCP auf 5180 mit allen bisherigen Tools.
+- **AC-02** Die Golden der Planung (RU68) sind grün.
+- **AC-03** `task check:all` ist grün; 🧑 hat die Workbench am PC abgenommen.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+Abhängig von Entscheidung 014 (🧑).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
-Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+Stichpunkte (Reife Entwurf): 1. Gerüst (AC-01). 2. Dienste, Tasks (AC-01). 3. Logs (AC-01). 4. Git, GitHub (AC-01). 5. Planung (AC-02). 6. Übriges (AC-01). 7. Review und Abnahme 🧑 (AC-03).
 
 ## Abnahme
 

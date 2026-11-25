@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-25
 
 ## Ausgangslage
 
@@ -20,51 +20,50 @@ Go ist aus dem Repo entfernt: `go.mod`/`go.sum`, Go-Tasks, CI-Schritte, golangci
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Agenten räumen auf; 🧑 gibt das Löschen frei und nimmt die Doku ab.
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Nach der Abnahme von RU69 und RU70: Go-Code, `go.mod`, `go.sum`, `golangci-lint`-Konfiguration, Go-Tasks, CI-Schritte und Go-Voraussetzungen in `requirements.md` entfernen; `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md` und die Agenten beschreiben den reinen Rust-Stand; Entscheidung 014 steht als umgesetzt.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Neue Funktionen. Änderungen an Frontends.
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Löschen nur nach Ja von 🧑 (Haltepunkt vor dem Löschen). Golden und `testdata/` bleiben. Datei ≤ 400, Funktion ≤ 60 Zeilen.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `engine/**`, `cmd/**`, `tools/**`, `go.mod`, `go.sum`, `Taskfile.yml`, `.github/workflows/ci.yml`, `requirements.md`, `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md`, `docs/decisions/**`, `.claude/agents/**`
+- **Abhängig von:** RU69, RU70, RU41
+- **Braucht 🧑:** Entscheidung
+- **Sperre:** deps, taskfile, exe, golden
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`git ls-files '*.go'` ist leer; `task check:all` ist grün.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Hängt noch ein Programm an Go, bricht die Session ab und legt ein Ticket an.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Es gibt keine Go-Dateien und keinen Go-Schritt in `Taskfile.yml` und CI; `task check:all` ist grün.
+- **AC-02** `CLAUDE.md`, `codemap.md`, `docs/arbeitsweise.md`, `requirements.md` und die Agenten beschreiben den Rust-Stand.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+Ja von 🧑 vor dem Löschen.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
-Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+Stichpunkte (Reife Entwurf): 1. Haltepunkt 🧑, dann Go entfernen (AC-01). 2. Doku (AC-02). 3. Review.
 
 ## Abnahme
 

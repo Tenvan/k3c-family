@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-25
 
 ## Ausgangslage
 
@@ -20,51 +20,50 @@ Das Backend des Studios läuft in Rust hinter dem unveränderten Frontend: Welte
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Agenten setzen um; 🧑 nimmt das Studio in Rust ab (Welten-Editor, Assets, MCP).
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Backend von `tools/k3c-studio` in Rust, Frontend unverändert. Teile: 1. Gerüst: Fenster, MCP-Server `k3c-studio` auf Port 5181 (UI-API 8193). 2. Welten, Inseln, Chunks, Hub (`world_*`, `hub_*`, `level_generate` über die Spiel-EXE). 3. Assets (`assets_*`, auf dem Crate aus RU67). 4. Sim und Balancing (`sim_*`, `replay_run`, `reports_list`, `saves_list`) über die Spiel-EXE. Die Go-Fassung bleibt bis zur Abnahme lauffähig.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Workbench (RU69). Entfernen von Go (RU71). Neue Studio-Funktionen.
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Tool-Namen, Parameter und Antworten des MCP bleiben gleich. Balancing schreibt nur unter `data/worlds/` (Beschluss 2026-11-22). Datei ≤ 400, Funktion ≤ 60 Zeilen. Abnahme nur durch 🧑 am PC.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-studio/**`, `rust/Cargo.toml`, `rust/Cargo.lock`, `tools/k3c-studio/**`, `Taskfile.yml`
+- **Abhängig von:** RU66, RU67, RU40
+- **Braucht 🧑:** Abnahme
+- **Sperre:** deps, taskfile, exe
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`world_check` in der Rust-Studio-Fassung meldet für dieselbe Welt dieselben Befunde wie die Go-Fassung.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Weicht Rust von Go ab, gilt Go. Fehlende MCP-Funktion: Erweiterung vorschlagen.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Die Rust-Studio-App startet als Fenster und im Dev-Betrieb und bedient den MCP auf 5181 mit allen bisherigen Tools.
+- **AC-02** `task check:all` ist grün; 🧑 hat das Studio am PC abgenommen.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+Abhängig von Entscheidung 014 (🧑).
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
-Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+Stichpunkte (Reife Entwurf): 1. Gerüst (AC-01). 2. Welten, Hub, Level (AC-01). 3. Assets (AC-01). 4. Sim, Balancing, Berichte (AC-01). 5. Review und Abnahme 🧑 (AC-02).
 
 ## Abnahme
 

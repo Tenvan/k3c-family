@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-25
 
 ## Ausgangslage
 
@@ -20,51 +20,50 @@ Die Asset-Logik liegt als Rust-Crate mit portierten Tests; die Dateien unter `pu
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Agenten setzen um, die Review-Session prüft.
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Port von `tools/assetkit` (Asset-Logik des Studios: Spezifikationen, Katalog, Quellen, Prüfungen) nach einem Rust-Crate, Verhalten wie Go, Tests mitportiert. Der Papierschnitt-Renderer `tools/paper` (TypeScript) und die Dateien unter `public/grafik` bleiben unverändert.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Studio-Backend und MCP-Tools `assets_*` (RU70). Entfernen des Go-Codes (RU71).
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Port ohne Verhaltensänderung; Go ist das Orakel. Datei ≤ 400, Funktion ≤ 60 Zeilen. Neue Crates nur nach Annahme von Entscheidung 014.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-assetkit/**`, `rust/Cargo.toml`, `rust/Cargo.lock`
+- **Abhängig von:** RU65, RU66
+- **Braucht 🧑:** –
+- **Sperre:** deps
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+Dieselbe Asset-Spec ergibt in Rust denselben Katalogeintrag und dieselben Prüfmeldungen wie in Go.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Weicht Rust von Go ab, gilt Go (Abweichung beheben oder Ticket).
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** `assetkit` liegt als Rust-Crate vor, die portierten Tests sind grün (`cargo test`, `task rust:lint`).
+- **AC-02** Kein Go-Code geändert; `task check:diff` grün.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
-Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+Stichpunkte (Reife Entwurf): 1. Datenmodell und Spezifikationen (AC-01). 2. Katalog, Quellen, Prüfungen (AC-01). 3. Review (AC-02).
 
 ## Abnahme
 

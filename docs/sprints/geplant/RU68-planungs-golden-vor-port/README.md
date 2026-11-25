@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-25
 
 ## Ausgangslage
 
@@ -20,51 +20,50 @@ Das heutige Verhalten der Planungslogik ist als Golden-Fälle festgehalten (Eing
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Agenten schreiben die Golden-Fälle; sie sind später das Orakel für den Rust-Port (RU69).
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Golden-Tests (Go) für die Planungslogik der Workbench in `tools/k3c-workbench/internal/planning`: je Fall ein Dateibaum unter `testdata/planung/<fall>/vorher`, ein Aufruf (`plan_create`, `plan_set`, `plan_sections`, `plan_delete`, `plan_next`, `plan_waves`, `plan_queue`, `plan_list`, `plan_check`, `plan_index`) als `aufruf.json` und die erwartete Antwort samt Dateibaum `nachher`. Abgedeckt sind Ticket, Sprint, Session und Projekt samt Index, Fahrplan, Projekt-Tabelle, Archiv und Verschieben nach Status. Der Test liest die Fälle ohne Go-spezifische Typen, sodass ein Rust-Test dieselben Dateien lesen kann.
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Verhalten ändern oder Fehler beheben (Fehler werden als Ticket erfasst, das Golden hält den Ist-Stand fest). Der Rust-Port selbst (RU69).
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Golden schreibt nur ein bewusster Lauf (`task go:golden`-ähnlich, Begründung im Commit). Datei ≤ 400, Funktion ≤ 60 Zeilen. Kein Netz, keine Uhrzeit im Golden (feste Daten).
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `tools/k3c-workbench/internal/planning/**`, `testdata/planung/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Sperre:** golden
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`plan_set B-001 Status erledigt` in einem Dateibaum mit Index und Archiv ergibt exakt die erwarteten Dateien unter `nachher`.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Fehlerfälle (unbekanntes Feld, ungültiger Wert, Zyklus bei Relationen) stehen als eigene Fälle mit erwarteter Fehlermeldung.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Mindestens ein Fall je Werkzeug und je Dokumentart, Fehlerfälle inklusive; `check_run go:test` grün.
+- **AC-02** Der Golden-Test liest nur Dateien unter `testdata/planung/` (kein Go-Typ im Format).
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+keine
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
-Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+Stichpunkte (Reife Entwurf): 1. Format und Lader (AC-02). 2. Fälle Tickets und Sprints (AC-01). 3. Fälle Sessions, Projekte, Wellen, Queue, Next (AC-01). 4. Review.
 
 ## Abnahme
 

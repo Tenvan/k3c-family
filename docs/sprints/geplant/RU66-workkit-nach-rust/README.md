@@ -6,9 +6,9 @@
 - **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** autonom, Claude, 2026-11-25
 
 ## Ausgangslage
 
@@ -20,51 +20,50 @@ Der gemeinsame Code liegt als Rust-Crates im Workspace (`rust/`), mit portierten
 
 ## Beteiligte und Zielgruppen
 
-Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+Agenten setzen um, die Review-Session prüft; 🧑 gibt neue Crates frei (Teil von Entscheidung 014).
 
 ## Anforderungen
 
-Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+Port von `tools/workkit` (`mcpkit`, `applog`, `console`, `proc`, `usage`, `winicon`; `uikit` und `claude` nur, soweit das Backend sie braucht) sowie `engine/conlog` und `engine/devrun` nach Rust-Crates unter `rust/crates/`, Verhalten wie Go, Tests mitportiert. Reihenfolge: 1. `mcpkit` und `applog`, 2. `console`, `proc` (Prozessbäume, Job-Objekt, CTRL_BREAK), 3. `usage`, `winicon`, `conlog`, 4. `devrun` (Supervisor).
 
 ## Nicht-Ziele
 
-Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+Backends von Workbench und Studio (RU69, RU70). Entfernen des Go-Codes (RU71).
 
 ## Regeln und Einschränkungen
 
-Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+Port ohne Verhaltensänderung; Go bleibt lauffähig und ist das Orakel. Datei ≤ 400 Zeilen, Funktion ≤ 60 Zeilen. Neue Crates nur nach Annahme von Entscheidung 014.
 
 Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
 
-- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
-- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
-- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
-- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+- **Bereich:** `rust/crates/k3c-kit*/**`, `rust/Cargo.toml`, `rust/Cargo.lock`
+- **Abhängig von:** RU65
+- **Braucht 🧑:** –
+- **Sperre:** deps
 
 ## Beispiele
 
-Typische Situation → erwartetes Ergebnis.
+`mcpkit` in Rust beantwortet `initialize`, `tools/list` und `tools/call` wie die Go-Fassung; ein portierter Test mit denselben Eingaben gibt dieselben Ausgaben.
 
 ## Ausnahme- und Fehlerfälle
 
-Ungültige oder seltene Situation → gewolltes Verhalten.
+Weicht Rust von Go ab, gilt Go: Abweichung beheben oder als Ticket erfassen, nie den Test anpassen.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Prüfbar formuliert, mit Herkunft, falls aus einem Ticket (`B-009/AC-01`).
+- **AC-01** Die genannten Pakete liegen als Rust-Crates vor, ihre portierten Tests sind grün (`cargo test`, `task rust:lint`).
+- **AC-02** Kein Go-Code geändert; `task check:diff` grün.
 
 ## Offene Fragen
 
-Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+Mit Default entschieden (autonom, Claude, 2026-11-25; 🧑 kann widersprechen): Ein Crate `k3c-kit` mit Modulen statt eines Crates je Paket.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 
-Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
-wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
-Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+Stichpunkte (Reife Entwurf): 1. mcpkit, applog (AC-01). 2. console, proc (AC-01). 3. usage, winicon, conlog (AC-01). 4. devrun (AC-01). 5. Review (AC-02).
 
 ## Abnahme
 
