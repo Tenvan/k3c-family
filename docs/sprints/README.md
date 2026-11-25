@@ -30,6 +30,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
 | RU25 | SIM | RSU | Rust-Balance-Crate Teil 1: Bots | – | `aktiv/RU25-balancing-teil-1-bots/` |
+| RU68 | DEV | RSU | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | – | `aktiv/RU68-planungs-golden-vor-port/` |
 
 ## Offen am Gerät
 
@@ -50,7 +51,6 @@ keine
 | RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | Entwurf | `geplant/RU65-rust-backend-spike-entscheidung/` |
 | RU66 | DEV | RSU | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | – | Entwurf | `geplant/RU66-workkit-nach-rust/` |
 | RU67 | DEV | RSU | assetkit nach Rust: Asset-Logik des Studios | – | Entwurf | `geplant/RU67-assetkit-nach-rust/` |
-| RU68 | DEV | RSU | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | – | Entwurf | `geplant/RU68-planungs-golden-vor-port/` |
 | RU69 | DEV | RSU | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | – | Entwurf | `geplant/RU69-workbench-backend-rust/` |
 | RU70 | DEV | RSU | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | – | Entwurf | `geplant/RU70-studio-backend-rust/` |
 | RU71 | DEV | RSU | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | – | Entwurf | `geplant/RU71-go-restlos-entfernen/` |
