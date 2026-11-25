@@ -124,7 +124,7 @@ func pumpEvents(r io.Reader, on func(Event), failure *atomic.Value) {
 
 // watch wartet auf das Ende des Prozesses (done) oder des Contexts: dann schließt es stdin (die EXE bricht ab) und
 // beendet nach grace den ganzen Baum. Ohne Abbruch gibt es keine Frist: Stream wartet, bis die EXE endet.
-func watch(ctx context.Context, stdin io.Closer, cmd *proc.Cmd, grace time.Duration, done <-chan struct{}, stopped *atomic.Bool) {
+func watch(ctx context.Context, stdin io.Closer, cmd *proc.Cmd, grace time.Duration, done <-chan struct{}, stopped *atomic.Bool, log *slog.Logger) {
 	select {
 	case <-done:
 	case <-ctx.Done():
@@ -133,7 +133,10 @@ func watch(ctx context.Context, stdin io.Closer, cmd *proc.Cmd, grace time.Durat
 		select {
 		case <-done:
 		case <-time.After(grace):
-			_ = cmd.Kill()
+			log.Warn("⏳ Spiel-EXE nach der Frist hart beendet", "ns", "sim", "grace", grace)
+			if err := cmd.Kill(); err != nil {
+				log.Error("💥 Spiel-EXE nicht beendet", "ns", "sim", "err", err)
+			}
 		}
 	}
 }
@@ -184,7 +187,7 @@ func run(ctx context.Context, argv []string, dir string, o Options) error {
 
 	var stopped atomic.Bool
 	done, watcher := make(chan struct{}), make(chan struct{})
-	go func() { defer close(watcher); watch(ctx, stdin, cmd, grace, done, &stopped) }()
+	go func() { defer close(watcher); watch(ctx, stdin, cmd, grace, done, &stopped, log) }()
 
 	wg.Wait() // beide Pipes zu: der Prozess ist beendet; os/exec verlangt Wait erst nach den Lesern
 	waitErr := cmd.Wait()

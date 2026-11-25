@@ -187,32 +187,26 @@ fn dispatch(
             };
             balance::run(rest, stdin, &mut env)
         }
-        "save" => {
-            let flags = parse_flags(rest)?;
-            check_flags(cmd, &flags)?;
-            let src = data_source(&flags)?;
-            let input = input_world::read_save_input(&read_source(&flags.input, stdin)?)?;
-            out.result_text(&save::run(&src, &input)?);
-            Ok(())
-        }
-        "world" | "hub" => {
-            let flags = parse_flags(rest)?;
-            check_flags(cmd, &flags)?;
-            let src = data_source(&flags)?;
-            let raw = read_source(&flags.input, stdin)?;
-            let report = if cmd == "world" {
-                world::run(&src, &input_world::read_world_input(&raw)?)?
-            } else {
-                hub::run(&src, &input_world::read_hub_input(&raw)?)?
-            };
-            out.result_report(&report);
-            Ok(())
-        }
+        "save" | "world" | "hub" => editor_cmd(cmd, rest, stdin, out),
         other => Err(usage(format!(
             "unbekannter Unterbefehl {} (bekannt: run, balance, level, world, hub)",
             quote(other)
         ))),
     }
+}
+
+/// `sim save`, `sim world`, `sim hub`: Eingabe-JSON lesen, rechnen, Ergebnis als `result` (Text oder Bericht).
+fn editor_cmd(cmd: &str, rest: &[String], stdin: &mut dyn Read, out: &mut Emitter) -> Result<(), RunError> {
+    let flags = parse_flags(rest)?;
+    check_flags(cmd, &flags)?;
+    let src = data_source(&flags)?;
+    let raw = read_source(&flags.input, stdin)?;
+    match cmd {
+        "save" => out.result_text(&save::run(&src, &input_world::read_save_input(&raw)?)?),
+        "world" => out.result_report(&world::run(&src, &input_world::read_world_input(&raw)?)?),
+        _ => out.result_report(&hub::run(&src, &input_world::read_hub_input(&raw)?)?),
+    }
+    Ok(())
 }
 
 /// `sim run`: headless über `run_headless` (Standard), mit `--window` im Fenster; beides rechnet über denselben `Stepper`.

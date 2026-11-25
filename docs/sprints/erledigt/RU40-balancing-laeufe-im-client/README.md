@@ -1,6 +1,6 @@
 # RU40 · CLI, DEV · Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** CLI, DEV
 - **Reife:** bereit
@@ -96,7 +96,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | RU40.2 | `RU40.2-sim-balance-window-sim-save.md` | Umsetzung | autonom | fertig |
 | RU40.3 | `RU40.3-sim-test-balancing-replay-ueber-exe.md` | Umsetzung | autonom | fertig |
 | RU40.4 | `RU40.4-engine-importe-simcli-k3c-sim-entfernen.md` | Umsetzung | autonom | fertig |
-| RU40.5 | `RU40.5-review.md` | Review | autonom | offen |
+| RU40.5 | `RU40.5-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -104,6 +104,8 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+- 2026-11-25: AC-01 bis AC-04 erfüllt (Nachweise in RU40.1 bis RU40.5). `engine/simcli` und `cmd/k3c-sim` sind entfernt (Freigabe 🧑).
+- Behoben in der Review: Länge von `dispatch`, Log beim harten Beenden der EXE, B-1284 (`task check` auf main wieder grün).
+- Neue Tickets: B-1284 (erledigt), B-1285.
+- Abnahme-Ticket für Sim, Balance, Gen und die Fensterläufe am PC: **B-1285**.
+- `task check`, `check:dev` und `check:go` sind grün.
