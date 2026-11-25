@@ -47,6 +47,13 @@ keine
 | RU31 | SIM | RSU | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
 | RU40 | CLI, DEV | RSU | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
+| RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | Entwurf | `geplant/RU65-rust-backend-spike-entscheidung/` |
+| RU66 | DEV | RSU | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | – | Entwurf | `geplant/RU66-workkit-nach-rust/` |
+| RU67 | DEV | RSU | assetkit nach Rust: Asset-Logik des Studios | – | Entwurf | `geplant/RU67-assetkit-nach-rust/` |
+| RU68 | DEV | RSU | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | – | Entwurf | `geplant/RU68-planungs-golden-vor-port/` |
+| RU69 | DEV | RSU | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | – | Entwurf | `geplant/RU69-workbench-backend-rust/` |
+| RU70 | DEV | RSU | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | – | Entwurf | `geplant/RU70-studio-backend-rust/` |
+| RU71 | DEV | RSU | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | – | Entwurf | `geplant/RU71-go-restlos-entfernen/` |
 | BAL11 | SIM | BAL | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | – | Entwurf | `geplant/BAL11-abnahme-laeufe-rust-umstellung/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
