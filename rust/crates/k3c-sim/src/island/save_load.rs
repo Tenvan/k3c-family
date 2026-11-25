@@ -150,26 +150,6 @@ pub fn saved_create_options(s: &IslandSave) -> CreateOptions {
         candidate: None,
     }
 }
-
-/// Prüft, dass die abgeschlossenen Inseln zur Welt gehören und die aktuelle nicht darunter steht.
-fn check_completed(world: &WorldDef, s: &IslandSave, current: &str) -> Result<(), Fehler> {
-    let fail = |m: String| Fehler::Spielstand(m);
-    for id in &s.completed {
-        if !world.islands.iter().any(|d| &d.id == id) {
-            return Err(fail(format!(
-                "spielstand: abgeschlossene Insel {id:?} gibt es in Welt {:?} nicht",
-                s.world
-            )));
-        }
-        if id == current {
-            return Err(fail(format!(
-                "spielstand: aktuelle Insel {id:?} steht unter den abgeschlossenen"
-            )));
-        }
-    }
-    Ok(())
-}
-
 /// GS4.6 R8: Flasche und Markierung der Stufe 0; die Zeilenzahl kommt aus der Welt, nicht aus dem Spielstand.
 fn restore_bottle(isl: &mut Island, s: &IslandSave) {
     if let Some(w) = isl.stages.iter_mut().find(|w| w.biome.depth == 0) {
