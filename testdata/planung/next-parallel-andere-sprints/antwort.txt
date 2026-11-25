@@ -1,0 +1,69 @@
+Nächste Session: X1.1 · Session X1.1
+Pfad: docs/sprints/aktiv/X1-x1/X1.1-s.md
+Sprint: X1 · Sprint X1 (Projekt ABC, Rang 1)
+Domäne: SRV · Umgebung: offline · Modell: sonnet (Standard)
+Branch: sprint/x1
+Kriterien: AC-01
+Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der Agent mit git fetch --prune.
+
+── Session-Datei ──
+# X1.1 · Session X1.1
+
+- **Status:** offen
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** SRV
+- **Lane:** –
+- **Modell:** –
+- **Umgebung:** offline
+- **Branch:** x1/1-s
+- **Abhängig von:** –
+- **Tickets:** –
+- **Kriterien:** AC-01
+
+## Ziel
+
+Ziel von X1.1.
+
+## Kontext
+
+–
+
+## Erlaubte Dateien
+
+- `x1/a.go`
+
+## Nicht-Ziele
+
+–
+
+## Schritte
+
+–
+
+## Fertig, wenn
+
+–
+
+## Prüfen
+
+–
+
+## Ergebnis
+
+–
+
+── Kriterien aus der Sprint-README ──
+- **AC-01** Kriterium eins.
+
+── Parallel möglich ──
+- SRV · X2.1 · Session X2.1 (Sprint X2, offline) · Modell: opus
+- SRV · X3.1 · Session X3.1 (Sprint X3, offline) · Modell: sonnet (Standard)
+- SRV · X4.1 · Session X4.1 (Sprint X4, offline) · Modell: sonnet (Standard)
+
+── Stand der Sprints ──
+X1: kein origin/sprint/x1, lokaler Stand
+X2: kein origin/sprint/x2, lokaler Stand
+X3: kein origin/sprint/x3, lokaler Stand
+X4: kein origin/sprint/x4, lokaler Stand
+X5: kein origin/sprint/x5, lokaler Stand

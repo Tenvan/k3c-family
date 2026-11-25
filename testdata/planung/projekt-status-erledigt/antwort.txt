@@ -1,0 +1,1 @@
+DEF geändert: docs/projekte/DEF-projekt-d.md (Ränge und Übersicht nachgezogen)

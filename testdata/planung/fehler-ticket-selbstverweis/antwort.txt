@@ -1,0 +1,1 @@
+FEHLER: B-001 verweist auf sich selbst, nichts geändert

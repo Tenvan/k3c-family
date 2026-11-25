@@ -1,0 +1,1 @@
+FEHLER: Session-ID "X1": Sprint-ID, Punkt, Nummer, z. B. M9.1

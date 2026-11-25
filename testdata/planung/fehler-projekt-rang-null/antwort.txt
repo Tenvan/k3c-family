@@ -1,0 +1,1 @@
+FEHLER: der Rang "0" ist keine Zahl ab 1

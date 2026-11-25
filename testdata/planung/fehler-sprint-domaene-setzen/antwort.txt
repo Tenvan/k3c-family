@@ -1,0 +1,1 @@
+FEHLER: die Domäne eines Sprints ist aus seinen Sessions abgeleitet; Domäne der Sessions setzen

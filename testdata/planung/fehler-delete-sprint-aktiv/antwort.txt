@@ -1,0 +1,1 @@
+FEHLER: löschen nur in geplanten Sprints mit Spec Entwurf; sonst Status ändern

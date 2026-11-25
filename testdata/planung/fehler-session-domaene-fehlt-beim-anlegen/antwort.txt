@@ -1,0 +1,1 @@
+FEHLER: das Feld Domäne fehlt noch (Vorlage: REG | SIM | SRV | CLI | PLAT | INF | DEV | PAP (genau eine; die Session ändert nur deren Dateien))

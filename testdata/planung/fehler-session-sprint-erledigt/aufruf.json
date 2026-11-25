@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "X1.2",
+    "slug": "zu-spaet",
+    "title": "Zu spät",
+    "fields": {
+      "Domäne": "SRV"
+    }
+  }
+}

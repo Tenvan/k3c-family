@@ -1,0 +1,11 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "ticket",
+    "slug": "Ungültig Name",
+    "title": "X",
+    "fields": {
+      "Domäne": "SRV"
+    }
+  }
+}

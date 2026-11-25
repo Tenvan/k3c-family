@@ -1,0 +1,2 @@
+Keine Session frei. Gründe je Projekt:
+- ABC: kein aktiver Sprint

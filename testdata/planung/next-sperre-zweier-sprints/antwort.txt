@@ -1,0 +1,6 @@
+Keine Session frei. Gründe je Projekt:
+- ABC: X2.1 Sperre golden gesperrt (X1.1 in Arbeit)
+
+── Stand der Sprints ──
+X1: kein origin/sprint/x1, lokaler Stand
+X2: kein origin/sprint/x2, lokaler Stand

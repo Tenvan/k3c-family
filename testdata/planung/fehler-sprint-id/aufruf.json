@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "sprint",
+    "id": "x-1",
+    "slug": "bad",
+    "title": "Bad",
+    "fields": {
+      "Domäne": "SRV"
+    }
+  }
+}

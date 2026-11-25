@@ -1,0 +1,10 @@
+{
+  "werkzeug": "plan_set",
+  "args": {
+    "id": "X1",
+    "fields": {
+      "Spec": "freigegeben",
+      "Freigabe": "2026-01-02 Test"
+    }
+  }
+}

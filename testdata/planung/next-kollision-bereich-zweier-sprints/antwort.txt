@@ -1,0 +1,64 @@
+Nächste Session: X2.2 · Session X2.2
+Pfad: docs/sprints/aktiv/X2-x2/X2.2-s.md
+Sprint: X2 · Sprint X2 (Projekt ABC, Rang 1)
+Domäne: SRV · Umgebung: offline · Modell: sonnet (Standard)
+Branch: sprint/x2
+Kriterien: AC-01
+Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der Agent mit git fetch --prune.
+
+── Session-Datei ──
+# X2.2 · Session X2.2
+
+- **Status:** offen
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** SRV
+- **Lane:** –
+- **Modell:** –
+- **Umgebung:** offline
+- **Branch:** x2/2-s
+- **Abhängig von:** –
+- **Tickets:** –
+- **Kriterien:** AC-01
+
+## Ziel
+
+Ziel von X2.2.
+
+## Kontext
+
+–
+
+## Erlaubte Dateien
+
+- `other/c.go`
+
+## Nicht-Ziele
+
+–
+
+## Schritte
+
+–
+
+## Fertig, wenn
+
+–
+
+## Prüfen
+
+–
+
+## Ergebnis
+
+–
+
+── Kriterien aus der Sprint-README ──
+- **AC-01** Kriterium eins.
+
+── Parallel möglich ──
+keine (sonst ist keine Session frei, die nicht kollidiert)
+
+── Stand der Sprints ──
+X1: kein origin/sprint/x1, lokaler Stand
+X2: kein origin/sprint/x2, lokaler Stand

@@ -1,0 +1,2 @@
+X1.2 geändert: docs/sprints/aktiv/X1-test/X1.2-zwei.md
+X1: Domäne SRV, DEV (aus den Sessions)

@@ -1,0 +1,8 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "epic",
+    "slug": "x",
+    "title": "X"
+  }
+}

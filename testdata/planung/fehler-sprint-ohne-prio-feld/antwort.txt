@@ -1,0 +1,1 @@
+FEHLER: sprints/geplant/X1-test/README.md: unbekanntes Feld "Prio" (Domäne, Freigabe, Projekt, Reife, Revision, Spec, Start-Commit, Status, Tickets)

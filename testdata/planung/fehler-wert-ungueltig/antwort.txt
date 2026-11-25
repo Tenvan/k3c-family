@@ -1,0 +1,1 @@
+FEHLER: backlog/B-001-altes-ticket.md: Status = "fertig" ungültig (offen, eingeplant, erledigt, verworfen)

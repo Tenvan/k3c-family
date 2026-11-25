@@ -1,0 +1,9 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "X1.2",
+    "slug": "x",
+    "title": "Ohne Domäne"
+  }
+}

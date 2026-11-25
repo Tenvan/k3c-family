@@ -1,0 +1,11 @@
+Ralf-Queue: 0 Freigaben · 0 Entscheidungen · 3 Abnahmen an 2 Geräten
+── Freigaben ──
+keine
+── Entscheidungen ──
+keine
+── Abnahmen je Gerät ──
+PC (1):
+- B-001 · Abnahme am PC (Ticket, SRV, Spec freigegeben, Braucht 🧑: Abnahme (PC))
+unbekannt (2):
+- B-002 · Gerät unklar (Ticket, SRV, Spec freigegeben, Braucht 🧑: Gerät)
+- X1 · Sprint X1 (Sprint, SRV, Spec freigegeben, Braucht 🧑: Abnahme)

@@ -1,0 +1,8 @@
+{
+  "werkzeug": "plan_section",
+  "args": {
+    "id": "ABC",
+    "section": "Ziel",
+    "text": "Das Projekt ist fertig, wenn alles läuft."
+  }
+}

@@ -1,0 +1,5 @@
+Arbeitswellen: 0 in Arbeit, 1 eingeplant in 1 Wellen (1 gezeigt), 1 in keiner Welle · Lanes: zweit (Second Worker), haupt (Hauptrechner)
+── Welle 1, jetzt (1 Knoten) ──
+- X1.2 · Session · Session X1.2 (SRV, Projekt ABC, Sprint X1) · Lane: zweit
+── In keiner Welle ──
+- Fehler: X1.1 · Session · Session X1.1 — unbekannte ID Q9.1 in „Abhängig von“

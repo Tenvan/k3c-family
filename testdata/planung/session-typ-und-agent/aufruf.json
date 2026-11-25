@@ -1,0 +1,10 @@
+{
+  "werkzeug": "plan_set",
+  "args": {
+    "id": "X1.1",
+    "fields": {
+      "Typ": "Workshop",
+      "Agent": "Mensch"
+    }
+  }
+}

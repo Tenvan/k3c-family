@@ -1,0 +1,9 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "projekt",
+    "id": "JKL",
+    "slug": "projekt-j",
+    "title": "Projekt J"
+  }
+}

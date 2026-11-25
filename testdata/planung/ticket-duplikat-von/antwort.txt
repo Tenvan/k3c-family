@@ -1,0 +1,2 @@
+B-002 ist Duplikat von B-001: Status verworfen
+B-002 geändert: docs/backlog/archiv/B-002-zweites-ticket.md (Index nachgezogen)

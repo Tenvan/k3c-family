@@ -1,0 +1,47 @@
+docs/sprints/aktiv/X1-eins/X1.2-b.md
+
+# X1.2 · Session X1.2
+
+- **Status:** offen
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** SRV
+- **Lane:** –
+- **Modell:** –
+- **Umgebung:** offline
+- **Branch:** x1/2-b
+- **Abhängig von:** –
+- **Tickets:** –
+- **Kriterien:** AC-01
+
+## Ziel
+
+Ziel von X1.2.
+
+## Kontext
+
+–
+
+## Erlaubte Dateien
+
+- `pfad/a.go`
+
+## Nicht-Ziele
+
+–
+
+## Schritte
+
+–
+
+## Fertig, wenn
+
+–
+
+## Prüfen
+
+–
+
+## Ergebnis
+
+–

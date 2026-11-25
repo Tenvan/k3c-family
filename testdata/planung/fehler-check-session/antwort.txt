@@ -1,0 +1,1 @@
+FEHLER: plan_check prüft Tickets und Sprints, nicht session X1.1

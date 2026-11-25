@@ -1,0 +1,6 @@
+X1 SRV aktiv Reife bereit Spec freigegeben · Sprint X1 · Sessions 1/3
+  X1.1 SRV Umsetzung autonom offline fertig Session X1.1
+  X1.2 SRV Umsetzung autonom offline offen Session X1.2
+  X1.3 SRV Umsetzung autonom offline offen Session X1.3
+X2 DEV aktiv Reife bereit Spec freigegeben · Sprint X2 · Sessions 0/1
+  X2.1 DEV Umsetzung autonom offline offen Session X2.1

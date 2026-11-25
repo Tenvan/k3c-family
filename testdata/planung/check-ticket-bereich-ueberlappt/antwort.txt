@@ -1,0 +1,3 @@
+B-001: 2 Mängel
+- Zeile „Größe“ fehlt
+- Bereich überlappt mit B-002 (`tools/a/**`)

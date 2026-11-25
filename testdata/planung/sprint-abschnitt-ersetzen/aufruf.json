@@ -1,0 +1,8 @@
+{
+  "werkzeug": "plan_section",
+  "args": {
+    "id": "X1",
+    "section": "Ziel",
+    "text": "Neues Ziel des Sprints."
+  }
+}

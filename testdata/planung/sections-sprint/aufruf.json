@@ -1,0 +1,10 @@
+{
+  "werkzeug": "plan_sections",
+  "args": {
+    "id": "X1",
+    "sections": {
+      "Ziel": "Neues Ziel.",
+      "Beteiligte und Zielgruppen": "Agenten."
+    }
+  }
+}

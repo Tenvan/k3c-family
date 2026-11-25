@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "X1.1",
+    "slug": "nochmal",
+    "title": "Nochmal",
+    "fields": {
+      "Domäne": "SRV"
+    }
+  }
+}

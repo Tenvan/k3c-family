@@ -1,0 +1,2 @@
+Keine Session frei. Gründe je Projekt:
+- kein aktives Projekt

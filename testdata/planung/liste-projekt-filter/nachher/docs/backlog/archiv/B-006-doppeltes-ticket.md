@@ -1,0 +1,59 @@
+# B-006 · Doppeltes Ticket
+
+- **Domäne:** SRV
+- **Typ:** Idee
+- **Prio:** mittel
+- **Umgebung:** offline
+- **Status:** verworfen
+- **Sprint:** –
+- **Projekt:** –
+- **Erstellt:** 2026-01-02
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+- **Duplikat von:** B-004
+- **Ersetzt:** –
+
+## Ausgangslage
+
+–
+
+## Ziel
+
+–
+
+## Beteiligte und Zielgruppen
+
+–
+
+## Anforderungen
+
+–
+
+## Nicht-Ziele
+
+–
+
+## Regeln und Einschränkungen
+
+–
+
+## Beispiele
+
+–
+
+## Ausnahme- und Fehlerfälle
+
+–
+
+## Akzeptanzkriterien
+
+–
+
+## Offene Fragen
+
+–
+
+## Notizen
+
+–

@@ -1,0 +1,3 @@
+B-001: 2 Mängel
+- Planungsangaben fehlen im Abschnitt „Regeln und Einschränkungen“
+- Umgebung: ?

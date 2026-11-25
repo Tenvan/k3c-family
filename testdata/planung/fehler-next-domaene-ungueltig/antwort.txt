@@ -1,0 +1,1 @@
+FEHLER: unbekannte Domäne "XYZ" (REG, SIM, SRV, CLI, PLAT, INF, DEV, PAP)

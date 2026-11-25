@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "Q9.1",
+    "slug": "x",
+    "title": "Ohne Sprint",
+    "fields": {
+      "Domäne": "SRV"
+    }
+  }
+}

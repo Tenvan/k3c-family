@@ -1,0 +1,5 @@
+Arbeitswellen: 0 in Arbeit, 2 eingeplant in 1 Wellen (1 gezeigt), 0 in keiner Welle · Lanes: zweit (Second Worker), haupt (Hauptrechner) · Anzeige gefiltert (Lanes und Kollisionen gelten für alle)
+── Welle 1, jetzt (2 Knoten) ──
+- Y1.1 · Session · Session Y1.1 (SRV, Projekt DEF, Sprint Y1) · Lane: haupt
+── In keiner Welle ──
+keine

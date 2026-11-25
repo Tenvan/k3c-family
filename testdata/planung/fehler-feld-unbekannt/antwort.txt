@@ -1,0 +1,1 @@
+FEHLER: backlog/B-001-altes-ticket.md: unbekanntes Feld "Farbe" (Domäne, Duplikat von, Ersetzt, Erstellt, Freigabe, Prio, Projekt, Revision, Spec, Sprint, Status, Typ, Umgebung)

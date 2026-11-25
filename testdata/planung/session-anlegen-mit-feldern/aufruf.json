@@ -1,0 +1,19 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "X1.2",
+    "slug": "review",
+    "title": "Review der Arbeit",
+    "fields": {
+      "Domäne": "SRV",
+      "Typ": "Review",
+      "Agent": "Mensch",
+      "Modell": "opus",
+      "Lane": "zweit",
+      "Umgebung": "offline",
+      "Abhängig von": "X1.1",
+      "Kriterien": "AC-01"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "werkzeug": "plan_set",
+  "args": {
+    "id": "B-002",
+    "fields": {
+      "Duplikat von": "B-001"
+    }
+  }
+}

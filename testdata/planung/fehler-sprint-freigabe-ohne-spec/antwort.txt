@@ -1,0 +1,1 @@
+FEHLER: sprints/geplant/X1-test/README.md: die Spec "Entwurf" passt nicht zu Freigabe "2026-01-02 Test": freigegeben braucht Datum und Quelle, sonst `–`

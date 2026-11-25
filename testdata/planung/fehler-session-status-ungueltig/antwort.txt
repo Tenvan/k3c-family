@@ -1,0 +1,1 @@
+FEHLER: sprints/aktiv/X1-test/X1.1-eins.md: Status = "fertig!" ungültig (offen, in Arbeit, fertig, blockiert, verworfen)

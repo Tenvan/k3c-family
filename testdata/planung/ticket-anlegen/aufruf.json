@@ -1,0 +1,13 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "ticket",
+    "slug": "neues-ticket",
+    "title": "Neues Ticket",
+    "fields": {
+      "Domäne": "SIM",
+      "Typ": "Problem",
+      "Prio": "hoch"
+    }
+  }
+}

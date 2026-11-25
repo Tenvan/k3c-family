@@ -1,0 +1,1 @@
+FEHLER: B-002 ergäbe einen Zyklus B-002 → B-001 → B-002, nichts geändert

@@ -1,0 +1,8 @@
+Arbeitswellen: 0 in Arbeit, 3 eingeplant in 2 Wellen (2 gezeigt), 0 in keiner Welle · Lanes: zweit (Second Worker), haupt (Hauptrechner)
+── Welle 1, jetzt (2 Knoten) ──
+- X1.1 · Session · Session X1.1 (SRV, Projekt ABC, Sprint X1) · Lane: zweit
+- X3.1 · Session · Session X3.1 (SRV, Projekt ABC, Sprint X3) · Lane: haupt
+── Welle 2 (1 Knoten) ──
+- X2.1 · Session · Session X2.1 (SRV, Projekt ABC, Sprint X2) · Lane: zweit — kollidiert mit X1.1: Bereich `shared/a/**` / `shared/a/b.go`
+── In keiner Welle ──
+keine
