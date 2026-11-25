@@ -1,6 +1,6 @@
 # RU25 · SIM · Rust-Balance-Crate Teil 1: Bots
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -95,7 +95,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU25.1 | `RU25.1-balance-bots.md` | Umsetzung | autonom | offen |
-| RU25.2 | `RU25.2-balance-bot-wirtschaft-clear-abstieg.md` | Umsetzung | autonom | offen |
+| RU25.2 | `RU25.2-balance-bot-wirtschaft-clear-abstieg.md` | Umsetzung | autonom | in Arbeit |
 | RU25.3 | `RU25.3-balance-bot-boss-learn-crown-helps-hints.md` | Umsetzung | autonom | offen |
 | RU25.4 | `RU25.4-balance-run-parallel-progress.md` | Umsetzung | autonom | offen |
 | RU25.5 | `RU25.5-balance-replay-island-world-seedmode-scope.md` | Umsetzung | autonom | offen |
