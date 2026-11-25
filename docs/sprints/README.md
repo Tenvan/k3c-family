@@ -29,6 +29,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
+| RU40 | CLI, DEV | RSU | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | – | `aktiv/RU40-balancing-laeufe-im-client/` |
 
 ## Offen am Gerät
 
@@ -42,7 +43,6 @@ keine
 |---|---|---|---|---|---|---|
 | AU1 | SIM | KMP | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
 | WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
-| RU40 | CLI, DEV | RSU | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | bereit | `geplant/RU65-rust-backend-spike-entscheidung/` |
 | RU66 | DEV | RSU | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | – | Entwurf | `geplant/RU66-workkit-nach-rust/` |

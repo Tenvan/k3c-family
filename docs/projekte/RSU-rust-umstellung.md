@@ -78,7 +78,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU25 | Rust-Balance-Crate Teil 1: Bots | erledigt |
 | RU28 | Rust-Balance-Crate Teil 2: Messungen und Auswertung | erledigt |
 | RU31 | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | erledigt |
-| RU40 | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | geplant |
+| RU40 | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | aktiv |
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | geplant |
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | erledigt |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | erledigt |

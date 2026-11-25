@@ -1,6 +1,6 @@
 # RU40 · CLI, DEV · Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** CLI, DEV
 - **Reife:** bereit
