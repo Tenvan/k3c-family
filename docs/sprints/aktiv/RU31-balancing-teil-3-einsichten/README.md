@@ -93,7 +93,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU31.1 | `RU31.1-balance-insights-figures-files.md` | Umsetzung | autonom | fertig |
-| RU31.2 | `RU31.2-balance-insights-levers-markdown-next.md` | Umsetzung | autonom | offen |
+| RU31.2 | `RU31.2-balance-insights-levers-markdown-next.md` | Umsetzung | autonom | fertig |
 | RU31.3 | `RU31.3-balance-insights-plain-progress.md` | Umsetzung | autonom | offen |
 | RU31.4 | `RU31.4-balance-insights-text-report-html.md` | Umsetzung | autonom | offen |
 | RU31.5 | `RU31.5-balance-tune-tuneparam.md` | Umsetzung | autonom | offen |
