@@ -2,7 +2,7 @@ package studioview
 
 import (
 	"context"
-	"errors"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log/slog"
@@ -13,8 +13,6 @@ import (
 	"sync"
 	"time"
 
-	"k3c/engine/room"
-	"k3c/engine/store"
 	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
@@ -33,6 +31,8 @@ type Game struct {
 	log   *slog.Logger
 	// launch startet das Spiel und kehrt sofort zurück (Tests ersetzen es); das Spiel überlebt das Studio.
 	launch func(cmd *exec.Cmd) error
+	// call führt `k3c-game sim <Sub>` aus (Tests ersetzen es; sonst gameexe.Call).
+	call func(ctx context.Context, o gameexe.Options) (gameexe.Event, error)
 
 	mu     sync.Mutex
 	closed bool // nach Close startet nichts mehr
@@ -49,7 +49,7 @@ func NewGame(ctx context.Context, root, savesDir string, log *slog.Logger) *Game
 	if savesDir == "" {
 		savesDir = DefaultSavesDir(root)
 	}
-	return &Game{ctx: ctx, root: root, saves: savesDir, log: log, launch: startDetached}
+	return &Game{ctx: ctx, root: root, saves: savesDir, log: log, launch: startDetached, call: gameexe.Call}
 }
 
 // DefaultSavesDir ist `<Checkout>/.work/studioview/saves` (ignoriert, Regel „Schreiben nur im Repo“).
@@ -98,21 +98,23 @@ func (g *Game) exe() (exe, dir string, err error) {
 	return exe, dir, nil
 }
 
-// fullSave legt voll-<seed> über die Engine an (wie früher der Spielserver im Dev-Modus, B-887) und liefert den Namen.
+// fullSave legt voll-<seed> über `k3c-game sim save` an (Port von room.Manager.FullSave, RU40.2) und liefert den Namen.
 func (g *Game) fullSave(seed string) (string, error) {
 	if err := os.MkdirAll(g.saves, 0o750); err != nil {
 		return "", err
 	}
-	rooms := room.NewManager(&store.Saves{Dir: g.saves})
-	rooms.Log = g.log
-	rooms.Dev = true
-	rooms.Worlds = os.DirFS(filepath.Join(g.root, "data", "worlds"))
-	defer rooms.Close()
-	save, err := rooms.FullSave(seed)
+	input, err := json.Marshal(map[string]string{"seed": seed, "saves": g.saves})
+	if err != nil {
+		return "", err
+	}
+	ev, err := g.call(g.ctx, gameexe.Options{Root: g.root, Sub: "save", Input: input, Log: g.log})
 	if err != nil {
 		return "", fullSaveHint(err)
 	}
-	return save, nil
+	if ev.Text == "" {
+		return "", hint("Spielstand nicht angelegt: Spiel-EXE meldet keinen Namen")
+	}
+	return ev.Text, nil
 }
 
 // startDetached startet das Spiel und holt den Prozess im Hintergrund ab, ohne auf ihn zu warten.
@@ -131,12 +133,9 @@ func (g *Game) Close(_ time.Duration) {
 	g.mu.Unlock()
 }
 
-// fullSaveHint macht aus einem Fehler der Engine beim Anlegen von „voll ausgebaut“ einen Hinweis.
+// fullSaveHint macht aus einem Fehler von `sim save` einen Hinweis (Exit 2 = Seed ungültig, sonst die Meldung der EXE).
 func fullSaveHint(err error) error {
-	switch {
-	case errors.Is(err, room.ErrSaveInUse):
-		return hint("Spielstand ist gerade in einem Raum mit verbundenem Gerät offen")
-	case errors.Is(err, room.ErrBadRequest):
+	if err.Error() == "Exit 2" {
 		return hint("Seed ungültig")
 	}
 	return hint(fmt.Sprintf("Spielstand nicht angelegt: %v", err))

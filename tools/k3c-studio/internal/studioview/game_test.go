@@ -1,6 +1,8 @@
 package studioview
 
 import (
+	"encoding/json"
+	"fmt"
 	"context"
 	"errors"
 	"os"
@@ -10,6 +12,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
 // B-847: „Im Spiel ansehen“ legt den Testspielstand voll-<seed> außerhalb des Repos an und startet das native Spiel mit
@@ -49,7 +53,18 @@ func newGame(t *testing.T, root string) (g *Game, saves string, started *[]*exec
 	g = NewGame(ctx, root, saves, nil)
 	var cmds []*exec.Cmd
 	g.launch = func(cmd *exec.Cmd) error { cmds = append(cmds, cmd); return nil }
+	g.call = fakeSave
 	return g, saves, &cmds
+}
+
+// fakeSave ersetzt `k3c-game sim save`: legt <saves>/voll-<seed>.json an und meldet den Namen (der echte Aufruf braucht die EXE).
+func fakeSave(_ context.Context, o gameexe.Options) (gameexe.Event, error) {
+	var in struct{ Seed, Saves string }
+	if err := json.Unmarshal(o.Input, &in); err != nil || o.Sub != "save" {
+		return gameexe.Event{}, fmt.Errorf("Aufruf %q: %v", o.Sub, err)
+	}
+	name := "voll-" + in.Seed
+	return gameexe.Event{Event: "result", Text: name}, os.WriteFile(filepath.Join(in.Saves, name+".json"), []byte("{}"), 0o600)
 }
 
 // AC-01: Die Befehlszeile zeigt auf die native EXE mit festem Pfad und lädt voll-<seed>; kein game.html.

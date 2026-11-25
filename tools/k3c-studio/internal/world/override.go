@@ -11,8 +11,6 @@ import (
 	"path/filepath"
 	"slices"
 	"sync"
-
-	"k3c/engine/store"
 )
 
 // writeMu reiht schreibende Aufrufe: zwei gleichzeitige Overrides auf dieselbe Datei verlieren keinen Wert.
@@ -174,7 +172,7 @@ func writeAtomic(path string, content []byte) error {
 		_ = os.Remove(tmp.Name())
 		return fmt.Errorf("schreiben: %v %v", werr, cerr)
 	}
-	if err := store.Rename(tmp.Name(), path); err != nil {
+	if err := renameReplace(tmp.Name(), path); err != nil {
 		_ = os.Remove(tmp.Name())
 		return err
 	}
