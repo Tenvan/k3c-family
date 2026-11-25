@@ -103,7 +103,7 @@ var goldenWerkzeuge = map[string]golden{
 		if err != nil {
 			return "", err
 		}
-		return Create(root, NewDoc{Kind: a.Kind, ID: a.ID, Slug: a.Slug, Title: a.Title, Fields: a.Fields})
+		return Create(root, NewDoc(a))
 	},
 	"plan_set": func(root string, raw json.RawMessage) (string, error) {
 		a, err := decodeArgs[gSet](raw)
