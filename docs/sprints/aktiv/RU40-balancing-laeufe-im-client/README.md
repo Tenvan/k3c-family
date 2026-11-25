@@ -93,7 +93,7 @@ Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann widersprechen):
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU40.1 | `RU40.1-sim-balance-headless.md` | Umsetzung | autonom | fertig |
-| RU40.2 | `RU40.2-sim-balance-window-sim-save.md` | Umsetzung | autonom | offen |
+| RU40.2 | `RU40.2-sim-balance-window-sim-save.md` | Umsetzung | autonom | fertig |
 | RU40.3 | `RU40.3-sim-test-balancing-replay-ueber-exe.md` | Umsetzung | autonom | offen |
 | RU40.4 | `RU40.4-engine-importe-simcli-k3c-sim-entfernen.md` | Umsetzung | autonom | offen |
 | RU40.5 | `RU40.5-review.md` | Review | autonom | offen |
