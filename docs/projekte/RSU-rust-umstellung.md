@@ -96,6 +96,13 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | erledigt |
 | LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | geplant |
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | erledigt |
+| RU65 | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | geplant |
+| RU66 | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | geplant |
+| RU67 | assetkit nach Rust: Asset-Logik des Studios | geplant |
+| RU68 | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | geplant |
+| RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | geplant |
+| RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | geplant |
+| RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | geplant |
 
 ## Nicht-Ziele
 
