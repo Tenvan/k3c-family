@@ -1,0 +1,69 @@
+docs/sprints/aktiv/X2-zwei/README.md
+
+# X2 · DEV · Sprint X2
+
+- **Status:** aktiv
+- **Projekt:** ABC
+- **Domäne:** DEV
+- **Reife:** bereit
+- **Tickets:** –
+- **Start-Commit:** –
+- **Spec:** freigegeben
+- **Revision:** 1
+- **Freigabe:** 2026-01-02 Test
+
+## Ausgangslage
+
+–
+
+## Ziel
+
+Ziel von X2.
+
+## Beteiligte und Zielgruppen
+
+–
+
+## Anforderungen
+
+–
+
+## Nicht-Ziele
+
+–
+
+## Regeln und Einschränkungen
+
+Planungsangaben für die Arbeitswellen.
+
+- **Bereich:** `pfad/**`
+- **Abhängig von:** –
+- **Braucht 🧑:** –
+- **Sperre:** –
+
+## Beispiele
+
+–
+
+## Ausnahme- und Fehlerfälle
+
+–
+
+## Akzeptanzkriterien
+
+- **AC-01** Erstes Kriterium.
+- **AC-02** Zweites Kriterium.
+
+## Offene Fragen
+
+–
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| X2.1 | `X2.1-a.md` | Umsetzung | autonom | offen |
+
+## Abnahme
+
+–

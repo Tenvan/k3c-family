@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "X1.1",
+    "slug": "erste",
+    "title": "Erste Session",
+    "fields": {
+      "Domäne": "DEV"
+    }
+  }
+}

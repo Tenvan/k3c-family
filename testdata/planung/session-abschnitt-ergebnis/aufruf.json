@@ -1,0 +1,8 @@
+{
+  "werkzeug": "plan_section",
+  "args": {
+    "id": "X1.1",
+    "section": "Ergebnis",
+    "text": "AC-01 geprüft: Test grün."
+  }
+}

@@ -64,7 +64,7 @@ keine
 |---|---|---|---|---|
 | RU68.1 | `RU68.1-golden-format-lader.md` | Umsetzung | autonom | fertig |
 | RU68.2 | `RU68.2-golden-faelle-tickets-sprints.md` | Umsetzung | autonom | fertig |
-| RU68.3 | `RU68.3-golden-faelle-sessions-projekte-wellen.md` | Umsetzung | autonom | offen |
+| RU68.3 | `RU68.3-golden-faelle-sessions-projekte-wellen.md` | Umsetzung | autonom | fertig |
 | RU68.4 | `RU68.4-review.md` | Review | autonom | offen |
 
 Stichpunkte (Reife Entwurf): 1. Format und Lader (AC-02). 2. Fälle Tickets und Sprints (AC-01). 3. Fälle Sessions, Projekte, Wellen, Queue, Next (AC-01). 4. Review.

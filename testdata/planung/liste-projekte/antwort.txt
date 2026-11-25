@@ -1,0 +1,5 @@
+1 ABC aktiv Sprints 1/3 · Projekt A
+  X1 aktiv · X2 aktiv · Z1 erledigt
+2 DEF aktiv Sprints 0/1 · Projekt D
+  Y1 geplant
+– GHI ruht Sprints 0/0 · Projekt G

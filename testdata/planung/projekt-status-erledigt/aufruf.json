@@ -1,0 +1,9 @@
+{
+  "werkzeug": "plan_set",
+  "args": {
+    "id": "DEF",
+    "fields": {
+      "Status": "erledigt"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+Tickets: 7 von 5 · 3 offen · 2 eingeplant · 3 ungeplant
+B-001 SRV Idee hoch offline eingeplant X1 · Altes Ticket
+B-002 DEV Problem niedrig offline offen – · Zweites Ticket
+B-003 SIM Schuld mittel offline eingeplant Y1 · Drittes Ticket
+B-004 PAP Frage hoch offline offen – · Viertes Ticket
+B-007 SRV Idee mittel offline offen – · Ersatz-Ticket · ersetzt B-002, B-004
+B-005 SRV Idee mittel offline erledigt Z1 · Erledigtes Ticket
+B-006 SRV Idee mittel offline verworfen – · Doppeltes Ticket → B-004

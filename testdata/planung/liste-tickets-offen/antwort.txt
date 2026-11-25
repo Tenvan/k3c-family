@@ -1,0 +1,4 @@
+Tickets: 3 von 5 · 3 offen · 2 eingeplant · 3 ungeplant
+B-002 DEV Problem niedrig offline offen – · Zweites Ticket
+B-004 PAP Frage hoch offline offen – · Viertes Ticket
+B-007 SRV Idee mittel offline offen – · Ersatz-Ticket · ersetzt B-002, B-004

@@ -1,0 +1,3 @@
+B-001: 2 Mängel
+- Größe: L (vor der Freigabe in Tickets je Teil zerlegen)
+- keine ID in „Abhängig von“: irgendwann spaeter

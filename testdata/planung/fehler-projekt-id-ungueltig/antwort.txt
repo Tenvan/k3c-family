@@ -1,0 +1,1 @@
+FEHLER: Projekt-Kürzel "ab": drei Großbuchstaben, z. B. GRA

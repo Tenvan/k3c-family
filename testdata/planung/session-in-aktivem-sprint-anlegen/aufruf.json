@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "session",
+    "id": "X1.2",
+    "slug": "neu",
+    "title": "Neu im aktiven Sprint",
+    "fields": {
+      "Domäne": "SRV"
+    }
+  }
+}

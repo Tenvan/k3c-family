@@ -1,0 +1,6 @@
+{
+  "werkzeug": "plan_waves",
+  "args": {
+    "wave_count": 3
+  }
+}

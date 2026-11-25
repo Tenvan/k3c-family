@@ -308,6 +308,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1273](B-1273-regel-b925-sim-worktree-nach-ru34.md) | DEV | Schuld | niedrig | offen | RU40 | Regel B-925 (eigene Workbench je Sim-Worktree) gilt nach RU34 nur noch für Balancing und Replay |
 | [B-1274](B-1274-oxlint-rot-auf-main-frontends.md) | DEV | Problem | niedrig | offen | RU34 | task lint ist auf main rot (15 Fehler in Workbench- und Studio-Frontend, tools/hooks, tools/paper) |
 | [B-1275](B-1275-abnahme-ru34-workbench-ruft-spiel-exe.md) | DEV | Idee | mittel | offen | RU34 | Abnahme RU34: Studio-Tools gegen die frisch gebaute Spiel-EXE |
+| [B-1276](B-1276-plan-set-sprint-ohne-pruefung.md) | DEV | Problem | niedrig | eingeplant | RU69 | plan_set und plan_create prüfen die Sprint-ID eines Tickets nicht gegen vorhandene Sprints |
 
 ## Archiv
 

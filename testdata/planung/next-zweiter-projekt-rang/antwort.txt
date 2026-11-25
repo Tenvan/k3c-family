@@ -1,0 +1,64 @@
+Nächste Session: Y1.1 · Session Y1.1
+Pfad: docs/sprints/aktiv/Y1-y1/Y1.1-s.md
+Sprint: Y1 · Sprint Y1 (Projekt DEF, Rang 2)
+Domäne: SRV · Umgebung: offline · Modell: sonnet (Standard)
+Branch: sprint/y1
+Kriterien: AC-01
+Hinweis: Stand je Sprint (origin oder lokal) siehe unten; Branches, die lokal noch nicht bekannt sind, prüft der Agent mit git fetch --prune.
+
+── Session-Datei ──
+# Y1.1 · Session Y1.1
+
+- **Status:** offen
+- **Typ:** Umsetzung
+- **Agent:** autonom
+- **Domäne:** SRV
+- **Lane:** –
+- **Modell:** –
+- **Umgebung:** offline
+- **Branch:** y1/1-s
+- **Abhängig von:** –
+- **Tickets:** –
+- **Kriterien:** AC-01
+
+## Ziel
+
+Ziel von Y1.1.
+
+## Kontext
+
+–
+
+## Erlaubte Dateien
+
+- `y1/a.go`
+
+## Nicht-Ziele
+
+–
+
+## Schritte
+
+–
+
+## Fertig, wenn
+
+–
+
+## Prüfen
+
+–
+
+## Ergebnis
+
+–
+
+── Kriterien aus der Sprint-README ──
+- **AC-01** Kriterium eins.
+
+── Parallel möglich ──
+keine (sonst ist keine Session frei, die nicht kollidiert)
+
+── Stand der Sprints ──
+X1: kein origin/sprint/x1, lokaler Stand
+Y1: kein origin/sprint/y1, lokaler Stand

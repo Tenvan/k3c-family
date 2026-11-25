@@ -1,0 +1,9 @@
+Arbeitswellen: 0 in Arbeit, 3 eingeplant in 3 Wellen (3 gezeigt), 0 in keiner Welle · Lanes: zweit (Second Worker), haupt (Hauptrechner)
+── Welle 1, jetzt (1 Knoten) ──
+- X1.1 · Session · Session X1.1 (SRV, Projekt ABC, Sprint X1) · Lane: zweit
+── Welle 2 (1 Knoten) ──
+- X1.2 · Session · Session X1.2 (SRV, Projekt ABC, Sprint X1) · Lane: zweit — nach X1.1
+── Welle 3 (1 Knoten) ──
+- X1.3 · Session · Session X1.3 (SRV, Projekt ABC, Sprint X1) · Lane: zweit — nach X1.2
+── In keiner Welle ──
+keine

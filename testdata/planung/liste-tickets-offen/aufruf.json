@@ -1,0 +1,7 @@
+{
+  "werkzeug": "plan_list",
+  "args": {
+    "kind": "ticket",
+    "status": "offen"
+  }
+}

@@ -1,0 +1,1 @@
+FEHLER: sprints/aktiv/X1-test/X1.1-eins.md: Modell = "gpt" ungültig (–, haiku, sonnet, opus, fable)

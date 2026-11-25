@@ -1,0 +1,5 @@
+Keine Session frei. Gründe je Projekt:
+- ABC: X1.2 wartet auf X1.1 (in Arbeit); X1.3 Sprint X1 gesperrt (X1.1 in Arbeit)
+
+── Stand der Sprints ──
+X1: kein origin/sprint/x1, lokaler Stand

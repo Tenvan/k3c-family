@@ -1,0 +1,8 @@
+{
+  "werkzeug": "plan_list",
+  "args": {
+    "kind": "ticket",
+    "status": "verworfen",
+    "domain": "REG"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "projekt",
+    "id": "ABC",
+    "slug": "nochmal",
+    "title": "Nochmal"
+  }
+}

@@ -1,0 +1,7 @@
+Ralf-Queue: 1 Freigaben · 1 Entscheidungen · 0 Abnahmen an 0 Geräten
+── Freigaben ──
+- B-001 · Spec im Entwurf (Ticket, SRV, Spec Entwurf, Braucht 🧑: Freigabe)
+── Entscheidungen ──
+- B-002 · Entscheidung offen (Ticket, SRV, Spec Entwurf, Braucht 🧑: Entscheidung)
+── Abnahmen je Gerät ──
+keine

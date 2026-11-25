@@ -1,0 +1,6 @@
+{
+  "werkzeug": "plan_next",
+  "args": {
+    "domain": "XYZ"
+  }
+}

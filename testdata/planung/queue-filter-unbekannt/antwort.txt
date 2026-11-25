@@ -1,0 +1,4 @@
+Ralf-Queue: 0 Freigaben · 0 Entscheidungen · 1 Abnahmen an 1 Geräten
+── Abnahmen je Gerät ──
+unbekannt (1):
+- X1.2 · Session X1.2 (Sprint X1, offen, Agent Mensch)
