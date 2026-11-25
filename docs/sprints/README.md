@@ -30,7 +30,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
 | RU25 | SIM | RSU | Rust-Balance-Crate Teil 1: Bots | – | `aktiv/RU25-balancing-teil-1-bots/` |
-| RU68 | DEV | RSU | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | – | `aktiv/RU68-planungs-golden-vor-port/` |
 
 ## Offen am Gerät
 
@@ -487,3 +486,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | `erledigt/RU36-abnahme-am-pc/` |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | `erledigt/RU33-laeufe-im-client/` |
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | `erledigt/RU34-workbench-ruft-spiel-exe/` |
+| RU68 | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | `erledigt/RU68-planungs-golden-vor-port/` |

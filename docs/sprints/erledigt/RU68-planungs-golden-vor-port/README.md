@@ -1,6 +1,6 @@
 # RU68 · DEV · Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -65,12 +65,10 @@ keine
 | RU68.1 | `RU68.1-golden-format-lader.md` | Umsetzung | autonom | fertig |
 | RU68.2 | `RU68.2-golden-faelle-tickets-sprints.md` | Umsetzung | autonom | fertig |
 | RU68.3 | `RU68.3-golden-faelle-sessions-projekte-wellen.md` | Umsetzung | autonom | fertig |
-| RU68.4 | `RU68.4-review.md` | Review | autonom | offen |
+| RU68.4 | `RU68.4-review.md` | Review | autonom | fertig |
 
 Stichpunkte (Reife Entwurf): 1. Format und Lader (AC-02). 2. Fälle Tickets und Sprints (AC-01). 3. Fälle Sessions, Projekte, Wellen, Queue, Next (AC-01). 4. Review.
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-25: AC-01 und AC-02 erfüllt (Sessions RU68.1 bis RU68.3, Review RU68.4). 174 Golden-Fälle in `testdata/planung/`, `task check:go` grün, `task check` nur an der Altlast B-1274 rot. Keine neuen Tickets, kein Abnahme-Ticket (keine Sim-, Balance- oder Gen-Läufe).
