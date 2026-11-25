@@ -47,7 +47,6 @@ keine
 | RU31 | SIM | RSU | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
 | RU40 | CLI, DEV | RSU | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
-| RU43 | CLI | RSU | Optimierung nach Messung | – | Entwurf | `geplant/RU43-optimierung-nach-messung/` |
 | BAL11 | SIM | BAL | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | – | Entwurf | `geplant/BAL11-abnahme-laeufe-rust-umstellung/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).

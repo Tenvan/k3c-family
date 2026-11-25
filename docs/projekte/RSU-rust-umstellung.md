@@ -72,7 +72,6 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU37 | Go-Spiel entfernen, Doku und Regeln nachziehen | erledigt |
 | RU59 | Go-Engine: Ungenutztes entfernen, Bestand der Workbench belegen | erledigt |
 | RU35 | Build, Paket und CI auf das Rust-Spiel umstellen | erledigt |
-| RU43 | Optimierung nach Messung | geplant |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | erledigt |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | erledigt |
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | erledigt |

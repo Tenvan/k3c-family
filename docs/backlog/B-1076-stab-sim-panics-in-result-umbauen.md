@@ -5,7 +5,7 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** RU43
+- **Sprint:** RU41
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-18
 - **Spec:** freigegeben
