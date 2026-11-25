@@ -1,0 +1,13 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "sprint",
+    "id": "X2",
+    "slug": "zweiter",
+    "title": "Zweiter Sprint",
+    "fields": {
+      "Domäne": "DEV",
+      "Projekt": "ABC"
+    }
+  }
+}

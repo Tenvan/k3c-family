@@ -1,0 +1,3 @@
+B-002 angelegt: docs/backlog/B-002-geplant.md (Index ergänzt)
+Warnung: Ordner ist keine Repo-Wurzel, Worktrees und Refs nicht gelesen
+B-002 vergeben, höchste bekannte Nummer B-001: eigener Checkout

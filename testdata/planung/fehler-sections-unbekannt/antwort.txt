@@ -1,0 +1,1 @@
+FEHLER: unbekannter Abschnitt "Unsinn" in B-001, nichts geändert (vorhanden: Ausgangslage, Ziel, Beteiligte und Zielgruppen, Anforderungen, Nicht-Ziele, Regeln und Einschränkungen, Beispiele, Ausnahme- und Fehlerfälle, Akzeptanzkriterien, Offene Fragen, Notizen)

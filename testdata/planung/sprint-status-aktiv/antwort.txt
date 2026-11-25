@@ -1,0 +1,2 @@
+X1 geändert: docs/sprints/aktiv/X1-test/ (Fahrplan nachgezogen)
+X1: Fahrplan-Zeile am Tabellenende, kein bekanntes Projekt (–)

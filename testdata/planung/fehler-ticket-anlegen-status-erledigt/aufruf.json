@@ -1,0 +1,14 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "ticket",
+    "slug": "x",
+    "title": "X",
+    "fields": {
+      "Domäne": "SRV",
+      "Typ": "Idee",
+      "Prio": "mittel",
+      "Status": "erledigt"
+    }
+  }
+}

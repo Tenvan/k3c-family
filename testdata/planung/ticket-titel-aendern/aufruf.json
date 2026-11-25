@@ -1,0 +1,9 @@
+{
+  "werkzeug": "plan_set",
+  "args": {
+    "id": "B-001",
+    "fields": {
+      "Titel": "Neuer Titel des Tickets"
+    }
+  }
+}

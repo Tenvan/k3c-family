@@ -1,0 +1,1 @@
+FEHLER: sprints/geplant/X1-test/README.md: die Spec "freigegeben" passt nicht zu Freigabe "–": freigegeben braucht Datum und Quelle, sonst `–`

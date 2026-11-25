@@ -1,0 +1,2 @@
+X1 angelegt: docs/sprints/geplant/X1-test/ (Fahrplan ergänzt)
+X1: Fahrplan-Zeile am Tabellenende, kein bekanntes Projekt (–)

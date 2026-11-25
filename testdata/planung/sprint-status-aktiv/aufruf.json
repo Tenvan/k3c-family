@@ -1,0 +1,12 @@
+{
+  "werkzeug": "plan_set",
+  "args": {
+    "id": "X1",
+    "fields": {
+      "Reife": "bereit",
+      "Spec": "freigegeben",
+      "Freigabe": "2026-01-02 Test",
+      "Status": "aktiv"
+    }
+  }
+}

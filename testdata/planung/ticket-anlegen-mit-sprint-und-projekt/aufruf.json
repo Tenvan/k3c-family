@@ -1,0 +1,16 @@
+{
+  "werkzeug": "plan_create",
+  "args": {
+    "kind": "ticket",
+    "slug": "geplant",
+    "title": "Ticket mit Sprint",
+    "fields": {
+      "Domäne": "SRV",
+      "Typ": "Idee",
+      "Prio": "mittel",
+      "Status": "eingeplant",
+      "Sprint": "X1",
+      "Projekt": "ABC"
+    }
+  }
+}
