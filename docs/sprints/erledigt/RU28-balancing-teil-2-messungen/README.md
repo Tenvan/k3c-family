@@ -1,6 +1,6 @@
 # RU28 · SIM · Rust-Balance-Crate Teil 2: Messungen und Auswertung
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -95,7 +95,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU28.3 | `RU28.3-balance-summary-targets.md` | Umsetzung | autonom | fertig |
 | RU28.4 | `RU28.4-balance-delta-ship-need-baselines.md` | Umsetzung | autonom | fertig |
 | RU28.5 | `RU28.5-balance-curves-sensitivity-variant-vary.md` | Umsetzung | autonom | fertig |
-| RU28.6 | `RU28.6-review.md` | Review | autonom | offen |
+| RU28.6 | `RU28.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -103,6 +103,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-25: Kriterien erfüllt (Sessions RU28.1 bis RU28.5, Review RU28.6): Metriken, Kennzahlen, Auswertung, Summary, Targets, Delta, Schiffsbedarf, Baselines, Kurven, Sensitivität und Varianten in `k3c-balance` portiert, 129 Tests grün. Drei Bot-Fixes aus dem RU25-Port nach dem Go-Vergleich. Neue Tickets: B-1277 bis B-1280 (RU31). Keine Sim-, Balance- oder Gen-Läufe; sie liegen in BAL11.

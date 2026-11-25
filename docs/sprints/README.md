@@ -29,7 +29,7 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
-| RU28 | SIM | RSU | Rust-Balance-Crate Teil 2: Messungen und Auswertung | – | `aktiv/RU28-balancing-teil-2-messungen/` |
+| RU31 | SIM | RSU | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | – | `aktiv/RU31-balancing-teil-3-einsichten/` |
 
 ## Offen am Gerät
 
@@ -43,7 +43,6 @@ keine
 |---|---|---|---|---|---|---|
 | AU1 | SIM | KMP | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
 | WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
-| RU31 | SIM | RSU | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | – | bereit | `geplant/RU31-balancing-teil-3-einsichten/` |
 | RU40 | CLI, DEV | RSU | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | – | bereit | `geplant/RU40-balancing-laeufe-im-client/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | bereit | `geplant/RU65-rust-backend-spike-entscheidung/` |
@@ -487,3 +486,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | `erledigt/RU34-workbench-ruft-spiel-exe/` |
 | RU68 | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | `erledigt/RU68-planungs-golden-vor-port/` |
 | RU25 | Rust-Balance-Crate Teil 1: Bots | `erledigt/RU25-balancing-teil-1-bots/` |
+| RU28 | Rust-Balance-Crate Teil 2: Messungen und Auswertung | `erledigt/RU28-balancing-teil-2-messungen/` |

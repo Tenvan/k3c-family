@@ -1,6 +1,6 @@
 # RU31 · SIM · Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning
 
-- **Status:** geplant
+- **Status:** aktiv
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit

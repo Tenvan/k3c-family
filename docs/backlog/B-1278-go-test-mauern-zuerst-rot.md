@@ -5,7 +5,7 @@
 - **Prio:** niedrig
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** RU28
+- **Sprint:** RU31
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-25
 - **Spec:** Entwurf

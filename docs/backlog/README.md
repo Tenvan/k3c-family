@@ -309,8 +309,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1274](B-1274-oxlint-rot-auf-main-frontends.md) | DEV | Problem | niedrig | offen | RU34 | task lint ist auf main rot (15 Fehler in Workbench- und Studio-Frontend, tools/hooks, tools/paper) |
 | [B-1275](B-1275-abnahme-ru34-workbench-ruft-spiel-exe.md) | DEV | Idee | mittel | offen | RU34 | Abnahme RU34: Studio-Tools gegen die frisch gebaute Spiel-EXE |
 | [B-1276](B-1276-plan-set-sprint-ohne-pruefung.md) | DEV | Problem | niedrig | eingeplant | RU69 | plan_set und plan_create prüfen die Sprint-ID eines Tickets nicht gegen vorhandene Sprints |
-| [B-1277](B-1277-go-hash-endzustand-fixture.md) | SIM | Schuld | niedrig | offen | RU28 | Der Endzustand-Hash der Rust-Aufnahme lässt sich gegen eine Go-Aufnahme vergleichen |
-| [B-1278](B-1278-go-test-mauern-zuerst-rot.md) | SIM | Problem | niedrig | offen | RU28 | Der Go-Test TestMauernZuerstBautMauerAus ist rot (Mauer wird nicht auf Stufe 2 ausgebaut) |
+| [B-1277](B-1277-go-hash-endzustand-fixture.md) | SIM | Schuld | niedrig | offen | RU31 | Der Endzustand-Hash der Rust-Aufnahme lässt sich gegen eine Go-Aufnahme vergleichen |
+| [B-1278](B-1278-go-test-mauern-zuerst-rot.md) | SIM | Problem | niedrig | offen | RU31 | Der Go-Test TestMauernZuerstBautMauerAus ist rot (Mauer wird nicht auf Stufe 2 ausgebaut) |
+| [B-1279](B-1279-vary-box-leak-arc.md) | SIM | Schuld | niedrig | offen | RU31 | vary::with_data gibt Variantendaten nie frei (Box::leak), der Speicher wächst je Lauf |
+| [B-1280](B-1280-go-vergleich-bots-mehr-abdeckung.md) | SIM | Schuld | mittel | offen | RU31 | Der Go-Vergleich der Rust-Bots deckt nur einen Tag und zwei Bots ab |
 
 ## Archiv
 
