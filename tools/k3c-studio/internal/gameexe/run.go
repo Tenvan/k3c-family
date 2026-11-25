@@ -35,6 +35,7 @@ type Options struct {
 	Input    []byte       // Eingabe-JSON; der Starter schreibt sie nach <Root>/.work/runs/ und löscht sie nach dem Ende
 	Window   bool         // --window (nur run und balance)
 	Speed    int          // --speed N (1 bis 64), nur mit Window
+	Args     []string     // weitere Schalter der Befehlszeile (balance: --targets …), stehen nach dem Eingabe-JSON
 	OnEvent  func(Event)  // jede JSON-Zeile von stdout; darf nil sein (läuft nebenläufig zu OnStderr)
 	OnStderr func(string) // jede Zeile von stderr; darf nil sein
 	Grace    time.Duration
@@ -71,6 +72,11 @@ func Stream(ctx context.Context, o Options) error {
 	if werr != nil {
 		return werr
 	}
+	return run(ctx, argvFor(exe, input, o), dir, o)
+}
+
+// argvFor baut die Befehlszeile `k3c-game sim <Sub> --input <Datei> --data <Root>/data --stop-stdin [--window [--speed N]] [Args…]`.
+func argvFor(exe, input string, o Options) []string {
 	argv := []string{exe, "sim", o.Sub, "--input", input, "--data", filepath.Join(o.Root, "data"), "--stop-stdin"}
 	if o.Window {
 		argv = append(argv, "--window")
@@ -78,7 +84,7 @@ func Stream(ctx context.Context, o Options) error {
 			argv = append(argv, "--speed", strconv.Itoa(o.Speed))
 		}
 	}
-	return run(ctx, argv, dir, o)
+	return append(argv, o.Args...)
 }
 
 // readLines ruft für jede Zeile von r den Rückruf; ist eine Zeile zu lang, wird der Rest verworfen (die EXE soll nicht

@@ -6,7 +6,7 @@ import (
 )
 
 // sim_run rechnet mit der Spiel-EXE des Checkouts (`k3c-game sim run`, RU34.2), neben level_generate (tools_engine.go);
-// replay_run rechnet bis RU40.3 im Prozess über engine/simcli (B-924).
+// replay_run rechnet ebenfalls mit der EXE (`sim balance --play`, tools_replay.go, RU40.3).
 
 // segment sind gedrückte Tasten eines Monarchen über einen Tick-Bereich (engine/enginetools › Segment).
 type segment struct {

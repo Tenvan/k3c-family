@@ -3,17 +3,20 @@ package mcpsrv
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
 	"time"
 
-	"k3c/engine/simcli"
+	"k3c/tools/k3c-studio/internal/gameexe"
 	"k3c/tools/workkit/mcpkit"
 )
 
 type replayIn struct {
 	Path string `json:"path" jsonschema:"Replay-Datei relativ zur Repo-Wurzel, z. B. replays/12-p2-saver-d0.replay.json (aus task balance:run -- --replay-dir)"`
+	Head  bool   `json:"head,omitempty" jsonschema:"Spiel mit Fenster öffnen und die Wiedergabe zeigen; ohne Angabe headless"`
+	Speed int    `json:"speed,omitempty" jsonschema:"Zeitraffer 1 bis 64 (Standard 1 = Echtzeit), nur mit head"`
 }
 
 // replayHead sind die Felder einer Replay-Datei, die replay_run nennt (engine/balance › Replay).
@@ -27,7 +30,7 @@ type replayHead struct {
 	CastleFallTick *int   `json:"castleFallTick"`
 }
 
-// playback ist das Ergebnis von `k3c-sim balance --play` (engine/balance › Playback).
+// playback ist das Ergebnis von `k3c-game sim balance --play` (engine/balance › Playback).
 type playback struct {
 	Ticks          int      `json:"ticks"`
 	EndHash        string   `json:"endHash"`
@@ -41,11 +44,14 @@ const replayTimeout = 10 * time.Minute
 // maxReplayBytes begrenzt die gelesene Datei (eine Aufnahme über 60 Tage hat wenige MB).
 const maxReplayBytes = 64 << 20
 
-// replayRun ist das Tool replay_run (B-159, BAL1.3): spielt eine Replay-Datei ohne Bot ab, im Prozess
-// (engine/simcli, B-924: wie `k3c-sim balance --play`).
+// replayRun ist das Tool replay_run (B-159, BAL1.3): spielt eine Replay-Datei ohne Bot ab, mit der Spiel-EXE des
+// Checkouts (`k3c-game sim balance --play`, RU40.3); mit head zeigt das Spiel die Wiedergabe.
 func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
-	if err := s.ownCheckoutErr(ctx, "replay_run"); err != nil {
-		return "", err
+	if in.Speed != 0 && !in.Head {
+		return "", errors.New("replay_run: speed gilt nur mit head")
+	}
+	if in.Speed < 0 || in.Speed > 64 {
+		return "", errors.New("replay_run: speed muss 1 bis 64 sein")
 	}
 	root := s.ws(ctx).Root
 	path, err := mcpkit.InsideRoot(root, in.Path)
@@ -63,15 +69,19 @@ func (s *Server) replayRun(ctx context.Context, in replayIn) (string, error) {
 	if err := json.Unmarshal(b, &r); err != nil {
 		return "", fmt.Errorf("%s: kein Replay: %w", in.Path, err)
 	}
-	ctx, cancel := context.WithTimeout(ctx, replayTimeout)
+	limit := replayTimeout
+	if in.Head {
+		limit = headTimeout
+	}
+	ctx, cancel := context.WithTimeout(ctx, limit)
 	defer cancel()
-	ev, err := simcli.Call(ctx, []string{"balance", "--play", path}, nil, nil)
+	ev, err := gameCall(ctx, gameexe.Options{Root: root, Sub: "balance", Input: []byte("{}"), Window: in.Head, Speed: in.Speed, Args: []string{"--play", path}})
 	if err != nil {
 		return "", err
 	}
 	var pb playback
 	if err := json.Unmarshal(ev.Report, &pb); err != nil {
-		return "", fmt.Errorf("k3c-sim balance --play: Ergebnis nicht lesbar: %w", err)
+		return "", fmt.Errorf("k3c-game sim balance --play: Ergebnis nicht lesbar: %w", err)
 	}
 	return replayText(in.Path, r, pb), nil
 }

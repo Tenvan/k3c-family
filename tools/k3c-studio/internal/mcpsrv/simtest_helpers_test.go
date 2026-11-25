@@ -32,7 +32,7 @@ func fakeServer(t *testing.T, run func(runSpec) runResult) (*Server, *atomic.Int
 // prüfen so den Weg Tool → Register ohne Rechnung der Engine. Vor dem ersten Start aufrufen.
 func (s *Server) simsViaRun() {
 	s.sims.Exec = func(ctx context.Context, p simrun.Proc) simrun.Result {
-		res := s.run(ctx, runSpec{dir: p.Dir, args: p.Args, timeout: p.Timeout, out: p.Out})
+		res := s.run(ctx, runSpec{dir: p.Dir, args: p.Args, head: p.Head, speed: p.Speed, timeout: p.Timeout, out: p.Out})
 		return simrun.Result{Exit: res.exit, TimedOut: res.timedOut, Err: res.err}
 	}
 }

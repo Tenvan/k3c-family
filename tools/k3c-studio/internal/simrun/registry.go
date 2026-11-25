@@ -85,19 +85,20 @@ type Registry struct {
 	notify Notify // Rückrufe für die Ereignisse der Seite (notify.go)
 }
 
-// New baut ein leeres Register; Läufe rechnet runEngine (im Prozess).
+// New baut ein leeres Register; Läufe rechnet runExe (Spiel-EXE).
 func New(log *slog.Logger) *Registry {
 	if log == nil {
 		log = slog.New(slog.DiscardHandler)
 	}
-	return &Registry{Exec: runEngine, log: log}
+	return &Registry{Exec: runExe, log: log}
 }
 
 // Start legt einen Lauf an. Ist ein Platz frei, rechnet er sofort; sonst wartet er (queue) oder Start liefert ErrFull.
 func (g *Registry) Start(root, where, label string, spec *Spec, runner Runner, queue bool) (*Run, error) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
-	free := g.active(root) < MaxPerRoot
+	head := spec != nil && spec.Head
+	free := g.canLaunch(root, head)
 	if !free && !queue {
 		return nil, ErrFull
 	}
@@ -162,13 +163,32 @@ func (g *Registry) launch(run *Run) {
 // launchNext startet wartende Läufe des Checkouts, solange Plätze frei sind; unter g.mu.
 func (g *Registry) launchNext(root string) {
 	for _, run := range g.runs {
-		if g.active(root) >= MaxPerRoot {
-			return
+		if run.root != root || run.state != Waiting {
+			continue
 		}
-		if run.root == root && run.state == Waiting {
-			g.launch(run)
+		if !g.canLaunch(root, run.spec != nil && run.spec.Head) {
+			return // der Älteste wartet zuerst: ein wartender Fensterlauf lässt keine späteren vorbei
+		}
+		g.launch(run)
+	}
+}
+
+// canLaunch sagt, ob im Checkout ein weiterer Lauf starten darf; unter g.mu. Ein Lauf mit Fenster (head) läuft allein:
+// ein Fenster, und nichts rechnet daneben (RU40.3).
+func (g *Registry) canLaunch(root string, head bool) bool {
+	n := g.active(root)
+	if n >= MaxPerRoot {
+		return false
+	}
+	if head {
+		return n == 0
+	}
+	for _, run := range g.runs {
+		if run.root == root && run.active && run.spec != nil && run.spec.Head {
+			return false
 		}
 	}
+	return true
 }
 
 // freeSlot ist der kleinste Platz, den kein aktiver Lauf des Checkouts hält; unter g.mu.

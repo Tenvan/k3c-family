@@ -11,12 +11,14 @@ import (
 )
 
 // simTestIn sind die Parameter von sim_test (B-348 › Anforderungen). Geprüft wird über Positivlisten und Grenzen.
-// Seit dem Rückbau des Spielservers (B-887) läuft sim_test nur offline (Mocks im Prozess).
+// Seit dem Rückbau des Spielservers (B-887) läuft sim_test nur offline (Spiel-EXE des Checkouts, RU40.3).
 type simTestIn struct {
 	Action       string   `json:"action" jsonschema:"start, status, wait, stop, list oder baseline"`
 	Wait         bool     `json:"wait,omitempty" jsonschema:"bei start: wartet wie check_run auf das Ende des Laufs (mit progressToken bis zum Ende, sonst höchstens 4 min, dann Lauf-ID)"`
 	ID           string   `json:"id,omitempty" jsonschema:"Lauf-ID für status und stop, z. B. run-1"`
-	Mode         string   `json:"mode,omitempty" jsonschema:"offline (Mocks im Prozess, Standard und einziger Modus)"`
+	Mode         string   `json:"mode,omitempty" jsonschema:"offline (Spiel-EXE des Checkouts, Standard und einziger Modus)"`
+	Head         bool     `json:"head,omitempty" jsonschema:"bei start: Spiel mit Fenster öffnen und die Läufe zeigen (nacheinander); ohne Angabe headless"`
+	Speed        int      `json:"speed,omitempty" jsonschema:"Zeitraffer 1 bis 64 (Standard 1 = Echtzeit), nur mit head"`
 	Players      int      `json:"players,omitempty" jsonschema:"Spieleranzahl aller Ziele, 1 bis 4, z. B. 1 für den Single-Player-Meilenstein"`
 	Bots         string   `json:"bots,omitempty" jsonschema:"Bot-Profil des Balancing-Testers, z. B. coop2 oder saver; ersetzt den Bot aller Ziele"`
 	Seeds        int      `json:"seeds,omitempty" jsonschema:"Seeds, 1 bis 200; ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)"`
@@ -42,16 +44,18 @@ type simSpec struct {
 	seeds    int
 	seedList []string // genau diese Seeds (B-634)
 	focus    []string
+	head     bool // mit Fenster (RU40.3)
+	speed    int
 }
 
 func (s simSpec) label() string {
-	return fmt.Sprintf("%s·headless·%s", s.mode, strings.Join(s.focus, ","))
+	return fmt.Sprintf("%s·%s·%s", s.mode, map[bool]string{true: "head", false: "headless"}[s.head], strings.Join(s.focus, ","))
 }
 
 // spec prüft die Parameter von start; jeder Fehler ist eine Zeile mit Grund.
 func (in simTestIn) spec() (simSpec, error) {
 	s := simSpec{mode: in.Mode, players: in.Players, bots: in.Bots, world: in.World, days: in.Days, vary: splitSemi(in.Vary), baseline: in.Baseline,
-		seeds: in.Seeds, seedList: splitList(in.SeedList), focus: in.Focus}
+		seeds: in.Seeds, seedList: splitList(in.SeedList), focus: in.Focus, head: in.Head, speed: in.Speed}
 	if s.mode == "" {
 		s.mode = "offline"
 	}
@@ -88,7 +92,8 @@ func (s *Server) simRunner(_ context.Context, spec simSpec) (simrun.Runner, erro
 
 // offline ist die Spec des Offline-Runners (internal/simrun).
 func (s simSpec) offline() *simrun.Spec {
-	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players, Vary: s.vary, Baseline: s.baseline}
+	return &simrun.Spec{Seeds: s.seeds, SeedList: s.seedList, Bot: s.bots, World: s.world, Days: s.days, Players: s.players, Vary: s.vary, Baseline: s.baseline,
+		Head: s.head, Speed: s.speed}
 }
 
 // emptyList: Die Eingabe ist gesetzt, enthält aber keinen Eintrag (z. B. „,“).

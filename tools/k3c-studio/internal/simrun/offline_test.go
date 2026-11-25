@@ -11,7 +11,7 @@ import (
 )
 
 // Falsche Engine (WZ28.4/AC-04, B-924): g.Exec rechnet `balance --targets` nicht, sondern schreibt einen festen
-// Bericht und meldet Events wie runEngine; die Rechnung selbst prüft engine/simcli. runEngine prüft der Test unten.
+// Bericht und meldet Events wie runExe; die Rechnung selbst prüft die Spiel-EXE. runExe prüft offline_exe_test.go.
 
 // fakeRegistry: g.Exec spielt je nach mode einen Lauf (ok, slow, crash, error).
 func fakeRegistry(mode string) *Registry {
@@ -48,25 +48,6 @@ func fakeRegistry(mode string) *Registry {
 		return Result{}
 	}
 	return g
-}
-
-// B-924: runEngine rechnet im Prozess; ein Fehler der Engine wird Exit 1 mit der Meldung auf stderr, ein beendeter
-// Context ein Abbruch, das Zeitlimit ein TimedOut. Kein Lauf wird gerechnet (unbekannter Unterbefehl).
-func TestRunEngineFehlerAbbruchUndZeitlimit(t *testing.T) {
-	var lines []string
-	out := func(stream, text string) { lines = append(lines, stream+": "+text) }
-	res := runEngine(context.Background(), Proc{Dir: t.TempDir(), Args: []string{"fliegen"}, Timeout: time.Minute, Out: out})
-	if res.Exit != 1 || len(lines) < 2 || !strings.Contains(strings.Join(lines, "\n"), "stderr: ❌ k3c-sim: unbekannter Unterbefehl") {
-		t.Errorf("Fehler: %+v %v", res, lines)
-	}
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
-	if res := runEngine(ctx, Proc{Dir: t.TempDir(), Args: []string{"level"}, Timeout: time.Minute}); res.Exit != 130 {
-		t.Errorf("Abbruch: %+v", res)
-	}
-	if res := runEngine(context.Background(), Proc{Dir: t.TempDir(), Args: []string{"level"}, Timeout: -time.Second}); !res.TimedOut {
-		t.Errorf("Zeitlimit: %+v", res)
-	}
 }
 
 // waitFor fragt den Lauf ab, bis ok gilt.

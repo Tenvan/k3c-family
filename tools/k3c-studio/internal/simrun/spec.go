@@ -34,6 +34,9 @@ type Spec struct {
 	Tune     *Tune  `json:"tune,omitempty"` // automatisches Balancing (WZ28.6), Ergebnis tuning-*.json
 	// PerVariant (B-662): je feste Variante ein eigener Lauf gegen einen gemeinsamen Basis-Lauf (StartOffline).
 	PerVariant bool `json:"perVariant,omitempty"`
+	// Head (RU40.3): der Lauf zeigt sich im Spiel (`--window`), Läufe nacheinander; Speed ist der Zeitraffer 1 bis 64.
+	Head  bool `json:"head,omitempty"`
+	Speed int  `json:"speed,omitempty"`
 }
 
 // Tune wird --tune, --param, --steps und --budget der Balance-CLI; 0 heißt Vorgabe der CLI.
@@ -88,7 +91,20 @@ func (s Spec) Check() error {
 			return fmt.Errorf("lauf abgelehnt: vary %q, Form datei.json:pfad.zum.wert=wert", v)
 		}
 	}
-	return cmp.Or(s.checkBaseline(), s.checkWorld(), s.checkHelps(), s.checkPerVariant(), s.Tune.check())
+	return cmp.Or(s.checkHead(), s.checkBaseline(), s.checkWorld(), s.checkHelps(), s.checkPerVariant(), s.Tune.check())
+}
+
+// checkHead prüft Fenster und Zeitraffer (RU40.3): speed nur mit head, 1 bis 64; das Fenster zeigt Matrix und Ziele, nicht das Abstimmen.
+func (s Spec) checkHead() error {
+	switch {
+	case s.Speed != 0 && !s.Head:
+		return fmt.Errorf("lauf abgelehnt: speed gilt nur mit head")
+	case s.Speed < 0 || s.Speed > 64:
+		return fmt.Errorf("lauf abgelehnt: speed 1 bis 64")
+	case s.Head && s.Tune != nil:
+		return fmt.Errorf("lauf abgelehnt: head geht nicht mit Abstimmung (nur Matrix und Ziele zeigt das Fenster)")
+	}
+	return nil
 }
 
 // checkPerVariant: „je Variante“ braucht feste Varianten und keine Bereiche (B-662).
@@ -207,6 +223,9 @@ func (s Spec) Title() string {
 	}
 	if s.Baseline != "" {
 		parts = append(parts, "gegen "+s.Baseline)
+	}
+	if s.Head {
+		parts = append(parts, "mit Fenster")
 	}
 	if s.Tune != nil {
 		parts = append(parts, fmt.Sprintf("tune %s %d Parameter", s.Tune.Mode, len(s.Tune.Params)))

@@ -24,8 +24,9 @@ func registerSimTest(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "sim_test",
 		Description: "Jeder Testlauf (Balancing, Performance, Stabilität) über ein Tool: action start (sofort zurück mit ID), " +
-			"status (≤ 10 Zeilen), stop, list. Nur mode offline (Mocks im Prozess; der Spielserver ist entfernt, B-887), focus balance. " +
-			"Bericht unter reports/simtest-<id>/. Ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList. " +
+			"status (≤ 10 Zeilen), stop, list. Nur mode offline (die Spiel-EXE des Checkouts rechnet, k3c-game sim balance; der Spielserver ist entfernt, B-887), focus balance. " +
+				"head: true zeigt den Lauf im Spiel mit Fenster (speed 1 bis 64, nur mit head, ein Lauf zugleich), sonst headless. " +
+			"stop beendet die EXE samt Kindprozessen. Bericht unter reports/simtest-<id>/. Ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList. " +
 			"world (z. B. standard) und days (1–60): der Lauf spielt die ganze erste Insel. " +
 			"wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). " +
 			"BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. " +
@@ -59,9 +60,6 @@ func (s *Server) simTest(ctx context.Context, in simTestIn) (string, error) {
 
 func (s *Server) simStart(ctx context.Context, ws workspace, in simTestIn) (string, error) {
 	if err := simLockErr("sim_test start"); err != nil {
-		return "", err
-	}
-	if err := s.ownCheckoutErr(ctx, "sim_test start"); err != nil {
 		return "", err
 	}
 	root := ws.Root

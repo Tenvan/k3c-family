@@ -30,8 +30,8 @@ func registerEngine(s *Server) {
 	}, s.levelGenerate)
 }
 
-// registerSim sind die Engine-Tools des Balancings (B-047, seit WZ63.5 aus k3c-workbench): rechnen im Prozess des
-// Studios über engine/simcli (B-924), ohne laufenden Server.
+// registerSim sind die Engine-Tools des Balancings (B-047, seit WZ63.5 aus k3c-workbench): rechnen mit der Spiel-EXE des
+// Checkouts (RU34, RU40), ohne laufenden Server.
 func registerSim(s *Server) {
 	add(s, &mcp.Tool{
 		Name: "sim_run",
@@ -44,8 +44,9 @@ func registerSim(s *Server) {
 	}, s.simRun)
 	add(s, &mcp.Tool{
 		Name: "replay_run",
-		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit der Engine des Studios ohne Bot ab: " +
+		Description: "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit der Spiel-EXE des Checkouts (k3c-game sim balance --play) ohne Bot ab: " +
 			"Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. " +
+			"Mit head: true zeigt das Spiel die Wiedergabe im Fenster (speed 1 bis 64). " +
 			"Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
 		Annotations: readOnly(),
 	}, s.replayRun)

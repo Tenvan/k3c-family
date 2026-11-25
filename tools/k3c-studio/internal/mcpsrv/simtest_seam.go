@@ -9,6 +9,8 @@ import "time"
 // runSpec ist ein Prozessaufruf eines Testlaufs (Ordner, Argumente, Zeitlimit, Ausgabe).
 type runSpec struct {
 	dir     string
+	head    bool // mit Fenster (RU40.3)
+	speed   int
 	args    []string
 	timeout time.Duration
 	out     func(stream, text string)

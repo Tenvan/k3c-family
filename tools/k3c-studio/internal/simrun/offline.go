@@ -11,21 +11,23 @@ import (
 	"sync"
 	"time"
 
-	"k3c/engine/simcli"
+	"k3c/tools/k3c-studio/internal/gameexe"
 )
 
-// Modus offline (B-348/AC-02, B-924): `balance --targets` rechnet im Prozess der Workbench (engine/simcli, in einer
-// Goroutine, abbrechbar über den Context; eine Panik der Engine wird zum Fehler des Laufs). Die Workbench liest die
-// Events (Fortschritt, Fehler) und den Bericht. Bericht des Testers und eigener Bericht liegen in reports/simtest-<id>/.
-// Die Engine ist die der laufenden Workbench: Sim-Änderungen prüft eine eigene Instanz im Worktree (B-925).
+// Modus offline (B-348/AC-02, RU40.3): `balance --targets` rechnet die Spiel-EXE des Checkouts (`k3c-game sim balance`,
+// internal/gameexe, docs/standards/k3c-game-laeufe.md); Stop schließt ihre stdin, nach der Frist beendet das Job-Objekt
+// den Baum. Das Studio liest die Events (Fortschritt, Fehler) und den Bericht. Bericht des Testers und eigener Bericht
+// liegen in reports/simtest-<id>/. Mit Head läuft der Lauf sichtbar im Spiel (`--window [--speed N]`).
 
 const offlineTimeout = 60 * time.Minute
 
-// Proc ist ein Lauf der Engine (Args wie bei `k3c-sim`: Unterbefehl zuerst); Out bekommt jede Zeile mit ihrem Strom
-// („stdout“: JSON-Zeilen der Events, „stderr“: Meldungen für Menschen).
+// Proc ist ein Lauf der Spiel-EXE (Args: Unterbefehl `balance` zuerst, dann die Schalter); Out bekommt jede Zeile mit
+// ihrem Strom („stdout“: JSON-Zeilen der Events, „stderr“: Meldungen für Menschen).
 type Proc struct {
-	Dir     string // Checkout; data/ darunter liest world/hub
+	Dir     string // Checkout; EXE und data/ darunter
 	Args    []string
+	Head    bool // mit Fenster (--window)
+	Speed   int  // --speed N, nur mit Head
 	Timeout time.Duration
 	Out     func(stream, text string)
 }
@@ -71,7 +73,7 @@ func (g *Registry) Offline(spec Spec) Runner {
 		dir := ReportDir(run)
 		g.SetPhase(run, "rechnen")
 		out := &procOutput{progress: func(done, total int) { g.SetProgress(run, done, total) }}
-		p := Proc{Dir: run.root, Timeout: offlineTimeout, Args: spec.args(dir), Out: out.line}
+		p := Proc{Dir: run.root, Timeout: offlineTimeout, Args: spec.args(dir), Head: spec.Head, Speed: spec.Speed, Out: out.line}
 		if failed := stepFailed(ctx, g.Exec(ctx, p)); failed != "" {
 			g.finishFailed(run, append([]string{"rechnen: " + failed}, out.lines()...), dir, spec)
 			return
@@ -95,7 +97,7 @@ type procOutput struct {
 }
 
 func (o *procOutput) line(stream, text string) {
-	if ev, ok := simcli.ParseEvent(text); ok && stream == "stdout" {
+	if ev, ok := gameexe.ParseEvent(text); ok && stream == "stdout" {
 		if ev.Event == "progress" {
 			o.progress(ev.Done, ev.Total)
 		}
@@ -145,19 +147,44 @@ func stepFailed(ctx context.Context, res Result) string {
 	return ""
 }
 
-// runEngine rechnet im Prozess (engine/simcli) mit den Daten von p.Dir/data; Zeitlimit und Abbruch beenden den Lauf
-// beim nächsten fertigen Lauf der Engine. Jedes Event geht als JSON-Zeile nach p.Out, ein Fehler als „❌ k3c-sim: …“.
-func runEngine(ctx context.Context, p Proc) Result {
+// streamExe startet die EXE; Tests ersetzen es durch eine Attrappe.
+var streamExe = gameexe.Stream
+
+// pathFlags sind die Schalter von `balance`, deren Wert ein Pfad ist; relative Werte gelten ab dem Checkout.
+var pathFlags = []string{"--report-dir", "--baseline", "--write-baseline", "--out", "--replay-dir", "--play", "--insights"}
+
+// exeArgs ist p.Args ohne den Unterbefehl, Pfadwerte absolut ab dir (die EXE läuft im Ordner ihres Pakets, nicht im Checkout).
+func exeArgs(dir string, args []string) []string {
+	out := slices.Clone(args)
+	if len(out) > 0 && out[0] == "balance" {
+		out = out[1:]
+	}
+	for i := 0; i+1 < len(out); i++ {
+		if slices.Contains(pathFlags, out[i]) && !filepath.IsAbs(out[i+1]) {
+			out[i+1] = filepath.Join(dir, out[i+1])
+		}
+	}
+	return out
+}
+
+// runExe rechnet mit der Spiel-EXE des Checkouts p.Dir (`k3c-game sim balance`, RU40.3). Jedes Event geht als JSON-Zeile
+// nach p.Out, jede Zeile von stderr als „stderr“. Stop und Zeitlimit schließen stdin der EXE (Exit 130, `aborted`); bleibt
+// sie hängen, beendet gameexe nach der Frist den ganzen Prozessbaum. Ein Fehler ohne Meldung der EXE steht als „❌ k3c-game sim: …“ auf stderr.
+func runExe(ctx context.Context, p Proc) Result {
 	ctx, cancel := context.WithTimeout(ctx, p.Timeout)
 	defer cancel()
 	out := p.Out
 	if out == nil {
 		out = func(string, string) {}
 	}
-	err := simcli.Stream(ctx, p.Args, nil, simcli.DirFiles(filepath.Join(p.Dir, "data")), func(ev simcli.Event) {
-		if b, err := json.Marshal(ev); err == nil {
-			out("stdout", string(b))
-		}
+	err := streamExe(ctx, gameexe.Options{
+		Root: p.Dir, Sub: "balance", Input: []byte("{}"), Window: p.Head, Speed: p.Speed, Args: exeArgs(p.Dir, p.Args),
+		OnEvent: func(ev gameexe.Event) {
+			if b, err := json.Marshal(ev); err == nil {
+				out("stdout", string(b))
+			}
+		},
+		OnStderr: func(l string) { out("stderr", l) },
 	})
 	switch {
 	case err == nil:
@@ -165,11 +192,14 @@ func runEngine(ctx context.Context, p Proc) Result {
 	case errors.Is(ctx.Err(), context.DeadlineExceeded):
 		return Result{TimedOut: true, Exit: -1}
 	case ctx.Err() != nil:
-		return Result{Exit: simcli.ExitAborted}
+		return Result{Exit: exitAborted}
 	}
-	out("stderr", "❌ k3c-sim: "+err.Error())
-	return Result{Exit: simcli.ExitFailed}
+	out("stderr", "❌ k3c-game sim: "+err.Error())
+	return Result{Exit: 1}
 }
+
+// exitAborted ist der Exit-Code eines abgebrochenen Laufs (docs/standards/k3c-game-laeufe.md).
+const exitAborted = 130
 
 func lastLines(lines []string, n int) []string {
 	if len(lines) > n {
