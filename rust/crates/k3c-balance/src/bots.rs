@@ -1,16 +1,17 @@
 //! Bot-Profile (Port von `engine/balance/bots.go`, B-099, BAL1.1): Ein Bot liest den Zustand seiner Stufe und liefert
 //! nur einen `PlayerCommand`; er ändert die Welt nie direkt. Alle Profile sind ohne Zufall und damit deterministisch.
 
-use k3c_sim::economy::site_gold_left;
+use k3c_sim::economy::{Economy, economy_of, site_gold_left};
 use k3c_sim::island::Island;
 use k3c_sim::state::{Player, PlayerCommand, Site, Troop, World};
 use k3c_sim::world::vals;
 
+use crate::bot_abstieg::descent_decide;
+use crate::bot_clear::{WantSet, clear_node};
+use crate::bot_material::covers;
+use crate::bot_wirtschaft::{PEASANT_LIMIT, hub_step, nearest_payable, peasants, wirtschaft};
 use crate::fehler::Fehler;
-use crate::pending::{
-    PEASANT_LIMIT, WantSet, boss_fight_decide, clear_node, covers, descent_decide, hub_step, nearest_payable, peasants,
-    wirtschaft,
-};
+use crate::pending::boss_fight_decide;
 use crate::prices::prices;
 
 /// Trennt die Profile einer Mischung je Spieler (B-611): "saver+passive" = Spieler 1 saver, Spieler 2 passive.
@@ -130,6 +131,11 @@ pub fn gold_left(w: &World, s: &Site) -> (i64, bool) {
     site_gold_left(w, &vals(w), w.island_ref_view().as_ref(), s)
 }
 
+/// Go: `sim.EconomyOf`: der abgeleitete Wirtschaftsstand der Stufe (Kämpfer, Hub-Ausbau).
+pub fn economy_view(w: &World) -> Economy {
+    economy_of(w, &vals(w), w.island_ref_view().as_ref())
+}
+
 /// Saver: nachts an der Burg; tags erst die nächste unbezahlte Mauer, dann den nächsten Landstreicher, jeweils nur,
 /// wenn das eigene Gold für den Rest des Preises reicht. Solange eine Mauer offen ist, wirbt er niemanden an.
 fn saver(w: &World, p: &Player) -> PlayerCommand {
@@ -186,8 +192,8 @@ fn walls(isl: &Island, w: &World, p: &Player) -> PlayerCommand {
             return go_to(p, s.x, true);
         }
     }
-    if let (Some(x), _) = hub_step(isl, w, p) {
-        return go_to(p, x, true);
+    if let (Some(hub), _) = hub_step(isl, w, p) {
+        return go_to(p, hub.x(w), true);
     }
     recruit_or_hub(w, p)
 }
@@ -282,7 +288,7 @@ pub fn nearest_upgrade<'a>(w: &'a World, p: &Player) -> (Option<&'a Site>, bool)
 /// Eine unbezahlte Mauer nimmt gerade Münzen (ihre Linie ist offen). Anders als `nearest_wall` zählen Mauern späterer
 /// Linien nicht, die erst mit höherer Hub-Stufe bezahlbar sind (B-300: sonst wartet `walls` auf sie für immer).
 pub fn wall_payable(w: &World) -> bool {
-    let want = WantSet { w };
+    let want = WantSet::new(w);
     w.sites
         .iter()
         .filter(|s| s.kind == "wall" && s.state == "unpaid")
@@ -291,7 +297,7 @@ pub fn wall_payable(w: &World) -> bool {
 
 /// Die nächste unbezahlte Mauer, deren Rest das Gold deckt; `open` meldet, ob überhaupt eine offen ist.
 pub fn nearest_wall<'a>(w: &'a World, p: &Player) -> (Option<&'a Site>, bool) {
-    let want = WantSet { w };
+    let want = WantSet::new(w);
     let wall_gold = prices().wall_gold;
     let (mut best, mut open): (Option<&Site>, bool) = (None, false);
     for s in &w.sites {
