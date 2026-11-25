@@ -314,6 +314,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1279](B-1279-vary-box-leak-arc.md) | SIM | Schuld | niedrig | offen | RU31 | vary::with_data gibt Variantendaten nie frei (Box::leak), der Speicher wächst je Lauf |
 | [B-1280](B-1280-go-vergleich-bots-mehr-abdeckung.md) | SIM | Schuld | mittel | offen | RU31 | Der Go-Vergleich der Rust-Bots deckt nur einen Tag und zwei Bots ab |
 | [B-1281](B-1281-go-tests-html-summary-frischer-worktree.md) | SIM | Problem | niedrig | offen | RU31 | Go-Tests TestHTMLEigenstaendig, TestHTMLOhneGrafiken und TestRustRefSummary sind in frischen Worktrees bzw. unter Windows rot |
+| [B-1282](B-1282-balance-tune-abbruch-je-lauf.md) | SIM | Schuld | niedrig | offen | RU40 | k3c-balance: Rückruf je Lauf in TuneOptions und Targets, damit --tune wie Go nach jedem Lauf abbricht |
+| [B-1283](B-1283-balance-play-endhash.md) | SIM | Frage | niedrig | offen | RU40 | sim balance --play: endHash der Rust-Insel weicht von Go ab, Entscheidung nötig |
 
 ## Archiv
 
