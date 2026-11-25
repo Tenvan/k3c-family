@@ -3,7 +3,7 @@
 - **Status:** geplant
 - **Projekt:** RSU
 - **Domäne:** DEV
-- **Reife:** Entwurf
+- **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
 - **Spec:** freigegeben
@@ -63,6 +63,8 @@ Entscheidung 014 (🧑): Tauri 2 oder Wails/Go behalten. Mit Default entschieden
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
+| RU65.1 | `RU65.1-spike-tauri.md` | Umsetzung | autonom | offen |
+| RU65.2 | `RU65.2-entscheidungsvorlage-014.md` | Umsetzung | autonom | offen |
 
 Stichpunkte (Reife Entwurf): 1. Spike Tauri (AC-01). 2. Entscheidungsvorlage 014 (AC-02). 3. Review und Annahme durch 🧑 (AC-03).
 
