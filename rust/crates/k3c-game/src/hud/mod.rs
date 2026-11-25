@@ -30,6 +30,7 @@ use crate::view::roles::AssetSource;
 use crate::view::settings::DEFAULT_LANGUAGE;
 
 pub mod banner;
+pub mod bottle;
 pub mod data;
 pub mod draw;
 pub mod drawglyph;

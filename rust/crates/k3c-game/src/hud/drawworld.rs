@@ -263,6 +263,11 @@ impl Hud {
                     let clr = PLAYER_COLORS[m.index.rem_euclid(PLAYER_COLORS.len() as i64) as usize];
                     pt.circle(dst, x, y, rad, rgb(clr, a));
                 }
+                RadarKind::Bottle => pt.circle(dst, x, y, 4.0 * k, rgb(0x78c8e6, 1.0)),
+                RadarKind::Goal => {
+                    pt.ring_at(dst, x, y, 7.0 * k, rgb(0xffe27a, 1.0));
+                    pt.circle(dst, x, y, 3.0 * k, rgb(0xffe27a, 1.0));
+                }
                 RadarKind::Enemy => pt.circle(dst, x, y, 3.0 * k, rgb(RADAR_ENEMY_C, 1.0)),
                 RadarKind::Castle => pt.fill_top(
                     dst,

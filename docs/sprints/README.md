@@ -16,8 +16,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
 | WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
 | GS3 | SIM, PAP, CLI, SRV | WZG | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | – | `aktiv/GS3-andenken-chronik/` |
-| GS4 | REG, SIM, PAP, CLI | WZG | Flaschenpost am Strand mit Geschichtszeile und Markierung | – | `aktiv/GS4-flaschenpost/` |
-| WE6 | CLI, DEV | WZG | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | – | `aktiv/WE6-welt-format-spiel-editor/` |
 | WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | `aktiv/WE8-welten-events-zuordnung/` |
 | WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
 | WZ63 | DEV | WZG | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | – | `aktiv/WZ63-studio-eigene-exe/` |
@@ -477,6 +475,8 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | `erledigt/HB1-hud-biome-hafen-kurzsprint/` |
 | LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | `erledigt/LA3-bauplaetze-nach-gebaeudegroesse/` |
 | EQ1 | Ausrüstung nachziehen: Rüstung abholen, Werte in Daten, Icons, Bogner oben, gemeinsames Limit, sichtbare Besorgung | `erledigt/EQ1-ausruestung-nachzug/` |
+| GS4 | Flaschenpost am Strand mit Geschichtszeile und Markierung | `erledigt/GS4-flaschenpost/` |
+| WE6 | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | `erledigt/WE6-welt-format-spiel-editor/` |
 | RU36 | Abnahme am PC: Rust-Spiel gegen Go-Spiel (Gate G4) | `erledigt/RU36-abnahme-am-pc/` |
 | RU33 | Läufe im Game-Client: Sim, Level, Welten und Hub, headless oder mit Fenster per Parameter | `erledigt/RU33-laeufe-im-client/` |
 | RU34 | Workbench: MCP-Tools für Sim, Level, Welten und Hub rufen die Spiel-EXE | `erledigt/RU34-workbench-ruft-spiel-exe/` |

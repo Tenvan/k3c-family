@@ -1,6 +1,6 @@
 # WE6.5 · Review WE6 und Abnahme-Ticket
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -59,11 +59,11 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Review WE6, Studio-Anteile (WE6.3, WE6.4) und PR #875 nur gelesen, ohne Prüfläufe (Tests ausstehend).
+Review WE6 am 2026-11-24, Diff und Session-Ergebnisse gelesen, Prüfläufe nacheinander.
 
-- AC-03 erfüllt: Tests in `tools/k3c-studio/internal/world/edit_endboss_skins_test.go` und `edit_override_lists_test.go`. Einschränkung: kein MCP-Roundtrip-Test, MCP-Beschreibung nennt `endBoss`, `skins`, `events` nicht.
-- AC-04 erfüllt im Code (`frontend/src/world/WorldBoss.tsx`), `task check:dev` steht aus.
-- AC-02 teilweise: #875 wendet Skins auf Gegner an (`actors/catalog.rs` › `skinned`), Rückfall auf das Basis-Asset ist da. Objekt-Skins und Log bei fehlendem Ersatz-Asset fehlen, Ticket nötig.
-- AC-01 offen: Bau und Endboss je Biom, kein Standbild-Test. WE6.6 liefert ihn nach.
-- Befund: „Erlaubte Dateien“ nennen `tools/k3c-workbench/internal/{world,mcpsrv}/**` und `frontend/src/world/**`; der Code liegt in `tools/k3c-studio/`. Vor dem Abnahme-Ticket korrigieren.
-- Abnahme-Ticket erst nach AC-01. Sichtprüfung der Welten-Oberfläche und B-993/AC-03 durch 🧑.
+- AC-01 umgesetzt, geprüft: WE6.6 Test endbosse_je_tiefe_mit_asset_oder_basisart (Tiefen 0 bis 4), Basisart-Ersatz in `add_bosses`.
+- AC-02 umgesetzt, geprüft: Figuren-Skins (#875) und Objekt-Skins (#885) mit Rückfall auf das Basis-Asset.
+- AC-03 umgesetzt, geprüft: Tests in `tools/k3c-studio/internal/world/edit_endboss_skins_test.go`, `edit_override_lists_test.go`; MCP-Roundtrip-Test und Beschreibung fehlen (B-1266).
+- AC-04 umgesetzt im Code (`WorldBoss.tsx`); `task check:dev` rot nur wegen gocyclo in services/config.go (B-1266), Tests grün.
+- `task check` rot nur durch `.work/ru33` (fremd); `task check:go` rot in Go-Engine-Paketen trace, room, sim (B-1266, nicht WE6).
+- Abnahme-Ticket B-1267 (Race, Gen, Sichtprüfungen 🧑). Hinweis: Die Erlaubten Dateien nennen `tools/k3c-workbench/...`, der Code liegt in `tools/k3c-studio/`.

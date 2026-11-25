@@ -216,6 +216,9 @@ impl Planner {
         self.entities(w, k, biome);
         self.nodes(w, k, biome);
         self.bottle(w, k, clock); // GS4.4: Flasche am Strand, nur wenn die Sim sie liegen hat
+        if let Some(x) = info.and_then(|i| i.bottle_goal) {
+            self.bottle_glow(x, k, clock); // GS4.7: Leuchten am markierten Ziel
+        }
         self.sites_pass(w, info, k, false);
         self.cargo(w, k);
         self.mount_gate(w, k);

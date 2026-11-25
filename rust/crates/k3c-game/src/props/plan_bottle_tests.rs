@@ -74,3 +74,21 @@ fn ausserhalb_des_bildes_nichts_zeichnen() {
     // gleiche Flasche, Kamera davor: sichtbar
     assert!(!plan_bottle(&stufe(Some(0.0)), &crate::props::testutil::camera(0.0), 0.0).is_empty());
 }
+
+/// GS4.7: Das Leuchten am Ziel besteht aus drei Scheiben im Bild, pulsiert mit der Uhr und fehlt außerhalb des Bildes.
+#[test]
+fn leuchten_am_ziel_pulsiert_und_fehlt_ausserhalb() {
+    let glow = |x: f64, clock: f64| {
+        let mut p = Planner::new(None);
+        p.bottle_glow(x, &crate::props::testutil::camera(0.0), clock);
+        p.body
+    };
+    let a = glow(0.0, 0.0);
+    let b = glow(0.0, 0.8);
+    assert_eq!(a.len(), 3, "drei Scheiben");
+    assert!(
+        a.iter().zip(&b).any(|(p, q)| p.alpha != q.alpha),
+        "pulsiert mit der Uhr"
+    );
+    assert!(glow(5000.0, 0.0).is_empty(), "außerhalb des Bildes nichts");
+}

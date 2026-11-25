@@ -1,6 +1,6 @@
 # WE8.6 · Review WE8 und Abnahme-Ticket
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -60,5 +60,4 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+AC-01 umgesetzt (WE8.1). AC-02, AC-03 geprüft: WE8.7, Reviewer k3c-reviewer ohne hohen Befund. AC-04 geprüft: WE8.8, event_veil-Tests grün. AC-05 verschoben: nur Feindnamen gesetzt, Events blockiert durch B-1260 (Entscheidung 013), Studio-MCP war nicht erreichbar; Sichtprüfung 🧑 B-996/AC-03 offen. AC-06 teilweise: testdata/golden unverändert durch WE8; `task check:go` rot nur an bekannten Befunden (Golden trace/room/sim), `task check` rot durch Altlast .work/ru36 (238 Dateien) und 5 bekannte Tests. Befund MITTEL B-1268 (Events ohne Wirkung angekündigt). Abnahme-Ticket B-1269.

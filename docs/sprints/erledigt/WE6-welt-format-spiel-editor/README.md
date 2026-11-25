@@ -1,6 +1,6 @@
 # WE6 · CLI, DEV · Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** CLI, DEV
 - **Reife:** bereit
@@ -70,7 +70,7 @@ Keine blockierende. Defaults in den Tickets (Größe des Ersatz-Bosses B-993, Um
 | WE6.2 | `WE6.2-spiel-skins.md` | Umsetzung | autonom | verworfen |
 | WE6.3 | `WE6.3-welten-mcp-neue-felder.md` | Umsetzung | autonom | fertig |
 | WE6.4 | `WE6.4-welten-editor-neue-felder.md` | Umsetzung | autonom | fertig |
-| WE6.5 | `WE6.5-review.md` | Review | autonom | offen |
+| WE6.5 | `WE6.5-review.md` | Review | autonom | fertig |
 | WE6.6 | `WE6.6-spiel-endboss-bau-skins-rust.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -79,6 +79,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-24 (WE6.5): AC-01 bis AC-04 laut Session-Ergebnissen von WE6.3, WE6.4, WE6.6 umgesetzt und per Tests belegt. Befunde: B-1266 (gocyclo, MCP-Roundtrip, Go-Testfehler außerhalb WE6). Abnahme-Ticket B-1267 (Race, Gen, 🧑 Sichtprüfungen B-993/AC-03, B-987/AC-04).

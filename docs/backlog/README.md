@@ -296,6 +296,10 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WE8 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
 | [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | GS3 | Trophäen-Assets an die Spielansicht binden |
 | [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | GS3 | Abnahme Sprint GS3: Andenken und Chronik |
+| [B-1266](B-1266-befunde-review-we6.md) | DEV | Problem | mittel | offen | WE6 | Review-Befunde WE6: gocyclo in services/config.go, MCP-Beschreibung ohne endBoss/skins/events, Go-Tests rot |
+| [B-1267](B-1267-abnahme-we6.md) | DEV | Problem | mittel | offen | WE6 | Abnahme-Läufe WE6: Race, Gen und Sichtprüfungen Endboss, Bau, Skins, Welten-Editor |
+| [B-1268](B-1268-events-ankuendigung-ohne-wirkung.md) | SIM | Problem | mittel | offen | WE8 | Banner und Schleier der Welt-Events erscheinen auch im Frieden, unter Tage und ohne Portale |
+| [B-1269](B-1269-abnahme-we8.md) | SIM | Schuld | mittel | offen | WE8 | Abnahme-Läufe WE8: Sim, Balance, Gen, Race |
 | [B-1264](B-1264-wald-frame-zeit-messen.md) | CLI | Schuld | mittel | offen | RU43 | Die Frame-Zeit des dichteren Waldes ist gemessen (Replay headless, Vorher/Nachher) |
 | [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | RU43 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
 | [B-1270](B-1270-hubfixture-pfad-go-test.md) | CLI | Problem | niedrig | offen | RU33 | Go-Test TestHubFixtureDesMocksIstDieAntwortDerEngine liest den alten Workbench-Pfad |

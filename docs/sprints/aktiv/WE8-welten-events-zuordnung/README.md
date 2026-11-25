@@ -73,9 +73,9 @@ Keine blockierende außer der Abhängigkeit von B-969 (Wetter-Rahmen). Defaults 
 | WE8.3 | `WE8.3-events-sandsturm-nebel.md` | Umsetzung | autonom | verworfen |
 | WE8.4 | `WE8.4-spiel-zeigt-events.md` | Umsetzung | autonom | verworfen |
 | WE8.5 | `WE8.5-welten-zuordnen.md` | Umsetzung | autonom | offen |
-| WE8.6 | `WE8.6-review.md` | Review | autonom | offen |
+| WE8.6 | `WE8.6-review.md` | Review | autonom | fertig |
 | WE8.7 | `WE8.7-events-sim-rust.md` | Umsetzung | autonom | fertig |
-| WE8.8 | `WE8.8-spiel-zeigt-events-rust.md` | Umsetzung | autonom | offen |
+| WE8.8 | `WE8.8-spiel-zeigt-events-rust.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -83,6 +83,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-24: AC-01 bis AC-04 erfüllt (WE8.1, WE8.7, WE8.8). AC-05 offen: Events der drei Welten warten auf B-1260, Sichtprüfung 🧑 B-996/AC-03. AC-06: Golden unverändert, check:go nur an bekannten Altlasten rot. Befund B-1268. Abnahme-Ticket B-1269.

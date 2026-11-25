@@ -20,6 +20,9 @@ pub struct Campaign {
     pub fresh: bool,
     /// Schwierigkeitsgrad des laufenden Spiels für das Siegel im HUD (ECO1.2); leer = unbekannt (Standardgrad)
     pub grade: String,
+    /// Geschichtszeilen der Flaschenpost der Welt (`story.bottles`, GS4.7); die n-te Flasche zeigt Eintrag `line` aus dem
+    /// Ereignis `bottleFound`. Leer = keine Zeilen.
+    pub bottles: std::rc::Rc<Vec<Vec<String>>>,
 }
 
 /// EndHolder ist die optionale Rolle eines Listeners, der am Spielende noch etwas zeigt (HUD: Zeilen der Geschichte

@@ -77,6 +77,8 @@ pub struct SeatState {
     pub saved_until: f64,
     pub gold: GoldFlash,
     pub radar: Vec<RadarMarker>,
+    /// Ziel des Flaschenpost-Pfeils dieser Zelle (GS4.7); `None` = keine Markierung
+    pub arrow: Option<super::bottle::ArrowAim>,
     /// Biome der Insel als Zeile am Kompass; nur im Hub (Tiefe 0) gefüllt (LA1.3, B-1167)
     pub biomes_s: String,
     pub biomes_k: u64,
@@ -192,6 +194,7 @@ impl SeatState {
             .zip(f.monarch(s.player));
         let Some(((stage, w), m)) = found else {
             self.active = false;
+            self.arrow = None;
             self.menu = MenuState::default();
             self.sea = SeaView::default();
             return;
@@ -209,6 +212,8 @@ impl SeatState {
         self.events(lang, f, stage);
         self.hints(lang, w, m, guide, seen, sv);
         radar_markers(&mut self.radar, w, m.index);
+        super::bottle::bottle_markers(&mut self.radar, w, crate::view::bottle::goal_in(f, s.stage));
+        self.arrow = super::bottle::arrow_aim(f, s.stage, w, m.x);
         self.island_line(lang, f, stage);
         self.width_units = w.width_units;
         self.citizen_labels(lang, w);
