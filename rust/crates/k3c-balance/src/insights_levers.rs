@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::insights::Insights;
 use crate::insights_next::{Command, WHERE_CHAT, worst};
-use crate::pending::LeverPlan;
+use crate::insights_plain::LeverPlan;
 
 /// Ein Wert in data/ mit allen verletzten Zielen, die er verbessern soll. `conflict`: Ein anderes verletztes Ziel braucht
 /// denselben Wert in die Gegenrichtung; dann hilft der Hebel dem einen und schadet vermutlich dem anderen.

@@ -1,5 +1,4 @@
-//! Tests zu `progress.rs` (Port von `engine/balance/progress_test.go`, B-648). Nur der Test zum Vergleich mit dem
-//! letzten Lauf (`findPrevious`, `BuildInsights`) wartet auf RU31.
+//! Tests zu `progress.rs` (Port von `engine/balance/progress_test.go`, B-648).
 
 use std::collections::BTreeMap;
 
@@ -7,12 +6,15 @@ use k3c_data::balance_targets::{FILE, Target, Targets};
 
 use crate::evaluate::{STATUS_NARROW, STATUS_OK};
 use crate::evaluate_tests::{metrics_with, report, seeds, share_target, targets};
+use crate::hints::default_hints;
+use crate::insights::{Meta, build_insights};
+use crate::insights_progress::{find_previous, mark_arrows, write_result};
 use crate::island_world::{load_world, shared};
 use crate::metrics::{DawnMetrics, Metrics};
 use crate::metrics_island::{BossMetrics, StageMetrics};
-use crate::progress::{QualityView, blocker, median_day, milestone_defs, progress_of, test_match};
+use crate::progress::{GoalView, QualityView, blocker, median_day, milestone_defs, progress_of, test_match};
 use crate::run::{Report, RunResult, Scenario};
-use crate::summary::Summarize;
+use crate::summary::{Summarize, Summary};
 use crate::targets::{default_targets, load_targets};
 
 /// B-648/AC-01: Das Urteil hängt nur an den Zielen mit Rolle goal; verfehlte guard-Korridore ändern es nie.
@@ -239,11 +241,79 @@ fn kein_blocker_bei_sieg() {
     assert!(b.is_empty(), "Blocker bei Sieg: {b:?}");
 }
 
+/// Schreibt einen Bericht `stem.json` mit Fortschritt (Anführer an `day`) in `dir`.
+fn bericht_schreiben(dir: &std::path::Path, stem: &str, day: i64) -> Summary {
+    {
+        let sc = Scenario {
+            players: 1,
+            bot: "wirtschaft".into(),
+            days: 40,
+            world: "standard".into(),
+            helps: "voll".into(),
+            ..Scenario::default()
+        };
+        let res = island_result("k3c-dev", &[1, 6], &goblin(day), None);
+        let r = Report {
+            matrix: Default::default(),
+            results: vec![res],
+        };
+        let s = Summary {
+            version: 1,
+            seeds: 1,
+            goal: Some(GoalView {
+                total: 1,
+                ..GoalView::default()
+            }),
+            progress: progress_of(&r, &sc, &["k3c-dev".to_string()]),
+            ..Summary::default()
+        };
+        std::fs::write(dir.join(format!("{stem}.json")), s.json().expect("JSON")).expect("schreiben");
+        s
+    }
+}
+
 /// B-648/AC-05: Pfeile gegen den letzten Lauf gleicher Konfiguration; result.json hat die Felder für Agenten.
 #[test]
-#[ignore = "wartet auf RU31"]
 fn vergleich_mit_letztem_lauf_und_result_json() {
-    // Go: `findPrevious`, `markArrows`, `BuildInsights`, `writeResult` (insights.go, RU31); `Summary::json` liefert RU28.3.
+    let dir = std::env::temp_dir().join(format!("k3c-balance-vergleich-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).expect("Ordner");
+    let mk = |stem: &str, day: i64| bericht_schreiben(&dir, stem, day);
+    mk("balance-20261001-100000", 9);
+    let mut cur = mk("balance-20261002-100000", 5);
+    let stem = dir.join("balance-20261002-100000").to_string_lossy().into_owned();
+    let (prev, name) = find_previous(&stem, &cur).expect("früherer Lauf");
+    assert!(name.ends_with("balance-20261001-100000"), "{name}");
+    mark_arrows(
+        cur.progress.as_mut().expect("Fortschritt"),
+        prev.progress.as_ref().expect("Fortschritt"),
+    );
+    for row in &cur.progress.as_ref().expect("Fortschritt").ladder {
+        if row.id == "boss:goblinLeader" {
+            assert_eq!(row.arrow, "▲", "Tag 5 statt 9");
+        }
+    }
+    let h = default_hints().expect("Richtwerte");
+    let mut inn = build_insights(
+        &cur,
+        None,
+        &h,
+        &Meta {
+            run: "r".into(),
+            ..Meta::default()
+        },
+    );
+    inn.previous = name;
+    write_result(&stem, &inn).expect("result.json");
+    let raw = std::fs::read_to_string(dir.join("result.json")).expect("lesen");
+    for key in ["\"goalReached\"", "\"milestones\"", "\"previous\"", "\"testMatch\""] {
+        assert!(
+            raw.contains(key),
+            "result.json ohne {key}:
+{raw}"
+        );
+    }
+    let _ = std::fs::remove_dir_all(&dir);
 }
 
 /// Unterer Median: bei gerader Anzahl der kleinere der beiden mittleren Tage; ohne Tage keiner.

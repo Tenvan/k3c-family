@@ -1,7 +1,7 @@
 //! Tuning-Hinweise und Vorschlag für den nächsten Lauf (Port von `engine/balance/insights_next.go`, B-632). Die Befehle
 //! passen zu den Werkzeugen: sim_test (voller Lauf), task balance:targets (Replays nach reports/balance-replays/), replay_run,
 //! Lauf-Spec der Balancing-Seite und CLI für --tune. Dazu die Hilfen aus `insights_text.go` und `insights_plain.go`, die
-//! `worst` und die Hinweise brauchen (`label`, `worst`, `above`, `below`, `word`); RU31.3 und RU31.4 übernehmen den Rest.
+//! `worst` und die Hinweise brauchen (`label`, `worst`); `above`, `below`, `word` stehen in `insights_plain`, RU31.4 übernimmt den Rest.
 
 use std::cmp::Ordering;
 use std::collections::HashMap;
@@ -11,7 +11,8 @@ use serde::{Deserialize, Serialize};
 use crate::hints::Lever;
 use crate::insights::{Insights, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW, TargetInsight};
 use crate::insights_levers::recommendations;
-use crate::pending::{Hint, LeverPlan};
+use crate::insights_plain::LeverPlan;
+use crate::pending::Hint;
 use crate::summary::Summary;
 use crate::summary_text::num;
 use crate::tuneparam::{MAX_TUNE_PARAMS, TUNE_SEARCH, parse_tune_param};
@@ -24,7 +25,7 @@ pub const WHERE_SHELL: &str = "shell";
 pub const WHERE_WORKBENCH: &str = "workbench";
 
 /// Höchstens drei Schritte des Hebels in seine Richtung, ab dem Wert in data/.
-const TUNE_RANGE: f64 = 3.0;
+pub(crate) const TUNE_RANGE: f64 = 3.0;
 
 /// Ein kopierbarer Aufruf. `where`: chat (Auftrag an Claude im Chat, Claude ruft das MCP-Werkzeug), shell (Terminal im
 /// Checkout) oder workbench (Balancing-Seite › Lauf-Spec).
@@ -45,15 +46,6 @@ pub struct NextRun {
     pub commands: Vec<Command>,
 }
 
-/// Was ein Wert über dem Korridor für das Spiel heißt; unbekannte Kennzahlen bleiben bei „zu hoch“ (Go: `highMeans`).
-fn high_means(measure: &str) -> Option<&'static str> {
-    match measure {
-        "castleHeld" | "firstWallBeforeDusk1" | "endbossDefeated" | "caveBeforeDay6" => Some("zu leicht"),
-        "endbossDay" | "destroyedPerWave" => Some("zu schwer"),
-        _ => None,
-    }
-}
-
 impl TargetInsight {
     /// Name des Ziels mit Grad, wenn nicht normal (Go: `label`).
     pub fn label(&self) -> String {
@@ -62,31 +54,6 @@ impl TargetInsight {
         } else {
             format!("{} ({})", self.name, self.grade)
         }
-    }
-
-    /// Wahr, wenn der Wert über der Obergrenze liegt (Go: `above`).
-    pub fn above(&self) -> bool {
-        self.upper.is_some_and(|u| self.value > u)
-    }
-
-    /// Wahr, wenn der Wert unter der Untergrenze liegt (Go: `below`).
-    pub fn below(&self) -> bool {
-        self.lower.is_some_and(|l| self.value < l)
-    }
-
-    /// „zu leicht“ / „zu schwer“ bzw. „zu hoch“ / „zu niedrig“ für die Richtung der Abweichung (Go: `word`).
-    pub fn word(&self) -> &'static str {
-        if self.above() {
-            return high_means(&self.measure).unwrap_or("zu hoch");
-        }
-        if self.below() {
-            return match high_means(&self.measure) {
-                Some("zu leicht") => "zu schwer",
-                Some("zu schwer") => "zu leicht",
-                _ => "zu niedrig",
-            };
-        }
-        ""
     }
 }
 

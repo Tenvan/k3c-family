@@ -4,18 +4,12 @@ use k3c_det::golden;
 
 use crate::hints::{FIGURE_KEYS, default_hints, lever_path, load_hints};
 use crate::insights_files::{meta_of, read_baseline, reevaluate};
+use crate::tuneparam::parse_tune_param;
 
 /// B-632/AC-02: Die eingebettete Richtwert-Datei lädt; jeder Hebel zeigt auf eine Zahl in data/ (ein umbenannter Pfad
-/// fällt hier auf, nicht erst im Bericht). Go prüft den Pfad mit `ParseTuneParam` (RU31.5, `tuneparam.rs`); der Teil, der
-/// ohne sie läuft, steht in `richtwerte_laden_ohne_tuning`.
+/// fällt hier auf, nicht erst im Bericht).
 #[test]
-#[ignore = "wartet auf RU31"]
-fn richtwerte_laden() {}
-
-/// Der Teil von `richtwerte_laden`, den `lever_path` allein erfüllt: Die Datei lädt, jede Kennzahl hat einen Richtwert,
-/// jeder Hebelpfad hat die Form `datei.json:a.b.c`.
-#[test]
-fn richtwerte_laden_ohne_tuning() {
+fn richtwerte_laden() {
     let h = default_hints().expect("Richtwerte laden");
     for k in FIGURE_KEYS {
         assert!(h.figures.contains_key(k), "Richtwert für {k} fehlt");
@@ -23,6 +17,9 @@ fn richtwerte_laden_ohne_tuning() {
     for (measure, l) in &h.levers {
         for lv in l.low.iter().chain(&l.high) {
             assert!(lever_path(&lv.path), "hebel {measure}: pfad {:?}", lv.path);
+            if let Err(e) = parse_tune_param(&format!("{}=0..1", lv.path)) {
+                panic!("hebel {measure}: {e}");
+            }
         }
     }
 }

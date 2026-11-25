@@ -14,7 +14,9 @@ use crate::hints::{Hints, Lever};
 use crate::insights_figures::{FigureInsights, figure_insights};
 use crate::insights_levers::{LeverGroup, lever_groups};
 use crate::insights_next::{NextRun, hints, next_run};
-use crate::pending::{Hint, LeverPlan, gap_text, goal_text, plain, plans, strengths, summary, trend_plain, weaknesses};
+use crate::insights_plain::{LeverPlan, gap_text, plain, plans, trend_plain};
+use crate::insights_progress::goal_text;
+use crate::pending::{Hint, strengths, summary, weaknesses};
 use crate::progress::{GoalView, Progress, QualityView};
 use crate::summary::{Change, Entry, Summary, compare};
 use crate::targets::KIND_SHARE;
@@ -204,7 +206,7 @@ pub fn build_insights(s: &Summary, base: Option<&Summary>, h: &Hints, m: &Meta) 
     inn
 }
 
-fn target_insight(e: &Entry, h: &Hints) -> TargetInsight {
+pub(crate) fn target_insight(e: &Entry, h: &Hints) -> TargetInsight {
     let (v, g) = (&e.verdict, &e.verdict.target);
     let mut t = TargetInsight {
         name: g.name.clone(),

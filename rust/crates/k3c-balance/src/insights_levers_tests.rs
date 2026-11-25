@@ -4,7 +4,7 @@ use crate::hints::Lever;
 use crate::insights::{Insights, LIGHT_RED, TargetInsight};
 use crate::insights_levers::{lever_groups, recommendations};
 use crate::insights_next::WHERE_CHAT;
-use crate::pending::LeverPlan;
+use crate::insights_plain::LeverPlan;
 
 fn rot(name: &str, distance: f64, levers: &[(&str, &str)]) -> TargetInsight {
     TargetInsight {

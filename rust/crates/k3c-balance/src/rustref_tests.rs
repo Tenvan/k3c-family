@@ -43,41 +43,18 @@ fn summary_run7() {
     assert_eq!(s.markdown_with(None, None), md.replace("\r\n", "\n"), "summary-run7.md");
 }
 
-/// Nimmt die Felder aus der Auswertung, die spätere Sessions liefern (Texte RU31.3 und RU31.4); sie fehlen in beiden
-/// Bäumen. Von RU31.2 stehen `hints` (ohne `why` und `plans`) und `next` (ohne den Empfehlungsblock, der die Pläne braucht)
-/// im Vergleich.
+/// Nimmt die Felder aus der Auswertung, die RU31.4 liefert (Kurzauswertung, Stärken, Schwächen); sie fehlen in beiden
+/// Bäumen. Zeilen, Pläne, Hinweise, Hebel-Gruppen und der Empfehlungsblock stehen seit RU31.3 im Vergleich.
 fn ohne_spaetere_felder(mut v: serde_json::Value) -> serde_json::Value {
     let Some(o) = v.as_object_mut() else { return v };
-    for k in ["summary", "strengths", "weaknesses", "leverGroups"] {
+    for k in ["summary", "strengths", "weaknesses"] {
         o.remove(k);
-    }
-    for h in o.get_mut("hints").and_then(|t| t.as_array_mut()).into_iter().flatten() {
-        for k in ["why", "plans"] {
-            h.as_object_mut().map(|h| h.remove(k));
-        }
-    }
-    if let Some(c) = o
-        .get_mut("next")
-        .and_then(|n| n.get_mut("commands"))
-        .and_then(|c| c.as_array_mut())
-    {
-        c.retain(|c| c["label"] != "Alle Empfehlungen als ein Block");
-    }
-    for t in o
-        .get_mut("targets")
-        .and_then(|t| t.as_array_mut())
-        .into_iter()
-        .flatten()
-    {
-        for k in ["plain", "gap", "trendText", "plans"] {
-            t.as_object_mut().map(|t| t.remove(k));
-        }
     }
     v
 }
 
 /// RU31.1: Die Auswertung aus dem echten Bericht simtest-run-7 (kein Lauf), ohne und mit Baseline, hat dasselbe JSON wie Go
-/// (`TestRustRefInsights`), soweit RU31.1 sie liefert; `generated` ist in beiden leer.
+/// (`TestRustRefInsights`), soweit RU31.1 bis RU31.3 sie liefern; `generated` ist in beiden leer.
 #[test]
 fn insights_run7() {
     let dir = golden::testdata().join("rust/balance");
@@ -116,18 +93,9 @@ fn abschnitt<'a>(md: &'a str, heading: &str) -> &'a str {
     &md[i..i + heading.len() + rest.find("\n## ").unwrap_or(rest.len())]
 }
 
-/// Nimmt den Befehl „Alle Empfehlungen als ein Block“ aus dem Text (er braucht die Pläne aus RU31.3).
-fn ohne_empfehlungen(text: &str) -> String {
-    let Some(i) = text.find("\nAlle Empfehlungen als ein Block") else {
-        return text.to_string();
-    };
-    let end = text[i..].find("```\n\n").map_or(text.len(), |e| i + e + 4);
-    format!("{}{}", &text[..i], &text[end..])
-}
-
 /// RU31.2: Der Markdown-Text der Auswertung aus `insights_markdown` hat dieselben Abschnitte wie Go (`insights-run7.md`,
-/// `insights-run7-trend.md`), soweit sie nicht von RU31.3 bis RU31.4 abhängen: Zählung der Ampeln, Delta, nächster Lauf
-/// (ohne den Empfehlungsblock) und Kennzahlen.
+/// `insights-run7-trend.md`), soweit sie nicht von RU31.4 abhängen: Zählung der Ampeln, Delta, nächster Lauf
+/// (mit dem Empfehlungsblock) und Kennzahlen.
 #[test]
 fn insights_markdown_run7() {
     let dir = golden::testdata().join("rust/balance");
@@ -162,7 +130,7 @@ fn insights_markdown_run7() {
             abschnitt(&want, "## Nächster Lauf"),
             abschnitt(&got, "## Nächster Lauf"),
         );
-        assert_eq!(ohne_empfehlungen(w), ohne_empfehlungen(g), "{file}: Nächster Lauf");
+        assert_eq!(w, g, "{file}: Nächster Lauf");
     }
 }
 

@@ -13,7 +13,7 @@ pub fn num(x: f64) -> String {
 }
 
 impl Entry {
-    fn unit(&self) -> &'static str {
+    pub(crate) fn unit(&self) -> &'static str {
         if self.verdict.target.kind == KIND_SHARE {
             " %"
         } else {
