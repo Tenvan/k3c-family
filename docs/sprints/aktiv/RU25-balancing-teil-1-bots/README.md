@@ -98,7 +98,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU25.2 | `RU25.2-balance-bot-wirtschaft-clear-abstieg.md` | Umsetzung | autonom | fertig |
 | RU25.3 | `RU25.3-balance-bot-boss-learn-crown-helps-hints.md` | Umsetzung | autonom | fertig |
 | RU25.4 | `RU25.4-balance-run-parallel-progress.md` | Umsetzung | autonom | fertig |
-| RU25.5 | `RU25.5-balance-replay-island-world-seedmode-scope.md` | Umsetzung | autonom | offen |
+| RU25.5 | `RU25.5-balance-replay-island-world-seedmode-scope.md` | Umsetzung | autonom | fertig |
 | RU25.6 | `RU25.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
