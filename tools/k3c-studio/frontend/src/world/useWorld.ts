@@ -241,6 +241,21 @@ function useWorldLoad(id: string, tick: number, set: LoadSetters, afterLoad: { c
   }, [id, tick]);
 }
 
+function useSetValue(id: string, current: { current: string }, setValues: (v: WorldValuesView) => void, setNotice: SetNotice) {
+  const setValue = async (file: string, path: string[], value: unknown) => {
+    const world = id;
+    const v = await backend.worldOverrideSet(world, file, path, value).catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }));
+    if (current.current !== world) return; // inzwischen eine andere Welt gewählt
+    if (v.error || !('entries' in v)) {
+      setNotice({ tone: 'error', text: v.error || 'keine Antwort' });
+      return;
+    }
+    setValues(v);
+    setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${file}.${path.join('.')} gespeichert` });
+  };
+  return setValue;
+}
+
 export function useWorld(): WorldState {
   const [worlds, setWorlds] = useState<WorldInfo[]>([]);
   const [id, setId] = useState(() => loadText('world.id', 'standard'));
@@ -273,17 +288,6 @@ export function useWorld(): WorldState {
     setValues(null);
     setId(next);
   };
-  const setValue = async (file: string, path: string[], value: unknown) => {
-    const world = id;
-    const v = await backend.worldOverrideSet(world, file, path, value).catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }));
-    if (current.current !== world) return; // inzwischen eine andere Welt gewählt
-    if (v.error || !('entries' in v)) {
-      setNotice({ tone: 'error', text: v.error || 'keine Antwort' });
-      return;
-    }
-    setValues(v);
-    setNotice(v.warnings?.length ? { tone: 'warn', text: v.warnings.join(' · ') } : { tone: 'ok', text: `${file}.${path.join('.')} gespeichert` });
-  };
   const create = async (newId: string, name: string, extendsId: string) => {
     const v = await backend.worldCreate(newId, name, extendsId).catch((e: unknown) => ({ id: newId, warnings: [] as string[], error: e instanceof Error ? e.message : String(e) }));
     if (v.error) return v.error;
@@ -300,6 +304,7 @@ export function useWorld(): WorldState {
     choose('standard');
     return '';
   };
+  const setValue = useSetValue(id, current, setValues, setNotice);
   const { setEtappe } = useEtappe(id, current, setDetail, setNotice);
   const { setKind, setParent } = useKind(id, current, setDetail, setWorlds, setNotice);
   const { picks, setPick } = usePicks(id, current, setNotice);

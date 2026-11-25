@@ -85,6 +85,9 @@ describe('Seite Spieltest', () => {
     expect(rows(host)).toContain('2026-11-20-1');
   });
 
+});
+
+describe('Seite Spieltest: Löschen', () => {
   it('Session löschen entfernt sie erst nach Bestätigung aus der Liste', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-19-1"]') as HTMLElement).click());
@@ -120,6 +123,9 @@ describe('Seite Spieltest', () => {
     expect(button('Session löschen', host).disabled).toBe(true);
   });
 
+});
+
+describe('Seite Spieltest: Player und Neu laden', () => {
   it('Player: Audio und Video mit Adresse der Datei', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
@@ -290,6 +296,9 @@ describe('Auswertung (B-1223)', () => {
     expect(panel().querySelector('[data-describe-one]')).toBeNull(); // abgewähltes Bild: kein Einzel-Knopf
   });
 
+});
+
+describe('Auswertung (B-1223): Bilder und Liste', () => {
   it('Alle Bilder auf einmal ab- und anwählen (B-1240)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-20-1"]') as HTMLElement).click());
@@ -339,6 +348,9 @@ describe('Auswertung (B-1223)', () => {
     expect(img().style.opacity).toBe('1');
   });
 
+});
+
+describe('Auswertung (B-1223): Befunde und Sperren', () => {
   it('Befunde: Haken speichern, Duplikat und Prompt-Knöpfe (B-1224)', async () => {
     const host = await mount();
     act(() => (host.querySelector('[data-session="2026-11-21-1"]') as HTMLElement).click());

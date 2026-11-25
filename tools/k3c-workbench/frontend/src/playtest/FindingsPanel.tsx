@@ -67,22 +67,47 @@ interface RowProps {
   onChange: (p: PlaytestFindingPatch) => void;
 }
 
+type RowChange = (p: PlaytestFindingPatch) => void;
+
+/** Kopfzeile eines Befunds: Haken mit Zitat, Zeit (springt im Player), Ticket- und Duplikat-Marke. */
+function RowHead({ f, captureMs, locked, onSeek, onChange }: Omit<RowProps, 'sessionId'> & { locked: boolean }) {
+  return (
+    <Flex gap="3" align="start" wrap="wrap">
+      <CheckField label={`„${f.quote}“`} checked={f.selected} disabled={locked}
+        onCheckedChange={(c) => onChange({ selected: c === true })} />
+      <Text size="1" color="gray" role="button" tabIndex={0} style={{ cursor: 'pointer' }} title="Im Player hierhin springen"
+        onClick={() => onSeek(f.ts - captureMs)} onKeyDown={(e) => e.key === 'Enter' && onSeek(f.ts - captureMs)}>
+        {clock(f.ts - captureMs)}
+      </Text>
+      {f.ticket && <StatusBadge tone="ok">{f.ticket}</StatusBadge>}
+      {f.duplicate_of && <StatusBadge tone="warn">Duplikat von {f.duplicate_of}</StatusBadge>}
+    </Flex>
+  );
+}
+
+/** Typ, Prio, Projekt und Sprint eines Befunds. */
+function RowFields({ f, locked, onChange }: { f: PlaytestFinding; locked: boolean; onChange: RowChange }) {
+  return (
+    <Flex gap="2" wrap="wrap" align="center">
+      <SelectField aria-label="Typ" placeholder="Typ" value={f.type ?? ''} disabled={locked}
+        options={TYPES.map((v) => ({ value: v, label: v }))} onChange={(v) => onChange({ type: v })} />
+      <SelectField aria-label="Prio" placeholder="Prio" value={f.prio ?? ''} disabled={locked}
+        options={PRIOS.map((v) => ({ value: v, label: v }))} onChange={(v) => onChange({ prio: v })} />
+      <TextField.Root size="1" aria-label="Projekt" placeholder="Projekt" defaultValue={f.project ?? ''} disabled={locked} style={{ width: 90 }}
+        key={`p${f.project ?? ''}`} onBlur={(e) => e.target.value !== (f.project ?? '') && onChange({ project: e.target.value })} />
+      <TextField.Root size="1" aria-label="Sprint" placeholder="Sprint" defaultValue={f.sprint ?? ''} disabled={locked} style={{ width: 90 }}
+        key={`s${f.sprint ?? ''}`} onBlur={(e) => e.target.value !== (f.sprint ?? '') && onChange({ sprint: e.target.value })} />
+    </Flex>
+  );
+}
+
 function Row({ sessionId, f, captureMs, onSeek, onChange }: RowProps) {
   const nr = /marker-(\d+)\.jpg$/.exec(f.frame ?? '')?.[1];
   const img = nr ? frameUrl(sessionId, Number(nr)) : null;
   const locked = Boolean(f.ticket);
   return (
     <Flex direction="column" gap="1" p="2" data-finding={f.id} style={{ border: '1px solid var(--gray-a5)', borderRadius: 6 }}>
-      <Flex gap="3" align="start" wrap="wrap">
-        <CheckField label={`„${f.quote}“`} checked={f.selected} disabled={locked}
-          onCheckedChange={(c) => onChange({ selected: c === true })} />
-        <Text size="1" color="gray" role="button" tabIndex={0} style={{ cursor: 'pointer' }} title="Im Player hierhin springen"
-          onClick={() => onSeek(f.ts - captureMs)} onKeyDown={(e) => e.key === 'Enter' && onSeek(f.ts - captureMs)}>
-          {clock(f.ts - captureMs)}
-        </Text>
-        {f.ticket && <StatusBadge tone="ok">{f.ticket}</StatusBadge>}
-        {f.duplicate_of && <StatusBadge tone="warn">Duplikat von {f.duplicate_of}</StatusBadge>}
-      </Flex>
+      <RowHead f={f} captureMs={captureMs} locked={locked} onSeek={onSeek} onChange={onChange} />
       {f.duplicate_of && !f.ticket && (
         <Text size="3" weight="bold" color="amber" data-duplicate={f.duplicate_of}>
           Vergleichsticket {f.duplicate_of}: kein neues Ticket nötig, der Befund gehört dorthin (Ticket ergänzen).
@@ -91,16 +116,7 @@ function Row({ sessionId, f, captureMs, onSeek, onChange }: RowProps) {
       {f.context && <Text size="3" as="p" style={{ maxWidth: '80ch', lineHeight: 1.5 }}>{f.context}</Text>}
       {f.error && <Text size="1" color="red">{f.error}</Text>}
       {img && <img src={img} alt={`Bild zu Befund ${f.id}`} loading="lazy" style={{ maxWidth: 560, width: '100%', borderRadius: 4 }} />}
-      <Flex gap="2" wrap="wrap" align="center">
-        <SelectField aria-label="Typ" placeholder="Typ" value={f.type ?? ''} disabled={locked}
-          options={TYPES.map((v) => ({ value: v, label: v }))} onChange={(v) => onChange({ type: v })} />
-        <SelectField aria-label="Prio" placeholder="Prio" value={f.prio ?? ''} disabled={locked}
-          options={PRIOS.map((v) => ({ value: v, label: v }))} onChange={(v) => onChange({ prio: v })} />
-        <TextField.Root size="1" aria-label="Projekt" placeholder="Projekt" defaultValue={f.project ?? ''} disabled={locked} style={{ width: 90 }}
-          key={`p${f.project ?? ''}`} onBlur={(e) => e.target.value !== (f.project ?? '') && onChange({ project: e.target.value })} />
-        <TextField.Root size="1" aria-label="Sprint" placeholder="Sprint" defaultValue={f.sprint ?? ''} disabled={locked} style={{ width: 90 }}
-          key={`s${f.sprint ?? ''}`} onBlur={(e) => e.target.value !== (f.sprint ?? '') && onChange({ sprint: e.target.value })} />
-      </Flex>
+      <RowFields f={f} locked={locked} onChange={onChange} />
     </Flex>
   );
 }

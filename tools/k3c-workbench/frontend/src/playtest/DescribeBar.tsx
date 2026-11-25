@@ -51,27 +51,34 @@ export function useDescribe(sessionId: string, refresh: number, onDone: () => vo
   return { info, model, pickModel, status, busy, error, start, cancel };
 }
 
+/** Fortschritt, Bildmodell und Knopf (Beschreiben bzw. Abbrechen) der Leiste. */
+function DescribeActions({ d, info, running }: { d: Describe; info: VisionInfo; running: boolean }) {
+  const chosen = info.models.find((m) => m.id === d.model) ?? info.models[0];
+  return (
+    <Flex gap="2" align="center">
+      {running && <Text size="2" role="status">{d.status.done}/{d.status.total}</Text>}
+      {info.models.length > 0 && (
+        <SelectField aria-label="Bildmodell" value={chosen?.id ?? ''} disabled={d.busy}
+          options={info.models.map((m) => ({ value: m.id, label: `${m.name} (${m.sizeMb} MB)` }))} onChange={d.pickModel} />
+      )}
+      {running
+        ? <ActionButton variant="soft" color="red" onClick={d.cancel}>Abbrechen</ActionButton>
+        : <ActionButton variant="soft" disabled={!info.ready || d.busy} onClick={() => d.start([])}
+            title="Beschreibt alle ausgewählten Marker-Bilder dieser Session lokal, damit der Chat sie nicht ansehen muss">Markierte Bilder beschreiben</ActionButton>}
+    </Flex>
+  );
+}
+
 /** Leiste über der Zeitleiste: Bildmodell wählen und die ausgewählten Marker-Bilder beschreiben lassen. */
 export function DescribeBar({ d, sessionId }: { d: Describe; sessionId: string }) {
   const { info } = d;
   if (!info) return null;
   const mine = d.status.id === sessionId;
-  const chosen = info.models.find((m) => m.id === d.model) ?? info.models[0];
   return (
     <Flex direction="column" gap="2" data-describe>
       <Flex align="center" justify="between" gap="3" wrap="wrap">
         <Text size="2" weight="bold">Bildbeschreibung</Text>
-        <Flex gap="2" align="center">
-          {d.busy && mine && <Text size="2" role="status">{d.status.done}/{d.status.total}</Text>}
-          {info.models.length > 0 && (
-            <SelectField aria-label="Bildmodell" value={chosen?.id ?? ''} disabled={d.busy}
-              options={info.models.map((m) => ({ value: m.id, label: `${m.name} (${m.sizeMb} MB)` }))} onChange={d.pickModel} />
-          )}
-          {d.busy && mine
-            ? <ActionButton variant="soft" color="red" onClick={d.cancel}>Abbrechen</ActionButton>
-            : <ActionButton variant="soft" disabled={!info.ready || d.busy} onClick={() => d.start([])}
-                title="Beschreibt alle ausgewählten Marker-Bilder dieser Session lokal, damit der Chat sie nicht ansehen muss">Markierte Bilder beschreiben</ActionButton>}
-        </Flex>
+        <DescribeActions d={d} info={info} running={d.busy && mine} />
       </Flex>
       {!info.ready && <NoticeCard title="Beschreiben gesperrt" tone="warn">{info.message}</NoticeCard>}
       {mine && !d.busy && d.status.error && <NoticeCard title="Bildbeschreibung" tone="error">{d.status.error}</NoticeCard>}

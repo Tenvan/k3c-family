@@ -1,18 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { ActionButton, CardButton, Checkbox, Flex, Heading, SelectField, StatusBadge, Text } from '@webkit/atoms';
+import { useState } from 'react';
+import { ActionButton, Flex, Heading, SelectField, Text } from '@webkit/atoms';
 import { NoticeCard } from '@webkit/molecules';
-import { DescribeBar, useDescribe } from './DescribeBar';
+import { DescribeBar, useDescribe, type Describe } from './DescribeBar';
 import { FindingsPanel } from './FindingsPanel';
-import { frameUrl, playtestApi } from './api';
 import { statsLines } from './format';
-import { clock } from './RecordBar';
-import { loadText, savePref } from '../lib/prefs';
-import type { PlaytestCapability, PlaytestJob, PlaytestModel, PlaytestSession, PlaytestTimeline } from './types';
-
-const message = (e: unknown) => (e instanceof Error ? e.message : String(e));
-const LANGS = ['de', 'en', 'auto'];
-const NO_JOB: PlaytestJob = { running: false, id: '', step: '', done: 0, total: 0, message: '', error: '' };
+import { Entries } from './TimelineEntries';
+import { LANGS, useEvalSettings, useTimeline, useTranscribe } from './useTimeline';
+import type { PlaytestSession, PlaytestTimeline } from './types';
 
 interface Props {
   session: PlaytestSession;
@@ -24,194 +18,96 @@ interface Props {
   refresh?: number;
 }
 
-/** Auswertung (B-1223): Knopf Auswerten (Transkript aus voice.wav, Bild je Marker) mit Fortschritt und Abbrechen, dazu
- *  die Zeitleiste aus Sätzen, Markern und deren Bildern; ein Klick springt im Player an die Stelle. */
-export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props) {
-  const [cap, setCap] = useState<PlaytestCapability | null>(null);
-  const [job, setJob] = useState(NO_JOB);
-  const [timeline, setTimeline] = useState<PlaytestTimeline | null>(null);
-  const [error, setError] = useState('');
-  const [models, setModels] = useState<PlaytestModel[]>([]);
-  const [model, setModel] = useState(() => loadText('playtest.model', ''));
-  const [lang, setLang] = useState(() => loadText('playtest.language', 'de'));
-  const mine = job.id === s.id;
-  const busy = job.running;
+type Transcribe = ReturnType<typeof useTranscribe>;
+type Settings = ReturnType<typeof useEvalSettings>;
 
-  const loadTimeline = useCallback(() => {
-    if (s.running) return;
-    playtestApi.timeline(s.id).then(setTimeline, (e) => setError(message(e)));
-  }, [s.id, s.running]);
+/** Der Auswerten-Knopf ist gesperrt ohne Sprachspur, bei laufender Aufnahme, fremdem Lauf oder fehlenden Voraussetzungen. */
+const evalBlocked = (s: PlaytestSession, tr: Transcribe) =>
+  !s.hasVoice || s.running || (tr.busy && !tr.mine) || tr.cap?.ready === false;
 
-  useEffect(() => {
-    playtestApi.check().then(setCap, (e) => setError(message(e)));
-    playtestApi.transcribeStatus().then(setJob, () => undefined);
-  }, [refresh]);
-  useEffect(() => {
-    setTimeline(null);
-    loadTimeline();
-  }, [loadTimeline, s.stage]);
-  useEffect(() => {
-    if (!busy) return undefined;
-    const t = setInterval(() => void playtestApi.transcribeStatus().then((j) => {
-      setJob(j);
-      if (!j.running) {
-        loadTimeline();
-        onDone();
-      }
-    }, () => undefined), 1000);
-    return () => clearInterval(t);
-  }, [busy, loadTimeline, onDone]);
-
-  useEffect(() => {
-    playtestApi.models().then(setModels, () => undefined);
-  }, [refresh]);
-  const chosen = models.find((m) => m.id === model) ?? models.find((m) => m.default) ?? models[0];
-  const pickModel = (v: string) => { setModel(v); savePref('playtest.model', v); };
-  const pickLang = (v: string) => { setLang(v); savePref('playtest.language', v); };
-
-  const start = async () => {
-    setError('');
-    try {
-      setJob(await playtestApi.transcribe(s.id, { model: chosen?.id ?? '', language: lang }));
-      onDone();
-      loadTimeline();
-    } catch (e) {
-      setError(message(e));
-    }
-  };
-  const describe = useDescribe(s.id, refresh, loadTimeline);
-  // Alle Marker-Bilder auf einmal an- oder abwählen (nacheinander, damit session.json nie gleichzeitig geschrieben wird).
-  const setAll = async (skip: boolean) => {
-    try {
-      for (const e of timeline?.entries ?? []) if (e.frame && e.nr && !!e.skip !== skip) await playtestApi.skipFrame(s.id, e.nr, skip);
-    } catch (err) {
-      setError(message(err));
-    }
-    loadTimeline();
-  };
-  const toggleSkip = (nr: number, skip: boolean) =>
-    void playtestApi.skipFrame(s.id, nr, skip).then(() => loadTimeline(), (e) => setError(message(e)));
-  const cancel = () => void playtestApi.transcribeCancel().catch((e) => setError(message(e)));
-
-  const blocked = !s.hasVoice || s.running || (busy && !mine) || cap?.ready === false;
+/** Fortschritt, Modell, Sprache und Knopf (Auswerten bzw. Abbrechen). */
+function EvalControls({ s, tr, settings }: { s: PlaytestSession; tr: Transcribe; settings: Settings }) {
+  const { job, busy } = tr;
+  const { models, chosen, lang } = settings;
+  const running = busy && tr.mine;
   return (
-    <Flex direction="column" gap="2" data-timeline={s.id}>
-      <Flex align="center" justify="between" gap="3" wrap="wrap">
-        <Heading size="3">Auswertung</Heading>
-        <Flex gap="2" align="center">
-          {busy && mine && (
-            <Text size="2" role="status">
-              {job.step}{job.total > 0 ? ` ${job.done}/${job.total}` : ' …'}
-            </Text>
-          )}
-          {models.length > 0 && (
-            <SelectField aria-label="Whisper-Modell" value={chosen?.id ?? ''} disabled={busy}
-              options={models.map((m) => ({ value: m.id, label: `${m.name} (${m.sizeMb} MB)` }))} onChange={pickModel} />
-          )}
-          <SelectField aria-label="Sprache" value={LANGS.includes(lang) ? lang : 'de'} disabled={busy}
-            options={LANGS.map((v) => ({ value: v, label: v }))} onChange={pickLang} />
-          {busy && mine
-            ?<ActionButton variant="soft" color="red" onClick={cancel}>Abbrechen</ActionButton>
-            : <ActionButton disabled={blocked} onClick={start}>Auswerten</ActionButton>}
-        </Flex>
-      </Flex>
-      {cap && !cap.ready && <NoticeCard title="Auswerten gesperrt" tone="warn">{cap.message}</NoticeCard>}
-      {mine && !busy && job.error && <NoticeCard title="Auswertung" tone="error">{job.error}</NoticeCard>}
-      {mine && !busy && !job.error && job.message && <Text size="2" color="gray">{job.message}</Text>}
-      {error && <NoticeCard title="Auswertung" tone="error">{error}</NoticeCard>}
-      {timeline?.stats && (
-        <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
+    <Flex gap="2" align="center">
+      {running && (
+        <Text size="2" role="status">
+          {job.step}{job.total > 0 ? ` ${job.done}/${job.total}` : ' …'}
+        </Text>
       )}
-      {timeline?.entries.some((e) => e.frame) && <DescribeBar d={describe} sessionId={s.id} />}
-      {timeline?.entries.some((e) => e.frame) && (
-        <Flex gap="2" align="center" data-pick-all>
-          <Text size="1" color="gray">Bilder:</Text>
-          <ActionButton size="1" variant="ghost" onClick={() => void setAll(false)}>Alle anwählen</ActionButton>
-          <ActionButton size="1" variant="ghost" onClick={() => void setAll(true)}>Alle abwählen</ActionButton>
-        </Flex>
+      {models.length > 0 && (
+        <SelectField aria-label="Whisper-Modell" value={chosen?.id ?? ''} disabled={busy}
+          options={models.map((m) => ({ value: m.id, label: `${m.name} (${m.sizeMb} MB)` }))} onChange={settings.pickModel} />
       )}
-      <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} onDescribe={(nr) => describe.start([nr])} describeBusy={describe.busy} describeReady={describe.info?.ready ?? false} />
-      {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
+      <SelectField aria-label="Sprache" value={LANGS.includes(lang) ? lang : 'de'} disabled={busy}
+        options={LANGS.map((v) => ({ value: v, label: v }))} onChange={settings.pickLang} />
+      {running
+        ? <ActionButton variant="soft" color="red" onClick={tr.cancel}>Abbrechen</ActionButton>
+        : <ActionButton disabled={evalBlocked(s, tr)} onClick={() => void tr.start(chosen?.id ?? '', lang)}>Auswerten</ActionButton>}
     </Flex>
   );
 }
 
-/** Vorschau eines Marker-Bilds: klein in der Zeile, beim Daraufzeigen groß. Die große Ansicht hängt am Seitenende (Portal,
- *  fixed), damit sie vor allen Zeilen und Karten liegt; sie sitzt unter dem Bild, am unteren Rand darüber. */
-function Thumb({ src, alt, dim }: { src: string; alt: string; dim: boolean }) {
-  const [at, setAt] = useState<{ left: number; top: number } | null>(null);
-  const show = (el: HTMLElement) => {
-    const r = el.getBoundingClientRect();
-    const h = Math.min(560, window.innerWidth * 0.8) * 0.5625 + 8; // etwa 16:9
-    const below = r.bottom + h < window.innerHeight;
-    setAt({ left: Math.max(8, Math.min(r.left, window.innerWidth - 568)), top: below ? r.bottom + 4 : Math.max(8, r.top - h) });
-  };
+/** Hinweise zur Auswertung: gesperrt, Fehler oder Meldung des letzten Laufs, letzter Fehler der Seite. */
+function EvalNotices({ tr, error }: { tr: Transcribe; error: string }) {
+  const { cap, job } = tr;
+  const idle = tr.mine && !tr.busy;
   return (
-    <span style={{ display: 'inline-block', lineHeight: 0 }} onMouseEnter={(ev) => show(ev.currentTarget)} onMouseLeave={() => setAt(null)}>
-      <img src={src} alt={alt} loading="lazy" style={{ height: 44, borderRadius: 3, opacity: dim ? 0.3 : 1 }} />
-      {at && createPortal(
-        <img src={src} alt="" data-preview style={{ position: 'fixed', left: at.left, top: at.top, width: 560, maxWidth: '80vw', zIndex: 10000,
-          borderRadius: 6, boxShadow: '0 8px 24px rgba(0,0,0,0.5)', pointerEvents: 'none' }} />,
-        document.body,
-      )}
-    </span>
+    <>
+      {cap && !cap.ready && <NoticeCard title="Auswerten gesperrt" tone="warn">{cap.message}</NoticeCard>}
+      {idle && job.error && <NoticeCard title="Auswertung" tone="error">{job.error}</NoticeCard>}
+      {idle && !job.error && job.message && <Text size="2" color="gray">{job.message}</Text>}
+      {error && <NoticeCard title="Auswertung" tone="error">{error}</NoticeCard>}
+    </>
   );
 }
 
-interface EntriesProps {
-  id: string;
+interface FrameToolsProps {
   timeline: PlaytestTimeline | null;
-  onSeek: (ms: number) => void;
-  onSkipFrame: (nr: number, skip: boolean) => void;
-  onDescribe: (nr: number) => void;
-  describeBusy: boolean;
-  describeReady: boolean;
+  describe: Describe;
+  sessionId: string;
+  setAll: (skip: boolean) => Promise<void>;
 }
 
-function Entries({ id, timeline, onSeek, onSkipFrame, onDescribe, describeBusy, describeReady }: EntriesProps) {
-  if (!timeline) return null;
-  if (timeline.entries.length === 0) return <Text size="2" color="gray">Noch kein Transkript und keine Marker.</Text>;
+/** Bildbeschreibung und „Alle an- oder abwählen“; nur sichtbar, wenn die Zeitleiste Marker-Bilder hat. */
+function FrameTools({ timeline, describe, sessionId, setAll }: FrameToolsProps) {
+  if (!timeline?.entries.some((e) => e.frame)) return null;
   return (
-    <Flex direction="column" role="list" aria-label="Zeitleiste">
-      {!timeline.hasTranscript && <Text size="2" color="gray">Noch kein Transkript, nur Marker.</Text>}
-      {timeline.entries.map((e) => {
-        const img = e.frame && e.nr ? frameUrl(id, e.nr) : null;
-        const pick = !!img && !!e.nr; // Zeile mit Bild: Klick schaltet den Haken, die Zeit springt im Player
-        return (
-          <Flex key={`${e.kind}-${e.ms}-${e.nr ?? 0}`} role="listitem" align="center" gap="1">
-          <CardButton data-entry={e.kind} variant="ghost" style={{ flex: 1, margin: 0 }}
-            onClick={() => (pick ? onSkipFrame(e.nr!, !e.skip) : onSeek(e.videoMs))}
-            title={pick ? 'Klick wählt das Bild ab oder an' : 'Im Player hierhin springen'}>
-            <Flex gap="3" align="center">
-              {pick ? (
-                <Text size="2" color="blue" data-seek style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums', textDecoration: 'underline' }}
-                  title="Im Player hierhin springen" onClick={(ev) => { ev.stopPropagation(); onSeek(e.videoMs); }}>{clock(e.videoMs)}</Text>
-              ) : (
-                <Text size="2" color="gray" style={{ minWidth: 56, fontVariantNumeric: 'tabular-nums' }}>{clock(e.videoMs)}</Text>
-              )}
-              <Flex direction="column" gap="1" align="start">
-              <Flex gap="2" align="center" wrap="wrap">
-                {e.kind === 'marker'
-                  ? <StatusBadge tone="warn">{e.text}</StatusBadge>
-                  : <Text size="2">{e.text}</Text>}
-                {img && <Thumb src={img} alt={`Bild zu Marker ${e.nr}`} dim={!!e.skip} />}
-              </Flex>
-              {e.desc && <Text size="1" color="gray" data-desc style={{ whiteSpace: 'normal', textAlign: 'left' }}>{e.desc}</Text>}
-              </Flex>
-            </Flex>
-          </CardButton>
-          {img && e.nr && (
-            <Checkbox size="1" checked={!e.skip} aria-label={`Bild von Marker ${e.nr} verwenden`}
-              title="Markierte Bilder kommen in den Prompt und werden beschrieben; Haken weg: Bild ausblenden (spart Tokens)"
-              onCheckedChange={(v) => onSkipFrame(e.nr!, v !== true)} />
-          )}
-          {img && e.nr && !e.skip && (
-            <ActionButton size="1" variant="ghost" disabled={describeBusy || !describeReady} data-describe-one
-              title="Dieses Bild mit dem Bildmodell beschreiben" onClick={() => onDescribe(e.nr!)}>Beschreiben</ActionButton>
-          )}
-          </Flex>
-        );
-      })}
+    <>
+      <DescribeBar d={describe} sessionId={sessionId} />
+      <Flex gap="2" align="center" data-pick-all>
+        <Text size="1" color="gray">Bilder:</Text>
+        <ActionButton size="1" variant="ghost" onClick={() => void setAll(false)}>Alle anwählen</ActionButton>
+        <ActionButton size="1" variant="ghost" onClick={() => void setAll(true)}>Alle abwählen</ActionButton>
+      </Flex>
+    </>
+  );
+}
+
+/** Auswertung (B-1223): Knopf Auswerten (Transkript aus voice.wav, Bild je Marker) mit Fortschritt und Abbrechen, dazu
+ *  die Zeitleiste aus Sätzen, Markern und deren Bildern; ein Klick springt im Player an die Stelle. */
+export function TimelinePanel({ session: s, onSeek, onDone, refresh = 0 }: Props) {
+  const [error, setError] = useState('');
+  const { timeline, loadTimeline, setAll, toggleSkip } = useTimeline(s, setError);
+  const tr = useTranscribe(s, refresh, onDone, loadTimeline, setError);
+  const settings = useEvalSettings(refresh);
+  const describe = useDescribe(s.id, refresh, loadTimeline);
+  return (
+    <Flex direction="column" gap="2" data-timeline={s.id}>
+      <Flex align="center" justify="between" gap="3" wrap="wrap">
+        <Heading size="3">Auswertung</Heading>
+        <EvalControls s={s} tr={tr} settings={settings} />
+      </Flex>
+      <EvalNotices tr={tr} error={error} />
+      {timeline?.stats && (
+        <Text size="2" color="gray" data-stats>{statsLines(timeline.stats).join(' · ')}</Text>
+      )}
+      <FrameTools timeline={timeline} describe={describe} sessionId={s.id} setAll={setAll} />
+      <Entries id={s.id} timeline={timeline} onSeek={onSeek} onSkipFrame={toggleSkip} onDescribe={(nr) => describe.start([nr])}
+        describeBusy={describe.busy} describeReady={describe.info?.ready ?? false} />
+      {!s.running && <FindingsPanel sessionId={s.id} hasTranscript={timeline?.hasTranscript ?? false} captureMs={timeline?.captureMs ?? s.startMs} onSeek={onSeek} />}
     </Flex>
   );
 }
