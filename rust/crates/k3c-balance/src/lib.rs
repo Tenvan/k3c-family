@@ -19,6 +19,9 @@ pub mod figures_island;
 pub mod groups;
 pub mod helps;
 pub mod hints;
+pub mod insights;
+pub mod insights_figures;
+pub mod insights_files;
 pub mod island_world;
 pub mod metrics;
 pub mod metrics_island;
@@ -73,6 +76,8 @@ mod groups_tests;
 mod helps_tests;
 #[cfg(test)]
 mod hints_tests;
+#[cfg(test)]
+mod insights_tests;
 #[cfg(test)]
 mod island_world_tests;
 #[cfg(test)]

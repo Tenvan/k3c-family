@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use crate::evaluate::{STATUS_NARROW, STATUS_OK};
 use crate::groups::GROUPS;
 use crate::hints::Lever;
-use crate::pending::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW};
+use crate::insights::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW};
 
 /// Trend: der Abstand zum Korridor wurde größer.
 pub const TREND_BETTER: &str = "besser";

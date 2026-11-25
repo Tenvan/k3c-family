@@ -9,7 +9,7 @@ use k3c_data::Source;
 use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::fehler::Fehler;
-use crate::pending::{LIGHT_GREEN, LIGHT_RED, LIGHT_YELLOW};
+use crate::insights::{LIGHT_GREEN, LIGHT_RED, LIGHT_YELLOW};
 use crate::summary::Entry;
 use crate::targets::measure_known;
 

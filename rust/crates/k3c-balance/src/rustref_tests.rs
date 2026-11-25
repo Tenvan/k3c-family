@@ -4,8 +4,11 @@
 
 use k3c_det::golden;
 
+use crate::evaluate::STATUS_OK;
+use crate::insights::{Meta, build_insights};
+use crate::insights_tests::{fixture, test_hints};
 use crate::run::{Matrix, run};
-use crate::summary::read_summary;
+use crate::summary::{Summary, read_summary};
 
 fn matrix(players: i64, bot: &str) -> Matrix {
     Matrix {
@@ -37,6 +40,66 @@ fn summary_run7() {
     assert!(at.is_empty(), "summary-run7.json: Abweichung von Go bei {at}");
     let md = std::fs::read_to_string(dir.join("summary-run7.md")).expect("Markdown");
     assert_eq!(s.markdown_with(None, None), md.replace("\r\n", "\n"), "summary-run7.md");
+}
+
+/// Nimmt die Felder aus der Auswertung, die spätere Sessions liefern (Texte RU31.2 bis RU31.4); sie fehlen in beiden Bäumen.
+fn ohne_spaetere_felder(mut v: serde_json::Value) -> serde_json::Value {
+    let Some(o) = v.as_object_mut() else { return v };
+    for k in [
+        "summary",
+        "strengths",
+        "weaknesses",
+        "hints",
+        "leverGroups",
+        "next",
+        "goalText",
+    ] {
+        o.remove(k);
+    }
+    for t in o
+        .get_mut("targets")
+        .and_then(|t| t.as_array_mut())
+        .into_iter()
+        .flatten()
+    {
+        for k in ["plain", "gap", "trendText", "plans"] {
+            t.as_object_mut().map(|t| t.remove(k));
+        }
+    }
+    v
+}
+
+/// RU31.1: Die Auswertung aus dem echten Bericht simtest-run-7 (kein Lauf), ohne und mit Baseline, hat dasselbe JSON wie Go
+/// (`TestRustRefInsights`), soweit RU31.1 sie liefert; `generated` ist in beiden leer.
+#[test]
+fn insights_run7() {
+    let dir = golden::testdata().join("rust/balance");
+    let s = fixture();
+    let mut base = fixture();
+    for e in &mut base.targets {
+        if e.verdict.target.measure == "goldAtDawnPerPlayer" {
+            e.verdict.value = 22.0;
+            e.verdict.status = STATUS_OK.into();
+            e.pass = true;
+        }
+    }
+    let h = test_hints();
+    let run = |b: Option<&Summary>, baseline: &str| {
+        let m = Meta {
+            run: "simtest-run-7".into(),
+            baseline: baseline.into(),
+            ..Meta::default()
+        };
+        ohne_spaetere_felder(golden::tree(&build_insights(&s, b, &h, &m)))
+    };
+    for (file, got) in [
+        ("insights-run7-out.json", run(None, "")),
+        ("insights-run7-trend.json", run(Some(&base), "b.json")),
+    ] {
+        let want = ohne_spaetere_felder(golden::read(dir.join(file)));
+        let at = golden::diff("", &want, &got);
+        assert!(at.is_empty(), "{file}: Abweichung von Go bei {at}");
+    }
 }
 
 /// Ein Spieler, Bot `saver`, Tiefe 0, ein Tag: der ganze Bericht stimmt mit Go überein.

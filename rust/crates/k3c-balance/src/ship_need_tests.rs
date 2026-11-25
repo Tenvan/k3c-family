@@ -3,8 +3,8 @@
 use k3c_data::hub::Stock;
 
 use crate::figures::figures_of;
+use crate::insights::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW};
 use crate::metrics::{DawnMetrics, DayMetrics, Metrics};
-use crate::pending::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW};
 use crate::run::{Matrix, Report, RunResult, Scenario, run};
 use crate::ship_need::{load_ship, ship_figures_of, ship_needs};
 

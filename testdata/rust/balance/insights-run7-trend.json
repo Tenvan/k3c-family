@@ -1,0 +1,2106 @@
+{
+  "title": "simtest-run-7",
+  "run": "simtest-run-7",
+  "generated": "",
+  "seeds": 20,
+  "pass": false,
+  "counts": {
+    "green": 7,
+    "grey": 0,
+    "red": 4,
+    "yellow": 2
+  },
+  "summary": [
+    "4 von 13 Zielen verletzt, 2 knapp, 7 im Korridor: der Lauf besteht nicht.",
+    "Die Burg hält in allen 5 Graden im Korridor.",
+    "Am weitesten daneben: Hub-Stufe 2 erreicht vor Tag 5 mit 0,0 % statt 60–85 %; Hub-Stufe 3 erreicht vor Tag 10 mit 0,0 % statt 40–70 %.",
+    "Größter Hebel: Stein-Kosten Hub-Stufe 2 (Schritt 1) senken (hub.json:levels.1.steps.0.cost.stone, je Schritt um 10 % ändern).",
+    "Alle Kennzahlen liegen im oder nahe am Richtwert.",
+    "Gegenüber der Baseline wechseln 1 Ziele den Status, 1 kippen."
+  ],
+  "strengths": [
+    "Burg hält Nacht 1–5 (easy): 100,0 % im Korridor 90–100 %.",
+    "Burg hält Nacht 1–5 (hard): 60,0 % im Korridor 50–70 %.",
+    "Burg hält Nacht 1–5 (ultra): 35,0 % im Korridor 25–45 %.",
+    "Erste Mauer gebaut vor Ende der hellen Phase: 100,0 % im Korridor 90–100 %.",
+    "Erster Turm gebaut vor Ende von Tag 2: 100,0 % im Korridor 70–100 %.",
+    "Holz am Tagesbeginn ≥ 100, ab Tag 3: 85,0 % im Korridor 70–100 %.",
+    "Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8: 80,0 % im Korridor 70–100 %.",
+    "Erste Mauer 836,5 Ticks im Richtwert."
+  ],
+  "weaknesses": [
+    "Hub-Stufe 2 erreicht vor Tag 5: 0,0 % statt 60–85 %, 20 Seeds betroffen.",
+    "Hub-Stufe 3 erreicht vor Tag 10: 0,0 % statt 40–70 %, 20 Seeds betroffen.",
+    "Zerstörte Gebäude je Welle 1–5, Median: 2,0 statt ≤ 1, 20 Seeds betroffen.",
+    "Gold am Morgen je Spieler, Median: 17,0 statt 20–70, 20 Seeds betroffen.",
+    "Gekippt gegenüber der Baseline: Gold am Morgen je Spieler, Median (ok → verletzt)."
+  ],
+  "targets": [
+    {
+      "name": "Burg hält Nacht 1–5",
+      "group": "",
+      "measure": "castleHeld",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 80,
+      "lower": 75,
+      "upper": 90,
+      "status": "knapp",
+      "light": "yellow",
+      "distance": 33.3,
+      "trend": {
+        "before": 80,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "knapp"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 1",
+      "levers": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Gegner je Welle 1–5 senken",
+          "group": "basis"
+        },
+        {
+          "path": "troops.json:archer.damage",
+          "direction": "+",
+          "step": 0.1,
+          "label": "Schaden der Bogenschützen erhöhen",
+          "group": "basis"
+        }
+      ],
+      "runs": 20,
+      "plain": "In 16 von 20 Läufen hielt die Burg Nacht 1 bis 5 (80 %). Sollwert: 75–90 % der Läufe. Im Korridor, aber knapp: nur 5 Prozentpunkte bis zur unteren Grenze.",
+      "gap": "5 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (80 %).",
+      "plans": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "known": true,
+          "current": "300",
+          "min": "300",
+          "max": "480",
+          "start": "360",
+          "short": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.",
+          "text": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "label": "Gegner je Welle 1–5 senken",
+          "known": true,
+          "current": "10",
+          "min": "7",
+          "max": "10",
+          "start": "9",
+          "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+          "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "troops.json:archer.damage",
+          "label": "Schaden der Bogenschützen erhöhen",
+          "known": true,
+          "current": "15",
+          "min": "15",
+          "max": "20",
+          "start": "17",
+          "short": "Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17.",
+          "text": "Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "name": "Burg hält Nacht 1–5",
+      "group": "",
+      "measure": "castleHeld",
+      "kind": "share",
+      "unit": "%",
+      "grade": "dev",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 100,
+      "lower": 99,
+      "upper": 100,
+      "status": "knapp",
+      "light": "yellow",
+      "distance": 100,
+      "trend": {
+        "before": 100,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "knapp"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "levers": [
+        {
+          "path": "waves.json:table.0.standard.1",
+          "direction": "+",
+          "step": 0.1,
+          "label": "Gegner je Welle 1–5 erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Mauer-HP Stufe 1 senken",
+          "group": "basis"
+        }
+      ],
+      "runs": 20,
+      "plain": "In 20 von 20 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 99–100 % der Läufe. Im Korridor, aber knapp: nur 1 Prozentpunkt bis zur unteren Grenze.",
+      "gap": "1 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (100 %).",
+      "plans": [
+        {
+          "path": "waves.json:table.0.standard.1",
+          "label": "Gegner je Welle 1–5 erhöhen",
+          "known": true,
+          "current": "10",
+          "min": "10",
+          "max": "13",
+          "start": "11",
+          "short": "Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11.",
+          "text": "Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "label": "Mauer-HP Stufe 1 senken",
+          "known": true,
+          "current": "300",
+          "min": "210",
+          "max": "300",
+          "start": "270",
+          "short": "Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270.",
+          "text": "Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "name": "Burg hält Nacht 1–5",
+      "group": "",
+      "measure": "castleHeld",
+      "kind": "share",
+      "unit": "%",
+      "grade": "easy",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 100,
+      "lower": 90,
+      "upper": 100,
+      "status": "ok",
+      "light": "green",
+      "distance": 100,
+      "trend": {
+        "before": 100,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 20 von 20 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 90–100 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "10 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (100 %).",
+      "plans": []
+    },
+    {
+      "name": "Burg hält Nacht 1–5",
+      "group": "",
+      "measure": "castleHeld",
+      "kind": "share",
+      "unit": "%",
+      "grade": "hard",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 60,
+      "lower": 50,
+      "upper": 70,
+      "status": "ok",
+      "light": "green",
+      "distance": 50,
+      "trend": {
+        "before": 60,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 12 von 20 Läufen hielt die Burg Nacht 1 bis 5 (60 %). Sollwert: 50–70 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "10 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (60 %).",
+      "plans": []
+    },
+    {
+      "name": "Burg hält Nacht 1–5",
+      "group": "",
+      "measure": "castleHeld",
+      "kind": "share",
+      "unit": "%",
+      "grade": "ultra",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 35,
+      "lower": 25,
+      "upper": 45,
+      "status": "ok",
+      "light": "green",
+      "distance": 50,
+      "trend": {
+        "before": 35,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 2",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 7 von 20 Läufen hielt die Burg Nacht 1 bis 5 (35 %). Sollwert: 25–45 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "10 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (35 %).",
+      "plans": []
+    },
+    {
+      "name": "Gold am Morgen je Spieler, Median",
+      "group": "",
+      "measure": "goldAtDawnPerPlayer",
+      "kind": "median",
+      "unit": "",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 17,
+      "lower": 20,
+      "upper": 70,
+      "status": "verletzt",
+      "light": "red",
+      "distance": -6,
+      "trend": {
+        "before": 22,
+        "delta": -5,
+        "better": false,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 1",
+      "levers": [
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "economy.json:purse.startGold",
+          "direction": "+",
+          "step": 0.1,
+          "label": "Startgold erhöhen",
+          "group": "basis"
+        }
+      ],
+      "runs": 20,
+      "plain": "Median von „Gold am Morgen je Spieler, Median“: 17. Sollwert: 20–70. Damit 3 unter dem Korridor, also zu niedrig.",
+      "gap": "3 zu niedrig",
+      "trendText": "Gegenüber der Baseline (22) weiter weg vom Korridor: -5.",
+      "plans": [
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "known": true,
+          "current": "2",
+          "min": "2",
+          "max": "4",
+          "start": "3",
+          "short": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.",
+          "text": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "economy.json:purse.startGold",
+          "label": "Startgold erhöhen",
+          "known": true,
+          "current": "14",
+          "min": "14",
+          "max": "19",
+          "start": "16",
+          "short": "Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16.",
+          "text": "Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "name": "Erste Mauer gebaut vor Ende der hellen Phase",
+      "group": "",
+      "measure": "firstWallBeforeDusk1",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 100,
+      "lower": 90,
+      "upper": 100,
+      "status": "ok",
+      "light": "green",
+      "distance": 100,
+      "trend": {
+        "before": 100,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 1",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 20 von 20 Läufen stand die erste Mauer vor der Dämmerung von Tag 1 (100 %). Sollwert: 90–100 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "10 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (100 %).",
+      "plans": []
+    },
+    {
+      "name": "Erster Turm gebaut vor Ende von Tag 2",
+      "group": "",
+      "measure": "firstTowerBeforeDusk2",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 100,
+      "lower": 70,
+      "upper": 100,
+      "status": "ok",
+      "light": "green",
+      "distance": 100,
+      "trend": {
+        "before": 100,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 20 von 20 Läufen traf „Erster Turm gebaut vor Ende von Tag 2“ zu (100 %). Sollwert: 70–100 % der Läufe. Im Korridor, 30 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "30 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (100 %).",
+      "plans": []
+    },
+    {
+      "name": "Holz am Tagesbeginn ≥ 100, ab Tag 3",
+      "group": "",
+      "measure": "woodAtDawnFrom3",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 85,
+      "lower": 70,
+      "upper": 100,
+      "status": "ok",
+      "light": "green",
+      "distance": 50,
+      "trend": {
+        "before": 85,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 17 von 20 Läufen traf „Holz am Tagesbeginn ≥ 100, ab Tag 3“ zu (85 %). Sollwert: 70–100 % der Läufe. Im Korridor, 15 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "15 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (85 %).",
+      "plans": []
+    },
+    {
+      "name": "Hub-Stufe 2 erreicht vor Tag 5",
+      "group": "",
+      "measure": "hubLevel2BeforeDay5",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 0,
+      "lower": 60,
+      "upper": 85,
+      "status": "verletzt",
+      "light": "red",
+      "distance": -240,
+      "trend": {
+        "before": 0,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "verletzt"
+      },
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "levers": [
+        {
+          "path": "hub.json:levels.1.steps.0.cost.stone",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken",
+          "group": "basis"
+        },
+        {
+          "path": "hub.json:levels.1.steps.2.cost.stone",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken",
+          "group": "basis"
+        }
+      ],
+      "runs": 20,
+      "plain": "In 0 von 20 Läufen traf „Hub-Stufe 2 erreicht vor Tag 5“ zu (0 %). Sollwert: 60–85 % der Läufe. Damit 60 Prozentpunkte unter dem Korridor, also zu niedrig.",
+      "gap": "60 Pkt. zu niedrig",
+      "trendText": "Unverändert gegenüber der Baseline (0 %).",
+      "plans": [
+        {
+          "path": "hub.json:levels.1.steps.0.cost.stone",
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken",
+          "known": true,
+          "current": "25",
+          "min": "17",
+          "max": "25",
+          "start": "22",
+          "short": "Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22.",
+          "text": "Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "hub.json:levels.1.steps.2.cost.stone",
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken",
+          "known": true,
+          "current": "50",
+          "min": "35",
+          "max": "50",
+          "start": "45",
+          "short": "Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45.",
+          "text": "Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "name": "Hub-Stufe 3 erreicht vor Tag 10",
+      "group": "",
+      "measure": "hubLevel3BeforeDay10",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 9 Tage",
+      "value": 0,
+      "lower": 40,
+      "upper": 70,
+      "status": "verletzt",
+      "light": "red",
+      "distance": -133.3,
+      "trend": {
+        "before": 0,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "verletzt"
+      },
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "levers": [
+        {
+          "path": "hub.json:levels.2.steps.2.cost.gold",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken",
+          "group": "basis"
+        },
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "group": "basis"
+        }
+      ],
+      "runs": 20,
+      "plain": "In 0 von 20 Läufen traf „Hub-Stufe 3 erreicht vor Tag 10“ zu (0 %). Sollwert: 40–70 % der Läufe. Damit 40 Prozentpunkte unter dem Korridor, also zu niedrig.",
+      "gap": "40 Pkt. zu niedrig",
+      "trendText": "Unverändert gegenüber der Baseline (0 %).",
+      "plans": [
+        {
+          "path": "hub.json:levels.2.steps.2.cost.gold",
+          "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken",
+          "known": true,
+          "current": "10",
+          "min": "7",
+          "max": "10",
+          "start": "9",
+          "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+          "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "known": true,
+          "current": "2",
+          "min": "2",
+          "max": "4",
+          "start": "3",
+          "short": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.",
+          "text": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "name": "Zerstörte Gebäude je Welle 1–5, Median",
+      "group": "",
+      "measure": "destroyedPerWave",
+      "kind": "median",
+      "unit": "",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 2,
+      "lower": null,
+      "upper": 1,
+      "status": "verletzt",
+      "light": "red",
+      "distance": -100,
+      "trend": {
+        "before": 2,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "verletzt"
+      },
+      "failSeeds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20"
+      ],
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "levers": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Gegner je Welle 1–5 senken",
+          "group": "basis"
+        }
+      ],
+      "runs": 20,
+      "plain": "Median von „Zerstörte Gebäude je Welle 1–5, Median“: 2 Gebäude. Sollwert: höchstens 1. Damit 1 Gebäude über dem Korridor, also zu schwer.",
+      "gap": "1 Gebäude zu hoch",
+      "trendText": "Unverändert gegenüber der Baseline (2).",
+      "plans": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "known": true,
+          "current": "300",
+          "min": "300",
+          "max": "480",
+          "start": "360",
+          "short": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.",
+          "text": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "label": "Gegner je Welle 1–5 senken",
+          "known": true,
+          "current": "10",
+          "min": "7",
+          "max": "10",
+          "start": "9",
+          "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+          "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "name": "Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8",
+      "group": "",
+      "measure": "fightersAtDawn",
+      "kind": "share",
+      "unit": "%",
+      "grade": "normal",
+      "scenario": "2 Spieler · wirtschaft · Tiefe 0 · 5 Tage",
+      "value": 80,
+      "lower": 70,
+      "upper": 100,
+      "status": "ok",
+      "light": "green",
+      "distance": 33.3,
+      "trend": {
+        "before": 80,
+        "delta": 0,
+        "better": true,
+        "beforeStatus": "ok"
+      },
+      "failSeeds": null,
+      "invalidSeeds": null,
+      "rule": "docs/rules/zielkorridore.md § 3",
+      "levers": [],
+      "runs": 20,
+      "plain": "In 16 von 20 Läufen traf „Kämpfer je Hub zu Tagesbeginn: Tag 3 ≥ 4 und Tag 6 ≥ 8“ zu (80 %). Sollwert: 70–100 % der Läufe. Im Korridor, 10 Prozentpunkte von der unteren Grenze entfernt.",
+      "gap": "10 Pkt. Reserve",
+      "trendText": "Unverändert gegenüber der Baseline (80 %).",
+      "plans": []
+    }
+  ],
+  "figures": {
+    "note": "Kennzahlen aus 120 gültigen Läufen; Richtwerte sind Startwerte (data/balance-hints.json).",
+    "bands": {
+      "goldBalance": [
+        -20,
+        60
+      ],
+      "idleShare": [
+        null,
+        25
+      ]
+    },
+    "lights": [
+      {
+        "key": "firstWallTick",
+        "name": "Erste Mauer",
+        "unit": "Ticks",
+        "value": 836.5,
+        "light": "green",
+        "text": "Median; Richtwert grün ≤ 1500, gelb ≤ 3000"
+      },
+      {
+        "key": "firstWorkshopTick",
+        "name": "Erste Werkstatt",
+        "unit": "Ticks",
+        "value": 9943,
+        "light": "yellow",
+        "text": "Median; Richtwert grün ≤ 6000, gelb ≤ 12000"
+      },
+      {
+        "key": "idleShare",
+        "name": "Leerlauf der Bauern",
+        "unit": "%",
+        "grade": "normal",
+        "value": 26.9,
+        "light": "yellow",
+        "text": "Richtwert grün ≤ 25, gelb ≤ 35"
+      },
+      {
+        "key": "survivalDrop",
+        "name": "Überlebensabfall je Nacht",
+        "unit": "Pkt.",
+        "grade": "normal",
+        "value": 10,
+        "light": "yellow",
+        "text": "Richtwert grün ≤ 5, gelb ≤ 15"
+      },
+      {
+        "key": "goldBalance",
+        "name": "Gold-Bilanz je Tag ab Tag 2",
+        "unit": "Gold",
+        "grade": "normal",
+        "value": 20,
+        "light": "green",
+        "text": "Richtwert grün -20 bis 60, gelb -60 bis 120"
+      },
+      {
+        "key": "woodBalance",
+        "name": "Holz-Bilanz je Tag",
+        "unit": "Holz",
+        "grade": "normal",
+        "value": 23.3,
+        "light": "green",
+        "text": "Richtwert grün 0 bis 150, gelb -30 bis 300"
+      },
+      {
+        "key": "stoneBalance",
+        "name": "Stein-Bilanz je Tag",
+        "unit": "Stein",
+        "grade": "normal",
+        "value": 0.9,
+        "light": "green",
+        "text": "Richtwert grün 0 bis 80, gelb -20 bis 160"
+      },
+      {
+        "key": "idleShare",
+        "name": "Leerlauf der Bauern",
+        "unit": "%",
+        "grade": "dev",
+        "value": 27.8,
+        "light": "yellow",
+        "text": "Richtwert grün ≤ 25, gelb ≤ 35"
+      },
+      {
+        "key": "idleShare",
+        "name": "Leerlauf der Bauern",
+        "unit": "%",
+        "grade": "easy",
+        "value": 28.8,
+        "light": "yellow",
+        "text": "Richtwert grün ≤ 25, gelb ≤ 35"
+      },
+      {
+        "key": "idleShare",
+        "name": "Leerlauf der Bauern",
+        "unit": "%",
+        "grade": "hard",
+        "value": 29.6,
+        "light": "yellow",
+        "text": "Richtwert grün ≤ 25, gelb ≤ 35"
+      },
+      {
+        "key": "idleShare",
+        "name": "Leerlauf der Bauern",
+        "unit": "%",
+        "grade": "ultra",
+        "value": 25.9,
+        "light": "yellow",
+        "text": "Richtwert grün ≤ 25, gelb ≤ 35"
+      }
+    ],
+    "nights": [
+      {
+        "grade": "",
+        "night": 1,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 4.8,
+        "resourceIn": {
+          "wood": 361.3,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 317.1,
+          "stone": 7.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 33.1
+      },
+      {
+        "grade": "",
+        "night": 2,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 84.8,
+        "dayExpense": 103.6,
+        "nightIncome": 0,
+        "nightExpense": 2.6,
+        "resourceIn": {
+          "wood": 367.2,
+          "stone": 4,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 245,
+          "stone": 4.2,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 12
+      },
+      {
+        "grade": "",
+        "night": 3,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 80.1,
+        "dayExpense": 40.1,
+        "nightIncome": 3.1,
+        "nightExpense": 0.3,
+        "resourceIn": {
+          "wood": 84,
+          "stone": 7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 67.2,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 34.3
+      },
+      {
+        "grade": "",
+        "night": 4,
+        "runs": 40,
+        "survival": 90,
+        "dayIncome": 68.9,
+        "dayExpense": 19.8,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 18.3,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 24.4,
+          "stone": 1.6,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 31.3
+      },
+      {
+        "grade": "",
+        "night": 5,
+        "runs": 40,
+        "survival": 80,
+        "dayIncome": 63.1,
+        "dayExpense": 19.1,
+        "nightIncome": 0.5,
+        "nightExpense": 10,
+        "resourceIn": {
+          "wood": 9.5,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 30.1,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 38.5
+      },
+      {
+        "grade": "dev",
+        "night": 1,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 358.3,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 314.5,
+          "stone": 7.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 34.4
+      },
+      {
+        "grade": "dev",
+        "night": 2,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 45.3,
+        "dayExpense": 78.7,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 332,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 180.5,
+          "stone": 2.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 12.1
+      },
+      {
+        "grade": "dev",
+        "night": 3,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 44.1,
+        "dayExpense": 46.2,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 68.3,
+          "stone": 7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 63.5,
+          "stone": 3.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 22.8
+      },
+      {
+        "grade": "dev",
+        "night": 4,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 39.4,
+        "dayExpense": 31.8,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 37.3,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 37.3,
+          "stone": 3.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 32.2
+      },
+      {
+        "grade": "dev",
+        "night": 5,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 45,
+        "dayExpense": 19.7,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 11.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 11.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 37.4
+      },
+      {
+        "grade": "easy",
+        "night": 1,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 357.8,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 314.5,
+          "stone": 7.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 34.3
+      },
+      {
+        "grade": "easy",
+        "night": 2,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 16.7,
+        "dayExpense": 44,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 249.8,
+          "stone": 2.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 98,
+          "stone": 1.3,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 21.1
+      },
+      {
+        "grade": "easy",
+        "night": 3,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 54.9,
+        "dayExpense": 62.6,
+        "nightIncome": 0.8,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 103.3,
+          "stone": 7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 98.3,
+          "stone": 5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 21.8
+      },
+      {
+        "grade": "easy",
+        "night": 4,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 47.6,
+        "dayExpense": 38.6,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 56.5,
+          "stone": 3.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 56.5,
+          "stone": 3.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 28.5
+      },
+      {
+        "grade": "easy",
+        "night": 5,
+        "runs": 20,
+        "survival": 100,
+        "dayIncome": 55.5,
+        "dayExpense": 25.1,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 21.8,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 21.8,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 38.2
+      },
+      {
+        "grade": "hard",
+        "night": 1,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 14.5,
+        "resourceIn": {
+          "wood": 360,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 319.7,
+          "stone": 8.8,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 30.9
+      },
+      {
+        "grade": "hard",
+        "night": 2,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 70,
+        "dayExpense": 86.5,
+        "nightIncome": 0,
+        "nightExpense": 3,
+        "resourceIn": {
+          "wood": 333.5,
+          "stone": 4,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 221,
+          "stone": 3.4,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 11
+      },
+      {
+        "grade": "hard",
+        "night": 3,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 74.5,
+        "dayExpense": 40.2,
+        "nightIncome": 0,
+        "nightExpense": 0.3,
+        "resourceIn": {
+          "wood": 102.3,
+          "stone": 7.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 95.7,
+          "stone": 6.3,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 36
+      },
+      {
+        "grade": "hard",
+        "night": 4,
+        "runs": 20,
+        "survival": 75,
+        "dayIncome": 68.3,
+        "dayExpense": 20.3,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 26.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 46.8,
+          "stone": 0.6,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 24.7
+      },
+      {
+        "grade": "hard",
+        "night": 5,
+        "runs": 20,
+        "survival": 60,
+        "dayIncome": 44.5,
+        "dayExpense": 16.9,
+        "nightIncome": 0.8,
+        "nightExpense": 13.8,
+        "resourceIn": {
+          "wood": 4.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 38.3,
+          "stone": 0.7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 45.3
+      },
+      {
+        "grade": "ultra",
+        "night": 1,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 10.9,
+        "dayExpense": 161.6,
+        "nightIncome": 0.4,
+        "nightExpense": 16.7,
+        "resourceIn": {
+          "wood": 360.3,
+          "stone": 13.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 338.3,
+          "stone": 9.2,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 26.5
+      },
+      {
+        "grade": "ultra",
+        "night": 2,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 67,
+        "dayExpense": 85.5,
+        "nightIncome": 0,
+        "nightExpense": 3,
+        "resourceIn": {
+          "wood": 335.3,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 246,
+          "stone": 3.9,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 11.9
+      },
+      {
+        "grade": "ultra",
+        "night": 3,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 46.7,
+        "dayExpense": 26.9,
+        "nightIncome": 0,
+        "nightExpense": 0.1,
+        "resourceIn": {
+          "wood": 85.5,
+          "stone": 4.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 89,
+          "stone": 3.7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 33.5
+      },
+      {
+        "grade": "ultra",
+        "night": 4,
+        "runs": 20,
+        "survival": 55,
+        "dayIncome": 60.7,
+        "dayExpense": 17.4,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 14,
+          "stone": 1.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 43.6,
+          "stone": 2.5,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 25.5
+      },
+      {
+        "grade": "ultra",
+        "night": 5,
+        "runs": 20,
+        "survival": 35,
+        "dayIncome": 42.1,
+        "dayExpense": 12.5,
+        "nightIncome": 0,
+        "nightExpense": 20,
+        "resourceIn": {
+          "wood": 18.5,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 54.3,
+          "stone": 0.7,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 32.1
+      },
+      {
+        "grade": "",
+        "night": 6,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 69.5,
+        "dayExpense": 46.1,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 110.3,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 118.6,
+          "stone": 0.1,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 16.1
+      },
+      {
+        "grade": "",
+        "night": 7,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 28.9,
+        "dayExpense": 22.2,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 73,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 46.9,
+          "stone": 0.1,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 20
+      },
+      {
+        "grade": "",
+        "night": 8,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 21.8,
+        "dayExpense": 21.8,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 45.8,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 47,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 20.6
+      },
+      {
+        "grade": "",
+        "night": 9,
+        "runs": 20,
+        "survival": 90,
+        "dayIncome": 23.7,
+        "dayExpense": 23.7,
+        "nightIncome": 0,
+        "nightExpense": 0,
+        "resourceIn": {
+          "wood": 42,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "resourceOut": {
+          "wood": 45.1,
+          "stone": 0,
+          "copper": 0,
+          "iron": 0,
+          "crystal": 0
+        },
+        "idleShare": 20.8
+      }
+    ]
+  },
+  "hints": [
+    {
+      "target": "Hub-Stufe 2 erreicht vor Tag 5",
+      "light": "red",
+      "text": "Zu niedrig (Wert unter dem Korridor). Eine dieser Stellschrauben probieren: Stein-Kosten Hub-Stufe 2 (Schritt 1) senken oder Stein-Kosten Hub-Stufe 2 (Schritt 3) senken (Zahlen darunter).",
+      "why": "In 0 von 20 Läufen traf „Hub-Stufe 2 erreicht vor Tag 5“ zu (0 %). Sollwert: 60–85 % der Läufe. Damit 60 Prozentpunkte unter dem Korridor, also zu niedrig. Unverändert gegenüber der Baseline (0 %).",
+      "levers": [
+        {
+          "path": "hub.json:levels.1.steps.0.cost.stone",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken",
+          "group": "basis"
+        },
+        {
+          "path": "hub.json:levels.1.steps.2.cost.stone",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken",
+          "group": "basis"
+        }
+      ],
+      "plans": [
+        {
+          "path": "hub.json:levels.1.steps.0.cost.stone",
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken",
+          "known": true,
+          "current": "25",
+          "min": "17",
+          "max": "25",
+          "start": "22",
+          "short": "Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22.",
+          "text": "Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "hub.json:levels.1.steps.2.cost.stone",
+          "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken",
+          "known": true,
+          "current": "50",
+          "min": "35",
+          "max": "50",
+          "start": "45",
+          "short": "Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45.",
+          "text": "Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "target": "Hub-Stufe 3 erreicht vor Tag 10",
+      "light": "red",
+      "text": "Zu niedrig (Wert unter dem Korridor). Eine dieser Stellschrauben probieren: Gold-Kosten Hub-Stufe 3 (Schritt 3) senken oder Morgen-Gold je Spieler erhöhen (Zahlen darunter).",
+      "why": "In 0 von 20 Läufen traf „Hub-Stufe 3 erreicht vor Tag 10“ zu (0 %). Sollwert: 40–70 % der Läufe. Damit 40 Prozentpunkte unter dem Korridor, also zu niedrig. Unverändert gegenüber der Baseline (0 %).",
+      "levers": [
+        {
+          "path": "hub.json:levels.2.steps.2.cost.gold",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken",
+          "group": "basis"
+        },
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "group": "basis"
+        }
+      ],
+      "plans": [
+        {
+          "path": "hub.json:levels.2.steps.2.cost.gold",
+          "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken",
+          "known": true,
+          "current": "10",
+          "min": "7",
+          "max": "10",
+          "start": "9",
+          "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+          "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "known": true,
+          "current": "2",
+          "min": "2",
+          "max": "4",
+          "start": "3",
+          "short": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.",
+          "text": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "target": "Zerstörte Gebäude je Welle 1–5, Median",
+      "light": "red",
+      "text": "Zu schwer (Wert über dem Korridor). Eine dieser Stellschrauben probieren: Mauer-HP Stufe 1 erhöhen oder Gegner je Welle 1–5 senken (Zahlen darunter).",
+      "why": "Median von „Zerstörte Gebäude je Welle 1–5, Median“: 2 Gebäude. Sollwert: höchstens 1. Damit 1 Gebäude über dem Korridor, also zu schwer. Unverändert gegenüber der Baseline (2).",
+      "levers": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Gegner je Welle 1–5 senken",
+          "group": "basis"
+        }
+      ],
+      "plans": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "known": true,
+          "current": "300",
+          "min": "300",
+          "max": "480",
+          "start": "360",
+          "short": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.",
+          "text": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "label": "Gegner je Welle 1–5 senken",
+          "known": true,
+          "current": "10",
+          "min": "7",
+          "max": "10",
+          "start": "9",
+          "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+          "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "target": "Gold am Morgen je Spieler, Median",
+      "light": "red",
+      "text": "Zu niedrig (Wert unter dem Korridor). Eine dieser Stellschrauben probieren: Morgen-Gold je Spieler erhöhen oder Startgold erhöhen (Zahlen darunter).",
+      "why": "Median von „Gold am Morgen je Spieler, Median“: 17. Sollwert: 20–70. Damit 3 unter dem Korridor, also zu niedrig. Gegenüber der Baseline (22) weiter weg vom Korridor: -5.",
+      "levers": [
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "economy.json:purse.startGold",
+          "direction": "+",
+          "step": 0.1,
+          "label": "Startgold erhöhen",
+          "group": "basis"
+        }
+      ],
+      "plans": [
+        {
+          "path": "economy.json:dawnGoldPerPlayer",
+          "label": "Morgen-Gold je Spieler erhöhen",
+          "known": true,
+          "current": "2",
+          "min": "2",
+          "max": "4",
+          "start": "3",
+          "short": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.",
+          "text": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "economy.json:purse.startGold",
+          "label": "Startgold erhöhen",
+          "known": true,
+          "current": "14",
+          "min": "14",
+          "max": "19",
+          "start": "16",
+          "short": "Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16.",
+          "text": "Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "target": "Burg hält Nacht 1–5",
+      "light": "yellow",
+      "text": "Knapp an der Grenze: beim Tunen anderer Ziele im Blick behalten, erst bei Rot drehen.",
+      "why": "In 16 von 20 Läufen hielt die Burg Nacht 1 bis 5 (80 %). Sollwert: 75–90 % der Läufe. Im Korridor, aber knapp: nur 5 Prozentpunkte bis zur unteren Grenze. Unverändert gegenüber der Baseline (80 %).",
+      "levers": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "direction": "+",
+          "step": 0.2,
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Gegner je Welle 1–5 senken",
+          "group": "basis"
+        },
+        {
+          "path": "troops.json:archer.damage",
+          "direction": "+",
+          "step": 0.1,
+          "label": "Schaden der Bogenschützen erhöhen",
+          "group": "basis"
+        }
+      ],
+      "plans": [
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "label": "Mauer-HP Stufe 1 erhöhen",
+          "known": true,
+          "current": "300",
+          "min": "300",
+          "max": "480",
+          "start": "360",
+          "short": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.",
+          "text": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "waves.json:table.0.standard.1",
+          "label": "Gegner je Welle 1–5 senken",
+          "known": true,
+          "current": "10",
+          "min": "7",
+          "max": "10",
+          "start": "9",
+          "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+          "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "troops.json:archer.damage",
+          "label": "Schaden der Bogenschützen erhöhen",
+          "known": true,
+          "current": "15",
+          "min": "15",
+          "max": "20",
+          "start": "17",
+          "short": "Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17.",
+          "text": "Aktuell 15. Probierbereich 15 … 20 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 17. Wirkung: „Burg hält Nacht 1–5“ (80,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 75–90 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    },
+    {
+      "target": "Burg hält Nacht 1–5 (dev)",
+      "light": "yellow",
+      "text": "Knapp an der Grenze: beim Tunen anderer Ziele im Blick behalten, erst bei Rot drehen.",
+      "why": "In 20 von 20 Läufen hielt die Burg Nacht 1 bis 5 (100 %). Sollwert: 99–100 % der Läufe. Im Korridor, aber knapp: nur 1 Prozentpunkt bis zur unteren Grenze. Unverändert gegenüber der Baseline (100 %).",
+      "levers": [
+        {
+          "path": "waves.json:table.0.standard.1",
+          "direction": "+",
+          "step": 0.1,
+          "label": "Gegner je Welle 1–5 erhöhen",
+          "group": "basis"
+        },
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "direction": "-",
+          "step": 0.1,
+          "label": "Mauer-HP Stufe 1 senken",
+          "group": "basis"
+        }
+      ],
+      "plans": [
+        {
+          "path": "waves.json:table.0.standard.1",
+          "label": "Gegner je Welle 1–5 erhöhen",
+          "known": true,
+          "current": "10",
+          "min": "10",
+          "max": "13",
+          "start": "11",
+          "short": "Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11.",
+          "text": "Aktuell 10. Probierbereich 10 … 13 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 11. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        },
+        {
+          "path": "buildings.json:wall.levels.0.hp",
+          "label": "Mauer-HP Stufe 1 senken",
+          "known": true,
+          "current": "300",
+          "min": "210",
+          "max": "300",
+          "start": "270",
+          "short": "Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270.",
+          "text": "Aktuell 300. Probierbereich 210 … 300 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 270. Wirkung: „Burg hält Nacht 1–5“ (100,0 %) soll sich von der knappen Grenze entfernen, ohne den Korridor 99–100 % zu verlassen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+        }
+      ]
+    }
+  ],
+  "leverGroups": [
+    {
+      "path": "economy.json:dawnGoldPerPlayer",
+      "direction": "+",
+      "plan": {
+        "path": "economy.json:dawnGoldPerPlayer",
+        "label": "Morgen-Gold je Spieler erhöhen",
+        "known": true,
+        "current": "2",
+        "min": "2",
+        "max": "4",
+        "start": "3",
+        "short": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3.",
+        "text": "Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Hub-Stufe 3 erreicht vor Tag 10",
+        "Gold am Morgen je Spieler, Median"
+      ],
+      "conflict": "",
+      "text": "Morgen-Gold je Spieler erhöhen `economy.json:dawnGoldPerPlayer` – soll 2 Verletzung(en) verbessern: Hub-Stufe 3 erreicht vor Tag 10; Gold am Morgen je Spieler, Median. Aktuell 2. Probierbereich 2 … 4 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 3."
+    },
+    {
+      "path": "hub.json:levels.1.steps.0.cost.stone",
+      "direction": "-",
+      "plan": {
+        "path": "hub.json:levels.1.steps.0.cost.stone",
+        "label": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken",
+        "known": true,
+        "current": "25",
+        "min": "17",
+        "max": "25",
+        "start": "22",
+        "short": "Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22.",
+        "text": "Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Hub-Stufe 2 erreicht vor Tag 5"
+      ],
+      "conflict": "",
+      "text": "Stein-Kosten Hub-Stufe 2 (Schritt 1) senken `hub.json:levels.1.steps.0.cost.stone` – soll 1 Verletzung(en) verbessern: Hub-Stufe 2 erreicht vor Tag 5. Aktuell 25. Probierbereich 17 … 25 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 22."
+    },
+    {
+      "path": "hub.json:levels.1.steps.2.cost.stone",
+      "direction": "-",
+      "plan": {
+        "path": "hub.json:levels.1.steps.2.cost.stone",
+        "label": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken",
+        "known": true,
+        "current": "50",
+        "min": "35",
+        "max": "50",
+        "start": "45",
+        "short": "Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45.",
+        "text": "Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45. Wirkung: „Hub-Stufe 2 erreicht vor Tag 5“ soll von 0,0 % Richtung Korridor 60–85 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Hub-Stufe 2 erreicht vor Tag 5"
+      ],
+      "conflict": "",
+      "text": "Stein-Kosten Hub-Stufe 2 (Schritt 3) senken `hub.json:levels.1.steps.2.cost.stone` – soll 1 Verletzung(en) verbessern: Hub-Stufe 2 erreicht vor Tag 5. Aktuell 50. Probierbereich 35 … 50 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 45."
+    },
+    {
+      "path": "hub.json:levels.2.steps.2.cost.gold",
+      "direction": "-",
+      "plan": {
+        "path": "hub.json:levels.2.steps.2.cost.gold",
+        "label": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken",
+        "known": true,
+        "current": "10",
+        "min": "7",
+        "max": "10",
+        "start": "9",
+        "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+        "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Hub-Stufe 3 erreicht vor Tag 10“ soll von 0,0 % Richtung Korridor 40–70 % steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Hub-Stufe 3 erreicht vor Tag 10"
+      ],
+      "conflict": "",
+      "text": "Gold-Kosten Hub-Stufe 3 (Schritt 3) senken `hub.json:levels.2.steps.2.cost.gold` – soll 1 Verletzung(en) verbessern: Hub-Stufe 3 erreicht vor Tag 10. Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9."
+    },
+    {
+      "path": "buildings.json:wall.levels.0.hp",
+      "direction": "+",
+      "plan": {
+        "path": "buildings.json:wall.levels.0.hp",
+        "label": "Mauer-HP Stufe 1 erhöhen",
+        "known": true,
+        "current": "300",
+        "min": "300",
+        "max": "480",
+        "start": "360",
+        "short": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360.",
+        "text": "Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Zerstörte Gebäude je Welle 1–5, Median"
+      ],
+      "conflict": "",
+      "text": "Mauer-HP Stufe 1 erhöhen `buildings.json:wall.levels.0.hp` – soll 1 Verletzung(en) verbessern: Zerstörte Gebäude je Welle 1–5, Median. Aktuell 300. Probierbereich 300 … 480 (1 bis 3 Schritte à 20 % rauf). Startvorschlag: 360."
+    },
+    {
+      "path": "waves.json:table.0.standard.1",
+      "direction": "-",
+      "plan": {
+        "path": "waves.json:table.0.standard.1",
+        "label": "Gegner je Welle 1–5 senken",
+        "known": true,
+        "current": "10",
+        "min": "7",
+        "max": "10",
+        "start": "9",
+        "short": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9.",
+        "text": "Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9. Wirkung: „Zerstörte Gebäude je Welle 1–5, Median“ soll von 2,0 Richtung Korridor ≤ 1 sinken. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Zerstörte Gebäude je Welle 1–5, Median"
+      ],
+      "conflict": "",
+      "text": "Gegner je Welle 1–5 senken `waves.json:table.0.standard.1` – soll 1 Verletzung(en) verbessern: Zerstörte Gebäude je Welle 1–5, Median. Aktuell 10. Probierbereich 7 … 10 (1 bis 3 Schritte à 10 % runter). Startvorschlag: 9."
+    },
+    {
+      "path": "economy.json:purse.startGold",
+      "direction": "+",
+      "plan": {
+        "path": "economy.json:purse.startGold",
+        "label": "Startgold erhöhen",
+        "known": true,
+        "current": "14",
+        "min": "14",
+        "max": "19",
+        "start": "16",
+        "short": "Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16.",
+        "text": "Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16. Wirkung: „Gold am Morgen je Spieler, Median“ soll von 17,0 Richtung Korridor 20–70 steigen. Wie weit, ist nicht berechenbar; erst der volle Lauf zeigt es."
+      },
+      "targets": [
+        "Gold am Morgen je Spieler, Median"
+      ],
+      "conflict": "",
+      "text": "Startgold erhöhen `economy.json:purse.startGold` – soll 1 Verletzung(en) verbessern: Gold am Morgen je Spieler, Median. Aktuell 14. Probierbereich 14 … 19 (1 bis 3 Schritte à 10 % rauf). Startvorschlag: 16."
+    }
+  ],
+  "next": {
+    "steps": [
+      "Seeds 1, 2, 3 im Replay nachspielen: Hub-Stufe 2 erreicht vor Tag 5 verletzt.",
+      "Hebel abstimmen: hub.json:levels.1.steps.0.cost.stone=17..25, hub.json:levels.2.steps.2.cost.gold=7..10 (Suche über höchstens drei Schritte).",
+      "Nach jeder Änderung in data/ den vollen Lauf wiederholen und mit diesem Bericht vergleichen."
+    ],
+    "seeds": [
+      "1",
+      "2",
+      "3"
+    ],
+    "commands": [
+      {
+        "label": "Alle Empfehlungen als ein Block",
+        "where": "chat",
+        "text": "# Empfehlungen aller Stellschrauben (Startvorschläge) als Wert-Varianten, ein Lauf mit allen zugleich:\neconomy.json:dawnGoldPerPlayer=3  # Morgen-Gold je Spieler erhöhen; aktuell 2, Bereich 2 … 4; verbessert: Hub-Stufe 3 erreicht vor Tag 10; Gold am Morgen je Spieler, Median\nhub.json:levels.1.steps.0.cost.stone=22  # Stein-Kosten Hub-Stufe 2 (Schritt 1) senken; aktuell 25, Bereich 17 … 25; verbessert: Hub-Stufe 2 erreicht vor Tag 5\nhub.json:levels.1.steps.2.cost.stone=45  # Stein-Kosten Hub-Stufe 2 (Schritt 3) senken; aktuell 50, Bereich 35 … 50; verbessert: Hub-Stufe 2 erreicht vor Tag 5\nhub.json:levels.2.steps.2.cost.gold=9  # Gold-Kosten Hub-Stufe 3 (Schritt 3) senken; aktuell 10, Bereich 7 … 10; verbessert: Hub-Stufe 3 erreicht vor Tag 10\nbuildings.json:wall.levels.0.hp=360  # Mauer-HP Stufe 1 erhöhen; aktuell 300, Bereich 300 … 480; verbessert: Zerstörte Gebäude je Welle 1–5, Median\nwaves.json:table.0.standard.1=9  # Gegner je Welle 1–5 senken; aktuell 10, Bereich 7 … 10; verbessert: Zerstörte Gebäude je Welle 1–5, Median\neconomy.json:purse.startGold=16  # Startgold erhöhen; aktuell 14, Bereich 14 … 19; verbessert: Gold am Morgen je Spieler, Median"
+      },
+      {
+        "label": "1. Replays schreiben",
+        "where": "shell",
+        "text": "task balance:targets -- --seeds 20"
+      },
+      {
+        "label": "2. Seed 1 nachspielen",
+        "where": "chat",
+        "text": "Spiele das Replay mit replay_run {\"path\":\"reports/balance-replays/1-p2-wirtschaft-d0.replay.json\"} ab und erkläre, warum Hub-Stufe 2 erreicht vor Tag 5 verletzt ist."
+      },
+      {
+        "label": "Abstimmen auf der Balancing-Seite",
+        "where": "workbench",
+        "text": "Abstimmen: Modus search · Seeds 20 · Parameter hub.json:levels.1.steps.0.cost.stone=17..25 und hub.json:levels.2.steps.2.cost.gold=7..10"
+      },
+      {
+        "label": "Abstimmen lassen",
+        "where": "chat",
+        "text": "Stimme mit dem Balancing-Tester (--tune search) hub.json:levels.1.steps.0.cost.stone=17..25 und hub.json:levels.2.steps.2.cost.gold=7..10 ab und schlage den besten Wert als Änderung in data/ vor."
+      },
+      {
+        "label": "Abstimmen in der Shell",
+        "where": "shell",
+        "text": "task balance:run -- --targets --tune search --seeds 20 --param hub.json:levels.1.steps.0.cost.stone=17..25 --param hub.json:levels.2.steps.2.cost.gold=7..10"
+      },
+      {
+        "label": "Voller Lauf zum Vergleich",
+        "where": "chat",
+        "text": "Starte sim_test {\"action\":\"start\",\"mode\":\"offline\",\"seeds\":20} und vergleiche den neuen Bericht mit simtest-run-7."
+      }
+    ]
+  },
+  "baseline": {
+    "present": true,
+    "note": "Baseline: b.json",
+    "changes": [
+      {
+        "name": "Gold am Morgen je Spieler, Median",
+        "before": "ok",
+        "after": "verletzt",
+        "tipped": true
+      }
+    ]
+  },
+  "delta": [],
+  "varianten": [],
+  "goal": null,
+  "quality": null,
+  "progress": null,
+  "previous": "",
+  "goalText": ""
+}

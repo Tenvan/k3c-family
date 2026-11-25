@@ -60,7 +60,7 @@ pub struct Summary {
 
 /// Ein Ziel, dessen Bewertung gegenüber der Baseline anders ist. `before`/`after` sind Status; „neu“ und „entfällt“, wenn das
 /// Ziel nur auf einer Seite steht. `tipped`: Pass wechselt (ok/knapp ↔ verletzt/ungültig).
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct Change {
     pub name: String,
     pub before: String,
@@ -205,7 +205,7 @@ pub fn read_summary(raw: &str) -> Result<Summary, Fehler> {
 
 impl Entry {
     /// Unterscheidet Ziele auch bei gleichem Namen (das Szenario gehört dazu; Go: `targetKey`).
-    fn target_key(&self) -> String {
+    pub(crate) fn target_key(&self) -> String {
         let t = &self.verdict.target;
         format!(
             "{}|{}|{}|{}|{}|{}|{}|{}|{}",

@@ -124,7 +124,7 @@ pub fn median(vals: &[f64]) -> f64 {
 
 /// Die Grenzen, die für „knapp“ zählen: Die natürlichen Enden eines Anteils (0 % und 100 %) gehören nicht dazu, sonst
 /// wäre jedes Ergebnis mit 100 % „knapp“.
-fn bounds(g: &Target) -> (Option<f64>, Option<f64>) {
+pub(crate) fn bounds(g: &Target) -> (Option<f64>, Option<f64>) {
     let (mut lo, mut hi) = (g.lower, g.upper);
     if g.kind == KIND_SHARE {
         lo = lo.filter(|&l| l > 0.0);

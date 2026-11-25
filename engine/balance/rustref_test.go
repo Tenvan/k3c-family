@@ -1,6 +1,8 @@
 package balance
 
 import (
+	"bytes"
+	"encoding/json"
 	"flag"
 	"os"
 	"path/filepath"
@@ -73,6 +75,58 @@ func TestRustRefSummary(t *testing.T) {
 			t.Fatalf("%v (schreiben mit -write)", err)
 		}
 		if string(want) != got {
+			t.Fatalf("%s weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)", name)
+		}
+	}
+}
+
+// TestRustRefInsights schreibt mit -write die Auswertung (BuildInsights) aus dem echten Bericht simtest-run-7 (kein
+// Sim-Lauf), einmal ohne und einmal mit Baseline (Trend, Vergleich, Delta); ohne -write vergleicht er mit den Dateien (RU31.1).
+// Generated bleibt leer, die Ortszeit wäre je Rechner verschieden.
+func TestRustRefInsights(t *testing.T) {
+	raw, err := os.ReadFile(filepath.Join(rustRefDir, "insights-run7.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	cur, err := ReadSummary(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	base, err := ReadSummary(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for i := range base.Targets {
+		if base.Targets[i].Measure == "goldAtDawnPerPlayer" {
+			base.Targets[i].Value, base.Targets[i].Status, base.Targets[i].Pass = 22, StatusOK, true
+		}
+	}
+	h, err := DefaultHints()
+	if err != nil {
+		t.Fatal(err)
+	}
+	cases := map[string]Insights{
+		"insights-run7-out.json":   BuildInsights(cur, nil, h, Meta{Run: "simtest-run-7"}),
+		"insights-run7-trend.json": BuildInsights(cur, &base, h, Meta{Run: "simtest-run-7", Baseline: "b.json"}),
+	}
+	for name, in := range cases {
+		got, err := json.MarshalIndent(in, "", "  ")
+		if err != nil {
+			t.Fatal(err)
+		}
+		got = append(got, '\n')
+		path := filepath.Join(rustRefDir, name)
+		if *write {
+			if err := os.WriteFile(path, got, 0o644); err != nil {
+				t.Fatal(err)
+			}
+			continue
+		}
+		want, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatalf("%v (schreiben mit -write)", err)
+		}
+		if !bytes.Equal(bytes.ReplaceAll(want, []byte("\r\n"), []byte("\n")), got) { // Windows-Checkout mit CRLF
 			t.Fatalf("%s weicht ab (neu schreiben mit -write, nur bei gewollter Änderung)", name)
 		}
 	}

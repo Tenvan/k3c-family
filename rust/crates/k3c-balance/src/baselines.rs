@@ -158,6 +158,12 @@ fn info_of(name: &str, run: &str, s: &Summary) -> BaselineInfo {
 
 /// Die Zeit als RFC 3339 in UTC, `2026-11-17T10:00:00Z` (Go: `time.Now().Format(time.RFC3339)` in Ortszeit).
 pub fn rfc3339_utc(t: SystemTime) -> String {
+    let [year, month, day, h, min, s] = utc_parts(t);
+    format!("{year:04}-{month:02}-{day:02}T{h:02}:{min:02}:{s:02}Z")
+}
+
+/// Jahr, Monat, Tag, Stunde, Minute, Sekunde in UTC (ohne Zeitzone; Rust-std kennt keine, Abweichung zu Go: dort Ortszeit).
+pub fn utc_parts(t: SystemTime) -> [i64; 6] {
     let secs = t.duration_since(UNIX_EPOCH).map_or(0, |d| d.as_secs() as i64);
     let (days, rest) = (secs.div_euclid(86400), secs.rem_euclid(86400));
     // Tage seit 1970-01-01 → Datum (Howard Hinnants `civil_from_days`)
@@ -170,12 +176,7 @@ pub fn rfc3339_utc(t: SystemTime) -> String {
     let day = doy - (153 * mp + 2) / 5 + 1;
     let month = if mp < 10 { mp + 3 } else { mp - 9 };
     let year = yoe + era * 400 + i64::from(month <= 2);
-    format!(
-        "{year:04}-{month:02}-{day:02}T{:02}:{:02}:{:02}Z",
-        rest / 3600,
-        rest % 3600 / 60,
-        rest % 60
-    )
+    [year, month, day, rest / 3600, rest % 3600 / 60, rest % 60]
 }
 
 /// Liest die gesicherten Baselines, nach Name sortiert; ein Ordner ohne lesbares `run.json` fehlt in der Liste (Go: `ListBaselines`).
