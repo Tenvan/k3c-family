@@ -14,7 +14,7 @@ import (
 
 // Welten anlegen und bearbeiten (B-954, MCP-Tools world_* und „Welt anlegen“ der Seite). Geschrieben wird nur die
 // Welt-Datei unter data/worlds/, atomar und format-stabil: Nur die geänderten Werte bekommen neue Bytes (Stil der
-// Datei: ein Wert eine Zeile, `inline`). Vor dem Schreiben prüft k3c-sim den Entwurf wie das Laden im Spiel
+// Datei: ein Wert eine Zeile, `inline`). Vor dem Schreiben prüft die Spiel-EXE den Entwurf wie das Laden im Spiel
 // (sim.ParseWorld, Werte aller Nachfolger); ungültig bleibt die Datei, wie sie ist, und der Fehler nennt den Grund.
 
 // headerKeys sind die Felder des Kopfs, die world_set ändert (Reihenfolge wie in der Datei); `islands` kommt dazu.

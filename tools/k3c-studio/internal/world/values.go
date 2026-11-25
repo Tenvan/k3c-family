@@ -11,7 +11,7 @@ import (
 )
 
 // Werte-Overrides (B-680, B-682, docs/rules/welten.md § 1): Die Ansicht „Werte“ zeigt je Feld den Basiswert (Basis
-// data/, darüber die Overrides der Eltern-Welten; gerechnet von k3c-sim world values) und den Override der Welt.
+// data/, darüber die Overrides der Eltern-Welten; gerechnet von k3c-game sim world values) und den Override der Welt.
 
 // ValueEntry ist ein Feld einer Basis-Datei: File ist der Schlüssel in `overrides` (z. B. buildings), Path der Weg darin
 // wie im Override (Listen von Objekten je id bzw. Index). Base ist null, wenn die Basis das Feld nicht nennt; Override
@@ -34,7 +34,7 @@ type ValuesView struct {
 	Error    string       `json:"error"`
 }
 
-// valuesReport ist die Antwort von `k3c-sim world` op values.
+// valuesReport ist die Antwort von `k3c-game sim world` op values.
 type valuesReport struct {
 	Extends   string                     `json:"extends"`
 	Children  []string                   `json:"children"`

@@ -35,11 +35,11 @@ func fakeRegistry(mode string) *Registry {
 			return Result{Exit: 130}
 		case "crash":
 			p.Out("stdout", `{"event":"progress","done":1,"total":2}`)
-			p.Out("stderr", "❌ k3c-sim: 💥 Absturz in der Engine: boom")
+			p.Out("stderr", "❌ k3c-game: 💥 Absturz in der Engine: boom")
 			return Result{Exit: 1}
 		case "error":
 			p.Out("stdout", `{"event":"error","message":"welt \"x\" fehlt"}`)
-			p.Out("stderr", `❌ k3c-sim: welt "x" fehlt`)
+			p.Out("stderr", `❌ k3c-game: welt "x" fehlt`)
 			return Result{Exit: 1}
 		}
 		p.Out("stdout", `{"event":"progress","done":1,"total":2}`)
@@ -136,10 +136,10 @@ func TestOfflineAlterBerichtZaehltNicht(t *testing.T) {
 	}
 }
 
-// RS2.2: Ein Absturz oder Fehler von k3c-sim beendet den Lauf als fehlgeschlagen; der Status nennt Exit und Grund.
+// RS2.2: Ein Absturz oder Fehler der Spiel-EXE beendet den Lauf als fehlgeschlagen; der Status nennt Exit und Grund.
 func TestOfflineAbsturzNenntStderr(t *testing.T) {
 	for mode, want := range map[string][]string{"crash": {"rechnen: Exit 1", "💥 Absturz in der Engine: boom"},
-		"error": {"rechnen: Exit 1", `❌ k3c-sim: welt "x" fehlt`}} {
+		"error": {"rechnen: Exit 1", `❌ k3c-game: welt "x" fehlt`}} {
 		root := t.TempDir()
 		g := fakeRegistry(mode)
 		info, err := g.StartOffline(root, "Repo-Wurzel", Spec{})

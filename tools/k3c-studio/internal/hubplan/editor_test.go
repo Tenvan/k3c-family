@@ -1,6 +1,13 @@
 package hubplan
 
-import "k3c/tools/k3c-studio/internal/goengine"
+import (
+	"testing"
 
-// editor ist der Planer unter root mit der Go-Engine als Referenz (goengine, statt der EXE; keine Simulation).
-func editor(root string) Editor { return Editor{Root: root, Engine: goengine.Call("hub", root)} }
+	"k3c/tools/k3c-studio/internal/exeengine"
+)
+
+// editor ist der Planer unter root mit der Spiel-EXE der Repo-Wurzel (exeengine; ohne EXE wird der Test übersprungen).
+func editor(t testing.TB, root string) Editor {
+	t.Helper()
+	return Editor{Root: root, Engine: exeengine.For(t, "hub", root)}
+}

@@ -31,7 +31,7 @@ func planerArmoryFrom3(t *testing.T) string {
 }
 
 func TestHubRulesOhneAbweichung(t *testing.T) {
-	v := editor(repoRoot).Rules("")
+	v := editor(t, repoRoot).Rules("")
 	if v.Error != "" || !v.Same || len(v.Lines) != 0 || v.Ist != v.Soll {
 		t.Fatalf("Regeltabelle weicht ab: %+v", v)
 	}
@@ -50,7 +50,7 @@ func TestHubRulesAbweichendeTabelle(t *testing.T) {
 	}
 	write(t, filepath.Join(root, filepath.FromSlash(rulesFile)), strings.Replace(doc, from, to, 1))
 	write(t, filepath.Join(root, filepath.FromSlash(hubFile)), readRepo(t, hubFile))
-	v := editor(root).Rules("")
+	v := editor(t, root).Rules("")
 	if v.Error != "" || v.Same || len(v.Lines) != 1 {
 		t.Fatalf("Abweichung nicht erkannt: %+v", v)
 	}
@@ -64,7 +64,7 @@ func TestHubRulesAbweichendeTabelle(t *testing.T) {
 }
 
 func TestHubRulesPlanerStandUndFehler(t *testing.T) {
-	v := editor(repoRoot).Rules(planerArmoryFrom3(t))
+	v := editor(t, repoRoot).Rules(planerArmoryFrom3(t))
 	if v.Error != "" || v.Same || len(v.Lines) != 2 {
 		t.Fatalf("Planer-Stand Rüstkammer ab 3: %+v", v)
 	}
@@ -72,14 +72,14 @@ func TestHubRulesPlanerStandUndFehler(t *testing.T) {
 		t.Errorf("Zeilen %+v", v.Lines)
 	}
 	root := t.TempDir()
-	if v := editor(root).Rules(""); !strings.Contains(v.Error, hubFile) {
+	if v := editor(t, root).Rules(""); !strings.Contains(v.Error, hubFile) {
 		t.Errorf("fehlende hub.json: %q", v.Error)
 	}
-	if v := editor(root).Rules(readRepo(t, hubFile)); !strings.Contains(v.Error, rulesFile) {
+	if v := editor(t, root).Rules(readRepo(t, hubFile)); !strings.Contains(v.Error, rulesFile) {
 		t.Errorf("fehlende Regeltabelle: %q", v.Error)
 	}
 	write(t, filepath.Join(root, filepath.FromSlash(rulesFile)), "ohne Marken")
-	if v := editor(root).Rules(readRepo(t, hubFile)); !strings.Contains(v.Error, "nicht vergleichbar") {
+	if v := editor(t, root).Rules(readRepo(t, hubFile)); !strings.Contains(v.Error, "nicht vergleichbar") {
 		t.Errorf("ohne Marken: %q", v.Error)
 	}
 }

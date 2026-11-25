@@ -25,7 +25,7 @@ Erst das Thema bestimmen, dann gezielt dort suchen. Vollständig: `docs/agenten-
 | Thema | Code | Werte und Regeln |
 |---|---|---|
 | Kampf | `engine/sim/enemies*.go`, `engine/sim/unit_*.go` (Zielwahl inline in `unit_archer.go` `stepArcher`, `unit_warrior.go`, Takt `unit_common.go`), `engine/sim/boss*.go`, `engine/sim/aggression*.go` | `data/enemies.json`, `data/troops.json`, `data/waves.json`, `data/bosses.json`, `docs/rules/gegner.md`, `docs/rules/bosse.md`, `docs/rules/kampf.md` |
-| Simulation | `engine/sim/` (`world*.go`, `island*.go`, `building*.go`, `economy*.go`, `monarch*.go`), `engine/room/`, `engine/level/`, `engine/simcli/` | `docs/rules/stufen.md`, `docs/game-design.md` |
+| Simulation | `engine/sim/` (`world*.go`, `island*.go`, `building*.go`, `economy*.go`, `monarch*.go`), `engine/room/`, `engine/level/` | `docs/rules/stufen.md`, `docs/game-design.md` |
 | Balancing | `engine/balance/` | `data/economy.json`, `data/difficulty.json`, `data/balance-targets.json`, `docs/rules/zielkorridore.md`, `docs/rules/wirtschaft.md` |
 | Welten | `engine/level/`, `engine/sim/island*.go` | `data/worlds/`, `data/biomes/`, `docs/rules/welten.md` |
 | Grafik | `tools/paper/`, `rust/crates/k3c-rig/`, `rust/crates/k3c-game/src/art/`, `rust/crates/k3c-game/src/actors/`, gezeichnete HUD-Grafik `rust/crates/k3c-game/src/hud/` | `public/grafik/<gruppe>/`, `data/paper.json`, `docs/standards/paper-spec.md` |

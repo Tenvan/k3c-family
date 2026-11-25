@@ -10,7 +10,7 @@ import (
 	"k3c/data"
 )
 
-// Grade (B-158, BAL3.3) für die Prüfung der Ziele; die Grad-Kurven selbst rechnet engine/balance (k3c-sim balance --curves).
+// Grade (B-158, BAL3.3) für die Prüfung der Ziele; die Grad-Kurven selbst rechnet engine/balance (k3c-game sim balance --curves).
 
 // Grades liefert die Grade aus data/difficulty.json, nach Wellengröße sortiert (dev, easy, normal, hard, ultra).
 func Grades() ([]string, error) {

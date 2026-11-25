@@ -36,11 +36,11 @@ func readIn(t *testing.T, root, rel string) string {
 // saveEdit lädt den Planer unter root, ändert den Kandidaten mit edit (kompakt, sortiert) und speichert.
 func saveEdit(t *testing.T, root string, edit func(m map[string]any)) (HubPlanView, HubSaveResult) {
 	t.Helper()
-	plan := editor(root).planFrom(context.Background(), hubFile)
+	plan := editor(t, root).planFrom(context.Background(), hubFile)
 	if plan.Error != "" {
 		t.Fatal(plan.Error)
 	}
-	return plan, editor(root).saveIn(context.Background(), []byte(remarshal(t, plan.Raw, edit)), plan.Stand)
+	return plan, editor(t, root).saveIn(context.Background(), []byte(remarshal(t, plan.Raw, edit)), plan.Stand)
 }
 
 // wantSaved prüft: gespeichert, REG-Hinweis, kein Tabellenfehler, neuer Stand, Regeltabelle passt zur hub.json und
@@ -138,7 +138,7 @@ func TestHubSavePlatzEntfernenUndHinzufuegen(t *testing.T) {
 		t.Fatalf("Entfernen: -%q +%q", removed, added)
 	}
 	afterRemove, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-	plan := editor(root).planFrom(context.Background(), hubFile)
+	plan := editor(t, root).planFrom(context.Background(), hubFile)
 	const nursery = `    { "kind": "armory", "offsetUnits": 40, "hubLevel": 4, "topOnly": true }` // letzter Eintrag in sites
 	nl := "\n"
 	if strings.Contains(plan.Raw, "\r\n") {
@@ -148,7 +148,7 @@ func TestHubSavePlatzEntfernenUndHinzufuegen(t *testing.T) {
 		t.Fatalf("data/hub.json enthält %s nicht genau einmal; Test an die Datei anpassen", nursery)
 	}
 	cand := strings.Replace(plan.Raw, nursery+nl, nursery+","+nl+"    "+healer+nl, 1)
-	res = editor(root).saveIn(context.Background(), []byte(cand), plan.Stand) // Reihenfolge wie im Frontend (JSON.stringify)
+	res = editor(t, root).saveIn(context.Background(), []byte(cand), plan.Stand) // Reihenfolge wie im Frontend (JSON.stringify)
 	wantSaved(t, root, rulesBefore, res)
 	removed, added = lineDiff(afterRemove, readIn(t, root, hubFile))
 	if !slices.Equal(removed, []string{nursery}) || !slices.Equal(added, []string{nursery + ",", "    " + healer}) {
@@ -185,11 +185,11 @@ func TestHubSaveExternGeaendert(t *testing.T) {
 	for _, rel := range []string{hubFile, rulesFile} {
 		t.Run(rel, func(t *testing.T) {
 			root := planerCopy(t, hubFile)
-			plan := editor(root).planFrom(context.Background(), hubFile)
+			plan := editor(t, root).planFrom(context.Background(), hubFile)
 			path := filepath.Join(root, filepath.FromSlash(rel))
 			write(t, path, readIn(t, root, rel)+"\n")
 			hubBefore, rulesBefore := readIn(t, root, hubFile), readIn(t, root, rulesFile)
-			res := editor(root).saveIn(context.Background(), []byte(strings.Replace(plan.Raw, armory4, armory3, 1)), plan.Stand)
+			res := editor(t, root).saveIn(context.Background(), []byte(strings.Replace(plan.Raw, armory4, armory3, 1)), plan.Stand)
 			if res.Saved || !strings.Contains(res.Stale, rel) || !strings.Contains(res.Stale, "neu laden") || res.Notice != "" {
 				t.Fatalf("extern geänderte Datei überschrieben: %+v", res)
 			}

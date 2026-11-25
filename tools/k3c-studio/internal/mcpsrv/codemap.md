@@ -11,7 +11,7 @@ MCP-Server `k3c-studio` (Streamable HTTP, nur 127.0.0.1, Port 5181, dev 5182): T
 - Welten: `tools_world.go` (`world_list`, `world_get`, `world_create`, `world_delete`, `world_set`, `world_override_set`, `world_chunks_set`, `world_check` über `internal/world`), `tools_world_story.go` (`world_story_set`).
 - Hub: `tools_hub.go` (`hub_get`, `hub_check`, `hub_save` über `internal/hubplan`).
 - Assets (über `internal/paperassets`): `tools_assets.go` (`assets_guide`, `assets_list`, `assets_get`, `assets_create`), `tools_assets_set.go` (`assets_set`, `assets_style_get`, `assets_style_set`, `assets_delete`), `tools_assets_render.go` (`assets_render` mit Jobs), `tools_assets_preview.go` (`assets_preview`), `tools_assets_review.go` (`assets_review`), `tools_assets_research.go` (`assets_research`, `assets_hits`, `assets_hit_add`, `assets_hit_drop`, `assets_import`), `tools_assets_prompts.go` (MCP-Prompts).
-- `tools_engine.go`: `level_generate` (rechnet im Prozess über `engine/simcli`).
+- `tools_engine.go`: `level_generate` (über die Spiel-EXE, `k3c-game sim level`).
 
 ## Flow
 
@@ -21,4 +21,4 @@ MCP-Server `k3c-studio` (Streamable HTTP, nur 127.0.0.1, Port 5181, dev 5182): T
 ## Integration
 
 - Konsument: `tools/k3c-studio` (`app.go`: `setMCP`, Stats für die Oberfläche).
-- Abhängigkeiten: `tools/workkit/mcpkit`, `tools/assetkit`, interne Pakete des Studios, `engine/simcli`.
+- Abhängigkeiten: `tools/workkit/mcpkit`, `tools/assetkit`, interne Pakete des Studios (Engine über die Spiel-EXE).

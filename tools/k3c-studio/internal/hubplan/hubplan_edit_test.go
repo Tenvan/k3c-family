@@ -9,7 +9,7 @@ import (
 // WZ9.3: Prüfung eines geänderten Stands (Check), Arten zum Hinzufügen, Index der Zeilen und Stand beim Laden.
 
 func TestHubCheckPrueftDenKandidaten(t *testing.T) {
-	a := editor(repoRoot)
+	a := editor(t, repoRoot)
 	v := a.Check(context.Background(), planerArmoryFrom3(t))
 	if v.Error != "" || len(v.Findings) != 0 || v.Stand != (HubStand{}) {
 		t.Fatalf("Kandidat: %+v", v)
@@ -28,7 +28,7 @@ func TestHubCheckPrueftDenKandidaten(t *testing.T) {
 
 func TestHubPlanIndexArtenUndStand(t *testing.T) {
 	root := planerCopy(t, hubFile)
-	v := editor(root).planFrom(context.Background(), hubFile)
+	v := editor(t, root).planFrom(context.Background(), hubFile)
 	if v.Stand.Hub != stamp([]byte(readIn(t, root, hubFile))) || v.Stand.Rules != stamp([]byte(readIn(t, root, rulesFile))) {
 		t.Errorf("Stand %+v", v.Stand)
 	}
@@ -44,7 +44,7 @@ func TestHubPlanIndexArtenUndStand(t *testing.T) {
 // damit das Frontend die Antwort zuordnen kann.
 func TestHubCheckNichtLesbarerKandidatBehaeltRaw(t *testing.T) {
 	cand := strings.Replace(planerArmoryFrom3(t), armory3, `{ "kind": "armory", "offsetUnits": 40, "hubLevel": 1.5 }`, 1)
-	v := editor(repoRoot).Check(context.Background(), cand)
+	v := editor(t, repoRoot).Check(context.Background(), cand)
 	if v.Error == "" || v.Raw != cand || len(v.Matrix.Rows) != 0 {
 		t.Fatalf("Kandidat mit 1.5: Error %q, Raw gesetzt %v, %d Zeilen", v.Error, v.Raw == cand, len(v.Matrix.Rows))
 	}

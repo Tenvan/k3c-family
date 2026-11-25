@@ -191,7 +191,7 @@ func TestEchteExe(t *testing.T) {
 	if _, _, err := Find(root); err != nil {
 		t.Skip("keine frische Spiel-EXE: ", err)
 	}
-	ev, err := Call(context.Background(), Options{Root: root, Sub: "level", Input: []byte(`{"biome":"forest","seed":1}`)})
+	ev, err := Call(context.Background(), Options{Root: root, Sub: "level", Input: []byte(`{"biome":"forest","seed":"1"}`)})
 	if err != nil {
 		t.Fatal(err)
 	}

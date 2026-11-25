@@ -31,6 +31,7 @@ const maxLine = 16 << 20
 // Options beschreibt einen Lauf `k3c-game sim <Sub> …`.
 type Options struct {
 	Root     string       // Checkout: EXE, data/ und .work/runs/
+	Data     string       // absoluter Daten-Ordner statt <Root>/data (Tests: Fixture-Daten, EXE der Repo-Wurzel); leer = <Root>/data
 	Sub      string       // run, level, world, hub (balance ab RU40)
 	Input    []byte       // Eingabe-JSON; der Starter schreibt sie nach <Root>/.work/runs/ und löscht sie nach dem Ende
 	Window   bool         // --window (nur run und balance)
@@ -75,9 +76,13 @@ func Stream(ctx context.Context, o Options) error {
 	return run(ctx, argvFor(exe, input, o), dir, o)
 }
 
-// argvFor baut die Befehlszeile `k3c-game sim <Sub> --input <Datei> --data <Root>/data --stop-stdin [--window [--speed N]] [Args…]`.
+// argvFor baut die Befehlszeile `k3c-game sim <Sub> --input <Datei> --data <Data|Root/data> --stop-stdin [--window [--speed N]] [Args…]`.
 func argvFor(exe, input string, o Options) []string {
-	argv := []string{exe, "sim", o.Sub, "--input", input, "--data", filepath.Join(o.Root, "data"), "--stop-stdin"}
+	data := o.Data
+	if data == "" {
+		data = filepath.Join(o.Root, "data")
+	}
+	argv := []string{exe, "sim", o.Sub, "--input", input, "--data", data, "--stop-stdin"}
 	if o.Window {
 		argv = append(argv, "--window")
 		if o.Speed > 0 {

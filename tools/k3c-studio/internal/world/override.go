@@ -18,7 +18,7 @@ var writeMu sync.Mutex
 
 // SetOverride übersteuert das Feld base/path der Welt id mit value (JSON). null oder ein Wert gleich dem Basiswert
 // entfernt den Override (das Feld erbt wieder). Nur Felder der Ansicht „Werte“ sind erlaubt. Vor dem Schreiben prüft
-// k3c-sim den Entwurf wie der Server (sim.ResolveWorldValues) für die Welt und alle Nachfolger; ungültig bleibt die
+// die Spiel-EXE den Entwurf wie das Spiel (sim.ResolveWorldValues) für die Welt und alle Nachfolger; ungültig bleibt die
 // Datei, wie sie ist, und Error nennt den Grund. Die Antwort ist die neue Ansicht.
 func (e Editor) SetOverride(ctx context.Context, id, base string, path []string, value json.RawMessage) ValuesView {
 	writeMu.Lock()
@@ -75,7 +75,7 @@ func (e Editor) draftOverride(id, base string, path []string, value, baseValue j
 	return raw, out, err
 }
 
-// checkDraft lässt k3c-sim den Entwurf out der Welt id prüfen; die Antwort sind die Warnungen.
+// checkDraft lässt die Spiel-EXE den Entwurf out der Welt id prüfen; die Antwort sind die Warnungen.
 func (e Editor) checkDraft(ctx context.Context, id string, out []byte) ([]string, error) {
 	var check struct {
 		Warnings []string `json:"warnings"`

@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"slices"
 	"strings"
 )
@@ -26,7 +27,11 @@ func (e Editor) rejectOverride(ctx context.Context, id string, entries []ValueEn
 		}
 	}
 	if !slices.Contains(files, base) {
-		return fmt.Errorf("unbekannte Datei %q (erlaubt: %s)", base, strings.Join(files, ", "))
+		list := strings.Join(files, ", ")
+		if engine := e.probeFiles(ctx, id, base); engine != "" {
+			list = engine // die Engine kennt auch Dateien ohne Blatt in der Ansicht (welt-events, RU40.4)
+		}
+		return fmt.Errorf("unbekannte Datei %q (erlaubt: %s)", base, list)
 	}
 	if len(path) == 0 {
 		return fmt.Errorf("der Pfad fehlt (Felder von %s: %s)", base, shown(levelFields(entries, base, nil)))
@@ -67,6 +72,40 @@ func (e Editor) probeLocked(ctx context.Context, id, base string, path []string)
 		return err
 	}
 	return nil
+}
+
+// probeFiles lässt die Engine einen Entwurf mit leerem Override der Datei base prüfen und liefert die Liste aus ihrer
+// Ablehnung „(erlaubt: …)“; leer, wenn die Engine keine solche Liste nennt.
+func (e Editor) probeFiles(ctx context.Context, id, base string) string {
+	raw, err := e.read(id)
+	if err != nil {
+		return ""
+	}
+	var head struct {
+		Overrides map[string]json.RawMessage `json:"overrides"`
+	}
+	if json.Unmarshal(raw, &head) != nil {
+		return ""
+	}
+	ov := maps.Clone(head.Overrides)
+	if ov == nil {
+		ov = map[string]json.RawMessage{}
+	}
+	ov[base] = json.RawMessage("{}")
+	out, err := patchOverrides(raw, ov)
+	if err != nil {
+		return ""
+	}
+	_, err = e.checkDraft(ctx, id, out)
+	if err == nil {
+		return ""
+	}
+	_, list, ok := strings.Cut(err.Error(), "(erlaubt: ")
+	if !ok {
+		return ""
+	}
+	list, _, _ = strings.Cut(list, ")")
+	return strings.TrimSpace(list)
 }
 
 // levelFields sind die Namen unter dem Pfad prefix der Datei file in der Reihenfolge der Datei, ohne Wiederholung.

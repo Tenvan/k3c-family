@@ -30,7 +30,7 @@ func TestSetNatureWritesAndResets(t *testing.T) {
 	}
 }
 
-// Ein ungültiger Wert (Prüfung von k3c-sim) lässt die Datei unverändert und nennt den Grund.
+// Ein ungültiger Wert (Prüfung der Spiel-EXE) lässt die Datei unverändert und nennt den Grund.
 func TestSetNatureRejectsInvalid(t *testing.T) {
 	e := fixture(t)
 	v := e.SetNature(ctx, "standard", "island1", 0, "forestDensity", ptr(9), "k3c")

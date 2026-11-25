@@ -24,9 +24,9 @@ func worldEditor(root string) world.Editor {
 	return world.Editor{Root: root, Engine: worldEngine(root)}
 }
 
-// overrideFilesText sind die Basis-Dateien, die eine Welt übersteuern darf (Engine: overrideFiles in engine/sim/world_values.go);
+// overrideFilesText sind die Basis-Dateien, die eine Welt übersteuern darf (Engine: override_files in rust/crates/k3c-sim/src/world/values.rs);
 // TestOverrideFilesTextMatchesEngine hält die Liste gleich.
-const overrideFilesText = "buildings, economy, enemies, events, goals, hub, monarch, ship, troops, waves"
+const overrideFilesText = "buildings, economy, enemies, events, goals, hub, monarch, ship, troops, waves, welt-events"
 
 type worldListIn struct{}
 
