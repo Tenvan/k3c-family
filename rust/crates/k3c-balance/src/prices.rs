@@ -10,6 +10,7 @@ use k3c_data::economy::Gatherable;
 use k3c_data::{buildings, economy, hub, troops};
 
 use crate::fehler::Fehler;
+use crate::vary::current_data;
 
 /// Rohstoff, Menge je Ernte und Markierungs-Preis eines Knotens (Go: `nodePrice`).
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -75,5 +76,8 @@ static PRICES: OnceLock<PriceList> = OnceLock::new();
 /// Die Preise aus `data/` (Go: Paket-Variable `prices`), einmal gelesen. Fehlen die Dateien, bricht Go beim Start ab;
 /// Rust rechnet mit leeren Preisen weiter, damit der Produktivcode nicht abstürzt.
 pub fn prices() -> &'static PriceList {
+    if let Some(ctx) = current_data() {
+        return ctx.prices; // innerhalb von `vary::with_data`: die Preise der Variante (Go: `withData` setzt `prices`)
+    }
     PRICES.get_or_init(|| load_prices(&Source::from_env()).unwrap_or_default())
 }

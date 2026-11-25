@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::fehler::Fehler;
 use crate::helps::after_step;
-use crate::island_world::shared;
+use crate::island_world::{base_shared, shared};
 use crate::metrics::Collector;
 use crate::run::{Scenario, TICK_HZ, new_island};
 use crate::sha256::{Sha256, sha256_hex};
@@ -77,6 +77,11 @@ fn data_files(source: &Source) -> Result<Vec<DataFile>, Fehler> {
             }
         }
         Source::Dir(dir) => walk(dir, &mut Vec::new(), &mut files)?,
+        Source::Mem(mem) => {
+            for (name, text) in mem {
+                files.push((name.split('/').map(String::from).collect(), text.as_bytes().to_vec()));
+            }
+        }
     }
     files.sort_by(|a, b| a.0.cmp(&b.0));
     Ok(files)
@@ -99,7 +104,7 @@ fn walk(dir: &Path, prefix: &mut Vec<String>, out: &mut Vec<DataFile>) -> Result
 
 fn hash_data() -> Result<String, Fehler> {
     let mut h = Sha256::default();
-    for (parts, raw) in data_files(&shared()?.source)? {
+    for (parts, raw) in data_files(&base_shared()?.source)? {
         h.write(parts.join("/").as_bytes());
         h.write(&[0]);
         h.write(&replace_crlf(&raw));

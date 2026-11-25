@@ -19,6 +19,10 @@ pub fn levels_in(source: &Source) -> Result<Vec<String>, String> {
             .iter()
             .filter_map(|(n, _)| n.strip_prefix("biomes/").and_then(biome_id))
             .collect(),
+        Source::Mem(files) => files
+            .keys()
+            .filter_map(|n| n.strip_prefix("biomes/").and_then(biome_id))
+            .collect(),
         Source::Dir(dir) => {
             let rd = std::fs::read_dir(dir.join("biomes")).map_err(|e| format!("{}: {e}", dir.display()))?;
             rd.filter_map(|e| biome_id(&e.ok()?.file_name().to_string_lossy()))

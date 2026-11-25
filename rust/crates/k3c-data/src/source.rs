@@ -3,6 +3,7 @@
 //! Wie in Go: `K3C_DATA_DIR`, sonst der Ordner `data` neben der EXE (wenn er `worlds` enthält), sonst eingebettet.
 //! Eingebettet sind genau die Dateien von `//go:embed *.json biomes/*.json worlds/standard.json`.
 
+use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
 use crate::Fehler;
@@ -17,6 +18,8 @@ pub enum Source {
     Dir(PathBuf),
     /// Die beim Bauen eingebetteten Dateien.
     Embedded,
+    /// Dateien im Speicher (Pfad → Inhalt), z. B. Daten mit Wert-Varianten (Go: `fstest.MapFS`).
+    Mem(BTreeMap<String, String>),
 }
 
 /// Eingebettete Dateien: Name unter data/ und Inhalt.
@@ -123,12 +126,41 @@ impl Source {
                 .find(|(n, _)| *n == name)
                 .map(|(_, text)| text.to_string())
                 .ok_or_else(|| fail("file does not exist")),
+            Source::Mem(files) => files.get(name).cloned().ok_or_else(|| fail("file does not exist")),
             Source::Dir(dir) => std::fs::read_to_string(dir.join(name)).map_err(|e| match e.kind() {
                 std::io::ErrorKind::NotFound => fail(NOT_FOUND),
                 _ => fail(&e.to_string()),
             }),
         }
     }
+
+    /// `files` liefert alle Dateien der Quelle (Pfad mit `/` → Inhalt), sortiert; ein Ordner wird rekursiv gelesen
+    /// (Go: `fs.WalkDir` über `data.Files`).
+    pub fn files(&self) -> Result<BTreeMap<String, String>, Fehler> {
+        match self {
+            Source::Embedded => Ok(EMBEDDED.iter().map(|(n, t)| (n.to_string(), t.to_string())).collect()),
+            Source::Mem(files) => Ok(files.clone()),
+            Source::Dir(dir) => {
+                let mut out = BTreeMap::new();
+                walk(dir, "", &mut out).map_err(|e| Fehler::Lesen(format!("data/: {e}")))?;
+                Ok(out)
+            }
+        }
+    }
+}
+
+/// Liest den Ordner dir rekursiv; `prefix` ist der Pfad unter data/ (leer oder mit `/` am Ende).
+fn walk(dir: &Path, prefix: &str, out: &mut BTreeMap<String, String>) -> std::io::Result<()> {
+    for e in std::fs::read_dir(dir)? {
+        let e = e?;
+        let name = format!("{prefix}{}", e.file_name().to_string_lossy());
+        if e.file_type()?.is_dir() {
+            walk(&e.path(), &format!("{name}/"), out)?;
+        } else {
+            out.insert(name, std::fs::read_to_string(e.path())?);
+        }
+    }
+    Ok(())
 }
 
 /// Text des Betriebssystems für eine fehlende Datei, wie Go ihn über `os.DirFS` meldet.

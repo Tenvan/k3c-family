@@ -5,10 +5,10 @@ use std::fmt::Write;
 
 use serde::{Deserialize, Serialize};
 
+use crate::curves::median_or_nil;
 use crate::figures::round1;
 use crate::island_world::shared;
 use crate::metrics::Metrics;
-use crate::pending::median_or_nil;
 use crate::run::Report;
 use crate::summary_text::num;
 

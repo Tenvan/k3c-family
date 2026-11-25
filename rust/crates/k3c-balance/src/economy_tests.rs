@@ -13,6 +13,7 @@ use crate::run::{Matrix, run};
 use crate::scope::validate_target;
 use crate::summary::Summarize;
 use crate::targets::{default_targets, measure_values};
+use crate::variant::with_variants;
 
 /// Ein Lauf über 5 Tage (Dämmerung bei Tick 100·n, Tagesbeginn bei 200·(n−1)) mit festen Werten zu Tagesbeginn; `wood` und
 /// `fighters` gelten je Tag ab Tag 1, `gold` für beide Monarchen.
@@ -135,9 +136,8 @@ fn ziel_mit_grad() {
 }
 
 /// BAL6.1 (B-347): Der Bot wirtschaft baut Turm, Baumschule und Werkstatt und schafft Kämpfer; der Lauf legt jeden
-/// Tagesbeginn ab (Tag 1 = Start, zuletzt der Morgen nach dem letzten Tag) mit Gold je Monarch. Go rechnet mit dem reichen
-/// Beutel von vor der Münzskala (`WithVariants`, kommt später); hier gilt der Beutel aus data/, darum fehlen die Aussagen zu
-/// Turm, Werkstatt und neuen Kämpfern.
+/// Tagesbeginn ab (Tag 1 = Start, zuletzt der Morgen nach dem letzten Tag) mit Gold je Monarch. Mit dem reichen Beutel von
+/// vor der Münzskala: Der Test prüft den Bot, die Wirtschaft der Münzskala stimmt BS3.4 ab.
 #[test]
 fn wirtschafts_bot_und_tagesbeginn() {
     let m = Matrix {
@@ -148,7 +148,8 @@ fn wirtschafts_bot_und_tagesbeginn() {
         days: 2,
         ..Matrix::default()
     };
-    let r = run(&m).expect("Lauf");
+    let variants = ["economy.json:purse.startGold=100", "economy.json:purse.maxGold=100"].map(String::from);
+    let r = with_variants(&variants, || run(&m)).expect("Lauf");
     let res = &r.results[0];
     assert!(res.valid, "ungültig: {}", res.error);
     let m = res.metrics.as_ref().expect("Kennzahlen");
@@ -161,6 +162,18 @@ fn wirtschafts_bot_und_tagesbeginn() {
         days == [1, 2, 3] && m.dawns[0].tick == 0 && m.dawns[0].fighters == 2,
         "Tagesbeginne {days:?}, Start {:?}",
         m.dawns[0]
+    );
+    assert!(
+        m.first_tower_tick.is_some() && m.first_workshop_tick.is_some(),
+        "kein Turm ({:?}) oder keine Werkstatt ({:?})",
+        m.first_tower_tick,
+        m.first_workshop_tick
+    );
+    assert!(
+        m.dawns[2].fighters > m.dawns[0].fighters,
+        "keine neuen Kämpfer: {} → {}",
+        m.dawns[0].fighters,
+        m.dawns[2].fighters
     );
 }
 

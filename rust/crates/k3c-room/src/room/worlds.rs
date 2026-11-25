@@ -31,7 +31,7 @@ fn world_error(code: Fehler, text: String) -> Fehler {
 fn missing(src: &Source, id: &str) -> bool {
     match src {
         Source::Dir(dir) => !dir.join("worlds").join(format!("{id}.json")).is_file(),
-        Source::Embedded => src.read(&format!("worlds/{id}.json")).is_err(),
+        Source::Embedded | Source::Mem(_) => src.read(&format!("worlds/{id}.json")).is_err(),
     }
 }
 

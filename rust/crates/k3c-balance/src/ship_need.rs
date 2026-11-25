@@ -8,11 +8,12 @@ use k3c_data::buildings::Cost;
 use k3c_data::hub::Stock;
 use serde::{Deserialize, Serialize};
 
+use crate::curves::median_or_nil;
 use crate::fehler::Fehler;
 use crate::figures::round1;
 use crate::island_world::shared;
 use crate::metrics::Metrics;
-use crate::pending::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW, light_icon, median_or_nil};
+use crate::pending::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW, light_icon};
 use crate::run::Report;
 
 /// Ein Abschnitt aus data/ship.json (Go: `ShipStage`).

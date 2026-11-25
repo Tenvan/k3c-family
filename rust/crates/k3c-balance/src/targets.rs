@@ -36,6 +36,10 @@ pub fn measure_kind(key: &str) -> Option<MeasureKind> {
     if ECONOMY_MEASURES.contains(&key) {
         return economy_measure(key, &Metrics::default()).map(|(k, _)| k);
     }
+    #[cfg(test)]
+    if key == TEST_GOLD_MEASURE {
+        return Some(MeasureKind::Median); // Go-Tests tragen sie in `measures` ein (`sensitivity_test.go`)
+    }
     None
 }
 
@@ -76,9 +80,20 @@ pub fn measure_values(key: &str, m: &Metrics) -> Vec<f64> {
             .filter(|w| w.wave <= 5)
             .map(|w| w.buildings_destroyed as f64)
             .collect(),
+        #[cfg(test)]
+        TEST_GOLD_MEASURE => m
+            .days
+            .first()
+            .and_then(|d| d.gold_at_dusk)
+            .map(|g| vec![g as f64])
+            .unwrap_or_default(),
         _ => economy_measure(key, m).map(|(_, v)| v).unwrap_or_default(),
     }
 }
+
+/// Nur für Tests (`sensitivity_tests.rs`): Gold zur Dämmerung von Tag 1 als Median-Kennzahl.
+#[cfg(test)]
+pub const TEST_GOLD_MEASURE: &str = "testGoldAtDusk1";
 
 /// Das Fenster der Kennzahl castleHeld: Nacht 1 bis 5 (Ziel „Burg hält Nacht 1–5“). Es hängt nicht an `Target.days`, weil
 /// ein Lauf über 40 Tage (`sim_test days=40`) die Tage aller Ziele überschreibt.

@@ -4,10 +4,10 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::curves::median_or_nil;
 use crate::economy_measures::b2f;
 use crate::figures_island::{IslandFigures, island_figures_of};
 use crate::metrics::DayMetrics;
-use crate::pending::median_or_nil;
 use crate::run::Report;
 use crate::ship_need::{ShipFigures, ship_figures_of};
 

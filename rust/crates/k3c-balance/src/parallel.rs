@@ -14,6 +14,7 @@ use std::sync::mpsc::{Sender, channel};
 use std::thread;
 
 use crate::run::{RunResult, Scenario, Tick, run_one};
+use crate::vary::{current_data, set_current_data};
 
 /// Fortschrittsmeldung: Zahl der fertigen Läufe und aller Läufe (Go: `progress func(done, total int)`).
 pub type ProgressFn<'a> = Box<dyn FnMut(usize, usize) + 'a>;
@@ -71,11 +72,15 @@ pub fn run_all_with(
     let (tx, rx) = channel::<(usize, RunResult)>();
     let mut results: Vec<Option<RunResult>> = (0..total).map(|_| None).collect();
     let mut crash: Option<Crash> = None;
+    let data = current_data(); // die Daten einer Variante (`vary::with_data`) gelten auch in den Arbeitern
     thread::scope(|s| {
         for _ in 0..workers.min(total).max(1) {
             let tx = tx.clone();
             let (next, stop) = (&next, &stop);
-            s.spawn(move || work(all, threshold, next, stop, &tx));
+            s.spawn(move || {
+                set_current_data(data);
+                work(all, threshold, next, stop, &tx);
+            });
         }
         drop(tx);
         for (n, (i, r)) in rx.into_iter().enumerate() {

@@ -2,8 +2,6 @@
 //! Platzhalter. Alle tragen dieselbe Signatur wie die spätere Funktion. Die Dinge hier haben einen Rumpf mit den echten
 //! Werten, damit `hints.rs` schon läuft (Ziel-Kennzahlen, Gruppen, Ampel); die liefernde Session ersetzt sie durch ihr Original.
 
-use crate::evaluate::median;
-
 /// RU31.1 (`insights.go`): die Ampel eines Ziels.
 pub const LIGHT_GREEN: &str = "green";
 /// RU31.1 (`insights.go`).
@@ -22,9 +20,4 @@ pub fn light_icon(light: &str) -> &'static str {
         LIGHT_GREY => "⚪",
         _ => "",
     }
-}
-
-/// RU28.5 (`curves.go`, Go: `medianOrNil`): der Median oder `None` ohne Werte.
-pub fn median_or_nil(vals: &[f64]) -> Option<f64> {
-    if vals.is_empty() { None } else { Some(median(vals)) }
 }

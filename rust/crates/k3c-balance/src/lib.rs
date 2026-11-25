@@ -9,6 +9,7 @@ pub mod bot_material;
 pub mod bot_wirtschaft;
 pub mod bots;
 pub mod crown_bot;
+pub mod curves;
 pub mod delta;
 pub mod economy_measures;
 pub mod evaluate;
@@ -29,6 +30,7 @@ pub mod replay;
 pub mod run;
 pub mod scope;
 pub mod seedmode;
+pub mod sensitivity;
 pub mod sha256;
 pub mod ship_need;
 pub mod summary;
@@ -36,6 +38,8 @@ pub mod summary_text;
 pub mod targets;
 #[cfg(test)]
 mod testutil;
+pub mod variant;
+pub mod vary;
 
 #[cfg(test)]
 mod balance_tests;
@@ -86,6 +90,8 @@ mod rustref_tests;
 #[cfg(test)]
 mod seedmode_tests;
 #[cfg(test)]
+mod sensitivity_tests;
+#[cfg(test)]
 mod sha256_tests;
 #[cfg(test)]
 mod ship_need_tests;
@@ -93,6 +99,8 @@ mod ship_need_tests;
 mod summary_tests;
 #[cfg(test)]
 mod targets_tests;
+#[cfg(test)]
+mod variant_tests;
 
 pub use fehler::Fehler;
 

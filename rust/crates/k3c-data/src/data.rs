@@ -61,6 +61,10 @@ pub fn biome_ids(src: &Source) -> Result<Vec<String>, Fehler> {
             .map_err(|e| Fehler::Lesen(format!("data/biomes: {e}")))?
             .filter_map(|e| e.ok()?.file_name().to_str()?.strip_suffix(".json").map(String::from))
             .collect(),
+        Source::Mem(files) => files
+            .keys()
+            .filter_map(|n| n.strip_prefix("biomes/")?.strip_suffix(".json").map(String::from))
+            .collect(),
     };
     ids.sort();
     Ok(ids)
