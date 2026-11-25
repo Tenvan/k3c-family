@@ -39,6 +39,9 @@ pub enum Bot {
     Descent { inner: Box<Bot>, deepest: i64 },
     /// Boss-Dekorator (Go: `withBossFight`, bot_boss.go).
     BossFight { inner: Box<Bot>, deepest: i64 },
+    /// Nur für Tests (Go-Test `TestUngueltigerLaufMitSeed` trägt den Bot „boom“ in `bots` ein): stürzt bei jeder Eingabe ab.
+    #[cfg(test)]
+    Boom,
 }
 
 impl Bot {
@@ -57,6 +60,8 @@ impl Bot {
             },
             Bot::Descent { inner, deepest } => descent_decide(inner, *deepest, isl, w, p),
             Bot::BossFight { inner, deepest } => boss_decide(inner, *deepest, isl, w, p),
+            #[cfg(test)]
+            Bot::Boom => panic!("kaputt"),
         }
     }
 }
@@ -70,6 +75,8 @@ fn single(name: &str) -> Option<Bot> {
         "economy" => Bot::Economy,
         "wirtschaft" => Bot::Wirtschaft,
         "coop2" | "coop4" => Bot::Coop,
+        #[cfg(test)]
+        "boom" => Bot::Boom,
         _ => return None,
     })
 }
