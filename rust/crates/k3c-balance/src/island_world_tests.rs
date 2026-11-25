@@ -4,9 +4,10 @@ use k3c_data::balance_targets::{FILE, load_targets};
 use k3c_sim::island::add_island_player;
 use serde_json::json;
 
+use crate::figures::figures_of;
 use crate::island_world::{create_in, load_world, shared, worlds};
-use crate::metrics::Collector;
-use crate::run::{Matrix, Scenario, new_island, run};
+use crate::metrics::{Collector, Metrics};
+use crate::run::{Matrix, Report, RunResult, Scenario, new_island, run};
 use crate::scope::{Restrict, Scope};
 
 fn scenario(world: &str, players: i64) -> Scenario {
@@ -79,8 +80,7 @@ fn insel_lauf_metriken() {
     }
 }
 
-/// BS11.1/AC-02: Der Sammler führt Ankunft, Bosse, Endboss und Burgfall je Stufe nach festem Ereignisverlauf. Die
-/// Prüfung der Kennzahlen und des Markdowns (`checkInselBericht`, `figures`) gehört zu RU28.2.
+/// BS11.1/AC-02: Der Sammler führt Ankunft, Bosse, Endboss und Burgfall je Stufe nach festem Ereignisverlauf.
 #[test]
 fn sammler_insel_ereignisse() {
     let mut isl = new_island(&scenario("standard", 1)).expect("Insel");
@@ -109,6 +109,34 @@ fn sammler_insel_ereignisse() {
         m.bosses
     );
     assert_eq!(m.endboss_tick, Some(200), "Endboss");
+    check_insel_bericht(&m);
+}
+
+/// Kennzahlen und Markdown zeigen Tiefen, Bosse und Endboss (Go: `checkInselBericht`).
+fn check_insel_bericht(m: &Metrics) {
+    let r = Report {
+        matrix: Matrix::default(),
+        results: vec![RunResult {
+            scenario: Scenario::default(),
+            valid: true,
+            error: String::new(),
+            ticks: 0,
+            metrics: Some(m.clone()),
+            replay: None,
+        }],
+    };
+    let f = figures_of(&r).expect("Kennzahlen");
+    let isl = f.island.as_ref().expect("Insel-Kennzahlen");
+    assert!(
+        isl.depths.len() == 5 && isl.endboss.defeated == 100.0 && isl.bosses.len() == 1,
+        "Kennzahlen {f:?}"
+    );
+    let mut b = String::new();
+    isl.markdown(&mut b);
+    assert!(
+        b.contains("| mini2 | 0 | 100") && b.contains("| 4 |"),
+        "Markdown ohne Tiefen und Bosse: {b}"
+    );
 }
 
 /// BS11.4: `Scope.world` lässt alle Ziele die ganze Insel spielen; jede andere Einschränkung ohne Welt entfernt die Insel-Ziele.

@@ -9,7 +9,11 @@ pub mod bot_wirtschaft;
 pub mod bots;
 pub mod crown_bot;
 pub mod economy_measures;
+pub mod evaluate;
 pub mod fehler;
+pub mod figures;
+pub mod figures_island;
+pub mod groups;
 pub mod helps;
 pub mod hints;
 pub mod island_world;
@@ -43,6 +47,12 @@ mod bot_perf_tests;
 mod bots_tests;
 #[cfg(test)]
 mod crown_bot_tests;
+#[cfg(test)]
+mod evaluate_tests;
+#[cfg(test)]
+mod figures_tests;
+#[cfg(test)]
+mod groups_tests;
 #[cfg(test)]
 mod helps_tests;
 #[cfg(test)]
