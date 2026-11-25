@@ -94,7 +94,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU28.2 | `RU28.2-balance-evaluate-figures-groups.md` | Umsetzung | autonom | fertig |
 | RU28.3 | `RU28.3-balance-summary-targets.md` | Umsetzung | autonom | fertig |
 | RU28.4 | `RU28.4-balance-delta-ship-need-baselines.md` | Umsetzung | autonom | fertig |
-| RU28.5 | `RU28.5-balance-curves-sensitivity-variant-vary.md` | Umsetzung | autonom | offen |
+| RU28.5 | `RU28.5-balance-curves-sensitivity-variant-vary.md` | Umsetzung | autonom | fertig |
 | RU28.6 | `RU28.6-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
