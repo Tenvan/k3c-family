@@ -94,7 +94,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU25.1 | `RU25.1-balance-bots.md` | Umsetzung | autonom | offen |
+| RU25.1 | `RU25.1-balance-bots.md` | Umsetzung | autonom | fertig |
 | RU25.2 | `RU25.2-balance-bot-wirtschaft-clear-abstieg.md` | Umsetzung | autonom | fertig |
 | RU25.3 | `RU25.3-balance-bot-boss-learn-crown-helps-hints.md` | Umsetzung | autonom | offen |
 | RU25.4 | `RU25.4-balance-run-parallel-progress.md` | Umsetzung | autonom | offen |
