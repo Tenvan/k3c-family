@@ -19,11 +19,13 @@ struct Dir(PathBuf);
 impl Dir {
     fn new() -> Dir {
         static N: AtomicU32 = AtomicU32::new(0);
-        let p = std::env::temp_dir().join(format!(
-            "k3c-baselines-{}-{}",
-            std::process::id(),
-            N.fetch_add(1, Ordering::SeqCst)
-        ));
+        let p = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../../.work/tmp")
+            .join(format!(
+                "k3c-baselines-{}-{}",
+                std::process::id(),
+                N.fetch_add(1, Ordering::SeqCst)
+            ));
         let _ = std::fs::remove_dir_all(&p);
         std::fs::create_dir_all(&p).expect("Ordner");
         Dir(p)

@@ -275,7 +275,9 @@ fn bericht_schreiben(dir: &std::path::Path, stem: &str, day: i64) -> Summary {
 /// B-648/AC-05: Pfeile gegen den letzten Lauf gleicher Konfiguration; result.json hat die Felder für Agenten.
 #[test]
 fn vergleich_mit_letztem_lauf_und_result_json() {
-    let dir = std::env::temp_dir().join(format!("k3c-balance-vergleich-{}", std::process::id()));
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
+        .join(format!("k3c-balance-vergleich-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).expect("Ordner");
     let mk = |stem: &str, day: i64| bericht_schreiben(&dir, stem, day);

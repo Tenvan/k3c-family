@@ -1,6 +1,6 @@
 # RU31 · SIM · Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** SIM
 - **Reife:** bereit
@@ -97,7 +97,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 | RU31.3 | `RU31.3-balance-insights-plain-progress.md` | Umsetzung | autonom | fertig |
 | RU31.4 | `RU31.4-balance-insights-text-report-html.md` | Umsetzung | autonom | fertig |
 | RU31.5 | `RU31.5-balance-tune-tuneparam.md` | Umsetzung | autonom | fertig |
-| RU31.6 | `RU31.6-review.md` | Review | autonom | offen |
+| RU31.6 | `RU31.6-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -105,6 +105,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+RU31.1–RU31.5 umgesetzt (Einsichten, Berichte, Base64, Tuning nach Rust), Review ohne schwere Befunde, cargo test -p k3c-balance 173 grün. Offene Tickets B-1277..B-1281 bleiben eingeplant.

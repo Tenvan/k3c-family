@@ -117,7 +117,9 @@ fn html_eigenstaendig() {
 /// AC-04 Fehlerfall: Ohne public/ fehlen die Grafiken (Platzhalter im Bericht), der Bericht entsteht trotzdem.
 #[test]
 fn html_ohne_grafiken() {
-    let leer = std::env::temp_dir().join(format!("k3c-html-leer-{}", std::process::id()));
+    let leer = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
+        .join(format!("k3c-html-leer-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&leer);
     std::fs::create_dir_all(&leer).expect("Ordner");
     let inn = build_insights(&fixture(), None, &test_hints(), &Meta::default());
@@ -134,7 +136,8 @@ fn html_ohne_grafiken() {
 /// Auswertung (`## Kurzauswertung`, Lauf und Zeit im HTML) steht in `reevaluate_inhalt`.
 #[test]
 fn reevaluate_schreibt_dateien() {
-    let dir = std::env::temp_dir()
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
         .join(format!("k3c-reevaluate-{}", std::process::id()))
         .join("simtest-run-9");
     let _ = std::fs::remove_dir_all(&dir);
@@ -161,7 +164,8 @@ fn reevaluate_schreibt_dateien() {
 /// AC-06: Lauf, Zeit und Kurzauswertung stehen in den neuen Dateien.
 #[test]
 fn reevaluate_inhalt() {
-    let dir = std::env::temp_dir()
+    let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../.work/tmp")
         .join(format!("k3c-reevaluate-inhalt-{}", std::process::id()))
         .join("simtest-run-9");
     let _ = std::fs::remove_dir_all(&dir);
