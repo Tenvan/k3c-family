@@ -90,7 +90,7 @@ Keine zum Port. Mit Default entschieden (autonom, Claude, 2026-11-17; 🧑 kann 
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU28.1 | `RU28.1-balance-metrics-economy-measures.md` | Umsetzung | autonom | offen |
+| RU28.1 | `RU28.1-balance-metrics-economy-measures.md` | Umsetzung | autonom | fertig |
 | RU28.2 | `RU28.2-balance-evaluate-figures-groups.md` | Umsetzung | autonom | offen |
 | RU28.3 | `RU28.3-balance-summary-targets.md` | Umsetzung | autonom | offen |
 | RU28.4 | `RU28.4-balance-delta-ship-need-baselines.md` | Umsetzung | autonom | offen |
