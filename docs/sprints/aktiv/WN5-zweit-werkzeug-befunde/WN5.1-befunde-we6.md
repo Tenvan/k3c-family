@@ -1,6 +1,6 @@
 # WN5.1 · gocyclo, MCP-Beschreibung und Roundtrip-Test (B-1266)
 
-- **Status:** in Arbeit
+- **Status:** fertig
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -54,5 +54,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `task:check:dev` war schon vor der Session grün (gocyclo ist behoben); nach der Änderung `task:check:diff` grün.
+- AC-02 umgesetzt für `endBoss` und `skins` (Beschreibung und Roundtrip-Test `tools_world_skins_test.go`); Welt-Events verschoben (B-1260).
+
+### Für den Hauptrechner
+- B-1260: Ursache gefunden. `welt-events` steht in der Studio-Liste und in `rust/crates/k3c-sim/src/world/values.rs`, fehlt aber in `OVERRIDE_FILES` in `rust/crates/k3c-data/src/world.rs`; der Parser lehnt den Override ab (`world_override_set` scheitert). Der Erwartungstext in `tree_rest_tests.rs` muss mit.
+- B-1266/AC-03 (Go-Testfehler in `engine/**`) bleibt offen, Bereich von RU41.

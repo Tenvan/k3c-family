@@ -60,7 +60,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WN5.1 | `WN5.1-befunde-we6.md` | Umsetzung | autonom | in Arbeit |
+| WN5.1 | `WN5.1-befunde-we6.md` | Umsetzung | autonom | fertig |
 | WN5.2 | `WN5.2-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

@@ -48,7 +48,7 @@ type worldDeleteIn struct {
 
 type worldSetIn struct {
 	ID    string         `json:"id" jsonschema:"Welt-ID"`
-	Patch map[string]any `json:"patch" jsonschema:"Felder: name, notes, extends, combat {mode, groupSize} (null entfernt); islands: Liste von Inseln {id, name?, etappe? (Ganzzahl ≥ 1, lückenlos ab 1, nicht fallend; null entfernt), depths? | biomes?, depthScaling? {hp, damage, speed}, plannedChunks?, chunkCounts?, nature?, natureByDepth?}. Bekannte Insel-id: nur genannte Felder ändern; neue id: anhängen (Standard: Tiefen 0-4, Skalierung der Standard-Welt). biomes = Biom-IDs statt Tiefen (forest, cave, mine, ironhold, crystal)."`
+	Patch map[string]any `json:"patch" jsonschema:"Felder: name, gewaesser, notes, extends, kind, combat {mode, groupSize}, skins {basisAsset: ersatzAsset} (null entfernt); islands: Liste von Inseln {id, name?, etappe? (Ganzzahl ≥ 1, lückenlos ab 1, nicht fallend; null entfernt), depths? | biomes?, depthScaling? {hp, damage, speed}, plannedChunks?, chunkCounts?, endBoss?, nature?, natureByDepth?}. Bekannte Insel-id: nur genannte Felder ändern; neue id: anhängen (Standard: Tiefen 0-4, Skalierung der Standard-Welt). biomes = Biom-IDs statt Tiefen (forest, cave, mine, ironhold, crystal)."`
 }
 
 type worldOverrideIn struct {
@@ -157,7 +157,7 @@ func registerWorldWrite(s *Server) {
 	})
 	add(s, &mcp.Tool{
 		Name: "world_set",
-		Description: "Ändert Kopf (name, gewaesser = Gewässer der Welt: Fluss, See, Küste oder Meer, notes, extends, kind = spinoff für Ableger oder Episode einer Eltern-Welt | new für komplett neue Welt, combat) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung, plannedChunks, chunkCounts) einer Welt; " +
+		Description: "Ändert Kopf (name, gewaesser = Gewässer der Welt: Fluss, See, Küste oder Meer, notes, extends, kind = spinoff für Ableger oder Episode einer Eltern-Welt | new für komplett neue Welt, combat, skins = Basis-Asset → Ersatz-Asset) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung, plannedChunks, chunkCounts, endBoss) einer Welt; " +
 			"der ganze Patch wird angewendet und dann einmal geprüft wie beim Laden im Spiel, bei Fehler bleibt die Datei. " +
 			"Insel anhängen in einem Aufruf: den Hafen der Insel davor mitgeben, z. B. islands: [{id: island1, plannedChunks: {\"0\": [{slot: -7, kind: harbor}]}}, {id: island2}]. Nutze es bei: Inseln, Tiefen, Biome, Kampfvariante einer Welt festlegen. " +
 			"Statt: Welt-Datei von Hand ändern.",
