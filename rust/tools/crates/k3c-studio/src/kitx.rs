@@ -53,7 +53,7 @@ fn escape_html(json: &str) -> String {
 }
 
 /// Go `json.Marshal` eines `json.RawMessage`: kompakt und maskiert.
-fn marshal_raw(src: &str) -> String {
+pub fn marshal_raw(src: &str) -> String {
     escape_html(&strip_space(src))
 }
 

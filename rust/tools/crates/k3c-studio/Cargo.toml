@@ -44,6 +44,8 @@ regex.workspace = true
 url.workspace = true
 # review: Hash der Specs wie hash.ts.
 sha2.workspace = true
+# paperassets: Schema-Prüfung der Stil-Datei (V9); ohne Default-Features kein Nachladen per HTTP oder Datei.
+jsonschema = { version = "=0.63.2", default-features = false }
 tokio = { workspace = true, features = ["rt-multi-thread", "signal", "process", "io-util", "time", "macros"] }
 
 [target.'cfg(windows)'.dependencies]

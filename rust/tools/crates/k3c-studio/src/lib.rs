@@ -11,6 +11,7 @@ pub mod hubplan;
 /// Nachgebaute Lücken von k3c-kit und k3c-assetkit (V10).
 pub(crate) mod kitx;
 pub mod mcpsrv;
+pub mod paperassets;
 pub mod platform;
 pub mod ports;
 pub mod review;
