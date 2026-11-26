@@ -98,8 +98,8 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU70.8 | `RU70.8-assets-review-paket.md` | Umsetzung | autonom | fertig |
 | RU70.9 | `RU70.9-assets-oberflaeche-methoden.md` | Umsetzung | autonom | fertig |
 | RU70.10 | `RU70.10-paperassets-basis-stil-patch.md` | Umsetzung | autonom | fertig |
-| RU70.11 | `RU70.11-paperassets-anlegen-set-job.md` | Umsetzung | autonom | in Arbeit |
-| RU70.12 | `RU70.12-mcp-assets-grundtools-prompts.md` | Umsetzung | autonom | offen |
+| RU70.11 | `RU70.11-paperassets-anlegen-set-job.md` | Umsetzung | autonom | fertig |
+| RU70.12 | `RU70.12-mcp-assets-grundtools-prompts.md` | Umsetzung | autonom | in Arbeit |
 | RU70.13 | `RU70.13-mcp-assets-render-recherche-review.md` | Umsetzung | autonom | offen |
 | RU70.14 | `RU70.14-balance-berichtstypen-kennzahlen.md` | Umsetzung | autonom | offen |
 | RU70.15 | `RU70.15-balance-ziele-hinweise-baselines.md` | Umsetzung | autonom | offen |
