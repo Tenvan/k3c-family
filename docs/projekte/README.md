@@ -11,10 +11,9 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | 1 | GEB · Gebäude-Grafik | Gebäude und Strukturen einheitlich aus Regeln und Beschreibung im Asset-Manager | [GEB-gebaeude-grafik.md](GEB-gebaeude-grafik.md) |
 | 2 | WRT · Wirtschaft & Spielstand | Wirtschaft sichtbar, Ausrüstung fair, Spielstand vollständig | [WRT-wirtschaft-spielstand.md](WRT-wirtschaft-spielstand.md) |
 | 3 | REL · Release & Betrieb | Belegte Releases, Start im Heimnetz, Veröffentlichung | [REL-release-betrieb.md](REL-release-betrieb.md) |
-| 4 | WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen | – | [WIR-wirtschaft-k2c.md](WIR-wirtschaft-k2c.md) |
-| 5 | RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust | – | [RSU-rust-umstellung.md](RSU-rust-umstellung.md) |
-| 6 | WZN · Werkzeuge Nachlauf: offene Punkte aus WZG | – | [WZN-werkzeuge-nachlauf.md](WZN-werkzeuge-nachlauf.md) |
-| 7 | NAC · Nachlauf: offene Punkte aus PAP, SND und KMP | – | [NAC-nachlauf-pap-snd-kmp.md](NAC-nachlauf-pap-snd-kmp.md) |
+| 4 | RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust | – | [RSU-rust-umstellung.md](RSU-rust-umstellung.md) |
+| 5 | WZN · Werkzeuge Nachlauf: offene Punkte aus WZG | – | [WZN-werkzeuge-nachlauf.md](WZN-werkzeuge-nachlauf.md) |
+| 6 | NAC · Nachlauf: offene Punkte aus PAP, SND und KMP | – | [NAC-nachlauf-pap-snd-kmp.md](NAC-nachlauf-pap-snd-kmp.md) |
 
 ## Ruht
 
@@ -42,4 +41,5 @@ Jedes Projekt ist eine Datei `XXX-name.md` nach [`../vorlagen/projekt.md`](../vo
 | SKL · Monarch & Skills | [SKL-monarch-skills.md](SKL-monarch-skills.md) |
 | SND · Sound | [SND-sound.md](SND-sound.md) |
 | TST · Testläufe | [TST-testlaeufe.md](TST-testlaeufe.md) |
+| WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen | [WIR-wirtschaft-k2c.md](WIR-wirtschaft-k2c.md) |
 | WZG · Werkzeuge | [WZG-werkzeuge-testlaeufe.md](WZG-werkzeuge-testlaeufe.md) |

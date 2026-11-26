@@ -1,7 +1,7 @@
 # WZN · Werkzeuge Nachlauf: offene Punkte aus WZG
 
 - **Status:** aktiv
-- **Rang:** 6
+- **Rang:** 5
 - **Ziel-Tickets:** –
 
 ## Ziel

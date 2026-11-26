@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** ECO1
-- **Projekt:** WIR
+- **Sprint:** WK1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-22
 - **Spec:** freigegeben
 - **Revision:** 1

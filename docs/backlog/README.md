@@ -228,30 +228,30 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1188](B-1188-hafen-start-biome-bewuchs.md) | SIM | Idee | mittel | offen | HB1 | Hafen als Startpunkt neuer Spiele, ein bis zwei Biome vom Lager, vom Wald umgeben und freizuräumen |
 | [B-1190](B-1190-abnahme-hb1-hud-biome-hafen.md) | DEV | Schuld | mittel | offen | WN4 | Abnahme HB1: HUD-Baustellen, Biome, Landstreicher-Lager, Hafen (PC-Abnahme, Sim, Gen, Race) |
 | [B-1189](B-1189-abnahme-la3-bauplaetze.md) | SIM | Schuld | mittel | offen | LA3 | Abnahme LA3: Bauplätze nach Gebäudegröße (PC-Sichtprüfung, Race, Rust-Aufzeichnung) |
-| [B-1191](B-1191-siegel-assets-schwierigkeit.md) | PAP | Idee | mittel | offen | ECO1 | Je Schwierigkeitsgrad ein Wachssiegel als Papierschnitt-Symbol |
-| [B-1192](B-1192-siegel-anzeige-schwierigkeit.md) | CLI | Idee | mittel | offen | ECO1 | Das Schwierigkeits-Siegel steht in der Auswahl, bei den Spielständen und im HUD bei der Welt |
-| [B-1193](B-1193-werkzeugguertel-werkzeugmacher.md) | SIM | Idee | mittel | offen | ECO1 | Der Werkzeugmacher stellt einen Werkzeuggürtel mit Hammer, Spitzhacke und Axt her |
-| [B-1194](B-1194-handwerker-alle-bauarbeiten.md) | SIM | Idee | mittel | offen | ECO1 | Ein Bürger mit Werkzeuggürtel ist Handwerker und macht alle Bauarbeiten: roden, Felsen hauen, bauen, reparieren |
-| [B-1195](B-1195-reparatur-kostet-material-und-gold.md) | SIM | Idee | mittel | offen | ECO1 | Gebäude reparieren kostet ein Grundmaterial der Ausbaustufe und zwei Gold |
-| [B-1196](B-1196-gebaeude-nach-tiefe-einschraenken.md) | SIM | Idee | mittel | offen | ECO1 | In den unteren Ebenen stehen nur Verteidigungsanlagen, produzierende Gebäude nur ganz oben |
-| [B-1197](B-1197-ausruestung-von-oben-holen.md) | SIM | Idee | mittel | offen | ECO1 | Bürger und Soldaten in den unteren Ebenen holen Ausrüstung von ganz oben oder von fallen gelassenen Stücken |
-| [B-1198](B-1198-erzadern-freiraeumen.md) | SIM | Idee | mittel | offen | ECO1 | Erzadern in den Minen müssen erst freigeräumt werden: keine Steine oder Felsen bis zum Hub |
-| [B-1199](B-1199-buerger-umbenennung-citizen.md) | SIM | Idee | mittel | offen | FG1 | Landstreicher und Bauer werden zum Bürger (citizen) |
-| [B-1200](B-1200-meister-gebaeude-ausruestung-kombinationen.md) | SIM | Idee | mittel | offen | FG1 | Waffenschmied, Rüstungsschmied und Bogner fertigen Ausrüstung; Soldat und Elite aus Bürger |
-| [B-1201](B-1201-figuren-grafik-texte-standard.md) | CLI | Idee | mittel | offen | FG1 | Grafik und Texte der Grundfiguren und Meister-Gebäude im Standard |
-| [B-1202](B-1202-abnahme-eco1-siegel-eco-plan.md) | DEV | Schuld | mittel | eingeplant | ECO1 | ECO1 ist am PC abgenommen: Siegel, Werkzeuggürtel, tiefe Ebenen, Minen |
-| [B-1203](B-1203-abnahme-fg1-grundfiguren.md) | DEV | Schuld | mittel | eingeplant | FG1 | FG1 ist am PC abgenommen: Bürger, Meister-Gebäude, Kombinationen, Grafik |
-| [B-1204](B-1204-wald-baumwuchs-rodungsregeln.md) | SIM | Idee | mittel | offen | WD1 | Oberfläche hat vollen Baumwuchs mit Lichtungen; gerodet wird von den Rändern der Waldstücke |
-| [B-1205](B-1205-ruestung-abholen.md) | SIM | Problem | mittel | eingeplant | EQ1 | Kämpfer holen die Rüstung am Gebäude ab, statt sie aus der Ferne zu bekommen |
-| [B-1206](B-1206-ausruestungswerte-nach-data.md) | SIM | Schuld | mittel | eingeplant | EQ1 | Preise, Regalgrößen und Herstellzeiten der Ausrüstung stehen in data/buildings.json |
-| [B-1207](B-1207-gegenstands-icons-im-hud.md) | CLI | Idee | mittel | eingeplant | EQ1 | Gegenstands-Icons erscheinen am Regal und im Holen-Hinweis |
-| [B-1208](B-1208-bogner-oben-gemeinsames-limit.md) | SIM | Problem | mittel | eingeplant | EQ1 | Bogner steht nur ganz oben, das Truppen-Limit gilt für die ganze Insel |
-| [B-1209](B-1209-besorger-sichtbarer-weg.md) | SIM | Idee | mittel | eingeplant | EQ1 | Besorger laufen sichtbar über die Treppe in die obere Stufe und zurück |
-| [B-1210](B-1210-welten-im-dist-und-repo-welten-vorrang.md) | CLI | Problem | mittel | offen | WL1 | Welten liegen im dist-Paket; beim Start aus dem Repo-dist gelten die Repo-Welten (Dev-Symbol) |
-| [B-1211](B-1211-welten-editor-weitere-welten-waehlbar.md) | DEV | Problem | mittel | offen | WL1 | Im Welten-Editor lassen sich alle Welten anwählen, nicht nur die erste |
-| [B-1212](B-1212-gamepad-hotplug-und-hud-beitreten-meldung.md) | CLI | Problem | mittel | offen | WL1 | Gamepad funktioniert auch, wenn es nach dem Spielstart eingeschaltet wird; die Beitreten-Meldung im HUD entfällt |
-| [B-1213](B-1213-zaun-und-mauern-lueckenlos-hoehe-nach-stufe.md) | PAP | Idee | mittel | offen | WL1 | Mauern: Jägerzaun auf Holz-Level, lückenloser Anschluss und Höhe nach Ausbaustufe |
-| [B-1214](B-1214-workbench-spielstart-dev-release-dienste.md) | DEV | Idee | mittel | offen | WL1 | Workbench: Spielstart (Dev und Release) als Dienste eintragen und loggen |
+| [B-1191](B-1191-siegel-assets-schwierigkeit.md) | PAP | Idee | mittel | offen | WK1 | Je Schwierigkeitsgrad ein Wachssiegel als Papierschnitt-Symbol |
+| [B-1192](B-1192-siegel-anzeige-schwierigkeit.md) | CLI | Idee | mittel | offen | WK1 | Das Schwierigkeits-Siegel steht in der Auswahl, bei den Spielständen und im HUD bei der Welt |
+| [B-1193](B-1193-werkzeugguertel-werkzeugmacher.md) | SIM | Idee | mittel | offen | WK1 | Der Werkzeugmacher stellt einen Werkzeuggürtel mit Hammer, Spitzhacke und Axt her |
+| [B-1194](B-1194-handwerker-alle-bauarbeiten.md) | SIM | Idee | mittel | offen | WK1 | Ein Bürger mit Werkzeuggürtel ist Handwerker und macht alle Bauarbeiten: roden, Felsen hauen, bauen, reparieren |
+| [B-1195](B-1195-reparatur-kostet-material-und-gold.md) | SIM | Idee | mittel | offen | WK1 | Gebäude reparieren kostet ein Grundmaterial der Ausbaustufe und zwei Gold |
+| [B-1196](B-1196-gebaeude-nach-tiefe-einschraenken.md) | SIM | Idee | mittel | offen | WK1 | In den unteren Ebenen stehen nur Verteidigungsanlagen, produzierende Gebäude nur ganz oben |
+| [B-1197](B-1197-ausruestung-von-oben-holen.md) | SIM | Idee | mittel | offen | WK1 | Bürger und Soldaten in den unteren Ebenen holen Ausrüstung von ganz oben oder von fallen gelassenen Stücken |
+| [B-1198](B-1198-erzadern-freiraeumen.md) | SIM | Idee | mittel | offen | WK1 | Erzadern in den Minen müssen erst freigeräumt werden: keine Steine oder Felsen bis zum Hub |
+| [B-1199](B-1199-buerger-umbenennung-citizen.md) | SIM | Idee | mittel | offen | WK1 | Landstreicher und Bauer werden zum Bürger (citizen) |
+| [B-1200](B-1200-meister-gebaeude-ausruestung-kombinationen.md) | SIM | Idee | mittel | offen | WK1 | Waffenschmied, Rüstungsschmied und Bogner fertigen Ausrüstung; Soldat und Elite aus Bürger |
+| [B-1201](B-1201-figuren-grafik-texte-standard.md) | CLI | Idee | mittel | offen | WK1 | Grafik und Texte der Grundfiguren und Meister-Gebäude im Standard |
+| [B-1202](B-1202-abnahme-eco1-siegel-eco-plan.md) | DEV | Schuld | mittel | eingeplant | WK1 | ECO1 ist am PC abgenommen: Siegel, Werkzeuggürtel, tiefe Ebenen, Minen |
+| [B-1203](B-1203-abnahme-fg1-grundfiguren.md) | DEV | Schuld | mittel | eingeplant | WK1 | FG1 ist am PC abgenommen: Bürger, Meister-Gebäude, Kombinationen, Grafik |
+| [B-1204](B-1204-wald-baumwuchs-rodungsregeln.md) | SIM | Idee | mittel | offen | WK1 | Oberfläche hat vollen Baumwuchs mit Lichtungen; gerodet wird von den Rändern der Waldstücke |
+| [B-1205](B-1205-ruestung-abholen.md) | SIM | Problem | mittel | eingeplant | WK1 | Kämpfer holen die Rüstung am Gebäude ab, statt sie aus der Ferne zu bekommen |
+| [B-1206](B-1206-ausruestungswerte-nach-data.md) | SIM | Schuld | mittel | eingeplant | WK1 | Preise, Regalgrößen und Herstellzeiten der Ausrüstung stehen in data/buildings.json |
+| [B-1207](B-1207-gegenstands-icons-im-hud.md) | CLI | Idee | mittel | eingeplant | WK1 | Gegenstands-Icons erscheinen am Regal und im Holen-Hinweis |
+| [B-1208](B-1208-bogner-oben-gemeinsames-limit.md) | SIM | Problem | mittel | eingeplant | WK1 | Bogner steht nur ganz oben, das Truppen-Limit gilt für die ganze Insel |
+| [B-1209](B-1209-besorger-sichtbarer-weg.md) | SIM | Idee | mittel | eingeplant | WK1 | Besorger laufen sichtbar über die Treppe in die obere Stufe und zurück |
+| [B-1210](B-1210-welten-im-dist-und-repo-welten-vorrang.md) | CLI | Problem | mittel | offen | WK1 | Welten liegen im dist-Paket; beim Start aus dem Repo-dist gelten die Repo-Welten (Dev-Symbol) |
+| [B-1211](B-1211-welten-editor-weitere-welten-waehlbar.md) | DEV | Problem | mittel | offen | WK1 | Im Welten-Editor lassen sich alle Welten anwählen, nicht nur die erste |
+| [B-1212](B-1212-gamepad-hotplug-und-hud-beitreten-meldung.md) | CLI | Problem | mittel | offen | WK1 | Gamepad funktioniert auch, wenn es nach dem Spielstart eingeschaltet wird; die Beitreten-Meldung im HUD entfällt |
+| [B-1213](B-1213-zaun-und-mauern-lueckenlos-hoehe-nach-stufe.md) | PAP | Idee | mittel | offen | WK1 | Mauern: Jägerzaun auf Holz-Level, lückenloser Anschluss und Höhe nach Ausbaustufe |
+| [B-1214](B-1214-workbench-spielstart-dev-release-dienste.md) | DEV | Idee | mittel | offen | WK1 | Workbench: Spielstart (Dev und Release) als Dienste eintragen und loggen |
 | [B-1217](B-1217-welt-art-ableger-oder-neu.md) | DEV | Idee | mittel | eingeplant | WL2 | Eine Welt hat eine Art (Ableger oder komplett neu); die Statistik erwartet danach eigene Assets, Einheiten und Werte |
 | [B-1218](B-1218-spieltest-seite-ablage-aufraeumen.md) | DEV | Idee | mittel | offen | WN1 | Workbench-Seite Spieltest listet Aufnahmen in playtests/ und räumt sie per Knopf auf |
 | [B-1219](B-1219-spieltest-aufnahme-ffmpeg.md) | DEV | Idee | mittel | offen | WN1 | Spieltest-Start nimmt Raummikro und Spielbild mit ffmpeg auf und startet das Spiel im Spieltest-Modus |
@@ -265,7 +265,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1227](B-1227-studio-dev-worktree-b925.md) | DEV | Schuld | mittel | offen | WN3 | Studio rechnet die Engine: Dev-Worktree-Instanz und Regel B-925 für das Studio |
 | [B-1228](B-1228-mount-ausdauer.md) | SIM | Idee | mittel | offen | AU1 | Reittiere haben Ausdauer: Sprint verbraucht sie, Pausen laden sie auf |
 | [B-1229](B-1229-abnahme-spieltest-modus.md) | CLI | Frage | mittel | offen | WN1 | Abnahme-Läufe WZ66: Sim, Balance, Gen samt Golden und Race laufen grün |
-| [B-1231](B-1231-abnahme-wl1-sim-balance-gen-race.md) | CLI | Frage | mittel | offen | WL1 | Abnahme-Läufe WL1: Sim, Balance, Gen samt Golden, Race |
+| [B-1231](B-1231-abnahme-wl1-sim-balance-gen-race.md) | CLI | Frage | mittel | offen | WK1 | Abnahme-Läufe WL1: Sim, Balance, Gen samt Golden, Race |
 | [B-1233](B-1233-spieltest-monitor-null-absturz.md) | DEV | Problem | hoch | eingeplant | WN1 | Workbench-Fenster wird beim Start der Spieltest-Aufnahme schwarz (Monitor bekommt null-Listen) |
 | [B-1234](B-1234-spieltest-player-mikro-session.md) | DEV | Idee | hoch | eingeplant | WN1 | Spieltest: Player im Fenster, Mikro-Session ohne Spiel, bessere Transkription |
 | [B-1235](B-1235-spieltest-aufnahme-mit-dem-spiel.md) | DEV | Idee | hoch | eingeplant | WN1 | Spieltest: Aufnahme beginnt mit dem Spiel im Vollbild, Pegel statt Datenrate beim Ton, Whisper 30 s |
@@ -277,18 +277,18 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1241](B-1241-spieltest-bilder-beschreiben.md) | DEV | Idee | niedrig | eingeplant | WN1 | Marker-Bilder werden vorab lokal beschrieben, damit der Chat sie nicht ansehen muss |
 | [B-1242](B-1242-marker-im-menue-zeigen-keine-rueckmeldun.md) | CLI | Problem | niedrig | offen | WN1 | Marker im Menü zeigen keine Rückmeldung und tragen keinen Spielkontext |
 | [B-1243](B-1243-das-rufhorn-laesst-sich-nicht-ausloesen.md) | CLI | Problem | mittel | offen | RU36 | Das Rufhorn lässt sich nicht auslösen und seine Voraussetzung ist nicht erkennbar |
-| [B-1244](B-1244-das-schiff-kostet-deutlich-mehr-und-wird.md) | SIM | Idee | mittel | offen | ECO1 | Das Schiff kostet deutlich mehr und wird in mehreren Stufen bezahlt |
-| [B-1245](B-1245-buerger-tragen-keine-forke-bis-sie-sich.md) | CLI | Problem | mittel | offen | FG1 | Bürger tragen keine Forke, bis sie sich Werkzeug geholt haben |
-| [B-1246](B-1246-im-standard-spawnen-pro-tag-nur-zwei-bue.md) | SIM | Problem | mittel | offen | ECO1 | Im Standard spawnen pro Tag nur zwei Bürger statt vieler |
+| [B-1244](B-1244-das-schiff-kostet-deutlich-mehr-und-wird.md) | SIM | Idee | mittel | offen | WK1 | Das Schiff kostet deutlich mehr und wird in mehreren Stufen bezahlt |
+| [B-1245](B-1245-buerger-tragen-keine-forke-bis-sie-sich.md) | CLI | Problem | mittel | offen | WK1 | Bürger tragen keine Forke, bis sie sich Werkzeug geholt haben |
+| [B-1246](B-1246-im-standard-spawnen-pro-tag-nur-zwei-bue.md) | SIM | Problem | mittel | offen | WK1 | Im Standard spawnen pro Tag nur zwei Bürger statt vieler |
 | [B-1247](B-1247-die-meldung-die-nacht-naht-steht-fest-ob.md) | CLI | Problem | mittel | offen | RU36 | Die Meldung „Die Nacht naht“ steht fest oben unter der Dämmerungsanzeige statt über dem Monarchen |
 | [B-1248](B-1248-bogenschuetzen-stehen-auf-der-standplatt.md) | CLI | Problem | mittel | offen | RU36 | Bogenschützen stehen auf der Standplattform des Turms, nicht auf den Zinnenspitzen |
 | [B-1249](B-1249-hinweistexte-voraussetzung-des-horns-tur.md) | CLI | Idee | mittel | offen | RU36 | Hinweistexte (Voraussetzung des Horns, Turm und Mauer) erscheinen im grünen Bereich zwischen Pferd und Fluss |
 | [B-1250](B-1250-der-pfeil-des-bogenschuetzen-fliegt-im-b.md) | CLI | Problem | mittel | offen | RU36 | Der Pfeil des Bogenschützen fliegt im Bogen vom Schützen zum Ziel |
-| [B-1251](B-1251-mauer-und-turmausbau-haengen-vom-ausbau.md) | SIM | Frage | mittel | offen | ECO1 | Mauer- und Turmausbau hängen vom Ausbau des Hubs ab und sind je Turm erkennbar |
-| [B-1252](B-1252-es-lassen-sich-hoechstens-fuenf-steine-a.md) | SIM | Idee | mittel | offen | ECO1 | Es lassen sich höchstens fünf Steine auf einmal markieren, Erzadern zählen als Markierung |
-| [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | ECO1 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
-| [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | ECO1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
-| [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | ECO1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
+| [B-1251](B-1251-mauer-und-turmausbau-haengen-vom-ausbau.md) | SIM | Frage | mittel | offen | WK1 | Mauer- und Turmausbau hängen vom Ausbau des Hubs ab und sind je Turm erkennbar |
+| [B-1252](B-1252-es-lassen-sich-hoechstens-fuenf-steine-a.md) | SIM | Idee | mittel | offen | WK1 | Es lassen sich höchstens fünf Steine auf einmal markieren, Erzadern zählen als Markierung |
+| [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | WK1 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
+| [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | WK1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
+| [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | WK1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
 | [B-1256](B-1256-b1255-lokale-aenderung-entscheiden.md) | PAP | Problem | niedrig | offen | WN4 | Entscheidung: lokale Änderung an B-1255 committen oder verwerfen |
 | [B-1257](B-1257-kritische-fragen-lane-umstellung.md) | INF | Problem | hoch | offen | WN4 | Kritische Fragen aus der Umstellung auf Lane zweit |
 | [B-1258](B-1258-e2e-ablauf-referenz-neu-aufnehmen.md) | INF | Problem | mittel | offen | WN4 | e2e-Ablauf ablauf_wie_go_zwei_laeufe_gleich ist ausgesetzt, weil die Referenz aus RU32 veraltet ist |
@@ -321,6 +321,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1287](B-1287-abnahme-projekt-pap.md) | PAP | Schuld | mittel | offen | PN1 | Abnahme Projekt PAP: Läufe und Sichtprüfungen sind nachgeholt |
 | [B-1288](B-1288-abnahme-projekt-snd.md) | CLI | Schuld | mittel | offen | SN1 | Abnahme Projekt SND: Läufe und Hörprobe sind nachgeholt |
 | [B-1289](B-1289-abnahme-projekt-kmp.md) | SIM | Schuld | mittel | offen | KN1 | Abnahme Projekt KMP: Läufe und Sichtprüfungen sind nachgeholt |
+| [B-1290](B-1290-abnahme-projekt-wir.md) | SIM | Schuld | mittel | offen | WK1 | Abnahme Projekt WIR: Läufe und Sichtprüfungen sind nachgeholt |
 
 ## Archiv
 

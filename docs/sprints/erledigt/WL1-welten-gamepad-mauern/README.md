@@ -1,6 +1,6 @@
 # WL1 · CLI, DEV, PAP · Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WIR
 - **Domäne:** CLI, DEV, PAP
 - **Reife:** bereit
@@ -78,6 +78,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-22, Review WL1.5: AC-01 bis AC-05 durch die Session-Ergebnisse WL1.1 bis WL1.6 belegt, Diff gelesen, keine schweren Befunde, nichts behoben.
-Prüfstand: fmt, clippy, Go, Frontend und Wurzeltests grün; bekannt rot (nicht WL1): zwei Rust-Tests; `internal/gitops` rot durch Prüfumgebung (git NUL).
-Neu: B-1231 (Sim, Balance, Gen samt Golden, Race). Offen für 🧑: Abnahme am PC (DEV-Schild, Spielstart-Dienste).
+2026-11-26, mit WIR geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WK1, keine Abnahme erteilt; Abnahme-Ticket B-1290.

@@ -6,7 +6,7 @@
 - **Umgebung:** offline
 - **Status:** eingeplant
 - **Sprint:** WL2
-- **Projekt:** WIR
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-21
 - **Spec:** freigegeben
 - **Revision:** 1

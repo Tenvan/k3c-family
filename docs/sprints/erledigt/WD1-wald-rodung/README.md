@@ -1,6 +1,6 @@
 # WD1 · SIM, CLI · Wald: voller Baumwuchs, Lichtungen und Rodungsregeln
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WIR
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
@@ -74,6 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-26, mit WIR geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WK1, keine Abnahme erteilt; Abnahme-Ticket B-1290.

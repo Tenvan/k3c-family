@@ -9,10 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| ECO1 | PAP, CLI, SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | `aktiv/ECO1-eco-plan/` |
-| FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
-| WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
-| WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
 
 ## Offen am Gerät
 
@@ -24,7 +20,6 @@ keine
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | bereit | `geplant/RU65-rust-backend-spike-entscheidung/` |
 | RU66 | DEV | RSU | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | – | Entwurf | `geplant/RU66-workkit-nach-rust/` |
@@ -40,6 +35,8 @@ keine
 | SN1 | CLI | NAC | Sound-Nachlauf aus SND | – | Entwurf | `geplant/SN1-sound-nachlauf/` |
 | KN1 | SIM | NAC | Kampf-Nachlauf aus KMP | – | Entwurf | `geplant/KN1-kampf-nachlauf/` |
 | AU1 | SIM | NAC | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
+| WL2 | DEV | NAC | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
+| WK1 | SIM | NAC | Wirtschafts-Nachlauf aus WIR | – | Entwurf | `geplant/WK1-wirtschaft-k2c-nachlauf/` |
 | BAL11 | SIM | BAL | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | – | Entwurf | `geplant/BAL11-abnahme-laeufe-rust-umstellung/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -494,3 +491,7 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | BB1 | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | `erledigt/BB1-bildaufbau-assets/` |
 | SR1 | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | `erledigt/SR1-sound-ruhig/` |
 | SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | `erledigt/SI7-welten-editor-kataloge/` |
+| ECO1 | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | `erledigt/ECO1-eco-plan/` |
+| FG1 | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | `erledigt/FG1-grundfiguren-ausruestung/` |
+| WD1 | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | `erledigt/WD1-wald-rodung/` |
+| WL1 | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | `erledigt/WL1-welten-gamepad-mauern/` |
