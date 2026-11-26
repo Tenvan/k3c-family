@@ -9,6 +9,11 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| RU66 | DEV | RSU | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | – | `aktiv/RU66-workkit-nach-rust/` |
+| RU67 | DEV | RSU | assetkit nach Rust: Asset-Logik des Studios | – | `aktiv/RU67-assetkit-nach-rust/` |
+| RU70 | DEV | RSU | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | – | `aktiv/RU70-studio-backend-rust/` |
+| RU69 | DEV | RSU | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | – | `aktiv/RU69-workbench-backend-rust/` |
+| RU71 | DEV, INF | RSU | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | – | `aktiv/RU71-go-restlos-entfernen/` |
 | WK2 | SIM, CLI | NAC | Spielwünsche aus dem Spieltest: Bürger und Handwerker | – | `aktiv/WK2-zweit-spielwuensche-handwerker/` |
 
 ## Offen am Gerät
@@ -21,12 +26,6 @@ keine
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | bereit | `geplant/RU65-rust-backend-spike-entscheidung/` |
-| RU66 | DEV | RSU | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | – | Entwurf | `geplant/RU66-workkit-nach-rust/` |
-| RU67 | DEV | RSU | assetkit nach Rust: Asset-Logik des Studios | – | Entwurf | `geplant/RU67-assetkit-nach-rust/` |
-| RU69 | DEV | RSU | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | – | Entwurf | `geplant/RU69-workbench-backend-rust/` |
-| RU70 | DEV | RSU | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | – | Entwurf | `geplant/RU70-studio-backend-rust/` |
-| RU71 | DEV | RSU | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | – | Entwurf | `geplant/RU71-go-restlos-entfernen/` |
 | WN1 | DEV | WZN | Spieltest-Nachlauf aus WZ64–WZ66 | – | Entwurf | `geplant/WN1-spieltest-nachlauf/` |
 | WN2 | SIM | WZN | Welten-Nachlauf aus WE3, WE7, WE8 und GS3 | – | Entwurf | `geplant/WN2-welten-nachlauf/` |
 | WN3 | DEV | WZN | Werkzeug-Nachlauf aus WZ60, WZ61, WZ63 | – | Entwurf | `geplant/WN3-werkzeuge-nachlauf/` |
@@ -497,3 +496,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WL1 | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | `erledigt/WL1-welten-gamepad-mauern/` |
 | WN5 | Werkzeug-Befunde WE6 beheben | `erledigt/WN5-zweit-werkzeug-befunde/` |
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | `erledigt/RU41-go-engine-entfernen/` |
+| RU65 | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | `erledigt/RU65-rust-backend-spike-entscheidung/` |

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "k3c-spike-tauri",
+  "version": "0.1.0",
+  "identifier": "de.k3c.spike-tauri",
+  "build": {
+    "devUrl": "http://localhost:5291",
+    "frontendDist": "../tools/k3c-workbench/frontend/dist",
+    "beforeDevCommand": {
+      "script": "bunx vite --port 5291 --strictPort",
+      "cwd": "../tools/k3c-workbench/frontend",
+      "wait": false
+    },
+    "beforeBuildCommand": {
+      "script": "bun run build",
+      "cwd": "../tools/k3c-workbench/frontend"
+    }
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": false,
+    "icon": ["icons/icon.ico"]
+  }
+}

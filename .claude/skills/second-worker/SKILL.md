@@ -15,7 +15,7 @@ Regelquelle: `docs/arbeitsweise.md` › Second Worker. Für den Ablauf je Sessio
 - Nur Sessions mit `Lane: zweit` in aktiven Sprints, Abhängigkeiten erledigt und auf `origin/main`.
 - Alles andere gehört dem Hauptrechner: andere Lanes, Planung, Tickets, Sprints, Lanes vergeben.
 - Reihenfolge: Projekt-Rang, im Sprint die Tabellen-Reihenfolge. Sprints mit freien `zweit`-Sessions parallel nur, wenn sich ihre Bereiche nicht berühren.
-- **Vorrang (Ralf 2026-11-19):** Zuerst die Sprints **RU58, RU37, RU59** (Go-Abbau, Projekt RSU) vor allen anderen Sessions, auch vor RU51 und RU52; RU58 vor RU37 vor RU59, Sessions in Tabellen-Reihenfolge. Erst wenn dort keine Session frei ist (Abhängigkeit offen, alles erledigt), folgen die übrigen. Gilt bis zum Abschluss der drei Sprints. Schreibende Schritte in `docs/sprints`, `docs/backlog`, `docs/projekte` nur über `plan_*`.
+- **Vorrang (Ralf 2026-11-26):** Projekt RSU, Werkzeuge nach Rust: RU66 → RU67 → RU70 → RU69 → RU71, Sessions in Tabellen-Reihenfolge (Abhängigkeiten in den Session-Köpfen). Leitfaden `docs/standards/rust-werkzeuge.md`. Fragen gibt es nicht: offene Punkte entscheidet der Worker nach dem Leitfaden und meldet sie unter `### Für den Hauptrechner`.
 
 ## Ablauf
 
@@ -41,8 +41,7 @@ Regelquelle: `docs/arbeitsweise.md` › Second Worker. Für den Ablauf je Sessio
   `### Für den Hauptrechner`; der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
 - Lanes ändern oder Sessions ohne `Lane: zweit` anfassen.
 - Sim-Läufe außerhalb einer Session mit `Lane: zweit`. Innerhalb gilt die Sperre für dich nicht (Ralf 2026-11-18):
-  `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` sind erlaubt, nur über `sim_test`, blockierend gewartet;
-  Sim-Code nur im eigenen Worktree (B-925). Gemessen wird sonst erst am Ende.
+  `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` sind erlaubt, nur über `sim_test`, blockierend gewartet; Gemessen wird sonst erst am Ende.
 
 ## Abschlussbericht
 

@@ -365,11 +365,11 @@ mit `main` und räumt auf. Abstimmung nur über `origin` (🧑 2026-11-18, Regel
 - **Aufräumen:** Nach jedem Merge Temporärdateien in `.work/` löschen und nicht mehr gebrauchte Worktrees entfernen; keine Branches stehen lassen, die gemergt sind.
 - **Geeignet:** Oberflächen-Ports mit eigenem Ordner (`menu/`, `hud/`, `devtools/`) und rechenlastige Läufe (Sim, Balancing,
   Messung). Planung über mehrere Sprints, Tickets und Lanes bleiben beim Hauptrechner.
-- **Vorrang (Ralf 2026-11-19):** Die Sprints des Go-Abbaus **RU58, RU37 und RU59** (Projekt RSU, in dieser Reihenfolge)
-  gehen vor jeder anderen `zweit`-Session, auch vor RU51 und RU52. Der Second Worker nimmt zuerst deren freie Sessions
-  (Abhängigkeiten beachten: RU58 vor RU37 vor RU59, die Sessions in Tabellen-Reihenfolge); erst wenn dort keine frei ist
-  oder alle erledigt sind, folgen die übrigen. Technisch ordnet die Sprint-Reihenfolge in `docs/projekte/RSU-rust-umstellung.md`
-  (`plan_next` liest sie); diese Regel gilt, bis die drei Sprints erledigt sind, danach entfällt sie.
+- **Vorrang (Ralf 2026-11-26):** Die Sprints der Werkzeuge nach Rust **RU66, RU67, RU70, RU69, RU71** (Projekt RSU, in
+  dieser Reihenfolge, Entscheidung 014) gehen vor jeder anderen `zweit`-Session; die Sessions in Tabellen-Reihenfolge.
+  Grundlage ist der Leitfaden `docs/standards/rust-werkzeuge.md`: Er enthält alle Vorentscheidungen, Rückfragen gibt es
+  nicht, offene Punkte entscheidet der Worker danach und meldet sie unter „Für den Hauptrechner“. Technisch ordnet die
+  Sprint-Reihenfolge in `docs/projekte/RSU-rust-umstellung.md` (`plan_next` liest sie); die Regel entfällt nach RU71.
 - **Start je Session:** `git fetch`, Branch `sprint/<präfix>` von `origin/sprint/<präfix>` oder `origin/main`, nächste offene Session
   mit `Lane: zweit` und erledigten Abhängigkeiten (`plan_list {projekt: "RSU", status: "aktiv"}`). Ein Commit je Session, Push nach jeder Session.
 - **Abschluss:** Review-Session des Sprints öffnet den PR gegen `main` und mergt ihn nach grüner Prüfung (`gh pr merge --squash --auto`).
