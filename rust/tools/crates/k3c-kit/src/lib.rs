@@ -7,11 +7,13 @@
 //! - [`applog`]: eigenes Log eines Werkzeugs als JSON-Datei plus Spiegel in den Konsolenpuffer (`workkit/applog`).
 //! - [`proc`]: Kindprozesse, die sich samt Enkeln beenden lassen (`workkit/proc`).
 //! - [`usage`]: Nutzungsstatistik der MCP-Aufrufe samt Datei (`workkit/usage`).
+//! - [`mcp`]: Zähler, Text-Hilfen, Checkout-Zuordnung und Schreibschutz der MCP-Server (`workkit/mcpkit`).
 
 pub mod applog;
 pub mod conlog;
 pub mod console;
 pub mod logger;
+pub mod mcp;
 pub mod proc;
 pub mod usage;
 
