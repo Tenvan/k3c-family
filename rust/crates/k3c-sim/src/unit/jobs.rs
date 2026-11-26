@@ -5,7 +5,7 @@ use super::walk_to;
 use super::warrior::weapon_to_fetch;
 use crate::island::errand::{ASCEND, built_stairs};
 use crate::island::storage::resource_full;
-use crate::state::common::{is_dangerous, is_worker};
+use crate::state::common::{danger_for, is_worker};
 use crate::state::island_ref::IslandRef;
 use crate::state::links::{armored_hp, each_site, gather_of, is_vein, node_free, outpost, repair_job};
 use crate::state::{Job, World, WorldValues};
@@ -17,7 +17,7 @@ pub fn find_job(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&IslandRe
     if let Some(j) = site_job(w, v, ti) {
         return Some(j);
     }
-    if is_dangerous(w) {
+    if danger_for(w, ti) {
         return None;
     }
     if let Some(j) = ascend_job(w, ti, isl) {
@@ -109,7 +109,7 @@ pub fn build_job(w: &mut World, ti: usize) -> Option<Job> {
         return None; // nur Handwerker bauen (B-950)
     }
     let (tid, tx) = (w.troops[ti].id, w.troops[ti].x);
-    let danger = is_dangerous(w);
+    let danger = danger_for(w, ti);
     let mut best: Option<(i64, f64)> = None;
     each_site(w, &mut |s| {
         let waiting =

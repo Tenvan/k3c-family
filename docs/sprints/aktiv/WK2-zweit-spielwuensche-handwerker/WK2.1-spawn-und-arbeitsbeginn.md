@@ -1,6 +1,6 @@
 # WK2.1 · Zwei Bürger je Tag, Handwerker ab Sonnenaufgang (B-1246, B-1253)
 
-- **Status:** in Arbeit
+- **Status:** blockiert
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -54,5 +54,12 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-02 umgesetzt, geprüft mit `unit/danger_tests.rs`: Handwerker arbeiten am Tag trotz ferner Gegner; Gefahr nur nachts oder bei Feindkontakt (8 Units). Zwei Tests an die neue Regel angepasst (`outpost_tests`, `hub/level_tests`), Regeltext in `buerger.md`.
+- AC-01 nicht umgesetzt (B-1246): braucht ein neues Datenfeld bei `recruitCamp`.
+- Blockiert: `task:check:diff` bleibt rot durch 4 `k3c-sim`-Tests, die ohne diese Änderung ebenso scheitern.
+
+### Für den Hauptrechner
+- `main` ist rot (CI zu ab5f30539): `k3c-game` `drei_stufen_mindestens_halbe_monarchenhoehe_auseinander`.
+- Auch ohne Änderung rot in `k3c-sim`: `eingebettete_welten_gueltig`, `standard_welt_gleich_bisherigen_inseln`, `insel_nach_1000_schritten_wie_go`, `standard_welt_erzaehlt_eine_geschichte` (data/worlds enthält britannien, nil, sengoku).
+- B-1246 entscheiden: „zwei je Tag“ je Lager, je Stufe oder je Insel? Ein neues Feld in `data/economy.json` berührt die eingefrorene Go-Engine und ihre Golden.
+- AC-02: Handwerker können an einem nahen Gegner zwischen Arbeit und Flucht pendeln; im Spiel prüfen.

@@ -132,7 +132,14 @@ fn hub_ausbau_nach_der_gefahr() {
         w.hub_site.as_ref().is_some_and(|h| h.upgrade == "waitingWorker")
     });
     assert!(paid, "bei Gefahr nicht bezahlbar: {:?}", w.hub_site);
-    run(&mut w, 2.0 * lv.build_seconds);
+    let dt = crate::world::testutil::DT;
+    for _ in 0..(2.0 * lv.build_seconds / dt) as usize {
+        // B-1253: am Tag hält nur Feindkontakt den Handwerker ab, der Gegner bleibt an ihm dran
+        if let Some(x) = w.troops.iter().find(|t| t.hammer).map(|t| t.x) {
+            w.enemies[ei].x = x;
+        }
+        crate::enemies::testutil::step(&mut w, None, dt);
+    }
     let progress = w.hub_site.as_ref().map_or(0.0, |h| h.build_progress);
     assert!(
         w.hub_step == 1 && progress == 0.0,

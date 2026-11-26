@@ -6,7 +6,7 @@
 use serde_json::json;
 
 use crate::hub::level_of;
-use crate::state::common::{event, is_dangerous, is_worker};
+use crate::state::common::{danger_for, event, is_worker};
 use crate::state::{Job, Site, World, WorldValues};
 use crate::unit::jobs::release_job;
 use crate::unit::professions::work_factor;
@@ -32,7 +32,7 @@ fn damaged(w: &World, s: &Site) -> bool {
 /// Go: `repairJob`: nächstes beschädigtes Gebäude, nur ohne Gefahr; `None`, wenn es keins gibt. Der Bauer `w.troops[ti]`
 /// wird als Bauer des Platzes eingetragen.
 pub fn repair_job(w: &mut World, ti: usize) -> Option<Job> {
-    if is_dangerous(w) || !w.troops[ti].hammer {
+    if !w.troops[ti].hammer || danger_for(w, ti) {
         return None;
     }
     let (tid, tx) = (w.troops[ti].id, w.troops[ti].x);

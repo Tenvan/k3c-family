@@ -86,6 +86,20 @@ pub fn is_dangerous(w: &World) -> bool {
     w.cycle.phase == "night" || w.enemies.iter().any(is_wave_enemy)
 }
 
+/// B-1253: Handwerker (mit Hammer) arbeiten ab Sonnenaufgang weiter, auch wenn noch Wellen-Gegner leben; sie suchen
+/// nur nachts oder bei Feindkontakt (Gegner in Hörweite) Schutz. Alle anderen wie `is_dangerous`.
+pub fn danger_for(w: &World, ti: usize) -> bool {
+    let t = &w.troops[ti];
+    if !t.hammer {
+        return is_dangerous(w);
+    }
+    let near = crate::state::links::values(w)
+        .troops
+        .get("peasant")
+        .map_or(0.0, |d| d.fetch_enemy_distance);
+    w.cycle.phase == "night" || w.enemies.iter().any(|e| e.hp > 0.0 && (e.x - t.x).abs() <= near)
+}
+
 /// Go: `outerWall`, die intakte Mauer auf der Seite `side` (-1 links, 1 rechts), die am weitesten außen steht.
 pub fn outer_wall(w: &World, side: f64) -> Option<&Site> {
     let mut best: Option<&Site> = None;

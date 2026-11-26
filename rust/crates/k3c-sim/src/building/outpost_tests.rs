@@ -41,8 +41,10 @@ fn outpost_peasant(w: &World) -> usize {
     }
 }
 
-/// Go: `endanger` setzt einen betäubten Gegner an den Rand der Stufe: Gefahr, ohne dass jemand angegriffen wird.
+/// Go: `endanger` setzt einen betäubten Gegner an den Rand der Stufe: Gefahr, ohne dass jemand angegriffen wird. Seit
+/// B-1253 ist ein ferner Gegner für Handwerker nur nachts Gefahr.
 fn endanger(w: &mut World) {
+    w.cycle.phase = "night".into();
     let x = w.width_units - 1.0;
     let e = spawn(w, "goblin", x);
     w.enemies[e].stun = f64::INFINITY;

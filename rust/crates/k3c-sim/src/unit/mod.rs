@@ -27,6 +27,8 @@ mod combo_tests;
 #[cfg(test)]
 mod common_tests;
 #[cfg(test)]
+mod danger_tests;
+#[cfg(test)]
 mod disarm_tests;
 #[cfg(test)]
 mod equip_tests;
@@ -47,7 +49,7 @@ use serde_json::json;
 
 use crate::economy::add_stock;
 use crate::island::storage::carry_to_stock;
-use crate::state::common::{approach, event, is_dangerous};
+use crate::state::common::{approach, danger_for, event};
 use crate::state::island_ref::IslandRef;
 use crate::state::links::{
     add_pool, build_progress_event, finish_upgrade, gather_of, gather_vein, is_vein, next_level, outpost_job, pure,
@@ -183,7 +185,7 @@ pub fn step_peasant(w: &mut World, v: &WorldValues, ti: usize, isl: Option<&Isla
     if w.troops[ti].job.is_none() {
         w.troops[ti].job = find_job(w, v, ti, isl);
     }
-    let danger = is_dangerous(w);
+    let danger = danger_for(w, ti);
     // Bei Gefahr: Arbeit außerhalb der Mauern und Ausbauten liegen lassen und in die Burg.
     if danger && leave_on_danger(w, w.troops[ti].job.as_ref()) {
         release_job(w, ti);
