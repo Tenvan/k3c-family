@@ -1,6 +1,6 @@
 # WZ66 · CLI · Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** CLI
 - **Reife:** bereit
@@ -85,6 +85,4 @@ Ralf prüft im Spiel: Back+Y bequem, REC stört nicht, Fragebogen lesbar am TV.
 
 ## Abnahme
 
-2026-11-22, Review WZ66.4: AC-01 bis AC-03 geprüft (Ergebnisse WZ66.1 bis WZ66.3), AC-04: Diff gelesen, `cargo fmt --check`, `clippy --all-targets` grün, `cargo test -p k3c-game` 1046 grün, 1 Test braucht `gen:paper` (gesperrt).
-Keine schweren Befunde, keine Fixes. `task check` und `task check:go` rot, aber nicht vom Sprint (kein Diff in engine, data, testdata): Go-Tests trace, room, sim, Planungstest WZ65/B-1225, Papier-Test EPERM; golangci-lint fehlt.
-Abnahme-Ticket für Sim, Balance, Gen, Race: B-1229. Ralf prüft am Gerät: LT+RT und Einfg setzen Marker, REC stört nicht, Fragebogen lesbar am TV.
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WN1, keine Abnahme erteilt; Abnahme-Ticket B-1286.

@@ -1,6 +1,6 @@
 # WZ61 · DEV, INF · Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV, INF
 - **Reife:** bereit
@@ -77,5 +77,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-16: AC-01 bis AC-04 erfüllt (WZ61.4 › Ergebnis), AC-05 offen bei Ralf (WZ61.5).
-Behoben: Nachladefehler ersetzte die Seite, Lint complexity. Keine neuen Tickets. Abnahme-Ticket für `check:race`: B-1022.
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): offene Punkte verschoben nach WN3 (B-1007, B-1022), keine Abnahme erteilt; Abnahme-Ticket B-1286.

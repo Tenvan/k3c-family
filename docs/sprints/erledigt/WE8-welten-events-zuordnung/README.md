@@ -1,6 +1,6 @@
 # WE8 · REG, SIM, CLI · Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** REG, SIM, CLI
 - **Reife:** bereit
@@ -72,7 +72,7 @@ Keine blockierende außer der Abhängigkeit von B-969 (Wetter-Rahmen). Defaults 
 | WE8.2 | `WE8.2-event-ueberfall.md` | Umsetzung | autonom | verworfen |
 | WE8.3 | `WE8.3-events-sandsturm-nebel.md` | Umsetzung | autonom | verworfen |
 | WE8.4 | `WE8.4-spiel-zeigt-events.md` | Umsetzung | autonom | verworfen |
-| WE8.5 | `WE8.5-welten-zuordnen.md` | Umsetzung | autonom | offen |
+| WE8.5 | `WE8.5-welten-zuordnen.md` | Umsetzung | autonom | verworfen |
 | WE8.6 | `WE8.6-review.md` | Review | autonom | fertig |
 | WE8.7 | `WE8.7-events-sim-rust.md` | Umsetzung | autonom | fertig |
 | WE8.8 | `WE8.8-spiel-zeigt-events-rust.md` | Umsetzung | autonom | fertig |
@@ -83,4 +83,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-24: AC-01 bis AC-04 erfüllt (WE8.1, WE8.7, WE8.8). AC-05 offen: Events der drei Welten warten auf B-1260, Sichtprüfung 🧑 B-996/AC-03. AC-06: Golden unverändert, check:go nur an bekannten Altlasten rot. Befund B-1268. Abnahme-Ticket B-1269.
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): WE8.5 verworfen, offene Tickets verschoben nach WN2, keine Abnahme erteilt; Abnahme-Ticket B-1286.

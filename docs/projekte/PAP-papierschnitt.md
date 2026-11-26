@@ -1,7 +1,7 @@
 # PAP · Papierschnitt-Grafik, Assets über MCP, Review
 
 - **Status:** aktiv
-- **Rang:** 2
+- **Rang:** 1
 - **Ziel-Tickets:** B-699, B-700, B-701
 
 ## Ziel

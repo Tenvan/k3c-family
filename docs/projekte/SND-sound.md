@@ -1,7 +1,7 @@
 # SND · Sound
 
 - **Status:** aktiv
-- **Rang:** 5
+- **Rang:** 4
 - **Ziel-Tickets:** B-011
 
 ## Ziel

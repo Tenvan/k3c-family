@@ -1,6 +1,6 @@
 # WZ65 · DEV · Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -80,7 +80,4 @@ keine
 
 ## Abnahme
 
-2026-11-22: AC-01 und AC-02 laut Ergebnis von WZ65.1 und WZ65.2, AC-03 laut WZ65.3 (Review ohne schwere Befunde, keine Fixes; go vet, Vitest, go test grün, gitops-Tests rot wegen `NUL` in der Umgebung, golangci-lint fehlt).
-Nicht gelaufen: task check, check:go, Sim, Balance, Gen, check:race.
-Offen: whisper-Rohformat nicht gegen echtes ffmpeg belegt.
-Kein neues Ticket; Abnahme der Kette am Gerät ist B-1225 (AC-04, bei Ralf).
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WN1, keine Abnahme erteilt; Abnahme-Ticket B-1286.

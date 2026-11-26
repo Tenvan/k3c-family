@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** eingeplant
-- **Sprint:** WE5
-- **Projekt:** WZG
+- **Sprint:** WN4
+- **Projekt:** WZN
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1

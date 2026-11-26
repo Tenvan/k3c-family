@@ -1,6 +1,6 @@
 # WZ64 · DEV · Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -78,6 +78,4 @@ keine
 
 ## Abnahme
 
-2026-11-22: AC-01 (WZ64.1) und AC-02 (WZ64.2) laut Session-Ergebnissen, AC-03 (WZ64.3) geprüft: go vet, go test, tsc, Vitest 324, projectRules und atomicDesign grün; golangci-lint fehlt, check:diff nicht vollständig.
-Behoben: Überbleibsel-Sperre nach Workbench-Absturz (session.json laeuft), Monitor-Index-Prüfung.
-Offen: Aufnahme nicht im Header, Kill beim Stopp. Keine neuen Tickets; Abnahme-Ticket der Kette ist B-1225 (WZ65), dort auch die Probe am Gerät.
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WN1, keine Abnahme erteilt; Abnahme-Ticket B-1286.

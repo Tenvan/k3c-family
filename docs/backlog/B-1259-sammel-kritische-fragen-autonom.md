@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** WE6
-- **Projekt:** WZG
+- **Sprint:** WN4
+- **Projekt:** WZN
 - **Erstellt:** 2026-11-24
 - **Spec:** Entwurf
 - **Revision:** 1

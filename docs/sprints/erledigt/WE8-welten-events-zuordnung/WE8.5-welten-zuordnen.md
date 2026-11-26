@@ -1,6 +1,6 @@
 # WE8.5 · Sengoku, Nil, Britannien: Skins, Namen und Events über world_* zuordnen (B-996)
 
-- **Status:** offen
+- **Status:** verworfen
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM
@@ -57,10 +57,6 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Teilweise erledigt, Status bleibt offen.
+Verworfen am 2026-11-26 beim Schließen von WZG (Beschluss 🧑 „Rest verschieben“); der Rest liegt mit B-996 und B-1260 in WN2.
 
-- AC-05 geprüft: Feindnamen über `world_override_set` gesetzt (sengoku, nil, britannien).
-- AC-02 geprüft: `world_check` für sengoku, nil und britannien gültig.
-- Skins: Default aus B-1259 Frage 14 angewandt. Ersatz-Assets fehlen (z. B. `gegner/ninja`), also keine Skins. Nur die Feindnamen gelten.
-- Events (`raid`, `sandstorm`, `fog`): blockiert, weil `world_override_set` `welt-events` nicht kennt. Ticket B-1260 angelegt (Sprint WE8), Ziel und Anforderungen stehen dort.
-- AC-03 Sichtprüfung 🧑: Prüfliste siehe Abschnitt oben in dieser Datei.
+Stand davor (teilweise erledigt): Feindnamen über `world_override_set` gesetzt (sengoku, nil, britannien), `world_check` für alle drei gültig. Skins fehlen, weil Ersatz-Assets fehlen (Default aus B-1259 Frage 14). Events (`raid`, `sandstorm`, `fog`) blockiert, weil `world_override_set` `welt-events` nicht kennt (B-1260). Sichtprüfung 🧑 (B-996/AC-03) ist offen.
