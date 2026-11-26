@@ -9,6 +9,8 @@ use rmcp::service::{RequestContext, RoleServer};
 use rmcp::{tool, tool_router};
 
 use super::kit::Workspace;
+use super::tools_assets_research::{self, SearcherFactory};
+use super::tools_assets_review::{self, ReviewFactory};
 use super::tools_engine::{self, LevelIn};
 use super::tools_gamedata::{self, ReportIn};
 use super::tools_world::{self, ChunksIn, CreateIn, DeleteIn, IdIn, OverrideIn, SetIn, blocking};
@@ -24,9 +26,22 @@ mod tools_hub;
 pub struct Studio {
     /// Engine-Seite des Welten-Editors.
     pub(super) world_engine: EngineFactory,
+    /// Web-Recherche der Asset-Tools.
+    pub(super) searcher: SearcherFactory,
+    /// Vergleich mit einer Basis für `assets_review` und `assets_preview`.
+    pub(super) review: ReviewFactory,
 }
 
 impl Studio {
+    /// Mit den echten Quellen für Recherche und Review.
+    pub(super) fn new(world_engine: EngineFactory) -> Studio {
+        Studio {
+            world_engine,
+            searcher: tools_assets_research::web_searcher(),
+            review: tools_assets_review::dienst(),
+        }
+    }
+
     /// Welten-Editor des Checkouts eines Aufrufs.
     fn worlds(&self, ws: &Workspace) -> Editor {
         Editor::new(&ws.root, (self.world_engine)(&ws.root))
@@ -47,6 +62,14 @@ pub(super) const CATALOG: &[&str] = &[
     "assets_style_get",
     "assets_style_set",
     "assets_delete",
+    "assets_render",
+    "assets_preview",
+    "assets_review",
+    "assets_research",
+    "assets_hits",
+    "assets_hit_add",
+    "assets_hit_drop",
+    "assets_import",
     "hub_get",
     "hub_check",
     "hub_save",
@@ -67,6 +90,10 @@ pub(super) fn router() -> ToolRouter<Studio> {
         + Studio::gamedata_router()
         + Studio::assets_router()
         + Studio::assets_set_router()
+        + Studio::assets_render_router()
+        + Studio::assets_preview_router()
+        + Studio::assets_review_router()
+        + Studio::assets_research_router()
         + Studio::hub_router()
         + Studio::world_read_router()
         + Studio::world_write_router()

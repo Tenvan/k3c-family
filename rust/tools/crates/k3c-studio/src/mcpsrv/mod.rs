@@ -7,7 +7,11 @@ mod kit;
 pub(crate) mod test_helpers;
 mod tools;
 mod tools_assets;
+mod tools_assets_preview;
 mod tools_assets_prompts;
+mod tools_assets_render;
+mod tools_assets_research;
+mod tools_assets_review;
 mod tools_assets_set;
 mod tools_engine;
 mod tools_gamedata;
@@ -56,6 +60,11 @@ impl Server {
 
     /// Wie [`Server::new`] mit einer anderen Engine-Seite des Welten-Editors (Tests).
     pub(crate) fn with_world_engine(cfg: Config, world_engine: EngineFactory) -> Server {
+        Server::with_studio(cfg, Studio::new(world_engine))
+    }
+
+    /// Wie [`Server::new`] mit fertigem Empfänger der Tools (Tests ersetzen Recherche und Review).
+    fn with_studio(cfg: Config, studio: Studio) -> Server {
         let prompts = tools_assets_prompts::prompt_router(&cfg.root);
         let options = Options {
             name: NAME.to_owned(),
@@ -72,7 +81,7 @@ impl Server {
             ..Options::default()
         };
         Server {
-            kit: KitServer::new(options, Studio { world_engine }, tools::router(), prompts),
+            kit: KitServer::new(options, studio, tools::router(), prompts),
         }
     }
 
