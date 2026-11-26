@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** offen
-- **Sprint:** SI1
-- **Projekt:** KMP
+- **Sprint:** KN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-17
 - **Spec:** Entwurf
 - **Revision:** 1

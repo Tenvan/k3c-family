@@ -1,22 +1,22 @@
-# SR1 · CLI · Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke
+# KN1 · SIM · Kampf-Nachlauf aus KMP
 
-- **Status:** aktiv
-- **Projekt:** SND
-- **Domäne:** CLI
-- **Reife:** bereit
+- **Status:** geplant
+- **Projekt:** NAC
+- **Domäne:** SIM
+- **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** freigegeben
+- **Spec:** Entwurf
 - **Revision:** 1
-- **Freigabe:** autonom, Claude
+- **Freigabe:** –
 
 ## Ausgangslage
 
-Live-Test 🧑 2026-11-15: Klang zu konsolenlastig und zu schnell.
+KMP ist geschlossen; seine offenen Tickets liegen hier.
 
 ## Ziel
 
-Ruhiges Klangbild, Piep-Kandidaten ersetzt, Variantenvergleich für Musik.
+Die übernommenen Kampf-Punkte sind erledigt. Am Ende sichtbar: geschlossene Tickets.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,8 +32,14 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `data/sounds.json`, `public/audio/**`, `docs/rules/**`, `docs/assets/**`
-- **Sperre:** –
+Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
+- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
+- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
+- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
 
 ## Beispiele
 
@@ -45,18 +51,16 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Klangbild, keine Piep-Kandidaten (`B-935`).
-- **AC-02** Variantenvergleich Musik (`B-936/AC-01`), Entscheidung 🧑.
+- **AC-01** Jedes übernommene Ticket ist erledigt oder mit Grund verworfen.
 
 ## Offene Fragen
 
-keine
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| SR1.1 | `SR1.1-klangbild.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -1,7 +1,7 @@
 # WIR · Wirtschaft wie K2C: Handwerker mit Hammer, Gold aus Holz, ergiebige Truhen
 
 - **Status:** aktiv
-- **Rang:** 7
+- **Rang:** 4
 - **Ziel-Tickets:** –
 
 ## Ziel

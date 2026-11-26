@@ -1,6 +1,6 @@
 # SI7 · DEV · Welten-Editor wählt Wetter, Reittier und Figur je Welt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** KMP
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -70,4 +70,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-–
+2026-11-26, mit KMP geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach KN1, keine Abnahme erteilt; Abnahme-Ticket B-1289.

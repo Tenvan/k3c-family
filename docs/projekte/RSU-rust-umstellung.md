@@ -1,7 +1,7 @@
 # RSU · Rust-Umstellung: Spiel und Simulation komplett in Rust
 
 - **Status:** aktiv
-- **Rang:** 8
+- **Rang:** 5
 - **Ziel-Tickets:** B-1014
 
 ## Ziel

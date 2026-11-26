@@ -9,9 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
-| SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
-| SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | `aktiv/SI7-welten-editor-kataloge/` |
 | ECO1 | PAP, CLI, SIM | WIR | Eco-Plan: Schwierigkeits-Siegel, Werkzeuggürtel und Handwerker, tiefe Ebenen und Minen | – | `aktiv/ECO1-eco-plan/` |
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
@@ -27,7 +24,6 @@ keine
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| AU1 | SIM | KMP | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
 | WL2 | DEV | WIR | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | – | Entwurf | `geplant/WL2-standard-fuenf-inseln-editor/` |
 | RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | bereit | `geplant/RU65-rust-backend-spike-entscheidung/` |
@@ -40,6 +36,10 @@ keine
 | WN2 | SIM | WZN | Welten-Nachlauf aus WE3, WE7, WE8 und GS3 | – | Entwurf | `geplant/WN2-welten-nachlauf/` |
 | WN3 | DEV | WZN | Werkzeug-Nachlauf aus WZ60, WZ61, WZ63 | – | Entwurf | `geplant/WN3-werkzeuge-nachlauf/` |
 | WN4 | DEV | WZN | Offene Tickets früher erledigter WZG-Sprints | – | Entwurf | `geplant/WN4-altlasten-nachlauf/` |
+| PN1 | PAP | NAC | Grafik-Nachlauf aus PAP | – | Entwurf | `geplant/PN1-grafik-nachlauf/` |
+| SN1 | CLI | NAC | Sound-Nachlauf aus SND | – | Entwurf | `geplant/SN1-sound-nachlauf/` |
+| KN1 | SIM | NAC | Kampf-Nachlauf aus KMP | – | Entwurf | `geplant/KN1-kampf-nachlauf/` |
+| AU1 | SIM | NAC | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | – | Entwurf | `geplant/AU1-mount-ausdauer/` |
 | BAL11 | SIM | BAL | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | – | Entwurf | `geplant/BAL11-abnahme-laeufe-rust-umstellung/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -491,3 +491,6 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WZ64 | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | `erledigt/WZ64-spieltest-aufnahme/` |
 | WZ65 | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | `erledigt/WZ65-spieltest-auswertung/` |
 | WZ66 | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | `erledigt/WZ66-spieltest-modus-im-spiel/` |
+| BB1 | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | `erledigt/BB1-bildaufbau-assets/` |
+| SR1 | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | `erledigt/SR1-sound-ruhig/` |
+| SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | `erledigt/SI7-welten-editor-kataloge/` |

@@ -10,15 +10,15 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
 | [B-622](B-622-fackeln-als-spielobjekt.md) | SIM | Idee | niedrig | eingeplant | W15 | Fackeln gibt es als Spielobjekt mit Licht in der Nacht |
-| [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
-| [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
+| [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | PN1 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
+| [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | PN1 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
 | [B-879](B-879-welten-editor-workbench.md) | DEV | Problem | hoch | eingeplant | WN4 | Die Workbench hat den Welten-Editor aus dem alten Studio wieder |
-| [B-880](B-880-asset-pakete-je-welt.md) | PAP | Idee | mittel | eingeplant | PT6 | Assets lassen sich zusammen mit einer Welt zu Paketen bündeln |
-| [B-884](B-884-abnahme-mg11.md) | PAP | Schuld | mittel | offen | MG11 | Abnahme MG11: Sichtprüfung der Welt-Grafik und Gen-Läufe sind erledigt |
+| [B-880](B-880-asset-pakete-je-welt.md) | PAP | Idee | mittel | eingeplant | PN1 | Assets lassen sich zusammen mit einer Welt zu Paketen bündeln |
+| [B-884](B-884-abnahme-mg11.md) | PAP | Schuld | mittel | offen | PN1 | Abnahme MG11: Sichtprüfung der Welt-Grafik und Gen-Läufe sind erledigt |
 | [B-882](B-882-abnahme-laeufe-wz45.md) | DEV | Schuld | mittel | offen | WN4 | Abnahme-Läufe WZ45 |
 | [B-885](B-885-native-rig-export-bosse.md) | PAP | Schuld | mittel | eingeplant | RU61 | Nativer Rig-Export der Bosse ist nach MG10 veraltet |
-| [B-886](B-886-abnahme-mg10.md) | PAP | Schuld | mittel | offen | MG10 | Abnahme MG10: Sichtprüfung der Bosse und Gen-Läufe sind erledigt |
+| [B-886](B-886-abnahme-mg10.md) | PAP | Schuld | mittel | offen | PN1 | Abnahme MG10: Sichtprüfung der Bosse und Gen-Läufe sind erledigt |
 | [B-907](B-907-abnahme-wr1-gen-race.md) | SRV | Schuld | niedrig | offen | WR2 | Abnahme WR1: gen:paper samt Grafik-Golden und check:race laufen nach dem Rückbau grün |
 | [B-889](B-889-nativ-debug-werte-und-logs.md) | CLI | Idee | hoch | offen | RU61 | Das native Spiel zeigt Debug-Werte der Sim (F10) und loggt Zustandswechsel und Zusammenfassungen |
 | [B-890](B-890-nativ-hud-icons-statt-namen.md) | CLI | Idee | hoch | offen | RU61 | Das HUD des nativen Spiels zeigt Ressourcen als Icon mit Zahl statt als Namen |
@@ -29,8 +29,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-911](B-911-papierschnitt-tasten-icons.md) | PAP | Idee | mittel | eingeplant | RU61 | Tastenkappen und Xbox-Tasten gibt es als Papierschnitt-Icons der Gruppe icons |
 | [B-913](B-913-abnahme-ep1.md) | CLI | Idee | mittel | offen | EP1 | Ralf nimmt EP1 ab: Eingabe-Profile und Tasten-Icons an TV und PC geprüft |
 | [B-914](B-914-abnahme-st2.md) | CLI | Idee | mittel | offen | ST2 | Ralf nimmt ST2 ab: Testing-Menü und Stresstest-Bericht am PC geprüft |
-| [B-935](B-935-klangbild-couch.md) | CLI | Problem | hoch | offen | SR1 | Klangbild für Couch-Abende festlegen und konsolige Piep-Sounds ersetzen |
-| [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SR1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
+| [B-935](B-935-klangbild-couch.md) | CLI | Problem | hoch | offen | SN1 | Klangbild für Couch-Abende festlegen und konsolige Piep-Sounds ersetzen |
+| [B-936](B-936-musik-ruhiger.md) | CLI | Problem | hoch | offen | SN1 | Ruhigere, langsamere Musikstücke passend zur Atmosphäre finden oder erzeugen |
 | [B-938](B-938-weltauswahl-menue.md) | CLI | Idee | mittel | offen | RU61 | Neues Spiel beginnt mit der Weltauswahl im großen Bild, Spielstände und Pausenmenü zeigen das kleine |
 | [B-940](B-940-kampf-assets.md) | PAP | Idee | mittel | offen | RU60 | Papierschnitt-Assets für Krone, Banner, Schild, Zahlstellen, Portal-HP und Münzschauer ersetzen die gezeichneten Formen |
 | [B-941](B-941-ausloeser-pfahl-vor-tor.md) | SIM | Problem | mittel | offen | RU60 | Der Angriffs-Auslöser steht als Horn auf einem Pfahl vor dem Tor statt schwebend dahinter |
@@ -80,7 +80,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1000](B-1000-reittiere-assets-anzeige.md) | CLI | Idee | mittel | eingeplant | RU62 | Gatter und Welt-Reittiere sind im Spiel sichtbar, der Monarch reitet sein gekauftes Tier |
 | [B-1001](B-1001-einsiedler-assets-anzeige.md) | CLI | Idee | mittel | eingeplant | RU62 | Hütte, Figur und Bauwerk der Welt sind im Spiel sichtbar |
 | [B-1002](B-1002-fest-darstellung-musik.md) | CLI | Idee | niedrig | eingeplant | RU62 | Das Fest zeigt Jubel, Himmels-Effekt je Welt und spielt Festmusik |
-| [B-1003](B-1003-welten-editor-wetter-reittier-figur.md) | DEV | Idee | niedrig | eingeplant | SI7 | Der Welten-Editor wählt Wetter, Reittier und Figur einer Welt aus den Katalogen |
+| [B-1003](B-1003-welten-editor-wetter-reittier-figur.md) | DEV | Idee | niedrig | eingeplant | KN1 | Der Welten-Editor wählt Wetter, Reittier und Figur einer Welt aus den Katalogen |
 | [B-1006](B-1006-steg-gehaltenes-a-zahlt-nicht.md) | CLI | Problem | mittel | eingeplant | RU61 | Gehaltenes A am Steg zahlt nach der Zielwahl erst wieder nach dem Loslassen |
 | [B-1007](B-1007-bin-alte-exe-aufraeumen.md) | INF | Schuld | niedrig | eingeplant | WN3 | task ops:aufraeumen räumt die EXE entfernter Programme aus bin/ ab |
 | [B-1008](B-1008-kronenraub-ueberlebt-laden-nicht.md) | SIM | Problem | hoch | offen | RU60 | Ein laufender Kronenraub bleibt nach Verlassen und Weiter bestehen |
@@ -100,20 +100,20 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1023](B-1023-go-exp-haengt-an-fma.md) | SIM | Problem | mittel | offen | RU22 | Go-math.Exp rechnet auf CPUs ohne AVX/FMA andere Bits als die Golden |
 | [B-1024](B-1024-rust-datenpruefungen-mit-fremden-tabellen.md) | SIM | Schuld | mittel | offen | RU25 | Rust-Datenprüfungen, die Tabellen aus Balance oder Sim brauchen, fehlen noch in k3c-data |
 | [B-1027](B-1027-abnahme-laeufe-ru3.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU3 |
-| [B-1033](B-1033-abnahme-si4.md) | PAP | Schuld | mittel | offen | SI4 | Abnahme-Läufe Sprint SI4 Reittiere je Welt sind grün |
-| [B-1034](B-1034-si4-engine-anzeige-offen.md) | SIM | Frage | hoch | offen | SI4 | Engine und Anzeige der Reittiere je Welt sind nach Verwerfen von SI4.3 und SI4.4 ohne Ersatz |
+| [B-1033](B-1033-abnahme-si4.md) | PAP | Schuld | mittel | offen | KN1 | Abnahme-Läufe Sprint SI4 Reittiere je Welt sind grün |
+| [B-1034](B-1034-si4-engine-anzeige-offen.md) | SIM | Frage | hoch | offen | KN1 | Engine und Anzeige der Reittiere je Welt sind nach Verwerfen von SI4.3 und SI4.4 ohne Ersatz |
 | [B-1029](B-1029-abnahme-laeufe-gs1.md) | REG | Schuld | mittel | offen | WN4 | Abnahme-Läufe GS1: Gen samt Golden und Race sind grün |
-| [B-1031](B-1031-abnahme-si3.md) | PAP | Schuld | mittel | offen | SI3 | Abnahme-Läufe SI3 Wetter je Welt sind grün |
-| [B-1032](B-1032-abnahme-laeufe-si2.md) | INF | Schuld | mittel | offen | SI2 | Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün |
-| [B-1036](B-1036-abnahme-laeufe-si5.md) | INF | Schuld | mittel | offen | SI5 | Abnahme-Läufe SI5: Sim, Balance, Gen samt Golden und Race sind grün |
-| [B-1037](B-1037-abnahme-laeufe-si6.md) | INF | Schuld | mittel | offen | SI6 | Abnahme-Läufe SI6: Sim, Balance, Gen samt Golden und Race sind grün |
+| [B-1031](B-1031-abnahme-si3.md) | PAP | Schuld | mittel | offen | KN1 | Abnahme-Läufe SI3 Wetter je Welt sind grün |
+| [B-1032](B-1032-abnahme-laeufe-si2.md) | INF | Schuld | mittel | offen | KN1 | Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün |
+| [B-1036](B-1036-abnahme-laeufe-si5.md) | INF | Schuld | mittel | offen | KN1 | Abnahme-Läufe SI5: Sim, Balance, Gen samt Golden und Race sind grün |
+| [B-1037](B-1037-abnahme-laeufe-si6.md) | INF | Schuld | mittel | offen | KN1 | Abnahme-Läufe SI6: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1048](B-1048-abnahme-laeufe-ru7.md) | CLI | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU7: Grafik laden samt gerenderter Grafik und Race sind grün |
-| [B-1035](B-1035-abnahme-laeufe-si1.md) | INF | Schuld | mittel | offen | SI1 | Abnahme-Läufe SI1: Sim, Balance, Gen samt Golden und Race sind grün |
-| [B-1038](B-1038-buerger-truppen-masstab.md) | PAP | Idee | mittel | offen | BB1 | Bürger und Truppen sind 0,55–0,65 Monarchenhöhen groß |
-| [B-1039](B-1039-schiff-masstab.md) | PAP | Idee | mittel | offen | BB1 | Schiff ist mit Segel etwa 3 Monarchenhöhen hoch und 4–5 lang |
-| [B-1040](B-1040-hub-gebaeude-masstab.md) | PAP | Idee | mittel | offen | BB1 | Hub-Gebäude folgen den Monarchenhöhen, die Burg ist das größte Gebäude |
-| [B-1041](B-1041-waldwand-baumvarianten.md) | PAP | Idee | mittel | offen | BB1 | Waldbäume in mehreren Höhen und Tönen ergeben eine geschlossene Waldwand |
-| [B-1042](B-1042-leitmotiv-je-welt.md) | PAP | Idee | mittel | offen | BB1 | Jede Welt hat ein großes Leitmotiv in der Ferne des Hubs |
+| [B-1035](B-1035-abnahme-laeufe-si1.md) | INF | Schuld | mittel | offen | KN1 | Abnahme-Läufe SI1: Sim, Balance, Gen samt Golden und Race sind grün |
+| [B-1038](B-1038-buerger-truppen-masstab.md) | PAP | Idee | mittel | offen | PN1 | Bürger und Truppen sind 0,55–0,65 Monarchenhöhen groß |
+| [B-1039](B-1039-schiff-masstab.md) | PAP | Idee | mittel | offen | PN1 | Schiff ist mit Segel etwa 3 Monarchenhöhen hoch und 4–5 lang |
+| [B-1040](B-1040-hub-gebaeude-masstab.md) | PAP | Idee | mittel | offen | PN1 | Hub-Gebäude folgen den Monarchenhöhen, die Burg ist das größte Gebäude |
+| [B-1041](B-1041-waldwand-baumvarianten.md) | PAP | Idee | mittel | offen | PN1 | Waldbäume in mehreren Höhen und Tönen ergeben eine geschlossene Waldwand |
+| [B-1042](B-1042-leitmotiv-je-welt.md) | PAP | Idee | mittel | offen | PN1 | Jede Welt hat ein großes Leitmotiv in der Ferne des Hubs |
 | [B-1043](B-1043-gehlinie-ufer.md) | CLI | Idee | mittel | eingeplant | RU55 | Gehlinie liegt bei 58 % der Ansicht, das Ufer ist 7 % hoch |
 | [B-1044](B-1044-fluss-spiegelt-welt.md) | CLI | Idee | mittel | eingeplant | RU55 | Der Fluss spiegelt die Welt über der Gehlinie |
 | [B-1045](B-1045-mehr-welt-sichtbar.md) | CLI | Idee | mittel | eingeplant | RU55 | Die Ansicht zeigt etwa 5 Monarchenhöhen Welt über der Gehlinie |
@@ -185,7 +185,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1136](B-1136-cheatmenues-im-spiel-entfernen.md) | CLI | Schuld | niedrig | eingeplant | RU56 | In-Game-Cheat-Menü (F9) entfernen, sobald das Cheat-Fenster abgenommen ist |
 | [B-1142](B-1142-cheatfenster-pipe-haerten.md) | CLI | Schuld | niedrig | offen | RU56 | Cheat-Fenster-Pipe härten: Zugriffsrechte, Pipe-Squatting, blockierendes Schreiben |
 | [B-1144](B-1144-cheatfenster-restpunkte-rev2.md) | CLI | Problem | mittel | offen | RU56 | Cheat-Fenster: Zielspieler und Schalterzustand bleiben erhalten, goto, Fokus und Skillpunkte fehlen |
-| [B-1145](B-1145-abnahme-laeufe-bb1.md) | PAP | Schuld | mittel | offen | BB1 | Abnahme-Läufe BB1: gen:paper und Grafik-Golden |
+| [B-1145](B-1145-abnahme-laeufe-bb1.md) | PAP | Schuld | mittel | offen | PN1 | Abnahme-Läufe BB1: gen:paper und Grafik-Golden |
 | [B-1146](B-1146-waldwand-baeume-leitmotive-im-spiel.md) | CLI | Idee | mittel | offen | LA1 | Waldwand, acht neue Bäume und Leitmotive im Rust-Spiel anbinden |
 | [B-1147](B-1147-schiff-geruest-bauplatz-breiten.md) | CLI | Problem | mittel | offen | LA1 | Schiff-Baustelle mit eigenem Gerüst, Bauplatz-Breiten für Schiff und Burg |
 | [B-1148](B-1148-schiffsrumpf-4-bis-5-m.md) | PAP | Problem | niedrig | offen | LA1 | Schiffsrumpf auf 4 bis 5 M Länge zeichnen |
@@ -318,6 +318,9 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1283](B-1283-balance-play-endhash.md) | SIM | Frage | niedrig | offen | RU40 | sim balance --play: endHash der Rust-Insel weicht von Go ab, Entscheidung nötig |
 | [B-1285](B-1285-abnahme-ru40-sim-balance-gen.md) | CLI | Frage | mittel | offen | RU40 | Abnahme RU40: Sim, Balance, Gen und Fensterläufe der Spiel-EXE am PC |
 | [B-1286](B-1286-abnahme-projekt-wzg.md) | DEV | Schuld | mittel | offen | WN3 | Abnahme Projekt WZG: Läufe und Sichtprüfungen sind nachgeholt |
+| [B-1287](B-1287-abnahme-projekt-pap.md) | PAP | Schuld | mittel | offen | PN1 | Abnahme Projekt PAP: Läufe und Sichtprüfungen sind nachgeholt |
+| [B-1288](B-1288-abnahme-projekt-snd.md) | CLI | Schuld | mittel | offen | SN1 | Abnahme Projekt SND: Läufe und Hörprobe sind nachgeholt |
+| [B-1289](B-1289-abnahme-projekt-kmp.md) | SIM | Schuld | mittel | offen | KN1 | Abnahme Projekt KMP: Läufe und Sichtprüfungen sind nachgeholt |
 
 ## Archiv
 

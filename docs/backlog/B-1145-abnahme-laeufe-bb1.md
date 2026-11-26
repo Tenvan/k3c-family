@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** BB1
-- **Projekt:** PAP
+- **Sprint:** PN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-19
 - **Spec:** Entwurf
 - **Revision:** 1

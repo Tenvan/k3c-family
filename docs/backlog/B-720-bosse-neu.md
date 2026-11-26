@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** MG10
-- **Projekt:** PAP
+- **Sprint:** PN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-07
 - **Spec:** freigegeben
 - **Revision:** 1
