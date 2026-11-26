@@ -12,7 +12,7 @@ edition = "2024"
 version = "0.1.0"
 publish = false
 
-# Versionen fest (Leitfaden › Abhängigkeiten); spätere Sessions ergänzen regex.
+# Versionen fest (Leitfaden › Abhängigkeiten).
 [workspace.dependencies]
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.154"
@@ -30,6 +30,9 @@ tempfile = "=3.27.0"
 # mcp: nur Modelltypen (RU66.3); Server und Streamable HTTP nutzt RU66.4.
 rmcp = { version = "=3.11.0", features = ["server", "macros", "transport-streamable-http-server"] }
 schemars = "=1.2.3"
+# uikit: TS-Schnittstelle lesen und Ereignisstrom (RU66.5).
+regex = "=1.13.2"
+tokio-stream = { version = "=0.1.19", features = ["sync"] }
 
 [workspace.lints.rust]
 # deny statt forbid (wie rust/): proc (Job-Objekt) und winicon brauchen je ein Windows-Modul mit #[allow(unsafe_code)],

@@ -8,14 +8,20 @@
 //! - [`proc`]: Kindprozesse, die sich samt Enkeln beenden lassen (`workkit/proc`).
 //! - [`usage`]: Nutzungsstatistik der MCP-Aufrufe samt Datei (`workkit/usage`).
 //! - [`mcp`]: MCP-Server samt Zählern, Checkout-Zuordnung und Schreibschutz (`workkit/mcpkit`).
+//! - [`uikit`]: HTTP-API der Oberfläche im Browser-Dev-Betrieb (`workkit/uikit`).
+//! - [`claude`]: Deep Link „In Claude öffnen“ (`workkit/claude`).
+//! - [`winicon`]: Fenster-Icon zur Laufzeit unter Windows (`workkit/winicon`).
 
 pub mod applog;
+pub mod claude;
 pub mod conlog;
 pub mod console;
 pub mod logger;
 pub mod mcp;
 pub mod proc;
+pub mod uikit;
 pub mod usage;
+pub mod winicon;
 
 #[cfg(test)]
 pub(crate) mod testutil;
