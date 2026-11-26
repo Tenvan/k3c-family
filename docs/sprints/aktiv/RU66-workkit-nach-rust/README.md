@@ -66,7 +66,7 @@ keine (Vorentscheidungen im Leitfaden, 🧑 2026-11-26)
 | RU66.1 | `RU66.1-fundament-logger-console-applog.md` | Umsetzung | autonom | fertig |
 | RU66.2 | `RU66.2-proc-usage.md` | Umsetzung | autonom | fertig |
 | RU66.3 | `RU66.3-mcp-bausteine.md` | Umsetzung | autonom | fertig |
-| RU66.4 | `RU66.4-mcp-server-rmcp.md` | Umsetzung | autonom | offen |
+| RU66.4 | `RU66.4-mcp-server-rmcp.md` | Umsetzung | autonom | in Arbeit |
 | RU66.5 | `RU66.5-uikit-claude-winicon.md` | Umsetzung | autonom | offen |
 | RU66.6 | `RU66.6-review.md` | Review | autonom | offen |
 
