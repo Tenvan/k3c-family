@@ -1,6 +1,6 @@
 # WK2.1 · Zwei Bürger je Tag, Handwerker ab Sonnenaufgang (B-1246, B-1253)
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** SIM

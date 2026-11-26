@@ -63,7 +63,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WK2.1 | `WK2.1-spawn-und-arbeitsbeginn.md` | Umsetzung | autonom | offen |
+| WK2.1 | `WK2.1-spawn-und-arbeitsbeginn.md` | Umsetzung | autonom | in Arbeit |
 | WK2.2 | `WK2.2-stein-markierungen.md` | Umsetzung | autonom | offen |
 | WK2.3 | `WK2.3-figuren-anzeige.md` | Umsetzung | autonom | offen |
 | WK2.4 | `WK2.4-review.md` | Review | autonom | offen |
