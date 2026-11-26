@@ -79,7 +79,7 @@ keine (Leitfaden, 🧑 2026-11-26)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU67.1 | `RU67.1-crate-register-ticket.md` | Umsetzung | autonom | offen |
+| RU67.1 | `RU67.1-crate-register-ticket.md` | Umsetzung | autonom | in Arbeit |
 | RU67.2 | `RU67.2-katalog-quellen-recherche.md` | Umsetzung | autonom | offen |
 | RU67.3 | `RU67.3-import-vorrat.md` | Umsetzung | autonom | offen |
 | RU67.4 | `RU67.4-kandidaten-vorschlaege.md` | Umsetzung | autonom | offen |
