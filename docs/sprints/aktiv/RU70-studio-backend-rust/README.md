@@ -93,8 +93,8 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU70.3 | `RU70.3-welten-lesen-format.md` | Umsetzung | autonom | fertig |
 | RU70.4 | `RU70.4-welten-bearbeiten-overrides.md` | Umsetzung | autonom | fertig |
 | RU70.5 | `RU70.5-welten-story-natur-endboss.md` | Umsetzung | autonom | fertig |
-| RU70.6 | `RU70.6-welten-mcp-bindings.md` | Umsetzung | autonom | in Arbeit |
-| RU70.7 | `RU70.7-hub-planer-mcp.md` | Umsetzung | autonom | offen |
+| RU70.6 | `RU70.6-welten-mcp-bindings.md` | Umsetzung | autonom | fertig |
+| RU70.7 | `RU70.7-hub-planer-mcp.md` | Umsetzung | autonom | in Arbeit |
 | RU70.8 | `RU70.8-assets-review-paket.md` | Umsetzung | autonom | offen |
 | RU70.9 | `RU70.9-assets-oberflaeche-methoden.md` | Umsetzung | autonom | offen |
 | RU70.10 | `RU70.10-paperassets-basis-stil-patch.md` | Umsetzung | autonom | offen |
