@@ -47,6 +47,15 @@ mod figures_tests;
 #[path = "groups_tests.rs"]
 mod groups_tests;
 #[cfg(test)]
+#[path = "insights_plain_tests.rs"]
+mod insights_plain_tests;
+#[cfg(test)]
+#[path = "insights_tests.rs"]
+mod insights_tests;
+#[cfg(test)]
+#[path = "mix_tests.rs"]
+mod mix_tests;
+#[cfg(test)]
 #[path = "names_tests.rs"]
 mod names_tests;
 #[cfg(test)]

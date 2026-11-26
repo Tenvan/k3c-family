@@ -67,7 +67,7 @@ fn split(keys: &str) -> Vec<&str> {
 
 impl TuneParam {
     /// Ein Wert des Parameters als Text (ganzzahlig gerundet bzw. auf vier Nachkommastellen).
-    fn format(&self, v: f64) -> String {
+    pub(crate) fn format(&self, v: f64) -> String {
         if self.int {
             // wie Go `int64(math.Round(v))`
             return format!("{}", v.round() as i64);

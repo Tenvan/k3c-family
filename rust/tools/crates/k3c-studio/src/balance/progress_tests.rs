@@ -55,10 +55,7 @@ fn urteil_haengt_nur_an_goal() {
         "{:?}",
         s.quality
     );
-    // Go ruft `s.Markdown(nil)`; bis RU70.17 liefert `Summary::insights` keine Auswertung, darum hier von Hand.
-    let hints = default_hints(&root).expect("Richtwerte");
-    let insights = build_insights(&root, &s, None, &hints, &Meta::default());
-    let md = s.markdown_with(None, Some(&insights));
+    let md = s.markdown(&root, None);
     assert!(
         md.contains("**Ziel erreicht**") && md.contains("Qualität: 0 von 1 Korridoren"),
         "Markdown nennt die zwei Urteile nicht:\n{md}"

@@ -154,7 +154,6 @@ fn reevaluate_schreibt_dateien() {
 }
 
 #[test]
-#[ignore = "RU70.17: Insights::markdown schreibt die Kurzauswertung"]
 fn reevaluate_schreibt_kurzauswertung() {
     assert!(reevaluated().1.contains("## Kurzauswertung"));
 }

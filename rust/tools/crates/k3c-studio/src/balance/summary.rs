@@ -167,12 +167,12 @@ impl Summary {
     }
 
     /// Auswertung, Tabelle je Ziel und Vergleich; `base` `None`: Hinweis „keine Baseline“.
-    pub fn markdown(&self, base: Option<&Summary>) -> String {
+    pub fn markdown(&self, root: &Path, base: Option<&Summary>) -> String {
         let meta = Meta {
             baseline: "Baseline".to_owned(),
             ..Meta::default()
         };
-        let insights = self.insights(base, meta).ok();
+        let insights = self.insights(root, base, meta).ok();
         self.markdown_with(base, insights.as_ref())
     }
 
@@ -269,7 +269,7 @@ impl Entry {
         )
     }
 
-    fn unit(&self) -> &'static str {
+    pub(crate) fn unit(&self) -> &'static str {
         if self.verdict.target.kind == KIND_SHARE {
             " %"
         } else {
@@ -277,7 +277,7 @@ impl Entry {
         }
     }
 
-    fn value_text(&self) -> String {
+    pub(crate) fn value_text(&self) -> String {
         if self.verdict.status == STATUS_INVALID {
             return "–".to_owned();
         }
@@ -285,7 +285,7 @@ impl Entry {
     }
 
     /// Ohne jede Grenze (nur in kaputten Dateien) „–“; Go stürzt dort ab.
-    fn bounds_text(&self) -> String {
+    pub(crate) fn bounds_text(&self) -> String {
         let unit = self.unit();
         match (self.verdict.target.lower, self.verdict.target.upper) {
             (Some(lo), Some(hi)) => format!("{}–{}{unit}", num(lo), num(hi)),

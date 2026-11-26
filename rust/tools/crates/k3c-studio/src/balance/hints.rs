@@ -74,7 +74,7 @@ pub struct Hints {
 }
 
 /// Kennzahlen, die die Auswertung aus den Figures berechnet.
-const FIGURE_KEYS: [&str; 7] = [
+pub(crate) const FIGURE_KEYS: [&str; 7] = [
     "firstWallTick",
     "firstWorkshopTick",
     "idleShare",

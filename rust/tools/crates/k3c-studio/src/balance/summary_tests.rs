@@ -34,7 +34,7 @@ fn run(fallen: bool) -> Option<Metrics> {
 #[test]
 fn bericht_nennt_seeds() {
     let s = summarize_with(share_target(), &[run(false), run(true), run(true), run(false)]);
-    let md = s.markdown(None);
+    let md = s.markdown(&repo_root(), None);
     assert!(
         !s.pass && md.contains("| x | 2 Spieler, saver, Tiefe 0, 5 Tage | 50,0 % | 70–90 % | Fail (verletzt) | 2, 3 |"),
         "Zeile fehlt:\n{md}"
@@ -50,7 +50,7 @@ fn bericht_nennt_seeds() {
 /// Ein abgebrochener Lauf erscheint mit seinem Seed als ungültig.
 #[test]
 fn bericht_ungueltig_mit_seed() {
-    let md = summarize_with(share_target(), &[run(false), None]).markdown(None);
+    let md = summarize_with(share_target(), &[run(false), None]).markdown(&repo_root(), None);
     assert!(
         md.contains("Fail (ungültig)") && md.contains("ungültig: 2"),
         "ungültiger Lauf fehlt:\n{md}"
@@ -86,7 +86,7 @@ fn vergleich_nennt_gekippte() {
         "Änderungen: {ch:?}"
     );
     // nur der Vergleichsabschnitt: die Auswertung oben (B-632) nennt y als Stärke
-    let md = cur.markdown(Some(&base));
+    let md = cur.markdown(&repo_root(), Some(&base));
     let (_, tail) = md.split_once("## Vergleich mit der Baseline").expect("Abschnitt");
     assert!(
         tail.contains("- x: ok → verletzt **gekippt**") && !tail.contains("- y:"),

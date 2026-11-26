@@ -4,9 +4,10 @@ use std::collections::HashMap;
 use std::fs;
 
 use super::super::evaluate::{STATUS_INVALID, STATUS_NARROW, STATUS_OK, STATUS_VIOLATED, Verdict};
+use super::super::insights::TargetInsight;
 use super::super::report_types::{DawnMetrics, Metrics, Report, RunResult};
 use super::super::test_helpers::{metrics_with, repo_root, results, seeds, share_target};
-use super::{KIND_MEDIAN, Margin, Target, Targets, default_targets, load_targets, measure};
+use super::{KIND_MEDIAN, KIND_SHARE, Margin, Target, Targets, default_targets, load_targets, measure};
 
 fn targets_file() -> String {
     fs::read_to_string(repo_root().join("data/balance-targets.json")).expect("balance-targets.json")
@@ -169,8 +170,7 @@ fn long(fall: Option<i64>) -> Metrics {
     }
 }
 
-/// B-657: castleHeld wertet nur Nacht 1 bis 5 (bis zum Morgen von Tag 6), auch in einem Lauf über 40 Tage. Den
-/// Klartext der Go-Fassung (`TargetInsight.what`) prüft RU70.17.
+/// B-657: castleHeld wertet nur Nacht 1 bis 5 (bis zum Morgen von Tag 6), auch in einem Lauf über 40 Tage.
 #[test]
 fn castle_held_fenster() {
     let early_end = Metrics {
@@ -204,6 +204,16 @@ fn castle_held_fenster() {
     let ts = with_targets(2, share_target());
     let v = first(&ts, results(&[Some(long(Some(9500))), Some(short)]));
     assert_eq!((v.value, v.counted), (100.0, 1), "kurzer Lauf verfälscht den Anteil");
+    let insight = TargetInsight {
+        kind: KIND_SHARE.to_owned(),
+        measure: "castleHeld".to_owned(),
+        name: "castleHeld".to_owned(),
+        value: v.value,
+        runs: v.counted,
+        ..TargetInsight::default()
+    };
+    let text = insight.what();
+    assert!(text.contains("In 1 von 1 Läufen"), "Klartext: {text}");
 }
 
 /// Die Mauer-Kennzahl zählt nur Mauern bis Dämmerungsbeginn von Tag 1.

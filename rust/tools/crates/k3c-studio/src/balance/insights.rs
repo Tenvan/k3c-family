@@ -39,9 +39,7 @@ pub struct Insights {
     pub pass: bool,
     pub counts: BTreeMap<String, i64>,
     pub summary: Vec<String>,
-    #[serde(serialize_with = "nil_empty")]
     pub strengths: Vec<String>,
-    #[serde(serialize_with = "nil_empty")]
     pub weaknesses: Vec<String>,
     pub targets: Vec<TargetInsight>,
     pub figures: FigureInsights,
@@ -154,7 +152,7 @@ pub fn build_insights(root: &Path, s: &Summary, base: Option<&Summary>, h: &Hint
     out.goal_text = goal_text(&out);
     out.hints = hints(&out);
     out.lever_groups = lever_groups(&out);
-    out.next = next_run(&out, s);
+    out.next = next_run(root, &out, s);
     out.summary = summary(&out);
     out
 }
@@ -184,7 +182,7 @@ fn add_targets(out: &mut Insights, root: &Path, s: &Summary, base: Option<&Summa
     }
 }
 
-fn target_insight(e: &Entry, h: &Hints) -> TargetInsight {
+pub(crate) fn target_insight(e: &Entry, h: &Hints) -> TargetInsight {
     let (v, g) = (&e.verdict, &e.verdict.target);
     let invalid = v.status == STATUS_INVALID;
     TargetInsight {
@@ -230,7 +228,7 @@ fn unit_of(kind: &str) -> &'static str {
     if kind == KIND_SHARE { "%" } else { "" }
 }
 
-fn grade_name(grade: &str) -> &str {
+pub(crate) fn grade_name(grade: &str) -> &str {
     if grade.is_empty() { "normal" } else { grade }
 }
 

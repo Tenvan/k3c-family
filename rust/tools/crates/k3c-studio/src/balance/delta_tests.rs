@@ -1,15 +1,14 @@
-//! Go `delta_test.go` (B-640/AC-03). Go prüft über `BuildInsights`; die Auswertung folgt erst mit `insights`, darum
-//! prüfen diese Tests [`build_delta`] und [`free_levers`] auf denselben Daten (Ziele der Fixture, Vergleich wie
-//! `targetInsight`). „Ohne Baseline kein Delta“ (`TestDeltaOhneBaselineLeer`) liegt in `BuildInsights` und folgt dort.
+//! Go `delta_test.go` (B-640/AC-03): Delta-Bericht je Werte-Gruppe, eingefrorene nur beim Kippen, Hinweise nur für
+//! freie Gruppen.
 
 use super::super::evaluate::{STATUS_NARROW, STATUS_OK, STATUS_VIOLATED};
 use super::super::groups::{GROUP_BASIS, GROUP_HOLZ, GROUP_SCHIFF};
-use super::super::hints::{Lever, default_hints};
-use super::super::insights::{LIGHT_GREEN, LIGHT_GREY, LIGHT_RED, LIGHT_YELLOW, TargetInsight, Trend};
-use super::super::summary::{Entry, Summary};
+use super::super::hints::default_hints;
+use super::super::insights::{Insights, LIGHT_GREEN, LIGHT_RED, Meta, TargetInsight, Trend, build_insights};
+use super::super::summary::Summary;
 use super::super::targets::KIND_SHARE;
 use super::super::test_helpers::{fixture, repo_root};
-use super::{GroupDelta, TREND_BETTER, TREND_SAME, TREND_WORSE, build_delta, free_levers};
+use super::{GroupDelta, TREND_BETTER, TREND_SAME, TREND_WORSE, build_delta};
 
 /// Baseline und Lauf auf Basis der Fixture: erste Hälfte der Ziele Gruppe basis, zweite holz; im Lauf kippt ein bisher
 /// erfülltes Ziel der Gruppe basis auf verletzt. Zurück: Baseline, Lauf, Name des gekippten Ziels.
@@ -35,52 +34,26 @@ fn delta_pair() -> (Summary, Summary, String) {
     (base, cur, name)
 }
 
-fn light_of(status: &str) -> &'static str {
-    match status {
-        STATUS_OK => LIGHT_GREEN,
-        STATUS_NARROW => LIGHT_YELLOW,
-        STATUS_VIOLATED => LIGHT_RED,
-        _ => LIGHT_GREY,
-    }
-}
-
-/// Die Felder, die das Delta liest; ein geänderter Wert gilt hier als schlechter (so baut ihn [`delta_pair`]).
-fn insight(e: &Entry, before: &Entry) -> TargetInsight {
-    TargetInsight {
-        name: e.verdict.target.name.clone(),
-        group: e.verdict.target.group.clone(),
-        status: e.verdict.status.clone(),
-        light: light_of(&e.verdict.status).to_owned(),
-        trend: Some(Trend {
-            before: before.verdict.value,
-            delta: e.verdict.value - before.verdict.value,
-            better: e.verdict.value == before.verdict.value,
-            before_status: before.verdict.status.clone(),
-        }),
-        ..TargetInsight::default()
-    }
-}
-
-fn insights(cur: &Summary, base: &Summary) -> Vec<TargetInsight> {
-    cur.targets
-        .iter()
-        .zip(&base.targets)
-        .map(|(e, b)| insight(e, b))
-        .collect()
+fn insights(cur: &Summary, base: Option<&Summary>, frozen: &[&str]) -> Insights {
+    let root = repo_root();
+    let hints = default_hints(&root).expect("Richtwerte");
+    let meta = Meta {
+        run: "r".to_owned(),
+        baseline: "M1".to_owned(),
+        frozen: frozen.iter().map(|g| (*g).to_owned()).collect(),
+        ..Meta::default()
+    };
+    build_insights(&root, cur, base, &hints, &meta)
 }
 
 fn group_of<'a>(delta: &'a [GroupDelta], group: &str) -> Option<&'a GroupDelta> {
     delta.iter().find(|d| d.group == group)
 }
 
-fn frozen_groups() -> Vec<String> {
-    vec![GROUP_BASIS.to_owned(), GROUP_HOLZ.to_owned()]
-}
-
 #[test]
 fn freie_gruppen_immer_mit_trend() {
     let (base, cur, name) = delta_pair();
-    let delta = build_delta(&insights(&cur, &base), &[]);
+    let delta = insights(&cur, Some(&base), &[]).delta;
     let basis = group_of(&delta, GROUP_BASIS).expect("basis fehlt");
     let holz = group_of(&delta, GROUP_HOLZ).expect("holz fehlt");
     assert_eq!(
@@ -100,7 +73,8 @@ fn freie_gruppen_immer_mit_trend() {
 #[test]
 fn eingefroren_nur_beim_kippen() {
     let (base, cur, name) = delta_pair();
-    let delta = build_delta(&insights(&cur, &base), &frozen_groups());
+    let frozen = [GROUP_BASIS, GROUP_HOLZ];
+    let delta = insights(&cur, Some(&base), &frozen).delta;
     assert_eq!(
         delta.len(),
         1,
@@ -112,7 +86,7 @@ fn eingefroren_nur_beim_kippen() {
         d.warning.contains("eingefrorene Gruppe basis kippt") && d.warning.contains(&name),
         "{d:?}"
     );
-    let same = build_delta(&insights(&base, &base), &frozen_groups());
+    let same = insights(&base, Some(&base), &frozen).delta;
     assert!(
         same.is_empty(),
         "unveränderter Lauf: eingefrorene Gruppen schweigen: {same:?}"
@@ -121,21 +95,36 @@ fn eingefroren_nur_beim_kippen() {
 
 #[test]
 fn hebel_nur_fuer_freie_gruppen() {
-    let hints = default_hints(&repo_root()).expect("Richtwerte");
-    let levers: Vec<Lever> = fixture()
-        .targets
-        .iter()
-        .filter(|e| e.verdict.status == STATUS_VIOLATED || e.verdict.status == STATUS_NARROW)
-        .flat_map(|e| hints.levers_for(e))
-        .collect();
-    let basis = |list: &[Lever]| list.iter().filter(|l| l.group == GROUP_BASIS).count();
+    let cur = fixture();
+    let free = insights(&cur, None, &[]);
+    let frozen = insights(&cur, None, &[GROUP_BASIS]);
+    let count = |i: &Insights| {
+        i.targets
+            .iter()
+            .flat_map(|t| &t.levers)
+            .filter(|l| l.group == GROUP_BASIS)
+            .count()
+    };
     assert!(
-        basis(&free_levers(&levers, &[])) > 0,
+        count(&free) > 0,
         "ohne Einfrieren nennt die Fixture Hebel der Gruppe basis"
     );
-    let rest = free_levers(&levers, &[GROUP_BASIS.to_owned()]);
-    assert_eq!(basis(&rest), 0, "eingefrorene Gruppe basis nennt noch Hebel");
-    assert_eq!(rest.len(), levers.len() - basis(&levers), "andere Gruppen bleiben");
+    assert_eq!(count(&frozen), 0, "eingefrorene Gruppe basis nennt noch Hebel");
+    for h in &frozen.hints {
+        assert!(
+            h.levers.iter().all(|l| l.group != GROUP_BASIS),
+            "Hinweis {} nennt einen Hebel einer eingefrorenen Gruppe",
+            h.target
+        );
+    }
+}
+
+#[test]
+fn ohne_baseline_leer() {
+    let got = insights(&fixture(), None, &[]);
+    assert!(got.delta.is_empty(), "ohne Baseline kein Delta: {:?}", got.delta);
+    let json = serde_json::to_string(&got).expect("JSON");
+    assert!(json.contains(r#""delta":[]"#), "nie null");
 }
 
 /// Trend nach Mehrheit; ohne Vergleich oder bei Gleichstand „gleich“; ohne Baseline-Werte kippt nichts.
