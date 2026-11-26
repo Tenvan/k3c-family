@@ -88,7 +88,7 @@ keine (Leitfaden, 🧑 2026-11-26)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU70.1 | `RU70.1-geruest-fenster-mcp-adapter.md` | Umsetzung | autonom | offen |
+| RU70.1 | `RU70.1-geruest-fenster-mcp-adapter.md` | Umsetzung | autonom | in Arbeit |
 | RU70.2 | `RU70.2-spiel-exe-level-studioview.md` | Umsetzung | autonom | offen |
 | RU70.3 | `RU70.3-welten-lesen-format.md` | Umsetzung | autonom | offen |
 | RU70.4 | `RU70.4-welten-bearbeiten-overrides.md` | Umsetzung | autonom | offen |
