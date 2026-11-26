@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| RU66 | DEV | RSU | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | – | `aktiv/RU66-workkit-nach-rust/` |
 | RU67 | DEV | RSU | assetkit nach Rust: Asset-Logik des Studios | – | `aktiv/RU67-assetkit-nach-rust/` |
 | RU70 | DEV | RSU | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | – | `aktiv/RU70-studio-backend-rust/` |
 | RU69 | DEV | RSU | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | – | `aktiv/RU69-workbench-backend-rust/` |
@@ -497,3 +496,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WN5 | Werkzeug-Befunde WE6 beheben | `erledigt/WN5-zweit-werkzeug-befunde/` |
 | RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | `erledigt/RU41-go-engine-entfernen/` |
 | RU65 | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | `erledigt/RU65-rust-backend-spike-entscheidung/` |
+| RU66 | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | `erledigt/RU66-workkit-nach-rust/` |
