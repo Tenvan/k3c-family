@@ -33,6 +33,8 @@ schemars = "=1.2.3"
 # uikit: TS-Schnittstelle lesen und Ereignisstrom (RU66.5).
 regex = "=1.13.2"
 tokio-stream = { version = "=0.1.19", features = ["sync"] }
+# k3c-assetkit: Stand des Slot-Registers (RU67.1).
+sha2 = "=0.10.9"
 
 [workspace.lints.rust]
 # deny statt forbid (wie rust/): proc (Job-Objekt) und winicon brauchen je ein Windows-Modul mit #[allow(unsafe_code)],
