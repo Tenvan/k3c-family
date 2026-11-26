@@ -9,19 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WZ60 | DEV | WZG | Workbench-Oberfläche bleibt bei langen Läufen stabil | – | `aktiv/WZ60-workbench-oberflaeche-speicher/` |
-| FB3 | DEV | WZG | Live-Test-Feedback: Gebäudeplaner in der Workbench | – | `aktiv/FB3-feedback-workbench/` |
-| WE1 | DEV | WZG | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | – | `aktiv/WE1-workbench-engine-inprocess/` |
-| WE2 | DEV | WZG | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | – | `aktiv/WE2-welten-mcp/` |
-| WE3 | DEV | WZG | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | – | `aktiv/WE3-welten-entwuerfe/` |
-| WE7 | PAP | WZG | Papierschnitt-Assets für Sengoku, Nil und Britannien | – | `aktiv/WE7-welten-assets/` |
-| GS3 | SIM, PAP, CLI, SRV | WZG | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | – | `aktiv/GS3-andenken-chronik/` |
-| WE8 | REG, SIM, CLI | WZG | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | – | `aktiv/WE8-welten-events-zuordnung/` |
-| WZ61 | DEV, INF | WZG | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | – | `aktiv/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
-| WZ63 | DEV | WZG | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | – | `aktiv/WZ63-studio-eigene-exe/` |
-| WZ64 | DEV | WZG | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | – | `aktiv/WZ64-spieltest-aufnahme/` |
-| WZ66 | CLI | WZG | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | – | `aktiv/WZ66-spieltest-modus-im-spiel/` |
-| WZ65 | DEV | WZG | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | – | `aktiv/WZ65-spieltest-auswertung/` |
 | BB1 | PAP | PAP | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | – | `aktiv/BB1-bildaufbau-assets/` |
 | SR1 | CLI | SND | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | – | `aktiv/SR1-sound-ruhig/` |
 | SI7 | DEV | KMP | Welten-Editor wählt Wetter, Reittier und Figur je Welt | – | `aktiv/SI7-welten-editor-kataloge/` |
@@ -49,6 +36,10 @@ keine
 | RU69 | DEV | RSU | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | – | Entwurf | `geplant/RU69-workbench-backend-rust/` |
 | RU70 | DEV | RSU | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | – | Entwurf | `geplant/RU70-studio-backend-rust/` |
 | RU71 | DEV | RSU | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | – | Entwurf | `geplant/RU71-go-restlos-entfernen/` |
+| WN1 | DEV | WZN | Spieltest-Nachlauf aus WZ64–WZ66 | – | Entwurf | `geplant/WN1-spieltest-nachlauf/` |
+| WN2 | SIM | WZN | Welten-Nachlauf aus WE3, WE7, WE8 und GS3 | – | Entwurf | `geplant/WN2-welten-nachlauf/` |
+| WN3 | DEV | WZN | Werkzeug-Nachlauf aus WZ60, WZ61, WZ63 | – | Entwurf | `geplant/WN3-werkzeuge-nachlauf/` |
+| WN4 | DEV | WZN | Offene Tickets früher erledigter WZG-Sprints | – | Entwurf | `geplant/WN4-altlasten-nachlauf/` |
 | BAL11 | SIM | BAL | Abnahme-Läufe der Rust-Umstellung: Sim, Balance, Gen, Race | – | Entwurf | `geplant/BAL11-abnahme-laeufe-rust-umstellung/` |
 
 Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwicklung.md). Offene Entscheidungen: [`../fragenkatalog.md`](../fragenkatalog.md).
@@ -487,3 +478,16 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU28 | Rust-Balance-Crate Teil 2: Messungen und Auswertung | `erledigt/RU28-balancing-teil-2-messungen/` |
 | RU31 | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | `erledigt/RU31-balancing-teil-3-einsichten/` |
 | RU40 | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | `erledigt/RU40-balancing-laeufe-im-client/` |
+| FB3 | Live-Test-Feedback: Gebäudeplaner in der Workbench | `erledigt/FB3-feedback-workbench/` |
+| WE1 | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | `erledigt/WE1-workbench-engine-inprocess/` |
+| WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | `erledigt/WE2-welten-mcp/` |
+| WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | `erledigt/WE3-welten-entwuerfe/` |
+| WE7 | Papierschnitt-Assets für Sengoku, Nil und Britannien | `erledigt/WE7-welten-assets/` |
+| WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | `erledigt/WE8-welten-events-zuordnung/` |
+| GS3 | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | `erledigt/GS3-andenken-chronik/` |
+| WZ60 | Workbench-Oberfläche bleibt bei langen Läufen stabil | `erledigt/WZ60-workbench-oberflaeche-speicher/` |
+| WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | `erledigt/WZ61-planungsdaten-schlank-bin-aufraeumen/` |
+| WZ63 | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | `erledigt/WZ63-studio-eigene-exe/` |
+| WZ64 | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | `erledigt/WZ64-spieltest-aufnahme/` |
+| WZ65 | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | `erledigt/WZ65-spieltest-auswertung/` |
+| WZ66 | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | `erledigt/WZ66-spieltest-modus-im-spiel/` |

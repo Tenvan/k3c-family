@@ -1,0 +1,73 @@
+# WN2 · SIM · Welten-Nachlauf aus WE3, WE7, WE8 und GS3
+
+- **Status:** geplant
+- **Projekt:** WZN
+- **Domäne:** SIM
+- **Reife:** Entwurf
+- **Tickets:** –
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Spec:** Entwurf
+- **Revision:** 1
+- **Freigabe:** –
+
+## Ausgangslage
+
+WE3, WE7, WE8 und GS3 sind geschlossen. WE8.5 wurde verworfen: Welt-Events brauchen B-1260, Skins brauchen Ersatz-Assets (B-996).
+
+## Ziel
+
+Welt-Events, Skins und Trophäen sind umgesetzt und gesichtet. Am Ende sichtbar: Welten mit eigenen Varianten und Events am PC.
+
+## Beteiligte und Zielgruppen
+
+Wer profitiert, wer arbeitet, wer entscheidet oder prüft (🧑)?
+
+## Anforderungen
+
+Verweise auf die Ticket-Specs (`B-009 › Anforderungen`) statt Kopien, dazu nur sprint-eigene Anforderungen.
+
+## Nicht-Ziele
+
+Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, falls es später kommt.
+
+## Regeln und Einschränkungen
+
+Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
+- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
+- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
+- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
+
+## Beispiele
+
+Typische Situation → erwartetes Ergebnis.
+
+## Ausnahme- und Fehlerfälle
+
+Ungültige oder seltene Situation → gewolltes Verhalten.
+
+## Akzeptanzkriterien
+
+- **AC-01** Jedes übernommene Ticket ist erledigt oder mit Grund verworfen.
+
+## Offene Fragen
+
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
+Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+
+## Abnahme
+
+Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
+(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
+(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.

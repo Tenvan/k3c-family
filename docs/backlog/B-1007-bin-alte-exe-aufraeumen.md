@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** WZ61
-- **Projekt:** WZG
+- **Sprint:** WN3
+- **Projekt:** WZN
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1

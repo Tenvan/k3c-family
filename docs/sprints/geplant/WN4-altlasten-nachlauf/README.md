@@ -1,22 +1,22 @@
-# FB3 · DEV · Live-Test-Feedback: Gebäudeplaner in der Workbench
+# WN4 · DEV · Offene Tickets früher erledigter WZG-Sprints
 
-- **Status:** aktiv
-- **Projekt:** WZG
+- **Status:** geplant
+- **Projekt:** WZN
 - **Domäne:** DEV
-- **Reife:** bereit
+- **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** freigegeben
+- **Spec:** Entwurf
 - **Revision:** 1
-- **Freigabe:** autonom, Claude
+- **Freigabe:** –
 
 ## Ausgangslage
 
-Hinweis 🧑 2026-11-15: Der Gebäudeplaner des alten Studios fehlt in der Workbench.
+Früher erledigte WZG-Sprints hatten noch offene Tickets (Abnahme-Läufe, Sammelfragen, Review-Befunde).
 
 ## Ziel
 
-Gebäudeplaner samt MCP-Tools in der Workbench.
+Diese Tickets sind abgenommen oder entschieden. Am Ende sichtbar: geschlossene Tickets.
 
 ## Beteiligte und Zielgruppen
 
@@ -51,17 +51,16 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Seite Gebäudeplaner, MCP-Tools `hub_*` mit Roundtrip-Test, `check:dev` grün (`B-923/AC-01` bis `AC-03`).
+- **AC-01** Jedes übernommene Ticket ist erledigt oder mit Grund verworfen.
 
 ## Offene Fragen
 
-keine
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| FB3.1 | `FB3.1-gebaeudeplaner.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

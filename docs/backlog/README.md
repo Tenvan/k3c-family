@@ -13,17 +13,17 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-699](B-699-papierschnitt-grafik-mcp-review.md) | DEV | Idee | hoch | eingeplant | MG11 | Alle Grafiken entstehen als Papierschnitt aus Specs, Assets nur über MCP, Review in der Workbench |
 | [B-720](B-720-bosse-neu.md) | PAP | Problem | hoch | eingeplant | MG10 | Bosse sind neu gestaltet, jeder mit eigener Silhouette |
 | [B-775](B-775-native-umstellung-rust-bevy.md) | CLI | Idee | hoch | eingeplant | NG9 | K3C läuft nativ in Go und Ebitengine auf dem Mini-PC, lokal für 1–2 Spieler ohne Server |
-| [B-879](B-879-welten-editor-workbench.md) | DEV | Problem | hoch | eingeplant | WZ58 | Die Workbench hat den Welten-Editor aus dem alten Studio wieder |
+| [B-879](B-879-welten-editor-workbench.md) | DEV | Problem | hoch | eingeplant | WN4 | Die Workbench hat den Welten-Editor aus dem alten Studio wieder |
 | [B-880](B-880-asset-pakete-je-welt.md) | PAP | Idee | mittel | eingeplant | PT6 | Assets lassen sich zusammen mit einer Welt zu Paketen bündeln |
 | [B-884](B-884-abnahme-mg11.md) | PAP | Schuld | mittel | offen | MG11 | Abnahme MG11: Sichtprüfung der Welt-Grafik und Gen-Läufe sind erledigt |
-| [B-882](B-882-abnahme-laeufe-wz45.md) | DEV | Schuld | mittel | offen | WZ45 | Abnahme-Läufe WZ45 |
+| [B-882](B-882-abnahme-laeufe-wz45.md) | DEV | Schuld | mittel | offen | WN4 | Abnahme-Läufe WZ45 |
 | [B-885](B-885-native-rig-export-bosse.md) | PAP | Schuld | mittel | eingeplant | RU61 | Nativer Rig-Export der Bosse ist nach MG10 veraltet |
 | [B-886](B-886-abnahme-mg10.md) | PAP | Schuld | mittel | offen | MG10 | Abnahme MG10: Sichtprüfung der Bosse und Gen-Läufe sind erledigt |
 | [B-907](B-907-abnahme-wr1-gen-race.md) | SRV | Schuld | niedrig | offen | WR2 | Abnahme WR1: gen:paper samt Grafik-Golden und check:race laufen nach dem Rückbau grün |
 | [B-889](B-889-nativ-debug-werte-und-logs.md) | CLI | Idee | hoch | offen | RU61 | Das native Spiel zeigt Debug-Werte der Sim (F10) und loggt Zustandswechsel und Zusammenfassungen |
 | [B-890](B-890-nativ-hud-icons-statt-namen.md) | CLI | Idee | hoch | offen | RU61 | Das HUD des nativen Spiels zeigt Ressourcen als Icon mit Zahl statt als Namen |
 | [B-891](B-891-biom-eigenschaften-je-welt.md) | SIM | Idee | mittel | offen | RU61 | Biome haben einstellbare Eigenschaften (Walddichte, Steindichte, Baumarten-Mischung), aus dem Seed gewürfelt oder im Welten-Editor fest gesetzt |
-| [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WZ60 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
+| [B-895](B-895-workbench-webview-speicherleck.md) | DEV | Problem | hoch | offen | WN3 | Die Oberfläche der Workbench wächst nicht unbegrenzt im Speicher und bleibt nach Stunden mit parallelen Prüfläufen bedienbar |
 | [B-908](B-908-pages-bausatz.md) | PLAT | Idee | mittel | offen | GP1 | Die Präsentationsseite zeigt das Spiel als Bausatz: Einzelspieler und Couch-Koop, nativ, frei für nicht-kommerzielle Nutzung, eigene Welten mit dem MCP-Server |
 | [B-910](B-910-abnahme-bi2.md) | CLI | Idee | mittel | eingeplant | RU61 | Abnahme BI2: Biom-Darstellung ist gesichtet, Grafik gerendert und Golden geprüft |
 | [B-911](B-911-papierschnitt-tasten-icons.md) | PAP | Idee | mittel | eingeplant | RU61 | Tastenkappen und Xbox-Tasten gibt es als Papierschnitt-Icons der Gruppe icons |
@@ -40,40 +40,40 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-948](B-948-baeume-groesser.md) | CLI | Problem | mittel | offen | RU61 | Bäume erscheinen in passender Größe statt zu klein |
 | [B-949](B-949-ladescreen-huebsch.md) | CLI | Idee | niedrig | offen | RU61 | Der Ladescreen ist im Stil des Spiels gestaltet |
 | [B-953](B-953-truhen-fontaene.md) | SIM | Problem | mittel | offen | RU60 | Truhen geben zehnmal mehr Gold und werfen es als Fontäne auf den Boden |
-| [B-959](B-959-welten-editor-nachtraege.md) | DEV | Problem | mittel | offen | WE3 | Welten-Editor-Nachträge: Endboss je Insel-Thema, Hafen-Ablauf, Event- und Sites-Overrides, Gegnerarten je Welt |
-| [B-960](B-960-welten-inhalte.md) | PAP | Idee | niedrig | offen | WE3 | Inhalte für die neuen Welten: Assets, Events und Gegnerarten für Sengoku, Nil und Britannien |
+| [B-959](B-959-welten-editor-nachtraege.md) | DEV | Problem | mittel | offen | WN2 | Welten-Editor-Nachträge: Endboss je Insel-Thema, Hafen-Ablauf, Event- und Sites-Overrides, Gegnerarten je Welt |
+| [B-960](B-960-welten-inhalte.md) | PAP | Idee | niedrig | offen | WN2 | Inhalte für die neuen Welten: Assets, Events und Gegnerarten für Sengoku, Nil und Britannien |
 | [B-962](B-962-seekarte-im-spiel.md) | CLI | Idee | hoch | eingeplant | RU60 | Am Hafen wählen die Spieler die Zielinsel auf einer Seekarte |
 | [B-964](B-964-seekarte-spiel-grafik.md) | PAP | Idee | mittel | eingeplant | RU60 | Die Seekarte im Spiel ist eine gestaltete Papierschnitt-Karte statt gezeichneter Formen |
 | [B-965](B-965-geschichte-kunstsprache.md) | REG | Idee | mittel | eingeplant | RU60 | Jede Welt und Insel erzählt eine kurze Geschichte in Kunstsprache mit eingestreuten echten Wörtern |
-| [B-966](B-966-chronik-der-reise.md) | REG | Idee | niedrig | eingeplant | GS3 | Abgeschlossene Inseln hinterlassen auf der Seekarte ein Andenken und eine Zeile der Geschichte |
+| [B-966](B-966-chronik-der-reise.md) | REG | Idee | niedrig | eingeplant | WN2 | Abgeschlossene Inseln hinterlassen auf der Seekarte ein Andenken und eine Zeile der Geschichte |
 | [B-967](B-967-fracht-auf-dem-schiff.md) | REG | Idee | mittel | eingeplant | RU62 | Vor der Abfahrt wählen die Spieler die Fracht des Schiffs |
 | [B-968](B-968-koop-aktionen-zu-zweit.md) | REG | Idee | mittel | eingeplant | RU62 | Zwei Monarchen am selben Ort lösen gemeinsame Koop-Aktionen aus |
 | [B-969](B-969-wetter-je-welt.md) | REG | Idee | mittel | eingeplant | RU62 | Jede Welt hat ein eigenes Wetter-Ereignis mit Spielwirkung |
 | [B-970](B-970-reittiere-je-welt.md) | REG | Idee | mittel | eingeplant | RU62 | Jede Welt hat ein eigenes Reittier mit kleiner Eigenheit |
-| [B-971](B-971-flaschenpost.md) | REG | Idee | niedrig | eingeplant | GS4 | Am Strand treibt eine Flaschenpost mit Geschichtszeile und Hinweis an |
+| [B-971](B-971-flaschenpost.md) | REG | Idee | niedrig | eingeplant | WN4 | Am Strand treibt eine Flaschenpost mit Geschichtszeile und Hinweis an |
 | [B-972](B-972-einsiedler-mit-angebot.md) | REG | Idee | mittel | eingeplant | RU62 | Auf jeder Insel wohnt eine besondere Figur der Welt mit einem einmaligen Angebot |
 | [B-973](B-973-fest-nach-dem-sieg.md) | REG | Idee | niedrig | eingeplant | RU62 | Nach dem Sieg über den Endgegner feiert das Volk ein Fest |
 | [B-974](B-974-geschichte-einblendung-spiel.md) | CLI | Idee | mittel | eingeplant | RU60 | Das Spiel blendet die Geschichtszeilen an den Wendepunkten je Spielerhälfte ein |
-| [B-975](B-975-geschichte-welten-werkzeuge.md) | DEV | Idee | mittel | eingeplant | GS1 | Die Welten-Werkzeuge schreiben und prüfen die Geschichte, „Welt anlegen“ erzeugt sie mit |
-| [B-976](B-976-geschichten-vier-welten.md) | REG | Idee | mittel | eingeplant | GS1 | Die vier vorhandenen Welten haben Wortschatz und Geschichtszeilen |
+| [B-975](B-975-geschichte-welten-werkzeuge.md) | DEV | Idee | mittel | eingeplant | WN4 | Die Welten-Werkzeuge schreiben und prüfen die Geschichte, „Welt anlegen“ erzeugt sie mit |
+| [B-976](B-976-geschichten-vier-welten.md) | REG | Idee | mittel | eingeplant | WN4 | Die vier vorhandenen Welten haben Wortschatz und Geschichtszeilen |
 | [B-977](B-977-seekarte-schiffsfahrt.md) | CLI | Idee | mittel | eingeplant | RU60 | Beim Inselwechsel fährt das Schiff im Vollbild über die Seekarte zur Zielinsel |
-| [B-978](B-978-spielstand-auswahl-seekarte.md) | CLI | Idee | niedrig | eingeplant | GS3 | Die Spielstand-Auswahl zeigt die Seekarte mit den Trophäen als Vorschau |
-| [B-979](B-979-sengoku-etappen-1-2-2.md) | SIM | Idee | mittel | eingeplant | WE5 | Sengoku nutzt die Etappen 1, 2, 2: Insel 3 bekommt einen Hafen |
-| [B-980](B-980-flaschenpost-im-spiel.md) | CLI | Idee | niedrig | eingeplant | GS4 | Das Spiel zeigt Flaschenpost, Richtungspfeil und leuchtendes Ziel in beiden Spielerhälften |
+| [B-978](B-978-spielstand-auswahl-seekarte.md) | CLI | Idee | niedrig | eingeplant | WN2 | Die Spielstand-Auswahl zeigt die Seekarte mit den Trophäen als Vorschau |
+| [B-979](B-979-sengoku-etappen-1-2-2.md) | SIM | Idee | mittel | eingeplant | WN4 | Sengoku nutzt die Etappen 1, 2, 2: Insel 3 bekommt einen Hafen |
+| [B-980](B-980-flaschenpost-im-spiel.md) | CLI | Idee | niedrig | eingeplant | WN4 | Das Spiel zeigt Flaschenpost, Richtungspfeil und leuchtendes Ziel in beiden Spielerhälften |
 | [B-981](B-981-endboss-je-insel.md) | SIM | Idee | mittel | eingeplant | RU60 | Jede Insel wählt ihren Endboss, der Bau liegt in ihrer tiefsten Stufe statt nur in der Kristallhöhle |
 | [B-982](B-982-overrides-events.md) | SIM | Idee | mittel | eingeplant | RU60 | Eine Welt übersteuert die Events der Nacht über overrides › events |
 | [B-983](B-983-overrides-hub-sites.md) | SIM | Idee | mittel | eingeplant | RU60 | Eine Welt übersteuert die Plätze hub › sites und islandSites, der Level-Generator liest den Wertesatz der Welt |
 | [B-984](B-984-welt-skins-feld.md) | SIM | Idee | mittel | eingeplant | RU60 | Die Welt-Datei ordnet mit skins Gegnern und Objekten eigene Assets zu (Gegner-Varianten je Welt) |
-| [B-987](B-987-welten-editor-neue-felder.md) | DEV | Idee | mittel | eingeplant | WE6 | Welten-Editor und Welten-MCP bearbeiten Endboss, Skins, Events und Plätze einer Welt |
-| [B-988](B-988-assets-sengoku.md) | PAP | Idee | niedrig | eingeplant | WE7 | Sengoku bekommt die Assets Torii, Pagode, Ninja, Samurai und Samurai-Lager |
-| [B-989](B-989-assets-nil.md) | PAP | Idee | niedrig | eingeplant | WE7 | Nil bekommt die Assets Palme, Barke, Obelisk, Skorpion und Mumie |
-| [B-990](B-990-assets-britannien.md) | PAP | Idee | niedrig | eingeplant | WE7 | Britannien bekommt die Assets Steinkreis, Rundhaus, römischer Späher und Moorgeist |
-| [B-991](B-991-event-ueberfall.md) | SIM | Idee | niedrig | eingeplant | WE8 | Das Event Überfall bringt jede n-te Nacht eine zusätzliche Gruppe einer Gegnerart (Ninja-Überfall in Sengoku) |
-| [B-992](B-992-events-sandsturm-nebel.md) | SIM | Idee | niedrig | eingeplant | WE8 | Die Events Sandsturm und Nebel verändern für eine Nacht Tempo und Fernkampf-Reichweite an der Oberfläche |
-| [B-993](B-993-spiel-endboss-bau-je-biom.md) | CLI | Idee | mittel | eingeplant | WE6 | Das Spiel zeigt Bau und Endboss in jedem Biom, ohne eigenes Asset mit dem der Basisart |
-| [B-994](B-994-spiel-skins-je-welt.md) | CLI | Idee | mittel | eingeplant | WE6 | Das Spiel zeichnet Gegner und Objekte mit den Skins der Welt |
-| [B-995](B-995-spiel-zeigt-welt-events.md) | CLI | Idee | niedrig | eingeplant | WE8 | Das Spiel kündigt Überfall, Sandsturm und Nebel an und zeigt sie in der Nacht |
-| [B-996](B-996-welten-inhalte-zuordnen.md) | SIM | Idee | niedrig | eingeplant | WE8 | Sengoku, Nil und Britannien nutzen ihre Assets, Gegner-Varianten und Events |
+| [B-987](B-987-welten-editor-neue-felder.md) | DEV | Idee | mittel | eingeplant | WN4 | Welten-Editor und Welten-MCP bearbeiten Endboss, Skins, Events und Plätze einer Welt |
+| [B-988](B-988-assets-sengoku.md) | PAP | Idee | niedrig | eingeplant | WN2 | Sengoku bekommt die Assets Torii, Pagode, Ninja, Samurai und Samurai-Lager |
+| [B-989](B-989-assets-nil.md) | PAP | Idee | niedrig | eingeplant | WN2 | Nil bekommt die Assets Palme, Barke, Obelisk, Skorpion und Mumie |
+| [B-990](B-990-assets-britannien.md) | PAP | Idee | niedrig | eingeplant | WN2 | Britannien bekommt die Assets Steinkreis, Rundhaus, römischer Späher und Moorgeist |
+| [B-991](B-991-event-ueberfall.md) | SIM | Idee | niedrig | eingeplant | WN2 | Das Event Überfall bringt jede n-te Nacht eine zusätzliche Gruppe einer Gegnerart (Ninja-Überfall in Sengoku) |
+| [B-992](B-992-events-sandsturm-nebel.md) | SIM | Idee | niedrig | eingeplant | WN2 | Die Events Sandsturm und Nebel verändern für eine Nacht Tempo und Fernkampf-Reichweite an der Oberfläche |
+| [B-993](B-993-spiel-endboss-bau-je-biom.md) | CLI | Idee | mittel | eingeplant | WN4 | Das Spiel zeigt Bau und Endboss in jedem Biom, ohne eigenes Asset mit dem der Basisart |
+| [B-994](B-994-spiel-skins-je-welt.md) | CLI | Idee | mittel | eingeplant | WN4 | Das Spiel zeichnet Gegner und Objekte mit den Skins der Welt |
+| [B-995](B-995-spiel-zeigt-welt-events.md) | CLI | Idee | niedrig | eingeplant | WN2 | Das Spiel kündigt Überfall, Sandsturm und Nebel an und zeigt sie in der Nacht |
+| [B-996](B-996-welten-inhalte-zuordnen.md) | SIM | Idee | niedrig | eingeplant | WN2 | Sengoku, Nil und Britannien nutzen ihre Assets, Gegner-Varianten und Events |
 | [B-997](B-997-fracht-assets-anzeige.md) | CLI | Idee | mittel | eingeplant | RU62 | Ladeplätze am Steg und Fracht an Deck sind im Spiel sichtbar |
 | [B-998](B-998-doppel-truhe-asset-anzeige.md) | CLI | Idee | mittel | eingeplant | RU62 | Die Doppel-Truhe hat ein eigenes Bild und zeigt, welcher Monarch fehlt |
 | [B-999](B-999-wetter-vorboten-darstellung.md) | CLI | Idee | mittel | eingeplant | RU62 | Vorboten, Taifun und Flut sind im Spiel sichtbar und hörbar |
@@ -82,27 +82,27 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1002](B-1002-fest-darstellung-musik.md) | CLI | Idee | niedrig | eingeplant | RU62 | Das Fest zeigt Jubel, Himmels-Effekt je Welt und spielt Festmusik |
 | [B-1003](B-1003-welten-editor-wetter-reittier-figur.md) | DEV | Idee | niedrig | eingeplant | SI7 | Der Welten-Editor wählt Wetter, Reittier und Figur einer Welt aus den Katalogen |
 | [B-1006](B-1006-steg-gehaltenes-a-zahlt-nicht.md) | CLI | Problem | mittel | eingeplant | RU61 | Gehaltenes A am Steg zahlt nach der Zielwahl erst wieder nach dem Loslassen |
-| [B-1007](B-1007-bin-alte-exe-aufraeumen.md) | INF | Schuld | niedrig | eingeplant | WZ61 | task ops:aufraeumen räumt die EXE entfernter Programme aus bin/ ab |
+| [B-1007](B-1007-bin-alte-exe-aufraeumen.md) | INF | Schuld | niedrig | eingeplant | WN3 | task ops:aufraeumen räumt die EXE entfernter Programme aus bin/ ab |
 | [B-1008](B-1008-kronenraub-ueberlebt-laden-nicht.md) | SIM | Problem | hoch | offen | RU60 | Ein laufender Kronenraub bleibt nach Verlassen und Weiter bestehen |
 | [B-1009](B-1009-anzeigename-geselle-troops.md) | SIM | Schuld | niedrig | offen | RG2 | Der Beruf craftsman heißt in data/troops.json Geselle statt Handwerker |
-| [B-1010](B-1010-abnahme-we7-welten-assets.md) | PAP | Frage | mittel | offen | WE7 | Abnahme WE7: Welten-Assets sind gesichtet, Gen-Läufe und Texturbudget geprüft |
+| [B-1010](B-1010-abnahme-we7-welten-assets.md) | PAP | Frage | mittel | offen | WN2 | Abnahme WE7: Welten-Assets sind gesichtet, Gen-Läufe und Texturbudget geprüft |
 | [B-1011](B-1011-abnahme-gs2-seekarte.md) | CLI | Frage | mittel | offen | RU60 | Abnahme GS2: Seekarte als Papierschnitt und Schiffsfahrt sind am TV gesichtet, Gen-Läufe geprüft |
 | [B-1012](B-1012-seekarte-nachtraege-review.md) | CLI | Schuld | mittel | offen | RU60 | Seekarten-Nachträge aus dem Review: Reihenfolge von completed abgesichert, gehaltenes A nach der Fahrt, Stufen der alten Insel im Wechsel-Frame |
-| [B-1013](B-1013-abnahme-laeufe-we5.md) | SIM | Schuld | mittel | eingeplant | WE5 | Abnahme-Läufe WE5 |
+| [B-1013](B-1013-abnahme-laeufe-we5.md) | SIM | Schuld | mittel | eingeplant | WN4 | Abnahme-Läufe WE5 |
 | [B-1014](B-1014-rust-umstellung-analyse.md) | INF | Idee | mittel | eingeplant | RU1 | Spiel und Simulation laufen komplett in Rust (Analyse, Empfehlung, Gates) |
 | [B-1015](B-1015-rust-umstellung-wellen-kosten.md) | INF | Idee | mittel | eingeplant | RU1 | Wellen- und Kostenplan der Rust-Umstellung |
 | [B-1016](B-1016-rust-client-spike-g1.md) | CLI | Frage | mittel | eingeplant | RU2 | Ein schlanker Rust-Client hält die Messwerte der Ebitengine (Spike, Gate G1) |
 | [B-1017](B-1017-laeufe-im-game-client.md) | CLI | Idee | mittel | eingeplant | RU33 | Sim und Balancing laufen im Game-Client, headless oder mit Fenster per Parameter |
 | [B-1018](B-1018-rust-port-leitfaden.md) | INF | Idee | mittel | eingeplant | RU1 | Port-Leitfaden: Regeln, nach denen jede Port-Session von Go nach Rust arbeitet |
 | [B-1021](B-1021-abnahme-ru1-rust-workspace.md) | INF | Idee | mittel | offen | BAL11 | Abnahme RU1: Rust-Workspace, check:race und CI-Lauf prüfen |
-| [B-1022](B-1022-abnahme-wz61-race.md) | DEV | Schuld | niedrig | offen | WZ61 | Abnahme WZ61: check:race über die geänderten Workbench- und Cleanup-Pakete läuft grün |
+| [B-1022](B-1022-abnahme-wz61-race.md) | DEV | Schuld | niedrig | offen | WN3 | Abnahme WZ61: check:race über die geänderten Workbench- und Cleanup-Pakete läuft grün |
 | [B-1028](B-1028-ru4-abnahme-gen-race.md) | CLI | Schuld | mittel | offen | BAL11 | Abnahme RU4: Gen- und Race-Läufe sowie Hardware-Prüfung der Rust-Plattform stehen aus |
 | [B-1023](B-1023-go-exp-haengt-an-fma.md) | SIM | Problem | mittel | offen | RU22 | Go-math.Exp rechnet auf CPUs ohne AVX/FMA andere Bits als die Golden |
 | [B-1024](B-1024-rust-datenpruefungen-mit-fremden-tabellen.md) | SIM | Schuld | mittel | offen | RU25 | Rust-Datenprüfungen, die Tabellen aus Balance oder Sim brauchen, fehlen noch in k3c-data |
 | [B-1027](B-1027-abnahme-laeufe-ru3.md) | SIM | Schuld | mittel | offen | BAL11 | Abnahme-Läufe RU3 |
 | [B-1033](B-1033-abnahme-si4.md) | PAP | Schuld | mittel | offen | SI4 | Abnahme-Läufe Sprint SI4 Reittiere je Welt sind grün |
 | [B-1034](B-1034-si4-engine-anzeige-offen.md) | SIM | Frage | hoch | offen | SI4 | Engine und Anzeige der Reittiere je Welt sind nach Verwerfen von SI4.3 und SI4.4 ohne Ersatz |
-| [B-1029](B-1029-abnahme-laeufe-gs1.md) | REG | Schuld | mittel | offen | GS1 | Abnahme-Läufe GS1: Gen samt Golden und Race sind grün |
+| [B-1029](B-1029-abnahme-laeufe-gs1.md) | REG | Schuld | mittel | offen | WN4 | Abnahme-Läufe GS1: Gen samt Golden und Race sind grün |
 | [B-1031](B-1031-abnahme-si3.md) | PAP | Schuld | mittel | offen | SI3 | Abnahme-Läufe SI3 Wetter je Welt sind grün |
 | [B-1032](B-1032-abnahme-laeufe-si2.md) | INF | Schuld | mittel | offen | SI2 | Abnahme-Läufe SI2: Sim, Balance, Gen samt Golden und Race sind grün |
 | [B-1036](B-1036-abnahme-laeufe-si5.md) | INF | Schuld | mittel | offen | SI5 | Abnahme-Läufe SI5: Sim, Balance, Gen samt Golden und Race sind grün |
@@ -205,28 +205,28 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1165](B-1165-weltwahl-ohne-entwicklermodus.md) | CLI | Problem | mittel | offen | RU36 | Die Weltwahl zeigt alle Welten aus data/worlds, nicht nur die Standard-Welt |
 | [B-1166](B-1166-wald-biom-dicht-standard-seed.md) | SIM | Problem | mittel | offen | RU36 | Wald-Biome sind im Standard-Seed immer dicht, Lichtungen sind selten, man rodet sich anfangs durch |
 | [B-1167](B-1167-hub-kompass-zeigt-biome.md) | CLI | Idee | mittel | offen | LA1 | Der Kompass im Hub zeigt die Biome der Insel an |
-| [B-1168](B-1168-studio-feste-welten.md) | DEV | Problem | mittel | offen | WZ62 | Das Studio listet die vier festen Welten (standard, sengoku, nil, britannien), nicht nur die Custom World Nordmeer |
-| [B-1169](B-1169-studio-welt-filter-vererbung.md) | DEV | Idee | mittel | offen | WZ62 | Katalog und Sound filtern nach Welt: alle Assets einer Welt (mit geerbten der Basis) oder nur die exklusiven |
-| [B-1170](B-1170-studio-groessenvergleich-lineal.md) | DEV | Idee | mittel | offen | WZ62 | Der Größenvergleich im Studio ist eine fensterfüllende Ansicht mit dem Größenstufen-Lineal statt vier Zoomstufen |
-| [B-1171](B-1171-welten-editor-link-katalog.md) | DEV | Idee | niedrig | offen | WZ62 | Der Welten-Editor hat einen Schnell-Link in den Katalog mit den Assets dieser Welt (exklusiv oder gesamt) |
-| [B-1172](B-1172-welten-editor-welt-loeschen.md) | DEV | Idee | mittel | offen | WZ62 | Im Welten-Editor lässt sich eine Welt löschen (mit Bestätigung, feste Welten geschützt) |
-| [B-1173](B-1173-welten-editor-werte-tabelle.md) | DEV | Problem | mittel | offen | WZ62 | Die Werte-Tabelle im Welten-Editor ist übersichtlich und bequem zu bedienen |
+| [B-1168](B-1168-studio-feste-welten.md) | DEV | Problem | mittel | offen | WN4 | Das Studio listet die vier festen Welten (standard, sengoku, nil, britannien), nicht nur die Custom World Nordmeer |
+| [B-1169](B-1169-studio-welt-filter-vererbung.md) | DEV | Idee | mittel | offen | WN4 | Katalog und Sound filtern nach Welt: alle Assets einer Welt (mit geerbten der Basis) oder nur die exklusiven |
+| [B-1170](B-1170-studio-groessenvergleich-lineal.md) | DEV | Idee | mittel | offen | WN4 | Der Größenvergleich im Studio ist eine fensterfüllende Ansicht mit dem Größenstufen-Lineal statt vier Zoomstufen |
+| [B-1171](B-1171-welten-editor-link-katalog.md) | DEV | Idee | niedrig | offen | WN4 | Der Welten-Editor hat einen Schnell-Link in den Katalog mit den Assets dieser Welt (exklusiv oder gesamt) |
+| [B-1172](B-1172-welten-editor-welt-loeschen.md) | DEV | Idee | mittel | offen | WN4 | Im Welten-Editor lässt sich eine Welt löschen (mit Bestätigung, feste Welten geschützt) |
+| [B-1173](B-1173-welten-editor-werte-tabelle.md) | DEV | Problem | mittel | offen | WN4 | Die Werte-Tabelle im Welten-Editor ist übersichtlich und bequem zu bedienen |
 | [B-1174](B-1174-balancing-rechenmodell-startwerte.md) | SIM | Idee | mittel | offen | RU31 | Das Balancing berechnet Startwerte vorab, kalibriert sie in der Simulation und tunt über die Empfindlichkeit je Hebel |
 | [B-1175](B-1175-mauer-burgbereich-luecke.md) | CLI | Problem | mittel | offen | LA1 | Im Burgbereich schließen Mauern die Lücke zwischen den inneren Mauerstücken |
 | [B-1176](B-1176-mauer-stufe-1-zaun.md) | PAP | Idee | mittel | offen | LA1 | Die Mauer der Stufe 1 sieht aus wie ein Zaun oder eine Bretterwand |
-| [B-1177](B-1177-werte-tabelle-einheit-min-max.md) | DEV | Idee | niedrig | offen | WZ62 | Das Backend liefert je Welt-Wert Einheit und Min/Max, damit die Werte-Tabelle Regler und Bereichsprüfung beim Tippen bietet |
+| [B-1177](B-1177-werte-tabelle-einheit-min-max.md) | DEV | Idee | niedrig | offen | WN4 | Das Backend liefert je Welt-Wert Einheit und Min/Max, damit die Werte-Tabelle Regler und Bereichsprüfung beim Tippen bietet |
 | [B-1183](B-1183-stimmung-reste-wolken-monumental-wellen.md) | CLI | Idee | mittel | offen | LA2 | Stimmung: Wolken, monumentaler Hintergrund und Wellenstriche fehlen noch |
 | [B-1179](B-1179-cheat-fenster-panel-umgebungseffekte.md) | CLI | Idee | mittel | offen | LA2 | Cheat-Fenster braucht ein Panel, das die Umgebungseffekte einzeln ein- und ausschaltet |
 | [B-1180](B-1180-fps-anzeige-zu-gross-null-fps.md) | CLI | Problem | mittel | offen | LA1 | Die FPS-Anzeige oben rechts zeigt 0 FPS, ist zu gross und am Rand abgeschnitten |
 | [B-1181](B-1181-licht-assets-fackeln-lampen-feuerschalen.md) | PAP | Idee | mittel | offen | LA2 | Lichtquellen als Assets: animierte Flammen, Fackeln, Lampen und Feuerschalen mit Ankerpunkten an Gebäuden |
 | [B-1182](B-1182-bauplaetze-abstand-nach-gebaeudegroesse.md) | SIM | Problem | mittel | offen | LA3 | Die festen Bauplätze im Hub überlappen sich, ihr Abstand soll der Gebäudegröße folgen |
-| [B-1178](B-1178-abnahme-wz62-studio-welten.md) | DEV | Schuld | mittel | offen | WZ62 | Abnahme WZ62: Studio feste Welten, Welt-Filter, Größenvergleich, Welten-Editor (PC-Abnahme, Sim, Balance, Gen, Race) |
+| [B-1178](B-1178-abnahme-wz62-studio-welten.md) | DEV | Schuld | mittel | offen | WN4 | Abnahme WZ62: Studio feste Welten, Welt-Filter, Größenvergleich, Welten-Editor (PC-Abnahme, Sim, Balance, Gen, Race) |
 | [B-1184](B-1184-abnahme-la1-stimmung.md) | CLI | Schuld | mittel | offen | LA1 | Abnahme LA1: Stimmung und Look-Anbindung (FPS-Messung, Gen, Race) |
 | [B-1185](B-1185-abnahme-la2-look-nachtraege.md) | CLI | Schuld | mittel | offen | LA2 | Abnahme LA2: Cheat-Panel, Wolken, Wellenstriche, Licht-Assets, Leitmotive (PC-Abnahme, Gen, Race) |
 | [B-1186](B-1186-hud-baustellen-gebaeudenamen-haendler.md) | CLI | Idee | mittel | offen | HB1 | HUD: Baustellen-Texte kleiner mit Icons und x/n, Gebäudename über dem Monarchen, Händler und Stände sichtbar |
 | [B-1187](B-1187-biome-dicht-radar-landstreicher-taverne.md) | SIM | Idee | mittel | offen | HB1 | Biome: dichter Bewuchs, Biome am Radar, Landstreicher-Lager zwischen Bäumen und Taverne an der Lagerstelle |
 | [B-1188](B-1188-hafen-start-biome-bewuchs.md) | SIM | Idee | mittel | offen | HB1 | Hafen als Startpunkt neuer Spiele, ein bis zwei Biome vom Lager, vom Wald umgeben und freizuräumen |
-| [B-1190](B-1190-abnahme-hb1-hud-biome-hafen.md) | DEV | Schuld | mittel | offen | HB1 | Abnahme HB1: HUD-Baustellen, Biome, Landstreicher-Lager, Hafen (PC-Abnahme, Sim, Gen, Race) |
+| [B-1190](B-1190-abnahme-hb1-hud-biome-hafen.md) | DEV | Schuld | mittel | offen | WN4 | Abnahme HB1: HUD-Baustellen, Biome, Landstreicher-Lager, Hafen (PC-Abnahme, Sim, Gen, Race) |
 | [B-1189](B-1189-abnahme-la3-bauplaetze.md) | SIM | Schuld | mittel | offen | LA3 | Abnahme LA3: Bauplätze nach Gebäudegröße (PC-Sichtprüfung, Race, Rust-Aufzeichnung) |
 | [B-1191](B-1191-siegel-assets-schwierigkeit.md) | PAP | Idee | mittel | offen | ECO1 | Je Schwierigkeitsgrad ein Wachssiegel als Papierschnitt-Symbol |
 | [B-1192](B-1192-siegel-anzeige-schwierigkeit.md) | CLI | Idee | mittel | offen | ECO1 | Das Schwierigkeits-Siegel steht in der Auswahl, bei den Spielständen und im HUD bei der Welt |
@@ -253,29 +253,29 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1213](B-1213-zaun-und-mauern-lueckenlos-hoehe-nach-stufe.md) | PAP | Idee | mittel | offen | WL1 | Mauern: Jägerzaun auf Holz-Level, lückenloser Anschluss und Höhe nach Ausbaustufe |
 | [B-1214](B-1214-workbench-spielstart-dev-release-dienste.md) | DEV | Idee | mittel | offen | WL1 | Workbench: Spielstart (Dev und Release) als Dienste eintragen und loggen |
 | [B-1217](B-1217-welt-art-ableger-oder-neu.md) | DEV | Idee | mittel | eingeplant | WL2 | Eine Welt hat eine Art (Ableger oder komplett neu); die Statistik erwartet danach eigene Assets, Einheiten und Werte |
-| [B-1218](B-1218-spieltest-seite-ablage-aufraeumen.md) | DEV | Idee | mittel | offen | WZ64 | Workbench-Seite Spieltest listet Aufnahmen in playtests/ und räumt sie per Knopf auf |
-| [B-1219](B-1219-spieltest-aufnahme-ffmpeg.md) | DEV | Idee | mittel | offen | WZ64 | Spieltest-Start nimmt Raummikro und Spielbild mit ffmpeg auf und startet das Spiel im Spieltest-Modus |
-| [B-1220](B-1220-spieltest-flag-rec-pad-marker.md) | CLI | Idee | mittel | offen | WZ66 | Spiel mit --playtest zeigt REC und schreibt Pad-Marker mit Spielkontext |
-| [B-1221](B-1221-spieltest-ruckler-marker-spielstand.md) | CLI | Idee | mittel | offen | WZ66 | Spieltest-Modus setzt bei Rucklern selbst Marker und legt je Marker einen Spielstand ab |
-| [B-1222](B-1222-spieltest-fragebogen-spielende.md) | CLI | Idee | niedrig | offen | WZ66 | Spieltest-Modus fragt am Spielende drei Fragen je Spieler per Pad ab |
-| [B-1223](B-1223-spieltest-transkript-ffmpeg-whisper.md) | DEV | Idee | mittel | offen | WZ65 | Knopf Transkribieren erzeugt per ffmpeg-whisper ein Transkript mit Zeitstempeln und ein Bild je Marker |
-| [B-1224](B-1224-spieltest-befunde-mcp-tickets.md) | DEV | Idee | mittel | offen | WZ65 | MCP-Tools playtest_* und Prompt-Knöpfe machen aus angehakten Befunden Tickets |
-| [B-1225](B-1225-abnahme-spieltest-aufnahme.md) | DEV | Frage | mittel | offen | WZ65 | Abnahme Spieltest-Aufnahme (WZ64–WZ66): Sofa-Test mit zwei Pads und Frame-Messung bei laufender Aufnahme |
-| [B-1226](B-1226-abnahme-wz63.md) | DEV | Schuld | mittel | offen | WZ63 | Abnahme WZ63: Studio startet allein und bearbeitet eine Welt |
-| [B-1227](B-1227-studio-dev-worktree-b925.md) | DEV | Schuld | mittel | offen | WZ63 | Studio rechnet die Engine: Dev-Worktree-Instanz und Regel B-925 für das Studio |
+| [B-1218](B-1218-spieltest-seite-ablage-aufraeumen.md) | DEV | Idee | mittel | offen | WN1 | Workbench-Seite Spieltest listet Aufnahmen in playtests/ und räumt sie per Knopf auf |
+| [B-1219](B-1219-spieltest-aufnahme-ffmpeg.md) | DEV | Idee | mittel | offen | WN1 | Spieltest-Start nimmt Raummikro und Spielbild mit ffmpeg auf und startet das Spiel im Spieltest-Modus |
+| [B-1220](B-1220-spieltest-flag-rec-pad-marker.md) | CLI | Idee | mittel | offen | WN1 | Spiel mit --playtest zeigt REC und schreibt Pad-Marker mit Spielkontext |
+| [B-1221](B-1221-spieltest-ruckler-marker-spielstand.md) | CLI | Idee | mittel | offen | WN1 | Spieltest-Modus setzt bei Rucklern selbst Marker und legt je Marker einen Spielstand ab |
+| [B-1222](B-1222-spieltest-fragebogen-spielende.md) | CLI | Idee | niedrig | offen | WN1 | Spieltest-Modus fragt am Spielende drei Fragen je Spieler per Pad ab |
+| [B-1223](B-1223-spieltest-transkript-ffmpeg-whisper.md) | DEV | Idee | mittel | offen | WN1 | Knopf Transkribieren erzeugt per ffmpeg-whisper ein Transkript mit Zeitstempeln und ein Bild je Marker |
+| [B-1224](B-1224-spieltest-befunde-mcp-tickets.md) | DEV | Idee | mittel | offen | WN1 | MCP-Tools playtest_* und Prompt-Knöpfe machen aus angehakten Befunden Tickets |
+| [B-1225](B-1225-abnahme-spieltest-aufnahme.md) | DEV | Frage | mittel | offen | WN1 | Abnahme Spieltest-Aufnahme (WZ64–WZ66): Sofa-Test mit zwei Pads und Frame-Messung bei laufender Aufnahme |
+| [B-1226](B-1226-abnahme-wz63.md) | DEV | Schuld | mittel | offen | WN3 | Abnahme WZ63: Studio startet allein und bearbeitet eine Welt |
+| [B-1227](B-1227-studio-dev-worktree-b925.md) | DEV | Schuld | mittel | offen | WN3 | Studio rechnet die Engine: Dev-Worktree-Instanz und Regel B-925 für das Studio |
 | [B-1228](B-1228-mount-ausdauer.md) | SIM | Idee | mittel | offen | AU1 | Reittiere haben Ausdauer: Sprint verbraucht sie, Pausen laden sie auf |
-| [B-1229](B-1229-abnahme-spieltest-modus.md) | CLI | Frage | mittel | offen | WZ66 | Abnahme-Läufe WZ66: Sim, Balance, Gen samt Golden und Race laufen grün |
+| [B-1229](B-1229-abnahme-spieltest-modus.md) | CLI | Frage | mittel | offen | WN1 | Abnahme-Läufe WZ66: Sim, Balance, Gen samt Golden und Race laufen grün |
 | [B-1231](B-1231-abnahme-wl1-sim-balance-gen-race.md) | CLI | Frage | mittel | offen | WL1 | Abnahme-Läufe WL1: Sim, Balance, Gen samt Golden, Race |
-| [B-1233](B-1233-spieltest-monitor-null-absturz.md) | DEV | Problem | hoch | eingeplant | WZ65 | Workbench-Fenster wird beim Start der Spieltest-Aufnahme schwarz (Monitor bekommt null-Listen) |
-| [B-1234](B-1234-spieltest-player-mikro-session.md) | DEV | Idee | hoch | eingeplant | WZ65 | Spieltest: Player im Fenster, Mikro-Session ohne Spiel, bessere Transkription |
-| [B-1235](B-1235-spieltest-aufnahme-mit-dem-spiel.md) | DEV | Idee | hoch | eingeplant | WZ65 | Spieltest: Aufnahme beginnt mit dem Spiel im Vollbild, Pegel statt Datenrate beim Ton, Whisper 30 s |
-| [B-1236](B-1236-spieltest-liste-modell-ton-mitlauf.md) | DEV | Idee | mittel | eingeplant | WZ65 | Spieltest: large-v3 als Standard, Liste nach Uhrzeit, Modelle bei Neu laden, Ton läuft mit dem Bild |
-| [B-1237](B-1237-spieltest-befunde-lesbar.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Spieltest: Spielkontext, Bild und Vergleichsticket eines Befunds sind groß und gut lesbar |
-| [B-1238](B-1238-claude-knoepfe-entfernen.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Knöpfe „In Claude öffnen“ entfallen, Prompt-Knöpfe kopieren nur |
-| [B-1239](B-1239-spieltest-auswertung-statistik-kompakt.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Spieltest zeigt Auswertungsdauer je Minute Aufnahme und die Zeitleiste ist kompakter |
-| [B-1240](B-1240-spieltest-marker-bilder-loeschen.md) | DEV | Idee | mittel | eingeplant | WZ65 | Einzelne Marker-Bilder einer Session lassen sich löschen |
-| [B-1241](B-1241-spieltest-bilder-beschreiben.md) | DEV | Idee | niedrig | eingeplant | WZ65 | Marker-Bilder werden vorab lokal beschrieben, damit der Chat sie nicht ansehen muss |
-| [B-1242](B-1242-marker-im-menue-zeigen-keine-rueckmeldun.md) | CLI | Problem | niedrig | offen | WZ66 | Marker im Menü zeigen keine Rückmeldung und tragen keinen Spielkontext |
+| [B-1233](B-1233-spieltest-monitor-null-absturz.md) | DEV | Problem | hoch | eingeplant | WN1 | Workbench-Fenster wird beim Start der Spieltest-Aufnahme schwarz (Monitor bekommt null-Listen) |
+| [B-1234](B-1234-spieltest-player-mikro-session.md) | DEV | Idee | hoch | eingeplant | WN1 | Spieltest: Player im Fenster, Mikro-Session ohne Spiel, bessere Transkription |
+| [B-1235](B-1235-spieltest-aufnahme-mit-dem-spiel.md) | DEV | Idee | hoch | eingeplant | WN1 | Spieltest: Aufnahme beginnt mit dem Spiel im Vollbild, Pegel statt Datenrate beim Ton, Whisper 30 s |
+| [B-1236](B-1236-spieltest-liste-modell-ton-mitlauf.md) | DEV | Idee | mittel | eingeplant | WN1 | Spieltest: large-v3 als Standard, Liste nach Uhrzeit, Modelle bei Neu laden, Ton läuft mit dem Bild |
+| [B-1237](B-1237-spieltest-befunde-lesbar.md) | DEV | Idee | niedrig | eingeplant | WN1 | Spieltest: Spielkontext, Bild und Vergleichsticket eines Befunds sind groß und gut lesbar |
+| [B-1238](B-1238-claude-knoepfe-entfernen.md) | DEV | Idee | niedrig | eingeplant | WN1 | Knöpfe „In Claude öffnen“ entfallen, Prompt-Knöpfe kopieren nur |
+| [B-1239](B-1239-spieltest-auswertung-statistik-kompakt.md) | DEV | Idee | niedrig | eingeplant | WN1 | Spieltest zeigt Auswertungsdauer je Minute Aufnahme und die Zeitleiste ist kompakter |
+| [B-1240](B-1240-spieltest-marker-bilder-loeschen.md) | DEV | Idee | mittel | eingeplant | WN1 | Einzelne Marker-Bilder einer Session lassen sich löschen |
+| [B-1241](B-1241-spieltest-bilder-beschreiben.md) | DEV | Idee | niedrig | eingeplant | WN1 | Marker-Bilder werden vorab lokal beschrieben, damit der Chat sie nicht ansehen muss |
+| [B-1242](B-1242-marker-im-menue-zeigen-keine-rueckmeldun.md) | CLI | Problem | niedrig | offen | WN1 | Marker im Menü zeigen keine Rückmeldung und tragen keinen Spielkontext |
 | [B-1243](B-1243-das-rufhorn-laesst-sich-nicht-ausloesen.md) | CLI | Problem | mittel | offen | RU36 | Das Rufhorn lässt sich nicht auslösen und seine Voraussetzung ist nicht erkennbar |
 | [B-1244](B-1244-das-schiff-kostet-deutlich-mehr-und-wird.md) | SIM | Idee | mittel | offen | ECO1 | Das Schiff kostet deutlich mehr und wird in mehreren Stufen bezahlt |
 | [B-1245](B-1245-buerger-tragen-keine-forke-bis-sie-sich.md) | CLI | Problem | mittel | offen | FG1 | Bürger tragen keine Forke, bis sie sich Werkzeug geholt haben |
@@ -289,17 +289,17 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | ECO1 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
 | [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | ECO1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
 | [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | ECO1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
-| [B-1256](B-1256-b1255-lokale-aenderung-entscheiden.md) | PAP | Problem | niedrig | offen | WE6 | Entscheidung: lokale Änderung an B-1255 committen oder verwerfen |
-| [B-1257](B-1257-kritische-fragen-lane-umstellung.md) | INF | Problem | hoch | offen | WE6 | Kritische Fragen aus der Umstellung auf Lane zweit |
-| [B-1258](B-1258-e2e-ablauf-referenz-neu-aufnehmen.md) | INF | Problem | mittel | offen | WE6 | e2e-Ablauf ablauf_wie_go_zwei_laeufe_gleich ist ausgesetzt, weil die Referenz aus RU32 veraltet ist |
-| [B-1259](B-1259-sammel-kritische-fragen-autonom.md) | INF | Problem | hoch | offen | WE6 | Sammelticket: kritische Fragen aus der autonomen Arbeit, von Ralf zu entscheiden |
-| [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WE8 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
-| [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | GS3 | Trophäen-Assets an die Spielansicht binden |
-| [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | GS3 | Abnahme Sprint GS3: Andenken und Chronik |
-| [B-1266](B-1266-befunde-review-we6.md) | DEV | Problem | mittel | offen | WE6 | Review-Befunde WE6: gocyclo in services/config.go, MCP-Beschreibung ohne endBoss/skins/events, Go-Tests rot |
-| [B-1267](B-1267-abnahme-we6.md) | DEV | Problem | mittel | offen | WE6 | Abnahme-Läufe WE6: Race, Gen und Sichtprüfungen Endboss, Bau, Skins, Welten-Editor |
-| [B-1268](B-1268-events-ankuendigung-ohne-wirkung.md) | SIM | Problem | mittel | offen | WE8 | Banner und Schleier der Welt-Events erscheinen auch im Frieden, unter Tage und ohne Portale |
-| [B-1269](B-1269-abnahme-we8.md) | SIM | Schuld | mittel | offen | WE8 | Abnahme-Läufe WE8: Sim, Balance, Gen, Race |
+| [B-1256](B-1256-b1255-lokale-aenderung-entscheiden.md) | PAP | Problem | niedrig | offen | WN4 | Entscheidung: lokale Änderung an B-1255 committen oder verwerfen |
+| [B-1257](B-1257-kritische-fragen-lane-umstellung.md) | INF | Problem | hoch | offen | WN4 | Kritische Fragen aus der Umstellung auf Lane zweit |
+| [B-1258](B-1258-e2e-ablauf-referenz-neu-aufnehmen.md) | INF | Problem | mittel | offen | WN4 | e2e-Ablauf ablauf_wie_go_zwei_laeufe_gleich ist ausgesetzt, weil die Referenz aus RU32 veraltet ist |
+| [B-1259](B-1259-sammel-kritische-fragen-autonom.md) | INF | Problem | hoch | offen | WN4 | Sammelticket: kritische Fragen aus der autonomen Arbeit, von Ralf zu entscheiden |
+| [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WN2 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
+| [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | WN2 | Trophäen-Assets an die Spielansicht binden |
+| [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | WN2 | Abnahme Sprint GS3: Andenken und Chronik |
+| [B-1266](B-1266-befunde-review-we6.md) | DEV | Problem | mittel | offen | WN4 | Review-Befunde WE6: gocyclo in services/config.go, MCP-Beschreibung ohne endBoss/skins/events, Go-Tests rot |
+| [B-1267](B-1267-abnahme-we6.md) | DEV | Problem | mittel | offen | WN4 | Abnahme-Läufe WE6: Race, Gen und Sichtprüfungen Endboss, Bau, Skins, Welten-Editor |
+| [B-1268](B-1268-events-ankuendigung-ohne-wirkung.md) | SIM | Problem | mittel | offen | WN2 | Banner und Schleier der Welt-Events erscheinen auch im Frieden, unter Tage und ohne Portale |
+| [B-1269](B-1269-abnahme-we8.md) | SIM | Schuld | mittel | offen | WN2 | Abnahme-Läufe WE8: Sim, Balance, Gen, Race |
 | [B-1264](B-1264-wald-frame-zeit-messen.md) | CLI | Schuld | mittel | offen | BAL11 | Die Frame-Zeit des dichteren Waldes ist gemessen (Replay headless, Vorher/Nachher) |
 | [B-1265](B-1265-abnahme-laeufe-ru36.md) | CLI | Schuld | niedrig | offen | BAL11 | Abnahme-Läufe RU36: Sim, Balance, Gen samt Golden und Race |
 | [B-1270](B-1270-hubfixture-pfad-go-test.md) | CLI | Problem | niedrig | offen | RU33 | Go-Test TestHubFixtureDesMocksIstDieAntwortDerEngine liest den alten Workbench-Pfad |
@@ -317,6 +317,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1282](B-1282-balance-tune-abbruch-je-lauf.md) | SIM | Schuld | niedrig | offen | RU40 | k3c-balance: Rückruf je Lauf in TuneOptions und Targets, damit --tune wie Go nach jedem Lauf abbricht |
 | [B-1283](B-1283-balance-play-endhash.md) | SIM | Frage | niedrig | offen | RU40 | sim balance --play: endHash der Rust-Insel weicht von Go ab, Entscheidung nötig |
 | [B-1285](B-1285-abnahme-ru40-sim-balance-gen.md) | CLI | Frage | mittel | offen | RU40 | Abnahme RU40: Sim, Balance, Gen und Fensterläufe der Spiel-EXE am PC |
+| [B-1286](B-1286-abnahme-projekt-wzg.md) | DEV | Schuld | mittel | offen | WN3 | Abnahme Projekt WZG: Läufe und Sichtprüfungen sind nachgeholt |
 
 ## Archiv
 

@@ -1,22 +1,22 @@
-# WE1 · DEV · Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn
+# WN3 · DEV · Werkzeug-Nachlauf aus WZ60, WZ61, WZ63
 
-- **Status:** aktiv
-- **Projekt:** WZG
+- **Status:** geplant
+- **Projekt:** WZN
 - **Domäne:** DEV
-- **Reife:** bereit
+- **Reife:** Entwurf
 - **Tickets:** –
 - **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
-- **Spec:** freigegeben
+- **Spec:** Entwurf
 - **Revision:** 1
-- **Freigabe:** Klasse A, Claude
+- **Freigabe:** –
 
 ## Ausgangslage
 
-B-726 trennte die Workbench von der Engine wegen der Rust-Pläne (006); seit 008 überholt.
+WZ60, WZ61 und WZ63 sind geschlossen; offen sind Messung, Freigabe und Abnahme-Läufe.
 
 ## Ziel
 
-Workbench ruft die Engine direkt; Sim-Änderungen laufen im eigenen Worktree mit eigener Dev-Workbench.
+Die Werkzeug-Nachträge sind abgenommen. Am Ende sichtbar: geschlossene Tickets.
 
 ## Beteiligte und Zielgruppen
 
@@ -51,18 +51,16 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Engine im Prozess, simexe entfernt, cmd/k3c-sim dünn, panic abgefangen, check:dev und check:go grün (`B-924/AC-01` bis `AC-04`).
-- **AC-02** Regel, Port-Task und Agent k3c-sim-dev (`B-925/AC-01` bis `AC-03`).
+- **AC-01** Jedes übernommene Ticket ist erledigt oder mit Grund verworfen.
 
 ## Offene Fragen
 
-keine
+Entscheidung, betroffener Umfang, wer entscheidet (🧑). Sonst `keine`. Blockierende Fragen verhindern die Freigabe.
 
 ## Sessions
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE1.1 | `WE1.1-engine-im-prozess.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

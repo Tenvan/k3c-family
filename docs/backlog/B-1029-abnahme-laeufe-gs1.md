@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** GS1
-- **Projekt:** WZG
+- **Sprint:** WN4
+- **Projekt:** WZN
 - **Erstellt:** 2026-11-17
 - **Spec:** Entwurf
 - **Revision:** 1

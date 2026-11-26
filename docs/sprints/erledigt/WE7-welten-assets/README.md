@@ -1,6 +1,6 @@
 # WE7 · PAP · Papierschnitt-Assets für Sengoku, Nil und Britannien
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -73,7 +73,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-15, WE7.4 (Claude): AC-01 bis AC-03 geprüft (14 Assets deckungsgleich mit der Basis, PRs #637, #641, #643); k3c-grafik ohne schwere Befunde.
-`gen:paper`, `vitest tools/paper` (411), `task check` (1805 Tests) und `check:diff` grün; Golden danach unverändert.
-Offen: Sichtprüfung 🧑 (B-988/B-989/B-990 AC-04), besonders das Ohr-Teil des römischen Spähers.
-Abnahme-Ticket: siehe Tickets des Sprints (Sichtprüfung, Gen, Texturbudget).
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WN2, keine Abnahme erteilt; Abnahme-Ticket B-1286.

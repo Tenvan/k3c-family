@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** WZ60
-- **Projekt:** WZG
+- **Sprint:** WN3
+- **Projekt:** WZN
 - **Erstellt:** 2026-11-14
 - **Spec:** freigegeben
 - **Revision:** 1

@@ -1,6 +1,6 @@
-# WE2 · DEV · Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks
+# FB3 · DEV · Live-Test-Feedback: Gebäudeplaner in der Workbench
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZG
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -12,11 +12,11 @@
 
 ## Ausgangslage
 
-Test des Welten-Editors 2026-11-15: keine MCP-Tools für Welten, kein „Welt anlegen“.
+Hinweis 🧑 2026-11-15: Der Gebäudeplaner des alten Studios fehlt in der Workbench.
 
 ## Ziel
 
-Welten per MCP und Oberfläche anlegen und bearbeiten.
+Gebäudeplaner samt MCP-Tools in der Workbench.
 
 ## Beteiligte und Zielgruppen
 
@@ -32,9 +32,14 @@ Was ausdrücklich nicht dazugehört (verhindert Ausufern), mit Ticket-Nummer, fa
 
 ## Regeln und Einschränkungen
 
-- **Bereich:** `tools/k3c-workbench/**`, `engine/sim/island_worlds.go`
-- **Sperre:** –
-- Sim-Code im eigenen Worktree (B-925).
+Entscheidungen, Domänen-Grenzen, Budget, Verträge, die für den ganzen Sprint gelten.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `pfad/**` (Vereinigung der Erlaubten Dateien der Sessions ohne Sammeldateien; ein Sprint = eine Dateimenge)
+- **Abhängig von:** – (nur IDs: SP00, B-000, SP00.1; erst starten, wenn erledigt und gemergt)
+- **Braucht 🧑:** – (oder Freigabe | Entscheidung | Abnahme | Gerät; Abnahmen am Gerät sind keine Abhängigkeit)
+- **Sperre:** – (oder golden | protokoll | spielstand | deps | taskfile | exe)
 
 ## Beispiele
 
@@ -46,7 +51,7 @@ Ungültige oder seltene Situation → gewolltes Verhalten.
 
 ## Akzeptanzkriterien
 
-- **AC-01** Welten-MCP-Tools und „Welt anlegen“ (`B-954/AC-01` bis `AC-03`).
+- **AC-01** Seite Gebäudeplaner, MCP-Tools `hub_*` mit Roundtrip-Test, `check:dev` grün (`B-923/AC-01` bis `AC-03`).
 
 ## Offene Fragen
 
@@ -56,7 +61,7 @@ keine
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| WE2.1 | `WE2.1-welten-mcp.md` | Umsetzung | autonom | fertig |
+| FB3.1 | `FB3.1-gebaeudeplaner.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -64,6 +69,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): Kriterien siehe Session-Ergebnis, keine Abnahme neu erteilt; Läufe und Sichtprüfung in B-1286.
