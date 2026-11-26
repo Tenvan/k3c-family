@@ -12,22 +12,22 @@ import (
 )
 
 type planIDIn struct {
-	ID string `json:"id" jsonschema:"Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA"`
+	ID string `json:"id" jsonschema:"Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA"`
 }
 
 type planSetIn struct {
-	ID     string            `json:"id" jsonschema:"Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA"`
+	ID     string            `json:"id" jsonschema:"Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA"`
 	Fields map[string]string `json:"fields" jsonschema:"Kopf-Felder wie in der Vorlage, z. B. {\"Status\": \"fertig\"}"`
 }
 
 type planSectionIn struct {
-	ID      string `json:"id" jsonschema:"Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA"`
+	ID      string `json:"id" jsonschema:"Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA"`
 	Section string `json:"section" jsonschema:"Abschnitt der Vorlage ohne ##, z. B. Ausgangslage, Ergebnis"`
 	Text    string `json:"text" jsonschema:"neuer Inhalt (Markdown, Unterüberschriften ab ###)"`
 }
 
 type planSectionsIn struct {
-	ID       string            `json:"id" jsonschema:"Ticket B-123, Sprint M8, Session M8.1 oder Projekt GRA"`
+	ID       string            `json:"id" jsonschema:"Ticket B-123 (doppelte Nummer: B-123-kurzname), Sprint M8, Session M8.1 oder Projekt GRA"`
 	Sections map[string]string `json:"sections" jsonschema:"Abschnitt der Vorlage ohne ## → neuer Inhalt (Markdown, Unterüberschriften ab ###), z. B. {\"Ziel\": \"…\", \"Kontext\": \"…\"}"`
 }
 

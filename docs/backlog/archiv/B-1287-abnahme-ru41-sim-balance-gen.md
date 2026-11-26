@@ -4,7 +4,7 @@
 - **Typ:** Frage
 - **Prio:** mittel
 - **Umgebung:** offline
-- **Status:** offen
+- **Status:** verworfen
 - **Sprint:** RU41
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-26
@@ -68,4 +68,4 @@ keine
 
 ## Notizen
 
-Gemeinsam mit B-1285 (RU40) fahren; beide brauchen denselben Widerruf.
+Verworfen: Nummer doppelt vergeben (auf main ist B-1287 die Abnahme PAP), umnummeriert nach **B-1294**.

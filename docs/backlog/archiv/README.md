@@ -7,6 +7,7 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 
 | Nr. | Domäne | Typ | Prio | Status | Sprint | Titel |
 |---|---|---|---|---|---|---|
+| [B-1286](B-1286-k3c-sim-tests-rot-welten-takt-geschichte.md) | SIM | Problem | hoch | verworfen | RU41 | Vier k3c-sim-Tests sind auf main rot (eingebettete Welten, Takt wie Go, Geschichte) |
 | [B-1158](B-1158-cheat-soldaten-schild.md) | CLI | Idee | mittel | erledigt | RU36 | Das Cheat-Fenster gibt Soldaten und Schilde (Soldaten plus, Schild plus, Burgstufe), damit Horn-Auslöser und Schild-Gestell prüfbar sind |
 | [B-1159](B-1159-truhen-gold-halbieren.md) | SIM | Problem | mittel | erledigt | RU36 | Truhen geben nur halb so viel Gold wie nach B-953 (statt zehnmal fünfmal) |
 | [B-1095](B-1095-abnahme-stand-rust-sim-teillauf.md) | SIM | Schuld | mittel | erledigt | RU47 | Abnahme-Teillauf Rust-Sim: Stand der ignorierten Tests und Go-Seite für RU10, RU11, RU14, RU15 |
@@ -925,4 +926,5 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1232](B-1232-spieltest-encoder-waechter.md) | DEV | Problem | hoch | erledigt | WZ65 | Spieltest nimmt mit nutzbarem Encoder auf, überwacht die Aufnahme und zeigt Ton- und Bild-Rate |
 | [B-1261](B-1261-flaschenpost-zielpool-alle-stufen.md) | SIM | Problem | hoch | erledigt | GS4 | Flaschenpost: Zielpool und Markierung über alle Stufen |
 | [B-1284](B-1284-eslint-spieltest-welteneditor-task-check-rot.md) | DEV | Schuld | hoch | erledigt | WZ65 | ESLint-Befunde in Spieltest-Seite und Welten-Editor machen task check auf main rot |
-| [B-1286](B-1286-k3c-sim-tests-rot-welten-takt-geschichte.md) | SIM | Problem | hoch | erledigt | RU41 | Vier k3c-sim-Tests sind auf main rot (eingebettete Welten, Takt wie Go, Geschichte) |
+| [B-1293](B-1293-k3c-sim-tests-rot-welten-takt-geschichte.md) | SIM | Problem | hoch | erledigt | RU41 | Vier k3c-sim-Tests sind auf main rot (eingebettete Welten, Takt wie Go, Geschichte) |
+| [B-1287](B-1287-abnahme-ru41-sim-balance-gen.md) | INF | Frage | mittel | verworfen | RU41 | Abnahme RU41: Sim, Balance, Gen und Race ohne Go-Engine |

@@ -96,5 +96,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-26 (Claude, Review RU41.3). AC-01 erfüllt: Go-Pakete entfernt, `testdata/` unverändert (RU41.1, Reviewer). AC-02 erfüllt: `task check:all` grün, `cargo test --workspace` grün (RU41.3, RU41.4/B-1286). AC-03 erfüllt: 011 angenommen 🧑 2026-11-25, 008 überholt, Doku und Agenten auf Rust-Stand, Regel B-925 gestrichen (🧑 2026-11-26) (RU41.2, RU41.3).
-Behoben aus dem Review: BOM `measure.ps1`, Cheat-Test nur Match-Arme, Datadoc-Test beide Richtungen, Doku-Rest (agenten-fundorte, Glossar, game-design). Abnahme-Ticket Sim, Balance, Gen: B-1287.
+2026-11-26 (Claude, Review RU41.3). AC-01 erfüllt: Go-Pakete entfernt, `testdata/` unverändert (RU41.1, Reviewer). AC-02 erfüllt: `task check:all` grün, `cargo test --workspace` grün (RU41.3, RU41.4/B-1293). AC-03 erfüllt: 011 angenommen 🧑 2026-11-25, 008 überholt, Doku und Agenten auf Rust-Stand, Regel B-925 gestrichen (🧑 2026-11-26) (RU41.2, RU41.3).
+Behoben aus dem Review: BOM `measure.ps1`, Cheat-Test nur Match-Arme, Datadoc-Test beide Richtungen, Doku-Rest (agenten-fundorte, Glossar, game-design). Abnahme-Ticket Sim, Balance, Gen: B-1294. (B-1286/B-1287 aus diesem Sprint waren doppelt vergeben und sind nach B-1293/B-1294 umnummeriert.)

@@ -4,7 +4,7 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** erledigt
+- **Status:** verworfen
 - **Sprint:** RU41
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-25
@@ -67,4 +67,4 @@ Takt-Test: Test-Welt aus testdata/ statt Standard-Welt (Default) oder neue Rust-
 
 ## Notizen
 
-Gefunden in RU41.1.
+Verworfen: Nummer doppelt vergeben (auf main ist B-1286 die Abnahme WZG), umnummeriert nach **B-1293** (erledigt in RU41.4).
