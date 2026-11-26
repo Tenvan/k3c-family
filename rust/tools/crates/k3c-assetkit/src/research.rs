@@ -208,7 +208,7 @@ const EXCLUDED_HOSTS: &[&str] = &[
 ];
 
 /// Nach Q70 übernehmbar (NC nur als markierter Lückenfüller).
-const KNOWN_LICENSES: &[&str] = &["CC0", "PUBLIC DOMAIN", "CC BY", "CC-BY", "OGA-BY", "OFL"];
+pub(crate) const KNOWN_LICENSES: &[&str] = &["CC0", "PUBLIC DOMAIN", "CC BY", "CC-BY", "OGA-BY", "OFL"];
 
 fn excluded_host(link: &str) -> bool {
     let Some(url) = parse_with_host(link) else {
@@ -273,7 +273,7 @@ pub async fn run_research(
 }
 
 /// Vorgabe der Suche: Beschreibung ohne Abschnitt („Gebäude: farm“ → „farm“).
-fn search_term(slot: &Slot) -> &str {
+pub(crate) fn search_term(slot: &Slot) -> &str {
     let d = slot.description.as_str();
     d.rsplit_once(':').map_or(d, |(_, term)| term).trim()
 }

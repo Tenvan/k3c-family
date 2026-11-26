@@ -88,6 +88,59 @@ pub(crate) fn parse_with_host(raw: &str) -> Option<Url> {
     url.host_str().is_some_and(|h| !h.is_empty()).then_some(url)
 }
 
+/// Dekodierter Pfad der Adresse wie Go `url.URL.Path` (ohne Normalisieren von `..`, anders als das Crate `url`);
+/// `None`, wo Go `url.Parse` wegen Steuerzeichen, fehlendem Schema oder kaputtem `%` scheitert.
+pub(crate) fn url_path(raw: &str) -> Option<String> {
+    if raw.chars().any(|c| c.is_ascii_control()) || raw.starts_with(':') {
+        return None;
+    }
+    let raw = raw.split('#').next().unwrap_or_default();
+    let scheme = raw.split_once(':').filter(|(s, _)| {
+        s.starts_with(|c: char| c.is_ascii_alphabetic())
+            && s.chars().all(|c| c.is_ascii_alphanumeric() || "+.-".contains(c))
+    });
+    let rest = scheme.map_or(raw, |(_, rest)| rest);
+    let rest = rest.split('?').next().unwrap_or_default();
+    if !rest.starts_with('/') {
+        if scheme.is_some() {
+            return Some(String::new());
+        }
+        if rest.split('/').next().is_some_and(|first| first.contains(':')) {
+            return None;
+        }
+    }
+    let path = match rest.strip_prefix("//") {
+        Some(authority) => authority.find('/').map_or("", |i| &authority[i..]),
+        None => rest,
+    };
+    let broken = path
+        .split('%')
+        .skip(1)
+        .any(|part| !part.get(..2).is_some_and(|h| h.chars().all(|c| c.is_ascii_hexdigit())));
+    (!broken).then(|| percent_decode(path))
+}
+
+/// Löst `%xx` auf; alles andere bleibt, ungültiges UTF-8 wird ersetzt.
+pub(crate) fn percent_decode(s: &str) -> String {
+    let bytes = s.as_bytes();
+    let hex = |i: usize| bytes.get(i).and_then(|&b| char::from(b).to_digit(16));
+    let mut out = Vec::with_capacity(bytes.len());
+    let mut i = 0;
+    while i < bytes.len() {
+        match (bytes[i], hex(i + 1), hex(i + 2)) {
+            (b'%', Some(high), Some(low)) => {
+                out.push((high * 16 + low) as u8);
+                i += 3;
+            }
+            (b, _, _) => {
+                out.push(b);
+                i += 1;
+            }
+        }
+    }
+    String::from_utf8_lossy(&out).into_owned()
+}
+
 /// Liest höchstens `limit` Bytes der Antwort (Go `io.ReadAll(io.LimitReader(body, limit))`). Wer eine Überschreitung
 /// erkennen will, übergibt die Grenze plus eins.
 pub(crate) async fn read_limited(mut res: reqwest::Response, limit: usize) -> reqwest::Result<Vec<u8>> {

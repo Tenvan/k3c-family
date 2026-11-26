@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use crate::catalog::license_flag;
 use crate::error::{Error, Result};
 use crate::gojson::null_default;
-use crate::net::parse_with_host;
+use crate::net::{is_test_origin, parse_with_host};
 use crate::register::{KIND_GRAPHIC, KIND_SOUND, Register};
 use crate::research::from_object;
 
@@ -170,11 +170,16 @@ pub(crate) fn check_suggestion(s: &Suggestion) -> Result<()> {
     }
     check_suggestion_values(s)?;
     for u in [&s.page, &s.file_url] {
-        if !parse_with_host(u).is_some_and(|p| p.scheme() == "https") {
+        if !is_https(u) {
             return Err(Error::Msg(format!("adresse {u:?} ist keine https-URL")));
         }
     }
     Ok(())
+}
+
+/// Adresse mit https und Host; nur im Test auch der freigegebene Testserver (V7).
+pub(crate) fn is_https(raw: &str) -> bool {
+    parse_with_host(raw).is_some_and(|u| u.scheme() == "https" || is_test_origin(&u))
 }
 
 /// Prüft Art, Quelle, Lizenz, Größe, Priorität und Status gegen ihre Wertebereiche.

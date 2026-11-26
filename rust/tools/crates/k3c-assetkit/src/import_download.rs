@@ -12,7 +12,7 @@ use url::Url;
 use crate::error::{Error, Result};
 use crate::fsutil::{self, TempFile};
 use crate::import::{MAX_IMPORT_BYTES, import_file_on, import_target};
-use crate::net::{DownloadClient, bounded, is_test_origin, parse_with_host, send_following};
+use crate::net::{DownloadClient, bounded, is_test_origin, parse_with_host, percent_decode, send_following};
 use crate::research::LICENSE_CHECK;
 
 /// Quellen mit direktem Download und maschinenlesbarer Lizenz. Nur sie lädt das Werkzeug selbst; Links aus Treffern
@@ -120,26 +120,6 @@ fn temp_suffix(url: &Url) -> String {
     let ext = fsutil::path_ext(&path).to_lowercase();
     let plain = ext.len() <= 16 && ext.chars().skip(1).all(|c| c.is_ascii_alphanumeric());
     if plain { ext } else { String::new() }
-}
-
-fn percent_decode(s: &str) -> String {
-    let bytes = s.as_bytes();
-    let hex = |i: usize| bytes.get(i).and_then(|&b| char::from(b).to_digit(16));
-    let mut out = Vec::with_capacity(bytes.len());
-    let mut i = 0;
-    while i < bytes.len() {
-        match (bytes[i], hex(i + 1), hex(i + 2)) {
-            (b'%', Some(high), Some(low)) => {
-                out.push((high * 16 + low) as u8);
-                i += 3;
-            }
-            (b, _, _) => {
-                out.push(b);
-                i += 1;
-            }
-        }
-    }
-    String::from_utf8_lossy(&out).into_owned()
 }
 
 /// Lädt höchstens ein Byte mehr als erlaubt nach `.work/tmp`; die Prüfung beim Import erkennt die Überschreitung.

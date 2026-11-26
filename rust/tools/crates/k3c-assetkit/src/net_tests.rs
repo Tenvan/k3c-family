@@ -136,3 +136,20 @@ async fn send_following_mit_zugangsdaten_und_fragment() {
         .expect("kein Sprung");
     assert_eq!(response.status(), StatusCode::OK);
 }
+
+/// Pfad wie Go `url.URL.Path`: dekodiert, ohne Abfrage, Fragment und Auflösen von `..`; `None`, wo Go ablehnt.
+#[test]
+fn url_path_wie_go() {
+    for (raw, want) in [
+        ("https://x.org/a/my%20file.png?q=1#f", Some("/a/my file.png")),
+        ("https://x.org/a/..", Some("/a/..")),
+        ("https://x.org", Some("")),
+        ("mailto:a@b", Some("")),
+        ("a/b.png", Some("a/b.png")),
+        ("", Some("")),
+        ("127.0.0.1:80/a.png", None),
+        ("https://x.org/a%zz.png", None),
+    ] {
+        assert_eq!(super::url_path(raw).as_deref(), want, "{raw:?}");
+    }
+}
