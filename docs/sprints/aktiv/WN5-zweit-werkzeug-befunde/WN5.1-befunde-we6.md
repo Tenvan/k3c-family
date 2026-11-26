@@ -1,6 +1,6 @@
 # WN5.1 · gocyclo, MCP-Beschreibung und Roundtrip-Test (B-1266)
 
-- **Status:** offen
+- **Status:** in Arbeit
 - **Typ:** Umsetzung
 - **Agent:** autonom
 - **Domäne:** DEV
