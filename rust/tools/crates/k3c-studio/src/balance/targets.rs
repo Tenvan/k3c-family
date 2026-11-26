@@ -1,8 +1,6 @@
 //! Zielkorridore (B-157, BAL2.1): Die Grenzen stehen in `data/balance-targets.json`, die Zahlen sind die bestätigten
 //! aus `docs/rules/zielkorridore.md`. Jedes Ziel nennt eine Kennzahl und ein Szenario; ein Ziel ohne bekannte Kennzahl
 //! ist ein Ladefehler.
-//!
-//! In RU70.14 aus RU70.15 vorgezogen (V11), weil Bewertung und Gruppen sie brauchen.
 
 use std::path::Path;
 
@@ -357,3 +355,7 @@ fn check_grade(root: &Path, grade: &str) -> Result<(), String> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+#[path = "targets_tests.rs"]
+mod tests;

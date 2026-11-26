@@ -102,7 +102,7 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU70.12 | `RU70.12-mcp-assets-grundtools-prompts.md` | Umsetzung | autonom | fertig |
 | RU70.13 | `RU70.13-mcp-assets-render-recherche-review.md` | Umsetzung | autonom | fertig |
 | RU70.14 | `RU70.14-balance-berichtstypen-kennzahlen.md` | Umsetzung | autonom | fertig |
-| RU70.15 | `RU70.15-balance-ziele-hinweise-baselines.md` | Umsetzung | autonom | in Arbeit |
+| RU70.15 | `RU70.15-balance-ziele-hinweise-baselines.md` | Umsetzung | autonom | fertig |
 | RU70.16 | `RU70.16-balance-tuning-fortschritt-insights.md` | Umsetzung | autonom | offen |
 | RU70.17 | `RU70.17-balance-auswertung-texte.md` | Umsetzung | autonom | offen |
 | RU70.18 | `RU70.18-simrun-register-spec-stempel.md` | Umsetzung | autonom | offen |

@@ -32,6 +32,7 @@ pub mod summary;
 pub mod targets;
 pub mod tune;
 pub mod tuneparam;
+pub mod writeguard;
 
 #[cfg(test)]
 #[path = "datafiles_tests.rs"]

@@ -1,7 +1,5 @@
 //! Richtwerte der Kennzahlen und Hebel je Ziel (B-632): `data/balance-hints.json`, Startwerte nach
 //! `docs/rules/zielkorridore.md` § 5. Die Auswertung liest sie; die Simulation nicht.
-//!
-//! In RU70.14 aus RU70.15 vorgezogen (V11), weil die Gruppen-Tests sie laden.
 
 use std::collections::BTreeMap;
 use std::path::Path;
@@ -237,3 +235,7 @@ impl Band {
         self.0[0].is_none_or(|lo| v >= lo) && self.0[1].is_none_or(|hi| v <= hi)
     }
 }
+
+#[cfg(test)]
+#[path = "hints_tests.rs"]
+mod tests;

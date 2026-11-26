@@ -1,7 +1,5 @@
 //! Seed-Modus (B-634, BS1.1): Im Modus `dev` rechnet ein Lauf ohne Seed-Angabe nur den ersten Seed der Datei
 //! (`k3c-dev`), sonst alle. Ausdrücklich übergebene Seeds gehen vor dem Modus.
-//!
-//! In RU70.14 aus RU70.15 vorgezogen (V11), weil Laden und Zusammenfassung sie brauchen.
 
 use std::collections::HashSet;
 
@@ -96,3 +94,7 @@ impl Summary {
         out
     }
 }
+
+#[cfg(test)]
+#[path = "seedmode_tests.rs"]
+mod tests;
