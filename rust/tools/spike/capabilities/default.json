@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Fenster main: Kern-Rechte (Events hören und senden); App-Commands sind ohne eigenes Manifest erlaubt.",
+  "windows": ["main"],
+  "permissions": ["core:default"]
+}

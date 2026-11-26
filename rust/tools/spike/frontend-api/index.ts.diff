@@ -1,0 +1,16 @@
+--- /c/WORKSPACE/TENVAN/k3c/tools/k3c-workbench/frontend/src/api/index.ts	2026-10-22 14:17:09.319524300 +0200
++++ index.ts	2026-11-25 21:34:26.028420900 +0100
+@@ -2,6 +2,7 @@
+ import { mockBackend } from './mock';
+ import type { Backend } from './types';
+ import { hasWails, wailsBackend } from './wails';
++import { hasTauri, tauriBackend } from './tauri';
+ 
+ export type * from './types';
+ 
+@@ -11,4 +12,4 @@
+ }
+ 
+ /** Das Backend dieser Sitzung: Wails-Bindings im Fenster, Mock mit `?mock=1` und in Tests, sonst k3c-workbench -headless/-dev über HTTP. */
+-export const backend: Backend = hasWails() ? wailsBackend() : wantsMock() ? mockBackend() : httpBackend();
++export const backend: Backend = hasTauri() ? tauriBackend() : hasWails() ? wailsBackend() : wantsMock() ? mockBackend() : httpBackend();

@@ -92,21 +92,20 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU62 | Welt-Features SI1 bis SI6 neu in Rust (Sim und Anzeige, Entwurf) | erledigt |
 | RU63 | Smoke-Nachträge: HUD mit Insel-Sicht, Stress-Starter im Menü, ein Messbericht | erledigt |
 | LA1 | Look-Anbindung BB1: Waldwand, Leitmotive und Maßstab-Nachträge im Rust-Spiel | erledigt |
-| LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | erledigt |
-| LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | erledigt |
 | LA3 | Bauplätze im Hub richten sich nach der Gebäudegröße | geplant |
+| LA2 | Look-Nachträge: Cheat-Panel für Umgebungseffekte, Wolken und Wellenstriche, Licht-Assets | erledigt |
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | erledigt |
-| RU65 | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | geplant |
-| RU66 | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | geplant |
-| RU67 | assetkit nach Rust: Asset-Logik des Studios | geplant |
+| RU65 | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | erledigt |
 | RU68 | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | erledigt |
-| RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | geplant |
-| RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | geplant |
-| RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | geplant |
+| RU66 | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | aktiv |
+| RU67 | assetkit nach Rust: Asset-Logik des Studios | aktiv |
+| RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | aktiv |
+| RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | aktiv |
+| RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | aktiv |
 
 ## Nicht-Ziele
 
-Workbench, `tools/assetkit`, `tools/paper` und die übrigen Werkzeuge nach Rust (bleiben Go und TypeScript). Neue Spielregeln (KSY, WRT, KMP). Balancing-Läufe selbst (BAL; gesperrt seit 2026-11-11). Online-Spiel. Ein ausgeliefertes Spiel mit Rust-Client und Go-Sim über eine Brücke (B-1014 › Notizen).
+`tools/paper` und die übrigen TypeScript-Werkzeuge nach Rust (bleiben TypeScript). Workbench, Studio, `tools/workkit` und `tools/assetkit` gehen seit Entscheidung 014 (🧑 2026-11-26) doch nach Rust (RU66 bis RU71). Neue Spielregeln (KSY, WRT, KMP). Balancing-Läufe selbst (BAL; gesperrt seit 2026-11-11). Online-Spiel. Ein ausgeliefertes Spiel mit Rust-Client und Go-Sim über eine Brücke (B-1014 › Notizen).
 
 ## Notizen
 
