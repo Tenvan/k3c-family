@@ -63,7 +63,7 @@ keine (Vorentscheidungen im Leitfaden, 🧑 2026-11-26)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU66.1 | `RU66.1-fundament-logger-console-applog.md` | Umsetzung | autonom | offen |
+| RU66.1 | `RU66.1-fundament-logger-console-applog.md` | Umsetzung | autonom | in Arbeit |
 | RU66.2 | `RU66.2-proc-usage.md` | Umsetzung | autonom | offen |
 | RU66.3 | `RU66.3-mcp-bausteine.md` | Umsetzung | autonom | offen |
 | RU66.4 | `RU66.4-mcp-server-rmcp.md` | Umsetzung | autonom | offen |
