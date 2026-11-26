@@ -1,0 +1,40 @@
+# Cargo-Workspace der Rust-Werkzeuge (Entscheidung 014, Leitfaden docs/standards/rust-werkzeuge.md): gemeinsamer Code
+# `k3c-kit`, später Asset-Logik, Studio und Workbench. Eigener Workspace neben rust/, damit `cargo test --workspace` des
+# Spiels die Tauri-Crates nicht mitbaut. Toolchain und rustfmt erbt er aus rust/rust-toolchain.toml und rust/rustfmt.toml.
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+# Der Spike RU65.1 hat einen eigenen Workspace und bleibt nur als Referenz (RU71 löscht ihn).
+exclude = ["spike"]
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+publish = false
+
+# Versionen fest (Leitfaden › Abhängigkeiten); spätere Sessions ergänzen tokio, windows, rmcp, axum, schemars, reqwest, regex.
+[workspace.dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+chrono = { version = "=0.4.45", default-features = false, features = ["clock", "std", "serde"] }
+# Nur Tests, Ordner unter .work/ (testutil.rs).
+tempfile = "=3.27.0"
+
+[workspace.lints.rust]
+# deny statt forbid (wie rust/): proc (Job-Objekt) und winicon brauchen je ein Windows-Modul mit #[allow(unsafe_code)],
+# jede Stelle mit `// SAFETY:` (Muster rust/crates/k3c-devwin).
+unsafe_code = "deny"
+
+[workspace.lints.clippy]
+too_many_lines = "deny"
+# Kein Panic im Produktivcode, Fehler weiterreichen (Tests in clippy.toml erlaubt).
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 16

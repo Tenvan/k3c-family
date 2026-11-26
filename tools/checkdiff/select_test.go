@@ -173,7 +173,8 @@ func TestRustSteps(t *testing.T) {
 	if cmd(got[1]) != "cargo clippy -p k3c-rng -p k3c-sim --all-targets -- -D warnings" || cmd(got[2]) != "cargo test -p k3c-rng -p k3c-sim" {
 		t.Errorf("nur geänderte Crates: %q, %q", cmd(got[1]), cmd(got[2]))
 	}
-	for _, f := range []string{"rust/Cargo.toml", "rust/Cargo.lock", "rust/rust-toolchain.toml"} {
+	// rust/rust-toolchain.toml wählt seit RU66.1 auch rust/tools/ (sechs Schritte, TestToolsRustSteps).
+	for _, f := range []string{"rust/Cargo.toml", "rust/Cargo.lock", "rust/clippy.toml"} {
 		got = rustSteps(classify(testRepo(), []string{f}))
 		if len(got) != 3 || cmd(got[1]) != "cargo clippy --workspace --all-targets -- -D warnings" || cmd(got[2]) != "cargo test --workspace" {
 			t.Errorf("%s wählt den ganzen Workspace: %+v", f, got)
@@ -183,5 +184,43 @@ func TestRustSteps(t *testing.T) {
 		if got := rustSteps(classify(testRepo(), files)); got != nil {
 			t.Errorf("%v: kein cargo erwartet, Schritte %v", files, got)
 		}
+	}
+}
+
+// Rust-Werkzeuge (RU66.1, AC-03): eigener Workspace rust/tools/, eine Crate oder der ganze Workspace.
+func TestToolsRustSteps(t *testing.T) {
+	cmd := func(s step) string { return strings.Join(s.Cmd, " ") }
+	got := rustSteps(classify(testRepo(), []string{"rust/tools/crates/k3c-kit/src/lib.rs"}))
+	if names(got) != "tools-rust-fmt tools-rust-lint tools-rust-test" || got[0].Dir != "rust/tools" || got[2].Dir != "rust/tools" {
+		t.Fatalf("eine Crate: %+v", got)
+	}
+	if got[0].Lane != "rust" || got[1].Stage != 1 || got[2].Stage != 2 {
+		t.Errorf("Bahn und Stufen: %+v", got)
+	}
+	if cmd(got[1]) != "cargo clippy -p k3c-kit --all-targets -- -D warnings" || cmd(got[2]) != "cargo test -p k3c-kit" {
+		t.Errorf("nur k3c-kit: %q, %q", cmd(got[1]), cmd(got[2]))
+	}
+	for _, f := range []string{"rust/tools/Cargo.lock", "rust/tools/Cargo.toml", "rust/tools/clippy.toml"} {
+		got = rustSteps(classify(testRepo(), []string{f}))
+		if names(got) != "tools-rust-fmt tools-rust-lint tools-rust-test" || cmd(got[2]) != "cargo test --workspace" {
+			t.Errorf("%s wählt den ganzen Werkzeug-Workspace: %+v", f, got)
+		}
+	}
+}
+
+// Rust-Werkzeuge (RU66.1, AC-03): Spike und Taskfile ohne cargo, geerbte Toolchain wählt beide Workspaces.
+func TestToolsRustStepsGrenzen(t *testing.T) {
+	cmd := func(s step) string { return strings.Join(s.Cmd, " ") }
+	for _, files := range [][]string{{"rust/tools/spike/src/main.rs"}, {"rust/tools/Taskfile.yml"}} {
+		if got := rustSteps(classify(testRepo(), files)); got != nil {
+			t.Errorf("%v: kein cargo erwartet, Schritte %v", files, got)
+		}
+	}
+	got := rustSteps(classify(testRepo(), []string{"rust/rust-toolchain.toml"}))
+	if names(got) != "rust-fmt rust-lint rust-test tools-rust-fmt tools-rust-lint tools-rust-test" || cmd(got[5]) != "cargo test --workspace" {
+		t.Errorf("geerbte Toolchain wählt beide Workspaces: %+v", got)
+	}
+	if got := rustSteps(classify(testRepo(), []string{"rust/Cargo.toml"})); names(got) != "rust-fmt rust-lint rust-test" {
+		t.Errorf("rust/Cargo.toml nur rust/: %q", names(got))
 	}
 }

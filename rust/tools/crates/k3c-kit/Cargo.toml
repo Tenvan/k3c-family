@@ -1,0 +1,17 @@
+[package]
+name = "k3c-kit"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+description = "Gemeinsamer Code der Rust-Werkzeuge (Port von tools/workkit und engine/conlog, RU66)"
+
+[lints]
+workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+chrono.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
