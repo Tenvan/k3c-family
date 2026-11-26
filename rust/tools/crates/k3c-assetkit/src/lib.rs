@@ -5,17 +5,28 @@
 //! - Slot-Register der Sounds (`data/sounds.json`): je Slot die Zuordnungen nach Präferenz, nur die erste ist aktiv.
 //! - Stand des Registers mit Schreibregel und Beobachtung ([`stamp()`], [`watch`]).
 //! - Zielmaß der Grafik-Slots ([`set_target_if`]).
+//! - Asset-Katalog über `public/` ([`catalog()`], [`search`]) und Credit-Zeilen ([`confirm_license`]).
+//! - Web-Recherche ([`Searcher`], [`run_research`]) mit Treffer-Ablage und Lizenz-Einordnung.
+//! - Vorschlagsliste lesen und prüfen ([`load_suggestions`], [`check_suggestions`]).
 //!
-//! [`ticket`] (Go-Paket `ticket`) ist ein eigenes Modul: `k3c_assetkit::ticket::create`.
+//! Eigene Module bleiben die Go-Pakete [`ticket`], [`windowstate`] und [`browser`]; [`net`] baut die HTTP-Clients.
 
+pub mod browser;
+mod catalog;
+mod credits;
 mod error;
 mod fsutil;
 mod gojson;
+pub mod net;
 mod pngsize;
 mod register;
+mod research;
+mod sources;
 mod stamp;
+mod suggestions;
 mod target;
 pub mod ticket;
+pub mod windowstate;
 
 #[cfg(test)]
 mod repo_tests;
@@ -24,10 +35,21 @@ mod testutil;
 #[cfg(test)]
 mod write_tests;
 
+pub use catalog::{Asset, catalog, license_flag, search};
+pub use credits::{LICENSE_CONFIRMED, confirm_license};
 pub use error::{Error, Result};
 pub use register::{
     CATEGORIES, Choice, KIND_GRAPHIC, KIND_SOUND, REGISTER_PATH, Rect, Register, STATUS_ASSIGNED, STATUS_GAP,
     STATUS_MISSING, Size, Slot, load, set_choices, status, write_atomic,
 };
+pub use research::{
+    Hit, LICENSE_CHECK, LICENSE_EXCLUDED, LICENSE_KNOWN, RESEARCH_PATH, Research, ResearchResult, add_hits,
+    classify_license, drop_hit, hits_of, load_research, run_research,
+};
+pub use sources::{Searcher, new_searcher};
 pub use stamp::{WatchHandle, find_root, set_choices_if, stamp, watch};
+pub use suggestions::{
+    MAX_SUGGESTION_BYTES, MIN_SUGGESTIONS, SUGGESTION_SOURCES, SUGGESTION_STATUS, SUGGESTIONS_PATH, Suggestion,
+    Suggestions, check_suggestions, load_suggestions, suggestion_license_allowed, suggestion_targets,
+};
 pub use target::{MAX_TARGET_UNITS, Units, set_target_if};

@@ -188,7 +188,7 @@ pub(crate) fn set_choices_locked(root: &Path, id: &str, choices: &[Choice]) -> R
 }
 
 /// Endungen eines Sound-Slots, alles andere gilt als Grafik.
-const SOUND_EXT: &[&str] = &["ogg", "mp3", "wav", "m4a"];
+pub(crate) const SOUND_EXT: &[&str] = &["ogg", "mp3", "wav", "m4a"];
 
 pub(crate) fn check_choice(root: &Path, kind: &str, c: &Choice) -> Result<()> {
     let full = public_file(root, &c.file)?;

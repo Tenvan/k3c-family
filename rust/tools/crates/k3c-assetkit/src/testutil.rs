@@ -88,3 +88,14 @@ pub(crate) fn write_png(path: &Path, w: u32, h: u32) {
     create_parent(path);
     fs::write(path, png_bytes(w, h)).expect("PNG schreiben");
 }
+
+/// Startet den Router auf einem freien Loopback-Port und liefert `http://127.0.0.1:<port>` (V7). Der Server läuft auf
+/// der Laufzeit des Tests und endet mit ihr.
+pub(crate) async fn serve(router: axum::Router) -> String {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
+        .await
+        .expect("Loopback-Port");
+    let address = listener.local_addr().expect("Adresse");
+    tokio::spawn(async move { axum::serve(listener, router).await });
+    format!("http://{address}")
+}
