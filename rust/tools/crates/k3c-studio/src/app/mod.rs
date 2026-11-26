@@ -1,6 +1,7 @@
 //! Backend des Studios (Port von `app.go`): es hostet den MCP-Server k3c-studio und das eigene Log; die Methoden der
 //! Oberfläche stehen in der Aufruf-Tabelle [`rpc`]. Ohne Tauri-Typen, damit Fenster und Headless-Betrieb dasselbe nutzen.
 
+mod assets;
 pub mod headless;
 mod hub;
 pub mod open_url;
@@ -20,6 +21,7 @@ use k3c_kit::usage::Tracker;
 use serde::Serialize;
 use serde_json::{Value, json};
 
+use crate::assetsui::PruefMemo;
 use crate::hubplan;
 use crate::studioview::Game;
 use crate::world::{EngineFactory, Watcher, exe_factory};
@@ -79,6 +81,8 @@ pub struct App {
     world_engine: EngineFactory,
     /// Engine-Seite des Gebäude-Planers der Oberfläche.
     hub_engine: hubplan::EngineFactory,
+    /// Gemerkte Prüfergebnisse des Asset-Katalogs (B-732).
+    asset_memo: PruefMemo,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -116,6 +120,7 @@ impl App {
             game: Mutex::new(None),
             world_engine: exe_factory(),
             hub_engine: hubplan::exe_factory(),
+            asset_memo: PruefMemo::default(),
         }
     }
 

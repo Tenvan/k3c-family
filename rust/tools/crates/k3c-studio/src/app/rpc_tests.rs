@@ -13,22 +13,6 @@ use crate::app::VERSION;
 
 /// Methoden von `GoApp`, die erst spätere Sessions von RU70 bringen; am Ende leer.
 const PENDING_METHODS: &[&str] = &[
-    "AssetsList",
-    "AssetsIndex",
-    "AssetsCheck",
-    "AssetsGroesse",
-    "AssetsGroesseBasis",
-    "AssetsFrameOhne",
-    "AssetsStufen",
-    "AssetsHintergruende",
-    "AssetsHintergrund",
-    "AssetsGet",
-    "AssetsStyle",
-    "AssetsPrompts",
-    "AssetsReview",
-    "AssetsFrame",
-    "AssetsPixelDiff",
-    "StudioWeltSicht",
     "BalanceStart",
     "BalanceRuns",
     "BalanceStop",

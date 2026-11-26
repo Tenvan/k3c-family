@@ -2,6 +2,7 @@
 //! Fenster (Tauri) oder `--headless` (Oberflächen-API für den Browser) hostet den MCP-Server k3c-studio.
 
 pub mod app;
+pub mod assetsui;
 #[cfg(test)]
 pub(crate) mod exeengine;
 pub mod gamedata;

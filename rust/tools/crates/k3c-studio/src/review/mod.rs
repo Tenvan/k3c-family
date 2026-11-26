@@ -17,7 +17,7 @@ mod types;
 #[path = "haertung_tests.rs"]
 mod haertung_tests;
 #[cfg(test)]
-mod test_helpers;
+pub(crate) mod test_helpers;
 #[cfg(test)]
 #[path = "review_tests.rs"]
 mod tests;

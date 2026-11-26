@@ -1,5 +1,5 @@
 //! Lesende Teile des früheren Asset-Studios im Bereich Assets (Port von `app_studio.go`): Sound, Quellen und „Im Spiel
-//! ansehen“ über `studioview`. Ändern bleibt Sache der MCP-Tools `assets_*`. `StudioWeltSicht` folgt mit den Welten.
+//! ansehen“ über `studioview`. Ändern bleibt Sache der MCP-Tools `assets_*`. `StudioWeltSicht` liegt in `assets.rs`.
 
 use std::sync::Arc;
 

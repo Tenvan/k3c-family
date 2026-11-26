@@ -8,7 +8,7 @@ use k3c_kit::uikit::{self, Method};
 use serde::Serialize;
 use serde_json::Value;
 
-use super::{App, hub, world};
+use super::{App, assets, hub, world};
 
 #[cfg(test)]
 #[path = "rpc_tests.rs"]
@@ -24,6 +24,22 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("StudioSoundData", studio_sound_data),
     ("StudioSources", studio_sources),
     ("StudioGameOpen", studio_game_open),
+    ("AssetsList", assets::list),
+    ("AssetsIndex", assets::index),
+    ("AssetsCheck", assets::check),
+    ("AssetsGroesse", assets::groesse),
+    ("AssetsGroesseBasis", assets::groesse_basis),
+    ("AssetsFrameOhne", assets::frame_ohne),
+    ("AssetsStufen", assets::stufen),
+    ("AssetsHintergruende", assets::hintergruende),
+    ("AssetsHintergrund", assets::hintergrund),
+    ("AssetsGet", assets::get),
+    ("AssetsStyle", assets::style),
+    ("AssetsPrompts", assets::prompts),
+    ("AssetsReview", assets::review),
+    ("AssetsFrame", assets::frame),
+    ("AssetsPixelDiff", assets::pixel_diff),
+    ("StudioWeltSicht", assets::welt_sicht),
     ("WorldList", world::list),
     ("WorldDetail", world::detail),
     ("WorldLevel", world::level),
