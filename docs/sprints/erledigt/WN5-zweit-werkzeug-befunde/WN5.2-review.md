@@ -1,6 +1,6 @@
 # WN5.2 · Review WN5
 
-- **Status:** offen
+- **Status:** fertig
 - **Typ:** Review
 - **Agent:** autonom
 - **Domäne:** DEV
@@ -52,5 +52,9 @@ Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑
 
 ## Ergebnis
 
-Wird am Ende der Session ausgefüllt: Nachweis je Kriterium (`AC-01 geprüft: task check grün`,
-`AC-02 verschoben: Grund, B-0NN`), wer manuell geprüft hat, Abweichungen vom Plan, neue Tickets. Bis dahin `–`.
+- AC-01 geprüft: `task:check:dev` grün auf dem Sprint-Branch.
+- AC-02: `endBoss` und `skins` nachgewiesen, Welt-Events verschoben (B-1260).
+- Diff gelesen (2 Dateien, Beschreibung und Test): keine schweren Befunde.
+
+### Für den Hauptrechner
+- Siehe WN5.1 (B-1260 Ursache, B-1266/AC-03).

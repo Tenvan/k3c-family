@@ -9,7 +9,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
-| WN5 | DEV | WZN | Werkzeug-Befunde WE6 beheben | – | `aktiv/WN5-zweit-werkzeug-befunde/` |
 | WK2 | SIM, CLI | NAC | Spielwünsche aus dem Spieltest: Bürger und Handwerker | – | `aktiv/WK2-zweit-spielwuensche-handwerker/` |
 
 ## Offen am Gerät
@@ -497,3 +496,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | FG1 | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | `erledigt/FG1-grundfiguren-ausruestung/` |
 | WD1 | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | `erledigt/WD1-wald-rodung/` |
 | WL1 | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | `erledigt/WL1-welten-gamepad-mauern/` |
+| WN5 | Werkzeug-Befunde WE6 beheben | `erledigt/WN5-zweit-werkzeug-befunde/` |

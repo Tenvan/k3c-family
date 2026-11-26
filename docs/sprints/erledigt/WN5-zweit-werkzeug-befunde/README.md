@@ -1,6 +1,6 @@
 # WN5 · DEV · Werkzeug-Befunde WE6 beheben
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WZN
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -61,7 +61,7 @@ keine
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | WN5.1 | `WN5.1-befunde-we6.md` | Umsetzung | autonom | fertig |
-| WN5.2 | `WN5.2-review.md` | Review | autonom | offen |
+| WN5.2 | `WN5.2-review.md` | Review | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
@@ -69,6 +69,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-26: AC-01 geprüft, AC-02 für endBoss/skins geprüft, Events verschoben (B-1260). Keine schweren Befunde. B-1266/AC-03 offen. Abnahme-Ticket B-1291.
