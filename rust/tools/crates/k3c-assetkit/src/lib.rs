@@ -8,6 +8,10 @@
 //! - Asset-Katalog über `public/` ([`catalog()`], [`search`]) und Credit-Zeilen ([`confirm_license`]).
 //! - Web-Recherche ([`Searcher`], [`run_research`]) mit Treffer-Ablage und Lizenz-Einordnung.
 //! - Vorschlagsliste lesen und prüfen ([`load_suggestions`], [`check_suggestions`]).
+//! - Datei-Import und Treffer-Download ([`import_file`], [`download_hit`]).
+//! - Vorrat der Vorschlagsliste: laden, übernehmen, aufräumen ([`vorrat_download()`], [`vorrat_adopt()`], [`vorrat_cleanup`]).
+//!
+//! Downloads erwarten einen Client ohne eigene Weiterleitungen ([`net::client`]).
 //!
 //! Eigene Module bleiben die Go-Pakete [`ticket`], [`windowstate`] und [`browser`]; [`net`] baut die HTTP-Clients.
 
@@ -17,6 +21,8 @@ mod credits;
 mod error;
 mod fsutil;
 mod gojson;
+mod import;
+mod import_download;
 pub mod net;
 mod pngsize;
 mod register;
@@ -26,6 +32,9 @@ mod stamp;
 mod suggestions;
 mod target;
 pub mod ticket;
+mod vorrat;
+mod vorrat_adopt;
+mod vorrat_download;
 pub mod windowstate;
 
 #[cfg(test)]
@@ -34,10 +43,14 @@ mod repo_tests;
 mod testutil;
 #[cfg(test)]
 mod write_tests;
+#[cfg(test)]
+mod writepaths_tests;
 
 pub use catalog::{Asset, catalog, license_flag, search};
 pub use credits::{LICENSE_CONFIRMED, confirm_license};
 pub use error::{Error, Result};
+pub use import::import_file;
+pub use import_download::{DOWNLOAD_HOSTS, DOWNLOAD_PORTS, download_hit};
 pub use register::{
     CATEGORIES, Choice, KIND_GRAPHIC, KIND_SOUND, REGISTER_PATH, Rect, Register, STATUS_ASSIGNED, STATUS_GAP,
     STATUS_MISSING, Size, Slot, load, set_choices, status, write_atomic,
@@ -53,3 +66,11 @@ pub use suggestions::{
     Suggestions, check_suggestions, load_suggestions, suggestion_license_allowed, suggestion_targets,
 };
 pub use target::{MAX_TARGET_UNITS, Units, set_target_if};
+pub use vorrat::{
+    VORRAT_BLOCKED, VORRAT_DIR, VORRAT_DROPPED, VORRAT_LOADED, VORRAT_OPEN, VorratEntry, VorratIndex, VorratState,
+    load_vorrat, vorrat_states,
+};
+pub use vorrat_adopt::{ERR_VORRAT_PACKAGE, vorrat_adopt, vorrat_adopt_if, vorrat_cleanup, vorrat_cleanup_preview};
+pub use vorrat_download::{
+    Progress, VORRAT_HOSTS, check_vorrat_download, vorrat_download, vorrat_redirect, vorrat_url_allowed,
+};

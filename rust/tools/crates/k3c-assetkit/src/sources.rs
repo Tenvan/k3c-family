@@ -12,14 +12,12 @@ use tokio::task::JoinSet;
 
 use crate::error::{Error, Result};
 use crate::gojson::null_default;
-use crate::net::{encode_query, read_limited};
+use crate::net::{USER_AGENT, encode_query, network_error, read_limited};
 use crate::register::{KIND_GRAPHIC, KIND_SOUND};
 use crate::research::Hit;
 
 /// Begrenzt jede Quelle; eine langsame Quelle hält die anderen nicht auf.
 const SOURCE_TIMEOUT: Duration = Duration::from_secs(15);
-
-const USER_AGENT: &str = "k3c-workbench/0.1 (Ressourcen-Manager, B-298)";
 
 /// Größte gelesene Antwort einer Quelle.
 const MAX_ANSWER: usize = 4 << 20;
@@ -217,18 +215,6 @@ impl Searcher {
             ..Hit::default()
         })
     }
-}
-
-/// Netzfehler ohne Adresse: so gelangt nichts aus der Anfrage in Hinweise und Logs.
-fn network_error(e: reqwest::Error) -> Error {
-    let e = e.without_url();
-    let mut text = e.to_string();
-    let mut cause = std::error::Error::source(&e);
-    while let Some(c) = cause {
-        text.push_str(&format!(": {c}"));
-        cause = c.source();
-    }
-    Error::Msg(text)
 }
 
 fn decode<'a, T: Deserialize<'a>>(body: &'a [u8]) -> Result<T> {

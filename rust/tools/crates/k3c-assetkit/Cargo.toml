@@ -18,6 +18,7 @@ regex.workspace = true
 url.workspace = true
 walkdir.workspace = true
 html-escape.workspace = true
+log.workspace = true
 tokio.workspace = true
 # Schannel statt eigenem TLS: kein C-Compiler (V6).
 reqwest = { workspace = true, features = ["native-tls"] }

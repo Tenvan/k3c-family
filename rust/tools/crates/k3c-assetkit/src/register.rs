@@ -213,7 +213,7 @@ pub(crate) fn check_choice(root: &Path, kind: &str, c: &Choice) -> Result<()> {
 }
 
 /// Prüft, dass `rel` eine vorhandene Datei unter `public/` ist, und liefert den vollen Pfad.
-fn public_file(root: &Path, rel: &str) -> Result<PathBuf> {
+pub(crate) fn public_file(root: &Path, rel: &str) -> Result<PathBuf> {
     let clean = fsutil::path_clean(rel);
     if rel.is_empty() || clean.starts_with('/') || clean == ".." || clean.starts_with("../") || rel.contains('\\') {
         return Err(Error::Msg(format!("{rel:?} liegt nicht unter public/")));

@@ -774,6 +774,7 @@ dependencies = [
  "axum",
  "chrono",
  "html-escape",
+ "log",
  "regex",
  "reqwest",
  "serde",

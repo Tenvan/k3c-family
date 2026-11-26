@@ -12,7 +12,7 @@ use crate::register::{KIND_GRAPHIC, KIND_SOUND, load, lock, write_atomic};
 use crate::research::{Hit, LICENSE_KNOWN, load_research};
 
 /// Lizenz-Status, den nur 🧑 in der Oberfläche setzt (B-298/AC-05), nie ein Agent.
-// Steht in Go in `import.go`; hier, weil die Credit-Zeilen ihn vor dem Import (RU67.3) brauchen.
+// Steht in Go in `import.go`; hier, bei den Credit-Zeilen.
 pub const LICENSE_CONFIRMED: &str = "bestaetigt";
 
 /// Abschnitt der Credit-Datei für Importe; je Datei eine Zeile (Ordner = `kandidaten/<datei>`).
@@ -71,8 +71,6 @@ fn utf8_text(file: &Path, bytes: Vec<u8>) -> Result<String> {
 }
 
 /// Trägt die Datei sofort in die Credit-Datei ein (B-165), im Abschnitt „Importe (k3c-workbench)“.
-// Erster Aufrufer ist der Import (RU67.3).
-#[allow(dead_code)]
 pub(crate) fn add_credit(root: &Path, kind: &str, rel: &str, h: &Hit, now: DateTime<FixedOffset>) -> Result<()> {
     let file = credit_path(root, kind);
     let bytes = match fs::read(&file) {
@@ -105,8 +103,6 @@ pub(crate) fn credit_folder(kind: &str, rel: &str) -> String {
 }
 
 /// Vermerkt am Treffer die importierte Datei.
-// Erster Aufrufer ist der Import (RU67.3).
-#[allow(dead_code)]
 pub(crate) fn mark_imported(root: &Path, slot_id: &str, hit_id: &str, rel: &str) -> Result<()> {
     update_hit(root, slot_id, hit_id, |h| h.file = rel.to_string())
 }
@@ -169,20 +165,5 @@ pub(crate) fn set_credit_status(root: &Path, kind: &str, folder: &str, status: &
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::testutil::tempdir;
-
-    // Review RU67.2: Eine Windows-1252-Datei bleibt Byte für Byte, statt Umlaute zu verlieren.
-    #[test]
-    fn ungueltiges_utf8_wird_nicht_ueberschrieben() {
-        let dir = tempdir();
-        let file = credit_path(dir.path(), KIND_SOUND);
-        fs::create_dir_all(file.parent().expect("Ordner")).expect("anlegen");
-        let before = b"| a.ogg | M\xfcller |\n".to_vec();
-        fs::write(&file, &before).expect("schreiben");
-        let err = set_credit_status(dir.path(), KIND_SOUND, "a.ogg", "ok").expect_err("abgelehnt");
-        assert!(err.to_string().contains("UTF-8"), "{err}");
-        assert_eq!(fs::read(&file).expect("lesen"), before);
-    }
-}
+#[path = "credits_tests.rs"]
+mod tests;

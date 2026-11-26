@@ -40,6 +40,8 @@ sha1 = "=0.10.6"
 url = "=2.5.9"
 html-escape = "=0.2.13"
 walkdir = "=2.5.0"
+# k3c-assetkit: Warnungen von Download und Übernahme (RU67.3).
+log = "=0.4.35"
 
 [workspace.lints.rust]
 # deny statt forbid (wie rust/): proc (Job-Objekt) und winicon brauchen je ein Windows-Modul mit #[allow(unsafe_code)],

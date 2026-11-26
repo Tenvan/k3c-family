@@ -1,12 +1,38 @@
 //! HTTP-Hilfen für Quellen und Downloads (V6, V7): Clients, Abfrage-Kodierung wie Go `net/url`, begrenztes Lesen.
 
+use std::future::Future;
+use std::time::Duration;
+
+use reqwest::header::{LOCATION, USER_AGENT as USER_AGENT_HEADER};
+use reqwest::{Method, Response};
 use url::Url;
 
+use crate::error::{Error, Result};
+
+/// Kennung aller Anfragen des Crates.
+pub(crate) const USER_AGENT: &str = "k3c-workbench/0.1 (Ressourcen-Manager, B-298)";
+
+/// Längste Pause, bis die Antwort bzw. das nächste Stück eines Downloads kommt. Go hat hier keine eigene Frist; sie
+/// begrenzt nur Stillstand, nicht die Gesamtdauer.
+const IDLE_TIMEOUT: Duration = Duration::from_secs(60);
+
+/// Client für Downloads, der nie selbst weiterleitet. Nur dieses Modul erzeugt ihn: ein fremder `reqwest::Client` folgte
+/// einer Weiterleitung, bevor das Ziel geprüft ist (Go erzwingt in `downloadHit` sein `CheckRedirect`).
+#[derive(Clone, Debug)]
+pub struct DownloadClient(reqwest::Client);
+
 /// Client für die Produktion: Proxy aus der Umgebung, keine Weiterleitungen (jeden Sprung prüft der Aufrufer).
-pub fn client() -> reqwest::Result<reqwest::Client> {
+pub fn client() -> reqwest::Result<DownloadClient> {
     reqwest::Client::builder()
         .redirect(reqwest::redirect::Policy::none())
         .build()
+        .map(DownloadClient)
+}
+
+/// [`test_client`] als [`DownloadClient`].
+#[cfg(test)]
+pub(crate) fn test_download_client() -> DownloadClient {
+    DownloadClient(test_client())
 }
 
 /// Wie [`client`], aber ohne Proxy (B-474: Tests erreichen ihren Loopback-Server immer direkt).
@@ -74,6 +100,83 @@ pub(crate) async fn read_limited(mut res: reqwest::Response, limit: usize) -> re
     Ok(out)
 }
 
+/// Netzfehler ohne Adresse: so gelangt nichts aus der Anfrage in Hinweise und Logs.
+pub(crate) fn network_error(e: reqwest::Error) -> Error {
+    let e = e.without_url();
+    let mut text = e.to_string();
+    let mut cause = std::error::Error::source(&e);
+    while let Some(c) = cause {
+        text.push_str(&format!(": {c}"));
+        cause = c.source();
+    }
+    Error::Msg(text)
+}
+
+/// Ein Netzschritt mit der Frist [`IDLE_TIMEOUT`].
+pub(crate) async fn bounded<T>(step: impl Future<Output = reqwest::Result<T>>) -> Result<T> {
+    match tokio::time::timeout(IDLE_TIMEOUT, step).await {
+        Ok(result) => result.map_err(network_error),
+        Err(_) => Err(Error::Msg("zeitüberschreitung beim Laden".to_string())),
+    }
+}
+
+/// Sendet die Anfrage und folgt 301/302/303/307/308 selbst (V6): vor jedem Sprung läuft `check(ziel, sprünge)` (wie
+/// Go `CheckRedirect`, `sprünge` = bisher gestellte Anfragen), mehr als `max_hops` Sprünge sind immer ein Fehler. HEAD
+/// bleibt HEAD, sonst wie Go: 301 bis 303 werden zu GET. Mitgeschickt wird nur die Kennung, nie ein Token.
+///
+/// Leitet der Client doch selbst weiter, wird die Antwort verworfen.
+pub(crate) async fn send_following(
+    client: &DownloadClient,
+    method: Method,
+    url: &Url,
+    max_hops: usize,
+    check: impl Fn(&Url, usize) -> Result<()>,
+) -> Result<Response> {
+    let (mut method, mut url, mut hops) = (method, url.clone(), 0);
+    loop {
+        let request = client
+            .0
+            .request(method.clone(), url.clone())
+            .header(USER_AGENT_HEADER, USER_AGENT);
+        let response = bounded(request.send()).await?;
+        if !same_target(response.url(), &url) {
+            return Err(Error::Msg(
+                "weiterleitung abgelehnt: der Client folgt selbst".to_string(),
+            ));
+        }
+        let status = response.status().as_u16();
+        let location = response.headers().get(LOCATION).filter(|l| !l.is_empty());
+        let (301 | 302 | 303 | 307 | 308, Some(location)) = (status, location) else {
+            return Ok(response);
+        };
+        let next = std::str::from_utf8(location.as_bytes())
+            .ok()
+            .and_then(|l| url.join(l).ok())
+            .ok_or_else(|| Error::Msg("weiterleitung: ungültiges Ziel".to_string()))?;
+        hops += 1;
+        if hops > max_hops {
+            return Err(Error::Msg("zu viele Weiterleitungen".to_string()));
+        }
+        check(&next, hops)?;
+        if status <= 303 && method != Method::HEAD {
+            method = Method::GET;
+        }
+        url = next;
+    }
+}
+
+/// Gleiches Ziel? Zugangsdaten (reqwest macht daraus eine Kopfzeile) und Fragment zählen nicht.
+fn same_target(a: &Url, b: &Url) -> bool {
+    let key = |u: &Url| {
+        (
+            u.origin().ascii_serialization(),
+            u.path().to_string(),
+            u.query().map(str::to_string),
+        )
+    };
+    key(a) == key(b)
+}
+
 /// Test-Naht (V7): Ersatz für Go `allowTestServer`/`allowTestHost`.
 #[cfg(test)]
 pub(crate) mod testing {
@@ -96,8 +199,6 @@ pub(crate) mod testing {
 }
 
 /// Ist die Adresse ein freigegebener Testserver? Außerhalb der Tests immer `false`.
-// Erster Aufrufer ist der Download (RU67.3).
-#[allow(dead_code)]
 pub(crate) fn is_test_origin(url: &Url) -> bool {
     #[cfg(test)]
     {
