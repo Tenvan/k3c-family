@@ -49,15 +49,17 @@ fn island_fields(isl: &Island) -> Value {
     })
 }
 
-/// Go: `TestRustrefInsel`: 1000 Schritte einer Insel. Aufbau und Schritt sind RU14; der Test läuft ab dann.
+/// Go: `TestRustrefInsel`: 1000 Schritte einer Insel. Aufbau und Schritt sind RU14; der Test läuft ab dann. Er rechnet mit der
+/// festen Welt vor WL2 (`data_vor_wl2`) und ohne native Regeln (`standard_world_legacy`): Die Fixture stammt aus Go vom 2026-11-18;
+/// seither gibt es in Rust den dichten Wald (WD1, B-1204) und weitere native Regeln, die Go nicht kennt (Entscheidung 013).
 #[test]
 fn insel_nach_1000_schritten_wie_go() {
     let want = reference();
-    let data = test_data();
+    let data = data_vor_wl2();
     let depths: Vec<i64> = serde_json::from_value(want["depths"].clone()).expect("Tiefen");
     let speed = want["cycleSpeed"].as_f64().expect("cycleSpeed");
     let dt = want["dt"].as_f64().expect("dt");
-    let world = standard_world(&data);
+    let world = standard_world_legacy(&data);
     let seed = want["seed"].as_str().expect("seed");
     let mut isl = create_island(&data, &world, seed, &depths, speed, CreateOptions::default()).expect("Insel");
     for _ in 0..want["players"].as_i64().expect("players") {

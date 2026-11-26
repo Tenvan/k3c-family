@@ -6,7 +6,7 @@ use serde_json::json;
 use super::{decode_island_story, decode_world_story};
 use crate::island::WorldDef;
 use crate::island::switch_testutil::{test_island, test_world};
-use crate::island::testutil::{parse_world_in, standard_world, test_data};
+use crate::island::testutil::{data_vor_wl2, parse_world_in, standard_world, test_data};
 
 /// Go: `harborPlan`: Hafen in Tiefe 0 (jede Insel einer Etappe mit mehreren Inseln braucht einen).
 pub const HARBOR_PLAN: &str = r#","plannedChunks":{"0":[{"slot":-7,"kind":"harbor"}]}"#;
@@ -77,8 +77,8 @@ fn story_laedt_mit_und_ohne() {
 
 #[test]
 fn standard_welt_erzaehlt_eine_geschichte() {
-    // GS1.5 (B-976): Die Standard-Welt erzählt eine Geschichte (Insel 1, ein Bogen).
-    let std = standard_world(&test_data());
+    // GS1.5 (B-976): Die Standard-Welt erzählt eine Geschichte (Insel 1, ein Bogen); feste Welt vor WL2, siehe `data_vor_wl2`.
+    let std = standard_world(&data_vor_wl2());
     assert!(
         std.story.start.as_ref().is_some_and(|s| !s.is_empty()) && !super::story_start(&std).is_empty(),
         "Standard-Welt ohne Zeilen: {:?}",

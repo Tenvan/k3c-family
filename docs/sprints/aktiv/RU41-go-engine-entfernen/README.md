@@ -1,8 +1,8 @@
-# RU41 · INF · Go-Engine entfernen, Entscheidung 011 abschließen
+# RU41 · INF, SIM · Go-Engine entfernen, Entscheidung 011 abschließen
 
 - **Status:** aktiv
 - **Projekt:** RSU
-- **Domäne:** INF
+- **Domäne:** INF, SIM
 - **Reife:** bereit
 - **Tickets:** –
 - **Start-Commit:** de3153421
@@ -88,6 +88,7 @@ Entscheidung 🧑 vor dem Löschen (RU41.1) und zur Annahme von 011 (RU41.2).
 | RU41.1 | `RU41.1-go-engine-pakete-entfernen.md` | Umsetzung | autonom | fertig |
 | RU41.2 | `RU41.2-doku-und-entscheidung-011.md` | Umsetzung | autonom | fertig |
 | RU41.3 | `RU41.3-review.md` | Review | autonom | offen |
+| RU41.4 | `RU41.4-k3c-sim-tests-gruen.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
 wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder

@@ -925,3 +925,4 @@ und bleiben beim Verschieben unverändert; offene und eingeplante Tickets stehen
 | [B-1232](B-1232-spieltest-encoder-waechter.md) | DEV | Problem | hoch | erledigt | WZ65 | Spieltest nimmt mit nutzbarem Encoder auf, überwacht die Aufnahme und zeigt Ton- und Bild-Rate |
 | [B-1261](B-1261-flaschenpost-zielpool-alle-stufen.md) | SIM | Problem | hoch | erledigt | GS4 | Flaschenpost: Zielpool und Markierung über alle Stufen |
 | [B-1284](B-1284-eslint-spieltest-welteneditor-task-check-rot.md) | DEV | Schuld | hoch | erledigt | WZ65 | ESLint-Befunde in Spieltest-Seite und Welten-Editor machen task check auf main rot |
+| [B-1286](B-1286-k3c-sim-tests-rot-welten-takt-geschichte.md) | SIM | Problem | hoch | erledigt | RU41 | Vier k3c-sim-Tests sind auf main rot (eingebettete Welten, Takt wie Go, Geschichte) |

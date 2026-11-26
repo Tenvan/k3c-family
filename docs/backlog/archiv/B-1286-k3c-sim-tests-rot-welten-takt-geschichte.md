@@ -4,13 +4,13 @@
 - **Typ:** Problem
 - **Prio:** hoch
 - **Umgebung:** ?
-- **Status:** offen
+- **Status:** erledigt
 - **Sprint:** RU41
 - **Projekt:** RSU
 - **Erstellt:** 2026-11-25
-- **Spec:** Entwurf
+- **Spec:** freigegeben
 - **Revision:** 1
-- **Freigabe:** –
+- **Freigabe:** 🧑 2026-11-25 (Takt-Test: Test-Welt aus testdata/, Default bestätigt)
 - **Duplikat von:** –
 - **Ersetzt:** –
 

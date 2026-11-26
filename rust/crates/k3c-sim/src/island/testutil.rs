@@ -44,6 +44,46 @@ pub fn one_island_standard(d: &mut Data) {
     d.standard_world.story = serde_json::Value::Null;
 }
 
+/// Die Standard-Welt im Stand vor WL2 (B-1215, PR #821): feste Test-Welt `testdata/rust/worlds/standard-vor-wl2.json` (eine Insel
+/// mit Geschichte). Takt- und Geschichten-Test brauchen sie, weil die Go-Fixture `insel-1000.json` aus ihr stammt; die Welten in
+/// `data/worlds/` ändern sich mit dem Spiel, das Orakel nicht.
+pub fn data_vor_wl2() -> Data {
+    let mut d = load_all(&Source::Embedded).expect("eingebettete Daten");
+    let path = k3c_det::golden::testdata().join("rust/worlds/standard-vor-wl2.json");
+    let raw = std::fs::read_to_string(&path).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+    d.standard_world = k3c_data::world::parse(&raw, "standard").expect("Welt vor WL2");
+    // Auch der Wald-Anteil gehört zum Stand der Fixture (RU10, 2026-11-18): `data/biomes/forest.json` hat seither mehr Wald-Chunks und
+    // mehr Bäume je Wald-Chunk (chunkWeights forest 5/clearing 3, tree 22–30); die Fixture bleibt Orakel, nur der Wald wird zurückgesetzt.
+    let forest = d.biomes.iter_mut().find(|b| b.id == "forest").expect("Biom forest");
+    for e in &mut forest.chunk_weights.0 {
+        match e.key.as_str() {
+            "forest" => e.value = 5.0,
+            "clearing" => e.value = 3.0,
+            _ => {}
+        }
+    }
+    for e in &mut forest.resources_per_chunk.0 {
+        if e.key == "forest" {
+            for t in &mut e.value.0 {
+                if t.key == "tree" {
+                    t.value = [22, 30];
+                }
+            }
+        }
+    }
+    d
+}
+
+/// Die feste Welt vor WL2 ohne die nativen Regeln des Rust-Spiels (`native_rules = false`, wie `legacy` in `k3c-balance`):
+/// Wald (WD1), Hafenstart, Besorgung und Rüstung gibt es in Go nicht; nur so ist die Fixture aus Go ein gültiges Orakel.
+pub fn standard_world_legacy(data: &Data) -> WorldDef {
+    let mut world = standard_world(data);
+    let mut v = (*values_of(&world).expect("Werte")).clone();
+    v.native_rules = false;
+    world.values = Some(std::sync::Arc::new(v));
+    world
+}
+
 /// Go: `neutralNature`, die neutralen Natur-Werte je Tiefe (`level.NeutralNature`).
 pub fn neutral_nature(biomes: &[Biome], depths: &[i64]) -> BTreeMap<i64, NatureValues> {
     let mut out = BTreeMap::new();
