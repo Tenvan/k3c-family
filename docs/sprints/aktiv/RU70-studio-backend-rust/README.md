@@ -90,7 +90,7 @@ keine (Leitfaden, 🧑 2026-11-26)
 |---|---|---|---|---|
 | RU70.1 | `RU70.1-geruest-fenster-mcp-adapter.md` | Umsetzung | autonom | fertig |
 | RU70.2 | `RU70.2-spiel-exe-level-studioview.md` | Umsetzung | autonom | fertig |
-| RU70.3 | `RU70.3-welten-lesen-format.md` | Umsetzung | autonom | in Arbeit |
+| RU70.3 | `RU70.3-welten-lesen-format.md` | Umsetzung | autonom | fertig |
 | RU70.4 | `RU70.4-welten-bearbeiten-overrides.md` | Umsetzung | autonom | offen |
 | RU70.5 | `RU70.5-welten-story-natur-endboss.md` | Umsetzung | autonom | offen |
 | RU70.6 | `RU70.6-welten-mcp-bindings.md` | Umsetzung | autonom | offen |

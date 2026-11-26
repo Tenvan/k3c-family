@@ -6,12 +6,15 @@ pub mod app;
 pub(crate) mod exeengine;
 pub mod gamedata;
 pub mod gameexe;
+/// Nachgebaute Lücken von k3c-kit und k3c-assetkit (V10).
+pub(crate) mod kitx;
 pub mod mcpsrv;
 pub mod platform;
 pub mod ports;
 pub mod studioview;
 #[cfg(test)]
 pub(crate) mod test_helpers;
+pub mod world;
 
 use std::process::ExitCode;
 
