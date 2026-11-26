@@ -18,7 +18,13 @@ mod tests;
 pub type Handler = fn(&App, &[Value]) -> Result<Value, String>;
 
 /// Alle Methoden nach Namen wie in Go. Spätere Sessions ergänzen hier und kürzen `PENDING_METHODS`.
-pub const METHODS: &[(&str, Handler)] = &[("Info", info)];
+pub const METHODS: &[(&str, Handler)] = &[
+    ("Info", info),
+    ("StudioSounds", studio_sounds),
+    ("StudioSoundData", studio_sound_data),
+    ("StudioSources", studio_sources),
+    ("StudioGameOpen", studio_game_open),
+];
 
 fn encode(value: impl Serialize) -> Result<Value, String> {
     serde_json::to_value(value).map_err(|e| e.to_string())
@@ -27,6 +33,26 @@ fn encode(value: impl Serialize) -> Result<Value, String> {
 fn info(app: &App, args: &[Value]) -> Result<Value, String> {
     uikit::args::<()>(args.to_vec())?;
     encode(app.info())
+}
+
+fn studio_sounds(app: &App, args: &[Value]) -> Result<Value, String> {
+    uikit::args::<()>(args.to_vec())?;
+    encode(app.studio_sounds()?)
+}
+
+fn studio_sound_data(app: &App, args: &[Value]) -> Result<Value, String> {
+    let (path,): (String,) = uikit::args(args.to_vec())?;
+    encode(app.studio_sound_data(&path)?)
+}
+
+fn studio_sources(app: &App, args: &[Value]) -> Result<Value, String> {
+    uikit::args::<()>(args.to_vec())?;
+    encode(app.studio_sources()?)
+}
+
+fn studio_game_open(app: &App, args: &[Value]) -> Result<Value, String> {
+    let (seed,): (String,) = uikit::args(args.to_vec())?;
+    encode(app.studio_game_open(&seed)?)
 }
 
 fn find(name: &str) -> Option<Handler> {

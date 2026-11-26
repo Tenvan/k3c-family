@@ -5,9 +5,11 @@
 use rmcp::handler::server::common::Extension;
 use rmcp::handler::server::router::tool::ToolRouter;
 use rmcp::handler::server::wrapper::Parameters;
+use rmcp::service::{RequestContext, RoleServer};
 use rmcp::{tool, tool_router};
 
 use super::kit::Workspace;
+use super::tools_engine::{self, LevelIn};
 use super::tools_gamedata::{self, ReportIn};
 
 /// Empfänger der Tool-Methoden.
@@ -15,11 +17,29 @@ use super::tools_gamedata::{self, ReportIn};
 pub struct Studio;
 
 /// Reihenfolge der Tools in den Zählern wie in Go `register`.
-pub(super) const CATALOG: &[&str] = &["reports_list", "report_read", "saves_list"];
+pub(super) const CATALOG: &[&str] = &["level_generate", "reports_list", "report_read", "saves_list"];
 
 /// Alle Routen.
 pub(super) fn router() -> ToolRouter<Studio> {
-    Studio::gamedata_router()
+    Studio::engine_router() + Studio::gamedata_router()
+}
+
+/// Das Engine-Tool (B-047): rechnet mit der Spiel-EXE des Checkouts, ohne laufenden Server.
+#[tool_router(router = engine_router)]
+impl Studio {
+    #[tool(
+        description = "Erzeugt ein Level mit der Spiel-EXE des Checkouts (k3c-game sim level, kein Server nötig; fehlt sie oder ist sie veraltet, nennt der Fehler den Bau-Befehl): Kopfzeile, eine Zeile je Abschnitt, Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. Nutze es bei: Level eines Seeds prüfen. Statt: Spiel starten und Level von Hand ansehen.",
+        annotations(read_only_hint = true, idempotent_hint = true, open_world_hint = false)
+    )]
+    async fn level_generate(
+        &self,
+        Parameters(input): Parameters<LevelIn>,
+        Extension(ws): Extension<Workspace>,
+        context: RequestContext<RoleServer>,
+    ) -> Result<String, String> {
+        let canceled = context.ct.cancelled_owned();
+        tools_engine::level_generate(&ws, &input, |o| tools_engine::game_call(o, canceled)).await
+    }
 }
 
 /// Die lesenden Tools für Berichte und Spielstände (B-063).

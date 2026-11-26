@@ -4,6 +4,7 @@
 mod checkout_policy;
 mod kit;
 mod tools;
+mod tools_engine;
 mod tools_gamedata;
 
 use std::path::PathBuf;

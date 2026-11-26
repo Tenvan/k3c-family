@@ -31,7 +31,6 @@ const PENDING_TOOLS: &[&str] = &[
     "hub_check",
     "hub_get",
     "hub_save",
-    "level_generate",
     "replay_run",
     "sim_run",
     "sim_test",

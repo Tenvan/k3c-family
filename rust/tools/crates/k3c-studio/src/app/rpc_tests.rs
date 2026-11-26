@@ -28,11 +28,7 @@ const PENDING_METHODS: &[&str] = &[
     "AssetsReview",
     "AssetsFrame",
     "AssetsPixelDiff",
-    "StudioSounds",
     "StudioWeltSicht",
-    "StudioSoundData",
-    "StudioSources",
-    "StudioGameOpen",
     "WorldList",
     "WorldDetail",
     "WorldLevel",
@@ -124,8 +120,9 @@ fn command_und_ui_api_nutzen_eine_tabelle() {
     let app = app();
     assert_eq!(call(&app, "Info", &[]).unwrap()["version"], json!(VERSION));
     assert_eq!(call(&app, "Nichts", &[]), Err("Unbekannte Methode Nichts".to_owned()));
-    let served: Vec<String> = api(&app).methods.into_keys().collect();
-    let table: Vec<String> = METHODS.iter().map(|(name, _)| (*name).to_owned()).collect();
+    // `methods` ist eine HashMap: die Reihenfolge zählt nicht.
+    let served: HashSet<String> = api(&app).methods.into_keys().collect();
+    let table: HashSet<String> = METHODS.iter().map(|(name, _)| (*name).to_owned()).collect();
     assert_eq!(served, table);
 }
 

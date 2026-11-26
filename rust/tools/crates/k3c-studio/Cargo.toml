@@ -16,6 +16,12 @@ name = "k3c_studio"
 name = "k3c-studio"
 path = "src/main.rs"
 
+# Spielt in tests/gameexe_run.rs die Spiel-EXE (Go `TestHelperProcess`, V8).
+[[bin]]
+name = "gameexe-helper"
+path = "tests/support/gameexe_helper.rs"
+test = false
+
 [build-dependencies]
 tauri-build.workspace = true
 
@@ -27,7 +33,9 @@ tauri.workspace = true
 tauri-plugin-window-state.workspace = true
 tauri-plugin-single-instance.workspace = true
 serde.workspace = true
-serde_json.workspace = true
+serde_json = { workspace = true, features = ["raw_value"] }
+# Hörprobe als Data-URL (studioview); schon im Lockfile über k3c-kit.
+base64.workspace = true
 schemars.workspace = true
 rmcp.workspace = true
 chrono.workspace = true

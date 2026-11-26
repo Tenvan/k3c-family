@@ -2160,6 +2160,7 @@ dependencies = [
 name = "k3c-studio"
 version = "0.1.0"
 dependencies = [
+ "base64 0.22.1",
  "chrono",
  "k3c-assetkit",
  "k3c-kit",

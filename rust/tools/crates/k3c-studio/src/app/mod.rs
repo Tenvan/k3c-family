@@ -4,6 +4,7 @@
 pub mod headless;
 pub mod open_url;
 pub mod rpc;
+mod studio;
 pub mod window;
 
 use std::path::{Path, PathBuf};
@@ -17,6 +18,7 @@ use k3c_kit::usage::Tracker;
 use serde::Serialize;
 use serde_json::{Value, json};
 
+use crate::studioview::Game;
 use crate::{mcpsrv, ports};
 
 /// Version der App (Info, MCP).
@@ -63,6 +65,8 @@ pub struct App {
     ready: (Mutex<bool>, Condvar),
     mcp: Mutex<McpState>,
     running: Mutex<Option<Running>>,
+    /// „Im Spiel ansehen“ im Bereich Assets (WB1.4), angelegt beim ersten Aufruf.
+    game: Mutex<Option<Arc<Game>>>,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -90,6 +94,7 @@ impl App {
             ready: (Mutex::new(false), Condvar::new()),
             mcp: Mutex::new(McpState::default()),
             running: Mutex::new(None),
+            game: Mutex::new(None),
         }
     }
 
@@ -182,8 +187,9 @@ impl App {
         drop(self.ready.1.wait_while(guard, |ready| !*ready));
     }
 
-    /// Beendet Server, Statistik und Log.
+    /// Beendet „Im Spiel ansehen“, Server, Statistik und Log (Fenster und Betrieb ohne Fenster).
     pub async fn shutdown(&self) {
+        self.close_studio();
         let taken = lock(&self.running).take();
         let Some(running) = taken else {
             return;
