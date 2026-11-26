@@ -24,10 +24,10 @@ Erst das Thema bestimmen, dann gezielt dort suchen. Vollständig: `docs/agenten-
 
 | Thema | Code | Werte und Regeln |
 |---|---|---|
-| Kampf | `engine/sim/enemies*.go`, `engine/sim/unit_*.go` (Zielwahl inline in `unit_archer.go` `stepArcher`, `unit_warrior.go`, Takt `unit_common.go`), `engine/sim/boss*.go`, `engine/sim/aggression*.go` | `data/enemies.json`, `data/troops.json`, `data/waves.json`, `data/bosses.json`, `docs/rules/gegner.md`, `docs/rules/bosse.md`, `docs/rules/kampf.md` |
-| Simulation | `engine/sim/` (`world*.go`, `island*.go`, `building*.go`, `economy*.go`, `monarch*.go`), `engine/room/`, `engine/level/` | `docs/rules/stufen.md`, `docs/game-design.md` |
-| Balancing | `engine/balance/` | `data/economy.json`, `data/difficulty.json`, `data/balance-targets.json`, `docs/rules/zielkorridore.md`, `docs/rules/wirtschaft.md` |
-| Welten | `engine/level/`, `engine/sim/island*.go` | `data/worlds/`, `data/biomes/`, `docs/rules/welten.md` |
+| Kampf | `rust/crates/k3c-sim/src/enemies/`, `rust/crates/k3c-sim/src/unit/`, `rust/crates/k3c-sim/src/combat/`, `rust/crates/k3c-sim/src/boss/` | `data/enemies.json`, `data/troops.json`, `data/waves.json`, `data/bosses.json`, `docs/rules/gegner.md`, `docs/rules/bosse.md`, `docs/rules/kampf.md` |
+| Simulation | `rust/crates/k3c-sim/src/` (`world/`, `island/`, `building/`, `economy/`, `monarch/`), `rust/crates/k3c-room/`, `rust/crates/k3c-level/` | `docs/rules/stufen.md`, `docs/game-design.md` |
+| Balancing | `rust/crates/k3c-balance/` | `data/economy.json`, `data/difficulty.json`, `data/balance-targets.json`, `docs/rules/zielkorridore.md`, `docs/rules/wirtschaft.md` |
+| Welten | `rust/crates/k3c-level/`, `rust/crates/k3c-sim/src/island/` | `data/worlds/`, `data/biomes/`, `docs/rules/welten.md` |
 | Grafik | `tools/paper/`, `rust/crates/k3c-rig/`, `rust/crates/k3c-game/src/art/`, `rust/crates/k3c-game/src/actors/`, gezeichnete HUD-Grafik `rust/crates/k3c-game/src/hud/` | `public/grafik/<gruppe>/`, `data/paper.json`, `docs/standards/paper-spec.md` |
 | Sound | `rust/crates/k3c-game/src/audio/` (gespielt wird der erste `wahl`-Eintrag ohne `sprite`, `register.rs`), `tools/soundatlas/` | `data/sounds.json`, `public/audio/atlas.json` |
 | HUD, Eingabe | `rust/crates/k3c-game/src/hud/`, `rust/crates/k3c-game/src/menu/`, `rust/crates/k3c-game/src/input/`, `rust/crates/k3c-game/src/game/` | `docs/rules/bedienung.md` |
@@ -37,7 +37,7 @@ Erst das Thema bestimmen, dann gezielt dort suchen. Vollständig: `docs/agenten-
 ## Vorgehen
 
 1. Erst Code und Daten (Wahrheit), dann Regeln und Tickets (Absicht). Grep auf Bezeichner und Feldnamen aus `data/`, nur die Treffer-Umgebung lesen.
-2. „Im Spiel umgesetzt“ heißt: Code in `engine/` oder `rust/` plus Wert in `data/`, erreichbar im Spiel. „Nur geplant“ heißt: steht nur in `docs/rules`, `docs/game-design.md`, Tickets oder Sprints.
+2. „Im Spiel umgesetzt“ heißt: Code in `rust/` plus Wert in `data/`, erreichbar im Spiel. „Nur geplant“ heißt: steht nur in `docs/rules`, `docs/game-design.md`, Tickets oder Sprints.
 3. Was du nicht im Code gesehen hast, ist „ungeprüft“ oder „vermutet“, nie eine Feststellung.
 
 ## Antwort

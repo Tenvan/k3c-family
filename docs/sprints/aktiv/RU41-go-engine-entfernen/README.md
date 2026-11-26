@@ -86,7 +86,7 @@ Entscheidung 🧑 vor dem Löschen (RU41.1) und zur Annahme von 011 (RU41.2).
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
 | RU41.1 | `RU41.1-go-engine-pakete-entfernen.md` | Umsetzung | autonom | fertig |
-| RU41.2 | `RU41.2-doku-und-entscheidung-011.md` | Umsetzung | autonom | offen |
+| RU41.2 | `RU41.2-doku-und-entscheidung-011.md` | Umsetzung | autonom | fertig |
 | RU41.3 | `RU41.3-review.md` | Review | autonom | offen |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren

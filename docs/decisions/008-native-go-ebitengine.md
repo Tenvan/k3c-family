@@ -1,6 +1,6 @@
 # 008 · Natives Spiel in Go + Ebitengine, Rust entfällt
 
-- **Status:** angenommen (Ralf, gemeldet im Chat am 2026-11-11; die Entscheidung fiel vorher auf einem anderen Rechner und war nicht im Repo angekommen)
+- **Status:** überholt durch 011 (2026-11-25; Punkte 4 bis 6 gelten weiter). Ursprünglich angenommen (Ralf, gemeldet im Chat am 2026-11-11; die Entscheidung fiel vorher auf einem anderen Rechner und war nicht im Repo angekommen)
 - **Datum:** 2026-11-11
 - **Projekt:** NAT · Tickets: B-775, B-776, B-777
 - **Vorgänger:** 001 (Engine auf Go-Server), 005 (Papierschnitt-Grafik), 006 (Rust-Engine), 007 (Rust-Server, Entwurf)

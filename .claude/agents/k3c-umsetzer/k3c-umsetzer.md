@@ -27,10 +27,10 @@ Wohin was gehört (vollständig: `docs/agenten-fundorte.md`, tiefer die `codemap
 
 | Änderung | Ort | Test daneben |
 |---|---|---|
-| Neue Mechanik, Regel | `engine/sim/` mit Gruppen-Präfix (`enemies_`, `unit_`, `building_`, `island_`, `monarch_`, `economy_` …) | `engine/sim/*_test.go` |
-| Spielwert, Zahl | `data/*.json` (nie im Code), Laden `engine/sim/*_data.go` | Test liest den Wert aus `data/` |
-| Level, Platzierung | `engine/level/` | `engine/level/*_test.go`, Golden `testdata/golden/` nur bei gewollter Änderung |
-| Raum, Spielstand, Dev-Aktion | `engine/room/` | `engine/room/*_test.go` |
+| Neue Mechanik, Regel | `rust/crates/k3c-sim/src/` im Modul der Gruppe (`enemies/`, `unit/`, `building/`, `island/`, `monarch/`, `economy/` …) | `*_tests.rs` neben dem Modul |
+| Spielwert, Zahl | `data/*.json` (nie im Code), Laden `rust/crates/k3c-data/` | Test liest den Wert aus `data/` |
+| Level, Platzierung | `rust/crates/k3c-level/` | `*_tests.rs` dort; `testdata/golden/` und `testdata/rust/` sind eingefroren (erst Ticket für Rust-Schreibweg) |
+| Raum, Spielstand, Dev-Aktion | `rust/crates/k3c-room/` | `*_tests.rs` dort |
 | Anzeige, HUD | `rust/crates/k3c-game/src/hud/` (zeichnet nur, rechnet keine Regel) | `hud/*_tests.rs` (Layout: `banner_fit_tests.rs`) |
 | Menü, Eingabe, Ablauf | `rust/crates/k3c-game/src/menu/`, `input/`, `game/` | dort, Durchlauf `rust/crates/k3c-game/tests/` |
 | Ton | `data/sounds.json`, `rust/crates/k3c-game/src/audio/` | `audio/*_tests.rs` |
@@ -42,10 +42,10 @@ Wohin was gehört (vollständig: `docs/agenten-fundorte.md`, tiefer die `codemap
 ## Vorgehen
 
 1. `plan_get` auf Session und Tickets: Ziel, Kriterien (`AC-nn`), **Erlaubte Dateien** bzw. **Bereich**, Abhängigkeiten, Sperre. Was außerhalb des Bereichs nötig wäre: nicht ändern, im Bericht als Folge-Ticket vorschlagen.
-2. Berührt der Auftrag Sim-Code (`engine/sim`, `engine/level`, `engine/room`, `engine/simcli`, `cmd/k3c-sim`) und verlangt der Auftraggeber die eigene Dev-Workbench (B-925), brich ab und melde „gehört zu k3c-sim-dev“.
+2. Berührt der Auftrag Sim-Code (`rust/crates/k3c-sim`, `k3c-level`, `k3c-room`, `k3c-game/src/runs`) und verlangt der Auftraggeber die eigene Dev-Workbench (B-925), brich ab und melde „gehört zu k3c-sim-dev“.
 3. Erst den nächsten Test lesen, dann ändern: kleinster Schritt, der das Kriterium erfüllt. Ein Kriterium = mindestens ein Test, der vorher rot war.
-4. Regeln aus `CLAUDE.md`: Datei ≤ 400 Zeilen, Funktion ≤ 60; Zufall nur `engine/rng`; 2 Spieler; B-Taste zurück in Menüs; Log-Meldungen mit Emoji; Werte in `data/`; Units statt Pixel in der Welt.
-5. Prüfen: gezielt `go test` der geänderten Pakete und `golangci-lint run` dort; danach einmal `task check:diff` (bzw. `check_run task:check:diff`). Bekannte Altlasten (e2e `TestFlow`, `audio`-Tests, staticcheck in `menu/licensefile`) nennen, nicht anfassen. Golden nur neu schreiben (`task go:golden`), wenn das Ticket eine Wert-/Regeländerung verlangt, und das melden.
+4. Regeln aus `CLAUDE.md`: Datei ≤ 400 Zeilen, Funktion ≤ 60; Zufall nur `k3c-rng`; 2 Spieler; B-Taste zurück in Menüs; Log-Meldungen mit Emoji; Werte in `data/`; Units statt Pixel in der Welt.
+5. Prüfen: gezielt `cargo test -p <crate>` der geänderten Crates (über `task rust:...`, falls vorhanden); danach einmal `task check:diff` (bzw. `check_run task:check:diff`). Bekannte Altlasten nennen, nicht anfassen. Golden (`testdata/golden/`, `testdata/rust/`) ist eingefroren: nicht ändern, Bedarf als Ticket für einen Rust-Schreibweg melden.
 
 ## Bericht
 
