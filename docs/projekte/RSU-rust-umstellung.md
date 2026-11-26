@@ -79,7 +79,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU28 | Rust-Balance-Crate Teil 2: Messungen und Auswertung | erledigt |
 | RU31 | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | erledigt |
 | RU40 | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | erledigt |
-| RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | geplant |
+| RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | erledigt |
 | RU51 | Abnahme- und Messläufe der Rust-Umstellung auf dem Second Worker | erledigt |
 | RU52 | Rust-Schuld: Sim-Testrümpfe, Platzhalter und Spiel-Nacharbeit | erledigt |
 | RU57 | Rust-Paket dist/k3c-game auslieferbar (Lizenzen, Prüfung, Pfade) | erledigt |

@@ -324,6 +324,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1290](B-1290-abnahme-projekt-wir.md) | SIM | Schuld | mittel | offen | WK1 | Abnahme Projekt WIR: Läufe und Sichtprüfungen sind nachgeholt |
 | [B-1291](B-1291-abnahme-wn5.md) | DEV | Schuld | niedrig | offen | WN5 | Abnahme WN5: Race-Lauf der geänderten Werkzeug-Pakete ist nachgeholt |
 | [B-1292](B-1292-abnahme-wk2.md) | SIM | Schuld | mittel | offen | WK2 | Abnahme WK2: Ralf prüft Bürger und Handwerker im Spiel |
+| [B-1294](B-1294-abnahme-ru41-sim-balance-gen.md) | INF | Frage | mittel | offen | RU41 | Abnahme RU41: Sim, Balance, Gen und Race ohne Go-Engine |
 
 ## Archiv
 

@@ -43,28 +43,30 @@ fn welt_aus_map_fs_laden() {
     }
 }
 
-/// Go: `TestEingebetteteWeltenGueltig` (AC-02): Jede eingebettete Welt-Datei (heute nur standard.json) besteht die Prüfung;
+/// Go: `TestEingebetteteWeltenGueltig` (AC-02): Jede eingebettete Welt-Datei in data/worlds/ (seit WL2, B-1215, mehrere) besteht die Prüfung;
 /// die Standard-Welt ist Voreinstellung.
 #[test]
 fn eingebettete_welten_gueltig() {
-    let dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../data/worlds");
-    let names: Vec<String> = std::fs::read_dir(dir)
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../data");
+    let mut names: Vec<String> = std::fs::read_dir(root.join("worlds"))
         .expect("data/worlds")
         .map(|e| e.expect("Eintrag").file_name().to_string_lossy().into_owned())
         .collect();
-    assert_eq!(
-        names,
-        ["standard.json"],
-        "eingebettet: {names:?}, erwartet nur standard.json"
+    names.sort();
+    assert!(
+        names.iter().any(|n| n == "standard.json"),
+        "eingebettet: {names:?}, standard.json fehlt"
     );
     let data = test_data();
     let rules = test_rules(&data);
     for n in &names {
         let id = n.trim_end_matches(".json");
-        if let Err(e) = load_world(&Source::Embedded, id, &data, &rules) {
+        if let Err(e) = load_world(&Source::Dir(root.clone()), id, &data, &rules) {
             panic!("{n}: {e}");
         }
     }
+    // Eingebettet ist nur standard.json (`//go:embed … worlds/standard.json`): sie ist Voreinstellung.
+    load_world(&Source::Embedded, "standard", &data, &rules).expect("eingebettete Standard-Welt");
     let w = standard_world(&data, &rules).expect("Standard-Welt");
     assert!(
         w.id == STANDARD_WORLD_ID && w.name == "Standard" && !w.islands.is_empty() && w.islands[0].id == "island1",
@@ -74,14 +76,15 @@ fn eingebettete_welten_gueltig() {
 
 /// Go: `TestStandardWeltGleichBisherigenInseln` (AC-02): Die Liste `islands` von standard.json ist unverändert gegenüber
 /// data/islands.json vor WZ18.2 (Hash von damals, Zeilenenden auf LF normiert) plus dem Hafen auf Insel 1 Tiefe 0 (BS5.1,
-/// B-637) und der Geschichte der Insel 1 (GS1.5, B-976).
+/// B-637) und der Geschichte der Insel 1 (GS1.5, B-976). Der Hash gilt seit WL2 (B-1215: fünf Inseln, PR #821) neu und ist
+/// bewusst geändert; die frühere Welt hält `testdata/rust/worlds/standard-vor-wl2.json` fest.
 #[test]
 fn standard_welt_gleich_bisherigen_inseln() {
     let raw = Source::Embedded.read("worlds/standard.json").expect("standard.json");
     let islands = islands_bytes(raw.as_bytes()).replace(b"\r\n", b"\n");
     assert_eq!(
         sha256_hex(&islands),
-        "118d1ac5588c067c5485f68c52a99509ca6954ac8c771a28dce56dcceb95e826",
+        "fa6cc66660a5fb82728d5b53284831b551c4c9303c990eceffad232b81065205",
         "islands geändert"
     );
 }

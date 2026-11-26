@@ -160,33 +160,29 @@ fn cheat_groups_known_actions_and_bosses() {
     assert!(bosses > 0, "keine Bosse aus data/bosses.json");
 }
 
-/// Jede Aktion des Menüs steht als Fall in `engine/room/dev.go` oder `dev_combat.go` (Zeile für Zeile als Text).
+/// Jede Aktion des Menüs steht als Fall im Rust-Raum (`k3c-room/src/room/dev*.rs`, als Text). Bis RU41 prüfte der Test
+/// gegen `engine/room/dev*.go`; die Go-Engine ist entfernt.
 #[test]
 fn cheat_actions_exist_in_room() {
-    let room = [
-        include_str!("../../../../../engine/room/dev.go"),
-        include_str!("../../../../../engine/room/dev_combat.go"),
-    ]
-    .concat();
-    let cases: Vec<&str> = room
-        .lines()
-        .map(str::trim)
-        .filter(|l| l.starts_with("case \""))
-        .collect();
-    // Die Go-Engine ist eingefroren (Entscheidung 013): neue Aktionen stehen nur im Rust-Raum.
     let rust_room = [
         include_str!("../../../k3c-room/src/room/dev_extra.rs"),
         include_str!("../../../k3c-room/src/room/dev.rs"),
         include_str!("../../../k3c-room/src/room/dev_combat.rs"),
     ]
     .concat();
+    // Nur Match-Arme zählen (`"a" | "b" => …`), nicht Kommentare oder Log-Texte.
+    let arms: Vec<&str> = rust_room
+        .lines()
+        .map(str::trim_start)
+        .filter(|l| l.starts_with('"'))
+        .filter_map(|l| l.split_once("=>").map(|(pat, _)| pat))
+        .collect();
     for g in cheat_groups() {
         for e in &g.entries {
             let quoted = format!("\"{}\"", e.act.action);
             assert!(
-                cases.iter().any(|l| l.contains(&quoted))
-                    || (["readyToSail", "shieldPlus"].contains(&e.act.action.as_str()) && rust_room.contains(&quoted)),
-                "Aktion {} fehlt in engine/room/dev*.go",
+                arms.iter().any(|pat| pat.split('|').any(|p| p.trim() == quoted)),
+                "Aktion {} hat keinen Match-Arm in k3c-room/src/room/dev*.rs",
                 e.act.action
             );
         }

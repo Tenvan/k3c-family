@@ -27,6 +27,14 @@ describe('Browser-Client und Spielserver entfernt (B-848, B-887)', () => {
     }
   });
 
+  // RU41: Sim und Balancing gibt es nur noch in Rust; von der Go-Engine bleiben conlog, devrun und internal/rules.
+  it('Go-Sim, Go-Balancing und Engine-CLI entfernt (RU40.4, RU41.1)', () => {
+    for (const gone of ['cmd', 'engine/sim', 'engine/level', 'engine/room', 'engine/store', 'engine/balance', 'engine/rng',
+      'engine/enginetools', 'engine/simcli', 'engine/internal/golden', 'engine/internal/detvec', 'engine/internal/trace']) {
+      expect(existsSync(join(ROOT, gone)), gone).toBe(false);
+    }
+  });
+
   it('package.json hängt nicht mehr an Phaser', () => {
     expect(read('package.json')).not.toContain('phaser');
   });
@@ -42,7 +50,7 @@ describe('Komplexität & Schichten', () => {
   const HARD = 400; // Grenze aus docs/arbeitsweise.md › Komplexitäts-Budget; für TypeScript prüft sie Oxlint, für Go dieser Test
   const posix = (path: string) => path.split(sep).join('/');
   const lines = (file: string) => (read(file).match(/\n/g) ?? []).length; // wie `wc -l`
-  const goDirs = ['data', 'engine', 'cmd', 'tools'];
+  const goDirs = ['data', 'engine', 'tools'];
   const goFiles = goDirs.flatMap((d) => filesIn(d, (n) => n.endsWith('.go'))).map(posix);
 
   it('keine Go-Datei über der harten Grenze, auch keine Test-Datei', () => {
@@ -88,7 +96,7 @@ describe('Altes Asset-Studio entfernt (005/AC-10, WB1)', () => {
   });
 
   it('K3C_STUDIO_LAN kommt im Code nicht mehr vor', () => {
-    const code = ['engine', 'cmd', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
+    const code = ['engine', 'tools'].flatMap((d) => filesIn(d, (n) => /\.(ts|tsx|go)$/.test(n)));
     expect(code.filter((f) => read(f).includes('K3C_STUDIO_LAN'))).toEqual([]);
   });
 });

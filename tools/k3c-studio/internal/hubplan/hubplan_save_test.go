@@ -50,7 +50,7 @@ func wantSaved(t *testing.T, root, rulesBefore string, res HubSaveResult) {
 	if !res.Saved || res.Error != "" || res.Stale != "" || res.RulesError != "" || len(res.Findings) != 0 {
 		t.Fatalf("nicht gespeichert: %+v", res)
 	}
-	if res.Notice != regNotice || !strings.Contains(res.Notice, "task go:golden") {
+	if res.Notice != regNotice || !strings.Contains(res.Notice, "REG-Änderung") {
 		t.Errorf("REG-Hinweis %q", res.Notice)
 	}
 	hub, doc := readIn(t, root, hubFile), readIn(t, root, rulesFile)

@@ -30,9 +30,9 @@ pub(crate) fn go_tree() -> &'static BTreeMap<String, Value> {
 
 /// `same_as_go` vergleicht den Baum von got mit dem Eintrag name aus Go.
 pub(crate) fn same_as_go<T: Serialize + ?Sized>(name: &str, got: &T) {
-    let want = go_tree()
-        .get(name)
-        .unwrap_or_else(|| panic!("{name} fehlt in data-tree.json.gz (go test ./engine/internal/detvec/ -write)"));
+    let want = go_tree().get(name).unwrap_or_else(|| {
+        panic!("{name} fehlt in data-tree.json.gz (eingefroren seit RU41, Go-Schreibweg im Tag go-referenz-final)")
+    });
     let d = golden::diff(name, want, &golden::tree(got));
     assert!(d.is_empty(), "Rust weicht von Go ab: {d}");
 }

@@ -17,23 +17,12 @@ linters:
       min-complexity: 15
     depguard:
       rules:
-        engine-ohne-cmd:
+        # Seit RU41 hält engine/ nur conlog und devrun (Sim und Balancing in Rust); beide kennen die Werkzeuge nicht.
+        engine-ohne-tools:
           files: ["**/engine/**"]
           deny:
-            - pkg: k3c/cmd
-              desc: "engine/ importiert nichts aus cmd/ (docs/arbeitsweise.md › Schichtgrenzen)"
-        sim-ohne-netz:
-          files: ["**/engine/sim/**", "**/engine/level/**", "**/engine/rng/**"]
-          deny:
-            - pkg: k3c/engine/room
-              desc: "engine/sim, engine/level und engine/rng kennen keine Räume"
-            - pkg: k3c/engine/net
-              desc: "engine/sim, engine/level und engine/rng kennen kein Netz"
-        room-ohne-netz:
-          files: ["**/engine/room/**"]
-          deny:
-            - pkg: k3c/engine/net
-              desc: "engine/room kennt kein Netz, engine/net setzt room.Peer um"
+            - pkg: k3c/tools
+              desc: "engine/ importiert nichts aus tools/ (docs/arbeitsweise.md › Schichtgrenzen)"
   exclusions:
     rules:
       - path: _test\.go

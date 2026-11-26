@@ -22,34 +22,18 @@ tasks:
       - golangci-lint run --allow-serial-runners {{.GO_LINT_PKGS}}
 
   race:
-    desc: go test -race für engine/ ohne engine/balance (dessen Simulationsläufe dauern unter -race über 10 min; Balancing nur im Abnahme-Ticket, B-742, B-757); braucht cgo und einen C-Compiler, ohne Compiler nur ein Hinweis, B-077
+    desc: go test -race für engine/ (seit RU41 nur conlog und devrun); braucht cgo und einen C-Compiler, ohne Compiler nur ein Hinweis, B-077
     deps: [':tmp']
     cmds:
       - cmd: |
           if command -v gcc >/dev/null 2>&1 || command -v clang >/dev/null 2>&1; then
-            CGO_ENABLED=1 go test -race -timeout 20m $(go list ./engine/... | grep -v '/engine/balance$')
+            CGO_ENABLED=1 go test -race -timeout 10m ./engine/...
           else
             echo "go:race übersprungen: kein C-Compiler (gcc oder clang), siehe requirements.md. Die CI prüft -race."
           fi
 
-  cover:
-    desc: Abdeckung der Go-Tests je Paket unter engine/ anzeigen (kein Gate, B-019)
-    deps: [':tmp']
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    cmds:
-      - go test -cover ./engine/...
-
-  golden:
-    desc: "testdata/golden/ aus dem Ist-Zustand neu schreiben (B-137): nur bei gewollter Regel- oder Wertänderung, Begründung in den Commit-Text, die Review-Session prüft den Diff; rng.json bleibt"
-    deps: [':tmp']
-    preconditions:
-      - sh: command -v go
-        msg: Go fehlt (requirements.md)
-    cmds:
-      - go test -count=1 ./engine/sim ./engine/level -run Golden -update
-
+  # golden und cover entfallen mit RU41: Die Go-Sim ist entfernt, die Golden unter testdata/golden/ sind eingefroren und
+  # werden nur noch von den Rust-Tests gelesen (Schreibweg in Rust: eigenes Ticket).
   golden-setup:
     desc: "Einmal je Klon: git zeigt Diffs der gepackten Golden-Dateien (*.json.gz) als JSON-Text (GD1, B-624)"
     cmds:

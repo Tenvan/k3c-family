@@ -22,7 +22,7 @@ will, legt ein Ticket an.
 11. `rng *rng.Rng` wird `rng: Rng` in `World`. Jeder Würfel-Aufruf bleibt an seiner Stelle der Reihenfolge.
 12. `Events` wird wie in Go je Schritt geleert.
 
-Dazu gilt: kein `HashMap` (`BTreeMap`; `engine/internal/rules/map_range_test.go` verbietet Durchläufe über Maps auch in Go),
+Dazu gilt: kein `HashMap` (`BTreeMap`; `engine/internal/rules/map_range_test.go` verbietet Durchläufe über Maps auch im Go-Altstand),
 kein `unsafe`, `Rc`, `RefCell`, `Cell`, `Mutex`.
 
 ## Beispiele je Fall
@@ -157,6 +157,6 @@ Lese-Verhalten: `#[serde(default)]` auf jedem Typ, damit fehlende Felder 0 sind 
 |---|---|
 | `state/mod.rs` | Module, Wiedergabe der öffentlichen Typen |
 | `state/omit.rs` | `skip_serializing_if`-Hilfen |
-| `state/types*.rs` | `engine/sim/types.go` (in Teile gegliedert, je ≤ 400 Zeilen) |
+| `state/types*.rs` | Go-Altstand `engine/sim/types.go` (in Teile gegliedert, je ≤ 400 Zeilen) |
 | `state/shared.rs` | Typen aus anderen Go-Dateien, die der Zustand braucht (Crown, Merchant, Island-Teile …); die Gruppe, die ihre Go-Datei portiert, ergänzt sie |
 | `state/pending.rs` | Platzhalter für Funktionen späterer Sprints (Leitfaden § 7) |

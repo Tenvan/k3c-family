@@ -139,7 +139,7 @@ if (-not $Trace) {
     if (-not (Test-Path $Trace)) { $Trace = Join-Path $Root '.work\trace\messung-nacht.jsonl.gz' }
 }
 if ($engines -contains 'replay' -and -not (Test-Path $Trace)) {
-    throw "Aufzeichnung fehlt: $Trace (go test ./engine/internal/trace/ -run TestMessungNacht -write)"
+    throw "Aufzeichnung fehlt: $Trace (eingefroren seit RU41; Go-Schreibweg im Tag go-referenz-final)"
 }
 if ($engines -contains 'replay' -and -not $Vsync) { Write-Host "⏳ Hinweis: Wiedergabe ohne -Vsync misst mit --novsync" }
 

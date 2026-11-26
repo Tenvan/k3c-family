@@ -1,8 +1,8 @@
 # Läufe im Game-Client (`k3c-game sim`)
 
 Quelle: Sprint RU33 (B-1017). Die Spiel-EXE führt Sim-, Level-, Welten- und Hub-Läufe aus, per Parameter headless oder mit
-Fenster. Die Schnittstelle ist die von `cmd/k3c-sim/main.go` (Kopfkommentar), mit Präfix `sim` und neuen Schaltern; `k3c-sim`
-(Go) bleibt, bis RU41 die Go-Engine entfernt. Umsetzung: `rust/crates/k3c-game/src/runs/`.
+Fenster. Die Schnittstelle ist die des Go-Altstands `cmd/k3c-sim/main.go` (Kopfkommentar), mit Präfix `sim` und neuen Schaltern; das Go-CLI `k3c-sim`
+ist entfernt (RU40.4, RU41). Umsetzung: `rust/crates/k3c-game/src/runs/`.
 
 ## Aufruf
 
@@ -85,7 +85,7 @@ mit Fenster nacheinander.
 
 ## balance (RU40.1)
 
-Headless wie `k3c-sim balance` (`engine/simcli/balance.go`): Matrix (`--seeds`, `--seed-list`, `--players`, `--bots`, `--depths`,
+Headless wie `k3c-sim balance` (Go-Altstand `engine/simcli/balance.go`): Matrix (`--seeds`, `--seed-list`, `--players`, `--bots`, `--depths`,
 `--days`, `--gold-threshold`, `--out`, `--replay-dir`), `--play DATEI`, Ziele (`--targets` mit `--baseline`, `--write-baseline`,
 `--depth`, `--bot`, `--grade`, `--world`, `--helps`, `--progress`), `--insights DATEI`, Sensitivität (`--sensitivity`,
 `--vary`, `--curves`) und Abstimmung (`--tune sweep|search`, `--param`, `--steps`, `--budget`). Schalter wie Gos `flag`-Paket

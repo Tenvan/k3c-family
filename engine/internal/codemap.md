@@ -2,17 +2,15 @@
 
 ## Responsibility
 
-Test-Hilfen und Repo-Regeln für die Go-Engine; kein Laufzeitcode des Spiels. Jeder Unterordner hat eine eigene Aufgabe.
+Repo-Regeln für den Go-Rest als Tests; kein Laufzeitcode. Golden-, Prüfvektor- und Trace-Hilfen der früheren Go-Engine
+sind mit RU41.1 entfernt (letzter Stand im Tag `go-referenz-final`).
 
 ## Design
 
 | Ordner | Rolle |
 |--------|-------|
-| `golden/` | Golden-Dateien unter `testdata/golden/` lesen, vergleichen und mit `task go:golden` neu schreiben |
-| `rules/` | Repo-Regeln für Go als Tests: Importgrenzen, Verschachtelungstiefe, Map-Iteration |
-| [`detvec/`](detvec/codemap.md) | Prüf-Vektoren (Gleitkomma, Spiel-Daten) für den Rust-Port |
-| [`trace/`](trace/codemap.md) | Aufzeichnung eines Sim-Laufs als `.jsonl.gz` für den Rust-Port |
+| `rules/` | Repo-Regeln für Go als Tests: Importgrenzen (`imports_test.go`), Verschachtelungstiefe (`nesting_test.go`) |
 
 ## Integration
 
-- Nur aus Tests der Engine genutzt; `internal` verhindert den Import von außen.
+- Läuft mit `task go:test`; `internal` verhindert den Import von außen.

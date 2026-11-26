@@ -21,7 +21,6 @@ keine
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Reife | Ordner |
 |---|---|---|---|---|---|---|
-| RU41 | INF | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | bereit | `geplant/RU41-go-engine-entfernen/` |
 | RU65 | DEV | RSU | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | – | bereit | `geplant/RU65-rust-backend-spike-entscheidung/` |
 | RU66 | DEV | RSU | workkit nach Rust: mcpkit, applog, console, proc, usage, winicon, conlog, devrun | – | Entwurf | `geplant/RU66-workkit-nach-rust/` |
 | RU67 | DEV | RSU | assetkit nach Rust: Asset-Logik des Studios | – | Entwurf | `geplant/RU67-assetkit-nach-rust/` |
@@ -497,3 +496,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | WD1 | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | `erledigt/WD1-wald-rodung/` |
 | WL1 | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | `erledigt/WL1-welten-gamepad-mauern/` |
 | WN5 | Werkzeug-Befunde WE6 beheben | `erledigt/WN5-zweit-werkzeug-befunde/` |
+| RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | `erledigt/RU41-go-engine-entfernen/` |

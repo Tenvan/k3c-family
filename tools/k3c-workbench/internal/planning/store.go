@@ -25,6 +25,8 @@ var (
 	reSprintID = regexp.MustCompile(`^[A-Z]+\d+$`)
 	reSession  = regexp.MustCompile(`^([A-Z]+\d+)\.(\d+[a-z]?)$`)
 	reSlug     = regexp.MustCompile(`^[a-z0-9]+(-[a-z0-9]+)*$`)
+	// reTicketSlug trennt doppelt vergebene Nummern (zwei Rechner, gleiche Nummer): B-1287-kurzname wählt genau die Datei.
+	reTicketSlug = regexp.MustCompile(`^(B-\d{3,})-([a-z0-9]+(?:-[a-z0-9]+)*)$`)
 )
 
 // States sind die Ordner unter docs/sprints, in Lebenslauf-Reihenfolge.
@@ -48,6 +50,13 @@ func resolve(root, id string) (ref, error) {
 		for _, folder := range []string{"", "archiv"} {
 			if f := findEntry(docsPath(root, "backlog/"+folder), id+"-", false); f != "" {
 				return ref{kind: "ticket", id: id, rel: path.Join("backlog", folder, f), state: folder}, nil
+			}
+		}
+	case reTicketSlug.MatchString(id):
+		num := reTicketSlug.FindStringSubmatch(id)[1]
+		for _, folder := range []string{"", "archiv"} {
+			if _, err := os.Stat(docsPath(root, path.Join("backlog", folder, id+".md"))); err == nil {
+				return ref{kind: "ticket", id: num, rel: path.Join("backlog", folder, id+".md"), state: folder}, nil
 			}
 		}
 	case reSprintID.MatchString(id):
