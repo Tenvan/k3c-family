@@ -1,0 +1,8 @@
+{
+  "name": "k3c-rust-tools",
+  "private": true,
+  "version": "0.1.0",
+  "devDependencies": {
+    "@tauri-apps/cli": "2.12.6"
+  }
+}

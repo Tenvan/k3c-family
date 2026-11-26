@@ -1,0 +1,1402 @@
+[
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Legt public/grafik/<gruppe>/<id>.paper.json aus der Rig-Vorlage an (Pflicht-Teile mit leeren Lagen), prüft und rendert. Nutze es bei: neues Asset. Statt: Spec-Datei von Hand anlegen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "beschreibung": {
+          "description": "was das Asset zeigt",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "gruppe": {
+          "description": "Ordner unter public/grafik, z. B. requisiten",
+          "type": "string"
+        },
+        "id": {
+          "description": "neue Asset-ID: a-z, 0-9, - (eindeutig über alle Gruppen)",
+          "type": "string"
+        },
+        "rig": {
+          "description": "figur, vierbeiner, gebaeude, requisite oder hintergrund",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "rig",
+        "beschreibung",
+        "gruppe"
+      ],
+      "type": "object"
+    },
+    "name": "assets_create"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Löscht Spec, Ausgabe-Ordner und den Eintrag im Gruppen-Index; ohne confirm=true nur Hinweis. Nutze es bei: Asset entfernen. Statt: Dateien von Hand löschen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "confirm": {
+          "description": "true löscht wirklich; ohne nur Hinweis",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Asset-ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "assets_delete"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Pfad und Paper-Spec eines Assets als JSON; felder kürzt auf oberste Schlüssel. Nutze es bei: vor einem assets_set. Statt: die .paper.json-Datei lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "felder": {
+          "description": "nur diese obersten Schlüssel, z. B. [umhang, ausgabe]",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "id": {
+          "description": "Asset-ID (Dateiname ohne .paper.json), z. B. monarch; bei gleicher ID in zwei Gruppen <gruppe>/<id>, z. B. gegner/wolf",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "assets_get"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Einstieg jeder Asset-Arbeit: Stil-Regeln, Papier-Materialien und Einzeltöne der Stil-Datei, Pflicht-Teile und Pivots des Rig-Typs, Proportion, Lagen-Arten, Vorlage, Ablauf. Nutze es bei: bevor du ein Asset anlegst oder änderst. Statt: paper-spec.md und Stil-Datei lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "rig": {
+          "description": "Rig-Typ: figur, vierbeiner, gebaeude, requisite, hintergrund; leer = alle",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "assets_guide"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Legt einen selbst gefundenen Treffer zu einem Asset-Slot ab (Agent hat im Netz gesucht); Lizenz wird nach Q70 eingeordnet, unklar bleibt „pruefen“. Nutze es bei: Fund von itch.io, Kenney oder anderen Seiten ohne API. Statt: Link nur im Chat nennen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "download": {
+          "description": "direkte Datei, nur wenn die Seite sie mit maschinenlesbarer Lizenz anbietet",
+          "type": "string"
+        },
+        "id": {
+          "description": "Asset-Slot, z. B. sfx:coin",
+          "type": "string"
+        },
+        "link": {
+          "description": "Seite des Fundes (https)",
+          "type": "string"
+        },
+        "lizenz": {
+          "description": "wie auf der Seite angegeben; leer = Lizenz prüfen",
+          "type": "string"
+        },
+        "quelle": {
+          "description": "z. B. itch.io, Kenney; Vorgabe Agent",
+          "type": "string"
+        },
+        "titel": {
+          "description": "Titel des Fundes",
+          "type": "string"
+        },
+        "urheber": {
+          "type": "string"
+        },
+        "vorschau": {
+          "description": "Bild- oder MP3-Adresse für die Vorschau",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "titel",
+        "link"
+      ],
+      "type": "object"
+    },
+    "name": "assets_hit_add"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Verwirft einen Recherche-Treffer eines Asset-Slots. Nutze es bei: 🧑 hat einen Vorschlag abgelehnt. Statt: data/assets-recherche.json von Hand ändern.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "hit": {
+          "description": "ID des Treffers aus assets_hits",
+          "type": "string"
+        },
+        "id": {
+          "description": "Asset-Slot",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "hit"
+      ],
+      "type": "object"
+    },
+    "name": "assets_hit_drop"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Gespeicherte Recherche-Treffer eines Asset-Slots: ID, Lizenz-Status (erkannt, pruefen, ausgeschlossen), Quelle, Titel, Link. Nutze es bei: welche Vorschläge liegen schon vor. Statt: data/assets-recherche.json lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Asset-Slot, z. B. farm, mount:horse, sfx:coin",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "assets_hits"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true,
+      "readOnlyHint": false
+    },
+    "description": "Übernimmt einen Recherche-Treffer: lokale Datei (path) oder direkter Download; legt sie unter public/…/kandidaten/ ab, trägt den Credit ein (Lizenz prüfen bis 🧑 bestätigt) und hängt sie als letzte Präferenz an. Nutze es bei: Fund übernehmen. Statt: Datei von Hand kopieren und CREDITS bearbeiten.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "hit": {
+          "description": "ID des Treffers aus assets_hits",
+          "type": "string"
+        },
+        "id": {
+          "description": "Asset-Slot",
+          "type": "string"
+        },
+        "path": {
+          "description": "lokale Datei (png bzw. ogg, mp3, wav); leer = direkter Download des Treffers (nur mit erkannter Lizenz)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "hit"
+      ],
+      "type": "object"
+    },
+    "name": "assets_import"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Alle Assets (Paper-Specs unter public/grafik) je Zeile: id · rig · pfad · gültig|ungültig[ · geändert]. Nutze es bei: Überblick, ungültige oder geänderte Assets finden. Statt: public/grafik durchsuchen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "geaendert": {
+          "description": "nur Assets mit Änderung gegen HEAD",
+          "type": "boolean"
+        },
+        "gruppe": {
+          "description": "nur diese Gruppe (Ordner unter public/grafik, z. B. figuren)",
+          "type": "string"
+        },
+        "rig": {
+          "description": "nur dieser Rig-Typ",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "assets_list"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Ein Frame eines Assets als Bild (image/png) plus Text: Animation, Frame, Basis, Größe, Teil-Boxen x,y,b,h; mit basis der alte Stand. Nutze es bei: Ergebnis eines assets_set ansehen, Teile finden. Statt: PNG-Dateien öffnen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "animation": {
+          "description": "Animation; leer = erste der Spec",
+          "type": "string"
+        },
+        "basis": {
+          "description": "alter Stand: HEAD, HEAD~1, Commit-SHA oder origin/main; leer = Arbeitsstand",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "frame": {
+          "description": "Frame-Nummer, Standard 0",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Asset-ID, z. B. monarch (bei doppelter ID <gruppe>/<id>, z. B. gegner/wolf)",
+          "type": "string"
+        },
+        "variante": {
+          "description": "Variante (Material-Tausch); leer = keine",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "assets_preview"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Rendert Assets über die Render-CLI: {id} synchron, {alle: true} als Job (sofort zurück), {job} Stand, {job, wait: true} bis zum Ende. Nutze es bei: Ausgabe neu erzeugen, nach assets_style_set warten. Statt: CLI in der Shell.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "alle": {
+          "description": "true startet einen Job für alle Assets",
+          "type": "boolean"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "ein Asset synchron rendern",
+          "type": "string"
+        },
+        "job": {
+          "description": "Job-ID j-<n>: Stand abfragen",
+          "type": "string"
+        },
+        "wait": {
+          "description": "mit job: bis zum Ende warten",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "name": "assets_render"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": true,
+      "readOnlyHint": false
+    },
+    "description": "Sucht für einen Asset-Slot im Netz (freesound mit Token, Wikimedia Commons, OpenGameArt) und speichert neue Treffer mit Link, Quelle, Urheber und Lizenz-Status nach Q70. Nutze es bei: Alternativen für einen Slot finden. Statt: Fundseiten von Hand anlegen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Asset-Slot, z. B. farm oder sfx:coin",
+          "type": "string"
+        },
+        "query": {
+          "description": "Suchbegriff; leer = Beschreibung des Slots (englische Begriffe finden mehr)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "assets_research"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Review des Arbeitsstands gegen eine Basis: je Asset status · id · Felder · Pixel-Anteil · Bilder (PNG unter .cache/paper/mcp/); Stiländerungen mit stil: true. Nutze es bei: zum Schluss jeder Asset-Änderung. Statt: git diff auf Specs und PNGs.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "description": "HEAD (Standard), HEAD~1, Commit-SHA oder origin/main",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "assets_review"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Ändert eine Paper-Spec per JSON-Merge-Patch atomar (validate, render, dann ersetzen); ungültig = nichts geändert, Antwort je Fehler feld · regel · text. Nutze es bei: jede Änderung an einem Asset. Statt: .paper.json von Hand ändern.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Asset-ID, z. B. monarch",
+          "type": "string"
+        },
+        "patch": {
+          "additionalProperties": true,
+          "description": "JSON-Merge-Patch (RFC 7396) auf die Spec: null löscht, Objekte werden gemischt, Listen ersetzt; teile auch als Objekt nach Teil-ID ({teile: {kopf: {...}}}): ändert nur die genannten Teile",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "patch"
+      ],
+      "type": "object"
+    },
+    "name": "assets_set"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Stil-Datei verdichtet: Pfad, stilHash, Materialien, Einzeltöne, Papier-Werte. Nutze es bei: welche Materialien gibt es. Statt: public/grafik/stil.paper.json lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "assets_style_get"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Merge-Patch auf die Stil-Datei (nur Sessions mit Lane: stil); prüft Schema und ob Specs entfernte Materialien nutzen, startet den Render der betroffenen Assets als Job. Nutze es bei: Farbton oder Papier-Wert ändern. Statt: Stil-Datei von Hand ändern.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "patch": {
+          "additionalProperties": true,
+          "description": "JSON-Merge-Patch (RFC 7396) auf public/grafik/stil.paper.json",
+          "type": "object"
+        }
+      },
+      "required": [
+        "patch"
+      ],
+      "type": "object"
+    },
+    "name": "assets_style_set"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Gebäude-Planer: prüft eine Änderung an data/hub.json (patch oder ganzer candidate), ohne zu schreiben: Matrix, Befunde, Abweichung der Regeltabelle. Nutze es bei: Änderung an Plätzen oder Hub-Stufen vorab prüfen. Statt: hub.json von Hand ändern und go test fahren.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "description": "stattdessen der ganze Text einer hub.json",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "patch": {
+          "additionalProperties": true,
+          "description": "JSON-Merge-Patch (RFC 7396) auf data/hub.json: null löscht, Objekte werden gemischt, Listen (sites, islandSites, levels) ganz angeben",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "name": "hub_check"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Gebäude-Planer: data/hub.json als Matrix Hub-Stufe × Bauplatz (Platz, ab Stufe, Tiefe), Befunde der Prüfung (sim.ValidateHubData), Abweichung der Regeltabelle und Stand für hub_save. Nutze es bei: wann wird welches Gebäude frei, vor jeder Änderung an data/hub.json. Statt: data/hub.json und docs/rules/materialien-gebaeude.md lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "hub_get"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Gebäude-Planer: schreibt eine geprüfte Änderung in data/hub.json (format-stabil, ein Wert eine Zeile) und den erzeugten Block in docs/rules/materialien-gebaeude.md; mit Befunden, bei geänderter Datei (stand) oder ohne Änderung wird nichts geschrieben. Eine REG-Änderung: Commit mit Begründung. Nutze es bei: Plätze, Hub-Stufen, Händler oder Baugrund ändern. Statt: data/hub.json von Hand ändern.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate": {
+          "description": "stattdessen der ganze Text einer hub.json",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "patch": {
+          "additionalProperties": true,
+          "description": "JSON-Merge-Patch (RFC 7396) auf data/hub.json: null löscht, Objekte werden gemischt, Listen (sites, islandSites, levels) ganz angeben",
+          "type": "object"
+        },
+        "stand": {
+          "description": "Pflicht: Stand aus hub_get (Zeile Stand, hub=…); ist die Datei seitdem geändert, wird nichts geschrieben",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "hub_save"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Erzeugt ein Level mit der Spiel-EXE des Checkouts (k3c-game sim level, kein Server nötig; fehlt sie oder ist sie veraltet, nennt der Fehler den Bau-Befehl): Kopfzeile, eine Zeile je Abschnitt, Objekte nach Art, Warnungen der Prüfung. Gleicher Seed ergibt dasselbe Level wie im Spiel. Nutze es bei: Level eines Seeds prüfen. Statt: Spiel starten und Level von Hand ansehen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "biome": {
+          "description": "forest (Standard), cave oder mine",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "seed": {
+          "description": "Seed als Text, z. B. 0 oder familie-2026",
+          "type": "string"
+        }
+      },
+      "required": [
+        "seed"
+      ],
+      "type": "object"
+    },
+    "name": "level_generate"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Spielt eine Replay-Datei des Balancing-Testers (task balance:run -- --replay-dir) mit der Spiel-EXE des Checkouts (k3c-game sim balance --play) ohne Bot ab: Endzustand-Hash, Burgfall-Tick, Vergleich mit der Aufnahme, Warnung bei anderem Datenstand. Nur Dateien im Repo. Mit head: true zeigt das Spiel die Wiedergabe im Fenster (speed 1 bis 64). Nutze es bei: Replay nachrechnen oder Abweichung finden. Statt: Balancing-Binary in der Shell.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "head": {
+          "description": "Spiel mit Fenster öffnen und die Wiedergabe zeigen; ohne Angabe headless",
+          "type": "boolean"
+        },
+        "path": {
+          "description": "Replay-Datei relativ zur Repo-Wurzel, z. B. replays/12-p2-saver-d0.replay.json (aus task balance:run -- --replay-dir)",
+          "type": "string"
+        },
+        "speed": {
+          "description": "Zeitraffer 1 bis 64 (Standard 1 = Echtzeit), nur mit head",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "type": "object"
+    },
+    "name": "replay_run"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Ein Xbox-Bericht verdichtet: Controller mit gesehenen Tasten, FPS je Sprite-Stufe, Vollbild, Zurück-Navigationen. Nutze es bei: Controller- oder FPS-Befund eines Berichts. Statt: JSON-Datei lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Dateiname aus reports_list, z. B. gamepad-2026-09-30T19-14-02-123Z.json",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "name": "report_read"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Xbox-Berichte der Gamepad-Testseite (reports/*.json), neueste zuerst: Datum, Gerät, Controller, FPS. Nutze es bei: neue Berichte von der Xbox finden. Statt: ls reports/.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "name": "reports_list"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Spielstände (saves/ oder K3C_SAVES_DIR) mit Stufe, Tag, Spielern und Datum, Sicherungen eingeschlossen. Nutze es bei: welcher Spielstand existiert und wie weit er ist. Statt: saves/ durchsuchen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "name": "saves_list"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Deterministischer Simulationslauf mit der Spiel-EXE des Checkouts (k3c-game sim run, kein Server nötig), höchstens 100000 Ticks (30/s): Tag, Welle, Gold, Truppen, Verluste, Ende. Optional Eingaben je Monarch und Tick-Bereich (höchstens 100 Segmente). Mit head: true öffnet sich das Spiel und zeigt den Lauf (speed 1 bis 64), sonst läuft er headless. Bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Studio mit K3C_SIM_ENTSPERRT=1). Nutze es bei: kurzer deterministischer Regel-Check. Statt: go run oder ein Spiel von Hand.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "biome": {
+          "description": "forest (Standard), cave oder mine",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "head": {
+          "description": "Spiel mit Fenster öffnen und den Lauf zeigen; ohne Angabe headless",
+          "type": "boolean"
+        },
+        "inputs": {
+          "description": "gedrückte Tasten je Monarch und Tick-Bereich; ohne Angabe ein Monarch ohne Eingaben",
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "fromTick": {
+                "description": "erster Tick (einschließlich)",
+                "type": "integer"
+              },
+              "moveX": {
+                "description": "-1 (links) bis 1 (rechts)",
+                "type": "number"
+              },
+              "pay": {
+                "description": "Bezahl-Taste gehalten",
+                "type": "boolean"
+              },
+              "player": {
+                "description": "Monarch ab 0, höchstens 3",
+                "type": "integer"
+              },
+              "sprint": {
+                "type": "boolean"
+              },
+              "toTick": {
+                "description": "letzter Tick (ausschließlich)",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "fromTick",
+              "toTick"
+            ],
+            "type": "object"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "seed": {
+          "description": "Seed als Text",
+          "type": "string"
+        },
+        "speed": {
+          "description": "Zeitraffer 1 bis 64 (Standard 1 = Echtzeit), nur mit head",
+          "type": "integer"
+        },
+        "ticks": {
+          "description": "Anzahl Ticks, 1 bis 100000 (30 pro Sekunde)",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "seed",
+        "ticks"
+      ],
+      "type": "object"
+    },
+    "name": "sim_run"
+  },
+  {
+    "annotations": {
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Jeder Testlauf (Balancing, Performance, Stabilität) über ein Tool: action start (sofort zurück mit ID), status (≤ 10 Zeilen), stop, list. Nur mode offline (die Spiel-EXE des Checkouts rechnet, k3c-game sim balance; der Spielserver ist entfernt, B-887), focus balance. head: true zeigt den Lauf im Spiel mit Fenster (speed 1 bis 64, nur mit head, ein Lauf zugleich), sonst headless. stop beendet die EXE samt Kindprozessen. Bericht unter reports/simtest-<id>/. Ohne seeds gilt seedMode aus data/balance-targets.json (dev: nur k3c-dev); bots (z. B. coop2) und seedList. world (z. B. standard) und days (1–60): der Lauf spielt die ganze erste Insel. wait: true (bei start) oder action wait {id} wartet wie check_run auf das Ende (mit progressToken bis zum Ende, sonst höchstens 4 min). BAS-Standardlauf: {action: start, bots: coop2}; Meilenstein-Lauf: {action: start, bots: coop2, world: standard, days: 40}. Delta-Runde (B-640): action baseline {id, saveBaseline: M1} sichert einen durchgelaufenen Lauf als Baseline, start mit baseline: M1 vergleicht je Werte-Gruppe. start ist bis auf Widerruf gesperrt (Beschluss 🧑 2026-11-11, aufheben: Studio mit K3C_SIM_ENTSPERRT=1). Nutze es bei: jedem Balancing-, Performance- oder Stabilitätslauf. Statt: task balance oder Binaries in der Shell.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "description": "start, status, wait, stop, list oder baseline",
+          "type": "string"
+        },
+        "baseline": {
+          "description": "bei start: Name einer gesicherten Baseline (z. B. M1) als Vergleich; der Bericht zeigt den Delta-Vergleich je Werte-Gruppe",
+          "type": "string"
+        },
+        "bots": {
+          "description": "Bot-Profil des Balancing-Testers, z. B. coop2 oder saver; ersetzt den Bot aller Ziele",
+          "type": "string"
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "days": {
+          "description": "Tage je Lauf, 1 bis 60; ersetzt die Tage aller Ziele",
+          "type": "integer"
+        },
+        "focus": {
+          "description": "nur balance (Standard)",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "head": {
+          "description": "bei start: Spiel mit Fenster öffnen und die Läufe zeigen (nacheinander); ohne Angabe headless",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Lauf-ID für status und stop, z. B. run-1",
+          "type": "string"
+        },
+        "mode": {
+          "description": "offline (Spiel-EXE des Checkouts, Standard und einziger Modus)",
+          "type": "string"
+        },
+        "ohnePass": {
+          "description": "bei action baseline mit saveBaseline: sichert auch einen Lauf, der sein Ziel nicht erreicht hat (offener Meilenstein, z. B. Endboss nie besiegt); der Lauf muss gültig durchgelaufen sein",
+          "type": "boolean"
+        },
+        "players": {
+          "description": "Spieleranzahl aller Ziele, 1 bis 4, z. B. 1 für den Single-Player-Meilenstein",
+          "type": "integer"
+        },
+        "saveBaseline": {
+          "description": "bei action baseline mit id: sichert den durchgelaufenen Lauf unter diesem Namen (z. B. M1) in reports/baseline/<name>/; ohne Namen listet baseline die gesicherten",
+          "type": "string"
+        },
+        "seedList": {
+          "description": "genau diese Seeds mit Komma, z. B. k3c-dev oder k3c-dev,7; statt seeds",
+          "type": "string"
+        },
+        "seeds": {
+          "description": "Seeds, 1 bis 200; ohne Angabe nach seedMode aus data/balance-targets.json (dev: nur k3c-dev)",
+          "type": "integer"
+        },
+        "speed": {
+          "description": "Zeitraffer 1 bis 64 (Standard 1 = Echtzeit), nur mit head",
+          "type": "integer"
+        },
+        "vary": {
+          "description": "Werte-Varianten für diesen Lauf, mit Semikolon, z. B. economy.json:purse.startGold=500;economy.json:purse.maxGold=500; data/ bleibt unverändert",
+          "type": "string"
+        },
+        "wait": {
+          "description": "bei start: wartet wie check_run auf das Ende des Laufs (mit progressToken bis zum Ende, sonst höchstens 4 min, dann Lauf-ID)",
+          "type": "boolean"
+        },
+        "world": {
+          "description": "Welt aus data/worlds, z. B. standard; der Lauf spielt die ganze erste Insel (Bots steigen ab und kämpfen), Meilenstein-Lauf mit bots coop2, days 40",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "type": "object"
+    },
+    "name": "sim_test"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Prüft die Datei einer Welt wie das Laden im Spiel (strenge Felder, Inseln, Tiefen, Bosse, Häfen, Chunks, Geschichte) und mit allen Nachfolger-Welten; fehlende Einträge der Geschichte kommen als Hinweis, nicht als Fehler; ändert nichts. Nutze es bei: nach Änderungen, bevor die Welt gespielt wird. Statt: Spiel starten und auf den Ladefehler warten.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Welt-ID (Dateiname ohne .json, a-z, 0-9, -)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "world_check"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Setzt die geplanten Chunks (plannedChunks) und/oder die Chunk-Anzahl (chunkCounts) einer Tiefe einer Insel; [] bzw. 0 entfernt. Jede Insel außer der letzten braucht in Tiefe 0 einen Hafen-Chunk (kind harbor). Nutze es bei: Chunk-Planung einer Insel-Stufe. Statt: plannedChunks in der Datei von Hand bearbeiten.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "chunks": {
+          "description": "geplante Chunks dieser Tiefe (plannedChunks, docs/rules/geplante-chunks.md), z. B. [{slot: -7, kind: harbor}]; [] entfernt, fehlt = unverändert",
+          "items": true,
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "count": {
+          "description": "Chunk-Anzahl dieser Tiefe (chunkCounts: 16, 24, 40, 64, 100, 160); 0 entfernt, fehlt = unverändert",
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "depth": {
+          "description": "Tiefe der Stufe (Wert aus depths der Insel, nicht der Index)",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Welt-ID",
+          "type": "string"
+        },
+        "island": {
+          "description": "Insel-ID",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "island",
+        "depth"
+      ],
+      "type": "object"
+    },
+    "name": "world_chunks_set"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Legt eine neue Welt an (data/worlds/<id>.json): eine Insel island1 mit Tiefen 0-4, Kampf groups/5, optional von einer Eltern-Welt erbend und mit Geschichte (story); eine vorhandene Welt wird nie überschrieben. Danach mit world_set, world_override_set, world_chunks_set und world_story_set ausbauen. Nutze es bei: neue Welt entwerfen. Statt: Welt-Datei von Hand schreiben.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "extends": {
+          "description": "Eltern-Welt, deren Werte geerbt werden (leer = Basis data/)",
+          "type": "string"
+        },
+        "id": {
+          "description": "neue Welt-ID (a-z, 0-9, -, höchstens 32 Zeichen); die Datei darf noch nicht existieren",
+          "type": "string"
+        },
+        "name": {
+          "description": "Anzeigename der Welt",
+          "type": "string"
+        },
+        "story": {
+          "additionalProperties": false,
+          "description": "Geschichte der neuen Welt wie bei world_story_set (lexicon, start, etappen, end, bottles, islands: {island1: {arrival, boss, done}}); fehlt sie, entsteht die Welt ohne story",
+          "properties": {
+            "bottles": {
+              "description": "Einträge der Flaschenpost, je Eintrag 1 bis 2 Zeilen; ersetzt die ganze Liste, [] entfernt",
+              "items": {
+                "items": {
+                  "type": "string"
+                },
+                "type": [
+                  "null",
+                  "array"
+                ]
+              },
+              "type": [
+                "null",
+                "array"
+              ]
+            },
+            "end": {
+              "description": "Zeilen beim Kampagnensieg (1 bis 2); [] entfernt",
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "null",
+                "array"
+              ]
+            },
+            "etappen": {
+              "additionalProperties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": [
+                  "null",
+                  "array"
+                ]
+              },
+              "description": "Etappen-Nummer (z. B. 1) → Zeilen beim Abschluss der Etappe; nur genannte Etappen ändern sich, [] entfernt die Etappe",
+              "type": "object"
+            },
+            "islands": {
+              "additionalProperties": {
+                "additionalProperties": false,
+                "properties": {
+                  "arrival": {
+                    "description": "Zeilen bei der Ankunft auf der Insel (1 bis 2); [] entfernt, fehlt = unverändert",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": [
+                      "null",
+                      "array"
+                    ]
+                  },
+                  "boss": {
+                    "description": "Zeilen, wenn der Endboss ausgelöst wird (1 bis 2); [] entfernt, fehlt = unverändert",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": [
+                      "null",
+                      "array"
+                    ]
+                  },
+                  "done": {
+                    "description": "Abschlusszeile nach dem Sieg über den Endboss (1 bis 2 Zeilen); [] entfernt, fehlt = unverändert",
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": [
+                      "null",
+                      "array"
+                    ]
+                  }
+                },
+                "type": "object"
+              },
+              "description": "Insel-ID → {arrival, boss, done}; nur genannte Inseln und Einträge ändern sich",
+              "type": "object"
+            },
+            "lexicon": {
+              "description": "Wortschatz der Kunstsprache: Kunstwörter klein, Apostroph und Bindestrich im Wort erlaubt; ersetzt die ganze Liste, [] entfernt",
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "null",
+                "array"
+              ]
+            },
+            "start": {
+              "description": "Zeilen beim Start einer neuen Kampagne (1 bis 2; je Zeile 2 bis 3 echte Wörter in GROSSBUCHSTABEN, jedes andere Wort aus lexicon); [] entfernt",
+              "items": {
+                "type": "string"
+              },
+              "type": [
+                "null",
+                "array"
+              ]
+            }
+          },
+          "type": [
+            "null",
+            "object"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "type": "object"
+    },
+    "name": "world_create"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Löscht die Datei einer Welt (data/worlds/<id>.json) endgültig (sie liegt in Git); braucht confirm=true. Abgelehnt werden die festen Welten (standard und jede Welt aus data/paper.json › weltbilder) und Welten mit Erben (andere Welten, deren extends auf sie zeigt; die Antwort nennt sie). Spielstände der Welt bleiben, die Antwort warnt vor ihnen. Nutze es bei: eine Test- oder Entwurfs-Welt entfernen. Statt: die Datei von Hand löschen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "confirm": {
+          "description": "muss true sein: die Datei wird endgültig gelöscht",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "Welt-ID der zu löschenden Welt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "world_delete"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Eine Welt: Kopf, Inseln mit Tiefen und Biomen, geplante Chunks, die Geschichte (Wortschatz und Zeilen je Wendepunkt, fehlende als „fehlt“), dazu der Text der Datei. Nutze es bei: vor jeder Änderung an einer Welt. Statt: data/worlds/<id>.json lesen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Welt-ID (Dateiname ohne .json, a-z, 0-9, -)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "world_get"
+  },
+  {
+    "annotations": {
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true
+    },
+    "description": "Welten unter data/worlds/ mit ID, Name, Eltern-Welt und Zahl der Inseln, die Standard-Welt zuerst. Nutze es bei: welche Welten es gibt, vor world_create. Statt: data/worlds/ auflisten und Dateien öffnen.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "world_list"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Übersteuert ein Basis-Feld (data/<file>.json › path, z. B. economy › purse › startGold) in den `overrides` der Welt; null oder der Basiswert setzt es zurück; geprüft mit allen Nachfolger-Welten. Erlaubte Dateien: buildings, economy, enemies, events, goals, hub, monarch, ship, troops, waves, welt-events; gesperrt sind u. a. hub › sitePlacement und economy › payRangeUnits (docs/rules/welten.md § 1.3). Nutze es bei: Werte einer Welt anders als die Basis (Gold, Preise, Händler, Handwerker). Statt: data/*.json ändern (gilt für alle Welten).",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "file": {
+          "description": "Basis-Datei ohne .json, z. B. economy (Namen nennt die Fehlermeldung bei einem unbekannten Feld)",
+          "type": "string"
+        },
+        "id": {
+          "description": "Welt-ID",
+          "type": "string"
+        },
+        "path": {
+          "description": "Pfad zum Feld in der Datei, z. B. [purse, startGold]",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "value": {
+          "description": "neuer Wert (JSON); fehlt er oder ist null, erbt das Feld wieder"
+        }
+      },
+      "required": [
+        "id",
+        "file",
+        "path"
+      ],
+      "type": "object"
+    },
+    "name": "world_override_set"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Ändert Kopf (name, gewaesser = Gewässer der Welt: Fluss, See, Küste oder Meer, notes, extends, kind = spinoff für Ableger oder Episode einer Eltern-Welt | new für komplett neue Welt, combat, skins = Basis-Asset → Ersatz-Asset) und Inseln (anhängen oder Felder ändern: Tiefen oder Biome, Skalierung, plannedChunks, chunkCounts, endBoss) einer Welt; der ganze Patch wird angewendet und dann einmal geprüft wie beim Laden im Spiel, bei Fehler bleibt die Datei. Insel anhängen in einem Aufruf: den Hafen der Insel davor mitgeben, z. B. islands: [{id: island1, plannedChunks: {\"0\": [{slot: -7, kind: harbor}]}}, {id: island2}]. Nutze es bei: Inseln, Tiefen, Biome, Kampfvariante einer Welt festlegen. Statt: Welt-Datei von Hand ändern.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Welt-ID",
+          "type": "string"
+        },
+        "patch": {
+          "additionalProperties": true,
+          "description": "Felder: name, gewaesser, notes, extends, kind, combat {mode, groupSize}, skins {basisAsset: ersatzAsset} (null entfernt); islands: Liste von Inseln {id, name?, etappe? (Ganzzahl ≥ 1, lückenlos ab 1, nicht fallend; null entfernt), depths? | biomes?, depthScaling? {hp, damage, speed}, plannedChunks?, chunkCounts?, endBoss?, nature?, natureByDepth?}. Bekannte Insel-id: nur genannte Felder ändern; neue id: anhängen (Standard: Tiefen 0-4, Skalierung der Standard-Welt). biomes = Biom-IDs statt Tiefen (forest, cave, mine, ironhold, crystal).",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "patch"
+      ],
+      "type": "object"
+    },
+    "name": "world_set"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": false
+    },
+    "description": "Setzt die Geschichte einer Welt (story: lexicon, start, etappen, end, bottles) und ihrer Inseln (islands: arrival, boss, done) in einem Aufruf oder je Teil; fehlt ein Feld, bleibt es, [] entfernt den Eintrag. Geschrieben wird nur, wenn die Prüfung wie beim Laden im Spiel besteht (docs/rules/welten.md § 2.2), sonst nennt der Fehler Feld und Zeile; alle übrigen Felder der Datei bleiben byte-gleich. Die Antwort nennt gesetzte, entfernte und noch fehlende Einträge. Nutze es bei: Wortschatz und Zeilen der Geschichte einer Welt schreiben oder ändern. Statt: story in der Welt-Datei von Hand bearbeiten.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "bottles": {
+          "description": "Einträge der Flaschenpost, je Eintrag 1 bis 2 Zeilen; ersetzt die ganze Liste, [] entfernt",
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "null",
+              "array"
+            ]
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "checkout": {
+          "description": "Worktree-Ordnername oder absoluter Pfad des eigenen Checkouts (git rev-parse --show-toplevel); gilt vor dem Header. Im Worktree immer setzen.",
+          "type": "string"
+        },
+        "end": {
+          "description": "Zeilen beim Kampagnensieg (1 bis 2); [] entfernt",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "etappen": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": [
+              "null",
+              "array"
+            ]
+          },
+          "description": "Etappen-Nummer (z. B. 1) → Zeilen beim Abschluss der Etappe; nur genannte Etappen ändern sich, [] entfernt die Etappe",
+          "type": "object"
+        },
+        "id": {
+          "description": "Welt-ID",
+          "type": "string"
+        },
+        "islands": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "arrival": {
+                "description": "Zeilen bei der Ankunft auf der Insel (1 bis 2); [] entfernt, fehlt = unverändert",
+                "items": {
+                  "type": "string"
+                },
+                "type": [
+                  "null",
+                  "array"
+                ]
+              },
+              "boss": {
+                "description": "Zeilen, wenn der Endboss ausgelöst wird (1 bis 2); [] entfernt, fehlt = unverändert",
+                "items": {
+                  "type": "string"
+                },
+                "type": [
+                  "null",
+                  "array"
+                ]
+              },
+              "done": {
+                "description": "Abschlusszeile nach dem Sieg über den Endboss (1 bis 2 Zeilen); [] entfernt, fehlt = unverändert",
+                "items": {
+                  "type": "string"
+                },
+                "type": [
+                  "null",
+                  "array"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "description": "Insel-ID → {arrival, boss, done}; nur genannte Inseln und Einträge ändern sich",
+          "type": "object"
+        },
+        "lexicon": {
+          "description": "Wortschatz der Kunstsprache: Kunstwörter klein, Apostroph und Bindestrich im Wort erlaubt; ersetzt die ganze Liste, [] entfernt",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        },
+        "start": {
+          "description": "Zeilen beim Start einer neuen Kampagne (1 bis 2; je Zeile 2 bis 3 echte Wörter in GROSSBUCHSTABEN, jedes andere Wort aus lexicon); [] entfernt",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "null",
+            "array"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "name": "world_story_set"
+  }
+]

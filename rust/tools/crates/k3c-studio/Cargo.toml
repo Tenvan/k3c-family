@@ -1,0 +1,53 @@
+[package]
+name = "k3c-studio"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+description = "Studio für Game- und Level-Designer: Tauri-Fenster, UI-API und MCP-Server (Port von tools/k3c-studio, RU70)"
+default-run = "k3c-studio"
+
+[lints]
+workspace = true
+
+[lib]
+name = "k3c_studio"
+
+[[bin]]
+name = "k3c-studio"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build.workspace = true
+
+[dependencies]
+k3c-kit = { path = "../k3c-kit" }
+# Genutzt ab RU70.8 (Assets).
+k3c-assetkit = { path = "../k3c-assetkit" }
+tauri.workspace = true
+tauri-plugin-window-state.workspace = true
+tauri-plugin-single-instance.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+schemars.workspace = true
+rmcp.workspace = true
+chrono.workspace = true
+regex.workspace = true
+url.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "signal"] }
+
+[target.'cfg(windows)'.dependencies]
+windows = { workspace = true, features = [
+    "Win32_Foundation",
+    "Win32_System_Console",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[dev-dependencies]
+tauri = { workspace = true, features = ["test"] }
+reqwest.workspace = true
+tempfile.workspace = true
+
+[features]
+# `tauri build` setzt custom-protocol: Frontend aus dist/ eingebettet statt devUrl.
+custom-protocol = ["tauri/custom-protocol"]

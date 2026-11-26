@@ -5,11 +5,11 @@ import type { WorldBackend } from './typesWorld';
 import type { HubBackend } from './typesHub';
 import type { BalanceBackend } from './typesBalance';
 
-// Client-Server-Betrieb (k3c-studio -headless/-dev, Go: uiapi.go über tools/workkit/uikit): Transport in
-// tools/webkit/lib/devRpc.ts, Methoden wie die Wails-Bindings (wails.ts).
-const rpc = devRpc('k3c-studio');
+// Methodenzuordnung für alle Transporte mit Aufruf-Tabelle: Client-Server-Betrieb (k3c-studio -headless/-dev über
+// tools/webkit/lib/devRpc.ts) und das Tauri-Fenster der Rust-Fassung (tauri.ts). Namen wie die Wails-Bindings (wails.ts).
+export type Rpc = <T>(method: string, ...args: unknown[]) => Promise<T>;
 
-function httpAssets(): AssetsBackend {
+function rpcAssets(rpc: Rpc): AssetsBackend {
   return {
     assetsList: () => rpc('AssetsList'),
     assetsIndex: () => rpc('AssetsIndex'),
@@ -34,7 +34,7 @@ function httpAssets(): AssetsBackend {
   };
 }
 
-function httpWorld(): WorldBackend {
+function rpcWorld(rpc: Rpc): WorldBackend {
   return {
     worldList: () => rpc('WorldList'),
     worldDetail: (id) => rpc('WorldDetail', id),
@@ -54,7 +54,7 @@ function httpWorld(): WorldBackend {
   };
 }
 
-function httpHub(): HubBackend {
+function rpcHub(rpc: Rpc): HubBackend {
   return {
     hubPlan: () => rpc('HubPlan'),
     hubCheck: (candidate) => rpc('HubCheck', candidate),
@@ -63,7 +63,7 @@ function httpHub(): HubBackend {
   };
 }
 
-function httpBalance(): BalanceBackend {
+function rpcBalance(rpc: Rpc): BalanceBackend {
   return {
     balanceStart: (spec) => rpc('BalanceStart', spec),
     balanceRuns: () => rpc('BalanceRuns'),
@@ -86,17 +86,22 @@ function httpBalance(): BalanceBackend {
   };
 }
 
-export function httpBackend(): Backend {
+/** Das Backend aus den drei Teilen eines Transports: Aufrufe, Ereignisse, Adressen öffnen. */
+export function rpcBackend(rpc: Rpc, on: Backend['on'], openUrl: Backend['openUrl']): Backend {
   return {
     mock: false,
     info: () => rpc('Info'),
-    ...httpAssets(),
-    ...httpWorld(),
-    ...httpHub(),
-    ...httpBalance(),
-    openUrl: (url) => {
-      window.open(url, '_blank', 'noopener');
-    },
-    on: devEvents<Events>(),
+    ...rpcAssets(rpc),
+    ...rpcWorld(rpc),
+    ...rpcHub(rpc),
+    ...rpcBalance(rpc),
+    openUrl,
+    on,
   };
+}
+
+export function httpBackend(): Backend {
+  return rpcBackend(devRpc('k3c-studio'), devEvents<Events>(), (url) => {
+    window.open(url, '_blank', 'noopener');
+  });
 }

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "createdAt": "2026-09-30T19:13:40.000Z",
+  "receivedAt": "2026-09-30T19:14:02.123Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; Xbox; Xbox One) AppleWebKit/537.36 Edg/140.0",
+  "pads": {
+    "0": { "id": "Xbox Wireless Controller", "mapping": "standard", "buttonCount": 17, "axisCount": 4, "buttonsSeen": [0, 2, 3, 8, 9, 16], "vibration": true },
+    "1": { "id": "Xbox Wireless Controller", "mapping": "standard", "buttonCount": 17, "axisCount": 4, "buttonsSeen": [], "vibration": true }
+  },
+  "maxSimultaneousPads": 2,
+  "backNavigations": 1,
+  "keyEvents": ["ArrowLeft", "Enter", "Escape"],
+  "fullscreenAttempts": [{ "via": "button", "ok": true }, { "via": "auto", "ok": false, "error": "Permissions check failed" }],
+  "perf": [{ "sprites": 100, "avgFps": 60, "minFps": 59 }, { "sprites": 4000, "avgFps": 57.6, "minFps": 41 }]
+}
