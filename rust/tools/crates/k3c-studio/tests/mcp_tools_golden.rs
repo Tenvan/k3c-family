@@ -12,22 +12,14 @@ mod mcp_client;
 
 /// Golden-Namen, die erst spätere Sessions von RU70 bringen; am Ende leer.
 const PENDING_TOOLS: &[&str] = &[
-    "assets_create",
-    "assets_delete",
-    "assets_get",
-    "assets_guide",
     "assets_hit_add",
     "assets_hit_drop",
     "assets_hits",
     "assets_import",
-    "assets_list",
     "assets_preview",
     "assets_render",
     "assets_research",
     "assets_review",
-    "assets_set",
-    "assets_style_get",
-    "assets_style_set",
     "replay_run",
     "sim_run",
     "sim_test",

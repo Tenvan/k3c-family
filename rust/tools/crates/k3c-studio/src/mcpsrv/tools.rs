@@ -39,6 +39,14 @@ pub(super) const CATALOG: &[&str] = &[
     "reports_list",
     "report_read",
     "saves_list",
+    "assets_guide",
+    "assets_list",
+    "assets_get",
+    "assets_create",
+    "assets_set",
+    "assets_style_get",
+    "assets_style_set",
+    "assets_delete",
     "hub_get",
     "hub_check",
     "hub_save",
@@ -57,6 +65,8 @@ pub(super) const CATALOG: &[&str] = &[
 pub(super) fn router() -> ToolRouter<Studio> {
     Studio::engine_router()
         + Studio::gamedata_router()
+        + Studio::assets_router()
+        + Studio::assets_set_router()
         + Studio::hub_router()
         + Studio::world_read_router()
         + Studio::world_write_router()

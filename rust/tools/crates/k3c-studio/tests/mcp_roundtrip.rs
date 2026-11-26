@@ -91,3 +91,70 @@ async fn instructions_nennen_jedes_tool() {
     }
     server.stop().await.unwrap();
 }
+
+/// RU70.12/AC-02: `prompts/list` führt je Vorlage `asset-<id>`, Argumente = Platzhalter im Text, Pflicht außer `zustand`
+/// und `basis` (wie `tools_assets_prompts.go`); `prompts/get` füllt sie aus.
+#[tokio::test(flavor = "multi_thread")]
+async fn prompts_je_vorlage() {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../../..");
+    let datei = std::fs::read_to_string(root.join("data/asset-prompts.json")).unwrap();
+    let vorlagen: Vec<Value> = serde_json::from_str(&datei).unwrap();
+    assert!(!vorlagen.is_empty());
+    let server = Server::new(Config {
+        root,
+        port: 0,
+        version: "test".to_owned(),
+        log: k3c_kit::logger::Logger::discard(),
+        usage: None,
+    });
+    server.start().await.unwrap();
+    let mut client = mcp_client::Client::connect(server.url()).await;
+    assert!(client.init["capabilities"]["prompts"].is_object(), "{}", client.init);
+    let list = client.request("prompts/list", json!({})).await;
+    let mut want: Vec<Value> = vorlagen.iter().map(erwarteter_prompt).collect();
+    want.sort_by_key(|p| p["name"].as_str().unwrap().to_owned());
+    assert_eq!(list["prompts"], json!(want));
+    for (vorlage, prompt) in vorlagen.iter().map(|v| (v, erwarteter_prompt(v))) {
+        let mut args = serde_json::Map::new();
+        let mut text = vorlage["text"].as_str().unwrap().to_owned();
+        for name in prompt["arguments"].as_array().into_iter().flatten() {
+            let name = name["name"].as_str().unwrap();
+            args.insert(name.to_owned(), json!(format!("<{name}>")));
+            text = text.replace(&format!("{{{name}}}"), &format!("<{name}>"));
+        }
+        let params = json!({"name": prompt["name"], "arguments": args});
+        let got = client.request("prompts/get", params).await;
+        assert_eq!(got["description"], vorlage["titel"]);
+        assert_eq!(
+            got["messages"],
+            json!([{"role": "user", "content": {"type": "text", "text": text}}])
+        );
+    }
+    server.stop().await.unwrap();
+}
+
+fn erwarteter_prompt(vorlage: &Value) -> Value {
+    let feld = |name: &str| vorlage[name].as_str().unwrap();
+    let muster = regex::Regex::new(
+        r"\{(asset|rig|teil|pfad|zustand|basis|eingabe|material|ton|slot|datei|pack|lizenz|treffer)\}",
+    );
+    let mut namen: Vec<String> = Vec::new();
+    for found in muster.unwrap().captures_iter(feld("text")) {
+        if !namen.iter().any(|n| n == &found[1]) {
+            namen.push(found[1].to_owned());
+        }
+    }
+    let mut prompt = json!({"name": format!("asset-{}", feld("id")), "title": feld("titel"),
+        "description": format!("Asset-Prompt ({}): {}", feld("ort"), feld("titel"))});
+    let argumente: Vec<Value> = namen
+        .iter()
+        .map(|n| match n.as_str() {
+            "zustand" | "basis" => json!({ "name": n }),
+            _ => json!({"name": n, "required": true}),
+        })
+        .collect();
+    if !argumente.is_empty() {
+        prompt["arguments"] = json!(argumente);
+    }
+    prompt
+}

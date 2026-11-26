@@ -3,7 +3,12 @@
 
 mod checkout_policy;
 mod kit;
+#[cfg(test)]
+pub(crate) mod test_helpers;
 mod tools;
+mod tools_assets;
+mod tools_assets_prompts;
+mod tools_assets_set;
 mod tools_engine;
 mod tools_gamedata;
 mod tools_world;
@@ -51,6 +56,7 @@ impl Server {
 
     /// Wie [`Server::new`] mit einer anderen Engine-Seite des Welten-Editors (Tests).
     pub(crate) fn with_world_engine(cfg: Config, world_engine: EngineFactory) -> Server {
+        let prompts = tools_assets_prompts::prompt_router(&cfg.root);
         let options = Options {
             name: NAME.to_owned(),
             version: cfg.version,
@@ -66,7 +72,7 @@ impl Server {
             ..Options::default()
         };
         Server {
-            kit: KitServer::new(options, Studio { world_engine }, tools::router(), None),
+            kit: KitServer::new(options, Studio { world_engine }, tools::router(), prompts),
         }
     }
 
