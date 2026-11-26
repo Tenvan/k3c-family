@@ -18,6 +18,15 @@ const ENGINE_TIMEOUT: Duration = Duration::from_secs(30);
 /// (`None`: der Lauf nannte keinen). Ein Fehler ist die Meldung der Spiel-EXE oder ein Startfehler. Blockiert.
 pub type Engine = Arc<dyn Fn(Vec<u8>) -> Result<Option<Box<RawValue>>, String> + Send + Sync>;
 
+/// Baut die Engine für den Checkout eines Aufrufs; Studio und MCP nehmen [`exe_factory`], Tests einen Ersatz (Gos
+/// `worldEngine`).
+pub type EngineFactory = Arc<dyn Fn(&std::path::Path) -> Engine + Send + Sync>;
+
+/// [`exe`] als [`EngineFactory`].
+pub fn exe_factory() -> EngineFactory {
+    Arc::new(|root| exe(root))
+}
+
 /// Die Engine über die Spiel-EXE des Checkouts `root`; ist sie nicht gebaut oder veraltet, nennt der Fehler den
 /// Bau-Befehl.
 pub fn exe(root: impl Into<std::path::PathBuf>) -> Engine {

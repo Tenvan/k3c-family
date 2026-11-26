@@ -6,6 +6,7 @@ pub mod open_url;
 pub mod rpc;
 mod studio;
 pub mod window;
+mod world;
 
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Condvar, Mutex, MutexGuard, PoisonError};
@@ -19,6 +20,7 @@ use serde::Serialize;
 use serde_json::{Value, json};
 
 use crate::studioview::Game;
+use crate::world::{EngineFactory, Watcher, exe_factory};
 use crate::{mcpsrv, ports};
 
 /// Version der App (Info, MCP).
@@ -27,6 +29,8 @@ pub const VERSION: &str = "0.1.0";
 pub const LOG_SOURCE: &str = "k3c-studio";
 /// Ereignis: Zustand des MCP-Servers.
 pub const EV_MCP_STATE: &str = "mcp:state";
+/// Ereignis: Welt- oder Basis-Dateien haben sich geändert.
+pub const EV_WORLD: &str = "world:changed";
 
 /// Zusätzliche Senke der Ereignisse (im Fenster `AppHandle::emit`); an den [`Bus`] gehen sie immer.
 pub type Emit = Arc<dyn Fn(&str, Value) + Send + Sync>;
@@ -52,6 +56,8 @@ struct Running {
     log: Log,
     tracker: Arc<Tracker>,
     server: Arc<mcpsrv::Server>,
+    /// Welten-Wächter; er endet, wenn er fallen gelassen wird.
+    watcher: Watcher,
 }
 
 /// Backend des Studios.
@@ -67,10 +73,19 @@ pub struct App {
     running: Mutex<Option<Running>>,
     /// „Im Spiel ansehen“ im Bereich Assets (WB1.4), angelegt beim ersten Aufruf.
     game: Mutex<Option<Arc<Game>>>,
+    /// Engine-Seite des Welten-Editors der Oberfläche.
+    world_engine: EngineFactory,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
     m.lock().unwrap_or_else(PoisonError::into_inner)
+}
+
+fn emit_to(forward: Option<&Emit>, bus: &Bus, name: &str, data: Value) {
+    if let Some(forward) = forward {
+        forward(name, data.clone());
+    }
+    bus.publish(name, vec![data]);
 }
 
 /// Datei unter `<%APPDATA%>/k3c/` wie Go `windowstate.ConfigPath`.
@@ -95,12 +110,20 @@ impl App {
             mcp: Mutex::new(McpState::default()),
             running: Mutex::new(None),
             game: Mutex::new(None),
+            world_engine: exe_factory(),
         }
     }
 
     /// Andere Datei für die Nutzungsstatistik (Tests).
     pub fn with_usage_file(mut self, path: PathBuf) -> App {
         self.usage_file = path;
+        self
+    }
+
+    /// Andere Engine-Seite des Welten-Editors (Tests).
+    #[cfg(test)]
+    pub(crate) fn with_world_engine(mut self, engine: EngineFactory) -> App {
+        self.world_engine = engine;
         self
     }
 
@@ -125,10 +148,7 @@ impl App {
 
     /// Sendet ein Ereignis an die Oberfläche (Fenster und Ströme der HTTP-Oberfläche).
     pub fn emit(&self, name: &str, data: Value) {
-        if let Some(forward) = &self.forward {
-            forward(name, data.clone());
-        }
-        self.bus.publish(name, vec![data]);
+        emit_to(self.forward.as_ref(), &self.bus, name, data);
     }
 
     /// Öffnet Log und Statistik und startet den MCP-Server. Ein belegter Port hält die App nicht auf: der Grund steht
@@ -146,6 +166,8 @@ impl App {
             Arc::new(chrono::Local::now),
             Arc::new(move |e: &str| warn.warn(&format!("📄 {e}"), &[("ns", json!("usage"))])),
         );
+        // Wie Go vor dem Server.
+        let watcher = self.watch_worlds();
         let server = Arc::new(mcpsrv::Server::new(mcpsrv::Config {
             root: self.root.clone(),
             port: self.port,
@@ -170,6 +192,7 @@ impl App {
             log,
             tracker,
             server,
+            watcher,
         });
         self.set_mcp(started.err());
         self.mark_ready();
@@ -196,6 +219,7 @@ impl App {
         };
         let logger = running.log.logger();
         logger.info("🛑 k3c-studio beendet", &[("ns", json!("main"))]);
+        drop(running.watcher);
         if let Err(e) = running.server.stop().await {
             logger.warn(
                 "❌ server nicht sauber beendet",

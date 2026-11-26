@@ -6,11 +6,14 @@ mod kit;
 mod tools;
 mod tools_engine;
 mod tools_gamedata;
+mod tools_world;
+mod tools_world_story;
 
 use std::path::PathBuf;
 use std::sync::Arc;
 
 use crate::ports;
+use crate::world::{self, EngineFactory};
 pub use kit::{Call, HEADER_ROOT, Snapshot, find_root};
 use kit::{KitServer, Logger, Options, Tracker, resolve_port_env};
 pub use tools::Studio;
@@ -43,6 +46,11 @@ pub struct Server {
 impl Server {
     /// Baut den Server mit allen Tools aus dem Katalog; gestartet wird er mit [`Server::start`].
     pub fn new(cfg: Config) -> Server {
+        Server::with_world_engine(cfg, world::exe_factory())
+    }
+
+    /// Wie [`Server::new`] mit einer anderen Engine-Seite des Welten-Editors (Tests).
+    pub(crate) fn with_world_engine(cfg: Config, world_engine: EngineFactory) -> Server {
         let options = Options {
             name: NAME.to_owned(),
             version: cfg.version,
@@ -58,7 +66,7 @@ impl Server {
             ..Options::default()
         };
         Server {
-            kit: KitServer::new(options, Studio, tools::router(), None),
+            kit: KitServer::new(options, Studio { world_engine }, tools::router(), None),
         }
     }
 

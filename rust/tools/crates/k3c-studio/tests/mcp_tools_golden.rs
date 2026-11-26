@@ -34,15 +34,6 @@ const PENDING_TOOLS: &[&str] = &[
     "replay_run",
     "sim_run",
     "sim_test",
-    "world_check",
-    "world_chunks_set",
-    "world_create",
-    "world_delete",
-    "world_get",
-    "world_list",
-    "world_override_set",
-    "world_set",
-    "world_story_set",
 ];
 
 /// Schema auf das, was gleich sein muss: je Eigenschaft Typ (ohne `null`), Beschreibung, `enum`, `items.type`; dazu die

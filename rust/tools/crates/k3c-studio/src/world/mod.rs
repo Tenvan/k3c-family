@@ -30,7 +30,7 @@ mod edit_override_lists_tests;
 #[cfg(test)]
 mod etappe_tests;
 #[cfg(test)]
-mod exe_tests;
+pub(crate) mod exe_tests;
 #[cfg(test)]
 mod world_tests;
 
@@ -44,7 +44,7 @@ use serde_json::value::RawValue;
 pub use catalog::PicksView;
 pub use edit::{CreateView, Warnings};
 pub use endboss_skins::EndBossOption;
-pub use level::{Engine, LevelView, exe};
+pub use level::{Engine, EngineFactory, LevelView, exe, exe_factory};
 pub use story::{IslandStory, Story, StoryPatch, StoryResult};
 pub use values::{ValueEntry, ValuesView};
 pub use watch::{Changed, Watcher, changed_ids, snapshot, watch};

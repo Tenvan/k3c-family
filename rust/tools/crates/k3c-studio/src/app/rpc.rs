@@ -8,7 +8,7 @@ use k3c_kit::uikit::{self, Method};
 use serde::Serialize;
 use serde_json::Value;
 
-use super::App;
+use super::{App, world};
 
 #[cfg(test)]
 #[path = "rpc_tests.rs"]
@@ -24,9 +24,24 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("StudioSoundData", studio_sound_data),
     ("StudioSources", studio_sources),
     ("StudioGameOpen", studio_game_open),
+    ("WorldList", world::list),
+    ("WorldDetail", world::detail),
+    ("WorldLevel", world::level),
+    ("WorldValues", world::values),
+    ("WorldCreate", world::create),
+    ("WorldDelete", world::delete),
+    ("WorldOverrideSet", world::override_set),
+    ("WorldIslandEtappe", world::island_etappe),
+    ("WorldSetKind", world::set_kind),
+    ("WorldSetExtends", world::set_extends),
+    ("WorldPicks", world::picks),
+    ("WorldSetPick", world::set_pick),
+    ("WorldIslandEndBoss", world::island_end_boss),
+    ("WorldSkins", world::skins),
+    ("WorldNatureSet", world::nature_set),
 ];
 
-fn encode(value: impl Serialize) -> Result<Value, String> {
+pub(super) fn encode(value: impl Serialize) -> Result<Value, String> {
     serde_json::to_value(value).map_err(|e| e.to_string())
 }
 

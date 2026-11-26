@@ -3,6 +3,7 @@
 
 use std::collections::BTreeMap;
 
+use serde_json::Value;
 use serde_json::value::RawValue;
 
 /// Maskiert U+2028 und U+2029 wie Go (immer, auch ohne HTML-Escapes).
@@ -41,12 +42,17 @@ pub fn compact(src: &str) -> String {
     }
 }
 
-/// Go `json.Marshal` eines `json.RawMessage`: kompakt, `<`, `>`, `&`, U+2028 und U+2029 maskiert.
-fn marshal_raw(src: &str) -> String {
-    escape_separators(&strip_space(src))
+/// Maskiert in fertigem JSON `<`, `>`, `&`, U+2028 und U+2029 wie Go mit HTML-Escapes.
+fn escape_html(json: &str) -> String {
+    escape_separators(json)
         .replace('<', "\\u003c")
         .replace('>', "\\u003e")
         .replace('&', "\\u0026")
+}
+
+/// Go `json.Marshal` eines `json.RawMessage`: kompakt und maskiert.
+fn marshal_raw(src: &str) -> String {
+    escape_html(&strip_space(src))
 }
 
 /// Go `json.Marshal` einer `map[string]json.RawMessage` (Schlüssel nach Bytes sortiert).
@@ -110,4 +116,58 @@ pub fn indent(src: &str, prefix: &str, step: &str) -> String {
         }
     }
     out
+}
+
+/// Go `float64` in `json.Marshal`: kürzeste Form, Exponent nur unter 1e-6 und ab 1e21.
+fn go_float(f: f64) -> String {
+    let abs = f.abs();
+    if abs == 0.0 || (1e-6..1e21).contains(&abs) {
+        return format!("{f}");
+    }
+    let text = format!("{f:e}");
+    match text.split_once('e') {
+        Some((mantissa, exponent)) if !exponent.starts_with('-') => format!("{mantissa}e+{exponent}"),
+        _ => text,
+    }
+}
+
+/// Go `json.Marshal` eines nach `any` gelesenen Werts (so sehen die MCP-Tools ihre freien Argumente): Schlüssel nach
+/// Bytes sortiert, jede Zahl als `float64`, `<`, `>`, `&`, U+2028 und U+2029 maskiert. Die Tiefe ist durch das Lesen
+/// begrenzt (`serde_json` bricht nach 128 Ebenen ab).
+pub fn go_marshal(value: &Value) -> String {
+    match value {
+        Value::Null => "null".to_owned(),
+        Value::Bool(b) => b.to_string(),
+        Value::Number(n) => n.as_f64().map_or_else(|| n.to_string(), go_float),
+        Value::String(s) => escape_html(&go_quote(s)),
+        Value::Array(list) => {
+            let parts: Vec<String> = list.iter().map(go_marshal).collect();
+            format!("[{}]", parts.join(","))
+        }
+        Value::Object(map) => {
+            let sorted: BTreeMap<&String, &Value> = map.iter().collect();
+            let parts: Vec<String> = sorted
+                .into_iter()
+                .map(|(k, v)| format!("{}:{}", escape_html(&go_quote(k)), go_marshal(v)))
+                .collect();
+            format!("{{{}}}", parts.join(","))
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use serde_json::json;
+
+    use super::go_marshal;
+
+    /// Erwartet nach den Regeln von Go `json.Marshal` für Werte nach `any` (Zahlform, Sortierung, HTML-Escapes).
+    #[test]
+    fn go_marshal_wie_go() {
+        let value = json!({"b": [100.0, 1.5, -0.0, 1e-7, 1e21, 99], "a": "x <&> y\u{2028}", "c": null, "d": {}});
+        assert_eq!(
+            go_marshal(&value),
+            r#"{"a":"x \u003c\u0026\u003e y\u2028","b":[100,1.5,-0,1e-7,1e+21,99],"c":null,"d":{}}"#
+        );
+    }
 }
