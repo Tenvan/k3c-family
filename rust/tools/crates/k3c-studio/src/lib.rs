@@ -12,6 +12,7 @@ pub(crate) mod kitx;
 pub mod mcpsrv;
 pub mod platform;
 pub mod ports;
+pub mod review;
 pub mod studioview;
 #[cfg(test)]
 pub(crate) mod test_helpers;

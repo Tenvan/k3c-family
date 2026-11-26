@@ -27,13 +27,14 @@ tauri-build.workspace = true
 
 [dependencies]
 k3c-kit = { path = "../k3c-kit" }
-# Genutzt ab RU70.8 (Assets).
+# Genutzt ab RU70.9 (Assets).
 k3c-assetkit = { path = "../k3c-assetkit" }
 tauri.workspace = true
 tauri-plugin-window-state.workspace = true
 tauri-plugin-single-instance.workspace = true
 serde.workspace = true
-serde_json = { workspace = true, features = ["raw_value"] }
+# float_roundtrip: Zahlen genau wie Go und JavaScript lesen (Hash der Specs, RU70.8).
+serde_json = { workspace = true, features = ["raw_value", "float_roundtrip"] }
 # Hörprobe als Data-URL (studioview); schon im Lockfile über k3c-kit.
 base64.workspace = true
 schemars.workspace = true
@@ -41,7 +42,9 @@ rmcp.workspace = true
 chrono.workspace = true
 regex.workspace = true
 url.workspace = true
-tokio = { workspace = true, features = ["rt-multi-thread", "signal"] }
+# review: Hash der Specs wie hash.ts.
+sha2.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "signal", "process", "io-util", "time", "macros"] }
 
 [target.'cfg(windows)'.dependencies]
 windows = { workspace = true, features = [
