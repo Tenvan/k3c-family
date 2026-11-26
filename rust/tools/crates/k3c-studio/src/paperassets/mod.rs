@@ -20,6 +20,9 @@ mod teile;
 
 #[cfg(test)]
 pub(crate) mod test_helpers;
+#[cfg(test)]
+#[path = "paperassets_tests.rs"]
+mod tests;
 
 use std::fmt;
 use std::io;
@@ -29,7 +32,7 @@ pub use basis::{Asset, GRAFIK, MehrdeutigFehler, STIL_PFAD, assets, check_basis,
 pub use batch::{Schritt, SchrittErgebnis};
 pub use cli::{Cli, DiffErgebnis, FrameArgs, FrameErgebnis, PixelErgebnis, RenderErgebnis};
 pub use gueltig::Gueltigkeit;
-pub use job::{AssetErgebnis, Jobs, Stand, render_eins};
+pub use job::{AssetErgebnis, Jobs, Renderer, Stand, render_eins};
 pub use patch::{felder, format, merge_patch, schluessel};
 pub use reiter::reiter_von;
 pub use rigs::{Rig, finde_rig, rig_namen, vorlage};

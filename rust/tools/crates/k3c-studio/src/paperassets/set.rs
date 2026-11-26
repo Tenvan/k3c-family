@@ -181,7 +181,11 @@ fn uebernimm(cli: &Cli, a: &Asset, tmp: &Path, (alt, text): (&str, &str), r: &mu
         zurueck(&a.abs(&cli.root), alt);
         return Err(e);
     }
-    gruppe_nachziehen(&cli.root, a)?;
+    gruppe_nachziehen(&cli.root, a).map_err(|e| {
+        Error::Sonst(format!(
+            "Spec und Ausgabe sind schon geschrieben, nur Index oder golden.json nicht nachgezogen: {e}"
+        ))
+    })?;
     let vorher = format!("{}/", cli.rel(&tmp_aus));
     let nachher = format!("{}/", cli.rel(&a.ausgabe(&cli.root)));
     for d in render.dateien {
@@ -322,3 +326,7 @@ fn zurueck_legen(beiseite: &Path, ziel: &Path, ursache: &io::Error) -> Error {
 pub fn set_overlay(id: &str, anim: &str) -> String {
     format!("set/{id}-{anim}-0-diff.png")
 }
+
+#[cfg(test)]
+#[path = "set_tests.rs"]
+mod tests;

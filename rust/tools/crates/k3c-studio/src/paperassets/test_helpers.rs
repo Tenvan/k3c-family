@@ -76,7 +76,8 @@ pub struct Wurzel {
 
 pub fn leere_wurzel() -> Wurzel {
     let dir = tmp_dir();
-    let pfad = dir.path().join("repo");
+    // Ohne `..`: Der Ordner aus `tmp_dir` enthält sie, Pfade der CLI kommen aber normalisiert zurück.
+    let pfad = std::path::absolute(dir.path().join("repo")).expect("absolut");
     fs::create_dir_all(&pfad).expect("Wurzel");
     Wurzel { _dir: dir, pfad }
 }
@@ -134,4 +135,53 @@ pub fn hash_baum(root: &Path, rels: &[&str]) -> String {
         h.extend(fs::read(&p).unwrap_or_default());
     }
     sha256_hex(&h)
+}
+
+/// Eine Spec, die validate ablehnt (Material `scharlach`).
+pub const BANNER_UNGUELTIG: &str = concat!(
+    r#"{"id":"banner","rig":"requisite","version":1,"beschreibung":"Banner","teile":[{"id":"tuch","pivot":[0,0],"#,
+    r#""lagen":[{"art":"flaeche","form":"M0 0L10 0L10 10Z","material":"scharlach"}]}],"#,
+    r#""ausgabe":{"hoehe_px":64,"rahmen":[0,0,10,10]}}"#
+);
+
+/// Ein Pfad als JSON-Text mit `/` (für TypeScript-Quellen).
+pub fn ts_text(p: &Path) -> String {
+    serde_json::Value::String(p.to_string_lossy().replace('\\', "/")).to_string()
+}
+
+/// Ersetzt die CLI durch ein Skript über der Attrappe: `render` liefert, was der JS-Rumpf `render` (a = Argumente,
+/// Ergebnis {code, stdout, stderr} oder undefined = Attrappe) zurückgibt, auch als Schritt von `batch`. Jeder
+/// bun-Start schreibt eine Zeile in die gelieferte Zähl-Datei (B-856). Das Skript liegt neben dem Test-Repo.
+pub fn stub_mit(cli: &mut Cli, render: &str) -> PathBuf {
+    let dir = cli.root.parent().expect("Temp-Ordner").to_path_buf();
+    let zaehler = dir.join("starts.txt");
+    let batch_ts = repo_root().join("tools/paper/cli/batch.ts");
+    let kopf = format!(
+        "import {{ run }} from {};\nimport {{ batch, schritteAus }} from {};\nconst zaehler = {};\n",
+        ts_text(&cli.skript),
+        ts_text(&batch_ts),
+        ts_text(&zaehler)
+    );
+    let rumpf = r"import { appendFileSync, mkdirSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
+appendFileSync(zaehler, process.argv[2] + '\n');
+type E = { code: 0 | 1 | 2; stdout: string; stderr: string };
+const render = (a: string[]): E | undefined => { RENDER };
+const lauf = (a: string[]): E => (a[0] === 'render' ? render(a) : undefined) ?? run(a);
+const a = process.argv.slice(2);
+const r: E = a[0] === 'batch' ? { code: 0, stdout: JSON.stringify({ ok: true, schritte: batch(schritteAus(a[1]), lauf) }), stderr: '' } : lauf(a);
+if (r.stdout) process.stdout.write(r.stdout + '\n');
+if (r.stderr) process.stderr.write(r.stderr + '\n');
+process.exit(r.code);
+";
+    let skript = dir.join("stub.ts");
+    fs::write(&skript, kopf + &rumpf.replace("RENDER", render)).expect("Stub schreiben");
+    cli.skript = skript;
+    zaehler
+}
+
+/// Der Ordner fehlt oder ist leer.
+pub fn leer(dir: &Path) {
+    let namen: Vec<_> = fs::read_dir(dir).into_iter().flatten().flatten().collect();
+    assert!(namen.is_empty(), "{dir:?} nicht leer: {namen:?}");
 }

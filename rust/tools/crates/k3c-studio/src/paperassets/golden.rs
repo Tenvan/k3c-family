@@ -1,5 +1,5 @@
 //! `golden.json` einer Gruppe nachziehen (B-707, Port von `golden.go`): `gen:paper` schreibt sie für alle Gruppen,
-//! `assets_set`/`create`/`render` ändern nur den Eintrag des einen Assets, im selben Format
+//! `assets_set`/`create`/`render`/`delete` ändern nur den Eintrag des einen Assets, im selben Format
 //! (`JSON.stringify(x, null, 2)`).
 
 use std::fs;
@@ -9,10 +9,10 @@ use serde::Deserialize;
 use serde_json::value::RawValue;
 
 use super::Error;
-use super::anlegen::{ersetze_text, in_index_aufnehmen};
-use super::basis::{Asset, ENDUNG, gruppen_ordner};
+use super::anlegen::{aus_index_entfernen, ersetze_text, in_index_aufnehmen};
+use super::basis::{Asset, ENDUNG, INDEX_NAME, gruppen_ordner};
 use super::patch::objekt;
-use super::set::sperre;
+use super::set::{Sperre, sperre};
 use crate::kitx::{go_marshal, sha256_hex};
 
 const GOLDEN_NAME: &str = "golden.json";
@@ -28,13 +28,35 @@ fn golden_pfad(root: &Path, gruppe: &str) -> PathBuf {
     gruppen_ordner(root, gruppe).join(GOLDEN_NAME)
 }
 
-/// Trägt das gerenderte Asset in Gruppen-Index und `golden.json` ein; je Gruppe nacheinander, damit zwei Assets
-/// derselben Gruppe sich nicht überschreiben.
-pub(super) fn gruppe_nachziehen(root: &Path, a: &Asset) -> Result<(), Error> {
+/// Gruppen-Index und `golden.json` ändern sich je Gruppe nacheinander, damit zwei Assets derselben Gruppe sich nicht
+/// überschreiben.
+fn gruppen_sperre(root: &Path, gruppe: &str) -> Sperre {
     // `#` kommt in keiner Asset-ID vor, die Sperre trifft also nie die eines Assets.
-    let _sperre = sperre(root, &format!("#{}", a.gruppe));
+    sperre(root, &format!("#{gruppe}"))
+}
+
+/// Trägt das gerenderte Asset in Gruppen-Index und `golden.json` ein.
+pub(super) fn gruppe_nachziehen(root: &Path, a: &Asset) -> Result<(), Error> {
+    let _sperre = gruppen_sperre(root, &a.gruppe);
     in_index_aufnehmen(root, a)?;
     golden_eintragen(root, a)
+}
+
+/// Nimmt das Asset aus Gruppen-Index und `golden.json`; `true`, wenn es einen Index gibt.
+pub(super) fn gruppe_entfernen(root: &Path, a: &Asset) -> Result<bool, Error> {
+    let _sperre = gruppen_sperre(root, &a.gruppe);
+    let index = aus_index_entfernen(&gruppen_ordner(root, &a.gruppe).join(INDEX_NAME), &a.id)?;
+    golden_entfernen(root, &a.gruppe, &a.id)?;
+    Ok(index)
+}
+
+/// Nimmt `id` aus `golden.json`; ohne Datei passiert nichts.
+fn golden_entfernen(root: &Path, gruppe: &str, id: &str) -> Result<(), Error> {
+    let pfad = golden_pfad(root, gruppe);
+    if lesen_falls_da(&pfad, GOLDEN_NAME)?.is_none() {
+        return Ok(());
+    }
+    golden_aendern(&pfad, id, None)
 }
 
 #[derive(Deserialize, Default)]
@@ -89,6 +111,14 @@ pub(super) fn lesen_falls_da(pfad: &Path, name: &str) -> Result<Option<Vec<u8>>,
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(e) => Err(Error::Sonst(format!("{name}: {e}"))),
     }
+}
+
+/// Fehler, wenn die `golden.json` der Gruppe da, aber nicht lesbar ist.
+pub(super) fn pruefe_golden(root: &Path, gruppe: &str) -> Result<(), Error> {
+    if let Some(raw) = lesen_falls_da(&golden_pfad(root, gruppe), GOLDEN_NAME)? {
+        golden_lesen(&raw).map_err(|e| Error::Sonst(format!("{GOLDEN_NAME}: {e}")))?;
+    }
+    Ok(())
 }
 
 fn golden_aendern(pfad: &Path, id: &str, neu: Option<Eintrag>) -> Result<(), Error> {
@@ -169,19 +199,5 @@ fn golden_text(alle: &[Eintrag]) -> String {
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-
-    // Review RU70.10: Nur eine fehlende Datei gilt als leer; ein Verzeichnis steht für „vorhanden, nicht lesbar“.
-    #[test]
-    fn unlesbare_golden_wird_nicht_ersetzt() {
-        let dir = crate::test_helpers::tmp_dir();
-        assert!(
-            lesen_falls_da(&dir.path().join("fehlt.json"), GOLDEN_NAME)
-                .unwrap()
-                .is_none()
-        );
-        assert!(lesen_falls_da(dir.path(), GOLDEN_NAME).is_err());
-        assert!(golden_aendern(dir.path(), "a", None).is_err());
-    }
-}
+#[path = "golden_tests.rs"]
+mod tests;

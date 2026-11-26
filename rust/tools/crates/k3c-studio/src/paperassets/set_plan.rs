@@ -159,3 +159,7 @@ fn abbruch(cli: &Cli, alt_spec: Option<&Path>, spec: &Path, r: &mut SetErgebnis,
     }
     e
 }
+
+#[cfg(test)]
+#[path = "set_batch_tests.rs"]
+mod batch_tests;
