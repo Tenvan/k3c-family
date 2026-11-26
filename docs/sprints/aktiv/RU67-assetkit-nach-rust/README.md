@@ -83,7 +83,7 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU67.2 | `RU67.2-katalog-quellen-recherche.md` | Umsetzung | autonom | fertig |
 | RU67.3 | `RU67.3-import-vorrat.md` | Umsetzung | autonom | fertig |
 | RU67.4 | `RU67.4-kandidaten-vorschlaege.md` | Umsetzung | autonom | fertig |
-| RU67.5 | `RU67.5-review.md` | Review | autonom | offen |
+| RU67.5 | `RU67.5-review.md` | Review | autonom | in Arbeit |
 
 ## Abnahme
 
