@@ -12,11 +12,15 @@ edition = "2024"
 version = "0.1.0"
 publish = false
 
-# Versionen fest (Leitfaden › Abhängigkeiten); spätere Sessions ergänzen tokio, windows, rmcp, axum, schemars, reqwest, regex.
+# Versionen fest (Leitfaden › Abhängigkeiten); spätere Sessions ergänzen rmcp, axum, schemars, reqwest, regex.
 [workspace.dependencies]
 serde = { version = "=1.0.229", features = ["derive"] }
 serde_json = "=1.0.154"
 chrono = { version = "=0.4.45", default-features = false, features = ["clock", "std", "serde"] }
+# proc: Prozesse async, weil alle Aufrufer in tokio laufen (RU66.2).
+tokio = { version = "=1.54.1", features = ["process", "rt", "macros", "sync", "time", "io-util"] }
+# Nur Windows: Job-Objekt (proc), Features je Crate.
+windows = { version = "=0.62.2", default-features = false }
 # Nur Tests, Ordner unter .work/ (testutil.rs).
 tempfile = "=3.27.0"
 
