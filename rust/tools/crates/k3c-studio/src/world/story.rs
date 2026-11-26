@@ -70,6 +70,17 @@ pub struct StoryResult {
     pub warnings: Vec<String>,
 }
 
+/// Schlüssel einer Map nach Zahlenwert, sonst nach Text (Gos `numericKeys`; vorgezogen aus `story.go`). Anders als Go
+/// stehen Zahlen immer vor Texten, damit die Ordnung eindeutig bleibt.
+pub(super) fn numeric_keys<V>(map: &BTreeMap<String, V>) -> Vec<&str> {
+    let mut keys: Vec<&str> = map.keys().map(String::as_str).collect();
+    keys.sort_by_key(|k| {
+        let n = k.parse::<i64>();
+        (n.is_err(), n.unwrap_or_default(), *k)
+    });
+    keys
+}
+
 /// Legt `patch` über die Geschichte in `raw`.
 #[allow(clippy::unimplemented)]
 pub(super) fn apply_story(_raw: &[u8], _patch: &StoryPatch) -> Result<(Vec<u8>, StoryResult), String> {

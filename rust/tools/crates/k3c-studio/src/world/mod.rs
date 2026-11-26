@@ -9,7 +9,10 @@ mod edit;
 mod edit_island;
 mod endboss_skins;
 mod inline;
+mod kind;
 mod level;
+mod nature;
+mod override_reject;
 // `override` ist ein reserviertes Wort.
 #[path = "override.rs"]
 mod overrides;
@@ -19,6 +22,10 @@ mod story;
 mod values;
 mod watch;
 
+#[cfg(test)]
+mod edit_override_lists_tests;
+#[cfg(test)]
+mod etappe_tests;
 #[cfg(test)]
 mod exe_tests;
 #[cfg(test)]
@@ -32,7 +39,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::value::RawValue;
 
 pub use catalog::PicksView;
-pub use edit::CreateView;
+pub use edit::{CreateView, Warnings};
 pub use endboss_skins::EndBossOption;
 pub use level::{Engine, LevelView, exe};
 pub use story::{IslandStory, Story, StoryPatch, StoryResult};

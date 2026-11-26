@@ -56,13 +56,18 @@ pub struct PicksView {
     pub error: String,
 }
 
-/// Schlüssel und Werte des Blocks `worlds` in der Reihenfolge der Datei.
+/// Schlüssel und Werte des Blocks `worlds` in der Reihenfolge der Datei. Ein nicht lesbarer Block ist ein Fehler und
+/// nie eine leere Liste, weil [`Editor::set_pick`] den Block sonst ersetzen würde (anders als Go).
 fn worlds_of(raw: &[u8]) -> Result<Vec<(String, String)>, String> {
     let top = parse_entries(raw).map_err(|e| e.to_string())?;
     let Some((_, block)) = top.into_iter().rfind(|(k, _)| k == "worlds") else {
         return Ok(Vec::new());
     };
-    object_items(block.get())
+    if !given(block.get()) {
+        return Ok(Vec::new());
+    }
+    let entries = parse_entries(block.get().as_bytes()).map_err(|e| format!("worlds: {e}"))?;
+    entries
         .into_iter()
         .map(|(world, value)| {
             let text = serde_json::from_str::<Option<String>>(value.get()).map_err(|e| format!("worlds: {e}"))?;

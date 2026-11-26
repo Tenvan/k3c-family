@@ -133,7 +133,6 @@ pub(super) fn same_json(a: &[u8], b: &[u8]) -> bool {
 /// Setzt `overrides` der Welt-Datei auf `ov` (Objekt je Basis-Datei): inhaltlich gleich bleibt die Datei byte-gleich,
 /// leer entfällt der Schlüssel. Ein neuer Schlüssel steht am Ende des Objekts, hinter den Inseln; die Zeilenenden
 /// folgen der Datei (CRLF bleibt CRLF).
-#[cfg_attr(not(test), allow(dead_code))] // Aufrufer ist `override.rs` (RU70.4).
 pub(super) fn patch_overrides(raw: &[u8], ov: &BTreeMap<String, Box<RawValue>>) -> Result<Vec<u8>, String> {
     let whole = Span::whole(raw);
     let at = value_span(raw, whole, "overrides")?;

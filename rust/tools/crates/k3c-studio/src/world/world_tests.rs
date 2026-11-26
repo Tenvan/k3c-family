@@ -9,7 +9,7 @@ use crate::exeengine;
 use crate::test_helpers::tmp_dir;
 
 /// Fixture: eine Standard-Welt mit einer Insel und eine Kind-Welt.
-const STANDARD: &str = r#"{
+pub(super) const STANDARD: &str = r#"{
   "id": "standard",
   "name": "Standard",
   "notes": "Fixture",
@@ -180,7 +180,12 @@ fn level_listen_nie_null() {
     }
 }
 
-fn entry<'a>(v: &'a ValuesView, file: &str, path: &[&str]) -> &'a ValueEntry {
+/// Text der Welt-Datei.
+pub(super) fn read_world(e: &Editor, id: &str) -> String {
+    std::fs::read_to_string(e.file(id)).unwrap()
+}
+
+pub(super) fn entry<'a>(v: &'a ValuesView, file: &str, path: &[&str]) -> &'a ValueEntry {
     v.entries
         .iter()
         .find(|e| e.file == file && e.path == path)

@@ -1,19 +1,19 @@
-//! Welten anlegen und bearbeiten (Port von `edit.go`). RU70.3 zieht nur `Create` und `Set` samt Schreibweg vor, weil
-//! die Katalog-Tests sie brauchen; `Check`, `Raw`, die Seiten-Antworten und die Insel-Bearbeitung folgen in RU70.4.
-//! Geschrieben wird nur die Welt-Datei, atomar und format-stabil; vorher prüft die Spiel-EXE den Entwurf wie das Laden
-//! im Spiel.
+//! Welten anlegen und bearbeiten (Port von `edit.go`, MCP-Tools `world_*` und „Welt anlegen“ der Seite). Geschrieben
+//! wird nur die Welt-Datei, atomar und format-stabil; vorher prüft die Spiel-EXE den Entwurf wie das Laden im Spiel.
 
 use std::collections::BTreeMap;
 use std::io::Write;
 use std::path::Path;
 
 use k3c_kit::logger::Logger;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
+use serde_json::json;
 use serde_json::value::RawValue;
 
 use super::catalog::check_patch_keys;
 use super::edit_island::new_island;
 use super::inline::inline;
+use super::nature::island_span;
 use super::overrides::{given, temp_file, write_atomic, write_lock};
 use super::patch::{Span, remove_key, same_json, set_key, value_span};
 use super::story::{StoryPatch, apply_story};
@@ -39,22 +39,25 @@ pub struct CreateView {
 }
 
 /// Warnungen der Prüfung; `None`, wenn sie keine nennt (Gos nil-Liste).
-pub(super) type Warnings = Option<Vec<String>>;
+pub type Warnings = Option<Vec<String>>;
 
-#[derive(Default, Deserialize)]
-struct Check {
-    warnings: Warnings,
-}
-
-#[derive(Serialize)]
-struct CheckRequest<'a> {
-    op: &'a str,
-    world: &'a str,
-    draft: &'a RawValue,
+impl CreateView {
+    /// Antwort für die Seite: die Warnungen sind nie `null`, ein Fehler steht in `error`.
+    fn from_result(id: &str, result: Result<Warnings, String>) -> CreateView {
+        let (warnings, error) = match result {
+            Ok(warnings) => (warnings.unwrap_or_default(), String::new()),
+            Err(error) => (Vec::new(), error),
+        };
+        CreateView {
+            id: id.to_owned(),
+            warnings: Some(warnings),
+            error,
+        }
+    }
 }
 
 /// `s` mit den Zeilenenden der Datei (CRLF bleibt CRLF).
-fn eol(raw: &[u8], s: &str) -> Vec<u8> {
+pub(super) fn eol(raw: &[u8], s: &str) -> Vec<u8> {
     if raw.windows(2).any(|w| w == b"\r\n") {
         return s.replace('\n', "\r\n").into_bytes();
     }
@@ -115,18 +118,13 @@ pub(super) fn set_field(raw: &[u8], obj: Span, key: &str, value: &str, top: bool
 impl Editor {
     /// Lässt den Entwurf `out` der Welt `id` prüfen und schreibt ihn atomar (siehe [`write_checked`]).
     fn commit(&self, id: &str, expect: Option<&[u8]>, out: &[u8]) -> Result<Warnings, String> {
-        let draft = serde_json::from_slice::<&RawValue>(out).map_err(|e| e.to_string())?;
-        let check = self.call::<Check>(&CheckRequest {
-            op: "check",
-            world: id,
-            draft,
-        })?;
+        let warnings = self.check_draft(id, out)?;
         let path = self.file(id);
         if let Some(dir) = path.parent() {
             std::fs::create_dir_all(dir).map_err(|e| e.to_string())?;
         }
         write_checked(&path, expect, out, &self.log)?;
-        Ok(check.warnings)
+        Ok(warnings)
     }
 
     /// Legt die Welt `id` an: eine Insel „island1“ (Tiefen 0-4), Kampf groups/5, optional von `extends` erbend. Eine
@@ -185,7 +183,7 @@ impl Editor {
             }
         }
         if let Some(list) = patch.get("islands") {
-            out = self.patch_islands(&out, id, list.get())?;
+            out = self.patch_islands(&out, list.get())?;
         }
         self.commit_change(id, &raw, &out).map_err(|e| {
             if !e.contains("kein Hafen") {
@@ -205,4 +203,38 @@ impl Editor {
         }
         self.commit(id, Some(raw), out)
     }
+
+    /// Prüft die Datei der Welt `id` wie das Laden im Spiel und mit allen Nachfolgern; die Antwort sind die Warnungen.
+    pub fn check(&self, id: &str) -> Result<Warnings, String> {
+        let raw = self.read(id)?;
+        self.check_draft(id, &raw)
+    }
+
+    /// Der Text der Welt-Datei.
+    pub fn raw(&self, id: &str) -> Result<String, String> {
+        self.read(id).map(|raw| String::from_utf8_lossy(&raw).into_owned())
+    }
+
+    /// Wie [`Editor::create`] mit der Antwort für die Seite.
+    pub fn create_view(&self, id: &str, name: &str, extends: &str) -> CreateView {
+        CreateView::from_result(id, self.create(id, name, extends))
+    }
+
+    /// [`Editor::set`] mit der Antwort für die Seite.
+    pub(super) fn set_view(&self, id: &str, patch: &serde_json::Value) -> CreateView {
+        CreateView::from_result(id, self.set(id, &patch.to_string()))
+    }
+
+    /// Setzt die Etappe einer vorhandenen Insel (`None` entfernt sie, dann gilt Listenplatz + 1) wie `world_set`.
+    pub fn set_etappe_view(&self, id: &str, island: &str, etappe: Option<i64>) -> CreateView {
+        let found = self.read(id).and_then(|raw| Ok(island_span(&raw, island).map(drop)?));
+        if let Err(error) = found {
+            return CreateView::from_result(id, Err(error));
+        }
+        self.set_view(id, &json!({"islands": [{"id": island, "etappe": etappe}]}))
+    }
 }
+
+#[cfg(test)]
+#[path = "edit_tests.rs"]
+mod tests;

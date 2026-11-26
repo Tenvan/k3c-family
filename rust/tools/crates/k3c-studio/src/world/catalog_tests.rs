@@ -51,6 +51,21 @@ fn pick_unbekannte_id_lehnt_ab() {
     assert_eq!(read(e, "hermits.json"), before);
 }
 
+// Ein nicht lesbarer Block `worlds` gilt nie als leer: sonst ersetzte das Schreiben die Zuordnungen der anderen Welten.
+#[test]
+fn kaputter_worlds_block_wird_nicht_ersetzt() {
+    let f = checkout(|_| failing("keine Engine"));
+    let e = &f.editor;
+    let path = e.root.join("data").join("mounts.json");
+    for block in [r#"{ "sengoku": "sengokuHorse", "\ud800": "camel" }"#, r#"["camel"]"#] {
+        let broken = format!("{{\n  \"mounts\": [{{ \"id\": \"camel\" }}],\n  \"worlds\": {block}\n}}\n");
+        std::fs::write(&path, &broken).unwrap();
+        let error = e.set_pick("standard", "mount", "camel").unwrap_err();
+        assert!(error.starts_with("data/mounts.json: worlds: "), "{error}");
+        assert_eq!(std::fs::read_to_string(&path).unwrap(), broken);
+    }
+}
+
 #[test]
 fn picks_view_liefert_optionen_und_lehnt_ab() {
     let Some(f) = with_hanse() else { return };
