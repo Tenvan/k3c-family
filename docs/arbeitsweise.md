@@ -338,12 +338,7 @@ steht in einer Zeile `Gerät: …` im Abschnitt Kontext, sonst gilt „unbekannt
   alle Sessions dieser Welle. Ohne Auftrag bleibt ein Agent im aktuellen Checkout.
 - Jede Session einer Welle arbeitet im eigenen Worktree auf ihrem Sprint-Branch; schreibende MCP-Aufrufe nennen `checkout`.
 - In einem Checkout, in dem eine andere Session arbeitet, wechselt niemand den Branch, stasht oder setzt zurück.
-- **Sim-Code (B-925):** Änderungen an `rust/crates/k3c-sim` (samt `k3c-level`, `k3c-room`, `k3c-balance`) und Daten in `data/`, die Sim, Level oder Balancing betreffen, laufen in einem eigenen Worktree mit eigener
-  Dev-Instanz der Workbench. Die Regel gilt vorerst weiter; ihr ursprünglicher Grund (die Workbench rechnete die Go-Engine im eigenen Prozess, B-924) ist mit RU41.1 entfallen, Workbench und Studio starten jetzt die EXE (`k3c-game sim`). Über den Wegfall entscheidet 🧑.
-  Im Worktree startet `task k3c-workbench:dev:worktree` Backend und Vite auf eigenen Ports (Versatz aus dem Worktree-Pfad, MCP 6001–6399, API 8601–8999,
-  Vite 7001–7399, nie 5180, 5190, 5191; der Task nennt `K3C_DEV_PORT`). Geprüft wird gegen diese Instanz (`checkout`-Argument der MCP-Tools), am Ende
-  wird sie gestoppt. Das gilt als ausdrückliche Anweisung für den Worktree (`CLAUDE.md`); die Wurzel-Workbench bleibt unberührt. Den Ablauf führt der
-  Agent `k3c-sim-dev`. `sim_test start`, `sim_run`, `replay_run` und `level_generate` (Server `k3c-studio`) lehnen einen fremden `checkout` ab (Hinweis auf den Task); der Task setzt `K3C_DATA_DIR=<Worktree>/data`. Sim und Balancing bleiben gesperrt.
+- Sim-Code (B-925) gilt nicht mehr (🧑 2026-11-26): Änderungen an `rust/crates/k3c-sim` & Co. laufen im Sprint-Branch; der Grund (B-924) ist mit RU41 entfallen.
 - Ticketnummern: `plan_create` kennt nur den eigenen Checkout. Vor dem Anlegen `git fetch` und die höchste Nummer aller offenen Branches prüfen
   (`git ls-tree -r --name-only <branch> docs/backlog`), sonst vergeben zwei Branches dieselbe Nummer.
 
@@ -381,7 +376,7 @@ mit `main` und räumt auf. Abstimmung nur über `origin` (🧑 2026-11-18, Regel
 - **Sim, Balancing und Messläufe (🧑 2026-11-18):** Die Sperre gilt nur für den Hauptrechner. Der Second Worker hat die bessere Hardware
   (Grafikkarte, CPU, Speicher) und darf `sim_test`, `sim_run`, Balancing, `gen:paper` und `check:race` in Sessions mit `Lane: zweit` fahren; die
   langen Läufe gehören dorthin: Der Hauptrechner ist Ralfs Arbeitsplatz, Sim- und Messläufe stören dort; der Second Worker ist sonst idle
-  (🧑 2026-11-18). Rechenlastige Sessions (Sim, Balancing, Messung, `check:race`) bekommen deshalb `Lane: zweit`. Läufe nur über `sim_test`, blockierend gewartet. Sim-Code ändert er nur im eigenen Worktree (B-925).
+  (🧑 2026-11-18). Rechenlastige Sessions (Sim, Balancing, Messung, `check:race`) bekommen deshalb `Lane: zweit`. Läufe nur über `sim_test`, blockierend gewartet.
 - **Keine Tickets und Sprints anlegen:** Befunde schreibt der Second Worker ins Ergebnis seiner Session (Abschnitt „Für den
   Hauptrechner“); der Hauptrechner legt daraus Tickets an. So kollidieren keine Nummern.
 - **Gemeinsame Dateien** (`Cargo.lock`, `lib.rs`-Modulzeilen, Indizes): vor dem Push `git merge origin/main`; Index-Konflikte über `plan_index` lösen.

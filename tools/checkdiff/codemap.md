@@ -20,4 +20,4 @@ CLI `checkdiff` (B-518, B-730, B-742): prüft vor einem Commit nur, was die geä
 ## Integration
 - Aufrufer: `Taskfile.yml` (`check:diff`, `check:diff:plan`, `check:diff:js`, `check:diff:go`, Paketliste für `check:go`), `tools/k3c-workbench/Taskfile.yml` (`-wbpkgs`); `check_run` der Workbench liest die Zeitmarker.
 - Externe Programme: `git`, `go`, `golangci-lint`, `bunx`, `task`, `cargo`.
-- Tests: `select_test.go` (Auswahl als Tabelle), `simlist_test.go` (`simDirs` gleich `GO_SIM_PKGS`/`WB_SIM_PKGS` in `.github/workflows/ci.yml`).
+- Tests: `select_test.go` (Auswahl als Tabelle), `simlist_test.go` (`simDirs` gleich `STUDIO_SIM_PKGS` in `.github/workflows/ci.yml`).

@@ -29,7 +29,6 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 | FG1 | SIM, CLI | WIR | Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite | – | `aktiv/FG1-grundfiguren-ausruestung/` |
 | WD1 | SIM, CLI | WIR | Wald: voller Baumwuchs, Lichtungen und Rodungsregeln | – | `aktiv/WD1-wald-rodung/` |
 | WL1 | CLI, DEV, PAP | WIR | Welten im Paket, Gamepad-Hotplug, HUD-Aufräumen und Zäune/Mauern | – | `aktiv/WL1-welten-gamepad-mauern/` |
-| RU41 | INF, SIM | RSU | Go-Engine entfernen, Entscheidung 011 abschließen | – | `aktiv/RU41-go-engine-entfernen/` |
 
 ## Offen am Gerät
 
@@ -487,3 +486,4 @@ Gesamtplan und Begründung: [`../plan-weiterentwicklung.md`](../plan-weiterentwi
 | RU28 | Rust-Balance-Crate Teil 2: Messungen und Auswertung | `erledigt/RU28-balancing-teil-2-messungen/` |
 | RU31 | Rust-Balance-Crate Teil 3: Einsichten, Berichte, Tuning | `erledigt/RU31-balancing-teil-3-einsichten/` |
 | RU40 | Läufe über die Spiel-EXE: Game-Client, sim_test und Workbench-Balancing | `erledigt/RU40-balancing-laeufe-im-client/` |
+| RU41 | Go-Engine entfernen, Entscheidung 011 abschließen | `erledigt/RU41-go-engine-entfernen/` |

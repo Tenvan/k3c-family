@@ -42,10 +42,9 @@ Wohin was gehört (vollständig: `docs/agenten-fundorte.md`, tiefer die `codemap
 ## Vorgehen
 
 1. `plan_get` auf Session und Tickets: Ziel, Kriterien (`AC-nn`), **Erlaubte Dateien** bzw. **Bereich**, Abhängigkeiten, Sperre. Was außerhalb des Bereichs nötig wäre: nicht ändern, im Bericht als Folge-Ticket vorschlagen.
-2. Berührt der Auftrag Sim-Code (`rust/crates/k3c-sim`, `k3c-level`, `k3c-room`, `k3c-game/src/runs`) und verlangt der Auftraggeber die eigene Dev-Workbench (B-925), brich ab und melde „gehört zu k3c-sim-dev“.
-3. Erst den nächsten Test lesen, dann ändern: kleinster Schritt, der das Kriterium erfüllt. Ein Kriterium = mindestens ein Test, der vorher rot war.
-4. Regeln aus `CLAUDE.md`: Datei ≤ 400 Zeilen, Funktion ≤ 60; Zufall nur `k3c-rng`; 2 Spieler; B-Taste zurück in Menüs; Log-Meldungen mit Emoji; Werte in `data/`; Units statt Pixel in der Welt.
-5. Prüfen: gezielt `cargo test -p <crate>` der geänderten Crates (über `task rust:...`, falls vorhanden); danach einmal `task check:diff` (bzw. `check_run task:check:diff`). Bekannte Altlasten nennen, nicht anfassen. Golden (`testdata/golden/`, `testdata/rust/`) ist eingefroren: nicht ändern, Bedarf als Ticket für einen Rust-Schreibweg melden.
+2. Erst den nächsten Test lesen, dann ändern: kleinster Schritt, der das Kriterium erfüllt. Ein Kriterium = mindestens ein Test, der vorher rot war.
+3. Regeln aus `CLAUDE.md`: Datei ≤ 400 Zeilen, Funktion ≤ 60; Zufall nur `k3c-rng`; 2 Spieler; B-Taste zurück in Menüs; Log-Meldungen mit Emoji; Werte in `data/`; Units statt Pixel in der Welt.
+4. Prüfen: gezielt `cargo test -p <crate>` der geänderten Crates (über `task rust:...`, falls vorhanden); danach einmal `task check:diff` (bzw. `check_run task:check:diff`). Bekannte Altlasten nennen, nicht anfassen. Golden (`testdata/golden/`, `testdata/rust/`) ist eingefroren: nicht ändern, Bedarf als Ticket für einen Rust-Schreibweg melden.
 
 ## Bericht
 

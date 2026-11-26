@@ -14,51 +14,51 @@ Zentrale Karte, wo was liegt. Die Agenten unter `.claude/agents/` verweisen hier
 
 ## Kampf
 
-- Gegner: `engine/sim/enemies*.go` (Wellen `enemies_waves.go`, Wachen `enemies_guard.go`, Eigenschaften `enemies_traits.go`), Aggression `engine/sim/aggression*.go`
-- Truppen: `engine/sim/unit_*.go` (Verhalten und Zielwahl inline: Bogenschützen `unit_archer.go`, Krieger `unit_warrior.go`, Takt `unit_common.go`), Bosse `engine/sim/boss*.go`
+- Gegner: `rust/crates/k3c-sim/src/enemies/` (Wellen `waves.rs`, Wachen `guard.rs`, Eigenschaften `traits.rs`), Aggression in `enemies/` (Suche `aggression`)
+- Truppen: `rust/crates/k3c-sim/src/unit/` (Bogenschützen `archer.rs`, Krieger `warrior.rs`, Takt `mod.rs`), Bosse `rust/crates/k3c-sim/src/boss/`
 - Werte: `data/enemies.json`, `data/troops.json`, `data/waves.json`, `data/bosses.json`, `data/guards.json`
 - Regeln: `docs/rules/gegner.md`, `docs/rules/bosse.md`
-- Anzeige: `native/k3c-game/hud/kampf.go`, Effekte `native/k3c-game/fx/`
-- Dev-Aktionen und Stresstest: `engine/room/dev_combat.go`, `engine/sim/dev*.go`, `native/k3c-game/game/stress.go`, `data/stresstests.json`
+- Anzeige: `rust/crates/k3c-game/src/hud/kampf.rs`, Effekte `rust/crates/k3c-game/src/fx/`
+- Dev-Aktionen und Stresstest: `rust/crates/k3c-room/src/room/dev_combat.rs`, `rust/crates/k3c-sim/src/dev/`, `rust/crates/k3c-game/src/game/stress.rs`, `data/stresstests.json`
 
 ## Simulation
 
-- Kern: `engine/sim/` (Welt `world*.go`, Insel und Stufen `island*.go`, Gebäude `building*.go`, Wirtschaft `economy*.go`, Monarch und Skills `monarch*.go`, `skills*.go`, Ereignisse `events*.go`, Spielstand `*save*.go`)
-- Zufall nur `engine/rng`; Level-Generator `engine/level/`; Raum mit Stufen und Spielstand `engine/room/`; Ablage `engine/store/`
-- Engine-CLI: Logik `engine/simcli/` (das Studio ruft sie im Prozess, seit WZ63.5), Hülle `cmd/k3c-sim/`; gemeinsame Aufrufe `engine/enginetools/`; Sim-Code nur im eigenen Worktree (Agent `k3c-sim-dev`, B-925)
+- Kern: `rust/crates/k3c-sim/src/` (Welt `world/`, Insel und Stufen `island/`, Gebäude `building/`, Wirtschaft `economy/`, Monarch und Skills `monarch/`, `skills/`, Ereignisse `events/`, Spielstand `state/save*.rs`, `island/save.rs`)
+- Zufall nur `rust/crates/k3c-rng`; Level-Generator `rust/crates/k3c-level/`; Raum mit Stufen und Spielstand `rust/crates/k3c-room/src/room/`; Ablage `rust/crates/k3c-room/src/store/`
+- Läufe: `k3c-game sim <run|level|balance|world|hub|save>` (`rust/crates/k3c-game/src/runs/`, Doku `docs/standards/k3c-game-laeufe.md`; das Studio startet die EXE); Go-CLI `cmd/k3c-sim` ist entfernt (RU41)
 - Regeln: `docs/rules/stufen.md`, `docs/rules/welten.md`, Protokoll `docs/protocol.md`
 
 ## Balancing
 
 - Werte: `data/economy.json`, `data/troops.json`, `data/enemies.json`, `data/waves.json`, `data/buildings.json`, `data/monarch.json`, `data/difficulty.json`, `data/bosses.json`
 - Ziele: `data/balance-targets.json`, `data/balance-hints.json`, `docs/rules/zielkorridore.md`, `docs/rules/wirtschaft.md`
-- Auswertung (Bots, Kennzahlen): `engine/balance/`; Messungen `docs/balancing/`, `docs/messung/`; Studio-Seite `tools/k3c-studio/frontend/src/balancing/`, Backend `tools/k3c-studio/internal/balance/` und `simrun/` (MCP `mcp__k3c-studio__sim_test` usw.)
+- Auswertung (Bots, Kennzahlen): `rust/crates/k3c-balance/`; Messungen `docs/balancing/`, `docs/messung/`; Studio-Seite `tools/k3c-studio/frontend/src/balancing/`, Backend `tools/k3c-studio/internal/balance/` und `simrun/` (MCP `mcp__k3c-studio__sim_test` usw.)
 - **Sim- und Balancing-Läufe sind gesperrt** (🧑 2026-11-11): nur lesen. Das Balancing schreibt Quelldateien nur unter `data/worlds/` (Wächter `balance.Guard`, WZ63.7); Code- oder andere Datenänderungen erst nach Plan im Chat und Freigabe von 🧑.
 
 ## Welten
 
 - Welt-Dateien `data/worlds/`, Biome `data/biomes/`, `data/island-sizes.json`, `data/hub.json`, `data/ruins.json`
-- Generator `engine/level/`, Insel-Code `engine/sim/island*.go`, Welt-Editor `tools/k3c-studio/frontend/src/world/`
+- Generator `rust/crates/k3c-level/`, Insel-Code `rust/crates/k3c-sim/src/island/`, Welt-Editor `tools/k3c-studio/frontend/src/world/`
 - Gebäudeplaner `tools/k3c-studio/internal/hubplan/`, Seite `tools/k3c-studio/frontend/src/planner/`
 
 ## Grafik
 
 - Papierschnitt: Specs und Indizes `public/grafik/<gruppe>/` (`index.paper.json`, `golden.json`), Zuordnung `data/paper.json`
 - Renderer und Verträge `tools/paper/`, Standards `docs/standards/paper-spec.md`, `docs/standards/paper-mcp.md`
-- Rig `native/k3c-rig/` (`RIG.md`), Laden im Spiel `native/k3c-game/art/`, Figuren `native/k3c-game/actors/`
+- Rig `rust/crates/k3c-rig/`, Laden im Spiel `rust/crates/k3c-game/src/art/`, Figuren `rust/crates/k3c-game/src/actors/`
 - Assets ändern nur MCP `assets_*`; Asset-Logik `tools/assetkit/`
-- Im Code gezeichnete HUD-Grafik ohne Asset (vorläufig): `native/k3c-game/hud/purse.go`, `native/k3c-game/hud/icons.go`
+- Im Code gezeichnete HUD-Grafik ohne Asset (vorläufig): `rust/crates/k3c-game/src/hud/purse.rs`, `rust/crates/k3c-game/src/hud/icons.rs`
 
 ## Sound
 
 - Slots `data/sounds.json`, Atlas `public/audio/` (`atlas.json`), Werkzeug `tools/soundatlas/`
-- Wiedergabe `native/k3c-game/audio/`, Lizenzen `native/k3c-game/menu/licensefile/`
+- Wiedergabe `rust/crates/k3c-game/src/audio/`, Lizenzen `rust/crates/k3c-game/src/menu/licenses.rs`
 
 ## HUD, Menüs, Eingabe
 
-- HUD `native/k3c-game/hud/` (Layout `layout.go`, Radar `radar.go`, Skill-Menü `skillmenu.go`)
-- Menüs `native/k3c-game/menu/`, Eingabe `native/k3c-game/input/`, Spielablauf `native/k3c-game/game/`, Sicht `native/k3c-game/view/`
-- Durchläufe `native/k3c-game/e2e/`, Regeln `docs/rules/bedienung.md`
+- HUD `rust/crates/k3c-game/src/hud/` (Layout `layout.rs`, Radar `radar.rs`, Skill-Menü `skillmenu.rs`)
+- Menüs `rust/crates/k3c-game/src/menu/`, Eingabe `…/input/`, Spielablauf `…/game/`, Sicht `…/view/` (alle unter `rust/crates/k3c-game/src/`)
+- Durchläufe `rust/crates/k3c-game/tests/e2e_*.rs`, Regeln `docs/rules/bedienung.md`
 
 ## Workbench
 

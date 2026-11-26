@@ -1,6 +1,6 @@
 # RU41 · INF, SIM · Go-Engine entfernen, Entscheidung 011 abschließen
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** INF, SIM
 - **Reife:** bereit
@@ -87,7 +87,7 @@ Entscheidung 🧑 vor dem Löschen (RU41.1) und zur Annahme von 011 (RU41.2).
 |---|---|---|---|---|
 | RU41.1 | `RU41.1-go-engine-pakete-entfernen.md` | Umsetzung | autonom | fertig |
 | RU41.2 | `RU41.2-doku-und-entscheidung-011.md` | Umsetzung | autonom | fertig |
-| RU41.3 | `RU41.3-review.md` | Review | autonom | offen |
+| RU41.3 | `RU41.3-review.md` | Review | autonom | fertig |
 | RU41.4 | `RU41.4-k3c-sim-tests-gruen.md` | Umsetzung | autonom | fertig |
 
 Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
@@ -96,6 +96,5 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-26 (Claude, Review RU41.3). AC-01 erfüllt: Go-Pakete entfernt, `testdata/` unverändert (RU41.1, Reviewer). AC-02 erfüllt: `task check:all` grün, `cargo test --workspace` grün (RU41.3, RU41.4/B-1286). AC-03 erfüllt: 011 angenommen 🧑 2026-11-25, 008 überholt, Doku und Agenten auf Rust-Stand, Regel B-925 gestrichen (🧑 2026-11-26) (RU41.2, RU41.3).
+Behoben aus dem Review: BOM `measure.ps1`, Cheat-Test nur Match-Arme, Datadoc-Test beide Richtungen, Doku-Rest (agenten-fundorte, Glossar, game-design). Abnahme-Ticket Sim, Balance, Gen: B-1287.

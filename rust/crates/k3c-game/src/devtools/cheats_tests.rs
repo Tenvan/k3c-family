@@ -170,12 +170,19 @@ fn cheat_actions_exist_in_room() {
         include_str!("../../../k3c-room/src/room/dev_combat.rs"),
     ]
     .concat();
+    // Nur Match-Arme zählen (`"a" | "b" => …`), nicht Kommentare oder Log-Texte.
+    let arms: Vec<&str> = rust_room
+        .lines()
+        .map(str::trim_start)
+        .filter(|l| l.starts_with('"'))
+        .filter_map(|l| l.split_once("=>").map(|(pat, _)| pat))
+        .collect();
     for g in cheat_groups() {
         for e in &g.entries {
             let quoted = format!("\"{}\"", e.act.action);
             assert!(
-                rust_room.contains(&quoted),
-                "Aktion {} fehlt in k3c-room/src/room/dev*.rs",
+                arms.iter().any(|pat| pat.split('|').any(|p| p.trim() == quoted)),
+                "Aktion {} hat keinen Match-Arm in k3c-room/src/room/dev*.rs",
                 e.act.action
             );
         }

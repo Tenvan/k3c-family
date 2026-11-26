@@ -22,7 +22,7 @@ tasks:
     dir: '{{.DEV}}'
     env:
       K3C_DEV_PORT: '{{.DEV_MCP_PORT}}'
-      # leer = eingebettete Daten; dev:worktree setzt data/ des Worktrees (B-925)
+      # leer = eingebettete Daten; dev:worktree setzt data/ des Worktrees (Worktree-Wellen)
       K3C_DATA_DIR: '{{.DEV_DATA_DIR}}'
       K3C_DEV_UI_API_PORT: '{{.DEV_UI_API_PORT}}'
       # k3c-workbench bettet data/*.json und frontend/dist ein, die devrun nicht beobachtet: immer erst bauen
@@ -36,7 +36,7 @@ tasks:
       - build/bin/k3c-workbench-dev-{{.DEV_UI_API_PORT}}{{exeExt}} -dev
 
   dev:worktree:
-    desc: "Eigene Dev-Instanz im Worktree (B-925): Ports aus dem Pfad (MCP 6001-6399, API 8601-8999, Vite 7001-7399), nie 5180/5190/5191; aus dem Worktree starten"
+    desc: "Eigene Dev-Instanz im Worktree (Worktree-Wellen): Ports aus dem Pfad (MCP 6001-6399, API 8601-8999, Vite 7001-7399), nie 5180/5190/5191; aus dem Worktree starten"
     vars:
       # Versatz 1..399 aus den Zeichen des Worktree-Pfads (nur Shell-Builtins, im Runner fehlen tr/grep/cksum; printf %d "'c" gibt dort 0).
       # Zeichen außerhalb von abc (Umlaute, Sonderzeichen) zählen mit eigenem Gewicht, damit sich solche Pfade unterscheiden.

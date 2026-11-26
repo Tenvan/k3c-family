@@ -32,7 +32,7 @@ am PC, Simulation, Level und Balancing ebenfalls in Rust (Entscheidung 011). Wor
   **005: Papierschnitt-Grafik aus Specs**, Assets nur über MCP `assets_*` (Server `k3c-studio`), Review im Bereich Assets des
   Studios; das Asset-Studio kehrt seit WZ63 als eigenständiges Studio zurück (Nachtrag in 005), die Workbench hat keine Assets mehr.
   **008: Natives Spiel in Go + Ebitengine** (Projekt NAT, B-775), überholt durch 011. **011: Spiel und Simulation in Rust, Go nur für die Werkzeuge** (angenommen 🧑 2026-11-25, RU41.2). Das Go-Spiel `native/` ist seit RU37 entfernt; der letzte Stand steht im Tag `go-referenz-final`, Bau und Messung beschreibt `docs/standards/go-referenz.md`.
-  **012: Port-Orakel ist das Verhalten, nicht Bit-Gleichheit.** **013: Neue Mechaniken nur in Rust, Go-Engine eingefroren** (Entwurf, B-1143; Annahme durch Ralf offen).
+  **012: Port-Orakel ist das Verhalten, nicht Bit-Gleichheit.** **013: Neue Mechaniken nur in Rust** (Entwurf, B-1143; die Go-Engine ist seit RU41 entfernt, Annahme durch Ralf offen).
 - Altes Godot-Projekt (nur Referenz): `C:\WORKSPACE\FamilyCrowns`
 
 ## Befehle
@@ -152,7 +152,6 @@ prüft Repo-Regeln automatisch (Go-Dateigröße, Golden-Größe, kein Browser-Cl
   Lesen/Schreiben unter `.claude/worktrees/`). Nur auf ausdrückliche Anweisung von 🧑; dazu zählt der **Wellen-Auftrag** („Welle starten“, „parallel abarbeiten“), er gilt für alle Sessions dieser Welle.
   In einem Checkout, in dem eine andere Session arbeitet: kein Branchwechsel, kein Stash, kein Reset. Sonst im aktuellen Checkout bleiben;
   Inhalte anderer Branches nur lesend per `git show <branch>:<pfad>`.
-  **Sim-Code (B-925):** Änderungen an `rust/crates/k3c-sim`, `k3c-level`, `k3c-room` und Daten in `data/` mit Wirkung auf Sim, Level oder Balancing laufen in einem eigenen Worktree mit eigener Dev-Instanz der Workbench auf eigenen Ports (`task k3c-workbench:dev:worktree`, Agent `k3c-sim-dev`); das gilt als ausdrückliche Anweisung für diesen Worktree. Der Grund von B-924 (Workbench rechnete die Go-Engine im Prozess) ist seit RU41 entfallen; ob die Regel wegfällt, entscheidet Ralf. Die Wurzel-Workbench bleibt unberührt.
 
 ## Haltung
 

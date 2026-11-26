@@ -14,10 +14,44 @@ import (
 const root = "../../../.."
 
 // WZ28.10/AC-11, seit RU41 gegen Rust: Jede Datei der Liste lädt der Daten-Loader k3c-data (Dateiname als Literal,
-// Ordner biomes/ und worlds/) oder der Tester. k3c-data lädt auch Daten nur für das Spiel (Grafik, Ton); die stehen
-// bewusst nicht in der Liste, darum gilt die Prüfung nur in diese Richtung.
+// Ordner biomes/ und worlds/) oder der Tester. Umgekehrt steht jede geladene Datei in der Liste, außer den Daten nur
+// für das Spiel und den Bestand beim Wechsel auf Rust (nurSpiel), damit neue Sim-Daten auffallen.
 func TestListeWieLoader(t *testing.T) {
-	lit := regexp.MustCompile(`"([a-z-]+\.json)"`)
+	nurSpiel := map[string]bool{}
+	for _, n := range []string{
+		// Grafik, Ton, Assets und Spiel-Einstellungen
+		"paper.json", "sounds.json", "look.json", "render.json", "native.json", "sizes.json",
+		"asset-prompts.json", "assets-recherche.json", "assets-vorschlaege.json", "stresstests.json",
+		// Sim-Daten ohne Beschreibung unter docs/data/ (Stand RU41; der Go-Loader las sie nicht)
+		"coop.json", "mounts.json", "welt-events.json", "festival.json", "cargo.json", "bottle.json",
+		"hermits.json", "weather.json",
+	} {
+		nurSpiel[n] = true
+	}
+	loaded := loadedByRust(t)
+	listed := map[string]bool{}
+	for _, e := range files {
+		listed[e.Name] = true
+	}
+	for name := range loaded {
+		if !listed[name] && !nurSpiel[name] {
+			t.Errorf("k3c-data lädt %s, die Liste kennt die Datei nicht (oder in nurSpiel eintragen)", name)
+		}
+	}
+	for _, e := range files {
+		if !loaded[e.Name] && !slices.Contains(e.ReadBy, ByTester) {
+			t.Errorf("%s steht in der Liste, k3c-data lädt die Datei nicht", e.Name)
+		}
+		if m, _ := filepath.Glob(filepath.Join(root, "data", e.Name)); len(m) == 0 {
+			t.Errorf("%s fehlt in data/", e.Name)
+		}
+	}
+}
+
+// loadedByRust sammelt die Dateinamen, die k3c-data als Literal lädt, samt der Ordner biomes/ und worlds/.
+func loadedByRust(t *testing.T) map[string]bool {
+	t.Helper()
+	lit := regexp.MustCompile(`"([a-z0-9-]+\.json)"`)
 	loaded := map[string]bool{"biomes/*.json": true, "worlds/*.json": true}
 	err := filepath.WalkDir(filepath.Join(root, "rust", "crates", "k3c-data", "src"), func(p string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(p, ".rs") || strings.HasSuffix(p, "_tests.rs") {
@@ -32,14 +66,7 @@ func TestListeWieLoader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, e := range files {
-		if !loaded[e.Name] && !slices.Contains(e.ReadBy, ByTester) {
-			t.Errorf("%s steht in der Liste, k3c-data lädt die Datei nicht", e.Name)
-		}
-		if m, _ := filepath.Glob(filepath.Join(root, "data", e.Name)); len(m) == 0 {
-			t.Errorf("%s fehlt in data/", e.Name)
-		}
-	}
+	return loaded
 }
 
 // WZ28.10/AC-11: Doc liest nur docs/data/<name>.md der Liste.
@@ -100,7 +127,7 @@ func TestVaryWieUseData(t *testing.T) {
 		t.Fatal("k3c-balance/src/vary.rs: RELOADED fehlt")
 	}
 	want := map[string]bool{}
-	for _, m := range regexp.MustCompile(`"([a-z-]+\.json)"`).FindAllSubmatch(body, -1) {
+	for _, m := range regexp.MustCompile(`"([a-z0-9-]+\.json)"`).FindAllSubmatch(body, -1) {
 		want[string(m[1])] = true
 	}
 	for _, e := range files {

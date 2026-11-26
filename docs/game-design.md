@@ -99,7 +99,7 @@ Gold gibt es überall (Truhen, Gegner-Drops). Post-MVP: Tiefe 3 (Eisen, Lava), T
 
 ### Prozedurale Generierung (Pflicht-Feature)
 
-Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `engine/level/` (Go, deterministisch über `engine/rng`).
+Die festen Eckdaten stehen in `data/biomes/<biom>.json`, der Generator in `rust/crates/k3c-level` (deterministisch über `k3c-rng`).
 
 ```text
 [Rand|Ausgang] … [Portal] … [Chunks] [ HUB ] [Chunks] … [Portal] … [Ausgang|Rand]
@@ -178,7 +178,7 @@ Gamepad-Test vom 2026-10-03 an der Xbox (Edge 150, zwei Controller, Server `http
 JSON mit Monarch-Zustand (Level, Skills), pro Hub (Gebäude, Bürger, Ressourcen), Fortschritt (freigeschaltete Tiefen)
 und den **Seeds** der Stufen. Gegner und Level-Layout werden nicht gespeichert. Speicherort ist der Heimnetz-Server
 (Browser-Speicher auf der Xbox gilt als unzuverlässig), mit Fallback auf localStorage.
-Umgesetzt in `engine/sim/campaign.go` und `engine/store/`: Autosave bei Tagesanbruch und beim Stufenwechsel. Zusätzlich gespeichert wird,
+Umgesetzt in `rust/crates/k3c-sim/src/campaign/` und `rust/crates/k3c-room/src/store/`: Autosave bei Tagesanbruch und beim Stufenwechsel. Zusätzlich gespeichert wird,
 was aus der Welt schon entfernt wurde (gefällte Bäume, geöffnete Truhen), sonst kämen sie beim Laden zurück.
 
 ## Grafik & Audio

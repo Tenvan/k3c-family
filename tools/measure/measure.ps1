@@ -1,4 +1,4 @@
-# K3C-Prototypen messen (B-776/AC-04): startet den Ebitengine-Prototyp (k3c-ebiten) für die Lastfälle `level` und
+﻿# K3C-Prototypen messen (B-776/AC-04): startet den Ebitengine-Prototyp (k3c-ebiten) für die Lastfälle `level` und
 # `alle`, liest dabei den GPU-Speicher des Prozesses (WMI-Klasse der GPU-Zähler, sprachunabhängig) und den
 # Arbeitsspeicher und schreibt einen Bericht nach reports/native-proto-<rechner>-<zeit>.json (je Lauf ein Feld `engine`).
 # Läuft mit Windows PowerShell 5.1 und pwsh 7. Der Rust-Vergleichs-Prototyp ist entfallen (Entscheidung 008, B-779).
