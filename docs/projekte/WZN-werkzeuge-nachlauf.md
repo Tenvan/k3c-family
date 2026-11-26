@@ -18,6 +18,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WN2 | Welten-Nachlauf aus WE3, WE7, WE8 und GS3 | geplant |
 | WN3 | Werkzeug-Nachlauf aus WZ60, WZ61, WZ63 | geplant |
 | WN4 | Offene Tickets früher erledigter WZG-Sprints | geplant |
+| WN5 | Werkzeug-Befunde WE6 beheben | aktiv |
 
 ## Nicht-Ziele
 

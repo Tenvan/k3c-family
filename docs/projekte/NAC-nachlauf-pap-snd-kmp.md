@@ -20,6 +20,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | AU1 | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | geplant |
 | WL2 | Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum | geplant |
 | WK1 | Wirtschafts-Nachlauf aus WIR | geplant |
+| WK2 | Spielwünsche aus dem Spieltest: Bürger und Handwerker | aktiv |
 
 ## Nicht-Ziele
 
