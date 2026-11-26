@@ -5,8 +5,8 @@
 - **Prio:** hoch
 - **Umgebung:** live
 - **Status:** offen
-- **Sprint:** SR1
-- **Projekt:** SND
+- **Sprint:** SN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1

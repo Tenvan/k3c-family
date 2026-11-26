@@ -1,0 +1,95 @@
+# GS3 · SIM, PAP, CLI, SRV · Andenken und Chronik abgeschlossener Inseln auf der Seekarte
+
+- **Status:** erledigt
+- **Projekt:** WZG
+- **Domäne:** SIM, PAP, CLI, SRV
+- **Reife:** bereit
+- **Tickets:** B-966, B-978
+- **Start-Commit:** – (wird beim Aktivieren gesetzt: `git rev-parse --short origin/develop`)
+- **Spec:** freigegeben
+- **Revision:** 1
+- **Freigabe:** 🧑 2026-11-15
+
+## Ausgangslage
+
+Die Seekarte zeigt abgeschlossene Inseln nur als Zustand (B-962, gestaltet in GS2). Der Spielstand kennt die abgeschlossenen Insel-IDs, aber weder Tage noch Spieler (`engine/sim/island_save.go`, Version 9). 🧑 2026-11-15 will Andenken und eine Chronik (B-966). B-966 ist zerlegt: Chronik, Trophäen und Anzeige im Spiel bleiben in B-966, die Vorschau in der Spielstand-Auswahl ist B-978.
+
+## Ziel
+
+Jede abgeschlossene Insel trägt auf der Seekarte Trophäe, Abschlusszeile und zwei Zahlen; dieselbe Karte erscheint als Vorschau in der Spielstand-Auswahl.
+
+## Beteiligte und Zielgruppen
+
+Spielende am TV (1–2 Monarchen). Claude setzt um und legt Assets über `assets_*` an; 🧑 gibt frei und nimmt am TV ab.
+
+## Anforderungen
+
+- Chronik im Spielstand, Trophäen-Assets, Andenken auf der Seekarte im Spiel: siehe `B-966 › Anforderungen`.
+- Seekarte als Vorschau in der Spielstand-Auswahl: siehe `B-978 › Anforderungen`.
+
+## Nicht-Ziele
+
+Abbild der Burg, ganze Geschichte zum Nachlesen, eigener Menüpunkt „Chronik“, Namen oder Farben der Spieler, eigene Trophäen je Endboss.
+
+## Regeln und Einschränkungen
+
+- Umgehängt auf Rust (B-1143, 2026-11-19): Sim, Raum und Spielstand liegen in `rust/crates/k3c-sim`, `k3c-room` (Spielstand-Speicher `src/store/`), die Anzeige in `rust/crates/k3c-game` (Entscheidung 013). Die Go-Sessions GS3.1, GS3.3, GS3.4, GS3.5 sind verworfen; GS3.7 und GS3.8 ersetzen sie. Der Sprint wartet auf RU37 und RU60.
+- Reihenfolge SIM → PAP → CLI → Review; ein Commit je Session auf `sprint/gs3`, ein PR.
+- GS3.7 ändert das Spielstand-Format (Version erhöhen, Fixture; keine Rücksicht auf alte Stände); Review vor dem Commit.
+- Assets nur über `assets_*`, Fachprüfung `k3c-grafik`; HUD und Menü prüft `k3c-hud`.
+
+Planungsangaben für die Arbeitswellen (`docs/arbeitsweise.md` › Parallelität und Wellen), je eine Zeile, nur IDs und Pfade:
+
+- **Bereich:** `docs/rules/welten.md`, `rust/crates/k3c-sim/**`, `rust/crates/k3c-room/**`, `public/grafik/objekte/**`, `data/paper.json`, `rust/crates/k3c-game/src/hud/**`, `rust/crates/k3c-game/src/view/**`, `rust/crates/k3c-game/src/local/**`, `rust/crates/k3c-game/src/menu/**`
+- **Abhängig von:** GS1, GS2, RU37, RU60
+- **Braucht 🧑:** Abnahme
+- **Sperre:** spielstand
+
+## Beispiele
+
+Sengoku, Insel 1 nach 14 Tagen zu zweit abgeschlossen: Auf der Seekarte an Insel 2 steht auf der Reisfeld-Ebene die Maske mit Fahne, mit dem Zeiger darauf erscheinen die Abschlusszeile und „14 Tage · 2 Monarchen“. In der Spielstand-Auswahl zeigt der markierte Stand dieselbe Karte.
+
+## Ausnahme- und Fehlerfälle
+
+- Stand ohne Chronik → Trophäe ohne Zahlen.
+- Insel ohne Abschlusszeile → nur Zahlen.
+- Nicht ladbarer Stand → keine Vorschau.
+- Einzelheiten: `B-966`, `B-978 › Ausnahme- und Fehlerfälle`.
+
+## Akzeptanzkriterien
+
+- **AC-01** Die Engine hält beim Ablegen Insel, Tage und Monarchen fest; Speichern und Laden erhalten die Chronik, Version erhöht, Fixture; Regeltext und Glossar ergänzt (B-966/AC-01 bis AC-03).
+- **AC-02** Trophäen-Assets der vier Welten angelegt und zugeordnet (B-966/AC-04).
+- **AC-03** Die Seekarte zeigt Trophäe, Abschlusszeile und Zahlen für abgeschlossene Inseln, für beide Spieler gleich (B-966/AC-05, AC-06).
+- **AC-04** Die Liste der Spielstände liefert Route, aktuelle Insel, abgeschlossene Inseln und Chronik (B-978/AC-01).
+- **AC-05** Die Spielstand-Auswahl zeigt die Vorschau des markierten Stands; Laden, Löschen und B unverändert (B-978/AC-02, AC-03).
+- **AC-06** 🧑 am TV: Andenken auf der Seekarte und Vorschau im Menü geprüft (B-966/AC-07, B-978/AC-04).
+
+## Offene Fragen
+
+Alle mit Default entschieden, 🧑 bestätigt bei der Freigabe:
+
+- Ein Trophäen-Motiv je Welt: Standard Kristallsplitter, Sengoku Maske, Nil Skarabäus, Britannien Horn (B-966).
+- „Wer dabei war“ = Anzahl der Monarchen; „Tage“ = Tage auf dieser Insel bis zum Ablegen (B-966).
+- Vorschau rechts neben der Liste (B-978).
+
+## Sessions
+
+| Nr. | Datei | Typ | Agent | Status |
+|---|---|---|---|---|
+| GS3.1 | `GS3.1-chronik-spielstand.md` | Umsetzung | autonom | verworfen |
+| GS3.2 | `GS3.2-assets-trophaeen.md` | Umsetzung | autonom | fertig |
+| GS3.3 | `GS3.3-andenken-seekarte.md` | Umsetzung | autonom | verworfen |
+| GS3.4 | `GS3.4-spielstand-liste-route.md` | Umsetzung | autonom | verworfen |
+| GS3.5 | `GS3.5-vorschau-spielstand-auswahl.md` | Umsetzung | autonom | verworfen |
+| GS3.6 | `GS3.6-review.md` | Review | autonom | fertig |
+| GS3.7 | `GS3.7-chronik-und-spielstandliste-rust.md` | Umsetzung | autonom | fertig |
+| GS3.8 | `GS3.8-andenken-und-vorschau-rust.md` | Umsetzung | autonom | fertig |
+
+Bei `Reife: Entwurf` genügen Stichpunkte mit den Kriterien in Klammern statt Session-Dateien. Vor dem Aktivieren
+wird jede Session als eigene Datei nach `docs/vorlagen/session.md` geschrieben. Keine eigenen Sim- oder
+Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket (B-742).
+
+## Abnahme
+
+2026-11-26, mit WZG geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WN2, keine Abnahme erteilt; Abnahme-Ticket B-1286.

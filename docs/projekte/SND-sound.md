@@ -1,7 +1,7 @@
 # SND · Sound
 
-- **Status:** aktiv
-- **Rang:** 5
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** B-011
 
 ## Ziel
@@ -21,7 +21,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SO6 | Sound-Credits auf der Credits-Seite, Sound-Atlas und Sounds für die übrigen Ereignisse | erledigt |
 | SO7 | Niederlage-Stück, Hufschlag, UI-Klicks und Skill-Sounds je Klasse | erledigt |
 | SO8 | Skill-Sounds je Klasse | erledigt |
-| SR1 | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | aktiv |
+| SR1 | Ruhigerer Klang für Couch-Abende: weniger Piepen, langsamer, warme Stücke | erledigt |
 
 ## Nicht-Ziele
 

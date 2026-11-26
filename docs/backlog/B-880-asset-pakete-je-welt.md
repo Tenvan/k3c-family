@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** PT6
-- **Projekt:** PAP
+- **Sprint:** PN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-14
 - **Spec:** Entwurf
 - **Revision:** 1

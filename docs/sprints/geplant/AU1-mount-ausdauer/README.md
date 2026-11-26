@@ -1,7 +1,7 @@
 # AU1 · SIM · Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf
 
 - **Status:** geplant
-- **Projekt:** KMP
+- **Projekt:** NAC
 - **Domäne:** SIM
 - **Reife:** Entwurf
 - **Tickets:** –

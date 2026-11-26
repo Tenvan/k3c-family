@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** WZ66
-- **Projekt:** WZG
+- **Sprint:** WN1
+- **Projekt:** WZN
 - **Erstellt:** 2026-11-22
 - **Spec:** Entwurf
 - **Revision:** 1

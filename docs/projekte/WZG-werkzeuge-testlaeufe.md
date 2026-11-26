@@ -1,7 +1,7 @@
 # WZG · Werkzeuge
 
-- **Status:** aktiv
-- **Rang:** 1
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -78,26 +78,26 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | WZ57 | Workbench ohne Web-Client, doppelte Ticket-Nummern, Abnahme WZ43 | erledigt |
 | WZ58 | Welten-Editor zurück, Wellen-Regel, Größenvergleich im Review | erledigt |
 | WZ59 | Studio-Seiten neu ordnen, Sound und Quellen zusammenlegen | erledigt |
-| WZ60 | Workbench-Oberfläche bleibt bei langen Läufen stabil | aktiv |
-| FB3 | Live-Test-Feedback: Gebäudeplaner in der Workbench | aktiv |
-| WE1 | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | aktiv |
-| WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | aktiv |
-| WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | aktiv |
+| WZ60 | Workbench-Oberfläche bleibt bei langen Läufen stabil | erledigt |
+| FB3 | Live-Test-Feedback: Gebäudeplaner in der Workbench | erledigt |
+| WE1 | Workbench ruft die Engine wieder direkt auf, k3c-sim wird dünn | erledigt |
+| WE2 | Welten-Editor per MCP: Welt anlegen, Inseln und Tiefen setzen, Overrides und geplante Chunks | erledigt |
+| WE3 | Neue Welten anlegen: Sengoku, Nil, Britannien, Polar (nach Welten-MCP B-954) | erledigt |
 | WE4 | Etappen und Seekarte: Inseln je Etappe frei wählbar, Querschnitt-Editor | erledigt |
 | GS1 | Geschichten je Welt und Insel in Kunstsprache | erledigt |
 | GS2 | Seekarte im Spiel als Papierschnitt-Diorama mit Schiffsfahrt | erledigt |
-| WE7 | Papierschnitt-Assets für Sengoku, Nil und Britannien | aktiv |
-| GS3 | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | aktiv |
+| WE7 | Papierschnitt-Assets für Sengoku, Nil und Britannien | erledigt |
+| GS3 | Andenken und Chronik abgeschlossener Inseln auf der Seekarte | erledigt |
 | GS4 | Flaschenpost am Strand mit Geschichtszeile und Markierung | erledigt |
 | WE5 | Welt-Format-Nachträge: Endboss je Insel, Overrides für Events und Plätze, Skins, Welten-MCP | erledigt |
 | WE6 | Welt-Format im Spiel und im Welten-Editor: Endboss-Bau je Biom, Skins, neue Felder | erledigt |
-| WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | aktiv |
-| WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | aktiv |
+| WE8 | Welten-Inhalte: Events Ninja-Überfall, Sandsturm, Nebel und Zuordnung in den Welten | erledigt |
+| WZ61 | Workbench-Nachträge: schlanke Planungsdaten, alte EXE in bin/ aufräumen | erledigt |
 | WZ62 | Studio: feste Welten, Welt-Filter für Katalog und Sound, Größenvergleich mit Lineal, Welten-Editor-Link | erledigt |
-| WZ63 | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | aktiv |
-| WZ64 | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | aktiv |
-| WZ66 | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | aktiv |
-| WZ65 | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | aktiv |
+| WZ63 | Studio als eigene EXE mit eigenem MCP-Server, gemeinsamer Code in workkit | erledigt |
+| WZ64 | Spieltest-Aufnahme: Workbench nimmt Raummikro und Spielbild auf | erledigt |
+| WZ66 | Spieltest-Modus im Spiel: REC, Pad-Marker mit Spielkontext, Ruckler-Marker, Fragebogen | erledigt |
+| WZ65 | Spieltest-Auswertung: Transkript, Marker-Bilder, Befunde werden Tickets | erledigt |
 
 ## Nicht-Ziele
 
@@ -105,4 +105,4 @@ Testläufe mit Bots, `sim_test` und Lasttest gehören zu TST (abgetrennt 2026-10
 
 ## Notizen
 
-Entscheidungen, Zurückstellungen (Grund und Datum bei `ruht`). Darf leer bleiben (`–`).
+Geschlossen am 2026-11-26 (Beschluss 🧑 „Rest verschieben“). Keine Abnahme wurde dabei erteilt. 68 offene Tickets liegen in WZN (WN1 Spieltest, WN2 Welten, WN3 Werkzeuge, WN4 frühere Sprints), Abnahme-Ticket des Projekts ist B-1286.

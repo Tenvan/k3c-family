@@ -5,8 +5,8 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** MG11
-- **Projekt:** PAP
+- **Sprint:** PN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-14
 - **Spec:** Entwurf
 - **Revision:** 1

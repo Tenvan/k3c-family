@@ -5,8 +5,8 @@
 - **Prio:** niedrig
 - **Umgebung:** offline
 - **Status:** eingeplant
-- **Sprint:** SI7
-- **Projekt:** KMP
+- **Sprint:** KN1
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-15
 - **Spec:** freigegeben
 - **Revision:** 1

@@ -1,7 +1,7 @@
 # WL2 · DEV · Standard-Welt aus fünf Inseln und Welten-Editor: Auto-Reload, Geschichten, Prompts, Werte-Baum
 
 - **Status:** geplant
-- **Projekt:** WIR
+- **Projekt:** NAC
 - **Domäne:** DEV
 - **Reife:** Entwurf
 - **Tickets:** –

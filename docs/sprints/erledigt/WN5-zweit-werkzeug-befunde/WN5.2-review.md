@@ -1,0 +1,60 @@
+# WN5.2 · Review WN5
+
+- **Status:** fertig
+- **Typ:** Review
+- **Agent:** autonom
+- **Domäne:** DEV
+- **Lane:** zweit
+- **Modell:** sonnet
+- **Umgebung:** offline
+- **Branch:** sprint/wn5
+- **Abhängig von:** WN5.1
+- **Tickets:** B-1266
+- **Kriterien:** AC-01, AC-02
+
+## Ziel
+
+WN5 ist geprüft und per PR auf `main`.
+
+## Kontext
+
+Review nach `docs/arbeitsweise.md`. Abnahme-Ticket ist B-1291 (schon angelegt). Der Second Worker legt keine Tickets an.
+
+## Erlaubte Dateien
+
+- `tools/k3c-workbench/internal/**`
+- `tools/k3c-studio/internal/**`
+
+## Nicht-Ziele
+
+Neue Funktionen.
+
+## Schritte
+
+1. Diff des Sprint-Branches prüfen, schwere Befunde beheben.
+2. Abnahme in der Sprint-README, PR, Merge.
+
+## Fertig, wenn
+
+- [ ] AC-01, AC-02: nachgewiesen.
+
+## Prüfen
+
+```bash
+task check:diff
+```
+
+Einmal vor dem Commit; während der Arbeit nur gezielte Tests (`docs/arbeitsweise.md` › Tempo im Lauf).
+Review-Session statt dessen: `task check`, `task check:go` (nacheinander) und das Abnahme-Ticket des Sprints anlegen.
+Sim-, Balance- und Gen-Läufe (`sim_test`, Balancing, `gen:paper` samt Golden, `check:race`) nur, wenn diese Session das
+betroffene Feature entwickelt; sonst laufen sie im Abnahme-Ticket (`docs/arbeitsweise.md` › Sim, Balance und Gen).
+Manuelle Prüfungen (Browser, Xbox, TV) nur, wenn diese Datei sie nennt und 🧑 sie für diesen Lauf freigegeben hat.
+
+## Ergebnis
+
+- AC-01 geprüft: `task:check:dev` grün auf dem Sprint-Branch.
+- AC-02: `endBoss` und `skins` nachgewiesen, Welt-Events verschoben (B-1260).
+- Diff gelesen (2 Dateien, Beschreibung und Test): keine schweren Befunde.
+
+### Für den Hauptrechner
+- Siehe WN5.1 (B-1260 Ursache, B-1266/AC-03).
