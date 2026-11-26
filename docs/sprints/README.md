@@ -9,6 +9,8 @@ Die Reihenfolge der Arbeit ist allein der Projekt-Rang: [`../projekte/README.md`
 
 | Sprint | Domäne | Projekt | Thema | Am Ende sichtbar | Ordner |
 |---|---|---|---|---|---|
+| WN5 | DEV | WZN | Werkzeug-Befunde WE6 beheben | – | `aktiv/WN5-zweit-werkzeug-befunde/` |
+| WK2 | SIM, CLI | NAC | Spielwünsche aus dem Spieltest: Bürger und Handwerker | – | `aktiv/WK2-zweit-spielwuensche-handwerker/` |
 
 ## Offen am Gerät
 

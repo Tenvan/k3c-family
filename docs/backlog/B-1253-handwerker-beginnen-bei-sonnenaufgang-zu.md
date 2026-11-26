@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** WK1
+- **Sprint:** WK2
 - **Projekt:** NAC
 - **Erstellt:** 2026-11-22
 - **Spec:** Entwurf

@@ -5,7 +5,7 @@
 - **Prio:** mittel
 - **Umgebung:** ?
 - **Status:** offen
-- **Sprint:** WN4
+- **Sprint:** WN5
 - **Projekt:** WZN
 - **Erstellt:** 2026-11-24
 - **Spec:** Entwurf

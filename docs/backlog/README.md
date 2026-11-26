@@ -278,16 +278,16 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1242](B-1242-marker-im-menue-zeigen-keine-rueckmeldun.md) | CLI | Problem | niedrig | offen | WN1 | Marker im Menü zeigen keine Rückmeldung und tragen keinen Spielkontext |
 | [B-1243](B-1243-das-rufhorn-laesst-sich-nicht-ausloesen.md) | CLI | Problem | mittel | offen | RU36 | Das Rufhorn lässt sich nicht auslösen und seine Voraussetzung ist nicht erkennbar |
 | [B-1244](B-1244-das-schiff-kostet-deutlich-mehr-und-wird.md) | SIM | Idee | mittel | offen | WK1 | Das Schiff kostet deutlich mehr und wird in mehreren Stufen bezahlt |
-| [B-1245](B-1245-buerger-tragen-keine-forke-bis-sie-sich.md) | CLI | Problem | mittel | offen | WK1 | Bürger tragen keine Forke, bis sie sich Werkzeug geholt haben |
-| [B-1246](B-1246-im-standard-spawnen-pro-tag-nur-zwei-bue.md) | SIM | Problem | mittel | offen | WK1 | Im Standard spawnen pro Tag nur zwei Bürger statt vieler |
+| [B-1245](B-1245-buerger-tragen-keine-forke-bis-sie-sich.md) | CLI | Problem | mittel | offen | WK2 | Bürger tragen keine Forke, bis sie sich Werkzeug geholt haben |
+| [B-1246](B-1246-im-standard-spawnen-pro-tag-nur-zwei-bue.md) | SIM | Problem | mittel | offen | WK2 | Im Standard spawnen pro Tag nur zwei Bürger statt vieler |
 | [B-1247](B-1247-die-meldung-die-nacht-naht-steht-fest-ob.md) | CLI | Problem | mittel | offen | RU36 | Die Meldung „Die Nacht naht“ steht fest oben unter der Dämmerungsanzeige statt über dem Monarchen |
 | [B-1248](B-1248-bogenschuetzen-stehen-auf-der-standplatt.md) | CLI | Problem | mittel | offen | RU36 | Bogenschützen stehen auf der Standplattform des Turms, nicht auf den Zinnenspitzen |
 | [B-1249](B-1249-hinweistexte-voraussetzung-des-horns-tur.md) | CLI | Idee | mittel | offen | RU36 | Hinweistexte (Voraussetzung des Horns, Turm und Mauer) erscheinen im grünen Bereich zwischen Pferd und Fluss |
 | [B-1250](B-1250-der-pfeil-des-bogenschuetzen-fliegt-im-b.md) | CLI | Problem | mittel | offen | RU36 | Der Pfeil des Bogenschützen fliegt im Bogen vom Schützen zum Ziel |
 | [B-1251](B-1251-mauer-und-turmausbau-haengen-vom-ausbau.md) | SIM | Frage | mittel | offen | WK1 | Mauer- und Turmausbau hängen vom Ausbau des Hubs ab und sind je Turm erkennbar |
-| [B-1252](B-1252-es-lassen-sich-hoechstens-fuenf-steine-a.md) | SIM | Idee | mittel | offen | WK1 | Es lassen sich höchstens fünf Steine auf einmal markieren, Erzadern zählen als Markierung |
-| [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | WK1 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
-| [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | WK1 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
+| [B-1252](B-1252-es-lassen-sich-hoechstens-fuenf-steine-a.md) | SIM | Idee | mittel | offen | WK2 | Es lassen sich höchstens fünf Steine auf einmal markieren, Erzadern zählen als Markierung |
+| [B-1253](B-1253-handwerker-beginnen-bei-sonnenaufgang-zu.md) | SIM | Problem | mittel | offen | WK2 | Handwerker beginnen bei Sonnenaufgang zu arbeiten und suchen nur nachts oder bei Feindkontakt Schutz |
+| [B-1254](B-1254-ueber-dem-kopf-der-handwerker-zeigt-ein.md) | CLI | Idee | mittel | offen | WK2 | Über dem Kopf der Handwerker zeigt ein kleines Symbol, was sie gerade tun |
 | [B-1255](B-1255-nach-dem-rufen-geht-keiner-baeume-faelle.md) | SIM | Problem | hoch | offen | WK1 | Nach dem Rufen geht keiner Bäume fällen, obwohl Hämmer und Handwerker da sind |
 | [B-1256](B-1256-b1255-lokale-aenderung-entscheiden.md) | PAP | Problem | niedrig | offen | WN4 | Entscheidung: lokale Änderung an B-1255 committen oder verwerfen |
 | [B-1257](B-1257-kritische-fragen-lane-umstellung.md) | INF | Problem | hoch | offen | WN4 | Kritische Fragen aus der Umstellung auf Lane zweit |
@@ -296,7 +296,7 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1260](B-1260-studio-welt-events-liste.md) | DEV | Problem | mittel | eingeplant | WN2 | Das Studio setzt die Welt-Events über world_override_set (welt-events) |
 | [B-1262](B-1262-trophaeen-assets-spielansicht.md) | PAP | Schuld | mittel | offen | WN2 | Trophäen-Assets an die Spielansicht binden |
 | [B-1263](B-1263-gs3-abnahme-andenken-chronik.md) | PAP | Problem | mittel | offen | WN2 | Abnahme Sprint GS3: Andenken und Chronik |
-| [B-1266](B-1266-befunde-review-we6.md) | DEV | Problem | mittel | offen | WN4 | Review-Befunde WE6: gocyclo in services/config.go, MCP-Beschreibung ohne endBoss/skins/events, Go-Tests rot |
+| [B-1266](B-1266-befunde-review-we6.md) | DEV | Problem | mittel | offen | WN5 | Review-Befunde WE6: gocyclo in services/config.go, MCP-Beschreibung ohne endBoss/skins/events, Go-Tests rot |
 | [B-1267](B-1267-abnahme-we6.md) | DEV | Problem | mittel | offen | WN4 | Abnahme-Läufe WE6: Race, Gen und Sichtprüfungen Endboss, Bau, Skins, Welten-Editor |
 | [B-1268](B-1268-events-ankuendigung-ohne-wirkung.md) | SIM | Problem | mittel | offen | WN2 | Banner und Schleier der Welt-Events erscheinen auch im Frieden, unter Tage und ohne Portale |
 | [B-1269](B-1269-abnahme-we8.md) | SIM | Schuld | mittel | offen | WN2 | Abnahme-Läufe WE8: Sim, Balance, Gen, Race |
@@ -322,6 +322,8 @@ Jedes Ticket ist eine eigene Datei nach [`../vorlagen/ticket.md`](../vorlagen/ti
 | [B-1288](B-1288-abnahme-projekt-snd.md) | CLI | Schuld | mittel | offen | SN1 | Abnahme Projekt SND: Läufe und Hörprobe sind nachgeholt |
 | [B-1289](B-1289-abnahme-projekt-kmp.md) | SIM | Schuld | mittel | offen | KN1 | Abnahme Projekt KMP: Läufe und Sichtprüfungen sind nachgeholt |
 | [B-1290](B-1290-abnahme-projekt-wir.md) | SIM | Schuld | mittel | offen | WK1 | Abnahme Projekt WIR: Läufe und Sichtprüfungen sind nachgeholt |
+| [B-1291](B-1291-abnahme-wn5.md) | DEV | Schuld | niedrig | offen | WN5 | Abnahme WN5: Race-Lauf der geänderten Werkzeug-Pakete ist nachgeholt |
+| [B-1292](B-1292-abnahme-wk2.md) | SIM | Schuld | mittel | offen | WK2 | Abnahme WK2: Ralf prüft Bürger und Handwerker im Spiel |
 
 ## Archiv
 
