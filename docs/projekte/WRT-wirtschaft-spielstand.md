@@ -1,7 +1,7 @@
 # WRT · Wirtschaft & Spielstand
 
 - **Status:** aktiv
-- **Rang:** 3
+- **Rang:** 2
 - **Ziel-Tickets:** –
 
 ## Ziel

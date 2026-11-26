@@ -1,6 +1,6 @@
 # FG1 · SIM, CLI · Grundfiguren und Ausrüstung: Bürger, Handwerker, Bogenschütze, Soldat, Elite
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** WIR
 - **Domäne:** SIM, CLI
 - **Reife:** bereit
@@ -74,4 +74,4 @@ Balance-Sessions vor der Abnahme: Sim, Balance, Gen und `check:race` laufen im A
 
 ## Abnahme
 
-2026-11-21: AC-01 (FG1.1), AC-02 (FG1.2), AC-03 (FG1.3) erfüllt, siehe Session-Ergebnisse. Review (FG1.4): ein Befund behoben (Dev-Spawn), zwei offen (Rüstung ohne Reichweite, Werte im Code). Abnahme-Ticket für Sim, Balance und Gen: B-1203.
+2026-11-26, mit WIR geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach WK1, keine Abnahme erteilt; Abnahme-Ticket B-1290.

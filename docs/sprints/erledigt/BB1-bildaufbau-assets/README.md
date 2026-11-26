@@ -1,6 +1,6 @@
 # BB1 · PAP · Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** PAP
 - **Domäne:** PAP
 - **Reife:** bereit
@@ -93,7 +93,4 @@ Sim, Balance, Gen und `check:race` laufen im Abnahme-Ticket der Review (B-742).
 
 ## Abnahme
 
-2026-11-19 (BB1.5, Claude): AC-01 bis AC-05 geprüft (Vitest `bildaufbauMasstab` 21/21, Reviewer ohne schweren Befund, Ergebnisse BB1.1 bis BB1.4); AC-06 (TV) bei Ralf, Liste im Ergebnis von BB1.5.
-Behoben: Kriterien von BB1.5 (AC-06 hatte keine Session).
-Folge-Tickets im Sprint LA1: B-1146 bis B-1151 (Anbindung, Schiff-Gerüst und Bauplatz, Schiffsrumpf, Plantage, Luftperspektive, Texturbudget).
-Abnahme-Ticket für Gen und Race: B-1145 (Lane zweit, Sperre golden); Sim und Balance nicht relevant.
+2026-11-26, mit PAP geschlossen (🧑 „Rest verschieben“): offene Tickets verschoben nach PN1, keine Abnahme erteilt; Abnahme-Ticket B-1287.

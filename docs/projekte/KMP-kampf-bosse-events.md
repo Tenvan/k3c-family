@@ -1,7 +1,7 @@
 # KMP · Kampf, Bosse, Events
 
-- **Status:** aktiv
-- **Rang:** 5
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** –
 
 ## Ziel
@@ -30,9 +30,8 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | SI4 | Reittiere je Welt: Regel, Assets, Engine, Anzeige | erledigt |
 | SI5 | Besondere Figur der Welt mit einmaligem Bauwerk: Regel, Engine, Assets, Anzeige | erledigt |
 | SI6 | Fest nach dem Sieg und friedliche Insel: Regel, Assets, Engine, Anzeige, Festmusik | erledigt |
-| SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | aktiv |
+| SI7 | Welten-Editor wählt Wetter, Reittier und Figur je Welt | erledigt |
 | SI1 | Fracht auf dem Schiff: Regel, Engine, Assets, Anzeige | erledigt |
-| AU1 | Ausdauer fürs Reittier: Sprint verbraucht, Pause lädt auf | geplant |
 
 ## Nicht-Ziele
 

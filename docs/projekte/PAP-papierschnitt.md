@@ -1,7 +1,7 @@
 # PAP · Papierschnitt-Grafik, Assets über MCP, Review
 
-- **Status:** aktiv
-- **Rang:** 1
+- **Status:** erledigt
+- **Rang:** –
 - **Ziel-Tickets:** B-699, B-700, B-701
 
 ## Ziel
@@ -44,7 +44,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | PT5 | Abnahme-Läufe CU1 (B-836) | erledigt |
 | PT6 | Entscheidungsvorlage: Asset-Pakete je Welt (B-880) | erledigt |
 | WG1 | Weltbilder: großes Titelbild für die Weltauswahl, kleines für Spielstand und Pause | erledigt |
-| BB1 | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | aktiv |
+| BB1 | Assets nach Bildaufbau: Maßstab in Monarchenhöhen, Waldwand, Leitmotiv je Welt | erledigt |
 
 ## Nicht-Ziele
 

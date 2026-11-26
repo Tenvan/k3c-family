@@ -6,7 +6,7 @@
 - **Umgebung:** ?
 - **Status:** offen
 - **Sprint:** AU1
-- **Projekt:** KMP
+- **Projekt:** NAC
 - **Erstellt:** 2026-11-22
 - **Spec:** Entwurf
 - **Revision:** 1
