@@ -4,7 +4,9 @@
 
 use std::collections::BTreeMap;
 
+use serde::Serialize;
 use serde_json::Value;
+use serde_json::ser::{Formatter, PrettyFormatter};
 use serde_json::value::RawValue;
 use sha2::{Digest, Sha256};
 
@@ -157,6 +159,49 @@ pub fn go_marshal(value: &Value) -> String {
     }
 }
 
+/// Einrückung mit zwei Leerzeichen wie serde, aber Zahlen und Texte wie Go `json.Marshal`.
+struct GoPretty(PrettyFormatter<'static>);
+
+/// Reicht die Aufrufe zum Aufbau an `PrettyFormatter` weiter.
+macro_rules! forward {
+    ($($name:ident($($arg:ident: $ty:ty),*);)*) => {
+        $(fn $name<W: ?Sized + std::io::Write>(&mut self, w: &mut W $(, $arg: $ty)*) -> std::io::Result<()> {
+            self.0.$name(w $(, $arg)*)
+        })*
+    };
+}
+
+impl Formatter for GoPretty {
+    forward! {
+        begin_array();
+        end_array();
+        begin_array_value(first: bool);
+        end_array_value();
+        begin_object();
+        end_object();
+        begin_object_key(first: bool);
+        begin_object_value();
+        end_object_value();
+    }
+
+    fn write_f64<W: ?Sized + std::io::Write>(&mut self, w: &mut W, value: f64) -> std::io::Result<()> {
+        w.write_all(go_float(value).as_bytes())
+    }
+
+    fn write_string_fragment<W: ?Sized + std::io::Write>(&mut self, w: &mut W, fragment: &str) -> std::io::Result<()> {
+        w.write_all(escape_html(fragment).as_bytes())
+    }
+}
+
+/// Go `json.MarshalIndent(v, "", "  ")` in Feldreihenfolge, ohne Zeilenende. Anders als Go (Fehler) wird NaN oder
+/// Unendlich zu `null`.
+pub(crate) fn go_marshal_indent<T: Serialize>(value: &T) -> Result<String, String> {
+    let mut out = Vec::new();
+    let mut serializer = serde_json::Serializer::with_formatter(&mut out, GoPretty(PrettyFormatter::new()));
+    value.serialize(&mut serializer).map_err(|e| e.to_string())?;
+    String::from_utf8(out).map_err(|e| e.to_string())
+}
+
 /// Go `%q` eines Texts (`strconv.Quote`): druckbare Zeichen bleiben, der Rest wird maskiert.
 pub fn go_quoted(s: &str) -> String {
     let mut out = String::from('"');
@@ -190,7 +235,7 @@ pub fn sha256_hex(data: &[u8]) -> String {
 mod tests {
     use serde_json::json;
 
-    use super::{go_marshal, go_quoted, sha256_hex};
+    use super::{go_marshal, go_marshal_indent, go_quoted, sha256_hex};
 
     /// Prüfwerte aus FIPS 180-4 (leer, ein Block, zwei Blöcke).
     #[test]
@@ -214,6 +259,32 @@ mod tests {
     fn go_quoted_wie_go() {
         let text = "| ü − \"x\" \\ \r\n\u{a0}\u{1}";
         assert_eq!(go_quoted(text), r#""| ü − \"x\" \\ \r\n\u00a0\x01""#);
+    }
+
+    /// Erwartet nach den Regeln von Go `json.MarshalIndent` für Strukturen.
+    #[test]
+    fn go_marshal_indent_wie_go() {
+        #[derive(serde::Serialize)]
+        struct Probe {
+            z: f64,
+            a: Vec<f64>,
+            s: &'static str,
+            n: Option<i64>,
+            e: Vec<i64>,
+        }
+        let probe = Probe {
+            z: 100.0,
+            a: vec![1.5, 1e-7],
+            s: "<&>\u{2029}\n\"",
+            n: None,
+            e: Vec::new(),
+        };
+        assert_eq!(
+            go_marshal_indent(&probe).as_deref(),
+            Ok(
+                "{\n  \"z\": 100,\n  \"a\": [\n    1.5,\n    1e-7\n  ],\n  \"s\": \"\\u003c\\u0026\\u003e\\u2029\\n\\\"\",\n  \"n\": null,\n  \"e\": []\n}"
+            )
+        );
     }
 
     /// Erwartet nach den Regeln von Go `json.Marshal` für Werte nach `any` (Zahlform, Sortierung, HTML-Escapes).

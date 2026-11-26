@@ -3,6 +3,7 @@
 
 pub mod app;
 pub mod assetsui;
+pub mod balance;
 #[cfg(test)]
 pub(crate) mod exeengine;
 pub mod gamedata;
