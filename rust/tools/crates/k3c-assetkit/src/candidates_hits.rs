@@ -8,7 +8,7 @@ use crate::catalog::{OWN_BUILDING, SELF_MADE, license_flag, search};
 use crate::credits::LICENSE_CONFIRMED;
 use crate::fsutil;
 use crate::import_download::download_allowed;
-use crate::net::{is_test_origin, parse_with_host, url_path};
+use crate::net::{is_test_origin, parse_with_host, plain_authority, url_path};
 use crate::research::{Hit, KNOWN_LICENSES, LICENSE_CHECK, LICENSE_EXCLUDED, search_term};
 
 /// Gilt für die Katalog-Treffer, wenn `limit` ≤ 0 ist.
@@ -126,7 +126,9 @@ fn hit_mark(h: &Hit) -> &'static str {
 
 /// Direkter Download über https von einem Host aus `DOWNLOAD_HOSTS` (wie `download_hit`).
 pub(crate) fn hit_downloadable(h: &Hit) -> bool {
-    parse_with_host(&h.download).is_some_and(|u| (u.scheme() == "https" || is_test_origin(&u)) && download_allowed(&u))
+    plain_authority(&h.download)
+        && parse_with_host(&h.download)
+            .is_some_and(|u| (u.scheme() == "https" || is_test_origin(&u)) && download_allowed(&u))
 }
 
 fn hit_file_name(h: &Hit) -> String {

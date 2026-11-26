@@ -153,3 +153,19 @@ fn url_path_wie_go() {
         assert_eq!(super::url_path(raw).as_deref(), want, "{raw:?}");
     }
 }
+
+// Sprint-Review RU67: Was `url` still entfernt, Go aber ablehnt.
+#[test]
+fn plain_authority_wie_go() {
+    for (raw, want) in [
+        ("https://upload.wikimedia.org/a.png", true),
+        ("https://upload.wikimedia.org:443/a@b.png", true),
+        ("a.png", true),
+        ("https://@upload.wikimedia.org/a.png", false),
+        ("https://:@upload.wikimedia.org/a.png", false),
+        ("//@upload.wikimedia.org/a.png", false),
+        ("https://upload.wikimedia.org:0443/a.png", false),
+    ] {
+        assert_eq!(plain_authority(raw), want, "{raw}");
+    }
+}

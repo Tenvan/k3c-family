@@ -1,6 +1,6 @@
 # RU67 · DEV · assetkit nach Rust: Asset-Logik des Studios
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -83,10 +83,11 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU67.2 | `RU67.2-katalog-quellen-recherche.md` | Umsetzung | autonom | fertig |
 | RU67.3 | `RU67.3-import-vorrat.md` | Umsetzung | autonom | fertig |
 | RU67.4 | `RU67.4-kandidaten-vorschlaege.md` | Umsetzung | autonom | fertig |
-| RU67.5 | `RU67.5-review.md` | Review | autonom | in Arbeit |
+| RU67.5 | `RU67.5-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-26 (Second Worker): AC-01 bis AC-03 erfüllt, Nachweise in RU67.1–RU67.4, Prüfläufe in RU67.5.
+Behoben: URL-Prüfung ließ leere Zugangsdaten und Port `:0443` durch, die Go ablehnt; neue Tickets: keine.
+Abnahme-Ticket: keins (nur Werkzeug-Code).
+Version: keine vorgeschlagen (Werkzeug-Port ohne Spielwirkung).

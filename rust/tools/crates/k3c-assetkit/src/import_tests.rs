@@ -184,6 +184,8 @@ async fn download_hit_weiterleitung_auf_fremden_host_abgelehnt() {
         "//169.254.169.254/x.png",
         "https://upload.wikimedia.org.evil.example/x.png",
         "https://user:pw@upload.wikimedia.org/x.png",
+        "https://@upload.wikimedia.org/x.png",
+        "https://upload.wikimedia.org:0443/x.png",
         "http://upload.wikimedia.org/x.png",
         "file:///c:/windows/win.ini",
     ] {

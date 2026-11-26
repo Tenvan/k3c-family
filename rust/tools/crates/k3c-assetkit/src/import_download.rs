@@ -12,7 +12,9 @@ use url::Url;
 use crate::error::{Error, Result};
 use crate::fsutil::{self, TempFile};
 use crate::import::{MAX_IMPORT_BYTES, import_file_on, import_target};
-use crate::net::{DownloadClient, bounded, is_test_origin, parse_with_host, percent_decode, send_following};
+use crate::net::{
+    DownloadClient, bounded, is_test_origin, parse_with_host, percent_decode, plain_authority, send_following,
+};
 use crate::research::LICENSE_CHECK;
 
 /// Quellen mit direktem Download und maschinenlesbarer Lizenz. Nur sie lädt das Werkzeug selbst; Links aus Treffern
@@ -68,7 +70,7 @@ pub(crate) async fn download_hit_on(
     let url = parse_with_host(&hit.download)
         .filter(|u| u.scheme() == "https" || is_test_origin(u))
         .ok_or_else(|| Error::Msg(format!("download nur über https: {:?}", hit.download)))?;
-    if !download_allowed(&url) {
+    if !plain_authority(&hit.download) || !download_allowed(&url) {
         return Err(Error::Msg(format!(
             "download nur von {}, nicht von {:?}: bitte manuell laden und importieren",
             host_list(),

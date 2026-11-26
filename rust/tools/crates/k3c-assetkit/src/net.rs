@@ -141,6 +141,21 @@ pub(crate) fn percent_decode(s: &str) -> String {
     String::from_utf8_lossy(&out).into_owned()
 }
 
+/// Prüft den Rohtext einer Adresse auf das, was `url` still entfernt, Go aber ablehnt: leere Zugangsdaten (`https://@host`)
+/// und einen Port mit führender Null (`:0443`). Adressen ohne Host-Teil (relative `Location`) gelten als schlicht.
+pub(crate) fn plain_authority(raw: &str) -> bool {
+    let rest = match raw.split_once("://") {
+        Some((_, rest)) => rest,
+        None => match raw.strip_prefix("//") {
+            Some(rest) => rest,
+            None => return true,
+        },
+    };
+    let authority = rest.split(['/', '?', '#', '\\']).next().unwrap_or_default();
+    let port = authority.rsplit_once(':').map(|(_, port)| port);
+    !authority.contains('@') && !port.is_some_and(|p| p.len() > 1 && p.starts_with('0'))
+}
+
 /// Liest höchstens `limit` Bytes der Antwort (Go `io.ReadAll(io.LimitReader(body, limit))`). Wer eine Überschreitung
 /// erkennen will, übergibt die Grenze plus eins.
 pub(crate) async fn read_limited(mut res: reqwest::Response, limit: usize) -> reqwest::Result<Vec<u8>> {
@@ -202,10 +217,14 @@ pub(crate) async fn send_following(
         let (301 | 302 | 303 | 307 | 308, Some(location)) = (status, location) else {
             return Ok(response);
         };
-        let next = std::str::from_utf8(location.as_bytes())
-            .ok()
+        let raw = std::str::from_utf8(location.as_bytes()).ok();
+        let next = raw
             .and_then(|l| url.join(l).ok())
             .ok_or_else(|| Error::Msg("weiterleitung: ungültiges Ziel".to_string()))?;
+        // Nicht leere Zugangsdaten sieht `check`; leere und `:0443` verschwinden beim Parsen.
+        if next.username().is_empty() && next.password().is_none() && !raw.is_some_and(plain_authority) {
+            return Err(Error::Msg("weiterleitung abgelehnt: ungültiges Ziel".to_string()));
+        }
         hops += 1;
         if hops > max_hops {
             return Err(Error::Msg("zu viele Weiterleitungen".to_string()));
