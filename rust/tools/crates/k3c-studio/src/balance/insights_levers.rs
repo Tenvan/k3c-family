@@ -4,6 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 
+use super::insights::Insights;
 use super::insights_plain::LeverPlan;
 
 /// Ein Wert in `data/` mit allen verletzten Zielen, die er verbessern soll. `conflict`: ein anderes verletztes Ziel
@@ -17,4 +18,9 @@ pub struct LeverGroup {
     pub targets: Vec<String>,
     pub conflict: String,
     pub text: String,
+}
+
+/// Stub RU70.17: noch keine Gruppen.
+pub(crate) fn lever_groups(_insights: &Insights) -> Vec<LeverGroup> {
+    Vec::new()
 }

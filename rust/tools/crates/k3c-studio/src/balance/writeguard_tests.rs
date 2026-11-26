@@ -1,9 +1,12 @@
-//! Go `writeguard_test.go` (WZ63.7/AC-09): Regeln und Helfer. Die Quelltext-Prüfung auf Schreibaufrufe am Wächter
-//! vorbei (`TestBalancingSchreibtNurUeberWaechter`) folgt, wenn `balance` und `simrun` vollständig sind.
+//! Go `writeguard_test.go` (WZ63.7/AC-09): Regeln, Helfer und die Quelltext-Prüfung auf Schreibaufrufe am Wächter
+//! vorbei.
 
 use std::fs;
+use std::path::Path;
 
-use super::super::test_helpers::temp_root;
+use regex::Regex;
+
+use super::super::test_helpers::{repo_root, temp_root};
 use super::{guard, mkdir_all, remove, remove_all, rename, write_file};
 
 /// Das Balancing schreibt Quelldateien nur unter `data/worlds/`, Laufausgaben nur unter `reports/`.
@@ -90,4 +93,66 @@ fn loeschen_folgt_keiner_junction() {
     remove_all(&root, "reports/r").expect("Ordner löschen");
     assert!(!root.join("reports").join("r").exists());
     assert!(outside.join("bleibt.txt").is_file() && !outside.join("neu.txt").exists());
+}
+
+/// Die Rust-Quellen unter `path` ohne Testdateien (Pfad ab `src/` → Inhalt).
+fn sources(src: &Path, path: &Path, out: &mut Vec<(String, String)>) {
+    if path.is_dir() {
+        for entry in fs::read_dir(path).expect("Ordner") {
+            sources(src, &entry.expect("Eintrag").path(), out);
+        }
+        return;
+    }
+    let rel = path
+        .strip_prefix(src)
+        .expect("unter src")
+        .to_string_lossy()
+        .replace('\\', "/");
+    let test = rel.ends_with("_tests.rs") || rel.ends_with("test_helpers.rs");
+    if rel.ends_with(".rs") && !test {
+        out.push((rel, fs::read_to_string(path).expect("Quelle")));
+    }
+}
+
+/// `balance`, `simrun`, `datadoc`, `gamedata` und die Balance-Bindings schreiben nur über die Helfer mit Wächter.
+/// `simrun`, `datadoc` und `app/balance*.rs` zählen mit, sobald es sie gibt (RU70.18 bis RU70.20).
+#[test]
+fn balancing_schreibt_nur_ueber_waechter() {
+    let raw_write = Regex::new(
+        r"\b(fs::(write|rename|copy|remove_file|remove_dir|remove_dir_all|create_dir|create_dir_all|hard_link|set_permissions)|File::(create|create_new|options)|OpenOptions::new|write_atomic|symlink_(file|dir))\(",
+    )
+    .expect("Muster");
+    let src = repo_root().join("rust/tools/crates/k3c-studio/src");
+    let mut files = Vec::new();
+    for dir in ["balance", "simrun", "datadoc", "gamedata"] {
+        let path = src.join(dir);
+        if path.exists() {
+            sources(&src, &path, &mut files);
+        }
+    }
+    for entry in fs::read_dir(src.join("app")).expect("app") {
+        let path = entry.expect("Eintrag").path();
+        if path
+            .file_name()
+            .is_some_and(|n| n.to_string_lossy().starts_with("balance"))
+        {
+            sources(&src, &path, &mut files);
+        }
+    }
+    assert!(
+        files.len() >= 20,
+        "nur {} Dateien gelesen: Pfade stimmen nicht",
+        files.len()
+    );
+    // die Helfer selbst, jeder Aufruf hinter dem Wächter
+    let allowed = "balance/writeguard.rs";
+    for (rel, text) in &files {
+        let found: Vec<&str> = raw_write.find_iter(text).map(|m| m.as_str()).collect();
+        if rel == allowed {
+            assert!(!found.is_empty(), "{rel} schreibt nicht mehr roh: Ausnahme streichen");
+        } else {
+            assert!(found.is_empty(), "{rel} schreibt am Wächter vorbei: {found:?}");
+        }
+    }
+    assert!(files.iter().any(|(rel, _)| rel == allowed));
 }

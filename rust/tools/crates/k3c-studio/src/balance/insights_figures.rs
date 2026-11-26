@@ -6,9 +6,9 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use super::figures::NightFigures;
+use super::figures::{Figures, NightFigures};
 use super::figures_island::IslandFigures;
-use super::hints::Band;
+use super::hints::{Band, Hints};
 use super::ship_figures::ShipFigures;
 
 /// Kennzahlen mit Ampel, die Nächte für die Diagramme und die grünen Bänder je Diagramm.
@@ -37,4 +37,9 @@ pub struct FigureLight {
     pub value: Option<f64>,
     pub light: String,
     pub text: String,
+}
+
+/// Stub RU70.17: noch ohne Ampeln der Kennzahlen.
+pub(crate) fn figure_insights(_figures: Option<&Figures>, _hints: &Hints) -> FigureInsights {
+    FigureInsights::default()
 }

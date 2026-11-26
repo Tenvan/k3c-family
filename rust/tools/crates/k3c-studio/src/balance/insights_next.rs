@@ -4,6 +4,10 @@
 
 use serde::{Deserialize, Serialize};
 
+use super::insights::Insights;
+use super::insights_text::Hint;
+use super::summary::Summary;
+
 /// Befehl als Auftrag an Claude im Chat.
 pub const WHERE_CHAT: &str = "chat";
 /// Befehl für das Terminal im Checkout.
@@ -28,4 +32,14 @@ pub struct Command {
     #[serde(rename = "where")]
     pub place: String,
     pub text: String,
+}
+
+/// Stub RU70.17: noch keine Hinweise.
+pub(crate) fn hints(_insights: &Insights) -> Vec<Hint> {
+    Vec::new()
+}
+
+/// Stub RU70.17: noch kein Vorschlag.
+pub(crate) fn next_run(_insights: &Insights, _summary: &Summary) -> NextRun {
+    NextRun::default()
 }
