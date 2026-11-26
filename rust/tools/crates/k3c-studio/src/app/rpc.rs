@@ -8,7 +8,7 @@ use k3c_kit::uikit::{self, Method};
 use serde::Serialize;
 use serde_json::Value;
 
-use super::{App, world};
+use super::{App, hub, world};
 
 #[cfg(test)]
 #[path = "rpc_tests.rs"]
@@ -39,6 +39,10 @@ pub const METHODS: &[(&str, Handler)] = &[
     ("WorldIslandEndBoss", world::island_end_boss),
     ("WorldSkins", world::skins),
     ("WorldNatureSet", world::nature_set),
+    ("HubPlan", hub::plan),
+    ("HubCheck", hub::check),
+    ("HubRules", hub::rules),
+    ("HubSave", hub::save),
 ];
 
 pub(super) fn encode(value: impl Serialize) -> Result<Value, String> {

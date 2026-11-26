@@ -2,6 +2,7 @@
 //! Oberfläche stehen in der Aufruf-Tabelle [`rpc`]. Ohne Tauri-Typen, damit Fenster und Headless-Betrieb dasselbe nutzen.
 
 pub mod headless;
+mod hub;
 pub mod open_url;
 pub mod rpc;
 mod studio;
@@ -19,6 +20,7 @@ use k3c_kit::usage::Tracker;
 use serde::Serialize;
 use serde_json::{Value, json};
 
+use crate::hubplan;
 use crate::studioview::Game;
 use crate::world::{EngineFactory, Watcher, exe_factory};
 use crate::{mcpsrv, ports};
@@ -75,6 +77,8 @@ pub struct App {
     game: Mutex<Option<Arc<Game>>>,
     /// Engine-Seite des Welten-Editors der Oberfläche.
     world_engine: EngineFactory,
+    /// Engine-Seite des Gebäude-Planers der Oberfläche.
+    hub_engine: hubplan::EngineFactory,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -111,6 +115,7 @@ impl App {
             running: Mutex::new(None),
             game: Mutex::new(None),
             world_engine: exe_factory(),
+            hub_engine: hubplan::exe_factory(),
         }
     }
 

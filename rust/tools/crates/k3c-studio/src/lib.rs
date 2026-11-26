@@ -6,6 +6,7 @@ pub mod app;
 pub(crate) mod exeengine;
 pub mod gamedata;
 pub mod gameexe;
+pub mod hubplan;
 /// Nachgebaute Lücken von k3c-kit und k3c-assetkit (V10).
 pub(crate) mod kitx;
 pub mod mcpsrv;

@@ -15,6 +15,10 @@ use super::tools_world::{self, ChunksIn, CreateIn, DeleteIn, IdIn, OverrideIn, S
 use super::tools_world_story::{self, StoryIn};
 use crate::world::{Editor, EngineFactory};
 
+// Die Tools des Gebäude-Planers samt ihrem Router.
+#[path = "tools_hub.rs"]
+mod tools_hub;
+
 /// Empfänger der Tool-Methoden.
 #[derive(Clone)]
 pub struct Studio {
@@ -35,6 +39,9 @@ pub(super) const CATALOG: &[&str] = &[
     "reports_list",
     "report_read",
     "saves_list",
+    "hub_get",
+    "hub_check",
+    "hub_save",
     "world_list",
     "world_get",
     "world_create",
@@ -48,7 +55,11 @@ pub(super) const CATALOG: &[&str] = &[
 
 /// Alle Routen.
 pub(super) fn router() -> ToolRouter<Studio> {
-    Studio::engine_router() + Studio::gamedata_router() + Studio::world_read_router() + Studio::world_write_router()
+    Studio::engine_router()
+        + Studio::gamedata_router()
+        + Studio::hub_router()
+        + Studio::world_read_router()
+        + Studio::world_write_router()
 }
 
 /// Das Engine-Tool (B-047): rechnet mit der Spiel-EXE des Checkouts, ohne laufenden Server.
