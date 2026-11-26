@@ -26,6 +26,7 @@ type plan struct {
 	StudioVitest bool // Typecheck und Vitest des Studios (sein Frontend und tools/webkit, WZ63.3)
 	Mods         map[string]*modPlan
 	Rust         *rustPlan // Workspace rust/ (rust.go); nil ohne Rust-Dateien
+	RustTools    *rustPlan // Workspace rust/tools/ der Rust-Werkzeuge (rust.go, RU66.1); nil ohne deren Dateien
 }
 
 // repo beantwortet, was die Auswahl über den Checkout wissen muss.
@@ -33,7 +34,6 @@ type repo struct {
 	modules []string              // Modul-Ordner, "." zuerst
 	hasGo   func(dir string) bool // enthält der Ordner (repo-relativ) Go-Dateien?
 }
-
 
 // clientRoots: Ordner, deren Dateien Lint, Typecheck und Vitest der Wurzel brauchen (der Browser-Client src/ ist entfernt, B-848).
 var clientRoots = []string{"tests/", "public/", "data/", "tools/paper/"}

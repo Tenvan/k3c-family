@@ -1,0 +1,43 @@
+# Namespace `tools-rust`: Cargo-Workspace rust/tools/ der Rust-Werkzeuge (Entscheidung 014, RU66 bis RU71): gemeinsamer
+# Code `k3c-kit`, später Asset-Logik, Studio und Workbench. Leitfaden: docs/standards/rust-werkzeuge.md. Build-Ordner
+# rust/tools/target, Temp der Tests unter .work/tmp (K3C_TMP). `run`, `dev`, `workbench:*` und `studio:*` folgen mit RU69/RU70.
+version: '3'
+
+tasks:
+  build:
+    desc: Rust-Werkzeuge bauen (cargo build --workspace in rust/tools)
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
+    cmds:
+      - cargo build --workspace
+
+  test:
+    desc: "Tests der Rust-Werkzeuge (cargo test --workspace in rust/tools); Filter: task tools-rust:test -- -p k3c-kit"
+    deps: [':tmp']
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
+    cmds:
+      - cargo test --workspace {{.CLI_ARGS}}
+
+  lint:
+    desc: Lint der Rust-Werkzeuge (cargo clippy mit -D warnings, alle Ziele, dann cargo fmt --check)
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
+    cmds:
+      - cargo clippy --workspace --all-targets -- -D warnings
+      - cargo fmt --all --check
+
+  fmt:
+    desc: Rust-Werkzeuge formatieren (cargo fmt --all in rust/tools)
+    dir: '{{.ROOT_DIR}}/rust/tools'
+    env:
+      CARGO_TARGET_DIR: '{{.ROOT_DIR}}/rust/tools/target'
+      K3C_TMP: '{{.ROOT_DIR}}/.work/tmp'
+    cmds:
+      - cargo fmt --all

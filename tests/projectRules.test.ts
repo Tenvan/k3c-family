@@ -57,9 +57,12 @@ describe('Komplexität & Schichten', () => {
     expect(goFiles.filter((f) => lines(f) > HARD)).toEqual([]);
   });
 
-  // Rust-Workspace (RSU, RU1.3): nur rust/crates; rust/target (Build) und rust/spike (Prototyp) zählen nicht. Die Funktionslänge prüft clippy.
-  it('keine Rust-Datei unter rust/crates über der harten Grenze, auch keine Test-Datei', () => {
-    const rustFiles = filesIn('rust/crates', (n) => n.endsWith('.rs')).map(posix);
+  // Rust-Workspaces (RSU, RU1.3; Werkzeuge RU66.1): nur rust/crates und rust/tools/crates; die Build-Ordner (rust/target,
+  // rust/tools/target) und der Spike rust/tools/spike zählen nicht. Die Funktionslänge prüft clippy.
+  it('keine Rust-Datei unter rust/crates und rust/tools/crates über der harten Grenze, auch keine Test-Datei', () => {
+    const rustFiles = ['rust/crates', 'rust/tools/crates']
+      .flatMap((d) => filesIn(d, (n) => n.endsWith('.rs')))
+      .map(posix);
     expect(rustFiles.filter((f) => lines(f) > HARD)).toEqual([]);
   });
 

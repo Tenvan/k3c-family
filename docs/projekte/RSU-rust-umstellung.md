@@ -97,7 +97,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | HB1 | Kurz-Sprint: HUD-Texte, dichte Biome, Landstreicher-Lager, Hafen als Start | erledigt |
 | RU65 | Rust-Backend für Workbench und Studio: Spike (Tauri) und Entscheidung 014 | erledigt |
 | RU68 | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | erledigt |
-| RU66 | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | aktiv |
+| RU66 | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | erledigt |
 | RU67 | assetkit nach Rust: Asset-Logik des Studios | aktiv |
 | RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | aktiv |
 | RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | aktiv |

@@ -1,0 +1,35 @@
+[package]
+name = "k3c-kit"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+description = "Gemeinsamer Code der Rust-Werkzeuge (Port von tools/workkit und engine/conlog, RU66)"
+
+[lints]
+workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+chrono.workspace = true
+tokio.workspace = true
+rmcp.workspace = true
+schemars.workspace = true
+axum.workspace = true
+base64.workspace = true
+regex.workspace = true
+tokio-stream.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows = { workspace = true, features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_System_JobObjects",
+    "Win32_System_Threading",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread"] }
+tempfile.workspace = true
+reqwest.workspace = true

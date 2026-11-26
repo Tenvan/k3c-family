@@ -11,6 +11,7 @@
 #   balance      tools/k3c-studio/internal/balance/Taskfile.yml  Balancing-Tester (seit WZ63.5 im Studio)
 #   gen          tools/Taskfile.yml             Generatoren: Atlas, Gebäude, Grafik-Pipeline, Regeltabelle
 #   ops          scripts/Taskfile.yml           Betrieb: Aufräumen, Spielstände sichern
+#   tools-rust   rust/tools/Taskfile.yml   Rust-Werkzeuge (k3c-kit, später Workbench und Studio): build, test, lint, fmt
 #
 # Gruppen dieses Taskfiles (in dieser Reihenfolge): Einrichten (install) · Werkzeuge und Tests (lint, typecheck, test) · Bauen und Ausliefern
 # (build, buildall, pages) · Prüfen (check, check:go, check:race, check:diff, check:dev, check:all).
@@ -39,6 +40,7 @@ includes:
   gen: tools/Taskfile.yml
   ops: scripts/Taskfile.yml
   rust: rust/Taskfile.yml
+  tools-rust: rust/tools/Taskfile.yml
 
 tasks:
   # Legt das feste Temp-Verzeichnis an (GOTMPDIR muss existieren, auch in der CI und in frischen Klonen ohne `task install`).
@@ -160,7 +162,7 @@ tasks:
       - go run ./tools/checkdiff -only go {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
   check:diff:rust:
-    desc: "check:diff, nur die Bahn Rust (cargo fmt, clippy und Tests der geänderten Crates in rust/)"
+    desc: "check:diff, nur die Bahn Rust (cargo fmt, clippy und Tests der geänderten Crates in rust/ und rust/tools/)"
     cmds:
       - go run ./tools/checkdiff -only rust {{if .CHECK_BASE}}-base "{{.CHECK_BASE}}"{{end}}
 
@@ -174,10 +176,12 @@ tasks:
       - task: k3c-studio:lint
 
   check:all:
-    desc: Alles prüfen (Wurzel, Go, k3c-workbench, k3c-studio, Build des Rust-Spiels; das Go-Spiel baut nicht mehr mit)
+    desc: Alles prüfen (Wurzel, Go, k3c-workbench, k3c-studio, Build des Rust-Spiels, Tests und Lint der Rust-Werkzeuge; das Go-Spiel baut nicht mehr mit)
     cmds:
       - task: check
       - task: build
       - task: check:go
       - task: check:race
       - task: check:dev
+      - task: tools-rust:test
+      - task: tools-rust:lint

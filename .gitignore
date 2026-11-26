@@ -63,6 +63,7 @@ graphify-out/
 *.syso
 
 rust/target/
+rust/tools/target/
 
 # Serena (lokaler Werkzeug-Zustand)
 .serena/

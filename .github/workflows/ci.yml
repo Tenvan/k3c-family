@@ -1,4 +1,4 @@
-# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; k3c-workbench und k3c-studio (samt tools/workkit): Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
+# CI: Lint, Typecheck, Tests der Wurzel (Regeln, Planung, Papierschnitt); Go: Tests, Lint, Cross-Build; Rust-Spiel: fmt, clippy, Tests und Paket dist/k3c-game (EXE ≤ 40 MB, data, Grafik) unter Windows; Rust-Werkzeuge rust/tools: fmt, clippy, Tests unter Windows (nur bei Änderungen dort oder an den Frontends); k3c-workbench und k3c-studio (samt tools/workkit): Frontend, Tests, Lint, Wails-Build (Windows). Tests nur nach dem Merge (Push auf main) oder von Hand (workflow_dispatch); im Pull Request nur Merge-Konflikt-Prüfung, Tests laufen lokal vor dem Push (task check).
 name: CI
 
 on:
@@ -127,6 +127,59 @@ jobs:
       - name: Paket prüfen
         working-directory: .
         run: task rust:game:dist:check
+
+  # Rust-Werkzeuge (RU66.1, Entscheidung 014): eigener Workspace rust/tools/ (k3c-kit, später Studio und Workbench mit
+  # Tauri). Läuft nur, wenn rust/tools/ oder die Frontends geändert sind (eigener Filter über git diff, keine weitere
+  # Action); von Hand (workflow_dispatch), beim ersten Push und nach Force-Push immer. Cache mit eigenem Schlüssel.
+  tools-rust:
+    if: github.event_name != 'pull_request'
+    name: Rust-Werkzeuge · fmt · clippy · Tests (Windows)
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: rust/tools
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Änderungen unter rust/tools und den Frontends
+        id: changes
+        shell: bash
+        working-directory: .
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+        run: |
+          run=false
+          # Ohne Vorgänger im Klon (erster Push, Force-Push) immer prüfen. rust-toolchain.toml, rustfmt.toml und .cargo/
+          # in rust/ erbt rust/tools/ (wie tools/checkdiff/rust.go).
+          if [ "$EVENT" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ -z "${BEFORE//0/}" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            run=true
+          elif [ -n "$(git diff --name-only "$BEFORE" "$SHA" -- rust/tools rust/rust-toolchain.toml rust/rustfmt.toml rust/.cargo tools/k3c-workbench/frontend tools/k3c-studio/frontend tools/webkit)" ]; then
+            run=true
+          fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          echo "Rust-Werkzeuge prüfen: $run"
+      - uses: actions/cache@v6
+        if: steps.changes.outputs.run == 'true'
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            rust/tools/target
+          key: tools-rust-${{ runner.os }}-${{ hashFiles('rust/rust-toolchain.toml', 'rust/tools/Cargo.lock') }}
+          restore-keys: tools-rust-${{ runner.os }}-
+      - if: steps.changes.outputs.run == 'true'
+        run: rustup show
+      - if: steps.changes.outputs.run == 'true'
+        run: cargo fmt --all --check
+      - if: steps.changes.outputs.run == 'true'
+        run: cargo clippy --workspace --all-targets -- -D warnings
+      - if: steps.changes.outputs.run == 'true'
+        run: cargo test --workspace
 
   k3c-workbench:
     if: github.event_name != 'pull_request'

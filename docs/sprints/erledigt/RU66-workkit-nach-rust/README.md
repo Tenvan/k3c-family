@@ -1,6 +1,6 @@
 # RU66 · DEV · workkit nach Rust: Crate k3c-kit im Workspace rust/tools
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -63,15 +63,16 @@ keine (Vorentscheidungen im Leitfaden, 🧑 2026-11-26)
 
 | Nr. | Datei | Typ | Agent | Status |
 |---|---|---|---|---|
-| RU66.1 | `RU66.1-fundament-logger-console-applog.md` | Umsetzung | autonom | offen |
-| RU66.2 | `RU66.2-proc-usage.md` | Umsetzung | autonom | offen |
-| RU66.3 | `RU66.3-mcp-bausteine.md` | Umsetzung | autonom | offen |
-| RU66.4 | `RU66.4-mcp-server-rmcp.md` | Umsetzung | autonom | offen |
-| RU66.5 | `RU66.5-uikit-claude-winicon.md` | Umsetzung | autonom | offen |
-| RU66.6 | `RU66.6-review.md` | Review | autonom | offen |
+| RU66.1 | `RU66.1-fundament-logger-console-applog.md` | Umsetzung | autonom | fertig |
+| RU66.2 | `RU66.2-proc-usage.md` | Umsetzung | autonom | fertig |
+| RU66.3 | `RU66.3-mcp-bausteine.md` | Umsetzung | autonom | fertig |
+| RU66.4 | `RU66.4-mcp-server-rmcp.md` | Umsetzung | autonom | fertig |
+| RU66.5 | `RU66.5-uikit-claude-winicon.md` | Umsetzung | autonom | fertig |
+| RU66.6 | `RU66.6-review.md` | Review | autonom | fertig |
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-26 (Second Worker): AC-01, AC-02, AC-03 erfüllt, Nachweise in den Ergebnissen RU66.1–RU66.6.
+Review ohne schwere Befunde; neue Tickets: keine, offene Punkte unter „Für den Hauptrechner“.
+Kein Abnahme-Ticket für Sim, Balance und Gen (reiner Werkzeug-Code); PC-Abnahme gesammelt in B-1295.
+Version: keine neue Version (nur Werkzeuge).
