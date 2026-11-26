@@ -16,6 +16,7 @@ pub mod paperassets;
 pub mod platform;
 pub mod ports;
 pub mod review;
+pub mod simrun;
 pub mod studioview;
 #[cfg(test)]
 pub(crate) mod test_helpers;
