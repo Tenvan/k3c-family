@@ -1,18 +1,31 @@
-//! Serverunabhängige Bausteine der MCP-Server (Port von `workkit/mcpkit`, RU66.3): Zähler und Aufruf-Log, Text-Hilfen,
-//! Zuordnung zum Checkout (Header, Argument `checkout`, Worktrees), Pfadprüfung und Schreibschutz. Server, Middleware
-//! und Fortschritt folgen mit RU66.4.
+//! Gemeinsames Gerüst der MCP-Server von Workbench und Studio (Port von `workkit/mcpkit`): [`Server`] auf `rmcp`
+//! (Streamable HTTP nur an 127.0.0.1), Zähler und Aufruf-Log, Zuordnung zum Checkout (Header, Argument `checkout`,
+//! Worktrees), Parameter-Hinweis, Fortschritt, Pfadprüfung und Schreibschutz.
+//!
+//! Die Tools schreiben die Apps mit `#[tool_router]` und `#[tool]` auf ihrem eigenen Typ; den Checkout und den
+//! Fortschritt eines Aufrufs lesen sie als `Extension<Workspace>` und `Extension<Progress>`.
 
 mod checkout;
+mod chunked;
+mod observe;
+mod param_hint;
 mod paths;
+mod progress;
+mod server;
+mod service;
 mod stats;
 mod text;
+mod tool;
 mod workspace;
 mod writeguard;
 
 pub use checkout::{Resolver, split_checkout, with_checkout};
 pub use paths::inside_root;
+pub use progress::{Progress, ProgressFn};
+pub use server::{MountFn, Options, Server, StopFn, ToolPredicate, TrackFn, resolve_port};
 pub use stats::{Call, CallHook, Outcome, Snapshot, Stats, TargetFn, ToolStats};
 pub use text::{clip, clip_args, or_dash, outcome_of, ref_name, result_text, text_result};
+pub use tool::{image_result, read_only};
 pub use workspace::{Workspace, find_root, same_dir, same_path};
 pub use writeguard::WriteGuard;
 
