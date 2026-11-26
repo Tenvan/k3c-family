@@ -5,6 +5,7 @@
 //! `spawn_blocking`).
 
 mod catalog;
+mod delete;
 mod edit;
 mod edit_island;
 mod endboss_skins;
@@ -22,6 +23,8 @@ mod story;
 mod values;
 mod watch;
 
+#[cfg(test)]
+mod edit_endboss_skins_tests;
 #[cfg(test)]
 mod edit_override_lists_tests;
 #[cfg(test)]
