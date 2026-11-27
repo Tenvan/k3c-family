@@ -127,3 +127,14 @@ fn saves_dir_und_leerer_ordner() {
     let dir = saves_dir(root.path(), "");
     assert_eq!(saves_list(root.path(), &dir), Ok("keine Spielstände".to_owned()));
 }
+
+/// Review RU70.21: Ein kaputter Spielstand mit riesiger Zeit läuft nicht über.
+#[test]
+fn saves_list_riesige_zeit() {
+    let root = fixture_root();
+    let dir = root.path().join("kaputte-zeit");
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(dir.join("riesig.json"), r#"{"time":1e300}"#).unwrap();
+    let text = saves_list(root.path(), &dir).unwrap();
+    assert!(text.starts_with("riesig · Stufe 0/0 · Tag "), "{text}");
+}

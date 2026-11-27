@@ -11,9 +11,10 @@ use super::evaluate::{STATUS_INVALID, STATUS_NARROW, STATUS_OK, Verdict};
 use super::figures::Figures;
 use super::insights::{Insights, Meta};
 use super::progress::{GoalView, Progress, QualityView, progress_of};
-use super::report_types::{Report, Scenario, nil_empty, read_go};
+use super::report_types::{Report, Scenario, nil_empty};
 use super::targets::{KIND_SHARE, ROLE_GOAL, ROLE_GUARD, Targets};
 use crate::kitx::go_marshal_indent;
+use crate::simrun::stamp::read_object;
 
 /// Ein bewertetes Ziel; `pass` gilt für „ok“ und „knapp“.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
@@ -125,9 +126,10 @@ impl Targets {
     }
 }
 
-/// Liest ein Summary-JSON (Baseline).
+/// Liest ein Summary-JSON (Baseline). Wie Go nur ein Objekt oder `null`: Eine Liste läse serde als Struktur, und der
+/// leere Bericht überschriebe beim Neuschreiben `result.json`.
 pub fn read_summary(raw: &[u8]) -> Result<Summary, String> {
-    read_go(raw).map_err(|e| format!("baseline: {e}"))
+    read_object(raw).map_err(|e| format!("baseline: {e}"))
 }
 
 /// Ziele, deren Status sich gegenüber der Baseline geändert hat, in der Reihenfolge von `cur` (entfallene am Ende).

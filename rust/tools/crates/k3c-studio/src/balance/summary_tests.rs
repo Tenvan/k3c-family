@@ -122,3 +122,10 @@ fn go_baseline_bleibt_byte_gleich() {
     let got = read_summary(want.as_bytes()).expect("lesen").json().expect("JSON");
     assert_eq!(got, want);
 }
+
+/// Review RU70.21: Eine Liste ist kein Bericht (Go lehnt sie ab).
+#[test]
+fn baseline_liste_abgelehnt() {
+    assert!(read_summary(b"[]").is_err());
+    assert!(read_summary(b"null").is_ok());
+}

@@ -63,7 +63,7 @@ fn save_line(name: &str, path: &Path, cycle: Option<(f64, f64)>) -> String {
     };
     let day = cycle.map_or_else(
         || "?".to_owned(),
-        |(length, dawn)| (((save.time + dawn) / length) as i64 + 1).to_string(),
+        |(length, dawn)| (((save.time + dawn) / length) as i64).saturating_add(1).to_string(),
     );
     let when = local_minute(&save.saved_at).unwrap_or_else(|| save.saved_at.clone());
     format!(

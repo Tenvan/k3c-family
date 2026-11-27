@@ -1,6 +1,6 @@
 # RU70 · DEV · Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP
 
-- **Status:** aktiv
+- **Status:** erledigt
 - **Projekt:** RSU
 - **Domäne:** DEV
 - **Reife:** bereit
@@ -108,12 +108,12 @@ keine (Leitfaden, 🧑 2026-11-26)
 | RU70.18 | `RU70.18-simrun-register-spec-stempel.md` | Umsetzung | autonom | fertig |
 | RU70.19 | `RU70.19-simrun-offline-berichte-datadoc.md` | Umsetzung | autonom | fertig |
 | RU70.20 | `RU70.20-mcp-sim-balance-bindings.md` | Umsetzung | autonom | fertig |
-| RU70.21 | `RU70.21-review-abnahme.md` | Review | autonom | in Arbeit |
+| RU70.21 | `RU70.21-review-abnahme.md` | Review | autonom | fertig |
 
 Reihenfolge = Tabelle; jede Session hängt an der vorigen (RU70.1 an RU66 und RU67).
 
 ## Abnahme
 
-Wird von der Review-Session (Doku-Sprint: letzte Session) ausgefüllt, höchstens fünf Zeilen: Datum, Kriterien
-(Verweis auf Session-Ergebnisse), behobene Befunde, neue Tickets und das Abnahme-Ticket für Sim, Balance und Gen
-(genau eins, `docs/arbeitsweise.md` › Sim, Balance und Gen). Bis dahin `–`.
+2026-11-27, Second Worker: AC-01 bis AC-05 belegt, AC-06 bis auf 11 lokale Norton-TLS-Tests (`tools/assetkit`); Nachweise in RU70.1 bis RU70.21.
+Behoben im Review: zwei Härtungen bei kaputten Dateien. Für den Hauptrechner: Ergebnis RU70.21, voran die rote CI auf `main`.
+PC-Abnahme: B-1295 (RU71), kein Abnahme-Ticket für Sim/Balance/Gen.

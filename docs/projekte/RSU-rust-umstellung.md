@@ -99,7 +99,7 @@ In Abarbeitungs-Reihenfolge; der erste nicht erledigte Sprint ist der nächste. 
 | RU68 | Planungslogik der Workbench: Golden-Tests als Orakel vor dem Rust-Port | erledigt |
 | RU66 | workkit nach Rust: Crate k3c-kit im Workspace rust/tools | erledigt |
 | RU67 | assetkit nach Rust: Asset-Logik des Studios | erledigt |
-| RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | aktiv |
+| RU70 | Studio-Backend in Rust: Welten, Hub, Assets, Spiel-EXE-Anbindung, MCP | erledigt |
 | RU69 | Workbench-Backend in Rust: Dienste, Tasks, Logs, Git, Planung, MCP | aktiv |
 | RU71 | Go restlos entfernen: go.mod, Taskfile, CI, Doku, Entscheidung 014 | aktiv |
 
